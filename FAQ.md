@@ -306,3 +306,13 @@
 ### V70.25.61 — manifest по умолчанию
 
 `app/update_manager.js` теперь по умолчанию проверяет стабильный manifest GitHub Pages. Android/native shell по-прежнему может переопределить URL через `window.DND_UPDATE_MANIFEST_URL` или `dnd_update_manifest_url`.
+
+
+### Android shell V70.25.61
+
+- `android/` содержит native Android shell.
+- `android/app/build.gradle` собирает `index.html` и `app/**`, а PNG/MP3 из корня перекладывает в APK в `wallpapers/` и `ambience/`, поэтому исходную структуру GitHub менять не требуется.
+- `android/app/src/main/java/com/dndvtt/app/MainActivity.java` использует `WebViewAssetLoader` и локальный HTTPS-origin `appassets.androidplatform.net`.
+- `.github/workflows/android-debug.yml` автоматически собирает debug APK через GitHub Actions.
+
+**Медиа:** обои и эмбиенты специально оставляем в корне репозитория. Это соответствует текущей загрузке GitHub; Android build сам раскладывает их в runtime-пути приложения.
