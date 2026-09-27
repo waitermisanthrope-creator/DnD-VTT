@@ -6,28 +6,43 @@ import android.net.Uri;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
-import androidx.annotation.RequiresApi;
+import java.io.File;
+import java.util.Collections;
 import androidx.webkit.WebViewAssetLoader;
 import androidx.webkit.WebViewClientCompat;
+import androidx.webkit.WebViewCompat;
+import androidx.webkit.WebViewFeature;
+import androidx.webkit.JavaScriptReplyProxy;
+import androidx.webkit.WebMessageCompat;
 
 public class MainActivity extends Activity {
+    private DndUpdateBridge updater;
+    private WebView webView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        WebView webView = new WebView(this);
+        updater = new DndUpdateBridge(this);
+        try {
+            updater.ensureSeeded();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        webView = new WebView(this);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
         webView.getSettings().setAllowFileAccess(false);
         webView.getSettings().setAllowContentAccess(false);
 
+        File activeRoot = new File(getFilesDir(), "vtt-versions/" + updater.getActiveVersion());
         final WebViewAssetLoader loader = new WebViewAssetLoader.Builder()
-                .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this))
+                .addPathHandler("/vtt/", new WebViewAssetLoader.InternalStoragePathHandler(this, activeRoot))
                 .build();
 
         webView.setWebViewClient(new WebViewClientCompat() {
             @Override
-            @RequiresApi(21)
             public WebResourceResponse shouldInterceptRequest(
                     WebView view, WebResourceRequest request) {
                 return loader.shouldInterceptRequest(request.getUrl());
@@ -38,9 +53,30 @@ public class MainActivity extends Activity {
             public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
                 return loader.shouldInterceptRequest(Uri.parse(url));
             }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                updater.markHealthy();
+            }
         });
 
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)) {
+            WebViewCompat.addWebMessageListener(
+                    webView,
+                    "dndNative",
+                    Collections.singleton("https://appassets.androidplatform.net"),
+                    new WebViewCompat.WebMessageListener() {
+                        @Override
+                        public void onPostMessage(WebView view, WebMessageCompat message,
+                                                   Uri sourceOrigin, boolean isMainFrame,
+                                                   JavaScriptReplyProxy replyProxy) {
+                            if (!isMainFrame || message.getData() == null) return;
+                            updater.handle(message.getData(), replyProxy);
+                        }
+                    });
+        }
+
         setContentView(webView);
-        webView.loadUrl("https://appassets.androidplatform.net/assets/index.html");
+        webView.loadUrl("https://appassets.androidplatform.net/vtt/index.html");
     }
 }
