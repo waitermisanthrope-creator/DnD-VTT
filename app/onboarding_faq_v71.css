@@ -12,7 +12,7 @@
 /* V70.25.62 — keep FAQ/help controls aligned with the mobile two-row dock. */
 @media (max-width: 600px) {
   .dnd-main-help, .dnd-main-faq {
-    bottom: 74px !important;
+    bottom: 182px !important;
     width: calc(50vw - 15px) !important;
     max-width: none !important;
     min-height: 54px;
