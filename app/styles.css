@@ -240,3 +240,43 @@ input:focus, textarea:focus, select:focus {
 /* Кнопка "Настройки" на главном экране — небольшой ховер */
 #characterSelectScreen .btn-action:hover { filter: brightness(1.1); }
 
+
+/* V70.25.62 — mobile main-menu dock: four controls must not overlap. */
+@media (max-width: 600px) {
+  #characterSelectScreen > button[onclick*="openSettingsModal"],
+  #characterSelectScreen > button[onclick*="openDndNetworkModal"] {
+    bottom: 10px !important;
+    width: calc(50vw - 15px) !important;
+    max-width: none !important;
+    min-height: 54px;
+    padding: 10px 8px !important;
+    white-space: nowrap;
+    z-index: 300 !important;
+  }
+  #characterSelectScreen > button[onclick*="openSettingsModal"] { left: 10px !important; right: auto !important; }
+  #characterSelectScreen > button[onclick*="openDndNetworkModal"] { left: auto !important; right: 10px !important; }
+  .dnd-main-help, .dnd-main-faq {
+    bottom: 74px !important;
+    width: calc(50vw - 15px) !important;
+    max-width: none !important;
+    min-height: 54px;
+    padding: 10px 8px !important;
+    white-space: nowrap;
+    z-index: 300 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  .dnd-main-help { left: 10px !important; right: auto !important; }
+  .dnd-main-faq { left: auto !important; right: 10px !important; }
+  #characterCreationScreen {
+    min-height: 100dvh;
+    max-height: 100dvh;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    padding-bottom: 110px !important;
+  }
+}
