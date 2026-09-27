@@ -2,7 +2,7 @@ plugins {
     id "com.android.application"
 }
 
-def vttAssets = layout.buildDirectory.dir("generated/vttAssets")
+def vttAssets = layout.buildDirectory.dir("generated/vttAssets").get().asFile
 
 tasks.register("prepareVttAssets", Sync) {
     into(vttAssets)
