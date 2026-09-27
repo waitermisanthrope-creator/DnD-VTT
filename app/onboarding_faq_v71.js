@@ -30,6 +30,41 @@ var FAQ=[
  ['Помощь','Как повторить обучение?','На главном экране нажмите «Обучение». Первый запуск определяется локальным флагом. Кнопка позволяет пройти тур повторно после сброса или обновления интерфейса.'],
  ['Источники','Где смотреть первоисточники Kibbles?','В FAQ указан сайт KibblesTasty и раздел Kibbles Reference Document. Там же размещены сведения о свободном контенте и актуальных версиях. Ссылки открываются во внешнем браузере устройства.']
 ];
+var CHANGELOG=[
+ ['70.25.64','Первое обновление','Добавлен закрытый журнал изменений: на главном экране можно открыть «Что нового» и посмотреть, что вошло в текущую версию.'],
+ ['70.25.64','Подготовка обновлений','Журнал отделён от игрового интерфейса и не мешает персонажу, инвентарю и бою.'],
+ ['70.25.64','Дальше','Следующие обновления будут добавлять сюда новые исправления и функции по мере их готовности.']
+];
+function openChangelog(){var m=document.getElementById('dndChangelogModal');if(!m)return;m.style.display='flex';}
+g.openDndChangelog=openChangelog;
+function closeChangelog(){var m=document.getElementById('dndChangelogModal');if(m)m.style.display='none';}
+g.closeDndChangelog=closeChangelog;
+function renderChangelog(){
+ var root=document.getElementById('dndChangelogBody'); if(!root)return;
+ root.innerHTML=CHANGELOG.map(function(x){
+   return '<section class="dnd-changelog-item"><div class="dnd-changelog-version">'+esc(x[0])+'</div><h3>'+esc(x[1])+'</h3><p>'+esc(x[2])+'</p></section>';
+ }).join('');
+}
+function buildChangelog(){
+ if(document.getElementById('dndChangelogModal'))return;
+ var m=document.createElement('div');
+ m.id='dndChangelogModal';
+ m.innerHTML='<div class="dnd-changelog-drawer"><div class="dnd-changelog-head"><div><div class="dnd-changelog-kicker">Карманный ВТТ</div><h2>📜 Что нового</h2></div><button class="dnd-changelog-close" onclick="closeDndChangelog()">✕</button></div><div class="dnd-changelog-body" id="dndChangelogBody"></div></div>';
+ m.addEventListener('click',function(e){if(e.target===m)closeChangelog();});
+ document.body.appendChild(m);
+ renderChangelog();
+}
+function addChangelogButton(){
+ var screen=document.getElementById('characterSelectScreen');
+ if(!screen||document.getElementById('dndChangelogButton'))return;
+ var b=document.createElement('button');
+ b.id='dndChangelogButton';
+ b.className='dnd-changelog-button';
+ b.textContent='📜 Что нового';
+ b.onclick=openChangelog;
+ var title=screen.querySelector('.app-title');
+ if(title&&title.nextSibling)screen.insertBefore(b,title.nextSibling);else screen.appendChild(b);
+}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]);});}
 function openFaq(){var m=document.getElementById('dndFaqModal');if(!m)return;m.style.display='flex';var inp=document.getElementById('dndFaqSearch');if(inp){inp.value='';inp.focus();}renderFaq('');}
 g.openDndFaq=openFaq;
@@ -57,8 +92,10 @@ function finishTour(){var o=document.getElementById('dndOnboardingOverlay');if(o
 function buildTour(){if(document.getElementById('dndOnboardingOverlay'))return;var o=document.createElement('div');o.id='dndOnboardingOverlay';o.innerHTML='<div class="dnd-ob-dim"></div><div class="dnd-ob-card"><div class="dnd-ob-count" style="font-size:.72rem;color:#aaa;margin-bottom:5px"></div><h2 class="dnd-ob-title"></h2><p class="dnd-ob-text"></p><div class="dnd-ob-actions"><button class="dnd-ob-back" onclick="window._dndTourBack()">Назад</button><button onclick="window._dndTourSkip()">Пропустить</button><button class="primary dnd-ob-next" onclick="window._dndTourNext()">Далее</button></div></div>';document.body.appendChild(o);g._dndTourNext=function(){if(idx>=steps.length-1)finishTour();else{idx++;renderTour();}};g._dndTourBack=function(){if(idx>0){idx--;renderTour();}};g._dndTourSkip=finishTour;}
 function init(){
   buildFaq();
+  buildChangelog();
   buildTour();
   addMainButtons();
+  addChangelogButton();
 
   // Обучение стартует только после полного завершения заставки.
   // Раньше таймер 700 мс запускал тур прямо поверх красивой картинки.
