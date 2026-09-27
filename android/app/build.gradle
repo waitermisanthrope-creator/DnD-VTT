@@ -2,6 +2,16 @@ plugins {
     id "com.android.application"
 }
 
+def vttAssets = layout.buildDirectory.dir("generated/vttAssets")
+
+tasks.register("prepareVttAssets", Sync) {
+    into(vttAssets)
+    from("../../index.html")
+    from("../../app") { into("app") }
+    from("../../") { include("*.png"); into("wallpapers") }
+    from("../../") { include("*.mp3"); into("ambience") }
+}
+
 android {
     namespace "com.dndvtt.app"
     compileSdk 36
@@ -20,7 +30,9 @@ android {
         }
     }
 
-    sourceSets { main { assets.srcDirs = ["../../"] } }
+    sourceSets { main { assets.srcDir(vttAssets) } }
+
+    sourceSets { main { assets.srcDir(vttAssets) } }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -31,3 +43,6 @@ android {
 dependencies {
     implementation "androidx.webkit:webkit:1.17.1"
 }
+
+
+tasks.named("preBuild").configure { dependsOn("prepareVttAssets") }
