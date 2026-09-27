@@ -1,4 +1,6 @@
 (function () {
+  window.dndSplashFinished = false;
+
   // Подключаем шрифт Playfair Display
   if (!document.getElementById('playfair-font')) {
     const link = document.createElement('link');
@@ -185,6 +187,8 @@
     overlay.addEventListener('transitionend', () => {
       overlay.remove();
       style.remove();
+      window.dndSplashFinished = true;
+      window.dispatchEvent(new CustomEvent('dnd:splash-complete'));
     }, { once: true });
   }
 

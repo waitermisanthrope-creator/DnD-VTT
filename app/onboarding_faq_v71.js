@@ -55,6 +55,21 @@ function startTour(force){if(!force && localStorage.getItem('dnd_v71_onboarding_
 g.startDndOnboarding=function(){startTour(true);};
 function finishTour(){var o=document.getElementById('dndOnboardingOverlay');if(o)o.style.display='none';localStorage.setItem('dnd_v71_onboarding_done','1');window.removeEventListener('resize',positionTour);}
 function buildTour(){if(document.getElementById('dndOnboardingOverlay'))return;var o=document.createElement('div');o.id='dndOnboardingOverlay';o.innerHTML='<div class="dnd-ob-dim"></div><div class="dnd-ob-card"><div class="dnd-ob-count" style="font-size:.72rem;color:#aaa;margin-bottom:5px"></div><h2 class="dnd-ob-title"></h2><p class="dnd-ob-text"></p><div class="dnd-ob-actions"><button class="dnd-ob-back" onclick="window._dndTourBack()">Назад</button><button onclick="window._dndTourSkip()">Пропустить</button><button class="primary dnd-ob-next" onclick="window._dndTourNext()">Далее</button></div></div>';document.body.appendChild(o);g._dndTourNext=function(){if(idx>=steps.length-1)finishTour();else{idx++;renderTour();}};g._dndTourBack=function(){if(idx>0){idx--;renderTour();}};g._dndTourSkip=finishTour;}
-function init(){buildFaq();buildTour();addMainButtons();setTimeout(function(){startTour(false);},700);}
+function init(){
+  buildFaq();
+  buildTour();
+  addMainButtons();
+
+  // Обучение стартует только после полного завершения заставки.
+  // Раньше таймер 700 мс запускал тур прямо поверх красивой картинки.
+  var launchTour = function () {
+    setTimeout(function () { startTour(false); }, 120);
+  };
+  if (g.dndSplashFinished === true) {
+    launchTour();
+  } else {
+    g.addEventListener('dnd:splash-complete', launchTour, { once: true });
+  }
+}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })(window);

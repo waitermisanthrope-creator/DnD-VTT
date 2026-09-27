@@ -43,15 +43,15 @@ jobs:
 
           python3 tools/build_update_manifest.py \
             --base-url "https://waitermisanthrope-creator.github.io/DnD-VTT" \
-            --version "70.25.62" \
-            --min-app-version "70.25.61" \
+            --version "70.25.63" \
+            --min-app-version "70.25.62" \
             --channel "stable" \
             --output site/updates/stable.json
 
           python3 tools/build_update_manifest.py \
             --base-url "https://waitermisanthrope-creator.github.io/DnD-VTT" \
-            --version "70.25.62" \
-            --min-app-version "70.25.61" \
+            --version "70.25.63" \
+            --min-app-version "70.25.62" \
             --channel "beta" \
             --output site/updates/beta.json
 

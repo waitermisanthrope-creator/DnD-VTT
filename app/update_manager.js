@@ -6,7 +6,7 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.25.62';
+  var APP_VERSION = '70.25.63';
   var DEFAULT_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url';
   var CHANNEL_KEY = 'dnd_update_channel';
@@ -271,15 +271,25 @@
   }
 
   function autoCheckForUpdates() {
-    setTimeout(async function () {
-      try {
-        if (global.navigator && global.navigator.onLine === false) return;
-        var state = await checkAndStage();
-        if (state && state.updateAvailable) showStartupUpdatePrompt(state);
-      } catch (e) {
-        try { console.warn('DND update check failed:', e); } catch (_) {}
-      }
-    }, 1200);
+    var run = function () {
+      setTimeout(async function () {
+        try {
+          if (global.navigator && global.navigator.onLine === false) return;
+          var state = await checkAndStage();
+          if (state && state.updateAvailable) showStartupUpdatePrompt(state);
+        } catch (e) {
+          try { console.warn('DND update check failed:', e); } catch (_) {}
+        }
+      }, 600);
+    };
+
+    // Не показываем окно обновления поверх красивой заставки.
+    // Проверка начинается только после её полного закрытия.
+    if (global.dndSplashFinished === true) {
+      run();
+    } else {
+      global.addEventListener('dnd:splash-complete', run, { once: true });
+    }
   }
 
   global.DND_UPDATE_MANAGER = {
