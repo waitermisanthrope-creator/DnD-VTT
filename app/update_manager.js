@@ -29,6 +29,31 @@
     return 0;
   }
 
+  var nativePending = {};
+  var nativeCounter = 0;
+
+  if (global.dndNative && typeof global.dndNative.addEventListener === 'function') {
+    global.dndNative.addEventListener('message', function (event) {
+      try {
+        var message = JSON.parse(String(event.data || '{}'));
+        var pending = nativePending[message.id];
+        if (!pending) return;
+        delete nativePending[message.id];
+        if (message.ok) pending.resolve(message);
+        else pending.reject(new Error(message.value || message.status || 'Native updater error'));
+      } catch (e) {}
+    });
+  }
+
+  function nativeRequest(type, manifestUrl) {
+    if (!global.dndNative || typeof global.dndNative.postMessage !== 'function') return null;
+    return new Promise(function (resolve, reject) {
+      var id = 'u' + Date.now() + '_' + (++nativeCounter);
+      nativePending[id] = { resolve: resolve, reject: reject };
+      global.dndNative.postMessage(JSON.stringify({ id: id, type: type, manifestUrl: manifestUrl || '' }));
+    });
+  }
+
   function getConfig() {
     var url = '';
     try { url = global.localStorage.getItem(STORAGE_KEY) || ''; } catch (_) {}
@@ -158,15 +183,26 @@
   async function checkAndStage() {
     var state = await inspect();
     if (!state.configured || !state.updateAvailable) return state;
+    var native = nativeRequest('stage', getConfig().manifestUrl);
+    if (native) {
+      var nativeResult = await native;
+      state.stageResult = { staged: true, native: true, version: nativeResult.value || state.manifest.version };
+      return state;
+    }
     state.stageResult = await stage(state.manifest);
     return state;
   }
 
   function canApplyNatively() {
-    return !!(global.DndUpdater && typeof global.DndUpdater.applyStagedUpdate === 'function');
+    return !!((global.dndNative && typeof global.dndNative.postMessage === 'function') || (global.DndUpdater && typeof global.DndUpdater.applyStagedUpdate === 'function'));
   }
 
   async function applyStaged() {
+    if (global.dndNative && typeof global.dndNative.postMessage === 'function') {
+      var native = await nativeRequest('apply', '');
+      clearStaged();
+      return native || true;
+    }
     var staged = getStaged();
     if (!staged) throw new Error('No staged update');
     if (!canApplyNatively()) throw new Error('Native updater is not available; update remains safely staged.');
