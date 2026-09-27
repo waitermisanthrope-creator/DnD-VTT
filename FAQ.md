@@ -301,3 +301,8 @@
 | `tests/test_v754_update_manager.js` | Контрактные тесты updater: версии, manifest и защита путей. |
 
 **Важно:** `app/update_manager.js` не записывает файлы поверх работающего WebView. Финальная атомарная замена выполняется Android/native updater после его реализации.
+
+
+### V70.25.61 — manifest по умолчанию
+
+`app/update_manager.js` теперь по умолчанию проверяет стабильный manifest GitHub Pages. Android/native shell по-прежнему может переопределить URL через `window.DND_UPDATE_MANIFEST_URL` или `dnd_update_manifest_url`.
