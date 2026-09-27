@@ -36,10 +36,10 @@ public final class DndUpdateBridge {
             } else if ("apply".equals(type)) {
                 executor.execute(() -> apply(id, reply));
             } else {
-                reply.postMessage(response(id, false, "unknown-request", null));
+                postReply(reply, response(id, false, "unknown-request", null));
             }
         } catch (Exception e) {
-            reply.postMessage(response("", false, "invalid-request", e.toString()));
+            postReply(reply, response("", false, "invalid-request", e.toString()));
         }
     }
 
@@ -81,10 +81,10 @@ public final class DndUpdateBridge {
             try (FileOutputStream out = new FileOutputStream(new File(stageRoot, "manifest.json"))) {
                 out.write(manifest.toString().getBytes("UTF-8"));
             }
-            reply.postMessage(response(id, true, "staged", version));
+            postReply(reply, response(id, true, "staged", version));
         } catch (Exception e) {
             if (stageRoot != null) deleteRecursive(stageRoot);
-            reply.postMessage(response(id, false, "stage-failed", e.toString()));
+            postReply(reply, response(id, false, "stage-failed", e.toString()));
         }
     }
 
@@ -115,10 +115,10 @@ public final class DndUpdateBridge {
             String previous = prefs.getString("active", "");
             prefs.edit().putString("previous", previous).putString("active", version).putString("pending", version).commit();
             deleteRecursive(staged);
-            reply.postMessage(response(id, true, "applied", version));
+            postReply(reply, response(id, true, "applied", version));
             new Handler(Looper.getMainLooper()).postDelayed(activity::recreate, 500);
         } catch (Exception e) {
-            reply.postMessage(response(id, false, "apply-failed", e.toString()));
+            postReply(reply, response(id, false, "apply-failed", e.toString()));
         }
     }
 
@@ -185,6 +185,10 @@ public final class DndUpdateBridge {
 
     private static void validatePath(String path) throws Exception {
         if (path.isEmpty() || path.startsWith("/") || path.contains("..")) throw new Exception("Unsafe update path: " + path);
+    }
+
+    private static void postReply(JavaScriptReplyProxy reply, String message) {
+        new Handler(Looper.getMainLooper()).post(() -> reply.postMessage(message));
     }
 
     private static String response(String id, boolean ok, String status, String value) {
