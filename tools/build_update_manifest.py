@@ -22,7 +22,7 @@ def sha256(path):
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument('--base-url',required=True)
-    ap.add_argument('--version',default='70.25.61')
+    ap.add_argument('--version',default='70.25.62')
     ap.add_argument('--min-app-version',default='70.25.61')
     ap.add_argument('--channel',default='stable',choices=['stable','beta'])
     ap.add_argument('--output',required=True)
