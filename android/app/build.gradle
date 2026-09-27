@@ -20,8 +20,8 @@ android {
         applicationId "com.dndvtt.app"
         minSdk 24
         targetSdk 36
-        versionCode 7025063
-        versionName "70.25.63"
+        versionCode 7025064
+        versionName "70.25.64"
     }
 
     buildTypes {
