@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "app": "DnD-VTT",
+  "version": "70.25.61",
+  "minAppVersion": "70.25.61",
+  "channel": "stable",
+  "generated": "2026-09-27T00:00:00Z",
+  "baseUrl": "",
+  "files": [],
+  "blockedVersions": []
+}
