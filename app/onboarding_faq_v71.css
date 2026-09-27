@@ -26,3 +26,21 @@
   .dnd-main-help { left: 10px !important; right: auto !important; }
   .dnd-main-faq { left: auto !important; right: 10px !important; }
 }
+
+
+/* V70.25.64 — closed release-notes drawer. */
+#dndChangelogModal{position:fixed;inset:0;z-index:110000;display:none;align-items:flex-start;justify-content:flex-end;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);font-family:Inter,system-ui,sans-serif}
+.dnd-changelog-drawer{width:min(430px,92vw);height:100%;background:#171717;color:#f4f4f4;border-left:1px solid #5c4625;box-shadow:-18px 0 60px #000;display:flex;flex-direction:column;animation:dnd-changelog-in .2s ease}
+.dnd-changelog-head{padding:18px;border-bottom:1px solid #3a3023;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.dnd-changelog-kicker{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:#a8946a}
+.dnd-changelog-head h2{margin:3px 0 0;color:#d4af37;font-size:1.25rem}
+.dnd-changelog-close{border:0;border-radius:8px;background:#333;color:#fff;font-size:20px;padding:5px 10px}
+.dnd-changelog-body{overflow:auto;padding:14px}
+.dnd-changelog-item{background:#202020;border:1px solid #333;border-radius:10px;padding:13px;margin-bottom:10px}
+.dnd-changelog-version{display:inline-block;color:#e5c878;background:#332a1e;border:1px solid #5d492a;border-radius:999px;padding:3px 8px;font-size:.74rem}
+.dnd-changelog-item h3{margin:9px 0 5px;color:#ffcf55;font-size:1rem}
+.dnd-changelog-item p{margin:0;color:#d0d0d0;line-height:1.5;font-size:.9rem}
+.dnd-changelog-button{display:block;margin:-14px auto 18px;background:#30281c;color:#f5d77b;border:1px solid #66502e;border-radius:999px;padding:8px 14px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px #0005}
+.dnd-changelog-button:active{transform:scale(.98)}
+@keyframes dnd-changelog-in{from{transform:translateX(100%);opacity:.6}to{transform:translateX(0);opacity:1}}
+@media(max-width:600px){#dndChangelogModal{align-items:flex-end;justify-content:center}.dnd-changelog-drawer{width:100%;height:min(78vh,620px);border-left:0;border-top:1px solid #5c4625;border-radius:16px 16px 0 0;animation:dnd-changelog-up .2s ease}@keyframes dnd-changelog-up{from{transform:translateY(100%);opacity:.6}to{transform:translateY(0);opacity:1}}}
