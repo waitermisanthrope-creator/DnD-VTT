@@ -1,0 +1,45 @@
+name: Unpack project archive
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Unpack V70.25.61 archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          ARCHIVE="DND_VTT_V70_25_61_UPDATE_INFRA_NO_ASSETS.zip"
+          if [ ! -f "$ARCHIVE" ]; then
+            echo "Archive not present; nothing to unpack."
+            exit 0
+          fi
+
+          rm -rf .project_unpack
+          mkdir -p .project_unpack
+          unzip -q "$ARCHIVE" -d .project_unpack
+
+          top_count="$(find .project_unpack -mindepth 1 -maxdepth 1 | wc -l | tr -d ' ')"
+          if [ "$top_count" = "1" ] && [ -d "$(find .project_unpack -mindepth 1 -maxdepth 1 -type d | head -n 1)" ]; then
+            SRC="$(find .project_unpack -mindepth 1 -maxdepth 1 -type d | head -n 1)"
+          else
+            SRC=".project_unpack"
+          fi
+
+          rsync -a "$SRC"/ ./
+          rm -rf .project_unpack "$ARCHIVE"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Unpack V70.25.61 project files" || exit 0
+          git push
