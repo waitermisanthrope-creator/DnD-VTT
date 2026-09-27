@@ -245,7 +245,7 @@ input:focus, textarea:focus, select:focus {
 @media (max-width: 600px) {
   #characterSelectScreen > button[onclick*="openSettingsModal"],
   #characterSelectScreen > button[onclick*="openDndNetworkModal"] {
-    bottom: 10px !important;
+    bottom: 118px !important;
     width: calc(50vw - 15px) !important;
     max-width: none !important;
     min-height: 54px;
@@ -256,7 +256,7 @@ input:focus, textarea:focus, select:focus {
   #characterSelectScreen > button[onclick*="openSettingsModal"] { left: 10px !important; right: auto !important; }
   #characterSelectScreen > button[onclick*="openDndNetworkModal"] { left: auto !important; right: 10px !important; }
   .dnd-main-help, .dnd-main-faq {
-    bottom: 74px !important;
+    bottom: 182px !important;
     width: calc(50vw - 15px) !important;
     max-width: none !important;
     min-height: 54px;
