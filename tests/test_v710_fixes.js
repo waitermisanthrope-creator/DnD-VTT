@@ -1,0 +1,20 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const ctx={console,alert:()=>{},confirm:()=>true,Math,Date,JSON,setTimeout,clearTimeout,window:null,document:{getElementById:()=>null,addEventListener:()=>{},readyState:'complete'},localStorage:{getItem:()=>null,setItem:()=>{}}};ctx.window=ctx;ctx.addEventListener=()=>{};ctx.globalThis=ctx;
+vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(__dirname+'/rulesEngine.js','utf8'),ctx);
+vm.runInContext(fs.readFileSync(__dirname+'/spells.js','utf8'),ctx);
+vm.runInContext(fs.readFileSync(__dirname+'/combat_engine.js','utf8'),ctx);
+function eq(a,b,m){assert.deepStrictEqual(a,b,m)}
+let h={stats:{int:16,wis:14,cha:12},classes:[{name:'Волшебник',level:5}]};
+eq(ctx.DNDSpellPreparation.getMaxPreparedSpellsLimit(h),8,'wizard prep = level + int mod');
+h={stats:{int:16,wis:14,cha:12},classes:[{name:'Паладин',level:6},{name:'Волшебник',level:4}]};
+eq(ctx.DNDSpellPreparation.getMaxPreparedSpellsLimit(h),11,'multiclass prep sums per-class limits');
+h={stats:{int:16},classes:[{name:'Бард',level:5}]};eq(ctx.DNDSpellPreparation.getProfile(h).hasPreparation,false,'bard is known caster');
+h={stats:{int:10},classes:[{name:'Изобретатель',level:3}]};eq(ctx.DNDSpellPreparation.getMaxPreparedSpellsLimit(h),1,'artificer preparation uses half-level rounded down');
+let r=ctx.DNDRules.conditionModifiers({activeConditions:{'Ослеплен':true}});assert.equal(r.disadvantage,true,'blind alias normalized');
+assert.equal(ctx.DNDRules.normalizeConditionName('Оглушен'),'Оглушён');
+assert.equal(ctx.DNDRules.attackAgainstMode({conditions:{'Парализован':true}},'normal'), 'advantage');
+let sv=ctx.DNDCombat.savingThrow({stats:{str:10},conditions:{'Парализован':true}},'str',20);assert.equal(sv.autoFailed,true);assert.equal(sv.success,false);
+let c={inventory:{weapons:[],armor:[],consumables:[],materials:[],junk:[]}};assert.ok(fs.readFileSync(__dirname+'/Proficienciescheck.js','utf8').includes('inventory.weapons'));
+let dbg=fs.readFileSync(__dirname+'/vtt_debug_character_lab_v702.js','utf8');assert.ok(dbg.includes('function ensureInventory'));
+console.log('V70.10 FIX TESTS: PASS');

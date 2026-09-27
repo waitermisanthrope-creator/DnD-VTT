@@ -1,0 +1,11 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const sandbox={console,Math,Date,setTimeout,clearTimeout};sandbox.window=sandbox;sandbox.global=sandbox;sandbox.addEventListener=()=>{};
+sandbox.DNDRules={profBonus:()=>3,rollD20:()=>({result:15,critical:false,fumble:false}),parseDice:(e)=>{const m=String(e).match(/(\d+)d(\d+)(?:\+(\d+))?/);return {groups:[{count:+m[1],sides:+m[2]}],constant:+(m[3]||0)};},getSaveBonus:()=>0};
+sandbox.currentChar={classes:[{name:'Паладин',level:5},{name:'Монах',level:5}],spellSlotsData:{1:{max:2,used:0}},resources:{ki:{max:5,current:5}},stats:{wis:16},abilityScores:{wis:16},hpCurrent:20,maxHitPoints:20};
+vm.runInNewContext(fs.readFileSync('class_features_engine.js','utf8'),sandbox,{filename:'class_features_engine.js'});
+const f=sandbox.DNDClassFeatures;
+let r=f.useFeature(sandbox.currentChar,'divineSmite',{spellLevel:1});assert(r.ok&&r.prepared);assert.equal(sandbox.currentChar.spellSlotsData[1].used,1);
+let a={id:'a',name:'Paladin',stats:{str:18,wis:16},classes:[{name:'Паладин',level:5}],spellSlotsData:{1:{max:2,used:1}},resources:{},classFeaturesState:{pendingOnHit:{divineSmite:{dice:'3d8',damageType:'излучение'}}}};
+const mod=f.attackModifiers(a,{weaponAttack:true,target:{id:'t'}});assert.equal(mod.pendingOnHit.divineSmite.dice,'3d8');
+let b={id:'m',name:'Monk',stats:{wis:16},classes:[{name:'Монах',level:5}],resources:{ki:{max:5,current:5}},classFeaturesState:{}};r=f.useFeature(b,'stunningStrike',{});assert(r.ok&&r.prepared);assert.equal(b.resources.ki.current,4);
+console.log('V70.20 feature hook tests: PASS');

@@ -1,0 +1,11 @@
+const fs=require('fs'),assert=require('assert'),vm=require('vm');
+for(const f of ['vtt_debug_panel_v70.js','vtt_combat_event_bus_v69.js','vtt_combat_log_v66.js','vtt_encounter_checkpoint_v68.js']) assert(fs.existsSync(f),`missing ${f}`);
+const s=fs.readFileSync('vtt_debug_panel_v70.js','utf8');
+assert(s.includes("VERSION='70.0.0'"));assert(s.includes('DNDAdvancedDebugV70'));assert(s.includes('inspectSource'));assert(s.includes('callAPI'));assert(s.includes('moduleRegistry'));assert(s.includes('apiRegistry'));assert(s.includes('localStorage'));
+const idx=fs.readFileSync('index.html','utf8');assert(idx.includes('vtt_debug_panel_v70.js'));assert(fs.existsSync('VTT_PROJECT_MANIFEST_V70.json'));assert(idx.includes('vtt_debug_panel_v70.js'));assert(fs.readFileSync('vtt_mobile_combat_hud_v62.js','utf8').includes('dndV70OpenDebug'));assert(JSON.parse(fs.readFileSync('VTT_PROJECT_MANIFEST_V70.json','utf8')).fileCount>100);
+const store={};
+const scripts=['a.js','vtt_combat_event_bus_v69.js','test_v70.js'];
+const doc={readyState:'complete',querySelectorAll:(q)=>scripts.map(src=>({getAttribute:()=>src})),getElementById:()=>null,createElement:()=>({}),body:{appendChild:()=>{}}};
+const ctx={localStorage:{getItem:k=>store[k]||null,setItem:(k,v)=>store[k]=v,key:i=>Object.keys(store)[i]||null,get length(){return Object.keys(store).length}},Math,Date,JSON,Blob:function(){},URL:{},console,document:doc,navigator:{onLine:true,userAgent:'test'},location:{href:'test://v70'},innerWidth:390,innerHeight:844,devicePixelRatio:2,performance:{},addEventListener:()=>{},setTimeout,clearTimeout};
+ctx.window=ctx;ctx.DNDCombat=function(){};ctx.DNDCombatEventBusV69={snapshot:()=>({eventCount:3}),events:()=>[{id:'e1'}]};vm.createContext(ctx);vm.runInContext(s,ctx);
+const dbg=ctx.DNDAdvancedDebugV70;assert(dbg&&dbg.VERSION==='70.0.0');assert(dbg.modules().length===3);assert(dbg.apis().some(x=>x.path==='DNDCombatEventBusV69'));const snap=dbg.snapshot();assert(snap.modules.length===3);assert(snap.engines.DNDCombat.present===true);assert(snap.eventBus.eventCount===3);console.log('V70_ADVANCED_DEBUG_PANEL_TEST_OK');

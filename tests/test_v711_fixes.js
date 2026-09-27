@@ -1,0 +1,14 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const sandbox={console,window:null,document:{readyState:'loading',addEventListener(){},getElementById(){return null},createElement(){return {style:{},addEventListener(){}}}},localStorage:{getItem(){return null},setItem(){}},Math};sandbox.window=sandbox;sandbox.globalThis=sandbox;
+vm.createContext(sandbox);
+vm.runInContext(fs.readFileSync(__dirname+'/battle_board.js','utf8'),sandbox);
+const bb=sandbox.DNDBattleBoard; assert(bb && typeof bb.aoeContainsPoint==='function');
+const src={x:0,y:0,size:1};
+assert(bb.aoeContainsPoint('circle',src,{x:2,y:0},15));
+assert(!bb.aoeContainsPoint('circle',src,{x:4,y:0},15));
+assert(bb.aoeContainsPoint('square',src,{x:2,y:2},15));
+assert(bb.aoeContainsPoint('cone',src,{x:2,y:1},15,{x:1,y:0}));
+assert(!bb.aoeContainsPoint('cone',src,{x:1,y:3},15,{x:1,y:0}));
+assert(bb.aoeContainsPoint('line',src,{x:2,y:0},15,{x:1,y:0}));
+assert(!bb.aoeContainsPoint('line',src,{x:2,y:1},15,{x:1,y:0}));
+console.log('V70.11 AoE geometry PASS');

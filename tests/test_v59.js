@@ -1,0 +1,16 @@
+const fs=require('fs');
+const assert=require('assert');
+const src=fs.readFileSync('vtt_encounter_map_v59.js','utf8');
+assert(src.includes("VERSION='59.0.0'"));
+assert(src.includes('DNDEncounterMapV59'));
+assert(src.includes('DNDGameplayV58.startEncounter'));
+assert(src.includes('DNDBattleBoard.syncFromInitiative'));
+assert(src.includes('ENCOUNTER_CREATED_V59'));
+const idx=fs.readFileSync('index.html','utf8');
+assert(idx.includes('vtt_encounter_map_v59.js'));
+const guide=fs.readFileSync('00_AI_PROJECT_GUIDE.md','utf8');
+assert(guide.includes('## 3G. V59 ENCOUNTER / MAP UX'));
+assert(guide.includes('BUILD:** v61.0.0'));assert(guide.includes('## 3G. V59 ENCOUNTER / MAP UX'));assert(guide.includes('## 2A. MOBILE APP / APK REQUIREMENT'));
+assert(guide.includes('V59.0.0'));
+assert(guide.includes('## 3G. V59 ENCOUNTER / MAP UX'));
+console.log('V59_ENCOUNTER_MAP_TEST_OK');

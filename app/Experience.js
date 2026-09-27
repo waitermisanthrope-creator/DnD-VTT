@@ -26,27 +26,45 @@ window.DND_EXP_TABLE = [
   { level: 20, exp: 355000 }
 ];
 
+/**
+ * Открытие модального окна опыта
+ */
 window.openExperienceModal = function() {
   if (typeof currentCharacter === 'undefined' || !currentCharacter) return;
-  if (typeof currentCharacter.exp === 'undefined') currentCharacter.exp = 0;
+
+  if (typeof currentCharacter.exp === 'undefined') {
+    currentCharacter.exp = 0;
+  }
+
   updateExperienceModalUI();
   const modal = document.getElementById('experienceModal');
   if (modal) modal.style.display = 'flex';
 };
 
+/**
+ * Закрытие модального окна опыта
+ */
 window.closeExperienceModal = function() {
   const modal = document.getElementById('experienceModal');
   if (modal) modal.style.display = 'none';
 };
 
+/**
+ * Получение текущего уровня персонажа из строки класса (например, "Воин 3" -> 3)
+ */
 window.getCharacterCurrentLevel = function() {
   if (!currentCharacter) return 1;
-  if (typeof window.getCharacterLevel === 'function') return window.getCharacterLevel();
+  if (typeof window.getCharacterLevel === 'function') {
+    return window.getCharacterLevel();
+  }
   if (!currentCharacter.class) return 1;
   const match = String(currentCharacter.class).match(/(\d+)$/);
   return match ? parseInt(match[1], 10) : 1;
 };
 
+/**
+ * Определение уровня персонажа по количеству опыта
+ */
 window.getLevelByExp = function(exp) {
   let currentLvl = 1;
   for (let i = DND_EXP_TABLE.length - 1; i >= 0; i--) {
@@ -58,28 +76,39 @@ window.getLevelByExp = function(exp) {
   return currentLvl;
 };
 
+/**
+ * Обновление интерфейса модального окна опыта
+ */
 window.updateExperienceModalUI = function() {
   if (!currentCharacter) return;
+
   const currentExp = parseInt(currentCharacter.exp, 10) || 0;
   const currentLvl = getCharacterCurrentLevel();
+
   let currentLevelExpReq = 0;
   let nextLevelExpReq = DND_EXP_TABLE[DND_EXP_TABLE.length - 1].exp;
+
   for (let i = 0; i < DND_EXP_TABLE.length; i++) {
-    if (DND_EXP_TABLE[i].level === currentLvl) currentLevelExpReq = DND_EXP_TABLE[i].exp;
+    if (DND_EXP_TABLE[i].level === currentLvl) {
+      currentLevelExpReq = DND_EXP_TABLE[i].exp;
+    }
     if (DND_EXP_TABLE[i].level === currentLvl + 1) {
       nextLevelExpReq = DND_EXP_TABLE[i].exp;
       break;
     }
   }
+
   const elCurLvl = document.getElementById('expModalCurrentLevel');
   const elCurExp = document.getElementById('expModalCurrentExp');
   const elNextExp = document.getElementById('expModalNextExp');
   const elInputCur = document.getElementById('expInputCurrent');
   const elBar = document.getElementById('expProgressBar');
+
   if (elCurLvl) elCurLvl.innerText = currentLvl;
   if (elCurExp) elCurExp.innerText = currentExp;
   if (elNextExp) elNextExp.innerText = currentLvl >= 20 ? 'MAX' : nextLevelExpReq;
   if (elInputCur) elInputCur.value = currentExp;
+
   let progressPercent = 100;
   if (currentLvl < 20) {
     const spanTotal = nextLevelExpReq - currentLevelExpReq;
@@ -87,8 +116,10 @@ window.updateExperienceModalUI = function() {
     progressPercent = spanTotal > 0 ? Math.min(100, Math.max(0, (spanCurrent / spanTotal) * 100)) : 100;
   }
   if (elBar) elBar.style.width = progressPercent + '%';
+
   const expBasedLevel = getLevelByExp(currentExp);
   const levelUpBtn = document.getElementById('expLevelUpBtn');
+  
   if (levelUpBtn) {
     if (expBasedLevel > currentLvl && currentLvl < 20) {
       levelUpBtn.style.display = 'block';
@@ -99,38 +130,66 @@ window.updateExperienceModalUI = function() {
   }
 };
 
+/**
+ * Обработка ввода значения напрямую в поле опыта
+ */
 window.onExpInputChange = function() {
   const inputElem = document.getElementById('expInputCurrent');
   if (!inputElem || !currentCharacter) return;
+
   const inputVal = parseInt(inputElem.value, 10);
   currentCharacter.exp = isNaN(inputVal) ? 0 : Math.max(0, inputVal);
+  
   updateExperienceModalUI();
-  if (typeof autoSaveCurrentCharacter === 'function') autoSaveCurrentCharacter();
+  if (typeof autoSaveCurrentCharacter === 'function') {
+    autoSaveCurrentCharacter();
+  }
 };
 
+/**
+ * Добавить опыт через калькулятор
+ */
 window.addExperienceValue = function() {
   const calcInput = document.getElementById('expCalcInput');
   if (!calcInput || !currentCharacter) return;
+
   const addVal = parseInt(calcInput.value, 10);
   if (isNaN(addVal) || addVal <= 0) return;
+
   currentCharacter.exp = (parseInt(currentCharacter.exp, 10) || 0) + addVal;
   calcInput.value = '';
+
   updateExperienceModalUI();
-  if (typeof autoSaveCurrentCharacter === 'function') autoSaveCurrentCharacter();
+  if (typeof autoSaveCurrentCharacter === 'function') {
+    autoSaveCurrentCharacter();
+  }
 };
 
+/**
+ * Отнять опыт через калькулятор
+ */
 window.subtractExperienceValue = function() {
   const calcInput = document.getElementById('expCalcInput');
   if (!calcInput || !currentCharacter) return;
+
   const subVal = parseInt(calcInput.value, 10);
   if (isNaN(subVal) || subVal <= 0) return;
+
   currentCharacter.exp = Math.max(0, (parseInt(currentCharacter.exp, 10) || 0) - subVal);
   calcInput.value = '';
+
   updateExperienceModalUI();
-  if (typeof autoSaveCurrentCharacter === 'function') autoSaveCurrentCharacter();
+  if (typeof autoSaveCurrentCharacter === 'function') {
+    autoSaveCurrentCharacter();
+  }
 };
 
+/**
+ * Закрыть модальное окно опыта и открыть штатное окно повышения уровня
+ */
 window.openLevelUpModalFromExp = function() {
   closeExperienceModal();
-  if (typeof openLevelUpModal === 'function') openLevelUpModal();
+  if (typeof openLevelUpModal === 'function') {
+    openLevelUpModal();
+  }
 };

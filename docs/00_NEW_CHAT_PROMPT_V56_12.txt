@@ -1,0 +1,7 @@
+D&D APP — NEW CHAT CONTINUATION PROMPT
+CURRENT BUILD: V56.12 — DRAGONLANCE
+Read 00_AI_PROJECT_GUIDE.md first. Treat it as the authoritative project map.
+Current checkpoint: 1082 creatures / 1084 crafting materials.
+V56.12 adds 33 unique Dragonlance creatures from Shadow of the Dragon Queen and Monstrous Compendium Vol. 2, with duplicate protection, Krynn warfront metadata, original app-native mechanics and harvest/crafting bridges.
+Next planned major build: V56.13 — Planescape: Adventures in the Multiverse.
+Mandatory: update 00_AI_PROJECT_GUIDE.md in every major build; preserve Wallpapers.js and Ambiences.js; run full JS syntax checks, index script-path validation, targeted regression tests, protected-file hashes and ZIP integrity before release.

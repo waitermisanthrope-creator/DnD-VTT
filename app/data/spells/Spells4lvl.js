@@ -1,0 +1,1020 @@
+// spells4lvl.js
+// Полный список заклинаний 4 круга D&D 5e (редакция 2014 года)
+// Источники: PHB (Player's Handbook), XGE (Xanathar's Guide to Everything),
+// TCoE (Tasha's Cauldron of Everything), SCAG (Sword Coast Adventurer's Guide),
+// VRGtR (Van Richten's Guide to Ravenloft)
+
+window.spells4lvl = [
+  {
+    name: "Дверь измерений (Dimension Door)",
+    level: 4,
+    school: "Вызов",
+    classes: ["Бард", "Чародей", "Колдун", "Волшебник"],
+    castingTime: "1 действие",
+    range: "500 футов",
+    components: {
+      verbal: true,
+      somatic: false,
+      material: null
+    },
+    duration: "Мгновенная",
+    concentration: false,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Вы телепортируетесь вместе с собой и с одним добровольным существом в пределах досягаемости в любую видимую или ранее увиденную вами точку в пределах дальности."
+  },
+  {
+    name: "Каменная кожа (Stoneskin)",
+    level: 4,
+    school: "Преобразование",
+    classes: ["Друид", "Паладин", "Следопыт", "Чародей", "Волшебник"],
+    castingTime: "1 действие",
+    range: "Касание",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "алмазная пыль стоимостью не менее 100 зм, расходуется"
+    },
+    duration: "До 1 часа",
+    concentration: true,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Прикосновением вы делаете добровольное существо устойчивым к дробящему, колющему и рубящему урону от немагического оружия."
+  },
+  {
+    name: "Свобода перемещения (Freedom of Movement)",
+    level: 4,
+    school: "Абъюрация",
+    classes: ["Бард", "Клирик", "Друид", "Паладин", "Следопыт"],
+    castingTime: "1 действие",
+    range: "Касание",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "кожаный ремешок, обвязанный вокруг конечности цели"
+    },
+    duration: "1 час",
+    concentration: false,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Существо, которого вы касаетесь, не подвержено эффектам, снижающим его скорость, а также не может быть парализовано или опутано."
+  },
+  {
+    name: "Стена огня (Wall of Fire)",
+    level: 4,
+    school: "Воплощение",
+    classes: ["Друид", "Чародей", "Волшебник"],
+    castingTime: "1 действие",
+    range: "120 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "маленький кусочек фосфора"
+    },
+    duration: "До 1 минуты",
+    concentration: true,
+    attackType: null,
+    savingThrow: "Ловкость",
+    damage: "5к8",
+    damageType: "Огонь",
+    source: "PHB",
+    description: "Вы создаёте стену пламени на твёрдой поверхности в пределах дистанции, наносящую урон огнём существам в области действия."
+  },
+  {
+    name: "Каменная форма (Stone Shape)",
+    level: 4,
+    school: "Преобразование",
+    classes: ["Клирик", "Друид", "Волшебник"],
+    castingTime: "1 действие",
+    range: "Касание",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "мягкая глина, которой нужно придать форму"
+    },
+    duration: "Мгновенная",
+    concentration: false,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Вы придаёте камню, которого касаетесь, любую форму по своему желанию в пределах размера, ограниченного заклинанием."
+  },
+  {
+    name: "Ледяной шторм (Ice Storm)",
+    level: 4,
+    school: "Воплощение",
+    classes: ["Друид", "Чародей", "Волшебник"],
+    castingTime: "1 действие",
+    range: "300 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "щепотка пыли и несколько капель воды"
+    },
+    duration: "Мгновенная",
+    concentration: false,
+    attackType: null,
+    savingThrow: null,
+    damage: "2к8+4к6",
+    damageType: "Дробящий и холод",
+    source: "PHB",
+    description: "Град острого льда обрушивается на цилиндрическую область, автоматически нанося урон всем существам внутри."
+  },
+  {
+    name: "Страж веры (Guardian of Faith)",
+    level: 4,
+    school: "Вызов",
+    classes: ["Клирик"],
+    castingTime: "1 действие",
+    range: "30 футов",
+    components: {
+      verbal: true,
+      somatic: false,
+      material: null
+    },
+    duration: "8 часов",
+    concentration: false,
+    attackType: null,
+    savingThrow: null,
+    damage: "20",
+    damageType: "Излучение",
+    source: "PHB",
+    description: "Появляется большой призрачный страж, охраняющий место в пределах дистанции и атакующий врагов, которые в него вторгаются."
+  },
+  {
+    name: "Малое вызывание элементалей (Conjure Minor Elementals)",
+    level: 4,
+    school: "Вызов",
+    classes: ["Друид", "Чародей", "Волшебник"],
+    castingTime: "1 минута",
+    range: "90 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: null
+    },
+    duration: "До 1 часа",
+    concentration: true,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Вы призываете элементалей низкого уровня опасности, появляющихся в незанятых клетках в пределах дистанции и сражающихся на вашей стороне."
+  },
+  {
+    name: "Лесные жители (Conjure Woodland Beings)",
+    level: 4,
+    school: "Вызов",
+    classes: ["Друид", "Следопыт"],
+    castingTime: "1 действие",
+    range: "60 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "омела"
+    },
+    duration: "До 1 часа",
+    concentration: true,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Вы призываете фей или похожих на них лесных существ, появляющихся в незанятых клетках в пределах дистанции."
+  },
+  {
+    name: "Управление водой (Control Water)",
+    level: 4,
+    school: "Преобразование",
+    classes: ["Клирик", "Друид", "Чародей", "Волшебник"],
+    castingTime: "1 действие",
+    range: "300 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "щепотка пыли и несколько капель воды"
+    },
+    duration: "До 10 минут",
+    concentration: true,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Вы управляете водой в области действия: поднимаете или опускаете её уровень, создаёте течение, формируете волну или рассеиваете водоворот."
+  },
+  {
+    name: "Порча (Blight)",
+    level: 4,
+    school: "Некромантия",
+    classes: ["Друид", "Чародей", "Колдун", "Волшебник"],
+    castingTime: "1 действие",
+    range: "30 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: null
+    },
+    duration: "Мгновенная",
+    concentration: false,
+    attackType: null,
+    savingThrow: "Телосложение",
+    damage: "8к8",
+    damageType: "Некротическая энергия",
+    source: "PHB",
+    description: "Некротическая энергия иссушает существо, которое вы видите в пределах дистанции, вытягивая из него жизненную силу и влагу."
+  },
+  {
+    name: "Смятение (Confusion)",
+    level: 4,
+    school: "Очарование",
+    classes: ["Бард", "Друид", "Чародей", "Колдун", "Волшебник"],
+    castingTime: "1 действие",
+    range: "90 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "три ореховые скорлупки"
+    },
+    duration: "До 1 минуты",
+    concentration: true,
+    attackType: null,
+    savingThrow: "Мудрость",
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Разум существ в области действия наполняется беспорядочными мыслями, из-за чего они действуют непредсказуемо каждый ход."
+  },
+  {
+    name: "Подчинение зверя (Dominate Beast)",
+    level: 4,
+    school: "Очарование",
+    classes: ["Друид", "Чародей", "Колдун", "Волшебник"],
+    castingTime: "1 действие",
+    range: "60 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: null
+    },
+    duration: "До 1 минуты",
+    concentration: true,
+    attackType: null,
+    savingThrow: "Мудрость",
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Вы пытаетесь взять под контроль разум зверя, которого видите в пределах дистанции, и отдавать ему приказы, пока заклинание действует."
+  },
+  {
+    name: "Гигантское насекомое (Giant Insect)",
+    level: 4,
+    school: "Преобразование",
+    classes: ["Друид"],
+    castingTime: "1 действие",
+    range: "60 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: null
+    },
+    duration: "До 10 минут",
+    concentration: true,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Вы превращаете до десяти сороконожек, трёх пауков, пяти ос или одну многоножку в пределах дистанции в гигантские версии этих существ."
+  },
+  {
+    name: "Цепляющая лоза (Grasping Vine)",
+    level: 4,
+    school: "Вызов",
+    classes: ["Друид", "Следопыт"],
+    castingTime: "1 бонусное действие",
+    range: "30 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: null
+    },
+    duration: "До 1 минуты",
+    concentration: true,
+    attackType: "Дальнобойная атака заклинанием",
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Из земли в пределах дистанции вырастает извивающаяся лоза, которая пытается подтащить существо ближе к вам."
+  },
+  {
+    name: "Большая невидимость (Greater Invisibility)",
+    level: 4,
+    school: "Иллюзия",
+    classes: ["Бард", "Чародей", "Волшебник"],
+    castingTime: "1 действие",
+    range: "Касание",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: null
+    },
+    duration: "До 1 минуты",
+    concentration: true,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Вы или существо, которого вы касаетесь, становитесь невидимыми до конца действия заклинания, даже совершая атаки или накладывая заклинания."
+  },
+  {
+    name: "Иллюзорная местность (Hallucinatory Terrain)",
+    level: 4,
+    school: "Иллюзия",
+    classes: ["Бард", "Друид", "Колдун", "Волшебник"],
+    castingTime: "10 минут",
+    range: "300 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "камень, ветка и клочок зелёной ткани"
+    },
+    duration: "24 часа",
+    concentration: false,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Вы заставляете область местности выглядеть, звучать, пахнуть и даже ощущаться на ощупь как другая местность."
+  },
+  {
+    name: "Тайный сундук Леомунда (Leomund's Secret Chest)",
+    level: 4,
+    school: "Вызов",
+    classes: ["Волшебник"],
+    castingTime: "1 действие",
+    range: "Касание",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "дорогой резной деревянный сундук с миниатюрной копией из слоновой кости стоимостью 5000 зм"
+    },
+    duration: "Мгновенная",
+    concentration: false,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Вы прячете сундук и его содержимое в Астральном плане, откуда впоследствии сможете его вернуть."
+  },
+  {
+    name: "Обнаружение существа (Locate Creature)",
+    level: 4,
+    school: "Прорицание",
+    classes: ["Бард", "Клирик", "Друид", "Паладин", "Следопыт", "Чародей", "Волшебник"],
+    castingTime: "1 действие",
+    range: "На себя",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "клочок шерсти знакомого зверя или личная вещь искомого человека"
+    },
+    duration: "До 1 часа",
+    concentration: true,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Вы чувствуете направление к знакомому существу определённого вида, находящемуся в пределах 1000 футов от вас."
+  },
+  {
+    name: "Верный пёс Морденкайнена (Mordenkainen's Faithful Hound)",
+    level: 4,
+    school: "Вызов",
+    classes: ["Волшебник"],
+    castingTime: "1 действие",
+    range: "30 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "маленький кусочек бронзы"
+    },
+    duration: "8 часов",
+    concentration: false,
+    attackType: null,
+    savingThrow: null,
+    damage: "4к8",
+    damageType: "Колющий",
+    source: "PHB",
+    description: "Призрачная сторожевая собака появляется в выбранной точке в пределах дистанции и атакует врагов, которые её не замечают."
+  },
+  {
+    name: "Личное святилище Морденкайнена (Mordenkainen's Private Sanctum)",
+    level: 4,
+    school: "Абъюрация",
+    classes: ["Волшебник"],
+    castingTime: "10 минут",
+    range: "120 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "щепотка чистого песка, гуммиарабика и слюды"
+    },
+    duration: "24 часа",
+    concentration: false,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Вы делаете область в пределах дистанции защищённой от подглядывания и подслушивания магическими и обычными способами."
+  },
+  {
+    name: "Стойкая сфера Отилуке (Otiluke's Resilient Sphere)",
+    level: 4,
+    school: "Воплощение",
+    classes: ["Чародей", "Волшебник"],
+    castingTime: "1 действие",
+    range: "30 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "два полушария из хрустального стекла, скреплённые вместе"
+    },
+    duration: "До 1 минуты",
+    concentration: true,
+    attackType: null,
+    savingThrow: "Ловкость",
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Прозрачная сфера силы окружает существо или предмет в пределах дистанции, изолируя его от внешнего мира."
+  },
+  {
+    name: "Иллюзорный убийца (Phantasmal Killer)",
+    level: 4,
+    school: "Иллюзия",
+    classes: ["Колдун", "Волшебник"],
+    castingTime: "1 действие",
+    range: "120 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: null
+    },
+    duration: "До 1 минуты",
+    concentration: true,
+    attackType: null,
+    savingThrow: "Мудрость",
+    damage: "4к10",
+    damageType: "Психическая энергия",
+    source: "PHB",
+    description: "Вы создаёте иллюзию величайшего страха цели, видимую только ей, которая терзает и мучает её разум каждый ход."
+  },
+  {
+    name: "Полиморф (Polymorph)",
+    level: 4,
+    school: "Преобразование",
+    classes: ["Бард", "Друид", "Чародей", "Колдун", "Волшебник"],
+    castingTime: "1 действие",
+    range: "60 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "гусеничный кокон"
+    },
+    duration: "До 1 часа",
+    concentration: true,
+    attackType: null,
+    savingThrow: "Мудрость",
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Это заклинание превращает существо, которое вы видите в пределах дистанции, в новую форму зверя на время действия заклинания."
+  },
+  {
+    name: "Сфера ядовитой кислоты (Vitriolic Sphere)",
+    level: 4,
+    school: "Воплощение",
+    classes: ["Чародей", "Колдун", "Волшебник"],
+    castingTime: "1 действие",
+    range: "150 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "капля кислоты"
+    },
+    duration: "Мгновенная",
+    concentration: false,
+    attackType: null,
+    savingThrow: "Ловкость",
+    damage: "10к4",
+    damageType: "Кислота",
+    source: "XGE",
+    description: "Вы создаёте пузырь кислоты в выбранной точке, который взрывается, выбрасывая едкую жидкость во всех направлениях."
+  },
+  {
+    name: "Водная сфера (Watery Sphere)",
+    level: 4,
+    school: "Вызов",
+    classes: ["Друид", "Чародей", "Волшебник"],
+    castingTime: "1 действие",
+    range: "90 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: null
+    },
+    duration: "До 1 минуты",
+    concentration: true,
+    attackType: null,
+    savingThrow: "Сила",
+    damage: null,
+    damageType: null,
+    source: "XGE",
+    description: "Вы создаёте сферу воды диаметром 3 метра, парящую в выбранной точке и затягивающую находящихся рядом существ внутрь."
+  },
+  {
+    name: "Сфера шторма (Storm Sphere)",
+    level: 4,
+    school: "Воплощение",
+    classes: ["Друид", "Чародей", "Волшебник"],
+    castingTime: "1 действие",
+    range: "150 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: null
+    },
+    duration: "До 1 минуты",
+    concentration: true,
+    attackType: null,
+    savingThrow: "Ловкость",
+    damage: "2к6",
+    damageType: "Молния",
+    source: "XGE",
+    description: "Сфера штормовой энергии появляется в выбранной точке, испуская молнии и оглушительный гром вокруг себя каждый ход."
+  },
+  {
+    name: "Чары чудовища (Charm Monster)",
+    level: 4,
+    school: "Очарование",
+    classes: ["Бард", "Друид", "Паладин", "Чародей", "Колдун", "Волшебник"],
+    castingTime: "1 действие",
+    range: "30 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: null
+    },
+    duration: "1 час",
+    concentration: false,
+    attackType: null,
+    savingThrow: "Мудрость",
+    damage: null,
+    damageType: null,
+    source: "XGE",
+    description: "Вы пытаетесь очаровать существо, которое видите в пределах дистанции, заставляя его считать вас другом."
+  },
+  {
+    name: "Проклятие стихий (Elemental Bane)",
+    level: 4,
+    school: "Преобразование",
+    classes: ["Друид", "Следопыт", "Чародей", "Колдун", "Волшебник"],
+    castingTime: "1 действие",
+    range: "90 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: null
+    },
+    duration: "До 1 минуты",
+    concentration: true,
+    attackType: null,
+    savingThrow: "Телосложение",
+    damage: "2к6",
+    damageType: "Выбранная стихия (кислота, холод, огонь, молния или гром)",
+    source: "XGE",
+    description: "Вы ослабляете сопротивление цели одной из стихий, делая её уязвимой к выбранному типу урона до конца действия заклинания."
+  },
+  {
+    name: "Страж природы (Guardian of Nature)",
+    level: 4,
+    school: "Преобразование",
+    classes: ["Друид", "Следопыт"],
+    castingTime: "1 бонусное действие",
+    range: "На себя",
+    components: {
+      verbal: true,
+      somatic: false,
+      material: null
+    },
+    duration: "До 1 минуты",
+    concentration: true,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "XGE",
+    description: "Вы призываете дух природы, принимающий облик Хранителя леса или Хищного зверя, наделяющий вас особыми способностями."
+  },
+  {
+    name: "Изнуряющее сияние (Sickening Radiance)",
+    level: 4,
+    school: "Воплощение",
+    classes: ["Чародей", "Колдун", "Волшебник"],
+    castingTime: "1 действие",
+    range: "120 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: null
+    },
+    duration: "До 1 минуты",
+    concentration: true,
+    attackType: null,
+    savingThrow: "Телосложение",
+    damage: "4к10",
+    damageType: "Излучение",
+    source: "XGE",
+    description: "Тусклый зеленоватый свет заливает область действия, нанося урон существам, делая их уязвимыми к урону и заставляя светиться."
+  },
+  {
+    name: "Глаз мага (Arcane Eye)",
+    level: 4,
+    school: "Прорицание",
+    classes: ["Волшебник"],
+    castingTime: "1 действие",
+    range: "30 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "щепотка сушёного мяса летучей мыши и кусочек меди"
+    },
+    duration: "До 1 часа",
+    concentration: true,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Вы создаёте невидимый магический глаз в пределах дистанции, который парит и перемещается по вашему желанию, позволяя видеть его глазами."
+  },
+  {
+    name: "Изгнание (Banishment)",
+    level: 4,
+    school: "Абъюрация",
+    classes: ["Клирик", "Паладин", "Чародей", "Колдун", "Волшебник"],
+    castingTime: "1 действие",
+    range: "60 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "предмет, являющийся анафемой для типа изгоняемого существа"
+    },
+    duration: "До 1 минуты",
+    concentration: true,
+    attackType: null,
+    savingThrow: "Харизма",
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Вы пытаетесь отправить одно видимое существо в пределах дистанции в другой план существования."
+  },
+  {
+    name: "Чёрные щупальца Эварда (Evard's Black Tentacles)",
+    level: 4,
+    school: "Вызов",
+    classes: ["Чародей", "Колдун", "Волшебник"],
+    castingTime: "1 действие",
+    range: "90 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "кусочек щупальца осьминога или кальмара"
+    },
+    duration: "До 1 минуты",
+    concentration: true,
+    attackType: null,
+    savingThrow: "Ловкость",
+    damage: "3к6",
+    damageType: "Дробящий",
+    source: "PHB",
+    description: "Извивающиеся чёрные щупальца заполняют квадратную область, хватая и раздавливая существ, которые оказались рядом."
+  },
+  {
+    name: "Страж смерти (Death Ward)",
+    level: 4,
+    school: "Абъюрация",
+    classes: ["Клирик", "Паладин"],
+    castingTime: "1 действие",
+    range: "Касание",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: null
+    },
+    duration: "8 часов",
+    concentration: false,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Вы касаетесь существа и наделяете его защитой от смерти: в следующий раз, когда оно должно упасть до 0 хитов, оно вместо этого остаётся с 1 хитом."
+  },
+  {
+    name: "Прорицание (Divination)",
+    level: 4,
+    school: "Прорицание",
+    classes: ["Клирик"],
+    castingTime: "1 действие",
+    range: "На себя",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "благовония и жертвенный дар стоимостью не менее 25 зм, расходуется"
+    },
+    duration: "Мгновенная",
+    concentration: false,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Вы обращаетесь к своему божеству за советом относительно цели, события или деятельности, которая произойдёт в течение следующих 7 дней."
+  },
+  {
+    name: "Сотворение (Fabricate)",
+    level: 4,
+    school: "Преобразование",
+    classes: ["Волшебник"],
+    castingTime: "10 минут",
+    range: "120 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: null
+    },
+    duration: "Мгновенная",
+    concentration: false,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Вы превращаете сырьё в готовые изделия того же материала, например, дерево в мост или ткань в одежду."
+  },
+  {
+    name: "Огненный щит (Fire Shield)",
+    level: 4,
+    school: "Воплощение",
+    classes: ["Чародей", "Волшебник"],
+    castingTime: "1 действие",
+    range: "На себя",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "небольшое количество фосфора или светлячок"
+    },
+    duration: "10 минут",
+    concentration: false,
+    attackType: null,
+    savingThrow: null,
+    damage: "2к8",
+    damageType: "Огонь или холод",
+    source: "PHB",
+    description: "Мерцающее пламя окутывает ваше тело, наделяя вас сопротивлением к огню или холоду и обжигая тех, кто ударит вас в ближнем бою."
+  },
+  {
+    name: "Принуждение (Compulsion)",
+    level: 4,
+    school: "Очарование",
+    classes: ["Бард"],
+    castingTime: "1 действие",
+    range: "30 футов",
+    components: {
+      verbal: true,
+      somatic: false,
+      material: null
+    },
+    duration: "До 1 минуты",
+    concentration: true,
+    attackType: null,
+    savingThrow: "Мудрость",
+    damage: null,
+    damageType: null,
+    source: "PHB",
+    description: "Вы создаёте магическое воздействие на разум существа, которое видите в пределах дистанции, заставляя его двигаться в выбранном вами направлении."
+  },
+  {
+    name: "Аура жизни (Aura of Life)",
+    level: 4,
+    school: "Абъюрация",
+    classes: ["Паладин"],
+    castingTime: "1 действие",
+    range: "На себя",
+    components: {
+      verbal: true,
+      somatic: false,
+      material: null
+    },
+    duration: "До 10 минут",
+    concentration: true,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "SCAG",
+    description: "Аура жизни в 30 футах вокруг вас укрепляет живых существ против смерти и некротической энергии, а также немного исцеляет их каждый ход."
+  },
+  {
+    name: "Аура чистоты (Aura of Purity)",
+    level: 4,
+    school: "Абъюрация",
+    classes: ["Паладин"],
+    castingTime: "1 действие",
+    range: "На себя",
+    components: {
+      verbal: true,
+      somatic: false,
+      material: null
+    },
+    duration: "До 10 минут",
+    concentration: true,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "SCAG",
+    description: "Аура чистоты в 30 футах вокруг вас даёт сопротивление к урону от болезней, иммунитет к болезням и преимущество на спасброски от испуга и очарования."
+  },
+  {
+    name: "Обретение великого скакуна (Find Greater Steed)",
+    level: 4,
+    school: "Вызов",
+    classes: ["Паладин"],
+    castingTime: "10 минут",
+    range: "30 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: null
+    },
+    duration: "Мгновенная",
+    concentration: false,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "SCAG",
+    description: "Вы призываете духа, принимающего облик могучего скакуна — единорога, пегаса, груд-паука или другого впечатляющего существа, служащего вам верным спутником."
+  },
+  {
+    name: "Оглушающий выпад (Staggering Smite)",
+    level: 4,
+    school: "Воплощение",
+    classes: ["Паладин"],
+    castingTime: "1 бонусное действие",
+    range: "На себя",
+    components: {
+      verbal: true,
+      somatic: false,
+      material: null
+    },
+    duration: "1 раунд",
+    concentration: false,
+    attackType: null,
+    savingThrow: "Мудрость",
+    damage: "4к6",
+    damageType: "Психическая энергия",
+    source: "XGE",
+    description: "Ваш следующий успешный удар оружием наполняется психической энергией, ошеломляющей цель и мешающей ей сосредоточиться."
+  },
+  {
+    name: "Призыв аберрации (Summon Aberration)",
+    level: 4,
+    school: "Вызов",
+    classes: ["Колдун", "Волшебник"],
+    castingTime: "1 действие",
+    range: "90 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "предмет из другого плана существования стоимостью не менее 400 зм, расходуется"
+    },
+    duration: "До 1 часа",
+    concentration: true,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "TCoE",
+    description: "Вы призываете дух аберрации, который принимает облик существа из Далёких пределов и сражается на вашей стороне."
+  },
+  {
+    name: "Призыв конструкта (Summon Construct)",
+    level: 4,
+    school: "Вызов",
+    classes: ["Волшебник"],
+    castingTime: "1 действие",
+    range: "90 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "предмет ремесленника стоимостью не менее 400 зм, расходуется"
+    },
+    duration: "До 1 часа",
+    concentration: true,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "TCoE",
+    description: "Вы призываете духа, принимающего облик конструкта, послушного вашим приказам и сражающегося рядом с вами."
+  },
+  {
+    name: "Призыв элементаля (Summon Elemental)",
+    level: 4,
+    school: "Вызов",
+    classes: ["Друид", "Чародей", "Колдун", "Волшебник"],
+    castingTime: "1 действие",
+    range: "90 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "предмет стоимостью не менее 400 зм, соответствующий выбранной стихии, расходуется"
+    },
+    duration: "До 1 часа",
+    concentration: true,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "TCoE",
+    description: "Вы призываете дух одной из четырёх стихий, который принимает физическую форму в незанятом пространстве в пределах дистанции."
+  },
+  {
+    name: "Потусторонний облик Таши (Tasha's Otherworldly Guise)",
+    level: 4,
+    school: "Преобразование",
+    classes: ["Чародей", "Колдун", "Волшебник"],
+    castingTime: "1 бонусное действие",
+    range: "На себя",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "одеяние стоимостью не менее 500 зм, посвящённое высшей силе из Нижних или Верхних планов"
+    },
+    duration: "До 1 минуты",
+    concentration: true,
+    attackType: null,
+    savingThrow: null,
+    damage: null,
+    damageType: null,
+    source: "TCoE",
+    description: "Потусторонняя сила преображает вас, даруя полёт, сопротивление к урону и бонусные атаки, соответствующие выбранному плану — Нижнему или Верхнему."
+  },
+  {
+    name: "Поток негативной энергии (Negative Energy Flood)",
+    level: 4,
+    school: "Некромантия",
+    classes: ["Колдун", "Волшебник"],
+    castingTime: "1 действие",
+    range: "60 футов",
+    components: {
+      verbal: true,
+      somatic: true,
+      material: "частица иссохшей плоти нежити"
+    },
+    duration: "Мгновенная",
+    concentration: false,
+    attackType: null,
+    savingThrow: "Телосложение",
+    damage: "4к12",
+    damageType: "Некротическая энергия",
+    source: "VRGtR",
+    description: "Тёмная энергия обрушивается на существо, которое вы видите в пределах дистанции, и если оно умирает от этого урона, оно восстаёт зомби в конце вашего следующего хода."
+  }
+];
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = spells4lvl;
+}

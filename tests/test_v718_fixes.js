@@ -1,0 +1,13 @@
+const fs=require('fs'), vm=require('vm'), assert=require('assert');
+const code=fs.readFileSync('network_gameplay.js','utf8');
+const ctx={console,Date,Math,JSON,setTimeout,clearTimeout,window:null};
+ctx.window=ctx;ctx.DNDRules={profBonus:()=>2,rollD20:()=>({result:10,critical:false,fumble:false})};
+vm.runInNewContext(code,ctx);
+const src=code;
+assert(src.includes('rangeFt:num(w.rangeFt,5)'),'weapon range must be authoritative');
+assert(src.includes('rangeFt:num(sp.rangeFt,0)'),'spell range must be authoritative');
+assert(src.includes('var authoritativeAoe=sp.aoe||null'),'spell AoE must come from profile');
+assert(src.includes("if(requestedAoe&&!hasAoe)return actionError"),'client cannot invent AoE');
+assert(src.includes('if(!hasAoe&&sp.attackType){'),'client cannot force spell attack mode');
+assert(src.includes('else if(!hasAoe&&sp.savingThrow&&sp.damage&&global.DNDCombat){'),'save spell resolution must require authoritative save type');
+console.log('V70.18 authority regression: PASS');

@@ -1,0 +1,15 @@
+const assert=require('assert'),vm=require('vm'),fs=require('fs');
+const ctx={console,Math,Date,JSON};ctx.window=ctx;ctx.globalThis=ctx;
+ctx.DNDContent={classes:[],registerClass(p){this.classes.push(p);return{ok:true,pack:p}},getClass(n){return this.classes.find(x=>x.name===n)},getFeature(id,pid){for(const p of this.classes){if(pid&&p.id!==pid)continue;for(const f of (p.features||[])){if(f.id===id)return Object.assign({packId:p.id,className:p.name},f)}for(const sub of (p.subclasses||[])){for(const f of (sub.features||[])){if(f.id===id)return Object.assign({packId:p.id,className:p.name,subclassId:sub.id},f)}}}return null},availableFeatures(){return[]}};
+vm.createContext(ctx);
+for(const f of ['content_framework.js','blood_hunter_engine.js','expansion_classes_pack.js'])vm.runInContext(fs.readFileSync(f,'utf8'),ctx,{filename:f});
+const bh=ctx.DNDContent.getClass('Кровавый охотник');assert(bh);
+const low={level:1,classes:[{name:'Кровавый охотник',level:1,subclass:'Орден ликантропов'}],resources:{},classFeaturesState:{}};
+let locked=ctx.DNDContent.invoke('Кровавый охотник',low,'brandOfCastigation',{});assert.strictEqual(locked.unavailable,true);
+let wrongSub={level:10,classes:[{name:'Кровавый охотник',level:10,subclass:'Орден мутантов'}],resources:{},classFeaturesState:{}};
+let subLocked=ctx.DNDContent.invoke('Кровавый охотник',wrongSub,'hybridTransformation',{});assert.strictEqual(subLocked.unavailable,true);
+const h={level:10,classes:[{name:'Кровавый охотник',level:10,subclass:'Орден ликантропов'}],resources:{},classFeaturesState:{},hitPoints:2};
+ctx.DNDBloodHunter.sync(h);const beforeR=h.resources.crimsonRite.current;const badR=ctx.DNDBloodHunter.useFeature(h,'crimsonRite',{riteType:'fire'});assert.strictEqual(badR.ok,false);assert.strictEqual(h.resources.crimsonRite.current,beforeR);
+const beforeC=h.resources.bloodMaledict.current;const badC=ctx.DNDBloodHunter.useFeature(h,'bloodMaledict',{});assert.strictEqual(badC.ok,false);assert.strictEqual(h.resources.bloodMaledict.current,beforeC);
+h.hitPoints=30;const on=ctx.DNDBloodHunter.useFeature(h,'hybridTransformation',{});assert.strictEqual(on.ok,true);const spent=h.resources.hybridTransformation.current;const off=ctx.DNDBloodHunter.useFeature(h,'hybridTransformation',{});assert.strictEqual(off.ok,true);assert.strictEqual(h.resources.hybridTransformation.current,spent);
+console.log('V70.25.32 invoke/transaction regression: PASS');

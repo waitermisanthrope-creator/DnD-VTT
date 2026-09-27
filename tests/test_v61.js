@@ -1,0 +1,18 @@
+const fs=require('fs');
+const assert=require('assert');
+const src=fs.readFileSync('vtt_mobile_battle_v61.js','utf8');
+assert(src.includes("VERSION='61.0.0'"));
+assert(src.includes('DNDMobileBattleV61'));
+assert(src.includes('pinch'));
+assert(src.includes('longTimer'));
+assert(src.includes('moveToken'));
+assert(src.includes('pointerdown'));
+const bb=fs.readFileSync('battle_board.js','utf8');
+assert(bb.includes('getView:function()'));
+assert(bb.includes('setView:function(v)'));
+assert(bb.includes('screenToCell:function(clientX,clientY)'));
+const idx=fs.readFileSync('index.html','utf8');
+assert(idx.includes('vtt_mobile_battle_v61.js'));
+const guide=fs.readFileSync('00_AI_PROJECT_GUIDE.md','utf8');
+assert(guide.includes('BUILD:** v61.0.0'));assert(guide.includes('## 3G. V59 ENCOUNTER / MAP UX'));assert(guide.includes('## 3H. V61 MOBILE BATTLE BOARD UX'));assert(guide.includes('MOBILE APP / APK REQUIREMENT'));
+console.log('V61_MOBILE_BATTLE_TEST_OK');

@@ -1,0 +1,11 @@
+const fs=require('fs'),assert=require('assert');
+const s=fs.readFileSync('vtt_mobile_session_v67.js','utf8');
+assert(s.includes("VERSION='67.3.0'"));
+assert(s.includes('DNDMobileSessionV67'));
+assert(s.includes('localStorage'));
+assert(s.includes('exportSession'));
+assert(s.includes('importText'));
+assert(s.includes('DNDGameplayV57'));
+const idx=fs.readFileSync('index.html','utf8');
+for(const f of ['vtt_character_sheet_v63.js','vtt_character_actions_v64.js','vtt_dice_resolution_v65.js','vtt_combat_log_v66.js','vtt_mobile_session_v67.js']) assert(idx.includes(f),`missing ${f}`);
+console.log('V67_MOBILE_SESSION_TEST_OK');

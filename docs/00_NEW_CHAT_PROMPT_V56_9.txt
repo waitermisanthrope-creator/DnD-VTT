@@ -1,0 +1,62 @@
+Ты продолжаешь разработку моего мобильного D&D 5e (2014-style) приложения из предыдущего чата.
+
+ВАЖНО: предыдущий чат огромный и больше не открывается. Источником истины теперь являются файлы проекта и `00_AI_PROJECT_GUIDE.md` внутри переданного ZIP. Не проси меня пересказывать историю проекта, сначала прочитай guide и текущие файлы.
+
+ТЕКУЩАЯ ТОЧКА:
+- Build: V56.9 — Mythic Odysseys of Theros.
+- Последний архив: `dnd_project_bestiary_theros_v56_9.zip`.
+- В V56.9 добавлено 55 уникальных существ после duplicate protection.
+- Runtime bestiary: 933 creatures.
+- Crafting materials: 935.
+- Source pack: `theros_moot`.
+- API: `DND_BESTIARY_V56_9`.
+- Mythic encounters получили оригинальный app-native second-phase hook `Mythic Trait`.
+- Публичные статблоки/тексты источников не копируются; используем названия/source metadata и собственную механику приложения.
+
+ОБЯЗАТЕЛЬНО ПЕРЕД РАБОТОЙ:
+1. Прочитай `00_AI_PROJECT_GUIDE.md`.
+2. Определи фактическую структуру проекта по файлам, а не по памяти.
+3. Не создавай второй Bestiary/Monster/Loot/Crafting engine.
+4. Каждый новый/изменённый JS начинай с комментария: что это за файл, как работает, важные переменные/API.
+5. НЕ ТРОГАЙ `Wallpapers.js` и `Ambiences.js`.
+6. Перед каждым релизом:
+   - `node --check` всех JS;
+   - проверить каждый `<script src>` в `index.html`;
+   - targeted runtime tests;
+   - проверить SHA-256 защищённых Wallpapers/Ambiences;
+   - `unzip -t` итогового ZIP.
+7. После каждого крупного этапа выдай полный ZIP проекта.
+
+ПЛАН:
+- V56.10 Ravenloft / Van Richten's Guide to Ravenloft
+- V56.11 Spelljammer
+- V56.12 Dragonlance
+- V56.13 Planescape
+- V56.14+ остальные официальные bestiary source packs
+- затем Bestiary 2.0 completion pass: families, ecology, variants, mythic/boss framework, search/filter/source UI
+- затем audit/completion Crafting + Economy + Alchemy
+- затем Character/Classes/Subclasses/Progression audit
+- затем Combat/VTT/Summoning/Companion audit
+- затем World/Campaign/UX polish
+- В САМОМ КОНЦЕ, и только тогда: licensing/access, network-game settings и APK/AAB/Capacitor. Эти три вещи сейчас НЕ делать.
+
+УЖЕ ЕСТЬ И НЕ НУЖНО ДЕЛАТЬ ЗАНОВО:
+- Rules Engine v2
+- Combat v3
+- Level Up/Magic/Campaign v4
+- Monster/Encounter v5
+- Multiplayer/network v6-v9
+- Battle Board/VTT v10-v13
+- Class Features v14-v18
+- Content Framework/Blood Hunter/expansion classes v19-v23
+- Secondary Tokens/Summoning/Companions v24-v26
+- Alchemy 2.0
+- Crafting professions/specializations/economy/disassembly/quality
+- Crafting/Wear optional DLC
+- World gathering
+- Containers
+- Market/merchant/trade/barter/haggle
+- Bestiary V56.0-V56.9
+
+ПРАВИЛО ДЛЯ НОВОГО ЭТАПА:
+Если я говорю «давай», бери следующий этап из `00_AI_PROJECT_GUIDE.md`, сначала при необходимости проверь официальные источники, затем реально редактируй проект, тестируй и дай ZIP. Не ограничивайся описанием того, что можно было бы сделать.

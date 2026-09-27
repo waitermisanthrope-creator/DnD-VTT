@@ -1,0 +1,15 @@
+const assert=require('assert'),fs=require('fs'),vm=require('vm'),root=__dirname;
+const ne=fs.readFileSync(root+'/network_engine.js','utf8');
+assert(ne.includes('actionResultsByPeer'),'RPC idempotency cache missing');
+assert(ne.includes('nativePacketSeq'),'native packet sequence missing');
+assert(ne.includes('nativeSeenSeqByPeer'),'native duplicate fence missing');
+assert(ne.includes('stateFingerprint)!==String(localCore)'),'equal-revision snapshot conflict fence missing');
+const gp=fs.readFileSync(root+'/network_gameplay.js','utf8');
+assert(gp.includes('refundPreparedSpell'),'prepared spell refund missing');
+assert(gp.includes('preparedSpellReserved'),'prepared reservation marker missing');
+assert(gp.includes('resourceKind=String(opt.resourceKind||action.resourceKind||\'action\')'),'monster resource ordering missing');
+assert(gp.includes('consumeLegendaryAction'),'legendary resource RPC guard missing');
+assert(gp.includes('consumeLairAction'),'lair resource RPC guard missing');
+const m=fs.readFileSync(root+'/monster_engine.js','utf8');
+assert(m.includes('consumeLegendaryAction')&&m.includes('consumeLairAction'));
+console.log('V751_AUTHORITATIVE_REPLAY_ROLLBACK_OK');

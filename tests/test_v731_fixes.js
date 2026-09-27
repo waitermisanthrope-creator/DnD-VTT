@@ -1,0 +1,11 @@
+const assert=require('assert'),vm=require('vm'),fs=require('fs');
+const ctx={console,Math,Date,JSON};ctx.window=ctx;ctx.globalThis=ctx;
+ctx.DNDContent={classes:[],registerClass(p){this.classes.push(p);return {ok:true,pack:p}},getClass(n){return this.classes.find(x=>x.name===n)},getFeature(id){for(const p of this.classes){const f=(p.features||[]).find(x=>x.id===id);if(f)return Object.assign({className:p.name},f);for(const s of (p.subclasses||[])){const sf=(s.features||[]).find(x=>x.id===id);if(sf)return Object.assign({className:p.name},sf)}}},availableFeatures(){return[]}};
+vm.createContext(ctx);
+for(const f of ['blood_hunter_engine.js','expansion_classes_pack.js'])vm.runInContext(fs.readFileSync(f,'utf8'),ctx,{filename:f});
+const bh=ctx.DNDContent.getClass('Кровавый охотник');assert(bh);
+const hero={level:10,classes:[{name:'Кровавый охотник',level:10,subclass:'Орден ликантропов'}],resources:{},classFeaturesState:{}};
+let unknown=bh.hooks.useFeature(hero,'missingActive',{}, {id:'missingActive',name:'Missing',action:'action'});assert.strictEqual(unknown.ok,false);assert.strictEqual(unknown.unsupported,true);
+let passive=bh.hooks.useFeature(hero,'stalkerProwess',{}, {id:'stalkerProwess',name:'Stalker',action:'passive'});assert.strictEqual(passive.ok,true);assert.strictEqual(passive.passive,true);
+const ps=ctx.DNDContent.getClass('Psion');const ph={level:5,classes:[{name:'Psion',level:5}],resources:{},classFeaturesState:{}};let pu=ps.hooks.useFeature(ph,'missingActive',{}, {id:'missingActive',name:'Missing',action:'action'});assert.strictEqual(pu.ok,false);assert.strictEqual(pu.unsupported,true);let pp=ps.hooks.useFeature(ph,'telepathy',{}, {id:'telepathy',name:'Телепатия',action:'passive'});assert.strictEqual(pp.ok,true);assert.strictEqual(pp.passive,true);
+console.log('V70.25.31 external feature stub regression: PASS');

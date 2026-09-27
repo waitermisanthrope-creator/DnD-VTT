@@ -1,0 +1,16 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const ctx={console,alert:()=>{},confirm:()=>true,Math,Date,JSON,setTimeout,clearTimeout,window:null,document:{getElementById:()=>null,addEventListener:()=>{},readyState:'complete'},localStorage:{getItem:()=>null,setItem:()=>{}}};
+ctx.window=ctx;ctx.globalThis=ctx;ctx.addEventListener=()=>{};ctx.rollSingleDice=()=>20;
+vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(__dirname+'/rulesEngine.js','utf8'),ctx);
+vm.runInContext(fs.readFileSync(__dirname+'/combat_engine.js','utf8'),ctx);
+const attacker={id:'a',name:'Hero',stats:{str:16,dex:12},level:5,classes:[{name:'Fighter',level:5}],inventory:{armor:[]}};
+const target={id:'t',name:'Goblin',ac:15,hp:20,maxHp:20,tempHp:0,conditions:{}};
+const weapon={id:'w',name:'Sword',stat:'str',proficient:true,diceCount:1,diceSides:8,extraDmg:0,damage:'1d8+3',damageType:'рубящий'};
+const r=ctx.DNDCombat.resolveAttack(attacker,target,{weapon,damage:weapon.damage,damageType:weapon.damageType,target:true,acOverride:17});
+assert.equal(r.d20,20); assert.equal(r.critical,true); assert.equal(r.ac,17); assert.equal(r.hit,true); assert.ok(r.damage); assert.equal(r.damage.rolls.length,2,'critical must double damage dice');
+assert.equal(target.hp,20-r.damageResult.amount,'resolver must apply damage when target:true');
+const src=fs.readFileSync(__dirname+'/network_gameplay.js','utf8');
+assert.ok(src.includes('DNDCombat.resolveAttack'), 'network attack must use shared combat resolver');
+assert.ok(!/var bonus=num\(w\.attackBonus/.test(src), 'network attack must not independently resolve attack bonus');
+console.log('V70.12 shared attack resolver PASS');

@@ -1,0 +1,13 @@
+const fs=require('fs'),vm=require('vm');
+const files=['vtt_debug_dice_lab_v706.js'];
+const sandbox={console,localStorage:{_:{},getItem(k){return this._[k]||null},setItem(k,v){this._[k]=v}},document:{readyState:'complete',getElementById(){return null},createElement(){return {style:{},appendChild(){}}},body:{appendChild(){}}},addEventListener(){},setTimeout,Date,Math,JSON};sandbox.window=sandbox;sandbox.DNDCombatEventBusV69={record(){}};
+vm.createContext(sandbox);files.forEach(f=>vm.runInContext(fs.readFileSync(f,'utf8'),sandbox,{filename:f}));
+const L=sandbox.DNDDiceLabV706;
+L.setD20(20); let r=L.rollD20(); if(r.roll!==20||!r.critical) throw Error('forced crit failed');
+L.setAttack('miss'); r=L.resolveAttack({ac:1,modifier:20}); if(r.result!=='miss') throw Error('forced miss failed');
+L.setSave('fail'); r=L.resolveSave({dc:1,modifier:20}); if(r.result!=='fail') throw Error('forced save fail failed');
+L.setDamageType('fire','resist'); r=L.resolveDamage('fire',20); if(r.final!==10) throw Error('resistance failed');
+L.setDamageType('cold','immune'); r=L.resolveDamage('cold',20); if(r.final!==0) throw Error('immunity failed');
+L.setDamageType('lightning','vulnerable'); r=L.resolveDamage('lightning',20); if(r.final!==40) throw Error('vulnerability failed');
+const snap=L.snapshot(); L.setD20(1); L.restore(snap); if(L.state().forcedD20!==20) throw Error('restore failed');
+console.log('V70.6 PASS');

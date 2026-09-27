@@ -1,0 +1,40 @@
+D&D APP — CONTINUE FROM V56.10
+
+Ты продолжаешь разработку большого D&D приложения.
+
+CURRENT CHECKPOINT
+- Build: V56.10 — Ravenloft / Van Richten's Guide to Ravenloft.
+- Last archive should be the V56.10 Ravenloft ZIP.
+- Read `00_AI_PROJECT_GUIDE.md` FIRST before changing anything.
+- Current source-pack API: `DND_BESTIARY_V56_10`.
+- Current source pack: `ravenloft_vrgtR`.
+- V56.10 adds the 32 Chapter 5 Ravenloft bestiary names after duplicate protection.
+- Each new creature uses original app-native combat/ecology/horror/harvest metadata.
+- Horror metadata includes reusable fear/stress/mist/identity/body-horror/relentless hooks where appropriate.
+- Lesser and Greater Star Spawn Emissary have a reusable phase-transition hook.
+- Harvest materials use stable `v56_10_*` IDs and the existing `DND_CRAFTING_V31` material owner.
+- V56.9 public API version typo was corrected to `56.9.0`.
+
+NON-NEGOTIABLE RULES
+1. Do not create a second Bestiary, Monster, Loot, Crafting or Horror engine when an existing owner can be extended.
+2. New/edited JS files must start with a header explaining purpose, architecture and public APIs.
+3. Never modify `Wallpapers.js` or `Ambiences.js` unless explicitly requested.
+4. Keep source packs separate and duplicate-protected.
+5. Do not copy published statblock prose/mechanics. Use names/source metadata plus original app-native mechanics.
+6. Before every release: node --check all JS, verify all index script paths, run targeted tests, verify protected hashes, verify ZIP integrity, update `00_AI_PROJECT_GUIDE.md`.
+7. When a source pack has a finite official bestiary list, add as many distinct entries as safely available rather than artificially stopping at a small count.
+
+NEXT TASK
+V56.11 — Spelljammer.
+- Search/verify the official source's bestiary/creature index before implementation.
+- Add the maximum useful number of unique Spelljammer creatures that are not already in V56.0–V56.10.
+- Keep a single catalogue file/API for the pack unless a genuinely reusable subsystem is required.
+- Integrate Astral Sea habitat, space ecology, boarding/ship encounter hooks and harvest materials into existing systems without creating duplicate engines.
+- Update `00_AI_PROJECT_GUIDE.md` in the same build.
+- Create a targeted `test_v56_11.js`.
+- Create a complete ZIP release and report counts, tests, protected hashes and next checkpoint.
+
+AFTER V56.11
+- V56.12 — Dragonlance: Shadow of the Dragon Queen.
+- V56.13 — Planescape: Adventures in the Multiverse.
+- Then continue remaining official source-pack bestiaries with duplicate protection and source-separated APIs.

@@ -1,0 +1,13 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const src=fs.readFileSync('network_gameplay.js','utf8');
+assert(src.includes("case'USE_FEATURE':return applyClassFeature(peerId,action);"),'USE_FEATURE RPC registered');
+assert(src.includes('classFeatureIds:featureIds.slice()'),'profile carries authoritative feature ids');
+assert(src.includes('featureAvailableForCurrentBuild(profile,id)'),'authoritative feature availability engine enforced');
+assert(src.includes("if(def.action==='on-hit')return actionError"),'on-hit feature cannot be invoked standalone');
+assert(src.includes("id!=='actionSurge'"),'Action Surge does not incorrectly consume Action');
+assert(src.includes("resourceKind==='reaction'"),'reaction resource is authoritative');
+const ui=fs.readFileSync('battle_action_ui.js','utf8');
+assert(ui.includes("if(isPlayer()){"),'player feature path exists');
+assert(ui.includes("playerAction('USE_FEATURE',payload)"),'player feature uses authoritative RPC');
+assert(ui.includes("if(f.action==='on-hit')return false;"),'standalone on-hit features hidden from battle UI');
+console.log('V70.19 authority/class-feature checks PASS');

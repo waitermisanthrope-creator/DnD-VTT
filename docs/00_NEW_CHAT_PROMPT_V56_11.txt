@@ -1,0 +1,35 @@
+D&D APP — CONTINUE FROM V56.11
+
+CURRENT CHECKPOINT
+- Build: V56.11 — Spelljammer.
+- Read `00_AI_PROJECT_GUIDE.md` FIRST.
+- Current API: `DND_BESTIARY_V56_11`.
+- V56.11 adds 84 unique Spelljammer creatures after duplicate protection: 74 from Boo’s Astral Menagerie and 10 from Monstrous Compendium Vol. 1: Spelljammer Creatures.
+- Source packs: `spelljammer_boo_astral_menagerie`, `spelljammer_mon_compendium_1`.
+- Runtime: 1049 creatures; materials: 1051.
+- Existing Autognome, Giff and Neogi were skipped to avoid duplicates.
+- Wildspace/Astral metadata, zero-G movement, shipboard/boarding hooks, air-envelope hazards and harvest bridges are integrated into existing systems.
+
+NON-NEGOTIABLE RULES
+1. Never create a duplicate Bestiary/Monster/Loot/Crafting engine.
+2. New/edited JS files need a header explaining purpose, architecture and public APIs.
+3. Never modify `Wallpapers.js` or `Ambiences.js` unless explicitly requested.
+4. Keep source packs separate and duplicate-protected.
+5. Do not copy published statblock prose/mechanics; use names/source metadata plus original app-native mechanics.
+6. Every major build MUST update `00_AI_PROJECT_GUIDE.md`.
+7. Before release: node --check all JS, verify all index script paths, run targeted tests, verify protected hashes, verify ZIP integrity.
+8. If an official source has a finite bestiary list, add as many verified unique entries as safely available; do not artificially stop at a tiny block.
+
+NEXT TASK
+V56.12 — Dragonlance: Shadow of the Dragon Queen.
+- Verify the official source bestiary/index first.
+- Add the maximum useful number of unique creatures not already present.
+- Reuse existing dragon/undead/humanoid/family systems.
+- Integrate source-specific hooks and harvest materials without creating duplicate engines.
+- Update `00_AI_PROJECT_GUIDE.md`.
+- Create `test_v56_12.js`.
+- Produce a complete ZIP and report counts, tests, protected hashes and next checkpoint.
+
+AFTER V56.12
+- V56.13 — Planescape: Adventures in the Multiverse.
+- Continue remaining official source-pack bestiaries with duplicate protection and source-separated APIs.

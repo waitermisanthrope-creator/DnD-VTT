@@ -1,0 +1,15 @@
+const fs=require('fs');
+const assert=require('assert');
+const src=fs.readFileSync('vtt_token_interaction_v60.js','utf8');
+assert(src.includes("VERSION='60.0.0'"));
+assert(src.includes('DNDTokenInteractionV60'));
+assert(src.includes('DNDCombat.attack'));
+assert(src.includes('DNDBattleBoard.findToken'));
+assert(src.includes('TOKEN_ATTACK_V60'));
+const idx=fs.readFileSync('index.html','utf8');
+assert(idx.includes('vtt_token_interaction_v60.js'));
+const guide=fs.readFileSync('00_AI_PROJECT_GUIDE.md','utf8');
+assert(guide.includes('BUILD:** v61.0.0'));assert(guide.includes('## 3H. V61 MOBILE BATTLE BOARD UX'));assert(guide.includes('## 2A. MOBILE APP / APK REQUIREMENT'));
+assert(guide.includes('MOBILE APP / APK REQUIREMENT'));
+assert(guide.includes('## 5D. V60 TOKEN & BATTLE INTERACTION — MOBILE FIRST'));
+console.log('V60_TOKEN_INTERACTION_TEST_OK');

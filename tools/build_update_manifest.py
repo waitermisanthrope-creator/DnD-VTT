@@ -1,48 +1,52 @@
 #!/usr/bin/env python3
-"""Build a static DnD VTT update manifest.
+"""Build a GitHub Pages/static-host update manifest from the current app tree.
 
-Only index.html and app/** are deployable application payload.
-Large media packs are intentionally outside this lightweight update bundle.
+Usage:
+  python tools/build_update_manifest.py --base-url https://example.github.io/repo/updates/files --output /tmp/update.json
+
+Only the deployable web application is included: index.html + app/**.
+Tests, docs, tools and the local integrity manifest are intentionally excluded.
 """
-import argparse, hashlib, json, pathlib
-from datetime import datetime, timezone
+from pathlib import Path
+import argparse, hashlib, json, datetime
+
+ROOT=Path(__file__).resolve().parents[1]
 
 def sha256(path):
-    h = hashlib.sha256()
-    with path.open("rb") as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b""):
+    h=hashlib.sha256()
+    with path.open('rb') as f:
+        for chunk in iter(lambda:f.read(1024*1024),b''):
             h.update(chunk)
     return h.hexdigest()
 
 def main():
-    p = argparse.ArgumentParser()
-    p.add_argument("--root", default=".")
-    p.add_argument("--base-url", required=True)
-    p.add_argument("--output", required=True)
-    p.add_argument("--version", default="70.25.61")
-    p.add_argument("--channel", default="stable")
-    args = p.parse_args()
-    root = pathlib.Path(args.root).resolve()
-    paths = [root / "index.html"] + sorted((root / "app").rglob("*"))
-    files = []
-    for path in paths:
-        if not path.is_file():
+    ap=argparse.ArgumentParser()
+    ap.add_argument('--base-url',required=True)
+    ap.add_argument('--version',default='70.25.61')
+    ap.add_argument('--min-app-version',default='70.25.61')
+    ap.add_argument('--channel',default='stable',choices=['stable','beta'])
+    ap.add_argument('--output',required=True)
+    args=ap.parse_args()
+    files=[]
+    candidates=[ROOT/'index.html']+sorted((ROOT/'app').rglob('*'))
+    for p in candidates:
+        if not p.is_file() or p.name.endswith('.map'):
             continue
-        rel = path.relative_to(root).as_posix()
-        data = path.read_bytes()
-        files.append({"path": rel, "bytes": len(data), "sha256": sha256(path)})
-    manifest = {
-        "schema": 1,
-        "app": "DnD-VTT",
-        "version": args.version,
-        "minAppVersion": "70.25.61",
-        "channel": args.channel,
-        "generated": datetime.now(timezone.utc).isoformat(),
-        "baseUrl": args.base_url.rstrip("/") + "/",
-        "files": files,
-        "blockedVersions": [],
+        rel=p.relative_to(ROOT).as_posix()
+        files.append({'path':rel,'bytes':p.stat().st_size,'sha256':sha256(p)})
+    manifest={
+        'schema':1,
+        'app':'DND_VTT',
+        'version':args.version,
+        'minAppVersion':args.min_app_version,
+        'channel':args.channel,
+        'generated':datetime.date.today().isoformat(),
+        'baseUrl':args.base_url.rstrip('/'),
+        'files':files,
+        'blockedVersions':[]
     }
-    pathlib.Path(args.output).write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    out=Path(args.output); out.parent.mkdir(parents=True,exist_ok=True)
+    out.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    print(f'wrote {out} ({len(files)} files)')
 
-if __name__ == "__main__":
-    main()
+if __name__=='__main__': main()

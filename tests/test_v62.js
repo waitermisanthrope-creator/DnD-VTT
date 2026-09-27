@@ -1,0 +1,17 @@
+const fs=require('fs');
+const assert=require('assert');
+const src=fs.readFileSync('vtt_mobile_combat_hud_v62.js','utf8');
+assert(src.includes("VERSION='62.0.0'"));
+assert(src.includes('DNDMobileCombatHUDV62'));
+assert(src.includes('dndV62QuickAttack'));
+assert(src.includes('dndV62EndTurn'));
+assert(src.includes('turnResources'));
+assert(src.includes('safe-area-inset-bottom'));
+assert(src.includes('touch-action:manipulation'));
+const idx=fs.readFileSync('index.html','utf8');
+assert(idx.includes('vtt_mobile_combat_hud_v62.js'));
+const guide=fs.readFileSync('00_AI_PROJECT_GUIDE.md','utf8');
+assert(guide.includes('MOBILE APP / APK REQUIREMENT'));
+assert(guide.includes('V61 MOBILE BATTLE BOARD UX'));
+assert(guide.includes('V62 MOBILE COMBAT HUD'));
+console.log('V62_MOBILE_COMBAT_HUD_TEST_OK');

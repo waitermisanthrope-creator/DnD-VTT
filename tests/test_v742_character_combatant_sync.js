@@ -1,0 +1,41 @@
+(function(global){
+'use strict';
+var assert=global.__TEST_ASSERT__||function(c,m){if(!c)throw new Error(m);};
+var oldChar=global.currentChar, oldCharacter=global.currentCharacter, oldNet=global.dndNetwork;
+var peer={id:'peer1',profile:{characterId:'c1',name:'Sync Hero',hpCurrent:20,hpMax:30,deathSaves:{successes:0,failures:0},activeConditions:{},resources:{}}};
+var combatant={id:'cmb1',characterId:'c1',ownerPeerId:'peer1',name:'Sync Hero',hp:0,maxHp:30,ac:15,defeated:true,deathSaves:{successes:1,failures:2},conditions:{Оглушён:true},turnResources:{action:false,bonusAction:true,reaction:false,movement:0,movementUsed:30}};
+global.currentChar={id:'c1',name:'Sync Hero',hpCurrent:20,hpMax:30,initiativeTracker:{round:1,activeIndex:0,combatants:[JSON.parse(JSON.stringify(combatant))]}};
+global.currentCharacter=global.currentChar;
+global.window=global;
+global.document={readyState:'complete',getElementById:function(){return null;},addEventListener:function(){}};
+global.addEventListener=function(){};
+global.renderInitiativeTracker=function(){}; global.dndRenderCombatV3=function(){}; global.dndNetworkGameplayRender=function(){};
+global.autoSaveCurrentCharacter=function(){};
+global.DNDCombat={CONDITIONS:[],rollD20:function(){return {result:10,critical:false,fumble:false};}};
+global.DNDClassFeatures={buildFeatureSet:function(){return[];}};
+global.DNDRules={profBonus:function(){return 2;}};
+var newPeer={id:'peerNew',profile:{characterId:'c1',name:'Sync Hero',hpCurrent:30,hpMax:30}};
+global.dndNetwork={state:{role:'host',clientId:'client1'},getPeer:function(id){return id==='peer1'?peer:(id==='peerNew'?newPeer:null);},roster:function(){return [{id:'peer1',characterId:'c1'},{id:'peerNew',characterId:'c1'}];},commitHostEvent:function(){return null;}};
+require('vm').runInThisContext(require('fs').readFileSync('network_gameplay.js','utf8'),{filename:'network_gameplay.js'});
+assert(typeof global.dndSyncCurrentCharacterFromCombat==='function','sync API missing');
+assert(global.dndSyncCurrentCharacterFromCombat()===true,'current-character sync failed');
+assert(global.currentChar.hpCurrent===0,'current character HP not synced');
+assert(global.currentChar.defeated===true,'defeated state not synced');
+assert(global.currentChar.deathSaves.failures===2,'death saves not synced');
+assert(global.currentChar.activeConditions.Оглушён===true,'conditions not synced');
+// Host authoritative direction: a combat commit must mirror combat HP/death state into the persistent peer profile.
+global.dndNetworkGameplayNext();
+assert(peer.profile.hpCurrent===0,'peer profile HP not synced from combatant');
+assert(peer.profile.defeated===true,'peer profile defeated not synced');
+assert(peer.profile.deathSaves.failures===2,'peer profile death saves not synced');
+assert(peer.profile.activeConditions.Оглушён===true,'peer profile conditions not synced');
+// Reconnect must not resurrect stale profile HP; authoritative combat HP wins.
+peer.profile.hpCurrent=30;
+combatant.hp=5; combatant.defeated=false;
+global.currentChar.initiativeTracker.combatants=[combatant];
+global.dndNetworkGameplayPeerHello('peerNew',{profile:{characterId:'c1',name:'Sync Hero',hpCurrent:30,hpMax:30}} ,'peer1');
+assert(newPeer.profile.hpCurrent===5,'reconnect resurrected stale profile HP');
+assert(newPeer.profile.defeated===false,'reconnect defeated state mismatch');
+global.currentChar=oldChar; global.currentCharacter=oldCharacter; global.dndNetwork=oldNet;
+global.__TEST_RESULT__='V70_25_42_CHARACTER_COMBATANT_SYNC_TEST_OK';
+})(global);

@@ -1,0 +1,81 @@
+/*
+ * Market Economy V55: торговцы, магазины, цены и региональный рынок поверх существующих
+ * Inventory/Coins/Crafting Economy/World Resource Gathering систем. Как работает: создаёт
+ * устойчивый каталог торговцев, рассчитывает цену покупки/продажи по базовой стоимости,
+ * региональному спросу, качеству и износу, ведёт ограниченный запас магазина и проводит
+ * реальные операции с currentCharacter.coins/inventory. Важные API: DND_MARKET_V55,
+ * getTrader(), quote(), buy(), sell(), restock(), setRegion(), marketReport(). Это
+ * авторское экономическое расширение; Wallpapers.js и Ambiences.js не изменяются.
+ */
+(function(global){'use strict';
+  var KEY='dnd_market_v55_state';
+  var COPPER={cp:1,sp:10,ep:50,gp:100,pp:1000};
+  var RARITY={common:1,uncommon:1.25,rare:1.75,very_rare:2.5,legendary:4};
+  var REGION_MOD={
+    forest:{wood:0.8,leather:0.9,herbalism:0.75,metal:1.15},
+    highlands:{metal:0.8,stone:0.85,wood:1.1,leather:1.05},
+    swamp:{herbalism:0.8,alchemical:0.9,food:1.15,metal:1.1},
+    coast:{food:0.85,glass:0.9,rope:0.85,metal:1.05},
+    wasteland:{metal:1.2,food:1.35,wood:1.35,water:1.5},
+    ruins:{arcane:0.75,relic:0.8,common:1.1,food:1.2}
+  };
+  var TRADERS={
+    village:{name:'Деревенский торговец',type:'general',buyFactor:1,sellFactor:.5,regions:['forest','highlands','swamp','coast'],stock:[
+      {id:'market_rations',name:'Паёк',category:'consumables',costGp:.5,qty:20,tags:['food']},
+      {id:'market_rope',name:'Верёвка, 50 футов',category:'gear',costGp:1,qty:8,tags:['rope']},
+      {id:'market_torch',name:'Факел',category:'gear',costGp:.01,qty:40,tags:['common']},
+      {id:'market_potion_healing',name:'Зелье лечения',category:'consumables',costGp:50,qty:4,tags:['alchemical']}
+    ]},
+    blacksmith:{name:'Кузнец',type:'smith',buyFactor:1.05,sellFactor:.6,regions:['highlands','wasteland','coast'],stock:[
+      {id:'market_dagger',name:'Кинжал',category:'weapons',costGp:2,qty:3,tags:['metal']},
+      {id:'market_shield',name:'Щит',category:'armor',costGp:10,qty:2,tags:['metal']},
+      {id:'market_arrows',name:'Стрелы (20)',category:'weapons',costGp:1,qty:10,tags:['metal','wood']},
+      {id:'market_repair_kit',name:'Ремонтный комплект',category:'materials',costGp:5,qty:8,tags:['metal','repair']}
+    ]},
+    apothecary:{name:'Аптекарь и алхимик',type:'alchemist',buyFactor:1.1,sellFactor:.55,regions:['forest','swamp','ruins'],stock:[
+      {id:'market_antitoxin',name:'Противоядие',category:'consumables',costGp:50,qty:3,tags:['alchemical']},
+      {id:'market_healing',name:'Зелье лечения',category:'consumables',costGp:50,qty:6,tags:['alchemical']},
+      {id:'market_reagent',name:'Алхимический реагент',category:'materials',costGp:8,qty:10,tags:['alchemical','reagent']},
+      {id:'market_herbs',name:'Пучок лечебных трав',category:'materials',costGp:3,qty:12,tags:['herbalism']}
+    ]},
+    caravan:{name:'Странствующий караванщик',type:'caravan',buyFactor:1.2,sellFactor:.65,regions:['forest','highlands','swamp','coast','wasteland','ruins'],stock:[
+      {id:'market_backpack',name:'Рюкзак',category:'gear',costGp:2,qty:5,tags:['common']},
+      {id:'market_glass',name:'Стеклянный флакон',category:'materials',costGp:.1,qty:30,tags:['glass']},
+      {id:'market_cloth',name:'Ткань',category:'materials',costGp:.5,qty:20,tags:['textile']},
+      {id:'market_iron',name:'Железо, 1 ед.',category:'materials',costGp:1,qty:15,tags:['metal']}
+    ]}
+  };
+  function read(){try{return JSON.parse(global.localStorage&&global.localStorage.getItem(KEY)||'{}')||{};}catch(e){return {};}}
+  function write(s){try{if(global.localStorage)global.localStorage.setItem(KEY,JSON.stringify(s));}catch(e){}}
+  function state(){var s=read();s.region=s.region||'forest';s.traders=s.traders||{};return s;}
+  function save(s){write(s);return s;}
+  function regionMod(tags,region){var map=REGION_MOD[region]||{};var a=(tags||[]).map(function(t){return map[t];}).filter(function(x){return typeof x==='number';});if(!a.length)return map.common||1;return a.reduce(function(x,y){return x*y;},1/Math.pow(1,a.length-1));}
+  function copper(v){return Math.max(0,Math.round(Number(v||0)*100));}
+  function priceParts(cp){cp=Math.max(0,Math.round(cp));var gp=Math.floor(cp/100);cp%=100;var sp=Math.floor(cp/10);cp%=10;return {gp:gp,sp:sp,cp:cp};}
+  function coins(){if(typeof global.currentCharacter==='undefined'||!global.currentCharacter)return {cp:0,sp:0,ep:0,gp:0,pp:0};var c=global.currentCharacter.coins;if(!c) c=global.currentCharacter.coins={cp:0,sp:0,ep:0,gp:0,pp:0};return c;}
+  function balanceCp(){var c=coins();return Object.keys(COPPER).reduce(function(s,k){return s+(Number(c[k])||0)*COPPER[k];},0);}
+  function setBalanceCp(total){var c=coins();total=Math.max(0,Math.floor(total));c.pp=Math.floor(total/1000);total%=1000;c.gp=Math.floor(total/100);total%=100;c.ep=Math.floor(total/50);total%=50;c.sp=Math.floor(total/10);c.cp=total%10;}
+  function spend(cp){cp=Math.max(0,Math.ceil(cp));if(balanceCp()<cp)return false;setBalanceCp(balanceCp()-cp);return true;}
+  function addMoney(cp){setBalanceCp(balanceCp()+Math.max(0,Math.round(cp)));}
+  function findInv(name,category){var inv=global.currentCharacter&&global.currentCharacter.inventory;if(!inv)return null;var a=inv[category]||[];for(var i=0;i<a.length;i++)if(a[i]&&String(a[i].name).toLowerCase()===String(name).toLowerCase())return {item:a[i],index:i,category:category};return null;}
+  function addInv(item){var inv=global.currentCharacter.inventory||(global.currentCharacter.inventory={weapons:[],armor:[],consumables:[],materials:[],junk:[]});var cat=item.category||'materials';if(!inv[cat])inv[cat]=[];var hit=inv[cat].find(function(x){return x.name===item.name&&!x.craftQuality&&!x.currentDurability;});if(hit)hit.count=(Number(hit.count)||0)+(Number(item.count)||1);else inv[cat].push(JSON.parse(JSON.stringify(item)));if(typeof global.renderInventory==='function')global.renderInventory();if(typeof global.autoSaveCurrentCharacter==='function')global.autoSaveCurrentCharacter();}
+  function removeInv(ref,count){var n=Number(count)||1;if(!ref||!ref.item||Number(ref.item.count||1)<n)return false;ref.item.count=(Number(ref.item.count||1)-n);if(ref.item.count<=0)global.currentCharacter.inventory[ref.category].splice(ref.index,1);return true;}
+  function traderTemplate(id){var t=TRADERS[id];if(!t)return null;var s=state();if(!s.traders[id])s.traders[id]={stock:t.stock.map(function(x){return {id:x.id,qty:x.qty};}),lastRestock:Date.now()};save(s);return t;}
+  function getTrader(id){var t=traderTemplate(id);if(!t)return null;var s=state(),st=s.traders[id];return {id:id,name:t.name,type:t.type,buyFactor:t.buyFactor,sellFactor:t.sellFactor,stock:t.stock.map(function(x){var q=st.stock.find(function(y){return y.id===x.id;});return Object.assign({},x,{qty:q?q.qty:0});})};}
+  function itemBaseValue(item){if(!item)return 0;if(global.DND_CRAFT_ECONOMY_V49&&typeof global.DND_CRAFT_ECONOMY_V49.itemValue==='function'){var v=Number(global.DND_CRAFT_ECONOMY_V49.itemValue(item));if(isFinite(v)&&v>0)return v;}if(item.marketPriceGp!=null)return Number(item.marketPriceGp)||0;if(item.price!=null)return Number(item.price)||0;if(item.cost!=null){var m=String(item.cost).match(/([0-9.]+)\s*зм/i);if(m)return Number(m[1]);}return 0;}
+  function quote(traderId,item,mode,region){var t=TRADERS[traderId];if(!t)return {ok:false,error:'Торговец не найден'};region=region||state().region;var base=itemBaseValue(item);if(!base&&item.costGp!=null)base=Number(item.costGp);var mod=regionMod(item.tags||item.craftTags||[],region);var q=RARITY[item.rarity]||1;if(mode==='sell')q=1/q;var durability=1;if(item.currentDurability!=null&&item.maxDurability)durability=Math.max(.15,Math.min(1,Number(item.currentDurability)/Number(item.maxDurability)));var factor=mode==='buy'?t.buyFactor:t.sellFactor;var gp=Math.max(.01,base*mod*q*factor*durability);return {ok:true,gp:gp,cp:copper(gp),display:priceParts(copper(gp)),region:region,regionMultiplier:mod,qualityMultiplier:q,durabilityMultiplier:durability};}
+  function stockItem(traderId,itemId){var t=TRADERS[traderId];if(!t)return null;return t.stock.find(function(x){return x.id===itemId;})||null;}
+  function buy(traderId,itemId,count){count=Math.max(1,Math.floor(Number(count)||1));var t=TRADERS[traderId],base=stockItem(traderId,itemId);if(!t||!base)return {ok:false,error:'Товар не найден'};var s=state(); traderTemplate(traderId); s=state(); var st=s.traders[traderId],slot=st.stock.find(function(x){return x.id===itemId;});if(!slot||slot.qty<count)return {ok:false,error:'Недостаточно товара на складе'};var q=quote(traderId,base,'buy',s.region);var total=q.cp*count;if(!spend(total))return {ok:false,error:'Недостаточно монет',required:q.display};slot.qty-=count;save(s);addInv({name:base.name,category:base.category,count:count,weight:base.weight||0,marketSource:traderId,marketPriceGp:q.gp});return {ok:true,count:count,totalCp:total,price:q};}
+  function sell(traderId,category,index,count){count=Math.max(1,Math.floor(Number(count)||1));var inv=global.currentCharacter&&global.currentCharacter.inventory;if(!inv||!inv[category]||!inv[category][index])return {ok:false,error:'Предмет не найден'};var item=inv[category][index],ref={item:item,index:index,category:category};var q=quote(traderId,item,'sell',state().region);var total=q.cp*count;if(Number(item.count||1)<count)return {ok:false,error:'Недостаточное количество'};removeInv(ref,count);addMoney(total);if(typeof global.autoSaveCurrentCharacter==='function')global.autoSaveCurrentCharacter();return {ok:true,count:count,totalCp:total,price:q,item:item};}
+  function restock(traderId,force){var t=TRADERS[traderId];if(!t)return {ok:false,error:'Торговец не найден'};var s=state(),st=s.traders[traderId]||{stock:t.stock.map(function(x){return {id:x.id,qty:x.qty};}),lastRestock:0};var day=24*60*60*1000;if(!force&&Date.now()-Number(st.lastRestock||0)<day)return {ok:false,error:'Склад ещё не восстановился'};st.stock=t.stock.map(function(x){return {id:x.id,qty:x.qty};});st.lastRestock=Date.now();s.traders[traderId]=st;save(s);return {ok:true};}
+  function setRegion(region){if(!REGION_MOD[region])return {ok:false,error:'Неизвестный регион'};var s=state();s.region=region;save(s);return {ok:true,region:region};}
+  function marketReport(){var s=state();return {region:s.region,traders:Object.keys(TRADERS).map(function(id){var t=getTrader(id);return {id:id,name:t.name,items:t.stock.length,units:t.stock.reduce(function(a,x){return a+(x.qty||0);},0)};})};}
+  function install(){if(typeof document==='undefined'||document.getElementById('marketV55'))return;var host=document.querySelector('.inventory-content-area')||document.querySelector('.inv-content')||document.getElementById('invCat_weapons');if(!host)return;var box=document.createElement('div');box.id='marketV55';box.style.cssText='margin-top:12px;padding:10px;background:#171717;border:1px solid #51452c;border-radius:8px;color:#ddd;';box.innerHTML='<div style="display:flex;gap:7px;align-items:center"><strong style="color:#e5b85c;flex:1">🏪 Рынок и торговцы</strong><button class="btn-action" id="marketOpenV55">Открыть рынок</button></div><div id="marketSummaryV55" style="font-size:.75em;color:#999;margin-top:6px"></div>';host.appendChild(box);var b=document.getElementById('marketOpenV55');if(b)b.onclick=openMarket;renderSummary();}
+  function renderSummary(){var e=document.getElementById('marketSummaryV55');if(!e)return;var s=state(),c=priceParts(balanceCp());e.textContent='Регион: '+s.region+' · Баланс: '+c.gp+' зм '+c.sp+' см '+c.cp+' мм';}
+  function openMarket(){if(typeof document==='undefined')return;var old=document.getElementById('marketModalV55');if(old)old.remove();var m=document.createElement('div');m.id='marketModalV55';m.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.78);display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box;';var p=document.createElement('div');p.style.cssText='max-width:720px;width:100%;max-height:90vh;overflow:auto;background:#191919;border:1px solid #66552f;border-radius:10px;padding:12px;color:#ddd;';p.innerHTML='<div style="display:flex;align-items:center;gap:8px"><h3 style="margin:0;flex:1;color:#e5b85c">🏪 Рынок</h3><button class="btn-action" id="marketCloseV55">✕</button></div><div id="marketBodyV55"></div>';m.appendChild(p);document.body.appendChild(m);document.getElementById('marketCloseV55').onclick=function(){m.remove();};renderMarketBody();}
+  function renderMarketBody(){var b=document.getElementById('marketBodyV55');if(!b)return;var s=state(),html='<div style="margin:10px 0;display:flex;gap:6px;align-items:center"><label>Регион: <select id="marketRegionV55"><option value="forest">Лес</option><option value="highlands">Нагорья</option><option value="swamp">Болота</option><option value="coast">Побережье</option><option value="wasteland">Пустоши</option><option value="ruins">Руины</option></select></label><span style="margin-left:auto">Баланс: '+priceParts(balanceCp()).gp+' зм</span></div>';html+='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:7px">';Object.keys(TRADERS).forEach(function(id){var t=getTrader(id);html+='<button class="btn-action" data-trader="'+id+'" style="padding:9px;text-align:left">🏪 '+t.name+'<br><small>'+t.stock.reduce(function(a,x){return a+(x.qty||0);},0)+' ед. на складе</small></button>';});html+='</div><div id="marketTraderV55" style="margin-top:10px"></div>';b.innerHTML=html;var sel=document.getElementById('marketRegionV55');sel.value=s.region;sel.onchange=function(){setRegion(this.value);renderMarketBody();};b.querySelectorAll('[data-trader]').forEach(function(x){x.onclick=function(){renderTrader(x.getAttribute('data-trader'));};});}
+  function renderTrader(id){var b=document.getElementById('marketTraderV55');if(!b)return;var t=getTrader(id),html='<h4 style="color:#e5b85c;margin:10px 0 6px">'+t.name+'</h4><div style="font-size:.75em;color:#999;margin-bottom:6px">Покупка — склад торговца · Продажа — ваши предметы</div>';t.stock.forEach(function(it){var q=quote(id,it,'buy');html+='<div style="display:flex;gap:6px;align-items:center;border-top:1px solid #333;padding:6px 0"><span style="flex:1">'+it.name+' × '+it.qty+'<br><small>'+q.display.gp+' зм '+q.display.sp+' см '+q.display.cp+' мм</small></span><button class="btn-action" data-buy="'+it.id+'" '+(it.qty?'':'disabled')+'>Купить</button></div>';});html+='<h5 style="margin:12px 0 5px">Продать из инвентаря</h5>';var inv=global.currentCharacter&&global.currentCharacter.inventory||{};['weapons','armor','consumables','materials','junk'].forEach(function(cat){(inv[cat]||[]).forEach(function(it,i){var q=quote(id,it,'sell');if(!q.ok)return;html+='<div style="display:flex;gap:6px;align-items:center;border-top:1px solid #333;padding:5px 0"><span style="flex:1">'+it.name+' × '+(it.count||1)+'</span><small>'+q.display.gp+' зм</small><button class="btn-action" data-sell-cat="'+cat+'" data-sell-index="'+i+'">Продать 1</button></div>';});});html+='<button class="btn-action" id="marketRestockV55" style="margin-top:8px">🔄 Восстановить склад</button>';b.innerHTML=html;b.querySelectorAll('[data-buy]').forEach(function(x){x.onclick=function(){var r=buy(id,x.getAttribute('data-buy'),1);if(!r.ok&&global.showCustomAlert)global.showCustomAlert('Рынок',r.error,'⚠️');renderTrader(id);renderSummary();};});b.querySelectorAll('[data-sell-cat]').forEach(function(x){x.onclick=function(){var r=sell(id,x.getAttribute('data-sell-cat'),Number(x.getAttribute('data-sell-index')),1);if(!r.ok&&global.showCustomAlert)global.showCustomAlert('Рынок',r.error,'⚠️');renderTrader(id);renderSummary();};});var rb=document.getElementById('marketRestockV55');if(rb)rb.onclick=function(){var r=restock(id,true);if(!r.ok&&global.showCustomAlert)global.showCustomAlert('Рынок',r.error,'⚠️');renderTrader(id);};}
+  var api={TRADERS:TRADERS,REGION_MOD:REGION_MOD,getTrader:getTrader,quote:quote,buy:buy,sell:sell,restock:restock,setRegion:setRegion,marketReport:marketReport,balanceCp:balanceCp};
+  global.DND_MARKET_V55=api;global.DndMarketV55=api;
+  if(typeof document!=='undefined'){document.addEventListener('DOMContentLoaded',function(){setTimeout(install,1200);});global.addEventListener('dnd:character-loaded',function(){setTimeout(install,100);});}
+})(window);

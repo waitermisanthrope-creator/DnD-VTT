@@ -1,0 +1,887 @@
+<!-- v5: index.html — подключает monster_engine.js для Monster/Statblock и Encounter 2.0; переменные/состояние: DNDMonsters, currentChar.encounters, currentChar.initiativeTracker. -->
+<!-- ДОРАБОТКА: основной HTML-шаблон листа персонажа.
+Поля/контейнеры для трекеров и несколько заклинательных характеристик создаются существующими
+JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences.js не изменять. -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>D&D Менеджер Персонажей</title>
+  <link rel="stylesheet" href="./app/styles.css">
+  <link rel="stylesheet" href="./app/onboarding_faq_v71.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Inter:wght@400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <script src="./app/Logo.js"></script>
+  <!-- Справочники и данные -->
+  <script src="./app/weaponsmelee.js"></script>
+  <script src="./app/weaponsheavy.js"></script>
+  <script src="./app/weaponsranged.js"></script>
+  <script src="./app/weaponsspecial.js"></script>
+  <script src="./app/armors.js"></script>
+  <script src="./app/consumables.js"></script>
+  <script src="./app/materials.js"></script>
+  <script src="./app/junk.js"></script>
+  <script src="./app/races.js"></script>
+  <script src="./app/Backgrounds.js"></script>
+
+  <!-- Базы заклинаний и магии (инкапсулированы в spells.js) -->
+  <script src="./app/data/spells/Focuses.js"></script>
+  <script src="./app/data/spells/Spells1lvl.js"></script>
+  <script src="./app/data/spells/Spells2lvl.js"></script>
+  <script src="./app/data/spells/Spells3lvl.js"></script>
+  <script src="./app/data/spells/Spells4lvl.js"></script>
+  <script src="./app/data/spells/Spells5lvl.js"></script>
+  <script src="./app/data/spells/spells6lvl.js"></script>
+  <script src="./app/data/spells/Spells7lvl.js"></script>
+  <script src="./app/data/spells/Spells8lvl.js"></script>
+  <script src="./app/data/spells/Spells9lvl.js"></script>
+  <script src="./app/spells.js"></script>
+
+
+  <!-- Справочники черт из папки Feats -->
+  <script src="./app/data/feats/Feats_phb.js"></script>
+  <script src="./app/data/feats/Feats_tcoe.js"></script>
+  <script src="./app/data/feats/Feats_xgte.js"></script>
+  <script src="./app/data/feats/Feats_settings.js"></script>
+  <script src="./app/data/feats/Feats_ua_homebrew.js"></script>
+  <script src="./app/data/feats/Feat_widget.js"></script>
+
+  <!-- Файлы прогрессии классов (из папки classes) -->
+  <script src="./app/data/classes/Artificer.js"></script>
+  <script src="./app/expansion_class_progressions.js"></script>
+  <script src="./app/data/classes/Barbarian.js"></script>
+  <script src="./app/data/classes/Bard.js"></script>
+  <script src="./app/data/classes/Cleric.js"></script>
+  <script src="./app/data/classes/Druid.js"></script>
+  <script src="./app/data/classes/Fighter.js"></script>
+  <script src="./app/data/classes/Monk.js"></script>
+  <script src="./app/data/classes/Paladin.js"></script>
+  <script src="./app/data/classes/Ranger.js"></script>
+  <script src="./app/data/classes/Rogue.js"></script>
+  <script src="./app/data/classes/Sorcerer.js"></script>
+  <script src="./app/data/classes/Warlock.js"></script>
+  <script src="./app/data/classes/Wizard.js"></script>
+
+  <!-- 1. Сначала подключаем реестр классов (чтобы зарегистрировать все данные).
+       Файл лежит в корне проекта, а не в папке classes/ — раньше путь был неверным. -->
+  <script src="./app/data/classes/BloodHunter.js"></script>
+  <script src="./app/classesRegistry.js"></script>
+  <!-- 1.5. ДОБАВЛЕНО: реестр подклассов (архетипы/домены/школы/традиции/клятвы и т.д.)
+       Должен подключаться до progressionEngine.js и level_up.js, т.к. они читают
+       window.getAvailableSubclasses / window.getSubclassData из этого файла. -->
+  <script src="./app/data/subclasses/subclassesRegistry.js"></script>
+  <script src="./app/expanded_subclasses_v23.js"></script>
+  <!-- 2. Затем движок прогрессии -->
+  <script src="./app/data/classes/progressionEngine.js"></script>
+  
+  <!-- Подключение файла с общей информацией о героях -->
+  <script src="./app/Hero-info.js"></script>
+
+  <!-- Игровая логика и модули -->
+  <!-- Модуль логики создания персонажа -->
+  <script src="./app/character_creation.js"></script>
+
+  <!-- Модуль управления данными персонажа -->
+  <script src="./app/character.js"></script>
+  <!-- Модуль навыков персонажа -->
+  <script src="./app/skills.js"></script>
+  <!-- Модуль владений (профисиенси) -->
+  <script src="./app/Proficiencies.js"></script>
+  <!-- Модуль боевых способностей -->
+  <script src="./app/combat_abilities.js"></script>
+  <!-- Модуль заметок -->
+  <script src="./app/notes.js"></script>
+  <!-- Модуль бросков кубиков (дайсов) -->
+  <script src="./app/dice.js"></script>
+  <!-- Модуль библиотеки (лор/бестиарий) -->
+  <script src="./app/library.js"></script>
+  <!-- Модуль инвентаря -->
+  <script src="./app/Inventory.js"></script>
+  <script src="./app/inventory_containers_v54.js"></script>
+  <!-- Модуль модальных окон инвентаря -->
+  <script src="./app/inventory-modal.js"></script>
+  <!-- Модуль кошелька/монет инвентаря -->
+  <script src="./app/inventory-coins.js"></script>
+  <!-- Модуль отслеживания веса инвентаря -->
+  <script src="./app/Inventory-weight-tracker.js"></script>
+  <!-- Модуль проверки владений -->
+  <script src="./app/Proficienciescheck.js"></script>
+  <!-- Модуль логики оружия -->
+  <script src="./app/weapons.js"></script>
+  <!-- Модуль настроек приложения и обоев -->
+  <script src="./app/update_manager.js"></script>
+  <script src="./app/Settings.js"></script>
+
+  <script src="./app/Wallpapers.js"></script>
+  <!-- Модуль эмбиентов и звукового сопровождения -->
+  <script src="./app/Ambiences.js"></script>
+
+  <!-- Модуль опыта -->
+  <script src="./app/Experience.js"></script>
+
+  <!-- Основные скрипты приложения подключаем в самом конце -->
+  <script src="./app/dnd_tools.js"></script>
+  <script src="./app/rulesEngine.js"></script>
+<script src="./app/content_framework.js"></script>
+<script src="./app/feat_engine.js"></script>
+<script src="./app/content_manifest.js"></script>
+  <script src="./app/content_catalog.js"></script>
+<script src="./app/expansion_classes_pack.js"></script>
+<script src="./app/expanded_classes_v23.js"></script>
+<script src="./app/blood_hunter_engine.js"></script>
+<script src="./app/expanded_class_registry_bridge.js"></script>
+<script src="./app/kibbles_localization_content_v71.js"></script>
+<script src="./app/class_features_engine.js"></script>
+  <script src="./app/monster_engine.js"></script>
+  <script src="./app/monster_loot_engine_v37.js"></script>
+  <script src="./app/expanded_bestiary_v39.js"></script>
+  <script src="./app/monster_loot_crafting_bridge_v40.js"></script>
+<script src="./app/combat_engine.js"></script>
+<script src="./app/crafting_dlc_v50.js"></script>
+  <script src="./app/magic_engine.js"></script>
+<script src="./app/campaign_manager.js"></script>
+<script src="./app/network_engine.js"></script>
+<script src="./app/network_gameplay.js"></script>
+<script src="./app/gameplay_core_v57.js"></script>
+<script src="./app/vtt_gameplay_ux_v58.js"></script>
+<script src="./app/vtt_encounter_map_v59.js"></script>
+<script src="./app/secondary_entities_engine.js"></script>
+<script src="./app/summoning_engine.js"></script>
+  <script src="./app/alchemy_engine_v29.js"></script>
+  <script src="./app/alchemy_gameplay_v30.js"></script>
+<script src="./app/alchemy_gathering_professions_v52.js"></script>
+  <script src="./app/crafting_engine_v31.js"></script>
+  <script src="./app/custom_crafting_v32.js"></script>
+  <script src="./app/crafting_professions_v33.js"></script>
+  <script src="./app/crafting_professions_v38.js"></script>
+  <script src="./app/crafting_profession_progression_v47.js"></script>
+  <script src="./app/crafting_resources_v34.js"></script>
+  <script src="./app/resource_processing_v44.js"></script>
+  <script src="./app/bestiary_2_0_v56.js"></script>
+<script src="./app/bestiary_catalog_v56_1.js"></script>
+<script src="./app/bestiary_catalog_v56_2.js"></script>
+  <script src="./app/crafting_economy_v49.js"></script>
+  <script src="./app/crafting_disassembly_v51.js"></script>
+  <script src="./app/crafting_disassembly_repair_v51.js"></script>
+  <script src="./app/resource_gathering_v35.js"></script>
+  <script src="./app/world_resource_gathering_v53.js"></script>
+<script src="./app/companion_packs_v26.js"></script>
+<script src="./app/companion_gameplay_v27.js"></script>
+<script src="./app/battle_board.js"></script>
+<script src="./app/turn_planner.js"></script>
+<script src="./app/battle_action_ui.js"></script>
+<script src="./app/vtt_token_interaction_v60.js"></script>
+<script src="./app/vtt_mobile_battle_v61.js"></script>
+<script src="./app/vtt_mobile_combat_hud_v62.js"></script>
+<script src="./app/vtt_character_sheet_v63.js"></script>
+<script src="./app/vtt_character_actions_v64.js"></script>
+<script src="./app/vtt_dice_resolution_v65.js"></script>
+<script src="./app/vtt_combat_log_v66.js"></script>
+<script src="./app/vtt_mobile_session_v67.js"></script>
+<script src="./app/vtt_encounter_checkpoint_v68.js"></script>
+<script src="./app/vtt_combat_event_bus_v69.js"></script>
+<script src="./app/vtt_project_manifest_v70.js"></script>
+<script>
+(function(){
+  var q=new URLSearchParams(location.search||'');
+  var debug=q.get('debug')==='1'||localStorage.getItem('dnd_debug_enabled')==='true';
+  window.dndDebugEnabled=debug;
+  if(debug)document.documentElement.classList.add('debug-enabled');
+  if(!debug)return;
+  ['Settings_debug.js','vtt_debug_panel_v70.js','vtt_debug_sandbox_v701.js','vtt_debug_character_lab_v702.js','vtt_debug_lab_v703.js','vtt_debug_scenarios_v704.js','vtt_debug_scenario_editor_v705.js','vtt_debug_dice_lab_v706.js','vtt_debug_rules_matrix_v707.js'].forEach(function(src){var s=document.createElement('script');s.src='./'+src;s.async=false;document.head.appendChild(s);});
+})();
+</script>
+<script src="./app/market_economy_v55.js"></script>
+<script src="./app/market_expansion_v55_1.js"></script>
+<script src="./app/market_trade_v55_2.js"></script>
+<script src="./app/market_social_v55_3.js"></script>
+  <script src="./app/app.js"></script>
+  <script src="./app/onboarding_faq_v71.js"></script>
+  <script>
+  (function(){
+    var q=new URLSearchParams(location.search||'');
+    if(q.get('debug')!=='1' && localStorage.getItem('dnd_debug_enabled')!=='true')return;
+    var s=document.createElement('script');s.src='./app/debug.js';s.async=false;document.head.appendChild(s);
+  })();
+  </script>
+</head>
+<body>
+
+  <!-- Экран выбора персонажа (стартовый экран) -->
+  <div id="characterSelectScreen" style="position: relative; min-height: 100vh; box-sizing: border-box; padding-bottom: 60px;">
+    <h2 class="app-title">📜 Персонажи D&D</h2>
+    <div id="characterList"></div>
+
+    <div style="margin-top: 20px; display: flex; gap: 10px;">
+      <button class="btn-action" style="background: #4CAF50; flex: 1; padding: 12px;" onclick="createNewCharacter()">+ Новый персонаж</button>
+      <button class="btn-action" style="background: #2196F3; flex: 1; padding: 12px;" onclick="document.getElementById('importSelectFile').click()">Загрузить из файла</button>
+      <input type="file" id="importSelectFile" style="display: none;" onchange="importCharacterFromFile(event)" accept=".json">
+    </div>
+
+    <button class="btn-action" onclick="openDndNetworkModal()" style="position: fixed; right: 15px; bottom: 15px; background: #7b1fa2; color: #fff; border: 1px solid #9c4dcc; padding: 10px 14px; border-radius: 8px; z-index: 100; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.4);">🎲 Игра: <span id="dndNetworkStatus">Одиночная игра</span></button>
+
+    <button class="btn-action" onclick="openSettingsModal()" style="position: fixed; left: 15px; bottom: 15px; background: #333; color: #fff; border: 1px solid #555; padding: 10px 14px; border-radius: 8px; z-index: 100; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.4);">
+      ⚙️ Настройки
+    </button>
+  </div>
+
+  <!-- Экран создания нового персонажа -->
+  <div id="characterCreationScreen" style="display: none; padding: 20px; max-width: 600px; margin: 0 auto; box-sizing: border-box;">
+    <div class="card" style="background: #1e1e1e; color: #fff; padding: 20px; border-radius: 8px;">
+      <h2 style="margin-top: 0; border-bottom: 1px solid #444; padding-bottom: 10px;">✨ Создание нового персонажа</h2>
+      
+      <label style="margin-top: 10px; display: block;">Имя персонажа</label>
+      <input type="text" id="cc_name" placeholder="Введите имя героя..." style="width:100%; padding:10px; margin-top:5px; box-sizing:border-box; background:#2a2a2a; border:1px solid #444; color:#fff; border-radius:4px;">
+
+      <label style="margin-top: 10px; display: block;">Возраст</label>
+      <input type="number" id="cc_age" placeholder="Возраст героя..." style="width:100%; padding:10px; margin-top:5px; box-sizing:border-box; background:#2a2a2a; border:1px solid #444; color:#fff; border-radius:4px;">
+
+      <div style="display: flex; gap: 10px; margin-top: 12px;">
+        <div style="flex: 1;">
+          <label style="display: block;">Класс</label>
+          <select id="cc_class" style="width:100%; padding:10px; margin-top:5px; background:#2a2a2a; border:1px solid #444; color:#fff; border-radius:4px; box-sizing:border-box;"></select>
+          <div id="cc_classDescBox" style="background: #252525; border: 1px solid #444; padding: 8px; border-radius: 4px; font-size: 13px; color: #ddd; margin-top: 5px;"></div>
+        </div>
+        <div style="flex: 1;">
+          <label style="display: block;">Предыстория</label>
+          <select id="cc_background" style="width:100%; padding:10px; margin-top:5px; background:#2a2a2a; border:1px solid #444; color:#fff; border-radius:4px; box-sizing:border-box;"></select>
+          <div id="cc_bgDescBox" style="background: #252525; border: 1px solid #444; padding: 8px; border-radius: 4px; font-size: 13px; color: #ddd; margin-top: 5px;"></div>
+        </div>
+      </div>
+
+      <div style="margin-top: 12px;">
+        <label style="display: block;">Раса персонажа</label>
+        <div style="display: flex; gap: 8px; align-items: center; margin-top: 5px;">
+          <select id="cc_race" style="flex: 1; padding: 10px; background:#2a2a2a; border:1px solid #444; color:#fff; border-radius:4px; box-sizing:border-box;"></select>
+        </div>
+        <div id="cc_raceDescBox" style="background: #252525; border: 1px solid #444; padding: 8px; border-radius: 4px; font-size: 13px; color: #ddd; margin-top: 5px;"></div>
+      </div>
+
+      <div id="cc_professionBox" style="margin-top:12px;"></div>
+
+      <hr style="border-color:#444; margin: 20px 0;">
+
+      <h3 style="margin: 0 0 5px 0;">Распределение характеристик (Point Buy)</h3>
+      <p style="font-size: 13px; color: #aaa; margin-top: 0;">Доступно очков: <span id="cc_pointsLeft" style="color:#4f4; font-weight:bold;">27</span> / 27 (от 8 до 15)</p>
+      
+      <div id="cc_statsContainer" style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;"></div>
+
+      <div style="margin-top: 25px; display: flex; gap: 10px;">
+        <button class="btn-action" style="background: #4CAF50; flex: 1; padding: 12px;" onclick="saveNewCreatedCharacter()">Создать героя</button>
+        <button class="btn-action" style="background: #e53935; flex: 1; padding: 12px;" onclick="showCharacterSelect()">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Главный экран листа персонажа (Character Sheet) -->
+  <div id="characterSheetScreen" style="display: none;">
+
+    <!-- Навигационная панель вкладки листа персонажа -->
+    <div class="tabs-nav" style="display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; position: relative;">
+      <div style="display: flex; gap: 4px; overflow-x: auto; align-items: center;">
+        <button class="home-btn" onclick="showCharacterSelect()">🏠 Меню</button>
+        <button class="tab-btn active" onclick="goToTab(0)">Герой</button>
+        <button class="tab-btn" onclick="goToTab(1)">Навыки</button>
+        <button class="tab-btn" id="combatAbilitiesTabNavBtn" onclick="goToTab(2)">Способн.</button>
+        <button class="tab-btn" onclick="goToTab(3)">Инв-рь</button>
+        <button class="tab-btn" onclick="goToTab(4)">Заметки</button>
+        <button class="tab-btn" onclick="goToTab(5)">Дайсы</button>
+        <button class="tab-btn" onclick="goToTab(6)">Лор/Бестиарий</button>
+        <button class="tab-btn" onclick="dndCampaignOpen()">🗺️ Кампания</button>
+        <button class="tab-btn" onclick="openDndNetworkModal()">🌐 Игра</button>
+        <button class="tab-btn" onclick="DNDContentCatalog.open()">📚 Варианты</button>
+      </div>
+
+      <button onclick="toggleInterfaceVisibility()" title="Скрыть/показать интерфейс" style="
+        background: rgba(30, 30, 30, 0.7); 
+        border: 1px solid #555; 
+        color: #fff; 
+        font-size: 1.1em; 
+        padding: 6px 10px; 
+        border-radius: 8px; 
+        cursor: pointer; 
+        backdrop-filter: blur(4px);
+        z-index: 30000;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        flex-shrink: 0;
+        margin-left: 6px;
+      ">
+        👁️
+      </button>
+    </div>
+
+    <!-- Слайдер (swiper) для переключения страниц листа персонажа -->
+    <div class="swiper-view">
+      <div class="swiper-container" id="swiper">
+
+        <!-- Индекс 0: Герой -->
+        <div class="tab-page">
+          <div class="card">
+            <h3>Герой</h3>
+            <label>Имя персонажа</label>
+            <input type="text" id="charName" placeholder="Имя" oninput="autoSaveCurrentCharacter()">
+            
+            <label style="margin-top: 8px;">Класс и Уровень</label>
+            <textarea id="charClass" placeholder="Воин 1" readonly oninput="autoSaveCurrentCharacter()" style="width: 100%; height: 60px; background: #2a2a2a; border: 1px solid #444; color: #fff; border-radius: 4px; padding: 8px; box-sizing: border-box; resize: none;"></textarea>
+
+            <button class="btn-action" style="background: #d4af37; color: #000; width: 100%; margin-top: 8px; padding: 8px; font-weight: bold;" onclick="openExperienceModal()">⭐ Опыт и уровень</button>
+            
+            <label style="margin-top: 8px;">Предыстория</label>
+            <input type="text" id="charBackground" placeholder="Солдат" oninput="autoSaveCurrentCharacter()">
+
+            <label style="margin-top: 8px;">Раса персонажа</label>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <select id="charRaceSelect" style="flex: 1; padding: 10px;" onchange="onRaceSelected()">
+                <option value="">-- Выберите расу --</option>
+              </select>
+              <button type="button" class="btn-action" style="background: #2196F3; padding: 10px;" onclick="openCustomRaceModal()">+ Своя</button>
+            </div>
+            
+            <div id="raceInfoBox" style="margin-top: 8px; font-size: 0.85em; color: #aaa; background: #2a2a2a; padding: 8px; border-radius: 4px; display: none;"></div>
+          </div>
+
+          <div class="card">
+            <h3>Боевые параметры</h3>
+            <div class="combat-grid">
+              <div class="combat-box"><label>КД (AC)</label><input type="number" id="ac" value="10" oninput="autoSaveCurrentCharacter()"></div>
+              <div class="combat-box"><label>ИНИЦИАТИВА</label><input type="text" id="initMod" value="+0" readonly></div>
+              <div class="combat-box"><label>СКОРОСТЬ</label><input type="text" id="speed" placeholder="30 футов" oninput="autoSaveCurrentCharacter()"></div>
+            </div>
+
+            <button class="btn-action" style="background: #e53935; width: 100%; margin-top: 10px; padding: 10px;" onclick="rollInitiative()">Бросок Инициативы 🎲</button>
+
+            <label style="margin-top: 12px;">Состояния (Status Effects)</label>
+            <div class="conditions-grid" id="conditionsContainer">
+              <button type="button" class="condition-btn" data-condition="encumbered" onclick="toggleCondition('encumbered')">⚖️ Перевес</button>
+            </div>
+
+            <label style="margin-top: 12px;">Здоровье (Макс / Текущее / Временное)</label>
+            <div style="display: flex; gap: 8px;">
+              <input type="number" id="hpMax" placeholder="Макс HP" oninput="autoSaveCurrentCharacter()">
+              <input type="number" id="hpCurrent" placeholder="Текущее HP" oninput="autoSaveCurrentCharacter()">
+              <input type="number" id="hpTemp" placeholder="Врем. HP" oninput="autoSaveCurrentCharacter()">
+            </div>
+
+            
+
+            <label style="margin-top: 12px;">Спасброски от смерти</label>
+            <div class="death-saves">
+              <span>Успехи:</span>
+              <input type="checkbox" id="deathSuccess1" onchange="autoSaveCurrentCharacter()">
+              <input type="checkbox" id="deathSuccess2" onchange="autoSaveCurrentCharacter()">
+              <input type="checkbox" id="deathSuccess3" onchange="autoSaveCurrentCharacter()">
+            </div>
+            <div class="death-saves">
+              <span>Провалы:</span>
+              <input type="checkbox" id="deathFail1" onchange="autoSaveCurrentCharacter()">
+              <input type="checkbox" id="deathFail2" onchange="autoSaveCurrentCharacter()">
+              <input type="checkbox" id="deathFail3" onchange="autoSaveCurrentCharacter()">
+            </div>
+
+            <div style="margin-top: 15px; display: flex; gap: 8px;">
+              <button class="btn-action" style="background: #ff9800; width: 50%;" onclick="shortRest()">Короткий отдых</button>
+              <button class="btn-action" style="background: #4caf50; width: 50%;" onclick="longRest()">Длинный отдых</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Характеристики</h3>
+            <div class="stats-grid">
+              <div class="stat-box"><label>СИЛ</label><input type="number" id="str" value="10" oninput="calculateMods()"><div class="mod-tag" id="strMod">+0</div></div>
+              <div class="stat-box"><label>ЛОВ</label><input type="number" id="dex" value="10" oninput="calculateMods()"><div class="mod-tag" id="dexMod">+0</div></div>
+              <div class="stat-box"><label>ТЕЛ</label><input type="number" id="con" value="10" oninput="calculateMods()"><div class="mod-tag" id="conMod">+0</div></div>
+              <div class="stat-box"><label>ИНТ</label><input type="number" id="int" value="10" oninput="calculateMods()"><div class="mod-tag" id="intMod">+0</div></div>
+              <div class="stat-box"><label>МУД</label><input type="number" id="wis" value="10" oninput="calculateMods()"><div class="mod-tag" id="wisMod">+0</div></div>
+              <div class="stat-box"><label>ХАР</label><input type="number" id="cha" value="10" oninput="calculateMods()"><div class="mod-tag" id="chaMod">+0</div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Спасброски Характеристики</h3>
+            <div id="saveThrowsList"></div>
+          </div>
+
+          <div class="card">
+            <h3>Управление данными</h3>
+            <div class="btn-group">
+              <button onclick="exportCurrentCharacter()" style="background: #2196F3;">Экспорт в JSON</button>
+              <button onclick="showCharacterSelect()" style="background: #ff9800;">К выбору героев</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Индекс 1: Навыки -->
+        <div class="tab-page">
+          <div class="card">
+            <h3>Бонус мастерства</h3>
+            <input type="number" id="profBonus" value="2" readonly style="font-size: 1.2em; text-align: center; font-weight: bold; background: #2a2a2a; color: #fff; border: 1px solid #444; cursor: not-allowed;" title="Бонус мастерства рассчитывается автоматически на основе общего уровня персонажа">
+          </div>
+
+          <div class="card">
+            <h3>Пассивные чувства</h3>
+            <p>Пассивная Внимательность: <strong id="passivePerception" style="color: #2196F3;">10</strong></p>
+            <p>Пассивный Анализ: <strong id="passiveInvestigation" style="color: #2196F3;">10</strong></p>
+            <p>Пассивная Проницательность: <strong id="passiveInsight" style="color: #2196F3;">10</strong></p>
+          </div>
+
+          <div class="card">
+            <h3>Навыки (18)</h3>
+            <div id="skillsList"></div>
+          </div>
+        </div>
+
+        <!-- Индекс 2: Боевые способности и заклинания -->
+        <div class="tab-page">
+          <!-- Объединенный блок: Параметры способностей + Боевые способности и приемы -->
+          <div class="card">
+            <div onclick="const content = document.getElementById('combatParamsContent'); const arrow = document.getElementById('combatParamsArrow'); const isHidden = content.style.display === 'none'; content.style.display = isHidden ? 'block' : 'none'; arrow.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(-90deg)';" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none;">
+              <h3 style="margin: 0; border: none; padding: 0;">Параметры способностей</h3>
+              <span id="combatParamsArrow" style="font-size: 1.1em; transition: transform 0.2s; color: #aaa;">▼</span>
+            </div>
+            
+            <div id="combatParamsContent" style="margin-top: 12px; border-top: 1px solid #333; padding-top: 12px;">
+              <div style="display: flex; gap: 8px; text-align: center; margin-bottom: 15px;">
+                <div style="flex:1;"><label>Базовая характеристика</label>
+                  <select id="combatAbilityStat" onchange="calculateCombatAbilityStats()" style="margin-top:4px;">
+                    <option value="str">СИЛ</option>
+                    <option value="dex">ЛОВ</option>
+                    <option value="con">ТЕЛ</option>
+                    <option value="int">ИНТ</option>
+                    <option value="wis">МУД</option>
+                    <option value="cha">ХАР</option>
+                  </select>
+                </div>
+                <div style="flex:1;"><label>Сл Спасброска</label><div id="combatAbilityDCVal" style="font-size:1.1em; font-weight:bold; color:#ff9800; margin-top:8px;">10</div></div>
+                <div style="flex:1;"><label>Бонус Атаки</label><div id="combatAbilityAtkVal" style="font-size:1.1em; font-weight:bold; color:#4caf50; margin-top:8px;">+2</div></div>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #333; padding-top: 12px; margin-top: 12px;">
+              <h3 style="margin: 0; border: none; padding: 0;">Боевые способности и приемы</h3>
+              <button class="btn-action" style="background: #4CAF50;" onclick="addCombatAbility()">+ Добавить</button>
+            </div>
+            <div id="classFeaturesList" style="margin-top: 10px;"></div>
+            <div id="combatAbilitiesList" style="margin-top: 10px;"></div>
+          </div>
+
+          <!-- Блок магии (автоматически управляется через spells.js) -->
+          <div class="card" id="spellcastingCard" style="display: none;">
+            <div onclick="const content = document.getElementById('spellParamsContent'); const arrow = document.getElementById('spellParamsArrow'); const isHidden = content.style.display === 'none'; content.style.display = isHidden ? 'block' : 'none'; arrow.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(-90deg)';" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none;">
+              <h3 style="color:#ff9800; margin:0; border: none; padding: 0;">Параметры заклинаний</h3>
+              <span id="spellParamsArrow" style="font-size: 1.1em; transition: transform 0.2s; color: #ff9800;">▼</span>
+            </div>
+
+            <div id="spellParamsContent" style="margin-top: 12px; border-top: 1px solid #333; padding-top: 12px;">
+              <div style="display:flex; gap:15px; align-items:center; flex-wrap:wrap; margin-bottom: 5px;">
+                <div>
+                  <span style="font-size:0.8em; color:#aaa; display:block;">Базовая характ.</span>
+                  <select id="spellStat" onchange="calculateSpellStats()" style="background:#333; color:#fff; padding:6px; border:1px solid #444; border-radius:4px;">
+                    <option value="int">ИНТ</option>
+                    <option value="wis">МДР</option>
+                    <option value="cha">ХАР</option>
+                  </select>
+                </div>
+                <div>
+                  <span style="font-size:0.8em; color:#aaa; display:block;">СЛ Спасброска</span>
+                  <div id="spellDCVal" style="font-size:1.2em; font-weight:bold; color:#fff; text-align:center; padding:4px;">10</div>
+                </div>
+                <div>
+                  <span style="font-size:0.8em; color:#aaa; display:block;">Бонус Атаки</span>
+                  <div id="spellAtkVal" style="font-size:1.2em; font-weight:bold; color:#ff9800; text-align:center; padding:4px;">+2</div>
+                </div>
+              </div>
+            </div>
+
+            <h3 style="color:#ff9800; margin-top:15px; border-top: 1px solid #333; padding-top: 12px;">Ячейки заклинаний</h3>
+            <div id="spellSlotsContainer" style="margin-bottom: 15px;"></div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-top: 1px solid #333; padding-top: 12px;">
+              <h3 style="color:#ff9800; margin:0;">Заклинания и фокусы</h3>
+              <button onclick="addSpell()" style="background:#4CAF50; color:#fff; border:none; padding:6px 12px; border-radius:4px; font-weight:bold; cursor:pointer;">+ Добавить</button>
+            </div>
+            <div id="spellsList"></div>
+          </div>
+        </div>
+
+        <!-- Индекс 3: Инвентарь -->
+        <div class="tab-page">
+          <div class="card" style="display: flex; gap: 10px; align-items: center;">
+            <div style="flex: 1; text-align: center; background: #2a2a2a; padding: 8px; border-radius: 6px;">
+              <label style="font-size: 0.8em; display: block; color: #aaa;">Текущий КД</label>
+              <div id="invHeaderAC" style="font-size: 1.4em; font-weight: bold; color: #4caf50; margin-top: 2px;">10</div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 4px; overflow-x: auto; margin-bottom: 12px; padding-bottom: 4px;">
+            <button class="btn-action inv-tab-btn active" data-category="weapons" onclick="switchInventoryTab('weapons')" style="flex: 1; padding: 8px 4px; font-size: 0.85em; background: #2196F3;">Оружие</button>
+            <button class="btn-action inv-tab-btn" data-category="armor" onclick="switchInventoryTab('armor')" style="flex: 1; padding: 8px 4px; font-size: 0.85em; background: #333;">Броня</button>
+            <button class="btn-action inv-tab-btn" data-category="consumables" onclick="switchInventoryTab('consumables')" style="flex: 1; padding: 8px 4px; font-size: 0.85em; background: #333;">Расходники</button>
+            <button class="btn-action inv-tab-btn" data-category="materials" onclick="switchInventoryTab('materials')" style="flex: 1; padding: 8px 4px; font-size: 0.85em; background: #333;">Материалы</button>
+            <button class="btn-action inv-tab-btn" data-category="junk" onclick="switchInventoryTab('junk')" style="flex: 1; padding: 8px 4px; font-size: 0.85em; background: #333;">Хлам</button>
+          </div>
+
+          <div class="inventory-actions" style="margin-bottom: 12px;">
+            <button class="btn-action" style="background: #4CAF50; width: 100%; padding: 10px;" onclick="openAddItemModal(currentInventoryCategory)">✨ Выбрать из справочника / Создать</button>
+          </div>
+
+          <div id="invCat_weapons" class="inv-category-content"><div id="invWeaponsList"></div></div>
+          <div id="invCat_armor" class="inv-category-content" style="display:none;"><div id="invArmorList"></div></div>
+          <div id="invCat_consumables" class="inv-category-content" style="display:none;"><div id="invConsumablesList"></div></div>
+          <div id="invCat_materials" class="inv-category-content" style="display:none;"><div id="invMaterialsList"></div>
+            <div id="craftingPanel"></div><div id="craftingProfessionsPanel"></div></div>
+          <div id="invCat_junk" class="inv-category-content" style="display:none;"><div id="invJunkList"></div></div>
+
+          <div id="inventory-list" class="inventory-list-container"></div>
+        </div>
+
+        <!-- Индекс 4: Заметки -->
+        <div class="tab-page">
+          <div class="card">
+            <h3>Папки Заметок</h3>
+            <div class="folder-nav" id="folderList"></div>
+            <div style="display: flex; gap: 8px; margin-top: 10px;">
+              <input type="text" id="newFolderName" placeholder="Имя новой папки..." style="margin: 0;">
+              <button class="btn-action" onclick="addFolder()">+ Папка</button>
+            </div>
+          </div>
+
+          <div class="card" id="notesContainer">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 8px; margin-bottom: 12px;">
+              <h3 id="currentFolderTitle" style="margin: 0; border: none; padding: 0;">Заметки</h3>
+              <button class="btn-action" style="background: #4CAF50;" onclick="addNote()">+ Заметка</button>
+            </div>
+            <div id="notesList"></div>
+          </div>
+        </div>
+
+        <!-- Индекс 5: Дайсы -->
+        <div class="tab-page" id="tabDice">
+          <!-- Весь интерфейс кубиков динамически создается в dice.js -->
+        </div>
+
+        <!-- Индекс 6: Лор / Бестиарий -->
+        <div class="tab-page" id="tab-page-library">
+          <!-- Контент динамически создается в library.js -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно выбора предметов из справочника -->
+  <div id="addItemModal" onclick="if(event.target === this) closeAddItemModal()" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10002; justify-content: center; align-items: center; padding: 10px; box-sizing: border-box;">
+    <div style="background: #1e1e1e; padding: 20px; border-radius: 8px; width: 100%; max-width: 500px; border: 1px solid #444; max-height: 85vh; overflow-y: auto; color: #fff;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444; padding-bottom: 8px; margin-bottom: 12px;">
+        <h3 style="margin: 0; color: #ff9800;">📚 Выбор предмета</h3>
+        <button class="btn-action" onclick="closeAddItemModal()" style="background: #e53935; padding: 4px 8px; cursor: pointer;">✕</button>
+      </div>
+      <div id="addItemPresetsContainer" style="display: flex; flex-direction: column; gap: 6px;"></div>
+    </div>
+  </div>
+
+  <!-- Модальное окно создания кастомного предмета -->
+  <div id="customItemModal" onclick="if(event.target === this) closeCustomItemModal()" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10001; justify-content: center; align-items: center; padding: 10px; box-sizing: border-box;">
+    <div style="background: #1e1e1e; padding: 20px; border-radius: 8px; width: 100%; max-width: 550px; border: 1px solid #444; max-height: 92vh; overflow-y: auto; color: #fff;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444; padding-bottom: 8px; margin-bottom: 12px;">
+        <h3 id="customItemModalTitle" style="margin: 0; color: #ff9800;">Создание предмета</h3>
+        <button class="btn-action" onclick="closeCustomItemModal()" style="background: #e53935; padding: 4px 8px; cursor: pointer;">✕</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div>
+          <label style="font-size: 0.85em; color: #aaa;">Название предмета</label>
+          <input type="text" id="ci_name" placeholder="Например: Утренняя Звезда / Кожанка" style="width: 100%; padding: 8px; background: #2a2a2a; color: #fff; border: 1px solid #444; border-radius: 4px; box-sizing: border-box; margin-top: 4px;">
+        </div>
+
+        <div id="ci_weaponFields" style="display: none; flex-direction: column; gap: 10px; background: #252525; padding: 10px; border-radius: 6px; border: 1px solid #333;">
+          <label style="font-size: 0.85em; color: #ff9800; font-weight: bold;">Тип оружия (можно выбрать несколько):</label>
+          <div id="ci_weaponTypesButtons" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
+
+          <div style="display: flex; gap: 8px; margin-top: 4px;">
+            <div style="flex: 1;">
+              <label style="font-size: 0.85em; color: #aaa;">Кость урона</label>
+              <div id="ci_diceButtons" style="display: flex; gap: 4px; margin-top: 4px;"></div>
+            </div>
+            <div style="width: 90px;">
+              <label style="font-size: 0.85em; color: #aaa;">Кол-во костей</label>
+              <input type="number" id="ci_diceCount" value="1" min="1" style="width: 100%; padding: 8px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; text-align: center; margin-top: 4px;">
+            </div>
+          </div>
+        </div>
+
+        <div id="ci_armorFields" style="display: none; flex-direction: column; gap: 10px; background: #252525; padding: 10px; border-radius: 6px; border: 1px solid #333;">
+          <div style="display: flex; gap: 8px;">
+            <div style="flex: 1;">
+              <label style="font-size: 0.85em; color: #aaa;">Тип доспеха / оберега</label>
+              <select id="ci_armorCategory" style="width: 100%; padding: 8px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; margin-top: 4px;">
+                <option value="light">Легкий доспех</option>
+                <option value="medium">Средний доспех</option>
+                <option value="heavy">Тяжелый доспех</option>
+                <option value="shield">Щит</option>
+                <option value="jewelry">Ювелирка / Одеяние / Кольцо</option>
+              </select>
+            </div>
+            <div style="width: 90px;">
+              <label style="font-size: 0.85em; color: #aaa;">Базовый КД</label>
+              <input type="number" id="ci_acBase" value="10" style="width: 100%; padding: 8px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; text-align: center; margin-top: 4px;">
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size: 0.85em; color: #ff9800; font-weight: bold;">Онлайн-калькулятор формулы КД:</label>
+            <div style="display: flex; gap: 6px; margin-top: 4px;">
+              <select id="ci_acCalcBase" style="flex: 1; padding: 6px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 0.85em;" onchange="updateCustomAcFormulaPreview()">
+                <option value="fixed">Фиксированный КД</option>
+                <option value="10 + ЛОВ">10 + ЛОВ (Без доспеха)</option>
+                <option value="база + ЛОВ">База + ЛОВ (Легкий)</option>
+                <option value="база + ЛОВ (макс 2)">База + ЛОВ (макс 2) (Средний)</option>
+                <option value="чистая база">Чистая база (Тяжелый)</option>
+              </select>
+            </div>
+            <div id="ci_acFormulaPreview" style="font-size: 0.75em; color: #aaa; margin-top: 4px; font-style: italic;">Формула: фиксированное значение КД</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <div style="flex: 1;">
+            <label style="font-size: 0.85em; color: #aaa;">Вес (в кг) → автоперевод в фунты</label>
+            <input type="number" id="ci_weightKg" placeholder="0" step="0.1" oninput="calculateCustomItemLb()" style="width: 100%; padding: 8px; background: #2a2a2a; color: #fff; border: 1px solid #444; border-radius: 4px; box-sizing: border-box; margin-top: 4px;">
+          </div>
+          <div style="flex: 1; display: flex; align-items: flex-end;">
+            <div id="ci_weightLbResult" style="padding: 8px; background: #222; border: 1px solid #444; border-radius: 4px; width: 100%; text-align: center; color: #ff9800; font-size: 0.9em; font-weight: bold; box-sizing: border-box;">0 фунтов</div>
+          </div>
+        </div>
+
+        <div>
+          <label style="font-size: 0.85em; color: #aaa;">Стоимость (например: 50 зм)</label>
+          <input type="text" id="ci_cost" placeholder="10 зм" style="width: 100%; padding: 8px; background: #2a2a2a; color: #fff; border: 1px solid #444; border-radius: 4px; box-sizing: border-box; margin-top: 4px;">
+        </div>
+
+        <div style="background: #252525; padding: 10px; border-radius: 6px; border: 1px solid #333;">
+          <label style="font-size: 0.85em; color: #ff9800; font-weight: bold; display: block; margin-bottom: 6px;">Бонусы при экипировке:</label>
+          
+          <div style="font-size: 0.8em; color: #aaa; margin-bottom: 4px;">Основные характеристики:</div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px;">
+            <div><span style="font-size:0.75em; color:#ccc;">Сила</span><input type="number" data-bonus="str" value="0" class="ci-bonus-input" style="width:100%; padding:4px; background:#1e1e1e; color:#fff; border:1px solid #444; text-align:center; border-radius:3px;"></div>
+            <div><span style="font-size:0.75em; color:#ccc;">Ловкость</span><input type="number" data-bonus="dex" value="0" class="ci-bonus-input" style="width:100%; padding:4px; background:#1e1e1e; color:#fff; border:1px solid #444; text-align:center; border-radius:3px;"></div>
+            <div><span style="font-size:0.75em; color:#ccc;">Телосложение</span><input type="number" data-bonus="con" value="0" class="ci-bonus-input" style="width:100%; padding:4px; background:#1e1e1e; color:#fff; border:1px solid #444; text-align:center; border-radius:3px;"></div>
+            <div><span style="font-size:0.75em; color:#ccc;">Интеллект</span><input type="number" data-bonus="int" value="0" class="ci-bonus-input" style="width:100%; padding:4px; background:#1e1e1e; color:#fff; border:1px solid #444; text-align:center; border-radius:3px;"></div>
+            <div><span style="font-size:0.75em; color:#ccc;">Мудрость</span><input type="number" data-bonus="wis" value="0" class="ci-bonus-input" style="width:100%; padding:4px; background:#1e1e1e; color:#fff; border:1px solid #444; text-align:center; border-radius:3px;"></div>
+            <div><span style="font-size:0.75em; color:#ccc;">Харизма</span><input type="number" data-bonus="cha" value="0" class="ci-bonus-input" style="width:100%; padding:4px; background:#1e1e1e; color:#fff; border:1px solid #444; text-align:center; border-radius:3px;"></div>
+          </div>
+
+          <div style="font-size: 0.8em; color: #aaa; margin-bottom: 4px;">18 навыков D&D:</div>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; max-height: 140px; overflow-y: auto; background: #1a1a1a; padding: 6px; border-radius: 4px;" id="ci_skillsBonusesContainer"></div>
+        </div>
+
+        <div>
+          <label style="font-size: 0.85em; color: #aaa;">Краткое описание</label>
+          <textarea id="ci_description" placeholder="Особенности, свойства, зачарование..." style="width: 100%; height: 60px; background: #2a2a2a; color: #fff; border: 1px solid #444; border-radius: 4px; box-sizing: border-box; margin-top: 4px;"></textarea>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+          <button class="btn-action" style="background: #4CAF50; flex: 1; padding: 12px; cursor: pointer; font-weight: bold;" onclick="saveCustomItemModalData()">Создать предмет</button>
+          <button class="btn-action" style="background: #e53935; flex: 1; padding: 12px; cursor: pointer;" onclick="closeCustomItemModal()">Отмена</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно создания кастомной расы -->
+  <div id="customRaceModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; overflow-y: auto; padding: 20px; box-sizing: border-box;">
+    <div class="card" style="max-width: 500px; margin: 30px auto; background: #1e1e1e; color: #fff; padding: 20px; border-radius: 8px;">
+      <h3 style="margin-top: 0;">🛠 Создание кастомной расы</h3>
+      
+      <label>Название расы</label>
+      <input type="text" id="newRaceName" placeholder="Например: Высший Эльф">
+
+      <label style="margin-top: 8px;">Описание и особенности</label>
+      <textarea id="newRaceDesc" placeholder="Опиши умения, языки, происхождение..." style="width: 100%; height: 60px; box-sizing: border-box;"></textarea>
+
+      <label style="margin-top: 8px;">Скорость (в футах)</label>
+      <input type="number" id="newRaceSpeed" value="30">
+
+      <h4 style="margin-top: 15px; margin-bottom: 8px;">Бонусы к характеристикам:</h4>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+        <div><label>СИЛ:</label> <input type="number" id="bonusStr" value="0"></div>
+        <div><label>ЛОВ:</label> <input type="number" id="bonusDex" value="0"></div>
+        <div><label>ТЕЛ:</label> <input type="number" id="bonusCon" value="0"></div>
+        <div><label>ИНТ:</label> <input type="number" id="bonusInt" value="0"></div>
+        <div><label>МУД:</label> <input type="number" id="bonusWis" value="0"></div>
+        <div><label>ХАР:</label> <input type="number" id="bonusCha" value="0"></div>
+      </div>
+
+      <div style="margin-top: 20px; display: flex; gap: 10px;">
+        <button class="btn-action" style="background: #4CAF50; flex: 1;" onclick="saveCustomRace()">Сохранить расу</button>
+        <button class="btn-action" style="background: #e53935; flex: 1;" onclick="closeCustomRaceModal()">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Кастомное модальное окно предупреждений -->
+  <div id="customAlertModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 20000; justify-content: center; align-items: center; padding: 15px; box-sizing: border-box; backdrop-filter: blur(4px);">
+    <div style="background: #1e1e1e; padding: 22px; border-radius: 10px; width: 100%; max-width: 400px; border: 1px solid #444; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: center; color: #fff; animation: modalScaleIn 0.2s ease;">
+      <div id="customAlertIcon" style="font-size: 32px; margin-bottom: 10px;">🚫</div>
+      <h3 id="customAlertTitle" style="margin: 0 0 8px 0; color: #ff9800; font-size: 1.2em;">Перегруз инвентаря</h3>
+      <p id="customAlertMessage" style="font-size: 0.95em; color: #ccc; margin: 0 0 20px 0; line-height: 1.4;"></p>
+      <button class="btn-action" style="background: #e53935; width: 100%; padding: 12px; font-weight: bold; cursor: pointer; border-radius: 6px;" onclick="closeCustomAlert()">Понятно</button>
+    </div>
+  </div>
+
+  <!-- Модальное окно повышения уровня -->
+  <div id="levelUpModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 15000; justify-content: center; align-items: center; padding: 15px; box-sizing: border-box; backdrop-filter: blur(4px);">
+    <div style="background: #1e1e1e; padding: 22px; border-radius: 10px; width: 100%; max-width: 450px; border: 1px solid #444; box-shadow: 0 10px 25px rgba(0,0,0,0.5); color: #fff; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444; padding-bottom: 8px; margin-bottom: 12px;">
+        <h3 style="margin: 0; color: #d4af37;">⬆️ Повышение уровня</h3>
+        <button class="btn-action" onclick="closeLevelUpModal()" style="background: #e53935; padding: 4px 8px; cursor: pointer;">✕</button>
+      </div>
+
+      <div id="levelUpContent"></div>
+
+      <div style="margin-top: 20px; display: flex; gap: 10px;">
+        <button class="btn-action" style="background: #4CAF50; flex: 1; padding: 12px; font-weight: bold;" onclick="confirmLevelUp()">Поднять уровень</button>
+        <button class="btn-action" style="background: #e53935; flex: 1; padding: 12px;" onclick="closeLevelUpModal()">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно опыта (Experience Modal) -->
+  <div id="experienceModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 14000; justify-content: center; align-items: center; padding: 15px; box-sizing: border-box; backdrop-filter: blur(4px);">
+    <div style="background: #1e1e1e; padding: 22px; border-radius: 10px; width: 100%; max-width: 450px; border: 1px solid #444; box-shadow: 0 10px 25px rgba(0,0,0,0.5); color: #fff; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444; padding-bottom: 8px; margin-bottom: 15px;">
+        <h3 style="margin: 0; color: #d4af37;">⭐ Опыт и прогрессия</h3>
+        <button class="btn-action" onclick="closeExperienceModal()" style="background: #e53935; padding: 4px 8px; cursor: pointer;">✕</button>
+      </div>
+
+      <!-- Шкала опыта -->
+      <div style="margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.85em; color: #aaa; margin-bottom: 6px;">
+          <span>Уровень <span id="expModalCurrentLevel">1</span></span>
+          <span><span id="expModalCurrentExp">0</span> / <span id="expModalNextExp">300</span> XP</span>
+        </div>
+        <div style="background: #2a2a2a; border-radius: 6px; height: 16px; width: 100%; overflow: hidden; border: 1px solid #444;">
+          <div id="expProgressBar" style="background: linear-gradient(90deg, #d4af37, #ff9800); height: 100%; width: 0%; transition: width 0.3s ease;"></div>
+        </div>
+      </div>
+
+      <!-- Ввод текущего опыта -->
+      <div style="margin-bottom: 15px;">
+        <label style="font-size: 0.85em; color: #aaa; display: block; margin-bottom: 5px;">Текущий накопленный опыт (XP)</label>
+        <input type="number" id="expInputCurrent" min="0" oninput="onExpInputChange()" style="width: 100%; padding: 10px; background: #2a2a2a; border: 1px solid #444; color: #fff; border-radius: 6px; box-sizing: border-box; font-size: 1.1em; font-weight: bold; text-align: center;">
+      </div>
+
+      <!-- Калькулятор опыта (Добавить / Отнять) -->
+      <div style="background: #252525; padding: 12px; border-radius: 8px; border: 1px solid #333; margin-bottom: 20px;">
+        <label style="font-size: 0.85em; color: #ff9800; font-weight: bold; display: block; margin-bottom: 6px;">Калькулятор опыта</label>
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+          <input type="number" id="expCalcInput" placeholder="Кол-во XP..." min="1" style="flex: 1; padding: 8px; background: #1e1e1e; border: 1px solid #444; color: #fff; border-radius: 4px; box-sizing: border-box;">
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-action" style="background: #4CAF50; flex: 1; padding: 8px;" onclick="addExperienceValue()">+ Добавить</button>
+          <button class="btn-action" style="background: #e53935; flex: 1; padding: 8px;" onclick="subtractExperienceValue()">- Отнять</button>
+        </div>
+      </div>
+
+      <!-- Кнопка вызова повышения уровня -->
+      <button class="btn-action" id="expLevelUpBtn" style="background: #d4af37; color: #000; width: 100%; padding: 12px; font-weight: bold; border-radius: 6px; display: none;" onclick="openLevelUpModalFromExp()">⬆️ Доступно повышение уровня!</button>
+
+      <div style="margin-top: 15px;">
+        <button class="btn-action" style="background: #555; width: 100%; padding: 10px; border-radius: 6px;" onclick="closeExperienceModal()">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <button class="debug-tool-button btn-action" onclick="dndV706Open()" style="position:fixed;right:10px;bottom:120px;z-index:55000;background:#5e35b1;color:#fff;padding:8px 10px;border-radius:9px;">🎲 Dice Lab</button>
+  <button class="debug-tool-button btn-action" onclick="dndV707Open()" style="position:fixed;right:10px;bottom:165px;z-index:55000;background:#2e7d32;color:#fff;padding:8px 10px;border-radius:9px;">⚖️ Rules Matrix</button>
+  <button class="debug-tool-button btn-action" onclick="dndV703Open('combat')" style="position:fixed;right:10px;bottom:72px;z-index:55000;background:#8b0000;color:#fff;padding:8px 10px;border-radius:9px;">🧪 QA Lab</button>
+
+  <!-- Сетевая комната / режим игры -->
+  <div id="dndNetworkModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:26000;justify-content:center;align-items:center;padding:15px;box-sizing:border-box;backdrop-filter:blur(4px);">
+    <div style="background:#1e1e1e;color:#fff;width:100%;max-width:620px;max-height:92vh;overflow:auto;border:1px solid #444;border-radius:12px;padding:20px;box-sizing:border-box;">
+      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #444;padding-bottom:10px;margin-bottom:14px;">
+        <h3 style="margin:0;color:#d4af37;">🌐 Режим игры</h3>
+        <button class="btn-action" onclick="closeDndNetworkModal()" style="background:#e53935;padding:5px 9px;">✕</button>
+      </div>
+      <p style="color:#aaa;font-size:.9em;margin-top:0;">Статус: <strong id="dndNetworkStatusModal">Одиночная игра</strong></p>
+      <label style="display:block;margin-bottom:6px;color:#aaa;">Как играем?</label>
+      <select id="dndNetworkMode" onchange="updateNetworkModeUI()" style="width:100%;padding:11px;background:#2a2a2a;color:#fff;border:1px solid #555;border-radius:6px;box-sizing:border-box;">
+        <option value="single">🎮 Одиночная игра</option>
+        <option value="host">👑 Я мастер — создать LAN-комнату</option>
+        <option value="player">🧙 Я игрок — подключиться к мастеру</option>
+      </select>
+
+      <div id="dndNetworkSinglePanel" style="margin-top:15px;background:#252525;border:1px solid #333;border-radius:8px;padding:12px;">
+        <strong>Одиночный режим</strong><div style="color:#aaa;margin-top:6px;font-size:.88em;">Полностью офлайн. Все правила и персонажи работают на этом устройстве.</div>
+        <button class="btn-action" onclick="dndNetworkSingle();closeDndNetworkModal();" style="width:100%;margin-top:10px;background:#555;">Использовать одиночный режим</button>
+      </div>
+
+      <div id="dndNetworkHostPanel" style="display:none;margin-top:15px;">
+        <div style="background:#252525;border:1px solid #333;border-radius:8px;padding:12px;">
+          <strong>👑 Мастер</strong>
+          <p style="color:#aaa;font-size:.85em;line-height:1.4;">Мастер хранит авторитетное состояние комнаты. Каждый игрок подключается отдельным каналом, поэтому в комнате может быть несколько игроков. В web-версии пока используется ручной обмен приглашением/ответом; APK сможет заменить его native LAN discovery.</p>
+          <button class="btn-action" onclick="dndNetworkHostCreate()" style="width:100%;background:#7b1fa2;margin-bottom:8px;">🏠 Создать комнату мастера</button>
+          <button class="btn-action" onclick="dndNetworkNewInvite()" style="width:100%;background:#4caf50;margin-bottom:10px;">➕ Новое приглашение игроку</button>
+          <div id="dndNetworkHostResult" style="color:#aaa;font-size:.84em;margin:8px 0;"></div>
+          <div id="dndNetworkInviteList"></div>
+          <label style="display:block;color:#aaa;font-size:.85em;margin-top:10px;">Ответ подключаемого игрока</label>
+          <textarea id="dndNetworkAnswerInput" style="width:100%;min-height:90px;box-sizing:border-box;background:#111;color:#ddd;border:1px solid #444;border-radius:6px;padding:8px;font-size:11px;"></textarea>
+          <button class="btn-action" onclick="dndNetworkHostFinish()" style="width:100%;margin-top:8px;background:#2196f3;">🔗 Принять ответ игрока</button>
+          <h4 style="margin:16px 0 7px;color:#d4af37;">👥 Игроки комнаты</h4>
+          <div id="dndNetworkRoster" style="background:#181818;border-radius:6px;padding:6px;"></div>
+          <button class="btn-action" onclick="dndNetwork.requestSync()" style="width:100%;margin-top:8px;background:#555;">🔄 Отправить всем актуальное состояние</button>
+        </div>
+      </div>
+
+      <div id="dndNetworkJoinPanel" style="display:none;margin-top:15px;">
+        <div style="background:#252525;border:1px solid #333;border-radius:8px;padding:12px;">
+          <strong>🧙 Игрок</strong>
+          <p style="color:#aaa;font-size:.85em;line-height:1.4;">Подключается только ваш сетевой профиль и метаданные персонажа. Полный лист персонажа остаётся на вашем устройстве.</p>
+          <label style="display:block;color:#aaa;font-size:.85em;margin:10px 0 5px;">Приглашение мастера</label>
+          <textarea id="dndNetworkOfferInput" style="width:100%;min-height:90px;box-sizing:border-box;background:#111;color:#ddd;border:1px solid #444;border-radius:6px;padding:8px;font-size:11px;"></textarea>
+          <button class="btn-action" onclick="dndNetworkJoinCreate()" style="width:100%;margin-top:8px;background:#2196f3;">➡️ Подключиться / создать ответ</button>
+          <div id="dndNetworkJoinResult" style="color:#aaa;font-size:.84em;margin:8px 0;"></div>
+          <label style="display:block;color:#aaa;font-size:.85em;">Ваш ответ для мастера</label>
+          <textarea id="dndNetworkAnswer" readonly onclick="dndNetworkCopyHint('dndNetworkAnswer')" style="width:100%;min-height:90px;box-sizing:border-box;background:#111;color:#ddd;border:1px solid #444;border-radius:6px;padding:8px;font-size:11px;" placeholder="Ответ появится здесь"></textarea>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px;">
+            <button class="btn-action" onclick="dndNetwork.playerRoll('Проверка игрока')" style="background:#7b1fa2;">🎲 Бросить d20 через мастера</button>
+            <button class="btn-action" onclick="dndNetwork.requestSync()" style="background:#555;">🔄 Синхронизироваться</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;padding:10px;background:#302b1e;border:1px solid #5b5138;border-radius:8px;color:#d9cda8;font-size:.82em;line-height:1.45;">
+        <strong>APK:</strong> сетевой движок уже отделён от правил. Для zero-config комнаты Android нужен native bridge на NSD/UDP multicast или аналогичный LAN discovery. Web fallback намеренно не выдаёт ручной обмен кодами за автоматическое обнаружение.
+      </div>
+    </div>
+  </div>
+
+  <!-- Каталог вариантов персонажей и контент-паков -->
+  <div id="dndContentCatalogModal" class="cc-modal" onclick="if(event.target===this)DNDContentCatalog.close()">
+    <div class="cc-panel">
+      <div class="cc-head"><div><h3>📚 Каталог вариантов</h3><div style="color:#888;font-size:.8em;margin-top:4px;">Правила — фундамент. Варианты — пространство для фантазии.</div></div><button class="btn-action" onclick="DNDContentCatalog.close()" style="background:#e53935;padding:5px 9px;">✕</button></div>
+      <div class="cc-controls"><input class="cc-input" type="search" placeholder="Поиск класса, пака или источника..." oninput="DNDContentCatalog.search(this.value)"><select class="cc-select" onchange="DNDContentCatalog.filter(this.value)"><option value="all">Все категории</option><option value="official">🏛️ Официальные</option><option value="thirdparty">✨ Сторонние</option><option value="homebrew">🧪 Homebrew</option><option value="experimental">🧬 Экспериментальные</option></select><select class="cc-select" onchange="DNDContentCatalog.status(this.value)"><option value="all">Все статусы</option><option value="installed">Установленные</option><option value="planned">В планах</option></select></div>
+      <div id="dndContentCatalogSummary" class="cc-summary"></div>
+      <div id="dndContentCatalogList" class="cc-list"></div>
+      <div style="margin:0 12px 12px;padding:10px;background:#211e17;border:1px solid #4b412c;border-radius:8px;color:#c9bd99;font-size:.78em;line-height:1.45;">Внешние паки можно отключить без удаления. Это удобно для разных кампаний: мастер может оставить только нужный набор контента.</div>
+    </div>
+  </div>
+
+  <script src="./app/data/classes/level_up.js"></script>
+<script src="./app/bestiary_catalog_v56_3.js"></script>
+<script src="./app/bestiary_catalog_v56_4.js"></script>
+<script src="./app/bestiary_catalog_v56_5.js"></script>
+<script src="./app/bestiary_catalog_v56_6.js"></script>
+<script src="./app/bestiary_catalog_v56_7.js"></script>
+<script src="./app/bestiary_catalog_v56_8.js"></script>
+<script src="./app/bestiary_catalog_v56_9.js"></script>
+<script src="./app/bestiary_catalog_v56_10.js"></script>
+<script src="./app/bestiary_catalog_v56_11.js"></script>
+<script src="./app/bestiary_catalog_v56_12.js"></script>
+<script src="./app/bestiary_catalog_v56_13.js"></script>
+  <script src="./app/swipe-lock.js"></script>
+</body>
+</html>
