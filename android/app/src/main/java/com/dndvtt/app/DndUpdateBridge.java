@@ -52,6 +52,8 @@ public final class DndUpdateBridge {
             JSONArray files = manifest.getJSONArray("files");
             String baseUrl = manifest.optString("baseUrl", "");
             File root = new File(context.getFilesDir(), "vtt-updates");
+            deleteRecursive(root);
+            if (!root.mkdirs() && !root.isDirectory()) throw new Exception("Cannot create update directory");
             stageRoot = new File(root, version);
             deleteRecursive(stageRoot);
             if (!stageRoot.mkdirs()) throw new Exception("Cannot create staging directory");
