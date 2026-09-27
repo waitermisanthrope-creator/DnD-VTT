@@ -316,3 +316,7 @@
 - `.github/workflows/android-debug.yml` автоматически собирает debug APK через GitHub Actions.
 
 **Медиа:** обои и эмбиенты специально оставляем в корне репозитория. Это соответствует текущей загрузке GitHub; Android build сам раскладывает их в runtime-пути приложения.
+
+
+- `android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java` — native staging/apply: HTTPS manifest, per-file size/SHA-256 checks, versioned private webroot, active-version switch and preserved previous version.
+- `android/app/src/main/java/com/dndvtt/app/MainActivity.java` — mounts the active private webroot through `WebViewAssetLoader`; the web/native bridge is restricted to `appassets.androidplatform.net`.
