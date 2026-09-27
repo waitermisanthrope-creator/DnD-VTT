@@ -32,8 +32,6 @@ android {
 
     sourceSets { main { assets.srcDir(vttAssets) } }
 
-    sourceSets { main { assets.srcDir(vttAssets) } }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
