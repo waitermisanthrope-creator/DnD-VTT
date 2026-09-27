@@ -1,6 +1,9 @@
 package com.dndvtt.app;
 
 import android.content.Context;
+import android.app.Activity;
+import android.os.Handler;
+import android.os.Looper;
 import android.content.SharedPreferences;
 import androidx.webkit.JavaScriptReplyProxy;
 import org.json.JSONArray;
@@ -14,10 +17,12 @@ import java.util.concurrent.Executors;
 
 public final class DndUpdateBridge {
     private final Context context;
+    private final Activity activity;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    public DndUpdateBridge(Context context) {
-        this.context = context.getApplicationContext();
+    public DndUpdateBridge(Activity activity) {
+        this.activity = activity;
+        this.context = activity.getApplicationContext();
     }
 
     public void handle(String raw, JavaScriptReplyProxy reply) {
@@ -109,6 +114,7 @@ public final class DndUpdateBridge {
             prefs.edit().putString("previous", previous).putString("active", version).putString("pending", version).commit();
             deleteRecursive(staged);
             reply.postMessage(response(id, true, "applied", version));
+            new Handler(Looper.getMainLooper()).postDelayed(activity::recreate, 500);
         } catch (Exception e) {
             reply.postMessage(response(id, false, "apply-failed", e.toString()));
         }
