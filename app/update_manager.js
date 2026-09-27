@@ -6,7 +6,7 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.25.61';
+  var APP_VERSION = '70.25.62';
   var DEFAULT_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url';
   var CHANNEL_KEY = 'dnd_update_channel';
@@ -212,7 +212,78 @@
     return result || true;
   }
 
+  function showStartupUpdatePrompt(state) {
+    if (!state || !state.updateAvailable || !state.stageResult || !state.stageResult.staged) return;
+    if (!canApplyNatively()) return;
+    if (document.getElementById('dndStartupUpdatePrompt')) return;
+
+    var overlay = document.createElement('div');
+    overlay.id = 'dndStartupUpdatePrompt';
+    overlay.style.cssText = [
+      'position:fixed','inset:0','z-index:120000','display:flex',
+      'align-items:center','justify-content:center','padding:18px',
+      'box-sizing:border-box','background:rgba(0,0,0,.78)',
+      'font-family:Inter,system-ui,sans-serif'
+    ].join(';');
+
+    var card = document.createElement('div');
+    card.style.cssText = [
+      'width:min(430px,100%)','background:#181818','color:#fff',
+      'border:1px solid #d4af37','border-radius:14px','padding:20px',
+      'box-sizing:border-box','box-shadow:0 18px 70px #000'
+    ].join(';');
+
+    card.innerHTML =
+      '<h2 style="margin:0 0 10px;color:#ffd85e;font-size:1.25rem">🔄 Доступно обновление</h2>' +
+      '<p style="margin:0 0 8px;line-height:1.5;color:#ddd">Версия <strong>' +
+      String(state.manifest.version) +
+      '</strong> уже загружена и проверена.</p>' +
+      '<p style="margin:0 0 16px;line-height:1.5;color:#aaa">Обновление заменит только файлы приложения. Персонажи и локальные данные не трогаются.</p>' +
+      '<div style="display:flex;gap:8px">' +
+      '<button id="dndStartupUpdateLater" style="flex:1;padding:11px;border-radius:8px;border:1px solid #555;background:#333;color:#fff">Позже</button>' +
+      '<button id="dndStartupUpdateApply" style="flex:1;padding:11px;border-radius:8px;border:1px solid #d4af37;background:#9b6e13;color:#fff;font-weight:700">Обновить</button>' +
+      '</div>' +
+      '<div id="dndStartupUpdateStatus" style="margin-top:10px;font-size:.8rem;color:#aaa"></div>';
+
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+
+    card.querySelector('#dndStartupUpdateLater').onclick = function () {
+      overlay.remove();
+    };
+
+    card.querySelector('#dndStartupUpdateApply').onclick = async function () {
+      var status = card.querySelector('#dndStartupUpdateStatus');
+      var apply = card.querySelector('#dndStartupUpdateApply');
+      var later = card.querySelector('#dndStartupUpdateLater');
+      apply.disabled = true;
+      later.disabled = true;
+      status.textContent = 'Применяю обновление…';
+      try {
+        await applyStaged();
+        status.textContent = 'Готово. Перезапускаю приложение…';
+      } catch (e) {
+        status.textContent = 'Не удалось применить: ' + (e && e.message || e);
+        apply.disabled = false;
+        later.disabled = false;
+      }
+    };
+  }
+
+  function autoCheckForUpdates() {
+    setTimeout(async function () {
+      try {
+        if (global.navigator && global.navigator.onLine === false) return;
+        var state = await checkAndStage();
+        if (state && state.updateAvailable) showStartupUpdatePrompt(state);
+      } catch (e) {
+        try { console.warn('DND update check failed:', e); } catch (_) {}
+      }
+    }, 1200);
+  }
+
   global.DND_UPDATE_MANAGER = {
+    autoCheckForUpdates: autoCheckForUpdates,
     VERSION: APP_VERSION,
     getConfig: getConfig,
     setManifestUrl: setManifestUrl,
@@ -228,4 +299,10 @@
     canApplyNatively: canApplyNatively,
     applyStaged: applyStaged
   };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', autoCheckForUpdates);
+  } else {
+    autoCheckForUpdates();
+  }
 })(window);
