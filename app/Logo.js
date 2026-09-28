@@ -47,37 +47,6 @@
       animation: fadeInBg 3s forwards linear;
     }
 
-    /* Логотип/ссылка: выезжает, стоит +7 сек по центру и уходит вверх */
-    .splash-text {
-      position: absolute;
-      left: 0;
-      right: 0;
-      color: #ffffff;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
-      letter-spacing: 0.08em;
-      text-align: center;
-      text-decoration: none; /* Убираем подчеркивание ссылки */
-      cursor: pointer;
-      pointer-events: auto; /* Разрешаем клик/тач по самой ссылке */
-
-      -webkit-text-stroke: 0.4px rgba(0, 0, 0, 0.8);
-      text-shadow: 
-        0 1px 3px rgba(0, 0, 0, 0.9),
-        0 0 8px rgba(0, 0, 0, 0.6);
-
-      z-index: 3;
-      padding: 0 20px;
-      
-      /* Длительность 13.5s (включает паузу 7s в центре) */
-      animation: scrollCreditsWithPause 13.5s 0.8s forwards linear;
-      transform: translateY(100vh);
-    }
-
-    .splash-text:hover {
-      color: #e0e0e0;
-    }
-
     /* Картинка: растянута на всю ширину -0.5см с каждой стороны, медленное движение */
     .splash-image {
       position: absolute;
@@ -149,19 +118,6 @@
   const overlay = document.createElement('div');
   overlay.className = 'splash-overlay';
 
-  // Делаем тег <a> вместо <div> для корректного перехода по ссылке
-  const textLink = document.createElement('a');
-  textLink.className = 'splash-text';
-  textLink.href = 'https://m.vk.com/dima_dimon_knk';
-  textLink.target = '_blank'; // Открывает в новой вкладке/приложении
-  textLink.rel = 'noopener noreferrer';
-  textLink.textContent = 'vk.com/dima_dimon_knk представляет';
-
-  // Остановка всплытия события клика/касания, чтобы при единичном нажатии на ссылку
-  // не срабатывал пропуск/закрытие сплэша, если случайно сработает двойной клик
-  textLink.addEventListener('touchend', (e) => e.stopPropagation());
-  textLink.addEventListener('dblclick', (e) => e.stopPropagation());
-
   const img = document.createElement('img');
   img.className = 'splash-image';
   img.src = './wallpapers/20.png';
@@ -171,7 +127,6 @@
   // чтобы сплэш-экран оставался чистым даже без ассета.
   img.addEventListener('error', () => { img.style.display = 'none'; });
 
-  overlay.appendChild(textLink);
   overlay.appendChild(img);
 
   let isDestroyed = false;
