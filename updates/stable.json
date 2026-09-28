@@ -71,6 +71,31 @@
       "path": "app/data/classes/DRUID.png",
       "bytes": 776880,
       "sha256": "e9043756c0eec43e043132ecf913c8f8e231fe5fc01fdf559ab6b8c27767be01"
+    },
+    {
+      "path": "app/data/classes/FIGHTER.png",
+      "bytes": 762812,
+      "sha256": "01aad1f981daf82d94c77d49401287f08e66958f6636860d4fb212fe3266e8ef"
+    },
+    {
+      "path": "app/data/classes/Illigger.png",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "app/data/classes/Monk.png",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "app/data/classes/PALADIN.png",
+      "bytes": 873991,
+      "sha256": "a47f0c8b150de834974c2c58cab4d5d7d5d52efa4a7488f880e03af517d9bc45"
+    },
+    {
+      "path": "app/data/classes/RANGER.png",
+      "bytes": 643335,
+      "sha256": "f195741786e3c0a616b0873bdce84d7af4e5cf1646eb24060da22cfa40d8687a"
     }
   ],
   "blockedVersions": []
