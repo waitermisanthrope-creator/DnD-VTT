@@ -17,11 +17,11 @@ android {
     compileSdk 36
 
     defaultConfig {
-        applicationId "com.dndvtt.app"
+        applicationId "com.dndvtt.pocketvtt"
         minSdk 24
         targetSdk 36
-        versionCode 7025069
-        versionName "70.25.69"
+        versionCode 7025070
+        versionName "70.25.70"
     }
 
     signingConfigs {
