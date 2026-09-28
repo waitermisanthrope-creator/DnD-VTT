@@ -3724,3 +3724,16 @@ Android update compatibility requires the target package/application identity an
 ### Статус
 Source fixes: FIXED / pending user smoke-test.
 APK: build required.
+
+
+## SOURCE-ONLY BUGFIX BATCH — 2026-09-28 (NO APK RELEASE)
+
+### Исправлено в репозитории
+- **Inventory proficiency normalization:** app/Inventory.js теперь принимает владения персонажа в форматах `id`, `value`, `key` и `code`, а также нормализует регистр/«ё». Для щитов дополнительно учитывается canonical `proficiencyType: "shield"`.
+- **Level Up / multiclass class matching:** app/data/classes/level_up.js теперь нормализует имена классов перед поиском существующего класса. Это закрывает путь, при котором различия регистра, пробелов, дефисов или служебных цифр могли заставить уже существующий класс выглядеть как новый и запустить multiclass-проверку.
+- **No APK:** изменения пока остаются только в main; новый APK не собирался и не публиковался. Следующий release сохраняет `com.dndvtt.pocketvtt` и постоянный signing key.
+
+### Проверка для следующего APK
+1. Повысить уровень уже существующего класса с обычными характеристиками — предупреждение о требованиях мультикласса не должно появляться.
+2. Взять реально новый класс — multiclass requirements должны по-прежнему проверяться.
+3. Проверить щит и броню, когда proficiency хранится как объект с `value/key/code`, а не только `id`.
