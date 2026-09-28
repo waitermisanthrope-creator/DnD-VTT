@@ -4,7 +4,7 @@ const src=fs.readFileSync(require('path').join(__dirname,'..','app','update_mana
 const storage={};
 const payload=new TextEncoder().encode('hello updater');
 const hash=crypto.createHash('sha256').update(payload).digest('hex');
-const ctx={console,crypto:{subtle:crypto.webcrypto.subtle},fetch:async(url)=>{ if(url==='manifest'){ return {ok:true,status:200,json:async()=>({version:'70.25.62',baseUrl:'https://example.invalid/files',files:[{path:'app/test.js',bytes:payload.byteLength,sha256:hash}]})}; } if(url==='https://example.invalid/files/app/test.js'){ return {ok:true,status:200,arrayBuffer:async()=>payload.buffer.slice(payload.byteOffset,payload.byteOffset+payload.byteLength)}; } return {ok:false,status:404,json:async()=>({})}; },localStorage:{getItem:k=>storage[k]||null,setItem:(k,v)=>storage[k]=String(v),removeItem:k=>delete storage[k]},DND_UPDATE_MANIFEST_URL:''};
+const ctx={console,crypto:{subtle:crypto.webcrypto.subtle},fetch:async(url)=>{ if(url==='manifest'){ return {ok:true,status:200,json:async()=>({version:'70.25.67',baseUrl:'https://example.invalid/files',files:[{path:'app/test.js',bytes:payload.byteLength,sha256:hash}]})}; } if(url==='https://example.invalid/files/app/test.js'){ return {ok:true,status:200,arrayBuffer:async()=>payload.buffer.slice(payload.byteOffset,payload.byteOffset+payload.byteLength)}; } return {ok:false,status:404,json:async()=>({})}; },localStorage:{getItem:k=>storage[k]||null,setItem:(k,v)=>storage[k]=String(v),removeItem:k=>delete storage[k]},DND_UPDATE_MANIFEST_URL:''};
 ctx.window=ctx;ctx.globalThis=ctx;ctx.__TEST_ASSERT__=(c,m)=>{if(!c)throw new Error(m||'assert');};
 vm.createContext(ctx);vm.runInContext(src,ctx,{filename:'update_manager.js'});
 const u=ctx.DND_UPDATE_MANAGER;
