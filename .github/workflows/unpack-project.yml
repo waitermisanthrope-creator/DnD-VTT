@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Convert class token JPGs to PNG without pixel cleanup
         shell: bash
@@ -25,69 +27,19 @@ jobs:
           fi
           python3 - <<'PY'
           from pathlib import Path
-          p=Path("/tmp/token_pairs.txt")
           root=Path("app/data/classes")
-          with p.open("w",encoding="utf-8") as f:
+          with Path("/tmp/token_pairs.txt").open("w",encoding="utf-8") as f:
               for src in sorted(root.glob("*.jpg")):
                   f.write(str(src)+"\t"+str(src.with_suffix(".png"))+"\n")
           PY
-          while IFS=
-          PY
-
-      - name: Commit converted class tokens
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add app/data/classes app/character_creation_pergament.js
-          if git diff --cached --quiet; then
-            echo "No token conversion changes."
-          else
-            git commit -m "Convert class tokens to PNG without pixel cleanup"
-            git fetch origin main
-            git rebase origin/main
-            git push origin HEAD:main
-          fi
-
-      - name: Unpack V70.25.61 archive
-        shell: bash
-        run: |
-          set -euo pipefail
-          ARCHIVE="DND_VTT_V70_25_61_UPDATE_INFRA_NO_ASSETS.zip"
-          if [ ! -f "$ARCHIVE" ]; then
-            echo "Archive not present; nothing to unpack."
-            exit 0
-          fi
-
-          rm -rf .project_unpack
-          mkdir -p .project_unpack
-          unzip -q "$ARCHIVE" -d .project_unpack
-
-          top_count="$(find .project_unpack -mindepth 1 -maxdepth 1 | wc -l | tr -d ' ')"
-          if [ "$top_count" = "1" ] && [ -d "$(find .project_unpack -mindepth 1 -maxdepth 1 -type d | head -n 1)" ]; then
-            SRC="$(find .project_unpack -mindepth 1 -maxdepth 1 -type d | head -n 1)"
-          else
-            SRC=".project_unpack"
-          fi
-
-          rsync -a "$SRC"/ ./
-          rm -rf .project_unpack "$ARCHIVE"
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "Unpack V70.25.61 project files" || exit 0
-          git push
-\t' read -r src dst; do
+          while IFS=$'\t' read -r src dst; do
             [ -z "$src" ] && continue
             "$CONVERTER" "$src" "PNG:$dst"
           done < /tmp/token_pairs.txt
           python3 - <<'PY'
           from pathlib import Path
-          pairs=[]
           root=Path("app/data/classes")
-          for src in sorted(root.glob("*.jpg")):
-              pairs.append((src,src.with_suffix(".png")))
+          pairs=[(src,src.with_suffix(".png")) for src in sorted(root.glob("*.jpg"))]
           p=Path("app/character_creation_pergament.js")
           text=p.read_text(encoding="utf-8")
           for src,dst in pairs:
@@ -100,15 +52,18 @@ jobs:
       - name: Commit converted class tokens
         shell: bash
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add app/data/classes app/character_creation_pergament.js
           if git diff --cached --quiet; then
             echo "No token conversion changes."
-          else
-            git commit -m "Convert class tokens to PNG without pixel cleanup"
-            git push
+            exit 0
           fi
+          git commit -m "Convert class tokens to PNG without pixel cleanup"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
 
       - name: Unpack V70.25.61 archive
         shell: bash
@@ -119,23 +74,21 @@ jobs:
             echo "Archive not present; nothing to unpack."
             exit 0
           fi
-
           rm -rf .project_unpack
           mkdir -p .project_unpack
           unzip -q "$ARCHIVE" -d .project_unpack
-
           top_count="$(find .project_unpack -mindepth 1 -maxdepth 1 | wc -l | tr -d ' ')"
           if [ "$top_count" = "1" ] && [ -d "$(find .project_unpack -mindepth 1 -maxdepth 1 -type d | head -n 1)" ]; then
             SRC="$(find .project_unpack -mindepth 1 -maxdepth 1 -type d | head -n 1)"
           else
             SRC=".project_unpack"
           fi
-
           rsync -a "$SRC"/ ./
           rm -rf .project_unpack "$ARCHIVE"
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -m "Unpack V70.25.61 project files" || exit 0
-          git push
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
