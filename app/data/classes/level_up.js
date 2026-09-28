@@ -235,7 +235,12 @@ let pendingLevelUpData = null;
         // Мягкая проверка требований мультикласса: не блокируем выбор,
         // но предупреждаем, если характеристик не хватает (правило D&D 5e).
         const hero = window.currentCharacter || window.currentChar;
-        if (hero && typeof window.checkMulticlassRequirements === 'function' &&
+        // Требования мультикласса относятся только к ВЗЯТИЮ НОВОГО КЛАССА.
+        // Повышение уже имеющегося класса не должно проверяться как multiclass entry.
+        const alreadyHasSelectedClass = !!(hero && Array.isArray(hero.classes) &&
+          hero.classes.some(function(c){ return c && c.name === selectedClassName; }));
+        if (hero && !alreadyHasSelectedClass &&
+            typeof window.checkMulticlassRequirements === 'function' &&
             !window.checkMulticlassRequirements(hero, selectedClassName)) {
           const proceed = confirm(
             `У персонажа не хватает характеристик для мультиклассирования в класс "${selectedClassName}" ` +
