@@ -3927,3 +3927,35 @@ APK: build required.
 8. После базового класса добавить подклассы/крафты и QA-тесты.
 
 **Правило этапа:** сначала каркас, затем проверка редакции и структуры, и только потом механики.
+
+
+## HB CLASS 24 — NECROMANCER / НЕКРОМАНТ — 2026-09-28
+
+### Этап 1: ЗАГОТОВКА
+Источник концепции: **Mike / Mage Hand Press — Necromancer**. Для каркаса сверена актуальная версия 5.5E: d6, Intelligence, спасброски Constitution+Intelligence, простое оружие, полный spellcasting, ключевые системы Thralls, Charnel Touch, Dead Space, Critical Spellcasting и Lichdom. Также у автора существует отдельная версия 5E 2014.
+
+### Что добавлено
+- `app/data/classes/Necromancer.js` — отдельный каркас уровней 1–20.
+- `app/classesRegistry.js` — регистрация Некроманта: d6 / Intelligence / Constitution+Intelligence.
+- `index.html` — загрузка `Necromancer.js`.
+- `app/character_creation.js` — Некромант доступен при создании персонажа.
+- `app/data/classes/level_up.js` — Некромант доступен при повышении уровня.
+- `app/Hero-info.js` — требование мультикласса Intelligence 13.
+- `app/data/classes/progressionEngine.js` — простое оружие при мультиклассе и Intelligence spellcasting.
+- `app/data/subclasses/subclassesRegistry.js` — три стартовых каркаса специализаций: Рыцарь смерти, Повелитель, Бледный мастер.
+
+### Каркас механик
+Пока только обозначены будущие системы: Spellcasting, Charnel Touch, Thralls, Dead Space, Animate Dead, Critical Spellcasting, Improved Thralls, Improved Critical Spellcasting, Undying Servitude и Lichdom. Полная реализация механик не выполняется на этом этапе.
+
+### Этап 2 — НАПОЛНЕНИЕ МЕХАНИКАМИ
+1. Проверить, какую редакцию Некроманта фиксируем окончательно: 5.5E или 5E 2014.
+2. Перенести progression 1–20 в независимой формулировке.
+3. Реализовать ресурс Charnel Touch.
+4. Создать систему Thralls без отдельного дублирующего движка существ.
+5. Реализовать Dead Space и управление хранением нежити.
+6. Подключить Animate Dead и лимиты контролируемой нежити.
+7. Добавить Critical Spellcasting / Improved Critical Spellcasting.
+8. Добавить Lichdom.
+9. После базового класса наполнить три стартовых подкласса и провести QA.
+
+**Правило этапа:** сначала каркас → проверка структуры → затем механики.
