@@ -34,7 +34,7 @@ window.vesselProgression = {
         8: { features: ["Увеличение характеристик (ASI) или Черта"], asi: true },
         9: { features: [] },
         10: { features: ["Заготовка: Primeval Will / Twin Consciousness"] },
-        11: { features: ["Заготовка: Elder Archon / Unchained Power"] },
+        11: { features: ["Заготовка: Elder Archon"] },
         12: { features: ["Увеличение характеристик (ASI) или Черта"], asi: true },
         13: { features: [] },
         14: { features: ["Заготовка: Dire Preservation"] },
