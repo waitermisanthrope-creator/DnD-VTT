@@ -4071,3 +4071,11 @@ APK: build required.
 - Extra class selector is restricted to the requested test classes: Рой, Призрак, Паразит. `Призрак` uses the existing Geist token until a dedicated token exists.
 - Signature/print now enters from the screen edge, then blackout transitions to the normal character creation screen.
 - Fixed the create-button hook so the normal creation form can actually create the character after the parchment transition instead of reopening the type chooser.
+
+
+## 2026-09-28 — FIX 70.25.72 / first real updater validation
+- Extra parchment explicitly uses root asset `1790622696215.png`; ordinary uses `1790622844831.jpg`. Android asset packaging now copies root PNG/JPG assets to the root of the WebView version.
+- Parchment text now appears line-by-line; class token is hidden until a class is selected; inputs/selects use 90% opaque backgrounds.
+- Standard classes use their existing transparent PNG tokens; named JPG tokens have near-black backgrounds removed at runtime.
+- Signature/print animation uses `1790622252250.png`; character deletion is touch-safe; Lineage 2 Shepard's Flute follows Glenmoril.
+- Settings updater UI is connected and the native bridge reports the active staged web version so 71 → 72 can apply without reinstalling the APK.
