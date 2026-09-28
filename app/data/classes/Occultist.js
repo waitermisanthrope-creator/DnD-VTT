@@ -20,14 +20,16 @@ window.occultistProgression = {
     englishName: "Occultist",
     source: "KibblesTasty / Third-party",
     status: "skeleton",
+    subclassLevel: 3,
 
     // Базовые параметры будут подтверждены при этапе наполнения механиками.
-    hitDie: null,
-    primaryStat: null,
-    savingThrows: [],
+    hitDie: 6,
+    primaryStat: "wisdom",
+    savingThrows: ["wisdom", "charisma"],
     armor: [],
-    weapons: [],
-    tools: [],
+    weapons: ["daggers", "quarterstaff", "light_crossbow"],
+    tools: ["herbalism_kit"],
+    multiclassRequirement: { wisdom: 13 },
 
     levels: {
         1: { features: ["Заготовка уровня 1"] },
