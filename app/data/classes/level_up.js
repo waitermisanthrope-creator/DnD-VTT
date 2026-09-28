@@ -237,8 +237,11 @@ let pendingLevelUpData = null;
         const hero = window.currentCharacter || window.currentChar;
         // Требования мультикласса относятся только к ВЗЯТИЮ НОВОГО КЛАССА.
         // Повышение уже имеющегося класса не должно проверяться как multiclass entry.
+        const selectedClassKey = String(selectedClassName || '').replace(/[0-9]/g, '').trim().toLowerCase();
         const alreadyHasSelectedClass = !!(hero && Array.isArray(hero.classes) &&
-          hero.classes.some(function(c){ return c && c.name === selectedClassName; }));
+          hero.classes.some(function(c){
+            return c && String(c.name || '').replace(/[0-9]/g, '').trim().toLowerCase() === selectedClassKey;
+          }));
         if (hero && !alreadyHasSelectedClass &&
             typeof window.checkMulticlassRequirements === 'function' &&
             !window.checkMulticlassRequirements(hero, selectedClassName)) {
