@@ -572,3 +572,74 @@ window.SUBCLASSES_REFERENCE["Мученик"] = {
     }
   }
 };
+
+
+/* Сосуд — независимый каркас шести Sealed Spirit. Механики будут добавлены позже. */
+window.SUBCLASSES_REFERENCE["Сосуд"] = {
+  "Вознесённый": {
+    source: "Third-party / laserllama",
+    description: "Дух возвышенного мага, связанный с тайной знания и мистической силой.",
+    pickLevel: 3,
+    levels: {
+      3: { features: ["Заготовка: Sealed Spirit / Sealed Magic"] },
+      6: { features: ["Заготовка: способность духа"] },
+      15: { features: ["Заготовка: способность духа"] },
+      20: { features: ["Заготовка: финальная форма Archon"] }
+    }
+  },
+  "Катаклизм": {
+    source: "Third-party / laserllama",
+    description: "Первобытный элементальный дух с четырьмя вариантами стихии.",
+    pickLevel: 3,
+    levels: {
+      3: { features: ["Заготовка: Elemental Affinity / Sealed Magic"] },
+      6: { features: ["Заготовка: способность духа"] },
+      15: { features: ["Заготовка: способность духа"] },
+      20: { features: ["Заготовка: финальная форма Archon"] }
+    }
+  },
+  "Проклятый": {
+    source: "Third-party / laserllama",
+    description: "Мрачный дух нижних планов, усиливающий огненные и проклятые проявления.",
+    pickLevel: 3,
+    levels: {
+      3: { features: ["Заготовка: Malignant Aura / Sealed Magic"] },
+      6: { features: ["Заготовка: способность духа"] },
+      15: { features: ["Заготовка: способность духа"] },
+      20: { features: ["Заготовка: финальная форма Archon"] }
+    }
+  },
+  "Падший": {
+    source: "Third-party / laserllama",
+    description: "Падший небесный дух, направляющий силу воли и небесного воина.",
+    pickLevel: 3,
+    levels: {
+      3: { features: ["Заготовка: Celestial Warrior / Divine Wrath / Sealed Magic"] },
+      6: { features: ["Заготовка: способность духа"] },
+      15: { features: ["Заготовка: способность духа"] },
+      20: { features: ["Заготовка: финальная форма Archon"] }
+    }
+  },
+  "Бесформенный": {
+    source: "Third-party / laserllama",
+    description: "Потусторонний дух-пожиратель, меняющий форму и поглощающий силу врагов.",
+    pickLevel: 3,
+    levels: {
+      3: { features: ["Заготовка: Amorphous Shape / Sealed Magic"] },
+      6: { features: ["Заготовка: способность духа"] },
+      15: { features: ["Заготовка: способность духа"] },
+      20: { features: ["Заготовка: финальная форма Archon"] }
+    }
+  },
+  "Трикстер": {
+    source: "Third-party / laserllama",
+    description: "Непредсказуемый дух фейской природы, специализирующийся на иллюзиях и обмане.",
+    pickLevel: 3,
+    levels: {
+      3: { features: ["Заготовка: Shifting Visage / Sealed Magic"] },
+      6: { features: ["Заготовка: способность духа"] },
+      15: { features: ["Заготовка: способность духа"] },
+      20: { features: ["Заготовка: финальная форма Archon"] }
+    }
+  }
+};
