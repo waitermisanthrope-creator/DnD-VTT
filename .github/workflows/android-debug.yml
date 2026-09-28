@@ -45,7 +45,7 @@ jobs:
 
       - name: Generate original token hashes
         run: |
-          sha256sum app/data/classes/*.png | sort > token-hashes.txt
+          sha256sum app/character_creation_pergament.js app/character_creation_pergament.css app/Ambiences.js app/app.js app/Settings.js app/update_manager.js app/onboarding_faq_v71.js app/styles.css app/data/classes/*.png | sort > token-hashes.txt
       - name: Upload token hashes
         uses: actions/upload-artifact@v4
         with:
