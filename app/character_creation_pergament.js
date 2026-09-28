@@ -103,7 +103,7 @@ function syncToClassic(){
  var name=el('pc_name').value.trim(),origin=el('pc_origin').value.trim(),age=el('pc_age').value.trim(),cls=el('pc_class').value,gender=el('pc_gender').value,race=el('pc_race').value,bg=el('pc_background').value,profession=el('pc_profession')?.value||'';
  window.__parchmentCharacterDraft={name:name,origin:origin,age:age,className:cls,gender:gender,raceId:race,background:bg,profession:profession,extra:CHARACTER_CREATION_MODE==='extra'};
  function set(id,val){var e=el(id);if(e)e.value=val}
- set('cc_name',name);set('cc_age',age);set('cc_race',race);set('cc_background',bg);set('cc_profession',profession);set('cc_class',cls+' 1');set('cc_gender',gender);set('cc_origin',origin);
+ set('cc_name',name);set('cc_age',age);set('cc_race',race);set('cc_background',bg);set('cc_profession',profession);set('cc_class',(cls==='Призрак'?'Гайст':cls)+' 1');set('cc_gender',gender);set('cc_origin',origin);
  if(typeof window.updateClassDescription==='function')window.updateClassDescription();
  if(typeof window.updateRaceDescription==='function')window.updateRaceDescription();
  if(typeof window.updateBackgroundDescription==='function')window.updateBackgroundDescription();
