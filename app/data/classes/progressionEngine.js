@@ -78,6 +78,7 @@ function _mergeFeatures(hero, featureList) {
 const MULTICLASS_PROFICIENCIES_2014 = {
     "Оккультист": { fixed: ["Prof_Med", "p_tool_herbalist"] },
     "Ведьма": { fixed: ["p_armor_light"] },
+    "Некромант": { fixed: ["p_weapon_simple"] },
     "Алхимик": { fixed: ["p_armor_light", "p_weapon_simple", "p_tool_alchemist", "p_tool_herbalist"] },
     "Кровавый охотник": { fixed: ["p_armor_light", "p_armor_medium", "p_shields", "p_weapon_simple", "p_weapon_martial", "p_tool_alchemist"], choices: [{ type: "skill", count: 1, label: "Навык Кровавого охотника" }] },
     "Варвар": { fixed: ["p_shields", "p_weapon_simple", "p_weapon_martial"] },
@@ -96,7 +97,7 @@ const MULTICLASS_PROFICIENCIES_2014 = {
 };
 
 const CLASS_SPELLCASTING_ABILITIES_2014 = {
-    "Оккультист": "wis", "Ведьма": "cha", "Бард": "cha", "Друид": "wis", "Жрец": "wis", "Паладин": "cha",
+    "Оккультист": "wis", "Ведьма": "cha", "Некромант": "int", "Бард": "cha", "Друид": "wis", "Жрец": "wis", "Паладин": "cha",
     "Следопыт": "wis", "Чародей": "cha", "Колдун": "cha", "Волшебник": "int", "Изобретатель": "int"
 };
 
