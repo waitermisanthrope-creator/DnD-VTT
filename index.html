@@ -377,7 +377,7 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
             <button class="btn-action" style="background: #d4af37; color: #000; width: 100%; margin-top: 8px; padding: 8px; font-weight: bold;" onclick="openExperienceModal()">⭐ Опыт и уровень</button>
             
             <label style="margin-top: 8px;">Предыстория</label>
-            <input type="text" id="charBackground" placeholder="Солдат" oninput="autoSaveCurrentCharacter()">
+            <input type="text" id="charBackground" placeholder="Солдат" readonly style="width:100%; box-sizing:border-box; background:#2a2a2a; border:1px solid #444; color:#fff; border-radius:4px; padding:8px;" title="Предыстория выбирается при создании персонажа и отображается здесь только для чтения">
 
             <label style="margin-top: 8px;">Раса персонажа</label>
             <div style="display: flex; gap: 8px; align-items: center;">
@@ -388,6 +388,8 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
             </div>
             
             <div id="raceInfoBox" style="margin-top: 8px; font-size: 0.85em; color: #aaa; background: #2a2a2a; padding: 8px; border-radius: 4px; display: none;"></div>
+            <label style="margin-top: 8px;">Профессия</label>
+            <input type="text" id="charProfession" placeholder="Без профессии" readonly style="width:100%; box-sizing:border-box; background:#2a2a2a; border:1px solid #444; color:#fff; border-radius:4px; padding:8px;" title="Профессия отображается здесь только для чтения">
           </div>
 
           <div class="card">
@@ -566,7 +568,7 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
             <button class="btn-action inv-tab-btn active" data-category="weapons" onclick="switchInventoryTab('weapons')" style="flex: 1; padding: 8px 4px; font-size: 0.85em; background: #2196F3;">Оружие</button>
             <button class="btn-action inv-tab-btn" data-category="armor" onclick="switchInventoryTab('armor')" style="flex: 1; padding: 8px 4px; font-size: 0.85em; background: #333;">Броня</button>
             <button class="btn-action inv-tab-btn" data-category="consumables" onclick="switchInventoryTab('consumables')" style="flex: 1; padding: 8px 4px; font-size: 0.85em; background: #333;">Расходники</button>
-            <button class="btn-action inv-tab-btn" data-category="materials" onclick="switchInventoryTab('materials')" style="flex: 1; padding: 8px 4px; font-size: 0.85em; background: #333;">Материалы</button>
+            <button class="btn-action inv-tab-btn" data-category="materials" onclick="switchInventoryTab('materials')" style="flex: 1; padding: 8px 4px; font-size: 0.85em; background: #333;">Материалы и крафт</button>
             <button class="btn-action inv-tab-btn" data-category="junk" onclick="switchInventoryTab('junk')" style="flex: 1; padding: 8px 4px; font-size: 0.85em; background: #333;">Хлам</button>
           </div>
 
