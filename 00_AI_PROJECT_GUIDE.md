@@ -3959,3 +3959,33 @@ APK: build required.
 9. После базового класса наполнить три стартовых подкласса и провести QA.
 
 **Правило этапа:** сначала каркас → проверка структуры → затем механики.
+
+
+## HB CLASS 25 — MARTYR / МУЧЕНИК — 2026-09-28
+
+### Этап 1: ЗАГОТОВКА
+Источник концепции: **Mike / Mage Hand Press — Martyr**. Для каркаса сверена актуальная версия 5.5E: d12, Wisdom вместе с Strength/Dexterity, спасброски Strength+Wisdom, простое и воинское оружие, лёгкая броня и щиты, а также необычная система заклинаний через жертвование HP. У автора существует отдельная версия 5E 2014.
+
+### Что добавлено
+- `app/data/classes/Martyr.js` — отдельный каркас уровней 1–20.
+- `app/classesRegistry.js` — регистрация Мученика: d12 / Wisdom / Strength+Wisdom.
+- `index.html` — загрузка `Martyr.js`.
+- `app/character_creation.js` — Мученик доступен при создании персонажа.
+- `app/data/classes/level_up.js` — Мученик доступен при повышении уровня.
+- `app/Hero-info.js` — временный базовый порог мультикласса Wisdom 13; выбор STR/DEX будет уточнён на этапе механик.
+- `app/data/classes/progressionEngine.js` — лёгкая броня, щиты, воинское оружие и Wisdom spellcasting.
+- `app/data/subclasses/subclassesRegistry.js` — три стартовых каркаса: Бремя милосердия, Бремя революции, Бремя истины.
+
+### Каркас механик
+Пока только обозначены будущие системы: Armor of Faith, HP-based Spellcasting, Weapon Mastery, Miraculous Healing, Reprisal, Sacrifice, Extra Attack, Sacrifice Foe, Divine Respite, Undying, Improved Sacrificial Strike, March Unto Destiny и Final Martyrdom.
+
+### Этап 2 — НАПОЛНЕНИЕ МЕХАНИКАМИ
+1. Зафиксировать окончательную редакцию и формулу мультикласса STR или DEX + WIS.
+2. Реализовать HP-based spellcasting и лимит использований заклинаний.
+3. Реализовать Sacrifice и самоповреждение без конфликтов с сопротивлениями/временными HP.
+4. Реализовать Miraculous Healing, Reprisal, Undying и Divine Respite.
+5. Реализовать Weapon Mastery и Extra Attack.
+6. Наполнить три стартовых Burden-подкласса.
+7. Добавить QA-тесты для жертвенного урона и финальной способности.
+
+**Правило этапа:** сначала каркас → проверка структуры → затем механики.
