@@ -6,7 +6,7 @@
 .parchment-title{text-align:center;font-weight:700;letter-spacing:.04em;font-size:clamp(21px,4.4vw,36px);margin:1vh 0 1.2vh;color:#3a2819}
 .parchment-subtitle{text-align:center;font-size:clamp(12px,2.2vw,16px);line-height:1.35;margin-bottom:2vh;font-style:italic;color:#493522}
 .parchment-text{font-size:clamp(13px,2.55vw,17px);line-height:1.45;text-align:left;color:#352519;margin:1.1vh 0}
-.parchment-field,.parchment-select{display:inline-block;vertical-align:baseline;box-sizing:border-box;width:auto;max-width:72vw;min-height:32px;border:0;border-bottom:1px dashed rgba(65,45,28,.75);background:rgba(255,248,220,.58);color:#241a13;font:inherit;font-weight:700;outline:none;padding:3px 6px;border-radius:3px}
+.parchment-field,.parchment-select{display:inline-block;vertical-align:baseline;box-sizing:border-box;width:auto;max-width:72vw;min-height:32px;border:0;border-bottom:1px dashed rgba(65,45,28,.75);background:rgba(255,248,220,.90);color:#241a13;font:inherit;font-weight:700;outline:none;padding:3px 6px;border-radius:3px}
 .parchment-field{min-width:8ch}
 .parchment-field[type=number]{width:7ch;min-width:7ch}
 .parchment-select{appearance:auto;-webkit-appearance:auto;min-width:80px;padding-right:25px}
@@ -15,7 +15,7 @@
 .parchment-step.step-hidden{display:none}
 .parchment-class-row{display:flex;align-items:center;justify-content:center;gap:12px;margin:1.2vh 0 1.4vh;flex-wrap:wrap}
 .parchment-token{width:clamp(92px,22vw,145px);height:clamp(92px,22vw,145px);overflow:visible;border:0;border-radius:0;box-shadow:none;background:transparent;display:flex;align-items:center;justify-content:center}
-.parchment-token img{width:100%;height:100%;object-fit:contain;display:block}
+.parchment-token img{width:100%;height:100%;object-fit:contain;display:none}.parchment-token img.token-ready{display:block}
 .parchment-class-caption{text-align:center;font-weight:700;font-size:clamp(13px,3vw,19px)}
 .parchment-class-caption .parchment-select{display:block;margin:5px auto 0}
 .parchment-warning{margin-top:2vh;font-weight:700;text-align:center;letter-spacing:.02em;color:#3b2418;font-size:clamp(13px,2.8vw,19px);line-height:1.3}
@@ -25,7 +25,7 @@
 .parchment-sign-hint{font-size:.5em;display:block;margin-top:1px;opacity:.75}
 .parchment-signature-layer{position:fixed;inset:0;z-index:9010;display:none;pointer-events:none;overflow:hidden}
 .parchment-signature-layer.show{display:block}
-.parchment-signature-img{position:absolute;left:-52vw;bottom:6vh;width:min(55vw,360px);max-height:34vh;height:auto;object-fit:contain;filter:drop-shadow(0 4px 5px rgba(45,25,8,.35));animation:signatureEnter 1.2s cubic-bezier(.2,.75,.2,1) forwards}
+.parchment-signature-img{position:absolute;left:-70vw;bottom:4vh;width:min(72vw,520px);max-height:34vh;height:auto;object-fit:contain;filter:drop-shadow(0 4px 5px rgba(45,25,8,.35));animation:signatureEnter 1.2s cubic-bezier(.2,.75,.2,1) forwards}
 .parchment-blackout{position:fixed;inset:0;z-index:9020;background:#000;display:none}
 .parchment-blackout.show{display:block;animation:parchmentBlackout .65s ease both}
 .creation-type-card{width:min(100%,410px);background:#181818;color:#fff;border:1px solid #66552b;border-radius:14px;padding:20px;box-shadow:0 15px 45px rgba(0,0,0,.7);text-align:center}
@@ -33,6 +33,8 @@
 .creation-type-card button{display:block;width:100%;border:0;border-radius:9px;padding:12px;margin:8px 0;color:#fff;font-weight:700;font-size:16px;background:#3f3f3f}
 .creation-type-card #ccTypeClassic{background:#4d7f4d}.creation-type-card #ccTypeExtra{background:#7b2828}
 .creation-type-card #ccTypeCancel{background:#333}.creation-type-icon{font-size:40px;margin-bottom:5px}
-@keyframes signatureEnter{0%{transform:translateX(0) rotate(-8deg);opacity:0}12%{opacity:1}100%{transform:translateX(58vw) rotate(-2deg);opacity:1}}
+@keyframes signatureEnter{0%{transform:translateX(0) rotate(-8deg);opacity:0}12%{opacity:1}100%{transform:translateX(70vw) rotate(-2deg);opacity:1}}
 @keyframes parchmentBlackout{0%{opacity:0}100%{opacity:1}}
 @media(max-width:520px){.parchment-stage{padding-left:6%;padding-right:6%}.parchment-text{line-height:1.38}.parchment-token{width:118px;height:118px}.parchment-sign{right:3vw;bottom:2vh}.parchment-field,.parchment-select{min-height:30px}}
+
+.parchment-step{margin:0}.parchment-step.step-hidden{display:none!important}.parchment-stage.is-extra{background-image:url('../1790622696215.png');background-size:100% 100%;background-position:center top}.parchment-stage.is-classic{background-image:url('../1790622844831.jpg');background-size:100% 100%;}
