@@ -31,6 +31,7 @@ window.CLASSES_REFERENCE = {
     "Ведьма": { hitDie: 8, primaryStat: "charisma", savingThrows: ["wisdom", "charisma"], progression: window.witchProgression || {} },
     "Некромант": { hitDie: 6, primaryStat: "intelligence", savingThrows: ["constitution", "intelligence"], progression: window.necromancerProgression || {} },
     "Мученик": { hitDie: 12, primaryStat: "wisdom", savingThrows: ["strength", "wisdom"], progression: window.martyrProgression || {} },
+    "Сосуд": { hitDie: 10, primaryStat: "charisma", savingThrows: ["constitution", "charisma"], progression: window.vesselProgression || {} },
     "Алхимик": { hitDie: 8, primaryStat: "intelligence", savingThrows: ["constitution", "intelligence"], progression: window.alchemistProgression || {} },
     "Кровавый охотник": { hitDie: 10, primaryStat: "dexterity", savingThrows: ["dexterity", "intelligence"], progression: window.bloodHunterProgression || {} },
     "Иллирригер": { hitDie: 10, primaryStat: "strength", savingThrows: ["strength", "charisma"], progression: window.illriggerProgression || {} },
