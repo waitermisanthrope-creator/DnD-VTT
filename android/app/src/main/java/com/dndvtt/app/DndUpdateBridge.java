@@ -30,7 +30,9 @@ public final class DndUpdateBridge {
             JSONObject request = new JSONObject(raw);
             String id = request.optString("id", "");
             String type = request.optString("type", "");
-            if ("stage".equals(type)) {
+            if ("version".equals(type)) {
+                postReply(reply, response(id, true, "version", BuildConfig.VERSION_NAME));
+            } else if ("stage".equals(type)) {
                 String manifestUrl = request.optString("manifestUrl", "");
                 executor.execute(() -> stage(id, manifestUrl, reply));
             } else if ("apply".equals(type)) {
