@@ -76,7 +76,7 @@ function _mergeFeatures(hero, featureList) {
  * сохраняются как pendingProficiencyChoices и разрешаются UI повышения уровня.
  */
 const MULTICLASS_PROFICIENCIES_2014 = {
-    "Алхимик": { fixed: ["p_armor_light", "p_weapon_simple", "p_tool_alchemist", "p_tool_herbalism"] },
+    "Алхимик": { fixed: ["p_armor_light", "p_weapon_simple", "p_tool_alchemist", "p_tool_herbalist"] },
     "Кровавый охотник": { fixed: ["p_armor_light", "p_armor_medium", "p_shields", "p_weapon_simple", "p_weapon_martial", "p_tool_alchemist"], choices: [{ type: "skill", count: 1, label: "Навык Кровавого охотника" }] },
     "Варвар": { fixed: ["p_shields", "p_weapon_simple", "p_weapon_martial"] },
     "Бард": { fixed: ["p_armor_light"], choices: [{ type: "skill", count: 1, label: "Навык Барда" }, { type: "instrument", count: 1, label: "Музыкальный инструмент Барда" }] },
