@@ -40,6 +40,7 @@ const MULTICLASS_REQUIREMENTS = {
     "Ведьма": { charisma: 13 },
     "Некромант": { intelligence: 13 },
     "Мученик": { wisdom: 13 },
+    "Сосуд": { constitution: 13, charisma: 13 },
     "Алхимик": { intelligence: 13 },
     "Бард": { charisma: 13 },
     "Варвар": { strength: 13 },
