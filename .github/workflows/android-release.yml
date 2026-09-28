@@ -1,6 +1,8 @@
 name: Build Android signed release APK
 
 on:
+  pull_request:
+    types: [opened, synchronize]
   workflow_dispatch:
 
 permissions:
