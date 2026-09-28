@@ -4089,3 +4089,11 @@ APK: build required.
 - `character_creation_pergament.js`: class selection no longer disables the class selector after the first choice; choosing another class replaces the token without clearing the selector.
 - Progressive parchment reveal was rewritten as a deterministic state machine: the first incomplete field is the only current step, all following steps remain hidden/disabled, and completing a choice immediately reveals the next line.
 - Added 70.25.73 update manifest entries for all 33 PNG tokens so OTA updates from 70.25.71/72 include the token assets too.
+
+
+## 2026-09-29 — FIX 70.25.74: class tokens + sequential parchment
+- Removed runtime pixel manipulation from class tokens completely. No black/near-black pixels are removed or altered.
+- The 20 custom class token files keep their original JPG bytes; only the repository filename is changed to .png so the WebView treats the asset path as PNG while the actual bytes remain unchanged.
+- Token switching now preloads the next image before replacing the visible one. If a token path fails, the previous visible token is kept instead of disappearing.
+- Parchment progression was hardened: every input/select change recalculates the first incomplete step, reveals the next line immediately, and rechecks on the next event loop tick. Completed/current controls remain interactive; only future controls are disabled.
+- Version bumped to 70.25.74. Android debug build is being generated with the restored token bytes. The updater hash artifact is generated from the exact files in the build so the stable manifest can be verified before the first OTA test.
