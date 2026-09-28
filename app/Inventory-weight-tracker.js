@@ -150,87 +150,55 @@ function initWeightTracker() {
 // 3. ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ БЛОКИРОВКИ
 // ==========================================
 window.getCurrentInventoryWeightData = function() {
+    const character = window.currentCharacter || window.currentChar;
     let totalWeightKg = 0;
-    const itemRegistry = window.DndItemDatabase || {};
 
-    const itemCards = document.querySelectorAll(
-        '#invWeaponsList > div, #invArmorList > div, #invArmorsList > div, ' +
-        '#invConsumablesList > div, #invMaterialsList > div, #invJunkList > div, ' +
-        '#inventory-list > div, .inventory-item, [class*="item"], [class*="armor"], [class*="weapon"], [class*="inventory"]'
-    );
-    const allCards = itemCards.length > 0 ? itemCards : document.querySelectorAll('div');
-    const processedCards = new Set();
-
-    allCards.forEach(card => {
-        if (processedCards.has(card)) return;
-        const text = card.innerText || '';
-        if (!text.trim() && !card.querySelector('input')) return;
-
-        let foundItemData = null;
-        const possibleIdElements = card.querySelectorAll('[data-id], [data-item-id], [id]');
-        for (let el of possibleIdElements) {
-            const elId = el.getAttribute('data-id') || el.getAttribute('data-item-id') || el.id;
-            if (itemRegistry[elId]) {
-                foundItemData = itemRegistry[elId];
-                break;
+    // Основной путь: считаем прямо из сохранённого инвентаря.
+    // Это важно для кастомных предметов: они не входят в стартовый DndItemDatabase.
+    if (character && character.inventory && typeof character.inventory === 'object') {
+        ['weapons','armor','consumables','materials','junk'].forEach(function(category) {
+            const items = Array.isArray(character.inventory[category]) ? character.inventory[category] : [];
+            items.forEach(function(item) {
+                if (!item) return;
+                const singleWeightKg = window.parseWeightToKg(item.weight);
+                if (!Number.isFinite(singleWeightKg) || singleWeightKg < 0) return;
+                const quantity = Math.max(0, Number(item.count) || 1);
+                totalWeightKg += singleWeightKg * quantity;
+            });
+        });
+    } else {
+        const itemRegistry = window.DndItemDatabase || {};
+        const itemCards = document.querySelectorAll(
+            '#invWeaponsList > div, #invArmorList > div, #invArmorsList > div, ' +
+            '#invConsumablesList > div, #invMaterialsList > div, #invJunkList > div, ' +
+            '#inventory-list > div, .inventory-item, [class*="item"], [class*="armor"], [class*="weapon"], [class*="inventory"]'
+        );
+        itemCards.forEach(function(card) {
+            const text = card.innerText || '';
+            let foundItemData = null;
+            const possibleIdElements = card.querySelectorAll('[data-id], [data-item-id], [id]');
+            for (let el of possibleIdElements) {
+                const elId = el.getAttribute('data-id') || el.getAttribute('data-item-id') || el.id;
+                if (itemRegistry[elId]) { foundItemData = itemRegistry[elId]; break; }
             }
-        }
-
-        if (!foundItemData) {
-            const cardId = card.getAttribute('data-id') || card.getAttribute('data-item-id');
-            if (cardId && itemRegistry[cardId]) {
-                foundItemData = itemRegistry[cardId];
-            }
-        }
-
-        if (!foundItemData) {
-            for (let id in itemRegistry) {
-                const dbItem = itemRegistry[id];
-                if (dbItem && dbItem.name && text.toLowerCase().includes(dbItem.name.toLowerCase().trim())) {
-                    foundItemData = dbItem;
-                    break;
+            if (!foundItemData) {
+                for (let id in itemRegistry) {
+                    const dbItem = itemRegistry[id];
+                    if (dbItem && dbItem.name && text.toLowerCase().includes(dbItem.name.toLowerCase().trim())) { foundItemData = dbItem; break; }
                 }
             }
-        }
-
-        if (!foundItemData || foundItemData.weight === undefined) return;
-
-        let singleWeightKg = window.parseWeightToKg(foundItemData.weight);
-        if (singleWeightKg < 0) return;
-
-        let quantity = 1;
-        const inputField = card.querySelector('input[type="number"], input[type="text"], input');
-        if (inputField) {
-            const parsedQty = parseInt(inputField.value);
-            if (!isNaN(parsedQty) && parsedQty >= 0) quantity = parsedQty;
-        } else {
-            const explicitMatch = text.match(/(?:эк|шт|кол-во|qty|x)\s*[:\-]?\s*(\d+)/i);
-            if (explicitMatch && explicitMatch[1]) {
-                quantity = parseInt(explicitMatch[1]) || 1;
-            } else {
-                const numbers = text.match(/\b([1-9]\d{0,2})\b/g);
-                if (numbers) {
-                    for (let numStr of numbers) {
-                        const val = parseInt(numStr);
-                        if (val > 0 && val < 100) {
-                            quantity = val;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        totalWeightKg += singleWeightKg * quantity;
-        processedCards.add(card);
-    });
+            if (!foundItemData || foundItemData.weight === undefined) return;
+            const singleWeightKg = window.parseWeightToKg(foundItemData.weight);
+            if (!Number.isFinite(singleWeightKg) || singleWeightKg < 0) return;
+            const inputField = card.querySelector('input[type="number"], input[type="text"], input');
+            const quantity = inputField ? Math.max(0, parseInt(inputField.value) || 1) : 1;
+            totalWeightKg += singleWeightKg * quantity;
+        });
+    }
 
     let strength = 10;
     const strInput = document.getElementById('str');
-    if (strInput && strInput.value) {
-        strength = parseInt(strInput.value) || 10;
-    }
-
+    if (strInput && strInput.value) strength = parseInt(strInput.value) || 10;
     const maxCapacityKg = strength * 15 * 0.453592;
     return { totalWeightKg, maxCapacityKg };
 };
