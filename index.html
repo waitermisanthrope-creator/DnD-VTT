@@ -10,6 +10,7 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
   <title>Карманный ВТТ</title>
   <link rel="stylesheet" href="./app/styles.css">
   <link rel="stylesheet" href="./app/onboarding_faq_v71.css">
+  <link rel="stylesheet" href="./app/character_creation_pergament.css">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -138,6 +139,7 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
   <!-- Игровая логика и модули -->
   <!-- Модуль логики создания персонажа -->
   <script src="./app/character_creation.js"></script>
+  <script src="./app/character_creation_pergament.js"></script>
 
   <!-- Модуль управления данными персонажа -->
   <script src="./app/character.js"></script>
@@ -290,6 +292,20 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
       ⚙️ Настройки
     </button>
   </div>
+
+  <div id="parchmentCreationScreen" aria-label="Розыскной лист персонажа"><div id="parchmentStage" class="parchment-stage"><div class="parchment-inner">
+<div class="parchment-title">РОЗЫСКНОЙ ЛИСТ</div>
+<div class="parchment-subtitle">По подозрению в неуплате налогов, славному городу Енотовиллю, для допроса разыскивается гуманоид</div>
+<div class="parchment-text">по имени <input id="pc_name" class="parchment-field" type="text" placeholder="имя" autocomplete="off">. В ходе следственно-розыскных мероприятий стало известно, что хулиган родом из <input id="pc_origin" class="parchment-field" type="text" placeholder="место">.</div>
+<div class="parchment-class-row"><div class="parchment-token"><img id="pc_classArt" src="./1.png" alt="Жетон класса"></div><div class="parchment-class-caption">При себе носит жетон<br><select id="pc_class" class="parchment-select"></select><div id="pc_classLabel" style="font-size:.7em;opacity:.7;margin-top:4px;"></div></div></div>
+<div class="parchment-text">Предположительно <select id="pc_gender" class="parchment-select"></select>, <select id="pc_race" class="parchment-select"></select>, на вид около <input id="pc_age" class="parchment-field" type="number" min="1" max="999" placeholder="лет"> лет.</div>
+<div class="parchment-text" style="margin-top:1.5vh">Со слов последних очевидцев, подозреваемый <select id="pc_background" class="parchment-select"></select>.</div>
+<div class="parchment-text" style="margin-top:2vh">Открытый учёт налоговой службы Енотовилля докладывает о невыплате в Счётную палату ежемесячной дани в размере <strong>60 серебряных монет</strong>, полученных вследствие легального заработка, облагаемого налогом.</div>
+<div class="parchment-warning">СТЫД ТЕБЕ, ПРОЧИТАВШИЙ ЭТО, РОЗЫСКИВАЕМЫЙ <span id="pc_professionText">—</span>.</div>
+<div class="parchment-reward">Доставить исключительно живым и с кошельком.<br>Награда 10 серебряных монет и кружка хорошего пива.</div>
+<button id="pc_signButton" class="parchment-sign" type="button" onclick="finishParchmentCreation()">расписаться<span class="parchment-sign-hint">завершить создание</span></button>
+</div></div></div>
+<div id="parchmentSignatureLayer" class="parchment-signature-layer" aria-hidden="true"><img class="parchment-signature-img" src="./1790622252250.png" alt=""></div><div id="parchmentBlackout" class="parchment-blackout" aria-hidden="true"></div>
 
   <!-- Экран создания нового персонажа -->
   <div id="characterCreationScreen" style="display: none; padding: 20px 20px 110px; max-width: 600px; margin: 0 auto; box-sizing: border-box; min-height: 100dvh; max-height: 100dvh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; touch-action: pan-y; overscroll-behavior-y: contain;">
