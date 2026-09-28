@@ -220,7 +220,7 @@ function updateInventoryItemCount(category, index, newCount) {
   }
 }
 
-function checkCharacterProficiency(category, item) {
+function checkInventoryItemProficiency(category, item) {
   if (typeof currentCharacter === 'undefined' || !currentCharacter) return true;
   
   const profs = currentCharacter.proficiencies || [];
@@ -235,6 +235,8 @@ function checkCharacterProficiency(category, item) {
 
   // 1. ПРОВЕРКА ДОСПЕХОВ И ЩИТОВ
   if (category === 'armor') {
+    const proficiencyType = String(item.proficiencyType || '').toLowerCase();
+
     if (itemCategory.includes('одежда') || itemCategory.includes('прочее') || itemCategory.includes('кольцо') || 
         itemCategory.includes('шлем') || itemCategory.includes('плащ') || itemCategory.includes('амулет') || 
         itemCategory.includes('наручи') || itemCategory.includes('чудесный предмет') || itemCategory.includes('аксессуар')) {
@@ -249,11 +251,11 @@ function checkCharacterProficiency(category, item) {
       return userProfsIds.includes('p_armor_heavy');
     }
 
-    if (itemCategory.includes('средн')) {
+    if (itemCategory.includes('средн') || proficiencyType === 'medium') {
       return userProfsIds.includes('p_armor_medium') || userProfsIds.includes('p_armor_heavy');
     }
 
-    if (itemCategory.includes('легк')) {
+    if (itemCategory.includes('легк') || proficiencyType === 'light') {
       return userProfsIds.includes('p_armor_light') || userProfsIds.includes('p_armor_medium') || userProfsIds.includes('p_armor_heavy');
     }
 
@@ -294,7 +296,7 @@ function toggleItemEquipped(category, index, isChecked) {
   
   if (item) {
     if (isChecked) {
-      const hasProficiency = checkCharacterProficiency(category, item);
+      const hasProficiency = checkInventoryItemProficiency(category, item);
       if (!hasProficiency) {
         alert(`❌ Персонаж не владеет данным типом снаряжения («${item.name}»)!\nЭкипировка заблокирована.`);
         renderInventory(); 
@@ -356,23 +358,35 @@ function updateCharacterArmorClass() {
   if (currentCharacter.inventory && currentCharacter.inventory.armor) {
     currentCharacter.inventory.armor.forEach(item => {
       if (item.equipped === true) {
-        let name = (item.name || '').toLowerCase();
-        let cat = (item.category || '').toLowerCase();
-        
+        const sourceArmor = Array.isArray(window.defaultArmors)
+          ? window.defaultArmors.find(a =>
+              a && (
+                (item.id && a.id === item.id) ||
+                (item.name && a.name && String(a.name).toLowerCase() === String(item.name).toLowerCase())
+              )
+            )
+          : null;
+
+        let name = String(item.name || sourceArmor?.name || '').toLowerCase();
+        let cat = String(item.category || sourceArmor?.category || '').toLowerCase();
+        let proficiencyType = String(item.proficiencyType || sourceArmor?.proficiencyType || '').toLowerCase();
+
         let acVal = 0;
         if (item.acBase !== undefined && !isNaN(parseInt(item.acBase))) {
           acVal = parseInt(item.acBase);
         } else if (item.ac !== undefined && !isNaN(parseInt(item.ac))) {
           acVal = parseInt(item.ac);
+        } else if (sourceArmor && sourceArmor.acBase !== undefined && !isNaN(parseInt(sourceArmor.acBase))) {
+          acVal = parseInt(sourceArmor.acBase);
         }
 
-        if (cat.includes('щит') || name.includes('щит') || cat.includes('shield')) {
+        if (cat.includes('щит') || name.includes('щит') || cat.includes('shield') || proficiencyType === 'shield') {
           shieldBonus += (acVal > 0 ? acVal : 2);
-        } else if (cat.includes('тяжел') || cat.includes('heavy')) {
+        } else if (cat.includes('тяжел') || cat.includes('heavy') || proficiencyType === 'heavy') {
           bodyArmor = { type: 'heavy', ac: acVal };
-        } else if (cat.includes('средн') || cat.includes('medium')) {
+        } else if (cat.includes('средн') || cat.includes('medium') || proficiencyType === 'medium') {
           bodyArmor = { type: 'medium', ac: acVal };
-        } else if (cat.includes('легк') || cat.includes('light')) {
+        } else if (cat.includes('легк') || cat.includes('light') || proficiencyType === 'light') {
           bodyArmor = { type: 'light', ac: acVal };
         } else {
           if (acVal > 0) extraACBonus += acVal;
