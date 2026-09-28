@@ -1,3 +1,4 @@
+// Bootstrap APK: keeps package version 70.25.71 while validating web updater 70.25.72.
 plugins {
     id "com.android.application"
 }
