@@ -4076,8 +4076,16 @@ APK: build required.
 ## 2026-09-28 — FIX 70.25.72 / first real updater validation
 - Extra parchment explicitly uses root asset `1790622696215.png`; ordinary uses `1790622844831.jpg`. Android asset packaging now copies root PNG/JPG assets to the root of the WebView version.
 - Parchment text now appears line-by-line; class token is hidden until a class is selected; inputs/selects use 90% opaque backgrounds.
-- Standard classes use their existing transparent PNG tokens; named JPG tokens have near-black backgrounds removed at runtime.
+- All class tokens are now stored as PNG; no runtime pixel processing or black-color removal is used. The JPG sources were converted to PNG without thresholding, recoloring, or alpha manipulation.
 - Signature/print animation uses `1790622252250.png`; character deletion is touch-safe; Lineage 2 Shepard's Flute follows Glenmoril.
 - Settings updater UI is connected and the native bridge reports the active staged web version so 71 → 72 can apply without reinstalling the APK.
 
 - 2026-09-29: token conversion workflow added; PNG conversion must preserve every pixel and must not remove dark shades.
+
+
+## 2026-09-29 — FIX 70.25.73 token regression / progressive parchment
+- Removed runtime background cleanup from class tokens completely. It was destroying legitimate black/dark shades inside the artwork.
+- All 33 class token images under `app/data/classes` are now PNG; the original JPG files are removed. Conversion preserves the image pixels and does not perform background removal.
+- `character_creation_pergament.js`: class selection no longer disables the class selector after the first choice; choosing another class replaces the token without clearing the selector.
+- Progressive parchment reveal was rewritten as a deterministic state machine: the first incomplete field is the only current step, all following steps remain hidden/disabled, and completing a choice immediately reveals the next line.
+- Added 70.25.73 update manifest entries for all 33 PNG tokens so OTA updates from 70.25.71/72 include the token assets too.
