@@ -48,27 +48,43 @@ function fitSelect(e){
 }
 function reveal(id,yes){var e=el(id);if(!e)return;e.closest('.parchment-step')?.classList.toggle('step-hidden',!yes)}
 function setupProgression(){
- var steps=[['pc_name',function(){return !!(el('pc_name')&&el('pc_name').value.trim())}],['pc_origin',function(){return !!(el('pc_origin')&&el('pc_origin').value.trim())}],['pc_class',function(){return !!(el('pc_class')&&el('pc_class').value)}],['pc_gender',function(){return !!(el('pc_gender')&&el('pc_gender').value)}],['pc_race',function(){return !!(el('pc_race')&&el('pc_race').value)}],['pc_age',function(){return !!(el('pc_age')&&el('pc_age').value)}],['pc_background',function(){return !!(el('pc_background')&&el('pc_background').value)}],['pc_profession',function(){return !!(el('pc_profession')&&el('pc_profession').value)}]];
+ var steps=[
+  ['pc_name',function(){var e=el('pc_name');return e&&String(e.value||'').trim().length>0}],
+  ['pc_origin',function(){var e=el('pc_origin');return e&&String(e.value||'').trim().length>0}],
+  ['pc_class',function(){var e=el('pc_class');return e&&String(e.value||'').length>0}],
+  ['pc_gender',function(){var e=el('pc_gender');return e&&String(e.value||'').length>0}],
+  ['pc_race',function(){var e=el('pc_race');return e&&String(e.value||'').length>0}],
+  ['pc_age',function(){var e=el('pc_age');return e&&String(e.value||'').trim().length>0}],
+  ['pc_background',function(){var e=el('pc_background');return e&&String(e.value||'').length>0}],
+  ['pc_profession',function(){var e=el('pc_profession');return e&&String(e.value||'').length>0}]
+ ];
+ function findStep(field){var n=field;while(n&&(!n.classList||!n.classList.contains('parchment-step')))n=n.parentNode;return n;}
  function update(){
   var firstIncomplete=steps.length;
   for(var i=0;i<steps.length;i++){if(!steps[i][1]()){firstIncomplete=i;break;}}
   for(var j=0;j<steps.length;j++){
    var field=el(steps[j][0]);if(!field)continue;
-   var step=field.closest?field.closest('.parchment-step'):field.parentNode;
-   var visible=j<=firstIncomplete;
+   var step=findStep(field),visible=(j<=firstIncomplete);
    if(step)step.classList.toggle('step-hidden',!visible);
-   /* The current and completed fields stay interactive; only future choices are locked. */
    field.disabled=j>firstIncomplete;
    if(field.tagName==='SELECT')fitSelect(field);
   }
   var sign=el('pc_signButton');if(sign)sign.disabled=firstIncomplete!==steps.length;
  }
- window.__updateParchmentProgress=update;
- steps.forEach(function(pair){
-  var e=el(pair[0]);if(!e)return;
-  e.addEventListener('input',function(){update();});
-  e.addEventListener('change',function(){update();renderClassArt();window.setTimeout(update,0);});
- });
+ var stage=el('parchmentStage');
+ if(stage&&!stage.dataset.progressBound){
+  stage.dataset.progressBound='1';
+  stage.addEventListener('input',function(ev){if(ev.target&&ev.target.classList&&ev.target.classList.contains('parchment-field'))update();});
+  stage.addEventListener('change',function(ev){
+   var t=ev.target;if(!t)return;
+   if(t.id==='pc_class'||t.id==='pc_gender'||t.id==='pc_race'||t.id==='pc_background'||t.id==='pc_profession'){
+    if(t.tagName==='SELECT')fitSelect(t);
+    update();
+    if(t.id==='pc_class')renderClassArt();
+   }else if(t.classList&&t.classList.contains('parchment-field'))update();
+  });
+ }
+ window.__refreshParchmentProgress=update;
  update();
 }
 function renderClassArt(){
