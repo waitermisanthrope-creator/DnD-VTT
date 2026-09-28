@@ -62,6 +62,7 @@ public final class DndUpdateBridge {
 
             for (int i = 0; i < files.length(); i++) {
                 JSONObject entry = files.getJSONObject(i);
+                postProgress(reply, id, "download", i + 1, files.length(), entry.optString("path", ""));
                 String path = entry.getString("path");
                 validatePath(path);
                 String url = entry.optString("url", "");
@@ -196,6 +197,20 @@ public final class DndUpdateBridge {
 
     private static void validatePath(String path) throws Exception {
         if (path.isEmpty() || path.startsWith("/") || path.contains("..")) throw new Exception("Unsafe update path: " + path);
+    }
+
+    private static void postProgress(JavaScriptReplyProxy reply, String id, String phase, int current, int total, String path) {
+        JSONObject o = new JSONObject();
+        try {
+            o.put("id", id);
+            o.put("ok", true);
+            o.put("status", "progress");
+            o.put("phase", phase);
+            o.put("current", current);
+            o.put("total", total);
+            o.put("path", path);
+        } catch (Exception ignored) {}
+        postReply(reply, o.toString());
     }
 
     private static void postReply(JavaScriptReplyProxy reply, String message) {
