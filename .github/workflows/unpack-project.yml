@@ -14,6 +14,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Convert class token JPGs to PNG without pixel cleanup
+        shell: bash
+        run: |
+          python3 -m pip install --quiet Pillow
+          python3 - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          root=Path("app/data/classes")
+          for src in sorted(root.glob("*.jpg")):
+              dst=src.with_suffix(".png")
+              with Image.open(src) as im:
+                  if im.mode not in ("RGB","RGBA"):
+                      im=im.convert("RGB")
+                  im.save(dst,format="PNG",optimize=False)
+              src.unlink()
+          p=Path("app/character_creation_pergament.js")
+          text=p.read_text(encoding="utf-8")
+          for src in sorted(root.glob("*.png")):
+              pass
+          for old in sorted(root.glob("*.jpg")):
+              text=text.replace("./app/data/classes/"+old.name,"./app/data/classes/"+old.with_suffix(".png").name)
+          p.write_text(text,encoding="utf-8")
+          PY
+
       - name: Unpack V70.25.61 archive
         shell: bash
         run: |
