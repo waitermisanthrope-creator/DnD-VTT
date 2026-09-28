@@ -473,6 +473,20 @@ function refreshDebugLogsModal() {
   body.scrollTop = body.scrollHeight;
 }
 
+function exportDebugLogs() {
+  const logs = Array.isArray(window.appDebugLogs) ? window.appDebugLogs : [];
+  const text = logs.length ? logs.join('\n') : 'Логи пока не собраны.';
+  const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'dnd-vtt-debug-logs-' + new Date().toISOString().replace(/[:.]/g,'-') + '.txt';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+}
+
 function clearDebugLogs() {
   window.appDebugLogs = [];
   refreshDebugLogsModal();
