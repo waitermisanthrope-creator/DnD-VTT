@@ -1,11 +1,57 @@
 {
   "schema": 1,
   "app": "DnD-VTT",
-  "version": "70.25.61",
-  "minAppVersion": "70.25.61",
+  "version": "70.25.72",
+  "minAppVersion": "70.25.71",
   "channel": "stable",
-  "generated": "2026-09-27T00:00:00Z",
-  "baseUrl": "",
-  "files": [],
+  "generated": "2026-09-28T20:45:00Z",
+  "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main",
+  "files": [
+    {
+      "path": "index.html",
+      "bytes": 75067,
+      "sha256": "6eeb95dac61f6afa69dd03b40da19d1199a86ef36ae65541ea077da8cece86d4"
+    },
+    {
+      "path": "app/character_creation_pergament.js",
+      "bytes": 14428,
+      "sha256": "109eb7bb64f66dcb205bb89854f68e34215ea73ed8097442e3cd186d8d46c9d3"
+    },
+    {
+      "path": "app/character_creation_pergament.css",
+      "bytes": 5288,
+      "sha256": "5093e6dbd91481271906718071172710bd2c2c9e4bbcb37ba4d5272a9aee27bc"
+    },
+    {
+      "path": "app/Ambiences.js",
+      "bytes": 12671,
+      "sha256": "56ba2ddc81c57a9e111467a3511ad7e6737b8c9b16cc2a5686ba6369517b9b01"
+    },
+    {
+      "path": "app/app.js",
+      "bytes": 29612,
+      "sha256": "12fdf5f0b85e590264af2309392b18f6e33ada7dc92d516e94a524cba8a83c80"
+    },
+    {
+      "path": "app/Settings.js",
+      "bytes": 37105,
+      "sha256": "ef9e9e35b250ee74733c65280965b54634b24901d3812afd337c1cb7c4a5127c"
+    },
+    {
+      "path": "app/update_manager.js",
+      "bytes": 16921,
+      "sha256": "ec03563760689258b51b0b417c1c041f5248a81b0858c4cbb4d6515927c8a9f7"
+    },
+    {
+      "path": "app/onboarding_faq_v71.js",
+      "bytes": 26415,
+      "sha256": "38d37f5af199a3b143d0c58a2a471f85852af09bd5893c8f9b32d659046b5ef1"
+    },
+    {
+      "path": "app/styles.css",
+      "bytes": 14611,
+      "sha256": "1965fda511d019710900206f2d34d0bb6956ac7ec63351ee1e6950ca66aaf480"
+    }
+  ],
   "blockedVersions": []
 }
