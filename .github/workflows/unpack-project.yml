@@ -44,7 +44,9 @@ jobs:
             echo "No token conversion changes."
           else
             git commit -m "Convert class tokens to PNG without pixel cleanup"
-            git push
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main
           fi
 
       - name: Unpack V70.25.61 archive
