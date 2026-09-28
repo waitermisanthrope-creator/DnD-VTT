@@ -21,7 +21,7 @@
 .parchment-sign-hint{font-size:.55em;display:block;margin-top:2px;opacity:.75}
 .parchment-signature-layer{position:fixed;inset:0;z-index:9010;display:none;pointer-events:none}
 .parchment-signature-layer.show{display:block;animation:parchmentFade .9s ease both}
-.parchment-signature-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+ .parchment-signature-img{position:absolute;left:5vw;bottom:7vh;width:min(42vw,320px);max-height:28vh;height:auto;object-fit:contain;object-position:left bottom;filter:drop-shadow(0 3px 3px rgba(0,0,0,.28))}
 .parchment-blackout{position:fixed;inset:0;z-index:9020;background:#000;display:none}
 .parchment-blackout.show{display:block;animation:parchmentBlackout 1.4s ease both}
 @keyframes parchmentFade{0%{opacity:0}35%{opacity:1}75%{opacity:1}100%{opacity:0}}

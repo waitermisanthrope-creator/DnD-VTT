@@ -4050,3 +4050,12 @@ APK: build required.
 - Новые ассеты пользователя используются как root-ресурсы: 1790622844831.jpg (светлый пергамент), 1790622696215.png (кровавый пергамент), 1790622252250.png (подпись/печать).
 - Для class-art используется существующая нумерованная коллекция 1.png–30.png с fallback на 1.png; точное соответствие эмблем классам можно позже закрепить отдельной таблицей, не ломая текущую сцену.
 - Не изменять Wallpapers.js и Ambiences.js.
+
+
+## 2026-09-28 — Character creation / named class tokens
+- Corrected character-creation routing: Ordinary -> standard sheet; Extra -> parchment/special sheet.
+- Connected the new named class token assets to class names via an explicit token map.
+- Added temporary class progression stubs for missing extra classes so creation can be tested now.
+- JPG tokens are retained; Android WebView supports JPEG, so conversion is not required at this stage.
+- Extra flow keeps the requested signature + blackout scene and then opens a temporary Extra sheet stub.
+- Signature/print layer is sized and positioned in the lower-left area.
