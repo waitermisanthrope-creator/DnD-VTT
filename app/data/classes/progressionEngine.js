@@ -76,6 +76,7 @@ function _mergeFeatures(hero, featureList) {
  * сохраняются как pendingProficiencyChoices и разрешаются UI повышения уровня.
  */
 const MULTICLASS_PROFICIENCIES_2014 = {
+    "Оккультист": { fixed: ["Prof_Med", "p_tool_herbalist"] },
     "Алхимик": { fixed: ["p_armor_light", "p_weapon_simple", "p_tool_alchemist", "p_tool_herbalist"] },
     "Кровавый охотник": { fixed: ["p_armor_light", "p_armor_medium", "p_shields", "p_weapon_simple", "p_weapon_martial", "p_tool_alchemist"], choices: [{ type: "skill", count: 1, label: "Навык Кровавого охотника" }] },
     "Варвар": { fixed: ["p_shields", "p_weapon_simple", "p_weapon_martial"] },
@@ -94,7 +95,7 @@ const MULTICLASS_PROFICIENCIES_2014 = {
 };
 
 const CLASS_SPELLCASTING_ABILITIES_2014 = {
-    "Бард": "cha", "Друид": "wis", "Жрец": "wis", "Паладин": "cha",
+    "Оккультист": "wis", "Бард": "cha", "Друид": "wis", "Жрец": "wis", "Паладин": "cha",
     "Следопыт": "wis", "Чародей": "cha", "Колдун": "cha", "Волшебник": "int", "Изобретатель": "int"
 };
 
