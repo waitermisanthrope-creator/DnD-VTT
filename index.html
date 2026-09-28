@@ -16,6 +16,44 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Inter:wght@400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
   <script src="./app/Logo.js"></script>
+  <style>
+    .author-link-card {
+      max-width: 620px;
+      margin: 24px auto 0;
+      padding: 16px 18px;
+      box-sizing: border-box;
+      background: rgba(30,30,30,.88);
+      border: 1px solid #4a4a4a;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.28);
+      text-align: center;
+    }
+    .author-link-card-title {
+      color: #d4af37;
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .author-link-card-text {
+      margin-top: 5px;
+      color: #aaa;
+      font-size: .82rem;
+    }
+    .author-link-card-button {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 9px 16px;
+      border-radius: 8px;
+      background: #333;
+      border: 1px solid #666;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .author-link-card-button:hover {
+      background: #444;
+      border-color: #888;
+    }
+  </style>
   <!-- Справочники и данные -->
   <script src="./app/weaponsmelee.js"></script>
   <script src="./app/weaponsheavy.js"></script>
@@ -217,6 +255,12 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
   <div id="characterSelectScreen" style="position: relative; min-height: 100vh; box-sizing: border-box; padding-bottom: 60px;">
     <h2 class="app-title">📜 Карманный ВТТ — персонажи</h2>
     <div id="characterList"></div>
+    <div class="author-link-card" aria-label="Страница автора">
+      <div class="author-link-card-title">✒️ Страница автора</div>
+      <div class="author-link-card-text">Новости проекта, материалы и связь с автором</div>
+      <a class="author-link-card-button" href="https://m.vk.com/dima_dimon_knk" target="_blank" rel="noopener noreferrer">Открыть страницу</a>
+    </div>
+
 
     <div style="margin-top: 20px; display: flex; gap: 10px;">
       <button class="btn-action" style="background: #4CAF50; flex: 1; padding: 12px;" onclick="createNewCharacter()">+ Новый персонаж</button>
