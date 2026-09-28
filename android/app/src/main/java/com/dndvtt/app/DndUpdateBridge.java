@@ -126,7 +126,7 @@ public final class DndUpdateBridge {
 
     public String getActiveVersion() {
         SharedPreferences prefs = context.getSharedPreferences("dnd_vtt_update", Context.MODE_PRIVATE);
-        return prefs.getString("active", "70.25.62");
+        return prefs.getString("active", BuildConfig.VERSION_NAME);
     }
 
     public void ensureSeeded() throws Exception {
@@ -140,7 +140,7 @@ public final class DndUpdateBridge {
         copyAssetTree("app", active);
         copyAssetTree("wallpapers", active);
         copyAssetTree("ambience", active);
-        prefs.edit().putString("active", "70.25.62").putString("healthy", "70.25.62").commit();
+        prefs.edit().putString("active", BuildConfig.VERSION_NAME).putString("healthy", BuildConfig.VERSION_NAME).commit();
     }
 
     public void markHealthy() {
