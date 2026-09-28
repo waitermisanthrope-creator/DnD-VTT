@@ -4059,3 +4059,15 @@ APK: build required.
 - JPG tokens are retained; Android WebView supports JPEG, so conversion is not required at this stage.
 - Extra flow keeps the requested signature + blackout scene and then opens a temporary Extra sheet stub.
 - Signature/print layer is sized and positioned in the lower-left area.
+
+
+## 2026-09-28 — Character parchment v2 after mobile QA
+- Rebuilt parchment flow instead of patching the previous routing.
+- Ordinary selection opens the ordinary parchment texture `1790622844831.jpg`; Extra opens `1790622696215.png`.
+- Added readable parchment base under the transparent PNG texture, removed the artificial circular token holder, enlarged class token.
+- Added progressive field reveal: later inputs/selectors remain hidden until the previous choice is made.
+- Selects auto-fit their visible text to reduce empty horizontal space.
+- Profession list now falls back to the base profession catalog if the progression API is not available.
+- Extra class selector is restricted to the requested test classes: Рой, Призрак, Паразит. `Призрак` uses the existing Geist token until a dedicated token exists.
+- Signature/print now enters from the screen edge, then blackout transitions to the normal character creation screen.
+- Fixed the create-button hook so the normal creation form can actually create the character after the parchment transition instead of reopening the type chooser.

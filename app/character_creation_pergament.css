@@ -1,31 +1,38 @@
-/* Пергаментное создание персонажа — VTT */
-#parchmentCreationScreen{position:fixed;inset:0;z-index:9000;display:none;overflow-y:auto;overflow-x:hidden;background:#15100c;-webkit-overflow-scrolling:touch}
-.parchment-stage{position:relative;width:min(100%,900px);min-height:100dvh;margin:0 auto;box-sizing:border-box;background-image:url('../1790622844831.jpg');background-size:100% 100%;background-position:center top;background-repeat:no-repeat;color:#2d2118;font-family:'Playfair Display',Georgia,serif;padding:7.5vh 8% 9vh;overflow:hidden}
-.parchment-stage.is-extra{background-image:url('../1790622696215.png')}
-.parchment-inner{position:relative;min-height:86dvh}
-.parchment-title{text-align:center;font-weight:700;letter-spacing:.04em;font-size:clamp(20px,4.4vw,38px);margin:1vh 0 1.5vh}
-.parchment-subtitle{text-align:center;font-size:clamp(11px,2.3vw,17px);margin-bottom:2.5vh;font-style:italic}
-.parchment-text{font-size:clamp(12px,2.5vw,18px);line-height:1.62;text-align:justify}
-.parchment-field{border:0;border-bottom:1px dashed rgba(65,45,28,.65);background:rgba(255,250,230,.16);color:#241a13;font:inherit;font-weight:700;outline:none;padding:1px 4px;min-width:70px;max-width:100%;border-radius:2px}
-.parchment-field:focus{background:rgba(255,255,220,.38);border-bottom-color:#6e4729}
-.parchment-select{appearance:none;-webkit-appearance:none;border:0;border-bottom:1px dashed rgba(65,45,28,.65);background:rgba(255,250,230,.16);color:#241a13;font:inherit;font-weight:700;outline:none;padding:1px 20px 1px 4px;max-width:100%;border-radius:2px}
-.parchment-select:focus{background:rgba(255,255,220,.38)}
-.parchment-class-row{display:flex;align-items:center;justify-content:center;gap:16px;margin:1.5vh 0 2vh;flex-wrap:wrap}
-.parchment-token{width:clamp(76px,18vw,120px);height:clamp(76px,18vw,120px);border-radius:50%;overflow:hidden;border:3px solid #5a3b22;box-shadow:0 4px 10px rgba(45,28,15,.35);background:rgba(255,248,220,.45)}
-.parchment-token img{width:100%;height:100%;object-fit:cover;display:block}
-.parchment-class-caption{text-align:center;font-weight:700;font-size:clamp(13px,3vw,20px)}
-.parchment-warning{margin-top:2vh;font-weight:700;text-align:center;letter-spacing:.02em}
-.parchment-reward{margin-top:2vh;text-align:center;font-weight:700}
-.parchment-sign{position:absolute;right:1%;bottom:0;border:0;background:none;color:#3c2818;font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(20px,4vw,32px);cursor:pointer;padding:10px 8px;text-shadow:0 1px rgba(255,255,255,.35)}
-.parchment-sign:hover{transform:rotate(-2deg) scale(1.03)}.parchment-sign:active{transform:scale(.97)}
-.parchment-sign-hint{font-size:.55em;display:block;margin-top:2px;opacity:.75}
-.parchment-signature-layer{position:fixed;inset:0;z-index:9010;display:none;pointer-events:none}
-.parchment-signature-layer.show{display:block;animation:parchmentFade .9s ease both}
- .parchment-signature-img{position:absolute;left:5vw;bottom:7vh;width:min(42vw,320px);max-height:28vh;height:auto;object-fit:contain;object-position:left bottom;filter:drop-shadow(0 3px 3px rgba(0,0,0,.28))}
+/* Parchment character creation v2 */
+#parchmentCreationScreen{position:fixed;inset:0;z-index:9000;display:none;overflow-y:auto;overflow-x:hidden;background:#17120d;-webkit-overflow-scrolling:touch}
+.parchment-stage{position:relative;width:min(100%,900px);min-height:100dvh;margin:0 auto;box-sizing:border-box;background-color:#d9c59d;background-image:url('../1790622844831.jpg');background-size:100% 100%;background-position:center top;background-repeat:no-repeat;color:#2d2118;font-family:'Playfair Display',Georgia,serif;padding:6.5vh 7% 8vh;overflow:hidden}
+.parchment-stage.is-extra{background-color:#d9c59d;background-image:url('../1790622696215.png');background-size:cover;background-position:center top}
+.parchment-inner{position:relative;min-height:88dvh;text-shadow:0 1px rgba(255,248,225,.38)}
+.parchment-title{text-align:center;font-weight:700;letter-spacing:.04em;font-size:clamp(21px,4.4vw,36px);margin:1vh 0 1.2vh;color:#3a2819}
+.parchment-subtitle{text-align:center;font-size:clamp(12px,2.2vw,16px);line-height:1.35;margin-bottom:2vh;font-style:italic;color:#493522}
+.parchment-text{font-size:clamp(13px,2.55vw,17px);line-height:1.45;text-align:left;color:#352519;margin:1.1vh 0}
+.parchment-field,.parchment-select{display:inline-block;vertical-align:baseline;box-sizing:border-box;width:auto;max-width:72vw;min-height:32px;border:0;border-bottom:1px dashed rgba(65,45,28,.75);background:rgba(255,248,220,.58);color:#241a13;font:inherit;font-weight:700;outline:none;padding:3px 6px;border-radius:3px}
+.parchment-field{min-width:8ch}
+.parchment-field[type=number]{width:7ch;min-width:7ch}
+.parchment-select{appearance:auto;-webkit-appearance:auto;min-width:80px;padding-right:25px}
+.parchment-field:focus,.parchment-select:focus{background:rgba(255,255,230,.82);border-bottom-color:#704a25}
+.parchment-step{transition:opacity .22s ease,transform .22s ease,max-height .22s ease;margin:0}
+.parchment-step.step-hidden{display:none}
+.parchment-class-row{display:flex;align-items:center;justify-content:center;gap:12px;margin:1.2vh 0 1.4vh;flex-wrap:wrap}
+.parchment-token{width:clamp(92px,22vw,145px);height:clamp(92px,22vw,145px);overflow:visible;border:0;border-radius:0;box-shadow:none;background:transparent;display:flex;align-items:center;justify-content:center}
+.parchment-token img{width:100%;height:100%;object-fit:contain;display:block}
+.parchment-class-caption{text-align:center;font-weight:700;font-size:clamp(13px,3vw,19px)}
+.parchment-class-caption .parchment-select{display:block;margin:5px auto 0}
+.parchment-warning{margin-top:2vh;font-weight:700;text-align:center;letter-spacing:.02em;color:#3b2418;font-size:clamp(13px,2.8vw,19px);line-height:1.3}
+.parchment-reward{margin-top:1.5vh;text-align:center;font-weight:700;color:#3b2418;font-size:clamp(13px,2.8vw,18px);line-height:1.3}
+.parchment-sign{position:fixed;right:3vw;bottom:3vh;z-index:9015;border:0;background:rgba(235,216,175,.82);color:#3c2818;font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(21px,4.2vw,31px);cursor:pointer;padding:9px 12px;border-radius:5px;box-shadow:0 3px 12px rgba(50,30,10,.25)}
+.parchment-sign:disabled{opacity:.35;cursor:not-allowed}
+.parchment-sign-hint{font-size:.5em;display:block;margin-top:1px;opacity:.75}
+.parchment-signature-layer{position:fixed;inset:0;z-index:9010;display:none;pointer-events:none;overflow:hidden}
+.parchment-signature-layer.show{display:block}
+.parchment-signature-img{position:absolute;left:-52vw;bottom:6vh;width:min(55vw,360px);max-height:34vh;height:auto;object-fit:contain;filter:drop-shadow(0 4px 5px rgba(45,25,8,.35));animation:signatureEnter 1.2s cubic-bezier(.2,.75,.2,1) forwards}
 .parchment-blackout{position:fixed;inset:0;z-index:9020;background:#000;display:none}
-.parchment-blackout.show{display:block;animation:parchmentBlackout 1.4s ease both}
-@keyframes parchmentFade{0%{opacity:0}35%{opacity:1}75%{opacity:1}100%{opacity:0}}
-@keyframes parchmentBlackout{0%{opacity:0}45%{opacity:1}100%{opacity:1}}
-.parchment-extra-banner{text-align:center;font-weight:700;color:#5b1712;font-size:clamp(15px,3.5vw,26px);margin-bottom:1vh}
-.parchment-extra .parchment-text{color:#2a1713}.parchment-extra .parchment-warning{color:#5b1712;font-size:1.2em}
-@media(max-width:600px){.parchment-stage{padding:5vh 7% 7vh}.parchment-text{line-height:1.48}.parchment-inner{min-height:90dvh}}
+.parchment-blackout.show{display:block;animation:parchmentBlackout .65s ease both}
+.creation-type-card{width:min(100%,410px);background:#181818;color:#fff;border:1px solid #66552b;border-radius:14px;padding:20px;box-shadow:0 15px 45px rgba(0,0,0,.7);text-align:center}
+.creation-type-card h2{margin:0 0 7px;color:#d4af37}.creation-type-card p{color:#aaa;margin:0 0 17px}
+.creation-type-card button{display:block;width:100%;border:0;border-radius:9px;padding:12px;margin:8px 0;color:#fff;font-weight:700;font-size:16px;background:#3f3f3f}
+.creation-type-card #ccTypeClassic{background:#4d7f4d}.creation-type-card #ccTypeExtra{background:#7b2828}
+.creation-type-card #ccTypeCancel{background:#333}.creation-type-icon{font-size:40px;margin-bottom:5px}
+@keyframes signatureEnter{0%{transform:translateX(0) rotate(-8deg);opacity:0}12%{opacity:1}100%{transform:translateX(58vw) rotate(-2deg);opacity:1}}
+@keyframes parchmentBlackout{0%{opacity:0}100%{opacity:1}}
+@media(max-width:520px){.parchment-stage{padding-left:6%;padding-right:6%}.parchment-text{line-height:1.38}.parchment-token{width:118px;height:118px}.parchment-sign{right:3vw;bottom:2vh}.parchment-field,.parchment-select{min-height:30px}}

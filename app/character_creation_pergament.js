@@ -1,73 +1,174 @@
-/* Пергаментное создание персонажа: этап 1 + переход к существующему механическому созданию. */
+/* Character creation parchment flow v2 — ordinary/extra sheets, progressive reveal, signature transition. */
 (function(){
 'use strict';
-var ROOT='./', SIGNATURE=ROOT+'1790622252250.png';
-var CLASS_TOKEN_ART={'Иллирригер':'./app/data/classes/Illigger.jpg','Аккурсд':'./app/data/classes/accursed.jpg','Алхимик':'./app/data/classes/alchemist.jpg','Бистхарт':'./app/data/classes/beasthart.jpg','Кровавый охотник':'./app/data/classes/blood hunter.jpg','Гайст':'./app/data/classes/geist.jpg','Мученик':'./app/data/classes/martyr.jpg','Некромант':'./app/data/classes/necromancer.jpg','Оккультист':'./app/data/classes/occultist.jpg','Паразит':'./app/data/classes/parasite.jpg','Псионик':'./app/data/classes/psion.jpg','Пугилист':'./app/data/classes/pugilist.jpg','Рунный хранитель':'./app/data/classes/rune keeper.jpg','Савант':'./app/data/classes/savant.jpg','Шифтер':'./app/data/classes/shifter.jpg','Рой':'./app/data/classes/the swam.jpg','Сосуд':'./app/data/classes/vessel.jpg','Страж':'./app/data/classes/warden.jpg','Военачальник':'./app/data/classes/warlord.jpg','Ведьма':'./app/data/classes/witch.jpg'};
-// Временные маршруты листов: classic = обычный персонаж, extra = экстра.
-// Если будущий отдельный файл/лист ещё отсутствует, используется встроенная заглушка,
-// чтобы можно было полностью проверить выбор типа и создание персонажа уже сейчас.
-var CHARACTER_CREATION_MODE = null;
-var EXTRA_SHEET_STUB = 'extra';
+var ROOT='./';
+var SIGNATURE=ROOT+'1790622252250.png';
+var CHARACTER_CREATION_MODE=null;
+var BYPASS_PARCHMENT_ONCE=false;
+var CLASS_TOKEN_ART={
+ 'Иллирригер':'./app/data/classes/Illigger.jpg','Аккурсд':'./app/data/classes/accursed.jpg','Алхимик':'./app/data/classes/alchemist.jpg',
+ 'Бистхарт':'./app/data/classes/beasthart.jpg','Кровавый охотник':'./app/data/classes/blood hunter.jpg','Гайст':'./app/data/classes/geist.jpg',
+ 'Призрак':'./app/data/classes/geist.jpg','Мученик':'./app/data/classes/martyr.jpg','Некромант':'./app/data/classes/necromancer.jpg',
+ 'Оккультист':'./app/data/classes/occultist.jpg','Паразит':'./app/data/classes/parasite.jpg','Псионик':'./app/data/classes/psion.jpg',
+ 'Пугилист':'./app/data/classes/pugilist.jpg','Рунный хранитель':'./app/data/classes/rune keeper.jpg','Савант':'./app/data/classes/savant.jpg',
+ 'Шифтер':'./app/data/classes/shifter.jpg','Рой':'./app/data/classes/the swam.jpg','Сосуд':'./app/data/classes/vessel.jpg',
+ 'Страж':'./app/data/classes/warden.jpg','Военачальник':'./app/data/classes/warlord.jpg','Ведьма':'./app/data/classes/witch.jpg'
+};
 function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]})}
-function getClasses(){return Array.isArray(window.DND_CLASSES_LIST)?window.DND_CLASSES_LIST:[]}
-function isExtraClass(name){return Object.prototype.hasOwnProperty.call(CLASS_TOKEN_ART,name)}
-function classArt(name){if(CLASS_TOKEN_ART[name])return CLASS_TOKEN_ART[name];var list=getClasses(),idx=-1;for(var i=0;i<list.length;i++)if(list[i].name===name){idx=i;break}return ROOT+(idx>=0?idx+1:1)+'.png'}
-function fillSelect(id,items,placeholder){var el=document.getElementById(id);if(!el)return;el.innerHTML='<option value="">'+esc(placeholder)+'</option>';items.forEach(function(x){var o=document.createElement('option');o.value=x.value;o.textContent=x.label;el.appendChild(o)})}
-function renderClassArt(){var name=document.getElementById('pc_class')?.value||'',img=document.getElementById('pc_classArt'),label=document.getElementById('pc_classLabel'),stage=document.getElementById('parchmentStage'),extra=isExtraClass(name);if(label)label.textContent=name||'класс не указан';if(stage)stage.classList.toggle('is-extra',extra);var title=document.getElementById('pcTitle'),warn=document.getElementById('pcWarning'),reward=document.getElementById('pcReward'),tax=document.getElementById('pcTax'),sub=document.getElementById('pcSubtitle');if(title)title.textContent=extra?'ЛИСТ ЛИКВИДАЦИИ':'РОЗЫСКНОЙ ЛИСТ';if(sub)sub.textContent=extra?'Разыскивается исключительно мёртвым. Любая попытка задержания живым считается нарушением приказа гарнизона.':'По подозрению в неуплате налогов, славному городу Енотовиллю, для допроса разыскивается гуманоид';if(tax)tax.style.display=extra?'none':'';if(warn)warn.innerHTML=extra?'ОСОБАЯ ПРИМЕТА И ПРИЧИНА РОЗЫСКА: <span id="pc_extraReason">[описание будет добавлено]</span>':'СТЫД ТЕБЕ, ПРОЧИТАВШИЙ ЭТО, РОЗЫСКИВАЕМЫЙ <span id="pc_professionText">—</span>.';if(reward)reward.innerHTML=extra?'Доставить исключительно мёртвым.<br>Награда <strong>30 золотых монет</strong>.':'Доставить исключительно живым и с кошельком.<br>Награда 10 серебряных монет и кружка хорошего пива.';var sign=document.getElementById('pc_signButton');if(sign)sign.innerHTML=(extra?'подтвердить розыск':'расписаться')+'<span class="parchment-sign-hint">завершить создание</span>';if(img){img.src=classArt(name);img.onerror=function(){this.src=ROOT+'1.png'}}}
+function el(id){return document.getElementById(id)}
+function classes(){return Array.isArray(window.DND_CLASSES_LIST)?window.DND_CLASSES_LIST:[]}
+function classArt(name){return CLASS_TOKEN_ART[name]||'./1.png'}
+function setModeClass(){
+ var stage=el('parchmentStage');if(!stage)return;
+ stage.classList.toggle('is-extra',CHARACTER_CREATION_MODE==='extra');
+ stage.classList.toggle('is-classic',CHARACTER_CREATION_MODE==='classic');
+}
+function fillSelect(id,items,placeholder){
+ var e=el(id);if(!e)return;
+ e.innerHTML='<option value="">'+esc(placeholder)+'</option>';
+ items.forEach(function(x){var o=document.createElement('option');o.value=x.value;o.textContent=x.label;e.appendChild(o)});
+ fitSelect(e);
+}
+function fitSelect(e){
+ if(!e)return;
+ var txt=e.options[e.selectedIndex]?e.options[e.selectedIndex].text:e.getAttribute('data-placeholder')||'выбрать';
+ var canvas=fitSelect.canvas||(fitSelect.canvas=document.createElement('canvas'));
+ var ctx=canvas.getContext('2d');ctx.font=getComputedStyle(e).font||'700 16px Georgia';
+ var w=Math.ceil(ctx.measureText(txt).width)+34;
+ e.style.width=Math.min(Math.max(w,80),Math.max(130,window.innerWidth*0.72))+'px';
+}
+function reveal(id,yes){var e=el(id);if(!e)return;e.closest('.parchment-step')?.classList.toggle('step-hidden',!yes)}
+function setupProgression(){
+ var steps=[['pc_name',function(){return el('pc_name').value.trim().length>0}],['pc_origin',function(){return el('pc_origin').value.trim().length>0}],['pc_class',function(){return !!el('pc_class').value}],['pc_gender',function(){return !!el('pc_gender').value}],['pc_race',function(){return !!el('pc_race').value}],['pc_age',function(){return !!el('pc_age').value}],['pc_background',function(){return !!el('pc_background').value}],['pc_profession',function(){return !!el('pc_profession').value}]];
+ function update(){
+  var ok=true;
+  steps.forEach(function(pair,i){
+   var id=pair[0],valid=pair[1](),field=el(id);
+   reveal(id,ok);
+   if(field)field.disabled=!ok;
+   if(ok && !valid)ok=false;
+   if(field && field.tagName==='SELECT')fitSelect(field);
+  });
+  var sign=el('pc_signButton');if(sign)sign.disabled=!ok;
+  renderClassArt();
+ }
+ steps.forEach(function(pair){
+  var e=el(pair[0]);if(!e)return;
+  e.addEventListener('input',update);e.addEventListener('change',update);
+ });
+ update();
+}
+function renderClassArt(){
+ var name=el('pc_class')?.value||'',img=el('pc_classArt'),label=el('pc_classLabel');
+ if(label)label.textContent=name||'';
+ if(img){img.src=classArt(name);img.onerror=function(){this.src='./1.png'}}
+ var title=el('pcTitle'),sub=el('pcSubtitle'),tax=el('pcTax'),warn=el('pcWarning'),reward=el('pcReward');
+ var extra=CHARACTER_CREATION_MODE==='extra';
+ if(title)title.textContent=extra?'ЛИСТ ЛИКВИДАЦИИ':'РОЗЫСКНОЙ ЛИСТ';
+ if(sub)sub.textContent=extra?'Разыскивается исключительно мёртвым. Любая попытка задержания живым считается нарушением приказа гарнизона.':'По подозрению в неуплате налогов, славному городу Енотовиллю, для допроса разыскивается гуманоид';
+ if(tax)tax.style.display=extra?'none':'';
+ if(warn)warn.innerHTML=extra?'ОСОБАЯ ПРИМЕТА И ПРИЧИНА РОЗЫСКА: <span id="pc_extraReason">описание будет добавлено</span>':'СТЫД ТЕБЕ, ПРОЧИТАВШИЙ ЭТО, РОЗЫСКИВАЕМЫЙ <span id="pc_professionText">—</span>.';
+ if(reward)reward.innerHTML=extra?'Доставить исключительно мёртвым.<br>Награда <strong>30 золотых монет</strong>.':'Доставить исключительно живым и с кошельком.<br>Награда 10 серебряных монет и кружка хорошего пива.';
+ var sign=el('pc_signButton');if(sign)sign.innerHTML='расписаться<span class="parchment-sign-hint">закончить создание</span>';
+}
+function getProfessionItems(){
+ var p=window.DND_CRAFT_PROFESSION_PROGRESS;
+ if(p&&typeof p.professionIds==='function'){
+  return p.professionIds().map(function(id){return{value:id,label:typeof p.professionLabel==='function'?p.professionLabel(id):id}});
+ }
+ var base=window.DND_CRAFT_PROFESSIONS_V38&&window.DND_CRAFT_PROFESSIONS_V38.PROFESSIONS;
+ return base?Object.keys(base).map(function(id){return{value:id,label:base[id].name||id}}):[];
+}
 function initParchment(){
-var classes=getClasses();fillSelect('pc_class',classes.map(function(c){return{value:c.name,label:c.name}}),'выбрать класс');
-var races=typeof getAllRaces==='function'?getAllRaces():[];fillSelect('pc_race',races.map(function(r){return{value:r.id,label:r.name}}),'выбрать расу');
-var bgs=typeof getAllBackgrounds==='function'?getAllBackgrounds():(Array.isArray(window.dndBackgrounds)?window.dndBackgrounds:[]);fillSelect('pc_background',bgs.map(function(b){var n=b.nameRu||b.name||'';return{value:n,label:n}}),'выбрать предысторию');
-fillSelect('pc_gender',[{value:'мужчина',label:'мужчина'},{value:'женщина',label:'женщина'}],'выбрать пол');
-var pids=window.DND_CRAFT_PROFESSION_PROGRESS&&typeof window.DND_CRAFT_PROFESSION_PROGRESS.professionIds==='function'?window.DND_CRAFT_PROFESSION_PROGRESS.professionIds():[];fillSelect('pc_profession',pids.map(function(id){return{value:id,label:typeof window.DND_CRAFT_PROFESSION_PROGRESS.professionLabel==='function'?window.DND_CRAFT_PROFESSION_PROGRESS.professionLabel(id):id}}),'выбрать профессию');
-var oldClass=document.getElementById('cc_class');if(oldClass&&oldClass.value)document.getElementById('pc_class').value=oldClass.value.split(' ')[0];
-renderClassArt();document.getElementById('pc_class').onchange=renderClassArt;
+ setModeClass();
+ var all=classes();
+ var isExtra=CHARACTER_CREATION_MODE==='extra';
+ var allowedExtra=['Рой','Призрак','Паразит'];
+ var classItems=all.map(function(c){return{value:c.name,label:c.displayName||c.name}});
+ if(isExtra){
+  classItems=allowedExtra.map(function(n){return{value:n,label:n}});
+ }
+ fillSelect('pc_class',classItems,'выбрать класс');
+ var races=typeof getAllRaces==='function'?getAllRaces():[];
+ fillSelect('pc_race',races.map(function(r){return{value:r.id,label:r.name}}),'выбрать расу');
+ var bgs=typeof getAllBackgrounds==='function'?getAllBackgrounds():(Array.isArray(window.dndBackgrounds)?window.dndBackgrounds:[]);
+ fillSelect('pc_background',bgs.map(function(b){var n=b.nameRu||b.name||'';return{value:n,label:n}}),'выбрать предысторию');
+ fillSelect('pc_gender',[{value:'мужчина',label:'мужчина'},{value:'женщина',label:'женщина'}],'выбрать пол');
+ fillSelect('pc_profession',getProfessionItems(),'выбрать профессию');
+ ['pc_class','pc_gender','pc_race','pc_background','pc_profession'].forEach(function(id){var e=el(id);if(e)e.addEventListener('change',function(){fitSelect(e);renderClassArt()})});
+ setupProgression();
+ renderClassArt();
 }
 function syncToClassic(){
-var name=document.getElementById('pc_name').value.trim(),origin=document.getElementById('pc_origin').value.trim(),age=document.getElementById('pc_age').value.trim(),cls=document.getElementById('pc_class').value,gender=document.getElementById('pc_gender').value,race=document.getElementById('pc_race').value,bg=document.getElementById('pc_background').value,profession=document.getElementById('pc_profession')?.value||'';
-window.__parchmentCharacterDraft={name:name,origin:origin,age:age,className:cls,gender:gender,raceId:race,background:bg,profession:profession,extra:isExtraClass(cls)};
-function set(id,val){var e=document.getElementById(id);if(e)e.value=val;return e}
-set('cc_name',name);set('cc_age',age);set('cc_race',race);set('cc_background',bg);set('cc_profession',profession);var cs=set('cc_class',cls?cls+' 1':'');set('cc_gender',gender);set('cc_origin',origin);
-if(cs&&typeof window.updateClassDescription==='function')window.updateClassDescription();if(typeof window.updateRaceDescription==='function')window.updateRaceDescription();if(typeof window.updateBackgroundDescription==='function')window.updateBackgroundDescription();var pt=document.getElementById('pc_professionText');if(pt){var ps=window.DND_CRAFT_PROFESSION_PROGRESS;if(profession&&ps&&typeof ps.professionLabel==='function')pt.textContent=ps.professionLabel(profession);else pt.textContent='без профессии';}
+ var name=el('pc_name').value.trim(),origin=el('pc_origin').value.trim(),age=el('pc_age').value.trim(),cls=el('pc_class').value,gender=el('pc_gender').value,race=el('pc_race').value,bg=el('pc_background').value,profession=el('pc_profession')?.value||'';
+ window.__parchmentCharacterDraft={name:name,origin:origin,age:age,className:cls,gender:gender,raceId:race,background:bg,profession:profession,extra:CHARACTER_CREATION_MODE==='extra'};
+ function set(id,val){var e=el(id);if(e)e.value=val}
+ set('cc_name',name);set('cc_age',age);set('cc_race',race);set('cc_background',bg);set('cc_profession',profession);set('cc_class',cls+' 1');set('cc_gender',gender);set('cc_origin',origin);
+ if(typeof window.updateClassDescription==='function')window.updateClassDescription();
+ if(typeof window.updateRaceDescription==='function')window.updateRaceDescription();
+ if(typeof window.updateBackgroundDescription==='function')window.updateBackgroundDescription();
+ var pt=el('pc_professionText'),p=window.DND_CRAFT_PROFESSION_PROGRESS;
+ if(pt)pt.textContent=profession&&p&&typeof p.professionLabel==='function'?p.professionLabel(profession):(profession||'без профессии');
 }
-function ensureCreationTypeChooser(){
-var old=document.getElementById('characterCreationTypeChooser');
-if(old)return old;
-var modal=document.createElement('div');
-modal.id='characterCreationTypeChooser';
-modal.style.cssText='display:none;position:fixed;inset:0;z-index:90000;background:rgba(0,0,0,.92);align-items:center;justify-content:center;padding:20px;box-sizing:border-box;';
-modal.innerHTML='<div style="width:100%;max-width:430px;background:#171717;border:1px solid #66552b;border-radius:14px;padding:22px;color:#fff;box-shadow:0 15px 45px rgba(0,0,0,.7);text-align:center;">'+
-'<div style="font-size:42px;margin-bottom:8px;">📜</div>'+
-'<h2 style="margin:0 0 8px;color:#d4af37;">Какого персонажа создаём?</h2>'+
-'<p style="color:#aaa;line-height:1.45;margin:0 0 20px;">Выберите тип листа. Это решение определит, в какой редактор будет отправлен персонаж.</p>'+
-'<div style="display:grid;gap:12px;">'+
-'<button id="ccTypeClassic" class="btn-action" style="padding:16px;background:#4caf50;font-size:1.05em;font-weight:bold;">🧙 Обычный персонаж<div style="font-size:.78em;font-weight:normal;margin-top:5px;opacity:.85;">Стандартный лист и обычная подпись</div></button>'+
-'<button id="ccTypeExtra" class="btn-action" style="padding:16px;background:#8b1e1e;font-size:1.05em;font-weight:bold;">☠️ Экстра<div style="font-size:.78em;font-weight:normal;margin-top:5px;opacity:.85;">Особый лист — пока временная заглушка</div></button>'+
-'<button id="ccTypeCancel" class="btn-action" style="padding:11px;background:#444;">Отмена</button>'+
-'</div></div>';
-document.body.appendChild(modal);
-modal.querySelector('#ccTypeClassic').onclick=function(){modal.style.display='none';CHARACTER_CREATION_MODE='classic';openClassicCreationSheet()};
-modal.querySelector('#ccTypeExtra').onclick=function(){modal.style.display='none';CHARACTER_CREATION_MODE='extra';openExtraCreationSheet()};
-modal.querySelector('#ccTypeCancel').onclick=function(){modal.style.display='none';if(typeof window.showCharacterSelect==='function')window.showCharacterSelect()};
-return modal;
+function chooser(){
+ var old=el('characterCreationTypeChooser');if(old)return old;
+ var m=document.createElement('div');m.id='characterCreationTypeChooser';
+ m.style.cssText='display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.88);align-items:center;justify-content:center;padding:18px;box-sizing:border-box';
+ m.innerHTML='<div class="creation-type-card"><div class="creation-type-icon">📜</div><h2>Какого персонажа создаём?</h2><p>Сначала выберите тип листа.</p><button id="ccTypeClassic">Обычный персонаж</button><button id="ccTypeExtra">Экстра</button><button id="ccTypeCancel">Отмена</button></div>';
+ document.body.appendChild(m);
+ m.querySelector('#ccTypeClassic').onclick=function(){m.style.display='none';CHARACTER_CREATION_MODE='classic';openParchmentSheet()};
+ m.querySelector('#ccTypeExtra').onclick=function(){m.style.display='none';CHARACTER_CREATION_MODE='extra';openParchmentSheet()};
+ m.querySelector('#ccTypeCancel').onclick=function(){m.style.display='none';if(typeof window.showCharacterSelect==='function')window.showCharacterSelect()};
+ return m;
 }
-function openClassicCreationSheet(){var a=document.getElementById('characterSelectScreen'),b=document.getElementById('characterCreationScreen'),c=document.getElementById('characterSheetScreen'),p=document.getElementById('parchmentCreationScreen'),x=document.getElementById('extraCharacterCreationStub');if(a)a.style.display='none';if(c)c.style.display='none';if(p)p.style.display='none';if(x)x.style.display='none';if(b){b.style.display='block';b.scrollTop=0;}if(typeof window.initCharacterCreationScreen==='function')window.initCharacterCreationScreen();if(typeof window.updatePointBuyUI==='function')window.updatePointBuyUI();}
-function openExtraCreationSheet(){var a=document.getElementById('characterSelectScreen'),b=document.getElementById('characterCreationScreen'),c=document.getElementById('characterSheetScreen'),p=document.getElementById('parchmentCreationScreen');if(a)a.style.display='none';if(c)c.style.display='none';if(b)b.style.display='none';if(p){p.style.display='block';p.scrollTop=0;initParchment();}}
-function openExtraCharacterStubAfterSignature(){var p=document.getElementById('parchmentCreationScreen');if(p)p.style.display='none';var x=document.getElementById('extraCharacterCreationStub');if(!x){x=document.createElement('div');x.id='extraCharacterCreationStub';x.style.cssText='display:block;position:fixed;inset:0;z-index:80000;background:#111;color:#fff;overflow:auto;padding:20px;box-sizing:border-box;';x.innerHTML='<div style="max-width:620px;margin:0 auto;padding:20px;background:#1b1b1b;border:1px solid #6d2b2b;border-radius:14px;"><div style="font-size:44px;text-align:center;">☠️</div><h2 style="color:#e05a5a;text-align:center;">ЭКСТРА — ВРЕМЕННЫЙ ЛИСТ</h2><p style="color:#aaa;line-height:1.5;text-align:center;">Заглушка для проверки маршрута: выбор типа → пергамент → подпись → лист экстра.</p><div id="extraStubSummary" style="background:#241818;border:1px solid #5a2929;border-radius:8px;padding:12px;margin:16px 0;color:#ddd;"></div><button class="btn-action" id="extraStubCreate" style="background:#8b1e1e;padding:12px;width:100%;">Создать экстра</button></div>';document.body.appendChild(x);x.querySelector('#extraStubCreate').onclick=function(){var d=window.__parchmentCharacterDraft||{},chars=Array.isArray(window.allCharacters)?window.allCharacters:(window.allCharacters=[]);chars.push({id:'char_'+Date.now(),name:d.name||'Экстра',age:d.age||'',class:d.className||'',className:d.className||'',background:d.background||'',raceId:d.raceId||'',gender:d.gender||'',origin:d.origin||'',profession:d.profession||'',level:1,creationMode:'extra',creationDocument:'extra-parchment',wantedStatus:'dead_only',wantedReward:'30 золотых монет'});if(typeof window.saveAllCharacters==='function')window.saveAllCharacters();else localStorage.setItem('dnd_multi_characters_v2',JSON.stringify(chars));x.style.display='none';if(typeof window.showCharacterSelect==='function')window.showCharacterSelect();};}var d=window.__parchmentCharacterDraft||{},sum=x.querySelector('#extraStubSummary');if(sum)sum.innerHTML='<strong>Маршрут подтверждён.</strong><br>Имя: '+esc(d.name||'—')+'<br>Класс: '+esc(d.className||'—')+'<br>Раса: '+esc(d.raceId||'—')+'<br>Предыстория: '+esc(d.background||'—');x.style.display='block';}
-window.openParchmentCreation=function(){
-var chooser=ensureCreationTypeChooser();
-chooser.style.display='flex';
-};
-window.closeParchmentCreation=function(){var p=document.getElementById('parchmentCreationScreen');if(p)p.style.display='none';if(typeof window.showCharacterSelect==='function')window.showCharacterSelect()};
+function openParchmentSheet(){
+ var a=el('characterSelectScreen'),b=el('characterCreationScreen'),p=el('parchmentCreationScreen');
+ if(a)a.style.display='none';if(b)b.style.display='none';if(p)p.style.display='block';
+ initParchment();
+}
+window.openParchmentCreation=function(){chooser().style.display='flex'};
+window.closeParchmentCreation=function(){var p=el('parchmentCreationScreen');if(p)p.style.display='none';if(typeof window.showCharacterSelect==='function')window.showCharacterSelect()};
 window.finishParchmentCreation=function(){
-
-var name=document.getElementById('pc_name').value.trim(),cls=document.getElementById('pc_class').value,race=document.getElementById('pc_race').value,bg=document.getElementById('pc_background').value;
-if(!name){alert('Разыскиваемый должен иметь имя.');return}if(!cls){alert('Необходимо указать класс.');return}if(!race){alert('Необходимо указать расу.');return}if(!bg){alert('Необходимо указать предысторию.');return}
-syncToClassic();var p=document.getElementById('parchmentCreationScreen'),s=document.getElementById('parchmentSignatureLayer'),bo=document.getElementById('parchmentBlackout');if(p)p.style.display='none';if(s){s.classList.add('show');setTimeout(function(){s.classList.remove('show')},900)}setTimeout(function(){if(bo)bo.classList.add('show');setTimeout(function(){if(bo)bo.classList.remove('show');if(CHARACTER_CREATION_MODE==='extra')openExtraCharacterStubAfterSignature();else{var classic=document.getElementById('characterCreationScreen');if(classic){classic.style.display='block';classic.scrollTop=0}}},700)},700)
+ var ids=['pc_name','pc_origin','pc_class','pc_gender','pc_race','pc_age','pc_background','pc_profession'];
+ var missing=ids.some(function(id){var e=el(id);return !e||!String(e.value||'').trim()});
+ if(missing){alert('Заполните все открытые поля по порядку.');return}
+ syncToClassic();
+ var p=el('parchmentCreationScreen'),s=el('parchmentSignatureLayer'),bo=el('parchmentBlackout');
+ if(p)p.style.display='none';
+ if(s){s.classList.remove('show');void s.offsetWidth;s.classList.add('show')}
+ setTimeout(function(){
+  if(bo){bo.classList.remove('show');void bo.offsetWidth;bo.classList.add('show')}
+  setTimeout(function(){
+   if(bo)bo.classList.remove('show');
+   if(s)s.classList.remove('show');
+   BYPASS_PARCHMENT_ONCE=true;
+   var classic=el('characterCreationScreen');
+   if(classic){classic.style.display='block';classic.scrollTop=0}
+   if(typeof window.initCharacterCreationScreen==='function')window.initCharacterCreationScreen();
+   syncToClassic();
+  },650);
+ },1200);
 };
-function hook(){if(typeof window.createNewCharacter!=='function'){setTimeout(hook,50);return}if(window.createNewCharacter.__parchmentHooked)return;
-var original=window.createNewCharacter;var wrapped=function(){window.openParchmentCreation()};wrapped.__parchmentHooked=true;window.createNewCharacter=wrapped;
-var classic=document.getElementById('characterCreationScreen');if(classic&&!document.getElementById('cc_origin')){var o=document.createElement('input');o.type='hidden';o.id='cc_origin';classic.appendChild(o);var g=document.createElement('input');g.type='hidden';g.id='cc_gender';classic.appendChild(g)}
-if(typeof window.saveNewCreatedCharacter==='function'&&!window.saveNewCreatedCharacter.__parchmentHooked){var oldSave=window.saveNewCreatedCharacter;var saveWrapped=function(){var draft=window.__parchmentCharacterDraft||{};oldSave.apply(this,arguments);if(Array.isArray(window.allCharacters)&&window.allCharacters.length){var c=window.allCharacters[window.allCharacters.length-1];if(c){c.origin=draft.origin||'';c.gender=draft.gender||'';c.creationDocument=CHARACTER_CREATION_MODE==='extra'?'extra-stub':'parchment';c.creationMode=CHARACTER_CREATION_MODE||'classic';c.wantedStatus=(CHARACTER_CREATION_MODE==='extra'||draft.extra)?'dead_only':'alive_only';c.wantedReward=draft.extra?'30 золотых монет':'10 серебряных монет и кружка хорошего пива';if(typeof window.saveAllCharacters==='function')window.saveAllCharacters()}}};saveWrapped.__parchmentHooked=true;window.saveNewCreatedCharacter=saveWrapped}}
+function hook(){
+ if(typeof window.createNewCharacter!=='function'){setTimeout(hook,50);return}
+ if(window.createNewCharacter.__parchmentHooked)return;
+ var original=window.createNewCharacter;
+ var wrapped=function(){
+  if(BYPASS_PARCHMENT_ONCE){BYPASS_PARCHMENT_ONCE=false;return original.apply(this,arguments)}
+  return window.openParchmentCreation();
+ };
+ wrapped.__parchmentHooked=true;window.createNewCharacter=wrapped;
+ var save=window.saveNewCreatedCharacter;
+ if(typeof save==='function'&&!save.__parchmentHooked){
+  var sw=function(){
+   var draft=window.__parchmentCharacterDraft||{};save.apply(this,arguments);
+   if(Array.isArray(window.allCharacters)&&window.allCharacters.length){
+    var c=window.allCharacters[window.allCharacters.length-1];
+    if(c){c.origin=draft.origin||'';c.gender=draft.gender||'';c.creationDocument='parchment';c.creationMode=draft.extra?'extra':'classic';c.wantedStatus=draft.extra?'dead_only':'alive_only';c.wantedReward=draft.extra?'30 золотых монет':'10 серебряных монет и кружка хорошего пива';if(typeof window.saveAllCharacters==='function')window.saveAllCharacters();}
+   }
+  };
+  sw.__parchmentHooked=true;window.saveNewCreatedCharacter=sw;
+ }
+}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook);else hook();
 })();
