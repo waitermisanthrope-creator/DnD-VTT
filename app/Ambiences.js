@@ -4,6 +4,7 @@
 
 const AMBIENT_TRACKS = [
   { name: "GLENMORIL Soundtrack - Music Box", src: "./ambience/GLENMORIL Soundtrack - Music Box.mp3" },
+  { name: "Lineage 2 — Shepard's Flute", src: "./ambience/lineage_2_16. Shepard's Flute.mp3" },
   { name: "Oliver Deriviere - Who Am I", src: "./ambience/Oliver Deriviere - Who Am I_(grizzlymusic.ru).mp3" },
   { name: "Oliver DeRiviere - Prelude to an End", src: "./ambience/Oliver DeRiviere - Prelude to an End_(grizzlymusic.ru).mp3" },
   { name: "Jalan Jalan - Lotus", src: "./ambience/Jalan Jalan - Lotus.mp3" }
