@@ -74,7 +74,11 @@ function openSettingsModal() {
           <div style="background: #252525; padding: 12px; border-radius: 6px; border: 1px solid #333;">
             <div style="font-size: 0.95em; font-weight: bold; margin-bottom: 8px; color: #4FC3F7;">🔄 Обновления приложения</div>
             <div style="font-size: 0.78em; color: #c7c7c7; margin-bottom: 8px;">Установленная версия: <strong id="settingsCurrentVersion" style="color:#fff;">—</strong></div>
-            <div id="settingsUpdateStatus" style="font-size: 0.78em; color: #aaa; line-height: 1.4; margin-bottom: 8px;">Проверка обновлений доступна, когда настроен канал распространения.</div>
+            <div id="settingsUpdateProgress" style="display:none;margin-top:8px;">
+  <div id="settingsUpdateProgressLabel" style="font-size:.78em;color:#aaa;margin-bottom:5px;">Загрузка обновления: 0%</div>
+  <div style="height:9px;background:#333;border-radius:999px;overflow:hidden;border:1px solid #555;"><div id="settingsUpdateProgressBar" style="height:100%;width:0%;background:var(--theme-primary,#ff9800);transition:width .2s;"></div></div>
+</div>
+<div id="settingsUpdateStatus" style="font-size: 0.78em; color: #aaa; line-height: 1.4; margin-bottom: 8px;">Проверка обновлений доступна, когда настроен канал распространения.</div>
             <div style="display:flex; gap:8px;">
               <button onclick="if(window.DND_UPDATE_UI) DND_UPDATE_UI.check()" class="btn-action" style="background:#1976D2; flex:1; padding:9px; font-size:0.8em; font-weight:bold; cursor:pointer; color:#fff; border:none; border-radius:6px;">🔎 Проверить</button>
               <button id="settingsUpdateApplyButton" onclick="if(window.DND_UPDATE_UI) DND_UPDATE_UI.apply()" class="btn-action" style="display:none; background:#2E7D32; flex:1; padding:9px; font-size:0.8em; font-weight:bold; cursor:pointer; color:#fff; border:none; border-radius:6px;">⬇️ Установить</button>
@@ -605,17 +609,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 (function(global){
   function setStatus(text){ var el=document.getElementById('settingsUpdateStatus'); if(el) el.textContent=text; }
+  function updateProgress(p){var w=document.getElementById('settingsUpdateProgress'),b=document.getElementById('settingsUpdateProgressBar'),l=document.getElementById('settingsUpdateProgressLabel');if(!w||!b||!l)return;w.style.display='block';var t=Number(p&&p.total||0),c=Number(p&&p.current||0),pc=t?Math.max(0,Math.min(100,Math.round(c*100/t))):0;b.style.width=pc+'%';l.textContent='Загрузка обновления: '+pc+'% — '+c+' из '+t+(p&&p.path?' — '+p.path:'');}
   global.DND_UPDATE_UI={
     check: async function(){
       if(!global.DND_UPDATE_MANAGER){ setStatus('Модуль обновлений недоступен.'); return; }
-      setStatus('Проверяю канал обновлений…');
+      setStatus('Проверяю канал обновлений…'); updateProgress({current:0,total:1});
       try {
-        var state=await global.DND_UPDATE_MANAGER.checkAndStage();
+        var state=await global.DND_UPDATE_MANAGER.checkAndStage({onProgress:updateProgress});
         var btn=document.getElementById('settingsUpdateApplyButton');
         if(!state.configured){ setStatus('Канал обновлений ещё не настроен.'); if(btn) btn.style.display='none'; return; }
         if(!state.compatibility.ok){ setStatus('Текущая версия несовместима с этим обновлением: '+state.compatibility.reason); if(btn) btn.style.display='none'; return; }
-        if(!state.updateAvailable){ setStatus('Установлена актуальная версия '+state.currentVersion+'.'); if(btn) btn.style.display='none'; return; }
-        setStatus('Доступно обновление '+state.manifest.version+'. Файлы проверены SHA-256 и подготовлены.');
+        if(!state.updateAvailable){ setStatus('Установлена актуальная версия '+state.currentVersion+'.'); var p=document.getElementById('settingsUpdateProgress'); if(p) p.style.display='none'; if(btn) btn.style.display='none'; return; }
+        updateProgress({current:1,total:1,path:'готово'}); setStatus('Доступно обновление '+state.manifest.version+'. Файлы проверены SHA-256 и подготовлены.');
         if(btn) btn.style.display=global.DND_UPDATE_MANAGER.canApplyNatively()?'block':'none';
       } catch(e){ setStatus('Ошибка обновления: '+(e&&e.message||e)); }
     },
