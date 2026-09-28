@@ -3631,3 +3631,24 @@ The future release UI should expose `Check for updates` and an exportable diagno
 ### RELEASE CHECKPOINT RULE
 
 Новый номер версии не считается полностью закрытым только потому, что APK собрался. Минимальный цикл: исправление → targeted regression test → запись в GUIDE → запись в «Что нового» → сборка/публикация → пользовательский smoke-test → статус VERIFIED после подтверждения пользователем.
+
+
+## V70.25.65 — FIRST BUGFIX RELEASE
+
+### FIXED — code, pending user verification
+
+- **Level Up / Multiclass prerequisites:** current-class matching is normalized before the multiclass prerequisite check. Existing class advancement no longer triggers the multiclass-stat warning; the check remains for genuinely new classes. Status: **FIXED / user verification pending**.
+- **Rules Matrix / Dice Lab / QA Lab:** technical debug buttons are now hidden by default and shown only when the document is in debug mode. Status: **FIXED / user verification pending**.
+- **Changelog location:** release notes are now also permanently reachable from Settings. Status: **FIXED / user verification pending**.
+
+### V70.25.65 USER CHECKLIST
+
+1. Open Settings → «История изменений» → verify the current release notes are visible.
+2. Open Level Up for the character's existing class → verify no multiclass prerequisite warning appears.
+3. Open Level Up and choose a genuinely new class → verify multiclass requirements are still checked.
+4. Return to the main screen → verify Rules Matrix / Dice Lab / QA Lab are absent in normal mode.
+5. If debug mode is intentionally enabled, verify the technical panels can still appear there.
+
+### RULE
+
+A bug remains **FIXED** until the user confirms the corresponding smoke test; then it becomes **VERIFIED**.
