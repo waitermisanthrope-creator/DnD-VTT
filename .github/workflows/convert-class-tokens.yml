@@ -1,0 +1,67 @@
+name: Convert class token JPGs to PNG
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'app/data/classes/*.jpg'
+
+permissions:
+  contents: write
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Convert without pixel cleanup
+        shell: bash
+        run: |
+          python3 -m pip install --quiet Pillow
+          python3 - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          root = Path("app/data/classes")
+          for src in sorted(root.glob("*.jpg")):
+              dst = src.with_suffix(".png")
+              with Image.open(src) as im:
+                  # Preserve the image exactly; no background removal, thresholding,
+                  # alpha manipulation, recoloring, or other pixel processing.
+                  if im.mode not in ("RGB", "RGBA"):
+                      im = im.convert("RGB")
+                  im.save(dst, format="PNG", optimize=False)
+          PY
+
+      - name: Switch parchment token map to PNG
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("app/character_creation_pergament.js")
+          s=p.read_text(encoding="utf-8")
+          for old in sorted(Path("app/data/classes").glob("*.jpg")):
+              s=s.replace("./app/data/classes/"+old.name, "./app/data/classes/"+old.with_suffix(".png").name)
+          p.write_text(s,encoding="utf-8")
+          PY
+
+      - name: Remove old JPG token files
+        shell: bash
+        run: |
+          rm -f app/data/classes/*.jpg
+
+      - name: Commit PNG tokens
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/data/classes app/character_creation_pergament.js
+          if git diff --cached --quiet; then
+            echo "No token conversion changes."
+            exit 0
+          fi
+          git commit -m "Convert class tokens to PNG without pixel cleanup"
+          git push
