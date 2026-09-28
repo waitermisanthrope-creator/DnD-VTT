@@ -1,4 +1,4 @@
-/* 70.25.73 token/progression fix — no pixel cleanup */
+/* 70.25.74 token/progression fix — preserve original image bytes */
 /* Character creation parchment flow v2 — ordinary/extra sheets, progressive reveal, signature transition. */
 (function(){
 'use strict';
@@ -48,27 +48,44 @@ function fitSelect(e){
 }
 function reveal(id,yes){var e=el(id);if(!e)return;e.closest('.parchment-step')?.classList.toggle('step-hidden',!yes)}
 function setupProgression(){
- var steps=[['pc_name',function(){return el('pc_name')&&el('pc_name').value.trim().length>0}],['pc_origin',function(){return el('pc_origin')&&el('pc_origin').value.trim().length>0}],['pc_class',function(){return el('pc_class')&&!!el('pc_class').value}],['pc_gender',function(){return el('pc_gender')&&!!el('pc_gender').value}],['pc_race',function(){return el('pc_race')&&!!el('pc_race').value}],['pc_age',function(){return el('pc_age')&&!!el('pc_age').value}],['pc_background',function(){return el('pc_background')&&!!el('pc_background').value}],['pc_profession',function(){return el('pc_profession')&&!!el('pc_profession').value}]];
+ var steps=[['pc_name',function(){return !!(el('pc_name')&&el('pc_name').value.trim())}],['pc_origin',function(){return !!(el('pc_origin')&&el('pc_origin').value.trim())}],['pc_class',function(){return !!(el('pc_class')&&el('pc_class').value)}],['pc_gender',function(){return !!(el('pc_gender')&&el('pc_gender').value)}],['pc_race',function(){return !!(el('pc_race')&&el('pc_race').value)}],['pc_age',function(){return !!(el('pc_age')&&el('pc_age').value)}],['pc_background',function(){return !!(el('pc_background')&&el('pc_background').value)}],['pc_profession',function(){return !!(el('pc_profession')&&el('pc_profession').value)}]];
  function update(){
   var firstIncomplete=steps.length;
   for(var i=0;i<steps.length;i++){if(!steps[i][1]()){firstIncomplete=i;break;}}
   for(var j=0;j<steps.length;j++){
-   var field=el(steps[j][0]); if(!field)continue;
-   var step=field.parentNode; while(step&&(!step.classList||!step.classList.contains('parchment-step')))step=step.parentNode;
+   var field=el(steps[j][0]);if(!field)continue;
+   var step=field.closest?field.closest('.parchment-step'):field.parentNode;
    var visible=j<=firstIncomplete;
    if(step)step.classList.toggle('step-hidden',!visible);
+   /* The current and completed fields stay interactive; only future choices are locked. */
    field.disabled=j>firstIncomplete;
    if(field.tagName==='SELECT')fitSelect(field);
   }
   var sign=el('pc_signButton');if(sign)sign.disabled=firstIncomplete!==steps.length;
  }
- steps.forEach(function(pair){var e=el(pair[0]);if(!e)return;e.addEventListener('input',update);e.addEventListener('change',update);});
+ window.__updateParchmentProgress=update;
+ steps.forEach(function(pair){
+  var e=el(pair[0]);if(!e)return;
+  e.addEventListener('input',function(){update();});
+  e.addEventListener('change',function(){update();renderClassArt();window.setTimeout(update,0);});
+ });
  update();
 }
 function renderClassArt(){
  var name=el('pc_class')?el('pc_class').value:'',img=el('pc_classArt'),label=el('pc_classLabel');
  if(label)label.textContent=name||'';
- if(img){var art=classArt(name);if(!art){img.removeAttribute('src');img.classList.remove('token-ready');img.alt='Жетон появится после выбора класса';}else if(img.getAttribute('src')!==art){img.classList.remove('token-ready');img.src=art;img.alt='Жетон класса: '+name;img.onload=function(){img.classList.add('token-ready')};img.onerror=function(){img.removeAttribute('src');img.classList.remove('token-ready');};}else{img.classList.add('token-ready');}}
+ if(img){
+  var art=classArt(name);
+  if(!art){
+   img.removeAttribute('src');img.removeAttribute('data-art');img.classList.remove('token-ready');img.alt='Жетон появится после выбора класса';
+  }else if(img.getAttribute('data-art')!==art){
+   /* Preload the new token first. If it is missing, keep the old token visible. */
+   var pending=new Image();
+   pending.onload=function(){img.src=art;img.setAttribute('data-art',art);img.alt='Жетон класса: '+name;img.classList.add('token-ready');};
+   pending.onerror=function(){console.warn('Token not found:',art);};
+   pending.src=art;
+  }
+ }
  var title=el('pcTitle'),sub=el('pcSubtitle'),tax=el('pcTax'),warn=el('pcWarning'),reward=el('pcReward');
  var extra=CHARACTER_CREATION_MODE==='extra';
  if(title)title.textContent=extra?'ЛИСТ ЛИКВИДАЦИИ':'РОЗЫСКНОЙ ЛИСТ';
@@ -77,6 +94,7 @@ function renderClassArt(){
  if(warn)warn.innerHTML=extra?'ОСОБАЯ ПРИМЕТА И ПРИЧИНА РОЗЫСКА: <span id="pc_extraReason">описание будет добавлено</span>':'СТЫД ТЕБЕ, ПРОЧИТАВШИЙ ЭТО, РОЗЫСКИВАЕМЫЙ <span id="pc_professionText">—</span>.';
  if(reward)reward.innerHTML=extra?'Доставить исключительно мёртвым.<br>Награда <strong>30 золотых монет</strong>.':'Доставить исключительно живым и с кошельком.<br>Награда 10 серебряных монет и кружка хорошего пива.';
  var sign=el('pc_signButton');if(sign)sign.innerHTML='расписаться<span class="parchment-sign-hint">закончить создание</span>';
+ if(typeof window.__updateParchmentProgress==='function')window.__updateParchmentProgress();
 }
 function getProfessionItems(){
  var p=window.DND_CRAFT_PROFESSION_PROGRESS;
