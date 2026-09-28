@@ -66,6 +66,11 @@ function openSettingsModal() {
             <div style="font-size: 0.95em; font-weight: bold; margin-bottom: 8px; color: var(--theme-primary, #ff9800);">🎵 Аудио и Эмбиент</div>
             <button onclick="if(typeof openAmbienceModal === 'function') openAmbienceModal()" class="btn-action" style="background: #FF9800; width: 100%; padding: 10px; font-size: 0.85em; font-weight: bold; cursor: pointer; color: #000; border: none; border-radius: 6px;">🎵 Настройки эмбиента и музыки</button>
           </div>
+          <div style="background: #252525; padding: 12px; border-radius: 6px; border: 1px solid #5d492a;">
+            <div style="font-size: 0.95em; font-weight: bold; margin-bottom: 8px; color: #e5c878;">📜 История изменений</div>
+            <div style="font-size: 0.78em; color: #aaa; line-height: 1.4; margin-bottom: 8px;">Здесь всегда можно посмотреть, что изменилось в установленной версии.</div>
+            <button onclick="if(typeof window.openDndChangelog==='function') window.openDndChangelog()" class="btn-action" style="background:#30281c; width:100%; padding:9px; font-size:0.82em; font-weight:bold; cursor:pointer; color:#f5d77b; border:1px solid #66502e; border-radius:6px;">📜 Открыть «Что нового»</button>
+          </div>
           <div style="background: #252525; padding: 12px; border-radius: 6px; border: 1px solid #333;">
             <div style="font-size: 0.95em; font-weight: bold; margin-bottom: 8px; color: #4FC3F7;">🔄 Обновления приложения</div>
             <div id="settingsUpdateStatus" style="font-size: 0.78em; color: #aaa; line-height: 1.4; margin-bottom: 8px;">Проверка обновлений доступна, когда настроен канал распространения.</div>
