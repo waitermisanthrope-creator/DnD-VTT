@@ -20,29 +20,19 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if command -v magick >/dev/null 2>&1; then
-            CONVERTER=magick
-          else
-            CONVERTER=convert
-          fi
+          python3 -m pip install --quiet Pillow
           python3 - <<'PY'
           from pathlib import Path
-          root=Path("app/data/classes")
-          with Path("/tmp/token_pairs.txt").open("w",encoding="utf-8") as f:
-              for src in sorted(root.glob("*.jpg")):
-                  f.write(str(src)+"\t"+str(src.with_suffix(".png"))+"\n")
-          PY
-          while IFS=$'\t' read -r src dst; do
-            [ -z "$src" ] && continue
-            "$CONVERTER" "$src" "PNG:$dst"
-          done < /tmp/token_pairs.txt
-          python3 - <<'PY'
-          from pathlib import Path
+          from PIL import Image
           root=Path("app/data/classes")
           pairs=[(src,src.with_suffix(".png")) for src in sorted(root.glob("*.jpg"))]
           p=Path("app/character_creation_pergament.js")
           text=p.read_text(encoding="utf-8")
           for src,dst in pairs:
+              with Image.open(src) as im:
+                  if im.mode not in ("RGB","RGBA"):
+                      im=im.convert("RGB")
+                  im.save(dst,format="PNG",optimize=False)
               text=text.replace("./app/data/classes/"+src.name,"./app/data/classes/"+dst.name)
           p.write_text(text,encoding="utf-8")
           for src,_ in pairs:
