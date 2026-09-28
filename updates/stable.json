@@ -9,43 +9,123 @@
   "files": [
     {
       "path": "app/character_creation_pergament.js",
-      "bytes": 14741,
-      "sha256": "593a858e634f71b9905ed83b9d2d4c892c57ba48a0d7001d20bc87a4d0497ff7"
+      "bytes": 15071,
+      "sha256": "44f1a7060c4045df5933476ac58d19e84be98b0f61e6ece348162933b7d5f725"
     },
     {
       "path": "app/character_creation_pergament.css",
       "bytes": 5288,
-      "sha256": "eb230bf5df43df6189328f96cd9035985ed577d8396b430ec87473b72d7a90cb"
+      "sha256": "5093c7bb8b9fdd200c10b7246f377bc9b198ae71e35f2224aa6b70f4982c20bb"
     },
     {
       "path": "app/Ambiences.js",
       "bytes": 12671,
-      "sha256": "d1066ccee2ace927e9f6404d68702ee94ed4e3c60c30a30e3e26b18e6bc548d7"
+      "sha256": "56ba2ddc81c57a9e111467a3511ad7e6737b8c9b16cc2a5686ba6369517b9b01"
     },
     {
       "path": "app/app.js",
       "bytes": 29612,
-      "sha256": "f9ef9b2e085ee1d6ffdd719a7968f0bd3d09fa40a4b3f8a3e018b70212f8f998"
+      "sha256": "12fdf5f0b85e590264af2309392b18f6e33ada7dc92d516e94a524cba8a83c80"
     },
     {
       "path": "app/Settings.js",
       "bytes": 37105,
-      "sha256": "02b1603b322679d4bf2b6de15fc41808eea617f456a7742ca8c74b2482f8b25a"
+      "sha256": "0d0218547ce546630414cd7c342c6e25eb5c7a2ec4e988c415c62797b11d9838"
     },
     {
       "path": "app/update_manager.js",
       "bytes": 16921,
-      "sha256": "8a7e50ca77505fb83d15ca0921b9881a2f64a43ff3bce65de6d85de8b3728e78"
+      "sha256": "4f524256c122bb12e7033ed4697d5cdf74a860b9b1770ea8a432c80373e6f8a9"
     },
     {
       "path": "app/onboarding_faq_v71.js",
       "bytes": 27255,
-      "sha256": "7b8bb0c1d82c001b76f4ed3222d6f566ac0a4d965798b48152c01801bb122ae7"
+      "sha256": "c5bb29eb7d757e90db6022f4eff1f63f9149bda381a23f439dff862b4be1aba6"
     },
     {
       "path": "app/styles.css",
       "bytes": 14611,
-      "sha256": "6a9dec4be8b519a21803cf4930e0571baf62e97264fe9e81a963cef2cd067201"
+      "sha256": "1965fda511d019710900206f2d34d0bb6956ac7ec63351ee1e6950ca66aaf480"
+    },
+    {
+      "path": "app/data/classes/Illigger.png",
+      "sha256": "54503ba40595be6204089098078aaa8f6204bcfd02da753a63b227d130cbb01b"
+    },
+    {
+      "path": "app/data/classes/accursed.png",
+      "sha256": "a2934cc38a694838d1c0845ef9b9d0bfd1d1a09c644830073a7ba0cf6d42e282"
+    },
+    {
+      "path": "app/data/classes/alchemist.png",
+      "sha256": "834c2190cc4f15ff71d38bf76fd9d6b6e15dda399e8c0a2a6031f38fffe14e23"
+    },
+    {
+      "path": "app/data/classes/beasthart.png",
+      "sha256": "10e24b5c4e49e3517a4c419b8c784e59b4000c7a5b7ae24dba661a08dad07814"
+    },
+    {
+      "path": "app/data/classes/blood hunter.png",
+      "sha256": "c7a1d4062b2bb24745d9fde394d7125882ce5011a542c09f2691ee8fe09c5d5f"
+    },
+    {
+      "path": "app/data/classes/geist.png",
+      "sha256": "515753daace4469fb83600b0bf9271af4ebdb28de2d04d00d93e441175efe7f3"
+    },
+    {
+      "path": "app/data/classes/martyr.png",
+      "sha256": "47b9c3983132cf5589119df00e254b712105bc5b8733f5972af2bc9d26d0a582"
+    },
+    {
+      "path": "app/data/classes/necromancer.png",
+      "sha256": "9dd05a1a8f349063ed6c83f647f47bb5931c5d740b42616949420bc4d321ea20"
+    },
+    {
+      "path": "app/data/classes/occultist.png",
+      "sha256": "05beab4ce9564998eab052d0b290f1e1a8d4c4654b8a5b115256c7e81c466d9d"
+    },
+    {
+      "path": "app/data/classes/parasite.png",
+      "sha256": "0c6a4a0454899cc3132adfb8b42c51cb04f91597fcd3d03f9c02f8137c3f6108"
+    },
+    {
+      "path": "app/data/classes/psion.png",
+      "sha256": "eb1a285024ed9835fd25ecfc0f4abcfec9df8705a62beadb83b5cf464b1e44b3"
+    },
+    {
+      "path": "app/data/classes/pugilist.png",
+      "sha256": "e7acd34e829a453845e5abaf8d5757334b325894cd52270da1f374fadaf0fb56"
+    },
+    {
+      "path": "app/data/classes/rune keeper.png",
+      "sha256": "f688e5889c6c07466e9768bafa2990e460b2c1f7247f92dd860b9b6a1820b9c4"
+    },
+    {
+      "path": "app/data/classes/savant.png",
+      "sha256": "fc9b5c28f005d96e33552fc3e94edb44daacca8c1e2e4da4c2c4e12fba18e870"
+    },
+    {
+      "path": "app/data/classes/shifter.png",
+      "sha256": "efe55529a7c5f06b8e536aad57baef67737f893a70a1dfc0b0d1be915f92fca2"
+    },
+    {
+      "path": "app/data/classes/the swam.png",
+      "sha256": "8d38fbc173c841327e17282b25690637eae74df4f71ed2f3a9d0c50ee9aec856"
+    },
+    {
+      "path": "app/data/classes/vessel.png",
+      "sha256": "0fee6a46d61017803a261d0d9410d7b817b544404936db3b67e0d99c2399e614"
+    },
+    {
+      "path": "app/data/classes/warden.png",
+      "sha256": "a72f96cb9784b2863e0ad703d5b836365f1f135943641bc7fd334d7bd54aa467"
+    },
+    {
+      "path": "app/data/classes/warlord.png",
+      "sha256": "5037c9bb8b9fdd200c10b7246f377bc9b198ae71e35f2224aa6b70f4982c20bb"
+    },
+    {
+      "path": "app/data/classes/witch.png",
+      "sha256": "ee2995873e094e6207c301e169476aea5540cb9fd594cc4aa92822678db073c3"
     }
   ]
 }
