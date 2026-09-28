@@ -3698,3 +3698,29 @@ A bug remains **FIXED** until the user confirms the corresponding smoke test; th
 
 - **FIXED / pending user verification — Debug tools visible in normal mode:** added a production-safe CSS gate in `index.html`. All buttons with `.debug-tool-button` are hidden unless debug mode is enabled. This addresses the user-observed ReferenceError path for `dndV703Open`, `dndV706Open`, and `dndV707Open` by preventing those controls from being callable in normal mode. Debug runtime loading itself is unchanged.
 - **No APK release yet:** this is a source-level fix after V70.25.70; the next signed release must keep package `com.dndvtt.pocketvtt` and the existing permanent signing key.
+
+
+## V70.25.71 — BUGFIX BATCH / PLAY PROTECT UPDATE TEST — 2026-09-28
+
+### Исправлено
+- **Weapon proficiency — function collision:** Inventory.js previously declared checkCharacterProficiency(category, item) with the same global function name used by Proficienciescheck.js as checkCharacterProficiency(character, weapon). The later declaration could overwrite the weapon checker and pass incompatible arguments. Inventory-specific checking is now checkInventoryItemProficiency(...); the canonical weapon checker keeps the name checkCharacterProficiency(...).
+- **Armor proficiency:** armor checks now also respect the canonical proficiencyType values from armors.js (light, medium, heavy, shield) when localized category text is missing or customized.
+- **Armor → AC:** equipped armor now falls back to the canonical defaultArmors entry by item ID/name when an inventory copy has lost acBase, category, or proficiency metadata. AC calculation also recognizes proficiencyType as a fallback.
+- **Release identity:** V70.25.71 keeps package com.dndvtt.pocketvtt, the existing permanent signing key, and increments Android versionCode from 7025070 to 7025071.
+
+### Почему это важно для обновления
+Android update compatibility requires the target package/application identity and signing key to remain consistent; the new release therefore does not change the package name or signing key. The version code is strictly increased for V70.25.71. This is the intended path for updating V70.25.70 in place.
+
+### Проверка на телефоне
+1. Keep Google Play Protect enabled.
+2. Install/update from 70.25.70 → 70.25.71.
+3. Confirm the update does not report a package/version/signature conflict.
+4. Open the app and test:
+   - equip a weapon with and without the relevant proficiency;
+   - equip light/medium/heavy armor and a shield;
+   - confirm AC changes immediately and persists after reopening.
+5. If update succeeds, uninstall V70.25.71 and perform a clean install with Play Protect enabled to test the post-install verification path.
+
+### Статус
+Source fixes: FIXED / pending user smoke-test.
+APK: build required.
