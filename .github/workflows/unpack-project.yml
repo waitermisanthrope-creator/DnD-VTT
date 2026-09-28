@@ -37,6 +37,19 @@ jobs:
               src.unlink()
           PY
 
+      - name: Commit converted class tokens
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/data/classes app/character_creation_pergament.js
+          if git diff --cached --quiet; then
+            echo "No token conversion changes."
+          else
+            git commit -m "Convert class tokens to PNG without pixel cleanup"
+            git push
+          fi
+
       - name: Unpack V70.25.61 archive
         shell: bash
         run: |
