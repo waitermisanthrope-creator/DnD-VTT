@@ -131,8 +131,9 @@ function openSettingsModal() {
   const currentVersion = document.getElementById('settingsCurrentVersion');
   if (currentVersion) {
     const version = (window.DND_UPDATE_MANAGER && window.DND_UPDATE_MANAGER.VERSION) ||
-      (window.DND_UPDATE_MANAGER && window.DND_UPDATE_MANAGER.getConfig && window.DND_UPDATE_MANAGER.getConfig().version) || '70.25.68';
+      (window.DND_UPDATE_MANAGER && window.DND_UPDATE_MANAGER.getConfig && window.DND_UPDATE_MANAGER.getConfig().version) || '70.25.72';
     currentVersion.textContent = 'v' + version;
+    if(window.DND_UPDATE_UI && typeof window.DND_UPDATE_UI.refresh==='function') window.DND_UPDATE_UI.refresh();
   }
 
   const isDebug = localStorage.getItem('dnd_debug_enabled') === 'true';
