@@ -17,6 +17,7 @@ let rejected=false; try{u.validateManifest({version:'70.25.61',baseUrl:'https://
 if(!rejected) throw new Error('unsafe path accepted');
 if(u.getConfig().manifestUrl!=='https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json') throw new Error('unexpected default update URL');
   if(u.getConfig().version!=='70.25.66') throw new Error('runtime version mismatch');
+  const compat=u.validateManifest({version:'70.25.66',minAppVersion:'70.25.63',baseUrl:'https://example.invalid',files:[{path:'app/test.js',sha256:'a'.repeat(64)}]});
 (async()=>{
   u.setManifestUrl('manifest');
   const state=await u.inspect();
