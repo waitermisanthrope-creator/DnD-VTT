@@ -6,13 +6,13 @@ var SIGNATURE=ROOT+'1790622252250.png';
 var CHARACTER_CREATION_MODE=null;
 var BYPASS_PARCHMENT_ONCE=false;
 var CLASS_TOKEN_ART={
- 'Иллирригер':'./app/data/classes/Illigger.jpg','Аккурсд':'./app/data/classes/accursed.jpg','Алхимик':'./app/data/classes/alchemist.jpg',
- 'Бистхарт':'./app/data/classes/beasthart.jpg','Кровавый охотник':'./app/data/classes/blood hunter.jpg','Гайст':'./app/data/classes/geist.jpg',
- 'Призрак':'./app/data/classes/geist.jpg','Мученик':'./app/data/classes/martyr.jpg','Некромант':'./app/data/classes/necromancer.jpg',
- 'Оккультист':'./app/data/classes/occultist.jpg','Паразит':'./app/data/classes/parasite.jpg','Псионик':'./app/data/classes/psion.jpg',
- 'Пугилист':'./app/data/classes/pugilist.jpg','Рунный хранитель':'./app/data/classes/rune keeper.jpg','Савант':'./app/data/classes/savant.jpg',
- 'Шифтер':'./app/data/classes/shifter.jpg','Рой':'./app/data/classes/the swam.jpg','Сосуд':'./app/data/classes/vessel.jpg',
- 'Страж':'./app/data/classes/warden.jpg','Военачальник':'./app/data/classes/warlord.jpg','Ведьма':'./app/data/classes/witch.jpg',
+ 'Иллирригер':'./app/data/classes/Illigger.png','Аккурсд':'./app/data/classes/accursed.png','Алхимик':'./app/data/classes/alchemist.png',
+ 'Бистхарт':'./app/data/classes/beasthart.png','Кровавый охотник':'./app/data/classes/blood hunter.png','Гайст':'./app/data/classes/geist.png',
+ 'Призрак':'./app/data/classes/geist.png','Мученик':'./app/data/classes/martyr.png','Некромант':'./app/data/classes/necromancer.png',
+ 'Оккультист':'./app/data/classes/occultist.png','Паразит':'./app/data/classes/parasite.png','Псионик':'./app/data/classes/psion.png',
+ 'Пугилист':'./app/data/classes/pugilist.png','Рунный хранитель':'./app/data/classes/rune keeper.png','Савант':'./app/data/classes/savant.png',
+ 'Шифтер':'./app/data/classes/shifter.png','Рой':'./app/data/classes/the swam.png','Сосуд':'./app/data/classes/vessel.png',
+ 'Страж':'./app/data/classes/warden.png','Военачальник':'./app/data/classes/warlord.png','Ведьма':'./app/data/classes/witch.png',
  'Изобретатель':'./app/data/classes/ARTIFICER.png','Варвар':'./app/data/classes/BARBARIAN.png','Бард':'./app/data/classes/Bard.png',
  'Жрец':'./app/data/classes/CLERIC.png','Друид':'./app/data/classes/DRUID.png','Воин':'./app/data/classes/FIGHTER.png','Монах':'./app/data/classes/Monk.png',
  'Паладин':'./app/data/classes/PALADIN.png','Следопыт':'./app/data/classes/RANGER.png','Плут':'./app/data/classes/Rogue.png','Чародей':'./app/data/classes/SORCERER.png','Колдун':'./app/data/classes/WARLOCK.png','Волшебник':'./app/data/classes/Wizard.png'
