@@ -237,10 +237,17 @@ let pendingLevelUpData = null;
         const hero = window.currentCharacter || window.currentChar;
         // Требования мультикласса относятся только к ВЗЯТИЮ НОВОГО КЛАССА.
         // Повышение уже имеющегося класса не должно проверяться как multiclass entry.
-        const selectedClassKey = String(selectedClassName || '').replace(/[0-9]/g, '').trim().toLowerCase();
+        const normalizeClassKey = function(value) {
+          return String(value || '')
+            .replace(/[0-9]/g, '')
+            .replace(/[‐‑‒–—]/g, '-')
+            .trim()
+            .toLowerCase();
+        };
+        const selectedClassKey = normalizeClassKey(selectedClassName);
         const alreadyHasSelectedClass = !!(hero && Array.isArray(hero.classes) &&
           hero.classes.some(function(c){
-            return c && String(c.name || '').replace(/[0-9]/g, '').trim().toLowerCase() === selectedClassKey;
+            return c && normalizeClassKey(c.name) === selectedClassKey;
           }));
         if (hero && !alreadyHasSelectedClass &&
             typeof window.checkMulticlassRequirements === 'function' &&
@@ -360,9 +367,16 @@ function proceedWithClassLevelUp(currentClass) {
   // Сохраняем исходное значение опыта на случай отмены повышения уровня
   window._expBeforeLevelUp = (hero.exp !== undefined) ? hero.exp : 0;
 
+  const normalizeLevelUpClassName = value => String(value || '')
+    .replace(/[0-9]/g, '')
+    .replace(/[‐‑‒–—]/g, '-')
+    .trim()
+    .toLowerCase();
+
   let classLevel = 0;
   if (hero.classes && Array.isArray(hero.classes)) {
-    const found = hero.classes.find(c => c.name === currentClass);
+    const wantedClass = normalizeLevelUpClassName(currentClass);
+    const found = hero.classes.find(c => c && normalizeLevelUpClassName(c.name) === wantedClass);
     if (found) classLevel = Number(found.level) || 0;
   }
 
@@ -373,8 +387,9 @@ function proceedWithClassLevelUp(currentClass) {
     : { features: [] };
 
   // Уже выбран ли подкласс для этого класса у персонажа?
+  const normalizedCurrentClass = normalizeLevelUpClassName(currentClass);
   let existingClassEntry = (hero.classes && Array.isArray(hero.classes))
-    ? hero.classes.find(c => c.name === currentClass)
+    ? hero.classes.find(c => c && normalizeLevelUpClassName(c.name) === normalizedCurrentClass)
     : null;
   const alreadyHasSubclass = !!(existingClassEntry && existingClassEntry.subclass);
   const needsSubclassChoice = !!(levelData && levelData.subclassLevel) && !alreadyHasSubclass;
@@ -499,7 +514,9 @@ function proceedWithClassLevelUp(currentClass) {
 
   // --- Блок выбора частичного владения при новом классе ---
   let proficiencyChoiceHtml = '';
-  const isNewClass = !(hero.classes && hero.classes.some(c => c.name === currentClass));
+  const isNewClass = !(hero.classes && hero.classes.some(c =>
+    c && normalizeLevelUpClassName(c.name) === normalizeLevelUpClassName(currentClass)
+  ));
   const multiRules = window.MULTICLASS_PROFICIENCIES_2014 ? window.MULTICLASS_PROFICIENCIES_2014[currentClass] : null;
   if (isNewClass && multiRules && multiRules.choices && multiRules.choices.length > 0) {
     let choiceBlocks = '';
