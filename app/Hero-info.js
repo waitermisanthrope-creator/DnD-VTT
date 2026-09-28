@@ -36,6 +36,7 @@
 
 // Официальные требования характеристик для мультикласса в D&D 5e (минимум 13)
 const MULTICLASS_REQUIREMENTS = {
+    "Оккультист": { wisdom: 13 },
     "Алхимик": { intelligence: 13 },
     "Бард": { charisma: 13 },
     "Варвар": { strength: 13 },
