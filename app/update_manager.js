@@ -6,7 +6,7 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.25.74';
+  var APP_VERSION = '70.25.75';
   var DEFAULT_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url';
   var CHANNEL_KEY = 'dnd_update_channel';
