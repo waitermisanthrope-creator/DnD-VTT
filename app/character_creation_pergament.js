@@ -1,3 +1,4 @@
+/* 70.25.73 token/progression fix — no pixel cleanup */
 /* Character creation parchment flow v2 — ordinary/extra sheets, progressive reveal, signature transition. */
 (function(){
 'use strict';
