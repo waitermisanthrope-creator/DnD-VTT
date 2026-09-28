@@ -313,10 +313,11 @@ function openCharacter(id) {
 }
 
 function deleteCharacter(id) {
-  if (!confirm('Вы уверены, что хотите полностью удалить этого персонажа?')) return;
-  allCharacters = allCharacters.filter(function(c) { return c.id !== id; });
-  saveAllCharacters();
-  renderCharacterList();
+  id=String(id);var exists=allCharacters.some(function(c){return String(c.id)===id;});if(!exists){renderCharacterList();return;}
+  var confirmed=true;try{confirmed=(typeof window.confirm==='function')?window.confirm('Вы уверены, что хотите полностью удалить этого персонажа?'):true;}catch(e){confirmed=true;}
+  if(!confirmed)return;allCharacters=allCharacters.filter(function(c){return String(c.id)!==id;});
+  if(String(currentCharacterId)===id){currentCharacterId=null;currentChar=null;window.currentCharacter=null;}
+  saveAllCharacters();try{localStorage.setItem('dnd_current_character_id','');}catch(e){}renderCharacterList();
 }
 
 function showCharacterSelect() {
