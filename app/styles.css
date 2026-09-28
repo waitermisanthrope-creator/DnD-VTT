@@ -280,3 +280,5 @@ input:focus, textarea:focus, select:focus {
     padding-bottom: 110px !important;
   }
 }
+
+.btn-del{position:relative;z-index:5;touch-action:manipulation;pointer-events:auto}.char-actions{position:relative;z-index:4}
