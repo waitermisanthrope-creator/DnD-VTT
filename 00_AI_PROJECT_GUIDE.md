@@ -4097,3 +4097,11 @@ APK: build required.
 - Token switching now preloads the next image before replacing the visible one. If a token path fails, the previous visible token is kept instead of disappearing.
 - Parchment progression was hardened: every input/select change recalculates the first incomplete step, reveals the next line immediately, and rechecks on the next event loop tick. Completed/current controls remain interactive; only future controls are disabled.
 - Version bumped to 70.25.74. Android debug build is being generated with the restored token bytes. The updater hash artifact is generated from the exact files in the build so the stable manifest can be verified before the first OTA test.
+
+
+## 2026-09-29 — FIX 70.25.75: tokens + parchment progression
+- Critical correction: the 20 extra-class token images were restored from the original JPG bytes from commit 9b8c564a3b1ef1bcd93ddc68cca825675c84ea3e. They are stored with .png filenames, but their actual JPEG bytes are untouched. No black-pixel/alpha cleanup is performed.
+- Removed runtime pixel manipulation completely. Standard class PNGs remain untouched.
+- Parchment progression now uses one delegated touch-safe change/input handler. After selecting a class, the next row is explicitly revealed and the class selector remains enabled so another class can be selected.
+- Token images have pointer-events:none so they cannot intercept taps intended for the selector.
+- Android debug workflow now regenerates updates/stable.json from the exact repository bytes, including all class token files, so OTA updates can carry the token correction with correct SHA-256 values.
