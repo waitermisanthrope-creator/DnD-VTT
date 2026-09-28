@@ -53,6 +53,16 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
       background: #444;
       border-color: #888;
     }
+
+    /* Developer-only tools must never be visible in normal user mode.
+       The debug runtime adds .debug-enabled to <html> before/while loading
+       the debug modules, so the same buttons become available only there. */
+    .debug-tool-button {
+      display: none !important;
+    }
+    .debug-enabled .debug-tool-button {
+      display: block !important;
+    }
   </style>
   <!-- Справочники и данные -->
   <script src="./app/weaponsmelee.js"></script>
