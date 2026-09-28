@@ -6,7 +6,7 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.25.71';
+  var APP_VERSION = '70.25.72';
   var DEFAULT_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url';
   var CHANNEL_KEY = 'dnd_update_channel';
@@ -327,6 +327,12 @@
       global.addEventListener('dnd:splash-complete', run, { once: true });
     }
   }
+
+  function updateUiProgress(show,current,total,path){var box=document.getElementById('settingsUpdateProgress'),bar=document.getElementById('settingsUpdateProgressBar'),label=document.getElementById('settingsUpdateProgressLabel');if(!box)return;box.style.display=show?'block':'none';if(total>0){var pct=Math.round(current/total*100);if(bar)bar.style.width=pct+'%';if(label)label.textContent='Загрузка обновления: '+pct+'% — '+current+' из '+total+(path?' · '+path:'');}}
+  async function settingsCheck(){var status=document.getElementById('settingsUpdateStatus'),apply=document.getElementById('settingsUpdateApplyButton');if(status)status.textContent='Проверяю GitHub…';if(apply)apply.style.display='none';updateUiProgress(true,0,0,'');try{var state=await checkAndStage({onProgress:function(p){updateUiProgress(true,p.current||0,p.total||0,p.path||'');}});if(state&&state.updateAvailable){if(status)status.textContent='Доступно обновление до v'+state.manifest.version+'. Загружено и проверено.';if(apply)apply.style.display='block';updateUiProgress(true,state.manifest.files.length,state.manifest.files.length,'готово');}else{if(status)status.textContent='Установлена актуальная версия v'+(state&&state.currentVersion||APP_VERSION)+'.';updateUiProgress(false,0,0,'');}return state;}catch(e){if(status)status.textContent='Ошибка проверки: '+(e&&e.message||e);updateUiProgress(false,0,0,'');return null;}}
+  async function settingsApply(){var status=document.getElementById('settingsUpdateStatus'),apply=document.getElementById('settingsUpdateApplyButton');if(apply)apply.disabled=true;if(status)status.textContent='Применяю обновление…';try{await applyStaged();if(status)status.textContent='Обновление применено. Перезапускаю приложение…';}catch(e){if(status)status.textContent='Не удалось применить: '+(e&&e.message||e);if(apply)apply.disabled=false;}}
+  function refreshSettingsVersion(){var e=document.getElementById('settingsCurrentVersion');if(!e)return;inspect().then(function(s){if(s&&s.currentVersion)e.textContent='v'+s.currentVersion;}).catch(function(){});}
+  global.DND_UPDATE_UI={check:settingsCheck,apply:settingsApply,refresh:refreshSettingsVersion};
 
   global.DND_UPDATE_MANAGER = {
     autoCheckForUpdates: autoCheckForUpdates,
