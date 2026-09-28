@@ -1,4 +1,4 @@
-/* 70.25.74 token/progression fix — preserve original image bytes */
+/* 70.25.74 token/progression fix — preserve original image bytes; harden row/token switching */
 /* Character creation parchment flow v2 — ordinary/extra sheets, progressive reveal, signature transition. */
 (function(){
 'use strict';
@@ -96,10 +96,15 @@ function renderClassArt(){
    img.removeAttribute('src');img.removeAttribute('data-art');img.classList.remove('token-ready');img.alt='Жетон появится после выбора класса';
   }else if(img.getAttribute('data-art')!==art){
    /* Preload the new token first. If it is missing, keep the old token visible. */
+   var requestedName=name, requestedArt=art;
    var pending=new Image();
-   pending.onload=function(){img.src=art;img.setAttribute('data-art',art);img.alt='Жетон класса: '+name;img.classList.add('token-ready');};
-   pending.onerror=function(){console.warn('Token not found:',art);};
-   pending.src=art;
+   pending.onload=function(){
+    var currentName=el('pc_class')?el('pc_class').value:'';
+    if(currentName!==requestedName||classArt(currentName)!==requestedArt)return;
+    img.src=requestedArt;img.setAttribute('data-art',requestedArt);img.alt='Жетон класса: '+requestedName;img.classList.add('token-ready');
+   };
+   pending.onerror=function(){console.warn('Token not found:',requestedArt);};
+   pending.src=requestedArt;
   }
  }
  var title=el('pcTitle'),sub=el('pcSubtitle'),tax=el('pcTax'),warn=el('pcWarning'),reward=el('pcReward');
