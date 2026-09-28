@@ -496,3 +496,41 @@ window.getSubclassFeaturesForLevel = function(className, subclassName, level) {
   if (!data || !data.levels || !data.levels[level]) return [];
   return data.levels[level].features || [];
 };
+
+
+/* Некромант — независимые краткие описания для VTT; подробные механики будут добавлены позже. */
+window.SUBCLASSES_REFERENCE["Некромант"] = {
+  "Рыцарь смерти": {
+    source: "Third-party / Mage Hand Press",
+    description: "Боевой некромант, сочетающий тяжёлое вооружение с тёмной магией.",
+    pickLevel: 3,
+    levels: {
+      3: { features: ["Заготовка: боевой некромант"] },
+      6: { features: ["Заготовка: способность специализации"] },
+      10: { features: ["Заготовка: способность специализации"] },
+      14: { features: ["Заготовка: способность специализации"] }
+    }
+  },
+  "Повелитель": {
+    source: "Third-party / Mage Hand Press",
+    description: "Некромант-командир, усиливающий союзников и собственную нежить.",
+    pickLevel: 3,
+    levels: {
+      3: { features: ["Заготовка: командование нежитью"] },
+      6: { features: ["Заготовка: способность специализации"] },
+      10: { features: ["Заготовка: способность специализации"] },
+      14: { features: ["Заготовка: способность специализации"] }
+    }
+  },
+  "Бледный мастер": {
+    source: "Third-party / Mage Hand Press",
+    description: "Специалист по чистой некромантии и разрушительной магии смерти.",
+    pickLevel: 3,
+    levels: {
+      3: { features: ["Заготовка: усиленная некромантия"] },
+      6: { features: ["Заготовка: способность специализации"] },
+      10: { features: ["Заготовка: способность специализации"] },
+      14: { features: ["Заготовка: способность специализации"] }
+    }
+  }
+};
