@@ -24,9 +24,26 @@ android {
         versionName "70.25.69"
     }
 
+    signingConfigs {
+        release {
+            def keystoreFile = System.getenv("DND_VTT_KEYSTORE_FILE")
+            def keystorePassword = System.getenv("DND_VTT_KEYSTORE_PASSWORD")
+            def keyAliasValue = System.getenv("DND_VTT_KEY_ALIAS")
+            def keyPasswordValue = System.getenv("DND_VTT_KEY_PASSWORD")
+
+            if (keystoreFile && keystorePassword && keyAliasValue && keyPasswordValue) {
+                storeFile file(keystoreFile)
+                storePassword keystorePassword
+                keyAlias keyAliasValue
+                keyPassword keyPasswordValue
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
         }
     }
 
@@ -41,6 +58,5 @@ android {
 dependencies {
     implementation "androidx.webkit:webkit:1.17.1"
 }
-
 
 tasks.named("preBuild").configure { dependsOn("prepareVttAssets") }
