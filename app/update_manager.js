@@ -6,7 +6,7 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.25.63';
+  var APP_VERSION = '70.25.66';
   var DEFAULT_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url';
   var CHANNEL_KEY = 'dnd_update_channel';
@@ -54,11 +54,22 @@
     });
   }
 
+  async function getRuntimeAppVersion() {
+    try {
+      var native = nativeRequest('version', '');
+      if (native) {
+        var result = await native;
+        if (result && result.value) return String(result.value);
+      }
+    } catch (_) {}
+    return APP_VERSION;
+  }
+
   function getConfig() {
     var url = '';
     try { url = global.localStorage.getItem(STORAGE_KEY) || ''; } catch (_) {}
     return {
-      version: APP_VERSION,
+      version: runtimeVersion,
       channel: (tryGetChannel() || DEFAULT_CHANNEL),
       manifestUrl: String(global.DND_UPDATE_MANIFEST_URL || url || DEFAULT_MANIFEST_URL || '').trim()
     };
@@ -117,11 +128,12 @@
     return true;
   }
 
-  function compatibility(manifest) {
-    if (manifest.minAppVersion && compareVersions(APP_VERSION, manifest.minAppVersion) < 0) {
+  function compatibility(manifest, appVersion) {
+    appVersion = String(appVersion || APP_VERSION);
+    if (manifest.minAppVersion && compareVersions(appVersion, manifest.minAppVersion) < 0) {
       return { ok: false, reason: 'minimum-app-version', minAppVersion: manifest.minAppVersion };
     }
-    if (Array.isArray(manifest.blockedVersions) && manifest.blockedVersions.indexOf(APP_VERSION) !== -1) {
+    if (Array.isArray(manifest.blockedVersions) && manifest.blockedVersions.indexOf(appVersion) !== -1) {
       return { ok: false, reason: 'blocked-current-version' };
     }
     return { ok: true };
@@ -131,10 +143,11 @@
     var cfg = getConfig();
     if (!cfg.manifestUrl) return { configured: false, currentVersion: APP_VERSION, channel: cfg.channel };
     var manifest = await fetchManifest(cfg.manifestUrl);
-    var compat = compatibility(manifest);
+    var runtimeVersion = await getRuntimeAppVersion();
+    var compat = compatibility(manifest, runtimeVersion);
     return {
       configured: true,
-      currentVersion: APP_VERSION,
+      currentVersion: runtimeVersion,
       channel: cfg.channel,
       manifest: manifest,
       compatibility: compat,
@@ -144,9 +157,10 @@
 
   async function stage(manifest) {
     validateManifest(manifest);
-    var compat = compatibility(manifest);
+    var runtimeVersion = await getRuntimeAppVersion();
+    var compat = compatibility(manifest, runtimeVersion);
     if (!compat.ok) throw new Error('Update rejected: ' + compat.reason);
-    if (compareVersions(manifest.version, APP_VERSION) <= 0) return { staged: false, reason: 'not-newer' };
+    if (compareVersions(manifest.version, runtimeVersion) <= 0) return { staged: false, reason: 'not-newer' };
 
     var base = manifest.baseUrl || '';
     var files = [];
