@@ -151,7 +151,7 @@
       channel: cfg.channel,
       manifest: manifest,
       compatibility: compat,
-      updateAvailable: compat.ok && compareVersions(manifest.version, APP_VERSION) > 0
+      updateAvailable: compat.ok && compareVersions(manifest.version, runtimeVersion) > 0
     };
   }
 
