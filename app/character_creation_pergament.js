@@ -12,12 +12,16 @@ var CLASS_TOKEN_ART={
  'Оккультист':'./app/data/classes/occultist.jpg','Паразит':'./app/data/classes/parasite.jpg','Псионик':'./app/data/classes/psion.jpg',
  'Пугилист':'./app/data/classes/pugilist.jpg','Рунный хранитель':'./app/data/classes/rune keeper.jpg','Савант':'./app/data/classes/savant.jpg',
  'Шифтер':'./app/data/classes/shifter.jpg','Рой':'./app/data/classes/the swam.jpg','Сосуд':'./app/data/classes/vessel.jpg',
- 'Страж':'./app/data/classes/warden.jpg','Военачальник':'./app/data/classes/warlord.jpg','Ведьма':'./app/data/classes/witch.jpg'
+ 'Страж':'./app/data/classes/warden.jpg','Военачальник':'./app/data/classes/warlord.jpg','Ведьма':'./app/data/classes/witch.jpg',
+ 'Изобретатель':'./app/data/classes/ARTIFICER.png','Варвар':'./app/data/classes/BARBARIAN.png','Бард':'./app/data/classes/Bard.png',
+ 'Жрец':'./app/data/classes/CLERIC.png','Друид':'./app/data/classes/DRUID.png','Воин':'./app/data/classes/FIGHTER.png','Монах':'./app/data/classes/Monk.png',
+ 'Паладин':'./app/data/classes/PALADIN.png','Следопыт':'./app/data/classes/RANGER.png','Плут':'./app/data/classes/Rogue.png','Чародей':'./app/data/classes/SORCERER.png','Колдун':'./app/data/classes/WARLOCK.png','Волшебник':'./app/data/classes/Wizard.png'
 };
 function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]})}
 function el(id){return document.getElementById(id)}
 function classes(){return Array.isArray(window.DND_CLASSES_LIST)?window.DND_CLASSES_LIST:[]}
-function classArt(name){return CLASS_TOKEN_ART[name]||'./1.png'}
+function classArt(name){return CLASS_TOKEN_ART[name]||''}
+function prepareTransparentToken(img){if(!img||!img.src||img.dataset.transparentReady==='1')return;img.dataset.transparentReady='1';var src=img.src,work=new Image();work.onload=function(){try{var c=document.createElement('canvas');c.width=work.naturalWidth||work.width;c.height=work.naturalHeight||work.height;var ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(work,0,0);var d=ctx.getImageData(0,0,c.width,c.height),p=d.data;for(var i=0;i<p.length;i+=4){var r=p[i],g=p[i+1],b=p[i+2],a=p[i+3],mx=Math.max(r,g,b),mn=Math.min(r,g,b);if(mx<48){p[i+3]=0;continue;}if(mx<90&&mx-mn<22)p[i+3]=Math.round(a*((mx-48)/42));}ctx.putImageData(d,0,0);img.src=c.toDataURL('image/png');img.classList.add('token-ready');}catch(e){img.classList.add('token-ready');}};work.onerror=function(){img.classList.remove('token-ready');};work.src=src;}
 function setModeClass(){
  var stage=el('parchmentStage');if(!stage)return;
  stage.classList.toggle('is-extra',CHARACTER_CREATION_MODE==='extra');
@@ -61,7 +65,7 @@ function setupProgression(){
 function renderClassArt(){
  var name=el('pc_class')?.value||'',img=el('pc_classArt'),label=el('pc_classLabel');
  if(label)label.textContent=name||'';
- if(img){img.src=classArt(name);img.onerror=function(){this.src='./1.png'}}
+ if(img){img.classList.remove('token-ready');var art=classArt(name);if(!art){img.removeAttribute('src');img.alt='Жетон появится после выбора класса';}else{img.src=art;img.alt='Жетон класса: '+name;img.onerror=function(){this.removeAttribute('src');this.classList.remove('token-ready');};img.onload=function(){prepareTransparentToken(this);};}}
  var title=el('pcTitle'),sub=el('pcSubtitle'),tax=el('pcTax'),warn=el('pcWarning'),reward=el('pcReward');
  var extra=CHARACTER_CREATION_MODE==='extra';
  if(title)title.textContent=extra?'ЛИСТ ЛИКВИДАЦИИ':'РОЗЫСКНОЙ ЛИСТ';
