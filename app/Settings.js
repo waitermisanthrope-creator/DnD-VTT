@@ -73,6 +73,7 @@ function openSettingsModal() {
           </div>
           <div style="background: #252525; padding: 12px; border-radius: 6px; border: 1px solid #333;">
             <div style="font-size: 0.95em; font-weight: bold; margin-bottom: 8px; color: #4FC3F7;">🔄 Обновления приложения</div>
+            <div style="font-size: 0.78em; color: #c7c7c7; margin-bottom: 8px;">Установленная версия: <strong id="settingsCurrentVersion" style="color:#fff;">—</strong></div>
             <div id="settingsUpdateStatus" style="font-size: 0.78em; color: #aaa; line-height: 1.4; margin-bottom: 8px;">Проверка обновлений доступна, когда настроен канал распространения.</div>
             <div style="display:flex; gap:8px;">
               <button onclick="if(window.DND_UPDATE_UI) DND_UPDATE_UI.check()" class="btn-action" style="background:#1976D2; flex:1; padding:9px; font-size:0.8em; font-weight:bold; cursor:pointer; color:#fff; border:none; border-radius:6px;">🔎 Проверить</button>
@@ -86,6 +87,7 @@ function openSettingsModal() {
             </label>
             <div id="settingsDebugButtonWrapper" style="display: none; margin-top: 8px;">
               <button onclick="openDevMenuModal()" class="btn-action" style="background: #37474F; width: 100%; padding: 10px; font-size: 0.85em; font-weight: bold; cursor: pointer; border: 1px solid #546E7A; border-radius: 6px; color: #fff;">🛠️ Меню разработчика</button>
+              <button onclick="openDebugLogsModal()" class="btn-action" style="background:#455a64; width:100%; margin-top:8px; padding:10px; font-size:0.85em; font-weight:bold; cursor:pointer; border:1px solid #607d8b; border-radius:6px; color:#fff;">📜 Логи отладки</button>
             </div>
           </div>
           <div style="background: #252525; padding: 12px; border-radius: 6px; border: 1px solid #333;">
@@ -119,6 +121,12 @@ function openSettingsModal() {
       if (event.target === modal) closeSettingsModal();
     });
     document.body.appendChild(modal);
+  }
+
+  const currentVersion = document.getElementById('settingsCurrentVersion');
+  if (currentVersion) {
+    const version = (window.DND_UPDATE_MANAGER && window.DND_UPDATE_MANAGER.VERSION) || '70.25.68';
+    currentVersion.textContent = 'v' + version;
   }
 
   const isDebug = localStorage.getItem('dnd_debug_enabled') === 'true';
@@ -429,6 +437,49 @@ function applyAppFont(fontKey) {
   fontStyleTag.innerHTML = `
     body, input, button, select, textarea { font-family: ${fontObj.family} !important; }
   `;
+}
+
+function openDebugLogsModal() {
+  let modal = document.getElementById('settingsDebugLogsModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'settingsDebugLogsModal';
+    modal.style.cssText = 'display:none;position:fixed;inset:0;z-index:20040;background:rgba(0,0,0,.88);align-items:center;justify-content:center;padding:15px;box-sizing:border-box;';
+    modal.innerHTML = '<div style="background:#181818;color:#fff;width:100%;max-width:700px;max-height:90vh;overflow:auto;border:1px solid #607d8b;border-radius:12px;padding:18px;box-sizing:border-box;">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #444;padding-bottom:10px;margin-bottom:12px;">' +
+        '<h3 style="margin:0;color:#90caf9;">📜 Логи отладки</h3>' +
+        '<button onclick="closeDebugLogsModal()" style="background:#e53935;color:#fff;border:0;border-radius:6px;padding:6px 10px;font-weight:bold;">✕</button>' +
+      '</div>' +
+      '<div id="settingsDebugLogsBody" style="font-family:monospace;font-size:11px;line-height:1.45;white-space:pre-wrap;background:#0d0d0d;color:#ddd;border:1px solid #333;border-radius:7px;padding:10px;min-height:180px;max-height:55vh;overflow:auto;"></div>' +
+      '<div style="display:flex;gap:8px;margin-top:10px;">' +
+        '<button onclick="refreshDebugLogsModal()" class="btn-action" style="flex:1;background:#455a64;padding:9px;">🔄 Обновить</button>' +
+        '<button onclick="exportDebugLogs()" class="btn-action" style="flex:1;background:#1976d2;padding:9px;">💾 Скачать</button>' +
+        '<button onclick="clearDebugLogs()" class="btn-action" style="flex:1;background:#6d3030;padding:9px;">🗑️ Очистить</button>' +
+      '</div>' +
+    '</div>';
+    document.body.appendChild(modal);
+    modal.addEventListener('click', function(event){ if(event.target === modal) closeDebugLogsModal(); });
+  }
+  modal.style.display = 'flex';
+  refreshDebugLogsModal();
+}
+
+function refreshDebugLogsModal() {
+  const body = document.getElementById('settingsDebugLogsBody');
+  if (!body) return;
+  const logs = Array.isArray(window.appDebugLogs) ? window.appDebugLogs : [];
+  body.textContent = logs.length ? logs.join('\n') : 'Логи пока не собраны.';
+  body.scrollTop = body.scrollHeight;
+}
+
+function clearDebugLogs() {
+  window.appDebugLogs = [];
+  refreshDebugLogsModal();
+}
+
+function closeDebugLogsModal() {
+  const modal = document.getElementById('settingsDebugLogsModal');
+  if (modal) modal.style.display = 'none';
 }
 
 function toggleDebugMode(isEnabled) {
