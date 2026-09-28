@@ -1,217 +1,51 @@
 {
   "schema": 1,
   "app": "DnD-VTT",
-  "version": "70.25.73",
+  "version": "70.25.74",
   "minAppVersion": "70.25.71",
   "channel": "stable",
-  "generated": "2026-09-29T00:00:00Z",
+  "generated": "2026-09-29T01:00:00+03:00",
   "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main",
   "files": [
     {
       "path": "app/character_creation_pergament.js",
-      "bytes": 14327,
-      "sha256": "01c88f062660a1d46d247acc65669c916ec5e77fd3da52be2f865e1489d67ae0"
+      "bytes": 14741,
+      "sha256": "593a858e634f71b9905ed83b9d2d4c892c57ba48a0d7001d20bc87a4d0497ff7"
     },
     {
       "path": "app/character_creation_pergament.css",
       "bytes": 5288,
-      "sha256": "5093e6dbd91481271906718071172710bd2c2c9e4bbcb37ba4d5272a9aee27bc"
+      "sha256": "eb230bf5df43df6189328f96cd9035985ed577d8396b430ec87473b72d7a90cb"
     },
     {
       "path": "app/Ambiences.js",
       "bytes": 12671,
-      "sha256": "56ba2ddc81c57a9e111467a3511ad7e6737b8c9b16cc2a5686ba6369517b9b01"
+      "sha256": "d1066ccee2ace927e9f6404d68702ee94ed4e3c60c30a30e3e26b18e6bc548d7"
     },
     {
       "path": "app/app.js",
       "bytes": 29612,
-      "sha256": "12fdf5f0b85e590264af2309392b18f6e33ada7dc92d516e94a524cba8a83c80"
+      "sha256": "f9ef9b2e085ee1d6ffdd719a7968f0bd3d09fa40a4b3f8a3e018b70212f8f998"
     },
     {
       "path": "app/Settings.js",
       "bytes": 37105,
-      "sha256": "3663b095afb86646a77746c5b4ccd3274bfc442f44e6492347fd37ac741cafed"
+      "sha256": "02b1603b322679d4bf2b6de15fc41808eea617f456a7742ca8c74b2482f8b25a"
     },
     {
       "path": "app/update_manager.js",
       "bytes": 16921,
-      "sha256": "41ff4f4d45f3393596a9b60df0c7354d012458aa5dd0200e4c328a198e667b84"
+      "sha256": "8a7e50ca77505fb83d15ca0921b9881a2f64a43ff3bce65de6d85de8b3728e78"
     },
     {
       "path": "app/onboarding_faq_v71.js",
-      "bytes": 26901,
-      "sha256": "7f56c623b528184ec439e4609258b7bf26acbda3397478e74ff56ce918dce483"
+      "bytes": 27255,
+      "sha256": "7b8bb0c1d82c001b76f4ed3222d6f566ac0a4d965798b48152c01801bb122ae7"
     },
     {
       "path": "app/styles.css",
       "bytes": 14611,
-      "sha256": "1965fda511d019710900206f2d34d0bb6956ac7ec63351ee1e6950ca66aaf480"
-    },
-    {
-      "path": "app/data/classes/ARTIFICER.png",
-      "bytes": 891812,
-      "sha256": "8b3e003d4c22db04e65d20e9b1536b19b8c1a6b4bf08d4d8f83e7fc35fb1c629"
-    },
-    {
-      "path": "app/data/classes/BARBARIAN.png",
-      "bytes": 815028,
-      "sha256": "4b1ac3f9c6abe250dd80bc9d1b9ab52f1a1bb356f7241602b7ef6291702793ee"
-    },
-    {
-      "path": "app/data/classes/Bard.png",
-      "bytes": 769261,
-      "sha256": "3cd4eb6779545dbdd886a274e5b7060b054518710af661b84f6aafe6b47633bf"
-    },
-    {
-      "path": "app/data/classes/CLERIC.png",
-      "bytes": 914579,
-      "sha256": "a66571a4a79eb93104ae08920cce1a1bc93c353b4fbee99b37f9d9ed928aab52"
-    },
-    {
-      "path": "app/data/classes/DRUID.png",
-      "bytes": 776880,
-      "sha256": "e9043756c0eec43e043132ecf913c8f8e231fe5fc01fdf559ab6b8c27767be01"
-    },
-    {
-      "path": "app/data/classes/FIGHTER.png",
-      "bytes": 762812,
-      "sha256": "01aad1f981daf82d94c77d49401287f08e66958f6636860d4fb212fe3266e8ef"
-    },
-    {
-      "path": "app/data/classes/Illigger.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/Monk.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/PALADIN.png",
-      "bytes": 873991,
-      "sha256": "a47f0c8b150de834974c2c58cab4d5d7d5d52efa4a7488f880e03af517d9bc45"
-    },
-    {
-      "path": "app/data/classes/RANGER.png",
-      "bytes": 643335,
-      "sha256": "f195741786e3c0a616b0873bdce84d7af4e5cf1646eb24060da22cfa40d8687a"
-    },
-    {
-      "path": "app/data/classes/Rogue.png",
-      "bytes": 579962,
-      "sha256": "fec8637b93f4e2e68ff243c70a82ce319b9cff3826f14453bcd288fe4a8aeb01"
-    },
-    {
-      "path": "app/data/classes/SORCERER.png",
-      "bytes": 939797,
-      "sha256": "c3524d41c8d2e8eed3c46911f08678a708d79332030056ec6d84f2e104ea5a62"
-    },
-    {
-      "path": "app/data/classes/WARLOCK.png",
-      "bytes": 981038,
-      "sha256": "c176f518d557966c3c00b2acccaf70b1fa0fb01c2663b6b7c1e4a1f946e9ce2c"
-    },
-    {
-      "path": "app/data/classes/Wizard.png",
-      "bytes": 822251,
-      "sha256": "9d13926285a959d55a92a7999f18ed236f6ea7a3a33042155c181a57ab414e69"
-    },
-    {
-      "path": "app/data/classes/accursed.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/alchemist.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/beasthart.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/blood hunter.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/geist.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/martyr.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/necromancer.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/occultist.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/parasite.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/psion.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/pugilist.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/rune keeper.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/savant.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/shifter.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/the swam.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/vessel.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/warden.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/warlord.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/data/classes/witch.png",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      "sha256": "6a9dec4be8b519a21803cf4930e0571baf62e97264fe9e81a963cef2cd067201"
     }
-  ],
-  "blockedVersions": []
+  ]
 }
