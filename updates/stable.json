@@ -96,6 +96,31 @@
       "path": "app/data/classes/RANGER.png",
       "bytes": 643335,
       "sha256": "f195741786e3c0a616b0873bdce84d7af4e5cf1646eb24060da22cfa40d8687a"
+    },
+    {
+      "path": "app/data/classes/Rogue.png",
+      "bytes": 579962,
+      "sha256": "fec8637b93f4e2e68ff243c70a82ce319b9cff3826f14453bcd288fe4a8aeb01"
+    },
+    {
+      "path": "app/data/classes/SORCERER.png",
+      "bytes": 939797,
+      "sha256": "c3524d41c8d2e8eed3c46911f08678a708d79332030056ec6d84f2e104ea5a62"
+    },
+    {
+      "path": "app/data/classes/WARLOCK.png",
+      "bytes": 981038,
+      "sha256": "c176f518d557966c3c00b2acccaf70b1fa0fb01c2663b6b7c1e4a1f946e9ce2c"
+    },
+    {
+      "path": "app/data/classes/Wizard.png",
+      "bytes": 822251,
+      "sha256": "9d13926285a959d55a92a7999f18ed236f6ea7a3a33042155c181a57ab414e69"
+    },
+    {
+      "path": "app/data/classes/accursed.png",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
   ],
   "blockedVersions": []
