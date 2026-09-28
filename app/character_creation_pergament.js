@@ -19,9 +19,13 @@ var CLASS_TOKEN_ART={
 };
 function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]})}
 function el(id){return document.getElementById(id)}
-function classes(){return Array.isArray(window.DND_CLASSES_LIST)?window.DND_CLASSES_LIST:[]}
+function classes(){
+ var list=Array.isArray(window.DND_CLASSES_LIST)?window.DND_CLASSES_LIST:[];
+ if(list.length)return list;
+ var ref=window.CLASSES_REFERENCE||{};
+ return Object.keys(ref).map(function(name){return{name:name,displayName:name}});
+}
 function classArt(name){return CLASS_TOKEN_ART[name]||''}
-function prepareTransparentToken(img){if(!img||!img.src||img.dataset.transparentReady==='1')return;img.dataset.transparentReady='1';var src=img.src,work=new Image();work.onload=function(){try{var c=document.createElement('canvas');c.width=work.naturalWidth||work.width;c.height=work.naturalHeight||work.height;var ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(work,0,0);var d=ctx.getImageData(0,0,c.width,c.height),p=d.data;for(var i=0;i<p.length;i+=4){var r=p[i],g=p[i+1],b=p[i+2],a=p[i+3],mx=Math.max(r,g,b),mn=Math.min(r,g,b);if(mx<48){p[i+3]=0;continue;}if(mx<90&&mx-mn<22)p[i+3]=Math.round(a*((mx-48)/42));}ctx.putImageData(d,0,0);img.src=c.toDataURL('image/png');img.classList.add('token-ready');}catch(e){img.classList.add('token-ready');}};work.onerror=function(){img.classList.remove('token-ready');};work.src=src;}
 function setModeClass(){
  var stage=el('parchmentStage');if(!stage)return;
  stage.classList.toggle('is-extra',CHARACTER_CREATION_MODE==='extra');
@@ -43,29 +47,27 @@ function fitSelect(e){
 }
 function reveal(id,yes){var e=el(id);if(!e)return;e.closest('.parchment-step')?.classList.toggle('step-hidden',!yes)}
 function setupProgression(){
- var steps=[['pc_name',function(){return el('pc_name').value.trim().length>0}],['pc_origin',function(){return el('pc_origin').value.trim().length>0}],['pc_class',function(){return !!el('pc_class').value}],['pc_gender',function(){return !!el('pc_gender').value}],['pc_race',function(){return !!el('pc_race').value}],['pc_age',function(){return !!el('pc_age').value}],['pc_background',function(){return !!el('pc_background').value}],['pc_profession',function(){return !!el('pc_profession').value}]];
+ var steps=[['pc_name',function(){return el('pc_name')&&el('pc_name').value.trim().length>0}],['pc_origin',function(){return el('pc_origin')&&el('pc_origin').value.trim().length>0}],['pc_class',function(){return el('pc_class')&&!!el('pc_class').value}],['pc_gender',function(){return el('pc_gender')&&!!el('pc_gender').value}],['pc_race',function(){return el('pc_race')&&!!el('pc_race').value}],['pc_age',function(){return el('pc_age')&&!!el('pc_age').value}],['pc_background',function(){return el('pc_background')&&!!el('pc_background').value}],['pc_profession',function(){return el('pc_profession')&&!!el('pc_profession').value}]];
  function update(){
-  var ok=true;
-  steps.forEach(function(pair,i){
-   var id=pair[0],valid=pair[1](),field=el(id);
-   reveal(id,ok);
-   if(field)field.disabled=!ok;
-   if(ok && !valid)ok=false;
-   if(field && field.tagName==='SELECT')fitSelect(field);
-  });
-  var sign=el('pc_signButton');if(sign)sign.disabled=!ok;
-  renderClassArt();
+  var firstIncomplete=steps.length;
+  for(var i=0;i<steps.length;i++){if(!steps[i][1]()){firstIncomplete=i;break;}}
+  for(var j=0;j<steps.length;j++){
+   var field=el(steps[j][0]); if(!field)continue;
+   var step=field.parentNode; while(step&&(!step.classList||!step.classList.contains('parchment-step')))step=step.parentNode;
+   var visible=j<=firstIncomplete;
+   if(step)step.classList.toggle('step-hidden',!visible);
+   field.disabled=j>firstIncomplete;
+   if(field.tagName==='SELECT')fitSelect(field);
+  }
+  var sign=el('pc_signButton');if(sign)sign.disabled=firstIncomplete!==steps.length;
  }
- steps.forEach(function(pair){
-  var e=el(pair[0]);if(!e)return;
-  e.addEventListener('input',update);e.addEventListener('change',update);
- });
+ steps.forEach(function(pair){var e=el(pair[0]);if(!e)return;e.addEventListener('input',update);e.addEventListener('change',update);});
  update();
 }
 function renderClassArt(){
- var name=el('pc_class')?.value||'',img=el('pc_classArt'),label=el('pc_classLabel');
+ var name=el('pc_class')?el('pc_class').value:'',img=el('pc_classArt'),label=el('pc_classLabel');
  if(label)label.textContent=name||'';
- if(img){img.classList.remove('token-ready');var art=classArt(name);if(!art){img.removeAttribute('src');img.alt='Жетон появится после выбора класса';}else{img.src=art;img.alt='Жетон класса: '+name;img.onerror=function(){this.removeAttribute('src');this.classList.remove('token-ready');};img.onload=function(){prepareTransparentToken(this);};}}
+ if(img){var art=classArt(name);if(!art){img.removeAttribute('src');img.classList.remove('token-ready');img.alt='Жетон появится после выбора класса';}else if(img.getAttribute('src')!==art){img.classList.remove('token-ready');img.src=art;img.alt='Жетон класса: '+name;img.onload=function(){img.classList.add('token-ready')};img.onerror=function(){img.removeAttribute('src');img.classList.remove('token-ready');};}else{img.classList.add('token-ready');}}
  var title=el('pcTitle'),sub=el('pcSubtitle'),tax=el('pcTax'),warn=el('pcWarning'),reward=el('pcReward');
  var extra=CHARACTER_CREATION_MODE==='extra';
  if(title)title.textContent=extra?'ЛИСТ ЛИКВИДАЦИИ':'РОЗЫСКНОЙ ЛИСТ';
