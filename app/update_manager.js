@@ -31,6 +31,7 @@
 
   var nativePending = {};
   var nativeCounter = 0;
+  var nativeProgressHandler = null;
 
   if (global.dndNative && typeof global.dndNative.addEventListener === 'function') {
     global.dndNative.addEventListener('message', function (event) {
@@ -38,6 +39,12 @@
         var message = JSON.parse(String(event.data || '{}'));
         var pending = nativePending[message.id];
         if (!pending) return;
+        if (message.status === 'progress') {
+          if (typeof nativeProgressHandler === 'function') {
+            try { nativeProgressHandler(message); } catch (_) {}
+          }
+          return;
+        }
         delete nativePending[message.id];
         if (message.ok) pending.resolve(message);
         else pending.reject(new Error(message.value || message.status || 'Native updater error'));
@@ -155,7 +162,7 @@
     };
   }
 
-  async function stage(manifest) {
+  async function stage(manifest, onProgress) {
     validateManifest(manifest);
     var runtimeVersion = await getRuntimeAppVersion();
     var compat = compatibility(manifest, runtimeVersion);
@@ -166,6 +173,9 @@
     var files = [];
     for (var i = 0; i < manifest.files.length; i++) {
       var entry = manifest.files[i];
+      if (typeof onProgress === 'function') {
+        try { onProgress({ phase: 'download', current: i + 1, total: manifest.files.length, path: entry.path }); } catch (_) {}
+      }
       var response = await global.fetch(entry.url || joinUrl(base, entry.path), { cache: 'no-store' });
       if (!response.ok) throw new Error('Update file HTTP ' + response.status + ': ' + entry.path);
       var buffer = await response.arrayBuffer();
@@ -194,16 +204,28 @@
     try { global.localStorage.removeItem(STAGED_KEY); } catch (_) {}
   }
 
-  async function checkAndStage() {
+  function setProgressHandler(handler) { nativeProgressHandler = typeof handler === 'function' ? handler : null; }
+
+  async function checkAndStage(options) {
+    options = options || {};
     var state = await inspect();
     if (!state.configured || !state.updateAvailable) return state;
     var native = nativeRequest('stage', getConfig().manifestUrl);
     if (native) {
-      var nativeResult = await native;
-      state.stageResult = { staged: true, native: true, version: nativeResult.value || state.manifest.version };
-      return state;
+      // Native bridge emits progress messages with the same request id.
+      // Keep the listener alive until the final "staged" reply.
+      if (options.onProgress) setProgressHandler(options.onProgress);
     }
-    state.stageResult = await stage(state.manifest);
+    if (native) {
+      try {
+        var nativeResult = await native;
+        state.stageResult = { staged: true, native: true, version: nativeResult.value || state.manifest.version };
+        return state;
+      } finally {
+        setProgressHandler(null);
+      }
+    }
+    state.stageResult = await stage(state.manifest, options.onProgress);
     return state;
   }
 
@@ -318,6 +340,7 @@
     inspect: inspect,
     stage: stage,
     checkAndStage: checkAndStage,
+    setProgressHandler: setProgressHandler,
     getStaged: getStaged,
     clearStaged: clearStaged,
     canApplyNatively: canApplyNatively,
