@@ -223,19 +223,23 @@ function updateInventoryItemCount(category, index, newCount) {
 function checkInventoryItemProficiency(category, item) {
   if (typeof currentCharacter === 'undefined' || !currentCharacter) return true;
   
-  const profs = currentCharacter.proficiencies || [];
+  const profs = Array.isArray(currentCharacter.proficiencies) ? currentCharacter.proficiencies : [];
+  // Normalize all supported proficiency record shapes. Characters created by
+  // older builds may store the identifier as id/value/key/code instead of id.
   const userProfsIds = profs.map(p => {
     if (!p) return '';
-    if (typeof p === 'object') return (p.id || '').toLowerCase();
-    return String(p).toLowerCase();
-  });
+    if (typeof p === 'object') {
+      return String(p.id || p.value || p.key || p.code || '').trim().toLowerCase().replace(/ё/g, 'е');
+    }
+    return String(p).trim().toLowerCase().replace(/ё/g, 'е');
+  }).filter(Boolean);
 
   const itemName = (item.name || '').toLowerCase();
   const itemCategory = (item.category || '').toLowerCase().replace(/ё/g, 'е');
 
   // 1. ПРОВЕРКА ДОСПЕХОВ И ЩИТОВ
   if (category === 'armor') {
-    const proficiencyType = String(item.proficiencyType || '').toLowerCase();
+    const proficiencyType = String(item.proficiencyType || '').trim().toLowerCase().replace(/ё/g, 'е');
 
     if (itemCategory.includes('одежда') || itemCategory.includes('прочее') || itemCategory.includes('кольцо') || 
         itemCategory.includes('шлем') || itemCategory.includes('плащ') || itemCategory.includes('амулет') || 
@@ -243,8 +247,8 @@ function checkInventoryItemProficiency(category, item) {
       return true;
     }
 
-    if (itemCategory.includes('щит') || itemName.includes('щит')) {
-      return userProfsIds.includes('p_shields');
+    if (itemCategory.includes('щит') || itemName.includes('щит') || proficiencyType === 'shield') {
+      return userProfsIds.includes('p_shields') || userProfsIds.includes('shield');
     }
 
     if (itemCategory.includes('тяжел') || itemName.includes('латы') || itemName.includes('кольчуга') || itemName.includes('кираса тяжелая')) {
