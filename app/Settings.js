@@ -434,13 +434,17 @@ function applyAppFont(fontKey) {
 function toggleDebugMode(isEnabled) {
   localStorage.setItem('dnd_debug_enabled', isEnabled ? 'true' : 'false');
   const debugWrapper = document.getElementById('settingsDebugButtonWrapper');
-  if (debugWrapper) {
-    debugWrapper.style.display = isEnabled ? 'block' : 'none';
+  if (debugWrapper) debugWrapper.style.display = isEnabled ? 'block' : 'none';
+  if (isEnabled) {
+    document.documentElement.classList.add('debug-enabled');
+    if (typeof window.enableDndDebugRuntime === 'function') window.enableDndDebugRuntime();
+    else if (typeof window.enableDndDebugLogger === 'function') window.enableDndDebugLogger();
+  } else {
+    document.documentElement.classList.remove('debug-enabled');
+    if (typeof window.disableDndDebugRuntime === 'function') window.disableDndDebugRuntime();
   }
   const debugContainer = document.getElementById('debugLogContainer');
-  if (debugContainer) {
-    debugContainer.style.display = isEnabled ? 'flex' : 'none';
-  }
+  if (debugContainer) debugContainer.style.display = isEnabled ? 'flex' : 'none';
 }
 
 function exportDebugLogs() {
