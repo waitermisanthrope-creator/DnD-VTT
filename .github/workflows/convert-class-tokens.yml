@@ -3,8 +3,6 @@ name: Convert class token JPGs to PNG
 on:
   workflow_dispatch:
   push:
-    paths:
-      - 'app/data/classes/*.jpg'
 
 permissions:
   contents: write
