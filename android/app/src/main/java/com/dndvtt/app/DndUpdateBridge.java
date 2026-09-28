@@ -31,7 +31,7 @@ public final class DndUpdateBridge {
             String id = request.optString("id", "");
             String type = request.optString("type", "");
             if ("version".equals(type)) {
-                postReply(reply, response(id, true, "version", BuildConfig.VERSION_NAME));
+                postReply(reply, response(id, true, "version", getRuntimeVersion()));
             } else if ("stage".equals(type)) {
                 String manifestUrl = request.optString("manifestUrl", "");
                 executor.execute(() -> stage(id, manifestUrl, reply));
@@ -124,9 +124,18 @@ public final class DndUpdateBridge {
         }
     }
 
+    private String getRuntimeVersion() {
+        try {
+            android.content.pm.PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return info.versionName == null ? "0" : info.versionName;
+        } catch (Exception e) {
+            return "0";
+        }
+    }
+
     public String getActiveVersion() {
         SharedPreferences prefs = context.getSharedPreferences("dnd_vtt_update", Context.MODE_PRIVATE);
-        return prefs.getString("active", BuildConfig.VERSION_NAME);
+        return prefs.getString("active", getRuntimeVersion());
     }
 
     public void ensureSeeded() throws Exception {
@@ -140,7 +149,7 @@ public final class DndUpdateBridge {
         copyAssetTree("app", active);
         copyAssetTree("wallpapers", active);
         copyAssetTree("ambience", active);
-        prefs.edit().putString("active", BuildConfig.VERSION_NAME).putString("healthy", BuildConfig.VERSION_NAME).commit();
+        prefs.edit().putString("active", getRuntimeVersion()).putString("healthy", getRuntimeVersion()).commit();
     }
 
     public void markHealthy() {
