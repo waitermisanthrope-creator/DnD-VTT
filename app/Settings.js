@@ -125,7 +125,8 @@ function openSettingsModal() {
 
   const currentVersion = document.getElementById('settingsCurrentVersion');
   if (currentVersion) {
-    const version = (window.DND_UPDATE_MANAGER && window.DND_UPDATE_MANAGER.VERSION) || '70.25.68';
+    const version = (window.DND_UPDATE_MANAGER && window.DND_UPDATE_MANAGER.VERSION) ||
+      (window.DND_UPDATE_MANAGER && window.DND_UPDATE_MANAGER.getConfig && window.DND_UPDATE_MANAGER.getConfig().version) || '70.25.68';
     currentVersion.textContent = 'v' + version;
   }
 
