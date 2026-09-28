@@ -2,9 +2,15 @@
 (function() {
     // Безопасная инициализация после полной загрузки DOM
     function initDebug() {
-        if (!document.body) return;
+        if (!document.body) {
+            document.addEventListener('DOMContentLoaded', initDebug, { once: true });
+            return;
+        }
+        if (document.getElementById('debugLogContainer')) return;
 
         let errorCount = 0;
+        window.appDebugLogs = window.appDebugLogs || [];
+        window.enableDndDebugLogger = initDebug;
 
         // Проверяем, включен ли дебаг в настройках (по умолчанию false)
         const isDebugEnabled = localStorage.getItem('dnd_debug_enabled') === 'true';
@@ -100,6 +106,10 @@
                 }
                 return String(arg);
             }).join(' ');
+
+            const logLine = '[' + type.toUpperCase() + '] ' + msg;
+            window.appDebugLogs.push(new Date().toISOString() + ' ' + logLine);
+            if (window.appDebugLogs.length > 500) window.appDebugLogs.shift();
 
             const p = document.createElement('div');
             p.style.borderBottom = '1px solid #333';
