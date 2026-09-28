@@ -4079,3 +4079,5 @@ APK: build required.
 - Standard classes use their existing transparent PNG tokens; named JPG tokens have near-black backgrounds removed at runtime.
 - Signature/print animation uses `1790622252250.png`; character deletion is touch-safe; Lineage 2 Shepard's Flute follows Glenmoril.
 - Settings updater UI is connected and the native bridge reports the active staged web version so 71 → 72 can apply without reinstalling the APK.
+
+- 2026-09-29: token conversion workflow added; PNG conversion must preserve every pixel and must not remove dark shades.
