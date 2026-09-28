@@ -55,6 +55,7 @@ function buildChangelog(){
  if(document.getElementById('dndChangelogModal'))return;
  var m=document.createElement('div');
  m.id='dndChangelogModal';
+ m.style.cssText='position:fixed;inset:0;z-index:27000;';
  m.innerHTML='<div class="dnd-changelog-drawer"><div class="dnd-changelog-head"><div><div class="dnd-changelog-kicker">Карманный ВТТ</div><h2>📜 Что нового</h2></div><button class="dnd-changelog-close" onclick="closeDndChangelog()">✕</button></div><div class="dnd-changelog-body" id="dndChangelogBody"></div></div>';
  m.addEventListener('click',function(e){if(e.target===m)closeChangelog();});
  document.body.appendChild(m);
