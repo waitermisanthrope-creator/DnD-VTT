@@ -3571,3 +3571,63 @@ The future release UI should expose `Check for updates` and an exportable diagno
 3. **Implement native updater + rollback in Android layer**.
 4. **Test update from V70.25.61 → V70.25.62 with a one-file patch**.
 5. Only after the update path is proven: finish APK build and device smoke gates.
+
+
+## V70.25.64 — LIVE BUG BACKLOG / CHANGELOG CONTRACT
+
+### ОБЯЗАТЕЛЬНОЕ ПРАВИЛО ДЛЯ ДАЛЬНЕЙШЕЙ РАЗРАБОТКИ
+
+С этого checkpoint каждый обнаруженный пользователем баг/регрессия сначала фиксируется здесь, затем получает статус OPEN / IN PROGRESS / FIXED / VERIFIED / WONTFIX-DEFERRED. Каждый release/update должен иметь пользовательский changelog с фактическими изменениями.
+
+### OPEN BUG BACKLOG — текущий пользовательский прогон
+
+1. **OPEN — Окно «Ещё»** — окно фактически отсутствует/реализовано не так, как было задумано. Нужно восстановить назначение и состав функций по существующей архитектуре/истории проекта. Приоритет HIGH.
+
+2. **OPEN — «Бой не начался» перекрывает окна** — persistent combat/status overlay оказывается выше других окон. Исправить общую систему z-index/layering и modal stacking. Приоритет HIGH.
+
+3. **OPEN — Rules Matrix / Dice Lab / QA Lab** — технические кнопки видны обычному пользователю; нажатия дают ReferenceError dndV703Open/dndV706Open/dndV707Open. Либо подключить панели только в debug-режиме, либо убрать их из production UI. Приоритет HIGH.
+
+4. **OPEN — network_gameplay.js** — TypeError: active is not a function в app/network_gameplay.js:449. Найти реальный runtime path и добавить regression test. Приоритет HIGH.
+
+5. **OPEN — окно Dice** — в него попал большой combat engine и DM-only технические элементы. Отделить dice UI от combat engine и скрыть DM-only controls от обычного игрока. Приоритет HIGH.
+
+6. **OPEN — Profession в окне героя** — добавить read-only поле «Профессия» под Race или Background. Приоритет MEDIUM.
+
+7. **OPEN — Предыстория** — если это только отображение сохранённой предыстории, сделать read-only; перед изменением проверить отдельный edit-flow. Приоритет MEDIUM.
+
+8. **OPEN — Saving Throws в окне героя** — убрать дублирующий UI только после проверки, что saving throws уже реализованы в другом месте; данные и логику не удалять. Приоритет MEDIUM.
+
+9. **OPEN — Level Up / Multiclass prerequisites** — критический баг: обычное повышение уровня текущего класса ошибочно проверяется как multiclass entry. Разделить требования Level Up текущего класса и требования входа в новый класс; обычный Level Up не должен требовать multiclass prerequisites. Добавить tests для обоих путей. Приоритет CRITICAL.
+
+10. **OPEN — описание класса ХБ** — добавить красивое описание в том же стиле, что остальные классы; проверить полный список классов на пустые описания. Приоритет MEDIUM.
+
+11. **OPEN — Weapon proficiency check** — при взятии оружия ошибка TypeError Cannot read properties of undefined (reading map) в app/Proficienciescheck.js:64. Восстановить реальную проверку владения оружием, не делать bypass. Приоритет CRITICAL.
+
+12. **OPEN — Armor proficiency check** — проверить и восстановить аналогичную проверку владения бронёй; добавить regression coverage. Приоритет HIGH.
+
+13. **OPEN — Armor → AC** — после надевания брони AC не пересчитывается ожидаемым образом. Проверить pipeline equip → derived stats → display. Приоритет HIGH.
+
+14. **OPEN — Weight calculation** — вес некорректен для части custom items. Унифицировать custom item schema и weight calculation; добавить tests. Приоритет HIGH.
+
+15. **OPEN — «Материалы»** — переименовать в «Материалы и крафт». Приоритет LOW.
+
+16. **OPEN — Market** — появляется/исчезает вместе с вкладкой «Оружие». Сделать Market стабильным отдельным разделом под кошельком; убрать дублирующий вывод монет из Market. Приоритет HIGH.
+
+17. **OPEN — «Создать контейнер» в Junk** — кнопка выглядит мёртвой/непонятной. Восстановить первоначальное назначение по истории кода либо удалить. Не оставлять dead-end control. Приоритет MEDIUM.
+
+18. **OPEN — Craft panel** — функциональность ещё не проверена пользователем; не считать рабочей до smoke-test. Приоритет MEDIUM.
+
+19. **OPEN — GM notes → players** — в Lore & Bestiary есть UI отправки заметок игрокам, но player-side receive/accept flow не завершён. Реализовать приём и статус доставки. Приоритет MEDIUM.
+
+20. **FIXED — closed changelog drawer** — V70.25.64 добавляет закрытую шторку «Что нового», открываемую с главного экрана. Это обязательная часть каждого последующего release/update.
+
+### CHANGELOG RULE FOR EVERY FIX
+
+Каждое исправление добавляется в release notes в формате:
+- Исправлено: что было сломано.
+- Изменено: что пользователь теперь увидит иначе.
+- Проверка: что именно проверить после обновления.
+
+### RELEASE CHECKPOINT RULE
+
+Новый номер версии не считается полностью закрытым только потому, что APK собрался. Минимальный цикл: исправление → targeted regression test → запись в GUIDE → запись в «Что нового» → сборка/публикация → пользовательский smoke-test → статус VERIFIED после подтверждения пользователем.
