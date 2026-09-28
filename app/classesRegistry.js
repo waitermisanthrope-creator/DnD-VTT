@@ -27,7 +27,7 @@
  */
 
 window.CLASSES_REFERENCE = {
-    "Оккультист": { hitDie: null, primaryStat: null, savingThrows: [], progression: window.occultistProgression || {} },
+    "Оккультист": { hitDie: 6, primaryStat: "wisdom", savingThrows: ["wisdom", "charisma"], progression: window.occultistProgression || {} },
     "Алхимик": { hitDie: 8, primaryStat: "intelligence", savingThrows: ["constitution", "intelligence"], progression: window.alchemistProgression || {} },
     "Кровавый охотник": { hitDie: 10, primaryStat: "dexterity", savingThrows: ["dexterity", "intelligence"], progression: window.bloodHunterProgression || {} },
     "Иллирригер": { hitDie: 10, primaryStat: "strength", savingThrows: ["strength", "charisma"], progression: window.illriggerProgression || {} },
