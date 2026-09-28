@@ -43,6 +43,16 @@ jobs:
         working-directory: android
         run: gradle :app:assembleDebug --stacktrace
 
+      - name: Generate original token hashes
+        run: |
+          sha256sum app/data/classes/*.png | sort > token-hashes.txt
+      - name: Upload token hashes
+        uses: actions/upload-artifact@v4
+        with:
+          name: token-hashes
+          path: token-hashes.txt
+          retention-days: 30
+
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
