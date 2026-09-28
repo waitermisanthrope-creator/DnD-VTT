@@ -191,8 +191,10 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
   var debug=q.get('debug')==='1'||localStorage.getItem('dnd_debug_enabled')==='true';
   window.dndDebugEnabled=debug;
   if(debug)document.documentElement.classList.add('debug-enabled');
-  if(!debug)return;
-  ['Settings_debug.js','vtt_debug_panel_v70.js','vtt_debug_sandbox_v701.js','vtt_debug_character_lab_v702.js','vtt_debug_lab_v703.js','vtt_debug_scenarios_v704.js','vtt_debug_scenario_editor_v705.js','vtt_debug_dice_lab_v706.js','vtt_debug_rules_matrix_v707.js'].forEach(function(src){var s=document.createElement('script');s.src='./'+src;s.async=false;document.head.appendChild(s);});
+  function loadDebugScript(src){var s=document.createElement('script');s.src='./app/'+src;s.async=false;s.setAttribute('data-dnd-debug-src',src);document.head.appendChild(s);}
+  window.enableDndDebugRuntime=function(){localStorage.setItem('dnd_debug_enabled','true');document.documentElement.classList.add('debug-enabled');['Settings_debug.js','vtt_debug_panel_v70.js','vtt_debug_sandbox_v701.js','vtt_debug_character_lab_v702.js','vtt_debug_lab_v703.js','vtt_debug_scenarios_v704.js','vtt_debug_scenario_editor_v705.js','vtt_debug_dice_lab_v706.js','vtt_debug_rules_matrix_v707.js'].forEach(loadDebugScript);if(typeof window.enableDndDebugLogger==='function')window.enableDndDebugLogger();};
+  window.disableDndDebugRuntime=function(){localStorage.setItem('dnd_debug_enabled','false');document.documentElement.classList.remove('debug-enabled');};
+  if(debug){['Settings_debug.js','vtt_debug_panel_v70.js','vtt_debug_sandbox_v701.js','vtt_debug_character_lab_v702.js','vtt_debug_lab_v703.js','vtt_debug_scenarios_v704.js','vtt_debug_scenario_editor_v705.js','vtt_debug_dice_lab_v706.js','vtt_debug_rules_matrix_v707.js'].forEach(loadDebugScript);}
 })();
 </script>
 <script src="./app/market_economy_v55.js"></script>
