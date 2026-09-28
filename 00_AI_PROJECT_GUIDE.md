@@ -3687,9 +3687,14 @@ A bug remains **FIXED** until the user confirms the corresponding smoke test; th
 - DM-заметки: отправка мастером и принятие игроком остаются в очереди.
 - Раздел «Дайсы»: сетевой/боевой интерфейс всё ещё требует переразмещения из вкладки кубиков.
 - Окно «Ещё»/дополнительное меню остаётся незакрытой UX-задачей.
-- Ошибки debug-кнопок `dndV703Open` / `dndV706Open` / `dndV707Open` и проверка скрытия debug-инструментов при выключенном debug остаются в QA-очереди.
+- **FIXED / pending user verification — debug tool visibility:** `index.html` now hides all `.debug-tool-button` controls by default and reveals them only when `<html>` has `.debug-enabled`. This prevents normal users from invoking unloaded debug functions (`dndV703Open`, `dndV706Open`, `dndV707Open`, etc.) and removes the corresponding ReferenceError path from normal UI.
 
 ### Состояние сборки
 - Эти изменения пока являются исходниками после V70.25.70 и ещё не объявляются новой пользовательской версией.
 - Следующий release APK после подтверждения пачки должен получить следующий versionName/versionCode; не менять signing key и package name.
 - GitHub Actions уже автоматически запустил debug-сборку после последних коммитов. До выпуска нового release APK сначала проверяем накопленную пачку.
+
+### BUGFIX BATCH CONTINUATION — 2026-09-28
+
+- **FIXED / pending user verification — Debug tools visible in normal mode:** added a production-safe CSS gate in `index.html`. All buttons with `.debug-tool-button` are hidden unless debug mode is enabled. This addresses the user-observed ReferenceError path for `dndV703Open`, `dndV706Open`, and `dndV707Open` by preventing those controls from being callable in normal mode. Debug runtime loading itself is unchanged.
+- **No APK release yet:** this is a source-level fix after V70.25.70; the next signed release must keep package `com.dndvtt.pocketvtt` and the existing permanent signing key.
