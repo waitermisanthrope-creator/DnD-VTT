@@ -1,4 +1,4 @@
-/* Parchment character creation v2 */
+/* Parchment character creation v2 — touch-safe token layer */
 #parchmentCreationScreen{position:fixed;inset:0;z-index:9000;display:none;overflow-y:auto;overflow-x:hidden;background:#17120d;-webkit-overflow-scrolling:touch}
 .parchment-stage{position:relative;width:min(100%,900px);min-height:100dvh;margin:0 auto;box-sizing:border-box;background-color:#d9c59d;background-image:url('../1790622844831.jpg');background-size:100% 100%;background-position:center top;background-repeat:no-repeat;color:#2d2118;font-family:'Playfair Display',Georgia,serif;padding:6.5vh 7% 8vh;overflow:hidden}
 .parchment-stage.is-extra{background-color:#d9c59d;background-image:url('../1790622696215.png');background-size:cover;background-position:center top}
@@ -15,7 +15,7 @@
 .parchment-step.step-hidden{display:none}
 .parchment-class-row{display:flex;align-items:center;justify-content:center;gap:12px;margin:1.2vh 0 1.4vh;flex-wrap:wrap}
 .parchment-token{width:clamp(92px,22vw,145px);height:clamp(92px,22vw,145px);overflow:visible;border:0;border-radius:0;box-shadow:none;background:transparent;display:flex;align-items:center;justify-content:center}
-.parchment-token img{width:100%;height:100%;object-fit:contain;display:none}.parchment-token img.token-ready{display:block}
+.parchment-token{pointer-events:none}.parchment-token img{width:100%;height:100%;object-fit:contain;display:none;pointer-events:none}.parchment-token img.token-ready{display:block}
 .parchment-class-caption{text-align:center;font-weight:700;font-size:clamp(13px,3vw,19px)}
 .parchment-class-caption .parchment-select{display:block;margin:5px auto 0}
 .parchment-warning{margin-top:2vh;font-weight:700;text-align:center;letter-spacing:.02em;color:#3b2418;font-size:clamp(13px,2.8vw,19px);line-height:1.3}
