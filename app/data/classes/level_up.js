@@ -60,6 +60,7 @@ let pendingLevelUpData = null;
             <div class="class-item" data-class="Оккультист"><span>👁️ Оккультист</span></div>
             <div class="class-item" data-class="Ведьма"><span>🧙‍♀️ Ведьма</span></div>
             <div class="class-item" data-class="Некромант"><span>☠️ Некромант</span></div>
+            <div class="class-item" data-class="Мученик"><span>✝️ Мученик</span></div>
             <div class="class-item" data-class="Psion"><span>🧠 Псионик</span></div>
             <div class="class-item" data-class="Warlord"><span>⚔️ Военачальник</span></div>
             <div class="class-item" data-class="Warden"><span>🌿 Страж</span></div>
