@@ -9,8 +9,8 @@
   "files": [
     {
       "path": "app/character_creation_pergament.js",
-      "bytes": 14269,
-      "sha256": "56e6c00f950b1e204e76f3b8ae022710c423764b51ed90c249a0c46e95f160a8"
+      "bytes": 14327,
+      "sha256": "01c88f062660a1d46d247acc65669c916ec5e77fd3da52be2f865e1489d67ae0"
     },
     {
       "path": "app/character_creation_pergament.css",
