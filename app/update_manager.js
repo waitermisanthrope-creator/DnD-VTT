@@ -69,7 +69,7 @@
     var url = '';
     try { url = global.localStorage.getItem(STORAGE_KEY) || ''; } catch (_) {}
     return {
-      version: runtimeVersion,
+      version: APP_VERSION,
       channel: (tryGetChannel() || DEFAULT_CHANNEL),
       manifestUrl: String(global.DND_UPDATE_MANIFEST_URL || url || DEFAULT_MANIFEST_URL || '').trim()
     };
