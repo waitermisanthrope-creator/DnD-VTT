@@ -4,9 +4,13 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Build Android debug APK"]
+    types: [completed]
 
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 
@@ -20,6 +24,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
 
       - name: Prepare Pages site
         shell: bash
@@ -54,6 +60,24 @@ jobs:
             --min-app-version "70.25.63" \
             --channel "beta" \
             --output site/updates/beta.json
+
+      - name: Download Android APK from completed build
+        if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' }}
+        uses: actions/download-artifact@v5
+        with:
+          name: dnd-vtt-debug-apk
+          path: site/downloads
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish stable APK names
+        if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mv site/downloads/app-debug.apk site/downloads/DND-VTT-70.25.66.apk
+          cp site/downloads/DND-VTT-70.25.66.apk site/downloads/latest.apk
+          sha256sum site/downloads/DND-VTT-70.25.66.apk > site/downloads/DND-VTT-70.25.66.apk.sha256
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
