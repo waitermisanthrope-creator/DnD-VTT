@@ -295,21 +295,19 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
   </div>
 
   <div id="parchmentCreationScreen" aria-label="Розыскной лист персонажа"><div id="parchmentStage" class="parchment-stage"><div class="parchment-inner">
-<div class="parchment-title">РОЗЫСКНОЙ ЛИСТ</div>
-<div id="pcSubtitle" class="parchment-subtitle">По подозрению в неуплате налогов, славному городу Енотовиллю, для допроса разыскивается гуманоид</div>
-<div class="parchment-text">по имени <input id="pc_name" class="parchment-field" type="text" placeholder="имя" autocomplete="off">. В ходе следственно-розыскных мероприятий стало известно, что хулиган родом из <input id="pc_origin" class="parchment-field" type="text" placeholder="место">.</div>
-<div class="parchment-class-row"><div class="parchment-token"><img id="pc_classArt" src="./1.png" alt="Жетон класса"></div><div class="parchment-class-caption">При себе носит жетон<br><select id="pc_class" class="parchment-select"></select><div id="pc_classLabel" style="font-size:.7em;opacity:.7;margin-top:4px;"></div></div></div>
-<div class="parchment-text">Предположительно <select id="pc_gender" class="parchment-select"></select>, <select id="pc_race" class="parchment-select"></select>, на вид около <input id="pc_age" class="parchment-field" type="number" min="1" max="999" placeholder="лет"> лет.</div>
-<div class="parchment-text" style="margin-top:1.5vh">Со слов последних очевидцев, подозреваемый <select id="pc_background" class="parchment-select"></select>.</div>
-<div class="parchment-text" style="margin-top:1.5vh">Известно, что зарабатывает как <select id="pc_profession" class="parchment-select"></select>.</div>
-<div id="pcTax" class="parchment-text" style="margin-top:2vh">Открытый учёт налоговой службы Енотовилля докладывает о невыплате в Счётную палату ежемесячной дани в размере <strong>60 серебряных монет</strong>, полученных вследствие легального заработка, облагаемого налогом.</div>
-<div id="pcWarning" class="parchment-warning">СТЫД ТЕБЕ, ПРОЧИТАВШИЙ ЭТО, РОЗЫСКИВАЕМЫЙ <span id="pc_professionText">—</span>.</div>
-<div id="pcReward" class="parchment-reward">Доставить исключительно живым и с кошельком.<br>Награда 10 серебряных монет и кружка хорошего пива.</div>
-<button id="pc_signButton" class="parchment-sign" type="button" onclick="finishParchmentCreation()">расписаться<span class="parchment-sign-hint">завершить создание</span></button>
-</div></div></div>
-<div id="parchmentSignatureLayer" class="parchment-signature-layer" aria-hidden="true"><img class="parchment-signature-img" src="./1790622252250.png" alt=""></div><div id="parchmentBlackout" class="parchment-blackout" aria-hidden="true"></div>
-
-  <!-- Экран создания нового персонажа -->
+<div class="parchment-title" id="pcTitle">РОЗЫСКНОЙ ЛИСТ</div><div id="pcSubtitle" class="parchment-subtitle">По подозрению в неуплате налогов, славному городу Енотовиллю, для допроса разыскивается гуманоид</div>
+<div class="parchment-step" data-step="name"><div class="parchment-text">по имени <input id="pc_name" class="parchment-field" type="text" placeholder="имя" autocomplete="off">.</div></div>
+<div class="parchment-step step-hidden" data-step="origin"><div class="parchment-text">В ходе следственно-розыскных мероприятий стало известно, что хулиган родом из <input id="pc_origin" class="parchment-field" type="text" placeholder="место">.</div></div>
+<div class="parchment-step step-hidden" data-step="class"><div class="parchment-class-row"><div class="parchment-token"><img id="pc_classArt" alt="Жетон класса"></div><div class="parchment-class-caption">При себе носит жетон<br><select id="pc_class" class="parchment-select"></select><div id="pc_classLabel" style="font-size:.7em;opacity:.7;margin-top:4px;"></div></div></div></div>
+<div class="parchment-step step-hidden" data-step="appearance"><div class="parchment-text">Предположительно <select id="pc_gender" class="parchment-select"></select>, <select id="pc_race" class="parchment-select"></select>, на вид около <input id="pc_age" class="parchment-field" type="number" min="1" max="999" placeholder="лет"> лет.</div></div>
+<div class="parchment-step step-hidden" data-step="background"><div class="parchment-text">Со слов последних очевидцев, подозреваемый <select id="pc_background" class="parchment-select"></select>.</div></div>
+<div class="parchment-step step-hidden" data-step="profession"><div class="parchment-text">Известно, что зарабатывает как <select id="pc_profession" class="parchment-select"></select>.</div></div>
+<div id="pcTax" class="parchment-step step-hidden parchment-text">Открытый учёт налоговой службы Енотовилля докладывает о невыплате в Счётную палату ежемесячной дани в размере <strong>60 серебряных монет</strong>, полученных вследствие легального заработка, облагаемого налогом.</div>
+<div id="pcWarning" class="parchment-step step-hidden parchment-warning">СТЫД ТЕБЕ, ПРОЧИТАВШИЙ ЭТО, РОЗЫСКИВАЕМЫЙ <span id="pc_professionText">—</span>.</div>
+<div id="pcReward" class="parchment-step step-hidden parchment-reward">Доставить исключительно живым и с кошельком.<br>Награда 10 серебряных монет и кружка хорошего пива.</div>
+<button id="pc_signButton" class="parchment-sign" type="button" onclick="finishParchmentCreation()">расписаться<span class="parchment-sign-hint">закончить создание</span></button>
+</div></div></div><div id="parchmentSignatureLayer" class="parchment-signature-layer" aria-hidden="true"><img class="parchment-signature-img" src="./1790622252250.png" alt=""></div><div id="parchmentBlackout" class="parchment-blackout" aria-hidden="true"></div>
+<!-- Экран создания нового персонажа -->
   <div id="characterCreationScreen" style="display: none; padding: 20px 20px 110px; max-width: 600px; margin: 0 auto; box-sizing: border-box; min-height: 100dvh; max-height: 100dvh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; touch-action: pan-y; overscroll-behavior-y: contain;">
     <div class="card" style="background: #1e1e1e; color: #fff; padding: 20px; border-radius: 8px;">
       <h2 style="margin-top: 0; border-bottom: 1px solid #444; padding-bottom: 10px;">✨ Создание нового персонажа</h2>
