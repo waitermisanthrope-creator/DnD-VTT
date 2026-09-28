@@ -230,6 +230,19 @@ function openCharacter(id) {
     document.getElementById('charBackground').value = currentChar.background || '';
   }
 
+  if (document.getElementById('charProfession')) {
+    var professionMap = currentChar.craftingProfessions && typeof currentChar.craftingProfessions === 'object'
+      ? currentChar.craftingProfessions
+      : {};
+    var professionNames = Object.keys(professionMap).map(function(id) {
+      var p = professionMap[id];
+      return p && (p.name || id) ? (p.name || id) : '';
+    }).filter(Boolean);
+    document.getElementById('charProfession').value = professionNames.length
+      ? professionNames.join(', ')
+      : 'Без профессии';
+  }
+
   document.getElementById('ac').value = currentChar.ac || '10';
   if (document.getElementById('speed')) document.getElementById('speed').value = currentChar.speed || '30 футов';
   document.getElementById('hpMax').value = currentChar.hpMax || '10';
