@@ -86,6 +86,17 @@ profession/tool -> processing chain -> recipe -> crafted item.
 - The project is intended to be packaged as an **Android APK in a later stage**. Native bridges may be added later for capabilities such as LAN discovery, notifications, filesystem integration and other Android-specific services.
 - Until the APK phase, keep the web implementation portable so it can be wrapped by a mobile WebView/native shell without rewriting gameplay systems.
 
+
+## V70.25.70 — NEW PACKAGE / FREE LIMITED DISTRIBUTION BUILD
+
+- Android package migration: com.dndvtt.app → com.dndvtt.pocketvtt so the project can use a new package name on the free Limited Distribution account, which only allows registration of new package names.
+- Android version: 70.25.70 / versionCode 7025070.
+- Signing: the permanent release signing key remains unchanged. Future 70.25.71+ release builds must continue using the same key so updates within the new package remain seamless.
+- Updater: app/update_manager.js now reports 70.25.70 as the web fallback version; native runtime version continues to come from Android package metadata.
+- Pages: update manifests and published APK filenames move from 70.25.69 to 70.25.70.
+- Migration note: 70.25.69 (com.dndvtt.app) and 70.25.70 (com.dndvtt.pocketvtt) are different Android applications. The first installation of 70.25.70 is a fresh install; subsequent 70.25.71+ builds with the same new package/signing key can update in place.
+- Verification: this build must be smoke-tested as a fresh install before treating the package migration as verified.
+
 ## 3. CURRENT BUILD STATUS
 
 ## 3B. V70 CURRENT CHECKPOINT
