@@ -78,7 +78,8 @@ function openSettingsModal() {
   <div id="settingsUpdateProgressLabel" style="font-size:.78em;color:#aaa;margin-bottom:5px;">Загрузка обновления: 0%</div>
   <div style="height:9px;background:#333;border-radius:999px;overflow:hidden;border:1px solid #555;"><div id="settingsUpdateProgressBar" style="height:100%;width:0%;background:var(--theme-primary,#ff9800);transition:width .2s;"></div></div>
 </div>
-<div id="settingsUpdateStatus" style="font-size: 0.78em; color: #aaa; line-height: 1.4; margin-bottom: 8px;">Проверка обновлений доступна, когда настроен канал распространения.</div>
+<div style="font-size:.76em;color:#d9b65a;line-height:1.45;margin:0 0 9px;padding:8px 9px;background:#2a2418;border:1px solid #5d492a;border-radius:6px;">🌐 Для подключения к GitHub и проверки обновлений может потребоваться VPN. Если GitHub недоступен из вашей сети, проверка обновлений не пройдёт.</div>
+            <div id="settingsUpdateStatus" style="font-size: 0.78em; color: #aaa; line-height: 1.4; margin-bottom: 8px;">Проверка обновлений доступна, когда настроен канал распространения.</div>
             <div style="display:flex; gap:8px;">
               <button onclick="if(window.DND_UPDATE_UI) DND_UPDATE_UI.check()" class="btn-action" style="background:#1976D2; flex:1; padding:9px; font-size:0.8em; font-weight:bold; cursor:pointer; color:#fff; border:none; border-radius:6px;">🔎 Проверить</button>
               <button id="settingsUpdateApplyButton" onclick="if(window.DND_UPDATE_UI) DND_UPDATE_UI.apply()" class="btn-action" style="display:none; background:#2E7D32; flex:1; padding:9px; font-size:0.8em; font-weight:bold; cursor:pointer; color:#fff; border:none; border-radius:6px;">⬇️ Установить</button>
