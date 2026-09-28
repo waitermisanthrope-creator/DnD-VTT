@@ -56,6 +56,7 @@ let pendingLevelUpData = null;
           <h2 style="text-align: center; margin-top: 0; color: #d4af37;">Выберите класс для повышения</h2>
           <div class="classes-grid">
             <div class="class-item" data-class="Кровавый охотник"><span>🩸 Кровавый охотник</span></div>
+            <div class="class-item" data-class="Алхимик"><span>🧪 Алхимик</span></div>
             <div class="class-item" data-class="Psion"><span>🧠 Псионик</span></div>
             <div class="class-item" data-class="Warlord"><span>⚔️ Военачальник</span></div>
             <div class="class-item" data-class="Warden"><span>🌿 Страж</span></div>
