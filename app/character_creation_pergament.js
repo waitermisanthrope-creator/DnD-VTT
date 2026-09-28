@@ -136,7 +136,6 @@ function initParchment(){
  fillSelect('pc_background',bgs.map(function(b){var n=b.nameRu||b.name||'';return{value:n,label:n}}),'выбрать предысторию');
  fillSelect('pc_gender',[{value:'мужчина',label:'мужчина'},{value:'женщина',label:'женщина'}],'выбрать пол');
  fillSelect('pc_profession',getProfessionItems(),'выбрать профессию');
- ['pc_class','pc_gender','pc_race','pc_background','pc_profession'].forEach(function(id){var e=el(id);if(e)e.addEventListener('change',function(){fitSelect(e);renderClassArt()})});
  setupProgression();
  renderClassArt();
 }
