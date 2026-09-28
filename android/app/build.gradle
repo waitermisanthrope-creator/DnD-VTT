@@ -9,6 +9,8 @@ tasks.register("prepareVttAssets", Sync) {
     from("../../index.html")
     from("../../app") { into("app") }
     from("../../") { include("*.png"); into("wallpapers") }
+    from("../../") { include("*.png"); into("") }
+    from("../../") { include("*.jpg"); into("") }
     from("../../") { include("*.mp3"); into("ambience") }
 }
 
