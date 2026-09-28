@@ -3989,3 +3989,52 @@ APK: build required.
 7. Добавить QA-тесты для жертвенного урона и финальной способности.
 
 **Правило этапа:** сначала каркас → проверка структуры → затем механики.
+
+
+## HB CLASS 26 — VESSEL / СОСУД — 2026-09-28
+
+### Этап 1: ЗАГОТОВКА
+Источник концепции: **laserllama — Vessel Class v4.0**. Актуальная опубликованная версия 4.0.0 датирована февралем 2026 года. Класс рассчитан на правила 5E 2014 и представляет собой харisma-ориентированного боевого полу-заклинателя с потусторонним духом, Spirit Mantle и Archon Form. В версии 4.0 подтверждены d10, спасброски Constitution/Charisma, лёгкая броня, простое оружие плюс scimitar/shortsword, а для мультикласса требуется Constitution 13 и Charisma 13. citeturn5view0turn2search0
+
+### Что добавлено
+- `app/data/classes/Vessel.js` — независимый каркас прогрессии 1–20.
+- `app/classesRegistry.js` — регистрация «Сосуда»: d10 / Charisma / Constitution+Charisma.
+- `index.html` — загрузка `Vessel.js`.
+- `app/character_creation.js` — «Сосуд» доступен при создании персонажа.
+- `app/data/classes/level_up.js` — «Сосуд» доступен при повышении уровня.
+- `app/Hero-info.js` — требования мультикласса Constitution 13 + Charisma 13.
+- `app/data/classes/progressionEngine.js` — лёгкая броня, простое оружие и Charisma spellcasting.
+- `app/data/subclasses/subclassesRegistry.js` — шесть стартовых каркасов Sealed Spirit: Вознесённый, Катаклизм, Проклятый, Падший, Бесформенный, Трикстер.
+
+### Проверенная структура 1–20
+1 Spirit Mantle + Unsealed Aspects  
+2 Vessel Magic  
+3 Sealed Spirit + Archon Form  
+4 ASI/черта  
+5 Extra Attack  
+6 Sealed Spirit feature  
+7 Controlled Transformation  
+8 ASI/черта  
+9 —  
+10 Primeval Will / Twin Consciousness  
+11 Elder Archon / Unchained Power  
+12 ASI/черта  
+13 —  
+14 Dire Preservation  
+15 Sealed Spirit feature  
+16 ASI/черта  
+17 —  
+18 Unchained Power  
+19 ASI/черта  
+20 Sealed Spirit feature
+
+### Важно
+На этом проходе **механики не переносились**: нет полного движка Spirit Mantle, Archon Form, Vessel Magic, Unsealed Aspects и статблоков Archon. Это намеренный каркас. Защищённый текст и художественные материалы исходника не копируются.
+
+### Этап 2 — НАПОЛНЕНИЕ МЕХАНИКАМИ
+1. Реализовать Spirit Mantle и его защиту/удары.
+2. Подключить Vessel Magic к существующему spell engine, без второго движка заклинаний.
+3. Сделать систему Unsealed Aspects с требованиями и заменой выбранного аспекта.
+4. Сделать Sealed Spirit как обычный подкласс VTT и Archon Form как трансформацию.
+5. Добавить шесть стартовых духов и их независимые краткие описания/механики.
+6. Добавить QA-тесты трансформации, ресурсов, spell slots и смены Aspects.
