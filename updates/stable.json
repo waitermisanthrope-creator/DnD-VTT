@@ -46,6 +46,31 @@
       "path": "app/styles.css",
       "bytes": 14611,
       "sha256": "1965fda511d019710900206f2d34d0bb6956ac7ec63351ee1e6950ca66aaf480"
+    },
+    {
+      "path": "app/data/classes/ARTIFICER.png",
+      "bytes": 891812,
+      "sha256": "8b3e003d4c22db04e65d20e9b1536b19b8c1a6b4bf08d4d8f83e7fc35fb1c629"
+    },
+    {
+      "path": "app/data/classes/BARBARIAN.png",
+      "bytes": 815028,
+      "sha256": "4b1ac3f9c6abe250dd80bc9d1b9ab52f1a1bb356f7241602b7ef6291702793ee"
+    },
+    {
+      "path": "app/data/classes/Bard.png",
+      "bytes": 769261,
+      "sha256": "3cd4eb6779545dbdd886a274e5b7060b054518710af661b84f6aafe6b47633bf"
+    },
+    {
+      "path": "app/data/classes/CLERIC.png",
+      "bytes": 914579,
+      "sha256": "a66571a4a79eb93104ae08920cce1a1bc93c353b4fbee99b37f9d9ed928aab52"
+    },
+    {
+      "path": "app/data/classes/DRUID.png",
+      "bytes": 776880,
+      "sha256": "e9043756c0eec43e043132ecf913c8f8e231fe5fc01fdf559ab6b8c27767be01"
     }
   ],
   "blockedVersions": []
