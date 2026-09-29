@@ -261,8 +261,8 @@
     return {id:'subclass',key:'class:'+className+':subclass',type:'single',label:'Подкласс / специализация',options:opts,className:className,level:targetLevel,source:'subclass'};
   }
 
-  function collectChoices(race,className,targetLevel,isNewClass,existingSubclass){
-    var arr=raceChoices(race).concat(classChoices(className,targetLevel,isNewClass)).concat(uniqueClassChoices(className,targetLevel,isNewClass,window.currentCharacter||window.currentChar));
+  function collectChoices(race,className,targetLevel,isNewClass,existingSubclass,hero){
+    var arr=raceChoices(race).concat(classChoices(className,targetLevel,isNewClass)).concat(uniqueClassChoices(className,targetLevel,isNewClass,hero||window.currentCharacter||window.currentChar));
     var ld=levelData(className,targetLevel);
     if(ld&&ld.asi)arr.push({id:'asi',key:'class:'+className+':level:'+targetLevel+':asi',type:'asi',label:'Увеличение характеристик или черта',options:function(){return allFeats();},className:className,level:targetLevel,source:'class'});
     var sc=subclassChoice(className,targetLevel,existingSubclass);
@@ -397,7 +397,7 @@
     }
     if(this.step===4){
       var rc=this.race,cc=this.className;
-      this.choices=collectChoices(rc,cc,this.classLevel,this.isNewClass,(this.hero&&this.hero.classes||[]).find(function(x){return norm(x.name)===norm(cc);})?.subclass);
+      this.choices=collectChoices(rc,cc,this.classLevel,this.isNewClass,(this.hero&&this.hero.classes||[]).find(function(x){return norm(x.name)===norm(cc);})?.subclass,this.hero);
       body='<div class="cb-card"><h3>Особенности и выборы</h3><p class="cb-note">Здесь собраны ВСЕ обязательные выборы, которые нужны персонажу до первого уровня. Ничего не потеряется.</p>'+
         (this.choices.length?this.choices.map(function(c,i){return renderChoice(c,i,self.values[c.key]);}).join(''):'<p>Для этого набора пока нет обязательных выборов.</p>')+'</div>';
       this.bindChoiceDescriptions();
@@ -437,7 +437,8 @@
     var self=this;
     this.choices.forEach(function(c,i){
       var el=self.root.querySelector('#cb_'+i);if(!el)return;
-      el.onchange=function(){var opts=typeof c.options==='function'?c.options():c.options||[];var selected=c.type==='multi'?Array.from(el.selectedOptions).map(function(x){return x.value;}):el.value;var box=self.root.querySelector('#cb_desc_'+i);var found=opts.filter(function(o){return selected.indexOf(o.id||o.name)>=0;});if(box)box.textContent=found.map(function(o){return o.description||o.desc||'';}).join(' ');if(c.type==='asi'){var ex=self.root.querySelector('#cb_'+i+'_extra'),mode=el.value;if(ex){ex.innerHTML=mode==='plus2'?'<select id="cb_'+i+'_stat1" class="cb-select">'+statOptions()+'</select>':mode==='plus11'?'<div class="cb-grid"><select id="cb_'+i+'_stat1" class="cb-select">'+statOptions()+'</select><select id="cb_'+i+'_stat2" class="cb-select">'+statOptions()+'</select></div>':mode==='feat'?'<select id="cb_'+i+'_feat" class="cb-select"><option value="">— Черта —</option>'+opts.map(function(o){return '<option value="'+esc(o.id)+'">'+esc(o.name)+'</option>';}).join('')+'</select>':'';}}};
+      el.onchange=function(){var opts=typeof c.options==='function'?c.options():c.options||[];var selected=c.type==='multi'?Array.from(el.selectedOptions).map(function(x){return x.value;}):el.value;var box=self.root.querySelector('#cb_desc_'+i);var found=opts.filter(function(o){return selected.indexOf(o.id||o.name)>=0;});if(box)box.textContent=found.map(function(o){return o.description||o.desc||'';}).join(' ');};
+      if(c.type==='asi'){var modeEl=self.root.querySelector('#cb_'+i+'_mode');if(modeEl)modeEl.onchange=function(){var ex=self.root.querySelector('#cb_'+i+'_extra'),mode=modeEl.value;if(ex){ex.innerHTML=mode==='plus2'?'<select id="cb_'+i+'_stat1" class="cb-select">'+statOptions()+'</select>':mode==='plus11'?'<div class="cb-grid"><select id="cb_'+i+'_stat1" class="cb-select">'+statOptions()+'</select><select id="cb_'+i+'_stat2" class="cb-select">'+statOptions()+'</select></div>':mode==='feat'?'<select id="cb_'+i+'_feat" class="cb-select"><option value="">— Черта —</option>'+opts.map(function(o){return '<option value="'+esc(o.id)+'">'+esc(o.name)+'</option>';}).join('')+'</select>':'';}};}
     });
   };
   Wizard.prototype.readStep=function(){
@@ -485,7 +486,7 @@
       this.isNewClass=!(hero.classes||[]).some(function(c){return norm(c.name)===norm(self.className);});
       this.classLevel=this.nextClassLevel();
       var entry=(hero.classes||[]).find(function(c){return norm(c.name)===norm(self.className);});
-      this.choices=collectChoices(null,self.className,this.classLevel,this.isNewClass,entry&&entry.subclass);
+      this.choices=collectChoices(null,self.className,this.classLevel,this.isNewClass,entry&&entry.subclass,hero);
       var html=this.choices.length?this.choices.map(function(c,i){return renderChoice(c,i,self.values[c.key]);}).join(''):'<p>Обязательных выборов нет.</p>';
       this.root.innerHTML='<div class="cb-wrap"><div class="cb-top"><b>Выборы уровня</b><span class="cb-step">3 / 4 · '+esc(self.className)+'</span></div><div class="cb-card"><h3>Все новые решения</h3>'+html+'<div id="cb_error" class="cb-error">'+esc(this.error)+'</div></div><div class="cb-actions"><button id="cbBack" class="cb-btn">Назад</button><button id="cbNext" class="cb-btn primary">Далее</button></div></div>';this.bindChoiceDescriptions();
     }else{
