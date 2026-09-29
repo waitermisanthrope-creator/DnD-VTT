@@ -115,6 +115,24 @@
     return out;
   }
 
+  function applyBackground(hero,name){
+    if(!name)return;
+    var list=typeof g.getAllBackgrounds==='function'?g.getAllBackgrounds():(g.dndBackgrounds||[]);
+    var b=list.find(function(x){return (x.nameRu||x.name)===name||x.name===name;});
+    if(!b)return;
+    hero.background=name;hero.skillsData=hero.skillsData||{};hero.proficiencies=hero.proficiencies||[];
+    (Array.isArray(b.skills)?b.skills:[]).forEach(function(sk){
+      if(/выбирается|на выбор/i.test(String(sk)))return;
+      var clean=String(sk).split('(')[0].trim().toLowerCase(),cfg=(g.SKILLS_CONFIG||[]).find(function(x){return x.name.toLowerCase()===clean||x.id===clean;});
+      if(cfg)hero.skillsData[cfg.id]=1;
+    });
+    var db=g.PROFICIENCIES_DB||[];
+    (Array.isArray(b.languages)?b.languages:[]).forEach(function(lang){
+      var p=db.find(function(x){return x.category==='Языки'&&(String(x.name).toLowerCase()===String(lang).toLowerCase()||String(x.name).toLowerCase().indexOf(String(lang).toLowerCase())>=0);});
+      if(p&&!hero.proficiencies.some(function(x){return x.id===p.id;}))hero.proficiencies.push(Object.assign({},p));
+    });
+  }
+
   function allFeats(){
     var out=[];
     [g.FEATS_PHB,g.PHB_FEATS,g.FEATS_TCOE,g.TCOE_FEATS,g.FEATS_XGTE,g.XGTE_FEATS,g.FEATS_SETTINGS,g.feats_settings,g.FEATS_UA_HOMEBREW,g.feats_ua_homebrew,g.Feats,g.FEATS,g.ALL_FEATS,g.allFeats].forEach(function(src){
@@ -447,6 +465,7 @@
     }
     if(ex&&ex.type==='walter_parasite'&&g.WALTER_PARASITE_EXTRA&&g.WALTER_PARASITE_EXTRA.normalizeCharacter)g.WALTER_PARASITE_EXTRA.normalizeCharacter(hero);
     if(ex&&ex.type==='ghost'&&g.GHOST_EXTRA&&g.GHOST_EXTRA.normalizeCharacter)g.GHOST_EXTRA.normalizeCharacter(hero);
+    applyBackground(hero,this.values.background);
     if(this.values.profession&&g.DND_CRAFT_PROFESSION_PROGRESS&&typeof g.DND_CRAFT_PROFESSION_PROGRESS.initCreatedCharacter==='function')g.DND_CRAFT_PROFESSION_PROGRESS.initCreatedCharacter(hero,this.values.profession);
     if(!Array.isArray(g.allCharacters))g.allCharacters=[];
     g.allCharacters.push(hero);if(typeof g.saveAllCharacters==='function')g.saveAllCharacters();else localStorage.setItem('dnd_multi_characters_v2',JSON.stringify(g.allCharacters));
