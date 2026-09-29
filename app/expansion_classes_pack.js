@@ -918,7 +918,7 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
     if(id==='schoolOfHardKnocks')return{ok:true,effect:{physicalResistance:true,advantageAgainst:['prone','incapacitated']},message:'🥊 Школа суровой жизни активна.'};
     if(id==='rabbleRouser')return{ok:true,effect:{settlementCarousingAdvantage:['persuasion','intimidation']},message:'🍻 Задира: социальное преимущество после каруза в поселении.'};
     if(id==='herculean')return{ok:true,effect:{carryingCapacityMultiplier:2,objectMeleeDamageMultiplier:2,standingJump:'running_start_distance'},message:'💪 Геркулесова сила активна.'};
-    if(id==='peakPhysicalCondition')return{ok:true,effect:{strengthMaxBonus:2,constitutionMaxBonus:2,maxScore:22,shortRestExhaustionRecovery:2,shortRestAllHitDice:true},message:'🏆 Пиковая физическая форма достигнута.'};
+    if(id==='peakPhysicalCondition')return{ok:true,effect:{strengthMaxBonus:2,constitutionMaxBonus:2,maxScore:22,longRestExhaustionRecovery:2,longRestAllHitDice:true},message:'🏆 Пиковая физическая форма достигнута.'};
     if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' активно.'};
     return{ok:false,unsupported:true,message:'Эта способность Пугилиста зарегистрирована, но отдельная UI-команда ещё требует подключения.'};
   }
@@ -1289,14 +1289,50 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
       {id:'unbreakable',name:'Несокрушимый',level:14,action:'reaction'},
       {id:'herculean',name:'Геркулесова сила',level:15,action:'passive'},
       {id:'fightingSpirit',name:'Боевой дух',level:18,action:'reaction'},
-      {id:'peakPhysicalCondition',name:'Пиковая физическая форма',level:20,action:'passive'}
+      {id:'peakPhysicalCondition',name:'Пиковая физическая форма',level:20,action:'passive'},
+      {id:'chooseFightClub',name:'Выбор Бойцовского клуба',level:3,action:'utility'},
+      {id:'personaLibre',name:'Свободная персона',level:3,action:'bonus'},
+      {id:'workCrowd',name:'Работа с толпой',level:6,action:'action'},
+      {id:'highFlyer',name:'Высокий полёт',level:11,action:'bonus'},
+      {id:'signatureMove',name:'Фирменный приём',level:17,action:'special'},
+      {id:'detectiveWork',name:'Детективная работа',level:3,action:'utility'},
+      {id:'scrapLikeSleuth',name:'Дерись как сыщик',level:6,action:'bonus'},
+      {id:'heartOfCity',name:'Сердце города',level:11,action:'utility'},
+      {id:'eyesWideOpen',name:'Глаза широко открыты',level:17,action:'bonus'},
+      {id:'summonHound',name:'Лучший друг бойца',level:3,action:'utility'},
+      {id:'coordinatedAttack',name:'Слаженная атака',level:6,action:'reaction'},
+      {id:'houndBestFriend',name:'Лучший друг гончей',level:11,action:'reaction'},
+      {id:'direHound',name:'Лютый пёс',level:17,action:'passive'},
+      {id:'blackMagic',name:'Чёрная магия',level:3,action:'utility'},
+      {id:'dreadHand',name:'Рука Ужаса',level:3,action:'bonus'},
+      {id:'dealWithDevil',name:'Сделка с Дьяволом',level:6,action:'utility'},
+      {id:'grotesqueGrowth',name:'Гротескный рост',level:11,action:'bonus'},
+      {id:'fountainViscera',name:'Фонтан внутренностей',level:17,action:'action'},
+      {id:'saltySalute',name:'Солёное приветствие',level:3,action:'bonus'},
+      {id:'heelstomper',name:'Топот пяткой',level:6,action:'bonus'},
+      {id:'lowBlow',name:'Низкий удар',level:6,action:'bonus'},
+      {id:'pocketSand',name:'Песок в кармане',level:6,action:'bonus'},
+      {id:'meanOldCuss',name:'Старый грубиян',level:11,action:'reaction'},
+      {id:'uncouthArt',name:'Искусство невоспитанности',level:17,action:'action'},
+      {id:'compressionLock',name:'Компрессионный захват',level:3,action:'reaction'},
+      {id:'quickPin',name:'Быстрый захват',level:3,action:'reaction'},
+      {id:'toTheMat',name:'На ковёр',level:3,action:'bonus'},
+      {id:'meatShield',name:'Живой щит',level:6,action:'reaction'},
+      {id:'heavyweight',name:'Тяжеловес',level:11,action:'passive'},
+      {id:'cleanFinish',name:'Чистое завершение',level:17,action:'passive'},
+      {id:'bareKnuckleBoxer',name:'Боксёрская техника',level:3,action:'passive'},
+      {id:'crossCounter',name:'Контрудар',level:3,action:'reaction'},
+      {id:'oneTwoThreeFloor',name:'Раз-два-три — на пол',level:6,action:'bonus'},
+      {id:'floatLikeButterfly',name:'Порхай как бабочка, жаль как пчела',level:11,action:'passive'},
+      {id:'knockOut',name:'Нокаут',level:17,action:'special'}
     ],subclasses:[
-      {id:'arenaRoyale',name:'Арена Рояль',features:[]},
-      {id:'bloodhoundBruisers',name:'Бладхаундские громилы',features:[]},
-      {id:'dogAndHound',name:'Пёс и гончая',features:[]},
-      {id:'pissAndVinegar',name:'Ярость и дерзость',features:[]},
-      {id:'squaredCircle',name:'Квадратный ринг',features:[]},
-      {id:'sweetScience',name:'Благородное искусство',features:[]}
+      {id:'arenaRoyale',name:'Арена Рояль',features:['personaLibre','workCrowd','highFlyer','signatureMove']},
+      {id:'bloodhoundBruisers',name:'Бладхаундские громилы',features:['detectiveWork','scrapLikeSleuth','heartOfCity','eyesWideOpen']},
+      {id:'dogAndHound',name:'Пёс и гончая',features:['summonHound','coordinatedAttack','houndBestFriend','direHound']},
+      {id:'handOfDread',name:'Рука Ужаса',features:['blackMagic','dreadHand','dealWithDevil','grotesqueGrowth','fountainViscera']},
+      {id:'pissAndVinegar',name:'Ярость и дерзость',features:['saltySalute','heelstomper','lowBlow','pocketSand','meanOldCuss','uncouthArt']},
+      {id:'squaredCircle',name:'Квадратный ринг',features:['compressionLock','quickPin','toTheMat','meatShield','heavyweight','cleanFinish']},
+      {id:'sweetScience',name:'Благородное искусство',features:['bareKnuckleBoxer','crossCounter','oneTwoThreeFloor','floatLikeButterfly','knockOut']}
     ],hooks:{sync:syncPugilist,useFeature:usePugilist,attackModifiers:pugilistAttack}},
   ];
   packs.push(occultistPack,witchPack);
