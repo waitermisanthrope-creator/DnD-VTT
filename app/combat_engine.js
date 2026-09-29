@@ -126,6 +126,11 @@
   }
   function concentrationCheck(target,damage,opts){var con=concentrationState(target);if(!con.active||num(damage)<=0)return null;opts=opts||{};var dc=Math.max(10,Math.floor(num(damage)/2)),actor=opts.saveActor||target,statBonus=0;if(global.DNDRules&&actor){statBonus=global.DNDRules.getSaveBonus(actor,'con');}else if(actor&&actor.saveBonuses)statBonus=num(actor.saveBonuses.con,0);var roll=global.DNDRules?global.DNDRules.rollD20('normal'):{result:rollDie(20)};var total=roll.result+statBonus,success=total>=dc;if(!success)breakConcentration(target);return {dc:dc,roll:roll.result,total:total,bonus:statBonus,success:success,spell:con.spellName};}
   function heal(target,amount){
+    // Мёртвая оболочка Призрака не подлежит лечению никакими обычными
+    // эффектами. Сам дух восстанавливается только собственными механиками.
+    if(target && target.extraClassType==='ghost'){
+      return {amount:0,hp:num(target.hpCurrent,target.hp||0),maxHp:num(target.hpMax,target.maxHp||target.hp||0),blocked:true,note:'Мёртвую оболочку Призрака невозможно лечить.'};
+    }
     // Accept both combatant fields (hp/maxHp/tempHp) and the canonical character fields (hpCurrent/hpMax/hpTemp).
     var characterShape=target && ('hpCurrent' in target || 'hpMax' in target);
     var max=characterShape?num(target.hpMax,target.maxHp):num(target.maxHp,target.hp);
