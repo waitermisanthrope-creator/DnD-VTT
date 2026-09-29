@@ -542,62 +542,14 @@ window.SUBCLASSES_REFERENCE["Рунный хранитель"] = {
 };
 
 window.SUBCLASSES_REFERENCE["Савант"] = {
-  "Adroit":{source:"third-party",description:"Мастер ловкости, точности и практического применения знаний.",pickLevel:3,levels:{3:{features:["Заготовка: способность подкласса"]},6:{features:["Заготовка: способность подкласса"]},10:{features:["Заготовка: способность подкласса"]},14:{features:["Заготовка: способность подкласса"]}}},
-  "Doctor":{source:"third-party",description:"Медик и поддерживающий специалист.",pickLevel:3,levels:{3:{features:["Заготовка: способность подкласса"]},6:{features:["Заготовка: способность подкласса"]},10:{features:["Заготовка: способность подкласса"]},14:{features:["Заготовка: способность подкласса"]}}},
-  "Investigator":{source:"third-party",description:"Следователь и аналитик, раскрывающий слабости противников.",pickLevel:3,levels:{3:{features:["Заготовка: способность подкласса"]},6:{features:["Заготовка: способность подкласса"]},10:{features:["Заготовка: способность подкласса"]},14:{features:["Заготовка: способность подкласса"]}}},
-  "Mechanist":{source:"third-party",description:"Техник, использующий инструменты и устройства.",pickLevel:3,levels:{3:{features:["Заготовка: способность подкласса"]},6:{features:["Заготовка: способность подкласса"]},10:{features:["Заготовка: способность подкласса"]},14:{features:["Заготовка: способность подкласса"]}}},
-  "Tactician":{source:"third-party",description:"Тактик, управляющий позициями и преимуществами союзников.",pickLevel:3,levels:{3:{features:["Заготовка: способность подкласса"]},6:{features:["Заготовка: способность подкласса"]},10:{features:["Заготовка: способность подкласса"]},14:{features:["Заготовка: способность подкласса"]}}},
-  "Marksman":{source:"third-party",description:"Специалист дальнего боя и точных атак.",pickLevel:3,levels:{3:{features:["Заготовка: способность подкласса"]},6:{features:["Заготовка: способность подкласса"]},10:{features:["Заготовка: способность подкласса"]},14:{features:["Заготовка: способность подкласса"]}}},
-  "Duelist":{source:"third-party",description:"Мастер одиночного боя и контрприёмов.",pickLevel:3,levels:{3:{features:["Заготовка: способность подкласса"]},6:{features:["Заготовка: способность подкласса"]},10:{features:["Заготовка: способность подкласса"]},14:{features:["Заготовка: способность подкласса"]}}},
-  "Philosopher":{source:"third-party",description:"Специалист абстрактных знаний, рассуждений и ментальной поддержки.",pickLevel:3,levels:{3:{features:["Заготовка: способность подкласса"]},6:{features:["Заготовка: способность подкласса"]},10:{features:["Заготовка: способность подкласса"]},14:{features:["Заготовка: способность подкласса"]}}}
+ "Археолог":{source:"Third-party / laserllama Savant v5.6.1",description:"Эксперт древностей, руин, ловушек и магических реликвий.",pickLevel:3,runtimeKey:"Археолог",levels:{3:{features:["Ученик истории","Око древности"]},7:{features:["Отважный исследователь","Древние знания"]},13:{features:["Мастер знаний","Найденная аркана"]},18:{features:["Мастер-археолог"]}}},
+ "Исследователь":{source:"Third-party / laserllama Savant v5.6.1",description:"Мастер расследований, правды, наблюдения и грязного боя.",pickLevel:3,runtimeKey:"Исследователь",levels:{3:{features:["Ученик истины","Грязная драка"]},7:{features:["Преступные связи","Грязный боец"]},13:{features:["Пронизывающий взгляд"]},18:{features:["Мастер-исследователь"]}}},
+ "Наставник":{source:"Third-party / laserllama Savant v5.6.1",description:"Чистая поддержка: советы, обучение и усиление союзников.",pickLevel:3,runtimeKey:"Наставник",levels:{3:{features:["Ученик жизни","Мудрый совет"]},7:{features:["Спокойствие","Успокаивающее присутствие"]},13:{features:["Чудесный совет","Мистическая интуиция"]},18:{features:["Мастер-наставник"]}}},
+ "Натуралист":{source:"Third-party / laserllama Savant v5.6.1",description:"Исследователь природы, существ, окружения и дикой местности.",pickLevel:3,runtimeKey:"Натуралист",levels:{3:{features:["Ученик природы","Журнал натуралиста"]},7:{features:["Зов природы"]},13:{features:["Продвинутые исследования"]},18:{features:["Мастер-натуралист"]}}},
+ "Врач":{source:"Third-party / laserllama Savant v5.6.1",description:"Полевой медик с лечением, стабилизацией и устранением тяжёлых состояний.",pickLevel:3,runtimeKey:"Врач",levels:{3:{features:["Ученик медицины","Боевой медик"]},7:{features:["Полевой врач","Уверенные руки"]},13:{features:["Медицинская экспертиза"]},18:{features:["Мастер-врач"]}}},
+ "Тактик":{source:"Third-party / laserllama Savant v5.6.1",description:"Командир поля боя с приказами, тактическим превосходством и легендарными приказами.",pickLevel:3,runtimeKey:"Тактик",levels:{3:{features:["Ученик войны","Тактическое командование"]},7:{features:["Продвинутая тактика","Стратегическое превосходство"]},13:{features:["Тактический гений"]},18:{features:["Мастер-тактик"]}}}
 };
 
-/**
- * Возвращает список подклассов, доступных для выбранного класса,
- * в формате для построения выпадающего списка / карточек UI.
- * @param {string} className
- * @returns {Array<{key:string,name:string,source:string,description:string,pickLevel:number}>}
- */
-window.getAvailableSubclasses = function(className) {
-  if (!className) return [];
-  const group = window.SUBCLASSES_REFERENCE[className.trim()];
-  if (!group) return [];
-  return Object.keys(group).map(key => ({
-    key: key,
-    name: key,
-    source: group[key].source || '—',
-    description: group[key].description || '',
-    pickLevel: group[key].pickLevel || 1
-  }));
-};
-
-/**
- * Возвращает полные данные одного подкласса или null.
- * @param {string} className
- * @param {string} subclassName
- */
-window.getSubclassData = function(className, subclassName) {
-  if (!className || !subclassName) return null;
-  const group = window.SUBCLASSES_REFERENCE[className.trim()];
-  if (!group) return null;
-  return group[subclassName] || null;
-};
-
-/**
- * Быстрый доступ к списку фич подкласса на конкретном уровне класса.
- * @param {string} className
- * @param {string} subclassName
- * @param {number} level
- * @returns {string[]}
- */
-window.getSubclassFeaturesForLevel = function(className, subclassName, level) {
-  const data = window.getSubclassData(className, subclassName);
-  if (!data || !data.levels || !data.levels[level]) return [];
-  return data.levels[level].features || [];
-};
-
-
-/* Некромант — независимые краткие описания для VTT; подробные механики будут добавлены позже. */
 window.SUBCLASSES_REFERENCE["Некромант"] = {
   "Рыцарь смерти": {
     source: "Third-party / Mage Hand Press",
