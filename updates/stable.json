@@ -29,8 +29,8 @@
     },
     {
       "path": "app/app.js",
-      "bytes": 34182,
-      "sha256": "a3c473fe48951104d65ddf45a444d8e526bc16f63678d168944ab98c18f0beec"
+      "bytes": 34192,
+      "sha256": "bc8f5c0eb4ed317709be1a28add843ce064626a355f4b339fabcbc8a67995dec"
     },
     {
       "path": "app/Settings.js",
