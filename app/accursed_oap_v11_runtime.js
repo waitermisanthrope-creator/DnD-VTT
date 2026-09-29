@@ -128,7 +128,7 @@
     if([3,5,11,15,20].includes(l)) progression.levels[l].features.push("Особенность выбранного проклятия");
   }
   window.ACCURSED_V11={PB,SPELLS_KNOWN,SLOTS,METAS,curses,spellList,progression};
-  window.accursedProgression=progression;
+  window.accursedProgression=Object.assign(window.accursedProgression||{},progression);
   window.accursedRuntime={
     version:"1.1",
     getSpellSlots:l=>SLOTS[l]||[0,0,0,0,0],
