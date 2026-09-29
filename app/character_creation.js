@@ -77,7 +77,7 @@ var DND_CLASSES_LIST = [
   { id: 'rune_keeper', name: 'Рунный хранитель', hitDie: 10, desc: 'Временная заглушка класса. Жетон подключён; механика будет добавлена позже.' },
   { id: 'savant', name: 'Савант', hitDie: 8, desc: 'Временная заглушка класса. Жетон подключён; механика будет добавлена позже.' },
   { id: 'shifter', name: 'Шифтер', hitDie: 10, desc: 'Временная заглушка класса. Жетон подключён; механика будет добавлена позже.' },
-  { id: 'swarm', name: 'Рой', hitDie: 8, desc: 'Временная заглушка класса. Жетон подключён; механика будет добавлена позже.' },
+  { id: 'swarm', name: 'Рой', hitDie: 8, isExtra: true, replacesRace: true, desc: 'Extra-класс: одновременно раса и класс. Управляет коллективной биомассой, не использует обычную расу и не может мультиклассироваться.' }
   { id: 'warden', name: 'Страж', hitDie: 10, desc: 'Временная заглушка класса. Жетон подключён; механика будет добавлена позже.' },
   { id: 'warlord', name: 'Военачальник', hitDie: 10, desc: 'Временная заглушка класса. Жетон подключён; механика будет добавлена позже.' }
 ];
@@ -116,7 +116,10 @@ function initCharacterCreationScreen() {
     DND_CLASSES_LIST.forEach(function(c) {
       classSelect.innerHTML += '<option value="' + c.name + ' 1">' + (c.displayName || c.name) + '</option>';
     });
-    classSelect.onchange = updateClassDescription;
+    classSelect.onchange = function() {
+      updateClassDescription();
+      updateExtraClassCreationUI();
+    };
   }
 
   // Получаем предыстории из Backgrounds.js через глобальные переменные или функции
@@ -146,6 +149,7 @@ function initCharacterCreationScreen() {
   renderPointBuyRows();
   
   updateClassDescription();
+  updateExtraClassCreationUI();
   updateBackgroundDescription();
   if (window.DND_CRAFT_PROFESSION_PROGRESS && typeof window.DND_CRAFT_PROFESSION_PROGRESS.renderCharacterCreation === 'function') {
     window.DND_CRAFT_PROFESSION_PROGRESS.renderCharacterCreation();
@@ -259,6 +263,39 @@ function updateBackgroundDescription() {
     descBox.innerHTML = '<span style="color: #777;">Информация о предыстории отсутствует.</span>';
   }
 }
+
+// Extra-классы: отдельная ветка создания персонажа.
+function updateExtraClassCreationUI() {
+  var classSelect = document.getElementById('cc_class');
+  var raceSelect = document.getElementById('cc_race');
+  var raceDesc = document.getElementById('cc_raceDescBox');
+  if (!classSelect || !raceSelect) return;
+
+  var className = String(classSelect.value || '').replace(/[0-9]/g, '').trim().split(' ')[0];
+  var isSwarm = className === 'Рой';
+
+  if (isSwarm) {
+    raceSelect.dataset.previousRace = raceSelect.value || '';
+    raceSelect.value = '';
+    raceSelect.disabled = true;
+    raceSelect.style.opacity = '0.55';
+    raceSelect.title = 'Рой одновременно является расой и классом. Обычная раса не выбирается.';
+    if (raceDesc) {
+      raceDesc.innerHTML = '<strong>Рой — Extra-класс</strong><br>' +
+        'Рой одновременно заменяет расу и класс. Обычная раса не выбирается. ' +
+        'Все уровни после первого идут только в класс «Рой».';
+    }
+  } else {
+    raceSelect.disabled = false;
+    raceSelect.style.opacity = '';
+    raceSelect.title = '';
+    if (raceSelect.dataset.previousRace && !raceSelect.value) {
+      raceSelect.value = raceSelect.dataset.previousRace;
+    }
+    updateRaceDescription();
+  }
+}
+window.updateExtraClassCreationUI = updateExtraClassCreationUI;
 
 // Обновление описания класса
 function updateClassDescription() {
@@ -434,8 +471,16 @@ window.saveNewCreatedCharacter = function() {
   var raceName = '';
   var baseAc = 10;
   var selectedRace = null;
+  var isSwarmExtra = className.split(' ')[0] === 'Рой';
 
-  if (raceId && typeof getAllRaces === 'function') {
+  // Рой полностью заменяет обычную расу.
+  if (isSwarmExtra) {
+    raceId = '';
+    raceName = 'Рой';
+    baseAc = 10 + Math.floor((finalStats.dex - 10) / 2);
+  }
+
+  if (!isSwarmExtra && raceId && typeof getAllRaces === 'function') {
     var allRaces = getAllRaces();
     for (var i = 0; i < allRaces.length; i++) {
       if (allRaces[i].id === raceId) {
@@ -626,10 +671,14 @@ window.saveNewCreatedCharacter = function() {
     raceId: raceId,
     raceName: raceName,
     baseAC: baseAc,
+    isExtraClass: isSwarmExtra,
+    extraClassType: isSwarmExtra ? 'swarm' : null,
+    replacesRace: isSwarmExtra,
+    multiclassAllowed: !isSwarmExtra,
     ac: String(baseAc),
     // Скорость теперь берётся из выбранной расы (races.js -> selectedRace.speed),
     // а не захардкожена как раньше. Если раса не выбрана — используем 30 футов по умолчанию.
-    speed: (selectedRace && selectedRace.speed) ? selectedRace.speed : '30 футов',
+    speed: isSwarmExtra ? '30 футов' : ((selectedRace && selectedRace.speed) ? selectedRace.speed : '30 футов'),
     hpMax: maxHp > 1 ? maxHp : 1,
     hpCurrent: maxHp > 1 ? maxHp : 1,
     hpTemp: '',
@@ -657,6 +706,12 @@ window.saveNewCreatedCharacter = function() {
     ],
     library: []
   };
+
+  if (isSwarmExtra && window.SWARM_EXTRA && typeof window.SWARM_EXTRA.normalizeCharacter === 'function') {
+    window.SWARM_EXTRA.normalizeCharacter(newChar);
+    newChar.swarm.currentHP = newChar.hpCurrent;
+    newChar.swarm.maxHP = newChar.hpMax;
+  }
 
   // Авторское ХБ: профессия необязательна; при выборе создаём навык с 1 уровня.
   if (window.DND_CRAFT_PROFESSION_PROGRESS && typeof window.DND_CRAFT_PROFESSION_PROGRESS.initCreatedCharacter === 'function') {
