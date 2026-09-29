@@ -59,10 +59,18 @@
 
 window.SUBCLASSES_REFERENCE = {
   "Кровавый охотник": {
-    "Орден призрачных убийц": {source:"Third-party",description:"Охотники на нежить и некромантов.",pickLevel:3,levels:{3:{features:["Rite of the Dawn","Curse of the Marked"]},6:{features:["Blood Curse of the Exorcist"]},7:{features:["Ethereal Step"]},11:{features:["Grim Psychometry"]},15:{features:["Brand of Tethering"]},18:{features:["Rite Revival"]}}},
-    "Орден ликантропов": {source:"Third-party",description:"Кровавые охотники, контролирующие проклятие ликантропии.",pickLevel:3,levels:{3:{features:["Hybrid Transformation"]},7:{features:["Stalker’s Prowess"]},11:{features:["Advanced Transformation"]},15:{features:["Feral Might"]},18:{features:["Hybrid Transformation Mastery"]}}},
-    "Орден мутантов": {source:"Third-party",description:"Гемокрафт и алхимические мутагены.",pickLevel:3,levels:{3:{features:["Mutagencraft"]},7:{features:["Strange Metabolism"]},11:{features:["Alchemical Mastery"]},15:{features:["Blood Curse Mastery"]},18:{features:["Exalted Mutation"]}}},
-    "Орден осквернённых душ": {source:"Third-party",description:"Кровавые охотники, заключившие договор с потусторонней силой.",pickLevel:3,levels:{3:{features:["Pact Magic","Otherworldly Patron"]},7:{features:["Mystic Frenzy"]},11:{features:["Unsealed Arcana"]},15:{features:["Revealed Arcana"]},18:{features:["Brand of Castigation Mastery"]}}},
+    "Орден призрачных убийц": {source:"Third-party / Critical Role",description:"Охотники на нежить и некромантов; особый световой обряд и эфирное перемещение.",pickLevel:3,levels:{
+      3:{features:["Rite of the Dawn","Curse Specialist"]},7:{features:["Aether Walk"]},11:{features:["Brand of Sundering"]},15:{features:["Blood Curse of the Exorcist"]},18:{features:["Rite Revival"]}
+    }},
+    "Орден ликантропов": {source:"Third-party / Critical Role",description:"Кровавые охотники, приручившие проклятие ликантропии и боевую гибридную форму.",pickLevel:3,levels:{
+      3:{features:["Heightened Senses","Hybrid Transformation"]},7:{features:["Stalker's Prowess"]},11:{features:["Advanced Transformation"]},15:{features:["Brand of the Voracious"]},18:{features:["Hybrid Transformation Mastery","Blood Curse of the Howl"]}
+    }},
+    "Орден мутантов": {source:"Third-party / Critical Role",description:"Гемокрафт и нестабильные алхимические мутагены.",pickLevel:3,levels:{
+      3:{features:["Mutagencraft"]},7:{features:["Strange Metabolism"]},11:{features:["Brand of Axiom"]},15:{features:["Blood Curse of Corrosion"]},18:{features:["Exalted Mutation"]}
+    }},
+    "Орден осквернённых душ": {source:"Third-party / Critical Role",description:"Кровавый охотник, связавший гемокрафт с магией потустороннего покровителя.",pickLevel:3,levels:{
+      3:{features:["Otherworldly Patron","Pact Magic","Rite Focus"]},7:{features:["Mystic Frenzy","Revealed Arcana"]},11:{features:["Brand of the Sapping Scar"]},15:{features:["Unsealed Arcana"]},18:{features:["Blood Curse of the Soul Eater"]}
+    }}
   },
 
   "Воин": {
