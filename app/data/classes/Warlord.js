@@ -40,7 +40,7 @@ g.warlordProgression={
  multiclassProficiencies:{armor:['light','medium','shields'],weapons:['simple'],tools:['gaming_set']},
  skills:{choose:2,from:['athletics','deception','history','insight','intimidation','investigation','persuasion']},
  subclassLevel:3,subclassFeatureLevels:[3,6,14,18],
- fightingStyles:['Сбалансированный бой','Классическое фехтование','Защитный бой','Конный воин','Знаменосец','Тактический бой','Универсальный бой'],
+ fightingStyles:['Сбалансированный бой','Классическое фехтование','Защитный бой','Конный воин','Знаменосец','Тактический бой','Универсальный бой','Стрельба','Рукопашный бой','Моряк','Альпинист','Воин со щитом','Сильный лук'],
  progression:{
    inspiringWordUses:[3,3,3,4,4,4,4,5,5,5,5,5,6,6,6,6,7,7,7,7],
    exploitsKnown:[0,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,10,10],
