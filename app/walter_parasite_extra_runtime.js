@@ -394,7 +394,7 @@
 
     if(key==='con'){
       var durationMin=level>=11?2:1;
-      w.cooldowns[key]=now+10*60*1000;
+      w.usedOrgans[key]=true;
       return {
         ok:true,kind:'buff',name:'Наросты',
         durationMinutes:durationMin,
@@ -406,7 +406,7 @@
     }
 
     if(key==='int'){
-      w.cooldowns[key]=now+10*60*1000;
+      w.usedOrgans[key]=true;
       return {
         ok:true,kind:'mark',name:'Жгутики',
         concentration:true,target:target||null,duration:'до 1 минуты',
@@ -417,7 +417,7 @@
     }
 
     if(key==='wis'){
-      w.cooldowns[key]=now+10*60*1000;
+      w.usedOrgans[key]=true;
       return {
         ok:true,kind:'sense',name:'Кистевые органы зрения',
         duration:'10 минут',
@@ -428,7 +428,7 @@
     }
 
     if(key==='cha'){
-      w.cooldowns[key]=now+10*60*1000;
+      w.usedOrgans[key]=true;
       return {
         ok:true,kind:'area',name:'Выработка феромонов',
         radius:15,
