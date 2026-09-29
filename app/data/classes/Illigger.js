@@ -1,94 +1,90 @@
 /**
  * Illigger.js
- * Карманный ВТТ — каркас прогрессии класса «Иллирригер».
+ * Карманный ВТТ — прогрессия и runtime-контракт класса «Иллирригер».
+ * Источник: MCDM, The Illrigger — Revised 1.0.
  *
- * Этап 1: только структура класса, требования, ресурсы прогрессии и точки
- * подклассов. Полная логика печатей, Interdict, Infernal Conduit, боевых
- * приёмов и заклинаний будет добавлена отдельным этапом.
- *
- * Публичный API: window.illriggerProgression
+ * Здесь хранится структурированная модель класса; полный runtime находится
+ * в app/expansion_classes_pack.js.
  */
 (function(g){
   'use strict';
+  var levels={};
+  for(var i=1;i<=20;i++)levels[i]={features:[]};
 
-  var levels = {};
-  for (var i = 1; i <= 20; i++) levels[i] = {features: []};
+  levels[1]={features:['Зловещее запрещение','Раздвоенный язык']};
+  levels[2]={features:['Боевая специализация','Интердикт']};
+  levels[3]={features:['Дьявольский контракт','Призыв Ада'],subclassLevel:true};
+  levels[4]={features:['Увеличение характеристик (ASI) или Черта'],asi:true};
+  levels[5]={features:['Дополнительная атака']};
+  levels[6]={features:['Инфернальный проводник']};
+  levels[7]={features:['Способность Дьявольского контракта']};
+  levels[8]={features:['Увеличение характеристик (ASI) или Черта'],asi:true};
+  levels[9]={features:['Раздвоенный язык — улучшение']};
+  levels[10]={features:['Кровавая цена']};
+  levels[11]={features:['Способность Дьявольского контракта','Инфернальный проводник — улучшение','Терроризирующая сила']};
+  levels[12]={features:['Увеличение характеристик (ASI) или Черта'],asi:true};
+  levels[13]={features:[]};
+  levels[14]={features:['Высший интердикт']};
+  levels[15]={features:['Способность Дьявольского контракта']};
+  levels[16]={features:['Увеличение характеристик (ASI) или Черта'],asi:true};
+  levels[17]={features:['Инфернальное величие']};
+  levels[18]={features:[]};
+  levels[19]={features:['Увеличение характеристик (ASI) или Черта'],asi:true};
+  levels[20]={features:['Повелитель Ада']};
 
-  levels[1] = {features: ['Заготовка: Baleful Interdict','Заготовка: Forked Tongue']};
-  levels[2] = {features: ['Заготовка: Combat Mastery','Заготовка: Interdiction']};
-  levels[3] = {features: ['Заготовка: Diabolic Contract','Заготовка: Invoke Hell'], subclassLevel: true};
-  levels[4] = {features: ['Увеличение характеристик (ASI) или Черта'], asi: true};
-  levels[5] = {features: ['Заготовка: Extra Attack']};
-  levels[6] = {features: ['Заготовка: Infernal Conduit']};
-  levels[7] = {features: ['Заготовка: способность Diabolic Contract']};
-  levels[8] = {features: ['Увеличение характеристик (ASI) или Черта'], asi: true};
-  levels[9] = {features: ['Заготовка: Forked Tongue — улучшение']};
-  levels[10] = {features: ['Заготовка: Blood Price']};
-  levels[11] = {features: ['Заготовка: способность Diabolic Contract','Заготовка: Infernal Conduit — улучшение','Заготовка: Terrorizing Force']};
-  levels[12] = {features: ['Увеличение характеристик (ASI) или Черта'], asi: true};
-  levels[13] = {features: []};
-  levels[14] = {features: ['Заготовка: Superior Interdict']};
-  levels[15] = {features: ['Заготовка: способность Diabolic Contract']};
-  levels[16] = {features: ['Увеличение характеристик (ASI) или Черта'], asi: true};
-  levels[17] = {features: ['Заготовка: Infernal Majesty']};
-  levels[18] = {features: ['Заготовка: дополнительный ресурс Interdict']};
-  levels[19] = {features: ['Увеличение характеристик (ASI) или Черта'], asi: true};
-  levels[20] = {features: ['Заготовка: Master of Hell']};
+  var seals=[3,3,4,4,4,4,5,5,5,5,5,5,6,6,6,6,6,7,7,7];
+  var sealDamage=['1d6','1d6','1d6','1d6','2d6','2d6','2d6','2d6','2d6','2d6','3d6','3d6','3d6','3d6','3d6','3d6','3d6','3d6','3d6','4d6'];
+  var conduit=[0,0,0,0,0,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10];
 
-  g.illriggerProgression = {
-    className: 'Иллирригер',
-    englishName: 'Illrigger',
-    source: 'MCDM / third-party',
-    status: 'skeleton',
-    edition: '5E',
-    hitDie: 10,
-    primaryStat: 'charisma',
-    secondaryStatChoice: ['strength','dexterity'],
-    savingThrows: ['constitution','charisma'],
-    armor: ['light','medium','shields'],
-    weapons: ['simple','martial'],
-    tools: [],
-
-    multiclassRequirement: {
-      charisma: 13,
-      strengthOrDexterity: 13
+  g.illriggerProgression={
+    className:'Иллирригер', englishName:'Illrigger',
+    source:'MCDM Productions — The Illrigger Revised 1.0',
+    status:'implemented_core',
+    edition:'5E 2024',
+    hitDie:10, primaryStat:'charisma', secondaryStatChoice:['strength','dexterity'],
+    savingThrows:['constitution','charisma'],
+    armor:['light','medium','shields'], weapons:['simple','martial'], tools:[],
+    multiclassRequirement:{charisma:13,strengthOrDexterity:13},
+    multiclassProficiencies:{armor:['light','medium','shields'],weapons:['simple','martial']},
+    skills:{choose:2,from:['arcana','athletics','deception','insight','intimidation','investigation','persuasion','religion','stealth']},
+    subclassLevel:3,
+    resources:{
+      seals:{recharge:'short',progression:seals},
+      sealDamage:{progression:sealDamage},
+      interdictBoons:{knownAt:[0,0,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3,4,4,4]},
+      infernalConduitDice:{recharge:'long',progression:conduit}
     },
-
-    multiclassProficiencies: {
-      armor: ['light','medium','shields'],
-      weapons: ['simple','martial']
+    levels:levels,
+    combatMasteries:['Бравада','Жестокость','Неумолимый','Ложь','Проворство','Неукротимый'],
+    interdictBoons:{
+      2:['Ослабляющая печать','Мучение','Пожиратель душ','Апатия Стикса','Быстрое возмездие'],
+      7:['Цепь Ахерона','Канал Пламени','Очи Врат','Теневая завеса','Высвободить Ад','Мстительный выстрел'],
+      13:['Натиск Диса','Вспышка серы','Адское неистовство']
     },
-
-    skills: {
-      choose: 2,
-      from: ['arcana','athletics','deception','insight','intimidation','investigation','persuasion','religion','stealth']
-    },
-
-    subclassLevel: 3,
-
-    resources: {
-      seals: {status: 'pending', progression: [3,3,4,4,4,4,5,5,5,5,5,5,6,6,6,6,6,7,7,7]},
-      sealDamage: {status: 'pending', progression: ['1d6','1d6','1d6','1d6','2d6','2d6','2d6','2d6','2d6','2d6','3d6','3d6','3d6','3d6','3d6','3d6','3d6','3d6','3d6','4d6']},
-      interdictBoons: {status: 'pending'},
-      infernalConduitDice: {status: 'pending'}
-    },
-
-    levels: levels,
-
-    mechanics: {
-      status: 'pending',
-      sealSystem: 'pending',
-      balefulInterdict: 'pending',
-      combatMastery: 'pending',
-      invokeHell: 'pending',
-      infernalConduit: 'pending',
-      bloodPrice: 'pending',
-      terrorizingForce: 'pending',
-      infernalMajesty: 'pending',
-      masterOfHell: 'pending',
-      spellcasting: 'subclass_dependent',
-      subclassSystem: 'diabolic_contract',
-      notes: 'Этап 1 — только каркас. Не реализует боевые формулы, печати или ресурсные расчёты.'
+    contracts:[
+      {id:'architect',name:'Архитектор разрушения',patron:'Асмодей'},
+      {id:'hellspeaker',name:'Говорящий с Адом',patron:'Молох'},
+      {id:'painkiller',name:'Палач боли',patron:'Диспатер'},
+      {id:'sanguine',name:'Кровавый рыцарь',patron:'Сутех'},
+      {id:'shadowmaster',name:'Повелитель теней',patron:'Велиал'}
+    ],
+    mechanics:{
+      status:'implemented_core',
+      sealSystem:'short_rest_pool; one seal can be placed per bonus action on a visible creature within 30 ft; burning deals current seal dice and transfers/refunds on death according to the tabletop rule',
+      balefulInterdict:'implemented',
+      forkedTongue:'implemented',
+      combatMastery:'implemented',
+      interdiction:'implemented',
+      invokeHell:'implemented_core',
+      infernalConduit:'implemented_core',
+      bloodPrice:'implemented_core',
+      terrorizingForce:'implemented_core',
+      superiorInterdict:'implemented_core',
+      infernalMajesty:'implemented_core',
+      masterOfHell:'implemented_core',
+      subclassSystem:'implemented_core',
+      subclassDeepMagic:'architect_spellbook_and_some_contract_actions_require_spell/condition/ally-selection UI',
+      notes:'Основные ресурсы и боевые hooks реализованы. Полная автоматизация книги заклинаний Архитектора и сложных многотаргетных приказов контрактов требует отдельного UI/боевого движка.'
     }
   };
 })(window);
