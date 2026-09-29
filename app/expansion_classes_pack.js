@@ -226,11 +226,6 @@
       s.bhMutagens=s.bhMutagens||[];if(s.bhMutagens.indexOf(name)<0)s.bhMutagens.push(name);
       return{ok:true,effect:{mutagen:name,formula:form.effect,sideEffect:form.side||null,duration:'short-or-long-rest'},message:'🧪 Мутаген активирован: '+name+'.'};
     }
-      var name=String(ctx.mutagen||'Celerity');
-      s.bhMutagens=s.bhMutagens||[];
-      if(s.bhMutagens.indexOf(name)<0)s.bhMutagens.push(name);
-      return{ok:true,effect:{mutagen:name,sideEffect:true,duration:'short-or-long-rest'},message:'🧪 Мутаген активирован: '+name+'.'};
-    }
     if(id==='flushMutagens'){s.bhMutagens=[];return{ok:true,message:'🧪 Все мутагены выведены.'};}
     if(id==='ignoreMutagenSideEffect'){if(s.bhMetabolismUsed)return{ok:false,message:'Вы уже подавили побочный эффект сегодня.'};s.bhMetabolismUsed=true;return{ok:true,effect:{ignoreOneMutagenSideEffect:true,durationMinutes:1},message:'🧪 Побочный эффект мутагена подавлен на 1 минуту.'};}
     if(id==='exaltedMutation'){
