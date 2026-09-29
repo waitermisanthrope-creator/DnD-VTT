@@ -1,6 +1,6 @@
 # D&D APP — AI PROJECT GUIDE / FIRST READ
 
-> **BUILD:** v70.25.56 audit-reconciliation checkpoint (source manifest remains V70.25.53 until regenerated)
+> **BUILD:** v70.26.0 — Builder V2 / parchment integration checkpoint
 > **PURPOSE:** this file is the first technical map for any AI/agent working on the project.
 > **READ THIS FILE BEFORE OPENING OR CREATING OTHER PROJECT FILES.**
 >
