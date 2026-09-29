@@ -114,6 +114,9 @@ let pendingLevelUpData = null;
               <img src="./app/data/classes/RANGER.png" alt="Следопыт">
               <span>Следопыт (Ranger)</span>
             </div>
+            <div class="class-item extra-class-item" data-class="Рой">
+              <span>🩸 Рой — EXTRA</span>
+            </div>
             <div class="class-item center-item" data-class="Чародей">
               <img src="./app/data/classes/SORCERER.png" alt="Чародей">
               <span>Чародей (Sorcerer)</span>
@@ -238,11 +241,30 @@ let pendingLevelUpData = null;
 
         const selectedClassName = item.getAttribute('data-class');
 
-        // Мягкая проверка требований мультикласса: не блокируем выбор,
-        // но предупреждаем, если характеристик не хватает (правило D&D 5e).
         const hero = window.currentCharacter || window.currentChar;
+
+        // EXTRA-классы — жёстко закрытая ветка. Рой одновременно является
+        // расой и классом: его нельзя взять вторым классом, а персонаж-Рой
+        // может повышать только Рой.
+        const isSwarm = selectedClassName === "Рой";
+        const isSwarmHero = !!(hero && (
+          hero.extraClassType === "swarm" ||
+          hero.isExtraClass === true && hero.race === "Рой" ||
+          Array.isArray(hero.classes) && hero.classes.some(function(c){
+            return c && normalizeClassKey(c.name) === "рой";
+          })
+        ));
+        if (isSwarmHero && !isSwarm) {
+          alert("Рой — Extra-класс. Он одновременно является расой и классом и не может мультиклассироваться. Повышать можно только класс «Рой».");
+          return;
+        }
+        if (!isSwarmHero && isSwarm) {
+          alert("«Рой» нельзя взять вторым классом. Это стартовый Extra-класс, который полностью заменяет обычную расу.");
+          return;
+        }
+
         // Требования мультикласса относятся только к ВЗЯТИЮ НОВОГО КЛАССА.
-        // Повышение уже имеющегося класса не должно проверяться как multiclass entry.
+        // Повышение уже имеющегося класса не проверяется как multiclass entry.
         const normalizeClassKey = function(value) {
           return String(value || '')
             .replace(/[0-9]/g, '')
@@ -283,11 +305,39 @@ let pendingLevelUpData = null;
   window.refreshClassModalLocks = function() {
     const hero = window.currentCharacter || window.currentChar;
     const items = document.querySelectorAll('#dndModal .class-item');
+    const isSwarmHero = !!(hero && (
+      hero.extraClassType === "swarm" ||
+      (hero.isExtraClass === true && hero.race === "Рой") ||
+      Array.isArray(hero.classes) && hero.classes.some(function(c){
+        return c && String(c.name || "").replace(/[0-9]/g,"").trim() === "Рой";
+      })
+    ));
+
     items.forEach(item => {
       const cls = item.getAttribute('data-class');
+      if (isSwarmHero) {
+        const allowed = cls === "Рой";
+        item.style.display = allowed ? "flex" : "none";
+        item.classList.toggle('class-item-locked', false);
+        item.setAttribute('aria-disabled', allowed ? 'false' : 'true');
+        return;
+      }
+
+      // Для обычных персонажей карточка Роя остаётся видимой, но полностью
+      // заблокирована: Extra-класс нельзя брать через мультикласс.
+      if (cls === "Рой") {
+        item.style.display = "flex";
+        item.classList.add('class-item-locked');
+        item.setAttribute('aria-disabled', 'true');
+        item.title = "Рой — Extra-класс. Нельзя взять мультиклассом.";
+        return;
+      }
+
+      item.style.display = "flex";
       const ok = !hero || typeof window.checkMulticlassRequirements !== 'function' ||
                  window.checkMulticlassRequirements(hero, cls);
       item.classList.toggle('class-item-locked', !ok);
+      item.setAttribute('aria-disabled', ok ? 'false' : 'true');
     });
   };
 })();
@@ -369,6 +419,23 @@ window.openLevelUpModal = function() {
 
 function proceedWithClassLevelUp(currentClass) {
   const hero = window.currentCharacter || window.currentChar;
+
+  // Сервероподобная защита на уровне логики: даже вызов функции вручную
+  // не должен позволить обойти ограничения Extra-класса.
+  const normalizedRequested = String(currentClass || "").replace(/[0-9]/g,"").trim();
+  const swarmLocked = !!(hero && (
+    hero.extraClassType === "swarm" ||
+    (hero.isExtraClass === true && hero.race === "Рой") ||
+    Array.isArray(hero.classes) && hero.classes.some(function(c){ return c && String(c.name||"").replace(/[0-9]/g,"").trim() === "Рой"; })
+  ));
+  if (swarmLocked && normalizedRequested !== "Рой") {
+    alert("Этот персонаж — Рой. Другой класс выбрать нельзя.");
+    return;
+  }
+  if (!swarmLocked && normalizedRequested === "Рой") {
+    alert("Рой нельзя взять мультиклассом.");
+    return;
+  }
   
   // Сохраняем исходное значение опыта на случай отмены повышения уровня
   window._expBeforeLevelUp = (hero.exp !== undefined) ? hero.exp : 0;
@@ -727,6 +794,20 @@ window.confirmLevelUp = function() {
 
   const { class: className } = pendingLevelUpData;
 
+  const heroIsSwarm = !!(
+    hero.extraClassType === "swarm" ||
+    (hero.isExtraClass === true && hero.race === "Рой") ||
+    Array.isArray(hero.classes) && hero.classes.some(function(c){ return c && String(c.name||"").replace(/[0-9]/g,"").trim() === "Рой"; })
+  );
+  if (heroIsSwarm && className !== "Рой") {
+    alert("Рой не может мультиклассироваться. Повышайте только уровень Роя.");
+    return;
+  }
+  if (!heroIsSwarm && className === "Рой") {
+    alert("Рой нельзя добавить вторым классом.");
+    return;
+  }
+
   // Валидируем ASI до изменения уровня/класса: две характеристики должны быть разными,
   // а повышение не может вывести значение выше 20 по правилам PHB 2014.
   const preFeatSelect = document.getElementById('selectedFeatInput');
@@ -891,6 +972,17 @@ window.getCharacterLevel = function() {
 window.setCharacterLevel = function(newLevel, hpGain = 0, specificClass = null) {
   const hero = window.currentCharacter || window.currentChar;
   if (!hero) return;
+
+  // Extra-класс нельзя превратить в мультикласс даже через прямой вызов API.
+  const heroIsSwarm = !!(
+    hero.extraClassType === "swarm" ||
+    (hero.isExtraClass === true && hero.race === "Рой") ||
+    Array.isArray(hero.classes) && hero.classes.some(function(c){ return c && String(c.name||"").replace(/[0-9]/g,"").trim() === "Рой"; })
+  );
+  if (heroIsSwarm && specificClass && String(specificClass).replace(/[0-9]/g,"").trim() !== "Рой") {
+    console.warn("[LevelUp] Заблокирована попытка мультикласса для Роя:", specificClass);
+    return;
+  }
 
   window.currentCharacter = hero;
   window.currentChar = hero;
