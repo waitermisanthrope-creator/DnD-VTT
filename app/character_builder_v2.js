@@ -18,10 +18,10 @@
   ];
   var STAT_NAMES={str:'Сила',dex:'Ловкость',con:'Телосложение',int:'Интеллект',wis:'Мудрость',cha:'Харизма'};
   var EXTRA={
-    'Рой':{type:'swarm',replacesRace:true},
-    'Паразит':{type:'parasite',replacesRace:true,host:true},
-    'Паразит доктора Вальтера':{type:'walter_parasite',replacesRace:true,host:true},
-    'Призрак':{type:'ghost',replacesRace:true,host:true}
+    'Рой':{type:'swarm',replacesRace:true,description:'Единый организм из множества особей.'},
+    'Паразит':{type:'parasite',replacesRace:true,host:true,description:'Живой организм, использующий тело хозяина как убежище и оружие.'},
+    'Паразит доктора Вальтера':{type:'walter_parasite',replacesRace:true,host:true,description:'Лабораторный вид доктора Вальтера. Редкий, плохо изученный и опасный.'},
+    'Призрак':{type:'ghost',replacesRace:true,host:true,description:'Нематериальная сущность, связанная с мёртвой оболочкой.'}
   };
 
   function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
@@ -360,6 +360,9 @@
       this.values={name:opts.draft.name||'',age:Number(opts.draft.age)||0,background:opts.draft.background||'',profession:opts.draft.profession||'',stats:{}};
       this.className=opts.draft.extra?opts.draft.extraType:(opts.draft.className||null);
       this.race=opts.draft.raceId?getRaces().find(function(r){return r.id===opts.draft.raceId;})||null:null;
+      this.values.hostRaceId=opts.draft.hostRaceId||opts.draft.raceId||'';
+      this.values.gender=opts.draft.gender||'';
+      this.values.origin=opts.draft.origin||'';
       this.step=3;
     }
     this.steps=this.mode==='create'?['Основное','Раса / Extra','Класс','Характеристики','Выборы','Проверка']:['Класс','Уровень','Выборы','Проверка'];
@@ -367,7 +370,13 @@
   Wizard.prototype.mount=function(){
     styles();
     var root=g.document.getElementById(this.mode==='create'?'characterCreationScreen':'levelUpModal');
-    if(!root)return;
+    if(!root){
+      if(this.mode==='create'&&g.document.body){
+        root=g.document.createElement('div');root.id='characterCreationScreen';
+        root.style.cssText='display:block;min-height:100dvh;overflow-y:auto;overflow-x:hidden;padding:20px 20px 110px;box-sizing:border-box;';
+        g.document.body.appendChild(root);
+      }else return;
+    }
     root.style.display='block';
     if(this.mode!=='create')root.style.display='flex';
     this.root=root;
@@ -386,7 +395,7 @@
     if(this.step===1){
       var races=getRaces(),sel=this.race?this.race.id:'';
       body='<div class="cb-card"><h3>Раса или особый путь</h3><div class="cb-list">'+races.map(function(r){return '<div class="cb-option '+(sel===r.id?'active':'')+'" data-race="'+esc(r.id)+'"><b>'+esc(r.name)+'</b><small>'+esc(r.desc||'')+'</small></div>';}).join('')+'</div>';
-      body+='<div class="cb-card cb-extra"><h3>EXTRA-классы</h3><p class="cb-note">Эти пути заменяют обычную расу и имеют собственную модель тела/сущности.</p><div class="cb-list">'+Object.keys(EXTRA).map(function(n){return '<div class="cb-option '+(self.className===n?'active':'')+'" data-extra="'+esc(n)+'"><b>'+esc(n)+'</b><small>Закрытая ветка персонажа</small></div>';}).join('')+'</div></div>';
+      body+='<div class="cb-card cb-extra"><h3>EXTRA-классы</h3><p class="cb-note">Эти пути заменяют обычную расу и имеют собственную модель тела/сущности.</p><div class="cb-list">'+Object.keys(EXTRA).map(function(n){var x=EXTRA[n];return '<div class="cb-option '+(self.className===n?'active':'')+'" data-extra="'+esc(n)+'"><b>'+esc(n)+'</b><small>'+esc(x.description||'Закрытая ветка персонажа')+'</small></div>';}).join('')+'</div></div>';
       if(this.className&&extraInfo(this.className).host){
         body+='<div class="cb-card cb-extra"><h3>Тело / хозяин</h3><p class="cb-note">'+esc(this.className==='Призрак'?'Выберите тело, которое стало оболочкой призрака.':'Выберите тело/вид хозяина, с которым связан Extra.')+'</p><div class="cb-list">'+races.map(function(r){return '<div class="cb-option '+(self.race&&self.race.id===r.id?'active':'')+'" data-host-race="'+esc(r.id)+'"><b>'+esc(r.name)+'</b><small>'+esc(r.desc||'')+'</small></div>';}).join('')+'</div></div>';
       }
@@ -532,8 +541,12 @@
     hero.hpMax=Math.max(1,hd+con);hero.hpCurrent=hero.hpMax;hero.hitDice='1d'+hd;
     if(this.className==='Рой')hero.raceName='Рой';
     if(ex&&ex.host&&this.race){
-      hero.hostName=this.race.name;hero.raceName=(this.className==='Призрак'?'Мёртвая оболочка: ':this.className==='Паразит доктора Вальтера'?'Труп: ':'Хозяин: ')+this.race.name;
+      hero.hostName=this.race.name;
+      hero.hostRaceId=this.race.id||'';
+      hero.raceName=(this.className==='Призрак'?'Мёртвая оболочка: ':this.className==='Паразит доктора Вальтера'?'Труп: ':'Хозяин: ')+this.race.name;
     }
+    hero.gender=this.values.gender||'';
+    hero.origin=this.values.origin||'';
     if(typeof g.applyClassProgression==='function')g.applyClassProgression(hero,this.className,1);
     /* Runtime-specific Extra initialization. */
     if(ex&&ex.type==='swarm'&&g.SWARM_EXTRA&&g.SWARM_EXTRA.normalizeCharacter)g.SWARM_EXTRA.normalizeCharacter(hero);
@@ -571,8 +584,11 @@
     if(!opts.fromParchment && typeof g.openParchmentCreation==='function'){
       return g.openParchmentCreation();
     }
-    var screen=g.document.getElementById('characterCreationScreen');if(!screen)return;
-    new Wizard({mode:'create',fromParchment:!!opts.fromParchment,draft:opts.draft||null}).mount();
+    var screen=g.document.getElementById('characterCreationScreen');
+    if(screen)screen.style.display='block';
+    var wizard=new Wizard({mode:'create',fromParchment:!!opts.fromParchment,draft:opts.draft||null});
+    wizard.mount();
+    return wizard;
   }
   function startLevel(){
     var hero=g.currentCharacter||g.currentChar;if(!hero)return alert('Персонаж не выбран.');
