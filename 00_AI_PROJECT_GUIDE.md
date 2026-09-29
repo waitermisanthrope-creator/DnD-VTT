@@ -5111,3 +5111,11 @@ Runtime содержит Усиление, Проекцию, Телекинез,
 - **Военноначальник закрыт как класс:** база 1–20 + базовые 40 Exploits + Expanded 30 Exploits-контракты + 14 Fighting Styles + 12 Academies + их ключевые способности.
 - Если позже появится конкретный баг общего боевого/UI resolver, исправляем resolver, а не возвращаем Военноначальника в список «недоделанных классов».
 - Следующий класс по авторитетному списку: **№7 — Страж**.
+
+
+## V70.25.96+ — ALCHEMIST 2024 RUNTIME
+- Добавлен `app/alchemist_mhp_2024_runtime.js` и подключён после Warden runtime.
+- Закрыто базовое ядро Алхимика 2024: Bombs, Reagents, Potion Brewing, Prime Bomb, 18 Bomb Formula, Reagent Synthesis, Discoveries, Improved Bombs, Evasion, Blast Coating, Potion Mixologist, Experimentalist, Philosopher's Stone, Nuclear Bomb.
+- Зарегистрированы все 11 подклассов Алхимика. Полностью реализованы доступные публичные 2024-материалы: Аптекарь, Безумный бомбардир, Мутагенист. Остальные 8 остаются зарегистрированными, но их точные 2024 механики не выдумываются без исходного материала Complete Alchemist.
+- Runtime-тест: 17 базовых feature entries, 11 subclasses, 18 formulas, 18 potion recipes, 12 discoveries; синтаксис OK.
+- Следующий шаг: после получения точного источника восьми закрытых подклассов — заполнить их без изменения API; затем перейти к Оккультисту.
