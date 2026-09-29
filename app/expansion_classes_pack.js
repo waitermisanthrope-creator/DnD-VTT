@@ -36,7 +36,7 @@
   function dieFor(l){return l>=17?'1d12':l>=11?'1d10':l>=5?'1d8':'1d6';}
 
   function psiLimit(l){return Math.ceil(l/2);} function psiMax(l){return l;}
-  function syncPsion(h){var l=lvl(h,'Psion');if(!l)return;res(h,'psiPoints',psiMax(l),'long');}
+  function syncPsion(h){var l=lvl(h,'Psion');if(!l)return;var r=res(h,'psiPoints',l,'short');r.limit=psiLimit(l);var s=st(h);s.psionTalentsKnown=l>=18?8:l>=15?7:l>=12?6:l>=9?5:l>=7?4:l>=5?3:2;s.psionDisciplinesKnown=l>=18?3:2;s.psionMasteryFree=l>=17?3:l>=11?2:l>=5?1:0;s.psionInnate=s.psionInnate||{};}
   function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
   function warlordDie(l){return l>=17?'d10':l>=9?'d8':'d6';}
   function syncWarlord(h){var l=lvl(h,'Warlord');if(!l)return;var r=res(h,'commandDice',warlordDice(l),'short');r.die=warlordDie(l);r.perTurn=l>=17?4:l>=11?3:l>=6?2:1;}
