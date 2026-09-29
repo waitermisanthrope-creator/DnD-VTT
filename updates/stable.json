@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DnD-VTT",
-  "version": "70.25.81",
+  "version": "70.25.82",
   "minAppVersion": "70.25.71",
   "channel": "stable",
   "generated": "AUTO",
@@ -35,17 +35,17 @@
     {
       "path": "app/update_manager.js",
       "bytes": 20290,
-      "sha256": "27a40ac1ddb6baa964b8a674c2953e2d171c0987bde052a70d2f0d5e563b31e0"
+      "sha256": "e53fa40037a168b48952ea4451f1eb54b82ad39b45f88a50d9109a6d360a17b7"
     },
     {
       "path": "app/onboarding_faq_v71.js",
-      "bytes": 31123,
-      "sha256": "020ebfcca8cada0559effedcb61d593f56bf605812bd5eaa2b6735b3cd299f7e"
+      "bytes": 32373,
+      "sha256": "d351dc459ddea34875c9432a6a0e715c8a0839ffea254b56701a35f9edfe5897"
     },
     {
       "path": "app/styles.css",
-      "bytes": 19296,
-      "sha256": "018c5afa3d9095924e8203f4c96260f3aeba2b8fdb0295c5a1942edef9297b6f"
+      "bytes": 19977,
+      "sha256": "160730ce97b817edcbf4dd2f7ebf9c4ae66dec15f8b33dbfba89092e3595beef"
     },
     {
       "path": "app/data/classes/ARTIFICER.png",
