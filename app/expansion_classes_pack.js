@@ -47,7 +47,7 @@
 
   function target(ctx){return ctx&&ctx.target?ctx.target:null;}
   function usePsion(h,id,ctx,feature){
- syncPsion(h);ctx=ctx||{};var l=lvl(h,'Psion'),s=st(h),r=h.resources.psiPoints,t=target(ctx),cost=Math.max(0,Number(ctx.psi)||0);
+ syncPsion(h);ctx=ctx||{};if(id==='psionicPower')id='psiMastery';if(id==='mindThrust')id='telepathicIntrusion';if(id==='telekineticPush')id='telekineticForce';if(id==='forceSurge')id='elementalBlast';if(id==='mentalConstruct')id='astralConstruct';var l=lvl(h,'Psion'),s=st(h),r=h.resources.psiPoints,t=target(ctx),cost=Math.max(0,Number(ctx.psi)||0);
  if(cost>r.limit)return{ok:false,message:'За один эффект можно потратить не более '+r.limit+' очк. пси.'};
  if(id==='usePsi'){if(!cost||!spend(h,'psiPoints',cost))return{ok:false,message:'Недостаточно очков пси.'};return{ok:true,effect:{psiSpent:cost},message:'🧠 Потрачено '+cost+' очк. пси.'};}
  if(id==='enhancingSurge'){if(!t)return{ok:false,message:'Выбери цель.'};if(cost&&!spend(h,'psiPoints',cost))return{ok:false,message:'Недостаточно очков пси.'};return{ok:true,target:t.id,effect:{tempHp:'1d6',nextDamage:'1d6',extraTempHpDice:cost},message:'🧠 Усиливающий импульс применён.'};}
