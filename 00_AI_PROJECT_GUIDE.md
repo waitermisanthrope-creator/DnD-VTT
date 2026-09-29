@@ -4105,3 +4105,11 @@ APK: build required.
 - Parchment progression now uses one delegated touch-safe change/input handler. After selecting a class, the next row is explicitly revealed and the class selector remains enabled so another class can be selected.
 - Token images have pointer-events:none so they cannot intercept taps intended for the selector.
 - Android debug workflow now regenerates updates/stable.json from the exact repository bytes, including all class token files, so OTA updates can carry the token correction with correct SHA-256 values.
+
+
+## 2026-09-29 — FIX 70.25.76: updater manifest source
+- Fixed a critical OTA updater issue: app/update_manager.js no longer uses the GitHub Pages URL as the default manifest source.
+- Default manifest URL is now https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json, matching the repository's generated stable manifest and avoiding a dependency on GitHub Pages availability.
+- Version bumped to 70.25.76 so the fix is delivered in a new Android build.
+- SHA-256 verification, file-size verification, path safety and native staging/apply flow remain unchanged.
+- The debug workflow already regenerates updates/stable.json from the exact repository bytes after each Android build, so 70.25.76 becomes the first build that can validate the corrected manifest source in-app.
