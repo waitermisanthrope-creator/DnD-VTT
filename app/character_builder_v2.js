@@ -146,6 +146,55 @@
     return out.sort(function(a,b){return a.name.localeCompare(b.name,'ru');});
   }
 
+  /* --------- Уникальные выборы классов ---------
+   * Все они проходят через тот же pendingChoices/choiceHistory контракт.
+   * Источник берём из уже загруженных runtime-паков, чтобы не дублировать
+   * списки механик в Builder V2.
+   */
+  function uniqueClassChoices(className,targetLevel,isNewClass,hero){
+    var out=[], old=hero&&hero.choiceState||{};
+    function multi(id,key,label,options,count,level){
+      var have=Array.isArray(old[key])?old[key].length:0, need=Math.max(0,Number(count||0)-have);
+      if(!isNewClass && need===0)return;
+      if(need>0)out.push({id:id,key:key,type:'multi',count:need,label:label,options:options,className:className,level:level||targetLevel,source:'class'});
+    }
+    if(className==='Алхимик' && g.ALCHEMIST_MHP_2024){
+      var al=g.ALCHEMIST_MHP_2024;
+      var formulas=Array.isArray(al.formulae)?al.formulae:[];
+      var formulaCount=(targetLevel>=19?8:targetLevel>=16?7:targetLevel>=12?6:targetLevel>=8?5:targetLevel>=2?3:0);
+      var prev=Array.isArray(old['class:Алхимик:formulas'])?old['class:Алхимик:formulas']:[];
+      var delta=Math.max(0,formulaCount-prev.length);
+      if(delta)out.push({id:'alchemist_formulas',key:'class:Алхимик:formulas',type:'multi',count:delta,label:'Формулы бомб',options:formulas,className:className,level:targetLevel,source:'class'});
+      var disc=Array.isArray(al.discoveries)?al.discoveries.map(function(x){return {id:x[0],name:x[0],description:x[1]};}):[];
+      var discoveryLevels=[5,9,13,17], got=Array.isArray(old['class:Алхимик:discoveries'])?old['class:Алхимик:discoveries']:[];
+      if(discoveryLevels.indexOf(targetLevel)>=0)out.push({id:'alchemist_discovery',key:'class:Алхимик:discoveries',type:'multi',count:1,label:'Открытие Алхимика',options:disc.filter(function(x){return got.indexOf(x.id)<0;}),className:className,level:targetLevel,source:'class'});
+    }
+    if(className==='Оккультист' && g.OCCULTIST_KIBBLES_V11){
+      var rr=Array.isArray(g.OCCULTIST_KIBBLES_V11.rites)?g.OCCULTIST_KIBBLES_V11.rites.map(function(x){return {id:x[0]||x.id,name:x[0]||x.name,description:x[2]||x.description||''};}):[];
+      var known={2:2,5:3,7:4,9:5,12:6,15:7,18:8,20:8}, total=known[targetLevel]||0;
+      var have=Array.isArray(old['class:Оккультист:rites'])?old['class:Оккультист:rites']:[];
+      var delta=Math.max(0,total-have.length);
+      if(delta)out.push({id:'occultist_rites',key:'class:Оккультист:rites',type:'multi',count:delta,label:'Оккультные обряды',options:rr.filter(function(x){return have.indexOf(x.id)<0;}),className:className,level:targetLevel,source:'class'});
+    }
+    if(className==='Ведьма'){
+      var hx=g.WITCH_HEXES||g.witchHexes||g.HEXES||null;
+      var hopts=Array.isArray(hx)?hx.map(function(x){return typeof x==='string'?{id:x,name:x}:{id:x.id||x.name,name:x.name||x.id,description:x.description||x.desc||''};}):[];
+      var counts=(g.witchProgression&&g.witchProgression.hexesKnown)||[];
+      var total=counts[targetLevel-1]||0,have=Array.isArray(old['class:Ведьма:hexes'])?old['class:Ведьма:hexes']:[];
+      var delta=Math.max(0,total-have.length);
+      if(delta&&hopts.length)out.push({id:'witch_hexes',key:'class:Ведьма:hexes',type:'multi',count:delta,label:'Выбор новых проклятий (Hexes)',options:hopts.filter(function(x){return have.indexOf(x.id)<0;}),className:className,level:targetLevel,source:'class'});
+    }
+    if(className==='Бистхарт' && targetLevel===3 && g.BeastheartRuntime){
+      var bonds=g.BeastheartRuntime.bonds||{},haveBond=old['class:Бистхарт:bond'];
+      if(!haveBond)out.push({id:'beast_bond',key:'class:Бистхарт:bond',type:'single',label:'Союз с компаньоном',options:Object.keys(bonds).map(function(k){var x=bonds[k];return {id:k,name:x.name||k,description:x.description||''};}),className:className,level:3,source:'class'});
+    }
+    if(className==='Пугилист' && targetLevel===3){
+      var p=getClass(className)||{}, clubs=(p.fightClubs||[]).map(function(x){return {id:x,name:x};}),haveClub=old['class:Пугилист:club'];
+      if(clubs.length&&!haveClub)out.push({id:'pugilist_club',key:'class:Пугилист:club',type:'single',label:'Бойцовский клуб',options:clubs,className:className,level:3,source:'class'});
+    }
+    return out;
+  }
+
   /* --------- Классические и кастомные выборы 1-го/любого уровня --------- */
   function classChoices(className,targetLevel,isNewClass){
     var d=getClass(className)||{};
@@ -213,7 +262,7 @@
   }
 
   function collectChoices(race,className,targetLevel,isNewClass,existingSubclass){
-    var arr=raceChoices(race).concat(classChoices(className,targetLevel,isNewClass));
+    var arr=raceChoices(race).concat(classChoices(className,targetLevel,isNewClass)).concat(uniqueClassChoices(className,targetLevel,isNewClass,window.currentCharacter||window.currentChar));
     var ld=levelData(className,targetLevel);
     if(ld&&ld.asi)arr.push({id:'asi',key:'class:'+className+':level:'+targetLevel+':asi',type:'asi',label:'Увеличение характеристик или черта',options:function(){return allFeats();},className:className,level:targetLevel,source:'class'});
     var sc=subclassChoice(className,targetLevel,existingSubclass);
@@ -275,7 +324,15 @@
       hero.choiceState.companion=val;
       if(g.BeastheartRuntime&&typeof g.BeastheartRuntime.chooseCompanion==='function')g.BeastheartRuntime.chooseCompanion(hero,val);
     }
-    if(choice.id==='pugilist_club_preview')hero.choiceState.pugilistClub=val;
+    if(choice.id==='pugilist_club_preview'||choice.id==='pugilist_club')hero.choiceState.pugilistClub=Array.isArray(val)?val[0]:val;
+    if(choice.id==='beast_bond'){
+      hero.choiceState.companionBond=Array.isArray(val)?val[0]:val;
+      if(g.BeastheartRuntime&&typeof g.BeastheartRuntime.chooseBond==='function')g.BeastheartRuntime.chooseBond(hero,hero.choiceState.companionBond);
+    }
+    if(choice.id==='alchemist_formulas')hero.choiceState.alchemistFormulas=(hero.choiceState.alchemistFormulas||[]).concat(val||[]);
+    if(choice.id==='alchemist_discovery')hero.choiceState.alchemistDiscoveries=(hero.choiceState.alchemistDiscoveries||[]).concat(val||[]);
+    if(choice.id==='occultist_rites')hero.choiceState.occultistRites=(hero.choiceState.occultistRites||[]).concat(val||[]);
+    if(choice.id==='witch_hexes')hero.choiceState.witchHexes=(hero.choiceState.witchHexes||[]).concat(val||[]);
     if(choice.id==='warden_stand')hero.choiceState.sentinelStand=val;
     if(choice.id==='warden_strike')hero.choiceState.sentinelStrike=val;
     if(choice.id==='warden_soul')hero.choiceState.sentinelSoul=val;
@@ -323,12 +380,16 @@
     if(this.step===1){
       var races=getRaces(),sel=this.race?this.race.id:'';
       body='<div class="cb-card"><h3>Раса или особый путь</h3><div class="cb-list">'+races.map(function(r){return '<div class="cb-option '+(sel===r.id?'active':'')+'" data-race="'+esc(r.id)+'"><b>'+esc(r.name)+'</b><small>'+esc(r.desc||'')+'</small></div>';}).join('')+'</div>';
-      body+='<div class="cb-card cb-extra"><h3>EXTRA-классы</h3><p class="cb-note">Эти пути заменяют обычную расу и имеют собственную модель тела/сущности.</p><div class="cb-list">'+Object.keys(EXTRA).map(function(n){return '<div class="cb-option '+(self.className===n?'active':'')+'" data-extra="'+esc(n)+'"><b>'+esc(n)+'</b><small>Закрытая ветка персонажа</small></div>';}).join('')+'</div></div></div>';
+      body+='<div class="cb-card cb-extra"><h3>EXTRA-классы</h3><p class="cb-note">Эти пути заменяют обычную расу и имеют собственную модель тела/сущности.</p><div class="cb-list">'+Object.keys(EXTRA).map(function(n){return '<div class="cb-option '+(self.className===n?'active':'')+'" data-extra="'+esc(n)+'"><b>'+esc(n)+'</b><small>Закрытая ветка персонажа</small></div>';}).join('')+'</div></div>';
+      if(this.className&&extraInfo(this.className).host){
+        body+='<div class="cb-card cb-extra"><h3>Тело / хозяин</h3><p class="cb-note">'+esc(this.className==='Призрак'?'Выберите тело, которое стало оболочкой призрака.':'Выберите тело/вид хозяина, с которым связан Extra.')+'</p><div class="cb-list">'+races.map(function(r){return '<div class="cb-option '+(self.race&&self.race.id===r.id?'active':'')+'" data-host-race="'+esc(r.id)+'"><b>'+esc(r.name)+'</b><small>'+esc(r.desc||'')+'</small></div>';}).join('')+'</div></div>';
+      }
+      body+='</div>';
     }
     if(this.step===2){
       var classes=getClasses(),selc=this.className||'';
       body='<div class="cb-card"><h3>Класс</h3><div class="cb-list">'+classes.filter(function(c){return !isExtra(c.name);}).map(function(c){return '<div class="cb-option '+(selc===c.name?'active':'')+'" data-class="'+esc(c.name)+'"><b>'+esc(c.name)+'</b><small>d'+(c.hitDie||8)+' · '+esc(c.desc||'')+'</small></div>';}).join('')+'</div></div>';
-      if(this.className&&isExtra(this.className))body='<div class="cb-card cb-extra"><h3>'+esc(this.className)+'</h3><p>Это Extra-класс. Обычный класс не выбирается.</p></div>';
+      if(this.className&&isExtra(this.className))body='<div class="cb-card cb-extra"><h3>'+esc(this.className)+'</h3><p>Это Extra-класс. Обычный класс не выбирается. Тело/хозяин уже выбран на предыдущем шаге.</p></div>';
     }
     if(this.step===3){
       var stats=this.values.stats||{str:8,dex:8,con:8,int:8,wis:8,cha:8};
@@ -357,7 +418,8 @@
   Wizard.prototype.bindRace=function(){
     var self=this;
     this.root.querySelectorAll('[data-race]').forEach(function(el){el.onclick=function(){self.race=getRaces().find(function(r){return r.id===el.dataset.race;});self.className=null;self.render();};});
-    this.root.querySelectorAll('[data-extra]').forEach(function(el){el.onclick=function(){self.className=el.dataset.extra;self.race=null;self.render();};});
+    this.root.querySelectorAll('[data-extra]').forEach(function(el){el.onclick=function(){self.className=el.dataset.extra;if(!extraInfo(self.className).host)self.race=null;self.render();};});
+    this.root.querySelectorAll('[data-host-race]').forEach(function(el){el.onclick=function(){self.race=getRaces().find(function(r){return r.id===el.dataset.hostRace;})||null;self.render();};});
   };
   Wizard.prototype.bindClass=function(){
     var self=this;
@@ -392,6 +454,7 @@
   };
   Wizard.prototype.next=function(){
     if(!this.readStep())return this.renderError();
+    if(this.mode==='create'&&this.step===1&&this.className&&extraInfo(this.className).host&&!this.race)return this.renderError('Для этого Extra выберите тело/хозяина.');
     if(this.mode==='create'&&this.step===2&&!this.className)return this.renderError('Выберите класс.');
     if(this.mode==='create'&&this.step===1&&this.className&&!isExtra(this.className)){} 
     if(this.step<this.steps.length-1){this.error='';this.step++;this.render();}
@@ -403,7 +466,15 @@
   Wizard.prototype.renderLevel=function(){
     var self=this,hero=this.hero;
     if(this.step===0){
-      var classes=getClasses().filter(function(c){return !isExtra(c.name)||extraInfo(c.name)&&hero.extraClassType===extraInfo(c.name).type;});
+      var classes=getClasses().filter(function(c){
+        if(isExtra(c.name)){
+          if(hero.extraClassType===extraInfo(c.name).type)return true;
+          if(hero.extraClassType==='swarm'&&c.name==='Рой')return true;
+          return false;
+        }
+        if(hero.extraClassType==='swarm'||hero.extraClassType==='parasite'||hero.extraClassType==='walter_parasite'||hero.extraClassType==='ghost')return false;
+        return true;
+      });
       this.root.innerHTML='<div class="cb-wrap"><div class="cb-top"><b>Повышение уровня</b><span class="cb-step">1 / 4 · Класс</span></div><div class="cb-card"><h3>Что повышаем?</h3><div class="cb-list">'+classes.map(function(c){return '<div class="cb-option" data-lu-class="'+esc(c.name)+'"><b>'+esc(c.name)+'</b><small>'+esc((getClass(c.name)||{}).desc||c.desc||'')+'</small></div>';}).join('')+'</div><div class="cb-error" id="cb_error">'+esc(this.error)+'</div></div><div class="cb-actions"><button id="cbBack" class="cb-btn">Отмена</button><button id="cbNext" class="cb-btn primary">Далее</button></div></div>';
       this.root.querySelectorAll('[data-lu-class]').forEach(function(el){el.onclick=function(){self.root.querySelectorAll('[data-lu-class]').forEach(function(x){x.classList.remove('active');});el.classList.add('active');};});
     }else if(this.step===1){
