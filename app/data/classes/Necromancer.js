@@ -20,6 +20,9 @@ window.necromancerProgression = {
     weapons: ["simple"],
     tools: [],
     multiclassRequirement: { intelligence: 13 },
+    multiclassProficiencies: { weapons: ["simple"] },
+    skills: { choose: 2, from: ["arcana", "history", "insight", "medicine", "religion", "deception"] },
+    subclassFeatureLevels: [3, 6, 10, 14],
     subclassLevel: 3,
 
     levels: {
