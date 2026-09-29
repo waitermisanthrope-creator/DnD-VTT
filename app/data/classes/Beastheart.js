@@ -38,14 +38,14 @@ function dc(h){return 8+prof(h)+mod(h,'wisdom')}
 function ownerCompanion(h){var s=st(h);if(s.beastheartCompanionId&&g.DNDSecondaryEntities&&g.DNDSecondaryEntities.get)return g.DNDSecondaryEntities.get(s.beastheartCompanionId);return null}
 function sync(h){
  var l=lvl(h);if(!l)return;var s=st(h);
- s.primalExploitSaveDC=dc(h);s.companionBond=s.companionBond||null;s.primalExploitsKnown=l>=17?7:l>=10?5:3;
+ s.primalExploitSaveDC=dc(h);s.companionBond=s.companionBond||null;s.primalExploitsKnown=l>=17?7:l>=10?5:3;s.beyondInstinctBonus=l>=15?5:l>=10?3:l>=5?1:0;s.signatureAttackDice=l>=17?3:l>=11?2:l>=5?1:0;
  res(h,'primalExploitFerocity',6,'short');
  s.signatureAttackDice=l>=18?3:l>=13?2:l>=6?1:0;
  s.beyondInstinct=l>=5?1:0;
  if(l>=3)s.masterCaregiver=true;
  if(l>=14)s.loyalToEnd=true;
  if(s.beastheartCompanionId&&g.DNDSecondaryEntities&&g.DNDSecondaryEntities.get){
-   var e=g.DNDSecondaryEntities.get(s.beastheartCompanionId);if(e){e.resources=e.resources||{};e.resources.ferocityMax=6+Math.max(0,l-1);e.resources.ferocity=Math.min(Number(e.resources.ferocity)||0,e.resources.ferocityMax);e.beastheartLevel=l;e.proficiencyBonus=prof(h);if(g.DNDSecondaryEntities.update)g.DNDSecondaryEntities.update(e.id,{resources:e.resources,beastheartLevel:l,proficiencyBonus:e.proficiencyBonus});}
+   var e=g.DNDSecondaryEntities.get(s.beastheartCompanionId);if(e){e.resources=e.resources||{};e.resources.ferocityMax=9999;e.resources.ferocity=Math.min(Number(e.resources.ferocity)||0,e.resources.ferocityMax);e.beastheartLevel=l;e.proficiencyBonus=prof(h);if(g.DNDSecondaryEntities.update)g.DNDSecondaryEntities.update(e.id,{resources:e.resources,beastheartLevel:l,proficiencyBonus:e.proficiencyBonus});}
  }
 }
 function chooseCompanion(h,id){
@@ -62,11 +62,11 @@ function use(h,id,ctx){
  if(id==='chooseCompanion')return chooseCompanion(h,String(ctx.companion||''));
  if(id==='chooseBond')return chooseBond(h,String(ctx.bond||''));
  if(id==='primalExploit'){var n=Number(ctx.cost)||1,r=spendFerocity(h,n);if(!r.ok)return r;return{ok:true,effect:{exploit:String(ctx.exploit||'Звериный рывок'),cost:n},message:'Природный приём применён.'}}
- if(id==='rejuvenatingFerocity'){var n=Number(ctx.amount)||Number(e&&e.resources&&e.resources.ferocity)||0;if(n<=0)return{ok:false,message:'Нет ярости для восстановления.'};var r=spendFerocity(h,n);if(!r.ok)return r;return{ok:true,effect:{tempHp:n},message:'Компаньон получает '+n+' временных HP.'}}
- if(id==='primalStrike'){if(l<6)return{ok:false,message:'Доступно с 6 уровня.'};var n=Number(ctx.ferocity)||1,r=spendFerocity(h,n);if(!r.ok)return r;return{ok:true,effect:{extraDamage:(n)+'d8',damageType:'первобытный'},message:'Первобытный удар усиливает атаку.'}}
+ if(id==='rejuvenatingFerocity'){var uses=Number(s.rejuvenatingFerocityUses)||0;if(l<6)return{ok:false,message:'Доступно с 6 уровня.'};var maxUses=Math.max(1,mod(h,'wisdom'));if(uses>=maxUses)return{ok:false,message:'Все использования восстановления потрачены до долгого отдыха.'};s.rejuvenatingFerocityUses=uses+1;var n=Number(ctx.amount)||Number(e&&e.resources&&e.resources.ferocity)||0;if(n<=0)return{ok:false,message:'Нет ярости для восстановления.'};var r=spendFerocity(h,n);if(!r.ok)return r;if(e){e.hp=Math.min(Number(e.maxHp)||Number(e.hp)||1,(Number(e.hp)||0)+n);if(g.DNDSecondaryEntities.update)g.DNDSecondaryEntities.update(e.id,{hp:e.hp});}return{ok:true,effect:{restoreHp:n},message:'Компаньон восстанавливает '+n+' HP.'}}
+ if(id==='primalStrike'){if(l<8)return{ok:false,message:'Доступно с 8 уровня.'};var n=Number(ctx.ferocity)||1,r=spendFerocity(h,n);if(!r.ok)return r;return{ok:true,effect:{extraDamage:(s.primalStrikeDice||1)+'d8',damageType:ctx.damageType||'громовой'},message:'Первобытный удар усиливает атаку.'}}
  if(id==='sootheBeast'){if(!e)return{ok:false,message:'Нет компаньона.'};if(e.resources)e.resources.ferocity=0;return{ok:true,effect:{removeRampage:true},message:'Компаньон успокоен.'}}
  if(id==='summonWilds'){if(l<18)return{ok:false,message:'Доступно с 18 уровня.'};return{ok:true,effect:{area:{shape:'cube',sizeFt:30,rangeFt:120,durationRounds:10},save:'wis',condition:'frightened',obscured:true},message:'Дикая стая призвана.'}}
- if(id==='unbreakableFriendship'){if(l<20)return{ok:false,message:'Доступно с 20 уровня.'};return{ok:true,effect:{deathSaveSuccess:true,returnCompanionAfterZeroHP:true},message:'Неразрывная дружба спасает вас и компаньона.'}}
+ if(id==='unbreakableFriendship'){if(l<20)return{ok:false,message:'Доступно с 20 уровня.'};return{ok:true,effect:{autoAnimalHandlingRampage:true,dropToOneHP:true,initiativeFerocity:'1d10'},message:'Неразрывная дружба активна.'}}
  var b=s.companionBond;
  if(b==='ferocious'&&id==='frenziedCharge'){return{ok:true,effect:{reaction:true,moveFt:'speed',attack:true},message:'Яростный рывок.'}}
  if(b==='ferocious'&&id==='energizingRampage'){if(e&&e.resources)e.resources.ferocity=Math.max(Number(e.resources.ferocity)||0,4);return{ok:true,message:'Ярость сохраняется после буйства.'}}
