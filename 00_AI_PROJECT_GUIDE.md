@@ -25,6 +25,16 @@
 - Полная логика Guardian Tactics, Interrupt и всех подклассов пока отложена.
 - Следующий класс по очереди: Алхимик.
 
+## CLASS TEMPLATE PASS — WARLORD (post-V70.25.95)
+
+- Добавлен каркас Военачальника: app/data/classes/Warlord.js.
+- Зафиксированы d8, Strength/Dexterity + leadership-stat, Constitution/Charisma saves, лёгкая/средняя броня и щиты, простое/воинское оружие.
+- Требование мультикласса: Strength или Dexterity 13 + Charisma 13.
+- Добавлены точки Academies на 3/7/11/15/18 уровнях.
+- Добавлены все 12 найденных Academies: Chivalry, Dread, Ferocity, Gallantry, Schemes, Tactics, Claws, Counsel, Liberty, Navigators, Order, Zeal.
+- Исправлен extra_class_stubs.js: реальный Warden/Warlord теперь не перезаписываются тестовыми заглушками.
+- Следующий класс по очереди: Алхимик.
+
 ## 3. CURRENT BUILD CHECKPOINT
 
 - **V70.25.48 — Full Combat Transaction / Reaction Race / Batch AoE.** Latest verified technical checkpoint. Network reaction windows now survive reconnect migration or deterministically finalize on disconnect; host handoff fences pending reactions before snapshot; room shutdown clears stale pending reaction/prepared-action state. `combat_engine.js` exposes atomic `applyDamageBatch()` / `healBatch()` with rollback, and network AoE damage uses the batch transaction.
