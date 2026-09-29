@@ -66,13 +66,26 @@ function use(h,id,ctx){
  if(id==='summonWilds'){if(l<18)return{ok:false,message:'Доступно с 18 уровня.'};return{ok:true,effect:{area:{shape:'cube',sizeFt:30,rangeFt:120,durationRounds:10},save:'wis',condition:'frightened',obscured:true},message:'Дикая стая призвана.'}}
  if(id==='unbreakableFriendship'){if(l<20)return{ok:false,message:'Доступно с 20 уровня.'};return{ok:true,effect:{autoAnimalHandlingRampage:true,dropToOneHP:true,initiativeFerocity:'1d10'},message:'Неразрывная дружба активна.'}}
  var b=s.companionBond;
- if(b==='ferocious'&&id==='frenziedCharge'){return{ok:true,effect:{reaction:true,moveFt:'speed',attack:true},message:'Яростный рывок.'}}
- if(b==='ferocious'&&id==='energizingRampage'){if(e&&e.resources)e.resources.ferocity=Math.max(Number(e.resources.ferocity)||0,4);return{ok:true,message:'Ярость сохраняется после буйства.'}}
- if(b==='hunter'&&id==='chosenQuarry'){var r=spendFerocity(h,4);if(!r.ok)return r;s.quarryId=ctx.targetId;return{ok:true,effect:{bonusDamage:'1d6',durationRounds:60},message:'Добыча отмечена.'}}
+ if(b==='ferocious'&&id==='frenziedCharge'){if(l<11)return{ok:false,message:'Доступно с 11 уровня.'};return{ok:true,effect:{reaction:true,moveFt:'speed',attack:true,advantageIfSameTarget:true,bonusDamage:'companionFerocity'},message:'Яростный рывок.'}}
+ if(b==='ferocious'&&id==='energizingRampage'){if(l<7)return{ok:false,message:'Доступно с 7 уровня.'};if(e&&e.resources)e.resources.ferocity=Math.max(Number(e.resources.ferocity)||0,4);return{ok:true,message:'Ярость сохраняется после буйства.'}}
+ if(b==='ferocious'&&id==='invigoratedRampage'){if(l<15)return{ok:false,message:'Доступно с 15 уровня.'};return{ok:true,effect:{conditionChoice:['ослеплён','оглох','испуган'],durationRounds:1},message:'Усиленное буйство.'}}
+ if(b==='hunter'&&id==='chosenQuarry'){if(l<3)return{ok:false,message:'Доступно с 3 уровня.'};var r=spendFerocity(h,4);if(!r.ok)return r;s.quarryId=ctx.targetId;return{ok:true,effect:{bonusDamage:'1d6',durationRounds:60},message:'Добыча отмечена.'}}
+ if(b==='hunter'&&id==='hunterWarding'){if(l<7)return{ok:false,message:'Доступно с 7 уровня.'};return{ok:true,effect:{companionResistance:'nonmagical',damageReduction:'wisdomModifier'},message:'Охотничий оберег.'}}
+ if(b==='hunter'&&id==='synchronizedStealth'){if(l<11)return{ok:false,message:'Доступно с 11 уровня.'};return{ok:true,effect:{sharedStealth:true,advantageStealth:true},message:'Синхронная скрытность.'}}
+ if(b==='hunter'&&id==='unseenHunters'){if(l<15)return{ok:false,message:'Доступно с 15 уровня.'};return{ok:true,effect:{invisible:true,durationMinutes:10,recharge:'long'},message:'Невидимые охотники.'}}
  if(b==='infernal'&&id==='infernalTeleport'){var r=spendFerocity(h,4);if(!r.ok)return r;return{ok:true,effect:{teleportFt:90},message:'Инфернальный перенос.'}}
  if(b==='infernal'&&id==='wickedDeception'){var r=spendFerocity(h,3);if(!r.ok)return r;return{ok:true,effect:{save:'wis',condition:'charmed',durationRounds:1},message:'Коварный обман.'}}
+ if(b==='infernal'&&id==='drainThem'){var r=spendFerocity(h,4);if(!r.ok)return r;return{ok:true,effect:{healCompanion:'halfDamage'},message:'Высосать силу.'}}
+ if(b==='infernal'&&id==='hellishWound'){var r=spendFerocity(h,4);if(!r.ok)return r;return{ok:true,effect:{ongoingDamage:'1d10',stacks:true,endsOnMagicHealing:true},message:'Адская рана.'}}
+ if(b==='infernal'&&id==='wickedDeception'){var r=spendFerocity(h,3);if(!r.ok)return r;return{ok:true,effect:{save:'wis',condition:'charmed',durationRounds:1},message:'Коварный обман.'}}
+ if(b==='infernal'&&id==='fiendishForm'){if(l<15)return{ok:false,message:'Доступно с 15 уровня.'};var r=spendFerocity(h,6);if(!r.ok)return r;return{ok:true,effect:{durationMinutes:1,resistance:['acid','cold','fire','lightning'],flyIfSelected:true,bonusFireDamage:'1d6'},message:'Инфернальная форма.'}}
  if(b==='primordial'&&id==='alliedEarth'){var r=spendFerocity(h,2);if(!r.ok)return r;return{ok:true,effect:{speedReductionFt:10,areaFt:10},message:'Союзная земля замедляет врагов.'}}
- if(b==='protector'&&id==='sentinelCompanion'){var r=spendFerocity(h,2);if(!r.ok)return r;return{ok:true,effect:{reactionAttack:true,protectAlly:true},message:'Страж-компаньон.'}}
+ if(b==='primordial'&&id==='spiritStampede'){if(l<11)return{ok:false,message:'Доступно с 11 уровня.'};return{ok:true,effect:{forceDamage:'companionFerocity',areaFt:40},message:'Духовный табун.'}}
+ if(b==='primordial'&&id==='alliedWeather'){if(l<15)return{ok:false,message:'Доступно с 15 уровня.'};return{ok:true,effect:{reactionWeather:true,save:'strOrDex'},message:'Союзная погода.'}}
+ if(b==='protector'&&id==='beastVitality'){if(l<3)return{ok:false,message:'Доступно с 3 уровня.'};return{ok:true,effect:{hpMaxBonus:3+(l-3)},message:'Живучесть зверя.'}}
+ if(b==='protector'&&id==='sentinelCompanion'){if(l<11)return{ok:false,message:'Доступно с 11 уровня.'};var r=spendFerocity(h,2);if(!r.ok)return r;return{ok:true,effect:{reactionAttack:true,protectAlly:true},message:'Страж-компаньон.'}}
+ if(b==='protector'&&id==='thickenedHide'){if(l<7)return{ok:false,message:'Доступно с 7 уровня.'};return{ok:true,effect:{companionACBonus:2},message:'Утолщённая шкура.'}}
+ if(b==='protector'&&id==='undyingProtector'){if(l<15)return{ok:false,message:'Доступно с 15 уровня.'};var cost=Number(s.undyingProtectorCost)||2;var r=spendFerocity(h,cost);if(!r.ok)return r;s.undyingProtectorCost=cost+2;return{ok:true,effect:{preventZeroHp:true},message:'Неумирающий защитник.'}}
  return{ok:false,unsupported:true,message:'Для этой способности нужен общий боевой resolver.'}
 }
 function attack(h,ctx){
