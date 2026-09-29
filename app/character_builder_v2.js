@@ -369,16 +369,26 @@
   }
   Wizard.prototype.mount=function(){
     styles();
-    var root=g.document.getElementById(this.mode==='create'?'characterCreationScreen':'levelUpModal');
-    if(!root){
-      if(this.mode==='create'&&g.document.body){
-        root=g.document.createElement('div');root.id='characterCreationScreen';
-        root.style.cssText='display:block;min-height:100dvh;overflow-y:auto;overflow-x:hidden;padding:20px 20px 110px;box-sizing:border-box;';
+    var root;
+    if(this.mode==='create'){
+      root=g.document.getElementById('cbv2Screen');
+      if(!root&&g.document.body){
+        root=g.document.createElement('div');
+        root.id='cbv2Screen';
+        root.style.cssText='position:fixed;inset:0;z-index:99990;display:block;background:#111;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-y;box-sizing:border-box;';
         g.document.body.appendChild(root);
-      }else return;
+      }
+      if(!root)return;
+      root.style.display='block';
+    }else{
+      root=g.document.getElementById('levelUpModal');
+      if(!root){
+        root=g.document.createElement('div');root.id='levelUpModal';root.className='modal-overlay';
+        root.style.cssText='position:fixed;inset:0;z-index:99990;display:flex;overflow:auto;';
+        g.document.body.appendChild(root);
+      }
+      root.style.display='flex';
     }
-    root.style.display='block';
-    if(this.mode!=='create')root.style.display='flex';
     this.root=root;
     this.render();
   };
@@ -525,7 +535,17 @@
     };
     ensureChoiceState(hero);
     var ex=extraInfo(this.className);
-    if(ex){hero.isExtraClass=true;hero.extraClassType=ex.type;hero.replacesRace=true;hero.multiclassAllowed=false;}
+    if(ex){
+      hero.isExtraClass=true;hero.extraClassType=ex.type;hero.extraClassName=this.className;
+      hero.replacesRace=true;hero.multiclassAllowed=false;
+      hero.tokenArt=({
+        'Рой':'./app/data/classes/the swam.png',
+        'Паразит':'./app/data/classes/parasite.png',
+        'Паразит доктора Вальтера':'./1790718758545.png',
+        'Призрак':'./app/data/classes/geist.png'
+      })[this.className]||'';
+      hero.tokenReady=!!hero.tokenArt;
+    }
     if(this.race&&this.race.bonuses){
       Object.keys(this.race.bonuses).forEach(function(k){hero.stats[k]=(Number(hero.stats[k])||0)+Number(self.race.bonuses[k]||0);});
     }
