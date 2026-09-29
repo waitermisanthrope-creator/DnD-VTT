@@ -44,6 +44,9 @@
 
 /* Homebrew uses the same clean parchment as classic; only the content bucket changes. */
 .parchment-stage.is-homebrew{background-image:url('../1790622844831.png') !important;background-size:100% 100%;background-position:center top;background-repeat:no-repeat}
-.parchment-burn{position:fixed;left:max(16px,calc((100vw - min(100vw,900px))/2 + 18px));bottom:max(16px,calc(env(safe-area-inset-bottom,0px) + 10px));z-index:9035;display:block!important;pointer-events:auto!important;border:1px solid rgba(74,45,24,.55);background:rgba(82,45,24,.12);color:#4b2d1d;font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:clamp(14px,3.2vw,19px);padding:8px 11px;border-radius:5px;cursor:pointer;box-shadow:0 2px 8px rgba(50,30,10,.16)}
+.parchment-burn{position:fixed;left:max(16px,calc((100vw - min(100vw,900px))/2 + 18px));bottom:max(16px,calc(env(safe-area-inset-bottom,0px) + 10px));z-index:12050;display:block!important;pointer-events:auto!important;border:1px solid rgba(74,45,24,.55);background:rgba(82,45,24,.12);color:#4b2d1d;font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:clamp(14px,3.2vw,19px);padding:8px 11px;border-radius:5px;cursor:pointer;box-shadow:0 2px 8px rgba(50,30,10,.16)}
 .parchment-burn span{display:block;font-size:.58em;font-weight:400;opacity:.72;margin-top:1px}
 .creation-type-card #ccTypeHomebrew{background:#80612d}
+
+/* V70.25.91: burn control is outside the clipped parchment-stage so Android WebView cannot hide it. */
+#parchmentCreationScreen > .parchment-burn{position:fixed!important;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;}
