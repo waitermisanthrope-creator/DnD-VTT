@@ -83,6 +83,18 @@ g.openDndFaq=openFaq;
 function closeFaq(){var m=document.getElementById('dndFaqModal');if(m)m.style.display='none';}
 g.closeDndFaq=closeFaq;
 function renderFaq(q){var root=document.getElementById('dndFaqBody');if(!root)return;q=(q||'').trim().toLowerCase();var groups={};FAQ.forEach(function(x){if(q && x.join(' ').toLowerCase().indexOf(q)<0)return;(groups[x[0]]=groups[x[0]]||[]).push(x);});root.innerHTML=Object.keys(groups).map(function(cat){return '<section class="dnd-faq-section"><h3>'+esc(cat)+'</h3>'+groups[cat].map(function(x){return '<h4>'+esc(x[1])+'</h4><p>'+esc(x[2])+'</p>';}).join('')+'</section>';}).join('') || '<div class="dnd-faq-section"><h3>Ничего не найдено</h3><p>Попробуйте другой запрос.</p></div>';}
+function closeMainMore(){var m=document.getElementById('dndMainMoreModal');if(m)m.classList.remove('open');}
+function runMainMore(fn){closeMainMore();setTimeout(fn,60);}
+function addMainMoreButton(){
+ var screen=document.getElementById('characterSelectScreen');if(!screen||document.getElementById('dndMainMoreButton'))return;
+ var b=document.createElement('button');b.id='dndMainMoreButton';b.type='button';b.textContent='☰  Ещё';
+ b.onclick=function(){var m=document.getElementById('dndMainMoreModal');if(m)m.classList.add('open');};
+ screen.appendChild(b);
+ var m=document.createElement('div');m.id='dndMainMoreModal';
+ m.innerHTML='<div class="dnd-main-more-card"><div class="dnd-main-more-head"><h2>⚙️ Дополнительно</h2><button type="button" onclick="closeMainMore()" style="background:#333;color:#fff;border:1px solid #555;border-radius:8px;padding:7px 11px">✕</button></div><div class="dnd-main-more-grid"><button class="accent" onclick="runMainMore(function(){openSettingsModal()})">⚙️ Настройки</button><button onclick="runMainMore(function(){openDndNetworkModal()})">🎲 Сетевая игра</button><button onclick="runMainMore(function(){openDndFaq()})">📖 FAQ</button><button onclick="runMainMore(function(){startTour(true)})">➡️ Обучение</button><button onclick="runMainMore(function(){openDndChangelog()})">📜 Что нового</button><button onclick="runMainMore(function(){if(window.dndBattleOpen)window.dndBattleOpen()})">⚔️ Поле боя</button><a href="https://m.vk.com/dima_dimon_knk" target="_blank" rel="noopener noreferrer">✒️ Страница автора</a></div></div>';
+ m.addEventListener('click',function(e){if(e.target===m)closeMainMore();});
+ document.body.appendChild(m);
+}
 function addMainButtons(){var screen=document.getElementById('characterSelectScreen');if(!screen||document.getElementById('dndFaqButton'))return;var faq=document.createElement('button');faq.id='dndFaqButton';faq.className='dnd-main-faq';faq.textContent='📖 FAQ';faq.onclick=openFaq;screen.appendChild(faq);var help=document.createElement('button');help.id='dndHelpButton';help.className='dnd-main-help';help.textContent='➡️ Обучение';help.onclick=function(){startTour(true);};screen.appendChild(help);}
 function buildFaq(){if(document.getElementById('dndFaqModal'))return;var m=document.createElement('div');m.id='dndFaqModal';m.innerHTML='<div class="dnd-faq-card"><div class="dnd-faq-head"><h2>📖 FAQ — D&D VTT / менеджер персонажей</h2><button class="dnd-faq-close" onclick="closeDndFaq()">✕</button></div><div class="dnd-faq-tools"><input id="dndFaqSearch" placeholder="Поиск по FAQ…" oninput="window._dndFaqRender(this.value)"><button onclick="document.getElementById(\'dndFaqSearch\').value=\'\';window._dndFaqRender(\'\')">Сбросить</button></div><div class="dnd-faq-body" id="dndFaqBody"></div></div>';m.addEventListener('click',function(e){if(e.target===m)closeFaq();});document.body.appendChild(m);g._dndFaqRender=renderFaq;renderFaq('');}
 var steps=[
@@ -108,6 +120,7 @@ function init(){
   buildTour();
   addMainButtons();
   addChangelogButton();
+  addMainMoreButton();
 
   // Обучение стартует только после полного завершения заставки.
   // Раньше таймер 700 мс запускал тур прямо поверх красивой картинки.

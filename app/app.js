@@ -171,6 +171,18 @@ function renderCharacterList() {
     return;
   }
 
+  if (!container.dataset.deleteBound) {
+    container.addEventListener('click', function(e) {
+      var btn = e.target.closest && e.target.closest('.btn-del');
+      if (!btn || !container.contains(btn)) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var id = btn.getAttribute('data-character-id');
+      if (id) deleteCharacter(id);
+    });
+    container.dataset.deleteBound = '1';
+  }
+
   var html = '';
   for (var i = 0; i < allCharacters.length; i++) {
     var char = allCharacters[i];
@@ -181,7 +193,7 @@ function renderCharacterList() {
       '</div>' +
       '<div class="char-actions">' +
         '<button class="btn-action" onclick="openCharacter(\'' + char.id + '\')">Играть</button>' +
-        '<button class="btn-del" onclick="deleteCharacter(\'' + char.id + '\')">✕</button>' +
+        '<button type="button" class="btn-del" data-character-id="' + String(char.id).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '">✕</button>' +
       '</div>' +
     '</div>';
   }

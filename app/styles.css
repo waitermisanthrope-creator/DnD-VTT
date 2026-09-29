@@ -282,3 +282,128 @@ input:focus, textarea:focus, select:focus {
 }
 
 .btn-del{position:relative;z-index:5;touch-action:manipulation;pointer-events:auto}.char-actions{position:relative;z-index:4}
+
+/* V70.25.79 — compact mobile main menu */
+#characterSelectScreen .author-link-card { display:none !important; }
+#characterSelectScreen {
+  padding: 12px 12px 82px !important;
+  max-width: 620px;
+}
+#characterSelectScreen .app-title {
+  margin: 4px 0 8px !important;
+  font-size: 1.45em;
+}
+#characterList { margin: 0 0 8px; }
+#characterList .char-card {
+  padding: 10px 10px 10px 12px;
+  margin-bottom: 7px;
+  min-height: 66px;
+  border-radius: 10px;
+}
+#characterList .char-info { min-width:0; flex:1; }
+#characterList .char-info h4 {
+  margin:0 0 2px !important;
+  font-size:1.05em !important;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#characterList .char-info p {
+  font-size:.78em !important;
+  line-height:1.2;
+}
+#characterList .char-actions { gap:5px; margin-left:7px; }
+#characterList .char-actions .btn-action {
+  padding:8px 11px !important;
+  font-size:.82em;
+}
+#characterList .char-actions .btn-del {
+  width:42px;
+  height:42px;
+  padding:0;
+  font-size:1.05em;
+}
+#characterSelectScreen > div[style*="margin-top: 20px"] {
+  margin-top:8px !important;
+  gap:7px !important;
+}
+#characterSelectScreen > div[style*="margin-top: 20px"] .btn-action {
+  min-height:42px;
+  padding:8px 6px !important;
+  font-size:.84em;
+}
+#characterSelectScreen > button[onclick*="openSettingsModal"],
+#characterSelectScreen > button[onclick*="openDndNetworkModal"],
+#characterSelectScreen .dnd-main-help,
+#characterSelectScreen .dnd-main-faq,
+#characterSelectScreen #dndChangelogButton,
+#battleBoardOpenButton { display:none !important; }
+
+/* One compact utility dock instead of five floating controls. */
+#dndMainMoreButton {
+  position:fixed;
+  left:12px;
+  right:12px;
+  bottom:10px;
+  width:calc(100vw - 24px);
+  min-height:48px;
+  z-index:30050;
+  border:1px solid #806020;
+  border-radius:12px;
+  background:rgba(38,31,22,.96);
+  color:#f3d27a;
+  box-shadow:0 6px 18px rgba(0,0,0,.45);
+  font-weight:700;
+  font-size:.95em;
+}
+#dndMainMoreModal {
+  position:fixed;
+  inset:0;
+  z-index:30040;
+  display:none;
+  background:rgba(0,0,0,.68);
+  align-items:flex-end;
+  justify-content:center;
+  padding:12px;
+}
+#dndMainMoreModal.open { display:flex; }
+.dnd-main-more-card {
+  width:min(620px,100%);
+  max-height:78dvh;
+  overflow:auto;
+  background:rgba(27,27,27,.98);
+  border:1px solid #4a4a4a;
+  border-radius:16px;
+  padding:14px;
+  box-shadow:0 12px 40px rgba(0,0,0,.6);
+}
+.dnd-main-more-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+.dnd-main-more-head h2 { margin:0; color:#d4af37; font-size:1.15em; }
+.dnd-main-more-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+.dnd-main-more-grid button,
+.dnd-main-more-grid a {
+  min-height:48px;
+  border:1px solid #444;
+  border-radius:10px;
+  background:#242424;
+  color:#eee;
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:8px;
+  font:600 .86em sans-serif;
+}
+.dnd-main-more-grid .accent { border-color:#76551b; color:#f0ca68; }
+@media (max-width:420px) {
+  .dnd-main-more-grid { grid-template-columns:1fr 1fr; }
+}
