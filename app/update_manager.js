@@ -312,7 +312,20 @@
           var total=Number(p&&p.total)||0,current=Number(p&&p.current)||0,percent=total?Math.round(current/total*100):0;
           if(bar)bar.style.width=percent+'%';if(pct)pct.textContent=percent+'%';if(card)card.textContent=(p&&p.phase==='apply'?'Применяю обновление…':'Загрузка обновления…')+' '+percent+'%'+(p&&p.path?' · '+p.path:'');
         }});
-        prompt=showStartupUpdatePrompt(state,{stagePromise:stagePromise})||prompt;
+        stagePromise.then(function(result){
+          var st=prompt&&prompt.querySelector?prompt.querySelector('#dndStartupUpdateStatus'):null;
+          var bar=prompt&&prompt.querySelector?prompt.querySelector('#dndStartupUpdateBar'):null;
+          var pc=prompt&&prompt.querySelector?prompt.querySelector('#dndStartupUpdatePercent'):null;
+          if(result&&result.stageResult&&result.stageResult.staged){
+            if(bar)bar.style.width='100%'; if(pc)pc.textContent='100%';
+            if(st)st.textContent='Обновление загружено и проверено. Можно устанавливать.';
+            var ap=prompt&&prompt.querySelector?prompt.querySelector('#dndStartupUpdateApply'):null;
+            if(ap){ap.disabled=false;ap.textContent='Установить обновление';ap.style.background='#9b6e13';ap.style.color='#fff';}
+          }
+        }).catch(function(e){
+          var st=prompt&&prompt.querySelector?prompt.querySelector('#dndStartupUpdateStatus'):null;
+          if(st)st.textContent='Ошибка загрузки: '+(e&&e.message||e);
+        });
         return await stagePromise;
       } catch(e){try{console.warn('DND update check failed:',e);}catch(_){} return null;}
       finally{global.__dndUpdateCheckRunning=null;}
@@ -322,7 +335,7 @@
 
   function updateUiProgress(show,current,total,path){var box=document.getElementById('settingsUpdateProgress'),bar=document.getElementById('settingsUpdateProgressBar'),label=document.getElementById('settingsUpdateProgressLabel');if(!box)return;box.style.display=show?'block':'none';if(total>0){var pct=Math.round(current/total*100);if(bar)bar.style.width=pct+'%';if(label)label.textContent='Загрузка обновления: '+pct+'% — '+current+' из '+total+(path?' · '+path:'');}}
   async function settingsCheck(){var status=document.getElementById('settingsUpdateStatus'),apply=document.getElementById('settingsUpdateApplyButton');if(status)status.textContent='Проверяю GitHub…';if(apply)apply.style.display='none';updateUiProgress(true,0,0,'');try{var state=await checkAndStage({onProgress:function(p){updateUiProgress(true,p.current||0,p.total||0,p.path||'');}});if(state&&state.updateAvailable){if(status)status.textContent='Доступно обновление до v'+state.manifest.version+'. Загружено и проверено.';if(apply)apply.style.display='block';updateUiProgress(true,state.manifest.files.length,state.manifest.files.length,'готово');}else{if(status)status.textContent='Установлена актуальная версия v'+(state&&state.currentVersion||APP_VERSION)+'.';updateUiProgress(false,0,0,'');}return state;}catch(e){if(status)status.textContent='Ошибка проверки: '+(e&&e.message||e);updateUiProgress(false,0,0,'');return null;}}
-  async function settingsApply(){var status=document.getElementById('settingsUpdateStatus'),apply=document.getElementById('settingsUpdateApplyButton');if(apply)apply.disabled=true;if(status)status.textContent='Применяю обновление…';try{await applyStaged();if(status)status.textContent='Обновление применено. Перезапускаю приложение…';}catch(e){if(status)status.textContent='Не удалось применить: '+(e&&e.message||e);if(apply)apply.disabled=false;}}
+  async function settingsApply(){var status=document.getElementById('settingsUpdateStatus'),apply=document.getElementById('settingsUpdateApplyButton');if(apply)apply.disabled=true;if(status)status.textContent='Применяю обновление… 0%';try{await applyStaged({onProgress:function(p){var t=Number(p&&p.total)||0,c=Number(p&&p.current)||0;if(status)status.textContent='Применяю обновление… '+(t?Math.round(c/t*100):0)+'%';}});if(status)status.textContent='Обновление применено. Перезапускаю приложение…';}catch(e){if(status)status.textContent='Не удалось применить: '+(e&&e.message||e);if(apply)apply.disabled=false;}}
   function refreshSettingsVersion(){var e=document.getElementById('settingsCurrentVersion');if(!e)return;inspect().then(function(s){if(s&&s.currentVersion)e.textContent='v'+s.currentVersion;}).catch(function(){});}
   global.DND_UPDATE_UI={check:settingsCheck,apply:settingsApply,refresh:refreshSettingsVersion};
 
