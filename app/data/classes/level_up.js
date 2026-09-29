@@ -338,7 +338,7 @@ let pendingLevelUpData = null;
     const isExtraHero = extraType === "swarm" || extraType === "parasite" || extraType === "walter_parasite" ||
       !!(hero && Array.isArray(hero.classes) && hero.classes.some(function(c){
         var n=String(c&&c.name||"").replace(/[0-9]/g,"").trim();
-        return n==="Рой" || n==="Паразит";
+        return n==="Рой" || n==="Паразит" || n==="Паразит доктора Вальтера";
       }));
     const extraClass = extraType === "parasite" ? "Паразит" : (extraType === "walter_parasite" ? "Паразит доктора Вальтера" : "Рой");
 
