@@ -1,6 +1,6 @@
 /**
  * Illigger.js
- * Карманный ВТТ — прогрессия и runtime-контракт класса «Иллирригер».
+ * Карманный ВТТ — прогрессия и runtime-контракт класса «Иллиригер».
  * Источник: MCDM, The Illrigger — Revised 1.0.
  *
  * Здесь хранится структурированная модель класса; полный runtime находится
@@ -37,7 +37,7 @@
   var conduit=[0,0,0,0,0,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10];
 
   g.illriggerProgression={
-    className:'Иллирригер', englishName:'Illrigger',
+    className:'Иллиригер', englishName:'Illrigger',
     source:'MCDM Productions — The Illrigger Revised 1.0',
     status:'implemented_core',
     edition:'5E 2024',
