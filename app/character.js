@@ -172,8 +172,17 @@ function shortRest() {
 }
 
 function longRest() {
+  // Extra-классы Паразит/Призрак не получают HP от долгого отдыха:
+  // их тело восстанавливается только собственными сверхъестественными/
+  // биологическими механизмами.
+  var suppressBodyHP = !!(
+    currentChar &&
+    window.EXTRA_BODY_RUNTIME &&
+    typeof window.EXTRA_BODY_RUNTIME.shouldSuppressRestHP === 'function' &&
+    window.EXTRA_BODY_RUNTIME.shouldSuppressRestHP(currentChar)
+  );
   var hpMax = document.getElementById('hpMax').value;
-  if (hpMax) document.getElementById('hpCurrent').value = hpMax;
+  if (hpMax && !suppressBodyHP) document.getElementById('hpCurrent').value = hpMax;
   document.getElementById('hpTemp').value = '';
 
   for (var i = 1; i <= 3; i++) {
@@ -197,5 +206,7 @@ function longRest() {
 
   if (typeof renderSpellSlots === 'function') renderSpellSlots();
   autoSaveCurrentCharacter();
-  alert('Длинный отдых завершен! HP, ячейки заклинаний и способности восстановлены.');
+  alert(suppressBodyHP
+    ? 'Длинный отдых завершен! Ячейки заклинаний и способности восстановлены. HP тела не восстановлены: это Extra-класс с особой системой восстановления.'
+    : 'Длинный отдых завершен! HP, ячейки заклинаний и способности восстановлены.');
 }
