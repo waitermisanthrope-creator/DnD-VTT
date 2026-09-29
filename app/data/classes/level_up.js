@@ -377,7 +377,9 @@ if (typeof window.getClassData !== 'function') {
       "Паладин": window.paladinProgression,
       "Плут": window.rogueProgression,
       "Следопыт": window.rangerProgression,
-      "Чародей": window.sorcererProgression
+      "Чародей": window.sorcererProgression,
+      "Рой": window.swarmProgression,
+      "Паразит": window.parasiteProgression
     };
     if (map[norm]) {
       const prog = map[norm];
