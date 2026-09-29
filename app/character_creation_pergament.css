@@ -14,7 +14,7 @@
 .parchment-step{transition:opacity .22s ease,transform .22s ease,max-height .22s ease;margin:0}
 .parchment-step.step-hidden{display:none}
 .parchment-class-row{display:flex;align-items:center;justify-content:center;gap:12px;margin:1.2vh 0 1.4vh;flex-wrap:wrap}
-.parchment-token{width:clamp(92px,22vw,145px);height:clamp(92px,22vw,145px);overflow:visible;border:0;border-radius:0;box-shadow:none;background:transparent;display:flex;align-items:center;justify-content:center}
+.parchment-token{width:clamp(110px,25vw,155px);height:clamp(110px,25vw,155px);overflow:visible;border:0;border-radius:0;box-shadow:none;background:transparent;display:flex;align-items:center;justify-content:center}
 .parchment-token{pointer-events:none}.parchment-token img{width:100%;height:100%;object-fit:contain;display:none;pointer-events:none}.parchment-token img.token-ready{display:block}
 .parchment-class-caption{text-align:center;font-weight:700;font-size:clamp(13px,3vw,19px)}
 .parchment-class-caption .parchment-select{display:block;margin:5px auto 0}
@@ -25,7 +25,7 @@
 .parchment-sign-hint{font-size:.5em;display:block;margin-top:1px;opacity:.75}
 .parchment-signature-layer{position:fixed;inset:0;z-index:9030;display:none;pointer-events:none;overflow:hidden}
 .parchment-signature-layer.show{display:block}
-.parchment-signature-img{position:absolute;right:max(18px,calc((100vw - min(100vw,900px))/2 + 18px));bottom:max(70px,calc(env(safe-area-inset-bottom,0px) + 70px));width:min(78vw,520px);max-height:38vh;height:auto;object-fit:contain;filter:drop-shadow(0 4px 5px rgba(45,25,8,.35));animation:signatureEnter 1.35s cubic-bezier(.18,.78,.2,1) forwards}
+.parchment-signature-img{position:absolute;right:max(18px,calc((100vw - min(100vw,900px))/2 + 18px));bottom:max(88px,calc(env(safe-area-inset-bottom,0px) + 88px));width:min(48vw,310px);max-height:24vh;height:auto;object-fit:contain;filter:drop-shadow(0 4px 5px rgba(45,25,8,.35));animation:signatureEnter 1.35s cubic-bezier(.18,.78,.2,1) forwards}
 .parchment-blackout{position:fixed;inset:0;z-index:9020;background:#000;display:none}
 .parchment-blackout.show{display:block;animation:parchmentBlackout .65s ease both}
 .creation-type-card{width:min(100%,410px);background:#181818;color:#fff;border:1px solid #66552b;border-radius:14px;padding:20px;box-shadow:0 15px 45px rgba(0,0,0,.7);text-align:center}
@@ -35,7 +35,7 @@
 .creation-type-card #ccTypeCancel{background:#333}.creation-type-icon{font-size:40px;margin-bottom:5px}
 @keyframes signatureEnter{0%{transform:translateX(65vw) translateY(8vh) rotate(7deg);opacity:0}12%{opacity:1}100%{transform:translateX(0) translateY(0) rotate(-2deg);opacity:1}}
 @keyframes parchmentBlackout{0%{opacity:0}100%{opacity:1}}
-@media(max-width:520px){.parchment-stage{padding-left:6%;padding-right:6%}.parchment-text{line-height:1.38}.parchment-token{width:118px;height:118px}.parchment-sign{right:3vw;bottom:2vh}.parchment-field,.parchment-select{min-height:30px}}
+@media(max-width:520px){.parchment-stage{padding-left:6%;padding-right:6%}.parchment-text{line-height:1.38}.parchment-token{width:150px;height:150px}.parchment-sign{right:3vw;bottom:2vh}.parchment-field,.parchment-select{min-height:30px}}
 
 .parchment-step{margin:0}.parchment-step.step-hidden{display:none!important}.parchment-stage.is-extra{background-image:url('../1790622696215.png');background-size:100% 100%;background-position:center top}.parchment-stage.is-classic{background-image:url('../1790622844831.png') !important;background-size:100% 100%;background-position:center top;background-repeat:no-repeat}
 
@@ -50,3 +50,24 @@
 
 /* V70.25.91: burn control is outside the clipped parchment-stage so Android WebView cannot hide it. */
 #parchmentCreationScreen > .parchment-burn{position:fixed!important;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;}
+
+/* V70.25.92: Extra sheet text needs stronger contrast against the parchment texture. */
+.parchment-stage.is-extra .parchment-text,
+.parchment-stage.is-extra .parchment-warning,
+.parchment-stage.is-extra .parchment-reward{
+  color:#20150e !important;
+  text-shadow:0 1px 0 rgba(255,248,225,.72),0 0 1px rgba(255,248,225,.42);
+}
+.parchment-stage.is-extra .parchment-title,
+.parchment-stage.is-extra .parchment-subtitle{
+  color:#28180e !important;
+  text-shadow:0 1px 0 rgba(255,248,225,.7);
+}
+.parchment-stage.is-extra .parchment-field,
+.parchment-stage.is-extra .parchment-select{
+  color:#1b120c !important;
+  background:rgba(255,250,235,.28);
+  text-shadow:none;
+}
+/* Keep the seal/signature in the actual signing zone instead of covering the body text. */
+.parchment-signature-img{transform-origin:center bottom;}
