@@ -108,8 +108,15 @@ function setupProgression(){
  var allFields=['pc_name','pc_origin','pc_class','pc_gender','pc_race','pc_extraHost','pc_age','pc_background','pc_profession'];
  function findStep(field){var n=field;while(n&&(!n.classList||!n.classList.contains('parchment-step')))n=n.parentNode;return n;}
  function update(){var firstIncomplete=steps.length;for(var i=0;i<steps.length;i++){if(!steps[i][1]()){firstIncomplete=i;break;}}var activeIds={};steps.forEach(function(x){activeIds[x[0]]=true});allFields.forEach(function(id){var field=el(id);if(!field)return;var step=findStep(field);if(isExtraMode()&&id==='pc_extraHost'&&!extraNeedsHost(el('pc_race')?el('pc_race').value:'')){if(step)step.classList.add('step-hidden');field.disabled=true;field.value='';return;}
- if(isExtraMode()&&!activeIds[id]){if(step)step.classList.add('step-hidden');field.disabled=true;return;}var idx=-1;for(var k=0;k<steps.length;k++){if(steps[k][0]===id){idx=k;break;}}var visible=idx>=0&&idx<=firstIncomplete;if(step)step.classList.toggle('step-hidden',!visible);field.disabled=idx<0||idx>firstIncomplete;if(field.tagName==='SELECT')fitSelect(field);});var complete=firstIncomplete===steps.length;var warning=el('pcWarning'),tax=el('pcTax'),reward=el('pcReward');if(isExtraMode()){if(warning)warning.classList.toggle('step-hidden',!el('pc_race')||!String(el('pc_race').value||'').trim());if(tax)tax.classList.add('step-hidden');if(reward)reward.classList.toggle('step-hidden',!complete);}else{if(tax)tax.classList.toggle('step-hidden',!complete);if(warning)warning.classList.toggle('step-hidden',!complete);if(reward)reward.classList.toggle('step-hidden',!complete);}var sign=el('pc_signButton');if(sign){sign.disabled=!complete;sign.classList.toggle('is-ready',complete);sign.style.display=complete?'block':'none';}var reason=el('pc_extraReason');if(reason&&CHARACTER_CREATION_MODE==='extra')reason.innerHTML=extraDescriptionHtml();}
- var stage=el('parchmentStage');if(stage&&!stage.dataset.progressBound){stage.dataset.progressBound='1';stage.addEventListener('input',function(ev){if(ev.target&&ev.target.classList&&ev.target.classList.contains('parchment-field'))update();});stage.addEventListener('change',function(ev){var t=ev.target;if(!t)return;if(t.id==='pc_class'||t.id==='pc_gender'||t.id==='pc_race'||t.id==='pc_extraHost'||t.id==='pc_background'||t.id==='pc_profession'){if(t.tagName==='SELECT')fitSelect(t);update();if(t.id==='pc_class')renderClassArt();}else if(t.classList&&t.classList.contains('parchment-field'))update();});}
+ if(isExtraMode()&&!activeIds[id]){if(step)step.classList.add('step-hidden');field.disabled=true;return;}var idx=-1;for(var k=0;k<steps.length;k++){if(steps[k][0]===id){idx=k;break;}}var visible=idx>=0&&idx<=firstIncomplete;if(step)step.classList.toggle('step-hidden',!visible);field.disabled=idx<0||idx>firstIncomplete;if(field.tagName==='SELECT')fitSelect(field);});
+ // В Extra режимах жетон лежит в старом class-step, а выбор Extra находится в pc_race.
+ // Поэтому этот шаг нельзя скрывать вместе с неиспользуемым pc_class.
+ var extraArtStep=el('pc_classArt')&&el('pc_classArt').closest('.parchment-step');
+ if(extraArtStep){
+   if(isExtraMode())extraArtStep.classList.toggle('step-hidden',!String((el('pc_race')||{}).value||'').trim());
+ }
+ var complete=firstIncomplete===steps.length;var warning=el('pcWarning'),tax=el('pcTax'),reward=el('pcReward');if(isExtraMode()){if(warning)warning.classList.toggle('step-hidden',!el('pc_race')||!String(el('pc_race').value||'').trim());if(tax)tax.classList.add('step-hidden');if(reward)reward.classList.toggle('step-hidden',!complete);}else{if(tax)tax.classList.toggle('step-hidden',!complete);if(warning)warning.classList.toggle('step-hidden',!complete);if(reward)reward.classList.toggle('step-hidden',!complete);}var sign=el('pc_signButton');if(sign){sign.disabled=!complete;sign.classList.toggle('is-ready',complete);sign.style.display=complete?'block':'none';}var reason=el('pc_extraReason');if(reason&&CHARACTER_CREATION_MODE==='extra')reason.innerHTML=extraDescriptionHtml();}
+ var stage=el('parchmentStage');if(stage&&!stage.dataset.progressBound){stage.dataset.progressBound='1';stage.addEventListener('input',function(ev){if(ev.target&&ev.target.classList&&ev.target.classList.contains('parchment-field'))update();});stage.addEventListener('change',function(ev){var t=ev.target;if(!t)return;if(t.id==='pc_class'||t.id==='pc_gender'||t.id==='pc_race'||t.id==='pc_extraHost'||t.id==='pc_background'||t.id==='pc_profession'){if(t.tagName==='SELECT')fitSelect(t);update();if(t.id==='pc_class'||t.id==='pc_race')renderClassArt();}else if(t.classList&&t.classList.contains('parchment-field'))update();});}
  window.__refreshParchmentProgress=update;window.__updateParchmentProgress=update;update();
 }
 function renderClassArt(){
@@ -217,18 +224,33 @@ function initParchment(){
  setupProgression();
  renderClassArt();
 }
-function syncToClassic(){
- var name=el('pc_name').value.trim(),origin=el('pc_origin')?el('pc_origin').value.trim():'',age=el('pc_age')?el('pc_age').value.trim():'',cls=el('pc_class')?el('pc_class').value:'',gender=el('pc_gender')?el('pc_gender').value:'',race=el('pc_race').value,extraHost=el('pc_extraHost')?el('pc_extraHost').value:'',bg=el('pc_background')?el('pc_background').value:'',profession=el('pc_profession')?.value||'';
+function buildParchmentDraft(){
+ var name=el('pc_name')?el('pc_name').value.trim():'';
+ var origin=el('pc_origin')?el('pc_origin').value.trim():'';
+ var age=el('pc_age')?el('pc_age').value.trim():'';
+ var cls=el('pc_class')?el('pc_class').value:'';
+ var gender=el('pc_gender')?el('pc_gender').value:'';
+ var race=el('pc_race')?el('pc_race').value:'';
+ var extraHost=el('pc_extraHost')?el('pc_extraHost').value:'';
+ var bg=el('pc_background')?el('pc_background').value:'';
+ var profession=el('pc_profession')?el('pc_profession').value:'';
  var isExtraDraft=CHARACTER_CREATION_MODE==='extra';
  var hostId=isExtraDraft&&extraNeedsHost(race)?extraHost:'';
- window.__parchmentCharacterDraft={name:name,origin:origin,age:age,className:isExtraDraft?race:cls,gender:gender,raceId:isExtraDraft?hostId:race,hostRaceId:isExtraDraft?hostId:'',background:bg,profession:profession,extra:isExtraDraft,extraType:isExtraDraft?race:'',creationMode:CHARACTER_CREATION_MODE};
- function set(id,val){var e=el(id);if(e)e.value=val}
- set('cc_name',name);set('cc_age',age);set('cc_race',isExtraDraft?extraHost:race);set('cc_background',bg);set('cc_profession',profession);set('cc_class',isExtraDraft?(race?(race==='Призрак'?'Гайст':race)+' 1':''):(cls?(cls==='Призрак'?'Гайст':cls)+' 1':''));set('cc_gender',gender);set('cc_origin',origin);
- if(typeof window.updateClassDescription==='function')window.updateClassDescription();
- if(typeof window.updateRaceDescription==='function')window.updateRaceDescription();
- if(typeof window.updateBackgroundDescription==='function')window.updateBackgroundDescription();
+ return {name:name,origin:origin,age:age,className:isExtraDraft?race:cls,gender:gender,raceId:isExtraDraft?hostId:race,hostRaceId:isExtraDraft?hostId:'',background:bg,profession:profession,extra:isExtraDraft,extraType:isExtraDraft?race:'',creationMode:CHARACTER_CREATION_MODE};
+}
+function syncToClassic(){
+ var draft=buildParchmentDraft();
+ window.__parchmentCharacterDraft=draft;
+ // Legacy UI остаётся только как совместимость. Ошибка старого экрана
+ // не должна блокировать переход в Builder V2.
+ try{
+  var name=draft.name,origin=draft.origin,age=draft.age,cls=draft.className,gender=draft.gender,race=draft.raceId,bg=draft.background,profession=draft.profession;
+  function set(id,val){var e=el(id);if(e)e.value=val}
+  set('cc_name',name);set('cc_age',age);set('cc_race',race);set('cc_background',bg);set('cc_profession',profession);
+  set('cc_class',cls?(cls==='Призрак'?'Гайст':cls)+' 1':'');set('cc_gender',gender);set('cc_origin',origin);
+ }catch(err){console.warn('Legacy creation bridge skipped:',err);}
  var pt=el('pc_professionText'),p=window.DND_CRAFT_PROFESSION_PROGRESS;
- if(pt)pt.textContent=profession&&p&&typeof p.professionLabel==='function'?p.professionLabel(profession):(profession||'без профессии');
+ if(pt)pt.textContent=draft.profession&&p&&typeof p.professionLabel==='function'?p.professionLabel(draft.profession):(draft.profession||'без профессии');
 }
 function chooser(){
  var old=el('characterCreationTypeChooser');if(old)return old;
@@ -254,20 +276,36 @@ window.finishParchmentCreation=function(){
  var ids=isExtraMode()?['pc_name','pc_race'].concat(extraNeedsHost(el('pc_race')?el('pc_race').value:'')?['pc_extraHost']:[]):['pc_name','pc_origin','pc_class','pc_gender','pc_race','pc_age','pc_background','pc_profession'];
  var missing=ids.some(function(id){var e=el(id);return !e||!String(e.value||'').trim()});
  if(missing){alert('Заполните все открытые поля по порядку.');return}
- syncToClassic();
- var draft=window.__parchmentCharacterDraft||{};
+ var draft=buildParchmentDraft();
+ window.__parchmentCharacterDraft=draft;
+ // Пытаемся синхронизировать старую форму, но это больше не является частью
+ // критического пути: Builder V2 должен открыться даже если legacy-функция сломана.
+ try{syncToClassic();}catch(err){console.warn('Parchment legacy sync failed:',err);}
  var p=el('parchmentCreationScreen'),s=el('parchmentSignatureLayer'),bo=el('parchmentBlackout');
  if(p)p.style.display='block';
  if(s){s.classList.remove('show','cinematic');void s.offsetWidth;s.classList.add('show','cinematic')}
  if(bo){bo.classList.remove('show','cinematic-hold');void bo.offsetWidth;bo.classList.add('show','cinematic-hold')}
+ function launchBuilder(attempt){
+  var builder=window.CharacterBuilderV2;
+  if(builder&&typeof builder.startCreateFromParchment==='function'){
+   try{
+    builder.startCreateFromParchment(draft);
+    return;
+   }catch(err){
+    console.error('Builder V2 launch failed:',err);
+    if(builder.Wizard){
+     try{new builder.Wizard({mode:'create',fromParchment:true,draft:draft}).mount();return;}catch(err2){console.error('Builder V2 fallback failed:',err2);}
+    }
+   }
+  }
+  if(attempt<10){setTimeout(function(){launchBuilder(attempt+1);},250);return;}
+  alert('Не удалось открыть Builder V2. Проверьте загрузку character_builder_v2.js.');
+ }
  setTimeout(function(){
   if(bo)bo.classList.remove('show','cinematic-hold');
   if(s)s.classList.remove('show','cinematic');
   if(p)p.style.display='none';
-  var builder=window.CharacterBuilderV2;
-  if(builder&&typeof builder.startCreateFromParchment==='function'){
-    builder.startCreateFromParchment(draft);
-  }
+  launchBuilder(0);
  },6000);
 };
 function hook(){
