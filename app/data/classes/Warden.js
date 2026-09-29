@@ -38,10 +38,11 @@
     className:'Страж',
     englishName:'Warden',
     source:'Mage Hand Press',
-    status:'implemented_core',
+    status:'implemented_full_runtime',
     edition:'5.5E / 2024',
     hitDie:10,
     primaryStat:'strength',
+    primaryAbilities:['strength','constitution'],
     secondaryStat:'constitution',
     savingThrows:['strength','constitution'],
     armor:['light','medium','heavy','shields'],
@@ -84,6 +85,7 @@
       {id:'verdantProtector',name:'Защитник зелени'},
       {id:'witchbaneHunter',name:'Охотник на ведьм'}
     ],
+    startingEquipment:{a:['Кольчуга','Щит','Боевой молот','6 копий','Набор исследователя подземелий','15 зм'],b:['130 зм']},
     mechanics:{
       fightingStyle:'implemented',
       sentinelStand:'implemented',
@@ -99,8 +101,8 @@
       improvedResolve:'implemented',
       sentinelSoul:'implemented',
       legendaryResistance:'implemented',
-      subclassSystem:'registered_deep_subclass_work_pending',
-      notes:'Базовое ядро 2024/5.5E реализовано. Глубокие механики Champion Calls требуют отдельного прохода.'
+      subclassSystem:'implemented_runtime',
+      notes:'Базовое ядро и все 13 Champion Calls подключены через warden_mhp_2024_runtime.js. Точные runtime-эффекты вынесены в отдельный контент-пак.'
     },
     levels:levels
   };
