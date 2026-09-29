@@ -82,7 +82,204 @@
   function syncSavant(h){var l=lvl(h,'Савант');if(!l)return;var s=st(h),die=savantIntellectDie(l);s.savantIntellectDie=die;s.savantFocusId=s.savantFocusId||null;s.savantFocusExpires=Number(s.savantFocusExpires)||0;s.savantFocusData=s.savantFocusData||{};s.savantReactions=l>=17?4:l>=11?3:l>=5?2:1;s.savantSaveDC=8+(Number(h.proficiencyBonus)||2)+mod(h,'int');}
   function useSavant(h,id,ctx,feature){syncSavant(h);var l=lvl(h,'Савант'),s=st(h),t=target(ctx),die=s.savantIntellectDie;if(id==='adroitAnalysis'){if(!t)return{ok:false,message:'Выбери видимую цель для анализа.'};s.savantFocusId=t.id;s.savantFocusExpires=10;return{ok:true,target:t.id,effect:{focus:true,focusDurationRounds:10,predictiveDodge:true},message:'🧠 Цель изучена и стала Фокусом.'};}if(id==='potentObservation'){if(!spend(h,'savantReaction',1)&&false)return{ok:false,message:'Нет реакции.'};return{ok:true,effect:{addDie:die},message:'🧠 Мощное наблюдение: добавь '+die+' к подходящему броску союзника.'};}if(id==='calculatedFlourish'){return{ok:true,effect:{acBonusDie:die},message:'🧠 Расчётный манёвр: +'+die+' к AC против этой атаки.'};}if(id==='flawlessAnalysis'){if(!t)return{ok:false,message:'Выбери Фокус.'};s.savantFlawlessUsed=s.savantFlawlessUsed||{};if(s.savantFlawlessUsed[t.id])return{ok:false,message:'Безупречный анализ уже использован против этой цели после долгого отдыха.'};s.savantFlawlessUsed[t.id]=true;return{ok:true,target:t.id,effect:{save:'int',focusDebuff:true,allySaveAdvantageFt:30,durationRounds:1},message:'🧠 Безупречный анализ применён.'};}if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'🧠 '+(feature.name||id)+' активно.'};return{ok:false,unsupported:true,message:'Способность Саванта зарегистрирована, но её отдельный эффект ещё не реализован.'};}
   function savantAttack(h,ctx){var l=lvl(h,'Савант'),s=st(h),o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]};if(s.savantFocusId&&ctx&&ctx.target&&String(s.savantFocusId)===String(ctx.target.id)){o.notes.push('Изученная цель: можно использовать Intelligence для атаки и урона.');o.extraDice.push(s.savantIntellectDie||savantIntellectDie(l));}return o;}
-  var packs=[
+  function bloodHunterLvl(h){return lvl(h,'Кровавый охотник');}
+  function bloodDie(l){return l>=17?'1d10':l>=11?'1d8':l>=5?'1d6':'1d4';}
+  function hemMod(h){var a=h.abilities||{},v=a.int||a.INT||a.intelligence||a.INTELLIGENCE||10,w=a.wis||a.WIS||a.wisdom||a.WISDOM||10;return Math.max(0,Math.floor(((Number(v)>10?Number(v):10)-10)/2));}
+  function hemSave(h){return 8+(Number(h.proficiencyBonus)||2)+hemMod(h);}
+  function bloodCurseUses(l){return l>=17?4:l>=13?3:l>=6?2:1;}
+  function syncBloodHunter(h){
+    var l=bloodHunterLvl(h);if(!l)return;
+    var s=st(h),d=bloodDie(l);
+    var r=res(h,'bloodMaledict',bloodCurseUses(l),'short');r.die=d;
+    s.bhHemocraftDie=d;s.bhHemocraftSaveDC=hemSave(h);s.bhActiveRites=s.bhActiveRites||{};s.bhKnownCurses=s.bhKnownCurses||[];
+    s.bhBrand=s.bhBrand||null;s.bhFightingStyle=s.bhFightingStyle||null;
+    s.bhCrimsonRitesKnown=s.bhCrimsonRitesKnown||['flame'];
+    s.bhRiteDamageDie=d;
+    if(l>=6)s.bhBloodCursesKnown=2;if(l>=10)s.bhBloodCursesKnown=3;if(l>=14)s.bhBloodCursesKnown=4;if(l>=18)s.bhBloodCursesKnown=5;
+    if(l>=3)s.bhOrder=s.bhOrder||'Орден призрачных убийц';
+  }
+  function bloodSpendAmplify(h,ctx){
+    if(!ctx||!ctx.amplify)return true;
+    var hp=Number(h.hp!==undefined?h.hp:h.currentHP);var costDie=bloodDie(bloodHunterLvl(h));
+    if(Number.isFinite(hp))h.hp=Math.max(0,hp); // actual HP damage is returned below for engine application
+    return {damageSelf:costDie,damageType:'necrotic',unreducible:true};
+  }
+  function useBloodHunter(h,id,ctx,feature){
+    syncBloodHunter(h);ctx=ctx||{};var s=st(h),l=bloodHunterLvl(h),t=target(ctx);
+    if(id==='crimsonRite'){
+      var rite=String(ctx.rite||s.bhCrimsonRitesKnown[0]||'flame');
+      var known=s.bhCrimsonRitesKnown.indexOf(rite)>=0;
+      if(!known)return{ok:false,message:'Этот Алый обряд ещё не изучен.'};
+      var weaponId=ctx.weaponId||ctx.itemId||'equipped';
+      var amp=bloodSpendAmplify(h,ctx);
+      if(!amp)return{ok:false,message:'Не удалось активировать обряд.'};
+      s.bhActiveRites[weaponId]={rite:rite,damageDie:bloodDie(l),active:true};
+      return{ok:true,effect:{weaponId:weaponId,magical:true,rite:rite,extraDamageDie:bloodDie(l),selfDamage:amp.damageSelf||bloodDie(l),selfDamageType:'necrotic',unreducible:true},message:'🩸 Алый обряд активирован: '+rite+'.'};
+    }
+    if(id==='bloodMaledict'){
+      var curse=String(ctx.curse||s.bhKnownCurses[0]||'marked');
+      var amp=bloodSpendAmplify(h,ctx);
+      if(!s.bhKnownCurses.length)s.bhKnownCurses=['marked'];
+      var known=s.bhKnownCurses.indexOf(curse)>=0;
+      if(!known)return{ok:false,message:'Это кровавое проклятие не изучено.'};
+      if(!spend(h,'bloodMaledict',1))return{ok:false,message:'Нет доступного использования Кровавого проклятия.'};
+      if(!t&&curse!=='exposure'&&curse!=='eyeless'&&curse!=='fallenPuppet'&&curse!=='howl'&&curse!=='soulEater')return{ok:false,message:'Выбери цель.'};
+      var e={curse:curse,saveDC:hemSave(h),amplified:!!ctx.amplify};
+      if(amp&&typeof amp==='object')e.selfDamage=amp.damageSelf;
+      if(curse==='anxious')e.intimidationAdvantage=true;
+      if(curse==='binding')e={...e,effect:'speed0_no_reaction',durationRounds:1,save:'str',size:'Large-or-smaller'};
+      if(curse==='bloatedAgony')e={...e,effect:'str_dex_disadvantage_plus_extra_attack_damage',damage:'1d8 necrotic',durationRounds:1};
+      if(curse==='corrosion')e={...e,effect:'poisoned',save:'con',durationRounds:10,damageOnFailedSave:'4d6 necrotic'};
+      if(curse==='exorcist')e={...e,effect:'remove_charmed_frightened_possession',amplifiedDamage:'3d6 psychic'};
+      if(curse==='exposure')e={...e,effect:'remove_resistance_to_trigger_damage',amplifiedEffect:'remove_invulnerability_then_resistance'};
+      if(curse==='eyeless')e={...e,effect:'subtractHemocraftDieFromAttack',reaction:true};
+      if(curse==='fallenPuppet')e={...e,effect:'fallen_creature_weapon_attack',reaction:true,amplifiedMoveFt:'half_speed'};
+      if(curse==='howl')e={...e,effect:'frightened',save:'wis',rangeFt:ctx.amplify?60:30,stunOnFailBy5:true};
+      if(curse==='marked')e={...e,effect:'extraRiteDieOnHitsThisTurn',amplifiedNextAttackAdvantage:true};
+      if(curse==='muddledMind')e={...e,effect:'concentration_save_disadvantage',durationRounds:1};
+      if(curse==='soulEater')e={...e,effect:'advantage_on_attacks_and_all_damage_resistance',durationRounds:1,amplifiedRestoreSpellSlot:true};
+      s.bhLastCurse=e;
+      return{ok:true,target:t&&t.id,effect:e,message:'🩸 Кровавое проклятие применено: '+curse+'.'};
+    }
+    if(id==='brandCastigation'){
+      if(!t)return{ok:false,message:'Выбери цель для Клейма наказания.'};
+      s.bhBrand={targetId:t.id,damagePerTrigger:Math.max(1,hemMod(h)),tethered:l>=13};
+      return{ok:true,target:t.id,effect:{brand:true,psychicDamage:Math.max(1,hemMod(h)),directionSense:true},message:'🔻 Клеймо наказания наложено.'};
+    }
+    if(id==='brandTethering'){
+      if(!s.bhBrand)return{ok:false,message:'Сначала наложи Клеймо наказания.'};
+      s.bhBrand.tethered=true;s.bhBrand.damagePerTrigger=Math.max(2,2*hemMod(h));
+      return{ok:true,effect:{noDash:true,teleportSave:'wis',teleportDamage:'4d6 psychic'},message:'🔻 Клеймо привязки усилено.'};
+    }
+    if(id==='grimPsychometry')return{ok:true,effect:{historyAdvantage:true},message:'👁️ Мрачная психометрия активна.'};
+    if(id==='darkAugmentation')return{ok:true,effect:{speedBonusFt:5,saveBonus:{str:Math.max(1,hemMod(h)),dex:Math.max(1,hemMod(h)),con:Math.max(1,hemMod(h))}},message:'🩸 Тёмное усиление активно.'};
+    if(id==='aetherWalk'){
+      var uses=res(h,'bhAetherWalk',l>=15?2:1,'short');
+      if(!spend(h,'bhAetherWalk',1))return{ok:false,message:'Астральный шаг уже использован.'};
+      return{ok:true,effect:{ethereal:true,durationRounds:Math.max(1,hemMod(h)),phaseThrough:true,forceDamageInside:'1d10'},message:'👻 Эфирный шаг активирован.'};
+    }
+    if(id==='hybridTransformation'){
+      var uses=res(h,'bhHybridTransformation',l>=11?2:1,'short');
+      if(l>=18){uses.max=999;uses.current=999;}
+      if(!spend(h,'bhHybridTransformation',1)&&l<18)return{ok:false,message:'Нет доступного превращения.'};
+      s.bhHybrid=!s.bhHybrid;
+      return{ok:true,effect:{hybrid:s.bhHybrid,advantageStr:true,resistance:['bludgeoning','piercing','slashing'],unarmedDamage:l>=11?'1d8':'1d6',bonusDamage:l>=18?3:l>=11?2:1,bonusAC:1},message:'🐺 Гибридная форма '+(s.bhHybrid?'активирована.':'завершена.')};
+    }
+    if(id==='lycanBloodlust'){
+      return{ok:true,effect:{save:'wis',dc:8,directAttackNearestIfFailed:true},message:'🐺 Кровожадность: проверь спасбросок Мудрости при низком HP.'};
+    }
+    if(id==='mutagen'){
+      var name=String(ctx.mutagen||'Celerity');
+      s.bhMutagens=s.bhMutagens||[];
+      if(s.bhMutagens.indexOf(name)<0)s.bhMutagens.push(name);
+      return{ok:true,effect:{mutagen:name,sideEffect:true,duration:'short-or-long-rest'},message:'🧪 Мутаген активирован: '+name+'.'};
+    }
+    if(id==='flushMutagens'){s.bhMutagens=[];return{ok:true,message:'🧪 Все мутагены выведены.'};}
+    if(id==='ignoreMutagenSideEffect'){if(s.bhMetabolismUsed)return{ok:false,message:'Вы уже подавили побочный эффект сегодня.'};s.bhMetabolismUsed=true;return{ok:true,effect:{ignoreOneMutagenSideEffect:true,durationMinutes:1},message:'🧪 Побочный эффект мутагена подавлен на 1 минуту.'};}
+    if(id==='exaltedMutation'){
+      var uses=res(h,'bhExaltedMutation',Math.max(1,hemMod(h)),'long');if(!spend(h,'bhExaltedMutation',1))return{ok:false,message:'Нет доступного использования Возвышенной мутации.'};
+      return{ok:true,effect:{replaceMutagen:true,mutagen:ctx.mutagen||'Celerity'},message:'🧪 Возвышенная мутация заменяет действующий мутаген.'};
+    }
+    if(id==='pactMagic'){
+      var order=String(ctx.order||s.bhOrder||'Орден осквернённых душ'),slots=[0,0,0,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2][Math.min(20,l)]||0;
+      var slotLevel=l>=19?4:l>=13?3:l>=7?2:1;
+      res(h,'bhPactSlots',slots,'short');s.bhPactSlotLevel=slotLevel;s.bhPatron=ctx.patron||s.bhPatron||'Великий Древний';
+      return{ok:true,effect:{slots:slots,slotLevel:slotLevel,cantrips:l>=10?3:2,spellsKnown:Math.min(11,2+Math.max(0,l-5)),ability:'int'},message:'📜 Договорная магия: ячейки '+slots+' уровня '+slotLevel+'.'};
+    }
+    if(id==='profaneSpell'){
+      var spell=String(ctx.spell||'detect thoughts');if(!spend(h,'bhPactSlots',1))return{ok:false,message:'Нет ячейки договорной магии.'};
+      return{ok:true,effect:{castSpell:spell,slotLevel:s.bhPactSlotLevel||1},message:'📜 Договорное заклинание: '+spell+'.'};
+    }
+    if(id==='riteFocus'){
+      return{ok:true,effect:{spellcastingFocus:'active crimson rite weapon',patron:s.bhPatron||'Великий Древний'},message:'📜 Оружие с Алым обрядом стало фокусом.'};
+    }
+    if(id==='mysticFrenzy')return{ok:true,effect:{bonusWeaponAttackAfterCantrip:true},message:'⚔️ Мистическое безумие: после заговора можно атаковать оружием бонусным действием.'};
+    if(id==='soulEater'){
+      if(!spend(h,'bloodMaledict',1))return{ok:false,message:'Нет использования Кровавого проклятия.'};
+      return{ok:true,effect:{advantageAttacks:true,resistanceAllDamage:true,durationRounds:1},message:'🩸 Пожиратель душ: преимущество на атаки и сопротивление всему урону.'};
+    }
+    if(id==='riteRevival')return{ok:true,effect:{ifReducedToZero:{setHP:1,endAllRites:true}},message:'🩸 Возрождение обряда готово сработать при падении до 0 HP.'};
+    if(id==='sanguineMastery')return{ok:true,effect:{rerollHemocraftOncePerTurn:true,critWithRiteRestoresBloodMaledict:true},message:'🩸 Кровавое мастерство активно.'};
+    if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'🩸 '+(feature.name||id)+' активно.'};
+    return{ok:false,unsupported:true,message:'Способность Кровавого охотника зарегистрирована, но отдельный runtime-эффект ещё не реализован.'};
+  }
+  function bloodHunterAttack(h,ctx){
+    syncBloodHunter(h);var s=st(h),o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]},t=ctx&&ctx.target;
+    Object.keys(s.bhActiveRites||{}).forEach(function(k){var r=s.bhActiveRites[k];if(r&&r.active){o.extraDice.push(r.damageDie||bloodDie(bloodHunterLvl(h)));o.notes.push('Алый обряд: '+r.rite);if(s.bhBrand&&t&&String(s.bhBrand.targetId)===String(t.id)&&s.bhBrand.tethered)o.extraDice.push(bloodDie(bloodHunterLvl(h)));}});
+    if(s.bhLastCurse&&s.bhLastCurse.curse==='marked'&&t&&s.bhLastCurse.targetId===t.id)o.extraDice.push(bloodDie(bloodHunterLvl(h)));
+    if(s.bhHybrid)o.notes.push('Гибридная форма: хищные удары доступны.');
+    return o;
+  }
+  var bloodHunterPack={
+    id:'cr-blood-hunter',name:'BloodHunter',displayName:'Кровавый охотник',
+    source:'Matt Mercer / Critical Role / third-party',
+    license:'Original runtime implementation; mechanics checked against current public source',
+    features:[
+      {id:'crimsonRite',name:'Алый обряд',level:2,action:'bonus',target:'weapon'},
+      {id:'bloodMaledict',name:'Кровавое проклятие',level:1,action:'bonus'},
+      {id:'brandCastigation',name:'Клеймо наказания',level:6,action:'passive',target:'enemy'},
+      {id:'brandTethering',name:'Клеймо привязки',level:13,action:'utility'},
+      {id:'grimPsychometry',name:'Мрачная психометрия',level:9,action:'passive'},
+      {id:'darkAugmentation',name:'Тёмное усиление',level:10,action:'passive'},
+      {id:'aetherWalk',name:'Эфирный шаг',level:7,action:'bonus'},
+      {id:'hybridTransformation',name:'Гибридная трансформация',level:3,action:'bonus'},
+      {id:'lycanBloodlust',name:'Кровожадность',level:3,action:'passive'},
+      {id:'mutagen',name:'Мутаген',level:3,action:'bonus'},
+      {id:'flushMutagens',name:'Вывести мутагены',level:3,action:'action'},
+      {id:'ignoreMutagenSideEffect',name:'Странный метаболизм',level:7,action:'bonus'},
+      {id:'exaltedMutation',name:'Возвышенная мутация',level:18,action:'bonus'},
+      {id:'pactMagic',name:'Договорная магия',level:3,action:'utility'},
+      {id:'profaneSpell',name:'Заклинание договора',level:3,action:'action'},
+      {id:'riteFocus',name:'Фокус обряда',level:3,action:'passive'},
+      {id:'mysticFrenzy',name:'Мистическое безумие',level:7,action:'passive'},
+      {id:'soulEater',name:'Пожиратель душ',level:18,action:'reaction'},
+      {id:'riteRevival',name:'Возрождение обряда',level:18,action:'reaction'},
+      {id:'sanguineMastery',name:'Кровавое мастерство',level:20,action:'passive'}
+    ],
+    subclasses:[
+      {id:'ghostslayer',name:'Орден призрачных убийц',features:[
+        {id:'riteDawn',name:'Обряд рассвета',level:3,action:'bonus'},
+        {id:'curseSpecialist',name:'Специалист по проклятиям',level:3,action:'passive'},
+        {id:'aetherWalk',name:'Эфирный шаг',level:7,action:'bonus'},
+        {id:'brandSundering',name:'Клеймо рассечения',level:11,action:'passive'},
+        {id:'exorcist',name:'Кровавое проклятие экзорциста',level:15,action:'bonus'},
+        {id:'riteRevival',name:'Возрождение обряда',level:18,action:'reaction'}]},
+      {id:'lycan',name:'Орден ликантропов',features:[
+        {id:'hybridTransformation',name:'Гибридная трансформация',level:3,action:'bonus'},
+        {id:'stalkersProwess',name:'Доблесть преследователя',level:7,action:'passive'},
+        {id:'advancedTransformation',name:'Продвинутая трансформация',level:11,action:'passive'},
+        {id:'brandVoracious',name:'Клеймо ненасытности',level:15,action:'passive'},
+        {id:'hybridMastery',name:'Мастерство гибридной формы',level:18,action:'passive'}]},
+      {id:'mutant',name:'Орден мутантов',features:[
+        {id:'mutagencraft',name:'Мутагенное ремесло',level:3,action:'utility'},
+        {id:'strangeMetabolism',name:'Странный метаболизм',level:7,action:'passive'},
+        {id:'brandAxiom',name:'Клеймо аксиомы',level:11,action:'passive'},
+        {id:'corrosion',name:'Кровавое проклятие коррозии',level:15,action:'bonus'},
+        {id:'exaltedMutation',name:'Возвышенная мутация',level:18,action:'bonus'}]},
+      {id:'profaneSoul',name:'Орден осквернённых душ',features:[
+        {id:'otherworldlyPatron',name:'Потусторонний покровитель',level:3,action:'utility'},
+        {id:'pactMagic',name:'Договорная магия',level:3,action:'utility'},
+        {id:'riteFocus',name:'Фокус обряда',level:3,action:'passive'},
+        {id:'mysticFrenzy',name:'Мистическое безумие',level:7,action:'passive'},
+        {id:'revealedArcana',name:'Открытая аркана',level:7,action:'utility'},
+        {id:'brandSappingScar',name:'Клеймо иссушающего шрама',level:11,action:'passive'},
+        {id:'unsealedArcana',name:'Раскрытая аркана',level:15,action:'utility'},
+        {id:'soulEater',name:'Кровавое проклятие пожирателя душ',level:18,action:'reaction'}]}
+    ],
+    hooks:{sync:syncBloodHunter,useFeature:useBloodHunter,attackModifiers:bloodHunterAttack}
+  };
+  function installBloodHunterSubclassReference(){
+    if(!global.SUBCLASSES_REFERENCE)return;
+    global.SUBCLASSES_REFERENCE['Кровавый охотник']={
+      'Орден призрачных убийц':{source:'Critical Role',description:'Охотники на нежить и некромантию.',pickLevel:3,levels:{3:{features:['Обряд рассвета','Специалист по проклятиям']},7:{features:['Эфирный шаг']},11:{features:['Клеймо рассечения']},15:{features:['Кровавое проклятие экзорциста']},18:{features:['Возрождение обряда']}}},
+      'Орден ликантропов':{source:'Critical Role',description:'Охотники, контролирующие силу ликантропии.',pickLevel:3,levels:{3:{features:['Чувства хищника','Гибридная трансформация']},7:{features:['Доблесть преследователя']},11:{features:['Продвинутая трансформация']},15:{features:['Клеймо ненасытности']},18:{features:['Мастерство гибридной формы']}}},
+      'Орден мутантов':{source:'Critical Role',description:'Гемокрафт и алхимические мутагены.',pickLevel:3,levels:{3:{features:['Мутагенное ремесло']},7:{features:['Странный метаболизм']},11:{features:['Клеймо аксиомы']},15:{features:['Кровавое проклятие коррозии']},18:{features:['Возвышенная мутация']}}},
+      'Орден осквернённых душ':{source:'Critical Role',description:'Охотники, заключившие договор с потусторонним покровителем.',pickLevel:3,levels:{3:{features:['Потусторонний покровитель','Договорная магия','Фокус обряда']},7:{features:['Мистическое безумие','Открытая аркана']},11:{features:['Клеймо иссушающего шрама']},15:{features:['Раскрытая аркана']},18:{features:['Кровавое проклятие пожирателя душ']}}}
+    };
+  }
+  installBloodHunterSubclassReference();
+  var packs=[bloodHunterPack,
+
     {id:'ll-shifter',name:'Shifter',displayName:'Шифтер',source:'LaserLlama / third-party',license:'Original runtime implementation',features:[{id:'shift',name:'Дикая форма',level:1,action:'bonus'},{id:'learnShape',name:'Изучить звериную форму',level:2,action:'action',target:'beast'},{id:'adrenalineSurge',name:'Всплеск адреналина',level:6,action:'reaction'},{id:'primalResilience',name:'Первобытная стойкость',level:10,action:'reaction'},{id:'primevalForm',name:'Первобытная форма',level:11,action:'bonus'}],subclasses:[{id:'aquatic',name:'Водная',features:[]},{id:'avian',name:'Птичья',features:[]},{id:'brute',name:'Грубая',features:[]},{id:'carnivore',name:'Хищная',features:[]},{id:'insect',name:'Насекомая',features:[]},{id:'reptilian',name:'Рептильная',features:[]},{id:'vermin',name:'Паразитная',features:[]}],hooks:{sync:syncShifter,useFeature:useShifter,attackModifiers:shifterAttack}},
     {id:'ll-savant',name:'Savant',displayName:'Савант',source:'LaserLlama / third-party',license:'Original runtime implementation; source mechanics checked against current public class',features:[{id:'adroitAnalysis',name:'Искусный анализ',level:1,action:'bonus',target:'enemy',rangeFt:60},{id:'potentObservation',name:'Мощное наблюдение',level:2,action:'reaction',rangeFt:30},{id:'calculatedFlourish',name:'Расчётный манёвр',level:5,action:'reaction'},{id:'flawlessAnalysis',name:'Безупречный анализ',level:15,action:'action',target:'enemy'}],subclasses:[{id:'archaeologist',name:'Археолог',features:[]},{id:'investigator',name:'Исследователь',features:[]},{id:'naturalist',name:'Натуралист',features:[]},{id:'physician',name:'Врач',features:[]},{id:'mentor',name:'Наставник',features:[]},{id:'tactician',name:'Тактик',features:[]}],hooks:{sync:syncSavant,useFeature:useSavant,attackModifiers:savantAttack}},
 
