@@ -16,13 +16,23 @@
 window.alchemistProgression = {
     className: "Алхимик",
     englishName: "Alchemist",
-    source: "Third-party / Homebrew",
+    source: "Taron Pounds / Indestructoboy Designs / third-party",
+    status: "skeleton",
+    edition: "5E",
     hitDie: 8,
     primaryStat: "intelligence",
     savingThrows: ["constitution", "intelligence"],
     armor: ["light"],
     weapons: ["simple", "blowgun"],
     tools: ["alchemist_supplies", "herbalism_kit"],
+    multiclassRequirement: { intelligence: 13 },
+    multiclassProficiencies: { armor: ["light"], weapons: ["simple", "blowgun"] },
+    skills: {
+        choose: 2,
+        from: ["arcana", "deception", "insight", "medicine", "nature", "sleightOfHand", "survival"]
+    },
+    subclassLevel: 2,
+    subclassFeatureLevels: [2, 6, 10, 14],
 
     levels: {
         1: {

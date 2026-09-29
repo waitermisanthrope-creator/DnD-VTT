@@ -35,6 +35,16 @@
 - Исправлен extra_class_stubs.js: реальный Warden/Warlord теперь не перезаписываются тестовыми заглушками.
 - Следующий класс по очереди: Алхимик.
 
+## CLASS TEMPLATE PASS — ALCHEMIST (post-V70.25.95)
+
+- Доведён существующий шаблон Алхимика до общего формата классов.
+- Зафиксированы d8, Intelligence, Constitution/Intelligence saves, light armor, simple weapons + blowgun.
+- Добавлено требование мультикласса Intelligence 13 и набор из 2 навыков.
+- Подкласс выбирается на 2 уровне; точки развития: 2/6/10/14.
+- В реестре уже присутствуют пять специализаций: Animator, Apothecary, Fulminare, Salbenist, Toxicologist.
+- Полная логика формул, сырья, Catalyze и боевых эффектов остаётся следующим этапом.
+- Следующий класс: Оккультист.
+
 ## 3. CURRENT BUILD CHECKPOINT
 
 - **V70.25.48 — Full Combat Transaction / Reaction Race / Batch AoE.** Latest verified technical checkpoint. Network reaction windows now survive reconnect migration or deterministically finalize on disconnect; host handoff fences pending reactions before snapshot; room shutdown clears stale pending reaction/prepared-action state. `combat_engine.js` exposes atomic `applyDamageBatch()` / `healBatch()` with rollback, and network AoE damage uses the batch transaction.
