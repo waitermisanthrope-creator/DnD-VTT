@@ -275,7 +275,7 @@
       var total=Number(p&&p.total)||0,current=Number(p&&p.current)||0;
       var percent=total?Math.max(0,Math.min(100,Math.round(current/total*100))):0;
       if(bar)bar.style.width=percent+'%'; if(pct)pct.textContent=percent+'%';
-      if(status)status.textContent=(p&&p.phase==='apply'?'Применяю обновление…':'Загрузка обновления…')+' '+percent+'%'+(p&&p.path?' · '+p.path:'');
+      if(status)status.textContent=(p&&p.phase==='apply'?'Применяю обновление…':(p&&p.phase==='skip'?'Уже установлено, повторная загрузка не нужна…':'Загрузка обновления…'))+' '+percent+'%'+(p&&p.path?' · '+p.path:'');
     }
     later.onclick=function(){overlay.remove();};
     apply.onclick=async function(){
@@ -311,7 +311,7 @@
           var bar=prompt&&prompt.querySelector?prompt.querySelector('#dndStartupUpdateBar'):null;
           var pct=prompt&&prompt.querySelector?prompt.querySelector('#dndStartupUpdatePercent'):null;
           var total=Number(p&&p.total)||0,current=Number(p&&p.current)||0,percent=total?Math.round(current/total*100):0;
-          if(bar)bar.style.width=percent+'%';if(pct)pct.textContent=percent+'%';if(card)card.textContent=(p&&p.phase==='apply'?'Применяю обновление…':'Загрузка обновления…')+' '+percent+'%'+(p&&p.path?' · '+p.path:'');
+          if(bar)bar.style.width=percent+'%';if(pct)pct.textContent=percent+'%';if(card)card.textContent=(p&&p.phase==='apply'?'Применяю обновление…':(p&&p.phase==='skip'?'Уже установлено, повторная загрузка не нужна…':'Загрузка обновления…'))+' '+percent+'%'+(p&&p.path?' · '+p.path:'');
         }});
         stagePromise.then(function(result){
           var st=prompt&&prompt.querySelector?prompt.querySelector('#dndStartupUpdateStatus'):null;
