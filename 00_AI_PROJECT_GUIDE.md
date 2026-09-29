@@ -4134,3 +4134,14 @@ APK: build required.
 - The previous immediate transition on signature was removed.
 - Input fields and selectors on both classic and extra parchments are now approximately 90% transparent (`rgba(...,.10)`), retaining only a subtle underline so the parchment texture remains dominant.
 - No image pixels are modified.
+
+
+## V70.25.79 — MAIN MENU COMPACT + CHARACTER DELETE FIX
+
+- Исправлено удаление персонажей: удаление теперь обрабатывается делегированным touch/click-обработчиком списка, кнопка удаления не зависит от inline onclick.
+- Главный экран мобильного меню уплотнён: карточки персонажей стали компактнее, уменьшены отступы и кнопки.
+- Большая карточка «Страница автора» убрана с главного экрана и перенесена в меню «Ещё».
+- «Настройки», «Сетевая игра», «FAQ», «Обучение», «Что нового» и «Поле боя» больше не занимают одновременно нижнюю часть экрана; они собраны в одно компактное меню «☰ Ещё».
+- Старые плавающие кнопки скрываются, чтобы не перекрывать контент на телефоне.
+- Добавлен единый нижний компактный dock для дополнительных функций.
+- APK после этого source-фикса будет собран workflow для мобильной проверки.
