@@ -149,10 +149,12 @@
     return hero;
   }
 
-  function releaseToLarva(hero){
+  function releaseToLarva(hero,hostDestroyed){
     hero=ensure(hero);
     var h=hero.parasite.host;
     if(!h)return createLarvaStatBlock(hero);
+    hero.parasite.lastReleasedHost=h;
+    hero.parasite.hostDestroyed=!!hostDestroyed;
     hero.parasite.larva=createLarvaStatBlock(hero);
     hero.parasite.larva.currentHP=hero.parasite.larva.maxHP;
     hero.parasite.host=null;
@@ -433,7 +435,7 @@
     h.currentHP=Math.max(0,h.currentHP-damage);
     syncBody(hero);
     if(h.currentHP<=0){
-      var larva=releaseToLarva(hero);
+      var larva=releaseToLarva(hero,true);
       return {stage:"larva",currentHP:hero.hpCurrent,hostDestroyed:true,larva:larva,source:source||null};
     }
     return {stage:"hosted",currentHP:h.currentHP,hostDestroyed:false};
@@ -442,8 +444,8 @@
   function voluntarilyDetach(hero){
     hero=ensure(hero);
     if(!hero.parasite.host)return {ok:false,reason:"Паразит уже не находится в хозяине."};
-    var larva=releaseToLarva(hero);
-    return {ok:true,larva:larva};
+    var larva=releaseToLarva(hero,false);
+    return {ok:true,larva:larva,hostSurvived:true,host:hero.parasite.lastReleasedHost};
   }
 
   function invadeHost(hero,target,saveRoll){
