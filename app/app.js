@@ -181,31 +181,21 @@ function renderCharacterList() {
       '</div>' +
       '<div class="char-actions">' +
         '<button class="btn-action" onclick="openCharacter(\'' + char.id + '\')">Играть</button>' +
-        '<button type="button" class="btn-del" data-character-id="' + String(char.id).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '">✕</button>' +
+        '<button type="button" class="btn-del" data-character-id="' + String(char.id).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '" onclick="deleteCharacter(this.getAttribute('data-character-id'))">✕</button>' +
       '</div>' +
     '</div>';
   }
   container.innerHTML = html;
-  // V70.25.90: удаление переведено на единый pointer/click-путь.
-  // Старый touchend + preventDefault мог ломать последующий click в Android WebView.
-  // Pointer Events дают одну модель для touch/мыши, а click остаётся запасным путём.
+  // V70.25.94: deletion is intentionally a plain button action.
+  // The previous pointerup/click de-duplication was unnecessary and could fail in
+  // some Android WebView touch paths. The button passes its own data-id directly
+  // to the globally exported deleteCharacter() function.
   Array.prototype.forEach.call(container.querySelectorAll('.btn-del'), function(btn) {
-    btn.__dndDeleteHandled = false;
-    var runDelete = function(e) {
-      if (e && e.type === 'click' && btn.__dndDeleteHandled) {
-        btn.__dndDeleteHandled = false;
-        return;
-      }
+    btn.addEventListener('click', function(e) {
       if (e) {
         try { e.stopPropagation(); } catch (_) {}
       }
-      var id = btn.getAttribute('data-character-id');
-      if (!id || btn.__dndDeleteHandled) return;
-      btn.__dndDeleteHandled = true;
-      deleteCharacter(id);
-    };
-    btn.addEventListener('pointerup', runDelete, false);
-    btn.addEventListener('click', runDelete, false);
+    }, false);
   });
 }
 
@@ -334,31 +324,23 @@ function openCharacter(id) {
 }
 
 function deleteCharacter(id) {
-  id = String(id);
+  id = String(id == null ? '' : id);
+  if (!id) return false;
+
   var index = -1;
   for (var i = 0; i < allCharacters.length; i++) {
     if (String(allCharacters[i].id) === id) { index = i; break; }
   }
-  if (index < 0) { renderCharacterList(); return false; }
-
-  var confirmed = true;
-  try {
-    if (typeof window.confirm === 'function') {
-      confirmed = window.confirm('Вы уверены, что хотите полностью удалить этого персонажа?');
-    }
-  } catch (_) {
-    confirmed = true;
+  if (index < 0) {
+    renderCharacterList();
+    return false;
   }
-  if (!confirmed) return false;
 
+  // V70.25.94: no window.confirm() here. If an embedded browser suppresses
+  // page dialogs, confirm() returns false and the delete appears to do nothing.
   var previous = allCharacters.slice();
+  var wasCurrent = String(currentCharacterId) === id;
   allCharacters.splice(index, 1);
-
-  if (String(currentCharacterId) === id) {
-    currentCharacterId = null;
-    currentChar = null;
-    window.currentCharacter = null;
-  }
 
   if (!saveAllCharacters()) {
     allCharacters = previous;
@@ -366,7 +348,13 @@ function deleteCharacter(id) {
     return false;
   }
 
-  try { localStorage.removeItem('dnd_current_character_id'); } catch (_) {}
+  if (wasCurrent) {
+    currentCharacterId = null;
+    currentChar = null;
+    window.currentCharacter = null;
+    try { localStorage.removeItem('dnd_current_character_id'); } catch (_) {}
+  }
+
   renderCharacterList();
   return true;
 }
