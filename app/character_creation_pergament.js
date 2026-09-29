@@ -209,20 +209,22 @@ window.finishParchmentCreation=function(){
  syncToClassic();
  var p=el('parchmentCreationScreen'),s=el('parchmentSignatureLayer'),bo=el('parchmentBlackout');
  if(p)p.style.display='block';
- if(s){s.classList.remove('show');void s.offsetWidth;s.classList.add('show')}
- /* The parchment stays visible while the seal/signature travels into position. */
+ if(s){s.classList.remove('show','cinematic');void s.offsetWidth;s.classList.add('show')}
+ /* V70.25.93: parchment fades first; then the seal zooms toward the viewer while the screen becomes black.
+    The black screen is held for exactly 1 second after the fade reaches full black. */
  setTimeout(function(){
-  if(bo){bo.classList.remove('show');void bo.offsetWidth;bo.classList.add('show')}
+  if(s){s.classList.add('cinematic')}
+  if(bo){bo.classList.remove('show','cinematic-hold');void bo.offsetWidth;bo.classList.add('show','cinematic-hold')}
   setTimeout(function(){
-   if(bo)bo.classList.remove('show');
-   if(s)s.classList.remove('show');
+   if(bo)bo.classList.remove('show','cinematic-hold');
+   if(s)s.classList.remove('show','cinematic');
    if(p)p.style.display='none';
    BYPASS_PARCHMENT_ONCE=true;
    var classic=el('characterCreationScreen');
    if(classic){classic.style.display='block';classic.scrollTop=0}
    if(typeof window.initCharacterCreationScreen==='function')window.initCharacterCreationScreen();
    syncToClassic();
-  },650);
+  },2650);
  },3350);
 };
 function hook(){
