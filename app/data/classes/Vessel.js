@@ -9,7 +9,9 @@
 window.vesselProgression = {
     className: "Сосуд",
     englishName: "Vessel",
-    source: "laserllama / Third-party",
+    source: "laserllama / third-party",
+    skills: { choose: 2, from: ["arcana","deception","insight","intimidation","investigation","religion","stealth","survival"] },
+    subclassFeatureLevels: [3,6,15,20],
     status: "skeleton",
 
     edition: "5E 2014",
@@ -21,9 +23,6 @@ window.vesselProgression = {
     weapons: ["simple", "scimitar", "shortsword"],
     tools: [],
     multiclassRequirement: { constitution: 13, charisma: 13 },
-    multiclassProficiencies: { armor: ["light"], weapons: ["simple"] },
-    skills: { choose: 2, from: ["arcana", "athletics", "deception", "history", "intimidation", "investigation", "religion"] },
-    subclassFeatureLevels: [3, 6, 15, 20],
     subclassLevel: 3,
 
     levels: {

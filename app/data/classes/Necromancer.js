@@ -9,7 +9,10 @@
 window.necromancerProgression = {
     className: "Некромант",
     englishName: "Necromancer",
-    source: "Mage Hand Press / Third-party",
+    source: "Mage Hand Press / third-party",
+    multiclassProficiencies: { armor: ["light"], weapons: ["simple"] },
+    skills: { choose: 2, from: ["arcana","history","insight","medicine","nature","religion"] },
+    subclassFeatureLevels: [3,6,10],
     status: "skeleton",
 
     edition: "5.5E",
@@ -20,9 +23,6 @@ window.necromancerProgression = {
     weapons: ["simple"],
     tools: [],
     multiclassRequirement: { intelligence: 13 },
-    multiclassProficiencies: { weapons: ["simple"] },
-    skills: { choose: 2, from: ["arcana", "history", "insight", "medicine", "religion", "deception"] },
-    subclassFeatureLevels: [3, 6, 10, 14],
     subclassLevel: 3,
 
     levels: {

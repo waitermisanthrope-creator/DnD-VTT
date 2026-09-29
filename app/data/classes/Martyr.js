@@ -9,7 +9,9 @@
 window.martyrProgression = {
     className: "Мученик",
     englishName: "Martyr",
-    source: "Mage Hand Press / Third-party",
+    source: "Mage Hand Press / third-party",
+    skills: { choose: 2, from: ["athletics","history","insight","intimidation","medicine","persuasion","religion"] },
+    subclassFeatureLevels: [3,6,14,18],
     status: "skeleton",
 
     edition: "5.5E",
@@ -21,9 +23,6 @@ window.martyrProgression = {
     weapons: ["simple", "martial"],
     tools: [],
     multiclassRequirement: { wisdom: 13, strengthOrDexterity: 13 },
-    multiclassProficiencies: { armor: ["light", "shields"], weapons: ["simple", "martial"] },
-    skills: { choose: 2, from: ["athletics", "insight", "intimidation", "medicine", "persuasion", "religion", "survival"] },
-    subclassFeatureLevels: [3, 6, 14, 18],
     subclassLevel: 3,
 
     levels: {
