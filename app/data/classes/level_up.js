@@ -202,7 +202,7 @@ let pendingLevelUpData = null;
           filter: grayscale(60%);
         }
         .class-item-locked::after {
-          content: "⚠ Не хватает характеристик для мультикласса";
+          content: "⚠ Недоступно для этого персонажа";
           display: block;
           font-size: 9px;
           color: #ff9800;
@@ -242,6 +242,13 @@ let pendingLevelUpData = null;
         const selectedClassName = item.getAttribute('data-class');
 
         const hero = window.currentCharacter || window.currentChar;
+        const normalizeClassKey = function(value) {
+          return String(value || '')
+            .replace(/[0-9]/g, '')
+            .replace(/[‐‑‒–—]/g, '-')
+            .trim()
+            .toLowerCase();
+        };
 
         // EXTRA-классы — жёстко закрытая ветка. Рой одновременно является
         // расой и классом: его нельзя взять вторым классом, а персонаж-Рой
@@ -265,13 +272,6 @@ let pendingLevelUpData = null;
 
         // Требования мультикласса относятся только к ВЗЯТИЮ НОВОГО КЛАССА.
         // Повышение уже имеющегося класса не проверяется как multiclass entry.
-        const normalizeClassKey = function(value) {
-          return String(value || '')
-            .replace(/[0-9]/g, '')
-            .replace(/[‐‑‒–—]/g, '-')
-            .trim()
-            .toLowerCase();
-        };
         const selectedClassKey = normalizeClassKey(selectedClassName);
         const alreadyHasSelectedClass = !!(hero && Array.isArray(hero.classes) &&
           hero.classes.some(function(c){
