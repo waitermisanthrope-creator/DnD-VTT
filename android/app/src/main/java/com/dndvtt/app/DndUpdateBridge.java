@@ -63,20 +63,33 @@ public final class DndUpdateBridge {
 
             for (int i = 0; i < files.length(); i++) {
                 JSONObject entry = files.getJSONObject(i);
-                postProgress(reply, id, "download", i + 1, totalFiles, entry.optString("path", ""));
                 String path = entry.getString("path");
                 validatePath(path);
+                String expectedHash = entry.getString("sha256");
+                long expectedBytes = entry.optLong("bytes", -1);
+                File activeFile = new File(new File(context.getFilesDir(), "vtt-versions/" + getActiveVersion()), path);
+                File target = new File(stageRoot, path);
+                File parent = target.getParentFile();
+                if (!parent.mkdirs() && !parent.isDirectory()) throw new Exception("Cannot create target directory");
+
+                // Do not redownload files already present in the active version.
+                // Compare the actual local SHA-256 with the manifest before touching GitHub.
+                if (activeFile.isFile() && expectedHash.equalsIgnoreCase(sha256(activeFile))) {
+                    if (expectedBytes >= 0 && activeFile.length() != expectedBytes) {
+                        throw new Exception("Local size mismatch: " + path);
+                    }
+                    postProgress(reply, id, "skip", i + 1, totalFiles, path);
+                    copyFile(activeFile, target);
+                    continue;
+                }
+
+                postProgress(reply, id, "download", i + 1, totalFiles, path);
                 String url = entry.optString("url", "");
                 if (url.isEmpty()) url = baseUrl.replaceAll("/+$", "") + "/" + path;
                 if (!url.startsWith("https://")) throw new Exception("HTTPS update file required");
                 byte[] data = readBytes(url);
-                long expectedBytes = entry.optLong("bytes", -1);
                 if (expectedBytes >= 0 && expectedBytes != data.length) throw new Exception("Size mismatch: " + path);
-                String expectedHash = entry.getString("sha256");
                 if (!expectedHash.equalsIgnoreCase(sha256(data))) throw new Exception("SHA-256 mismatch: " + path);
-                File target = new File(stageRoot, path);
-                File parent = target.getParentFile();
-                if (!parent.mkdirs() && !parent.isDirectory()) throw new Exception("Cannot create target directory");
                 try (FileOutputStream out = new FileOutputStream(target)) {
                     out.write(data);
                 }
