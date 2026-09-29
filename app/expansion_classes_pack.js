@@ -351,7 +351,146 @@
     };
   }
   installBloodHunterSubclassReference();
-  var packs=[bloodHunterPack,
+
+  function illriggerLevel(h){return lvl(h,'Иллирригер');}
+  function illriggerSealDie(l){return l>=20?'4d6':l>=11?'3d6':l>=5?'2d6':'1d6';}
+  function illriggerSeals(l){var t=[0,3,3,4,4,4,4,5,5,5,5,5,5,6,6,6,6,6,7,7,7];return t[Math.max(1,Math.min(20,l))]||3;}
+  function illriggerConduit(l){var t=[0,0,0,0,0,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,10];return t[Math.max(1,Math.min(20,l))]||0;}
+  function illriggerBoonCount(l){return l>=18?4:l>=13?3:l>=7?2:l>=2?1:0;}
+  function illriggerSaveDC(h){return 8+(Number(h.proficiencyBonus)||2)+mod(h,'cha');}
+  function syncIllrigger(h){
+    var l=illriggerLevel(h);if(!l)return;
+    var s=st(h);
+    var r=res(h,'illriggerSeals',illriggerSeals(l),'short');
+    r.die=illriggerSealDie(l);r.max=illriggerSeals(l);
+    var cd=illriggerConduit(l);
+    if(cd>0){var cr=res(h,'illriggerConduit',cd,'long');cr.max=cd;cr.die='d10';}
+    res(h,'illriggerInvokeHell',l>=3?1:0,'short');
+    res(h,'illriggerBloodPrice',l>=10?Math.max(1,Math.min(6,Math.floor((l+1)/4))):0,'long');
+    s.illriggerSealTargets=s.illriggerSealTargets||{};
+    s.illriggerContract=s.illriggerContract||'architect';
+    s.illriggerBoons=s.illriggerBoons||[];
+    s.illriggerMastery=s.illriggerMastery||null;
+    s.illriggerSaveDC=illriggerSaveDC(h);
+    s.illriggerConduitActive=!!s.illriggerConduitActive;
+  }
+  function illriggerBurn(h,targetId,count){
+    var s=st(h),r=h.resources&&h.resources.illriggerSeals;
+    if(!targetId||!s.illriggerSealTargets[targetId])return{ok:false,message:'На этой цели нет печатей.'};
+    var available=Number(s.illriggerSealTargets[targetId])||0;
+    count=Math.max(1,Math.min(available,Number(count)||1));
+    if(!spend(h,'illriggerSeals',count))return{ok:false,message:'Недостаточно печатей.'};
+    s.illriggerSealTargets[targetId]=available-count;
+    if(s.illriggerSealTargets[targetId]<=0)delete s.illriggerSealTargets[targetId];
+    return{ok:true,count:count,effect:{damage:count+'*'+illriggerSealDie(illriggerLevel(h)),damageType:'necrotic_or_fire',save:illriggerLevel(h)>=14?null:'none'},message:'🔥 Печати сожжены: '+count+' × '+illriggerSealDie(illriggerLevel(h))+'.'};
+  }
+  function useIllrigger(h,id,ctx,feature){
+    syncIllrigger(h);ctx=ctx||{};var l=illriggerLevel(h),s=st(h),t=target(ctx),r=h.resources&&h.resources.illriggerSeals;
+    if(id==='balefulInterdict'||id==='placeSeal'){
+      if(!t)return{ok:false,message:'Выбери видимую цель в пределах 30 футов.'};
+      var turn=ctx.turnId===undefined?null:String(ctx.turnId);
+      if(turn!==null&&s.illriggerSealPlacedTurn===turn)return{ok:false,message:'В этом ходу печать уже поставлена.'};
+      if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет доступных печатей.'};
+      s.illriggerSealTargets[t.id]=(Number(s.illriggerSealTargets[t.id])||0)+1;
+      if(turn!==null)s.illriggerSealPlacedTurn=turn;
+      return{ok:true,target:t.id,effect:{seal:true,duration:'until target dies or seal is burned'},message:'🔻 Зловещее запрещение: печать наложена.'};
+    }
+    if(id==='burnSeal'){
+      var out=illriggerBurn(h,t&&t.id||ctx.targetId,ctx.count);
+      if(!out.ok)return out;
+      if(s.illriggerBoons.indexOf('soulEater')>=0)out.effect.tempHp=l;
+      return out;
+    }
+    if(id==='forkedTongue')return{ok:true,effect:{languages: l>=9?3:2,persuasionDeceptionIntimidationFloor:8,insightBonus:l>=9?Math.max(1,mod(h,'cha')):0},message:'🗣️ Раздвоенный язык активен.'};
+    if(id==='combatMastery'){
+      var ms=['Бравада','Жестокость','Неумолимый','Ложь','Проворство','Неукротимый'];
+      var m=String(ctx.mastery||'');if(ms.indexOf(m)<0)return{ok:false,message:'Неизвестная боевая специализация.'};
+      s.illriggerMastery=m;return{ok:true,effect:{combatMastery:m},message:'⚔️ Боевая специализация: '+m+'.'};
+    }
+    if(id==='interdictBoon'){
+      var b=String(ctx.boon||'');s.illriggerBoons=s.illriggerBoons||[];if(!b)return{ok:false,message:'Укажи дар Интердикта.'};
+      if(s.illriggerBoons.length>=illriggerBoonCount(l)&&s.illriggerBoons.indexOf(b)<0)return{ok:false,message:'Достигнут лимит даров Интердикта.'};
+      if(s.illriggerBoons.indexOf(b)<0)s.illriggerBoons.push(b);
+      return{ok:true,effect:{boon:b},message:'🔻 Дар Интердикта выбран: '+b+'.'};
+    }
+    if(id==='abatingSeal'){
+      if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати для Ослабляющей печати.'};
+      return{ok:true,effect:{damageReduction:'1d10+'+Math.floor(l/2),rangeFt:30,reaction:true},message:'🛡️ Ослабляющая печать уменьшает получаемый урон.'};
+    }
+    if(id==='soulEater'){
+      var burn=illriggerBurn(h,t&&t.id||ctx.targetId,1);if(!burn.ok)return burn;
+      burn.effect.tempHp=l;burn.message='🩸 Пожиратель душ: получено '+l+' временных HP.';return burn;
+    }
+    if(id==='shadowShroud'){
+      if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет свободной печати.'};
+      return{ok:true,effect:{acBonus:2,durationMinutes:1,targetSelfOrTouch:true},message:'🌑 Теневая завеса: +2 к AC.'};
+    }
+    if(id==='conflagrantChannel'){
+      var bc=illriggerBurn(h,t&&t.id||ctx.targetId,1);if(!bc.ok)return bc;
+      bc.effect.damageType='fire';bc.effect.disadvantageNextSave=true;return bc;
+    }
+    if(id==='unleashHell'){
+      if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати.'};
+      return{ok:true,effect:{areaRadiusFt:10,damage:'3d6 fire',save:'dex'},message:'🔥 Высвободить Ад: огненный взрыв.'};
+    }
+    if(id==='infernalConduit'||id==='invigorate'||id==='devour'){
+      var cr=h.resources&&h.resources.illriggerConduit;if(!cr||!spend(h,'illriggerConduit',Math.max(1,Number(ctx.dice)||1)))return{ok:false,message:'Нет кубов Инфернального проводника.'};
+      var n=Math.max(1,Number(ctx.dice)||1);
+      if(id==='invigorate')return{ok:true,target:t&&t.id,effect:{heal:n+'d10',selfNecrotic:n+'d10'},message:'🔥 Инфернальный проводник: союзник исцелён ценой твоей крови.'};
+      if(!t)return{ok:false,message:'Выбери цель для Пожирания.'};
+      return{ok:true,target:t.id,effect:{save:'con',damage:n+'d10 necrotic',healSelf:'half'},message:'☠️ Пожирание: инфернальная энергия вырвана из цели.'};
+    }
+    if(id==='invokeHell'){
+      var inv=String(ctx.option||'');var known=['infernalEdict','hellishCommand','bloodRitual','shadowStep','ruinSpell'];
+      if(known.indexOf(inv)<0)return{ok:false,message:'Для этого контракта ещё не выбран вариант Призыва Ада.'};
+      if(!spend(h,'illriggerInvokeHell',1))return{ok:false,message:'Призыв Ада уже использован до отдыха.'};
+      return{ok:true,target:t&&t.id,effect:{invokeHell:inv,saveDC:s.illriggerSaveDC},message:'🔥 Призыв Ада: '+inv+'.'};
+    }
+    if(id==='bloodPrice'){
+      if(!spend(h,'illriggerBloodPrice',1))return{ok:false,message:'Нет доступной Кровавой цены.'};
+      return{ok:true,effect:{expendHitDie:true,selfNecrotic:'1d10',saveBonus:'1d10'},message:'🩸 Кровавая цена: пожертвуй КХ и добавь 1d10 к проваленному спасброску.'};
+    }
+    if(id==='terrorizingForce'){
+      var typ=String(ctx.damageType||'necrotic');if(['cold','fire','necrotic','poison'].indexOf(typ)<0)return{ok:false,message:'Допустимы холод, огонь, некротический или яд.'};
+      s.illriggerTerrorType=typ;return{ok:true,effect:{extraDamage:'1d8 '+typ,durationMinutes:1},message:'😈 Терроризирующая сила: '+typ+'.'};
+    }
+    if(id==='superiorInterdict'){
+      return{ok:true,effect:{sealDamageIgnoresResistance:true,restoreOneSealLongRest:true},message:'🔻 Высший интердикт: урон печатей игнорирует сопротивление.'};
+    }
+    if(id==='infernalMajesty'){
+      s.illriggerMajesty=true;return{ok:true,effect:{durationRounds:10,resistance:['cold','fire','necrotic'],flyFt:60,bloodPriceAura:true,terrorDie:'1d10',rebirthInHell:true},message:'👑 Инфернальное величие активировано.'};
+    }
+    if(id==='masterOfHell'){
+      var form=String(ctx.form||'inferno');if(['inferno','pestilence','darkness'].indexOf(form)<0)return{ok:false,message:'Выбери Инферно, Чуму или Тьму.'};
+      return{ok:true,effect:{areaRadiusFt:20,damage:form==='inferno'?'8d6 fire':form==='pestilence'?'8d6 poison/necrotic':'8d6 cold',save:form==='darkness'?'con':'dex',condition:form==='darkness'?'blinded':form==='pestilence'?'poisoned':null},message:'☠️ Повелитель Ада: '+form+'.'};
+    }
+    if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' активно.'};
+    return{ok:false,unsupported:true,message:'Способность Иллирригера зарегистрирована, но её отдельная автоматизация требует дополнительного UI.'};
+  }
+  function illriggerAttack(h,ctx){
+    var s=st(h),l=illriggerLevel(h),o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]};
+    if(s.illriggerTerrorType&&l>=11)o.extraDice.push('1d8 '+s.illriggerTerrorType);
+    if(s.illriggerMajesty&&l>=17)o.extraDice.push('1d10 necrotic_or_fire');
+    if(s.illriggerMastery==='Ложь')o.notes.push('Оружейная атака может использовать Харизму.');
+    if(s.illriggerMastery==='Неукротимый')o.notes.push('Бонус к спасброскам зависит от числа врагов рядом.');
+    return o;
+  }
+  function illriggerContractFeature(h,id,ctx){
+    syncIllrigger(h);ctx=ctx||{};var l=illriggerLevel(h),s=st(h),t=target(ctx);
+    if(id==='architectBlessing')return{ok:true,effect:{extraKnowledgeSkill:true,language:'дополнительный язык'},message:'📚 Благословение Архитектора активно.'};
+    if(id==='architectSpellcasting')return{ok:true,effect:{oneThirdCaster:true,ability:'charisma',spellSaveDC:illriggerSaveDC(h)},message:'🔮 Магия Архитектора разрушения доступна.'};
+    if(id==='hellspeakerCommand')return{ok:true,effect:{charmOrCompel:true,save:'wis',saveDC:illriggerSaveDC(h)},message:'🗣️ Воля Говорящего с Адом применена.'};
+    if(id==='painkillerArmor')return{ok:true,effect:{heavyArmor:true},message:'🛡️ Палач боли получает владение тяжёлой бронёй.'};
+    if(id==='painkillerPunishment'){if(!t)return{ok:false,message:'Выбери атакующего врага.'};return{ok:true,target:t.id,effect:{reactionDamage:'2d8 fire_or_psychic',mark:true},message:'⚔️ Наказание активировано.'};
+    if(id==='sanguineRitual'){if(!t)return{ok:false,message:'Выбери цель.'};var n=Math.max(1,Number(ctx.seals)||1);var b=illriggerBurn(h,t.id,n);if(!b.ok)return b;b.effect.healAlly=n+'d8';b.effect.tempHpAlly=n+'d8';return{ok:true,target:t.id,effect:b.effect,message:'🩸 Кровавый ритуал: жизненная сила направлена союзнику.'};}
+    if(id==='shadowStep')return{ok:true,effect:{invisible:true,durationRounds:1,teleportFt:30},message:'🌑 Теневой шаг активирован.'};
+    if(id==='shadowAssassin'){if(!t)return{ok:false,message:'Выбери помеченную цель.'};return{ok:true,target:t.id,effect:{advantageFirstAttack:true,extraDamage:'2d6'},message:'🗡️ Теневой убийца: преимущество против цели с печатью.'};
+    }
+    if(id==='contractInvoke')return useIllrigger(h,'invokeHell',ctx);
+    return{ok:false,unsupported:true,message:'Способность контракта '+id+' требует отдельного действия/условия.'};
+  }
+
+    {id:'mcdm-illrigger',name:'Illrigger',displayName:'Иллирригер',source:'MCDM Productions — The Illrigger Revised 1.0',license:'Original runtime implementation; source mechanics checked against public class material',features:[{id:'balefulInterdict',name:'Зловещее запрещение',level:1,action:'bonus',target:'enemy',rangeFt:30},{id:'burnSeal',name:'Сжечь печать',level:1,action:'special',target:'enemy'},{id:'forkedTongue',name:'Раздвоенный язык',level:1,action:'passive'},{id:'combatMastery',name:'Боевая специализация',level:2,action:'utility'},{id:'interdictBoon',name:'Дар Интердикта',level:2,action:'utility'},{id:'invokeHell',name:'Призыв Ада',level:3,action:'action'},{id:'infernalConduit',name:'Инфернальный проводник',level:6,action:'action'},{id:'bloodPrice',name:'Кровавая цена',level:10,action:'reaction'},{id:'terrorizingForce',name:'Терроризирующая сила',level:11,action:'bonus'},{id:'superiorInterdict',name:'Высший интердикт',level:14,action:'passive'},{id:'infernalMajesty',name:'Инфернальное величие',level:17,action:'bonus'},{id:'masterOfHell',name:'Повелитель Ада',level:20,action:'action'}],subclasses:[{id:'architect',name:'Архитектор разрушения',features:[{id:'architectBlessing',name:'Благословение Архитектора',level:3,action:'passive'},{id:'architectSpellcasting',name:'Магия Архитектора',level:3,action:'utility'}]},{id:'hellspeaker',name:'Говорящий с Адом',features:[{id:'hellspeakerCommand',name:'Инфернальное убеждение',level:3,action:'action'}]},{id:'painkiller',name:'Палач боли',features:[{id:'painkillerArmor',name:'Тяжёлая броня',level:3,action:'passive'},{id:'painkillerPunishment',name:'Наказание',level:7,action:'reaction'}]},{id:'sanguine',name:'Кровавый рыцарь',features:[{id:'sanguineRitual',name:'Кровавый ритуал',level:3,action:'action'}]},{id:'shadowmaster',name:'Повелитель теней',features:[{id:'shadowStep',name:'Теневой шаг',level:3,action:'bonus'},{id:'shadowAssassin',name:'Теневой убийца',level:7,action:'attack'}]}],hooks:{sync:syncIllrigger,useFeature:useIllrigger,attackModifiers:illriggerAttack,subclassUse:illriggerContractFeature}},\n  var packs=[bloodHunterPack,
 
     {id:'ll-shifter',name:'Shifter',displayName:'Шифтер',source:'LaserLlama / third-party',license:'Original runtime implementation',features:[{id:'shift',name:'Дикая форма',level:1,action:'bonus'},{id:'learnShape',name:'Изучить звериную форму',level:2,action:'action',target:'beast'},{id:'adrenalineSurge',name:'Всплеск адреналина',level:6,action:'reaction'},{id:'primalResilience',name:'Первобытная стойкость',level:10,action:'reaction'},{id:'primevalForm',name:'Первобытная форма',level:11,action:'bonus'}],subclasses:[{id:'aquatic',name:'Водная',features:[]},{id:'avian',name:'Птичья',features:[]},{id:'brute',name:'Грубая',features:[]},{id:'carnivore',name:'Хищная',features:[]},{id:'insect',name:'Насекомая',features:[]},{id:'reptilian',name:'Рептильная',features:[]},{id:'vermin',name:'Паразитная',features:[]}],hooks:{sync:syncShifter,useFeature:useShifter,attackModifiers:shifterAttack}},
     {id:'ll-savant',name:'Savant',displayName:'Савант',source:'LaserLlama / third-party',license:'Original runtime implementation; source mechanics checked against current public class',features:[{id:'adroitAnalysis',name:'Искусный анализ',level:1,action:'bonus',target:'enemy',rangeFt:60},{id:'potentObservation',name:'Мощное наблюдение',level:2,action:'reaction',rangeFt:30},{id:'calculatedFlourish',name:'Расчётный манёвр',level:5,action:'reaction'},{id:'flawlessAnalysis',name:'Безупречный анализ',level:15,action:'action',target:'enemy'}],subclasses:[{id:'archaeologist',name:'Археолог',features:[]},{id:'investigator',name:'Исследователь',features:[]},{id:'naturalist',name:'Натуралист',features:[]},{id:'physician',name:'Врач',features:[]},{id:'mentor',name:'Наставник',features:[]},{id:'tactician',name:'Тактик',features:[]}],hooks:{sync:syncSavant,useFeature:useSavant,attackModifiers:savantAttack}},
