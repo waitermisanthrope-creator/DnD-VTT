@@ -17,12 +17,14 @@
 
 ## CLASS TEMPLATE PASS — WARDEN (post-V70.25.95)
 
-- Завершён первый этап шаблона Стража: app/data/classes/Warden.js.
-- Зафиксированы d10, Strength/Constitution, спасброски Strength/Constitution, все типы брони со щитом и простое/воинское оружие.
-- Требование мультикласса: Strength 13.
-- Добавлена прогрессия 1–20 и точки подкласса на 3/6/10/17 уровнях.
-- Добавлены все 13 актуальных Champion Calls: Beastblood Guardian, Carrion King, Diabolist, Drake-Blooded, Godsworn, Grey Watchman, Nightgaunt, Rimekeeper, Steel Shepherd, Stoneheart Defender, Storm Sentinel, Verdant Protector, Witchbane Hunter.
-- Полная логика Guardian Tactics, Interrupt и всех подклассов пока отложена.
+- Завершён полный runtime-проход Стража 2024/5.5E: `app/data/classes/Warden.js` + `app/warden_mhp_2024_runtime.js`.
+- Зафиксированы d10, Strength + Constitution, спасброски Strength/Constitution, light/medium/heavy armor + shields, simple/martial weapons и мультикласс Strength 13.
+- Подключены уровни 1–20, Weapon Mastery 2/3/4, Interrupt 3/4/5/6, Guardian Tactics, Unyielding Resolve, Mettle, Survive, Sentinel's Strike, Font of Life, Extended Tactics, Improved Resolve, Sentinel's Soul и Legendary Resistance.
+- Реализованы выборы Sentinel's Stand, Sentinel's Strike и Sentinel's Soul с сохранением состояния персонажа.
+- Зарегистрированы все 13 Champion Calls: Beastblood Guardian, Carrion King, Diabolist, Drake-Blooded, Godsworn, Grey Watchman, Nightgaunt, Rimekeeper, Steel Shepherd, Stoneheart Defender, Storm Sentinel, Verdant Protector, Witchbane Hunter.
+- Для каждого Champion Call добавлена полная прогрессия 3/6/10/17, русские описания, runtime hooks и дополнительные магические наборы там, где подкласс их использует.
+- Новый слой загружается после legacy Kibbles localization, поэтому старый Warden-пак не должен смешиваться с текущим Стражем.
+- Тестовый приоритет после этого коммита: создание персонажа Стража → выбор Champion Call → применение Guardian Tactics → проверка Interrupt/ресурсов → level-up 3/6/10/17 → бой.
 - Следующий класс по очереди: Алхимик.
 
 ## CLASS TEMPLATE PASS — WARLORD (post-V70.25.95)
