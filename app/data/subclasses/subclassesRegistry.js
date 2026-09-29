@@ -642,41 +642,7 @@ window.SUBCLASSES_REFERENCE["Некромант"] = {
 
 
 /* Мученик — независимые краткие описания для VTT; подробные механики будут добавлены позже. */
-window.SUBCLASSES_REFERENCE["Мученик"] = {
-  "Бремя милосердия": {
-    source: "Third-party / Mage Hand Press",
-    description: "Целитель и носитель надежды, направляющий жертву на спасение других.",
-    pickLevel: 3,
-    levels: {
-      3: { features: ["Заготовка: милосердие"] },
-      6: { features: ["Заготовка: способность специализации"] },
-      14: { features: ["Заготовка: способность специализации"] },
-      18: { features: ["Заготовка: способность специализации"] }
-    }
-  },
-  "Бремя революции": {
-    source: "Third-party / Mage Hand Press",
-    description: "Воин-пророк, чья судьба связана с борьбой против тирании.",
-    pickLevel: 3,
-    levels: {
-      3: { features: ["Заготовка: революционный путь"] },
-      6: { features: ["Заготовка: способность специализации"] },
-      14: { features: ["Заготовка: способность специализации"] },
-      18: { features: ["Заготовка: способность специализации"] }
-    }
-  },
-  "Бремя истины": {
-    source: "Third-party / Mage Hand Press",
-    description: "Пророк и провидец, несущий миру опасное или неудобное знание.",
-    pickLevel: 3,
-    levels: {
-      3: { features: ["Заготовка: пророческий путь"] },
-      6: { features: ["Заготовка: способность специализации"] },
-      14: { features: ["Заготовка: способность специализации"] },
-      18: { features: ["Заготовка: способность специализации"] }
-    }
-  }
-};
+window.SUBCLASSES_REFERENCE["Мученик"] = {\n  "Бремя анонимности": { source:"Mage Hand Press / Complete Martyr 2024", description:"Работа из тени.", pickLevel:3, runtimeKey:"Бремя анонимности", levels:{3:{features:["Подробная способность Бремени"]},6:{features:["Способность Бремени"]},14:{features:["Способность Бремени"]},18:{features:["Способность Бремени"]}} },  "Бремя вознесения": { source:"Mage Hand Press / Complete Martyr 2024", description:"Божественные труды и путь к вознесению.", pickLevel:3, runtimeKey:"Бремя вознесения", levels:{3:{features:["Подробная способность Бремени"]},6:{features:["Способность Бремени"]},14:{features:["Способность Бремени"]},18:{features:["Способность Бремени"]}} },  "Бремя искупления": { source:"Mage Hand Press / Complete Martyr 2024", description:"Искупление через защиту невиновных.", pickLevel:3, runtimeKey:"Бремя искупления", levels:{3:{features:["Подробная способность Бремени"]},6:{features:["Способность Бремени"]},14:{features:["Способность Бремени"]},18:{features:["Способность Бремени"]}} },  "Бремя бедствия": { source:"Mage Hand Press / Complete Martyr 2024", description:"Вестник бедствий.", pickLevel:3, runtimeKey:"Бремя бедствия", levels:{3:{features:["Подробная способность Бремени"]},6:{features:["Способность Бремени"]},14:{features:["Способность Бремени"]},18:{features:["Способность Бремени"]}} },  "Бремя раздора": { source:"Mage Hand Press / Complete Martyr 2024", description:"Хаос и разрушение порядка.", pickLevel:3, runtimeKey:"Бремя раздора", levels:{3:{features:["Подробная способность Бремени"]},6:{features:["Способность Бремени"]},14:{features:["Способность Бремени"]},18:{features:["Способность Бремени"]}} },  "Бремя конца": { source:"Mage Hand Press / Complete Martyr 2024", description:"Предотвращение катастрофы.", pickLevel:3, runtimeKey:"Бремя конца", levels:{3:{features:["Подробная способность Бремени"]},6:{features:["Способность Бремени"]},14:{features:["Способность Бремени"]},18:{features:["Способность Бремени"]}} },  "Бремя славы": { source:"Mage Hand Press / Complete Martyr 2024", description:"Божественная знаменитость.", pickLevel:3, runtimeKey:"Бремя славы", levels:{3:{features:["Подробная способность Бремени"]},6:{features:["Способность Бремени"]},14:{features:["Способность Бремени"]},18:{features:["Способность Бремени"]}} },  "Бремя лёгкости": { source:"Mage Hand Press / Complete Martyr 2024", description:"Божественный трикстер.", pickLevel:3, runtimeKey:"Бремя лёгкости", levels:{3:{features:["Подробная способность Бремени"]},6:{features:["Способность Бремени"]},14:{features:["Способность Бремени"]},18:{features:["Способность Бремени"]}} },  "Бремя милосердия": { source:"Mage Hand Press / Complete Martyr 2024", description:"Исцеление и надежда.", pickLevel:3, runtimeKey:"Бремя милосердия", levels:{3:{features:["Подробная способность Бремени"]},6:{features:["Способность Бремени"]},14:{features:["Способность Бремени"]},18:{features:["Способность Бремени"]}} },  "Бремя одиссеи": { source:"Mage Hand Press / Complete Martyr 2024", description:"Путешествие и открытия.", pickLevel:3, runtimeKey:"Бремя одиссеи", levels:{3:{features:["Подробная способность Бремени"]},6:{features:["Способность Бремени"]},14:{features:["Способность Бремени"]},18:{features:["Способность Бремени"]}} },  "Бремя возрождения": { source:"Mage Hand Press / Complete Martyr 2024", description:"Восстановление природы.", pickLevel:3, runtimeKey:"Бремя возрождения", levels:{3:{features:["Подробная способность Бремени"]},6:{features:["Способность Бремени"]},14:{features:["Способность Бремени"]},18:{features:["Способность Бремени"]}} },  "Бремя революции": { source:"Mage Hand Press / Complete Martyr 2024", description:"Освобождение и свержение тиранов.", pickLevel:3, runtimeKey:"Бремя революции", levels:{3:{features:["Подробная способность Бремени"]},6:{features:["Способность Бремени"]},14:{features:["Способность Бремени"]},18:{features:["Способность Бремени"]}} },  "Бремя истины": { source:"Mage Hand Press / Complete Martyr 2024", description:"Пророчество и истина.", pickLevel:3, runtimeKey:"Бремя истины", levels:{3:{features:["Подробная способность Бремени"]},6:{features:["Способность Бремени"]},14:{features:["Способность Бремени"]},18:{features:["Способность Бремени"]}} },  "Бремя тирании": { source:"Mage Hand Press / Complete Martyr 2024", description:"Подчинение и власть.", pickLevel:3, runtimeKey:"Бремя тирании", levels:{3:{features:["Подробная способность Бремени"]},6:{features:["Способность Бремени"]},14:{features:["Способность Бремени"]},18:{features:["Способность Бремени"]}} }\n};
 
 
 /* Сосуд — независимый каркас шести Sealed Spirit. Механики будут добавлены позже. */
