@@ -10,7 +10,7 @@ var BYPASS_PARCHMENT_ONCE=false;
 var CLASSIC_CLASS_NAMES=['Варвар','Бард','Жрец','Друид','Воин','Монах','Паладин','Следопыт','Плут','Чародей','Колдун','Волшебник','Изобретатель'];
 var CLASSIC_RACE_IDS=['human','human_variant','elf_high','elf_wood','elf_drow','dwarf_hill','dwarf_mountain','halfling_lightfoot','halfling_stout','dragonborn','gnome_rock','gnome_forest','half_elf','half_orc','tiefling'];
 var CLASSIC_BACKGROUND_NAMES=['Прислужник','Шарлатан','Преступник','Артист','Народный герой','Гильдийский ремесленник','Отшельник','Благородный','Дикарь','Мудрец','Мореход','Солдат','Беспризорник'];
-var EXTRA_TYPES=['Рой','Призрак','Паразит'];
+var EXTRA_TYPES=['Рой','Призрак','Паразит','Паразит доктора Вальтера'];
 function isClassicMode(){return CHARACTER_CREATION_MODE==='classic';}
 function isHomebrewMode(){return CHARACTER_CREATION_MODE==='homebrew';}
 function isExtraMode(){return CHARACTER_CREATION_MODE==='extra';}
@@ -99,8 +99,8 @@ function setupProgression(){
 }
 function renderClassArt(){
  var name=el('pc_class')?el('pc_class').value:'',img=el('pc_classArt'),label=el('pc_classLabel');var extra=isExtraMode(), homebrew=isHomebrewMode();
- if(label)label.textContent=extra?'':(name||'');var raceLead=el('pcRaceLead');if(raceLead)raceLead.textContent=extra?'Выберите заглушку':'По внешним признакам относится к расе';
- if(extra){if(img){img.removeAttribute('src');img.removeAttribute('data-art');img.classList.remove('token-ready');}}else if(img){
+ if(label)label.textContent=extra?'':(name||'');var raceLead=el('pcRaceLead');if(raceLead)raceLead.textContent=extra?'Выберите Extra-класс':'По внешним признакам относится к расе';
+ if(extra){if(img){var extraArt=(name==='Паразит доктора Вальтера'?'./1790718758545.png':'');if(extraArt&&img.getAttribute('data-art')!==extraArt){var ep=new Image();ep.onload=function(){img.src=extraArt;img.setAttribute('data-art',extraArt);img.alt='Паразит доктора Вальтера';img.classList.add('token-ready');};ep.onerror=function(){console.warn('Extra art not found:',extraArt);};ep.src=extraArt;}else if(!extraArt){img.removeAttribute('src');img.removeAttribute('data-art');img.classList.remove('token-ready');}}}else if(img){
   var art=classArt(name);
   if(!art){
    img.removeAttribute('src');img.removeAttribute('data-art');img.classList.remove('token-ready');img.alt='Жетон появится после выбора класса';
@@ -141,7 +141,7 @@ function renderClassArt(){
   fillSelect('pc_background',creationBackgroundItems().map(function(b){var n=b.nameRu||b.name||'';return{value:n,label:n}}),'выбрать предысторию');
   fillSelect('pc_profession',getProfessionItems(),'выбрать профессию');
  }
- if(warn)warn.innerHTML=extra?'ОСОБАЯ ПРИМЕТА И ПРИЧИНА РОЗЫСКА: <span id="pc_extraReason">выберите заглушку</span>':homebrew?'ПОМЕТКА ХРАНИТЕЛЯ АРХИВА: сведения не подтверждены обычными реестрами. Проверять происхождение, способности и связи отдельно.':'СТЫД ТЕБЕ, ПРОЧИТАВШИЙ ЭТО, РОЗЫСКИВАЕМЫЙ <span id="pc_professionText">—</span>.';
+ if(warn)warn.innerHTML=extra?'ОСОБАЯ ПРИМЕТА И ПРИЧИНА РОЗЫСКА: <span id="pc_extraReason">выберите Extra-класс</span>':homebrew?'ПОМЕТКА ХРАНИТЕЛЯ АРХИВА: сведения не подтверждены обычными реестрами. Проверять происхождение, способности и связи отдельно.':'СТЫД ТЕБЕ, ПРОЧИТАВШИЙ ЭТО, РОЗЫСКИВАЕМЫЙ <span id="pc_professionText">—</span>.';
  if(reward)reward.innerHTML=extra?'Доставить исключительно мёртвым.<br>Награда <strong>30 золотых монет</strong>.':homebrew?'Материал признан редким и передан в особый архив.<br>Награда за доставку не назначена. Досье подлежит сохранению.':'Доставить исключительно живым и с кошельком.<br>Награда 10 серебряных монет и кружка хорошего пива.';
  var sign=el('pc_signButton');if(sign)sign.innerHTML='расписаться<span class="parchment-sign-hint">закончить создание</span>';
  if(typeof window.__updateParchmentProgress==='function')window.__updateParchmentProgress();
@@ -207,24 +207,19 @@ window.finishParchmentCreation=function(){
  var missing=ids.some(function(id){var e=el(id);return !e||!String(e.value||'').trim()});
  if(missing){alert('Заполните все открытые поля по порядку.');return}
  syncToClassic();
+ var draft=window.__parchmentCharacterDraft||{};
  var p=el('parchmentCreationScreen'),s=el('parchmentSignatureLayer'),bo=el('parchmentBlackout');
  if(p)p.style.display='block';
- /* V70.25.94: the transition starts the instant the seal is placed.
-    The parchment darkens immediately. The seal slowly travels from the signing area
-    to the center; exactly when it reaches the center the screen is already black.
-    It then keeps zooming on the black background while becoming black itself.
-    Once the seal is fully black, the black screen is held for exactly 1 second. */
  if(s){s.classList.remove('show','cinematic');void s.offsetWidth;s.classList.add('show','cinematic')}
  if(bo){bo.classList.remove('show','cinematic-hold');void bo.offsetWidth;bo.classList.add('show','cinematic-hold')}
  setTimeout(function(){
   if(bo)bo.classList.remove('show','cinematic-hold');
   if(s)s.classList.remove('show','cinematic');
   if(p)p.style.display='none';
-  BYPASS_PARCHMENT_ONCE=true;
-  var classic=el('characterCreationScreen');
-  if(classic){classic.style.display='block';classic.scrollTop=0}
-  if(typeof window.initCharacterCreationScreen==='function')window.initCharacterCreationScreen();
-  syncToClassic();
+  var builder=window.CharacterBuilderV2;
+  if(builder&&typeof builder.startCreateFromParchment==='function'){
+    builder.startCreateFromParchment(draft);
+  }
  },6000);
 };
 function hook(){
