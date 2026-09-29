@@ -35,7 +35,7 @@
   function mod(h,k){var a=h.abilities||{};var v=a[k]||a[k.toUpperCase()]||0;return Number(v)>10?Math.floor((Number(v)-10)/2):Number(v)||0;}
   function dieFor(l){return l>=17?'1d12':l>=11?'1d10':l>=5?'1d8':'1d6';}
 
-  function psiMax(l){var t=[0,0,2,2,2,3,3,4,4,5,5,5,6,6,6,7,7,7,8,8,8];return t[Math.max(1,Math.min(20,l))]||0;}
+  function psiLimit(l){return Math.ceil(l/2);} function psiMax(l){return l;}
   function syncPsion(h){var l=lvl(h,'Psion');if(!l)return;res(h,'psiPoints',psiMax(l),'long');}
   function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
   function warlordDie(l){return l>=17?'d10':l>=9?'d8':'d6';}
