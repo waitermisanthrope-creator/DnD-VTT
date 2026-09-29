@@ -28,8 +28,10 @@ function orderKey(h){var x=sub(h);return x.indexOf('призрач')>=0?'ghostsl
 function ensureChoices(h){
  var s=st(h),l=lvl(h);s.hemocraftAbility=s.hemocraftAbility||'intelligence';
  s.crimsonRitesKnown=s.crimsonRitesKnown||['flame'];if(l>=7&&s.crimsonRitesKnown.length<2)s.crimsonRitesKnown.push('frozen');if(l>=14&&s.crimsonRitesKnown.length<3)s.crimsonRitesKnown.push('dead');
- if(!s.bloodCursesKnown)s.bloodCursesKnown=['anxious']; 
- s.bloodCursesKnown=s.bloodCursesKnown.slice(0,5);
+ if(!s.bloodCursesKnown)s.bloodCursesKnown=['anxious'];
+ var curseCount=l>=17?5:l>=13?4:l>=10?3:l>=6?2:1,defaults=['anxious','binding','bloatedAgony','exposure','marked'];
+ defaults.forEach(function(x){if(s.bloodCursesKnown.length<curseCount&&s.bloodCursesKnown.indexOf(x)<0)s.bloodCursesKnown.push(x);});
+ s.bloodCursesKnown=s.bloodCursesKnown.slice(0,curseCount);
 }
 function sync(h){
  var l=lvl(h);if(!l)return;
