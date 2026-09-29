@@ -291,6 +291,7 @@
     hero.walterParasite.body=body;
     hero.walterParasite.stage='body';
     hero.walterParasite.hostDestroyed=false;
+    body.currentHP=body.maxHP;
     hero.walterParasite.bodyHistory.push({
       sourceId:body.sourceId,
       sourceName:body.sourceName,
@@ -362,14 +363,14 @@
     if(active.indexOf(key)<0)return {ok:false,reason:'Этот орган не активирован: характеристика тела не является максимальной.'};
     var w=hero.walterParasite;
     w.cooldowns=w.cooldowns||{};
-    var now=Date.now();
-    if(w.cooldowns[key] && w.cooldowns[key]>now)return {ok:false,reason:'Орган ещё восстанавливается.'};
+    w.usedOrgans=w.usedOrgans||{};
+    if(w.usedOrgans[key])return {ok:false,reason:'Этот орган уже использован. Он восстановится после короткого или долгого отдыха.'};
 
     var s=getStats(hero);
     var dc=8+pb(level)+mod(s[key]);
 
     if(key==='str'){
-      w.cooldowns[key]=now+((level>=11)?5*60*1000:10*60*1000);
+      w.usedOrgans[key]=true;
       return {
         ok:true,kind:'attack',name:'Костяной хлыст-жало',
         range:10,attackBonus:pb(level)+mod(s.str),
@@ -382,7 +383,7 @@
 
     if(key==='dex'){
       var duration=roll(10);
-      w.cooldowns[key]=now+10*60*1000;
+      w.usedOrgans[key]=true;
       return {
         ok:true,kind:'buff',name:'Пластичность',
         durationSeconds:duration,
@@ -438,6 +439,13 @@
     }
 
     return {ok:false,reason:'Неизвестный орган.'};
+  }
+
+  function resetRestResources(hero){
+    hero=ensure(hero);
+    hero.walterParasite.usedOrgans={};
+    hero.walterParasite.cooldowns={};
+    return true;
   }
 
   function getDominantAbilityNames(hero){
@@ -560,6 +568,7 @@
     getMaxCharacteristics:getMaxCharacteristics,
     refreshOrgans:refreshOrgans,
     getDominantAbilityNames:getDominantAbilityNames,
+    resetRestResources:resetRestResources,
     useDominantOrgan:useDominantOrgan,
     recordMutation:recordMutation,
     useSubclassFeature:useSubclassFeature,
