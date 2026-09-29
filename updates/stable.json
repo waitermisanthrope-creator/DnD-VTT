@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DnD-VTT",
-  "version": "70.26.0",
+  "version": "70.26.1",
   "minAppVersion": "70.25.71",
   "channel": "stable",
   "generated": "AUTO",
@@ -14,8 +14,8 @@
     },
     {
       "path": "app/character_creation_pergament.js",
-      "bytes": 28543,
-      "sha256": "977c0423b2e1b5b8a786b69593f75110ecd7eb21ee2456dbfdcad0649a335388"
+      "bytes": 28951,
+      "sha256": "b02bc2d0661d7677742c2bd42de9aaedf9a80735790eb5ef4b53db28795afd4e"
     },
     {
       "path": "app/character_creation_pergament.css",
@@ -40,7 +40,7 @@
     {
       "path": "app/update_manager.js",
       "bytes": 20687,
-      "sha256": "9471c7975e54c4f8ffac4561c281fbdcf0257da0dba7548eb3fb0681e1204a17"
+      "sha256": "d63240dd4032f3b30556ddd00f95d1bac1b93ff5b93fe4e3b29e6332ff6a8372"
     },
     {
       "path": "app/onboarding_faq_v71.js",
