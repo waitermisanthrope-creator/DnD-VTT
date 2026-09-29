@@ -116,6 +116,11 @@ function setupProgression(){
 function renderClassArt(){
  var extra=isExtraMode(), homebrew=isHomebrewMode();var name=extra?(el('pc_race')?el('pc_race').value:''):(el('pc_class')?el('pc_class').value:'');var img=el('pc_classArt'),label=el('pc_classLabel');
  if(label)label.textContent=extra?'':(name||'');var raceLead=el('pcRaceLead');if(raceLead)raceLead.textContent=extra?'Выберите Extra-класс':'По внешним признакам относится к расе';
+ var hostLead=el('pcExtraHostLead');
+ if(hostLead&&extra){
+   var selectedExtra=el('pc_race')?el('pc_race').value:'';
+   hostLead.textContent=selectedExtra==='Призрак'?'Укажите мёртвую оболочку':selectedExtra==='Паразит доктора Вальтера'?'Укажите тело, в которое будет внедрён паразит':'Укажите тело / хозяина';
+ }
  if(extra){if(img){var extraArt=(name==='Паразит доктора Вальтера'?'./1790718758545.png':'');if(extraArt&&img.getAttribute('data-art')!==extraArt){var ep=new Image();ep.onload=function(){img.src=extraArt;img.setAttribute('data-art',extraArt);img.alt='Паразит доктора Вальтера';img.classList.add('token-ready');};ep.onerror=function(){console.warn('Extra art not found:',extraArt);};ep.src=extraArt;}else if(!extraArt){img.removeAttribute('src');img.removeAttribute('data-art');img.classList.remove('token-ready');}}}else if(img){
   var art=classArt(name);
   if(!art){
@@ -158,7 +163,12 @@ function renderClassArt(){
   fillSelect('pc_profession',getProfessionItems(),'выбрать профессию');
  }
  if(warn)warn.innerHTML=extra?'ОСОБАЯ ПРИМЕТА И ПРИЧИНА РОЗЫСКА: <span id="pc_extraReason">выберите Extra-класс</span>':homebrew?'ПОМЕТКА ХРАНИТЕЛЯ АРХИВА: сведения не подтверждены обычными реестрами. Проверять происхождение, способности и связи отдельно.':'СТЫД ТЕБЕ, ПРОЧИТАВШИЙ ЭТО, РОЗЫСКИВАЕМЫЙ <span id="pc_professionText">—</span>.';
- if(reward)reward.innerHTML=extra?'Доставить исключительно мёртвым.<br>Награда <strong>30 золотых монет</strong>.':homebrew?'Материал признан редким и передан в особый архив.<br>Награда за доставку не назначена. Досье подлежит сохранению.':'Доставить исключительно живым и с кошельком.<br>Награда 10 серебряных монет и кружка хорошего пива.';
+ if(reward){
+   if(extra&&el('pc_race')&&el('pc_race').value==='Паразит доктора Вальтера')
+     reward.innerHTML='Доставить экземпляр живым или мёртвым.<br><strong>Мёртвый: 30 золотых.</strong> &nbsp; <strong>Живой: 300 золотых.</strong>';
+   else
+     reward.innerHTML=extra?'Доставить исключительно мёртвым.<br>Награда <strong>30 золотых монет</strong>.':homebrew?'Материал признан редким и передан в особый архив.<br>Награда за доставку не назначена. Досье подлежит сохранению.':'Доставить исключительно живым и с кошельком.<br>Награда 10 серебряных монет и кружка хорошего пива.';
+ }
  var sign=el('pc_signButton');if(sign)sign.innerHTML='расписаться<span class="parchment-sign-hint">закончить создание</span>';
  if(typeof window.__updateParchmentProgress==='function')window.__updateParchmentProgress();
 }
