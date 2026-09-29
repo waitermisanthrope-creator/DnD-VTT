@@ -70,16 +70,63 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add updates/stable.json
-          git diff --cached --quiet || git commit -m "Auto-publish stable update manifest"
+
+          regenerate_manifest() {
+            python3 - <<'PY'
+          import glob, hashlib, json, re
+          from pathlib import Path
+          text=Path("app/update_manager.js").read_text(encoding="utf-8")
+          version=re.search(r"var APP_VERSION = '([^']+)'", text).group(1)
+          files=[]
+          paths=[
+            "app/character_creation_pergament.js","app/character_creation_pergament.css",
+            "app/Ambiences.js","app/app.js","app/Settings.js","app/update_manager.js",
+            "app/onboarding_faq_v71.js","app/styles.css"
+          ] + sorted(glob.glob("app/data/classes/*.png"))
+          for path in paths:
+            data=Path(path).read_bytes()
+            files.append({"path":path,"bytes":len(data),"sha256":hashlib.sha256(data).hexdigest()})
+          manifest={
+            "schema":1,"app":"DnD-VTT","version":version,"minAppVersion":"70.25.71",
+            "channel":"stable","generated":"AUTO",
+            "baseUrl":"https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main",
+            "files":files,"blockedVersions":[]
+          }
+          Path("updates/stable.json").write_text(
+            json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8"
+          )
+          PY
+          }
+
+          # The source branch may move while this workflow is running.
+          # Never publish a manifest generated from the old checkout.
           for attempt in 1 2 3 4 5; do
             git fetch origin main
-            if git rebase origin/main && git push origin HEAD:main; then
+            git rebase origin/main || {
+              git rebase --abort || true
+              sleep $((attempt * 2))
+              continue
+            }
+
+            regenerate_manifest
+            git add updates/stable.json
+
+            if git diff --cached --quiet; then
+              echo "Stable manifest already matches current main."
               exit 0
             fi
-            git rebase --abort || true
+
+            git commit -m "Auto-publish stable update manifest"
+
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+
+            git reset --soft HEAD~1
+            git reset
             sleep $((attempt * 2))
           done
+
           echo "Failed to publish stable manifest after retries"
           exit 1
       - name: Upload token hashes
