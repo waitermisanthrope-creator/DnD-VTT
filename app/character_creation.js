@@ -272,10 +272,9 @@ function updateExtraClassCreationUI() {
   var raceDesc = document.getElementById('cc_raceDescBox');
   if (!classSelect || !raceSelect) return;
 
-  var className = String(classSelect.value || '').replace(/[0-9]/g, '').trim().split(' ')[0];
+  var className = String(classSelect.value || '').replace(/\s+\d+$/, '').trim();
   var isSwarm = className === 'Рой';
   var isParasite = className === 'Паразит';
-  var isWalterParasite = className === 'Паразит доктора Вальтера';
   var isWalterParasite = className === 'Паразит доктора Вальтера';
 
   if (isSwarm) {
