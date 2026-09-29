@@ -407,3 +407,11 @@ input:focus, textarea:focus, select:focus {
 @media (max-width:420px) {
   .dnd-main-more-grid { grid-template-columns:1fr 1fr; }
 }
+
+/* V70.25.80 — menu hit targets and overlay layering */
+#dndMainMoreButton{z-index:29990 !important;touch-action:manipulation;}
+#dndMainMoreModal{z-index:30000 !important;touch-action:auto;}
+#dndMainMoreModal .dnd-main-more-card{position:relative;z-index:30001;}
+#dndMainMoreModal .dnd-main-more-grid button,
+#dndMainMoreModal .dnd-main-more-grid a,
+#dndMainMoreModal .dnd-main-more-close{position:relative;z-index:30002;touch-action:manipulation;cursor:pointer;}

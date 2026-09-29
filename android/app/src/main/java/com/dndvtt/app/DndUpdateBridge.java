@@ -52,6 +52,7 @@ public final class DndUpdateBridge {
             JSONObject manifest = new JSONObject(readUrl(manifestUrl));
             String version = manifest.getString("version");
             JSONArray files = manifest.getJSONArray("files");
+            final int totalFiles = files.length();
             String baseUrl = manifest.optString("baseUrl", "");
             File root = new File(context.getFilesDir(), "vtt-updates");
             deleteRecursive(root);
@@ -62,7 +63,7 @@ public final class DndUpdateBridge {
 
             for (int i = 0; i < files.length(); i++) {
                 JSONObject entry = files.getJSONObject(i);
-                postProgress(reply, id, "download", i + 1, files.length(), entry.optString("path", ""));
+                postProgress(reply, id, "download", i + 1, totalFiles, entry.optString("path", ""));
                 String path = entry.getString("path");
                 validatePath(path);
                 String url = entry.optString("url", "");
@@ -107,6 +108,7 @@ public final class DndUpdateBridge {
             JSONArray files = manifest.getJSONArray("files");
             for (int i = 0; i < files.length(); i++) {
                 String path = files.getJSONObject(i).getString("path");
+                postProgress(reply, id, "apply", i + 1, files.length(), path);
                 validatePath(path);
                 File src = new File(staged, path);
                 File dst = new File(next, path);

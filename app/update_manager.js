@@ -6,7 +6,7 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.25.79';
+  var APP_VERSION = '70.25.80';
   // Public manifest is stored in the repository; do not depend on GitHub Pages.
   var DEFAULT_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url';
@@ -211,12 +211,9 @@
     options = options || {};
     var state = await inspect();
     if (!state.configured || !state.updateAvailable) return state;
-    var native = nativeRequest('stage', getConfig().manifestUrl);
-    if (native) {
-      // Native bridge emits progress messages with the same request id.
-      // Keep the listener alive until the final "staged" reply.
-      if (options.onProgress) setProgressHandler(options.onProgress);
-    }
+    var native;
+    if (options.onProgress) setProgressHandler(options.onProgress);
+    native = nativeRequest('stage', getConfig().manifestUrl);
     if (native) {
       try {
         var nativeResult = await native;
@@ -234,11 +231,17 @@
     return !!((global.dndNative && typeof global.dndNative.postMessage === 'function') || (global.DndUpdater && typeof global.DndUpdater.applyStagedUpdate === 'function'));
   }
 
-  async function applyStaged() {
+  async function applyStaged(options) {
+    options = options || {};
+    if (options.onProgress) setProgressHandler(options.onProgress);
     if (global.dndNative && typeof global.dndNative.postMessage === 'function') {
-      var native = await nativeRequest('apply', '');
-      clearStaged();
-      return native || true;
+      try {
+        var native = await nativeRequest('apply', '');
+        clearStaged();
+        return native || true;
+      } finally {
+        setProgressHandler(null);
+      }
     }
     var staged = getStaged();
     if (!staged) throw new Error('No staged update');
@@ -246,87 +249,75 @@
     var result = await global.DndUpdater.applyStagedUpdate(staged);
     if (result === false) throw new Error('Native updater rejected the staged update');
     clearStaged();
+    if (options.onProgress) options.onProgress({phase:'apply',current:1,total:1,path:'готово'});
     return result || true;
   }
 
-  function showStartupUpdatePrompt(state) {
-    if (!state || !state.updateAvailable || !state.stageResult || !state.stageResult.staged) return;
-    if (!canApplyNatively()) return;
-    if (document.getElementById('dndStartupUpdatePrompt')) return;
-
+  function showStartupUpdatePrompt(state, options) {
+    options = options || {};
+    if (!state || !state.updateAvailable || !state.manifest) return null;
+    if (document.getElementById('dndStartupUpdatePrompt')) return document.getElementById('dndStartupUpdatePrompt');
     var overlay = document.createElement('div');
     overlay.id = 'dndStartupUpdatePrompt';
-    overlay.style.cssText = [
-      'position:fixed','inset:0','z-index:120000','display:flex',
-      'align-items:center','justify-content:center','padding:18px',
-      'box-sizing:border-box','background:rgba(0,0,0,.78)',
-      'font-family:Inter,system-ui,sans-serif'
-    ].join(';');
-
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:120000;display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box;background:rgba(0,0,0,.78);font-family:Inter,system-ui,sans-serif';
     var card = document.createElement('div');
-    card.style.cssText = [
-      'width:min(430px,100%)','background:#181818','color:#fff',
-      'border:1px solid #d4af37','border-radius:14px','padding:20px',
-      'box-sizing:border-box','box-shadow:0 18px 70px #000'
-    ].join(';');
-
-    card.innerHTML =
-      '<h2 style="margin:0 0 10px;color:#ffd85e;font-size:1.25rem">🔄 Доступно обновление</h2>' +
-      '<p style="margin:0 0 8px;line-height:1.5;color:#ddd">Версия <strong>' +
-      String(state.manifest.version) +
-      '</strong> уже загружена и проверена.</p>' +
-      '<p style="margin:0 0 16px;line-height:1.5;color:#aaa">Обновление заменит только файлы приложения. Персонажи и локальные данные не трогаются.</p>' +
-      '<div style="display:flex;gap:8px">' +
-      '<button id="dndStartupUpdateLater" style="flex:1;padding:11px;border-radius:8px;border:1px solid #555;background:#333;color:#fff">Позже</button>' +
-      '<button id="dndStartupUpdateApply" style="flex:1;padding:11px;border-radius:8px;border:1px solid #d4af37;background:#9b6e13;color:#fff;font-weight:700">Обновить</button>' +
-      '</div>' +
-      '<div id="dndStartupUpdateStatus" style="margin-top:10px;font-size:.8rem;color:#aaa"></div>';
-
-    overlay.appendChild(card);
-    document.body.appendChild(overlay);
-
-    card.querySelector('#dndStartupUpdateLater').onclick = function () {
-      overlay.remove();
+    card.style.cssText = 'width:min(430px,100%);background:#181818;color:#fff;border:1px solid #d4af37;border-radius:14px;padding:20px;box-sizing:border-box;box-shadow:0 18px 70px #000';
+    card.innerHTML = '<h2 style="margin:0 0 10px;color:#ffd85e;font-size:1.25rem">🔄 Доступно обновление</h2>' +
+      '<p style="margin:0 0 8px;line-height:1.5;color:#ddd">Версия <strong>'+String(state.manifest.version)+'</strong> найдена.</p>' +
+      '<p id="dndStartupUpdateStatus" style="margin:0 0 10px;line-height:1.45;color:#aaa">Подготавливаю обновление…</p>' +
+      '<div style="height:10px;background:#292929;border-radius:99px;overflow:hidden;border:1px solid #444"><div id="dndStartupUpdateBar" style="height:100%;width:0%;background:#d4af37;transition:width .15s ease"></div></div>' +
+      '<div id="dndStartupUpdatePercent" style="margin-top:7px;text-align:center;color:#ffd85e;font-weight:700">0%</div>' +
+      '<div style="display:flex;gap:8px;margin-top:14px"><button id="dndStartupUpdateLater" style="flex:1;padding:11px;border-radius:8px;border:1px solid #555;background:#333;color:#fff">Позже</button><button id="dndStartupUpdateApply" disabled style="flex:1;padding:11px;border-radius:8px;border:1px solid #d4af37;background:#5b4618;color:#aaa;font-weight:700">Загрузка…</button></div>';
+    overlay.appendChild(card); document.body.appendChild(overlay);
+    var status=card.querySelector('#dndStartupUpdateStatus'),bar=card.querySelector('#dndStartupUpdateBar'),pct=card.querySelector('#dndStartupUpdatePercent'),apply=card.querySelector('#dndStartupUpdateApply'),later=card.querySelector('#dndStartupUpdateLater');
+    function progress(p){
+      var total=Number(p&&p.total)||0,current=Number(p&&p.current)||0;
+      var percent=total?Math.max(0,Math.min(100,Math.round(current/total*100))):0;
+      if(bar)bar.style.width=percent+'%'; if(pct)pct.textContent=percent+'%';
+      if(status)status.textContent=(p&&p.phase==='apply'?'Применяю обновление…':'Загрузка обновления…')+' '+percent+'%'+(p&&p.path?' · '+p.path:'');
+    }
+    later.onclick=function(){overlay.remove();};
+    apply.onclick=async function(){
+      apply.disabled=true;later.disabled=true;
+      try { await applyStaged({onProgress:progress}); if(status)status.textContent='Готово. Перезапускаю приложение…'; }
+      catch(e){ if(status)status.textContent='Не удалось применить: '+(e&&e.message||e);apply.disabled=false;later.disabled=false; }
     };
-
-    card.querySelector('#dndStartupUpdateApply').onclick = async function () {
-      var status = card.querySelector('#dndStartupUpdateStatus');
-      var apply = card.querySelector('#dndStartupUpdateApply');
-      var later = card.querySelector('#dndStartupUpdateLater');
-      apply.disabled = true;
-      later.disabled = true;
-      status.textContent = 'Применяю обновление…';
-      try {
-        await applyStaged();
-        status.textContent = 'Готово. Перезапускаю приложение…';
-      } catch (e) {
-        status.textContent = 'Не удалось применить: ' + (e && e.message || e);
-        apply.disabled = false;
-        later.disabled = false;
-      }
-    };
+    if(options.stagePromise){
+      options.stagePromise.then(function(result){
+        if(result&&result.stageResult&&result.stageResult.staged){
+          progress({phase:'download',current:state.manifest.files.length,total:state.manifest.files.length,path:'готово'});
+          if(status)status.textContent='Обновление загружено и проверено. Можно устанавливать.';
+          apply.disabled=false;apply.textContent='Установить обновление';apply.style.background='#9b6e13';apply.style.color='#fff';
+        } else {
+          if(status)status.textContent='Новая версия не была загружена.';apply.style.display='none';
+        }
+      }).catch(function(e){if(status)status.textContent='Ошибка загрузки: '+(e&&e.message||e);apply.disabled=true;});
+    }
+    return overlay;
   }
 
-  function autoCheckForUpdates() {
-    var run = function () {
-      setTimeout(async function () {
-        try {
-          if (global.navigator && global.navigator.onLine === false) return;
-          var state = await checkAndStage();
-          if (state && state.updateAvailable) showStartupUpdatePrompt(state);
-        } catch (e) {
-          try { console.warn('DND update check failed:', e); } catch (_) {}
-        }
-      }, 600);
+  function autoCheckForUpdates(options) {
+    options=options||{};
+    if(global.__dndUpdateCheckRunning)return global.__dndUpdateCheckRunning;
+    var run = async function () {
+      try {
+        if (global.navigator && global.navigator.onLine === false) return;
+        var state = await inspect();
+        if (!state || !state.updateAvailable) return state;
+        var prompt=showStartupUpdatePrompt(state);
+        var stagePromise=checkAndStage({onProgress:function(p){
+          var card=prompt&&prompt.querySelector?prompt.querySelector('#dndStartupUpdateStatus'):null;
+          var bar=prompt&&prompt.querySelector?prompt.querySelector('#dndStartupUpdateBar'):null;
+          var pct=prompt&&prompt.querySelector?prompt.querySelector('#dndStartupUpdatePercent'):null;
+          var total=Number(p&&p.total)||0,current=Number(p&&p.current)||0,percent=total?Math.round(current/total*100):0;
+          if(bar)bar.style.width=percent+'%';if(pct)pct.textContent=percent+'%';if(card)card.textContent=(p&&p.phase==='apply'?'Применяю обновление…':'Загрузка обновления…')+' '+percent+'%'+(p&&p.path?' · '+p.path:'');
+        }});
+        prompt=showStartupUpdatePrompt(state,{stagePromise:stagePromise})||prompt;
+        return await stagePromise;
+      } catch(e){try{console.warn('DND update check failed:',e);}catch(_){} return null;}
+      finally{global.__dndUpdateCheckRunning=null;}
     };
-
-    // Не показываем окно обновления поверх красивой заставки.
-    // Проверка начинается только после её полного закрытия.
-    if (global.dndSplashFinished === true) {
-      run();
-    } else {
-      global.addEventListener('dnd:splash-complete', run, { once: true });
-    }
+    global.__dndUpdateCheckRunning=run(); return global.__dndUpdateCheckRunning;
   }
 
   function updateUiProgress(show,current,total,path){var box=document.getElementById('settingsUpdateProgress'),bar=document.getElementById('settingsUpdateProgressBar'),label=document.getElementById('settingsUpdateProgressLabel');if(!box)return;box.style.display=show?'block':'none';if(total>0){var pct=Math.round(current/total*100);if(bar)bar.style.width=pct+'%';if(label)label.textContent='Загрузка обновления: '+pct+'% — '+current+' из '+total+(path?' · '+path:'');}}

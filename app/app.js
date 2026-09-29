@@ -171,18 +171,6 @@ function renderCharacterList() {
     return;
   }
 
-  if (!container.dataset.deleteBound) {
-    container.addEventListener('click', function(e) {
-      var btn = e.target.closest && e.target.closest('.btn-del');
-      if (!btn || !container.contains(btn)) return;
-      e.preventDefault();
-      e.stopPropagation();
-      var id = btn.getAttribute('data-character-id');
-      if (id) deleteCharacter(id);
-    });
-    container.dataset.deleteBound = '1';
-  }
-
   var html = '';
   for (var i = 0; i < allCharacters.length; i++) {
     var char = allCharacters[i];
@@ -198,6 +186,18 @@ function renderCharacterList() {
     '</div>';
   }
   container.innerHTML = html;
+  // V70.25.80: прямые touch/click-обработчики. Не полагаемся на closest/delegation
+  // WebView и не оставляем удаление на inline onclick.
+  Array.prototype.forEach.call(container.querySelectorAll('.btn-del'), function(btn) {
+    var handler = function(e) {
+      if (e) { e.preventDefault(); e.stopPropagation(); }
+      var id = btn.getAttribute('data-character-id');
+      if (id) deleteCharacter(id);
+      return false;
+    };
+    btn.addEventListener('click', handler, false);
+    btn.addEventListener('touchend', handler, false);
+  });
 }
 
 function openCharacter(id) {
@@ -343,6 +343,10 @@ function showCharacterSelect() {
   if (selectScreen) selectScreen.style.display = 'block';
   
   renderCharacterList();
+  // Проверяем обновления именно в момент появления главного экрана после логотипа.
+  if (window.DND_UPDATE_MANAGER && typeof window.DND_UPDATE_MANAGER.autoCheckForUpdates === 'function') {
+    window.DND_UPDATE_MANAGER.autoCheckForUpdates();
+  }
 }
 
 // Экспорт текущего открытого персонажа в отдельный JSON-файл (кнопка "Экспорт в JSON" на листе персонажа)

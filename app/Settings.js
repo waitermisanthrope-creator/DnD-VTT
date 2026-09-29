@@ -157,6 +157,7 @@ function openSettingsModal() {
   modal.style.display = 'flex';
 }
 
+window.openSettingsModal = openSettingsModal;
 function closeSettingsModal() {
   const modal = document.getElementById('settingsModal');
   if (modal) modal.style.display = 'none';
@@ -635,3 +636,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 })(window);
+
+window.openSettingsModal = openSettingsModal;
+window.closeSettingsModal = closeSettingsModal;
