@@ -480,6 +480,15 @@ window.SUBCLASSES_REFERENCE["Оккультист"] = {
 };
 
 
+/* Ведьма — четыре базовых Witch's Craft Mage Hand Press 5E 2014. */
+window.SUBCLASSES_REFERENCE["Ведьма"]={
+  "Black Magic":{source:"Third-party / Mage Hand Press",description:"Тёмная магия, страдание и некромантические эффекты.",pickLevel:3,levels:{3:{features:["Black Magic"]},6:{features:["Black Magic feature"]},10:{features:["Black Magic feature"]},14:{features:["Black Magic feature"]}}},
+  "Green Magic":{source:"Third-party / Mage Hand Press",description:"Природная магия растений, животных и превращений.",pickLevel:3,levels:{3:{features:["Green Magic"]},6:{features:["Green Magic feature"]},10:{features:["Green Magic feature"]},14:{features:["Green Magic feature"]}}},
+  "Red Magic":{source:"Third-party / Mage Hand Press",description:"Разрушительная магия огня и прямого урона.",pickLevel:3,levels:{3:{features:["Red Magic"]},6:{features:["Red Magic feature"]},10:{features:["Red Magic feature"]},14:{features:["Red Magic feature"]}}},
+  "White Magic":{source:"Third-party / Mage Hand Press",description:"Исцеление, защита и восстановительная магия.",pickLevel:3,levels:{3:{features:["White Magic"]},6:{features:["White Magic feature"]},10:{features:["White Magic feature"]},14:{features:["White Magic feature"]}}}
+};
+
+
 
 window.SUBCLASSES_REFERENCE["Шифтер"] = {
   "Avian":{source:"third-party",description:"Крылатая кровная линия: скорость, мобильность и воздушные формы.",pickLevel:3,levels:{3:{features:["Заготовка: способность подкласса"]},6:{features:["Заготовка: способность подкласса"]},10:{features:["Заготовка: способность подкласса"]},14:{features:["Заготовка: способность подкласса"]}}},
