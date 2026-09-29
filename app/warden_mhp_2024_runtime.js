@@ -238,7 +238,22 @@
   function use(h,id,ctx,feature){
     id=String(id||'').replace(/^warden-/,'');
     sync(h);ctx=ctx||{};var s=state(h),l=lvl(h),t=target(ctx),range=s.wardenGuardianRange||5;
-    if(id==='sentinelStand'||id==='sentinelStrike'||id==='sentinelSoul')return choice(h,id,ctx.choice);
+    if(id==='sentinelStand'){
+      if(!choice(h,id,ctx.choice).ok)return choice(h,id,ctx.choice);
+      var v=ctx.choice,s=state(h);
+      s.wardenStand=v;
+      if(v==='stalwartSpirit')return{ok:true,effect:{savingThrowProficiencyChoice:true},message:'🛡️ Стойкий дух: выберите спасбросок для владения.'};
+      if(v==='steadfastToughness')return{ok:true,effect:{bonusMaxHP:'CON modifier + Warden level'},message:'❤️ Несокрушимая стойкость: максимум HP увеличен.'};
+      return{ok:true,effect:{shieldACBonus:10>=10?4:3},message:'🛡️ Башенный щит: бонус щита +3, с 10 уровня +4.'};
+    }
+    if(id==='sentinelSoul'){
+      var ch=choice(h,id,ctx.choice);if(!ch.ok)return ch;
+      var sv=ctx.choice,s2=state(h);s2.wardenSentinelSoul=sv;
+      if(sv==='allSeeing')return{ok:true,effect:{blindsightFt:30},message:'👁️ Всевидящий: слепое зрение 30 фт.'};
+      if(sv==='fortified')return{ok:true,effect:{noAttackAdvantage:true},message:'🛡️ Укреплённый: атаки не получают преимущество против вас.'};
+      return{ok:true,effect:{moveThroughCreatureSpaces:true,proneOnEnter:true},message:'⚔️ Неостановимый: проход сквозь пространство существ.'};
+    }
+    if(id==='sentinelStrike')return choice(h,id,ctx.choice);
     if(id==='guardianBlock'){
       if(!t)return{ok:false,message:'Выберите союзника.'};
       s.wardenBlockedAllyId=t.id;return{ok:true,target:t.id,effect:{guardianTactic:'block',rangeFt:range,acEqualsSelf:true,duration:'untilStartOfTurn'},message:'🛡️ Блок применён.'};
