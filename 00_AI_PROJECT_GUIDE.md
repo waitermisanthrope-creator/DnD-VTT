@@ -4218,3 +4218,15 @@ APK: build required.
 - После обнаружения рассинхронизации stable.json и исходников повышена версия до 70.25.86, чтобы GitHub Actions создал новый однозначный манифест из текущего main.
 - Цель: убрать старый манифест 70.25.84 из цепочки обновлений и проверить загрузку файлов с актуальными размерами/SHA-256.
 - APK отдельно пока не собирался вручную; сборка должна быть создана GitHub Actions.
+
+
+## 2026-09-29 — Character creation: three parchment buckets / test navigation
+- Reworked the parchment creation flow into three explicit modes: `classic`, `homebrew` (DLC / Хоумбрю), and `extra`.
+- Classic parchment now exposes only the 13 intended base classes (12 core classes + Изобретатель/Artificer), the base PHB race set already present in `app/races.js`, and the 13 core PHB backgrounds.
+- DLC / Хоумбрю uses the same clean parchment artwork as classic, but exposes non-core races, non-core classes, and all non-core backgrounds. Extra-only implementation classes (`Рой`, `Паразит`, `Гайст`) are kept out of this bucket.
+- Extra remains isolated to the three test stubs: `Призрак`, `Паразит`, `Рой`, using the scary parchment.
+- Added `сжечь свиток` / `вернуться назад` to the parchment itself; it closes the current creation attempt and returns to character selection for rapid testing.
+- Opening a new parchment creation now clears previous parchment field values and class token state so a burned test does not leak selections into the next attempt.
+- Added DLC / Хоумбрю-specific parchment text without changing the image bytes.
+- Bumped app version to 70.25.87 so the update manifest/build pipeline can publish this creation-flow change.
+- Relevant files: `app/character_creation_pergament.js`, `app/character_creation_pergament.css`, `index.html`, `app/update_manager.js`.
