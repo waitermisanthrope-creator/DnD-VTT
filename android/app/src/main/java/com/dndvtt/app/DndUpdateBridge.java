@@ -163,6 +163,7 @@ public final class DndUpdateBridge {
         if (!active.mkdirs()) throw new Exception("Cannot create active version");
         copyAssetTree("index.html", active);
         copyAssetTree("app", active);
+        copyRootImageAssets(active);
         copyAssetTree("wallpapers", active);
         copyAssetTree("ambience", active);
         prefs.edit().putString("active", getPackageVersion()).putString("healthy", getPackageVersion()).commit();
@@ -172,6 +173,20 @@ public final class DndUpdateBridge {
         String active = getActiveVersion();
         context.getSharedPreferences("dnd_vtt_update", Context.MODE_PRIVATE)
                 .edit().putString("healthy", active).remove("pending").commit();
+    }
+
+    private void copyRootImageAssets(File targetRoot) throws Exception {
+        String[] rootEntries = context.getAssets().list("");
+        if (rootEntries == null) return;
+        for (String name : rootEntries) {
+            String lower = name.toLowerCase(java.util.Locale.ROOT);
+            if (!lower.endsWith(".png") && !lower.endsWith(".jpg") && !lower.endsWith(".jpeg")) continue;
+            File target = new File(targetRoot, name);
+            try (InputStream in = context.getAssets().open(name); FileOutputStream out = new FileOutputStream(target)) {
+                byte[] buf = new byte[8192]; int n;
+                while ((n = in.read(buf)) >= 0) out.write(buf, 0, n);
+            }
+        }
     }
 
     private void copyAssetTree(String path, File targetRoot) throws Exception {
