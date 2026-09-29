@@ -155,3 +155,78 @@
     filter:brightness(0) drop-shadow(0 0 0 rgba(0,0,0,0));
   }
 }
+
+
+/* V70.25.95 — exact cinematic sequence requested:
+   0-3s: the whole parchment darkens while the seal slowly grows and travels to center.
+   3-5s: on the already-black background the centered seal keeps growing and turns black.
+   5-6s: the fully black seal/screen is held for exactly one second. */
+.parchment-signature-layer.cinematic .parchment-signature-img{
+  animation:signatureCinematicV95 5s cubic-bezier(.2,.72,.18,1) forwards!important;
+}
+.parchment-blackout.show.cinematic-hold{
+  animation:parchmentBlackoutV95 3s ease-out forwards!important;
+}
+@keyframes parchmentBlackoutV95{
+  0%{opacity:0}
+  100%{opacity:1}
+}
+@keyframes signatureCinematicV95{
+  /* 0-3s: move + grow together while the parchment becomes black. */
+  0%{
+    right:max(18px,calc((100vw - min(100vw,900px))/2 + 18px));
+    bottom:max(88px,calc(env(safe-area-inset-bottom,0px) + 88px));
+    width:min(48vw,310px);
+    max-height:24vh;
+    transform:translate(0,0) scale(1) rotate(-2deg);
+    opacity:1;
+    filter:brightness(1) drop-shadow(0 4px 5px rgba(45,25,8,.35));
+  }
+  30%{
+    right:50%;
+    bottom:50%;
+    width:min(60vw,410px);
+    max-height:32vh;
+    transform:translate(50%,50%) scale(1) rotate(-2deg);
+    opacity:1;
+    filter:brightness(.86) drop-shadow(0 2px 4px rgba(0,0,0,.18));
+  }
+  60%{
+    right:50%;
+    bottom:50%;
+    width:min(78vw,560px);
+    max-height:48vh;
+    transform:translate(50%,50%) scale(1.04) rotate(-2deg);
+    opacity:1;
+    filter:brightness(.55) drop-shadow(0 0 2px rgba(0,0,0,.3));
+  }
+  /* Exactly at 3s: center reached and the background is fully black. */
+  60.01%{
+    right:50%;
+    bottom:50%;
+    width:min(78vw,560px);
+    max-height:48vh;
+    transform:translate(50%,50%) scale(1.04) rotate(-2deg);
+    opacity:1;
+    filter:brightness(.55) drop-shadow(0 0 2px rgba(0,0,0,.3));
+  }
+  /* 3-5s: keep the seal centered, continue the slow zoom and turn it black. */
+  80%{
+    right:50%;
+    bottom:50%;
+    width:min(96vw,720px);
+    max-height:62vh;
+    transform:translate(50%,50%) scale(1.14) rotate(-2deg);
+    opacity:1;
+    filter:brightness(.18) drop-shadow(0 0 0 rgba(0,0,0,0));
+  }
+  100%{
+    right:50%;
+    bottom:50%;
+    width:min(122vw,980px);
+    max-height:none;
+    transform:translate(50%,50%) scale(1.24) rotate(-2deg);
+    opacity:1;
+    filter:brightness(0) drop-shadow(0 0 0 rgba(0,0,0,0));
+  }
+}
