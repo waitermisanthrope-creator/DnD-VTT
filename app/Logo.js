@@ -1,6 +1,10 @@
 (function () {
   window.dndSplashFinished = false;
 
+  // V70.25.83: prevent the real app UI from flashing before the splash is mounted.
+  // Logo.js executes in <head>, so the lock is installed before <body> is parsed.
+  document.documentElement.classList.add('dnd-boot-lock');
+
   // Подключаем шрифт Playfair Display
   if (!document.getElementById('playfair-font')) {
     const link = document.createElement('link');
@@ -164,12 +168,16 @@
 
   overlay.addEventListener('dblclick', closeSplash);
 
-  // Вставляем оверлей в DOM
-  if (document.body) {
+  // Вставляем оверлей в DOM и только после этого разрешаем показывать приложение.
+  function mountSplash() {
+    if (!document.body) return;
     document.body.appendChild(overlay);
+    document.documentElement.classList.remove('dnd-boot-lock');
+  }
+
+  if (document.body) {
+    mountSplash();
   } else {
-    document.addEventListener('DOMContentLoaded', () => {
-      document.body.appendChild(overlay);
-    });
+    document.addEventListener('DOMContentLoaded', mountSplash, { once: true });
   }
 })();
