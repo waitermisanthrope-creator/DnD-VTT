@@ -175,11 +175,11 @@ window.resolveMulticlassProficiencyChoice = resolveMulticlassProficiencyChoice;
 function applyClassProgression(hero, className, targetLevel) {
     // Жёсткая защита Extra-классов: Рой не может получать прогрессию
     // другого класса, даже если внешний код вызовет движок напрямую.
-    if (hero && (hero.extraClassType === "swarm" || hero.extraClassType === "parasite" ||
-        (hero.isExtraClass === true && (hero.race === "Рой" || hero.extraClassType === "parasite")) ||
-        (Array.isArray(hero.classes) && hero.classes.some(c => c && ["Рой","Паразит"].includes(String(c.name || "").replace(/[0-9]/g, "").trim()))))) {
+    if (hero && (hero.extraClassType === "swarm" || hero.extraClassType === "parasite" || hero.extraClassType === "walter_parasite" ||
+        (hero.isExtraClass === true && (hero.race === "Рой" || hero.extraClassType === "parasite" || hero.extraClassType === "walter_parasite")) ||
+        (Array.isArray(hero.classes) && hero.classes.some(c => c && ["Рой","Паразит","Паразит доктора Вальтера"].includes(String(c.name || "").replace(/[0-9]/g, "").trim()))))) {
         const normalized = String(className || "").replace(/[0-9]/g, "").trim();
-        const extraName = hero.extraClassType === "parasite" ? "Паразит" : "Рой";
+        const extraName = hero.extraClassType === "parasite" ? "Паразит" : (hero.extraClassType === "walter_parasite" ? "Паразит доктора Вальтера" : "Рой");
         if (normalized !== extraName) {
             console.warn("[progressionEngine] Заблокирована прогрессия чужого класса для " + extraName + ":", className);
             return;
