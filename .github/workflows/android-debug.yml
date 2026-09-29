@@ -51,11 +51,16 @@ jobs:
           text=Path("app/update_manager.js").read_text(encoding="utf-8")
           version=re.search(r"var APP_VERSION = '([^']+)'", text).group(1)
           files=[]
+          # Keep the stable web manifest focused on files that can actually change the web app.
+          # Class-token PNGs are bundled in the APK and must NOT be redownloaded on every web update.
+          # When a class-token image really changes, add that exact path to this list in the same release.
           paths=[
+            "index.html",
             "app/character_creation_pergament.js","app/character_creation_pergament.css",
             "app/Ambiences.js","app/app.js","app/Settings.js","app/update_manager.js",
-            "app/onboarding_faq_v71.js","app/styles.css"
-          ] + sorted(glob.glob("app/data/classes/*.png"))
+            "app/onboarding_faq_v71.js","app/styles.css",
+            "1790622844831.png","1790622696215.png","1790622252250.png"
+          ]
           for path in paths:
             data=Path(path).read_bytes()
             files.append({"path":path,"bytes":len(data),"sha256":hashlib.sha256(data).hexdigest()})
@@ -78,11 +83,16 @@ jobs:
           text=Path("app/update_manager.js").read_text(encoding="utf-8")
           version=re.search(r"var APP_VERSION = '([^']+)'", text).group(1)
           files=[]
+          # Keep the stable web manifest focused on files that can actually change the web app.
+          # Class-token PNGs are bundled in the APK and must NOT be redownloaded on every web update.
+          # When a class-token image really changes, add that exact path to this list in the same release.
           paths=[
+            "index.html",
             "app/character_creation_pergament.js","app/character_creation_pergament.css",
             "app/Ambiences.js","app/app.js","app/Settings.js","app/update_manager.js",
-            "app/onboarding_faq_v71.js","app/styles.css"
-          ] + sorted(glob.glob("app/data/classes/*.png"))
+            "app/onboarding_faq_v71.js","app/styles.css",
+            "1790622844831.png","1790622696215.png","1790622252250.png"
+          ]
           for path in paths:
             data=Path(path).read_bytes()
             files.append({"path":path,"bytes":len(data),"sha256":hashlib.sha256(data).hexdigest()})
