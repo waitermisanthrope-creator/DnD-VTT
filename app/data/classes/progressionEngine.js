@@ -173,6 +173,18 @@ window.applyMulticlassProficiencies = applyMulticlassProficiencies;
 window.resolveMulticlassProficiencyChoice = resolveMulticlassProficiencyChoice;
 
 function applyClassProgression(hero, className, targetLevel) {
+    // Жёсткая защита Extra-классов: Рой не может получать прогрессию
+    // другого класса, даже если внешний код вызовет движок напрямую.
+    if (hero && (hero.extraClassType === "swarm" ||
+        (hero.isExtraClass === true && hero.race === "Рой") ||
+        (Array.isArray(hero.classes) && hero.classes.some(c => c && String(c.name || "").replace(/[0-9]/g, "").trim() === "Рой")))) {
+        const normalized = String(className || "").replace(/[0-9]/g, "").trim();
+        if (normalized !== "Рой") {
+            console.warn("[progressionEngine] Заблокирована прогрессия чужого класса для Роя:", className);
+            return;
+        }
+    }
+
     // Безопасное получение данных класса (поддерживает как глобальную функцию, так и метод из window)
     const getData = typeof getClassData === 'function' ? getClassData : (window.getClassData || (() => null));
     const classData = getData(className);
