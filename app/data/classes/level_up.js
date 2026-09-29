@@ -269,7 +269,6 @@ let pendingLevelUpData = null;
         const isParasite = selectedClassName === "Паразит";
         const isWalterParasite = selectedClassName === "Паразит доктора Вальтера";
         const isGhost = selectedClassName === "Призрак";
-        const isWalterParasite = selectedClassName === "Паразит доктора Вальтера";
         const isSwarmHero = !!(hero && (
           hero.extraClassType === "swarm" ||
           hero.isExtraClass === true && hero.race === "Рой" ||
