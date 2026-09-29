@@ -1,2 +1,13 @@
-/** Shifter.js — реализуемая база класса. */
-window.shifterProgression={className:"Шифтер",englishName:"Shifter",source:"LaserLlama / third-party",status:"implemented_core",edition:"5E 2014",hitDie:10,primaryStat:"constitution",savingThrows:["strength","dexterity"],armor:["light"],weapons:["simple","blowgun","longbow","net"],multiclassRequirement:{constitution:13},subclassLevel:1,subclassFeatureLevels:[1,7,13,18],levels:{1:{features:["Кровная линия","Дикая форма"]},2:{features:["Первобытная связь"]},3:{features:["Звериные инстинкты"]},4:{features:["Увеличение характеристик (ASI) или Черта"],asi:true},5:{features:["Дикий воин","Мистические удары"]},6:{features:["Всплеск адреналина"]},7:{features:["Особенность кровной линии"]},8:{features:["Увеличение характеристик (ASI) или Черта"],asi:true},9:{features:["Дикая осведомлённость"]},10:{features:["Первобытная стойкость"]},11:{features:["Первобытная форма"]},12:{features:["Увеличение характеристик (ASI) или Черта"],asi:true},13:{features:["Особенность кровной линии"]},14:{features:["Звериные чувства"]},15:{features:["Мифические формы"]},16:{features:["Увеличение характеристик (ASI) или Черта"],asi:true},17:{features:["Первобытное возрождение"]},18:{features:["Особенность кровной линии"]},19:{features:["Увеличение характеристик (ASI) или Черта"],asi:true},20:{features:["Сила природы"]}},mechanics:{wildShape:{status:"implemented_core",maxCRByLevel:[0,0,0.25,0.5,1,1,1,2,2,2,3,3,3,4,4,5,5,5,6,6,6]},primalBond:{status:"implemented_core"},bestialInstincts:{status:"implemented_core"},adrenalineSurge:{status:"implemented_core"},primalResilience:{status:"implemented_core"},primevalForm:{status:"implemented_core"},mythicForms:{status:"implemented_core"},forceOfNature:{status:"implemented_core"},bloodlines:["Водная","Птичья","Грубая","Хищная","Насекомая","Рептильная","Паразитная"]}};
+/** Shifter.js — metadata bridge к shifter_laserllama_v2_1_runtime.js. */
+(function(){
+"use strict";
+window.shifterProgression={
+ className:"Шифтер",englishName:"Shifter",source:"laserllama",sourceVersion:"2.1.0",
+ edition:"5E",status:"implemented_full_v2_1_runtime",hitDie:10,primaryStat:"constitution",
+ secondaryStats:["strength","dexterity"],savingThrows:["strength","dexterity"],
+ armor:["light"],weapons:["simple","blowgun","longbow","net"],
+ skills:{choose:2,from:["acrobatics","animal handling","athletics","nature","perception","stealth","survival"]},
+ multiclassRequirement:{constitution:13},subclassFeatureLevels:[1,7,13,18],
+ progressionSource:"window.SHIFTER_V21",mechanicsSource:"window.shifterRuntime"
+};
+})();
