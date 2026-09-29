@@ -4124,3 +4124,13 @@ APK: build required.
 - Added dedicated descriptions for the existing extra identities Рой, Призрак and Паразит; their descriptions are stored in the parchment module for the extra identity mapping.
 - The 20 newly uploaded class-token PNG blobs from the repository root are used to replace the corresponding old files under `app/data/classes/`; the temporary root copies are removed after the move. Image bytes are reused directly: no recoloring, transparency processing or pixel modification.
 - Updater source version is bumped to 70.25.77. No APK artifact is generated in this fix.
+
+
+## V70.25.78 — SIGNATURE SCENE + IMMERSIVE PARCHMENT FIELDS (SOURCE-ONLY)
+
+- APK is intentionally NOT built yet.
+- Reworked the parchment completion scene: pressing `расписаться` keeps the parchment visible; `1790622252250.png` enters from beyond the lower-right edge and settles into the signature/seal area.
+- After the signature/seal finishes moving, there is a 2-second hold before the screen begins its blackout transition. The character creation screen is hidden only after this sequence.
+- The previous immediate transition on signature was removed.
+- Input fields and selectors on both classic and extra parchments are now approximately 90% transparent (`rgba(...,.10)`), retaining only a subtle underline so the parchment texture remains dominant.
+- No image pixels are modified.

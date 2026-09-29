@@ -147,20 +147,22 @@ window.finishParchmentCreation=function(){
  if(missing){alert('Заполните все открытые поля по порядку.');return}
  syncToClassic();
  var p=el('parchmentCreationScreen'),s=el('parchmentSignatureLayer'),bo=el('parchmentBlackout');
- if(p)p.style.display='none';
+ if(p)p.style.display='block';
  if(s){s.classList.remove('show');void s.offsetWidth;s.classList.add('show')}
+ /* The parchment stays visible while the seal/signature travels into position. */
  setTimeout(function(){
   if(bo){bo.classList.remove('show');void bo.offsetWidth;bo.classList.add('show')}
   setTimeout(function(){
    if(bo)bo.classList.remove('show');
    if(s)s.classList.remove('show');
+   if(p)p.style.display='none';
    BYPASS_PARCHMENT_ONCE=true;
    var classic=el('characterCreationScreen');
    if(classic){classic.style.display='block';classic.scrollTop=0}
    if(typeof window.initCharacterCreationScreen==='function')window.initCharacterCreationScreen();
    syncToClassic();
   },650);
- },1200);
+ },3350);
 };
 function hook(){
  if(typeof window.createNewCharacter!=='function'){setTimeout(hook,50);return}
