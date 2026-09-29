@@ -176,7 +176,12 @@
     hero.ghost.stage='incorporeal';
     hero.hpMax=hero.ghost.spiritMaxHP;
     hero.hpCurrent=hero.ghost.spiritHP;
-    hero.ac=13+mod(hero.stats&&hero.stats.cha);
+    var mental=hero.stats||{};
+    hero.stats={
+      str:6,dex:16,con:10,
+      int:Number(mental.int||10),wis:Number(mental.wis||10),cha:Number(mental.cha||10)
+    };
+    hero.ac=13+mod(hero.stats&&hero.stats.dex);
     hero.baseAC=hero.ac;
     hero.speed='40 футов, полёт (парение)';
     hero.raceName='Призрак — бесплотная форма';
