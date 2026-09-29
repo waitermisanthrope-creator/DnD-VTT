@@ -847,7 +847,7 @@ window.confirmLevelUp = function() {
 
   const extraType = hero.extraClassType;
   const heroIsExtra = extraType === "swarm" || extraType === "parasite" || extraType === "walter_parasite" || extraType === "ghost";
-  const extraName = extraType === "parasite" ? "Паразит" : (extraType === "walter_parasite" ? "Паразит доктора Вальтера" : "Рой");
+  const extraName = extraType === "parasite" ? "Паразит" : (extraType === "walter_parasite" ? "Паразит доктора Вальтера" : (extraType === "ghost" ? "Призрак" : "Рой"));
   if (heroIsExtra && className !== extraName) {
     alert(extraName + " не может мультиклассироваться. Повышайте только уровень " + extraName + ".");
     return;
@@ -1024,7 +1024,7 @@ window.setCharacterLevel = function(newLevel, hpGain = 0, specificClass = null) 
 
   // Extra-класс нельзя превратить в мультикласс даже через прямой вызов API.
   const extraType = hero.extraClassType;
-  const heroIsExtra = extraType === "swarm" || extraType === "parasite" || extraType === "walter_parasite";
+  const heroIsExtra = extraType === "swarm" || extraType === "parasite" || extraType === "walter_parasite" || extraType === "ghost";
   const extraName = extraType === "parasite" ? "Паразит" : (extraType === "walter_parasite" ? "Паразит доктора Вальтера" : "Рой");
   if (heroIsExtra && specificClass && String(specificClass).replace(/[0-9]/g,"").trim() !== extraName) {
     console.warn("[LevelUp] Заблокирована попытка мультикласса для " + extraName + ":", specificClass);
