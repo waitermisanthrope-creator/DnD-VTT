@@ -54,11 +54,11 @@
     var r=res(h,'psiPoints',l,'short');r.max=l;r.limit=psiLimit(l);
     var s=st(h);s.psionTalentsKnown=psionTalentCount(l);s.psionMasteryFree=psionMastery(l);
     s.psionInnate=s.psionInnate||{};s.psionInnateChoices=s.psionInnateChoices||{};
-    s.psionDisciplinesKnown=l>=18?3:2;s.psionDisciplinesKnown=Math.min(3,s.psionDisciplinesKnown);
+    s.psionDisciplinesKnown=l>=18?3:2;s.psionDisciplinesKnown=Math.min(3,s.psionDisciplinesKnown);if(!s.psionDisciplines)s.psionDisciplines=[];
     s.psionicAbility='intelligence';s.psionicSaveDC=8+(Number(h.proficiencyBonus)||2)+mod(h,'intelligence');s.psionicAttackBonus=(Number(h.proficiencyBonus)||2)+mod(h,'intelligence');
     if(!s.psionTalents) s.psionTalents=[];
     if(s.psionTalents.length>s.psionTalentsKnown)s.psionTalents=s.psionTalents.slice(0,s.psionTalentsKnown);
-    if(l>=3&&!s.psionDisciplines)s.psionDisciplines=[];
+    
     s.psionAlternateEffects=Object.keys(psionDisciplines).filter(function(k){return s.psionDisciplines.indexOf(k)>=0;}).map(function(k){return psionDisciplines[k].alt;});
   }
   function psionSpend(h,cost,allowMastery,ctx){
