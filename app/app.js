@@ -186,17 +186,26 @@ function renderCharacterList() {
     '</div>';
   }
   container.innerHTML = html;
-  // V70.25.80: прямые touch/click-обработчики. Не полагаемся на closest/delegation
-  // WebView и не оставляем удаление на inline onclick.
+  // V70.25.90: удаление переведено на единый pointer/click-путь.
+  // Старый touchend + preventDefault мог ломать последующий click в Android WebView.
+  // Pointer Events дают одну модель для touch/мыши, а click остаётся запасным путём.
   Array.prototype.forEach.call(container.querySelectorAll('.btn-del'), function(btn) {
-    var handler = function(e) {
-      if (e) { e.preventDefault(); e.stopPropagation(); }
+    btn.__dndDeleteHandled = false;
+    var runDelete = function(e) {
+      if (e && e.type === 'click' && btn.__dndDeleteHandled) {
+        btn.__dndDeleteHandled = false;
+        return;
+      }
+      if (e) {
+        try { e.stopPropagation(); } catch (_) {}
+      }
       var id = btn.getAttribute('data-character-id');
-      if (id) deleteCharacter(id);
-      return false;
+      if (!id || btn.__dndDeleteHandled) return;
+      btn.__dndDeleteHandled = true;
+      deleteCharacter(id);
     };
-    btn.addEventListener('click', handler, false);
-    btn.addEventListener('touchend', handler, false);
+    btn.addEventListener('pointerup', runDelete, false);
+    btn.addEventListener('click', runDelete, false);
   });
 }
 
@@ -325,12 +334,43 @@ function openCharacter(id) {
 }
 
 function deleteCharacter(id) {
-  id=String(id);var exists=allCharacters.some(function(c){return String(c.id)===id;});if(!exists){renderCharacterList();return;}
-  var confirmed=true;try{confirmed=(typeof window.confirm==='function')?window.confirm('Вы уверены, что хотите полностью удалить этого персонажа?'):true;}catch(e){confirmed=true;}
-  if(!confirmed)return;allCharacters=allCharacters.filter(function(c){return String(c.id)!==id;});
-  if(String(currentCharacterId)===id){currentCharacterId=null;currentChar=null;window.currentCharacter=null;}
-  saveAllCharacters();try{localStorage.setItem('dnd_current_character_id','');}catch(e){}renderCharacterList();
+  id = String(id);
+  var index = -1;
+  for (var i = 0; i < allCharacters.length; i++) {
+    if (String(allCharacters[i].id) === id) { index = i; break; }
+  }
+  if (index < 0) { renderCharacterList(); return false; }
+
+  var confirmed = true;
+  try {
+    if (typeof window.confirm === 'function') {
+      confirmed = window.confirm('Вы уверены, что хотите полностью удалить этого персонажа?');
+    }
+  } catch (_) {
+    confirmed = true;
+  }
+  if (!confirmed) return false;
+
+  var previous = allCharacters.slice();
+  allCharacters.splice(index, 1);
+
+  if (String(currentCharacterId) === id) {
+    currentCharacterId = null;
+    currentChar = null;
+    window.currentCharacter = null;
+  }
+
+  if (!saveAllCharacters()) {
+    allCharacters = previous;
+    renderCharacterList();
+    return false;
+  }
+
+  try { localStorage.removeItem('dnd_current_character_id'); } catch (_) {}
+  renderCharacterList();
+  return true;
 }
+window.deleteCharacter = deleteCharacter;
 
 function ensureMainVersionBadge() {
   var host = document.getElementById('characterSelectScreen');

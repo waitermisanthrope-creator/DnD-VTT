@@ -4264,3 +4264,12 @@ Whenever a new **race, class, or background** is added to the project, it must b
 - Preserve the separation between classic, DLC/Homebrew and Extra content; do not accidentally expose implementation-only classes or extra stubs in the wrong selector.
 - When adding a new content item, verify both the underlying registry and the parchment selector/filter, then test that the item can actually be selected on a phone.
 - Treat this as a **mandatory acceptance criterion for every future new race/class/background**. A content addition is not considered complete until its parchment creation integration is complete too.
+
+## V70.25.90 — ИСПРАВЛЕНИЕ УДАЛЕНИЯ ПЕРСОНАЖЕЙ + ОБНОВЛЕНИЕ ПЕРГАМЕНТОВ
+
+- Найдена проблема в предыдущем фиксe удаления: обработчик одновременно использовал `touchend` и `click` и вызывал `preventDefault()` на touch-событии. Для Android WebView это могло подавлять/ломать последующий click-путь.
+- Кнопка удаления теперь использует единый `pointerup` для touch/мыши и безопасный fallback через `click`, без `preventDefault()` на удалении. Повторный вызов от одного касания блокируется.
+- `deleteCharacter()` теперь явно экспортируется как `window.deleteCharacter`, проверяет существование персонажа, откатывает удаление при ошибке сохранения и корректно очищает текущего выбранного персонажа.
+- Версии web updater и Android APK синхронизированы на **70.25.90 / versionCode 7025090**, чтобы этот фикс появился как полноценное обновление.
+- Цель теста после обновления: удалить одного тестового персонажа с главного экрана, затем создать новый персонаж и проверить все три пергамента (Classic / DLC-Homebrew / Extra).
+- Правило: существующие изображения пергаментов и жетонов не изменялись.
