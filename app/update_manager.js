@@ -6,7 +6,8 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.25.85';
+  var APP_VERSION = '70.25.86';
+  // V70.25.86: force a fresh stable-manifest publication after the previous stale manifest.
   // Public manifest is stored in the repository; do not depend on GitHub Pages.
   var DEFAULT_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url';
