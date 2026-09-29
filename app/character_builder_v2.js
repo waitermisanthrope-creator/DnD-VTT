@@ -196,6 +196,8 @@
 
   function collectChoices(race,className,targetLevel,isNewClass,existingSubclass){
     var arr=raceChoices(race).concat(classChoices(className,targetLevel,isNewClass));
+    var ld=levelData(className,targetLevel);
+    if(ld&&ld.asi)arr.push({id:'asi',key:'class:'+className+':level:'+targetLevel+':asi',type:'asi',label:'Увеличение характеристик или черта',options:function(){return allFeats();},className:className,level:targetLevel,source:'class'});
     var sc=subclassChoice(className,targetLevel,existingSubclass);
     if(sc)arr.push(sc);
     return arr;
@@ -203,6 +205,7 @@
 
   function renderChoice(choice,idx,state){
     var opts=typeof choice.options==='function'?choice.options():choice.options||[];
+    if(choice.type==='asi'){return '<div class="cb-choice" data-choice="'+idx+'"><b>'+esc(choice.label)+'</b><select id="cb_'+idx+'_mode" class="cb-select"><option value="">— Выберите —</option><option value="plus2">+2 к одной характеристике</option><option value="plus11">+1 к двум характеристикам</option><option value="feat">Выбрать черту</option></select><div id="cb_'+idx+'_extra" style="margin-top:7px"></div></div> ';}
     if(choice.type==='stats2'){
       return '<div class="cb-choice" data-choice="'+idx+'"><b>'+esc(choice.label)+'</b><div class="cb-grid">'+
         '<select id="cb_'+idx+'_a">'+statOptions(state&&state[0])+'</select>'+
@@ -218,6 +221,7 @@
   }
 
   function choiceValue(choice,idx){
+    if(choice.type==='asi'){var mode=g.document.getElementById('cb_'+idx+'_mode')?.value;if(mode==='plus2')return {mode:mode,stat:g.document.getElementById('cb_'+idx+'_stat1')?.value};if(mode==='plus11')return {mode:mode,stat1:g.document.getElementById('cb_'+idx+'_stat1')?.value,stat2:g.document.getElementById('cb_'+idx+'_stat2')?.value};if(mode==='feat')return {mode:mode,feat:g.document.getElementById('cb_'+idx+'_feat')?.value};return {mode:''};}
     if(choice.type==='stats2'){
       return [g.document.getElementById('cb_'+idx+'_a')?.value,g.document.getElementById('cb_'+idx+'_b')?.value];
     }
@@ -225,6 +229,7 @@
     return choice.type==='multi'?Array.from(el?.selectedOptions||[]).map(function(o){return o.value;}):(el?el.value:'');
   }
   function validChoice(choice,val){
+    if(choice.type==='asi')return val&&((val.mode==='plus2'&&val.stat)||(val.mode==='plus11'&&val.stat1&&val.stat2&&val.stat1!==val.stat2)||(val.mode==='feat'&&val.feat));
     if(choice.type==='stats2')return val[0]&&val[1]&&val[0]!==val[1];
     if(choice.type==='multi')return Array.isArray(val)&&val.length===Number(choice.count||1);
     return !!val;
@@ -232,6 +237,7 @@
   function applyChoice(hero,choice,val){
     if(!validChoice(choice,val))return false;
     addChoice(hero,{key:choice.key,value:val,label:choice.label,source:choice.source,className:choice.className,level:choice.level,raceId:choice.raceId});
+    if(choice.id==='asi'){if(val.mode==='plus2')hero.stats[val.stat]=Math.min(20,(Number(hero.stats[val.stat])||10)+2);else if(val.mode==='plus11'){hero.stats[val.stat1]=Math.min(20,(Number(hero.stats[val.stat1])||10)+1);hero.stats[val.stat2]=Math.min(20,(Number(hero.stats[val.stat2])||10)+1);}else if(val.mode==='feat'){hero.feats=hero.feats||[];if(hero.feats.indexOf(val.feat)<0)hero.feats.push(val.feat);hero.features=hero.features||[];if(hero.features.indexOf(val.feat)<0)hero.features.push(val.feat);}}
     if(choice.id==='human_stats'){
       var base=(hero._builderBaseStats||hero.stats); val.forEach(function(k){hero.stats[k]=Number(base[k]||8)+1;});
     }
@@ -295,7 +301,7 @@
   };
   Wizard.prototype.renderCreate=function(){
     var s=this.steps[this.step],body='';
-    if(this.step===0)body='<div class="cb-card"><h3>Кто вы?</h3><input id="cb_name" class="cb-input" placeholder="Имя персонажа"><input id="cb_age" type="number" class="cb-input" style="margin-top:8px" placeholder="Возраст"><p class="cb-note">Дальше мастер проведёт вас по расе, классу, характеристикам и всем обязательным выборам.</p></div>';
+    if(this.step===0)var bgs=typeof g.getAllBackgrounds==='function'?g.getAllBackgrounds():(g.dndBackgrounds||[]);body='<div class="cb-card"><h3>Кто вы?</h3><input id="cb_name" class="cb-input" placeholder="Имя персонажа"><input id="cb_age" type="number" class="cb-input" style="margin-top:8px" placeholder="Возраст"><select id="cb_bg" class="cb-select" style="margin-top:8px"><option value="">— Предыстория —</option>'+bgs.map(function(b){var id=b.nameRu||b.name;return '<option value="'+esc(id)+'">'+esc(id)+'</option>';}).join('')+'</select><select id="cb_prof" class="cb-select" style="margin-top:8px"><option value="">— Профессия (необязательно) —</option>'+((g.DND_CRAFT_PROFESSION_PROGRESS&&g.DND_CRAFT_PROFESSION_PROGRESS.professions)||[]).map(function(p){return '<option value="'+esc(p.id||p.name)+'">'+esc(p.nameRu||p.name||p.id)+'</option>';}).join('')+'</select><p class="cb-note">Дальше мастер проведёт вас по расе, классу, характеристикам и всем обязательным выборам.</p></div>'; 
     if(this.step===1){
       var races=getRaces(),sel=this.race?this.race.id:'';
       body='<div class="cb-card"><h3>Раса или особый путь</h3><div class="cb-list">'+races.map(function(r){return '<div class="cb-option '+(sel===r.id?'active':'')+'" data-race="'+esc(r.id)+'"><b>'+esc(r.name)+'</b><small>'+esc(r.desc||'')+'</small></div>';}).join('')+'</div>';
@@ -351,12 +357,12 @@
     var self=this;
     this.choices.forEach(function(c,i){
       var el=self.root.querySelector('#cb_'+i);if(!el)return;
-      el.onchange=function(){var opts=typeof c.options==='function'?c.options():c.options||[];var selected=c.type==='multi'?Array.from(el.selectedOptions).map(function(x){return x.value;}):el.value;var box=self.root.querySelector('#cb_desc_'+i);var found=opts.filter(function(o){return selected.indexOf(o.id||o.name)>=0;});if(box)box.textContent=found.map(function(o){return o.description||o.desc||'';}).join(' ');};
+      el.onchange=function(){var opts=typeof c.options==='function'?c.options():c.options||[];var selected=c.type==='multi'?Array.from(el.selectedOptions).map(function(x){return x.value;}):el.value;var box=self.root.querySelector('#cb_desc_'+i);var found=opts.filter(function(o){return selected.indexOf(o.id||o.name)>=0;});if(box)box.textContent=found.map(function(o){return o.description||o.desc||'';}).join(' ');if(c.type==='asi'){var ex=self.root.querySelector('#cb_'+i+'_extra'),mode=el.value;if(ex){ex.innerHTML=mode==='plus2'?'<select id="cb_'+i+'_stat1" class="cb-select">'+statOptions()+'</select>':mode==='plus11'?'<div class="cb-grid"><select id="cb_'+i+'_stat1" class="cb-select">'+statOptions()+'</select><select id="cb_'+i+'_stat2" class="cb-select">'+statOptions()+'</select></div>':mode==='feat'?'<select id="cb_'+i+'_feat" class="cb-select"><option value="">— Черта —</option>'+opts.map(function(o){return '<option value="'+esc(o.id)+'">'+esc(o.name)+'</option>';}).join('')+'</select>':'';}};
     });
   };
   Wizard.prototype.readStep=function(){
     if(this.mode==='create'){
-      if(this.step===0){this.values.name=(this.root.querySelector('#cb_name')||{}).value?.trim();this.values.age=Number((this.root.querySelector('#cb_age')||{}).value)||0;if(!this.values.name){this.error='Введите имя.';return false;}}
+      if(this.step===0){this.values.name=(this.root.querySelector('#cb_name')||{}).value?.trim();this.values.age=Number((this.root.querySelector('#cb_age')||{}).value)||0;this.values.background=(this.root.querySelector('#cb_bg')||{}).value||'';this.values.profession=(this.root.querySelector('#cb_prof')||{}).value||'';if(!this.values.name){this.error='Введите имя.';return false;}}
       if(this.step===3){this.values.stats={};var sum=0,costs={8:0,9:1,10:2,11:3,12:4,13:5,14:7,15:9};this.root.querySelectorAll('[data-stat]').forEach(function(el){var v=Math.max(8,Math.min(15,Number(el.value)||8));self.values.stats[el.dataset.stat]=v;sum+=costs[v];});if(sum>27){this.error='Превышен лимит 27 очков.';return false;}}
       if(this.step===4){for(var i=0;i<this.choices.length;i++){var c=this.choices[i],v=choiceValue(c,i);if(!validChoice(c,v)){this.error='Нужно заполнить: '+c.label;return false;}this.values[c.key]=v;}}
     }else{
@@ -406,7 +412,7 @@
       id:'char_'+Date.now(),name:this.values.name,age:this.values.age||0,
       level:1,class:this.className,className:this.className,
       classes:[{name:this.className,level:1,subclass:null}],
-      background:'',raceId:this.race?this.race.id:'',raceName:this.race?this.race.name:'',
+      background:this.values.background||'',profession:this.values.profession||'',raceId:this.race?this.race.id:'',raceName:this.race?this.race.name:'',
       baseAC:10,ac:'10',speed:(this.race&&this.race.speed)||'30 футов',
       profBonus:2,stats:Object.assign({},this.values.stats),_builderBaseStats:Object.assign({},this.values.stats),
       savesData:{},skillsData:{},proficiencies:[],feats:[],features:[],choiceState:{},choiceHistory:[],pendingChoices:[],
@@ -441,6 +447,7 @@
     }
     if(ex&&ex.type==='walter_parasite'&&g.WALTER_PARASITE_EXTRA&&g.WALTER_PARASITE_EXTRA.normalizeCharacter)g.WALTER_PARASITE_EXTRA.normalizeCharacter(hero);
     if(ex&&ex.type==='ghost'&&g.GHOST_EXTRA&&g.GHOST_EXTRA.normalizeCharacter)g.GHOST_EXTRA.normalizeCharacter(hero);
+    if(this.values.profession&&g.DND_CRAFT_PROFESSION_PROGRESS&&typeof g.DND_CRAFT_PROFESSION_PROGRESS.initCreatedCharacter==='function')g.DND_CRAFT_PROFESSION_PROGRESS.initCreatedCharacter(hero,this.values.profession);
     if(!Array.isArray(g.allCharacters))g.allCharacters=[];
     g.allCharacters.push(hero);if(typeof g.saveAllCharacters==='function')g.saveAllCharacters();else localStorage.setItem('dnd_multi_characters_v2',JSON.stringify(g.allCharacters));
     this.root.style.display='none';if(typeof g.openCharacter==='function')g.openCharacter(hero.id);
