@@ -39,7 +39,7 @@ function sync(h){
  if(orderKey(h)==='ghostslayer'){res(h,'aetherWalk',l>=15?2:1,'short');s.ghostslayerCurseSpecial=true;}
  if(orderKey(h)==='lycan'){res(h,'hybridTransformation',l>=18?999:l>=11?2:1,'short');}
  if(orderKey(h)==='mutant'){s.mutagenFormulasKnown=s.mutagenFormulasKnown||['celerity','deftness','embers','mobility'];s.mutagenFormulasKnown=s.mutagenFormulasKnown.slice(0,l>=18?8:l>=15?7:l>=11?6:l>=7?5:4);res(h,'mutagenConcoctions',l>=15?3:l>=7?2:1,'short');res(h,'strangeMetabolism',1,'long');res(h,'exaltedMutation',Math.max(1,hemMod(h)),'long');}
- if(orderKey(h)==='profaneSoul'){var slots=l>=19?2:2,sl=l>=19?4:l>=13?3:l>=7?2:1;res(h,'profaneSoulSlots',slots,'short');s.profaneSoulSlotLevel=sl;s.profaneSoulCantrips=l>=10?3:2;s.profaneSoulSpellsKnown=l>=20?11:l>=19?10:l>=17?9:l>=15?8:l>=13?7:l>=11?6:l>=9?5:l>=7?4:l>=5?3:2;}
+ if(orderKey(h)==='profaneSoul'){var slots=l>=6?2:1,sl=l>=19?4:l>=13?3:l>=7?2:1;res(h,'profaneSoulSlots',slots,'short');s.profaneSoulSlotLevel=sl;s.profaneSoulCantrips=l>=10?3:2;s.profaneSoulSpellsKnown=l>=20?11:l>=19?10:l>=17?9:l>=15?8:l>=13?7:l>=11?6:l>=9?5:l>=7?4:l>=5?3:2;}
 }
 function requireHp(h){var loss=bloodLoss(h),cur=hp(h);if(cur<=loss)return null;setHp(h,cur-loss);return loss;}
 var curses={
@@ -105,7 +105,7 @@ function useGhost(h,id,ctx){
  if(id==='riteOfTheDawn'){s.dawnRite=true;s.crimsonRiteType='dawn';return{ok:true,effect:{damageType:'radiant',brightLightFt:20,resistance:['necrotic'],extraRiteDieVsUndead:true}};}
  if(id==='aetherWalk'){if(!spend(h,'aetherWalk',1))return{ok:false,reason:'Aether Walk недоступен.'};return{ok:true,effect:{ethereal:true,durationRounds:Math.max(1,hemMod(h)),phaseThrough:true,forceDamageIfInside:'1d10'}};}
  if(id==='riteRevival'){if(!s.crimsonRite||!s.crimsonRite.active)return{ok:false,reason:'Нет активного Crimson Rite.'};s.crimsonRite.active=false;return{ok:true,effect:{setHpIfDroppedToZero:1},message:'Rite Revival спасает от смерти.'};}
- if(id==='curseOfTheMarked'){return useCurse(h,{curse:'marked',target:t});}
+ if(id==='curseOfTheMarked'){return useCurse(h,{curse:'marked',target:t});}\n if(id==='bloodCurseOfTheExorcist'){return useCurse(h,{curse:'exorcist',target:t});}\n if(id==='bloodCurseOfCorrosion'){return useCurse(h,{curse:'corrosion',target:t});}\n if(id==='bloodCurseOfHowl'){return useCurse(h,{curse:'howl',target:t});}
  if(id==='curseSpecialist')return{ok:true,effect:{extraBloodMaledictUse:true,cursesIgnoreBloodRequirement:true}};
  if(id==='brandOfSundering')return{ok:true,effect:{brandedExtraRiteDie:true,blockIncorporealMovement:true}};
  return{ok:false,unsupported:true};
