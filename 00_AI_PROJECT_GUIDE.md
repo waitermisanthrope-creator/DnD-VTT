@@ -113,6 +113,20 @@
 - Полная HP-магия, Sacrifice, Reprisal и эффекты Burdens остаются отдельным этапом.
 - Следующий класс: Сосуд.
 
+## CLASS TEMPLATE PASS — SHIFTER (v2.1.0 / 2026-09-29)
+
+- **СТАТУС: ШИФТЕР ЗАКРЫТ ПО ПУБЛИЧНОМУ ИСТОЧНИКУ laserllama Shifter v2.1.0.**
+- Создан `app/shifter_laserllama_v2_1_runtime.js`; `app/data/classes/Shifter.js` переведён на metadata-bridge.
+- Runtime подключён в `index.html` после Сосуда.
+- Исправлена старая заготовка: Bloodline выбирается на 1 уровне, Wild Shape также начинается на 1 уровне; Max CR теперь соответствует актуальной таблице: 0 / 1⁄4 / 1⁄2 / 1 / 1 / 1 / 2 / 2 / 2 / 3 / 3 / 3 / 4 / 4 / 5 / 5 / 5 / 6 / 6 / 6.
+- Реализована полная базовая механика: Wild Shape, Diminutive Beasts, объединение естественного снаряжения, запрет заклинаний в Beast Shape, Mystic Empowerment, Natural Armor, Primal Bond, Bestial Instincts, ASI/черты, Feral Warrior, Mystic Strikes, Adrenaline Surge, Wild Awareness, Primal Resilience, Primeval Form, Feral Senses, Mythic Forms, Primeval Resurgence и Force of Nature.
+- Добавлены все **7 публичных Bloodlines v2.1.0**: Водная, Птичья, Грубая, Хищная, Насекомая, Рептильная и Паразитная.
+- Для каждой Bloodline внесены особенности уровней 1/7/13/18, параметры естественной брони/оружия и доступные Bloodline Shapes по CR 0–6.
+- Для Насекомой и Паразитной реализованы отдельные механики роев; для Грубой — Great Behemoth; для Птичьей — управление ветром; для Водной — Mystical Waters; для Хищной — Prey Drive; для Рептильной — Adaptive Camouflage/Coiled Strike/Crushing Might.
+- Патронские Bloodlines (Aberrant, Ancient, Chimera, Cuddly, Draconic, Elder, Face-Stealer, Infernal, Synthetic) не смешивались с публичными семью: источник прямо отделяет их как Patron-Exclusive Content. citeturn1view0
+- Источник сверки: публичный GM Binder Shifter и обновление v2.1.0 от 25 июня 2026. citeturn1view1turn1view0
+- Следующий класс по очереди: Аккурсд.
+
 ## CLASS TEMPLATE PASS — VESSEL (v4.0.0 / 2026-09-29)
 
 - **СТАТУС: СОСУД ЗАКРЫТ ПО АКТУАЛЬНОМУ ПУБЛИЧНОМУ ИСТОЧНИКУ laserllama Vessel v4.0.0.**
