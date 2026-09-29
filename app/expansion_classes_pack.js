@@ -210,7 +210,14 @@ function warlordRollDie(sides){var n=parseInt(String(sides||'8').replace(/[^0-9]
     if(id==='unwaveringWill')return{ok:true,effect:{advantageAgainst:['charmed','frightened','stunned']},message:'🛡️ Непоколебимая воля активна.'};
     if(id==='tacticalSuperiority')return{ok:true,effect:{restoreOnInitiative:['warlordInspiringWord','warlordRally'],rangeMultiplier:2},message:'🎖️ Тактическое превосходство.'};
     if(id==='dauntless')return{ok:true,effect:{rallyUnlimited:true,inspiringWordMaxHeal:true},message:'👑 Неустрашимый командир.'};
-    var academy=String(s.warlordAcademy||'');
+        var fightingStyleEffects={
+      archery:{rangedAttackBonus:1,ignoreHalfCover:true},brawling:{unarmedDamage:'1d6+strength',freeHandBonusAction:['unarmed','shove','grapple']},
+      mariner:{swimSpeed:'walking',acBonus:1,noUnderwaterDrawbacks:true},mountaineer:{climbSpeed:'walking',acBonus:1,fallDamageReduction:'2*level'},
+      shieldWarrior:{shieldMartial:true,shieldDamage:'2d4',soloShieldAC:1,shieldAttackBonus:1},strongbow:{useStrengthWithBows:true,bowDamageBonus:1},
+      versatileFightingAdvanced:{versatileAttackBonus:1,bonusAction:['grapple','shove','useObject']}
+    };
+    if(fightingStyleEffects[id])return{ok:true,effect:fightingStyleEffects[id],message:'⚔️ Стиль боя активен.'};
+var academy=String(s.warlordAcademy||'');
     var academyEffects={
       knighthood:{proficiency:['martialWeapons'],skills:['history','performance','religion']},inspiringShout:{initiativeTempHp:'exploitDie+leadership'},
       leadTheCharge:{bonusActionOrder:'attackOrder'},flamesOfHope:{alliesTempHp:'exploitDie+leadership',enemiesFrightened:true},paragonOfChivalry:{immune:['charmed','frightened'],allySaveAdvantage:['charmed','frightened']},
@@ -1222,6 +1229,13 @@ function warlordRollDie(sides){var n=parseInt(String(sides||'8').replace(/[^0-9]
     ],hooks:{sync:syncPsion,useFeature:usePsion,attackModifiers:psionAttack}},
     {id:'kibbles-warlord',name:'Warlord',displayName:'Военачальник',source:'Laserllama — Warlord v3.3.0',license:'Original runtime implementation; source mechanics checked against public class material',features:[
       {id:'leadershipStyle',name:'Стиль лидерства',level:1,action:'utility'},
+      {id:'archery',name:'Стрельба',level:2,action:'passive'},
+      {id:'brawling',name:'Рукопашный бой',level:2,action:'passive'},
+      {id:'mariner',name:'Моряк',level:2,action:'passive'},
+      {id:'mountaineer',name:'Альпинист',level:2,action:'passive'},
+      {id:'shieldWarrior',name:'Воин со щитом',level:2,action:'passive'},
+      {id:'strongbow',name:'Сильный лук',level:2,action:'passive'},
+      {id:'versatileFightingAdvanced',name:'Универсальный бой (расширенный)',level:2,action:'passive'},
       {id:'inspiringWord',name:'Вдохновляющее слово',level:1,action:'bonus',target:'ally',rangeFt:30},
       {id:'attackOrder',name:'Приказ к атаке',level:2,action:'special',target:'ally',rangeFt:30},
       {id:'maneuveringOrder',name:'Манёвренный приказ',level:2,action:'special',target:'ally',rangeFt:30},
