@@ -313,6 +313,7 @@ function openCharacter(id) {
   if (typeof renderCombatAbilities === 'function') renderCombatAbilities();
   if (typeof calculateCombatAbilityStats === 'function') calculateCombatAbilityStats();
   if (typeof renderCharacterFeatsOnSkillsTab === 'function') renderCharacterFeatsOnSkillsTab(currentChar);
+  if (typeof renderWalterParasitePanel === 'function') renderWalterParasitePanel(currentChar);
   
   renderProficienciesBlock();
   if (typeof renderDndTools === 'function') renderDndTools();
