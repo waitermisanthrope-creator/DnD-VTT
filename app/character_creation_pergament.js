@@ -98,7 +98,7 @@ function setupProgression(){
  window.__refreshParchmentProgress=update;window.__updateParchmentProgress=update;update();
 }
 function renderClassArt(){
- var name=el('pc_class')?el('pc_class').value:'',img=el('pc_classArt'),label=el('pc_classLabel');var extra=isExtraMode(), homebrew=isHomebrewMode();
+ var extra=isExtraMode(), homebrew=isHomebrewMode();var name=extra?(el('pc_race')?el('pc_race').value:''):(el('pc_class')?el('pc_class').value:'');var img=el('pc_classArt'),label=el('pc_classLabel');
  if(label)label.textContent=extra?'':(name||'');var raceLead=el('pcRaceLead');if(raceLead)raceLead.textContent=extra?'Выберите Extra-класс':'По внешним признакам относится к расе';
  if(extra){if(img){var extraArt=(name==='Паразит доктора Вальтера'?'./1790718758545.png':'');if(extraArt&&img.getAttribute('data-art')!==extraArt){var ep=new Image();ep.onload=function(){img.src=extraArt;img.setAttribute('data-art',extraArt);img.alt='Паразит доктора Вальтера';img.classList.add('token-ready');};ep.onerror=function(){console.warn('Extra art not found:',extraArt);};ep.src=extraArt;}else if(!extraArt){img.removeAttribute('src');img.removeAttribute('data-art');img.classList.remove('token-ready');}}}else if(img){
   var art=classArt(name);
