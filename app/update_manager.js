@@ -7,7 +7,8 @@
   'use strict';
 
   var APP_VERSION = '70.25.75';
-  var DEFAULT_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
+  // Public manifest is stored in the repository; do not depend on GitHub Pages.
+  var DEFAULT_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url';
   var CHANNEL_KEY = 'dnd_update_channel';
   var STAGED_KEY = 'dnd_update_staged_manifest';
