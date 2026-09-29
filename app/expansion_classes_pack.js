@@ -257,6 +257,30 @@
     }
     return{ok:true,message:'🧪 Формула бомбы выбрана: '+formula+'.'};
   }
+  function alchemistFormulaEffect(h,formula){
+    var s=st(h),dc=s.alchemistSaveDC||alchemistDC(h),die=s.alchemistBombDie;
+    var m={
+      'Acid Bomb':{type:'acid',die:'d8',save:'dex',effect:'target AC -3 until start of your next turn'},
+      'Bramble Bomb':{type:'none',save:'str',effect:'difficult terrain; failed save: Speed 0'},
+      'Concussion Bomb':{type:'thunder',save:'con',effect:'push 10 ft'},
+      'Cryo Bomb':{type:'cold',die:'d8',save:'con',effect:'target attack rolls -3 until start of your next turn'},
+      'Fear Bomb':{type:'psychic',die:'d6',save:'wis',effect:'Frightened until start of your next turn'},
+      'Holy Bomb':{type:'radiant',effect:'Fiends and Undead use d12 damage dice'},
+      'Impact Bomb':{type:'force',die:'d8',save:'str',effect:'Prone on failed save'},
+      'Incendiary Bomb':{type:'fire',die:'d8',save:'dex',effect:'burning area until start of your next turn'},
+      'Laughing Gas Bomb':{type:'poison',die:'d8',save:'con',effect:'Poisoned; no verbal spells until start of your next turn'},
+      'Lightning Bomb':{type:'lightning',save:'dex',effect:'no Opportunity Attacks until start of your next turn'},
+      'Oil Bomb':{type:'none',effect:'flammable oil; next fire damage treats d1-3 as 4'},
+      'Paint Bomb':{type:'none',save:'dex',effect:'Invisible condition suppressed; attacks have Advantage'},
+      'Prismatic Bomb':{type:'random',save:'random',effect:'random elemental damage and save'},
+      'Quiet Bomb':{type:'bludgeoning',effect:'silent; can knock target unconscious at 1 HP'},
+      'Seeking Bomb':{type:'fire',effect:'ignores Half and Three-Quarters Cover'},
+      'Smoke Bomb':{type:'none',effect:'heavily obscured smoke, radius doubled, 1 minute'},
+      'Teleportation Bomb':{type:'none',effect:'teleport to impact; fails beyond 30 ft'},
+      'Withering Bomb':{type:'necrotic',die:'d8',save:'con',effect:'saving throws -3 until start of your next turn'}
+    };
+    var x=m[formula];if(!x)return null;x.saveDC=dc;x.baseDie=die;return x;
+  }
   function useAlchemist(h,id,ctx,feature){
     syncAlchemist(h);ctx=ctx||{};var l=lvl(h,'Alchemist'),s=st(h),t=target(ctx),r=h.resources.alchemistReagents;
     if(id==='setFormula')return alchemistSetFormula(h,ctx.formula||'Guided Explosives');
@@ -293,8 +317,10 @@
       if(l<20)return{ok:false,message:'Ядерная бомба доступна только на 20 уровне.'};
       return{ok:true,effect:{damage:'10d10 + 100 force',radiusFt:5280,save:'dex',saveDC:s.alchemistSaveDC},message:'☢️ Ядерная бомба подготовлена.'};
     }
-    if(id==='teleportationBomb')return{ok:true,effect:{damage:0,teleportToImpact:true,maxTeleportDistanceFt:30},message:'🌀 Телепортационная бомба.'};
-    if(id==='witheringBomb')return{ok:true,effect:{damageDice:'d8',damageType:'necrotic',save:'con',saveDC:s.alchemistSaveDC,savePenalty:-3},message:'💀 Иссушающая бомба.'};
+    if(id==='teleportationBomb')return{ok:true,effect:alchemistFormulaEffect(h,'Teleportation Bomb'),message:'🌀 Телепортационная бомба.'};
+    if(id==='witheringBomb')return{ok:true,effect:alchemistFormulaEffect(h,'Withering Bomb'),message:'💀 Иссушающая бомба.'};
+    var formulaIds={acidBomb:'Acid Bomb',brambleBomb:'Bramble Bomb',concussionBomb:'Concussion Bomb',cryoBomb:'Cryo Bomb',fearBomb:'Fear Bomb',holyBomb:'Holy Bomb',impactBomb:'Impact Bomb',incendiaryBomb:'Incendiary Bomb',laughingGasBomb:'Laughing Gas Bomb',lightningBomb:'Lightning Bomb',oilBomb:'Oil Bomb',paintBomb:'Paint Bomb',prismaticBomb:'Prismatic Bomb',quietBomb:'Quiet Bomb',seekingBomb:'Seeking Bomb',smokeBomb:'Smoke Bomb'};
+    if(formulaIds[id])return{ok:true,effect:alchemistFormulaEffect(h,formulaIds[id]),message:'🧪 Формула: '+formulaIds[id]+'.'};
     if(id==='evasion')return{ok:true,effect:{evasion:true},message:'🏃 Уклонение активно.'};
     if(id==='blastCoating')return{ok:true,effect:{bombImmunity:true},message:'🧪 Покрытие взрыва: собственные бомбы не вредят тебе.'};
     if(id==='potionMixologist'){
@@ -884,15 +910,31 @@
       {id:'experimentalist',name:'Экспериментатор',level:18,action:'utility'},
       {id:'philosophersStone',name:'Философский камень',level:20,action:'passive'},
       {id:'nuclearBomb',name:'Ядерная бомба',level:20,action:'action'},
+      {id:'acidBomb',name:'Кислотная бомба',level:2,action:'special'},
+      {id:'brambleBomb',name:'Ежевичная бомба',level:2,action:'special'},
+      {id:'concussionBomb',name:'Контузионная бомба',level:2,action:'special'},
+      {id:'cryoBomb',name:'Крио-бомба',level:2,action:'special'},
+      {id:'fearBomb',name:'Бомба страха',level:2,action:'special'},
+      {id:'holyBomb',name:'Святая бомба',level:2,action:'special'},
+      {id:'impactBomb',name:'Ударная бомба',level:2,action:'special'},
+      {id:'incendiaryBomb',name:'Зажигательная бомба',level:2,action:'special'},
+      {id:'laughingGasBomb',name:'Бомба со смехотворным газом',level:2,action:'special'},
+      {id:'lightningBomb',name:'Молниевая бомба',level:2,action:'special'},
+      {id:'oilBomb',name:'Масляная бомба',level:2,action:'special'},
+      {id:'paintBomb',name:'Бомба с краской',level:2,action:'special'},
+      {id:'prismaticBomb',name:'Призматическая бомба',level:2,action:'special'},
+      {id:'quietBomb',name:'Тихая бомба',level:2,action:'special'},
+      {id:'seekingBomb',name:'Самонаводящаяся бомба',level:2,action:'special'},
+      {id:'smokeBomb',name:'Дымовая бомба',level:2,action:'special'},
       {id:'teleportationBomb',name:'Телепортационная бомба',level:2,action:'special'},
       {id:'witheringBomb',name:'Иссушающая бомба',level:2,action:'special'}
     ],subclasses:[
-      {id:'apothecary',name:'Аптекарь',features:[]},{id:'madBomber',name:'Безумный бомбардир',features:[]},
-      {id:'mutagenist',name:'Мутагенист',features:[]},{id:'polymorphist',name:'Полиморфист',features:[]},
-      {id:'xenoalchemist',name:'Ксеноалхимик',features:[]},{id:'oozeRancher',name:'Разводчик слизней',features:[]},
-      {id:'pigmentist',name:'Пигментист',features:[]},{id:'elementalist',name:'Элементалист',features:[]},
-      {id:'bombardier',name:'Бомбардир',features:[]},{id:'plagueDoctor',name:'Чумной доктор',features:[]},
-      {id:'vivisectionist',name:'Вивисектор',features:[]}
+      {id:'amorist',name:'Аморист',features:[]},{id:'apothecary',name:'Аптекарь',features:[]},
+      {id:'dynamoEngineer',name:'Инженер-динамо',features:[]},{id:'ionizer',name:'Ионизатор',features:[]},
+      {id:'madBomber',name:'Безумный бомбардир',features:[]},{id:'mutagenist',name:'Мутагенист',features:[]},
+      {id:'oozeRancher',name:'Разводчик слизней',features:[]},{id:'pigmentist',name:'Пигментист',features:[]},
+      {id:'resonator',name:'Резонатор',features:[]},{id:'venomsmith',name:'Веномсмит',features:[]},
+      {id:'xenoalchemist',name:'Ксеноалхимик',features:[]}
     ],hooks:{sync:syncAlchemist,useFeature:useAlchemist,attackModifiers:alchemistAttack}},
     {id:'mh-warden',name:'Warden',displayName:'Страж',source:'Mage Hand Press — Warden 2024 / 5.5E',license:'Original runtime implementation; feature names paraphrased',features:[
       {id:'fightingStyle',name:'Боевой стиль',level:1,action:'choice'},
