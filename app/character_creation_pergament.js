@@ -42,7 +42,6 @@ function creationHostItems(){
  var races=typeof getAllRaces==='function'?getAllRaces():[];
  return races.map(function(r){return {value:r.id,label:r.name};});
 }
-}
 function creationBackgroundItems(){
  var bgs=typeof getAllBackgrounds==='function'?getAllBackgrounds():(Array.isArray(window.dndBackgrounds)?window.dndBackgrounds:[]);
  if(isClassicMode())return bgs.filter(function(b){return CLASSIC_BACKGROUND_NAMES.indexOf(b.nameRu||b.name)!==-1;});
