@@ -74,6 +74,7 @@ var DND_CLASSES_LIST = [
   { id: 'geist', name: 'Гайст', hitDie: 8, desc: 'Временная заглушка класса. Жетон подключён; механика будет добавлена позже.' },
   { id: 'parasite', name: 'Паразит', hitDie: 8, isExtra: true, replacesRace: true, desc: 'Extra-класс: разумный симбионт. Сила, Ловкость и Телосложение принадлежат хозяину; Интеллект, Мудрость и Харизма — Паразиту. Хозяин лечится не отдыхом, а особыми механизмами симбиоза.' },
   { id: 'walter_parasite', name: 'Паразит доктора Вальтера', hitDie: 10, isExtra: true, replacesRace: true, desc: 'Extra-класс: мутагенный червь с кровью вампира. Заселяется только в мёртвое тело, оживляет его и полностью управляет им.' },
+  { id: 'ghost', name: 'Призрак', hitDie: 8, isExtra: true, replacesRace: true, desc: 'Extra-класс: душа умершего. Использует мёртвую оболочку как якорь, может покидать её и действовать бесплотно. Оболочка не подлежит лечению.' },
   { id: 'psion', name: 'Псионик', hitDie: 8, desc: 'Временная заглушка класса. Жетон подключён; механика будет добавлена позже.' },
   { id: 'rune_keeper', name: 'Рунный хранитель', hitDie: 10, desc: 'Временная заглушка класса. Жетон подключён; механика будет добавлена позже.' },
   { id: 'savant', name: 'Савант', hitDie: 8, desc: 'Временная заглушка класса. Жетон подключён; механика будет добавлена позже.' },
@@ -276,6 +277,7 @@ function updateExtraClassCreationUI() {
   var isSwarm = className === 'Рой';
   var isParasite = className === 'Паразит';
   var isWalterParasite = className === 'Паразит доктора Вальтера';
+  var isGhost = className === 'Призрак';
 
   if (isSwarm) {
     raceSelect.dataset.previousRace = raceSelect.value || '';
@@ -333,7 +335,7 @@ function updateClassDescription() {
   if (!classSelect || !descBox) return;
 
   var val = classSelect.value;
-  var classNameOnly = val.split(' ')[0];
+  var classNameOnly = val.replace(/\s+\d+$/, '').trim();
 
   var selectedClass = null;
   for (var i = 0; i < DND_CLASSES_LIST.length; i++) {
@@ -504,6 +506,7 @@ window.saveNewCreatedCharacter = function() {
   var isSwarmExtra = classNameBase === 'Рой';
   var isParasiteExtra = classNameBase === 'Паразит';
   var isWalterParasiteExtra = classNameBase === 'Паразит доктора Вальтера';
+  var isGhostExtra = classNameBase === 'Призрак';
 
   // Рой полностью заменяет обычную расу.
   if (isSwarmExtra) {
@@ -530,7 +533,7 @@ window.saveNewCreatedCharacter = function() {
           // Интеллект/Мудрость/Харизма принадлежат самому Паразиту и
           // должны сохраняться при последующей смене тела.
           if (finalStats[stat] !== undefined &&
-              (!isParasiteExtra || stat === 'str' || stat === 'dex' || stat === 'con')) {
+              (!isParasiteExtra && !isGhostExtra || stat === 'str' || stat === 'dex' || stat === 'con')) {
             finalStats[stat] += selectedRace.bonuses[stat];
           }
         }
@@ -553,7 +556,7 @@ window.saveNewCreatedCharacter = function() {
   // сохраняют существующую стартовую формулу.
   var maxHp = isSwarmExtra
     ? Math.max(1, 8 + conModFinal)
-    : ((isParasiteExtra || isWalterParasiteExtra) ? Math.max(1, (isWalterParasiteExtra ? 10 : 8) + conModFinal) : (10 + conModFinal));
+    : ((isParasiteExtra || isWalterParasiteExtra || isGhostExtra) ? Math.max(1, (isWalterParasiteExtra ? 10 : 8) + conModFinal) : (10 + conModFinal));
 
   // Ищем выбранную предысторию
   var backgroundsList = [];
@@ -711,10 +714,10 @@ window.saveNewCreatedCharacter = function() {
     raceId: raceId,
     raceName: raceName,
     baseAC: baseAc,
-    isExtraClass: isSwarmExtra || isParasiteExtra || isWalterParasiteExtra,
-    extraClassType: isSwarmExtra ? 'swarm' : (isParasiteExtra ? 'parasite' : (isWalterParasiteExtra ? 'walter_parasite' : null)),
-    replacesRace: isSwarmExtra || isParasiteExtra || isWalterParasiteExtra,
-    multiclassAllowed: !(isSwarmExtra || isParasiteExtra || isWalterParasiteExtra),
+    isExtraClass: isSwarmExtra || isParasiteExtra || isWalterParasiteExtra || isGhostExtra,
+    extraClassType: isSwarmExtra ? 'swarm' : (isParasiteExtra ? 'parasite' : (isWalterParasiteExtra ? 'walter_parasite' : (isGhostExtra ? 'ghost' : null))),
+    replacesRace: isSwarmExtra || isParasiteExtra || isWalterParasiteExtra || isGhostExtra,
+    multiclassAllowed: !(isSwarmExtra || isParasiteExtra || isWalterParasiteExtra || isGhostExtra),
     ac: String(baseAc),
     // Скорость теперь берётся из выбранной расы (races.js -> selectedRace.speed),
     // а не захардкожена как раньше. Если раса не выбрана — используем 30 футов по умолчанию.
@@ -805,6 +808,30 @@ window.saveNewCreatedCharacter = function() {
     window.WALTER_PARASITE_EXTRA.reanimateCorpse(newChar, walterCorpseTarget);
     newChar.raceName = 'Труп: ' + (raceName || 'Первичный труп');
     newChar.hostName = raceName || 'Первичный труп';
+  }
+
+  if (isGhostExtra && window.GHOST_EXTRA && typeof window.GHOST_EXTRA.normalizeCharacter === 'function') {
+    window.GHOST_EXTRA.normalizeCharacter(newChar);
+    var ghostShellTarget = {
+      id: 'initial_ghost_shell_' + newId,
+      name: raceName || 'Первичная оболочка',
+      creatureType: (selectedRace && selectedRace.creatureType) || 'Гуманоид',
+      size: (selectedRace && selectedRace.size) || 'Средний',
+      isDead: true,
+      stats: {
+        str: finalStats.str, dex: finalStats.dex, con: finalStats.con,
+        int: finalStats.int, wis: finalStats.wis, cha: finalStats.cha
+      },
+      hpMax: newChar.hpMax,
+      hpCurrent: 0,
+      ac: baseAc,
+      speed: newChar.speed
+    };
+    window.GHOST_EXTRA.bindShell(newChar, ghostShellTarget);
+    newChar.raceName = 'Мёртвая оболочка: ' + (raceName || 'Первичная оболочка');
+    newChar.hostName = raceName || 'Первичная оболочка';
+    newChar.ghost.spiritMaxHP = Math.max(1, 8 + Math.floor((newChar.stats.cha - 10) / 2));
+    newChar.ghost.spiritHP = newChar.ghost.spiritMaxHP;
   }
 
   // Авторское ХБ: профессия необязательна; при выборе создаём навык с 1 уровня.
