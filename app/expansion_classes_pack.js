@@ -863,7 +863,8 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
     r.max=pugilistMoxieMax(l);r.die=pugilistDie(l);
     s.pugilistMoxie=r.current;s.pugilistDie=pugilistDie(l);
     s.pugilistIronChin=l>=1;s.pugilistMagicFists=l>=6;
-    s.pugilistBloodiedReady=s.pugilistBloodiedReady!==false;
+    res(h,'pugilistBloodiedButUnbowed',l>=3?1:0,'short');
+    res(h,'pugilistFightingSpirit',l>=18?1:0,'long');
     syncPugilistClub(h);
   }
   function usePugilist(h,id,ctx,feature){
@@ -884,10 +885,10 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
       return{ok:true,effect:{choose:['shove','dash']},message:'👊 Ударил и отошёл: выбери Толчок или Рывок.'};
     }
     if(id==='bloodiedButUnbowed'){
-      if(s.pugilistBloodiedReady===false)return{ok:false,message:'Эта способность уже использована до отдыха.'};
+      var bbu=h.resources&&h.resources.pugilistBloodiedButUnbowed;if(!bbu||bbu.current<=0)return{ok:false,message:'Эта способность уже использована до отдыха.'};
       if((Number(h.hp)||0)>((Number(h.maxHp)||0)/2))return{ok:false,message:'Эта способность срабатывает, когда HP падают до половины или ниже.'};
       var rr=h.resources&&h.resources.pugilistMoxie;if(rr)rr.current=rr.max;
-      s.pugilistBloodiedReady=false;
+      bbu.current=0;
       return{ok:true,effect:{tempHp:l+mod(h,'con'),restoreMoxie:true},message:'🩸 Израненный, но не сломленный: Мокси восстановлено.'};
     }
     if(id==='digDeep'){
@@ -905,8 +906,10 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
       return{ok:true,effect:{rerollSave:true,ability:['str','dex','con']},message:'🛡️ Несокрушимый: спасбросок переброшен.'};
     }
     if(id==='fightingSpirit'){
+      var fs=h.resources&&h.resources.pugilistFightingSpirit;if(!fs||fs.current<=0)return{ok:false,message:'Боевой дух уже использован до долгого отдыха.'};
       if((Number(h.hp)||0)>0)return{ok:false,message:'Боевой дух срабатывает при падении до 0 HP.'};
       if((Number(s.pugilistExhaustion)||0)>=4)return{ok:false,message:'Слишком высокий уровень истощения.'};
+      fs.current=0;
       s.pugilistExhaustion=(Number(s.pugilistExhaustion)||0)+1;
       if(r)r.current=Math.ceil(r.max/2);
       return{ok:true,effect:{setHp:Math.ceil((Number(h.maxHp)||1)/2),restoreMoxie:'half',exhaustion:1},message:'🔥 Боевой дух: Пугилист возвращается в бой.'};
@@ -974,7 +977,7 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
       if(id==='uncouthArt'){if(!spendResource(h,'pugilistUncouthArt'))return{ok:false,message:'Искусство невоспитанности уже использовано до долгого отдыха.'};return{ok:true,effect:{targetsUpToLevel:l,rangeFt:60,firstHitByEachTargetRestoresMoxie:true},message:'📢 Искусство невоспитанности.'};}
     }
     if(club==='squaredCircle'){
-      if(id==='compressionLock'||id==='quickPin'||id==='toTheMat'){if(!spend(h,'pugilistMoxie',1))return{ok:false,message:'Недостаточно Мокси.'};var ge={compressionLock:{rerollGrappleEscape:true},quickPin:{opportunityAttackBecomesGrapple:true},toTheMat:{bonusGrapple:true,proneOnSuccess:true}};return{ok:true,effect:ge[id],message:'🤼 Приём «'+id+'».'};}
+      if(id==='compressionLock'||id==='quickPin'||id==='toTheMat'){if(!spend(h,'pugilistMoxie',1))return{ok:false,message:'Недостаточно Мокси.'};var ge={compressionLock:{rerollGrappleEscape:true},quickPin:{opportunityAttackBecomesGrapple:true},toTheMat:{bonusGrapple:true,proneOnSuccess:true}};var gn={compressionLock:'Компрессионный захват',quickPin:'Быстрый захват',toTheMat:'На ковёр'};return{ok:true,effect:ge[id],message:'🤼 Приём «'+gn[id]+'».'};}
       if(id==='meatShield'){if(ctx.attackMissedTargetId&&!spend(h,'pugilistMoxie',1))return{ok:false,message:'Недостаточно Мокси.'};return{ok:true,effect:{halfCoverWhileGrappling:true,redirectMissedAttackToGrappledTarget:!!ctx.attackMissedTargetId},message:'🤼 Живой щит.'};}
       if(id==='heavyweight')return{ok:true,effect:{grappleSizePlus:1,fullSpeedDragging:true},message:'🏋️ Тяжеловес.'};
       if(id==='cleanFinish')return{ok:true,effect:{advantageAgainstGrappled:true,criticalRange:19,requiresGrappled:true},message:'💥 Чистое завершение.'};
