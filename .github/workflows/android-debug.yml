@@ -123,7 +123,7 @@ jobs:
               exit 0
             fi
 
-            git commit -m "Auto-publish stable update manifest"
+            git commit -m "Auto-publish stable update manifest [skip ci]"
 
             if git push origin HEAD:main; then
               exit 0
