@@ -273,6 +273,7 @@ function updateExtraClassCreationUI() {
 
   var className = String(classSelect.value || '').replace(/[0-9]/g, '').trim().split(' ')[0];
   var isSwarm = className === 'Рой';
+  var isParasite = className === 'Паразит';
 
   if (isSwarm) {
     raceSelect.dataset.previousRace = raceSelect.value || '';
@@ -284,6 +285,19 @@ function updateExtraClassCreationUI() {
       raceDesc.innerHTML = '<strong>Рой — Extra-класс</strong><br>' +
         'Рой одновременно заменяет расу и класс. Обычная раса не выбирается. ' +
         'Все уровни после первого идут только в класс «Рой».';
+    }
+  } else if (isParasite) {
+    // Для Паразита выбор расы становится выбором стартового хозяина.
+    // Сам Extra-класс всё равно заменяет расу и остаётся закрытым для мультикласса.
+    raceSelect.disabled = false;
+    raceSelect.style.opacity = '';
+    raceSelect.title = 'Выберите стартовое тело-хозяина. Разум Паразита сохраняется при переселении.';
+    var raceLabel = raceSelect.previousElementSibling;
+    if (raceLabel && raceLabel.tagName === 'LABEL') raceLabel.textContent = 'Стартовый хозяин';
+    if (raceDesc) {
+      raceDesc.innerHTML = '<strong>Паразит — Extra-класс</strong><br>' +
+        'Выберите тело-хозяина. Сила, Ловкость и Телосложение берутся из него; ' +
+        'Интеллект, Мудрость и Харизма принадлежат Паразиту и сохраняются при переселении.';
     }
   } else {
     raceSelect.disabled = false;
