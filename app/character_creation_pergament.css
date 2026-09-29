@@ -71,3 +71,35 @@
 }
 /* Keep the seal/signature in the actual signing zone instead of covering the body text. */
 .parchment-signature-img{transform-origin:center bottom;}
+
+/* V70.25.93 — cinematic seal transition: after the parchment darkens, the seal grows toward the viewer and fades into black. */
+.parchment-signature-layer.cinematic .parchment-signature-img{
+  animation:signatureCinematic 1.65s cubic-bezier(.22,.7,.2,1) forwards!important;
+}
+@keyframes signatureCinematic{
+  0%{
+    right:max(18px,calc((100vw - min(100vw,900px))/2 + 18px));
+    bottom:max(88px,calc(env(safe-area-inset-bottom,0px) + 88px));
+    width:min(48vw,310px);
+    max-height:24vh;
+    transform:translate(0,0) scale(1) rotate(-2deg);
+    opacity:1;
+    filter:drop-shadow(0 4px 5px rgba(45,25,8,.35));
+  }
+  38%{
+    opacity:1;
+    filter:drop-shadow(0 3px 4px rgba(45,25,8,.18));
+  }
+  100%{
+    right:50%;
+    bottom:50%;
+    width:min(112vw,900px);
+    max-height:none;
+    transform:translate(50%,50%) scale(1.18) rotate(-2deg);
+    opacity:0;
+    filter:brightness(.08) drop-shadow(0 0 0 rgba(0,0,0,0));
+  }
+}
+.parchment-blackout.show.cinematic-hold{
+  animation:parchmentBlackout 0.65s ease both;
+}
