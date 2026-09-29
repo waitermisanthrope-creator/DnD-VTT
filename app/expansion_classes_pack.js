@@ -228,6 +228,92 @@
     return o;
   }
 
+  function alchemistReagents(l){return 2+2*(l-1);}
+  function alchemistPrime(l){return l>=17?5:l>=13?4:l>=9?3:l>=5?2:l>=2?1:0;}
+  function alchemistBombDie(l){return l>=17?'4d10':l>=11?'3d10':l>=5?'2d10':'1d10';}
+  function alchemistFormulaCount(l){return l>=19?8:l>=16?7:l>=12?6:l>=8?5:l>=2?3:0;}
+  function alchemistDC(h){return 8+(Number(h.proficiencyBonus)||2)+mod(h,'intelligence');}
+  function syncAlchemist(h){
+    var l=lvl(h,'Alchemist');if(!l)return;
+    var s=st(h),r=res(h,'alchemistReagents',alchemistReagents(l),'short');
+    r.max=alchemistReagents(l);
+    s.alchemistBombDie=alchemistBombDie(l);
+    s.alchemistPrimeBomb=alchemistPrime(l);
+    s.alchemistFormulaCount=alchemistFormulaCount(l);
+    s.alchemistFormulae=s.alchemistFormulae||['Teleportation Bomb','Withering Bomb','Guided Explosives'];
+    s.alchemistDiscoveries=s.alchemistDiscoveries||[];
+    s.alchemistPotions=s.alchemistPotions||[];
+    s.alchemistSaveDC=alchemistDC(h);
+    s.alchemistPhilosopherStone=l>=20;
+  }
+  function alchemistSetFormula(h,formula){
+    syncAlchemist(h);var s=st(h);
+    var allowed=['Teleportation Bomb','Withering Bomb','Nuclear Bomb','Elemental Infusion','Guided Explosives','Precision Explosives','Unconventional Explosives'];
+    if(allowed.indexOf(formula)<0)return{ok:false,message:'Неизвестная формула бомбы.'};
+    s.alchemistFormulae=s.alchemistFormulae||[];
+    if(s.alchemistFormulae.indexOf(formula)<0){
+      if(s.alchemistFormulae.length>=alchemistFormulaCount(lvl(h,'Alchemist')))s.alchemistFormulae.shift();
+      s.alchemistFormulae.push(formula);
+    }
+    return{ok:true,message:'🧪 Формула бомбы выбрана: '+formula+'.'};
+  }
+  function useAlchemist(h,id,ctx,feature){
+    syncAlchemist(h);ctx=ctx||{};var l=lvl(h,'Alchemist'),s=st(h),t=target(ctx),r=h.resources.alchemistReagents;
+    if(id==='setFormula')return alchemistSetFormula(h,ctx.formula||'Guided Explosives');
+    if(id==='bomb'){
+      var prime=Math.max(0,Math.min(Number(ctx.reagents)||0,s.alchemistPrimeBomb));
+      if(prime&&!spend(h,'alchemistReagents',prime))return{ok:false,message:'Недостаточно реагентов для Прайм-бомбы.'};
+      var damage=alchemistBombDie(l)+(prime?' + '+prime+'d10':'')+' fire';
+      return{ok:true,target:t&&t.id,effect:{bomb:true,damage:damage,rangeFt:90,radiusFt:5+5*prime,save:'dex',saveDC:s.alchemistSaveDC,explodesOncePerTurn:true},message:'💣 Бомба: '+damage+'.'};
+    }
+    if(id==='primeBomb'){
+      var n=Math.max(1,Math.min(Number(ctx.reagents)||1,s.alchemistPrimeBomb));
+      if(!spend(h,'alchemistReagents',n))return{ok:false,message:'Недостаточно реагентов.'};
+      return{ok:true,effect:{extraDamageDice:n+'d10',radiusIncreaseFt:5*n},message:'💥 Прайм-бомба: +'+n+'d10.'};
+    }
+    if(id==='reagentSynthesis'){
+      if(s.alchemistSynthesisUsed)return{ok:false,message:'Синтез реагентов уже использован до долгого отдыха.'};
+      s.alchemistSynthesisUsed=true;
+      var gain=Math.max(1,mod(h,'intelligence'));r.current=Math.min(r.max,r.current+gain);
+      return{ok:true,effect:{restoreReagents:gain},message:'🧪 Синтез: восстановлено '+gain+' реагентов.'};
+    }
+    if(id==='potionBrew'){
+      var cost=Math.max(1,Number(ctx.reagents)||1),name=ctx.potion||'Potion of Healing';
+      if(!spend(h,'alchemistReagents',cost))return{ok:false,message:'Недостаточно реагентов.'};
+      if(s.alchemistPotions.length>=Math.max(1,mod(h,'intelligence')))return{ok:false,message:'Достигнут лимит приготовленных зелий.'};
+      s.alchemistPotions.push({name:name,reagents:cost});
+      return{ok:true,effect:{potion:name,reagents:cost},message:'🧪 Приготовлено зелье: '+name+'.'};
+    }
+    if(id==='distillPotion'){
+      var idx=Number(ctx.index)||0;if(!s.alchemistPotions[idx])return{ok:false,message:'Зелье не найдено.'};
+      var p=s.alchemistPotions.splice(idx,1)[0],back=Math.min(Number(p.reagents)||0,r.max-r.current);r.current+=back;
+      return{ok:true,effect:{restoreReagents:back},message:'🧪 Зелье перегнано: +'+back+' реагентов.'};
+    }
+    if(id==='nuclearBomb'){
+      if(l<20)return{ok:false,message:'Ядерная бомба доступна только на 20 уровне.'};
+      return{ok:true,effect:{damage:'10d10 + 100 force',radiusFt:5280,save:'dex',saveDC:s.alchemistSaveDC},message:'☢️ Ядерная бомба подготовлена.'};
+    }
+    if(id==='teleportationBomb')return{ok:true,effect:{damage:0,teleportToImpact:true,maxTeleportDistanceFt:30},message:'🌀 Телепортационная бомба.'};
+    if(id==='witheringBomb')return{ok:true,effect:{damageDice:'d8',damageType:'necrotic',save:'con',saveDC:s.alchemistSaveDC,savePenalty:-3},message:'💀 Иссушающая бомба.'};
+    if(id==='evasion')return{ok:true,effect:{evasion:true},message:'🏃 Уклонение активно.'};
+    if(id==='blastCoating')return{ok:true,effect:{bombImmunity:true},message:'🧪 Покрытие взрыва: собственные бомбы не вредят тебе.'};
+    if(id==='potionMixologist'){
+      if(s.alchemistPotions.length<2)return{ok:false,message:'Нужно два зелья.'};
+      var a=s.alchemistPotions.shift(),b=s.alchemistPotions.shift();
+      return{ok:true,effect:{mixedPotions:[a.name,b.name],bonusAction:true},message:'🧪 Два зелья объединены.'};
+    }
+    if(id==='philosophersStone'){
+      if(l<20)return{ok:false,message:'Философский камень доступен на 20 уровне.'};
+      return{ok:true,effect:{initiativeReagentsTo:6,quickBrewing:true,longevity:true},message:'💎 Философский камень активен.'};
+    }
+    if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' активно.'};
+    return{ok:false,unsupported:true,message:'Эта особенность Алхимика зарегистрирована, но требует отдельного UI/боевого hook.'};
+  }
+  function alchemistAttack(h,ctx){
+    syncAlchemist(h);var s=st(h);
+    return{bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:['Alchemist Bomb DC '+s.alchemistSaveDC,'Bomb '+s.alchemistBombDie]};
+  }
+
   function syncSpellblade(h){var l=lvl(h,'Spellblade');if(!l)return;res(h,'arcaneSurges',Math.max(2,Math.ceil((Number(h.proficiencyBonus)||Math.floor((l-1)/4)+2))), 'short');}
 
   function target(ctx){return ctx&&ctx.target?ctx.target:null;}
@@ -786,6 +872,28 @@
       {id:'chivalry',name:'Рыцарство',features:[]},{id:'dread',name:'Ужас',features:[]},{id:'ferocity',name:'Свирепость',features:[]},{id:'gallantry',name:'Галантерея',features:[]},{id:'schemes',name:'Интриги',features:[]},{id:'tactics',name:'Тактика',features:[]},
       {id:'claws',name:'Когти',features:[]},{id:'counsel',name:'Совет',features:[]},{id:'liberty',name:'Свобода',features:[]},{id:'navigators',name:'Навигаторы',features:[]},{id:'order',name:'Порядок',features:[]},{id:'zeal',name:'Рвение',features:[]}
     ],hooks:{sync:syncWarlord,useFeature:useWarlord,attackModifiers:warlordAttack}},
+    {id:'mh-alchemist',name:'Alchemist',displayName:'Алхимик',source:'Mage Hand Press — Alchemist 2024 / 5.5E',license:'Original runtime implementation; feature names paraphrased',features:[
+      {id:'bomb',name:'Бомба',level:1,action:'attack',target:'enemy'},
+      {id:'potionBrew',name:'Варка зелий',level:1,action:'utility'},
+      {id:'primeBomb',name:'Прайм-бомба',level:2,action:'special'},
+      {id:'setFormula',name:'Формула бомбы',level:2,action:'choice'},
+      {id:'reagentSynthesis',name:'Синтез реагентов',level:2,action:'utility'},
+      {id:'evasion',name:'Уклонение',level:7,action:'passive'},
+      {id:'blastCoating',name:'Покрытие взрыва',level:11,action:'passive'},
+      {id:'potionMixologist',name:'Миксолог зелий',level:15,action:'bonus'},
+      {id:'experimentalist',name:'Экспериментатор',level:18,action:'utility'},
+      {id:'philosophersStone',name:'Философский камень',level:20,action:'passive'},
+      {id:'nuclearBomb',name:'Ядерная бомба',level:20,action:'action'},
+      {id:'teleportationBomb',name:'Телепортационная бомба',level:2,action:'special'},
+      {id:'witheringBomb',name:'Иссушающая бомба',level:2,action:'special'}
+    ],subclasses:[
+      {id:'apothecary',name:'Аптекарь',features:[]},{id:'madBomber',name:'Безумный бомбардир',features:[]},
+      {id:'mutagenist',name:'Мутагенист',features:[]},{id:'polymorphist',name:'Полиморфист',features:[]},
+      {id:'xenoalchemist',name:'Ксеноалхимик',features:[]},{id:'oozeRancher',name:'Разводчик слизней',features:[]},
+      {id:'pigmentist',name:'Пигментист',features:[]},{id:'elementalist',name:'Элементалист',features:[]},
+      {id:'bombardier',name:'Бомбардир',features:[]},{id:'plagueDoctor',name:'Чумной доктор',features:[]},
+      {id:'vivisectionist',name:'Вивисектор',features:[]}
+    ],hooks:{sync:syncAlchemist,useFeature:useAlchemist,attackModifiers:alchemistAttack}},
     {id:'mh-warden',name:'Warden',displayName:'Страж',source:'Mage Hand Press — Warden 2024 / 5.5E',license:'Original runtime implementation; feature names paraphrased',features:[
       {id:'fightingStyle',name:'Боевой стиль',level:1,action:'choice'},
       {id:'sentinelStand',name:'Стойка часового',level:1,action:'choice'},
@@ -822,7 +930,6 @@
     {id:'kibbles-spellblade',name:'Spellblade',displayName:'Заклинатель клинка',source:'KibblesTasty Homebrew',license:'CC-BY content source; original runtime implementation',features:[{id:'spellstrike',name:'Заклинательный удар',level:1,action:'bonus',target:'self',description:'Связать оружейную атаку с магическим эффектом.'},{id:'arcaneGuard',name:'Арканная защита',level:2,action:'bonus',target:'self',description:'Получить временную защиту.'}],subclasses:[{id:'arcaneTradition',name:'Арканная традиция',features:[{id:'arcaneDuelist',name:'Арканный дуэлянт',level:3,action:'passive'}]},{id:'stormTradition',name:'Традиция бури',features:[{id:'stormStrike',name:'Удар бури',level:3,action:'on-hit'}]},{id:'wardingTradition',name:'Оберегающая традиция',features:[{id:'spellParry',name:'Парирование заклинания',level:3,action:'reaction'}]},{id:'bladeDancer',name:'Танцор клинка',features:[{id:'bladeDance',name:'Танец клинка',level:3,action:'bonus'}]}],hooks:{sync:syncSpellblade,useFeature:useSpellblade,attackModifiers:spellbladeAttack}},
     {id:'mh-necromancer',name:'Necromancer',displayName:'Некромант',source:'Mage Hand Press',license:'Original runtime implementation; feature names paraphrased',features:[{id:'charnelTouch',name:'Могильное касание',level:1,action:'action'},{id:'thralls',name:'Неживые слуги',level:2,action:'utility'},{id:'deadSpace',name:'Мёртвое пространство',level:2,action:'utility'},{id:'darkArcana',name:'Тёмная аркана',level:3,action:'bonus'},{id:'animateDead',name:'Оживление мёртвых',level:5,action:'utility'},{id:'criticalSpellcasting',name:'Критическое колдовство',level:5,action:'passive'},{id:'improvedThralls',name:'Улучшенные слуги',level:7,action:'passive'},{id:'improvedCriticalSpellcasting',name:'Улучшенное критическое колдовство',level:14,action:'passive'},{id:'undyingServitude',name:'Неумирающее служение',level:18,action:'reaction'},{id:'lichdom',name:'Личествование',level:20,action:'passive'}],subclasses:[{id:'deathKnight',name:'Death Knight',features:[]},{id:'overlord',name:'Overlord',features:[]},{id:'paleMaster',name:'Pale Master',features:[]}],hooks:{sync:syncNecromancer,useFeature:useNecromancer,attackModifiers:necromancerAttack}},
     {id:'mh-martyr',name:'Martyr',displayName:'Мученик',source:'Mage Hand Press',license:'Original runtime implementation; feature names paraphrased',features:[{id:'armorOfFaith',name:'Доспех веры',level:1,action:'utility'},{id:'miraculousHealing',name:'Чудесное исцеление',level:2,action:'action'},{id:'reprisal',name:'Воздаяние',level:2,action:'reaction'},{id:'sacrifice',name:'Жертвенный удар',level:3,action:'bonus'},{id:'sacrificeFoe',name:'Жертва врага',level:7,action:'passive'},{id:'divineRespite',name:'Божественная передышка',level:9,action:'utility'},{id:'undying',name:'Неумирающий',level:10,action:'reaction'},{id:'improvedSacrificialStrike',name:'Улучшенный жертвенный удар',level:11,action:'bonus'},{id:'marchUntoDestiny',name:'Шествие к судьбе',level:15,action:'passive'},{id:'finalMartyrdom',name:'Последнее мученичество',level:20,action:'action'}],subclasses:[{id:'mercy',name:'Burden of Mercy',features:[]},{id:'revolution',name:'Burden of Revolution',features:[]},{id:'truth',name:'Burden of Truth',features:[]},{id:'awakening',name:'Burden of Awakening',features:[]}],hooks:{sync:syncMartyr,useFeature:useMartyr}}
-  ];
     {id:'sv-pugilist',name:'Pugilist',displayName:'Пугилист',source:'Benjamin Huffman / Sterling Vermin Adventuring Co.',license:'Original runtime implementation; source mechanics checked against current 5.5E class material',features:[
       {id:'fisticuffs',name:'Кулачный бой',level:1,action:'passive'},
       {id:'ironChin',name:'Железный подбородок',level:1,action:'utility'},
@@ -850,6 +957,7 @@
       {id:'squaredCircle',name:'Квадратный ринг',features:[]},
       {id:'sweetScience',name:'Благородное искусство',features:[]}
     ],hooks:{sync:syncPugilist,useFeature:usePugilist,attackModifiers:pugilistAttack}},
+  ];
   packs.forEach(function(p){D.registerClass(p);});
   global.DNDExpansionClasses={VERSION:'1.0.0',packs:packs.map(function(p){return p.id;})};
 })(window);
