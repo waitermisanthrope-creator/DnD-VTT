@@ -953,8 +953,8 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
     }
     if(club==='dogAndHound'){
       if(id==='summonHound'){
-        if(!g.DNDCompanionPacks||!g.DNDCompanionPacks.create)return{ok:false,message:'Система спутников недоступна.'};
-        var e=g.DNDCompanionPacks.create('beastMaster',{name:'Гончая Пугилиста',source:'Пугилист — Пёс и гончая',sourceType:'subclass',controlMode:'command',hp:3+5*l,maxHp:3+5*l,ac:12+(Number(h.proficiencyBonus)||2),speed:40,size:1,actions:[{name:'Укус',attackBonus:(Number(h.proficiencyBonus)||2)+2,damage:'2d4+'+(Number(h.proficiencyBonus)||2),damageType:'piercing',rangeFt:5}],metadata:{pugilistHound:true,dire:l>=17}});s.pugilistHoundId=e&&e.id;return{ok:true,message:'🐕 Гончая призвана.'};
+        if(!global.DNDCompanionPacks||!global.DNDCompanionPacks.create)return{ok:false,message:'Система спутников недоступна.'};
+        var e=global.DNDCompanionPacks.create('beastMaster',{name:'Гончая Пугилиста',source:'Пугилист — Пёс и гончая',sourceType:'subclass',controlMode:'command',hp:3+5*l,maxHp:3+5*l,ac:12+(Number(h.proficiencyBonus)||2),speed:40,size:1,actions:[{name:'Укус',attackBonus:(Number(h.proficiencyBonus)||2)+2,damage:'2d4+'+(Number(h.proficiencyBonus)||2),damageType:'piercing',rangeFt:5}],metadata:{pugilistHound:true,dire:l>=17}});s.pugilistHoundId=e&&e.id;return{ok:true,message:'🐕 Гончая призвана.'};
       }
       if(id==='coordinatedAttack')return{ok:true,effect:{houndReactionAttack:true},message:'🐕 Слаженная атака: гончая может атаковать реакцией.'};
       if(id==='houndBestFriend')return{ok:true,effect:{reactionOpportunityAgainstAttacker:true},message:'🐕 Лучший друг гончей: доступна ответная атака.'};
