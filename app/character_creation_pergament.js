@@ -35,7 +35,13 @@ function creationRaceItems(){
  var races=typeof getAllRaces==='function'?getAllRaces():[];
  if(isClassicMode())return races.filter(function(r){return CLASSIC_RACE_IDS.indexOf(r.id)!==-1;}).map(function(r){return {value:r.id,label:r.name};});
  if(isHomebrewMode())return races.filter(function(r){return CLASSIC_RACE_IDS.indexOf(r.id)===-1;}).map(function(r){return {value:r.id,label:r.name};});
- return [{value:'Призрак',label:'Призрак'},{value:'Паразит',label:'Паразит'},{value:'Рой',label:'Рой'}];
+ return EXTRA_TYPES.map(function(name){return {value:name,label:name};});
+}
+function extraNeedsHost(name){return name==='Призрак'||name==='Паразит'||name==='Паразит доктора Вальтера';}
+function creationHostItems(){
+ var races=typeof getAllRaces==='function'?getAllRaces():[];
+ return races.map(function(r){return {value:r.id,label:r.name};});
+}
 }
 function creationBackgroundItems(){
  var bgs=typeof getAllBackgrounds==='function'?getAllBackgrounds():(Array.isArray(window.dndBackgrounds)?window.dndBackgrounds:[]);
@@ -64,7 +70,12 @@ function classes(){
  return Object.keys(ref).map(function(name){return{name:name,displayName:name}});
 }
 function classArt(name){return CLASS_TOKEN_ART[name]||''}
-var EXTRA_DESCRIPTIONS={'Рой':'Не оставляет после себя свидетелей: эта живая масса окружает жертву со всех сторон, давит числом и продолжает двигаться даже после самых тяжёлых ран.','Призрак':'Его появление означает, что кто-то уже умер. Он не торгуется, не отступает и не оставляет тех, кого считает своей добычей.','Паразит':'Он превращает живое тело в убежище и оружие. Чем дольше его не остановить, тем меньше шансов, что носитель останется собой.'};
+var EXTRA_DESCRIPTIONS={
+ 'Рой':'Существо, состоящее из множества живых особей, действующих как единый организм. Отдельную особь уничтожить почти невозможно, но весь рой уязвим к массовому воздействию и огню.',
+ 'Призрак':'Нематериальная сущность, сохранившая волю после смерти. Привязанный к миру живых призрак может вселяться в мёртвые оболочки и использовать их как временное тело.',
+ 'Паразит':'Живой организм, превращающий носителя в убежище и оружие. Паразит сохраняет сознание и постепенно перестраивает тело хозяина под собственные потребности.',
+ 'Паразит доктора Вальтера':'Экспериментальный вид, созданный в лаборатории безумного доктора Вальтера. Несколько особей были выращены в строго контролируемой среде, однако часть из них сумела покинуть лабораторию и исчезла. Их способности, пределы развития и причина агрессивного поведения до сих пор неизвестны. В связи с этим городские власти объявили особый розыск: за уничтоженную особь или доставленный мёртвый экземпляр выплачивается 30 золотых, за живой и неповреждённый экземпляр — 300 золотых. Живой экземпляр считается чрезвычайно ценным для изучения и одновременно потенциально опасным.'
+};
 function extraDescriptionHtml(){var type=el('pc_race')?el('pc_race').value:'';if(type&&EXTRA_DESCRIPTIONS[type])return '<strong>'+esc(type)+':</strong> '+esc(EXTRA_DESCRIPTIONS[type]);return '';}
 function setModeClass(){
  var stage=el('parchmentStage');if(!stage)return;
@@ -89,12 +100,17 @@ function fitSelect(e){
 function reveal(id,yes){var e=el(id);if(!e)return;e.closest('.parchment-step')?.classList.toggle('step-hidden',!yes)}
 function setupProgression(){
  var classicSteps=[['pc_name',function(){var e=el('pc_name');return e&&String(e.value||'').trim().length>0}],['pc_origin',function(){var e=el('pc_origin');return e&&String(e.value||'').trim().length>0}],['pc_class',function(){var e=el('pc_class');return e&&String(e.value||'').length>0}],['pc_gender',function(){var e=el('pc_gender');return e&&String(e.value||'').length>0}],['pc_race',function(){var e=el('pc_race');return e&&String(e.value||'').length>0}],['pc_age',function(){var e=el('pc_age');return e&&String(e.value||'').trim().length>0}],['pc_background',function(){var e=el('pc_background');return e&&String(e.value||'').length>0}],['pc_profession',function(){var e=el('pc_profession');return e&&String(e.value||'').length>0}]];
- var extraSteps=[['pc_name',function(){var e=el('pc_name');return e&&String(e.value||'').trim().length>0}],['pc_race',function(){var e=el('pc_race');return e&&String(e.value||'').length>0}]];
+ var extraSteps=[
+  ['pc_name',function(){var e=el('pc_name');return e&&String(e.value||'').trim().length>0}],
+  ['pc_race',function(){var e=el('pc_race');return e&&String(e.value||'').length>0}],
+  ['pc_extraHost',function(){var type=el('pc_race')?el('pc_race').value:'';if(!extraNeedsHost(type))return true;var e=el('pc_extraHost');return e&&String(e.value||'').length>0}]
+];
  var steps=isExtraMode()?extraSteps:classicSteps;
- var allFields=['pc_name','pc_origin','pc_class','pc_gender','pc_race','pc_age','pc_background','pc_profession'];
+ var allFields=['pc_name','pc_origin','pc_class','pc_gender','pc_race','pc_extraHost','pc_age','pc_background','pc_profession'];
  function findStep(field){var n=field;while(n&&(!n.classList||!n.classList.contains('parchment-step')))n=n.parentNode;return n;}
- function update(){var firstIncomplete=steps.length;for(var i=0;i<steps.length;i++){if(!steps[i][1]()){firstIncomplete=i;break;}}var activeIds={};steps.forEach(function(x){activeIds[x[0]]=true});allFields.forEach(function(id){var field=el(id);if(!field)return;var step=findStep(field);if(isExtraMode()&&!activeIds[id]){if(step)step.classList.add('step-hidden');field.disabled=true;return;}var idx=-1;for(var k=0;k<steps.length;k++){if(steps[k][0]===id){idx=k;break;}}var visible=idx>=0&&idx<=firstIncomplete;if(step)step.classList.toggle('step-hidden',!visible);field.disabled=idx<0||idx>firstIncomplete;if(field.tagName==='SELECT')fitSelect(field);});var complete=firstIncomplete===steps.length;var warning=el('pcWarning'),tax=el('pcTax'),reward=el('pcReward');if(isExtraMode()){if(warning)warning.classList.toggle('step-hidden',!el('pc_race')||!String(el('pc_race').value||'').trim());if(tax)tax.classList.add('step-hidden');if(reward)reward.classList.toggle('step-hidden',!complete);}else{if(tax)tax.classList.toggle('step-hidden',!complete);if(warning)warning.classList.toggle('step-hidden',!complete);if(reward)reward.classList.toggle('step-hidden',!complete);}var sign=el('pc_signButton');if(sign){sign.disabled=!complete;sign.classList.toggle('is-ready',complete);sign.style.display=complete?'block':'none';}var reason=el('pc_extraReason');if(reason&&CHARACTER_CREATION_MODE==='extra')reason.innerHTML=extraDescriptionHtml();}
- var stage=el('parchmentStage');if(stage&&!stage.dataset.progressBound){stage.dataset.progressBound='1';stage.addEventListener('input',function(ev){if(ev.target&&ev.target.classList&&ev.target.classList.contains('parchment-field'))update();});stage.addEventListener('change',function(ev){var t=ev.target;if(!t)return;if(t.id==='pc_class'||t.id==='pc_gender'||t.id==='pc_race'||t.id==='pc_background'||t.id==='pc_profession'){if(t.tagName==='SELECT')fitSelect(t);update();if(t.id==='pc_class')renderClassArt();}else if(t.classList&&t.classList.contains('parchment-field'))update();});}
+ function update(){var firstIncomplete=steps.length;for(var i=0;i<steps.length;i++){if(!steps[i][1]()){firstIncomplete=i;break;}}var activeIds={};steps.forEach(function(x){activeIds[x[0]]=true});allFields.forEach(function(id){var field=el(id);if(!field)return;var step=findStep(field);if(isExtraMode()&&id==='pc_extraHost'&&!extraNeedsHost(el('pc_race')?el('pc_race').value:'')){if(step)step.classList.add('step-hidden');field.disabled=true;field.value='';return;}
+ if(isExtraMode()&&!activeIds[id]){if(step)step.classList.add('step-hidden');field.disabled=true;return;}var idx=-1;for(var k=0;k<steps.length;k++){if(steps[k][0]===id){idx=k;break;}}var visible=idx>=0&&idx<=firstIncomplete;if(step)step.classList.toggle('step-hidden',!visible);field.disabled=idx<0||idx>firstIncomplete;if(field.tagName==='SELECT')fitSelect(field);});var complete=firstIncomplete===steps.length;var warning=el('pcWarning'),tax=el('pcTax'),reward=el('pcReward');if(isExtraMode()){if(warning)warning.classList.toggle('step-hidden',!el('pc_race')||!String(el('pc_race').value||'').trim());if(tax)tax.classList.add('step-hidden');if(reward)reward.classList.toggle('step-hidden',!complete);}else{if(tax)tax.classList.toggle('step-hidden',!complete);if(warning)warning.classList.toggle('step-hidden',!complete);if(reward)reward.classList.toggle('step-hidden',!complete);}var sign=el('pc_signButton');if(sign){sign.disabled=!complete;sign.classList.toggle('is-ready',complete);sign.style.display=complete?'block':'none';}var reason=el('pc_extraReason');if(reason&&CHARACTER_CREATION_MODE==='extra')reason.innerHTML=extraDescriptionHtml();}
+ var stage=el('parchmentStage');if(stage&&!stage.dataset.progressBound){stage.dataset.progressBound='1';stage.addEventListener('input',function(ev){if(ev.target&&ev.target.classList&&ev.target.classList.contains('parchment-field'))update();});stage.addEventListener('change',function(ev){var t=ev.target;if(!t)return;if(t.id==='pc_class'||t.id==='pc_gender'||t.id==='pc_race'||t.id==='pc_extraHost'||t.id==='pc_background'||t.id==='pc_profession'){if(t.tagName==='SELECT')fitSelect(t);update();if(t.id==='pc_class')renderClassArt();}else if(t.classList&&t.classList.contains('parchment-field'))update();});}
  window.__refreshParchmentProgress=update;window.__updateParchmentProgress=update;update();
 }
 function renderClassArt(){
@@ -164,7 +180,8 @@ function initParchment(){
  setModeClass();
  var isExtra=isExtraMode();
  if(isExtra){fillSelect('pc_class',[],'не используется');}else{fillSelect('pc_class',creationClassItems(),'выбрать класс');}
- fillSelect('pc_race',creationRaceItems(),isExtra?'выбрать заглушку':'выбрать расу');
+ fillSelect('pc_race',creationRaceItems(),isExtra?'выбрать Extra-класс':'выбрать расу');
+ fillSelect('pc_extraHost',creationHostItems(),'выбрать тело / хозяина');
  fillSelect('pc_background',creationBackgroundItems().map(function(b){var n=b.nameRu||b.name||'';return{value:n,label:n}}),'выбрать предысторию');
  fillSelect('pc_gender',[{value:'мужчина',label:'мужчина'},{value:'женщина',label:'женщина'}],'выбрать пол');
  fillSelect('pc_profession',getProfessionItems(),'выбрать профессию');
@@ -172,10 +189,12 @@ function initParchment(){
  renderClassArt();
 }
 function syncToClassic(){
- var name=el('pc_name').value.trim(),origin=el('pc_origin')?el('pc_origin').value.trim():'',age=el('pc_age')?el('pc_age').value.trim():'',cls=el('pc_class')?el('pc_class').value:'',gender=el('pc_gender')?el('pc_gender').value:'',race=el('pc_race').value,bg=el('pc_background')?el('pc_background').value:'',profession=el('pc_profession')?.value||'';
- var isExtraDraft=CHARACTER_CREATION_MODE==='extra';window.__parchmentCharacterDraft={name:name,origin:origin,age:age,className:isExtraDraft?race:cls,gender:gender,raceId:isExtraDraft?'':race,background:bg,profession:profession,extra:isExtraDraft,extraType:isExtraDraft?race:'',creationMode:CHARACTER_CREATION_MODE};
+ var name=el('pc_name').value.trim(),origin=el('pc_origin')?el('pc_origin').value.trim():'',age=el('pc_age')?el('pc_age').value.trim():'',cls=el('pc_class')?el('pc_class').value:'',gender=el('pc_gender')?el('pc_gender').value:'',race=el('pc_race').value,extraHost=el('pc_extraHost')?el('pc_extraHost').value:'',bg=el('pc_background')?el('pc_background').value:'',profession=el('pc_profession')?.value||'';
+ var isExtraDraft=CHARACTER_CREATION_MODE==='extra';
+ var hostId=isExtraDraft&&extraNeedsHost(race)?extraHost:'';
+ window.__parchmentCharacterDraft={name:name,origin:origin,age:age,className:isExtraDraft?race:cls,gender:gender,raceId:isExtraDraft?hostId:race,hostRaceId:isExtraDraft?hostId:'',background:bg,profession:profession,extra:isExtraDraft,extraType:isExtraDraft?race:'',creationMode:CHARACTER_CREATION_MODE};
  function set(id,val){var e=el(id);if(e)e.value=val}
- set('cc_name',name);set('cc_age',age);set('cc_race',race);set('cc_background',bg);set('cc_profession',profession);set('cc_class',isExtraDraft?(race?(race==='Призрак'?'Гайст':race)+' 1':''):(cls?(cls==='Призрак'?'Гайст':cls)+' 1':''));set('cc_gender',gender);set('cc_origin',origin);
+ set('cc_name',name);set('cc_age',age);set('cc_race',isExtraDraft?extraHost:race);set('cc_background',bg);set('cc_profession',profession);set('cc_class',isExtraDraft?(race?(race==='Призрак'?'Гайст':race)+' 1':''):(cls?(cls==='Призрак'?'Гайст':cls)+' 1':''));set('cc_gender',gender);set('cc_origin',origin);
  if(typeof window.updateClassDescription==='function')window.updateClassDescription();
  if(typeof window.updateRaceDescription==='function')window.updateRaceDescription();
  if(typeof window.updateBackgroundDescription==='function')window.updateBackgroundDescription();
@@ -203,7 +222,7 @@ window.openParchmentCreation=function(){chooser().style.display='flex'};
 window.closeParchmentCreation=function(){var p=el('parchmentCreationScreen');if(p)p.style.display='none';if(typeof window.showCharacterSelect==='function')window.showCharacterSelect()};
 window.burnParchment=function(){window.closeParchmentCreation();};
 window.finishParchmentCreation=function(){
- var ids=isExtraMode()?['pc_name','pc_race']:['pc_name','pc_origin','pc_class','pc_gender','pc_race','pc_age','pc_background','pc_profession'];
+ var ids=isExtraMode()?['pc_name','pc_race'].concat(extraNeedsHost(el('pc_race')?el('pc_race').value:'')?['pc_extraHost']:[]):['pc_name','pc_origin','pc_class','pc_gender','pc_race','pc_age','pc_background','pc_profession'];
  var missing=ids.some(function(id){var e=el(id);return !e||!String(e.value||'').trim()});
  if(missing){alert('Заполните все открытые поля по порядку.');return}
  syncToClassic();
