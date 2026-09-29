@@ -1,134 +1,50 @@
 /**
  * Alchemist.js
- * Карманный ВТТ — независимая структура прогрессии класса «Алхимик».
- *
- * Источник концепции: The Alchemist by Taron Pounds / Indestructoboy Designs.
- * ВАЖНО: файл содержит собственную структуру данных проекта и краткие
- * пересказы механик, а не копию текста/иллюстраций исходного продукта.
- *
- * Архитектура:
- * - d8, основной параметр INT;
- * - класс не является заклинателем: основной ресурс — формулы и алхимические
- *   предметы;
- * - отдельная система формул/сырья/быстрого создания будет подключена позже;
- * - подклассы хранятся в subclassesRegistry.js.
+ * Карманный ВТТ — класс «Алхимик».
+ * Источник механики: Mage Hand Press, Alchemist 2024 / 5.5E.
  */
-window.alchemistProgression = {
-    className: "Алхимик",
-    englishName: "Alchemist",
-    source: "Taron Pounds / Indestructoboy Designs / third-party",
-    status: "skeleton",
-    edition: "5E",
-    hitDie: 8,
-    primaryStat: "intelligence",
-    savingThrows: ["constitution", "intelligence"],
-    armor: ["light"],
-    weapons: ["simple", "blowgun"],
-    tools: ["alchemist_supplies", "herbalism_kit"],
-    multiclassRequirement: { intelligence: 13 },
-    multiclassProficiencies: { armor: ["light"], weapons: ["simple", "blowgun"] },
-    skills: {
-        choose: 2,
-        from: ["arcana", "deception", "insight", "medicine", "nature", "sleightOfHand", "survival"]
-    },
-    subclassLevel: 2,
-    subclassFeatureLevels: [2, 6, 10, 14],
-
-    levels: {
-        1: {
-            features: [
-                "Экспериментатор",
-                "Алхимия: формулы",
-                "Алхимия: Катализ",
-                "Алхимия: Потентность"
-            ]
-        },
-        2: {
-            features: ["Алхимическая практика (подкласс)"],
-            subclassLevel: true
-        },
-        3: {
-            features: [
-                "Эврика",
-                "Методичная эффективность"
-            ]
-        },
-        4: {
-            features: ["Увеличение характеристик (ASI) или Черта"],
-            asi: true
-        },
-        5: {
-            features: ["Усиленные декокции"]
-        },
-        6: {
-            features: ["Алхимическая практика: развитие"]
-        },
-        7: {
-            features: ["Смешивание"]
-        },
-        8: {
-            features: ["Увеличение характеристик (ASI) или Черта"],
-            asi: true
-        },
-        9: {
-            features: [
-                "Эврика: необычные зелья",
-                "Меркуриальный поток"
-            ]
-        },
-        10: {
-            features: ["Алхимическая практика: развитие"]
-        },
-        11: {
-            features: ["Летучая мощь"]
-        },
-        12: {
-            features: ["Увеличение характеристик (ASI) или Черта"],
-            asi: true
-        },
-        13: {
-            features: [
-                "Эврика: редкие зелья",
-                "Разум сильнее материи"
-            ]
-        },
-        14: {
-            features: ["Алхимическая практика: развитие"]
-        },
-        15: {
-            features: ["Философский камень"]
-        },
-        16: {
-            features: ["Увеличение характеристик (ASI) или Черта"],
-            asi: true
-        },
-        17: {
-            features: ["Усиление летучей мощи"]
-        },
-        18: {
-            features: ["Молния в бутылке", "Эврика: очень редкие зелья"]
-        },
-        19: {
-            features: ["Увеличение характеристик (ASI) или Черта"],
-            asi: true
-        },
-        20: {
-            features: ["Большой взрыв"]
-        }
-    },
-
-    /**
-     * Метаданные будущей цифровой системы алхимика.
-     * Пока не подключаются к боевому движку — это контракт для следующего этапа.
-     */
-    mechanics: {
-        formulaLearning: true,
-        craftingResource: "raw_materials",
-        fastCrafting: "catalyze",
-        potionCreation: "eureka",
-        combineItems: "mix",
-        rareMaterialSubstitution: "mercurial_flux",
-        philosopherStone: true,
-        initiativeCapstone: "big_bang"
-    }
+(function(g){
+'use strict';
+var levels={};for(var i=1;i<=20;i++)levels[i]={features:[]};
+levels[1]={features:['Бомбы','Реагенты','Варка зелий']};
+levels[2]={features:['Прайм-бомба','Формулы бомб','Синтез реагентов']};
+levels[3]={features:['Подкласс Алхимика'],subclassLevel:true};
+levels[4]={features:['Увеличение характеристик (ASI) или Черта','Зелья'],asi:true};
+levels[5]={features:['Открытие','Улучшенные бомбы']};
+levels[6]={features:['Особенность подкласса']};
+levels[7]={features:['Уклонение']};
+levels[8]={features:['Увеличение характеристик (ASI) или Черта','Зелья'],asi:true};
+levels[9]={features:['Открытие']};
+levels[10]={features:['Особенность подкласса']};
+levels[11]={features:['Покрытие взрыва']};
+levels[12]={features:['Увеличение характеристик (ASI) или Черта','Зелья'],asi:true};
+levels[13]={features:['Открытие']};
+levels[14]={features:['Особенность подкласса']};
+levels[15]={features:['Миксолог зелий']};
+levels[16]={features:['Увеличение характеристик (ASI) или Черта','Зелья'],asi:true};
+levels[17]={features:['Открытие']};
+levels[18]={features:['Экспериментатор']};
+levels[19]={features:['Эпический дар']};
+levels[20]={features:['Философский камень','Ядерная бомба']};
+g.alchemistProgression={
+ className:'Алхимик',englishName:'Alchemist',source:'Mage Hand Press — Alchemist 2024 / 5.5E',
+ status:'implemented_core',edition:'5.5E / 2024',hitDie:8,primaryStat:'dexterity',secondaryStat:'intelligence',
+ savingThrows:['dexterity','intelligence'],armor:['light'],weapons:['simple'],tools:['alchemist_supplies'],
+ multiclassRequirement:{dexterity:13,intelligence:13},
+ multiclassProficiencies:{armor:['light'],weapons:['simple'],tools:['alchemist_supplies']},
+ skills:{choose:3,from:['arcana','history','insight','medicine','nature','perception','sleightOfHand','survival']},
+ subclassLevel:3,subclassFeatureLevels:[3,6,10,14],
+ progression:{bombDamage:['1d10','1d10','1d10','1d10','2d10','2d10','2d10','2d10','2d10','2d10','3d10','3d10','3d10','3d10','3d10','3d10','4d10','4d10','4d10','4d10'],primeBomb:[0,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5],reagents:[2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40],formulas:[0,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,8]},
+ bomb:{damage:'1d10 fire + Dexterity modifier',range:'30/90',radiusFt:5,properties:['destructible','finesse','thrown'],mastery:'explode',intelligentExplosions:true,saveAbility:'dexterity'},
+ bombFormulas:['Teleportation Bomb','Withering Bomb','Nuclear Bomb','Elemental Infusion','Guided Explosives','Precision Explosives','Unconventional Explosives'],
+ discoveries:['Alchemy of Alteration','Alchemy of Poison','Alchemy of Restoration','Fundamental Alchemy','Guided Explosives','Homunculus','Necrobiology','Precision Explosives','Unconventional Explosives','Unconventional Potions'],
+ subclasses:[
+  {id:'apothecary',name:'Аптекарь'},{id:'madBomber',name:'Безумный бомбардир'},{id:'mutagenist',name:'Мутагенист'},
+  {id:'polymorphist',name:'Полиморфист'},{id:'xenoalchemist',name:'Ксеноалхимик'},{id:'oozeRancher',name:'Разводчик слизней'},
+  {id:'pigmentist',name:'Пигментист'},{id:'elementalist',name:'Элементалист'},{id:'bombardier',name:'Бомбардир'},
+  {id:'plagueDoctor',name:'Чумной доктор'},{id:'vivisectionist',name:'Вивисектор'}
+ ],
+ mechanics:{bombs:'implemented_core',reagents:'implemented_core',potionBrewing:'implemented_core',primeBomb:'implemented_core',bombFormulas:'core_registry',reagentSynthesis:'implemented_core',discoveries:'core_registry',improvedBombs:'implemented_core',evasion:'implemented_core',blastCoating:'implemented_core',potionMixologist:'implemented_core',experimentalist:'implemented_core',philosophersStone:'implemented_core',nuclearBomb:'implemented_core',subclassSystem:'registered_deep_subclass_work_pending',notes:'Базовое ядро 2024/5.5E реализовано. Полные 11 подклассов, все формулы и глубокие Discovery требуют отдельного runtime/UI прохода.'},
+ levels:levels
 };
+})(window);
