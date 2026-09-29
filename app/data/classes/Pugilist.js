@@ -39,7 +39,7 @@
     source:'Benjamin Huffman / Sterling Vermin Adventuring Co.',
     status:'implemented_core',
     edition:'5.5E',
-    hitDie:8,
+    hitDie:10,
     primaryStat:'strength',
     secondaryStat:'constitution',
     savingThrows:['strength','constitution'],
@@ -58,6 +58,7 @@
       'Arena Royale — Арена Рояль',
       'Bloodhound Bruisers — Бладхаундские громилы',
       'Dog & Hound — Пёс и гончая',
+      'Hand of Dread — Рука Ужаса',
       'Piss & Vinegar — Ярость и дерзость',
       'The Squared Circle — Квадратный ринг',
       'The Sweet Science — Благородное искусство'
@@ -97,7 +98,7 @@
       },
       bloodiedButUnbowed:{
         name:'Израненный, но не сломленный',
-        effect:'Когда HP опускаются до половины максимума или ниже, Пугилист восстанавливает Мокси и получает временные HP.'
+        effect:'Когда HP опускаются до половины максимума или ниже, реакцией получить временные HP = 3 × уровень Пугилиста и восстановить всю Мокси; после применения требуется короткий или долгий отдых.'
       },
       extraAttack:{name:'Дополнительная атака'},
       haymaker:{
