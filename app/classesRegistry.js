@@ -46,7 +46,7 @@ window.CLASSES_REFERENCE = {
     "Шифтер": { hitDie: 10, primaryStat: "dexterity", savingThrows: ["dexterity", "wisdom"], progression: window.shifterProgression || {} },
     "Рой": { hitDie: 8, primaryStat: "wisdom", savingThrows: ["dexterity", "wisdom"], progression: window.swarmProgression || {} },
     "Страж": { hitDie: 10, primaryStat: "constitution", savingThrows: ["strength", "constitution"], progression: window.wardenProgression || {} },
-    "Военачальник": { hitDie: 10, primaryStat: "strength", savingThrows: ["strength", "charisma"], progression: window.warlordProgression || {} },
+    "Военачальник": { hitDie: 8, primaryStat: "strength_or_dexterity", savingThrows: ["wisdom", "charisma"], progression: window.warlordProgression || {} },
     "Бард": {
         hitDie: 8,
         primaryStat: "charisma",
