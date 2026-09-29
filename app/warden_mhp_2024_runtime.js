@@ -330,7 +330,7 @@
   }
 
   g.CLASSES_REFERENCE=g.CLASSES_REFERENCE||{};
-  g.CLASSES_REFERENCE[CLASS]={hitDie:10,primaryStat:'strength',primaryAbilities:['strength','constitution'],savingThrows:['strength','constitution'],progression:{levels:(function(){var z={};for(var i=1;i<=20;i++)z[i]={features:[]};features.forEach(function(f){z[f.level].features.push(f.name);});[4,8,12,16,19].forEach(function(i){z[i].asi=true;z[i].features.push(i===19?'Эпический дар':'Увеличение характеристик / черта');});z[3].subclassLevel=true;z[6].features.push('Способность Призвания стража');z[10].features.push('Способность Призвания стража');z[17].features.push('Способность Призвания стража');z[5].features.push('Дополнительная атака','Перехват');return z;})()},subclassLevel:3,subclassFeatureLevels:[3,6,10,17]},source:SOURCE,contentPackId:PACK_ID};
+  g.CLASSES_REFERENCE[CLASS]={hitDie:10,primaryStat:'strength',primaryAbilities:['strength','constitution'],savingThrows:['strength','constitution'],progression:{levels:(function(){var z={};for(var i=1;i<=20;i++)z[i]={features:[]};features.forEach(function(f){z[f.level].features.push(f.name);});[4,8,12,16,19].forEach(function(i){z[i].asi=true;z[i].features.push(i===19?'Эпический дар':'Увеличение характеристик / черта');});z[3].subclassLevel=true;z[6].features.push('Способность Призвания стража');z[10].features.push('Способность Призвания стража');z[17].features.push('Способность Призвания стража');z[5].features.push('Дополнительная атака','Перехват');return z;})()},subclassLevel:3,subclassFeatureLevels:[3,6,10,17],source:SOURCE,contentPackId:PACK_ID};
   g.WARDEN_MHP_2024={
     VERSION:'1.0.0',PACK_ID:PACK_ID,
     subclasses:SUBS.map(function(s){return{id:s.id,name:s.name};}),
