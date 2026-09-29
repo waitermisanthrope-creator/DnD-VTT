@@ -282,7 +282,7 @@
       if(!sub)return{ok:false,message:'Сначала выберите Призвание стража.'};
       return subclassFeature(h,sub,ctx.featureId||String(ctx.level||3),ctx);
     }
-    var selected=SUBS.find(function(x){return x.name===ctx.subclass||x.id===ctx.subclass;});
+    var selected=feature&&feature.subclassId?SUBS.find(function(x){return x.id===feature.subclassId;}):SUBS.find(function(x){return x.name===ctx.subclass||x.id===ctx.subclass;});
     if(selected&&feature&&feature.subclassId)return subclassFeature(h,selected,String(feature.level),ctx);
     if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+feature.name+' активно.'};
     return{ok:true,message:'🛡️ '+(feature&&feature.name||id)+' подготовлено.'};
