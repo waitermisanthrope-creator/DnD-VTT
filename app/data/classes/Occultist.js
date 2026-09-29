@@ -18,8 +18,9 @@
 window.occultistProgression = {
     className: "Оккультист",
     englishName: "Occultist",
-    source: "KibblesTasty / Third-party",
+    source: "KibblesTasty / third-party",
     status: "skeleton",
+    edition: "5E",
     subclassLevel: 3,
 
     // Базовые параметры будут подтверждены при этапе наполнения механиками.
@@ -30,6 +31,12 @@ window.occultistProgression = {
     weapons: ["daggers", "quarterstaff", "light_crossbow"],
     tools: ["herbalism_kit"],
     multiclassRequirement: { wisdom: 13 },
+    multiclassProficiencies: { skills: ["medicine"], tools: ["herbalism_kit"] },
+    skills: {
+        choose: 2,
+        from: ["animalHandling", "arcana", "deception", "history", "investigation", "medicine", "nature", "religion", "sleightOfHand", "stealth", "survival"]
+    },
+    subclassFeatureLevels: [1, 3, 6, 14],
 
     levels: {
         1: { features: ["Заготовка уровня 1"] },

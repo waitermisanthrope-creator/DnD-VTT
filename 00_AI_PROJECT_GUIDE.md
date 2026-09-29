@@ -45,6 +45,15 @@
 - Полная логика формул, сырья, Catalyze и боевых эффектов остаётся следующим этапом.
 - Следующий класс: Оккультист.
 
+## CLASS TEMPLATE PASS — OCCULTIST (post-V70.25.95)
+
+- Доведён каркас Оккультиста: d6, Wisdom, спасброски Wisdom/Charisma, без базовой брони, daggers/quarterstaff/light crossbow, herbalism kit.
+- Требование мультикласса: Wisdom 13; получаемые навыки/инструмент: Medicine + Herbalism Kit.
+- Добавлен набор из 2 навыков из 11 вариантов.
+- Добавлены все три базовые традиции: Oracle, Shaman, Witch; точки развития 1/3/6/14.
+- Магия, Occult Rites, проклятия и точные эффекты традиций пока остаются отдельным этапом.
+- Следующий класс по очереди: Некромант.
+
 ## 3. CURRENT BUILD CHECKPOINT
 
 - **V70.25.48 — Full Combat Transaction / Reaction Race / Batch AoE.** Latest verified technical checkpoint. Network reaction windows now survive reconnect migration or deterministically finalize on disconnect; host handoff fences pending reactions before snapshot; room shutdown clears stale pending reaction/prepared-action state. `combat_engine.js` exposes atomic `applyDamageBatch()` / `healBatch()` with rollback, and network AoE damage uses the batch transaction.

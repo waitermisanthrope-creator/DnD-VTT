@@ -514,6 +514,15 @@ window.SUBCLASSES_REFERENCE["Военачальник"] = {
   "Academy of Zeal":{source:"Laserllama / third-party",description:"Воодушевлённый лидер, поддерживающий союзников убеждённостью и решимостью.",pickLevel:3,levels:{3:{features:["Заготовка: Academy feature"]},7:{features:["Заготовка: Academy feature"]},11:{features:["Заготовка: Academy feature"]},15:{features:["Заготовка: Academy feature"]},18:{features:["Заготовка: Academy feature"]}}}
 };
 
+
+
+/* Оккультист — каркас трёх базовых Occult Traditions. */
+window.SUBCLASSES_REFERENCE["Оккультист"] = {
+  "Oracle": {source:"KibblesTasty / third-party",description:"Оккультная традиция предвидения, пророчеств и управления вероятностями.",pickLevel:1,levels:{1:{features:["Заготовка: Oracle Tradition"]},3:{features:["Заготовка: Oracle Tradition"]},6:{features:["Заготовка: Oracle Tradition"]},14:{features:["Заготовка: Oracle Tradition"]}}},
+  "Shaman": {source:"KibblesTasty / third-party",description:"Духовная традиция: призыв и связывание духов, стихий и предков.",pickLevel:1,levels:{1:{features:["Заготовка: Shaman Tradition"]},3:{features:["Заготовка: Shaman Tradition"]},6:{features:["Заготовка: Shaman Tradition"]},14:{features:["Заготовка: Shaman Tradition"]}}},
+  "Witch": {source:"KibblesTasty / third-party",description:"Ведьмовская традиция, основанная на проклятиях, обрядах и тайных договорах.",pickLevel:1,levels:{1:{features:["Заготовка: Witch Tradition"]},3:{features:["Заготовка: Witch Tradition"]},6:{features:["Заготовка: Witch Tradition"]},14:{features:["Заготовка: Witch Tradition"]}}}
+};
+
 /**
  * Возвращает список подклассов, доступных для выбранного класса,
  * в формате для построения выпадающего списка / карточек UI.
