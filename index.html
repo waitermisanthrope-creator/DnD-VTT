@@ -283,9 +283,9 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
   window.dndDebugEnabled=debug;
   if(debug)document.documentElement.classList.add('debug-enabled');
   function loadDebugScript(src){var s=document.createElement('script');s.src='./app/'+src;s.async=false;s.setAttribute('data-dnd-debug-src',src);document.head.appendChild(s);}
-  window.enableDndDebugRuntime=function(){localStorage.setItem('dnd_debug_enabled','true');document.documentElement.classList.add('debug-enabled');['Settings_debug.js','vtt_debug_panel_v70.js','vtt_debug_sandbox_v701.js','vtt_debug_character_lab_v702.js','vtt_debug_lab_v703.js','vtt_debug_scenarios_v704.js','vtt_debug_scenario_editor_v705.js','vtt_debug_dice_lab_v706.js','vtt_debug_rules_matrix_v707.js','vtt_debug_tasks_v708.js'].forEach(loadDebugScript);if(typeof window.enableDndDebugLogger==='function')window.enableDndDebugLogger();};
+  window.enableDndDebugRuntime=function(){localStorage.setItem('dnd_debug_enabled','true');document.documentElement.classList.add('debug-enabled');['Settings_debug.js','vtt_debug_error_log_v709.js','vtt_debug_panel_v70.js','vtt_debug_sandbox_v701.js','vtt_debug_character_lab_v702.js','vtt_debug_lab_v703.js','vtt_debug_scenarios_v704.js','vtt_debug_scenario_editor_v705.js','vtt_debug_dice_lab_v706.js','vtt_debug_rules_matrix_v707.js','vtt_debug_tasks_v708.js'].forEach(loadDebugScript);if(typeof window.enableDndDebugLogger==='function')window.enableDndDebugLogger();};
   window.disableDndDebugRuntime=function(){localStorage.setItem('dnd_debug_enabled','false');document.documentElement.classList.remove('debug-enabled');};
-  if(debug){['Settings_debug.js','vtt_debug_panel_v70.js','vtt_debug_sandbox_v701.js','vtt_debug_character_lab_v702.js','vtt_debug_lab_v703.js','vtt_debug_scenarios_v704.js','vtt_debug_scenario_editor_v705.js','vtt_debug_dice_lab_v706.js','vtt_debug_rules_matrix_v707.js','vtt_debug_tasks_v708.js'].forEach(loadDebugScript);}
+  if(debug){['Settings_debug.js','vtt_debug_error_log_v709.js','vtt_debug_panel_v70.js','vtt_debug_sandbox_v701.js','vtt_debug_character_lab_v702.js','vtt_debug_lab_v703.js','vtt_debug_scenarios_v704.js','vtt_debug_scenario_editor_v705.js','vtt_debug_dice_lab_v706.js','vtt_debug_rules_matrix_v707.js','vtt_debug_tasks_v708.js'].forEach(loadDebugScript);}
 })();
 </script>
 <script src="./app/market_economy_v55.js"></script>
@@ -918,6 +918,7 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
   <button class="debug-tool-button btn-action" onclick="dndV703Open('combat')" style="position:fixed;right:10px;bottom:72px;z-index:55000;background:#8b0000;color:#fff;padding:8px 10px;border-radius:9px;">🧪 QA Lab</button>
   <button class="debug-tool-button btn-action" onclick="dndV708Open()" style="position:fixed;right:10px;bottom:260px;z-index:55000;background:#1565c0;color:#fff;padding:8px 10px;border-radius:9px;">☑️ Задачи</button>
   <button class="debug-tool-button btn-action" onclick="dndV66OpenLog()" style="position:fixed;right:10px;bottom:215px;z-index:55000;background:#455a64;color:#fff;padding:8px 10px;border-radius:9px;">📜 Combat Log</button>
+  <button class="debug-tool-button btn-action" onclick="dndV709Open()" style="position:fixed;right:10px;bottom:305px;z-index:100050;background:#c62828;color:#fff;padding:8px 10px;border-radius:9px;">🐞 Ошибки здесь</button>
 
   <!-- Сетевая комната / режим игры -->
   <div id="dndNetworkModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:26000;justify-content:center;align-items:center;padding:15px;box-sizing:border-box;backdrop-filter:blur(4px);">
