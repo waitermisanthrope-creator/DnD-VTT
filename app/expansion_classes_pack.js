@@ -133,6 +133,7 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
     s.warlordSaveDC=warlordDC(h);
     s.warlordLeadership=s.warlordLeadership||'cha';
     s.warlordRallyUses=l>=17?3:l>=13?2:1;
+    res(h,'warlordRally',s.warlordRallyUses,'short');
   }
   function useWarlord(h,id,ctx,feature){
     syncWarlord(h);ctx=ctx||{};var l=lvl(h,'Warlord'),s=st(h),t=target(ctx),lead=warlordLeadership(h),die=(h.resources&&h.resources.warlordExploitDice&&h.resources.warlordExploitDice.die)||warlordDie(l);
@@ -209,6 +210,29 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
     if(id==='unwaveringWill')return{ok:true,effect:{advantageAgainst:['charmed','frightened','stunned']},message:'🛡️ Непоколебимая воля активна.'};
     if(id==='tacticalSuperiority')return{ok:true,effect:{restoreOnInitiative:['warlordInspiringWord','warlordRally'],rangeMultiplier:2},message:'🎖️ Тактическое превосходство.'};
     if(id==='dauntless')return{ok:true,effect:{rallyUnlimited:true,inspiringWordMaxHeal:true},message:'👑 Неустрашимый командир.'};
+    var exploitContract={
+      eloquentSpeech:{check:['deception','persuasion'],useLeadership:true},
+      feint:{save:'wisdom',advantageAgainstTarget:true},firstAid:{heal:'hitDie+constitution',maxDice:'proficiencyBonus'},
+      heroicFortitude:{save:['strength','dexterity','constitution']},imposingPresence:{check:['intimidation','persuasion'],useStrength:true},
+      riposte:{reactionAttack:true,bonusDamage:die},steadfastOrder:{allySaveBonus:'leadership',saves:['strength','dexterity','constitution']},
+      cunningInstinct:{initiativeOrPerception:true},
+      crescendoOfViolence:{allyTempHp:'diceSpent+leadership'},defensiveStance:{acBonus:die,endsOnMove:true},
+      dirtyHit:{prone:true,noReaction:true,bonusDamage:die},enliveningOrder:{speedBonus:'5*leadership',advantage:['acrobatics','athletics']},
+      exposingStrike:{nextAttackAdvantage:true,bonusDamage:die},holdTheLine:{halfCover:true,forcedMovementProtection:true},
+      honorDuel:{disadvantageAgainstOthers:true},insightfulOrder:{nextAttackBonus:'leadership'},intimidatingCommand:{command:true},
+      menacingShout:{frightened:true},rejuvenatingOrder:{repeatSave:true},resilientOrder:{allySaveBonus:'leadership',saves:['wisdom','charisma','intelligence']},
+      surpriseAttack:{reactionAttack:true,advantage:true,bonusDamage:die},wildCharge:{moveAndAttack:true},
+      daringRescue:{tempHp:'warlordLevel',reviveTo1:true},inspirationalSpeech:{tempHp:'warlordLevel',wisdomSaveAdvantage:true},
+      packTactics:{allyAdvantageAgainstMarkedPrey:true},tacticalReposition:{reactionMove:'speed',noOpportunityAttacks:true},
+      perilousGambit:{taunt:true,disadvantageAgainstOthers:true},warCry:{coneWisdomSave:true,frightened:true},standTheFallen:{heal:'diceSpent+leadership',canTarget0Hp:true},
+      heroicOrderExploit:{resistanceAll:true,advantageAllD20:true},revitalizingOrderExploit:{reviveHp:'level+leadership'},
+      victorySurgeExploit:{reactionMove:'full',reactionAction:true},finalStrikeExploit:{allyCount:'leadership',attackOrSpell:true},subjugateThrall:{charmedHours:8,commandable:true}
+    };
+    if(exploitContract[id]){
+      var ec=exploitContract[id];
+      if(!spend(h,'warlordExploitDice',1))return{ok:false,message:'Нет куба Тактического приёма.'};
+      return{ok:true,target:t&&t.id,effect:ec,die:die,message:'🎯 '+(feature&&feature.name||id)+' выполнен.'};
+    }
     if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' активно.'};
     return{ok:false,unsupported:true,message:'Эта особенность Военачальника зарегистрирована, но отдельная UI-команда ещё требует подключения.'};
   }
@@ -1195,7 +1219,41 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
       {id:'revitalizingOrder',name:'Оживляющий приказ',level:13,action:'special',target:'ally'},
       {id:'victorySurge',name:'Натиск победы',level:13,action:'action',target:'ally'},
       {id:'finalStrike',name:'Финальный удар',level:17,action:'action'},
-      {id:'dauntless',name:'Неустрашимый',level:20,action:'passive'}
+      {id:'dauntless',name:'Неустрашимый',level:20,action:'passive'},
+      {id:'eloquentSpeech',name:'Красноречивая речь',level:2,action:'check'},
+      {id:'feint',name:'Ложный выпад',level:2,action:'bonus'},
+      {id:'firstAid',name:'Первая помощь',level:2,action:'action',target:'ally'},
+      {id:'heroicFortitude',name:'Героическая стойкость',level:2,action:'reaction'},
+      {id:'imposingPresence',name:'Внушительное присутствие',level:2,action:'check'},
+      {id:'riposte',name:'Ответный удар',level:2,action:'reaction'},
+      {id:'steadfastOrder',name:'Непоколебимый приказ',level:2,action:'special',target:'ally'},
+      {id:'cunningInstinct',name:'Хитрый инстинкт',level:2,action:'utility'},
+      {id:'crescendoOfViolence',name:'Крещендо насилия',level:5,action:'reaction'},
+      {id:'defensiveStance',name:'Оборонительная стойка',level:5,action:'bonus'},
+      {id:'dirtyHit',name:'Грязный удар',level:5,action:'on-hit'},
+      {id:'enliveningOrder',name:'Воодушевляющий приказ',level:5,action:'special',target:'ally'},
+      {id:'exposingStrike',name:'Раскрывающий удар',level:5,action:'on-hit'},
+      {id:'holdTheLine',name:'Держать строй',level:5,action:'bonus'},
+      {id:'honorDuel',name:'Честная дуэль',level:5,action:'bonus',target:'enemy'},
+      {id:'insightfulOrder',name:'Проницательный приказ',level:5,action:'special',target:'ally'},
+      {id:'intimidatingCommand',name:'Запугивающий приказ',level:5,action:'bonus'},
+      {id:'menacingShout',name:'Угрожающий крик',level:5,action:'bonus'},
+      {id:'rejuvenatingOrder',name:'Восстанавливающий приказ',level:5,action:'special',target:'ally'},
+      {id:'resilientOrder',name:'Стойкий приказ',level:5,action:'special',target:'ally'},
+      {id:'surpriseAttack',name:'Внезапная атака',level:5,action:'action',target:'ally'},
+      {id:'wildCharge',name:'Дикий натиск',level:5,action:'special',target:'ally'},
+      {id:'daringRescue',name:'Отважное спасение',level:9,action:'reaction',target:'ally'},
+      {id:'inspirationalSpeech',name:'Вдохновляющая речь',level:9,action:'action',target:'ally'},
+      {id:'packTactics',name:'Тактика стаи',level:9,action:'bonus'},
+      {id:'tacticalReposition',name:'Тактическое перемещение',level:9,action:'action',target:'ally'},
+      {id:'perilousGambit',name:'Опасная уловка',level:9,action:'bonus',target:'enemy'},
+      {id:'warCry',name:'Боевой клич',level:9,action:'action'},
+      {id:'standTheFallen',name:'Поднять павших',level:9,action:'action',target:'ally'},
+      {id:'heroicOrderExploit',name:'Героический приказ',level:13,action:'special',target:'ally'},
+      {id:'revitalizingOrderExploit',name:'Оживляющий приказ',level:13,action:'special',target:'ally'},
+      {id:'victorySurgeExploit',name:'Натиск победы',level:13,action:'action',target:'ally'},
+      {id:'finalStrikeExploit',name:'Финальный удар',level:17,action:'action',target:'enemy'},
+      {id:'subjugateThrall',name:'Подчинить раба',level:17,action:'action',target:'enemy'}
     ],subclasses:[
       {id:'chivalry',name:'Рыцарство',features:[]},{id:'dread',name:'Ужас',features:[]},{id:'ferocity',name:'Свирепость',features:[]},{id:'gallantry',name:'Галантерея',features:[]},{id:'schemes',name:'Интриги',features:[]},{id:'tactics',name:'Тактика',features:[]},
       {id:'claws',name:'Когти',features:[]},{id:'counsel',name:'Совет',features:[]},{id:'liberty',name:'Свобода',features:[]},{id:'navigators',name:'Навигаторы',features:[]},{id:'order',name:'Порядок',features:[]},{id:'zeal',name:'Рвение',features:[]}
