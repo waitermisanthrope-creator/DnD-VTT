@@ -6,6 +6,7 @@ function make(name,hitDie,primaryStat,saves){var levels={};for(var i=1;i<=20;i++
 if(!g.accursedProgression)g.accursedProgression=make('Аккурсд',10,'charisma',['constitution','charisma']);
 if(!g.geistProgression)g.geistProgression=make('Гайст',8,'wisdom',['wisdom','charisma']);
 if(!g.parasiteProgression)g.parasiteProgression=make('Паразит',10,'constitution',['constitution','wisdom']);
+if(!g.walterParasiteProgression)g.walterParasiteProgression=make('Паразит доктора Вальтера',10,'highest_stat',['constitution','dexterity']);
 if(!g.psionProgression)g.psionProgression=make('Псионик',8,'intelligence',['intelligence','wisdom']);
 if(!g.runeKeeperProgression)g.runeKeeperProgression=make('Рунный хранитель',10,'intelligence',['constitution','intelligence']);
 if(!g.savantProgression)g.savantProgression=make('Савант',8,'intelligence',['intelligence','wisdom']);
