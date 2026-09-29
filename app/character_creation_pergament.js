@@ -29,7 +29,7 @@ function creationClassItems(){
   var c=all.find(function(x){return x.name===name;})||{name:name,displayName:name};
   return {value:c.name,label:c.displayName||c.name};
  });
- return all.filter(function(c){return !EXTRA_TYPES.includes(c.name);}).map(function(c){return {value:c.name,label:c.displayName||c.name};});
+ return all.filter(function(c){return CLASSIC_CLASS_NAMES.indexOf(c.name)===-1 && !EXTRA_TYPES.includes(c.name) && c.name!=='Гайст';}).map(function(c){return {value:c.name,label:c.displayName||c.name};});
 }
 function creationRaceItems(){
  var races=typeof getAllRaces==='function'?getAllRaces():[];
@@ -134,7 +134,13 @@ function getProfessionItems(){
  var base=window.DND_CRAFT_PROFESSIONS_V38&&window.DND_CRAFT_PROFESSIONS_V38.PROFESSIONS;
  return base?Object.keys(base).map(function(id){return{value:id,label:base[id].name||id}}):[];
 }
+function resetParchmentFields(){
+ ['pc_name','pc_origin','pc_age'].forEach(function(id){var e=el(id);if(e)e.value='';});
+ ['pc_class','pc_gender','pc_race','pc_background','pc_profession'].forEach(function(id){var e=el(id);if(e)e.value='';});
+ var art=el('pc_classArt');if(art){art.removeAttribute('src');art.removeAttribute('data-art');art.classList.remove('token-ready');}
+}
 function initParchment(){
+ resetParchmentFields();
  setModeClass();
  var isExtra=isExtraMode();
  if(isExtra){fillSelect('pc_class',[],'не используется');}else{fillSelect('pc_class',creationClassItems(),'выбрать класс');}
