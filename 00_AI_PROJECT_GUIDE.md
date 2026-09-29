@@ -15,6 +15,16 @@
 - Полная боевая логика, Moxie и механика Fight Clubs пока намеренно отложены.
 - Следующий класс по очереди: Страж.
 
+## CLASS TEMPLATE PASS — WARDEN (post-V70.25.95)
+
+- Завершён первый этап шаблона Стража: app/data/classes/Warden.js.
+- Зафиксированы d10, Strength/Constitution, спасброски Strength/Constitution, все типы брони со щитом и простое/воинское оружие.
+- Требование мультикласса: Strength 13.
+- Добавлена прогрессия 1–20 и точки подкласса на 3/6/10/17 уровнях.
+- Добавлены все 13 актуальных Champion Calls: Beastblood Guardian, Carrion King, Diabolist, Drake-Blooded, Godsworn, Grey Watchman, Nightgaunt, Rimekeeper, Steel Shepherd, Stoneheart Defender, Storm Sentinel, Verdant Protector, Witchbane Hunter.
+- Полная логика Guardian Tactics, Interrupt и всех подклассов пока отложена.
+- Следующий класс по очереди: Алхимик.
+
 ## 3. CURRENT BUILD CHECKPOINT
 
 - **V70.25.48 — Full Combat Transaction / Reaction Race / Batch AoE.** Latest verified technical checkpoint. Network reaction windows now survive reconnect migration or deterministically finalize on disconnect; host handoff fences pending reactions before snapshot; room shutdown clears stale pending reaction/prepared-action state. `combat_engine.js` exposes atomic `applyDamageBatch()` / `healBatch()` with rollback, and network AoE damage uses the batch transaction.

@@ -477,6 +477,25 @@ window.SUBCLASSES_REFERENCE["Пугилист"] = {
   "The Sweet Science": {source:"Benjamin Huffman / third-party",description:"Техничный боксёр: точные удары, контратаки и ставка на нокаут.",pickLevel:3,levels:{3:{features:["Заготовка: Fight Club feature"]},6:{features:["Заготовка: Fight Club feature"]},11:{features:["Заготовка: Fight Club feature"]},17:{features:["Заготовка: Fight Club feature"]}}}
 };
 
+
+
+/* Страж — каркас 13 Champion Calls / Warden subclasses. */
+window.SUBCLASSES_REFERENCE["Страж"] = {
+  "Beastblood Guardian": {source:"Mage Hand Press / third-party",description:"Защитник зверей, усиливающийся через первобытную ярость и охотничьи инстинкты.",pickLevel:3,levels:{3:{features:["Заготовка: Champion Call"]},6:{features:["Заготовка: Champion Call"]},10:{features:["Заготовка: Champion Call"]},17:{features:["Заготовка: Champion Call"]}}},
+  "Carrion King": {source:"Mage Hand Press / third-party",description:"Покровитель паразитов и мелких существ, управляющий роем защитников.",pickLevel:3,levels:{3:{features:["Заготовка: Champion Call"]},6:{features:["Заготовка: Champion Call"]},10:{features:["Заготовка: Champion Call"]},17:{features:["Заготовка: Champion Call"]}}},
+  "Diabolist": {source:"Mage Hand Press / third-party",description:"Защитник, заключающий сделки с адскими существами и использующий инфернальную силу.",pickLevel:3,levels:{3:{features:["Заготовка: Champion Call"]},6:{features:["Заготовка: Champion Call"]},10:{features:["Заготовка: Champion Call"]},17:{features:["Заготовка: Champion Call"]}}},
+  "Drake-Blooded": {source:"Mage Hand Press / third-party",description:"Страж, связанный с драконьей кровью и стихийной магией.",pickLevel:3,levels:{3:{features:["Заготовка: Champion Call"]},6:{features:["Заготовка: Champion Call"]},10:{features:["Заготовка: Champion Call"]},17:{features:["Заготовка: Champion Call"]}}},
+  "Godsworn": {source:"Mage Hand Press / third-party",description:"Божественно назначенный защитник храмов, священных мест и тех, кто ищет убежища.",pickLevel:3,levels:{3:{features:["Заготовка: Champion Call"]},6:{features:["Заготовка: Champion Call"]},10:{features:["Заготовка: Champion Call"]},17:{features:["Заготовка: Champion Call"]}}},
+  "Grey Watchman": {source:"Mage Hand Press / third-party",description:"Тактический страж, использующий манёвры, дисциплину и контратаки.",pickLevel:3,levels:{3:{features:["Заготовка: Champion Call"]},6:{features:["Заготовка: Champion Call"]},10:{features:["Заготовка: Champion Call"]},17:{features:["Заготовка: Champion Call"]}}},
+  "Nightgaunt": {source:"Mage Hand Press / third-party",description:"Союзник нежити, использующий некротическую силу для защиты своей цели.",pickLevel:3,levels:{3:{features:["Заготовка: Champion Call"]},6:{features:["Заготовка: Champion Call"]},10:{features:["Заготовка: Champion Call"]},17:{features:["Заготовка: Champion Call"]}}},
+  "Rimekeeper": {source:"Mage Hand Press / third-party",description:"Страж зимы, управляющий холодом, снегом и замораживающей защитой.",pickLevel:3,levels:{3:{features:["Заготовка: Champion Call"]},6:{features:["Заготовка: Champion Call"]},10:{features:["Заготовка: Champion Call"]},17:{features:["Заготовка: Champion Call"]}}},
+  "Steel Shepherd": {source:"Mage Hand Press / third-party",description:"Защитник конструкций и машин, соединяющий боевую выносливость с техномантией.",pickLevel:3,levels:{3:{features:["Заготовка: Champion Call"]},6:{features:["Заготовка: Champion Call"]},10:{features:["Заготовка: Champion Call"]},17:{features:["Заготовка: Champion Call"]}}},
+  "Stoneheart Defender": {source:"Mage Hand Press / third-party",description:"Неподвижный защитник гор и крепостей, почти буквально превращающийся в стену.",pickLevel:3,levels:{3:{features:["Заготовка: Champion Call"]},6:{features:["Заготовка: Champion Call"]},10:{features:["Заготовка: Champion Call"]},17:{features:["Заготовка: Champion Call"]}}},
+  "Storm Sentinel": {source:"Mage Hand Press / third-party",description:"Страж бурь, использующий гром и молнию для защиты побережий и союзников.",pickLevel:3,levels:{3:{features:["Заготовка: Champion Call"]},6:{features:["Заготовка: Champion Call"]},10:{features:["Заготовка: Champion Call"]},17:{features:["Заготовка: Champion Call"]}}},
+  "Verdant Protector": {source:"Mage Hand Press / third-party",description:"Защитник природы, связывающий боевые тактики с растениями и лесом.",pickLevel:3,levels:{3:{features:["Заготовка: Champion Call"]},6:{features:["Заготовка: Champion Call"]},10:{features:["Заготовка: Champion Call"]},17:{features:["Заготовка: Champion Call"]}}},
+  "Witchbane Hunter": {source:"Mage Hand Press / third-party",description:"Охотник на магов, колдунов и опасные сверхъестественные угрозы.",pickLevel:3,levels:{3:{features:["Заготовка: Champion Call"]},6:{features:["Заготовка: Champion Call"]},10:{features:["Заготовка: Champion Call"]},17:{features:["Заготовка: Champion Call"]}}}
+};
+
 /**
  * Возвращает список подклассов, доступных для выбранного класса,
  * в формате для построения выпадающего списка / карточек UI.
