@@ -864,9 +864,11 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
     s.pugilistMoxie=r.current;s.pugilistDie=pugilistDie(l);
     s.pugilistIronChin=l>=1;s.pugilistMagicFists=l>=6;
     s.pugilistBloodiedReady=s.pugilistBloodiedReady!==false;
+    syncPugilistClub(h);
   }
   function usePugilist(h,id,ctx,feature){
     syncPugilist(h);ctx=ctx||{};var l=pugilistLevel(h),s=st(h),r=h.resources&&h.resources.pugilistMoxie;
+    if(id==='chooseFightClub'||id==='personaLibre'||id==='workCrowd'||id==='highFlyer'||id==='signatureMove'||id==='detectiveWork'||id==='scrapLikeSleuth'||id==='heartOfCity'||id==='eyesWideOpen'||id==='summonHound'||id==='coordinatedAttack'||id==='houndBestFriend'||id==='direHound'||id==='blackMagic'||id==='dreadHand'||id==='dealWithDevil'||id==='grotesqueGrowth'||id==='fountainViscera'||id==='saltySalute'||id==='heelstomper'||id==='lowBlow'||id==='pocketSand'||id==='meanOldCuss'||id==='uncouthArt'||id==='compressionLock'||id==='quickPin'||id==='toTheMat'||id==='meatShield'||id==='heavyweight'||id==='cleanFinish'||id==='bareKnuckleBoxer'||id==='crossCounter'||id==='oneTwoThreeFloor'||id==='floatLikeButterfly'||id==='knockOut')return usePugilistClub(h,id,ctx);
     var cost=0;
     if(id==='braceUp'){
       cost=1;if(!spend(h,'pugilistMoxie',cost))return{ok:false,message:'Недостаточно Мокси.'};
@@ -920,6 +922,74 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
     if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' активно.'};
     return{ok:false,unsupported:true,message:'Эта способность Пугилиста зарегистрирована, но отдельная UI-команда ещё требует подключения.'};
   }
+  function pugilistClub(h,ctx){var s=st(h);return String((ctx&&ctx.fightClub)||s.pugilistFightClub||'');}
+  function syncPugilistClub(h){
+    var s=st(h),l=pugilistLevel(h),club=pugilistClub(h);
+    s.pugilistFightClub=club;
+    if(club==='arenaRoyale'&&l>=3){var pp=res(h,'pugilistPersona',Math.max(1,3+mod(h,'cha')),'long');pp.max=Math.max(1,3+mod(h,'cha'));s.pugilistPersonaActive=!!s.pugilistPersonaActive;}
+    if(club==='pissAndVinegar'&&l>=6){['heelstomper','lowBlow','pocketSand'].forEach(function(id){res(h,'pugilist_'+id,1,'short');});}
+    if(club==='pissAndVinegar'&&l>=17)res(h,'pugilistUncouthArt',1,'long');
+    if(club==='arenaRoyale'&&l>=6)res(h,'pugilistWorkCrowd',1,'long');
+    if(club==='arenaRoyale'&&l>=17)res(h,'pugilistSignatureMove',1,'long');
+    if(club==='handOfDread'&&l>=3)res(h,'pugilistDreadHand',1,'short');
+    if(club==='handOfDread'&&l>=11)res(h,'pugilistGrotesqueGrowth',1,'long');
+    if(club==='handOfDread'&&l>=17)res(h,'pugilistFountainViscera',1,'long');
+  }
+  function usePugilistClub(h,id,ctx){
+    syncPugilist(h);syncPugilistClub(h);ctx=ctx||{};var l=pugilistLevel(h),s=st(h),club=pugilistClub(h),r=h.resources&&h.resources.pugilistMoxie;
+    if(id==='chooseFightClub'){var c=String(ctx.club||'');var ok=['arenaRoyale','bloodhoundBruisers','dogAndHound','handOfDread','pissAndVinegar','squaredCircle','sweetScience'].indexOf(c)>=0;if(!ok)return{ok:false,message:'Неизвестный Бойцовский клуб.'};s.pugilistFightClub=c;syncPugilistClub(h);return{ok:true,message:'Бойцовский клуб выбран: '+c+'.'};}
+    if(!club)return{ok:false,message:'Сначала выбери Бойцовский клуб.'};
+    if(club==='arenaRoyale'){
+      if(id==='personaLibre'){s.pugilistPersonaActive=!s.pugilistPersonaActive;return{ok:true,effect:{persona:s.pugilistPersonaActive},message:s.pugilistPersonaActive?'🎭 Персона принята.':'🎭 Персона снята.'};}
+      if(id==='workCrowd'){if(!spendResource(h,'pugilistWorkCrowd'))return{ok:false,message:'Работа с толпой уже использована до долгого отдыха.'};return{ok:true,effect:{radiusFt:30,save:'wisdom',dc:8+(Number(h.proficiencyBonus)||2)+mod(h,'str'),choice:['charmed','frightened'],durationMinutes:1,repeatSaveOnDamage:true},message:'🎭 Работа с толпой активирована.'};}
+      if(id==='highFlyer')return{ok:true,effect:{speedBonusFt:10,jumpMultiplier:2,bonusDash:true},message:'🪽 Высокий полёт активен.'};
+      if(id==='signatureMove'){if(!spendResource(h,'pugilistSignatureMove'))return{ok:false,message:'Фирменный приём восстановится после долгого отдыха, если он попал.'};return{ok:true,effect:{jumpFt:'до скорости',advantage:true,criticalOnHit:true,stunnedUntilEndOfNextTurn:true,missRecoveryMinutes:1},message:'💥 Фирменный приём подготовлен.'};}
+    }
+    if(club==='bloodhoundBruisers'){
+      if(id==='detectiveWork'){if(!spend(h,'pugilistMoxie',1))return{ok:false,message:'Недостаточно Мокси.'};return{ok:true,effect:{advantage:true,checks:['investigation','insight','perception']},message:'🔎 Детективная работа: преимущество.'};}
+      if(id==='scrapLikeSleuth'){if(!spend(h,'pugilistMoxie',2))return{ok:false,message:'Недостаточно Мокси.'};s.pugilistStudiedTarget=ctx.targetId||null;return{ok:true,effect:{target:s.pugilistStudiedTarget,advantageAgainstTarget:true,acBonusAgainstTarget:Number(h.proficiencyBonus)||2,durationMinutes:1},message:'🔎 Противник изучен.'};}
+      if(id==='heartOfCity')return{ok:true,effect:{familiarSettlement:true,noSurprise:true,initiativeBonus:Number(h.proficiencyBonus)||2,darkvisionFt:120,expertise:['insight','investigation','perception'],fastTravel:true},message:'🏙️ Сердце города активировано для выбранного поселения.'};
+      if(id==='eyesWideOpen'){if(!spend(h,'pugilistMoxie',1))return{ok:false,message:'Недостаточно Мокси.'};return{ok:true,effect:{durationMinutes:1,advantageSaves:['blinded','deafened'],truesightFt:30},message:'👁️ Глаза широко открыты.'};}
+    }
+    if(club==='dogAndHound'){
+      if(id==='summonHound'){
+        if(!g.DNDCompanionPacks||!g.DNDCompanionPacks.create)return{ok:false,message:'Система спутников недоступна.'};
+        var e=g.DNDCompanionPacks.create('beastMaster',{name:'Гончая Пугилиста',source:'Пугилист — Пёс и гончая',sourceType:'subclass',controlMode:'command',hp:3+5*l,maxHp:3+5*l,ac:12+(Number(h.proficiencyBonus)||2),speed:40,size:1,actions:[{name:'Укус',attackBonus:(Number(h.proficiencyBonus)||2)+2,damage:'2d4+'+(Number(h.proficiencyBonus)||2),damageType:'piercing',rangeFt:5}],metadata:{pugilistHound:true,dire:l>=17}});s.pugilistHoundId=e&&e.id;return{ok:true,message:'🐕 Гончая призвана.'};
+      }
+      if(id==='coordinatedAttack')return{ok:true,effect:{houndReactionAttack:true},message:'🐕 Слаженная атака: гончая может атаковать реакцией.'};
+      if(id==='houndBestFriend')return{ok:true,effect:{reactionOpportunityAgainstAttacker:true},message:'🐕 Лучший друг гончей: доступна ответная атака.'};
+      if(id==='direHound')return{ok:true,effect:{replaceWolfWithDireWolf:true,size:'medium',bonusHpDice:'d8 per pugilist level'},message:'🐺 Гончая стала лютой.'};
+    }
+    if(club==='handOfDread'){
+      if(id==='blackMagic')return{ok:true,effect:{cantrips:['Порча клинка','Потусторонний разряд','Фокус-покус'],spellcasting:'constitution',languageChoice:true},message:'🖤 Чёрная магия изучена.'};
+      if(id==='dreadHand'){if(!spendResource(h,'pugilistDreadHand'))return{ok:false,message:'Рука Ужаса уже использована до короткого или долгого отдыха.'};s.pugilistDreadHandActive=true;return{ok:true,effect:{durationMinutes:1,rerollOneDamageDie:true,missedUnarmedExtraAttack:true,afterAttackThreeUnarmed:true,afterAttackCost:2},message:'🖐️ Рука Ужаса проявилась.'};}
+      if(id==='dealWithDevil')return{ok:true,effect:{invocationSlots:2,warlockLevelEquivalent:Math.floor(l/2),spellcasting:'constitution',charismaReferencesUse:'strength'},message:'😈 Сделка с Дьяволом: выбери два мистических воззвания.'};
+      if(id==='grotesqueGrowth'){if(!s.pugilistDreadHandActive)return{ok:false,message:'Сначала активируй Руку Ужаса.'};if(!spendResource(h,'pugilistGrotesqueGrowth'))return{ok:false,message:'Гротескный рост уже использован до долгого отдыха.'};return{ok:true,effect:{durationMinutes:1,sizeIncrease:1,advantage:['strengthChecks','strengthSaves'],reachFt:10,meleeExtraDamage:'1d4',after:{exhaustion:1}},message:'👹 Гротескный рост активирован.'};}
+      if(id==='fountainViscera'){if(!spendResource(h,'pugilistFountainViscera')||!spend(h,'pugilistMoxie',6))return{ok:false,message:'Нужны 6 Мокси и доступная способность.'};return{ok:true,effect:{save:'dexterity',dc:8+(Number(h.proficiencyBonus)||2)+mod(h,'str'),damageOnFail:100,damageOnSave:50,damageType:'piercing',deathAtZero:true,fearRadiusFt:30,fearSave:'wisdom',fearDurationMinutes:1},message:'🩸 Фонтан внутренностей применён.'};}
+    }
+    if(club==='pissAndVinegar'){
+      if(id==='saltySalute')return{ok:true,effect:{rangeFt:60,save:'wisdom',damage:pugilistDie(l)+'+'+mod(h,'cha')+' psychic',attackDisadvantageUnlessTargetsSelf:true},message:'🗯️ Солёное приветствие.'};
+      if(['heelstomper','lowBlow','pocketSand'].indexOf(id)>=0){if(!spendResource(h,'pugilist_'+id))return{ok:false,message:'Этот грязный приём уже использован до отдыха.'};var map={heelstomper:{save:'dexterity',condition:'slowed',moxieOnFail:1},lowBlow:{save:'strength',condition:'prone',moxieOnFail:1},pocketSand:{save:'constitution',condition:'blinded',durationRounds:1,moxieOnFail:1}};return{ok:true,effect:map[id],message:'🃏 Грязный приём: '+id+'.'};}
+      if(id==='meanOldCuss'){if(!spend(h,'pugilistMoxie',1))return{ok:false,message:'Недостаточно Мокси.'};return{ok:true,effect:{intimidationAdvantage:true,saveDisadvantageForPugilistFeatures:true},message:'😠 Старый грубиян.'};}
+      if(id==='uncouthArt'){if(!spendResource(h,'pugilistUncouthArt'))return{ok:false,message:'Искусство невоспитанности уже использовано до долгого отдыха.'};return{ok:true,effect:{targetsUpToLevel:l,rangeFt:60,firstHitByEachTargetRestoresMoxie:true},message:'📢 Искусство невоспитанности.'};}
+    }
+    if(club==='squaredCircle'){
+      if(id==='compressionLock'||id==='quickPin'||id==='toTheMat'){if(!spend(h,'pugilistMoxie',1))return{ok:false,message:'Недостаточно Мокси.'};var ge={compressionLock:{rerollGrappleEscape:true},quickPin:{opportunityAttackBecomesGrapple:true},toTheMat:{bonusGrapple:true,proneOnSuccess:true}};return{ok:true,effect:ge[id],message:'🤼 Приём «'+id+'».'};}
+      if(id==='meatShield'){if(ctx.attackMissedTargetId&&!spend(h,'pugilistMoxie',1))return{ok:false,message:'Недостаточно Мокси.'};return{ok:true,effect:{halfCoverWhileGrappling:true,redirectMissedAttackToGrappledTarget:!!ctx.attackMissedTargetId},message:'🤼 Живой щит.'};}
+      if(id==='heavyweight')return{ok:true,effect:{grappleSizePlus:1,fullSpeedDragging:true},message:'🏋️ Тяжеловес.'};
+      if(id==='cleanFinish')return{ok:true,effect:{advantageAgainstGrappled:true,criticalRange:19,requiresGrappled:true},message:'💥 Чистое завершение.'};
+    }
+    if(club==='sweetScience'){
+      if(id==='bareKnuckleBoxer')return{ok:true,effect:{criticalRange:19},message:'🥊 Боксёрская техника: критическое попадание с 19–20.'};
+      if(id==='crossCounter'){if(!spend(h,'pugilistMoxie',2))return{ok:false,message:'Недостаточно Мокси.'};return{ok:true,effect:{reduceMeleeDamageBy:'1d10 + Strength modifier + pugilist level',counterAttackIfReducedToZero:true},message:'🥊 Контрудар подготовлен.'};}
+      if(id==='oneTwoThreeFloor'){if(!spend(h,'pugilistMoxie',1))return{ok:false,message:'Недостаточно Мокси.'};return{ok:true,effect:{extraUnarmedAfterTwoOldOneTwo:true,proneOnHit:true,noDamage:true},message:'🥊 Раз-два-три — на пол.'};
+      }
+      if(id==='floatLikeButterfly'){return{ok:true,effect:{restoreMoxieOnSuccessfulCrossCounter:1},message:'🦋 Мокси восстанавливается успешным контрударом.'};}
+      if(id==='knockOut'){var cost=Math.max(1,Number(ctx.moxie)||1);if(!spend(h,'pugilistMoxie',cost))return{ok:false,message:'Недостаточно Мокси.'};return{ok:true,effect:{knockoutRoll:'3d12 + 2d12 за каждую дополнительную Мокси + уровень',durationMinutes:10},message:'💫 Проверка на нокаут.'};}
+    }
+    return{ok:false,unsupported:true,message:'Способность этого клуба требует контекста цели/боя.'};
+  }
+  function spendResource(h,id){var r=h.resources&&h.resources[id];if(!r||Number(r.current)<=0)return false;r.current--;return true;}
   function pugilistAttack(h,ctx){
     var l=pugilistLevel(h),s=st(h),o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]};
     o.unarmedDie=pugilistDie(l);
