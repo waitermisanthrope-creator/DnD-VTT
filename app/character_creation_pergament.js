@@ -109,25 +109,28 @@ function setupProgression(){
  function findStep(field){var n=field;while(n&&(!n.classList||!n.classList.contains('parchment-step')))n=n.parentNode;return n;}
  function update(){var firstIncomplete=steps.length;for(var i=0;i<steps.length;i++){if(!steps[i][1]()){firstIncomplete=i;break;}}var activeIds={};steps.forEach(function(x){activeIds[x[0]]=true});allFields.forEach(function(id){var field=el(id);if(!field)return;var step=findStep(field);if(isExtraMode()&&id==='pc_extraHost'&&!extraNeedsHost(el('pc_race')?el('pc_race').value:'')){if(step)step.classList.add('step-hidden');field.disabled=true;field.value='';return;}
  if(isExtraMode()&&!activeIds[id]){if(step)step.classList.add('step-hidden');field.disabled=true;return;}var idx=-1;for(var k=0;k<steps.length;k++){if(steps[k][0]===id){idx=k;break;}}var visible=idx>=0&&idx<=firstIncomplete;if(step)step.classList.toggle('step-hidden',!visible);field.disabled=idx<0||idx>firstIncomplete;if(field.tagName==='SELECT')fitSelect(field);});
- // В Extra режимах жетон лежит в старом class-step, а выбор Extra находится в pc_race.
- // Поэтому этот шаг нельзя скрывать вместе с неиспользуемым pc_class.
- var extraArtStep=el('pc_classArt')&&el('pc_classArt').closest('.parchment-step');
- if(extraArtStep){
-   if(isExtraMode())extraArtStep.classList.toggle('step-hidden',!String((el('pc_race')||{}).value||'').trim());
- }
  var complete=firstIncomplete===steps.length;var warning=el('pcWarning'),tax=el('pcTax'),reward=el('pcReward');if(isExtraMode()){if(warning)warning.classList.toggle('step-hidden',!el('pc_race')||!String(el('pc_race').value||'').trim());if(tax)tax.classList.add('step-hidden');if(reward)reward.classList.toggle('step-hidden',!complete);}else{if(tax)tax.classList.toggle('step-hidden',!complete);if(warning)warning.classList.toggle('step-hidden',!complete);if(reward)reward.classList.toggle('step-hidden',!complete);}var sign=el('pc_signButton');if(sign){sign.disabled=!complete;sign.classList.toggle('is-ready',complete);sign.style.display=complete?'block':'none';}var reason=el('pc_extraReason');if(reason&&CHARACTER_CREATION_MODE==='extra')reason.innerHTML=extraDescriptionHtml();}
  var stage=el('parchmentStage');if(stage&&!stage.dataset.progressBound){stage.dataset.progressBound='1';stage.addEventListener('input',function(ev){if(ev.target&&ev.target.classList&&ev.target.classList.contains('parchment-field'))update();});stage.addEventListener('change',function(ev){var t=ev.target;if(!t)return;if(t.id==='pc_class'||t.id==='pc_gender'||t.id==='pc_race'||t.id==='pc_extraHost'||t.id==='pc_background'||t.id==='pc_profession'){if(t.tagName==='SELECT')fitSelect(t);update();if(t.id==='pc_class'||t.id==='pc_race')renderClassArt();}else if(t.classList&&t.classList.contains('parchment-field'))update();});}
  window.__refreshParchmentProgress=update;window.__updateParchmentProgress=update;update();
 }
 function renderClassArt(){
- var extra=isExtraMode(), homebrew=isHomebrewMode();var name=extra?(el('pc_race')?el('pc_race').value:''):(el('pc_class')?el('pc_class').value:'');var img=el('pc_classArt'),label=el('pc_classLabel');
- if(label)label.textContent=extra?'':(name||'');var raceLead=el('pcRaceLead');if(raceLead)raceLead.textContent=extra?'Выберите Extra-класс':'По внешним признакам относится к расе';
+ var extra=isExtraMode(), homebrew=isHomebrewMode();
+ var name=extra?(el('pc_race')?el('pc_race').value:''):(el('pc_class')?el('pc_class').value:'');
+ var img=extra?el('pc_extraClassArt'):el('pc_classArt');
+ var extraToken=el('pcExtraToken');
+ var classStep=el('pc_classArt')&&el('pc_classArt').closest('.parchment-step');
+ var label=el('pc_classLabel');
+ if(label)label.textContent=extra?'':(name||'');
+ var raceLead=el('pcRaceLead');
+ if(raceLead)raceLead.textContent=extra?'Выберите Extra-класс':'По внешним признакам относится к расе';
  var hostLead=el('pcExtraHostLead');
  if(hostLead&&extra){
    var selectedExtra=el('pc_race')?el('pc_race').value:'';
    hostLead.textContent=selectedExtra==='Призрак'?'Укажите мёртвую оболочку':selectedExtra==='Паразит доктора Вальтера'?'Укажите тело, в которое будет внедрён паразит':'Укажите тело / хозяина';
  }
- if(extra){if(img){
+ if(extra){
+   if(classStep)classStep.classList.add('step-hidden');
+   if(extraToken)extraToken.style.display=name?'flex':'none';
    var extraTokenArt={
      'Рой':'./app/data/classes/the swam.png',
      'Паразит':'./app/data/classes/parasite.png',
@@ -135,19 +138,22 @@ function renderClassArt(){
      'Призрак':'./app/data/classes/geist.png'
    };
    var extraArt=extraTokenArt[name]||'';
-   if(extraArt&&img.getAttribute('data-art')!==extraArt){
-     var ep=new Image();
-     ep.onload=function(){
-       var current=el('pc_race')?el('pc_race').value:'';
-       if(current!==name)return;
-       img.src=extraArt;img.setAttribute('data-art',extraArt);img.alt='Жетон Extra: '+name;img.classList.add('token-ready');
-     };
-     ep.onerror=function(){console.warn('Extra token not found:',extraArt);};
-     ep.src=extraArt;
-   }else if(!extraArt){
-     img.removeAttribute('src');img.removeAttribute('data-art');img.classList.remove('token-ready');
+   if(img){
+     if(extraArt){
+       img.onerror=function(){console.error('Extra token not found: '+extraArt);};
+       img.src=extraArt;
+       img.setAttribute('data-art',extraArt);
+       img.alt='Жетон Extra: '+name;
+       img.classList.add('token-ready');
+     }else{
+       img.removeAttribute('src');img.removeAttribute('data-art');img.classList.remove('token-ready');
+     }
    }
- }}else if(img){
+ }else{
+   if(extraToken)extraToken.style.display='none';
+   if(classStep)classStep.classList.remove('step-hidden');
+   img=el('pc_classArt');
+   if(img){
   var art=classArt(name);
   if(!art){
    img.removeAttribute('src');img.removeAttribute('data-art');img.classList.remove('token-ready');img.alt='Жетон появится после выбора класса';
@@ -209,7 +215,8 @@ function getProfessionItems(){
 function resetParchmentFields(){
  ['pc_name','pc_origin','pc_age'].forEach(function(id){var e=el(id);if(e)e.value='';});
  ['pc_class','pc_gender','pc_race','pc_background','pc_profession'].forEach(function(id){var e=el(id);if(e)e.value='';});
- var art=el('pc_classArt');if(art){art.removeAttribute('src');art.removeAttribute('data-art');art.classList.remove('token-ready');}
+ ['pc_classArt','pc_extraClassArt'].forEach(function(id){var art=el(id);if(art){art.removeAttribute('src');art.removeAttribute('data-art');art.classList.remove('token-ready');}});
+ var extraToken=el('pcExtraToken');if(extraToken)extraToken.style.display='none';
 }
 function initParchment(){
  resetParchmentFields();
