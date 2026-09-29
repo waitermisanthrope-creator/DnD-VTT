@@ -167,6 +167,10 @@ function shortRest() {
     if (restoredShort) renderCombatAbilities();
   }
 
+  if (currentChar && currentChar.extraClassType === 'walter_parasite' && window.WALTER_PARASITE_EXTRA && typeof window.WALTER_PARASITE_EXTRA.resetRestResources === 'function') {
+    window.WALTER_PARASITE_EXTRA.resetRestResources(currentChar);
+  }
+
   autoSaveCurrentCharacter();
   alert('Короткий отдых завершен.');
 }
@@ -202,6 +206,10 @@ function longRest() {
       currentChar.combatAbilities[j].usedCount = 0;
     }
     if (typeof renderCombatAbilities === 'function') renderCombatAbilities();
+  }
+
+  if (currentChar && currentChar.extraClassType === 'walter_parasite' && window.WALTER_PARASITE_EXTRA && typeof window.WALTER_PARASITE_EXTRA.resetRestResources === 'function') {
+    window.WALTER_PARASITE_EXTRA.resetRestResources(currentChar);
   }
 
   if (typeof renderSpellSlots === 'function') renderSpellSlots();
