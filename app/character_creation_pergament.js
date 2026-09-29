@@ -225,7 +225,7 @@ window.finishParchmentCreation=function(){
   if(classic){classic.style.display='block';classic.scrollTop=0}
   if(typeof window.initCharacterCreationScreen==='function')window.initCharacterCreationScreen();
   syncToClassic();
- },4200);
+ },6000);
 };
 function hook(){
  if(typeof window.createNewCharacter!=='function'){setTimeout(hook,50);return}
