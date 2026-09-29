@@ -115,7 +115,7 @@
     if(tok&&g.DNDBattleBoard&&typeof g.DNDBattleBoard.distanceFt==='function'){
       targetList.forEach(function(c){if(c&&String(c.team||'')!==String(e.team||'party')&&!c.defeated){var tt=g.DNDBattleBoard.findToken('bt_'+String(c.id))||g.DNDBattleBoard.findToken(c.id);if(tt&&g.DNDBattleBoard.distanceFt(tok,tt)<=5)hostiles++;}});
     }
-    var bonus=l>=15?3:l>=5?2:1;var gained=base+hostiles+bonus-1;
+    var bonus=l>=15?5:l>=10?3:l>=5?1:0;var gained=base+hostiles+bonus;
     gainFerocity(e,gained);e.resources.ferocity=e.resources.ferocity||0;
     var out={ok:true,gained:gained,ferocity:e.resources.ferocity,rampage:false};
     if(Number(e.resources.ferocity)>=10&&!e.metadata.rampage){
