@@ -203,7 +203,7 @@ public final class DndUpdateBridge {
         } finally { c.disconnect(); }
     }
 
-    private static String sha256(byte[] data) throws Exception {
+    private static String sha256(File file) throws Exception {\n        try (InputStream in = new FileInputStream(file)) {\n            MessageDigest digest = MessageDigest.getInstance("SHA-256");\n            byte[] buf = new byte[16384]; int n;\n            while ((n = in.read(buf)) >= 0) digest.update(buf, 0, n);\n            byte[] bytes = digest.digest();\n            StringBuilder s = new StringBuilder();\n            for (byte b : bytes) s.append(String.format("%02x", b & 0xff));\n            return s.toString();\n        }\n    }\n\n    private static String sha256(byte[] data) throws Exception {
         byte[] digest = MessageDigest.getInstance("SHA-256").digest(data);
         StringBuilder s = new StringBuilder();
         for (byte b : digest) s.append(String.format("%02x", b & 0xff));
