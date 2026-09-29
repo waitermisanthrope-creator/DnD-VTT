@@ -4620,3 +4620,18 @@ Stable manifest после успешной сборки должен содер
 - Бистхарт остаётся отложенным до появления универсального связанного второго Actor/листа спутника.
 - Рой, Паразит и Призрак не изменялись.
 - Следующий класс по утверждённому порядку: Пугилист.
+
+
+## CLASS LOGIC PASS — ПУГИЛИСТ (2026-09-29)
+
+- **Статус:** implemented_core.
+- **Источник:** Benjamin Huffman / Sterling Vermin Adventuring Co., версия 5.5E.
+- `app/data/classes/Pugilist.js` обновлён с каркаса до основной прогрессии 1–20.
+- Исправлено соответствие 5.5E: **d8**, Сила/Телосложение, лёгкая броня, простое/импровизированное оружие, хлыст и ручной арбалет, 1 инструмент, 2 навыка, мультикласс Сила 13 + Телосложение 13.
+- Добавлены прогрессии Moxie и Fisticuffs, шесть актуальных Fight Clubs и основные классовые особенности.
+- `app/expansion_classes_pack.js` получил runtime: Moxie, Fisticuffs, Iron Chin, Brace Up, Old One-Two, Stick and Move, Bloodied but Unbowed, Haymaker, Dig Deep, Moxie-Fueled Fists, Fancy Footwork, Shake It Off, Down But Not Out, School of Hard Knocks, Rabble Rouser, Unbreakable, Herculean, Fighting Spirit и Peak Physical Condition.
+- Runtime commit: `19183a1a`.
+- Data/progression commit: `4353df81`.
+- **Отложено:** полноценная механика всех шести Fight Clubs (Arena Royale, Bloodhound Bruisers, Dog & Hound, Piss & Vinegar, The Squared Circle, The Sweet Science), а также специализированный UI выбора и применения их многошаговых особенностей.
+- **Важно:** не повышать APK/versionCode только из-за этих изменений; сборка нужна отдельно перед тестированием APK.
+- **Специальные классы Рой / Призрак / Паразит не изменялись.**
