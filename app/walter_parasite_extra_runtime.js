@@ -532,6 +532,8 @@
     levels:levels,
     mechanics:{
       onlyDeadBodies:true,
+      entryRoute:'через рот',
+      attachment:'спинной мозг',
       noFreeWill:true,
       dominantCharacteristics:true,
       tiedMaximumsAllActive:true,
