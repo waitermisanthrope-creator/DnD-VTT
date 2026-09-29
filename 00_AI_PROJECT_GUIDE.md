@@ -4651,3 +4651,26 @@ Stable manifest после успешной сборки должен содер
 - **Пугилист:** к полной механике шести Fight Clubs обязательно вернуться отдельным проходом позже; текущая реализация Пугилиста это не отменяет.
 - APK/versionCode не повышался.
 - Рой / Призрак / Паразит не изменялись.
+
+
+## CLASS LOGIC PASS — СТРАЖ / WARDEN (2026-09-29)
+
+- **Статус:** implemented_core для базового класса.
+- **Источник:** Mage Hand Press — Warden 2024 / 5.5E. Актуальная версия позиционирует Стража как танка с упором на удержание линии и контроль противников. citeturn1view0turn0search2
+- `app/data/classes/Warden.js` переведён из skeleton в implemented_core.
+- Обновлена базовая прогрессия 1–20: Fighting Style, Sentinel's Stand, Weapon Mastery, Guardian Tactics, Unyielding Resolve, Extra Attack, Interrupt, Mettle, Survive, Sentinel's Strike, Font of Life, Extended Tactics, Improved Resolve, Sentinel's Soul, Epic Boon и Legendary Resistance.
+- Реализованы три варианта Sentinel's Stand: Stalwart Spirit, Steadfast Toughness и Tower Shield.
+- Реализованы три варианта Sentinel's Strike: Interdict, Shield Slam и Sweep.
+- Реализованы три варианта Sentinel's Soul: All-Seeing, Fortified и Unstoppable.
+- Runtime Стража в `app/expansion_classes_pack.js` переведён с прежнего Kibbles-слоя на Mage Hand Press 2024/5.5E.
+- Реализованы runtime-контракты Guardian Tactics: Block, Challenge и Grasp; их базовый радиус 5 футов и расширение до 10 футов с Extended Tactics.
+- Реализованы ресурсы и основные эффекты Interrupt, Survive, Font of Life и Legendary Resistance.
+- Реализованы состояния/эффекты Unyielding Resolve и Improved Resolve, а также Mettle и варианты Sentinel's Strike/Soul.
+- Зарегистрированы 13 Champion Calls: Beastblood Guardian, Carrion King, Diabolist, Drake-Blooded, Godsworn, Grey Watchman, Nightgaunt, Rimekeeper, Steel Shepherd, Stoneheart Defender, Storm Sentinel, Verdant Protector и Witchbane Hunter.
+- **Отложено отдельным проходом:** глубокая механика всех Champion Calls и их специализированный UI. Базовый класс не объявляется полной реализацией подклассов только из-за регистрации названий.
+- Важное отличие от старой реализации: прежние `primalChallenge`/`earthshaker` и четыре Kibbles-подкласса больше не используются как ядро Стража.
+- Пугилист: к шести Fight Clubs обязательно вернуться отдельным проходом.
+- Бистхарт остаётся отложенным до универсального связанного второго Actor/листа спутника.
+- Рой / Призрак / Паразит не изменялись.
+- APK/versionCode не повышались.
+- Следующий класс по утверждённому порядку: **Алхимик**.
