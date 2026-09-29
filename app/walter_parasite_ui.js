@@ -30,7 +30,7 @@
     var summary=api.getClassSummary(hero);
     var meta=api.STAT_META;
     var organs=summary.activeCharacteristics.map(function(k){
-      return '<button class="btn-action" style="margin:3px;padding:6px 8px;" onclick="useWalterDominantOrgan(\\''+k+'\\')">'+esc(meta[k].label)+': '+esc(meta[k].ability)+'</button>';
+      return '<button class="btn-action" style="margin:3px;padding:6px 8px;" onclick="useWalterDominantOrgan(&quot;'+k+'&quot;)">'+esc(meta[k].label)+': '+esc(meta[k].ability)+'</button>';
     }).join('');
 
     var muts=summary.mutations.length?summary.mutations.map(esc).join(', '):'нет';
