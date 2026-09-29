@@ -9,8 +9,8 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 75632,
-      "sha256": "96829a1961c97a54956c850fa3750e1ddc846705e84b91a733e047ae90e55647"
+      "bytes": 75687,
+      "sha256": "031a04129c58a9a17674f1ab708ee5fe1b9303a19dd7bfa028af7fe9729840d5"
     },
     {
       "path": "app/character_creation_pergament.js",
