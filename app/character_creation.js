@@ -472,6 +472,7 @@ window.saveNewCreatedCharacter = function() {
   var baseAc = 10;
   var selectedRace = null;
   var isSwarmExtra = className.split(' ')[0] === 'Рой';
+  var isParasiteExtra = className.split(' ')[0] === 'Паразит';
 
   // Рой полностью заменяет обычную расу.
   if (isSwarmExtra) {
@@ -494,7 +495,11 @@ window.saveNewCreatedCharacter = function() {
       
       if (selectedRace.bonuses) {
         for (var stat in selectedRace.bonuses) {
-          if (finalStats[stat] !== undefined) {
+          // Для Паразита бонусы хозяина применяются только к физике.
+          // Интеллект/Мудрость/Харизма принадлежат самому Паразиту и
+          // должны сохраняться при последующей смене тела.
+          if (finalStats[stat] !== undefined &&
+              (!isParasiteExtra || stat === 'str' || stat === 'dex' || stat === 'con')) {
             finalStats[stat] += selectedRace.bonuses[stat];
           }
         }
@@ -515,7 +520,9 @@ window.saveNewCreatedCharacter = function() {
   var conModFinal = Math.floor((finalStats.con - 10) / 2);
   // Extra-класс Рой использует d8 уже на 1 уровне; обычные классы
   // сохраняют существующую стартовую формулу.
-  var maxHp = isSwarmExtra ? Math.max(1, 8 + conModFinal) : (10 + conModFinal);
+  var maxHp = isSwarmExtra
+    ? Math.max(1, 8 + conModFinal)
+    : (isParasiteExtra ? Math.max(1, 8 + conModFinal) : (10 + conModFinal));
 
   // Ищем выбранную предысторию
   var backgroundsList = [];
@@ -673,14 +680,14 @@ window.saveNewCreatedCharacter = function() {
     raceId: raceId,
     raceName: raceName,
     baseAC: baseAc,
-    isExtraClass: isSwarmExtra,
-    extraClassType: isSwarmExtra ? 'swarm' : null,
-    replacesRace: isSwarmExtra,
-    multiclassAllowed: !isSwarmExtra,
+    isExtraClass: isSwarmExtra || isParasiteExtra,
+    extraClassType: isSwarmExtra ? 'swarm' : (isParasiteExtra ? 'parasite' : null),
+    replacesRace: isSwarmExtra || isParasiteExtra,
+    multiclassAllowed: !(isSwarmExtra || isParasiteExtra),
     ac: String(baseAc),
     // Скорость теперь берётся из выбранной расы (races.js -> selectedRace.speed),
     // а не захардкожена как раньше. Если раса не выбрана — используем 30 футов по умолчанию.
-    speed: isSwarmExtra ? '30 футов' : ((selectedRace && selectedRace.speed) ? selectedRace.speed : '30 футов'),
+    speed: ((selectedRace && selectedRace.speed) ? selectedRace.speed : '30 футов'),
     hpMax: maxHp > 1 ? maxHp : 1,
     hpCurrent: maxHp > 1 ? maxHp : 1,
     hpTemp: '',
@@ -713,6 +720,33 @@ window.saveNewCreatedCharacter = function() {
     window.SWARM_EXTRA.normalizeCharacter(newChar);
     newChar.swarm.currentHP = newChar.hpCurrent;
     newChar.swarm.maxHP = newChar.hpMax;
+  }
+
+  if (isParasiteExtra && window.PARASITE_EXTRA && typeof window.PARASITE_EXTRA.normalizeCharacter === 'function') {
+    window.PARASITE_EXTRA.normalizeCharacter(newChar);
+    // Начальный хозяин строится из выбранной расы, но его физика и тело
+    // отделены от разума Паразита.
+    var parasiteHostTarget = {
+      id: 'initial_host_' + newId,
+      name: raceName || 'Первичный хозяин',
+      creatureType: (selectedRace && selectedRace.creatureType) || 'Гуманоид',
+      size: (selectedRace && selectedRace.size) || 'Средний',
+      stats: {
+        str: finalStats.str,
+        dex: finalStats.dex,
+        con: finalStats.con,
+        int: finalStats.int,
+        wis: finalStats.wis,
+        cha: finalStats.cha
+      },
+      hpMax: newChar.hpMax,
+      hpCurrent: newChar.hpCurrent,
+      ac: baseAc,
+      speed: newChar.speed
+    };
+    window.PARASITE_EXTRA.bindHost(newChar, parasiteHostTarget);
+    newChar.raceName = raceName || 'Хозяин';
+    newChar.hostName = raceName || 'Первичный хозяин';
   }
 
   // Авторское ХБ: профессия необязательна; при выборе создаём навык с 1 уровня.
