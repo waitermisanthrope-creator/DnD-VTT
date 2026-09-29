@@ -123,6 +123,12 @@ let pendingLevelUpData = null;
             <div class="class-item extra-class-item" data-class="Паразит доктора Вальтера">
               <span>🧬 Паразит доктора Вальтера — EXTRA</span>
             </div>
+            <div class="class-item extra-class-item" data-class="Призрак">
+              <span>👻 Призрак — EXTRA</span>
+            </div>
+            <div class="class-item extra-class-item" data-class="Паразит доктора Вальтера">
+              <span>🧬 Паразит доктора Вальтера — EXTRA</span>
+            </div>
             <div class="class-item center-item" data-class="Чародей">
               <img src="./app/data/classes/SORCERER.png" alt="Чародей">
               <span>Чародей (Sorcerer)</span>
@@ -262,6 +268,8 @@ let pendingLevelUpData = null;
         const isSwarm = selectedClassName === "Рой";
         const isParasite = selectedClassName === "Паразит";
         const isWalterParasite = selectedClassName === "Паразит доктора Вальтера";
+        const isGhost = selectedClassName === "Призрак";
+        const isWalterParasite = selectedClassName === "Паразит доктора Вальтера";
         const isSwarmHero = !!(hero && (
           hero.extraClassType === "swarm" ||
           hero.isExtraClass === true && hero.race === "Рой" ||
@@ -274,6 +282,18 @@ let pendingLevelUpData = null;
           hero.isExtraClass === true && hero.extraClassType === "parasite" ||
           Array.isArray(hero.classes) && hero.classes.some(function(c){
             return c && normalizeClassKey(c.name) === "паразит";
+          })
+        ));
+        const isWalterHero = !!(hero && (
+          hero.extraClassType === "walter_parasite" ||
+          Array.isArray(hero.classes) && hero.classes.some(function(c){
+            return c && normalizeClassKey(c.name) === normalizeClassKey("Паразит доктора Вальтера");
+          })
+        ));
+        const isGhostHero = !!(hero && (
+          hero.extraClassType === "ghost" ||
+          Array.isArray(hero.classes) && hero.classes.some(function(c){
+            return c && normalizeClassKey(c.name) === "призрак";
           })
         ));
         const isWalterParasiteHero = !!(hero && (
@@ -394,6 +414,8 @@ if (typeof window.getClassData !== 'function') {
       "Чародей": window.sorcererProgression,
       "Рой": window.swarmProgression,
       "Паразит": window.parasiteProgression,
+      "Паразит доктора Вальтера": window.walterParasiteProgression,
+      "Призрак": window.ghostProgression,
       "Паразит доктора Вальтера": window.walterParasiteProgression
     };
     if (map[norm]) {
