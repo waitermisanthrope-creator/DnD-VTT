@@ -84,7 +84,7 @@
     hero=hero||{};
     var s=hero.stats||{};
     var level=Number(hero.level)||1;
-    var hp=Math.max(1,Math.min(10+level, 4+level+mod(s.con)));
+    var hp=Math.max(1,Math.min(10+level, 4+level));
     return {
       type:"parasiteLarva",
       creatureType:"Аберрация",
