@@ -490,6 +490,82 @@
     return{ok:false,unsupported:true,message:'Способность контракта '+id+' требует отдельного действия/условия.'};
   }
 
+  function pugilistLevel(h){return lvl(h,'Пугилист');}
+  function pugilistDie(l){return l>=17?'1d12':l>=11?'1d10':l>=5?'1d8':'1d6';}
+  function pugilistMoxieMax(l){var t=[0,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,12];return t[Math.max(1,Math.min(20,l))]||0;}
+  function syncPugilist(h){
+    var l=pugilistLevel(h);if(!l)return;
+    var s=st(h),r=res(h,'pugilistMoxie',pugilistMoxieMax(l),'short');
+    r.max=pugilistMoxieMax(l);r.die=pugilistDie(l);
+    s.pugilistMoxie=r.value;s.pugilistDie=pugilistDie(l);
+    s.pugilistIronChin=l>=1;s.pugilistMagicFists=l>=6;
+    s.pugilistBloodiedReady=s.pugilistBloodiedReady!==false;
+  }
+  function usePugilist(h,id,ctx,feature){
+    syncPugilist(h);ctx=ctx||{};var l=pugilistLevel(h),s=st(h),r=h.resources&&h.resources.pugilistMoxie;
+    var cost=0;
+    if(id==='braceUp'){
+      cost=1;if(!spend(h,'pugilistMoxie',cost))return{ok:false,message:'Недостаточно Мокси.'};
+      var temp=diceRoll(pugilistDie(l)) + l + mod(h,'con');
+      return{ok:true,effect:{tempHp:temp},message:'🥊 Соберись: получено '+temp+' временных HP.'};
+    }
+    if(id==='oldOneTwo'){
+      cost=1;if(!spend(h,'pugilistMoxie',cost))return{ok:false,message:'Недостаточно Мокси.'};
+      return{ok:true,effect:{bonusActionAttacks:2,unarmed:true},message:'🥊 Двойка: две дополнительные безоружные атаки.'};
+    }
+    if(id==='stickAndMove'){
+      cost=1;if(!spend(h,'pugilistMoxie',cost))return{ok:false,message:'Недостаточно Мокси.'};
+      return{ok:true,effect:{choose:['shove','dash','disengage']},message:'👊 Ударил и отошёл: выбери Толчок, Рывок или Отход.'};
+    }
+    if(id==='bloodiedButUnbowed'){
+      if((Number(h.hp)||0)>((Number(h.maxHp)||0)/2))return{ok:false,message:'Эта способность срабатывает, когда HP падают до половины или ниже.'};
+      var rr=h.resources&&h.resources.pugilistMoxie;if(rr)rr.value=rr.max;
+      s.pugilistBloodiedReady=false;
+      return{ok:true,effect:{tempHp:l+mod(h,'con'),restoreMoxie:true},message:'🩸 Израненный, но не сломленный: Мокси восстановлено.'};
+    }
+    if(id==='digDeep'){
+      return{ok:true,effect:{resistance:['bludgeoning','piercing','slashing'],durationMinutes:1,after:{exhaustion:1}},message:'💪 Соберись с силами: сопротивление физическому урону на 1 минуту.'};
+    }
+    if(id==='haymaker'){
+      return{ok:true,effect:{attackDisadvantage:true,maximizeDamageDice:true,duration:'turn'},message:'💥 Сокрушительный удар: атаки получают помеху, кости урона максимальны.'};
+    }
+    if(id==='shakeItOff'){
+      return{ok:true,effect:{endConditions:['charmed','frightened']},message:'🧠 Стряхнуто Очарование/Испуг.'};
+    }
+    if(id==='unbreakable'){
+      if(ctx.failedSave===false)return{ok:false,message:'Переброс используется после провала спасброска.'};
+      cost=1;if(!spend(h,'pugilistMoxie',cost))return{ok:false,message:'Недостаточно Мокси для переброса.'};
+      return{ok:true,effect:{rerollSave:true,ability:['str','dex','con']},message:'🛡️ Несокрушимый: спасбросок переброшен.'};
+    }
+    if(id==='fightingSpirit'){
+      if((Number(h.hp)||0)>0)return{ok:false,message:'Боевой дух срабатывает при падении до 0 HP.'};
+      if((Number(s.pugilistExhaustion)||0)>=4)return{ok:false,message:'Слишком высокий уровень истощения.'};
+      s.pugilistExhaustion=(Number(s.pugilistExhaustion)||0)+1;
+      if(r)r.value=Math.ceil(r.max/2);
+      return{ok:true,effect:{setHp:Math.ceil((Number(h.maxHp)||1)/2),restoreMoxie:'half',exhaustion:1},message:'🔥 Боевой дух: Пугилист возвращается в бой.'};
+    }
+    if(id==='fisticuffs')return{ok:true,effect:{damageDie:pugilistDie(l),bonusActionUnarmedOrGrapple:true,magical:l>=6},message:'🥊 Кулачный бой активен: '+pugilistDie(l)+'.'};
+    if(id==='ironChin')return{ok:true,effect:{armorClass:'12 + Constitution modifier',requires:['light_or_no_armor','no_shield']},message:'🛡️ Железный подбородок: AC считается через Телосложение.'};
+    if(id==='fancyFootwork')return{ok:true,effect:{acrobaticsProficiency:true},message:'👟 Вычурная работа ногами: владение Акробатикой.'};
+    if(id==='downButNotOut')return{ok:true,effect:{bonusDamage:'proficiency bonus',durationMinutes:1,requires:'Bloodied but Unbowed'},message:'🩸 Ещё не повержен: атаки получают дополнительный урон.'};
+    if(id==='schoolOfHardKnocks')return{ok:true,effect:{physicalResistance:true,advantageAgainst:['prone','incapacitated']},message:'🥊 Школа суровой жизни активна.'};
+    if(id==='rabbleRouser')return{ok:true,effect:{settlementCarousingAdvantage:['persuasion','intimidation']},message:'🍻 Задира: социальное преимущество после каруза в поселении.'};
+    if(id==='herculean')return{ok:true,effect:{carryingCapacityMultiplier:2,objectMeleeDamageMultiplier:2,standingJump:'running_start_distance'},message:'💪 Геркулесова сила активна.'};
+    if(id==='peakPhysicalCondition')return{ok:true,effect:{strengthMaxBonus:2,constitutionMaxBonus:2,maxScore:22,shortRestExhaustionRecovery:2,shortRestAllHitDice:true},message:'🏆 Пиковая физическая форма достигнута.'};
+    if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' активно.'};
+    return{ok:false,unsupported:true,message:'Эта способность Пугилиста зарегистрирована, но отдельная UI-команда ещё требует подключения.'};
+  }
+  function pugilistAttack(h,ctx){
+    var l=pugilistLevel(h),s=st(h),o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]};
+    o.unarmedDie=pugilistDie(l);
+    if(s.pugilistMagicFists)o.notes.push('Безоружные атаки считаются магическими.');
+    if(ctx&&ctx.haymaker)o.disadvantage=true;
+    if(ctx&&ctx.haymaker)o.maximizeDamageDice=true;
+    if(ctx&&ctx.pugilistWeapon)o.usesFisticuffsDie=true;
+    if(l>=13&&s.pugilistDownButNotOut)o.bonusDamage+=Number(h.proficiencyBonus)||2;
+    return o;
+  }
+
   var packs=[bloodHunterPack,
 
     {id:'mcdm-illrigger',name:'Illrigger',displayName:'Иллирригер',source:'MCDM Productions — The Illrigger Revised 1.0',license:'Original runtime implementation; source mechanics checked against public class material',features:[{id:'balefulInterdict',name:'Зловещее запрещение',level:1,action:'bonus',target:'enemy',rangeFt:30},{id:'burnSeal',name:'Сжечь печать',level:1,action:'special',target:'enemy'},{id:'forkedTongue',name:'Раздвоенный язык',level:1,action:'passive'},{id:'combatMastery',name:'Боевая специализация',level:2,action:'utility'},{id:'interdictBoon',name:'Дар Интердикта',level:2,action:'utility'},{id:'invokeHell',name:'Призыв Ада',level:3,action:'action'},{id:'infernalConduit',name:'Инфернальный проводник',level:6,action:'action'},{id:'bloodPrice',name:'Кровавая цена',level:10,action:'reaction'},{id:'terrorizingForce',name:'Терроризирующая сила',level:11,action:'bonus'},{id:'superiorInterdict',name:'Высший интердикт',level:14,action:'passive'},{id:'infernalMajesty',name:'Инфернальное величие',level:17,action:'bonus'},{id:'masterOfHell',name:'Повелитель Ада',level:20,action:'action'}],subclasses:[{id:'architect',name:'Архитектор разрушения',features:[{id:'architectBlessing',name:'Благословение Архитектора',level:3,action:'passive'},{id:'architectSpellcasting',name:'Магия Архитектора',level:3,action:'utility'}]},{id:'hellspeaker',name:'Говорящий с Адом',features:[{id:'hellspeakerCommand',name:'Инфернальное убеждение',level:3,action:'action'}]},{id:'painkiller',name:'Палач боли',features:[{id:'painkillerArmor',name:'Тяжёлая броня',level:3,action:'passive'},{id:'painkillerPunishment',name:'Наказание',level:7,action:'reaction'}]},{id:'sanguine',name:'Кровавый рыцарь',features:[{id:'sanguineRitual',name:'Кровавый ритуал',level:3,action:'action'}]},{id:'shadowmaster',name:'Повелитель теней',features:[{id:'shadowStep',name:'Теневой шаг',level:3,action:'bonus'},{id:'shadowAssassin',name:'Теневой убийца',level:7,action:'attack'}]}],hooks:{sync:syncIllrigger,useFeature:useIllrigger,attackModifiers:illriggerAttack,subclassUse:illriggerContractFeature}},
@@ -508,6 +584,33 @@
     {id:'mh-necromancer',name:'Necromancer',displayName:'Некромант',source:'Mage Hand Press',license:'Original runtime implementation; feature names paraphrased',features:[{id:'charnelTouch',name:'Могильное касание',level:1,action:'action'},{id:'thralls',name:'Неживые слуги',level:2,action:'utility'},{id:'deadSpace',name:'Мёртвое пространство',level:2,action:'utility'},{id:'darkArcana',name:'Тёмная аркана',level:3,action:'bonus'},{id:'animateDead',name:'Оживление мёртвых',level:5,action:'utility'},{id:'criticalSpellcasting',name:'Критическое колдовство',level:5,action:'passive'},{id:'improvedThralls',name:'Улучшенные слуги',level:7,action:'passive'},{id:'improvedCriticalSpellcasting',name:'Улучшенное критическое колдовство',level:14,action:'passive'},{id:'undyingServitude',name:'Неумирающее служение',level:18,action:'reaction'},{id:'lichdom',name:'Личествование',level:20,action:'passive'}],subclasses:[{id:'deathKnight',name:'Death Knight',features:[]},{id:'overlord',name:'Overlord',features:[]},{id:'paleMaster',name:'Pale Master',features:[]}],hooks:{sync:syncNecromancer,useFeature:useNecromancer,attackModifiers:necromancerAttack}},
     {id:'mh-martyr',name:'Martyr',displayName:'Мученик',source:'Mage Hand Press',license:'Original runtime implementation; feature names paraphrased',features:[{id:'armorOfFaith',name:'Доспех веры',level:1,action:'utility'},{id:'miraculousHealing',name:'Чудесное исцеление',level:2,action:'action'},{id:'reprisal',name:'Воздаяние',level:2,action:'reaction'},{id:'sacrifice',name:'Жертвенный удар',level:3,action:'bonus'},{id:'sacrificeFoe',name:'Жертва врага',level:7,action:'passive'},{id:'divineRespite',name:'Божественная передышка',level:9,action:'utility'},{id:'undying',name:'Неумирающий',level:10,action:'reaction'},{id:'improvedSacrificialStrike',name:'Улучшенный жертвенный удар',level:11,action:'bonus'},{id:'marchUntoDestiny',name:'Шествие к судьбе',level:15,action:'passive'},{id:'finalMartyrdom',name:'Последнее мученичество',level:20,action:'action'}],subclasses:[{id:'mercy',name:'Burden of Mercy',features:[]},{id:'revolution',name:'Burden of Revolution',features:[]},{id:'truth',name:'Burden of Truth',features:[]},{id:'awakening',name:'Burden of Awakening',features:[]}],hooks:{sync:syncMartyr,useFeature:useMartyr}}
   ];
+    {id:'sv-pugilist',name:'Pugilist',displayName:'Пугилист',source:'Benjamin Huffman / Sterling Vermin Adventuring Co.',license:'Original runtime implementation; source mechanics checked against current 5.5E class material',features:[
+      {id:'fisticuffs',name:'Кулачный бой',level:1,action:'passive'},
+      {id:'ironChin',name:'Железный подбородок',level:1,action:'utility'},
+      {id:'braceUp',name:'Соберись',level:2,action:'bonus'},
+      {id:'oldOneTwo',name:'Двойка',level:2,action:'bonus'},
+      {id:'stickAndMove',name:'Ударил и отошёл',level:2,action:'bonus'},
+      {id:'bloodiedButUnbowed',name:'Израненный, но не сломленный',level:3,action:'reaction'},
+      {id:'haymaker',name:'Сокрушительный удар',level:5,action:'utility'},
+      {id:'digDeep',name:'Соберись с силами',level:4,action:'bonus'},
+      {id:'moxieFueledFists',name:'Кулаки, подпитанные Мокси',level:6,action:'passive'},
+      {id:'fancyFootwork',name:'Вычурная работа ногами',level:7,action:'passive'},
+      {id:'shakeItOff',name:'Стряхнуть с себя',level:7,action:'action'},
+      {id:'downButNotOut',name:'Ещё не повержен',level:9,action:'passive'},
+      {id:'schoolOfHardKnocks',name:'Школа суровой жизни',level:10,action:'passive'},
+      {id:'rabbleRouser',name:'Задира',level:13,action:'passive'},
+      {id:'unbreakable',name:'Несокрушимый',level:14,action:'reaction'},
+      {id:'herculean',name:'Геркулесова сила',level:15,action:'passive'},
+      {id:'fightingSpirit',name:'Боевой дух',level:18,action:'reaction'},
+      {id:'peakPhysicalCondition',name:'Пиковая физическая форма',level:20,action:'passive'}
+    ],subclasses:[
+      {id:'arenaRoyale',name:'Арена Рояль',features:[]},
+      {id:'bloodhoundBruisers',name:'Бладхаундские громилы',features:[]},
+      {id:'dogAndHound',name:'Пёс и гончая',features:[]},
+      {id:'pissAndVinegar',name:'Ярость и дерзость',features:[]},
+      {id:'squaredCircle',name:'Квадратный ринг',features:[]},
+      {id:'sweetScience',name:'Благородное искусство',features:[]}
+    ],hooks:{sync:syncPugilist,useFeature:usePugilist,attackModifiers:pugilistAttack}},
   packs.forEach(function(p){D.registerClass(p);});
   global.DNDExpansionClasses={VERSION:'1.0.0',packs:packs.map(function(p){return p.id;})};
 })(window);
