@@ -36,13 +36,13 @@ g.alchemistProgression={
  subclassLevel:3,subclassFeatureLevels:[3,6,10,14],
  progression:{bombDamage:['1d10','1d10','1d10','1d10','2d10','2d10','2d10','2d10','2d10','2d10','3d10','3d10','3d10','3d10','3d10','3d10','4d10','4d10','4d10','4d10'],primeBomb:[0,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5],reagents:[2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40],formulas:[0,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,8,8]},
  bomb:{damage:'1d10 fire + Dexterity modifier',range:'30/90',radiusFt:5,properties:['destructible','finesse','thrown'],mastery:'explode',intelligentExplosions:true,saveAbility:'dexterity'},
- bombFormulas:['Teleportation Bomb','Withering Bomb','Nuclear Bomb','Elemental Infusion','Guided Explosives','Precision Explosives','Unconventional Explosives'],
- discoveries:['Alchemy of Alteration','Alchemy of Poison','Alchemy of Restoration','Fundamental Alchemy','Guided Explosives','Homunculus','Necrobiology','Precision Explosives','Unconventional Explosives','Unconventional Potions'],
+ bombFormulas:['Acid Bomb','Bramble Bomb','Concussion Bomb','Cryo Bomb','Fear Bomb','Holy Bomb','Impact Bomb','Incendiary Bomb','Laughing Gas Bomb','Lightning Bomb','Oil Bomb','Paint Bomb','Prismatic Bomb','Quiet Bomb','Seeking Bomb','Smoke Bomb','Teleportation Bomb','Withering Bomb'],
+ discoveries:['Alchemy of Alteration','Alchemy of Poison','Alchemy of Restoration','Arcane Studies','Combat Studies','Fundamental Alchemy','Guided Explosives','Homunculus','Precision Explosives','Unconventional Explosives','Unconventional Potions'],
  subclasses:[
-  {id:'apothecary',name:'Аптекарь'},{id:'madBomber',name:'Безумный бомбардир'},{id:'mutagenist',name:'Мутагенист'},
-  {id:'polymorphist',name:'Полиморфист'},{id:'xenoalchemist',name:'Ксеноалхимик'},{id:'oozeRancher',name:'Разводчик слизней'},
-  {id:'pigmentist',name:'Пигментист'},{id:'elementalist',name:'Элементалист'},{id:'bombardier',name:'Бомбардир'},
-  {id:'plagueDoctor',name:'Чумной доктор'},{id:'vivisectionist',name:'Вивисектор'}
+  {id:'amorist',name:'Аморист'},{id:'apothecary',name:'Аптекарь'},{id:'dynamoEngineer',name:'Инженер-динамо'},
+  {id:'ionizer',name:'Ионизатор'},{id:'madBomber',name:'Безумный бомбардир'},{id:'mutagenist',name:'Мутагенист'},
+  {id:'oozeRancher',name:'Разводчик слизней'},{id:'pigmentist',name:'Пигментист'},{id:'resonator',name:'Резонатор'},
+  {id:'venomsmith',name:'Веномсмит'},{id:'xenoalchemist',name:'Ксеноалхимик'}
  ],
  mechanics:{bombs:'implemented_core',reagents:'implemented_core',potionBrewing:'implemented_core',primeBomb:'implemented_core',bombFormulas:'core_registry',reagentSynthesis:'implemented_core',discoveries:'core_registry',improvedBombs:'implemented_core',evasion:'implemented_core',blastCoating:'implemented_core',potionMixologist:'implemented_core',experimentalist:'implemented_core',philosophersStone:'implemented_core',nuclearBomb:'implemented_core',subclassSystem:'registered_deep_subclass_work_pending',notes:'Базовое ядро 2024/5.5E реализовано. Полные 11 подклассов, все формулы и глубокие Discovery требуют отдельного runtime/UI прохода.'},
  levels:levels
