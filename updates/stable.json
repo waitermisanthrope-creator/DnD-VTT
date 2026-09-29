@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DnD-VTT",
-  "version": "70.25.78",
+  "version": "70.25.79",
   "minAppVersion": "70.25.71",
   "channel": "stable",
   "generated": "AUTO",
@@ -24,8 +24,8 @@
     },
     {
       "path": "app/app.js",
-      "bytes": 29612,
-      "sha256": "12fdf5f0b85e590264af2309392b18f6e33ada7dc92d516e94a524cba8a83c80"
+      "bytes": 30118,
+      "sha256": "d8d616121de303f43d31286fee4ea771b440a450584db03a13547e2e41b9b8d6"
     },
     {
       "path": "app/Settings.js",
@@ -35,17 +35,17 @@
     {
       "path": "app/update_manager.js",
       "bytes": 17023,
-      "sha256": "ed1607b7aca4d32e4b06f392dd727af9a918b27a1bf9cfc4b6b30912f82c1991"
+      "sha256": "6b31fc24251d54770c6923b3ecffc574ab81c9bc5560d86b305156e6a6701494"
     },
     {
       "path": "app/onboarding_faq_v71.js",
-      "bytes": 27849,
-      "sha256": "0b231e093bef8d8c8f9e1c881f8a0e9f4d800de17d6ebbbc70bb27a3c3b3def5"
+      "bytes": 29650,
+      "sha256": "c2f8af7e4aec17e9314074f1bf5d7359495d3fca16a88719308d6e18b9b28bda"
     },
     {
       "path": "app/styles.css",
-      "bytes": 14611,
-      "sha256": "1965fda511d019710900206f2d34d0bb6956ac7ec63351ee1e6950ca66aaf480"
+      "bytes": 17738,
+      "sha256": "8e624764c983b2eab81c236682f213948a0b95a19e996983f9994359497f5f2d"
     },
     {
       "path": "app/data/classes/ARTIFICER.png",
