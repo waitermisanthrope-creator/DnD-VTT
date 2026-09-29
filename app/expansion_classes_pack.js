@@ -861,7 +861,7 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
     var l=pugilistLevel(h);if(!l)return;
     var s=st(h),r=res(h,'pugilistMoxie',pugilistMoxieMax(l),'short');
     r.max=pugilistMoxieMax(l);r.die=pugilistDie(l);
-    s.pugilistMoxie=r.value;s.pugilistDie=pugilistDie(l);
+    s.pugilistMoxie=r.current;s.pugilistDie=pugilistDie(l);
     s.pugilistIronChin=l>=1;s.pugilistMagicFists=l>=6;
     s.pugilistBloodiedReady=s.pugilistBloodiedReady!==false;
   }
@@ -879,13 +879,14 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
     }
     if(id==='stickAndMove'){
       cost=1;if(!spend(h,'pugilistMoxie',cost))return{ok:false,message:'Недостаточно Мокси.'};
-      return{ok:true,effect:{choose:['shove','dash','disengage']},message:'👊 Ударил и отошёл: выбери Толчок, Рывок или Отход.'};
+      return{ok:true,effect:{choose:['shove','dash']},message:'👊 Ударил и отошёл: выбери Толчок или Рывок.'};
     }
     if(id==='bloodiedButUnbowed'){
+      if(s.pugilistBloodiedReady===false)return{ok:false,message:'Эта способность уже использована до отдыха.'};
       if((Number(h.hp)||0)>((Number(h.maxHp)||0)/2))return{ok:false,message:'Эта способность срабатывает, когда HP падают до половины или ниже.'};
-      var rr=h.resources&&h.resources.pugilistMoxie;if(rr)rr.value=rr.max;
+      var rr=h.resources&&h.resources.pugilistMoxie;if(rr)rr.current=rr.max;
       s.pugilistBloodiedReady=false;
-      return{ok:true,effect:{tempHp:l+mod(h,'con'),restoreMoxie:true},message:'🩸 Израненный, но не сломленный: Мокси восстановлено.'};
+      return{ok:true,effect:{tempHp:3*l,restoreMoxie:true},message:'🩸 Израненный, но не сломленный: Мокси восстановлено.'};
     }
     if(id==='digDeep'){
       return{ok:true,effect:{resistance:['bludgeoning','piercing','slashing'],durationMinutes:1,after:{exhaustion:1}},message:'💪 Соберись с силами: сопротивление физическому урону на 1 минуту.'};
@@ -905,7 +906,7 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
       if((Number(h.hp)||0)>0)return{ok:false,message:'Боевой дух срабатывает при падении до 0 HP.'};
       if((Number(s.pugilistExhaustion)||0)>=4)return{ok:false,message:'Слишком высокий уровень истощения.'};
       s.pugilistExhaustion=(Number(s.pugilistExhaustion)||0)+1;
-      if(r)r.value=Math.ceil(r.max/2);
+      if(r)r.current=Math.ceil(r.max/2);
       return{ok:true,effect:{setHp:Math.ceil((Number(h.maxHp)||1)/2),restoreMoxie:'half',exhaustion:1},message:'🔥 Боевой дух: Пугилист возвращается в бой.'};
     }
     if(id==='fisticuffs')return{ok:true,effect:{damageDie:pugilistDie(l),bonusActionUnarmedOrGrapple:true,magical:l>=6},message:'🥊 Кулачный бой активен: '+pugilistDie(l)+'.'};
