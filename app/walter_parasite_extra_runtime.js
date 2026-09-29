@@ -393,11 +393,11 @@
     }
 
     if(key==='con'){
-      var durationMin=level>=11?2:1;
+      var durationSeconds=roll(10);
       w.usedOrgans[key]=true;
       return {
         ok:true,kind:'buff',name:'Наросты',
-        durationMinutes:durationMin,
+        durationSeconds:durationSeconds,
         acBonus:2,
         thornsDice:level>=11?'2d4':'1d4',
         effect:'Кожа и суставы покрываются костными пластинами. При попадании рукопашной атакой по телу атакующий получает колющий урон.',
