@@ -113,15 +113,21 @@
 - Полная HP-магия, Sacrifice, Reprisal и эффекты Burdens остаются отдельным этапом.
 - Следующий класс: Сосуд.
 
-## CLASS TEMPLATE PASS — VESSEL (post-V70.25.95)
+## CLASS TEMPLATE PASS — VESSEL (v4.0.0 / 2026-09-29)
 
-- Доведён шаблон Сосуда: d10, Charisma, Constitution/Charisma saves, light armor, simple weapons + scimitar/shortsword.
-- Требование мультикласса: Constitution 13 + Charisma 13.
-- Добавлены владения для мультикласса и выбор 2 навыков из 7.
-- Sealed Spirit выбирается на 3 уровне; точки 3/6/15/20.
-- В реестре уже шесть духов: Вознесённый, Катаклизм, Проклятый, Падший, Бесформенный, Трикстер.
-- Vessel Magic, Spirit Mantle, Archon Forms и точные способности духов остаются отдельным этапом.
-- Следующий класс: Шифтер.
+- **СТАТУС: СОСУД ЗАКРЫТ ПО АКТУАЛЬНОМУ ПУБЛИЧНОМУ ИСТОЧНИКУ laserllama Vessel v4.0.0.**
+- Создан app/vessel_laserllama_v4_runtime.js; app/data/classes/Vessel.js переведён на metadata-bridge.
+- Runtime подключён в index.html после Мученика.
+- Полностью описана прогрессия 1–20: Spirit Mantle, Unsealed Aspects, Vessel Magic, Sealed Spirit, Archon Form, ASI/черты, Extra Attack, Controlled Transformation, Primeval Will, Elder Archon, Dire Preservation и Unchained Power.
+- Обновлена базовая модель v4.0: d10, Харизма/Телосложение, спасброски Con/Cha, лёгкая броня, простое оружие + scimitar/shortsword; выбор 2 навыков из Acrobatics/Athletics/Insight/Intimidation/Perception/Religion/Survival; мультикласс Con 13 + Cha 13.
+- Реализован полный Vessel Spell List 0–5 уровня, включая специальные заклинания laserllama/compendium как имена-записи, чтобы существующий spell engine мог их разрешать.
+- Реализованы все Unsealed Aspects v4.0 с требованиями уровней и ключевыми механиками.
+- Полностью зарегистрированы и описаны все 6 Sealed Spirits: Вознесённый, Катаклизм, Проклятый, Падший, Бесформенный, Трикстер.
+- Для Катаклизма реализованы 4 Elemental Affinity: Воздух, Земля, Огонь, Вода, включая отдельные списки магии и параметры четырёх Archon Forms.
+- Для всех духов реализованы Sealed Magic, тип урона Иридесцентных ударов, способности уровней 3/6/15/20 и основные параметры Archon Forms.
+- Реестр app/data/subclasses/subclassesRegistry.js заменён с шаблонов-заготовок на полноценные 6 Sealed Spirit.
+- Источник сверки: публичный GM Binder документ laserllama, Version 4.0.0, Last Updated February 10th 2026. Публичный документ подтверждает таблицу 1–20, spell list, aspects и шесть духов.
+- Следующий класс по очереди: Шифтер.
 
 ## 3. CURRENT BUILD CHECKPOINT
 
