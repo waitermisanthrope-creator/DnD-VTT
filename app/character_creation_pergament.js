@@ -1,4 +1,4 @@
-/* 70.25.87 creation buckets: classic / DLC-homebrew / extra + burn-scroll back button */
+/* 70.25.89 creation buckets: classic / DLC-homebrew / extra + burn-scroll back button */
 /* Character creation parchment flow v2 — ordinary/extra sheets, progressive reveal, signature transition. */
 (function(){
 'use strict';
@@ -118,11 +118,31 @@ function renderClassArt(){
   }
  }
  var title=el('pcTitle'),sub=el('pcSubtitle'),tax=el('pcTax'),warn=el('pcWarning'),reward=el('pcReward');
- if(title)title.textContent=extra?'ЛИСТ ЛИКВИДАЦИИ':homebrew?'ДОПОЛНИТЕЛЬНЫЙ РОЗЫСКНОЙ ЛИСТ':'РОЗЫСКНОЙ ЛИСТ';
- if(sub)sub.textContent=extra?'Разыскивается исключительно мёртвым. Любая попытка задержания живым считается нарушением приказа гарнизона.':homebrew?'В архиве обнаружены сведения, которых нет в обычных реестрах. Дополнительные материалы допускаются к проверке по особому распоряжению.':'По подозрению в неуплате налогов, славному городу Енотовиллю, для допроса разыскивается гуманоид';
+ if(title)title.textContent=extra?'ЛИСТ ЛИКВИДАЦИИ':homebrew?'АРХИВНЫЙ ЛИСТ — ДОПОЛНИТЕЛЬНЫЕ МАТЕРИАЛЫ':'РОЗЫСКНОЙ ЛИСТ';
+ if(sub)sub.textContent=extra?'Разыскивается исключительно мёртвым. Любая попытка задержания живым считается нарушением приказа гарнизона.':homebrew?'В закрытом архиве обнаружены сведения о тех, кто не вписывается в обычные реестры. Лист составлен по разрозненным донесениям и требует отдельной проверки.':'По подозрению в неуплате налогов, славному городу Енотовиллю, для допроса разыскивается гуманоид';
  if(tax)tax.style.display=(extra||homebrew)?'none':'';
- if(warn)warn.innerHTML=extra?'ОСОБАЯ ПРИМЕТА И ПРИЧИНА РОЗЫСКА: <span id="pc_extraReason">выберите заглушку</span>':homebrew?'ОСОБАЯ ОТМЕТКА АРХИВА: выбранный вариант относится к дополнительным материалам и проверяется отдельно.':'СТЫД ТЕБЕ, ПРОЧИТАВШИЙ ЭТО, РОЗЫСКИВАЕМЫЙ <span id="pc_professionText">—</span>.';
- if(reward)reward.innerHTML=extra?'Доставить исключительно мёртвым.<br>Награда <strong>30 золотых монет</strong>.':homebrew?'Дополнительный материал принят к рассмотрению.<br>Награда за доставку не назначена.':'Доставить исключительно живым и с кошельком.<br>Награда 10 серебряных монет и кружка хорошего пива.';
+ var originField=el('pc_origin'),genderField=el('pc_gender'),raceField=el('pc_race'),ageField=el('pc_age'),bgField=el('pc_background'),profField=el('pc_profession');
+ var stepText=el('parchmentStage');
+ if(homebrew&&stepText){
+  var originText=originField&&originField.closest('.parchment-step')?.querySelector('.parchment-text');
+  var genderText=genderField&&genderField.closest('.parchment-step')?.querySelector('.parchment-text');
+  var raceText=raceField&&raceField.closest('.parchment-step')?.querySelector('.parchment-text');
+  var ageText=ageField&&ageField.closest('.parchment-step')?.querySelector('.parchment-text');
+  var bgText=bgField&&bgField.closest('.parchment-step')?.querySelector('.parchment-text');
+  var profText=profField&&profField.closest('.parchment-step')?.querySelector('.parchment-text');
+  if(originText)originText.innerHTML='По архивной записи считается, что след ведёт в <input id="pc_origin" class="parchment-field" type="text" placeholder="место" autocomplete="off">.';
+  if(genderText)genderText.innerHTML='В старых донесениях фигурант описан как <select id="pc_gender" class="parchment-select"></select>.';
+  if(raceText)raceText.innerHTML='Свидетели утверждают, что перед нами существо рода <select id="pc_race" class="parchment-select"></select>.';
+  if(ageText)ageText.innerHTML='По состоянию архивной записи ему приблизительно <input id="pc_age" class="parchment-field" type="number" min="1" max="999" placeholder="лет"> лет.';
+  if(bgText)bgText.innerHTML='В прошлом за ним числится путь: <select id="pc_background" class="parchment-select"></select>.';
+  if(profText)profText.innerHTML='Среди известных занятий значится <select id="pc_profession" class="parchment-select"></select>.';
+  fillSelect('pc_gender',[{value:'мужчина',label:'мужчина'},{value:'женщина',label:'женщина'}],'выбрать пол');
+  fillSelect('pc_race',creationRaceItems(),'выбрать расу');
+  fillSelect('pc_background',creationBackgroundItems().map(function(b){var n=b.nameRu||b.name||'';return{value:n,label:n}}),'выбрать предысторию');
+  fillSelect('pc_profession',getProfessionItems(),'выбрать профессию');
+ }
+ if(warn)warn.innerHTML=extra?'ОСОБАЯ ПРИМЕТА И ПРИЧИНА РОЗЫСКА: <span id="pc_extraReason">выберите заглушку</span>':homebrew?'ПОМЕТКА ХРАНИТЕЛЯ АРХИВА: сведения не подтверждены обычными реестрами. Проверять происхождение, способности и связи отдельно.':'СТЫД ТЕБЕ, ПРОЧИТАВШИЙ ЭТО, РОЗЫСКИВАЕМЫЙ <span id="pc_professionText">—</span>.';
+ if(reward)reward.innerHTML=extra?'Доставить исключительно мёртвым.<br>Награда <strong>30 золотых монет</strong>.':homebrew?'Материал признан редким и передан в особый архив.<br>Награда за доставку не назначена. Досье подлежит сохранению.':'Доставить исключительно живым и с кошельком.<br>Награда 10 серебряных монет и кружка хорошего пива.';
  var sign=el('pc_signButton');if(sign)sign.innerHTML='расписаться<span class="parchment-sign-hint">закончить создание</span>';
  if(typeof window.__updateParchmentProgress==='function')window.__updateParchmentProgress();
 }
@@ -153,7 +173,7 @@ function initParchment(){
 }
 function syncToClassic(){
  var name=el('pc_name').value.trim(),origin=el('pc_origin')?el('pc_origin').value.trim():'',age=el('pc_age')?el('pc_age').value.trim():'',cls=el('pc_class')?el('pc_class').value:'',gender=el('pc_gender')?el('pc_gender').value:'',race=el('pc_race').value,bg=el('pc_background')?el('pc_background').value:'',profession=el('pc_profession')?.value||'';
- var isExtraDraft=CHARACTER_CREATION_MODE==='extra';window.__parchmentCharacterDraft={name:name,origin:origin,age:age,className:isExtraDraft?race:cls,gender:gender,raceId:isExtraDraft?'':race,background:bg,profession:profession,extra:isExtraDraft,extraType:isExtraDraft?race:''};
+ var isExtraDraft=CHARACTER_CREATION_MODE==='extra';window.__parchmentCharacterDraft={name:name,origin:origin,age:age,className:isExtraDraft?race:cls,gender:gender,raceId:isExtraDraft?'':race,background:bg,profession:profession,extra:isExtraDraft,extraType:isExtraDraft?race:'',creationMode:CHARACTER_CREATION_MODE};
  function set(id,val){var e=el(id);if(e)e.value=val}
  set('cc_name',name);set('cc_age',age);set('cc_race',race);set('cc_background',bg);set('cc_profession',profession);set('cc_class',isExtraDraft?(race?(race==='Призрак'?'Гайст':race)+' 1':''):(cls?(cls==='Призрак'?'Гайст':cls)+' 1':''));set('cc_gender',gender);set('cc_origin',origin);
  if(typeof window.updateClassDescription==='function')window.updateClassDescription();
@@ -220,7 +240,7 @@ function hook(){
    var draft=window.__parchmentCharacterDraft||{};save.apply(this,arguments);
    if(Array.isArray(window.allCharacters)&&window.allCharacters.length){
     var c=window.allCharacters[window.allCharacters.length-1];
-    if(c){c.origin=draft.origin||'';c.gender=draft.gender||'';c.creationDocument='parchment';c.creationMode=draft.extra?'extra':'classic';c.extraType=draft.extraType||'';c.wantedStatus=draft.extra?'dead_only':'alive_only';c.wantedReward=draft.extra?'30 золотых монет':'10 серебряных монет и кружка хорошего пива';if(typeof window.saveAllCharacters==='function')window.saveAllCharacters();}
+    if(c){c.origin=draft.origin||'';c.gender=draft.gender||'';c.creationDocument='parchment';c.creationMode=draft.creationMode||(draft.extra?'extra':'classic');c.extraType=draft.extraType||'';c.wantedStatus=draft.extra?'dead_only':(draft.creationMode==='homebrew'?'archive_review':'alive_only');c.wantedReward=draft.extra?'30 золотых монет':(draft.creationMode==='homebrew'?'не назначена':'10 серебряных монет и кружка хорошего пива');if(typeof window.saveAllCharacters==='function')window.saveAllCharacters();}
    }
   };
   sw.__parchmentHooked=true;window.saveNewCreatedCharacter=sw;
