@@ -44,7 +44,7 @@ window.CLASSES_REFERENCE = {
     "Рунный хранитель": { hitDie: 8, primaryStat: "intelligence", savingThrows: ["intelligence", "wisdom"], progression: window.runeKeeperProgression || {} },
     "Савант": { hitDie: 8, primaryStat: "intelligence", savingThrows: ["intelligence", "wisdom"], progression: window.savantProgression || {} },
     "Шифтер": { hitDie: 10, primaryStat: "dexterity", savingThrows: ["dexterity", "wisdom"], progression: window.shifterProgression || {} },
-    "Рой": { hitDie: 8, primaryStat: "wisdom", savingThrows: ["dexterity", "wisdom"], progression: window.swarmProgression || {} },
+    "Рой": { hitDie: 8, primaryStat: "constitution", savingThrows: ["constitution", "dexterity"], isExtra: true, replacesRace: true, multiclassAllowed: false, progression: window.swarmProgression || {} },
     "Страж": { hitDie: 10, primaryStat: "constitution", savingThrows: ["strength", "constitution"], progression: window.wardenProgression || {} },
     "Военачальник": { hitDie: 8, primaryStat: "strength_or_dexterity", savingThrows: ["wisdom", "charisma"], progression: window.warlordProgression || {} },
     "Бард": {
