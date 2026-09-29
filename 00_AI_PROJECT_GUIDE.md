@@ -4230,3 +4230,12 @@ APK: build required.
 - Added DLC / Хоумбрю-specific parchment text without changing the image bytes.
 - Bumped app version to 70.25.87 so the update manifest/build pipeline can publish this creation-flow change.
 - Relevant files: `app/character_creation_pergament.js`, `app/character_creation_pergament.css`, `index.html`, `app/update_manager.js`.
+
+
+## 2026-09-29 — V70.25.88: не скачивать неизменившиеся файлы повторно
+- Найдена причина повторной загрузки PNG стандартных классов: Android native updater при каждом обновлении создавал новую staging-папку и скачивал каждый файл из `stable.json` без проверки уже установленной активной версии.
+- `android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java`: перед скачиванием каждого файла теперь проверяется локальный файл активной версии по SHA-256 из manifest.
+- Если файл существует, его SHA-256 и размер совпадают с manifest — файл не скачивается с GitHub, а локально копируется в новую staging-версию.
+- Если файла нет или SHA-256 отличается — файл скачивается и снова проверяется по размеру и SHA-256.
+- В прогрессе неизменившиеся файлы отмечаются фазой `skip`; общее количество файлов сохраняется корректным.
+- Версия web/update manager обновлена до **70.25.88**.
