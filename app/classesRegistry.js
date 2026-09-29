@@ -39,7 +39,7 @@ window.CLASSES_REFERENCE = {
     "Пугилист": { hitDie: 8, primaryStat: "strength", savingThrows: ["strength", "constitution"], progression: window.pugilistProgression || {} },
     "Аккурсд": { hitDie: 10, primaryStat: "curseAbility", savingThrows: ["wisdom", "intelligence_or_charisma"], progression: window.accursedProgression || {} },
     "Гайст": { hitDie: 8, primaryStat: "wisdom", savingThrows: ["wisdom", "charisma"], progression: window.geistProgression || {} },
-    "Паразит": { hitDie: 10, primaryStat: "constitution", savingThrows: ["constitution", "wisdom"], progression: window.parasiteProgression || {} },
+    "Паразит": { hitDie: 8, primaryStat: "wisdom", savingThrows: ["wisdom", "intelligence"], isExtra: true, isRaceClassHybrid: true, replacesRace: true, multiclassAllowed: false, progression: window.parasiteProgression || {} },
     "Псионик": { hitDie: 8, primaryStat: "intelligence", savingThrows: ["intelligence", "wisdom"], progression: window.psionProgression || {} },
     "Рунный хранитель": { hitDie: 8, primaryStat: "intelligence", savingThrows: ["intelligence", "wisdom"], progression: window.runeKeeperProgression || {} },
     "Савант": { hitDie: 8, primaryStat: "intelligence", savingThrows: ["intelligence", "wisdom"], progression: window.savantProgression || {} },
