@@ -513,7 +513,9 @@ window.saveNewCreatedCharacter = function() {
   }
 
   var conModFinal = Math.floor((finalStats.con - 10) / 2);
-  var maxHp = 10 + conModFinal;
+  // Extra-класс Рой использует d8 уже на 1 уровне; обычные классы
+  // сохраняют существующую стартовую формулу.
+  var maxHp = isSwarmExtra ? Math.max(1, 8 + conModFinal) : (10 + conModFinal);
 
   // Ищем выбранную предысторию
   var backgroundsList = [];
