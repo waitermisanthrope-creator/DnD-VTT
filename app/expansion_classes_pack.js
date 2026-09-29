@@ -117,7 +117,7 @@
     return o;
   }
 
-function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
+function warlordRollDie(sides){var n=parseInt(String(sides||'8').replace(/[^0-9]/g,''),10)||8;return 1+Math.floor(Math.random()*n);} function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
   function warlordDie(l){return l>=17?'d10':l>=11?'d8':l>=5?'d6':'d4';}
   function warlordDice(l){return l>=17?5:l>=11?4:l>=5?3:l>=2?2:0;}
   function warlordExploitKnown(l){return l>=17?10:l>=13?8:l>=11?7:l>=9?6:l>=7?5:l>=5?4:2;}
@@ -144,7 +144,7 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
     if(id==='inspiringWord'){
       if(!t)return{ok:false,message:'Выбери союзника.'};
       if(!spend(h,'warlordInspiringWord',1))return{ok:false,message:'Вдохновляющее слово уже использовано до отдыха.'};
-      var heal=diceRoll(ctx.hitDie||'d8')+mod(h,lead);
+      var heal=warlordRollDie(ctx.hitDie||'d8')+mod(h,lead);
       return{ok:true,target:t.id,effect:{heal:Math.max(1,heal),rangeFt:l>=11?60:30},message:'📣 Вдохновляющее слово: '+Math.max(1,heal)+' HP.'};
     }
     if(id==='rallyingCry'){
