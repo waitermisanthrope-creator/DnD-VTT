@@ -332,6 +332,74 @@ function deleteCharacter(id) {
   saveAllCharacters();try{localStorage.setItem('dnd_current_character_id','');}catch(e){}renderCharacterList();
 }
 
+function ensureMainVersionBadge() {
+  var host = document.getElementById('characterSelectScreen');
+  if (!host) return null;
+
+  var badge = document.getElementById('dndMainVersionBadge');
+  if (!badge) {
+    badge = document.createElement('div');
+    badge.id = 'dndMainVersionBadge';
+    badge.innerHTML =
+      '<span id="dndMainVersionText">Версия…</span>' +
+      '<button id="dndMainVersionCheck" type="button" aria-label="Проверить обновления" title="Проверить обновления">🔄</button>' +
+      '<span id="dndMainVersionStatus">Проверка…</span>';
+    var title = host.querySelector('.app-title');
+    if (title && title.parentNode) title.parentNode.insertBefore(badge, title.nextSibling);
+    else host.insertBefore(badge, host.firstChild);
+
+    var check = document.getElementById('dndMainVersionCheck');
+    if (check) {
+      check.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        refreshMainVersionBadge(true);
+      }, false);
+      check.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        refreshMainVersionBadge(true);
+      }, false);
+    }
+  }
+  return badge;
+}
+
+function refreshMainVersionBadge(manual) {
+  var badge = ensureMainVersionBadge();
+  if (!badge) return;
+  var versionText = document.getElementById('dndMainVersionText');
+  var statusText = document.getElementById('dndMainVersionStatus');
+  var check = document.getElementById('dndMainVersionCheck');
+  if (statusText) statusText.textContent = manual ? 'Проверяю…' : 'Проверка…';
+  if (check) check.textContent = '⏳';
+
+  if (!window.DND_UPDATE_MANAGER || typeof window.DND_UPDATE_MANAGER.inspect !== 'function') {
+    if (versionText) versionText.textContent = 'Версия 70.25.81';
+    if (statusText) statusText.textContent = 'Проверка недоступна';
+    if (check) check.textContent = '⚠️';
+    return Promise.resolve(null);
+  }
+
+  return window.DND_UPDATE_MANAGER.inspect().then(function(state) {
+    var current = state && state.currentVersion ? state.currentVersion : window.DND_UPDATE_MANAGER.VERSION;
+    if (versionText) versionText.textContent = 'Версия ' + (current ? 'v' + current : '—');
+    if (state && state.updateAvailable && state.manifest) {
+      if (statusText) statusText.textContent = '🆕 Доступна v' + state.manifest.version;
+      if (check) check.textContent = '🔄';
+    } else {
+      if (statusText) statusText.textContent = '✅ Актуально';
+      if (check) check.textContent = '✓';
+    }
+    return state;
+  }).catch(function() {
+    if (versionText) versionText.textContent = 'Версия v' + (window.DND_UPDATE_MANAGER.VERSION || '70.25.81');
+    if (statusText) statusText.textContent = '⚠️ Нет связи';
+    if (check) check.textContent = '🔄';
+    return null;
+  });
+}
+
 function showCharacterSelect() {
   autoSaveCurrentCharacter();
   var selectScreen = document.getElementById('characterSelectScreen');
@@ -343,9 +411,17 @@ function showCharacterSelect() {
   if (selectScreen) selectScreen.style.display = 'block';
   
   renderCharacterList();
+  ensureMainVersionBadge();
+  refreshMainVersionBadge(false);
   // Проверяем обновления именно в момент появления главного экрана после логотипа.
   if (window.DND_UPDATE_MANAGER && typeof window.DND_UPDATE_MANAGER.autoCheckForUpdates === 'function') {
-    window.DND_UPDATE_MANAGER.autoCheckForUpdates();
+    window.DND_UPDATE_MANAGER.autoCheckForUpdates().then(function(state) {
+      if (state && state.updateAvailable) {
+        refreshMainVersionBadge(false);
+      } else if (state) {
+        refreshMainVersionBadge(false);
+      }
+    }).catch(function(){});
   }
 }
 

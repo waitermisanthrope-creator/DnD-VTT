@@ -1,4 +1,4 @@
-// Bootstrap APK: keeps package version 70.25.71 while validating web updater 70.25.72.
+// V70.25.81 test APK: native runtime version matches the web updater version.
 plugins {
     id "com.android.application"
 }
@@ -23,8 +23,8 @@ android {
         applicationId "com.dndvtt.pocketvtt"
         minSdk 24
         targetSdk 36
-        versionCode 7025071
-        versionName "70.25.71"
+        versionCode 7025081
+        versionName "70.25.81"
     }
 
     signingConfigs {

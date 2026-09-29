@@ -415,3 +415,44 @@ input:focus, textarea:focus, select:focus {
 #dndMainMoreModal .dnd-main-more-grid button,
 #dndMainMoreModal .dnd-main-more-grid a,
 #dndMainMoreModal .dnd-main-more-close{position:relative;z-index:30002;touch-action:manipulation;cursor:pointer;}
+
+
+/* V70.25.81 — current version + update-check indicator on the main screen. */
+#dndMainVersionBadge {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  width:fit-content;
+  max-width:calc(100% - 30px);
+  margin:-15px auto 18px;
+  padding:6px 10px;
+  border:1px solid #444;
+  border-radius:999px;
+  background:rgba(24,24,24,.88);
+  color:#aaa;
+  font-size:.78rem;
+  line-height:1.2;
+  box-shadow:0 3px 12px rgba(0,0,0,.22);
+}
+#dndMainVersionText { color:#ddd; font-weight:700; white-space:nowrap; }
+#dndMainVersionStatus { color:#aaa; white-space:nowrap; }
+#dndMainVersionCheck {
+  min-width:30px;
+  min-height:28px;
+  padding:2px 6px;
+  border:1px solid #555;
+  border-radius:999px;
+  background:#2b2b2b;
+  color:#fff;
+  font-size:1rem;
+  line-height:1;
+  cursor:pointer;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+#dndMainVersionCheck:active { transform:scale(.94); }
+@media (max-width:420px) {
+  #dndMainVersionBadge { gap:5px; font-size:.70rem; }
+  #dndMainVersionCheck { min-width:28px; min-height:27px; font-size:.9rem; }
+}

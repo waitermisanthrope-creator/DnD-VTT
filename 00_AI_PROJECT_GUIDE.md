@@ -4158,3 +4158,14 @@ APK: build required.
 - Окно обновления теперь показывается до завершения загрузки и показывает процент/полосу прогресса.
 - Нативный этап применения обновления теперь также сообщает текущий файл и процент; интерфейс больше не должен выглядеть зависшим на «Применяю обновление…».
 - Версия: 70.25.80.
+
+
+## V70.25.81 — MAIN SCREEN VERSION / UPDATE INDICATOR
+
+- The main character-selection screen now shows the current runtime version directly under the title.
+- Added a compact 🔄/⏳/✓ check indicator; tapping it manually re-checks GitHub updates.
+- Status changes to `⏳ Проверяю…`, `✅ Актуально`, `🆕 Доступна vX`, or `⚠️ Нет связи`.
+- The automatic update check still starts when the main screen appears after the logo.
+- `app/update_manager.js` web version bumped to **70.25.81**.
+- Android `versionName`/versionCode bumped to **70.25.81 / 7025081**, so the APK native runtime and web updater report the same version.
+- No image assets were modified.
