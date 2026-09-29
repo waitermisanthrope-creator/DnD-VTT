@@ -85,7 +85,7 @@ omniscience:"Знать, говорить и писать все языки.",
 omnipotence:"Радиус рунной стойки увеличивается до 30 футов."
 };
 window.RUNEKeeper_V12={INS,PB,KNOWN,LANGS,DIALECTS,progression,base};
-window.runeKeeperProgression=progression;
+window.runeKeeperProgression=Object.assign(window.runeKeeperProgression||{},progression);
 window.runeKeeperRuntime={version:"1.2",getInscribedRunes:l=>INS[l]||0,getRunesKnown:l=>KNOWN[l]||0,getRunicDC:(pb,intMod)=>8+(pb||0)+(intMod||0),getDialect:n=>DIALECTS[n]||null,getLanguages:()=>LANGS};
 window.runeKeeperDialects=Object.keys(DIALECTS);
 })();
