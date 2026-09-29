@@ -353,9 +353,15 @@
   }
 
   function Wizard(opts){
-    this.mode=opts.mode||'create';this.hero=opts.hero||null;this.step=0;this.values={};
+    this.mode=opts.mode||'create';this.hero=opts.hero||null;this.fromParchment=!!opts.fromParchment;this.step=0;this.values={};
     this.race=null;this.className=null;this.classLevel=opts.classLevel||1;this.isNewClass=opts.isNewClass!==false;
     this.choices=[];this.error='';
+    if(this.fromParchment&&opts.draft){
+      this.values={name:opts.draft.name||'',age:Number(opts.draft.age)||0,background:opts.draft.background||'',profession:opts.draft.profession||'',stats:{}};
+      this.className=opts.draft.extra?opts.draft.extraType:(opts.draft.className||null);
+      this.race=opts.draft.raceId?getRaces().find(function(r){return r.id===opts.draft.raceId;})||null:null;
+      this.step=3;
+    }
     this.steps=this.mode==='create'?['Основное','Раса / Extra','Класс','Характеристики','Выборы','Проверка']:['Класс','Уровень','Выборы','Проверка'];
   }
   Wizard.prototype.mount=function(){
@@ -444,7 +450,7 @@
   Wizard.prototype.readStep=function(){
     if(this.mode==='create'){
       if(this.step===0){this.values.name=(this.root.querySelector('#cb_name')||{}).value?.trim();this.values.age=Number((this.root.querySelector('#cb_age')||{}).value)||0;this.values.background=(this.root.querySelector('#cb_bg')||{}).value||'';this.values.profession=(this.root.querySelector('#cb_prof')||{}).value||'';if(!this.values.name){this.error='Введите имя.';return false;}}
-      if(this.step===3){this.values.stats={};var sum=0,costs={8:0,9:1,10:2,11:3,12:4,13:5,14:7,15:9};this.root.querySelectorAll('[data-stat]').forEach(function(el){var v=Math.max(8,Math.min(15,Number(el.value)||8));self.values.stats[el.dataset.stat]=v;sum+=costs[v];});if(sum>27){this.error='Превышен лимит 27 очков.';return false;}}
+      if(this.step===3){this.values.stats={};var sum=0,costs={8:0,9:1,10:2,11:3,12:4,13:5,14:7,15:9};var self=this;this.root.querySelectorAll('[data-stat]').forEach(function(el){var v=Math.max(8,Math.min(15,Number(el.value)||8));self.values.stats[el.dataset.stat]=v;sum+=costs[v];});if(sum>27){this.error='Превышен лимит 27 очков.';return false;}}
       if(this.step===4){for(var i=0;i<this.choices.length;i++){var c=this.choices[i],v=choiceValue(c,i);if(!validChoice(c,v)){this.error='Нужно заполнить: '+c.label;return false;}this.values[c.key]=v;}}
     }else{
       if(this.step===0){var sel=this.root.querySelector('[data-lu-class].active');if(!sel){this.error='Выберите класс.';return false;}this.className=sel.dataset.luClass;}
@@ -560,9 +566,13 @@
     alert('Уровень '+hero.level+' получен. Все выборы сохранены.');
   };
 
-  function startCreate(){
+  function startCreate(opts){
+    opts=opts||{};
+    if(!opts.fromParchment && typeof g.openParchmentCreation==='function'){
+      return g.openParchmentCreation();
+    }
     var screen=g.document.getElementById('characterCreationScreen');if(!screen)return;
-    new Wizard({mode:'create'}).mount();
+    new Wizard({mode:'create',fromParchment:!!opts.fromParchment,draft:opts.draft||null}).mount();
   }
   function startLevel(){
     var hero=g.currentCharacter||g.currentChar;if(!hero)return alert('Персонаж не выбран.');
@@ -574,5 +584,5 @@
   }
   g.createNewCharacter=startCreate;
   g.openLevelUpModal=startLevel;
-  g.CharacterBuilderV2={Wizard:Wizard,raceChoices:raceChoices,classChoices:classChoices,collectChoices:collectChoices,applyChoice:applyChoice,startCreate:startCreate,startLevel:startLevel};
+  g.CharacterBuilderV2={Wizard:Wizard,raceChoices:raceChoices,classChoices:classChoices,collectChoices:collectChoices,applyChoice:applyChoice,startCreate:startCreate,startLevel:startLevel,startCreateFromParchment:function(draft){return startCreate({fromParchment:true,draft:draft});}};
 })(window);
