@@ -1,3 +1,12 @@
+## BUILDER V2 + EXTRA TOKENS FIX — V70.26.1
+
+- Builder V2 теперь создаётся в отдельном фиксированном контейнере `cbv2Screen` поверх старого экрана создания; это исключает ситуацию, когда Builder отрисован внутри скрытого/перекрытого `characterCreationScreen`.
+- После пергаментной подписи переход идёт в этот контейнер напрямую.
+- Для всех четырёх Extra подключено появление жетона: Рой, Паразит, Паразит доктора Вальтера, Призрак.
+- Токен Вальтера использует `1790718758545.png`.
+- Созданный Extra-персонаж получает `extraClassName`, `tokenArt` и `tokenReady`.
+- Версия Android: `70.26.1`.
+
 # D&D APP — AI PROJECT GUIDE / FIRST READ
 
 > **BUILD:** v70.26.0 — Builder V2 / parchment integration checkpoint
