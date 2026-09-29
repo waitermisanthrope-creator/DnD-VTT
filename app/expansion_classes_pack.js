@@ -124,7 +124,7 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
   function warlordLeadership(h){var s=st(h),x=s.warlordLeadership||'cha';return x==='int'?'int':x==='wis'?'wis':'cha';}
   function warlordDC(h){return 8+(Number(h.proficiencyBonus)||2)+mod(h,warlordLeadership(h));}
   function syncWarlord(h){
-    var l=lvl(h,'Warlord');if(!l)return;
+    var l=Math.max(lvl(h,'Warlord'),lvl(h,'Военачальник'));if(!l)return;
     var s=st(h),r=res(h,'warlordExploitDice',warlordDice(l),'short');
     r.max=warlordDice(l);r.die=warlordDie(l);
     var iw=res(h,'warlordInspiringWord',Math.min(7,Math.max(3,Math.floor((l+2)/3))),'short');
@@ -136,7 +136,7 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
     res(h,'warlordRally',s.warlordRallyUses,'short');
   }
   function useWarlord(h,id,ctx,feature){
-    syncWarlord(h);ctx=ctx||{};var l=lvl(h,'Warlord'),s=st(h),t=target(ctx),lead=warlordLeadership(h),die=(h.resources&&h.resources.warlordExploitDice&&h.resources.warlordExploitDice.die)||warlordDie(l);
+    syncWarlord(h);ctx=ctx||{};var l=Math.max(lvl(h,'Warlord'),lvl(h,'Военачальник')),s=st(h),t=target(ctx),lead=warlordLeadership(h),die=(h.resources&&h.resources.warlordExploitDice&&h.resources.warlordExploitDice.die)||warlordDie(l);
     if(id==='leadershipStyle'){
       var x=String(ctx.style||'');if(['cha','wis','int'].indexOf(x)<0)return{ok:false,message:'Выбери Капитана, Наставника или Стратега.'};
       s.warlordLeadership=x;return{ok:true,effect:{leadershipAbility:x},message:'🎖️ Стиль лидерства выбран.'};
@@ -466,7 +466,7 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
   function syncSpellblade(h){var l=lvl(h,'Spellblade');if(!l)return;res(h,'arcaneSurges',Math.max(2,Math.ceil((Number(h.proficiencyBonus)||Math.floor((l-1)/4)+2))), 'short');}
 
   function target(ctx){return ctx&&ctx.target?ctx.target:null;}
-  function useWarlord(h,id,ctx,feature){syncWarlord(h);var t=target(ctx);if(id==='commandingStrike'){if(!t)return{ok:false,message:'Выбери союзника на поле.'};if(!spend(h,'commandDice',1))return{ok:false,message:'Нет кубов лидерства.'};return{ok:true,target:t.id,effect:{grantAttack:true,bonusDie:(h.resources&&h.resources.commandDice&&h.resources.commandDice.die)||dieFor(lvl(h,'Warlord'))},message:'⚔️ Commanding Strike: союзник получает усиление атаки.'};}if(id==='rallyingCry'){if(!spend(h,'commandDice',1))return{ok:false,message:'Нет кубов лидерства.'};return{ok:true,effect:{allyTempHp:Math.max(1,mod(h,'cha'))+Number(lvl(h,'Warlord'))},message:'📣 Rallying Cry: союзники получают временные HP.'};}if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' пассивно активно.'};return{ok:false,unsupported:true,message:'Способность '+id+' зарегистрирована, но её runtime-эффект ещё не реализован.'};}
+  function useWarlord(h,id,ctx,feature){syncWarlord(h);var t=target(ctx);if(id==='commandingStrike'){if(!t)return{ok:false,message:'Выбери союзника на поле.'};if(!spend(h,'commandDice',1))return{ok:false,message:'Нет кубов лидерства.'};return{ok:true,target:t.id,effect:{grantAttack:true,bonusDie:(h.resources&&h.resources.commandDice&&h.resources.commandDice.die)||dieFor(Math.max(lvl(h,'Warlord'),lvl(h,'Военачальник')))},message:'⚔️ Commanding Strike: союзник получает усиление атаки.'};}if(id==='rallyingCry'){if(!spend(h,'commandDice',1))return{ok:false,message:'Нет кубов лидерства.'};return{ok:true,effect:{allyTempHp:Math.max(1,mod(h,'cha'))+Number(Math.max(lvl(h,'Warlord'),lvl(h,'Военачальник')))},message:'📣 Rallying Cry: союзники получают временные HP.'};}if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' пассивно активно.'};return{ok:false,unsupported:true,message:'Способность '+id+' зарегистрирована, но её runtime-эффект ещё не реализован.'};}
   function warlordAttack(h){return{bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]};}
 
   function useWarden(h,id,ctx,feature){syncWarden(h);var t=target(ctx);if(id==='primalChallenge'){if(!t)return{ok:false,message:'Выбери врага на поле.'};if(!spend(h,'wardenEndurance',1))return{ok:false,message:'Нет костей выносливости.'};st(h).challengedTargetId=t.id;return{ok:true,target:t.id,effect:{marked:true},message:'🌿 Primal Challenge: цель помечена.'};}if(id==='earthshaker'){if(!spend(h,'wardenEndurance',2))return{ok:false,message:'Недостаточно костей выносливости.'};return{ok:true,effect:{aoeRadiusFt:10,damage:'2d6 bludgeoning',save:'str'},message:'🌿 Earthshaker: зона 10 ft подготовлена.'};}if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' пассивно активно.'};return{ok:false,unsupported:true,message:'Способность '+id+' зарегистрирована, но её runtime-эффект ещё не реализован.'};}
