@@ -58,6 +58,25 @@ var discoveries=[
  ['Нестандартное применение взрывчатки','Взрывной снаряд: после Действия атаки бомбой можно Бонусным действием зарядить её в арбалет и выстрелить; используется дальность арбалета, свойство «Взрыв» не применяется, формулы и усиление применимы. Пожиратель огня: после Действия атаки бомбой можно Бонусным действием выпить её и выдохнуть конус 15 футов, работающий как зона «Взрыва»; усиление реагентами увеличивает конус на 5 футов за реагент.'],
  ['Нестандартное применение зелий','Бросок зелья: Бонусным действием метнуть зелье союзнику в пределах 30 футов, передав ему эффект выпивания. Реакционный глоток: сразу после получения урона от видимого существа можно Реакцией выпить зелье; лечебное зелье можно выпить даже если урон снизил ваши HP до 0.']
 ]
+var discoveryRecipes=[
+ {discovery:'Алхимия превращений',level:5,name:'Зелье газообразной формы',cost:2},
+ {discovery:'Алхимия превращений',level:5,name:'Приворотное зелье',cost:1},
+ {discovery:'Алхимия превращений',level:5,name:'Зелье чтения мыслей',cost:1},
+ {discovery:'Алхимия превращений',level:5,name:'Зелье дружбы с животными',cost:1},
+ {discovery:'Алхимия превращений',level:9,name:'Масло эфирности',cost:3},
+ {discovery:'Алхимия превращений',level:13,name:'Масло скользкости',cost:5},
+ {discovery:'Алхимия яда',level:5,name:'Слизь падальщика',cost:2,type:'poison'},
+ {discovery:'Алхимия яда',level:5,name:'Жало Лолт',cost:2,type:'poison'},
+ {discovery:'Алхимия яда',level:5,name:'Змеиный яд',cost:2,type:'poison'},
+ {discovery:'Алхимия яда',level:9,name:'Злоба',cost:3,type:'poison'},
+ {discovery:'Алхимия яда',level:9,name:'Пламя горелого отура',cost:3,type:'poison'},
+ {discovery:'Алхимия яда',level:9,name:'Масло таггита',cost:3,type:'poison'},
+ {discovery:'Алхимия яда',level:13,name:'Яд виверны',cost:null,type:'poison'},
+ {discovery:'Алхимия восстановления',level:5,name:'Эликсир здоровья',cost:2},
+ {discovery:'Алхимия восстановления',level:9,name:'Зелье долголетия',cost:4},
+ {discovery:'Алхимия восстановления',level:13,name:'Зелье жизненной силы',cost:4},
+ {discovery:'Алхимия восстановления',level:13,name:'Зелье высшего лечения',cost:6}
+];
 var subs=[
  {id:'apothecary',name:'Аптекарь',desc:'Алхимический целитель.',f:[
   [3,'Бомба обезболивания','Бомба не наносит урон, а даёт цели временные HP, равные уровню Алхимика; реагенты усиливают количество временных HP.'],
@@ -129,7 +148,7 @@ function use(h,id,ctx){
  if(sub&&id==='subclassFeature'){var f=sub.f.find(function(x){return Number(x[0])===Number(ctx.level)||String(x[0])===String(ctx.featureId);});if(!f)return{ok:false,message:'Особенность подкласса не найдена.'};return{ok:true,effect:{subclass:sub.id,feature:f[1]},message:'✨ '+f[1]+' активна.'};}
  return{ok:true,message:'🧪 '+id+' зарегистрирован.'};
 }
-var pack={id:PACK_ID,name:CLASS,source:SOURCE,metadata:{edition:'2024 / 5.5E',hitDie:8,primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],skillsChoose:3,armor:['light'],weapons:['simple'],tools:['alchemist_supplies'],multiclass:{dexterity:13,intelligence:13},startingEquipment:['2 кинжала','Кожаный доспех','Инструменты алхимика','Алхимический огонь','Набор учёного','6 зм'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14]},features:features,subclasses:subpacks,formulas:formulae,potions:potions,discoveries:discoveries,hooks:{sync:sync,useFeature:use}};
+var pack={id:PACK_ID,name:CLASS,source:SOURCE,metadata:{edition:'2024 / 5.5E',hitDie:8,primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],skillsChoose:3,armor:['light'],weapons:['simple'],tools:['alchemist_supplies'],multiclass:{dexterity:13,intelligence:13},startingEquipment:['2 кинжала','Кожаный доспех','Инструменты алхимика','Алхимический огонь','Набор учёного','6 зм'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14]},features:features,subclasses:subpacks,formulas:formulae,potions:potions,discoveries:discoveries,discoveryRecipes:discoveryRecipes,hooks:{sync:sync,useFeature:use}};
 D.registerClass(pack);
 g.CLASSES_REFERENCE=g.CLASSES_REFERENCE||{};
 g.CLASSES_REFERENCE[CLASS]={source:SOURCE,hitDie:8,primaryStat:'dexterity',primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14],contentPackId:PACK_ID};
