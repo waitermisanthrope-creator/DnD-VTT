@@ -863,6 +863,137 @@
     return o;
   }
 
+  function occultistRiteCount(l){return l>=18?8:l>=15?7:l>=12?6:l>=9?5:l>=7?4:l>=5?3:l>=2?2:0;}
+  function occultistDC(h){return 8+(Number(h.proficiencyBonus)||2)+mod(h,'wisdom');}
+  function syncOccultist(h){
+    var l=lvl(h,'Occultist');if(!l)return;
+    var s=st(h);s.occultistRitesKnown=occultistRiteCount(l);
+    s.occultistDC=occultistDC(h);s.occultistTradition=s.occultistTradition||'Oracle';
+    s.occultistRites=s.occultistRites||[];
+    s.occultistRites=s.occultistRites.slice(0,s.occultistRitesKnown);
+  }
+  function useOccultist(h,id,ctx){
+    syncOccultist(h);ctx=ctx||{};var l=lvl(h,'Occultist'),s=st(h),t=target(ctx);
+    if(id==='chooseTradition'){
+      if(['Oracle','Shaman','Witch'].indexOf(ctx.choice)<0)return{ok:false,message:'Выбери Oracle, Shaman или Witch.'};
+      s.occultistTradition=ctx.choice;return{ok:true,message:'🔮 Оккультная традиция: '+ctx.choice+'.'};
+    }
+    if(id==='chooseRite'){
+      var r=String(ctx.rite||'');var known=(s.occultistRites||[]);
+      if(known.indexOf(r)>=0)return{ok:false,message:'Этот обряд уже изучен.'};
+      if(known.length>=s.occultistRitesKnown)return{ok:false,message:'Нет свободного слота Occult Rite.'};
+      s.occultistRites.push(r);return{ok:true,message:'🕯️ Изучен оккультный обряд: '+r+'.'};
+    }
+    if(id==='replaceRite'){
+      var a=(s.occultistRites||[]),idx=Number(ctx.index);
+      if(idx<0||idx>=a.length)return{ok:false,message:'Укажи корректный индекс обряда.'};
+      a[idx]=String(ctx.rite||'');s.occultistRites=a;return{ok:true,message:'🕯️ Обряд заменён.'};
+    }
+    if(id==='traditionalExpertise')return{ok:true,effect:{expertiseSkills:['animalHandling','arcana','medicine','nature','survival']},message:'📜 Традиционная экспертиза активна.'};
+    if(id==='ritualCasting')return{ok:true,effect:{ritualCasting:true},message:'🕯️ Известные ритуальные заклинания можно проводить как ритуалы.'};
+    if(id==='wardingPower')return{ok:true,effect:{learnSpell:'shield'},message:'🛡️ Получена защитная магия.'};
+    if(id==='communeBeyondDeath')return{ok:true,effect:{learnSpell:'speakWithDead',freeCast:true,recharge:'short'},message:'💀 Доступно бесплатное обращение к мёртвым.'};
+    if(id==='emblazonedFocus')return{ok:true,effect:{focus:'bodyMark',somaticMaterialFree:true},message:'🜏 Клеймёный фокус активен.'};
+    if(id==='riteOfProwess')return{ok:true,effect:{fightingStyleChoice:['dueling','twoWeaponFighting','greatWeaponFighting']},message:'⚔️ Обряд мастерства: доступен боевой стиль.'};
+    if(id==='occultFamiliar')return{ok:true,effect:{summonFamiliar:true,spellAttackUsesWisdom:true},message:'👁️ Оккультный фамильяр доступен.'};
+    if(id==='witchsHat')return{ok:true,effect:{hatOfDisguise:true},message:'🎩 Ведьмина шляпа получила магию маскировки.'};
+    if(id==='witchsClaws')return{ok:true,effect:{cantrip:'primalSavagery',applyWitchTouch:true},message:'🖐️ Ведьмины когти активны.'};
+    if(id==='bloodRituals'){
+      if(l<5)return{ok:false,message:'Кровавые ритуалы доступны с 5 уровня.'};
+      return{ok:true,effect:{ritualMaterialSubstitution:'blood',rangeFt:10,hpPer100gp:10},message:'🩸 Ритуал может быть подпитан жизненной силой.'};
+    }
+    if(id==='shamansTouch'){
+      if(l<7)return{ok:false,message:'Прикосновение шамана доступно с 7 уровня.'};
+      return{ok:true,effect:{replaceAttackWithTouchCantrip:true},message:'🌿 Одна атака может быть заменена контактным заговором.'};
+    }
+    if(id==='sympatheticBond')return{ok:true,effect:{bondedTarget:t&&t.id},message:'🔗 Симпатическая связь установлена.'};
+    if(id==='theOldWays'){return{ok:true,effect:{riteSwapAtLevel:true,ritualMastery:true},message:'🕯️ Старые пути: мастерство оккультных обрядов.'};}
+    return{ok:false,unsupported:true,message:'Эта способность Оккультиста требует отдельного resolver/UI.'};
+  }
+  function occultistAttack(h,ctx){syncOccultist(h);return{bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:['Occultist DC '+st(h).occultistDC]};}
+
+  function witchHexCount(l){return l>=20?10:l>=18?9:l>=16?8:l>=14?7:l>=11?6:l>=9?5:l>=5?4:l>=2?3:2;}
+  function witchDC(h){return 8+(Number(h.proficiencyBonus)||2)+mod(h,'charisma');}
+  function syncWitch(h){
+    var l=lvl(h,'Witch');if(!l)return;
+    var s=st(h);s.witchHexesKnown=witchHexCount(l);s.witchDC=witchDC(h);
+    s.witchCraft=s.witchCraft||'Black';s.witchCurse=s.witchCurse||'Hideous';
+    s.witchFamiliar=s.witchFamiliar||{active:false,improved:l>=7};
+    s.witchGrandHexesKnown=l>=17?4:l>=15?3:l>=13?2:l>=11?1:0;
+    s.witchHexTargets=s.witchHexTargets||{};
+  }
+  function useWitch(h,id,ctx){
+    syncWitch(h);ctx=ctx||{};var l=lvl(h,'Witch'),s=st(h),t=target(ctx);
+    if(id==='chooseCraft'){
+      if(['Black','Green','Red','White'].indexOf(ctx.choice)<0)return{ok:false,message:'Выбери Black, Green, Red или White.'};
+      if(l<3)return{ok:false,message:'Craft выбирается с 3 уровня.'};
+      s.witchCraft=ctx.choice;return{ok:true,message:'🧙‍♀️ Ведьмина традиция: '+ctx.choice+' Magic.'};
+    }
+    if(id==='chooseCurse'){
+      s.witchCurse=String(ctx.curse||'Hideous');return{ok:true,message:'🕯️ Проклятие ведьмы выбрано.'};
+    }
+    if(id==='hex'){
+      if(!t)return{ok:false,message:'Выбери цель Hex.'};
+      s.witchHexTargets[String(t.id)]={name:ctx.hex||'Hex',rounds:1,untilNextTurn:true};
+      return{ok:true,target:t.id,effect:{hex:ctx.hex||'generic',durationRounds:1,saveDC:s.witchDC},message:'🕯️ Hex наложен на цель.'};
+    }
+    if(id==='cackle'){
+      var key=t?String(t.id):String(ctx.targetId||'');
+      if(!key||!s.witchHexTargets[key])return{ok:false,message:'Нет активного Hex для продления.'};
+      s.witchHexTargets[key].rounds=Math.max(2,Number(s.witchHexTargets[key].rounds)||1);
+      return{ok:true,target:key,effect:{extendHex:true,bonusAction:true},message:'😈 Cackle продлевает Hex.'};
+    }
+    if(id==='familiar'){
+      s.witchFamiliar.active=true;
+      return{ok:true,effect:{summonFamiliar:true,commandBonusAction:true,usesSpellAttack:true},message:'🐈 Фамильяр ведьмы призван.'};
+    }
+    if(id==='improvedFamiliar'){
+      if(l<7)return{ok:false,message:'Улучшенный фамильяр доступен с 7 уровня.'};
+      s.witchFamiliar.improved=true;return{ok:true,effect:{familiarMultiattack:l>=17?4:3,forceDamage:true},message:'🐾 Фамильяр улучшен.'};
+    }
+    if(id==='insidiousSpell'){
+      return{ok:true,effect:{hexSaveFailureDebuff:true,spellSaveFailureHexDebuff:true,durationRounds:1},message:'🕸️ Провал против Hex/заклинания даёт помеху на следующую противоположную категорию.'};
+    }
+    if(id==='grandHex'){
+      if(l<11)return{ok:false,message:'Grand Hex доступен с 11 уровня.'};
+      return{ok:true,effect:{grandHexUses:s.witchGrandHexesKnown,choiceRequired:true},message:'🔮 Доступен Grand Hex.'};
+    }
+    if(id==='vengefulCurse'){
+      if(l<18)return{ok:false,message:'Vengeful Curse доступно с 18 уровня.'};
+      return{ok:true,effect:{retaliateAgainstCurseTarget:true},message:'💀 Проклятие отвечает на удар.'};
+    }
+    if(id==='hexmaster'){
+      if(l<20)return{ok:false,message:'Hexmaster доступен с 20 уровня.'};
+      return{ok:true,effect:{hexNoLongerExpiring:true,cackleFree:true},message:'👑 Hexmaster: проклятия мастерского уровня.'};
+    }
+    if(id==='curse')return{ok:true,target:t&&t.id,effect:{curse:s.witchCurse,saveDC:s.witchDC},message:'🕯️ Проклятие ведьмы применено.'};
+    return{ok:false,unsupported:true,message:'Эта способность Ведьмы требует отдельного resolver/UI.'};
+  }
+  function witchAttack(h,ctx){syncWitch(h);return{bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:['Witch DC '+st(h).witchDC]};}
+
+  var occultistPack={id:'kibbles-occultist',name:'Occultist',displayName:'Оккультист',source:'KibblesTasty Occultist v1.1',license:'Original runtime implementation; feature names paraphrased',features:[
+    {id:'spellcasting',name:'Колдовство',level:1,action:'spell'},
+    {id:'chooseTradition',name:'Оккультная традиция',level:1,action:'choice'},
+    {id:'chooseRite',name:'Оккультный обряд',level:2,action:'choice'},
+    {id:'replaceRite',name:'Замена обряда',level:2,action:'choice'},
+    {id:'traditionalExpertise',name:'Традиционная экспертиза',level:10,action:'passive'},
+    {id:'theOldWays',name:'Старые пути',level:20,action:'passive'}
+  ],subclasses:[{id:'oracle',name:'Oracle',features:[]},{id:'shaman',name:'Shaman',features:[]},{id:'witch',name:'Witch',features:[]}],hooks:{sync:syncOccultist,useFeature:useOccultist,attackModifiers:occultistAttack}};
+
+  var witchPack={id:'mh-witch',name:'Witch',displayName:'Ведьма',source:'Mage Hand Press Complete Witch / 5E 2014',license:'Original runtime implementation; feature names paraphrased',features:[
+    {id:'spellcasting',name:'Колдовство',level:1,action:'spell'},
+    {id:'hex',name:'Hex',level:1,action:'action',target:'enemy'},
+    {id:'curse',name:'Проклятие ведьмы',level:1,action:'action',target:'enemy'},
+    {id:'cackle',name:'Cackle',level:2,action:'bonus',target:'enemy'},
+    {id:'familiar',name:'Фамильяр',level:2,action:'utility'},
+    {id:'chooseCraft',name:'Ведьмин Craft',level:3,action:'choice'},
+    {id:'insidiousSpell',name:'Insidious Spell',level:5,action:'passive'},
+    {id:'improvedFamiliar',name:'Улучшенный фамильяр',level:7,action:'passive'},
+    {id:'grandHex',name:'Grand Hex',level:11,action:'special'},
+    {id:'vengefulCurse',name:'Vengeful Curse',level:18,action:'reaction'},
+    {id:'hexmaster',name:'Hexmaster',level:20,action:'passive'}
+  ],subclasses:[{id:'black',name:'Black Magic',features:[]},{id:'green',name:'Green Magic',features:[]},{id:'red',name:'Red Magic',features:[]},{id:'white',name:'White Magic',features:[]}],hooks:{sync:syncWitch,useFeature:useWitch,attackModifiers:witchAttack}};
+
   var packs=[bloodHunterPack,
 
     {id:'mcdm-illrigger',name:'Illrigger',displayName:'Иллирригер',source:'MCDM Productions — The Illrigger Revised 1.0',license:'Original runtime implementation; source mechanics checked against public class material',features:[{id:'balefulInterdict',name:'Зловещее запрещение',level:1,action:'bonus',target:'enemy',rangeFt:30},{id:'burnSeal',name:'Сжечь печать',level:1,action:'special',target:'enemy'},{id:'forkedTongue',name:'Раздвоенный язык',level:1,action:'passive'},{id:'combatMastery',name:'Боевая специализация',level:2,action:'utility'},{id:'interdictBoon',name:'Дар Интердикта',level:2,action:'utility'},{id:'invokeHell',name:'Призыв Ада',level:3,action:'action'},{id:'infernalConduit',name:'Инфернальный проводник',level:6,action:'action'},{id:'bloodPrice',name:'Кровавая цена',level:10,action:'reaction'},{id:'terrorizingForce',name:'Терроризирующая сила',level:11,action:'bonus'},{id:'superiorInterdict',name:'Высший интердикт',level:14,action:'passive'},{id:'infernalMajesty',name:'Инфернальное величие',level:17,action:'bonus'},{id:'masterOfHell',name:'Повелитель Ада',level:20,action:'action'}],subclasses:[{id:'architect',name:'Архитектор разрушения',features:[{id:'architectBlessing',name:'Благословение Архитектора',level:3,action:'passive'},{id:'architectSpellcasting',name:'Магия Архитектора',level:3,action:'utility'}]},{id:'hellspeaker',name:'Говорящий с Адом',features:[{id:'hellspeakerCommand',name:'Инфернальное убеждение',level:3,action:'action'}]},{id:'painkiller',name:'Палач боли',features:[{id:'painkillerArmor',name:'Тяжёлая броня',level:3,action:'passive'},{id:'painkillerPunishment',name:'Наказание',level:7,action:'reaction'}]},{id:'sanguine',name:'Кровавый рыцарь',features:[{id:'sanguineRitual',name:'Кровавый ритуал',level:3,action:'action'}]},{id:'shadowmaster',name:'Повелитель теней',features:[{id:'shadowStep',name:'Теневой шаг',level:3,action:'bonus'},{id:'shadowAssassin',name:'Теневой убийца',level:7,action:'attack'}]}],hooks:{sync:syncIllrigger,useFeature:useIllrigger,attackModifiers:illriggerAttack,subclassUse:illriggerContractFeature}},
@@ -1000,6 +1131,7 @@
       {id:'sweetScience',name:'Благородное искусство',features:[]}
     ],hooks:{sync:syncPugilist,useFeature:usePugilist,attackModifiers:pugilistAttack}},
   ];
+  packs.push(occultistPack,witchPack);
   packs.forEach(function(p){D.registerClass(p);});
   global.DNDExpansionClasses={VERSION:'1.0.0',packs:packs.map(function(p){return p.id;})};
 })(window);
