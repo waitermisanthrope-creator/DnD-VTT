@@ -40,6 +40,7 @@ window.CLASSES_REFERENCE = {
     "Аккурсд": { hitDie: 10, primaryStat: "curseAbility", savingThrows: ["wisdom", "intelligence_or_charisma"], progression: window.accursedProgression || {} },
     "Гайст": { hitDie: 8, primaryStat: "wisdom", savingThrows: ["wisdom", "charisma"], progression: window.geistProgression || {} },
     "Паразит": { hitDie: 8, primaryStat: "wisdom", savingThrows: ["wisdom", "intelligence"], isExtra: true, isRaceClassHybrid: true, replacesRace: true, multiclassAllowed: false, progression: window.parasiteProgression || {} },
+    "Паразит доктора Вальтера": { hitDie: 10, primaryStat: "highest_stat", savingThrows: ["constitution", "dexterity"], isExtra: true, isRaceClassHybrid: true, replacesRace: true, multiclassAllowed: false, progression: window.walterParasiteProgression || {} },
     "Псионик": { hitDie: 8, primaryStat: "intelligence", savingThrows: ["intelligence", "wisdom"], progression: window.psionProgression || {} },
     "Рунный хранитель": { hitDie: 8, primaryStat: "intelligence", savingThrows: ["intelligence", "wisdom"], progression: window.runeKeeperProgression || {} },
     "Савант": { hitDie: 8, primaryStat: "intelligence", savingThrows: ["intelligence", "wisdom"], progression: window.savantProgression || {} },
