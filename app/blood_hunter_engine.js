@@ -105,7 +105,10 @@ function useGhost(h,id,ctx){
  if(id==='riteOfTheDawn'){s.dawnRite=true;s.crimsonRiteType='dawn';return{ok:true,effect:{damageType:'radiant',brightLightFt:20,resistance:['necrotic'],extraRiteDieVsUndead:true}};}
  if(id==='aetherWalk'){if(!spend(h,'aetherWalk',1))return{ok:false,reason:'Aether Walk недоступен.'};return{ok:true,effect:{ethereal:true,durationRounds:Math.max(1,hemMod(h)),phaseThrough:true,forceDamageIfInside:'1d10'}};}
  if(id==='riteRevival'){if(!s.crimsonRite||!s.crimsonRite.active)return{ok:false,reason:'Нет активного Crimson Rite.'};s.crimsonRite.active=false;return{ok:true,effect:{setHpIfDroppedToZero:1},message:'Rite Revival спасает от смерти.'};}
- if(id==='curseOfTheMarked'){return useCurse(h,{curse:'marked',target:t});}\n if(id==='bloodCurseOfTheExorcist'){return useCurse(h,{curse:'exorcist',target:t});}\n if(id==='bloodCurseOfCorrosion'){return useCurse(h,{curse:'corrosion',target:t});}\n if(id==='bloodCurseOfHowl'){return useCurse(h,{curse:'howl',target:t});}
+ if(id==='curseOfTheMarked'){return useCurse(h,{curse:'marked',target:t});}
+ if(id==='bloodCurseOfTheExorcist'){return useCurse(h,{curse:'exorcist',target:t});}
+ if(id==='bloodCurseOfCorrosion'){return useCurse(h,{curse:'corrosion',target:t});}
+ if(id==='bloodCurseOfHowl'){return useCurse(h,{curse:'howl',target:t});}
  if(id==='curseSpecialist')return{ok:true,effect:{extraBloodMaledictUse:true,cursesIgnoreBloodRequirement:true}};
  if(id==='brandOfSundering')return{ok:true,effect:{brandedExtraRiteDie:true,blockIncorporealMovement:true}};
  return{ok:false,unsupported:true};
