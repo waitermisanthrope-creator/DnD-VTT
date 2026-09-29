@@ -4818,3 +4818,34 @@ app/data/classes/extra_class_stubs.js содержит старые fallback-з�
 - ошибки и конфликтующие fallback-слои.
 
 Базовый принцип: статус `implemented_core` больше не считать финальным. Каждый класс должен пройти отдельный **deep audit** после создания общей инфраструктуры спутников.
+
+
+## CLASS DEEP AUDIT — КРОВАВЫЙ ОХОТНИК — 2026-09-29
+
+Первый полноценный deep-audit после создания универсального Companion/Linked Actor фундамента.
+
+### Исправлено
+- `app/data/classes/BloodHunter.js`: исправлена прогрессия Hemocraft Die — d4 (1), d6 (5), d8 (11), d10 (17); убрана ошибочная d12.
+- `app/blood_hunter_engine.js`: полностью переработан runtime Blood Hunter 2.0.
+- Hemocraft modifier теперь выбирается между Intelligence/Wisdom; DC = 8 + PB + модификатор Hemocraft.
+- Blood Maledict: 1/2/3/4 использования на уровнях 1/6/13/17; Amplify реально тратит HP через Hemocraft die.
+- Crimson Rite: выбор изученных обрядов, проверка доступности, трата HP, активный обряд и дополнительный урон Hemocraft die.
+- Fighting Style: Archery, Dueling и базовые runtime hooks для остальных стилей.
+- Brand of Castigation/Tethering: отслеживание цели, корректный психический урон от Hemocraft modifier, ограничения Tethering.
+- Hunter's Bane, Grim Psychometry, Dark Augmentation, Hardened Soul, Extra Attack и Sanguine Mastery получили отдельные runtime-контракты.
+
+### Все 4 подкласса
+- Ghostslayer: Rite of the Dawn, Curse Specialist, Aether Walk, Brand of Sundering, Blood Curse of the Exorcist, Rite Revival.
+- Lycan: Heightened Senses, Hybrid Transformation, Feral Might, Resilient Hide, Predatory Strikes, Bloodlust, Stalker's Prowess, Advanced Transformation, Lycan Regeneration, Brand of the Voracious, Hybrid Transformation Mastery и Howl.
+- Mutant: Mutagencraft, 19 мутагенов, число известных формул/создаваемых мутагенов по уровням, Strange Metabolism, Brand of Axiom, Corrosion и Exalted Mutation.
+- Profane Soul: Otherworldly Patron (9 вариантов), Pact Magic, cantrips/spells known, pact-slot progression, Rite Focus, Mystic Frenzy, Revealed Arcana, Brand of the Sapping Scar, Unsealed Arcana и Soul Eater.
+- `subclassesRegistry.js` приведён к реальным уровням особенностей всех четырёх Order: 3/7/11/15/18.
+
+### Важная архитектурная оговорка
+Runtime возвращает структурированные effect-контракты для общего combat/effect resolver. Сложные multi-target, полноценная длительность условий, фактическое применение сопротивлений/иммунитетов и автоматическое применение заклинаний должны быть доведены общим resolver-слоем, а не отдельными костылями каждого класса.
+
+### Проверено по источнику
+Текущая публичная страница Blood Hunter на D&D Beyond подтверждает таблицу 1–20, Hemocraft d4/d6/d8/d10, Blood Maledict, Crimson Rite, четыре Order и их ключевые уровни/механики; Profane Soul имеет отдельную Pact Magic progression и patron-dependent abilities. citeturn1view0turn2view0turn2view1turn2view2turn3view0
+
+### Следующий шаг
+После фиксации Blood Hunter перейти к **Псионику** и повторить тот же цикл: базовая прогрессия → все дисциплины/подклассы → ресурсы → способности → эффекты → UI hooks → глубокая запись в этот guide.
