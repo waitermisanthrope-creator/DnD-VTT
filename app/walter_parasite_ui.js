@@ -68,7 +68,7 @@
     }else if(key==='dex'){
       alert('Пластичность: '+result.durationSeconds+' сек.\\nПреимущество на спасброски Ловкости, протискивание и движение без атак по возможности.');
     }else if(key==='con'){
-      alert('Наросты: '+result.durationMinutes+' мин.\\nКД +'+result.acBonus+', ответный урон '+result.thornsDice+'.');
+      alert('Наросты: '+result.durationSeconds+' сек.\\nКД +'+result.acBonus+', ответный урон '+result.thornsDice+'.');
     }else if(key==='int'){
       alert('Жгутики активированы на '+(target&&target.name?target.name:'выбранную цель')+'.\\nКонцентрация до 1 минуты.');
     }else if(key==='wis'){
