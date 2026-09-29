@@ -41,3 +41,9 @@
 
 /* V70.25.84 — signature button appears after all revealed parchment fields. */
 .parchment-sign.is-ready{display:block;}
+
+/* Homebrew uses the same clean parchment as classic; only the content bucket changes. */
+.parchment-stage.is-homebrew{background-image:url('../1790622844831.jpg');background-size:100% 100%;background-position:center top;background-repeat:no-repeat}
+.parchment-burn{position:absolute;left:4vw;bottom:2.5vh;z-index:9025;border:1px solid rgba(74,45,24,.55);background:rgba(82,45,24,.12);color:#4b2d1d;font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:clamp(14px,3.2vw,19px);padding:8px 11px;border-radius:5px;cursor:pointer;box-shadow:0 2px 8px rgba(50,30,10,.16)}
+.parchment-burn span{display:block;font-size:.58em;font-weight:400;opacity:.72;margin-top:1px}
+.creation-type-card #ccTypeHomebrew{background:#80612d}

@@ -1,4 +1,4 @@
-/* 70.25.77 extra creation + token replacement fix — preserve original image bytes; harden row/token switching */
+/* 70.25.87 creation buckets: classic / DLC-homebrew / extra + burn-scroll back button */
 /* Character creation parchment flow v2 — ordinary/extra sheets, progressive reveal, signature transition. */
 (function(){
 'use strict';
@@ -6,6 +6,43 @@ var ROOT='./';
 var SIGNATURE=ROOT+'1790622252250.png';
 var CHARACTER_CREATION_MODE=null;
 var BYPASS_PARCHMENT_ONCE=false;
+/* Creation content buckets: classic = core 5e + Artificer; homebrew = every non-core option; extra stays isolated. */
+var CLASSIC_CLASS_NAMES=['Варвар','Бард','Жрец','Друид','Воин','Монах','Паладин','Следопыт','Плут','Чародей','Колдун','Волшебник','Изобретатель'];
+var CLASSIC_RACE_IDS=['human','human_variant','elf_high','elf_wood','elf_drow','dwarf_hill','dwarf_mountain','halfling_lightfoot','halfling_stout','dragonborn','gnome_rock','gnome_forest','half_elf','half_orc','tiefling'];
+var CLASSIC_BACKGROUND_NAMES=['Прислужник','Шарлатан','Преступник','Артист','Народный герой','Гильдийский ремесленник','Отшельник','Благородный','Дикарь','Мудрец','Мореход','Солдат','Беспризорник'];
+var EXTRA_TYPES=['Рой','Призрак','Паразит'];
+function isClassicMode(){return CHARACTER_CREATION_MODE==='classic';}
+function isHomebrewMode(){return CHARACTER_CREATION_MODE==='homebrew';}
+function isExtraMode(){return CHARACTER_CREATION_MODE==='extra';}
+function classRecords(){
+ var base=Array.isArray(window.DND_CLASSES_LIST)?window.DND_CLASSES_LIST:[];
+ var out=base.slice();
+ var ref=window.CLASSES_REFERENCE||{};
+ Object.keys(ref).forEach(function(name){
+  if(!out.some(function(c){return c.name===name;}))out.push({name:name,displayName:name,hitDie:ref[name].hitDie});
+ });
+ return out;
+}
+function creationClassItems(){
+ var all=classRecords();
+ if(isClassicMode())return CLASSIC_CLASS_NAMES.map(function(name){
+  var c=all.find(function(x){return x.name===name;})||{name:name,displayName:name};
+  return {value:c.name,label:c.displayName||c.name};
+ });
+ return all.filter(function(c){return !EXTRA_TYPES.includes(c.name);}).map(function(c){return {value:c.name,label:c.displayName||c.name};});
+}
+function creationRaceItems(){
+ var races=typeof getAllRaces==='function'?getAllRaces():[];
+ if(isClassicMode())return races.filter(function(r){return CLASSIC_RACE_IDS.indexOf(r.id)!==-1;}).map(function(r){return {value:r.id,label:r.name};});
+ if(isHomebrewMode())return races.filter(function(r){return CLASSIC_RACE_IDS.indexOf(r.id)===-1;}).map(function(r){return {value:r.id,label:r.name};});
+ return [{value:'Призрак',label:'Призрак'},{value:'Паразит',label:'Паразит'},{value:'Рой',label:'Рой'}];
+}
+function creationBackgroundItems(){
+ var bgs=typeof getAllBackgrounds==='function'?getAllBackgrounds():(Array.isArray(window.dndBackgrounds)?window.dndBackgrounds:[]);
+ if(isClassicMode())return bgs.filter(function(b){return CLASSIC_BACKGROUND_NAMES.indexOf(b.nameRu||b.name)!==-1;});
+ if(isHomebrewMode())return bgs.filter(function(b){return CLASSIC_BACKGROUND_NAMES.indexOf(b.nameRu||b.name)===-1;});
+ return bgs;
+}
 var CLASS_TOKEN_ART={
  'Иллирригер':'./app/data/classes/Illigger.png','Аккурсд':'./app/data/classes/accursed.png','Алхимик':'./app/data/classes/alchemist.png',
  'Бистхарт':'./app/data/classes/beasthart.png','Кровавый охотник':'./app/data/classes/blood hunter.png','Гайст':'./app/data/classes/geist.png',
@@ -31,8 +68,9 @@ var EXTRA_DESCRIPTIONS={'Рой':'Не оставляет после себя с
 function extraDescriptionHtml(){var type=el('pc_race')?el('pc_race').value:'';if(type&&EXTRA_DESCRIPTIONS[type])return '<strong>'+esc(type)+':</strong> '+esc(EXTRA_DESCRIPTIONS[type]);return '';}
 function setModeClass(){
  var stage=el('parchmentStage');if(!stage)return;
- stage.classList.toggle('is-extra',CHARACTER_CREATION_MODE==='extra');
- stage.classList.toggle('is-classic',CHARACTER_CREATION_MODE==='classic');
+ stage.classList.toggle('is-extra',isExtraMode());
+ stage.classList.toggle('is-classic',isClassicMode());
+ stage.classList.toggle('is-homebrew',isHomebrewMode());
 }
 function fillSelect(id,items,placeholder){
  var e=el(id);if(!e)return;
@@ -52,15 +90,15 @@ function reveal(id,yes){var e=el(id);if(!e)return;e.closest('.parchment-step')?.
 function setupProgression(){
  var classicSteps=[['pc_name',function(){var e=el('pc_name');return e&&String(e.value||'').trim().length>0}],['pc_origin',function(){var e=el('pc_origin');return e&&String(e.value||'').trim().length>0}],['pc_class',function(){var e=el('pc_class');return e&&String(e.value||'').length>0}],['pc_gender',function(){var e=el('pc_gender');return e&&String(e.value||'').length>0}],['pc_race',function(){var e=el('pc_race');return e&&String(e.value||'').length>0}],['pc_age',function(){var e=el('pc_age');return e&&String(e.value||'').trim().length>0}],['pc_background',function(){var e=el('pc_background');return e&&String(e.value||'').length>0}],['pc_profession',function(){var e=el('pc_profession');return e&&String(e.value||'').length>0}]];
  var extraSteps=[['pc_name',function(){var e=el('pc_name');return e&&String(e.value||'').trim().length>0}],['pc_race',function(){var e=el('pc_race');return e&&String(e.value||'').length>0}]];
- var steps=CHARACTER_CREATION_MODE==='extra'?extraSteps:classicSteps;
+ var steps=isExtraMode()?extraSteps:classicSteps;
  var allFields=['pc_name','pc_origin','pc_class','pc_gender','pc_race','pc_age','pc_background','pc_profession'];
  function findStep(field){var n=field;while(n&&(!n.classList||!n.classList.contains('parchment-step')))n=n.parentNode;return n;}
- function update(){var firstIncomplete=steps.length;for(var i=0;i<steps.length;i++){if(!steps[i][1]()){firstIncomplete=i;break;}}var activeIds={};steps.forEach(function(x){activeIds[x[0]]=true});allFields.forEach(function(id){var field=el(id);if(!field)return;var step=findStep(field);if(CHARACTER_CREATION_MODE==='extra'&&!activeIds[id]){if(step)step.classList.add('step-hidden');field.disabled=true;return;}var idx=-1;for(var k=0;k<steps.length;k++){if(steps[k][0]===id){idx=k;break;}}var visible=idx>=0&&idx<=firstIncomplete;if(step)step.classList.toggle('step-hidden',!visible);field.disabled=idx<0||idx>firstIncomplete;if(field.tagName==='SELECT')fitSelect(field);});var complete=firstIncomplete===steps.length;var warning=el('pcWarning'),tax=el('pcTax'),reward=el('pcReward');if(CHARACTER_CREATION_MODE==='extra'){if(warning)warning.classList.toggle('step-hidden',!el('pc_race')||!String(el('pc_race').value||'').trim());if(tax)tax.classList.add('step-hidden');if(reward)reward.classList.toggle('step-hidden',!complete);}else{if(tax)tax.classList.toggle('step-hidden',!complete);if(warning)warning.classList.toggle('step-hidden',!complete);if(reward)reward.classList.toggle('step-hidden',!complete);}var sign=el('pc_signButton');if(sign){sign.disabled=!complete;sign.classList.toggle('is-ready',complete);sign.style.display=complete?'block':'none';}var reason=el('pc_extraReason');if(reason&&CHARACTER_CREATION_MODE==='extra')reason.innerHTML=extraDescriptionHtml();}
+ function update(){var firstIncomplete=steps.length;for(var i=0;i<steps.length;i++){if(!steps[i][1]()){firstIncomplete=i;break;}}var activeIds={};steps.forEach(function(x){activeIds[x[0]]=true});allFields.forEach(function(id){var field=el(id);if(!field)return;var step=findStep(field);if(isExtraMode()&&!activeIds[id]){if(step)step.classList.add('step-hidden');field.disabled=true;return;}var idx=-1;for(var k=0;k<steps.length;k++){if(steps[k][0]===id){idx=k;break;}}var visible=idx>=0&&idx<=firstIncomplete;if(step)step.classList.toggle('step-hidden',!visible);field.disabled=idx<0||idx>firstIncomplete;if(field.tagName==='SELECT')fitSelect(field);});var complete=firstIncomplete===steps.length;var warning=el('pcWarning'),tax=el('pcTax'),reward=el('pcReward');if(isExtraMode()){if(warning)warning.classList.toggle('step-hidden',!el('pc_race')||!String(el('pc_race').value||'').trim());if(tax)tax.classList.add('step-hidden');if(reward)reward.classList.toggle('step-hidden',!complete);}else{if(tax)tax.classList.toggle('step-hidden',!complete);if(warning)warning.classList.toggle('step-hidden',!complete);if(reward)reward.classList.toggle('step-hidden',!complete);}var sign=el('pc_signButton');if(sign){sign.disabled=!complete;sign.classList.toggle('is-ready',complete);sign.style.display=complete?'block':'none';}var reason=el('pc_extraReason');if(reason&&CHARACTER_CREATION_MODE==='extra')reason.innerHTML=extraDescriptionHtml();}
  var stage=el('parchmentStage');if(stage&&!stage.dataset.progressBound){stage.dataset.progressBound='1';stage.addEventListener('input',function(ev){if(ev.target&&ev.target.classList&&ev.target.classList.contains('parchment-field'))update();});stage.addEventListener('change',function(ev){var t=ev.target;if(!t)return;if(t.id==='pc_class'||t.id==='pc_gender'||t.id==='pc_race'||t.id==='pc_background'||t.id==='pc_profession'){if(t.tagName==='SELECT')fitSelect(t);update();if(t.id==='pc_class')renderClassArt();}else if(t.classList&&t.classList.contains('parchment-field'))update();});}
  window.__refreshParchmentProgress=update;window.__updateParchmentProgress=update;update();
 }
 function renderClassArt(){
- var name=el('pc_class')?el('pc_class').value:'',img=el('pc_classArt'),label=el('pc_classLabel');var extra=CHARACTER_CREATION_MODE==='extra';
+ var name=el('pc_class')?el('pc_class').value:'',img=el('pc_classArt'),label=el('pc_classLabel');var extra=isExtraMode(), homebrew=isHomebrewMode();
  if(label)label.textContent=extra?'':(name||'');var raceLead=el('pcRaceLead');if(raceLead)raceLead.textContent=extra?'Выберите заглушку':'По внешним признакам относится к расе';
  if(extra){if(img){img.removeAttribute('src');img.removeAttribute('data-art');img.classList.remove('token-ready');}}else if(img){
   var art=classArt(name);
@@ -80,11 +118,11 @@ function renderClassArt(){
   }
  }
  var title=el('pcTitle'),sub=el('pcSubtitle'),tax=el('pcTax'),warn=el('pcWarning'),reward=el('pcReward');
- if(title)title.textContent=extra?'ЛИСТ ЛИКВИДАЦИИ':'РОЗЫСКНОЙ ЛИСТ';
- if(sub)sub.textContent=extra?'Разыскивается исключительно мёртвым. Любая попытка задержания живым считается нарушением приказа гарнизона.':'По подозрению в неуплате налогов, славному городу Енотовиллю, для допроса разыскивается гуманоид';
- if(tax)tax.style.display=extra?'none':'';
- if(warn)warn.innerHTML=extra?'ОСОБАЯ ПРИМЕТА И ПРИЧИНА РОЗЫСКА: <span id="pc_extraReason">выберите заглушку</span>':'СТЫД ТЕБЕ, ПРОЧИТАВШИЙ ЭТО, РОЗЫСКИВАЕМЫЙ <span id="pc_professionText">—</span>.';
- if(reward)reward.innerHTML=extra?'Доставить исключительно мёртвым.<br>Награда <strong>30 золотых монет</strong>.':'Доставить исключительно живым и с кошельком.<br>Награда 10 серебряных монет и кружка хорошего пива.';
+ if(title)title.textContent=extra?'ЛИСТ ЛИКВИДАЦИИ':homebrew?'ДОПОЛНИТЕЛЬНЫЙ РОЗЫСКНОЙ ЛИСТ':'РОЗЫСКНОЙ ЛИСТ';
+ if(sub)sub.textContent=extra?'Разыскивается исключительно мёртвым. Любая попытка задержания живым считается нарушением приказа гарнизона.':homebrew?'В архиве обнаружены сведения, которых нет в обычных реестрах. Дополнительные материалы допускаются к проверке по особому распоряжению.':'По подозрению в неуплате налогов, славному городу Енотовиллю, для допроса разыскивается гуманоид';
+ if(tax)tax.style.display=(extra||homebrew)?'none':'';
+ if(warn)warn.innerHTML=extra?'ОСОБАЯ ПРИМЕТА И ПРИЧИНА РОЗЫСКА: <span id="pc_extraReason">выберите заглушку</span>':homebrew?'ОСОБАЯ ОТМЕТКА АРХИВА: выбранный вариант относится к дополнительным материалам и проверяется отдельно.':'СТЫД ТЕБЕ, ПРОЧИТАВШИЙ ЭТО, РОЗЫСКИВАЕМЫЙ <span id="pc_professionText">—</span>.';
+ if(reward)reward.innerHTML=extra?'Доставить исключительно мёртвым.<br>Награда <strong>30 золотых монет</strong>.':homebrew?'Дополнительный материал принят к рассмотрению.<br>Награда за доставку не назначена.':'Доставить исключительно живым и с кошельком.<br>Награда 10 серебряных монет и кружка хорошего пива.';
  var sign=el('pc_signButton');if(sign)sign.innerHTML='расписаться<span class="parchment-sign-hint">закончить создание</span>';
  if(typeof window.__updateParchmentProgress==='function')window.__updateParchmentProgress();
 }
@@ -98,15 +136,10 @@ function getProfessionItems(){
 }
 function initParchment(){
  setModeClass();
- var all=classes();
- var isExtra=CHARACTER_CREATION_MODE==='extra';
- var allowedExtra=['Рой','Призрак','Паразит'];
- var classItems=all.map(function(c){return{value:c.name,label:c.displayName||c.name}});
- if(isExtra){fillSelect('pc_class',[],'не используется');}else{fillSelect('pc_class',classItems,'выбрать класс');}
- var races=typeof getAllRaces==='function'?getAllRaces():[];
- if(isExtra){fillSelect('pc_race',[{value:'Призрак',label:'Призрак'},{value:'Паразит',label:'Паразит'},{value:'Рой',label:'Рой'}],'выбрать заглушку');}else{fillSelect('pc_race',races.map(function(r){return{value:r.id,label:r.name}}),'выбрать расу');}
- var bgs=typeof getAllBackgrounds==='function'?getAllBackgrounds():(Array.isArray(window.dndBackgrounds)?window.dndBackgrounds:[]);
- fillSelect('pc_background',bgs.map(function(b){var n=b.nameRu||b.name||'';return{value:n,label:n}}),'выбрать предысторию');
+ var isExtra=isExtraMode();
+ if(isExtra){fillSelect('pc_class',[],'не используется');}else{fillSelect('pc_class',creationClassItems(),'выбрать класс');}
+ fillSelect('pc_race',creationRaceItems(),isExtra?'выбрать заглушку':'выбрать расу');
+ fillSelect('pc_background',creationBackgroundItems().map(function(b){var n=b.nameRu||b.name||'';return{value:n,label:n}}),'выбрать предысторию');
  fillSelect('pc_gender',[{value:'мужчина',label:'мужчина'},{value:'женщина',label:'женщина'}],'выбрать пол');
  fillSelect('pc_profession',getProfessionItems(),'выбрать профессию');
  setupProgression();
@@ -127,9 +160,10 @@ function chooser(){
  var old=el('characterCreationTypeChooser');if(old)return old;
  var m=document.createElement('div');m.id='characterCreationTypeChooser';
  m.style.cssText='display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.88);align-items:center;justify-content:center;padding:18px;box-sizing:border-box';
- m.innerHTML='<div class="creation-type-card"><div class="creation-type-icon">📜</div><h2>Какого персонажа создаём?</h2><p>Сначала выберите тип листа.</p><button id="ccTypeClassic">Обычный персонаж</button><button id="ccTypeExtra">Экстра</button><button id="ccTypeCancel">Отмена</button></div>';
+ m.innerHTML='<div class="creation-type-card"><div class="creation-type-icon">📜</div><h2>Какого персонажа создаём?</h2><p>Сначала выберите тип листа.</p><button id="ccTypeClassic">Обычный персонаж</button><button id="ccTypeHomebrew">DLC / Хоумбрю</button><button id="ccTypeExtra">Экстра</button><button id="ccTypeCancel">Отмена</button></div>';
  document.body.appendChild(m);
  m.querySelector('#ccTypeClassic').onclick=function(){m.style.display='none';CHARACTER_CREATION_MODE='classic';openParchmentSheet()};
+ m.querySelector('#ccTypeHomebrew').onclick=function(){m.style.display='none';CHARACTER_CREATION_MODE='homebrew';openParchmentSheet()};
  m.querySelector('#ccTypeExtra').onclick=function(){m.style.display='none';CHARACTER_CREATION_MODE='extra';openParchmentSheet()};
  m.querySelector('#ccTypeCancel').onclick=function(){m.style.display='none';if(typeof window.showCharacterSelect==='function')window.showCharacterSelect()};
  return m;
@@ -141,8 +175,9 @@ function openParchmentSheet(){
 }
 window.openParchmentCreation=function(){chooser().style.display='flex'};
 window.closeParchmentCreation=function(){var p=el('parchmentCreationScreen');if(p)p.style.display='none';if(typeof window.showCharacterSelect==='function')window.showCharacterSelect()};
+window.burnParchment=function(){window.closeParchmentCreation();};
 window.finishParchmentCreation=function(){
- var ids=CHARACTER_CREATION_MODE==='extra'?['pc_name','pc_race']:['pc_name','pc_origin','pc_class','pc_gender','pc_race','pc_age','pc_background','pc_profession'];
+ var ids=isExtraMode()?['pc_name','pc_race']:['pc_name','pc_origin','pc_class','pc_gender','pc_race','pc_age','pc_background','pc_profession'];
  var missing=ids.some(function(id){var e=el(id);return !e||!String(e.value||'').trim()});
  if(missing){alert('Заполните все открытые поля по порядку.');return}
  syncToClassic();
