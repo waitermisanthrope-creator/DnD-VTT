@@ -477,13 +477,13 @@ function proceedWithClassLevelUp(currentClass) {
   // не должен позволить обойти ограничения Extra-класса.
   const normalizedRequested = String(currentClass || "").replace(/[0-9]/g,"").trim();
   const extraType = hero && hero.extraClassType;
-  const extraLocked = extraType === "swarm" || extraType === "parasite" || extraType === "walter_parasite";
-  const extraName = extraType === "parasite" ? "Паразит" : (extraType === "walter_parasite" ? "Паразит доктора Вальтера" : "Рой");
+  const extraLocked = extraType === "swarm" || extraType === "parasite" || extraType === "walter_parasite" || extraType === "ghost";
+  const extraName = extraType === "parasite" ? "Паразит" : (extraType === "walter_parasite" ? "Паразит доктора Вальтера" : (extraType === "ghost" ? "Призрак" : "Рой"));
   if (extraLocked && normalizedRequested !== extraName) {
     alert("Этот персонаж — " + extraName + ". Другой класс выбрать нельзя.");
     return;
   }
-  if (!extraLocked && (normalizedRequested === "Рой" || normalizedRequested === "Паразит" || normalizedRequested === "Паразит доктора Вальтера")) {
+  if (!extraLocked && (normalizedRequested === "Рой" || normalizedRequested === "Паразит" || normalizedRequested === "Паразит доктора Вальтера" || normalizedRequested === "Призрак")) {
     alert(normalizedRequested + " нельзя взять мультиклассом.");
     return;
   }
@@ -846,13 +846,13 @@ window.confirmLevelUp = function() {
   const { class: className } = pendingLevelUpData;
 
   const extraType = hero.extraClassType;
-  const heroIsExtra = extraType === "swarm" || extraType === "parasite" || extraType === "walter_parasite";
+  const heroIsExtra = extraType === "swarm" || extraType === "parasite" || extraType === "walter_parasite" || extraType === "ghost";
   const extraName = extraType === "parasite" ? "Паразит" : (extraType === "walter_parasite" ? "Паразит доктора Вальтера" : "Рой");
   if (heroIsExtra && className !== extraName) {
     alert(extraName + " не может мультиклассироваться. Повышайте только уровень " + extraName + ".");
     return;
   }
-  if (!heroIsExtra && (className === "Рой" || className === "Паразит" || className === "Паразит доктора Вальтера")) {
+  if (!heroIsExtra && (className === "Рой" || className === "Паразит" || className === "Паразит доктора Вальтера" || className === "Призрак")) {
     alert(className + " нельзя добавить вторым классом.");
     return;
   }
