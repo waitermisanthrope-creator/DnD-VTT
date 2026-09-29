@@ -1039,6 +1039,15 @@ window.setCharacterLevel = function(newLevel, hpGain = 0, specificClass = null) 
     hero.hp.max = newMax;
     hero.hp.current = newVal;
 
+    // Синхронизация специальной биомассы Роя с обычными полями HP.
+    if (hero.extraClassType === "swarm" && hero.swarm) {
+      hero.swarm.maxHP = newMax;
+      hero.swarm.currentHP = newVal;
+      if (window.SWARM_EXTRA && typeof window.SWARM_EXTRA.getState === "function") {
+        hero.swarm.state = window.SWARM_EXTRA.getState(newVal, newMax);
+      }
+    }
+
     const hpMaxInput = document.getElementById('hpMax');
     if (hpMaxInput) {
       hpMaxInput.value = newMax;
