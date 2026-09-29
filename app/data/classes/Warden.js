@@ -1,44 +1,45 @@
 /**
  * Warden.js
- * Карманный ВТТ — каркас прогрессии класса «Страж».
+ * Карманный ВТТ — класс «Страж».
+ * Источник механики: Mage Hand Press, Warden 2024 / 5.5E.
  *
- * Этап 1: базовые требования, владения, уровни 1–20 и точки Champion/Warden
- * subclass. Полная логика Guardian Tactics, Interrupt и подклассов будет
- * добавлена отдельно.
- *
- * Публичный API: window.wardenProgression
+ * Базовое ядро реализовано отдельно от Champion Calls:
+ * Guardian Tactics, Sentinel's Stand, Interrupt, Mettle, Survive,
+ * Sentinel's Strike, Font of Life, Extended Tactics, Improved Resolve,
+ * Sentinel's Soul и Legendary Resistance.
  */
 (function(g){
   'use strict';
   var levels={};
-  for(var i=1;i<=20;i++)levels[i]={features:[]};
-  levels[1]={features:['Заготовка: Fighting Style','Заготовка: Sentinel’s Stand','Заготовка: Weapon Mastery']};
-  levels[2]={features:['Заготовка: Guardian Tactics','Заготовка: Unyielding Resolve']};
-  levels[3]={features:['Заготовка: Warden Subclass'],subclassLevel:true};
+  for(var i=1;i<=20;i++) levels[i]={features:[]};
+
+  levels[1]={features:['Боевой стиль','Стойка часового','Мастерство оружия']};
+  levels[2]={features:['Тактика стража','Непоколебимая решимость']};
+  levels[3]={features:['Призвание стража'],subclassLevel:true};
   levels[4]={features:['Увеличение характеристик (ASI) или Черта'],asi:true};
-  levels[5]={features:['Заготовка: Extra Attack','Заготовка: Interrupt']};
-  levels[6]={features:['Заготовка: способность подкласса']};
-  levels[7]={features:['Заготовка: Mettle']};
+  levels[5]={features:['Дополнительная атака','Перехват']};
+  levels[6]={features:['Способность призвания стража']};
+  levels[7]={features:['Стойкость']};
   levels[8]={features:['Увеличение характеристик (ASI) или Черта'],asi:true};
-  levels[9]={features:['Заготовка: Survive']};
-  levels[10]={features:['Заготовка: способность подкласса']};
-  levels[11]={features:['Заготовка: Sentinel’s Strike']};
+  levels[9]={features:['Выжить']};
+  levels[10]={features:['Способность призвания стража']};
+  levels[11]={features:['Удар часового']};
   levels[12]={features:['Увеличение характеристик (ASI) или Черта'],asi:true};
-  levels[13]={features:['Заготовка: Font of Life']};
-  levels[14]={features:['Заготовка: Extended Tactics']};
-  levels[15]={features:['Заготовка: Improved Resolve']};
+  levels[13]={features:['Источник жизни']};
+  levels[14]={features:['Расширенная тактика']};
+  levels[15]={features:['Улучшенная решимость']};
   levels[16]={features:['Увеличение характеристик (ASI) или Черта'],asi:true};
-  levels[17]={features:['Заготовка: способность подкласса']};
-  levels[18]={features:['Заготовка: Sentinel’s Soul']};
-  levels[19]={features:['Заготовка: Epic Boon'],asi:false};
-  levels[20]={features:['Заготовка: Legendary Resistance']};
+  levels[17]={features:['Способность призвания стража']};
+  levels[18]={features:['Душа часового']};
+  levels[19]={features:['Эпический дар']};
+  levels[20]={features:['Легендарное сопротивление']};
 
   g.wardenProgression={
     className:'Страж',
     englishName:'Warden',
-    source:'Mage Hand Press / third-party',
-    status:'skeleton',
-    edition:'5.5E',
+    source:'Mage Hand Press',
+    status:'implemented_core',
+    edition:'5.5E / 2024',
     hitDie:10,
     primaryStat:'strength',
     secondaryStat:'constitution',
@@ -51,22 +52,55 @@
     skills:{choose:2,from:['animalHandling','athletics','insight','intimidation','medicine','perception','persuasion','survival']},
     subclassLevel:3,
     subclassFeatureLevels:[3,6,10,17],
+    weaponMasteryLevels:{1:2,4:3,10:4},
+    interruptUses:{5:3,9:4,13:5,17:6},
+    sentinelStandChoices:[
+      {id:'stalwartSpirit',name:'Стойкий дух',description:'Владение одним выбранным спасброском.'},
+      {id:'steadfastToughness',name:'Несокрушимая стойкость',description:'Максимум HP увеличивается на модификатор Телосложения + уровень Стража.'},
+      {id:'towerShield',name:'Башенный щит',description:'Щит даёт +3 AC вместо +2; с 10 уровня +4.'}
+    ],
+    sentinelStrikeChoices:[
+      {id:'interdict',name:'Запрет',description:'При Перехвате совершить рукопашную атаку и восстановить Перехват при броске инициативы.'},
+      {id:'shieldSlam',name:'Удар щитом',description:'Раз за ход после попадания оружием в пределах 5 футов нанести 1d8 + бонус AC щита.'},
+      {id:'sweep',name:'Размашистый удар',description:'При Attack Action рукопашным оружием атаковать каждое выбранное существо в пределах 5 футов.'}
+    ],
+    sentinelSoulChoices:[
+      {id:'allSeeing',name:'Всевидящий',description:'Blindsight 30 футов.'},
+      {id:'fortified',name:'Укреплённый',description:'Атаки не получают преимущество против Стража, кроме состояния Incapacitated.'},
+      {id:'unstoppable',name:'Неостановимый',description:'Можно проходить через пространство существ; меньшие существа сбиваются с ног.'}
+    ],
+    championCalls:[
+      {id:'beastbloodGuardian',name:'Зверокровный хранитель'},
+      {id:'carrionKing',name:'Король падали'},
+      {id:'diabolist',name:'Диаболист'},
+      {id:'drakeBlooded',name:'Драконокровный'},
+      {id:'godsworn',name:'Богопоклятый'},
+      {id:'greyWatchman',name:'Серый страж'},
+      {id:'nightgaunt',name:'Ночной кошмар'},
+      {id:'rimekeeper',name:'Хранитель изморози'},
+      {id:'steelShepherd',name:'Стальной пастырь'},
+      {id:'stoneheartDefender',name:'Каменносердечный защитник'},
+      {id:'stormSentinel',name:'Грозовой часовой'},
+      {id:'verdantProtector',name:'Защитник зелени'},
+      {id:'witchbaneHunter',name:'Охотник на ведьм'}
+    ],
     mechanics:{
-      status:'pending',
-      sentinelStand:'pending',
-      guardianTactics:'pending',
-      unyieldingResolve:'pending',
-      interrupt:'pending',
-      mettle:'pending',
-      survive:'pending',
-      sentinelStrike:'pending',
-      fontOfLife:'pending',
-      extendedTactics:'pending',
-      improvedResolve:'pending',
-      sentinelSoul:'pending',
-      legendaryResistance:'pending',
-      subclassSystem:'warden_subclass',
-      notes:'Этап 1 — только каркас. Guardian Tactics и защитные реакции не исполняются автоматически.'
+      fightingStyle:'implemented',
+      sentinelStand:'implemented',
+      weaponMastery:'implemented',
+      guardianTactics:'implemented',
+      unyieldingResolve:'implemented',
+      interrupt:'implemented',
+      mettle:'implemented',
+      survive:'implemented',
+      sentinelStrike:'implemented',
+      fontOfLife:'implemented',
+      extendedTactics:'implemented',
+      improvedResolve:'implemented',
+      sentinelSoul:'implemented',
+      legendaryResistance:'implemented',
+      subclassSystem:'registered_deep_subclass_work_pending',
+      notes:'Базовое ядро 2024/5.5E реализовано. Глубокие механики Champion Calls требуют отдельного прохода.'
     },
     levels:levels
   };
