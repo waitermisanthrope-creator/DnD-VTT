@@ -1,0 +1,89 @@
+/**
+ * Бистхарт — полная модель класса MCDM 5e.
+ * Все строки, которые видит игрок, на русском.
+ */
+(function(g){
+'use strict';
+var CLASS='Бистхарт';
+var bonds={
+ ferocious:{name:'Свирепый союз',levels:{3:['Яростный рывок','Мудрость ярости'],7:['Заряжающая ярость'],11:['Свирепая ярость'],15:['Усиленная ярость']}},
+ hunter:{name:'Охотничий союз',levels:{3:['Избранная добыча','Инстинкты охотника'],7:['Охотничья связь'],11:['Улучшенная охота'],15:['Выслеживание добычи']}},
+ infernal:{name:'Инфернальный союз',levels:{3:['Дьявольское понимание','Инфернальные приёмы'],7:['Адское обаяние'],11:['Демонические черты'],15:['Инфернальная форма']}},
+ primordial:{name:'Первородный союз',levels:{3:['Первородное понимание','Приёмы природы'],7:['Союз с землёй'],11:['Улучшенные приёмы природы'],15:['Первобытная форма']}},
+ protector:{name:'Защитный союз',levels:{3:['Живучесть зверя','Фаланга стаи'],7:['Утолщённая шкура'],11:['Страж-компаньон'],15:['Неумирающий защитник']}}
+};
+var creatures={
+basilisk:{name:'Василиск',size:'Средний',ac:15,hp:22,speed:20,actions:[{name:'Укус',attackBonus:5,damage:'1d8+3',damageType:'колющий',rangeFt:5},{name:'Окаменяющий взгляд',attackBonus:0,damage:'2d6',damageType:'яд'}]},
+bloodhawk:{name:'Кровавый ястреб',size:'Маленький',ac:14,hp:12,speed:60,actions:[{name:'Когти',attackBonus:5,damage:'1d6+3',damageType:'рубящий',rangeFt:5}]},
+bulette:{name:'Буровая акула',size:'Большой',ac:17,hp:42,speed:40,actions:[{name:'Укус',attackBonus:6,damage:'1d10+4',damageType:'колющий',rangeFt:5},{name:'Прыжок',attackBonus:6,damage:'2d6+4',damageType:'дробящий',rangeFt:10}]},
+deinonychus:{name:'Дейноних',size:'Средний',ac:14,hp:18,speed:40,actions:[{name:'Когти',attackBonus:5,damage:'1d8+3',damageType:'рубящий',rangeFt:5}]},
+dragon:{name:'Дракончик',size:'Средний',ac:16,hp:28,speed:30,actions:[{name:'Укус',attackBonus:6,damage:'1d8+4',damageType:'колющий',rangeFt:5},{name:'Дыхание',attackBonus:0,damage:'2d6',damageType:'огонь',rangeFt:15}]},
+earth:{name:'Земляной элементаль',size:'Большой',ac:17,hp:45,speed:30,actions:[{name:'Удар',attackBonus:6,damage:'1d8+4',damageType:'дробящий',rangeFt:5},{name:'Землетрясение',attackBonus:0,damage:'2d6',damageType:'дробящий',rangeFt:10}]},
+cube:{name:'Слизистый куб',size:'Большой',ac:8,hp:30,speed:15,actions:[{name:'Поглощение',attackBonus:4,damage:'2d6+2',damageType:'кислота',rangeFt:5}]},
+spider:{name:'Гигантский паук',size:'Большой',ac:14,hp:24,speed:30,actions:[{name:'Укус',attackBonus:5,damage:'1d8+3',damageType:'яд',rangeFt:5},{name:'Паутина',attackBonus:5,damage:'1d4',damageType:'огонь',rangeFt:30}]},
+toad:{name:'Гигантская жаба',size:'Большой',ac:13,hp:28,speed:30,actions:[{name:'Укус',attackBonus:5,damage:'1d10+3',damageType:'колющий',rangeFt:5},{name:'Язык',attackBonus:5,damage:'1d6+3',damageType:'дробящий',rangeFt:15}]},
+weasel:{name:'Гигантская ласка',size:'Средний',ac:14,hp:16,speed:40,actions:[{name:'Укус',attackBonus:5,damage:'1d6+3',damageType:'колющий',rangeFt:5}]},
+hellhound:{name:'Адская гончая',size:'Средний',ac:15,hp:30,speed:50,actions:[{name:'Укус',attackBonus:6,damage:'1d8+4',damageType:'огонь',rangeFt:5},{name:'Огненное дыхание',attackBonus:0,damage:'2d6',damageType:'огонь',rangeFt:15}]},
+mimic:{name:'Мимик',size:'Средний',ac:12,hp:25,speed:15,actions:[{name:'Псевдоподия',attackBonus:5,damage:'1d8+3',damageType:'дробящий',rangeFt:5},{name:'Липкость',attackBonus:5,damage:'1d6',damageType:'кислота',rangeFt:5}]},
+owlbear:{name:'Совомедведь',size:'Большой',ac:13,hp:38,speed:40,actions:[{name:'Клюв',attackBonus:6,damage:'1d8+4',damageType:'колющий',rangeFt:5},{name:'Когти',attackBonus:6,damage:'2d6+4',damageType:'рубящий',rangeFt:5}]},
+sporeling:{name:'Спорлинг',size:'Маленький',ac:13,hp:20,speed:30,actions:[{name:'Удар спорами',attackBonus:5,damage:'1d6+3',damageType:'яд',rangeFt:5},{name:'Облако спор',attackBonus:0,damage:'1d6',damageType:'яд',rangeFt:10}]},
+worg:{name:'Ворг',size:'Большой',ac:13,hp:30,speed:50,actions:[{name:'Укус',attackBonus:5,damage:'2d6+3',damageType:'колющий',rangeFt:5}]}
+};
+function lvl(h){var c=(h&&h.classes||[]).find(function(x){return String(x.name)===CLASS||String(x.name)==='Beastheart';});return c?Number(c.level)||0:0}
+function st(h){h.classFeaturesState=h.classFeaturesState||{};return h.classFeaturesState}
+function res(h,id,max,recharge){h.resources=h.resources||{};var r=h.resources[id];if(!r)r=h.resources[id]={max:max,current:max,recharge:recharge||'short'};r.max=max;r.current=Math.min(Number(r.current)||0,max);return r}
+function prof(h){return Number(h.proficiencyBonus)||2}
+function mod(h,a){var v=Number((h.abilities||{})[a]);return Math.floor((v-10)/2)}
+function dc(h){return 8+prof(h)+mod(h,'wisdom')}
+function ownerCompanion(h){var s=st(h);if(s.beastheartCompanionId&&g.DNDSecondaryEntities&&g.DNDSecondaryEntities.get)return g.DNDSecondaryEntities.get(s.beastheartCompanionId);return null}
+function sync(h){
+ var l=lvl(h);if(!l)return;var s=st(h);
+ s.primalExploitSaveDC=dc(h);s.companionBond=s.companionBond||null;s.primalExploitsKnown=l>=17?7:l>=10?5:3;
+ res(h,'primalExploitFerocity',6,'short');
+ s.signatureAttackDice=l>=18?3:l>=13?2:l>=6?1:0;
+ s.beyondInstinct=l>=5?1:0;
+ if(l>=3)s.masterCaregiver=true;
+ if(l>=14)s.loyalToEnd=true;
+ if(s.beastheartCompanionId&&g.DNDSecondaryEntities&&g.DNDSecondaryEntities.get){
+   var e=g.DNDSecondaryEntities.get(s.beastheartCompanionId);if(e){e.resources=e.resources||{};e.resources.ferocityMax=6+Math.max(0,l-1);e.resources.ferocity=Math.min(Number(e.resources.ferocity)||0,e.resources.ferocityMax);e.beastheartLevel=l;e.proficiencyBonus=prof(h);if(g.DNDSecondaryEntities.update)g.DNDSecondaryEntities.update(e.id,{resources:e.resources,beastheartLevel:l,proficiencyBonus:e.proficiencyBonus});}
+ }
+}
+function chooseCompanion(h,id){
+ var c=creatures[id];if(!c)return{ok:false,message:'Неизвестный вид компаньона.'};
+ var s=st(h),l=lvl(h);if(s.beastheartCompanionId&&g.DNDSecondaryEntities&&g.DNDSecondaryEntities.remove)g.DNDSecondaryEntities.remove(s.beastheartCompanionId);
+ var spec={name:c.name,source:'Бистхарт',sourceType:'class',companionType:'beastheart',controlMode:'command',team:'party',hp:c.hp,maxHp:c.hp,ac:c.ac,speed:c.speed,size:c.size,actions:c.actions,resources:{ferocity:0,ferocityMax:6+Math.max(0,l-1)},beastheartLevel:l,metadata:{вид:id,масштабируетсяСБистхартом:true}};
+ var e=g.DNDCompanionPacks&&g.DNDCompanionPacks.create?g.DNDCompanionPacks.create('beastheart',spec):null;
+ if(!e)return{ok:false,message:'Система спутников недоступна.'};s.beastheartCompanionId=e.id;s.beastheartCompanionType=id;sync(h);return{ok:true,companion:e,message:'Компаньон выбран: '+c.name+'.'};
+}
+function chooseBond(h,id){if(!bonds[id])return{ok:false,message:'Неизвестный союз.'};st(h).companionBond=id;return{ok:true,message:'Выбран '+bonds[id].name+'.'}}
+function spendFerocity(h,n){var e=ownerCompanion(h);if(!e)return{ok:false,message:'Сначала выбери компаньона.'};e.resources=e.resources||{};var cur=Number(e.resources.ferocity)||0;if(cur<n)return{ok:false,message:'Недостаточно ярости компаньона.'};e.resources.ferocity=cur-n;if(g.DNDSecondaryEntities.update)g.DNDSecondaryEntities.update(e.id,{resources:e.resources});return{ok:true,spent:n,remaining:e.resources.ferocity}}
+function use(h,id,ctx){
+ sync(h);ctx=ctx||{};var s=st(h),l=lvl(h),e=ownerCompanion(h);
+ if(id==='chooseCompanion')return chooseCompanion(h,String(ctx.companion||''));
+ if(id==='chooseBond')return chooseBond(h,String(ctx.bond||''));
+ if(id==='primalExploit'){var n=Number(ctx.cost)||1,r=spendFerocity(h,n);if(!r.ok)return r;return{ok:true,effect:{exploit:String(ctx.exploit||'Звериный рывок'),cost:n},message:'Природный приём применён.'}}
+ if(id==='rejuvenatingFerocity'){var n=Number(ctx.amount)||Number(e&&e.resources&&e.resources.ferocity)||0;if(n<=0)return{ok:false,message:'Нет ярости для восстановления.'};var r=spendFerocity(h,n);if(!r.ok)return r;return{ok:true,effect:{tempHp:n},message:'Компаньон получает '+n+' временных HP.'}}
+ if(id==='primalStrike'){if(l<6)return{ok:false,message:'Доступно с 6 уровня.'};var n=Number(ctx.ferocity)||1,r=spendFerocity(h,n);if(!r.ok)return r;return{ok:true,effect:{extraDamage:(n)+'d8',damageType:'первобытный'},message:'Первобытный удар усиливает атаку.'}}
+ if(id==='sootheBeast'){if(!e)return{ok:false,message:'Нет компаньона.'};if(e.resources)e.resources.ferocity=0;return{ok:true,effect:{removeRampage:true},message:'Компаньон успокоен.'}}
+ if(id==='summonWilds'){if(l<18)return{ok:false,message:'Доступно с 18 уровня.'};return{ok:true,effect:{area:{shape:'cube',sizeFt:30,rangeFt:120,durationRounds:10},save:'wis',condition:'frightened',obscured:true},message:'Дикая стая призвана.'}}
+ if(id==='unbreakableFriendship'){if(l<20)return{ok:false,message:'Доступно с 20 уровня.'};return{ok:true,effect:{deathSaveSuccess:true,returnCompanionAfterZeroHP:true},message:'Неразрывная дружба спасает вас и компаньона.'}}
+ var b=s.companionBond;
+ if(b==='ferocious'&&id==='frenziedCharge'){return{ok:true,effect:{reaction:true,moveFt:'speed',attack:true},message:'Яростный рывок.'}}
+ if(b==='ferocious'&&id==='energizingRampage'){if(e&&e.resources)e.resources.ferocity=Math.max(Number(e.resources.ferocity)||0,4);return{ok:true,message:'Ярость сохраняется после буйства.'}}
+ if(b==='hunter'&&id==='chosenQuarry'){var r=spendFerocity(h,4);if(!r.ok)return r;s.quarryId=ctx.targetId;return{ok:true,effect:{bonusDamage:'1d6',durationRounds:60},message:'Добыча отмечена.'}}
+ if(b==='infernal'&&id==='infernalTeleport'){var r=spendFerocity(h,4);if(!r.ok)return r;return{ok:true,effect:{teleportFt:90},message:'Инфернальный перенос.'}}
+ if(b==='infernal'&&id==='wickedDeception'){var r=spendFerocity(h,3);if(!r.ok)return r;return{ok:true,effect:{save:'wis',condition:'charmed',durationRounds:1},message:'Коварный обман.'}}
+ if(b==='primordial'&&id==='alliedEarth'){var r=spendFerocity(h,2);if(!r.ok)return r;return{ok:true,effect:{speedReductionFt:10,areaFt:10},message:'Союзная земля замедляет врагов.'}}
+ if(b==='protector'&&id==='sentinelCompanion'){var r=spendFerocity(h,2);if(!r.ok)return r;return{ok:true,effect:{reactionAttack:true,protectAlly:true},message:'Страж-компаньон.'}}
+ return{ok:false,unsupported:true,message:'Для этой способности нужен общий боевой resolver.'}
+}
+function attack(h,ctx){
+ sync(h);var e=ownerCompanion(h),o={bonusDamage:0,advantage:false,disadvantage:false,notes:[]};if(!e)return o;
+ if(st(h).quarryId&&ctx&&String(ctx.targetId)===String(st(h).quarryId))o.bonusDamage+=6;
+ if(st(h).companionBond==='ferocious'&&e.metadata&&e.metadata.rampage)o.advantage=true;
+ if(st(h).companionBond==='protector')o.notes.push('Фаланга стаи');
+ return o;
+}
+g.BeastheartRuntime={version:'1.0.0',bonds:bonds,companions:creatures,sync:sync,use:use,attack:attack,chooseCompanion:chooseCompanion,chooseBond:chooseBond};
+if(g.DNDContent&&g.DNDContent.registerClass)g.DNDContent.registerClass({id:'mcdm-beastheart',name:'Бистхарт',displayName:'Бистхарт',source:'MCDM Beastheart and Monstrous Companions',features:[],hooks:{sync:sync,useFeature:use,attackModifiers:attack}});
+})(window);
