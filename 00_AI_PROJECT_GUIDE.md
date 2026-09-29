@@ -4250,3 +4250,17 @@ APK: build required.
 - Для DLC/Хоумбрю переписаны не только заголовок и финальный блок, но и формулировки происхождения, пола, расы, возраста, предыстории и профессии, чтобы это выглядело как отдельное архивное досье, а не обычный розыскной лист.
 - При сохранении персонажа режим теперь сохраняется как `homebrew`, а не ошибочно как `classic`.
 - Версия: **70.25.89**.
+
+## PERMANENT RULE — NEW RACES / CLASSES / BACKGROUNDS MUST BE ADDED TO PARCHMENT CREATION
+
+Whenever a new **race, class, or background** is added to the project, it must be integrated into the parchment character-creation system in the same change batch.
+
+- Do not add a new race/class/background only to its gameplay registry and leave the parchment selectors unaware of it.
+- Update the relevant parchment data/filtering in `app/character_creation_pergament.js` so the new content appears in the correct creation mode:
+  - **Classic** — only the defined classic/base set.
+  - **DLC / Homebrew** — new non-core content that belongs outside the classic set.
+  - **Extra** — only the dedicated extra identities/stubs.
+- Add the corresponding parchment-facing description/text where the creation flow displays descriptive information.
+- Preserve the separation between classic, DLC/Homebrew and Extra content; do not accidentally expose implementation-only classes or extra stubs in the wrong selector.
+- When adding a new content item, verify both the underlying registry and the parchment selector/filter, then test that the item can actually be selected on a phone.
+- Treat this as a **mandatory acceptance criterion for every future new race/class/background**. A content addition is not considered complete until its parchment creation integration is complete too.
