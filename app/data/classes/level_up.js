@@ -120,6 +120,9 @@ let pendingLevelUpData = null;
             <div class="class-item extra-class-item" data-class="Паразит">
               <span>🦠 Паразит — EXTRA</span>
             </div>
+            <div class="class-item extra-class-item" data-class="Паразит доктора Вальтера">
+              <span>🧬 Паразит доктора Вальтера — EXTRA</span>
+            </div>
             <div class="class-item center-item" data-class="Чародей">
               <img src="./app/data/classes/SORCERER.png" alt="Чародей">
               <span>Чародей (Sorcerer)</span>
@@ -258,6 +261,7 @@ let pendingLevelUpData = null;
         // может повышать только Рой.
         const isSwarm = selectedClassName === "Рой";
         const isParasite = selectedClassName === "Паразит";
+        const isWalterParasite = selectedClassName === "Паразит доктора Вальтера";
         const isSwarmHero = !!(hero && (
           hero.extraClassType === "swarm" ||
           hero.isExtraClass === true && hero.race === "Рой" ||
@@ -272,6 +276,12 @@ let pendingLevelUpData = null;
             return c && normalizeClassKey(c.name) === "паразит";
           })
         ));
+        const isWalterParasiteHero = !!(hero && (
+          hero.extraClassType === "walter_parasite" ||
+          Array.isArray(hero.classes) && hero.classes.some(function(c){
+            return c && normalizeClassKey(c.name) === "паразит доктора вальтера";
+          })
+        ));
         if (isSwarmHero && !isSwarm) {
           alert("Рой — Extra-класс. Повышать можно только класс «Рой».");
           return;
@@ -280,8 +290,12 @@ let pendingLevelUpData = null;
           alert("Паразит — Extra-класс. Повышать можно только класс «Паразит».");
           return;
         }
-        if (!isSwarmHero && !isParasiteHero && (isSwarm || isParasite)) {
-          alert("Extra-классы нельзя взять мультиклассом. Рой, Паразит и Призрак выбираются как отдельная закрытая ветка.");
+        if (isWalterParasiteHero && !isWalterParasite) {
+          alert("Паразит доктора Вальтера — Extra-класс. Повышать можно только его.");
+          return;
+        }
+        if (!isSwarmHero && !isParasiteHero && !isWalterParasiteHero && (isSwarm || isParasite || isWalterParasite)) {
+          alert("Extra-классы нельзя взять мультиклассом. Рой, Паразит и Паразит доктора Вальтера выбираются как отдельная закрытая ветка.");
           return;
         }
 
@@ -321,12 +335,12 @@ let pendingLevelUpData = null;
     const hero = window.currentCharacter || window.currentChar;
     const items = document.querySelectorAll('#dndModal .class-item');
     const extraType = hero && hero.extraClassType;
-    const isExtraHero = extraType === "swarm" || extraType === "parasite" ||
+    const isExtraHero = extraType === "swarm" || extraType === "parasite" || extraType === "walter_parasite" ||
       !!(hero && Array.isArray(hero.classes) && hero.classes.some(function(c){
         var n=String(c&&c.name||"").replace(/[0-9]/g,"").trim();
         return n==="Рой" || n==="Паразит";
       }));
-    const extraClass = extraType === "parasite" ? "Паразит" : "Рой";
+    const extraClass = extraType === "parasite" ? "Паразит" : (extraType === "walter_parasite" ? "Паразит доктора Вальтера" : "Рой");
 
     items.forEach(item => {
       const cls = item.getAttribute('data-class');
@@ -339,7 +353,7 @@ let pendingLevelUpData = null;
       }
 
       // Extra-классы всегда видимы обычным персонажам только как заблокированные карточки.
-      if (cls === "Рой" || cls === "Паразит") {
+      if (cls === "Рой" || cls === "Паразит" || cls === "Паразит доктора Вальтера") {
         item.style.display = "flex";
         item.classList.add('class-item-locked');
         item.setAttribute('aria-disabled', 'true');
@@ -379,7 +393,8 @@ if (typeof window.getClassData !== 'function') {
       "Следопыт": window.rangerProgression,
       "Чародей": window.sorcererProgression,
       "Рой": window.swarmProgression,
-      "Паразит": window.parasiteProgression
+      "Паразит": window.parasiteProgression,
+      "Паразит доктора Вальтера": window.walterParasiteProgression
     };
     if (map[norm]) {
       const prog = map[norm];
@@ -440,13 +455,13 @@ function proceedWithClassLevelUp(currentClass) {
   // не должен позволить обойти ограничения Extra-класса.
   const normalizedRequested = String(currentClass || "").replace(/[0-9]/g,"").trim();
   const extraType = hero && hero.extraClassType;
-  const extraLocked = extraType === "swarm" || extraType === "parasite";
-  const extraName = extraType === "parasite" ? "Паразит" : "Рой";
+  const extraLocked = extraType === "swarm" || extraType === "parasite" || extraType === "walter_parasite";
+  const extraName = extraType === "parasite" ? "Паразит" : (extraType === "walter_parasite" ? "Паразит доктора Вальтера" : "Рой");
   if (extraLocked && normalizedRequested !== extraName) {
     alert("Этот персонаж — " + extraName + ". Другой класс выбрать нельзя.");
     return;
   }
-  if (!extraLocked && (normalizedRequested === "Рой" || normalizedRequested === "Паразит")) {
+  if (!extraLocked && (normalizedRequested === "Рой" || normalizedRequested === "Паразит" || normalizedRequested === "Паразит доктора Вальтера")) {
     alert(normalizedRequested + " нельзя взять мультиклассом.");
     return;
   }
@@ -809,13 +824,13 @@ window.confirmLevelUp = function() {
   const { class: className } = pendingLevelUpData;
 
   const extraType = hero.extraClassType;
-  const heroIsExtra = extraType === "swarm" || extraType === "parasite";
-  const extraName = extraType === "parasite" ? "Паразит" : "Рой";
+  const heroIsExtra = extraType === "swarm" || extraType === "parasite" || extraType === "walter_parasite";
+  const extraName = extraType === "parasite" ? "Паразит" : (extraType === "walter_parasite" ? "Паразит доктора Вальтера" : "Рой");
   if (heroIsExtra && className !== extraName) {
     alert(extraName + " не может мультиклассироваться. Повышайте только уровень " + extraName + ".");
     return;
   }
-  if (!heroIsExtra && (className === "Рой" || className === "Паразит")) {
+  if (!heroIsExtra && (className === "Рой" || className === "Паразит" || className === "Паразит доктора Вальтера")) {
     alert(className + " нельзя добавить вторым классом.");
     return;
   }
@@ -987,8 +1002,8 @@ window.setCharacterLevel = function(newLevel, hpGain = 0, specificClass = null) 
 
   // Extra-класс нельзя превратить в мультикласс даже через прямой вызов API.
   const extraType = hero.extraClassType;
-  const heroIsExtra = extraType === "swarm" || extraType === "parasite";
-  const extraName = extraType === "parasite" ? "Паразит" : "Рой";
+  const heroIsExtra = extraType === "swarm" || extraType === "parasite" || extraType === "walter_parasite";
+  const extraName = extraType === "parasite" ? "Паразит" : (extraType === "walter_parasite" ? "Паразит доктора Вальтера" : "Рой");
   if (heroIsExtra && specificClass && String(specificClass).replace(/[0-9]/g,"").trim() !== extraName) {
     console.warn("[LevelUp] Заблокирована попытка мультикласса для " + extraName + ":", specificClass);
     return;
@@ -1056,6 +1071,11 @@ window.setCharacterLevel = function(newLevel, hpGain = 0, specificClass = null) 
       if (window.SWARM_EXTRA && typeof window.SWARM_EXTRA.getState === "function") {
         hero.swarm.state = window.SWARM_EXTRA.getState(newVal, newMax);
       }
+    }
+
+    if (hero.extraClassType === "walter_parasite" && hero.walterParasite && hero.walterParasite.body) {
+      hero.walterParasite.body.maxHP = newMax;
+      hero.walterParasite.body.currentHP = Math.min(hero.walterParasite.body.currentHP, newMax);
     }
 
     const hpMaxInput = document.getElementById('hpMax');
