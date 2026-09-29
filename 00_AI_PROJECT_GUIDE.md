@@ -4113,3 +4113,14 @@ APK: build required.
 - Version bumped to 70.25.76 so the fix is delivered in a new Android build.
 - SHA-256 verification, file-size verification, path safety and native staging/apply flow remain unchanged.
 - The debug workflow already regenerates updates/stable.json from the exact repository bytes after each Android build, so 70.25.76 becomes the first build that can validate the corrected manifest source in-app.
+
+
+## V70.25.77 — EXTRA CREATION + CLASS TOKEN REPLACEMENT (SOURCE-ONLY)
+
+- APK is intentionally NOT built yet; this is a source-only batch for the next large fix.
+- Extra character creation uses the dedicated extra parchment texture `1790622696215.png`; ordinary characters continue using `1790622844831.jpg`.
+- Extra creation now requires only name and race. Class, backstory/origin, gender, age and profession are hidden and disabled for extras.
+- The signature/completion action unlocks after both extra name and race are entered.
+- Added dedicated descriptions for the existing extra identities Рой, Призрак and Паразит; their descriptions are stored in the parchment module for the extra identity mapping.
+- The 20 newly uploaded class-token PNG blobs from the repository root are used to replace the corresponding old files under `app/data/classes/`; the temporary root copies are removed after the move. Image bytes are reused directly: no recoloring, transparency processing or pixel modification.
+- Updater source version is bumped to 70.25.77. No APK artifact is generated in this fix.
