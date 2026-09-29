@@ -4674,3 +4674,18 @@ Stable manifest после успешной сборки должен содер
 - Рой / Призрак / Паразит не изменялись.
 - APK/versionCode не повышались.
 - Следующий класс по утверждённому порядку: **Алхимик**.
+
+
+## CLASS LOGIC PASS — АЛХИМИК (2026-09-29)
+
+- **Статус:** implemented_core для базового класса.
+- **Источник:** Mage Hand Press — Alchemist 2024 / 5.5E. Публичная версия подтверждает базовые характеристики, таблицу прогрессии 1–20, Bombs, Reagents, Potion Brewing, Prime Bomb, Bomb Formulas, Discoveries, Improved Bombs, Evasion, Blast Coating, Potion Mixologist, Experimentalist, Philosopher's Stone и Nuclear Bomb. citeturn0search0turn0search1
+- app/data/classes/Alchemist.js переведён из старого skeleton в progression 1–20.
+- Исправлены базовые характеристики под актуальную версию: d8, Ловкость + Интеллект, спасброски DEX/INT, лёгкая броня, простое оружие, Alchemist's Supplies, мультикласс DEX 13 + INT 13, 3 навыка из списка.
+- Добавлена прогрессия реагентов 2 → 40, Prime Bomb 1 → 5, Bomb Damage 1d10 → 4d10 и количество изученных Bomb Formulae.
+- app/expansion_classes_pack.js получил runtime-ядро Алхимика: Bomb, Prime Bomb, Reagent Synthesis, Potion Brewing/Distillation, Bomb Formula selection, Teleportation Bomb, Withering Bomb, Evasion, Blast Coating, Potion Mixologist, Philosopher's Stone и Nuclear Bomb.
+- Зарегистрированы 11 подклассов: Apothecary, Mad Bomber, Mutagenist, Polymorphist, Xenoalchemist, Ooze Rancher, Pigmentist, Elementalist, Bombardier, Plague Doctor и Vivisectionist.
+- **Отложено отдельным проходом:** полный runtime всех 11 подклассов, полный набор Bomb Formulae и Discoveries, полноценный инвентарь/создание алхимических предметов, сложные многотаргетные эффекты и отдельный UI для выбора/хранения формул и Discoveries.
+- **Найден и исправлен баг:** ранее добавленный блок Пугилиста находился после закрытия массива packs, поэтому не был корректно зарегистрирован через D.registerClass. Блок возвращён внутрь массива.
+- APK/versionCode не повышались: изменения относятся к web/runtime-коду.
+- Следующий этап: **углубление Алхимика или переход к следующему классу по утверждённому порядку**, без потери отложенных задач Пугилиста, Стража и Бистхарта.
