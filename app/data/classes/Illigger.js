@@ -52,7 +52,10 @@
       seals:{recharge:'short',progression:seals},
       sealDamage:{progression:sealDamage},
       interdictBoons:{knownAt:[0,0,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3,4,4,4]},
-      infernalConduitDice:{recharge:'long',progression:conduit}
+      infernalConduitDice:{recharge:'long',progression:conduit},
+      infernalMajesty:{recharge:'long',uses:1},
+      masterOfHell:{recharge:'long',uses:1},
+      superiorInterdictRestore:{recharge:'long',uses:1}
     },
     levels:levels,
     combatMasteries:['Бравада','Жестокость','Неумолимый','Ложь','Проворство','Неукротимый'],
@@ -70,6 +73,7 @@
     ],
     mechanics:{
       status:'implemented_core',
+      extraAttack:'level 5; two attacks with Attack action',
       sealSystem:'short_rest_pool; one seal can be placed per bonus action on a visible creature within 30 ft; burning deals current seal dice and transfers/refunds on death according to the tabletop rule',
       balefulInterdict:'implemented',
       forkedTongue:'implemented',
