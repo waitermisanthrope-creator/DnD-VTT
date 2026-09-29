@@ -103,3 +103,55 @@
 .parchment-blackout.show.cinematic-hold{
   animation:parchmentBlackout 0.65s ease both;
 }
+
+
+/* V70.25.94 — cinematic timing: darken immediately, reach center at full blackout,
+   then zoom/darken on black until the seal itself becomes black. */
+.parchment-signature-layer.cinematic .parchment-signature-img{
+  animation:signatureCinematicV94 3.2s cubic-bezier(.2,.72,.18,1) forwards!important;
+}
+.parchment-blackout.show.cinematic-hold{
+  animation:parchmentBlackoutV94 2.2s ease-out both!important;
+}
+@keyframes parchmentBlackoutV94{
+  0%{opacity:0}
+  100%{opacity:1}
+}
+@keyframes signatureCinematicV94{
+  0%{
+    right:max(18px,calc((100vw - min(100vw,900px))/2 + 18px));
+    bottom:max(88px,calc(env(safe-area-inset-bottom,0px) + 88px));
+    width:min(48vw,310px);
+    max-height:24vh;
+    transform:translate(0,0) scale(1) rotate(-2deg);
+    opacity:1;
+    filter:brightness(1) drop-shadow(0 4px 5px rgba(45,25,8,.35));
+  }
+  38%{
+    right:50%;
+    bottom:50%;
+    width:min(58vw,390px);
+    max-height:30vh;
+    transform:translate(50%,50%) scale(1) rotate(-2deg);
+    opacity:1;
+    filter:brightness(.9) drop-shadow(0 2px 4px rgba(0,0,0,.18));
+  }
+  68.75%{
+    right:50%;
+    bottom:50%;
+    width:min(72vw,520px);
+    max-height:44vh;
+    transform:translate(50%,50%) scale(1.04) rotate(-2deg);
+    opacity:1;
+    filter:brightness(.52) drop-shadow(0 0 2px rgba(0,0,0,.3));
+  }
+  100%{
+    right:50%;
+    bottom:50%;
+    width:min(125vw,1050px);
+    max-height:none;
+    transform:translate(50%,50%) scale(1.16) rotate(-2deg);
+    opacity:1;
+    filter:brightness(0) drop-shadow(0 0 0 rgba(0,0,0,0));
+  }
+}
