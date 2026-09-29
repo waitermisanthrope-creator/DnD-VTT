@@ -4729,3 +4729,28 @@ app/data/classes/extra_class_stubs.js содержит старые fallback-з�
 ### Очередь
 Алхимик — текущий core-проход завершён. Следующий класс: ИЛЛИРРИГЕР.
 Оккультист и Ведьма остаются в очереди позже.
+
+## CLASS LOGIC PASS — ОККУЛЬТИСТ + ВЕДЬМА (2026-09-29)
+
+- Порядок работ изменён по решению пользователя: после Бистхарта сначала **Оккультист и Ведьма**, затем возвращаемся к Иллиригеру.
+- **Оккультист:** app/data/classes/Occultist.js переведён из skeleton в implemented_core.
+- Источник Оккультиста: KibblesTasty Occultist v1.1. Проверены d6, Wisdom, Wisdom/Charisma saves, лёгкая броня, 13 Wisdom для multiclass, полный caster, ритуальное колдовство, три традиции Oracle/Shaman/Witch и Occult Rites. Публичный материал подтверждает выбор традиции на 1 уровне, развитие на 3/6/14 и систему заменяемых Rites с 2 уровня. citeturn1search3turn1search2
+- Добавлена прогрессия Оккультиста 1–20, cantrips/spells known, количество Rites, Traditional Expertise и The Old Ways.
+- app/expansion_classes_pack.js получил runtime: выбор традиции, выбор/замена Rites, Ritual Casting, Warding Power, Commune Beyond Death, Emblazoned Focus, Rite of Prowess, Occult Familiar, Witch's Hat, Witch's Claws, Blood Rituals, Shaman's Touch и базовые hooks.
+- app/data/subclasses/subclassesRegistry.js зарегистрировал Oracle, Shaman и Witch.
+- **Не считать полной реализацией:** глубокие уникальные способности трёх традиций и часть Rites требуют общего resolver/UI.
+
+- **Ведьма:** app/data/classes/Witch.js переведена из skeleton в implemented_core.
+- Источник: Mage Hand Press Complete Witch, версия 5E 2014 для совместимости с существующим каркасом проекта. База подтверждает d8, Charisma, Wisdom/Charisma saves, лёгкую броню, simple weapons + blowgun/shortsword/whip, два навыка, Hexes, Spellcasting, Witch's Curse, Cackle, Familiar, Witch's Craft 3/6/10/14, Insidious Spell, Improved Familiar и дальнейшие Grand Hex/Vengeful Curse/Hexmaster. citeturn0search6turn0search9
+- Добавлена прогрессия 1–20, spell slots, spells/cantrips known, Hexes Known и четыре Craft: Black, Green, Red, White.
+- app/expansion_classes_pack.js получил runtime: Hex, Cackle, Witch's Curse, Familiar, выбор Craft, Insidious Spell, Improved Familiar, Grand Hex, Vengeful Curse и Hexmaster.
+- app/data/subclasses/subclassesRegistry.js зарегистрировал четыре Craft: Black Magic, Green Magic, Red Magic, White Magic.
+- **Не считать полной реализацией:** глубокие механики каждого Craft, полный набор Hex/Grand Hex и отдельный связанный Actor фамильяра требуют специализированного UI/resolver. У MHP также существует обновлённая 5.5E версия Ведьмы, где Hexes переосмыслены как cantrips; текущий проектный pass сознательно оставлен на 5E 2014, чтобы не смешивать две системы в одном классе. citeturn0search1turn0search8
+
+### Новые отложенные задачи после этого прохода
+1. Оккультист: глубокий runtime Oracle/Shaman/Witch.
+2. Оккультист: интерактивный выбор и полная обработка всех Occult Rites.
+3. Ведьма: глубокий runtime Black/Green/Red/White Magic.
+4. Ведьма: полный каталог Hexes и Grand Hex с единым condition/effect resolver.
+5. Ведьма: полноценный второй Actor/лист фамильяра и синхронизация с хозяином.
+6. После этого — Иллиригер по утверждённой очереди.
