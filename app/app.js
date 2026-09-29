@@ -181,7 +181,7 @@ function renderCharacterList() {
       '</div>' +
       '<div class="char-actions">' +
         '<button class="btn-action" onclick="openCharacter(\'' + char.id + '\')">Играть</button>' +
-        '<button type="button" class="btn-del" data-character-id="' + String(char.id).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '" onclick="deleteCharacter(this.getAttribute('data-character-id'))">✕</button>' +
+        '<button type="button" class="btn-del" data-character-id="' + String(char.id).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '" onclick="deleteCharacter(this.getAttribute(&quot;data-character-id&quot;))">✕</button>' +
       '</div>' +
     '</div>';
   }
