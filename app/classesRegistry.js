@@ -35,7 +35,7 @@ window.CLASSES_REFERENCE = {
     "Алхимик": { hitDie: 8, primaryStat: "intelligence", savingThrows: ["constitution", "intelligence"], progression: window.alchemistProgression || {} },
     "Кровавый охотник": { hitDie: 10, primaryStat: "dexterity", savingThrows: ["dexterity", "intelligence"], progression: window.bloodHunterProgression || {} },
     "Иллирригер": { hitDie: 10, primaryStat: "strength", savingThrows: ["strength", "charisma"], progression: window.illriggerProgression || {} },
-    "Бистхарт": { hitDie: 10, primaryStat: "strength", savingThrows: ["strength", "wisdom"], progression: window.beastheartProgression || {} },
+    "Бистхарт": { hitDie: 8, primaryStat: "strength", savingThrows: ["strength", "wisdom"], progression: window.beastheartProgression || {} },
     "Пугилист": { hitDie: 10, primaryStat: "strength", savingThrows: ["strength", "constitution"], progression: window.pugilistProgression || {} },
     "Аккурсд": { hitDie: 10, primaryStat: "charisma", savingThrows: ["constitution", "charisma"], progression: window.accursedProgression || {} },
     "Гайст": { hitDie: 8, primaryStat: "wisdom", savingThrows: ["wisdom", "charisma"], progression: window.geistProgression || {} },
