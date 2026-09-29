@@ -38,8 +38,102 @@
   function psiLimit(l){return Math.ceil(l/2);} function psiMax(l){return l;}
   function syncPsion(h){var l=lvl(h,'Psion');if(!l)return;var r=res(h,'psiPoints',l,'short');r.limit=psiLimit(l);var s=st(h);s.psionTalentsKnown=l>=18?8:l>=15?7:l>=12?6:l>=9?5:l>=7?4:l>=5?3:2;s.psionDisciplinesKnown=l>=18?3:2;s.psionMasteryFree=l>=17?3:l>=11?2:l>=5?1:0;s.psionInnate=s.psionInnate||{};}
   function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
-  function warlordDie(l){return l>=17?'d10':l>=9?'d8':'d6';}
-  function syncWarlord(h){var l=lvl(h,'Warlord');if(!l)return;var r=res(h,'commandDice',warlordDice(l),'short');r.die=warlordDie(l);r.perTurn=l>=17?4:l>=11?3:l>=6?2:1;}
+  function warlordDie(l){return l>=17?'d10':l>=11?'d8':l>=5?'d6':'d4';}
+  function warlordDice(l){return l>=17?5:l>=11?4:l>=5?3:l>=2?2:0;}
+  function warlordExploitKnown(l){return l>=17?10:l>=13?8:l>=11?7:l>=9?6:l>=7?5:l>=5?4:2;}
+  function warlordLeadership(h){var s=st(h),x=s.warlordLeadership||'cha';return x==='int'?'int':x==='wis'?'wis':'cha';}
+  function warlordDC(h){return 8+(Number(h.proficiencyBonus)||2)+mod(h,warlordLeadership(h));}
+  function syncWarlord(h){
+    var l=lvl(h,'Warlord');if(!l)return;
+    var s=st(h),r=res(h,'warlordExploitDice',warlordDice(l),'short');
+    r.max=warlordDice(l);r.die=warlordDie(l);
+    var iw=res(h,'warlordInspiringWord',Math.min(7,Math.max(3,Math.floor((l+2)/3))),'short');
+    iw.max=l>=17?7:l>=13?6:l>=9?5:l>=8?5:l>=4?4:3;
+    s.warlordExploitKnown=warlordExploitKnown(l);
+    s.warlordSaveDC=warlordDC(h);
+    s.warlordLeadership=s.warlordLeadership||'cha';
+    s.warlordRallyUses=l>=17?3:l>=13?2:1;
+  }
+  function useWarlord(h,id,ctx,feature){
+    syncWarlord(h);ctx=ctx||{};var l=lvl(h,'Warlord'),s=st(h),t=target(ctx),lead=warlordLeadership(h),die=(h.resources&&h.resources.warlordExploitDice&&h.resources.warlordExploitDice.die)||warlordDie(l);
+    if(id==='leadershipStyle'){
+      var x=String(ctx.style||'');if(['cha','wis','int'].indexOf(x)<0)return{ok:false,message:'Выбери Капитана, Наставника или Стратега.'};
+      s.warlordLeadership=x;return{ok:true,effect:{leadershipAbility:x},message:'🎖️ Стиль лидерства выбран.'};
+    }
+    if(id==='inspiringWord'){
+      if(!t)return{ok:false,message:'Выбери союзника.'};
+      if(!spend(h,'warlordInspiringWord',1))return{ok:false,message:'Вдохновляющее слово уже использовано до отдыха.'};
+      var heal=diceRoll(ctx.hitDie||'d8')+mod(h,lead);
+      return{ok:true,target:t.id,effect:{heal:Math.max(1,heal),rangeFt:l>=11?60:30},message:'📣 Вдохновляющее слово: '+Math.max(1,heal)+' HP.'};
+    }
+    if(id==='rallyingCry'){
+      if(!t)return{ok:false,message:'Выбери союзника, провалившего спасбросок.'};
+      if(!spend(h,'warlordRally',1))return{ok:false,message:'Боевой клич уже использован до отдыха.'};
+      return{ok:true,target:t.id,effect:{rerollSave:true,addToRoll:mod(h,lead),rangeFt:l>=11?60:30},message:'📣 Боевой клич: спасбросок можно перебросить.'};
+    }
+    if(id==='tacticalSkill'){
+      if(!spend(h,'warlordExploitDice',1))return{ok:false,message:'Нет кубов Tactical Exploit.'};
+      return{ok:true,effect:{addDie:die,abilityCheck:true},message:'🎯 Тактический навык: + '+die+'.'};
+    }
+    if(id==='attackOrder'){
+      if(!t)return{ok:false,message:'Выбери союзника.'};
+      if(!spend(h,'warlordExploitDice',1))return{ok:false,message:'Нет куба Exploit.'};
+      return{ok:true,target:t.id,effect:{reactionAttack:true},message:'⚔️ Приказ к атаке: союзник атакует реакцией.'};
+    }
+    if(id==='maneuveringOrder'){
+      if(!t)return{ok:false,message:'Выбери союзника.'};
+      if(!spend(h,'warlordExploitDice',1))return{ok:false,message:'Нет куба Exploit.'};
+      return{ok:true,target:t.id,effect:{reactionMoveFt:'speed',noOpportunityAttacks:true},message:'🏃 Манёвренный приказ: союзник перемещается без провоцирования.'};
+    }
+    if(id==='supportOrder'){
+      if(!t)return{ok:false,message:'Выбери союзника.'};
+      if(!spend(h,'warlordExploitDice',1))return{ok:false,message:'Нет куба Exploit.'};
+      return{ok:true,target:t.id,effect:{reactionAction:['help','hide','search','useObject']},message:'🛡️ Приказ поддержки: союзник немедленно выполняет действие.'};
+    }
+    if(id==='parry'){
+      if(!spend(h,'warlordExploitDice',1))return{ok:false,message:'Нет куба Exploit.'};
+      return{ok:true,effect:{acBonus:die,reaction:true},message:'🛡️ Парирование: +'+die+' к AC против атаки.'};
+    }
+    if(id==='tauntingStrike'){
+      if(!t)return{ok:false,message:'Выбери врага.'};
+      if(!spend(h,'warlordExploitDice',1))return{ok:false,message:'Нет куба Exploit.'};
+      return{ok:true,target:t.id,effect:{bonusDamage:die,disadvantageAgainstOthers:true},message:'😈 Провоцирующий удар.'};
+    }
+    if(id==='heroicWill'){
+      if(!spend(h,'warlordExploitDice',1))return{ok:false,message:'Нет куба Exploit.'};
+      return{ok:true,effect:{addDie:die,saves:['int','wis','cha']},message:'🛡️ Героическая воля: +'+die+' к спасброску.'};
+    }
+    if(id==='defensiveOrder'){
+      if(!t)return{ok:false,message:'Выбери союзника.'};
+      if(!spend(h,'warlordExploitDice',1))return{ok:false,message:'Нет куба Exploit.'};
+      return{ok:true,target:t.id,effect:{dodge:true},message:'🛡️ Оборонительный приказ.'};
+    }
+    if(id==='heroicOrder'){
+      if(l<13||!t)return{ok:false,message:'Героический приказ доступен с 13 уровня.'};
+      return{ok:true,target:t.id,effect:{resistanceAll:true,advantageAllD20:true,durationRounds:1},message:'👑 Героический приказ.'};
+    }
+    if(id==='revitalizingOrder'){
+      if(l<13||!t)return{ok:false,message:'Выбери союзника, погибшего не более минуты назад.'};
+      return{ok:true,target:t.id,effect:{reviveHp:l+mod(h,lead)},message:'✨ Оживляющий приказ.'};
+    }
+    if(id==='victorySurge'){
+      if(l<13||!t)return{ok:false,message:'Выбери союзника.'};
+      if(!spend(h,'warlordExploitDice',1))return{ok:false,message:'Нет куба Exploit.'};
+      return{ok:true,target:t.id,effect:{reactionMove:'full',reactionAction:true},message:'⚔️ Натиск победы.'};
+    }
+    if(id==='finalStrike'){
+      if(l<17)return{ok:false,message:'Финальный удар доступен с 17 уровня.'};
+      if(!spend(h,'warlordExploitDice',1))return{ok:false,message:'Нет куба Exploit.'};
+      return{ok:true,effect:{allyCount:Math.max(1,mod(h,lead)),attackAction:true,spellLevelMax:5},message:'🔥 Финальный удар: союзники немедленно атакуют одну цель.'};
+    }
+    if(id==='unwaveringWill')return{ok:true,effect:{advantageAgainst:['charmed','frightened','stunned']},message:'🛡️ Непоколебимая воля активна.'};
+    if(id==='tacticalSuperiority')return{ok:true,effect:{restoreOnInitiative:['warlordInspiringWord','warlordRally'],rangeMultiplier:2},message:'🎖️ Тактическое превосходство.'};
+    if(id==='dauntless')return{ok:true,effect:{rallyUnlimited:true,inspiringWordMaxHeal:true},message:'👑 Неустрашимый командир.'};
+    if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' активно.'};
+    return{ok:false,unsupported:true,message:'Эта особенность Военачальника зарегистрирована, но отдельная UI-команда ещё требует подключения.'};
+  }
+  function warlordAttack(h,ctx){return{bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:['Класс использует Leadership modifier: '+warlordLeadership(h)+'.']};}
+
   function wardenEndurance(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
   function wardenDie(l){return l>=11?'d12':l>=5?'d10':'d8';}
   function syncWarden(h){var l=lvl(h,'Warden');if(!l)return;var r=res(h,'wardenEndurance',wardenEndurance(l),'short');r.die=wardenDie(l);}
@@ -578,7 +672,29 @@
     {id:'ip-runekeeper',name:'RuneKeeper',displayName:'Рунный хранитель',source:'Taron Pounds / Indestructoboy',license:'Original runtime implementation',features:[{id:'inscribeRune',name:'Вписать руну',level:1,action:'utility'},{id:'runeStance',name:'Рунная стойка',level:2,action:'bonus'},{id:'invokeRune',name:'Призвать руну',level:1,action:'action'}],subclasses:[{id:'dethek',name:'Детек',features:[]},{id:'fiendish',name:'Инфернский',features:[]},{id:'ghukliak',name:'Гуклиак',features:[]},{id:'jotun',name:'Йотун',features:[]},{id:'iokharic',name:'Иокхарик',features:[]},{id:'supernal',name:'Высший',features:[]}],hooks:{sync:syncRuneKeeper,useFeature:useRuneKeeper,attackModifiers:runeKeeperAttack}},
 
     {id:'kibbles-psion',name:'Psion',displayName:'Псионик',source:'KibblesTasty Homebrew',license:'CC-BY content source; original runtime implementation',features:[{id:'psionicPower',name:'Псионическая сила',level:1,action:'bonus',description:'Усилить следующий подходящий псionic эффект.'},{id:'mindThrust',name:'Ментальный удар',level:1,action:'action',target:'enemy',rangeFt:60,description:'Псионическая атака по выбранной цели.'},{id:'telekineticPush',name:'Телекинетический толчок',level:2,action:'action',target:'enemy',rangeFt:60,description:'Принудительно переместить цель.'}],subclasses:[{id:'awakened',name:'Пробуждённый',features:[{id:'telepathy',name:'Телепатия',level:3,action:'passive'}]},{id:'unleashed',name:'Освобождённый',features:[{id:'forceSurge',name:'Всплеск силы',level:3,action:'bonus'}]},{id:'transcended',name:'Возвысившийся',features:[{id:'bodyMind',name:'Тело и разум',level:3,action:'passive'}]},{id:'shaper',name:'Создатель',features:[{id:'mentalConstruct',name:'Ментальная конструкция',level:3,action:'action'}]}],hooks:{sync:syncPsion,useFeature:usePsion,attackModifiers:psionAttack}},
-    {id:'kibbles-warlord',name:'Warlord',displayName:'Военачальник',source:'KibblesTasty Homebrew',license:'CC-BY content source; original runtime implementation',features:[{id:'commandingStrike',name:'Командный удар',level:1,action:'reaction',target:'ally',rangeFt:30,description:'Передать союзнику возможность усилить атаку.'},{id:'rallyingCry',name:'Боевой клич',level:1,action:'bonus',target:'ally',rangeFt:30,description:'Поднять боевой дух группы.'}],subclasses:[{id:'tactician',name:'Тактик',features:[{id:'tacticalShift',name:'Тактический манёвр',level:3,action:'reaction'}]},{id:'paragon',name:'Парагон',features:[{id:'heroicSurge',name:'Героический рывок',level:3,action:'bonus'}]},{id:'packleader',name:'Вожак',features:[{id:'coordinatedAssault',name:'Скоординированная атака',level:3,action:'reaction'}]},{id:'chieftain',name:'Вождь',features:[{id:'warCry',name:'Боевой клич вождя',level:3,action:'bonus'}]}],hooks:{sync:syncWarlord,useFeature:useWarlord,attackModifiers:warlordAttack}},
+    {id:'kibbles-warlord',name:'Warlord',displayName:'Военачальник',source:'Laserllama — Warlord v3.3.0',license:'Original runtime implementation; source mechanics checked against public class material',features:[
+      {id:'leadershipStyle',name:'Стиль лидерства',level:1,action:'utility'},
+      {id:'inspiringWord',name:'Вдохновляющее слово',level:1,action:'bonus',target:'ally',rangeFt:30},
+      {id:'attackOrder',name:'Приказ к атаке',level:2,action:'special',target:'ally',rangeFt:30},
+      {id:'maneuveringOrder',name:'Манёвренный приказ',level:2,action:'special',target:'ally',rangeFt:30},
+      {id:'supportOrder',name:'Приказ поддержки',level:2,action:'special',target:'ally',rangeFt:30},
+      {id:'tacticalSkill',name:'Тактический навык',level:2,action:'special'},
+      {id:'parry',name:'Парирование',level:2,action:'reaction'},
+      {id:'tauntingStrike',name:'Провоцирующий удар',level:2,action:'on-hit',target:'enemy'},
+      {id:'heroicWill',name:'Героическая воля',level:5,action:'reaction'},
+      {id:'defensiveOrder',name:'Оборонительный приказ',level:2,action:'special',target:'ally'},
+      {id:'rallyingCry',name:'Боевой клич',level:9,action:'reaction',target:'ally'},
+      {id:'unwaveringWill',name:'Непоколебимая воля',level:10,action:'passive'},
+      {id:'tacticalSuperiority',name:'Тактическое превосходство',level:11,action:'passive'},
+      {id:'heroicOrder',name:'Героический приказ',level:13,action:'special',target:'ally'},
+      {id:'revitalizingOrder',name:'Оживляющий приказ',level:13,action:'special',target:'ally'},
+      {id:'victorySurge',name:'Натиск победы',level:13,action:'action',target:'ally'},
+      {id:'finalStrike',name:'Финальный удар',level:17,action:'action'},
+      {id:'dauntless',name:'Неустрашимый',level:20,action:'passive'}
+    ],subclasses:[
+      {id:'chivalry',name:'Рыцарство',features:[]},{id:'dread',name:'Ужас',features:[]},{id:'ferocity',name:'Свирепость',features:[]},{id:'gallantry',name:'Галантерея',features:[]},{id:'schemes',name:'Интриги',features:[]},{id:'tactics',name:'Тактика',features:[]},
+      {id:'claws',name:'Когти',features:[]},{id:'counsel',name:'Совет',features:[]},{id:'liberty',name:'Свобода',features:[]},{id:'navigators',name:'Навигаторы',features:[]},{id:'order',name:'Порядок',features:[]},{id:'zeal',name:'Рвение',features:[]}
+    ],hooks:{sync:syncWarlord,useFeature:useWarlord,attackModifiers:warlordAttack}},
     {id:'kibbles-warden',name:'Warden',displayName:'Страж',source:'KibblesTasty Homebrew',license:'CC-BY content source; original runtime implementation',features:[{id:'primalChallenge',name:'Первобытный вызов',level:1,action:'bonus',target:'enemy',rangeFt:30,description:'Пометить врага и контролировать его на поле.'},{id:'earthshaker',name:'Землетряс',level:2,action:'action',rangeFt:10,description:'Создать короткую зону контроля с проверкой силы.'}],subclasses:[{id:'fortressmind',name:'Крепость разума',features:[{id:'psychicWard',name:'Психический барьер',level:3,action:'reaction'}]},{id:'elements',name:'Стихии',features:[{id:'elementalAspect',name:'Стихийный облик',level:3,action:'bonus'}]},{id:'roots',name:'Корни',features:[{id:'graspingRoots',name:'Хватающие корни',level:3,action:'action'}]},{id:'nightmares',name:'Кошмары',features:[{id:'dreadAura',name:'Аура ужаса',level:3,action:'bonus'}]}],hooks:{sync:syncWarden,useFeature:useWarden,attackModifiers:wardenAttack}},
     {id:'kibbles-spellblade',name:'Spellblade',displayName:'Заклинатель клинка',source:'KibblesTasty Homebrew',license:'CC-BY content source; original runtime implementation',features:[{id:'spellstrike',name:'Заклинательный удар',level:1,action:'bonus',target:'self',description:'Связать оружейную атаку с магическим эффектом.'},{id:'arcaneGuard',name:'Арканная защита',level:2,action:'bonus',target:'self',description:'Получить временную защиту.'}],subclasses:[{id:'arcaneTradition',name:'Арканная традиция',features:[{id:'arcaneDuelist',name:'Арканный дуэлянт',level:3,action:'passive'}]},{id:'stormTradition',name:'Традиция бури',features:[{id:'stormStrike',name:'Удар бури',level:3,action:'on-hit'}]},{id:'wardingTradition',name:'Оберегающая традиция',features:[{id:'spellParry',name:'Парирование заклинания',level:3,action:'reaction'}]},{id:'bladeDancer',name:'Танцор клинка',features:[{id:'bladeDance',name:'Танец клинка',level:3,action:'bonus'}]}],hooks:{sync:syncSpellblade,useFeature:useSpellblade,attackModifiers:spellbladeAttack}},
     {id:'mh-necromancer',name:'Necromancer',displayName:'Некромант',source:'Mage Hand Press',license:'Original runtime implementation; feature names paraphrased',features:[{id:'charnelTouch',name:'Могильное касание',level:1,action:'action'},{id:'thralls',name:'Неживые слуги',level:2,action:'utility'},{id:'deadSpace',name:'Мёртвое пространство',level:2,action:'utility'},{id:'darkArcana',name:'Тёмная аркана',level:3,action:'bonus'},{id:'animateDead',name:'Оживление мёртвых',level:5,action:'utility'},{id:'criticalSpellcasting',name:'Критическое колдовство',level:5,action:'passive'},{id:'improvedThralls',name:'Улучшенные слуги',level:7,action:'passive'},{id:'improvedCriticalSpellcasting',name:'Улучшенное критическое колдовство',level:14,action:'passive'},{id:'undyingServitude',name:'Неумирающее служение',level:18,action:'reaction'},{id:'lichdom',name:'Личествование',level:20,action:'passive'}],subclasses:[{id:'deathKnight',name:'Death Knight',features:[]},{id:'overlord',name:'Overlord',features:[]},{id:'paleMaster',name:'Pale Master',features:[]}],hooks:{sync:syncNecromancer,useFeature:useNecromancer,attackModifiers:necromancerAttack}},
