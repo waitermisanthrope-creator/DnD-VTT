@@ -54,6 +54,14 @@
 - Магия, Occult Rites, проклятия и точные эффекты традиций пока остаются отдельным этапом.
 - Следующий класс по очереди: Некромант.
 
+## CLASS TEMPLATE PASS — NECROMANCER / MARTYR / VESSEL / SHIFTER / ACCURSED / RUNE KEEPER / SAVANT
+
+- Подтверждены и оставлены в шаблонном режиме: Некромант, Мученик, Сосуд.
+- Добавлены новые классы: Шифтер, Аккурсд, Рунный хранитель, Савант.
+- Добавлены подклассы: Некромант — 3; Мученик — 3; Сосуд — 6 уже существующих; Шифтер — 7; Аккурсд — 5; Рунный хранитель — 5; Савант — 8 базовых дисциплин.
+- **Рой, Паразит и Призрак намеренно НЕ трогаются:** это отдельные раса-классы и требуют другой архитектуры персонажа.
+- Полная логика магии, трансформаций, проклятий, рун и ресурсов остаётся отдельным этапом.
+
 ## 3. CURRENT BUILD CHECKPOINT
 
 - **V70.25.48 — Full Combat Transaction / Reaction Race / Batch AoE.** Latest verified technical checkpoint. Network reaction windows now survive reconnect migration or deterministically finalize on disconnect; host handoff fences pending reactions before snapshot; room shutdown clears stale pending reaction/prepared-action state. `combat_engine.js` exposes atomic `applyDamageBatch()` / `healBatch()` with rollback, and network AoE damage uses the batch transaction.
