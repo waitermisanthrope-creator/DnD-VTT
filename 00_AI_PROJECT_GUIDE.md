@@ -5050,7 +5050,7 @@ Runtime содержит Усиление, Проекцию, Телекинез,
 ## CLASS DEEP AUDIT — ВОЕННОНАЧАЛЬНИК — 2026-09-29 — ЗАКРЫТ
 
 ### Источник и версия
-- Сверен **Laserllama Warlord v3.3.0** и **Warlord Expanded v3.3.0**. Базовая версия содержит 40 Tactical Exploits, 7 Fighting Styles и 6 Academies of War; Expanded добавляет ещё 30 Exploits, 7 Fighting Styles и 6 Academies. Вместе для проекта закрыт полный набор из **70 Exploits, 14 Fighting Styles и 12 Academies** как контентный набор.
+- Сверен **Laserllama Warlord v3.3.0** и **Warlord Expanded v3.3.0**. Базовая версия содержит 40 Tactical Exploits, 7 Fighting Styles и 6 Academies of War; Expanded добавляет ещё 30 Exploits, 7 Fighting Styles и 6 Academies. Вместе для проекта закрыт полный набор из **70 Tactical Exploits, 14 Fighting Styles и 12 Academies** как контентный набор.
 - Таблица класса 1–20: d8, Leadership Style на 1, Inspiring Word на 1, Fighting Style/Tactical Exploits на 2, Academy на 3, Extra Attack на 5, Valiant Leader 7, Rallying Cry 9/13/17, Unwavering Will 10, Tactical Superiority 11, Exalted Leader 15, Dauntless 20.
 - Спасброски: Мудрость и Харизма. Броня: лёгкая/средняя/щиты. Оружие: простое, ручные арбалеты, длинные луки, длинные мечи, рапиры, скимитары, короткие мечи. Мультикласс: Сила или Ловкость 13 и Интеллект/Мудрость/Харизма 13.
 - Leadership Ability выбирается между Харизмой, Мудростью и Интеллектом.
@@ -5103,7 +5103,7 @@ Runtime содержит Усиление, Проекцию, Телекинез,
 - Syntax OK: app/data/subclasses/subclassesRegistry.js.
 - Проверены уровни 1/2/3/5/6/9/11/13/14/17/18/20.
 - Проверены русский идентификатор класса, Leadership Style, Inspiring Word, Tactical Exploits, Rallying Cry, Dauntless и по одной уникальной способности каждой из 12 Академий.
-- Feature pack содержит 12 подклассов и 118 зарегистрированных контентных/runtime-фич Военноначальника.
+- Feature pack содержит 12 подклассов и **155 зарегистрированных контентных/runtime-фич** Военноначальника; контрольный прогон всех 155 вернул успешный результат.
 
 ### Итог
 - **Военноначальник закрыт как класс:** база 1–20 + базовые 40 Exploits + Expanded 30 Exploits-контракты + 14 Fighting Styles + 12 Academies + их ключевые способности.
