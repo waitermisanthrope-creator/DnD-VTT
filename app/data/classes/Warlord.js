@@ -38,7 +38,7 @@ g.warlordProgression={
  tools:['gaming_set'],
  multiclassRequirement:{strengthOrDexterity:13,intelligenceOrWisdomOrCharisma:13},
  multiclassProficiencies:{armor:['light','medium','shields'],weapons:['simple'],tools:['gaming_set']},
- skills:{choose:2,from:['athletics','deception','history','insight','intimidation','persuasion']},
+ skills:{choose:2,from:['athletics','deception','history','insight','intimidation','investigation','persuasion']},
  subclassLevel:3,subclassFeatureLevels:[3,6,14,18],
  fightingStyles:['Сбалансированный бой','Классическое фехтование','Защитный бой','Конный воин','Знаменосец','Тактический бой','Универсальный бой'],
  progression:{
