@@ -303,6 +303,8 @@ function updateExtraClassCreationUI() {
     raceSelect.disabled = false;
     raceSelect.style.opacity = '';
     raceSelect.title = '';
+    var normalRaceLabel = raceSelect.previousElementSibling;
+    if (normalRaceLabel && normalRaceLabel.tagName === 'LABEL') normalRaceLabel.textContent = 'Раса';
     if (raceSelect.dataset.previousRace && !raceSelect.value) {
       raceSelect.value = raceSelect.dataset.previousRace;
     }
