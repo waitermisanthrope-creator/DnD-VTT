@@ -6,6 +6,15 @@
 >
 > File name intentionally starts with `00_` and lives in the project root so it appears first in a normal alphabetical file listing. The project workflow also treats it as the mandatory first-read file.
 
+## CLASS TEMPLATE PASS — PUGILIST (post-V70.25.95)
+
+- Завершён первый этап шаблона Пугилиста: app/data/classes/Pugilist.js.
+- Зафиксированы требования Strength 13 + Constitution 13, лёгкие доспехи, базовые владения и выбор навыков.
+- Добавлена структура ресурса Moxie и прогрессии Fisticuffs 1–20.
+- Добавлены все семь Fight Clubs: Arena Royale, Bloodhound Bruisers, Dog & Hound, Hand of Dread, Piss & Vinegar, The Squared Circle, The Sweet Science.
+- Полная боевая логика, Moxie и механика Fight Clubs пока намеренно отложены.
+- Следующий класс по очереди: Страж.
+
 ## 3. CURRENT BUILD CHECKPOINT
 
 - **V70.25.48 — Full Combat Transaction / Reaction Race / Batch AoE.** Latest verified technical checkpoint. Network reaction windows now survive reconnect migration or deterministically finalize on disconnect; host handoff fences pending reactions before snapshot; room shutdown clears stale pending reaction/prepared-action state. `combat_engine.js` exposes atomic `applyDamageBatch()` / `healBatch()` with rollback, and network AoE damage uses the batch transaction.

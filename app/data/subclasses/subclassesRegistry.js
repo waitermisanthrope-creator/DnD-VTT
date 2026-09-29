@@ -464,6 +464,19 @@ window.SUBCLASSES_REFERENCE["Иллирригер"] = {
   "Shadowmaster": {source:"MCDM / third-party",description:"Скрытный контракт: тени, проникновение, маскировка и точечные атаки.",pickLevel:3,levels:{3:{features:["Заготовка: контракт Shadowmaster","Заготовка: Invoke Hell"]},7:{features:["Заготовка: способность контракта"]},11:{features:["Заготовка: способность контракта"]},15:{features:["Заготовка: способность контракта"]}}}
 };
 
+
+
+/* Пугилист — каркас семи Fight Clubs. Подробные механики добавятся позже. */
+window.SUBCLASSES_REFERENCE["Пугилист"] = {
+  "Arena Royale": {source:"Benjamin Huffman / third-party",description:"Гладиатор и шоумен: выступление, репутация и зрелищный стиль боя.",pickLevel:3,levels:{3:{features:["Заготовка: Fight Club feature"]},6:{features:["Заготовка: Fight Club feature"]},11:{features:["Заготовка: Fight Club feature"]},17:{features:["Заготовка: Fight Club feature"]}}},
+  "Bloodhound Bruisers": {source:"Benjamin Huffman / third-party",description:"Городской защитник и следопыт, специализирующийся на наблюдательности и расследовании.",pickLevel:3,levels:{3:{features:["Заготовка: Fight Club feature"]},6:{features:["Заготовка: Fight Club feature"]},11:{features:["Заготовка: Fight Club feature"]},17:{features:["Заготовка: Fight Club feature"]}}},
+  "Dog & Hound": {source:"Benjamin Huffman / third-party",description:"Боец со специально обученным псом-компаньоном и тактикой совместного нападения.",pickLevel:3,levels:{3:{features:["Заготовка: Fight Club feature","Заготовка: собачий компаньон"]},6:{features:["Заготовка: Fight Club feature"]},11:{features:["Заготовка: Fight Club feature"]},17:{features:["Заготовка: Fight Club feature"]}}},
+  "Hand of Dread": {source:"Benjamin Huffman / third-party",description:"Мрачный сверхъестественный путь, открывающий доступ к иномировой силе.",pickLevel:3,levels:{3:{features:["Заготовка: Fight Club feature","Заготовка: сверхъестественная магия"]},6:{features:["Заготовка: Fight Club feature"]},11:{features:["Заготовка: Fight Club feature"]},17:{features:["Заготовка: Fight Club feature"]}}},
+  "Piss & Vinegar": {source:"Benjamin Huffman / third-party",description:"Грязный уличный боец: провокации, обманные приёмы и давление на противника.",pickLevel:3,levels:{3:{features:["Заготовка: Fight Club feature"]},6:{features:["Заготовка: Fight Club feature"]},11:{features:["Заготовка: Fight Club feature"]},17:{features:["Заготовка: Fight Club feature"]}}},
+  "The Squared Circle": {source:"Benjamin Huffman / third-party",description:"Специалист по борьбе, захватам, удержанию и контролю противников в ближнем бою.",pickLevel:3,levels:{3:{features:["Заготовка: Fight Club feature","Заготовка: grappling"]},6:{features:["Заготовка: Fight Club feature"]},11:{features:["Заготовка: Fight Club feature"]},17:{features:["Заготовка: Fight Club feature"]}}},
+  "The Sweet Science": {source:"Benjamin Huffman / third-party",description:"Техничный боксёр: точные удары, контратаки и ставка на нокаут.",pickLevel:3,levels:{3:{features:["Заготовка: Fight Club feature"]},6:{features:["Заготовка: Fight Club feature"]},11:{features:["Заготовка: Fight Club feature"]},17:{features:["Заготовка: Fight Club feature"]}}}
+};
+
 /**
  * Возвращает список подклассов, доступных для выбранного класса,
  * в формате для построения выпадающего списка / карточек UI.
