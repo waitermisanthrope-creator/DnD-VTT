@@ -56,7 +56,7 @@ var CLASS_TOKEN_ART={
  'Пугилист':'./app/data/classes/pugilist.png','Рунный хранитель':'./app/data/classes/rune keeper.png','Савант':'./app/data/classes/savant.png',
  'Шифтер':'./app/data/classes/shifter.png','Рой':'./app/data/classes/the swam.png','Сосуд':'./app/data/classes/vessel.png',
  'Страж':'./app/data/classes/warden.png','Военачальник':'./app/data/classes/warlord.png','Ведьма':'./app/data/classes/witch.png',
- 'Изобретатель':'./app/data/classes/ARTIFICER.png','Варвар':'./app/data/classes/BARBARIAN.png','Бард':'./app/data/classes/Bard.png',
+ 'Изобретатель':'./app/data/classes/ARTIFICER.png','Паразит доктора Вальтера':'./1790718758545.png','Варвар':'./app/data/classes/BARBARIAN.png','Бард':'./app/data/classes/Bard.png',
  'Жрец':'./app/data/classes/CLERIC.png','Друид':'./app/data/classes/DRUID.png','Воин':'./app/data/classes/FIGHTER.png','Монах':'./app/data/classes/Monk.png',
  'Паладин':'./app/data/classes/PALADIN.png','Следопыт':'./app/data/classes/RANGER.png','Плут':'./app/data/classes/Rogue.png','Чародей':'./app/data/classes/SORCERER.png','Колдун':'./app/data/classes/WARLOCK.png','Волшебник':'./app/data/classes/Wizard.png'
 };
@@ -120,7 +120,27 @@ function renderClassArt(){
    var selectedExtra=el('pc_race')?el('pc_race').value:'';
    hostLead.textContent=selectedExtra==='Призрак'?'Укажите мёртвую оболочку':selectedExtra==='Паразит доктора Вальтера'?'Укажите тело, в которое будет внедрён паразит':'Укажите тело / хозяина';
  }
- if(extra){if(img){var extraArt=(name==='Паразит доктора Вальтера'?'./1790718758545.png':'');if(extraArt&&img.getAttribute('data-art')!==extraArt){var ep=new Image();ep.onload=function(){img.src=extraArt;img.setAttribute('data-art',extraArt);img.alt='Паразит доктора Вальтера';img.classList.add('token-ready');};ep.onerror=function(){console.warn('Extra art not found:',extraArt);};ep.src=extraArt;}else if(!extraArt){img.removeAttribute('src');img.removeAttribute('data-art');img.classList.remove('token-ready');}}}else if(img){
+ if(extra){if(img){
+   var extraTokenArt={
+     'Рой':'./app/data/classes/the swam.png',
+     'Паразит':'./app/data/classes/parasite.png',
+     'Паразит доктора Вальтера':'./1790718758545.png',
+     'Призрак':'./app/data/classes/geist.png'
+   };
+   var extraArt=extraTokenArt[name]||'';
+   if(extraArt&&img.getAttribute('data-art')!==extraArt){
+     var ep=new Image();
+     ep.onload=function(){
+       var current=el('pc_race')?el('pc_race').value:'';
+       if(current!==name)return;
+       img.src=extraArt;img.setAttribute('data-art',extraArt);img.alt='Жетон Extra: '+name;img.classList.add('token-ready');
+     };
+     ep.onerror=function(){console.warn('Extra token not found:',extraArt);};
+     ep.src=extraArt;
+   }else if(!extraArt){
+     img.removeAttribute('src');img.removeAttribute('data-art');img.classList.remove('token-ready');
+   }
+ }}else if(img){
   var art=classArt(name);
   if(!art){
    img.removeAttribute('src');img.removeAttribute('data-art');img.classList.remove('token-ready');img.alt='Жетон появится после выбора класса';
