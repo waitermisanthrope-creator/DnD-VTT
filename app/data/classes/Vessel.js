@@ -21,6 +21,9 @@ window.vesselProgression = {
     weapons: ["simple", "scimitar", "shortsword"],
     tools: [],
     multiclassRequirement: { constitution: 13, charisma: 13 },
+    multiclassProficiencies: { armor: ["light"], weapons: ["simple"] },
+    skills: { choose: 2, from: ["arcana", "athletics", "deception", "history", "intimidation", "investigation", "religion"] },
+    subclassFeatureLevels: [3, 6, 15, 20],
     subclassLevel: 3,
 
     levels: {

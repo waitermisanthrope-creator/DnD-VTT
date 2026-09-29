@@ -72,6 +72,16 @@
 - Полная HP-магия, Sacrifice, Reprisal и эффекты Burdens остаются отдельным этапом.
 - Следующий класс: Сосуд.
 
+## CLASS TEMPLATE PASS — VESSEL (post-V70.25.95)
+
+- Доведён шаблон Сосуда: d10, Charisma, Constitution/Charisma saves, light armor, simple weapons + scimitar/shortsword.
+- Требование мультикласса: Constitution 13 + Charisma 13.
+- Добавлены владения для мультикласса и выбор 2 навыков из 7.
+- Sealed Spirit выбирается на 3 уровне; точки 3/6/15/20.
+- В реестре уже шесть духов: Вознесённый, Катаклизм, Проклятый, Падший, Бесформенный, Трикстер.
+- Vessel Magic, Spirit Mantle, Archon Forms и точные способности духов остаются отдельным этапом.
+- Следующий класс: Шифтер.
+
 ## 3. CURRENT BUILD CHECKPOINT
 
 - **V70.25.48 — Full Combat Transaction / Reaction Race / Batch AoE.** Latest verified technical checkpoint. Network reaction windows now survive reconnect migration or deterministically finalize on disconnect; host handoff fences pending reactions before snapshot; room shutdown clears stale pending reaction/prepared-action state. `combat_engine.js` exposes atomic `applyDamageBatch()` / `healBatch()` with rollback, and network AoE damage uses the batch transaction.
