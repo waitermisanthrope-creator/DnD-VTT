@@ -227,7 +227,7 @@ function warlordRollDie(sides){var n=parseInt(String(sides||'8').replace(/[^0-9]
       anointedMagic:{spellcasting:true,shortRestSlots:true},divineMandate:{proficiency:['religion'],leadershipForReligion:true},channelDivinity:{uses:2,recharge:'short_long'},wordsOfZeal:{maxHeal:true,radiantAttackOrder:true},favoredServant:{castSpellInAttack:true}
     };
     if(academyEffects[id]){
-      return{ok:true,effect:academyEffects[id],message:'🎖️ '+(feature&&feature.name||id)+' активно.'};
+      return{ok:true,effect:academyEffects[id],message:'🎖️ '+(feature&&feature.name||'Особенность академии')+' активна.'};
     }
     var exploitContract={
       eloquentSpeech:{check:['deception','persuasion'],useLeadership:true},
@@ -250,7 +250,7 @@ function warlordRollDie(sides){var n=parseInt(String(sides||'8').replace(/[^0-9]
     if(exploitContract[id]){
       var ec=exploitContract[id];
       if(!spend(h,'warlordExploitDice',1))return{ok:false,message:'Нет куба Тактического приёма.'};
-      return{ok:true,target:t&&t.id,effect:ec,die:die,message:'🎯 '+(feature&&feature.name||id)+' выполнен.'};
+      return{ok:true,target:t&&t.id,effect:ec,die:die,message:'🎯 Тактический приём выполнен.'};
     }
     if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' активно.'};
     return{ok:false,unsupported:true,message:'Эта особенность Военачальника зарегистрирована, но отдельная UI-команда ещё требует подключения.'};
