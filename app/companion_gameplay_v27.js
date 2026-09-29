@@ -53,8 +53,8 @@
   function gainFerocity(e,amount){
     if(e.companionType!=='beastheart')return null;
     ensureState(e);
-    var cur=Number(e.resources.ferocity)||0,max=Number(e.resources.ferocityMax)||6;
-    cur=Math.min(max,cur+Math.max(0,Number(amount)||0));
+    var cur=Number(e.resources.ferocity)||0,max=Number(e.resources.ferocityMax)||9999;
+    cur=Math.max(0,cur+Math.max(0,Number(amount)||0));
     e.resources.ferocity=cur;
     if(g.DNDSecondaryEntities)g.DNDSecondaryEntities.update(e.id,{resources:e.resources});
     return cur;
@@ -107,6 +107,26 @@
     if(r&&r.ok){ensureState(e);e.metadata.lastCommandType=type;if(g.DNDSecondaryEntities.update)g.DNDSecondaryEntities.update(id,{metadata:e.metadata});}
     return r;
   }
+  function beastheartStartTurn(id,ctx){
+    var e=entity(id);if(!e||e.companionType!=='beastheart')return{ok:false,reason:'not_beastheart'};
+    ensureState(e);var h=hero(),l=Number(e.beastheartLevel)||1,base=1+Math.floor(Math.random()*4),hostiles=0;
+    var targetList=(h&&h.initiativeTracker&&h.initiativeTracker.combatants)||[];
+    var tok=tokenForEntity(e);
+    if(tok&&g.DNDBattleBoard&&typeof g.DNDBattleBoard.distanceFt==='function'){
+      targetList.forEach(function(c){if(c&&String(c.team||'')!==String(e.team||'party')&&!c.defeated){var tt=g.DNDBattleBoard.findToken('bt_'+String(c.id))||g.DNDBattleBoard.findToken(c.id);if(tt&&g.DNDBattleBoard.distanceFt(tok,tt)<=5)hostiles++;}});
+    }
+    var bonus=l>=15?3:l>=5?2:1;var gained=base+hostiles+bonus-1;
+    gainFerocity(e,gained);e.resources.ferocity=e.resources.ferocity||0;
+    var out={ok:true,gained:gained,ferocity:e.resources.ferocity,rampage:false};
+    if(Number(e.resources.ferocity)>=10&&!e.metadata.rampage){
+      var wis=0,pb=Number(h&&h.proficiencyBonus)||2,ab=h&&h.abilities&&h.abilities.wisdom;if(ab!=null)wis=Math.floor((Number(ab)-10)/2);
+      var dc=5+Number(e.resources.ferocity),roll=Math.floor(Math.random()*20)+1+pb+wis;
+      out.rampageCheck={dc:dc,total:roll,success:roll>=dc};
+      if(roll<dc){e.metadata.rampage=true;out.rampage=true;}
+      if(g.DNDSecondaryEntities.update)g.DNDSecondaryEntities.update(e.id,{resources:e.resources,metadata:e.metadata});
+    }
+    return out;
+  }
   function resetTurn(c){if(!c)return;c.turnResources=c.turnResources||{};c.turnResources.action=true;c.turnResources.bonusAction=true;c.turnResources.reaction=true;c.turnResources.movement=Number(c.speed)||30;c.turnResources.movementUsed=0;}
   function render(){
     var box=document.getElementById('battleBoardSummonPanel');if(!box)return;
@@ -134,7 +154,7 @@
     if(!g.DNDSummoning||g.DNDSummoning.__v27)return;
     var original=g.DNDSummoning.attack;
     g.DNDSummoning.attack=function(id,targetId,index){return attack(id,targetId,index);};
-    g.DNDSummoning.__v27=true;g.DNDSummoning.moveToward=moveToward;g.DNDSummoning.resetTurn=resetTurn;g.DNDSummoning.renderV27=render;
+    g.DNDSummoning.__v27=true;g.DNDSummoning.moveToward=moveToward;g.DNDSummoning.resetTurn=resetTurn;g.DNDSummoning.beastheartStartTurn=beastheartStartTurn;g.DNDSummoning.renderV27=render;
   }
   function hook(){
     patchAttack();
@@ -146,5 +166,5 @@
     render();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook);else hook();
-  g.DNDCompanionGameplayV27={VERSION:'1.0.0',attack:attack,moveToward:moveToward,command:command,render:render,gainFerocity:gainFerocity};
+  g.DNDCompanionGameplayV27={VERSION:'1.1.0',attack:attack,moveToward:moveToward,command:command,render:render,gainFerocity:gainFerocity,beastheartStartTurn:beastheartStartTurn};
 })(window);
