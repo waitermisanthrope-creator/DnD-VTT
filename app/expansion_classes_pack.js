@@ -55,7 +55,7 @@
     var s=st(h);s.psionTalentsKnown=psionTalentCount(l);s.psionMasteryFree=psionMastery(l);
     s.psionInnate=s.psionInnate||{};s.psionInnateChoices=s.psionInnateChoices||{};
     s.psionDisciplinesKnown=l>=18?3:2;s.psionDisciplinesKnown=Math.min(3,s.psionDisciplinesKnown);if(!s.psionDisciplines)s.psionDisciplines=[];
-    s.psionicAbility='intelligence';s.psionicSaveDC=8+(Number(h.proficiencyBonus)||2)+mod(h,'intelligence');s.psionicAttackBonus=(Number(h.proficiencyBonus)||2)+mod(h,'intelligence');
+    s.psionicAbility='intelligence';s.empoweredPsionics=l>=6;s.psionArchetypeFeatureLevels={3:l>=3,6:l>=6,10:l>=10,14:l>=14};s.psionicSaveDC=8+(Number(h.proficiencyBonus)||2)+mod(h,'intelligence');s.psionicAttackBonus=(Number(h.proficiencyBonus)||2)+mod(h,'intelligence');
     if(!s.psionTalents) s.psionTalents=[];
     if(s.psionTalents.length>s.psionTalentsKnown)s.psionTalents=s.psionTalents.slice(0,s.psionTalentsKnown);
     
@@ -66,7 +66,7 @@
     if(cost>r.limit)return{ok:false,message:'Нельзя потратить больше '+r.limit+' очков пси за один эффект.'};
     if(cost===0)return{ok:true,spent:0};
     if(ctx&&ctx.useMastery){
-      var free=Math.min(cost,Number(s.psionMasteryFree||0));if(allowMastery&&free>0){s.psionMasteryUsed=free;return{ok:true,spent:free,remaining:cost-free};}
+      var free=Math.min(cost,Number(s.psionMasteryFree||0));if(allowMastery&&free>0){var rest=cost-free;if(rest>0&&!spend(h,'psiPoints',rest))return{ok:false,message:'Недостаточно обычных очков пси.'};s.psionMasteryUsed=free;return{ok:true,spent:cost,masterySpent:free};}
     }
     if(!spend(h,'psiPoints',cost))return{ok:false,message:'Недостаточно очков пси.'};
     return{ok:true,spent:cost};
@@ -109,10 +109,11 @@
   }
   function psionAttack(h,ctx){
     syncPsion(h);var s=st(h),o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]};
-    if(s.psionArchetype==='awakened'&&s.empoweredPsionics&&ctx&&ctx.psionicDamage)o.bonusDamage+=mod(h,'intelligence');
+    if(s.empoweredPsionics&&['awakened','unleashed','elemental','consuming'].indexOf(s.psionArchetype)>=0&&ctx&&ctx.psionicDamage)o.bonusDamage+=mod(h,'intelligence');
+    if(s.psionArchetype==='shaper'&&ctx&&ctx.astralConstructDamage&&lvl(h,'Psion')>=6)o.bonusDamage+=mod(h,'intelligence');
     if(s.psionArchetype==='unleashed'&&s.rampageDie&&ctx&&ctx.damageRoll)o.extraDice.push(s.rampageDie);
-    if(s.psionArchetype==='shaper'&&ctx&&ctx.astralConstructDamage)o.bonusDamage+=mod(h,'intelligence');
-    if(s.psionArchetype==='consuming'&&ctx&&ctx.psychicDamage)o.notes.push('Поглощение: может сработать Пиявка разума.');
+    if(s.psionArchetype==='consuming'&&ctx&&ctx.psychicDamage)o.notes.push('Поглощение: Пиявка разума может получить заряд.');
+    if(s.psionArchetype==='wandering'&&s.phaseRiftUsedThisTurn)o.advantage=true;
     return o;
   }
 
