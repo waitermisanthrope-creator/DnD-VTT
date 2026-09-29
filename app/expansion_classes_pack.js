@@ -134,9 +134,100 @@
   }
   function warlordAttack(h,ctx){return{bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:['Класс использует Leadership modifier: '+warlordLeadership(h)+'.']};}
 
-  function wardenEndurance(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
-  function wardenDie(l){return l>=11?'d12':l>=5?'d10':'d8';}
-  function syncWarden(h){var l=lvl(h,'Warden');if(!l)return;var r=res(h,'wardenEndurance',wardenEndurance(l),'short');r.die=wardenDie(l);}
+  function wardenInterruptUses(l){return l>=17?6:l>=13?5:l>=9?4:l>=5?3:0;}
+  function wardenMasteryCount(l){return l>=10?4:l>=4?3:2;}
+  function syncWarden(h){
+    var l=lvl(h,'Warden');if(!l)return;
+    var s=st(h),ir=res(h,'wardenInterrupt',wardenInterruptUses(l),'short');
+    ir.max=wardenInterruptUses(l);
+    s.wardenMasteryCount=wardenMasteryCount(l);
+    s.wardenSentinelStand=s.wardenSentinelStand||'stalwartSpirit';
+    s.wardenSentinelStrike=s.wardenSentinelStrike||'interdict';
+    s.wardenSentinelSoul=s.wardenSentinelSoul||'allSeeing';
+    s.wardenFontUses=l>=13?2:0;
+    s.wardenSurviveReady=s.wardenSurviveReady!==false;
+    s.wardenLegendaryResistance=l>=20?3:0;
+    s.wardenGuardianRange=l>=14?10:5;
+    s.wardenBloodiedResist=l>=15;
+  }
+  function wardenSetChoice(h,id,value){
+    syncWarden(h);var s=st(h);
+    if(id==='sentinelStand'&&['stalwartSpirit','steadfastToughness','towerShield'].indexOf(value)>=0){s.wardenSentinelStand=value;return{ok:true,message:'🛡️ Стойка часового: '+value+'.'};}
+    if(id==='sentinelStrike'&&['interdict','shieldSlam','sweep'].indexOf(value)>=0){s.wardenSentinelStrike=value;return{ok:true,message:'⚔️ Удар часового: '+value+'.'};}
+    if(id==='sentinelSoul'&&['allSeeing','fortified','unstoppable'].indexOf(value)>=0){s.wardenSentinelSoul=value;return{ok:true,message:'👁️ Душа часового: '+value+'.'};}
+    return{ok:false,message:'Недопустимый вариант выбора Стража.'};
+  }
+  function useWarden(h,id,ctx,feature){
+    syncWarden(h);ctx=ctx||{};var l=lvl(h,'Warden'),s=st(h),t=target(ctx),range=s.wardenGuardianRange||5;
+    if(id==='sentinelStand')return wardenSetChoice(h,id,ctx.choice||'stalwartSpirit');
+    if(id==='sentinelStrike')return wardenSetChoice(h,id,ctx.choice||'interdict');
+    if(id==='sentinelSoul')return wardenSetChoice(h,id,ctx.choice||'allSeeing');
+    if(id==='guardianBlock'){
+      if(!t)return{ok:false,message:'Выбери союзника.'};
+      return{ok:true,target:t.id,effect:{guardianTactic:'block',rangeFt:range,acEqualsSelf:true,durationUntilStartOfTurn:true},message:'🛡️ Блок: AC союзника повышен до твоего AC.'};
+    }
+    if(id==='guardianChallenge'){
+      if(!t)return{ok:false,message:'Выбери врага.'};
+      s.wardenChallengedTargetId=t.id;
+      return{ok:true,target:t.id,effect:{guardianTactic:'challenge',rangeFt:range,disadvantageAgainstOthersWithinFt:range,durationUntilStartOfTurn:true},message:'🎯 Вызов: врагу невыгодно атаковать кого-либо кроме Стража.'};
+    }
+    if(id==='guardianGrasp'){
+      return{ok:true,effect:{guardianTactic:'grasp',emanationFt:range,requiresDisengage:true,durationUntilStartOfTurn:true},message:'⛓️ Захват: враги не могут добровольно отойти без Disengage.'};
+    }
+    if(id==='interrupt'){
+      if(!t)return{ok:false,message:'Выбери врага.'};
+      if(!spend(h,'wardenInterrupt',1))return{ok:false,message:'Перехваты больше не осталось.'};
+      return{ok:true,target:t.id,effect:{reaction:true,interruptOneAttackOrAbility:true,chooseBeforeRoll:true},message:'✋ Перехват: одна атака или способность врага отменена.'};
+    }
+    if(id==='fontOfLife'){
+      var fr=s.wardenFontUses||0;if(fr<=0)return{ok:false,message:'Источник жизни уже использован.'};
+      s.wardenFontUses=fr-1;
+      return{ok:true,effect:{endCondition:true,conditions:['blinded','charmed','deafened','frightened','paralyzed','poisoned','stunned','restrained'],noAction:true},message:'✨ Источник жизни: состояние снято.'};
+    }
+    if(id==='survive'){
+      if(!s.wardenSurviveReady)return{ok:false,message:'Выжить уже использовано до долгого отдыха.'};
+      s.wardenSurviveReady=false;
+      return{ok:true,effect:{setHP:1,healHP:2*l},message:'🛡️ Выжить: вместо 0 HP остаётся 1 HP и восстанавливается '+(2*l)+' HP.'};
+    }
+    if(id==='legendaryResistance'){
+      if((s.wardenLegendaryResistance||0)<=0)return{ok:false,message:'Легендарное сопротивление уже использовано.'};
+      s.wardenLegendaryResistance--;
+      return{ok:true,effect:{saveSucceeds:true},message:'👑 Легендарное сопротивление: спасбросок считается успешным.'};
+    }
+    if(id==='sentinelStrikeInterdict'){
+      if(s.wardenSentinelStrike!=='interdict')return{ok:false,message:'Выбран другой Удар часового.'};
+      if(!spend(h,'wardenInterrupt',1))return{ok:false,message:'Нет использования Перехвата.'};
+      return{ok:true,target:t&&t.id,effect:{reaction:true,interruptOneAttackOrAbility:true,bonusMeleeAttack:true,restoreInterruptOnInitiative:true},message:'⚔️ Запрет: Перехват с ответной атакой.'};
+    }
+    if(id==='sentinelStrikeShieldSlam'){
+      if(s.wardenSentinelStrike!=='shieldSlam')return{ok:false,message:'Выбран другой Удар часового.'};
+      return{ok:true,target:t&&t.id,effect:{shieldSlam:true,damage:'1d8 + shield AC bonus',oncePerTurn:true},message:'🛡️ Удар щитом.'};
+    }
+    if(id==='sentinelStrikeSweep'){
+      if(s.wardenSentinelStrike!=='sweep')return{ok:false,message:'Выбран другой Удар часового.'};
+      return{ok:true,effect:{sweepAttack:true,rangeFt:5},message:'⚔️ Размашистый удар: атака по каждой выбранной цели в пределах 5 футов.'};
+    }
+    if(id==='stalwartSpirit')return{ok:true,effect:{chooseSavingThrowProficiency:true},message:'🛡️ Стойкий дух: выбери спасбросок для владения.'};
+    if(id==='steadfastToughness')return{ok:true,effect:{bonusMaxHP:'constitution modifier + Warden level'},message:'❤️ Несокрушимая стойкость: максимум HP увеличен.'};
+    if(id==='towerShield')return{ok:true,effect:{shieldACBonus:l>=10?4:3},message:'🛡️ Башенный щит: усиленный бонус AC.'};
+    if(id==='mettle')return{ok:true,effect:{constitutionHalfDamageSuccess:0,constitutionHalfDamageFailure:'half'},message:'💪 Стойкость: успешный Con save от половины урона даёт 0 урона.'};
+    if(id==='unyieldingResolve')return{ok:true,effect:{resistanceWhileBloodied:['bludgeoning','piercing','slashing']},message:'🩸 Непоколебимая решимость: сопротивление физическому урону в кровоточащем состоянии.'};
+    if(id==='improvedResolve')return{ok:true,effect:{resistanceWhileBloodied:['bludgeoning','piercing','slashing','acid','cold','fire','lightning','poison','thunder']},message:'🩸 Улучшенная решимость: расширенное сопротивление в кровоточащем состоянии.'};
+    if(id==='extendedTactics')return{ok:true,effect:{guardianRangeFt:10},message:'📍 Расширенная тактика: радиус тактик 10 футов.'};
+    if(id==='sentinelSoulAllSeeing')return{ok:true,effect:{blindsightFt:30},message:'👁️ Всевидящий: blindsight 30 футов.'};
+    if(id==='sentinelSoulFortified')return{ok:true,effect:{denyAttackAdvantage:true},message:'🛡️ Укреплённый: атаки не получают преимущество.'};
+    if(id==='sentinelSoulUnstoppable')return{ok:true,effect:{moveThroughCreatures:true,knockProneSmaller:true},message:'💥 Неостановимый: проход сквозь существ.'};
+    if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' активно.'};
+    return{ok:false,unsupported:true,message:'Эта особенность Стража зарегистрирована, но для неё требуется отдельный UI/боевой hook.'};
+  }
+  function wardenAttack(h,ctx){
+    syncWarden(h);var s=st(h),o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]};
+    if(s.wardenChallengedTargetId&&ctx&&ctx.target&&String(s.wardenChallengedTargetId)===String(ctx.target.id))o.notes.push('Guardian Challenge');
+    if(s.wardenSentinelSoul==='fortified')o.notes.push('Sentinel Soul: Fortified');
+    if(s.wardenBloodiedResist)o.notes.push('Improved Resolve: Bloodied resistance');
+    return o;
+  }
+
   function syncSpellblade(h){var l=lvl(h,'Spellblade');if(!l)return;res(h,'arcaneSurges',Math.max(2,Math.ceil((Number(h.proficiencyBonus)||Math.floor((l-1)/4)+2))), 'short');}
 
   function target(ctx){return ctx&&ctx.target?ctx.target:null;}
@@ -695,7 +786,39 @@
       {id:'chivalry',name:'Рыцарство',features:[]},{id:'dread',name:'Ужас',features:[]},{id:'ferocity',name:'Свирепость',features:[]},{id:'gallantry',name:'Галантерея',features:[]},{id:'schemes',name:'Интриги',features:[]},{id:'tactics',name:'Тактика',features:[]},
       {id:'claws',name:'Когти',features:[]},{id:'counsel',name:'Совет',features:[]},{id:'liberty',name:'Свобода',features:[]},{id:'navigators',name:'Навигаторы',features:[]},{id:'order',name:'Порядок',features:[]},{id:'zeal',name:'Рвение',features:[]}
     ],hooks:{sync:syncWarlord,useFeature:useWarlord,attackModifiers:warlordAttack}},
-    {id:'kibbles-warden',name:'Warden',displayName:'Страж',source:'KibblesTasty Homebrew',license:'CC-BY content source; original runtime implementation',features:[{id:'primalChallenge',name:'Первобытный вызов',level:1,action:'bonus',target:'enemy',rangeFt:30,description:'Пометить врага и контролировать его на поле.'},{id:'earthshaker',name:'Землетряс',level:2,action:'action',rangeFt:10,description:'Создать короткую зону контроля с проверкой силы.'}],subclasses:[{id:'fortressmind',name:'Крепость разума',features:[{id:'psychicWard',name:'Психический барьер',level:3,action:'reaction'}]},{id:'elements',name:'Стихии',features:[{id:'elementalAspect',name:'Стихийный облик',level:3,action:'bonus'}]},{id:'roots',name:'Корни',features:[{id:'graspingRoots',name:'Хватающие корни',level:3,action:'action'}]},{id:'nightmares',name:'Кошмары',features:[{id:'dreadAura',name:'Аура ужаса',level:3,action:'bonus'}]}],hooks:{sync:syncWarden,useFeature:useWarden,attackModifiers:wardenAttack}},
+    {id:'mh-warden',name:'Warden',displayName:'Страж',source:'Mage Hand Press — Warden 2024 / 5.5E',license:'Original runtime implementation; feature names paraphrased',features:[
+      {id:'fightingStyle',name:'Боевой стиль',level:1,action:'choice'},
+      {id:'sentinelStand',name:'Стойка часового',level:1,action:'choice'},
+      {id:'weaponMastery',name:'Мастерство оружия',level:1,action:'passive'},
+      {id:'guardianBlock',name:'Тактика: Блок',level:2,action:'bonus',target:'ally'},
+      {id:'guardianChallenge',name:'Тактика: Вызов',level:2,action:'bonus',target:'enemy'},
+      {id:'guardianGrasp',name:'Тактика: Захват',level:2,action:'bonus'},
+      {id:'unyieldingResolve',name:'Непоколебимая решимость',level:2,action:'passive'},
+      {id:'extraAttack',name:'Дополнительная атака',level:5,action:'passive'},
+      {id:'interrupt',name:'Перехват',level:5,action:'reaction',target:'enemy'},
+      {id:'mettle',name:'Стойкость',level:7,action:'passive'},
+      {id:'survive',name:'Выжить',level:9,action:'reaction'},
+      {id:'sentinelStrike',name:'Удар часового',level:11,action:'choice'},
+      {id:'fontOfLife',name:'Источник жизни',level:13,action:'free'},
+      {id:'extendedTactics',name:'Расширенная тактика',level:14,action:'passive'},
+      {id:'improvedResolve',name:'Улучшенная решимость',level:15,action:'passive'},
+      {id:'sentinelSoul',name:'Душа часового',level:18,action:'choice'},
+      {id:'legendaryResistance',name:'Легендарное сопротивление',level:20,action:'reaction'}
+    ],subclasses:[
+      {id:'beastbloodGuardian',name:'Зверокровный хранитель',features:[]},
+      {id:'carrionKing',name:'Король падали',features:[]},
+      {id:'diabolist',name:'Диаболист',features:[]},
+      {id:'drakeBlooded',name:'Драконокровный',features:[]},
+      {id:'godsworn',name:'Богопоклятый',features:[]},
+      {id:'greyWatchman',name:'Серый страж',features:[]},
+      {id:'nightgaunt',name:'Ночной кошмар',features:[]},
+      {id:'rimekeeper',name:'Хранитель изморози',features:[]},
+      {id:'steelShepherd',name:'Стальной пастырь',features:[]},
+      {id:'stoneheartDefender',name:'Каменносердечный защитник',features:[]},
+      {id:'stormSentinel',name:'Грозовой часовой',features:[]},
+      {id:'verdantProtector',name:'Защитник зелени',features:[]},
+      {id:'witchbaneHunter',name:'Охотник на ведьм',features:[]}
+    ],hooks:{sync:syncWarden,useFeature:useWarden,attackModifiers:wardenAttack}},
     {id:'kibbles-spellblade',name:'Spellblade',displayName:'Заклинатель клинка',source:'KibblesTasty Homebrew',license:'CC-BY content source; original runtime implementation',features:[{id:'spellstrike',name:'Заклинательный удар',level:1,action:'bonus',target:'self',description:'Связать оружейную атаку с магическим эффектом.'},{id:'arcaneGuard',name:'Арканная защита',level:2,action:'bonus',target:'self',description:'Получить временную защиту.'}],subclasses:[{id:'arcaneTradition',name:'Арканная традиция',features:[{id:'arcaneDuelist',name:'Арканный дуэлянт',level:3,action:'passive'}]},{id:'stormTradition',name:'Традиция бури',features:[{id:'stormStrike',name:'Удар бури',level:3,action:'on-hit'}]},{id:'wardingTradition',name:'Оберегающая традиция',features:[{id:'spellParry',name:'Парирование заклинания',level:3,action:'reaction'}]},{id:'bladeDancer',name:'Танцор клинка',features:[{id:'bladeDance',name:'Танец клинка',level:3,action:'bonus'}]}],hooks:{sync:syncSpellblade,useFeature:useSpellblade,attackModifiers:spellbladeAttack}},
     {id:'mh-necromancer',name:'Necromancer',displayName:'Некромант',source:'Mage Hand Press',license:'Original runtime implementation; feature names paraphrased',features:[{id:'charnelTouch',name:'Могильное касание',level:1,action:'action'},{id:'thralls',name:'Неживые слуги',level:2,action:'utility'},{id:'deadSpace',name:'Мёртвое пространство',level:2,action:'utility'},{id:'darkArcana',name:'Тёмная аркана',level:3,action:'bonus'},{id:'animateDead',name:'Оживление мёртвых',level:5,action:'utility'},{id:'criticalSpellcasting',name:'Критическое колдовство',level:5,action:'passive'},{id:'improvedThralls',name:'Улучшенные слуги',level:7,action:'passive'},{id:'improvedCriticalSpellcasting',name:'Улучшенное критическое колдовство',level:14,action:'passive'},{id:'undyingServitude',name:'Неумирающее служение',level:18,action:'reaction'},{id:'lichdom',name:'Личествование',level:20,action:'passive'}],subclasses:[{id:'deathKnight',name:'Death Knight',features:[]},{id:'overlord',name:'Overlord',features:[]},{id:'paleMaster',name:'Pale Master',features:[]}],hooks:{sync:syncNecromancer,useFeature:useNecromancer,attackModifiers:necromancerAttack}},
     {id:'mh-martyr',name:'Martyr',displayName:'Мученик',source:'Mage Hand Press',license:'Original runtime implementation; feature names paraphrased',features:[{id:'armorOfFaith',name:'Доспех веры',level:1,action:'utility'},{id:'miraculousHealing',name:'Чудесное исцеление',level:2,action:'action'},{id:'reprisal',name:'Воздаяние',level:2,action:'reaction'},{id:'sacrifice',name:'Жертвенный удар',level:3,action:'bonus'},{id:'sacrificeFoe',name:'Жертва врага',level:7,action:'passive'},{id:'divineRespite',name:'Божественная передышка',level:9,action:'utility'},{id:'undying',name:'Неумирающий',level:10,action:'reaction'},{id:'improvedSacrificialStrike',name:'Улучшенный жертвенный удар',level:11,action:'bonus'},{id:'marchUntoDestiny',name:'Шествие к судьбе',level:15,action:'passive'},{id:'finalMartyrdom',name:'Последнее мученичество',level:20,action:'action'}],subclasses:[{id:'mercy',name:'Burden of Mercy',features:[]},{id:'revolution',name:'Burden of Revolution',features:[]},{id:'truth',name:'Burden of Truth',features:[]},{id:'awakening',name:'Burden of Awakening',features:[]}],hooks:{sync:syncMartyr,useFeature:useMartyr}}
