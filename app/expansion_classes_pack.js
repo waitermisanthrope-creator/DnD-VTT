@@ -719,6 +719,9 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
     var cd=illriggerConduit(l);
     if(cd>0){var cr=res(h,'illriggerConduit',cd,'long');cr.max=cd;cr.die='d10';}
     res(h,'illriggerInvokeHell',l>=3?1:0,'short');
+    res(h,'illriggerInfernalMajesty',l>=17?1:0,'long');
+    res(h,'illriggerMasterOfHell',l>=20?1:0,'long');
+    res(h,'illriggerSuperiorInterdict',l>=14?1:0,'long');
     s.illriggerBloodPriceReady=l>=10;
     s.illriggerSealTargets=s.illriggerSealTargets||{};
     s.illriggerContract=s.illriggerContract||'architect';
@@ -808,22 +811,30 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
       s.illriggerTerrorType=typ;return{ok:true,effect:{extraDamage:'1d8 '+typ,durationMinutes:1},message:'😈 Терроризирующая сила: '+typ+'.'};
     }
     if(id==='superiorInterdict'){
-      return{ok:true,effect:{sealDamageIgnoresResistance:true,restoreOneSealLongRest:true},message:'🔻 Высший интердикт: урон печатей игнорирует сопротивление.'};
+      var sr=h.resources&&h.resources.illriggerSuperiorInterdict;
+      if(sr&&sr.current>0){sr.current=0;var seals=h.resources&&h.resources.illriggerSeals;if(seals)seals.current=Math.min(seals.max,(Number(seals.current)||0)+1);return{ok:true,effect:{sealDamageIgnoresResistance:true,restoreOneSealLongRest:true},message:'🔻 Высший интердикт: урон печатей игнорирует сопротивление; одна печать восстановлена.'};}
+      return{ok:false,message:'Восстановление печати уже использовано до долгого отдыха.'};
     }
     if(id==='infernalMajesty'){
-      s.illriggerMajesty=true;return{ok:true,effect:{durationRounds:10,resistance:['cold','fire','necrotic'],flyFt:60,bloodPriceAura:true,terrorDie:'1d10',rebirthInHell:true},message:'👑 Инфернальное величие активировано.'};
+      var mj=h.resources&&h.resources.illriggerInfernalMajesty;
+      if(mj&&mj.current<=0)return{ok:false,message:'Инфернальное величие уже использовано до долгого отдыха.'};
+      if(mj)mj.current=0;
+      s.illriggerMajesty=true;return{ok:true,effect:{durationMinutes:10,resistance:['cold','fire','necrotic'],flyFt:60,bloodPriceAura:true,terrorDie:'2d8',rebirthInHell:true},message:'👑 Инфернальное величие активировано на 10 минут.'};
     }
     if(id==='masterOfHell'){
+      var mh=h.resources&&h.resources.illriggerMasterOfHell;
+      if(mh&&mh.current<=0)return{ok:false,message:'Повелитель Ада уже использован до долгого отдыха.'};
+      if(mh)mh.current=0;
       var form=String(ctx.form||'inferno');if(['inferno','pestilence','darkness'].indexOf(form)<0)return{ok:false,message:'Выбери Инферно, Чуму или Тьму.'};
-      return{ok:true,effect:{areaRadiusFt:20,damage:form==='inferno'?'8d6 fire':form==='pestilence'?'8d6 poison/necrotic':'8d6 cold',save:form==='darkness'?'con':'dex',condition:form==='darkness'?'blinded':form==='pestilence'?'poisoned':null},message:'☠️ Повелитель Ада: '+form+'.'};
+      return{ok:true,effect:{rangeFt:150,areaRadiusFt:50,damage:form==='inferno'?'10d10 fire':form==='pestilence'?'10d10 poison/necrotic':'10d10 cold',save:form==='darkness'||form==='pestilence'?'con':'dex',condition:form==='darkness'?'blinded':form==='pestilence'?'poisoned':null},message:'☠️ Повелитель Ада: адский шторм «'+form+'».'};
     }
     if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' активно.'};
     return{ok:false,unsupported:true,message:'Способность Иллирригера зарегистрирована, но её отдельная автоматизация требует дополнительного UI.'};
   }
   function illriggerAttack(h,ctx){
     var s=st(h),l=illriggerLevel(h),o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]};
-    if(s.illriggerTerrorType&&l>=11)o.extraDice.push('1d8 '+s.illriggerTerrorType);
-    if(s.illriggerMajesty&&l>=17)o.extraDice.push('1d10 necrotic_or_fire');
+    if(s.illriggerTerrorType&&l>=11)o.extraDice.push((l>=17?'2d8':'1d8')+' '+s.illriggerTerrorType);
+    
     if(s.illriggerMastery==='Ложь')o.notes.push('Оружейная атака может использовать Харизму.');
     if(s.illriggerMastery==='Неукротимый')o.notes.push('Бонус к спасброскам зависит от числа врагов рядом.');
     return o;
