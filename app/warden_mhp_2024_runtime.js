@@ -244,7 +244,7 @@
       s.wardenStand=v;
       if(v==='stalwartSpirit')return{ok:true,effect:{savingThrowProficiencyChoice:true},message:'🛡️ Стойкий дух: выберите спасбросок для владения.'};
       if(v==='steadfastToughness')return{ok:true,effect:{bonusMaxHP:'CON modifier + Warden level'},message:'❤️ Несокрушимая стойкость: максимум HP увеличен.'};
-      return{ok:true,effect:{shieldACBonus:10>=10?4:3},message:'🛡️ Башенный щит: бонус щита +3, с 10 уровня +4.'};
+      return{ok:true,effect:{shieldACBonus:lvl(h)>=10?4:3},message:'🛡️ Башенный щит: бонус щита +3, с 10 уровня +4.'};
     }
     if(id==='sentinelSoul'){
       var ch=choice(h,id,ctx.choice);if(!ch.ok)return ch;
