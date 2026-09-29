@@ -366,7 +366,7 @@
     var cd=illriggerConduit(l);
     if(cd>0){var cr=res(h,'illriggerConduit',cd,'long');cr.max=cd;cr.die='d10';}
     res(h,'illriggerInvokeHell',l>=3?1:0,'short');
-    res(h,'illriggerBloodPrice',l>=10?Math.max(1,Math.min(6,Math.floor((l+1)/4))):0,'long');
+    s.illriggerBloodPriceReady=l>=10;
     s.illriggerSealTargets=s.illriggerSealTargets||{};
     s.illriggerContract=s.illriggerContract||'architect';
     s.illriggerBoons=s.illriggerBoons||[];
@@ -447,8 +447,8 @@
       return{ok:true,target:t&&t.id,effect:{invokeHell:inv,saveDC:s.illriggerSaveDC},message:'🔥 Призыв Ада: '+inv+'.'};
     }
     if(id==='bloodPrice'){
-      if(!spend(h,'illriggerBloodPrice',1))return{ok:false,message:'Нет доступной Кровавой цены.'};
-      return{ok:true,effect:{expendHitDie:true,selfNecrotic:'1d10',saveBonus:'1d10'},message:'🩸 Кровавая цена: пожертвуй КХ и добавь 1d10 к проваленному спасброску.'};
+      if(l<10||!s.illriggerBloodPriceReady||ctx.hitDieAvailable===false)return{ok:false,message:'Кровавая цена недоступна: нужен доступный КХ.'};
+      s.illriggerBloodPriceReady=true;return{ok:true,effect:{expendHitDie:true,saveBonus:'1d10',selfUsesHitDie:true},message:'🩸 Кровавая цена: потрать КХ и добавь его результат к проваленному спасброску.'};
     }
     if(id==='terrorizingForce'){
       var typ=String(ctx.damageType||'necrotic');if(['cold','fire','necrotic','poison'].indexOf(typ)<0)return{ok:false,message:'Допустимы холод, огонь, некротический или яд.'};
@@ -481,7 +481,7 @@
     if(id==='architectSpellcasting')return{ok:true,effect:{oneThirdCaster:true,ability:'charisma',spellSaveDC:illriggerSaveDC(h)},message:'🔮 Магия Архитектора разрушения доступна.'};
     if(id==='hellspeakerCommand')return{ok:true,effect:{charmOrCompel:true,save:'wis',saveDC:illriggerSaveDC(h)},message:'🗣️ Воля Говорящего с Адом применена.'};
     if(id==='painkillerArmor')return{ok:true,effect:{heavyArmor:true},message:'🛡️ Палач боли получает владение тяжёлой бронёй.'};
-    if(id==='painkillerPunishment'){if(!t)return{ok:false,message:'Выбери атакующего врага.'};return{ok:true,target:t.id,effect:{reactionDamage:'2d8 fire_or_psychic',mark:true},message:'⚔️ Наказание активировано.'};
+    if(id==='painkillerPunishment'){if(!t)return{ok:false,message:'Выбери атакующего врага.'};return{ok:true,target:t.id,effect:{reactionDamage:'2d8 fire_or_psychic',mark:true},message:'⚔️ Наказание активировано.'};}
     if(id==='sanguineRitual'){if(!t)return{ok:false,message:'Выбери цель.'};var n=Math.max(1,Number(ctx.seals)||1);var b=illriggerBurn(h,t.id,n);if(!b.ok)return b;b.effect.healAlly=n+'d8';b.effect.tempHpAlly=n+'d8';return{ok:true,target:t.id,effect:b.effect,message:'🩸 Кровавый ритуал: жизненная сила направлена союзнику.'};}
     if(id==='shadowStep')return{ok:true,effect:{invisible:true,durationRounds:1,teleportFt:30},message:'🌑 Теневой шаг активирован.'};
     if(id==='shadowAssassin'){if(!t)return{ok:false,message:'Выбери помеченную цель.'};return{ok:true,target:t.id,effect:{advantageFirstAttack:true,extraDamage:'2d6'},message:'🗡️ Теневой убийца: преимущество против цели с печатью.'};
@@ -509,3 +509,4 @@
   packs.forEach(function(p){D.registerClass(p);});
   global.DNDExpansionClasses={VERSION:'1.0.0',packs:packs.map(function(p){return p.id;})};
 })(window);
+
