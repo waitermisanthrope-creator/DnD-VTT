@@ -14,8 +14,8 @@
     },
     {
       "path": "app/character_creation_pergament.js",
-      "bytes": 28545,
-      "sha256": "0fc5379487595ea68997c78db9710a2ec80c885fa2505828e34a864b44187fb7"
+      "bytes": 28543,
+      "sha256": "977c0423b2e1b5b8a786b69593f75110ecd7eb21ee2456dbfdcad0649a335388"
     },
     {
       "path": "app/character_creation_pergament.css",
