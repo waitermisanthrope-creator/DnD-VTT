@@ -4635,3 +4635,19 @@ Stable manifest после успешной сборки должен содер
 - **Отложено:** полноценная механика всех шести Fight Clubs (Arena Royale, Bloodhound Bruisers, Dog & Hound, Piss & Vinegar, The Squared Circle, The Sweet Science), а также специализированный UI выбора и применения их многошаговых особенностей.
 - **Важно:** не повышать APK/versionCode только из-за этих изменений; сборка нужна отдельно перед тестированием APK.
 - **Специальные классы Рой / Призрак / Паразит не изменялись.**
+
+
+## CLASS LOGIC PASS — ВОЕНАЧАЛЬНИК (2026-09-29)
+
+- **Статус:** implemented_core.
+- **Источник:** Laserllama Warlord v3.3.0; версия обновлена автором 20 декабря 2025 года. citeturn1search0
+- `app/data/classes/Warlord.js` обновлён с каркаса до основной прогрессии 1–20.
+- Реализована базовая структура Leadership Style: Captain/Капитан (CHA), Mentor/Наставник (WIS), Strategist/Стратег (INT), а также Inspiring Word, Tactical Exploits, Exploit Dice, Tactical Skill, Extra Attack, Rallying Cry, Unwavering Will, Tactical Superiority, Exalted Leader и Dauntless.
+- `app/expansion_classes_pack.js` получил runtime-команды для основных Orders/Exploits: Attack Order, Maneuvering Order, Support Order, Tactical Skill, Parry, Taunting Strike, Heroic Will, Defensive Order, Heroic Order, Revitalizing Order, Victory Surge и Final Strike.
+- Зарегистрированы 12 Academies, включая базовые и Expanded-варианты: Chivalry, Dread, Ferocity, Gallantry, Schemes, Tactics, Claws, Counsel, Liberty, Navigators, Order, Zeal.
+- Runtime commit: `253fc3fd`.
+- Data/progression commit: `690e9a10`.
+- **Отложено:** полный набор Tactical Exploits (в актуальном v3.3.0 — 70 в основном и Expanded-материале), все Fighting Styles и полная глубокая механика каждой из 12 Academies, включая специальные spell/Academy UI.
+- **Пугилист:** к полной механике шести Fight Clubs обязательно вернуться отдельным проходом позже; текущая реализация Пугилиста это не отменяет.
+- APK/versionCode не повышался.
+- Рой / Призрак / Паразит не изменялись.
