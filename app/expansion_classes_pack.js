@@ -856,7 +856,7 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
 
   function pugilistLevel(h){return lvl(h,'Пугилист');}
   function pugilistDie(l){return l>=17?'1d12':l>=11?'1d10':l>=5?'1d8':'1d6';}
-  function pugilistMoxieMax(l){var t=[0,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,12];return t[Math.max(1,Math.min(20,l))]||0;}
+  function pugilistMoxieMax(l){var t=[0,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,10,12];return t[Math.max(1,Math.min(20,l))]||0;}
   function syncPugilist(h){
     var l=pugilistLevel(h);if(!l)return;
     var s=st(h),r=res(h,'pugilistMoxie',pugilistMoxieMax(l),'short');
@@ -911,12 +911,12 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
       if(r)r.current=Math.ceil(r.max/2);
       return{ok:true,effect:{setHp:Math.ceil((Number(h.maxHp)||1)/2),restoreMoxie:'half',exhaustion:1},message:'🔥 Боевой дух: Пугилист возвращается в бой.'};
     }
-    if(id==='fisticuffs')return{ok:true,effect:{damageDie:pugilistDie(l),bonusActionUnarmedOrGrapple:true,magical:l>=6},message:'🥊 Кулачный бой активен: '+pugilistDie(l)+'.'};
+    if(id==='fisticuffs')return{ok:true,effect:{damageDie:pugilistDie(l),bonusActionUnarmedOrGrapple:true,magical:l>=6,requiresArmor:['light_or_none'],noShield:true},message:'🥊 Кулачный бой активен: '+pugilistDie(l)+'.'};
     if(id==='ironChin')return{ok:true,effect:{armorClass:'12 + Constitution modifier',requires:['light_or_no_armor','no_shield']},message:'🛡️ Железный подбородок: AC считается через Телосложение.'};
-    if(id==='fancyFootwork')return{ok:true,effect:{acrobaticsProficiency:true},message:'👟 Вычурная работа ногами: владение Акробатикой.'};
-    if(id==='downButNotOut')return{ok:true,effect:{bonusDamage:'proficiency bonus',durationMinutes:1,requires:'Bloodied but Unbowed'},message:'🩸 Ещё не повержен: атаки получают дополнительный урон.'};
-    if(id==='schoolOfHardKnocks')return{ok:true,effect:{physicalResistance:true,advantageAgainst:['prone','incapacitated']},message:'🥊 Школа суровой жизни активна.'};
-    if(id==='rabbleRouser')return{ok:true,effect:{settlementCarousingAdvantage:['persuasion','intimidation']},message:'🍻 Задира: социальное преимущество после каруза в поселении.'};
+    if(id==='fancyFootwork')return{ok:true,effect:{dexteritySaveProficiency:true},message:'👟 Вычурная работа ногами: владение спасбросками Ловкости.'};
+    if(id==='downButNotOut'){var db=res(h,'pugilistDownButNotOut',l>=9?1:0,'long');if(db.current<=0)return{ok:false,message:'Эта способность уже использована до долгого отдыха.'};db.current=0;s.pugilistDownButNotOut=true;return{ok:true,effect:{bonusDamage:'proficiency bonus',durationMinutes:1,requires:'Bloodied but Unbowed'},message:'🩸 Ещё не повержен: атаки получают дополнительный урон на 1 минуту.'};}
+    if(id==='schoolOfHardKnocks')return{ok:true,effect:{resistance:['psychic'],advantageSavesAgainst:['stunned','unconscious']},message:'🥊 Школа суровой жизни активна: сопротивление психическому урону и преимущество против оглушения/бессознательности.'};
+    if(id==='rabbleRouser')return{ok:true,effect:{afterCarousingAdvantage:['persuasion','intimidation'],scope:'peopleOfSettlement'},message:'🍻 Задира: преимущество на Убеждение и Запугивание среди жителей знакомого поселения.'};
     if(id==='herculean')return{ok:true,effect:{carryingCapacityMultiplier:2,objectMeleeDamageMultiplier:2,standingJump:'running_start_distance'},message:'💪 Геркулесова сила активна.'};
     if(id==='peakPhysicalCondition')return{ok:true,effect:{strengthMaxBonus:2,constitutionMaxBonus:2,maxScore:22,longRestExhaustionRecovery:2,longRestAllHitDice:true},message:'🏆 Пиковая физическая форма достигнута.'};
     if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' активно.'};
