@@ -135,15 +135,56 @@ var steps=[
  ['Настройки','Здесь находятся тема, шрифт, обои, аудио, резервные копии и режим отладки.','#characterSelectScreen button[onclick*="openSettingsModal"]'],
  ['Онлайн/сетевая игра','Эта кнопка открывает сетевой режим и показывает текущий статус соединения.','#characterSelectScreen button[onclick*="openDndNetworkModal"]'],
  ['FAQ','В FAQ собраны базовые правила D&D, описание функций приложения, резервные копии, мобильная сборка и информация о расширенных классах.','#dndFaqButton'],
+ ['Меню «Ещё»','Откройте меню «Ещё»: там находятся настройки, сеть, FAQ, обучение, список изменений и поле боя.','#dndMainMoreButton'],
  ['Готово','Теперь можно создать первого героя. Если вы забудете что-то, откройте FAQ или повторите обучение.','']
 ];
 var idx=0,focusEl=null;
 function clearTour(){var o=document.getElementById('dndOnboardingOverlay');if(!o)return;var f=o.querySelector('.dnd-ob-focus');if(f)f.remove();var a=o.querySelector('.dnd-ob-arrow');if(a)a.remove();}
-function positionTour(){var o=document.getElementById('dndOnboardingOverlay');if(!o)return;clearTour();var sel=steps[idx][2],el=sel?document.querySelector(sel):null;focusEl=el;if(!el)return;var r=el.getBoundingClientRect();var f=document.createElement('div');f.className='dnd-ob-focus';f.style.left=Math.max(4,r.left-5)+'px';f.style.top=Math.max(4,r.top-5)+'px';f.style.width=Math.max(20,r.width+10)+'px';f.style.height=Math.max(20,r.height+10)+'px';o.appendChild(f);var card=o.querySelector('.dnd-ob-card');if(!card)return;var cr=card.getBoundingClientRect();var x=Math.min(window.innerWidth-cr.width-10,Math.max(10,r.left));var y=r.bottom+16;if(y+cr.height>window.innerHeight-10)y=Math.max(10,r.top-cr.height-16);card.style.left=x+'px';card.style.top=y+'px';var ar=document.createElement('div');ar.className='dnd-ob-arrow';ar.style.left=Math.max(10,Math.min(window.innerWidth-30,r.left+r.width/2-13))+'px';ar.style.top=(y>r.bottom?r.bottom+1:Math.max(4,r.top-20))+'px';if(y<=r.top)ar.style.transform='rotate(180deg)';o.appendChild(ar);}
+function positionTour(){
+ var o=document.getElementById('dndOnboardingOverlay');if(!o)return;
+ clearTour();
+ var isMoreStep=steps[idx] && steps[idx][0]==='Меню «Ещё»';
+ if(isMoreStep){
+   var menu=document.getElementById('dndMainMoreModal');
+   if(menu && !menu.classList.contains('open')){
+     menu.classList.add('open','dnd-tour-curtain-opening');
+     setTimeout(function(){menu.classList.remove('dnd-tour-curtain-opening');},700);
+   }
+   var action=menu?menu.querySelector('[data-main-action="settings"]'):null;
+   focusEl=action;
+   if(action){
+     action.classList.add('dnd-tour-highlight');
+     setTimeout(function(){action.classList.remove('dnd-tour-highlight');},2000);
+   }
+   var card=o.querySelector('.dnd-ob-card');
+   if(card){card.style.left='50%';card.style.top='10%';card.style.transform='translateX(-50%)';}
+   return;
+ }
+ var sel=steps[idx][2],el=sel?document.querySelector(sel):null;focusEl=el;if(!el)return;
+ var r=el.getBoundingClientRect();
+ var f=document.createElement('div');f.className='dnd-ob-focus';
+ f.style.left=Math.max(4,r.left-5)+'px';f.style.top=Math.max(4,r.top-5)+'px';
+ f.style.width=Math.max(20,r.width+10)+'px';f.style.height=Math.max(20,r.height+10)+'px';o.appendChild(f);
+ var card=o.querySelector('.dnd-ob-card');if(!card)return;
+ card.style.transform='';
+ var cr=card.getBoundingClientRect();var x=Math.min(window.innerWidth-cr.width-10,Math.max(10,r.left));var y=r.bottom+16;
+ if(y+cr.height>window.innerHeight-10)y=Math.max(10,r.top-cr.height-16);
+ card.style.left=x+'px';card.style.top=y+'px';
+ var ar=document.createElement('div');ar.className='dnd-ob-arrow';
+ ar.style.left=Math.max(10,Math.min(window.innerWidth-30,r.left+r.width/2-13))+'px';
+ ar.style.top=(y>r.bottom?r.bottom+1:Math.max(4,r.top-20))+'px';
+ if(y<=r.top)ar.style.transform='rotate(180deg)';o.appendChild(ar);
+}
 function renderTour(){var o=document.getElementById('dndOnboardingOverlay');if(!o)return;var s=steps[idx];o.querySelector('.dnd-ob-title').textContent=s[0];o.querySelector('.dnd-ob-text').textContent=s[1];o.querySelector('.dnd-ob-count').textContent=(idx+1)+' / '+steps.length;o.querySelector('.dnd-ob-back').style.display=idx?'inline-block':'none';o.querySelector('.dnd-ob-next').textContent=idx===steps.length-1?'Завершить':'Далее';positionTour();}
 function startTour(force){if(!force && localStorage.getItem('dnd_v71_onboarding_done')==='1')return;idx=0;var o=document.getElementById('dndOnboardingOverlay');if(!o)return;o.style.display='block';renderTour();window.addEventListener('resize',positionTour);}
 g.startDndOnboarding=function(){startTour(true);};
-function finishTour(){var o=document.getElementById('dndOnboardingOverlay');if(o)o.style.display='none';localStorage.setItem('dnd_v71_onboarding_done','1');window.removeEventListener('resize',positionTour);}
+function finishTour(){
+ var o=document.getElementById('dndOnboardingOverlay');if(o)o.style.display='none';
+ var menu=document.getElementById('dndMainMoreModal');
+ if(menu)menu.classList.remove('open','dnd-tour-curtain-opening');
+ var hi=document.querySelector('.dnd-tour-highlight');if(hi)hi.classList.remove('dnd-tour-highlight');
+ localStorage.setItem('dnd_v71_onboarding_done','1');window.removeEventListener('resize',positionTour);
+}
 function buildTour(){if(document.getElementById('dndOnboardingOverlay'))return;var o=document.createElement('div');o.id='dndOnboardingOverlay';o.innerHTML='<div class="dnd-ob-dim"></div><div class="dnd-ob-card"><div class="dnd-ob-count" style="font-size:.72rem;color:#aaa;margin-bottom:5px"></div><h2 class="dnd-ob-title"></h2><p class="dnd-ob-text"></p><div class="dnd-ob-actions"><button class="dnd-ob-back" onclick="window._dndTourBack()">Назад</button><button onclick="window._dndTourSkip()">Пропустить</button><button class="primary dnd-ob-next" onclick="window._dndTourNext()">Далее</button></div></div>';document.body.appendChild(o);g._dndTourNext=function(){if(idx>=steps.length-1)finishTour();else{idx++;renderTour();}};g._dndTourBack=function(){if(idx>0){idx--;renderTour();}};g._dndTourSkip=finishTour;}
 function init(){
   buildFaq();

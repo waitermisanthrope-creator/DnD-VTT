@@ -456,3 +456,9 @@ input:focus, textarea:focus, select:focus {
   #dndMainVersionBadge { gap:5px; font-size:.70rem; }
   #dndMainVersionCheck { min-width:28px; min-height:27px; font-size:.9rem; }
 }
+
+/* V70.25.82 — обучение открывает настоящее меню «Ещё» с анимацией шторки. */
+#dndMainMoreModal.dnd-tour-curtain-opening{animation:dndTourCurtainRise .65s cubic-bezier(.22,.8,.28,1) both;transform-origin:50% 100%;}
+@keyframes dndTourCurtainRise{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:translateY(0)}}
+#dndMainMoreModal .dnd-tour-highlight{animation:dndTourMenuPulse 1.8s ease-in-out both;position:relative;z-index:30003!important;}
+@keyframes dndTourMenuPulse{0%,100%{filter:none;box-shadow:none}20%,70%{filter:brightness(1.65);box-shadow:0 0 0 3px rgba(255,210,70,.55),0 0 22px rgba(255,210,70,.55)}}

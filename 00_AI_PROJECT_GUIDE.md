@@ -4169,3 +4169,11 @@ APK: build required.
 - `app/update_manager.js` web version bumped to **70.25.81**.
 - Android `versionName`/versionCode bumped to **70.25.81 / 7025081**, so the APK native runtime and web updater report the same version.
 - No image assets were modified.
+
+## V70.25.82 — ОБУЧЕНИЕ / МЕНЮ «ЕЩЁ»
+- Шаг обучения для меню «Ещё» теперь открывает настоящее меню вместо попытки подсветить его через затемнение.
+- Добавлена простая анимация: меню поднимается снизу вверх как шторка.
+- После открытия кнопка внутри меню подсвечивается непосредственно там.
+- При завершении обучения меню и подсветка закрываются/сбрасываются.
+- APK по этой задаче НЕ собирался.
+- Версия web/update manager: 70.25.82.
