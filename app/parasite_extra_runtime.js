@@ -360,8 +360,130 @@
     }
   };
 
+  function ensureResources(hero){
+    hero=ensure(hero);
+    var level=Number(hero.level)||1;
+    var p=hero.parasite;
+    if(typeof p.biomass!=="number")p.biomass=0;
+    if(typeof p.biomassMax!=="number")p.biomassMax=4+level*2;
+    if(typeof p.symbiosis!=="number")p.symbiosis=50;
+    return p;
+  }
+
+  function feedOnCorpse(hero,corpse){
+    hero=ensure(hero);
+    var p=ensureResources(hero);
+    corpse=corpse||{};
+    var size=String(corpse.size||"medium").toLowerCase();
+    var gain=({tiny:0,small:1,medium:2,large:4,huge:8,gargantuan:12}[size]||2);
+    gain=Math.max(0,gain);
+    var room=Math.max(0,p.biomassMax-p.biomass);
+    var added=Math.min(gain,room);
+    p.biomass+=added;
+    return {ok:added>0,biomassGained:added,biomass:p.biomass,consumed:true};
+  }
+
+  function restoreBody(hero,amount){
+    hero=ensure(hero);
+    var p=ensureResources(hero);
+    var h=p.host;
+    if(!h){
+      var l=p.larva;
+      if(!l)return {ok:false,reason:"Нет тела для восстановления."};
+      var want=Math.max(0,Number(amount)||0);
+      var healed=Math.min(want,p.biomass,l.maxHP-l.currentHP);
+      var cost=Math.ceil(healed/2);
+      cost=Math.min(cost,p.biomass);
+      healed=Math.min(healed,cost*2);
+      p.biomass-=cost;
+      l.currentHP+=healed;
+      hero.hpCurrent=l.currentHP;
+      hero.hpMax=l.maxHP;
+      return {ok:healed>0,healed:healed,cost:cost,currentHP:l.currentHP,maxHP:l.maxHP};
+    }
+    var desired=Math.max(0,Number(amount)||0);
+    var missing=Math.max(0,h.maxHP-h.currentHP);
+    var healed=Math.min(desired,missing,p.biomass*2);
+    var cost=Math.ceil(healed/2);
+    cost=Math.min(cost,p.biomass);
+    healed=Math.min(healed,cost*2);
+    p.biomass-=cost;
+    h.currentHP+=healed;
+    syncBody(hero);
+    return {ok:healed>0,healed:healed,cost:cost,currentHP:h.currentHP,maxHP:h.maxHP};
+  }
+
+  function damageBody(hero,amount,source){
+    hero=ensure(hero);
+    var p=ensureResources(hero);
+    var h=p.host;
+    if(!h){
+      if(p.larva){
+        p.larva.currentHP=Math.max(0,p.larva.currentHP-Math.max(0,Number(amount)||0));
+        hero.hpCurrent=p.larva.currentHP;
+        if(p.larva.currentHP<=0){
+          p.stage="destroyed";
+          hero.hpCurrent=0;
+        }
+        return {stage:p.stage,currentHP:hero.hpCurrent,hostDestroyed:false};
+      }
+      return {stage:p.stage,currentHP:0,hostDestroyed:true};
+    }
+    var damage=Math.max(0,Number(amount)||0);
+    h.currentHP=Math.max(0,h.currentHP-damage);
+    syncBody(hero);
+    if(h.currentHP<=0){
+      var larva=releaseToLarva(hero);
+      return {stage:"larva",currentHP:hero.hpCurrent,hostDestroyed:true,larva:larva,source:source||null};
+    }
+    return {stage:"hosted",currentHP:h.currentHP,hostDestroyed:false};
+  }
+
+  function voluntarilyDetach(hero){
+    hero=ensure(hero);
+    if(!hero.parasite.host)return {ok:false,reason:"Паразит уже не находится в хозяине."};
+    var larva=releaseToLarva(hero);
+    return {ok:true,larva:larva};
+  }
+
+  function invadeHost(hero,target,saveRoll){
+    hero=ensure(hero);
+    ensureResources(hero);
+    if(hero.parasite.stage!=="larva")return {ok:false,reason:"Для принудительного захвата Паразит должен находиться в личинке."};
+    target=target||{};
+    var dcValue=8+pb(hero.level)+mod(hero.stats&&hero.stats.wis);
+    var roll=Number(saveRoll);
+    var total=roll+(Number(target.saveBonus)||0);
+    if(Number.isFinite(roll) && total>=dcValue){
+      return {ok:false,saved:true,dc:dcValue,roll:total};
+    }
+    var host=bindHost(hero,target);
+    // Принудительный захват снижает Симбиоз: новое тело сопротивляется.
+    hero.parasite.symbiosis=Math.max(0,hero.parasite.symbiosis-20);
+    return {ok:true,saved:false,dc:dcValue,host:host,symbiosis:hero.parasite.symbiosis};
+  }
+
+  function getSymbiosisTier(hero){
+    var value=Number(hero&&hero.parasite&&hero.parasite.symbiosis||0);
+    if(value>=76)return {key:"perfect",name:"Совершенный симбиоз"};
+    if(value>=51)return {key:"stable",name:"Стабильный симбиоз"};
+    if(value>=26)return {key:"tense",name:"Напряжённый симбиоз"};
+    return {key:"conflict",name:"Конфликт"};
+  }
+
+  function recordMutation(hero,name){
+    hero=ensure(hero);
+    var p=ensureResources(hero);
+    if(!mutations[name])return {ok:false,reason:"Неизвестная мутация."};
+    var slots=mutationSlots(hero.level);
+    if(p.mutations.indexOf(name)>=0)return {ok:false,reason:"Мутация уже выбрана."};
+    if(p.mutations.length>=slots)return {ok:false,reason:"Нет свободного слота мутации."};
+    p.mutations.push(name);
+    return {ok:true,mutations:p.mutations.slice(),slots:slots};
+  }
+
   var runtime={
-    version:"0.1.0",
+    version:"0.2.0",
     progression:progression,
     mutations:mutations,
     subclasses:subclasses,
@@ -375,6 +497,13 @@
     releaseToLarva:releaseToLarva,
     setSymbiosis:setSymbiosis,
     adjustSymbiosis:adjustSymbiosis,
+    getSymbiosisTier:getSymbiosisTier,
+    feedOnCorpse:feedOnCorpse,
+    restoreBody:restoreBody,
+    damageBody:damageBody,
+    voluntarilyDetach:voluntarilyDetach,
+    invadeHost:invadeHost,
+    recordMutation:recordMutation,
     canRestHealBody:canRestHealBody,
     getBody:function(hero){return hero&&hero.parasite&&hero.parasite.host||null;},
     getLarva:function(hero){return hero&&hero.parasite&&hero.parasite.larva||null;}
