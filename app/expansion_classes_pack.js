@@ -888,7 +888,7 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
       if((Number(h.hp)||0)>((Number(h.maxHp)||0)/2))return{ok:false,message:'Эта способность срабатывает, когда HP падают до половины или ниже.'};
       var rr=h.resources&&h.resources.pugilistMoxie;if(rr)rr.current=rr.max;
       s.pugilistBloodiedReady=false;
-      return{ok:true,effect:{tempHp:3*l,restoreMoxie:true},message:'🩸 Израненный, но не сломленный: Мокси восстановлено.'};
+      return{ok:true,effect:{tempHp:l+mod(h,'con'),restoreMoxie:true},message:'🩸 Израненный, но не сломленный: Мокси восстановлено.'};
     }
     if(id==='digDeep'){
       return{ok:true,effect:{resistance:['bludgeoning','piercing','slashing'],durationMinutes:1,after:{exhaustion:1}},message:'💪 Соберись с силами: сопротивление физическому урону на 1 минуту.'};
@@ -969,7 +969,7 @@ function warlordDice(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:3;}
     }
     if(club==='pissAndVinegar'){
       if(id==='saltySalute')return{ok:true,effect:{rangeFt:60,save:'wisdom',damage:pugilistDie(l)+'+'+mod(h,'cha')+' psychic',attackDisadvantageUnlessTargetsSelf:true},message:'🗯️ Солёное приветствие.'};
-      if(['heelstomper','lowBlow','pocketSand'].indexOf(id)>=0){if(!spendResource(h,'pugilist_'+id))return{ok:false,message:'Этот грязный приём уже использован до отдыха.'};var map={heelstomper:{save:'dexterity',condition:'slowed',moxieOnFail:1},lowBlow:{save:'strength',condition:'prone',moxieOnFail:1},pocketSand:{save:'constitution',condition:'blinded',durationRounds:1,moxieOnFail:1}};return{ok:true,effect:map[id],message:'🃏 Грязный приём: '+id+'.'};}
+      if(['heelstomper','lowBlow','pocketSand'].indexOf(id)>=0){if(!spendResource(h,'pugilist_'+id))return{ok:false,message:'Этот грязный приём уже использован до отдыха.'};var map={heelstomper:{save:'dexterity',condition:'slowed',moxieOnFail:1},lowBlow:{save:'strength',condition:'prone',moxieOnFail:1},pocketSand:{save:'constitution',condition:'blinded',durationRounds:1,moxieOnFail:1}};return{ok:true,effect:map[id],message:'🃏 Грязный приём: '+({heelstomper:'Топот пяткой',lowBlow:'Низкий удар',pocketSand:'Песок в кармане'}[id]||'приём')+'.'};}
       if(id==='meanOldCuss'){if(!spend(h,'pugilistMoxie',1))return{ok:false,message:'Недостаточно Мокси.'};return{ok:true,effect:{intimidationAdvantage:true,saveDisadvantageForPugilistFeatures:true},message:'😠 Старый грубиян.'};}
       if(id==='uncouthArt'){if(!spendResource(h,'pugilistUncouthArt'))return{ok:false,message:'Искусство невоспитанности уже использовано до долгого отдыха.'};return{ok:true,effect:{targetsUpToLevel:l,rangeFt:60,firstHitByEachTargetRestoresMoxie:true},message:'📢 Искусство невоспитанности.'};}
     }
