@@ -157,13 +157,14 @@ forceOfNature:{level:20,effect:"CR 5 и 6 без ограничений; в бо
 
 window.SHIFTER_V21={version:"2.1.0",updated:"2026-06-25",source:"laserllama / GM Binder",PB,MAX_CR,ASI,progression,bloodlines,mechanics};
 window.shifterRuntime=window.SHIFTER_V21;
-window.shifterProgression={
+var __shifterProgression={
 className:"Шифтер",englishName:"Shifter",source:"laserllama",sourceVersion:"2.1.0",edition:"5E",
 status:"implemented_full_v2_1_runtime",hitDie:10,primaryStat:"constitution",secondaryStats:["strength","dexterity"],
 savingThrows:["strength","dexterity"],armor:["light"],weapons:["simple","blowgun","longbow","net"],
 skills:mechanics.skills,multiclassRequirement:{constitution:13},subclassFeatureLevels:[1,7,13,18],
 progression,mechanics,bloodlines:Object.keys(bloodlines)
 };
+window.shifterProgression=Object.assign(window.shifterProgression||{},__shifterProgression);
 window.getShifterBloodlines=function(){return Object.values(window.SHIFTER_V21.bloodlines);};
 window.getShifterBloodline=function(name){return window.SHIFTER_V21.bloodlines[name]||null;};
 window.getShifterMaxCR=function(level){return window.SHIFTER_V21.MAX_CR[Math.max(0,Math.min(20,Number(level)||0))]||0;};
