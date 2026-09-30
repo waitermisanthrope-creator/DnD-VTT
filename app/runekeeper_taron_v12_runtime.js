@@ -98,7 +98,25 @@ window.runeKeeperDialects=Object.keys(DIALECTS);
   function rkStance(h,mode){if(["разрушение","защита"].indexOf(String(mode))<0)return {ok:false,reason:"Неизвестная рунная стойка."};rkState(h).stance=mode;return {ok:true,stance:mode};}
   function rkDialect(h,name){if(!DIALECTS[name])return {ok:false,reason:"Неизвестный диалект."};rkState(h).dialect=name;return {ok:true,dialect:name,data:DIALECTS[name]};}
   function rkRestore(h,type){var s=rkState(h);if(type==="long"){s.runicCharges=Math.floor(rkLevel(h)/2);Object.keys(s.runes).forEach(k=>s.runes[k].active=true);}return s;}
-  window.runeKeeperRuntime.MECHANICS=MECHANICS;window.runeKeeperRuntime.inscribe=rkInscribe;window.runeKeeperRuntime.invoke=rkInvoke;window.runeKeeperRuntime.useRunicCharge=rkCharge;window.runeKeeperRuntime.setStance=rkStance;window.runeKeeperRuntime.chooseDialect=rkDialect;window.runeKeeperRuntime.restore=rkRestore;
+  function rkSync(h){
+    var l=rkLevel(h),s=rkState(h),pb=PB[l]||2,intMod=Math.floor(((Number(h&&h.stats&&h.stats.int)||10)-10)/2);
+    var max=Math.floor(l/2);
+    s.level=l;s.proficiencyBonus=pb;s.runesKnown=KNOWN[l]||0;s.inscribedRunesMax=INS[l]||0;
+    s.runicCharges=s.runicCharges==null?max:Math.min(Number(s.runicCharges)||0,max);
+    s.runicChargeMax=max;s.runicDC=8+pb+intMod;s.stanceRangeFt=l>=20?30:10;
+    s.chantRunes=l>=20?3:l>=9?2:1;
+    return s;
+  }
+  function rkStanceEffect(h,context){
+    var s=rkSync(h),count=Object.keys(s.runes||{}).length;
+    var bonus=Math.floor(count/2),mode=s.stance||"разрушение";
+    return {mode:mode,rangeFt:s.stanceRangeFt,bonus:bonus,
+      damageReduction:mode==="защита"?bonus:0,damageBonus:mode==="разрушение"?bonus:0,context:context||{}};
+  }
+  function rkLongRest(h){var s=rkSync(h);s.runicCharges=s.runicChargeMax;Object.keys(s.runes).forEach(k=>s.runes[k].active=true);return s;}
+  function rkShortRest(h){return rkSync(h);}
+  function rkCanInvoke(h,objectId){var s=rkState(h),e=s.runes[objectId];return !!(e&&e.active);}
+  window.runeKeeperRuntime.MECHANICS=MECHANICS;window.runeKeeperRuntime.inscribe=rkInscribe;window.runeKeeperRuntime.invoke=rkInvoke;window.runeKeeperRuntime.useRunicCharge=rkCharge;window.runeKeeperRuntime.setStance=rkStance;window.runeKeeperRuntime.chooseDialect=rkDialect;window.runeKeeperRuntime.restore=rkRestore;window.runeKeeperRuntime.sync=rkSync;window.runeKeeperRuntime.stanceEffect=rkStanceEffect;window.runeKeeperRuntime.longRest=rkLongRest;window.runeKeeperRuntime.shortRest=rkShortRest;window.runeKeeperRuntime.canInvoke=rkCanInvoke;
 
 
 })();
