@@ -525,8 +525,10 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     var pactSlots=l>=6?2:l>=3?1:0;
     res(h,'bhPactSlots',pactSlots,'short');
     res(h,'bhAetherWalk',l>=15?2:1,'short');
-    res(h,'bhHybridTransformation',l>=11?2:1,'short');
-    s.bhHemocraftDie=d;s.bhHemocraftSaveDC=hemSave(h);s.bhActiveRites=s.bhActiveRites||{};s.bhKnownCurses=s.bhKnownCurses||[];
+    var hybrid=res(h,'bhHybridTransformation',s.bhHybridMastery?9999:(l>=11?2:1),'short');
+    if(s.bhHybridMastery){hybrid.max=9999;hybrid.current=9999;hybrid.unbounded=true;hybrid.displayMax=null;}
+
+    s.bhHemocraftDie=d;s.bhHemocraftSaveDC=hemSave(h);s.bhActiveRites=s.bhActiveRites||{};s.bhKnownCurses=s.bhKnownCurses||['marked'];
     s.bhBrand=s.bhBrand||null;s.bhFightingStyle=s.bhFightingStyle||null;
     s.bhCrimsonRitesKnown=s.bhCrimsonRitesKnown||['flame'];
     s.bhRiteDamageDie=d;
@@ -544,6 +546,30 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
   }
   function useBloodHunter(h,id,ctx,feature){
     syncBloodHunter(h);ctx=ctx||{};var s=st(h),l=bloodHunterLvl(h),t=target(ctx);
+    if(id==='chooseBloodCurse'){
+      var curseId=String(ctx.curse||'');
+      var allCurses=['anxious','binding','bloatedAgony','corrosion','exorcist','exposure','eyeless','fallenPuppet','howl','marked','muddledMind','soulEater'];
+      if(allCurses.indexOf(curseId)<0)return{ok:false,message:'Неизвестное кровавое проклятие.'};
+      var req={corrosion:15,exorcist:15,howl:18,soulEater:18}[curseId]||0;
+      if(l<req)return{ok:false,message:'Это проклятие доступно только с '+req+' уровня.'};
+      if(s.bhKnownCurses.indexOf(curseId)>=0)return{ok:false,message:'Это проклятие уже известно.'};
+      var curseMax=bloodCurseUses(l)>=4?5:bloodCurseUses(l)+1;
+      if(s.bhKnownCurses.length>=curseMax)return{ok:false,message:'Все доступные кровавые проклятия уже выбраны.'};
+      s.bhKnownCurses.push(curseId);
+      return{ok:true,message:'🩸 Кровавое проклятие изучено: '+curseId+'.'};
+    }
+    if(id==='chooseCrimsonRite'){
+      var riteId=String(ctx.rite||'');
+      var rites=['flame','frozen','storm','dead','oracle','roar'];
+      if(rites.indexOf(riteId)<0)return{ok:false,message:'Неизвестный Алый обряд.'};
+      var reqR={dead:14,oracle:14,roar:14}[riteId]||0;
+      if(l<reqR)return{ok:false,message:'Этот обряд доступен только с '+reqR+' уровня.'};
+      if(s.bhCrimsonRitesKnown.indexOf(riteId)>=0)return{ok:false,message:'Этот обряд уже известен.'};
+      var riteMax=l>=14?3:l>=7?2:1;
+      if(s.bhCrimsonRitesKnown.length>=riteMax)return{ok:false,message:'Все доступные Алые обряды уже выбраны.'};
+      s.bhCrimsonRitesKnown.push(riteId);
+      return{ok:true,message:'🩸 Алый обряд изучен: '+riteId+'.'};
+    }
     if(id==='fightingStyle'){
       var styles=['Стрельба','Дуэлянт','Сражение большим оружием','Сражение двумя оружиями'],fs=String(ctx.style||'');
       if(styles.indexOf(fs)<0)return{ok:false,message:'Неизвестный боевой стиль.'};s.bhFightingStyle=fs;return{ok:true,effect:{fightingStyle:fs},message:'⚔️ Боевой стиль: '+fs+'.'};
@@ -558,7 +584,7 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     if(id==='stalkersProwess')return{ok:true,effect:{speedBonusFt:10,longJumpBonusFt:10,highJumpBonusFt:3,unarmedAttackBonus:l>=18?3:l>=11?2:1},message:'🐺 Доблесть преследователя активна.'};
     if(id==='advancedTransformation'){var rht=res(h,'bhHybridTransformation',2,'short');rht.max=2;return{ok:true,effect:{hybridRegeneration:'1+CON',useCount:2},message:'🐺 Продвинутая трансформация: 2 использования и регенерация.'};}
     if(id==='brandVoracious'){if(!s.bhBrand)return{ok:false,message:'Нет активного Клейма наказания.'};s.bhBrand.voracious=true;return{ok:true,effect:{hybridAttackAdvantageVsBranded:true,bloodlustAdvantage:true},message:'🐺 Клеймо ненасытности активно.'};}
-    if(id==='hybridMastery'){var rm=res(h,'bhHybridTransformation',999,'short');rm.max=999;rm.current=999;return{ok:true,effect:{unlimitedHybrid:true},message:'🐺 Мастерство гибридной формы: превращение больше не ограничено.'};}
+    if(id==='hybridMastery'){s.bhHybridMastery=true;var rm=res(h,'bhHybridTransformation',9999,'short');rm.max=9999;rm.current=9999;rm.unbounded=true;rm.displayMax=null;return{ok:true,effect:{unlimitedHybrid:true},message:'🐺 Мастерство гибридной формы: превращение больше не ограничено.'};}
     if(id==='brandAxiom'){if(!s.bhBrand)return{ok:false,message:'Нет активного Клейма наказания.'};s.bhBrand.axiom=true;return{ok:true,effect:{endIllusion:true,endInvisibility:true,shapeChangeSave:'wis',stunOnFail:true},message:'🔻 Клеймо аксиомы раскрывает истинную форму цели.'};}
     if(id==='otherworldlyPatron'){var patrons=['Архифея','Исчадие','Великий Древний','Бессмертный','Небожитель','Клинок проклятия','Глубинный','Джинн','Нежить'];var chosenPatron=String(ctx.patron||'Великий Древний');if(patrons.indexOf(chosenPatron)<0)return{ok:false,message:'Неизвестный потусторонний покровитель.'};s.bhPatron=chosenPatron;return{ok:true,effect:{patron:s.bhPatron},message:'📜 Покровитель выбран: '+s.bhPatron+'.'};}
     if(id==='brandSappingScar'){if(!s.bhBrand)return{ok:false,message:'Нет активного Клейма наказания.'};s.bhBrand.sappingScar=true;return{ok:true,effect:{disadvantageVsBloodHunterSpells:true},message:'🔻 Иссушающий шрам активен.'};}
@@ -669,8 +695,7 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
       if(!form)return{ok:false,message:'Неизвестная формула мутагена.'};
       if(form.min&&l<form.min)return{ok:false,message:'Эта формула доступна только с '+form.min+' уровня.'};
       if(s.bhKnownMutagens.length&&s.bhKnownMutagens.indexOf(name)<0)return{ok:false,message:'Сначала изучи эту формулу мутагена.'};
-      if(!spend(h,'bhMutagenConcoctions',1))return{ok:false,message:'Нет приготовленного мутагена. Приготовь новый после короткого или долгого отдыха.'};
-      s.bhMutagens=s.bhMutagens||[];if(s.bhMutagens.indexOf(name)>=0)return{ok:false,message:'Этот мутаген уже активен.'};if(s.bhMutagens.length>=s.bhMutagenCreated)return{ok:false,message:'Все доступные мутагены уже активны.'};s.bhMutagens.push(name);
+      s.bhMutagens=s.bhMutagens||[];if(s.bhMutagens.indexOf(name)>=0)return{ok:false,message:'Этот мутаген уже активен.'};if(s.bhMutagens.length>=s.bhMutagenCreated)return{ok:false,message:'Все доступные мутагены уже активны.'};if(!spend(h,'bhMutagenConcoctions',1))return{ok:false,message:'Нет приготовленного мутагена. Приготовь новый после короткого или долгого отдыха.'};s.bhMutagens.push(name);
       return{ok:true,effect:{mutagen:name,formula:form.effect,sideEffect:form.side||null,duration:'short-or-long-rest'},message:'🧪 Мутаген активирован: '+name+'.'};
     }
     if(id==='flushMutagens'){s.bhMutagens=[];return{ok:true,message:'🧪 Все мутагены выведены.'};}
@@ -716,7 +741,9 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     license:'Original runtime implementation; mechanics checked against current public source',
     features:[
       {id:'crimsonRite',name:'Алый обряд',level:2,action:'bonus',target:'weapon'},
+      {id:'chooseCrimsonRite',name:'Выбор Алого обряда',level:2,action:'choice'},
       {id:'bloodMaledict',name:'Кровавое проклятие',level:1,action:'bonus'},
+      {id:'chooseBloodCurse',name:'Выбор кровавого проклятия',level:1,action:'choice'},
       {id:'brandCastigation',name:'Клеймо наказания',level:6,action:'passive',target:'enemy'},
       {id:'brandTethering',name:'Клеймо привязки',level:13,action:'utility'},
       {id:'grimPsychometry',name:'Мрачная психометрия',level:9,action:'passive'},
