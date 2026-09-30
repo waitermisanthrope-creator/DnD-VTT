@@ -136,7 +136,7 @@
     (Array.isArray(p.armor)?p.armor:[]).forEach(function(x){addProficiency(hero,x,'Доспехи',x);});
     (Array.isArray(p.weapons)?p.weapons:[]).forEach(function(x){addProficiency(hero,x,'Оружие',x);});
     (Array.isArray(p.tools)?p.tools:[]).forEach(function(x){if(typeof x==='string')addProficiency(hero,x,'Инструменты',x);});
-    if(isNewClass&&p.multiclassProficiencies&&isNewClass===false)return;
+    /* Для нового класса выше применяются полные стартовые владения. */
   }
   function applyStartingEquipment(hero,className){
     var d=getClass(className)||{},eq=d.startingEquipment||d.equipment;if(!eq)return;
