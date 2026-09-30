@@ -28,6 +28,21 @@
       "sha256": "81bc8f7e749ef75ae500322d6afb3aa30923280fbecfa2969826ab6628698ce4"
     },
     {
+      "path": "app/races.js",
+      "bytes": 52239,
+      "sha256": "edebb1f1ddcb47b9a1863b4b427f7ac0721cc22f64de543188614c7444cbbdbc"
+    },
+    {
+      "path": "app/Backgrounds.js",
+      "bytes": 63130,
+      "sha256": "bf5e7730ba3497edd6519999b929f1a8b1abf47162838e0f00df030bd5c8269d"
+    },
+    {
+      "path": "app/expansion_class_progressions.js",
+      "bytes": 6000,
+      "sha256": "b0b970e9a22473586f1feba59b60817db1e3ddb34399857765c7ea840a615bff"
+    },
+    {
       "path": "app/classesRegistry.js",
       "bytes": 10685,
       "sha256": "315c11e1926aa0717c530f8e35fa49ebd8a746e6eb0b5cbb62af7ebb25ff8bb0"
