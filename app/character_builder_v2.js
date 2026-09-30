@@ -691,7 +691,7 @@
   }
   function startCreate(opts){
     opts=opts||{};
-    if(!opts.fromParchment && typeof g.openParchmentCreation==='function'){
+    if(!opts.fromParchment && !opts.direct && typeof g.openParchmentCreation==='function'){
       return g.openParchmentCreation();
     }
     var screen=g.document.getElementById('characterCreationScreen');
@@ -717,7 +717,7 @@
   }
   g.createNewCharacter=startCreate;
   g.openLevelUpModal=startLevel;
-  g.CharacterBuilderV2={Wizard:Wizard,raceChoices:raceChoices,classChoices:classChoices,collectChoices:collectChoices,applyChoice:applyChoice,startCreate:startCreate,startLevel:startLevel,startCreateFromParchment:function(draft){return startCreate({fromParchment:true,draft:draft});}};
+  g.CharacterBuilderV2={Wizard:Wizard,raceChoices:raceChoices,classChoices:classChoices,collectChoices:collectChoices,applyChoice:applyChoice,startCreate:startCreate,startCreateDirect:function(){return startCreate({direct:true});},startLevel:startLevel,startCreateFromParchment:function(draft){return startCreate({fromParchment:true,draft:draft});}};
 })(window);
 
 // V70.26.71: keep Builder array normalization fix in the stable web update payload.
