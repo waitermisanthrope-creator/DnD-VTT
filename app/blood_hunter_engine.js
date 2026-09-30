@@ -36,7 +36,7 @@ function ensureChoices(h){
 function sync(h){
  var l=lvl(h);if(!l)return;
  var s=st(h);ensureChoices(h);h.hemocraftDie=die(l);s.hemocraftSaveDC=dc(h);
- var uses=l>=17?4:l>=13?3:l>=6?2:1;res(h,'bloodMaledict',uses,'short');
+ var uses=l>=17?4:l>=13?3:l>=6?2:1;if(orderKey(h)==='ghostslayer')uses+=1;res(h,'bloodMaledict',uses,'short');
  res(h,'brandCastigation',1,'short');
  if(orderKey(h)==='ghostslayer'){res(h,'aetherWalk',l>=15?2:1,'short');s.ghostslayerCurseSpecial=true;}
  if(orderKey(h)==='lycan'){res(h,'hybridTransformation',l>=18?999:l>=11?2:1,'short');}
@@ -103,7 +103,7 @@ function useCurse(h,ctx){
  var out={ok:true,curse:id,effect:c.effect||{},action:c.action,rangeFt:30,targetId:t.id};if(loss!==null){out.amplified=true;out.amplify=c.amp;out.lossHp=loss;}st(h).lastBloodCurse=out;return out;
 }
 function useBrand(h,ctx,tether){
- sync(h);var t=target(ctx);if(!t)return{ok:false,reason:'Нужна цель.'};if(!spend(h,'brandCastigation',1))return{ok:false,reason:'Клеймо уже использовано до отдыха.'};
+ sync(h);var t=target(ctx),s=st(h);if(!t)return{ok:false,reason:'Нужна цель.'};if(!s.crimsonRite||!s.crimsonRite.active)return{ok:false,reason:'Клеймо можно наложить только на попадание оружием с активным Алым обрядом.'};if(ctx&&ctx.hit===false)return{ok:false,reason:'Клеймо применяется после подтверждённого попадания.'};if(!spend(h,'brandCastigation',1))return{ok:false,reason:'Клеймо уже использовано до отдыха.'};
  var s=st(h);s.brandTargetId=t.id;s.brandTether=!!tether;return{ok:true,targetId:t.id,effect:{trackSamePlane:true,psychicDamage:tether?Math.max(2,2*hemMod(h)):Math.max(1,hemMod(h)),dashForbidden:!!tether,teleportDamage:tether?'4d6':null,teleportSave:tether?'wis':null}};
 }
 function useGhost(h,id,ctx){
@@ -125,14 +125,14 @@ function useLycan(h,id,ctx){
  if(id==='stalkersProwess')return{ok:true,effect:{speedBonusFt:10,jumpLongBonusFt:10,jumpHighBonusFt:3,predatoryAttackBonus:l>=18?3:l>=11?2:1,predatoryRiteMagical:true}};
  if(id==='advancedTransformation'){return{ok:true,effect:{uses:2,regen:'1 + CON modifier when bloodied'}};}
  if(id==='brandOfVoracious')return{ok:true,effect:{bloodlustSaveAdvantage:true,advantageAgainstBrandedWhileHybrid:true}};
- if(id==='hybridTransformationMastery'){h.resources.hybridTransformation.current=999;return{ok:true,effect:{unlimitedHybrid:true,curseHowl:true}};}
+ if(id==='hybridTransformationMastery'){if(l<18)return{ok:false,reason:'Доступно с 18 уровня.'};s.bloodCursesKnown=s.bloodCursesKnown||[];if(s.bloodCursesKnown.indexOf('howl')<0)s.bloodCursesKnown.push('howl');h.resources.hybridTransformation.current=h.resources.hybridTransformation.max;return{ok:true,effect:{unlimitedHybrid:true,curseHowl:true}};}
  return{ok:false,unsupported:true};
 }
 function useMutant(h,id,ctx){
  sync(h);var s=st(h),l=lvl(h);
  if(id==='mutagencraft'||id==='consumeMutagen'){var m=String(ctx&&ctx.mutagen||'celerity'),d=mutagens[m];if(!d)return{ok:false,reason:'Неизвестный мутаген.'};if(d.req&&l<d.req)return{ok:false,reason:'Мутаген требует '+d.req+' уровня.'};if(!spend(h,'mutagenConcoctions',1))return{ok:false,reason:'Нет приготовленных мутагенов.'};s.activeMutagens=s.activeMutagens||[];s.activeMutagens.push({id:m,effect:d.effect,side:d.side});return{ok:true,mutagen:m,effect:d.effect,sideEffect:d.side};}
  if(id==='flushMutagens'){s.activeMutagens=[];return{ok:true,message:'Все мутагены удалены.'};}
- if(id==='strangeMetabolism'){return{ok:true,effect:{immunity:['poison','poisoned'],ignoreMutagenSideEffect:'1 minute',uses:1,recharge:'long'}};}
+ if(id==='strangeMetabolism'){if(l<7)return{ok:false,reason:'Доступно с 7 уровня.'};if(!spend(h,'strangeMetabolism',1))return{ok:false,reason:'Ускорение метаболизма уже использовано до долгого отдыха.'};return{ok:true,effect:{immunity:['poison','poisoned'],ignoreMutagenSideEffect:'1 minute'}};}
  if(id==='brandOfAxiom')return{ok:true,effect:{endIllusionOrInvisibilityOnBrand:true,blockIllusionInvisibility:true,shapechangeSave:'wis',stunOnFailedShapechange:true}};
  if(id==='exaltedMutation'){var uses=h.resources.exaltedMutation;if(!spend(h,'exaltedMutation',1))return{ok:false,reason:'Нет использования Exalted Mutation.'};return{ok:true,effect:{replaceOneActiveMutagen:true,usesLeft:uses.current}};}
  if(id==='alchemicalMastery')return{ok:true,effect:{mutagenCraftUses:2,formulaCount:6}};
