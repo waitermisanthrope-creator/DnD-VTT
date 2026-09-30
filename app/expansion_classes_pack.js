@@ -65,24 +65,39 @@
     syncPsion(h);cost=Math.max(0,Number(cost)||0);var r=h.resources.psiPoints,s=st(h);
     if(cost>r.limit)return{ok:false,message:'Нельзя потратить больше '+r.limit+' очков пси за один эффект.'};
     if(cost===0)return{ok:true,spent:0};
-    if(ctx&&ctx.useMastery){
-      var free=Math.min(cost,Number(s.psionMasteryFree||0));if(allowMastery&&free>0){var rest=cost-free;if(rest>0&&!spend(h,'psiPoints',rest))return{ok:false,message:'Недостаточно обычных очков пси.'};s.psionMasteryUsed=free;return{ok:true,spent:cost,masterySpent:free};}
+    if(ctx&&ctx.useMastery&&allowMastery&&Number(s.psionMasteryFree||0)>0){
+      var turnKey=ctx.turnKey!==undefined?String(ctx.turnKey):(ctx.round!==undefined?String(ctx.round)+':'+String(ctx.turn||0):null);
+      if(turnKey!==null&&s.psionMasteryTurnKey!==turnKey){s.psionMasteryTurnKey=turnKey;s.psionMasteryUsed=0;}
+      var available=Math.max(0,Number(s.psionMasteryFree||0)-Number(s.psionMasteryUsed||0));
+      var free=Math.min(cost,available);
+      if(free>0){var rest=cost-free;if(rest>0&&!spend(h,'psiPoints',rest))return{ok:false,message:'Недостаточно обычных очков пси.'};s.psionMasteryUsed=(Number(s.psionMasteryUsed)||0)+free;return{ok:true,spent:cost,masterySpent:free};}
     }
     if(!spend(h,'psiPoints',cost))return{ok:false,message:'Недостаточно очков пси.'};
     return{ok:true,spent:cost};
   }
+  function psionStartTurn(h,ctx){
+    syncPsion(h);ctx=ctx||{};var s=st(h),l=lvl(h,'Psion');if(l<5)return{ok:true,freePsi:0};
+    var key=ctx.turnKey!==undefined?String(ctx.turnKey):(ctx.round!==undefined?String(ctx.round)+':'+String(ctx.turn||0):null);
+    if(key!==null&&s.psionMasteryTurnKey===key)return{ok:true,freePsi:Math.max(0,Number(s.psionMasteryFree||0)-Number(s.psionMasteryUsed||0))};
+    s.psionMasteryTurnKey=key;s.psionMasteryUsed=0;return{ok:true,freePsi:Number(s.psionMasteryFree||0)};
+  }
   function psionPower(h,id,ctx){
-    ctx=ctx||{};var s=st(h),t=target(ctx),cost=Math.max(0,Number(ctx.psi)||0),p=psionSpend(h,cost,true,ctx);if(!p.ok)return p;
-    if(id==='enhancingSurge'){if(!t)return{ok:false,message:'Выбери цель.'};return{ok:true,target:t.id,effect:{tempHp:'1d6',nextDamage:'1d6',fortifyingDice:cost,savageDice:cost,swift:cost>=2,resistanceAll:cost>=3,durationRounds:1},message:'🧠 Усиливающий импульс применён.'};}
-    if(id==='telekineticForce'){if(!t)return{ok:false,message:'Выбери цель.'};return{ok:true,target:t.id,effect:{save:'str',damage:(1+cost)+'d10 bludgeoning',forcedMoveFt:5+10*cost,prone:true,restrained:cost>=2,zoneRadiusFt:cost>=1?5*Math.pow(2,Math.min(2,cost)):0},message:'🧠 Телекинетическая сила применена.'};}
-    if(id==='telepathicIntrusion'){if(!t)return{ok:false,message:'Выбери цель.'};return{ok:true,target:t.id,effect:{save:ctx.intSave?'int':'wis',damage:(1+cost)+'d8 psychic',disadvantageAgainstSelf:true,frightened:cost>=1,stunned:cost>=3,durationRounds:1},message:'🧠 Телепатическое вторжение применено.'};}
+    ctx=ctx||{};var s=st(h),t=target(ctx),cost=Math.max(0,Number(ctx.psi)||0);
+    var needsTarget=['enhancingSurge','telekineticForce','telepathicIntrusion','elementalBlast','denial','mindLeech'].indexOf(id)>=0;
+    if(needsTarget&&!t)return{ok:false,message:'Выбери цель.'};
+    if(id==='astralConstruct'&&s.astralConstruct&&s.astralConstruct.active)return{ok:false,message:'Астральная конструкция уже существует.'};
+    if(id==='projectItem'&&(s.projectedItems||[]).length>=3)return{ok:false,message:'Одновременно можно иметь не более трёх спроецированных предметов.'};
+    var p=psionSpend(h,cost,true,ctx);if(!p.ok)return p;
+    if(id==='enhancingSurge')return{ok:true,target:t.id,effect:{tempHp:'1d6',nextDamage:'1d6',fortifyingDice:cost,savageDice:cost,swift:cost>=2,resistanceAll:cost>=3,durationRounds:1},message:'🧠 Усиливающий импульс применён.'};
+    if(id==='telekineticForce')return{ok:true,target:t.id,effect:{save:'str',damage:(1+cost)+'d10 bludgeoning',forcedMoveFt:5+10*cost,prone:true,restrained:cost>=2,zoneRadiusFt:cost>=1?5*Math.pow(2,Math.min(2,cost)):0},message:'🧠 Телекинетическая сила применена.'};
+    if(id==='telepathicIntrusion')return{ok:true,target:t.id,effect:{save:ctx.intSave?'int':'wis',damage:(1+cost)+'d8 psychic',disadvantageAgainstSelf:true,frightened:cost>=1,stunned:cost>=3,durationRounds:1},message:'🧠 Телепатическое вторжение применено.'};
     if(id==='phaseRift')return{ok:true,effect:{teleportFt:Math.max(10,Number(ctx.distance)||10),straightLine:true,damage:'1d8 force',save:'dex',passesThroughCreatures:true,durationRounds:1},message:'🌀 Фазовый разрыв активирован.'};
-    if(id==='elementalBlast'){if(!t)return{ok:false,message:'Выбери цель.'};return{ok:true,target:t.id,effect:{attackRoll:true,damage:(1+cost)+'d8 '+(ctx.element||'fire')},message:'⚡ Элементальный взрыв.'};}
-    if(id==='astralConstruct'){if(s.astralConstruct&&s.astralConstruct.active)return{ok:false,message:'Астральная конструкция уже существует.'};s.astralConstruct={active:true,concentration:true};return{ok:true,effect:{summon:'astralConstruct',durationRounds:10,rangeFt:60,attack:'1d8 force',commands:['Удар','Перемещение','Уплотнение','Захват','Рост','Копия','Поддержание']},message:'🜁 Астральная конструкция создана.'};}
-    if(id==='projectItem'){s.projectedItems=(s.projectedItems||[]);if(s.projectedItems.length>=3)return{ok:false,message:'Одновременно можно иметь не более трёх спроецированных предметов.'};s.projectedItems.push({createdAt:Date.now()});return{ok:true,effect:{createProjectedItem:true,maxSizeFt:3,maxWeightLb:10,durationRounds:10},message:'🜁 Предмет спроецирован.'};}
+    if(id==='elementalBlast')return{ok:true,target:t.id,effect:{attackRoll:true,damage:(1+cost)+'d8 '+(ctx.element||'fire')},message:'⚡ Элементальный взрыв.'};
+    if(id==='astralConstruct'){s.astralConstruct={active:true,concentration:true};return{ok:true,effect:{summon:'astralConstruct',durationRounds:10,rangeFt:60,attack:'1d8 force',commands:['Удар','Перемещение','Уплотнение','Захват','Рост','Копия','Поддержание']},message:'🜁 Астральная конструкция создана.'};}
+    if(id==='projectItem'){s.projectedItems=(s.projectedItems||[]);s.projectedItems.push({createdAt:Date.now()});return{ok:true,effect:{createProjectedItem:true,maxSizeFt:3,maxWeightLb:10,durationRounds:10},message:'🜁 Предмет спроецирован.'};}
     if(id==='seeing')return{ok:true,effect:{advantageNextD20:true,foresight:true},message:'👁️ Видение применено.'};
-    if(id==='denial'){if(!t)return{ok:false,message:'Выбери цель.'};return{ok:true,target:t.id,effect:{save:'cha',endEffectPowerUpTo:Math.max(1,cost)},message:'🛑 Нейтрализация применена.'};}
-    if(id==='mindLeech'){if(!t)return{ok:false,message:'Выбери цель.'};return{ok:true,target:t.id,effect:{save:'wis',damage:Math.max(1,cost)+'d8 psychic',healSelf:'halfDamage',restorePsiOnKill:1},message:'🩸 Пиявка разума применена.'};}
+    if(id==='denial')return{ok:true,target:t.id,effect:{save:'cha',endEffectPowerUpTo:Math.max(1,cost)},message:'🛑 Нейтрализация применена.'};
+    if(id==='mindLeech')return{ok:true,target:t.id,effect:{save:'wis',damage:Math.max(1,cost)+'d8 psychic',healSelf:'halfDamage',restorePsiOnKill:1},message:'🩸 Пиявка разума применена.'};
     return{ok:false,unsupported:true};
   }
   function usePsion(h,id,ctx,feature){
@@ -90,10 +105,12 @@
     var aliases={psionicPower:'psiMastery',mindThrust:'telepathicIntrusion',telekineticPush:'telekineticForce',forceSurge:'elementalBlast',mentalConstruct:'astralConstruct'};id=aliases[id]||id;
     var l=lvl(h,'Psion'),s=st(h),t=target(ctx);
     if(id==='chooseArchetype'){var a=String(ctx.archetype||'');var amap={awakened:'telepathy',unleashed:'telekinesis',transcended:'enhancement',shaper:'projection',wandering:'transposition',elemental:'psychokinetics',consuming:'consumption'};if(!amap[a]||!psionDisciplines[amap[a]])return{ok:false,message:'Неизвестный архетип.'};s.psionArchetype=a;s.psionDisciplines=[amap[a]];return{ok:true,message:'🧠 Архетип Псионика выбран.'};}
-    if(id==='chooseDiscipline'){var d=String(ctx.discipline||'');if(!psionDisciplines[d])return{ok:false,message:'Неизвестная дисциплина.'};s.psionDisciplines=s.psionDisciplines||[];if(s.psionDisciplines.indexOf(d)>=0)return{ok:false,message:'Эта дисциплина уже изучена.'};if(s.psionDisciplines.length>=(l>=18?3:2))return{ok:false,message:'Достигнут предел дисциплин.'};s.psionDisciplines.push(d);return{ok:true,message:'🧠 Дисциплина изучена: '+psionDisciplines[d].name+'.'};}
+    if(id==='chooseDiscipline'){var d=String(ctx.discipline||'');if(!psionDisciplines[d])return{ok:false,message:'Неизвестная дисциплина.'};if(l<3)return{ok:false,message:'Вторая дисциплина доступна с 3 уровня.'};s.psionDisciplines=s.psionDisciplines||[];if(s.psionDisciplines.indexOf(d)>=0)return{ok:false,message:'Эта дисциплина уже изучена.'};if(s.psionDisciplines.length>=(l>=18?3:2))return{ok:false,message:'Достигнут предел дисциплин.'};s.psionDisciplines.push(d);return{ok:true,message:'🧠 Дисциплина изучена: '+psionDisciplines[d].name+'.'};}
     if(id==='chooseTalent'){var tal=String(ctx.talent||'');if(!tal)return{ok:false,message:'Выбери псионический талант.'};if((s.psionTalents||[]).indexOf(tal)>=0)return{ok:false,message:'Этот талант уже выбран.'};if((s.psionTalents||[]).length>=s.psionTalentsKnown)return{ok:false,message:'Все доступные таланты уже выбраны.'};s.psionTalents.push(tal);return{ok:true,message:'🧠 Псионический талант выбран.'};}
-    if(id==='chooseInnateSpell'){var sl=Number(ctx.spellLevel);if([6,7,8,9].indexOf(sl)<0)return{ok:false,message:'Неверный уровень врождённого заклинания.'};if(s.psionInnateChoices[sl])return{ok:false,message:'Этот уровень уже выбран.'};s.psionInnateChoices[sl]=String(ctx.spell||'');return{ok:true,message:'🧠 Врождённое заклинание выбрано.'};}
-    if(id==='usePsi')return psionSpend(h,ctx.psi,true,ctx);
+    if(id==='chooseInnateSpell'){var sl=Number(ctx.spellLevel),req={6:11,7:13,8:15,9:17}[sl],spell=String(ctx.spell||'');if(!req||l<req)return{ok:false,message:'Врождённое заклинание этого уровня ещё недоступно.'};var list=(global.psionProgression&&global.psionProgression.spellLists&&global.psionProgression.spellLists[sl])||[];if(list.indexOf(spell)<0)return{ok:false,message:'Выбранного заклинания нет в списке Псионика этого уровня.'};if(s.psionInnateChoices[sl])return{ok:false,message:'Этот уровень уже выбран.'};s.psionInnateChoices[sl]=spell;return{ok:true,message:'🧠 Врождённое заклинание выбрано.'};}
+    if(id==='startTurn')return psionStartTurn(h,ctx);
+    if(id==='endTurn'){s.psionMasteryUsed=0;s.psionMasteryTurnKey=null;return{ok:true,freePsiLost:true,message:'🧠 Неиспользованные временные очки пси потеряны.'};}
+    if(id==='usePsi')return psionSpend(h,ctx.psi,false,ctx);
     if(['enhancingSurge','telekineticForce','telepathicIntrusion','phaseRift','elementalBlast','astralConstruct','projectItem','seeing','denial','mindLeech'].indexOf(id)>=0)return psionPower(h,id,ctx);
     if(id==='psiMastery')return{ok:true,effect:{freePsiPerTurn:s.psionMasteryFree||0,temporary:true,expires:'endOfTurn'},message:'🧠 Псионическое мастерство готово.'};
     if(id==='innatePsionics'){var sl=Number(ctx.spellLevel),spell=s.psionInnateChoices[sl]||ctx.spell;if(!spell)return{ok:false,message:'Сначала выбери заклинание этого уровня.'};if(s.psionInnateUsed&&s.psionInnateUsed[sl])return{ok:false,message:'Врождённая способность этого уровня уже использована до долгого отдыха.'};s.psionInnateUsed=s.psionInnateUsed||{};s.psionInnateUsed[sl]=true;return{ok:true,effect:{castSpell:spell,spellLevel:sl,components:'обычные компоненты'},message:'🧠 Врождённая псионика применена.'};}
@@ -1405,7 +1422,7 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
       {id:'wandering',name:'Странствующий разум',features:[{id:'phaseDancer',name:'Танец фаз',level:6,action:'passive'},{id:'planeswalker',name:'Путешественник планов',level:14,action:'utility'}]},
       {id:'elemental',name:'Элементальный разум',features:[{id:'primordialAspect',name:'Первородный облик',level:1,action:'choice'},{id:'elementalForm',name:'Элементальное воплощение',level:14,action:'action'}]},
       {id:'consuming',name:'Поглощающий разум',features:[{id:'mindDevourer',name:'Пожиратель разума',level:3,action:'reaction'},{id:'mindVampire',name:'Вампир разума',level:10,action:'reaction'},{id:'shatteredHusks',name:'Разрушенные оболочки',level:14,action:'action'}]}
-    ],hooks:{sync:syncPsion,useFeature:usePsion,attackModifiers:psionAttack}},
+    ],hooks:{sync:syncPsion,useFeature:usePsion,attackModifiers:psionAttack,startTurn:psionStartTurn}},
     {id:'kibbles-warlord',name:'Warlord',displayName:'Военачальник',source:'Laserllama — Warlord v3.3.0',license:'Original runtime implementation; source mechanics checked against public class material',features:[
       {id:'leadershipStyle',name:'Стиль лидерства',level:1,action:'utility'},
       {id:'archery',name:'Стрельба',level:2,action:'passive'},
