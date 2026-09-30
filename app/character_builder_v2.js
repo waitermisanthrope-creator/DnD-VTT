@@ -167,6 +167,9 @@
   }
   function applyStartingEquipment(hero,className){
     var d=getClass(className)||{},eq=d.startingEquipment||d.equipment;if(!eq)return;
+    /* A/B packages are resolved by class_equipment choice. Do not silently
+       give the character both mutually exclusive packages. */
+    if(!Array.isArray(eq)&&typeof eq==='object'&&(eq.a||eq.b))return;
     hero.startingEquipment=hero.startingEquipment||[];
     var add=function(x){if(!x)return;var v=String(x);if(hero.startingEquipment.indexOf(v)<0)hero.startingEquipment.push(v);};
     if(Array.isArray(eq))eq.forEach(add);else if(typeof eq==='object')Object.keys(eq).forEach(function(k){var v=eq[k];if(Array.isArray(v))v.forEach(add);else add(v);});
@@ -458,6 +461,12 @@
         return ids.map(function(id){var f=db.find(function(x){return x.id===id||x.name===id;});return f||{id:id,name:id};});
       },className:className,level:1,source:'class'});
     }
+    if(isNewClass && p.startingEquipment && typeof p.startingEquipment==='object' && !Array.isArray(p.startingEquipment) && (p.startingEquipment.a||p.startingEquipment.b)){
+      out.push({id:'class_equipment',key:'class:'+className+':equipment',type:'single',label:'Стартовое снаряжение',options:[
+        {id:'a',name:'Набор А',description:(Array.isArray(p.startingEquipment.a)?p.startingEquipment.a:[]).join(', ')},
+        {id:'b',name:'Набор Б',description:(Array.isArray(p.startingEquipment.b)?p.startingEquipment.b:[]).join(', ')}
+      ],className:className,level:1,source:'class'});
+    }
     if(isNewClass && p.secondaryStatChoice){
       out.push({id:'secondary_stat',key:'class:'+className+':secondaryStat',type:'single',label:'Дополнительная характеристика класса',options:STATS.filter(function(s){return p.secondaryStatChoice.indexOf(s.id)>=0;}),className:className,level:1,source:'class'});
     }
@@ -623,6 +632,12 @@
     }
     if(choice.id==='class_skills'){hero.skillsData=hero.skillsData||{};val.forEach(function(x){hero.skillsData[normalizeSkillId(x)]=1;});}
     if(choice.id==='class_tools'){hero.proficiencies=hero.proficiencies||[];var db=g.PROFICIENCIES_DB||[];val.forEach(function(id){var p=db.find(function(x){return x.id===id;});if(p&&!hero.proficiencies.some(function(x){return x.id===id;}))hero.proficiencies.push(Object.assign({},p));});}
+    if(choice.id==='class_equipment'){
+      var eqClass=getClass(choice.className)||{},eq=eqClass.startingEquipment||{};
+      var picked=eq[val]||[];
+      hero.startingEquipment=Array.isArray(picked)?picked.slice():[];
+      hero.startingEquipmentChoice=val;
+    }
     if(choice.id==='secondary_stat')hero.choiceState.secondaryStat=val;
     if(choice.id==='leadership')hero.choiceState.leadershipStyle=val;
     if(choice.id==='shifter_bloodline'){hero.choiceState.bloodline=val;applyRuntimeSpecializationFeatures(hero,'Шифтер',1);}
