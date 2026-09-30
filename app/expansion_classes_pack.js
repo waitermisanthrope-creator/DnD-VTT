@@ -796,6 +796,14 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     res(h,'illriggerInfernalMajesty',l>=17?1:0,'long');
     res(h,'illriggerMasterOfHell',l>=20?1:0,'long');
     res(h,'illriggerSuperiorInterdict',l>=14?1:0,'long');
+    res(h,'illriggerBloodPrice',l>=10?1:0,'long');
+    var dealUses=Math.max(1,Number(h.proficiencyBonus)||2);res(h,'illriggerHellspeakerDeal',l>=11?dealUses:0,'long');
+    res(h,'illriggerCharmEnemy',Math.max(1,mod(h,'cha')),'long');
+    res(h,'illriggerSanguineBlessing',Math.max(1,Number(h.proficiencyBonus)||2),'long');
+    res(h,'illriggerDevastator',l>=3?1:0,'short');
+    res(h,'illriggerYouDie',l>=11?1:0,'short');
+    res(h,'illriggerDeathstrike',l>=15?Math.max(1,Number(h.proficiencyBonus)||2):0,'long');
+    res(h,'illriggerQuidProQuo',l>=15?1:0,'long');
     s.illriggerBloodPriceReady=l>=10;
     s.illriggerSealTargets=s.illriggerSealTargets||{};
     s.illriggerContract=s.illriggerContract||'architect';
@@ -888,9 +896,10 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
       return{ok:true,target:t&&t.id,effect:{invokeHell:inv,saveDC:s.illriggerSaveDC},message:'🔥 Призыв Ада: '+inv+'.'};
     }
     if(id==='bloodPrice'){
-      if(l<10||!s.illriggerBloodPriceReady||ctx.hitDieAvailable===false)return{ok:false,message:'Кровавая цена недоступна: нужен доступный КХ.'};
+      var bp=h.resources&&h.resources.illriggerBloodPrice;if(l<10||!bp||bp.current<=0||ctx.hitDieAvailable===false)return{ok:false,message:'Кровавая цена недоступна: нужен доступный КХ и заряд способности.'};
+      if(ctx.failedSave!==true)return{ok:false,message:'Кровавую цену можно применить только после провала спасброска.'};
       if(ctx.hitDieResult===undefined&&ctx.consumeHitDie!==true)return{ok:false,message:'Для Кровавой цены нужно подтвердить расход КХ.'};
-      s.illriggerBloodPriceReady=false;return{ok:true,effect:{expendHitDie:true,saveBonus:ctx.hitDieResult!==undefined?ctx.hitDieResult:'1d10',selfUsesHitDie:true},message:'🩸 Кровавая цена: КХ потрачен и его результат добавлен к спасброску.'};
+      bp.current=0;return{ok:true,effect:{expendHitDie:true,saveBonus:ctx.hitDieResult!==undefined?ctx.hitDieResult:'1d10',selfUsesHitDie:true,majestySplash:s.illriggerMajesty===true},message:'🩸 Кровавая цена: КХ потрачен и его результат добавлен к спасброску.'};
     }
     if(id==='terrorizingForce'){
       var typ=String(ctx.damageType||'necrotic');if(['cold','fire','necrotic','poison'].indexOf(typ)<0)return{ok:false,message:'Допустимы холод, огонь, некротический или яд.'};
@@ -912,7 +921,11 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
       if(mh&&mh.current<=0)return{ok:false,message:'Повелитель Ада уже использован до долгого отдыха.'};
       var form=String(ctx.form||'inferno');if(['inferno','pestilence','darkness'].indexOf(form)<0)return{ok:false,message:'Выбери Инферно, Чуму или Тьму.'};
       if(mh)mh.current=0;
-      return{ok:true,effect:{rangeFt:150,areaRadiusFt:50,damage:form==='inferno'?'10d10 fire':form==='pestilence'?'10d10 poison/necrotic':'10d10 cold',save:form==='darkness'||form==='pestilence'?'con':'dex',condition:form==='darkness'?'blinded':form==='pestilence'?'poisoned':null},message:'☠️ Повелитель Ада: адский шторм «'+form+'».'};
+      var eff={rangeFt:150,areaRadiusFt:50,save:form==='darkness'||form==='pestilence'?'con':'dex'};
+      if(form==='inferno')eff.damage='5d10 fire + 5d10 necrotic',eff.burning=true,eff.burningDamage='1d10 fire + 1d10 necrotic';
+      if(form==='pestilence')eff.damage='5d10 poison + 5d10 necrotic',eff.poisoned=true,eff.durationMinutes=1;
+      if(form==='darkness')eff.damage='10d10 cold',eff.blinded=true,eff.durationMinutes=1;
+      return{ok:true,effect:eff,message:'☠️ Повелитель Ада: адский шторм «'+form+'».'};
     }
     if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' активно.'};
     return{ok:false,unsupported:true,message:'Способность Иллиригера зарегистрирована, но её отдельная автоматизация требует дополнительного UI.'};
@@ -927,6 +940,69 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
   }
   function illriggerContractFeature(h,id,ctx){
     syncIllrigger(h);ctx=ctx||{};var l=illriggerLevel(h),s=st(h),t=target(ctx);
+    var contract=String(s.illriggerContract||'architect');
+
+    if(id==='architectBlessing')return{ok:true,effect:{extraSkillChoice:['Arcana','History','Nature','Religion'],readWriteForkedLanguages:true},message:'📚 Благословение Архитектора активно.'};
+    if(id==='architectSpellcasting'){
+      var slots=[0,2,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4][Math.min(20,l)]||0;
+      var slot2=l>=7?2:0,slot3=l>=13?2:0,slot4=l>=16?3:0;
+      return{ok:true,effect:{cantrips:l>=10?3:2,spellsKnown:Math.min(13,3+Math.max(0,l-3)),slots:{1:slots,2:slot2,3:slot3,4:slot4},ability:'cha',saveDC:illriggerSaveDC(h),recharge:'long'},message:'🔮 Магия Архитектора доступна.'};
+    }
+    if(id==='hellspeakerCommand'||id==='charmEnemy'){
+      var cr=h.resources&&h.resources.illriggerCharmEnemy;if(cr&&cr.current<=0)return{ok:false,message:'Очарование уже использовано до долгого отдыха.'};
+      if(!t)return{ok:false,message:'Выбери цель.'};if(ctx.humanoid===false)return{ok:false,message:'Цель должна быть гуманоидом.'};
+      if(cr)cr.current-=1;return{ok:true,target:t.id,effect:{save:'cha',condition:'charmed',durationHours:1},message:'😈 Враг очарован.'};
+    }
+    if(id==='hellspeakerHoneySweetBlades')return{ok:true,effect:{advantageFirstAttack:true,criticalOnHit:true},message:'🍯 Сладчайшие клинки активированы.'};
+    if(id==='hellspeakerTurncoat')return{ok:true,effect:{save:'cha',targetsUpTo:Number(h.proficiencyBonus)||2,rangeFt:60,forcedReactionAttack:true},message:'🗣️ Перебежчик активирован.'};
+    if(id==='hellspeakerRedCant'){if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати для Красной речи.'};return{ok:true,effect:{minimumD20:10},message:'🗣️ Красная речь: результат d20 повышен до 10.'};}
+    if(id==='hellspeakerSlipperyPloy'){if(!t)return{ok:false,message:'Выбери атакующую цель.'};if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати.'};return{ok:true,target:t.id,effect:{save:'cha',redirectOrCancel:true},message:'🪤 Скользкий манёвр.'};}
+    if(id==='hellspeakerIncontrovertible')return{ok:true,passive:true,effect:{disadvantageSaves:['wis','cha'],againstInterdicted:true},message:'🗣️ Непререкаемость активна.'};
+    if(id==='hellspeakerIntransigent')return{ok:true,passive:true,effect:{immune:'charmed',radiusFt:10},message:'🛡️ Непреклонность активна.'};
+    if(id==='hellspeakerDeal'){
+      var dr=h.resources&&h.resources.illriggerHellspeakerDeal;if(!dr||dr.current<=0)return{ok:false,message:'Все сделки до долгого отдыха уже использованы.'};if(!t)return{ok:false,message:'Выбери союзника.'};dr.current-=1;
+      return{ok:true,target:t.id,effect:{durationMinutes:10,advantageOneAttackOrSave:true,addProficiencyBonus:true,successTempHp:l,failNextRollDisadvantage:true},message:'🤝 Сделка с Адом заключена.'};
+    }
+    if(id==='hellspeakerQuidProQuo'){
+      var qr=h.resources&&h.resources.illriggerQuidProQuo;if(!qr||qr.current<=0)return{ok:false,message:'Квид про кво уже использовано до долгого отдыха.'};if(!t)return{ok:false,message:'Выбери цель.'};qr.current=0;
+      return{ok:true,target:t.id,effect:{save:'cha',durationMinutes:1,banished:true,summonDevilJurist:true,repeatSaveAtTurnEnd:true},message:'⚖️ Квид про кво: цель отправлена в Ад.'};
+    }
+    if(id==='painkillerArmor')return{ok:true,passive:true,effect:{heavyArmor:true},message:'🛡️ Палач боли получает владение тяжёлой бронёй.'};
+    if(id==='painkillerDevastator'){
+      var dv=h.resources&&h.resources.illriggerDevastator;if(!dv||dv.current<=0)return{ok:false,message:'Опустошитель уже использован до короткого/долгого отдыха.'};if(dv)dv.current=0;
+      return{ok:true,effect:{makeWeaponAttack:true,allyReactionsUpTo:Number(h.proficiencyBonus)||2,allyAttackOrDamageCantrip:true,rangeFt:30},message:'⚔️ Опустошитель активирован.'};
+    }
+    if(id==='painkillerGrandStrategist')return{ok:true,effect:{moveAlliesHalfSpeed:true,rangeFt:60,noOpportunityAttacks:true},message:'🎖️ Великий стратег.'};
+    if(id==='painkillerPunishment')return useIllrigger(h,'punishment',ctx);
+    if(id==='painkillerTelekineticSeal'){if(!t)return{ok:false,message:'Выбери цель.'};if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати.'};return{ok:true,target:t.id,effect:{save:'wis',pushFt:15OrProne:true},message:'🪝 Телекинетическая печать.'};}
+    if(id==='painkillerByTheThroat'){if(!t)return{ok:false,message:'Выбери цель.'};if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати.'};return{ok:true,target:t.id,effect:{save:'wis',restrainedUntilEndOfNextTurn:true},message:'🗜️ За горло.'};}
+    if(id==='painkillerSupremacy')return{ok:true,passive:true,effect:{criticalRange:18,againstInterdicted:true},message:'⚔️ Превосходство Диспейтера активно.'};
+    if(id==='painkillerYouDie'){
+      var yd=h.resources&&h.resources.illriggerYouDie;if(!yd||yd.current<=0)return{ok:false,message:'Приказ уже использован.'};if(!t)return{ok:false,message:'Выбери союзника с 0 HP.'};if(ctx.hp!==0)return{ok:false,message:'Цель должна быть при 0 HP.'};yd.current=0;return{ok:true,target:t.id,effect:{setHp:1},message:'🩸 «Ты умрёшь по моему приказу!» — союзник остаётся на 1 HP.'};
+    }
+    if(id==='painkillerDeathstrike'){
+      var ds=h.resources&&h.resources.illriggerDeathstrike;if(!ds||ds.current<=0)return{ok:false,message:'Нет зарядов Смертельного удара.'};if(!t)return{ok:false,message:'Выбери помеченную цель.'};if(!s.illriggerSealTargets[t.id])return{ok:false,message:'На цели нет печати.'};ds.current-=1;
+      var b=illriggerBurn(h,t.id,1);if(!b.ok)return b;return{ok:true,target:t.id,effect:{criticalHit:true,sealDiceDoubled:true},message:'💀 Смертельный удар превращает попадание в критическое.'};
+    }
+    if(id==='sanguineExsanguinate'){
+      if(!t)return{ok:false,message:'Выбери союзника.'};var targetId=ctx.enemyId||ctx.sourceTargetId||ctx.interdictedTargetId;if(!targetId)return{ok:false,message:'Укажи врага, на котором сжигаются печати.'};var b=illriggerBurn(h,targetId,ctx.count);if(!b.ok)return b;return{ok:true,target:t.id,effect:{tempHp:Math.floor(Number(String(b.effect.damage).match(/^\\d+/)||[1])[0])},message:'🩸 Истощение: союзник получает временные HP.'};
+    }
+    if(id==='sanguineBlessing'){
+      var sb=h.resources&&h.resources.illriggerSanguineBlessing;if(!sb||sb.current<=0)return{ok:false,message:'Благословение Сутеха уже использовано до долгого отдыха.'};sb.current-=1;return{ok:true,effect:{senseBloodCreatures:true,rangeFt:120,durationRounds:1},message:'🩸 Кровь ощущается в радиусе 120 футов.'};
+    }
+    if(id==='sanguineFoulInterchange'){if(!t)return{ok:false,message:'Выбери заражённую цель.'};if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати.'};return{ok:true,target:t.id,effect:{endCondition:ctx.condition||'poisoned',transferCondition:true,rangeFt:60,save:'con'},message:'🩸 Грязный обмен.'};}
+    if(id==='sanguineGift'){if(!t)return{ok:false,message:'Выбери цель лечения.'};if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати.'};return{ok:true,target:t.id,effect:{bonusHealing:l},message:'🎁 Кровавый дар.'};}
+    if(id==='sanguineBloodstroke')return{ok:true,effect:{retaliatoryDamage:l,damageType:ctx.damageType||'fire'},message:'🩸 Кровавый удар готов.'};
+    if(id==='sanguineHaemalExchange'){if(!t)return{ok:false,message:'Выбери помеченную цель.'};if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати.'};return{ok:true,target:t.id,effect:{subtractD8:true,allyNextAddD8:true,rangeFt:60},message:'🩸 Гемальный обмен.'};
+    if(id==='sanguineBloodForBlood')return{ok:true,passive:true,effect:{retaliatoryNecrotic:Number(h.proficiencyBonus)||2},message:'🩸 Кровь за кровь активна.'};
+    if(id==='shadowMarkedForDeath')return{ok:true,effect:{advantageFirstAttack:true,againstInterdicted:true},message:'🌑 Помеченный на смерть.'};
+    if(id==='shadowStrikeFromDark')return{ok:true,effect:{bonusDamageDice:Number(h.proficiencyBonus)||2,die:l>=15?'d8':'d4',extraDimLightDie:l>=15?'2d8':'1d4',requiresAdvantage:true},message:'🌑 Удар из тьмы.'};
+    if(id==='shadowNoEscape'){if(!t)return{ok:false,message:'Выбери цель.'};return{ok:true,target:t.id,effect:{save:'cha',disadvantageInDimLight:true,speedHalf:true,maxDistanceFt:30},message:'🌑 Не уйдёшь.'};
+    if(id==='shadowVeil'){if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати.'};return{ok:true,effect:{invisible:true,durationMinutes:10,endsOnAttackOrSpell:true},message:'🌑 Покров лжи.'};
+    if(id==='shadowHellAssassin')return{ok:true,passive:true,effect:{rerollDamage12:true,againstInterdicted:true},message:'🗡️ Адский убийца активен.'};
+    if(id==='shadowDarkMalediction')return{ok:true,passive:true,effect:{darknessAroundInterdictedFt:10},message:'🌑 Тёмное проклятие активно.'};
+    if(id==='shadowUmbralKiller')return{ok:true,passive:true,effect:{darkvisionFt:60,speedBonusFt:10,stealthAdvantage:true,evasion:true},message:'🌑 Умбральный убийца активен.'};
+    if(id==='shadowDoomedToShadows')return{ok:true,effect:{strikeDice:Number(h.proficiencyBonus)||2,die:'d8',extraDimLight:'2d8',canBurnSealForBlind:true},message:'🌑 Обречённый тьмой.'};
     if(id==='architectBlessing')return{ok:true,effect:{extraKnowledgeSkill:true,language:'дополнительный язык'},message:'📚 Благословение Архитектора активно.'};
     if(id==='architectSpellcasting')return{ok:true,effect:{oneThirdCaster:true,ability:'charisma',spellSaveDC:illriggerSaveDC(h)},message:'🔮 Магия Архитектора разрушения доступна.'};
     if(id==='hellspeakerCommand')return{ok:true,effect:{charmOrCompel:true,save:'wis',saveDC:illriggerSaveDC(h)},message:'🗣️ Воля Говорящего с Адом применена.'};
