@@ -353,6 +353,14 @@
       if(rt&&typeof rt.sync==='function')rt.sync(h);
       ensureRes(h,'bloodMaledict',l>=17?4: l>=13?3: l>=6?2:1,'short');
       if(orderKeyForBridge(h)==='ghostslayer')ensureRes(h,'bloodMaledict',l>=17?5:l>=13?4:l>=6?3:2,'short');
+      if(l>=3&&orderKeyForBridge(h)==='profaneSoul'){
+        var bhSlots=l>=19?4:l>=13?3:l>=7?2:1;
+        ensureRes(h,'bhPactSlots',bhSlots,'short');
+      }
+      if(l>=7&&orderKeyForBridge(h)==='ghostslayer')ensureRes(h,'bhAetherWalk',l>=15?2:1,'short');
+      if(l>=3&&orderKeyForBridge(h)==='lycan')ensureRes(h,'bhHybridTransformation',l>=11?2:1,'short');
+      if(l>=18&&orderKeyForBridge(h)==='lycan')ensureRes(h,'bhHybridTransformation',999,'short');
+      if(l>=18&&orderKeyForBridge(h)==='mutant')ensureRes(h,'bhExaltedMutation',Math.max(1,abilityMod(h,'int')),'long');
     }
 
     l=classLevel(h,'Шифтер');
@@ -391,6 +399,8 @@
       ensureRes(h,'beastheartFerocity',9999,'encounter');
       h.resources.beastheartFerocity.current=bf;
       h.resources.beastheartFerocity.max=9999;
+      h.resources.beastheartFerocity.unbounded=true;
+      h.resources.beastheartFerocity.displayMax=null;
     }
 
     l=classLevel(h,'Оккультист');
