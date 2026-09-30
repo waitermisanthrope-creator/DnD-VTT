@@ -551,7 +551,7 @@
       hero.tokenArt=({
         'Рой':'./app/data/classes/the swam.png',
         'Паразит':'./app/data/classes/parasite.png',
-        'Паразит доктора Вальтера':'./1790718758545.png',
+        'Паразит доктора Вальтера':'./wallpapers/1790718758545.png',
         'Призрак':'./app/data/classes/geist.png'
       })[this.className]||'';
       hero.tokenReady=!!hero.tokenArt;
