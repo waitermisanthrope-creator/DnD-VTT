@@ -84,19 +84,21 @@ omnipresence:"Всегда знать местоположение своих н
 omniscience:"Знать, говорить и писать все языки.",
 omnipotence:"Радиус рунной стойки увеличивается до 30 футов."
 };
-window.RUNEKeeper_V12={INS,PB,KNOWN,LANGS,DIALECTS,progression,base,MECHANICS};
+window.RUNEKeeper_V12={INS,PB,KNOWN,LANGS,DIALECTS,progression,base};
 window.runeKeeperProgression=Object.assign(window.runeKeeperProgression||{},progression);
+window.runeKeeperRuntime={version:"1.2",getInscribedRunes:l=>INS[l]||0,getRunesKnown:l=>KNOWN[l]||0,getRunicDC:(pb,intMod)=>8+(pb||0)+(intMod||0),getDialect:n=>DIALECTS[n]||null,getLanguages:()=>LANGS};
+window.runeKeeperDialects=Object.keys(DIALECTS);
 
   const MECHANICS={runicCharges:"floor(classLevel/2)",invocation:"touch_or_speak_name",inscription:"one_rune_per_object",inactiveAfterInvoke:true,stance:{rangeFtByLevel:{2:10,20:30},action:"bonus_action",modes:["разрушение","защита"]},chant:{level9:2,level20:3}};
-  function state(h){h.classFeaturesState=h.classFeaturesState||{};var s=h.classFeaturesState.runekeeper=h.classFeaturesState.runekeeper||{};s.runes=s.runes||{};return s;}
-  function level(h){return ((h&&h.classes)||[]).reduce((n,c)=>String(c.name||"")==="Рунный хранитель"?Math.max(n,Number(c.level)||0):n,0);}
-  function inscribe(h,rune,objectId){var s=state(h);if(!rune)return {ok:false,reason:"Не указана руна."};var id=objectId||("obj_"+Date.now());s.runes[id]={rune:rune,active:true};return {ok:true,rune:rune,objectId:id};}
-  function invoke(h,objectId){var s=state(h),e=s.runes[objectId];if(!e)return {ok:false,reason:"На объекте нет вашей руны."};if(!e.active)return {ok:false,reason:"Руна уже инертна."};e.active=false;s.lastInvokedRune=e.rune;return {ok:true,rune:e.rune,objectId:objectId};}
-  function useRunicCharge(h,objectId){var s=state(h),max=Math.floor(level(h)/2);s.runicCharges=s.runicCharges==null?max:s.runicCharges;if(s.runicCharges<=0)return {ok:false,reason:"Рунные заряды закончились."};var e=s.runes[objectId];if(!e)return {ok:false,reason:"Руна не найдена."};s.runicCharges--;e.active=true;return {ok:true,remaining:s.runicCharges,rune:e.rune};}
-  function setStance(h,mode){if(["разрушение","защита"].indexOf(String(mode))<0)return {ok:false,reason:"Неизвестная рунная стойка."};state(h).stance=mode;return {ok:true,stance:mode};}
-  function chooseDialect(h,name){if(!DIALECTS[name])return {ok:false,reason:"Неизвестный диалект."};state(h).dialect=name;return {ok:true,dialect:name,data:DIALECTS[name]};}
-  function restore(h,type){var s=state(h);if(type==="long"){s.runicCharges=Math.floor(level(h)/2);Object.keys(s.runes).forEach(k=>s.runes[k].active=true);}return s;}
+  function rkState(h){h.classFeaturesState=h.classFeaturesState||{};var s=h.classFeaturesState.runekeeper=h.classFeaturesState.runekeeper||{};s.runes=s.runes||{};return s;}
+  function rkLevel(h){return ((h&&h.classes)||[]).reduce((n,c)=>String(c.name||"")==="Рунный хранитель"?Math.max(n,Number(c.level)||0):n,0);}
+  function rkInscribe(h,rune,objectId){var s=rkState(h);if(!rune)return {ok:false,reason:"Не указана руна."};var id=objectId||("obj_"+Date.now());s.runes[id]={rune:rune,active:true};return {ok:true,rune:rune,objectId:id};}
+  function rkInvoke(h,objectId){var s=rkState(h),e=s.runes[objectId];if(!e)return {ok:false,reason:"На объекте нет вашей руны."};if(!e.active)return {ok:false,reason:"Руна уже инертна."};e.active=false;s.lastInvokedRune=e.rune;return {ok:true,rune:e.rune,objectId:objectId};}
+  function rkCharge(h,objectId){var s=rkState(h),max=Math.floor(rkLevel(h)/2);s.runicCharges=s.runicCharges==null?max:s.runicCharges;if(s.runicCharges<=0)return {ok:false,reason:"Рунные заряды закончились."};var e=s.runes[objectId];if(!e)return {ok:false,reason:"Руна не найдена."};s.runicCharges--;e.active=true;return {ok:true,remaining:s.runicCharges,rune:e.rune};}
+  function rkStance(h,mode){if(["разрушение","защита"].indexOf(String(mode))<0)return {ok:false,reason:"Неизвестная рунная стойка."};rkState(h).stance=mode;return {ok:true,stance:mode};}
+  function rkDialect(h,name){if(!DIALECTS[name])return {ok:false,reason:"Неизвестный диалект."};rkState(h).dialect=name;return {ok:true,dialect:name,data:DIALECTS[name]};}
+  function rkRestore(h,type){var s=rkState(h);if(type==="long"){s.runicCharges=Math.floor(rkLevel(h)/2);Object.keys(s.runes).forEach(k=>s.runes[k].active=true);}return s;}
+  window.runeKeeperRuntime.MECHANICS=MECHANICS;window.runeKeeperRuntime.inscribe=rkInscribe;window.runeKeeperRuntime.invoke=rkInvoke;window.runeKeeperRuntime.useRunicCharge=rkCharge;window.runeKeeperRuntime.setStance=rkStance;window.runeKeeperRuntime.chooseDialect=rkDialect;window.runeKeeperRuntime.restore=rkRestore;
 
-window.runeKeeperRuntime={version:"1.2",getInscribedRunes:l=>INS[l]||0,getRunesKnown:l=>KNOWN[l]||0,getRunicDC:(pb,intMod)=>8+(pb||0)+(intMod||0),getDialect:n=>DIALECTS[n]||null,getLanguages:()=>LANGS,MECHANICS,inscribe,invoke,useRunicCharge,setStance,chooseDialect,restore};
-window.runeKeeperDialects=Object.keys(DIALECTS);
+
 })();
