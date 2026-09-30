@@ -24,8 +24,8 @@
     },
     {
       "path": "app/character_builder_v2.js",
-      "bytes": 102344,
-      "sha256": "ebe444c336a8f7a1c7adb6a46bd8cadfbbc3d979f853486908781dcc6f9c59a7"
+      "bytes": 102503,
+      "sha256": "d7c04749343340038f4e06cdc553e2f6c7f2a29d6e675844333ffbf05879e5cf"
     },
     {
       "path": "app/character_creation.js",
@@ -79,8 +79,8 @@
     },
     {
       "path": "app/class_features_engine.js",
-      "bytes": 105467,
-      "sha256": "8e0181588984ca03d03bc47907d0d4bdf060bad82166800ecef647e78f4db09d"
+      "bytes": 108142,
+      "sha256": "35dcc294786e500a3cc1dc008e33d8482ad1d4050e90b41a001369361e0440e3"
     },
     {
       "path": "app/combat_engine.js",
