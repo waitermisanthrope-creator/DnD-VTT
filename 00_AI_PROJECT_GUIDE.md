@@ -5669,3 +5669,24 @@ QA после сборки:
 - Исправлено: путь жетона Паразита доктора Вальтера в Builder V2 приведён к Android-пути `./wallpapers/1790718758545.png`.
 - Проверено в APK run 538 (70.26.5): внутри APK присутствуют одновременно `assets/app/character_builder_v2.js`, `assets/wallpapers/1790718758545.png` и `assets/1790718758545.png`; Builder V2 проходит `node --check` без синтаксических ошибок. Для следующего APK нужен тест именно новой сборки после этих трёх изменений.
 - **Следующий шаг:** собрать V70.26.6 и проверить на телефоне путь «Создать персонажа → расписаться → Builder V2». Если снова не откроется, новый экран должен показать уже конкретную причину загрузки/исполнения скрипта, а не сообщение «module unavailable after 10 attempts».
+
+
+## V70.26.7 — DUPLICATE BUILDER SCRIPT CLEANUP — 2026-09-30
+
+После проверки APK V70.26.6 обнаружено, что автоматический фикс порядка загрузки Builder V2 добавил ранний script, но старый поздний script Builder V2 остался в index.html. Получался двойной запуск character_builder_v2.js; второй запуск мог перезаписать уже установленную parchment-обёртку createNewCharacter.
+
+Исправлено:
+- в index.html оставлен ровно один script character_builder_v2.js — ранний, сразу после live error console и до legacy creation scripts;
+- поздний дубликат Builder V2 удалён;
+- версия повышена до 70.26.7 / versionCode 7026007;
+- динамический bootstrap Builder V2 получил cache-bust ?v=70.26.7.
+
+Проверка APK V70.26.6 перед этим фиксом также подтвердила наличие в APK:
+- assets/app/character_builder_v2.js;
+- assets/1790718758545.png;
+- assets/wallpapers/1790718758545.png.
+
+Ожидаемый критический порядок:
+error console → Builder V2 → legacy creation → parchment → подпись → уже существующий window.CharacterBuilderV2.startCreateFromParchment().
+
+Следующая сборка 70.26.7 обязательна для теста.
