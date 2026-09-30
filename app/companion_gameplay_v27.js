@@ -60,7 +60,7 @@
     return cur;
   }
   function attack(id,targetId,index,flags){
-    var e=entity(id);if(!e)return {ok:false,reason:'not_found'};
+    var h=hero(),e=entity(id);if(!e)return {ok:false,reason:'not_found'};
     var t=findCombatant(targetId);if(!t)return {ok:false,reason:'target_not_found'};
     if(String(t.team||'')===String(e.team||'party')&&!(flags&&flags.allowFriendly))return {ok:false,reason:'friendly_target'};
     var action=(e.actions||[])[Number(index)||0];if(!action)return {ok:false,reason:'action_not_found'};
