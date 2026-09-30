@@ -320,6 +320,11 @@
     l=classLevel(h,'Заклинатель клинка');
     if(l)ensureRes(h,'arcaneSurges',Math.max(2,Math.ceil((Number(h.proficiencyBonus)||2))),'short');
 
+    l=classLevel(h,'Пугилист');
+    if(l){
+      pack=global.DNDContent&&global.DNDContent.getClass?global.DNDContent.getClass('Пугилист'):null;
+      if(pack&&pack.hooks&&typeof pack.hooks.sync==='function')pack.hooks.sync(h);
+    }
     l=classLevel(h,'Иллирригер');
     if(l){
       pack=global.DNDContent&&global.DNDContent.getClass?global.DNDContent.getClass('Иллирригер'):null;
@@ -844,6 +849,7 @@
        'shifterAdrenaline','shifterPrimevalForm','vesselMagicSlots','charnelTouch','undyingServitude',
        'brandCastigation','aetherWalk','hybridTransformation','mutagenConcoctions','strangeMetabolism','exaltedMutation','profaneSoulSlots',
        'illriggerSeals','illriggerConduit','illriggerInvokeHell','illriggerSuperiorInterdict','illriggerInfernalMajesty','illriggerMasterOfHell',
+       'pugilistMoxie','pugilistBloodiedButUnbowed','pugilistFightingSpirit','pugilistPersona','pugilistWorkCrowd','pugilistSignatureMove','pugilistDreadHand','pugilistGrotesqueGrowth','pugilistFountainViscera','pugilistUncouthArt',
        'martyrSpellUses','martyrDivineRespite','occultistFateReading',
        'beastheartFerocity','runicCharges','savantReactions'].forEach(function(id){
         if(h.resources[id])out.resources[id]={current:h.resources[id].current,max:h.resources[id].max,recharge:h.resources[id].recharge};
