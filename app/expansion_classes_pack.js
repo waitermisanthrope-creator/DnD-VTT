@@ -277,9 +277,9 @@ var academy=String(s.warlordAcademy||'');
     s.wardenSentinelStand=s.wardenSentinelStand||'stalwartSpirit';
     s.wardenSentinelStrike=s.wardenSentinelStrike||'interdict';
     s.wardenSentinelSoul=s.wardenSentinelSoul||'allSeeing';
-    s.wardenFontUses=l>=13?2:0;
-    s.wardenSurviveReady=s.wardenSurviveReady!==false;
-    s.wardenLegendaryResistance=l>=20?3:0;
+    res(h,'wardenFontOfLife',l>=13?2:0,'short');
+    res(h,'wardenSurvive',l>=9?1:0,'long');
+    res(h,'wardenLegendaryResistance',l>=20?3:0,'long');
     s.wardenGuardianRange=l>=14?10:5;
     s.wardenBloodiedResist=l>=15;
   }
@@ -313,18 +313,15 @@ var academy=String(s.warlordAcademy||'');
       return{ok:true,target:t.id,effect:{reaction:true,interruptOneAttackOrAbility:true,chooseBeforeRoll:true},message:'✋ Перехват: одна атака или способность врага отменена.'};
     }
     if(id==='fontOfLife'){
-      var fr=s.wardenFontUses||0;if(fr<=0)return{ok:false,message:'Источник жизни уже использован.'};
-      s.wardenFontUses=fr-1;
+      if(!spendResource(h,'wardenFontOfLife'))return{ok:false,message:'Источник жизни уже использован.'};
       return{ok:true,effect:{endCondition:true,conditions:['blinded','charmed','deafened','frightened','paralyzed','poisoned','stunned','restrained'],noAction:true},message:'✨ Источник жизни: состояние снято.'};
     }
     if(id==='survive'){
-      if(!s.wardenSurviveReady)return{ok:false,message:'Выжить уже использовано до долгого отдыха.'};
-      s.wardenSurviveReady=false;
+      if(!spendResource(h,'wardenSurvive'))return{ok:false,message:'Выжить уже использовано до долгого отдыха.'};
       return{ok:true,effect:{setHP:1,healHP:2*l},message:'🛡️ Выжить: вместо 0 HP остаётся 1 HP и восстанавливается '+(2*l)+' HP.'};
     }
     if(id==='legendaryResistance'){
-      if((s.wardenLegendaryResistance||0)<=0)return{ok:false,message:'Легендарное сопротивление уже использовано.'};
-      s.wardenLegendaryResistance--;
+      if(!spendResource(h,'wardenLegendaryResistance'))return{ok:false,message:'Легендарное сопротивление уже использовано.'};
       return{ok:true,effect:{saveSucceeds:true},message:'👑 Легендарное сопротивление: спасбросок считается успешным.'};
     }
     if(id==='sentinelStrikeInterdict'){
