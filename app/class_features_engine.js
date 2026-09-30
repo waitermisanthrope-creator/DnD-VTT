@@ -727,14 +727,14 @@
       var objectId=ctx&&ctx.objectId;
       if(!objectId)return{ok:false,reason:'Для расхода рунного заряда нужна конкретная руна.'};
       if(v!==1)return{ok:false,reason:'Рунный заряд расходуется по одному за активацию.'};
-      return rt.charge(h,objectId);
+      var rr=rt.charge(h,objectId);if(rr&&rr.ok&&h.resources&&h.resources.runicCharges)h.resources.runicCharges.current=Math.max(0,Math.min(Number(rr.remaining)||0,h.resources.runicCharges.max));return rr;
     }
     if(id==='savantReactions'){
       s=h.classFeaturesState&&h.classFeaturesState.savant;rt=global.savantRuntime;
       if(!s||!rt)return{ok:false,reason:'Runtime Саванта недоступен.'};
       if(Number(s.reactionUses)<v)return{ok:false,reason:'Реакции Саванта закончились.'};
       if(v!==1)return{ok:false,reason:'Реакция Саванта расходуется по одной за активацию.'};
-      if(typeof rt.observe==='function')return rt.observe(h,'resource',{});
+      if(typeof rt.observe==='function'){var sr=rt.observe(h,'resource',{});if(sr&&sr.ok&&h.resources&&h.resources.savantReactions)h.resources.savantReactions.current=Math.max(0,Math.min(Number(sr.remaining)||0,h.resources.savantReactions.max));return sr;}
       s.reactionUses=Number(s.reactionUses)-v;
       return{ok:true,remaining:s.reactionUses};
     }
@@ -748,7 +748,7 @@
   function extendedResourceState(h){
     if(!h)return {};
     syncClassResources(h);
-    var out={resources:{}};
+    var out={resources:{},version:'custom-resource-bridge-1'};
     if(h.resources){
       ['alchemistReagents','wardenInterrupt','wardenFontOfLife','wardenLegendaryResistance','wardenSecondWind',
        'shifterAdrenaline','shifterPrimevalForm','vesselArchonForm','necromancerCharnelTouch',
@@ -772,7 +772,7 @@
     return out;
   }
 
-global.DNDClassFeatures={VERSION:'3.1.0',CLASS_NAMES:CLASS_NAMES,CORE:CORE,SUBCLASS_FEATURES:SUBCLASS_FEATURES,FEATURE_DEFS:FEATURE_DEFS,META_COST:META_COST,META_NAMES:META_NAMES,getSubclass:getSubclass,isAssassin:isAssassin,featureAvailableForCurrentBuild:featureAvailableForCurrentBuild,syncClassResources:syncClassResources,buildFeatureSet:buildFeatureSet,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,spellDamageModifiers:spellDamageModifiers,checkModifiers:checkModifiers,resetTurn:resetTurn,onAttackResult:onAttackResult,consumePendingOnHit:consumePendingOnHit,onTurnEnd:onTurnEnd,restore:restore,spendExtendedResource:spendExtendedResource,extendedResourceState:extendedResourceState,activeRage:activeRage,reactionOptions:reactionOptions,resolveReaction:resolveReaction};
+global.DNDClassFeatures={VERSION:'3.2.0',CLASS_NAMES:CLASS_NAMES,CORE:CORE,SUBCLASS_FEATURES:SUBCLASS_FEATURES,FEATURE_DEFS:FEATURE_DEFS,META_COST:META_COST,META_NAMES:META_NAMES,getSubclass:getSubclass,isAssassin:isAssassin,featureAvailableForCurrentBuild:featureAvailableForCurrentBuild,syncClassResources:syncClassResources,buildFeatureSet:buildFeatureSet,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,spellDamageModifiers:spellDamageModifiers,checkModifiers:checkModifiers,resetTurn:resetTurn,onAttackResult:onAttackResult,consumePendingOnHit:consumePendingOnHit,onTurnEnd:onTurnEnd,restore:restore,spendExtendedResource:spendExtendedResource,extendedResourceState:extendedResourceState,activeRage:activeRage,reactionOptions:reactionOptions,resolveReaction:resolveReaction};
   global.renderClassFeatures=renderClassFeatures;global.useClassFeature=useClassFeatureUI;global.chooseMetamagic=chooseMetamagic;global.chooseAssassinSubclass=chooseAssassinSubclass;global.chooseSubclassForClass=chooseSubclassForClass;
   global.addEventListener('dnd-character-rendered',function(){setTimeout(renderClassFeatures,0);});
 })(window);
