@@ -39,13 +39,13 @@
     },
     {
       "path": "app/runekeeper_taron_v12_runtime.js",
-      "bytes": 20810,
-      "sha256": "1a85aa6e2070057f3219c17a9afa201a05a5e71e17a16d4e37b876bd86d0fb59"
+      "bytes": 22330,
+      "sha256": "8144c7a9bb3aa1d7320866b5390c546de5e4480f436014ae5968935b71a72223"
     },
     {
       "path": "app/savant_laserllama_v561_runtime.js",
-      "bytes": 21358,
-      "sha256": "dcbc52b83c0ce31832564400f0e2be42011a454c833f687b704184781e6bd9c7"
+      "bytes": 21947,
+      "sha256": "970fd9654dc0f4cffdaa6ddbd8c3bd4e35a17bd16b303ca0b77985d8f4b96b1c"
     },
     {
       "path": "app/races.js",
