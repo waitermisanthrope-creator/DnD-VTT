@@ -390,7 +390,17 @@
       root.style.display='flex';
     }
     this.root=root;
-    this.render();
+    try{
+      this.render();
+    }catch(err){
+      console.error('Builder V2 render failed:',err);
+      var msg=err&&err.stack?err.stack:(err&&err.message?err.message:String(err));
+      this.root.innerHTML='<div class="cb-wrap"><div class="cb-card cb-extra"><h3>⚠️ Builder V2 получил ошибку</h3><p class="cb-note">Экран не оставлен пустым: ниже показана реальная ошибка, которая произошла при построении мастера.</p><pre style="white-space:pre-wrap;word-break:break-word;color:#ffb4ab;background:#171717;border:1px solid #553;border-radius:8px;padding:10px;font-size:12px;">'+esc(msg)+'</pre><div class="cb-actions"><button id="cbDiagLog" class="cb-btn primary">🐞 Открыть ошибки</button><button id="cbDiagClose" class="cb-btn">Закрыть</button></div></div></div>';
+      var logBtn=this.root.querySelector('#cbDiagLog');
+      if(logBtn)logBtn.onclick=function(){if(typeof g.dndV709Open==='function')g.dndV709Open();else alert('Журнал ошибок ещё не загрузился.');};
+      var closeBtn=this.root.querySelector('#cbDiagClose');
+      if(closeBtn)closeBtn.onclick=function(){if(typeof g.showCharacterSelect==='function')g.showCharacterSelect();else this.root.style.display='none';}.bind(this);
+    }
   };
   Wizard.prototype.render=function(){
     var self=this;
