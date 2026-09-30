@@ -57,7 +57,7 @@ jobs:
           paths=[
             "index.html",
             "app/character_creation_pergament.js","app/character_creation_pergament.css",
-            "app/character_builder_v2.js","app/data/subclasses/subclassesRegistry.js","app/vtt_debug_error_log_v709.js",
+            "app/character_builder_v2.js","app/classesRegistry.js","app/data/classes/progressionEngine.js","app/data/subclasses/subclassesRegistry.js","app/vtt_debug_error_log_v709.js",
             "app/Ambiences.js","app/app.js","app/Settings.js","app/update_manager.js",
             "app/onboarding_faq_v71.js","app/styles.css",
             "1790622844831.png","1790622696215.png","1790622252250.png","1790718758545.png"
@@ -90,7 +90,7 @@ jobs:
           paths=[
             "index.html",
             "app/character_creation_pergament.js","app/character_creation_pergament.css",
-            "app/character_builder_v2.js","app/data/subclasses/subclassesRegistry.js","app/vtt_debug_error_log_v709.js",
+            "app/character_builder_v2.js","app/classesRegistry.js","app/data/classes/progressionEngine.js","app/data/subclasses/subclassesRegistry.js","app/vtt_debug_error_log_v709.js",
             "app/Ambiences.js","app/app.js","app/Settings.js","app/update_manager.js",
             "app/onboarding_faq_v71.js","app/styles.css",
             "1790622844831.png","1790622696215.png","1790622252250.png","1790718758545.png"
