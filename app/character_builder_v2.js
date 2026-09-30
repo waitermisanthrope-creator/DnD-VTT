@@ -210,12 +210,18 @@
   }
 
   /* --------- Классические и кастомные выборы 1-го/любого уровня --------- */
+  /* FIX: base 5e classes keep skill-choice data in the rules section, not progression. */
+  var CLASS_SKILL_CHOICES_2014={
+    'Варвар':{choose:2,from:['animalHandling','athletics','intimidation','nature','perception','survival']},'Бард':{choose:3,from:['any']},'Жрец':{choose:2,from:['history','insight','medicine','persuasion','religion']},'Друид':{choose:2,from:['arcana','animalHandling','insight','medicine','nature','perception','religion','survival']},'Воин':{choose:2,from:['acrobatics','animalHandling','athletics','history','insight','intimidation','perception','survival']},'Монах':{choose:2,from:['acrobatics','athletics','history','insight','religion','stealth']},'Паладин':{choose:2,from:['athletics','insight','intimidation','medicine','persuasion','religion']},'Следопыт':{choose:3,from:['animalHandling','athletics','insight','investigation','nature','perception','stealth','survival']},'Плут':{choose:4,from:['acrobatics','athletics','deception','insight','intimidation','investigation','perception','persuasion','sleightOfHand','stealth']},'Чародей':{choose:2,from:['arcana','deception','insight','intimidation','persuasion','religion']},'Колдун':{choose:2,from:['arcana','deception','history','intimidation','investigation','nature','religion']},'Волшебник':{choose:2,from:['arcana','history','insight','investigation','medicine','religion']},'Изобретатель':{choose:2,from:['arcana','history','investigation','medicine','nature','perception','sleightOfHand']}
+  };
+  function classSkillRule(p,className){return p&&p.skills&&p.skills.choose?p.skills:(CLASS_SKILL_CHOICES_2014[className]||null);}
   function classChoices(className,targetLevel,isNewClass){
     var d=getClass(className)||{};
     var p=d.progression&&d.progression.levels?d.progression:d;
     var out=[];
-    if(isNewClass && p.skills && p.skills.choose){
-      out.push({id:'class_skills',key:'class:'+className+':skills',type:'multi',count:Number(p.skills.choose),label:'Навыки класса',options:function(){return (p.skills.from||[]).map(function(x){
+    var skillRule=classSkillRule(p,className);
+    if(isNewClass && skillRule && skillRule.choose){
+      out.push({id:'class_skills',key:'class:'+className+':skills',type:'multi',count:Number(skillRule.choose),label:'Навыки класса',options:function(){var ids=skillRule.from||[];if(ids.indexOf('any')>=0)return (g.SKILLS_CONFIG||[]).slice();return ids.map(function(x){
         var id=x.id||x; var f=(g.SKILLS_CONFIG||[]).find(function(s){return s.id===id||s.name===id;}); return {id:id,name:f?f.name:id};
       });},className:className,level:1,source:'class'});
     }
@@ -266,7 +272,8 @@
     if(existing)return null;
     var d=getClass(className)||{};
     var p=d.progression&&d.progression.levels?d.progression:d;
-    var pick=Number(d.subclassLevel||p.subclassLevel||3);
+    var firstDeclared=0;if(p&&p.levels){Object.keys(p.levels).sort(function(a,b){return Number(a)-Number(b);}).some(function(k){if(p.levels[k]&&p.levels[k].subclassLevel){firstDeclared=Number(k);return true;}return false;});}
+    var pick=Number(d.subclassLevel||p.subclassLevel||firstDeclared||3);
     if(targetLevel<pick)return null;
     if(typeof g.getAvailableSubclasses!=='function')return null;
     var opts=g.getAvailableSubclasses(className)||[];
