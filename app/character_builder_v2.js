@@ -99,27 +99,23 @@
     var out=[];
     var langs=Array.isArray(race.languages)?race.languages:[];
     var langCount=langs.filter(function(x){return /на выбор|дополнительный язык/i.test(String(x));}).length;
-    if(langCount) out.push({
-      id:'race_languages',key:'race:'+race.id+':languages',type:'multi',count:langCount,
-      label:'Дополнительные языки',options:function(){return (g.PROFICIENCIES_DB||[]).filter(function(p){return p.category==='Языки';});},
-      source:'race',raceId:race.id
-    });
+    if(langCount)out.push({id:'race_languages',key:'race:'+race.id+':languages',type:'multi',count:langCount,label:'Дополнительные языки',options:function(){return (g.PROFICIENCIES_DB||[]).filter(function(p){return p.category==='Языки';});},source:'race',raceId:race.id});
     if(race.id==='human_variant'){
       out.push({id:'human_stats',key:'race:human_variant:stats',type:'stats2',count:2,label:'Две характеристики человека-варианта',options:STATS,source:'race',raceId:race.id});
       out.push({id:'human_skill',key:'race:human_variant:skill',type:'single',label:'Навык человека-варианта',options:function(){return g.SKILLS_CONFIG||[];},source:'race',raceId:race.id});
       out.push({id:'human_feat',key:'race:human_variant:feat',type:'feat',label:'Черта человека-варианта',options:function(){return allFeats();},source:'race',raceId:race.id});
     }
+    if(race.id==='half_elf')out.push({id:'half_elf_skills',key:'race:half_elf:skills',type:'multi',count:2,label:'Дополнительные навыки полуэльфа',options:function(){return (g.SKILLS_CONFIG||[]).slice();},source:'race',raceId:race.id});
+    if(race.id==='dragonborn')out.push({id:'dragonborn_ancestry',key:'race:dragonborn:ancestry',type:'single',label:'Драконье происхождение',options:[
+      {id:'acid',name:'Кислота',description:'Дыхание кислотой и сопротивление кислоте.'},{id:'cold',name:'Холод',description:'Дыхание холодом и сопротивление холоду.'},{id:'fire',name:'Огонь',description:'Дыхание огнём и сопротивление огню.'},{id:'lightning',name:'Молния',description:'Дыхание молнией и сопротивление молнии.'},{id:'poison',name:'Яд',description:'Ядовитое дыхание и сопротивление яду.'}
+    ],source:'race',raceId:race.id});
+    if(['harengon','owlin','plasmoid','loxodon'].indexOf(race.id)>=0){
+      var sizeOptions=race.id==='loxodon'?[{id:'Средний',name:'Средний'},{id:'Большой',name:'Большой'}]:[{id:'Маленький',name:'Маленький'},{id:'Средний',name:'Средний'}];
+      out.push({id:'race_size',key:'race:'+race.id+':size',type:'single',label:'Размер',options:sizeOptions,source:'race',raceId:race.id});
+    }
     if(race.id==='tiefling'){
       out.push({id:'tiefling_origin',key:'race:tiefling:origin',type:'single',label:'Происхождение Тифлинга',options:[
-        {id:'asmodeus',name:'Асмодей',description:'Классическое инфернальное происхождение.'},
-        {id:'baalzebul',name:'Баалзебул',description:'Наследие порчи и скверны.'},
-        {id:'dispater',name:'Диспатер',description:'Наследие железа, интриг и наблюдения.'},
-        {id:'fierna',name:'Фьерна',description:'Наследие чар и огня.'},
-        {id:'glasya',name:'Гласия',description:'Наследие скрытности и обмана.'},
-        {id:'levistus',name:'Левистус',description:'Наследие льда и выживания.'},
-        {id:'mammon',name:'Маммон',description:'Наследие богатства и жадности.'},
-        {id:'mephistopheles',name:'Мефистофель',description:'Наследие пламени и арканы.'},
-        {id:'zariel',name:'Зариэль',description:'Наследие войны и боевого пламени.'}
+        {id:'asmodeus',name:'Асмодей',description:'Классическое инфернальное происхождение.'},{id:'baalzebul',name:'Баалзебул',description:'Наследие порчи и скверны.'},{id:'dispater',name:'Диспатер',description:'Наследие железа, интриг и наблюдения.'},{id:'fierna',name:'Фьерна',description:'Наследие чар и огня.'},{id:'glasya',name:'Гласия',description:'Наследие скрытности и обмана.'},{id:'levistus',name:'Левистус',description:'Наследие льда и выживания.'},{id:'mammon',name:'Маммон',description:'Наследие богатства и жадности.'},{id:'mephistopheles',name:'Мефистофель',description:'Наследие пламени и арканы.'},{id:'zariel',name:'Зариэль',description:'Наследие войны и боевого пламени.'}
       ],source:'race',raceId:race.id});
     }
     return out;
