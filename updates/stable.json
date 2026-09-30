@@ -15,7 +15,7 @@
     {
       "path": "app/character_creation_pergament.js",
       "bytes": 38061,
-      "sha256": "3a8bb6ba8252c1fd5ab9c64f0e08614515209525bbb33d69811b2c8a98f47d54"
+      "sha256": "2b4fc0c38b2401704515911c4bd9d838540f6dd6b64b6f4553c43457fda79f0b"
     },
     {
       "path": "app/character_creation_pergament.css",
@@ -50,7 +50,7 @@
     {
       "path": "app/update_manager.js",
       "bytes": 20814,
-      "sha256": "c6b700aa77dbb734bfc42902d10981fd41047c16f8a5f8f37b98ead0c7fa31fe"
+      "sha256": "07d066f9d6f3cf85246826d09a8b6369bd68aaf829034825d7dd1c3885ec593d"
     },
     {
       "path": "app/onboarding_faq_v71.js",
