@@ -28,6 +28,11 @@
       "sha256": "fcb7f52bdcfd29dd4e8a08db520a5d93fe152fa73d1d12d07e442ed3e3271eac"
     },
     {
+      "path": "app/data/subclasses/subclassesRegistry.js",
+      "bytes": 111083,
+      "sha256": "bf1d2f0932d057d425a0d85bcd7058d2ba5d8a7b5313098afb1c6c3bcb0a31dc"
+    },
+    {
       "path": "app/vtt_debug_error_log_v709.js",
       "bytes": 4816,
       "sha256": "cd684a8c03cb0cd97e32eab9b5b88f5a2917251e419bac8bcb3da279e4fd23b8"
