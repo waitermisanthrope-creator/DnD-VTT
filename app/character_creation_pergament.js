@@ -99,18 +99,75 @@ function fitSelect(e){
 function reveal(id,yes){var e=el(id);if(!e)return;e.closest('.parchment-step')?.classList.toggle('step-hidden',!yes)}
 function setupProgression(){
  var classicSteps=[['pc_name',function(){var e=el('pc_name');return e&&String(e.value||'').trim().length>0}],['pc_origin',function(){var e=el('pc_origin');return e&&String(e.value||'').trim().length>0}],['pc_class',function(){var e=el('pc_class');return e&&String(e.value||'').length>0}],['pc_gender',function(){var e=el('pc_gender');return e&&String(e.value||'').length>0}],['pc_race',function(){var e=el('pc_race');return e&&String(e.value||'').length>0}],['pc_age',function(){var e=el('pc_age');return e&&String(e.value||'').trim().length>0}],['pc_background',function(){var e=el('pc_background');return e&&String(e.value||'').length>0}],['pc_profession',function(){var e=el('pc_profession');return e&&String(e.value||'').length>0}]];
- var extraSteps=[
-  ['pc_name',function(){var e=el('pc_name');return e&&String(e.value||'').trim().length>0}],
-  ['pc_race',function(){var e=el('pc_race');return e&&String(e.value||'').length>0}],
-  ['pc_extraHost',function(){var type=el('pc_race')?el('pc_race').value:'';if(!extraNeedsHost(type))return true;var e=el('pc_extraHost');return e&&String(e.value||'').length>0}]
-];
+ var extraSteps=[['pc_name',function(){var e=el('pc_name');return e&&String(e.value||'').trim().length>0}],['pc_race',function(){var e=el('pc_race');return e&&String(e.value||'').length>0}],['pc_extraHost',function(){var type=el('pc_race')?el('pc_race').value:'';if(!extraNeedsHost(type))return true;var e=el('pc_extraHost');return e&&String(e.value||'').length>0}]];
  var steps=isExtraMode()?extraSteps:classicSteps;
  var allFields=['pc_name','pc_origin','pc_class','pc_gender','pc_race','pc_extraHost','pc_age','pc_background','pc_profession'];
+ function saveState(){
+   window.__parchmentFieldState=window.__parchmentFieldState||{};
+   allFields.forEach(function(id){var e=el(id);if(e)window.__parchmentFieldState[id]=e.value;});
+ }
+ function restoreState(){
+   var state=window.__parchmentFieldState||{};
+   allFields.forEach(function(id){var e=el(id);if(e&&Object.prototype.hasOwnProperty.call(state,id)&&state[id]!==undefined)e.value=state[id];});
+ }
  function findStep(field){var n=field;while(n&&(!n.classList||!n.classList.contains('parchment-step')))n=n.parentNode;return n;}
- function update(){var firstIncomplete=steps.length;for(var i=0;i<steps.length;i++){if(!steps[i][1]()){firstIncomplete=i;break;}}var activeIds={};steps.forEach(function(x){activeIds[x[0]]=true});allFields.forEach(function(id){var field=el(id);if(!field)return;var step=findStep(field);if(isExtraMode()&&id==='pc_extraHost'&&!extraNeedsHost(el('pc_race')?el('pc_race').value:'')){if(step)step.classList.add('step-hidden');field.disabled=true;field.value='';return;}
- if(isExtraMode()&&!activeIds[id]){if(step)step.classList.add('step-hidden');field.disabled=true;return;}var idx=-1;for(var k=0;k<steps.length;k++){if(steps[k][0]===id){idx=k;break;}}var visible=idx>=0&&idx<=firstIncomplete;if(step)step.classList.toggle('step-hidden',!visible);field.disabled=idx<0||idx>firstIncomplete;if(field.tagName==='SELECT')fitSelect(field);});
- var complete=firstIncomplete===steps.length;var warning=el('pcWarning'),tax=el('pcTax'),reward=el('pcReward');if(isExtraMode()){if(warning)warning.classList.toggle('step-hidden',!el('pc_race')||!String(el('pc_race').value||'').trim());if(tax)tax.classList.add('step-hidden');if(reward)reward.classList.toggle('step-hidden',!complete);}else{if(tax)tax.classList.toggle('step-hidden',!complete);if(warning)warning.classList.toggle('step-hidden',!complete);if(reward)reward.classList.toggle('step-hidden',!complete);}var sign=el('pc_signButton');if(sign){sign.disabled=!complete;sign.classList.toggle('is-ready',complete);sign.style.display=complete?'block':'none';}var reason=el('pc_extraReason');if(reason&&CHARACTER_CREATION_MODE==='extra')reason.innerHTML=extraDescriptionHtml();}
- var stage=el('parchmentStage');if(stage&&!stage.dataset.progressBound){stage.dataset.progressBound='1';stage.addEventListener('input',function(ev){if(ev.target&&ev.target.classList&&ev.target.classList.contains('parchment-field'))update();});stage.addEventListener('change',function(ev){var t=ev.target;if(!t)return;if(t.id==='pc_class'||t.id==='pc_gender'||t.id==='pc_race'||t.id==='pc_extraHost'||t.id==='pc_background'||t.id==='pc_profession'){if(t.tagName==='SELECT')fitSelect(t);update();if(t.id==='pc_class'||t.id==='pc_race')renderClassArt();}else if(t.classList&&t.classList.contains('parchment-field'))update();});}
+ function update(){
+   saveState();
+   var firstIncomplete=steps.length;
+   for(var i=0;i<steps.length;i++){if(!steps[i][1]()){firstIncomplete=i;break;}}
+   var activeIds={};steps.forEach(function(x){activeIds[x[0]]=true});
+   allFields.forEach(function(id){
+     var field=el(id);if(!field)return;
+     var step=findStep(field);
+     if(isExtraMode()&&id==='pc_extraHost'&&!extraNeedsHost(el('pc_race')?el('pc_race').value:'')){
+       if(step)step.classList.add('step-hidden');
+       field.disabled=true;field.value='';
+       return;
+     }
+     if(isExtraMode()&&!activeIds[id]){if(step)step.classList.add('step-hidden');field.disabled=true;return;}
+     var idx=-1;for(var k=0;k<steps.length;k++){if(steps[k][0]===id){idx=k;break;}}
+     var visible=idx>=0&&idx<=firstIncomplete;
+     if(step)step.classList.toggle('step-hidden',!visible);
+     /* Completed fields are never disabled. This makes the parchment monotonic:
+        once revealed, a completed choice cannot vanish because another field changed. */
+     field.disabled=idx<0||idx>firstIncomplete;
+     if(idx>=0&&idx<=firstIncomplete)field.disabled=false;
+     if(field.tagName==='SELECT')fitSelect(field);
+   });
+   restoreState();
+   var complete=firstIncomplete===steps.length;
+   var warning=el('pcWarning'),tax=el('pcTax'),reward=el('pcReward');
+   if(isExtraMode()){
+     if(warning)warning.classList.toggle('step-hidden',!el('pc_race')||!String(el('pc_race').value||'').trim());
+     if(tax)tax.classList.add('step-hidden');
+     if(reward)reward.classList.toggle('step-hidden',!complete);
+   }else{
+     if(tax)tax.classList.toggle('step-hidden',!complete);
+     if(warning)warning.classList.toggle('step-hidden',!complete);
+     if(reward)reward.classList.toggle('step-hidden',!complete);
+   }
+   var sign=el('pc_signButton');
+   if(sign){sign.disabled=!complete;sign.classList.toggle('is-ready',complete);sign.style.display=complete?'block':'none';}
+   var reason=el('pc_extraReason');
+   if(reason&&CHARACTER_CREATION_MODE==='extra')reason.innerHTML=extraDescriptionHtml();
+   saveState();
+ }
+ var stage=el('parchmentStage');
+ if(stage&&!stage.dataset.progressBound){
+   stage.dataset.progressBound='1';
+   stage.addEventListener('input',function(ev){
+     if(ev.target&&ev.target.classList&&ev.target.classList.contains('parchment-field'))update();
+   });
+   stage.addEventListener('change',function(ev){
+     var t=ev.target;if(!t)return;
+     if(t.id==='pc_class'||t.id==='pc_gender'||t.id==='pc_race'||t.id==='pc_extraHost'||t.id==='pc_background'||t.id==='pc_profession'){
+       saveState();
+       if(t.tagName==='SELECT')fitSelect(t);
+       update();
+       if(t.id==='pc_class'||t.id==='pc_race')renderClassArt();
+     }else if(t.classList&&t.classList.contains('parchment-field'))update();
+   });
+ }
  window.__refreshParchmentProgress=update;window.__updateParchmentProgress=update;update();
 }
 function renderClassArt(){
