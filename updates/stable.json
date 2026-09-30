@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DnD-VTT",
-  "version": "70.26.73",
+  "version": "70.26.74",
   "minAppVersion": "70.25.71",
   "channel": "stable",
   "generated": "AUTO",
@@ -24,8 +24,8 @@
     },
     {
       "path": "app/character_builder_v2.js",
-      "bytes": 60649,
-      "sha256": "66355326ec4342ec8dcc91c5fccf622a7037017d4f8fd3a685555fee5051c722"
+      "bytes": 61260,
+      "sha256": "6f9258a8c0425dfc7163a56f3f963f231b69d1f0951081434d96662d397a1186"
     },
     {
       "path": "app/vtt_debug_error_log_v709.js",
@@ -50,7 +50,7 @@
     {
       "path": "app/update_manager.js",
       "bytes": 20814,
-      "sha256": "b1877e03a35482a2c511098acf63752649b3f4b1a2814909e8f9f912b2b280b0"
+      "sha256": "a714e10f4eee38ed327e8b1aeb97d9b49531114ae5f459b2d8d8d31f3f90c12b"
     },
     {
       "path": "app/onboarding_faq_v71.js",
