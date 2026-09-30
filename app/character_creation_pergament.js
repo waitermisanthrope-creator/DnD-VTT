@@ -443,7 +443,7 @@ window.finishParchmentCreation=function(){
   if(!window.__CBV2_RETRY_STARTED){
    window.__CBV2_RETRY_STARTED=true;
    var retry=document.createElement('script');
-   retry.src='./app/character_builder_v2.js?cbv2_retry=7026076';
+   retry.src='./app/character_builder_v2.js?cbv2_retry=7026077';
    retry.async=false;
    retry.onload=function(){setTimeout(function(){launchBuilder(attempt+1);},0);};
    retry.onerror=function(){
