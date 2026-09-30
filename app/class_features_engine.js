@@ -346,6 +346,19 @@
       var dr=l>=17?10:l>=13?6:l>=9?3:0;
       ensureRes(h,'martyrDivineRespite',dr,'long');
     }
+    // Beastheart: Ferocity lives on the companion entity; hero.resources is a live mirror for the common UI/resolver.
+    l=classLevel(h,'Бистхарт');
+    if(l){
+      rt=global.BeastheartRuntime;
+      if(rt&&typeof rt.sync==='function')rt.sync(h);
+      var bc=rt&&typeof rt=== 'object' && h.classFeaturesState&&h.classFeaturesState.beastheartCompanionId && global.DNDSecondaryEntities&&global.DNDSecondaryEntities.get
+        ?global.DNDSecondaryEntities.get(h.classFeaturesState.beastheartCompanionId):null;
+      var bf=bc&&bc.resources?Number(bc.resources.ferocity)||0:0;
+      ensureRes(h,'beastheartFerocity',Math.max(10,bf),'encounter');
+      h.resources.beastheartFerocity.current=bf;
+      h.resources.beastheartFerocity.max=Math.max(10,bf);
+    }
+
     l=classLevel(h,'Оккультист');
     if(l){
       pack=global.DNDContent&&global.DNDContent.getClass?global.DNDContent.getClass('Оккультист'):null;
@@ -811,7 +824,7 @@
        'accursedSpellSlots','psiPoints','warlordExploitDice','warlordInspiringWord','warlordRally','arcaneSurges','bloodMaledict',
        'shifterAdrenaline','shifterPrimevalForm','vesselMagicSlots','charnelTouch','undyingServitude',
        'martyrSpellUses','martyrDivineRespite','occultistFateReading',
-       'runicCharges','savantReactions'].forEach(function(id){
+       'beastheartFerocity','runicCharges','savantReactions'].forEach(function(id){
         if(h.resources[id])out.resources[id]={current:h.resources[id].current,max:h.resources[id].max,recharge:h.resources[id].recharge};
       });
     }
