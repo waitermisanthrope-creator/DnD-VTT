@@ -486,7 +486,7 @@
     var out=[];
     if(typeof g.getAvailableSubclasses==='function') out=g.getAvailableSubclasses(className)||[];
     if((!out.length) && g.DNDContent && typeof g.DNDContent.listSubclasses==='function'){
-      var aliases={'Иллирригер':'Illrigger','Кровавый охотник':'Blood Hunter','Бистхарт':'Beastheart','Пугилист':'Pugilist','Страж':'Warden','Военачальник':'Warlord','Псионик':'Psion','Алхимик':'Alchemist','Оккультист':'Occultist','Ведьма':'Witch','Некромант':'Necromancer','Мученик':'Martyr','Сосуд':'Vessel','Рунный хранитель':'RuneKeeper','Савант':'Savant','Шифтер':'Shifter','Аккурсд':'Accursed','Гайст':'Geist','Рой':'Swarm','Призрак':'Ghost'};
+      var aliases={'Иллиригер':'Illrigger','Иллирригер':'Illrigger','Кровавый охотник':'Blood Hunter','Бистхарт':'Beastheart','Пугилист':'Pugilist','Страж':'Warden','Военачальник':'Warlord','Псионик':'Psion','Алхимик':'Alchemist','Оккультист':'Occultist','Ведьма':'Witch','Некромант':'Necromancer','Мученик':'Martyr','Сосуд':'Vessel','Рунный хранитель':'RuneKeeper','Савант':'Savant','Шифтер':'Shifter','Аккурсд':'Accursed','Гайст':'Geist','Рой':'Swarm','Призрак':'Ghost'};
       out=g.DNDContent.listSubclasses(className)||g.DNDContent.listSubclasses(aliases[className])||[];
     }
     return out.map(function(x){return typeof x==='string'?{name:x}:Object.assign({},x,{name:x.nameRu||x.name||x.id});});
