@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DnD-VTT",
-  "version": "70.26.94",
+  "version": "70.26.95",
   "minAppVersion": "70.25.71",
   "channel": "stable",
   "generated": "AUTO",
@@ -9,8 +9,8 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 78698,
-      "sha256": "3c85e83ca7204fff8b4d089be5673fdd7abebcb923c14e884ea7112fea62189e"
+      "bytes": 78635,
+      "sha256": "2bece4605ac6658ebd07adaa1f21a08607e79de54016dbe4dde7a179f70b1592"
     },
     {
       "path": "app/character_creation_pergament.js",
@@ -104,8 +104,8 @@
     },
     {
       "path": "app/Settings.js",
-      "bytes": 38044,
-      "sha256": "607a099c7c7404a92401ba66c3ee59ea33550731f913e9f8a9d8edfcf40c7294"
+      "bytes": 48440,
+      "sha256": "f989beaeb8608782594f382e82bacc0677e565959729618ab4cba05afb20ca75"
     },
     {
       "path": "app/icon_settings.js",
@@ -115,7 +115,7 @@
     {
       "path": "app/update_manager.js",
       "bytes": 20812,
-      "sha256": "e2003e7ed9f1d5f26150ed9b8e337b47b7797b702b6519d2815e4e2afb606bfb"
+      "sha256": "258ab2ddfd10eebe679dad529b6fe8f918b087007ba435c6eab4f51acec53610"
     },
     {
       "path": "app/onboarding_faq_v71.js",
