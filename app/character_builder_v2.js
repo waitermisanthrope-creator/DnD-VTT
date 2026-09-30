@@ -436,9 +436,11 @@
     }
     if(this.step===4){
       var rc=this.race,cc=this.className;
+      this.values=(this.values&&typeof this.values==='object')?this.values:{};
+      var savedChoiceValues=this.values;
       this.choices=collectChoices(rc,cc,this.classLevel,this.isNewClass,(this.hero&&this.hero.classes||[]).find(function(x){return norm(x.name)===norm(cc);})?.subclass,this.hero);
       body='<div class="cb-card"><h3>Особенности и выборы</h3><p class="cb-note">Здесь собраны ВСЕ обязательные выборы, которые нужны персонажу до первого уровня. Ничего не потеряется.</p>'+
-        (this.choices.length?this.choices.map(function(c,i){return renderChoice(c,i,self.values[c.key]);}).join(''):'<p>Для этого набора пока нет обязательных выборов.</p>')+'</div>';
+        (this.choices.length?this.choices.map(function(c,i){return renderChoice(c,i,savedChoiceValues[c.key]);}).join(''):'<p>Для этого набора пока нет обязательных выборов.</p>')+'</div>';
       this.bindChoiceDescriptions();
     }
     if(this.step===5){
