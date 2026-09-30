@@ -248,6 +248,23 @@ function subclassFeatureEffect(h,sub,f,ctx){
  if(name==='Токсическое возмездие')return{ok:true,effect:{reaction:true,save:'constitution',condition:'poisoned',duration:'1 minute',damageAtTurnStart:'1d10 poison',repeatSave:true},message:'☠️ Токсическое возмездие готово.'};
  if(name==='Хирургическая атака'){if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,effect:{attackAbility:'intelligence',extraDamage:'1d8'},message:'🧬 Хирургическая атака усилена.'};}
  if(name==='Некромантические органы'){s.xenoNecroticReady=true;return{ok:true,effect:{replaceDropToZeroWithHP:l,longRestUses:1},message:'🧬 Некромантические органы готовы.'};}
+ if(name==='Кислотная бомба')return{ok:true,effect:{damageDice:'2d8',damageType:'acid',splashDice:'d8'},message:'🧪 Кислотная бомба готова.'};
+ if(name==='Философский камень')return{ok:true,effect:{regainReagentsOnInitiativeUpTo:6,quickBrewing:true,longevity:true},message:'💎 Философский камень активен.'};
+ if(name==='Реактивный двигатель')return{ok:true,effect:{bonusActionDash:true,flySpeed:30,duration:'1 minute'},message:'🚀 Реактивный двигатель активирован.'};
+ if(name==='Динамо-ядро')return{ok:true,effect:{chargeWeapon:true,extraDamage:'1d8 lightning'},message:'⚡ Динамо-ядро заряжено.'};
+ if(name==='Ионизация')return{ok:true,effect:{damageType:'lightning',chain:true,save:'dexterity'},message:'⚡ Ионизация активирована.'};
+ if(name==='Большая бомба')return{ok:true,effect:{damageDice:'3d12',areaFt:15,save:'dexterity',damageType:'fire'},message:'💣 Большая бомба готова.'};
+ if(name==='Грязная тактика')return{ok:true,effect:{rerollAttack:true,addDamage:'proficiencyBonus',oncePerTurn:true},message:'🎲 Грязная тактика применена.'};
+ if(name==='Стабильный мутаген')return{ok:true,effect:{mutagenNoDownside:true},message:'🧬 Стабильный мутаген активен.'};
+ if(name==='Адаптивная мутация')return{ok:true,effect:{chooseResistance:true,chooseMovement:true},message:'🧬 Адаптивная мутация готова.'};
+ if(name==='Большая слизь')return{ok:true,effect:{summonOoze:true,crScale:'alchemistLevel',duration:'1 hour'},message:'🟢 Большая слизь призвана.'};
+ if(name==='Слизевой двойник')return{ok:true,effect:{reaction:true,createOozeDuplicate:true,duration:'1 minute'},message:'🟢 Слизевой двойник создан.'};
+ if(name==='Живая палитра')return{ok:true,effect:{paintCreatures:true,temporaryHP:true},message:'🎨 Живая палитра активирована.'};
+ if(name==='Цветной взрыв')return{ok:true,effect:{damageType:'choose',damageDice:'2d8',areaFt:10},message:'🌈 Цветной взрыв готов.'};
+ if(name==='Резонансная бомба')return{ok:true,effect:{damageDice:'2d10',damageType:'thunder',save:'constitution',deafened:true},message:'🔊 Резонансная бомба готова.'};
+ if(name==='Резонансная волна')return{ok:true,effect:{pushFt:10,areaFt:15,save:'strength'},message:'🔊 Резонансная волна готова.'};
+ if(name==='Ядовитая бомба')return{ok:true,effect:{damageDice:'2d10',damageType:'poison',save:'constitution',condition:'poisoned'},message:'☠️ Ядовитая бомба готова.'};
+ if(name==='Мутагенная ярость')return{ok:true,effect:{bonusDamage:'1d6',resistance:true,duration:'1 minute'},message:'🧬 Мутагенная ярость активирована.'};
  return{ok:true,passive:true,effect:{subclass:sub.id,feature:name,description:f[2]||''},message:'✨ '+name+' отмечена как пассивная особенность.'};
 }
 
