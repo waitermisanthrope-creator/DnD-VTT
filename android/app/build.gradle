@@ -36,6 +36,20 @@ tasks.register("prepareVttAssets", Sync) {
     from("../../") { include("*.mp3"); into("ambience") }
 }
 
+tasks.register("prepareVttIconPreviews", Sync) {
+    into(vttAssets)
+    from("../../1790788500741.png") {
+        rename { "default.png" }
+        into("icon_previews")
+    }
+    launcherDiceFiles.eachWithIndex { sourceName, index ->
+        from("../../app/assets/dice/${sourceName}") {
+            rename { "dice_${String.format('%02d', index + 1)}.png" }
+            into("icon_previews")
+        }
+    }
+}
+
 tasks.register("prepareVttIconResources", Sync) {
     into(vttIconRes)
     from("../../1790788500741.png") {
@@ -58,8 +72,8 @@ android {
         applicationId "com.dndvtt.pocketvtt"
         minSdk 24
         targetSdk 36
-        versionCode 7026091
-        versionName '70.26.91'
+        versionCode 7026092
+        versionName '70.26.92'
     }
 
     signingConfigs {
@@ -100,4 +114,4 @@ dependencies {
     implementation "androidx.webkit:webkit:1.17.1"
 }
 
-tasks.named("preBuild").configure { dependsOn("prepareVttAssets", "prepareVttIconResources") }
+tasks.named("preBuild").configure { dependsOn("prepareVttAssets", "prepareVttIconPreviews", "prepareVttIconResources") }
