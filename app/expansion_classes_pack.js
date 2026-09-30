@@ -191,11 +191,14 @@ function warlordRollDie(sides){var n=parseInt(String(sides||'8').replace(/[^0-9]
     }
     if(id==='heroicOrder'){
       if(l<13||!t)return{ok:false,message:'Героический приказ доступен с 13 уровня.'};
+      if(!spend(h,'warlordExploitDice',1))return{ok:false,message:'Нет куба Exploit.'};
       return{ok:true,target:t.id,effect:{resistanceAll:true,advantageAllD20:true,durationRounds:1},message:'👑 Героический приказ.'};
     }
     if(id==='revitalizingOrder'){
       if(l<13||!t)return{ok:false,message:'Выбери союзника, погибшего не более минуты назад.'};
-      return{ok:true,target:t.id,effect:{reviveHp:l+mod(h,lead)},message:'✨ Оживляющий приказ.'};
+      if(ctx.deadWithinSeconds!==undefined&&Number(ctx.deadWithinSeconds)>60)return{ok:false,message:'Прошло больше минуты с момента смерти.'};
+      if(!spend(h,'warlordExploitDice',1))return{ok:false,message:'Нет куба Exploit.'};
+      return{ok:true,target:t.id,effect:{reviveHp:l+mod(h,lead),standUp:true},message:'✨ Оживляющий приказ.'};
     }
     if(id==='victorySurge'){
       if(l<13||!t)return{ok:false,message:'Выбери союзника.'};
