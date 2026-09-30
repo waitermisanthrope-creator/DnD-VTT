@@ -81,14 +81,25 @@
     x[20]={features:['Мастерство класса']};
     return {className:name,englishName:englishName,status:'structured_core',hitDie:hitDie,primaryStat:primary,skills:skills,subclassLevel:3,subclasses:subclasses,levels:x,mechanics:{status:'structured_core',note:'Структурный слой готов; отдельные активные resolver-ы расширяются без изменения Builder/Level Up.'}};
   }
-  g.accursedProgression=skeletonClass('Аккурсд','Accursed',10,'constitution',{choose:2,from:['athletics','deception','insight','intimidation','investigation','religion','stealth']},[
+  /* Runtime-паки Аккурсда/Рунного хранителя/Саванта содержат полноценные
+     таблицы 1–20. Этот fallback не должен затирать их при поздней загрузке
+     expansion_class_progressions.js. Используем skeleton только если runtime
+     действительно отсутствует или не содержит уровней. */
+  function keepRuntimeOrSkeleton(key,args){
+    var live=g[key];
+    if(live&&live.levels&&Object.keys(live.levels).length>=20)return live;
+    var fallback=skeletonClass.apply(null,args);
+    g[key]=fallback;
+    return fallback;
+  }
+  keepRuntimeOrSkeleton('accursedProgression',['Аккурсд','Accursed',10,'constitution',{choose:2,from:['athletics','deception','insight','intimidation','investigation','religion','stealth']},[
     {id:'bloodCurse',name:'Кровавое проклятие'},{id:'hexblade',name:'Проклятый клинок'},{id:'doomcaller',name:'Вестник рока'}
-  ],['Проклятие','Мрачная клятва']);
-  g.runeKeeperProgression=skeletonClass('Рунный хранитель','RuneKeeper',8,'intelligence',{choose:2,from:['arcana','history','investigation','nature','religion','insight','perception']},[
+  ],['Проклятие','Мрачная клятва']]);
+  keepRuntimeOrSkeleton('runeKeeperProgression',['Рунный хранитель','RuneKeeper',8,'intelligence',{choose:2,from:['arcana','history','investigation','nature','religion','insight','perception']},[
     {id:'warRune',name:'Военные руны'},{id:'wardRune',name:'Руны защиты'},{id:'sageRune',name:'Руны знания'}
-  ],['Руническое начертание','Рунический фокус']);
-  g.savantProgression=skeletonClass('Савант','Savant',8,'intelligence',{choose:3,from:['arcana','history','insight','investigation','medicine','nature','perception','persuasion']},[
+  ],['Руническое начертание','Рунический фокус']]);
+  keepRuntimeOrSkeleton('savantProgression',['Савант','Savant',8,'intelligence',{choose:3,from:['arcana','history','insight','investigation','medicine','nature','perception','persuasion']},[
     {id:'tactician',name:'Тактик'},{id:'scholar',name:'Учёный'},{id:'physician',name:'Практик'},{id:'investigator',name:'Следователь'}
-  ],['Изучение','Анализ']);
+  ],['Изучение','Анализ']]);
 
 })(window);
