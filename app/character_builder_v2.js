@@ -377,12 +377,12 @@
     rm.undeadResilience=rm.undeadResilience||/стойкость нежити/i.test(rd);
     rm.spiderClimb=rm.spiderClimb||/вертикальным стенам/i.test(rd);
     rm.flight=rm.flight||/полноценный пол[её]т|пол[её]т(?:ом|ать)?\\s*(?:30|[0-9]{2,3})?\\s*(?:фут|футов|ф)/i.test(rd);
-    var speedMatch=String(race.speed||'').match(/(\\d+)\\s*(?:фут|футов|фт)/i);
+    var speedMatch=String(race.speed||'').match(/(\d+)\s*(?:фут|футов|фт)/i);
     if(speedMatch)rm.speedFt=Number(speedMatch[1]);
-    var sizeMatch=String(race.desc||'').match(/Размер\\s*:\\s*([^\\.]+)/i);
+    var sizeMatch=String(race.desc||'').match(/Размер\s*:\s*([^\.]+)/i);
     if(sizeMatch)rm.size=String(sizeMatch[1]).trim();
     var dmgTypes={кислот:'кислота',огн:'огонь',холод:'холод',молни:'молния',яд:'яд',некрот:'некротический',психичес:'психический',излучен:'излучение'};
-    Object.keys(dmgTypes).forEach(function(k){if(new RegExp('сопротивлен(?:ие|ием)\\\\s+'+k,'i').test(rd)){rm.resistanceDamageType=dmgTypes[k];}});
+    Object.keys(dmgTypes).forEach(function(k){if(new RegExp('сопротивлен(?:ие|ием)\\s+'+k,'i').test(rd)){rm.resistanceDamageType=dmgTypes[k];}});
     rm.innateSpellcasting=rm.innateSpellcasting||/врождённ.*заклин|врожденн.*маг/i.test(rd);
     rm.skillBonuses=rm.skillBonuses||[];
     if(/внимательн|восприят/i.test(rd)&&/отличн|бонус|превосход/i.test(rd))if(rm.skillBonuses.indexOf('perception')<0)rm.skillBonuses.push('perception');
