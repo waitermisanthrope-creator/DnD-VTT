@@ -246,6 +246,8 @@
   function featureAvailableForCurrentBuild(h,id){if(!h||!id)return false;var ok=false;(h.classes||[]).forEach(function(c){var cls=String(c.name||''),lvl=num(c.level);if(!lvl)return;var core=(CORE[cls]||[]).some(function(f){var req=(function(){var m={rage:1,rele:0,reckless:2,dangerSense:2,fastMovement:5,feralInstinct:7,brutalCritical:9,relentlessRage:11,persistentRage:15,indomitableMight:18,primalChampion:20,bardicInspiration:1,jackOfAllTrades:2,songOfRest:2,countercharm:6,magicalSecrets:10,superiorInspiration:20,secondWind:1,actionSurge:2,indomitable:9,fightingStyle:1,extraAttack:5,fighterRemarkableAthlete:7,survivor:18,arcaneRecovery:1,spellMastery:18,signatureSpells:20,arcaneMastery:20,druidic:1,wildShape:2,timelessBody:18,beastSpells:18,archdruid:20,channelDivinity:2,turnUndead:2,destroyUndead:5,divineIntervention:10,greaterDivineIntervention:20,flurry:2,patientDefense:2,stepWind:2,stunningStrike:5,deflectMissiles:3,slowFall:4,evasionMonk:7,stillnessOfMind:7,diamondSoul:14,perfectSelf:20,divineSense:1,layOnHands:1,divineSmite:2,auraOfProtection:6,auraOfCourage:10,improvedDivineSmite:11,cleansingTouch:14,holyNexus:20,sneakAttack:1,cunningAction:2,uncannyDodge:5,evasion:7,reliableTalent:11,blindsense:14,slipperyMind:15,strokeOfLuck:20,favoredEnemy:1,naturalExplorer:1,rangerFightingStyle:2,huntersMark:2,landsStrideRanger:8,hideInPlainSight:10,vanish:14,feralSenses:18,foeSlayer:20,fontOfMagic:2,metamagic:3,sorcerousRestoration:20,sorcerousOriginMastery:18,pactBoon:3,eldritchInvocations:2,mysticArcanum:11,eldritchMaster:20,magicalTinkering:1,infuseItem:2,flashOfGenius:7,spellStoringItem:11,magicItemAdept:10,soulOfArtifice:20};return m[f[0]]||1;})();return f[0]===id&&lvl>=req;});if(core)ok=true;var sub=getSubclass(h,cls),arr=sub&&SUBCLASS_MAP[cls]&&SUBCLASS_MAP[cls][sub];if(arr&&arr.some(function(x){return x.id===id&&lvl>=x.level;}))ok=true;});if(!ok&&global.DNDFeats&&global.DNDFeats.has)ok=!!global.DNDFeats.has(h,id);if(!ok&&global.DNDContent&&global.DNDContent.getFeature){var f=global.DNDContent.getFeature(id);if(f&&f.className&&classLevel(h,f.className)>0)ok=true;}return ok;}
   function activeRage(h){return !!(h&&h.classFeaturesState&&h.classFeaturesState.raging);}
 
+  function orderKeyForBridge(h){var c=(h&&h.classes||[]).find(function(x){return String(x.name)==='Кровавый охотник';});var s=c&&String(c.subclass||'').toLowerCase();return s.indexOf('призрач')>=0?'ghostslayer':s;}
+
   function syncExtendedRuntimeResources(h){
     if(!h)return;
     var l, s, r, rt, pack;
@@ -319,7 +321,12 @@
     if(l)ensureRes(h,'arcaneSurges',Math.max(2,Math.ceil((Number(h.proficiencyBonus)||2))),'short');
 
     l=classLevel(h,'Кровавый охотник');
-    if(l)ensureRes(h,'bloodMaledict',l>=18?5:l>=14?4:l>=10?3:l>=6?2:1,'short');
+    if(l){
+      rt=global.DNDBloodHunter;
+      if(rt&&typeof rt.sync==='function')rt.sync(h);
+      ensureRes(h,'bloodMaledict',l>=17?4: l>=13?3: l>=6?2:1,'short');
+      if(orderKeyForBridge(h)==='ghostslayer')ensureRes(h,'bloodMaledict',l>=17?5:l>=13?4:l>=6?3:2,'short');
+    }
 
     l=classLevel(h,'Шифтер');
     if(l){
@@ -765,7 +772,7 @@
     return out;
   }
   function resetTurn(h){if(!h)return;syncClassResources(h);if(!h.turnResources)h.turnResources={};h.turnResources.actions=1;h.turnResources.bonusAction=1;h.turnResources.reaction=1;h.turnResources.movement=num(h.speed,30);var s=ensureState(h);s.sneakUsedThisTurn=false;s.foeSlayerUsedThisTurn=false;s.recklessThisTurn=false;s.actionSurgeUsed=false;s.rageMaintained=false;if(activeRage(h)&&classLevel(h,'Варвар')>=15)s.rageMaintained=true;}
-  function onAttackResult(h,ctx){if(!h)return;var s=ensureState(h);if(ctx&&ctx.sneakApplied)s.sneakUsedThisTurn=true;if(ctx&&ctx.foeSlayerApplied&&ctx.hit)s.foeSlayerUsedThisTurn=true;if(ctx&&ctx.pendingOnHit&&ctx.pendingOnHit.divineSmite){if(s.pendingOnHit)s.pendingOnHit.divineSmite=null;}if(ctx&&ctx.pendingOnHit&&ctx.pendingOnHit.stunningStrike){if(s.pendingOnHit)s.pendingOnHit.stunningStrike=null;}if(activeRage(h))s.rageMaintained=true;}
+  function onAttackResult(h,ctx){if(!h)return;var s=ensureState(h);if(ctx&&ctx.sneakApplied)s.sneakUsedThisTurn=true;if(classLevel(h,'Кровавый охотник')>=20&&ctx&&ctx.critical&&s.crimsonRite&&s.crimsonRite.active&&h.resources&&h.resources.bloodMaledict){h.resources.bloodMaledict.current=Math.min(h.resources.bloodMaledict.max,h.resources.bloodMaledict.current+1);s.sanguineMasteryRefundedThisTurn=true;}if(ctx&&ctx.foeSlayerApplied&&ctx.hit)s.foeSlayerUsedThisTurn=true;if(ctx&&ctx.pendingOnHit&&ctx.pendingOnHit.divineSmite){if(s.pendingOnHit)s.pendingOnHit.divineSmite=null;}if(ctx&&ctx.pendingOnHit&&ctx.pendingOnHit.stunningStrike){if(s.pendingOnHit)s.pendingOnHit.stunningStrike=null;}if(activeRage(h))s.rageMaintained=true;}
 
   function consumePendingOnHit(h,ctx){var s=ensureState(h),p=s.pendingOnHit||{},out={};if(ctx&&ctx.hit){if(p.divineSmite)out.divineSmite=JSON.parse(JSON.stringify(p.divineSmite));if(p.stunningStrike)out.stunningStrike=JSON.parse(JSON.stringify(p.stunningStrike));}return out;}
   function onTurnEnd(h){if(!h)return;var s=ensureState(h);if(activeRage(h)&&!s.rageMaintained&&!isSubclassFeatureAvailable(h,'Варвар','persistentRage'))s.raging=false;if(global.DNDContent&&global.DNDContent.listClasses)global.DNDContent.listClasses().forEach(function(x){if(classLevel(h,x.name)>0){var p=global.DNDContent.getClass(x.name);if(p&&p.hooks&&typeof p.hooks.onTurnEnd==='function')p.hooks.onTurnEnd(h);}});}
@@ -823,6 +830,7 @@
       ['alchemistReagents','wardenInterrupt','wardenFontOfLife','wardenLegendaryResistance','wardenSecondWind',
        'accursedSpellSlots','psiPoints','warlordExploitDice','warlordInspiringWord','warlordRally','arcaneSurges','bloodMaledict',
        'shifterAdrenaline','shifterPrimevalForm','vesselMagicSlots','charnelTouch','undyingServitude',
+       'brandCastigation','aetherWalk','hybridTransformation','mutagenConcoctions','strangeMetabolism','exaltedMutation','profaneSoulSlots',
        'martyrSpellUses','martyrDivineRespite','occultistFateReading',
        'beastheartFerocity','runicCharges','savantReactions'].forEach(function(id){
         if(h.resources[id])out.resources[id]={current:h.resources[id].current,max:h.resources[id].max,recharge:h.resources[id].recharge};
