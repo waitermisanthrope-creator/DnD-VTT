@@ -5808,3 +5808,13 @@ QA:
 - The manifest remains SHA-256 verified by both the web updater and native Android bridge.
 - After the next main-branch push, the Android debug workflow regenerates `updates/stable.json` from the actual repository bytes and publishes the 70.26.79 manifest.
 - Test after update: Settings → Check updates should offer **70.26.79**, then install it. After restart, test at least Cleric, Sorcerer, Warlock and several homebrew classes for their level-1 choices.
+
+
+## V70.26.80 — DIRECT CONSTRUCTOR + CLASS CHOICE DELIVERY FIX + AMBIENCE STATE
+- Added **«⚡ Конструктор»** to the character-creation type chooser. It opens Builder V2 directly, without the parchment flow, so creation is faster and is useful for QA.
+- Added a dedicated Builder V2 direct entry `startCreateDirect()`. The ordinary parchment route remains unchanged.
+- Fixed a release-blocking cache-buster bug: `character_creation_pergament.js` was dynamically loading `character_builder_v2.js` with **70.26.78**, which could overwrite the updated Builder after an in-app update to 70.26.79. It now loads the current release cache key **70.26.80**.
+- This explains the previous symptom where the standard class choices worked but most homebrew class choices appeared absent: the updated Builder was being replaced by the older cached Builder during the parchment transition.
+- Homebrew subclass timing is preserved from each class definition rather than forcing every class to choose a subclass at level 1. Examples: Pugilist/Warden/Warlord/Alchemist use level-3 specialization; Occultist and Shifter have level-1 specialization in the current project data.
+- Ambience state is now persisted in `localStorage`: current track, volume, shuffle, repeat-one and, most importantly, **playing/paused state**. If the user leaves the app paused, the next launch remains paused; if it was playing, the app attempts to restore playback.
+- Release target: **70.26.80**. After the stable manifest is regenerated, test both creation routes and ambience restart behavior.
