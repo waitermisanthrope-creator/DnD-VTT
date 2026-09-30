@@ -37,6 +37,9 @@ public final class DndUpdateBridge {
                 executor.execute(() -> stage(id, manifestUrl, reply));
             } else if ("apply".equals(type)) {
                 executor.execute(() -> apply(id, reply));
+            } else if ("set-icon".equals(type)) {
+                String iconId = request.optString("iconId", "default");
+                executor.execute(() -> setLauncherIcon(id, iconId, reply));
             } else {
                 postReply(reply, response(id, false, "unknown-request", null));
             }
@@ -191,6 +194,67 @@ public final class DndUpdateBridge {
         copyAssetTree("wallpapers", active);
         copyAssetTree("ambience", active);
         prefs.edit().putString("active", packageVersion).putString("healthy", packageVersion).commit();
+    }
+
+    private void setLauncherIcon(String id, String iconId, JavaScriptReplyProxy reply) {
+        try {
+            if (!"default".equals(iconId) && !iconId.matches("dice_\\d{2}")) {
+                throw new Exception("Unknown launcher icon: " + iconId);
+            }
+            android.content.pm.PackageManager pm = context.getPackageManager();
+            String[] aliases = new String[31];
+            aliases[0] = "com.dndvtt.app.LauncherDefault";
+            for (int i = 1; i <= 30; i++) {
+                aliases[i] = "com.dndvtt.app.LauncherDice" + String.format(java.util.Locale.ROOT, "%02d", i);
+            }
+
+            int selectedIndex = 0;
+            if (!"default".equals(iconId)) {
+                selectedIndex = Integer.parseInt(iconId.substring("dice_".length()));
+            }
+
+            for (int i = 0; i < aliases.length; i++) {
+                android.content.ComponentName component = new android.content.ComponentName(context, aliases[i]);
+                int state = (i == selectedIndex)
+                        ? android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                        : android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+                pm.setComponentEnabledSetting(
+                        component,
+                        state,
+                        android.content.pm.PackageManager.DONT_KILL_APP
+                );
+            }
+
+            context.getSharedPreferences("dnd_vtt_icon", Context.MODE_PRIVATE)
+                    .edit().putString("selected", iconId).apply();
+
+            postReply(reply, response(id, true, "icon-applied", iconId));
+        } catch (Exception e) {
+            postReply(reply, response(id, false, "icon-failed", e.toString()));
+        }
+    }
+
+    public void ensureLauncherIcon() throws Exception {
+        SharedPreferences prefs = context.getSharedPreferences("dnd_vtt_icon", Context.MODE_PRIVATE);
+        String selected = prefs.getString("selected", "default");
+        if (!"default".equals(selected) && !selected.matches("dice_\\d{2}")) selected = "default";
+
+        android.content.pm.PackageManager pm = context.getPackageManager();
+        for (int i = 0; i <= 30; i++) {
+            String name = i == 0
+                    ? "com.dndvtt.app.LauncherDefault"
+                    : "com.dndvtt.app.LauncherDice" + String.format(java.util.Locale.ROOT, "%02d", i);
+            boolean enabled = (i == 0 && "default".equals(selected))
+                    || (i > 0 && selected.equals("dice_" + String.format(java.util.Locale.ROOT, "%02d", i)));
+            pm.setComponentEnabledSetting(
+                    new android.content.ComponentName(context, name),
+                    enabled
+                            ? android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                            : android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    android.content.pm.PackageManager.DONT_KILL_APP
+            );
+        }
+        prefs.edit().putString("selected", selected).apply();
     }
 
     public void markHealthy() {
