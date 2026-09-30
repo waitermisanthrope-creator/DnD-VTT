@@ -23,6 +23,16 @@
       "sha256": "baaa140fb6f83ca8515608ced2f4588e673e4d0fd050b63b460be9a26e8adf99"
     },
     {
+      "path": "app/character_builder_v2.js",
+      "bytes": 58305,
+      "sha256": "d352584e9b729a4c8d79d82aee6749b32ba60cfe033dfbbc5e34f10b0bc5e17f"
+    },
+    {
+      "path": "app/vtt_debug_error_log_v709.js",
+      "bytes": 4816,
+      "sha256": "cd684a8c03cb0cd97e32eab9b5b88f5a2917251e419bac8bcb3da279e4fd23b8"
+    },
+    {
       "path": "app/Ambiences.js",
       "bytes": 12671,
       "sha256": "56ba2ddc81c57a9e111467a3511ad7e6737b8c9b16cc2a5686ba6369517b9b01"
@@ -66,6 +76,11 @@
       "path": "1790622252250.png",
       "bytes": 908119,
       "sha256": "1157a229c1ddc35a06db0aff82b7b4b31262b36edfb7cf5994c03d6147bd99b2"
+    },
+    {
+      "path": "1790718758545.png",
+      "bytes": 1889164,
+      "sha256": "0a3eab3f11aebea532709de2a29279b3a60b28bc0785bd84bceacde56167700d"
     }
   ],
   "blockedVersions": []
