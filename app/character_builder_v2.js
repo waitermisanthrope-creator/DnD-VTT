@@ -873,9 +873,15 @@
     entry.level=(Number(entry.level)||0)+1;
     var newLevel=entry.level;
     this.choices.forEach(function(c){applyChoice(hero,c,this.values[c.key]);},this);
-    var hd=(getClass(cls)||{}).hitDie||8,con=Math.floor((Number(hero.stats&&hero.stats.con)||10)-10)/2;
-    hero.hpMax=(Number(hero.hpMax)||1)+Math.max(1,Number(this.values.hp)||Math.floor(hd/2)+1+con);hero.hpCurrent=hero.hpMax;
+    var hd=(getClass(cls)||{}).hitDie||8,con=Math.floor(((Number(hero.stats&&hero.stats.con)||10)-10)/2);
+    var raceHpBonus=Number(hero.raceHpBonusPerLevel)||0;
+    var hpGain=(Number(this.values.hp)||Math.floor(hd/2)+1)+con+raceHpBonus;
+    hero.hpMax=(Number(hero.hpMax)||1)+Math.max(1,hpGain);hero.hpCurrent=hero.hpMax;
     hero.level=(hero.classes||[]).reduce(function(a,c){return a+(Number(c.level)||0);},0);
+    if(this.isNewClass){
+      applyClassProficiencies(hero,cls,true);
+      applyStartingEquipment(hero,cls);
+    }
     if(typeof g.applyClassProgression==='function')g.applyClassProgression(hero,cls,newLevel);
     applyExternalClassFeatures(hero,cls);
     applyRuntimeSpecializationFeatures(hero,cls,newLevel);
