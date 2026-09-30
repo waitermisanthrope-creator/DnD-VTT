@@ -859,7 +859,7 @@
        'shifterAdrenaline','shifterPrimevalForm','vesselMagicSlots','charnelTouch','undyingServitude',
        'brandCastigation','aetherWalk','hybridTransformation','mutagenConcoctions','strangeMetabolism','exaltedMutation','profaneSoulSlots',
        'illriggerSeals','illriggerConduit','illriggerInvokeHell','illriggerSuperiorInterdict','illriggerInfernalMajesty','illriggerMasterOfHell',
-       'wardenInterrupt','wardenFontOfLife','wardenSurvive','wardenLegendaryResistance','wardenSecondWind',
+       'wardenInterrupt','wardenFontOfLife','wardenSurvive','wardenLegendaryResistance','wardenSecondWind','wardenBattleDice',
        'pugilistMoxie','pugilistBloodiedButUnbowed','pugilistFightingSpirit','pugilistDownButNotOut','pugilistPersona','pugilistWorkCrowd','pugilistSignatureMove','pugilistDreadHand','pugilistGrotesqueGrowth','pugilistFountainViscera','pugilistUncouthArt','pugilist_heelstomper','pugilist_lowBlow','pugilist_pocketSand',
        'martyrSpellUses','martyrDivineRespite','occultistFateReading',
        'beastheartFerocity','runicCharges','savantReactions'].forEach(function(id){
