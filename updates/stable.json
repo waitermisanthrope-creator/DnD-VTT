@@ -79,8 +79,8 @@
     },
     {
       "path": "app/class_features_engine.js",
-      "bytes": 114932,
-      "sha256": "823a3885a5993170a4eeab6ced68949783cbd9ecb23f062fa546856f0f325bde"
+      "bytes": 115649,
+      "sha256": "f8531d80125019d296a816670cf7c01550dacef1fa5c04d4bc46c48ba6ca9527"
     },
     {
       "path": "app/combat_engine.js",
