@@ -52,7 +52,9 @@ tasks.register("prepareVttIconPreviews", Sync) {
 
 tasks.register("prepareVttIconResources", Sync) {
     into(vttIconRes)
-    from("../../1790788500741.png") {
+    // Для чистой установки APK по умолчанию показываем красивый куб.
+    // Внутренний пункт «Стандартная иконка» в селекторе при этом остаётся отдельным.
+    from("../../app/assets/dice/dice1.png") {
         rename { "icon_default.png" }
         into("drawable-nodpi")
     }
