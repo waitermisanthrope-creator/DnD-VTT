@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DnD-VTT",
-  "version": "70.26.79",
+  "version": "70.26.78",
   "minAppVersion": "70.25.71",
   "channel": "stable",
   "generated": "AUTO",
@@ -25,7 +25,7 @@
     {
       "path": "app/character_builder_v2.js",
       "bytes": 66243,
-      "sha256": "617d3a07d402468ab131b83d2cdc97b660001facfbce7c14f4a92aab95261594"
+      "sha256": "2c57401324f90b212206fbc14aad27576153d2d0422f277770ea051b22ee036b"
     },
     {
       "path": "app/vtt_debug_error_log_v709.js",
@@ -50,7 +50,7 @@
     {
       "path": "app/update_manager.js",
       "bytes": 20814,
-      "sha256": "5560f33e7f40e71816fbf7204fc27d8e9b089acffd68312f58a69dc938b98268"
+      "sha256": "d5f651657c2f328d84697f346ff6d57dba679537c8f3a918ad332e7976272a5b"
     },
     {
       "path": "app/onboarding_faq_v71.js",
@@ -81,11 +81,6 @@
       "path": "1790718758545.png",
       "bytes": 1889164,
       "sha256": "0a3eab3f11aebea532709de2a29279b3a60b28bc0785bd84bceacde56167700d"
-    },
-    {
-      "path": "app/data/subclasses/subclassesRegistry.js",
-      "bytes": 111083,
-      "sha256": "87c4156488a9c2cd09b9500cf314f2503479e4d5df1afe058b9385e675ac2539"
     }
   ],
   "blockedVersions": []
