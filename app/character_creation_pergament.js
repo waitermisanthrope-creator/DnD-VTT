@@ -354,22 +354,44 @@ window.finishParchmentCreation=function(){
     throw new Error('CharacterBuilderV2.startCreateFromParchment() не вернул Wizard.');
    }catch(err){
     console.error('Builder V2 launch failed:',err);
-    showBuilderModuleFatal(String(err&&err.stack||err));
+    var root=el('cbv2Screen');
+    if(!root){
+      root=document.createElement('div');
+      root.id='cbv2Screen';
+      root.style.cssText='position:fixed;inset:0;z-index:99990;display:block;background:#111;color:#fff;overflow:auto;';
+      document.body.appendChild(root);
+    }
+    root.innerHTML='<div style="max-width:720px;margin:0 auto;padding:18px;color:#fff;font-family:system-ui"><h2>⚠️ Не удалось открыть Builder V2</h2><pre style="white-space:pre-wrap;word-break:break-word;color:#ffb4ab;background:#171717;padding:12px;border-radius:8px;">'+String(err&&err.stack||err)+'</pre><button onclick="dndV709Open()" style="padding:10px 14px">🐞 Открыть ошибки</button></div>';
     return;
    }
   }
-  if(attempt===0){
-    loadBuilderModule(function(ok,reason){
-      if(ok)launchBuilder(1);
-      else{console.error('Builder V2 bootstrap failed:',reason);showBuilderModuleFatal(reason);}
-    });
-    return;
+  /* If the early <script> was blocked, retry the actual file once instead of
+     silently waiting for ten identical missing globals. */
+  if(!window.__CBV2_RETRY_STARTED){
+   window.__CBV2_RETRY_STARTED=true;
+   var retry=document.createElement('script');
+   retry.src='./app/character_builder_v2.js?cbv2_retry=702605';
+   retry.async=false;
+   retry.onload=function(){setTimeout(function(){launchBuilder(attempt+1);},0);};
+   retry.onerror=function(){
+    console.error('Builder V2 script load failed on retry:',retry.src);
+    launchBuilder(10);
+   };
+   document.head.appendChild(retry);
+   return;
   }
-  if(attempt<4){setTimeout(function(){launchBuilder(attempt+1);},250);return;}
-  console.error('Builder V2 module unavailable after bootstrap/retries.');
-  showBuilderModuleFatal('Модуль не появился после статической и динамической загрузки.');
- }
- setTimeout(function(){
+  if(attempt<10){setTimeout(function(){launchBuilder(attempt+1);},250);return;}
+  var reason=window.__CBV2_LAST_ERROR||window.__CBV2_SCRIPT_ERROR||'Файл character_builder_v2.js не создал window.CharacterBuilderV2.';
+  console.error('Builder V2 module unavailable after retry:',reason);
+  var root=el('cbv2Screen');
+  if(!root){
+   root=document.createElement('div');
+   root.id='cbv2Screen';
+   document.body.appendChild(root);
+  }
+  root.style.cssText='position:fixed;inset:0;z-index:99990;display:block;background:#111;color:#fff;overflow:auto;box-sizing:border-box;';
+  root.innerHTML='<div style="max-width:720px;margin:0 auto;padding:18px;color:#fff;font-family:system-ui"><h2>⚠️ Builder V2 не загрузился</h2><p>Мастер создания не был найден после повторной загрузки скрипта.</p><pre style="white-space:pre-wrap;word-break:break-word;color:#ffb4ab;background:#171717;padding:12px;border-radius:8px;">'+String(reason)+'</pre><button onclick="dndV709Open()" style="padding:10px 14px">🐞 Открыть ошибки</button></div>';
+ } setTimeout(function(){
   if(bo)bo.classList.remove('show','cinematic-hold');
   if(s)s.classList.remove('show','cinematic');
   if(p)p.style.display='none';
