@@ -262,6 +262,26 @@
     l=classLevel(h,'Следопыт');if(l){ensureRes(h,'huntersMark',1,'short');}
     l=classLevel(h,'Колдун');if(l){var slots=l>=17?4:l>=11?3:l>=5?2:1;ensureRes(h,'pactSlots',slots,'short');}
     l=classLevel(h,'Изобретатель');if(l){ensureRes(h,'infusions',Math.max(2,Math.floor((l+1)/3)),'long');ensureRes(h,'flashOfGenius',Math.max(1,abilityMod(h,'int')),'long');}
+    // Extended-class runtimes: expose their own resource pools in the common
+    // resource UI without replacing their richer classFeaturesState.
+    if(l=classLevel(h,'Аккурсд')){
+      var ar=global.accursedRuntime;
+      if(ar&&typeof ar.sync==='function') ar.sync(h);
+      var acs=h.classFeaturesState&&h.classFeaturesState.accursed;
+      if(acs&&Number.isFinite(Number(acs.metamorphosesUsesMax))) ensureRes(h,'accursedMetamorphoses',Number(acs.metamorphosesUsesMax),'long');
+    }
+    if(l=classLevel(h,'Рунный хранитель')){
+      var rr=global.runeKeeperRuntime;
+      if(rr&&typeof rr.sync==='function') rr.sync(h);
+      var rks=h.classFeaturesState&&h.classFeaturesState.runekeeper;
+      if(rks) ensureRes(h,'runicCharges',Number(rks.runicChargeMax)||Math.floor(l/2),'long');
+    }
+    if(l=classLevel(h,'Савант')){
+      var sr=global.savantRuntime;
+      if(sr&&typeof sr.sync==='function') sr.sync(h);
+      var svs=h.classFeaturesState&&h.classFeaturesState.savant;
+      if(svs&&Number.isFinite(Number(svs.focusMax))) ensureRes(h,'savantFocus',Number(svs.focusMax),'short');
+    }
     if(isSubclassFeatureAvailable(h,'Воин','superiorityDice'))ensureRes(h,'superiorityDice',classLevel(h,'Воин')>=15?6:4,'short');
     if(isSubclassFeatureAvailable(h,'Варвар','frenzy'))ensureRes(h,'frenzy',1,'long');
     if(isSubclassFeatureAvailable(h,'Волшебник','arcaneWard'))ensureRes(h,'arcaneWard',0,'long');
