@@ -660,3 +660,5 @@
   g.openLevelUpModal=startLevel;
   g.CharacterBuilderV2={Wizard:Wizard,raceChoices:raceChoices,classChoices:classChoices,collectChoices:collectChoices,applyChoice:applyChoice,startCreate:startCreate,startLevel:startLevel,startCreateFromParchment:function(draft){return startCreate({fromParchment:true,draft:draft});}};
 })(window);
+
+// V70.26.71: keep Builder array normalization fix in the stable web update payload.
