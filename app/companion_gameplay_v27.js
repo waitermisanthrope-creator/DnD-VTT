@@ -59,10 +59,10 @@
     if(g.DNDSecondaryEntities)g.DNDSecondaryEntities.update(e.id,{resources:e.resources});
     return cur;
   }
-  function attack(id,targetId,index){
+  function attack(id,targetId,index,flags){
     var e=entity(id);if(!e)return {ok:false,reason:'not_found'};
     var t=findCombatant(targetId);if(!t)return {ok:false,reason:'target_not_found'};
-    if(String(t.team||'')===String(e.team||'party'))return {ok:false,reason:'friendly_target'};
+    if(String(t.team||'')===String(e.team||'party')&&!(flags&&flags.allowFriendly))return {ok:false,reason:'friendly_target'};
     var action=(e.actions||[])[Number(index)||0];if(!action)return {ok:false,reason:'action_not_found'};
     var targetToken=g.DNDBattleBoard&&g.DNDBattleBoard.findToken?g.DNDBattleBoard.findToken('bt_'+String(targetId)):null;
     if(!targetToken&&g.DNDBattleBoard&&g.DNDBattleBoard.findToken)targetToken=g.DNDBattleBoard.findToken(targetId);
@@ -72,12 +72,17 @@
     if(!chk.ok)return {ok:false,reason:chk.los&&!chk.los.clear?'los_blocked':'out_of_range',distance:chk.distance,range:chk.range};
     var c=findCombatant('summon_'+e.id);if(!c)return {ok:false,reason:'combatant_not_found'};
     if(!consumeAction(c))return {ok:false,reason:'action_used'};
-    var opts={bonus:Number(action.attackBonus)||0,damage:action.damage||'1d4',damageType:action.damageType||'',target:t,usesStrength:true,meleeOrThrown:true};
+    var rampage=!!(e.companionType==='beastheart'&&e.metadata&&e.metadata.rampage),fer=Number(e.resources&&e.resources.ferocity)||0,owner=ownerCombatant(e),bond=h&&h.classFeaturesState&&h.classFeaturesState.companionBond,extra=rampage?(bond==='ferocious'&&Number(e.beastheartLevel||1)>=11?fer:Math.floor(fer/2)):0;
+    var dmg=action.damage||'1d4';if(extra>0)dmg=dmg+'+'+extra;
+    var opts={bonus:Number(action.attackBonus)||0,damage:dmg,damageType:action.damageType||'',target:t,usesStrength:true,meleeOrThrown:true};
+    if(rampage&&bond==='ferocious'&&Number(e.beastheartLevel||1)>=11&&owner&&g.DNDBattleBoard&&sourceToken){
+      var ot=g.DNDBattleBoard.findToken('bt_'+String(owner.id))||g.DNDBattleBoard.findToken(owner.id);if(ot&&g.DNDBattleBoard.distanceFt(sourceToken,targetToken)<=5)opts.advantage=true;
+    }
     if(Number(action.rangeFt)>5)opts.meleeOrThrown=false;
     var r=g.DNDCombat&&g.DNDCombat.attack?g.DNDCombat.attack(c,t,opts):null;
     if(!r)return {ok:false,reason:'combat_unavailable'};
     var hit=!!r.hit;
-    if(hit&&e.companionType==='beastheart')gainFerocity(e,1);
+    if(hit&&e.companionType==='beastheart'&&!rampage)gainFerocity(e,1);
     if(g.DNDSummoning&&g.DNDSummoning.sync)g.DNDSummoning.sync();
     if(typeof g.autoSaveCurrentCharacter==='function')g.autoSaveCurrentCharacter();
     if(g.DNDBattleBoard&&g.DNDBattleBoard.render)g.DNDBattleBoard.render();
@@ -133,7 +138,7 @@
       if(roll<dc){
         e.metadata.rampage=true;out.rampage=true;
         if(nearest){
-          var rr=attack(e.id,nearest.combatant.id,0);
+          var rr=attack(e.id,nearest.combatant.id,0,{allowFriendly:true});
           out.rampageAttack=rr;
           if(rr&&rr.ok){
             var keep=(String(h&&h.classFeaturesState&&h.classFeaturesState.companionBond)==='ferocious'&&l>=7)?4:0;
