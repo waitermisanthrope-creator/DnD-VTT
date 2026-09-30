@@ -15,7 +15,7 @@
     {
       "path": "app/character_creation_pergament.js",
       "bytes": 38991,
-      "sha256": "bd14a80c0f4e02a14ce1f858c362aa9af05261eabebdac07f91063d4d98f0190"
+      "sha256": "ae604efad6373a707b6a78590ac994aab7f2d3a065ac3fb2329ed222956def2c"
     },
     {
       "path": "app/character_creation_pergament.css",
@@ -44,8 +44,8 @@
     },
     {
       "path": "app/expansion_class_progressions.js",
-      "bytes": 6000,
-      "sha256": "b0b970e9a22473586f1feba59b60817db1e3ddb34399857765c7ea840a615bff"
+      "bytes": 6719,
+      "sha256": "93352071c1f0a30df0762c4b15c8b6dee2d6ea7710dbf235747b9daf73abe673"
     },
     {
       "path": "app/classesRegistry.js",
