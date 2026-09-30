@@ -313,19 +313,29 @@ window.finishParchmentCreation=function(){
  if(bo){bo.classList.remove('show','cinematic-hold');void bo.offsetWidth;bo.classList.add('show','cinematic-hold')}
  function launchBuilder(attempt){
   var builder=window.CharacterBuilderV2;
+  console.warn('Parchment → Builder V2: attempt '+attempt, builder?'module loaded':'module NOT loaded');
   if(builder&&typeof builder.startCreateFromParchment==='function'){
    try{
-    builder.startCreateFromParchment(draft);
-    return;
+    var result=builder.startCreateFromParchment(draft);
+    if(result)return;
+    if(g.__CBV2_LAST_ERROR)return;
+    throw new Error('CharacterBuilderV2.startCreateFromParchment() не вернул Wizard.');
    }catch(err){
     console.error('Builder V2 launch failed:',err);
-    if(builder.Wizard){
-     try{new builder.Wizard({mode:'create',fromParchment:true,draft:draft}).mount();return;}catch(err2){console.error('Builder V2 fallback failed:',err2);}
+    var root=el('cbv2Screen');
+    if(!root){
+      root=document.createElement('div');
+      root.id='cbv2Screen';
+      root.style.cssText='position:fixed;inset:0;z-index:99990;display:block;background:#111;color:#fff;overflow:auto;';
+      document.body.appendChild(root);
     }
+    root.innerHTML='<div style="max-width:720px;margin:0 auto;padding:18px;color:#fff;font-family:system-ui"><h2>⚠️ Не удалось открыть Builder V2</h2><pre style="white-space:pre-wrap;word-break:break-word;color:#ffb4ab;background:#171717;padding:12px;border-radius:8px;">'+String(err&&err.stack||err)+'</pre><button onclick="dndV709Open()" style="padding:10px 14px">🐞 Открыть ошибки</button></div>';
+    return;
    }
   }
   if(attempt<10){setTimeout(function(){launchBuilder(attempt+1);},250);return;}
-  alert('Не удалось открыть Builder V2. Проверьте загрузку character_builder_v2.js.');
+  console.error('Builder V2 module unavailable after 10 attempts.');
+  alert('Не удалось открыть Builder V2. Проверьте журнал ошибок.');
  }
  setTimeout(function(){
   if(bo)bo.classList.remove('show','cinematic-hold');
