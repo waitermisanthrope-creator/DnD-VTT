@@ -432,7 +432,7 @@
         {id:'str',name:'Сила'},{id:'dex',name:'Ловкость'},{id:'con',name:'Телосложение'},
         {id:'int',name:'Интеллект'},{id:'wis',name:'Мудрость'},{id:'cha',name:'Харизма'}
       ];
-      body='<div class="cb-card"><h3>Характеристики</h3><p class="cb-note">27 очков. Значения 8–15 до расовых и специальных бонусов.</p><div class="cb-grid3">'+statList.map(function(x){return '<label>'+x.name+'<input class="cb-input" type="number" min="8" max="15" data-stat="'+x.id+'" value="'+(stats[x.id]||8)+'"></label>';}).join('')+'</div><div id="cb_pointbuy" class="cb-note" style="margin-top:8px"></div></div>';
+      body='<div class="cb-card"><h3>Характеристики</h3><p class="cb-note">27 очков. Значения 8–15 до расовых и специальных бонусов. Используйте кнопки − / +; ручной ввод отключён.</p><div class="cb-grid3">'+statList.map(function(x){var raw=Number(stats[x.id]);var value=Number.isFinite(raw)?Math.max(8,Math.min(15,raw)):8;return '<div class="cb-stat-control"><label>'+x.name+'</label><div class="cb-stat-row"><button type="button" class="cb-stat-btn" data-stat-minus="'+x.id+'">−</button><input class="cb-input cb-stat-input" type="number" min="8" max="15" readonly data-stat="'+x.id+'" value="'+value+'"><button type="button" class="cb-stat-btn" data-stat-plus="'+x.id+'">+</button></div></div>';}).join('')+'</div><div id="cb_pointbuy" class="cb-note" style="margin-top:8px"></div></div>';
     }
     if(this.step===4){
       var rc=this.race,cc=this.className;
@@ -465,8 +465,28 @@
     this.root.querySelectorAll('[data-class]').forEach(function(el){el.onclick=function(){self.className=el.dataset.class;self.render();};});
   };
   Wizard.prototype.bindStats=function(){
-    var self=this;this.root.querySelectorAll('[data-stat]').forEach(function(el){el.onchange=function(){self.values.stats=self.values.stats||{};self.values.stats[el.dataset.stat]=Math.max(8,Math.min(15,Number(el.value)||8));self.updatePointBuy();};});this.updatePointBuy();
-  };
+     var self=this,costs={8:0,9:1,10:2,11:3,12:4,13:5,14:7,15:9};
+     this.values.stats=this.values.stats||{};
+     this.root.querySelectorAll('[data-stat]').forEach(function(el){
+       var id=el.dataset.stat,raw=Number(self.values.stats[id]),value=Number.isFinite(raw)?Math.max(8,Math.min(15,raw)):8;
+       self.values.stats[id]=value;el.value=value;
+     });
+     function change(id,delta){
+       var current=Number(self.values.stats[id]);if(!Number.isFinite(current))current=8;
+       var next=Math.max(8,Math.min(15,current+delta));
+       if(next===current)return;
+       if(delta>0){
+         var spent=0;Object.keys(self.values.stats).forEach(function(k){var v=Number(self.values.stats[k]);spent+=costs[v]||0;});
+         if((costs[next]||0)-(costs[current]||0)>27-spent)return;
+       }
+       self.values.stats[id]=next;
+       var input=self.root.querySelector('[data-stat="'+id+'"]');if(input)input.value=next;
+       self.updatePointBuy();
+     }
+     this.root.querySelectorAll('[data-stat-minus]').forEach(function(btn){btn.onclick=function(){change(btn.dataset.statMinus,-1);};});
+     this.root.querySelectorAll('[data-stat-plus]').forEach(function(btn){btn.onclick=function(){change(btn.dataset.statPlus,1);};});
+     this.updatePointBuy();
+   };
   Wizard.prototype.updatePointBuy=function(){
     var costs={8:0,9:1,10:2,11:3,12:4,13:5,14:7,15:9},sum=0;
     Object.values(this.values.stats||{}).forEach(function(v){sum+=costs[v]||0;});
