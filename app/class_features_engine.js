@@ -280,7 +280,10 @@
       var sr=global.savantRuntime;
       if(sr&&typeof sr.sync==='function') sr.sync(h);
       var svs=h.classFeaturesState&&h.classFeaturesState.savant;
-      if(svs&&Number.isFinite(Number(svs.focusMax))) ensureRes(h,'savantFocus',Number(svs.focusMax),'short');
+      if(svs){
+        ensureRes(h,'savantReactions',Number(svs.reactionMax)||1,'long');
+        h.resources.savantReactions.current=Math.max(0,Math.min(Number(svs.reactionUses)||0,h.resources.savantReactions.max));
+      }
     }
     if(isSubclassFeatureAvailable(h,'Воин','superiorityDice'))ensureRes(h,'superiorityDice',classLevel(h,'Воин')>=15?6:4,'short');
     if(isSubclassFeatureAvailable(h,'Варвар','frenzy'))ensureRes(h,'frenzy',1,'long');
