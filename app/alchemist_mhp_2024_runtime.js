@@ -238,7 +238,7 @@ function subclassFeatureEffect(h,sub,f,ctx){
   s.activeMutagen=ctx.ability||'constitution';
   return {ok:true,effect:{abilityBonus:3,ability:s.activeMutagen,maxAbility:23,duration:'1 minute'},message:'🧬 Мутаген активирован.'};
  }
- if(name==='Общий мутаген'){if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,target:ctx.target&&ctx.target.id,effect:{grantMutagen:true,duration:'1 minute',onePerTarget:true},message:'🧬 Мутаген передан союзнику.'};
+ if(name==='Общий мутаген'){if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,target:(ctx.target&&ctx.target.id)||null,effect:{grantMutagen:true,duration:'1 minute',onePerTarget:true},message:'🧬 Мутаген передан союзнику.'};}
  if(name==='Слизевая бомба')return{ok:true,effect:{damage:0,areaSlime:true,deniesActions:['dash','disengage','dodge'],removeAction:true},message:'🟢 Слизевая бомба разлита.'};
  if(name==='Жертвенная слизь'){if(!spend(h,0))return{ok:false};return{ok:true,effect:{reaction:true,redirectAttackToAlly:true,rangeFt:5},message:'🟢 Жертвенная слизь готова.'};}
  if(name==='Палитра-порталы')return{ok:true,effect:{teleportBetweenPaint:true,moveCostFt:10,rangeFt:60},message:'🎨 Палитра-порталы готовы.'};
