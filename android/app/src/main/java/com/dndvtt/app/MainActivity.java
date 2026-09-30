@@ -26,6 +26,7 @@ public class MainActivity extends Activity {
         updater = new DndUpdateBridge(this);
         try {
             updater.ensureSeeded();
+            updater.ensureLauncherIcon();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
