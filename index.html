@@ -19,6 +19,8 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
   <script src="./app/Logo.js"></script>
   <!-- Live developer error console: loaded early so it can capture startup errors and always define dndV709Open. -->
   <script src="./app/vtt_debug_error_log_v709.js"></script>
+  <!-- Builder V2 is loaded before legacy creation scripts so the parchment handoff always sees its global. -->
+  <script src="./app/character_builder_v2.js"></script>
   <style>
     .author-link-card {
       max-width: 620px;
