@@ -156,7 +156,7 @@ if(g.DNDContent&&g.DNDContent.registerClass)g.DNDContent.registerClass({
   {id:'thickenedHide',name:'Утолщённая шкура',level:7,action:'passive'},
   {id:'undyingProtector',name:'Неумирающий защитник',level:15,action:'reaction'}
  ],
- subclasses:Object.keys(bonds).map(function(k){return{id:k,name:bonds[k].name,features:bonds[k].levels};}),
+ subclasses:Object.keys(bonds).map(function(k){return{id:k,name:bonds[k].name,features:Object.keys(bonds[k].levels).reduce(function(a,l){return a.concat(bonds[k].levels[l].map(function(n){return{id:k+'_'+l+'_'+n,name:n,level:Number(l),action:'passive'};}));},[])};}),
  hooks:{sync:sync,useFeature:use,attackModifiers:attack}
 });
 })(window);
