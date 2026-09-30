@@ -151,3 +151,4 @@ jobs:
           retention-days: 30
 
 # Stable APK build: every main-branch update produces a fresh test artifact.
+# V70.26.82: rerun manifest generation after Builder V2 level-1 feature fix.
