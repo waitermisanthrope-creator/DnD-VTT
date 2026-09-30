@@ -205,7 +205,45 @@
     return o;
   }
 
+
+  function syncPsion(h){
+    var l=lvl(h,'Псионик');if(!l)return;
+    var max=[0,2,3,5,6,7,9,10,11,13,14,15,17,18,19,20,21,22,23,25][l]||25;
+    res(h,'psiPoints',max,'long');
+    var s=state(h);s.psionDiscipline=s.psionDiscipline||'Астральный разум';s.psionicFocus=s.psionicFocus||false;
+  }
+  function psiCost(h,n){return spend(h,'psiPoints',n);}
+  function usePsion(h,id,ctx){
+    syncPsion(h);var l=lvl(h,'Псионик'),s=state(h),t=target(ctx),cost=Number(ctx&&ctx.cost)||1;
+    if(id==='psiBlast'){if(!t)return{ok:false,message:'Выбери цель.'};if(!psiCost(h,cost))return{ok:false,message:'Недостаточно псионических очков.'};return{ok:true,target:t.id,effect:{damage:(1+Math.floor(l/5))+'d8',damageType:ctx.damageType||'psychic',save:'int'},message:'🧠 Псионический взрыв.'};}
+    if(id==='mindLink'){if(!psiCost(h,1))return{ok:false,message:'Недостаточно псионических очков.'};s.psionicFocus=true;return{ok:true,effect:{telepathyFt:120,link:true,duration:'1 hour'},message:'🔗 Ментальная связь установлена.'};}
+    if(id==='psychicShield'){if(!psiCost(h,2))return{ok:false,message:'Недостаточно псионических очков.'};return{ok:true,effect:{reaction:true,acBonus:2,resistance:'psychic',duration:'1 round'},message:'🛡️ Психический щит.'};}
+    if(id==='telekineticPush'){if(!t)return{ok:false,message:'Выбери цель.'};if(!psiCost(h,1))return{ok:false,message:'Недостаточно псионических очков.'};return{ok:true,target:t.id,effect:{forcedMoveFt:30,save:'str'},message:'🌀 Телекинетический толчок.'};}
+    if(id==='teleport'){if(!psiCost(h,3))return{ok:false,message:'Недостаточно псионических очков.'};return{ok:true,effect:{teleportFt:Number(ctx.distanceFt)||60,provokesNoOpportunity:true},message:'✨ Псионическая телепортация.'};}
+    if(id==='dominateMind'){if(!t)return{ok:false,message:'Выбери цель.'};if(!psiCost(h,5))return{ok:false,message:'Недостаточно псионических очков.'};return{ok:true,target:t.id,effect:{condition:'charmed',save:'wis',duration:'1 minute',concentration:true},message:'👁️ Подчинение разума.'};}
+    if(id==='discipline'){
+      var d=ctx.discipline||s.psionDiscipline;var map={
+        'Астральный разум':{effect:{telepathyFt:120,clairvoyance:true}},
+        'Психокинез':{effect:{telekinesis:true,moveFt:30}},
+        'Психометаболизм':{effect:{tempHp:l*2,advantageOnCon:true}},
+        'Телепатия':{effect:{mindRead:true,telepathyFt:120}},
+        'Прорицание':{effect:{foresight:true,advantageOnChecks:true}},
+        'Телепортация':{effect:{teleportFt:60,noOpportunity:true}}
+      };return{ok:true,effect:map[d]||map['Астральный разум'],message:'🧠 Дисциплина: '+d};
+    }
+    if(id==='apotheosis')return{ok:true,effect:{psiPointsMax:25,regainOnShortRest:true,immune:['charmed','frightened'],allDisciplines:true},message:'🌌 Псионический апофеоз.'};
+    return{ok:false,unsupported:true,message:'Псионик: неизвестная активная способность '+id};
+  }
+  function psionAttack(h,ctx){
+    var o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]},s=state(h);
+    if(s.psionicFocus)o.notes.push('Псионический фокус');
+    if(ctx&&ctx.psionicDamage)o.extraDice.push(lvl(h,'Псионик')>=11?'2d8':'1d8');
+    return o;
+  }
+
   var packs=[
+    {id:'psion',name:'Псионик',source:'Project custom class contract',license:'Project-owned rules layer',features:[{id:'psiBlast',name:'Псионический взрыв',level:1,action:'action',target:'enemy'},{id:'mindLink',name:'Ментальная связь',level:1,action:'action',target:'ally'},{id:'psychicShield',name:'Психический щит',level:2,action:'reaction',target:'self'},{id:'telekineticPush',name:'Телекинетический толчок',level:2,action:'action',target:'enemy'},{id:'teleport',name:'Псионическая телепортация',level:5,action:'bonus',target:'self'},{id:'dominateMind',name:'Подчинение разума',level:9,action:'action',target:'enemy'},{id:'discipline',name:'Псионическая дисциплина',level:2,action:'varies'},{id:'apotheosis',name:'Псионический апофеоз',level:20,action:'passive'}],subclasses:[{id:'astral',name:'Астральный разум'},{id:'kinetic',name:'Психокинез'},{id:'metabolic',name:'Психометаболизм'},{id:'telepath',name:'Телепатия'},{id:'seer',name:'Прорицание'},{id:'teleporter',name:'Телепортация'}],hooks:{sync:syncPsion,useFeature:usePsion,attackModifiers:psionAttack}},
+
     {id:'mcdm-illrigger',name:'Иллирригер',source:'MCDM Productions — The Illrigger Revised',license:'Requires appropriate source rights',features:[{id:'infernalBrand',name:'Infernal Brand',level:1,action:'bonus',target:'enemy',rangeFt:60},{id:'sealTransfer',name:'Seal Transfer',level:2,action:'action',target:'enemy',rangeFt:60},{id:'hellishRebuke',name:'Infernal Reaction',level:3,action:'reaction',target:'enemy',rangeFt:60}],subclasses:[{id:'hellknight',name:'Hell Knight',features:[{id:'hellishArmor',name:'Infernal Armor',level:3,action:'passive'}]},{id:'shadowmaster',name:'Shadowmaster',features:[{id:'shadowStep',name:'Shadow Step',level:3,action:'bonus'}]},{id:'painkiller',name:'Painkiller',features:[{id:'painTransfer',name:'Pain Transfer',level:3,action:'reaction'}]},{id:'duelist',name:'Dread Duelist',features:[{id:'infernalDuel',name:'Infernal Duel',level:3,action:'bonus'}]},{id:'commander',name:'Hellspeaker',features:[{id:'commandSeal',name:'Command Seal',level:3,action:'bonus'}]}],hooks:{sync:syncIll,useFeature:useIll,attackModifiers:illAttack}},
     {id:'mcdm-beastheart',name:'Бистхарт',source:'MCDM Productions — Beastheart and Monstrous Companions (5e)',license:'Requires appropriate source rights',features:[{id:'companionCommand',name:'Companion Command',level:1,action:'action',target:'self'},{id:'ferociousStrike',name:'Ferocious Strike',level:1,action:'bonus',target:'enemy',rangeFt:30},{id:'earthshaker',name:'Earthshaker',level:2,action:'action',rangeFt:10},{id:'rampage',name:'Rampage',level:3,action:'bonus',target:'self'}],subclasses:[{id:'beastcaller',name:'Beastcaller',features:[{id:'bondedBeast',name:'Bonded Beast',level:3,action:'passive'}]},{id:'direHunter',name:'Dire Hunter',features:[{id:'predatoryStrike',name:'Predatory Strike',level:3,action:'on-hit'}]},{id:'packleader',name:'Pack Leader',features:[{id:'packTactics',name:'Pack Tactics',level:3,action:'passive'}]},{id:'primalSoul',name:'Primal Soul',features:[{id:'primalBond',name:'Primal Bond',level:3,action:'bonus'}]},{id:'wildHeart',name:'Wild Heart',features:[{id:'feralForm',name:'Feral Form',level:3,action:'bonus'}]}],hooks:{sync:syncBeast,useFeature:useBeast,attackModifiers:beastAttack}},
     {id:'pugilist',name:'Пугилист',source:'Benjamin Huffman / community Pugilist',license:'Requires appropriate source rights',features:[{id:'oldOneTwo',name:'Old One-Two',level:1,action:'bonus',target:'self'},{id:'stickAndMove',name:'Stick and Move',level:1,action:'bonus',target:'self'},{id:'bloodiedButUnbowed',name:'Bloodied but Unbowed',level:3,action:'reaction',target:'self'},{id:'haymaker',name:'Haymaker',level:5,action:'bonus',target:'enemy',rangeFt:5},{id:'shakeItOff',name:'Shake It Off',level:7,action:'bonus',target:'self'},{id:'digDeep',name:'Dig Deep',level:2,action:'bonus',target:'self'},{id:'unbreakable',name:'Unbreakable',level:14,action:'reaction',target:'self'},{id:'fightingSpirit',name:'Fighting Spirit',level:18,action:'reaction',target:'self'},{id:'peakPhysicalCondition',name:'Peak Physical Condition',level:20,action:'passive'}],subclasses:[{id:'arenaRoyale',name:'Арена Рояль'},{id:'bloodhoundBruisers',name:'Бладхаундские громилы'},{id:'dogAndHound',name:'Пёс и гончая'},{id:'handOfDread',name:'Рука Ужаса'},{id:'pissAndVinegar',name:'Ярость и дерзость'},{id:'squaredCircle',name:'Квадратный ринг'},{id:'sweetScience',name:'Благородное искусство'}],hooks:{sync:syncPug,useFeature:usePugClosed,attackModifiers:pugAttackClosed}},
