@@ -973,8 +973,8 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
       return{ok:true,effect:{makeWeaponAttack:true,allyReactionsUpTo:Number(h.proficiencyBonus)||2,allyAttackOrDamageCantrip:true,rangeFt:30},message:'⚔️ Опустошитель активирован.'};
     }
     if(id==='painkillerGrandStrategist')return{ok:true,effect:{moveAlliesHalfSpeed:true,rangeFt:60,noOpportunityAttacks:true},message:'🎖️ Великий стратег.'};
-    if(id==='painkillerPunishment')return useIllrigger(h,'punishment',ctx);
-    if(id==='painkillerTelekineticSeal'){if(!t)return{ok:false,message:'Выбери цель.'};if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати.'};return{ok:true,target:t.id,effect:{save:'wis',pushFt:15OrProne:true},message:'🪝 Телекинетическая печать.'};}
+    if(id==='painkillerPunishment'){if(!t)return{ok:false,message:'Выбери атакующего врага.'};return{ok:true,target:t.id,effect:{reactionDamage:'triggeringDamage',save:'wis',halfOnSave:true},message:'⚔️ Наказание Диспейтера.'};}
+    if(id==='painkillerTelekineticSeal'){if(!t)return{ok:false,message:'Выбери цель.'};if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати.'};return{ok:true,target:t.id,effect:{save:'wis',pushFt:15,prone:true},message:'🪝 Телекинетическая печать.'};}
     if(id==='painkillerByTheThroat'){if(!t)return{ok:false,message:'Выбери цель.'};if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати.'};return{ok:true,target:t.id,effect:{save:'wis',restrainedUntilEndOfNextTurn:true},message:'🗜️ За горло.'};}
     if(id==='painkillerSupremacy')return{ok:true,passive:true,effect:{criticalRange:18,againstInterdicted:true},message:'⚔️ Превосходство Диспейтера активно.'};
     if(id==='painkillerYouDie'){
