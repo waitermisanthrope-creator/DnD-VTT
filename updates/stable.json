@@ -104,8 +104,8 @@
     },
     {
       "path": "app/Settings.js",
-      "bytes": 48664,
-      "sha256": "09ae72c1324f201cd16e4fb826ff07a5264a7671cf35fb699bc79b0502df1253"
+      "bytes": 49984,
+      "sha256": "9e3648dc4508ee1b22f98cbed65f973fbdc870d5c707fad6b259526a4fdbec03"
     },
     {
       "path": "app/icon_settings.js",
