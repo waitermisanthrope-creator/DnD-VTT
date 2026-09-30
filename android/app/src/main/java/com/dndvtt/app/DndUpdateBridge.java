@@ -191,6 +191,7 @@ public final class DndUpdateBridge {
         copyAssetTree("index.html", active);
         copyAssetTree("app", active);
         copyRootImageAssets(active);
+        copyAssetTree("icon_previews", active);
         copyAssetTree("wallpapers", active);
         copyAssetTree("ambience", active);
         prefs.edit().putString("active", packageVersion).putString("healthy", packageVersion).commit();
