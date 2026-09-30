@@ -130,11 +130,30 @@ window.CLASSES_REFERENCE = {
 };
 
 /**
+ * Runtime-прогрессии загружаются в index.html ПОСЛЕ classesRegistry.js.
+ * Поэтому нельзя навсегда сохранять window.xxxProgression в момент загрузки
+ * реестра: иначе custom/runtime-классы получают пустую таблицу levels.
+ */
+var LIVE_PROGRESSION_KEYS = {
+    "Оккультист": "occultistProgression", "Ведьма": "witchProgression", "Некромант": "necromancerProgression", "Мученик": "martyrProgression", "Сосуд": "vesselProgression", "Алхимик": "alchemistProgression", "Кровавый охотник": "bloodHunterProgression", "Иллиригер": "illriggerProgression", "Бистхарт": "beastheartProgression", "Пугилист": "pugilistProgression", "Аккурсд": "accursedProgression", "Гайст": "geistProgression", "Паразит": "parasiteProgression", "Паразит доктора Вальтера": "walterParasiteProgression", "Призрак": "ghostProgression", "Псионик": "psionProgression", "Рунный хранитель": "runeKeeperProgression", "Савант": "savantProgression", "Шифтер": "shifterProgression", "Рой": "swarmProgression", "Страж": "wardenProgression", "Военачальник": "warlordProgression"
+};
+
+/**
  * Глобальный хелпер для получения данных конкретного класса
  */
 window.getClassData = function(className) {
     if (!className) return null;
-    return window.CLASSES_REFERENCE[className.trim()] || null;
+    var key = className.trim();
+    var base = window.CLASSES_REFERENCE[key] || null;
+    var liveKey = LIVE_PROGRESSION_KEYS[key];
+    var live = liveKey ? window[liveKey] : null;
+    if (live && typeof live === 'object' && Object.keys(live).length) {
+        var merged = Object.assign({}, base || {}, live);
+        merged.progression = live;
+        if (!merged.hitDie && base) merged.hitDie = base.hitDie;
+        return merged;
+    }
+    return base;
 };
 
 /**

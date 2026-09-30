@@ -188,8 +188,11 @@ function applyClassProgression(hero, className, targetLevel) {
 
     // Безопасное получение данных класса (поддерживает как глобальную функцию, так и метод из window)
     const getData = typeof getClassData === 'function' ? getClassData : (window.getClassData || (() => null));
-    const classData = getData(className);
-
+    let classData = getData(className);
+    if (window.LIVE_PROGRESSION_KEYS && window.LIVE_PROGRESSION_KEYS[className]) {
+        const live = window[window.LIVE_PROGRESSION_KEYS[className]];
+        if (live && typeof live === 'object' && Object.keys(live).length) classData = Object.assign({}, classData || {}, { progression: live, hitDie: live.hitDie || (classData && classData.hitDie) });
+    }
     if (!classData || !classData.progression) {
         console.log(`Для класса "${className}" пока нет файла прогрессии.`);
         return;

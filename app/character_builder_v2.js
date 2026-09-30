@@ -131,6 +131,14 @@
       var p=db.find(function(x){return x.category==='Языки'&&(String(x.name).toLowerCase()===String(lang).toLowerCase()||String(x.name).toLowerCase().indexOf(String(lang).toLowerCase())>=0);});
       if(p&&!hero.proficiencies.some(function(x){return x.id===p.id;}))hero.proficiencies.push(Object.assign({},p));
     });
+    (Array.isArray(b.toolProficiencies)?b.toolProficiencies:[]).forEach(function(tool){
+      var p=db.find(function(x){return String(x.name||'').toLowerCase()===String(tool).toLowerCase()||String(x.id||'').toLowerCase()===String(tool).toLowerCase();});
+      if(p&&!hero.proficiencies.some(function(x){return x.id===p.id;}))hero.proficiencies.push(Object.assign({},p));
+      else if(tool)hero.proficiencies.push({id:'background_tool_'+String(tool).replace(/\\s+/g,'_'),category:'Инструменты',name:String(tool),description:'Владение от предыстории.'});
+    });
+    if(b.feature){hero.backgroundFeature=b.feature;hero.features=hero.features||[];if(hero.features.indexOf(b.feature)<0)hero.features.push(b.feature);}
+    var featureDescription=b.featuredescription||b.featureDescription||b.featureDesc||'';
+    if(featureDescription)hero.backgroundFeatureDescription=featureDescription;
   }
 
   /* Расовые бонусы применяются ПОСЛЕ point-buy и всех выборов Builder.
@@ -145,6 +153,33 @@
       if(!bonus)return;
       hero.stats[stat]=(Number(hero.stats[stat])||8)+bonus;
     });
+  }
+
+  function applyRaceTraits(hero,race){
+    if(!hero||!race)return;
+    hero.features=hero.features||[];hero.proficiencies=hero.proficiencies||[];
+    var add=function(v){var name=typeof v==='string'?v:(v&&((v.nameRu||v.name||v.id)));if(name&&hero.features.indexOf(name)<0)hero.features.push(name);};
+    (Array.isArray(race.features)?race.features:[]).forEach(add);(Array.isArray(race.traits)?race.traits:[]).forEach(add);if(race.feature)add(race.feature);
+    var db=g.PROFICIENCIES_DB||[];
+    (Array.isArray(race.proficiencies)?race.proficiencies:[]).forEach(function(id){var p=db.find(function(x){return x.id===id||x.name===id;});if(p&&!hero.proficiencies.some(function(x){return x.id===p.id;}))hero.proficiencies.push(Object.assign({},p));});
+    (Array.isArray(race.languages)?race.languages:[]).forEach(function(lang){if(/на выбор|дополнительный язык/i.test(String(lang)))return;var p=db.find(function(x){return x.category==='Языки'&&String(x.name||'').toLowerCase().indexOf(String(lang).toLowerCase())>=0;});if(p&&!hero.proficiencies.some(function(x){return x.id===p.id;}))hero.proficiencies.push(Object.assign({},p));});
+    if(race.hpBonusPerLevel)hero.raceHpBonusPerLevel=Number(race.hpBonusPerLevel)||0;
+    if(race.baseAc)hero.baseAC=Number(race.baseAc)||hero.baseAC;
+  }
+  function applyExternalClassFeatures(hero,className){
+    if(!hero||!className)return;hero.features=hero.features||[];
+    if(g.DNDContent&&typeof g.DNDContent.availableFeatures==='function'){
+      (g.DNDContent.availableFeatures(hero,className)||[]).forEach(function(f){var name=f&&(f.nameRu||f.name||f.id);if(name&&hero.features.indexOf(name)<0)hero.features.push(name);});
+    }
+  }
+  function applyRuntimeSpecializationFeatures(hero,className,targetLevel){
+    if(!hero||!className)return;var d=getClass(className)||{},p=d.progression&&d.progression.levels?d.progression:d,selected=hero.choiceState||{},chosen=null;
+    if(className==='Шифтер')chosen=selected.bloodline;else if(className==='Псионик')chosen=selected.psionArchetype;else if(className==='Оккультист')chosen=selected.occultTradition;
+    if(!chosen)return;var map=p.bloodlines||p.archetypes||p.traditions||p.crafts;if(!map)return;var obj=map[chosen]||map[String(chosen)];if(!obj)return;
+    var add=function(v){var name=typeof v==='string'?v:(v&&((v.nameRu||v.name||v.id)));if(name&&hero.features.indexOf(name)<0)hero.features.push(name);};
+    var feats=obj.features;
+    if(Array.isArray(feats))feats.forEach(function(f){if(Array.isArray(f)){if(Number(f[0])<=Number(targetLevel||1))add(f[1]);}else if(typeof f==='object'&&f.level!=null){if(Number(f.level)<=Number(targetLevel||1))add(f);}else add(f);});
+    else if(feats&&typeof feats==='object')Object.keys(feats).forEach(function(lvl){if(Number(lvl)<=Number(targetLevel||1))(Array.isArray(feats[lvl])?feats[lvl]:[feats[lvl]]).forEach(add);});
   }
 
   function allFeats(){
@@ -285,10 +320,13 @@
   }
   function subclassChoice(className,targetLevel,existing){
     if(existing)return null;
+    if(['Шифтер','Псионик','Оккультист'].indexOf(className)>=0)return null;
     var d=getClass(className)||{};
     var p=d.progression&&d.progression.levels?d.progression:d;
     var firstDeclared=0;if(p&&p.levels){Object.keys(p.levels).sort(function(a,b){return Number(a)-Number(b);}).some(function(k){if(p.levels[k]&&p.levels[k].subclassLevel){firstDeclared=Number(k);return true;}return false;});}
-    var pick=Number(d.subclassLevel||p.subclassLevel||firstDeclared||3);
+    var inferred=0,maps=[p&&p.archetypes,p&&p.bloodlines,p&&p.traditions,p&&p.crafts];
+    maps.some(function(map){if(!map||typeof map!=='object')return false;return Object.keys(map).some(function(k){var x=map[k]||{},fs=x.features;if(Array.isArray(fs)){for(var i=0;i<fs.length;i++){var lv=Array.isArray(fs[i])?Number(fs[i][0]):Number(fs[i]&&fs[i].level);if(isFinite(lv)&&lv>0){inferred=lv;return true;}}}if(Array.isArray(x.featureLevels)&&x.featureLevels.length){inferred=Number(x.featureLevels[0])||0;return !!inferred;}return false;});});
+    var pick=Number(d.subclassLevel||p.subclassLevel||firstDeclared||inferred||3);
     if(targetLevel<pick)return null;
     if(typeof g.getAvailableSubclasses!=='function')return null;
     var opts=g.getAvailableSubclasses(className)||[];
@@ -356,9 +394,9 @@
     if(choice.id==='class_tools'){hero.proficiencies=hero.proficiencies||[];var db=g.PROFICIENCIES_DB||[];val.forEach(function(id){var p=db.find(function(x){return x.id===id;});if(p&&!hero.proficiencies.some(function(x){return x.id===id;}))hero.proficiencies.push(Object.assign({},p));});}
     if(choice.id==='secondary_stat')hero.choiceState.secondaryStat=val;
     if(choice.id==='leadership')hero.choiceState.leadershipStyle=val;
-    if(choice.id==='shifter_bloodline')hero.choiceState.bloodline=val;
-    if(choice.id==='occult_tradition')hero.choiceState.occultTradition=val;
-    if(choice.id==='psion_archetype')hero.choiceState.psionArchetype=val;
+    if(choice.id==='shifter_bloodline'){hero.choiceState.bloodline=val;applyRuntimeSpecializationFeatures(hero,'Шифтер',1);}
+    if(choice.id==='occult_tradition'){hero.choiceState.occultTradition=val;applyRuntimeSpecializationFeatures(hero,'Оккультист',1);}
+    if(choice.id==='psion_archetype'){hero.choiceState.psionArchetype=val;applyRuntimeSpecializationFeatures(hero,'Псионик',1);}
     if(choice.id==='beast_companion'){
       hero.choiceState.companion=val;
       if(g.BeastheartRuntime&&typeof g.BeastheartRuntime.chooseCompanion==='function')g.BeastheartRuntime.chooseCompanion(hero,val);
@@ -630,8 +668,10 @@
     }else{
       applyRaceBonuses(hero,this.race);
     }
+    applyRaceTraits(hero,this.race);
     var con=Math.floor((hero.stats.con-10)/2),hd=(getClass(this.className)||{}).hitDie||8;
-    hero.hpMax=Math.max(1,hd+con);hero.hpCurrent=hero.hpMax;hero.hitDice='1d'+hd;
+    var raceHpBonus=Number(hero.raceHpBonusPerLevel)||0;
+    hero.hpMax=Math.max(1,hd+con+raceHpBonus);hero.hpCurrent=hero.hpMax;hero.hitDice='1d'+hd;
     if(this.className==='Рой')hero.raceName='Рой';
     if(ex&&ex.host&&this.race){
       hero.hostName=this.race.name;
@@ -641,6 +681,9 @@
     hero.gender=this.values.gender||'';
     hero.origin=this.values.origin||'';
     if(typeof g.applyClassProgression==='function')g.applyClassProgression(hero,this.className,1);
+    applyExternalClassFeatures(hero,this.className);
+    applyRuntimeSpecializationFeatures(hero,this.className,1);
+    if(g.DNDClassFeatures&&typeof g.DNDClassFeatures.syncClassResources==='function')g.DNDClassFeatures.syncClassResources(hero);
     /* Runtime-specific Extra initialization. */
     if(ex&&ex.type==='swarm'&&g.SWARM_EXTRA&&g.SWARM_EXTRA.normalizeCharacter)g.SWARM_EXTRA.normalizeCharacter(hero);
     if(ex&&ex.type==='parasite'&&g.PARASITE_EXTRA&&g.PARASITE_EXTRA.normalizeCharacter){
@@ -665,6 +708,9 @@
     hero.hpMax=(Number(hero.hpMax)||1)+Math.max(1,Number(this.values.hp)||Math.floor(hd/2)+1+con);hero.hpCurrent=hero.hpMax;
     hero.level=(hero.classes||[]).reduce(function(a,c){return a+(Number(c.level)||0);},0);
     if(typeof g.applyClassProgression==='function')g.applyClassProgression(hero,cls,newLevel);
+    applyExternalClassFeatures(hero,cls);
+    applyRuntimeSpecializationFeatures(hero,cls,newLevel);
+    if(g.DNDClassFeatures&&typeof g.DNDClassFeatures.syncClassResources==='function')g.DNDClassFeatures.syncClassResources(hero);
     ensureChoiceState(hero);
     hero.pendingChoices=(hero.pendingChoices||[]).filter(function(c){return !(c.className===cls&&Number(c.level)===newLevel);});
     if(typeof g.autoSaveCurrentCharacter==='function')g.autoSaveCurrentCharacter();else if(typeof g.saveAllCharacters==='function')g.saveAllCharacters();

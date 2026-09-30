@@ -5818,3 +5818,15 @@ QA:
 - Homebrew subclass timing is preserved from each class definition rather than forcing every class to choose a subclass at level 1. Examples: Pugilist/Warden/Warlord/Alchemist use level-3 specialization; Occultist and Shifter have level-1 specialization in the current project data.
 - Ambience state is now persisted in `localStorage`: current track, volume, shuffle, repeat-one and, most importantly, **playing/paused state**. If the user leaves the app paused, the next launch remains paused; if it was playing, the app attempts to restore playback.
 - Release target: **70.26.80**. After the stable manifest is regenerated, test both creation routes and ambience restart behavior.
+
+
+## V70.26.81 — CUSTOM/DLC LEVEL-1 FEATURE DELIVERY + CONSTRUCTOR QA FIX — 2026-09-30
+
+- Исправлен порядок данных прогрессии: runtime-файлы кастомных классов загружаются после `classesRegistry.js`, поэтому старый реестр сохранял пустые/неполные `progression.levels`. `getClassData()` теперь подхватывает актуальную runtime-прогрессию.
+- Builder V2 теперь применяет структурированные расовые особенности/черты, языки, владения, `hpBonusPerLevel` и базовую КД, если они объявлены в данных расы.
+- Предыстория теперь реально выдаёт свою `feature`, описание особенности, инструменты и языки, а не только навыки.
+- После создания/повышения уровня Builder синхронизирует внешние runtime-фичи `DNDContent` и ресурсы `DNDClassFeatures`.
+- Для Шифтера, Псионика и Оккультиста специальные выборы 1 уровня сразу добавляют заявленные особенности специализации в `hero.features`.
+- Для классов, где специализация описана через `archetypes/bloodlines/traditions/crafts`, Builder умеет определить фактический первый уровень специализации вместо безусловного fallback на 3.
+- Cache-bust пергамента и нативная версия Android повышены до **70.26.81 / versionCode 7026081**.
+- QA: проверить Обычный, DLC/Хоумбрю и ⚡ Конструктор; отдельно создать персонажа с дополнительной расой, предысторией и кастомным классом и проверить level-1 особенности в листе.
