@@ -109,21 +109,43 @@
   }
   function beastheartStartTurn(id,ctx){
     var e=entity(id);if(!e||e.companionType!=='beastheart')return{ok:false,reason:'not_beastheart'};
-    ensureState(e);var h=hero(),l=Number(e.beastheartLevel)||1,base=1+Math.floor(Math.random()*4),hostiles=0;
-    var targetList=(h&&h.initiativeTracker&&h.initiativeTracker.combatants)||[];
-    var tok=tokenForEntity(e);
+    ensureState(e);var h=hero(),l=Number(e.beastheartLevel)||1;
+    if(e.defeated||Number(e.hp)<=0)return{ok:false,reason:'incapacitated',gained:0,ferocity:Number(e.resources&&e.resources.ferocity)||0};
+    var base=1+Math.floor(Math.random()*4),hostiles=0,targetList=(h&&h.initiativeTracker&&h.initiativeTracker.combatants)||[],tok=tokenForEntity(e),nearest=null,nearestDist=Infinity;
     if(tok&&g.DNDBattleBoard&&typeof g.DNDBattleBoard.distanceFt==='function'){
-      targetList.forEach(function(c){if(c&&String(c.team||'')!==String(e.team||'party')&&!c.defeated){var tt=g.DNDBattleBoard.findToken('bt_'+String(c.id))||g.DNDBattleBoard.findToken(c.id);if(tt&&g.DNDBattleBoard.distanceFt(tok,tt)<=5)hostiles++;}});
+      targetList.forEach(function(c){
+        if(!c||String(c.team||'')===String(e.team||'party')||c.defeated)return;
+        var tt=g.DNDBattleBoard.findToken('bt_'+String(c.id))||g.DNDBattleBoard.findToken(c.id);
+        if(!tt)return;
+        var d=g.DNDBattleBoard.distanceFt(tok,tt);
+        if(d<=5)hostiles++;
+        if(d<nearestDist){nearestDist=d;nearest={combatant:c,token:tt};}
+      });
     }
-    var bonus=l>=15?5:l>=10?3:l>=5?1:0;var gained=base+hostiles+bonus;
+    var bonus=l>=15?5:l>=10?3:l>=5?1:0,gained=base+hostiles+bonus;
     gainFerocity(e,gained);e.resources.ferocity=e.resources.ferocity||0;
     var out={ok:true,gained:gained,ferocity:e.resources.ferocity,rampage:false};
     if(Number(e.resources.ferocity)>=10&&!e.metadata.rampage){
-      var wis=0,pb=Number(h&&h.proficiencyBonus)||2,ab=h&&h.abilities&&h.abilities.wisdom;if(ab!=null)wis=Math.floor((Number(ab)-10)/2);
+      var wis=0,pb=Number(h&&h.proficiencyBonus)||2,ab=h&&h.abilities&&h.abilities.wisdom;
+      if(ab!=null)wis=Math.floor((Number(ab)-10)/2);
       var dc=5+Number(e.resources.ferocity),roll=Math.floor(Math.random()*20)+1+pb+wis;
       out.rampageCheck={dc:dc,total:roll,success:roll>=dc};
-      if(roll<dc){e.metadata.rampage=true;out.rampage=true;}
+      if(roll<dc){
+        e.metadata.rampage=true;out.rampage=true;
+        if(nearest){
+          var rr=attack(e.id,nearest.combatant.id,0);
+          out.rampageAttack=rr;
+          if(rr&&rr.ok){
+            var keep=(String(h&&h.classFeaturesState&&h.classFeaturesState.companionBond)==='ferocious'&&l>=7)?4:0;
+            e.resources.ferocity=keep;e.metadata.rampage=false;out.ferocityAfterRampage=keep;
+          }
+        }else{
+          out.rampagePending=true;
+        }
+      }
       if(g.DNDSecondaryEntities.update)g.DNDSecondaryEntities.update(e.id,{resources:e.resources,metadata:e.metadata});
+    }else if(g.DNDSecondaryEntities.update){
+      g.DNDSecondaryEntities.update(e.id,{resources:e.resources,metadata:e.metadata});
     }
     return out;
   }
