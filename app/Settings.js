@@ -61,7 +61,7 @@ function openSettingsModal() {
           <div style="background: #252525; padding: 12px; border-radius: 6px; border: 1px solid #66502e;">
             <div style="font-size: 0.95em; font-weight: bold; margin-bottom: 8px; color: #e5c878;">🖼️ Иконка приложения</div>
             <div style="font-size: 0.76em; color: #aaa; line-height: 1.4; margin-bottom: 8px;">Выберите, какая иконка будет отображаться у Карманного ВТТ на рабочем столе.</div>
-            <button onclick="if(typeof openIconSettingsModal==='function') openIconSettingsModal()" class="btn-action" style="background:#594a31; width:100%; padding:10px; font-size:0.85em; font-weight:bold; cursor:pointer; color:#fff; border:1px solid #806b45; border-radius:6px;">🖼️ Параметры иконки</button>
+            <button onclick="openIconSettingsModal()" class="btn-action" style="background:#594a31; width:100%; padding:10px; font-size:0.85em; font-weight:bold; cursor:pointer; color:#fff; border:1px solid #806b45; border-radius:6px;">🖼️ Параметры иконки</button>
           </div>
           <div style="background: #252525; padding: 12px; border-radius: 6px; border: 1px solid #333;">
             <div style="font-size: 0.95em; font-weight: bold; margin-bottom: 8px; color: var(--theme-primary, #ff9800);">🖼️ Обои и арты</div>
