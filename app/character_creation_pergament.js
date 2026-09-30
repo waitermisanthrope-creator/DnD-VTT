@@ -253,6 +253,15 @@ function renderClassArt(){
  var originField=el('pc_origin'),genderField=el('pc_gender'),raceField=el('pc_race'),ageField=el('pc_age'),bgField=el('pc_background'),profField=el('pc_profession');
  var stepText=el('parchmentStage');
  if(homebrew&&stepText){
+  /* Homebrew перерисовывает текстовые блоки при смене класса/расы.
+     Сначала сохраняем значения полей, иначе замена innerHTML уничтожает место
+     и последующий update() принимает пустое поле за новый незаполненный шаг. */
+  var preservedState=window.__parchmentFieldState||{};
+  ['pc_name','pc_origin','pc_class','pc_gender','pc_race','pc_extraHost','pc_age','pc_background','pc_profession'].forEach(function(id){
+    var oldField=el(id);
+    if(oldField)preservedState[id]=oldField.value;
+  });
+  window.__parchmentFieldState=preservedState;
   var originText=originField&&originField.closest('.parchment-step')?.querySelector('.parchment-text');
   var genderText=genderField&&genderField.closest('.parchment-step')?.querySelector('.parchment-text');
   var raceText=raceField&&raceField.closest('.parchment-step')?.querySelector('.parchment-text');
@@ -269,6 +278,13 @@ function renderClassArt(){
   fillSelect('pc_race',creationRaceItems(),'выбрать расу');
   fillSelect('pc_background',creationBackgroundItems().map(function(b){var n=b.nameRu||b.name||'';return{value:n,label:n}}),'выбрать предысторию');
   fillSelect('pc_profession',getProfessionItems(),'выбрать профессию');
+  /* innerHTML выше создал новые DOM-элементы. Вернуть сохранённые значения
+     до запуска прогрессии, чтобы homebrew не сбрасывал уже пройденные шаги. */
+  var restoredState=window.__parchmentFieldState||{};
+  ['pc_name','pc_origin','pc_class','pc_gender','pc_race','pc_extraHost','pc_age','pc_background','pc_profession'].forEach(function(id){
+    var field=el(id);
+    if(field&&Object.prototype.hasOwnProperty.call(restoredState,id))field.value=restoredState[id];
+  });
  }
  if(warn)warn.innerHTML=extra?'ОСОБАЯ ПРИМЕТА И ПРИЧИНА РОЗЫСКА: <span id="pc_extraReason">выберите Extra-класс</span>':homebrew?'ПОМЕТКА ХРАНИТЕЛЯ АРХИВА: сведения не подтверждены обычными реестрами. Проверять происхождение, способности и связи отдельно.':'СТЫД ТЕБЕ, ПРОЧИТАВШИЙ ЭТО, РОЗЫСКИВАЕМЫЙ <span id="pc_professionText">—</span>.';
  if(reward){
