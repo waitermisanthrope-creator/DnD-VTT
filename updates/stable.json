@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DnD-VTT",
-  "version": "70.26.89",
+  "version": "70.26.90",
   "minAppVersion": "70.25.71",
   "channel": "stable",
   "generated": "AUTO",
@@ -95,7 +95,7 @@
     {
       "path": "app/update_manager.js",
       "bytes": 20812,
-      "sha256": "54b7c5448746b51b736007670e99eb196551cdd993a32f6bce40238e3f1bff99"
+      "sha256": "1d01b7761e49867b540a7d31b7d6d1c0570ce41cf1105b568110544329ddc296"
     },
     {
       "path": "app/onboarding_faq_v71.js",
@@ -126,21 +126,6 @@
       "path": "1790718758545.png",
       "bytes": 1889164,
       "sha256": "0a3eab3f11aebea532709de2a29279b3a60b28bc0785bd84bceacde56167700d"
-    },
-    {
-      "path": "app/accursed_oap_v11_runtime.js",
-      "bytes": 24129,
-      "sha256": "0d6f0049d44193009e7d122d360ab47d48d5b4548b9c0c85e21b912d071a2c10"
-    },
-    {
-      "path": "app/runekeeper_taron_v12_runtime.js",
-      "bytes": 19474,
-      "sha256": "929fb14a8cc6d64caf4c9b0e1475e9fba889469e8d2250370682e9818f7295a8"
-    },
-    {
-      "path": "app/savant_laserllama_v561_runtime.js",
-      "bytes": 19869,
-      "sha256": "97940951f0abc2c1f424a990420ed2256c20566385a96d24920d9f79566e72fe"
     }
   ],
   "blockedVersions": []
