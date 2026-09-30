@@ -6188,10 +6188,46 @@ QA дополнен:
 | **Оккультист** | `occultistFateReading` + обычные spell slots | Чтение судьбы, заклинания/обряды | 🟡 **Частично** — Чтение судьбы теперь синхронизировано с общим мостом; остальные обряды требуют отдельной проверки расходов |
 | **Пугилист** | `pugilistMoxie`, `pugilistBloodiedButUnbowed`, `pugilistFightingSpirit` | Соберись, Двойка, Ударил и отошёл, Боевое применение Мокси, Израненный но не сломленный, Боевой дух | 🟢 **Полностью по существующим ресурсам**; боевые эффекты, требующие событий попадания/захвата/движения, в backlog |
 | **Иллиригер** | `illriggerSeals`, `illriggerConduit`, `illriggerInvokeHell`, `illriggerSuperiorInterdict`, `illriggerInfernalMajesty`, `illriggerMasterOfHell` | Печати, Сжечь печать, Инфернальный проводник, Призыв Ада и высокоуровневые способности | 🟡 **Частично** — основные пулы связаны; Кровавая цена расходует Hit Die и требует боевого контекста, subclass-механики ещё не полностью замкнуты |
-| **Кровавый охотник** | `bloodMaledict`, состояние `bhActiveRites`, отдельная трансформация | Кровавые проклятия, Алые обряды, Клеймо, гибридная трансформация | 🟡 **Частично** — Кровавые проклятия подключены; часть трансформационной механики пока создаётся локально в runtime |
+| **Кровавый охотник** | `bloodMaledict`, `brandCastigation`, `aetherWalk`, `hybridTransformation`, `mutagenConcoctions`, `strangeMetabolism`, `exaltedMutation`, `profaneSoulSlots` | Кровавые проклятия, Алые обряды, Клеймо, четыре Ордена и их ресурсы | 🟢 **Полностью закрыт** по текущему движку |
 | **Бистхарт** | `beastheartFerocity` + live Ferocity на сущности компаньона | Компаньон, Природные приёмы, Первобытный удар, Восстанавливающая ярость, 5 союзов и их расходующие Ferocity способности | 🟢 **Полностью закрыт** по текущему движку: runtime + companion entity + common resource bridge связаны; Ferocity не имеет искусственного лимита |
 
 ## V70.26.90+ — БИСТХАРТ ЗАКРЫТ ПОЛНОСТЬЮ
+## V70.26.90+ — КРОВАВЫЙ ОХОТНИК ЗАКРЫТ ПОЛНОСТЬЮ
+
+Кровавый охотник переведён из 🟡 в 🟢. Core + четыре Ордена + особые ресурсы связаны с единым runtime/resource-layer.
+
+### Закрыто
+
+- `bloodMaledict`: 1/2/3/4 использования по уровню; для Ордена призрачных убийц добавляется отдельное использование Curse Specialist. Проверки цели и HP для усиления выполняются до списания ресурса.
+
+- `Crimson Rite`: HP/жизненная сила остаётся реальным расходом, а не искусственной «ячейкой». Фантомный ресурс `crimsonRite` убран из runtime-схемы.
+
+- `Brand of Castigation`: ресурс `brandCastigation`, короткий/долгий отдых; применение требует цели и активного Алого обряда и не списывается до проверки этих условий.
+
+- `Brand of Tethering`: использует тот же ресурс/состояние бренда и наследует его проверку.
+
+- `Order of the Ghostslayer`: Rite of the Dawn, Curse Specialist, Aether Walk, Brand of Sundering, Blood Curse of the Exorcist, Rite Revival.
+
+- `Order of the Lycan`: Hybrid Transformation, Stalker’s Prowess, Advanced Transformation, Brand of the Voracious, Hybrid Transformation Mastery и Blood Curse of the Howl.
+
+- `Order of the Mutant`: Mutagencraft, формулы, Strange Metabolism, Brand of Axiom, Blood Curse of Corrosion, Exalted Mutation.
+
+- `Order of the Profane Soul`: покровители, Pact Magic/ячейки, Rite Focus, Mystic Frenzy, Revealed Arcana, Brand of the Sapping Scar, Unsealed Arcana, Soul Eater.
+
+- В `hero.resources` отражаются все специальные числовые ресурсы runtime: `bloodMaledict`, `brandCastigation`, `aetherWalk`, `hybridTransformation`, `mutagenConcoctions`, `strangeMetabolism`, `exaltedMutation`, `profaneSoulSlots`.
+
+- `Sanguine Mastery`: критическое попадание оружием с активным Crimson Rite возвращает один израсходованный Blood Maledict; возврат проходит через общий `onAttackResult`.
+
+- Обычный `restore(short/long)` восстанавливает связанные ресурсы через общий слой; HP- и Hit Die-расходы не подменяются искусственными пулами.
+
+
+### Правило закрытия
+Все ресурсные способности сначала проверяют доступность цели/контекста/HP, затем расходуют ресурс. То, что требует фактического события боя, получает данные через существующие attack/save hooks, а не через фиктивный счётчик.
+
+
+**Статус класса: 🟢 ГОТОВ. Возврат к Кровавому охотнику не требуется, кроме регрессионного теста после изменений общего боевого движка.**
+
+
 
 Бистхарт переведён из 🔴 в 🟢. Класс считается закрытым по текущему архитектурному контракту.
 
