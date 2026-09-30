@@ -434,7 +434,7 @@ var academy=String(s.warlordAcademy||'');
     if(id==='potionBrew'){
       var cost=Math.max(1,Number(ctx.reagents)||1),name=ctx.potion||'Potion of Healing';
       if(!spend(h,'alchemistReagents',cost))return{ok:false,message:'Недостаточно реагентов.'};
-      if(s.alchemistPotions.length>=Math.max(1,mod(h,'intelligence')))return{ok:false,message:'Достигнут лимит приготовленных зелий.'};
+      if(s.alchemistPotions.length>=Math.max(1,mod(h,'intelligence'))){r.current=Math.min(r.max,r.current+cost);return{ok:false,message:'Достигнут лимит приготовленных зелий.'};}
       s.alchemistPotions.push({name:name,reagents:cost});
       return{ok:true,effect:{potion:name,reagents:cost},message:'🧪 Приготовлено зелье: '+name+'.'};
     }
