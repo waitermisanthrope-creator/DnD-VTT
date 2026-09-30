@@ -24,8 +24,8 @@
     },
     {
       "path": "app/character_builder_v2.js",
-      "bytes": 83835,
-      "sha256": "b81232c69b7f63f2ebf8e79a54318ecd179b63ba112ee428bec6ceb5a3fdfcb3"
+      "bytes": 84820,
+      "sha256": "8624f771042f0854436bad5f7cf2fbc1809704c5d1db672f2f41f043ef0573a0"
     },
     {
       "path": "app/races.js",
