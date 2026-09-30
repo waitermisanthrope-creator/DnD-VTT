@@ -206,7 +206,7 @@ public final class DndUpdateBridge {
         prefs.edit().putString("active", packageVersion).putString("healthy", packageVersion).commit();
     }
 
-    private void setLauncherIcon(String id, String iconId, JavaScriptReplyProxy reply) {
+    public void setLauncherIcon(String id, String iconId, JavaScriptReplyProxy reply) {
         try {
             Log.d("DndUpdateBridge", "setLauncherIcon iconId=" + iconId);
             if (!"default".equals(iconId) && !iconId.matches("dice_\\d{2}")) {
@@ -242,6 +242,36 @@ public final class DndUpdateBridge {
             postReply(reply, response(id, true, "icon-applied", iconId));
         } catch (Exception e) {
             postReply(reply, response(id, false, "icon-failed", e.toString()));
+        }
+    }
+
+    public String setLauncherIconFromJs(String iconId) {
+        try {
+            Log.d("DndUpdateBridge", "direct JS setLauncherIcon iconId=" + iconId);
+            if (iconId == null || (!"default".equals(iconId) && !iconId.matches("dice_\\d{2}"))) {
+                return "ERROR:Unknown launcher icon: " + iconId;
+            }
+            android.content.pm.PackageManager pm = context.getPackageManager();
+            for (int i = 0; i <= 30; i++) {
+                String name = i == 0
+                        ? "com.dndvtt.app.LauncherDefault"
+                        : "com.dndvtt.app.LauncherDice" + String.format(java.util.Locale.ROOT, "%02d", i);
+                boolean enabled = (i == 0 && "default".equals(iconId))
+                        || (i > 0 && iconId.equals("dice_" + String.format(java.util.Locale.ROOT, "%02d", i)));
+                pm.setComponentEnabledSetting(
+                        new android.content.ComponentName(context, name),
+                        enabled
+                                ? android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                                : android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                        android.content.pm.PackageManager.DONT_KILL_APP
+                );
+            }
+            context.getSharedPreferences("dnd_vtt_icon", Context.MODE_PRIVATE)
+                    .edit().putString("selected", iconId).commit();
+            return "OK";
+        } catch (Exception e) {
+            Log.e("DndUpdateBridge", "direct launcher icon change failed", e);
+            return "ERROR:" + e.toString();
         }
     }
 
