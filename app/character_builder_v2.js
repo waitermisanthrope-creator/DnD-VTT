@@ -166,14 +166,61 @@
     (Array.isArray(p.tools)?p.tools:[]).forEach(function(x){if(typeof x==='string')addProficiency(hero,x,'Инструменты',x);});
     /* Для нового класса выше применяются полные стартовые владения. */
   }
+  function ensureInventoryShape(hero){
+    hero.inventory=hero.inventory||{};
+    ['weapons','armor','consumables','materials','junk'].forEach(function(k){if(!Array.isArray(hero.inventory[k]))hero.inventory[k]=[];});
+  }
+  function startingEquipmentItemCategory(name,data){
+    var s=String(name||'').toLowerCase();
+    if(data&&/armor|shield|доспех|щит/i.test(String(data.category||data.type||'')))return 'armor';
+    if(/меч|топор|булава|копье|копьё|лук|арбалет|кинжал|рапира|булав|молот|дубина|оруж/i.test(s))return 'weapons';
+    if(/доспех|латы|кольчуга|рубаха.*кольч|щит|панцир/i.test(s))return 'armor';
+    if(/зель|эликсир|пузыр|лечеб|яд|фляг/i.test(s))return 'consumables';
+    if(/материал|руда|ингредиент|ткань|кожа|дерево|камень/i.test(s))return 'materials';
+    return 'junk';
+  }
+  function addStartingEquipmentToInventory(hero){
+    if(!hero||!Array.isArray(hero.startingEquipment)||!hero.startingEquipment.length)return;
+    ensureInventoryShape(hero);
+    var databases=[
+      ['weapons',g.defaultWeapons],['armor',g.defaultArmors],['consumables',g.defaultConsumables],
+      ['materials',g.defaultMaterials],['junk',g.defaultJunk]
+    ];
+    var findPreset=function(name){
+      var target=String(name||'').trim().toLowerCase();
+      for(var i=0;i<databases.length;i++){
+        var db=databases[i][1];
+        if(Array.isArray(db)){
+          for(var j=0;j<db.length;j++){var x=db[j];if(x&&String(x.name||'').trim().toLowerCase()===target)return {category:databases[i][0],data:x};}
+        }else if(db&&typeof db==='object'){
+          var keys=Object.keys(db);
+          for(var k=0;k<keys.length;k++){var x2=db[keys[k]];if(x2&&String(x2.name||keys[k]).trim().toLowerCase()===target)return {category:databases[i][0],data:x2};}
+        }
+      }
+      return null;
+    };
+    hero.startingEquipment.forEach(function(raw){
+      var name=String(raw||'').trim();if(!name)return;
+      /* Quantity prefixes such as '2 кинжала' are preserved in the label,
+         while the inventory receives one stack with the parsed count. */
+      var m=name.match(/^(\\d+)\\s*[x×]?\\s*(.+)$/),count=m?Math.max(1,Number(m[1])):1,label=(m?m[2]:name).trim();
+      var found=findPreset(label),category=found?found.category:startingEquipmentItemCategory(label,found&&found.data),data=found&&found.data?JSON.parse(JSON.stringify(found.data)):{};
+      var existing=hero.inventory[category].find(function(x){return x&&String(x.name||'').toLowerCase()===label.toLowerCase();});
+      if(existing)existing.count=(Number(existing.count)||0)+count;
+      else hero.inventory[category].push(Object.assign({},data,{name:label,count:count,equipped:false}));
+    });
+  }
   function applyStartingEquipment(hero,className){
     var d=getClass(className)||{},eq=d.startingEquipment||d.equipment;if(!eq)return;
-    /* A/B packages are resolved by class_equipment choice. Do not silently
-       give the character both mutually exclusive packages. */
-    if(!Array.isArray(eq)&&typeof eq==='object'&&(eq.a||eq.b))return;
     hero.startingEquipment=hero.startingEquipment||[];
     var add=function(x){if(!x)return;var v=String(x);if(hero.startingEquipment.indexOf(v)<0)hero.startingEquipment.push(v);};
+    /* Package choices are instantiated only after the player chooses A/B. */
+    if(!Array.isArray(eq)&&typeof eq==='object'&&(eq.a||eq.b)){
+      hero.startingEquipmentPackages=Object.assign({},eq);
+      return;
+    }
     if(Array.isArray(eq))eq.forEach(add);else if(typeof eq==='object')Object.keys(eq).forEach(function(k){var v=eq[k];if(Array.isArray(v))v.forEach(add);else add(v);});
+    addStartingEquipmentToInventory(hero);
   }
   function syncCreationChoiceRuntime(hero){
     if(!hero)return;hero.classFeaturesState=hero.classFeaturesState||{};var c=hero.choiceState||{};
@@ -198,7 +245,7 @@
     var list=typeof g.getAllBackgrounds==='function'?g.getAllBackgrounds():(g.dndBackgrounds||[]);
     var b=list.find(function(x){return (x.nameRu||x.name)===name||x.name===name;});
     if(!b)return;
-    hero.background=name;hero.skillsData=hero.skillsData||{};hero.proficiencies=hero.proficiencies||[];
+    hero.background=name;hero.skillsData=hero.skillsData||{};hero.proficiencies=hero.proficiencies||[];hero.backgroundLanguagesToChoose=0;
     (Array.isArray(b.skills)?b.skills:[]).forEach(function(sk){
       if(/выбирается|на выбор/i.test(String(sk)))return;
       var clean=String(sk).split('(')[0].trim().toLowerCase(),cfg=(g.SKILLS_CONFIG||[]).find(function(x){return x.name.toLowerCase()===clean||x.id===clean;});
@@ -329,7 +376,17 @@
     rm.mentalShield=rm.mentalShield||/ментальн(?:ый|ая) (?:защит|щит|защита)/i.test(rd);
     rm.undeadResilience=rm.undeadResilience||/стойкость нежити/i.test(rd);
     rm.spiderClimb=rm.spiderClimb||/вертикальным стенам/i.test(rd);
-    rm.flight=rm.flight||/полноценный пол[её]т|полет|полет 30|полетом/i.test(rd);
+    rm.flight=rm.flight||/полноценный пол[её]т|пол[её]т(?:ом|ать)?\\s*(?:30|[0-9]{2,3})?\\s*(?:фут|футов|ф)/i.test(rd);
+    var speedMatch=String(race.speed||'').match(/(\\d+)\\s*(?:фут|футов|фт)/i);
+    if(speedMatch)rm.speedFt=Number(speedMatch[1]);
+    var sizeMatch=String(race.desc||'').match(/Размер\\s*:\\s*([^\\.]+)/i);
+    if(sizeMatch)rm.size=String(sizeMatch[1]).trim();
+    var dmgTypes={кислот:'кислота',огн:'огонь',холод:'холод',молни:'молния',яд:'яд',некрот:'некротический',психичес:'психический',излучен:'излучение'};
+    Object.keys(dmgTypes).forEach(function(k){if(new RegExp('сопротивлен(?:ие|ием)\\\\s+'+k,'i').test(rd)){rm.resistanceDamageType=dmgTypes[k];}});
+    rm.innateSpellcasting=rm.innateSpellcasting||/врождённ.*заклин|врожденн.*маг/i.test(rd);
+    rm.skillBonuses=rm.skillBonuses||[];
+    if(/внимательн|восприят/i.test(rd)&&/отличн|бонус|превосход/i.test(rd))if(rm.skillBonuses.indexOf('perception')<0)rm.skillBonuses.push('perception');
+    if(/скрыт/i.test(rd)&&/бонус|превосход|отличн/i.test(rd))if(rm.skillBonuses.indexOf('stealth')<0)rm.skillBonuses.push('stealth');
     var db=g.PROFICIENCIES_DB||[];
     (Array.isArray(race.proficiencies)?race.proficiencies:[]).forEach(function(id){var p=db.find(function(x){return x.id===id||x.name===id;});if(p&&!hero.proficiencies.some(function(x){return x.id===p.id;}))hero.proficiencies.push(Object.assign({},p));});
     (Array.isArray(race.languages)?race.languages:[]).forEach(function(lang){if(/на выбор|дополнительный язык/i.test(String(lang)))return;var p=db.find(function(x){return x.category==='Языки'&&String(x.name||'').toLowerCase().indexOf(String(lang).toLowerCase())>=0;});if(p&&!hero.proficiencies.some(function(x){return x.id===p.id;}))hero.proficiencies.push(Object.assign({},p));});
@@ -638,6 +695,8 @@
       var picked=eq[val]||[];
       hero.startingEquipment=Array.isArray(picked)?picked.slice():[];
       hero.startingEquipmentChoice=val;
+      hero.startingEquipmentPackages=eq;
+      addStartingEquipmentToInventory(hero);
     }
     if(choice.id==='secondary_stat')hero.choiceState.secondaryStat=val;
     if(choice.id==='leadership')hero.choiceState.leadershipStyle=val;
