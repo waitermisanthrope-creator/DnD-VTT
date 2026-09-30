@@ -579,8 +579,8 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
       if(!s.bhKnownCurses.length)s.bhKnownCurses=['marked'];
       var known=s.bhKnownCurses.indexOf(curse)>=0;
       if(!known)return{ok:false,message:'Это кровавое проклятие не изучено.'};
-      if(!spend(h,'bloodMaledict',1))return{ok:false,message:'Нет доступного использования Кровавого проклятия.'};
       if(!t&&curse!=='exposure'&&curse!=='eyeless'&&curse!=='fallenPuppet'&&curse!=='howl'&&curse!=='soulEater')return{ok:false,message:'Выбери цель.'};
+      if(!spend(h,'bloodMaledict',1))return{ok:false,message:'Нет доступного использования Кровавого проклятия.'};
       var e={curse:curse,saveDC:hemSave(h),amplified:!!ctx.amplify};
       if(amp&&typeof amp==='object')e.selfDamage=amp.damageSelf;
       if(curse==='anxious')e.intimidationAdvantage=true;
@@ -675,6 +675,7 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     }
     if(id==='mysticFrenzy')return{ok:true,effect:{bonusWeaponAttackAfterCantrip:true},message:'⚔️ Мистическое безумие: после заговора можно атаковать оружием бонусным действием.'};
     if(id==='soulEater'){
+      if(l<18)return{ok:false,message:'Пожиратель душ доступен с 18 уровня.'};
       if(!spend(h,'bloodMaledict',1))return{ok:false,message:'Нет использования Кровавого проклятия.'};
       return{ok:true,effect:{advantageAttacks:true,resistanceAllDamage:true,durationRounds:1},message:'🩸 Пожиратель душ: преимущество на атаки и сопротивление всему урону.'};
     }
@@ -798,6 +799,7 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     syncIllrigger(h);ctx=ctx||{};var l=illriggerLevel(h),s=st(h),t=target(ctx),r=h.resources&&h.resources.illriggerSeals;
     if(id==='balefulInterdict'||id==='placeSeal'){
       if(!t)return{ok:false,message:'Выбери видимую цель в пределах 30 футов.'};
+      if(ctx.distanceFt!==undefined&&Number(ctx.distanceFt)>30)return{ok:false,message:'Цель находится дальше 30 футов.'};
       var tracker=h.initiativeTracker||{},active=tracker.combatants&&tracker.combatants[tracker.activeIndex];var turn=ctx.turnId!==undefined?String(ctx.turnId):String(Number(tracker.round||0)+':'+Number(tracker.activeIndex||0)+':'+String(active&&active.id||h.id||''));
       if(turn!==null&&s.illriggerSealPlacedTurn===turn)return{ok:false,message:'В этом ходу печать уже поставлена.'};
       if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет доступных печатей.'};
@@ -820,6 +822,7 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     }
     if(id==='interdictBoon'){
       var b=String(ctx.boon||'');s.illriggerBoons=s.illriggerBoons||[];if(!b)return{ok:false,message:'Укажи дар Интердикта.'};
+      var validBoons=['abatingSeal','soulEater','shadowShroud','conflagrantChannel','unleashHell'];if(validBoons.indexOf(b)<0)return{ok:false,message:'Неизвестный Дар Интердикта.'};
       if(s.illriggerBoons.length>=illriggerBoonCount(l)&&s.illriggerBoons.indexOf(b)<0)return{ok:false,message:'Достигнут лимит даров Интердикта.'};
       if(s.illriggerBoons.indexOf(b)<0)s.illriggerBoons.push(b);
       return{ok:true,effect:{boon:b},message:'🔻 Дар Интердикта выбран: '+b+'.'};
@@ -867,7 +870,8 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     }
     if(id==='bloodPrice'){
       if(l<10||!s.illriggerBloodPriceReady||ctx.hitDieAvailable===false)return{ok:false,message:'Кровавая цена недоступна: нужен доступный КХ.'};
-      s.illriggerBloodPriceReady=true;return{ok:true,effect:{expendHitDie:true,saveBonus:'1d10',selfUsesHitDie:true},message:'🩸 Кровавая цена: потрать КХ и добавь его результат к проваленному спасброску.'};
+      if(ctx.hitDieResult===undefined&&ctx.consumeHitDie!==true)return{ok:false,message:'Для Кровавой цены нужно подтвердить расход КХ.'};
+      s.illriggerBloodPriceReady=false;return{ok:true,effect:{expendHitDie:true,saveBonus:ctx.hitDieResult!==undefined?ctx.hitDieResult:'1d10',selfUsesHitDie:true},message:'🩸 Кровавая цена: КХ потрачен и его результат добавлен к спасброску.'};
     }
     if(id==='terrorizingForce'){
       var typ=String(ctx.damageType||'necrotic');if(['cold','fire','necrotic','poison'].indexOf(typ)<0)return{ok:false,message:'Допустимы холод, огонь, некротический или яд.'};
@@ -887,8 +891,8 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     if(id==='masterOfHell'){
       var mh=h.resources&&h.resources.illriggerMasterOfHell;
       if(mh&&mh.current<=0)return{ok:false,message:'Повелитель Ада уже использован до долгого отдыха.'};
-      if(mh)mh.current=0;
       var form=String(ctx.form||'inferno');if(['inferno','pestilence','darkness'].indexOf(form)<0)return{ok:false,message:'Выбери Инферно, Чуму или Тьму.'};
+      if(mh)mh.current=0;
       return{ok:true,effect:{rangeFt:150,areaRadiusFt:50,damage:form==='inferno'?'10d10 fire':form==='pestilence'?'10d10 poison/necrotic':'10d10 cold',save:form==='darkness'||form==='pestilence'?'con':'dex',condition:form==='darkness'?'blinded':form==='pestilence'?'poisoned':null},message:'☠️ Повелитель Ада: адский шторм «'+form+'».'};
     }
     if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' активно.'};
