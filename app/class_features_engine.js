@@ -320,6 +320,16 @@
     l=classLevel(h,'Заклинатель клинка');
     if(l)ensureRes(h,'arcaneSurges',Math.max(2,Math.ceil((Number(h.proficiencyBonus)||2))),'short');
 
+    l=classLevel(h,'Страж');
+    if(l){
+      pack=global.DNDContent&&global.DNDContent.getClass?global.DNDContent.getClass('Страж'):null;
+      if(pack&&pack.hooks&&typeof pack.hooks.sync==='function')pack.hooks.sync(h);
+      ensureRes(h,'wardenInterrupt',l>=17?6:l>=13?5:l>=9?4:l>=5?3:0,'short');
+      ensureRes(h,'wardenFontOfLife',l>=13?2:0,'short');
+      ensureRes(h,'wardenSurvive',l>=9?1:0,'long');
+      ensureRes(h,'wardenLegendaryResistance',l>=20?3:0,'long');
+      ensureRes(h,'wardenSecondWind',1,'short');
+    }
     l=classLevel(h,'Пугилист');
     if(l){
       pack=global.DNDContent&&global.DNDContent.getClass?global.DNDContent.getClass('Пугилист'):null;
@@ -849,6 +859,7 @@
        'shifterAdrenaline','shifterPrimevalForm','vesselMagicSlots','charnelTouch','undyingServitude',
        'brandCastigation','aetherWalk','hybridTransformation','mutagenConcoctions','strangeMetabolism','exaltedMutation','profaneSoulSlots',
        'illriggerSeals','illriggerConduit','illriggerInvokeHell','illriggerSuperiorInterdict','illriggerInfernalMajesty','illriggerMasterOfHell',
+       'wardenInterrupt','wardenFontOfLife','wardenSurvive','wardenLegendaryResistance','wardenSecondWind',
        'pugilistMoxie','pugilistBloodiedButUnbowed','pugilistFightingSpirit','pugilistDownButNotOut','pugilistPersona','pugilistWorkCrowd','pugilistSignatureMove','pugilistDreadHand','pugilistGrotesqueGrowth','pugilistFountainViscera','pugilistUncouthArt','pugilist_heelstomper','pugilist_lowBlow','pugilist_pocketSand',
        'martyrSpellUses','martyrDivineRespite','occultistFateReading',
        'beastheartFerocity','runicCharges','savantReactions'].forEach(function(id){
