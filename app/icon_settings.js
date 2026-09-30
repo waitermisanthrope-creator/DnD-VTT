@@ -7,7 +7,7 @@
   const DEFAULT_ICON = {
     id: 'default',
     label: 'Стандартная иконка',
-    src: './1790788500741.png'
+    src: './icon_previews/default.png'
   };
   const DICE_ICONS = [
   {
@@ -191,6 +191,9 @@
     "src": "./app/assets/dice/dice9.png"
   }
 ];
+  DICE_ICONS.forEach(function(icon, index) {
+    icon.src = './icon_previews/dice_' + String(index + 1).padStart(2, '0') + '.png';
+  });
   const ICONS = [DEFAULT_ICON].concat(DICE_ICONS);
   let pending = {};
   let counter = 0;
