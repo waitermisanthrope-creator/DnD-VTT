@@ -28,6 +28,16 @@
       "sha256": "85ce54f280333683943332168e5731093d2d836fb56e9a17a10bacb49f59f850"
     },
     {
+      "path": "app/classesRegistry.js",
+      "bytes": 10685,
+      "sha256": "315c11e1926aa0717c530f8e35fa49ebd8a746e6eb0b5cbb62af7ebb25ff8bb0"
+    },
+    {
+      "path": "app/data/classes/progressionEngine.js",
+      "bytes": 20610,
+      "sha256": "e761a97acb8fbb14126340abc51585f9cfcacf9bff018f579482664c0c18ab6c"
+    },
+    {
       "path": "app/data/subclasses/subclassesRegistry.js",
       "bytes": 111083,
       "sha256": "bf1d2f0932d057d425a0d85bcd7058d2ba5d8a7b5313098afb1c6c3bcb0a31dc"
