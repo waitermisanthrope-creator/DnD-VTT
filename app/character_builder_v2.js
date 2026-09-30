@@ -45,13 +45,19 @@
   function extraInfo(name){return EXTRA[name]||null;}
   function classProgression(name){
     var d=getClass(name)||{};
-    if(d.progression&&d.progression.levels){
-      /* Runtime progression contains levels/resources, while the base class
-         object contains skills, armor, weapons and other creation metadata. */
-      return Object.assign({},d,d.progression,{levels:d.progression.levels});
+    if(d.progression&&typeof d.progression==='object'){
+      return Object.assign({},d,d.progression,{levels:d.progression.levels||d.levels});
     }
     if(d.levels)return d;
     return d;
+  }
+  function normalizeSkillId(value){
+    var raw=String(value==null?'':value).trim();if(!raw)return '';
+    var clean=raw.toLowerCase().replace(/ё/g,'е');
+    var aliases={'animal handling':'animalHandling','уход за животными':'animalHandling','sleight of hand':'sleightOfHand','ловкость рук':'sleightOfHand','arcana':'arcana','магия':'arcana','алкана':'arcana','athletics':'athletics','атлетика':'athletics','acrobatics':'acrobatics','акробатика':'acrobatics','deception':'deception','обман':'deception','history':'history','история':'history','insight':'insight','проницательность':'insight','intimidation':'intimidation','запугивание':'intimidation','investigation':'investigation','расследование':'investigation','medicine':'medicine','медицина':'medicine','лекарство':'medicine','nature':'nature','природа':'nature','perception':'perception','внимательность':'perception','восприятие':'perception','performance':'performance','выступление':'performance','persuasion':'persuasion','убеждение':'persuasion','religion':'religion','религия':'religion','stealth':'stealth','скрытность':'stealth','survival':'survival','выживание':'survival'};
+    if(aliases[clean])return aliases[clean];
+    var cfg=(g.SKILLS_CONFIG||[]).find(function(x){return x&&(String(x.id||'').toLowerCase()===clean||String(x.name||'').toLowerCase()===clean);});
+    return cfg?cfg.id:raw;
   }
   function levelData(name,lvl){
     var d=classProgression(name);
@@ -268,8 +274,8 @@
     rm.swim=rm.swim||/амфибия|плавание 30/i.test(rd);
     rm.climb=rm.climb||/когт.*лазани|лазани/i.test(rd);
     rm.telepathy=rm.telepathy||/телепат/i.test(rd);
-    rm.magicResistance=rm.magicResistance||/сопротивление магии|сопротивление магии/i.test(rd);
-    rm.poisonResistance=rm.poisonResistance||/сопротивление яду/i.test(rd);
+    rm.magicResistance=rm.magicResistance||/сопротивлен(?:ие|ием) маги/i.test(rd);
+    rm.poisonResistance=rm.poisonResistance||/сопротивлен(?:ие|ием) яду/i.test(rd);
     rm.poisonImmunity=rm.poisonImmunity||/иммунитетом к ядам|иммунитет к яду/i.test(rd);
     rm.fireResistance=rm.fireResistance||/сопротивление огню/i.test(rd);
     rm.coldResistance=rm.coldResistance||/сопротивление холоду/i.test(rd);
@@ -290,9 +296,21 @@
     rm.noBreath=rm.noBreath||/не нуждаются.*дыхани/i.test(rd);
     rm.sunlightSensitivity=rm.sunlightSensitivity||/солнечн.*свет/i.test(rd);
     rm.stoneEndurance=rm.stoneEndurance||/выносливость камня|каменная стойкость/i.test(rd);
-    rm.charge=rm.charge||/таран|штурмов с разбега/i.test(rd);
+    rm.charge=rm.charge||/таран|штурмов с разбега|заячьим прыжком/i.test(rd);
     rm.horns=rm.horns||/удары рогами|рогами/i.test(rd);
     rm.sizeChoice=rm.sizeChoice||/размер:.*или/i.test(rd);
+    rm.feyAncestry=rm.feyAncestry||/наследие фей/i.test(rd);
+    rm.weaponTraining=rm.weaponTraining||/владение оружием/i.test(rd);
+    rm.savageAttacks=rm.savageAttacks||/разрушительные критические удары/i.test(rd);
+    rm.nimbleEscape=rm.nimbleEscape||/быстро отступать после удара/i.test(rd);
+    rm.packTactics=rm.packTactics||/командной работе/i.test(rd);
+    rm.trunk=rm.trunk||/хобот/i.test(rd);
+    rm.glide=rm.glide||/планир/i.test(rd);
+    rm.repairable=rm.repairable||/чинятся заклинаниями ремонта/i.test(rd);
+    rm.mentalShield=rm.mentalShield||/ментальн(?:ый|ая) (?:защит|щит|защита)/i.test(rd);
+    rm.undeadResilience=rm.undeadResilience||/стойкость нежити/i.test(rd);
+    rm.spiderClimb=rm.spiderClimb||/вертикальным стенам/i.test(rd);
+    rm.flight=rm.flight||/полноценный пол[её]т|полет|полет 30|полетом/i.test(rd);
     var db=g.PROFICIENCIES_DB||[];
     (Array.isArray(race.proficiencies)?race.proficiencies:[]).forEach(function(id){var p=db.find(function(x){return x.id===id||x.name===id;});if(p&&!hero.proficiencies.some(function(x){return x.id===p.id;}))hero.proficiencies.push(Object.assign({},p));});
     (Array.isArray(race.languages)?race.languages:[]).forEach(function(lang){if(/на выбор|дополнительный язык/i.test(String(lang)))return;var p=db.find(function(x){return x.category==='Языки'&&String(x.name||'').toLowerCase().indexOf(String(lang).toLowerCase())>=0;});if(p&&!hero.proficiencies.some(function(x){return x.id===p.id;}))hero.proficiencies.push(Object.assign({},p));});
@@ -304,6 +322,11 @@
       hero.baseAC=Number(race.baseAc)||hero.baseAC;
       hero.ac=String(hero.baseAC);
     }
+    hero.resistances=Array.isArray(hero.resistances)?hero.resistances:[];
+    hero.immunities=Array.isArray(hero.immunities)?hero.immunities:[];
+    var resistanceMap=[['poisonResistance','яд'],['fireResistance','огонь'],['coldResistance','холод'],['acidResistance','кислота'],['necroticResistance','некротический'],['radiantResistance','излучение'],['psychicResistance','психический']];
+    resistanceMap.forEach(function(pair){if(rm[pair[0]]&&hero.resistances.indexOf(pair[1])<0)hero.resistances.push(pair[1]);});
+    if(rm.poisonImmunity&&hero.immunities.indexOf('яд')<0)hero.immunities.push('яд');
     if(race.speed){
       hero.speed=String(race.speed);
       rm.speed=hero.speed;
@@ -406,12 +429,12 @@
   function classSkillRule(p,className){return p&&p.skills&&p.skills.choose?p.skills:(CLASS_SKILL_CHOICES_2014[className]||null);}
   function classChoices(className,targetLevel,isNewClass){
     var d=getClass(className)||{};
-    var p=d.progression&&d.progression.levels?d.progression:d;
+    var p=d.progression&&typeof d.progression==='object'?Object.assign({},d,d.progression):d;
     var out=[];
     var skillRule=classSkillRule(p,className);
     if(isNewClass && skillRule && skillRule.choose){
       out.push({id:'class_skills',key:'class:'+className+':skills',type:'multi',count:Number(skillRule.choose),label:'Навыки класса',options:function(){var ids=skillRule.from||[];if(ids.indexOf('any')>=0)return (g.SKILLS_CONFIG||[]).slice();return ids.map(function(x){
-        var id=x.id||x; var f=(g.SKILLS_CONFIG||[]).find(function(s){return s.id===id||s.name===id;}); return {id:id,name:f?f.name:id};
+        var id=typeof x==='object'?(x.id||x.name):x; var normalized=normalizeSkillId(id); var f=(g.SKILLS_CONFIG||[]).find(function(s){return s.id===normalized||s.id===id||s.name===id;}); return {id:f?f.id:normalized,name:f?f.name:(x.nameRu||x.name||id)};
       });},className:className,level:1,source:'class'});
     }
     if(isNewClass && p.tools && p.tools.choose){
@@ -537,7 +560,13 @@
     if(choice.id==='human_stats'){
       var base=(hero._builderBaseStats||hero.stats); val.forEach(function(k){hero.stats[k]=Number(base[k]||8)+1;});
     }
-    if(choice.id==='human_skill'){hero.skillsData=hero.skillsData||{};hero.skillsData[val]=1;}
+    if(choice.id==='human_skill'){hero.skillsData=hero.skillsData||{};hero.skillsData[normalizeSkillId(val)]=1;}
+    if(choice.id==='half_elf_skills'){hero.skillsData=hero.skillsData||{};val.forEach(function(x){hero.skillsData[normalizeSkillId(x)]=1;});}
+    if(choice.id==='dragonborn_ancestry'){
+      hero.choiceState.dragonbornAncestry=val;hero.raceMechanics=hero.raceMechanics||{};hero.raceMechanics.breathWeapon=true;hero.raceMechanics.breathWeaponType=val;hero.raceMechanics.resistanceDamageType=val;
+      hero.resistances=hero.resistances||[];var dmgMap={acid:'кислота',cold:'холод',fire:'огонь',lightning:'молния',poison:'яд'};var dt=dmgMap[val]||val;if(hero.resistances.indexOf(dt)<0)hero.resistances.push(dt);
+    }
+    if(choice.id==='race_size'){hero.size=String(val);hero.raceMechanics=hero.raceMechanics||{};hero.raceMechanics.size=String(val);}
     if(choice.id==='human_feat'){hero.feats=hero.feats||[];if(hero.feats.indexOf(val)<0)hero.feats.push(val);hero.features=hero.features||[];if(hero.features.indexOf(val)<0)hero.features.push(val);}
     if(choice.id==='background_languages'){
       hero.proficiencies=hero.proficiencies||[];var db=g.PROFICIENCIES_DB||[];
@@ -549,7 +578,7 @@
       var db=g.PROFICIENCIES_DB||[];
       val.forEach(function(id){var p=db.find(function(x){return x.id===id;});if(p&&!hero.proficiencies.some(function(x){return x.id===id;}))hero.proficiencies.push(Object.assign({},p));});
     }
-    if(choice.id==='class_skills'){hero.skillsData=hero.skillsData||{};val.forEach(function(x){hero.skillsData[x]=1;});}
+    if(choice.id==='class_skills'){hero.skillsData=hero.skillsData||{};val.forEach(function(x){hero.skillsData[normalizeSkillId(x)]=1;});}
     if(choice.id==='class_tools'){hero.proficiencies=hero.proficiencies||[];var db=g.PROFICIENCIES_DB||[];val.forEach(function(id){var p=db.find(function(x){return x.id===id;});if(p&&!hero.proficiencies.some(function(x){return x.id===id;}))hero.proficiencies.push(Object.assign({},p));});}
     if(choice.id==='secondary_stat')hero.choiceState.secondaryStat=val;
     if(choice.id==='leadership')hero.choiceState.leadershipStyle=val;
