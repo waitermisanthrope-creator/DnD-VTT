@@ -570,6 +570,10 @@
     if(hasClass(h,'Монах')&&classLevel(h,'Монах')>=7){out.evasion=true;out.notes.push('Уворот');}
     if(hasClass(h,'Монах')&&classLevel(h,'Монах')>=14){out.advantage=true;out.notes.push('Алмазная душа');}if(hasClass(h,'Варвар')&&classLevel(h,'Варвар')>=2&&ctx.dexSaveVisible){out.advantage=true;out.notes.push('Чувство опасности');}if(isSubclassFeatureAvailable(h,'Волшебник','spellResistance')&&ctx.fromSpell){out.advantage=true;out.notes.push('Магическое сопротивление');}if(hasClass(h,'Изобретатель')&&ctx.flashOfGeniusAvailable){out.bonus+=abilityMod(h,'int');out.notes.push('Вспышка гениальности');}
     if(ensureState(h).bendLuckBonus){out.bonus+=num(ensureState(h).bendLuckBonus);ensureState(h).bendLuckBonus=0;out.notes.push('Искривление удачи');}
+    var race=h&&h.raceMechanics||{};
+    if(race.magicResistance&&ctx.fromSpell){out.advantage=true;out.notes.push('Расовое сопротивление магии');}
+    if(race.feyAncestry&&ctx.charmEffect){out.advantage=true;out.notes.push('Наследие фей');}
+    if(race.brave&&ctx.saveType==='frightened'){out.advantage=true;out.notes.push('Расовая храбрость');}
     if(ensureState(h).immuneCharm&&ctx.saveType==='wis'&&ctx.charmEffect)out.advantage=true;
     if(ensureState(h).holyNimbus&&ctx.fromFiendOrUndead)out.bonus+=abilityMod(h,'cha');
     if(global.DNDContent&&global.DNDContent.listClasses)global.DNDContent.listClasses().forEach(function(x){if(classLevel(h,x.name)>0){var p=global.DNDContent.getClass(x.name);if(p&&p.hooks&&typeof p.hooks.saveModifiers==='function'){var e=p.hooks.saveModifiers(h,ctx)||{};out.bonus+=num(e.bonus);if(e.advantage)out.advantage=true;if(e.disadvantage)out.disadvantage=true;(e.notes||[]).forEach(function(v){out.notes.push(v);});}}});if(global.DNDFeats&&global.DNDFeats.saveModifiers){var ff=global.DNDFeats.saveModifiers(h,ctx)||{};out.bonus+=num(ff.bonus);if(ff.advantage)out.advantage=true;if(ff.disadvantage)out.disadvantage=true;(ff.notes||[]).forEach(function(v){out.notes.push(v);});}return out;}
