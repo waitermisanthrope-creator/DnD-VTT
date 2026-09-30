@@ -1,3 +1,13 @@
+## V70.26.79 — ГЛУБОКИЙ АУДИТ ВЫБОРОВ КЛАССОВ
+
+- Найден критический дефект: `subclassesRegistry.js` содержал большой каталог подклассов, но публичные `getAvailableSubclasses/getSubclassData/getSubclassFeaturesForLevel` фактически отсутствовали.
+- Из-за этого Builder зависел от stale runtime и не видел часть домашних классов/подклассов.
+- Добавлен единый resolver: реестр → Content Framework → progression class data.
+- Для домашних классов подключены источники `subclasses`, `fightClubs`, `championCalls`, `academies`, `archetypes`, `traditions`, `crafts`, `subclassFeatureCatalog`.
+- Добавлены дополнительные варианты стандартных классов; у Жреца каталог расширен до базовых 2014 доменов и ряда официальных поздних вариантов.
+- Оккультист и Псионик получили явный выбор своей стартовой специализации в Builder.
+- Версия web-layer: 70.26.79.
+
 ## EXTRA PARCHMENT + LIVE ERROR CONSOLE — V70.26.3
 
 ### Исправлено
