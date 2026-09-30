@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DnD-VTT",
-  "version": "70.26.96",
+  "version": "70.26.97",
   "minAppVersion": "70.25.71",
   "channel": "stable",
   "generated": "AUTO",
@@ -104,8 +104,8 @@
     },
     {
       "path": "app/Settings.js",
-      "bytes": 48440,
-      "sha256": "f989beaeb8608782594f382e82bacc0677e565959729618ab4cba05afb20ca75"
+      "bytes": 48947,
+      "sha256": "a371174bfaf8b4a626b5fde939aeca64184f6b1b06d00ed9ff2e3a5fc82167d6"
     },
     {
       "path": "app/icon_settings.js",
@@ -115,7 +115,7 @@
     {
       "path": "app/update_manager.js",
       "bytes": 20812,
-      "sha256": "4cce743c750f33e1d5178a9f2276cf85c472c94e5ba3de12bbb1b33498c7311a"
+      "sha256": "498592d70960df4e18585b6af06e5ce3a9d520980fa7431e2dbd770a6aa4a1d9"
     },
     {
       "path": "app/onboarding_faq_v71.js",
