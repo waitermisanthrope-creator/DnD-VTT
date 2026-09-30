@@ -179,6 +179,23 @@ public final class DndUpdateBridge {
         return prefs.getString("active", getPackageVersion());
     }
 
+    /** Ensure icon preview assets exist in the active web root even when that root was created by an older web update. */
+    private void ensureIconPreviewAssets(File activeRoot) throws Exception {
+        File previewRoot = new File(activeRoot, "icon_previews");
+        File defaultFile = new File(previewRoot, "default.png");
+        if (!previewRoot.isDirectory() || !defaultFile.isFile()) {
+            copyAssetTree("icon_previews", activeRoot);
+            return;
+        }
+        for (int i = 1; i <= 30; i++) {
+            File f = new File(previewRoot, String.format(java.util.Locale.ROOT, "dice_%02d.png", i));
+            if (!f.isFile() || f.length() <= 0) {
+                copyAssetTree("icon_previews", activeRoot);
+                return;
+            }
+        }
+    }
+
     public void ensureSeeded() throws Exception {
         SharedPreferences prefs = context.getSharedPreferences("dnd_vtt_update", Context.MODE_PRIVATE);
         File versions = new File(context.getFilesDir(), "vtt-versions");
@@ -190,6 +207,9 @@ public final class DndUpdateBridge {
         // This prevents an older in-app update from hiding newly bundled JS/assets.
         if (active.isDirectory() && new File(active, "index.html").isFile()
                 && compareVersions(activeVersion, packageVersion) >= 0) {
+            // Web updates intentionally do not carry the APK-bundled icon previews.
+            // Repair them in-place so an old active web version cannot leave broken <img> elements.
+            ensureIconPreviewAssets(active);
             return;
         }
 
