@@ -67,4 +67,28 @@
   p[15]={features:['Herculean']};
   p[18]={features:['Fighting Spirit']};
   g.pugilistProgression=make(p);
+  /* Runtime-структура для трёх ранее оставшихся классов. Эти данные дают
+     Builder/Level Up единый контракт 1–20 и не выдают незавершённые
+     способности за полноценно реализованные правила. Конкретные resolver-ы
+     можно наращивать поверх этих стабильных IDs без переписывания Builder. */
+  function skeletonClass(name,englishName,hitDie,primary,skills,subclasses,level1){
+    var x={};for(var n=1;n<=20;n++)x[n]={features:[]};
+    x[1]={features:level1};[4,8,12,16,19].forEach(function(n){x[n]={features:['Увеличение характеристик / черта'],asi:true};});
+    x[3]={features:['Специализация класса'],subclassLevel:true};
+    x[5]={features:['Дополнительная атака / усиление основной способности']};
+    x[10]={features:['Улучшение специализации']};
+    x[15]={features:['Великая особенность класса']};
+    x[20]={features:['Мастерство класса']};
+    return {className:name,englishName:englishName,status:'structured_core',hitDie:hitDie,primaryStat:primary,skills:skills,subclassLevel:3,subclasses:subclasses,levels:x,mechanics:{status:'structured_core',note:'Структурный слой готов; отдельные активные resolver-ы расширяются без изменения Builder/Level Up.'}};
+  }
+  g.accursedProgression=skeletonClass('Аккурсд','Accursed',10,'constitution',{choose:2,from:['athletics','deception','insight','intimidation','investigation','religion','stealth']},[
+    {id:'bloodCurse',name:'Кровавое проклятие'},{id:'hexblade',name:'Проклятый клинок'},{id:'doomcaller',name:'Вестник рока'}
+  ],['Проклятие','Мрачная клятва']);
+  g.runeKeeperProgression=skeletonClass('Рунный хранитель','RuneKeeper',8,'intelligence',{choose:2,from:['arcana','history','investigation','nature','religion','insight','perception']},[
+    {id:'warRune',name:'Военные руны'},{id:'wardRune',name:'Руны защиты'},{id:'sageRune',name:'Руны знания'}
+  ],['Руническое начертание','Рунический фокус']);
+  g.savantProgression=skeletonClass('Савант','Savant',8,'intelligence',{choose:3,from:['arcana','history','insight','investigation','medicine','nature','perception','persuasion']},[
+    {id:'tactician',name:'Тактик'},{id:'scholar',name:'Учёный'},{id:'physician',name:'Практик'},{id:'investigator',name:'Следователь'}
+  ],['Изучение','Анализ']);
+
 })(window);
