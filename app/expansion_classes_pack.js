@@ -1000,7 +1000,7 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
       var b=illriggerBurn(h,t.id,1);if(!b.ok)return b;return{ok:true,target:t.id,effect:{criticalHit:true,sealDiceDoubled:true},message:'💀 Смертельный удар превращает попадание в критическое.'};
     }
     if(id==='sanguineExsanguinate'){
-      if(!t)return{ok:false,message:'Выбери союзника.'};var targetId=ctx.enemyId||ctx.sourceTargetId||ctx.interdictedTargetId;if(!targetId)return{ok:false,message:'Укажи врага, на котором сжигаются печати.'};var b=illriggerBurn(h,targetId,ctx.count);if(!b.ok)return b;return{ok:true,target:t.id,effect:{tempHp:Math.floor(Number(String(b.effect.damage).match(/^\\d+/)||[1])[0])},message:'🩸 Истощение: союзник получает временные HP.'};
+      if(!t)return{ok:false,message:'Выбери союзника.'};var targetId=ctx.enemyId||ctx.sourceTargetId||ctx.interdictedTargetId;if(!targetId)return{ok:false,message:'Укажи врага, на котором сжигаются печати.'};var b=illriggerBurn(h,targetId,ctx.count);if(!b.ok)return b;return{ok:true,target:t.id,effect:{tempHpFromSealDamage:true,sealDamage:b.effect.damage},message:'🩸 Истощение: союзник получает временные HP по фактическому урону печатей.'};
     }
     if(id==='sanguineBlessing'){
       var sb=h.resources&&h.resources.illriggerSanguineBlessing;if(!sb||sb.current<=0)return{ok:false,message:'Благословение Сутеха уже использовано до долгого отдыха.'};sb.current-=1;return{ok:true,effect:{senseBloodCreatures:true,rangeFt:120,durationRounds:1},message:'🩸 Кровь ощущается в радиусе 120 футов.'};
