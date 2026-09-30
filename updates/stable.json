@@ -28,6 +28,11 @@
       "sha256": "16462522b6149013900b8c19c0bf553bf92d7e151f18ef4318323bf6056f93bf"
     },
     {
+      "path": "app/character_creation.js",
+      "bytes": 46823,
+      "sha256": "225e42704f7802b50012d2af7b2cbdae9a93300823d34565abff543da903bf91"
+    },
+    {
       "path": "app/races.js",
       "bytes": 52239,
       "sha256": "edebb1f1ddcb47b9a1863b4b427f7ac0721cc22f64de543188614c7444cbbdbc"
@@ -56,6 +61,16 @@
       "path": "app/data/subclasses/subclassesRegistry.js",
       "bytes": 111083,
       "sha256": "bf1d2f0932d057d425a0d85bcd7058d2ba5d8a7b5313098afb1c6c3bcb0a31dc"
+    },
+    {
+      "path": "app/class_features_engine.js",
+      "bytes": 105467,
+      "sha256": "8e0181588984ca03d03bc47907d0d4bdf060bad82166800ecef647e78f4db09d"
+    },
+    {
+      "path": "app/combat_engine.js",
+      "bytes": 37979,
+      "sha256": "fe3f4e4050cd82863dc2b3e64c79dec35146e7518c43cd5a675937e70d14eb8a"
     },
     {
       "path": "app/vtt_debug_error_log_v709.js",
