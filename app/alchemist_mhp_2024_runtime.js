@@ -234,7 +234,9 @@ function subclassFeatureEffect(h,sub,f,ctx){
  if(name==='Плазменная бомба')return{ok:true,effect:{damageType:'radiant',directDice:'d12',blastDice:'d6',attached:true},message:'☀️ Плазменная бомба готова.'};
  if(name==='Теплоотвод'){if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,effect:{overheatDamage:'2d6 fire',coolWeaponBonus:'2d6 cold'},message:'🔥❄️ Теплоотвод применён.'};}
  if(name==='Бомба с чёрным порохом'){var r=h.resources.alchemistReagents;if(!s.blackPowderUses)s.blackPowderUses=Math.max(1,mod(h,'int'));if(s.blackPowderUses<1)return{ok:false,message:'Бомбы с чёрным порохом исчерпаны до отдыха.'};s.blackPowderUses--;return{ok:true,effect:{damageDice:'d12',damageType:'fire',ignoreResistance:true,immunityBecomesResistance:true},message:'💥 Бомба с чёрным порохом готова.'};}
- if(name==='Мутаген'){s.activeMutagen=ctx.ability||'constitution';return{ok:true,effect:{abilityBonus:3,ability:s.activeMutagen,maxAbility:23,duration:'1 minute'},message:'🧬 Мутаген активирован.'};
+ if(name==='Мутаген'){
+  s.activeMutagen=ctx.ability||'constitution';
+  return {ok:true,effect:{abilityBonus:3,ability:s.activeMutagen,maxAbility:23,duration:'1 minute'},message:'🧬 Мутаген активирован.'};
  }
  if(name==='Общий мутаген'){if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,target:ctx.target&&ctx.target.id,effect:{grantMutagen:true,duration:'1 minute',onePerTarget:true},message:'🧬 Мутаген передан союзнику.'};
  if(name==='Слизевая бомба')return{ok:true,effect:{damage:0,areaSlime:true,deniesActions:['dash','disengage','dodge'],removeAction:true},message:'🟢 Слизевая бомба разлита.'};
