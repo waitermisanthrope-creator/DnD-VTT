@@ -48,6 +48,9 @@ public class MainActivity extends Activity {
         File activeRoot = new File(getFilesDir(), "vtt-versions/" + updater.getActiveVersion());
         final WebViewAssetLoader loader = new WebViewAssetLoader.Builder()
                 .addPathHandler("/vtt/", new WebViewAssetLoader.InternalStoragePathHandler(this, activeRoot))
+                // Icon previews are static APK assets, so they must remain available even when
+                // the active web version was produced by an in-app update.
+                .addPathHandler("/vtt-apk/", new WebViewAssetLoader.AssetsPathHandler(this))
                 .build();
 
         webView.addJavascriptInterface(new LauncherIconJsBridge(), "DndLauncherIcon");
