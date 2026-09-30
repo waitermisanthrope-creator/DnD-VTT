@@ -477,28 +477,35 @@
   function useCustomRuntimeFeature(h,id,ctx){
     ctx=ctx||{};
     var name=String(id||'');
-    var map={
-      accursed:['accursedRuntime','useFeature'],
-      runeKeeper:['runeKeeperRuntime','useFeature'],
-      runekeeper:['runeKeeperRuntime','useFeature'],
-      savant:['savantRuntime','useFeature'],
-      shifter:['shifterRuntime','useFeature'],
-      vessel:['vesselRuntime','useFeature'],
-      necromancer:['necromancerRuntime','useFeature'],
-      martyr:['martyrRuntime','useFeature'],
-      occultist:['occultistRuntime','useFeature'],
-      alchemist:['alchemistRuntime','useFeature'],
-      warden:['wardenRuntime','useFeature'],
-      beastheart:['beastheartRuntime','useFeature'],
-      pugilist:['pugilistRuntime','useFeature'],
-      warlord:['warlordRuntime','useFeature'],
-      illrigger:['illriggerRuntime','useFeature']
+    var map=[
+      ['accursed','Аккурсд'],['runeKeeper','Рунный хранитель'],['runekeeper','Рунный хранитель'],
+      ['savant','Савант'],['shifter','Шифтер'],['vessel','Сосуд'],['necromancer','Некромант'],
+      ['martyr','Мученик'],['occultist','Оккультист'],['alchemist','Алхимик'],['warden','Страж'],
+      ['beastheart','Бистхарт'],['pugilist','Пугилист'],['warlord','Военачальник'],['illrigger','Иллиригер']
+    ];
+    var cls=null;
+    for(var i=0;i<map.length;i++)if(name.indexOf(map[i][0])===0){cls=map[i][1];break;}
+    if(!cls)return null;
+
+    // Prefer the registered DNDContent hook: this is the actual class action
+    // implementation and already knows the class-specific resource rules.
+    var pack=global.DNDContent&&typeof global.DNDContent.getClass==='function'
+      ?global.DNDContent.getClass(cls):null;
+    if(pack&&pack.hooks&&typeof pack.hooks.useFeature==='function'){
+      var fid=name.replace(/^[^:]+:/,'');
+      var result=pack.hooks.useFeature(h,fid,ctx);
+      if(result)return result;
+    }
+
+    // Runtime fallback for classes whose content pack has not loaded yet.
+    var runtimes={
+      'Аккурсд':'accursedRuntime','Рунный хранитель':'runeKeeperRuntime','Савант':'savantRuntime',
+      'Шифтер':'shifterRuntime','Сосуд':'vesselRuntime','Некромант':'necromancerRuntime',
+      'Мученик':'martyrRuntime','Оккультист':'occultistRuntime'
     };
-    var k=Object.keys(map).find(function(x){return name.indexOf(x)===0;});
-    if(!k)return null;
-    var spec=map[k],rt=global[spec[0]];
-    if(!rt||typeof rt[spec[1]]!=='function')return null;
-    return rt[spec[1]](h,name,ctx);
+    var rt=global[runtimes[cls]];
+    if(rt&&typeof rt.useFeature==='function')return rt.useFeature(h,name,ctx);
+    return null;
   }
 
   function useFeatureAction(h,id,ctx){
