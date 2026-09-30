@@ -609,16 +609,40 @@
     alert('Уровень '+hero.level+' получен. Все выборы сохранены.');
   };
 
+  function showBuilderFatal(err){
+    var msg=err&&err.stack?err.stack:(err&&err.message?err.message:String(err));
+    console.error('Builder V2 fatal launch error:',err);
+    g.__CBV2_LAST_ERROR=msg;
+    var root=g.document.getElementById('cbv2Screen');
+    if(!root){
+      root=g.document.createElement('div');
+      root.id='cbv2Screen';
+      g.document.body.appendChild(root);
+    }
+    root.style.cssText='position:fixed;inset:0;z-index:99990;display:block;background:#111;color:#fff;overflow:auto;box-sizing:border-box;';
+    root.innerHTML='<div class="cb-wrap"><div class="cb-card cb-extra"><h3>⚠️ Builder V2 не запустился</h3><p class="cb-note">Ошибка произошла при запуске мастера. Пустого окна больше не будет.</p><pre style="white-space:pre-wrap;word-break:break-word;color:#ffb4ab;background:#171717;border:1px solid #553;border-radius:8px;padding:10px;font-size:12px;">'+esc(msg)+'</pre><div class="cb-actions"><button id="cbFatalLog" class="cb-btn primary">🐞 Открыть ошибки</button><button id="cbFatalClose" class="cb-btn">Закрыть</button></div></div></div>';
+    var b=g.document.getElementById('cbFatalLog');
+    if(b)b.onclick=function(){if(typeof g.dndV709Open==='function')g.dndV709Open();};
+    var close=g.document.getElementById('cbFatalClose');
+    if(close)close.onclick=function(){root.style.display='none';if(typeof g.showCharacterSelect==='function')g.showCharacterSelect();};
+  }
   function startCreate(opts){
     opts=opts||{};
     if(!opts.fromParchment && typeof g.openParchmentCreation==='function'){
       return g.openParchmentCreation();
     }
     var screen=g.document.getElementById('characterCreationScreen');
-    if(screen)screen.style.display='block';
-    var wizard=new Wizard({mode:'create',fromParchment:!!opts.fromParchment,draft:opts.draft||null});
-    wizard.mount();
-    return wizard;
+    if(screen)screen.style.display=opts.fromParchment?'none':'block';
+    try{
+      console.warn('Builder V2 launch: startCreateFromParchment=',!!opts.fromParchment);
+      var wizard=new Wizard({mode:'create',fromParchment:!!opts.fromParchment,draft:opts.draft||null});
+      wizard.mount();
+      if(!wizard.root||!wizard.root.innerHTML.trim())throw new Error('Builder V2 mount завершился пустым root');
+      return wizard;
+    }catch(err){
+      showBuilderFatal(err);
+      return null;
+    }
   }
   function startLevel(){
     var hero=g.currentCharacter||g.currentChar;if(!hero)return alert('Персонаж не выбран.');
