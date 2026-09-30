@@ -108,6 +108,11 @@
       "sha256": "2a0880c224e13f8847a3a6b7c297bd35786283a51e7b933bb448d7bbf8ac4cc6"
     },
     {
+      "path": "app/icon_settings.js",
+      "bytes": 11136,
+      "sha256": "c6f8b79706cfee53ccb5a61be9ccd799d7a2f9f12c9620f12b7b60da370d1dc2"
+    },
+    {
       "path": "app/update_manager.js",
       "bytes": 20812,
       "sha256": "061a7131e3bf9628b850a904f7f461ce5ffb17bf0ab30deef09386af2f8b39f0"
