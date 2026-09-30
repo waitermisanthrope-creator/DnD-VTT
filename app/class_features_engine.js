@@ -300,21 +300,43 @@
     }
 
     // Remaining extended runtimes expose progression/state rather than a
-    // mutable pool. Their bridge resources are created here so UI/combat can
-    // address them uniformly without inventing a second state object.
+    // mutable pool. Bridge only the REAL runtime resources; never invent a
+    // second counter for the same class feature.
+    l=classLevel(h,'Аккурсд');
+    if(l)ensureRes(h,'accursedSpellSlots',l>=18?4:l>=11?3:2,'long');
+
+    l=classLevel(h,'Псионик');
+    if(l)ensureRes(h,'psiPoints',l,'short');
+
+    l=classLevel(h,'Военачальник');
+    if(l){
+      ensureRes(h,'warlordExploitDice',l>=15?6:4,'short');
+      ensureRes(h,'warlordInspiringWord',l>=17?7:l>=13?6:l>=9?5:l>=4?4:3,'short');
+      ensureRes(h,'warlordRally',l>=17?3:l>=13?2:1,'short');
+    }
+
+    l=classLevel(h,'Заклинатель клинка');
+    if(l)ensureRes(h,'arcaneSurges',Math.max(2,Math.ceil((Number(h.proficiencyBonus)||2))),'short');
+
+    l=classLevel(h,'Кровавый охотник');
+    if(l)ensureRes(h,'bloodMaledict',l>=18?5:l>=14?4:l>=10?3:l>=6?2:1,'short');
+
     l=classLevel(h,'Шифтер');
     if(l){
       var maxAdr=Math.max(1,abilityMod(h,'con'));
       ensureRes(h,'shifterAdrenaline',maxAdr,'short');
       ensureRes(h,'shifterPrimevalForm',l>=11?3:0,'long');
     }
+
     l=classLevel(h,'Сосуд');
     if(l){
-      ensureRes(h,'vesselArchonForm',1,'short');
+      ensureRes(h,'vesselMagicSlots',l>=18?4:l>=11?3:2,'short');
     }
+
     l=classLevel(h,'Некромант');
     if(l){
-      ensureRes(h,'necromancerCharnelTouch',l*5,'long');
+      ensureRes(h,'charnelTouch',l*5,'long');
+      ensureRes(h,'undyingServitude',l>=18?1:0,'long');
     }
     l=classLevel(h,'Мученик');
     if(l){
@@ -786,7 +808,8 @@
     var out={resources:{},version:'custom-resource-bridge-1'};
     if(h.resources){
       ['alchemistReagents','wardenInterrupt','wardenFontOfLife','wardenLegendaryResistance','wardenSecondWind',
-       'shifterAdrenaline','shifterPrimevalForm','vesselArchonForm','necromancerCharnelTouch',
+       'accursedSpellSlots','psiPoints','warlordExploitDice','warlordInspiringWord','warlordRally','arcaneSurges','bloodMaledict',
+       'shifterAdrenaline','shifterPrimevalForm','vesselMagicSlots','charnelTouch','undyingServitude',
        'martyrSpellUses','martyrDivineRespite','occultistFateReading',
        'runicCharges','savantReactions'].forEach(function(id){
         if(h.resources[id])out.resources[id]={current:h.resources[id].current,max:h.resources[id].max,recharge:h.resources[id].recharge};
