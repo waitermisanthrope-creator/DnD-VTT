@@ -355,11 +355,22 @@ function chooser(){
  var old=el('characterCreationTypeChooser');if(old)return old;
  var m=document.createElement('div');m.id='characterCreationTypeChooser';
  m.style.cssText='display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.88);align-items:center;justify-content:center;padding:18px;box-sizing:border-box';
- m.innerHTML='<div class="creation-type-card"><div class="creation-type-icon">📜</div><h2>Какого персонажа создаём?</h2><p>Сначала выберите тип листа.</p><button id="ccTypeClassic">Обычный персонаж</button><button id="ccTypeHomebrew">DLC / Хоумбрю</button><button id="ccTypeExtra">Экстра</button><button id="ccTypeCancel">Отмена</button></div>';
+ m.innerHTML='<div class="creation-type-card"><div class="creation-type-icon">📜</div><h2>Какого персонажа создаём?</h2><p>Сначала выберите тип листа.</p><button id="ccTypeClassic">Обычный персонаж</button><button id="ccTypeHomebrew">DLC / Хоумбрю</button><button id="ccTypeExtra">Экстра</button><button id="ccTypeConstructor" style="background:#6b5414;border-color:#d4af37;">⚡ Конструктор</button><button id="ccTypeCancel">Отмена</button></div>';
  document.body.appendChild(m);
  m.querySelector('#ccTypeClassic').onclick=function(){m.style.display='none';CHARACTER_CREATION_MODE='classic';openParchmentSheet()};
  m.querySelector('#ccTypeHomebrew').onclick=function(){m.style.display='none';CHARACTER_CREATION_MODE='homebrew';openParchmentSheet()};
  m.querySelector('#ccTypeExtra').onclick=function(){m.style.display='none';CHARACTER_CREATION_MODE='extra';openParchmentSheet()};
+  m.querySelector('#ccTypeConstructor').onclick=function(){
+    m.style.display='none';
+    if(window.CharacterBuilderV2&&typeof window.CharacterBuilderV2.startCreateDirect==='function'){
+      return window.CharacterBuilderV2.startCreateDirect();
+    }
+    var src='./app/character_builder_v2.js?direct_builder=7026080';
+    var s=document.createElement('script');s.async=false;s.src=src;
+    s.onload=function(){if(window.CharacterBuilderV2&&typeof window.CharacterBuilderV2.startCreateDirect==='function')window.CharacterBuilderV2.startCreateDirect();else alert('Конструктор не загрузился.');};
+    s.onerror=function(){alert('Не удалось загрузить конструктор.');};
+    document.head.appendChild(s);
+  };
  m.querySelector('#ccTypeCancel').onclick=function(){m.style.display='none';if(typeof window.showCharacterSelect==='function')window.showCharacterSelect()};
  return m;
 }
@@ -400,7 +411,7 @@ window.finishParchmentCreation=function(){
     var n=0,wait=function(){if(window.CharacterBuilderV2&&typeof window.CharacterBuilderV2.startCreateFromParchment==='function'){done(true);return;}if(++n>=20){done(false,'Builder V2 не появился после динамической загрузки.');return;}setTimeout(wait,100);};wait();return;
   }
   window.__CBV2_BOOT_LOADING=true;
-  var src='./app/character_builder_v2.js?v=70.26.78';
+  var src='./app/character_builder_v2.js?v=70.26.80';
   var existing=document.querySelector('script[data-cbv2-bootstrap="1"]');
   var s=existing||document.createElement('script');
   s.async=false;
@@ -443,7 +454,7 @@ window.finishParchmentCreation=function(){
   if(!window.__CBV2_RETRY_STARTED){
    window.__CBV2_RETRY_STARTED=true;
    var retry=document.createElement('script');
-   retry.src='./app/character_builder_v2.js?cbv2_retry=7026078';
+   retry.src='./app/character_builder_v2.js?cbv2_retry=7026080';
    retry.async=false;
    retry.onload=function(){setTimeout(function(){launchBuilder(attempt+1);},0);};
    retry.onerror=function(){
