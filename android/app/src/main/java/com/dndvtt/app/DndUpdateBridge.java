@@ -4,6 +4,7 @@ import android.content.Context;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.content.SharedPreferences;
 import androidx.webkit.JavaScriptReplyProxy;
 import org.json.JSONArray;
@@ -30,6 +31,13 @@ public final class DndUpdateBridge {
             JSONObject request = new JSONObject(raw);
             String id = request.optString("id", "");
             String type = request.optString("type", "");
+            // Accept the launcher-icon request under all names used by older/newer web assets.
+            if (type.isEmpty()) type = request.optString("action", "");
+            if (type.isEmpty()) type = request.optString("request", "");
+            if ("setIcon".equals(type) || "set_icon".equals(type) || "launcher-icon".equals(type)) {
+                type = "set-icon";
+            }
+            Log.d("DndUpdateBridge", "request id=" + id + " type=" + type + " raw=" + raw);
             if ("version".equals(type)) {
                 postReply(reply, response(id, true, "version", getActiveVersion()));
             } else if ("stage".equals(type)) {
@@ -41,7 +49,8 @@ public final class DndUpdateBridge {
                 String iconId = request.optString("iconId", "default");
                 executor.execute(() -> setLauncherIcon(id, iconId, reply));
             } else {
-                postReply(reply, response(id, false, "unknown-request", null));
+                Log.e("DndUpdateBridge", "Unknown request: " + raw);
+                postReply(reply, response(id, false, "unknown-request", "type=" + type));
             }
         } catch (Exception e) {
             postReply(reply, response("", false, "invalid-request", e.toString()));
@@ -199,6 +208,7 @@ public final class DndUpdateBridge {
 
     private void setLauncherIcon(String id, String iconId, JavaScriptReplyProxy reply) {
         try {
+            Log.d("DndUpdateBridge", "setLauncherIcon iconId=" + iconId);
             if (!"default".equals(iconId) && !iconId.matches("dice_\\d{2}")) {
                 throw new Exception("Unknown launcher icon: " + iconId);
             }
