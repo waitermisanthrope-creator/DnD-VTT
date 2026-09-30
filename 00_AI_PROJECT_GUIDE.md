@@ -5648,3 +5648,12 @@ QA после сборки:
 2. Заполнить обязательные поля → «расписаться».
 3. После анимации должен открыться Builder V2.
 4. Если модуль снова не зарегистрируется, на экране должна появиться конкретная причина, а не только сообщение «module unavailable».
+
+
+## V70.26.6 — APK seed/update persistence fix — 2026-09-30
+
+- Найдена причина сообщения «Builder V2 module unavailable after 10 attempts»: Android мог сохранять старую папку `vtt-versions/<active>` после установки нового APK. `ensureSeeded()` проверял только наличие старого `index.html` и поэтому не копировал новый `character_builder_v2.js` из APK.
+- Android теперь сравнивает сохранённую active-версию с версией установленного APK: если active старее APK, web-слой пересоздаётся из свежих APK assets. Если active новее APK, он сохраняется.
+- В stable update manifest добавлены `app/character_builder_v2.js`, `app/vtt_debug_error_log_v709.js` и `1790718758545.png`.
+- Арт Паразита доктора Вальтера использует корневой путь `./1790718758545.png`, который одновременно попадает в APK root и может обновляться через GitHub manifest.
+- Версия Android: 70.26.6 / versionCode 7026006.
