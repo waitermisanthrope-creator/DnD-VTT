@@ -237,6 +237,11 @@
     if(isNewClass && p.leadershipChoices){
       out.push({id:'leadership',key:'class:'+className+':leadership',type:'single',label:'Стиль лидерства',options:p.leadershipChoices.map(function(x){return {id:x,name:(p.leadershipStyles&&p.leadershipStyles[x]&&x==='charisma'?'Капитан':x==='wisdom'?'Наставник':x==='intelligence'?'Стратег':'Лидер '+x)};}),className:className,level:1,source:'class'});
     }
+
+    if(isNewClass && className==='Оккультист' && p.traditions){out.push({id:'occult_tradition',key:'class:Оккультист:tradition',type:'single',label:'Оккультная традиция',options:Object.keys(p.traditions).map(function(k){return {id:k,name:k,description:p.traditions[k].description||''};}),className:className,level:1,source:'class'});}
+    if(isNewClass && className==='Псионик' && p.archetypes){out.push({id:'psion_archetype',key:'class:Псионик:archetype',type:'single',label:'Псионический архетип',options:Object.keys(p.archetypes).map(function(k){var x=p.archetypes[k];return {id:k,name:x.name||k};}),className:className,level:1,source:'class'});}
+    if(isNewClass && className==='Пугилист' && p.tools&&p.tools.choose){/* already handled by generic class_tools */}
+
     if(isNewClass && className==='Шифтер'){
       var blood=(g.SHIFTER_V21&&g.SHIFTER_V21.bloodlines)||null;
       if(!blood && p.bloodlines)blood=p.bloodlines;
@@ -268,7 +273,17 @@
     return out.filter(function(x){return !x.optional;});
   }
 
-  function subclassChoice(className,targetLevel,existing){
+
+  function availableSubclassOptions(className){
+    var out=[];
+    if(typeof g.getAvailableSubclasses==='function') out=g.getAvailableSubclasses(className)||[];
+    if((!out.length) && g.DNDContent && typeof g.DNDContent.listSubclasses==='function'){
+      var aliases={'Иллирригер':'Illrigger','Кровавый охотник':'Blood Hunter','Бистхарт':'Beastheart','Пугилист':'Pugilist','Страж':'Warden','Военачальник':'Warlord','Псионик':'Psion','Алхимик':'Alchemist','Оккультист':'Occultist','Ведьма':'Witch','Некромант':'Necromancer','Мученик':'Martyr','Сосуд':'Vessel','Рунный хранитель':'RuneKeeper','Савант':'Savant','Шифтер':'Shifter','Аккурсд':'Accursed','Гайст':'Geist','Рой':'Swarm','Призрак':'Ghost'};
+      out=g.DNDContent.listSubclasses(className)||g.DNDContent.listSubclasses(aliases[className])||[];
+    }
+    return out.map(function(x){return typeof x==='string'?{name:x}:Object.assign({},x,{name:x.nameRu||x.name||x.id});});
+  }
+\n  function subclassChoice(className,targetLevel,existing){
     if(existing)return null;
     var d=getClass(className)||{};
     var p=d.progression&&d.progression.levels?d.progression:d;
@@ -277,7 +292,7 @@
     if(targetLevel<pick)return null;
     if(typeof g.getAvailableSubclasses!=='function')return null;
     var opts=g.getAvailableSubclasses(className)||[];
-    if(!opts.length && p.subclasses)opts=p.subclasses.map(function(x){return typeof x==='string'?{name:x}:x;});
+    if(!opts.length && p.subclasses)opts=p.subclasses.map(function(x){return typeof x==='string'?{name:x}:x;});\n    if(!opts.length){ var src=[]; if(p.fightClubs)src=p.fightClubs; else if(p.championCalls)src=p.championCalls; else if(p.academies)src=p.academies; else if(p.archetypes)src=Object.keys(p.archetypes).map(function(k){return p.archetypes[k];}); else if(p.traditions)src=Object.keys(p.traditions).map(function(k){return {name:k,description:p.traditions[k].description};}); else if(p.crafts)src=Object.keys(p.crafts).map(function(k){return {name:k,description:p.crafts[k].description};}); else if(p.subclassFeatureCatalog)src=Object.keys(p.subclassFeatureCatalog).map(function(k){return p.subclassFeatureCatalog[k];}); opts=src.map(function(x){return typeof x==='string'?{name:String(x).split(' — ').pop()}:x;});}
     if(!opts.length)return null;
     return {id:'subclass',key:'class:'+className+':subclass',type:'single',label:'Подкласс / специализация',options:opts,className:className,level:targetLevel,source:'subclass'};
   }
@@ -341,6 +356,8 @@
     if(choice.id==='secondary_stat')hero.choiceState.secondaryStat=val;
     if(choice.id==='leadership')hero.choiceState.leadershipStyle=val;
     if(choice.id==='shifter_bloodline')hero.choiceState.bloodline=val;
+    if(choice.id==='occult_tradition')hero.choiceState.occultTradition=val;
+    if(choice.id==='psion_archetype')hero.choiceState.psionArchetype=val;
     if(choice.id==='beast_companion'){
       hero.choiceState.companion=val;
       if(g.BeastheartRuntime&&typeof g.BeastheartRuntime.chooseCompanion==='function')g.BeastheartRuntime.chooseCompanion(hero,val);
