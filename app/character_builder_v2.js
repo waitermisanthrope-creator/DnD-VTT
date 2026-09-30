@@ -43,6 +43,7 @@
   function getRaces(){return typeof g.getAllRaces==='function'?g.getAllRaces():((g.DEFAULT_RACES||[]).slice());}
   function isExtra(name){return !!EXTRA[name];}
   function extraInfo(name){return EXTRA[name]||null;}
+  var STANDARD_CLASS_NAMES=['Варвар','Бард','Жрец','Друид','Воин','Монах','Паладин','Следопыт','Плут','Чародей','Колдун','Волшебник','Изобретатель'];
   var CLASS_CREATION_RULES_2014={
     'Варвар':{armor:['p_armor_light','p_armor_medium','p_shields'],weapons:['p_weapon_simple','p_weapon_martial']},
     'Бард':{armor:['p_armor_light'],weapons:['p_weapon_simple','p_weap_hand_crossbow','p_weap_longsword','p_weap_rapier','p_weap_shortsword'],tools:{choose:3,from:['p_instr_lute','p_instr_flute','p_instr_drum','p_instr_horn','p_instr_pan_flute','p_instr_shawm','p_instr_lyre','p_instr_viol','p_instr_bagpipes']}},
@@ -677,7 +678,7 @@
 
   function Wizard(opts){
     this.mode=opts.mode||'create';this.hero=opts.hero||null;this.fromParchment=!!opts.fromParchment;this.step=0;this.values={};
-    this.race=null;this.className=null;this.classLevel=opts.classLevel||1;this.isNewClass=opts.isNewClass!==false;
+    this.creationMode='classic';this.race=null;this.className=null;this.classLevel=opts.classLevel||1;this.isNewClass=opts.isNewClass!==false;
     this.choices=[];this.error='';
     if(this.fromParchment&&opts.draft){
       this.values={name:opts.draft.name||'',age:Number(opts.draft.age)||0,background:opts.draft.background||'',profession:opts.draft.profession||'',stats:{}};
@@ -686,7 +687,15 @@
       this.values.hostRaceId=opts.draft.hostRaceId||opts.draft.raceId||'';
       this.values.gender=opts.draft.gender||'';
       this.values.origin=opts.draft.origin||'';
-      this.step=3;
+      this.creationMode=opts.draft.creationMode||'classic';
+      if(opts.draft.extra){
+        this.values.stats={str:10,dex:10,con:10,int:10,wis:10,cha:10};
+        /* Extra is already fully defined by the parchment: name + Extra/body.
+           Do not force the ordinary stats/background/class wizard onto it. */
+        this.step=5;
+      }else{
+        this.step=3;
+      }
     }
     this.steps=this.mode==='create'?['Основное','Раса / Extra','Класс','Характеристики','Выборы','Проверка']:['Класс','Уровень','Выборы','Проверка'];
   }
@@ -745,8 +754,9 @@
       body+='</div>';
     }
     if(this.step===2){
-      var classes=getClasses(),selc=this.className||'';
-      body='<div class="cb-card"><h3>Класс</h3><div class="cb-list">'+classes.filter(function(c){return !isExtra(c.name);}).map(function(c){return '<div class="cb-option '+(selc===c.name?'active':'')+'" data-class="'+esc(c.name)+'"><b>'+esc(c.name)+'</b><small>d'+(c.hitDie||8)+' · '+esc(c.desc||'')+'</small></div>';}).join('')+'</div></div>';
+      var classes=getClasses(),selc=this.className||'',mode=this.creationMode||'classic';
+      var visibleClasses=classes.filter(function(c){if(isExtra(c.name))return false;if(mode==='classic')return STANDARD_CLASS_NAMES.indexOf(c.name)>=0;return true;});
+      body='<div class="cb-card"><h3>Класс</h3><div class="cb-list">'+visibleClasses.map(function(c){return '<div class="cb-option '+(selc===c.name?'active':'')+'" data-class="'+esc(c.name)+'"><b>'+esc(c.name)+'</b><small>d'+(c.hitDie||8)+' · '+esc(c.desc||'')+'</small></div>';}).join('')+'</div></div>';
       if(this.className&&isExtra(this.className))body='<div class="cb-card cb-extra"><h3>'+esc(this.className)+'</h3><p>Это Extra-класс. Обычный класс не выбирается. Тело/хозяин уже выбран на предыдущем шаге.</p></div>';
     }
     if(this.step===3){
