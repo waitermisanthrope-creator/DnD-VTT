@@ -149,6 +149,19 @@ public final class DndUpdateBridge {
         }
     }
 
+    private static int compareVersions(String a, String b) {
+        String[] aa = String.valueOf(a == null ? "0" : a).replaceFirst("^v", "").split("\\.");
+        String[] bb = String.valueOf(b == null ? "0" : b).replaceFirst("^v", "").split("\\.");
+        int len = Math.max(aa.length, bb.length);
+        for (int i = 0; i < len; i++) {
+            int av = 0, bv = 0;
+            try { av = i < aa.length ? Integer.parseInt(aa[i]) : 0; } catch (Exception ignored) {}
+            try { bv = i < bb.length ? Integer.parseInt(bb[i]) : 0; } catch (Exception ignored) {}
+            if (av != bv) return av > bv ? 1 : -1;
+        }
+        return 0;
+    }
+
     public String getActiveVersion() {
         SharedPreferences prefs = context.getSharedPreferences("dnd_vtt_update", Context.MODE_PRIVATE);
         return prefs.getString("active", getPackageVersion());
@@ -157,8 +170,19 @@ public final class DndUpdateBridge {
     public void ensureSeeded() throws Exception {
         SharedPreferences prefs = context.getSharedPreferences("dnd_vtt_update", Context.MODE_PRIVATE);
         File versions = new File(context.getFilesDir(), "vtt-versions");
-        File active = new File(versions, getActiveVersion());
-        if (active.isDirectory() && new File(active, "index.html").isFile()) return;
+        String packageVersion = getPackageVersion();
+        String activeVersion = getActiveVersion();
+        File active = new File(versions, activeVersion);
+
+        // Refresh persisted web assets when the installed APK is newer.
+        // This prevents an older in-app update from hiding newly bundled JS/assets.
+        if (active.isDirectory() && new File(active, "index.html").isFile()
+                && compareVersions(activeVersion, packageVersion) >= 0) {
+            return;
+        }
+
+        if (active.isDirectory()) deleteRecursive(active);
+        active = new File(versions, packageVersion);
         deleteRecursive(active);
         if (!active.mkdirs()) throw new Exception("Cannot create active version");
         copyAssetTree("index.html", active);
@@ -166,7 +190,7 @@ public final class DndUpdateBridge {
         copyRootImageAssets(active);
         copyAssetTree("wallpapers", active);
         copyAssetTree("ambience", active);
-        prefs.edit().putString("active", getPackageVersion()).putString("healthy", getPackageVersion()).commit();
+        prefs.edit().putString("active", packageVersion).putString("healthy", packageVersion).commit();
     }
 
     public void markHealthy() {
