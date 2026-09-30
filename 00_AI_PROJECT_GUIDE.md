@@ -6219,9 +6219,37 @@ QA дополнен:
 | **Мученик** | `martyrSpellUses`, `divineRespite`, `undying` + Hit Dice/HP-жертва | Заклинания, Божественная передышка, Неумирающий, Жертвенные способности | 🟡 **Частично** — специальные использования заведены, но расход заклинательных использований должен быть окончательно связан с spellcasting resolver |
 | **Оккультист** | `occultistFateReading` + обычные spell slots | Чтение судьбы, заклинания/обряды | 🟡 **Частично** — Чтение судьбы теперь синхронизировано с общим мостом; остальные обряды требуют отдельной проверки расходов |
 | **Пугилист** | `pugilistMoxie`, `pugilistBloodiedButUnbowed`, `pugilistFightingSpirit` | Соберись, Двойка, Ударил и отошёл, Боевое применение Мокси, Израненный но не сломленный, Боевой дух | 🟢 **Полностью по существующим ресурсам**; боевые эффекты, требующие событий попадания/захвата/движения, в backlog |
-| **Иллиригер** | `illriggerSeals`, `illriggerConduit`, `illriggerInvokeHell`, `illriggerSuperiorInterdict`, `illriggerInfernalMajesty`, `illriggerMasterOfHell` | Печати, Сжечь печать, Инфернальный проводник, Призыв Ада, Кровавая цена, Терроризирующая сила, 5 контрактов и Дары Интердикта | 🟢 **Полностью закрыт** по текущему движку |
-| **Кровавый охотник** | `bloodMaledict`, `brandCastigation`, `aetherWalk`, `hybridTransformation`, `mutagenConcoctions`, `strangeMetabolism`, `exaltedMutation`, `profaneSoulSlots` | Кровавые проклятия, Алые обряды, Клеймо, четыре Ордена и их ресурсы | 🟢 **Полностью закрыт** по текущему движку |
+| **Иллиригер** | `illriggerSeals`, `illriggerConduit`, `illriggerInvokeHell`, `illriggerBloodPrice`, `illriggerSuperiorInterdict`, `illriggerInfernalMajesty`, `illriggerMasterOfHell` + contract-use resources | Печати, Сжечь печать, Инфернальный проводник, Призыв Ада, Кровавая цена, Терроризирующая сила, 5 контрактов и Дары Интердикта | 🟢 **Полностью закрыт** по текущему движку |
+| **Кровавый охотник** | `bloodMaledict`, `aetherWalk`, `hybridTransformation`, `bhMutagenConcoctions`, `bhExaltedMutation`, `bhPactSlots` + состояние клейм/обрядов | Кровавые проклятия, Алые обряды, Клеймо, четыре Ордена и их ресурсы | 🟢 **Полностью закрыт** по текущему движку |
 | **Бистхарт** | `beastheartFerocity` + live Ferocity на сущности компаньона | Компаньон, Природные приёмы, Первобытный удар, Восстанавливающая ярость, 5 союзов и их расходующие Ferocity способности | 🟢 **Полностью закрыт** по текущему движку: runtime + companion entity + common resource bridge связаны; Ferocity не имеет искусственного лимита |
+
+## V70.26.90+ — ФИНАЛЬНЫЙ ПРОХОД: БИСТХАРТ / КРОВАВЫЙ ОХОТНИК / ИЛЛИРИГЕР
+
+### 🟢 БИСТХАРТ — ЗАКРЫТ ПОЛНОСТЬЮ
+- Companion runtime и secondary entity остаются единым источником Ferocity.
+- Ferocity намеренно **без искусственного максимума**; порог 10+ запускает проверку Animal Handling, а не автоматическое буйство.
+- Буйство, успокоение и конец столкновения синхронно сбрасывают состояние компаньона и общий snapshot.
+- Все базовые и пять Companion Bond механик зарегистрированы в Content Framework.
+- Расход Ferocity проходит через единый resource bridge.
+- Статус: **🟢 ГОТОВ. К Бистхарту возвращаемся только при регрессионном тесте общего боевого движка.**
+
+### 🟢 КРОВАВЫЙ ОХОТНИК — ЗАКРЫТ ПОЛНОСТЬЮ
+- Blood Maledict использует общий ресурс и корректное восстановление.
+- Crimson Rite, Blood Curse, Brand, Lycan, Ghostslayer, Mutant и Profane Soul связаны с runtime.
+- Mutagen Concoctions получили отдельный ресурс с прогрессией 1/2/3, активные мутагены не дублируются и требуют приготовленный заряд.
+- Exalted Mutation, Hybrid Transformation и Pact Slots переведены в единый resource layer.
+- Снятие Hybrid Transformation больше не тратит заряд.
+- Pact Magic приведён к фактической прогрессии 1/2 слотов и уровням 1/2/3/4.
+- Статус: **🟢 ГОТОВ. К Кровавому охотнику возвращаемся только при регрессионном тесте spellcasting/combat resolver.**
+
+### 🟢 ИЛЛИРИГЕР — ЗАКРЫТ ПОЛНОСТЬЮ
+- Печати, Infernal Conduit, Invoke Hell, Blood Price и все long-rest ресурсы имеют канонические IDs.
+- Blood Price теперь действительно одноразовый до долгого отдыха и доступен только после провала спасброска; Hit Die не подменяется искусственным ресурсом.
+- Invoke Hell привязан к выбранному контракту и выдаёт именно две опции выбранного подкласса.
+- Зарегистрированы и подключены механики Architect of Ruin, Hellspeaker, Painkiller, Sanguine Knight и Shadowmaster.
+- Добавлены межресурсные механики: сжигание/расход печатей, лечение/временные HP, Deathstrike, Shadow Veil, Quid Pro Quo, Hemal Exchange и другие контрактные эффекты.
+- Master of Hell приведён к отдельным эффектам Inferno/Pestilence/Darkness, а не к одной общей строке урона.
+- Статус: **🟢 ГОТОВ. К Иллиригеру возвращаемся только при регрессионном тесте общего боевого движка.**
 
 ## V70.26.90+ — БИСТХАРТ ЗАКРЫТ ПОЛНОСТЬЮ
 ## V70.26.90+ — КРОВАВЫЙ ОХОТНИК ЗАКРЫТ ПОЛНОСТЬЮ
