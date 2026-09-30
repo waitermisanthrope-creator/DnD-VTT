@@ -5657,3 +5657,15 @@ QA после сборки:
 - В stable update manifest добавлены `app/character_builder_v2.js`, `app/vtt_debug_error_log_v709.js` и `1790718758545.png`.
 - Арт Паразита доктора Вальтера использует корневой путь `./1790718758545.png`, который одновременно попадает в APK root и может обновляться через GitHub manifest.
 - Версия Android: 70.26.6 / versionCode 7026006.
+
+
+## V70.26.6 — Parchment → Builder V2 hardening (2026-09-30)
+
+- Пользовательский тест показал два симптома после нажатия «расписаться»: `Extra token not found: ./1790718758545.png` и `Builder V2 module unavailable after 10 attempts`.
+- Проверена цепочка запуска: `createNewCharacter()` → Builder V2 → `openParchmentCreation()` → пергамент → `finishParchmentCreation()` → `buildParchmentDraft()` → кинематографическая пауза → Builder V2.
+- Причина архитектурной уязвимости: Builder V2 подключался в конце `<head>`, уже после большого набора legacy/runtime-скриптов, а пергамент после 10 таймеров только проверял глобал `window.CharacterBuilderV2`, не пытаясь реально перезагрузить файл и не показывая причину отсутствия модуля.
+- Исправлено: `app/character_builder_v2.js` теперь подключается в самом начале `<head>`, сразу после live error console, до legacy creation scripts. Поздняя дублирующая загрузка удалена.
+- Исправлено: `app/character_creation_pergament.js` при отсутствии Builder V2 один раз реально повторно загружает `./app/character_builder_v2.js` и после неудачи показывает диагностический экран вместо пустого окна/бесконечного ожидания.
+- Исправлено: путь жетона Паразита доктора Вальтера в Builder V2 приведён к Android-пути `./wallpapers/1790718758545.png`.
+- Проверено в APK run 538 (70.26.5): внутри APK присутствуют одновременно `assets/app/character_builder_v2.js`, `assets/wallpapers/1790718758545.png` и `assets/1790718758545.png`; Builder V2 проходит `node --check` без синтаксических ошибок. Для следующего APK нужен тест именно новой сборки после этих трёх изменений.
+- **Следующий шаг:** собрать V70.26.6 и проверить на телефоне путь «Создать персонажа → расписаться → Builder V2». Если снова не откроется, новый экран должен показать уже конкретную причину загрузки/исполнения скрипта, а не сообщение «module unavailable after 10 attempts».
