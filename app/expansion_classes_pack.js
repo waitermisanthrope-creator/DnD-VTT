@@ -949,6 +949,9 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
       return{ok:true,effect:{tempHp:l+mod(h,'con'),restoreMoxie:true},message:'🩸 Израненный, но не сломленный: Мокси восстановлено.'};
     }
     if(id==='digDeep'){
+      if(ctx.activate!==true&&ctx.confirm!==true)return{ok:false,message:'Подтверди использование «Соберись с силами».'};
+      var dd=h.resources&&h.resources.pugilistDigDeep;if(dd&&dd.current<=0)return{ok:false,message:'«Соберись с силами» уже использована до отдыха.'};
+      if(dd)dd.current=0;
       return{ok:true,effect:{resistance:['bludgeoning','piercing','slashing'],durationMinutes:1,after:{exhaustion:1}},message:'💪 Соберись с силами: сопротивление физическому урону на 1 минуту.'};
     }
     if(id==='haymaker'){
