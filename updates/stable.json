@@ -33,6 +33,21 @@
       "sha256": "225e42704f7802b50012d2af7b2cbdae9a93300823d34565abff543da903bf91"
     },
     {
+      "path": "app/accursed_oap_v11_runtime.js",
+      "bytes": 25292,
+      "sha256": "13122e378670a90a2f5c2df163125a2ea339d8d91a74dbae1c63bcb6c7be6c25"
+    },
+    {
+      "path": "app/runekeeper_taron_v12_runtime.js",
+      "bytes": 20810,
+      "sha256": "1a85aa6e2070057f3219c17a9afa201a05a5e71e17a16d4e37b876bd86d0fb59"
+    },
+    {
+      "path": "app/savant_laserllama_v561_runtime.js",
+      "bytes": 21358,
+      "sha256": "dcbc52b83c0ce31832564400f0e2be42011a454c833f687b704184781e6bd9c7"
+    },
+    {
       "path": "app/races.js",
       "bytes": 52239,
       "sha256": "edebb1f1ddcb47b9a1863b4b427f7ac0721cc22f64de543188614c7444cbbdbc"
