@@ -365,7 +365,7 @@ function chooser(){
     if(window.CharacterBuilderV2&&typeof window.CharacterBuilderV2.startCreateDirect==='function'){
       return window.CharacterBuilderV2.startCreateDirect();
     }
-    var src='./app/character_builder_v2.js?direct_builder=7026083';
+    var src='./app/character_builder_v2.js?direct_builder=7026084';
     var s=document.createElement('script');s.async=false;s.src=src;
     s.onload=function(){if(window.CharacterBuilderV2&&typeof window.CharacterBuilderV2.startCreateDirect==='function')window.CharacterBuilderV2.startCreateDirect();else alert('Конструктор не загрузился.');};
     s.onerror=function(){alert('Не удалось загрузить конструктор.');};
@@ -411,7 +411,7 @@ window.finishParchmentCreation=function(){
     var n=0,wait=function(){if(window.CharacterBuilderV2&&typeof window.CharacterBuilderV2.startCreateFromParchment==='function'){done(true);return;}if(++n>=20){done(false,'Builder V2 не появился после динамической загрузки.');return;}setTimeout(wait,100);};wait();return;
   }
   window.__CBV2_BOOT_LOADING=true;
-  var src='./app/character_builder_v2.js?v=70.26.83';
+  var src='./app/character_builder_v2.js?v=70.26.84';
   var existing=document.querySelector('script[data-cbv2-bootstrap="1"]');
   var s=existing||document.createElement('script');
   s.async=false;
@@ -454,7 +454,7 @@ window.finishParchmentCreation=function(){
   if(!window.__CBV2_RETRY_STARTED){
    window.__CBV2_RETRY_STARTED=true;
    var retry=document.createElement('script');
-   retry.src='./app/character_builder_v2.js?cbv2_retry=7026083';
+   retry.src='./app/character_builder_v2.js?cbv2_retry=7026084';
    retry.async=false;
    retry.onload=function(){setTimeout(function(){launchBuilder(attempt+1);},0);};
    retry.onerror=function(){
