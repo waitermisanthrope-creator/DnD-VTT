@@ -54,9 +54,14 @@
     if(e.companionType!=='beastheart')return null;
     ensureState(e);
     var cur=Number(e.resources.ferocity)||0,max=Number(e.resources.ferocityMax)||9999;
-    cur=Math.max(0,cur+Math.max(0,Number(amount)||0));
+    cur=Math.min(max,Math.max(0,cur+Math.max(0,Number(amount)||0)));
     e.resources.ferocity=cur;
     if(g.DNDSecondaryEntities)g.DNDSecondaryEntities.update(e.id,{resources:e.resources});
+    var h=hero();
+    if(h&&e.companionType==='beastheart'){
+      h.resources=h.resources||{};h.resources.beastheartFerocity=h.resources.beastheartFerocity||{};
+      h.resources.beastheartFerocity.max=max;h.resources.beastheartFerocity.current=cur;h.resources.beastheartFerocity.recharge='encounter';
+    }
     return cur;
   }
   function attack(id,targetId,index,flags){
@@ -73,7 +78,10 @@
     var c=findCombatant('summon_'+e.id);if(!c)return {ok:false,reason:'combatant_not_found'};
     if(!consumeAction(c))return {ok:false,reason:'action_used'};
     var rampage=!!(e.companionType==='beastheart'&&e.metadata&&e.metadata.rampage),fer=Number(e.resources&&e.resources.ferocity)||0,owner=ownerCombatant(e),bond=h&&h.classFeaturesState&&h.classFeaturesState.companionBond,extra=rampage?(bond==='ferocious'&&Number(e.beastheartLevel||1)>=11?fer:Math.floor(fer/2)):0;
-    var dmg=action.damage||'1d4';if(extra>0)dmg=dmg+'+'+extra;
+    var dmg=action.damage||'1d4';
+    var queued=(e.metadata&&Array.isArray(e.metadata.nextAttackExtraDice))?e.metadata.nextAttackExtraDice.slice():[];
+    if(queued.length)dmg=dmg+'+'+queued.join('+');
+    if(extra>0)dmg=dmg+'+'+extra;
     var opts={bonus:Number(action.attackBonus)||0,damage:dmg,damageType:action.damageType||'',target:t,usesStrength:true,meleeOrThrown:true};
     if(rampage&&bond==='ferocious'&&Number(e.beastheartLevel||1)>=11&&owner&&g.DNDBattleBoard&&sourceToken){
       var ot=g.DNDBattleBoard.findToken('bt_'+String(owner.id))||g.DNDBattleBoard.findToken(owner.id);if(ot&&g.DNDBattleBoard.distanceFt(sourceToken,targetToken)<=5)opts.advantage=true;
@@ -81,6 +89,7 @@
     if(Number(action.rangeFt)>5)opts.meleeOrThrown=false;
     var r=g.DNDCombat&&g.DNDCombat.attack?g.DNDCombat.attack(c,t,opts):null;
     if(!r)return {ok:false,reason:'combat_unavailable'};
+    if(queued.length){e.metadata=e.metadata||{};e.metadata.nextAttackExtraDice=[];if(g.DNDSecondaryEntities&&g.DNDSecondaryEntities.update)g.DNDSecondaryEntities.update(e.id,{metadata:e.metadata});}
     var hit=!!r.hit;
     if(hit&&e.companionType==='beastheart'&&!rampage)gainFerocity(e,1);
     if(g.DNDSummoning&&g.DNDSummoning.sync)g.DNDSummoning.sync();
@@ -154,6 +163,16 @@
     }
     return out;
   }
+  function beastheartEndTurn(id){
+    var e=entity(id);if(!e||e.companionType!=='beastheart')return{ok:false,reason:'not_beastheart'};
+    ensureState(e);if(!e.metadata.rampage)return{ok:true,rampage:false,ferocity:Number(e.resources&&e.resources.ferocity)||0};
+    var h=hero(),l=Number(e.beastheartLevel)||1;
+    var keep=(h&&h.classFeaturesState&&h.classFeaturesState.companionBond==='ferocious'&&l>=7)?4:0;
+    e.resources.ferocity=keep;e.metadata.rampage=false;e.metadata.rampagePending=false;
+    if(g.DNDSecondaryEntities&&g.DNDSecondaryEntities.update)g.DNDSecondaryEntities.update(e.id,{resources:e.resources,metadata:e.metadata});
+    if(h){h.resources=h.resources||{};h.resources.beastheartFerocity=h.resources.beastheartFerocity||{};h.resources.beastheartFerocity.max=Number(e.resources.ferocityMax)||9999;h.resources.beastheartFerocity.current=keep;h.resources.beastheartFerocity.recharge='encounter';}
+    return{ok:true,rampage:false,ferocity:keep};
+  }
   function resetTurn(c){if(!c)return;c.turnResources=c.turnResources||{};c.turnResources.action=true;c.turnResources.bonusAction=true;c.turnResources.reaction=true;c.turnResources.movement=Number(c.speed)||30;c.turnResources.movementUsed=0;}
   function render(){
     var box=document.getElementById('battleBoardSummonPanel');if(!box)return;
@@ -165,7 +184,7 @@
     var title=document.createElement('div');title.style.cssText='font-size:.78em;color:#aaa;margin-bottom:5px';title.textContent='🎯 Цель VTT: '+targetName+' • выбери врага на поле, затем действие спутника';wrap.appendChild(title);
     list.forEach(function(e){
       var card=document.createElement('div');card.style.cssText='padding:6px;margin:4px 0;border:1px solid #2f2f2f;border-radius:6px';
-      var stat=document.createElement('div');stat.innerHTML='<strong>'+String(e.name||'Спутник')+'</strong> • HP '+Number(e.hp||0)+'/'+Number(e.maxHp||0)+' • КД '+Number(e.ac||10)+' • '+Number(e.speed||0)+' фт.'+(e.companionType==='beastheart'?' • 🐾 Ferocity '+Number(e.resources&&e.resources.ferocity||0)+'/'+Number(e.resources&&e.resources.ferocityMax||6):'');card.appendChild(stat);
+      var stat=document.createElement('div');stat.innerHTML='<strong>'+String(e.name||'Спутник')+'</strong> • HP '+Number(e.hp||0)+'/'+Number(e.maxHp||0)+' • КД '+Number(e.ac||10)+' • '+Number(e.speed||0)+' фт.'+(e.companionType==='beastheart'?' • 🐾 Ferocity '+Number(e.resources&&e.resources.ferocity||0)+'/'+Number(e.resources&&e.resources.ferocityMax||9999):'');card.appendChild(stat);
       var actions=document.createElement('div');actions.style.cssText='display:flex;gap:4px;flex-wrap:wrap;margin-top:5px';
       (e.actions||[]).forEach(function(a,i){var b=document.createElement('button');b.className='btn-action';b.style.padding='5px';b.textContent='⚔️ '+a.name+' ('+(a.rangeFt||5)+' фт.)';b.onclick=function(){var tok=selectedToken();var targetId=tok&&(tok.sourceId||tok.entityId);if(!targetId){alert('Сначала выбери врага на Поле боя.');return;}var r=attack(e.id,targetId,i);if(!r.ok)alert('Нельзя выполнить: '+(r.reason==='out_of_range'?'цель вне дальности':r.reason==='los_blocked'?'линия видимости заблокирована':r.reason==='action_used'?'Действие уже потрачено':r.reason));};actions.appendChild(b);});
       var mv=document.createElement('button');mv.className='btn-action';mv.style.padding='5px';mv.textContent='↔️ Идти к выбранному';mv.onclick=function(){var tok=selectedToken();var targetId=tok&&(tok.sourceId||tok.entityId);if(!targetId){alert('Выбери токен назначения.');return;}var r=moveToward(e.id,targetId);if(!r.ok)alert('Движение: '+r.reason);};actions.appendChild(mv);
@@ -181,7 +200,7 @@
     if(!g.DNDSummoning||g.DNDSummoning.__v27)return;
     var original=g.DNDSummoning.attack;
     g.DNDSummoning.attack=function(id,targetId,index){return attack(id,targetId,index);};
-    g.DNDSummoning.__v27=true;g.DNDSummoning.moveToward=moveToward;g.DNDSummoning.resetTurn=resetTurn;g.DNDSummoning.beastheartStartTurn=beastheartStartTurn;g.DNDSummoning.renderV27=render;
+    g.DNDSummoning.__v27=true;g.DNDSummoning.moveToward=moveToward;g.DNDSummoning.resetTurn=resetTurn;g.DNDSummoning.beastheartStartTurn=beastheartStartTurn;g.DNDSummoning.beastheartEndTurn=beastheartEndTurn;g.DNDSummoning.renderV27=render;
   }
   function hook(){
     patchAttack();
@@ -193,5 +212,5 @@
     render();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook);else hook();
-  g.DNDCompanionGameplayV27={VERSION:'1.1.0',attack:attack,moveToward:moveToward,command:command,render:render,gainFerocity:gainFerocity,beastheartStartTurn:beastheartStartTurn};
+  g.DNDCompanionGameplayV27={VERSION:'1.2.0',attack:attack,moveToward:moveToward,command:command,render:render,gainFerocity:gainFerocity,beastheartStartTurn:beastheartStartTurn,beastheartEndTurn:beastheartEndTurn};
 })(window);
