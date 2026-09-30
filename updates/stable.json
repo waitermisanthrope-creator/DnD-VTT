@@ -25,7 +25,7 @@
     {
       "path": "app/character_builder_v2.js",
       "bytes": 58714,
-      "sha256": "49f7aebb25cba4c0e7af63ffa84359b26d8c08d5528b4ba6f45f5c0aaa14f60b"
+      "sha256": "5cbe9c3624e58ec0bd7ef0c539465d4089d5cab1455c912d1a5c9be737c31865"
     },
     {
       "path": "app/vtt_debug_error_log_v709.js",
@@ -50,7 +50,7 @@
     {
       "path": "app/update_manager.js",
       "bytes": 20688,
-      "sha256": "ee4baf87c3f1c2110b6fa5492b51f8b66080d5faa270f791c8d77e060f1f5cf0"
+      "sha256": "8466d0ae94d9774792739a2fc558668d52553f604230098c5dd1f41c4a75576d"
     },
     {
       "path": "app/onboarding_faq_v71.js",
