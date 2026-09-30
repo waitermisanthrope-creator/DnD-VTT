@@ -844,12 +844,15 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
       return{ok:true,effect:{areaRadiusFt:10,damage:'3d6 fire',save:'dex'},message:'🔥 Высвободить Ад: огненный взрыв.'};
     }
     if(id==='infernalConduit'||id==='invigorate'||id==='devour'){
-      var cr=h.resources&&h.resources.illriggerConduit;if(!cr||!spend(h,'illriggerConduit',Math.max(1,Number(ctx.dice)||1)))return{ok:false,message:'Нет кубов Инфернального проводника.'};
       var n=Math.max(1,Number(ctx.dice)||1);
-      if(id==='invigorate')return{ok:true,target:t&&t.id,effect:{heal:n+'d10',selfNecrotic:n+'d10'},message:'🔥 Инфернальный проводник: союзник исцелён ценой твоей крови.'};
-      if(!t)return{ok:false,message:'Выбери цель для Пожирания.'};
+      if(id==='invigorate'&&!t)return{ok:false,message:'Выбери союзника для исцеления.'};
+      if(id==='devour'&&!t)return{ok:false,message:'Выбери цель для Пожирания.'};
+      var cr=h.resources&&h.resources.illriggerConduit;if(!cr||cr.current<n)return{ok:false,message:'Недостаточно кубов Инфернального проводника.'};
+      cr.current-=n;
+      if(id==='invigorate')return{ok:true,target:t.id,effect:{heal:n+'d10',selfNecrotic:n+'d10'},message:'🔥 Инфернальный проводник: союзник исцелён ценой твоей крови.'};
       return{ok:true,target:t.id,effect:{save:'con',damage:n+'d10 necrotic',healSelf:'half'},message:'☠️ Пожирание: инфернальная энергия вырвана из цели.'};
     }
+
     if(id==='invokeHell'){
       var inv=String(ctx.option||'');var known=['infernalEdict','hellishCommand','bloodRitual','shadowStep','ruinSpell'];
       if(known.indexOf(inv)<0)return{ok:false,message:'Для этого контракта ещё не выбран вариант Призыва Ада.'};
