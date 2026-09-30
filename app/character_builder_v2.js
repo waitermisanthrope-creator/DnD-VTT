@@ -135,6 +135,7 @@
     if(!hero||!className)return;var d=getClass(className)||{},p=d.progression&&d.progression.levels?d.progression:d;
     (Array.isArray(p.armor)?p.armor:[]).forEach(function(x){addProficiency(hero,x,'Доспехи',x);});
     (Array.isArray(p.weapons)?p.weapons:[]).forEach(function(x){addProficiency(hero,x,'Оружие',x);});
+    (Array.isArray(p.savingThrows)?p.savingThrows:[]).forEach(function(x){addProficiency(hero,x,'Спасброски',x);});
     (Array.isArray(p.tools)?p.tools:[]).forEach(function(x){if(typeof x==='string')addProficiency(hero,x,'Инструменты',x);});
     /* Для нового класса выше применяются полные стартовые владения. */
   }
