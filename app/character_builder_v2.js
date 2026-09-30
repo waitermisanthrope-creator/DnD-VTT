@@ -155,11 +155,56 @@
     });
   }
 
+  function normalizeFeatureName(v){
+    if(typeof v==='string')return v.trim();
+    if(v&&typeof v==='object')return String(v.nameRu||v.name||v.id||'').trim();
+    return '';
+  }
+  function extractRaceTraitText(race){
+    if(!race||!race.desc)return [];
+    var text=String(race.desc);
+    var beforeAge=text.split(/\\bВозраст\\s*:/i)[0];
+    beforeAge=beforeAge.split(/\\bРазмер\\s*:/i)[0];
+    var parts=beforeAge.split(/\\.\\s*/).map(function(x){return x.trim();}).filter(Boolean);
+    if(parts.length<=1)return [];
+    var keywords=/темн|зрени|наслед|сопротив|владен|маг|заговор|дыхани|удач|скрыт|скорост|когт|реген|стойк|природ|иллюз|общени|ремесл|мастерств|кислот|яд|полет|плаван|телепат|видени|боев|крит|лечени|невидим|амфиб|лазани|оружи/i;
+    return parts.slice(1).filter(function(x){return keywords.test(x);}).slice(0,8);
+  }
+  function getLevelFeatureNames(className,level){
+    var ld=levelData(className,level)||{};
+    var list=Array.isArray(ld.features)?ld.features:[];
+    return list.map(normalizeFeatureName).filter(Boolean);
+  }
+  function collectStartingFeaturePreview(race,className,background){
+    var out=[];
+    getLevelFeatureNames(className,1).forEach(function(x){if(out.indexOf(x)<0)out.push(x);});
+    if(race){
+      var structured=[];
+      (Array.isArray(race.features)?race.features:[]).forEach(function(x){var n=normalizeFeatureName(x);if(n)structured.push(n);});
+      (Array.isArray(race.traits)?race.traits:[]).forEach(function(x){var n=normalizeFeatureName(x);if(n)structured.push(n);});
+      if(race.feature){var n=normalizeFeatureName(race.feature);if(n)structured.push(n);}
+      (structured.length?structured:extractRaceTraitText(race)).forEach(function(x){if(out.indexOf(x)<0)out.push(x);});
+    }
+    if(background&&background.feature)out.push(String(background.feature));
+    return out;
+  }
+
   function applyRaceTraits(hero,race){
     if(!hero||!race)return;
     hero.features=hero.features||[];hero.proficiencies=hero.proficiencies||[];
-    var add=function(v){var name=typeof v==='string'?v:(v&&((v.nameRu||v.name||v.id)));if(name&&hero.features.indexOf(name)<0)hero.features.push(name);};
-    (Array.isArray(race.features)?race.features:[]).forEach(add);(Array.isArray(race.traits)?race.traits:[]).forEach(add);if(race.feature)add(race.feature);
+    var add=function(v){var name=normalizeFeatureName(v);if(name&&hero.features.indexOf(name)<0)hero.features.push(name);};
+    var structuredCount=0;
+    (Array.isArray(race.features)?race.features:[]).forEach(function(v){structuredCount++;add(v);});
+    (Array.isArray(race.traits)?race.traits:[]).forEach(function(v){structuredCount++;add(v);});
+    if(race.feature){structuredCount++;add(race.feature);}
+    /* Старые/домашние расы хранят расовые способности прямо в desc.
+       Не превращаем весь lore в механику: сохраняем только распознанные
+       короткие названия как стартовые особенности, а полный текст оставляем
+       отдельно для листа/Builder. */
+    var textTraits=extractRaceTraitText(race);
+    if(!structuredCount)textTraits.forEach(add);
+    if(textTraits.length)hero.raceFeatureDescriptions=textTraits.slice();
+    else if(race.desc)hero.raceFeatureDescriptions=[String(race.desc)];
     var db=g.PROFICIENCIES_DB||[];
     (Array.isArray(race.proficiencies)?race.proficiencies:[]).forEach(function(id){var p=db.find(function(x){return x.id===id||x.name===id;});if(p&&!hero.proficiencies.some(function(x){return x.id===p.id;}))hero.proficiencies.push(Object.assign({},p));});
     (Array.isArray(race.languages)?race.languages:[]).forEach(function(lang){if(/на выбор|дополнительный язык/i.test(String(lang)))return;var p=db.find(function(x){return x.category==='Языки'&&String(x.name||'').toLowerCase().indexOf(String(lang).toLowerCase())>=0;});if(p&&!hero.proficiencies.some(function(x){return x.id===p.id;}))hero.proficiencies.push(Object.assign({},p));});
@@ -425,7 +470,7 @@
   function styles(){
     if(g.document.getElementById('cbv2_styles'))return;
     var st=g.document.createElement('style');st.id='cbv2_styles';
-    st.textContent='.cb-wrap{max-width:720px;margin:0 auto;padding:16px;color:#eee;font-family:Inter,system-ui}.cb-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.cb-step{font-size:12px;color:#aaa}.cb-progress{height:6px;background:#292929;border-radius:6px;overflow:hidden}.cb-progress>i{display:block;height:100%;background:#d4af37}.cb-card{background:#202020;border:1px solid #444;border-radius:12px;padding:14px;margin:10px 0}.cb-card h3{margin:0 0 10px;color:#d4af37}.cb-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cb-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.cb-stat-control{min-width:0}.cb-stat-control>label{display:block;margin-bottom:5px}.cb-stat-row{display:grid;grid-template-columns:34px minmax(0,1fr) 34px;gap:5px;align-items:center}.cb-stat-input{text-align:center;min-width:0}.cb-stat-btn{height:42px;padding:0;border:1px solid #555;border-radius:8px;background:#303030;color:#fff;font-size:24px;line-height:1;touch-action:manipulation}.cb-stat-btn:active{background:#6b5414;border-color:#d4af37}.cb-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:360px;overflow:auto}.cb-option{padding:10px;border:1px solid #444;border-radius:9px;background:#292929;cursor:pointer}.cb-option.active{border-color:#d4af37;background:#35301d}.cb-option small{display:block;color:#aaa;margin-top:4px}.cb-input,.cb-select{width:100%;box-sizing:border-box;padding:10px;background:#151515;color:#fff;border:1px solid #555;border-radius:8px}.cb-choice{margin:10px 0;padding:11px;border:1px solid #3e3e3e;border-radius:9px;background:#181818}.cb-choice select{width:100%;box-sizing:border-box;margin-top:7px;padding:9px;background:#111;color:#fff;border:1px solid #555;border-radius:7px}.cb-choice-desc{font-size:12px;color:#aaa;margin-top:6px}.cb-actions{display:flex;gap:8px;justify-content:space-between;margin-top:14px}.cb-btn{padding:11px 15px;border:1px solid #555;border-radius:9px;background:#303030;color:#fff}.cb-btn.primary{background:#6b5414;border-color:#d4af37}.cb-summary{display:grid;grid-template-columns:1fr 1fr;gap:7px}.cb-badge{padding:8px;background:#292929;border-radius:8px;font-size:12px}.cb-error{color:#ff8a80;margin-top:8px}.cb-note{font-size:12px;color:#aaa;line-height:1.4}.cb-extra{border-color:#8e44ad}.cb-mobile{font-size:13px}@media(max-width:560px){.cb-list{grid-template-columns:1fr}.cb-grid3{grid-template-columns:1fr 1fr}.cb-wrap{padding:10px}.cb-card{padding:11px}}';
+    st.textContent='.cb-wrap{max-width:720px;margin:0 auto;padding:16px;color:#eee;font-family:Inter,system-ui}.cb-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.cb-step{font-size:12px;color:#aaa}.cb-progress{height:6px;background:#292929;border-radius:6px;overflow:hidden}.cb-progress>i{display:block;height:100%;background:#d4af37}.cb-card{background:#202020;border:1px solid #444;border-radius:12px;padding:14px;margin:10px 0}.cb-card h3{margin:0 0 10px;color:#d4af37}.cb-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cb-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.cb-stat-control{min-width:0}.cb-stat-control>label{display:block;margin-bottom:5px}.cb-stat-row{display:grid;grid-template-columns:34px minmax(0,1fr) 34px;gap:5px;align-items:center}.cb-stat-input{text-align:center;min-width:0}.cb-stat-btn{height:42px;padding:0;border:1px solid #555;border-radius:8px;background:#303030;color:#fff;font-size:24px;line-height:1;touch-action:manipulation}.cb-stat-btn:active{background:#6b5414;border-color:#d4af37}.cb-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:360px;overflow:auto}.cb-option{padding:10px;border:1px solid #444;border-radius:9px;background:#292929;cursor:pointer}.cb-option.active{border-color:#d4af37;background:#35301d}.cb-option small{display:block;color:#aaa;margin-top:4px}.cb-input,.cb-select{width:100%;box-sizing:border-box;padding:10px;background:#151515;color:#fff;border:1px solid #555;border-radius:8px}.cb-choice{margin:10px 0;padding:11px;border:1px solid #3e3e3e;border-radius:9px;background:#181818}.cb-choice select{width:100%;box-sizing:border-box;margin-top:7px;padding:9px;background:#111;color:#fff;border:1px solid #555;border-radius:7px}.cb-choice-desc{font-size:12px;color:#aaa;margin-top:6px}.cb-feature-list{display:grid;gap:6px}.cb-feature{padding:9px 10px;border:1px solid #3e3e3e;border-radius:8px;background:#181818;color:#ddd;font-size:13px;line-height:1.35}.cb-feature b{color:#d4af37}.cb-actions{display:flex;gap:8px;justify-content:space-between;margin-top:14px}.cb-btn{padding:11px 15px;border:1px solid #555;border-radius:9px;background:#303030;color:#fff}.cb-btn.primary{background:#6b5414;border-color:#d4af37}.cb-summary{display:grid;grid-template-columns:1fr 1fr;gap:7px}.cb-badge{padding:8px;background:#292929;border-radius:8px;font-size:12px}.cb-error{color:#ff8a80;margin-top:8px}.cb-note{font-size:12px;color:#aaa;line-height:1.4}.cb-extra{border-color:#8e44ad}.cb-mobile{font-size:13px}@media(max-width:560px){.cb-list{grid-template-columns:1fr}.cb-grid3{grid-template-columns:1fr 1fr}.cb-wrap{padding:10px}.cb-card{padding:11px}}';
     g.document.head.appendChild(st);
   }
 
@@ -516,7 +561,13 @@
       this.values=(this.values&&typeof this.values==='object')?this.values:{};
       var savedChoiceValues=this.values;
       this.choices=collectChoices(rc,cc,this.classLevel,this.isNewClass,(this.hero&&this.hero.classes||[]).find(function(x){return norm(x.name)===norm(cc);})?.subclass,this.hero);
-      body='<div class="cb-card"><h3>Особенности и выборы</h3><p class="cb-note">Здесь собраны ВСЕ обязательные выборы, которые нужны персонажу до первого уровня. Ничего не потеряется.</p>'+
+      var bgName=this.values.background||'';
+      var bgList=typeof g.getAllBackgrounds==='function'?g.getAllBackgrounds():(g.dndBackgrounds||[]);
+      var bg=Array.isArray(bgList)?bgList.find(function(x){return (x.nameRu||x.name)===bgName||x.name===bgName;}):null;
+      var startFeatures=collectStartingFeaturePreview(rc,cc,bg);
+      body='<div class="cb-card"><h3>Стартовые особенности 1 уровня</h3><p class="cb-note">Эти способности будут записаны персонажу автоматически при создании. Отдельные выборы ниже нужны только там, где правила требуют выбрать вариант.</p>'+
+        (startFeatures.length?'<div class="cb-feature-list">'+startFeatures.map(function(f){return '<div class="cb-feature"><b>✦</b> '+esc(f)+'</div>';}).join('')+'</div>':'<p class="cb-note">Для этого набора пока нет структурированных стартовых особенностей.</p>')+
+        '</div><div class="cb-card"><h3>Выборы 1 уровня</h3><p class="cb-note">Здесь собраны обязательные выборы, которые нужны персонажу до первого уровня. Ничего не потеряется.</p>'+
         (this.choices.length?this.choices.map(function(c,i){return renderChoice(c,i,savedChoiceValues[c.key]);}).join(''):'<p>Для этого набора пока нет обязательных выборов.</p>')+'</div>';
       this.bindChoiceDescriptions();
     }
