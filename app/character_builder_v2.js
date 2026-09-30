@@ -497,6 +497,34 @@
       out.push({id:'warden_strike',key:'class:Страж:sentinelStrike',type:'single',label:'Удар часового',options:p.sentinelStrikeChoices,className:className,level:11,source:'class'});
     if(className==='Страж' && targetLevel===18 && Array.isArray(p.sentinelSoulChoices))
       out.push({id:'warden_soul',key:'class:Страж:sentinelSoul',type:'single',label:'Душа часового',options:p.sentinelSoulChoices,className:className,level:18,source:'class'});
+    /* Runtime-safe fallbacks: these level-1 choices must remain visible even
+       when a late runtime pack exposes only combat hooks. */
+    if(isNewClass&&className==='Страж'&&targetLevel===1&&!out.some(function(x){return x.id==='warden_stand';}))
+      out.push({id:'warden_stand',key:'class:Страж:sentinelStand',type:'single',label:'Стойка часового',options:[
+        {id:'stalwartSpirit',name:'Стойкий дух',description:'Владение одним выбранным спасброском.'},
+        {id:'steadfastToughness',name:'Несокрушимая стойкость',description:'Максимум HP увеличивается на модификатор Телосложения + уровень Стража.'},
+        {id:'towerShield',name:'Башенный щит',description:'Щит даёт +3 КД вместо +2; с 10 уровня +4.'}
+      ],className:className,level:1,source:'class'});
+    if(isNewClass&&className==='Военачальник'&&targetLevel===1&&!out.some(function(x){return x.id==='leadership';}))
+      out.push({id:'leadership',key:'class:Военачальник:leadership',type:'single',label:'Стиль лидерства',options:[
+        {id:'charisma',name:'Капитан'},{id:'wisdom',name:'Наставник'},{id:'intelligence',name:'Стратег'}
+      ],className:className,level:1,source:'class'});
+    if(isNewClass&&className==='Псионик'&&targetLevel===1&&!out.some(function(x){return x.id==='psion_archetype';}))
+      out.push({id:'psion_archetype',key:'class:Псионик:archetype',type:'single',label:'Псионический архетип',options:[
+        {id:'awakened',name:'Пробуждённый разум'},{id:'unleashed',name:'Освобождённый разум'},{id:'transcended',name:'Возвышенный разум'},{id:'shaper',name:'Формирователь'}
+      ],className:className,level:1,source:'class'});
+    if(isNewClass&&className==='Оккультист'&&targetLevel===1&&!out.some(function(x){return x.id==='occult_tradition';}))
+      out.push({id:'occult_tradition',key:'class:Оккультист:tradition',type:'single',label:'Оккультная традиция',options:[
+        {id:'Oracle',name:'Оракул'},{id:'Shaman',name:'Шаман'},{id:'Witch',name:'Ведьма'}
+      ],className:className,level:1,source:'class'});
+    if(isNewClass&&className==='Шифтер'&&targetLevel===1&&!out.some(function(x){return x.id==='shifter_bloodline';}))
+      out.push({id:'shifter_bloodline',key:'class:Шифтер:bloodline',type:'single',label:'Кровная линия Шифтера',options:[
+        {id:'aquatic',name:'Водная'},{id:'avian',name:'Птичья'},{id:'brutish',name:'Грубая'},{id:'predatory',name:'Хищная'},{id:'insectoid',name:'Насекомая'},{id:'reptilian',name:'Рептильная'},{id:'parasitic',name:'Паразитная'}
+      ],className:className,level:1,source:'class'});
+    if(isNewClass&&className==='Бистхарт'&&targetLevel===1&&!out.some(function(x){return x.id==='beast_companion';})&&g.BeastheartRuntime){
+      var bc=g.BeastheartRuntime.companions||{},bo=Object.keys(bc).map(function(k){var x=bc[k];return {id:k,name:x.name||k,description:x.description||''};});
+      if(bo.length)out.push({id:'beast_companion',key:'class:Бистхарт:companion',type:'single',label:'Монструозный компаньон',options:bo,className:className,level:1,source:'class'});
+    }
     return out.filter(function(x){return !x.optional;});
   }
 
