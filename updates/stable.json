@@ -24,8 +24,8 @@
     },
     {
       "path": "app/character_builder_v2.js",
-      "bytes": 58800,
-      "sha256": "e1c7ca9bd6327d332ece60f2db5ca9013bef68d8e7de861cc3b1a804ac429dc0"
+      "bytes": 60649,
+      "sha256": "66355326ec4342ec8dcc91c5fccf622a7037017d4f8fd3a685555fee5051c722"
     },
     {
       "path": "app/vtt_debug_error_log_v709.js",
