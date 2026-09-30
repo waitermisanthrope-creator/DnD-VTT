@@ -354,9 +354,9 @@
       var bc=rt&&typeof rt=== 'object' && h.classFeaturesState&&h.classFeaturesState.beastheartCompanionId && global.DNDSecondaryEntities&&global.DNDSecondaryEntities.get
         ?global.DNDSecondaryEntities.get(h.classFeaturesState.beastheartCompanionId):null;
       var bf=bc&&bc.resources?Number(bc.resources.ferocity)||0:0;
-      ensureRes(h,'beastheartFerocity',Math.max(10,bf),'encounter');
+      ensureRes(h,'beastheartFerocity',9999,'encounter');
       h.resources.beastheartFerocity.current=bf;
-      h.resources.beastheartFerocity.max=Math.max(10,bf);
+      h.resources.beastheartFerocity.max=9999;
     }
 
     l=classLevel(h,'Оккультист');
