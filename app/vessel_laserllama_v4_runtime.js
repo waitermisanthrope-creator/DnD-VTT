@@ -175,6 +175,15 @@ const progression={
 20:["Способность Запечатанного духа"]
 };
 
+function vesselState(c){c.classFeaturesState=c.classFeaturesState||{};return c.classFeaturesState.vessel=c.classFeaturesState.vessel||{};}
+function vesselLevel(c){return Math.max(1,Math.min(20,Number(c&&c.level)||1));}
+function vesselSync(c){var l=vesselLevel(c),s=vesselState(c);s.level=l;s.proficiencyBonus=PB[l];s.aspectMax=ASPECTS[l];s.cantripsMax=CANTRIPS[l];s.spellsKnownMax=KNOWN[l];s.vesselSlotsMax=SLOTS[l];s.vesselSlots=s.vesselSlots==null?SLOTS[l]:Math.min(Math.max(0,Number(s.vesselSlots)||0),SLOTS[l]);s.spellSlotLevel=SLOT_LEVEL[l];s.archonFreeUsesMax=1;s.archonFreeUses=s.archonFreeUses==null?1:s.archonFreeUses;s.archonActive=!!s.archonActive;s.archonTempHP=s.archonTempHP||0;return s;}
+function vesselChooseAspect(c,name){var l=vesselLevel(c),s=vesselSync(c),a=aspects[name];if(!a)return {ok:false,reason:"Неизвестный аспект."};if(a.prerequisite){var nums=String(a.prerequisite).match(/\\d+/g);if(nums&&l<Number(nums[0]))return {ok:false,reason:"Недостаточный уровень для этого аспекта."};}if((s.aspects||[]).indexOf(name)<0&&(s.aspects||[]).length>=s.aspectMax)return {ok:false,reason:"Достигнут лимит нераскрытых аспектов."};s.aspects=s.aspects||[];if(s.aspects.indexOf(name)<0)s.aspects.push(name);return {ok:true,selected:s.aspects.slice(),max:s.aspectMax};}
+function vesselSelectSpirit(c,name){var s=vesselSync(c);if(!spirits[name])return {ok:false,reason:"Неизвестный Запечатанный дух."};s.spirit=name;return {ok:true,spirit:name,data:spirits[name]};}
+function vesselCast(c,spellLevel,spellName){var l=vesselLevel(c),s=vesselSync(c),sl=Number(spellLevel)||s.spellSlotLevel;if(!s.vesselSlots)return {ok:false,reason:"Ячейки магии Сосуда закончились."};if(sl!==s.spellSlotLevel)return {ok:false,reason:"Все ячейки Сосуда имеют текущий уровень "+s.spellSlotLevel+"."};var list=spellList[sl]||[];if(spellName&&list.indexOf(spellName)<0)return {ok:false,reason:"Заклинание отсутствует в списке Сосуда."};s.vesselSlots--;return {ok:true,spell:spellName||null,slotLevel:sl,remaining:s.vesselSlots,maxSlots:s.vesselSlotsMax};}
+function vesselArchon(c,forceSlot){var l=vesselLevel(c),s=vesselSync(c);if(l<3)return {ok:false,reason:"Форма архонта доступна с 3 уровня."};if(s.archonActive)return {ok:false,reason:"Форма архонта уже активна."};if(s.archonFreeUses>0){s.archonFreeUses--;s.archonActive=true;s.archonTempHP=2*l;return {ok:true,free:true,tempHP:s.archonTempHP,durationMinutes:10};}if(forceSlot&&s.vesselSlots>0){s.vesselSlots--;s.archonActive=true;s.archonTempHP=2*l;return {ok:true,free:false,tempHP:s.archonTempHP,durationMinutes:10,remainingSlots:s.vesselSlots};}return {ok:false,reason:"Нет бесплатного использования и не выбрана трата ячейки Сосуда."};}
+function vesselEndArchon(c){var s=vesselSync(c);s.archonActive=false;s.archonTempHP=0;return s;}
+function vesselRest(c,type){var s=vesselSync(c);if(type==="short"||type==="long"){s.vesselSlots=s.vesselSlotsMax;s.archonFreeUses=s.archonFreeUsesMax;}return s;}
 window.VESSEL_V4={
 version:"4.0.0",updated:"2026-02-10",source:"laserllama / GM Binder",
 progression,PB,ASPECTS,CANTRIPS,KNOWN,SLOTS,SLOT_LEVEL,
@@ -198,7 +207,7 @@ armor:["light"],weapons:["simple","scimitar","shortsword"],skills:{choose:2,from
 multiclassRequirement:{constitution:13,charisma:13},subclassLevel:3,subclassFeatureLevels:[3,6,15,20],
 progression,mechanics:window.VESSEL_V4.mechanics,spellcasting:"half_pact_warlock_style"
 };
-window.vesselRuntime=window.VESSEL_V4;
+window.vesselRuntime=window.VESSEL_V4;window.vesselRuntime.state=vesselState;window.vesselRuntime.sync=vesselSync;window.vesselRuntime.chooseAspect=vesselChooseAspect;window.vesselRuntime.selectSpirit=vesselSelectSpirit;window.vesselRuntime.cast=vesselCast;window.vesselRuntime.archonForm=vesselArchon;window.vesselRuntime.endArchon=vesselEndArchon;window.vesselRuntime.rest=vesselRest;
 
 window.getVesselSpellList=function(level){return (window.VESSEL_V4.spellList[level]||[]).slice();};
 window.getVesselAspects=function(level){
@@ -210,3 +219,4 @@ window.getVesselAspects=function(level){
 };
 window.getVesselSpirit=function(name){return window.VESSEL_V4.spirits[name]||null;};
 })();
+/* V70.26.92 closure pass: executable Vessel slots, aspects, spirit and Archon resources. */
