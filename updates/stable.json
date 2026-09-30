@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DnD-VTT",
-  "version": "70.26.98",
+  "version": "70.26.99",
   "minAppVersion": "70.25.71",
   "channel": "stable",
   "generated": "AUTO",
@@ -115,7 +115,7 @@
     {
       "path": "app/update_manager.js",
       "bytes": 20812,
-      "sha256": "7ae0db750c0a4f207b394c72da2472b899a90ccc4b82427c1e3e0bb6b164c596"
+      "sha256": "c29e35a2ee5ab7e55cfedf51490cafde88fcdc384476b0697573c8f378d20ebd"
     },
     {
       "path": "app/onboarding_faq_v71.js",
