@@ -261,8 +261,8 @@ function use(h,id,ctx){
  if(id==='potionMix'){if(l<15)return{ok:false,message:'Миксолог доступен с 15 уровня.'};return{ok:true,effect:{mixPotions:true},message:'🍶 Два зелья можно выпить бонусным действием.'};}
  if(id==='philosopherStone'){if(l<20)return{ok:false,message:'Философский камень доступен с 20 уровня.'};s.philosopherStone=true;return{ok:true,effect:{regainReagentsOnInitiativeUpTo:6,quickBrewing:true,longevity:true},message:'💎 Философский камень создан.'};}
  var sub=subs.find(function(x){return x.id===ctx.subclass||x.name===ctx.subclass;});
- if(sub&&id==='subclassFeature'){var f=sub.f.find(function(x){return Number(x[0])===Number(ctx.level)||String(x[0])===String(ctx.featureId);});if(!f)return{ok:false,message:'Особенность подкласса не найдена.'};return{ok:true,effect:{subclass:sub.id,feature:f[1]},message:'✨ '+f[1]+' активна.'};}
- return{ok:true,message:'🧪 '+id+' зарегистрирован.'};
+ if(sub&&id==='subclassFeature'){var f=sub.f.find(function(x){return Number(x[0])===Number(ctx.level)||String(x[0])===String(ctx.featureId)||String(x[1])===String(ctx.featureName);});if(!f)return{ok:false,message:'Особенность подкласса не найдена.'};return subclassFeatureEffect(h,sub,f,ctx);}
+ return{ok:false,unsupported:true,message:'Алхимик: способность '+id+' пока не имеет исполняемого resolver-а.'};
 }
 var pack={id:PACK_ID,name:CLASS,source:SOURCE,metadata:{edition:'2024 / 5.5E',hitDie:8,primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],skillsChoose:3,armor:['light'],weapons:['simple'],tools:['alchemist_supplies'],multiclass:{dexterity:13,intelligence:13},startingEquipment:['2 кинжала','Кожаный доспех','Инструменты алхимика','Алхимический огонь','Набор учёного','6 зм'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14]},features:features,subclasses:subpacks,formulas:formulae,potions:potions,discoveries:discoveries,discoveryRecipes:discoveryRecipes,monstrousGrafts:monstrousGrafts,variants:alchemistVariants,alcoholRules:{maxStages:10,decayPerHour:1,longRestClears:true,stage10:'без сознания до утра'},hooks:{sync:sync,useFeature:use}};
 D.registerClass(pack);
