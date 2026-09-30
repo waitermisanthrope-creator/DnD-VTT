@@ -4,98 +4,98 @@
   "version": "70.26.82",
   "minAppVersion": "70.25.71",
   "channel": "stable",
-  "generated": "AUTO",
+  "generated": "MANUAL-70.26.82",
   "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main",
   "files": [
     {
       "path": "index.html",
       "bytes": 78635,
-      "sha256": "2bece4605ac6658ebd07adaa1f21a08607e79de54016dbe4dde7a179f70b1592"
+      "sha256": "2d45a1ffca57cd288c87e65489f0e58472faa805cb5c647c57f4b1c014a6f3f3"
     },
     {
       "path": "app/character_creation_pergament.js",
       "bytes": 38936,
-      "sha256": "5a62f71b77a574d83c64deee2bdfc6cc147a6b470212e90ef59e6fffb004a663"
+      "sha256": "6139f0010e1f73c31fca015746f25912eea09f2ab1903e31c1882450954bef47"
     },
     {
       "path": "app/character_creation_pergament.css",
       "bytes": 12669,
-      "sha256": "baaa140fb6f83ca8515608ced2f4588e673e4d0fd050b63b460be9a26e8adf99"
+      "sha256": "cfc3cbde8dd10d734528098aa7f3fe4d4870dcbcfc0e30c98ae6326b6613b3ed"
     },
     {
       "path": "app/character_builder_v2.js",
       "bytes": 75610,
-      "sha256": "81f237458077f51aec2a5faf225310ebc76b7b7dbce8ce6ec138406c15f5c13d"
+      "sha256": "401612265900016308bb353d891102d8c0d5c4b359da5b901b6e36b448bdc10b"
     },
     {
       "path": "app/classesRegistry.js",
       "bytes": 10685,
-      "sha256": "315c11e1926aa0717c530f8e35fa49ebd8a746e6eb0b5cbb62af7ebb25ff8bb0"
+      "sha256": "61b9e6260a90acaa25b0cace3e46eae456942054d58e496e8703757bf4d2a23f"
     },
     {
       "path": "app/data/classes/progressionEngine.js",
       "bytes": 20610,
-      "sha256": "e761a97acb8fbb14126340abc51585f9cfcacf9bff018f579482664c0c18ab6c"
+      "sha256": "5f0df83e723c7a88d357fbb956493ae62dc705a4d9c5b0b98cb39692ced9e147"
     },
     {
       "path": "app/data/subclasses/subclassesRegistry.js",
       "bytes": 111083,
-      "sha256": "bf1d2f0932d057d425a0d85bcd7058d2ba5d8a7b5313098afb1c6c3bcb0a31dc"
+      "sha256": "09f2ee82bc1b850f886bf7e8c9b8a45c5543f048ca42e8ca257209f646a5ce37"
     },
     {
       "path": "app/vtt_debug_error_log_v709.js",
       "bytes": 4816,
-      "sha256": "cd684a8c03cb0cd97e32eab9b5b88f5a2917251e419bac8bcb3da279e4fd23b8"
+      "sha256": "d69b2be51a0c1797f42439ec8bfc3b442500da6e90a305c515f4d387687b9b51"
     },
     {
       "path": "app/Ambiences.js",
       "bytes": 14648,
-      "sha256": "517d2d198c6e567f3b1b3e39d4505f95dadfd9dafd3f46b22f70004d78725634"
+      "sha256": "3b5ed8eaba3f9c254c6832801b8714c0de7fbeabc0c7ae08a9180b876904b447"
     },
     {
       "path": "app/app.js",
       "bytes": 34192,
-      "sha256": "bc8f5c0eb4ed317709be1a28add843ce064626a355f4b339fabcbc8a67995dec"
+      "sha256": "a9de5ebe5a0258696523eee5838bf5b6a5cfa66693023278f2cbc1efa1796c8a"
     },
     {
       "path": "app/Settings.js",
       "bytes": 37246,
-      "sha256": "a202dae5c7391e1eac1007db3cd3699d46a6301d0444f356567057e4abd8bba9"
+      "sha256": "2a1bcb167fdbaee8b6b7eb5f3cffbaf0f9d4e54545f950daaf5e67c92b2bfec9"
     },
     {
       "path": "app/update_manager.js",
       "bytes": 20812,
-      "sha256": "7325ae8cabb327ff1529f88a1455ab1045dda834ae3b3c710bbcb0070bf68ad7"
+      "sha256": "37342338ade2cfd36d5691d9006103b28f47f63fd64d407654acc061b9ecdbbc"
     },
     {
       "path": "app/onboarding_faq_v71.js",
       "bytes": 32373,
-      "sha256": "d351dc459ddea34875c9432a6a0e715c8a0839ffea254b56701a35f9edfe5897"
+      "sha256": "e71c5940e24fc7df953832f38662f4c0de004f14fc7a50b82a4c6d08609368a8"
     },
     {
       "path": "app/styles.css",
       "bytes": 19977,
-      "sha256": "160730ce97b817edcbf4dd2f7ebf9c4ae66dec15f8b33dbfba89092e3595beef"
+      "sha256": "29979a344365042dafb39da4401ff5ed3e5dc2329968e5c379ac0ccb598d588b"
     },
     {
       "path": "1790622844831.png",
       "bytes": 104000,
-      "sha256": "60c9ccfc77616b10a60b454ee077d79737a6a2ff1c8ed26649d35f2ebee37fa5"
+      "sha256": "c7c3743cb540256a4adbd3d204d436b0f3c5ad3229b72f81b588f7fb1d847fa6"
     },
     {
       "path": "1790622696215.png",
-      "bytes": 1202179,
-      "sha256": "99987d82b27f29f4d1e71c91847fb54dbf0d546816297260d26668ed77c74cd7"
+      "bytes": 0,
+      "sha256": "8c3b3a9d088216d51bb00f1bcfbeebe9d5e7ee59519e0b854ac22b057457003a"
     },
     {
       "path": "1790622252250.png",
       "bytes": 908119,
-      "sha256": "1157a229c1ddc35a06db0aff82b7b4b31262b36edfb7cf5994c03d6147bd99b2"
+      "sha256": "a0be94f0b9ac298dd8c151db027e49592803f9106acc2072edba91580020962d"
     },
     {
       "path": "1790718758545.png",
-      "bytes": 1889164,
-      "sha256": "0a3eab3f11aebea532709de2a29279b3a60b28bc0785bd84bceacde56167700d"
+      "bytes": 0,
+      "sha256": "8c3b3a9d088216d51bb00f1bcfbeebe9d5e7ee59519e0b854ac22b057457003a"
     }
   ],
   "blockedVersions": []
