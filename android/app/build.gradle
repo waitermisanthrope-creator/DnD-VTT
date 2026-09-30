@@ -36,7 +36,7 @@ tasks.register("prepareVttAssets", Sync) {
     from("../../") { include("*.mp3"); into("ambience") }
 }
 
-tasks.register("prepareVttIconPreviews", Sync) {
+tasks.register("prepareVttIconPreviews", Copy) {
     into(vttAssets)
     from("../../1790788500741.png") {
         rename { "default.png" }
@@ -74,8 +74,8 @@ android {
         applicationId "com.dndvtt.pocketvtt"
         minSdk 24
         targetSdk 36
-        versionCode 7026098
-        versionName '70.26.98'
+        versionCode 7026099
+        versionName '70.26.99'
     }
 
     signingConfigs {
@@ -117,3 +117,4 @@ dependencies {
 }
 
 tasks.named("preBuild").configure { dependsOn("prepareVttAssets", "prepareVttIconPreviews", "prepareVttIconResources") }
+prepareVttIconPreviews.dependsOn("prepareVttAssets")
