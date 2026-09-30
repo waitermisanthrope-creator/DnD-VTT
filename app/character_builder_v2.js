@@ -115,6 +115,53 @@
     return out;
   }
 
+  function backgroundData(name){
+    var list=typeof g.getAllBackgrounds==='function'?g.getAllBackgrounds():(g.dndBackgrounds||[]);
+    return Array.isArray(list)?list.find(function(x){return (x.nameRu||x.name)===name||x.name===name;}):null;
+  }
+  function backgroundChoices(name){
+    var b=backgroundData(name),out=[];if(!b)return out;
+    var n=Number(b.languages)||0;
+    if(n>0)out.push({id:'background_languages',key:'background:'+name+':languages',type:'multi',count:n,label:'Языки предыстории',options:function(){return (g.PROFICIENCIES_DB||[]).filter(function(p){return p.category==='Языки';});},source:'background',level:1});
+    return out;
+  }
+  function addProficiency(hero,id,category,label){
+    hero.proficiencies=hero.proficiencies||[];var db=g.PROFICIENCIES_DB||[];
+    var p=db.find(function(x){return x.id===id||String(x.name||'').toLowerCase()===String(id||'').toLowerCase();});
+    var key=p?p.id:'class_'+String(id||label||'').replace(/\\s+/g,'_');
+    if(!hero.proficiencies.some(function(x){return x&&x.id===key;}))hero.proficiencies.push(p?Object.assign({},p):{id:key,category:category||'Владения',name:String(label||id),description:'Владение от класса.'});
+  }
+  function applyClassProficiencies(hero,className,isNewClass){
+    if(!hero||!className)return;var d=getClass(className)||{},p=d.progression&&d.progression.levels?d.progression:d;
+    (Array.isArray(p.armor)?p.armor:[]).forEach(function(x){addProficiency(hero,x,'Доспехи',x);});
+    (Array.isArray(p.weapons)?p.weapons:[]).forEach(function(x){addProficiency(hero,x,'Оружие',x);});
+    (Array.isArray(p.tools)?p.tools:[]).forEach(function(x){if(typeof x==='string')addProficiency(hero,x,'Инструменты',x);});
+    if(isNewClass&&p.multiclassProficiencies&&isNewClass===false)return;
+  }
+  function applyStartingEquipment(hero,className){
+    var d=getClass(className)||{},eq=d.startingEquipment||d.equipment;if(!eq)return;
+    hero.startingEquipment=hero.startingEquipment||[];
+    var add=function(x){if(!x)return;var v=String(x);if(hero.startingEquipment.indexOf(v)<0)hero.startingEquipment.push(v);};
+    if(Array.isArray(eq))eq.forEach(add);else if(typeof eq==='object')Object.keys(eq).forEach(function(k){var v=eq[k];if(Array.isArray(v))v.forEach(add);else add(v);});
+  }
+  function syncCreationChoiceRuntime(hero){
+    if(!hero)return;hero.classFeaturesState=hero.classFeaturesState||{};var c=hero.choiceState||{};
+    if(c.leadershipStyle)hero.classFeaturesState.warlordLeadership=c.leadershipStyle;
+    if(c.sentinelStand)hero.classFeaturesState.wardenSentinelStand=c.sentinelStand;
+    if(c.sentinelStrike)hero.classFeaturesState.wardenSentinelStrike=c.sentinelStrike;
+    if(c.sentinelSoul)hero.classFeaturesState.wardenSentinelSoul=c.sentinelSoul;
+    if(c.alchemistFormulas)hero.classFeaturesState.alchemistFormulas=c.alchemistFormulas.slice();
+    if(c.alchemistDiscoveries)hero.classFeaturesState.alchemistDiscoveries=c.alchemistDiscoveries.slice();
+    if(c.occultistRites)hero.classFeaturesState.occultistRitesChosen=c.occultistRites.slice();
+    if(c.witchHexes)hero.classFeaturesState.witchHexes=c.witchHexes.slice();
+    if(c.pugilistClub)hero.classFeaturesState.pugilistClub=c.pugilistClub;
+    if(c.companion)hero.classFeaturesState.beastheartCompanion=c.companion;
+    if(c.companionBond)hero.classFeaturesState.beastheartBond=c.companionBond;
+    if(c.bloodline)hero.classFeaturesState.shifterBloodline=c.bloodline;
+    if(c.psionArchetype)hero.classFeaturesState.psionArchetype=c.psionArchetype;
+    if(c.occultTradition)hero.classFeaturesState.occultTradition=c.occultTradition;
+  }
+
   function applyBackground(hero,name){
     if(!name)return;
     var list=typeof g.getAllBackgrounds==='function'?g.getAllBackgrounds():(g.dndBackgrounds||[]);
@@ -127,6 +174,8 @@
       if(cfg)hero.skillsData[cfg.id]=1;
     });
     var db=g.PROFICIENCIES_DB||[];
+    /* В старых предысториях languages хранится числом — это количество языков на выбор. */
+    if(Number(b.languages)>0) hero.backgroundLanguagesToChoose=Math.max(Number(hero.backgroundLanguagesToChoose)||0,Number(b.languages)||0);
     (Array.isArray(b.languages)?b.languages:[]).forEach(function(lang){
       var p=db.find(function(x){return x.category==='Языки'&&(String(x.name).toLowerCase()===String(lang).toLowerCase()||String(x.name).toLowerCase().indexOf(String(lang).toLowerCase())>=0);});
       if(p&&!hero.proficiencies.some(function(x){return x.id===p.id;}))hero.proficiencies.push(Object.assign({},p));
@@ -382,7 +431,7 @@
   }
 
   function collectChoices(race,className,targetLevel,isNewClass,existingSubclass,hero){
-    var arr=raceChoices(race).concat(classChoices(className,targetLevel,isNewClass)).concat(uniqueClassChoices(className,targetLevel,isNewClass,hero||window.currentCharacter||window.currentChar));
+    var arr=raceChoices(race).concat(backgroundChoices((hero&&hero.background)||'' )).concat(classChoices(className,targetLevel,isNewClass)).concat(uniqueClassChoices(className,targetLevel,isNewClass,hero||window.currentCharacter||window.currentChar));
     var ld=levelData(className,targetLevel);
     if(ld&&ld.asi)arr.push({id:'asi',key:'class:'+className+':level:'+targetLevel+':asi',type:'asi',label:'Увеличение характеристик или черта',options:function(){return allFeats();},className:className,level:targetLevel,source:'class'});
     var sc=subclassChoice(className,targetLevel,existingSubclass);
@@ -430,6 +479,11 @@
     }
     if(choice.id==='human_skill'){hero.skillsData=hero.skillsData||{};hero.skillsData[val]=1;}
     if(choice.id==='human_feat'){hero.feats=hero.feats||[];if(hero.feats.indexOf(val)<0)hero.feats.push(val);hero.features=hero.features||[];if(hero.features.indexOf(val)<0)hero.features.push(val);}
+    if(choice.id==='background_languages'){
+      hero.proficiencies=hero.proficiencies||[];var db=g.PROFICIENCIES_DB||[];
+      val.forEach(function(id){var p=db.find(function(x){return x.id===id;});if(p&&!hero.proficiencies.some(function(x){return x.id===id;}))hero.proficiencies.push(Object.assign({},p));});
+      hero.backgroundLanguagesToChoose=0;
+    }
     if(choice.id==='race_languages'){
       hero.proficiencies=hero.proficiencies||[];
       var db=g.PROFICIENCIES_DB||[];
@@ -744,6 +798,10 @@
     if(ex&&ex.type==='walter_parasite'&&g.WALTER_PARASITE_EXTRA&&g.WALTER_PARASITE_EXTRA.normalizeCharacter)g.WALTER_PARASITE_EXTRA.normalizeCharacter(hero);
     if(ex&&ex.type==='ghost'&&g.GHOST_EXTRA&&g.GHOST_EXTRA.normalizeCharacter)g.GHOST_EXTRA.normalizeCharacter(hero);
     applyBackground(hero,this.values.background);
+    applyClassProficiencies(hero,this.className,this.isNewClass);
+    applyStartingEquipment(hero,this.className);
+    syncCreationChoiceRuntime(hero);
+    hero.abilities=hero.stats;
     if(this.values.profession&&g.DND_CRAFT_PROFESSION_PROGRESS&&typeof g.DND_CRAFT_PROFESSION_PROGRESS.initCreatedCharacter==='function')g.DND_CRAFT_PROFESSION_PROGRESS.initCreatedCharacter(hero,this.values.profession);
     if(!Array.isArray(g.allCharacters))g.allCharacters=[];
     g.allCharacters.push(hero);if(typeof g.saveAllCharacters==='function')g.saveAllCharacters();else localStorage.setItem('dnd_multi_characters_v2',JSON.stringify(g.allCharacters));
