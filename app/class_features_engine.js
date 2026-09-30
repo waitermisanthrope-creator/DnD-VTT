@@ -324,8 +324,8 @@
     if(l){
       pack=global.DNDContent&&global.DNDContent.getClass?global.DNDContent.getClass('Иллирригер'):null;
       if(pack&&pack.hooks&&typeof pack.hooks.sync==='function')pack.hooks.sync(h);
-      ensureRes(h,'illriggerSeals',l>=18?7:l>=13?6:l>=7?5:3,'short');
-      if(l>=6)ensureRes(h,'illriggerConduit',l>=18?9:l>=17?9:l>=15?8:l>=14?7:l>=11?6:3,'long');
+      ensureRes(h,'illriggerSeals',l>=19?7:l>=13?6:l>=7?5:l>=3?4:3,'short');
+      if(l>=6)ensureRes(h,'illriggerConduit',l>=20?10:l>=19?10:l>=17?9:l>=15?8:l>=14?7:l>=11?6:l>=9?5:l>=7?4:3,'long');
       if(l>=3)ensureRes(h,'illriggerInvokeHell',1,'short');
       if(l>=14)ensureRes(h,'illriggerSuperiorInterdict',1,'long');
       if(l>=17)ensureRes(h,'illriggerInfernalMajesty',1,'long');
