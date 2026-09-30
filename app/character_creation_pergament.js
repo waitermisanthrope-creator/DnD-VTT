@@ -318,7 +318,7 @@ window.finishParchmentCreation=function(){
    try{
     var result=builder.startCreateFromParchment(draft);
     if(result)return;
-    if(g.__CBV2_LAST_ERROR)return;
+    if(window.__CBV2_LAST_ERROR)return;
     throw new Error('CharacterBuilderV2.startCreateFromParchment() не вернул Wizard.');
    }catch(err){
     console.error('Builder V2 launch failed:',err);
