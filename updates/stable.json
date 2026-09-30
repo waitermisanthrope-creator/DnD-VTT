@@ -9,8 +9,8 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 78635,
-      "sha256": "2bece4605ac6658ebd07adaa1f21a08607e79de54016dbe4dde7a179f70b1592"
+      "bytes": 78684,
+      "sha256": "22227763352921d87e9717c3d437b85f656314629bac885f0d5e6e9ce51dfb58"
     },
     {
       "path": "app/character_creation_pergament.js",
@@ -104,8 +104,8 @@
     },
     {
       "path": "app/Settings.js",
-      "bytes": 37246,
-      "sha256": "a202dae5c7391e1eac1007db3cd3699d46a6301d0444f356567057e4abd8bba9"
+      "bytes": 38090,
+      "sha256": "2a0880c224e13f8847a3a6b7c297bd35786283a51e7b933bb448d7bbf8ac4cc6"
     },
     {
       "path": "app/update_manager.js",
