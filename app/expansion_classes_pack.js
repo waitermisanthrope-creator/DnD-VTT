@@ -979,7 +979,7 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     syncIllrigger(h);ctx=ctx||{};var l=illriggerLevel(h),s=st(h),t=target(ctx);
     var contract=String(s.illriggerContract||'architect');
 
-    if(id==='architectEnervatingSpell'){if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати для Эннервирующего заклинания.'};return{ok:true,effect:{spellDamageVulnerability:true,suppressResistanceAndImmunity:true},message:'🔮 Эннервирующее заклинание усилило урон.'};
+    if(id==='architectEnervatingSpell'){if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати для Эннервирующего заклинания.'};return{ok:true,effect:{spellDamageVulnerability:true,suppressResistanceAndImmunity:true},message:'🔮 Эннервирующее заклинание усилило урон.'};}
     if(id==='architectSpellblade')return{ok:true,effect:{meleeWeaponAttack:true,castIllriggerActionSpell:true},message:'⚔️ Заклинательный клинок активирован.'};
     if(id==='sanguineEmboldenAllies')return{ok:true,effect:{healPool:5*l,rangeFt:30,splitAmongTargets:true},message:'🩸 Воодушевление союзников.'};
     if(id==='sanguineVitalize')return{ok:true,effect:{abilityCheckBonus:Number(h.proficiencyBonus)||2,rangeFt:30,durationMinutes:1},message:'🩸 Жизненная сила разлита по группе.'};
