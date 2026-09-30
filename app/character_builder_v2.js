@@ -136,7 +136,7 @@
     if(!hero.proficiencies.some(function(x){return x&&x.id===key;}))hero.proficiencies.push(p?Object.assign({},p):{id:key,category:category||'Владения',name:String(label||id),description:'Владение от класса.'});
   }
   function applyClassProficiencies(hero,className,isNewClass){
-    if(!hero||!className)return;var d=getClass(className)||{},p=d.progression&&d.progression.levels?d.progression:d;
+    if(!hero||!className)return;var p=classProgression(className)||{};
     (Array.isArray(p.armor)?p.armor:[]).forEach(function(x){addProficiency(hero,x,'Доспехи',x);});
     (Array.isArray(p.weapons)?p.weapons:[]).forEach(function(x){addProficiency(hero,x,'Оружие',x);});
     hero.savesData=hero.savesData||{};
