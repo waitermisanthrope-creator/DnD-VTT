@@ -852,6 +852,17 @@ window.closeSettingsModal = closeSettingsModal;
   }
 
   function nativeSetIcon(iconId) {
+    if (global.DndLauncherIcon && typeof global.DndLauncherIcon.setIcon === 'function') {
+      return new Promise(function(resolve, reject) {
+        try {
+          const result = String(global.DndLauncherIcon.setIcon(iconId) || '');
+          if (result === 'OK') resolve({ok:true, status:'icon-applied', value:iconId});
+          else reject(new Error(result.replace(/^ERROR:/, '') || 'Неизвестная ошибка Android'));
+        } catch (e) {
+          reject(e);
+        }
+      });
+    }
     if (!global.dndNative || typeof global.dndNative.postMessage !== 'function') {
       return Promise.reject(new Error('Native-слой смены иконки недоступен. Нужен Android APK.'));
     }
