@@ -580,16 +580,14 @@
       })[this.className]||'';
       hero.tokenReady=!!hero.tokenArt;
     }
-    if(this.race&&this.race.bonuses){
-      Object.keys(this.race.bonuses).forEach(function(k){hero.stats[k]=(Number(hero.stats[k])||0)+Number(self.race.bonuses[k]||0);});
-    }
-    if(this.race&&this.race.id==='human_variant'){
-      hero.stats=Object.assign({},this.values.stats); /* fixed legacy +1/+1 is replaced by the actual two selected stats */
-    }
     /* Start choices are applied before progression so runtime can read them. */
     this.choices.forEach(function(c){applyChoice(hero,c,self.values[c.key]);});
+    /* Расовые бонусы применяются после всех выборов, чтобы не затереть human_stats. */
     if(this.race&&this.race.id==='human_variant'){
-      var st=hero.choiceState['race:human_variant:stats'];if(Array.isArray(st))st.forEach(function(k){hero.stats[k]=(Number(hero.stats[k])||0)+1;});
+      var st=hero.choiceState['race:human_variant:stats'];
+      if(Array.isArray(st))st.forEach(function(k){hero.stats[k]=(Number(hero.stats[k])||0)+1;});
+    }else{
+      applyRaceBonuses(hero,this.race);
     }
     var con=Math.floor((hero.stats.con-10)/2),hd=(getClass(this.className)||{}).hitDie||8;
     hero.hpMax=Math.max(1,hd+con);hero.hpCurrent=hero.hpMax;hero.hitDice='1d'+hd;
