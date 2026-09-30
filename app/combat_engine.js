@@ -46,8 +46,11 @@
     type=String(type||'').toLowerCase().trim();
     var physical=(type==='дробящий'||type==='колющий'||type==='рубящий');
     var raging=physical&&global.DNDClassFeatures&&global.DNDClassFeatures.activeRage&&global.DNDClassFeatures.activeRage(target);
-    if(hasType(target && target.immunities,type)){return {raw:amount,amount:0,mode:'immune',note:'Иммунитет',type:type};}
-    var resistant=raging||hasType(target && target.resistances,type);
+    var rm=target&&target.raceMechanics||{};
+    var raceImmune=(type==='яд'&&rm.poisonImmunity);
+    var raceResistant=(type==='яд'&&rm.poisonResistance)||(type==='огонь'&&rm.fireResistance)||(type==='холод'&&rm.coldResistance)||(type==='кислота'&&rm.acidResistance)||(type==='некротический'&&rm.necroticResistance)||(type==='излучение'&&rm.radiantResistance)||(type==='психический'&&rm.psychicResistance);
+    if(raceImmune||hasType(target && target.immunities,type)){return {raw:amount,amount:0,mode:'immune',note:'Иммунитет',type:type};}
+    var resistant=raging||raceResistant||hasType(target && target.resistances,type);
     var vulnerable=hasType(target && target.vulnerabilities,type);
     if(resistant&&vulnerable){
       note='Сопротивление и уязвимость взаимно компенсированы';
