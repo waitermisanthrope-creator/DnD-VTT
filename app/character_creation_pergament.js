@@ -140,13 +140,31 @@ function renderClassArt(){
    var extraArt=extraTokenArt[name]||'';
    if(img){
      if(extraArt){
-       img.onerror=function(){console.error('Extra token not found: '+extraArt);};
+       /* Extra tokens are displayed directly; do not rely on the parchment CSS
+          preloader class, because Android WebView can retain display:none. */
+       if(extraToken)extraToken.style.display='flex';
+       img.style.display='block';
+       img.style.visibility='visible';
+       img.style.opacity='1';
+       img.onerror=function(){
+         console.error('Extra token not found: '+extraArt);
+         img.classList.remove('token-ready');
+         img.style.display='none';
+         if(extraToken)extraToken.style.display='none';
+       };
+       img.onload=function(){
+         img.classList.add('token-ready');
+         img.style.display='block';
+         img.style.visibility='visible';
+         img.style.opacity='1';
+       };
        img.src=extraArt;
        img.setAttribute('data-art',extraArt);
        img.alt='Жетон Extra: '+name;
        img.classList.add('token-ready');
      }else{
        img.removeAttribute('src');img.removeAttribute('data-art');img.classList.remove('token-ready');
+       img.style.display='none';
      }
    }
  }else{
