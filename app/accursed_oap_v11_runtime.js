@@ -139,13 +139,35 @@
   function controlAilments(h,names){var s=state(h),a=s.curse&&curses[s.curse]?curses[s.curse].ailments||[]:[];s.suppressedAilments=(Array.isArray(names)?names:[names]).filter(x=>a.indexOf(x)>=0);return {ok:true,selected:s.suppressedAilments};}
   function reset(h){var s=state(h);s.hexTargetId=null;s.hexActive=false;s.suppressedAilments=[];return s;}
 
+  function sync(h){
+    var l=level(h),s=state(h),pb=PB[l]||2,mod=Math.floor(((Number(h&&h.stats&&h.stats.wis)||10)-10)/2);
+    var max=l>=18?4:l>=10?3:l>=6?2:l>=2?1:0;
+    s.level=l;s.proficiencyBonus=pb;s.saveDC=8+pb+mod;s.spellSlots=(SLOTS[l]||[0,0,0,0,0]).slice();
+    s.spellsKnown=SPELLS_KNOWN[l]||0;s.metamorphosisMax=max;
+    if(!Array.isArray(s.metamorphoses))s.metamorphoses=[];
+    s.metamorphoses=s.metamorphoses.slice(0,max);
+    s.jealousyDie=l>=20?"2d10":l>=14?"2d8":l>=7?"1d8":l>=3?"1d6":null;
+    return s;
+  }
+  function jealousyDamage(h){
+    var l=level(h);return l>=20?"2d10":l>=14?"2d8":l>=7?"1d8":l>=3?"1d6":"0";
+  }
+  function isAilmentSuppressed(h,name){var s=state(h);return Array.isArray(s.suppressedAilments)&&s.suppressedAilments.indexOf(name)>=0;}
+  function clearHex(h){var s=state(h);s.hexTargetId=null;s.hexActive=false;return s;}
+  function rest(h,type){
+    var s=state(h);
+    if(type==="long"||type==="short"){s.hexTargetId=null;s.hexActive=false;}
+    if(type==="long"){s.suppressedAilments=[];s.lastRest="long";}
+    sync(h);return s;
+  }
   window.accursedRuntime={
-    version:"1.1",
+    version:"1.2-mechanical",
     getSpellSlots:l=>SLOTS[l]||[0,0,0,0,0],
     getSpellsKnown:l=>SPELLS_KNOWN[l]||0,
     getSaveDC:(ability,pb,mod)=>8+(pb||0)+(mod||0),
     getMetamorphoses:(l)=>[...(METAS[2]||[]),...(l>=10?METAS[10]||[]:[]),...(l>=18?METAS[18]||[]:[])],
-    getCurse:n=>curses[n]||null,MECHANICS,chooseCurse,chooseMetamorphoses,useHex,controlAilments,reset
+    getCurse:n=>curses[n]||null,MECHANICS,chooseCurse,chooseMetamorphoses,useHex,controlAilments,reset,
+    sync,syncState:sync,jealousyDamage,isAilmentSuppressed,clearHex,rest
   };
   window.accursedAfflictions=Object.keys(curses);
 })();
