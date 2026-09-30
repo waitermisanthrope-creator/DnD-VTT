@@ -134,7 +134,7 @@ function renderClassArt(){
    var extraTokenArt={
      'Рой':'./app/data/classes/the swam.png',
      'Паразит':'./app/data/classes/parasite.png',
-     'Паразит доктора Вальтера':'./1790718758545.png',
+     'Паразит доктора Вальтера':'./wallpapers/1790718758545.png',
      'Призрак':'./app/data/classes/geist.png'
    };
    var extraArt=extraTokenArt[name]||'';
@@ -311,6 +311,38 @@ window.finishParchmentCreation=function(){
  if(p)p.style.display='block';
  if(s){s.classList.remove('show','cinematic');void s.offsetWidth;s.classList.add('show','cinematic')}
  if(bo){bo.classList.remove('show','cinematic-hold');void bo.offsetWidth;bo.classList.add('show','cinematic-hold')}
+ function showBuilderModuleFatal(reason){
+  var root=el('cbv2Screen');
+  if(!root){
+    root=document.createElement('div');
+    root.id='cbv2Screen';
+    document.body.appendChild(root);
+  }
+  root.style.cssText='position:fixed;inset:0;z-index:99990;display:block;background:#111;color:#fff;overflow:auto;box-sizing:border-box;';
+  root.innerHTML='<div style="max-width:720px;margin:0 auto;padding:18px;color:#fff;font-family:system-ui"><h2>⚠️ Builder V2 не загрузился</h2><p>Файл мастера не зарегистрировал <code>window.CharacterBuilderV2</code>.</p><pre style="white-space:pre-wrap;word-break:break-word;color:#ffb4ab;background:#171717;padding:12px;border-radius:8px;">'+String(reason||'Неизвестная ошибка загрузки')+'</pre><button onclick="dndV709Open()" style="padding:10px 14px">🐞 Открыть ошибки</button></div>';
+ }
+ function loadBuilderModule(done){
+  if(window.CharacterBuilderV2&&typeof window.CharacterBuilderV2.startCreateFromParchment==='function'){done(true);return;}
+  if(window.__CBV2_BOOT_LOADING){
+    var n=0,wait=function(){if(window.CharacterBuilderV2&&typeof window.CharacterBuilderV2.startCreateFromParchment==='function'){done(true);return;}if(++n>=20){done(false,'Builder V2 не появился после динамической загрузки.');return;}setTimeout(wait,100);};wait();return;
+  }
+  window.__CBV2_BOOT_LOADING=true;
+  var src='./app/character_builder_v2.js?v=70.26.6';
+  var existing=document.querySelector('script[data-cbv2-bootstrap="1"]');
+  var s=existing||document.createElement('script');
+  s.async=false;
+  s.setAttribute('data-cbv2-bootstrap','1');
+  s.onload=function(){
+    var ok=!!(window.CharacterBuilderV2&&typeof window.CharacterBuilderV2.startCreateFromParchment==='function');
+    window.__CBV2_BOOT_LOADING=false;
+    if(ok)done(true);else done(false,'Файл загрузился, но window.CharacterBuilderV2 не зарегистрирован. Возможна синтаксическая/стартовая ошибка. URL: '+src);
+  };
+  s.onerror=function(){
+    window.__CBV2_BOOT_LOADING=false;
+    done(false,'Не удалось загрузить '+src);
+  };
+  if(!existing){s.src=src;document.head.appendChild(s);}
+ }
  function launchBuilder(attempt){
   var builder=window.CharacterBuilderV2;
   console.warn('Parchment → Builder V2: attempt '+attempt, builder?'module loaded':'module NOT loaded');
@@ -322,20 +354,20 @@ window.finishParchmentCreation=function(){
     throw new Error('CharacterBuilderV2.startCreateFromParchment() не вернул Wizard.');
    }catch(err){
     console.error('Builder V2 launch failed:',err);
-    var root=el('cbv2Screen');
-    if(!root){
-      root=document.createElement('div');
-      root.id='cbv2Screen';
-      root.style.cssText='position:fixed;inset:0;z-index:99990;display:block;background:#111;color:#fff;overflow:auto;';
-      document.body.appendChild(root);
-    }
-    root.innerHTML='<div style="max-width:720px;margin:0 auto;padding:18px;color:#fff;font-family:system-ui"><h2>⚠️ Не удалось открыть Builder V2</h2><pre style="white-space:pre-wrap;word-break:break-word;color:#ffb4ab;background:#171717;padding:12px;border-radius:8px;">'+String(err&&err.stack||err)+'</pre><button onclick="dndV709Open()" style="padding:10px 14px">🐞 Открыть ошибки</button></div>';
+    showBuilderModuleFatal(String(err&&err.stack||err));
     return;
    }
   }
-  if(attempt<10){setTimeout(function(){launchBuilder(attempt+1);},250);return;}
-  console.error('Builder V2 module unavailable after 10 attempts.');
-  alert('Не удалось открыть Builder V2. Проверьте журнал ошибок.');
+  if(attempt===0){
+    loadBuilderModule(function(ok,reason){
+      if(ok)launchBuilder(1);
+      else{console.error('Builder V2 bootstrap failed:',reason);showBuilderModuleFatal(reason);}
+    });
+    return;
+  }
+  if(attempt<4){setTimeout(function(){launchBuilder(attempt+1);},250);return;}
+  console.error('Builder V2 module unavailable after bootstrap/retries.');
+  showBuilderModuleFatal('Модуль не появился после статической и динамической загрузки.');
  }
  setTimeout(function(){
   if(bo)bo.classList.remove('show','cinematic-hold');
