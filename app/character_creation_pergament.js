@@ -327,7 +327,7 @@ window.finishParchmentCreation=function(){
     var n=0,wait=function(){if(window.CharacterBuilderV2&&typeof window.CharacterBuilderV2.startCreateFromParchment==='function'){done(true);return;}if(++n>=20){done(false,'Builder V2 не появился после динамической загрузки.');return;}setTimeout(wait,100);};wait();return;
   }
   window.__CBV2_BOOT_LOADING=true;
-  var src='./app/character_builder_v2.js?v=70.26.6';
+  var src='./app/character_builder_v2.js?v=70.26.7';
   var existing=document.querySelector('script[data-cbv2-bootstrap="1"]');
   var s=existing||document.createElement('script');
   s.async=false;
