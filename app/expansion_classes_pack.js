@@ -798,7 +798,7 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     syncIllrigger(h);ctx=ctx||{};var l=illriggerLevel(h),s=st(h),t=target(ctx),r=h.resources&&h.resources.illriggerSeals;
     if(id==='balefulInterdict'||id==='placeSeal'){
       if(!t)return{ok:false,message:'Выбери видимую цель в пределах 30 футов.'};
-      var turn=ctx.turnId===undefined?null:String(ctx.turnId);
+      var tracker=h.initiativeTracker||{},active=tracker.combatants&&tracker.combatants[tracker.activeIndex];var turn=ctx.turnId!==undefined?String(ctx.turnId):String(Number(tracker.round||0)+':'+Number(tracker.activeIndex||0)+':'+String(active&&active.id||h.id||''));
       if(turn!==null&&s.illriggerSealPlacedTurn===turn)return{ok:false,message:'В этом ходу печать уже поставлена.'};
       if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет доступных печатей.'};
       s.illriggerSealTargets[t.id]=(Number(s.illriggerSealTargets[t.id])||0)+1;
@@ -806,6 +806,7 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
       return{ok:true,target:t.id,effect:{seal:true,duration:'until target dies or seal is burned'},message:'🔻 Зловещее запрещение: печать наложена.'};
     }
     if(id==='burnSeal'){
+      if(ctx.sourceIsSelf===true||String(ctx.sourceId||'')===String(h.id||''))return{ok:false,message:'Собственную атаку нельзя использовать для сжигания этой печати.'};
       var out=illriggerBurn(h,t&&t.id||ctx.targetId,ctx.count);
       if(!out.ok)return out;
       if(s.illriggerBoons.indexOf('soulEater')>=0)out.effect.tempHp=l;
@@ -824,22 +825,27 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
       return{ok:true,effect:{boon:b},message:'🔻 Дар Интердикта выбран: '+b+'.'};
     }
     if(id==='abatingSeal'){
+      if(s.illriggerBoons.indexOf('abatingSeal')<0)return{ok:false,message:'Этот Дар Интердикта не выбран.'};
       if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати для Ослабляющей печати.'};
       return{ok:true,effect:{damageReduction:'1d10+'+Math.floor(l/2),rangeFt:30,reaction:true},message:'🛡️ Ослабляющая печать уменьшает получаемый урон.'};
     }
     if(id==='soulEater'){
+      if(s.illriggerBoons.indexOf('soulEater')<0)return{ok:false,message:'Этот Дар Интердикта не выбран.'};
       var burn=illriggerBurn(h,t&&t.id||ctx.targetId,1);if(!burn.ok)return burn;
       burn.effect.tempHp=l;burn.message='🩸 Пожиратель душ: получено '+l+' временных HP.';return burn;
     }
     if(id==='shadowShroud'){
+      if(s.illriggerBoons.indexOf('shadowShroud')<0)return{ok:false,message:'Этот Дар Интердикта не выбран.'};
       if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет свободной печати.'};
       return{ok:true,effect:{acBonus:2,durationMinutes:1,targetSelfOrTouch:true},message:'🌑 Теневая завеса: +2 к AC.'};
     }
     if(id==='conflagrantChannel'){
+      if(s.illriggerBoons.indexOf('conflagrantChannel')<0)return{ok:false,message:'Этот Дар Интердикта не выбран.'};
       var bc=illriggerBurn(h,t&&t.id||ctx.targetId,1);if(!bc.ok)return bc;
       bc.effect.damageType='fire';bc.effect.disadvantageNextSave=true;return bc;
     }
     if(id==='unleashHell'){
+      if(s.illriggerBoons.indexOf('unleashHell')<0)return{ok:false,message:'Этот Дар Интердикта не выбран.'};
       if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати.'};
       return{ok:true,effect:{areaRadiusFt:10,damage:'3d6 fire',save:'dex'},message:'🔥 Высвободить Ад: огненный взрыв.'};
     }
@@ -849,8 +855,8 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
       if(id==='devour'&&!t)return{ok:false,message:'Выбери цель для Пожирания.'};
       var cr=h.resources&&h.resources.illriggerConduit;if(!cr||cr.current<n)return{ok:false,message:'Недостаточно кубов Инфернального проводника.'};
       cr.current-=n;
-      if(id==='invigorate')return{ok:true,target:t.id,effect:{heal:n+'d10',selfNecrotic:n+'d10'},message:'🔥 Инфернальный проводник: союзник исцелён ценой твоей крови.'};
-      return{ok:true,target:t.id,effect:{save:'con',damage:n+'d10 necrotic',healSelf:'half'},message:'☠️ Пожирание: инфернальная энергия вырвана из цели.'};
+      if(id==='invigorate')return{ok:true,target:t.id,effect:{save:'con',saveDC:illriggerSaveDC(h),heal:n+'d10',selfNecrotic:n+'d10',onSave:{heal:'half',selfNecrotic:n+'d10'},unreducedSelfDamage:true,knockoutIfSelfDamageReachesZero:true},message:'🔥 Инфернальный проводник: союзник исцелён ценой твоей крови.'};
+      return{ok:true,target:t.id,effect:{save:'con',saveDC:illriggerSaveDC(h),damage:n+'d10 necrotic',healSelf:'sameAsDamage',onSave:{damage:'half',healSelf:'actualDamage'},unreducedNecrotic:true,exhaustionOnFailedSave:l>=11},message:'☠️ Пожирание: инфернальная энергия вырвана из цели.'};
     }
 
     if(id==='invokeHell'){
@@ -868,8 +874,8 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
       s.illriggerTerrorType=typ;return{ok:true,effect:{extraDamage:'1d8 '+typ,durationMinutes:1},message:'😈 Терроризирующая сила: '+typ+'.'};
     }
     if(id==='superiorInterdict'){
-      var sr=h.resources&&h.resources.illriggerSuperiorInterdict;
-      if(sr&&sr.current>0){sr.current=0;var seals=h.resources&&h.resources.illriggerSeals;if(seals)seals.current=Math.min(seals.max,(Number(seals.current)||0)+1);return{ok:true,effect:{sealDamageIgnoresResistance:true,restoreOneSealLongRest:true},message:'🔻 Высший интердикт: урон печатей игнорирует сопротивление; одна печать восстановлена.'};}
+      var sr=h.resources&&h.resources.illriggerSuperiorInterdict,seals=h.resources&&h.resources.illriggerSeals;
+      if(sr&&sr.current>0&&seals&&Number(seals.current)<=0){sr.current=0;seals.current=Math.min(seals.max,Number(seals.current)+1);return{ok:true,effect:{sealDamageIgnoresResistance:true,restoreOneSealLongRest:true},message:'🔻 Высший интердикт: урон печатей игнорирует сопротивление; одна печать восстановлена.'};}
       return{ok:false,message:'Восстановление печати уже использовано до долгого отдыха.'};
     }
     if(id==='infernalMajesty'){
@@ -905,7 +911,7 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     if(id==='painkillerPunishment'){if(!t)return{ok:false,message:'Выбери атакующего врага.'};return{ok:true,target:t.id,effect:{reactionDamage:'2d8 fire_or_psychic',mark:true},message:'⚔️ Наказание активировано.'};}
     if(id==='sanguineRitual'){if(!t)return{ok:false,message:'Выбери цель.'};var n=Math.max(1,Number(ctx.seals)||1);var b=illriggerBurn(h,t.id,n);if(!b.ok)return b;b.effect.healAlly=n+'d8';b.effect.tempHpAlly=n+'d8';return{ok:true,target:t.id,effect:b.effect,message:'🩸 Кровавый ритуал: жизненная сила направлена союзнику.'};}
     if(id==='shadowStep')return{ok:true,effect:{invisible:true,durationRounds:1,teleportFt:30},message:'🌑 Теневой шаг активирован.'};
-    if(id==='shadowAssassin'){if(!t)return{ok:false,message:'Выбери помеченную цель.'};return{ok:true,target:t.id,effect:{advantageFirstAttack:true,extraDamage:'2d6'},message:'🗡️ Теневой убийца: преимущество против цели с печатью.'};
+    if(id==='shadowAssassin'){if(!t)return{ok:false,message:'Выбери помеченную цель.'};if(!s.illriggerSealTargets||!s.illriggerSealTargets[t.id])return{ok:false,message:'Цель должна иметь активную печать.'};return{ok:true,target:t.id,effect:{advantageFirstAttack:true,extraDamage:'2d6'},message:'🗡️ Теневой убийца: преимущество против цели с печатью.'};
     }
     if(id==='contractInvoke')return useIllrigger(h,'invokeHell',ctx);
     return{ok:false,unsupported:true,message:'Способность контракта '+id+' требует отдельного действия/условия.'};
