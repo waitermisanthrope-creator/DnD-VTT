@@ -518,11 +518,21 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
   function syncBloodHunter(h){
     var l=bloodHunterLvl(h);if(!l)return;
     var s=st(h),d=bloodDie(l);
-    var r=res(h,'bloodMaledict',bloodCurseUses(l),'short');r.die=d;
+    var r=res(h,'bloodMaledict',bloodCurseUses(l)+(s.bhCurseSpecialist?1:0),'short');r.die=d;
+    var mutCreated=l>=15?3:l>=7?2:1;
+    res(h,'bhMutagenConcoctions',mutCreated,'short');
+    res(h,'bhExaltedMutation',Math.max(1,hemMod(h)),'long');
+    var pactSlots=l>=19?2:l>=13?2:l>=7?2:l>=3?1:0;
+    res(h,'bhPactSlots',pactSlots,'short');
+    res(h,'bhAetherWalk',l>=15?2:1,'short');
+    res(h,'bhHybridTransformation',l>=11?2:1,'short');
     s.bhHemocraftDie=d;s.bhHemocraftSaveDC=hemSave(h);s.bhActiveRites=s.bhActiveRites||{};s.bhKnownCurses=s.bhKnownCurses||[];
     s.bhBrand=s.bhBrand||null;s.bhFightingStyle=s.bhFightingStyle||null;
     s.bhCrimsonRitesKnown=s.bhCrimsonRitesKnown||['flame'];
     s.bhRiteDamageDie=d;
+    s.bhMutagens=s.bhMutagens||[];s.bhKnownMutagens=s.bhKnownMutagens||[];
+    s.bhMutagenCreated=mutCreated;
+    s.bhMutagenKnownCount=l>=18?8:l>=15?7:l>=11?6:l>=7?5:4;
     if(l>=6)s.bhBloodCursesKnown=2;if(l>=10)s.bhBloodCursesKnown=3;if(l>=14)s.bhBloodCursesKnown=4;if(l>=18)s.bhBloodCursesKnown=5;
     if(l>=3)s.bhOrder=s.bhOrder||'Орден призрачных убийц';
   }
@@ -550,7 +560,7 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     if(id==='brandVoracious'){if(!s.bhBrand)return{ok:false,message:'Нет активного Клейма наказания.'};s.bhBrand.voracious=true;return{ok:true,effect:{hybridAttackAdvantageVsBranded:true,bloodlustAdvantage:true},message:'🐺 Клеймо ненасытности активно.'};}
     if(id==='hybridMastery'){var rm=res(h,'bhHybridTransformation',999,'short');rm.max=999;rm.current=999;return{ok:true,effect:{unlimitedHybrid:true},message:'🐺 Мастерство гибридной формы: превращение больше не ограничено.'};}
     if(id==='brandAxiom'){if(!s.bhBrand)return{ok:false,message:'Нет активного Клейма наказания.'};s.bhBrand.axiom=true;return{ok:true,effect:{endIllusion:true,endInvisibility:true,shapeChangeSave:'wis',stunOnFail:true},message:'🔻 Клеймо аксиомы раскрывает истинную форму цели.'};}
-    if(id==='otherworldlyPatron'){s.bhPatron=String(ctx.patron||'Великий Древний');var patrons=['Архифея','Исчадие','Великий Древний','Бессмертный','Небожитель','Клинок проклятия','Глубинный','Джинн','Нежить'];if(patrons.indexOf(s.bhPatron)<0)return{ok:false,message:'Неизвестный потусторонний покровитель.'};return{ok:true,effect:{patron:s.bhPatron},message:'📜 Покровитель выбран: '+s.bhPatron+'.'};}
+    if(id==='otherworldlyPatron'){var patrons=['Архифея','Исчадие','Великий Древний','Бессмертный','Небожитель','Клинок проклятия','Глубинный','Джинн','Нежить'];var chosenPatron=String(ctx.patron||'Великий Древний');if(patrons.indexOf(chosenPatron)<0)return{ok:false,message:'Неизвестный потусторонний покровитель.'};s.bhPatron=chosenPatron;return{ok:true,effect:{patron:s.bhPatron},message:'📜 Покровитель выбран: '+s.bhPatron+'.'};}
     if(id==='brandSappingScar'){if(!s.bhBrand)return{ok:false,message:'Нет активного Клейма наказания.'};s.bhBrand.sappingScar=true;return{ok:true,effect:{disadvantageVsBloodHunterSpells:true},message:'🔻 Иссушающий шрам активен.'};}
     if(id==='revealedArcana'||id==='unsealedArcana'){
       var p=s.bhPatron||'Великий Древний',map={
@@ -617,13 +627,20 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     }
     if(id==='hybridTransformation'){
       var uses=res(h,'bhHybridTransformation',l>=11?2:1,'short');
+      if(s.bhHybrid){s.bhHybrid=false;return{ok:true,effect:{hybrid:false},message:'🐺 Гибридная форма завершена.'};}
+      if(l<18&&!spend(h,'bhHybridTransformation',1))return{ok:false,message:'Нет доступного превращения.'};
       if(l>=18){uses.max=999;uses.current=999;}
-      if(!spend(h,'bhHybridTransformation',1)&&l<18)return{ok:false,message:'Нет доступного превращения.'};
-      s.bhHybrid=!s.bhHybrid;
+      s.bhHybrid=true;
       return{ok:true,effect:{hybrid:s.bhHybrid,advantageStr:true,resistance:['bludgeoning','piercing','slashing'],unarmedDamage:l>=11?'1d8':'1d6',bonusDamage:l>=18?3:l>=11?2:1,bonusAC:1},message:'🐺 Гибридная форма '+(s.bhHybrid?'активирована.':'завершена.')};
     }
     if(id==='lycanBloodlust'){
       return{ok:true,effect:{save:'wis',dc:8,directAttackNearestIfFailed:true},message:'🐺 Кровожадность: проверь спасбросок Мудрости при низком HP.'};
+    }
+    if(id==='chooseMutagenFormula'){
+      var knownFormula=String(ctx.mutagen||'');if(!knownFormula)return{ok:false,message:'Укажи формулу мутагена.'};
+      if((s.bhKnownMutagens||[]).indexOf(knownFormula)>=0)return{ok:false,message:'Эта формула уже изучена.'};
+      if((s.bhKnownMutagens||[]).length>=s.bhMutagenKnownCount)return{ok:false,message:'Достигнут предел известных формул.'};
+      s.bhKnownMutagens.push(knownFormula);return{ok:true,message:'🧪 Формула изучена: '+knownFormula+'.'};
     }
     if(id==='mutagen'){
       var formulas={
@@ -651,7 +668,9 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
       var name=String(ctx.mutagen||'Celerity'),form=formulas[name];
       if(!form)return{ok:false,message:'Неизвестная формула мутагена.'};
       if(form.min&&l<form.min)return{ok:false,message:'Эта формула доступна только с '+form.min+' уровня.'};
-      s.bhMutagens=s.bhMutagens||[];if(s.bhMutagens.indexOf(name)<0)s.bhMutagens.push(name);
+      if(s.bhKnownMutagens.length&&s.bhKnownMutagens.indexOf(name)<0)return{ok:false,message:'Сначала изучи эту формулу мутагена.'};
+      if(!spend(h,'bhMutagenConcoctions',1))return{ok:false,message:'Нет приготовленного мутагена. Приготовь новый после короткого или долгого отдыха.'};
+      s.bhMutagens=s.bhMutagens||[];if(s.bhMutagens.indexOf(name)>=0)return{ok:false,message:'Этот мутаген уже активен.'};if(s.bhMutagens.length>=s.bhMutagenCreated)return{ok:false,message:'Все доступные мутагены уже активны.'};s.bhMutagens.push(name);
       return{ok:true,effect:{mutagen:name,formula:form.effect,sideEffect:form.side||null,duration:'short-or-long-rest'},message:'🧪 Мутаген активирован: '+name+'.'};
     }
     if(id==='flushMutagens'){s.bhMutagens=[];return{ok:true,message:'🧪 Все мутагены выведены.'};}
