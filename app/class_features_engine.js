@@ -320,6 +320,18 @@
     l=classLevel(h,'Заклинатель клинка');
     if(l)ensureRes(h,'arcaneSurges',Math.max(2,Math.ceil((Number(h.proficiencyBonus)||2))),'short');
 
+    l=classLevel(h,'Иллирригер');
+    if(l){
+      pack=global.DNDContent&&global.DNDContent.getClass?global.DNDContent.getClass('Иллирригер'):null;
+      if(pack&&pack.hooks&&typeof pack.hooks.sync==='function')pack.hooks.sync(h);
+      ensureRes(h,'illriggerSeals',l>=18?7:l>=13?6:l>=7?5:3,'short');
+      if(l>=6)ensureRes(h,'illriggerConduit',l>=18?9:l>=17?9:l>=15?8:l>=14?7:l>=11?6:3,'long');
+      if(l>=3)ensureRes(h,'illriggerInvokeHell',1,'short');
+      if(l>=14)ensureRes(h,'illriggerSuperiorInterdict',1,'long');
+      if(l>=17)ensureRes(h,'illriggerInfernalMajesty',1,'long');
+      if(l>=20)ensureRes(h,'illriggerMasterOfHell',1,'long');
+    }
+
     l=classLevel(h,'Кровавый охотник');
     if(l){
       rt=global.DNDBloodHunter;
@@ -831,6 +843,7 @@
        'accursedSpellSlots','psiPoints','warlordExploitDice','warlordInspiringWord','warlordRally','arcaneSurges','bloodMaledict',
        'shifterAdrenaline','shifterPrimevalForm','vesselMagicSlots','charnelTouch','undyingServitude',
        'brandCastigation','aetherWalk','hybridTransformation','mutagenConcoctions','strangeMetabolism','exaltedMutation','profaneSoulSlots',
+       'illriggerSeals','illriggerConduit','illriggerInvokeHell','illriggerSuperiorInterdict','illriggerInfernalMajesty','illriggerMasterOfHell',
        'martyrSpellUses','martyrDivineRespite','occultistFateReading',
        'beastheartFerocity','runicCharges','savantReactions'].forEach(function(id){
         if(h.resources[id])out.resources[id]={current:h.resources[id].current,max:h.resources[id].max,recharge:h.resources[id].recharge};
