@@ -522,7 +522,7 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     var mutCreated=l>=15?3:l>=7?2:1;
     res(h,'bhMutagenConcoctions',mutCreated,'short');
     res(h,'bhExaltedMutation',Math.max(1,hemMod(h)),'long');
-    var pactSlots=l>=19?2:l>=13?2:l>=7?2:l>=3?1:0;
+    var pactSlots=l>=6?2:l>=3?1:0;
     res(h,'bhPactSlots',pactSlots,'short');
     res(h,'bhAetherWalk',l>=15?2:1,'short');
     res(h,'bhHybridTransformation',l>=11?2:1,'short');
@@ -683,7 +683,7 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
       var order=String(ctx.order||s.bhOrder||'Орден осквернённых душ'),slots=[0,0,0,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2][Math.min(20,l)]||0;
       var slotLevel=l>=19?4:l>=13?3:l>=7?2:1;
       res(h,'bhPactSlots',slots,'short');s.bhPactSlotLevel=slotLevel;s.bhPatron=ctx.patron||s.bhPatron||'Великий Древний';
-      return{ok:true,effect:{slots:slots,slotLevel:slotLevel,cantrips:l>=10?3:2,spellsKnown:Math.min(11,2+Math.max(0,l-5)),ability:'int'},message:'📜 Договорная магия: ячейки '+slots+' уровня '+slotLevel+'.'};
+      return{ok:true,effect:{slots:slots,slotLevel:slotLevel,cantrips:l>=10?3:2,spellsKnown:([0,0,0,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,11][Math.min(20,l)]||0),ability:'int'},message:'📜 Договорная магия: ячейки '+slots+' уровня '+slotLevel+'.'};
     }
     if(id==='profaneSpell'){
       var spell=String(ctx.spell||'detect thoughts');if(!spend(h,'bhPactSlots',1))return{ok:false,message:'Нет ячейки договорной магии.'};
