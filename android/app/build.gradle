@@ -4,6 +4,27 @@ plugins {
 }
 
 def vttAssets = layout.buildDirectory.dir("generated/vttAssets").get().asFile
+def vttIconRes = layout.buildDirectory.dir("generated/vttIconRes").get().asFile
+
+def launcherDiceFiles = [
+    "ChatGPT Image Sep 30, 2026, 07_08_07 PM.png",
+    "ChatGPT Image Sep 30, 2026, 07_08_30 PM.png",
+    "ChatGPT Image Sep 30, 2026, 07_13_27 PM.png",
+    "ChatGPT Image Sep 30, 2026, 07_23_00 PM.png",
+    "ChatGPT Image Sep 30, 2026, 07_24_38 PM.png",
+    "ChatGPT Image Sep 30, 2026, 07_27_51 PM.png",
+    "ChatGPT Image Sep 30, 2026, 07_35_50 PM.png",
+    "ChatGPT Image Sep 30, 2026, 07_41_40 PM.png",
+    "ChatGPT Image Sep 30, 2026, 07_49_58 PM.png",
+    "ChatGPT Image Sep 30, 2026, 07_58_07 PM.png",
+    "ChatGPT Image Sep 30, 2026, 07_58_18 PM.png",
+    "ChatGPT Image Sep 30, 2026, 07_58_28 PM.png",
+    "ChatGPT Image Sep 30, 2026, 07_58_39 PM.png",
+    "dice1.png", "dice10-1.png", "dice10.png", "dice11.png", "dice12.png",
+    "dice13.png", "dice15.png", "dice16.png", "dice17.png", "dice2.png",
+    "dice3.png", "dice4.png", "dice5.png", "dice6.png", "dice7.png",
+    "dice8.png", "dice9.png"
+]
 
 tasks.register("prepareVttAssets", Sync) {
     into(vttAssets)
@@ -13,6 +34,20 @@ tasks.register("prepareVttAssets", Sync) {
     from("../../") { include("*.png"); into("") }
     from("../../") { include("*.jpg"); into("") }
     from("../../") { include("*.mp3"); into("ambience") }
+}
+
+tasks.register("prepareVttIconResources", Sync) {
+    into(vttIconRes)
+    from("../../1790788500741.png") {
+        rename { "icon_default.png" }
+        into("drawable-nodpi")
+    }
+    launcherDiceFiles.eachWithIndex { sourceName, index ->
+        from("../../app/assets/dice/${sourceName}") {
+            rename { "icon_dice_${String.format('%02d', index + 1)}.png" }
+            into("drawable-nodpi")
+        }
+    }
 }
 
 android {
@@ -50,7 +85,10 @@ android {
         }
     }
 
-    sourceSets { main { assets.srcDir(vttAssets) } }
+    sourceSets { main {
+        assets.srcDir(vttAssets)
+        res.srcDir(vttIconRes)
+    } }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -62,4 +100,4 @@ dependencies {
     implementation "androidx.webkit:webkit:1.17.1"
 }
 
-tasks.named("preBuild").configure { dependsOn("prepareVttAssets") }
+tasks.named("preBuild").configure { dependsOn("prepareVttAssets", "prepareVttIconResources") }
