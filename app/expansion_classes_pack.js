@@ -961,7 +961,7 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
       return{ok:true,effect:{endConditions:['charmed','frightened']},message:'🧠 Стряхнуто Очарование/Испуг.'};
     }
     if(id==='unbreakable'){
-      if(ctx.failedSave===false)return{ok:false,message:'Переброс используется после провала спасброска.'};
+      if(ctx.failedSave!==true)return{ok:false,message:'Сначала зафиксируй провал спасброска.'};
       cost=1;if(!spend(h,'pugilistMoxie',cost))return{ok:false,message:'Недостаточно Мокси для переброса.'};
       return{ok:true,effect:{rerollSave:true,ability:['str','dex','con']},message:'🛡️ Несокрушимый: спасбросок переброшен.'};
     }
