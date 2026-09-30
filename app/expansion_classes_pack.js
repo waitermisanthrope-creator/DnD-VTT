@@ -890,10 +890,20 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     }
 
     if(id==='invokeHell'){
-      var inv=String(ctx.option||'');var known=['infernalEdict','hellishCommand','bloodRitual','shadowStep','ruinSpell'];
-      if(known.indexOf(inv)<0)return{ok:false,message:'Для этого контракта ещё не выбран вариант Призыва Ада.'};
-      if(!spend(h,'illriggerInvokeHell',1))return{ok:false,message:'Призыв Ада уже использован до отдыха.'};
-      return{ok:true,target:t&&t.id,effect:{invokeHell:inv,saveDC:s.illriggerSaveDC},message:'🔥 Призыв Ада: '+inv+'.'};
+      var inv=String(ctx.option||''),contract=String(s.illriggerContract||'architect');
+      var invokeOptions={
+        architect:['enervatingSpell','spellblade'],
+        hellspeaker:['hellspeakerHoneySweetBlades','hellspeakerTurncoat'],
+        painkiller:['painkillerGrandStrategist','painkillerPunishment'],
+        sanguine:['sanguineEmboldenAllies','sanguineVitalize'],
+        shadowmaster:['shadowMasterOfDisguise','shadowNoEscape']
+      };
+      var known=invokeOptions[contract]||invokeOptions.architect;
+      if(known.indexOf(inv)<0)return{ok:false,message:'Этот вариант Призыва Ада не принадлежит выбранному контракту.'};
+      if(!spend(h,'illriggerInvokeHell',1))return{ok:false,message:'Призыв Ада уже использован до короткого или долгого отдыха.'};
+      var mapped={enervatingSpell:'architectEnervatingSpell',spellblade:'architectSpellblade',hellspeakerHoneySweetBlades:'hellspeakerHoneySweetBlades',hellspeakerTurncoat:'hellspeakerTurncoat',painkillerGrandStrategist:'painkillerGrandStrategist',painkillerPunishment:'painkillerPunishment',sanguineEmboldenAllies:'sanguineEmboldenAllies',sanguineVitalize:'sanguineVitalize',shadowMasterOfDisguise:'shadowMasterOfDisguise',shadowNoEscape:'shadowNoEscape'};
+      var fx=illriggerContractFeature(h,mapped[inv]||inv,ctx);if(!fx.ok){h.resources.illriggerInvokeHell.current=Math.min(h.resources.illriggerInvokeHell.max,h.resources.illriggerInvokeHell.current+1);return fx;}
+      fx.message='🔥 Призыв Ада: '+inv+'.';return fx;
     }
     if(id==='bloodPrice'){
       var bp=h.resources&&h.resources.illriggerBloodPrice;if(l<10||!bp||bp.current<=0||ctx.hitDieAvailable===false)return{ok:false,message:'Кровавая цена недоступна: нужен доступный КХ и заряд способности.'};
@@ -942,6 +952,11 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     syncIllrigger(h);ctx=ctx||{};var l=illriggerLevel(h),s=st(h),t=target(ctx);
     var contract=String(s.illriggerContract||'architect');
 
+    if(id==='architectEnervatingSpell'){if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати для Эннервирующего заклинания.'};return{ok:true,effect:{spellDamageVulnerability:true,suppressResistanceAndImmunity:true},message:'🔮 Эннервирующее заклинание усилило урон.'};
+    if(id==='architectSpellblade')return{ok:true,effect:{meleeWeaponAttack:true,castIllriggerActionSpell:true},message:'⚔️ Заклинательный клинок активирован.'};
+    if(id==='sanguineEmboldenAllies')return{ok:true,effect:{healPool:5*l,rangeFt:30,splitAmongTargets:true},message:'🩸 Воодушевление союзников.'};
+    if(id==='sanguineVitalize')return{ok:true,effect:{abilityCheckBonus:Number(h.proficiencyBonus)||2,rangeFt:30,durationMinutes:1},message:'🩸 Жизненная сила разлита по группе.'};
+    if(id==='shadowMasterOfDisguise')return{ok:true,effect:{castSpell:'disguise self',free:true},message:'🌑 Маска повелителя теней.'};
     if(id==='architectBlessing')return{ok:true,effect:{extraSkillChoice:['Arcana','History','Nature','Religion'],readWriteForkedLanguages:true},message:'📚 Благословение Архитектора активно.'};
     if(id==='architectSpellcasting'){
       var slots=[0,2,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4][Math.min(20,l)]||0;
