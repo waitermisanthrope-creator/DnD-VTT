@@ -155,8 +155,19 @@ primevalResurgence:{level:17,effect:"можно получать Primeval Form �
 forceOfNature:{level:20,effect:"CR 5 и 6 без ограничений; в бою в начале каждого хода восстанавливается 1 Adrenaline Surge"}
 };
 
+function shifterState(c){c.classFeaturesState=c.classFeaturesState||{};return c.classFeaturesState.shifter=c.classFeaturesState.shifter||{};}
+function shifterLevel(c){return Math.max(1,Math.min(20,Number(c&&c.level)||1));}
+function shifterSync(c){var l=shifterLevel(c),s=shifterState(c),con=Number(c&&((c.constitution??c.stats?.constitution??c.abilities?.constitution)))||10,mod=Math.max(1,Math.floor((con-10)/2));s.level=l;s.proficiencyBonus=PB[l];s.maxCR=MAX_CR[l];s.bloodline=s.bloodline||Object.keys(bloodlines)[0];s.adrenalineMax=l>=6?mod:0;s.adrenaline=s.adrenaline==null?s.adrenalineMax:Math.min(Math.max(0,Number(s.adrenaline)||0),s.adrenalineMax);s.primevalFormMax=l>=11?3:0;s.primevalForm=s.primevalForm==null?s.primevalFormMax:Math.min(Math.max(0,Number(s.primevalForm)||0),s.primevalFormMax);s.knownShapes=s.knownShapes||[];return s;}
+function shifterChooseBloodline(c,name){if(!bloodlines[name])return {ok:false,reason:"Неизвестная кровная линия."};shifterState(c).bloodline=name;return {ok:true,bloodline:name,data:bloodlines[name]};}
+function shifterLearnShape(c,shape,cr,source){var l=shifterLevel(c),s=shifterSync(c),n=Number(cr)||0;if(n>s.maxCR)return {ok:false,reason:"CR формы выше доступного лимита."};s.knownShapes=s.knownShapes||[];if(s.knownShapes.some(x=>x.name===shape))return {ok:true,alreadyKnown:true,shape};s.knownShapes.push({name:shape,cr:n,source:source||"bloodline"});return {ok:true,shape,cr:n,known:s.knownShapes.length};}
+function shifterShift(c,shape,context){var l=shifterLevel(c),s=shifterSync(c);var found=(s.knownShapes||[]).find(x=>x.name===shape);if(!found)return {ok:false,reason:"Эта звериная форма ещё не изучена."};if(found.cr>s.maxCR)return {ok:false,reason:"CR формы превышает текущий лимит."};s.activeShape=found;s.primalBondSource=context&&context.source||found.source;s.bloodlineActive=true;return {ok:true,shape:found.name,cr:found.cr,bloodline:s.bloodline,naturalArmor:(bloodlines[s.bloodline].normalForm||{}).naturalArmor};}
+function shifterRevert(c,reason){var s=shifterSync(c);s.activeShape=null;s.bloodlineActive=false;return {ok:true,reason:reason||"bonus_action"};}
+function shifterAdrenaline(c,damage){var s=shifterSync(c);if(s.adrenaline<=0)return {ok:false,reason:"Всплеск адреналина закончился."};s.adrenaline--;var hp=Math.max(0,Number(damage)||0);return {ok:true,tempHP:hp,remaining:s.adrenaline};}
+function shifterResilience(c,failedSave){var l=shifterLevel(c),s=shifterSync(c),con=Number(c&&((c.constitution??c.stats?.constitution??c.abilities?.constitution)))||10;if(l<10||!failedSave)return {ok:false,reason:"Первобытная стойкость доступна с 10 уровня после провала спасброска."};if(s.adrenaline<=0)return {ok:false,reason:"Нет Всплеска адреналина."};s.adrenaline--;var bonus=Math.max(1,Math.floor((con-10)/2));return {ok:true,bonus:bonus,remaining:s.adrenaline};}
+function shifterPrimeval(c){var l=shifterLevel(c),s=shifterSync(c);if(l<11)return {ok:false,reason:"Первобытная форма доступна с 11 уровня."};if(s.primevalForm<=0)return {ok:false,reason:"Использования Первобытной формы закончились."};s.primevalForm--;s.primevalActive=true;return {ok:true,remaining:s.primevalForm,effects:mechanics.primevalForm.effects};}
+function shifterRest(c,type){var s=shifterSync(c);if(type==="short"||type==="long"){if(s.adrenalineMax)s.adrenaline=s.adrenalineMax;if(s.primevalFormMax&&type==="short")s.primevalForm=Math.min(s.primevalFormMax,s.primevalForm+1);}if(type==="long"){if(s.primevalFormMax)s.primevalForm=s.primevalFormMax;s.primevalActive=false;}return s;}
 window.SHIFTER_V21={version:"2.1.0",updated:"2026-06-25",source:"laserllama / GM Binder",PB,MAX_CR,ASI,progression,bloodlines,mechanics};
-window.shifterRuntime=window.SHIFTER_V21;
+window.shifterRuntime=window.SHIFTER_V21;window.shifterRuntime.state=shifterState;window.shifterRuntime.sync=shifterSync;window.shifterRuntime.chooseBloodline=shifterChooseBloodline;window.shifterRuntime.learnShape=shifterLearnShape;window.shifterRuntime.shift=shifterShift;window.shifterRuntime.revert=shifterRevert;window.shifterRuntime.adrenalineSurge=shifterAdrenaline;window.shifterRuntime.primalResilience=shifterResilience;window.shifterRuntime.primevalForm=shifterPrimeval;window.shifterRuntime.rest=shifterRest;
 var __shifterProgression={
 className:"Шифтер",englishName:"Shifter",source:"laserllama",sourceVersion:"2.1.0",edition:"5E",
 status:"implemented_full_v2_1_runtime",hitDie:10,primaryStat:"constitution",secondaryStats:["strength","dexterity"],
@@ -169,3 +180,4 @@ window.getShifterBloodlines=function(){return Object.values(window.SHIFTER_V21.b
 window.getShifterBloodline=function(name){return window.SHIFTER_V21.bloodlines[name]||null;};
 window.getShifterMaxCR=function(level){return window.SHIFTER_V21.MAX_CR[Math.max(0,Math.min(20,Number(level)||0))]||0;};
 })();
+/* V70.26.92 closure pass: executable Shifter bloodline, shape and resource APIs. */
