@@ -37,7 +37,7 @@ function sync(h){
  var l=lvl(h);if(!l)return;
  var s=st(h);ensureChoices(h);h.hemocraftDie=die(l);s.hemocraftSaveDC=dc(h);
  var uses=l>=17?4:l>=13?3:l>=6?2:1;res(h,'bloodMaledict',uses,'short');
- res(h,'crimsonRite',1,'short');res(h,'brandCastigation',1,'short');
+ res(h,'brandCastigation',1,'short');
  if(orderKey(h)==='ghostslayer'){res(h,'aetherWalk',l>=15?2:1,'short');s.ghostslayerCurseSpecial=true;}
  if(orderKey(h)==='lycan'){res(h,'hybridTransformation',l>=18?999:l>=11?2:1,'short');}
  if(orderKey(h)==='mutant'){s.mutagenFormulasKnown=s.mutagenFormulasKnown||['celerity','deftness','embers','mobility'];s.mutagenFormulasKnown=s.mutagenFormulasKnown.slice(0,l>=18?8:l>=15?7:l>=11?6:l>=7?5:4);res(h,'mutagenConcoctions',l>=15?3:l>=7?2:1,'short');res(h,'strangeMetabolism',1,'long');res(h,'exaltedMutation',Math.max(1,hemMod(h)),'long');}
@@ -93,10 +93,14 @@ function useRite(h,ctx){
  s.crimsonRite={active:true,type:type,weaponId:ctx&&ctx.weaponId||null};return{ok:true,message:'🩸 Алый обряд: '+type+'. Потеряно '+loss+' HP.',lossHp:loss};
 }
 function useCurse(h,ctx){
- sync(h);var id=String(ctx&&ctx.curse||'binding'),c=curses[id];if(!c)return{ok:false,reason:'Неизвестное проклятие.'};var o=orderKey(h),l=lvl(h);
+ sync(h);var id=String(ctx&&ctx.curse||'binding'),c=curses[id];if(!c)return{ok:false,reason:'Неизвестное проклятие.'};var o=orderKey(h),l=lvl(h),t=target(ctx);
  if(c.req&&((typeof c.req[0]==='string'&&c.req[0]!==o)||(typeof c.req[0]==='string'&&l<c.req[1])))return{ok:false,reason:'Проклятие пока недоступно.'};
+ if(!t)return{ok:false,reason:'Для Кровавого проклятия нужна цель или боевой триггер.'};
+ var loss=null;
+ if(ctx&&ctx.amplify){loss=bloodLoss(h);if(hp(h)<=loss)return{ok:false,reason:'Недостаточно HP для усиления проклятия.'};}
  if(!spend(h,'bloodMaledict',1))return{ok:false,reason:'Нет использований Blood Maledict.'};
- var out={ok:true,curse:id,effect:c.effect||{},action:c.action,rangeFt:30};if(ctx&&ctx.amplify){var loss=requireHp(h);if(loss===null)return{ok:false,reason:'Недостаточно HP для Amplify.'};out.amplified=true;out.amplify=c.amp;out.lossHp=loss;}st(h).lastBloodCurse=out;return out;
+ if(loss!==null)setHp(h,hp(h)-loss);
+ var out={ok:true,curse:id,effect:c.effect||{},action:c.action,rangeFt:30,targetId:t.id};if(loss!==null){out.amplified=true;out.amplify=c.amp;out.lossHp=loss;}st(h).lastBloodCurse=out;return out;
 }
 function useBrand(h,ctx,tether){
  sync(h);var t=target(ctx);if(!t)return{ok:false,reason:'Нужна цель.'};if(!spend(h,'brandCastigation',1))return{ok:false,reason:'Клеймо уже использовано до отдыха.'};
