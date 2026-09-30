@@ -1005,6 +1005,7 @@
     applyExternalClassFeatures(hero,this.className);
     applyRuntimeSpecializationFeatures(hero,this.className,1);
     if(g.DNDClassFeatures&&typeof g.DNDClassFeatures.syncClassResources==='function')g.DNDClassFeatures.syncClassResources(hero);
+    if(g.DNDClassFeatures&&typeof g.DNDClassFeatures.extendedResourceState==='function')hero.extendedResources=g.DNDClassFeatures.extendedResourceState(hero);
     /* Runtime-specific Extra initialization. */
     if(ex&&ex.type==='swarm'&&g.SWARM_EXTRA&&g.SWARM_EXTRA.normalizeCharacter)g.SWARM_EXTRA.normalizeCharacter(hero);
     if(ex&&ex.type==='parasite'&&g.PARASITE_EXTRA&&g.PARASITE_EXTRA.normalizeCharacter){
