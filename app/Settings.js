@@ -657,181 +657,181 @@ window.closeSettingsModal = closeSettingsModal;
     "id": "dice_01",
     "name": "ChatGPT Image Sep 30, 2026, 07_08_07 PM.png",
     "label": "Куб 1",
-    "src": "./icon_previews/dice_01.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_01.png"
   },
   {
     "id": "dice_02",
     "name": "ChatGPT Image Sep 30, 2026, 07_08_30 PM.png",
     "label": "Куб 2",
-    "src": "./icon_previews/dice_02.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_02.png"
   },
   {
     "id": "dice_03",
     "name": "ChatGPT Image Sep 30, 2026, 07_13_27 PM.png",
     "label": "Куб 3",
-    "src": "./icon_previews/dice_03.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_03.png"
   },
   {
     "id": "dice_04",
     "name": "ChatGPT Image Sep 30, 2026, 07_23_00 PM.png",
     "label": "Куб 4",
-    "src": "./icon_previews/dice_04.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_04.png"
   },
   {
     "id": "dice_05",
     "name": "ChatGPT Image Sep 30, 2026, 07_24_38 PM.png",
     "label": "Куб 5",
-    "src": "./icon_previews/dice_05.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_05.png"
   },
   {
     "id": "dice_06",
     "name": "ChatGPT Image Sep 30, 2026, 07_27_51 PM.png",
     "label": "Куб 6",
-    "src": "./icon_previews/dice_06.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_06.png"
   },
   {
     "id": "dice_07",
     "name": "ChatGPT Image Sep 30, 2026, 07_35_50 PM.png",
     "label": "Куб 7",
-    "src": "./icon_previews/dice_07.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_07.png"
   },
   {
     "id": "dice_08",
     "name": "ChatGPT Image Sep 30, 2026, 07_41_40 PM.png",
     "label": "Куб 8",
-    "src": "./icon_previews/dice_08.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_08.png"
   },
   {
     "id": "dice_09",
     "name": "ChatGPT Image Sep 30, 2026, 07_49_58 PM.png",
     "label": "Куб 9",
-    "src": "./icon_previews/dice_09.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_09.png"
   },
   {
     "id": "dice_10",
     "name": "ChatGPT Image Sep 30, 2026, 07_58_07 PM.png",
     "label": "Куб 10",
-    "src": "./icon_previews/dice_10.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_10.png"
   },
   {
     "id": "dice_11",
     "name": "ChatGPT Image Sep 30, 2026, 07_58_18 PM.png",
     "label": "Куб 11",
-    "src": "./icon_previews/dice_11.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_11.png"
   },
   {
     "id": "dice_12",
     "name": "ChatGPT Image Sep 30, 2026, 07_58_28 PM.png",
     "label": "Куб 12",
-    "src": "./icon_previews/dice_12.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_12.png"
   },
   {
     "id": "dice_13",
     "name": "ChatGPT Image Sep 30, 2026, 07_58_39 PM.png",
     "label": "Куб 13",
-    "src": "./icon_previews/dice_13.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_13.png"
   },
   {
     "id": "dice_14",
     "name": "dice1.png",
     "label": "Куб 14",
-    "src": "./icon_previews/dice_14.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_14.png"
   },
   {
     "id": "dice_15",
     "name": "dice10-1.png",
     "label": "Куб 15",
-    "src": "./icon_previews/dice_15.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_15.png"
   },
   {
     "id": "dice_16",
     "name": "dice10.png",
     "label": "Куб 16",
-    "src": "./icon_previews/dice_16.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_16.png"
   },
   {
     "id": "dice_17",
     "name": "dice11.png",
     "label": "Куб 17",
-    "src": "./icon_previews/dice_17.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_17.png"
   },
   {
     "id": "dice_18",
     "name": "dice12.png",
     "label": "Куб 18",
-    "src": "./icon_previews/dice_18.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_18.png"
   },
   {
     "id": "dice_19",
     "name": "dice13.png",
     "label": "Куб 19",
-    "src": "./icon_previews/dice_19.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_19.png"
   },
   {
     "id": "dice_20",
     "name": "dice15.png",
     "label": "Куб 20",
-    "src": "./icon_previews/dice_20.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_20.png"
   },
   {
     "id": "dice_21",
     "name": "dice16.png",
     "label": "Куб 21",
-    "src": "./icon_previews/dice_21.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_21.png"
   },
   {
     "id": "dice_22",
     "name": "dice17.png",
     "label": "Куб 22",
-    "src": "./icon_previews/dice_22.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_22.png"
   },
   {
     "id": "dice_23",
     "name": "dice2.png",
     "label": "Куб 23",
-    "src": "./icon_previews/dice_23.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_23.png"
   },
   {
     "id": "dice_24",
     "name": "dice3.png",
     "label": "Куб 24",
-    "src": "./icon_previews/dice_24.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_24.png"
   },
   {
     "id": "dice_25",
     "name": "dice4.png",
     "label": "Куб 25",
-    "src": "./icon_previews/dice_25.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_25.png"
   },
   {
     "id": "dice_26",
     "name": "dice5.png",
     "label": "Куб 26",
-    "src": "./icon_previews/dice_26.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_26.png"
   },
   {
     "id": "dice_27",
     "name": "dice6.png",
     "label": "Куб 27",
-    "src": "./icon_previews/dice_27.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_27.png"
   },
   {
     "id": "dice_28",
     "name": "dice7.png",
     "label": "Куб 28",
-    "src": "./icon_previews/dice_28.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_28.png"
   },
   {
     "id": "dice_29",
     "name": "dice8.png",
     "label": "Куб 29",
-    "src": "./icon_previews/dice_29.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_29.png"
   },
   {
     "id": "dice_30",
     "name": "dice9.png",
     "label": "Куб 30",
-    "src": "./icon_previews/dice_30.png"
+    "src": "https://appassets.androidplatform.net/vtt-apk/icon_previews/dice_30.png"
   }
 ];
   const ICONS = [DEFAULT_ICON].concat(DICE_ICONS);
