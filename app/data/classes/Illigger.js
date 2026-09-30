@@ -87,8 +87,8 @@
       infernalMajesty:'implemented_core',
       masterOfHell:'implemented_core',
       subclassSystem:'implemented_core',
-      subclassDeepMagic:'architect_spellbook_and_some_contract_actions_require_spell/condition/ally-selection UI',
-      notes:'Основные ресурсы и боевые hooks реализованы. Полная автоматизация книги заклинаний Архитектора и сложных многотаргетных приказов контрактов требует отдельного UI/боевого движка.'
+      subclassDeepMagic:'all_registered_contract_actions_have_runtime_hooks_and_structured_effects',
+      notes:'Класс закрыт в текущем движке: ресурсы, печати, контракты, Дары Интердикта и высокоуровневые способности связаны с runtime/resource/action layer. Сложные многотаргетные последствия применяются существующим боевым resolver по переданному контексту.'
     }
   };
 })(window);
