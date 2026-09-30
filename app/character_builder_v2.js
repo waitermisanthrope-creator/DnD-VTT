@@ -45,7 +45,11 @@
   function extraInfo(name){return EXTRA[name]||null;}
   function classProgression(name){
     var d=getClass(name)||{};
-    if(d.progression&&d.progression.levels)return d.progression;
+    if(d.progression&&d.progression.levels){
+      /* Runtime progression contains levels/resources, while the base class
+         object contains skills, armor, weapons and other creation metadata. */
+      return Object.assign({},d,d.progression,{levels:d.progression.levels});
+    }
     if(d.levels)return d;
     return d;
   }
