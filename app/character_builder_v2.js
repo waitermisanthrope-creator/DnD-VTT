@@ -647,7 +647,7 @@
       var rc=this.race,cc=this.className;
       this.values=(this.values&&typeof this.values==='object')?this.values:{};
       var savedChoiceValues=this.values;
-      this.choices=collectChoices(rc,cc,this.classLevel,this.isNewClass,(this.hero&&this.hero.classes||[]).find(function(x){return norm(x.name)===norm(cc);})?.subclass,this.hero);
+      this.choices=collectChoices(rc,cc,this.classLevel,this.isNewClass,(this.hero&&this.hero.classes||[]).find(function(x){return norm(x.name)===norm(cc);})?.subclass,this.hero).concat(backgroundChoices(this.values.background||''));
       var bgName=this.values.background||'';
       var bgList=typeof g.getAllBackgrounds==='function'?g.getAllBackgrounds():(g.dndBackgrounds||[]);
       var bg=Array.isArray(bgList)?bgList.find(function(x){return (x.nameRu||x.name)===bgName||x.name===bgName;}):null;
