@@ -427,8 +427,12 @@
       if(this.className&&isExtra(this.className))body='<div class="cb-card cb-extra"><h3>'+esc(this.className)+'</h3><p>Это Extra-класс. Обычный класс не выбирается. Тело/хозяин уже выбран на предыдущем шаге.</p></div>';
     }
     if(this.step===3){
-      var stats=this.values.stats||{str:8,dex:8,con:8,int:8,wis:8,cha:8};
-      body='<div class="cb-card"><h3>Характеристики</h3><p class="cb-note">27 очков. Значения 8–15 до расовых и специальных бонусов.</p><div class="cb-grid3">'+STATS.map(function(x){return '<label>'+x.name+'<input class="cb-input" type="number" min="8" max="15" data-stat="'+x.id+'" value="'+(stats[x.id]||8)+'"></label>';}).join('')+'</div><div id="cb_pointbuy" class="cb-note" style="margin-top:8px"></div></div>';
+      var stats=this.values.stats||{};
+      var statList=Array.isArray(STATS)&&STATS.length?STATS:[
+        {id:'str',name:'Сила'},{id:'dex',name:'Ловкость'},{id:'con',name:'Телосложение'},
+        {id:'int',name:'Интеллект'},{id:'wis',name:'Мудрость'},{id:'cha',name:'Харизма'}
+      ];
+      body='<div class="cb-card"><h3>Характеристики</h3><p class="cb-note">27 очков. Значения 8–15 до расовых и специальных бонусов.</p><div class="cb-grid3">'+statList.map(function(x){return '<label>'+x.name+'<input class="cb-input" type="number" min="8" max="15" data-stat="'+x.id+'" value="'+(stats[x.id]||8)+'"></label>';}).join('')+'</div><div id="cb_pointbuy" class="cb-note" style="margin-top:8px"></div></div>';
     }
     if(this.step===4){
       var rc=this.race,cc=this.className;
