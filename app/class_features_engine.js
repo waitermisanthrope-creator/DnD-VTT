@@ -246,6 +246,94 @@
   function featureAvailableForCurrentBuild(h,id){if(!h||!id)return false;var ok=false;(h.classes||[]).forEach(function(c){var cls=String(c.name||''),lvl=num(c.level);if(!lvl)return;var core=(CORE[cls]||[]).some(function(f){var req=(function(){var m={rage:1,rele:0,reckless:2,dangerSense:2,fastMovement:5,feralInstinct:7,brutalCritical:9,relentlessRage:11,persistentRage:15,indomitableMight:18,primalChampion:20,bardicInspiration:1,jackOfAllTrades:2,songOfRest:2,countercharm:6,magicalSecrets:10,superiorInspiration:20,secondWind:1,actionSurge:2,indomitable:9,fightingStyle:1,extraAttack:5,fighterRemarkableAthlete:7,survivor:18,arcaneRecovery:1,spellMastery:18,signatureSpells:20,arcaneMastery:20,druidic:1,wildShape:2,timelessBody:18,beastSpells:18,archdruid:20,channelDivinity:2,turnUndead:2,destroyUndead:5,divineIntervention:10,greaterDivineIntervention:20,flurry:2,patientDefense:2,stepWind:2,stunningStrike:5,deflectMissiles:3,slowFall:4,evasionMonk:7,stillnessOfMind:7,diamondSoul:14,perfectSelf:20,divineSense:1,layOnHands:1,divineSmite:2,auraOfProtection:6,auraOfCourage:10,improvedDivineSmite:11,cleansingTouch:14,holyNexus:20,sneakAttack:1,cunningAction:2,uncannyDodge:5,evasion:7,reliableTalent:11,blindsense:14,slipperyMind:15,strokeOfLuck:20,favoredEnemy:1,naturalExplorer:1,rangerFightingStyle:2,huntersMark:2,landsStrideRanger:8,hideInPlainSight:10,vanish:14,feralSenses:18,foeSlayer:20,fontOfMagic:2,metamagic:3,sorcerousRestoration:20,sorcerousOriginMastery:18,pactBoon:3,eldritchInvocations:2,mysticArcanum:11,eldritchMaster:20,magicalTinkering:1,infuseItem:2,flashOfGenius:7,spellStoringItem:11,magicItemAdept:10,soulOfArtifice:20};return m[f[0]]||1;})();return f[0]===id&&lvl>=req;});if(core)ok=true;var sub=getSubclass(h,cls),arr=sub&&SUBCLASS_MAP[cls]&&SUBCLASS_MAP[cls][sub];if(arr&&arr.some(function(x){return x.id===id&&lvl>=x.level;}))ok=true;});if(!ok&&global.DNDFeats&&global.DNDFeats.has)ok=!!global.DNDFeats.has(h,id);if(!ok&&global.DNDContent&&global.DNDContent.getFeature){var f=global.DNDContent.getFeature(id);if(f&&f.className&&classLevel(h,f.className)>0)ok=true;}return ok;}
   function activeRage(h){return !!(h&&h.classFeaturesState&&h.classFeaturesState.raging);}
 
+  function syncExtendedRuntimeResources(h){
+    if(!h)return;
+    var l, s, r, rt, pack;
+
+    // Accursed: runtime owns metamorphosis/spell state.
+    l=classLevel(h,'Аккурсд');
+    if(l){
+      rt=global.accursedRuntime;
+      if(rt&&typeof rt.sync==='function')rt.sync(h);
+      s=h.classFeaturesState&&h.classFeaturesState.accursed;
+      if(s&&Number.isFinite(Number(s.metamorphosesUsesMax))){
+        ensureRes(h,'accursedMetamorphoses',Number(s.metamorphosesUsesMax),'long');
+        h.resources.accursedMetamorphoses.current=Math.max(0,Math.min(Number(s.metamorphosesUses)||0,h.resources.accursedMetamorphoses.max));
+      }
+    }
+
+    // Rune Keeper: charges are held by the runtime state.
+    l=classLevel(h,'Рунный хранитель');
+    if(l){
+      rt=global.runeKeeperRuntime;
+      if(rt&&typeof rt.sync==='function')rt.sync(h);
+      s=h.classFeaturesState&&h.classFeaturesState.runekeeper;
+      if(s){
+        ensureRes(h,'runicCharges',Number(s.runicChargeMax)||Math.floor(l/2),'long');
+        h.resources.runicCharges.current=Math.max(0,Math.min(Number(s.runicCharges)||0,h.resources.runicCharges.max));
+      }
+    }
+
+    // Savant: reactions are runtime-owned. Focuses are selections, not a pool.
+    l=classLevel(h,'Савант');
+    if(l){
+      rt=global.savantRuntime;
+      if(rt&&typeof rt.sync==='function')rt.sync(h);
+      s=h.classFeaturesState&&h.classFeaturesState.savant;
+      if(s){
+        ensureRes(h,'savantReactions',Number(s.reactionMax)||1,'long');
+        h.resources.savantReactions.current=Math.max(0,Math.min(Number(s.reactionUses)||0,h.resources.savantReactions.max));
+      }
+    }
+
+    // Alchemist / Warden already keep their live pools in h.resources through
+    // their DNDContent hooks. We only ensure the hooks have had a chance to run.
+    l=classLevel(h,'Алхимик');
+    if(l){
+      pack=global.DNDContent&&global.DNDContent.getClass?global.DNDContent.getClass('Алхимик'):null;
+      if(pack&&pack.hooks&&typeof pack.hooks.sync==='function')pack.hooks.sync(h);
+    }
+    l=classLevel(h,'Страж');
+    if(l){
+      pack=global.DNDContent&&global.DNDContent.getClass?global.DNDContent.getClass('Страж'):null;
+      if(pack&&pack.hooks&&typeof pack.hooks.sync==='function')pack.hooks.sync(h);
+    }
+
+    // Remaining extended runtimes expose progression/state rather than a
+    // mutable pool. Their bridge resources are created here so UI/combat can
+    // address them uniformly without inventing a second state object.
+    l=classLevel(h,'Шифтер');
+    if(l){
+      var maxAdr=Math.max(1,abilityMod(h,'con'));
+      ensureRes(h,'shifterAdrenaline',maxAdr,'short');
+      ensureRes(h,'shifterPrimevalForm',l>=11?3:0,'long');
+    }
+    l=classLevel(h,'Сосуд');
+    if(l){
+      ensureRes(h,'vesselArchonForm',1,'short');
+    }
+    l=classLevel(h,'Некромант');
+    if(l){
+      ensureRes(h,'necromancerCharnelTouch',l*5,'long');
+    }
+    l=classLevel(h,'Мученик');
+    if(l){
+      var mr=global.martyrRuntime;
+      var mp=mr&&mr.progression&&mr.progression.levels?mr.progression.levels[l]:null;
+      if(mp&&Number.isFinite(Number(mp.spellUses)))ensureRes(h,'martyrSpellUses',Number(mp.spellUses),'long');
+      var dr=l>=17?10:l>=13?6:l>=9?3:0;
+      ensureRes(h,'martyrDivineRespite',dr,'long');
+    }
+    l=classLevel(h,'Оккультист');
+    if(l){
+      pack=global.DNDContent&&global.DNDContent.getClass?global.DNDContent.getClass('Оккультист'):null;
+      if(pack&&pack.hooks&&typeof pack.hooks.sync==='function')pack.hooks.sync(h);
+      s=h.classFeaturesState||{};
+      var fateMax=Math.max(0,Number(s.occultistFateReadingUses)||0);
+      if(fateMax)ensureRes(h,'occultistFateReading',fateMax,'long');
+    }
+  }
+
   function syncClassResources(h){
     if(!h)return;
     externalSync(h);
@@ -262,29 +350,12 @@
     l=classLevel(h,'Следопыт');if(l){ensureRes(h,'huntersMark',1,'short');}
     l=classLevel(h,'Колдун');if(l){var slots=l>=17?4:l>=11?3:l>=5?2:1;ensureRes(h,'pactSlots',slots,'short');}
     l=classLevel(h,'Изобретатель');if(l){ensureRes(h,'infusions',Math.max(2,Math.floor((l+1)/3)),'long');ensureRes(h,'flashOfGenius',Math.max(1,abilityMod(h,'int')),'long');}
-    // Extended-class runtimes: expose their own resource pools in the common
-    // resource UI without replacing their richer classFeaturesState.
-    if(l=classLevel(h,'Аккурсд')){
-      var ar=global.accursedRuntime;
-      if(ar&&typeof ar.sync==='function') ar.sync(h);
-      var acs=h.classFeaturesState&&h.classFeaturesState.accursed;
-      if(acs&&Number.isFinite(Number(acs.metamorphosesUsesMax))) ensureRes(h,'accursedMetamorphoses',Number(acs.metamorphosesUsesMax),'long');
-    }
-    if(l=classLevel(h,'Рунный хранитель')){
-      var rr=global.runeKeeperRuntime;
-      if(rr&&typeof rr.sync==='function') rr.sync(h);
-      var rks=h.classFeaturesState&&h.classFeaturesState.runekeeper;
-      if(rks) ensureRes(h,'runicCharges',Number(rks.runicChargeMax)||Math.floor(l/2),'long');
-    }
-    if(l=classLevel(h,'Савант')){
-      var sr=global.savantRuntime;
-      if(sr&&typeof sr.sync==='function') sr.sync(h);
-      var svs=h.classFeaturesState&&h.classFeaturesState.savant;
-      if(svs){
-        ensureRes(h,'savantReactions',Number(svs.reactionMax)||1,'long');
-        h.resources.savantReactions.current=Math.max(0,Math.min(Number(svs.reactionUses)||0,h.resources.savantReactions.max));
-      }
-    }
+    // Extended-class runtimes: expose their real resource pools in the
+    // common layer. A runtime-owned state remains the source of truth; a
+    // common resource is only a bridge for UI/combat when the runtime itself
+    // already uses h.resources as its state store.
+    syncExtendedRuntimeResources(h);
+
     if(isSubclassFeatureAvailable(h,'Воин','superiorityDice'))ensureRes(h,'superiorityDice',classLevel(h,'Воин')>=15?6:4,'short');
     if(isSubclassFeatureAvailable(h,'Варвар','frenzy'))ensureRes(h,'frenzy',1,'long');
     if(isSubclassFeatureAvailable(h,'Волшебник','arcaneWard'))ensureRes(h,'arcaneWard',0,'long');
@@ -644,10 +715,52 @@
     box.innerHTML=html||'<div style="color:#777">Добавьте класс персонажу.</div>';
   }
 
-    function extendedResourceState(h){
+    function spendExtendedResource(h,id,n){
+    if(!h)return{ok:false,reason:'Персонаж не найден.'};
+    syncClassResources(h);
+    var v=Math.max(1,Number(n)||1), s, rt, pack, res;
+    id=String(id||'');
+
+    if(id==='accursedMetamorphoses'){
+      s=h.classFeaturesState&&h.classFeaturesState.accursed;rt=global.accursedRuntime;
+      if(!s||!rt)return{ok:false,reason:'Runtime Аккурсда недоступен.'};
+      if(Number(s.metamorphosesUses)<v)return{ok:false,reason:'Недостаточно использований метаморфозы.'};
+      if(typeof rt.useMetamorphosis==='function')return rt.useMetamorphosis(h,v);
+      s.metamorphosesUses=Number(s.metamorphosesUses)-v;
+      return{ok:true,remaining:s.metamorphosesUses};
+    }
+    if(id==='runicCharges'){
+      s=h.classFeaturesState&&h.classFeaturesState.runekeeper;rt=global.runeKeeperRuntime;
+      if(!s||!rt||typeof rt.charge!=='function')return{ok:false,reason:'Расход рунного заряда не поддержан runtime.'};
+      return rt.charge(h,v);
+    }
+    if(id==='savantReactions'){
+      s=h.classFeaturesState&&h.classFeaturesState.savant;rt=global.savantRuntime;
+      if(!s||!rt)return{ok:false,reason:'Runtime Саванта недоступен.'};
+      if(Number(s.reactionUses)<v)return{ok:false,reason:'Реакции Саванта закончились.'};
+      if(typeof rt.observe==='function')return rt.observe(h,'resource',{amount:v});
+      s.reactionUses=Number(s.reactionUses)-v;
+      return{ok:true,remaining:s.reactionUses};
+    }
+
+    res=h.resources&&h.resources[id];
+    if(!res||Number(res.current)<v)return{ok:false,reason:'Недостаточно ресурса: '+id+'.'};
+    res.current-=v;
+    return{ok:true,remaining:res.current};
+  }
+
+  function extendedResourceState(h){
     if(!h)return {};
     syncClassResources(h);
-    var out={};
+    var out={resources:{}};
+    if(h.resources){
+      ['alchemistReagents','wardenInterrupt','wardenFontOfLife','wardenLegendaryResistance','wardenSecondWind',
+       'shifterAdrenaline','shifterPrimevalForm','vesselArchonForm','necromancerCharnelTouch',
+       'martyrSpellUses','martyrDivineRespite','occultistFateReading','accursedMetamorphoses',
+       'runicCharges','savantReactions'].forEach(function(id){
+        if(h.resources[id])out.resources[id]={current:h.resources[id].current,max:h.resources[id].max,recharge:h.resources[id].recharge};
+      });
+    }
     if(hasClass(h,'Аккурсд')){
       var a=h.classFeaturesState&&h.classFeaturesState.accursed;
       if(a)out.accursed={charges:a.metamorphosesUses,chargesMax:a.metamorphosesUsesMax,spellSlots:a.spellSlots||a.slots||null};
@@ -663,7 +776,7 @@
     return out;
   }
 
-global.DNDClassFeatures={VERSION:'3.1.0',CLASS_NAMES:CLASS_NAMES,CORE:CORE,SUBCLASS_FEATURES:SUBCLASS_FEATURES,FEATURE_DEFS:FEATURE_DEFS,META_COST:META_COST,META_NAMES:META_NAMES,getSubclass:getSubclass,isAssassin:isAssassin,featureAvailableForCurrentBuild:featureAvailableForCurrentBuild,syncClassResources:syncClassResources,buildFeatureSet:buildFeatureSet,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,spellDamageModifiers:spellDamageModifiers,checkModifiers:checkModifiers,resetTurn:resetTurn,onAttackResult:onAttackResult,consumePendingOnHit:consumePendingOnHit,onTurnEnd:onTurnEnd,restore:restore,extendedResourceState:extendedResourceState,activeRage:activeRage,reactionOptions:reactionOptions,resolveReaction:resolveReaction};
+global.DNDClassFeatures={VERSION:'3.1.0',CLASS_NAMES:CLASS_NAMES,CORE:CORE,SUBCLASS_FEATURES:SUBCLASS_FEATURES,FEATURE_DEFS:FEATURE_DEFS,META_COST:META_COST,META_NAMES:META_NAMES,getSubclass:getSubclass,isAssassin:isAssassin,featureAvailableForCurrentBuild:featureAvailableForCurrentBuild,syncClassResources:syncClassResources,buildFeatureSet:buildFeatureSet,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,spellDamageModifiers:spellDamageModifiers,checkModifiers:checkModifiers,resetTurn:resetTurn,onAttackResult:onAttackResult,consumePendingOnHit:consumePendingOnHit,onTurnEnd:onTurnEnd,restore:restore,spendExtendedResource:spendExtendedResource,extendedResourceState:extendedResourceState,activeRage:activeRage,reactionOptions:reactionOptions,resolveReaction:resolveReaction};
   global.renderClassFeatures=renderClassFeatures;global.useClassFeature=useClassFeatureUI;global.chooseMetamagic=chooseMetamagic;global.chooseAssassinSubclass=chooseAssassinSubclass;global.chooseSubclassForClass=chooseSubclassForClass;
   global.addEventListener('dnd-character-rendered',function(){setTimeout(renderClassFeatures,0);});
 })(window);
