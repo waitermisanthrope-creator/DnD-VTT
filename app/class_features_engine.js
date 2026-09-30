@@ -257,7 +257,7 @@
       if(rt&&typeof rt.sync==='function')rt.sync(h);
       s=h.classFeaturesState&&h.classFeaturesState.accursed;
       if(s&&Number.isFinite(Number(s.metamorphosesUsesMax))){
-        ensureRes(h,'accursedMetamorphoses',Number(s.metamorphosesUsesMax),'long');
+        ensureRes(h,Number(s.metamorphosesUsesMax),'long');
         h.resources.accursedMetamorphoses.current=Math.max(0,Math.min(Number(s.metamorphosesUses)||0,h.resources.accursedMetamorphoses.max));
       }
     }
@@ -721,24 +721,20 @@
     var v=Math.max(1,Number(n)||1), s, rt, pack, res;
     id=String(id||'');
 
-    if(id==='accursedMetamorphoses'){
-      s=h.classFeaturesState&&h.classFeaturesState.accursed;rt=global.accursedRuntime;
-      if(!s||!rt)return{ok:false,reason:'Runtime Аккурсда недоступен.'};
-      if(Number(s.metamorphosesUses)<v)return{ok:false,reason:'Недостаточно использований метаморфозы.'};
-      if(typeof rt.useMetamorphosis==='function')return rt.useMetamorphosis(h,v);
-      s.metamorphosesUses=Number(s.metamorphosesUses)-v;
-      return{ok:true,remaining:s.metamorphosesUses};
-    }
     if(id==='runicCharges'){
       s=h.classFeaturesState&&h.classFeaturesState.runekeeper;rt=global.runeKeeperRuntime;
       if(!s||!rt||typeof rt.charge!=='function')return{ok:false,reason:'Расход рунного заряда не поддержан runtime.'};
-      return rt.charge(h,v);
+      var objectId=arguments.length>3&&arguments[3]&&arguments[3].objectId;
+      if(!objectId)return{ok:false,reason:'Для расхода рунного заряда нужна конкретная руна.'};
+      if(v!==1)return{ok:false,reason:'Рунный заряд расходуется по одному за активацию.'};
+      return rt.charge(h,objectId);
     }
     if(id==='savantReactions'){
       s=h.classFeaturesState&&h.classFeaturesState.savant;rt=global.savantRuntime;
       if(!s||!rt)return{ok:false,reason:'Runtime Саванта недоступен.'};
       if(Number(s.reactionUses)<v)return{ok:false,reason:'Реакции Саванта закончились.'};
-      if(typeof rt.observe==='function')return rt.observe(h,'resource',{amount:v});
+      if(v!==1)return{ok:false,reason:'Реакция Саванта расходуется по одной за активацию.'};
+      if(typeof rt.observe==='function')return rt.observe(h,'resource',{});
       s.reactionUses=Number(s.reactionUses)-v;
       return{ok:true,remaining:s.reactionUses};
     }
@@ -763,7 +759,7 @@
     }
     if(hasClass(h,'Аккурсд')){
       var a=h.classFeaturesState&&h.classFeaturesState.accursed;
-      if(a)out.accursed={charges:a.metamorphosesUses,chargesMax:a.metamorphosesUsesMax,spellSlots:a.spellSlots||a.slots||null};
+      if(a)out.accursed={charges:a.metamorphosesKnown:Array.isArray(a.metamorphoses)?a.metamorphoses.length:0,chargesMax:a.metamorphosisMax,spellSlots:a.spellSlots||a.slots||null};
     }
     if(hasClass(h,'Рунный хранитель')){
       var r=h.classFeaturesState&&h.classFeaturesState.runekeeper;
