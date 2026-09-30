@@ -645,3 +645,198 @@ window.SUBCLASSES_REFERENCE["Призрак"] = {
   "Блуждающий": {source:"Project Extra / самостоятельный дизайн",description:"Мастер Эфира, который свободно переходит между материальным и потусторонним мирами.",pickLevel:3,runtimeKey:"Блуждающий",levels:{3:{features:["Эфирный странник"]},6:{features:["Проход сквозь стену"]},14:{features:["Двойное существование"]},18:{features:["Владыка границы"]}}},
   "Кошмарник": {source:"Project Extra / самостоятельный дизайн",description:"Дух, который атакует разум, сны и восприятие живых.",pickLevel:3,runtimeKey:"Кошмарник",levels:{3:{features:["Кошмарный шёпот"]},6:{features:["Сон наяву"]},14:{features:["Паника толпы"]},18:{features:["Ночь без рассвета"]}}}
 };
+
+
+/* V70.26.79 — unified subclass resolver.
+ * The original registry contained the data but not the public resolver functions.
+ * Builder/level-up therefore depended on stale runtime state. Keep the registry
+ * authoritative, while also accepting installed Content Framework packs.
+ */
+(function(g){
+  'use strict';
+  var R=g.SUBCLASSES_REFERENCE||(g.SUBCLASSES_REFERENCE={});
+  var ALIAS={
+    'Иллирригер':'Illrigger','Кровавый охотник':'Blood Hunter','Бистхарт':'Beastheart',
+    'Пугилист':'Pugilist','Страж':'Warden','Военачальник':'Warlord','Псионик':'Psion',
+    'Алхимик':'Alchemist','Оккультист':'Occultist','Ведьма':'Witch','Некромант':'Necromancer',
+    'Мученик':'Martyr','Сосуд':'Vessel','Рунный хранитель':'RuneKeeper','Савант':'Savant',
+    'Шифтер':'Shifter','Аккурсд':'Accursed','Гайст':'Geist','Рой':'Swarm',
+    'Паразит':'Parasite','Паразит доктора Вальтера':'Walter Parasite','Призрак':'Ghost'
+  };
+  function asEntry(x){
+    if(!x)return null;
+    if(typeof x==='string')return {name:x,source:'class progression'};
+    return {key:x.id||x.name,name:x.nameRu||x.name||x.id,source:x.source||'class progression',description:x.description||x.desc||'',pickLevel:Number(x.pickLevel||x.level||3)||3,levels:x.levels||{}};
+  }
+  function addUnique(out,x){
+    var e=asEntry(x);if(!e||!e.name)return;
+    if(!out.some(function(y){return String(y.name)===String(e.name);}))out.push(e);
+  }
+  function fromContent(className){
+    if(!g.DNDContent||typeof g.DNDContent.listSubclasses!=='function')return[];
+    var names=[className,ALIAS[className]];
+    for(var i=0;i<names.length;i++){
+      var p=g.DNDContent.listSubclasses(names[i]);
+      if(Array.isArray(p)&&p.length)return p;
+    }
+    return [];
+  }
+  function fromProgression(className){
+    var d=typeof g.getClassData==='function'?g.getClassData(className):null;
+    var p=d&&d.progression?d.progression:d;
+    if(!p)return[];
+    var out=[];
+    (p.subclasses||[]).forEach(addUnique.bind(null,out));
+    (p.fightClubs||[]).forEach(function(x){addUnique(out,{name:String(x).split(' — ').pop(),id:x});});
+    (p.championCalls||[]).forEach(addUnique.bind(null,out));
+    (p.academies||[]).forEach(addUnique.bind(null,out));
+    if(p.archetypes)Object.keys(p.archetypes).forEach(function(k){addUnique(out,p.archetypes[k]);});
+    if(p.traditions)Object.keys(p.traditions).forEach(function(k){var x=p.traditions[k];addUnique(out,{name:k,description:x.description,pickLevel:1});});
+    if(p.crafts)Object.keys(p.crafts).forEach(function(k){var x=p.crafts[k];addUnique(out,{name:k,description:x.description,pickLevel:3});});
+    if(p.subclassFeatureCatalog)Object.keys(p.subclassFeatureCatalog).forEach(function(k){addUnique(out,p.subclassFeatureCatalog[k]);});
+    return out;
+  }
+  function collect(className){
+    var out=[];
+    var local=R[className]||{};
+    Object.keys(local).forEach(function(k){var x=local[k];addUnique(out,{id:k,name:k,source:x.source,description:x.description,pickLevel:x.pickLevel,levels:x.levels});});
+    fromContent(className).forEach(function(x){addUnique(out,x);});
+    fromProgression(className).forEach(function(x){addUnique(out,x);});
+    return out;
+  }
+  g.getAvailableSubclasses=function(className){
+    return collect(className).map(function(x){return {key:x.key||x.id||x.name,name:x.name,source:x.source||'Project',description:x.description||'',pickLevel:Number(x.pickLevel||3)||3,levels:x.levels||{}};});
+  };
+  g.getSubclassData=function(className,subclassName){
+    var local=R[className]||{};
+    if(local[subclassName])return local[subclassName];
+    var list=collect(className);
+    var hit=list.find(function(x){return String(x.name)===String(subclassName)||String(x.key)===String(subclassName);});
+    return hit||null;
+  };
+  g.getSubclassFeaturesForLevel=function(className,subclassName,level){
+    var d=g.getSubclassData(className,subclassName);
+    if(!d||!d.levels)return[];
+    var x=d.levels[level];return Array.isArray(x)?x:(x&&Array.isArray(x.features)?x.features:[]);
+  };
+
+  /* Broaden the 2014-era standard catalog without replacing the existing data.
+     Entries are short paraphrases/labels; detailed mechanics remain in the
+     progression engine or can be expanded later. */
+  function seed(cls,items,pick){
+    R[cls]=R[cls]||{};
+    items.forEach(function(x){
+      if(!R[cls][x.name])R[cls][x.name]={source:x.source||'2014+ official options',description:x.description||'',pickLevel:pick,levels:x.levels||{}};
+    });
+  }
+  seed('Жрец',[
+    {name:'Домен Знаний',description:'Знания, языки, навыки и тайны.'},
+    {name:'Домен Света',description:'Свет, огонь и защита от тьмы.'},
+    {name:'Домен Природы',description:'Связь с природой и стихийными силами.'},
+    {name:'Домен Бури',description:'Гром, молния и ярость стихии.'},
+    {name:'Домен Хитрости',description:'Иллюзии, обман и ловкость.'},
+    {name:'Домен Войны',description:'Боевой жрец и благословение оружия.'},
+    {name:'Домен Смерти',source:'DMG 2014',description:'Некротическая сила и повеление смертью.'},
+    {name:'Домен Тайны',source:'SCAG',description:'Божественная магия, связанная с арканными знаниями.'},
+    {name:'Домен Кузни',source:'Xanathar/Tasha',description:'Создание, металл и усиление снаряжения.'},
+    {name:'Домен Могилы',source:'Xanathar',description:'Граница между жизнью и смертью.'},
+    {name:'Домен Порядка',source:'Tasha',description:'Закон, дисциплина и командная поддержка.'},
+    {name:'Домен Мира',source:'Tasha',description:'Связь, защита и поддержка союзников.'},
+    {name:'Домен Сумерек',source:'Tasha',description:'Защита от тьмы и сила сумеречной границы.'}
+  ],1);
+  seed('Бард',[
+    {name:'Коллегия Гламура',source:'Xanathar',description:'Очарование, сценическое присутствие и влияние.'},
+    {name:'Коллегия Мечей',source:'Xanathar',description:'Боевой артист и фехтовальщик.'},
+    {name:'Коллегия Шёпотов',source:'Xanathar',description:'Тайны, страх и скрытое психологическое давление.'},
+    {name:'Коллегия Красноречия',source:'Tasha',description:'Переговоры, убеждение и безупречная речь.'},
+    {name:'Коллегия Созидания',source:'Tasha',description:'Музыка, создающая материальные и магические проявления.'}
+  ],3);
+  seed('Варвар',[
+    {name:'Путь Предков',source:'Xanathar',description:'Духи предков и защита союзников.'},
+    {name:'Путь Штормового вестника',source:'Xanathar',description:'Ярость, связанная со стихиями.'},
+    {name:'Путь Зилота',source:'Xanathar',description:'Божественная ярость и почти фанатичная стойкость.'},
+    {name:'Путь Зверя',source:'Tasha',description:'Первобытная трансформация и природное оружие.'},
+    {name:'Путь Дикой магии',source:'Tasha',description:'Случайные магические проявления во время ярости.'}
+  ],3);
+  seed('Друид',[
+    {name:'Круг Снов',source:'Xanathar',description:'Сновидения, фейская магия и восстановление.'},
+    {name:'Круг Пастыря',source:'Xanathar',description:'Духи природы и защита зверей.'},
+    {name:'Круг Спор',source:'Tasha',description:'Грибы, разложение и некротическая природа.'},
+    {name:'Круг Звёзд',source:'Tasha',description:'Созвездия, небесная сила и астральный облик.'},
+    {name:'Круг Дикого огня',source:'Tasha',description:'Огонь как сила разрушения и возрождения.'}
+  ],2);
+  seed('Воин',[
+    {name:'Чемпион',description:'Простая специализация на физическом боевом мастерстве.'},
+    {name:'Мистический лучник',source:'Xanathar',description:'Арканные приёмы дальнего боя.'},
+    {name:'Кавалер',source:'Xanathar',description:'Конный бой, удержание линии и защита союзников.'},
+    {name:'Самурай',source:'Xanathar',description:'Дисциплина, воля и точные атаки.'},
+    {name:'Пси-воин',source:'Tasha',description:'Псионические приёмы поверх боевого мастерства.'},
+    {name:'Рунный рыцарь',source:'Tasha',description:'Руны, усиление тела и магическое оружие.'}
+  ],3);
+  seed('Монах',[
+    {name:'Путь четырёх стихий',description:'Манипуляция элементами через ки.'},
+    {name:'Путь пьяного мастера',source:'Xanathar',description:'Непредсказуемые движения и контратаки.'},
+    {name:'Путь Кэнсэя',source:'Xanathar',description:'Мастерство оружия и точность.'},
+    {name:'Путь Долгой смерти',source:'SCAG',description:'Выносливость и некротическая энергия.'},
+    {name:'Путь Солнечной души',source:'SCAG/Xanathar',description:'Солнечная и дальняя ки-атака.'},
+    {name:'Путь Милосердия',source:'Tasha',description:'Лечение и поражение через контроль жизненной энергии.'},
+    {name:'Путь Астрального Я',source:'Tasha',description:'Проявление астральных рук и тела.'}
+  ],3);
+  seed('Паладин',[
+    {name:'Клятва Древних',description:'Защита жизни, природы и света.'},
+    {name:'Клятва Завоевания',source:'Xanathar',description:'Страх, подавление и воинская власть.'},
+    {name:'Клятва Искупления',source:'Xanathar',description:'Защита, терпение и стремление остановить конфликт.'},
+    {name:'Клятва Короны',source:'SCAG',description:'Верность государству, порядку и защите народа.'},
+    {name:'Клятва Наблюдателей',source:'Tasha',description:'Охота на планарные угрозы и защита мира.'},
+    {name:'Клятва Славы',source:'Tasha',description:'Героизм, атлетизм и стремление к легендарным подвигам.'},
+    {name:'Клятвопреступник',source:'DMG',description:'Падший паладин, использующий тёмную силу.'}
+  ],3);
+  seed('Следопыт',[
+    {name:'Охотник',description:'Универсальный охотник на опасных врагов.'},
+    {name:'Повелитель зверей',description:'Боевой союз с животным-компаньоном.'},
+    {name:'Сумрачный охотник',source:'Xanathar',description:'Засады, тьма и первая атака.'},
+    {name:'Странник горизонта',source:'Xanathar',description:'Планарные перемещения и дальние переходы.'},
+    {name:'Истребитель чудовищ',source:'Xanathar',description:'Охота на конкретные сверхъестественные угрозы.'},
+    {name:'Странник фей',source:'Tasha',description:'Фейская магия и перемещение между врагами.'},
+    {name:'Хранитель роя',source:'Tasha',description:'Магическая связь с роем мелких существ.'},
+    {name:'Драконовод',source:'Fizban',description:'Драконья связь и растущий дракон-компаньон.'}
+  ],3);
+  seed('Плут',[
+    {name:'Вор',description:'Ловкость рук, взлом и использование предметов.'},
+    {name:'Убийца',description:'Маскировка, яды и внезапные смертельные атаки.'},
+    {name:'Мистический ловкач',description:'Скрытность и арканная магия.'},
+    {name:'Следователь',source:'Xanathar',description:'Анализ, поиск слабостей и чтение противника.'},
+    {name:'Мастер интриг',source:'Xanathar',description:'Манипуляция, социальные уловки и разведка.'},
+    {name:'Разведчик',source:'Xanathar',description:'Мобильность, выживание и полевой бой.'},
+    {name:'Сорвиголова',source:'Xanathar',description:'Дуэль и социальная смелость.'},
+    {name:'Фантом',source:'Tasha',description:'Связь с душами умерших и некротическая сила.'},
+    {name:'Пси-клинок',source:'Tasha',description:'Псионическое оружие и скрытые атаки.'}
+  ],3);
+  seed('Чародей',[
+    {name:'Божественная душа',source:'Xanathar',description:'Врожденная магия с божественным оттенком.'},
+    {name:'Теневая магия',source:'Xanathar',description:'Тьма, живучесть и силы Царства Теней.'},
+    {name:'Бурная магия',source:'Xanathar',description:'Гром, ветер и полёт.'},
+    {name:'Отклонённый разум',source:'Tasha',description:'Псионическая и чужеродная магия.'},
+    {name:'Механическая душа',source:'Tasha',description:'Магия порядка и закономерностей.'}
+  ],1);
+  seed('Колдун',[
+    {name:'Небожитель',source:'Xanathar',description:'Покровитель из высших планов и целительная сила.'},
+    {name:'Великий Древний',description:'Чуждое сознание, тайны и ментальное влияние.'},
+    {name:'Бездонная',source:'Xanathar',description:'Сила морских глубин и щупальцев.'},
+    {name:'Проклятый клинок',source:'Xanathar',description:'Магическое оружие и боевая специализация.'},
+    {name:'Бессмертный',source:'SCAG',description:'Связь с сущностью, победившей смерть.'}
+  ],1);
+  seed('Волшебник',[
+    {name:'Школа Ограждения',description:'Защитная магия и магические барьеры.'},
+    {name:'Школа Воплощения',description:'Разрушительная и стихийная магия.'},
+    {name:'Школа Прорицания',description:'Предвидение и управление вероятностью.'},
+    {name:'Школа Очарования',description:'Воздействие на сознание и эмоции.'},
+    {name:'Школа Иллюзий',description:'Обман восприятия и создание иллюзорных миров.'},
+    {name:'Школа Некромантии',description:'Жизненная энергия, смерть и нежить.'},
+    {name:'Школа Преобразования',description:'Изменение материи и форм.'}
+  ],2);
+  seed('Изобретатель',[
+    {name:'Бронник',source:'Tasha',description:'Боевой костюм, защита и технологические модули.'},
+    {name:'Боевой кузнец',source:'Tasha',description:'Оружие, защита союзника и механический спутник.'}
+  ],3);
+})(window);
