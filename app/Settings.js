@@ -650,7 +650,7 @@ window.closeSettingsModal = closeSettingsModal;
   const DEFAULT_ICON = {
     id: 'default',
     label: 'Стандартная иконка',
-    src: './icon_previews/default.png'
+    src: 'https://appassets.androidplatform.net/vtt-apk/icon_previews/default.png'
   };
   const DICE_ICONS = [
   {
@@ -863,18 +863,7 @@ window.closeSettingsModal = closeSettingsModal;
         }
       });
     }
-    if (!global.dndNative || typeof global.dndNative.postMessage !== 'function') {
-      return Promise.reject(new Error('Native-слой смены иконки недоступен. Нужен Android APK.'));
-    }
-    return new Promise(function(resolve, reject) {
-      const id = 'icon_' + Date.now() + '_' + (++counter);
-      pending[id] = {resolve: resolve, reject: reject};
-      global.dndNative.postMessage(JSON.stringify({
-        id: id,
-        type: 'set-icon',
-        iconId: iconId
-      }));
-    });
+    return Promise.reject(new Error('Нативный модуль иконок недоступен. Установите свежий APK с поддержкой смены иконки.'));
   }
 
   function selectedId() {
