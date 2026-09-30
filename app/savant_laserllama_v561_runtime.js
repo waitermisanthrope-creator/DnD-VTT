@@ -82,7 +82,27 @@ window.savantDisciplines=Object.keys(disciplines);
   function svFlourish(h,ctx){var r=svObserve(h,"calculated_flourish",ctx);if(r.ok)r.acBonus=r.die;return r;}
   function svAnalysis(h,target){var l=svLevel(h);if(l<15)return {ok:false,reason:"Безупречный анализ доступен с 15 уровня."};var s=svState(h),id=target&&(target.id||target.name);if(!id)return {ok:false,reason:"Нужна цель."};s.flawless=s.flawless||{};if(s.flawless[id])return {ok:false,reason:"Эта цель уже анализировалась после последнего долгого отдыха."};s.flawless[id]=true;var mod=Math.floor(((Number(h.stats&&h.stats.int)||10)-10)/2);return {ok:true,targetId:id,saveDC:8+(PB[l]||2)+mod,save:"intelligence"};}
   function svRestore(h){var s=svState(h),l=svLevel(h);s.reactionUses=REACTIONS[l]||1;s.flawless={};s.focuses=[];return s;}
-  window.SAVANT_V561.MECHANICS=MECHANICS;window.savantRuntime.MECHANICS=MECHANICS;window.savantRuntime.chooseDiscipline=svDiscipline;window.savantRuntime.choosePursuit=svPursuit;window.savantRuntime.markFocus=svFocus;window.savantRuntime.potentObservation=svObserve;window.savantRuntime.calculatedFlourish=svFlourish;window.savantRuntime.flawlessAnalysis=svAnalysis;window.savantRuntime.restore=svRestore;
+  function svSync(h){
+    var l=svLevel(h),s=svState(h),pb=PB[l]||2,intMod=Math.floor(((Number(h&&h.stats&&h.stats.int)||10)-10)/2);
+    var maxReact=REACTIONS[l]||1;
+    s.level=l;s.proficiencyBonus=pb;s.intellectDie=DIE[l]||"d4";s.reactionMax=maxReact;
+    s.reactionUses=s.reactionUses==null?maxReact:Math.min(Number(s.reactionUses)||0,maxReact);
+    s.saveDC=8+pb+intMod;s.analyticalAC=10+Math.floor(((Number(h&&h.stats&&h.stats.dex)||10)-10)/2)+intMod;
+    s.focusRangeFt=60;s.focusCount=l>=20?2:1;
+    return s;
+  }
+  function svDieValue(h){var s=svSync(h),m=(Number(h&&h.stats&&h.stats.int)||10);var mod=Math.floor((m-10)/2);
+    var raw=String(s.intellectDie||"d4");var n=parseInt(raw.replace(/^d/i,""),10)||4;
+    return {notation:"d"+n,faces:n,modifierAtLevel20:(svLevel(h)>=20?mod:null),die:n};}
+  function svAnalyticalAC(h,armor){
+    var s=svSync(h),dex=Math.floor(((Number(h&&h.stats&&h.stats.dex)||10)-10)/2),intMod=Math.floor(((Number(h&&h.stats&&h.stats.int)||10)-10)/2);
+    if(!armor||armor==="none")return 10+dex+intMod;
+    return null;
+  }
+  function svFocusState(h){return svSync(h).focuses.slice();}
+  function svLongRest(h){return svRestore(h),svSync(h);}
+  function svShortRest(h){var s=svSync(h);return s;}
+  window.SAVANT_V561.MECHANICS=MECHANICS;window.savantRuntime.MECHANICS=MECHANICS;window.savantRuntime.chooseDiscipline=svDiscipline;window.savantRuntime.choosePursuit=svPursuit;window.savantRuntime.markFocus=svFocus;window.savantRuntime.potentObservation=svObserve;window.savantRuntime.calculatedFlourish=svFlourish;window.savantRuntime.flawlessAnalysis=svAnalysis;window.savantRuntime.restore=svRestore;window.savantRuntime.sync=svSync;window.savantRuntime.getDieValue=svDieValue;window.savantRuntime.analyticalAC=svAnalyticalAC;window.savantRuntime.focusState=svFocusState;window.savantRuntime.longRest=svLongRest;window.savantRuntime.shortRest=svShortRest;
 
 
 })();
