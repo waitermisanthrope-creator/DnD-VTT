@@ -1039,8 +1039,8 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     if(id==='sanguineBloodForBlood')return{ok:true,passive:true,effect:{retaliatoryNecrotic:Number(h.proficiencyBonus)||2},message:'🩸 Кровь за кровь активна.'};
     if(id==='shadowMarkedForDeath')return{ok:true,effect:{advantageFirstAttack:true,againstInterdicted:true},message:'🌑 Помеченный на смерть.'};
     if(id==='shadowStrikeFromDark')return{ok:true,effect:{bonusDamageDice:Number(h.proficiencyBonus)||2,die:l>=15?'d8':'d4',extraDimLightDie:l>=15?'2d8':'1d4',requiresAdvantage:true},message:'🌑 Удар из тьмы.'};
-    if(id==='shadowNoEscape'){if(!t)return{ok:false,message:'Выбери цель.'};return{ok:true,target:t.id,effect:{save:'cha',disadvantageInDimLight:true,speedHalf:true,maxDistanceFt:30},message:'🌑 Не уйдёшь.'};
-    if(id==='shadowVeil'){if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати.'};return{ok:true,effect:{invisible:true,durationMinutes:10,endsOnAttackOrSpell:true},message:'🌑 Покров лжи.'};
+    if(id==='shadowNoEscape'){if(!t)return{ok:false,message:'Выбери цель.'};return{ok:true,target:t.id,effect:{save:'cha',disadvantageInDimLight:true,speedHalf:true,maxDistanceFt:30},message:'🌑 Не уйдёшь.'};}
+    if(id==='shadowVeil'){if(!spend(h,'illriggerSeals',1))return{ok:false,message:'Нет печати.'};return{ok:true,effect:{invisible:true,durationMinutes:10,endsOnAttackOrSpell:true},message:'🌑 Покров лжи.'};}
     if(id==='shadowHellAssassin')return{ok:true,passive:true,effect:{rerollDamage12:true,againstInterdicted:true},message:'🗡️ Адский убийца активен.'};
     if(id==='shadowDarkMalediction')return{ok:true,passive:true,effect:{darknessAroundInterdictedFt:10},message:'🌑 Тёмное проклятие активно.'};
     if(id==='shadowUmbralKiller')return{ok:true,passive:true,effect:{darkvisionFt:60,speedBonusFt:10,stealthAdvantage:true,evasion:true},message:'🌑 Умбральный убийца активен.'};
