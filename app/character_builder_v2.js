@@ -189,7 +189,7 @@
     (Array.isArray(b.toolProficiencies)?b.toolProficiencies:[]).forEach(function(tool){
       var p=db.find(function(x){return String(x.name||'').toLowerCase()===String(tool).toLowerCase()||String(x.id||'').toLowerCase()===String(tool).toLowerCase();});
       if(p&&!hero.proficiencies.some(function(x){return x.id===p.id;}))hero.proficiencies.push(Object.assign({},p));
-      else if(tool)hero.proficiencies.push({id:'background_tool_'+String(tool).replace(/\\s+/g,'_'),category:'Инструменты',name:String(tool),description:'Владение от предыстории.'});
+      else if(tool){var fallbackId='background_tool_'+String(tool).replace(/\\s+/g,'_');if(!hero.proficiencies.some(function(x){return x.id===fallbackId;}))hero.proficiencies.push({id:fallbackId,category:'Инструменты',name:String(tool),description:'Владение от предыстории.'});}
     });
     if(b.feature){hero.backgroundFeature=b.feature;hero.features=hero.features||[];if(hero.features.indexOf(b.feature)<0)hero.features.push(b.feature);}
     var featureDescription=b.featuredescription||b.featureDescription||b.featureDesc||'';
@@ -296,8 +296,29 @@
     var db=g.PROFICIENCIES_DB||[];
     (Array.isArray(race.proficiencies)?race.proficiencies:[]).forEach(function(id){var p=db.find(function(x){return x.id===id||x.name===id;});if(p&&!hero.proficiencies.some(function(x){return x.id===p.id;}))hero.proficiencies.push(Object.assign({},p));});
     (Array.isArray(race.languages)?race.languages:[]).forEach(function(lang){if(/на выбор|дополнительный язык/i.test(String(lang)))return;var p=db.find(function(x){return x.category==='Языки'&&String(x.name||'').toLowerCase().indexOf(String(lang).toLowerCase())>=0;});if(p&&!hero.proficiencies.some(function(x){return x.id===p.id;}))hero.proficiencies.push(Object.assign({},p));});
-    if(race.hpBonusPerLevel)hero.raceHpBonusPerLevel=Number(race.hpBonusPerLevel)||0;
-    if(race.baseAc)hero.baseAC=Number(race.baseAc)||hero.baseAC;
+    if(race.hpBonusPerLevel){
+      hero.raceHpBonusPerLevel=Number(race.hpBonusPerLevel)||0;
+      rm.hpBonusPerLevel=hero.raceHpBonusPerLevel;
+    }
+    if(race.baseAc){
+      hero.baseAC=Number(race.baseAc)||hero.baseAC;
+      hero.ac=String(hero.baseAC);
+    }
+    if(race.speed){
+      hero.speed=String(race.speed);
+      rm.speed=hero.speed;
+    }
+    var sizeMatch=String(race.desc||'').match(/Размер:\s*([^\.]+)/i);
+    if(sizeMatch&&sizeMatch[1]){
+      hero.size=String(sizeMatch[1]).trim();
+      rm.size=hero.size;
+    }
+    var craftMatch=String(race.desc||'').match(/Ремесло:\s*([^\.]+)/i);
+    if(craftMatch&&craftMatch[1]){
+      hero.raceCraftBonuses=hero.raceCraftBonuses||[];
+      if(hero.raceCraftBonuses.indexOf(craftMatch[1].trim())<0)hero.raceCraftBonuses.push(craftMatch[1].trim());
+      rm.craftBonuses=hero.raceCraftBonuses.slice();
+    }
   }
   function applyExternalClassFeatures(hero,className){
     if(!hero||!className)return;hero.features=hero.features||[];
@@ -653,7 +674,7 @@
       var rc=this.race,cc=this.className;
       this.values=(this.values&&typeof this.values==='object')?this.values:{};
       var savedChoiceValues=this.values;
-      this.choices=collectChoices(rc,cc,this.classLevel,this.isNewClass,(this.hero&&this.hero.classes||[]).find(function(x){return norm(x.name)===norm(cc);})?.subclass,this.hero).concat(backgroundChoices(this.values.background||''));
+      this.choices=collectChoices(rc,cc,this.classLevel,this.isNewClass,(this.hero&&this.hero.classes||[]).find(function(x){return norm(x.name)===norm(cc);})?.subclass,this.hero);
       var bgName=this.values.background||'';
       var bgList=typeof g.getAllBackgrounds==='function'?g.getAllBackgrounds():(g.dndBackgrounds||[]);
       var bg=Array.isArray(bgList)?bgList.find(function(x){return (x.nameRu||x.name)===bgName||x.name===bgName;}):null;
