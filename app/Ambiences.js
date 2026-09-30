@@ -18,9 +18,47 @@ let isRepeatOneOn = false;
 let currentVolume = 0.7;
 let fadeInterval = null;
 let hasAutoStarted = false;
+let ambienceStateLoaded = false;
+let ambienceShouldPlay = true;
+const AMBIENCE_STATE_KEY = 'dnd_ambience_state_v1';
+
+function loadAmbienceState() {
+  if (ambienceStateLoaded) return;
+  ambienceStateLoaded = true;
+  try {
+    const raw = localStorage.getItem(AMBIENCE_STATE_KEY);
+    if (!raw) return;
+    const state = JSON.parse(raw);
+    if (Number.isInteger(state.track) && state.track >= 0 && state.track < AMBIENT_TRACKS.length) currentTrackIndex = state.track;
+    if (typeof state.volume === 'number' && isFinite(state.volume)) currentVolume = Math.max(0, Math.min(1, state.volume));
+    if (typeof state.shuffle === 'boolean') isShuffleOn = state.shuffle;
+    if (typeof state.repeat === 'boolean') isRepeatOneOn = state.repeat;
+    if (typeof state.playing === 'boolean') ambienceShouldPlay = state.playing;
+  } catch (e) {
+    console.warn('Не удалось восстановить состояние эмбиента:', e);
+  }
+}
+
+function saveAmbienceState() {
+  try {
+    localStorage.setItem(AMBIENCE_STATE_KEY, JSON.stringify({
+      track: currentTrackIndex,
+      volume: currentVolume,
+      shuffle: isShuffleOn,
+      repeat: isRepeatOneOn,
+      playing: !!ambienceShouldPlay
+    }));
+  } catch (e) {
+    console.warn('Не удалось сохранить состояние эмбиента:', e);
+  }
+}
 
 function initAmbienceEngine() {
-  if (globalAudio) return;
+  loadAmbienceState();
+  if (globalAudio) {
+    globalAudio.volume = currentVolume;
+    return;
+  }
   globalAudio = new Audio();
   globalAudio.volume = currentVolume;
 
@@ -64,16 +102,16 @@ function fadeInAudio(targetVol = 1.0, startVol = 0.3, durationMs = 30000) {
 
 // Запуск Гленморила с нарастанием
 function startGlenmorilAutoplay() {
-  if (hasAutoStarted) return;
   initAmbienceEngine();
-  
-  currentTrackIndex = 0; // Гленморил
+  if (hasAutoStarted || !ambienceShouldPlay) return;
   const track = AMBIENT_TRACKS[currentTrackIndex];
 
   globalAudio.src = track.src;
   globalAudio.play().then(() => {
     isPlayingAmbience = true;
+    ambienceShouldPlay = true;
     hasAutoStarted = true;
+    saveAmbienceState();
     fadeInAudio(1.0, 0.3, 30000);
     updateAmbienceModalUI();
     
@@ -210,7 +248,10 @@ function toggleAmbiencePlay() {
   if (isPlayingAudio()) {
     if (fadeInterval) { clearInterval(fadeInterval); fadeInterval = null; }
     globalAudio.pause();
+    ambienceShouldPlay = false;
+    saveAmbienceState();
   } else {
+    ambienceShouldPlay = true;
     playAmbienceTrack(currentTrackIndex);
   }
   updateAmbienceModalUI();
@@ -221,11 +262,16 @@ function playAmbienceTrack(index) {
   if (fadeInterval) { clearInterval(fadeInterval); fadeInterval = null; }
   
   currentTrackIndex = index;
+  ambienceShouldPlay = true;
+  saveAmbienceState();
   const track = AMBIENT_TRACKS[currentTrackIndex];
 
   globalAudio.src = track.src;
   globalAudio.play().then(() => {
     globalAudio.volume = currentVolume;
+    isPlayingAmbience = true;
+    ambienceShouldPlay = true;
+    saveAmbienceState();
     updateAmbienceModalUI();
   }).catch(err => {
     // ИСПРАВЛЕНО (аудит): alert() создаёт блокирующее нативное окно поверх
@@ -233,6 +279,8 @@ function playAmbienceTrack(index) {
     // Заменено на неблокирующее сообщение прямо в модалке эмбиентов.
     console.error("Ошибка воспроизведения аудио:", track.src, err);
     isPlayingAmbience = false;
+    ambienceShouldPlay = false;
+    saveAmbienceState();
     const statusEl = document.getElementById('ambStatusText');
     if (statusEl) {
       statusEl.innerText = "Не удалось воспроизвести: " + track.name;
@@ -253,6 +301,7 @@ function nextAmbienceTrack(autoPlay = false) {
     currentTrackIndex = (currentTrackIndex + 1) % AMBIENT_TRACKS.length;
   }
 
+  saveAmbienceState();
   if (autoPlay || isPlayingAudio()) {
     playAmbienceTrack(currentTrackIndex);
   } else {
@@ -265,17 +314,20 @@ function prevAmbienceTrack() {
   if (isPlayingAudio()) {
     playAmbienceTrack(currentTrackIndex);
   } else {
+    saveAmbienceState();
     updateAmbienceModalUI();
   }
 }
 
 function toggleShuffle() {
   isShuffleOn = !isShuffleOn;
+  saveAmbienceState();
   updateAmbienceModalUI();
 }
 
 function toggleRepeatOne() {
   isRepeatOneOn = !isRepeatOneOn;
+  saveAmbienceState();
   updateAmbienceModalUI();
 }
 
@@ -285,11 +337,15 @@ function changeAmbienceVolume(val) {
   if (globalAudio) {
     globalAudio.volume = currentVolume;
   }
+  saveAmbienceState();
 }
 
 // При старте пробуем запустить сразу, а также вешаем триггеры на первый клик/тап по экрану
 document.addEventListener('DOMContentLoaded', () => {
+  loadAmbienceState();
   setTimeout(startGlenmorilAutoplay, 300);
   document.addEventListener('click', triggerAutoplayOnInteraction, { once: true });
   document.addEventListener('touchstart', triggerAutoplayOnInteraction, { once: true });
+  window.addEventListener('pagehide', saveAmbienceState);
+  window.addEventListener('beforeunload', saveAmbienceState);
 });
