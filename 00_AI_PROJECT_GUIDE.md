@@ -5798,3 +5798,13 @@ QA:
 - Таким образом смена класса/расы/перерисовка жетона больше не должна уничтожать уже введённое место или другие пройденные поля.
 - Версия web-релиза: 70.26.77.
 - Следующий обязательный тест именно DLC/Хоумбрю: Имя → Место → класс → снова проверить, что Место осталось; затем пол → раса → возраст → предыстория → профессия. Отдельно проверить смену расы после заполнения места.
+
+
+## V70.26.79 — UPDATE DELIVERY REPAIR + DEEP CLASS CHOICE AUDIT
+- Release target: **70.26.79**.
+- Root cause of the user's failed in-app update: the repository's `app/update_manager.js` was still advertising **70.26.78**, so the generated `updates/stable.json` also remained at **70.26.78**. The app therefore correctly concluded that no newer update existed.
+- Additional release-blocking defect found in `app/character_builder_v2.js`: the subclass fallback contained a literal `\\n` sequence inside JavaScript source. This was converted to a real line break so the Builder can parse and register its class-choice logic.
+- Stable-manifest generation in `.github/workflows/android-debug.yml` now includes `app/data/subclasses/subclassesRegistry.js`; otherwise the new unified subclass resolver would never reach an already-installed APK through the web updater.
+- The manifest remains SHA-256 verified by both the web updater and native Android bridge.
+- After the next main-branch push, the Android debug workflow regenerates `updates/stable.json` from the actual repository bytes and publishes the 70.26.79 manifest.
+- Test after update: Settings → Check updates should offer **70.26.79**, then install it. After restart, test at least Cleric, Sorcerer, Warlock and several homebrew classes for their level-1 choices.
