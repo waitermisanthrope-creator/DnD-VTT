@@ -15,7 +15,7 @@
     {
       "path": "app/character_creation_pergament.js",
       "bytes": 38061,
-      "sha256": "b1846c1b956228747398f0294c530ec68d060b076b69d3b90f59375243a1daea"
+      "sha256": "7c696596f9f4f735796d9dcf3f65b6aa0990d80f59734f6640e7a60bb0ae7758"
     },
     {
       "path": "app/character_creation_pergament.css",
@@ -25,7 +25,7 @@
     {
       "path": "app/character_builder_v2.js",
       "bytes": 63433,
-      "sha256": "2903aef527b59e257b9fddfc27bfc40758a7d61b6d6dc5c13ba03d44582e16f9"
+      "sha256": "138a306bd187bd14ccb9641d9031c93007d594ecf21edb865ef3365f983c498c"
     },
     {
       "path": "app/vtt_debug_error_log_v709.js",
@@ -50,7 +50,7 @@
     {
       "path": "app/update_manager.js",
       "bytes": 20814,
-      "sha256": "29b8c40809c22d5f209b7e04b513b1e28ae5bfd88171df7cde33243dcbe2ac4d"
+      "sha256": "4d834ae0d22bb75e3ff54300de50881e80814c6e4fbc7fd4c3ceafb88e81215d"
     },
     {
       "path": "app/onboarding_faq_v71.js",
