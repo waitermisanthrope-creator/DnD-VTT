@@ -715,7 +715,7 @@
     box.innerHTML=html||'<div style="color:#777">Добавьте класс персонажу.</div>';
   }
 
-    function spendExtendedResource(h,id,n){
+    function spendExtendedResource(h,id,n,ctx){
     if(!h)return{ok:false,reason:'Персонаж не найден.'};
     syncClassResources(h);
     var v=Math.max(1,Number(n)||1), s, rt, pack, res;
@@ -724,7 +724,7 @@
     if(id==='runicCharges'){
       s=h.classFeaturesState&&h.classFeaturesState.runekeeper;rt=global.runeKeeperRuntime;
       if(!s||!rt||typeof rt.charge!=='function')return{ok:false,reason:'Расход рунного заряда не поддержан runtime.'};
-      var objectId=arguments.length>3&&arguments[3]&&arguments[3].objectId;
+      var objectId=ctx&&ctx.objectId;
       if(!objectId)return{ok:false,reason:'Для расхода рунного заряда нужна конкретная руна.'};
       if(v!==1)return{ok:false,reason:'Рунный заряд расходуется по одному за активацию.'};
       return rt.charge(h,objectId);
@@ -752,14 +752,14 @@
     if(h.resources){
       ['alchemistReagents','wardenInterrupt','wardenFontOfLife','wardenLegendaryResistance','wardenSecondWind',
        'shifterAdrenaline','shifterPrimevalForm','vesselArchonForm','necromancerCharnelTouch',
-       'martyrSpellUses','martyrDivineRespite','occultistFateReading','accursedMetamorphoses',
+       'martyrSpellUses','martyrDivineRespite','occultistFateReading',
        'runicCharges','savantReactions'].forEach(function(id){
         if(h.resources[id])out.resources[id]={current:h.resources[id].current,max:h.resources[id].max,recharge:h.resources[id].recharge};
       });
     }
     if(hasClass(h,'Аккурсд')){
       var a=h.classFeaturesState&&h.classFeaturesState.accursed;
-      if(a)out.accursed={charges:a.metamorphosesKnown:Array.isArray(a.metamorphoses)?a.metamorphoses.length:0,chargesMax:a.metamorphosisMax,spellSlots:a.spellSlots||a.slots||null};
+      if(a)out.accursed={metamorphosesKnown:Array.isArray(a.metamorphoses)?a.metamorphoses.length:0,metamorphosesMax:a.metamorphosisMax,spellSlots:a.spellSlots||a.slots||null};
     }
     if(hasClass(h,'Рунный хранитель')){
       var r=h.classFeaturesState&&h.classFeaturesState.runekeeper;
