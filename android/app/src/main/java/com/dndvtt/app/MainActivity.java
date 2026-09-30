@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
+import android.webkit.JavascriptInterface;
 import java.io.File;
 import java.util.Collections;
 import androidx.webkit.WebViewAssetLoader;
@@ -18,6 +19,13 @@ import androidx.webkit.WebMessageCompat;
 public class MainActivity extends Activity {
     private DndUpdateBridge updater;
     private WebView webView;
+
+    public class LauncherIconJsBridge {
+        @JavascriptInterface
+        public String setIcon(String iconId) {
+            return updater.setLauncherIconFromJs(iconId);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +49,8 @@ public class MainActivity extends Activity {
         final WebViewAssetLoader loader = new WebViewAssetLoader.Builder()
                 .addPathHandler("/vtt/", new WebViewAssetLoader.InternalStoragePathHandler(this, activeRoot))
                 .build();
+
+        webView.addJavascriptInterface(new LauncherIconJsBridge(), "DndLauncherIcon");
 
         webView.setWebViewClient(new WebViewClientCompat() {
             @Override
