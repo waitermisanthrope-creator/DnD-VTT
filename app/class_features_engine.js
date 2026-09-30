@@ -641,7 +641,26 @@
     box.innerHTML=html||'<div style="color:#777">Добавьте класс персонажу.</div>';
   }
 
-  global.DNDClassFeatures={VERSION:'3.1.0',CLASS_NAMES:CLASS_NAMES,CORE:CORE,SUBCLASS_FEATURES:SUBCLASS_FEATURES,FEATURE_DEFS:FEATURE_DEFS,META_COST:META_COST,META_NAMES:META_NAMES,getSubclass:getSubclass,isAssassin:isAssassin,featureAvailableForCurrentBuild:featureAvailableForCurrentBuild,syncClassResources:syncClassResources,buildFeatureSet:buildFeatureSet,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,spellDamageModifiers:spellDamageModifiers,checkModifiers:checkModifiers,resetTurn:resetTurn,onAttackResult:onAttackResult,consumePendingOnHit:consumePendingOnHit,onTurnEnd:onTurnEnd,restore:restore,activeRage:activeRage,reactionOptions:reactionOptions,resolveReaction:resolveReaction};
+    function extendedResourceState(h){
+    if(!h)return {};
+    syncClassResources(h);
+    var out={};
+    if(hasClass(h,'Аккурсд')){
+      var a=h.classFeaturesState&&h.classFeaturesState.accursed;
+      if(a)out.accursed={charges:a.metamorphosesUses,chargesMax:a.metamorphosesUsesMax,spellSlots:a.spellSlots||a.slots||null};
+    }
+    if(hasClass(h,'Рунный хранитель')){
+      var r=h.classFeaturesState&&h.classFeaturesState.runekeeper;
+      if(r)out.runekeeper={charges:r.runicCharges,chargesMax:r.runicChargeMax,runesKnown:r.runesKnown};
+    }
+    if(hasClass(h,'Савант')){
+      var s=h.classFeaturesState&&h.classFeaturesState.savant;
+      if(s)out.savant={reactions:s.reactionUses,reactionsMax:s.reactionMax,focuses:s.focuses||[]};
+    }
+    return out;
+  }
+
+global.DNDClassFeatures={VERSION:'3.1.0',CLASS_NAMES:CLASS_NAMES,CORE:CORE,SUBCLASS_FEATURES:SUBCLASS_FEATURES,FEATURE_DEFS:FEATURE_DEFS,META_COST:META_COST,META_NAMES:META_NAMES,getSubclass:getSubclass,isAssassin:isAssassin,featureAvailableForCurrentBuild:featureAvailableForCurrentBuild,syncClassResources:syncClassResources,buildFeatureSet:buildFeatureSet,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,spellDamageModifiers:spellDamageModifiers,checkModifiers:checkModifiers,resetTurn:resetTurn,onAttackResult:onAttackResult,consumePendingOnHit:consumePendingOnHit,onTurnEnd:onTurnEnd,restore:restore,extendedResourceState:extendedResourceState,activeRage:activeRage,reactionOptions:reactionOptions,resolveReaction:resolveReaction};
   global.renderClassFeatures=renderClassFeatures;global.useClassFeature=useClassFeatureUI;global.chooseMetamagic=chooseMetamagic;global.chooseAssassinSubclass=chooseAssassinSubclass;global.chooseSubclassForClass=chooseSubclassForClass;
   global.addEventListener('dnd-character-rendered',function(){setTimeout(renderClassFeatures,0);});
 })(window);
