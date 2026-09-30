@@ -24,8 +24,8 @@
     },
     {
       "path": "app/character_builder_v2.js",
-      "bytes": 71571,
-      "sha256": "85ce54f280333683943332168e5731093d2d836fb56e9a17a10bacb49f59f850"
+      "bytes": 75610,
+      "sha256": "81f237458077f51aec2a5faf225310ebc76b7b7dbce8ce6ec138406c15f5c13d"
     },
     {
       "path": "app/classesRegistry.js",
