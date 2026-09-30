@@ -212,9 +212,9 @@
   function extractRaceTraitText(race){
     if(!race||!race.desc)return [];
     var text=String(race.desc);
-    var beforeAge=text.split(/\\bВозраст\\s*:/i)[0];
-    beforeAge=beforeAge.split(/\\bРазмер\\s*:/i)[0];
-    var parts=beforeAge.split(/\\.\\s*/).map(function(x){return x.trim();}).filter(Boolean);
+    var beforeAge=text.split(/\bВозраст\s*:/i)[0];
+    beforeAge=beforeAge.split(/\bРазмер\s*:/i)[0];
+    var parts=beforeAge.split(/\.\s*/).map(function(x){return x.trim();}).filter(Boolean);
     if(parts.length<=1)return [];
     var keywords=/темн|зрени|наслед|сопротив|владен|маг|заговор|дыхани|удач|скрыт|скорост|когт|реген|стойк|природ|иллюз|общени|ремесл|мастерств|кислот|яд|полет|плаван|телепат|видени|боев|крит|лечени|невидим|амфиб|лазани|оружи/i;
     return parts.slice(1).filter(function(x){return keywords.test(x);}).slice(0,8);
@@ -254,6 +254,39 @@
     if(!structuredCount)textTraits.forEach(add);
     if(textTraits.length)hero.raceFeatureDescriptions=textTraits.slice();
     else if(race.desc)hero.raceFeatureDescriptions=[String(race.desc)];
+    /* Унифицированные механические маркеры для всех старых рас. Они не
+       подменяют resolver боя, но дают листу/движкам один стабильный контракт. */
+    var rd=String(race.desc||'').toLowerCase(),rm=hero.raceMechanics=hero.raceMechanics||{};
+    rm.darkvisionFt=rd.indexOf('120 ф')>=0?120:(rd.indexOf('тёмное зрение')>=0?60:(rd.indexOf('превосходное тёмное зрение')>=0?120:rm.darkvisionFt||0));
+    rm.flight=rm.flight||/полноценный полёт|полет 30|планировать|крылат/i.test(rd);
+    rm.swim=rm.swim||/амфибия|плавание 30/i.test(rd);
+    rm.climb=rm.climb||/когт.*лазани|лазани/i.test(rd);
+    rm.telepathy=rm.telepathy||/телепат/i.test(rd);
+    rm.magicResistance=rm.magicResistance||/сопротивление магии|сопротивление магии/i.test(rd);
+    rm.poisonResistance=rm.poisonResistance||/сопротивление яду/i.test(rd);
+    rm.poisonImmunity=rm.poisonImmunity||/иммунитетом к ядам|иммунитет к яду/i.test(rd);
+    rm.fireResistance=rm.fireResistance||/сопротивление огню/i.test(rd);
+    rm.coldResistance=rm.coldResistance||/сопротивление холоду/i.test(rd);
+    rm.acidResistance=rm.acidResistance||/сопротивление кислот/i.test(rd);
+    rm.necroticResistance=rm.necroticResistance||/сопротивление некрот/i.test(rd);
+    rm.radiantResistance=rm.radiantResistance||/сопротивление излучен/i.test(rd);
+    rm.psychicResistance=rm.psychicResistance||/сопротивление психическому/i.test(rd);
+    rm.amphibious=rm.amphibious||/амфибия/i.test(rd);
+    rm.breathWeapon=rm.breathWeapon||/оружие дыхания|изрыгать.*стихи/i.test(rd);
+    rm.lucky=rm.lucky||/удача/i.test(rd);
+    rm.brave=rm.brave||/смелост|бесстраш/i.test(rd);
+    rm.relentlessEndurance=rm.relentlessEndurance||/дикая стойкость|несокрушимая выносливость/i.test(rd);
+    rm.powerfulBuild=rm.powerfulBuild||/мощное телосложение|мощным телосложением/i.test(rd);
+    rm.naturalArmor=rm.naturalArmor||/панцир|толстой шкур/i.test(rd);
+    rm.shapeshifter=rm.shapeshifter||/смена формы|перевоплощ/i.test(rd);
+    rm.mimicry=rm.mimicry||/подражания звукам/i.test(rd);
+    rm.noSleep=rm.noSleep||/не нуждаются.*сне|отсутствие потребности в сне/i.test(rd);
+    rm.noBreath=rm.noBreath||/не нуждаются.*дыхани/i.test(rd);
+    rm.sunlightSensitivity=rm.sunlightSensitivity||/солнечн.*свет/i.test(rd);
+    rm.stoneEndurance=rm.stoneEndurance||/выносливость камня|каменная стойкость/i.test(rd);
+    rm.charge=rm.charge||/таран|штурмов с разбега/i.test(rd);
+    rm.horns=rm.horns||/удары рогами|рогами/i.test(rd);
+    rm.sizeChoice=rm.sizeChoice||/размер:.*или/i.test(rd);
     var db=g.PROFICIENCIES_DB||[];
     (Array.isArray(race.proficiencies)?race.proficiencies:[]).forEach(function(id){var p=db.find(function(x){return x.id===id||x.name===id;});if(p&&!hero.proficiencies.some(function(x){return x.id===p.id;}))hero.proficiencies.push(Object.assign({},p));});
     (Array.isArray(race.languages)?race.languages:[]).forEach(function(lang){if(/на выбор|дополнительный язык/i.test(String(lang)))return;var p=db.find(function(x){return x.category==='Языки'&&String(x.name||'').toLowerCase().indexOf(String(lang).toLowerCase())>=0;});if(p&&!hero.proficiencies.some(function(x){return x.id===p.id;}))hero.proficiencies.push(Object.assign({},p));});
