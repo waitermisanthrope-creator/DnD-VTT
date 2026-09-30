@@ -133,7 +133,7 @@
     });
   }
 
-  function allFeats(){
+  /* Расовые бонусы применяются ПОСЛЕ point-buy и всех выборов Builder.\n   * Исключение — Человек (Вариантный): его bonuses в races.js исторически\n   * содержат служебные +1/+1, а реальная механика выбора задаётся human_stats. */\n  function applyRaceBonuses(hero,race){\n    if(!hero||!race||race.id==='human_variant')return;\n    hero.stats=hero.stats||{};\n    var bonuses=race.bonuses&&typeof race.bonuses==='object'?race.bonuses:{};\n    Object.keys(bonuses).forEach(function(stat){\n      var bonus=Number(bonuses[stat])||0;\n      if(!bonus)return;\n      hero.stats[stat]=(Number(hero.stats[stat])||8)+bonus;\n    });\n  }\n\n  function allFeats(){
     var out=[];
     [g.FEATS_PHB,g.PHB_FEATS,g.FEATS_TCOE,g.TCOE_FEATS,g.FEATS_XGTE,g.XGTE_FEATS,g.FEATS_SETTINGS,g.feats_settings,g.FEATS_UA_HOMEBREW,g.feats_ua_homebrew,g.Feats,g.FEATS,g.ALL_FEATS,g.allFeats].forEach(function(src){
       flattenSource(src).forEach(function(f){
