@@ -283,7 +283,7 @@
     }
     return out.map(function(x){return typeof x==='string'?{name:x}:Object.assign({},x,{name:x.nameRu||x.name||x.id});});
   }
-\n  function subclassChoice(className,targetLevel,existing){
+  function subclassChoice(className,targetLevel,existing){
     if(existing)return null;
     var d=getClass(className)||{};
     var p=d.progression&&d.progression.levels?d.progression:d;
