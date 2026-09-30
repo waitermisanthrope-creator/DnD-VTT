@@ -118,5 +118,45 @@ function endEncounter(h){
 var progression={className:'Бистхарт',englishName:'Beastheart',source:'MCDM Beastheart and Monstrous Companions',status:'implemented_full',hitDie:8,primaryAbilities:['strength','dexterity'],secondaryAbility:'wisdom',savingThrows:['strength','wisdom'],armor:['light','medium','shields'],weapons:['simple','battleaxe','greataxe','longbow','net','scimitar','shortsword'],tools:[],skills:{choose:3,from:['Уход за животными','Атлетика','Запугивание','Природа','Внимательность','Скрытность','Выживание']},multiclass:{requires:[['strength','dexterity'],13,'wisdom',13]},subclassLevel:3,subclasses:Object.keys(bonds).map(function(k){return bonds[k].name;}),levels:{1:{features:['Компаньон','Природный язык']},2:{features:['Природные приёмы','Превосходная ярость']},3:{features:['Союз с компаньоном','Успокоить зверя','Мастерство заботы']},4:{features:['Увеличение характеристик / Черта']},5:{features:['За пределами инстинкта','Улучшенная фирменная атака']},6:{features:['Верный компаньон','Восстанавливающая ярость']},7:{features:['Способность союза']},8:{features:['Увеличение характеристик / Черта','Первобытный удар (1к8)']},9:{features:['Мистическая связь']},10:{features:['Улучшение за пределами инстинкта','Природные приёмы']},11:{features:['Улучшенная фирменная атака (2 кости)','Способность союза']},12:{features:['Увеличение характеристик / Черта']},13:{features:['Верность до конца']},14:{features:['Острые чувства','Первобытный удар (2к8)']},15:{features:['Улучшение за пределами инстинкта','Способность союза']},16:{features:['Увеличение характеристик / Черта']},17:{features:['Улучшенная фирменная атака (3 кости)','Природные приёмы']},18:{features:['Призыв дикой природы']},19:{features:['Увеличение характеристик / Черта']},20:{features:['Неразрывная дружба']}},mechanics:{status:'fully_closed',companionActor:true,ferocity:true,rampage:true,subclassBonds:true,resourceBridge:true,combatTurnGate:true}};
 g.beastheartProgression=progression;
 g.BeastheartRuntime={version:'1.3.0',bonds:bonds,companions:creatures,sync:sync,use:use,attack:attack,chooseCompanion:chooseCompanion,chooseBond:chooseBond,startTurn:startTurn,endRampage:endRampage,gainFerocity:gainFerocity,endEncounter:endEncounter};
-if(g.DNDContent&&g.DNDContent.registerClass)g.DNDContent.registerClass({id:'mcdm-beastheart',name:'Бистхарт',displayName:'Бистхарт',source:'MCDM Beastheart and Monstrous Companions',features:[],hooks:{sync:sync,useFeature:use,attackModifiers:attack}});
+if(g.DNDContent&&g.DNDContent.registerClass)g.DNDContent.registerClass({
+ id:'mcdm-beastheart',name:'Бистхарт',displayName:'Бистхарт',source:'MCDM Beastheart and Monstrous Companions',
+ features:[
+  {id:'chooseCompanion',name:'Компаньон',level:1,action:'choice'},
+  {id:'startTurn',name:'Ярость компаньона',level:1,action:'combat'},
+  {id:'chooseBond',name:'Союз с компаньоном',level:3,action:'choice'},
+  {id:'primalExploit',name:'Природный приём',level:2,action:'bonus'},
+  {id:'rejuvenatingFerocity',name:'Восстанавливающая ярость',level:6,action:'bonus'},
+  {id:'primalStrike',name:'Первобытный удар',level:8,action:'attack'},
+  {id:'sootheBeast',name:'Успокоить зверя',level:3,action:'action'},
+  {id:'summonWilds',name:'Призыв дикой природы',level:18,action:'action'},
+  {id:'unbreakableFriendship',name:'Неразрывная дружба',level:20,action:'passive'},
+  {id:'beyondInstinct',name:'За пределами инстинкта',level:5,action:'passive'},
+  {id:'signatureAttack',name:'Фирменная атака',level:5,action:'passive'},
+  {id:'faithfulCompanion',name:'Верный компаньон',level:6,action:'passive'},
+  {id:'masterCaregiver',name:'Мастерство заботы',level:3,action:'passive'},
+  {id:'loyalToEnd',name:'Верность до конца',level:13,action:'passive'},
+  {id:'keenSenses',name:'Острые чувства',level:14,action:'passive'},
+  {id:'ferociousFrenziedCharge',name:'Яростный рывок',level:11,action:'reaction'},
+  {id:'ferociousEnergizingRampage',name:'Заряжающая ярость',level:7,action:'passive'},
+  {id:'ferociousInvigoratedRampage',name:'Усиленная ярость',level:15,action:'special'},
+  {id:'hunterChosenQuarry',name:'Избранная добыча',level:3,action:'bonus'},
+  {id:'hunterWarding',name:'Охотничий оберег',level:7,action:'passive'},
+  {id:'synchronizedStealth',name:'Синхронная скрытность',level:11,action:'passive'},
+  {id:'unseenHunters',name:'Невидимые охотники',level:15,action:'special'},
+  {id:'infernalTeleport',name:'Инфернальный перенос',level:3,action:'bonus'},
+  {id:'wickedDeception',name:'Коварный обман',level:3,action:'bonus'},
+  {id:'drainThem',name:'Высосать силу',level:7,action:'special'},
+  {id:'hellishWound',name:'Адская рана',level:11,action:'special'},
+  {id:'fiendishForm',name:'Инфернальная форма',level:15,action:'bonus'},
+  {id:'alliedEarth',name:'Союзная земля',level:3,action:'bonus'},
+  {id:'spiritStampede',name:'Духовный табун',level:11,action:'special'},
+  {id:'alliedWeather',name:'Союзная погода',level:15,action:'reaction'},
+  {id:'beastVitality',name:'Живучесть зверя',level:3,action:'passive'},
+  {id:'sentinelCompanion',name:'Страж-компаньон',level:11,action:'reaction'},
+  {id:'thickenedHide',name:'Утолщённая шкура',level:7,action:'passive'},
+  {id:'undyingProtector',name:'Неумирающий защитник',level:15,action:'reaction'}
+ ],
+ subclasses:Object.keys(bonds).map(function(k){return{id:k,name:bonds[k].name,features:bonds[k].levels};}),
+ hooks:{sync:sync,useFeature:use,attackModifiers:attack}
+});
 })(window);
