@@ -43,13 +43,32 @@
   function getRaces(){return typeof g.getAllRaces==='function'?g.getAllRaces():((g.DEFAULT_RACES||[]).slice());}
   function isExtra(name){return !!EXTRA[name];}
   function extraInfo(name){return EXTRA[name]||null;}
+  var CLASS_CREATION_RULES_2014={
+    'Варвар':{armor:['p_armor_light','p_armor_medium','p_shields'],weapons:['p_weapon_simple','p_weapon_martial']},
+    'Бард':{armor:['p_armor_light'],weapons:['p_weapon_simple','p_weap_hand_crossbow','p_weap_longsword','p_weap_rapier','p_weap_shortsword'],tools:{choose:3,from:['p_instr_lute','p_instr_flute','p_instr_drum','p_instr_horn','p_instr_pan_flute','p_instr_shawm','p_instr_lyre','p_instr_viol','p_instr_bagpipes']}},
+    'Жрец':{armor:['p_armor_light','p_armor_medium','p_shields'],weapons:['p_weapon_simple']},
+    'Друид':{armor:['p_armor_light','p_armor_medium','p_shields'],weapons:['p_weapon_simple','p_weap_scimitar']},
+    'Воин':{armor:['p_armor_light','p_armor_medium','p_armor_heavy','p_shields'],weapons:['p_weapon_simple','p_weapon_martial']},
+    'Монах':{armor:[],weapons:['p_weapon_simple','p_weap_shortsword']},
+    'Паладин':{armor:['p_armor_light','p_armor_medium','p_armor_heavy','p_shields'],weapons:['p_weapon_simple','p_weapon_martial']},
+    'Следопыт':{armor:['p_armor_light','p_armor_medium','p_shields'],weapons:['p_weapon_simple','p_weapon_martial']},
+    'Плут':{armor:['p_armor_light'],weapons:['p_weapon_simple','p_weap_hand_crossbow','p_weap_longsword','p_weap_rapier','p_weap_shortsword'],tools:['p_tool_thief']},
+    'Чародей':{armor:[],weapons:['p_weap_dagger','p_weap_dart','p_weap_sling','p_weap_quarterstaff','p_weap_light_crossbow']},
+    'Колдун':{armor:['p_armor_light'],weapons:['p_weapon_simple']},
+    'Волшебник':{armor:[],weapons:['p_weap_dagger','p_weap_dart','p_weap_sling','p_weap_quarterstaff','p_weap_light_crossbow']},
+    'Изобретатель':{armor:['p_armor_light','p_armor_medium','p_shields'],weapons:['p_weapon_simple','p_weap_hand_crossbow','p_weap_heavy_crossbow'],tools:['p_tool_thief']}
+  };
   function classProgression(name){
-    var d=getClass(name)||{};
-    if(d.progression&&typeof d.progression==='object'){
-      return Object.assign({},d,d.progression,{levels:d.progression.levels||d.levels});
-    }
-    if(d.levels)return d;
-    return d;
+    var d=getClass(name)||{},rules=CLASS_CREATION_RULES_2014[name]||{};
+    var out=d;
+    if(d.progression&&typeof d.progression==='object')out=Object.assign({},d,d.progression,{levels:d.progression.levels||d.levels});
+    else if(d.levels)out=d;
+    /* Fill only missing creation metadata for the 13 canonical classes. */
+    if(rules.armor&&!out.armor)out.armor=rules.armor;
+    if(rules.weapons&&!out.weapons)out.weapons=rules.weapons;
+    if(rules.tools&&!out.tools)out.tools=rules.tools;
+    if(!out.savingThrows && d.savingThrows)out.savingThrows=d.savingThrows;
+    return out;
   }
   function normalizeSkillId(value){
     var raw=String(value==null?'':value).trim();if(!raw)return '';
