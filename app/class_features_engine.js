@@ -474,8 +474,36 @@
     if(id==='magicalTinkering'||id==='infuseItem'||id==='spellStoringItem'||id==='magicItemAdept'||id==='soulOfArtifice')st[id]=true;
     return {ok:true,prepared:true,passive:true,message:'✨ '+(FEATURE_DEFS[id]?FEATURE_DEFS[id].name:id)+' активно и учтено движком.'};
   }
+  function useCustomRuntimeFeature(h,id,ctx){
+    ctx=ctx||{};
+    var name=String(id||'');
+    var map={
+      accursed:['accursedRuntime','useFeature'],
+      runeKeeper:['runeKeeperRuntime','useFeature'],
+      runekeeper:['runeKeeperRuntime','useFeature'],
+      savant:['savantRuntime','useFeature'],
+      shifter:['shifterRuntime','useFeature'],
+      vessel:['vesselRuntime','useFeature'],
+      necromancer:['necromancerRuntime','useFeature'],
+      martyr:['martyrRuntime','useFeature'],
+      occultist:['occultistRuntime','useFeature'],
+      alchemist:['alchemistRuntime','useFeature'],
+      warden:['wardenRuntime','useFeature'],
+      beastheart:['beastheartRuntime','useFeature'],
+      pugilist:['pugilistRuntime','useFeature'],
+      warlord:['warlordRuntime','useFeature'],
+      illrigger:['illriggerRuntime','useFeature']
+    };
+    var k=Object.keys(map).find(function(x){return name.indexOf(x)===0;});
+    if(!k)return null;
+    var spec=map[k],rt=global[spec[0]];
+    if(!rt||typeof rt[spec[1]]!=='function')return null;
+    return rt[spec[1]](h,name,ctx);
+  }
+
   function useFeatureAction(h,id,ctx){
     ctx=ctx||{}; syncClassResources(h);
+    var custom=useCustomRuntimeFeature(h,id,ctx); if(custom)return custom;
     var l;
     switch(id){
       case 'rage': return useRage(h);
