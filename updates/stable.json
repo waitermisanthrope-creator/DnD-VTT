@@ -9,13 +9,13 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 78770,
-      "sha256": "fb5b08f659ff164c5202842533a123af3ee8309097500ac2862478f4a0923ebf"
+      "bytes": 78938,
+      "sha256": "fe2ac08a7cd1ce7d167705208ded164dcfdabba79269e14d421001127c0f1350"
     },
     {
       "path": "app/character_creation_pergament.js",
-      "bytes": 33956,
-      "sha256": "54f27e1384b0f02ea3666efa66ff730308503cc09e402e446aa8e30301d747c8"
+      "bytes": 35832,
+      "sha256": "29f374229969ff39a65f6cc811583d4c1b931ff389334ab4e2d1c10644400cbf"
     },
     {
       "path": "app/character_creation_pergament.css",
@@ -24,8 +24,8 @@
     },
     {
       "path": "app/character_builder_v2.js",
-      "bytes": 58305,
-      "sha256": "d352584e9b729a4c8d79d82aee6749b32ba60cfe033dfbbc5e34f10b0bc5e17f"
+      "bytes": 58316,
+      "sha256": "b4203c2a3be5f016b576c595dd3ee98a63b35e1af1a17c4d1f9376b5e3b15535"
     },
     {
       "path": "app/vtt_debug_error_log_v709.js",
