@@ -280,6 +280,7 @@ function checkModifiers(h,ctx){
 function attackModifiers(h,ctx){
  ctx=ctx||{};var out={bonusDamage:0,extraDice:[],typedExtraDice:[],damageTypes:[],advantage:false,disadvantage:false,notes:[],pendingOnHit:{}},l=alvl(h),s=st(h),c=(h.classes||[]).find(function(x){return x.name===CLASS;}),sid=c&&c.subclass;
  var isBomb=ctx.isBomb===true||ctx.attackType==='bomb'||ctx.weaponType==='bomb'||String(ctx.weaponName||'').toLowerCase().indexOf('бомб')>=0;
+ if(isBomb&&c&&['madBomber','Безумный бомбометатель'].indexOf(c.subclass)>=0&&ctx.target&&(ctx.target.isObject||ctx.target.isStructure||ctx.target.targetType==='object'||ctx.target.type==='object'))out.doubleDamageAgainstObjects=true;
  if(isBomb&&l>=5)out.notes.push('Улучшенные бомбы: базовые кости бомбы '+bombDice(l));
  var preparedFormula=s.alchemistPreparedFormula;
  if(isBomb&&preparedFormula){
