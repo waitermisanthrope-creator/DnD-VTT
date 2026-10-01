@@ -306,7 +306,7 @@ function attackModifiers(h,ctx){
  return out;
 }
 function subclassFeatureEffect(h,sub,f,ctx){
- var n=f[1],l=alvl(h),s=st(h),name=String(n||'');
+ var n=f[1],l=alvl(h),s=st(h),r=h.resources.alchemistReagents,name=String(n||'');
  if(name==='Болеутоляющая бомба'){
   if(!ctx.target||typeof ctx.target!=='object')return{ok:false,needsTarget:true,message:'Выберите союзника для Болеутоляющей бомбы; действие не потрачено.'};
   var reagentCount=Math.max(0,Math.floor(Number(ctx.reagents)||0));
