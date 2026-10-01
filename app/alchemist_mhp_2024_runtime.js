@@ -594,7 +594,7 @@ function use(h,id,ctx,feature){
   if(grafts.some(function(x){return x.name===graftName;}))return{ok:false,message:'Этот трансплантат уже установлен.'};
   if(grafts.length>=2)return{ok:false,message:'У Ксеноалхимика может быть не более двух личных трансплантатов.'};
   if(graftDef[2]!=='любое существо'&&(!ctx.donorVerified||!String(ctx.donorType||'').trim()))return{ok:false,needsDonor:true,message:'Подтвердите подходящего донора и укажите donorType; трансплантат не установлен.'};
-  grafts.push({name:graftName,slot:graftDef[1],donorType:String(ctx.donorType||graftDef[2]),description:graftDef[3],installedAtLevel:l});
+  var resistanceType=String(ctx.resistanceType||'').trim();if(['Энергетический шов','Шкура дракона'].indexOf(graftName)>=0&&resistanceType&&!['кислота','холод','огонь','молния','гром','яд','некротический','излучение','силовой','психический','дробящий','колющий','рубящий'].includes(resistanceType))return{ok:false,needsChoice:true,message:'Выберите допустимый тип сопротивления; трансплантат не установлен.'};grafts.push({name:graftName,slot:graftDef[1],donorType:String(ctx.donorType||graftDef[2]),resistanceType:resistanceType||null,description:graftDef[3],installedAtLevel:l});
   return{ok:true,grafts:grafts.slice(),installed:graftName,effect:{slot:graftDef[1],donorType:String(ctx.donorType||graftDef[2])},message:'🧬 Трансплантат «'+graftName+'» установлен.'};
  }
 
