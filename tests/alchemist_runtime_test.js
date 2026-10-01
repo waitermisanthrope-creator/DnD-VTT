@@ -94,5 +94,19 @@ formulaHero.classFeaturesState.alchemistDynamoCharged=true;
 const dynamoAttack=hooks.attackModifiers(formulaHero,{weaponAttack:true});
 assert.ok(dynamoAttack.damageTypes.includes('молния'),'Dynamo Core adds lightning damage type');
 
+const reliefTarget={id:'ally',tempHp:2};
+const reliefResult=hooks.useFeature(formulaHero,'alchemist-subclassFeature',{featureName:'Болеутоляющая бомба',target:reliefTarget},{subclassId:'apothecary'});
+assert.equal(reliefResult.ok,true,'pain-relief bomb applies to a selected ally');
+assert.equal(reliefTarget.tempHp,8,'pain-relief bomb grants temporary HP equal to Alchemist level when no reagents are spent');
+const noReliefTarget=hooks.useFeature(formulaHero,'alchemist-subclassFeature',{featureName:'Болеутоляющая бомба'},{subclassId:'apothecary'});
+assert.equal(noReliefTarget.ok,false,'pain-relief bomb requires a target');
+const amorist={classes:[{name:'Алхимик',level:3,subclass:'amorist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{}};
+hooks.sync(amorist);
+const pheromoneTarget={id:'foe',conditions:{},activeConditions:{}};
+const pheromone=hooks.useFeature(amorist,'alchemist-subclassFeature',{featureName:'Бомба с феромонами',target:pheromoneTarget,saveResult:{success:false,total:5,dc:13}},{subclassId:'amorist'});
+assert.equal(pheromone.ok,true,'pheromone bomb resolves a provided saving throw');
+assert.equal(pheromoneTarget.activeConditions['Очарован'],true,'failed pheromone save applies charmed condition');
+
+
 
 console.log('Alchemist runtime regression tests PASS');
