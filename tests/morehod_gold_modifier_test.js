@@ -20,6 +20,8 @@ assert.strictEqual(rules.getModifier({ className: 'Мореход', coins: { gp:
 assert.strictEqual(rules.getModifier({ classes: [{ englishName: 'Mariner', level: 1 }], coins: { gp: -100, pp: -1, ep: -2, sp: -5, cp: -50 } }), -5, 'negative coin entries are clamped to zero for carried wealth');
 assert.strictEqual(rules.carriedGoldEquivalent({ gp: '100', pp: '1', ep: '2', sp: '5', cp: '50' }), 112, 'numeric strings in a saved coin purse are normalized consistently');
 assert.strictEqual(rules.getModifier({ classes: [{ name: 'Бандит', englishName: 'Mariner' }], coins: { gp: 2000 } }), 0, 'a non-Mariner class name takes precedence over an incidental alias');
+assert.strictEqual(rules.getModifier({ classes: [{ name: 'Бандит', level: 2 }, { name: 'Мореход', level: 1 }], coins: { gp: 2000 } }), 5, 'multiclass characters receive the modifier when one actual class is Mariner');
+assert.strictEqual(rules.getModifier({ classes: [{ name: 'Мореход', level: 1 }], coins: { gp: 'not-a-number', pp: {}, ep: null, sp: -3, cp: 'NaN' } }), -5, 'malformed and negative coin fields safely count as zero');
 assert.strictEqual(rules.adjustRollTotal(14, { className: 'Мореход', coins: { gp: 1200 } }), 15);
 assert.strictEqual(typeof rules.adjustDamageDie, 'undefined', 'Mariner modifier does not expose damage-die adjustment');
 // Integration: load the actual rules engine and confirm the modifier reaches weapon attacks once.
@@ -82,6 +84,15 @@ assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'),
   diceContext.executeD20Check('Проверка с преимуществом', 2);
   assert.strictEqual(diceResult.textContent, 'Итог: 17 (+17)', 'advantage still applies the modifier only once to the final d20 result');
   assert.strictEqual(modifierReads, 1, 'the wallet modifier is read exactly once per check even when two d20 are rolled');
+  const previousRoller = diceContext.rollSingleDice;
+  let disadvantageRolls = [8, 3];
+  diceContext.rollSingleDice = () => disadvantageRolls.shift();
+  diceContext.applyConditionsToRoll = () => ({ effectiveMode: 'disadvantage', forceCrit1: false, conditionNotes: [] });
+  modifierReads = 0;
+  diceContext.executeD20Check('Проверка с помехой', 2);
+  assert.strictEqual(diceResult.textContent, 'Итог: 10 (+10)', 'disadvantage uses the lower d20, then adds the +2 check modifier and +5 Mariner modifier once');
+  assert.strictEqual(modifierReads, 1, 'disadvantage reads the wallet modifier once despite rolling two d20');
+  diceContext.rollSingleDice = previousRoller;
 }
 // Integration: combat dice remain natural; the Mariner modifier never adjusts damage or HP dice.
 {
