@@ -139,7 +139,7 @@ function traditionFeature(h,tr,ctx){
  return{ok:false,message:'Особенность традиции ещё недоступна.'};
 }
 function use(h,id,ctx){sync(h);ctx=ctx||{};var l=lvl(h),s=h.classFeaturesState||{};
-if(id==='traditionFeature')return traditionFeature(h,s.occultistTradition||ctx.tradition||'Оракул',ctx);
+if(id==='traditionFeature'){var chosenTrad=s.occultistTradition||ctx.tradition;if(!chosenTrad||!traditions[chosenTrad])return{ok:false,message:'Сначала выбери Оккультную традицию.'};return traditionFeature(h,chosenTrad,ctx);}
 if(id==='summonFamiliar')return traditionFeature(h,'Ведьма',Object.assign({},ctx,{action:'familiar'}));
 if(id==='summonSpirit')return traditionFeature(h,'Шаман',Object.assign({},ctx,{action:'spirit'}));
 if(id==='empowerSpirit')return traditionFeature(h,'Шаман',Object.assign({},ctx,{action:'empowerSpirit'}));
