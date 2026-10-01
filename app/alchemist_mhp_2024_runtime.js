@@ -311,6 +311,7 @@ function attackModifiers(h,ctx){
  if(activeEffects.some(function(e){return e.name==='Зелье скорости';})){out.hasteActive=true;out.notes.push('Зелье скорости активно: преимущество скорости/дополнительное действие обрабатывается боевым ходом');}
  if(activeEffects.some(function(e){return e.name==='Зелье полёта';})){out.flySpeed=activeEffects.filter(function(e){return e.name==='Зелье полёта';})[0].effect.flySpeed||30;}
 
+ if(s.alchemistGrafts&&ctx.unarmedGraft&&s.alchemistGrafts.some(function(x){return x.name==='Звериное оружие';})){out.extraDice.push('1d6');out.notes.push('Трансплантат «Звериное оружие»: природный удар');}
  if(s.alchemistSurgicalAttackReady&&ctx.unarmedGraft){out.extraDice.push('1d8');s.alchemistSurgicalAttackReady=false;out.notes.push('Хирургическая атака');}
  if(s.alchemistDynamoCharged&&ctx.weaponAttack){out.extraDice.push('1d8');out.damageTypes.push('молния');out.notes.push('Динамо-ядро: +1d8 молнией');s.alchemistDynamoCharged=false;}
  return out;
@@ -478,6 +479,28 @@ function use(h,id,ctx,feature){
  sync(h);ctx=ctx||{};var l=alvl(h),s=st(h),r=h.resources.alchemistReagents;
  id=String(id||'').replace(/^alchemist-/,'');
  var aliases={'Прайм-бомба':'primeBomb','Синтез реагентов':'reagentSynthesis','Бомбы':'bomb','Варка зелий':'potionBrew','Формулы бомб':'formula','Философский камень':'philosopherStone','Ядерная бомба':'nuclearBomb','Гомункул':'homunculusCreate'};if(aliases[id])id=aliases[id];
+ var requestedFeature=String(ctx.featureName||ctx.name||'');
+ if(id==='graft'||id==='transplant'||id==='transplants'||requestedFeature==='Трансплантаты'){
+  var ownerClass=(h.classes||[]).find(function(c){return c&&(c.name===CLASS||c.englishName==='Alchemist');});
+  if(!ownerClass||!(ownerClass.subclass==='xenoalchemist'||ownerClass.subclass==='Ксеноалхимик'))return{ok:false,message:'Трансплантаты доступны только Ксеноалхимику.'};
+  if(l<3)return{ok:false,message:'Трансплантаты доступны с 3 уровня.'};
+  var action=String(ctx.graftAction||ctx.action||'list'),grafts=s.alchemistGrafts=s.alchemistGrafts||[];
+  if(action==='list')return{ok:true,grafts:grafts.slice(),message:'🧬 Установлено трансплантатов: '+grafts.length+'.'};
+  var graftName=String(ctx.graftName||ctx.graft||''),graftDef=monstrousGrafts.find(function(x){return x[0]===graftName;});
+  if(!graftDef)return{ok:false,message:'Выберите трансплантат из каталога.'};
+  if(action==='remove'){
+   var removeAt=grafts.findIndex(function(x){return x.name===graftName;});
+   if(removeAt<0)return{ok:false,message:'Этот трансплантат не установлен.'};
+   grafts.splice(removeAt,1);return{ok:true,grafts:grafts.slice(),removed:graftName,message:'🧬 Трансплантат «'+graftName+'» удалён.'};
+  }
+  if(action!=='install')return{ok:false,message:'Укажите graftAction: install, remove или list.'};
+  if(grafts.some(function(x){return x.name===graftName;}))return{ok:false,message:'Этот трансплантат уже установлен.'};
+  if(grafts.length>=2)return{ok:false,message:'У Ксеноалхимика может быть не более двух личных трансплантатов.'};
+  if(graftDef[2]!=='любое существо'&&(!ctx.donorVerified||!String(ctx.donorType||'').trim()))return{ok:false,needsDonor:true,message:'Подтвердите подходящего донора и укажите donorType; трансплантат не установлен.'};
+  grafts.push({name:graftName,slot:graftDef[1],donorType:String(ctx.donorType||graftDef[2]),description:graftDef[3],installedAtLevel:l});
+  return{ok:true,grafts:grafts.slice(),installed:graftName,effect:{slot:graftDef[1],donorType:String(ctx.donorType||graftDef[2])},message:'🧬 Трансплантат «'+graftName+'» установлен.'};
+ }
+
  if(id==='primeBomb'){var n=Math.min(Number(ctx.reagents)||1,s.alchemistPrimeMax,r.current);if(!spend(h,n))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,effect:{extraDamage:n+'d10',extraRadiusFt:n*5},message:'💣 Прайм-бомба: +'+n+'d10.'};}
  if(id==='reagentSynthesis'){if(!s.alchemistSynthesisReady)return{ok:false,message:'Синтез реагентов доступен после короткого отдыха; после применения нужен долгий отдых.'};if(s.alchemistSynthesisUsed)return{ok:false,message:'Синтез уже использован до долгого отдыха.'};var n=Math.min(Math.max(1,mod(h,'int')),r.max-r.current);if(n<=0)return{ok:false,message:'Реагенты уже на максимуме.'};r.current+=n;s.alchemistSynthesisUsed=true;s.alchemistSynthesisReady=false;return{ok:true,message:'⚗️ Синтез: восстановлено реагентов '+n+'.'};}
  if(id==='bomb'){return{ok:true,effect:{attack:true,damageDice:s.alchemistBombDamage,damageType:'fire',range:'30/90',saveDC:s.alchemistSaveDC,explodeRadiusFt:5,intelligentExplosion:Math.max(1,mod(h,'int'))},message:'💣 Бомба готова.'};}
