@@ -241,6 +241,12 @@ function cleanupPotionEffects(h,oldEffects,keepEffects){
   if(h.activeConditions&&h.activeConditions[ef.condition])delete h.activeConditions[ef.condition];
   if(h.conditions&&h.conditions[ef.condition])delete h.conditions[ef.condition];
  }
+ if(e&&e.name==='Гибкая форма'&&oldEffects.indexOf(e)>=0&&keepEffects.indexOf(e)<0&&s.alchemistFlexibleForm){
+  var original=s.alchemistFlexibleForm.original||{};
+  if(original.appearance===undefined)delete h.appearance;else h.appearance=original.appearance;
+  if(original.disguiseAppearance===undefined)delete h.disguiseAppearance;else h.disguiseAppearance=original.disguiseAppearance;
+  s.alchemistFlexibleForm=null;
+ }
  if(e&&(e.name==='Мутаген'||e.name==='Общий мутаген')&&oldEffects.indexOf(e)>=0&&keepEffects.indexOf(e)<0&&s.activeMutagen&&s.activeMutagen.snapshots){
   s.activeMutagen.snapshots.forEach(function(snap){var obj=snap.target?snap.target[snap.prop]:h[snap.prop];if(obj&&obj[snap.key]!==undefined)obj[snap.key]=snap.original;});if(s.activeMutagen.target&&s.activeMutagen.target.classFeaturesState){delete s.activeMutagen.target.classFeaturesState.alchemistSharedMutagenActive;delete s.activeMutagen.target.classFeaturesState.alchemistSharedMutagenSourceId;}s.activeMutagen=null;
  }});
@@ -642,6 +648,28 @@ function use(h,id,ctx,feature){
     s.alchemistPoisonedWeaponId=poisonWeaponId;s.alchemistGraftUses[graftName]=true;
     return{ok:true,effect:{weaponId:poisonWeaponId,damageDice:'1d4',damageType:'яд',expires:'next_matching_weapon_hit'},message:'☠️ Яд нанесён. Следующее попадание выбранным оружием наносит +1d4 ядом.'};
    }
+   if(graftName==='Гибкая форма'){
+    var appearance=String(ctx.appearance||'').trim();if(!appearance)return{ok:false,needsChoice:true,message:'Опишите внешность для изменения формы; использование не потрачено.'};
+    if(s.alchemistGraftUses[graftName])return{ok:false,message:'Гибкая форма уже использована до долгого отдыха.'};
+    if(!Array.isArray(s.alchemistActiveEffects))s.alchemistActiveEffects=[];
+    var originalAppearance={appearance:h.appearance,disguiseAppearance:h.disguiseAppearance};
+    h.appearance=appearance;h.disguiseAppearance=appearance;s.alchemistFlexibleForm={appearance:appearance,original:originalAppearance};
+    s.alchemistActiveEffects.push({name:'Гибкая форма',effect:{durationMinutes:60,appearance:appearance},remainingMinutes:60});
+    s.alchemistGraftUses[graftName]=true;
+    return{ok:true,effect:{appearance:appearance,durationMinutes:60,usesPerLongRest:1},message:'🧬 Гибкая форма: внешность изменена на 1 час.'};
+   }
+   if(graftName==='Голосовые связки'){
+    var imitation=String(ctx.imitation||ctx.sound||'').trim();if(!imitation)return{ok:false,needsChoice:true,message:'Укажите услышанный голос или звук для подражания.'};
+    var deception=Number(ctx.deceptionTotal),insight=Number(ctx.insightTotal);if(!Number.isFinite(deception)||!Number.isFinite(insight))return{ok:false,needsRoll:true,message:'Для проверки подражания укажите итог Обмана и встречной Проницательности.'};
+    return{ok:true,effect:{imitation:imitation,deceptionTotal:deception,insightTotal:insight,success:deception>=insight},message:deception>=insight?'🧬 Подражание убедительно; звук не раскрыт проверкой Проницательности.':'🧬 Подражание не удалось обмануть слушателя.'};
+   }
+   if(graftName==='Магические синапсы'){
+    var cantrip=String(ctx.cantrip||'').trim();if(!cantrip)return{ok:false,needsChoice:true,message:'Выберите заговор волшебника для магических синапсов.'};
+    var knownCantrips=s.alchemistSynapseCantrips=s.alchemistSynapseCantrips||[];
+    if(knownCantrips.indexOf(cantrip)>=0)return{ok:false,message:'Этот заговор уже выбран для магических синапсов.'};
+    knownCantrips.push(cantrip);
+    return{ok:true,effect:{cantrip:cantrip,spellcastingAbility:'intelligence',knownCantrips:knownCantrips.slice()},message:'🧬 Магические синапсы: заговор «'+cantrip+'» записан в список способностей.'};
+   }
    if(graftName==='Драконьи лёгкие'){
     var breathTargets=Array.isArray(ctx.targets)?ctx.targets:[],breathType=String(ctx.damageType||''),breathRoll=Number(ctx.damageRoll),pbBreath=prof(h);
     if(!['кислота','холод','огонь','молния','яд'].includes(breathType))return{ok:false,needsChoice:true,message:'Выберите тип урона дыхания до активации.'};
@@ -807,5 +835,5 @@ g.CLASSES_REFERENCE=g.CLASSES_REFERENCE||{};
 g.CLASSES_REFERENCE[CLASS]={source:SOURCE,hitDie:8,primaryStat:'dexterity',primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14],contentPackId:PACK_ID};
 g.SUBCLASSES_REFERENCE=g.SUBCLASSES_REFERENCE||{};g.SUBCLASSES_REFERENCE[CLASS]={};
 subpacks.forEach(function(s){var lv={};s.features.forEach(function(f){lv[f.level]=lv[f.level]||{features:[]};lv[f.level].features.push(f.name);});g.SUBCLASSES_REFERENCE[CLASS][s.name]={source:SOURCE,description:s.description,pickLevel:3,levels:lv};});
-g.ALCHEMIST_MHP_2024={VERSION:'1.8.1-alchemist-graft-combat',STATUS:'in_progress',CANONICAL_2024_SUBCLASSES:11,PACK_ID:PACK_ID,formulae:formulae,potions:potions,discoveries:discoveries,subclasses:subpacks.map(function(s){return{id:s.id,name:s.name};})};
+g.ALCHEMIST_MHP_2024={VERSION:'1.8.2-alchemist-graft-actions',STATUS:'in_progress',CANONICAL_2024_SUBCLASSES:11,PACK_ID:PACK_ID,formulae:formulae,potions:potions,discoveries:discoveries,subclasses:subpacks.map(function(s){return{id:s.id,name:s.name};})};
 })(window);
