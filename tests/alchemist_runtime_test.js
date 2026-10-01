@@ -233,6 +233,7 @@ assert.equal(flexible.ok,true,'Flexible Form applies a chosen appearance');
 assert.equal(xenoOwner.appearance,'guard in a blue coat','Flexible Form stores the temporary appearance');
 hooks.advanceTime(xenoOwner,60);
 assert.equal(xenoOwner.appearance,'original look','Flexible Form restores the original appearance after one hour');
+hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Гибкая форма'});
 const voiceInstall=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'install',graftName:'Голосовые связки',donorVerified:true,donorType:'Подражатель'});
 assert.equal(voiceInstall.ok,true,'Vocal Cords graft can be installed');
 const voice=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'activate',graftName:'Голосовые связки',imitation:'voice of the captain',deceptionTotal:18,insightTotal:14});
@@ -246,7 +247,6 @@ assert.equal(synapse.ok,true,'Magical Synapses records a selected wizard cantrip
 assert.ok(xenoOwner.classFeaturesState.alchemistSynapseCantrips.includes('Огненный снаряд'),'Magical Synapses stores the selected cantrip');
 hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Магические синапсы'});
 assert.equal(xenoOwner.classFeaturesState.alchemistSynapseCantrips.includes('Огненный снаряд'),false,'Removing Magical Synapses removes its granted cantrip');
-hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Гибкая форма'});
 
 
 const graftRemoved=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Звериное оружие'});
