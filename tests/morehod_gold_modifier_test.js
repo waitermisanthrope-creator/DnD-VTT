@@ -24,6 +24,34 @@ assert.strictEqual(rules.getModifier({ classes: [{ name: 'Бандит', level: 
 assert.strictEqual(rules.getModifier({ classes: [{ name: 'Мореход', level: 1 }], coins: { gp: 'not-a-number', pp: {}, ep: null, sp: -3, cp: 'NaN' } }), -5, 'malformed and negative coin fields safely count as zero');
 const restoredMariner = JSON.parse(JSON.stringify({ classes: [{ name: 'Мореход', level: 3 }], coins: { gp: 1200, sp: 10 }, name: 'Тестовый мореход' }));
 assert.strictEqual(rules.getModifier(restoredMariner), 1, 'the wallet modifier survives JSON save/export/import round-trip');
+
+// Integration: exercise the actual app character storage functions with a localStorage mock.
+{
+  const appSource = fs.readFileSync(require.resolve('../app/app.js'), 'utf8');
+  const start = appSource.indexOf('var CHARACTER_SAVE_SCHEMA_VERSION = 3;');
+  const end = appSource.indexOf('function renderCharacterList() {', start);
+  assert(start >= 0 && end > start, 'character storage functions are available in app.js');
+  const storage = new Map();
+  const appContext = {
+    console, JSON, Number, Math, Date, isFinite,
+    localStorage: {
+      getItem: key => storage.has(key) ? storage.get(key) : null,
+      setItem: (key, value) => storage.set(key, String(value))
+    },
+    alert: () => {},
+    allCharacters: []
+  };
+  vm.createContext(appContext);
+  vm.runInContext(appSource.slice(start, end), appContext);
+  appContext.allCharacters = [{ id: 'mariner-storage-test', name: 'Мореход', classes: [{ name: 'Мореход', level: 3 }], coins: { gp: 1200, sp: 10 } }];
+  assert.strictEqual(appContext.saveAllCharacters(), true, 'app character storage accepts the Mariner save');
+  appContext.allCharacters = [];
+  appContext.loadAllCharacters();
+  assert.strictEqual(appContext.allCharacters.length, 1, 'app character storage restores the saved character');
+  assert.strictEqual(appContext.allCharacters[0].coins.gp, 1200, 'app storage preserves carried gold');
+  assert.strictEqual(appContext.allCharacters[0].coins.sp, 10, 'app storage preserves carried silver');
+  assert.strictEqual(rules.getModifier(appContext.allCharacters[0]), 1, 'restored in-app wallet produces the same Mariner modifier');
+}
 assert.strictEqual(rules.adjustRollTotal(14, { className: 'Мореход', coins: { gp: 1200 } }), 15);
 assert.strictEqual(typeof rules.adjustDamageDie, 'undefined', 'Mariner modifier does not expose damage-die adjustment');
 // Integration: load the actual rules engine and confirm the modifier reaches weapon attacks once.
