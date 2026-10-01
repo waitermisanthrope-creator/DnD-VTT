@@ -1,4 +1,4 @@
-name: Mariner rules regression tests
+name: Custom class runtime regression tests
 
 on:
   push:
@@ -12,6 +12,10 @@ on:
       - "app/spells.js"
       - "app/app.js"
       - "tests/morehod_gold_modifier_test.js"
+      - "app/four_custom_class_runtime.js"
+      - "tests/four_custom_class_runtime_test.js"
+      - "app/class_features_engine.js"
+      - "index.html"
       - ".github/workflows/morehod-tests.yml"
   workflow_dispatch:
 
@@ -19,7 +23,7 @@ permissions:
   contents: read
 
 jobs:
-  mariner-tests:
+  custom-class-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -38,5 +42,9 @@ jobs:
           node --check app/dice.js
           node --check app/spells.js
           node --check app/app.js
+          node --check app/four_custom_class_runtime.js
+          node --check app/class_features_engine.js
       - name: Run Mariner gold modifier regression test
         run: node tests/morehod_gold_modifier_test.js
+      - name: Run remaining custom class foundation tests
+        run: node tests/four_custom_class_runtime_test.js
