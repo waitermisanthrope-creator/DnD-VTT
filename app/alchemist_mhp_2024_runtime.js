@@ -387,6 +387,7 @@ function subclassFeatureEffect(h,sub,f,ctx){
  if(name==='Общий мутаген'){
   var ally=ctx.target;if(!ally||!ally.id)return{ok:false,needsTarget:true,message:'Выберите союзника для передачи мутагена; реагенты не списаны.'};
   if(ally.isAlly===false||(h.team&&ally.team&&String(h.team)!==String(ally.team)))return{ok:false,message:'Общий мутаген можно передать только союзнику; реагенты не списаны.'};
+  if(s.activeMutagen)return{ok:false,message:'У Алхимика уже действует мутаген; сначала завершите его.'};
   var sharedAbility=String(ctx.ability||'constitution');
   if(['strength','dexterity','constitution','intelligence','wisdom','charisma'].indexOf(sharedAbility)<0)return{ok:false,needsChoice:true,message:'Выберите характеристику для Общего мутагена; реагенты не списаны.'};
   ally.classFeaturesState=ally.classFeaturesState||{};var allyState=ally.classFeaturesState;
