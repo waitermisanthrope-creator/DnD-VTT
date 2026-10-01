@@ -48,6 +48,15 @@ ctx.DNDCombat.attack(invisibleAttacker,{id:'third',ac:12,hp:20,maxHp:20},{bonus:
 assert.equal(invisibleAttacker.classFeaturesState.alchemistActiveEffects.length,0,'invisibility potion ends after an attack even on a miss');
 assert.equal(invisibleAttacker.activeConditions['Невидим'],undefined,'invisibility condition clears after attacking');
 
+const xenoHero={id:'xeno',classes:[{name:'Алхимик',level:14,subclass:'xenoalchemist'}],hp:3,maxHp:30,hitPoints:3,classFeaturesState:{xenoNecroticReady:true},conditions:{},resistances:[]};
+const revival=ctx.DNDCombat.applyDamage(xenoHero,5,'огонь');
+assert.equal(xenoHero.hp,14,'Necromantic Organs restore HP equal to Alchemist level instead of dropping to zero');
+assert.equal(xenoHero.classFeaturesState.xenoNecroticReady,false,'Necromantic Organs charge is consumed');
+assert.equal(xenoHero.classFeaturesState.xenoNecroticUsed,true,'Necromantic Organs cannot trigger twice before rest');
+assert.equal(xenoHero.defeated,false,'Necromantic Organs prevent defeat');
+assert.ok(revival.note.includes('Некромантические органы'),'combat log reports the revival');
+
+
 
 assert.equal(ctx.DNDCombat.attack(target,{id:'second',ac:12,hp:20,maxHp:20}, {bonus:0,damage:'1',useRules:false}).ac,12,'test combat engine remains callable after formula resolution');
 console.log('Alchemist combat integration tests PASS');
