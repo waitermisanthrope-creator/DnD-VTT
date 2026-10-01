@@ -1,5 +1,5 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
-const ctx={console,Date,JSON,Set,Number,String,Array,Object,RegExp,parseInt,parseFloat,
+const ctx={console,Math,Date,JSON,Set,Number,String,Array,Object,RegExp,parseInt,parseFloat,
   document:{getElementById:()=>null,querySelectorAll:()=>[]},addEventListener:()=>{},setTimeout:()=>{},clearTimeout:()=>{},window:null};
 ctx.window=ctx;ctx.globalThis=ctx;
 vm.createContext(ctx);
