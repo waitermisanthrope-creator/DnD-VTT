@@ -32,13 +32,14 @@
   function hasType(list,type){ return normList(list).indexOf(String(type||'').toLowerCase().trim())>=0; }
   function rollDie(sides){return Math.floor(Math.random()*sides)+1;}
   function parseDice(expr){ return global.DNDRules && global.DNDRules.parseDice ? global.DNDRules.parseDice(expr) : {groups:[{count:1,sides:6}],constant:0}; }
-  function rollDice(expr,critical,maximize){
+  function rollDice(expr,critical,maximize,damageSource){
     var p=parseDice(expr), total=num(p.constant), rolls=[];
+    var goldMod=damageSource&&global.MorehodGoldModifier&&typeof global.MorehodGoldModifier.getModifier==='function' ? global.MorehodGoldModifier.getModifier(damageSource) : 0;
     p.groups.forEach(function(g){
       var count=Math.max(0,num(g.count,1))*(critical?2:1);
-      for(var i=0;i<count;i++){var r=maximize?Math.max(1,num(g.sides,6)):rollDie(Math.max(1,num(g.sides,6)));rolls.push(r);total+=r;}
+      for(var i=0;i<count;i++){var raw=maximize?Math.max(1,num(g.sides,6)):rollDie(Math.max(1,num(g.sides,6)));var r=Math.max(0,raw+goldMod);rolls.push(r);total+=r;}
     });
-    return {total:total,rolls:rolls,expression:String(expr||'1d6'),critical:!!critical,maximized:!!maximize};
+    return {total:total,rolls:rolls,expression:String(expr||'1d6'),critical:!!critical,maximized:!!maximize,goldModifier:goldMod};
   }
   function rerollFirstDamageOne(damage){if(!damage)return false;var parts=[damage].concat(Array.isArray(damage.extraDice)?damage.extraDice:[],Array.isArray(damage.typedExtraDice)?damage.typedExtraDice:[]);for(var pi=0;pi<parts.length;pi++){var part=parts[pi];if(!part||!Array.isArray(part.rolls))continue;var parsed=parseDice(part.expression),index=0;for(var gi=0;gi<(parsed.groups||[]).length;gi++){var group=parsed.groups[gi],count=Math.max(0,num(group.count,1))*(part.critical?2:1),sides=Math.max(1,num(group.sides,6));for(var di=0;di<count&&index<part.rolls.length;di++,index++){if(Number(part.rolls[index])===1){var next=rollDie(sides),delta=next-1;part.rolls[index]=next;if(part!==damage&&part.total!=null)part.total+=delta;damage.total+=delta;return true;}}}}return false;}
     function effectiveDamage(target,amount,type,opts){
@@ -268,6 +269,7 @@
     var roll=global.DNDRules ? global.DNDRules.rollD20(featureMode) : {result:rollDie(20),critical:false};
     var saveDebuffs=actor&&actor.classFeaturesState&&actor.classFeaturesState.alchemistDebuffs||{};
     bonus-=num(saveDebuffs.savePenalty,0);
+    if(global.DNDRules&&global.DNDRules.getD20Modifier)bonus+=global.DNDRules.getD20Modifier(actor);
     var total=roll.result+bonus;
     var success=autoFail?false:total>=num(dc);var evasion=!!(sm&&sm.evasion&&String(stat).toLowerCase()==='dex'&&success&&!autoFail);
     return {stat:stat,dc:num(dc),bonus:bonus,roll:roll,total:total,success:success,autoFailed:autoFail,evasion:evasion,classFeatureNotes:sm&&sm.notes||[]};
@@ -314,6 +316,7 @@
       if(opts.weapon) { var wa=global.DNDRules.weaponAttack(attacker,opts.weapon,mode); opts.__classFeatureMod=featureMod; opts.__attacker=attacker; opts.__forceCritical=!!featureMod.forceCritical; if(featureMod.unarmedDie&&(opts.unarmedAttack||opts.isUnarmed||opts.pugilistWeapon))opts.damage=featureMod.unarmedDie; return resolveAttack(target,wa.roll.result,wa.bonus,opts); }
     }
     var roll=global.DNDRules ? global.DNDRules.rollD20(mode) : {result:rollDie(20),critical:false,fumble:false};
+    if(global.DNDRules&&global.DNDRules.getD20Modifier)bonus+=global.DNDRules.getD20Modifier(attacker);
     opts.__classFeatureMod=featureMod; opts.__attacker=attacker; opts.__forceCritical=!!featureMod.forceCritical;
     if(featureMod.unarmedDie&&(opts.unarmedAttack||opts.isUnarmed||opts.pugilistWeapon||opts.attackKind==='unarmed'))opts.damage=featureMod.unarmedDie;
     return resolveAttack(target,roll.result,bonus,opts,roll);
@@ -360,13 +363,13 @@
     if(electromagneticShield){out.electromagneticShield=electromagneticShield;out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Электромагнитный щит: атака отражена; накоплено 1 заряд.');}
     if(hit && opts.damage){
       var fm=opts.__classFeatureMod||{bonusDamage:0,extraDice:[]};
-      out.damage=fm.noDamage?{total:0,extraDice:[]}:rollDice(opts.damage,!!roll.critical,!!fm.maximizeDamageDice);
-      if(!fm.noDamage&&Array.isArray(fm.extraDice)) fm.extraDice.forEach(function(expr){var er=rollDice(expr,!!roll.critical,!!fm.maximizeDamageDice);out.damage.total+=er.total;(out.damage.extraDice||(out.damage.extraDice=[])).push(er);});
-      if(!fm.noDamage&&Array.isArray(fm.typedExtraDice))fm.typedExtraDice.forEach(function(entry){var er=rollDice(entry.dice,!!roll.critical,!!fm.maximizeDamageDice);out.damage.total+=er.total;(out.damage.typedExtraDice||(out.damage.typedExtraDice=[])).push({total:er.total,type:entry.type,label:entry.label||'Дополнительный урон'});});
+      out.damage=fm.noDamage?{total:0,extraDice:[]}:rollDice(opts.damage,!!roll.critical,!!fm.maximizeDamageDice,opts.__attacker);
+      if(!fm.noDamage&&Array.isArray(fm.extraDice)) fm.extraDice.forEach(function(expr){var er=rollDice(expr,!!roll.critical,!!fm.maximizeDamageDice,opts.__attacker);out.damage.total+=er.total;(out.damage.extraDice||(out.damage.extraDice=[])).push(er);});
+      if(!fm.noDamage&&Array.isArray(fm.typedExtraDice))fm.typedExtraDice.forEach(function(entry){var er=rollDice(entry.dice,!!roll.critical,!!fm.maximizeDamageDice,opts.__attacker);out.damage.total+=er.total;(out.damage.typedExtraDice||(out.damage.typedExtraDice=[])).push({total:er.total,type:entry.type,label:entry.label||'Дополнительный урон'});});
       if(!fm.noDamage)out.damage.total+=num(fm.bonusDamage);
       if(!fm.noDamage&&fm.doubleDamageAgainstObjects){out.damage.total*=2;(out.damage.typedExtraDice||[]).forEach(function(p){p.total*=2;});out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Взрывная специализация: двойной урон объекту/сооружению.');}
       var pending=(global.DNDClassFeatures&&global.DNDClassFeatures.consumePendingOnHit&&opts.__attacker)?global.DNDClassFeatures.consumePendingOnHit(opts.__attacker,{hit:true}):{};
-      if(pending.divineSmite){var sr=rollDice(pending.divineSmite.dice,!!roll.critical,!!fm.maximizeDamageDice);out.damage.total+=sr.total;out.damage.extraDice=(out.damage.extraDice||[]);out.damage.extraDice.push(sr);out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Божественная кара +'+sr.total+' '+pending.divineSmite.damageType);out.divineSmite={dice:pending.divineSmite.dice,total:sr.total,damageType:pending.divineSmite.damageType};}
+      if(pending.divineSmite){var sr=rollDice(pending.divineSmite.dice,!!roll.critical,!!fm.maximizeDamageDice,opts.__attacker);out.damage.total+=sr.total;out.damage.extraDice=(out.damage.extraDice||[]);out.damage.extraDice.push(sr);out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Божественная кара +'+sr.total+' '+pending.divineSmite.damageType);out.divineSmite={dice:pending.divineSmite.dice,total:sr.total,damageType:pending.divineSmite.damageType};}
       if(pending.stunningStrike){var ss=global.DNDCombat&&global.DNDCombat.savingThrow?global.DNDCombat.savingThrow(target,'con',pending.stunningStrike.dc):{success:true};out.stunningStrike={dc:pending.stunningStrike.dc,save:ss,applied:!ss.success};if(!ss.success&&global.DNDCombat&&global.DNDCombat.toggleCondition)global.DNDCombat.toggleCondition(target,'Оглушён',true);}
       if(fm.assassinDeathStrikeEligible&&fm.assassinSurprised&&global.DNDRules){var dexStats=(opts.__attacker&&opts.__attacker.stats)||{};var dexMod=Math.floor((num(dexStats.dex,10)-10)/2);var pb=global.DNDRules.profBonus?global.DNDRules.profBonus(opts.__attacker):2;var dc=8+dexMod+pb;var sv=global.DNDCombat.savingThrow?global.DNDCombat.savingThrow(target,'con',dc):{success:false,total:0,dc:dc};out.assassinDeathStrike={dc:dc,save:sv,damageDoubled:!sv.success};if(!sv.success)out.damage.total*=2;}
       if(fm.rerollDamageOne&&rerollFirstDamageOne(out.damage)){out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Рука Ужаса: одна кость урона переброшена.');}
