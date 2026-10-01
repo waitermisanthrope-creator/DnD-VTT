@@ -82,9 +82,35 @@ function sync(h){
  s.occultistFamiliar=s.occultistFamiliar||null;
  s.occultistTraditionalExpertise=s.occultistTraditionalExpertise||[];
  s.occultistOldWays=s.occultistOldWays||false;
+ s.occultistCoven=s.occultistCoven||null;s.occultistMystery=s.occultistMystery||null;
+ s.occultistFateReadingActive=false;s.occultistFateReadingACUntil=null;
+ s.occultistRevelationTempHp=Number(s.occultistRevelationTempHp)||0;
+ s.occultistSpiritualEmpowerment=false;s.occultistExtraAttack=false;
+ s.occultistMageArmor=false;s.occultistFightingStyle=s.occultistFightingStyle||null;
+ s.occultistMarkedFocus=s.occultistMarkedFocus||false;s.occultistArmorTraining=s.occultistArmorTraining||false;
+ s.occultistStorage=s.occultistStorage||null;s.occultistDefiledItems=s.occultistDefiledItems||[];
+ s.occultistAlchemy=s.occultistAlchemy||{potion:false};s.occultistForbiddenRite=false;
+ s.occultistRootCantrips=s.occultistRootCantrips||[];s.occultistImmortal=false;s.occultistAgeless=false;
+ s.occultistShieldPrepared=false;s.occultistSoulBurnType=null;s.occultistPoisonTarget=s.occultistPoisonTarget||null;
+ s.occultistCursedTargets=s.occultistCursedTargets||{};
+
  normalizeRiteState(h,s,l);
  if(l>=3)s.fateReadingUses=s.fateReadingUses==null?prof(h):Math.min(Number(s.fateReadingUses)||0,prof(h));
  if(l>=20)s.occultistOldWays=true;
+}
+function hitDiceState(h){
+ var r=h&&h.resources&&h.resources.hitDice;
+ if(r)return{current:Number(r.current),max:Number(r.max)};
+ if(h&&h.hitDice)return{current:Number(h.hitDice.current!=null?h.hitDice.current:h.hitDice),max:Number(h.hitDice.max||h.hitDice)};
+ return{current:0,max:0};
+}
+function consumeHitDice(h,n){
+ n=Math.max(1,Number(n)||1);var hd=hitDiceState(h);
+ if(hd.max<=0||hd.current<n)return{ok:false,message:'Недостаточно Костей хитов для кровавой магии.'};
+ if(h.resources&&h.resources.hitDice)h.resources.hitDice.current=hd.current-n;
+ else if(h.hitDice&&typeof h.hitDice==='object')h.hitDice.current=hd.current-n;
+ else h.hitDice=hd.current-n;
+ return{ok:true,spent:n,damage:n+'d6'};
 }
 function saveTarget(h,t,ability,dc){if(!t)return null;return g.DNDCombat&&g.DNDCombat.savingThrow?g.DNDCombat.savingThrow(t,ability,dc,'normal',{saveType:ability}):null;}
 function healTarget(t,n){return g.DNDCombat&&g.DNDCombat.heal?g.DNDCombat.heal(t,n):null;}
@@ -116,20 +142,48 @@ if(id==='traditionFeature')return traditionFeature(h,s.occultistTradition||ctx.t
 if(id==='summonFamiliar')return traditionFeature(h,'Ведьма',Object.assign({},ctx,{action:'familiar'}));
 if(id==='summonSpirit')return traditionFeature(h,'Шаман',Object.assign({},ctx,{action:'spirit'}));
 if(id==='empowerSpirit')return traditionFeature(h,'Шаман',Object.assign({},ctx,{action:'empowerSpirit'}));
-if(id==='bloodCast'){var sl=Math.max(1,Number(ctx.spellLevel)||1);if(sl>l)return{ok:false,message:'Уровень заклинания превышает уровень Оккультиста.'};if(Number(s.occultistBloodMagic.usedLevels||0)+sl>l)return{ok:false,message:'Достигнут лимит кровавой магии до долгого отдыха.'};s.occultistBloodMagic.usedLevels+=sl;return{ok:true,effect:{spellLevel:sl,bloodCost:sl,hitDice:sl,necroticDamage:sl+'d6'},message:'🩸 Заклинание оплачено кровью.'};}
-if(id==='lostRitual'){var spell=String(ctx.spell||'');if(!spell||Number(ctx.spellLevel)>5)return{ok:false,message:'Выбери известное заклинание до 5 уровня.'};if(s.occultistLostRitual.spell&&s.occultistLostRitual.spell!==spell)return{ok:false,message:'Потерянный ритуал уже выбран.'};s.occultistLostRitual.spell=spell;if(s.occultistLostRitual.used)return{ok:false,message:'Потерянный ритуал уже использован до отдыха.'};s.occultistLostRitual.used=true;return{ok:true,effect:{castAsRitual:true,spell:spell,spellLevel:Number(ctx.spellLevel)||1},message:'🕯️ Потерянный ритуал применён.'};}
+if(id==='bloodCast'){var sl=Math.max(1,Number(ctx.spellLevel)||1);if(l<5)return{ok:false,message:'Кровавая магия доступна с 5 уровня.'};if(sl>l)return{ok:false,message:'Уровень заклинания превышает уровень Оккультиста.'};if(Number(s.occultistBloodMagic.usedLevels||0)+sl>l)return{ok:false,message:'Достигнут лимит кровавой магии до долгого отдыха.'};var hd=consumeHitDice(h,sl);if(!hd.ok)return hd;s.occultistBloodMagic.usedLevels+=sl;return{ok:true,effect:{spellLevel:sl,bloodCost:sl,hitDiceSpent:sl,necroticDamage:hd.damage},message:'🩸 Заклинание оплачено кровью.'};}
+if(id==='lostRitual'){var spell=String(ctx.spell||''),spellLevel=Number(ctx.spellLevel)||1;if(!spell||spellLevel>5)return{ok:false,message:'Выбери известное заклинание до 5 уровня.'};if(s.occultistLostRitual.used)return{ok:false,message:'Потерянный ритуал уже использован до отдыха.'};if(s.occultistLostRitual.spell&&s.occultistLostRitual.spell!==spell)return{ok:false,message:'Потерянный ритуал уже выбран.'};s.occultistLostRitual.spell=spell;s.occultistLostRitual.used=true;return{ok:true,effect:{castAsRitual:true,spell:spell,spellLevel:spellLevel},message:'🕯️ Потерянный ритуал применён.'};}
 if(id==='deathBeyond'){if(s.occultistDeathBeyond.used)return{ok:false,message:'За гранью смерти уже использовано до отдыха.'};s.occultistDeathBeyond.used=true;return{ok:true,effect:{castSpell:'Разговор с мёртвыми',spellLevel:3,free:true},message:'☠️ Разговор с мёртвыми применён.'};}
 if(id==='specialPoison'){s.occultistSpecialPoison.targetType=String(ctx.targetType||'');return{ok:true,effect:{poisonBypass:true,targetType:s.occultistSpecialPoison.targetType},message:'☠️ Специализированный яд настроен.'};}
 if(id==='soulBurn'){var typ=String(ctx.damageType||'cold');if(['cold','fire','lightning'].indexOf(typ)<0)return{ok:false,message:'Можно преобразовать только холод, огонь или молнию.'};return{ok:true,effect:{convertDamage:{from:typ,to:'necrotic'}},message:'🔥 Выжигание души активно.'};}
 
-if(id==='chooseTradition'){var tr=String(ctx.tradition||'');if(!traditions[tr])return{ok:false,message:'Неизвестная Оккультная традиция.'};s.occultistTradition=tr;return{ok:true,effect:{tradition:tr,featureLevels:[1,3,6,14]},message:'🔮 Традиция выбрана: '+tr+'.'};}
+if(id==='chooseTradition'){var tr=String(ctx.tradition||'');if(!traditions[tr])return{ok:false,message:'Неизвестная Оккультная традиция.'};if(s.occultistTradition&&s.occultistTradition!==tr)return{ok:false,message:'Оккультную традицию нельзя сменить после выбора.'};s.occultistTradition=tr;return{ok:true,effect:{tradition:tr,featureLevels:[1,3,6,14]},message:'🔮 Традиция выбрана: '+tr+'.'};}
+if(id==='chooseCoven'){if(s.occultistTradition!=='Ведьма')return{ok:false,message:'Ковен доступен только Ведьме.'};var cv=String(ctx.coven||'');if(['Чёрный ковен','Белый ковен','Зелёный ковен'].indexOf(cv)<0)return{ok:false,message:'Неизвестный ковен.'};if(s.occultistCoven&&s.occultistCoven!==cv)return{ok:false,message:'Ковен нельзя сменить после выбора.'};s.occultistCoven=cv;return{ok:true,effect:{coven:cv,bonusSpells:traditions.Ведьма.bonus[cv]||[]},message:'🧿 Выбран '+cv+'.'};}
+if(id==='chooseMystery'){if(s.occultistTradition!=='Оракул')return{ok:false,message:'Тайна доступна только Оракулу.'};var my=String(ctx.mystery||'');if(!mysteries[my])return{ok:false,message:'Неизвестная тайна.'};if(s.occultistMystery&&s.occultistMystery!==my)return{ok:false,message:'Тайну нельзя сменить после выбора.'};s.occultistMystery=my;return{ok:true,effect:{mystery:my,spells:mysteries[my]},message:'🔮 Выбрана тайна: '+my+'.'};}
 if(id==='chooseRite'){var rn=String(ctx.rite||'');var allowed=availableRites(l),max=riteKnown[l]||0;if(allowed.indexOf(rn)<0)return{ok:false,message:'Этот обряд ещё недоступен.'};s.occultistSelectedRites=s.occultistSelectedRites||[];if(s.occultistSelectedRites.indexOf(rn)>=0)return{ok:false,message:'Этот обряд уже выбран.'};if(s.occultistSelectedRites.length>=max)return{ok:false,message:'Достигнут предел известных обрядов ('+max+').'};s.occultistSelectedRites.push(rn);return{ok:true,effect:{selectedRites:s.occultistSelectedRites.slice()},message:'🕯️ Обряд выбран: '+rn+'.'};}
 if(id==='replaceRite'){var old=String(ctx.oldRite||''),rn2=String(ctx.rite||''),allowed2=availableRites(l),max2=riteKnown[l]||0; s.occultistSelectedRites=s.occultistSelectedRites||[];if(s.occultistSelectedRites.indexOf(old)<0)return{ok:false,message:'Старый обряд не выбран.'};if(allowed2.indexOf(rn2)<0||riteLevel(rn2)>l)return{ok:false,message:'Новый обряд недоступен.'};if(s.occultistSelectedRites.indexOf(rn2)>=0)return{ok:false,message:'Этот обряд уже выбран.'};if(s.occultistSelectedRites.length>max2)return{ok:false,message:'Нарушен лимит обрядов.'};s.occultistSelectedRites[s.occultistSelectedRites.indexOf(old)]=rn2;return{ok:true,effect:{selectedRites:s.occultistSelectedRites.slice()},message:'🕯️ Обряд заменён: '+old+' → '+rn2+'.'};}
 if(id==='fateReading'&&l>=3){if(Number(s.fateReadingUses)<=0)return{ok:false,reason:'Чтение судьбы уже потрачено до долгого отдыха.'};s.fateReadingUses--;if(global.DNDClassFeatures&&h.resources&&h.resources.occultistFateReading)h.resources.occultistFateReading.current=Math.max(0,Math.min(Number(s.fateReadingUses)||0,h.resources.occultistFateReading.max));return{ok:true,effect:{acBonus:mod(h,'wis'),uses:s.fateReadingUses},message:'🔮 Чтение судьбы активировано.'};}
 if(id==='augury'){return{ok:true,effect:{free:true},message:'🔮 Предсказание можно использовать без ячейки.'};}
-if(id==='spirit'){var type=ctx.type||'fire';s.spirit={type:type,manifested:false};return{ok:true,effect:s.spirit,message:'👻 Дух призван: '+type+'.'};}
-if(id==='empowerSpirit'){var n=Math.max(1,Math.min(5,Number(ctx.slot)||1));s.spirit=s.spirit||{type:'fire'};s.spirit.empowered=n;return{ok:true,effect:{weaponDamage:['','1d6','1d8','1d10','1d12','1d12'][n],manifestedDamage:['','2d4','2d6','2d6','2d8','2d8'][n],tempHP:n},message:'🔥 Дух усилен ячейкой '+n+' уровня.'};}
+if(id==='spirit'){if(s.occultistTradition!=='Шаман')return{ok:false,message:'Дух доступен только Шаману.'};var type=String(ctx.type||'fire');if(['fire','cold','lightning','radiant','necrotic'].indexOf(type)<0)return{ok:false,message:'Неизвестный тип духа.'};s.occultistSpirit={type:type,manifested:true,level:l,damageDice:'1d6',tempHp:0,empowered:0};return{ok:true,effect:{summon:'spirit',type:type,rangeFt:30,weaponBonus:prof(h),damageDice:'1d6'},message:'👻 Дух призван: '+type+'.'};}
+if(id==='empowerSpirit'){if(s.occultistTradition!=='Шаман'||l<3)return{ok:false,message:'Усиленный дух доступен Шаману с 3 уровня.'};var n=Math.max(1,Math.min(5,Number(ctx.slot)||1));if((s.occultistSlots[n-1]||0)<=0)return{ok:false,message:'Нет ячейки этого уровня.'};s.occultistSlots[n-1]--;s.occultistSpirit=s.occultistSpirit||{type:String(ctx.type||'fire'),manifested:true};s.occultistSpirit.empowered=n;s.occultistSpirit.damageDice=['','1d6','1d8','1d10','1d12','2d8'][n];s.occultistSpirit.tempHp=Math.max(1,n*Math.max(1,mod(h,'wis')));return{ok:true,effect:{weaponDamage:s.occultistSpirit.damageDice,tempHP:s.occultistSpirit.tempHp},message:'🔥 Дух усилен ячейкой '+n+' уровня.'};}
 if(id==='ritual'&&l>=20){return{ok:true,effect:{ritual:true,materialCostGP:Math.max(0,Number(ctx.spellLevel)||1)*10,extraTurns:Number(ctx.spellLevel)||1},message:'🕯️ Заклинание превращено в ускоренный ритуал.'};}
+if(id==='useRite'){
+ var rn0=String(ctx.rite||''),selected0=s.occultistSelectedRites||[],rd0=rites.find(function(x){return x[0]===rn0;});
+ if(!rd0||selected0.indexOf(rn0)<0||l<rd0[1])return{ok:false,message:'Обряд недоступен или не выбран.'};
+ var e0={rite:rn0};
+ if(rn0==='Алхимические обряды'){s.occultistAlchemy.potion=true;e0={alchemyTools:true,healingPotion:true,recharge:'long'};}
+ else if(rn0==='Кровавые ритуалы'){var donor=ctx.donor||null;if(!donor)return{ok:false,message:'Нужен добровольный донор.'};var d=consumeHitDice(donor,1);if(!d.ok)return d;e0={donorHitDieSpent:1,necroticDamage:'1d6',ritualComponentReplaced:true};}
+ else if(rn0==='Кровавая магия')return use(h,'bloodCast',{spellLevel:Number(ctx.spellLevel)||1});
+ else if(rn0==='Осквернение предмета'){var item=String(ctx.itemId||'');if(!item)return{ok:false,message:'Нужен ID предмета.'};s.occultistDefiledItems.push({itemId:item,curse:String(ctx.curse||'сила')});e0={itemId:item,curse:String(ctx.curse||'сила')};}
+ else if(rn0==='За гранью смерти')return use(h,'deathBeyond',{});
+ else if(rn0==='Клеймёный фокус'){s.occultistMarkedFocus=true;e0={focus:true,components:['V','S','M']};}
+ else if(rn0==='Эксперт традиции'){s.occultistTraditionalExpertise.push(String(ctx.skill||''));e0={expertise:s.occultistTraditionalExpertise.slice()};}
+ else if(rn0==='Запретные обряды'){s.occultistForbiddenRite=true;e0={bonusSpell:'Анимация мёртвых',cannotBecomeRitual:true};}
+ else if(rn0==='Потерянный ритуал')return use(h,'lostRitual',{spell:ctx.spell,spellLevel:ctx.spellLevel});
+ else if(rn0==='Оккультное ускорение')e0={bonusSpell:'Ускорение'};
+ else if(rn0==='Защитные метки'){s.occultistMageArmor=true;e0={mageArmor:true,baseAC:13,plusDex:true};}
+ else if(rn0==='Обряд бессмертия'){s.occultistImmortal=true;e0={immuneNaturalDeath:true};}
+ else if(rn0==='Обряд молодости'){s.occultistAgeless=true;e0={appearanceAgingStopped:true};}
+ else if(rn0==='Корень магии'){var roots=Array.isArray(ctx.cantrips)?ctx.cantrips.slice(0,10):[];s.occultistRootCantrips=roots;e0={cantrips:roots};}
+ else if(rn0==='Пространственное хранилище'){s.occultistStorage={capacityFt3:Math.max(1,l*2),items:[]};e0=s.occultistStorage;}
+ else if(rn0==='Специализированные яды')return use(h,'specialPoison',{targetType:ctx.targetType});
+ else if(rn0==='Выжигание души')return use(h,'soulBurn',{damageType:ctx.damageType});
+ else if(rn0==='Воинские облачения'){s.occultistArmorTraining=true;e0={armor:['light','medium','shield']};}
+ else if(rn0==='Обряд мастерства'){var fs=String(ctx.style||'Дуэлянт');if(['Дуэлянт','Два оружия','Великое оружие'].indexOf(fs)<0)return{ok:false,message:'Неизвестный боевой стиль.'};s.occultistFightingStyle=fs;e0={fightingStyle:fs};}
+ else if(rn0==='Оберегающая сила'){s.occultistShieldPrepared=true;e0={reactionSpell:'Щит'};}
+ return{ok:true,effect:e0,message:'🕯️ Обряд применён: '+rn0+'.'};
+}
 if(id==='rite'){var rn=String(ctx.rite||''),rd=rites.find(function(x){return x[0]===rn;}),selected=s.occultistSelectedRites||[];if(!rd||l<rd[1])return{ok:false,message:'Обряд недоступен на текущем уровне.'};if(selected.indexOf(rn)<0)return{ok:false,message:'Сначала выбери этот обряд в списке известных.'};var re={};if(rn==='Кровавые ритуалы')re={resource:'hitDice',sacrifice:true,necroticDamage:true};else if(rn==='Кровавая магия')re={resource:'hitDice',spellLevelCap:l,bloodCostPerSpellLevel:1};else if(rn==='Осквернение предмета')re={curseItem:true,choices:['проклятие силы','проклятие защиты','проклятие восприятия']};else if(rn==='Запретные обряды')re={bonusSpell:'Анимация мёртвых',cannotBecomeRitual:true};else if(rn==='Защитные метки')re={mageArmor:true,alwaysPrepared:true};else if(rn==='Обряд мастерства')re={fightingStyle:ctx.style||'Дуэлянт',styles:['Дуэлянт','Два оружия','Великое оружие']};else if(rn==='Воинские облачения')re={armorProficiency:['light','medium','shield']};else if(rn==='Оберегающая сила')re={reactionSpell:'Щит'};else if(rn==='Специализированные яды'){re={poisonBypass:true,targetType:ctx.targetType||null};s.occultistSpecialPoison.targetType=ctx.targetType||s.occultistSpecialPoison.targetType;}
 else if(rn==='Выжигание души')re={convertDamage:['cold','fire','lightning'],to:'necrotic'};
 else if(rn==='Кровавая магия')re={resource:'hitDice',spellLevelCap:l,bloodCostPerSpellLevel:1,maxBloodLevels:l,usedBloodLevels:s.occultistBloodMagic.usedLevels};
@@ -138,23 +192,54 @@ else if(rn==='Потерянный ритуал')re={ritualSpellLevelMax:5,uses:
 
 if(id==='mystery'){var mn=ctx.mystery||'Жизнь';return{ok:true,effect:{bonusSpells:mysteries[mn]||[]},message:'✨ Тайна '+mn+' применена.'};}
 return{ok:false,unsupported:true,message:'Оккультист: неизвестная активная способность '+id};}
+function attackModifiers(h,ctx){
+ sync(h);ctx=ctx||{};var s=h.classFeaturesState||{},o={bonusAttack:0,bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,extraAttacks:0,notes:[]};
+ if(s.occultistFightingStyle==='Дуэлянт'&&ctx.oneHandedWeapon&&!ctx.offHand){o.bonusDamage+=2;o.notes.push('Обряд мастерства: Дуэлянт');}
+ if(s.occultistFightingStyle==='Великое оружие'&&ctx.twoHandedWeapon&&ctx.damageRerollAvailable)o.rerollDamage=true;
+ if(s.occultistFightingStyle==='Два оружия'&&ctx.offHand)o.bonusDamage+=prof(h);
+ if(s.occultistTradition==='Шаман'&&s.occultistSpirit&&s.occultistSpirit.manifested&&ctx.weaponAttack)o.extraDice.push(s.occultistSpirit.damageDice||'1d6'),o.notes.push('Духовный воин');
+ if(s.occultistExtraAttack&&ctx.weaponAttack)o.extraAttacks=2;
+ if(s.occultistFateReadingActive)o.notes.push('Чтение судьбы: реакция готова');
+ return o;
+}
+function saveModifiers(h,ctx){
+ sync(h);ctx=ctx||{};var s=h.classFeaturesState||{},o={bonus:0,advantage:false,disadvantage:false,notes:[]};
+ if(s.occultistMageArmor&&ctx.armorClassBase===13)o.notes.push('Защитные метки');
+ if(s.occultistCoven==='Белый ковен'&&ctx.charmEffect){o.advantage=true;o.notes.push('Белый ковен');}
+ if(s.occultistFateReadingActive){o.bonus+=mod(h,'wis');o.notes.push('Чтение судьбы');}
+ if(s.occultistMystery==='Жизни'&&ctx.deathSave){o.bonus+=mod(h,'wis');}
+ return o;
+}
+function spellDamageModifiers(h,ctx){
+ sync(h);ctx=ctx||{};var s=h.classFeaturesState||{},o={bonus:0,maximize:false,rerollOne:false,notes:[],selfDamage:0};
+ var type=String(ctx.damageType||'').toLowerCase();
+ if(s.occultistSoulBurnType&&['cold','fire','lightning'].indexOf(type)>=0){o.convertDamage={from:type,to:'necrotic'};o.notes.push('Выжигание души');}
+ if(s.occultistCoven==='Чёрный ковен'&&type==='necrotic')o.bonus+=Math.max(0,mod(h,'wis'));
+ return o;
+}
+function checkModifiers(h,ctx){
+ sync(h);ctx=ctx||{};var s=h.classFeaturesState||{},o={bonus:0,advantage:false,disadvantage:false,notes:[]};
+ if(s.occultistTraditionalExpertise&&ctx.skill&&s.occultistTraditionalExpertise.indexOf(ctx.skill)>=0)o.expertise=true;
+ return o;
+}
+function onTurnEnd(h){
+ sync(h);var s=h.classFeaturesState||{};s.occultistFateReadingActive=false;s.occultistSpiritualEmpowerment=false;
+ if(s.occultistSpirit&&s.occultistSpirit.manifested&&s.occultistSpirit.tempHp&&s.occultistSpirit.tempHpExpires==='turn')s.occultistSpirit.tempHp=0;
+}
 var levels={};for(var i=1;i<=20;i++){levels[i]={features:[]};if(i===1)levels[i].features=['Заклинания','Оккультная традиция'];if(riteKnown[i])levels[i].features.push('Оккультные обряды');if([4,8,12,16,19].indexOf(i)>=0)levels[i].features.push('Увеличение характеристик');if(i===10)levels[i].features.push('Традиционное мастерство');if(i===20)levels[i].features.push('Старые пути');if([3,6,14].indexOf(i)>=0)levels[i].features.push('Особенность традиции');}
 function rest(h,type){
  sync(h);var s=h.classFeaturesState||{};
  if(type==='long'){
-   s.occultistBloodMagic.usedLevels=0;
-   s.occultistLostRitual.used=false;
-   s.occultistDeathBeyond.used=false;
+   s.occultistBloodMagic.usedLevels=0;s.occultistLostRitual.used=false;s.occultistDeathBeyond.used=false;
    if(s.fateReadingUses!==undefined)s.fateReadingUses=prof(h);
-   s.oracleReservedDie=null;
-   s.occultistSpecialPoison.targetType=null;
+   s.oracleReservedDie=null;s.occultistAlchemy.potion=false;s.occultistFateReadingActive=false;
+   if(s.occultistSpirit)s.occultistSpirit.manifested=false;
  }
- if(type==='short'&&s.occultistSpirit)s.occultistSpirit.manifested=false;
  return{ok:true,type:type};
 }
-var pack={id:PACK_ID,name:CLASS,source:SOURCE,metadata:{edition:'5E',hitDie:6,primaryStat:'wisdom',savingThrows:['wisdom','charisma'],armor:[],weapons:['daggers','quarterstaff','light_crossbow'],tools:['herbalism_kit'],multiclassRequirement:{wisdom:13},skillsChoose:2,subclassLevel:1,subclassFeatureLevels:[1,3,6,14]},features:baseFeatures.map(function(x){return{id:'occultist-'+x[1],level:x[0],name:x[1],description:x[2]};}),levels:levels,spellcasting:{ability:'wisdom',cantripsKnown:cantrips,spellsKnown:known,slots:slots},spells:spells,rites:rites.map(function(x){return{id:x[0].replace(/\s+/g,'-').toLowerCase(),name:x[0],level:x[1],description:x[2]};}),traditions:traditions,mysteries:mysteries,hooks:{sync:sync,useFeature:use,rest:rest}};
+var pack={id:PACK_ID,name:CLASS,source:SOURCE,metadata:{edition:'5E',hitDie:6,primaryStat:'wisdom',savingThrows:['wisdom','charisma'],armor:[],weapons:['daggers','quarterstaff','light_crossbow'],tools:['herbalism_kit'],multiclassRequirement:{wisdom:13},skillsChoose:2,subclassLevel:1,subclassFeatureLevels:[1,3,6,14]},features:baseFeatures.map(function(x){return{id:'occultist-'+x[1],level:x[0],name:x[1],description:x[2]};}),levels:levels,spellcasting:{ability:'wisdom',cantripsKnown:cantrips,spellsKnown:known,slots:slots},spells:spells,rites:rites.map(function(x){return{id:x[0].replace(/\s+/g,'-').toLowerCase(),name:x[0],level:x[1],description:x[2]};}),traditions:traditions,mysteries:mysteries,hooks:{sync:sync,useFeature:use,rest:rest,attackModifiers:attackModifiers,saveModifiers:saveModifiers,spellDamageModifiers:spellDamageModifiers,checkModifiers:checkModifiers,onTurnEnd:onTurnEnd}};
 D.registerClass(pack);
 g.CLASSES_REFERENCE=g.CLASSES_REFERENCE||{};g.CLASSES_REFERENCE[CLASS]={source:SOURCE,hitDie:6,primaryStat:'wisdom',savingThrows:['wisdom','charisma'],subclassLevel:1,subclassFeatureLevels:[1,3,6,14],contentPackId:PACK_ID};
-g.occultistRuntime={sync:sync,useFeature:use,rest:rest};
+g.occultistRuntime={sync:sync,useFeature:use,rest:rest,attackModifiers:attackModifiers,saveModifiers:saveModifiers,spellDamageModifiers:spellDamageModifiers,checkModifiers:checkModifiers,onTurnEnd:onTurnEnd};
 g.OCCULTIST_KIBBLES_V11={VERSION:'1.1',PACK_ID:PACK_ID,spellLevels:spells,rites:rites,traditions:Object.keys(traditions),mysteries:Object.keys(mysteries)};
 })(window);
