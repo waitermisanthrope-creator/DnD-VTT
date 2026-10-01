@@ -42,5 +42,12 @@ rolls=[{result:20,critical:true,fumble:false}];
 const penalizedAttack=ctx.DNDCombat.attack(attacker,{id:'second',ac:12,hp:20,maxHp:20},{bonus:0,damage:'1',useRules:false});
 assert.equal(penalizedAttack.classBonus,-3,'alchemist formula attack penalty modifies real attack total');
 
+const invisibleAttacker={id:'invisible-alchemist',classes:[{name:'Алхимик',level:3,subclass:'apothecary'}],abilityScores:{intelligence:14,dexterity:14},proficiencyBonus:2,resources:{},activeConditions:{'Невидим':true},conditions:{'Невидим':true},classFeaturesState:{alchemistActiveEffects:[{name:'Зелье невидимости',effect:{condition:'Невидим',endsOnAttack:true,durationMinutes:60},remainingMinutes:60}]}};
+rolls=[{result:1,critical:false,fumble:true}];
+ctx.DNDCombat.attack(invisibleAttacker,{id:'third',ac:12,hp:20,maxHp:20},{bonus:0,damage:'1',useRules:false});
+assert.equal(invisibleAttacker.classFeaturesState.alchemistActiveEffects.length,0,'invisibility potion ends after an attack even on a miss');
+assert.equal(invisibleAttacker.activeConditions['Невидим'],undefined,'invisibility condition clears after attacking');
+
+
 assert.equal(ctx.DNDCombat.attack(target,{id:'second',ac:12,hp:20,maxHp:20}, {bonus:0,damage:'1',useRules:false}).ac,12,'test combat engine remains callable after formula resolution');
 console.log('Alchemist combat integration tests PASS');
