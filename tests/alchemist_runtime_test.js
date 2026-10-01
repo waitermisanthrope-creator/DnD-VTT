@@ -207,6 +207,24 @@ const graftInstalled=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'
 assert.equal(graftInstalled.ok,true,'Xenoalchemist can install a verified graft');
 assert.equal(graftInstalled.grafts.length,1,'installed graft is stored on the character');
 assert.ok(hooks.attackModifiers(xenoOwner,{unarmedGraft:true}).extraDice.includes('1d6'),'Beast Weapon graft adds its natural-weapon damage die');
+
+const hornInstall=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'install',graftName:'Рога',donorVerified:true,donorType:'Зверь'});
+assert.equal(hornInstall.ok,true,'Horns graft can be installed');
+const hornAttack=hooks.attackModifiers(xenoOwner,{unarmedGraft:true,graftName:'Рога'});
+assert.ok(hornAttack.extraDice.includes('1d6'),'Horns graft adds its selected natural attack damage');
+assert.equal(hornAttack.naturalAttackName,'Рога','natural attack modifier reports the selected graft');
+hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Рога'});
+const hugeHands=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'install',graftName:'Огромные руки',donorVerified:true,donorType:'Великан'});
+assert.equal(hugeHands.ok,true,'Huge Hands graft can be installed');
+assert.equal(hooks.attackModifiers(xenoOwner,{meleeAttack:true}).reachFt,10,'Huge Hands grant 10-foot melee reach in combat modifiers');
+hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Огромные руки'});
+const amphibian=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'install',graftName:'Адаптация амфибии',donorVerified:true,donorType:'Амфибия'});
+assert.equal(amphibian.ok,true,'Amphibian Adaptation graft can be installed');
+const amphibianMods=hooks.attackModifiers(xenoOwner,{});
+assert.equal(amphibianMods.breathesWater,true,'Amphibian Adaptation grants water breathing');
+assert.equal(amphibianMods.swimSpeed,30,'Amphibian Adaptation grants a swim speed equal to walking speed');
+hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Адаптация амфибии'});
+
 const graftRemoved=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Звериное оружие'});
 assert.equal(graftRemoved.ok,true,'installed graft can be removed');
 assert.equal(graftRemoved.grafts.length,0,'removed graft no longer remains equipped');
