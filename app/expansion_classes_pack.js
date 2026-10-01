@@ -1628,7 +1628,7 @@ var academy=String(s.warlordAcademy||'');
     if(club==='arenaRoyale'&&l>=3){var pp=res(h,'pugilistPersona',Math.max(1,3+mod(h,'cha')),'long');pp.max=Math.max(1,3+mod(h,'cha'));s.pugilistPersonaActive=!!s.pugilistPersonaActive;}
     if(club==='pissAndVinegar'&&l>=6){['heelstomper','lowBlow','pocketSand'].forEach(function(id){res(h,'pugilist_'+id,1,'short');});}
     if(club==='pissAndVinegar'&&l>=17)res(h,'pugilistUncouthArt',1,'long');
-    if(club==='arenaRoyale'&&l>=6)res(h,'pugilistWorkCrowd',1,'long');
+    if(club==='arenaRoyale'&&l>=6)res(h,'pugilistWorkCrowd',1,'long');if(club==='arenaRoyale'&&l>=11){s.pugilistHighFlyerActive=true;s.pugilistJumpMultiplier=2;s.pugilistBonusDashAvailable=true;}
     if(club==='arenaRoyale'&&l>=17)res(h,'pugilistSignatureMove',1,'long');
     if(club==='handOfDread'&&l>=3)res(h,'pugilistDreadHand',1,'short');
     if(club==='handOfDread'&&l>=11)res(h,'pugilistGrotesqueGrowth',1,'long');
