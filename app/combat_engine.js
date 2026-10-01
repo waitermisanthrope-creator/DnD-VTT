@@ -91,6 +91,7 @@
     if(target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs&&target.classFeaturesState.alchemistDebuffs.oilCoated&&rawParts.some(function(p){return p.damageType==='огонь';})){var oilDamage=rollDice('1d6').total;rawParts.push({amount:oilDamage,damageType:'огонь',label:'Масляная бомба'});target.classFeaturesState.alchemistDebuffs.oilCoated=false;}
     var rawTotal=rawParts.reduce(function(sum,p){return sum+p.amount;},0);
     var reactionCtx={amount:rawTotal,damageType:type||'',source:opts.source||'generic',attackKind:opts.attackKind||'',visible:opts.visible!==false,projectile:!!opts.projectile,fall:!!opts.fall,critical:!!opts.critical,damageParts:rawParts.map(function(x){return {amount:x.amount,damageType:x.damageType,label:x.label||''};})};
+    var perfumeSource=opts.attacker,perfumeTargetId=target&&(target.id||target.entityId),perfumeSourceClass=(perfumeSource&&perfumeSource.classes||[]).find(function(cl){return cl&&(cl.name==='Алхимик'||cl.englishName==='Alchemist')&&(cl.subclass==='amorist'||cl.subclass==='Аморист')&&Number(cl.level)>=10;});if(perfumeSourceClass&&perfumeTargetId){var perfumeHero=global.currentChar||global.currentCharacter||{},perfumeRound=Number(perfumeHero.initiativeTracker&&perfumeHero.initiativeTracker.round)||1,perfumeState=perfumeSource.classFeaturesState=perfumeSource.classFeaturesState||{};perfumeState.alchemistPerfumeImmuneUntilByTarget=perfumeState.alchemistPerfumeImmuneUntilByTarget||{};perfumeState.alchemistPerfumeImmuneUntilByTarget[String(perfumeTargetId)]=perfumeRound+600;}
     if(global.DNDClassFeatures&&typeof global.DNDClassFeatures.reactionOptions==='function') reaction=global.DNDClassFeatures.reactionOptions(target,reactionCtx);
     if(opts.reactionChoice&&global.DNDClassFeatures&&typeof global.DNDClassFeatures.resolveReaction==='function'){ reactionResult=global.DNDClassFeatures.resolveReaction(target,opts.reactionChoice,reactionCtx); if(reactionResult&&reactionResult.ok) amount=reactionResult.remainingAmount; }
     var wardAbsorbed=0,wardState=target&&target.classFeaturesState;
@@ -268,6 +269,21 @@
   function resetDeathSaves(hero){hero.deathSaves={successes:0,failures:0};}
   function attack(attacker,target,opts){
     opts=opts||{};if(!opts.target)opts.target=target; var bonus=num(opts.bonus), mode=opts.mode||'normal';
+    var perfumeClass=(target&&target.classes||[]).find(function(cl){return cl&&(cl.name==='Алхимик'||cl.englishName==='Alchemist')&&(cl.subclass==='amorist'||cl.subclass==='Аморист')&&Number(cl.level)>=10;});
+    if(perfumeClass&&attacker&&target&&opts.__perfumeChecked!==true){
+      var perfumeState=target.classFeaturesState=target.classFeaturesState||{},perfumeOwnerState=attacker.classFeaturesState||{},attackerId=String(attacker.id||attacker.entityId||''),roundTracker=(global.currentChar||global.currentCharacter||{}).initiativeTracker||{},currentRound=Number(roundTracker.round)||1;
+      var immuneUntil=Number(perfumeOwnerState.alchemistPerfumeImmuneUntilByTarget&&perfumeOwnerState.alchemistPerfumeImmuneUntilByTarget[String(target.id||target.entityId||'')])||0;
+      var distance=Number(opts.distanceFt);
+      if(!Number.isFinite(distance)&&global.DNDBattleBoard&&global.DNDBattleBoard.findToken&&global.DNDBattleBoard.distanceFt){
+        var aTok=global.DNDBattleBoard.findToken('bt_'+attackerId)||global.DNDBattleBoard.findToken(attackerId),tTok=global.DNDBattleBoard.findToken('bt_'+String(target.id||target.entityId||''));
+        if(aTok&&tTok)distance=global.DNDBattleBoard.distanceFt(aTok,tTok);
+      }
+      if(Number.isFinite(distance)&&distance<=5&&immuneUntil<currentRound&&Number(perfumeState.alchemistPerfumeLastRound||0)!==currentRound){
+        var perfumeDC=Number(perfumeState.alchemistSaveDC)||8+Math.floor((Number(target.abilityScores&&target.abilityScores.intelligence||target.stats&&target.stats.int||10)-10)/2)+Number(target.proficiencyBonus||2);
+        var perfumeSave=global.DNDCombat&&global.DNDCombat.savingThrow?global.DNDCombat.savingThrow(attacker,'wis',perfumeDC):null;
+        if(perfumeSave){perfumeState.alchemistPerfumeLastRound=currentRound;if(target.turnResources)target.turnResources.reaction=false;opts.__perfumeResult={dc:perfumeDC,save:perfumeSave,targetId:attackerId};if(!perfumeSave.success)opts.__perfumeCancelled=true;}
+      }
+    }
     if(opts.weapon){opts.weaponAttack=true;opts.meleeOrThrown=opts.meleeOrThrown!==undefined?opts.meleeOrThrown:(opts.weapon.rangeFt==null||Number(opts.weapon.rangeFt)<=5);}
     var featureMod=(global.DNDClassFeatures&&global.DNDClassFeatures.attackModifiers&&attacker)?global.DNDClassFeatures.attackModifiers(attacker,opts):{bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[],pendingOnHit:{}};
     if(target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs&&target.classFeaturesState.alchemistDebuffs.attacksHaveAdvantage)featureMod.advantage=true;
@@ -306,13 +322,14 @@
     var duplicityMiss=false;
     if(duplicityTarget&&!roll.fumble){var dupRoll=rollDie(6);if(dupRoll%2===1){duplicityMiss=true;target.classFeaturesState.witch.witchDuplicity=false;}}
     var naturalTwenty=!!roll.critical;if(naturalTwenty&&targetGrafts.indexOf('Изменчивая анатомия')>=0)roll.critical=false;
-    var hit=!duplicityMiss&&(naturalTwenty || (!roll.fumble && total>=ac));
+    var hit=!opts.__perfumeCancelled&&!duplicityMiss&&(naturalTwenty || (!roll.fumble && total>=ac));
     var electromagneticShield=null,defenderClasses=target&&target.classes||[],ionizerClass=defenderClasses.find(function(c){return c&&(c.name==='Алхимик'||c.englishName==='Alchemist')&&(c.subclass==='ionizer'||c.subclass==='Ионизатор');});
     var incomingType=String(opts&&opts.damageType||'').toLowerCase(),rangedIncoming=!!(opts&&(opts.rangedAttack||opts.attackKind==='rangedWeapon'||opts.weapon&&Number(opts.weapon.rangeFt)>5));
     if(hit&&ionizerClass&&Number(ionizerClass.level)>=10&&rangedIncoming&&['силовой','force','молния','lightning','некротический','necrotic','излучение','radiant'].indexOf(incomingType)>=0){
       var shieldRoll=rollDie(6);if(shieldRoll===6){hit=false;target.classFeaturesState=target.classFeaturesState||{};target.classFeaturesState.alchemistEnergyCharges=Math.min(10,(Number(target.classFeaturesState.alchemistEnergyCharges)||0)+1);electromagneticShield={roll:shieldRoll,deflected:true,charges:target.classFeaturesState.alchemistEnergyCharges};}
     }
     var out={d20:d20,bonus:bonus,classBonus:classBonus,total:total,ac:ac,hit:hit,critical:!!roll.critical,fumble:!!roll.fumble,damage:null,extraAttacks:Math.max(1,num(opts&&opts.__classFeatureMod&&opts.__classFeatureMod.extraAttacks,1))};
+    if(opts.__perfumeResult){out.alchemistPerfume=opts.__perfumeResult;out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push(opts.__perfumeCancelled?'Притягательный парфюм: спасбросок провален, атака сорвана.':'Притягательный парфюм: цель устояла.');}
     if(electromagneticShield){out.electromagneticShield=electromagneticShield;out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Электромагнитный щит: атака отражена; накоплено 1 заряд.');}
     if(hit && opts.damage){
       var fm=opts.__classFeatureMod||{bonusDamage:0,extraDice:[]};
