@@ -120,6 +120,9 @@ assert.equal(graftCriticalAttack.hit,true,'Mutable Anatomy still allows a natura
 assert.equal(graftCriticalAttack.critical,false,'Mutable Anatomy turns a critical hit into a normal hit');
 
 
+const energySeamTarget={id:'energy-seam-target',hp:20,maxHp:20,conditions:{},activeConditions:{},classFeaturesState:{alchemistGrafts:[{name:'Энергетический шов',resistanceType:'огонь'}]}};
+const seamDamage=ctx.DNDCombat.applyDamage(energySeamTarget,10,'огонь');
+assert.equal(seamDamage.amount,5,'Energy Stitch halves damage of the selected donor type');
 const burningTarget={id:'burning-target',hp:20,maxHp:20,ac:10,conditions:{},activeConditions:{},classFeaturesState:{alchemistDebuffs:{burning:true,burningTicks:1,sourceId:'incendiary-owner'}}};
 const burningOwner={id:'incendiary-owner',name:'Поджигатель',classes:[{name:'Алхимик',level:5,subclass:'madBomber'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:3,resources:{},classFeaturesState:{}};
 ctx.currentChar=burningOwner;burningOwner.initiativeTracker={round:1,activeIndex:1,combatants:[burningOwner,burningTarget]};
