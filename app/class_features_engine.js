@@ -576,7 +576,7 @@
       ?global.DNDContent.getClass(cls):null;
     if(pack&&pack.hooks&&typeof pack.hooks.useFeature==='function'){
       var fid=name.replace(/^[^:]+:/,'');
-      var result=pack.hooks.useFeature(h,fid,ctx);
+      var result=pack.hooks.useFeature(h,fid,ctx,f);
       if(result)return result;
     }
 
