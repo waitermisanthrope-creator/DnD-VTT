@@ -114,7 +114,7 @@
     var resolvedParts=rawParts.map(function(part){return Object.assign({},part,effectiveDamage(target,part.amount,part.damageType,opts));});
     var protectorIntercept=null;
     if(opts.protector&&global.FourCustomClassRuntime&&typeof global.FourCustomClassRuntime.interceptDamage==='function'){
-      protectorIntercept=global.FourCustomClassRuntime.interceptDamage(opts.protector,target,resolvedParts.reduce(function(sum,p){return sum+num(p.amount);},0),{distanceFt:opts.protectorDistanceFt,visible:opts.protectorVisible,isAlly:opts.protectorIsAlly===true});
+      protectorIntercept=global.FourCustomClassRuntime.interceptDamage(opts.protector,target,resolvedParts.reduce(function(sum,p){return sum+num(p.amount);},0),{distanceFt:opts.protectorDistanceFt,visible:opts.protectorVisible,isAlly:opts.protectorIsAlly===true,isSelf:opts.protectorIsSelf===true});
       if(protectorIntercept&&protectorIntercept.ok){
         var protectLeft=Math.min(resolvedParts.reduce(function(sum,p){return sum+num(p.amount);},0),Math.max(0,num(protectorIntercept.reduction)));
         resolvedParts.forEach(function(part){var take=Math.min(Math.max(0,num(part.amount)),protectLeft);part.amount=Math.max(0,num(part.amount)-take);protectLeft-=take;});
