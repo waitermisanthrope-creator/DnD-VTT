@@ -208,6 +208,12 @@ assert.equal(graftInstalled.ok,true,'Xenoalchemist can install a verified graft'
 assert.equal(graftInstalled.grafts.length,1,'installed graft is stored on the character');
 assert.ok(hooks.attackModifiers(xenoOwner,{unarmedGraft:true}).extraDice.includes('1d6'),'Beast Weapon graft adds its natural-weapon damage die');
 
+const slimeBomber={id:'slime-bomber',classes:[{name:'Алхимик',level:6,subclass:'oozeRancher'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:3,resources:{},classFeaturesState:{}};
+hooks.sync(slimeBomber);
+assert.equal(hooks.useFeature(slimeBomber,'alchemist-subclassFeature',{featureName:'Слизевая бомба'},{subclassId:'oozeRancher'}).ok,true,'Ooze Rancher prepares a slime bomb');
+const slimeBombAttack=hooks.attackModifiers(slimeBomber,{isBomb:true});
+assert.equal(slimeBombAttack.noDamage,true,'Slime Bomb does not deal ordinary bomb damage');
+assert.equal(slimeBombAttack.pendingOnHit.alchemistFormula.slimeCovered,true,'Slime Bomb carries its action-denial effect into combat');
 const hornInstall=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'install',graftName:'Рога',donorVerified:true,donorType:'Зверь'});
 assert.equal(hornInstall.ok,true,'Horns graft can be installed');
 const hornAttack=hooks.attackModifiers(xenoOwner,{unarmedGraft:true,graftName:'Рога'});
