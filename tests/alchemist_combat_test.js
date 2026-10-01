@@ -61,6 +61,20 @@ assert.equal(immuneFire.amount,5,'black powder converts immunity into resistance
 const resistantFire=ctx.DNDCombat.effectiveDamage({resistances:['огонь']},10,'огонь',{ignoreResistance:true});
 assert.equal(resistantFire.amount,10,'black powder bypasses ordinary resistance');
 
+const oldRandom=ctx.Math.random;ctx.Math.random=()=>0.999;
+rolls=[{result:20,critical:true,fumble:false}];
+const ionizerTarget={id:'ionizer-defender',classes:[{name:'Алхимик',level:14,subclass:'ionizer'}],ac:15,hp:25,maxHp:25,abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:5,resources:{},classFeaturesState:{},conditions:{},resistances:[]};
+const deflected=ctx.DNDCombat.attack({id:'ranged-attacker',classes:[],stats:{}},ionizerTarget,{bonus:10,damage:'1d8',damageType:'молния',attackKind:'rangedWeapon',rangedAttack:true,useRules:false});
+ctx.Math.random=oldRandom;
+assert.equal(deflected.hit,false,'Electromagnetic Shield deflects a qualifying ranged hit on a six');
+assert.equal(ionizerTarget.classFeaturesState.alchemistEnergyCharges,1,'Electromagnetic Shield stores one energy charge');
+const dischargeTarget={id:'discharge-target',hp:30,maxHp:30,ac:12,conditions:{},resistances:[]};
+const discharge=hooks.useFeature(ionizerTarget,'alchemist-subclassFeature',{featureName:'Энергетический разряд',target:dischargeTarget,charges:1,damageRoll:7,distanceFt:20},{subclassId:'ionizer'});
+assert.equal(discharge.ok,true,'Energy Discharge spends a stored charge on a valid target');
+assert.equal(dischargeTarget.hp,23,'Energy Discharge applies actual force damage');
+assert.equal(ionizerTarget.classFeaturesState.alchemistEnergyCharges,0,'Energy Discharge consumes exactly one charge');
+
+
 
 
 
