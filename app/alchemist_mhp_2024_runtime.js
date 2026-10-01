@@ -674,6 +674,7 @@ function use(h,id,ctx,feature){
  if(id==='philosopherStone'){if(l<20)return{ok:false,message:'Философский камень доступен с 20 уровня.'};s.philosopherStone=true;return{ok:true,effect:{regainReagentsOnInitiativeUpTo:6,quickBrewing:true,longevity:true},message:'💎 Философский камень создан.'};}
  var requestedFeature=String(ctx.featureName||ctx.name||'');
  if(requestedFeature==='Болт Лазаря'||id==='Болт Лазаря'||id==='lazarusBolt'){
+  if(l<13||(s.alchemistDiscovered||[]).indexOf('Некробиология')<0)return{ok:false,message:'Болт Лазаря требует Открытие «Некробиология» и 13 уровень Алхимика.'};
   var patient=ctx.target;if(!patient||typeof patient!=='object')return{ok:false,needsTarget:true,message:'Выберите умершее существо в пределах 5 футов.'};
   if(Number(ctx.distanceFt)>5||!Number.isFinite(Number(ctx.distanceFt)))return{ok:false,message:'Цель должна находиться в пределах 5 футов; способность не потрачена.'};
   var minutesSinceDeath=Number(ctx.minutesSinceDeath);
