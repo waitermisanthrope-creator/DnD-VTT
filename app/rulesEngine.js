@@ -625,7 +625,7 @@ if (typeof window !== 'undefined' && window.addEventListener) window.addEventLis
     box.appendChild(wrap);
   };
   window.dndInitiativeActive=function(){var h=hero(),t=h&&h.initiativeTracker;if(!t||!t.combatants.length)return null;return t.combatants[t.activeIndex]||null;};
-  window.dndInitiativeDamageActive=function(){var c=dndInitiativeActive();if(!c)return;var n=Number(prompt('Урон:','1'));if(!isFinite(n))return;c.hp=Math.max(0,(Number(c.hp)||0)-n);c.defeated=c.hp<=0;save();renderInitiativeTracker();};
+  window.dndInitiativeDamageActive=function(){var h=hero(),c=dndInitiativeActive();if(!c)return;var n=Number(prompt('Урон:','1'));if(!isFinite(n))return;c.hp=Math.max(0,(Number(c.hp)||0)-n);c.defeated=c.hp<=0;if(c.defeated&&h&&c.id!=null&&window.FourCustomClassRuntime&&typeof window.FourCustomClassRuntime.clearStudiedTarget==='function')window.FourCustomClassRuntime.clearStudiedTarget(h,c.id);save();renderInitiativeTracker();};
   window.dndInitiativeHealActive=function(){var c=dndInitiativeActive();if(!c)return;var n=Number(prompt('Лечение:','1'));if(!isFinite(n))return;c.hp=Math.min(Number(c.maxHp)||0,(Number(c.hp)||0)+n);c.defeated=false;save();renderInitiativeTracker();};
   window.dndInitiativeSkipDefeated=function(){var h=hero(),t=h&&h.initiativeTracker;if(!t||!t.combatants.length)return;var guard=0;while(t.combatants[t.activeIndex]&&t.combatants[t.activeIndex].defeated&&guard++<t.combatants.length){if(typeof window.nextInitiativeTurn==='function')window.nextInitiativeTurn();else break;}renderInitiativeTracker();};
 
