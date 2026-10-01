@@ -175,4 +175,11 @@ ctx.Math.random=oldRandomMutable;
 assert.equal(mutableHit.hit,true,'Variable Anatomy still allows a natural-20 hit');
 assert.equal(mutableHit.critical,false,'Variable Anatomy suppresses critical-hit damage');
 
+
+const venomTarget={id:'venomsmith-10',classes:[{name:'Алхимик',level:10,subclass:'venomsmith'}],hp:30,maxHp:30,conditions:{},activeConditions:{},classFeaturesState:{}};
+const venomDamage=ctx.DNDCombat.effectiveDamage(venomTarget,12,'яд');
+assert.equal(venomDamage.amount,0,'Venomsmith level 10 is immune to poison damage');
+assert.equal(ctx.DNDCombat.toggleCondition(venomTarget,'Отравлен',true),false,'Venomsmith level 10 cannot gain the poisoned condition');
+assert.equal(venomTarget.conditions['Отравлен'],undefined,'Poison immunity does not leave a poisoned condition behind');
+
 console.log('Alchemist combat integration tests PASS');
