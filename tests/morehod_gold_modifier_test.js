@@ -20,6 +20,8 @@ assert.strictEqual(rules.getModifier({ className: 'Мореход', coins: { gp:
 assert.strictEqual(rules.getModifier({ classes: [{ englishName: 'Mariner', level: 1 }], coins: { gp: -100, pp: -1, ep: -2, sp: -5, cp: -50 } }), -5, 'negative coin entries are clamped to zero for carried wealth');
 assert.strictEqual(rules.carriedGoldEquivalent({ gp: '100', pp: '1', ep: '2', sp: '5', cp: '50' }), 112, 'numeric strings in a saved coin purse are normalized consistently');
 assert.strictEqual(rules.getModifier({ classes: [{ name: 'Бандит', englishName: 'Mariner' }], coins: { gp: 2000 } }), 0, 'a non-Mariner class name takes precedence over an incidental alias');
+assert.strictEqual(rules.getModifier({ classes: [{ name: 'Бандит', level: 1 }], className: 'Мореход', coins: { gp: 2000 } }), 0, 'an explicit non-Mariner class list overrides a stale legacy className');
+assert.strictEqual(rules.getModifier({ classes: [{ name: 'Мореход', level: 1 }], coins: { gp: 100 }, bank: { gp: 5000 }, partyCoins: { gp: 5000 } }), -5, 'bank and party wealth do not count as carried personal coins');
 assert.strictEqual(rules.getModifier({ classes: [{ name: 'Бандит', level: 2 }, { name: 'Мореход', level: 1 }], coins: { gp: 2000 } }), 5, 'multiclass characters receive the modifier when one actual class is Mariner');
 assert.strictEqual(rules.getModifier({ classes: [{ name: 'Мореход', level: 1 }], coins: { gp: 'not-a-number', pp: {}, ep: null, sp: -3, cp: 'NaN' } }), -5, 'malformed and negative coin fields safely count as zero');
 const restoredMariner = JSON.parse(JSON.stringify({ classes: [{ name: 'Мореход', level: 3 }], coins: { gp: 1200, sp: 10 }, name: 'Тестовый мореход' }));
