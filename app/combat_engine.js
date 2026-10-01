@@ -537,7 +537,7 @@
   };
   global.dndProtectorRescue=function(){
     var h=ensure(),rt=global.FourCustomClassRuntime;if(!h||!rt||typeof rt.useFeature!=='function'){alert('Runtime Заступника недоступен.');return;}
-    var target=chooseTarget();if(!target)return;syncHeroCombatant(target);
+    var target=chooseTarget();if(!target)return;
     var distance=Number(prompt('Расстояние до союзника в футах:','5'));if(!isFinite(distance))return;
     var x=Number(prompt('X свободной клетки:','0'));if(!isFinite(x))return;
     var y=Number(prompt('Y свободной клетки:','0'));if(!isFinite(y))return;
@@ -546,7 +546,7 @@
     var foeList=foes.map(function(c,i){return i+': '+c.name;}).join('\\n'),foeIndex=Number(prompt('Выберите противника, от которого не будет провоцированной атаки:\\n'+foeList,'0'));if(!isFinite(foeIndex)||!foes[foeIndex])return;
     if(!confirm('Подтверждаете, что клетка ('+x+', '+y+') свободна и доступна для перемещения?'))return;
     var actor=protectorActorForTurn(h),result=rt.useFeature(actor,'protectorRescue',{target:target,isAlly:target.type==='hero'||target.team==='ally',visible:true,distanceFt:distance,cellAvailable:true,freeCell:{x:x,y:y},distanceToCellFt:cellDistance,chosenEnemyId:foes[foeIndex].id,round:num(h.initiativeTracker&&h.initiativeTracker.round,1)});syncProtectorTurnActor(actor);
-    if(result.ok)syncBackToHero(target);
+    if(result.ok&&target.type==='hero'&&(String(target.id)===String(h.id)||String(target.name)===String(h.name)))syncBackToHero(target);
     alert(result.message||result.reason||'Спаситель: без результата.');if(result.ok){save();if(typeof global.renderInitiativeTracker==='function')global.renderInitiativeTracker();renderCombatStatus();syncNetworkMasterCombat('protector-rescue');}
   };
   global.dndCombatHeal=function(){var t=chooseTarget();if(!t)return;var n=Number(prompt('Лечение:','5'));if(!isFinite(n))return;syncHeroCombatant(t);var r=heal(t,n);syncBackToHero(t);alert('Восстановлено '+r.amount+' HP. HP: '+r.hp+'/'+r.maxHp);save();if(typeof global.renderInitiativeTracker==='function')global.renderInitiativeTracker();renderCombatStatus();syncNetworkMasterCombat('heal');};
