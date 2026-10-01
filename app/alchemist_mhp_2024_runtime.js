@@ -243,6 +243,23 @@ function startTurn(h){
  if(s.philosopherStone&&h.resources.alchemistReagents)h.resources.alchemistReagents.current=Math.min(h.resources.alchemistReagents.max,h.resources.alchemistReagents.current+Math.min(6,h.resources.alchemistReagents.max-h.resources.alchemistReagents.current));
  s.alchemistTurnUsed={};
 }
+function checkModifiers(h,ctx){
+ ctx=ctx||{};var out={bonus:0,minimum:0,notes:[]},l=alvl(h),sub=(h.classes||[]).find(function(x){return x.name===CLASS;}),sid=sub&&sub.subclass,s=subs.find(function(x){return x.id===sid||x.name===sid;});
+ if(!s)return out;
+ if(s.id==='apothecary'&&l>=3&&(ctx.skill==='medicine'||ctx.skillName==='Медицина')){out.bonus=Math.max(1,mod(h,'int'));out.notes.push('Исследования врача');}
+ if(s.id==='amorist'&&l>=3&&['deception','persuasion','Обман','Убеждение'].indexOf(ctx.skill)>=0){out.abilityOverride='intelligence';out.notes.push('Очарователь: Интеллект вместо Харизмы');}
+ return out;
+}
+function attackModifiers(h,ctx){
+ ctx=ctx||{};var out={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]},l=alvl(h),s=st(h),c=(h.classes||[]).find(function(x){return x.name===CLASS;}),sid=c&&c.subclass;
+ var isBomb=ctx.isBomb===true||ctx.attackType==='bomb'||ctx.weaponType==='bomb'||String(ctx.weaponName||'').toLowerCase().indexOf('бомб')>=0;
+ if(isBomb&&l>=5){out.extraDice.push(bombDice(l));out.notes.push('Улучшенные бомбы');}
+ if(isBomb&&l>=11)out.bonusDamage+=2;
+ if(s.alchemistSeekingBombBonus&&isBomb){out.bonusDamage+=Number(s.alchemistSeekingBombBonus)||0;s.alchemistSeekingBombBonus=0;}
+ if(s.alchemistSurgicalAttackReady&&ctx.unarmedGraft){out.extraDice.push('1d8');s.alchemistSurgicalAttackReady=false;out.notes.push('Хирургическая атака');}
+ if(s.alchemistDynamoCharged&&ctx.weaponAttack){out.extraDice.push('1d8');out.notes.push('Динамо-ядро');s.alchemistDynamoCharged=false;}
+ return out;
+}
 function subclassFeatureEffect(h,sub,f,ctx){
  var n=f[1],l=alvl(h),s=st(h),name=String(n||'');
  if(name==='Болеутоляющая бомба')return{ok:true,effect:{damage:0,tempHp:l+(Number(ctx.reagents)||0)*10,targetOrArea:true},message:'⚗️ Болеутоляющая бомба: временные HP.'};
@@ -263,12 +280,12 @@ function subclassFeatureEffect(h,sub,f,ctx){
  if(name==='Светошумовая граната')return{ok:true,effect:{bonusAction:true,areaFt:10,noOpportunityAttacks:true,duration:'until_start_of_next_turn'},message:'🔊 Светошумовая граната готова.'};
  if(name==='Бомба со смехотворным газом')return{ok:true,effect:{damageType:'poison',damageDice:'d8',save:'constitution',onNatural1:{condition:'incapacitated',speed:0,duration:'until_start_of_next_turn'}},message:'☠️ Газовая бомба готова.'};
  if(name==='Токсическое возмездие')return{ok:true,effect:{reaction:true,save:'constitution',condition:'poisoned',duration:'1 minute',damageAtTurnStart:'1d10 poison',repeatSave:true},message:'☠️ Токсическое возмездие готово.'};
- if(name==='Хирургическая атака'){if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,effect:{attackAbility:'intelligence',extraDamage:'1d8'},message:'🧬 Хирургическая атака усилена.'};}
+ if(name==='Хирургическая атака'){if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};s.alchemistSurgicalAttackReady=true;return{ok:true,effect:{attackAbility:'intelligence',extraDamage:'1d8'},message:'🧬 Следующий подходящий удар трансплантатом усилен.'};}
  if(name==='Некромантические органы'){s.xenoNecroticReady=true;return{ok:true,effect:{replaceDropToZeroWithHP:l,longRestUses:1},message:'🧬 Некромантические органы готовы.'};}
  if(name==='Кислотная бомба')return{ok:true,effect:{damageDice:'2d8',damageType:'acid',splashDice:'d8'},message:'🧪 Кислотная бомба готова.'};
  if(name==='Философский камень')return{ok:true,effect:{regainReagentsOnInitiativeUpTo:6,quickBrewing:true,longevity:true},message:'💎 Философский камень активен.'};
  if(name==='Реактивный двигатель')return{ok:true,effect:{bonusActionDash:true,flySpeed:30,duration:'1 minute'},message:'🚀 Реактивный двигатель активирован.'};
- if(name==='Динамо-ядро')return{ok:true,effect:{chargeWeapon:true,extraDamage:'1d8 lightning'},message:'⚡ Динамо-ядро заряжено.'};
+ if(name==='Динамо-ядро'){s.alchemistDynamoCharged=true;return{ok:true,effect:{chargeWeapon:true,extraDamage:'1d8 lightning'},message:'⚡ Следующее попадание оружием заряжено молнией.'};}
  if(name==='Ионизация')return{ok:true,effect:{damageType:'lightning',chain:true,save:'dexterity'},message:'⚡ Ионизация активирована.'};
  if(name==='Большая бомба')return{ok:true,effect:{damageDice:'3d12',areaFt:15,save:'dexterity',damageType:'fire'},message:'💣 Большая бомба готова.'};
  if(name==='Грязная тактика')return{ok:true,effect:{rerollAttack:true,addDamage:'proficiencyBonus',oncePerTurn:true},message:'🎲 Грязная тактика применена.'};
@@ -301,7 +318,7 @@ function use(h,id,ctx,feature){
  if(id==='primeBomb'){var n=Math.min(Number(ctx.reagents)||1,s.alchemistPrimeMax,r.current);if(!spend(h,n))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,effect:{extraDamage:n+'d10',extraRadiusFt:n*5},message:'💣 Прайм-бомба: +'+n+'d10.'};}
  if(id==='reagentSynthesis'){if(!s.alchemistSynthesisReady)return{ok:false,message:'Синтез реагентов доступен после короткого отдыха; после применения нужен долгий отдых.'};if(s.alchemistSynthesisUsed)return{ok:false,message:'Синтез уже использован до долгого отдыха.'};var n=Math.min(Math.max(1,mod(h,'int')),r.max-r.current);if(n<=0)return{ok:false,message:'Реагенты уже на максимуме.'};r.current+=n;s.alchemistSynthesisUsed=true;s.alchemistSynthesisReady=false;return{ok:true,message:'⚗️ Синтез: восстановлено реагентов '+n+'.'};}
  if(id==='bomb'){return{ok:true,effect:{attack:true,damageDice:s.alchemistBombDamage,damageType:'fire',range:'30/90',saveDC:s.alchemistSaveDC,explodeRadiusFt:5,intelligentExplosion:Math.max(1,mod(h,'int'))},message:'💣 Бомба готова.'};}
- if(id==='formula'){var f=formulae.find(function(x){return x.id===ctx.formula||x.name===ctx.formula;});if(!f)return{ok:false,message:'Формула не найдена.'};return{ok:true,effect:{formula:f},message:'🧪 Формула применена: '+f.name+'.'};}
+ if(id==='formula'){var f=formulae.find(function(x){return x.id===ctx.formula||x.name===ctx.formula;});if(!f)return{ok:false,message:'Формула не найдена.'};if(s.alchemistFormulas.indexOf(f.id)<0&&s.alchemistFormulas.indexOf(f.name)<0)return{ok:false,message:'Формула не выбрана/не известна персонажу.'};return{ok:true,effect:{formula:f},message:'🧪 Формула применена: '+f.name+'.'};}
  if(id==='nuclearBomb'){if(l<20||!s.philosopherStone)return{ok:false,message:'Нужен 20 уровень и Философский камень.'};s.philosopherStone=false;return{ok:true,effect:{damage:'10d10+100',type:'force',radiusMiles:1},message:'☢️ Ядерная бомба создана. Философский камень уничтожен.'};}
  if(id==='potionBrew'){var p=potions.find(function(x){return x.name===ctx.potion;});if(!p||l<p.level)return{ok:false,message:'Этот рецепт ещё недоступен.'};if(!spend(h,p.cost))return{ok:false,message:'Недостаточно реагентов.'};s.alchemistPotions=s.alchemistPotions||[];if(s.alchemistPotions.length>=s.alchemistPotionLimit){r.current+=p.cost;return{ok:false,message:'Достигнут лимит зелий.'};}s.alchemistPotions.push({name:p.name,cost:p.cost});return{ok:true,message:'⚗️ Сварено: '+p.name+'.'};}
  if(id==='potionMix'){if(l<15)return{ok:false,message:'Миксолог доступен с 15 уровня.'};s.alchemistPotionMixReady=true;return{ok:true,effect:{mixPotions:true},message:'🍶 До конца хода можно выпить два зелья бонусным действием.'};}
@@ -311,7 +328,7 @@ function use(h,id,ctx,feature){
  if(sub&&(id==='subclassFeature'||id.indexOf(sub.id+'-')===0)){var f=sub.f.find(function(x){return String(x[1])===String(ctx.featureName)||String(x[1])===String(ctx.featureId)||(feature&&String(feature.name)===String(x[1]))||Number(x[0])===Number(ctx.level);});if(!f)return{ok:false,unsupported:true,message:'Не удалось однозначно определить особенность подкласса; эффект не применён.'};if(l<Number(f[0]))return{ok:false,message:'Особенность доступна с '+f[0]+' уровня.'};return subclassFeatureEffect(h,sub,f,ctx);}
  return{ok:false,unsupported:true,message:'Алхимик: способность '+id+' пока не имеет исполняемого resolver-а.'};
 }
-var pack={id:PACK_ID,name:CLASS,source:SOURCE,metadata:{edition:'2024 / 5.5E',hitDie:8,primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],skillsChoose:3,armor:['light'],weapons:['simple'],tools:['alchemist_supplies'],multiclass:{dexterity:13,intelligence:13},startingEquipment:['2 кинжала','Кожаный доспех','Инструменты алхимика','Алхимический огонь','Набор учёного','6 зм'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14]},features:features,subclasses:subpacks,formulas:formulae,potions:potions,discoveries:discoveries,discoveryRecipes:discoveryRecipes,monstrousGrafts:monstrousGrafts,variants:alchemistVariants,alcoholRules:{maxStages:10,decayPerHour:1,longRestClears:true,stage10:'без сознания до утра'},hooks:{sync:sync,useFeature:use,shortRest:shortRest,longRest:longRest,startTurn:startTurn}};
+var pack={id:PACK_ID,name:CLASS,source:SOURCE,metadata:{edition:'2024 / 5.5E',hitDie:8,primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],skillsChoose:3,armor:['light'],weapons:['simple'],tools:['alchemist_supplies'],multiclass:{dexterity:13,intelligence:13},startingEquipment:['2 кинжала','Кожаный доспех','Инструменты алхимика','Алхимический огонь','Набор учёного','6 зм'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14]},features:features,subclasses:subpacks,formulas:formulae,potions:potions,discoveries:discoveries,discoveryRecipes:discoveryRecipes,monstrousGrafts:monstrousGrafts,variants:alchemistVariants,alcoholRules:{maxStages:10,decayPerHour:1,longRestClears:true,stage10:'без сознания до утра'},hooks:{sync:sync,useFeature:use,shortRest:shortRest,longRest:longRest,startTurn:startTurn,checkModifiers:checkModifiers,attackModifiers:attackModifiers}};
 D.registerClass(pack);
 g.CLASSES_REFERENCE=g.CLASSES_REFERENCE||{};
 g.CLASSES_REFERENCE[CLASS]={source:SOURCE,hitDie:8,primaryStat:'dexterity',primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14],contentPackId:PACK_ID};
