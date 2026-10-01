@@ -169,6 +169,7 @@
     ctx=ctx||{};
     var l=level(hero,CLASS_IDS.protector);
     if(l<3)return {ok:false,reason:'Страж рубежа доступен с 3-го уровня Заступника.'};
+    if(selectedSubclass(hero,CLASS_IDS.protector).indexOf('страж рубежа')<0&&selectedSubclass(hero,CLASS_IDS.protector).indexOf('bastion')<0)return {ok:false,reason:'Выберите специализацию «Страж рубежа».'};
     if(ctx.actionAvailable!==true)return {ok:false,reason:'Нужно свободное бонусное действие.'};
     var tr=hero.turnResources||(hero.turnResources={actions:1,bonusAction:1,reaction:1});
     if(n(tr.bonusAction,0)<1)return {ok:false,reason:'Бонусное действие уже использовано.'};
@@ -199,6 +200,7 @@
     ctx=ctx||{};
     var l=level(hero,CLASS_IDS.protector),target=ctx.target;
     if(l<3)return {ok:false,reason:'Спаситель доступен с 3-го уровня Заступника.'};
+    if(selectedSubclass(hero,CLASS_IDS.protector).indexOf('спаситель')<0&&selectedSubclass(hero,CLASS_IDS.protector).indexOf('savior')<0&&selectedSubclass(hero,CLASS_IDS.protector).indexOf('saviour')<0)return {ok:false,reason:'Выберите специализацию «Спаситель».'};
     if(!target||target.id==null)return {ok:false,reason:'Выберите конкретного союзника.'};
     if(ctx.isAlly!==true||ctx.visible!==true)return {ok:false,reason:'Цель должна быть видимым союзником.'};
     if(n(target.hp, target.hpCurrent)>0)return {ok:false,reason:'Спасение доступно, только когда союзник упал до 0 HP.'};
