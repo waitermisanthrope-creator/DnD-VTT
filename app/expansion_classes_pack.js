@@ -760,7 +760,7 @@ var academy=String(s.warlordAcademy||'');
   function runeCount(l){return RUNEKEEPER_INSCRIBED[Math.max(1,Math.min(20,Number(l)||1))]||2;}
   function runeKnownCount(l){return 3+Math.max(1,Math.min(20,Number(l)||1));}
   function runeChargeMax(l){return l>=5?Math.floor(l/2):0;}
-  function rkState(h){var s=st(h);s.runeKeeper=s.runeKeeper||{};return s.runeKeeper;}
+  function rkState(h){var s=st(h);s.runekeeper=s.runekeeper||{};return s.runekeeper;}
   function syncRuneKeeperRuntime(h){
     var l=lvl(h,'Рунный хранитель');if(!l)return;
     var s=rkState(h),n=runeCount(l);
@@ -772,9 +772,9 @@ var academy=String(s.warlordAcademy||'');
     s.runeStance=s.runeStance||null;
     s.runeSaveDC=8+(Number(h.proficiencyBonus)||2)+mod(h,'int');
     s.runeAttackBonus=(Number(h.proficiencyBonus)||2)+mod(h,'int');
-    s.inscribedMax=n;s.knownRunesMax=runeKnownCount(l);
-    if(l>=5){s.runicChargesMax=runeChargeMax(l);if(typeof s.runicCharges!=='number'||s.runicCharges>s.runicChargesMax)s.runicCharges=s.runicChargesMax;}
-    else{s.runicChargesMax=0;s.runicCharges=0;}
+    s.inscribedMax=n;s.knownRunesMax=runeKnownCount(l);s.runesKnown=s.knownRunesMax;
+    if(l>=5){s.runicChargesMax=runeChargeMax(l);s.runicChargeMax=s.runicChargesMax;if(typeof s.runicCharges!=='number'||s.runicCharges>s.runicChargesMax)s.runicCharges=s.runicChargesMax;}
+    else{s.runicChargesMax=0;s.runicChargeMax=0;s.runicCharges=0;}
     s.runeChantMax=l>=20?3:l>=9?2:1;
   }
   function rkInscribe(h,rune,objectId){
@@ -798,7 +798,7 @@ var academy=String(s.warlordAcademy||'');
     sync:syncRuneKeeperRuntime,
     inscribe:rkInscribe,invoke:rkInvoke,setStance:rkSetStance,
     spendCharges:function(h,n){syncRuneKeeperRuntime(h);var s=rkState(h),x=Number(n)||1;if(s.runicCharges<x)return false;s.runicCharges-=x;return true;},
-    rest:function(h,type){syncRuneKeeperRuntime(h);var s=rkState(h);if(type==='long'){s.runicCharges=s.runicChargesMax;s.runeStance=null;s.inertRunes={};}}
+    rest:function(h,type){syncRuneKeeperRuntime(h);var s=rkState(h);if(type==='long'){s.runicCharges=s.runicChargesMax;s.runeStance=null;s.inertRunes={};}},longRest:function(h){this.rest(h,'long');},shortRest:function(h){this.rest(h,'short');},charge:function(h,objectId){var s=rkState(h),oid=String(objectId||'');if(!s.inertRunes[oid])return{ok:false,reason:'Руна не является инертной.'};if(!this.spendCharges(h,1))return{ok:false,reason:'Нет рунных зарядов.'};s.inertRunes[oid]=false;return{ok:true,objectId:oid};}
   };
   function syncRuneKeeper(h){syncRuneKeeperRuntime(h);var s=rkState(h),n=runeCount(lvl(h,'Рунный хранитель'));s.inscribedRunes=s.inscribedRunes||[];if(s.inscribedRunes.length>n)s.inscribedRunes=s.inscribedRunes.slice(0,n);}
   function useRuneKeeper(h,id,ctx,feature){
