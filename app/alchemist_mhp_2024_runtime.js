@@ -448,7 +448,7 @@ function use(h,id,ctx,feature){
    h.resistances=Array.isArray(h.resistances)?h.resistances:[];
    var resistanceTypes=effect.resistanceAll?['кислота','холод','огонь','молния','гром','некротический','яд','психический','излучение','силовой','дробящий','колющий','рубящий']:[effect.resistance];
    s.alchemistGrantedResistances=s.alchemistGrantedResistances||[];
-   resistanceTypes.forEach(function(t){if(h.resistances.indexOf(t)<0)h.resistances.push(t);if(s.alchemistGrantedResistances.indexOf(t)<0)s.alchemistGrantedResistances.push(t);});
+   resistanceTypes.forEach(function(t){if(h.resistances.indexOf(t)<0){h.resistances.push(t);if(s.alchemistGrantedResistances.indexOf(t)<0)s.alchemistGrantedResistances.push(t);}});
   }
   if(effect.condition){h.activeConditions=h.activeConditions||h.conditions||{};h.activeConditions[effect.condition]=true;}
   if(effect.temporaryHP){var oldTemp=Number(h.tempHp||h.temporaryHP)||0;var newTemp=Math.max(oldTemp,effect.temporaryHP);h.tempHp=newTemp;h.temporaryHP=newTemp;}
