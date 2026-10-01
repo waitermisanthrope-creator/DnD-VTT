@@ -184,6 +184,23 @@ assert.equal(homunculusCraft.entity.actions[0].attackBonus,6,'homunculus attack 
 assert.equal(homunculusOwner.resources.alchemistReagents.current,homunculusOwner.resources.alchemistReagents.max-3,'homunculus creation spends three reagents');
 assert.ok(homunculusOwner.initiativeTracker.combatants.some(c=>c.entityId==='homunculus-test'),'homunculus receives a separate combatant stat block');
 
+const golemEntities={};
+ctx.DNDSecondaryEntities={ensure:()=>({}),create:spec=>{const entity=Object.assign({id:'alchemist-golem-test'},spec);golemEntities[entity.id]=entity;return entity;},get:id=>golemEntities[id]||null,update:(id,patch)=>Object.assign(golemEntities[id]||{},patch),remove:id=>delete golemEntities[id]};
+const xenoOwner={id:'xeno-owner',name:'Ксеноалхимик',classes:[{name:'Алхимик',level:14,subclass:'xenoalchemist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:5,resources:{},classFeaturesState:{}};
+hooks.sync(xenoOwner);
+assert.equal(hooks.useFeature(xenoOwner,'alchemist-subclassFeature',{featureName:'Оно живое!',bodiesCount:3,timeMinutes:60},{subclassId:'xenoalchemist'}).ok,false,'golem requires the full eight-hour process');
+const golemCraft=hooks.useFeature(xenoOwner,'alchemist-subclassFeature',{featureName:'Оно живое!',bodiesCount:3,timeMinutes:480,grafts:['Звериное оружие']},{subclassId:'xenoalchemist'});
+assert.equal(golemCraft.ok,true,'Xenoalchemist can create the golem from three bodies');
+assert.equal(golemCraft.entity.hp,140,'alchemical golem has a level-scaled HP stat block');
+assert.equal(golemCraft.entity.actions[0].damage,'2d8+3','golem has an executable slam attack');
+assert.equal(golemCraft.entity.metadata.grafts[0],'Звериное оружие','selected grafts are recorded on the golem');
+const golemEntity=golemCraft.entity;golemEntity.hp=0;golemEntity.defeated=true;
+const golemRestore=hooks.useFeature(xenoOwner,'alchemist-subclassFeature',{featureName:'Оно живое!',restoreGolem:true,minutesSinceDeath:30},{subclassId:'xenoalchemist'});
+assert.equal(golemRestore.ok,true,'golem can be restored within one hour');
+assert.equal(golemRestore.entity.hp,140,'restoration returns golem to maximum HP');
+assert.equal(xenoOwner.resources.alchemistReagents.current,xenoOwner.resources.alchemistReagents.max-1,'restoration spends one reagent');
+
+
 const lazarusOwner={id:'lazarus-owner',classes:[{name:'Алхимик',level:14,subclass:'xenoalchemist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:5,resources:{},classFeaturesState:{}};
 hooks.sync(lazarusOwner);
 const deadAlly={id:'dead-ally',hp:0,maxHp:20,dead:true,defeated:true};
