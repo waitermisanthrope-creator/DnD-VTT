@@ -184,6 +184,23 @@ assert.equal(homunculusCraft.entity.actions[0].attackBonus,6,'homunculus attack 
 assert.equal(homunculusOwner.resources.alchemistReagents.current,homunculusOwner.resources.alchemistReagents.max-3,'homunculus creation spends three reagents');
 assert.ok(homunculusOwner.initiativeTracker.combatants.some(c=>c.entityId==='homunculus-test'),'homunculus receives a separate combatant stat block');
 
+const lazarusOwner={id:'lazarus-owner',classes:[{name:'Алхимик',level:14,subclass:'xenoalchemist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:5,resources:{},classFeaturesState:{}};
+hooks.sync(lazarusOwner);
+const deadAlly={id:'dead-ally',hp:0,maxHp:20,dead:true,defeated:true};
+const revived=hooks.useFeature(lazarusOwner,'alchemist-classFeature',{featureName:'Болт Лазаря',target:deadAlly,distanceFt:5,minutesSinceDeath:0.5});
+assert.equal(revived.ok,true,'Lazarus Bolt revives a valid recently deceased target');
+assert.equal(deadAlly.hp,1,'Lazarus Bolt restores one hit point');
+assert.equal(deadAlly.tempHp,28,'Lazarus Bolt grants temporary HP equal to twice Alchemist level');
+assert.equal(lazarusOwner.classFeaturesState.alchemistLazarusUsed,true,'Lazarus Bolt is limited to once per long rest');
+const secondDead={id:'second-dead',hp:0,dead:true,defeated:true};
+assert.equal(hooks.useFeature(lazarusOwner,'alchemist-classFeature',{featureName:'Болт Лазаря',target:secondDead,distanceFt:5,minutesSinceDeath:0.2}).ok,false,'Lazarus Bolt cannot be reused before rest without reagents');
+const restoredUse=hooks.useFeature(lazarusOwner,'alchemist-classFeature',{featureName:'Болт Лазаря',target:secondDead,distanceFt:5,minutesSinceDeath:0.2,restoreWithReagents:true});
+assert.equal(restoredUse.ok,true,'Lazarus Bolt can be restored for three reagents');
+assert.equal(lazarusOwner.resources.alchemistReagents.current,lazarusOwner.resources.alchemistReagents.max-3,'restoring Lazarus Bolt spends three reagents');
+const invalidDead={id:'old-death',hp:0,dead:true,deathCause:'old_age'};
+assert.equal(hooks.useFeature(lazarusOwner,'alchemist-classFeature',{featureName:'Болт Лазаря',target:invalidDead,distanceFt:5,minutesSinceDeath:0.2,restoreWithReagents:true}).ok,false,'Lazarus Bolt refuses death from old age');
+
+
 
 
 
