@@ -33,15 +33,15 @@
   function rollDie(sides){return Math.floor(Math.random()*sides)+1;}
   function parseDice(expr){ return global.DNDRules && global.DNDRules.parseDice ? global.DNDRules.parseDice(expr) : {groups:[{count:1,sides:6}],constant:0}; }
   function rollDice(expr,critical,maximize,damageSource){
-    var p=parseDice(expr), total=num(p.constant), rolls=[];
+    var p=parseDice(expr), total=num(p.constant), rolls=[], adjustedRolls=[];
     var goldMod=damageSource&&global.MorehodGoldModifier&&typeof global.MorehodGoldModifier.getModifier==='function' ? global.MorehodGoldModifier.getModifier(damageSource) : 0;
     p.groups.forEach(function(g){
       var count=Math.max(0,num(g.count,1))*(critical?2:1);
-      for(var i=0;i<count;i++){var raw=maximize?Math.max(1,num(g.sides,6)):rollDie(Math.max(1,num(g.sides,6)));var r=Math.max(0,raw+goldMod);rolls.push(r);total+=r;}
+      for(var i=0;i<count;i++){var raw=maximize?Math.max(1,num(g.sides,6)):rollDie(Math.max(1,num(g.sides,6)));var r=Math.max(0,raw+goldMod);rolls.push(raw);adjustedRolls.push(r);total+=r;}
     });
-    return {total:total,rolls:rolls,expression:String(expr||'1d6'),critical:!!critical,maximized:!!maximize,goldModifier:goldMod};
+    return {total:total,rolls:rolls,adjustedRolls:adjustedRolls,expression:String(expr||'1d6'),critical:!!critical,maximized:!!maximize,goldModifier:goldMod};
   }
-  function rerollFirstDamageOne(damage){if(!damage)return false;var parts=[damage].concat(Array.isArray(damage.extraDice)?damage.extraDice:[],Array.isArray(damage.typedExtraDice)?damage.typedExtraDice:[]);for(var pi=0;pi<parts.length;pi++){var part=parts[pi];if(!part||!Array.isArray(part.rolls))continue;var parsed=parseDice(part.expression),index=0;for(var gi=0;gi<(parsed.groups||[]).length;gi++){var group=parsed.groups[gi],count=Math.max(0,num(group.count,1))*(part.critical?2:1),sides=Math.max(1,num(group.sides,6));for(var di=0;di<count&&index<part.rolls.length;di++,index++){if(Number(part.rolls[index])===1){var next=rollDie(sides),delta=next-1;part.rolls[index]=next;if(part!==damage&&part.total!=null)part.total+=delta;damage.total+=delta;return true;}}}}return false;}
+  function rerollFirstDamageOne(damage){if(!damage)return false;var parts=[damage].concat(Array.isArray(damage.extraDice)?damage.extraDice:[],Array.isArray(damage.typedExtraDice)?damage.typedExtraDice:[]);for(var pi=0;pi<parts.length;pi++){var part=parts[pi];if(!part||!Array.isArray(part.rolls))continue;var parsed=parseDice(part.expression),index=0;for(var gi=0;gi<(parsed.groups||[]).length;gi++){var group=parsed.groups[gi],count=Math.max(0,num(group.count,1))*(part.critical?2:1),sides=Math.max(1,num(group.sides,6));for(var di=0;di<count&&index<part.rolls.length;di++,index++){if(Number(part.rolls[index])===1){var next=rollDie(sides),modifier=num(part.goldModifier,0),delta=Math.max(0,next+modifier)-Math.max(0,1+modifier);part.rolls[index]=next;if(Array.isArray(part.adjustedRolls))part.adjustedRolls[index]=Math.max(0,next+modifier);if(part!==damage&&part.total!=null)part.total+=delta;damage.total+=delta;return true;}}}}return false;}
     function effectiveDamage(target,amount,type,opts){
     opts=opts||{};
     amount=Math.max(0,Math.floor(num(amount)));
