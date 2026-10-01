@@ -61,6 +61,10 @@ assert.equal(immuneFire.amount,5,'black powder converts immunity into resistance
 const resistantFire=ctx.DNDCombat.effectiveDamage({resistances:['огонь']},10,'огонь',{ignoreResistance:true});
 assert.equal(resistantFire.amount,10,'black powder bypasses ordinary resistance');
 
+const ownerBombHit=ctx.DNDCombat.effectiveDamage({classFeaturesState:{alchemistHomunculusOwner:'alch'}},12,'огонь',{isBomb:true,attackerId:'alch'});
+assert.equal(ownerBombHit.amount,0,'homunculus is immune to its creator Alchemist bombs');
+
+
 const oldRandom=ctx.Math.random;ctx.Math.random=()=>0.999;
 rolls=[{result:20,critical:true,fumble:false}];
 const ionizerTarget={id:'ionizer-defender',classes:[{name:'Алхимик',level:14,subclass:'ionizer'}],ac:15,hp:25,maxHp:25,abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:5,resources:{},classFeaturesState:{},conditions:{},resistances:[]};
