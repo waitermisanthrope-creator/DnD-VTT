@@ -2124,6 +2124,15 @@ var academy=String(s.warlordAcademy||'');
   ];
   packs.push(occultistPack,witchPack);
   // Public bridge used by class_features_engine: one source of truth for Accursed.
+  global.witchRuntime={
+    sync:syncWitch,
+    rest:function(h,type){
+      if(!h||lvl(h,'Ведьма')<=0)return;
+      var s=state(h);
+      if(type==='long'){s.dyingCurseUsed=false;s.hexmasterUses=Math.max(1,mod(h,'charisma'));s.hexRounds=0;s.hexTarget=null;s.familiar.boosted=false;}
+      s.familiar.attackUsedTurn=false;
+    }
+  };
   global.accursedRuntime={
     sync:syncAccursed,
     useFeature:useAccursed,
