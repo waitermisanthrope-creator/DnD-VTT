@@ -35,11 +35,30 @@ vm.runInContext(fs.readFileSync(require.resolve('../app/morehod_gold_modifier.js
 vm.runInContext(fs.readFileSync(require.resolve('../app/rulesEngine.js'), 'utf8'), context);
 const mariner = { classes: [{ name: 'Мореход', level: 1 }], stats: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 }, proficiencyBonus: 2, coins: { gp: 2000 } };
 const attack = context.DNDRules.weaponAttack(mariner, { stat: 'str' }, 'normal');
-assert.strictEqual(attack.bonus, 7, 'weapon attack bonus includes +5 Mariner gold modifier once');
-assert.strictEqual(attack.total, 17, 'weapon attack total includes modifier once');
+assert.strictEqual(attack.bonus, 2, 'weapon attack does not receive the ability/skill-check-only gold modifier');
+assert.strictEqual(attack.total, 12, 'weapon attack total excludes the Mariner gold modifier');
 const other = { classes: [{ name: 'Бандит', level: 1 }], stats: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 }, proficiencyBonus: 2, coins: { gp: 2000 } };
 assert.strictEqual(context.DNDRules.weaponAttack(other, { stat: 'str' }, 'normal').bonus, 2, 'other classes are unaffected');
 assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'), 0, 'static skill bonus remains unchanged; passive values are not modified');
+// Integration: ordinary ability/skill d20 checks receive the carried-gold modifier exactly once.
+{
+  const diceResult = { textContent: '' };
+  const diceContext = {
+    console, Math: Object.create(Math), Number, String, Array, Object, Date,
+    document: { getElementById: id => id === 'diceResult' ? diceResult : null },
+    window: {}, currentChar: mariner,
+    MorehodGoldModifier: { getModifier: hero => hero === mariner ? 5 : 0 },
+    applyConditionsToRoll: () => ({ effectiveMode: 'normal', forceCrit1: false, conditionNotes: [] }),
+    rollSingleDice: () => 10,
+    triggerCritEffect: () => {}
+  };
+  diceContext.window = diceContext;
+  diceContext.globalThis = diceContext;
+  vm.createContext(diceContext);
+  vm.runInContext(fs.readFileSync(require.resolve('../app/dice.js'), 'utf8'), diceContext);
+  diceContext.executeD20Check('Проверка характеристики', 2);
+  assert.strictEqual(diceResult.textContent, 'Итог: 17 (+17)', 'ability/skill d20 check receives +5 once');
+}
 // Integration: combat dice remain natural; the Mariner modifier never adjusts damage or HP dice.
 {
   const combatContext = {
@@ -112,8 +131,8 @@ assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'),
   const lowGoldDie = combatContext.DNDCombat.rollDice('1d6', false, false, poorMariner);
   assert.strictEqual(lowGoldDie.adjustedRolls[0], 1, 'damage die remains natural even with -5 modifier');
   const save = combatContext.DNDCombat.savingThrow(loadedMariner, 'con', 6);
-  assert.strictEqual(save.total, 6, 'combat saving throw receives +5 once');
-  assert.strictEqual(save.success, true);
+  assert.strictEqual(save.total, 1, 'saving throw excludes the ability/skill-check-only Mariner modifier');
+  assert.strictEqual(save.success, false);
   const nonMariner = Object.assign({}, loadedMariner, { classes: [{ name: 'Бандит', level: 1 }] });
   assert.strictEqual(combatContext.DNDCombat.savingThrow(nonMariner, 'con', 6).total, 1, 'other classes receive no gold modifier');
   // Integration: defeating a studied target through the initiative quick-damage control clears only that target.
