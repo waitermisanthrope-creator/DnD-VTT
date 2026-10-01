@@ -279,6 +279,8 @@
   function resolveAttack(target,d20,bonus,opts,roll){
     roll=roll||{result:d20,critical:d20===20,fumble:d20===1};
     if(opts&&opts.__forceCritical&&roll.result!==1)roll.critical=true;
+    var criticalRange=Number(opts&&opts.__classFeatureMod&&opts.__classFeatureMod.criticalRange)||20;
+    if(roll.result>=criticalRange&&roll.result!==1)roll.critical=true;
     var classBonus=opts&&opts.__classFeatureMod?num(opts.__classFeatureMod.bonusAttack):0;
     var attackerDebuffs=opts&&opts.__attacker&&opts.__attacker.classFeaturesState&&opts.__attacker.classFeaturesState.alchemistDebuffs||{};
     classBonus-=num(attackerDebuffs.attackPenalty,0);
