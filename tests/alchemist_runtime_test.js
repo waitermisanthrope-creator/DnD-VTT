@@ -43,4 +43,14 @@ assert.equal(heal.ok,true,'healing potion applies');
 assert.equal(hero.hp,7,'healing potion updates character HP when no max is specified');
 assert.equal(hero.classFeaturesState.alchemistPotions.length,0,'successfully used potions are consumed');
 
+
+// Progression regression: level 4 gains the fourth formula; poison specialist gets its free discovery.
+const levelFour={classes:[{name:'Алхимик',level:4,subclass:'apothecary'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{}};
+hooks.sync(levelFour);
+assert.equal(levelFour.classFeaturesState.alchemistFormulaMax,4,'level 4 formula count matches progression table');
+const venom={classes:[{name:'Алхимик',level:3,subclass:'venomsmith'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{}};
+const venomFeature=hooks.useFeature(venom,'alchemist-venomsmith-3-Отравитель',{}, {subclassId:'venomsmith'});
+assert.equal(venomFeature.ok,true,'Venomsmith poisoner feature resolves');
+assert.ok(venom.classFeaturesState.alchemistDiscovered.includes('Алхимия яда'),'Venomsmith gains poison alchemy discovery');
+
 console.log('Alchemist runtime regression tests PASS');
