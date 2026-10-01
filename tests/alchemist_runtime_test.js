@@ -153,6 +153,16 @@ assert.equal(blackPowderAttack.ignoreResistance,true,'black powder bomb ignores 
 assert.equal(blackPowderAttack.immunityBecomesResistance,true,'black powder bomb treats immunity as resistance');
 assert.ok(blackPowderAttack.extraDice.includes('1d12'),'black powder bomb adds its d12 damage');
 
+const ionizer={classes:[{name:'Алхимик',level:3,subclass:'ionizer'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{}};
+hooks.sync(ionizer);
+assert.equal(hooks.useFeature(ionizer,'alchemist-subclassFeature',{featureName:'Ионизация'},{subclassId:'ionizer'}).ok,true,'Ionization prepares a bomb effect');
+assert.equal(hooks.attackModifiers(ionizer,{isBomb:true}).pendingOnHit.alchemistFormula.save,'dex','Ionization forwards its Dexterity save to combat');
+const pigmentist={classes:[{name:'Алхимик',level:3,subclass:'pigmentist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{}};
+hooks.sync(pigmentist);
+assert.equal(hooks.useFeature(pigmentist,'alchemist-subclassFeature',{featureName:'Цветной взрыв'},{subclassId:'pigmentist'}).ok,false,'Colorful Explosion requires a damage type choice');
+assert.equal(hooks.useFeature(pigmentist,'alchemist-subclassFeature',{featureName:'Цветной взрыв',damageType:'огонь'},{subclassId:'pigmentist'}).ok,true,'Colorful Explosion accepts a valid damage type');
+
+
 
 
 
