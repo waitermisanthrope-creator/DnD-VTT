@@ -118,4 +118,22 @@ const missedTarget = { id: 'missed-target', speed: 30, saveSuccess: false };
 const tripBeforeMiss = banditTripHero.resources.banditDirtyTricks.current;
 assert.strictEqual(runtime.useFeature(banditTripHero, 'banditTrip', { attackHit: false, target: missedTarget, distanceFt: 5 }).ok, false);
 assert.strictEqual(banditTripHero.resources.banditDirtyTricks.current, tripBeforeMiss, 'failed precondition does not spend resource');
+const selfProtector = {
+  id: 'protector-self',
+  classes: [{ name: 'Заступник', level: 3 }],
+  resources: { protectorImpulses: { current: 2, max: 2, recharge: 'short' } },
+  turnResources: { reaction: 1 }
+};
+window.DNDCombat = { rollDice: () => ({ total: 4 }) };
+const selfTarget = { id: 'protector-self' };
+const rejectedSelfIntercept = runtime.interceptDamage(selfProtector, selfTarget, 10, {
+  isAlly: false, visible: false
+});
+assert.strictEqual(rejectedSelfIntercept.ok, false, 'self-target interception must be explicit');
+assert.strictEqual(selfProtector.resources.protectorImpulses.current, 2, 'rejected self-intercept does not spend an impulse');
+const selfIntercept = runtime.interceptDamage(selfProtector, selfTarget, 10, { isSelf: true });
+assert.strictEqual(selfIntercept.ok, true, 'Protector can explicitly use the same defensive reaction on themself');
+assert.strictEqual(selfIntercept.reduction, 6, 'self-defense uses the existing 1d10 + proficiency reduction');
+assert.strictEqual(selfProtector.resources.protectorImpulses.current, 1, 'self-defense spends one impulse');
+assert.strictEqual(selfProtector.turnResources.reaction, 0, 'self-defense spends the reaction');
 console.log('Four custom class runtime foundation tests: PASS');
