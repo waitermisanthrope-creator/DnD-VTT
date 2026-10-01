@@ -756,6 +756,50 @@ var academy=String(s.warlordAcademy||'');
     if(s.knownMetamorphoses.indexOf('hexPlate')>=0)o.minimumAC=16+m;else if(s.knownMetamorphoses.indexOf('hexArmor')>=0)o.minimumAC=13+m;
     return o;
   }
+  var RUNEKEEPER_INSCRIBED=[0,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,10,10];
+  function runeCount(l){return RUNEKEEPER_INSCRIBED[Math.max(1,Math.min(20,Number(l)||1))]||2;}
+  function runeKnownCount(l){return 3+Math.max(1,Math.min(20,Number(l)||1));}
+  function runeChargeMax(l){return l>=5?Math.floor(l/2):0;}
+  function rkState(h){var s=st(h);s.runeKeeper=s.runeKeeper||{};return s.runeKeeper;}
+  function syncRuneKeeperRuntime(h){
+    var l=lvl(h,'Рунный хранитель');if(!l)return;
+    var s=rkState(h),n=runeCount(l);
+    s.inscribedRunes=Array.isArray(s.inscribedRunes)?s.inscribedRunes:[];
+    if(s.inscribedRunes.length>n)s.inscribedRunes=s.inscribedRunes.slice(0,n);
+    s.runicLexicon=Array.isArray(s.runicLexicon)?s.runicLexicon:[];
+    s.inscribedObjects=s.inscribedObjects&&typeof s.inscribedObjects==='object'?s.inscribedObjects:{};
+    s.inertRunes=s.inertRunes&&typeof s.inertRunes==='object'?s.inertRunes:{};
+    s.runeStance=s.runeStance||null;
+    s.runeSaveDC=8+(Number(h.proficiencyBonus)||2)+mod(h,'int');
+    s.runeAttackBonus=(Number(h.proficiencyBonus)||2)+mod(h,'int');
+    s.inscribedMax=n;s.knownRunesMax=runeKnownCount(l);
+    if(l>=5){s.runicChargesMax=runeChargeMax(l);if(typeof s.runicCharges!=='number'||s.runicCharges>s.runicChargesMax)s.runicCharges=s.runicChargesMax;}
+    else{s.runicChargesMax=0;s.runicCharges=0;}
+    s.runeChantMax=l>=20?3:l>=9?2:1;
+  }
+  function rkInscribe(h,rune,objectId){
+    syncRuneKeeperRuntime(h);var s=rkState(h),name=String(rune||'Руна'),oid=String(objectId||'');
+    if(!oid)return{ok:false,reason:'Укажи объект для руны.'};
+    var n=s.inscribedMax;
+    if(Object.keys(s.inscribedObjects).some(function(k){return k!==oid&&s.inscribedObjects[k]===name;})){}
+    var old=s.inscribedObjects[oid]; if(old&&old!==name)return{ok:false,reason:'На этом объекте уже есть другая руна.'};
+    if(!old){if(s.inscribedRunes.length>=n){s.inscribedRunes.shift();}s.inscribedRunes.push(name);s.inscribedObjects[oid]=name;}
+    s.inertRunes[oid]=false;
+    return{ok:true,objectId:oid};
+  }
+  function rkInvoke(h,objectId){
+    syncRuneKeeperRuntime(h);var s=rkState(h),oid=String(objectId||''),name=s.inscribedObjects[oid];
+    if(!name)return{ok:false,reason:'На объекте нет вашей вписанной руны.'};
+    if(s.inertRunes[oid])return{ok:false,reason:'Эта руна уже инертна. Впишите её заново.'};
+    s.inertRunes[oid]=true;return{ok:true,rune:name};
+  }
+  function rkSetStance(h,stance){syncRuneKeeperRuntime(h);var s=rkState(h);s.runeStance=String(stance||'разрушение');return s.runeStance;}
+  global.runeKeeperRuntime={
+    sync:syncRuneKeeperRuntime,
+    inscribe:rkInscribe,invoke:rkInvoke,setStance:rkSetStance,
+    spendCharges:function(h,n){syncRuneKeeperRuntime(h);var s=rkState(h),x=Number(n)||1;if(s.runicCharges<x)return false;s.runicCharges-=x;return true;},
+    rest:function(h,type){syncRuneKeeperRuntime(h);var s=rkState(h);if(type==='long'){s.runicCharges=s.runicChargesMax;s.runeStance=null;s.inertRunes={};}}
+  };
   function syncRuneKeeper(h){var l=lvl(h,'Рунный хранитель');if(!l)return;var s=st(h),n=runeCount(l);s.inscribedRunes=Array.isArray(s.inscribedRunes)?s.inscribedRunes:[];if(s.inscribedRunes.length>n)s.inscribedRunes=s.inscribedRunes.slice(0,n);s.runeStance=s.runeStance||null;s.runeSaveDC=8+(Number(h.proficiencyBonus)||2)+mod(h,'int');}
   function useRuneKeeper(h,id,ctx,feature){syncRuneKeeper(h);ctx=ctx||{};var s=st(h),n=runeCount(lvl(h,'Рунный хранитель')),rt=global.runeKeeperRuntime;
 if(id==='inscribeRune'){var name=ctx.rune?String(ctx.rune):'Руна';if(rt&&typeof rt.inscribe==='function'){var ins=rt.inscribe(h,name,ctx.objectId);if(!ins.ok)return{ok:false,message:ins.reason||'Не удалось вписать руну.'};return{ok:true,effect:{objectId:ins.objectId,rune:name},message:'🔷 Руна «'+name+'» вписана.'};}if(s.inscribedRunes.indexOf(name)<0){if(s.inscribedRunes.length>=n)s.inscribedRunes.shift();s.inscribedRunes.push(name);}return{ok:true,message:'🔷 Руна «'+name+'» вписана: '+s.inscribedRunes.length+'/'+n+'.'};}
@@ -1643,7 +1687,22 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
       {id:'chooseMetamorphosis',name:'Маледикционная метаморфоза',level:2,action:'choice'},
       {id:'maledictionVersatility',name:'Универсальность маледикции',level:4,action:'utility'}
     ].concat(Object.keys(ACCURSED_CURSE_FEATURES).reduce(function(a,k){return a.concat(Object.keys(ACCURSED_CURSE_FEATURES[k]).map(function(id){var f=ACCURSED_CURSE_FEATURES[k][id];return{id:id,name:id,level:f.level,action:f.action,curse:k};}));},[])),subclasses:Object.keys(ACCURSED_CURSES).map(function(id){return{id:id,name:ACCURSED_CURSES[id].name,pickLevel:1,features:Object.keys(ACCURSED_CURSE_FEATURES[id]||{}).map(function(fid){return{id:fid,name:fid,level:ACCURSED_CURSE_FEATURES[id][fid].level};})};}),hooks:{sync:syncAccursed,useFeature:useAccursed,attackModifiers:accursedAttack}},
-    {id:'ip-runekeeper',name:'RuneKeeper',displayName:'Рунный хранитель',source:'Taron Pounds / Indestructoboy',license:'Original runtime implementation',features:[{id:'inscribeRune',name:'Вписать руну',level:1,action:'utility'},{id:'runeStance',name:'Рунная стойка',level:2,action:'bonus'},{id:'invokeRune',name:'Призвать руну',level:1,action:'action'}],subclasses:[{id:'dethek',name:'Детек',features:[]},{id:'fiendish',name:'Инфернский',features:[]},{id:'ghukliak',name:'Гуклиак',features:[]},{id:'jotun',name:'Йотун',features:[]},{id:'iokharic',name:'Иокхарик',features:[]},{id:'supernal',name:'Высший',features:[]}],hooks:{sync:syncRuneKeeper,useFeature:useRuneKeeper,attackModifiers:runeKeeperAttack}},
+    {id:'ip-runekeeper',name:'RuneKeeper',displayName:'Рунный хранитель',source:'Taron Pounds / Indestructoboy',license:'Original runtime implementation',features:[
+{id:'runicLore',name:'Руническое знание',level:1,action:'utility'},{id:'polyglot',name:'Полиглот',level:1,action:'passive'},
+{id:'keeperDialect',name:'Хранительский диалект',level:2,action:'choice'},{id:'runeStance',name:'Рунная стойка',level:2,action:'bonus'},
+{id:'hermeticIntuition',name:'Герметическая интуиция',level:3,action:'action'},{id:'causalInvocation',name:'Причинное призывание',level:5,action:'utility'},
+{id:'harmonicAttunement',name:'Гармоническая настройка',level:7,action:'passive'},{id:'runeChant',name:'Рунный напев',level:9,action:'action'},
+{id:'omnipresence',name:'Вездесущность',level:11,action:'passive'},{id:'omniscience',name:'Всеведение',level:15,action:'passive'},
+{id:'omnipotence',name:'Всемогущество',level:18,action:'passive'},{id:'inscribeRune',name:'Вписать руну',level:1,action:'utility'},
+{id:'invokeRune',name:'Призвать руну',level:2,action:'action'}
+],subclasses:[
+{id:'dethek',name:'Детек',features:[{id:'dwarvishDiscourse',name:'Гномья речь',level:2},{id:'callOfIron',name:'Зов железа',level:2},{id:'dethekStance',name:'Стойка Детек',level:6},{id:'wordsOfAdamance',name:'Слова непреклонности',level:10},{id:'furyOfForge',name:'Ярость кузницы',level:14}]},
+{id:'fiendish',name:'Инфернский',features:[{id:'darkOneDiscourse',name:'Речь Тёмного',level:2},{id:'callFromBelow',name:'Зов из бездны',level:2},{id:'fiendishStance',name:'Инфернская стойка',level:6},{id:'wordsOfDamnation',name:'Слова проклятия',level:10},{id:'wretchedCastigation',name:'Отвратительное воздаяние',level:14}]},
+{id:'ghukliak',name:'Гуклиак',features:[{id:'goblinDiscourse',name:'Гоблинская речь',level:2},{id:'callToHavok',name:'Призыв к хаосу',level:2},{id:'goblinStance',name:'Гоблинская стойка',level:6},{id:'wordsOfMayhem',name:'Слова безумия',level:10},{id:'unbridledChaos',name:'Необузданный хаос',level:14}]},
+{id:'jotun',name:'Йотун',features:[{id:'ostorianDiscourse',name:'Осторианская речь',level:2},{id:'skiltKrigga',name:'Скилт Кригга',level:2},{id:'jotunStance',name:'Йотунская стойка',level:6},{id:'wordsOfDomination',name:'Слова господства',level:10},{id:'jotunbrudJuggernaut',name:'Йотунбруд-джаггернаут',level:14}]},
+{id:'iokharic',name:'Иокхарик',features:[{id:'draconicDiscourse',name:'Драконья речь',level:2},{id:'dragonsAscent',name:'Восхождение дракона',level:2},{id:'draconicStance',name:'Драконья стойка',level:6},{id:'wordsOfLegend',name:'Слова легенды',level:10},{id:'cataclysmicStrike',name:'Катаклизмический удар',level:14}]},
+{id:'supernal',name:'Высший',features:[{id:'celestialDiscourse',name:'Небесная речь',level:2},{id:'sigilicGrace',name:'Сигильная благодать',level:2},{id:'celestialStance',name:'Небесная стойка',level:6},{id:'wordsOfBenediction',name:'Слова благословения',level:10},{id:'censurePeacemaker',name:'Порицание миротворца',level:14}]}
+],hooks:{sync:syncRuneKeeper,useFeature:useRuneKeeper,attackModifiers:runeKeeperAttack}},
 
     {id:'kibbles-psion',name:'Psion',displayName:'Псионик',source:'KibblesTasty Homebrew',license:'CC-BY content source; original runtime implementation',features:[
       {id:'chooseArchetype',name:'Псионический архетип',level:1,action:'choice'},
