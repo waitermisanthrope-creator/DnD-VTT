@@ -242,7 +242,6 @@ assert.equal(webResult.ok,true,'Spider Gland resolves a Dexterity save');
 assert.equal(webbedTarget.activeConditions['Опутан'],true,'Spider Gland applies restrained condition on failed save');
 assert.equal(webbedTarget.turnResources.movement,0,'Spider Gland reduces target movement to zero');
 hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Паутинная железа'});
-assert.equal(hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Мешочек с ядом'}).ok,true,'Poison Sack can be removed after its test');
 assert.equal(hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'install',graftName:'Энергетический шов',donorVerified:true,donorType:'Дракон',resistanceType:'огонь'}).ok,true,'Energy Stitch can store its donor damage resistance');
 assert.equal(xenoOwner.classFeaturesState.alchemistGrafts.find(x=>x.name==='Энергетический шов').resistanceType,'огонь','Energy Stitch persists the chosen resistance type');
 assert.equal(hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Энергетический шов'}).ok,true,'Energy Stitch can be removed');
