@@ -66,8 +66,35 @@ assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'),
     profBonus: () => 2
   };
   combatContext.DNDClassFeatures = { activeRage: () => false, reactionOptions: () => null, saveModifiers: () => null };
+  vm.runInContext(fs.readFileSync(require.resolve('../app/four_custom_class_runtime.js'), 'utf8'), combatContext);
   vm.runInContext(fs.readFileSync(require.resolve('../app/combat_engine.js'), 'utf8'), combatContext);
   const loadedMariner = { classes: [{ name: 'Мореход', level: 1 }], stats: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 }, coins: { gp: 2000 } };
+  const protector = {
+    id: 'protector-1',
+    classes: [{ name: 'Заступник', level: 3 }],
+    stats: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
+    abilityScores: { dex: 10, cha: 10 },
+    resources: {},
+    turnResources: { actions: 1, bonusAction: 1, reaction: 1 }
+  };
+  combatContext.FourCustomClassRuntime.sync(protector);
+  const ally = { id: 'ally-1', hitPoints: 20, maxHitPoints: 20, stats: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 } };
+  const protectedHit = combatContext.DNDCombat.applyDamage(ally, 10, 'огонь', { protector, protectorDistanceFt: 5, protectorVisible: true });
+  assert.strictEqual(protectedHit.amount, 7, 'Protector reduces incoming damage by 1d10 + proficiency (deterministic roll 1 + 2)');
+  assert.strictEqual(ally.hitPoints, 13, 'reduced damage is reflected in target HP');
+  assert.strictEqual(protector.resources.protectorImpulses.current, 1, 'Protector spends one impulse');
+  assert.strictEqual(protector.turnResources.reaction, 0, 'Protector spends one reaction');
+  const invalidProtector = {
+    id: 'protector-2',
+    classes: [{ name: 'Заступник', level: 3 }],
+    resources: {},
+    turnResources: { actions: 1, bonusAction: 1, reaction: 1 }
+  };
+  combatContext.FourCustomClassRuntime.sync(invalidProtector);
+  const unprotectedHit = combatContext.DNDCombat.applyDamage(ally, 5, 'огонь', { protector: invalidProtector, protectorDistanceFt: 6 });
+  assert.strictEqual(unprotectedHit.amount, 5, 'Protector outside 5 feet cannot intercept');
+  assert.strictEqual(invalidProtector.resources.protectorImpulses.current, 2, 'invalid interception spends no resource');
+  assert.strictEqual(invalidProtector.turnResources.reaction, 1, 'invalid interception spends no reaction');
   const highGoldDie = combatContext.DNDCombat.rollDice('1d6', false, false, loadedMariner);
   assert.strictEqual(highGoldDie.rolls[0], 1);
   assert.strictEqual(highGoldDie.adjustedRolls[0], 6);
