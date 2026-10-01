@@ -144,6 +144,16 @@ for(let i=0;i<10;i++)hooks.onTurnEnd(mutagenHero);
 assert.equal(mutagenHero.abilityScores.strength,14,'mutagen restores original ability score after one minute');
 assert.equal(mutagenHero.stats.str,14,'mutagen restores original combat stat after one minute');
 
+const bomber={classes:[{name:'Алхимик',level:3,subclass:'madBomber'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{}};
+hooks.sync(bomber);
+const blackPowder=hooks.useFeature(bomber,'alchemist-subclassFeature',{featureName:'Бомба с чёрным порохом'},{subclassId:'madBomber'});
+assert.equal(blackPowder.ok,true,'black powder bomb can be prepared');
+const blackPowderAttack=hooks.attackModifiers(bomber,{isBomb:true});
+assert.equal(blackPowderAttack.ignoreResistance,true,'black powder bomb ignores resistance');
+assert.equal(blackPowderAttack.immunityBecomesResistance,true,'black powder bomb treats immunity as resistance');
+assert.ok(blackPowderAttack.extraDice.includes('1d12'),'black powder bomb adds its d12 damage');
+
+
 
 
 
