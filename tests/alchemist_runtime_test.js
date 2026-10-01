@@ -328,6 +328,13 @@ assert.equal(hooks.useFeature(bloodMutagenist,'alchemist-subclassFeature',{featu
 assert.equal(bloodMutagenist.abilityScores.strength,23,'Mutagen raises the selected ability by three above its permanent Mutated Blood value');
 hooks.advanceTime(bloodMutagenist,1.1);
 assert.equal(bloodMutagenist.abilityScores.strength,20,'Mutagen expiry preserves the permanent Mutated Blood bonus');
+const coloredPotionMaker={id:'colored-potion-maker',classes:[{name:'Алхимик',level:10,subclass:'pigmentist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:4,resources:{},classFeaturesState:{}};
+hooks.sync(coloredPotionMaker);
+assert.equal(hooks.useFeature(coloredPotionMaker,'alchemist-potionBrew',{potion:'Зелье лечения',potionColor:'огонь'}).ok,true,'Pigmentist can brew a fire-colored potion');
+const coloredDrink=hooks.useFeature(coloredPotionMaker,'alchemist-potionUse',{index:0,healAmount:4});
+assert.equal(coloredDrink.ok,true,'A colored potion can be consumed');
+assert.ok(coloredPotionMaker.resistances.includes('огонь'),'Pigment Potion grants actual fire resistance');
+assert.equal(coloredPotionMaker.classFeaturesState.alchemistActiveEffects[0].effect.durationMinutes,60,'Pigment Potion resistance lasts one minute');
 const painter={id:'painter',classes:[{name:'Алхимик',level:3,subclass:'pigmentist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{}};
 hooks.sync(painter);
 assert.equal(hooks.checkModifiers(painter,{toolName:'Инструменты художника'}).bonus,3,'Pigmentist Artist adds Intelligence modifier to painter tool checks');
