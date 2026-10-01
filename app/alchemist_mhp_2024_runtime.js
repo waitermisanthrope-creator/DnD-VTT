@@ -256,7 +256,18 @@ function advancePotionTime(h,minutes){
  var keep=old.filter(function(e){return e&&e.effect&&(Number(e.effect.durationMinutes)<=0||Number(e.remainingMinutes)>0);});
  cleanupPotionEffects(h,old,keep);s.alchemistActiveEffects=keep;
 }
-function onTurnEnd(h){advancePotionTime(h,0.1);}
+function onTurnEnd(h){
+ advancePotionTime(h,0.1);
+ var s=st(h),bomb=s.alchemistDelayedBomb;if(!bomb)return;
+ var tracker=h&&h.initiativeTracker,combatants=tracker&&Array.isArray(tracker.combatants)?tracker.combatants:[],target=combatants.find(function(x){return x&&String(x.id)===String(bomb.targetId);});
+ if(!target){s.alchemistDelayedBomb=null;return{ok:false,expired:true,message:'Отложенная бомба отменена: цель больше не участвует в бою.'};}
+ bomb.remainingOwnerTurns=Math.max(0,Number(bomb.remainingOwnerTurns||1)-1);
+ if(bomb.remainingOwnerTurns>0)return{ok:true,pending:true,remainingOwnerTurns:bomb.remainingOwnerTurns};
+ if(!g.DNDCombat||typeof g.DNDCombat.rollDice!=='function'||typeof g.DNDCombat.applyDamage!=='function')return{ok:false,unsupported:true,message:'Боевой resolver недоступен; отложенная бомба остаётся подготовленной.'};
+ var rolled=g.DNDCombat.rollDice(bombDice(alvl(h))),result=g.DNDCombat.applyDamage(target,rolled.total,'огонь',{source:'alchemist-delayed-demolition',isBomb:true,attackerId:h.id||null});
+ s.alchemistDelayedBomb=null;
+ return{ok:true,exploded:true,target:target.id,damage:result.amount,roll:rolled.total,message:'💣 Отложенная бомба взорвалась: '+result.amount+' огненного урона.'};
+}
 function longRest(h){
  if(!h||!alvl(h))return;sync(h);var r=h.resources.alchemistReagents,s=st(h);
  r.current=r.max;s.alchemistSynthesisUsed=false;s.alchemistSynthesisReady=false;
@@ -389,6 +400,17 @@ function subclassFeatureEffect(h,sub,f,ctx){
   if(!spend(h,overloadCost))return{ok:false,message:'Не удалось списать реагенты; заряд не подготовлен.'};
   s.alchemistOverloadedBombBonus=true;
   return{ok:true,effect:{reagentsSpent:overloadCost,extraDice:'2d10',nextBombOnly:true},message:'💥 Перегруженный заряд: потрачено '+overloadCost+' реагентов; следующая бомба наносит +2d10.'};
+ }
+ if(name==='Своевременный снос'){
+  if(l<6||!(sub.id==='madBomber'||sub.name==='Безумный бомбометатель'))return{ok:false,message:'Своевременный снос доступен Безумному бомбометателю с 6 уровня.'};
+  if(s.alchemistDelayedBomb)return{ok:false,message:'Уже есть отложенная бомба; перекрёстные взрывы не складываются.'};
+  var demolitionTarget=ctx.target;if(!demolitionTarget||!demolitionTarget.id)return{ok:false,needsTarget:true,message:'Выберите цель/участника боя для отложенной бомбы.'};
+  var fuseRounds=Number(ctx.fuseRounds);
+  if(!Number.isFinite(fuseRounds)){var fuseMinutes=Number(ctx.fuseMinutes);if(!Number.isFinite(fuseMinutes)||fuseMinutes<0||fuseMinutes>10)return{ok:false,needsChoice:true,message:'Укажите fuseMinutes от 0 до 10 или fuseRounds от 1 до 100.'};fuseRounds=Math.max(1,Math.ceil(fuseMinutes*10));}
+  fuseRounds=Math.ceil(fuseRounds);
+  if(fuseRounds<1||fuseRounds>100)return{ok:false,message:'Запал должен быть от 1 до 100 раундов (не более 10 минут).'};
+  s.alchemistDelayedBomb={targetId:String(demolitionTarget.id),remainingOwnerTurns:fuseRounds,createdAtTurn:Number(s.alchemistTurnCounter)||0};
+  return{ok:true,effect:{targetId:String(demolitionTarget.id),fuseRounds:fuseRounds,fuseMinutes:fuseRounds/10,damageDice:bombDice(l),damageType:'огонь'},message:'⏱️ Отложенная бомба подготовлена на '+fuseRounds+' ходов владельца.'};
  }
  if(name==='Защита от взрыва'){
   if(l<10)return{ok:false,message:'Защита от взрыва доступна с 10 уровня.'};
