@@ -241,7 +241,7 @@ function cleanupPotionEffects(h,oldEffects,keepEffects){
   if(h.activeConditions&&h.activeConditions[ef.condition])delete h.activeConditions[ef.condition];
   if(h.conditions&&h.conditions[ef.condition])delete h.conditions[ef.condition];
  }
- if(e&&e.name==='Мутаген'&&oldEffects.indexOf(e)>=0&&keepEffects.indexOf(e)<0&&s.activeMutagen&&s.activeMutagen.snapshots){
+ if(e&&(e.name==='Мутаген'||e.name==='Общий мутаген')&&oldEffects.indexOf(e)>=0&&keepEffects.indexOf(e)<0&&s.activeMutagen&&s.activeMutagen.snapshots){
   s.activeMutagen.snapshots.forEach(function(snap){var obj=h[snap.prop];if(obj&&obj[snap.key]!==undefined)obj[snap.key]=snap.original;});s.activeMutagen=null;
  }});
  var keepResistance=[];
@@ -366,7 +366,22 @@ function subclassFeatureEffect(h,sub,f,ctx){
   s.alchemistActiveEffects=s.alchemistActiveEffects||[];s.alchemistActiveEffects.push({name:'Мутаген',effect:{mutagenAbility:mutagenAbility,durationMinutes:1,abilityBonus:3,maxAbility:23},remainingMinutes:1});
   return {ok:true,effect:{abilityBonus:3,ability:mutagenAbility,maxAbility:23,durationMinutes:1,applied:true},message:'🧬 Мутаген: '+mutagenAbility+' увеличена на 3 (максимум 23) на 1 минуту.'};
  }
- if(name==='Общий мутаген'){if(!ctx.target||!ctx.target.id)return{ok:false,needsTarget:true,message:'Выберите союзника для передачи мутагена; реагенты не списаны.'};if(ctx.target.isAlly===false)return{ok:false,message:'Общий мутаген можно передать только союзнику; реагенты не списаны.'};if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,target:ctx.target.id,effect:{grantMutagen:true,duration:'1 minute',onePerTarget:true},message:'🧬 Мутаген подготовлен для передачи союзнику.'};}
+ if(name==='Общий мутаген'){
+  var ally=ctx.target;if(!ally||!ally.id)return{ok:false,needsTarget:true,message:'Выберите союзника для передачи мутагена; реагенты не списаны.'};
+  if(ally.isAlly===false||(h.team&&ally.team&&String(h.team)!==String(ally.team)))return{ok:false,message:'Общий мутаген можно передать только союзнику; реагенты не списаны.'};
+  var sharedAbility=String(ctx.ability||'constitution');
+  if(['strength','dexterity','constitution','intelligence','wisdom','charisma'].indexOf(sharedAbility)<0)return{ok:false,needsChoice:true,message:'Выберите характеристику для Общего мутагена; реагенты не списаны.'};
+  ally.classFeaturesState=ally.classFeaturesState||{};var allyState=ally.classFeaturesState;
+  if(allyState.activeMutagen)return{ok:false,message:'У союзника уже действует мутаген; сначала завершите текущий эффект.'};
+  var sharedAliases={strength:'str',dexterity:'dex',constitution:'con',intelligence:'int',wisdom:'wis',charisma:'cha'},sharedSnapshots=[];
+  ['abilityScores','stats'].forEach(function(prop){var obj=ally[prop];if(!obj||typeof obj!=='object')return;var key=obj[sharedAbility]!==undefined?sharedAbility:(obj[sharedAliases[sharedAbility]]!==undefined?sharedAliases[sharedAbility]:null);if(key===null)return;var original=Number(obj[key])||10;sharedSnapshots.push({prop:prop,key:key,original:original});});
+  if(!sharedSnapshots.length)return{ok:false,unsupported:true,message:'Не найдены характеристики союзника; реагенты не списаны.'};
+  if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов; мутаген не передан.'};
+  sharedSnapshots.forEach(function(snap){var obj=ally[snap.prop];obj[snap.key]=Math.min(23,snap.original+3);});
+  allyState.activeMutagen={ability:sharedAbility,snapshots:sharedSnapshots};
+  allyState.alchemistActiveEffects=allyState.alchemistActiveEffects||[];allyState.alchemistActiveEffects.push({name:'Общий мутаген',effect:{mutagenAbility:sharedAbility,durationMinutes:1,abilityBonus:3,maxAbility:23},remainingMinutes:1});
+  return{ok:true,target:ally.id,effect:{ability:sharedAbility,abilityBonus:3,maxAbility:23,durationMinutes:1,applied:true,reagentsSpent:1},message:'🧬 Общий мутаген: характеристика союзника повышена на 3 на 1 минуту.'};
+ }
  if(name==='Слизевая бомба')return{ok:true,effect:{damage:0,areaSlime:true,deniesActions:['dash','disengage','dodge'],removeAction:true},message:'🟢 Слизевая бомба разлита.'};
  if(name==='Жертвенная слизь'){if(!spend(h,0))return{ok:false};return{ok:true,effect:{reaction:true,redirectAttackToAlly:true,rangeFt:5},message:'🟢 Жертвенная слизь готова.'};}
  if(name==='Палитра-порталы')return{ok:true,effect:{teleportBetweenPaint:true,moveCostFt:10,rangeFt:60},message:'🎨 Палитра-порталы готовы.'};
