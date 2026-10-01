@@ -267,6 +267,12 @@ function attackModifiers(h,ctx){
  var pendingBomb=s.alchemistPendingBombEffect;
  if(isBomb&&pendingBomb){out.extraDice.push(pendingBomb.dice);out.damageTypes.push(pendingBomb.type);out.notes.push('Особая бомба: '+pendingBomb.name+' ('+pendingBomb.type+')');s.alchemistPendingBombEffect=null;}
  if(s.alchemistSeekingBombBonus&&isBomb){out.bonusDamage+=Number(s.alchemistSeekingBombBonus)||0;s.alchemistSeekingBombBonus=0;}
+ var activeEffects=s.alchemistActiveEffects||[];
+ if(ctx.weaponAttack&&activeEffects.some(function(e){return e.name==='Зелье увеличения';})){out.extraDice.push('1d4');out.notes.push('Зелье увеличения: +1d4 урона оружием');}
+ if(ctx.weaponAttack&&activeEffects.some(function(e){return e.name==='Зелье героизма';})){out.notes.push('Зелье героизма активно');}
+ if(activeEffects.some(function(e){return e.name==='Зелье скорости';})){out.hasteActive=true;out.notes.push('Зелье скорости активно: преимущество скорости/дополнительное действие обрабатывается боевым ходом');}
+ if(activeEffects.some(function(e){return e.name==='Зелье полёта';})){out.flySpeed=activeEffects.filter(function(e){return e.name==='Зелье полёта';})[0].effect.flySpeed||30;}
+
  if(s.alchemistSurgicalAttackReady&&ctx.unarmedGraft){out.extraDice.push('1d8');s.alchemistSurgicalAttackReady=false;out.notes.push('Хирургическая атака');}
  if(s.alchemistDynamoCharged&&ctx.weaponAttack){out.extraDice.push('1d8');out.notes.push('Динамо-ядро');s.alchemistDynamoCharged=false;}
  return out;
@@ -427,6 +433,7 @@ function use(h,id,ctx,feature){
    resistanceTypes.forEach(function(t){if(h.resistances.indexOf(t)<0)h.resistances.push(t);});
   }
   if(effect.condition){h.activeConditions=h.activeConditions||h.conditions||{};h.activeConditions[effect.condition]=true;}
+  if(effect.temporaryHP){var oldTemp=Number(h.tempHp||h.temporaryHP)||0;var newTemp=Math.max(oldTemp,effect.temporaryHP);h.tempHp=newTemp;h.temporaryHP=newTemp;}
   s.alchemistActiveEffects.push({name:potion.name,effect:effect,startedAtTurn:Number(s.alchemistTurnCounter)||0,remainingMinutes:effect.durationMinutes||0});
   s.alchemistPotions.splice(idx,1);s.alchemistPotionsDrunkThisTurn=(s.alchemistPotionsDrunkThisTurn||0)+1;
   if(s.alchemistPotionMixReady&&s.alchemistPotionsDrunkThisTurn>=2)s.alchemistPotionMixReady=false;
@@ -443,5 +450,5 @@ g.CLASSES_REFERENCE=g.CLASSES_REFERENCE||{};
 g.CLASSES_REFERENCE[CLASS]={source:SOURCE,hitDie:8,primaryStat:'dexterity',primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14],contentPackId:PACK_ID};
 g.SUBCLASSES_REFERENCE=g.SUBCLASSES_REFERENCE||{};g.SUBCLASSES_REFERENCE[CLASS]={};
 subpacks.forEach(function(s){var lv={};s.features.forEach(function(f){lv[f.level]=lv[f.level]||{features:[]};lv[f.level].features.push(f.name);});g.SUBCLASSES_REFERENCE[CLASS][s.name]={source:SOURCE,description:s.description,pickLevel:3,levels:lv};});
-g.ALCHEMIST_MHP_2024={VERSION:'1.3.2-progression-fixes',STATUS:'in_progress',CANONICAL_2024_SUBCLASSES:11,PACK_ID:PACK_ID,formulae:formulae,potions:potions,discoveries:discoveries,subclasses:subpacks.map(function(s){return{id:s.id,name:s.name};})};
+g.ALCHEMIST_MHP_2024={VERSION:'1.3.3-combat-potion-bridge',STATUS:'in_progress',CANONICAL_2024_SUBCLASSES:11,PACK_ID:PACK_ID,formulae:formulae,potions:potions,discoveries:discoveries,subclasses:subpacks.map(function(s){return{id:s.id,name:s.name};})};
 })(window);
