@@ -40,7 +40,8 @@
     });
     return {total:total,rolls:rolls,expression:String(expr||'1d6'),critical:!!critical,maximized:!!maximize};
   }
-  function effectiveDamage(target,amount,type,opts){
+  function rerollFirstDamageOne(damage){if(!damage)return false;var parts=[damage].concat(Array.isArray(damage.extraDice)?damage.extraDice:[],Array.isArray(damage.typedExtraDice)?damage.typedExtraDice:[]);for(var pi=0;pi<parts.length;pi++){var part=parts[pi];if(!part||!Array.isArray(part.rolls))continue;var parsed=parseDice(part.expression),index=0;for(var gi=0;gi<(parsed.groups||[]).length;gi++){var group=parsed.groups[gi],count=Math.max(0,num(group.count,1))*(part.critical?2:1),sides=Math.max(1,num(group.sides,6));for(var di=0;di<count&&index<part.rolls.length;di++,index++){if(Number(part.rolls[index])===1){var next=rollDie(sides),delta=next-1;part.rolls[index]=next;if(part!==damage&&part.total!=null)part.total+=delta;damage.total+=delta;return true;}}}}return false;}
+    function effectiveDamage(target,amount,type,opts){
     opts=opts||{};
     amount=Math.max(0,Math.floor(num(amount)));
     var note='';
@@ -362,6 +363,7 @@
       if(pending.divineSmite){var sr=rollDice(pending.divineSmite.dice,!!roll.critical,!!fm.maximizeDamageDice);out.damage.total+=sr.total;out.damage.extraDice=(out.damage.extraDice||[]);out.damage.extraDice.push(sr);out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Божественная кара +'+sr.total+' '+pending.divineSmite.damageType);out.divineSmite={dice:pending.divineSmite.dice,total:sr.total,damageType:pending.divineSmite.damageType};}
       if(pending.stunningStrike){var ss=global.DNDCombat&&global.DNDCombat.savingThrow?global.DNDCombat.savingThrow(target,'con',pending.stunningStrike.dc):{success:true};out.stunningStrike={dc:pending.stunningStrike.dc,save:ss,applied:!ss.success};if(!ss.success&&global.DNDCombat&&global.DNDCombat.toggleCondition)global.DNDCombat.toggleCondition(target,'Оглушён',true);}
       if(fm.assassinDeathStrikeEligible&&fm.assassinSurprised&&global.DNDRules){var dexStats=(opts.__attacker&&opts.__attacker.stats)||{};var dexMod=Math.floor((num(dexStats.dex,10)-10)/2);var pb=global.DNDRules.profBonus?global.DNDRules.profBonus(opts.__attacker):2;var dc=8+dexMod+pb;var sv=global.DNDCombat.savingThrow?global.DNDCombat.savingThrow(target,'con',dc):{success:false,total:0,dc:dc};out.assassinDeathStrike={dc:dc,save:sv,damageDoubled:!sv.success};if(!sv.success)out.damage.total*=2;}
+      if(fm.rerollDamageOne&&rerollFirstDamageOne(out.damage)){out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Рука Ужаса: одна кость урона переброшена.');}
       out.classFeatureNotes=(out.classFeatureNotes||[]).concat((fm.notes||[]).slice());
       var alchemistFormula=fm.pendingOnHit&&fm.pendingOnHit.alchemistFormula;
       if(alchemistFormula&&opts.target){
