@@ -93,6 +93,13 @@
     state.studiedTargetIds=state.studiedTargetIds.filter(function(id){return set[String(id)];});
     return state.studiedTargetIds.slice();
   }
+  function clearStudiedTarget(hero,targetId){
+    var state=hero&&hero.classFeaturesState&&hero.classFeaturesState.bandit;
+    if(!state||!Array.isArray(state.studiedTargetIds)||targetId==null)return [];
+    var id=String(targetId);
+    state.studiedTargetIds=state.studiedTargetIds.filter(function(studiedId){return String(studiedId)!==id;});
+    return state.studiedTargetIds.slice();
+  }
   function selectedSubclass(hero,names){
     var classes=Array.isArray(hero&&hero.classes)?hero.classes:[];
     var c=classes.find(function(x){return names.some(function(nm){return String(x&&x.name||'').toLowerCase()===String(nm).toLowerCase();});});
@@ -211,6 +218,7 @@
     restore:restore,
     studyTarget:studyTarget,
     clearInvalidTargets:clearInvalidTargets,
+    clearStudiedTarget:clearStudiedTarget,
     interceptDamage:interceptDamage,
     hasFeature:hasFeature,
     useFeature:useFeature,
