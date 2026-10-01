@@ -97,4 +97,16 @@ assert.ok(poisonedCombatant.hp<=hpAfterTick,'poison tick remains applied through
 
 
 assert.equal(ctx.DNDCombat.attack(target,{id:'second',ac:12,hp:20,maxHp:20}, {bonus:0,damage:'1',useRules:false}).ac,12,'test combat engine remains callable after formula resolution');
+
+const pheromoneOwner={id:'pheromone-owner',name:'Алхимик-фумарий',classes:[{name:'Алхимик',level:3,subclass:'amorist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{}};
+hooks.sync(pheromoneOwner);
+const pheromoneTarget={id:'pheromone-target',hp:20,maxHp:20,conditions:{},activeConditions:{},classFeaturesState:{}};
+const pheromone=hooks.useFeature(pheromoneOwner,'alchemist-subclassFeature',{featureName:'Бомба с феромонами',target:pheromoneTarget},{subclassId:'amorist'});
+assert.equal(pheromone.ok,true,'Pheromone Bomb resolves its Wisdom save');
+assert.equal(pheromoneTarget.activeConditions['Очарован'],true,'failed save applies charmed condition');
+assert.equal(pheromoneTarget.classFeaturesState.alchemistDebuffs.endsOnDamage,true,'charm is marked to end when target takes damage');
+ctx.DNDCombat.applyDamage(pheromoneTarget,1,'дробящий');
+assert.equal(pheromoneTarget.activeConditions['Очарован'],undefined,'taking damage ends Pheromone Bomb charm');
+assert.equal(pheromoneTarget.classFeaturesState.alchemistDebuffs.endsOnDamage,undefined,'on-damage trigger is consumed');
+
 console.log('Alchemist combat integration tests PASS');
