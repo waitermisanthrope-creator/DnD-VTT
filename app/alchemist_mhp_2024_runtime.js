@@ -15,7 +15,7 @@ function mod(h,k){return Math.floor((ability(h,k)-10)/2);}
 function prof(h){return Number(h.proficiencyBonus)||Math.floor((level(h)-1)/4)+2;}
 function maxReagents(l){return 2*l;}
 function primeMax(l){return l>=17?5:l>=13?4:l>=9?3:l>=5?2:l>=2?1:0;}
-function formulasKnown(l){return l>=19?8:l>=16?7:l>=12?6:l>=8?5:l>=2?3:0;}
+function formulasKnown(l){return l>=19?8:l>=16?7:l>=12?6:l>=8?5:l>=4?4:l>=2?3:0;}
 function bombDice(l){return l>=17?'4d10':l>=11?'3d10':l>=5?'2d10':'1d10';}
 var formulae=[
  {id:'acid',name:'Кислотная бомба',damage:'кислота',dice:'d8',save:'Ловкость',effect:'попадание или провал спасброска: -3 к AC до начала вашего следующего хода.'},
@@ -312,14 +312,14 @@ function subclassFeatureEffect(h,sub,f,ctx){
  if(name==='Ядовитая бомба'){s.alchemistPendingBombEffect={dice:'2d10',type:'яд',name:name};return{ok:true,effect:{damageDice:'2d10',damageType:'poison',save:'constitution',condition:'poisoned'},message:'☠️ Ядовитая бомба подготовлена; спасбросок и состояние требуют resolver-а.'};}
  if(name==='Мутагенная ярость')return{ok:true,effect:{bonusDamage:'1d6',resistance:true,duration:'1 minute'},message:'🧬 Мутагенная ярость активирована.'};
  var passiveFeatures={
-  'Исследования врача':1,'Концентрированное лечение':1,'Самолечение':1,'Алхимическое воскрешение':1,
+  'Отравитель':1,'Дополнительные владения':1,'Дополнительное владение':1,'Исследования врача':1,'Концентрированное лечение':1,'Самолечение':1,'Алхимическое воскрешение':1,
   'Очарователь':1,'Магнетическая личность':1,'Улучшенные бомбы':1,'Аэродинамические бомбы':1,
   'Самонаведение':1,'Владение оружием':1,'Улучшенный прицел':1,'Митридатизм':1,
   'Формула стрелка':1,'Междисциплинарные исследования':1,'Дополнительные зелья':1,
   'Заядлый читатель':1,'Убийца-алхимик':1,'Чудо-самогонщик':1,'Пьяная удаль':1,
   'Талант бармена':1,'Безопасная перегонка':1,'Стабильный мутаген':1
  };
- if(passiveFeatures[name])return{ok:true,passive:true,effect:{subclass:sub.id,feature:name,description:f[2]||''},message:'📘 Пассивная особенность: '+name+'.'};
+ if(passiveFeatures[name]){if(name==='Отравитель'){s.alchemistDiscovered=s.alchemistDiscovered||[];if(s.alchemistDiscovered.indexOf('Алхимия яда')<0)s.alchemistDiscovered.push('Алхимия яда');}return{ok:true,passive:true,effect:{subclass:sub.id,feature:name,description:f[2]||''},message:'📘 Пассивная особенность: '+name+'.'};}
  return{ok:false,unsupported:true,message:'Алхимик: «'+name+'» пока не имеет полноценного resolver-а; способность не отмечена как успешно применённая.'};
 }
 
@@ -441,5 +441,5 @@ g.CLASSES_REFERENCE=g.CLASSES_REFERENCE||{};
 g.CLASSES_REFERENCE[CLASS]={source:SOURCE,hitDie:8,primaryStat:'dexterity',primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14],contentPackId:PACK_ID};
 g.SUBCLASSES_REFERENCE=g.SUBCLASSES_REFERENCE||{};g.SUBCLASSES_REFERENCE[CLASS]={};
 subpacks.forEach(function(s){var lv={};s.features.forEach(function(f){lv[f.level]=lv[f.level]||{features:[]};lv[f.level].features.push(f.name);});g.SUBCLASSES_REFERENCE[CLASS][s.name]={source:SOURCE,description:s.description,pickLevel:3,levels:lv};});
-g.ALCHEMIST_MHP_2024={VERSION:'1.3.0-potion-effects',STATUS:'in_progress',CANONICAL_2024_SUBCLASSES:11,PACK_ID:PACK_ID,formulae:formulae,potions:potions,discoveries:discoveries,subclasses:subpacks.map(function(s){return{id:s.id,name:s.name};})};
+g.ALCHEMIST_MHP_2024={VERSION:'1.3.1-progression-fixes',STATUS:'in_progress',CANONICAL_2024_SUBCLASSES:11,PACK_ID:PACK_ID,formulae:formulae,potions:potions,discoveries:discoveries,subclasses:subpacks.map(function(s){return{id:s.id,name:s.name};})};
 })(window);
