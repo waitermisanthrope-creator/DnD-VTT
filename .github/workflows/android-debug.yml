@@ -42,6 +42,8 @@ jobs:
 
       - name: Test Alchemist runtime regressions
         run: node tests/alchemist_runtime_test.js
+      - name: Test Alchemist combat integration
+        run: node tests/alchemist_combat_test.js
 
       - name: Build debug APK
         working-directory: android
