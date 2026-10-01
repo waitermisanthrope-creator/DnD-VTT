@@ -278,7 +278,7 @@ function checkModifiers(h,ctx){
  return out;
 }
 function attackModifiers(h,ctx){
- ctx=ctx||{};var out={bonusDamage:0,extraDice:[],damageTypes:[],advantage:false,disadvantage:false,notes:[],pendingOnHit:{}},l=alvl(h),s=st(h),c=(h.classes||[]).find(function(x){return x.name===CLASS;}),sid=c&&c.subclass;
+ ctx=ctx||{};var out={bonusDamage:0,extraDice:[],typedExtraDice:[],damageTypes:[],advantage:false,disadvantage:false,notes:[],pendingOnHit:{}},l=alvl(h),s=st(h),c=(h.classes||[]).find(function(x){return x.name===CLASS;}),sid=c&&c.subclass;
  var isBomb=ctx.isBomb===true||ctx.attackType==='bomb'||ctx.weaponType==='bomb'||String(ctx.weaponName||'').toLowerCase().indexOf('бомб')>=0;
  if(isBomb&&l>=5)out.notes.push('Улучшенные бомбы: базовые кости бомбы '+bombDice(l));
  var preparedFormula=s.alchemistPreparedFormula;
@@ -312,7 +312,7 @@ function attackModifiers(h,ctx){
  }
  if(s.alchemistSeekingBombBonus&&isBomb){out.bonusDamage+=Number(s.alchemistSeekingBombBonus)||0;s.alchemistSeekingBombBonus=0;}
  var activeEffects=s.alchemistActiveEffects||[];
- if(ctx.weaponAttack&&s.alchemistPoisonedWeaponId&&String(ctx.weaponId||ctx.weapon&&ctx.weapon.id||'')===String(s.alchemistPoisonedWeaponId)){out.extraDice.push('1d4');out.damageTypes.push('яд');out.notes.push('Мешочек с ядом: +1d4 ядом; яд израсходован');s.alchemistPoisonedWeaponId=null;}
+ if(ctx.weaponAttack&&s.alchemistPoisonedWeaponId&&String(ctx.weaponId||ctx.weapon&&ctx.weapon.id||'')===String(s.alchemistPoisonedWeaponId)){out.typedExtraDice.push({dice:'1d4',type:'яд',label:'Мешочек с ядом'});out.notes.push('Мешочек с ядом: +1d4 ядом; яд израсходован');s.alchemistPoisonedWeaponId=null;}
  if(ctx.weaponAttack&&activeEffects.some(function(e){return e.name==='Зелье увеличения';})){out.extraDice.push('1d4');out.notes.push('Зелье увеличения: +1d4 урона оружием');}
  if(ctx.weaponAttack&&activeEffects.some(function(e){return e.name==='Зелье героизма';})){out.notes.push('Зелье героизма активно');}
  if(activeEffects.some(function(e){return e.name==='Зелье скорости';})){out.hasteActive=true;out.notes.push('Зелье скорости активно: преимущество скорости/дополнительное действие обрабатывается боевым ходом');}
