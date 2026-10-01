@@ -196,6 +196,8 @@ assert.strictEqual(runtime.useFeature(rescuer,'protectorRescue',{target:fallen,i
 assert.strictEqual(rescued.ok, true, 'valid rescue succeeds');
 assert.strictEqual(fallen.hp, 0, 'rescue does not restore HP');
 assert.strictEqual(fallen.stable, true, 'rescue stabilizes ally');
+assert.strictEqual(fallen.deathSaves.successes, 3, 'stabilized ally is marked stable in the death-save tracker');
+assert.strictEqual(fallen.deathSaves.failures, 2, 'rescue does not erase existing death-save failures');
 assert.deepStrictEqual(JSON.parse(JSON.stringify(fallen.position)), {x:2,y:3}, 'rescue moves ally to selected free cell');
 assert.strictEqual(rescuer.resources.protectorImpulses.current, 1);
 assert.strictEqual(rescuer.turnResources.reaction, 0);
