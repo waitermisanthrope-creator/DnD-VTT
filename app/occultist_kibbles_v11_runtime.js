@@ -94,6 +94,9 @@ function sync(h){
  s.occultistRootCantrips=s.occultistRootCantrips||[];s.occultistImmortal=false;s.occultistAgeless=false;
  s.occultistShieldPrepared=false;s.occultistSoulBurnType=null;s.occultistPoisonTarget=s.occultistPoisonTarget||null;
  s.occultistCursedTargets=s.occultistCursedTargets||{};
+ s.occultistWitchClaws=false;s.occultistWitchHat=false;s.occultistBroom=false;s.occultistHairFamiliar=false;s.occultistFamiliarCompanions=false;s.occultistEvilEye=false;s.occultistFamiliarSwap=false;s.occultistFamiliarForm=false;s.occultistLunarRites=false;s.occultistMountedFamiliar=false;s.occultistStealthFamiliar=false;s.occultistWitchBrew=false;
+ s.occultistDeathWard=false;s.occultistDivineMiracle=false;s.occultistDivineSight=false;s.occultistOracleSight=false;s.occultistFireRevelation=false;s.occultistLifeRevelation=false;s.occultistSoulRevelation=false;s.occultistWarRevelation=false;s.occultistFireTouch=false;s.occultistDeathTruth=false;s.occultistFireTruth=false;s.occultistWarTruth=false;s.occultistSoulTruth=false;s.occultistDualRevelation=false;s.occultistWarUnderstanding=false;
+ s.occultistElementalAvatar=false;s.occultistSpiritDance=false;s.occultistElementalWeapon=null;s.occultistChargedWeapon=false;s.occultistSpiritGuidance=false;s.occultistMistwalker=false;s.occultistStrongBond=false;s.occultistPrimalEarth=false;s.occultistPrimalIce=false;s.occultistPrimalFire=false;s.occultistPrimalStorms=false;s.occultistForceRadiance=false;s.occultistShamanTouch=false;
 
  normalizeRiteState(h,s,l);
  if(l>=3)s.fateReadingUses=s.fateReadingUses==null?prof(h):Math.min(Number(s.fateReadingUses)||0,prof(h));
@@ -183,7 +186,59 @@ if(id==='useRite'){
  else if(rn0==='Воинские облачения'){s.occultistArmorTraining=true;e0={armor:['light','medium','shield']};}
  else if(rn0==='Обряд мастерства'){var fs=String(ctx.style||'Дуэлянт');if(['Дуэлянт','Два оружия','Великое оружие'].indexOf(fs)<0)return{ok:false,message:'Неизвестный боевой стиль.'};s.occultistFightingStyle=fs;e0={fightingStyle:fs};}
  else if(rn0==='Оберегающая сила'){s.occultistShieldPrepared=true;e0={reactionSpell:'Щит'};}
+ else if(rn0==='Оккультный фамильяр'){s.occultistFamiliar={active:true,initiative:'after_own',languages:'owner',int:10,wis:10,cha:10};e0={familiar:s.occultistFamiliar};}
+ else if(rn0==='Ведьмины когти'){s.occultistWitchClaws=true;e0={meleeDamage:'1d6',finesse:true};}
+ else if(rn0==='Ведьмина шляпа'){s.occultistWitchHat=true;e0={disguiseAndHexFocus:true};}
+ else if(rn0==='Оживление метлы'){s.occultistBroom=true;e0={flyingSpeed:30,carryCapacity:'standard'};}
+ else if(rn0==='Оживление волос'){s.occultistHairFamiliar=true;e0={extraFamiliarAction:true};}
+ else if(rn0==='Ковен спутников'){s.occultistFamiliarCompanions=true;e0={additionalFamiliar:true};}
+ else if(rn0==='Зловещий взгляд'){s.occultistEvilEye=true;e0={frighten:true,save:'wisdom'};}
+ else if(rn0==='Обмен с фамильяром'){s.occultistFamiliarSwap=true;e0={teleportWithFamiliar:true};}
+ else if(rn0==='Форма фамильяра'){s.occultistFamiliarForm=true;e0={changeShape:true};}
+ else if(rn0==='Лунные обряды'){s.occultistLunarRites=true;e0={moonEffects:true};}
+ else if(rn0==='Верхом на фамильяре'){s.occultistMountedFamiliar=true;e0={mounted:true};}
+ else if(rn0==='Скрытный фамильяр'){s.occultistStealthFamiliar=true;e0={familiarStealth:true};}
+ else if(rn0==='Ведьмино варево'){s.occultistWitchBrew=true;e0={brew:true};}
+ else if(rn0==='Страж смерти'){s.occultistDeathWard=true;e0={deathWard:true};}
+ else if(rn0==='Божественное чудо'){s.occultistDivineMiracle=true;e0={miracle:true};}
+ else if(rn0==='Божественное зрение'){s.occultistDivineSight=true;e0={trueSight:false,detectMagic:true};}
+ else if(rn0==='Зрение оракула'){s.occultistOracleSight=true;e0={advantagePerception:true};}
+ else if(rn0==='Откровение огня'){s.occultistFireRevelation=true;e0={fireResistance:true};}
+ else if(rn0==='Откровение жизни'){s.occultistLifeRevelation=true;e0={healingBoost:true};}
+ else if(rn0==='Откровение душ'){s.occultistSoulRevelation=true;e0={soulSight:true};}
+ else if(rn0==='Откровение войны'){s.occultistWarRevelation=true;e0={weaponProficiency:true};}
+ else if(rn0==='Касание огня'){s.occultistFireTouch=true;e0={fireDamage:'1d6'};}
+ else if(rn0==='Истина смерти'){s.occultistDeathTruth=true;e0={necroticAffinity:true};}
+ else if(rn0==='Истина огня'){s.occultistFireTruth=true;e0={fireAffinity:true};}
+ else if(rn0==='Истина войны'){s.occultistWarTruth=true;e0={weaponAttackBonus:1};}
+ else if(rn0==='Истина душ'){s.occultistSoulTruth=true;e0={spiritCommunication:true};}
+ else if(rn0==='Двойное откровение'){s.occultistDualRevelation=true;e0={twoRevelations:true};}
+ else if(rn0==='Понимание войны'){s.occultistWarUnderstanding=true;e0={combatInsight:true};}
+ else if(rn0==='Аватар стихий'){s.occultistElementalAvatar=true;e0={spiritDamageBonus:prof(h)};}
+ else if(rn0==='Танец духов'){s.occultistSpiritDance=true;e0={movementWithoutOpportunityAttacks:true};}
+ else if(rn0==='Стихийное оружие'){s.occultistElementalWeapon=String(ctx.type||'fire');e0={damageType:s.occultistElementalWeapon};}
+ else if(rn0==='Заряженное оружие'){s.occultistChargedWeapon=true;e0={bonusDamage:'1d4'};}
+ else if(rn0==='Наставление духов'){s.occultistSpiritGuidance=true;e0={skillBonus:1};}
+ else if(rn0==='Туманник'){s.occultistMistwalker=true;e0={mistStep:true};}
+ else if(rn0==='Усиленная связь'){s.occultistStrongBond=true;e0={spiritRangeFt:60};}
+ else if(rn0==='Первородная земля'){s.occultistPrimalEarth=true;e0={damageResistance:'bludgeoning'};}
+ else if(rn0==='Первородный лёд'){s.occultistPrimalIce=true;e0={damageResistance:'cold'};}
+ else if(rn0==='Первородный огонь'){s.occultistPrimalFire=true;e0={damageResistance:'fire'};}
+ else if(rn0==='Первородные бури'){s.occultistPrimalStorms=true;e0={damageResistance:'lightning'};}
+ else if(rn0==='Излучение силы'){s.occultistForceRadiance=true;e0={forceDamage:true};}
+ else if(rn0==='Прикосновение шамана'){s.occultistShamanTouch=true;e0={healOrDamage:'1d6'};}
  return{ok:true,effect:e0,message:'🕯️ Обряд применён: '+rn0+'.'};
+}
+if(id==='traditionalMastery'){
+ if(l<10)return{ok:false,message:'Традиционное мастерство доступно с 10 уровня.'};
+ var skill=String(ctx.skill||'');if(!skill)return{ok:false,message:'Укажи навык для экспертизы.'};
+ if(s.occultistTraditionalExpertise.indexOf(skill)<0)s.occultistTraditionalExpertise.push(skill);
+ if(ctx.advantageWisdom){var slot=(s.occultistSlots[0]||0);if(slot<=0)return{ok:false,message:'Нет ячейки 1 уровня для Традиционного мастерства.'};s.occultistSlots[0]--;return{ok:true,effect:{expertise:s.occultistTraditionalExpertise.slice(),wisdomCheckAdvantage:true,slotSpent:1},message:'🔮 Традиционное мастерство: преимущество получено.'};}
+ return{ok:true,effect:{expertise:s.occultistTraditionalExpertise.slice()},message:'🔮 Экспертиза добавлена.'};
+}
+if(id==='oldWays'){
+ if(l<20)return{ok:false,message:'Старые пути доступны на 20 уровне.'};
+ s.occultistOldWays=true;return{ok:true,effect:{ritualizeKnownSpellsUpTo:3,materialCostPerLevelGP:10,ritualTurnsBySpellLevel:true},message:'🕯️ Старые пути активированы.'};
 }
 if(id==='rite'){var rn=String(ctx.rite||''),rd=rites.find(function(x){return x[0]===rn;}),selected=s.occultistSelectedRites||[];if(!rd||l<rd[1])return{ok:false,message:'Обряд недоступен на текущем уровне.'};if(selected.indexOf(rn)<0)return{ok:false,message:'Сначала выбери этот обряд в списке известных.'};var re={};if(rn==='Кровавые ритуалы')re={resource:'hitDice',sacrifice:true,necroticDamage:true};else if(rn==='Кровавая магия')re={resource:'hitDice',spellLevelCap:l,bloodCostPerSpellLevel:1};else if(rn==='Осквернение предмета')re={curseItem:true,choices:['проклятие силы','проклятие защиты','проклятие восприятия']};else if(rn==='Запретные обряды')re={bonusSpell:'Анимация мёртвых',cannotBecomeRitual:true};else if(rn==='Защитные метки')re={mageArmor:true,alwaysPrepared:true};else if(rn==='Обряд мастерства')re={fightingStyle:ctx.style||'Дуэлянт',styles:['Дуэлянт','Два оружия','Великое оружие']};else if(rn==='Воинские облачения')re={armorProficiency:['light','medium','shield']};else if(rn==='Оберегающая сила')re={reactionSpell:'Щит'};else if(rn==='Специализированные яды'){re={poisonBypass:true,targetType:ctx.targetType||null};s.occultistSpecialPoison.targetType=ctx.targetType||s.occultistSpecialPoison.targetType;}
 else if(rn==='Выжигание души')re={convertDamage:['cold','fire','lightning'],to:'necrotic'};
