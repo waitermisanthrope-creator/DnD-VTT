@@ -400,7 +400,7 @@ function rollSpellDamage(spellName, damageString, isCrit = false) {
   const cleanStr = damageString.toLowerCase().replace(/[кk]/g, 'd').replace(/\s+/g, '');
   let totalSum = 0;
   const allRollsDetails = [];
-  const activeHero = (typeof currentCharacter !== 'undefined' && currentCharacter) || (typeof currentChar !== 'undefined' && currentChar) || null;
+  const activeHero = (typeof getActiveCharacter === 'function' && getActiveCharacter()) || (typeof currentChar !== 'undefined' && currentChar) || (typeof currentCharacter !== 'undefined' && currentCharacter) || null;
   const goldMod = activeHero && window.MorehodGoldModifier && typeof window.MorehodGoldModifier.getModifier === 'function' ? window.MorehodGoldModifier.getModifier(activeHero) : 0;
 
   // Ищем все группы кубов вида XdY (например, 2d8, 4d6)
