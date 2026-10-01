@@ -40,7 +40,8 @@
     });
     return {total:total,rolls:rolls,expression:String(expr||'1d6'),critical:!!critical};
   }
-  function effectiveDamage(target,amount,type){
+  function effectiveDamage(target,amount,type,opts){
+    opts=opts||{};
     amount=Math.max(0,Math.floor(num(amount)));
     var note='';
     type=String(type||'').toLowerCase().trim();
@@ -49,10 +50,10 @@
     var rm=target&&target.raceMechanics||{};
     var raceImmune=(type==='яд'&&rm.poisonImmunity);
     var raceResistant=(type==='яд'&&rm.poisonResistance)||(type==='огонь'&&rm.fireResistance)||(type==='холод'&&rm.coldResistance)||(type==='кислота'&&rm.acidResistance)||(type==='некротический'&&rm.necroticResistance)||(type==='излучение'&&rm.radiantResistance)||(type==='психический'&&rm.psychicResistance);
-    if(raceImmune||hasType(target && target.immunities,type)){return {raw:amount,amount:0,mode:'immune',note:'Иммунитет',type:type};}
+    if(raceImmune||hasType(target && target.immunities,type)){if(opts.immunityBecomesResistance)return {raw:amount,amount:Math.floor(amount/2),mode:'immunity-as-resistance',note:'Иммунитет считается сопротивлением',type:type};return {raw:amount,amount:0,mode:'immune',note:'Иммунитет',type:type};}
     var witchImperil=target&&target.witchImperil&&String(target.witchImperil.damageType||'').toLowerCase()===type;
     var witchElemental=target&&target.witchElementalResistance&&String(target.witchElementalResistance).toLowerCase()===type;
-    var resistant=!witchImperil&&(raging||raceResistant||witchElemental||hasType(target && target.resistances,type));
+    var resistant=!opts.ignoreResistance&&!witchImperil&&(raging||raceResistant||witchElemental||hasType(target && target.resistances,type));
     var vulnerable=hasType(target && target.vulnerabilities,type);
     if(resistant&&vulnerable){
       note='Сопротивление и уязвимость взаимно компенсированы';
@@ -86,7 +87,7 @@
     var wardAbsorbed=0,wardState=target&&target.classFeaturesState;
     // Resolve resistance/vulnerability/immunity per damage component. This is required
     // for mixed hits such as weapon damage + Divine Smite (different damage types).
-    var resolvedParts=rawParts.map(function(part){return Object.assign({},part,effectiveDamage(target,part.amount,part.damageType));});
+    var resolvedParts=rawParts.map(function(part){return Object.assign({},part,effectiveDamage(target,part.amount,part.damageType,opts));});
     var damageBeforeWard=resolvedParts.reduce(function(sum,p){return sum+num(p.amount);},0);
     if(damageBeforeWard>0&&wardState&&num(wardState.arcaneWard)>0){
       wardAbsorbed=Math.min(damageBeforeWard,num(wardState.arcaneWard));
@@ -329,7 +330,7 @@
         }
         if(num(fm.bonusDamage)){damageParts.push({amount:num(fm.bonusDamage),damageType:opts.damageType||'',label:'Бонус урона'});}
         if(opts.deferDamage){out.damageResult=null;out.pendingDamage={amount:out.damage.total,damageType:opts.damageType||'',context:Object.assign({},damageOpts,{damageParts:damageParts})};}
-        else out.damageResult=applyDamage(target,out.damage.total,opts.damageType||'',Object.assign({},damageOpts,{damageParts:damageParts}));
+        else out.damageResult=applyDamage(target,out.damage.total,opts.damageType||'',Object.assign({},damageOpts,{damageParts:damageParts,ignoreResistance:!!fm.ignoreResistance,immunityBecomesResistance:!!fm.immunityBecomesResistance}));
       }
       if(global.DNDClassFeatures&&global.DNDClassFeatures.onAttackResult)global.DNDClassFeatures.onAttackResult(opts.__attacker||{}, {sneakApplied:Array.isArray(fm.extraDice)&&fm.extraDice.length>0,hit:hit,pendingOnHit:pending});
     }
