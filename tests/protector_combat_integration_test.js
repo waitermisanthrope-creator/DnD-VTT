@@ -80,6 +80,7 @@ const rejectedUnmapped = window.DNDCombat.applyDamage(heroCombatant, 8, 'руб�
 });
 assert.strictEqual(rejectedUnmapped.amount, 8, 'self-defense identity bridge is rejected unless UI confirms hero combatant');
 assert.strictEqual(mappedProtector.resources.protectorImpulses.current, 2, 'rejected identity bridge does not spend impulse');
+heroCombatant.hp = 18; // Reset the deliberately unprotected hit before testing the accepted choice.
 const mappedDefense = window.DNDCombat.applyDamage(heroCombatant, 8, 'рубящий', {
   protector: mappedProtector, protectorIsSelf: true, protectorIsHeroCombatant: true
 });
