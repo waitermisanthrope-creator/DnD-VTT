@@ -34,7 +34,7 @@
   function spend(h,key,n){var r=h.resources&&h.resources[key];if(!r||r.current<n)return false;r.current-=n;return true;}
   function mod(h,k){var a=h.abilities||{};var v=a[k]||a[k.toUpperCase()]||0;return Number(v)>10?Math.floor((Number(v)-10)/2):Number(v)||0;}
   function dieFor(l){return l>=17?'1d12':l>=11?'1d10':l>=5?'1d8':'1d6';}
-  function psionLevel(h){return Math.max(lvl(h,'Псионик'),psionLevel(h));}
+  function psionLevel(h){return Math.max(lvl(h,'Псионик'),lvl(h,'Psion'));}
 
   function psiLimit(l){return Math.ceil(l/2);}
   function psionTalentCount(l){return l>=18?8:l>=15?7:l>=12?6:l>=9?5:l>=7?4:l>=5?3:2;}
