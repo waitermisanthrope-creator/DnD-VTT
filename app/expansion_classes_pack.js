@@ -554,7 +554,7 @@ var academy=String(s.warlordAcademy||'');
     return t[Math.max(1,Math.min(20,l))]||0;
   }
   function accursedSlotTable(l){
-    var p=(g.accursedProgression&&g.accursedProgression.spellSlots)||{};
+    var p=(global.accursedProgression&&global.accursedProgression.spellSlots)||{};
     return p[l]||[0,0,0,0,0];
   }
   function accursedAbility(h){
