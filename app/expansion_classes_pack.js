@@ -1565,7 +1565,7 @@ var academy=String(s.warlordAcademy||'');
     }
     if(id==='bloodiedButUnbowed'){
       var bbu=h.resources&&h.resources.pugilistBloodiedButUnbowed;if(!bbu||bbu.current<=0)return{ok:false,message:'Эта способность уже использована до отдыха.'};
-      if((Number(h.hp)||0)>((Number(h.maxHp)||0)/2))return{ok:false,message:'Эта способность срабатывает, когда HP падают до половины или ниже.'};
+      var hpNow=Number(h.hpCurrent!=null?h.hpCurrent:(h.hp&&typeof h.hp==='object'?h.hp.current:h.hp))||0,hpMax=Number(h.hpMax!=null?h.hpMax:(h.hp&&typeof h.hp==='object'?h.hp.max:(h.maxHp||h.maxHP||h.maxHitPoints)))||0;if(hpNow>(hpMax/2))return{ok:false,message:'Эта способность срабатывает, когда HP падают до половины или ниже.'};
       var rr=h.resources&&h.resources.pugilistMoxie;if(rr)rr.current=rr.max;
       bbu.current=0;var bbuTemp=Math.max(0,l+mod(h,'con'));h.tempHp=Math.max(Number(h.tempHp)||0,bbuTemp);
       return{ok:true,effect:{tempHp:h.tempHp,restoreMoxie:true},message:'🩸 Израненный, но не сломленный: Мокси восстановлено.'};
@@ -1583,7 +1583,8 @@ var academy=String(s.warlordAcademy||'');
       return{ok:true,effect:{attackDisadvantage:true,maximizeDamageDice:true,duration:'turn'},message:'💥 Сокрушительный удар: до конца хода атаки получают помеху, кости урона максимальны.'};
     }
     if(id==='shakeItOff'){
-      return{ok:true,effect:{endConditions:['charmed','frightened']},message:'🧠 Стряхнуто Очарование/Испуг.'};
+      ['conditions','activeConditions'].forEach(function(key){var list=h[key];if(!list)return;['Очарован','Испуган','charmed','frightened'].forEach(function(k){if(Array.isArray(list)){var i=list.indexOf(k);if(i>=0)list.splice(i,1);}else delete list[k];});});
+      return{ok:true,effect:{endConditions:['Очарован','Испуган']},message:'🧠 С Пугилиста сняты Очарование и Испуг, если они действовали.'};
     }
     if(id==='unbreakable'){
       if(ctx.failedSave!==true)return{ok:false,message:'Сначала зафиксируй провал спасброска.'};
@@ -1592,13 +1593,12 @@ var academy=String(s.warlordAcademy||'');
     }
     if(id==='fightingSpirit'){
       var fs=h.resources&&h.resources.pugilistFightingSpirit;if(!fs||fs.current<=0)return{ok:false,message:'Боевой дух уже использован до долгого отдыха.'};
-      if((Number(h.hp)||0)>0)return{ok:false,message:'Боевой дух срабатывает при падении до 0 HP.'};
+      var spiritHp=Number(h.hpCurrent!=null?h.hpCurrent:(h.hp&&typeof h.hp==='object'?h.hp.current:h.hp))||0,spiritMax=Number(h.hpMax!=null?h.hpMax:(h.hp&&typeof h.hp==='object'?h.hp.max:(h.maxHp||h.maxHP||h.maxHitPoints)))||1;if(spiritHp>0)return{ok:false,message:'Боевой дух срабатывает при падении до 0 HP.'};
       if((Number(s.pugilistExhaustion)||0)>=5)return{ok:false,message:'Боевой дух не срабатывает при 5 уровнях истощения.'};
       fs.current=0;
       s.pugilistExhaustion=(Number(s.pugilistExhaustion)||0)+1;
-      h.hp=Math.max(1,Math.ceil((Number(h.maxHp)||1)/2));
-      if(r)r.current=Math.ceil(r.max/2);
-      return{ok:true,effect:{setHp:h.hp,restoreMoxie:'half',exhaustion:1},message:'🔥 Боевой дух: Пугилист возвращается в бой с '+h.hp+' HP.'};
+      var spiritRestored=Math.max(1,Math.ceil(spiritMax/2));if(h.hpCurrent!=null)h.hpCurrent=spiritRestored;if(h.hp&&typeof h.hp==='object'){h.hp.current=spiritRestored;h.hp.max=spiritMax;}else h.hp=spiritRestored;if(h.hitPoints!=null)h.hitPoints=spiritRestored;if(h.currentHP!=null)h.currentHP=spiritRestored;if(h.hpMax!=null)h.hpMax=spiritMax;if(h.maxHp!=null)h.maxHp=spiritMax;if(r)r.current=Math.ceil(r.max/2);
+      return{ok:true,effect:{setHp:spiritRestored,restoreMoxie:'half',exhaustion:1},message:'🔥 Боевой дух: Пугилист возвращается в бой с '+spiritRestored+' HP.'};
     }
     if(id==='fisticuffs')return{ok:true,effect:{damageDie:pugilistDie(l),bonusActionUnarmedOrGrapple:true,magical:l>=6,requiresArmor:['light_or_none'],noShield:true},message:'🥊 Кулачный бой активен: '+pugilistDie(l)+'.'};
     if(id==='ironChin')return{ok:true,effect:{armorClass:'12 + Constitution modifier',requires:['light_or_no_armor','no_shield']},message:'🛡️ Железный подбородок: AC считается через Телосложение.'};
@@ -1694,17 +1694,18 @@ var academy=String(s.warlordAcademy||'');
     if(ctx&&ctx.haymaker)o.disadvantage=true;
     if(ctx&&ctx.haymaker)o.maximizeDamageDice=true;
     if(ctx&&ctx.pugilistWeapon)o.usesFisticuffsDie=true;
-    if(l>=13&&s.pugilistDownButNotOut)o.bonusDamage+=Number(h.proficiencyBonus)||2;
+    if(l>=9&&s.pugilistDownButNotOut)o.bonusDamage+=Number(h.proficiencyBonus)||2;
     if(s.pugilistHaymakerActive){o.disadvantage=true;o.maximizeDamageDice=true;o.notes.push('Сокрушительный удар');}
     var club=pugilistClub(h,ctx),target=ctx&&ctx.target||{};
     if(club==='sweetScience'&&l>=3)o.criticalRange=19;
     if(club==='squaredCircle'&&l>=17&&target&&target.grappledByPugilist)o.criticalRange=19;
     if(club==='squaredCircle'&&l>=17&&target&&target.grappledByPugilist)o.advantage=true;
     if(s.pugilistDreadHandActive){o.rerollDamageOne=true;o.notes.push('Рука Ужаса');}
-    if(s.pugilistSignatureMovePending){o.advantage=true;o.forceCritical=true;o.notes.push('Фирменный приём');}
+    if(s.pugilistSignatureMovePending&&(!s.pugilistSignatureTargetId||String(target.id||target.entityId||'')===String(s.pugilistSignatureTargetId))){o.advantage=true;o.forceCritical=true;o.notes.push('Фирменный приём');}
     return o;
   }
 
+  function pugilistOnAttackResult(h,ctx){if(!h||!pugilistLevel(h))return;var s=st(h);if(s.pugilistSignatureMovePending&&(!s.pugilistSignatureTargetId||String(s.pugilistSignatureTargetId)===String(ctx&&ctx.targetId||''))){if(ctx&&ctx.hit&&ctx.target&&global.DNDCombat&&global.DNDCombat.toggleCondition){global.DNDCombat.toggleCondition(ctx.target,'Оглушён',true);s.pugilistSignatureResult='hit';}else{var rr=h.resources&&h.resources.pugilistSignatureMove;if(rr)rr.current=Math.min(Number(rr.max)||1,(Number(rr.current)||0)+1);s.pugilistSignatureResult='miss';}s.pugilistSignatureMovePending=false;s.pugilistSignatureTargetId=null;}}
   function pugilistRest(h,type){if(!h||!pugilistLevel(h))return;var s=st(h);if(type==='short'||type==='long'){s.pugilistHaymakerActive=false;s.pugilistSignatureMovePending=false;s.pugilistCounterCounter=null;s.pugilistDigDeepActive=null;s.pugilistDownButNotOut=false;s.pugilistDreadHandActive=false;}if(type==='long'&&pugilistLevel(h)>=20){s.pugilistExhaustion=Math.max(0,(Number(s.pugilistExhaustion)||0)-2);}}
   function pugilistTurnEnd(h){if(!h||!pugilistLevel(h))return;var s=st(h);s.pugilistHaymakerActive=false;if(s.pugilistDigDeepActive){s.pugilistDigDeepActive.roundsRemaining=Math.max(0,(Number(s.pugilistDigDeepActive.roundsRemaining)||0)-1);if(s.pugilistDigDeepActive.roundsRemaining<=0){s.pugilistExhaustion=(Number(s.pugilistExhaustion)||0)+1;s.pugilistDigDeepActive=null;}}if(s.pugilistSignatureMovePending)s.pugilistSignatureMovePending=false;}
   function occultistRiteCount(l){return l>=18?8:l>=15?7:l>=12?6:l>=9?5:l>=7?4:l>=5?3:l>=2?2:0;}
@@ -2353,7 +2354,7 @@ var academy=String(s.warlordAcademy||'');
       {id:'pissAndVinegar',name:'Ярость и дерзость',features:['saltySalute','heelstomper','lowBlow','pocketSand','meanOldCuss','uncouthArt']},
       {id:'squaredCircle',name:'Квадратный ринг',features:['compressionLock','quickPin','toTheMat','meatShield','heavyweight','cleanFinish']},
       {id:'sweetScience',name:'Благородное искусство',features:['bareKnuckleBoxer','crossCounter','oneTwoThreeFloor','floatLikeButterfly','knockOut']}
-    ],hooks:{sync:syncPugilist,useFeature:usePugilist,attackModifiers:pugilistAttack}},
+    ],hooks:{sync:syncPugilist,useFeature:usePugilist,attackModifiers:pugilistAttack,onAttackResult:pugilistOnAttackResult}},
   ];
   packs.push(occultistPack,witchPack);
   // Public bridge used by class_features_engine: one source of truth for Accursed.
@@ -2367,7 +2368,7 @@ var academy=String(s.warlordAcademy||'');
       s.familiar.attackUsedTurn=false;
     }
   };
-  global.pugilistRuntime={sync:syncPugilist,rest:pugilistRest,onTurnEnd:pugilistTurnEnd,attackModifiers:pugilistAttack};
+  global.pugilistRuntime={sync:syncPugilist,rest:pugilistRest,onTurnEnd:pugilistTurnEnd,attackModifiers:pugilistAttack,onAttackResult:pugilistOnAttackResult};
   global.accursedRuntime={
     sync:syncAccursed,
     useFeature:useAccursed,
