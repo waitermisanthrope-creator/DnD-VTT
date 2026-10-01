@@ -223,7 +223,7 @@ function sync(h){
  function rr(id,max,recharge){var r=h.resources[id];if(!r||r.max!==max)h.resources[id]={max:max,current:r?Math.min(r.current,max):max,recharge:recharge};}
  rr('alchemistReagents',maxReagents(l),'long');
  s.alchemistBombDamage=bombDice(l);s.alchemistPrimeMax=primeMax(l);s.alchemistFormulaMax=formulasKnown(l);s.alchemistSaveDC=8+mod(h,'int')+prof(h);
- s.alchemistPotionLimit=Math.max(1,mod(h,'int')) + (s.alchemistDiscoveries||[]).filter(function(x){return x==='Алхимия превращений'||x==='Алхимия яда'||x==='Алхимия восстановления';}).length*2;s.alchemistDiscovered=s.alchemistDiscovered||[]; s.alchemistPotionOnlyReagents=s.alchemistPotionOnlyReagents||0;s.alchemistFormulas=s.alchemistFormulas||[];
+ s.alchemistDiscovered=s.alchemistDiscovered||[];s.alchemistDiscoveries=s.alchemistDiscovered;s.alchemistPotionLimit=Math.max(1,mod(h,'int')) + s.alchemistDiscovered.filter(function(x){return x==='Алхимия превращений'||x==='Алхимия яда'||x==='Алхимия восстановления';}).length*2; s.alchemistPotionOnlyReagents=s.alchemistPotionOnlyReagents||0;s.alchemistFormulas=s.alchemistFormulas||[];
 }
 function spend(h,n){var r=h.resources&&h.resources.alchemistReagents;if(!r||r.current<n)return false;r.current-=n;return true;}
 function shortRest(h){
