@@ -61,6 +61,11 @@ assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'),
   vm.runInContext(fs.readFileSync(require.resolve('../app/dice.js'), 'utf8'), diceContext);
   diceContext.executeD20Check('Проверка характеристики', 2);
   assert.strictEqual(diceResult.textContent, 'Итог: 17 (+17)', 'ability/skill d20 check receives +5 once');
+  const poorMarinerForCheck = Object.assign({}, mariner, { coins: { gp: 0 } });
+  diceContext.currentChar = poorMarinerForCheck;
+  diceContext.MorehodGoldModifier.getModifier = hero => hero === mariner ? 5 : (hero === poorMarinerForCheck ? -5 : 0);
+  diceContext.executeD20Check('Проверка навыка', 2);
+  assert.strictEqual(diceResult.textContent, 'Итог: 7 (+7)', 'the current wallet is read for each check and the -5 modifier applies exactly once');
 }
 // Integration: combat dice remain natural; the Mariner modifier never adjusts damage or HP dice.
 {
