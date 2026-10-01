@@ -266,7 +266,8 @@
     var classBonus=opts&&opts.__classFeatureMod?num(opts.__classFeatureMod.bonusAttack):0;
     var witchAttackPenalty=target&&target.witchAttackPenaltyDice?rollDie(6):0;
     var total=d20+bonus+classBonus-witchAttackPenalty;
-    var ac=opts&&opts.acOverride!=null?num(opts.acOverride,10):Math.max(10,num(target && target.ac,10)-num(target&&target.witchACPenalty,0));
+    var alchemistDebuffs=target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs||{};
+    var ac=opts&&opts.acOverride!=null?num(opts.acOverride,10):Math.max(10,num(target && target.ac,10)-num(target&&target.witchACPenalty,0))-num(alchemistDebuffs.acPenalty,0);
     var duplicityTarget=opts&&opts.__attacker&&target&&target.classFeaturesState&&target.classFeaturesState.witchDuplicity;
     var duplicityMiss=false;
     if(duplicityTarget&&!roll.fumble){var dupRoll=rollDie(6);if(dupRoll%2===1){duplicityMiss=true;target.classFeaturesState.witch.witchDuplicity=false;}}
@@ -290,7 +291,7 @@
           target.classFeaturesState=target.classFeaturesState||{};
           target.classFeaturesState.alchemistDebuffs=target.classFeaturesState.alchemistDebuffs||{};
           var debuffs=target.classFeaturesState.alchemistDebuffs;
-          if(alchemistFormula.acPenalty){debuffs.acPenalty=Math.max(Number(debuffs.acPenalty)||0,alchemistFormula.acPenalty);target.ac=Math.max(0,num(target.ac,10)-alchemistFormula.acPenalty);out.alchemistFormulaEffect.effects.push('acPenalty');}
+          if(alchemistFormula.acPenalty){debuffs.acPenalty=Math.max(Number(debuffs.acPenalty)||0,alchemistFormula.acPenalty);out.alchemistFormulaEffect.effects.push('acPenalty');}
           if(alchemistFormula.attackPenalty){debuffs.attackPenalty=Math.max(Number(debuffs.attackPenalty)||0,alchemistFormula.attackPenalty);out.alchemistFormulaEffect.effects.push('attackPenalty');}
           if(alchemistFormula.savePenalty){debuffs.savePenalty=Math.max(Number(debuffs.savePenalty)||0,alchemistFormula.savePenalty);out.alchemistFormulaEffect.effects.push('savePenalty');}
           if(alchemistFormula.condition&&global.DNDCombat&&global.DNDCombat.toggleCondition){global.DNDCombat.toggleCondition(target,alchemistFormula.condition,true);out.alchemistFormulaEffect.effects.push(alchemistFormula.condition);}
