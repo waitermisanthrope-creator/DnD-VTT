@@ -147,4 +147,29 @@ assert.strictEqual(uiHeroToken.turnResources.reaction, 0, 'manual damage UI spen
 assert(promptCalls.length > confirmsBeforeManualDamage, 'manual damage UI prompts for target and damage');
 window.currentChar = null;
 
+
+ 
+// Explicit ally interception also resolves through the real damage pipeline.
+const allyProtector = {
+  id: 'ally-protector',
+  classes: [{ name: 'Заступник', level: 3 }],
+  resources: { protectorImpulses: { current: 2, max: 2, recharge: 'short' } },
+  turnResources: { reaction: 1 }
+};
+const allyTarget = { id: 'protected-ally', hp: 20, maxHp: 20, tempHp: 0, resistances: [] };
+const unprotectedAllyHit = window.DNDCombat.applyDamage(allyTarget, 4, 'рубящий');
+assert.strictEqual(unprotectedAllyHit.amount, 4, 'ally is not protected unless Protector choice is explicitly passed');
+assert.strictEqual(allyProtector.resources.protectorImpulses.current, 2, 'ordinary ally damage does not spend Protector resource');
+allyTarget.hp = 20;
+const protectedAllyHit = window.DNDCombat.applyDamage(allyTarget, 8, 'рубящий', {
+  protector: allyProtector,
+  protectorIsAlly: true,
+  protectorVisible: true,
+  protectorDistanceFt: 5
+});
+assert.strictEqual(protectedAllyHit.amount, 0, 'explicit ally interception reduces damage through combat engine');
+assert.strictEqual(allyTarget.hp, 20, 'ally HP is unchanged when interception covers all damage');
+assert.strictEqual(allyProtector.resources.protectorImpulses.current, 1, 'ally interception spends one impulse');
+assert.strictEqual(allyProtector.turnResources.reaction, 0, 'ally interception spends reaction');
+
 console.log('Protector combat integration tests: PASS');
