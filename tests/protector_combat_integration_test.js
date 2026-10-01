@@ -212,7 +212,7 @@ window.DNDBattleBoard = {
   distanceFt(a, b) { return Math.abs(a.x - b.x) * 5 + Math.abs(a.y - b.y) * 5; },
   tokenList() { return []; }
 };
-const autoZoneSave = window.DNDCombat.savingThrow(zoneAlly, 'str', 11, 'normal', { forcedMovementSave: true });
+const autoZoneSave = window.DNDCombat.forcedMovementSave(zoneAlly, 'str', 11, 'normal');
 assert.strictEqual(autoZoneSave.bonus, 1, 'zone is found without manually passing protector/distance');
 window.DNDBattleBoard = null;
 window.currentChar = null;
