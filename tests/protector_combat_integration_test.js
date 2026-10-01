@@ -125,6 +125,7 @@ window.currentChar = {
   ...uiProtector,
   initiativeTracker: { round: 1, activeIndex: 0, combatants: [uiAttacker, uiHeroToken] }
 };
+window.DNDRules.rollD20 = () => ({ result: 20, critical: true, fumble: false });
 window.dndCombatAttack();
 assert.strictEqual(uiHeroToken.hp, 18, 'combat UI self-defense choice prevents HP loss after an incoming hit');
 assert.strictEqual(window.currentChar.resources.protectorImpulses.current, 1, 'combat UI spends one Protector impulse after confirmation');
