@@ -128,6 +128,9 @@ const structureBlast=ctx.DNDCombat.attack(objectBomber,structureTarget,{bonus:10
 ctx.Math.random=oldRandomObject;
 assert.equal(structureBlast.damageResult.amount,12,'Mad Bomber doubles bomb damage against objects and structures');
 assert.equal(structureTarget.hp,18,'double bomb damage is applied to structure HP');
+const slimeResistantTarget={id:'slime-resistant-target',hp:20,maxHp:20,classes:[{name:'Алхимик',level:3,subclass:'oozeRancher'}],classFeaturesState:{},conditions:{},activeConditions:{}};
+const slimeAcid=ctx.DNDCombat.applyDamage(slimeResistantTarget,10,'кислота');
+assert.equal(slimeAcid.amount,5,'Ooze Rancher resists acid damage in the actual combat resolver');
 const bomberResistanceTarget={id:'bomber-resistance-target',hp:20,maxHp:20,classes:[{name:'Алхимик',level:10,subclass:'madBomber'}],classFeaturesState:{alchemistExplosionResistanceType:'огонь'},conditions:{},activeConditions:{}};
 const bomberResisted=ctx.DNDCombat.applyDamage(bomberResistanceTarget,10,'огонь');
 assert.equal(bomberResisted.amount,5,'Mad Bomber resistance halves the selected damage type in combat');
