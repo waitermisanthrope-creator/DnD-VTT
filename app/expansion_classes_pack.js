@@ -33,6 +33,7 @@
   function res(h,key,max,recharge){h.resources=h.resources||{};var r=h.resources[key]||{};r.max=max;r.current=Math.min(Number(r.current===undefined?max:r.current),max);r.recharge=recharge;h.resources[key]=r;return r;}
   function spend(h,key,n){var r=h.resources&&h.resources[key];if(!r||r.current<n)return false;r.current-=n;return true;}
   function mod(h,k){var a=h.abilities||{};var v=a[k]||a[k.toUpperCase()]||0;return Number(v)>10?Math.floor((Number(v)-10)/2):Number(v)||0;}
+  function diceRoll(expr){var m=String(expr||'1d6').match(/^(\d+)d(\d+)(?:\s*([+-])\s*(\d+))?$/i);if(!m)return 0;var count=Math.max(1,Math.min(100,Number(m[1])||1)),sides=Math.max(1,Math.min(1000,Number(m[2])||6)),total=0;for(var i=0;i<count;i++)total+=1+Math.floor(Math.random()*sides);if(m[3])total+=(m[3]==='-'?-1:1)*(Number(m[4])||0);return total;}
   function dieFor(l){return l>=17?'1d12':l>=11?'1d10':l>=5?'1d8':'1d6';}
   function psionLevel(h){return Math.max(lvl(h,'Псионик'),lvl(h,'Psion'));}
 
