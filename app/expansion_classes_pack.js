@@ -1535,7 +1535,7 @@ var academy=String(s.warlordAcademy||'');
   function syncPugilist(h){
     var l=pugilistLevel(h);if(!l)return;
     var s=st(h),r=res(h,'pugilistMoxie',pugilistMoxieMax(l),'short');
-    r.max=pugilistMoxieMax(l);r.die=pugilistDie(l);
+    r.max=pugilistMoxieMax(l);r.current=Math.max(0,Math.min(Number(r.current)||0,r.max));r.die=pugilistDie(l);
     s.pugilistMoxie=r.current;s.pugilistDie=pugilistDie(l);
     s.pugilistIronChin=l>=1;s.pugilistMagicFists=l>=6;
     res(h,'pugilistBloodiedButUnbowed',l>=3?1:0,'short');
@@ -1549,8 +1549,8 @@ var academy=String(s.warlordAcademy||'');
     var cost=0;
     if(id==='braceUp'){
       cost=1;if(!spend(h,'pugilistMoxie',cost))return{ok:false,message:'Недостаточно Мокси.'};
-      var temp=diceRoll(pugilistDie(l)) + l + mod(h,'con');
-      return{ok:true,effect:{tempHp:temp},message:'🥊 Соберись: получено '+temp+' временных HP.'};
+      var temp=diceRoll(pugilistDie(l)) + l + mod(h,'con');h.tempHp=Math.max(Number(h.tempHp)||0,Math.max(0,temp));
+      return{ok:true,effect:{tempHp:h.tempHp},message:'🥊 Соберись: получено '+h.tempHp+' временных HP.'};
     }
     if(id==='oldOneTwo'){
       cost=1;if(!spend(h,'pugilistMoxie',cost))return{ok:false,message:'Недостаточно Мокси.'};
@@ -1564,19 +1564,20 @@ var academy=String(s.warlordAcademy||'');
       var bbu=h.resources&&h.resources.pugilistBloodiedButUnbowed;if(!bbu||bbu.current<=0)return{ok:false,message:'Эта способность уже использована до отдыха.'};
       if((Number(h.hp)||0)>((Number(h.maxHp)||0)/2))return{ok:false,message:'Эта способность срабатывает, когда HP падают до половины или ниже.'};
       var rr=h.resources&&h.resources.pugilistMoxie;if(rr)rr.current=rr.max;
-      bbu.current=0;
-      return{ok:true,effect:{tempHp:l+mod(h,'con'),restoreMoxie:true},message:'🩸 Израненный, но не сломленный: Мокси восстановлено.'};
+      bbu.current=0;var bbuTemp=Math.max(0,l+mod(h,'con'));h.tempHp=Math.max(Number(h.tempHp)||0,bbuTemp);
+      return{ok:true,effect:{tempHp:h.tempHp,restoreMoxie:true},message:'🩸 Израненный, но не сломленный: Мокси восстановлено.'};
     }
     if(id==='digDeep'){
       if(ctx.activate!==true&&ctx.confirm!==true)return{ok:false,message:'Подтверди использование «Соберись с силами».'};
       var dd=h.resources&&h.resources.pugilistDigDeep;if(dd&&dd.current<=0)return{ok:false,message:'«Соберись с силами» уже использована до отдыха.'};
       if(!dd||Number(dd.current)<=0)return{ok:false,message:'«Соберись с силами» уже использована до долгого отдыха.'};
       if(!spend(h,'pugilistDigDeep',1))return{ok:false,message:'«Соберись с силами» уже использована до долгого отдыха.'};
-      s.pugilistDigDeepActive={expiresAt:null,damageTypes:['bludgeoning','piercing','slashing'],durationMinutes:1};
+      s.pugilistDigDeepActive={roundsRemaining:10,damageTypes:['bludgeoning','piercing','slashing'],durationMinutes:1};
       return{ok:true,effect:{resistance:['bludgeoning','piercing','slashing'],durationMinutes:1,after:{exhaustion:1}},message:'💪 Соберись с силами: сопротивление физическому урону на 1 минуту.'};
     }
     if(id==='haymaker'){
-      return{ok:true,effect:{attackDisadvantage:true,maximizeDamageDice:true,duration:'turn'},message:'💥 Сокрушительный удар: атаки получают помеху, кости урона максимальны.'};
+      s.pugilistHaymakerActive=true;
+      return{ok:true,effect:{attackDisadvantage:true,maximizeDamageDice:true,duration:'turn'},message:'💥 Сокрушительный удар: до конца хода атаки получают помеху, кости урона максимальны.'};
     }
     if(id==='shakeItOff'){
       return{ok:true,effect:{endConditions:['charmed','frightened']},message:'🧠 Стряхнуто Очарование/Испуг.'};
@@ -1589,11 +1590,12 @@ var academy=String(s.warlordAcademy||'');
     if(id==='fightingSpirit'){
       var fs=h.resources&&h.resources.pugilistFightingSpirit;if(!fs||fs.current<=0)return{ok:false,message:'Боевой дух уже использован до долгого отдыха.'};
       if((Number(h.hp)||0)>0)return{ok:false,message:'Боевой дух срабатывает при падении до 0 HP.'};
-      if((Number(s.pugilistExhaustion)||0)>=4)return{ok:false,message:'Слишком высокий уровень истощения.'};
+      if((Number(s.pugilistExhaustion)||0)>=5)return{ok:false,message:'Боевой дух не срабатывает при 5 уровнях истощения.'};
       fs.current=0;
       s.pugilistExhaustion=(Number(s.pugilistExhaustion)||0)+1;
+      h.hp=Math.max(1,Math.ceil((Number(h.maxHp)||1)/2));
       if(r)r.current=Math.ceil(r.max/2);
-      return{ok:true,effect:{setHp:Math.ceil((Number(h.maxHp)||1)/2),restoreMoxie:'half',exhaustion:1},message:'🔥 Боевой дух: Пугилист возвращается в бой.'};
+      return{ok:true,effect:{setHp:h.hp,restoreMoxie:'half',exhaustion:1},message:'🔥 Боевой дух: Пугилист возвращается в бой с '+h.hp+' HP.'};
     }
     if(id==='fisticuffs')return{ok:true,effect:{damageDie:pugilistDie(l),bonusActionUnarmedOrGrapple:true,magical:l>=6,requiresArmor:['light_or_none'],noShield:true},message:'🥊 Кулачный бой активен: '+pugilistDie(l)+'.'};
     if(id==='ironChin')return{ok:true,effect:{armorClass:'12 + Constitution modifier',requires:['light_or_no_armor','no_shield']},message:'🛡️ Железный подбородок: AC считается через Телосложение.'};
@@ -1635,7 +1637,7 @@ var academy=String(s.warlordAcademy||'');
       if(id==='personaLibre'){s.pugilistPersonaActive=!s.pugilistPersonaActive;return{ok:true,effect:{persona:s.pugilistPersonaActive},message:s.pugilistPersonaActive?'🎭 Персона принята.':'🎭 Персона снята.'};}
       if(id==='workCrowd'){if(!spendResource(h,'pugilistWorkCrowd'))return{ok:false,message:'Работа с толпой уже использована до долгого отдыха.'};return{ok:true,effect:{radiusFt:30,save:'wisdom',dc:8+(Number(h.proficiencyBonus)||2)+mod(h,'str'),choice:['charmed','frightened'],durationMinutes:1,repeatSaveOnDamage:true},message:'🎭 Работа с толпой активирована.'};}
       if(id==='highFlyer')return{ok:true,effect:{speedBonusFt:10,jumpMultiplier:2,bonusDash:true},message:'🪽 Высокий полёт активен.'};
-      if(id==='signatureMove'){if(!spendResource(h,'pugilistSignatureMove'))return{ok:false,message:'Фирменный приём восстановится после долгого отдыха, если он попал.'};return{ok:true,effect:{jumpFt:'до скорости',advantage:true,criticalOnHit:true,stunnedUntilEndOfNextTurn:true,missRecoveryMinutes:1},message:'💥 Фирменный приём подготовлен.'};}
+      if(id==='signatureMove'){if(!ctx.target)return{ok:false,message:'Выбери цель для Фирменного приёма.'};if(!spendResource(h,'pugilistSignatureMove'))return{ok:false,message:'Фирменный приём восстановится после долгого отдыха, если он попал.'};s.pugilistSignatureMovePending=true;s.pugilistSignatureTargetId=String(ctx.target.id||ctx.targetId||'');return{ok:true,effect:{jumpFt:'до скорости',advantage:true,criticalOnHit:true,stunnedUntilEndOfNextTurn:true,missRecoveryMinutes:1,targetId:s.pugilistSignatureTargetId},message:'💥 Фирменный приём подготовлен против выбранной цели.'};}
     }
     if(club==='bloodhoundBruisers'){
       if(id==='detectiveWork'){if(!spend(h,'pugilistMoxie',1))return{ok:false,message:'Недостаточно Мокси.'};return{ok:true,effect:{advantage:true,checks:['investigation','insight','perception']},message:'🔎 Детективная работа: преимущество.'};}
@@ -1673,7 +1675,7 @@ var academy=String(s.warlordAcademy||'');
     }
     if(club==='sweetScience'){
       if(id==='bareKnuckleBoxer')return{ok:true,effect:{criticalRange:19},message:'🥊 Боксёрская техника: критическое попадание с 19–20.'};
-      if(id==='crossCounter'){if(!spend(h,'pugilistMoxie',2))return{ok:false,message:'Недостаточно Мокси.'};return{ok:true,effect:{reduceMeleeDamageBy:'1d10 + Strength modifier + pugilist level',counterAttackIfReducedToZero:true},message:'🥊 Контрудар подготовлен.'};}
+      if(id==='crossCounter'){if(!ctx.incomingDamage||!ctx.attacker)return{ok:false,message:'Для Контрудара нужны атакующий и уже определённый входящий урон.'};if(!spend(h,'pugilistMoxie',2))return{ok:false,message:'Недостаточно Мокси.'};var counterReduction=Math.max(0,diceRoll('1d10')+mod(h,'str')+l),counterDamage=Math.max(0,Number(ctx.incomingDamage)||0-counterReduction);counterDamage=Math.max(0,(Number(ctx.incomingDamage)||0)-counterReduction);s.pugilistCounterCounter={targetId:String(ctx.attacker.id||''),damageBefore:Number(ctx.incomingDamage)||0,damageAfter:counterDamage,reducedBy:counterReduction,canCounter:counterDamage===0};return{ok:true,effect:{damageAfter:counterDamage,damageReduction:counterReduction,counterAttackIfReducedToZero:counterDamage===0,targetId:s.pugilistCounterCounter.targetId},message:'🥊 Контрудар: входящий урон уменьшен на '+counterReduction+'; осталось '+counterDamage+'.'};}
       if(id==='oneTwoThreeFloor'){if(!spend(h,'pugilistMoxie',1))return{ok:false,message:'Недостаточно Мокси.'};return{ok:true,effect:{extraUnarmedAfterTwoOldOneTwo:true,proneOnHit:true,noDamage:true},message:'🥊 Раз-два-три — на пол.'};
       }
       if(id==='floatLikeButterfly'){return{ok:true,effect:{restoreMoxieOnSuccessfulCrossCounter:1},message:'🦋 Мокси восстанавливается успешным контрударом.'};}
@@ -1690,9 +1692,18 @@ var academy=String(s.warlordAcademy||'');
     if(ctx&&ctx.haymaker)o.maximizeDamageDice=true;
     if(ctx&&ctx.pugilistWeapon)o.usesFisticuffsDie=true;
     if(l>=13&&s.pugilistDownButNotOut)o.bonusDamage+=Number(h.proficiencyBonus)||2;
+    if(s.pugilistHaymakerActive){o.disadvantage=true;o.maximizeDamageDice=true;o.notes.push('Сокрушительный удар');}
+    var club=pugilistClub(h,ctx),target=ctx&&ctx.target||{};
+    if(club==='sweetScience'&&l>=3)o.criticalRange=19;
+    if(club==='squaredCircle'&&l>=17&&target&&target.grappledByPugilist)o.criticalRange=19;
+    if(club==='squaredCircle'&&l>=17&&target&&target.grappledByPugilist)o.advantage=true;
+    if(s.pugilistDreadHandActive){o.rerollDamageOne=true;o.notes.push('Рука Ужаса');}
+    if(s.pugilistSignatureMovePending){o.advantage=true;o.forceCritical=true;o.notes.push('Фирменный приём');}
     return o;
   }
 
+  function pugilistRest(h,type){if(!h||!pugilistLevel(h))return;var s=st(h);if(type==='short'||type==='long'){s.pugilistHaymakerActive=false;s.pugilistSignatureMovePending=false;s.pugilistCounterCounter=null;s.pugilistDigDeepActive=null;s.pugilistDownButNotOut=false;s.pugilistDreadHandActive=false;}if(type==='long'){s.pugilistExhaustion=Math.max(0,(Number(s.pugilistExhaustion)||0)-2);}}
+  function pugilistTurnEnd(h){if(!h||!pugilistLevel(h))return;var s=st(h);s.pugilistHaymakerActive=false;if(s.pugilistDigDeepActive){s.pugilistDigDeepActive.roundsRemaining=Math.max(0,(Number(s.pugilistDigDeepActive.roundsRemaining)||0)-1);if(s.pugilistDigDeepActive.roundsRemaining<=0){s.pugilistExhaustion=(Number(s.pugilistExhaustion)||0)+1;s.pugilistDigDeepActive=null;}}if(s.pugilistSignatureMovePending)s.pugilistSignatureMovePending=false;}
   function occultistRiteCount(l){return l>=18?8:l>=15?7:l>=12?6:l>=9?5:l>=7?4:l>=5?3:l>=2?2:0;}
   function occultistDC(h){return 8+(Number(h.proficiencyBonus)||2)+mod(h,'wisdom');}
   function syncOccultist(h){
@@ -2353,6 +2364,7 @@ var academy=String(s.warlordAcademy||'');
       s.familiar.attackUsedTurn=false;
     }
   };
+  global.pugilistRuntime={sync:syncPugilist,rest:pugilistRest,onTurnEnd:pugilistTurnEnd,attackModifiers:pugilistAttack};
   global.accursedRuntime={
     sync:syncAccursed,
     useFeature:useAccursed,
