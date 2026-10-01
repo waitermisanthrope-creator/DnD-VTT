@@ -69,8 +69,8 @@
     },
     {
       "path": "app/data/classes/Alchemist.js",
-      "bytes": 5590,
-      "sha256": "8c8bf859e6583276698bd2f64d5ab6bd5bf02f009860ff4253ee940b4907cddb"
+      "bytes": 5592,
+      "sha256": "cb83e279e841a47b6fc69d29b1cc561a7d2d3569adefee7c57455a270708cbf3"
     },
     {
       "path": "app/classesRegistry.js",
