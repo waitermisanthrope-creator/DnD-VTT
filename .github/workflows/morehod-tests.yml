@@ -15,6 +15,7 @@ on:
       - "app/four_custom_class_runtime.js"
       - "tests/four_custom_class_runtime_test.js"
       - "tests/protector_combat_integration_test.js"
+      - "app/vtt_debug_tasks_v708.js"
       - "app/class_features_engine.js"
       - "index.html"
       - ".github/workflows/morehod-tests.yml"
@@ -45,6 +46,7 @@ jobs:
           node --check app/app.js
           node --check app/four_custom_class_runtime.js
           node --check app/class_features_engine.js
+          node --check app/vtt_debug_tasks_v708.js
       - name: Run Mariner gold modifier regression test
         run: node tests/morehod_gold_modifier_test.js
       - name: Run remaining custom class foundation tests
