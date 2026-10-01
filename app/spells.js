@@ -449,7 +449,7 @@ function rollSpellDamage(spellName, damageString, isCrit = false) {
   if (modVal !== 0) {
     logText += ` | Мод: ${modVal > 0 ? '+' + modVal : modVal}`;
   }
-  if (goldMod !== 0) logText += ` | Мореход: ${goldMod >= 0 ? '+' : ''}${goldMod} к каждой кости`;
+  // Mariner gold modifier applies to d20 checks, never to spell damage dice.
   logText += ` ➔ Итог: **${totalSum}**`;
 
   console.groupEnd();
