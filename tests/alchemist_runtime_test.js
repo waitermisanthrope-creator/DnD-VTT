@@ -200,6 +200,17 @@ assert.equal(golemRestore.ok,true,'golem can be restored within one hour');
 assert.equal(golemRestore.entity.hp,140,'restoration returns golem to maximum HP');
 assert.equal(xenoOwner.resources.alchemistReagents.current,xenoOwner.resources.alchemistReagents.max-1,'restoration spends one reagent');
 
+const graftMissingDonor=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'install',graftName:'Звериное оружие'});
+assert.equal(graftMissingDonor.ok,false,'graft installation requires donor confirmation');
+const graftInstalled=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'install',graftName:'Звериное оружие',donorVerified:true,donorType:'Зверь'});
+assert.equal(graftInstalled.ok,true,'Xenoalchemist can install a verified graft');
+assert.equal(graftInstalled.grafts.length,1,'installed graft is stored on the character');
+assert.ok(hooks.attackModifiers(xenoOwner,{unarmedGraft:true}).extraDice.includes('1d6'),'Beast Weapon graft adds its natural-weapon damage die');
+const graftRemoved=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Звериное оружие'});
+assert.equal(graftRemoved.ok,true,'installed graft can be removed');
+assert.equal(graftRemoved.grafts.length,0,'removed graft no longer remains equipped');
+
+
 
 const lazarusOwner={id:'lazarus-owner',classes:[{name:'Алхимик',level:14,subclass:'xenoalchemist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:5,resources:{},classFeaturesState:{}};
 hooks.sync(lazarusOwner);
