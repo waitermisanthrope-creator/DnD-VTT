@@ -80,6 +80,7 @@
     opts=opts||{};
     var reaction=null, reactionResult=null;
     var rawParts=normalizeDamageParts(amount,type,opts);
+    if(target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs&&target.classFeaturesState.alchemistDebuffs.oilCoated&&rawParts.some(function(p){return p.damageType==='огонь';})){var oilDamage=rollDice('1d6').total;rawParts.push({amount:oilDamage,damageType:'огонь',label:'Масляная бомба'});target.classFeaturesState.alchemistDebuffs.oilCoated=false;}
     var rawTotal=rawParts.reduce(function(sum,p){return sum+p.amount;},0);
     var reactionCtx={amount:rawTotal,damageType:type||'',source:opts.source||'generic',attackKind:opts.attackKind||'',visible:opts.visible!==false,projectile:!!opts.projectile,fall:!!opts.fall,critical:!!opts.critical,damageParts:rawParts.map(function(x){return {amount:x.amount,damageType:x.damageType,label:x.label||''};})};
     if(global.DNDClassFeatures&&typeof global.DNDClassFeatures.reactionOptions==='function') reaction=global.DNDClassFeatures.reactionOptions(target,reactionCtx);
@@ -260,6 +261,7 @@
     opts=opts||{}; var bonus=num(opts.bonus), mode=opts.mode||'normal';
     if(opts.weapon){opts.weaponAttack=true;opts.meleeOrThrown=opts.meleeOrThrown!==undefined?opts.meleeOrThrown:(opts.weapon.rangeFt==null||Number(opts.weapon.rangeFt)<=5);}
     var featureMod=(global.DNDClassFeatures&&global.DNDClassFeatures.attackModifiers&&attacker)?global.DNDClassFeatures.attackModifiers(attacker,opts):{bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[],pendingOnHit:{}};
+    if(target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs&&target.classFeaturesState.alchemistDebuffs.attacksHaveAdvantage)featureMod.advantage=true;
     if(featureMod.advantage && featureMod.disadvantage) mode='normal'; else if(featureMod.advantage) mode='advantage'; else if(featureMod.disadvantage) mode='disadvantage';
     if(global.DNDRules && attacker && attacker.stats && opts.useRules!==false){
       if(opts.weapon) { var wa=global.DNDRules.weaponAttack(attacker,opts.weapon,mode); opts.__classFeatureMod=featureMod; opts.__attacker=attacker; opts.__forceCritical=!!featureMod.forceCritical; return resolveAttack(target,wa.roll.result,wa.bonus,opts); }
@@ -286,9 +288,9 @@
     var out={d20:d20,bonus:bonus,classBonus:classBonus,total:total,ac:ac,hit:hit,critical:!!roll.critical,fumble:!!roll.fumble,damage:null,extraAttacks:Math.max(1,num(opts&&opts.__classFeatureMod&&opts.__classFeatureMod.extraAttacks,1))};
     if(hit && opts.damage){
       var fm=opts.__classFeatureMod||{bonusDamage:0,extraDice:[]};
-      out.damage=rollDice(opts.damage,!!roll.critical);
-      if(Array.isArray(fm.extraDice)) fm.extraDice.forEach(function(expr){var er=rollDice(expr,!!roll.critical);out.damage.total+=er.total;(out.damage.extraDice||(out.damage.extraDice=[])).push(er);});
-      out.damage.total+=num(fm.bonusDamage);
+      out.damage=fm.noDamage?{total:0,extraDice:[]}:rollDice(opts.damage,!!roll.critical);
+      if(!fm.noDamage&&Array.isArray(fm.extraDice)) fm.extraDice.forEach(function(expr){var er=rollDice(expr,!!roll.critical);out.damage.total+=er.total;(out.damage.extraDice||(out.damage.extraDice=[])).push(er);});
+      if(!fm.noDamage)out.damage.total+=num(fm.bonusDamage);
       var pending=(global.DNDClassFeatures&&global.DNDClassFeatures.consumePendingOnHit&&opts.__attacker)?global.DNDClassFeatures.consumePendingOnHit(opts.__attacker,{hit:true}):{};
       if(pending.divineSmite){var sr=rollDice(pending.divineSmite.dice,!!roll.critical);out.damage.total+=sr.total;out.damage.extraDice=(out.damage.extraDice||[]);out.damage.extraDice.push(sr);out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Божественная кара +'+sr.total+' '+pending.divineSmite.damageType);out.divineSmite={dice:pending.divineSmite.dice,total:sr.total,damageType:pending.divineSmite.damageType};}
       if(pending.stunningStrike){var ss=global.DNDCombat&&global.DNDCombat.savingThrow?global.DNDCombat.savingThrow(target,'con',pending.stunningStrike.dc):{success:true};out.stunningStrike={dc:pending.stunningStrike.dc,save:ss,applied:!ss.success};if(!ss.success&&global.DNDCombat&&global.DNDCombat.toggleCondition)global.DNDCombat.toggleCondition(target,'Оглушён',true);}
@@ -296,9 +298,11 @@
       out.classFeatureNotes=(out.classFeatureNotes||[]).concat((fm.notes||[]).slice());
       var alchemistFormula=fm.pendingOnHit&&fm.pendingOnHit.alchemistFormula;
       if(alchemistFormula&&opts.target){
-        var saveResult=global.DNDCombat&&global.DNDCombat.savingThrow?global.DNDCombat.savingThrow(target,alchemistFormula.save,alchemistFormula.dc):{success:true,unsupported:true};
-        out.alchemistFormulaEffect={id:alchemistFormula.id,dc:alchemistFormula.dc,save:saveResult,applied:!!(saveResult&&!saveResult.success),effects:[]};
-        if(saveResult&&!saveResult.success){
+        var needsSave=!!alchemistFormula.save;
+        var saveResult=needsSave?(global.DNDCombat&&global.DNDCombat.savingThrow?global.DNDCombat.savingThrow(target,alchemistFormula.save,alchemistFormula.dc):{success:true,unsupported:true}):null;
+        var effectApplies=!needsSave||!!(saveResult&&!saveResult.success);
+        out.alchemistFormulaEffect={id:alchemistFormula.id,dc:alchemistFormula.dc,save:saveResult,applied:effectApplies,effects:[]};
+        if(effectApplies){
           target.classFeaturesState=target.classFeaturesState||{};
           target.classFeaturesState.alchemistDebuffs=target.classFeaturesState.alchemistDebuffs||{};
           var debuffs=target.classFeaturesState.alchemistDebuffs;
@@ -312,7 +316,11 @@
           if(alchemistFormula.noOpportunityAttacks){debuffs.noOpportunityAttacks=true;out.alchemistFormulaEffect.effects.push('noOpportunityAttacks');}
           if(alchemistFormula.verbalComponentsBlocked){debuffs.verbalComponentsBlocked=true;out.alchemistFormulaEffect.effects.push('verbalComponentsBlocked');}
           if(alchemistFormula.revealsInvisible){debuffs.revealsInvisible=true;if(target.activeConditions)delete target.activeConditions['Невидим'];if(target.conditions)delete target.conditions['Невидим'];out.alchemistFormulaEffect.effects.push('revealsInvisible');}
+          if(alchemistFormula.attacksHaveAdvantage){debuffs.attacksHaveAdvantage=true;out.alchemistFormulaEffect.effects.push('attacksHaveAdvantage');}
           if(alchemistFormula.burning){debuffs.burning=true;out.alchemistFormulaEffect.effects.push('burning');}
+          if(alchemistFormula.oilCoated){debuffs.oilCoated=true;out.alchemistFormulaEffect.effects.push('oilCoated');}
+          if(alchemistFormula.smokeCloud){debuffs.smokeCloud=true;out.alchemistFormulaEffect.effects.push('smokeCloud');}
+          if(alchemistFormula.teleportToImpact){var source=opts.__attacker;if(source&&target&&source.x!=null&&source.y!=null&&target.x!=null&&target.y!=null){var dx=Number(source.x)-Number(target.x),dy=Number(source.y)-Number(target.y);if(Math.sqrt(dx*dx+dy*dy)<=30){source.x=target.x;source.y=target.y;out.alchemistFormulaEffect.effects.push('teleportedToImpact');}else out.alchemistFormulaEffect.effects.push('teleportOutOfRange');}else out.alchemistFormulaEffect.effects.push('teleportNeedsMapCoordinates');}
           debuffs.expires='start_of_attacker_next_turn';
         }
         out.classFeatureNotes.push('Алхимическая формула: '+alchemistFormula.name+'; спасбросок '+(saveResult&&saveResult.success?'успешен':'провален')+'.');
