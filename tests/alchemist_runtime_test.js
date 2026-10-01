@@ -245,6 +245,7 @@ const synapse=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'activat
 assert.equal(synapse.ok,true,'Magical Synapses records a selected wizard cantrip');
 assert.ok(xenoOwner.classFeaturesState.alchemistSynapseCantrips.includes('Огненный снаряд'),'Magical Synapses stores the selected cantrip');
 hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Магические синапсы'});
+assert.equal(xenoOwner.classFeaturesState.alchemistSynapseCantrips.includes('Огненный снаряд'),false,'Removing Magical Synapses removes its granted cantrip');
 hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Гибкая форма'});
 
 
