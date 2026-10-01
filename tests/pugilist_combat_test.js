@@ -1,6 +1,6 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
-let randomValue=0.99,rollResult=19;
-const math=Object.create(Math);math.random=()=>randomValue;
+let randomValue=0.99,randomSequence=null,rollResult=19;
+const math=Object.create(Math);math.random=()=>randomSequence&&randomSequence.length?randomSequence.shift():randomValue;
 const ctx={console,Math:math,Date,JSON,Set,Number,String,Array,Object,RegExp,parseInt,parseFloat,
   document:{getElementById:()=>null,querySelectorAll:()=>[],addEventListener:()=>{}},
   addEventListener:()=>{},setTimeout:()=>{},clearTimeout:()=>{},prompt:()=>null,alert:()=>{},window:null};
@@ -116,4 +116,26 @@ assert.equal(viscera.ok,true,'Fountain of Viscera resolves its Dexterity and fea
 assert.equal(visceraTarget.hp,0,'Fountain of Viscera applies its actual damage to HP');
 assert.equal(visceraTarget.conditions['Испуган'],true,'Fountain of Viscera applies fear after a failed Wisdom save');
 assert.equal(dreadHero.resources.pugilistMoxie.current,4,'Fountain of Viscera spends six Moxie');
+const bbuHero=hero(3,'Арена Рояль',{hp:20,maxHp:30,turnResources:{reaction:1}});pack.hooks.sync(bbuHero);bbuHero.resources.pugilistMoxie.current=0;
+const bbuDamage=ctx.DNDCombat.applyDamage(bbuHero,6,'рубящий',{attackerId:'threshold-enemy'});
+assert.equal(bbuHero.hp,14,'Damage crosses the half-HP threshold');
+assert.equal(bbuHero.tempHp,5,'Bloodied but Unbowed automatically grants temporary HP');
+assert.equal(bbuHero.resources.pugilistMoxie.current,bbuHero.resources.pugilistMoxie.max,'Bloodied but Unbowed automatically restores Moxie');
+assert.equal(bbuHero.turnResources.reaction,0,'Bloodied but Unbowed consumes the reaction');
+assert.ok(bbuDamage.note.includes('Израненный, но не сломленный'),'Combat result reports the automatic reaction');
+const spiritAuto=hero(18,'Арена Рояль',{hp:5,maxHp:40});pack.hooks.sync(spiritAuto);
+const fatalHit=ctx.DNDCombat.applyDamage(spiritAuto,10,'рубящий',{attackerId:'fatal-enemy'});
+assert.equal(spiritAuto.hp,20,'Fighting Spirit automatically restores half maximum HP when reduced to zero');
+assert.equal(spiritAuto.classFeaturesState.pugilistExhaustion,1,'Automatic Fighting Spirit adds exhaustion');
+assert.equal(spiritAuto.resources.pugilistFightingSpirit.current,0,'Automatic Fighting Spirit consumes its long-rest use');
+const unbreakableHero=hero(14,'Арена Рояль');pack.hooks.sync(unbreakableHero);const beforeMoxie=unbreakableHero.resources.pugilistMoxie.current;
+const unbreakable=pack.hooks.useFeature(unbreakableHero,'unbreakable',{failedSave:true,stat:'str',dc:15});
+assert.equal(unbreakable.ok,true,'Unbreakable performs a real rerolled saving throw');
+assert.equal(unbreakable.effect.success,true,'The deterministic reroll can succeed');
+assert.equal(unbreakableHero.resources.pugilistMoxie.current,beforeMoxie-1,'Unbreakable spends exactly one Moxie');
+const dreadHandHero=hero(17,'Рука Ужаса');pack.hooks.sync(dreadHandHero);pack.hooks.useFeature(dreadHandHero,'dreadHand',{});
+const dreadTarget=target('dread-hand-target');randomSequence=[0,0.99];
+const dreadAttack=ctx.DNDCombat.attack(dreadHandHero,dreadTarget,{bonus:0,damage:'1d6',damageType:'дробящий',unarmedAttack:true,useRules:false});randomSequence=null;
+assert.equal(dreadAttack.damage.total,6,'Hand of Dread rerolls one damage die that rolled a 1');
+assert.ok(dreadAttack.classFeatureNotes.includes('Рука Ужаса: одна кость урона переброшена.'),'Combat log reports the damage-die reroll');
 console.log('Pugilist combat integration tests: PASS (real class hooks, subclass mapping, Fisticuffs die, Haymaker, target-bound Signature Move hit/miss, Dig Deep resistance, Fighting Spirit HP shape)');
