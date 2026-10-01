@@ -94,6 +94,14 @@ formulaHero.classFeaturesState.alchemistDynamoCharged=true;
 const dynamoAttack=hooks.attackModifiers(formulaHero,{weaponAttack:true});
 assert.ok(dynamoAttack.damageTypes.includes('молния'),'Dynamo Core adds lightning damage type');
 
+formulaHero.classFeaturesState.alchemistPreparedFormula='holy';
+const holyAttack=hooks.attackModifiers(formulaHero,{isBomb:true,target:{creatureType:'undead'}});
+assert.ok(holyAttack.extraDice.includes('1d12'),'Holy Bomb uses d12 against undead');
+formulaHero.classFeaturesState.alchemistPreparedFormula='seeking';
+const seekingAttack=hooks.attackModifiers(formulaHero,{isBomb:true});
+assert.equal(seekingAttack.ignoreCover,true,'Seeking Bomb flags cover bypass for the combat engine');
+
+
 const reliefTarget={id:'ally',tempHp:2};
 const reliefResult=hooks.useFeature(formulaHero,'alchemist-subclassFeature',{featureName:'Болеутоляющая бомба',target:reliefTarget},{subclassId:'apothecary'});
 assert.equal(reliefResult.ok,true,'pain-relief bomb applies to a selected ally');
