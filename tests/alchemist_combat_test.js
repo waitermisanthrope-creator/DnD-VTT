@@ -182,4 +182,9 @@ assert.equal(venomDamage.amount,0,'Venomsmith level 10 is immune to poison damag
 assert.equal(ctx.DNDCombat.toggleCondition(venomTarget,'Отравлен',true),false,'Venomsmith level 10 cannot gain the poisoned condition');
 assert.equal(venomTarget.conditions['Отравлен'],undefined,'Poison immunity does not leave a poisoned condition behind');
 
+const oozeTarget={id:'ooze-rancher',classes:[{name:'Алхимик',level:3,subclass:'oozeRancher'}],hp:30,maxHp:30,conditions:{},classFeaturesState:{}};
+assert.equal(ctx.DNDCombat.effectiveDamage(oozeTarget,10,'кислота').amount,5,'Ooze Rancher has acid resistance from level 3');
+assert.equal(ctx.DNDCombat.effectiveDamage(oozeTarget,10,'огонь').amount,10,'Ooze Rancher acid resistance does not affect fire damage');
+
+
 console.log('Alchemist combat integration tests PASS');
