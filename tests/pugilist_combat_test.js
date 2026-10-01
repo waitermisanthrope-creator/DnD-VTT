@@ -1,5 +1,5 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
-let randomValue=0.99;
+let randomValue=0.99,rollResult=19;
 const math=Object.create(Math);math.random=()=>randomValue;
 const ctx={console,Math:math,Date,JSON,Set,Number,String,Array,Object,RegExp,parseInt,parseFloat,
   document:{getElementById:()=>null,querySelectorAll:()=>[],addEventListener:()=>{}},
@@ -7,7 +7,7 @@ const ctx={console,Math:math,Date,JSON,Set,Number,String,Array,Object,RegExp,par
 ctx.window=ctx;ctx.globalThis=ctx;
 ctx.DNDRules={
   parseDice(expr){const m=String(expr).match(/(\d+)d(\d+)(?:([+-])(\d+))?/i);return m?{groups:[{count:Number(m[1]),sides:Number(m[2])}],constant:m[3]?(m[3]==='-'?-1:1)*Number(m[4]):0}:{groups:[{count:1,sides:6}],constant:0};},
-  rollD20(){return {result:19,critical:false,fumble:false};}
+  rollD20(){return {result:rollResult,critical:rollResult===20,fumble:rollResult===1};}
 };
 ctx.DNDContent={packs:[],registerClass(p){this.packs.push(p);},listClasses(){return this.packs.map(p=>({name:p.displayName||p.name}));},getClass(n){return this.packs.find(p=>p.displayName===n||p.name===n||p.id===n)||null;}};
 vm.createContext(ctx);
@@ -52,7 +52,7 @@ const missArena=hero(17,'Арена Рояль');pack.hooks.sync(missArena);
 const missTarget=target('miss-target',99);
 const resourceBefore=missArena.resources.pugilistSignatureMove.current;
 pack.hooks.useFeature(missArena,'signatureMove',{target:missTarget});
-ctx.DNDCombat.attack(missArena,missTarget,{bonus:-100,damage:'1d6',damageType:'дробящий',useRules:false});
+rollResult=1;ctx.DNDCombat.attack(missArena,missTarget,{bonus:-100,damage:'1d6',damageType:'дробящий',useRules:false});rollResult=19;
 assert.equal(missArena.classFeaturesState.pugilistSignatureMovePending,false,'Signature Move clears after a miss');
 assert.equal(missArena.resources.pugilistSignatureMove.current,resourceBefore,'Signature Move charge is restored after a miss');
 const defender=target('dig-deep-defender');
