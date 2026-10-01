@@ -199,4 +199,15 @@ assert.strictEqual(zoneSave.success, true, 'zone bonus changes a boundary result
 assert(zoneSave.classFeatureNotes.some(note => note.includes('Страж рубежа')), 'zone effect is reflected in result notes');
 window.currentChar = null;
 
+
+const rescuedTarget = {
+  id: 'rescue-oa-target', hp: 0, ac: 10,
+  classFeaturesState: { protectorRescue: { noOpportunityAttacksFrom: 'rescued-foe' } }
+};
+const blockedOpportunity = window.DNDCombat.attack({ id: 'rescued-foe', name: 'Enemy' }, rescuedTarget, { bonus: 100, damage: '1d6', attackKind: 'opportunity' });
+assert.strictEqual(blockedOpportunity.blockedByProtectorRescue, true, 'selected enemy opportunity attack is blocked after rescue');
+assert.strictEqual(blockedOpportunity.hit, false, 'blocked opportunity attack cannot hit');
+const otherOpportunity = window.DNDCombat.attack({ id: 'other-foe', name: 'Other Enemy' }, rescuedTarget, { bonus: 100, damage: '1d6', attackKind: 'opportunity' });
+assert.strictEqual(otherOpportunity.blockedByProtectorRescue, undefined, 'rescue does not block opportunity attacks from other enemies');
+
 console.log('Protector combat integration tests: PASS');
