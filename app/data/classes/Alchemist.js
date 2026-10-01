@@ -28,7 +28,7 @@ levels[19]={features:['Эпический дар']};
 levels[20]={features:['Философский камень','Ядерная бомба']};
 g.alchemistProgression={
  className:'Алхимик',englishName:'Alchemist',source:'Mage Hand Press — Alchemist 2024 / 5.5E',
- status:'in_progress_runtime',runtimeVersion:'1.5.0-resurrection-grafts',edition:'5.5E / 2024',hitDie:8,primaryStat:'dexterity',secondaryStat:'intelligence',
+ status:'in_progress_runtime',runtimeVersion:'1.6.0-necro-mutagen-grafts',edition:'5.5E / 2024',hitDie:8,primaryStat:'dexterity',secondaryStat:'intelligence',
  savingThrows:['dexterity','intelligence'],armor:['light'],weapons:['simple'],tools:['alchemist_supplies'],
  multiclassRequirement:{dexterity:13,intelligence:13},
  multiclassProficiencies:{armor:['light'],weapons:['simple'],tools:['alchemist_supplies']},
