@@ -320,6 +320,9 @@ const hemoragentNoPool={id:'hemoragent-no-pool',classes:[{name:'Алхимик',
 hooks.sync(hemoragentNoPool);
 assert.equal(hooks.useFeature(hemoragentNoPool,'alchemist-classFeature',{featureName:'Геморагент',hitDiceSpent:2}).ok,false,'Hemoragent refuses to spend without an integrated hit-dice pool');
 
+const painter={id:'painter',classes:[{name:'Алхимик',level:3,subclass:'pigmentist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{}};
+hooks.sync(painter);
+assert.equal(hooks.checkModifiers(painter,{toolName:'Инструменты художника'}).bonus,3,'Pigmentist Artist adds Intelligence modifier to painter tool checks');
 const overloadBomber={id:'overload-bomber',classes:[{name:'Алхимик',level:14,subclass:'madBomber'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:5,resources:{},classFeaturesState:{}};
 hooks.sync(overloadBomber);
 const overloadBefore=overloadBomber.resources.alchemistReagents.current;
