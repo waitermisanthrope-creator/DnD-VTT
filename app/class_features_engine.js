@@ -576,7 +576,19 @@
       ?global.DNDContent.getClass(cls):null;
     if(pack&&pack.hooks&&typeof pack.hooks.useFeature==='function'){
       var fid=name.replace(/^[^:]+:/,'');
-      var result=pack.hooks.useFeature(h,fid,ctx,f);
+      // Resolve the registered feature metadata before dispatch. The old code
+      // passed an undeclared variable ("f"), causing ReferenceError on custom
+      // runtime actions in strict mode instead of reaching the class resolver.
+      var featureMeta=null;
+      var featureLists=[pack.features||[]];
+      (pack.subclasses||[]).forEach(function(sc){featureLists.push(sc.features||[]);});
+      for(var fi=0;fi<featureLists.length&&!featureMeta;fi++){
+        featureMeta=featureLists[fi].filter(function(feat){
+          return feat&&(String(feat.id)===String(name)||String(feat.id)===String(fid)||
+            String(feat.name)===String(fid)||String(feat.name)===String(ctx.featureName));
+        })[0]||null;
+      }
+      var result=pack.hooks.useFeature(h,fid,ctx,featureMeta);
       if(result)return result;
     }
 
