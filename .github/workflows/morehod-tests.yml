@@ -1,0 +1,42 @@
+name: Mariner rules regression tests
+
+on:
+  push:
+    branches:
+      - work/class-audit-oct-2026
+    paths:
+      - "app/morehod_gold_modifier.js"
+      - "app/rulesEngine.js"
+      - "app/combat_engine.js"
+      - "app/dice.js"
+      - "app/spells.js"
+      - "app/app.js"
+      - "tests/morehod_gold_modifier_test.js"
+      - ".github/workflows/morehod-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mariner-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: work/class-audit-oct-2026
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Check JavaScript syntax for changed runtime modules
+        run: |
+          node --check app/morehod_gold_modifier.js
+          node --check app/rulesEngine.js
+          node --check app/combat_engine.js
+          node --check app/dice.js
+          node --check app/spells.js
+          node --check app/app.js
+      - name: Run Mariner gold modifier regression test
+        run: node tests/morehod_gold_modifier_test.js
