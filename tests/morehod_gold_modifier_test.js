@@ -1,4 +1,6 @@
 const assert = require('assert');
+const fs = require('fs');
+const vm = require('vm');
 const rules = require('../app/morehod_gold_modifier.js');
 
 const thresholds = [
@@ -19,4 +21,25 @@ assert.strictEqual(rules.adjustRollTotal(14, { className: 'Мореход', coin
 assert.strictEqual(rules.adjustDamageDie(1, { className: 'Мореход', coins: { gp: 0 } }), 0);
 assert.strictEqual(rules.adjustDamageDie(4, { className: 'Мореход', coins: { gp: 2000 } }), 9);
 assert.strictEqual(rules.adjustDamageDie(4, { className: 'Бандит', coins: { gp: 2000 } }), 4);
+// Integration: load the actual rules engine and confirm the modifier reaches weapon attacks once.
+const context = {
+  console,
+  Math: Object.create(Math),
+  Number, String, Array, Object, RegExp, JSON, Date, Set, parseInt, parseFloat,
+  document: { getElementById: () => null },
+  addEventListener: () => {},
+  rollSingleDice: () => 10
+};
+context.window = context;
+context.globalThis = context;
+vm.createContext(context);
+vm.runInContext(fs.readFileSync(require.resolve('../app/morehod_gold_modifier.js'), 'utf8'), context);
+vm.runInContext(fs.readFileSync(require.resolve('../app/rulesEngine.js'), 'utf8'), context);
+const mariner = { classes: [{ name: 'Мореход', level: 1 }], stats: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 }, proficiencyBonus: 2, coins: { gp: 2000 } };
+const attack = context.DNDRules.weaponAttack(mariner, { stat: 'str' }, 'normal');
+assert.strictEqual(attack.bonus, 7, 'weapon attack bonus includes +5 Mariner gold modifier once');
+assert.strictEqual(attack.total, 17, 'weapon attack total includes modifier once');
+const other = { classes: [{ name: 'Бандит', level: 1 }], stats: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 }, proficiencyBonus: 2, coins: { gp: 2000 } };
+assert.strictEqual(context.DNDRules.weaponAttack(other, { stat: 'str' }, 'normal').bonus, 2, 'other classes are unaffected');
+assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'), 0, 'static skill bonus remains unchanged; passive values are not modified');
 console.log('morehod_gold_modifier_test: all assertions passed');
