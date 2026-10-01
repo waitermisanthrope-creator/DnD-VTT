@@ -332,7 +332,21 @@ function attackModifiers(h,ctx){
  if(activeEffects.some(function(e){return e.name==='Зелье скорости';})){out.hasteActive=true;out.notes.push('Зелье скорости активно: преимущество скорости/дополнительное действие обрабатывается боевым ходом');}
  if(activeEffects.some(function(e){return e.name==='Зелье полёта';})){out.flySpeed=activeEffects.filter(function(e){return e.name==='Зелье полёта';})[0].effect.flySpeed||30;}
 
- if(s.alchemistGrafts&&ctx.unarmedGraft&&s.alchemistGrafts.some(function(x){return x.name==='Звериное оружие';})){out.extraDice.push('1d6');out.notes.push('Трансплантат «Звериное оружие»: природный удар');}
+ var installedGrafts=s.alchemistGrafts||[],hasGraft=function(name){return installedGrafts.some(function(x){return x&&x.name===name;});};
+ if(ctx.unarmedGraft){
+  var naturalGrafts=[['Звериное оружие','Звериное оружие'],['Рога','Рога'],['Цепкий хвост','Цепкий хвост'],['Щупальца','Щупальца'],['Копыта','Копыта']];
+  var natural=naturalGrafts.find(function(pair){return hasGraft(pair[0]);});
+  if(natural){out.extraDice.push('1d6');out.notes.push('Трансплантат «'+natural[1]+'»: природный удар +1d6');if(natural[0]==='Щупальца')out.reachFt=10;}
+ }
+ if(ctx.meleeAttack&&hasGraft('Огромные руки')){out.reachFt=Math.max(Number(out.reachFt)||0,10);out.notes.push('Огромные руки: досягаемость рукопашных атак 10 фт');}
+ if(hasGraft('Адаптация амфибии')){out.swimSpeed=Number(h.speed)||30;out.breathesWater=true;}
+ if(hasGraft('Звериная шкура')&&!(h.armor&&h.armor.equipped)&&!h.equippedArmor){out.naturalArmor=Math.max(Number(out.naturalArmor)||0,13+mod(h,'dex'));}
+ if(hasGraft('Чешуя исчадия')&&!(h.armor&&h.armor.equipped)&&!h.equippedArmor){out.naturalArmor=Math.max(Number(out.naturalArmor)||0,15+Math.min(2,mod(h,'dex')));}
+ if(hasGraft('Шкура дракона')&&!(h.armor&&h.armor.equipped)&&!h.equippedArmor){out.naturalArmor=Math.max(Number(out.naturalArmor)||0,17);var dragonGraft=installedGrafts.find(function(x){return x.name==='Шкура дракона';});if(dragonGraft&&dragonGraft.resistanceType)out.graftResistanceType=dragonGraft.resistanceType;}
+ var seam=installedGrafts.find(function(x){return x.name==='Энергетический шов';});if(seam&&seam.resistanceType)out.graftResistanceType=seam.resistanceType;
+ if(hasGraft('Тёмное зрение'))out.darkvisionFt=60;
+ if(hasGraft('Обонятельные имплантаты'))out.advantageOnSmellPerception=true;
+ if(hasGraft('Изменчивая анатомия'))out.criticalHitsBecomeNormal=true;
  if(s.alchemistSurgicalAttackReady&&ctx.unarmedGraft){out.extraDice.push('1d8');s.alchemistSurgicalAttackReady=false;out.notes.push('Хирургическая атака');}
  if(s.alchemistCoolingWeaponId&&ctx.weaponAttack&&String(ctx.weaponId||ctx.weapon&&ctx.weapon.id||'')===String(s.alchemistCoolingWeaponId)){out.extraDice.push('2d6');out.damageTypes.push('холод');out.notes.push('Теплоотвод: охлаждённое оружие +2d6 холодом');s.alchemistCoolingWeaponId=null;}
  if(s.alchemistDynamoCharged&&ctx.weaponAttack){out.extraDice.push('1d8');out.damageTypes.push('молния');out.notes.push('Динамо-ядро: +1d8 молнией');s.alchemistDynamoCharged=false;}
