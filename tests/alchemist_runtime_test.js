@@ -225,6 +225,29 @@ assert.equal(amphibianMods.breathesWater,true,'Amphibian Adaptation grants water
 assert.equal(amphibianMods.swimSpeed,30,'Amphibian Adaptation grants a swim speed equal to walking speed');
 hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Адаптация амфибии'});
 
+const flexibleInstall=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'install',graftName:'Гибкая форма',donorVerified:true,donorType:'Перевёртыш'});
+assert.equal(flexibleInstall.ok,true,'Flexible Form graft can be installed');
+xenoOwner.appearance='original look';
+const flexible=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'activate',graftName:'Гибкая форма',appearance:'guard in a blue coat'});
+assert.equal(flexible.ok,true,'Flexible Form applies a chosen appearance');
+assert.equal(xenoOwner.appearance,'guard in a blue coat','Flexible Form stores the temporary appearance');
+hooks.advanceTime(xenoOwner,60);
+assert.equal(xenoOwner.appearance,'original look','Flexible Form restores the original appearance after one hour');
+const voiceInstall=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'install',graftName:'Голосовые связки',donorVerified:true,donorType:'Подражатель'});
+assert.equal(voiceInstall.ok,true,'Vocal Cords graft can be installed');
+const voice=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'activate',graftName:'Голосовые связки',imitation:'voice of the captain',deceptionTotal:18,insightTotal:14});
+assert.equal(voice.ok,true,'Vocal Cords resolves a provided imitation contest');
+assert.equal(voice.effect.success,true,'Vocal Cords succeeds when Deception meets or exceeds Insight');
+hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Голосовые связки'});
+const synapseInstall=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'install',graftName:'Магические синапсы',donorVerified:true,donorType:'Врождённый колдун'});
+assert.equal(synapseInstall.ok,true,'Magical Synapses graft can be installed');
+const synapse=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'activate',graftName:'Магические синапсы',cantrip:'Огненный снаряд'});
+assert.equal(synapse.ok,true,'Magical Synapses records a selected wizard cantrip');
+assert.ok(xenoOwner.classFeaturesState.alchemistSynapseCantrips.includes('Огненный снаряд'),'Magical Synapses stores the selected cantrip');
+hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Магические синапсы'});
+hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Гибкая форма'});
+
+
 const graftRemoved=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Звериное оружие'});
 assert.equal(graftRemoved.ok,true,'installed graft can be removed');
 assert.equal(graftRemoved.grafts.length,0,'removed graft no longer remains equipped');
