@@ -329,7 +329,7 @@
     }
     var normalAC=Math.max(10,num(target && target.ac,10)-num(target&&target.witchACPenalty,0))-num(alchemistDebuffs.acPenalty,0);
     var ac=(opts&&opts.acOverride!=null?num(opts.acOverride,10):graftAC!=null?graftAC:normalAC)+coverBonus;
-    var pugilistDefender=(targetClasses||[]).find(function(cl){return cl&&(['Пугилист','Pugilist'].indexOf(String(cl.name))>=0||cl.englishName==='Pugilist')&&Number(cl.level)>=1;});
+    var pugilistDefender=(target&&target.classes||[]).find(function(cl){return cl&&(['Пугилист','Pugilist'].indexOf(String(cl.name))>=0||cl.englishName==='Pugilist')&&Number(cl.level)>=1;});
     if(pugilistDefender){var armorObj=target.armorEquipped||target.equippedArmor||(target.equipment&&(target.equipment.armor||target.equipment.armour))||target.armor||null,armorName=String(armorObj&&(armorObj.type||armorObj.armorType||armorObj.name)||armorObj||'').toLowerCase(),shield=!!(target.shieldEquipped||target.equippedShield||target.shield||(target.equipment&&target.equipment.shield)),lightArmor=!armorObj||/light|лёгк|легк|padded|leather|studded|hide|chain shirt|light armor/.test(armorName);if(lightArmor&&!shield){var conScore=Number(target.abilityScores&&target.abilityScores.constitution!=null?target.abilityScores.constitution:target.stats&&target.stats.con!=null?target.stats.con:target.stats&&target.stats.constitution!=null?target.stats.constitution:10),pugilistAC=12+Math.floor((conScore-10)/2);ac=Math.max(ac,pugilistAC);}}
     var duplicityTarget=opts&&opts.__attacker&&target&&target.classFeaturesState&&target.classFeaturesState.witchDuplicity;
     var duplicityMiss=false;
