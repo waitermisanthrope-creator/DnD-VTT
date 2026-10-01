@@ -349,12 +349,12 @@ function use(h,id,ctx,feature){
   var discoveryName=String(ctx.discovery||ctx.name||'');
   var discovery=discoveries.find(function(x){return x[0]===discoveryName;});
   if(!discovery)return{ok:false,message:'Выберите Открытие из каталога Алхимика.'};
-  var discoveryLevel=Number(ctx.level)||l;
-  if(discoveryLevel<5||[5,9,13,17].indexOf(discoveryLevel)<0)return{ok:false,message:'Открытие выбирается на 5, 9, 13 и 17 уровнях.'};
+  var discoveryLevel=l;
+  if(discoveryLevel<5)return{ok:false,message:'Первое Открытие доступно с 5 уровня.'};
   s.alchemistDiscovered=s.alchemistDiscovered||[];
   if(s.alchemistDiscovered.indexOf(discoveryName)>=0)return{ok:false,message:'Это Открытие уже известно.'};
-  var expected=Math.floor((l-1)/4);
-  if(s.alchemistDiscovered.length>=expected)return{ok:false,message:'Нет свободного выбора Открытия на текущем уровне.'};
+  var expected=[5,9,13,17].filter(function(requiredLevel){return l>=requiredLevel;}).length;
+  if(s.alchemistDiscovered.length>=expected)return{ok:false,message:'Нет свободного выбора Открытия на текущем уровне. Выборы доступны на 5, 9, 13 и 17 уровнях.'};
   s.alchemistDiscovered.push(discoveryName);
   return{ok:true,selected:discoveryName,message:'📘 Открытие изучено: '+discoveryName+'.'};
  }
@@ -397,7 +397,7 @@ function use(h,id,ctx,feature){
  }
  if(id==='philosopherStone'){if(l<20)return{ok:false,message:'Философский камень доступен с 20 уровня.'};s.philosopherStone=true;return{ok:true,effect:{regainReagentsOnInitiativeUpTo:6,quickBrewing:true,longevity:true},message:'💎 Философский камень создан.'};}
  var selected=(h.classes||[]).find(function(x){return x.name===CLASS||x.englishName==='Alchemist';});var subId=(feature&&feature.subclassId)||ctx.subclass||(selected&&selected.subclass);var sub=subs.find(function(x){return x.id===subId||x.name===subId;});
- if(sub&&(id==='subclassFeature'||id.indexOf(sub.id+'-')===0)){var f=sub.f.find(function(x){return String(x[1])===String(ctx.featureName)||String(x[1])===String(ctx.featureId)||(feature&&String(feature.name)===String(x[1]))||Number(x[0])===Number(ctx.level);});if(!f)return{ok:false,unsupported:true,message:'Не удалось однозначно определить особенность подкласса; эффект не применён.'};if(l<Number(f[0]))return{ok:false,message:'Особенность доступна с '+f[0]+' уровня.'};return subclassFeatureEffect(h,sub,f,ctx);}
+ if(sub&&(id==='subclassFeature'||id.indexOf(sub.id+'-')===0)){var f=sub.f.find(function(x){return id===sub.id+'-'+x[0]+'-'+x[1]||id===sub.id+'-'+x[1]||String(x[1])===String(ctx.featureName)||String(x[1])===String(ctx.featureId)||(feature&&String(feature.name)===String(x[1]))||(ctx.level!=null&&Number(x[0])===Number(ctx.level)&&!ctx.featureName&&!ctx.featureId);});if(!f)return{ok:false,unsupported:true,message:'Не удалось однозначно определить особенность подкласса; эффект не применён.'};if(l<Number(f[0]))return{ok:false,message:'Особенность доступна с '+f[0]+' уровня.'};return subclassFeatureEffect(h,sub,f,ctx);}
  return{ok:false,unsupported:true,message:'Алхимик: способность '+id+' пока не имеет исполняемого resolver-а.'};
 }
 var pack={id:PACK_ID,name:CLASS,source:SOURCE,metadata:{edition:'2024 / 5.5E',hitDie:8,primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],skillsChoose:3,armor:['light'],weapons:['simple'],tools:['alchemist_supplies'],multiclass:{dexterity:13,intelligence:13},startingEquipment:['2 кинжала','Кожаный доспех','Инструменты алхимика','Алхимический огонь','Набор учёного','6 зм'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14]},features:features,subclasses:subpacks,formulas:formulae,potions:potions,discoveries:discoveries,discoveryRecipes:discoveryRecipes,monstrousGrafts:monstrousGrafts,variants:alchemistVariants,alcoholRules:{maxStages:10,decayPerHour:1,longRestClears:true,stage10:'без сознания до утра'},hooks:{sync:sync,useFeature:use,shortRest:shortRest,longRest:longRest,startTurn:startTurn,checkModifiers:checkModifiers,attackModifiers:attackModifiers}};
@@ -406,5 +406,5 @@ g.CLASSES_REFERENCE=g.CLASSES_REFERENCE||{};
 g.CLASSES_REFERENCE[CLASS]={source:SOURCE,hitDie:8,primaryStat:'dexterity',primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14],contentPackId:PACK_ID};
 g.SUBCLASSES_REFERENCE=g.SUBCLASSES_REFERENCE||{};g.SUBCLASSES_REFERENCE[CLASS]={};
 subpacks.forEach(function(s){var lv={};s.features.forEach(function(f){lv[f.level]=lv[f.level]||{features:[]};lv[f.level].features.push(f.name);});g.SUBCLASSES_REFERENCE[CLASS][s.name]={source:SOURCE,description:s.description,pickLevel:3,levels:lv};});
-g.ALCHEMIST_MHP_2024={VERSION:'1.2.0-in-progress',STATUS:'in_progress',CANONICAL_2024_SUBCLASSES:11,PACK_ID:PACK_ID,formulae:formulae,potions:potions,discoveries:discoveries,subclasses:subpacks.map(function(s){return{id:s.id,name:s.name};})};
+g.ALCHEMIST_MHP_2024={VERSION:'1.2.1-runtime-fixes',STATUS:'in_progress',CANONICAL_2024_SUBCLASSES:11,PACK_ID:PACK_ID,formulae:formulae,potions:potions,discoveries:discoveries,subclasses:subpacks.map(function(s){return{id:s.id,name:s.name};})};
 })(window);
