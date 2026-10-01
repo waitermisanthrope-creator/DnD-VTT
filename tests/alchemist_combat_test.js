@@ -109,4 +109,15 @@ ctx.DNDCombat.applyDamage(pheromoneTarget,1,'дробящий');
 assert.equal(pheromoneTarget.activeConditions['Очарован'],undefined,'taking damage ends Pheromone Bomb charm');
 assert.equal(pheromoneTarget.classFeaturesState.alchemistDebuffs.endsOnDamage,undefined,'on-damage trigger is consumed');
 
+rolls=[{result:10,critical:false,fumble:false}];
+const graftArmorTarget={id:'graft-armor',ac:10,hp:20,maxHp:20,abilityScores:{dexterity:14},conditions:{},activeConditions:{},classFeaturesState:{alchemistGrafts:[{name:'Звериная шкура'}]}};
+const graftArmorAttack=ctx.DNDCombat.attack(attacker,graftArmorTarget,{bonus:0,damage:'1',useRules:false});
+assert.equal(graftArmorAttack.ac,15,'Beast Hide graft sets unarmored AC to 13 plus Dexterity');
+rolls=[{result:20,critical:true,fumble:false}];
+const graftCriticalTarget={id:'graft-critical',ac:10,hp:20,maxHp:20,conditions:{},activeConditions:{},classFeaturesState:{alchemistGrafts:[{name:'Изменчивая анатомия'}]}};
+const graftCriticalAttack=ctx.DNDCombat.attack(attacker,graftCriticalTarget,{bonus:0,damage:'1d8',useRules:false});
+assert.equal(graftCriticalAttack.hit,true,'Mutable Anatomy still allows a natural 20 to hit');
+assert.equal(graftCriticalAttack.critical,false,'Mutable Anatomy turns a critical hit into a normal hit');
+
+
 console.log('Alchemist combat integration tests PASS');
