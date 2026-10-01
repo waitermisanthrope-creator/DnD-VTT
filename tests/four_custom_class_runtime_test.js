@@ -163,11 +163,12 @@ assert.strictEqual(allyProtector.resources.protectorImpulses.current, 1, 'succes
 assert.strictEqual(allyProtector.turnResources.reaction, 0, 'successful ally interception spends reaction');
 
 const zoneHero = {
-  id: 'zone-protector', classes: [{ name: 'Заступник', level: 3 }],
+  id: 'zone-protector', classes: [{ name: 'Заступник', level: 3, subclass: 'Страж рубежа' }],
   resources: { protectorImpulses: { current: 2, max: 2 } },
   turnResources: { actions: 1, bonusAction: 1, reaction: 1 }, classFeaturesState: {}
 };
 const zone = runtime.useFeature(zoneHero, 'protectorZone', { actionAvailable: true, round: 1 });
+assert.strictEqual(runtime.useFeature(Object.assign({},zoneHero,{classes:[{name:'Заступник',level:3,subclass:'Спаситель'}]}),'protectorZone',{actionAvailable:true,round:1}).ok,false,'other Protector subclass cannot use Strazh Rubezha');
 assert.strictEqual(zone.ok, true, 'Strazh Rubezha creates a zone using a bonus action');
 assert.strictEqual(zone.zone.radiusFt, 10);
 assert.strictEqual(zoneHero.resources.protectorImpulses.current, 1);
@@ -179,7 +180,7 @@ assert.strictEqual(runtime.useFeature(zoneHero, 'protectorZone', { actionAvailab
 const expiredZone = runtime.protectorZoneSave(zoneHero, zoneAlly, { forcedMovementSave: true, isAlly: true, visible: true, distanceFt: 5, round: 11 });
 assert.strictEqual(expiredZone.ok, false, 'zone expires after its one-minute round window');
 const rescuer = {
-  id: 'rescuer', classes: [{ name: 'Заступник', level: 3 }],
+  id: 'rescuer', classes: [{ name: 'Заступник', level: 3, subclass: 'Спаситель' }],
   resources: { protectorImpulses: { current: 2, max: 2 } }, turnResources: { reaction: 1 }
 };
 const fallen = { id: 'fallen', hp: 0, tempHp: 0, deathSaves: { successes: 0, failures: 2 } };
@@ -188,6 +189,7 @@ assert.strictEqual(rescueInvalid.ok, false, 'rescue requires a confirmed free ce
 assert.strictEqual(rescuer.resources.protectorImpulses.current, 2, 'invalid rescue does not spend resource');
 assert.strictEqual(rescuer.turnResources.reaction, 1, 'invalid rescue does not spend reaction');
 const rescued = runtime.useFeature(rescuer, 'protectorRescue', { target: fallen, isAlly: true, visible: true, distanceFt: 5, cellAvailable: true, freeCell: {x:2,y:3}, chosenEnemyId:'enemy', round:2 });
+assert.strictEqual(runtime.useFeature(Object.assign({},rescuer,{classes:[{name:'Заступник',level:3,subclass:'Страж рубежа'}]}),'protectorRescue',{target:fallen,isAlly:true,visible:true,distanceFt:5,cellAvailable:true,freeCell:{x:2,y:3}}).ok,false,'other Protector subclass cannot use Savior');
 assert.strictEqual(rescued.ok, true, 'valid rescue succeeds');
 assert.strictEqual(fallen.hp, 0, 'rescue does not restore HP');
 assert.strictEqual(fallen.stable, true, 'rescue stabilizes ally');
@@ -195,7 +197,7 @@ assert.deepStrictEqual(JSON.parse(JSON.stringify(fallen.position)), {x:2,y:3}, '
 assert.strictEqual(rescuer.resources.protectorImpulses.current, 1);
 assert.strictEqual(rescuer.turnResources.reaction, 0);
 const highRescuer = {
-  id: 'high-rescuer', classes: [{ name: 'Заступник', level: 17 }],
+  id: 'high-rescuer', classes: [{ name: 'Заступник', level: 17, subclass: 'Спаситель' }],
   resources: { protectorImpulses: { current: 2, max: 2 } }, turnResources: { reaction: 1 }
 };
 window.DNDCombat = { rollDice: () => ({ total: 5 }) };
@@ -203,7 +205,7 @@ const highFallen = { id: 'high-fallen', hp: 0, tempHp: 0 };
 const highRescue = runtime.useFeature(highRescuer, 'protectorRescue', { target: highFallen, isAlly: true, visible: true, distanceFt: 5, cellAvailable: true, freeCell: {x:3,y:4}, round:1 });
 assert.strictEqual(highRescue.movementFt, 10, 'level 17 rescue can move ally 10 feet');
 assert.strictEqual(highFallen.tempHp, 9, 'level 11+ rescue grants 1d8 + proficiency temporary HP');
-const zoneHigh = { id:'zone-high', classes:[{name:'Заступник',level:17}], resources:{protectorImpulses:{current:2,max:2}}, turnResources:{bonusAction:1}, classFeaturesState:{} };
+const zoneHigh = { id:'zone-high', classes:[{name:'Заступник',level:17,subclass:'Страж рубежа'}], resources:{protectorImpulses:{current:2,max:2}}, turnResources:{bonusAction:1}, classFeaturesState:{} };
 assert.strictEqual(runtime.useFeature(zoneHigh,'protectorZone',{actionAvailable:true,round:1}).zone.radiusFt,15,'level 11+ zone radius is 15 feet');
 assert.strictEqual(runtime.protectorZoneSave(zoneHigh,zoneAlly,{forcedMovementSave:true,isAlly:true,visible:true,distanceFt:15,round:2,requestAdvantage:true}).advantage,true,'level 17 zone can grant one chosen advantage per round');
 
