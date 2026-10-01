@@ -239,6 +239,9 @@ function cleanupPotionEffects(h,oldEffects,keepEffects){
  oldEffects.forEach(function(e){var ef=e&&e.effect||{};if(ef.condition&&keepConditions.indexOf(ef.condition)<0){
   if(h.activeConditions&&h.activeConditions[ef.condition])delete h.activeConditions[ef.condition];
   if(h.conditions&&h.conditions[ef.condition])delete h.conditions[ef.condition];
+ }
+ if(e&&e.name==='Мутаген'&&oldEffects.indexOf(e)>=0&&keepEffects.indexOf(e)<0&&s.activeMutagen&&s.activeMutagen.snapshots){
+  s.activeMutagen.snapshots.forEach(function(snap){var obj=h[snap.prop];if(obj&&obj[snap.key]!==undefined)obj[snap.key]=snap.original;});s.activeMutagen=null;
  }});
  var keepResistance=[];
  keepEffects.forEach(function(e){var ef=e&&e.effect||{};if(ef.resistanceAll)keepResistance=keepResistance.concat(['кислота','холод','огонь','молния','гром','некротический','яд','психический','излучение','силовой','дробящий','колющий','рубящий']);if(ef.resistance)keepResistance.push(ef.resistance);});
@@ -334,8 +337,12 @@ function subclassFeatureEffect(h,sub,f,ctx){
   var mutagenAbility=String(ctx.ability||'constitution');
   if(['strength','dexterity','constitution','intelligence','wisdom','charisma'].indexOf(mutagenAbility)<0)return{ok:false,message:'Выберите допустимую характеристику для мутагена.'};
   if(s.activeMutagen)return{ok:false,message:'Мутагены уже активны; сначала завершите текущий эффект.'};
-  s.activeMutagen=mutagenAbility;
-  return {ok:true,effect:{abilityBonus:3,ability:s.activeMutagen,maxAbility:23,duration:'1 minute'},message:'🧬 Мутаген выбран: '+mutagenAbility+'. Применение бонуса требует подключения effect resolver.'};
+  var aliases={strength:'str',dexterity:'dexterity',constitution:'con',intelligence:'int',wisdom:'wis',charisma:'cha'},shortKeys={strength:'str',dexterity:'dex',constitution:'con',intelligence:'int',wisdom:'wis',charisma:'cha'},scoreSnapshots=[];
+  ['abilityScores','stats'].forEach(function(prop){var obj=h[prop];if(!obj||typeof obj!=='object')return;var key=obj[mutagenAbility]!==undefined?mutagenAbility:(obj[shortKeys[mutagenAbility]]!==undefined?shortKeys[mutagenAbility]:(obj[aliases[mutagenAbility]]!==undefined?aliases[mutagenAbility]:null));if(key===null)return;var original=Number(obj[key])||10;scoreSnapshots.push({prop:prop,key:key,original:original});obj[key]=Math.min(23,original+3);});
+  if(!scoreSnapshots.length)return{ok:false,unsupported:true,message:'Не удалось найти характеристики персонажа; мутаген не применён.'};
+  s.activeMutagen={ability:mutagenAbility,snapshots:scoreSnapshots};
+  s.alchemistActiveEffects=s.alchemistActiveEffects||[];s.alchemistActiveEffects.push({name:'Мутаген',effect:{mutagenAbility:mutagenAbility,durationMinutes:1,abilityBonus:3,maxAbility:23},remainingMinutes:1});
+  return {ok:true,effect:{abilityBonus:3,ability:mutagenAbility,maxAbility:23,durationMinutes:1,applied:true},message:'🧬 Мутаген: '+mutagenAbility+' увеличена на 3 (максимум 23) на 1 минуту.'};
  }
  if(name==='Общий мутаген'){if(!ctx.target||!ctx.target.id)return{ok:false,needsTarget:true,message:'Выберите союзника для передачи мутагена; реагенты не списаны.'};if(ctx.target.isAlly===false)return{ok:false,message:'Общий мутаген можно передать только союзнику; реагенты не списаны.'};if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,target:ctx.target.id,effect:{grantMutagen:true,duration:'1 minute',onePerTarget:true},message:'🧬 Мутаген подготовлен для передачи союзнику.'};}
  if(name==='Слизевая бомба')return{ok:true,effect:{damage:0,areaSlime:true,deniesActions:['dash','disengage','dodge'],removeAction:true},message:'🟢 Слизевая бомба разлита.'};
