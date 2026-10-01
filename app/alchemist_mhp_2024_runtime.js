@@ -335,8 +335,9 @@ function attackModifiers(h,ctx){
  var installedGrafts=s.alchemistGrafts||[],hasGraft=function(name){return installedGrafts.some(function(x){return x&&x.name===name;});};
  if(ctx.unarmedGraft){
   var naturalGrafts=[['Звериное оружие','Звериное оружие'],['Рога','Рога'],['Цепкий хвост','Цепкий хвост'],['Щупальца','Щупальца'],['Копыта','Копыта']];
-  var natural=naturalGrafts.find(function(pair){return hasGraft(pair[0]);});
-  if(natural){out.extraDice.push('1d6');out.notes.push('Трансплантат «'+natural[1]+'»: природный удар +1d6');if(natural[0]==='Щупальца')out.reachFt=10;}
+  var selectedNatural=ctx.graftName&&naturalGrafts.find(function(pair){return pair[0]===ctx.graftName&&hasGraft(pair[0]);});
+  if(!selectedNatural)selectedNatural=naturalGrafts.find(function(pair){return hasGraft(pair[0]);});
+  if(selectedNatural){out.extraDice.push('1d6');out.notes.push('Трансплантат «'+selectedNatural[1]+'»: природный удар +1d6');out.naturalAttackName=selectedNatural[0];if(selectedNatural[0]==='Щупальца'||selectedNatural[0]==='Огромные руки')out.reachFt=10;}
  }
  if(ctx.meleeAttack&&hasGraft('Огромные руки')){out.reachFt=Math.max(Number(out.reachFt)||0,10);out.notes.push('Огромные руки: досягаемость рукопашных атак 10 фт');}
  if(hasGraft('Адаптация амфибии')){out.swimSpeed=Number(h.speed)||30;out.breathesWater=true;}
