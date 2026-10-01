@@ -18,6 +18,15 @@ const hero = {
 runtime.sync(hero);
 assert.strictEqual(hero.resources.banditDirtyTricks.max, 5, 'Bandit uses proficiency + Dexterity modifier');
 assert.strictEqual(hero.resources.circusResource.max, 4, 'Circus has one shared resource using proficiency + Charisma modifier');
+const legacyCircusHero = {
+  classes: [{ name: 'Циркач', level: 3, subclass: 'Пожиратель огня' }],
+  abilityScores: { cha: 14 },
+  resources: { circusZap: { current: 1, max: 4, recharge: 'short' } }
+};
+runtime.sync(legacyCircusHero);
+assert.strictEqual(legacyCircusHero.resources.circusResource.current, 1, 'legacy Circus resource migration preserves spent uses');
+assert.strictEqual(legacyCircusHero.resources.circusResource.max, 4, 'legacy Circus resource migration keeps the synced maximum');
+assert.strictEqual(legacyCircusHero.resources.circusZap, undefined, 'legacy Circus resource key is removed after migration');
 assert.strictEqual(hero.resources.protectorImpulses.max, 2, 'Protector uses proficiency bonus');
 hero.resources.banditDirtyTricks.current = 1;
 runtime.sync(hero);
