@@ -98,6 +98,17 @@ const reliefTarget={id:'ally',tempHp:2};
 const reliefResult=hooks.useFeature(formulaHero,'alchemist-subclassFeature',{featureName:'Болеутоляющая бомба',target:reliefTarget},{subclassId:'apothecary'});
 assert.equal(reliefResult.ok,true,'pain-relief bomb applies to a selected ally');
 assert.equal(reliefTarget.tempHp,8,'pain-relief bomb grants temporary HP equal to Alchemist level when no reagents are spent');
+
+const reagentTarget={id:'ally2',tempHp:0};
+const reagentsBefore=Number(formulaHero.resources.alchemistReagents.current);
+const missingReliefRoll=hooks.useFeature(formulaHero,'alchemist-subclassFeature',{featureName:'Болеутоляющая бомба',target:reagentTarget,reagents:1},{subclassId:'apothecary'});
+assert.equal(missingReliefRoll.ok,false,'extra pain-relief dice require an actual roll');
+assert.equal(formulaHero.resources.alchemistReagents.current,reagentsBefore,'missing roll does not spend reagents');
+const rolledRelief=hooks.useFeature(formulaHero,'alchemist-subclassFeature',{featureName:'Болеутоляющая бомба',target:reagentTarget,reagents:1,reagentRoll:7},{subclassId:'apothecary'});
+assert.equal(rolledRelief.ok,true,'rolled extra d10 applies to pain-relief bomb');
+assert.equal(reagentTarget.tempHp,15,'temporary HP equals level plus rolled d10');
+assert.equal(formulaHero.resources.alchemistReagents.current,reagentsBefore-1,'successful extra die spends exactly one reagent');
+
 const noReliefTarget=hooks.useFeature(formulaHero,'alchemist-subclassFeature',{featureName:'Болеутоляющая бомба'},{subclassId:'apothecary'});
 assert.equal(noReliefTarget.ok,false,'pain-relief bomb requires a target');
 const amorist={classes:[{name:'Алхимик',level:3,subclass:'amorist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{}};
