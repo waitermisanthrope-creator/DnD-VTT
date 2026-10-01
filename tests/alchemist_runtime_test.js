@@ -45,6 +45,11 @@ assert.equal(heal.ok,true,'healing potion applies');
 assert.equal(hero.hp,7,'healing potion updates character HP when no max is specified');
 assert.equal(hero.classFeaturesState.alchemistPotions.length,0,'successfully used potions are consumed');
 
+hooks.longRest(hero);
+assert.ok(!hero.resistances.includes('огонь'),'long rest removes Alchemist-granted potion resistance');
+assert.ok(!hero.activeConditions.Невидим,'long rest removes short-duration potion conditions');
+
+
 
 // Progression regression: level 4 gains the fourth formula; poison specialist gets its free discovery.
 const levelFour={classes:[{name:'Алхимик',level:4,subclass:'apothecary'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{}};
