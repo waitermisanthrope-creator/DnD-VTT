@@ -78,10 +78,10 @@ assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'),
     turnResources: { actions: 1, bonusAction: 1, reaction: 1 }
   };
   combatContext.FourCustomClassRuntime.sync(protector);
-  const ally = { id: 'ally-1', hitPoints: 20, maxHitPoints: 20, stats: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 } };
+  const ally = { id: 'ally-1', hp: 20, hpMax: 20, stats: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 } };
   const protectedHit = combatContext.DNDCombat.applyDamage(ally, 10, 'огонь', { protector, protectorDistanceFt: 5, protectorVisible: true });
   assert.strictEqual(protectedHit.amount, 7, 'Protector reduces incoming damage by 1d10 + proficiency (deterministic roll 1 + 2)');
-  assert.strictEqual(ally.hitPoints, 13, 'reduced damage is reflected in target HP');
+  assert.strictEqual(ally.hp, 13, 'reduced damage is reflected in target HP');
   assert.strictEqual(protector.resources.protectorImpulses.current, 1, 'Protector spends one impulse');
   assert.strictEqual(protector.turnResources.reaction, 0, 'Protector spends one reaction');
   const invalidProtector = {
