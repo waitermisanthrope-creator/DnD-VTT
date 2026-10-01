@@ -139,8 +139,22 @@ else if(rn==='Потерянный ритуал')re={ritualSpellLevelMax:5,uses:
 if(id==='mystery'){var mn=ctx.mystery||'Жизнь';return{ok:true,effect:{bonusSpells:mysteries[mn]||[]},message:'✨ Тайна '+mn+' применена.'};}
 return{ok:false,unsupported:true,message:'Оккультист: неизвестная активная способность '+id};}
 var levels={};for(var i=1;i<=20;i++){levels[i]={features:[]};if(i===1)levels[i].features=['Заклинания','Оккультная традиция'];if(riteKnown[i])levels[i].features.push('Оккультные обряды');if([4,8,12,16,19].indexOf(i)>=0)levels[i].features.push('Увеличение характеристик');if(i===10)levels[i].features.push('Традиционное мастерство');if(i===20)levels[i].features.push('Старые пути');if([3,6,14].indexOf(i)>=0)levels[i].features.push('Особенность традиции');}
-var pack={id:PACK_ID,name:CLASS,source:SOURCE,metadata:{edition:'5E',hitDie:6,primaryStat:'wisdom',savingThrows:['wisdom','charisma'],armor:[],weapons:['daggers','quarterstaff','light_crossbow'],tools:['herbalism_kit'],multiclassRequirement:{wisdom:13},skillsChoose:2,subclassLevel:1,subclassFeatureLevels:[1,3,6,14]},features:baseFeatures.map(function(x){return{id:'occultist-'+x[1],level:x[0],name:x[1],description:x[2]};}),levels:levels,spellcasting:{ability:'wisdom',cantripsKnown:cantrips,spellsKnown:known,slots:slots},spells:spells,rites:rites.map(function(x){return{id:x[0].replace(/\s+/g,'-').toLowerCase(),name:x[0],level:x[1],description:x[2]};}),traditions:traditions,mysteries:mysteries,hooks:{sync:sync,useFeature:use}};
+function rest(h,type){
+ sync(h);var s=h.classFeaturesState||{};
+ if(type==='long'){
+   s.occultistBloodMagic.usedLevels=0;
+   s.occultistLostRitual.used=false;
+   s.occultistDeathBeyond.used=false;
+   if(s.fateReadingUses!==undefined)s.fateReadingUses=prof(h);
+   s.oracleReservedDie=null;
+   s.occultistSpecialPoison.targetType=null;
+ }
+ if(type==='short'&&s.occultistSpirit)s.occultistSpirit.manifested=false;
+ return{ok:true,type:type};
+}
+var pack={id:PACK_ID,name:CLASS,source:SOURCE,metadata:{edition:'5E',hitDie:6,primaryStat:'wisdom',savingThrows:['wisdom','charisma'],armor:[],weapons:['daggers','quarterstaff','light_crossbow'],tools:['herbalism_kit'],multiclassRequirement:{wisdom:13},skillsChoose:2,subclassLevel:1,subclassFeatureLevels:[1,3,6,14]},features:baseFeatures.map(function(x){return{id:'occultist-'+x[1],level:x[0],name:x[1],description:x[2]};}),levels:levels,spellcasting:{ability:'wisdom',cantripsKnown:cantrips,spellsKnown:known,slots:slots},spells:spells,rites:rites.map(function(x){return{id:x[0].replace(/\s+/g,'-').toLowerCase(),name:x[0],level:x[1],description:x[2]};}),traditions:traditions,mysteries:mysteries,hooks:{sync:sync,useFeature:use,rest:rest}};
 D.registerClass(pack);
 g.CLASSES_REFERENCE=g.CLASSES_REFERENCE||{};g.CLASSES_REFERENCE[CLASS]={source:SOURCE,hitDie:6,primaryStat:'wisdom',savingThrows:['wisdom','charisma'],subclassLevel:1,subclassFeatureLevels:[1,3,6,14],contentPackId:PACK_ID};
+g.occultistRuntime={sync:sync,useFeature:use,rest:rest};
 g.OCCULTIST_KIBBLES_V11={VERSION:'1.1',PACK_ID:PACK_ID,spellLevels:spells,rites:rites,traditions:Object.keys(traditions),mysteries:Object.keys(mysteries)};
 })(window);
