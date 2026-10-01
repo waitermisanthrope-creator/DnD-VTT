@@ -327,6 +327,17 @@
       }
       if(global.DNDClassFeatures&&global.DNDClassFeatures.onAttackResult)global.DNDClassFeatures.onAttackResult(opts.__attacker||{}, {sneakApplied:Array.isArray(fm.extraDice)&&fm.extraDice.length>0,hit:hit,pendingOnHit:pending});
     }
+    var attacker=opts&&opts.__attacker;
+    var attackerState=attacker&&attacker.classFeaturesState;
+    if(attackerState&&Array.isArray(attackerState.alchemistActiveEffects)){
+      var invisUsed=attackerState.alchemistActiveEffects.some(function(e){return e&&e.name==='Зелье невидимости'&&e.effect&&e.effect.endsOnAttack;});
+      if(invisUsed){
+        attackerState.alchemistActiveEffects=attackerState.alchemistActiveEffects.filter(function(e){return !(e&&e.name==='Зелье невидимости'&&e.effect&&e.effect.endsOnAttack);});
+        if(attacker.activeConditions)delete attacker.activeConditions['Невидим'];
+        if(attacker.conditions)delete attacker.conditions['Невидим'];
+        out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Невидимость от зелья завершилась после атаки.');
+      }
+    }
     return out;
   }
   function addCombatantFromTemplate(template){
