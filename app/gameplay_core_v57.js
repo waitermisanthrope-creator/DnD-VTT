@@ -27,7 +27,7 @@
     list.forEach(function(target){var d=target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs;if(!d)return;
       var id=source.id||source.entityId||source.characterId,match=(d.sourceId!=null&&id!=null&&String(d.sourceId)===String(id))||(d.sourceName&&source.name&&String(d.sourceName)===String(source.name));if(!match)return;var hadSpeedZero=!!d.speedZero;
       (d.conditionsApplied||[]).forEach(function(condition){if(target.conditions)delete target.conditions[condition];if(target.activeConditions)delete target.activeConditions[condition];});
-      ['acPenalty','attackPenalty','savePenalty','speedZero','noOpportunityAttacks','verbalComponentsBlocked','revealsInvisible','attacksHaveAdvantage','burning'].forEach(function(key){delete d[key];});
+      ['acPenalty','attackPenalty','savePenalty','speedZero','noOpportunityAttacks','verbalComponentsBlocked','revealsInvisible','attacksHaveAdvantage','burning','endsOnDamage'].forEach(function(key){delete d[key];});
       if(target.turnResources&&hadSpeedZero)target.turnResources.movement=Math.max(0,num(target.speed,30));
       delete d.sourceId;delete d.sourceName;delete d.conditionsApplied;delete d.expires;
       if(!d.oilCoated&&!d.smokeCloud&&!Object.keys(d).length)delete target.classFeaturesState.alchemistDebuffs;
