@@ -42,7 +42,7 @@ window.CLASSES_REFERENCE = {
     "Паразит": { hitDie: 8, primaryStat: "wisdom", savingThrows: ["wisdom", "intelligence"], isExtra: true, isRaceClassHybrid: true, replacesRace: true, multiclassAllowed: false, progression: window.parasiteProgression || {} },
     "Паразит доктора Вальтера": { hitDie: 10, primaryStat: "highest_stat", savingThrows: ["constitution", "dexterity"], isExtra: true, isRaceClassHybrid: true, replacesRace: true, multiclassAllowed: false, progression: window.walterParasiteProgression || {} },
     "Призрак": { hitDie: 8, primaryStat: "charisma", savingThrows: ["wisdom", "charisma"], isExtra: true, isRaceClassHybrid: true, replacesRace: true, multiclassAllowed: false, progression: window.ghostProgression || {} },
-    "Псионик": { hitDie: 8, primaryStat: "intelligence", savingThrows: ["intelligence", "wisdom"], progression: window.psionProgression || {} },
+    "Псионик": { hitDie: 6, primaryStat: "intelligence", savingThrows: ["intelligence", "wisdom"], progression: window.psionProgression || {} },
     "Рунный хранитель": { hitDie: 8, primaryStat: "intelligence", savingThrows: ["intelligence", "wisdom"], progression: window.runeKeeperProgression || {} },
     "Савант": { hitDie: 8, primaryStat: "intelligence", savingThrows: ["intelligence", "wisdom"], progression: window.savantProgression || {} },
     "Шифтер": { hitDie: 10, primaryStat: "dexterity", savingThrows: ["dexterity", "wisdom"], progression: window.shifterProgression || {} },
