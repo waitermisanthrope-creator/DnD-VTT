@@ -29,7 +29,7 @@ const targetA = { id: 'enemy-a' }, targetB = { id: 'enemy-b' }, targetC = { id: 
 assert.strictEqual(runtime.studyTarget(hero, targetA, { visible: true, distanceFt: 60 }).ok, true);
 assert.deepStrictEqual(Array.from(hero.classFeaturesState.bandit.studiedTargetIds), ['enemy-a']);
 assert.strictEqual(runtime.studyTarget(hero, targetB, { visible: false, distanceFt: 10 }).ok, false);
-assert.deepStrictEqual(hero.classFeaturesState.bandit.studiedTargetIds, ['enemy-a'], 'invalid target does not alter state');
+assert.deepStrictEqual(Array.from(hero.classFeaturesState.bandit.studiedTargetIds), ['enemy-a'], 'invalid target does not alter state');
 runtime.studyTarget(hero, targetB, { visible: true, distanceFt: 30 });
 assert.deepStrictEqual(hero.classFeaturesState.bandit.studiedTargetIds, ['enemy-b'], 'one target before level 11; new target replaces old');
 hero.classes[0].level = 11;
