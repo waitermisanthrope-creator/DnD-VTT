@@ -481,6 +481,8 @@
           <button class="btn-action" onclick="dndCombatDamage()">💥 Нанести урон</button>
           <button class="btn-action" onclick="dndCombatHeal()">💚 Лечение</button>
           <button class="btn-action" onclick="dndCombatCondition()">☠️ Состояние</button>
+          <button class="btn-action" onclick="dndProtectorZone()">🛡️ Страж рубежа</button>
+          <button class="btn-action" onclick="dndProtectorRescue()">🆘 Спаситель</button>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px;">
           <button class="btn-action" onclick="dndDeathSave(true)">☠️ Успех death save</button>
@@ -519,6 +521,22 @@
   function chooseTarget(){var h=ensure(),list=h.initiativeTracker.combatants;if(!list.length)return null;var s=list.map(function(c,i){return i+': '+c.name+' HP '+num(c.hp)+'/'+num(c.maxHp);}).join('\n');var idx=Number(prompt('Цель:\n'+s,'0'));return isFinite(idx)&&list[idx]?list[idx]:null;}
   global.dndCombatAttack=function(){var h=ensure(),a=active(),target=chooseTarget();if(!a||!target)return;var bonus=Number(prompt('Бонус атаки:',a.type==='hero'&&h? (global.DNDRules?global.DNDRules.profBonus(h):2):0));if(!isFinite(bonus))return;var dmg=prompt('Урон (например 1d8+3):','1d8+3');if(!dmg)return;var type=prompt('Тип урона:','рубящий')||'';syncHeroCombatant(a);syncHeroCombatant(target);var deferForProtector=target.type==='hero'&&heroHasProtector(h);var r=attack(a,target,{bonus:bonus,damage:dmg,damageType:type,target:target,attackKind:'weapon',deferDamage:deferForProtector});if(r.pendingDamage){var defense=selfDefenseOptions(target,r.pendingDamage.amount);r.damageResult=applyDamage(target,r.pendingDamage.amount,r.pendingDamage.damageType,Object.assign({},r.pendingDamage.context,defense));}if(r.damageResult)syncBackToHero(target);var msg='d20 '+r.d20+' '+(bonus>=0?'+':'')+bonus+' = '+r.total+' против КД '+r.ac+' — '+(r.hit?'ПОПАДАНИЕ':'ПРОМАХ');if(r.damage){var dr=r.damageResult||{amount:r.damage.total,hp:target.hp};msg+='\nУрон '+r.damage.total+(r.critical?' (крит!)':'')+' → '+dr.amount+' ('+type+')';if(dr.note)msg+='; '+dr.note;msg+='\nHP цели: '+dr.hp+'/'+target.maxHp;}alert(msg);save();if(typeof global.renderInitiativeTracker==='function')global.renderInitiativeTracker();renderCombatStatus();syncNetworkMasterCombat('attack');};
   global.dndCombatDamage=function(){var t=chooseTarget();if(!t)return;var a=prompt('Урон:','5'),n=Number(a);if(!isFinite(n))return;var type=prompt('Тип урона:','рубящий')||'';syncHeroCombatant(t);var defense=selfDefenseOptions(t,n);var r=applyDamage(t,n,type,defense);syncBackToHero(t);alert('Получено '+r.amount+' урона'+(r.note?' ('+r.note+')':'')+'. HP: '+r.hp+'/'+t.maxHp);save();if(typeof global.renderInitiativeTracker==='function')global.renderInitiativeTracker();renderCombatStatus();syncNetworkMasterCombat('damage');};
+  global.dndProtectorZone=function(){
+    var h=ensure(),rt=global.FourCustomClassRuntime;if(!h||!rt||typeof rt.useFeature!=='function'){alert('Runtime Заступника недоступен.');return;}
+    var result=rt.useFeature(h,'protectorZone',{actionAvailable:true,round:num(h.initiativeTracker&&h.initiativeTracker.round,1)});
+    alert(result.message||result.reason||'Страж рубежа: без результата.');if(result.ok){save();renderCombatStatus();syncNetworkMasterCombat('protector-zone');}
+  };
+  global.dndProtectorRescue=function(){
+    var h=ensure(),rt=global.FourCustomClassRuntime;if(!h||!rt||typeof rt.useFeature!=='function'){alert('Runtime Заступника недоступен.');return;}
+    var target=chooseTarget();if(!target)return;syncHeroCombatant(target);
+    var distance=Number(prompt('Расстояние до союзника в футах:','5'));if(!isFinite(distance))return;
+    var x=Number(prompt('X свободной клетки:','0'));if(!isFinite(x))return;
+    var y=Number(prompt('Y свободной клетки:','0'));if(!isFinite(y))return;
+    if(!confirm('Подтверждаете, что клетка ('+x+', '+y+') свободна и доступна для перемещения?'))return;
+    var result=rt.useFeature(h,'protectorRescue',{target:target,isAlly:target.type==='hero'||target.team==='ally',visible:true,distanceFt:distance,cellAvailable:true,freeCell:{x:x,y:y},round:num(h.initiativeTracker&&h.initiativeTracker.round,1)});
+    if(result.ok)syncBackToHero(target);
+    alert(result.message||result.reason||'Спаситель: без результата.');if(result.ok){save();if(typeof global.renderInitiativeTracker==='function')global.renderInitiativeTracker();renderCombatStatus();syncNetworkMasterCombat('protector-rescue');}
+  };
   global.dndCombatHeal=function(){var t=chooseTarget();if(!t)return;var n=Number(prompt('Лечение:','5'));if(!isFinite(n))return;syncHeroCombatant(t);var r=heal(t,n);syncBackToHero(t);alert('Восстановлено '+r.amount+' HP. HP: '+r.hp+'/'+r.maxHp);save();if(typeof global.renderInitiativeTracker==='function')global.renderInitiativeTracker();renderCombatStatus();syncNetworkMasterCombat('heal');};
   global.dndCombatCondition=function(){var t=chooseTarget();if(!t)return;var c=prompt('Состояние:\n'+CONDITIONS.join(', '),'Отравлен');if(!c)return;var on=toggleCondition(t,c);alert(c+': '+(on?'активно':'снято'));save();syncNetworkMasterCombat('condition');};
   global.dndDeathSave=function(){var h=ensure();if(!h)return;var roll=rollDie(20),total=roll,ds=h.deathSaves||{successes:0,failures:0};if(num(ds.successes)>=3||num(ds.failures)>=3){alert(num(ds.failures)>=3?'☠ Персонаж уже мёртв.':'🛡 Персонаж уже стабилен — новый Death Save не требуется.');return;}if(roll===20){h.hpCurrent=1;h.hp=h.hp||{};h.hp.current=1;resetDeathSaves(h);alert('🎲 Death Save: натуральная 20 — герой приходит в себя с 1 HP!');}else if(roll===1){deathSave(h,false);deathSave(h,false);alert('🎲 Death Save: натуральная 1 — два провала. '+h.deathSaves.failures+'/3');}else if(total>=10){deathSave(h,true);alert('🎲 Death Save: d20 '+roll+' = '+total+' — успех. '+h.deathSaves.successes+'/3');}else{deathSave(h,false);alert('🎲 Death Save: d20 '+roll+' = '+total+' — провал. '+h.deathSaves.failures+'/3');}save();if(typeof global.calculateMods==='function')global.calculateMods();syncNetworkMasterCombat('death_save');};
