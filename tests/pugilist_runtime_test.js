@@ -9,7 +9,7 @@ vm.runInContext(fs.readFileSync(__dirname+'/../app/expansion_classes_pack.js','u
 const pugilist=registered.find(p=>p.id==='sv-pugilist');
 assert.ok(pugilist,'Pugilist class registered');
 const hooks=pugilist.hooks;
-function hero(level,extra={}){return Object.assign({id:'pugilist-test',classes:[{name:'Пугилист',level}],abilities:{strength:16,constitution:14,charisma:12},proficiencyBonus:3,hp:30,maxHp:30,tempHp:0,resources:{},classFeaturesState:{}},extra);}
+function hero(level,extra={}){return Object.assign({id:'pugilist-test',classes:[{name:'Пугилист',level}],abilities:{str:16,con:14,cha:12},proficiencyBonus:3,hp:30,maxHp:30,tempHp:0,resources:{},classFeaturesState:{}},extra);}
 let h=hero(1);
 hooks.sync(h);
 let r=hooks.useFeature(h,'braceUp',{});
