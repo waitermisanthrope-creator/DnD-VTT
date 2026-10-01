@@ -18,9 +18,7 @@ assert.strictEqual(rules.getModifier({ className: 'Бандит', coins: { gp: 2
 assert.strictEqual(rules.getModifier({ className: 'Мореход', coins: { gp: 2000 } }), 5);
 assert.strictEqual(rules.getModifier({ className: 'Мореход', coins: { gp: 0 } }), -5);
 assert.strictEqual(rules.adjustRollTotal(14, { className: 'Мореход', coins: { gp: 1200 } }), 15);
-assert.strictEqual(rules.adjustDamageDie(1, { className: 'Мореход', coins: { gp: 0 } }), 0);
-assert.strictEqual(rules.adjustDamageDie(4, { className: 'Мореход', coins: { gp: 2000 } }), 9);
-assert.strictEqual(rules.adjustDamageDie(4, { className: 'Бандит', coins: { gp: 2000 } }), 4);
+assert.strictEqual(typeof rules.adjustDamageDie, 'undefined', 'Mariner modifier does not expose damage-die adjustment');
 // Integration: load the actual rules engine and confirm the modifier reaches weapon attacks once.
 const context = {
   console,
@@ -108,11 +106,11 @@ assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'),
   assert.strictEqual(fireResistantAlly.hp, 18, 'post-resistance interception applies correct HP damage');
   const highGoldDie = combatContext.DNDCombat.rollDice('1d6', false, false, loadedMariner);
   assert.strictEqual(highGoldDie.rolls[0], 1);
-  assert.strictEqual(highGoldDie.adjustedRolls[0], 6);
-  assert.strictEqual(highGoldDie.total, 6, 'each damage die receives +5');
+  assert.strictEqual(highGoldDie.adjustedRolls[0], 1);
+  assert.strictEqual(highGoldDie.total, 1, 'Mariner modifier does not affect damage or HP dice');
   const poorMariner = Object.assign({}, loadedMariner, { coins: { gp: 0 } });
   const lowGoldDie = combatContext.DNDCombat.rollDice('1d6', false, false, poorMariner);
-  assert.strictEqual(lowGoldDie.adjustedRolls[0], 0, 'a modified damage die cannot go below zero');
+  assert.strictEqual(lowGoldDie.adjustedRolls[0], 1, 'damage die remains natural even with -5 modifier');
   const save = combatContext.DNDCombat.savingThrow(loadedMariner, 'con', 6);
   assert.strictEqual(save.total, 6, 'combat saving throw receives +5 once');
   assert.strictEqual(save.success, true);
