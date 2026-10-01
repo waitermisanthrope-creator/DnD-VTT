@@ -1543,8 +1543,10 @@ var academy=String(s.warlordAcademy||'');
     res(h,'pugilistFightingSpirit',l>=18?1:0,'long');
     syncPugilistClub(h);
   }
+  function pugilistFeatureMinLevel(id){var req={braceUp:2,oldOneTwo:2,stickAndMove:2,bloodiedButUnbowed:3,haymaker:5,fancyFootwork:7,shakeItOff:7,downButNotOut:9,schoolOfHardKnocks:10,rabbleRouser:13,unbreakable:14,herculean:15,fightingSpirit:18,peakPhysicalCondition:20};return req[id]||1;}
   function usePugilist(h,id,ctx,feature){
     syncPugilist(h);ctx=ctx||{};var l=pugilistLevel(h),s=st(h),r=h.resources&&h.resources.pugilistMoxie;
+    if(l<pugilistFeatureMinLevel(id))return{ok:false,message:'Эта особенность Пугилиста доступна с '+pugilistFeatureMinLevel(id)+'-го уровня.'};
     if(id==='chooseFightClub'||id==='personaLibre'||id==='workCrowd'||id==='highFlyer'||id==='signatureMove'||id==='detectiveWork'||id==='scrapLikeSleuth'||id==='heartOfCity'||id==='eyesWideOpen'||id==='summonHound'||id==='coordinatedAttack'||id==='houndBestFriend'||id==='direHound'||id==='blackMagic'||id==='dreadHand'||id==='dealWithDevil'||id==='grotesqueGrowth'||id==='fountainViscera'||id==='saltySalute'||id==='heelstomper'||id==='lowBlow'||id==='pocketSand'||id==='meanOldCuss'||id==='uncouthArt'||id==='compressionLock'||id==='quickPin'||id==='toTheMat'||id==='meatShield'||id==='heavyweight'||id==='cleanFinish'||id==='bareKnuckleBoxer'||id==='crossCounter'||id==='oneTwoThreeFloor'||id==='floatLikeButterfly'||id==='knockOut')return usePugilistClub(h,id,ctx);
     var cost=0;
     if(id==='braceUp'){
@@ -1675,7 +1677,7 @@ var academy=String(s.warlordAcademy||'');
     }
     if(club==='sweetScience'){
       if(id==='bareKnuckleBoxer')return{ok:true,effect:{criticalRange:19},message:'🥊 Боксёрская техника: критическое попадание с 19–20.'};
-      if(id==='crossCounter'){if(!ctx.incomingDamage||!ctx.attacker)return{ok:false,message:'Для Контрудара нужны атакующий и уже определённый входящий урон.'};if(!spend(h,'pugilistMoxie',2))return{ok:false,message:'Недостаточно Мокси.'};var counterReduction=Math.max(0,diceRoll('1d10')+mod(h,'str')+l),counterDamage=Math.max(0,Number(ctx.incomingDamage)||0-counterReduction);counterDamage=Math.max(0,(Number(ctx.incomingDamage)||0)-counterReduction);s.pugilistCounterCounter={targetId:String(ctx.attacker.id||''),damageBefore:Number(ctx.incomingDamage)||0,damageAfter:counterDamage,reducedBy:counterReduction,canCounter:counterDamage===0};return{ok:true,effect:{damageAfter:counterDamage,damageReduction:counterReduction,counterAttackIfReducedToZero:counterDamage===0,targetId:s.pugilistCounterCounter.targetId},message:'🥊 Контрудар: входящий урон уменьшен на '+counterReduction+'; осталось '+counterDamage+'.'};}
+      if(id==='crossCounter'){if(!ctx.incomingDamage||!ctx.attacker)return{ok:false,message:'Для Контрудара нужны атакующий и уже определённый входящий урон.'};if(!spend(h,'pugilistMoxie',2))return{ok:false,message:'Недостаточно Мокси.'};var counterReduction=Math.max(0,diceRoll('1d10')+mod(h,'str')+l),counterDamage=Math.max(0,(Number(ctx.incomingDamage)||0)-counterReduction);s.pugilistCounterCounter={targetId:String(ctx.attacker.id||''),damageBefore:Number(ctx.incomingDamage)||0,damageAfter:counterDamage,reducedBy:counterReduction,canCounter:counterDamage===0};return{ok:true,effect:{damageAfter:counterDamage,damageReduction:counterReduction,counterAttackIfReducedToZero:counterDamage===0,targetId:s.pugilistCounterCounter.targetId},message:'🥊 Контрудар: входящий урон уменьшен на '+counterReduction+'; осталось '+counterDamage+'.'};}
       if(id==='oneTwoThreeFloor'){if(!spend(h,'pugilistMoxie',1))return{ok:false,message:'Недостаточно Мокси.'};return{ok:true,effect:{extraUnarmedAfterTwoOldOneTwo:true,proneOnHit:true,noDamage:true},message:'🥊 Раз-два-три — на пол.'};
       }
       if(id==='floatLikeButterfly'){return{ok:true,effect:{restoreMoxieOnSuccessfulCrossCounter:1},message:'🦋 Мокси восстанавливается успешным контрударом.'};}
@@ -1702,7 +1704,7 @@ var academy=String(s.warlordAcademy||'');
     return o;
   }
 
-  function pugilistRest(h,type){if(!h||!pugilistLevel(h))return;var s=st(h);if(type==='short'||type==='long'){s.pugilistHaymakerActive=false;s.pugilistSignatureMovePending=false;s.pugilistCounterCounter=null;s.pugilistDigDeepActive=null;s.pugilistDownButNotOut=false;s.pugilistDreadHandActive=false;}if(type==='long'){s.pugilistExhaustion=Math.max(0,(Number(s.pugilistExhaustion)||0)-2);}}
+  function pugilistRest(h,type){if(!h||!pugilistLevel(h))return;var s=st(h);if(type==='short'||type==='long'){s.pugilistHaymakerActive=false;s.pugilistSignatureMovePending=false;s.pugilistCounterCounter=null;s.pugilistDigDeepActive=null;s.pugilistDownButNotOut=false;s.pugilistDreadHandActive=false;}if(type==='long'&&pugilistLevel(h)>=20){s.pugilistExhaustion=Math.max(0,(Number(s.pugilistExhaustion)||0)-2);}}
   function pugilistTurnEnd(h){if(!h||!pugilistLevel(h))return;var s=st(h);s.pugilistHaymakerActive=false;if(s.pugilistDigDeepActive){s.pugilistDigDeepActive.roundsRemaining=Math.max(0,(Number(s.pugilistDigDeepActive.roundsRemaining)||0)-1);if(s.pugilistDigDeepActive.roundsRemaining<=0){s.pugilistExhaustion=(Number(s.pugilistExhaustion)||0)+1;s.pugilistDigDeepActive=null;}}if(s.pugilistSignatureMovePending)s.pugilistSignatureMovePending=false;}
   function occultistRiteCount(l){return l>=18?8:l>=15?7:l>=12?6:l>=9?5:l>=7?4:l>=5?3:l>=2?2:0;}
   function occultistDC(h){return 8+(Number(h.proficiencyBonus)||2)+mod(h,'wisdom');}
