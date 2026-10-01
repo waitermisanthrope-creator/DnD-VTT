@@ -21,13 +21,9 @@
   }
   function abilityMod(hero,key){
     var scores=hero&&hero.abilityScores||hero&&hero.stats||{};
-    var aliases={dex:['dex','dexterity','Ловкость'],cha:['cha','charisma','Харизма']};
-    var val;
-    (aliases[key]||[key]).some(function(k){if(scores[k]!=null){val=Number(scores[k]);return true;}return false;});
-    if(val==null&&hero&&hero[key]!=null)val=Number(hero[key]);
-    if(val==null)return 0;
-    // Some sheets store a modifier rather than a score.
-    return val>=3&&val<=30?Math.floor((val-10)/2):Math.floor(val);
+    var aliases={str:'strength',dex:'dexterity',con:'constitution',int:'intelligence',wis:'wisdom',cha:'charisma'};
+    var val=scores[key]!==undefined?scores[key]:scores[aliases[key]];
+    return Math.floor((n(val,10)-10)/2);
   }
   function proficiency(levelValue){return levelValue>0?Math.floor((levelValue-1)/4)+2:0;}
   function ensureResource(hero,id,max,recharge){
@@ -36,7 +32,7 @@
     if(!r||typeof r!=='object')r=hero.resources[id]={current:max,max:max,recharge:recharge};
     else{
       var oldMax=Math.max(0,n(r.max,max)),current=Math.max(0,n(r.current,max));
-      r.max=max;r.current=Math.min(max,Math.max(0,current+(max-oldMax)));
+      r.max=max;r.current=Math.min(max,Math.max(0,current));
       r.recharge=recharge;
     }
     return r;
