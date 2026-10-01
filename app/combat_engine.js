@@ -58,7 +58,8 @@
     if(raceImmune||hasType(target && target.immunities,type)){if(opts.immunityBecomesResistance)return {raw:amount,amount:Math.floor(amount/2),mode:'immunity-as-resistance',note:'Иммунитет считается сопротивлением',type:type};return {raw:amount,amount:0,mode:'immune',note:'Иммунитет',type:type};}
     var witchImperil=target&&target.witchImperil&&String(target.witchImperil.damageType||'').toLowerCase()===type;
     var witchElemental=target&&target.witchElementalResistance&&String(target.witchElementalResistance).toLowerCase()===type;
-    var resistant=!opts.ignoreResistance&&!witchImperil&&(raging||pugilistDigDeepResistant||raceResistant||witchElemental||hasType(target && target.resistances,type));
+    var grafts=target&&target.classFeaturesState&&Array.isArray(target.classFeaturesState.alchemistGrafts)?target.classFeaturesState.alchemistGrafts:[];var graftResistant=grafts.some(function(g){return g&&['Энергетический шов','Шкура дракона'].indexOf(g.name)>=0&&String(g.resistanceType||'')===String(type||'');});
+    var resistant=!opts.ignoreResistance&&!witchImperil&&(raging||pugilistDigDeepResistant||raceResistant||witchElemental||graftResistant||hasType(target && target.resistances,type));
     var vulnerable=hasType(target && target.vulnerabilities,type);
     if(resistant&&vulnerable){
       note='Сопротивление и уязвимость взаимно компенсированы';
