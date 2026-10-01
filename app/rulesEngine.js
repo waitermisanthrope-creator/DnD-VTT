@@ -263,7 +263,7 @@
     var bonus = mod(stats[stat]) + (proficient ? profBonus(hero) : 0) + (Number(weapon.extraAtk) || 0);
     var conditions = conditionModifiers(hero);
     var roll = rollD20(resolveRollMode(hero, mode), global.rollSingleDice ? function(){ return global.rollSingleDice(20); } : null);
-    bonus += conditions.attack + getD20Modifier(hero);
+    bonus += conditions.attack;
     return { bonus: bonus, roll: roll, total: roll.result + bonus, critical: roll.critical, fumble: roll.fumble, stat: stat };
   }
 
@@ -460,9 +460,8 @@ if (typeof window !== 'undefined' && window.addEventListener) window.addEventLis
       var stats = R.spellStats(h, src || undefined);
       var mode = (typeof window.currentRollMode !== 'undefined') ? window.currentRollMode : 'normal';
       var roll = R.rollD20(R.resolveRollMode(h, mode), typeof window.rollSingleDice === 'function' ? function(){ return window.rollSingleDice(20); } : null);
-      var goldMod = R.getD20Modifier(h);
-      var total = roll.result + stats.attack + goldMod;
-      var effectiveAttackBonus = stats.attack + goldMod;
+      var total = roll.result + stats.attack;
+      var effectiveAttackBonus = stats.attack;
       var text = '✨ ' + spellName + ' [' + (stats.className || 'Заклинание') + ': ' + stats.ability.toUpperCase() + ']\n' +
         'd20 (' + roll.result + ') ' + (effectiveAttackBonus >= 0 ? '+' : '') + effectiveAttackBonus + ' = ' + total +
         (roll.critical ? ' 🔥 КРИТ!' : roll.fumble ? ' 💀 КРИТИЧЕСКИЙ ПРОМАХ!' : '');
@@ -573,7 +572,7 @@ if (typeof window !== 'undefined' && window.addEventListener) window.addEventLis
   }
 
   window.dndStartConcentrationPrompt=function(){var h=hero();if(!h)return;var name=prompt('Какое заклинание держите концентрацией?',(h.concentration&&h.concentration.spellName)||'');if(name===null)return;if(window.DNDCombat&&typeof window.DNDCombat.beginConcentration==='function')window.DNDCombat.beginConcentration(h,name?{name:name,concentration:true}:null);else h.concentration={active:!!name,spellName:name,spellId:null};save();renderRulesPanel();};
-  window.dndConcentrationDamagePrompt=function(){var h=hero();if(!h)return;var dmg=Number(prompt('Полученный урон:','10'));if(!isFinite(dmg))return;var dc=R.concentrationDC(h,dmg), stats=R.getSaveBonus(h,'con')+R.getD20Modifier(h);var roll=R.rollD20('normal');var total=roll.result+stats;var ok=total>=dc;alert('Проверка концентрации\nDC '+dc+'\nCON: d20 '+roll.result+' '+(stats>=0?'+':'')+stats+' = '+total+'\n'+(ok?'✅ Концентрация сохранена':'❌ Концентрация потеряна'));if(!ok)h.concentration={active:false,spellId:null,spellName:''};save();renderRulesPanel();};
+  window.dndConcentrationDamagePrompt=function(){var h=hero();if(!h)return;var dmg=Number(prompt('Полученный урон:','10'));if(!isFinite(dmg))return;var dc=R.concentrationDC(h,dmg), stats=R.getSaveBonus(h,'con');var roll=R.rollD20('normal');var total=roll.result+stats;var ok=total>=dc;alert('Проверка концентрации\nDC '+dc+'\nCON: d20 '+roll.result+' '+(stats>=0?'+':'')+stats+' = '+total+'\n'+(ok?'✅ Концентрация сохранена':'❌ Концентрация потеряна'));if(!ok)h.concentration={active:false,spellId:null,spellName:''};save();renderRulesPanel();};
   window.dndShowRulesSummary=function(){var h=hero();if(!h)return;var s=R.getStats(h),lines=['D&D 5e Rules Engine','Уровень '+R.totalLevel(h),'Бонус мастерства +'+R.profBonus(h),'КД '+R.calculateAC(h),'Спасброски: '+Object.keys(s).map(function(k){return k.toUpperCase()+' '+(R.getSaveBonus(h,k)>=0?'+':'')+R.getSaveBonus(h,k);}).join(', ')];alert(lines.join('\n'));};
 
   var oldRenderDndTools=window.renderDndTools;
