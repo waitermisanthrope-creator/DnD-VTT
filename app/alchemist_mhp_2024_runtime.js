@@ -262,7 +262,7 @@ function longRest(h){
  r.current=r.max;s.alchemistSynthesisUsed=false;s.alchemistSynthesisReady=false;
  var oldEffects=s.alchemistActiveEffects||[],keepEffects=oldEffects.filter(function(e){return e.effect&&e.effect.durationMinutes>=1440;});
  cleanupPotionEffects(h,oldEffects,keepEffects);s.alchemistActiveEffects=keepEffects;
- s.blackPowderUses=Math.max(1,mod(h,'int'));s.xenoNecroticReady=false;s.xenoNecroticUsed=false;s.alchemistEnergyCharges=0;s.alchemistPotionMixReady=false;
+ s.blackPowderUses=Math.max(1,mod(h,'int'));s.xenoNecroticReady=false;s.xenoNecroticUsed=false;s.alchemistEnergyCharges=0;s.alchemistLazarusUsed=false;s.alchemistPotionMixReady=false;
  s.alchemistRestType='long';
 }
 function startTurn(h){
@@ -549,6 +549,24 @@ function use(h,id,ctx,feature){
   return{ok:true,effect:{consumedPotion:potion.name,applied:effect,applyPotionEffect:true},message:'🍶 Выпито: '+potion.name+(effect.healing!=null?'. Восстановлено HP: '+effect.healing+'.':'. Эффект записан в активные эффекты персонажа.')};
  }
  if(id==='philosopherStone'){if(l<20)return{ok:false,message:'Философский камень доступен с 20 уровня.'};s.philosopherStone=true;return{ok:true,effect:{regainReagentsOnInitiativeUpTo:6,quickBrewing:true,longevity:true},message:'💎 Философский камень создан.'};}
+ var requestedFeature=String(ctx.featureName||ctx.name||'');
+ if(requestedFeature==='Болт Лазаря'||id==='Болт Лазаря'||id==='lazarusBolt'){
+  var patient=ctx.target;if(!patient||typeof patient!=='object')return{ok:false,needsTarget:true,message:'Выберите умершее существо в пределах 5 футов.'};
+  if(Number(ctx.distanceFt)>5||!Number.isFinite(Number(ctx.distanceFt)))return{ok:false,message:'Цель должна находиться в пределах 5 футов; способность не потрачена.'};
+  var minutesSinceDeath=Number(ctx.minutesSinceDeath);
+  if(!Number.isFinite(minutesSinceDeath)||minutesSinceDeath<0||minutesSinceDeath>1)return{ok:false,message:'Болт Лазаря работает только в течение первой минуты после смерти; укажите время с момента смерти.'};
+  if(patient.noHeart===true||patient.hasHeart===false||patient.missingVitalOrgans===true||patient.deathCause==='old_age'||patient.deathCause==='старость')return{ok:false,message:'Болт Лазаря не действует без сердца, жизненно важных органов или при смерти от старости.'};
+  var isDead=patient.dead===true||patient.isDead===true||patient.defeated===true||Number(patient.hp)<=0;
+  if(!isDead)return{ok:false,message:'Цель ещё жива; Болт Лазаря не требуется.'};
+  var restoreUsed=!!s.alchemistLazarusUsed;
+  if(restoreUsed){
+   if(ctx.restoreWithReagents!==true)return{ok:false,message:'Болт Лазаря уже использован после долгого отдыха. Для восстановления без действия потратьте 3 реагента.'};
+   if(!spend(h,3))return{ok:false,message:'Нужно 3 реагента для восстановления Болта Лазаря.'};
+  }
+  patient.hp=1;patient.currentHp=1;patient.tempHp=2*l;patient.temporaryHP=2*l;patient.dead=false;patient.isDead=false;patient.defeated=false;
+  s.alchemistLazarusUsed=true;
+  return{ok:true,target:patient.id||null,effect:{revived:true,hp:1,tempHp:2*l,reagentsSpent:restoreUsed?3:0,actionSpent:!restoreUsed},message:'✨ Болт Лазаря: существо возвращено к жизни с 1 HP и '+(2*l)+' временными HP.'};
+ }
  var selected=(h.classes||[]).find(function(x){return x.name===CLASS||x.englishName==='Alchemist';});var subId=(feature&&feature.subclassId)||ctx.subclass||(selected&&selected.subclass);var sub=subs.find(function(x){return x.id===subId||x.name===subId;});
  if(sub&&(id==='subclassFeature'||id.indexOf(sub.id+'-')===0)){var f=sub.f.find(function(x){return id===sub.id+'-'+x[0]+'-'+x[1]||id===sub.id+'-'+x[1]||String(x[1])===String(ctx.featureName)||String(x[1])===String(ctx.featureId)||(feature&&String(feature.name)===String(x[1]))||(ctx.level!=null&&Number(x[0])===Number(ctx.level)&&!ctx.featureName&&!ctx.featureId);});if(!f)return{ok:false,unsupported:true,message:'Не удалось однозначно определить особенность подкласса; эффект не применён.'};if(l<Number(f[0]))return{ok:false,message:'Особенность доступна с '+f[0]+' уровня.'};return subclassFeatureEffect(h,sub,f,ctx);}
  return{ok:false,unsupported:true,message:'Алхимик: способность '+id+' пока не имеет исполняемого resolver-а.'};
