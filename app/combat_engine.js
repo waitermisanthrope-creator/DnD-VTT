@@ -328,6 +328,7 @@
     var alchemistDebuffs=target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs||{};
     var coverBonus=(opts&&opts.__classFeatureMod&&opts.__classFeatureMod.ignoreCover)?0:num(opts&&opts.coverBonus, num(target&&target.coverBonus,0));
     var targetGrafts=target&&target.classFeaturesState&&Array.isArray(target.classFeaturesState.alchemistGrafts)?target.classFeaturesState.alchemistGrafts.map(function(x){return typeof x==='string'?x:x&&x.name||'';}):[];
+    if(roll.critical&&targetGrafts.indexOf('Изменчивая анатомия')>=0){roll.critical=false;roll.graftCriticalSuppressed=true;}
     var dexScore=Number(target&&target.abilityScores&&target.abilityScores.dexterity!=null?target.abilityScores.dexterity:target&&target.stats&&target.stats.dexterity!=null?target.stats.dexterity:10),dexMod=Math.floor((dexScore-10)/2);
     var targetHasArmor=!!(target&&(target.armorEquipped||target.equippedArmor||(target.equipment&&(target.equipment.armor||target.equipment.armour))));
     var graftAC=null,unarmoredBase=10+dexMod;
