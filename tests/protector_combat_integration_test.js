@@ -63,4 +63,29 @@ assert.strictEqual(protector.hp, 20, 'damage reduction prevents HP loss');
 assert.strictEqual(protector.resources.protectorImpulses.current, 1, 'successful self-defense spends one impulse');
 assert.strictEqual(protector.turnResources.reaction, 0, 'successful self-defense spends reaction');
 
+// The combat UI's hero combatant has a separate initiative ID from the saved character.
+// The bridge is accepted only when the UI explicitly confirms this is the hero token.
+const mappedProtector = {
+  id: 'protector-character-id',
+  classes: [{ name: 'Заступник', level: 3 }],
+  resources: { protectorImpulses: { current: 2, max: 2, recharge: 'short' } },
+  turnResources: { reaction: 1 },
+  hp: 18,
+  maxHp: 18,
+  tempHp: 0
+};
+const heroCombatant = { id: 'initiative-hero-token', type: 'hero', hp: 18, maxHp: 18, tempHp: 0 };
+const rejectedUnmapped = window.DNDCombat.applyDamage(heroCombatant, 8, 'рубящий', {
+  protector: mappedProtector, protectorIsSelf: true
+});
+assert.strictEqual(rejectedUnmapped.amount, 8, 'self-defense identity bridge is rejected unless UI confirms hero combatant');
+assert.strictEqual(mappedProtector.resources.protectorImpulses.current, 2, 'rejected identity bridge does not spend impulse');
+const mappedDefense = window.DNDCombat.applyDamage(heroCombatant, 8, 'рубящий', {
+  protector: mappedProtector, protectorIsSelf: true, protectorIsHeroCombatant: true
+});
+assert.strictEqual(mappedDefense.amount, 0, 'explicitly mapped hero combatant can use self-defense');
+assert.strictEqual(heroCombatant.hp, 18, 'mapped self-defense prevents hero HP loss');
+assert.strictEqual(mappedProtector.resources.protectorImpulses.current, 1, 'mapped self-defense spends exactly one impulse');
+assert.strictEqual(mappedProtector.turnResources.reaction, 0, 'mapped self-defense spends reaction');
+
 console.log('Protector combat integration tests: PASS');
