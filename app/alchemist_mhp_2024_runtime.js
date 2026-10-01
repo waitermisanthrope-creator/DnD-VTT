@@ -297,6 +297,7 @@ function subclassFeatureEffect(h,sub,f,ctx){
 function use(h,id,ctx,feature){
  sync(h);ctx=ctx||{};var l=alvl(h),s=st(h),r=h.resources.alchemistReagents;
  id=String(id||'').replace(/^alchemist-/,'');
+ var aliases={'Прайм-бомба':'primeBomb','Синтез реагентов':'reagentSynthesis','Бомбы':'bomb','Варка зелий':'potionBrew','Формулы бомб':'formula','Философский камень':'philosopherStone','Ядерная бомба':'nuclearBomb'};if(aliases[id])id=aliases[id];
  if(id==='primeBomb'){var n=Math.min(Number(ctx.reagents)||1,s.alchemistPrimeMax,r.current);if(!spend(h,n))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,effect:{extraDamage:n+'d10',extraRadiusFt:n*5},message:'💣 Прайм-бомба: +'+n+'d10.'};}
  if(id==='reagentSynthesis'){if(!s.alchemistSynthesisReady)return{ok:false,message:'Синтез реагентов доступен после короткого отдыха; после применения нужен долгий отдых.'};if(s.alchemistSynthesisUsed)return{ok:false,message:'Синтез уже использован до долгого отдыха.'};var n=Math.min(Math.max(1,mod(h,'int')),r.max-r.current);if(n<=0)return{ok:false,message:'Реагенты уже на максимуме.'};r.current+=n;s.alchemistSynthesisUsed=true;s.alchemistSynthesisReady=false;return{ok:true,message:'⚗️ Синтез: восстановлено реагентов '+n+'.'};}
  if(id==='bomb'){return{ok:true,effect:{attack:true,damageDice:s.alchemistBombDamage,damageType:'fire',range:'30/90',saveDC:s.alchemistSaveDC,explodeRadiusFt:5,intelligentExplosion:Math.max(1,mod(h,'int'))},message:'💣 Бомба готова.'};}
