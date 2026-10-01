@@ -42,16 +42,11 @@
     return Number(total || 0) + getModifier(hero);
   }
 
-  function adjustDamageDie(value, hero) {
-    return Math.max(0, Number(value || 0) + getModifier(hero));
-  }
-
   var api = {
     carriedGoldEquivalent: carriedGoldEquivalent,
     modifierForGold: modifierForGold,
     getModifier: getModifier,
-    adjustRollTotal: adjustRollTotal,
-    adjustDamageDie: adjustDamageDie
+    adjustRollTotal: adjustRollTotal
   };
   global.MorehodGoldModifier = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
