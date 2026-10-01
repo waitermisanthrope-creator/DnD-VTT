@@ -7,7 +7,7 @@ const ctx={console,Math:math,Date,JSON,Set,Number,String,Array,Object,RegExp,par
 ctx.window=ctx;ctx.globalThis=ctx;
 ctx.DNDRules={
   parseDice(expr){const m=String(expr).match(/(\d+)d(\d+)(?:([+-])(\d+))?/i);return m?{groups:[{count:Number(m[1]),sides:Number(m[2])}],constant:m[3]?(m[3]==='-'?-1:1)*Number(m[4]):0}:{groups:[{count:1,sides:6}],constant:0};},
-  rollD20(){return {result:rollResult,critical:rollResult===20,fumble:rollResult===1};}
+  rollD20(){return {result:rollResult,critical:rollResult===20,fumble:rollResult===1};},getSaveBonus(){return 0;}
 };
 ctx.DNDContent={packs:[],registerClass(p){this.packs.push(p);},listClasses(){return this.packs.map(p=>({name:p.displayName||p.name}));},getClass(n){return this.packs.find(p=>p.displayName===n||p.name===n||p.id===n)||null;}};
 vm.createContext(ctx);
@@ -68,4 +68,27 @@ pack.hooks.sync(hpShape);
 assert.equal(pack.hooks.useFeature(hpShape,'fightingSpirit',{}).ok,true,'Fighting Spirit supports the app hpCurrent/hpMax shape');
 assert.equal(hpShape.hpCurrent,20,'Fighting Spirit restores half max HP in the app data shape');
 assert.equal(hpShape.classFeaturesState.pugilistExhaustion,1,'Fighting Spirit adds one exhaustion level');
+const ironChinTarget=hero(1,'Арена Рояль');ironChinTarget.ac=10;ironChinTarget.abilityScores.constitution=16;ironChinTarget.stats.con=16;
+const ironChinAttack=ctx.DNDCombat.attack(hero(1,'Арена Рояль'),ironChinTarget,{bonus:0,damage:'1d4',damageType:'рубящий',useRules:false});
+assert.equal(ironChinAttack.ac,15,'Iron Chin computes AC as 12 + Constitution modifier without armor/shield');
+const schoolHero=hero(10,'Арена Рояль');pack.hooks.sync(schoolHero);
+const schoolDamageTarget=target('school-of-hard-knocks');schoolDamageTarget.classes=[{name:'Пугилист',level:10}];
+assert.equal(ctx.DNDCombat.effectiveDamage(schoolDamageTarget,11,'психический',{}).amount,5,'School of Hard Knocks resists psychic damage');
+const schoolSave=ctx.DNDCombat.savingThrow(schoolHero,'con',10,'normal',{saveType:'stunned'});
+assert.ok(schoolSave.classFeatureNotes.includes('Школа суровой жизни'),'School of Hard Knocks grants advantage against stun/unconsciousness saves');
+const counterHero=hero(3,'Благородное искусство');pack.hooks.sync(counterHero);
+const counter=pack.hooks.useFeature(counterHero,'crossCounter',{attacker:{id:'enemy-attacker'},incomingDamage:10});
+assert.equal(counter.ok,true,'Cross Counter prepares a damage reduction reaction');
+const counterDamage=ctx.DNDCombat.applyDamage(counterHero,10,'рубящий',{attackerId:'enemy-attacker'});
+assert.equal(counterDamage.amount,counter.effect.damageAfter,'Cross Counter reduction reaches the actual damage resolver');
+assert.equal(counterHero.hp,30-counter.effect.damageAfter,'Cross Counter reduces actual HP loss');
+assert.equal(counterHero.classFeaturesState.pugilistCounterCounter,undefined,'Cross Counter state is consumed after the matching attack');
+const magicFistHero=hero(6,'Арена Рояль');pack.hooks.sync(magicFistHero);
+const resistantTarget=target('nonmagical-resistance');resistantTarget.resistances=['nonmagical дробящий'];
+const magicHit=ctx.DNDCombat.attack(magicFistHero,resistantTarget,{bonus:0,damage:'1d4',damageType:'дробящий',unarmedAttack:true,useRules:false});
+assert.equal(magicHit.damageResult.amount,magicHit.damage.total,'Level 6 magical fists bypass resistance explicitly limited to nonmagical bludgeoning damage');
+const conditionHero=hero(7,'Арена Рояль');conditionHero.conditions={Очарован:true,Испуган:true};conditionHero.activeConditions={charmed:true,frightened:true};pack.hooks.sync(conditionHero);
+assert.equal(pack.hooks.useFeature(conditionHero,'shakeItOff',{}).ok,true,'Shake It Off resolves');
+assert.equal(conditionHero.conditions['Очарован'],undefined,'Shake It Off removes charmed condition');
+assert.equal(conditionHero.activeConditions.frightened,undefined,'Shake It Off removes frightened condition');
 console.log('Pugilist combat integration tests: PASS (real class hooks, subclass mapping, Fisticuffs die, Haymaker, target-bound Signature Move hit/miss, Dig Deep resistance, Fighting Spirit HP shape)');
