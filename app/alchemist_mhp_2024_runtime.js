@@ -265,20 +265,23 @@ function subclassFeatureEffect(h,sub,f,ctx){
  if(name==='Бомба с феромонами')return{ok:true,effect:{damage:0,save:'wisdom',condition:'charmed',until:'start_of_next_turn',endsOnDamage:true},message:'💗 Феромонная бомба применена.'};
  if(name==='Аркано-бомба')return{ok:true,effect:{damageType:'force',damageDice:'d12',extraDice:1,spendDynamo:true},message:'⚡ Аркано-бомба готова.'};
  if(name==='Плазменная бомба')return{ok:true,effect:{damageType:'radiant',directDice:'d12',blastDice:'d6',attached:true},message:'☀️ Плазменная бомба готова.'};
- if(name==='Теплоотвод'){if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,effect:{overheatDamage:'2d6 fire',coolWeaponBonus:'2d6 cold'},message:'🔥❄️ Теплоотвод применён.'};}
+ if(name==='Теплоотвод'){if(!ctx.overheatedWeapon||!ctx.overheatedWeapon.id)return{ok:false,needsTarget:true,message:'Выберите конкретное перегретое оружие; реагенты не списаны.'};if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,effect:{overheatDamage:'2d6 fire',coolWeaponBonus:'2d6 cold',weaponId:ctx.overheatedWeapon.id},message:'🔥❄️ Теплоотвод применён.'};}
  if(name==='Бомба с чёрным порохом'){var r=h.resources.alchemistReagents;if(!s.blackPowderUses)s.blackPowderUses=Math.max(1,mod(h,'int'));if(s.blackPowderUses<1)return{ok:false,message:'Бомбы с чёрным порохом исчерпаны до отдыха.'};s.blackPowderUses--;return{ok:true,effect:{damageDice:'d12',damageType:'fire',ignoreResistance:true,immunityBecomesResistance:true},message:'💥 Бомба с чёрным порохом готова.'};}
  if(name==='Мутаген'){
-  s.activeMutagen=ctx.ability||'constitution';
-  return {ok:true,effect:{abilityBonus:3,ability:s.activeMutagen,maxAbility:23,duration:'1 minute'},message:'🧬 Мутаген активирован.'};
+  var mutagenAbility=String(ctx.ability||'constitution');
+  if(['strength','dexterity','constitution','intelligence','wisdom','charisma'].indexOf(mutagenAbility)<0)return{ok:false,message:'Выберите допустимую характеристику для мутагена.'};
+  if(s.activeMutagen)return{ok:false,message:'Мутагены уже активны; сначала завершите текущий эффект.'};
+  s.activeMutagen=mutagenAbility;
+  return {ok:true,effect:{abilityBonus:3,ability:s.activeMutagen,maxAbility:23,duration:'1 minute'},message:'🧬 Мутаген выбран: '+mutagenAbility+'. Применение бонуса требует подключения effect resolver.'};
  }
- if(name==='Общий мутаген'){if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,target:(ctx.target&&ctx.target.id)||null,effect:{grantMutagen:true,duration:'1 minute',onePerTarget:true},message:'🧬 Мутаген передан союзнику.'};}
+ if(name==='Общий мутаген'){if(!ctx.target||!ctx.target.id)return{ok:false,needsTarget:true,message:'Выберите союзника для передачи мутагена; реагенты не списаны.'};if(ctx.target.isAlly===false)return{ok:false,message:'Общий мутаген можно передать только союзнику; реагенты не списаны.'};if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,target:ctx.target.id,effect:{grantMutagen:true,duration:'1 minute',onePerTarget:true},message:'🧬 Мутаген подготовлен для передачи союзнику.'};}
  if(name==='Слизевая бомба')return{ok:true,effect:{damage:0,areaSlime:true,deniesActions:['dash','disengage','dodge'],removeAction:true},message:'🟢 Слизевая бомба разлита.'};
  if(name==='Жертвенная слизь'){if(!spend(h,0))return{ok:false};return{ok:true,effect:{reaction:true,redirectAttackToAlly:true,rangeFt:5},message:'🟢 Жертвенная слизь готова.'};}
  if(name==='Палитра-порталы')return{ok:true,effect:{teleportBetweenPaint:true,moveCostFt:10,rangeFt:60},message:'🎨 Палитра-порталы готовы.'};
  if(name==='Коническая бомба')return{ok:true,effect:{damageType:'thunder',damageDice:'d10',area:'cone',sizeFt:10,save:'constitution',radiusPerReagentFt:5},message:'🔊 Коническая бомба готова.'};
  if(name==='Светошумовая граната')return{ok:true,effect:{bonusAction:true,areaFt:10,noOpportunityAttacks:true,duration:'until_start_of_next_turn'},message:'🔊 Светошумовая граната готова.'};
  if(name==='Бомба со смехотворным газом')return{ok:true,effect:{damageType:'poison',damageDice:'d8',save:'constitution',onNatural1:{condition:'incapacitated',speed:0,duration:'until_start_of_next_turn'}},message:'☠️ Газовая бомба готова.'};
- if(name==='Токсическое возмездие')return{ok:true,effect:{reaction:true,save:'constitution',condition:'poisoned',duration:'1 minute',damageAtTurnStart:'1d10 poison',repeatSave:true},message:'☠️ Токсическое возмездие готово.'};
+ if(name==='Токсическое возмездие'){if(!ctx.attacker||!ctx.attacker.id)return{ok:false,needsTarget:true,message:'Нужен конкретный атакующий как цель реакции.'};return{ok:true,target:ctx.attacker.id,effect:{reaction:true,save:'constitution',condition:'poisoned',duration:'1 minute',damageAtTurnStart:'1d10 poison',repeatSave:true},message:'☠️ Токсическое возмездие подготовлено против атакующего.'};}
  if(name==='Хирургическая атака'){if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};s.alchemistSurgicalAttackReady=true;return{ok:true,effect:{attackAbility:'intelligence',extraDamage:'1d8'},message:'🧬 Следующий подходящий удар трансплантатом усилен.'};}
  if(name==='Некромантические органы'){s.xenoNecroticReady=true;return{ok:true,effect:{replaceDropToZeroWithHP:l,longRestUses:1},message:'🧬 Некромантические органы готовы.'};}
  if(name==='Кислотная бомба')return{ok:true,effect:{damageDice:'2d8',damageType:'acid',splashDice:'d8'},message:'🧪 Кислотная бомба готова.'};
