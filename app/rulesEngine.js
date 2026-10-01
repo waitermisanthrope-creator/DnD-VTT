@@ -188,16 +188,21 @@
     return hero;
   }
 
+  function getD20Modifier(hero) {
+    return global.MorehodGoldModifier && typeof global.MorehodGoldModifier.getModifier === 'function'
+      ? global.MorehodGoldModifier.getModifier(hero) : 0;
+  }
+
   function getSkillBonus(hero, skillId, statKey) {
     var stats = getStats(hero);
     var rank = hero && hero.skillsData ? Number(hero.skillsData[skillId]) || 0 : 0;
-    return mod(stats[statKey]) + profBonus(hero) * Math.min(2, Math.max(0, rank));
+    return mod(stats[statKey]) + profBonus(hero) * Math.min(2, Math.max(0, rank)) + getD20Modifier(hero);
   }
 
   function getSaveBonus(hero, statKey) {
     var stats = getStats(hero);
     var proficient = !!(hero && hero.savesData && hero.savesData[statKey]);
-    return mod(stats[statKey]) + (proficient ? profBonus(hero) : 0);
+    return mod(stats[statKey]) + (proficient ? profBonus(hero) : 0) + getD20Modifier(hero);
   }
 
   function conditionModifiers(hero) {
@@ -258,7 +263,7 @@
     var bonus = mod(stats[stat]) + (proficient ? profBonus(hero) : 0) + (Number(weapon.extraAtk) || 0);
     var conditions = conditionModifiers(hero);
     var roll = rollD20(resolveRollMode(hero, mode), global.rollSingleDice ? function(){ return global.rollSingleDice(20); } : null);
-    bonus += conditions.attack;
+    bonus += conditions.attack + getD20Modifier(hero);
     return { bonus: bonus, roll: roll, total: roll.result + bonus, critical: roll.critical, fumble: roll.fumble, stat: stat };
   }
 
@@ -355,7 +360,7 @@
     normalize: normalize, getStats: getStats, mod: mod, totalLevel: totalLevel, profBonus: profBonus,
     classKey: classKey, classLevel: classLevel, getSkillBonus: getSkillBonus, getSaveBonus: getSaveBonus,
     conditionModifiers: conditionModifiers, normalizeConditionName: normalizeConditionName, attackAgainstMode: attackAgainstMode, resolveRollMode: resolveRollMode, rollD20: rollD20,
-    weaponAttack: weaponAttack, parseDice: parseDice, calculateAC: calculateAC, spellSources: spellSources,
+    weaponAttack: weaponAttack, getD20Modifier: getD20Modifier, parseDice: parseDice, calculateAC: calculateAC, spellSources: spellSources,
     spellStats: spellStats, spellSlotTable: spellSlotTable, concentrationDC: concentrationDC,
     setResource: setResource, spendResource: spendResource, restoreResources: restoreResources, applyASI: applyASI
   };
