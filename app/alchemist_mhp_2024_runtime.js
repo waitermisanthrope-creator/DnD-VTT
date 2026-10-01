@@ -399,12 +399,24 @@ function subclassFeatureEffect(h,sub,f,ctx){
   return{ok:true,effect:{resistanceType:chosenResistance,until:'next_long_rest'},message:'💥 Защита от взрыва: сопротивление '+chosenResistance+' до следующего продолжительного отдыха.'};
  }
  if(name==='Бомба с чёрным порохом'){var r=h.resources.alchemistReagents;if(!s.blackPowderUses)s.blackPowderUses=Math.max(1,mod(h,'int'));if(s.blackPowderUses<1)return{ok:false,message:'Бомбы с чёрным порохом исчерпаны до отдыха.'};s.blackPowderUses--;s.alchemistPendingBombEffect={dice:'1d12',type:'огонь',name:name,ignoreResistance:true,immunityBecomesResistance:true};return{ok:true,effect:{damageDice:'d12',damageType:'fire',ignoreResistance:true,immunityBecomesResistance:true,prepared:true},message:'💥 Бомба с чёрным порохом подготовлена к следующей атаке бомбой.'};}
+ if(name==='Мутировавшая кровь'){
+  if(l<14||!(sub.id==='mutagenist'||sub.name==='Мутагенист'))return{ok:false,message:'Мутировавшая кровь доступна Мутагенисту с 14 уровня.'};
+  if(s.alchemistMutatedBlood)return{ok:false,message:'Постоянное усиление Мутировавшей крови уже выбрано.'};
+  var bloodAbility=String(ctx.ability||'');if(['strength','dexterity','constitution'].indexOf(bloodAbility)<0)return{ok:false,needsChoice:true,message:'Выберите Силу, Ловкость или Телосложение; характеристика не изменена.'};
+  var bloodShort={strength:'str',dexterity:'dex',constitution:'con'},bloodSnapshots=[];
+  ['abilityScores','stats'].forEach(function(prop){var obj=h[prop];if(!obj||typeof obj!=='object')return;var key=obj[bloodAbility]!==undefined?bloodAbility:(obj[bloodShort[bloodAbility]]!==undefined?bloodShort[bloodAbility]:null);if(key===null)return;var original=Number(obj[key])||10;bloodSnapshots.push({prop:prop,key:key,original:original});});
+  if(!bloodSnapshots.length)return{ok:false,unsupported:true,message:'Не найдены характеристики персонажа; бонус не применён.'};
+  if(bloodSnapshots.some(function(x){return x.original>=22;}))return{ok:false,message:'Мутировавшая кровь повышает выбранную характеристику максимум до 22; текущая характеристика уже достигла лимита.'};
+  bloodSnapshots.forEach(function(x){h[x.prop][x.key]=Math.min(22,x.original+2);});
+  s.alchemistMutatedBlood={ability:bloodAbility,snapshots:bloodSnapshots};
+  return{ok:true,effect:{ability:bloodAbility,bonus:2,maximum:22,mutagenMaximum:25},message:'🧬 Мутировавшая кровь: '+bloodAbility+' повышена на 2 (максимум 22); под мутагеном предел этой характеристики — 25.'};
+ }
  if(name==='Мутаген'){
   var mutagenAbility=String(ctx.ability||'constitution');
   if(['strength','dexterity','constitution','intelligence','wisdom','charisma'].indexOf(mutagenAbility)<0)return{ok:false,message:'Выберите допустимую характеристику для мутагена.'};
   if(s.activeMutagen)return{ok:false,message:'Мутагены уже активны; сначала завершите текущий эффект.'};
   var aliases={strength:'str',dexterity:'dexterity',constitution:'con',intelligence:'int',wisdom:'wis',charisma:'cha'},shortKeys={strength:'str',dexterity:'dex',constitution:'con',intelligence:'int',wisdom:'wis',charisma:'cha'},scoreSnapshots=[];
-  ['abilityScores','stats'].forEach(function(prop){var obj=h[prop];if(!obj||typeof obj!=='object')return;var key=obj[mutagenAbility]!==undefined?mutagenAbility:(obj[shortKeys[mutagenAbility]]!==undefined?shortKeys[mutagenAbility]:(obj[aliases[mutagenAbility]]!==undefined?aliases[mutagenAbility]:null));if(key===null)return;var original=Number(obj[key])||10;scoreSnapshots.push({prop:prop,key:key,original:original});obj[key]=Math.min(23,original+3);});
+  ['abilityScores','stats'].forEach(function(prop){var obj=h[prop];if(!obj||typeof obj!=='object')return;var key=obj[mutagenAbility]!==undefined?mutagenAbility:(obj[shortKeys[mutagenAbility]]!==undefined?shortKeys[mutagenAbility]:(obj[aliases[mutagenAbility]]!==undefined?aliases[mutagenAbility]:null));if(key===null)return;var original=Number(obj[key])||10;scoreSnapshots.push({prop:prop,key:key,original:original});var mutatedCap=(l>=14&&sub&&sub.subclass==='mutagenist'&&s.alchemistMutatedBlood&&s.alchemistMutatedBlood.ability===mutagenAbility)?25:23;obj[key]=Math.min(mutatedCap,original+3);});
   if(!scoreSnapshots.length)return{ok:false,unsupported:true,message:'Не удалось найти характеристики персонажа; мутаген не применён.'};
   s.activeMutagen={ability:mutagenAbility,snapshots:scoreSnapshots};
   s.alchemistActiveEffects=s.alchemistActiveEffects||[];s.alchemistActiveEffects.push({name:'Мутаген',effect:{mutagenAbility:mutagenAbility,durationMinutes:1,abilityBonus:3,maxAbility:23},remainingMinutes:1});
