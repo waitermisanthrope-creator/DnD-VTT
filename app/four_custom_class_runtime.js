@@ -85,12 +85,29 @@
     state.studiedTargetIds=state.studiedTargetIds.filter(function(id){return set[String(id)];});
     return state.studiedTargetIds.slice();
   }
+  function hasFeature(id){return ['banditStudyTarget'].indexOf(String(id||''))>=0;}
+  function useFeature(hero,id,ctx){
+    ctx=ctx||{};
+    if(!hero)return {ok:false,reason:'Персонаж не найден.'};
+    sync(hero);
+    if(String(id)!=='banditStudyTarget')return {ok:false,unsupported:true,reason:'Эта способность пока не подключена.'};
+    if(level(hero,CLASS_IDS.bandit)<1)return {ok:false,reason:'Для изучения цели нужен класс Бандит.'};
+    var tr=hero.turnResources||(hero.turnResources={actions:1,bonusAction:1,reaction:1});
+    if(n(tr.bonusAction,0)<1)return {ok:false,reason:'Бонусное действие уже использовано.'};
+    var result=studyTarget(hero,ctx.target,{visible:ctx.visible,distanceFt:ctx.distanceFt});
+    if(!result.ok)return result;
+    tr.bonusAction=Math.max(0,n(tr.bonusAction,1)-1);
+    result.message='Цель изучена: '+String(ctx.target.name||ctx.target.id)+'.';
+    return result;
+  }
   global.FourCustomClassRuntime={
     VERSION:'0.1.0-stage-foundation',
     sync:sync,
     restore:restore,
     studyTarget:studyTarget,
     clearInvalidTargets:clearInvalidTargets,
+    hasFeature:hasFeature,
+    useFeature:useFeature,
     classLevel:level,
     proficiencyBonus:proficiency,
     abilityModifier:abilityMod
