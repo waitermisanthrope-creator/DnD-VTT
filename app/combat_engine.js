@@ -97,7 +97,7 @@
     var r={raw:rawTotal,amount:resolvedParts.reduce(function(sum,p){return sum+num(p.amount);},0),note:resolvedParts.map(function(p){return p.note;}).filter(Boolean).filter(function(v,i,a){return a.indexOf(v)===i;}).join('; ')};
     if(target&&target.witchWard&&r.amount>0){var wardReduce=Math.min(3,r.amount);r.amount-=wardReduce;r.note=(r.note?r.note+'; ':'')+'Hex Ward: -'+wardReduce+' урона';}
     if(target&&target.witchBleedingUntil&&r.amount>0){var bleed=rollDice('1d4').total;r.amount+=bleed;r.note=(r.note?r.note+'; ':'')+'Bleeding: +'+bleed+' урона';}
-    if(target&&target.classFeaturesState&&target.classFeaturesState.witch&&target.classFeaturesState.witch.invulnerability50&&r.amount>0){var inv=Math.min(50,r.amount);r.amount-=inv;target.classFeaturesState.witch.invulnerability50=false;r.note=(r.note?r.note+'; ':'')+'Неуязвимость: -'+inv+' урона';}
+    if(target&&target.classFeaturesState&&target.classFeaturesState&&target.classFeaturesState.invulnerability50&&r.amount>0){var inv=Math.min(50,r.amount);r.amount-=inv;target.classFeaturesState.witch.invulnerability50=false;r.note=(r.note?r.note+'; ':'')+'Неуязвимость: -'+inv+' урона';}
     if(reactionResult&&reactionResult.id==='relentlessRage'&&reactionResult.keptAtOne){ target.hp=1;target.hitPoints=1;target.defeated=false; return {amount:0,hpDamage:0,tempAbsorbed:0,wardAbsorbed:wardAbsorbed,hp:1,tempHp:num(target.tempHp),defeated:false,note:'Неукротимая ярость: HP сохранены на 1',concentration:null,reaction:reactionResult,reactionWindow:null}; }
     var hp=num(target.hp), temp=num(target.tempHp);
     var damageTaken=r.amount;
@@ -120,11 +120,11 @@
       if(target.hpCurrent!==undefined)target.hpCurrent=1;
     }
     var eventAttacker=opts&&opts.attacker||null;
-    if(eventAttacker&&target.hp<=0&&!instantDeath&&eventAttacker.classFeaturesState&&eventAttacker.classFeaturesState.witch&&eventAttacker.classFeaturesState.witch.witchCurse==='Hollow'){
+    if(eventAttacker&&target.hp<=0&&!instantDeath&&eventAttacker.classFeaturesState&&eventAttacker.classFeaturesState.witchCurse==='Hollow'){
       var hollowHp=Math.max(1,num((eventAttacker.abilities&&eventAttacker.abilities.charisma)||0)>10?Math.floor((num(eventAttacker.abilities.charisma)-10)/2):0)+num((eventAttacker.classes||[]).find(function(c){return String(c.name)==='Ведьма';})||{} .level,0);
       addTempHpForWitch(eventAttacker,hollowHp);
     }
-    if(target.hp<=0&&target.classFeaturesState&&target.classFeaturesState.witch&&target.classFeaturesState.witch.dyingCurseArmed&&eventAttacker&&!instantDeath){
+    if(target.hp<=0&&target.classFeaturesState&&target.classFeaturesState.dyingCurseArmed&&eventAttacker&&!instantDeath){
       target.classFeaturesState.witch.dyingCurseArmed=false;
       eventAttacker.witchDyingCurse={source:target,durationHours:24,disadvantage:['attack','ability','save']};
     }
@@ -267,7 +267,7 @@
     var witchAttackPenalty=target&&target.witchAttackPenaltyDice?rollDie(6):0;
     var total=d20+bonus+classBonus-witchAttackPenalty;
     var ac=opts&&opts.acOverride!=null?num(opts.acOverride,10):Math.max(10,num(target && target.ac,10)-num(target&&target.witchACPenalty,0));
-    var duplicityTarget=opts&&opts.__attacker&&target&&target.classFeaturesState&&target.classFeaturesState.witch&&target.classFeaturesState.witch.witchDuplicity;
+    var duplicityTarget=opts&&opts.__attacker&&target&&target.classFeaturesState&&target.classFeaturesState.witchDuplicity;
     var duplicityMiss=false;
     if(duplicityTarget&&!roll.fumble){var dupRoll=rollDie(6);if(dupRoll%2===1){duplicityMiss=true;target.classFeaturesState.witch.witchDuplicity=false;}}
     var hit=!duplicityMiss&&(roll.critical || (!roll.fumble && total>=ac));
