@@ -32,5 +32,15 @@ assert.ok(result.alchemistFormulaEffect,'acid formula is resolved by combat engi
 assert.equal(result.alchemistFormulaEffect.save.success,false,'target fails formula saving throw');
 assert.equal(target.classFeaturesState.alchemistDebuffs.acPenalty,3,'failed save applies AC penalty');
 assert.equal(target.ac,15,'formula does not destructively alter base AC');
+
+target.classFeaturesState.alchemistDebuffs.savePenalty=2;
+rolls=[{result:20,critical:true,fumble:false}];
+const penalizedSave=ctx.DNDCombat.savingThrow(target,'dex',10);
+assert.equal(penalizedSave.bonus,-102,'alchemist formula save penalty modifies real save total');
+attacker.classFeaturesState.alchemistDebuffs={attackPenalty:3};
+rolls=[{result:20,critical:true,fumble:false}];
+const penalizedAttack=ctx.DNDCombat.attack(attacker,{id:'second',ac:12,hp:20,maxHp:20},{bonus:0,damage:'1',useRules:false});
+assert.equal(penalizedAttack.classBonus,-3,'alchemist formula attack penalty modifies real attack total');
+
 assert.equal(ctx.DNDCombat.attack(target,{id:'second',ac:12,hp:20,maxHp:20}, {bonus:0,damage:'1',useRules:false}).ac,12,'test combat engine remains callable after formula resolution');
 console.log('Alchemist combat integration tests PASS');
