@@ -325,8 +325,8 @@ function attackModifiers(h,ctx){
  var pendingBomb=s.alchemistPendingBombEffect;
  if(isBomb&&pendingBomb){
   out.extraDice.push(pendingBomb.dice);out.damageTypes.push(pendingBomb.type);if(pendingBomb.ignoreResistance)out.ignoreResistance=true;if(pendingBomb.immunityBecomesResistance)out.immunityBecomesResistance=true;out.notes.push('Особая бомба: '+pendingBomb.name+' ('+pendingBomb.type+')');
-  var specialBombEffects={'Кислотная бомба':{save:'dex',acPenalty:3},'Большая бомба':{save:'dex',burning:true},'Резонансная бомба':{save:'con',condition:'Оглох'},'Ядовитая бомба':{save:'con',condition:'Отравлен'},'Ионизация':{save:'dex'},'Коническая бомба':{save:'con'},'Резонансная волна':{save:'str',pushFt:10},'Цветной взрыв':{save:'dex'}};
-  if(specialBombEffects[pendingBomb.name])out.pendingOnHit.alchemistFormula=Object.assign({id:'special-'+pendingBomb.name,name:pendingBomb.name,dc:Number(s.alchemistSaveDC)||10,duration:'until_start_of_attacker_next_turn',saveOnHit:true},specialBombEffects[pendingBomb.name]);
+  var specialBombEffects={'Кислотная бомба':{save:'dex',acPenalty:3},'Большая бомба':{save:'dex',burning:true},'Резонансная бомба':{save:'con',condition:'Оглох'},'Ядовитая бомба':{save:'con',condition:'Отравлен'},'Ионизация':{save:'dex'},'Коническая бомба':{save:'con'},'Резонансная волна':{save:'str',pushFt:10},'Цветной взрыв':{save:'dex'},'Слизевая бомба':{noDamage:true,slimeCovered:true,denyBonusActions:true,denyDashDisengageDodge:true}};
+  if(specialBombEffects[pendingBomb.name]){out.pendingOnHit.alchemistFormula=Object.assign({id:'special-'+pendingBomb.name,name:pendingBomb.name,dc:Number(s.alchemistSaveDC)||10,duration:'until_start_of_attacker_next_turn',saveOnHit:true},specialBombEffects[pendingBomb.name]);if(specialBombEffects[pendingBomb.name].noDamage)out.noDamage=true;}
   s.alchemistPendingBombEffect=null;
  }
  if(s.alchemistSeekingBombBonus&&isBomb){out.bonusDamage+=Number(s.alchemistSeekingBombBonus)||0;s.alchemistSeekingBombBonus=0;}
@@ -482,7 +482,7 @@ function subclassFeatureEffect(h,sub,f,ctx){
   s.alchemistActiveEffects=s.alchemistActiveEffects||[];s.alchemistActiveEffects.push({name:'Общий мутаген',effect:{mutagenAbility:sharedAbility,durationMinutes:1,abilityBonus:3,maxAbility:23},remainingMinutes:1,targetId:ally.id||null});
   return{ok:true,target:ally.id,effect:{ability:sharedAbility,abilityBonus:3,maxAbility:23,durationMinutes:1,applied:true,reagentsSpent:1},message:'🧬 Общий мутаген: характеристика союзника повышена на 3 на 1 минуту.'};
  }
- if(name==='Слизевая бомба')return{ok:true,effect:{damage:0,areaSlime:true,deniesActions:['dash','disengage','dodge'],removeAction:true},message:'🟢 Слизевая бомба разлита.'};
+ if(name==='Слизевая бомба'){s.alchemistPendingBombEffect={name:name,noDamage:true,slimeCovered:true,denyBonusActions:true,denyDashDisengageDodge:true};return{ok:true,effect:{damage:0,areaSlime:true,deniesActions:['bonus action','dash','disengage','dodge'],removeAction:true,prepared:true},message:'🟢 Слизевая бомба подготовлена к следующей атаке бомбой; при попадании цель покрывается слизью.'};}
  if(name==='Жертвенная слизь'){if(!spend(h,0))return{ok:false};return{ok:true,effect:{reaction:true,redirectAttackToAlly:true,rangeFt:5},message:'🟢 Жертвенная слизь готова.'};}
  if(name==='Палитра-порталы')return{ok:true,effect:{teleportBetweenPaint:true,moveCostFt:10,rangeFt:60},message:'🎨 Палитра-порталы готовы.'};
  if(name==='Коническая бомба'){s.alchemistPendingBombEffect={dice:'1d10',type:'гром',name:name,save:'con',area:'cone',sizeFt:10};return{ok:true,effect:{damageType:'гром',damageDice:'d10',area:'cone',sizeFt:10,save:'con',prepared:true},message:'🔊 Коническая бомба подготовлена к следующей атаке; боевой интерфейс пока разрешает выбранную цель, но не все цели конуса.'};}
