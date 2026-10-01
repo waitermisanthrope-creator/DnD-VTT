@@ -514,6 +514,19 @@ function use(h,id,ctx,feature){
  id=String(id||'').replace(/^alchemist-/,'');
  var aliases={'Прайм-бомба':'primeBomb','Синтез реагентов':'reagentSynthesis','Бомбы':'bomb','Варка зелий':'potionBrew','Формулы бомб':'formula','Философский камень':'philosopherStone','Ядерная бомба':'nuclearBomb','Гомункул':'homunculusCreate'};if(aliases[id])id=aliases[id];
  var requestedFeature=String(ctx.featureName||ctx.name||'');
+ if(requestedFeature==='Геморагент'||id==='Геморагент'||id==='hemoragent'){
+  if((s.alchemistDiscovered||[]).indexOf('Некробиология')<0)return{ok:false,message:'Геморагент требует Открытие «Некробиология».'};
+  var diceSpent=Math.floor(Number(ctx.hitDiceSpent)||0);if(diceSpent<1)return{ok:false,needsChoice:true,message:'Укажите количество Костей хитов для траты.'};
+  var pool=null,poolKind=null;
+  var candidates=[['resources.hitDice',h.resources&&h.resources.hitDice],['resources.hitDiceRemaining',h.resources&&h.resources.hitDiceRemaining],['hitDiceRemaining',h.hitDiceRemaining],['hitDice',h.hitDice],['hitDicePool',h.hitDicePool]];
+  for(var hi=0;hi<candidates.length;hi++){var val=candidates[hi][1];if(typeof val==='number'&&Number.isFinite(val)){pool={current:val,write:function(v){var key=candidates[hi][0];if(key==='resources.hitDice')h.resources.hitDice=v;else if(key==='resources.hitDiceRemaining')h.resources.hitDiceRemaining=v;else if(key==='hitDiceRemaining')h.hitDiceRemaining=v;else if(key==='hitDice')h.hitDice=v;else h.hitDicePool=v;}};poolKind='number';break;}if(val&&typeof val==='object'){var keyName=['current','remaining','available','value'].find(function(k){return Number.isFinite(Number(val[k]));});if(keyName){pool={current:Number(val[keyName]),write:function(v){val[keyName]=v;}};poolKind='object';break;}}}
+  if(!pool)return{ok:false,unsupported:true,message:'Система персонажа не предоставляет доступный запас Костей хитов; Геморагент не потратил ресурсы.'};
+  if(diceSpent>pool.current)return{ok:false,message:'Нельзя потратить больше Костей хитов, чем доступно.'};
+  if(r.current>=r.max)return{ok:false,message:'Реагенты уже на максимуме; Геморагент не потратил Кости хитов.'};
+  pool.write(pool.current-diceSpent);
+  var reagentGain=Math.min(Math.floor(diceSpent/2),r.max-r.current);r.current+=reagentGain;
+  return{ok:true,effect:{hitDiceSpent:diceSpent,reagentsRegained:reagentGain,hitDiceRemaining:pool.current-diceSpent},message:'🩸 Геморагент: потрачено Костей хитов '+diceSpent+', восстановлено реагентов '+reagentGain+'.'};
+ }
  if(id==='graft'||id==='transplant'||id==='transplants'||requestedFeature==='Трансплантаты'){
   var ownerClass=(h.classes||[]).find(function(c){return c&&(c.name===CLASS||c.englishName==='Alchemist');});
   if(!ownerClass||!(ownerClass.subclass==='xenoalchemist'||ownerClass.subclass==='Ксеноалхимик'))return{ok:false,message:'Трансплантаты доступны только Ксеноалхимику.'};
