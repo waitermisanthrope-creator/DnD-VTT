@@ -120,29 +120,30 @@ const uiProtector = {
   hp: { current: 18, max: 18, temp: 0 }
 };
 const uiAttacker = { id: 'attacker-ui', name: 'Враг', type: 'enemy', hp: 20, maxHp: 20, ac: 10 };
-const uiHeroToken = { id: 'combat-token-id', name: 'Заступник', type: 'hero', hp: 18, maxHp: 18, tempHp: 0, ac: 10 };
+const uiHeroToken = { id: 'combat-token-id', name: 'Заступник', type: 'hero', hp: 18, maxHp: 18, tempHp: 0, ac: 10, turnResources: { reaction: 1 } };
 window.currentChar = {
   ...uiProtector,
+  turnResources: undefined, // Reaction state belongs to the initiative combatant, not necessarily the saved character.
   initiativeTracker: { round: 1, activeIndex: 0, combatants: [uiAttacker, uiHeroToken] }
 };
 window.DNDRules.rollD20 = () => ({ result: 20, critical: true, fumble: false });
 window.dndCombatAttack();
 assert.strictEqual(uiHeroToken.hp, 18, 'combat UI self-defense choice prevents HP loss after an incoming hit');
 assert.strictEqual(window.currentChar.resources.protectorImpulses.current, 1, 'combat UI spends one Protector impulse after confirmation');
-assert.strictEqual(window.currentChar.turnResources.reaction, 0, 'combat UI spends the reaction after confirmation');
+assert.strictEqual(uiHeroToken.turnResources.reaction, 0, 'combat UI spends the initiative combatant reaction after confirmation');
 assert(promptCalls.some(message => message.startsWith('Цель:')), 'combat UI asks for a target');
 assert(alerts.some(message => message.includes('ПОПАДАНИЕ')), 'combat UI reports the resolved hit');
 
 // The manual damage control must offer the same explicit reaction choice.
 window.currentChar.resources.protectorImpulses.current = 2;
-window.currentChar.turnResources.reaction = 1;
+uiHeroToken.turnResources.reaction = 1;
 window.currentChar.hpCurrent = 18;
 uiHeroToken.hp = 18;
 const confirmsBeforeManualDamage = promptCalls.length;
 window.dndCombatDamage();
 assert.strictEqual(uiHeroToken.hp, 18, 'manual damage UI self-defense prevents HP loss');
 assert.strictEqual(window.currentChar.resources.protectorImpulses.current, 1, 'manual damage UI spends one impulse after confirmation');
-assert.strictEqual(window.currentChar.turnResources.reaction, 0, 'manual damage UI spends the reaction after confirmation');
+assert.strictEqual(uiHeroToken.turnResources.reaction, 0, 'manual damage UI spends the initiative combatant reaction after confirmation');
 assert(promptCalls.length > confirmsBeforeManualDamage, 'manual damage UI prompts for target and damage');
 window.currentChar = null;
 
