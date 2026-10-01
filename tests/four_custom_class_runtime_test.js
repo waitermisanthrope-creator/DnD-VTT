@@ -38,4 +38,20 @@ runtime.studyTarget(hero, targetC, { visible: true, distanceFt: 20 });
 assert.deepStrictEqual(Array.from(hero.classFeaturesState.bandit.studiedTargetIds), ['enemy-a', 'enemy-c'], 'two targets from level 11');
 assert.deepStrictEqual(Array.from(runtime.clearInvalidTargets(hero, ['enemy-c'])), ['enemy-c']);
 assert.strictEqual(runtime.studyTarget(hero, { name: 'no id' }, { visible: true, distanceFt: 10 }).ok, false);
+const actionHero = {
+  classes: [{ name: 'Бандит', level: 3 }],
+  abilityScores: { dex: 14, cha: 10 },
+  resources: {},
+  turnResources: { actions: 1, bonusAction: 1, reaction: 1 }
+};
+const actionResult = runtime.useFeature(actionHero, 'banditStudyTarget', {
+  target: { id: 'visible-enemy', name: 'Видимый враг' }, visible: true, distanceFt: 25
+});
+assert.strictEqual(actionResult.ok, true, 'study target resolves through feature runtime');
+assert.strictEqual(actionHero.turnResources.bonusAction, 0, 'study target spends one bonus action');
+const actionAfterUse = runtime.useFeature(actionHero, 'banditStudyTarget', {
+  target: { id: 'second-enemy' }, visible: true, distanceFt: 10
+});
+assert.strictEqual(actionAfterUse.ok, false, 'cannot study twice after spending bonus action');
+assert.strictEqual(actionHero.classFeaturesState.bandit.studiedTargetIds.length, 1, 'failed second action does not change target');
 console.log('Four custom class runtime foundation tests: PASS');
