@@ -66,6 +66,17 @@
   function availableFeatures(hero,name){var p=getClass(name),lvl=0;if(!p||!hero)return[];var c=(hero.classes||[]).find(function(x){return String(x.name)===name;});lvl=c?Number(c.level)||0:0;var out=(p.features||[]).filter(function(f){return lvl>=(Number(f.level)||1);}).map(clone);var sub=c&&c.subclass;var s=(p.subclasses||[]).find(function(x){return x.name===sub||x.id===sub;});if(s)(s.features||[]).forEach(function(f){if(lvl>=(Number(f.level)||1))out.push(clone(f));});return out;}
   function invoke(packName,hero,id,ctx){
     var p=getClass(packName),f=getFeature(id,p&&p.id);
+    // If an ID is shared by multiple subclass features, resolve it against the
+    // hero's actually selected subclass instead of whichever duplicate was
+    // indexed last.
+    if(p&&hero&&hero.classes){
+      var c0=hero.classes.find(function(x){return String(x.name)===String(p.name);});
+      var selected0=c0&&c0.subclass;
+      var candidates=(featureIds[id]||[]).map(function(k){return featureIndex[k];}).filter(function(x){return x&&x.packId===p.id;});
+      var exact=candidates.find(function(x){return x.subclassId&&String(x.subclassId)===String(selected0);});
+      var base=candidates.find(function(x){return !x.subclassId;});
+      if(exact)f=exact;else if(base)f=base;
+    }
     if(p&&registry.enabled[p.id]===false)return {ok:false,message:'Контент-пак отключён в каталоге.'};
     if(!p||!f||f.packId!==p.id)return null;
     var c=(hero&&hero.classes||[]).find(function(x){return String(x.name)===String(p.name);});
