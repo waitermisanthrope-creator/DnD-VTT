@@ -1560,7 +1560,6 @@ var academy=String(s.warlordAcademy||'');
       var oneTwoTarget=ctx.target&&(ctx.target.id||ctx.target.entityId);s.pugilistOldOneTwoActive={targetId:oneTwoTarget!=null?String(oneTwoTarget):null,hits:0,attacks:2};
       return{ok:true,effect:{bonusActionAttacks:2,unarmed:true,targetId:s.pugilistOldOneTwoActive.targetId},message:'🥊 Двойка: две дополнительные безоружные атаки по одной цели.'};
     }
-    }
     if(id==='stickAndMove'){
       cost=1;if(!spend(h,'pugilistMoxie',cost))return{ok:false,message:'Недостаточно Мокси.'};
       return{ok:true,effect:{choose:['shove','dash']},message:'👊 Ударил и отошёл: выбери Толчок или Рывок.'};
