@@ -84,4 +84,25 @@ assert.strictEqual(circusHero.resources.circusZap.current, circusHero.resources.
 assert.strictEqual(appliedDamage.length, 1);
 assert.strictEqual(appliedDamage[0].amount, 15);
 assert.strictEqual(fireTarget.target.hitPoints, 5, 'damage is applied through combat resolver');
+const banditTripHero = {
+  id: 'bandit-trip-hero',
+  classes: [{ name: 'Бандит', level: 3 }],
+  abilityScores: { dex: 16, cha: 10 },
+  resources: {},
+  turnResources: { actions: 1, bonusAction: 1, reaction: 1 }
+};
+runtime.sync(banditTripHero);
+const tripTarget = { id: 'trip-target', speed: 30, saveSuccess: false, classFeaturesState: {} };
+const tripResult = runtime.useFeature(banditTripHero, 'banditTrip', { attackHit: true, target: tripTarget, distanceFt: 5 });
+assert.strictEqual(tripResult.ok, true);
+assert.strictEqual(tripResult.applied, true);
+assert.strictEqual(tripTarget.speed, 0, 'failed Strength save sets speed to zero');
+assert.strictEqual(banditTripHero.resources.banditDirtyTricks.current, banditTripHero.resources.banditDirtyTricks.max - 1);
+assert.strictEqual(runtime.onTurnStart(tripTarget), true, 'speed lock expires at target turn start');
+assert.strictEqual(tripTarget.speed, 30, 'original speed is restored');
+assert.strictEqual(tripTarget.classFeaturesState.banditTripSpeedLock, undefined);
+const missedTarget = { id: 'missed-target', speed: 30, saveSuccess: false };
+const tripBeforeMiss = banditTripHero.resources.banditDirtyTricks.current;
+assert.strictEqual(runtime.useFeature(banditTripHero, 'banditTrip', { attackHit: false, target: missedTarget, distanceFt: 5 }).ok, false);
+assert.strictEqual(banditTripHero.resources.banditDirtyTricks.current, tripBeforeMiss, 'failed precondition does not spend resource');
 console.log('Four custom class runtime foundation tests: PASS');
