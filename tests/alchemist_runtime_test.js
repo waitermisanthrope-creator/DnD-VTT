@@ -189,6 +189,7 @@ ctx.DNDSecondaryEntities={ensure:()=>({}),create:spec=>{const entity=Object.assi
 const xenoOwner={id:'xeno-owner',name:'Ксеноалхимик',classes:[{name:'Алхимик',level:14,subclass:'xenoalchemist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:5,resources:{},classFeaturesState:{}};
 hooks.sync(xenoOwner);
 assert.equal(hooks.useFeature(xenoOwner,'alchemist-subclassFeature',{featureName:'Оно живое!',bodiesCount:3,timeMinutes:60},{subclassId:'xenoalchemist'}).ok,false,'golem requires the full eight-hour process');
+assert.equal(hooks.useFeature(xenoOwner,'alchemist-subclassFeature',{featureName:'Оно живое!',bodiesCount:3},{subclassId:'xenoalchemist'}).ok,false,'golem creation refuses to proceed without an explicit time commitment');
 const golemCraft=hooks.useFeature(xenoOwner,'alchemist-subclassFeature',{featureName:'Оно живое!',bodiesCount:3,timeMinutes:480,grafts:['Звериное оружие']},{subclassId:'xenoalchemist'});
 assert.equal(golemCraft.ok,true,'Xenoalchemist can create the golem from three bodies');
 assert.equal(golemCraft.entity.hp,140,'alchemical golem has a level-scaled HP stat block');
