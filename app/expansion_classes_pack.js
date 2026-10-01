@@ -1539,6 +1539,7 @@ var academy=String(s.warlordAcademy||'');
     s.pugilistMoxie=r.current;s.pugilistDie=pugilistDie(l);
     s.pugilistIronChin=l>=1;s.pugilistMagicFists=l>=6;
     res(h,'pugilistBloodiedButUnbowed',l>=3?1:0,'short');
+    res(h,'pugilistDigDeep',l>=2?1:0,'long');
     res(h,'pugilistFightingSpirit',l>=18?1:0,'long');
     syncPugilistClub(h);
   }
@@ -1569,7 +1570,9 @@ var academy=String(s.warlordAcademy||'');
     if(id==='digDeep'){
       if(ctx.activate!==true&&ctx.confirm!==true)return{ok:false,message:'Подтверди использование «Соберись с силами».'};
       var dd=h.resources&&h.resources.pugilistDigDeep;if(dd&&dd.current<=0)return{ok:false,message:'«Соберись с силами» уже использована до отдыха.'};
-      if(dd)dd.current=0;
+      if(!dd||Number(dd.current)<=0)return{ok:false,message:'«Соберись с силами» уже использована до долгого отдыха.'};
+      if(!spend(h,'pugilistDigDeep',1))return{ok:false,message:'«Соберись с силами» уже использована до долгого отдыха.'};
+      s.pugilistDigDeepActive={expiresAt:null,damageTypes:['bludgeoning','piercing','slashing'],durationMinutes:1};
       return{ok:true,effect:{resistance:['bludgeoning','piercing','slashing'],durationMinutes:1,after:{exhaustion:1}},message:'💪 Соберись с силами: сопротивление физическому урону на 1 минуту.'};
     }
     if(id==='haymaker'){
