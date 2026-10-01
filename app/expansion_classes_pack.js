@@ -609,14 +609,18 @@ var academy=String(s.warlordAcademy||'');
     if(id==='learnAccursedSpell'){var sp=String(ctx.spell||'');if(!sp)return{ok:false,message:'Укажи заклинание.'};if(s.spellsKnown.indexOf(sp)>=0)return{ok:false,message:'Это заклинание уже известно.'};if(s.spellsKnown.length>=s.spellsKnownMax)return{ok:false,message:'Все ячейки известных заклинаний уже заняты.'};s.spellsKnown.push(sp);return{ok:true,message:'📜 Заклинание Аккурсда изучено.'};}
     if(id==='replaceAccursedSpell'){var old=String(ctx.oldSpell||''),nw=String(ctx.newSpell||'');var oi=s.spellsKnown.indexOf(old);if(oi<0)return{ok:false,message:'Известное заклинание не найдено.'};s.spellsKnown[oi]=nw;return{ok:true,message:'📜 Заклинание заменено.'};}
     if(id==='jinx'){
-      if(!t)return{ok:false,message:'Выбери цель для Сглаза.'};var j=String(ctx.jinx||'abilityCheck');
+      if(!t)return{ok:false,message:'Выбери цель для Сглаза.'};
+      if(ctx.distanceFt!==undefined&&Number(ctx.distanceFt)>30)return{ok:false,message:'Цель находится дальше 30 футов.'};
+      var j=String(ctx.jinx||'abilityCheck'),baseJinx=['abilityCheck','attackAgainstChosenCreature'];
+      if(baseJinx.indexOf(j)<0)return{ok:false,message:'Неизвестный вариант Сглаза.'};
       if(ctx.savePassed===true)return{ok:false,message:'Цель сопротивляется Сглазу.'};
-      s.jinx={targetId:t.id,type:j,endsAt:'endNextTurn',maintainable:l>=1&&s.knownMetamorphoses.indexOf('swiftJinx')<0};
+      var swift=s.knownMetamorphoses.indexOf('swiftJinx')>=0;
+      s.jinx={targetId:t.id,type:j,endsAt:'endNextTurn',maintainable:!swift};
       var opts=['disadvantageNextAbilityCheck','disadvantageNextAttackAgainstChosenCreature'];
       if(s.knownMetamorphoses.indexOf('enervatingJinx')>=0){opts.push('halveNextSpellDamageRoll','halveNextWeaponDamageRoll');}
       if(s.knownMetamorphoses.indexOf('startlingJinx')>=0){opts.push('disadvantageNextFrightSave','disadvantageNextConcentrationSave');}
       if(s.knownMetamorphoses.indexOf('cripplingJinx')>=0){opts.push('disadvantageNextAttack','disadvantageNextSave');}
-      return{ok:true,target:t.id,effect:{save:'wis',dc:dc,jinxOptions:opts,durationRounds:1},message:'🩸 Сглаз наложен.'};
+      return{ok:true,target:t.id,effect:{save:'wis',dc:dc,jinxOptions:opts,durationRounds:1,maxDistanceFt:90,maintainAction:!swift},message:'🩸 Сглаз наложен.'};
     }
     if(id==='afflict'||id==='afflictAilment'){
       if(!t)return{ok:false,message:'Выбери цель для Поражения.'};var slot=Number(ctx.spellLevel)||1;
