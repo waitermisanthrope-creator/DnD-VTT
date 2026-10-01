@@ -134,6 +134,17 @@ hooks.onTurnEnd(timedHero);
 assert.equal(timedHero.classFeaturesState.alchemistActiveEffects.length,0,'potion effect is removed after duration expires');
 assert.equal(timedHero.activeConditions['Невидим'],undefined,'expired potion condition is cleared from active conditions');
 
+const mutagenHero={classes:[{name:'Алхимик',level:6,subclass:'mutagenist'}],abilityScores:{strength:14,intelligence:16,dexterity:14},stats:{str:14,int:16,dex:14},proficiencyBonus:3,resources:{},classFeaturesState:{}};
+hooks.sync(mutagenHero);
+const mutagenResult=hooks.useFeature(mutagenHero,'alchemist-subclassFeature',{featureName:'Мутаген',ability:'strength'},{subclassId:'mutagenist'});
+assert.equal(mutagenResult.ok,true,'mutagen applies successfully');
+assert.equal(mutagenHero.abilityScores.strength,17,'mutagen modifies character sheet ability score');
+assert.equal(mutagenHero.stats.str,17,'mutagen modifies combat stat alias');
+for(let i=0;i<10;i++)hooks.onTurnEnd(mutagenHero);
+assert.equal(mutagenHero.abilityScores.strength,14,'mutagen restores original ability score after one minute');
+assert.equal(mutagenHero.stats.str,14,'mutagen restores original combat stat after one minute');
+
+
 
 
 
