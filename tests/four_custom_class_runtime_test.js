@@ -207,7 +207,7 @@ window.DNDCombat = { rollDice: () => ({ total: 5 }) };
 const highFallen = { id: 'high-fallen', hp: 0, tempHp: 0 };
 const highRescue = runtime.useFeature(highRescuer, 'protectorRescue', { target: highFallen, isAlly: true, visible: true, distanceFt: 5, cellAvailable: true, freeCell: {x:3,y:4}, distanceToCellFt:10, round:1 });
 assert.strictEqual(highRescue.movementFt, 10, 'level 17 rescue can move ally 10 feet');
-assert.strictEqual(highFallen.tempHp, 9, 'level 11+ rescue grants 1d8 + proficiency temporary HP');
+assert.strictEqual(highFallen.tempHp, 11, 'level 17 rescue grants 1d8 + level-17 proficiency bonus temporary HP');
 const zoneHigh = { id:'zone-high', classes:[{name:'Заступник',level:17,subclass:'Страж рубежа'}], resources:{protectorImpulses:{current:2,max:2}}, turnResources:{bonusAction:1}, classFeaturesState:{} };
 assert.strictEqual(runtime.useFeature(zoneHigh,'protectorZone',{actionAvailable:true,round:1}).zone.radiusFt,15,'level 11+ zone radius is 15 feet');
 assert.strictEqual(runtime.protectorZoneSave(zoneHigh,zoneAlly,{forcedMovementSave:true,isAlly:true,visible:true,distanceFt:15,round:2,requestAdvantage:true}).advantage,true,'level 17 zone can grant one chosen advantage per round');
