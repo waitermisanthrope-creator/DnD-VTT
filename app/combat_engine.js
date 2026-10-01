@@ -389,8 +389,8 @@
         if(opts.deferDamage){out.damageResult=null;out.pendingDamage={amount:out.damage.total,damageType:opts.damageType||'',context:Object.assign({},damageOpts,{damageParts:damageParts,isBomb:!!opts.isBomb,attackerId:opts.__attacker&&(opts.__attacker.id||opts.__attacker.entityId)||null})};}
         else out.damageResult=applyDamage(target,out.damage.total,opts.damageType||'',Object.assign({},damageOpts,{damageParts:damageParts,ignoreResistance:!!fm.ignoreResistance,immunityBecomesResistance:!!fm.immunityBecomesResistance,isBomb:!!opts.isBomb,attackerId:opts.__attacker&&(opts.__attacker.id||opts.__attacker.entityId)||null}));
       }
-      if(global.DNDClassFeatures&&global.DNDClassFeatures.onAttackResult)global.DNDClassFeatures.onAttackResult(opts.__attacker||{}, {sneakApplied:Array.isArray(fm.extraDice)&&fm.extraDice.length>0,hit:hit,critical:!!roll.critical,target:target,targetId:String(target&&(target.id||target.entityId)||''),damageResult:out.damageResult||null,pendingOnHit:pending});
     }
+    if(global.DNDClassFeatures&&global.DNDClassFeatures.onAttackResult)global.DNDClassFeatures.onAttackResult(opts.__attacker||{}, {sneakApplied:!!(hit&&opts.__classFeatureMod&&Array.isArray(opts.__classFeatureMod.extraDice)&&opts.__classFeatureMod.extraDice.length>0),hit:hit,critical:!!roll.critical,target:target,targetId:String(target&&(target.id||target.entityId)||''),damageResult:out.damageResult||null,pendingOnHit:pending||{}});
     var attacker=opts&&opts.__attacker;
     var attackerState=attacker&&attacker.classFeaturesState;
     if(attackerState&&Array.isArray(attackerState.alchemistActiveEffects)){
