@@ -135,5 +135,15 @@ assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'),
   assert.strictEqual(save.success, false);
   const nonMariner = Object.assign({}, loadedMariner, { classes: [{ name: 'Бандит', level: 1 }] });
   assert.strictEqual(combatContext.DNDCombat.savingThrow(nonMariner, 'con', 6).total, 1, 'other classes receive no gold modifier');
+  const banditHero = {
+    id: 'bandit-hero',
+    classes: [{ name: 'Бандит', level: 3 }],
+    classFeaturesState: { bandit: { studiedTargetIds: ['enemy-down', 'enemy-live'] } }
+  };
+  combatContext.currentChar = banditHero;
+  const defeatedStudiedTarget = { id: 'enemy-down', hp: 1, hpMax: 1, stats: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 } };
+  const defeatedResult = combatContext.DNDCombat.applyDamage(defeatedStudiedTarget, 1, 'огонь');
+  assert.strictEqual(defeatedResult.defeated, true, 'combat resolver marks the target defeated');
+  assert.deepStrictEqual(Array.from(banditHero.classFeaturesState.bandit.studiedTargetIds), ['enemy-live'], 'combat resolver clears only the defeated studied target');
 }
 console.log('morehod_gold_modifier_test: all assertions passed');
