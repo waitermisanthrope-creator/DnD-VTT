@@ -95,6 +95,17 @@ assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'),
   assert.strictEqual(unprotectedHit.amount, 5, 'Protector outside 5 feet cannot intercept');
   assert.strictEqual(invalidProtector.resources.protectorImpulses.current, 2, 'invalid interception spends no resource');
   assert.strictEqual(invalidProtector.turnResources.reaction, 1, 'invalid interception spends no reaction');
+  const protectorWithResistance = {
+    id: 'protector-3',
+    classes: [{ name: 'Заступник', level: 3 }],
+    resources: {},
+    turnResources: { actions: 1, bonusAction: 1, reaction: 1 }
+  };
+  combatContext.FourCustomClassRuntime.sync(protectorWithResistance);
+  const fireResistantAlly = { id: 'ally-fire-resistant', hp: 20, hpMax: 20, resistances: ['огонь'], stats: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 } };
+  const resistedProtectedHit = combatContext.DNDCombat.applyDamage(fireResistantAlly, 10, 'огонь', { protector: protectorWithResistance, protectorDistanceFt: 5, protectorVisible: true, protectorIsAlly: true });
+  assert.strictEqual(resistedProtectedHit.amount, 2, 'Protector reduces damage after fire resistance (10 -> 5 -> 2)');
+  assert.strictEqual(fireResistantAlly.hp, 18, 'post-resistance interception applies correct HP damage');
   const highGoldDie = combatContext.DNDCombat.rollDice('1d6', false, false, loadedMariner);
   assert.strictEqual(highGoldDie.rolls[0], 1);
   assert.strictEqual(highGoldDie.adjustedRolls[0], 6);
