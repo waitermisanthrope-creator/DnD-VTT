@@ -285,8 +285,8 @@ const sharedMutagen=hooks.useFeature(mutagenist,'alchemist-subclassFeature',{fea
 assert.equal(sharedMutagen.ok,true,'Shared Mutagen applies to a valid ally');
 assert.equal(mutagenAlly.abilityScores.strength,15,'Shared Mutagen increases the chosen ally ability by three');
 assert.equal(mutagenist.resources.alchemistReagents.current,mutagenist.resources.alchemistReagents.max-1,'Shared Mutagen spends one reagent after validation');
-hooks.advanceTime(mutagenAlly,1.1);
-assert.equal(mutagenAlly.abilityScores.strength,12,'Shared Mutagen restores the original ability after one minute');
-assert.equal(mutagenAlly.classFeaturesState.activeMutagen,null,'Shared Mutagen clears its active mutation state after expiry');
+hooks.advanceTime(mutagenist,1.1);
+assert.equal(mutagenAlly.abilityScores.strength,12,'Shared Mutagen restores the original ability after one minute of the Alchemist time');
+assert.equal(mutagenAlly.classFeaturesState.alchemistSharedMutagenActive,undefined,'Shared Mutagen clears its active mutation state after expiry');
 
 console.log('Alchemist runtime regression tests PASS');
