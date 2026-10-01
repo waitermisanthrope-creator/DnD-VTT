@@ -33,7 +33,14 @@
       if(!d.oilCoated&&!d.smokeCloud&&!Object.keys(d).length)delete target.classFeaturesState.alchemistDebuffs;
     });
   }
+  function tickAlchemistBurningStart(c){
+    var debuffs=c&&c.classFeaturesState&&c.classFeaturesState.alchemistDebuffs;if(!debuffs||!debuffs.burning)return;
+    if(!global.DNDCombat||typeof global.DNDCombat.rollDice!=='function'||typeof global.DNDCombat.applyDamage!=='function')return;
+    var rolled=global.DNDCombat.rollDice('1d6');global.DNDCombat.applyDamage(c,rolled.total,'огонь',{source:'alchemist-incendiary-bomb'});debuffs.burningTicks=Math.max(0,Number(debuffs.burningTicks||1)-1);
+    if(debuffs.burningTicks<=0){delete debuffs.burning;if(!debuffs.oilCoated&&!debuffs.smokeCloud&&!debuffs.sourceId&&!debuffs.conditionsApplied?.length)delete c.classFeaturesState.alchemistDebuffs;}
+  }
   function tickToxicVengeanceStart(c){
+    tickAlchemistBurningStart(c);
     var state=c&&c.classFeaturesState&&c.classFeaturesState.alchemistToxicVengeance;if(!state||!state.nextTick)return;
     if(global.DNDCombat&&typeof global.DNDCombat.rollDice==='function'&&typeof global.DNDCombat.applyDamage==='function'){
       var rolled=global.DNDCombat.rollDice(state.damage||'1d10');global.DNDCombat.applyDamage(c,rolled.total,'яд',{source:'alchemist-toxic-vengeance'});state.nextTick=false;
