@@ -1570,8 +1570,8 @@ var academy=String(s.warlordAcademy||'');
       var bbu=h.resources&&h.resources.pugilistBloodiedButUnbowed;if(!bbu||bbu.current<=0)return{ok:false,message:'Эта способность уже использована до отдыха.'};
       var hpNow=Number(h.hpCurrent!=null?h.hpCurrent:(h.hp&&typeof h.hp==='object'?h.hp.current:h.hp))||0,hpMax=Number(h.hpMax!=null?h.hpMax:(h.hp&&typeof h.hp==='object'?h.hp.max:(h.maxHp||h.maxHP||h.maxHitPoints)))||0;if(hpNow>(hpMax/2))return{ok:false,message:'Эта способность срабатывает, когда HP падают до половины или ниже.'};
       var rr=h.resources&&h.resources.pugilistMoxie;if(rr)rr.current=rr.max;
-      bbu.current=0;var bbuTemp=Math.max(0,l+mod(h,'con'));h.tempHp=Math.max(Number(h.tempHp)||0,bbuTemp);
-      return{ok:true,effect:{tempHp:h.tempHp,restoreMoxie:true},message:'🩸 Израненный, но не сломленный: Мокси восстановлено.'};
+      bbu.current=0;var bbuTemp=Math.max(0,l+mod(h,'con'));h.tempHp=Math.max(Number(h.tempHp)||0,bbuTemp);s.pugilistBloodiedButUnbowedTriggered=true;s.pugilistBloodiedButUnbowedExpires=Date.now()+60000;if(l>=9){var db=res(h,'pugilistDownButNotOut',1,'long');if(db.current>0){db.current=0;s.pugilistDownButNotOut={roundsRemaining:10};}}
+      return{ok:true,effect:{tempHp:h.tempHp,restoreMoxie:true,downButNotOutActive:!!s.pugilistDownButNotOut},message:'🩸 Израненный, но не сломленный: Мокси восстановлено.'+(s.pugilistDownButNotOut?' Ещё не повержен усиливает атаки на 1 минуту.':'')};
     }
     if(id==='digDeep'){
       if(ctx.activate!==true&&ctx.confirm!==true)return{ok:false,message:'Подтверди использование «Соберись с силами».'};
@@ -1608,7 +1608,7 @@ var academy=String(s.warlordAcademy||'');
     if(id==='fisticuffs')return{ok:true,effect:{damageDie:pugilistDie(l),bonusActionUnarmedOrGrapple:true,magical:l>=6,requiresArmor:['light_or_none'],noShield:true},message:'🥊 Кулачный бой активен: '+pugilistDie(l)+'.'};
     if(id==='ironChin')return{ok:true,effect:{armorClass:'12 + Constitution modifier',requires:['light_or_no_armor','no_shield']},message:'🛡️ Железный подбородок: AC считается через Телосложение.'};
     if(id==='fancyFootwork')return{ok:true,effect:{dexteritySaveProficiency:true},message:'👟 Вычурная работа ногами: владение спасбросками Ловкости.'};
-    if(id==='downButNotOut'){var db=res(h,'pugilistDownButNotOut',l>=9?1:0,'long');if(db.current<=0)return{ok:false,message:'Эта способность уже использована до долгого отдыха.'};db.current=0;s.pugilistDownButNotOut={roundsRemaining:10};return{ok:true,effect:{bonusDamage:'proficiency bonus',durationMinutes:1,requires:'Bloodied but Unbowed'},message:'🩸 Ещё не повержен: атаки получают дополнительный урон на 1 минуту.'};}
+    if(id==='downButNotOut'){if(!s.pugilistDownButNotOut)return{ok:false,message:'«Ещё не повержен» автоматически включается при срабатывании «Израненный, но не сломленный».'};return{ok:true,passive:true,effect:{bonusDamage:'proficiency bonus',durationMinutes:1},message:'🩸 Ещё не повержен: дополнительный урон действует до конца эффекта «Израненный, но не сломленный».'};}
     if(id==='schoolOfHardKnocks')return{ok:true,effect:{resistance:['psychic'],advantageSavesAgainst:['stunned','unconscious']},message:'🥊 Школа суровой жизни активна: сопротивление психическому урону и преимущество против оглушения/бессознательности.'};
     if(id==='rabbleRouser')return{ok:true,effect:{afterCarousingAdvantage:['persuasion','intimidation'],scope:'peopleOfSettlement'},message:'🍻 Задира: преимущество на Убеждение и Запугивание среди жителей знакомого поселения.'};
     if(id==='herculean')return{ok:true,effect:{carryingCapacityMultiplier:2,objectMeleeDamageMultiplier:2,standingJump:'running_start_distance'},message:'💪 Геркулесова сила активна.'};
