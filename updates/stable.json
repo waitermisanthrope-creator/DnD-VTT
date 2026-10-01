@@ -65,7 +65,7 @@
     {
       "path": "app/classesRegistry.js",
       "bytes": 10685,
-      "sha256": "315c11e1926aa0717c530f8e35fa49ebd8a746e6eb0b5cbb62af7ebb25ff8bb0"
+      "sha256": "880652937850a998d9f30270650c20a492e1a4a9d7bf5db0466529e2b3f06be0"
     },
     {
       "path": "app/data/classes/progressionEngine.js",
@@ -79,8 +79,8 @@
     },
     {
       "path": "app/class_features_engine.js",
-      "bytes": 122037,
-      "sha256": "7caa3cc6792a52ac32128c3b3e963d1b3927daacf681ce8010cbe1c8312abaa3"
+      "bytes": 122792,
+      "sha256": "0a9c95d1d11f9756b936fd1745dccd21657844463f1e3878e4d0c12cd342990d"
     },
     {
       "path": "app/combat_engine.js",
