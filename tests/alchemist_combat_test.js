@@ -122,10 +122,11 @@ assert.equal(graftCriticalAttack.critical,false,'Mutable Anatomy turns a critica
 
 const burningTarget={id:'burning-target',hp:20,maxHp:20,ac:10,conditions:{},activeConditions:{},classFeaturesState:{alchemistDebuffs:{burning:true,burningTicks:1,sourceId:'incendiary-owner'}}};
 const burningOwner={id:'incendiary-owner',name:'Поджигатель',classes:[{name:'Алхимик',level:5,subclass:'madBomber'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:3,resources:{},classFeaturesState:{}};
-ctx.currentChar=burningOwner;burningOwner.initiativeTracker={round:1,activeIndex:0,combatants:[burningOwner,burningTarget]};
+ctx.currentChar=burningOwner;burningOwner.initiativeTracker={round:1,activeIndex:1,combatants:[burningOwner,burningTarget]};
 const beforeBurn=burningTarget.hp;
-rolls=[{result:4,critical:false,fumble:false}];
-ctx.DNDGameplayCore.startTurn(burningTarget);
-assert.equal(burningTarget.hp,beforeBurn-4,'Incendiary Bomb deals real fire damage at the start of the burning target turn');
+const oldRandomForBurn=ctx.Math.random;ctx.Math.random=()=>0.999;
+ctx.DNDGameplayV57.startTurn();
+ctx.Math.random=oldRandomForBurn;
+assert.equal(burningTarget.hp,beforeBurn-6,'Incendiary Bomb deals real fire damage at the start of the burning target turn');
 assert.equal(burningTarget.classFeaturesState.alchemistDebuffs.burning,undefined,'Incendiary Bomb burning expires after its scheduled tick');
 console.log('Alchemist combat integration tests PASS');
