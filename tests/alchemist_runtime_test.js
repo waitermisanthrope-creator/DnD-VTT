@@ -233,6 +233,22 @@ const breath=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'activate
 assert.equal(breath.ok,true,'Dragon Lungs resolves a 15-foot cone with Dexterity saves');
 assert.equal(breathOne.hp,24,'successful save halves Dragon Lungs damage');
 assert.equal(breathTwo.hp,18,'failed save takes full Dragon Lungs damage');
+
+hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Драконьи лёгкие'});
+assert.equal(hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'install',graftName:'Паутинная железа',donorVerified:true,donorType:'Паукообразное'}).ok,true,'Spider Gland graft can be installed');
+const webbedTarget={id:'webbed-target',conditions:{},activeConditions:{},classFeaturesState:{},turnResources:{movement:30}};
+const webResult=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'activate',graftName:'Паутинная железа',target:webbedTarget,saveResult:{success:false}});
+assert.equal(webResult.ok,true,'Spider Gland resolves a Dexterity save');
+assert.equal(webbedTarget.activeConditions['Опутан'],true,'Spider Gland applies restrained condition on failed save');
+assert.equal(webbedTarget.turnResources.movement,0,'Spider Gland reduces target movement to zero');
+hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Паутинная железа'});
+assert.equal(hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'install',graftName:'Мешочек с ядом',donorVerified:true,donorType:'Ядовитое существо'}).ok,true,'Poison Sack graft can be installed');
+assert.equal(hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'activate',graftName:'Мешочек с ядом',weapon:{id:'poisoned-dagger'}}).ok,true,'Poison Sack coats a selected weapon');
+const poisonedWeaponAttack=hooks.attackModifiers(xenoOwner,{weaponAttack:true,weaponId:'poisoned-dagger'});
+assert.ok(poisonedWeaponAttack.extraDice.includes('1d4'),'Poison Sack adds real damage dice to the matching weapon attack');
+assert.ok(poisonedWeaponAttack.damageTypes.includes('яд'),'Poison Sack adds poison damage type');
+assert.equal(hooks.attackModifiers(xenoOwner,{weaponAttack:true,weaponId:'poisoned-dagger'}).extraDice.includes('1d4'),false,'Poison Sack is consumed by one matching attack');
+
 delete ctx.DNDCombat;
 const ionizerEngineer={id:'ionizer-engineer',classes:[{name:'Алхимик',level:6,subclass:'ionizer'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:3,resources:{},classFeaturesState:{}};
 hooks.sync(ionizerEngineer);
