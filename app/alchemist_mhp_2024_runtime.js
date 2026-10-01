@@ -292,7 +292,7 @@ function attackModifiers(h,ctx){
  }
  var pendingBomb=s.alchemistPendingBombEffect;
  if(isBomb&&pendingBomb){
-  out.extraDice.push(pendingBomb.dice);out.damageTypes.push(pendingBomb.type);out.notes.push('Особая бомба: '+pendingBomb.name+' ('+pendingBomb.type+')');
+  out.extraDice.push(pendingBomb.dice);out.damageTypes.push(pendingBomb.type);if(pendingBomb.ignoreResistance)out.ignoreResistance=true;if(pendingBomb.immunityBecomesResistance)out.immunityBecomesResistance=true;out.notes.push('Особая бомба: '+pendingBomb.name+' ('+pendingBomb.type+')');
   var specialBombEffects={'Кислотная бомба':{save:'dex',acPenalty:3},'Большая бомба':{save:'dex',burning:true},'Резонансная бомба':{save:'con',condition:'Оглох'},'Ядовитая бомба':{save:'con',condition:'Отравлен'}};
   if(specialBombEffects[pendingBomb.name])out.pendingOnHit.alchemistFormula=Object.assign({id:'special-'+pendingBomb.name,name:pendingBomb.name,dc:Number(s.alchemistSaveDC)||10,duration:'until_start_of_attacker_next_turn',saveOnHit:true},specialBombEffects[pendingBomb.name]);
   s.alchemistPendingBombEffect=null;
@@ -332,7 +332,7 @@ function subclassFeatureEffect(h,sub,f,ctx){
  if(name==='Аркано-бомба'){s.alchemistPendingBombEffect={dice:'1d12',type:'силовой',name:name};return{ok:true,effect:{damageType:'force',damageDice:'d12',extraDice:1,spendDynamo:true},message:'⚡ Аркано-бомба подготовлена к следующей атаке бомбой.'};}
  if(name==='Плазменная бомба'){s.alchemistPendingBombEffect={dice:'1d12',type:'излучение',name:name};return{ok:true,effect:{damageType:'radiant',directDice:'d12',blastDice:'d6',attached:true},message:'☀️ Плазменная бомба подготовлена к следующей атаке; урон взрыва требует выбора цели в боевом интерфейсе.'};}
  if(name==='Теплоотвод'){if(!ctx.overheatedWeapon||!ctx.overheatedWeapon.id)return{ok:false,needsTarget:true,message:'Выберите конкретное перегретое оружие; реагенты не списаны.'};if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,effect:{overheatDamage:'2d6 fire',coolWeaponBonus:'2d6 cold',weaponId:ctx.overheatedWeapon.id},message:'🔥❄️ Теплоотвод применён.'};}
- if(name==='Бомба с чёрным порохом'){var r=h.resources.alchemistReagents;if(!s.blackPowderUses)s.blackPowderUses=Math.max(1,mod(h,'int'));if(s.blackPowderUses<1)return{ok:false,message:'Бомбы с чёрным порохом исчерпаны до отдыха.'};s.blackPowderUses--;return{ok:true,effect:{damageDice:'d12',damageType:'fire',ignoreResistance:true,immunityBecomesResistance:true},message:'💥 Бомба с чёрным порохом готова.'};}
+ if(name==='Бомба с чёрным порохом'){var r=h.resources.alchemistReagents;if(!s.blackPowderUses)s.blackPowderUses=Math.max(1,mod(h,'int'));if(s.blackPowderUses<1)return{ok:false,message:'Бомбы с чёрным порохом исчерпаны до отдыха.'};s.blackPowderUses--;s.alchemistPendingBombEffect={dice:'1d12',type:'огонь',name:name,ignoreResistance:true,immunityBecomesResistance:true};return{ok:true,effect:{damageDice:'d12',damageType:'fire',ignoreResistance:true,immunityBecomesResistance:true,prepared:true},message:'💥 Бомба с чёрным порохом подготовлена к следующей атаке бомбой.'};}
  if(name==='Мутаген'){
   var mutagenAbility=String(ctx.ability||'constitution');
   if(['strength','dexterity','constitution','intelligence','wisdom','charisma'].indexOf(mutagenAbility)<0)return{ok:false,message:'Выберите допустимую характеристику для мутагена.'};
