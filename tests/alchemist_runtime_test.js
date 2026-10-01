@@ -72,4 +72,14 @@ hooks.startTurn(hero);
 assert.equal(hooks.useFeature(hero,'alchemist-potionUse',{index:0}).ok,true,'speed potion applies');
 assert.equal(hooks.attackModifiers(hero,{weaponAttack:true}).hasteActive,true,'speed potion exposes active combat state');
 
+
+const formulaHero={classes:[{name:'Алхимик',level:8,subclass:'apothecary'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:3,resources:{},classFeaturesState:{}};
+hooks.sync(formulaHero);
+assert.equal(hooks.useFeature(formulaHero,'alchemist-formula',{formulas:['acid','fear','cryo']}).ok,true,'known bomb formulas can be selected');
+assert.equal(hooks.useFeature(formulaHero,'alchemist-formula',{formula:'acid'}).ok,true,'known acid formula can be prepared');
+const acidAttack=hooks.attackModifiers(formulaHero,{isBomb:true});
+assert.equal(acidAttack.pendingOnHit.alchemistFormula.id,'acid','acid formula emits a pending on-hit save effect');
+assert.equal(acidAttack.pendingOnHit.alchemistFormula.acPenalty,3,'acid formula declares its AC penalty for the combat resolver');
+assert.equal(hooks.attackModifiers(formulaHero,{isBomb:true}).pendingOnHit.alchemistFormula,undefined,'formula on-hit effect is consumed once');
+
 console.log('Alchemist runtime regression tests PASS');
