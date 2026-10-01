@@ -1698,7 +1698,7 @@ var academy=String(s.warlordAcademy||'');
   function pugilistAttack(h,ctx){
     var l=pugilistLevel(h),s=st(h),o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]};
     o.unarmedDie=pugilistDie(l);
-    if(s.pugilistMagicFists)o.notes.push('Безоружные атаки считаются магическими.');
+    if(s.pugilistMagicFists){o.notes.push('Безоружные атаки считаются магическими.');if(ctx&&(ctx.unarmedAttack||ctx.isUnarmed||ctx.pugilistWeapon||ctx.attackKind==='unarmed'))o.magicalAttack=true;}
     if(ctx&&ctx.haymaker)o.disadvantage=true;
     if(ctx&&ctx.haymaker)o.maximizeDamageDice=true;
     if(ctx&&ctx.pugilistWeapon)o.usesFisticuffsDie=true;
