@@ -35,9 +35,11 @@ assert.equal(hero.classFeaturesState.alchemistPotions.length,3,'missing choice d
 let resistance=hooks.useFeature(hero,'alchemist-potionUse',{index:0,damageType:'огонь'});
 assert.equal(resistance.ok,true,'resistance potion applies');
 assert.ok(hero.resistances.includes('огонь'),'resistance is recorded on character');
+hooks.startTurn(hero);
 let invis=hooks.useFeature(hero,'alchemist-potionUse',{index:0});
 assert.equal(invis.ok,true,'invisibility potion applies');
 assert.equal(hero.activeConditions.Невидим,true,'invisibility condition is set');
+hooks.startTurn(hero);
 let heal=hooks.useFeature(hero,'alchemist-potionUse',{index:0,healAmount:7});
 assert.equal(heal.ok,true,'healing potion applies');
 assert.equal(hero.hp,7,'healing potion updates character HP when no max is specified');
@@ -62,8 +64,10 @@ hero.classFeaturesState.alchemistPotions=[
 ];
 assert.equal(hooks.useFeature(hero,'alchemist-potionUse',{index:0}).ok,true,'enlarge potion applies');
 assert.ok(hooks.attackModifiers(hero,{weaponAttack:true}).extraDice.includes('1d4'),'enlarge potion adds weapon damage');
+hooks.startTurn(hero);
 assert.equal(hooks.useFeature(hero,'alchemist-potionUse',{index:0}).ok,true,'heroism potion applies');
 assert.equal(hero.tempHp,10,'heroism potion grants temporary HP');
+hooks.startTurn(hero);
 assert.equal(hooks.useFeature(hero,'alchemist-potionUse',{index:0}).ok,true,'speed potion applies');
 assert.equal(hooks.attackModifiers(hero,{weaponAttack:true}).hasteActive,true,'speed potion exposes active combat state');
 
