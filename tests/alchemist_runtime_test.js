@@ -249,9 +249,8 @@ assert.equal(hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',
 assert.equal(hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'install',graftName:'Мешочек с ядом',donorVerified:true,donorType:'Ядовитое существо'}).ok,true,'Poison Sack graft can be installed');
 assert.equal(hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'activate',graftName:'Мешочек с ядом',weapon:{id:'poisoned-dagger'}}).ok,true,'Poison Sack coats a selected weapon');
 const poisonedWeaponAttack=hooks.attackModifiers(xenoOwner,{weaponAttack:true,weaponId:'poisoned-dagger'});
-assert.ok(poisonedWeaponAttack.extraDice.includes('1d4'),'Poison Sack adds real damage dice to the matching weapon attack');
-assert.ok(poisonedWeaponAttack.damageTypes.includes('яд'),'Poison Sack adds poison damage type');
-assert.equal(hooks.attackModifiers(xenoOwner,{weaponAttack:true,weaponId:'poisoned-dagger'}).extraDice.includes('1d4'),false,'Poison Sack is consumed by one matching attack');
+assert.ok(poisonedWeaponAttack.typedExtraDice.some(d=>d.dice==='1d4'&&d.type==='яд'),'Poison Sack adds a typed poison damage die to the matching weapon attack');
+assert.equal(hooks.attackModifiers(xenoOwner,{weaponAttack:true,weaponId:'poisoned-dagger'}).typedExtraDice.length,0,'Poison Sack is consumed by one matching attack');
 
 delete ctx.DNDCombat;
 const ionizerEngineer={id:'ionizer-engineer',classes:[{name:'Алхимик',level:6,subclass:'ionizer'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:3,resources:{},classFeaturesState:{}};
