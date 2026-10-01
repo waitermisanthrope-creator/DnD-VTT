@@ -196,13 +196,13 @@
   function getSkillBonus(hero, skillId, statKey) {
     var stats = getStats(hero);
     var rank = hero && hero.skillsData ? Number(hero.skillsData[skillId]) || 0 : 0;
-    return mod(stats[statKey]) + profBonus(hero) * Math.min(2, Math.max(0, rank)) + getD20Modifier(hero);
+    return mod(stats[statKey]) + profBonus(hero) * Math.min(2, Math.max(0, rank));
   }
 
   function getSaveBonus(hero, statKey) {
     var stats = getStats(hero);
     var proficient = !!(hero && hero.savesData && hero.savesData[statKey]);
-    return mod(stats[statKey]) + (proficient ? profBonus(hero) : 0) + getD20Modifier(hero);
+    return mod(stats[statKey]) + (proficient ? profBonus(hero) : 0);
   }
 
   function conditionModifiers(hero) {
