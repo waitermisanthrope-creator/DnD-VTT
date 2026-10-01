@@ -316,6 +316,7 @@
       var fm=opts.__classFeatureMod||{bonusDamage:0,extraDice:[]};
       out.damage=fm.noDamage?{total:0,extraDice:[]}:rollDice(opts.damage,!!roll.critical,!!fm.maximizeDamageDice);
       if(!fm.noDamage&&Array.isArray(fm.extraDice)) fm.extraDice.forEach(function(expr){var er=rollDice(expr,!!roll.critical,!!fm.maximizeDamageDice);out.damage.total+=er.total;(out.damage.extraDice||(out.damage.extraDice=[])).push(er);});
+      if(!fm.noDamage&&Array.isArray(fm.typedExtraDice))fm.typedExtraDice.forEach(function(entry){var er=rollDice(entry.dice,!!roll.critical,!!fm.maximizeDamageDice);out.damage.total+=er.total;(out.damage.typedExtraDice||(out.damage.typedExtraDice=[])).push({total:er.total,type:entry.type,label:entry.label||'Дополнительный урон'});});
       if(!fm.noDamage)out.damage.total+=num(fm.bonusDamage);
       var pending=(global.DNDClassFeatures&&global.DNDClassFeatures.consumePendingOnHit&&opts.__attacker)?global.DNDClassFeatures.consumePendingOnHit(opts.__attacker,{hit:true}):{};
       if(pending.divineSmite){var sr=rollDice(pending.divineSmite.dice,!!roll.critical,!!fm.maximizeDamageDice);out.damage.total+=sr.total;out.damage.extraDice=(out.damage.extraDice||[]);out.damage.extraDice.push(sr);out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Божественная кара +'+sr.total+' '+pending.divineSmite.damageType);out.divineSmite={dice:pending.divineSmite.dice,total:sr.total,damageType:pending.divineSmite.damageType};}
@@ -357,7 +358,7 @@
         var damageOpts={source:'attack',attackKind:opts.attackKind||((opts.weapon&&Number(opts.weapon.rangeFt)>5)?'rangedWeapon':'weapon'),visible:opts.visible!==false,projectile:!!opts.projectile,critical:!!roll.critical,attacker:opts.__attacker||null};
         var damageParts=[{amount:rollDice(opts.damage,!!roll.critical).total,damageType:opts.damageType||''}];
         // Rebuild the exact rolled base damage used above so resistance is applied per type.
-        damageParts[0].amount=out.damage.total-num(fm.bonusDamage);
+        var typedExtraTotal=(out.damage.typedExtraDice||[]).reduce(function(sum,p){return sum+num(p.total);},0);damageParts[0].amount=out.damage.total-num(fm.bonusDamage)-typedExtraTotal;(out.damage.typedExtraDice||[]).forEach(function(p){damageParts.push({amount:num(p.total),damageType:p.type||opts.damageType||'',label:p.label||'Дополнительный урон'});});
         if(pending.divineSmite){
           var smitePart=out.divineSmite&&num(out.divineSmite.total)||0;
           damageParts[0].amount-=smitePart;
