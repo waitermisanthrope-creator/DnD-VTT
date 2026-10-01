@@ -87,4 +87,12 @@ assert.equal(acidAttack.pendingOnHit.alchemistFormula.id,'acid','acid formula em
 assert.equal(acidAttack.pendingOnHit.alchemistFormula.acPenalty,3,'acid formula declares its AC penalty for the combat resolver');
 assert.equal(hooks.attackModifiers(formulaHero,{isBomb:true}).pendingOnHit.alchemistFormula,undefined,'formula on-hit effect is consumed once');
 
+formulaHero.classFeaturesState.alchemistPendingBombEffect={dice:'2d10',type:'яд',name:'Ядовитая бомба'};
+const poisonBomb=hooks.attackModifiers(formulaHero,{isBomb:true});
+assert.equal(poisonBomb.pendingOnHit.alchemistFormula.condition,'Отравлен','poison bomb forwards its condition to combat resolver');
+formulaHero.classFeaturesState.alchemistDynamoCharged=true;
+const dynamoAttack=hooks.attackModifiers(formulaHero,{weaponAttack:true});
+assert.ok(dynamoAttack.damageTypes.includes('молния'),'Dynamo Core adds lightning damage type');
+
+
 console.log('Alchemist runtime regression tests PASS');
