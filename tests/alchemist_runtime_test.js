@@ -12,7 +12,7 @@ const hero={classes:[{name:'Алхимик',level:6,subclass:'apothecary'}],
   resources:{},classFeaturesState:{}};
 hooks.sync(hero);
 assert.equal(hero.resources.alchemistReagents.max,12,'level 6 reagent maximum');
-const subclassResult=hooks.useFeature(hero,'alchemist-apothecary-3-Болеутоляющая бомба',{}, {subclassId:'apothecary'});
+const subclassResult=hooks.useFeature(hero,'alchemist-apothecary-3-Болеутоляющая бомба',{target:{id:'initial-ally',tempHp:0}}, {subclassId:'apothecary'});
 assert.equal(subclassResult.ok,true,'generated subclass feature ID resolves');
 assert.equal(subclassResult.effect.tempHp,6,'pain-relief bomb scales with class level');
 const first=hooks.useFeature(hero,'alchemist-discovery',{discovery:'Базовая алхимия'});
