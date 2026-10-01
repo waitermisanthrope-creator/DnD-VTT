@@ -371,7 +371,16 @@ function subclassFeatureEffect(h,sub,f,ctx){
  if(name==='Коническая бомба'){s.alchemistPendingBombEffect={dice:'1d10',type:'гром',name:name,save:'con',area:'cone',sizeFt:10};return{ok:true,effect:{damageType:'гром',damageDice:'d10',area:'cone',sizeFt:10,save:'con',prepared:true},message:'🔊 Коническая бомба подготовлена к следующей атаке; боевой интерфейс пока разрешает выбранную цель, но не все цели конуса.'};}
  if(name==='Светошумовая граната')return{ok:true,effect:{bonusAction:true,areaFt:10,noOpportunityAttacks:true,duration:'until_start_of_next_turn'},message:'🔊 Светошумовая граната готова.'};
  if(name==='Бомба со смехотворным газом')return{ok:true,effect:{damageType:'poison',damageDice:'d8',save:'constitution',onNatural1:{condition:'incapacitated',speed:0,duration:'until_start_of_next_turn'}},message:'☠️ Газовая бомба готова.'};
- if(name==='Токсическое возмездие'){if(!ctx.attacker||!ctx.attacker.id)return{ok:false,needsTarget:true,message:'Нужен конкретный атакующий как цель реакции.'};return{ok:true,target:ctx.attacker.id,effect:{reaction:true,save:'constitution',condition:'poisoned',duration:'1 minute',damageAtTurnStart:'1d10 poison',repeatSave:true},message:'☠️ Токсическое возмездие подготовлено против атакующего.'};}
+ if(name==='Токсическое возмездие'){
+  var toxicTarget=ctx.attacker;if(!toxicTarget||typeof toxicTarget!=='object')return{ok:false,needsTarget:true,message:'Нужен конкретный атакующий как цель реакции.'};
+  var toxicDC=Number(s.alchemistSaveDC)||10,toxicSave=ctx.saveResult||(g.DNDCombat&&g.DNDCombat.savingThrow?g.DNDCombat.savingThrow(toxicTarget,'con',toxicDC):null);
+  if(!toxicSave)return{ok:false,unsupported:true,message:'Спасбросок Телосложения недоступен; реагенты/реакция не потрачены.'};
+  if(toxicSave.success)return{ok:true,target:toxicTarget.id||null,effect:{reaction:true,save:toxicSave,applied:false},message:'☠️ Атакующий устоял против токсического возмездия.'};
+  toxicTarget.classFeaturesState=toxicTarget.classFeaturesState||{};toxicTarget.classFeaturesState.alchemistToxicVengeance={dc:toxicDC,remainingTurns:10,nextTick:true,sourceId:h.id||null,damage:'1d10'};
+  if(g.DNDCombat&&g.DNDCombat.toggleCondition)g.DNDCombat.toggleCondition(toxicTarget,'Отравлен',true);
+  toxicTarget.activeConditions=toxicTarget.activeConditions||{};toxicTarget.activeConditions['Отравлен']=true;
+  return{ok:true,target:toxicTarget.id||null,effect:{reaction:true,save:toxicSave,condition:'Отравлен',applied:true,durationMinutes:1,damageAtTurnStart:'1d10',repeatSave:true},message:'☠️ Атакующий отравлен: 1d10 ядом в начале хода, повторный спасбросок в конце хода.'};
+ }
  if(name==='Хирургическая атака'){if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};s.alchemistSurgicalAttackReady=true;return{ok:true,effect:{attackAbility:'intelligence',extraDamage:'1d8'},message:'🧬 Следующий подходящий удар трансплантатом усилен.'};}
  if(name==='Некромантические органы'){s.xenoNecroticReady=true;return{ok:true,effect:{replaceDropToZeroWithHP:l,longRestUses:1},message:'🧬 Некромантические органы готовы.'};}
  if(name==='Кислотная бомба'){s.alchemistPendingBombEffect={dice:'2d8',type:'кислота',name:name};return{ok:true,effect:{damageDice:'2d8',damageType:'acid',splashDice:'d8'},message:'🧪 Кислотная бомба подготовлена к следующей атаке.'};}
