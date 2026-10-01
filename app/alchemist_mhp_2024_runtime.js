@@ -226,6 +226,23 @@ function sync(h){
  s.alchemistPotionLimit=Math.max(1,mod(h,'int')) + (s.alchemistDiscoveries||[]).filter(function(x){return x==='Алхимия превращений'||x==='Алхимия яда'||x==='Алхимия восстановления';}).length*2;s.alchemistDiscovered=s.alchemistDiscovered||[]; s.alchemistPotionOnlyReagents=s.alchemistPotionOnlyReagents||0;s.alchemistFormulas=s.alchemistFormulas||[];
 }
 function spend(h,n){var r=h.resources&&h.resources.alchemistReagents;if(!r||r.current<n)return false;r.current-=n;return true;}
+function shortRest(h){
+ if(!h||!alvl(h))return;sync(h);var r=h.resources.alchemistReagents,s=st(h);
+ r.current=Math.min(r.max,r.current+1);
+ if(!s.alchemistSynthesisUsed)s.alchemistSynthesisReady=true;
+ s.alchemistRestType='short';
+}
+function longRest(h){
+ if(!h||!alvl(h))return;sync(h);var r=h.resources.alchemistReagents,s=st(h);
+ r.current=r.max;s.alchemistSynthesisUsed=false;s.alchemistSynthesisReady=false;
+ s.blackPowderUses=Math.max(1,mod(h,'int'));s.xenoNecroticReady=false;s.alchemistPotionMixReady=false;
+ s.alchemistRestType='long';
+}
+function startTurn(h){
+ if(!h||!alvl(h))return;sync(h);var s=st(h);
+ if(s.philosopherStone&&h.resources.alchemistReagents)h.resources.alchemistReagents.current=Math.min(h.resources.alchemistReagents.max,h.resources.alchemistReagents.current+Math.min(6,h.resources.alchemistReagents.max-h.resources.alchemistReagents.current));
+ s.alchemistTurnUsed={};
+}
 function subclassFeatureEffect(h,sub,f,ctx){
  var n=f[1],l=alvl(h),s=st(h),name=String(n||'');
  if(name==='Болеутоляющая бомба')return{ok:true,effect:{damage:0,tempHp:l+(Number(ctx.reagents)||0)*10,targetOrArea:true},message:'⚗️ Болеутоляющая бомба: временные HP.'};
@@ -277,26 +294,27 @@ function subclassFeatureEffect(h,sub,f,ctx){
  return{ok:false,unsupported:true,message:'Алхимик: «'+name+'» пока не имеет полноценного resolver-а; способность не отмечена как успешно применённая.'};
 }
 
-function use(h,id,ctx){
+function use(h,id,ctx,feature){
  sync(h);ctx=ctx||{};var l=alvl(h),s=st(h),r=h.resources.alchemistReagents;
  id=String(id||'').replace(/^alchemist-/,'');
  if(id==='primeBomb'){var n=Math.min(Number(ctx.reagents)||1,s.alchemistPrimeMax,r.current);if(!spend(h,n))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,effect:{extraDamage:n+'d10',extraRadiusFt:n*5},message:'💣 Прайм-бомба: +'+n+'d10.'};}
- if(id==='reagentSynthesis'){if(s.alchemistSynthesisUsed)return{ok:false,message:'Синтез уже использован до долгого отдыха.'};var n=Math.min(Math.max(1,mod(h,'int')),r.max-r.current);r.current=Math.min(r.max,r.current+n);s.alchemistSynthesisUsed=true;return{ok:true,message:'⚗️ Восстановлено реагентов: '+n+'.'};}
+ if(id==='reagentSynthesis'){if(!s.alchemistSynthesisReady)return{ok:false,message:'Синтез реагентов доступен после короткого отдыха; после применения нужен долгий отдых.'};if(s.alchemistSynthesisUsed)return{ok:false,message:'Синтез уже использован до долгого отдыха.'};var n=Math.min(Math.max(1,mod(h,'int')),r.max-r.current);if(n<=0)return{ok:false,message:'Реагенты уже на максимуме.'};r.current+=n;s.alchemistSynthesisUsed=true;s.alchemistSynthesisReady=false;return{ok:true,message:'⚗️ Синтез: восстановлено реагентов '+n+'.'};}
  if(id==='bomb'){return{ok:true,effect:{attack:true,damageDice:s.alchemistBombDamage,damageType:'fire',range:'30/90',saveDC:s.alchemistSaveDC,explodeRadiusFt:5,intelligentExplosion:Math.max(1,mod(h,'int'))},message:'💣 Бомба готова.'};}
  if(id==='formula'){var f=formulae.find(function(x){return x.id===ctx.formula||x.name===ctx.formula;});if(!f)return{ok:false,message:'Формула не найдена.'};return{ok:true,effect:{formula:f},message:'🧪 Формула применена: '+f.name+'.'};}
  if(id==='nuclearBomb'){if(l<20||!s.philosopherStone)return{ok:false,message:'Нужен 20 уровень и Философский камень.'};s.philosopherStone=false;return{ok:true,effect:{damage:'10d10+100',type:'force',radiusMiles:1},message:'☢️ Ядерная бомба создана. Философский камень уничтожен.'};}
  if(id==='potionBrew'){var p=potions.find(function(x){return x.name===ctx.potion;});if(!p||l<p.level)return{ok:false,message:'Этот рецепт ещё недоступен.'};if(!spend(h,p.cost))return{ok:false,message:'Недостаточно реагентов.'};s.alchemistPotions=s.alchemistPotions||[];if(s.alchemistPotions.length>=s.alchemistPotionLimit){r.current+=p.cost;return{ok:false,message:'Достигнут лимит зелий.'};}s.alchemistPotions.push({name:p.name,cost:p.cost});return{ok:true,message:'⚗️ Сварено: '+p.name+'.'};}
- if(id==='potionMix'){if(l<15)return{ok:false,message:'Миксолог доступен с 15 уровня.'};return{ok:true,effect:{mixPotions:true},message:'🍶 Два зелья можно выпить бонусным действием.'};}
+ if(id==='potionMix'){if(l<15)return{ok:false,message:'Миксолог доступен с 15 уровня.'};s.alchemistPotionMixReady=true;return{ok:true,effect:{mixPotions:true},message:'🍶 До конца хода можно выпить два зелья бонусным действием.'};}
+ if(id==='potionUse'){var idx=Number(ctx.index);if(!Number.isInteger(idx)||idx<0||!s.alchemistPotions||idx>=s.alchemistPotions.length)return{ok:false,message:'Выберите существующее зелье из инвентаря Алхимика.'};var potion=s.alchemistPotions[idx];var healMap={'Зелье лечения': '2d4+2','Зелье улучшенного лечения':'4d4+4','Зелье превосходного лечения':'8d4+8'};if(healMap[potion.name]){var healRoll=typeof ctx.healAmount==='number'?Math.max(0,ctx.healAmount):null;if(healRoll===null)return{ok:false,needsRoll:true,potion:potion.name,formula:healMap[potion.name],message:'Бросьте лечение '+healMap[potion.name]+' и повторите применение с результатом.'};var hpKey=('hpCurrent' in h)?'hpCurrent':(('hitPoints' in h)?'hitPoints':'hp');var maxHp=Number(h.hpMax||h.maxHitPoints||h.maxHP||h.maxHp)||0;var oldHp=Number(h[hpKey])||0;h[hpKey]=maxHp>0?Math.min(maxHp,oldHp+healRoll):oldHp+healRoll;}s.alchemistPotions.splice(idx,1);if(s.alchemistPotionMixReady)s.alchemistPotionMixReady=false;return{ok:true,effect:{consumedPotion:potion.name,applyPotionEffect:true},message:'🍶 Выпито: '+potion.name+'. Для эффектов, требующих спасброска/состояния, примените соответствующий эффект в карточке цели.'};}
  if(id==='philosopherStone'){if(l<20)return{ok:false,message:'Философский камень доступен с 20 уровня.'};s.philosopherStone=true;return{ok:true,effect:{regainReagentsOnInitiativeUpTo:6,quickBrewing:true,longevity:true},message:'💎 Философский камень создан.'};}
- var sub=subs.find(function(x){return x.id===ctx.subclass||x.name===ctx.subclass;});
- if(sub&&id==='subclassFeature'){var f=sub.f.find(function(x){return Number(x[0])===Number(ctx.level)||String(x[0])===String(ctx.featureId)||String(x[1])===String(ctx.featureName);});if(!f)return{ok:false,message:'Особенность подкласса не найдена.'};return subclassFeatureEffect(h,sub,f,ctx);}
+ var selected=(h.classes||[]).find(function(x){return x.name===CLASS||x.englishName==='Alchemist';});var subId=(feature&&feature.subclassId)||ctx.subclass||(selected&&selected.subclass);var sub=subs.find(function(x){return x.id===subId||x.name===subId;});
+ if(sub&&(id==='subclassFeature'||id.indexOf('alchemist-'+sub.id+'-')===0)){var f=sub.f.find(function(x){return String(x[1])===String(ctx.featureName)||String(x[1])===String(ctx.featureId)||(feature&&String(feature.name)===String(x[1]))||Number(x[0])===Number(ctx.level);});if(!f)return{ok:false,unsupported:true,message:'Не удалось однозначно определить особенность подкласса; эффект не применён.'};if(l<Number(f[0]))return{ok:false,message:'Особенность доступна с '+f[0]+' уровня.'};return subclassFeatureEffect(h,sub,f,ctx);}
  return{ok:false,unsupported:true,message:'Алхимик: способность '+id+' пока не имеет исполняемого resolver-а.'};
 }
-var pack={id:PACK_ID,name:CLASS,source:SOURCE,metadata:{edition:'2024 / 5.5E',hitDie:8,primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],skillsChoose:3,armor:['light'],weapons:['simple'],tools:['alchemist_supplies'],multiclass:{dexterity:13,intelligence:13},startingEquipment:['2 кинжала','Кожаный доспех','Инструменты алхимика','Алхимический огонь','Набор учёного','6 зм'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14]},features:features,subclasses:subpacks,formulas:formulae,potions:potions,discoveries:discoveries,discoveryRecipes:discoveryRecipes,monstrousGrafts:monstrousGrafts,variants:alchemistVariants,alcoholRules:{maxStages:10,decayPerHour:1,longRestClears:true,stage10:'без сознания до утра'},hooks:{sync:sync,useFeature:use}};
+var pack={id:PACK_ID,name:CLASS,source:SOURCE,metadata:{edition:'2024 / 5.5E',hitDie:8,primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],skillsChoose:3,armor:['light'],weapons:['simple'],tools:['alchemist_supplies'],multiclass:{dexterity:13,intelligence:13},startingEquipment:['2 кинжала','Кожаный доспех','Инструменты алхимика','Алхимический огонь','Набор учёного','6 зм'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14]},features:features,subclasses:subpacks,formulas:formulae,potions:potions,discoveries:discoveries,discoveryRecipes:discoveryRecipes,monstrousGrafts:monstrousGrafts,variants:alchemistVariants,alcoholRules:{maxStages:10,decayPerHour:1,longRestClears:true,stage10:'без сознания до утра'},hooks:{sync:sync,useFeature:use,shortRest:shortRest,longRest:longRest,startTurn:startTurn}};
 D.registerClass(pack);
 g.CLASSES_REFERENCE=g.CLASSES_REFERENCE||{};
 g.CLASSES_REFERENCE[CLASS]={source:SOURCE,hitDie:8,primaryStat:'dexterity',primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14],contentPackId:PACK_ID};
 g.SUBCLASSES_REFERENCE=g.SUBCLASSES_REFERENCE||{};g.SUBCLASSES_REFERENCE[CLASS]={};
 subpacks.forEach(function(s){var lv={};s.features.forEach(function(f){lv[f.level]=lv[f.level]||{features:[]};lv[f.level].features.push(f.name);});g.SUBCLASSES_REFERENCE[CLASS][s.name]={source:SOURCE,description:s.description,pickLevel:3,levels:lv};});
-g.ALCHEMIST_MHP_2024={VERSION:'1.1.0-complete',STATUS:'in_progress',CANONICAL_2024_SUBCLASSES:11,PACK_ID:PACK_ID,formulae:formulae,potions:potions,discoveries:discoveries,subclasses:subpacks.map(function(s){return{id:s.id,name:s.name};})};
+g.ALCHEMIST_MHP_2024={VERSION:'1.2.0-in-progress',STATUS:'in_progress',CANONICAL_2024_SUBCLASSES:11,PACK_ID:PACK_ID,formulae:formulae,potions:potions,discoveries:discoveries,subclasses:subpacks.map(function(s){return{id:s.id,name:s.name};})};
 })(window);
