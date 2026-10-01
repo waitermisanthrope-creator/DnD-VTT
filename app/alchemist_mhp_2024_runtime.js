@@ -619,7 +619,7 @@ function use(h,id,ctx,feature){
   if(action==='activate'){
    if(!grafts.some(function(x){return x.name===graftName;}))return{ok:false,message:'Сначала установите этот трансплантат.'};
    s.alchemistGraftUses=s.alchemistGraftUses||{};
-   if(s.alchemistGraftUses[graftName])return{ok:false,message:'Эта способность трансплантата уже использована до короткого/долгого отдыха.'};
+   if(s.alchemistGraftUses[graftName]&&graftName!=='Голосовые связки'&&graftName!=='Магические синапсы')return{ok:false,message:'Эта способность трансплантата уже использована до короткого/долгого отдыха.'};
    if(graftName==='Регенерация'){
     var healRoll=Number(ctx.healRoll),conMod=mod(h,'con'),currentHp=Number(h.hp!=null?h.hp:h.hitPoints),maxHp=Number(h.maxHp!=null?h.maxHp:h.maxHitPoints);
     if(!Number.isFinite(healRoll)||healRoll<1||healRoll>10)return{ok:false,needsRoll:true,formula:'1d10',message:'Бросьте 1d10 для Регенерации; использование не потрачено.'};
@@ -667,7 +667,7 @@ function use(h,id,ctx,feature){
     var cantrip=String(ctx.cantrip||'').trim();if(!cantrip)return{ok:false,needsChoice:true,message:'Выберите заговор волшебника для магических синапсов.'};
     var knownCantrips=s.alchemistSynapseCantrips=s.alchemistSynapseCantrips||[];
     if(knownCantrips.indexOf(cantrip)>=0)return{ok:false,message:'Этот заговор уже выбран для магических синапсов.'};
-    knownCantrips.push(cantrip);
+    knownCantrips.push(cantrip);var synapseRecord=grafts.find(function(x){return x.name===graftName;});if(synapseRecord)synapseRecord.cantrip=cantrip;
     return{ok:true,effect:{cantrip:cantrip,spellcastingAbility:'intelligence',knownCantrips:knownCantrips.slice()},message:'🧬 Магические синапсы: заговор «'+cantrip+'» записан в список способностей.'};
    }
    if(graftName==='Драконьи лёгкие'){
@@ -684,7 +684,8 @@ function use(h,id,ctx,feature){
   if(action==='remove'){
    var removeAt=grafts.findIndex(function(x){return x.name===graftName;});
    if(removeAt<0)return{ok:false,message:'Этот трансплантат не установлен.'};
-   grafts.splice(removeAt,1);return{ok:true,grafts:grafts.slice(),removed:graftName,message:'🧬 Трансплантат «'+graftName+'» удалён.'};
+   var removedGraft=grafts.splice(removeAt,1)[0];if(graftName==='Магические синапсы'&&removedGraft.cantrip){s.alchemistSynapseCantrips=(s.alchemistSynapseCantrips||[]).filter(function(x){return x!==removedGraft.cantrip;});}
+   return{ok:true,grafts:grafts.slice(),removed:graftName,message:'🧬 Трансплантат «'+graftName+'» удалён.'};
   }
   if(action!=='install')return{ok:false,message:'Укажите graftAction: install, remove или list.'};
   if(grafts.some(function(x){return x.name===graftName;}))return{ok:false,message:'Этот трансплантат уже установлен.'};
@@ -835,5 +836,5 @@ g.CLASSES_REFERENCE=g.CLASSES_REFERENCE||{};
 g.CLASSES_REFERENCE[CLASS]={source:SOURCE,hitDie:8,primaryStat:'dexterity',primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14],contentPackId:PACK_ID};
 g.SUBCLASSES_REFERENCE=g.SUBCLASSES_REFERENCE||{};g.SUBCLASSES_REFERENCE[CLASS]={};
 subpacks.forEach(function(s){var lv={};s.features.forEach(function(f){lv[f.level]=lv[f.level]||{features:[]};lv[f.level].features.push(f.name);});g.SUBCLASSES_REFERENCE[CLASS][s.name]={source:SOURCE,description:s.description,pickLevel:3,levels:lv};});
-g.ALCHEMIST_MHP_2024={VERSION:'1.8.2-alchemist-graft-actions',STATUS:'in_progress',CANONICAL_2024_SUBCLASSES:11,PACK_ID:PACK_ID,formulae:formulae,potions:potions,discoveries:discoveries,subclasses:subpacks.map(function(s){return{id:s.id,name:s.name};})};
+g.ALCHEMIST_MHP_2024={VERSION:'1.8.3-alchemist-graft-lifecycle',STATUS:'in_progress',CANONICAL_2024_SUBCLASSES:11,PACK_ID:PACK_ID,formulae:formulae,potions:potions,discoveries:discoveries,subclasses:subpacks.map(function(s){return{id:s.id,name:s.name};})};
 })(window);
