@@ -84,8 +84,8 @@
     },
     {
       "path": "app/combat_engine.js",
-      "bytes": 37979,
-      "sha256": "fe3f4e4050cd82863dc2b3e64c79dec35146e7518c43cd5a675937e70d14eb8a"
+      "bytes": 40716,
+      "sha256": "42103f89ffc5894ce71ad39633e83c6648ea2f8f4be4aabe57d1eca858ff3850"
     },
     {
       "path": "app/vtt_debug_error_log_v709.js",
