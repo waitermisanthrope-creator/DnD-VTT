@@ -675,7 +675,7 @@ function executeEquippedWeaponAttack() {
   }
 
   const proficiencyBonus = typeof getProfBonusNum === 'function' ? getProfBonusNum() : 2;
-  const totalAttackBonus = chosenMod + proficiencyBonus + getMorehodD20ModifierForCurrentCharacter();
+  const totalAttackBonus = chosenMod + proficiencyBonus;
 
   let d20Result = 0;
   const r1 = rollSingleDice(20);
