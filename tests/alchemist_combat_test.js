@@ -120,6 +120,14 @@ assert.equal(graftCriticalAttack.hit,true,'Mutable Anatomy still allows a natura
 assert.equal(graftCriticalAttack.critical,false,'Mutable Anatomy turns a critical hit into a normal hit');
 
 
+const objectBomber={id:'object-bomber',classes:[{name:'Алхимик',level:3,subclass:'madBomber'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{}};
+hooks.sync(objectBomber);
+const structureTarget={id:'structure-target',isObject:true,ac:10,hp:30,maxHp:30,conditions:{},activeConditions:{},classFeaturesState:{}};
+rolls=[{result:10,critical:false,fumble:false}];const oldRandomObject=ctx.Math.random;ctx.Math.random=()=>0.999;
+const structureBlast=ctx.DNDCombat.attack(objectBomber,structureTarget,{bonus:10,damage:'1d6',damageType:'огонь',isBomb:true,target:structureTarget,useRules:false});
+ctx.Math.random=oldRandomObject;
+assert.equal(structureBlast.damageResult.amount,12,'Mad Bomber doubles bomb damage against objects and structures');
+assert.equal(structureTarget.hp,18,'double bomb damage is applied to structure HP');
 const bomberResistanceTarget={id:'bomber-resistance-target',hp:20,maxHp:20,classes:[{name:'Алхимик',level:10,subclass:'madBomber'}],classFeaturesState:{alchemistExplosionResistanceType:'огонь'},conditions:{},activeConditions:{}};
 const bomberResisted=ctx.DNDCombat.applyDamage(bomberResistanceTarget,10,'огонь');
 assert.equal(bomberResisted.amount,5,'Mad Bomber resistance halves the selected damage type in combat');
