@@ -47,7 +47,10 @@
     type=String(type||'').toLowerCase().trim();
     var homunculusState=target&&target.classFeaturesState||{},homunculusOwner=homunculusState.alchemistHomunculusOwner;
     if(opts.isBomb&&homunculusOwner!=null&&opts.attackerId!=null&&String(homunculusOwner)===String(opts.attackerId))return{raw:amount,amount:0,mode:'owner-bomb-immunity',note:'Гомункул невосприимчив к бомбам создателя',type:type};
-    var physical=(type==='дробящий'||type==='колющий'||type==='рубящий');
+    var physical=(type==='дробящий'||type==='колющий'||type==='рубящий'||type==='bludgeoning'||type==='piercing'||type==='slashing');
+    var pugilistState=target&&target.classFeaturesState||{},digDeep=pugilistState.pugilistDigDeepActive;
+    var digDeepTypes=['дробящий','колющий','рубящий','bludgeoning','piercing','slashing'];
+    var pugilistDigDeepResistant=!!(digDeep&&Number(digDeep.roundsRemaining)>0&&digDeepTypes.indexOf(type)>=0);
     var raging=physical&&global.DNDClassFeatures&&global.DNDClassFeatures.activeRage&&global.DNDClassFeatures.activeRage(target);
     var rm=target&&target.raceMechanics||{};
     var raceImmune=(type==='яд'&&rm.poisonImmunity);
@@ -55,14 +58,14 @@
     if(raceImmune||hasType(target && target.immunities,type)){if(opts.immunityBecomesResistance)return {raw:amount,amount:Math.floor(amount/2),mode:'immunity-as-resistance',note:'Иммунитет считается сопротивлением',type:type};return {raw:amount,amount:0,mode:'immune',note:'Иммунитет',type:type};}
     var witchImperil=target&&target.witchImperil&&String(target.witchImperil.damageType||'').toLowerCase()===type;
     var witchElemental=target&&target.witchElementalResistance&&String(target.witchElementalResistance).toLowerCase()===type;
-    var resistant=!opts.ignoreResistance&&!witchImperil&&(raging||raceResistant||witchElemental||hasType(target && target.resistances,type));
+    var resistant=!opts.ignoreResistance&&!witchImperil&&(raging||pugilistDigDeepResistant||raceResistant||witchElemental||hasType(target && target.resistances,type));
     var vulnerable=hasType(target && target.vulnerabilities,type);
     if(resistant&&vulnerable){
       note='Сопротивление и уязвимость взаимно компенсированы';
     }else if(vulnerable){
       amount*=2;note='Уязвимость ×2';
     }else if(resistant){
-      amount=Math.floor(amount/2);note=raging?'Сопротивление от Ярости 1/2':'Сопротивление 1/2';
+      amount=Math.floor(amount/2);note=pugilistDigDeepResistant?'Сопротивление «Соберись с силами» 1/2':raging?'Сопротивление от Ярости 1/2':'Сопротивление 1/2';
     }
     return {raw:num(amount),amount:amount,mode:note||'normal',note:note,type:type};
   }
