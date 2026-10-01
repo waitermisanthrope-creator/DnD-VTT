@@ -283,11 +283,22 @@
     var total=d20+bonus+classBonus-witchAttackPenalty;
     var alchemistDebuffs=target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs||{};
     var coverBonus=(opts&&opts.__classFeatureMod&&opts.__classFeatureMod.ignoreCover)?0:num(opts&&opts.coverBonus, num(target&&target.coverBonus,0));
-    var ac=(opts&&opts.acOverride!=null?num(opts.acOverride,10):Math.max(10,num(target && target.ac,10)-num(target&&target.witchACPenalty,0))-num(alchemistDebuffs.acPenalty,0))+coverBonus;
+    var targetGrafts=target&&target.classFeaturesState&&Array.isArray(target.classFeaturesState.alchemistGrafts)?target.classFeaturesState.alchemistGrafts.map(function(x){return typeof x==='string'?x:x&&x.name||'';}):[];
+    var dexScore=Number(target&&target.abilityScores&&target.abilityScores.dexterity!=null?target.abilityScores.dexterity:target&&target.stats&&target.stats.dexterity!=null?target.stats.dexterity:10),dexMod=Math.floor((dexScore-10)/2);
+    var targetHasArmor=!!(target&&(target.armorEquipped||target.equippedArmor||(target.equipment&&(target.equipment.armor||target.equipment.armour))));
+    var graftAC=null,unarmoredBase=10+dexMod;
+    if(!targetHasArmor&&(target.ac==null||Number(target.ac)<=unarmoredBase)){
+      if(targetGrafts.indexOf('Шкура дракона')>=0&&target.heavyArmorProficient)graftAC=17;
+      else if(targetGrafts.indexOf('Чешуя исчадия')>=0)graftAC=15+Math.min(2,dexMod);
+      else if(targetGrafts.indexOf('Звериная шкура')>=0)graftAC=13+dexMod;
+    }
+    var normalAC=Math.max(10,num(target && target.ac,10)-num(target&&target.witchACPenalty,0))-num(alchemistDebuffs.acPenalty,0);
+    var ac=(opts&&opts.acOverride!=null?num(opts.acOverride,10):graftAC!=null?graftAC:normalAC)+coverBonus;
     var duplicityTarget=opts&&opts.__attacker&&target&&target.classFeaturesState&&target.classFeaturesState.witchDuplicity;
     var duplicityMiss=false;
     if(duplicityTarget&&!roll.fumble){var dupRoll=rollDie(6);if(dupRoll%2===1){duplicityMiss=true;target.classFeaturesState.witch.witchDuplicity=false;}}
-    var hit=!duplicityMiss&&(roll.critical || (!roll.fumble && total>=ac));
+    var naturalTwenty=!!roll.critical;if(naturalTwenty&&targetGrafts.indexOf('Изменчивая анатомия')>=0)roll.critical=false;
+    var hit=!duplicityMiss&&(naturalTwenty || (!roll.fumble && total>=ac));
     var electromagneticShield=null,defenderClasses=target&&target.classes||[],ionizerClass=defenderClasses.find(function(c){return c&&(c.name==='Алхимик'||c.englishName==='Alchemist')&&(c.subclass==='ionizer'||c.subclass==='Ионизатор');});
     var incomingType=String(opts&&opts.damageType||'').toLowerCase(),rangedIncoming=!!(opts&&(opts.rangedAttack||opts.attackKind==='rangedWeapon'||opts.weapon&&Number(opts.weapon.rangeFt)>5));
     if(hit&&ionizerClass&&Number(ionizerClass.level)>=10&&rangedIncoming&&['силовой','force','молния','lightning','некротический','necrotic','излучение','radiant'].indexOf(incomingType)>=0){
