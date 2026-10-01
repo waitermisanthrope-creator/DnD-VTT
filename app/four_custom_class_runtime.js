@@ -267,7 +267,9 @@
     ctx=ctx||{};
     if(!hero)return {ok:false,reason:'Персонаж не найден.'};
     sync(hero);
-    if(String(id)==='banditTrip')return useBanditTrip(hero,ctx);\n    if(String(id)==='protectorZone')return useProtectorZone(hero,ctx);\n    if(String(id)==='protectorRescue')return rescueAlly(hero,ctx);
+    if(String(id)==='banditTrip')return useBanditTrip(hero,ctx);
+    if(String(id)==='protectorZone')return useProtectorZone(hero,ctx);
+    if(String(id)==='protectorRescue')return rescueAlly(hero,ctx);
     if(String(id)==='circusFireBreath')return useCircusFireBreath(hero,ctx);
     if(String(id)!=='banditStudyTarget')return {ok:false,unsupported:true,reason:'Эта способность пока не подключена.'};
     if(level(hero,CLASS_IDS.bandit)<1)return {ok:false,reason:'Для изучения цели нужен класс Бандит.'};
