@@ -320,6 +320,14 @@ const hemoragentNoPool={id:'hemoragent-no-pool',classes:[{name:'Алхимик',
 hooks.sync(hemoragentNoPool);
 assert.equal(hooks.useFeature(hemoragentNoPool,'alchemist-classFeature',{featureName:'Геморагент',hitDiceSpent:2}).ok,false,'Hemoragent refuses to spend without an integrated hit-dice pool');
 
+const overloadBomber={id:'overload-bomber',classes:[{name:'Алхимик',level:14,subclass:'madBomber'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:5,resources:{},classFeaturesState:{}};
+hooks.sync(overloadBomber);
+const overloadBefore=overloadBomber.resources.alchemistReagents.current;
+const overload=hooks.useFeature(overloadBomber,'alchemist-subclassFeature',{featureName:'Перегруженный заряд'},{subclassId:'madBomber'});
+assert.equal(overload.ok,true,'Overloaded Charge prepares a powered bomb');
+assert.equal(overloadBomber.resources.alchemistReagents.current,overloadBefore-5,'Overloaded Charge spends proficiency-bonus reagents');
+assert.ok(hooks.attackModifiers(overloadBomber,{isBomb:true}).extraDice.includes('2d10'),'Overloaded Charge adds 2d10 to the next bomb');
+assert.equal(hooks.attackModifiers(overloadBomber,{isBomb:true}).extraDice.includes('2d10'),false,'Overloaded Charge is consumed by one bomb');
 const prismTester={id:'prism-test',classes:[{name:'Алхимик',level:4,subclass:'apothecary'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{alchemistPreparedFormula:'prismatic'}};
 hooks.sync(prismTester);
 const prismAttack=hooks.attackModifiers(prismTester,{isBomb:true,prismaticIndex:3});
