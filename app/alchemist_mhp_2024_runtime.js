@@ -312,6 +312,7 @@ function attackModifiers(h,ctx){
  }
  if(s.alchemistSeekingBombBonus&&isBomb){out.bonusDamage+=Number(s.alchemistSeekingBombBonus)||0;s.alchemistSeekingBombBonus=0;}
  var activeEffects=s.alchemistActiveEffects||[];
+ if(ctx.weaponAttack&&s.alchemistPoisonedWeaponId&&String(ctx.weaponId||ctx.weapon&&ctx.weapon.id||'')===String(s.alchemistPoisonedWeaponId)){out.extraDice.push('1d4');out.damageTypes.push('яд');out.notes.push('Мешочек с ядом: +1d4 ядом; яд израсходован');s.alchemistPoisonedWeaponId=null;}
  if(ctx.weaponAttack&&activeEffects.some(function(e){return e.name==='Зелье увеличения';})){out.extraDice.push('1d4');out.notes.push('Зелье увеличения: +1d4 урона оружием');}
  if(ctx.weaponAttack&&activeEffects.some(function(e){return e.name==='Зелье героизма';})){out.notes.push('Зелье героизма активно');}
  if(activeEffects.some(function(e){return e.name==='Зелье скорости';})){out.hasteActive=true;out.notes.push('Зелье скорости активно: преимущество скорости/дополнительное действие обрабатывается боевым ходом');}
@@ -559,6 +560,19 @@ function use(h,id,ctx,feature){
     var affected=[];
     targets.forEach(function(x){if(x.saveResult.success)return;var target=x.target;target.classFeaturesState=target.classFeaturesState||{};var deb=target.classFeaturesState.alchemistDebuffs=target.classFeaturesState.alchemistDebuffs||{};deb.sourceId=h.id||null;deb.sourceName=h.name||null;deb.conditionsApplied=deb.conditionsApplied||[];if(deb.conditionsApplied.indexOf('Отравлен')<0)deb.conditionsApplied.push('Отравлен');if(g.DNDCombat&&g.DNDCombat.toggleCondition)g.DNDCombat.toggleCondition(target,'Отравлен',true);target.activeConditions=target.activeConditions||{};target.activeConditions['Отравлен']=true;affected.push(target.id||null);});
     s.alchemistGraftUses[graftName]=true;return{ok:true,effect:{affected:affected,condition:'Отравлен',save:'con',dc:s.alchemistSaveDC},message:'🧬 Зловонная секреция: отравлено целей '+affected.length+'.'};
+   }
+   if(graftName==='Паутинная железа'){
+    var webTarget=ctx.target;if(!webTarget||typeof webTarget!=='object')return{ok:false,needsTarget:true,message:'Выберите цель паутины; использование не потрачено.'};
+    var webSave=ctx.saveResult||(g.DNDCombat&&g.DNDCombat.savingThrow?g.DNDCombat.savingThrow(webTarget,'dex',s.alchemistSaveDC):null);
+    if(!webSave)return{ok:false,unsupported:true,message:'Спасбросок Ловкости недоступен; использование не потрачено.'};
+    if(!webSave.success){webTarget.classFeaturesState=webTarget.classFeaturesState||{};var webDebuffs=webTarget.classFeaturesState.alchemistDebuffs=webTarget.classFeaturesState.alchemistDebuffs||{};webDebuffs.sourceId=h.id||null;webDebuffs.sourceName=h.name||null;webDebuffs.speedZero=true;webDebuffs.conditionsApplied=webDebuffs.conditionsApplied||[];if(webDebuffs.conditionsApplied.indexOf('Опутан')<0)webDebuffs.conditionsApplied.push('Опутан');if(g.DNDCombat&&g.DNDCombat.toggleCondition)g.DNDCombat.toggleCondition(webTarget,'Опутан',true);webTarget.activeConditions=webTarget.activeConditions||{};webTarget.activeConditions['Опутан']=true;if(webTarget.turnResources)webTarget.turnResources.movement=0;}
+    s.alchemistGraftUses[graftName]=true;return{ok:true,effect:{target:webTarget.id||null,save:'dex',dc:s.alchemistSaveDC,saveResult:webSave,condition:webSave.success?null:'Опутан',applied:!webSave.success,duration:'until_start_of_owner_next_turn'},message:webSave.success?'🕸️ Цель вырвалась из паутины.':'🕸️ Цель опутана паутиной.'};
+   }
+   if(graftName==='Мешочек с ядом'){
+    var poisonWeapon=ctx.weapon||ctx.targetWeapon,poisonWeaponId=String(ctx.weaponId||poisonWeapon&&poisonWeapon.id||'');
+    if(!poisonWeaponId)return{ok:false,needsTarget:true,message:'Выберите оружие для нанесения яда; использование не потрачено.'};
+    s.alchemistPoisonedWeaponId=poisonWeaponId;s.alchemistGraftUses[graftName]=true;
+    return{ok:true,effect:{weaponId:poisonWeaponId,damageDice:'1d4',damageType:'яд',expires:'next_matching_weapon_hit'},message:'☠️ Яд нанесён. Следующее попадание выбранным оружием наносит +1d4 ядом.'};
    }
    if(graftName==='Драконьи лёгкие'){
     var breathTargets=Array.isArray(ctx.targets)?ctx.targets:[],breathType=String(ctx.damageType||''),breathRoll=Number(ctx.damageRoll),pbBreath=prof(h);
