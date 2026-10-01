@@ -40,7 +40,7 @@ assert.strictEqual(attack.total, 17, 'weapon attack total includes modifier once
 const other = { classes: [{ name: 'Бандит', level: 1 }], stats: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 }, proficiencyBonus: 2, coins: { gp: 2000 } };
 assert.strictEqual(context.DNDRules.weaponAttack(other, { stat: 'str' }, 'normal').bonus, 2, 'other classes are unaffected');
 assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'), 0, 'static skill bonus remains unchanged; passive values are not modified');
-// Integration: combat dice apply the modifier to each individual die, with a floor of zero.
+// Integration: combat dice remain natural; the Mariner modifier never adjusts damage or HP dice.
 {
   const combatContext = {
     console, Math: Object.create(Math), Date, JSON, setTimeout, clearTimeout,
