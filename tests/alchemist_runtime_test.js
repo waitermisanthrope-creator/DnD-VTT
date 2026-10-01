@@ -338,6 +338,18 @@ assert.equal(coloredPotionMaker.classFeaturesState.alchemistActiveEffects[0].eff
 const painter={id:'painter',classes:[{name:'Алхимик',level:3,subclass:'pigmentist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{}};
 hooks.sync(painter);
 assert.equal(hooks.checkModifiers(painter,{toolName:'Инструменты художника'}).bonus,3,'Pigmentist Artist adds Intelligence modifier to painter tool checks');
+const demolitionOwner={id:'demolition-owner',classes:[{name:'Алхимик',level:6,subclass:'madBomber'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:3,resources:{},classFeaturesState:{}};
+hooks.sync(demolitionOwner);
+const demolitionTarget={id:'demolition-target',hp:30,maxHp:30};
+demolitionOwner.initiativeTracker={combatants:[demolitionOwner,demolitionTarget],round:1,activeIndex:0};
+const oldCombatForDemolition=ctx.DNDCombat;ctx.DNDCombat={rollDice:()=>({total:15}),applyDamage:(target,amount,type)=>{target.hp-=amount;return{amount:amount,type:type};}};
+const delayedBomb=hooks.useFeature(demolitionOwner,'alchemist-subclassFeature',{featureName:'Своевременный снос',target:demolitionTarget,fuseRounds:1},{subclassId:'madBomber'});
+assert.equal(delayedBomb.ok,true,'Timed Demolition prepares a valid delayed bomb');
+assert.equal(hooks.useFeature(demolitionOwner,'alchemist-subclassFeature',{featureName:'Своевременный снос',target:demolitionTarget,fuseRounds:1},{subclassId:'madBomber'}).ok,false,'Timed Demolition prevents overlapping explosions');
+const demolitionResult=hooks.onTurnEnd(demolitionOwner);
+assert.equal(demolitionResult.exploded,true,'Timed Demolition explodes at the end of the scheduled owner turn');
+assert.equal(demolitionTarget.hp,15,'Timed Demolition applies real damage to its tracked target');
+ctx.DNDCombat=oldCombatForDemolition;
 const overloadBomber={id:'overload-bomber',classes:[{name:'Алхимик',level:14,subclass:'madBomber'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:5,resources:{},classFeaturesState:{}};
 hooks.sync(overloadBomber);
 const overloadBefore=overloadBomber.resources.alchemistReagents.current;
