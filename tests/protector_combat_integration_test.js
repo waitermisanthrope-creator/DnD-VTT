@@ -89,4 +89,48 @@ assert.strictEqual(heroCombatant.hp, 18, 'mapped self-defense prevents hero HP l
 assert.strictEqual(mappedProtector.resources.protectorImpulses.current, 1, 'mapped self-defense spends exactly one impulse');
 assert.strictEqual(mappedProtector.turnResources.reaction, 0, 'mapped self-defense spends reaction');
 
+
+ 
+// Exercise the actual combat UI attack entry point with a mocked prompt/confirm layer.
+let promptCalls = [];
+let alerts = [];
+context.prompt = (message, fallback) => {
+  promptCalls.push(String(message));
+  if (String(message).startsWith('Цель:')) return '1';
+  if (String(message).startsWith('Бонус атаки:')) return '100';
+  if (String(message).startsWith('Урон (')) return '1d4';
+  if (String(message).startsWith('Тип урона:')) return 'рубящий';
+  return fallback == null ? '' : String(fallback);
+};
+context.confirm = message => {
+  assert(String(message).includes('Защитный импульс'), 'UI asks for an explicit Protector reaction choice');
+  return true;
+};
+context.alert = message => alerts.push(String(message));
+context.document = { getElementById: () => null };
+const uiProtector = {
+  id: 'saved-protector-id',
+  name: 'Заступник',
+  classes: [{ name: 'Заступник', level: 3 }],
+  resources: { protectorImpulses: { current: 2, max: 2, recharge: 'short' } },
+  turnResources: { reaction: 1 },
+  hpCurrent: 18,
+  hpMax: 18,
+  hpTemp: 0,
+  hp: { current: 18, max: 18, temp: 0 }
+};
+const uiAttacker = { id: 'attacker-ui', name: 'Враг', type: 'enemy', hp: 20, maxHp: 20, ac: 10 };
+const uiHeroToken = { id: 'combat-token-id', name: 'Заступник', type: 'hero', hp: 18, maxHp: 18, tempHp: 0, ac: 10 };
+window.currentChar = {
+  ...uiProtector,
+  initiativeTracker: { round: 1, activeIndex: 0, combatants: [uiAttacker, uiHeroToken] }
+};
+window.dndCombatAttack();
+assert.strictEqual(uiHeroToken.hp, 18, 'combat UI self-defense choice prevents HP loss after an incoming hit');
+assert.strictEqual(window.currentChar.resources.protectorImpulses.current, 1, 'combat UI spends one Protector impulse after confirmation');
+assert.strictEqual(window.currentChar.turnResources.reaction, 0, 'combat UI spends the reaction after confirmation');
+assert(promptCalls.some(message => message.startsWith('Цель:')), 'combat UI asks for a target');
+assert(alerts.some(message => message.includes('ПОПАДАНИЕ')), 'combat UI reports the resolved hit');
+window.currentChar = null;
+
 console.log('Protector combat integration tests: PASS');
