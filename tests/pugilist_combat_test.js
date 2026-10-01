@@ -159,7 +159,7 @@ const floorAttack=ctx.DNDCombat.attack(floorHero,floorTarget,{bonus:0,damage:'1d
 assert.equal(floorAttack.damage.total,0,'One-Two-Three Floor deals no damage');
 assert.equal(floorTarget.conditions['Сбит с ног'],true,'One-Two-Three Floor knocks the target prone on a hit');
 assert.equal(floorTarget.hp,floorHpBefore,'One-Two-Three Floor does not reduce HP');
-const knockoutHero=hero(17,'Благородное искусство');pack.hooks.sync(knockoutHero);const knockoutTarget=target('knockout-target');
+const knockoutHero=hero(17,'Благородное искусство');pack.hooks.sync(knockoutHero);randomValue=0.99;const knockoutTarget=target('knockout-target');
 assert.equal(pack.hooks.useFeature(knockoutHero,'knockOut',{target:knockoutTarget,moxie:1}).ok,true,'Knockout prepares its selected target');
 const knockout=ctx.DNDCombat.attack(knockoutHero,knockoutTarget,{bonus:0,damage:'1d6',damageType:'дробящий',unarmedAttack:true,useRules:false});
 assert.equal(knockoutTarget.hp,30,'Knockout leaves HP unchanged; it is not lethal damage');
