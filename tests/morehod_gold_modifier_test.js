@@ -66,6 +66,22 @@ assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'),
   diceContext.MorehodGoldModifier.getModifier = hero => hero === mariner ? 5 : (hero === poorMarinerForCheck ? -5 : 0);
   diceContext.executeD20Check('Проверка навыка', 2);
   assert.strictEqual(diceResult.textContent, 'Итог: 7 (+7)', 'the current wallet is read for each check and the -5 modifier applies exactly once');
+  diceContext.currentChar = mariner;
+  diceContext.getStatModNum = () => 2;
+  diceContext.getProfBonusNum = () => 2;
+  diceContext.updateSkillsState = () => {};
+  diceContext.currentChar.skillsData = { perception: 1 };
+  diceContext.MorehodGoldModifier.getModifier = hero => hero === mariner ? 5 : 0;
+  diceContext.rollStatCheck('str', 'Сила');
+  assert.strictEqual(diceResult.textContent, 'Итог: 17 (+17)', 'the public ability-check entry point receives the modifier once');
+  diceContext.rollSkillCheck('perception', 'Восприятие', 'wis');
+  assert.strictEqual(diceResult.textContent, 'Итог: 19 (+19)', 'the public skill-check entry point receives the modifier once after proficiency');
+  let modifierReads = 0;
+  diceContext.MorehodGoldModifier.getModifier = hero => { modifierReads++; return hero === mariner ? 5 : 0; };
+  diceContext.applyConditionsToRoll = () => ({ effectiveMode: 'advantage', forceCrit1: false, conditionNotes: [] });
+  diceContext.executeD20Check('Проверка с преимуществом', 2);
+  assert.strictEqual(diceResult.textContent, 'Итог: 17 (+17)', 'advantage still applies the modifier only once to the final d20 result');
+  assert.strictEqual(modifierReads, 1, 'the wallet modifier is read exactly once per check even when two d20 are rolled');
 }
 // Integration: combat dice remain natural; the Mariner modifier never adjusts damage or HP dice.
 {
