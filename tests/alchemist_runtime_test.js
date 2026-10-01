@@ -210,6 +210,31 @@ const graftRemoved=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'re
 assert.equal(graftRemoved.ok,true,'installed graft can be removed');
 assert.equal(graftRemoved.grafts.length,0,'removed graft no longer remains equipped');
 
+xenoOwner.hp=10;xenoOwner.maxHp=20;
+assert.equal(hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'install',graftName:'Регенерация',donorVerified:true,donorType:'Регенерация'}).ok,true,'Regeneration graft can be installed');
+const regeneration=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'activate',graftName:'Регенерация',healRoll:6});
+assert.equal(regeneration.ok,true,'Regeneration spends its rest use after a valid roll');
+assert.equal(xenoOwner.hp,16,'Regeneration heals 1d10 plus Constitution modifier');
+assert.equal(hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'activate',graftName:'Регенерация',healRoll:6}).ok,false,'Regeneration cannot be reused before resting');
+hooks.shortRest(xenoOwner);
+assert.equal(hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'activate',graftName:'Регенерация',healRoll:4}).ok,true,'short rest restores graft uses');
+hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Регенерация'});
+assert.equal(hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'install',graftName:'Зловонная секреция',donorVerified:true,donorType:'Вонь'}).ok,true,'Stench Secretion graft can be installed');
+const stenchTarget={id:'stench-target',conditions:{},activeConditions:{},classFeaturesState:{}};
+const stench=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'activate',graftName:'Зловонная секреция',targets:[{target:stenchTarget,distanceFt:10,saveResult:{success:false}},{target:{id:'resistant-target'},distanceFt:5,saveResult:{success:true}}]});
+assert.equal(stench.ok,true,'Stench Secretion resolves provided Constitution saves');
+assert.equal(stenchTarget.activeConditions['Отравлен'],true,'Stench Secretion poisons a target that fails its save');
+hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'remove',graftName:'Зловонная секреция'});
+assert.equal(hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'install',graftName:'Драконьи лёгкие',donorVerified:true,donorType:'Дракон'}).ok,true,'Dragon Lungs graft can be installed');
+ctx.DNDCombat={applyDamage:(target,amount,type)=>{target.hp=Math.max(0,(Number(target.hp)||0)-amount);return{amount:amount,type:type};}};
+const breathOne={id:'breath-one',hp:30},breathTwo={id:'breath-two',hp:30};
+const breath=hooks.useFeature(xenoOwner,'alchemist-graft',{graftAction:'activate',graftName:'Драконьи лёгкие',damageType:'огонь',damageRoll:12,targets:[{target:breathOne,saveResult:{success:true}},{target:breathTwo,saveResult:{success:false}}]});
+assert.equal(breath.ok,true,'Dragon Lungs resolves a 15-foot cone with Dexterity saves');
+assert.equal(breathOne.hp,24,'successful save halves Dragon Lungs damage');
+assert.equal(breathTwo.hp,18,'failed save takes full Dragon Lungs damage');
+delete ctx.DNDCombat;
+
+
 
 
 const lazarusOwner={id:'lazarus-owner',classes:[{name:'Алхимик',level:14,subclass:'xenoalchemist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:5,resources:{},classFeaturesState:{}};
