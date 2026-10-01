@@ -536,17 +536,35 @@
     alert(result.message||result.reason||'Страж рубежа: без результата.');if(result.ok){save();renderCombatStatus();syncNetworkMasterCombat('protector-zone');}
   };
   global.dndProtectorRescue=function(){
-    var h=ensure(),rt=global.FourCustomClassRuntime;if(!h||!rt||typeof rt.useFeature!=='function'){alert('Runtime Заступника недоступен.');return;}
+    var h=ensure(),rt=global.FourCustomClassRuntime,board=global.DNDBattleBoard;
+    if(!h||!rt||typeof rt.useFeature!=='function'){alert('Runtime Заступника недоступен.');return;}
+    if(!board||typeof board.validateRescueMove!=='function'||typeof board.moveRescuedCombatant!=='function'){alert('Поле боя не поддерживает проверку перемещения. Обновите приложение.');return;}
+    board.ensure();board.syncFromInitiative();
     var target=chooseTarget();if(!target)return;
-    var distance=Number(prompt('Расстояние до союзника в футах:','5'));if(!isFinite(distance))return;
-    var x=Number(prompt('X свободной клетки:','0'));if(!isFinite(x))return;
-    var y=Number(prompt('Y свободной клетки:','0'));if(!isFinite(y))return;
-    var cellDistance=Number(prompt('Расстояние от союзника до выбранной клетки в футах:','5'));if(!isFinite(cellDistance))return;
-    var foes=(h.initiativeTracker.combatants||[]).filter(function(c){return c&&c.id!=null&&c!==target&&c.type!=='hero'&&c.team!=='ally';});if(!foes.length){alert('Для спасения выберите противника, от которого союзник не спровоцирует атаку.');return;}
+    var targetToken=board.findTokenForCombatant(target.id);
+    if(!targetToken||targetToken.visible===false){alert('Союзник должен быть видимым токеном на поле боя. Сначала добавьте участников боя на сетку.');return;}
+    var combatants=h.initiativeTracker&&h.initiativeTracker.combatants||[];
+    var protectorCombatant=combatants.find(function(c){return c&&c.type==='hero'&&(String(c.id)===String(h.id)||String(c.name||'')===String(h.name||''));})||combatants.find(function(c){return c&&c.type==='hero';});
+    var protectorToken=protectorCombatant&&board.findTokenForCombatant(protectorCombatant.id);
+    if(!protectorToken){alert('Токен Заступника не найден на поле боя. Нажмите «Участники боя» и повторите.');return;}
+    var distance=board.distanceFt(protectorToken,targetToken);
+    if(!isFinite(distance)||distance>5){alert('Спаситель действует только на союзника в пределах 5 футов. Сейчас: '+distance+' фт.');return;}
+    var levelEntry=(h.classes||[]).find(function(cl){return cl&&(['Заступник','Protector'].indexOf(String(cl.name))>=0||cl.englishName==='Protector');});
+    var protectorLevel=Number(levelEntry&&levelEntry.level)||0,maxMove=protectorLevel>=17?10:5;
+    var x=Number(prompt('X свободной клетки (координаты сетки):',String(targetToken.x)));if(!isFinite(x))return;
+    var y=Number(prompt('Y свободной клетки (координаты сетки):',String(targetToken.y)));if(!isFinite(y))return;
+    var moveCheck=board.validateRescueMove(target.id,x,y,maxMove);
+    if(!moveCheck.ok){alert(moveCheck.reason||'Нельзя переместить союзника в выбранную клетку.');return;}
+    var foes=combatants.filter(function(c){return c&&c.id!=null&&String(c.id)!==String(target.id)&&c.type!=='hero'&&c.team!=='ally';});
+    if(!foes.length){alert('Для спасения выберите противника, от которого союзник не спровоцирует атаку.');return;}
     var foeList=foes.map(function(c,i){return i+': '+c.name;}).join('\\n'),foeIndex=Number(prompt('Выберите противника, от которого не будет провоцированной атаки:\\n'+foeList,'0'));if(!isFinite(foeIndex)||!foes[foeIndex])return;
-    if(!confirm('Подтверждаете, что клетка ('+x+', '+y+') свободна и доступна для перемещения?'))return;
-    var actor=protectorActorForTurn(h),result=rt.useFeature(actor,'protectorRescue',{target:target,isAlly:target.type==='hero'||target.team==='ally',visible:true,distanceFt:distance,cellAvailable:true,freeCell:{x:x,y:y},distanceToCellFt:cellDistance,chosenEnemyId:foes[foeIndex].id,round:num(h.initiativeTracker&&h.initiativeTracker.round,1)});syncProtectorTurnActor(actor);
-    if(result.ok&&target.type==='hero'&&(String(target.id)===String(h.id)||String(target.name)===String(h.name)))syncBackToHero(target);
+    if(!confirm('Проверка поля пройдена: клетка ('+x+', '+y+') свободна; расстояние '+moveCheck.distanceFt+' фт., путь '+moveCheck.pathCostFt+' фт. Подтвердить спасение?'))return;
+    var actor=protectorActorForTurn(h),result=rt.useFeature(actor,'protectorRescue',{target:target,isAlly:target.type==='hero'||target.team==='ally',visible:true,distanceFt:distance,cellAvailable:true,freeCell:{x:x,y:y},distanceToCellFt:moveCheck.distanceFt,moveFt:maxMove,chosenEnemyId:foes[foeIndex].id,round:num(h.initiativeTracker&&h.initiativeTracker.round,1)});syncProtectorTurnActor(actor);
+    if(result.ok){
+      var moved=board.moveRescuedCombatant(target.id,x,y,maxMove);
+      if(!moved.ok){alert('Спасение применено, но обновить токен не удалось: '+(moved.reason||'неизвестная ошибка')+'. Проверьте позицию на поле.');}
+      if(target.type==='hero'&&(String(target.id)===String(h.id)||String(target.name)===String(h.name)))syncBackToHero(target);
+    }
     alert(result.message||result.reason||'Спаситель: без результата.');if(result.ok){save();if(typeof global.renderInitiativeTracker==='function')global.renderInitiativeTracker();renderCombatStatus();syncNetworkMasterCombat('protector-rescue');}
   };
   global.dndCombatHeal=function(){var t=chooseTarget();if(!t)return;var n=Number(prompt('Лечение:','5'));if(!isFinite(n))return;syncHeroCombatant(t);var r=heal(t,n);syncBackToHero(t);alert('Восстановлено '+r.amount+' HP. HP: '+r.hp+'/'+r.maxHp);save();if(typeof global.renderInitiativeTracker==='function')global.renderInitiativeTracker();renderCombatStatus();syncNetworkMasterCombat('heal');};
