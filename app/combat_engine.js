@@ -103,11 +103,16 @@
     var damageTaken=r.amount;
     var absorbed=Math.min(temp,damageTaken); target.tempHp=temp-absorbed;
     var hpDamage=damageTaken-absorbed; target.hp=Math.max(0,hp-hpDamage);
+    var necromanticRevival=false,alchemistState=target&&target.classFeaturesState;
+    if(target.hp<=0&&alchemistState&&alchemistState.xenoNecroticReady&&!alchemistState.xenoNecroticUsed){
+      var alchemistLevel=(target.classes||[]).reduce(function(sum,c){return sum+(c&&(c.name==='Алхимик'||c.englishName==='Alchemist')?(Number(c.level)||0):0);},0);
+      if(alchemistLevel>0){target.hp=Math.max(1,alchemistLevel);target.hitPoints=target.hp;target.defeated=false;alchemistState.xenoNecroticReady=false;alchemistState.xenoNecroticUsed=true;target.deathSaves={successes:0,failures:0};necromanticRevival=true;r.note=(r.note?r.note+'; ':'')+'Некромантические органы: вместо падения до 0 HP восстановлено '+target.hp+' HP.';}
+    }
     var concentration=null;
     var deathSaveFailures=0, instantDeath=false;
     // A character already at 0 HP that takes damage suffers death-save failures.
     // A critical hit causes two failures; massive damage can kill outright.
-    if(hp<=0 && damageTaken>0 && (target.type==='hero'||target.ownerPeerId||target.deathSaveEligible)){
+    if(!necromanticRevival&&hp<=0 && damageTaken>0 && (target.type==='hero'||target.ownerPeerId||target.deathSaveEligible)){
       if(damageTaken>=num(target.maxHp,hp)) instantDeath=true;
       else deathSaveFailures=opts.critical?2:1;
       if(deathSaveFailures){target.deathSaves=target.deathSaves||{successes:0,failures:0};target.deathSaves.failures=Math.min(3,num(target.deathSaves.failures)+deathSaveFailures);}
