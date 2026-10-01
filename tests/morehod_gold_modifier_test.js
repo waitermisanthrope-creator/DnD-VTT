@@ -79,7 +79,7 @@ assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'),
   };
   combatContext.FourCustomClassRuntime.sync(protector);
   const ally = { id: 'ally-1', hp: 20, hpMax: 20, stats: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 } };
-  const protectedHit = combatContext.DNDCombat.applyDamage(ally, 10, 'огонь', { protector, protectorDistanceFt: 5, protectorVisible: true });
+  const protectedHit = combatContext.DNDCombat.applyDamage(ally, 10, 'огонь', { protector, protectorDistanceFt: 5, protectorVisible: true, protectorIsAlly: true });
   assert.strictEqual(protectedHit.amount, 7, 'Protector reduces incoming damage by 1d10 + proficiency (deterministic roll 1 + 2)');
   assert.strictEqual(ally.hp, 13, 'reduced damage is reflected in target HP');
   assert.strictEqual(protector.resources.protectorImpulses.current, 1, 'Protector spends one impulse');
@@ -91,7 +91,7 @@ assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'),
     turnResources: { actions: 1, bonusAction: 1, reaction: 1 }
   };
   combatContext.FourCustomClassRuntime.sync(invalidProtector);
-  const unprotectedHit = combatContext.DNDCombat.applyDamage(ally, 5, 'огонь', { protector: invalidProtector, protectorDistanceFt: 6 });
+  const unprotectedHit = combatContext.DNDCombat.applyDamage(ally, 5, 'огонь', { protector: invalidProtector, protectorDistanceFt: 6, protectorIsAlly: true });
   assert.strictEqual(unprotectedHit.amount, 5, 'Protector outside 5 feet cannot intercept');
   assert.strictEqual(invalidProtector.resources.protectorImpulses.current, 2, 'invalid interception spends no resource');
   assert.strictEqual(invalidProtector.turnResources.reaction, 1, 'invalid interception spends no reaction');
