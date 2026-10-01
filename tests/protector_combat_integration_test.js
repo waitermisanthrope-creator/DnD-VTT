@@ -172,4 +172,31 @@ assert.strictEqual(allyTarget.hp, 20, 'ally HP is unchanged when interception co
 assert.strictEqual(allyProtector.resources.protectorImpulses.current, 1, 'ally interception spends one impulse');
 assert.strictEqual(allyProtector.turnResources.reaction, 0, 'ally interception spends reaction');
 
+
+ 
+// Defensive zone bonus is applied by the actual saving-throw resolver when a forced-movement save opts in.
+window.DNDRules.rollD20 = () => ({ result: 10, critical: false, fumble: false });
+window.currentChar = { initiativeTracker: { round: 2 } };
+const zoneProtector = {
+  id: 'zone-integration-protector',
+  classes: [{ name: 'Заступник', level: 3, subclass: 'Страж рубежа' }],
+  resources: { protectorImpulses: { current: 2, max: 2 } },
+  turnResources: { bonusAction: 1 },
+  classFeaturesState: {}
+};
+const zoneCreated = window.FourCustomClassRuntime.useFeature(zoneProtector, 'protectorZone', { actionAvailable: true, round: 1 });
+assert.strictEqual(zoneCreated.ok, true, 'zone activation works through runtime');
+const zoneAlly = { id: 'zone-integration-ally', hp: 10, maxHp: 10, saveBonuses: { str: 0 }, activeConditions: {} };
+const zoneSave = window.DNDCombat.savingThrow(zoneAlly, 'str', 11, 'normal', {
+  forcedMovementSave: true,
+  protectorZoneProtector: zoneProtector,
+  isAlly: true,
+  visible: true,
+  protectorZoneDistanceFt: 10
+});
+assert.strictEqual(zoneSave.bonus, 1, 'real saving-throw resolver adds zone bonus');
+assert.strictEqual(zoneSave.success, true, 'zone bonus changes a boundary result from failure to success');
+assert(zoneSave.classFeatureNotes.some(note => note.includes('Страж рубежа')), 'zone effect is reflected in result notes');
+window.currentChar = null;
+
 console.log('Protector combat integration tests: PASS');
