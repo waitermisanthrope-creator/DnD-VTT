@@ -274,6 +274,12 @@
     if(h && global.DNDRules){bonus=global.DNDRules.getSaveBonus(h,stat);} else bonus=num(actor && actor.saveBonuses && actor.saveBonuses[stat]);
     ctx=ctx||{};var sm=(global.DNDClassFeatures&&global.DNDClassFeatures.saveModifiers&&actor)?global.DNDClassFeatures.saveModifiers(actor,{stat:stat,dexSaveVisible:stat==='dex',fromSpell:!!(actor&&actor.saveFromSpell),allyWithinAura:!!(ctx.allyWithinAura||actor&&actor.allyWithinAura),auraSource:ctx.auraSource||null,saveType:ctx.saveType||stat,frightenedEffect:!!ctx.frightenedEffect,courageSource:ctx.courageSource||null,allyWithinCourage:!!ctx.allyWithinCourage,charmEffect:!!ctx.charmEffect,fromFiendOrUndead:!!ctx.fromFiendOrUndead,flashOfGeniusAvailable:!!(actor&&actor.useFlashOfGenius)}):null;
     if(sm){bonus+=num(sm.bonus);if(sm.advantage)featureMode=featureMode==='disadvantage'?'normal':'advantage';}
+    var protectorZoneResult=null;
+    if(ctx.forcedMovementSave===true&&ctx.protectorZoneProtector&&global.FourCustomClassRuntime&&typeof global.FourCustomClassRuntime.protectorZoneSave==='function'){
+      var roundNow=num((global.currentChar||global.currentCharacter||{}).initiativeTracker&&((global.currentChar||global.currentCharacter).initiativeTracker.round),1);
+      protectorZoneResult=global.FourCustomClassRuntime.protectorZoneSave(ctx.protectorZoneProtector,actor,{forcedMovementSave:true,isAlly:ctx.isAlly===true,visible:ctx.visible!==false,distanceFt:ctx.protectorZoneDistanceFt,round:roundNow,requestAdvantage:ctx.useProtectorZoneAdvantage===true});
+      if(protectorZoneResult&&protectorZoneResult.ok){bonus+=num(protectorZoneResult.bonus);if(protectorZoneResult.advantage)featureMode=featureMode==='disadvantage'?'normal':'advantage';}
+    }
     var normalizedCondition=global.DNDRules&&global.DNDRules.normalizeConditionName?global.DNDRules.normalizeConditionName:null;
     var conds=(actor&&actor.activeConditions)|| (actor&&actor.conditions)||{};
     var autoFail=!!(global.DNDRules&&global.DNDRules.conditionModifiers&&global.DNDRules.conditionModifiers(actor).autoFailStrDex&&(stat==='str'||stat==='dex'));
@@ -283,7 +289,7 @@
     
     var total=roll.result+bonus;
     var success=autoFail?false:total>=num(dc);var evasion=!!(sm&&sm.evasion&&String(stat).toLowerCase()==='dex'&&success&&!autoFail);
-    return {stat:stat,dc:num(dc),bonus:bonus,roll:roll,total:total,success:success,autoFailed:autoFail,evasion:evasion,classFeatureNotes:sm&&sm.notes||[]};
+    return {stat:stat,dc:num(dc),bonus:bonus,roll:roll,total:total,success:success,autoFailed:autoFail,evasion:evasion,classFeatureNotes:(sm&&sm.notes||[]).concat(protectorZoneResult&&protectorZoneResult.ok?['Страж рубежа: +1 к спасброску против принудительного перемещения'].concat(protectorZoneResult.advantage?['Преимущество от Стража рубежа']:[]):[])};
   }
   function toggleCondition(target,condition,on){
     if(!target.conditions) target.conditions={};
@@ -534,8 +540,9 @@
     var distance=Number(prompt('Расстояние до союзника в футах:','5'));if(!isFinite(distance))return;
     var x=Number(prompt('X свободной клетки:','0'));if(!isFinite(x))return;
     var y=Number(prompt('Y свободной клетки:','0'));if(!isFinite(y))return;
+    var cellDistance=Number(prompt('Расстояние от союзника до выбранной клетки в футах:','5'));if(!isFinite(cellDistance))return;
     if(!confirm('Подтверждаете, что клетка ('+x+', '+y+') свободна и доступна для перемещения?'))return;
-    var actor=protectorActorForTurn(h),result=rt.useFeature(actor,'protectorRescue',{target:target,isAlly:target.type==='hero'||target.team==='ally',visible:true,distanceFt:distance,cellAvailable:true,freeCell:{x:x,y:y},round:num(h.initiativeTracker&&h.initiativeTracker.round,1)});syncProtectorTurnActor(actor);
+    var actor=protectorActorForTurn(h),result=rt.useFeature(actor,'protectorRescue',{target:target,isAlly:target.type==='hero'||target.team==='ally',visible:true,distanceFt:distance,cellAvailable:true,freeCell:{x:x,y:y},distanceToCellFt:cellDistance,round:num(h.initiativeTracker&&h.initiativeTracker.round,1)});syncProtectorTurnActor(actor);
     if(result.ok)syncBackToHero(target);
     alert(result.message||result.reason||'Спаситель: без результата.');if(result.ok){save();if(typeof global.renderInitiativeTracker==='function')global.renderInitiativeTracker();renderCombatStatus();syncNetworkMasterCombat('protector-rescue');}
   };
