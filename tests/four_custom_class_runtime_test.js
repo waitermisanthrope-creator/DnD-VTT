@@ -54,4 +54,34 @@ const actionAfterUse = runtime.useFeature(actionHero, 'banditStudyTarget', {
 });
 assert.strictEqual(actionAfterUse.ok, false, 'cannot study twice after spending bonus action');
 assert.strictEqual(actionHero.classFeaturesState.bandit.studiedTargetIds.length, 1, 'failed second action does not change target');
+const circusHero = {
+  id: 'circus-1',
+  classes: [{ name: 'Циркач', level: 7, subclass: 'Пожиратель огня' }],
+  abilityScores: { dex: 16, cha: 14 },
+  resources: {},
+  stats: { dex: 16 },
+  classFeaturesState: {}
+};
+runtime.sync(circusHero);
+let appliedDamage = [];
+window.DNDCombat = {
+  savingThrow: (target, stat, dc) => ({ success: !!target.saveSuccess, stat, dc }),
+  rollDice: expression => ({ total: expression === '3d6' ? 15 : 10, expression }),
+  applyDamage: (target, amount, type) => {
+    target.hitPoints = Math.max(0, (target.hitPoints || 20) - amount);
+    appliedDamage.push({ id: target.id, amount, type });
+    return { applied: amount };
+  }
+};
+const fireTarget = { id: 'target-fire-1', inArea: true, distanceFt: 10, target: { id: 'target-fire-1', hitPoints: 20, saveSuccess: false } };
+const invalidFire = runtime.useFeature(circusHero, 'circusFireBreath', { targets: [{ ...fireTarget, inArea: false }] });
+assert.strictEqual(invalidFire.ok, false, 'invalid area fails before spending resource');
+assert.strictEqual(circusHero.resources.circusZap.current, circusHero.resources.circusZap.max);
+const fireResult = runtime.useFeature(circusHero, 'circusFireBreath', { targets: [fireTarget] });
+assert.strictEqual(fireResult.ok, true, 'Fire Eater ability resolves');
+assert.strictEqual(fireResult.dice, '3d6', 'Fire Eater scales at level 7');
+assert.strictEqual(circusHero.resources.circusZap.current, circusHero.resources.circusZap.max - 1, 'Zap is spent exactly once');
+assert.strictEqual(appliedDamage.length, 1);
+assert.strictEqual(appliedDamage[0].amount, 15);
+assert.strictEqual(fireTarget.target.hitPoints, 5, 'damage is applied through combat resolver');
 console.log('Four custom class runtime foundation tests: PASS');
