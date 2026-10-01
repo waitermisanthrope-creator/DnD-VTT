@@ -242,7 +242,7 @@ function cleanupPotionEffects(h,oldEffects,keepEffects){
   if(h.conditions&&h.conditions[ef.condition])delete h.conditions[ef.condition];
  }
  if(e&&(e.name==='Мутаген'||e.name==='Общий мутаген')&&oldEffects.indexOf(e)>=0&&keepEffects.indexOf(e)<0&&s.activeMutagen&&s.activeMutagen.snapshots){
-  s.activeMutagen.snapshots.forEach(function(snap){var obj=h[snap.prop];if(obj&&obj[snap.key]!==undefined)obj[snap.key]=snap.original;});s.activeMutagen=null;
+  s.activeMutagen.snapshots.forEach(function(snap){var obj=snap.target?snap.target[snap.prop]:h[snap.prop];if(obj&&obj[snap.key]!==undefined)obj[snap.key]=snap.original;});if(s.activeMutagen.target&&s.activeMutagen.target.classFeaturesState){delete s.activeMutagen.target.classFeaturesState.alchemistSharedMutagenActive;delete s.activeMutagen.target.classFeaturesState.alchemistSharedMutagenSourceId;}s.activeMutagen=null;
  }});
  var keepResistance=[];
  keepEffects.forEach(function(e){var ef=e&&e.effect||{};if(ef.resistanceAll)keepResistance=keepResistance.concat(['кислота','холод','огонь','молния','гром','некротический','яд','психический','излучение','силовой','дробящий','колющий','рубящий']);if(ef.resistance)keepResistance.push(ef.resistance);});
@@ -390,14 +390,14 @@ function subclassFeatureEffect(h,sub,f,ctx){
   var sharedAbility=String(ctx.ability||'constitution');
   if(['strength','dexterity','constitution','intelligence','wisdom','charisma'].indexOf(sharedAbility)<0)return{ok:false,needsChoice:true,message:'Выберите характеристику для Общего мутагена; реагенты не списаны.'};
   ally.classFeaturesState=ally.classFeaturesState||{};var allyState=ally.classFeaturesState;
-  if(allyState.activeMutagen)return{ok:false,message:'У союзника уже действует мутаген; сначала завершите текущий эффект.'};
+  if(allyState.activeMutagen||allyState.alchemistSharedMutagenActive)return{ok:false,message:'У союзника уже действует мутаген; сначала завершите текущий эффект.'};
   var sharedAliases={strength:'str',dexterity:'dex',constitution:'con',intelligence:'int',wisdom:'wis',charisma:'cha'},sharedSnapshots=[];
   ['abilityScores','stats'].forEach(function(prop){var obj=ally[prop];if(!obj||typeof obj!=='object')return;var key=obj[sharedAbility]!==undefined?sharedAbility:(obj[sharedAliases[sharedAbility]]!==undefined?sharedAliases[sharedAbility]:null);if(key===null)return;var original=Number(obj[key])||10;sharedSnapshots.push({prop:prop,key:key,original:original});});
   if(!sharedSnapshots.length)return{ok:false,unsupported:true,message:'Не найдены характеристики союзника; реагенты не списаны.'};
   if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов; мутаген не передан.'};
   sharedSnapshots.forEach(function(snap){var obj=ally[snap.prop];obj[snap.key]=Math.min(23,snap.original+3);});
-  allyState.activeMutagen={ability:sharedAbility,snapshots:sharedSnapshots};
-  allyState.alchemistActiveEffects=allyState.alchemistActiveEffects||[];allyState.alchemistActiveEffects.push({name:'Общий мутаген',effect:{mutagenAbility:sharedAbility,durationMinutes:1,abilityBonus:3,maxAbility:23},remainingMinutes:1});
+  sharedSnapshots.forEach(function(snap){snap.target=ally;});s.activeMutagen={ability:sharedAbility,snapshots:sharedSnapshots,target:ally};allyState.alchemistSharedMutagenActive=true;allyState.alchemistSharedMutagenSourceId=h.id||null;
+  s.alchemistActiveEffects=s.alchemistActiveEffects||[];s.alchemistActiveEffects.push({name:'Общий мутаген',effect:{mutagenAbility:sharedAbility,durationMinutes:1,abilityBonus:3,maxAbility:23},remainingMinutes:1,targetId:ally.id||null});
   return{ok:true,target:ally.id,effect:{ability:sharedAbility,abilityBonus:3,maxAbility:23,durationMinutes:1,applied:true,reagentsSpent:1},message:'🧬 Общий мутаген: характеристика союзника повышена на 3 на 1 минуту.'};
  }
  if(name==='Слизевая бомба')return{ok:true,effect:{damage:0,areaSlime:true,deniesActions:['dash','disengage','dodge'],removeAction:true},message:'🟢 Слизевая бомба разлита.'};
