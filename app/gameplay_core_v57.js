@@ -40,7 +40,7 @@
     }
   }
   function tickToxicVengeanceEnd(c){
-    var state=c&&c.classFeaturesState&&c.classFeaturesState.alchemistToxicVengeance;if(!state)return;
+    var state=c&&c.classFeaturesState&&c.classFeaturesState.alchemistToxicVengeance;if(!state||state.nextTick)return;
     var save=global.DNDCombat&&typeof global.DNDCombat.savingThrow==='function'?global.DNDCombat.savingThrow(c,'con',state.dc):null;
     state.remainingTurns=Math.max(0,num(state.remainingTurns)-1);
     if((save&&save.success)||state.remainingTurns<=0){
