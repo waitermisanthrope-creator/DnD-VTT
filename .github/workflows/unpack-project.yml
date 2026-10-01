@@ -2,6 +2,7 @@ name: Unpack project archive
 
 on:
   push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
