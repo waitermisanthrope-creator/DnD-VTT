@@ -1973,6 +1973,19 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     ],hooks:{sync:syncPugilist,useFeature:usePugilist,attackModifiers:pugilistAttack}},
   ];
   packs.push(occultistPack,witchPack);
+  // Public bridge used by class_features_engine: one source of truth for Accursed.
+  global.accursedRuntime={
+    sync:syncAccursed,
+    useFeature:useAccursed,
+    attackModifiers:accursedAttack,
+    rest:function(h,type){
+      if(!h||!hasClassForAccursed(h))return;
+      var s=st(h).accursed||{};if(type==='long'){s.slotCurrent=(s.spellSlots||[0,0,0,0,0]).slice();s.suppressed=null;s.jinx=null;}
+      if(type==='short'&&s.knownMetamorphoses.indexOf('fecundAffliction')>=0)s.fecundReady=true;
+      syncAccursedResource(h);
+    }
+  };
+  function hasClassForAccursed(h){return lvl(h,'Аккурсд')>0;}
   packs.forEach(function(p){D.registerClass(p);});
   global.DNDExpansionClasses={VERSION:'1.0.0',packs:packs.map(function(p){return p.id;})};
 })(window);
