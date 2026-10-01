@@ -164,6 +164,16 @@ const paintAttack=hooks.attackModifiers(pigmentist,{isBomb:true});
 assert.equal(paintAttack.noDamage,true,'Colorful Bomb does not add ordinary bomb damage');
 assert.equal(paintAttack.pendingOnHit.alchemistFormula.revealsInvisible,true,'Colorful Bomb exposes invisible targets');
 
+const venomHero={classes:[{name:'Алхимик',level:14,subclass:'venomsmith'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:5,resources:{},classFeaturesState:{}};
+hooks.sync(venomHero);
+const toxicTarget={id:'toxic-target',conditions:{},activeConditions:{},classFeaturesState:{}};
+const toxic=hooks.useFeature(venomHero,'alchemist-subclassFeature',{featureName:'Токсическое возмездие',attacker:toxicTarget,saveResult:{success:false,total:8,dc:16}},{subclassId:'venomsmith'});
+assert.equal(toxic.ok,true,'Toxic Vengeance resolves a failed Constitution save');
+assert.equal(toxicTarget.activeConditions['Отравлен'],true,'Toxic Vengeance applies poisoned condition');
+assert.equal(toxicTarget.classFeaturesState.alchemistToxicVengeance.damage,'1d10','Toxic Vengeance records the correct recurring damage');
+assert.equal(toxicTarget.classFeaturesState.alchemistToxicVengeance.remainingTurns,10,'Toxic Vengeance lasts at most ten target turns');
+
+
 
 
 
