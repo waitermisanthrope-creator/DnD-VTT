@@ -679,7 +679,7 @@ function use(h,id,ctx,feature){
   if(!spend(h,p.cost))return{ok:false,message:'Недостаточно реагентов.'};
   s.alchemistPotions=s.alchemistPotions||[];
   if(s.alchemistPotions.length>=s.alchemistPotionLimit){r.current+=p.cost;return{ok:false,message:'Достигнут лимит зелий.'};}
-  s.alchemistPotions.push({name:p.name,cost:p.cost,discovery:p.discovery||null,type:p.type||'potion'});
+  var potionColor=String(ctx.potionColor||'').trim();if(potionColor){if(!(selectedClass&&selectedClass.subclass==='pigmentist'&&l>=10))return{ok:false,message:'Цветные зелья доступны Пигментисту с 10 уровня; зелье не сварено.'};if(['кислота','холод','огонь','молния','гром','яд','некротический','излучение','психический','силовой'].indexOf(potionColor)<0)return{ok:false,needsChoice:true,message:'Выберите допустимый тип сопротивления; реагенты не потрачены.'};}s.alchemistPotions.push({name:p.name,cost:p.cost,discovery:p.discovery||null,type:p.type||'potion',potionColor:potionColor||null});
   return{ok:true,message:'⚗️ Сварено: '+p.name+'.'};
  }
  if(id==='potionMix'){if(l<15)return{ok:false,message:'Миксолог доступен с 15 уровня.'};s.alchemistPotionMixReady=true;s.alchemistPotionsDrunkThisTurn=0;return{ok:true,effect:{mixPotions:true,maxPotions:2},message:'🍶 Миксология подготовлена: до двух зелий в этом ходу.'};}
@@ -722,6 +722,7 @@ function use(h,id,ctx,feature){
   }else if(!effect){
    return{ok:false,unsupported:true,potion:potion.name,message:'Эффект зелья «'+potion.name+'» ещё не реализован. Зелье не потрачено.'};
   }
+  if(potion.potionColor){effect.resistance=potion.potionColor;effect.pigmentResistance=true;effect.durationMinutes=Math.max(Number(effect.durationMinutes)||0,60);}
   s.alchemistActiveEffects=s.alchemistActiveEffects||[];
   if(effect.resistanceAll||effect.resistance){
    h.resistances=Array.isArray(h.resistances)?h.resistances:[];
