@@ -135,6 +135,10 @@ assert.equal(burningTarget.classFeaturesState.alchemistDebuffs.burning,undefined
 const poisonedAttacker={id:'poisoned-attacker',classes:[{name:'Алхимик',level:3,subclass:'xenoalchemist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{alchemistPoisonedWeaponId:'dagger'}};
 hooks.sync(poisonedAttacker);
 const poisonImmuneTarget={id:'poison-immune-target',ac:10,hp:30,maxHp:30,immunities:['яд'],conditions:{},activeConditions:{},classFeaturesState:{}};
+assert.equal(ctx.DNDCombat.effectiveDamage({immunities:['яд']},4,'яд').amount,0,'Combat resolver recognizes Russian poison immunity');
+const poisonPreview=hooks.attackModifiers(poisonedAttacker,{weaponAttack:true,weaponId:'dagger',weapon:{id:'dagger',rangeFt:5}});
+assert.equal(poisonPreview.typedExtraDice.length,1,'Poison Sack exposes one typed damage die to combat');
+poisonedAttacker.classFeaturesState.alchemistPoisonedWeaponId='dagger';
 const oldRandomPoison=ctx.Math.random;ctx.Math.random=()=>0.999;rolls=[{result:20,critical:true,fumble:false}];
 const poisonedStrike=ctx.DNDCombat.attack(poisonedAttacker,poisonImmuneTarget,{bonus:10,damage:'1d4',damageType:'дробящий',weaponAttack:true,weaponId:'dagger',weapon:{id:'dagger',rangeFt:5},target:poisonImmuneTarget,useRules:false});
 ctx.Math.random=oldRandomPoison;
