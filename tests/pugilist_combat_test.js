@@ -6,7 +6,7 @@ const ctx={console,Math:math,Date,JSON,Set,Number,String,Array,Object,RegExp,par
   addEventListener:()=>{},setTimeout:()=>{},clearTimeout:()=>{},prompt:()=>null,alert:()=>{},window:null};
 ctx.window=ctx;ctx.globalThis=ctx;
 ctx.DNDRules={
-  parseDice(expr){const m=String(expr).match(/(\\d+)d(\\d+)(?:([+-])(\\d+))?/i);return m?{groups:[{count:Number(m[1]),sides:Number(m[2])}],constant:m[3]?(m[3]==='-'?-1:1)*Number(m[4]):0}:{groups:[{count:1,sides:6}],constant:0};},
+  parseDice(expr){const m=String(expr).match(/(\d+)d(\d+)(?:([+-])(\d+))?/i);return m?{groups:[{count:Number(m[1]),sides:Number(m[2])}],constant:m[3]?(m[3]==='-'?-1:1)*Number(m[4]):0}:{groups:[{count:1,sides:6}],constant:0};},
   rollD20(){return {result:19,critical:false,fumble:false};}
 };
 ctx.DNDContent={packs:[],registerClass(p){this.packs.push(p);},listClasses(){return this.packs.map(p=>({name:p.displayName||p.name}));},getClass(n){return this.packs.find(p=>p.displayName===n||p.name===n||p.id===n)||null;}};
