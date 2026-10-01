@@ -1,3 +1,10 @@
+function getMorehodD20ModifierForCurrentCharacter() {
+  const hero = (typeof currentCharacter !== 'undefined' && currentCharacter)
+    || (typeof currentChar !== 'undefined' && currentChar) || null;
+  return window.MorehodGoldModifier && typeof window.MorehodGoldModifier.getModifier === 'function'
+    ? window.MorehodGoldModifier.getModifier(hero) : 0;
+}
+
 /**
  * DICE.JS — Модуль бросков D&D 5e (Автономный)
  * Включает детальное логирование (отладку) всех расчетов в консоль, 
@@ -516,6 +523,7 @@ function rollSkillCheck(skillId, skillName, statId) {
  * Выполнение стандартной проверки d20 + модификатор с учетом состояний
  */
 function executeD20Check(title, modifier, varName = '') {
+  modifier += getMorehodD20ModifierForCurrentCharacter();
   console.group(`[DICE_EXECUTE_D20] Запуск d20 проверки для: "${title}" с модификатором: ${modifier}`);
   const { effectiveMode, forceCrit1, conditionNotes } = applyConditionsToRoll(true);
 
@@ -594,11 +602,13 @@ function rollWeaponDamage(weaponName, damageString, critical) {
   const modVal = modifierMatch ? parseInt(modifierMatch[1], 10) : 0;
 
   const effectiveDiceCount = Math.max(1, diceCount * (critical ? 2 : 1));
+  const goldMod = getMorehodD20ModifierForCurrentCharacter();
 
   for (let i = 0; i < effectiveDiceCount; i++) {
-    const r = rollSingleDice(diceSides);
-    rolls.push(r);
-    totalSum += r;
+    const raw = rollSingleDice(diceSides);
+    const adjusted = Math.max(0, raw + goldMod);
+    rolls.push(raw + (goldMod ? '→' + adjusted : ''));
+    totalSum += adjusted;
   }
 
   totalSum += modVal;
@@ -667,7 +677,7 @@ function executeEquippedWeaponAttack() {
   }
 
   const proficiencyBonus = typeof getProfBonusNum === 'function' ? getProfBonusNum() : 2;
-  const totalAttackBonus = chosenMod + proficiencyBonus;
+  const totalAttackBonus = chosenMod + proficiencyBonus + getMorehodD20ModifierForCurrentCharacter();
 
   let d20Result = 0;
   const r1 = rollSingleDice(20);
