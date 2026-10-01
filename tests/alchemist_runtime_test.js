@@ -234,6 +234,20 @@ assert.equal(breath.ok,true,'Dragon Lungs resolves a 15-foot cone with Dexterity
 assert.equal(breathOne.hp,24,'successful save halves Dragon Lungs damage');
 assert.equal(breathTwo.hp,18,'failed save takes full Dragon Lungs damage');
 delete ctx.DNDCombat;
+const ionizerEngineer={id:'ionizer-engineer',classes:[{name:'Алхимик',level:6,subclass:'ionizer'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:3,resources:{},classFeaturesState:{}};
+hooks.sync(ionizerEngineer);
+const overheatedTarget={id:'overheated-target',hp:20,maxHp:20};
+ctx.DNDCombat={applyDamage:(target,amount,type)=>{target.hp=Math.max(0,target.hp-amount);return{amount:amount,type:type};}};
+const heatDamage=hooks.useFeature(ionizerEngineer,'alchemist-subclassFeature',{featureName:'Теплоотвод',mode:'overheat',target:overheatedTarget,damageRoll:7},{subclassId:'ionizer'});
+assert.equal(heatDamage.ok,true,'Heat Sink overheat mode resolves actual fire damage');
+assert.equal(overheatedTarget.hp,13,'Heat Sink applies the rolled 2d6 damage');
+const cooling=hooks.useFeature(ionizerEngineer,'alchemist-subclassFeature',{featureName:'Теплоотвод',mode:'cool',weapon:{id:'test-sword'}},{subclassId:'ionizer'});
+assert.equal(cooling.ok,true,'Heat Sink can cool a selected weapon');
+const cooledAttack=hooks.attackModifiers(ionizerEngineer,{weaponAttack:true,weaponId:'test-sword'});
+assert.ok(cooledAttack.extraDice.includes('2d6'),'the next attack with the cooled weapon adds 2d6');
+assert.ok(cooledAttack.damageTypes.includes('холод'),'the cooling bonus is cold damage');
+assert.equal(ionizerEngineer.classFeaturesState.alchemistCoolingWeaponId,null,'cooling bonus is consumed by the matching weapon attack');
+delete ctx.DNDCombat;
 
 
 
