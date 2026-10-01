@@ -187,6 +187,7 @@
     ctx=ctx||{};
     var l=level(protector,CLASS_IDS.protector),state=protector&&protector.classFeaturesState&&protector.classFeaturesState.protector,zone=state&&state.zone;
     if(l<3||!zone||!zone.active)return {ok:false,bonus:0,reason:'Оборонительная зона не активна.'};
+    var conditions=protector&&(protector.activeConditions||protector.conditions)||{};if(ctx.protectorIncapacitated===true||conditions['Недееспособен']||conditions['Бессознателен']||conditions['Парализован']||conditions['Оглушён']){zone.active=false;return {ok:false,bonus:0,reason:'Зона заканчивается, когда Заступник недееспособен.'};}
     var round=Math.max(1,n(ctx.round,1));
     if(round>=zone.expiresRound){zone.active=false;return {ok:false,bonus:0,reason:'Время оборонительной зоны истекло.'};}
     if(ctx.forcedMovementSave!==true||ctx.isAlly!==true||ctx.visible!==true)return {ok:false,bonus:0,reason:'Нужен спасбросок видимого союзника против принудительного перемещения.'};
@@ -210,6 +211,7 @@
     if(ctx.cellAvailable!==true||!ctx.freeCell||!isFinite(Number(ctx.freeCell.x))||!isFinite(Number(ctx.freeCell.y)))return {ok:false,reason:'Нужно выбрать и подтвердить свободную клетку для перемещения.'};
     var maxMove=l>=17?10:5,move=Number(ctx.moveFt==null?maxMove:ctx.moveFt);
     if(!isFinite(move)||move<0||move>maxMove)return {ok:false,reason:'Перемещение превышает доступную дистанцию '+maxMove+' футов.'};
+    var cellDistance=Number(ctx.distanceToCellFt);if(!isFinite(cellDistance)||cellDistance<0||cellDistance>maxMove)return {ok:false,reason:'Выбранная клетка должна находиться в пределах перемещения '+maxMove+' футов.'};
     var tr=hero.turnResources||(hero.turnResources={actions:1,bonusAction:1,reaction:1});
     if(n(tr.reaction,0)<1)return {ok:false,reason:'Реакция уже потрачена.'};
     var resource=hero.resources&&hero.resources.protectorImpulses;
