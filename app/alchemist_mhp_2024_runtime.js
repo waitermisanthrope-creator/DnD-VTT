@@ -236,7 +236,22 @@ function shortRest(h){
 }
 function longRest(h){
  if(!h||!alvl(h))return;sync(h);var r=h.resources.alchemistReagents,s=st(h);
- r.current=r.max;s.alchemistSynthesisUsed=false;s.alchemistSynthesisReady=false;s.alchemistActiveEffects=(s.alchemistActiveEffects||[]).filter(function(e){return e.effect&&e.effect.durationMinutes>=1440;});
+ r.current=r.max;s.alchemistSynthesisUsed=false;s.alchemistSynthesisReady=false;
+ var oldEffects=s.alchemistActiveEffects||[],keepEffects=oldEffects.filter(function(e){return e.effect&&e.effect.durationMinutes>=1440;});
+ var keepConditions=keepEffects.map(function(e){return e.effect&&e.effect.condition;}).filter(Boolean);
+ oldEffects.forEach(function(e){
+  var ef=e&&e.effect||{};
+  if(ef.condition&&keepConditions.indexOf(ef.condition)<0){
+   if(h.activeConditions&&h.activeConditions[ef.condition])delete h.activeConditions[ef.condition];
+   if(h.conditions&&h.conditions[ef.condition])delete h.conditions[ef.condition];
+  }
+ });
+ var keepResistance=[];
+ keepEffects.forEach(function(e){var ef=e&&e.effect||{};if(ef.resistanceAll)keepResistance=keepResistance.concat(['кислота','холод','огонь','молния','гром','некротический','яд','психический','излучение','силовой','дробящий','колющий','рубящий']);if(ef.resistance)keepResistance.push(ef.resistance);});
+ var granted=s.alchemistGrantedResistances||[];
+ if(Array.isArray(h.resistances))h.resistances=h.resistances.filter(function(type){return granted.indexOf(type)<0||keepResistance.indexOf(type)>=0;});
+ s.alchemistGrantedResistances=granted.filter(function(type){return keepResistance.indexOf(type)>=0;});
+ s.alchemistActiveEffects=keepEffects;
  s.blackPowderUses=Math.max(1,mod(h,'int'));s.xenoNecroticReady=false;s.alchemistPotionMixReady=false;
  s.alchemistRestType='long';
 }
@@ -432,7 +447,8 @@ function use(h,id,ctx,feature){
   if(effect.resistanceAll||effect.resistance){
    h.resistances=Array.isArray(h.resistances)?h.resistances:[];
    var resistanceTypes=effect.resistanceAll?['кислота','холод','огонь','молния','гром','некротический','яд','психический','излучение','силовой','дробящий','колющий','рубящий']:[effect.resistance];
-   resistanceTypes.forEach(function(t){if(h.resistances.indexOf(t)<0)h.resistances.push(t);});
+   s.alchemistGrantedResistances=s.alchemistGrantedResistances||[];
+   resistanceTypes.forEach(function(t){if(h.resistances.indexOf(t)<0)h.resistances.push(t);if(s.alchemistGrantedResistances.indexOf(t)<0)s.alchemistGrantedResistances.push(t);});
   }
   if(effect.condition){h.activeConditions=h.activeConditions||h.conditions||{};h.activeConditions[effect.condition]=true;}
   if(effect.temporaryHP){var oldTemp=Number(h.tempHp||h.temporaryHP)||0;var newTemp=Math.max(oldTemp,effect.temporaryHP);h.tempHp=newTemp;h.temporaryHP=newTemp;}
