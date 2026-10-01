@@ -346,7 +346,25 @@ function use(h,id,ctx,feature){
   return{ok:true,selected:discoveryName,message:'📘 Открытие изучено: '+discoveryName+'.'};
  }
  if(id==='nuclearBomb'){if(l<20||!s.philosopherStone)return{ok:false,message:'Нужен 20 уровень и Философский камень.'};s.philosopherStone=false;return{ok:true,effect:{damage:'10d10+100',type:'force',radiusMiles:1},message:'☢️ Ядерная бомба создана. Философский камень уничтожен.'};}
- if(id==='potionBrew'){var p=potions.find(function(x){return x.name===ctx.potion;});if(!p||l<p.level)return{ok:false,message:'Этот рецепт ещё недоступен.'};if(!spend(h,p.cost))return{ok:false,message:'Недостаточно реагентов.'};s.alchemistPotions=s.alchemistPotions||[];if(s.alchemistPotions.length>=s.alchemistPotionLimit){r.current+=p.cost;return{ok:false,message:'Достигнут лимит зелий.'};}s.alchemistPotions.push({name:p.name,cost:p.cost});return{ok:true,message:'⚗️ Сварено: '+p.name+'.'};}
+ if(id==='potionBrew'){
+  var p=potions.find(function(x){return x.name===ctx.potion;});
+  var recipe=null;
+  if(!p){
+   recipe=discoveryRecipes.find(function(x){return x.name===ctx.potion;});
+   if(recipe){
+    if((s.alchemistDiscovered||[]).indexOf(recipe.discovery)<0)return{ok:false,message:'Для рецепта нужно Открытие «'+recipe.discovery+'».'};
+    if(l<recipe.level)return{ok:false,message:'Рецепт доступен с '+recipe.level+' уровня.'};
+    if(recipe.cost==null)return{ok:false,unsupported:true,message:'Стоимость рецепта «'+recipe.name+'» не подтверждена; реагенты не списаны.'};
+    p={name:recipe.name,level:recipe.level,cost:recipe.cost,discovery:recipe.discovery,type:recipe.type||'potion'};
+   }
+  }
+  if(!p||l<p.level)return{ok:false,message:'Этот рецепт ещё недоступен.'};
+  if(!spend(h,p.cost))return{ok:false,message:'Недостаточно реагентов.'};
+  s.alchemistPotions=s.alchemistPotions||[];
+  if(s.alchemistPotions.length>=s.alchemistPotionLimit){r.current+=p.cost;return{ok:false,message:'Достигнут лимит зелий.'};}
+  s.alchemistPotions.push({name:p.name,cost:p.cost,discovery:p.discovery||null,type:p.type||'potion'});
+  return{ok:true,message:'⚗️ Сварено: '+p.name+'.'};
+ }
  if(id==='potionMix'){if(l<15)return{ok:false,message:'Миксолог доступен с 15 уровня.'};s.alchemistPotionMixReady=true;s.alchemistPotionsDrunkThisTurn=0;return{ok:true,effect:{mixPotions:true,maxPotions:2},message:'🍶 Миксология подготовлена: до двух зелий в этом ходу.'};}
  if(id==='potionUse'){
   var idx=Number(ctx.index);
