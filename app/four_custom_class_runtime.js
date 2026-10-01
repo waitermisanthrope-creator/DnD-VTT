@@ -224,7 +224,7 @@
     target.position={x:Number(ctx.freeCell.x),y:Number(ctx.freeCell.y)};
     target.x=Number(ctx.freeCell.x);target.y=Number(ctx.freeCell.y);
     target.stable=true;target.defeated=false;
-    target.deathSaves={successes:0,failures:0};
+    target.deathSaves=target.deathSaves||{successes:0,failures:0};target.deathSaves.successes=3;
     if(l>=11)target.tempHp=Math.max(n(target.tempHp,0),temp);
     target.classFeaturesState=target.classFeaturesState||{};
     target.classFeaturesState.protectorRescue={sourceId:hero.id==null?null:String(hero.id),noOpportunityAttacksFrom:ctx.chosenEnemyId==null?null:String(ctx.chosenEnemyId),round:Math.max(1,n(ctx.round,1))};
