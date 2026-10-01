@@ -261,7 +261,7 @@ function longRest(h){
  r.current=r.max;s.alchemistSynthesisUsed=false;s.alchemistSynthesisReady=false;
  var oldEffects=s.alchemistActiveEffects||[],keepEffects=oldEffects.filter(function(e){return e.effect&&e.effect.durationMinutes>=1440;});
  cleanupPotionEffects(h,oldEffects,keepEffects);s.alchemistActiveEffects=keepEffects;
- s.blackPowderUses=Math.max(1,mod(h,'int'));s.xenoNecroticReady=false;s.xenoNecroticUsed=false;s.alchemistPotionMixReady=false;
+ s.blackPowderUses=Math.max(1,mod(h,'int'));s.xenoNecroticReady=false;s.xenoNecroticUsed=false;s.alchemistEnergyCharges=0;s.alchemistPotionMixReady=false;
  s.alchemistRestType='long';
 }
 function startTurn(h){
@@ -338,6 +338,19 @@ function subclassFeatureEffect(h,sub,f,ctx){
  if(name==='Аркано-бомба'){s.alchemistPendingBombEffect={dice:'1d12',type:'силовой',name:name};return{ok:true,effect:{damageType:'force',damageDice:'d12',extraDice:1,spendDynamo:true},message:'⚡ Аркано-бомба подготовлена к следующей атаке бомбой.'};}
  if(name==='Плазменная бомба'){s.alchemistPendingBombEffect={dice:'1d12',type:'излучение',name:name};return{ok:true,effect:{damageType:'radiant',directDice:'d12',blastDice:'d6',attached:true},message:'☀️ Плазменная бомба подготовлена к следующей атаке; урон взрыва требует выбора цели в боевом интерфейсе.'};}
  if(name==='Красочная бомба'){s.alchemistPreparedFormula='paint';return{ok:true,prepared:true,effect:{formula:'paint',noDamage:true,revealsInvisible:true,attacksHaveAdvantage:true},message:'🎨 Красочная бомба подготовлена; попадание покрывает цель магической краской.'};}
+ if(name==='Электромагнитный щит')return{ok:true,passive:true,effect:{autoTrigger:true,damageTypes:['силовой','молния','некротический','излучение'],range:'ranged',d6:6,chargeOnDeflect:true},message:'🛡️ Электромагнитный щит работает автоматически при подходящей дальней атаке.'};
+ if(name==='Энергетический разряд'){
+  if(!ctx.target||typeof ctx.target!=='object')return{ok:false,needsTarget:true,message:'Выберите цель в пределах 60 футов; заряды не потрачены.'};
+  var chargeCount=Math.floor(Number(ctx.charges)||0),availableCharges=Math.max(0,Number(s.alchemistEnergyCharges)||0);
+  if(chargeCount<1||chargeCount>availableCharges)return{ok:false,message:'Выберите от 1 до '+availableCharges+' зарядов накопителя.'};
+  if(Number(ctx.distanceFt)>60)return{ok:false,message:'Цель находится дальше 60 футов; заряды не потрачены.'};
+  var energyDamage=Number(ctx.damageRoll);
+  if(!Number.isFinite(energyDamage)||energyDamage<chargeCount||energyDamage>10*chargeCount)return{ok:false,needsRoll:true,formula:chargeCount+'d10',message:'Бросьте '+chargeCount+'d10 силового урона; заряды пока не потрачены.'};
+  if(!g.DNDCombat||typeof g.DNDCombat.applyDamage!=='function')return{ok:false,unsupported:true,message:'Боевой resolver урона недоступен; заряды не потрачены.'};
+  s.alchemistEnergyCharges=availableCharges-chargeCount;
+  var energyResult=g.DNDCombat.applyDamage(ctx.target,energyDamage,'силовой');
+  return{ok:true,target:ctx.target.id||null,damage:energyResult.amount,effect:{damageType:'силовой',damage:energyResult.amount,chargesSpent:chargeCount,remainingCharges:s.alchemistEnergyCharges},message:'⚡ Энергетический разряд: '+energyResult.amount+' силового урона.'};
+ }
  if(name==='Теплоотвод'){if(!ctx.overheatedWeapon||!ctx.overheatedWeapon.id)return{ok:false,needsTarget:true,message:'Выберите конкретное перегретое оружие; реагенты не списаны.'};if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,effect:{overheatDamage:'2d6 fire',coolWeaponBonus:'2d6 cold',weaponId:ctx.overheatedWeapon.id},message:'🔥❄️ Теплоотвод применён.'};}
  if(name==='Бомба с чёрным порохом'){var r=h.resources.alchemistReagents;if(!s.blackPowderUses)s.blackPowderUses=Math.max(1,mod(h,'int'));if(s.blackPowderUses<1)return{ok:false,message:'Бомбы с чёрным порохом исчерпаны до отдыха.'};s.blackPowderUses--;s.alchemistPendingBombEffect={dice:'1d12',type:'огонь',name:name,ignoreResistance:true,immunityBecomesResistance:true};return{ok:true,effect:{damageDice:'d12',damageType:'fire',ignoreResistance:true,immunityBecomesResistance:true,prepared:true},message:'💥 Бомба с чёрным порохом подготовлена к следующей атаке бомбой.'};}
  if(name==='Мутаген'){
@@ -384,7 +397,7 @@ function subclassFeatureEffect(h,sub,f,ctx){
   'Самонаведение':1,'Владение оружием':1,'Улучшенный прицел':1,'Митридатизм':1,
   'Формула стрелка':1,'Междисциплинарные исследования':1,'Дополнительные зелья':1,
   'Заядлый читатель':1,'Убийца-алхимик':1,'Чудо-самогонщик':1,'Пьяная удаль':1,
-  'Талант бармена':1,'Безопасная перегонка':1,'Стабильный мутаген':1
+  'Талант бармена':1,'Безопасная перегонка':1,'Стабильный мутаген':1,'Электромагнитный щит':1
  };
  if(passiveFeatures[name]){if(name==='Отравитель'){s.alchemistDiscovered=s.alchemistDiscovered||[];if(s.alchemistDiscovered.indexOf('Алхимия яда')<0)s.alchemistDiscovered.push('Алхимия яда');}return{ok:true,passive:true,effect:{subclass:sub.id,feature:name,description:f[2]||''},message:'📘 Пассивная особенность: '+name+'.'};}
  return{ok:false,unsupported:true,message:'Алхимик: «'+name+'» пока не имеет полноценного resolver-а; способность не отмечена как успешно применённая.'};
