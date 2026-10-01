@@ -282,6 +282,29 @@
       if(pending.stunningStrike){var ss=global.DNDCombat&&global.DNDCombat.savingThrow?global.DNDCombat.savingThrow(target,'con',pending.stunningStrike.dc):{success:true};out.stunningStrike={dc:pending.stunningStrike.dc,save:ss,applied:!ss.success};if(!ss.success&&global.DNDCombat&&global.DNDCombat.toggleCondition)global.DNDCombat.toggleCondition(target,'Оглушён',true);}
       if(fm.assassinDeathStrikeEligible&&fm.assassinSurprised&&global.DNDRules){var dexStats=(opts.__attacker&&opts.__attacker.stats)||{};var dexMod=Math.floor((num(dexStats.dex,10)-10)/2);var pb=global.DNDRules.profBonus?global.DNDRules.profBonus(opts.__attacker):2;var dc=8+dexMod+pb;var sv=global.DNDCombat.savingThrow?global.DNDCombat.savingThrow(target,'con',dc):{success:false,total:0,dc:dc};out.assassinDeathStrike={dc:dc,save:sv,damageDoubled:!sv.success};if(!sv.success)out.damage.total*=2;}
       out.classFeatureNotes=(out.classFeatureNotes||[]).concat((fm.notes||[]).slice());
+      var alchemistFormula=fm.pendingOnHit&&fm.pendingOnHit.alchemistFormula;
+      if(alchemistFormula&&opts.target){
+        var saveResult=global.DNDCombat&&global.DNDCombat.savingThrow?global.DNDCombat.savingThrow(target,alchemistFormula.save,alchemistFormula.dc):{success:true,unsupported:true};
+        out.alchemistFormulaEffect={id:alchemistFormula.id,dc:alchemistFormula.dc,save:saveResult,applied:!!(saveResult&&!saveResult.success),effects:[]};
+        if(saveResult&&!saveResult.success){
+          target.classFeaturesState=target.classFeaturesState||{};
+          target.classFeaturesState.alchemistDebuffs=target.classFeaturesState.alchemistDebuffs||{};
+          var debuffs=target.classFeaturesState.alchemistDebuffs;
+          if(alchemistFormula.acPenalty){debuffs.acPenalty=Math.max(Number(debuffs.acPenalty)||0,alchemistFormula.acPenalty);target.ac=Math.max(0,num(target.ac,10)-alchemistFormula.acPenalty);out.alchemistFormulaEffect.effects.push('acPenalty');}
+          if(alchemistFormula.attackPenalty){debuffs.attackPenalty=Math.max(Number(debuffs.attackPenalty)||0,alchemistFormula.attackPenalty);out.alchemistFormulaEffect.effects.push('attackPenalty');}
+          if(alchemistFormula.savePenalty){debuffs.savePenalty=Math.max(Number(debuffs.savePenalty)||0,alchemistFormula.savePenalty);out.alchemistFormulaEffect.effects.push('savePenalty');}
+          if(alchemistFormula.condition&&global.DNDCombat&&global.DNDCombat.toggleCondition){global.DNDCombat.toggleCondition(target,alchemistFormula.condition,true);out.alchemistFormulaEffect.effects.push(alchemistFormula.condition);}
+          if(alchemistFormula.condition){target.activeConditions=target.activeConditions||{};target.activeConditions[alchemistFormula.condition]=true;}
+          if(alchemistFormula.speed===0){target.speed=0;debuffs.speedZero=true;out.alchemistFormulaEffect.effects.push('speedZero');}
+          if(alchemistFormula.pushFt){out.alchemistFormulaEffect.pushFt=alchemistFormula.pushFt;out.alchemistFormulaEffect.effects.push('pushFt');}
+          if(alchemistFormula.noOpportunityAttacks){debuffs.noOpportunityAttacks=true;out.alchemistFormulaEffect.effects.push('noOpportunityAttacks');}
+          if(alchemistFormula.verbalComponentsBlocked){debuffs.verbalComponentsBlocked=true;out.alchemistFormulaEffect.effects.push('verbalComponentsBlocked');}
+          if(alchemistFormula.revealsInvisible){debuffs.revealsInvisible=true;out.alchemistFormulaEffect.effects.push('revealsInvisible');}
+          if(alchemistFormula.burning){debuffs.burning=true;out.alchemistFormulaEffect.effects.push('burning');}
+          debuffs.expires='start_of_attacker_next_turn';
+        }
+        out.classFeatureNotes.push('Алхимическая формула: '+alchemistFormula.name+'; спасбросок '+(saveResult&&saveResult.success?'успешен':'провален')+'.');
+      }
       if(out.assassinDeathStrike&&out.assassinDeathStrike.damageDoubled)out.classFeatureNotes.push('Смертельный удар: урон удвоен');
       if(opts.target){
         var damageOpts={source:'attack',attackKind:opts.attackKind||((opts.weapon&&Number(opts.weapon.rangeFt)>5)?'rangedWeapon':'weapon'),visible:opts.visible!==false,projectile:!!opts.projectile,critical:!!roll.critical,attacker:opts.__attacker||null};
