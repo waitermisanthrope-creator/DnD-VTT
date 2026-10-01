@@ -1661,12 +1661,14 @@ var academy=String(s.warlordAcademy||'');
     }
     if(club==='dogAndHound'){
       if(id==='summonHound'){
-        if(!global.DNDCompanionPacks||!global.DNDCompanionPacks.create)return{ok:false,message:'Система спутников недоступна.'};
-        var e=global.DNDCompanionPacks.create('beastMaster',{name:'Гончая Пугилиста',source:'Пугилист — Пёс и гончая',sourceType:'subclass',controlMode:'command',hp:3+5*l,maxHp:3+5*l,ac:12+(Number(h.proficiencyBonus)||2),speed:40,size:1,actions:[{name:'Укус',attackBonus:(Number(h.proficiencyBonus)||2)+2,damage:'2d4+'+(Number(h.proficiencyBonus)||2),damageType:'piercing',rangeFt:5}],metadata:{pugilistHound:true,dire:l>=17}});s.pugilistHoundId=e&&e.id;return{ok:true,message:'🐕 Гончая призвана.'};
+        var houndTemplate={name:'Гончая Пугилиста',source:'Пугилист — Пёс и гончая',sourceType:'subclass',controlMode:'command',hp:3+5*l,maxHp:3+5*l,ac:12+(Number(h.proficiencyBonus)||2),speed:40,size:1,actions:[{name:'Укус',attackBonus:(Number(h.proficiencyBonus)||2)+2,damage:'2d4+'+(Number(h.proficiencyBonus)||2),damageType:'piercing',rangeFt:5}],metadata:{pugilistHound:true,dire:l>=17}};
+        var e=global.DNDCompanionPacks&&global.DNDCompanionPacks.create?global.DNDCompanionPacks.create('beastMaster',houndTemplate):null;
+        if(e&&e.id){s.pugilistHoundId=e.id;s.pugilistHound=e;return{ok:true,effect:{companion:e},message:'🐕 Гончая призвана.'};}
+        s.pugilistHound=Object.assign({id:'pugilist-hound-'+String(h.id||h.entityId||Date.now()),ownerId:String(h.id||h.entityId||''),active:true},houndTemplate);s.pugilistHoundId=s.pugilistHound.id;return{ok:true,effect:{companion:s.pugilistHound},message:'🐕 Гончая создана как спутник-статблок.'};
       }
-      if(id==='coordinatedAttack')return{ok:true,effect:{houndReactionAttack:true},message:'🐕 Слаженная атака: гончая может атаковать реакцией.'};
-      if(id==='houndBestFriend')return{ok:true,effect:{reactionOpportunityAgainstAttacker:true},message:'🐕 Лучший друг гончей: доступна ответная атака.'};
-      if(id==='direHound')return{ok:true,effect:{replaceWolfWithDireWolf:true,size:'medium',bonusHpDice:'d8 per pugilist level'},message:'🐺 Гончая стала лютой.'};
+      if(id==='coordinatedAttack'){s.pugilistHoundCoordinated=true;if(s.pugilistHound)s.pugilistHound.coordinatedAttack=true;return{ok:true,effect:{houndReactionAttack:true},message:'🐕 Слаженная атака: гончая может атаковать реакцией.'};}
+      if(id==='houndBestFriend'){s.pugilistHoundBestFriend=true;if(s.pugilistHound)s.pugilistHound.bestFriend=true;return{ok:true,effect:{reactionOpportunityAgainstAttacker:true},message:'🐕 Лучший друг гончей: доступна ответная атака.'};}
+      if(id==='direHound'){if(!s.pugilistHound)return{ok:false,message:'Сначала призови гончую.'};s.pugilistHound.dire=true;s.pugilistHound.size='medium';s.pugilistHound.maxHp=Math.max(Number(s.pugilistHound.maxHp)||0,(Number(l)||0)*8+Number(h.proficiencyBonus||2));s.pugilistHound.hp=Math.min(Number(s.pugilistHound.hp)||s.pugilistHound.maxHp,s.pugilistHound.maxHp);return{ok:true,effect:{replaceWolfWithDireWolf:true,size:'medium',bonusHpDice:'d8 per pugilist level'},message:'🐺 Гончая стала лютой.'};}
     }
     if(club==='handOfDread'){
       if(id==='blackMagic')return{ok:true,effect:{cantrips:['Порча клинка','Потусторонний разряд','Фокус-покус'],spellcasting:'constitution',languageChoice:true},message:'🖤 Чёрная магия изучена.'};
