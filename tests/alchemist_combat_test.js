@@ -74,6 +74,20 @@ assert.equal(discharge.ok,true,'Energy Discharge spends a stored charge on a val
 assert.equal(dischargeTarget.hp,23,'Energy Discharge applies actual force damage');
 assert.equal(ionizerTarget.classFeaturesState.alchemistEnergyCharges,0,'Energy Discharge consumes exactly one charge');
 
+const poisonedCombatant={id:'poisoned',name:'Отравлённый',type:'monster',hp:20,maxHp:20,ac:12,saveBonuses:{con:-100},conditions:{'Отравлен':true},activeConditions:{'Отравлен':true},classFeaturesState:{alchemistToxicVengeance:{dc:18,remainingTurns:2,nextTick:true,damage:'1d10'}}};
+const alchemistCombatant={id:'alch-turn',name:'Алхимик',type:'hero',classes:[{name:'Алхимик',level:14,subclass:'venomsmith'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:5,resources:{},classFeaturesState:{},hp:20,maxHp:20,ac:15};
+ctx.currentChar={id:'alch-turn',name:'Алхимик',classes:alchemistCombatant.classes,abilityScores:alchemistCombatant.abilityScores,proficiencyBonus:5,resources:{},classFeaturesState:{},initiativeTracker:{round:1,activeIndex:0,combatants:[alchemistCombatant,poisonedCombatant]}};
+vm.runInContext(fs.readFileSync(__dirname+'/../app/gameplay_core_v57.js','utf8'),ctx);
+const turnOne=ctx.DNDGameplayV57.endTurn();
+assert.equal(turnOne.ok,true,'turn engine advances to the poisoned target');
+assert.ok(poisonedCombatant.hp<20,'Toxic Vengeance deals 1d10 poison damage at target turn start');
+const hpAfterTick=poisonedCombatant.hp;
+const turnTwo=ctx.DNDGameplayV57.endTurn();
+assert.equal(turnTwo.ok,true,'turn engine advances back to the Alchemist');
+assert.equal(poisonedCombatant.classFeaturesState.alchemistToxicVengeance.nextTick,true,'failed end-of-turn save schedules another poison tick');
+assert.ok(poisonedCombatant.hp<=hpAfterTick,'poison tick remains applied through the turn cycle');
+
+
 
 
 
