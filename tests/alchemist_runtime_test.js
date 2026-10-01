@@ -62,6 +62,7 @@ hero.classFeaturesState.alchemistPotions=[
   {name:'Зелье героизма',cost:3,type:'potion'},
   {name:'Зелье скорости',cost:9,type:'potion'}
 ];
+hooks.startTurn(hero);
 assert.equal(hooks.useFeature(hero,'alchemist-potionUse',{index:0}).ok,true,'enlarge potion applies');
 assert.ok(hooks.attackModifiers(hero,{weaponAttack:true}).extraDice.includes('1d4'),'enlarge potion adds weapon damage');
 hooks.startTurn(hero);
