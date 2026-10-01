@@ -269,15 +269,38 @@
     }
     return {ok:true,attacks:results,attackCount:results.length,hitCount:results.filter(function(r){return r&&r.hit;}).length,targetDefeated:!!(target&&(target.defeated||num(target.hp)<=0))};
   }
+  function protectorZoneContextForSave(actor,ctx){
+    ctx=ctx||{};if(ctx.forcedMovementSave!==true)return null;
+    if(ctx.protectorZoneProtector)return {protector:ctx.protectorZoneProtector,distanceFt:ctx.protectorZoneDistanceFt,isAlly:ctx.isAlly===true,visible:ctx.visible!==false};
+    var h=global.currentChar||global.currentCharacter||{},tracker=h.initiativeTracker||{},list=Array.isArray(tracker.combatants)?tracker.combatants:[],board=global.DNDBattleBoard;
+    var ally=actor&&(actor.type==='hero'||actor.team==='ally'||actor.ownerPeerId!=null),visible=ctx.visible!==false,distance=null,protector=null;
+    if(!ally||!board||typeof board.findTokenForCombatant!=='function'||typeof board.distanceFt!=='function')return null;
+    var actorToken=actor&&board.findTokenForCombatant(actor.id);
+    if(!actorToken&&actor&&actor.name&&board.tokenList){actorToken=board.tokenList().find(function(t){return t.type==='hero'&&String(t.name||'')===String(actor.name);})||null;}
+    if(!actorToken||actorToken.visible===false)return null;
+    var candidates=[h].concat(list);
+    for(var i=0;i<candidates.length;i++){
+      var p=candidates[i];if(!p||p===actor)continue;
+      var classes=p.classes||[],isProtector=classes.some(function(cl){return cl&&(['Заступник','Protector'].indexOf(String(cl.name))>=0||cl.englishName==='Protector')&&Number(cl.level)>=3;});
+      var zone=p.classFeaturesState&&p.classFeaturesState.protector&&p.classFeaturesState.protector.zone;
+      if(!isProtector||!zone||!zone.active)continue;
+      var pToken=p.id!=null&&board.findTokenForCombatant(p.id);
+      if(!pToken&&p.name&&board.tokenList)pToken=board.tokenList().find(function(t){return t.type==='hero'&&String(t.name||'')===String(p.name);})||null;
+      if(!pToken||pToken.visible===false)continue;
+      var d=board.distanceFt(pToken,actorToken);
+      if(isFinite(d)&&d<=Number(zone.radiusFt)){protector=p;distance=d;break;}
+    }
+    return protector?{protector:protector,distanceFt:distance,isAlly:true,visible:visible}:null;
+  }
   function savingThrow(actor,stat,dc,mode,ctx){
     var h=actor && actor.stats ? actor : null, bonus=0, featureMode=mode||'normal';
     if(h && global.DNDRules){bonus=global.DNDRules.getSaveBonus(h,stat);} else bonus=num(actor && actor.saveBonuses && actor.saveBonuses[stat]);
     ctx=ctx||{};var sm=(global.DNDClassFeatures&&global.DNDClassFeatures.saveModifiers&&actor)?global.DNDClassFeatures.saveModifiers(actor,{stat:stat,dexSaveVisible:stat==='dex',fromSpell:!!(actor&&actor.saveFromSpell),allyWithinAura:!!(ctx.allyWithinAura||actor&&actor.allyWithinAura),auraSource:ctx.auraSource||null,saveType:ctx.saveType||stat,frightenedEffect:!!ctx.frightenedEffect,courageSource:ctx.courageSource||null,allyWithinCourage:!!ctx.allyWithinCourage,charmEffect:!!ctx.charmEffect,fromFiendOrUndead:!!ctx.fromFiendOrUndead,flashOfGeniusAvailable:!!(actor&&actor.useFlashOfGenius)}):null;
     if(sm){bonus+=num(sm.bonus);if(sm.advantage)featureMode=featureMode==='disadvantage'?'normal':'advantage';}
-    var protectorZoneResult=null;
-    if(ctx.forcedMovementSave===true&&ctx.protectorZoneProtector&&global.FourCustomClassRuntime&&typeof global.FourCustomClassRuntime.protectorZoneSave==='function'){
+    var protectorZoneResult=null,zoneCtx=protectorZoneContextForSave(actor,ctx);
+    if(ctx.forcedMovementSave===true&&zoneCtx&&global.FourCustomClassRuntime&&typeof global.FourCustomClassRuntime.protectorZoneSave==='function'){
       var roundNow=num((global.currentChar||global.currentCharacter||{}).initiativeTracker&&((global.currentChar||global.currentCharacter).initiativeTracker.round),1);
-      protectorZoneResult=global.FourCustomClassRuntime.protectorZoneSave(ctx.protectorZoneProtector,actor,{forcedMovementSave:true,isAlly:ctx.isAlly===true,visible:ctx.visible!==false,distanceFt:ctx.protectorZoneDistanceFt,round:roundNow,requestAdvantage:ctx.useProtectorZoneAdvantage===true});
+      protectorZoneResult=global.FourCustomClassRuntime.protectorZoneSave(zoneCtx.protector,actor,{forcedMovementSave:true,isAlly:zoneCtx.isAlly,visible:zoneCtx.visible,distanceFt:zoneCtx.distanceFt,round:roundNow,requestAdvantage:ctx.useProtectorZoneAdvantage===true});
       if(protectorZoneResult&&protectorZoneResult.ok){bonus+=num(protectorZoneResult.bonus);if(protectorZoneResult.advantage)featureMode=featureMode==='disadvantage'?'normal':'advantage';}
     }
     var normalizedCondition=global.DNDRules&&global.DNDRules.normalizeConditionName?global.DNDRules.normalizeConditionName:null;
@@ -472,7 +495,8 @@
     if(!Object.keys(d).length)delete target.classFeaturesState.alchemistDebuffs;
     return{ok:true,actionSpent:true,message:'Слизь удалена Действием.'};
   }
-  global.DNDCombat={VERSION:'3.4.0-alchemist-slime',removeAlchemistSlime:removeAlchemistSlime,DAMAGE_TYPES:DAMAGE_TYPES,CONDITIONS:CONDITIONS,rollDice:rollDice,applyDamage:applyDamage,applyDamageBatch:applyDamageBatch,heal:heal,healBatch:healBatch,effectiveDamage:effectiveDamage,savingThrow:savingThrow,toggleCondition:toggleCondition,concentrationState:concentrationState,concentrationCheck:concentrationCheck,breakConcentration:breakConcentration,beginConcentration:beginConcentration,deathSave:deathSave,resetDeathSaves:resetDeathSaves,attack:attack,attackSequence:attackSequence,resolveAttack:attack,addCombatantFromTemplate:addCombatantFromTemplate,MONSTERS:MONSTERS};
+  function opportunityAttack(attacker,target,opts){opts=Object.assign({},opts||{},{attackKind:'opportunity'});return attack(attacker,target,opts);}
+  global.DNDCombat={VERSION:'3.4.0-alchemist-slime',opportunityAttack:opportunityAttack,removeAlchemistSlime:removeAlchemistSlime,DAMAGE_TYPES:DAMAGE_TYPES,CONDITIONS:CONDITIONS,rollDice:rollDice,applyDamage:applyDamage,applyDamageBatch:applyDamageBatch,heal:heal,healBatch:healBatch,effectiveDamage:effectiveDamage,savingThrow:savingThrow,toggleCondition:toggleCondition,concentrationState:concentrationState,concentrationCheck:concentrationCheck,breakConcentration:breakConcentration,beginConcentration:beginConcentration,deathSave:deathSave,resetDeathSaves:resetDeathSaves,attack:attack,attackSequence:attackSequence,resolveAttack:attack,addCombatantFromTemplate:addCombatantFromTemplate,MONSTERS:MONSTERS};
 
   function hero(){return global.currentChar||global.currentCharacter||null;}
   function save(){if(typeof global.autoSaveCurrentCharacter==='function')global.autoSaveCurrentCharacter();}
