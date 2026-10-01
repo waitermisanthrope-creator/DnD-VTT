@@ -136,6 +136,6 @@ assert.equal(unbreakableHero.resources.pugilistMoxie.current,beforeMoxie-1,'Unbr
 const dreadHandHero=hero(17,'Рука Ужаса');pack.hooks.sync(dreadHandHero);pack.hooks.useFeature(dreadHandHero,'dreadHand',{});
 const dreadTarget=target('dread-hand-target');randomSequence=[0,0.99];
 const dreadAttack=ctx.DNDCombat.attack(dreadHandHero,dreadTarget,{bonus:0,damage:'1d6',damageType:'дробящий',unarmedAttack:true,useRules:false});randomSequence=null;
-assert.equal(dreadAttack.damage.total,6,'Hand of Dread rerolls one damage die that rolled a 1');
+assert.equal(dreadAttack.damage.total,12,'Level 17 Hand of Dread rerolls a d12 damage die that rolled a 1');
 assert.ok(dreadAttack.classFeatureNotes.includes('Рука Ужаса: одна кость урона переброшена.'),'Combat log reports the damage-die reroll');
 console.log('Pugilist combat integration tests: PASS (real class hooks, subclass mapping, Fisticuffs die, Haymaker, target-bound Signature Move hit/miss, Dig Deep resistance, Fighting Spirit HP shape)');
