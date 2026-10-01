@@ -320,6 +320,14 @@ const hemoragentNoPool={id:'hemoragent-no-pool',classes:[{name:'Алхимик',
 hooks.sync(hemoragentNoPool);
 assert.equal(hooks.useFeature(hemoragentNoPool,'alchemist-classFeature',{featureName:'Геморагент',hitDiceSpent:2}).ok,false,'Hemoragent refuses to spend without an integrated hit-dice pool');
 
+const bloodMutagenist={id:'blood-mutagenist',classes:[{name:'Алхимик',level:14,subclass:'mutagenist'}],abilityScores:{strength:18,dexterity:14,constitution:14,intelligence:16},proficiencyBonus:5,resources:{},classFeaturesState:{}};
+hooks.sync(bloodMutagenist);
+assert.equal(hooks.useFeature(bloodMutagenist,'alchemist-subclassFeature',{featureName:'Мутировавшая кровь',ability:'strength'},{subclassId:'mutagenist'}).ok,true,'Mutated Blood permanently increases one eligible ability');
+assert.equal(bloodMutagenist.abilityScores.strength,20,'Mutated Blood applies +2 up to 22');
+assert.equal(hooks.useFeature(bloodMutagenist,'alchemist-subclassFeature',{featureName:'Мутаген',ability:'strength'},{subclassId:'mutagenist'}).ok,true,'Mutagen works after Mutated Blood');
+assert.equal(bloodMutagenist.abilityScores.strength,23,'Mutagen raises the selected ability by three above its permanent Mutated Blood value');
+hooks.advanceTime(bloodMutagenist,1.1);
+assert.equal(bloodMutagenist.abilityScores.strength,20,'Mutagen expiry preserves the permanent Mutated Blood bonus');
 const painter={id:'painter',classes:[{name:'Алхимик',level:3,subclass:'pigmentist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{}};
 hooks.sync(painter);
 assert.equal(hooks.checkModifiers(painter,{toolName:'Инструменты художника'}).bonus,3,'Pigmentist Artist adds Intelligence modifier to painter tool checks');
