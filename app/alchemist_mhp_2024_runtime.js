@@ -313,6 +313,7 @@ function attackModifiers(h,ctx){
 
  if(s.alchemistGrafts&&ctx.unarmedGraft&&s.alchemistGrafts.some(function(x){return x.name==='Звериное оружие';})){out.extraDice.push('1d6');out.notes.push('Трансплантат «Звериное оружие»: природный удар');}
  if(s.alchemistSurgicalAttackReady&&ctx.unarmedGraft){out.extraDice.push('1d8');s.alchemistSurgicalAttackReady=false;out.notes.push('Хирургическая атака');}
+ if(s.alchemistCoolingWeaponId&&ctx.weaponAttack&&String(ctx.weaponId||ctx.weapon&&ctx.weapon.id||'')===String(s.alchemistCoolingWeaponId)){out.extraDice.push('2d6');out.damageTypes.push('холод');out.notes.push('Теплоотвод: охлаждённое оружие +2d6 холодом');s.alchemistCoolingWeaponId=null;}
  if(s.alchemistDynamoCharged&&ctx.weaponAttack){out.extraDice.push('1d8');out.damageTypes.push('молния');out.notes.push('Динамо-ядро: +1d8 молнией');s.alchemistDynamoCharged=false;}
  return out;
 }
@@ -353,7 +354,24 @@ function subclassFeatureEffect(h,sub,f,ctx){
   var energyResult=g.DNDCombat.applyDamage(ctx.target,energyDamage,'силовой');
   return{ok:true,target:ctx.target.id||null,damage:energyResult.amount,effect:{damageType:'силовой',damage:energyResult.amount,chargesSpent:chargeCount,remainingCharges:s.alchemistEnergyCharges},message:'⚡ Энергетический разряд: '+energyResult.amount+' силового урона.'};
  }
- if(name==='Теплоотвод'){if(!ctx.overheatedWeapon||!ctx.overheatedWeapon.id)return{ok:false,needsTarget:true,message:'Выберите конкретное перегретое оружие; реагенты не списаны.'};if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,effect:{overheatDamage:'2d6 fire',coolWeaponBonus:'2d6 cold',weaponId:ctx.overheatedWeapon.id},message:'🔥❄️ Теплоотвод применён.'};}
+ if(name==='Теплоотвод'){
+  var heatMode=String(ctx.mode|| (ctx.overheatedWeapon?'cool':'overheat'));
+  if(heatMode==='overheat'){
+   if(!ctx.target||typeof ctx.target!=='object')return{ok:false,needsTarget:true,message:'Выберите цель перегрева; реагенты не списаны.'};
+   var fireRoll=Number(ctx.damageRoll);if(!Number.isFinite(fireRoll)||fireRoll<2||fireRoll>12)return{ok:false,needsRoll:true,formula:'2d6',message:'Бросьте 2d6 огненного урона; реагенты не списаны.'};
+   if(!g.DNDCombat||typeof g.DNDCombat.applyDamage!=='function')return{ok:false,unsupported:true,message:'Боевой resolver урона недоступен; реагенты не списаны.'};
+   if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};
+   var overheated=g.DNDCombat.applyDamage(ctx.target,fireRoll,'огонь');
+   return{ok:true,target:ctx.target.id||null,effect:{damage:overheated.amount,damageType:'огонь',reagentsSpent:1},message:'🔥 Теплоотвод: перегрев нанёс '+overheated.amount+' огненного урона.'};
+  }
+  if(heatMode==='cool'){
+   var weapon=ctx.weapon||ctx.overheatedWeapon;if(!weapon||!weapon.id)return{ok:false,needsTarget:true,message:'Выберите конкретное оружие для охлаждения; реагенты не списаны.'};
+   if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};
+   s.alchemistCoolingWeaponId=String(weapon.id);
+   return{ok:true,effect:{weaponId:String(weapon.id),nextAttackExtraDice:'2d6',damageType:'холод',reagentsSpent:1},message:'❄️ Оружие охлаждено: следующая атака этим оружием наносит +2d6 холодом.'};
+  }
+  return{ok:false,message:'Укажите режим перегрева цели или охлаждения оружия; реагенты не списаны.'};
+ }
  if(name==='Бомба с чёрным порохом'){var r=h.resources.alchemistReagents;if(!s.blackPowderUses)s.blackPowderUses=Math.max(1,mod(h,'int'));if(s.blackPowderUses<1)return{ok:false,message:'Бомбы с чёрным порохом исчерпаны до отдыха.'};s.blackPowderUses--;s.alchemistPendingBombEffect={dice:'1d12',type:'огонь',name:name,ignoreResistance:true,immunityBecomesResistance:true};return{ok:true,effect:{damageDice:'d12',damageType:'fire',ignoreResistance:true,immunityBecomesResistance:true,prepared:true},message:'💥 Бомба с чёрным порохом подготовлена к следующей атаке бомбой.'};}
  if(name==='Мутаген'){
   var mutagenAbility=String(ctx.ability||'constitution');
