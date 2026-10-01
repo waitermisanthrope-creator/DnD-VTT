@@ -124,6 +124,28 @@
     });
     return {ok:true,dc:dc,dice:diceCount+'d6',results:results,message:'Огненное дыхание: '+results.length+' целей обработано.'};
   }
+  function interceptDamage(protector,target,amount,ctx){
+    ctx=ctx||{};
+    var l=level(protector,CLASS_IDS.protector);
+    if(l<1)return {ok:false,reason:'Нужен класс Заступник.'};
+    if(!target||target.id==null||String(target.id)===String(protector.id))return {ok:false,reason:'Нужен другой союзник с устойчивым ID.'};
+    if(ctx.visible===false)return {ok:false,reason:'Заступник должен видеть союзника.'};
+    var distance=Number(ctx.distanceFt);
+    if(!isFinite(distance)||distance<0||distance>5)return {ok:false,reason:'Союзник должен находиться в пределах 5 футов.'};
+    var turns=protector.turnResources||{};
+    if(n(turns.reaction,0)<1)return {ok:false,reason:'Реакция Заступника уже потрачена.'};
+    var resource=protector.resources&&protector.resources.protectorImpulses;
+    if(!resource||Number(resource.current)<1)return {ok:false,reason:'Защитные импульсы закончились.'};
+    var combat=global.DNDCombat;
+    if(!combat||typeof combat.rollDice!=='function')return {ok:false,reason:'Боевой движок не поддерживает защитный перехват.'};
+    var diceCount=l>=17?3:l>=11?2:1;
+    var roll=combat.rollDice(diceCount+'d10',false,false,protector);
+    var reduction=Math.max(0,n(roll&&roll.total,0)+proficiency(l));
+    // Spend the reaction and impulse only after all preconditions and the roll are valid.
+    resource.current-=1;
+    turns.reaction=0;
+    return {ok:true,reduction:Math.min(Math.max(0,n(amount,0)),reduction),rolled:roll.total,dice:diceCount+'d10',resourceRemaining:resource.current};
+  }
   function hasFeature(id){return ['banditStudyTarget','circusFireBreath'].indexOf(String(id||''))>=0;}
   function useFeature(hero,id,ctx){
     ctx=ctx||{};
@@ -146,6 +168,7 @@
     restore:restore,
     studyTarget:studyTarget,
     clearInvalidTargets:clearInvalidTargets,
+    interceptDamage:interceptDamage,
     hasFeature:hasFeature,
     useFeature:useFeature,
     classLevel:level,
