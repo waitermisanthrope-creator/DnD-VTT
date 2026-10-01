@@ -173,6 +173,18 @@ assert.equal(toxicTarget.activeConditions['Отравлен'],true,'Toxic Vengea
 assert.equal(toxicTarget.classFeaturesState.alchemistToxicVengeance.damage,'1d10','Toxic Vengeance records the correct recurring damage');
 assert.equal(toxicTarget.classFeaturesState.alchemistToxicVengeance.remainingTurns,10,'Toxic Vengeance lasts at most ten target turns');
 
+const homunculusEntities={};
+ctx.DNDSecondaryEntities={ensure:()=>({}),create:spec=>{const entity=Object.assign({id:'homunculus-test'},spec);homunculusEntities[entity.id]=entity;return entity;},get:id=>homunculusEntities[id]||null,remove:id=>delete homunculusEntities[id]};
+const homunculusOwner={id:'alchemist-owner',name:'Алхимик',classes:[{name:'Алхимик',level:5,subclass:'apothecary'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:3,resources:{},classFeaturesState:{alchemistDiscovered:['Гомункул']}};
+hooks.sync(homunculusOwner);
+const homunculusCraft=hooks.useFeature(homunculusOwner,'alchemist-potionBrew',{potion:'Гомункул',materialsPaid:true,duringShortRest:true});
+assert.equal(homunculusCraft.ok,true,'homunculus discovery creates a companion entity');
+assert.equal(homunculusCraft.entity.hp,25,'homunculus has five HP per Alchemist level');
+assert.equal(homunculusCraft.entity.actions[0].attackBonus,6,'homunculus attack bonus uses Intelligence modifier plus proficiency');
+assert.equal(homunculusOwner.resources.alchemistReagents.current,homunculusOwner.resources.alchemistReagents.max-3,'homunculus creation spends three reagents');
+assert.ok(homunculusOwner.initiativeTracker.combatants.some(c=>c.entityId==='homunculus-test'),'homunculus receives a separate combatant stat block');
+
+
 
 
 
