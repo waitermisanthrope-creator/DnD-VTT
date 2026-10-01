@@ -32,13 +32,13 @@
   function hasType(list,type){ return normList(list).indexOf(String(type||'').toLowerCase().trim())>=0; }
   function rollDie(sides){return Math.floor(Math.random()*sides)+1;}
   function parseDice(expr){ return global.DNDRules && global.DNDRules.parseDice ? global.DNDRules.parseDice(expr) : {groups:[{count:1,sides:6}],constant:0}; }
-  function rollDice(expr,critical){
+  function rollDice(expr,critical,maximize){
     var p=parseDice(expr), total=num(p.constant), rolls=[];
     p.groups.forEach(function(g){
       var count=Math.max(0,num(g.count,1))*(critical?2:1);
-      for(var i=0;i<count;i++){var r=rollDie(Math.max(1,num(g.sides,6)));rolls.push(r);total+=r;}
+      for(var i=0;i<count;i++){var r=maximize?Math.max(1,num(g.sides,6)):rollDie(Math.max(1,num(g.sides,6)));rolls.push(r);total+=r;}
     });
-    return {total:total,rolls:rolls,expression:String(expr||'1d6'),critical:!!critical};
+    return {total:total,rolls:rolls,expression:String(expr||'1d6'),critical:!!critical,maximized:!!maximize};
   }
   function effectiveDamage(target,amount,type,opts){
     opts=opts||{};
@@ -311,11 +311,11 @@
     if(electromagneticShield){out.electromagneticShield=electromagneticShield;out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Электромагнитный щит: атака отражена; накоплено 1 заряд.');}
     if(hit && opts.damage){
       var fm=opts.__classFeatureMod||{bonusDamage:0,extraDice:[]};
-      out.damage=fm.noDamage?{total:0,extraDice:[]}:rollDice(opts.damage,!!roll.critical);
-      if(!fm.noDamage&&Array.isArray(fm.extraDice)) fm.extraDice.forEach(function(expr){var er=rollDice(expr,!!roll.critical);out.damage.total+=er.total;(out.damage.extraDice||(out.damage.extraDice=[])).push(er);});
+      out.damage=fm.noDamage?{total:0,extraDice:[]}:rollDice(opts.damage,!!roll.critical,!!fm.maximizeDamageDice);
+      if(!fm.noDamage&&Array.isArray(fm.extraDice)) fm.extraDice.forEach(function(expr){var er=rollDice(expr,!!roll.critical,!!fm.maximizeDamageDice);out.damage.total+=er.total;(out.damage.extraDice||(out.damage.extraDice=[])).push(er);});
       if(!fm.noDamage)out.damage.total+=num(fm.bonusDamage);
       var pending=(global.DNDClassFeatures&&global.DNDClassFeatures.consumePendingOnHit&&opts.__attacker)?global.DNDClassFeatures.consumePendingOnHit(opts.__attacker,{hit:true}):{};
-      if(pending.divineSmite){var sr=rollDice(pending.divineSmite.dice,!!roll.critical);out.damage.total+=sr.total;out.damage.extraDice=(out.damage.extraDice||[]);out.damage.extraDice.push(sr);out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Божественная кара +'+sr.total+' '+pending.divineSmite.damageType);out.divineSmite={dice:pending.divineSmite.dice,total:sr.total,damageType:pending.divineSmite.damageType};}
+      if(pending.divineSmite){var sr=rollDice(pending.divineSmite.dice,!!roll.critical,!!fm.maximizeDamageDice);out.damage.total+=sr.total;out.damage.extraDice=(out.damage.extraDice||[]);out.damage.extraDice.push(sr);out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Божественная кара +'+sr.total+' '+pending.divineSmite.damageType);out.divineSmite={dice:pending.divineSmite.dice,total:sr.total,damageType:pending.divineSmite.damageType};}
       if(pending.stunningStrike){var ss=global.DNDCombat&&global.DNDCombat.savingThrow?global.DNDCombat.savingThrow(target,'con',pending.stunningStrike.dc):{success:true};out.stunningStrike={dc:pending.stunningStrike.dc,save:ss,applied:!ss.success};if(!ss.success&&global.DNDCombat&&global.DNDCombat.toggleCondition)global.DNDCombat.toggleCondition(target,'Оглушён',true);}
       if(fm.assassinDeathStrikeEligible&&fm.assassinSurprised&&global.DNDRules){var dexStats=(opts.__attacker&&opts.__attacker.stats)||{};var dexMod=Math.floor((num(dexStats.dex,10)-10)/2);var pb=global.DNDRules.profBonus?global.DNDRules.profBonus(opts.__attacker):2;var dc=8+dexMod+pb;var sv=global.DNDCombat.savingThrow?global.DNDCombat.savingThrow(target,'con',dc):{success:false,total:0,dc:dc};out.assassinDeathStrike={dc:dc,save:sv,damageDoubled:!sv.success};if(!sv.success)out.damage.total*=2;}
       out.classFeatureNotes=(out.classFeatureNotes||[]).concat((fm.notes||[]).slice());
