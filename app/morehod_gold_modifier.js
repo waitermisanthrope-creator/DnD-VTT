@@ -34,7 +34,10 @@
       var name = typeof entry === 'string' ? entry : entry && (entry.name || entry.englishName);
       return /^(мореход|morehod|mariner)$/i.test(String(name || '').trim());
     });
-    if (!isMorehod && !/^(мореход|morehod|mariner)$/i.test(String(hero.className || hero.class || '').trim())) return 0;
+    // When an explicit class list exists, it is authoritative. Do not let a
+    // stale legacy className/class field grant the Mariner bonus to another class.
+    var hasExplicitClassList = Array.isArray(hero.classes) && hero.classes.length > 0;
+    if (!isMorehod && (hasExplicitClassList || !/^(мореход|morehod|mariner)$/i.test(String(hero.className || hero.class || '').trim()))) return 0;
     return modifierForGold(carriedGoldEquivalent(hero.coins));
   }
 
