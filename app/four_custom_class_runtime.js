@@ -129,6 +129,7 @@
     var l=level(protector,CLASS_IDS.protector);
     if(l<1)return {ok:false,reason:'Нужен класс Заступник.'};
     if(!target||target.id==null||String(target.id)===String(protector.id))return {ok:false,reason:'Нужен другой союзник с устойчивым ID.'};
+    if(ctx.isAlly!==true)return {ok:false,reason:'Цель должна быть подтверждённым союзником.'};
     if(ctx.visible===false)return {ok:false,reason:'Заступник должен видеть союзника.'};
     var distance=Number(ctx.distanceFt);
     if(!isFinite(distance)||distance<0||distance>5)return {ok:false,reason:'Союзник должен находиться в пределах 5 футов.'};
