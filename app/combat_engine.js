@@ -51,6 +51,7 @@
     var pugilistState=target&&target.classFeaturesState||{},digDeep=pugilistState.pugilistDigDeepActive;
     var digDeepTypes=['дробящий','колющий','рубящий','bludgeoning','piercing','slashing'];
     var pugilistDigDeepResistant=!!(digDeep&&Number(digDeep.roundsRemaining)>0&&digDeepTypes.indexOf(type)>=0);
+    var pugilistSchool=(target&&target.classes||[]).some(function(cl){return cl&&(['Пугилист','Pugilist'].indexOf(String(cl.name))>=0||cl.englishName==='Pugilist')&&Number(cl.level)>=10;}),pugilistPsychicResistant=pugilistSchool&&['психический','psychic'].indexOf(type)>=0;
     var raging=physical&&global.DNDClassFeatures&&global.DNDClassFeatures.activeRage&&global.DNDClassFeatures.activeRage(target);
     var rm=target&&target.raceMechanics||{};
     var raceImmune=(type==='яд'&&rm.poisonImmunity);
@@ -61,14 +62,14 @@
     var grafts=target&&target.classFeaturesState&&Array.isArray(target.classFeaturesState.alchemistGrafts)?target.classFeaturesState.alchemistGrafts:[];var graftResistant=grafts.some(function(g){return g&&['Энергетический шов','Шкура дракона'].indexOf(g.name)>=0&&String(g.resistanceType||'')===String(type||'');});
     var targetClasses=target&&target.classes||[],madBomber=targetClasses.find(function(c){return c&&(c.name==='Алхимик'||c.englishName==='Alchemist')&&(c.subclass==='madBomber'||c.subclass==='Безумный бомбометатель')&&Number(c.level)>=10;}),madBomberResistance=!!(madBomber&&target.classFeaturesState&&target.classFeaturesState.alchemistExplosionResistanceType===type);
     var targetClassesForSlime=target&&target.classes||[],oozeRancher=targetClassesForSlime.find(function(c){return c&&(c.name==='Алхимик'||c.englishName==='Alchemist')&&(c.subclass==='oozeRancher'||c.subclass==='Разводчик слизи')&&Number(c.level)>=3;}),slimeAcidResistance=!!(oozeRancher&&type==='кислота');
-    var resistant=!opts.ignoreResistance&&!witchImperil&&(raging||pugilistDigDeepResistant||raceResistant||witchElemental||graftResistant||madBomberResistance||slimeAcidResistance||hasType(target && target.resistances,type));
+    var resistant=!opts.ignoreResistance&&!witchImperil&&(raging||pugilistDigDeepResistant||pugilistPsychicResistant||raceResistant||witchElemental||graftResistant||madBomberResistance||slimeAcidResistance||hasType(target && target.resistances,type));
     var vulnerable=hasType(target && target.vulnerabilities,type);
     if(resistant&&vulnerable){
       note='Сопротивление и уязвимость взаимно компенсированы';
     }else if(vulnerable){
       amount*=2;note='Уязвимость ×2';
     }else if(resistant){
-      amount=Math.floor(amount/2);note=pugilistDigDeepResistant?'Сопротивление «Соберись с силами» 1/2':raging?'Сопротивление от Ярости 1/2':'Сопротивление 1/2';
+      amount=Math.floor(amount/2);note=pugilistDigDeepResistant?'Сопротивление «Соберись с силами» 1/2':pugilistPsychicResistant?'Школа суровой жизни: сопротивление психическому урону 1/2':raging?'Сопротивление от Ярости 1/2':'Сопротивление 1/2';
     }
     return {raw:num(amount),amount:amount,mode:note||'normal',note:note,type:type};
   }
@@ -90,6 +91,13 @@
     var rawParts=normalizeDamageParts(amount,type,opts);
     if(target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs&&target.classFeaturesState.alchemistDebuffs.oilCoated&&rawParts.some(function(p){return p.damageType==='огонь';})){var oilDamage=rollDice('1d6').total;rawParts.push({amount:oilDamage,damageType:'огонь',label:'Масляная бомба'});target.classFeaturesState.alchemistDebuffs.oilCoated=false;}
     var rawTotal=rawParts.reduce(function(sum,p){return sum+p.amount;},0);
+    var counterState=target&&target.classFeaturesState&&target.classFeaturesState.pugilistCounterCounter;
+    if(counterState&&opts.attackerId!=null&&String(counterState.targetId||'')===String(opts.attackerId)&&!counterState.consumed){
+      var counterReduction=Math.min(rawTotal,Math.max(0,num(counterState.reducedBy))),counterLeft=counterReduction;
+      rawParts.forEach(function(part){var take=Math.min(Math.max(0,num(part.amount)),counterLeft);part.amount=Math.max(0,num(part.amount)-take);counterLeft-=take;});
+      counterState.consumed=true;if(rawTotal>0&&counterReduction>=rawTotal&&target.classFeaturesState)target.classFeaturesState.pugilistCounterReady={targetId:String(opts.attackerId),expires:'next-turn'};
+      delete target.classFeaturesState.pugilistCounterCounter;rawTotal=rawParts.reduce(function(sum,p){return sum+p.amount;},0);
+    }
     var reactionCtx={amount:rawTotal,damageType:type||'',source:opts.source||'generic',attackKind:opts.attackKind||'',visible:opts.visible!==false,projectile:!!opts.projectile,fall:!!opts.fall,critical:!!opts.critical,damageParts:rawParts.map(function(x){return {amount:x.amount,damageType:x.damageType,label:x.label||''};})};
     var perfumeSource=opts.attacker,perfumeTargetId=target&&(target.id||target.entityId),perfumeSourceClass=(perfumeSource&&perfumeSource.classes||[]).find(function(cl){return cl&&(cl.name==='Алхимик'||cl.englishName==='Alchemist')&&(cl.subclass==='amorist'||cl.subclass==='Аморист')&&Number(cl.level)>=10;});if(perfumeSourceClass&&perfumeTargetId){var perfumeHero=global.currentChar||global.currentCharacter||{},perfumeRound=Number(perfumeHero.initiativeTracker&&perfumeHero.initiativeTracker.round)||1,perfumeState=perfumeSource.classFeaturesState=perfumeSource.classFeaturesState||{};perfumeState.alchemistPerfumeImmuneUntilByTarget=perfumeState.alchemistPerfumeImmuneUntilByTarget||{};perfumeState.alchemistPerfumeImmuneUntilByTarget[String(perfumeTargetId)]=perfumeRound+600;}
     if(global.DNDClassFeatures&&typeof global.DNDClassFeatures.reactionOptions==='function') reaction=global.DNDClassFeatures.reactionOptions(target,reactionCtx);
