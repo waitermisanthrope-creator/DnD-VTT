@@ -1619,10 +1619,18 @@ var academy=String(s.warlordAcademy||'');
     if(club==='handOfDread'&&l>=11)res(h,'pugilistGrotesqueGrowth',1,'long');
     if(club==='handOfDread'&&l>=17)res(h,'pugilistFountainViscera',1,'long');
   }
+  function pugilistClubMinLevel(id){
+    if(['personaLibre','detectiveWork','summonHound','blackMagic','dreadHand','saltySalute','compressionLock','quickPin','toTheMat','bareKnuckleBoxer','crossCounter'].indexOf(id)>=0)return 3;
+    if(['workCrowd','scrapLikeSleuth','coordinatedAttack','dealWithDevil','heelstomper','lowBlow','pocketSand','meatShield','oneTwoThreeFloor'].indexOf(id)>=0)return 6;
+    if(['highFlyer','heartOfCity','houndBestFriend','grotesqueGrowth','meanOldCuss','heavyweight','floatLikeButterfly'].indexOf(id)>=0)return 11;
+    if(['signatureMove','eyesWideOpen','direHound','fountainViscera','uncouthArt','cleanFinish','knockOut'].indexOf(id)>=0)return 17;
+    return 0;
+  }
   function usePugilistClub(h,id,ctx){
     syncPugilist(h);syncPugilistClub(h);ctx=ctx||{};var l=pugilistLevel(h),s=st(h),club=pugilistClub(h),r=h.resources&&h.resources.pugilistMoxie;
-    if(id==='chooseFightClub'){var c=String(ctx.club||'');var ok=['arenaRoyale','bloodhoundBruisers','dogAndHound','handOfDread','pissAndVinegar','squaredCircle','sweetScience'].indexOf(c)>=0;if(!ok)return{ok:false,message:'Неизвестный Бойцовский клуб.'};s.pugilistFightClub=c;syncPugilistClub(h);return{ok:true,message:'Бойцовский клуб выбран: '+c+'.'};}
+    if(id==='chooseFightClub'){if(l<3)return{ok:false,message:'Бойцовский клуб выбирается на 3-м уровне.'};var c=String(ctx.club||'');var ok=['arenaRoyale','bloodhoundBruisers','dogAndHound','handOfDread','pissAndVinegar','squaredCircle','sweetScience'].indexOf(c)>=0;if(!ok)return{ok:false,message:'Неизвестный Бойцовский клуб.'};s.pugilistFightClub=c;syncPugilistClub(h);return{ok:true,message:'Бойцовский клуб выбран: '+c+'.'};}
     if(!club)return{ok:false,message:'Сначала выбери Бойцовский клуб.'};
+    var requiredLevel=pugilistClubMinLevel(id);if(requiredLevel&&l<requiredLevel)return{ok:false,message:'Эта особенность Бойцовского клуба доступна с '+requiredLevel+'-го уровня.'};
     if(club==='arenaRoyale'){
       if(id==='personaLibre'){s.pugilistPersonaActive=!s.pugilistPersonaActive;return{ok:true,effect:{persona:s.pugilistPersonaActive},message:s.pugilistPersonaActive?'🎭 Персона принята.':'🎭 Персона снята.'};}
       if(id==='workCrowd'){if(!spendResource(h,'pugilistWorkCrowd'))return{ok:false,message:'Работа с толпой уже использована до долгого отдыха.'};return{ok:true,effect:{radiusFt:30,save:'wisdom',dc:8+(Number(h.proficiencyBonus)||2)+mod(h,'str'),choice:['charmed','frightened'],durationMinutes:1,repeatSaveOnDamage:true},message:'🎭 Работа с толпой активирована.'};}
