@@ -1,6 +1,6 @@
 function getMorehodD20ModifierForCurrentCharacter() {
-  const hero = (typeof currentCharacter !== 'undefined' && currentCharacter)
-    || (typeof currentChar !== 'undefined' && currentChar) || null;
+  const hero = (typeof currentChar !== 'undefined' && currentChar)
+    || (typeof currentCharacter !== 'undefined' && currentCharacter) || null;
   return window.MorehodGoldModifier && typeof window.MorehodGoldModifier.getModifier === 'function'
     ? window.MorehodGoldModifier.getModifier(hero) : 0;
 }
