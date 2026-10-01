@@ -50,7 +50,9 @@
     var raceImmune=(type==='яд'&&rm.poisonImmunity);
     var raceResistant=(type==='яд'&&rm.poisonResistance)||(type==='огонь'&&rm.fireResistance)||(type==='холод'&&rm.coldResistance)||(type==='кислота'&&rm.acidResistance)||(type==='некротический'&&rm.necroticResistance)||(type==='излучение'&&rm.radiantResistance)||(type==='психический'&&rm.psychicResistance);
     if(raceImmune||hasType(target && target.immunities,type)){return {raw:amount,amount:0,mode:'immune',note:'Иммунитет',type:type};}
-    var resistant=raging||raceResistant||hasType(target && target.resistances,type);
+    var witchImperil=target&&target.witchImperil&&String(target.witchImperil.damageType||'').toLowerCase()===type;
+    var witchElemental=target&&target.witchElementalResistance&&String(target.witchElementalResistance).toLowerCase()===type;
+    var resistant=!witchImperil&&(raging||raceResistant||witchElemental||hasType(target && target.resistances,type));
     var vulnerable=hasType(target && target.vulnerabilities,type);
     if(resistant&&vulnerable){
       note='Сопротивление и уязвимость взаимно компенсированы';
@@ -66,6 +68,12 @@
     var parts=Array.isArray(opts.damageParts)?opts.damageParts:[];
     if(!parts.length)parts=[{amount:num(amount),damageType:type||''}];
     return parts.map(function(part){return {amount:Math.max(0,num(part&&part.amount)),damageType:String(part&&part.damageType||type||'').toLowerCase().trim(),label:part&&part.label||''};}).filter(function(part){return part.amount>0;});
+  }
+  function addTempHpForWitch(target,amount){
+    if(!target)return;
+    var current=Math.max(num(target.tempHp),num(target.hpTemp));
+    var next=Math.max(current,Math.max(1,num(amount)));
+    target.tempHp=next;target.hpTemp=next;
   }
   function applyDamage(target,amount,type,opts){
     opts=opts||{};
@@ -87,6 +95,9 @@
       resolvedParts.forEach(function(part){var take=Math.min(num(part.amount),left);part.wardAbsorbed=take;part.amount-=take;left-=take;});
     }
     var r={raw:rawTotal,amount:resolvedParts.reduce(function(sum,p){return sum+num(p.amount);},0),note:resolvedParts.map(function(p){return p.note;}).filter(Boolean).filter(function(v,i,a){return a.indexOf(v)===i;}).join('; ')};
+    if(target&&target.witchWard&&r.amount>0){var wardReduce=Math.min(3,r.amount);r.amount-=wardReduce;r.note=(r.note?r.note+'; ':'')+'Hex Ward: -'+wardReduce+' урона';}
+    if(target&&target.witchBleedingUntil&&r.amount>0){var bleed=rollDice('1d4').total;r.amount+=bleed;r.note=(r.note?r.note+'; ':'')+'Bleeding: +'+bleed+' урона';}
+    if(target&&target.classFeaturesState&&target.classFeaturesState.witch&&target.classFeaturesState.witch.invulnerability50&&r.amount>0){var inv=Math.min(50,r.amount);r.amount-=inv;target.classFeaturesState.witch.invulnerability50=false;r.note=(r.note?r.note+'; ':'')+'Неуязвимость: -'+inv+' урона';}
     if(reactionResult&&reactionResult.id==='relentlessRage'&&reactionResult.keptAtOne){ target.hp=1;target.hitPoints=1;target.defeated=false; return {amount:0,hpDamage:0,tempAbsorbed:0,wardAbsorbed:wardAbsorbed,hp:1,tempHp:num(target.tempHp),defeated:false,note:'Неукротимая ярость: HP сохранены на 1',concentration:null,reaction:reactionResult,reactionWindow:null}; }
     var hp=num(target.hp), temp=num(target.tempHp);
     var damageTaken=r.amount;
@@ -103,6 +114,20 @@
     }
     target.defeated=target.hp<=0 || instantDeath || !!(target.deathSaves&&num(target.deathSaves.failures)>=3);
     if(target.hp>0) target.defeated=false;
+    if(target.hp<=0&&target.witchDoomward&&!instantDeath){
+      target.hp=1;target.defeated=false;target.witchDoomward=null;
+      target.deathSaves={successes:0,failures:0};
+      if(target.hpCurrent!==undefined)target.hpCurrent=1;
+    }
+    var eventAttacker=opts&&opts.attacker||null;
+    if(eventAttacker&&target.hp<=0&&!instantDeath&&eventAttacker.classFeaturesState&&eventAttacker.classFeaturesState.witch&&eventAttacker.classFeaturesState.witch.witchCurse==='Hollow'){
+      var hollowHp=Math.max(1,num((eventAttacker.abilities&&eventAttacker.abilities.charisma)||0)>10?Math.floor((num(eventAttacker.abilities.charisma)-10)/2):0)+num((eventAttacker.classes||[]).find(function(c){return String(c.name)==='Ведьма';})||{} .level,0);
+      addTempHpForWitch(eventAttacker,hollowHp);
+    }
+    if(target.hp<=0&&target.classFeaturesState&&target.classFeaturesState.witch&&target.classFeaturesState.witch.dyingCurseArmed&&eventAttacker&&!instantDeath){
+      target.classFeaturesState.witch.dyingCurseArmed=false;
+      eventAttacker.witchDyingCurse={source:target,durationHours:24,disadvantage:['attack','ability','save']};
+    }
     // Falling unconscious/defeated ends concentration regardless of the CON save.
     // Otherwise a successful save at 0 HP could leave an illegal concentration state.
     if(target.hp<=0 || target.defeated){
@@ -238,7 +263,14 @@
   function resolveAttack(target,d20,bonus,opts,roll){
     roll=roll||{result:d20,critical:d20===20,fumble:d20===1};
     if(opts&&opts.__forceCritical&&roll.result!==1)roll.critical=true;
-    var classBonus=opts&&opts.__classFeatureMod?num(opts.__classFeatureMod.bonusAttack):0; var total=d20+bonus+classBonus, ac=opts&&opts.acOverride!=null?num(opts.acOverride,10):num(target && target.ac,10), hit=roll.critical || (!roll.fumble && total>=ac);
+    var classBonus=opts&&opts.__classFeatureMod?num(opts.__classFeatureMod.bonusAttack):0;
+    var witchAttackPenalty=target&&target.witchAttackPenaltyDice?rollDie(6):0;
+    var total=d20+bonus+classBonus-witchAttackPenalty;
+    var ac=opts&&opts.acOverride!=null?num(opts.acOverride,10):Math.max(10,num(target && target.ac,10)-num(target&&target.witchACPenalty,0));
+    var duplicityTarget=opts&&opts.__attacker&&target&&target.classFeaturesState&&target.classFeaturesState.witch&&target.classFeaturesState.witch.witchDuplicity;
+    var duplicityMiss=false;
+    if(duplicityTarget&&!roll.fumble){var dupRoll=rollDie(6);if(dupRoll%2===1){duplicityMiss=true;target.classFeaturesState.witch.witchDuplicity=false;}}
+    var hit=!duplicityMiss&&(roll.critical || (!roll.fumble && total>=ac));
     var out={d20:d20,bonus:bonus,classBonus:classBonus,total:total,ac:ac,hit:hit,critical:!!roll.critical,fumble:!!roll.fumble,damage:null,extraAttacks:Math.max(1,num(opts&&opts.__classFeatureMod&&opts.__classFeatureMod.extraAttacks,1))};
     if(hit && opts.damage){
       var fm=opts.__classFeatureMod||{bonusDamage:0,extraDice:[]};
@@ -252,7 +284,7 @@
       out.classFeatureNotes=(out.classFeatureNotes||[]).concat((fm.notes||[]).slice());
       if(out.assassinDeathStrike&&out.assassinDeathStrike.damageDoubled)out.classFeatureNotes.push('Смертельный удар: урон удвоен');
       if(opts.target){
-        var damageOpts={source:'attack',attackKind:opts.attackKind||((opts.weapon&&Number(opts.weapon.rangeFt)>5)?'rangedWeapon':'weapon'),visible:opts.visible!==false,projectile:!!opts.projectile,critical:!!roll.critical};
+        var damageOpts={source:'attack',attackKind:opts.attackKind||((opts.weapon&&Number(opts.weapon.rangeFt)>5)?'rangedWeapon':'weapon'),visible:opts.visible!==false,projectile:!!opts.projectile,critical:!!roll.critical,attacker:opts.__attacker||null};
         var damageParts=[{amount:rollDice(opts.damage,!!roll.critical).total,damageType:opts.damageType||''}];
         // Rebuild the exact rolled base damage used above so resistance is applied per type.
         damageParts[0].amount=out.damage.total-num(fm.bonusDamage);
