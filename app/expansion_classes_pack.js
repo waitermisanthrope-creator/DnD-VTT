@@ -507,10 +507,143 @@ var academy=String(s.warlordAcademy||'');
   function syncVessel(h){var l=lvl(h,'Сосуд');if(!l)return;var s=st(h),cha=mod(h,'cha');res(h,'vesselMagicSlots',l>=18?4:l>=11?3:2,'short');s.vesselSpiritMantle=!!s.vesselSpiritMantle;s.vesselAspects=s.vesselAspects||[];s.vesselArchon=!!s.vesselArchon;s.vesselStrikeDie=l>=11?'1d10':l>=5?'1d8':'1d6';s.vesselSpellDC=8+(Number(h.proficiencyBonus)||2)+cha;}
   function useVessel(h,id,ctx,feature){syncVessel(h);var l=lvl(h,'Сосуд'),s=st(h),cha=mod(h,'cha');if(id==='spiritMantle'){s.vesselSpiritMantle=!s.vesselSpiritMantle;return{ok:true,message:'✨ Покров духа '+(s.vesselSpiritMantle?'проявлён.':'рассеян.')};}if(id==='iridescentStrike'){if(!s.vesselSpiritMantle)return{ok:false,message:'Иридисцентный удар требует Покров духа.'};return{ok:true,effect:{damage:(s.vesselStrikeDie||'1d6')+' radiant',ability:'cha'},message:'✨ Иридисцентный удар нанесён.'};}if(id==='archonForm'){if(!s.vesselSpiritMantle)return{ok:false,message:'Сначала прояви Покров духа.'};if(!spend(h,'vesselMagicSlots',1))return{ok:false,message:'Нет свободного слота магии Сосуда.'};s.vesselArchon=true;return{ok:true,effect:{tempHp:2*l,durationMinutes:10,freeUse:true},message:'👁️ Форма архонта активирована: '+(2*l)+' временных HP.'};}if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' активно.'};return{ok:false,unsupported:true,message:'Способность Сосуда зарегистрирована, но отдельный эффект ещё не реализован.'};}
   function vesselAttack(h){var s=st(h),o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]};if(s.vesselSpiritMantle)o.notes.push('Покров духа: атаки могут использовать Charisma.');return o;}
-  function syncAccursed(h){var l=lvl(h,'Аккурсд');if(!l)return;var s=st(h);res(h,'accursedSpellSlots',l>=18?4:l>=11?3:2,'long');s.accursedJinx=s.accursedJinx||{};s.accursedMetamorphoses=s.accursedMetamorphoses||[];s.accursedSaveDC=8+(Number(h.proficiencyBonus)||2)+mod(h,'cha');}
-  function useAccursed(h,id,ctx,feature){syncAccursed(h);ctx=ctx||{};var s=st(h),t=target(ctx);if(id==='jinx'){if(!t)return{ok:false,message:'Выбери цель для Сглаза.'};var hx=global.accursedRuntime&&global.accursedRuntime.useHex?global.accursedRuntime.useHex(h,t,ctx):null;if(hx&&hx.ok){s.accursedJinx={targetId:t.id,expiresRounds:hx.durationRounds};return{ok:true,target:t.id,effect:{nextAttackOrCheckDisadvantage:true,accursedHex:true,durationRounds:hx.durationRounds,saveDC:hx.dc},message:'🩸 Сглаз наложен.'};}s.accursedJinx={targetId:t.id,expiresRounds:2};return{ok:true,target:t.id,effect:{nextAttackOrCheckDisadvantage:true},message:'🩸 Сглаз наложен.'};}if(id==='suppressCurse'){if(!spend(h,'accursedSpellSlots',1))return{ok:false,message:'Нет свободной ячейки заклинаний Аккурсда.'};return{ok:true,effect:{suppressCurse:true,durationRounds:10},message:'🩸 Подавление проклятия активно на 10 раундов.'};}if(id==='afflictCurse'){if(!t)return{ok:false,message:'Выбери цель для проклятия.'};if(!spend(h,'accursedSpellSlots',1))return{ok:false,message:'Нет свободной ячейки заклинаний Аккурсда.'};return{ok:true,target:t.id,effect:{curseSave:'wis',curseDurationRounds:10},message:'🩸 Проклятие поражает цель.'};}if(id==='metamorphosis'){var names=Array.isArray(ctx.names)?ctx.names:(ctx.name?[ctx.name]:[]);if(!names.length)return{ok:false,message:'Выбери хотя бы одну метаморфозу.'};var chosen=global.accursedRuntime&&global.accursedRuntime.chooseMetamorphoses?global.accursedRuntime.chooseMetamorphoses(h,names):null;if(chosen&&chosen.ok){s.accursedMetamorphoses=chosen.selected.slice();return{ok:true,effect:{selected:chosen.selected,max:chosen.max},message:'🩸 Метаморфозы выбраны: '+chosen.selected.join(', ')+'.'};}return{ok:false,message:'Не удалось проверить доступные метаморфозы Аккурсда.'};}if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'🩸 '+(feature.name||id)+' активно.'};return{ok:false,unsupported:true,message:'Способность Аккурсда зарегистрирована, но отдельный эффект ещё не реализован.'};}
-  function accursedAttack(h,ctx){var l=lvl(h,'Аккурсд'),s=st(h),o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]};if(s.accursedMetamorphoses.indexOf('Воинский путь')>=0&&ctx&&ctx.weaponAttack)o.extraDice.push(l>=17?'3d6':l>=11?'2d6':'1d6');return o;}
-  function runeCount(l){var t=[0,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,10,10];return t[Math.max(1,Math.min(20,l))]||2;}
+  var ACCURSED_CURSES={
+    animation:{name:'Проклятие оживления',curseSpells:{2:'skull servant',5:'animate dead',9:'stoneskin',13:'danse macabre',17:'necromantic spurs'}},
+    armament:{name:'Проклятие оружия',curseSpells:{2:'wrathful smite',5:'magic weapon',9:'guiding weapon',13:'vampiric weapon',17:'steel wind strike'}},
+    combustion:{name:'Проклятие воспламенения',curseSpells:{2:'burning hands',5:'scorching ray',9:'fireball',13:'fire shield',17:'immolation'}},
+    created:{name:'Проклятие созданного',curseSpells:{2:'thunderwave',5:'shatter',9:'lightning bolt',13:'fabricate',17:'animate objects'}},
+    immortality:{name:'Проклятие бессмертия',curseSpells:{2:'false life',5:'lesser restoration',9:'revivify',13:'death ward',17:'raise dead'}},
+    misfortune:{name:'Проклятие несчастья',curseSpells:{2:'bane',5:'bestow curse',9:'slow',13:'confusion',17:'contagion'}},
+    mummification:{name:'Проклятие мумификации',curseSpells:{2:'inflict wounds',5:'blindness/deafness',9:'vampiric touch',13:'blight',17:'enervation'}},
+    petrification:{name:'Проклятие окаменения',curseSpells:{2:'earth tremor',5:'maximilian’s earthen grasp',9:'meld into stone',13:'stone shape',17:'wall of stone'}},
+    somnolence:{name:'Проклятие сонливости',curseSpells:{2:'sleep',5:'hold person',9:'hypnotic pattern',13:'compulsion',17:'hold monster'}}
+  };
+  var ACCURSED_METAMORPHOSES={
+    arcaneAnathema:{name:'Арканная анафема',level:2},
+    bolsteringSuppression:{name:'Укрепляющее подавление',level:2},
+    enshroudingImprecation:{name:'Покровная инвектива',level:2},
+    fecundAffliction:{name:'Плодовитое поражение',level:2},
+    hexArmor:{name:'Доспех сглаза',level:2},
+    hostileBane:{name:'Враждебная кара',level:2},
+    scourgeSpeech:{name:'Речь бичевания',level:2},
+    swiftJinx:{name:'Стремительный сглаз',level:2},
+    eldritchBane:{name:'Колдовская кара',level:10,requires:'hostileBane'},
+    enervatingJinx:{name:'Истощающий сглаз',level:10,requires:'swiftJinx'},
+    hexAura:{name:'Аура сглаза',level:10,requires:'hexArmor'},
+    hexPlate:{name:'Пластина сглаза',level:10,requires:'hexArmor'},
+    martialBane:{name:'Воинская кара',level:10,requires:'hostileBane'},
+    resistantSuppression:{name:'Устойчивое подавление',level:10,requires:'bolsteringSuppression'},
+    enshroudingMuffling:{name:'Приглушающая инвектива',level:10,requires:'enshroudingImprecation'},
+    sleightingImprecation:{name:'Ловкая инвектива',level:10,requires:'enshroudingImprecation'},
+    fecundProlific:{name:'Плодовитая маледикция',level:10,requires:'fecundAffliction'},
+    scourgeSense:{name:'Чувство бичевания',level:10,requires:'scourgeSpeech'},
+    arcaneCapacious:{name:'Ёмкая анафема',level:10,requires:'arcaneAnathema'},
+    arcaneObstinate:{name:'Упрямая анафема',level:10,requires:'arcaneAnathema'},
+    cripplingJinx:{name:'Калечащий сглаз',level:18,requires:'enervatingJinx'},
+    doublingJinx:{name:'Двойной сглаз',level:18,requires:'enervatingJinx'},
+    hexPhalanx:{name:'Фаланга сглаза',level:18,requires:'hexAura'},
+    hexShield:{name:'Щит сглаза',level:18,requires:'hexAura'},
+    immuneSuppression:{name:'Невосприимчивое подавление',level:18,requires:'resistantSuppression'},
+    negatingAnathema:{name:'Отрицающая анафема',level:18,requires:'arcaneAnathema'},
+    vengefulBane:{name:'Мстительная кара',level:18,requires:'hostileBane'},
+    vileAffliction:{name:'Мерзкое поражение',level:18,requires:'fecundAffliction'},
+    umbralImprecation:{name:'Теневая инвектива',level:18,requires:'enshroudingImprecation'}
+  };
+  function accursedSpellSlots(l){
+    var t=[0,0,2,3,3,3,6,6,7,7,9,9,11,11,12,12,14,14,15,15,15];
+    return t[Math.max(1,Math.min(20,l))]||0;
+  }
+  function accursedSlotTable(l){
+    var p=(g.accursedProgression&&g.accursedProgression.spellSlots)||{};
+    return p[l]||[0,0,0,0,0];
+  }
+  function accursedAbility(h){
+    var s=st(h),a=String(s.accursed&&s.accursed.curseAbility||s.accursedCurseAbility||'charisma').toLowerCase();
+    return ['intelligence','wisdom','charisma'].indexOf(a)>=0?a:'charisma';
+  }
+  function syncAccursed(h){
+    var l=lvl(h,'Аккурсд');if(!l)return;
+    var s=st(h);s.accursed=s.accursed||{};
+    s.accursed.curseId=s.accursed.curseId||null;
+    s.accursed.curseAbility=accursedAbility(h);
+    s.accursed.maledictionKnown=Math.max(0,Object.keys((g.accursedProgression&&g.accursedProgression.maledictionMetamorphosesKnown)||{}).filter(function(x){return Number(x)<=l;}).reduce(function(a,k){return Math.max(a,Number(g.accursedProgression.maledictionMetamorphosesKnown[k]));},0));
+    s.accursed.knownMetamorphoses=Array.isArray(s.accursed.knownMetamorphoses)?s.accursed.knownMetamorphoses:[];
+    s.accursed.jinx=s.accursed.jinx||null;s.accursed.ailments=s.accursed.ailments||[];
+    s.accursed.spellsKnown=Array.isArray(s.accursed.spellsKnown)?s.accursed.spellsKnown:[];
+    s.accursed.saveDC=8+(Number(h.proficiencyBonus)||2)+mod(h,s.accursed.curseAbility);
+    s.accursed.attackBonus=(Number(h.proficiencyBonus)||2)+mod(h,s.accursed.curseAbility);
+    s.accursed.spellSlots=accursedSlotTable(l);
+    s.accursed.spellsKnownMax=((g.accursedProgression&&g.accursedProgression.spellsKnown)||{})[l]||0;
+    s.accursed.curseSpells=ACCURSED_CURSES[s.accursed.curseId]?ACCURSED_CURSES[s.accursed.curseId].curseSpells:{};
+    res(h,'accursedSpellSlots',Math.max(0,s.accursed.spellSlots.reduce(function(a,b){return a+b;},0)),'long');
+    h.resources.accursedSpellSlots.max=Math.max(0,s.accursed.spellSlots.reduce(function(a,b){return a+b;},0));
+    h.resources.accursedSpellSlots.current=Math.min(Number(h.resources.accursedSpellSlots.current)||0,h.resources.accursedSpellSlots.max);
+  }
+  function chooseAccursedCurse(h,id){
+    syncAccursed(h);id=String(id||'');
+    if(!ACCURSED_CURSES[id])return{ok:false,message:'Неизвестное завоёванное проклятие.'};
+    var s=st(h).accursed;s.curseId=id;
+    return{ok:true,curse:id,curseName:ACCURSED_CURSES[id].name,message:'🩸 Выбрано завоёванное проклятие: '+ACCURSED_CURSES[id].name+'.'};
+  }
+  function chooseAccursedAbility(h,ability){
+    syncAccursed(h);ability=String(ability||'').toLowerCase();
+    if(['intelligence','wisdom','charisma'].indexOf(ability)<0)return{ok:false,message:'Способность проклятия должна быть Интеллектом, Мудростью или Харизмой.'};
+    st(h).accursed.curseAbility=ability;return{ok:true,message:'🩸 Характеристика проклятия: '+ability+'.'};
+  }
+  function useAccursed(h,id,ctx,feature){
+    syncAccursed(h);ctx=ctx||{};var s=st(h).accursed,t=target(ctx),l=lvl(h,'Аккурсд');
+    if(id==='chooseCurse'||id==='chooseConqueredCurse')return chooseAccursedCurse(h,ctx.curse||ctx.id);
+    if(id==='chooseCurseAbility')return chooseAccursedAbility(h,ctx.ability);
+    if(id==='jinx'){
+      if(!t)return{ok:false,message:'Выбери цель для Сглаза.'};
+      var dc=s.saveDC,savePassed=ctx.savePassed===true;
+      if(savePassed)return{ok:false,message:'Цель успешно сопротивляется Сглазу.'};
+      s.jinx={targetId:t.id,ends:'next associated roll or end of next turn',durationRounds:1};
+      return{ok:true,target:t.id,effect:{save:'wis',dc:dc,chooseJinx:['disadvantageNextAbilityCheck','disadvantageNextAttackVsChosenCreature'],durationRounds:1},message:'🩸 Сглаз наложен.'};
+    }
+    if(id==='afflict'){
+      if(!t)return{ok:false,message:'Выбери цель для Поражения.'};
+      var slot=Number(ctx.spellLevel)||1;if(slot<1||slot>5||!s.spellSlots[slot-1])return{ok:false,message:'Нет ячейки нужного уровня.'};
+      if(!spend(h,'accursedSpellSlots',1))return{ok:false,message:'Нет доступной ячейки Аккурсда.'};
+      var ailment=String(ctx.ailment||'');
+      if(!ailment)return{ok:false,message:'Выбери недуг своего проклятия.'};
+      return{ok:true,target:t.id,effect:{save:'wis',dc:s.saveDC,ailment:ailment,duration:slot===1?'1 minute':slot===2?'10 minutes':slot===3?'1 hour':slot===4?'8 hours':'24 hours',repeatSaveEndTurn:true,endsOnRemoveCurse:true},message:'🩸 Недуг наложен.'};
+    }
+    if(id==='suppressCurse'){
+      var slots=Number(ctx.spellLevel)||1;if(slots<1||slots>5||!s.spellSlots[slots-1])return{ok:false,message:'Нет ячейки нужного уровня.'};
+      if(!spend(h,'accursedSpellSlots',1))return{ok:false,message:'Нет доступной ячейки Аккурсда.'};
+      return{ok:true,effect:{suppressAilments:Array.isArray(ctx.ailments)?ctx.ailments:[],duration:slots===1?'1 minute':slots===2?'10 minutes':slots===3?'1 hour':slots===4?'8 hours':'24 hours'},message:'🛡️ Недуги подавлены.'};
+    }
+    if(id==='chooseMetamorphosis'||id==='metamorphosis'){
+      var names=Array.isArray(ctx.names)?ctx.names:(ctx.name?[ctx.name]:[]);
+      if(!names.length)return{ok:false,message:'Выбери хотя бы одну метаморфозу.'};
+      if(names.length>s.maledictionKnown)return{ok:false,message:'Недостаточно известных метаморфоз.'};
+      for(var i=0;i<names.length;i++){
+        var m=ACCURSED_METAMORPHOSES[names[i]];if(!m)return{ok:false,message:'Неизвестная метаморфоза: '+names[i]};
+        if(l<m.level)return{ok:false,message:'Метаморфоза '+m.name+' ещё недоступна.'};
+        if(m.requires&&s.knownMetamorphoses.indexOf(m.requires)<0)return{ok:false,message:'Сначала нужна метаморфоза-предшественник: '+m.requires};
+      }
+      s.knownMetamorphoses=names.slice();
+      return{ok:true,effect:{knownMetamorphoses:s.knownMetamorphoses.slice(),count:s.knownMetamorphoses.length},message:'🩸 Метаморфозы обновлены.'};
+    }
+    if(id==='maledictionVersatility'){
+      if(l<4)return{ok:false,message:'Универсальность маледикции доступна с 4 уровня.'};
+      return{ok:true,effect:{replaceMetamorphosis:true,requiresQualifiedReplacement:true},message:'🩸 Можно заменить одну маледикционную метаморфозу.'};
+    }
+    if(id==='afflictAilment'){
+      if(!t)return{ok:false,message:'Выбери цель.'};
+      return{ok:true,target:t.id,effect:{usesSpellSlot:true,save:'wis',dc:s.saveDC,ailment:ctx.ailment||'выбранный недуг'},message:'🩸 Контроль недуга подготовлен.'};
+    }
+    if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' активно.'};
+    return{ok:false,unsupported:true,message:'Способность Аккурсда ещё не имеет отдельного resolver-а.'};
+  }
+  function accursedAttack(h,ctx){
+    syncAccursed(h);var s=st(h).accursed,o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]};
+    var mods=Math.max(1,mod(h,s.curseAbility));
+    if(s.knownMetamorphoses.indexOf('hostileBane')>=0&&ctx&&ctx.hit)o.bonusDamage+=mods;
+    if(s.knownMetamorphoses.indexOf('martialBane')>=0&&ctx&&ctx.hit)o.bonusDamage+=mods;
+    return o;
+  }
   function syncRuneKeeper(h){var l=lvl(h,'Рунный хранитель');if(!l)return;var s=st(h),n=runeCount(l);s.inscribedRunes=Array.isArray(s.inscribedRunes)?s.inscribedRunes:[];if(s.inscribedRunes.length>n)s.inscribedRunes=s.inscribedRunes.slice(0,n);s.runeStance=s.runeStance||null;s.runeSaveDC=8+(Number(h.proficiencyBonus)||2)+mod(h,'int');}
   function useRuneKeeper(h,id,ctx,feature){syncRuneKeeper(h);ctx=ctx||{};var s=st(h),n=runeCount(lvl(h,'Рунный хранитель')),rt=global.runeKeeperRuntime;
 if(id==='inscribeRune'){var name=ctx.rune?String(ctx.rune):'Руна';if(rt&&typeof rt.inscribe==='function'){var ins=rt.inscribe(h,name,ctx.objectId);if(!ins.ok)return{ok:false,message:ins.reason||'Не удалось вписать руну.'};return{ok:true,effect:{objectId:ins.objectId,rune:name},message:'🔷 Руна «'+name+'» вписана.'};}if(s.inscribedRunes.indexOf(name)<0){if(s.inscribedRunes.length>=n)s.inscribedRunes.shift();s.inscribedRunes.push(name);}return{ok:true,message:'🔷 Руна «'+name+'» вписана: '+s.inscribedRunes.length+'/'+n+'.'};}
@@ -1389,7 +1522,7 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
     {id:'ll-savant',name:'Savant',displayName:'Савант',source:'LaserLlama / third-party',license:'Original runtime implementation; source mechanics checked against current public class',features:[{id:'adroitAnalysis',name:'Искусный анализ',level:1,action:'bonus',target:'enemy',rangeFt:60},{id:'potentObservation',name:'Мощное наблюдение',level:2,action:'reaction',rangeFt:30},{id:'calculatedFlourish',name:'Расчётный манёвр',level:5,action:'reaction'},{id:'flawlessAnalysis',name:'Безупречный анализ',level:15,action:'action',target:'enemy'}],subclasses:[{id:'archaeologist',name:'Археолог',features:[]},{id:'investigator',name:'Исследователь',features:[]},{id:'naturalist',name:'Натуралист',features:[]},{id:'physician',name:'Врач',features:[]},{id:'mentor',name:'Наставник',features:[]},{id:'tactician',name:'Тактик',features:[]}],hooks:{sync:syncSavant,useFeature:useSavant,attackModifiers:savantAttack}},
 
     {id:'ll-vessel',name:'Vessel',displayName:'Сосуд',source:'laserllama / third-party',license:'Original runtime implementation',features:[{id:'spiritMantle',name:'Покров духа',level:1,action:'bonus'},{id:'iridescentStrike',name:'Иридисцентный удар',level:1,action:'attack'},{id:'unsealedAspects',name:'Нераскрытые аспекты',level:1,action:'utility'},{id:'archonForm',name:'Форма архонта',level:3,action:'bonus'}],subclasses:[{id:'ascended',name:'Вознесённый',features:[]},{id:'cataclysm',name:'Катаклизм',features:[]},{id:'cursed',name:'Проклятый',features:[]},{id:'fallen',name:'Падший',features:[]},{id:'formless',name:'Бесформенный',features:[]},{id:'trickster',name:'Трикстер',features:[]}],hooks:{sync:syncVessel,useFeature:useVessel,attackModifiers:vesselAttack}},
-    {id:'sv-accursed',name:'Accursed',displayName:'Аккурсд',source:'Ross Leiser / Sterling Vermin Adventuring Co.',license:'Original runtime implementation',features:[{id:'jinx',name:'Сглаз',level:1,action:'bonus',target:'enemy'},{id:'suppressCurse',name:'Подавление проклятия',level:2,action:'action'},{id:'afflictCurse',name:'Поражение проклятием',level:2,action:'action',target:'enemy'},{id:'metamorphosis',name:'Метаморфоза проклятия',level:2,action:'utility'}],subclasses:[{id:'curse',name:'Проклятие',features:[]}],hooks:{sync:syncAccursed,useFeature:useAccursed,attackModifiers:accursedAttack}},
+    {id:'sv-accursed',name:'Accursed',displayName:'Аккурсд',source:'Ross Leiser / Sterling Vermin Adventuring Co.',license:'Original runtime implementation',features:[{id:'chooseCurse',name:'Завоёванное проклятие',level:1,action:'choice'},{id:'chooseCurseAbility',name:'Характеристика проклятия',level:1,action:'choice'},{id:'jinx',name:'Сглаз',level:1,action:'action',target:'enemy'},{id:'suppressCurse',name:'Подавление недуга',level:2,action:'bonus'},{id:'afflict',name:'Поражение недугом',level:2,action:'action',target:'enemy'},{id:'chooseMetamorphosis',name:'Маледикционная метаморфоза',level:2,action:'choice'},{id:'maledictionVersatility',name:'Универсальность маледикции',level:4,action:'utility'}],subclasses:ACCURSED_CURSES&&Object.keys(ACCURSED_CURSES).map(function(id){return{id:id,name:ACCURSED_CURSES[id].name,features:[]};}),hooks:{sync:syncAccursed,useFeature:useAccursed,attackModifiers:accursedAttack}},
     {id:'ip-runekeeper',name:'RuneKeeper',displayName:'Рунный хранитель',source:'Taron Pounds / Indestructoboy',license:'Original runtime implementation',features:[{id:'inscribeRune',name:'Вписать руну',level:1,action:'utility'},{id:'runeStance',name:'Рунная стойка',level:2,action:'bonus'},{id:'invokeRune',name:'Призвать руну',level:1,action:'action'}],subclasses:[{id:'dethek',name:'Детек',features:[]},{id:'fiendish',name:'Инфернский',features:[]},{id:'ghukliak',name:'Гуклиак',features:[]},{id:'jotun',name:'Йотун',features:[]},{id:'iokharic',name:'Иокхарик',features:[]},{id:'supernal',name:'Высший',features:[]}],hooks:{sync:syncRuneKeeper,useFeature:useRuneKeeper,attackModifiers:runeKeeperAttack}},
 
     {id:'kibbles-psion',name:'Psion',displayName:'Псионик',source:'KibblesTasty Homebrew',license:'CC-BY content source; original runtime implementation',features:[
