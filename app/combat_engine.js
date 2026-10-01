@@ -306,11 +306,12 @@
           target.classFeaturesState=target.classFeaturesState||{};
           target.classFeaturesState.alchemistDebuffs=target.classFeaturesState.alchemistDebuffs||{};
           var debuffs=target.classFeaturesState.alchemistDebuffs;
+          debuffs.sourceId=opts.__attacker&&(opts.__attacker.id||opts.__attacker.entityId)||null;debuffs.sourceName=opts.__attacker&&opts.__attacker.name||null;debuffs.conditionsApplied=debuffs.conditionsApplied||[];
           if(alchemistFormula.acPenalty){debuffs.acPenalty=Math.max(Number(debuffs.acPenalty)||0,alchemistFormula.acPenalty);out.alchemistFormulaEffect.effects.push('acPenalty');}
           if(alchemistFormula.attackPenalty){debuffs.attackPenalty=Math.max(Number(debuffs.attackPenalty)||0,alchemistFormula.attackPenalty);out.alchemistFormulaEffect.effects.push('attackPenalty');}
           if(alchemistFormula.savePenalty){debuffs.savePenalty=Math.max(Number(debuffs.savePenalty)||0,alchemistFormula.savePenalty);out.alchemistFormulaEffect.effects.push('savePenalty');}
           if(alchemistFormula.condition&&global.DNDCombat&&global.DNDCombat.toggleCondition){global.DNDCombat.toggleCondition(target,alchemistFormula.condition,true);out.alchemistFormulaEffect.effects.push(alchemistFormula.condition);}
-          if(alchemistFormula.condition){target.activeConditions=target.activeConditions||{};target.activeConditions[alchemistFormula.condition]=true;}
+          if(alchemistFormula.condition){target.activeConditions=target.activeConditions||{};target.activeConditions[alchemistFormula.condition]=true;if(debuffs.conditionsApplied.indexOf(alchemistFormula.condition)<0)debuffs.conditionsApplied.push(alchemistFormula.condition);}
           if(alchemistFormula.speed===0){debuffs.speedZero=true;if(target.turnResources)target.turnResources.movement=0;out.alchemistFormulaEffect.effects.push('speedZero');}
           if(alchemistFormula.pushFt){out.alchemistFormulaEffect.pushFt=alchemistFormula.pushFt;out.alchemistFormulaEffect.effects.push('pushFt');}
           if(alchemistFormula.noOpportunityAttacks){debuffs.noOpportunityAttacks=true;out.alchemistFormulaEffect.effects.push('noOpportunityAttacks');}
