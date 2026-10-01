@@ -253,8 +253,7 @@ function checkModifiers(h,ctx){
 function attackModifiers(h,ctx){
  ctx=ctx||{};var out={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]},l=alvl(h),s=st(h),c=(h.classes||[]).find(function(x){return x.name===CLASS;}),sid=c&&c.subclass;
  var isBomb=ctx.isBomb===true||ctx.attackType==='bomb'||ctx.weaponType==='bomb'||String(ctx.weaponName||'').toLowerCase().indexOf('бомб')>=0;
- if(isBomb&&l>=5){out.extraDice.push(bombDice(l));out.notes.push('Улучшенные бомбы');}
- if(isBomb&&l>=11)out.bonusDamage+=2;
+ if(isBomb&&l>=5)out.notes.push('Улучшенные бомбы: базовые кости бомбы '+bombDice(l));
  if(s.alchemistSeekingBombBonus&&isBomb){out.bonusDamage+=Number(s.alchemistSeekingBombBonus)||0;s.alchemistSeekingBombBonus=0;}
  if(s.alchemistSurgicalAttackReady&&ctx.unarmedGraft){out.extraDice.push('1d8');s.alchemistSurgicalAttackReady=false;out.notes.push('Хирургическая атака');}
  if(s.alchemistDynamoCharged&&ctx.weaponAttack){out.extraDice.push('1d8');out.notes.push('Динамо-ядро');s.alchemistDynamoCharged=false;}
