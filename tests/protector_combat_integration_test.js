@@ -197,6 +197,24 @@ const zoneSave = window.DNDCombat.savingThrow(zoneAlly, 'str', 11, 'normal', {
 assert.strictEqual(zoneSave.bonus, 1, 'real saving-throw resolver adds zone bonus');
 assert.strictEqual(zoneSave.success, true, 'zone bonus changes a boundary result from failure to success');
 assert(zoneSave.classFeatureNotes.some(note => note.includes('Страж рубежа')), 'zone effect is reflected in result notes');
+
+// Zone context is discovered from battlefield tokens when the caller marks a forced-movement save.
+const zoneProtectorCombatant = { id: 'zone-protector-token', name: 'Zone Protector', type: 'hero' };
+zoneAlly.type = 'hero';
+zoneAlly.name = 'Zone Ally';
+window.currentChar = { initiativeTracker: { round: 2, combatants: [zoneProtectorCombatant, zoneAlly] } };
+window.DNDBattleBoard = {
+  findTokenForCombatant(id) {
+    if (String(id) === String(zoneProtectorCombatant.id)) return { id: 'bt-zone-protector-token', sourceId: id, type: 'hero', x: 1, y: 1, visible: true };
+    if (String(id) === String(zoneAlly.id)) return { id: 'bt-zone-ally', sourceId: id, type: 'hero', x: 3, y: 1, visible: true };
+    return null;
+  },
+  distanceFt(a, b) { return Math.abs(a.x - b.x) * 5 + Math.abs(a.y - b.y) * 5; },
+  tokenList() { return []; }
+};
+const autoZoneSave = window.DNDCombat.savingThrow(zoneAlly, 'str', 11, 'normal', { forcedMovementSave: true });
+assert.strictEqual(autoZoneSave.bonus, 1, 'zone is found without manually passing protector/distance');
+window.DNDBattleBoard = null;
 window.currentChar = null;
 
 
@@ -204,7 +222,7 @@ const rescuedTarget = {
   id: 'rescue-oa-target', hp: 0, ac: 10,
   classFeaturesState: { protectorRescue: { noOpportunityAttacksFrom: 'rescued-foe' } }
 };
-const blockedOpportunity = window.DNDCombat.attack({ id: 'rescued-foe', name: 'Enemy' }, rescuedTarget, { bonus: 100, damage: '1d6', attackKind: 'opportunity' });
+const blockedOpportunity = window.DNDCombat.opportunityAttack({ id: 'rescued-foe', name: 'Enemy' }, rescuedTarget, { bonus: 100, damage: '1d6' });
 assert.strictEqual(blockedOpportunity.blockedByProtectorRescue, true, 'selected enemy opportunity attack is blocked after rescue');
 assert.strictEqual(blockedOpportunity.hit, false, 'blocked opportunity attack cannot hit');
 const otherOpportunity = window.DNDCombat.attack({ id: 'other-foe', name: 'Other Enemy' }, rescuedTarget, { bonus: 100, damage: '1d6', attackKind: 'opportunity' });
