@@ -17,6 +17,9 @@ assert.strictEqual(rules.getModifier({ className: 'Мореход', coins: { gp:
 assert.strictEqual(rules.getModifier({ className: 'Бандит', coins: { gp: 2000 } }), 0);
 assert.strictEqual(rules.getModifier({ className: 'Мореход', coins: { gp: 2000 } }), 5);
 assert.strictEqual(rules.getModifier({ className: 'Мореход', coins: { gp: 0 } }), -5);
+assert.strictEqual(rules.getModifier({ classes: [{ englishName: 'Mariner', level: 1 }], coins: { gp: -100, pp: -1, ep: -2, sp: -5, cp: -50 } }), -5, 'negative coin entries are clamped to zero for carried wealth');
+assert.strictEqual(rules.carriedGoldEquivalent({ gp: '100', pp: '1', ep: '2', sp: '5', cp: '50' }), 112, 'numeric strings in a saved coin purse are normalized consistently');
+assert.strictEqual(rules.getModifier({ classes: [{ name: 'Бандит', englishName: 'Mariner' }], coins: { gp: 2000 } }), 0, 'a non-Mariner class name takes precedence over an incidental alias');
 assert.strictEqual(rules.adjustRollTotal(14, { className: 'Мореход', coins: { gp: 1200 } }), 15);
 assert.strictEqual(typeof rules.adjustDamageDie, 'undefined', 'Mariner modifier does not expose damage-die adjustment');
 // Integration: load the actual rules engine and confirm the modifier reaches weapon attacks once.
