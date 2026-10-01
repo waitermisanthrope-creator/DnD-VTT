@@ -107,6 +107,7 @@
     var damageTaken=r.amount;
     var absorbed=Math.min(temp,damageTaken); target.tempHp=temp-absorbed;
     var hpDamage=damageTaken-absorbed; target.hp=Math.max(0,hp-hpDamage);
+    if(damageTaken>0&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs&&target.classFeaturesState.alchemistDebuffs.endsOnDamage){var pher=target.classFeaturesState.alchemistDebuffs;if(target.conditions)delete target.conditions['Очарован'];if(target.activeConditions)delete target.activeConditions['Очарован'];pher.conditionsApplied=(pher.conditionsApplied||[]).filter(function(x){return x!=='Очарован';});delete pher.endsOnDamage;if(!pher.oilCoated&&!pher.smokeCloud&&!pher.conditionsApplied.length){delete pher.sourceId;delete pher.sourceName;delete pher.expires;if(!Object.keys(pher).length)delete target.classFeaturesState.alchemistDebuffs;}}
     var necromanticRevival=false,alchemistState=target&&target.classFeaturesState;
     if(target.hp<=0&&alchemistState&&alchemistState.xenoNecroticReady&&!alchemistState.xenoNecroticUsed){
       var alchemistLevel=(target.classes||[]).reduce(function(sum,c){return sum+(c&&(c.name==='Алхимик'||c.englishName==='Alchemist')?(Number(c.level)||0):0);},0);
