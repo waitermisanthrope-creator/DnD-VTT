@@ -251,14 +251,14 @@ function checkModifiers(h,ctx){
  return out;
 }
 function attackModifiers(h,ctx){
- ctx=ctx||{};var out={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]},l=alvl(h),s=st(h),c=(h.classes||[]).find(function(x){return x.name===CLASS;}),sid=c&&c.subclass;
+ ctx=ctx||{};var out={bonusDamage:0,extraDice:[],damageTypes:[],advantage:false,disadvantage:false,notes:[]},l=alvl(h),s=st(h),c=(h.classes||[]).find(function(x){return x.name===CLASS;}),sid=c&&c.subclass;
  var isBomb=ctx.isBomb===true||ctx.attackType==='bomb'||ctx.weaponType==='bomb'||String(ctx.weaponName||'').toLowerCase().indexOf('бомб')>=0;
  if(isBomb&&l>=5)out.notes.push('Улучшенные бомбы: базовые кости бомбы '+bombDice(l));
  var preparedFormula=s.alchemistPreparedFormula;
  if(isBomb&&preparedFormula){
   var formulaDamage={acid:['1d8','кислота'],concussion:['1d10','гром'],cryo:['1d8','холод'],fear:['1d6','психический'],holy:['1d10','излучение'],impact:['1d8','силовой'],incendiary:['1d8','огонь'],laughingGas:['1d8','яд'],lightning:['1d10','молния'],quiet:['1d10','дробящий'],seeking:['1d10','огонь'],withering:['1d8','некротический']};
   var fd=formulaDamage[preparedFormula];
-  if(fd){out.extraDice.push(fd[0]);out.notes.push('Формула бомбы: '+preparedFormula+' ('+fd[1]+')');}
+  if(fd){out.extraDice.push(fd[0]);out.damageTypes.push(fd[1]);out.notes.push('Формула бомбы: '+preparedFormula+' ('+fd[1]+')');}
   else out.notes.push('Формула бомбы: '+preparedFormula+'; дополнительный урон не определён runtime-ом.');
   s.alchemistPreparedFormula=null;
  }
