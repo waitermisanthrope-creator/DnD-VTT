@@ -165,6 +165,67 @@
     turns.reaction=0;
     return {ok:true,reduction:Math.min(Math.max(0,n(amount,0)),reduction),rolled:roll.total,dice:diceCount+'d10',resourceRemaining:resource.current};
   }
+  function useProtectorZone(hero,ctx){
+    ctx=ctx||{};
+    var l=level(hero,CLASS_IDS.protector);
+    if(l<3)return {ok:false,reason:'Страж рубежа доступен с 3-го уровня Заступника.'};
+    if(ctx.actionAvailable!==true)return {ok:false,reason:'Нужно свободное бонусное действие.'};
+    var tr=hero.turnResources||(hero.turnResources={actions:1,bonusAction:1,reaction:1});
+    if(n(tr.bonusAction,0)<1)return {ok:false,reason:'Бонусное действие уже использовано.'};
+    var resource=hero.resources&&hero.resources.protectorImpulses;
+    if(!resource||n(resource.current,0)<1)return {ok:false,reason:'Защитные импульсы закончились.'};
+    var round=Math.max(1,n(ctx.round,1));
+    hero.classFeaturesState=hero.classFeaturesState||{};
+    var state=hero.classFeaturesState.protector||(hero.classFeaturesState.protector={});
+    if(state.zone&&state.zone.active&&round<state.zone.expiresRound)return {ok:false,reason:'Оборонительная зона уже активна.'};
+    resource.current-=1;tr.bonusAction-=1;
+    state.zone={active:true,createdRound:round,expiresRound:round+10,radiusFt:l>=11?15:10,saveBonus:1,advantageAtLevel17:l>=17,lastAdvantageRound:null};
+    return {ok:true,zone:state.zone,resourceRemaining:resource.current,message:'Оборонительная зона создана на 1 минуту.'};
+  }
+  function protectorZoneSave(protector,ally,ctx){
+    ctx=ctx||{};
+    var l=level(protector,CLASS_IDS.protector),state=protector&&protector.classFeaturesState&&protector.classFeaturesState.protector,zone=state&&state.zone;
+    if(l<3||!zone||!zone.active)return {ok:false,bonus:0,reason:'Оборонительная зона не активна.'};
+    var round=Math.max(1,n(ctx.round,1));
+    if(round>=zone.expiresRound){zone.active=false;return {ok:false,bonus:0,reason:'Время оборонительной зоны истекло.'};}
+    if(ctx.forcedMovementSave!==true||ctx.isAlly!==true||ctx.visible!==true)return {ok:false,bonus:0,reason:'Нужен спасбросок видимого союзника против принудительного перемещения.'};
+    var distance=Number(ctx.distanceFt);
+    if(!isFinite(distance)||distance<0||distance>zone.radiusFt)return {ok:false,bonus:0,reason:'Союзник находится вне оборонительной зоны.'};
+    var result={ok:true,bonus:1,advantage:false,radiusFt:zone.radiusFt};
+    if(l>=17&&zone.lastAdvantageRound!==round&&ctx.requestAdvantage===true){result.advantage=true;zone.lastAdvantageRound=round;}
+    return result;
+  }
+  function rescueAlly(hero,ctx){
+    ctx=ctx||{};
+    var l=level(hero,CLASS_IDS.protector),target=ctx.target;
+    if(l<3)return {ok:false,reason:'Спаситель доступен с 3-го уровня Заступника.'};
+    if(!target||target.id==null)return {ok:false,reason:'Выберите конкретного союзника.'};
+    if(ctx.isAlly!==true||ctx.visible!==true)return {ok:false,reason:'Цель должна быть видимым союзником.'};
+    if(n(target.hp, target.hpCurrent)>0)return {ok:false,reason:'Спасение доступно, только когда союзник упал до 0 HP.'};
+    if(target.instantDeath===true||target.dead===true||target.deathState==='dead')return {ok:false,reason:'Мгновенно погибшего персонажа спасти нельзя.'};
+    var distance=Number(ctx.distanceFt);
+    if(!isFinite(distance)||distance<0||distance>5)return {ok:false,reason:'Союзник должен находиться в пределах 5 футов.'};
+    if(ctx.cellAvailable!==true||!ctx.freeCell||!isFinite(Number(ctx.freeCell.x))||!isFinite(Number(ctx.freeCell.y)))return {ok:false,reason:'Нужно выбрать и подтвердить свободную клетку для перемещения.'};
+    var maxMove=l>=17?10:5,move=Number(ctx.moveFt==null?maxMove:ctx.moveFt);
+    if(!isFinite(move)||move<0||move>maxMove)return {ok:false,reason:'Перемещение превышает доступную дистанцию '+maxMove+' футов.'};
+    var tr=hero.turnResources||(hero.turnResources={actions:1,bonusAction:1,reaction:1});
+    if(n(tr.reaction,0)<1)return {ok:false,reason:'Реакция уже потрачена.'};
+    var resource=hero.resources&&hero.resources.protectorImpulses;
+    if(!resource||n(resource.current,0)<1)return {ok:false,reason:'Защитные импульсы закончились.'};
+    var combat=global.DNDCombat;
+    if(l>=11&&(!combat||typeof combat.rollDice!=='function'))return {ok:false,reason:'Боевой движок для временных HP недоступен.'};
+    var temp=0;
+    if(l>=11){var roll=combat.rollDice('1d8',false,false,hero);temp=Math.max(0,n(roll&&roll.total,0)+proficiency(l));}
+    resource.current-=1;tr.reaction=0;
+    target.position={x:Number(ctx.freeCell.x),y:Number(ctx.freeCell.y)};
+    target.x=Number(ctx.freeCell.x);target.y=Number(ctx.freeCell.y);
+    target.stable=true;target.defeated=false;
+    target.deathSaves={successes:0,failures:0};
+    if(l>=11)target.tempHp=Math.max(n(target.tempHp,0),temp);
+    target.classFeaturesState=target.classFeaturesState||{};
+    target.classFeaturesState.protectorRescue={sourceId:hero.id==null?null:String(hero.id),noOpportunityAttacksFrom:ctx.chosenEnemyId==null?null:String(ctx.chosenEnemyId),round:Math.max(1,n(ctx.round,1))};
+    return {ok:true,targetId:String(target.id),position:target.position,movementFt:move,tempHpGranted:temp,resourceRemaining:resource.current,message:'Союзник стабилизирован и перемещён; HP не восстановлены.'};
+  }
   function useBanditTrip(hero,ctx){
     ctx=ctx||{};
     var l=level(hero,CLASS_IDS.bandit);
@@ -197,12 +258,12 @@
     delete hero.classFeaturesState.banditTripSpeedLock;
     return true;
   }
-  function hasFeature(id){return ['banditStudyTarget','banditTrip','circusFireBreath'].indexOf(String(id||''))>=0;}
+  function hasFeature(id){return ['banditStudyTarget','banditTrip','circusFireBreath','protectorZone','protectorRescue'].indexOf(String(id||''))>=0;}
   function useFeature(hero,id,ctx){
     ctx=ctx||{};
     if(!hero)return {ok:false,reason:'Персонаж не найден.'};
     sync(hero);
-    if(String(id)==='banditTrip')return useBanditTrip(hero,ctx);
+    if(String(id)==='banditTrip')return useBanditTrip(hero,ctx);\n    if(String(id)==='protectorZone')return useProtectorZone(hero,ctx);\n    if(String(id)==='protectorRescue')return rescueAlly(hero,ctx);
     if(String(id)==='circusFireBreath')return useCircusFireBreath(hero,ctx);
     if(String(id)!=='banditStudyTarget')return {ok:false,unsupported:true,reason:'Эта способность пока не подключена.'};
     if(level(hero,CLASS_IDS.bandit)<1)return {ok:false,reason:'Для изучения цели нужен класс Бандит.'};
@@ -221,7 +282,7 @@
     studyTarget:studyTarget,
     clearInvalidTargets:clearInvalidTargets,
     clearStudiedTarget:clearStudiedTarget,
-    interceptDamage:interceptDamage,
+    interceptDamage:interceptDamage,\n    protectorZoneSave:protectorZoneSave,
     hasFeature:hasFeature,
     useFeature:useFeature,
     onTurnStart:onTurnStart,
