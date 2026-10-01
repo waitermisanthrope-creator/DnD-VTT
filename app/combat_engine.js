@@ -45,6 +45,8 @@
     amount=Math.max(0,Math.floor(num(amount)));
     var note='';
     type=String(type||'').toLowerCase().trim();
+    var homunculusState=target&&target.classFeaturesState||{},homunculusOwner=homunculusState.alchemistHomunculusOwner;
+    if(opts.isBomb&&homunculusOwner!=null&&opts.attackerId!=null&&String(homunculusOwner)===String(opts.attackerId))return{raw:amount,amount:0,mode:'owner-bomb-immunity',note:'Гомункул невосприимчив к бомбам создателя',type:type};
     var physical=(type==='дробящий'||type==='колющий'||type==='рубящий');
     var raging=physical&&global.DNDClassFeatures&&global.DNDClassFeatures.activeRage&&global.DNDClassFeatures.activeRage(target);
     var rm=target&&target.raceMechanics||{};
@@ -344,8 +346,8 @@
           damageParts.push({amount:smitePart,damageType:pending.divineSmite.damageType,label:'Божественная кара'});
         }
         if(num(fm.bonusDamage)){damageParts.push({amount:num(fm.bonusDamage),damageType:opts.damageType||'',label:'Бонус урона'});}
-        if(opts.deferDamage){out.damageResult=null;out.pendingDamage={amount:out.damage.total,damageType:opts.damageType||'',context:Object.assign({},damageOpts,{damageParts:damageParts})};}
-        else out.damageResult=applyDamage(target,out.damage.total,opts.damageType||'',Object.assign({},damageOpts,{damageParts:damageParts,ignoreResistance:!!fm.ignoreResistance,immunityBecomesResistance:!!fm.immunityBecomesResistance}));
+        if(opts.deferDamage){out.damageResult=null;out.pendingDamage={amount:out.damage.total,damageType:opts.damageType||'',context:Object.assign({},damageOpts,{damageParts:damageParts,isBomb:!!opts.isBomb,attackerId:opts.__attacker&&(opts.__attacker.id||opts.__attacker.entityId)||null})};}
+        else out.damageResult=applyDamage(target,out.damage.total,opts.damageType||'',Object.assign({},damageOpts,{damageParts:damageParts,ignoreResistance:!!fm.ignoreResistance,immunityBecomesResistance:!!fm.immunityBecomesResistance,isBomb:!!opts.isBomb,attackerId:opts.__attacker&&(opts.__attacker.id||opts.__attacker.entityId)||null}));
       }
       if(global.DNDClassFeatures&&global.DNDClassFeatures.onAttackResult)global.DNDClassFeatures.onAttackResult(opts.__attacker||{}, {sneakApplied:Array.isArray(fm.extraDice)&&fm.extraDice.length>0,hit:hit,pendingOnHit:pending});
     }
