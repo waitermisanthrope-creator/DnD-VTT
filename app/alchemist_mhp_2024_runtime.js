@@ -231,7 +231,7 @@ function sync(h){
 function spend(h,n){var r=h.resources&&h.resources.alchemistReagents;if(!r||r.current<n)return false;r.current-=n;return true;}
 function shortRest(h){
  if(!h||!alvl(h))return;sync(h);var r=h.resources.alchemistReagents,s=st(h);
- r.current=Math.min(r.max,r.current+1);
+ r.current=Math.min(r.max,r.current+1);s.alchemistGraftUses={};
  if(!s.alchemistSynthesisUsed)s.alchemistSynthesisReady=true;
  s.alchemistRestType='short';
 }
@@ -263,7 +263,7 @@ function longRest(h){
  var oldEffects=s.alchemistActiveEffects||[],keepEffects=oldEffects.filter(function(e){return e.effect&&e.effect.durationMinutes>=1440;});
  cleanupPotionEffects(h,oldEffects,keepEffects);s.alchemistActiveEffects=keepEffects;
  s.blackPowderUses=Math.max(1,mod(h,'int'));s.xenoNecroticReady=false;s.xenoNecroticUsed=false;s.alchemistEnergyCharges=0;s.alchemistLazarusUsed=false;s.alchemistPotionMixReady=false;
- s.alchemistRestType='long';
+ s.alchemistGraftUses={};s.alchemistRestType='long';
 }
 function startTurn(h){
  if(!h||!alvl(h))return;sync(h);var s=st(h);
@@ -488,6 +488,36 @@ function use(h,id,ctx,feature){
   if(action==='list')return{ok:true,grafts:grafts.slice(),message:'🧬 Установлено трансплантатов: '+grafts.length+'.'};
   var graftName=String(ctx.graftName||ctx.graft||''),graftDef=monstrousGrafts.find(function(x){return x[0]===graftName;});
   if(!graftDef)return{ok:false,message:'Выберите трансплантат из каталога.'};
+  if(action==='activate'){
+   if(!grafts.some(function(x){return x.name===graftName;}))return{ok:false,message:'Сначала установите этот трансплантат.'};
+   s.alchemistGraftUses=s.alchemistGraftUses||{};
+   if(s.alchemistGraftUses[graftName])return{ok:false,message:'Эта способность трансплантата уже использована до короткого/долгого отдыха.'};
+   if(graftName==='Регенерация'){
+    var healRoll=Number(ctx.healRoll),conMod=mod(h,'con'),currentHp=Number(h.hp!=null?h.hp:h.hitPoints),maxHp=Number(h.maxHp!=null?h.maxHp:h.maxHitPoints);
+    if(!Number.isFinite(healRoll)||healRoll<1||healRoll>10)return{ok:false,needsRoll:true,formula:'1d10',message:'Бросьте 1d10 для Регенерации; использование не потрачено.'};
+    if(!Number.isFinite(currentHp)||!Number.isFinite(maxHp))return{ok:false,unsupported:true,message:'Не найдены текущие/максимальные HP; трансплантат не активирован.'};
+    if(currentHp>=maxHp)return{ok:false,message:'HP уже максимальны; использование не потрачено.'};
+    var healed=Math.min(maxHp-currentHp,Math.max(0,healRoll+conMod));h.hp=currentHp+healed;if(h.hitPoints!=null)h.hitPoints=h.hp;s.alchemistGraftUses[graftName]=true;
+    return{ok:true,effect:{healing:healed,hp:h.hp,formula:'1d10 + модификатор Телосложения'},message:'🧬 Регенерация восстановила '+healed+' HP.'};
+   }
+   if(graftName==='Зловонная секреция'){
+    var targets=Array.isArray(ctx.targets)?ctx.targets:[];if(!targets.length)return{ok:false,needsTarget:true,message:'Выберите существ в пределах 10 футов.'};
+    if(targets.some(function(x){return !x||!x.target||typeof x.target!=='object'||!Number.isFinite(Number(x.distanceFt))||Number(x.distanceFt)>10||!x.saveResult;}))return{ok:false,needsTarget:true,message:'Для каждой цели укажите расстояние и результат спасброска Телосложения; использование не потрачено.'};
+    var affected=[];
+    targets.forEach(function(x){if(x.saveResult.success)return;var target=x.target;target.classFeaturesState=target.classFeaturesState||{};var deb=target.classFeaturesState.alchemistDebuffs=target.classFeaturesState.alchemistDebuffs||{};deb.sourceId=h.id||null;deb.sourceName=h.name||null;deb.conditionsApplied=deb.conditionsApplied||[];if(deb.conditionsApplied.indexOf('Отравлен')<0)deb.conditionsApplied.push('Отравлен');if(g.DNDCombat&&g.DNDCombat.toggleCondition)g.DNDCombat.toggleCondition(target,'Отравлен',true);target.activeConditions=target.activeConditions||{};target.activeConditions['Отравлен']=true;affected.push(target.id||null);});
+    s.alchemistGraftUses[graftName]=true;return{ok:true,effect:{affected:affected,condition:'Отравлен',save:'con',dc:s.alchemistSaveDC},message:'🧬 Зловонная секреция: отравлено целей '+affected.length+'.'};
+   }
+   if(graftName==='Драконьи лёгкие'){
+    var breathTargets=Array.isArray(ctx.targets)?ctx.targets:[],breathType=String(ctx.damageType||''),breathRoll=Number(ctx.damageRoll),pbBreath=prof(h);
+    if(!['кислота','холод','огонь','молния','яд'].includes(breathType))return{ok:false,needsChoice:true,message:'Выберите тип урона дыхания до активации.'};
+    if(!Number.isFinite(breathRoll)||breathRoll<pbBreath||breathRoll>6*pbBreath)return{ok:false,needsRoll:true,formula:pbBreath+'d6',message:'Бросьте '+pbBreath+'d6; использование не потрачено.'};
+    if(!breathTargets.length||breathTargets.some(function(x){return !x||!x.target||!x.saveResult;}))return{ok:false,needsTarget:true,message:'Выберите цели 15-футового конуса и укажите спасбросок Ловкости каждой цели.'};
+    if(!g.DNDCombat||typeof g.DNDCombat.applyDamage!=='function')return{ok:false,unsupported:true,message:'Боевой resolver урона недоступен; использование не потрачено.'};
+    var breathResults=[];breathTargets.forEach(function(x){var dmg=x.saveResult.success?Math.floor(breathRoll/2):breathRoll;var result=g.DNDCombat.applyDamage(x.target,dmg,breathType);breathResults.push({target:x.target.id||null,damage:result.amount,saveSuccess:!!x.saveResult.success});});
+    s.alchemistGraftUses[graftName]=true;return{ok:true,effect:{damageType:breathType,damageRoll:breathRoll,targets:breathResults,area:'15-футовый конус',save:'dex'},message:'🧬 Драконьи лёгкие: обработано целей '+breathResults.length+'.'};
+   }
+   return{ok:false,unsupported:true,message:'Активная способность трансплантата «'+graftName+'» ещё не подключена; использование не потрачено.'};
+  }
   if(action==='remove'){
    var removeAt=grafts.findIndex(function(x){return x.name===graftName;});
    if(removeAt<0)return{ok:false,message:'Этот трансплантат не установлен.'};
