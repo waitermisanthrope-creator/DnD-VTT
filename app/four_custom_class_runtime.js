@@ -144,7 +144,7 @@
     var l=level(protector,CLASS_IDS.protector);
     if(l<1)return {ok:false,reason:'Нужен класс Заступник.'};
     if(!target||target.id==null)return {ok:false,reason:'Нужна цель с устойчивым ID.'};
-    var selfTarget=String(target.id)===String(protector.id);
+    var selfTarget=String(target.id)===String(protector.id)||(ctx.isSelf===true&&ctx.isHeroCombatant===true);
     if(selfTarget&&ctx.isSelf!==true)return {ok:false,reason:'Самозащита должна быть явно выбрана.'};
     if(!selfTarget&&ctx.isAlly!==true)return {ok:false,reason:'Цель должна быть подтверждённым союзником.'};
     if(!selfTarget&&ctx.visible!==true)return {ok:false,reason:'Заступник должен видеть союзника.'};
