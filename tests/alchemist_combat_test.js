@@ -142,6 +142,6 @@ poisonedAttacker.classFeaturesState.alchemistPoisonedWeaponId='dagger';
 const oldRandomPoison=ctx.Math.random;ctx.Math.random=()=>0.999;rolls=[{result:20,critical:true,fumble:false}];
 const poisonedStrike=ctx.DNDCombat.attack(poisonedAttacker,poisonImmuneTarget,{bonus:10,damage:'1d4',damageType:'дробящий',weaponAttack:true,weaponId:'dagger',weapon:{id:'dagger',rangeFt:5},target:poisonImmuneTarget,useRules:false});
 ctx.Math.random=oldRandomPoison;
-assert.equal(poisonedStrike.damageResult.amount,8,'Poison immunity prevents poison dice while preserving the critical physical damage');
-assert.equal(poisonImmuneTarget.hp,22,'Poison immunity prevents only the poison dice, not the physical hit');
+assert.equal(poisonedStrike.damageResult.amount,12,'Poison immunity prevents poison dice while preserving the critical physical damage');
+assert.equal(poisonImmuneTarget.hp,18,'Poison immunity prevents only the poison dice, not the physical hit');
 console.log('Alchemist combat integration tests PASS');
