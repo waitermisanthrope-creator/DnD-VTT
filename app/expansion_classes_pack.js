@@ -645,7 +645,7 @@ var academy=String(s.warlordAcademy||'');
     if(id==='calculatedCombustion')return{ok:true,effect:{safeAlliesMax:Math.floor(l/2),ignoreHalfDamageOnSave:true},message:'🔥 Рассчитанное воспламенение.'};
     if(id==='whiteHot')return{ok:true,effect:{ignoreResistance:'fire'},message:'🔥 Белое пламя игнорирует сопротивление огню.'};
     if(id==='ragingInferno')return{ok:true,effect:{extraDamage:'2d8 fire',overheatIgnoresImmunity:true},message:'🔥 Бушующий инферно.'};
-    if(id==='itsAlive')return{ok:true,effect:{preventDropToZero:true,setHp:1,tempHp:5*l,burstRadiusFt:5,burstDamage:5*l+' lightning',recharge:'fullHp'},message:'⚡ Оно живо!'});
+    if(id==='itsAlive')return{ok:true,effect:{preventDropToZero:true,setHp:1,tempHp:5*l,burstRadiusFt:5,burstDamage:5*l+' lightning',recharge:'fullHp'},message:'⚡ Оно живо.'};
     if(id==='shockingStrike')return{ok:true,target:t&&t.id,effect:{extraDamage:'1d12 lightning',ifStolenSpark:true,oncePerTurn:true,disadvantageAttacksExceptSelfUntilEndNextTurn:true},message:'⚡ Разрядный удар.'};
     if(id==='electricCharge')return{ok:true,effect:{resistance:'lightning',tempHpFromLightningDamage:true,maxSpendTempHp:Math.floor(l/2)},message:'⚡ Электрический заряд.'};
     if(id==='reassembleCorpus')return{ok:true,effect:{maxStrDexCon:22,longRestRedistribute:2},message:'⚡ Корпус восстановлен.'};
