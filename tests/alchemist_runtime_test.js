@@ -21,4 +21,26 @@ const second=hooks.useFeature(hero,'alchemist-discovery',{discovery:'Алхим�
 assert.equal(second.ok,false,'level 6 cannot take second discovery before level 9');
 const bomb=hooks.attackModifiers(hero,{isBomb:true});
 assert.ok(Array.isArray(bomb.extraDice),'bomb hook returns dice modifiers');
+
+// Potion effects must be applied to the character and unsupported recipes must never be consumed.
+hero.classFeaturesState.alchemistPotions=[
+  {name:'Зелье сопротивления',cost:1,type:'potion'},
+  {name:'Зелье невидимости',cost:2,type:'potion'},
+  {name:'Зелье лечения',cost:1,type:'potion'}
+];
+hero.resistances=[];
+let noChoice=hooks.useFeature(hero,'alchemist-potionUse',{index:0});
+assert.equal(noChoice.ok,false,'resistance potion requires a damage type');
+assert.equal(hero.classFeaturesState.alchemistPotions.length,3,'missing choice does not consume potion');
+let resistance=hooks.useFeature(hero,'alchemist-potionUse',{index:0,damageType:'огонь'});
+assert.equal(resistance.ok,true,'resistance potion applies');
+assert.ok(hero.resistances.includes('огонь'),'resistance is recorded on character');
+let invis=hooks.useFeature(hero,'alchemist-potionUse',{index:0});
+assert.equal(invis.ok,true,'invisibility potion applies');
+assert.equal(hero.activeConditions.Невидим,true,'invisibility condition is set');
+let heal=hooks.useFeature(hero,'alchemist-potionUse',{index:0,healAmount:7});
+assert.equal(heal.ok,true,'healing potion applies');
+assert.equal(hero.hp,7,'healing potion updates character HP when no max is specified');
+assert.equal(hero.classFeaturesState.alchemistPotions.length,0,'successfully used potions are consumed');
+
 console.log('Alchemist runtime regression tests PASS');
