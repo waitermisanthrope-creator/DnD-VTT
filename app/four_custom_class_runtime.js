@@ -66,8 +66,8 @@
     var l=level(hero,CLASS_IDS.bandit);
     if(!l)return {ok:false,reason:'Для изучения цели нужен класс Бандит.'};
     if(!target||target.id==null)return {ok:false,reason:'Выберите конкретную цель со стабильным ID.'};
-    if(ctx.visible===false)return {ok:false,reason:'Цель должна быть видна.'};
-    if(ctx.distanceFt!=null&&(!isFinite(Number(ctx.distanceFt))||Number(ctx.distanceFt)>60||Number(ctx.distanceFt)<0))return {ok:false,reason:'Цель должна находиться в пределах 60 футов.'};
+    if(ctx.visible!==true)return {ok:false,reason:'Подтвердите, что цель видна.'};
+    if(ctx.distanceFt==null||!isFinite(Number(ctx.distanceFt))||Number(ctx.distanceFt)>60||Number(ctx.distanceFt)<0)return {ok:false,reason:'Цель должна находиться в пределах 60 футов.'};
     hero.classFeaturesState=hero.classFeaturesState||{};
     var state=hero.classFeaturesState.bandit||(hero.classFeaturesState.bandit={studiedTargetIds:[]});
     if(!Array.isArray(state.studiedTargetIds))state.studiedTargetIds=[];
@@ -130,7 +130,8 @@
     if(l<1)return {ok:false,reason:'Нужен класс Заступник.'};
     if(!target||target.id==null||String(target.id)===String(protector.id))return {ok:false,reason:'Нужен другой союзник с устойчивым ID.'};
     if(ctx.isAlly!==true)return {ok:false,reason:'Цель должна быть подтверждённым союзником.'};
-    if(ctx.visible===false)return {ok:false,reason:'Заступник должен видеть союзника.'};
+    if(ctx.visible!==true)return {ok:false,reason:'Заступник должен видеть союзника.'};
+    if(n(amount,0)<=0)return {ok:false,reason:'Нет урона для перехвата.'};
     var distance=Number(ctx.distanceFt);
     if(!isFinite(distance)||distance<0||distance>5)return {ok:false,reason:'Союзник должен находиться в пределах 5 футов.'};
     var turns=protector.turnResources||{};
