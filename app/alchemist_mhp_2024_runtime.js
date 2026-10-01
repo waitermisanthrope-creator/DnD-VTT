@@ -265,7 +265,16 @@ function subclassFeatureEffect(h,sub,f,ctx){
  if(name==='Резонансная волна')return{ok:true,effect:{pushFt:10,areaFt:15,save:'strength'},message:'🔊 Резонансная волна готова.'};
  if(name==='Ядовитая бомба')return{ok:true,effect:{damageDice:'2d10',damageType:'poison',save:'constitution',condition:'poisoned'},message:'☠️ Ядовитая бомба готова.'};
  if(name==='Мутагенная ярость')return{ok:true,effect:{bonusDamage:'1d6',resistance:true,duration:'1 minute'},message:'🧬 Мутагенная ярость активирована.'};
- return{ok:true,passive:true,effect:{subclass:sub.id,feature:name,description:f[2]||''},message:'✨ '+name+' отмечена как пассивная особенность.'};
+ var passiveFeatures={
+  'Исследования врача':1,'Концентрированное лечение':1,'Самолечение':1,'Алхимическое воскрешение':1,
+  'Очарователь':1,'Магнетическая личность':1,'Улучшенные бомбы':1,'Аэродинамические бомбы':1,
+  'Самонаведение':1,'Владение оружием':1,'Улучшенный прицел':1,'Митридатизм':1,
+  'Формула стрелка':1,'Междисциплинарные исследования':1,'Дополнительные зелья':1,
+  'Заядлый читатель':1,'Убийца-алхимик':1,'Чудо-самогонщик':1,'Пьяная удаль':1,
+  'Талант бармена':1,'Безопасная перегонка':1,'Стабильный мутаген':1
+ };
+ if(passiveFeatures[name])return{ok:true,passive:true,effect:{subclass:sub.id,feature:name,description:f[2]||''},message:'📘 Пассивная особенность: '+name+'.'};
+ return{ok:false,unsupported:true,message:'Алхимик: «'+name+'» пока не имеет полноценного resolver-а; способность не отмечена как успешно применённая.'};
 }
 
 function use(h,id,ctx){
@@ -289,5 +298,5 @@ g.CLASSES_REFERENCE=g.CLASSES_REFERENCE||{};
 g.CLASSES_REFERENCE[CLASS]={source:SOURCE,hitDie:8,primaryStat:'dexterity',primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14],contentPackId:PACK_ID};
 g.SUBCLASSES_REFERENCE=g.SUBCLASSES_REFERENCE||{};g.SUBCLASSES_REFERENCE[CLASS]={};
 subpacks.forEach(function(s){var lv={};s.features.forEach(function(f){lv[f.level]=lv[f.level]||{features:[]};lv[f.level].features.push(f.name);});g.SUBCLASSES_REFERENCE[CLASS][s.name]={source:SOURCE,description:s.description,pickLevel:3,levels:lv};});
-g.ALCHEMIST_MHP_2024={VERSION:'1.1.0-complete',STATUS:'closed',CANONICAL_2024_SUBCLASSES:11,PACK_ID:PACK_ID,formulae:formulae,potions:potions,discoveries:discoveries,subclasses:subpacks.map(function(s){return{id:s.id,name:s.name};})};
+g.ALCHEMIST_MHP_2024={VERSION:'1.1.0-complete',STATUS:'in_progress',CANONICAL_2024_SUBCLASSES:11,PACK_ID:PACK_ID,formulae:formulae,potions:potions,discoveries:discoveries,subclasses:subpacks.map(function(s){return{id:s.id,name:s.name};})};
 })(window);
