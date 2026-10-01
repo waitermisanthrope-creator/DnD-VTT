@@ -266,7 +266,7 @@
   }
   function resetDeathSaves(hero){hero.deathSaves={successes:0,failures:0};}
   function attack(attacker,target,opts){
-    opts=opts||{}; var bonus=num(opts.bonus), mode=opts.mode||'normal';
+    opts=opts||{};if(!opts.target)opts.target=target; var bonus=num(opts.bonus), mode=opts.mode||'normal';
     if(opts.weapon){opts.weaponAttack=true;opts.meleeOrThrown=opts.meleeOrThrown!==undefined?opts.meleeOrThrown:(opts.weapon.rangeFt==null||Number(opts.weapon.rangeFt)<=5);}
     var featureMod=(global.DNDClassFeatures&&global.DNDClassFeatures.attackModifiers&&attacker)?global.DNDClassFeatures.attackModifiers(attacker,opts):{bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[],pendingOnHit:{}};
     if(target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs&&target.classFeaturesState.alchemistDebuffs.attacksHaveAdvantage)featureMod.advantage=true;
