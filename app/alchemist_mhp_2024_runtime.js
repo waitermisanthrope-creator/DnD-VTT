@@ -221,7 +221,7 @@ var subpacks=subs.map(function(s){return{id:s.id,name:s.name,description:s.desc,
 function sync(h){
  var l=alvl(h);if(!l)return;var s=st(h);h.resources=h.resources||{};
  function rr(id,max,recharge){var r=h.resources[id];if(!r||r.max!==max)h.resources[id]={max:max,current:r?Math.min(r.current,max):max,recharge:recharge};}
- rr('alchemistReagents',maxReagents(l),'short');
+ rr('alchemistReagents',maxReagents(l),'long');
  s.alchemistBombDamage=bombDice(l);s.alchemistPrimeMax=primeMax(l);s.alchemistFormulaMax=formulasKnown(l);s.alchemistSaveDC=8+mod(h,'int')+prof(h);
  s.alchemistPotionLimit=Math.max(1,mod(h,'int')) + (s.alchemistDiscoveries||[]).filter(function(x){return x==='Алхимия превращений'||x==='Алхимия яда'||x==='Алхимия восстановления';}).length*2;s.alchemistDiscovered=s.alchemistDiscovered||[]; s.alchemistPotionOnlyReagents=s.alchemistPotionOnlyReagents||0;s.alchemistFormulas=s.alchemistFormulas||[];
 }
