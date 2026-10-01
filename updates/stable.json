@@ -64,8 +64,8 @@
     },
     {
       "path": "app/alchemist_mhp_2024_runtime.js",
-      "bytes": 139260,
-      "sha256": "b78d7eb0b4c3e78dd7066e6b2a5963644c483110c45b778155298329dfcb070e"
+      "bytes": 139693,
+      "sha256": "5f471f71bdd01e2baa522e4d32cada59d3bba1ce4a57302fb7f57247a3c94d06"
     },
     {
       "path": "app/data/classes/Alchemist.js",
