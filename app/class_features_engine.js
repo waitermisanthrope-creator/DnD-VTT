@@ -304,8 +304,7 @@
     // Remaining extended runtimes expose progression/state rather than a
     // mutable pool. Bridge only the REAL runtime resources; never invent a
     // second counter for the same class feature.
-    l=classLevel(h,'Аккурсд');
-    if(l)ensureRes(h,'accursedSpellSlots',l>=18?4:l>=11?3:2,'long');
+    // Accursed spell slots are owned by syncAccursed() in expansion_classes_pack.js; do not create a second counter here.
 
     l=classLevel(h,'Псионик');
     if(l)ensureRes(h,'psiPoints',l,'short');
