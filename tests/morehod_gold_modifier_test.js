@@ -116,5 +116,17 @@ assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'),
   assert.strictEqual(save.success, true);
   const nonMariner = Object.assign({}, loadedMariner, { classes: [{ name: 'Бандит', level: 1 }] });
   assert.strictEqual(combatContext.DNDCombat.savingThrow(nonMariner, 'con', 6).total, 1, 'other classes receive no gold modifier');
+  // Integration: defeating a studied target through the initiative quick-damage control clears only that target.
+  const banditCombatHero = {
+    id: 'bandit-hero',
+    classes: [{ name: 'Бандит', level: 3 }],
+    classFeaturesState: { bandit: { studiedTargetIds: ['enemy-down', 'enemy-still-alive'] } },
+    initiativeTracker: { activeIndex: 0, combatants: [{ id: 'enemy-down', hp: 1, maxHp: 8, defeated: false }] }
+  };
+  combatContext.currentChar = banditCombatHero;
+  combatContext.prompt = () => '1';
+  combatContext.dndInitiativeDamageActive();
+  assert.strictEqual(banditCombatHero.initiativeTracker.combatants[0].defeated, true, 'quick initiative damage marks target defeated');
+  assert.deepStrictEqual(Array.from(banditCombatHero.classFeaturesState.bandit.studiedTargetIds), ['enemy-still-alive'], 'quick initiative defeat clears only the defeated studied target');
 }
 console.log('morehod_gold_modifier_test: all assertions passed');
