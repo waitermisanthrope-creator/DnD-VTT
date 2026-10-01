@@ -28,7 +28,7 @@ levels[19]={features:['Эпический дар']};
 levels[20]={features:['Философский камень','Ядерная бомба']};
 g.alchemistProgression={
  className:'Алхимик',englishName:'Alchemist',source:'Mage Hand Press — Alchemist 2024 / 5.5E',
- status:'in_progress_runtime',edition:'5.5E / 2024',hitDie:8,primaryStat:'dexterity',secondaryStat:'intelligence',
+ status:'in_progress_runtime',runtimeVersion:'1.2.1-runtime-fixes',edition:'5.5E / 2024',hitDie:8,primaryStat:'dexterity',secondaryStat:'intelligence',
  savingThrows:['dexterity','intelligence'],armor:['light'],weapons:['simple'],tools:['alchemist_supplies'],
  multiclassRequirement:{dexterity:13,intelligence:13},
  multiclassProficiencies:{armor:['light'],weapons:['simple'],tools:['alchemist_supplies']},
@@ -45,7 +45,7 @@ g.alchemistProgression={
   {id:'oozeRancher',name:'Разводчик слизней'},{id:'pigmentist',name:'Пигментист'},{id:'resonator',name:'Резонатор'},
   {id:'venomsmith',name:'Веномсмит'},{id:'xenoalchemist',name:'Ксеноалхимик'}
  ],
- mechanics:{bombs:'implemented_core',reagents:'implemented_core',potionBrewing:'implemented_core',primeBomb:'implemented_core',bombFormulas:'core_registry',reagentSynthesis:'implemented_core',discoveries:'core_registry',improvedBombs:'implemented_core',evasion:'implemented_core',blastCoating:'implemented_core',potionMixologist:'implemented_core',experimentalist:'implemented_core',philosophersStone:'implemented_core',nuclearBomb:'implemented_core',subclassSystem:'runtime_registered_2024_in_progress',notes:'2024 runtime подключён: бомбы, 18 формул, реагенты, зелья, Prime Bomb, Synthesis, Discoveries, уровни 1–20 и 11 регистраций подклассов. Остаются незакрытые subclass effect resolver-ы; неизвестные активные особенности возвращают unsupported, а не фиктивный успех.'},
+ mechanics:{bombs:'implemented_core',reagents:'implemented_core',potionBrewing:'implemented_core',primeBomb:'implemented_core',bombFormulas:'core_registry',reagentSynthesis:'implemented_core',discoveries:'core_registry',improvedBombs:'implemented_core',evasion:'implemented_core',blastCoating:'implemented_core',potionMixologist:'implemented_core',experimentalist:'implemented_core',philosophersStone:'implemented_core',nuclearBomb:'implemented_core',subclassSystem:'runtime_registered_2024_in_progress',subclassFeatureIdResolution:'fixed',discoveryLevelGating:'fixed',notes:'2024 runtime подключён: бомбы, 18 формул, реагенты, зелья, Prime Bomb, Synthesis, Discoveries, уровни 1–20 и 11 регистраций подклассов. Остаются незакрытые subclass effect resolver-ы; неизвестные активные особенности возвращают unsupported, а не фиктивный успех.'},
  levels:levels
 };
 })(window);
