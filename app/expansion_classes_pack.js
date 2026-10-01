@@ -1592,9 +1592,17 @@ var academy=String(s.warlordAcademy||'');
 
   function witchHexCount(l){return l>=20?10:l>=18?9:l>=16?8:l>=14?7:l>=11?6:l>=9?5:l>=5?4:l>=2?3:2;}
   function witchDC(h){return 8+(Number(h.proficiencyBonus)||2)+mod(h,'charisma');}
-  var WITCH_HEXES={"Abate":{"save":"charisma","rangeFt":60,"effect":"no_reactions"},"Apathy":{"save":"charisma","rangeFt":60,"effect":"indifferent"},"Beckon Familiar":{"effect":"find_familiar_action","requiresLevel":2},"Bleeding":{"save":"constitution","rangeFt":60,"effect":"extra_1d4_damage"},"Charm":{"save":"wisdom","rangeFt":60,"effect":"charmed"},"Dire Familiar":{"effect":"familiar_boost","requiresLevel":2},"Disorient":{"save":"constitution","rangeFt":60,"effect":"d6_attack_penalty"},"Doomward":{"rangeFt":60,"effect":"prevent_zero_hp","friendly":true},"Duplicity":{"effect":"shadow_duplicate"},"Evil Eye":{"save":"wisdom","rangeFt":60,"effect":"frightened"},"Fortune":{"rangeFt":60,"effect":"advantage_saves","friendly":true},"Go Unseen":{"effect":"invisibility","cooldown":"1 minute"},"Hobble":{"save":"strength","rangeFt":60,"effect":"speed_10"},"Mire":{"effect":"difficult_terrain_30ft"},"Misfortune":{"rangeFt":60,"effect":"nat20_to_nat1"},"Obfuscate":{"effect":"fog_20ft"},"Pox":{"save":"constitution","rangeFt":5,"effect":"poisoned"},"Ruin":{"save":"constitution","rangeFt":60,"effect":"ac_minus_3"},"Slumber":{"save":"wisdom","rangeFt":60,"effect":"unconscious"},"Tremors":{"save":"dexterity","rangeFt":10,"effect":"prone"},"Ward":{"rangeFt":60,"effect":"damage_minus_3","friendly":true}};
+  var WITCH_HEXES={"Abate":{"save":"charisma","rangeFt":60,"effect":"no_reactions"},"Apathy":{"save":"charisma","rangeFt":60,"effect":"indifferent"},"Beckon Familiar":{"effect":"find_familiar_action","requiresLevel":2,"self":true},"Bleeding":{"save":"constitution","rangeFt":60,"effect":"extra_1d4_damage"},"Charm":{"save":"wisdom","rangeFt":60,"effect":"charmed"},"Dire Familiar":{"effect":"familiar_boost","requiresLevel":2,"self":true},"Disorient":{"save":"constitution","rangeFt":60,"effect":"d6_attack_penalty"},"Doomward":{"rangeFt":60,"effect":"prevent_zero_hp","friendly":true},"Duplicity":{"effect":"shadow_duplicate","self":true},"Evil Eye":{"save":"wisdom","rangeFt":60,"effect":"frightened"},"Fortune":{"rangeFt":60,"effect":"advantage_saves","friendly":true},"Go Unseen":{"effect":"invisibility","cooldown":"1 minute","self":true},"Hobble":{"save":"strength","rangeFt":60,"effect":"speed_10"},"Mire":{"effect":"difficult_terrain_30ft","self":true},"Misfortune":{"rangeFt":60,"effect":"nat20_to_nat1"},"Obfuscate":{"effect":"fog_20ft","self":true},"Pox":{"save":"constitution","rangeFt":5,"effect":"poisoned"},"Ruin":{"save":"constitution","rangeFt":60,"effect":"ac_minus_3"},"Slumber":{"save":"wisdom","rangeFt":60,"effect":"unconscious"},"Tremors":{"save":"dexterity","rangeFt":10,"effect":"prone"},"Ward":{"rangeFt":60,"effect":"damage_minus_3","friendly":true}};
   var WITCH_GRAND_HEXES={"Cauldron":{"effect":"alchemy","recharge":"longRest"},"Coven":{"effect":"coven_shared_spells"},"DualHex":{"effect":"double_single_target_hex"},"ForcefulPersonality":{"effect":"charisma_plus_2_max_22"},"Possession":{"effect":"possess","rangeFt":10,"recharge":"longRest"},"WarHex":{"effect":"hex_plus_cantrip_bonus_action"},"Witch's Broom":{"effect":"fly_60ft"},"Witch's Hut":{"effect":"animate_hut","teleportFt":60,"recharge":"longRest"}};
   var WITCH_CURSES=["Burned","Drowned","Hideous","Hollow","Loveless","Possessed"];
+  var WITCH_CURSE_EFFECTS={
+    Burned:{resistance:['fire'],bonusCantrip:'produce flame'},
+    Drowned:{waterBreathing:true,swimSpeedEqualsWalking:true},
+    Hideous:{skillProficiency:'intimidation',initiativeSave:{ability:'wisdom',condition:'frightened',duration:'until_end_next_witch_turn'}},
+    Hollow:{tempHpOnEnemyReducedToZero:'charisma_modifier_plus_witch_level'},
+    Loveless:{immunity:'charmed'},
+    Possessed:{bonusKnownSpells:[1,4,8,12],spellsDoNotCountAgainstKnown:true}
+  };
   var WITCH_CRAFTS=["Black","Green","Red","White"];
   function syncWitch(h){
     var l=lvl(h,'Ведьма');if(!l)return;
@@ -1649,13 +1657,13 @@ var academy=String(s.warlordAcademy||'');
     }
     if(id==='hex'){
       var name2=String(ctx.hexName||'');if(name2&&WITCH_HEXES[name2]&&!witchKnownHex(h,name2))return{ok:false,message:'Сначала изучи этот Hex.'};
-      if(!t&&WITCH_HEXES[name2]&&WITCH_HEXES[name2].friendly!==true)return{ok:false,message:'Выбери цель для Hex.'};
+      if(!t&&WITCH_HEXES[name2]&&!WITCH_HEXES[name2].friendly&&!WITCH_HEXES[name2].self)return{ok:false,message:'Выбери цель для Hex.'};
       var def=WITCH_HEXES[name2]||{};
       if(name2==='Go Unseen')s.witchInvisibilityUntil='endNextTurn';
       if(name2==='Dire Familiar'){if(!s.familiar.active)return{ok:false,message:'Сначала призови фамильяра.'};s.familiar.boosted=true;}
       if(name2==='Doomward'&&t)s.wardedTarget=t.id;
       s.hexTarget=t&&t.id||null;s.hexName=name2||null;
-      return{ok:true,target:t&&t.id,effect:Object.assign({hex:true,duration:'until_end_next_turn',concentration:true},def),message:'🧿 Hex применён: '+(name2||'выбранный Hex')};
+      return{ok:true,target:t&&t.id,effect:Object.assign({hex:true,saveDC:s.witchSaveDC,duration:'until_end_next_turn',concentration:true,targetRequired:!def.self},def),message:'🧿 Hex применён: '+(name2||'выбранный Hex')};
     }
     if(id==='cackle'){
       if(!s.hexTarget)return{ok:false,message:'Нет активного Hex для продления.'};
@@ -1663,6 +1671,9 @@ var academy=String(s.warlordAcademy||'');
       s.hexRounds=(Number(s.hexRounds)||1)+1;return{ok:true,effect:{extendHexRounds:1},message:'😈 Cackle продлевает Hex на 1 раунд.'};
     }
     if(id==='familiar'){
+      var familiarForms=['cat','owl','raven','bat','hawk','lizard','snake','imp','quasit','brass dragon wyrmling','fright','grep','обычный'];
+      var requestedForm=String(ctx.form||s.familiar.form||'обычный').toLowerCase();
+      if(familiarForms.indexOf(requestedForm)<0)return{ok:false,message:'Неизвестная форма фамильяра.'};
       s.familiar.active=true;s.familiar.form=ctx.form||s.familiar.form;
       s.familiar.turnTiming='before_or_after_witch';s.familiar.canDeliverNonTouch=true;
       s.familiar.command={actionOrBonusAction:true,reactionAttack:true,usesPerTurn:1};
@@ -1675,7 +1686,8 @@ var academy=String(s.warlordAcademy||'');
     }
     if(id==='witchCurse'){
       if(!s.witchCurse)return{ok:false,message:'Сначала выбери форму Witch’s Curse.'};
-      return{ok:true,effect:{curse:s.witchCurse,saveDC:s.witchSaveDC},message:'☠️ Witch’s Curse: '+s.witchCurse};
+      var curseEffect=WITCH_CURSE_EFFECTS[s.witchCurse]||{};
+      return{ok:true,effect:Object.assign({curse:s.witchCurse,saveDC:s.witchSaveDC},curseEffect),message:'☠️ Witch’s Curse: '+s.witchCurse};
     }
     if(id==='craftFeature'){
       var craft2=s.witchCraft||'Black';
@@ -1688,7 +1700,9 @@ var academy=String(s.warlordAcademy||'');
       return{ok:true,effect:Object.assign({craft:craft2},effects[craft2]||{}),message:'🔮 Ремесло Ведьмы: '+craft2};
     }
     if(id==='insidiousSpell'){
-      return{ok:true,effect:{disadvantageFirstSaveAgainstSpell:true,requiresSoleHexTarget:true},message:'🕷️ Insidious Spell готов.'};
+      if(!s.hexTarget)return{ok:false,message:'Insidious Spell требует активный Hex.'};
+      if(t&&String(s.hexTarget)!==String(t.id))return{ok:false,message:'Цель заклинания должна быть той же, что и единственная цель Hex.'};
+      return{ok:true,target:t&&t.id,effect:{disadvantageFirstSaveAgainstSpell:true,requiresSoleHexTarget:true,saveDC:s.witchSaveDC},message:'🕷️ Insidious Spell готов.'};
     }
     if(id==='improvedFamiliar'){
       s.familiar.magicalAttacks=true;return{ok:true,effect:{magicalFamiliarAttacks:true,extraForms:['brass dragon wyrmling','fright','grep']},message:'🐉 Улучшенный фамильяр.'};
@@ -1710,7 +1724,9 @@ var academy=String(s.warlordAcademy||'');
       return{ok:true,effect:{hexSaveDisadvantage:true,autoFailSaveUses:s.hexmasterUses},message:'👑 Hexmaster активирован.'};
     }
     if(id==='hexmasterAutoFail'){
-      if(!s.hexmasterUses)return{ok:false,message:'Нет доступных применений Hexmaster.'};s.hexmasterUses--;return{ok:true,effect:{autoFailHexSave:true},message:'👑 Hexmaster: цель автоматически проваливает спасбросок.'};
+      if(l<20)return{ok:false,message:'Hexmaster доступен только с 20 уровня.'};
+      if(!s.hexmasterUses)return{ok:false,message:'Нет доступных применений Hexmaster.'};
+      s.hexmasterUses--;return{ok:true,effect:{autoFailHexSave:true},message:'👑 Hexmaster: цель автоматически проваливает спасбросок.'};
     }
     return{ok:false,unsupported:true,message:'Ведьма: неизвестная активная способность '+id};
   }
