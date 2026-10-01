@@ -223,7 +223,9 @@ function sync(h){
  function rr(id,max,recharge){var r=h.resources[id];if(!r||r.max!==max)h.resources[id]={max:max,current:r?Math.min(r.current,max):max,recharge:recharge};}
  rr('alchemistReagents',maxReagents(l),'long');
  s.alchemistBombDamage=bombDice(l);s.alchemistPrimeMax=primeMax(l);s.alchemistFormulaMax=formulasKnown(l);s.alchemistSaveDC=8+mod(h,'int')+prof(h);
- s.alchemistDiscovered=s.alchemistDiscovered||[];s.alchemistDiscoveries=s.alchemistDiscovered;s.alchemistPotionLimit=Math.max(1,mod(h,'int')) + s.alchemistDiscovered.filter(function(x){return x==='Алхимия превращений'||x==='Алхимия яда'||x==='Алхимия восстановления';}).length*2; s.alchemistPotionOnlyReagents=s.alchemistPotionOnlyReagents||0;s.alchemistFormulas=s.alchemistFormulas||[];
+ s.alchemistDiscovered=s.alchemistDiscovered||[];s.alchemistDiscoveries=s.alchemistDiscovered;
+ var selectedClass=(h.classes||[]).find(function(x){return x.name===CLASS||x.englishName==='Alchemist';});
+ if(selectedClass&&l>=3&&(selectedClass.subclass==='venomsmith'||selectedClass.subclass==='Веномсмит')){if(s.alchemistDiscovered.indexOf('Алхимия яда')<0)s.alchemistDiscovered.push('Алхимия яда');}s.alchemistPotionLimit=Math.max(1,mod(h,'int')) + s.alchemistDiscovered.filter(function(x){return x==='Алхимия превращений'||x==='Алхимия яда'||x==='Алхимия восстановления';}).length*2; s.alchemistPotionOnlyReagents=s.alchemistPotionOnlyReagents||0;s.alchemistFormulas=s.alchemistFormulas||[];
 }
 function spend(h,n){var r=h.resources&&h.resources.alchemistReagents;if(!r||r.current<n)return false;r.current-=n;return true;}
 function shortRest(h){
@@ -441,5 +443,5 @@ g.CLASSES_REFERENCE=g.CLASSES_REFERENCE||{};
 g.CLASSES_REFERENCE[CLASS]={source:SOURCE,hitDie:8,primaryStat:'dexterity',primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14],contentPackId:PACK_ID};
 g.SUBCLASSES_REFERENCE=g.SUBCLASSES_REFERENCE||{};g.SUBCLASSES_REFERENCE[CLASS]={};
 subpacks.forEach(function(s){var lv={};s.features.forEach(function(f){lv[f.level]=lv[f.level]||{features:[]};lv[f.level].features.push(f.name);});g.SUBCLASSES_REFERENCE[CLASS][s.name]={source:SOURCE,description:s.description,pickLevel:3,levels:lv};});
-g.ALCHEMIST_MHP_2024={VERSION:'1.3.1-progression-fixes',STATUS:'in_progress',CANONICAL_2024_SUBCLASSES:11,PACK_ID:PACK_ID,formulae:formulae,potions:potions,discoveries:discoveries,subclasses:subpacks.map(function(s){return{id:s.id,name:s.name};})};
+g.ALCHEMIST_MHP_2024={VERSION:'1.3.2-progression-fixes',STATUS:'in_progress',CANONICAL_2024_SUBCLASSES:11,PACK_ID:PACK_ID,formulae:formulae,potions:potions,discoveries:discoveries,subclasses:subpacks.map(function(s){return{id:s.id,name:s.name};})};
 })(window);
