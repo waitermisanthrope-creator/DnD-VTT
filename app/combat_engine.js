@@ -228,6 +228,8 @@
     var conds=(actor&&actor.activeConditions)|| (actor&&actor.conditions)||{};
     var autoFail=!!(global.DNDRules&&global.DNDRules.conditionModifiers&&global.DNDRules.conditionModifiers(actor).autoFailStrDex&&(stat==='str'||stat==='dex'));
     var roll=global.DNDRules ? global.DNDRules.rollD20(featureMode) : {result:rollDie(20),critical:false};
+    var saveDebuffs=actor&&actor.classFeaturesState&&actor.classFeaturesState.alchemistDebuffs||{};
+    bonus-=num(saveDebuffs.savePenalty,0);
     var total=roll.result+bonus;
     var success=autoFail?false:total>=num(dc);var evasion=!!(sm&&sm.evasion&&String(stat).toLowerCase()==='dex'&&success&&!autoFail);
     return {stat:stat,dc:num(dc),bonus:bonus,roll:roll,total:total,success:success,autoFailed:autoFail,evasion:evasion,classFeatureNotes:sm&&sm.notes||[]};
@@ -264,6 +266,8 @@
     roll=roll||{result:d20,critical:d20===20,fumble:d20===1};
     if(opts&&opts.__forceCritical&&roll.result!==1)roll.critical=true;
     var classBonus=opts&&opts.__classFeatureMod?num(opts.__classFeatureMod.bonusAttack):0;
+    var attackerDebuffs=opts&&opts.__attacker&&opts.__attacker.classFeaturesState&&opts.__attacker.classFeaturesState.alchemistDebuffs||{};
+    classBonus-=num(attackerDebuffs.attackPenalty,0);
     var witchAttackPenalty=target&&target.witchAttackPenaltyDice?rollDie(6):0;
     var total=d20+bonus+classBonus-witchAttackPenalty;
     var alchemistDebuffs=target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs||{};
