@@ -326,4 +326,8 @@ const prismAttack=hooks.attackModifiers(prismTester,{isBomb:true,prismaticIndex:
 assert.ok(prismAttack.extraDice.includes('1d8'),'Prismatic Bomb rolls an extra d8');
 assert.ok(prismAttack.damageTypes.includes('молния'),'Prismatic Bomb chooses a concrete damage type');
 assert.equal(prismAttack.pendingOnHit.alchemistFormula.save,'dex','Prismatic Bomb chooses the corresponding save');
+const bomberGuard={id:'bomber-guard',classes:[{name:'Алхимик',level:10,subclass:'madBomber'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:4,resources:{},classFeaturesState:{}};
+hooks.sync(bomberGuard);hooks.longRest(bomberGuard);
+assert.equal(hooks.useFeature(bomberGuard,'alchemist-subclassFeature',{featureName:'Защита от взрыва',damageType:'огонь'},{subclassId:'madBomber'}).ok,true,'Mad Bomber chooses an explosion resistance after a long rest');
+assert.equal(bomberGuard.classFeaturesState.alchemistExplosionResistanceType,'огонь','Mad Bomber resistance is persisted');
 console.log('Alchemist runtime regression tests PASS');
