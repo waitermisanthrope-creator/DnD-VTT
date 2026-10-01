@@ -33,8 +33,22 @@
       if(!d.oilCoated&&!d.smokeCloud&&!Object.keys(d).length)delete target.classFeaturesState.alchemistDebuffs;
     });
   }
-  function startTurn(c){if(!c)return null;resetTurnResources(c);c.turnCount=num(c.turnCount)+1;expireAlchemistDebuffs(c);if(c.preparedAction&&c.preparedAction.expiresRound&&num(c.preparedAction.expiresRound)<num(ensureTracker().round))c.preparedAction=null;var h=hero();if(isCurrentHeroCombatant(c,h)){alchemistHook(h,'startTurn');if(c!==h)alchemistHook(c,'startTurn');}return c;}
-  function endTurn(opts){opts=opts||{};var t=ensureTracker();if(!t||!t.combatants.length)return {ok:false,error:'Нет участников боя.'};var prev=t.combatants[t.activeIndex];var currentHero=hero();if(isCurrentHeroCombatant(prev,currentHero)){alchemistHook(currentHero,'onTurnEnd');if(prev!==currentHero)alchemistHook(prev,'onTurnEnd');}if(prev&&global.DNDSummoning&&typeof global.DNDSummoning.endTurn==='function')try{global.DNDSummoning.endTurn(prev);}catch(e){}
+  function tickToxicVengeanceStart(c){
+    var state=c&&c.classFeaturesState&&c.classFeaturesState.alchemistToxicVengeance;if(!state||!state.nextTick)return;
+    if(global.DNDCombat&&typeof global.DNDCombat.rollDice==='function'&&typeof global.DNDCombat.applyDamage==='function'){
+      var rolled=global.DNDCombat.rollDice(state.damage||'1d10');global.DNDCombat.applyDamage(c,rolled.total,'яд',{source:'alchemist-toxic-vengeance'});state.nextTick=false;
+    }
+  }
+  function tickToxicVengeanceEnd(c){
+    var state=c&&c.classFeaturesState&&c.classFeaturesState.alchemistToxicVengeance;if(!state)return;
+    var save=global.DNDCombat&&typeof global.DNDCombat.savingThrow==='function'?global.DNDCombat.savingThrow(c,'con',state.dc):null;
+    state.remainingTurns=Math.max(0,num(state.remainingTurns)-1);
+    if((save&&save.success)||state.remainingTurns<=0){
+      if(c.conditions)delete c.conditions['Отравлен'];if(c.activeConditions)delete c.activeConditions['Отравлен'];delete c.classFeaturesState.alchemistToxicVengeance;
+    }else state.nextTick=true;
+  }
+  function startTurn(c){if(!c)return null;resetTurnResources(c);c.turnCount=num(c.turnCount)+1;expireAlchemistDebuffs(c);tickToxicVengeanceStart(c);if(c.preparedAction&&c.preparedAction.expiresRound&&num(c.preparedAction.expiresRound)<num(ensureTracker().round))c.preparedAction=null;var h=hero();if(isCurrentHeroCombatant(c,h)){alchemistHook(h,'startTurn');if(c!==h)alchemistHook(c,'startTurn');}return c;}
+  function endTurn(opts){opts=opts||{};var t=ensureTracker();if(!t||!t.combatants.length)return {ok:false,error:'Нет участников боя.'};var prev=t.combatants[t.activeIndex];tickToxicVengeanceEnd(prev);var currentHero=hero();if(isCurrentHeroCombatant(prev,currentHero)){alchemistHook(currentHero,'onTurnEnd');if(prev!==currentHero)alchemistHook(prev,'onTurnEnd');}if(prev&&global.DNDSummoning&&typeof global.DNDSummoning.endTurn==='function')try{global.DNDSummoning.endTurn(prev);}catch(e){}
     var count=t.combatants.length,next=t.activeIndex,guard=0;do{next=(next+1)%count;if(next===0)t.round=num(t.round,1)+1;guard++;}while(guard<=count&&!opts.includeDefeated&&isDefeated(t.combatants[next]));
     if(guard>count){return {ok:false,error:'Все участники повержены.',battleOver:true,previous:prev};}
     t.activeIndex=next;var now=t.combatants[next];startTurn(now);if(now&&now.entityId&&global.DNDSummoning&&typeof global.DNDSummoning.startTurn==='function')try{global.DNDSummoning.startTurn(now);}catch(e){}
