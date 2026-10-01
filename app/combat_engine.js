@@ -495,8 +495,9 @@
     if(!Object.keys(d).length)delete target.classFeaturesState.alchemistDebuffs;
     return{ok:true,actionSpent:true,message:'Слизь удалена Действием.'};
   }
+  function forcedMovementSave(actor,stat,dc,mode,ctx){ctx=Object.assign({},ctx||{},{forcedMovementSave:true});return savingThrow(actor,stat,dc,mode,ctx);}
   function opportunityAttack(attacker,target,opts){opts=Object.assign({},opts||{},{attackKind:'opportunity'});return attack(attacker,target,opts);}
-  global.DNDCombat={VERSION:'3.4.0-alchemist-slime',opportunityAttack:opportunityAttack,removeAlchemistSlime:removeAlchemistSlime,DAMAGE_TYPES:DAMAGE_TYPES,CONDITIONS:CONDITIONS,rollDice:rollDice,applyDamage:applyDamage,applyDamageBatch:applyDamageBatch,heal:heal,healBatch:healBatch,effectiveDamage:effectiveDamage,savingThrow:savingThrow,toggleCondition:toggleCondition,concentrationState:concentrationState,concentrationCheck:concentrationCheck,breakConcentration:breakConcentration,beginConcentration:beginConcentration,deathSave:deathSave,resetDeathSaves:resetDeathSaves,attack:attack,attackSequence:attackSequence,resolveAttack:attack,addCombatantFromTemplate:addCombatantFromTemplate,MONSTERS:MONSTERS};
+  global.DNDCombat={VERSION:'3.4.0-alchemist-slime',forcedMovementSave:forcedMovementSave,opportunityAttack:opportunityAttack,removeAlchemistSlime:removeAlchemistSlime,DAMAGE_TYPES:DAMAGE_TYPES,CONDITIONS:CONDITIONS,rollDice:rollDice,applyDamage:applyDamage,applyDamageBatch:applyDamageBatch,heal:heal,healBatch:healBatch,effectiveDamage:effectiveDamage,savingThrow:savingThrow,toggleCondition:toggleCondition,concentrationState:concentrationState,concentrationCheck:concentrationCheck,breakConcentration:breakConcentration,beginConcentration:beginConcentration,deathSave:deathSave,resetDeathSaves:resetDeathSaves,attack:attack,attackSequence:attackSequence,resolveAttack:attack,addCombatantFromTemplate:addCombatantFromTemplate,MONSTERS:MONSTERS};
 
   function hero(){return global.currentChar||global.currentCharacter||null;}
   function save(){if(typeof global.autoSaveCurrentCharacter==='function')global.autoSaveCurrentCharacter();}
