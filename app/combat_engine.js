@@ -343,7 +343,7 @@
           if(alchemistFormula.verbalComponentsBlocked){debuffs.verbalComponentsBlocked=true;out.alchemistFormulaEffect.effects.push('verbalComponentsBlocked');}
           if(alchemistFormula.revealsInvisible){debuffs.revealsInvisible=true;if(target.activeConditions)delete target.activeConditions['Невидим'];if(target.conditions)delete target.conditions['Невидим'];out.alchemistFormulaEffect.effects.push('revealsInvisible');}
           if(alchemistFormula.attacksHaveAdvantage){debuffs.attacksHaveAdvantage=true;out.alchemistFormulaEffect.effects.push('attacksHaveAdvantage');}
-          if(alchemistFormula.burning){debuffs.burning=true;out.alchemistFormulaEffect.effects.push('burning');}
+          if(alchemistFormula.burning){debuffs.burning=true;debuffs.burningTicks=1;out.alchemistFormulaEffect.effects.push('burning');}
           if(alchemistFormula.oilCoated){debuffs.oilCoated=true;out.alchemistFormulaEffect.effects.push('oilCoated');}
           if(alchemistFormula.smokeCloud){debuffs.smokeCloud=true;out.alchemistFormulaEffect.effects.push('smokeCloud');}
           if(alchemistFormula.teleportToImpact){var source=opts.__attacker;if(source&&target&&source.x!=null&&source.y!=null&&target.x!=null&&target.y!=null){var dx=Number(source.x)-Number(target.x),dy=Number(source.y)-Number(target.y);if(Math.sqrt(dx*dx+dy*dy)<=30){source.x=target.x;source.y=target.y;out.alchemistFormulaEffect.effects.push('teleportedToImpact');}else out.alchemistFormulaEffect.effects.push('teleportOutOfRange');}else out.alchemistFormulaEffect.effects.push('teleportNeedsMapCoordinates');}
