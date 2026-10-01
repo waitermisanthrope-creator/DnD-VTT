@@ -53,4 +53,18 @@ const venomFeature=hooks.useFeature(venom,'alchemist-venomsmith-3-Отравит
 assert.equal(venomFeature.ok,true,'Venomsmith poisoner feature resolves');
 assert.ok(venom.classFeaturesState.alchemistDiscovered.includes('Алхимия яда'),'Venomsmith gains poison alchemy discovery');
 
+
+// Active combat potion effects feed the shared attack-modifier bridge.
+hero.classFeaturesState.alchemistPotions=[
+  {name:'Зелье увеличения',cost:2,type:'potion'},
+  {name:'Зелье героизма',cost:3,type:'potion'},
+  {name:'Зелье скорости',cost:9,type:'potion'}
+];
+assert.equal(hooks.useFeature(hero,'alchemist-potionUse',{index:0}).ok,true,'enlarge potion applies');
+assert.ok(hooks.attackModifiers(hero,{weaponAttack:true}).extraDice.includes('1d4'),'enlarge potion adds weapon damage');
+assert.equal(hooks.useFeature(hero,'alchemist-potionUse',{index:0}).ok,true,'heroism potion applies');
+assert.equal(hero.tempHp,10,'heroism potion grants temporary HP');
+assert.equal(hooks.useFeature(hero,'alchemist-potionUse',{index:0}).ok,true,'speed potion applies');
+assert.equal(hooks.attackModifiers(hero,{weaponAttack:true}).hasteActive,true,'speed potion exposes active combat state');
+
 console.log('Alchemist runtime regression tests PASS');
