@@ -148,11 +148,44 @@
     turns.reaction=0;
     return {ok:true,reduction:Math.min(Math.max(0,n(amount,0)),reduction),rolled:roll.total,dice:diceCount+'d10',resourceRemaining:resource.current};
   }
-  function hasFeature(id){return ['banditStudyTarget','circusFireBreath'].indexOf(String(id||''))>=0;}
+  function useBanditTrip(hero,ctx){
+    ctx=ctx||{};
+    var l=level(hero,CLASS_IDS.bandit);
+    if(l<1)return {ok:false,reason:'Для подсечки нужен класс Бандит.'};
+    var target=ctx.target;
+    if(ctx.attackHit!==true)return {ok:false,reason:'Подсечка применяется только после подтверждённого попадания рукопашной атакой.'};
+    if(!target||target.id==null||String(target.id)===String(hero.id))return {ok:false,reason:'Выберите конкретную цель.'};
+    var dist=Number(ctx.distanceFt);
+    if(!isFinite(dist)||dist<0||dist>5)return {ok:false,reason:'Цель должна быть в пределах досягаемости 5 футов.'};
+    if(target.classFeaturesState&&target.classFeaturesState.banditTripSpeedLock)return {ok:false,reason:'Цель уже находится под эффектом подсечки.'};
+    if(!isFinite(Number(target.speed)))return {ok:false,reason:'У цели не задана скорость; подсечка не применена.'};
+    var resource=hero.resources&&hero.resources.banditDirtyTricks;
+    var combat=global.DNDCombat;
+    if(!resource||Number(resource.current)<1)return {ok:false,reason:'Грязные приёмы закончились.'};
+    if(!combat||typeof combat.savingThrow!=='function')return {ok:false,reason:'Боевой движок спасбросков недоступен.'};
+    var dc=8+proficiency(l)+abilityMod(hero,'dex');
+    resource.current-=1;
+    var save=combat.savingThrow(target,'str',dc,'normal',{source:hero,saveType:'str'});
+    if(!save||!save.success){
+      target.classFeaturesState=target.classFeaturesState||{};
+      target.classFeaturesState.banditTripSpeedLock={originalSpeed:Number(target.speed),sourceId:hero.id==null?null:String(hero.id)};
+      target.speed=0;
+    }
+    return {ok:true,dc:dc,save:save,applied:!!(save&&!save.success),resourceRemaining:resource.current,message:save&&save.success?'Цель устояла против подсечки.':'Подсечка успешна: скорость цели равна 0 до начала её следующего хода.'};
+  }
+  function onTurnStart(hero){
+    var state=hero&&hero.classFeaturesState&&hero.classFeaturesState.banditTripSpeedLock;
+    if(!state)return false;
+    hero.speed=Number(state.originalSpeed);
+    delete hero.classFeaturesState.banditTripSpeedLock;
+    return true;
+  }
+  function hasFeature(id){return ['banditStudyTarget','banditTrip','circusFireBreath'].indexOf(String(id||''))>=0;}
   function useFeature(hero,id,ctx){
     ctx=ctx||{};
     if(!hero)return {ok:false,reason:'Персонаж не найден.'};
     sync(hero);
+    if(String(id)==='banditTrip')return useBanditTrip(hero,ctx);
     if(String(id)==='circusFireBreath')return useCircusFireBreath(hero,ctx);
     if(String(id)!=='banditStudyTarget')return {ok:false,unsupported:true,reason:'Эта способность пока не подключена.'};
     if(level(hero,CLASS_IDS.bandit)<1)return {ok:false,reason:'Для изучения цели нужен класс Бандит.'};
@@ -173,6 +206,7 @@
     interceptDamage:interceptDamage,
     hasFeature:hasFeature,
     useFeature:useFeature,
+    onTurnStart:onTurnStart,
     classLevel:level,
     proficiencyBonus:proficiency,
     abilityModifier:abilityMod
