@@ -263,7 +263,7 @@ function longRest(h){
  var oldEffects=s.alchemistActiveEffects||[],keepEffects=oldEffects.filter(function(e){return e.effect&&e.effect.durationMinutes>=1440;});
  cleanupPotionEffects(h,oldEffects,keepEffects);s.alchemistActiveEffects=keepEffects;
  s.blackPowderUses=Math.max(1,mod(h,'int'));s.xenoNecroticReady=false;s.xenoNecroticUsed=false;s.alchemistEnergyCharges=0;s.alchemistLazarusUsed=false;s.alchemistPotionMixReady=false;
- s.alchemistGraftUses={};s.alchemistRestType='long';
+ s.alchemistGraftUses={};s.alchemistExplosionResistanceType=null;s.alchemistRestType='long';
 }
 function startTurn(h){
  if(!h||!alvl(h))return;sync(h);var s=st(h);
@@ -378,6 +378,14 @@ function subclassFeatureEffect(h,sub,f,ctx){
    return{ok:true,effect:{weaponId:String(weapon.id),nextAttackExtraDice:'2d6',damageType:'холод',reagentsSpent:1},message:'❄️ Оружие охлаждено: следующая атака этим оружием наносит +2d6 холодом.'};
   }
   return{ok:false,message:'Укажите режим перегрева цели или охлаждения оружия; реагенты не списаны.'};
+ }
+ if(name==='Защита от взрыва'){
+  if(l<10)return{ok:false,message:'Защита от взрыва доступна с 10 уровня.'};
+  if(s.alchemistRestType!=='long')return{ok:false,message:'Выберите сопротивление после продолжительного отдыха.'};
+  var chosenResistance=String(ctx.damageType||'');
+  if(['кислота','холод','огонь','молния','гром'].indexOf(chosenResistance)<0)return{ok:false,needsChoice:true,message:'Выберите кислоту, холод, огонь, молнию или гром; выбор не сохранён.'};
+  s.alchemistExplosionResistanceType=chosenResistance;s.alchemistRestType=null;
+  return{ok:true,effect:{resistanceType:chosenResistance,until:'next_long_rest'},message:'💥 Защита от взрыва: сопротивление '+chosenResistance+' до следующего продолжительного отдыха.'};
  }
  if(name==='Бомба с чёрным порохом'){var r=h.resources.alchemistReagents;if(!s.blackPowderUses)s.blackPowderUses=Math.max(1,mod(h,'int'));if(s.blackPowderUses<1)return{ok:false,message:'Бомбы с чёрным порохом исчерпаны до отдыха.'};s.blackPowderUses--;s.alchemistPendingBombEffect={dice:'1d12',type:'огонь',name:name,ignoreResistance:true,immunityBecomesResistance:true};return{ok:true,effect:{damageDice:'d12',damageType:'fire',ignoreResistance:true,immunityBecomesResistance:true,prepared:true},message:'💥 Бомба с чёрным порохом подготовлена к следующей атаке бомбой.'};}
  if(name==='Мутаген'){
