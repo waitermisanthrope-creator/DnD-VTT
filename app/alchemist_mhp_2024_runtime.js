@@ -312,6 +312,7 @@ function attackModifiers(h,ctx){
   s.alchemistPendingBombEffect=null;
  }
  if(s.alchemistSeekingBombBonus&&isBomb){out.bonusDamage+=Number(s.alchemistSeekingBombBonus)||0;s.alchemistSeekingBombBonus=0;}
+ if(isBomb&&s.alchemistOverloadedBombBonus){out.extraDice.push('2d10');out.notes.push('Перегруженный заряд: +2d10 к этой бомбе');s.alchemistOverloadedBombBonus=false;}
  var activeEffects=s.alchemistActiveEffects||[];
  if(ctx.weaponAttack&&s.alchemistPoisonedWeaponId&&String(ctx.weaponId||ctx.weapon&&ctx.weapon.id||'')===String(s.alchemistPoisonedWeaponId)){out.typedExtraDice.push({dice:'1d4',type:'яд',label:'Мешочек с ядом'});out.notes.push('Мешочек с ядом: +1d4 ядом; яд израсходован');s.alchemistPoisonedWeaponId=null;}
  if(ctx.weaponAttack&&activeEffects.some(function(e){return e.name==='Зелье увеличения';})){out.extraDice.push('1d4');out.notes.push('Зелье увеличения: +1d4 урона оружием');}
@@ -379,6 +380,14 @@ function subclassFeatureEffect(h,sub,f,ctx){
    return{ok:true,effect:{weaponId:String(weapon.id),nextAttackExtraDice:'2d6',damageType:'холод',reagentsSpent:1},message:'❄️ Оружие охлаждено: следующая атака этим оружием наносит +2d6 холодом.'};
   }
   return{ok:false,message:'Укажите режим перегрева цели или охлаждения оружия; реагенты не списаны.'};
+ }
+ if(name==='Перегруженный заряд'){
+  if(l<14)return{ok:false,message:'Перегруженный заряд доступен с 14 уровня.'};
+  if(s.alchemistOverloadedBombBonus)return{ok:false,message:'Перегруженный заряд уже подготовлен для следующей бомбы.'};
+  var overloadCost=prof(h);if(r.current<overloadCost)return{ok:false,message:'Нужно '+overloadCost+' реагентов (бонус мастерства); ресурсы не потрачены.'};
+  if(!spend(h,overloadCost))return{ok:false,message:'Не удалось списать реагенты; заряд не подготовлен.'};
+  s.alchemistOverloadedBombBonus=true;
+  return{ok:true,effect:{reagentsSpent:overloadCost,extraDice:'2d10',nextBombOnly:true},message:'💥 Перегруженный заряд: потрачено '+overloadCost+' реагентов; следующая бомба наносит +2d10.'};
  }
  if(name==='Защита от взрыва'){
   if(l<10)return{ok:false,message:'Защита от взрыва доступна с 10 уровня.'};
