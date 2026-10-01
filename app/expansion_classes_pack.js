@@ -1709,7 +1709,7 @@ var academy=String(s.warlordAcademy||'');
     if(club==='squaredCircle'&&l>=17&&target&&target.grappledByPugilist)o.criticalRange=19;
     if(club==='squaredCircle'&&l>=17&&target&&target.grappledByPugilist)o.advantage=true;
     if(s.pugilistDreadHandActive){o.rerollDamageOne=true;o.notes.push('Рука Ужаса');}
-    if(s.pugilistSignatureMovePending&&(!s.pugilistSignatureTargetId||String(target.id||target.entityId||'')===String(s.pugilistSignatureTargetId))){o.advantage=true;o.forceCritical=true;o.notes.push('Фирменный приём');}
+    if(club==='arenaRoyale'&&l>=17&&s.pugilistSignatureMovePending&&(!s.pugilistSignatureTargetId||String(target.id||target.entityId||'')===String(s.pugilistSignatureTargetId))){o.advantage=true;o.forceCritical=true;o.notes.push('Фирменный приём');}
     return o;
   }
 
