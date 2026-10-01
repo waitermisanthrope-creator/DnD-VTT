@@ -460,9 +460,11 @@ if (typeof window !== 'undefined' && window.addEventListener) window.addEventLis
       var stats = R.spellStats(h, src || undefined);
       var mode = (typeof window.currentRollMode !== 'undefined') ? window.currentRollMode : 'normal';
       var roll = R.rollD20(R.resolveRollMode(h, mode), typeof window.rollSingleDice === 'function' ? function(){ return window.rollSingleDice(20); } : null);
-      var total = roll.result + stats.attack;
+      var goldMod = R.getD20Modifier(h);
+      var total = roll.result + stats.attack + goldMod;
+      var effectiveAttackBonus = stats.attack + goldMod;
       var text = '✨ ' + spellName + ' [' + (stats.className || 'Заклинание') + ': ' + stats.ability.toUpperCase() + ']\n' +
-        'd20 (' + roll.result + ') ' + (stats.attack >= 0 ? '+' : '') + stats.attack + ' = ' + total +
+        'd20 (' + roll.result + ') ' + (effectiveAttackBonus >= 0 ? '+' : '') + effectiveAttackBonus + ' = ' + total +
         (roll.critical ? ' 🔥 КРИТ!' : roll.fumble ? ' 💀 КРИТИЧЕСКИЙ ПРОМАХ!' : '');
       if (typeof window.appendDiceLog === 'function') window.appendDiceLog(text, roll.critical ? 'adv-roll' : 'norm-roll');
       return total;
