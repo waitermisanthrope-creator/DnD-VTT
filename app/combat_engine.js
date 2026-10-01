@@ -443,7 +443,15 @@
     'Зомби':{name:'Зомби',ac:8,hp:22,maxHp:22,initiative:-2,attacks:[{name:'Удар',bonus:3,damage:'1d6+1',type:'дробящий'}],resistances:[]},
     'Волк':{name:'Волк',ac:13,hp:11,maxHp:11,initiative:2,attacks:[{name:'Укус',bonus:4,damage:'2d4+2',type:'колющий'}]}
   };
-  global.DNDCombat={VERSION:'3.3.0',DAMAGE_TYPES:DAMAGE_TYPES,CONDITIONS:CONDITIONS,rollDice:rollDice,applyDamage:applyDamage,applyDamageBatch:applyDamageBatch,heal:heal,healBatch:healBatch,effectiveDamage:effectiveDamage,savingThrow:savingThrow,toggleCondition:toggleCondition,concentrationState:concentrationState,concentrationCheck:concentrationCheck,breakConcentration:breakConcentration,beginConcentration:beginConcentration,deathSave:deathSave,resetDeathSaves:resetDeathSaves,attack:attack,attackSequence:attackSequence,resolveAttack:attack,addCombatantFromTemplate:addCombatantFromTemplate,MONSTERS:MONSTERS};
+  function removeAlchemistSlime(target,actionSpent){
+    var d=target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs;
+    if(!d||!d.slimeCovered)return{ok:false,message:'Цель не покрыта алхимической слизью.'};
+    if(actionSpent!==true)return{ok:false,actionRequired:true,message:'Чтобы удалить слизь, потратьте Действие.'};
+    delete d.slimeCovered;delete d.denyBonusActions;delete d.denyDashDisengageDodge;
+    if(!Object.keys(d).length)delete target.classFeaturesState.alchemistDebuffs;
+    return{ok:true,actionSpent:true,message:'Слизь удалена Действием.'};
+  }
+  global.DNDCombat={VERSION:'3.4.0-alchemist-slime',removeAlchemistSlime:removeAlchemistSlime,DAMAGE_TYPES:DAMAGE_TYPES,CONDITIONS:CONDITIONS,rollDice:rollDice,applyDamage:applyDamage,applyDamageBatch:applyDamageBatch,heal:heal,healBatch:healBatch,effectiveDamage:effectiveDamage,savingThrow:savingThrow,toggleCondition:toggleCondition,concentrationState:concentrationState,concentrationCheck:concentrationCheck,breakConcentration:breakConcentration,beginConcentration:beginConcentration,deathSave:deathSave,resetDeathSaves:resetDeathSaves,attack:attack,attackSequence:attackSequence,resolveAttack:attack,addCombatantFromTemplate:addCombatantFromTemplate,MONSTERS:MONSTERS};
 
   function hero(){return global.currentChar||global.currentCharacter||null;}
   function save(){if(typeof global.autoSaveCurrentCharacter==='function')global.autoSaveCurrentCharacter();}
