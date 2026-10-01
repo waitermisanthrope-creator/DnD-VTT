@@ -254,6 +254,14 @@ function attackModifiers(h,ctx){
  ctx=ctx||{};var out={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]},l=alvl(h),s=st(h),c=(h.classes||[]).find(function(x){return x.name===CLASS;}),sid=c&&c.subclass;
  var isBomb=ctx.isBomb===true||ctx.attackType==='bomb'||ctx.weaponType==='bomb'||String(ctx.weaponName||'').toLowerCase().indexOf('бомб')>=0;
  if(isBomb&&l>=5)out.notes.push('Улучшенные бомбы: базовые кости бомбы '+bombDice(l));
+ var preparedFormula=s.alchemistPreparedFormula;
+ if(isBomb&&preparedFormula){
+  var formulaDamage={acid:['1d8','кислота'],concussion:['1d10','гром'],cryo:['1d8','холод'],fear:['1d6','психический'],holy:['1d10','излучение'],impact:['1d8','силовой'],incendiary:['1d8','огонь'],laughingGas:['1d8','яд'],lightning:['1d10','молния'],quiet:['1d10','дробящий'],seeking:['1d10','огонь'],withering:['1d8','некротический']};
+  var fd=formulaDamage[preparedFormula];
+  if(fd){out.extraDice.push(fd[0]);out.notes.push('Формула бомбы: '+preparedFormula+' ('+fd[1]+')');}
+  else out.notes.push('Формула бомбы: '+preparedFormula+'; дополнительный урон не определён runtime-ом.');
+  s.alchemistPreparedFormula=null;
+ }
  if(s.alchemistSeekingBombBonus&&isBomb){out.bonusDamage+=Number(s.alchemistSeekingBombBonus)||0;s.alchemistSeekingBombBonus=0;}
  if(s.alchemistSurgicalAttackReady&&ctx.unarmedGraft){out.extraDice.push('1d8');s.alchemistSurgicalAttackReady=false;out.notes.push('Хирургическая атака');}
  if(s.alchemistDynamoCharged&&ctx.weaponAttack){out.extraDice.push('1d8');out.notes.push('Динамо-ядро');s.alchemistDynamoCharged=false;}
@@ -333,7 +341,7 @@ function use(h,id,ctx,feature){
   var f=formulae.find(function(x){return x.id===ctx.formula||x.name===ctx.formula;});
   if(!f)return{ok:false,message:'Формула не найдена.'};
   if(s.alchemistFormulas.indexOf(f.id)<0&&s.alchemistFormulas.indexOf(f.name)<0)return{ok:false,message:'Формула не выбрана/не известна персонажу.'};
-  return{ok:true,effect:{formula:f},message:'🧪 Формула подготовлена: '+f.name+'.'};
+  s.alchemistPreparedFormula=f.id;return{ok:true,prepared:true,formula:f.id,effect:{formula:f},message:'🧪 Формула подготовлена: '+f.name+'. Следующая атака бомбой получит её числовые модификаторы.'};
  }
  if(id==='discovery'||id==='discoveries'||id==='Открытие'){
   var discoveryName=String(ctx.discovery||ctx.name||'');
