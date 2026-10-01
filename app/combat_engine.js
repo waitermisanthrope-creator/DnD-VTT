@@ -62,7 +62,9 @@
     var grafts=target&&target.classFeaturesState&&Array.isArray(target.classFeaturesState.alchemistGrafts)?target.classFeaturesState.alchemistGrafts:[];var graftResistant=grafts.some(function(g){return g&&['Энергетический шов','Шкура дракона'].indexOf(g.name)>=0&&String(g.resistanceType||'')===String(type||'');});
     var targetClasses=target&&target.classes||[],madBomber=targetClasses.find(function(c){return c&&(c.name==='Алхимик'||c.englishName==='Alchemist')&&(c.subclass==='madBomber'||c.subclass==='Безумный бомбометатель')&&Number(c.level)>=10;}),madBomberResistance=!!(madBomber&&target.classFeaturesState&&target.classFeaturesState.alchemistExplosionResistanceType===type);
     var targetClassesForSlime=target&&target.classes||[],oozeRancher=targetClassesForSlime.find(function(c){return c&&(c.name==='Алхимик'||c.englishName==='Alchemist')&&(c.subclass==='oozeRancher'||c.subclass==='Разводчик слизи')&&Number(c.level)>=3;}),slimeAcidResistance=!!(oozeRancher&&type==='кислота');
-    var resistant=!opts.ignoreResistance&&!witchImperil&&(raging||pugilistDigDeepResistant||pugilistPsychicResistant||raceResistant||witchElemental||graftResistant||madBomberResistance||slimeAcidResistance||hasType(target && target.resistances,type));
+    var targetResistances=target&&target.resistances,nonmagicalVariants=['nonmagical '+type,'немагический '+type,'немагическое '+type,type+' from nonmagical attacks',type+' от немагических атак'];
+    var onlyNonmagicalResistance=!!(opts.magicalAttack&&nonmagicalVariants.some(function(v){return hasType(targetResistances,v);}));
+    var resistant=!opts.ignoreResistance&&!witchImperil&&(raging||pugilistDigDeepResistant||pugilistPsychicResistant||raceResistant||witchElemental||graftResistant||madBomberResistance||slimeAcidResistance||(hasType(targetResistances,type)&&!onlyNonmagicalResistance)||(!opts.magicalAttack&&onlyNonmagicalResistance));
     var vulnerable=hasType(target && target.vulnerabilities,type);
     if(resistant&&vulnerable){
       note='Сопротивление и уязвимость взаимно компенсированы';
@@ -327,6 +329,8 @@
     }
     var normalAC=Math.max(10,num(target && target.ac,10)-num(target&&target.witchACPenalty,0))-num(alchemistDebuffs.acPenalty,0);
     var ac=(opts&&opts.acOverride!=null?num(opts.acOverride,10):graftAC!=null?graftAC:normalAC)+coverBonus;
+    var pugilistDefender=(targetClasses||[]).find(function(cl){return cl&&(['Пугилист','Pugilist'].indexOf(String(cl.name))>=0||cl.englishName==='Pugilist')&&Number(cl.level)>=1;});
+    if(pugilistDefender){var armorObj=target.armorEquipped||target.equippedArmor||(target.equipment&&(target.equipment.armor||target.equipment.armour))||target.armor||null,armorName=String(armorObj&&(armorObj.type||armorObj.armorType||armorObj.name)||armorObj||'').toLowerCase(),shield=!!(target.shieldEquipped||target.equippedShield||target.shield||(target.equipment&&target.equipment.shield)),lightArmor=!armorObj||/light|лёгк|легк|padded|leather|studded|hide|chain shirt|light armor/.test(armorName);if(lightArmor&&!shield){var conScore=Number(target.abilityScores&&target.abilityScores.constitution!=null?target.abilityScores.constitution:target.stats&&target.stats.con!=null?target.stats.con:target.stats&&target.stats.constitution!=null?target.stats.constitution:10),pugilistAC=12+Math.floor((conScore-10)/2);ac=Math.max(ac,pugilistAC);}}
     var duplicityTarget=opts&&opts.__attacker&&target&&target.classFeaturesState&&target.classFeaturesState.witchDuplicity;
     var duplicityMiss=false;
     if(duplicityTarget&&!roll.fumble){var dupRoll=rollDie(6);if(dupRoll%2===1){duplicityMiss=true;target.classFeaturesState.witch.witchDuplicity=false;}}
@@ -395,7 +399,7 @@
         }
         if(num(fm.bonusDamage)){damageParts.push({amount:num(fm.bonusDamage),damageType:opts.damageType||'',label:'Бонус урона'});}
         if(opts.deferDamage){out.damageResult=null;out.pendingDamage={amount:out.damage.total,damageType:opts.damageType||'',context:Object.assign({},damageOpts,{damageParts:damageParts,isBomb:!!opts.isBomb,attackerId:opts.__attacker&&(opts.__attacker.id||opts.__attacker.entityId)||null})};}
-        else out.damageResult=applyDamage(target,out.damage.total,opts.damageType||'',Object.assign({},damageOpts,{damageParts:damageParts,ignoreResistance:!!fm.ignoreResistance,immunityBecomesResistance:!!fm.immunityBecomesResistance,isBomb:!!opts.isBomb,attackerId:opts.__attacker&&(opts.__attacker.id||opts.__attacker.entityId)||null}));
+        else out.damageResult=applyDamage(target,out.damage.total,opts.damageType||'',Object.assign({},damageOpts,{damageParts:damageParts,ignoreResistance:!!fm.ignoreResistance,magicalAttack:!!fm.magicalAttack,immunityBecomesResistance:!!fm.immunityBecomesResistance,isBomb:!!opts.isBomb,attackerId:opts.__attacker&&(opts.__attacker.id||opts.__attacker.entityId)||null}));
       }
     }
     if(global.DNDClassFeatures&&global.DNDClassFeatures.onAttackResult)global.DNDClassFeatures.onAttackResult(opts.__attacker||{}, {sneakApplied:!!(hit&&opts.__classFeatureMod&&Array.isArray(opts.__classFeatureMod.extraDice)&&opts.__classFeatureMod.extraDice.length>0),hit:hit,critical:!!roll.critical,target:target,targetId:String(target&&(target.id||target.entityId)||''),damageResult:out.damageResult||null,pendingOnHit:pending||{}});
