@@ -305,7 +305,7 @@ function subclassFeatureEffect(h,sub,f,ctx){
   if(!ctx.target||typeof ctx.target!=='object')return{ok:false,needsTarget:true,message:'Выберите союзника для Болеутоляющей бомбы; действие не потрачено.'};
   var reagentCount=Math.max(0,Math.floor(Number(ctx.reagents)||0));
   if(reagentCount>r.current)return{ok:false,message:'Недостаточно реагентов; Болеутоляющая бомба не применена.'};
-  var reagentRoll=Number(ctx.reagentRoll);
+  var reagentRoll=reagentCount>0?Number(ctx.reagentRoll):0;
   if(reagentCount>0&&(!Number.isFinite(reagentRoll)||reagentRoll<reagentCount||reagentRoll>10*reagentCount))return{ok:false,needsRoll:true,reagents:reagentCount,formula:reagentCount+'d10',message:'Бросьте '+reagentCount+'d10 для дополнительных временных HP; реагенты пока не списаны.'};
   var relief=l+reagentRoll,oldTemp=Number(ctx.target.tempHp||ctx.target.temporaryHP)||0;
   if(reagentCount>0&&!spend(h,reagentCount))return{ok:false,message:'Недостаточно реагентов; Болеутоляющая бомба не применена.'};
