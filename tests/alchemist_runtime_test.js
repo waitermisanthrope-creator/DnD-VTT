@@ -252,7 +252,7 @@ delete ctx.DNDCombat;
 
 
 
-const lazarusOwner={id:'lazarus-owner',classes:[{name:'Алхимик',level:14,subclass:'xenoalchemist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:5,resources:{},classFeaturesState:{}};
+const lazarusOwner={id:'lazarus-owner',classes:[{name:'Алхимик',level:14,subclass:'xenoalchemist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:5,resources:{},classFeaturesState:{alchemistDiscovered:['Некробиология']}};
 hooks.sync(lazarusOwner);
 const deadAlly={id:'dead-ally',hp:0,maxHp:20,dead:true,defeated:true};
 const revived=hooks.useFeature(lazarusOwner,'alchemist-classFeature',{featureName:'Болт Лазаря',target:deadAlly,distanceFt:5,minutesSinceDeath:0.5});
