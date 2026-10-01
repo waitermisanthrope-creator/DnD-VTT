@@ -60,7 +60,8 @@
     var witchElemental=target&&target.witchElementalResistance&&String(target.witchElementalResistance).toLowerCase()===type;
     var grafts=target&&target.classFeaturesState&&Array.isArray(target.classFeaturesState.alchemistGrafts)?target.classFeaturesState.alchemistGrafts:[];var graftResistant=grafts.some(function(g){return g&&['Энергетический шов','Шкура дракона'].indexOf(g.name)>=0&&String(g.resistanceType||'')===String(type||'');});
     var targetClasses=target&&target.classes||[],madBomber=targetClasses.find(function(c){return c&&(c.name==='Алхимик'||c.englishName==='Alchemist')&&(c.subclass==='madBomber'||c.subclass==='Безумный бомбометатель')&&Number(c.level)>=10;}),madBomberResistance=!!(madBomber&&target.classFeaturesState&&target.classFeaturesState.alchemistExplosionResistanceType===type);
-    var resistant=!opts.ignoreResistance&&!witchImperil&&(raging||pugilistDigDeepResistant||raceResistant||witchElemental||graftResistant||madBomberResistance||hasType(target && target.resistances,type));
+    var targetClassesForSlime=target&&target.classes||[],oozeRancher=targetClassesForSlime.find(function(c){return c&&(c.name==='Алхимик'||c.englishName==='Alchemist')&&(c.subclass==='oozeRancher'||c.subclass==='Разводчик слизи')&&Number(c.level)>=3;}),slimeAcidResistance=!!(oozeRancher&&type==='кислота');
+    var resistant=!opts.ignoreResistance&&!witchImperil&&(raging||pugilistDigDeepResistant||raceResistant||witchElemental||graftResistant||madBomberResistance||slimeAcidResistance||hasType(target && target.resistances,type));
     var vulnerable=hasType(target && target.vulnerabilities,type);
     if(resistant&&vulnerable){
       note='Сопротивление и уязвимость взаимно компенсированы';
