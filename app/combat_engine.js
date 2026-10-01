@@ -202,7 +202,7 @@
     con.active=true;con.spellId=spell.id||spell.spellId||spell.name||null;con.spellName=spell.name||spell.spellName||'';
     return con;
   }
-  function concentrationCheck(target,damage,opts){var con=concentrationState(target);if(!con.active||num(damage)<=0)return null;opts=opts||{};var dc=Math.max(10,Math.floor(num(damage)/2)),actor=opts.saveActor||target,statBonus=0;if(global.DNDRules&&actor){statBonus=global.DNDRules.getSaveBonus(actor,'con');}else if(actor&&actor.saveBonuses)statBonus=num(actor.saveBonuses.con,0);var roll=global.DNDRules?global.DNDRules.rollD20('normal'):{result:rollDie(20)};if(global.DNDRules&&global.DNDRules.getD20Modifier)statBonus+=global.DNDRules.getD20Modifier(actor);var total=roll.result+statBonus,success=total>=dc;if(!success)breakConcentration(target);return {dc:dc,roll:roll.result,total:total,bonus:statBonus,success:success,spell:con.spellName};}
+  function concentrationCheck(target,damage,opts){var con=concentrationState(target);if(!con.active||num(damage)<=0)return null;opts=opts||{};var dc=Math.max(10,Math.floor(num(damage)/2)),actor=opts.saveActor||target,statBonus=0;if(global.DNDRules&&actor){statBonus=global.DNDRules.getSaveBonus(actor,'con');}else if(actor&&actor.saveBonuses)statBonus=num(actor.saveBonuses.con,0);var roll=global.DNDRules?global.DNDRules.rollD20('normal'):{result:rollDie(20)};var total=roll.result+statBonus,success=total>=dc;if(!success)breakConcentration(target);return {dc:dc,roll:roll.result,total:total,bonus:statBonus,success:success,spell:con.spellName};}
   function heal(target,amount){
     // Мёртвая оболочка Призрака не подлежит лечению никакими обычными
     // эффектами. Сам дух восстанавливается только собственными механиками.
@@ -280,7 +280,7 @@
     var roll=global.DNDRules ? global.DNDRules.rollD20(featureMode) : {result:rollDie(20),critical:false};
     var saveDebuffs=actor&&actor.classFeaturesState&&actor.classFeaturesState.alchemistDebuffs||{};
     bonus-=num(saveDebuffs.savePenalty,0);
-    if(global.DNDRules&&global.DNDRules.getD20Modifier)bonus+=global.DNDRules.getD20Modifier(actor);
+    
     var total=roll.result+bonus;
     var success=autoFail?false:total>=num(dc);var evasion=!!(sm&&sm.evasion&&String(stat).toLowerCase()==='dex'&&success&&!autoFail);
     return {stat:stat,dc:num(dc),bonus:bonus,roll:roll,total:total,success:success,autoFailed:autoFail,evasion:evasion,classFeatureNotes:sm&&sm.notes||[]};
@@ -327,7 +327,7 @@
       if(opts.weapon) { var wa=global.DNDRules.weaponAttack(attacker,opts.weapon,mode); opts.__classFeatureMod=featureMod; opts.__attacker=attacker; opts.__forceCritical=!!featureMod.forceCritical; if(featureMod.unarmedDie&&(opts.unarmedAttack||opts.isUnarmed||opts.pugilistWeapon))opts.damage=featureMod.unarmedDie; return resolveAttack(target,wa.roll.result,wa.bonus,opts); }
     }
     var roll=global.DNDRules ? global.DNDRules.rollD20(mode) : {result:rollDie(20),critical:false,fumble:false};
-    if(global.DNDRules&&global.DNDRules.getD20Modifier)bonus+=global.DNDRules.getD20Modifier(attacker);
+    
     opts.__classFeatureMod=featureMod; opts.__attacker=attacker; opts.__forceCritical=!!featureMod.forceCritical;
     if(featureMod.unarmedDie&&(opts.unarmedAttack||opts.isUnarmed||opts.pugilistWeapon||opts.attackKind==='unarmed'))opts.damage=featureMod.unarmedDie;
     return resolveAttack(target,roll.result,bonus,opts,roll);
@@ -518,7 +518,7 @@
   global.dndCombatDamage=function(){var t=chooseTarget();if(!t)return;var a=prompt('Урон:','5'),n=Number(a);if(!isFinite(n))return;var type=prompt('Тип урона:','рубящий')||'';syncHeroCombatant(t);var r=applyDamage(t,n,type);syncBackToHero(t);alert('Получено '+r.amount+' урона'+(r.note?' ('+r.note+')':'')+'. HP: '+r.hp+'/'+t.maxHp);save();if(typeof global.renderInitiativeTracker==='function')global.renderInitiativeTracker();renderCombatStatus();syncNetworkMasterCombat('damage');};
   global.dndCombatHeal=function(){var t=chooseTarget();if(!t)return;var n=Number(prompt('Лечение:','5'));if(!isFinite(n))return;syncHeroCombatant(t);var r=heal(t,n);syncBackToHero(t);alert('Восстановлено '+r.amount+' HP. HP: '+r.hp+'/'+r.maxHp);save();if(typeof global.renderInitiativeTracker==='function')global.renderInitiativeTracker();renderCombatStatus();syncNetworkMasterCombat('heal');};
   global.dndCombatCondition=function(){var t=chooseTarget();if(!t)return;var c=prompt('Состояние:\n'+CONDITIONS.join(', '),'Отравлен');if(!c)return;var on=toggleCondition(t,c);alert(c+': '+(on?'активно':'снято'));save();syncNetworkMasterCombat('condition');};
-  global.dndDeathSave=function(){var h=ensure();if(!h)return;var roll=rollDie(20),goldMod=global.DNDRules&&global.DNDRules.getD20Modifier?global.DNDRules.getD20Modifier(h):0,total=roll+goldMod,ds=h.deathSaves||{successes:0,failures:0};if(num(ds.successes)>=3||num(ds.failures)>=3){alert(num(ds.failures)>=3?'☠ Персонаж уже мёртв.':'🛡 Персонаж уже стабилен — новый Death Save не требуется.');return;}if(roll===20){h.hpCurrent=1;h.hp=h.hp||{};h.hp.current=1;resetDeathSaves(h);alert('🎲 Death Save: натуральная 20 — герой приходит в себя с 1 HP!');}else if(roll===1){deathSave(h,false);deathSave(h,false);alert('🎲 Death Save: натуральная 1 — два провала. '+h.deathSaves.failures+'/3');}else if(total>=10){deathSave(h,true);alert('🎲 Death Save: d20 '+roll+(goldMod>=0?' +':' ')+goldMod+' = '+total+' — успех. '+h.deathSaves.successes+'/3');}else{deathSave(h,false);alert('🎲 Death Save: d20 '+roll+(goldMod>=0?' +':' ')+goldMod+' = '+total+' — провал. '+h.deathSaves.failures+'/3');}save();if(typeof global.calculateMods==='function')global.calculateMods();syncNetworkMasterCombat('death_save');};
+  global.dndDeathSave=function(){var h=ensure();if(!h)return;var roll=rollDie(20),total=roll,ds=h.deathSaves||{successes:0,failures:0};if(num(ds.successes)>=3||num(ds.failures)>=3){alert(num(ds.failures)>=3?'☠ Персонаж уже мёртв.':'🛡 Персонаж уже стабилен — новый Death Save не требуется.');return;}if(roll===20){h.hpCurrent=1;h.hp=h.hp||{};h.hp.current=1;resetDeathSaves(h);alert('🎲 Death Save: натуральная 20 — герой приходит в себя с 1 HP!');}else if(roll===1){deathSave(h,false);deathSave(h,false);alert('🎲 Death Save: натуральная 1 — два провала. '+h.deathSaves.failures+'/3');}else if(total>=10){deathSave(h,true);alert('🎲 Death Save: d20 '+roll+' = '+total+' — успех. '+h.deathSaves.successes+'/3');}else{deathSave(h,false);alert('🎲 Death Save: d20 '+roll+' = '+total+' — провал. '+h.deathSaves.failures+'/3');}save();if(typeof global.calculateMods==='function')global.calculateMods();syncNetworkMasterCombat('death_save');};
   global.dndRenderCombatV3=function(){combatPanel();};
 
   function patchRest(name,type){
