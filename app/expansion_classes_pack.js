@@ -586,7 +586,7 @@ var academy=String(s.warlordAcademy||'');
     if(!replace&&arr.length>s.maledictionKnown)return{ok:false,message:'Недостаточно слотов метаморфоз.'};
     var final=replace?s.knownMetamorphoses.slice():[];
     for(var i=0;i<arr.length;i++){var id=String(arr[i]||''),m=ACCURSED_METAMORPHOSES[id];if(!m)return{ok:false,message:'Неизвестная метаморфоза: '+id};if(l<m.level)return{ok:false,message:'Метаморфоза '+m.name+' ещё недоступна.'};if(m.requires&&final.indexOf(m.requires)<0&&s.knownMetamorphoses.indexOf(m.requires)<0)return{ok:false,message:'Сначала нужна: '+m.requires};if(final.indexOf(id)<0)final.push(id);}
-    if(!replace)final=arr.slice();s.knownMetamorphoses=final.slice();return{ok:true,effect:{knownMetamorphoses:final.slice(),count:final.length},message:'🩸 Метаморфозы сохранены.'};
+    if(!replace)final=arr.slice();s.knownMetamorphoses=final.slice();if(final.indexOf('fecundAffliction')>=0)s.fecundReady=true;return{ok:true,effect:{knownMetamorphoses:final.slice(),count:final.length},message:'🩸 Метаморфозы сохранены.'};
   }
   function accursedDuration(slot){return Number(slot)>=5?'24 hours':Number(slot)===4?'8 hours':Number(slot)===3?'1 hour':Number(slot)===2?'10 minutes':'1 minute';}
   function useAccursed(h,id,ctx,feature){
@@ -731,14 +731,13 @@ var academy=String(s.warlordAcademy||'');
     return{ok:false,unsupported:true,message:'Неизвестная способность Аккурсда: '+id};
   }
   function accursedAttack(h,ctx){
-    syncAccursed(h);var s=st(h).accursed,o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]},m=Math.max(1,mod(h,s.curseAbility));
+    syncAccursed(h);var s=st(h).accursed,o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]},m=mod(h,s.curseAbility);
     if(ctx&&ctx.hit){
       if(s.knownMetamorphoses.indexOf('hostileBane')>=0)o.bonusDamage+=m;
       if(s.knownMetamorphoses.indexOf('martialBane')>=0)o.bonusDamage+=m;
       if(s.knownMetamorphoses.indexOf('eldritchBane')>=0&&!ctx.attack)o.bonusDamage+=m;
       if(s.knownMetamorphoses.indexOf('explosiveBane')>=0)o.extraDice.push('1d8 necrotic');
       if(s.knownMetamorphoses.indexOf('vengefulBane')>=0&&ctx.reaction)o.bonusDamage+=m;
-      if(s.accursed&&s.accursed.stolenSpark)o.bonusDamage+=1;
     }
     if(s.knownMetamorphoses.indexOf('hexPlate')>=0)o.minimumAC=16+m;else if(s.knownMetamorphoses.indexOf('hexArmor')>=0)o.minimumAC=13+m;
     return o;
