@@ -89,13 +89,13 @@
     },
     {
       "path": "app/class_features_engine.js",
-      "bytes": 124949,
-      "sha256": "c63aa8efd64b2bb94758f8981990af0945990d317548a003053ba75027ca38ca"
+      "bytes": 125785,
+      "sha256": "2a243b8cac909c55991e4c53ce5659e831a9c57036d4e0bb57bb6a7633b05fa7"
     },
     {
       "path": "app/combat_engine.js",
-      "bytes": 58408,
-      "sha256": "0f8e14079fda45395ca5fbf781f392b5f997a677179cf16bee95eada57b98297"
+      "bytes": 58812,
+      "sha256": "5f9b32948fc3ad5eafbd55202576e8c7c2a2adb47de3f642440588ab6a6803b4"
     },
     {
       "path": "app/vtt_debug_error_log_v709.js",
