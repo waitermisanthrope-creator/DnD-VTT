@@ -97,15 +97,6 @@
     var rawParts=normalizeDamageParts(amount,type,opts);
     if(target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs&&target.classFeaturesState.alchemistDebuffs.oilCoated&&rawParts.some(function(p){return p.damageType==='огонь';})){var oilDamage=rollDice('1d6').total;rawParts.push({amount:oilDamage,damageType:'огонь',label:'Масляная бомба'});target.classFeaturesState.alchemistDebuffs.oilCoated=false;}
     var rawTotal=rawParts.reduce(function(sum,p){return sum+p.amount;},0);
-    var protectorIntercept=null;
-    if(opts.protector&&global.FourCustomClassRuntime&&typeof global.FourCustomClassRuntime.interceptDamage==='function'){
-      protectorIntercept=global.FourCustomClassRuntime.interceptDamage(opts.protector,target,rawTotal,{distanceFt:opts.protectorDistanceFt,visible:opts.protectorVisible});
-      if(protectorIntercept&&protectorIntercept.ok){
-        var protectLeft=Math.min(rawTotal,Math.max(0,num(protectorIntercept.reduction)));
-        rawParts.forEach(function(part){var take=Math.min(Math.max(0,num(part.amount)),protectLeft);part.amount=Math.max(0,num(part.amount)-take);protectLeft-=take;});
-        rawTotal=rawParts.reduce(function(sum,p){return sum+p.amount;},0);
-      }
-    }
     var counterState=target&&target.classFeaturesState&&target.classFeaturesState.pugilistCounterCounter;
     if(counterState&&opts.attackerId!=null&&String(counterState.targetId||'')===String(opts.attackerId)&&!counterState.consumed){
       var counterReduction=Math.min(rawTotal,Math.max(0,num(counterState.reducedBy))),counterLeft=counterReduction;
@@ -122,6 +113,14 @@
     // Resolve resistance/vulnerability/immunity per damage component. This is required
     // for mixed hits such as weapon damage + Divine Smite (different damage types).
     var resolvedParts=rawParts.map(function(part){return Object.assign({},part,effectiveDamage(target,part.amount,part.damageType,opts));});
+    var protectorIntercept=null;
+    if(opts.protector&&global.FourCustomClassRuntime&&typeof global.FourCustomClassRuntime.interceptDamage==='function'){
+      protectorIntercept=global.FourCustomClassRuntime.interceptDamage(opts.protector,target,resolvedParts.reduce(function(sum,p){return sum+num(p.amount);},0),{distanceFt:opts.protectorDistanceFt,visible:opts.protectorVisible,isAlly:opts.protectorIsAlly===true});
+      if(protectorIntercept&&protectorIntercept.ok){
+        var protectLeft=Math.min(resolvedParts.reduce(function(sum,p){return sum+num(p.amount);},0),Math.max(0,num(protectorIntercept.reduction)));
+        resolvedParts.forEach(function(part){var take=Math.min(Math.max(0,num(part.amount)),protectLeft);part.amount=Math.max(0,num(part.amount)-take);protectLeft-=take;});
+      }
+    }
     var damageBeforeWard=resolvedParts.reduce(function(sum,p){return sum+num(p.amount);},0);
     if(damageBeforeWard>0&&wardState&&num(wardState.arcaneWard)>0){
       wardAbsorbed=Math.min(damageBeforeWard,num(wardState.arcaneWard));
