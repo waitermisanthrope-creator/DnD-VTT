@@ -56,6 +56,12 @@ assert.equal(xenoHero.classFeaturesState.xenoNecroticUsed,true,'Necromantic Orga
 assert.equal(xenoHero.defeated,false,'Necromantic Organs prevent defeat');
 assert.ok(revival.note.includes('Некромантические органы'),'combat log reports the revival');
 
+const immuneFire=ctx.DNDCombat.effectiveDamage({immunities:['огонь']},10,'огонь',{immunityBecomesResistance:true});
+assert.equal(immuneFire.amount,5,'black powder converts immunity into resistance');
+const resistantFire=ctx.DNDCombat.effectiveDamage({resistances:['огонь']},10,'огонь',{ignoreResistance:true});
+assert.equal(resistantFire.amount,10,'black powder bypasses ordinary resistance');
+
+
 
 
 assert.equal(ctx.DNDCombat.attack(target,{id:'second',ac:12,hp:20,maxHp:20}, {bonus:0,damage:'1',useRules:false}).ac,12,'test combat engine remains callable after formula resolution');
