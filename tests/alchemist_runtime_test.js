@@ -302,4 +302,10 @@ const hemoragentNoPool={id:'hemoragent-no-pool',classes:[{name:'Алхимик',
 hooks.sync(hemoragentNoPool);
 assert.equal(hooks.useFeature(hemoragentNoPool,'alchemist-classFeature',{featureName:'Геморагент',hitDiceSpent:2}).ok,false,'Hemoragent refuses to spend without an integrated hit-dice pool');
 
+const prismTester={id:'prism-test',classes:[{name:'Алхимик',level:4,subclass:'apothecary'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{alchemistPreparedFormula:'prismatic'}};
+hooks.sync(prismTester);
+const prismAttack=hooks.attackModifiers(prismTester,{isBomb:true,prismaticIndex:3});
+assert.ok(prismAttack.extraDice.includes('1d8'),'Prismatic Bomb rolls an extra d8');
+assert.ok(prismAttack.damageTypes.includes('молния'),'Prismatic Bomb chooses a concrete damage type');
+assert.equal(prismAttack.pendingOnHit.alchemistFormula.save,'dex','Prismatic Bomb chooses the corresponding save');
 console.log('Alchemist runtime regression tests PASS');
