@@ -399,6 +399,8 @@ function rollSpellDamage(spellName, damageString, isCrit = false) {
   const cleanStr = damageString.toLowerCase().replace(/[кk]/g, 'd').replace(/\s+/g, '');
   let totalSum = 0;
   const allRollsDetails = [];
+  const activeHero = (typeof currentCharacter !== 'undefined' && currentCharacter) || (typeof currentChar !== 'undefined' && currentChar) || null;
+  const goldMod = activeHero && window.MorehodGoldModifier && typeof window.MorehodGoldModifier.getModifier === 'function' ? window.MorehodGoldModifier.getModifier(activeHero) : 0;
 
   // Ищем все группы кубов вида XdY (например, 2d8, 4d6)
   const diceRegex = /(\d+)d(\d+)/g;
@@ -416,8 +418,9 @@ function rollSpellDamage(spellName, damageString, isCrit = false) {
 
     let groupRolls = [];
     for (let i = 0; i < diceCount; i++) {
-      const r = typeof rollSingleDice === 'function' ? rollSingleDice(diceSides) : (Math.floor(Math.random() * diceSides) + 1);
-      groupRolls.push(r);
+      const raw = typeof rollSingleDice === 'function' ? rollSingleDice(diceSides) : (Math.floor(Math.random() * diceSides) + 1);
+      const r = Math.max(0, raw + goldMod);
+      groupRolls.push(goldMod ? raw + '→' + r : raw);
       totalSum += r;
     }
     allRollsDetails.push(`${diceCount}d${diceSides}: [${groupRolls.join(', ')}]`);
@@ -427,8 +430,9 @@ function rollSpellDamage(spellName, damageString, isCrit = false) {
     let diceCount = isCrit ? 2 : 1;
     let groupRolls = [];
     for (let i = 0; i < diceCount; i++) {
-      const r = typeof rollSingleDice === 'function' ? rollSingleDice(6) : (Math.floor(Math.random() * 6) + 1);
-      groupRolls.push(r);
+      const raw = typeof rollSingleDice === 'function' ? rollSingleDice(6) : (Math.floor(Math.random() * 6) + 1);
+      const r = Math.max(0, raw + goldMod);
+      groupRolls.push(goldMod ? raw + '→' + r : raw);
       totalSum += r;
     }
     allRollsDetails.push(`1d6: [${groupRolls.join(', ')}]`);
@@ -448,6 +452,7 @@ function rollSpellDamage(spellName, damageString, isCrit = false) {
   if (modVal !== 0) {
     logText += ` | Мод: ${modVal > 0 ? '+' + modVal : modVal}`;
   }
+  if (goldMod !== 0) logText += ` | Мореход: ${goldMod >= 0 ? '+' : ''}${goldMod} к каждой кости`;
   logText += ` ➔ Итог: **${totalSum}**`;
 
   console.groupEnd();
