@@ -57,7 +57,8 @@
     var rm=target&&target.raceMechanics||{};
     var venomsmithPoisonImmune=type==='яд'&&(target&&target.classes||[]).some(function(cl){return cl&&(cl.name==='Алхимик'||cl.englishName==='Alchemist')&&(cl.subclass==='venomsmith'||cl.subclass==='Веномсмит')&&Number(cl.level)>=10;});
     var raceImmune=(type==='яд'&&(rm.poisonImmunity||venomsmithPoisonImmune));
-    var raceResistant=(type==='яд'&&rm.poisonResistance)||(type==='огонь'&&rm.fireResistance)||(type==='холод'&&rm.coldResistance)||(type==='кислота'&&rm.acidResistance)||(type==='некротический'&&rm.necroticResistance)||(type==='излучение'&&rm.radiantResistance)||(type==='психический'&&rm.psychicResistance);
+    var oozeRancherAcidResistance=type==='кислота'&&(target&&target.classes||[]).some(function(cl){return cl&&(cl.name==='Алхимик'||cl.englishName==='Alchemist')&&(cl.subclass==='oozeRancher'||cl.subclass==='Разводчик слизи')&&Number(cl.level)>=3;});
+    var raceResistant=(type==='яд'&&rm.poisonResistance)||(type==='огонь'&&rm.fireResistance)||(type==='холод'&&rm.coldResistance)||(type==='кислота'&&(rm.acidResistance||oozeRancherAcidResistance))||(type==='некротический'&&rm.necroticResistance)||(type==='излучение'&&rm.radiantResistance)||(type==='психический'&&rm.psychicResistance);
     if(raceImmune||hasType(target && target.immunities,type)){if(opts.immunityBecomesResistance)return {raw:amount,amount:Math.floor(amount/2),mode:'immunity-as-resistance',note:'Иммунитет считается сопротивлением',type:type};return {raw:amount,amount:0,mode:'immune',note:'Иммунитет',type:type};}
     var witchImperil=target&&target.witchImperil&&String(target.witchImperil.damageType||'').toLowerCase()===type;
     var witchElemental=target&&target.witchElementalResistance&&String(target.witchElementalResistance).toLowerCase()===type;
