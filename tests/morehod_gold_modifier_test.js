@@ -79,7 +79,6 @@ assert.strictEqual(rules.getModifier(restoredMariner), 1, 'the wallet modifier s
   const purchase = marketContext.DND_MARKET_V55.buy(traderId, item.id, 1);
   assert.strictEqual(purchase.ok, true, 'the market purchase succeeds');
   assert.strictEqual(rules.getModifier(hero), 4, 'market spending immediately recalculates the modifier from the updated carried wallet');
-
 }
 assert.strictEqual(rules.adjustRollTotal(14, { className: 'Мореход', coins: { gp: 1200 } }), 15);
 assert.strictEqual(typeof rules.adjustDamageDie, 'undefined', 'Mariner modifier does not expose damage-die adjustment');
