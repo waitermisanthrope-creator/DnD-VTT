@@ -45,7 +45,7 @@ assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'),
   const diceResult = { textContent: '' };
   const diceContext = {
     console, Math: Object.create(Math), Number, String, Array, Object, Date,
-    document: { getElementById: id => id === 'diceResult' ? diceResult : null },
+    document: { getElementById: id => id === 'diceResult' ? diceResult : null, addEventListener: () => {} },
     window: {}, currentChar: mariner,
     MorehodGoldModifier: { getModifier: hero => hero === mariner ? 5 : 0 },
     applyConditionsToRoll: () => ({ effectiveMode: 'normal', forceCrit1: false, conditionNotes: [] }),
