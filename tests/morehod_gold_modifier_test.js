@@ -239,4 +239,37 @@ assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'),
   assert.strictEqual(defeatedResult.defeated, true, 'combat resolver marks the target defeated');
   assert.deepStrictEqual(Array.from(banditHero.classFeaturesState.bandit.studiedTargetIds), ['enemy-live'], 'combat resolver clears only the defeated studied target');
 }
+// Integration: selling inventory through the real market updates the carried wallet and modifier immediately.
+{
+  const storage = new Map();
+  const seller = {
+    id: 'mariner-market-sale-test',
+    name: 'Мореход',
+    classes: [{ name: 'Мореход', level: 1 }],
+    coins: { gp: 1999, sp: 5, ep: 0, cp: 0, pp: 0 },
+    inventory: { materials: [{ name: 'Тестовый товар', category: 'materials', count: 1, marketPriceGp: 1 }] }
+  };
+  const saleContext = {
+    console, Math, Number, String, Array, Object, JSON, Date, RegExp, isFinite, parseInt, parseFloat,
+    currentCharacter: seller,
+    localStorage: { getItem: key => storage.has(key) ? storage.get(key) : null, setItem: (key, value) => storage.set(key, String(value)) },
+    document: { addEventListener: () => {}, getElementById: () => null },
+    addEventListener: () => {},
+    autoSaveCurrentCharacter: () => {}
+  };
+  saleContext.window = saleContext;
+  saleContext.globalThis = saleContext;
+  vm.createContext(saleContext);
+  vm.runInContext(fs.readFileSync(require.resolve('../app/market_economy_v55.js'), 'utf8'), saleContext);
+  assert.strictEqual(rules.getModifier(seller), 4, 'seller begins below 2000 gp equivalent');
+  const sale = saleContext.DND_MARKET_V55.sell('caravan', 'materials', 0, 1);
+  assert.strictEqual(sale.ok, true, 'market sale succeeds');
+  assert.strictEqual(sale.totalCp, 65, 'one-gold item sells for 65 copper at caravan sell factor');
+  assert.strictEqual(rules.getModifier(seller), 5, 'market sale immediately recalculates the modifier after crossing the 2000 gp threshold');
+  assert.strictEqual((seller.inventory.materials || []).length, 0, 'sold item is removed from inventory');
+  const beforeFailedSale = saleContext.DND_MARKET_V55.balanceCp();
+  const failedSale = saleContext.DND_MARKET_V55.sell('caravan', 'materials', 0, 1);
+  assert.strictEqual(failedSale.ok, false, 'selling a missing item fails safely');
+  assert.strictEqual(saleContext.DND_MARKET_V55.balanceCp(), beforeFailedSale, 'failed sale does not alter carried wealth');
+}
 console.log('morehod_gold_modifier_test: all assertions passed');
