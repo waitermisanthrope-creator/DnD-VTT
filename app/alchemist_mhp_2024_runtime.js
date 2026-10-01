@@ -75,7 +75,8 @@ var discoveryRecipes=[
  {discovery:'Алхимия восстановления',level:5,name:'Эликсир здоровья',cost:2},
  {discovery:'Алхимия восстановления',level:9,name:'Зелье долголетия',cost:4},
  {discovery:'Алхимия восстановления',level:13,name:'Зелье жизненной силы',cost:4},
- {discovery:'Алхимия восстановления',level:13,name:'Зелье высшего лечения',cost:6}
+ {discovery:'Алхимия восстановления',level:13,name:'Зелье высшего лечения',cost:6},
+ {discovery:'Гомункул',level:5,name:'Гомункул',cost:3,type:'companion',materialCost:10,durationMinutes:60}
 ];
 var subs=[
 {id:'apothecary',name:'Аптекарь',desc:'Алхимический целитель.',f:[
@@ -412,10 +413,34 @@ function subclassFeatureEffect(h,sub,f,ctx){
  return{ok:false,unsupported:true,message:'Алхимик: «'+name+'» пока не имеет полноценного resolver-а; способность не отмечена как успешно применённая.'};
 }
 
+function createHomunculus(h,ctx){
+ ctx=ctx||{};var l=alvl(h),s=st(h),r=h&&h.resources&&h.resources.alchemistReagents;
+ if(l<5||(s.alchemistDiscovered||[]).indexOf('Гомункул')<0)return{ok:false,message:'Для создания нужен Алхимик 5 уровня с Открытием «Гомункул».'};
+ if(!h.id)return{ok:false,unsupported:true,message:'У персонажа нет ID для привязки гомункула.'};
+ if(!r||Number(r.current)<3)return{ok:false,message:'Для создания нужны 3 реагента.'};
+ if(s.alchemistHomunculusId&&g.DNDSecondaryEntities&&g.DNDSecondaryEntities.get&&g.DNDSecondaryEntities.get(s.alchemistHomunculusId))return{ok:false,message:'У Алхимика уже есть живой гомункул.'};
+ var confirmed=ctx.materialsPaid===true&&(ctx.duringShortRest===true||Number(ctx.timeMinutes)>=60);
+ if(!confirmed&&typeof g.confirm==='function')confirmed=g.confirm('Создать гомункула? Будут потрачены 3 реагента и материалы стоимостью не менее 10 зм; процесс занимает 1 час или короткий отдых.');
+ if(!confirmed)return{ok:false,needsConfirmation:true,message:'Подтвердите оплату материалов на 10 зм и час работы/короткий отдых; реагенты не списаны.'};
+ if(!g.DNDSecondaryEntities||typeof g.DNDSecondaryEntities.create!=='function'||typeof g.DNDSecondaryEntities.ensure!=='function'||!g.DNDSecondaryEntities.ensure())return{ok:false,unsupported:true,message:'Движок вторичных сущностей/поле боя недоступен; реагенты не списаны.'};
+ var pb=prof(h),intMod=mod(h,'int'),hp=5*l,actions=[{name:'Удар гомункула',attackBonus:intMod+pb,damage:'1d4+'+intMod,damageType:'дробящий',rangeFt:5,actionType:'melee'}];
+ var entity;
+ try{entity=g.DNDSecondaryEntities.create({name:'Гомункул '+String(h.name||'Алхимика'),ownerId:String(h.id),ownerTokenId:'bt_'+String(h.id),source:'alchemist',sourceType:'class',companionType:'homunculus',controlMode:'bonus_action_command',team:'party',hp:hp,maxHp:hp,ac:13,speed:20,size:1,actions:actions,resources:{},metadata:{alchemistHomunculus:true,immuneToOwnerBombs:true,ownerId:String(h.id),statblock:{hp:hp,maxHp:hp,ac:13,speed:20,attackBonus:intMod+pb,damage:'1d4+'+intMod}}});}
+ catch(e){return{ok:false,unsupported:true,message:'Не удалось создать гомункула: '+String(e&&e.message||e)};}
+ if(!entity||!entity.id)return{ok:false,unsupported:true,message:'Движок не вернул ID гомункула; реагенты не списаны.'};
+ if(!spend(h,3)){if(g.DNDSecondaryEntities.remove)g.DNDSecondaryEntities.remove(entity.id);return{ok:false,message:'Недостаточно реагентов; гомункул не создан.'};}
+ s.alchemistHomunculusId=entity.id;
+ var tracker=h.initiativeTracker;if(tracker&&Array.isArray(tracker.combatants)){
+  var cid='summon_'+entity.id;
+  if(!tracker.combatants.some(function(c){return String(c.id)===cid;}))tracker.combatants.push({id:cid,entityId:entity.id,name:entity.name,type:'summon',team:'party',ownerId:String(h.id),hp:hp,maxHp:hp,ac:13,speed:20,size:1,actions:actions,turnResources:{action:true,bonusAction:true,reaction:true,movement:20,movementUsed:0},classFeaturesState:{alchemistHomunculusOwner:String(h.id),immuneToOwnerBombs:true}});
+ }
+ if(typeof g.saveCurrentCharacter==='function')try{g.saveCurrentCharacter();}catch(e){}
+ return{ok:true,entity:entity,effect:{companion:'homunculus',statblock:{hp:hp,ac:13,speed:20,attackBonus:intMod+pb,damage:'1d4+'+intMod},reagentsSpent:3,materialsCost:10,durationMinutes:60},message:'🧬 Гомункул создан: '+hp+' HP, КД 13, скорость 20 фт. Его отдельный статблок добавлен в систему компаньонов.'};
+}
 function use(h,id,ctx,feature){
  sync(h);ctx=ctx||{};var l=alvl(h),s=st(h),r=h.resources.alchemistReagents;
  id=String(id||'').replace(/^alchemist-/,'');
- var aliases={'Прайм-бомба':'primeBomb','Синтез реагентов':'reagentSynthesis','Бомбы':'bomb','Варка зелий':'potionBrew','Формулы бомб':'formula','Философский камень':'philosopherStone','Ядерная бомба':'nuclearBomb'};if(aliases[id])id=aliases[id];
+ var aliases={'Прайм-бомба':'primeBomb','Синтез реагентов':'reagentSynthesis','Бомбы':'bomb','Варка зелий':'potionBrew','Формулы бомб':'formula','Философский камень':'philosopherStone','Ядерная бомба':'nuclearBomb','Гомункул':'homunculusCreate'};if(aliases[id])id=aliases[id];
  if(id==='primeBomb'){var n=Math.min(Number(ctx.reagents)||1,s.alchemistPrimeMax,r.current);if(!spend(h,n))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,effect:{extraDamage:n+'d10',extraRadiusFt:n*5},message:'💣 Прайм-бомба: +'+n+'d10.'};}
  if(id==='reagentSynthesis'){if(!s.alchemistSynthesisReady)return{ok:false,message:'Синтез реагентов доступен после короткого отдыха; после применения нужен долгий отдых.'};if(s.alchemistSynthesisUsed)return{ok:false,message:'Синтез уже использован до долгого отдыха.'};var n=Math.min(Math.max(1,mod(h,'int')),r.max-r.current);if(n<=0)return{ok:false,message:'Реагенты уже на максимуме.'};r.current+=n;s.alchemistSynthesisUsed=true;s.alchemistSynthesisReady=false;return{ok:true,message:'⚗️ Синтез: восстановлено реагентов '+n+'.'};}
  if(id==='bomb'){return{ok:true,effect:{attack:true,damageDice:s.alchemistBombDamage,damageType:'fire',range:'30/90',saveDC:s.alchemistSaveDC,explodeRadiusFt:5,intelligentExplosion:Math.max(1,mod(h,'int'))},message:'💣 Бомба готова.'};}
@@ -448,6 +473,7 @@ function use(h,id,ctx,feature){
   return{ok:true,selected:discoveryName,message:'📘 Открытие изучено: '+discoveryName+'.'};
  }
  if(id==='nuclearBomb'){if(l<20||!s.philosopherStone)return{ok:false,message:'Нужен 20 уровень и Философский камень.'};s.philosopherStone=false;return{ok:true,effect:{damage:'10d10+100',type:'force',radiusMiles:1},message:'☢️ Ядерная бомба создана. Философский камень уничтожен.'};}
+ if(id==='homunculusCreate')return createHomunculus(h,ctx);
  if(id==='potionBrew'){
   var p=potions.find(function(x){return x.name===ctx.potion;});
   var recipe=null;
@@ -460,6 +486,7 @@ function use(h,id,ctx,feature){
     p={name:recipe.name,level:recipe.level,cost:recipe.cost,discovery:recipe.discovery,type:recipe.type||'potion'};
    }
   }
+  if(recipe&&recipe.type==='companion')return createHomunculus(h,ctx);
   if(!p||l<p.level)return{ok:false,message:'Этот рецепт ещё недоступен.'};
   if(!spend(h,p.cost))return{ok:false,message:'Недостаточно реагентов.'};
   s.alchemistPotions=s.alchemistPotions||[];
