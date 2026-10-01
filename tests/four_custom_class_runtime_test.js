@@ -37,6 +37,10 @@ runtime.studyTarget(hero, targetA, { visible: true, distanceFt: 20 });
 runtime.studyTarget(hero, targetC, { visible: true, distanceFt: 20 });
 assert.deepStrictEqual(Array.from(hero.classFeaturesState.bandit.studiedTargetIds), ['enemy-a', 'enemy-c'], 'two targets from level 11');
 assert.deepStrictEqual(Array.from(runtime.clearInvalidTargets(hero, ['enemy-c'])), ['enemy-c']);
+assert.deepStrictEqual(Array.from(runtime.clearStudiedTarget(hero, 'enemy-c')), [], 'studied target is cleared immediately when that target dies or is removed');
+runtime.studyTarget(hero, targetA, { visible: true, distanceFt: 20 });
+runtime.studyTarget(hero, targetC, { visible: true, distanceFt: 20 });
+assert.deepStrictEqual(Array.from(runtime.clearStudiedTarget(hero, 'enemy-a')), ['enemy-c'], 'clearing one target preserves other studied targets');
 assert.strictEqual(runtime.studyTarget(hero, { name: 'no id' }, { visible: true, distanceFt: 10 }).ok, false);
 const actionHero = {
   classes: [{ name: 'Бандит', level: 3 }],
