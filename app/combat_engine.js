@@ -271,7 +271,8 @@
     var witchAttackPenalty=target&&target.witchAttackPenaltyDice?rollDie(6):0;
     var total=d20+bonus+classBonus-witchAttackPenalty;
     var alchemistDebuffs=target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs||{};
-    var ac=opts&&opts.acOverride!=null?num(opts.acOverride,10):Math.max(10,num(target && target.ac,10)-num(target&&target.witchACPenalty,0))-num(alchemistDebuffs.acPenalty,0);
+    var coverBonus=(opts&&opts.__classFeatureMod&&opts.__classFeatureMod.ignoreCover)?0:num(opts&&opts.coverBonus, num(target&&target.coverBonus,0));
+    var ac=(opts&&opts.acOverride!=null?num(opts.acOverride,10):Math.max(10,num(target && target.ac,10)-num(target&&target.witchACPenalty,0))-num(alchemistDebuffs.acPenalty,0))+coverBonus;
     var duplicityTarget=opts&&opts.__attacker&&target&&target.classFeaturesState&&target.classFeaturesState.witchDuplicity;
     var duplicityMiss=false;
     if(duplicityTarget&&!roll.fumble){var dupRoll=rollDie(6);if(dupRoll%2===1){duplicityMiss=true;target.classFeaturesState.witch.witchDuplicity=false;}}
@@ -300,11 +301,11 @@
           if(alchemistFormula.savePenalty){debuffs.savePenalty=Math.max(Number(debuffs.savePenalty)||0,alchemistFormula.savePenalty);out.alchemistFormulaEffect.effects.push('savePenalty');}
           if(alchemistFormula.condition&&global.DNDCombat&&global.DNDCombat.toggleCondition){global.DNDCombat.toggleCondition(target,alchemistFormula.condition,true);out.alchemistFormulaEffect.effects.push(alchemistFormula.condition);}
           if(alchemistFormula.condition){target.activeConditions=target.activeConditions||{};target.activeConditions[alchemistFormula.condition]=true;}
-          if(alchemistFormula.speed===0){target.speed=0;debuffs.speedZero=true;out.alchemistFormulaEffect.effects.push('speedZero');}
+          if(alchemistFormula.speed===0){debuffs.speedZero=true;if(target.turnResources)target.turnResources.movement=0;out.alchemistFormulaEffect.effects.push('speedZero');}
           if(alchemistFormula.pushFt){out.alchemistFormulaEffect.pushFt=alchemistFormula.pushFt;out.alchemistFormulaEffect.effects.push('pushFt');}
           if(alchemistFormula.noOpportunityAttacks){debuffs.noOpportunityAttacks=true;out.alchemistFormulaEffect.effects.push('noOpportunityAttacks');}
           if(alchemistFormula.verbalComponentsBlocked){debuffs.verbalComponentsBlocked=true;out.alchemistFormulaEffect.effects.push('verbalComponentsBlocked');}
-          if(alchemistFormula.revealsInvisible){debuffs.revealsInvisible=true;out.alchemistFormulaEffect.effects.push('revealsInvisible');}
+          if(alchemistFormula.revealsInvisible){debuffs.revealsInvisible=true;if(target.activeConditions)delete target.activeConditions['Невидим'];if(target.conditions)delete target.conditions['Невидим'];out.alchemistFormulaEffect.effects.push('revealsInvisible');}
           if(alchemistFormula.burning){debuffs.burning=true;out.alchemistFormulaEffect.effects.push('burning');}
           debuffs.expires='start_of_attacker_next_turn';
         }
