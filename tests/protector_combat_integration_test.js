@@ -132,6 +132,18 @@ assert.strictEqual(window.currentChar.resources.protectorImpulses.current, 1, 'c
 assert.strictEqual(window.currentChar.turnResources.reaction, 0, 'combat UI spends the reaction after confirmation');
 assert(promptCalls.some(message => message.startsWith('Цель:')), 'combat UI asks for a target');
 assert(alerts.some(message => message.includes('ПОПАДАНИЕ')), 'combat UI reports the resolved hit');
+
+// The manual damage control must offer the same explicit reaction choice.
+window.currentChar.resources.protectorImpulses.current = 2;
+window.currentChar.turnResources.reaction = 1;
+window.currentChar.hpCurrent = 18;
+uiHeroToken.hp = 18;
+const confirmsBeforeManualDamage = promptCalls.length;
+window.dndCombatDamage();
+assert.strictEqual(uiHeroToken.hp, 18, 'manual damage UI self-defense prevents HP loss');
+assert.strictEqual(window.currentChar.resources.protectorImpulses.current, 1, 'manual damage UI spends one impulse after confirmation');
+assert.strictEqual(window.currentChar.turnResources.reaction, 0, 'manual damage UI spends the reaction after confirmation');
+assert(promptCalls.length > confirmsBeforeManualDamage, 'manual damage UI prompts for target and damage');
 window.currentChar = null;
 
 console.log('Protector combat integration tests: PASS');
