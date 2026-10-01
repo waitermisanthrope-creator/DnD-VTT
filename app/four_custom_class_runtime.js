@@ -43,7 +43,15 @@
     l=level(hero,CLASS_IDS.bandit);
     if(l){pb=proficiency(l);out.bandit=ensureResource(hero,'banditDirtyTricks',Math.max(1,pb+abilityMod(hero,'dex')),'short');}
     l=level(hero,CLASS_IDS.circus);
-    if(l){pb=proficiency(l);out.circus=ensureResource(hero,'circusZap',Math.max(1,pb+abilityMod(hero,'cha')),'short');}
+    if(l){
+      pb=proficiency(l);
+      // Migrate the old internal key without resetting the character's spent resource.
+      if(hero.resources&&hero.resources.circusResource==null&&hero.resources.circusZap){
+        hero.resources.circusResource=hero.resources.circusZap;
+        delete hero.resources.circusZap;
+      }
+      out.circus=ensureResource(hero,'circusResource',Math.max(1,pb+abilityMod(hero,'cha')),'short');
+    }
     l=level(hero,CLASS_IDS.protector);
     if(l){pb=proficiency(l);out.protector=ensureResource(hero,'protectorImpulses',Math.max(1,pb),'short');}
     return out;
@@ -52,7 +60,7 @@
     if(!hero||!hero.resources)return {ok:false,reason:'Персонаж или ресурсы не найдены.'};
     sync(hero);
     var restored=[];
-    Object.keys({banditDirtyTricks:1,circusZap:1,protectorImpulses:1}).forEach(function(id){
+    Object.keys({banditDirtyTricks:1,circusResource:1,protectorImpulses:1}).forEach(function(id){
       var r=hero.resources[id];
       if(!r)return;
       if(kind==='short'||kind==='long'||kind==='shortRest'||kind==='longRest'){
@@ -108,8 +116,8 @@
       if(!isFinite(dist)||dist<0||dist>15)return {ok:false,reason:'Все цели должны находиться в пределах конуса длиной 15 футов.'};
       normalized.push({target:target,distanceFt:dist});
     }
-    var resource=hero.resources&&hero.resources.circusZap;
-    if(!resource||Number(resource.current)<1)return {ok:false,reason:'Недостаточно Запала.'};
+    var resource=hero.resources&&hero.resources.circusResource;
+    if(!resource||Number(resource.current)<1)return {ok:false,reason:'Недостаточно Циркового ресурса.'};
     var dc=8+proficiency(l)+abilityMod(hero,'dex');
     var diceCount=l>=15?5:l>=11?4:l>=7?3:2;
     // Reserve the resource only after all input and engine prerequisites pass.
