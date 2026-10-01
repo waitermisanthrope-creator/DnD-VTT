@@ -234,24 +234,30 @@ function shortRest(h){
  if(!s.alchemistSynthesisUsed)s.alchemistSynthesisReady=true;
  s.alchemistRestType='short';
 }
-function longRest(h){
- if(!h||!alvl(h))return;sync(h);var r=h.resources.alchemistReagents,s=st(h);
- r.current=r.max;s.alchemistSynthesisUsed=false;s.alchemistSynthesisReady=false;
- var oldEffects=s.alchemistActiveEffects||[],keepEffects=oldEffects.filter(function(e){return e.effect&&e.effect.durationMinutes>=1440;});
- var keepConditions=keepEffects.map(function(e){return e.effect&&e.effect.condition;}).filter(Boolean);
- oldEffects.forEach(function(e){
-  var ef=e&&e.effect||{};
-  if(ef.condition&&keepConditions.indexOf(ef.condition)<0){
-   if(h.activeConditions&&h.activeConditions[ef.condition])delete h.activeConditions[ef.condition];
-   if(h.conditions&&h.conditions[ef.condition])delete h.conditions[ef.condition];
-  }
- });
+function cleanupPotionEffects(h,oldEffects,keepEffects){
+ var s=st(h),keepConditions=keepEffects.map(function(e){return e.effect&&e.effect.condition;}).filter(Boolean);
+ oldEffects.forEach(function(e){var ef=e&&e.effect||{};if(ef.condition&&keepConditions.indexOf(ef.condition)<0){
+  if(h.activeConditions&&h.activeConditions[ef.condition])delete h.activeConditions[ef.condition];
+  if(h.conditions&&h.conditions[ef.condition])delete h.conditions[ef.condition];
+ }});
  var keepResistance=[];
  keepEffects.forEach(function(e){var ef=e&&e.effect||{};if(ef.resistanceAll)keepResistance=keepResistance.concat(['кислота','холод','огонь','молния','гром','некротический','яд','психический','излучение','силовой','дробящий','колющий','рубящий']);if(ef.resistance)keepResistance.push(ef.resistance);});
  var granted=s.alchemistGrantedResistances||[];
  if(Array.isArray(h.resistances))h.resistances=h.resistances.filter(function(type){return granted.indexOf(type)<0||keepResistance.indexOf(type)>=0;});
  s.alchemistGrantedResistances=granted.filter(function(type){return keepResistance.indexOf(type)>=0;});
- s.alchemistActiveEffects=keepEffects;
+}
+function advancePotionTime(h,minutes){
+ if(!h||!alvl(h)||!(Number(minutes)>0))return;var s=st(h),old=s.alchemistActiveEffects||[];
+ old.forEach(function(e){if(e&&e.effect&&Number(e.effect.durationMinutes)>0)e.remainingMinutes=Math.max(0,(Number(e.remainingMinutes)||Number(e.effect.durationMinutes))-Number(minutes));});
+ var keep=old.filter(function(e){return e&&e.effect&&(Number(e.remainingMinutes)>0||Number(e.effect.durationMinutes)>=1440);});
+ cleanupPotionEffects(h,old,keep);s.alchemistActiveEffects=keep;
+}
+function onTurnEnd(h){advancePotionTime(h,0.1);}
+function longRest(h){
+ if(!h||!alvl(h))return;sync(h);var r=h.resources.alchemistReagents,s=st(h);
+ r.current=r.max;s.alchemistSynthesisUsed=false;s.alchemistSynthesisReady=false;
+ var oldEffects=s.alchemistActiveEffects||[],keepEffects=oldEffects.filter(function(e){return e.effect&&e.effect.durationMinutes>=1440;});
+ cleanupPotionEffects(h,oldEffects,keepEffects);s.alchemistActiveEffects=keepEffects;
  s.blackPowderUses=Math.max(1,mod(h,'int'));s.xenoNecroticReady=false;s.alchemistPotionMixReady=false;
  s.alchemistRestType='long';
 }
@@ -484,7 +490,7 @@ function use(h,id,ctx,feature){
  if(sub&&(id==='subclassFeature'||id.indexOf(sub.id+'-')===0)){var f=sub.f.find(function(x){return id===sub.id+'-'+x[0]+'-'+x[1]||id===sub.id+'-'+x[1]||String(x[1])===String(ctx.featureName)||String(x[1])===String(ctx.featureId)||(feature&&String(feature.name)===String(x[1]))||(ctx.level!=null&&Number(x[0])===Number(ctx.level)&&!ctx.featureName&&!ctx.featureId);});if(!f)return{ok:false,unsupported:true,message:'Не удалось однозначно определить особенность подкласса; эффект не применён.'};if(l<Number(f[0]))return{ok:false,message:'Особенность доступна с '+f[0]+' уровня.'};return subclassFeatureEffect(h,sub,f,ctx);}
  return{ok:false,unsupported:true,message:'Алхимик: способность '+id+' пока не имеет исполняемого resolver-а.'};
 }
-var pack={id:PACK_ID,name:CLASS,source:SOURCE,metadata:{edition:'2024 / 5.5E',hitDie:8,primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],skillsChoose:3,armor:['light'],weapons:['simple'],tools:['alchemist_supplies'],multiclass:{dexterity:13,intelligence:13},startingEquipment:['2 кинжала','Кожаный доспех','Инструменты алхимика','Алхимический огонь','Набор учёного','6 зм'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14]},features:features,subclasses:subpacks,formulas:formulae,potions:potions,discoveries:discoveries,discoveryRecipes:discoveryRecipes,monstrousGrafts:monstrousGrafts,variants:alchemistVariants,alcoholRules:{maxStages:10,decayPerHour:1,longRestClears:true,stage10:'без сознания до утра'},hooks:{sync:sync,useFeature:use,shortRest:shortRest,longRest:longRest,startTurn:startTurn,checkModifiers:checkModifiers,attackModifiers:attackModifiers}};
+var pack={id:PACK_ID,name:CLASS,source:SOURCE,metadata:{edition:'2024 / 5.5E',hitDie:8,primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],skillsChoose:3,armor:['light'],weapons:['simple'],tools:['alchemist_supplies'],multiclass:{dexterity:13,intelligence:13},startingEquipment:['2 кинжала','Кожаный доспех','Инструменты алхимика','Алхимический огонь','Набор учёного','6 зм'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14]},features:features,subclasses:subpacks,formulas:formulae,potions:potions,discoveries:discoveries,discoveryRecipes:discoveryRecipes,monstrousGrafts:monstrousGrafts,variants:alchemistVariants,alcoholRules:{maxStages:10,decayPerHour:1,longRestClears:true,stage10:'без сознания до утра'},hooks:{sync:sync,useFeature:use,shortRest:shortRest,longRest:longRest,startTurn:startTurn,onTurnEnd:onTurnEnd,advanceTime:advancePotionTime,checkModifiers:checkModifiers,attackModifiers:attackModifiers}};
 D.registerClass(pack);
 g.CLASSES_REFERENCE=g.CLASSES_REFERENCE||{};
 g.CLASSES_REFERENCE[CLASS]={source:SOURCE,hitDie:8,primaryStat:'dexterity',primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14],contentPackId:PACK_ID};
