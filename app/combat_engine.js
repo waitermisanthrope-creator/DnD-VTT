@@ -310,6 +310,7 @@
   function resetDeathSaves(hero){hero.deathSaves={successes:0,failures:0};}
   function attack(attacker,target,opts){
     opts=opts||{};if(target)opts.target=target; var bonus=num(opts.bonus), mode=opts.mode||'normal';
+    var rescueState=target&&target.classFeaturesState&&target.classFeaturesState.protectorRescue,attackerId=attacker&&(attacker.id||attacker.entityId);if(rescueState&&opts.attackKind==='opportunity'&&rescueState.noOpportunityAttacksFrom!=null&&attackerId!=null&&String(rescueState.noOpportunityAttacksFrom)===String(attackerId))return {hit:false,blockedByProtectorRescue:true,damage:null,total:0,ac:num(target&&target.ac,10),d20:null,critical:false,fumble:false,classFeatureNotes:['Спаситель: выбранный противник не провоцирует атаку при перемещении союзника.']};
     var perfumeClass=(target&&target.classes||[]).find(function(cl){return cl&&(cl.name==='Алхимик'||cl.englishName==='Alchemist')&&(cl.subclass==='amorist'||cl.subclass==='Аморист')&&Number(cl.level)>=10;});
     if(perfumeClass&&attacker&&target&&opts.__perfumeChecked!==true){
       var perfumeState=target.classFeaturesState=target.classFeaturesState||{},perfumeOwnerState=attacker.classFeaturesState||{},attackerId=String(attacker.id||attacker.entityId||''),roundTracker=(global.currentChar||global.currentCharacter||{}).initiativeTracker||{},currentRound=Number(roundTracker.round)||1;
@@ -541,8 +542,10 @@
     var x=Number(prompt('X свободной клетки:','0'));if(!isFinite(x))return;
     var y=Number(prompt('Y свободной клетки:','0'));if(!isFinite(y))return;
     var cellDistance=Number(prompt('Расстояние от союзника до выбранной клетки в футах:','5'));if(!isFinite(cellDistance))return;
+    var foes=(h.initiativeTracker.combatants||[]).filter(function(c){return c&&c.id!=null&&c!==target&&c.type!=='hero'&&c.team!=='ally';});if(!foes.length){alert('Для спасения выберите противника, от которого союзник не спровоцирует атаку.');return;}
+    var foeList=foes.map(function(c,i){return i+': '+c.name;}).join('\\n'),foeIndex=Number(prompt('Выберите противника, от которого не будет провоцированной атаки:\\n'+foeList,'0'));if(!isFinite(foeIndex)||!foes[foeIndex])return;
     if(!confirm('Подтверждаете, что клетка ('+x+', '+y+') свободна и доступна для перемещения?'))return;
-    var actor=protectorActorForTurn(h),result=rt.useFeature(actor,'protectorRescue',{target:target,isAlly:target.type==='hero'||target.team==='ally',visible:true,distanceFt:distance,cellAvailable:true,freeCell:{x:x,y:y},distanceToCellFt:cellDistance,round:num(h.initiativeTracker&&h.initiativeTracker.round,1)});syncProtectorTurnActor(actor);
+    var actor=protectorActorForTurn(h),result=rt.useFeature(actor,'protectorRescue',{target:target,isAlly:target.type==='hero'||target.team==='ally',visible:true,distanceFt:distance,cellAvailable:true,freeCell:{x:x,y:y},distanceToCellFt:cellDistance,chosenEnemyId:foes[foeIndex].id,round:num(h.initiativeTracker&&h.initiativeTracker.round,1)});syncProtectorTurnActor(actor);
     if(result.ok)syncBackToHero(target);
     alert(result.message||result.reason||'Спаситель: без результата.');if(result.ok){save();if(typeof global.renderInitiativeTracker==='function')global.renderInitiativeTracker();renderCombatStatus();syncNetworkMasterCombat('protector-rescue');}
   };
