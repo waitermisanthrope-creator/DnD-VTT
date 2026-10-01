@@ -234,14 +234,14 @@ function shortRest(h){
 }
 function longRest(h){
  if(!h||!alvl(h))return;sync(h);var r=h.resources.alchemistReagents,s=st(h);
- r.current=r.max;s.alchemistSynthesisUsed=false;s.alchemistSynthesisReady=false;
+ r.current=r.max;s.alchemistSynthesisUsed=false;s.alchemistSynthesisReady=false;s.alchemistActiveEffects=(s.alchemistActiveEffects||[]).filter(function(e){return e.effect&&e.effect.durationMinutes>=1440;});
  s.blackPowderUses=Math.max(1,mod(h,'int'));s.xenoNecroticReady=false;s.alchemistPotionMixReady=false;
  s.alchemistRestType='long';
 }
 function startTurn(h){
  if(!h||!alvl(h))return;sync(h);var s=st(h);
  if(s.philosopherStone&&h.resources.alchemistReagents)h.resources.alchemistReagents.current=Math.min(h.resources.alchemistReagents.max,h.resources.alchemistReagents.current+Math.min(6,h.resources.alchemistReagents.max-h.resources.alchemistReagents.current));
- s.alchemistTurnUsed={};s.alchemistPotionsDrunkThisTurn=0;
+ s.alchemistTurnCounter=(Number(s.alchemistTurnCounter)||0)+1;s.alchemistTurnUsed={};s.alchemistPotionsDrunkThisTurn=0;
 }
 function checkModifiers(h,ctx){
  ctx=ctx||{};var out={bonus:0,minimum:0,notes:[]},l=alvl(h),sub=(h.classes||[]).find(function(x){return x.name===CLASS;}),sid=sub&&sub.subclass,s=subs.find(function(x){return x.id===sid||x.name===sid;});
@@ -383,17 +383,52 @@ function use(h,id,ctx,feature){
   var idx=Number(ctx.index);
   if(!Number.isInteger(idx)||idx<0||!s.alchemistPotions||idx>=s.alchemistPotions.length)return{ok:false,message:'Выберите существующее зелье из инвентаря Алхимика.'};
   var potion=s.alchemistPotions[idx],healMap={'Зелье лечения':'2d4+2','Зелье улучшенного лечения':'4d4+4','Зелье превосходного лечения':'8d4+8'};
-  if(!healMap[potion.name])return{ok:false,unsupported:true,potion:potion.name,message:'Эффект зелья «'+potion.name+'» ещё не подключён к игровому resolver-у. Зелье не потрачено.'};
-  if(s.alchemistPotionsDrunkThisTurn>= (s.alchemistPotionMixReady?2:1))return{ok:false,message:s.alchemistPotionMixReady?'В этом ходу уже выпиты два зелья.':'Без Миксологии можно выпить только одно зелье за ход.'};
+  if(s.alchemistPotionsDrunkThisTurn>=(s.alchemistPotionMixReady?2:1))return{ok:false,message:s.alchemistPotionMixReady?'В этом ходу уже выпиты два зелья.':'Без Миксологии можно выпить только одно зелье за ход.'};
   var healRoll=typeof ctx.healAmount==='number'?Math.max(0,ctx.healAmount):null;
-  if(healRoll===null)return{ok:false,needsRoll:true,potion:potion.name,formula:healMap[potion.name],message:'Бросьте лечение '+healMap[potion.name]+' и повторите применение с результатом.'};
-  var hpObj=h.hp&&typeof h.hp==='object'?h.hp:null,maxHp=Number(h.hpMax||h.maxHitPoints||h.maxHP||h.maxHp||(hpObj&&hpObj.max))||0;
-  var oldHp=Number(('hpCurrent' in h)?h.hpCurrent:(('hitPoints' in h)?h.hitPoints:(hpObj?hpObj.current:h.hp)))||0;
-  var nextHp=maxHp>0?Math.min(maxHp,oldHp+healRoll):oldHp+healRoll;
-  if('hpCurrent' in h)h.hpCurrent=nextHp;if('hitPoints' in h)h.hitPoints=nextHp;if(hpObj)hpObj.current=nextHp;if(!('hpCurrent' in h)&&!('hitPoints' in h)&&!hpObj)h.hp=nextHp;
+  if(healMap[potion.name]&&healRoll===null)return{ok:false,needsRoll:true,potion:potion.name,formula:healMap[potion.name],message:'Бросьте лечение '+healMap[potion.name]+' и повторите применение с результатом.'};
+  var effectMap={
+   'Зелье лазания':{climbSpeed:'walk',durationMinutes:60},
+   'Зелье уменьшения':{sizeChange:'small',attackDisadvantage:true,durationMinutes:60},
+   'Зелье увеличения':{sizeChange:'large',bonusDamage:'1d4',advantageStrength:true,durationMinutes:60},
+   'Зелье сопротивления':{chooseResistance:true,durationMinutes:60},
+   'Зелье дыхания под водой':{waterBreathing:true,durationMinutes:60},
+   'Зелье невидимости':{condition:'Невидим',endsOnAttack:true,durationMinutes:60},
+   'Совершенный клей':{adhesive:true,durationMinutes:1440},
+   'Универсальный растворитель':{solvent:true,instant:true},
+   'Зелье героизма':{temporaryHP:10,blessLike:true,durationMinutes:60},
+   'Зелье силы холмового великана':{setStrength:21,durationMinutes:3600},
+   'Зелье полёта':{flySpeed:Number(h.speed||h.walkSpeed||h.movementSpeed)||30,durationMinutes:60},
+   'Зелье силы морозного/каменного великана':{setStrength:23,durationMinutes:3600},
+   'Зелье неуязвимости':{resistanceAll:true,durationMinutes:60},
+   'Зелье силы огненного великана':{setStrength:25,durationMinutes:3600},
+   'Зелье скорости':{haste:true,durationMinutes:60}
+  };
+  var effect=effectMap[potion.name]||null;
+  if(potion.name==='Зелье сопротивления'){
+   var resistance=String(ctx.damageType||'').trim();
+   if(!resistance)return{ok:false,needsChoice:true,message:'Выберите тип урона для сопротивления; зелье не потрачено.'};
+   effect.resistance=resistance;effect.chooseResistance=false;
+  }
+  if(healMap[potion.name]){
+   var hpObj=h.hp&&typeof h.hp==='object'?h.hp:null,maxHp=Number(h.hpMax||h.maxHitPoints||h.maxHP||h.maxHp||(hpObj&&hpObj.max))||0;
+   var oldHp=Number(('hpCurrent' in h)?h.hpCurrent:(('hitPoints' in h)?h.hitPoints:(hpObj?hpObj.current:h.hp)))||0;
+   var nextHp=maxHp>0?Math.min(maxHp,oldHp+healRoll):oldHp+healRoll;
+   if('hpCurrent' in h)h.hpCurrent=nextHp;if('hitPoints' in h)h.hitPoints=nextHp;if(hpObj)hpObj.current=nextHp;if(!('hpCurrent' in h)&&!('hitPoints' in h)&&!hpObj)h.hp=nextHp;
+   effect={healing:healRoll,instant:true};
+  }else if(!effect){
+   return{ok:false,unsupported:true,potion:potion.name,message:'Эффект зелья «'+potion.name+'» ещё не реализован. Зелье не потрачено.'};
+  }
+  s.alchemistActiveEffects=s.alchemistActiveEffects||[];
+  if(effect.resistanceAll||effect.resistance){
+   h.resistances=Array.isArray(h.resistances)?h.resistances:[];
+   var resistanceTypes=effect.resistanceAll?['кислота','холод','огонь','молния','гром','некротический','яд','психический','излучение','силовой','дробящий','колющий','рубящий']:[effect.resistance];
+   resistanceTypes.forEach(function(t){if(h.resistances.indexOf(t)<0)h.resistances.push(t);});
+  }
+  if(effect.condition){h.activeConditions=h.activeConditions||h.conditions||{};h.activeConditions[effect.condition]=true;}
+  s.alchemistActiveEffects.push({name:potion.name,effect:effect,startedAtTurn:Number(s.alchemistTurnCounter)||0,remainingMinutes:effect.durationMinutes||0});
   s.alchemistPotions.splice(idx,1);s.alchemistPotionsDrunkThisTurn=(s.alchemistPotionsDrunkThisTurn||0)+1;
   if(s.alchemistPotionMixReady&&s.alchemistPotionsDrunkThisTurn>=2)s.alchemistPotionMixReady=false;
-  return{ok:true,effect:{consumedPotion:potion.name,healing:healRoll,applyPotionEffect:true},message:'🍶 Выпито: '+potion.name+'. Восстановлено HP: '+healRoll+'.'};
+  return{ok:true,effect:{consumedPotion:potion.name,applied:effect,applyPotionEffect:true},message:'🍶 Выпито: '+potion.name+(effect.healing!=null?'. Восстановлено HP: '+effect.healing+'.':'. Эффект записан в активные эффекты персонажа.')};
  }
  if(id==='philosopherStone'){if(l<20)return{ok:false,message:'Философский камень доступен с 20 уровня.'};s.philosopherStone=true;return{ok:true,effect:{regainReagentsOnInitiativeUpTo:6,quickBrewing:true,longevity:true},message:'💎 Философский камень создан.'};}
  var selected=(h.classes||[]).find(function(x){return x.name===CLASS||x.englishName==='Alchemist';});var subId=(feature&&feature.subclassId)||ctx.subclass||(selected&&selected.subclass);var sub=subs.find(function(x){return x.id===subId||x.name===subId;});
@@ -406,5 +441,5 @@ g.CLASSES_REFERENCE=g.CLASSES_REFERENCE||{};
 g.CLASSES_REFERENCE[CLASS]={source:SOURCE,hitDie:8,primaryStat:'dexterity',primaryAbilities:['dexterity','intelligence'],savingThrows:['dexterity','intelligence'],subclassLevel:3,subclassFeatureLevels:[3,6,10,14],contentPackId:PACK_ID};
 g.SUBCLASSES_REFERENCE=g.SUBCLASSES_REFERENCE||{};g.SUBCLASSES_REFERENCE[CLASS]={};
 subpacks.forEach(function(s){var lv={};s.features.forEach(function(f){lv[f.level]=lv[f.level]||{features:[]};lv[f.level].features.push(f.name);});g.SUBCLASSES_REFERENCE[CLASS][s.name]={source:SOURCE,description:s.description,pickLevel:3,levels:lv};});
-g.ALCHEMIST_MHP_2024={VERSION:'1.2.1-runtime-fixes',STATUS:'in_progress',CANONICAL_2024_SUBCLASSES:11,PACK_ID:PACK_ID,formulae:formulae,potions:potions,discoveries:discoveries,subclasses:subpacks.map(function(s){return{id:s.id,name:s.name};})};
+g.ALCHEMIST_MHP_2024={VERSION:'1.3.0-potion-effects',STATUS:'in_progress',CANONICAL_2024_SUBCLASSES:11,PACK_ID:PACK_ID,formulae:formulae,potions:potions,discoveries:discoveries,subclasses:subpacks.map(function(s){return{id:s.id,name:s.name};})};
 })(window);
