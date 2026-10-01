@@ -55,7 +55,8 @@
     var pugilistSchool=(target&&target.classes||[]).some(function(cl){return cl&&(['Пугилист','Pugilist'].indexOf(String(cl.name))>=0||cl.englishName==='Pugilist')&&Number(cl.level)>=10;}),pugilistPsychicResistant=pugilistSchool&&['психический','psychic'].indexOf(type)>=0;
     var raging=physical&&global.DNDClassFeatures&&global.DNDClassFeatures.activeRage&&global.DNDClassFeatures.activeRage(target);
     var rm=target&&target.raceMechanics||{};
-    var raceImmune=(type==='яд'&&rm.poisonImmunity);
+    var venomsmithPoisonImmune=type==='яд'&&(target&&target.classes||[]).some(function(cl){return cl&&(cl.name==='Алхимик'||cl.englishName==='Alchemist')&&(cl.subclass==='venomsmith'||cl.subclass==='Веномсмит')&&Number(cl.level)>=10;});
+    var raceImmune=(type==='яд'&&(rm.poisonImmunity||venomsmithPoisonImmune));
     var raceResistant=(type==='яд'&&rm.poisonResistance)||(type==='огонь'&&rm.fireResistance)||(type==='холод'&&rm.coldResistance)||(type==='кислота'&&rm.acidResistance)||(type==='некротический'&&rm.necroticResistance)||(type==='излучение'&&rm.radiantResistance)||(type==='психический'&&rm.psychicResistance);
     if(raceImmune||hasType(target && target.immunities,type)){if(opts.immunityBecomesResistance)return {raw:amount,amount:Math.floor(amount/2),mode:'immunity-as-resistance',note:'Иммунитет считается сопротивлением',type:type};return {raw:amount,amount:0,mode:'immune',note:'Иммунитет',type:type};}
     var witchImperil=target&&target.witchImperil&&String(target.witchImperil.damageType||'').toLowerCase()===type;
@@ -273,6 +274,7 @@
   function toggleCondition(target,condition,on){
     if(!target.conditions) target.conditions={};
     var key=global.DNDRules&&global.DNDRules.normalizeConditionName?global.DNDRules.normalizeConditionName(condition):String(condition||'').trim(); if(!key)return false;
+    if((key==='Отравлен'||key==='Poisoned')&&on!==false&&(target.classes||[]).some(function(cl){return cl&&(cl.name==='Алхимик'||cl.englishName==='Alchemist')&&(cl.subclass==='venomsmith'||cl.subclass==='Веномсмит')&&Number(cl.level)>=10;}))return false;
     target.conditions[key]=on===undefined?!target.conditions[key]:!!on;
     if(target.conditions[key] && ['Недееспособен','Бессознателен','Парализован','Оглушён','Окаменел'].indexOf(key)>=0){
       breakConcentration(target);
