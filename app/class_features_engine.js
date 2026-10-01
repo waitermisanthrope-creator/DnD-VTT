@@ -259,7 +259,7 @@
       if(rt&&typeof rt.sync==='function')rt.sync(h);
       s=h.classFeaturesState&&h.classFeaturesState.accursed;
       if(s&&Number.isFinite(Number(s.metamorphosesUsesMax))){
-        ensureRes(h,Number(s.metamorphosesUsesMax),'long');
+        ensureRes(h,'accursedMetamorphoses',Number(s.metamorphosesUsesMax)||0,'long');
         h.resources.accursedMetamorphoses.current=Math.max(0,Math.min(Number(s.metamorphosesUses)||0,h.resources.accursedMetamorphoses.max));
       }
     }
