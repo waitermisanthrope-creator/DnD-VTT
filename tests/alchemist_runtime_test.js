@@ -155,12 +155,14 @@ assert.ok(blackPowderAttack.extraDice.includes('1d12'),'black powder bomb adds i
 
 const ionizer={classes:[{name:'Алхимик',level:3,subclass:'ionizer'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{}};
 hooks.sync(ionizer);
-assert.equal(hooks.useFeature(ionizer,'alchemist-subclassFeature',{featureName:'Ионизация'},{subclassId:'ionizer'}).ok,true,'Ionization prepares a bomb effect');
-assert.equal(hooks.attackModifiers(ionizer,{isBomb:true}).pendingOnHit.alchemistFormula.save,'dex','Ionization forwards its Dexterity save to combat');
+assert.equal(hooks.useFeature(ionizer,'alchemist-subclassFeature',{featureName:'Плазменная бомба'},{subclassId:'ionizer'}).ok,true,'Plasma Bomb prepares a valid subclass bomb');
+assert.ok(hooks.attackModifiers(ionizer,{isBomb:true}).extraDice.includes('1d12'),'Plasma Bomb adds its direct-hit d12');
 const pigmentist={classes:[{name:'Алхимик',level:3,subclass:'pigmentist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{}};
 hooks.sync(pigmentist);
-assert.equal(hooks.useFeature(pigmentist,'alchemist-subclassFeature',{featureName:'Цветной взрыв'},{subclassId:'pigmentist'}).ok,false,'Colorful Explosion requires a damage type choice');
-assert.equal(hooks.useFeature(pigmentist,'alchemist-subclassFeature',{featureName:'Цветной взрыв',damageType:'огонь'},{subclassId:'pigmentist'}).ok,true,'Colorful Explosion accepts a valid damage type');
+assert.equal(hooks.useFeature(pigmentist,'alchemist-subclassFeature',{featureName:'Красочная бомба'},{subclassId:'pigmentist'}).ok,true,'Colorful Bomb is available to the Pigmentist');
+const paintAttack=hooks.attackModifiers(pigmentist,{isBomb:true});
+assert.equal(paintAttack.noDamage,true,'Colorful Bomb does not add ordinary bomb damage');
+assert.equal(paintAttack.pendingOnHit.alchemistFormula.revealsInvisible,true,'Colorful Bomb exposes invisible targets');
 
 
 
