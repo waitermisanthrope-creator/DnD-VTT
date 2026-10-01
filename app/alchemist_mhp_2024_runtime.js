@@ -458,7 +458,7 @@ function createAlchemistGolem(h,ctx){
  }
  if(s.alchemistGolemId&&registry.get(s.alchemistGolemId)&&Number(registry.get(s.alchemistGolemId).hp)>0)return{ok:false,message:'У Алхимика уже есть действующий алхимический голем.'};
  if(Number(ctx.bodiesCount)!==3)return{ok:false,needsMaterials:true,message:'Для создания нужны ровно три тела; передайте bodiesCount:3.'};
- if(ctx.duringLongRest!==true&&Number(ctx.timeMinutes)<480)return{ok:false,needsTime:true,message:'Создание занимает 8 часов. Укажите timeMinutes:480 или duringLongRest:true; тела пока не расходованы.'};
+ if(ctx.duringLongRest!==true&&(!Number.isFinite(Number(ctx.timeMinutes))||Number(ctx.timeMinutes)<480))return{ok:false,needsTime:true,message:'Создание занимает 8 часов. Укажите timeMinutes:480 или duringLongRest:true; тела пока не расходованы.'};
  var grafts=Array.isArray(ctx.grafts)?ctx.grafts.slice():[];
  if(grafts.length>3)return{ok:false,message:'Голем может получить не более трёх трансплантатов.'};
  var known=monstrousGrafts.map(function(x){return x[0];});
