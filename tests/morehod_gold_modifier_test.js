@@ -55,7 +55,7 @@ assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'),
   vm.runInContext(fs.readFileSync(require.resolve('../app/morehod_gold_modifier.js'), 'utf8'), combatContext);
   combatContext.DNDRules = {
     parseDice: (expr) => {
-      const m = String(expr).match(/(\\d+)d(\\d+)([+-]\\d+)?/i);
+      const m = String(expr).match(/(\d+)d(\d+)([+-]\d+)?/i);
       return { groups: [{ count: Number(m[1]), sides: Number(m[2]) }], constant: m[3] ? Number(m[3]) : 0 };
     },
     getSaveBonus: () => 0,
