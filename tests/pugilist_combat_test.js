@@ -126,7 +126,7 @@ assert.ok(bbuDamage.note.includes('Израненный, но не сломле�
 const bbuLevel9=hero(9,'Арена Рояль',{hp:20,maxHp:30,turnResources:{reaction:1}});pack.hooks.sync(bbuLevel9);ctx.DNDCombat.applyDamage(bbuLevel9,6,'рубящий',{attackerId:'threshold-enemy'});
 assert.ok(bbuLevel9.classFeaturesState.pugilistDownButNotOut,'Down but Not Out automatically activates with Bloodied but Unbowed at level 9');
 assert.equal(bbuLevel9.resources.pugilistDownButNotOut.current,0,'Down but Not Out spends its long-rest use on activation');
-const enhancedTarget=target('down-but-not-out-target');const enhancedAttack=ctx.DNDCombat.attack(bbuLevel9,enhancedTarget,{bonus:0,damage:'1d8',damageType:'дробящий',useRules:false});
+randomValue=0.99;const enhancedTarget=target('down-but-not-out-target');const enhancedAttack=ctx.DNDCombat.attack(bbuLevel9,enhancedTarget,{bonus:0,damage:'1d8',damageType:'дробящий',useRules:false});
 assert.equal(enhancedAttack.damage.total,11,'Down but Not Out adds proficiency bonus to actual attack damage');
 const spiritAuto=hero(18,'Арена Рояль',{hp:5,maxHp:40});pack.hooks.sync(spiritAuto);
 const fatalHit=ctx.DNDCombat.applyDamage(spiritAuto,10,'рубящий',{attackerId:'fatal-enemy'});
