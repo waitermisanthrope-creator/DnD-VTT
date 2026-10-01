@@ -409,6 +409,11 @@
       s=h.classFeaturesState||{};
       var fateMax=Math.max(0,Number(s.occultistFateReadingUses)||0);
       if(fateMax)ensureRes(h,'occultistFateReading',fateMax,'long');
+      if(Number(s.occultistBloodMagic&&s.occultistBloodMagic.maxLevels)>=5){
+        var bloodMax=Number(s.occultistBloodMagic.maxLevels)||l;
+        ensureRes(h,'occultistBloodMagic',bloodMax,'long');
+        h.resources.occultistBloodMagic.current=Math.max(0,bloodMax-Number(s.occultistBloodMagic.usedLevels||0));
+      }
     }
   }
 
@@ -870,7 +875,7 @@
        'illriggerSeals','illriggerConduit','illriggerInvokeHell','illriggerSuperiorInterdict','illriggerInfernalMajesty','illriggerMasterOfHell',
        'wardenInterrupt','wardenFontOfLife','wardenSurvive','wardenLegendaryResistance','wardenSecondWind','wardenBattleDice',
        'pugilistMoxie','pugilistBloodiedButUnbowed','pugilistFightingSpirit','pugilistDownButNotOut','pugilistPersona','pugilistWorkCrowd','pugilistSignatureMove','pugilistDreadHand','pugilistGrotesqueGrowth','pugilistFountainViscera','pugilistUncouthArt','pugilist_heelstomper','pugilist_lowBlow','pugilist_pocketSand',
-       'martyrSpellUses','martyrDivineRespite','occultistFateReading',
+       'martyrSpellUses','martyrDivineRespite','occultistFateReading','occultistBloodMagic',
        'beastheartFerocity','runicCharges','savantReactions'].forEach(function(id){
         if(h.resources[id])out.resources[id]={current:h.resources[id].current,max:h.resources[id].max,recharge:h.resources[id].recharge};
       });
