@@ -1590,7 +1590,7 @@ var academy=String(s.warlordAcademy||'');
   }
   function occultistAttack(h,ctx){syncOccultist(h);return{bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:['Occultist DC '+st(h).occultistDC]};}
 
-  function witchHexCount(l){return l>=20?10:l>=18?9:l>=16?8:l>=14?7:l>=11?6:l>=9?5:l>=5?4:l>=2?3:2;}
+  function witchHexCount(l){return l>=17?7:l>=13?6:l>=9?5:l>=5?4:l>=2?3:2;}
   function witchDC(h){return 8+(Number(h.proficiencyBonus)||2)+mod(h,'charisma');}
   var WITCH_HEXES={"Abate":{"save":"charisma","rangeFt":60,"effect":"no_reactions"},"Apathy":{"save":"charisma","rangeFt":60,"effect":"indifferent"},"Beckon Familiar":{"effect":"find_familiar_action","requiresLevel":2,"self":true},"Bleeding":{"save":"constitution","rangeFt":60,"effect":"extra_1d4_damage"},"Charm":{"save":"wisdom","rangeFt":60,"effect":"charmed"},"Dire Familiar":{"effect":"familiar_boost","requiresLevel":2,"self":true},"Disorient":{"save":"constitution","rangeFt":60,"effect":"d6_attack_penalty"},"Doomward":{"rangeFt":60,"effect":"prevent_zero_hp","friendly":true},"Duplicity":{"effect":"shadow_duplicate","self":true},"Evil Eye":{"save":"wisdom","rangeFt":60,"effect":"frightened"},"Fortune":{"rangeFt":60,"effect":"advantage_saves","friendly":true},"Go Unseen":{"effect":"invisibility","cooldown":"1 minute","self":true},"Hobble":{"save":"strength","rangeFt":60,"effect":"speed_10"},"Mire":{"effect":"difficult_terrain_30ft","self":true},"Misfortune":{"rangeFt":60,"effect":"nat20_to_nat1"},"Obfuscate":{"effect":"fog_20ft","self":true},"Pox":{"save":"constitution","rangeFt":5,"effect":"poisoned"},"Ruin":{"save":"constitution","rangeFt":60,"effect":"ac_minus_3"},"Slumber":{"save":"wisdom","rangeFt":60,"effect":"unconscious"},"Tremors":{"save":"dexterity","rangeFt":10,"effect":"prone"},"Ward":{"rangeFt":60,"effect":"damage_minus_3","friendly":true}};
   var WITCH_GRAND_HEXES={"Cauldron":{"effect":"alchemy","recharge":"longRest"},"Coven":{"effect":"coven_shared_spells"},"DualHex":{"effect":"double_single_target_hex"},"ForcefulPersonality":{"effect":"charisma_plus_2_max_22"},"Possession":{"effect":"possess","rangeFt":10,"recharge":"longRest"},"WarHex":{"effect":"hex_plus_cantrip_bonus_action"},"Witch's Broom":{"effect":"fly_60ft"},"Witch's Hut":{"effect":"animate_hut","teleportFt":60,"recharge":"longRest"}};
@@ -1604,6 +1604,12 @@ var academy=String(s.warlordAcademy||'');
     Possessed:{bonusKnownSpells:[1,4,8,12],spellsDoNotCountAgainstKnown:true}
   };
   var WITCH_CRAFTS=["Black","Green","Red","White"];
+  var WITCH_CRAFT_DATA={
+    Black:{description:"Некромантия, страдание и магия смерти.",spells:{1:["exhume","inflict wounds"],2:["gentle repose","magic weapon"],3:["animate dead","vampiric touch"],4:["blight","death ward"],5:["cloudkill","contagion"]},features:[{level:3,id:"decay",name:"Гниение"},{level:6,id:"undeathCommand",name:"Командование нежитью"},{level:10,id:"lifeTether",name:"Связь жизни"},{level:14,id:"blackSacrifice",name:"Чёрная жертва"}]},
+    Green:{description:"Растения, животные и природная магия.",spells:{1:["entangle","goodberry"],2:["barkskin","locate animals or plants"],3:["conjure animals","plant growth"],4:["conjure woodland beings","stoneskin"],5:["awaken","tree stride"]},features:[{level:3,id:"elderTongue",name:"Язык природы"},{level:3,id:"primalAlly",name:"Первобытный союзник"},{level:6,id:"twinFamiliar",name:"Двойной фамильяр"},{level:10,id:"vitalNourishment",name:"Живительное питание"},{level:14,id:"sacrificialFamiliar",name:"Жертвенный фамильяр"}]},
+    Red:{description:"Разрушительная стихийная магия.",spells:{1:["burning hands","magic missile"],2:["acid arrow","scorching ray"],3:["fireball","protection from energy"],4:["ice storm","wall of fire"],5:["cone of cold","telekinesis"]},features:[{level:3,id:"imperil",name:"Ослабление защиты"},{level:6,id:"convoluteEnergy",name:"Смешение энергии"},{level:10,id:"invulnerability",name:"Неуязвимость"},{level:14,id:"elementalAnnihilation",name:"Стихийное уничтожение"}]},
+    White:{description:"Исцеление и защитная магия.",spells:{1:["bless","cure wounds"],2:["lesser restoration","prayer of healing"],3:["beacon of hope","revivify"],4:["death ward","guardian of faith"],5:["mass cure wounds","raise dead"]},features:[{level:3,id:"remedy",name:"Средство"},{level:6,id:"talismanProtection",name:"Талисман защиты"},{level:10,id:"benevolentSurge",name:"Благотворный всплеск"},{level:14,id:"witchGift",name:"Дар ведьмы"}]}
+  };
   function syncWitch(h){
     var l=lvl(h,'Ведьма');if(!l)return;
     var p=arrMax(l,[0,2,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7]);
@@ -1613,6 +1619,11 @@ var academy=String(s.warlordAcademy||'');
     s.witchCurse=s.witchCurse||null;
     s.witchHexesKnown=s.witchHexesKnown||[];
     s.witchGrandHexes=s.witchGrandHexes||[];
+    s.witchActiveHexes=s.witchActiveHexes||[];
+    s.witchCraftSpells=(s.witchCraft&&WITCH_CRAFT_DATA[s.witchCraft])?WITCH_CRAFT_DATA[s.witchCraft].spells:null;
+    s.witchCraftFeatures=(s.witchCraft&&WITCH_CRAFT_DATA[s.witchCraft])?WITCH_CRAFT_DATA[s.witchCraft].features:[];
+    s.witchHexmasterUsesMax=Math.max(1,mod(h,'charisma'));
+    if(l>=20&&s.witchHexmasterUses===undefined)s.witchHexmasterUses=s.witchHexmasterUsesMax;
     s.familiar=s.familiar||{active:false,name:'Фамильяр ведьмы',form:'обычный'};
     s.familiar.maxHpBonus=2*l;
     s.familiar.attackUsesPerTurn=1;
@@ -1628,6 +1639,32 @@ var academy=String(s.warlordAcademy||'');
   function witchKnownHex(h,name){
     syncWitch(h);return state(h).witchHexesKnown.indexOf(String(name))>=0;
   }
+  function useWitchCraftFeature(h,id,ctx){
+    syncWitch(h);ctx=ctx||{};var l=lvl(h,'Ведьма'),s=state(h),craft=s.witchCraft||ctx.craft;
+    if(!craft||!WITCH_CRAFT_DATA[craft])return{ok:false,message:'Сначала выбери Ремесло Ведьмы.'};
+    var f=WITCH_CRAFT_DATA[craft].features.find(function(x){return x.id===id;});
+    if(!f||l<f.level)return{ok:false,message:'Эта особенность Ремесла ещё недоступна.'};
+    var t=target(ctx);
+    if(id==='decay'){if(!t)return{ok:false,message:'Нужна цель.'};var sv=global.DNDCombat&&global.DNDCombat.savingThrow?global.DNDCombat.savingThrow(t,'con',s.witchSaveDC,s.witchHexmaster?'disadvantage':'normal',{saveType:'con'}):null;if(sv&&!sv.success)t.witchDecay={damageDice:'1d4',until:'endNextTurn',maxHpReduction:true};return{ok:true,target:t.id,effect:{hex:'Decay',save:sv,necroticDamage:'1d4',reduceMaxHpByDamage:!!(sv&&!sv.success)},message:sv&&!sv.success?'🖤 Гниение наложено.':'🖤 Гниение отражено.'};}
+    if(id==='undeathCommand')return{ok:true,effect:{commandFamiliarAndUndeadTogether:true},message:'🖤 Командование нежитью активно.'};
+    if(id==='lifeTether'){h.resources=h.resources||{};h.resources.witchLifeTether=h.resources.witchLifeTether||{max:1,current:1,recharge:'short'};if(h.resources.witchLifeTether.current<=0)return{ok:false,message:'Связь жизни уже использована до отдыха.'};h.resources.witchLifeTether.current--;return{ok:true,effect:{transferDamage:true,split:'half_to_witch_half_to_hex_target',target:t&&t.id},message:'🖤 Связь жизни подготовлена.'};}
+    if(id==='blackSacrifice'){if(!s.familiar.active)return{ok:false,message:'Нужен фамильяр.'};if(s.blackSacrificeUsed)return{ok:false,message:'Чёрная жертва уже использована до долгого отдыха.'};s.blackSacrificeUsed=true;s.familiar.active=false;return{ok:true,effect:{radiusFt:20,damageDice:'8d10',damageType:'necrotic',save:'dexterity',saveDC:s.witchSaveDC,reduceMaxHpByDamage:true},message:'🖤 Чёрная жертва: фамильяр растворён.'};}
+    if(id==='elderTongue'){s.elderTongueUntil='endNextTurn';return{ok:true,effect:{speakWithBeastsAndPlants:true,advantageCharismaChecks:true},message:'🌿 Язык природы активирован.'};}
+    if(id==='primalAlly'){s.familiar.maxHpBonus=3*l;return{ok:true,effect:{familiarHpBonus:3*l},message:'🌿 Первобытный союзник усилил фамильяра.'};}
+    if(id==='twinFamiliar'){if(!s.familiar.active)return{ok:false,message:'Нужен фамильяр.'};s.familiar.twins=true;return{ok:true,effect:{twinFamiliar:true,sharedHp:true},message:'🌿 Двойной фамильяр активирован.'};}
+    if(id==='vitalNourishment')return{ok:true,effect:{longRestTempHp:true,tempHpEach:Math.floor(l/2)+mod(h,'charisma'),maxTargets:6,endConditions:['Ослеплён','Оглушён','Парализован','Отравлен']},message:'🌿 Живительное питание добавлено к долгому отдыху.'};
+    if(id==='sacrificialFamiliar'){if(!s.familiar.active)return{ok:false,message:'Нужен фамильяр.'};var max=Math.max(1,mod(h,'charisma'));h.resources=h.resources||{};h.resources.greenSacrificialFamiliar={max:max,current:max,recharge:'long'};return{ok:true,effect:{redirectMeleeAttackToFamiliar:true,rangeFt:5},message:'🌿 Жертвенный фамильяр готов.'};}
+    if(id==='imperil'){if(!t)return{ok:false,message:'Нужна цель.'};var sv2=global.DNDCombat&&global.DNDCombat.savingThrow?global.DNDCombat.savingThrow(t,'con',s.witchSaveDC,s.witchHexmaster?'disadvantage':'normal',{saveType:'con'}):null;if(sv2&&!sv2.success)t.witchImperil={damageType:ctx.damageType||'fire',until:'endNextTurn'};return{ok:true,target:t.id,effect:{save:sv2,removeResistanceTo:ctx.damageType||'fire'},message:sv2&&!sv2.success?'🔴 Сопротивление ослаблено.':'🔴 Imperil отражён.'};}
+    if(id==='convoluteEnergy'){s.witchElementalResistance=ctx.damageType||'fire';return{ok:true,effect:{resistance:[s.witchElementalResistance],until:'endNextTurn'},message:'🔴 Стихийная устойчивость активна.'};}
+    if(id==='invulnerability'){s.invulnerability50=true;return{ok:true,effect:{reduceNextVisibleAttackBy:50},message:'🔴 Неуязвимость подготовлена.'};}
+    if(id==='elementalAnnihilation'){s.elementalAnnihilationUsed=true;return{ok:true,effect:{maximizeElementalSpell:true,requiresEqualOrHigherExtraSlot:true},message:'🔴 Стихийное уничтожение подготовлено.'};}
+    if(id==='remedy'){if(!t)return{ok:false,message:'Нужна цель.'};var heal=global.DNDCombat&&global.DNDCombat.heal?global.DNDCombat.heal(t,rollDiceLocal('1d10')+l):null;return{ok:true,target:t.id,effect:{healing:heal&&heal.amount||0,roll:'1d10+'+l},message:'⚪ Средство применено.'};}
+    if(id==='talismanProtection'){s.talismanProtection=true;return{ok:true,effect:{savingThrowBonusDice:'1d4'},message:'⚪ Талисман защиты создан.'};}
+    if(id==='benevolentSurge'){if(!t)return{ok:false,message:'Нужна цель.'};var heal2=global.DNDCombat&&global.DNDCombat.heal?global.DNDCombat.heal(t,rollDiceLocal('1d10')+mod(h,'charisma')):null;return{ok:true,target:t.id,effect:{healing:heal2&&heal2.amount||0},message:'⚪ Благотворный всплеск применён.'};}
+    if(id==='witchGift')return{ok:true,effect:{healingGrantsACBonus:3},message:'⚪ Дар ведьмы активен.'};
+    return{ok:false,unsupported:true,message:'Неизвестная особенность Ремесла.'};
+  }
+  function rollDiceLocal(expr){var m=String(expr).match(/^(\d+)d(\d+)$/);if(!m)return 0;var n=Number(m[1]),d=Number(m[2]),x=0;for(var i=0;i<n;i++)x+=1+Math.floor(Math.random()*d);return x;}
   function useWitch(h,id,ctx){
     syncWitch(h);ctx=ctx||{};var l=lvl(h,'Ведьма'),t=target(ctx),s=state(h);
     var levelReq={hex:1,cackle:2,familiar:2,witchCurse:1,craftFeature:3,insidiousSpell:5,improvedFamiliar:7,dyingCurse:9,grandHex:11,hexmaster:20};
@@ -1649,21 +1686,62 @@ var academy=String(s.warlordAcademy||'');
     }
     if(id==='chooseCraft'){
       var craft=String(ctx.craft||'');if(WITCH_CRAFTS.indexOf(craft)<0)return{ok:false,message:'Неизвестное Ремесло Ведьмы.'};
-      if(l<3)return{ok:false,message:'Ремесло доступно с 3 уровня.'};s.witchCraft=craft;return{ok:true,message:'🔮 Выбрано Ремесло: '+craft};
+      if(l<3)return{ok:false,message:'Ремесло доступно с 3 уровня.'};
+      s.witchCraft=craft;s.witchCraftSpells=WITCH_CRAFT_DATA[craft].spells;
+      return{ok:true,effect:{craft:craft,spells:WITCH_CRAFT_DATA[craft].spells,features:WITCH_CRAFT_DATA[craft].features},message:'🔮 Выбрано Ремесло: '+craft};
     }
     if(id==='chooseCurse'){
       var curse=String(ctx.curse||'');if(WITCH_CURSES.indexOf(curse)<0)return{ok:false,message:'Неизвестное Ведьмино проклятие.'};
-      if(l!==1&&s.witchCurse&&s.witchCurse!==curse)return{ok:false,message:'Проклятие выбирается один раз.'};s.witchCurse=curse;return{ok:true,message:'☠️ Проклятие выбрано: '+curse};
+      if(s.witchCurse&&s.witchCurse!==curse)return{ok:false,message:'Проклятие выбирается один раз.'};
+      s.witchCurse=curse;
+      if(curse==='Burned'){h.resistances=h.resistances||[];if(h.resistances.indexOf('fire')<0)h.resistances.push('fire');}
+      if(curse==='Loveless'){h.immunities=h.immunities||[];if(h.immunities.indexOf('Очарован')<0)h.immunities.push('Очарован');}
+      if(curse==='Possessed')s.possessedBonusSpells=[1,4,8,12];
+      if(curse==='Drowned'){h.waterBreathing=true;h.swimSpeed=Number(h.speed)||30;}
+      if(curse==='Hideous'){h.skillsData=h.skillsData||{};h.skillsData.intimidation=Math.max(1,Number(h.skillsData.intimidation)||0);}
+      return{ok:true,effect:Object.assign({curse:curse,saveDC:s.witchSaveDC},WITCH_CURSE_EFFECTS[curse]||{}),message:'☠️ Проклятие выбрано: '+curse};
     }
     if(id==='hex'){
-      var name2=String(ctx.hexName||'');if(name2&&WITCH_HEXES[name2]&&!witchKnownHex(h,name2))return{ok:false,message:'Сначала изучи этот Hex.'};
-      if(!t&&WITCH_HEXES[name2]&&!WITCH_HEXES[name2].friendly&&!WITCH_HEXES[name2].self)return{ok:false,message:'Выбери цель для Hex.'};
-      var def=WITCH_HEXES[name2]||{};
-      if(name2==='Go Unseen')s.witchInvisibilityUntil='endNextTurn';
-      if(name2==='Dire Familiar'){if(!s.familiar.active)return{ok:false,message:'Сначала призови фамильяра.'};s.familiar.boosted=true;}
-      if(name2==='Doomward'&&t)s.wardedTarget=t.id;
+      var name2=String(ctx.hexName||''),def=WITCH_HEXES[name2]||{};
+      if(!witchKnownHex(h,name2))return{ok:false,message:'Сначала изучи этот Hex.'};
+      if(def.requiresLevel&&l<def.requiresLevel)return{ok:false,message:'Этот Hex ещё недоступен.'};
+      if(!t&&!def.self&&!def.friendly)return{ok:false,message:'Выбери цель для Hex.'};
+      if(def.friendly&&!t)return{ok:false,message:'Выбери союзную цель.'};
+      var sv=null;
+      if(def.save&&t){
+        sv=global.DNDCombat&&global.DNDCombat.savingThrow?global.DNDCombat.savingThrow(t,def.save,s.witchSaveDC,s.witchHexmaster?'disadvantage':'normal',{saveType:def.save}):null;
+        if(sv&&!sv.success){
+          if(name2==='Abate')t.witchNoReactionsUntil='endNextTurn';
+          if(name2==='Apathy'){t.witchApathyUntil='endNextTurn';t.witchApathyToward=ctx.indifferentTargetId||null;}
+          if(name2==='Bleeding')t.witchBleedingUntil='endNextTurn';
+          if(name2==='Charm'&&global.DNDCombat)global.DNDCombat.toggleCondition(t,'Очарован',true);
+          if(name2==='Disorient')t.witchAttackPenaltyDice=true;
+          if(name2==='Evil Eye'&&global.DNDCombat)global.DNDCombat.toggleCondition(t,'Испуган',true);
+          if(name2==='Hobble')t.witchSpeedOverride=10;
+          if(name2==='Pox'&&global.DNDCombat)global.DNDCombat.toggleCondition(t,'Отравлен',true);
+          if(name2==='Ruin')t.witchACPenalty=3;
+          if(name2==='Slumber'){
+            var curHp=Number(t.hp||t.hpCurrent||0),immuneCharm=Array.isArray(t.immunities)&&t.immunities.indexOf('Очарован')>=0;
+            if(!immuneCharm&&curHp<=5*l&&global.DNDCombat)global.DNDCombat.toggleCondition(t,'Бессознателен',true);
+          }
+        }
+      }
+      if(name2==='Beckon Familiar')return useWitch(h,'familiar',{form:ctx.form});
+      if(name2==='Dire Familiar'){if(!s.familiar.active)return{ok:false,message:'Сначала призови фамильяра.'};s.familiar.boosted=true;s.familiar.boostHp=2*l;s.familiar.boostDamage=mod(h,'charisma');}
+      if(name2==='Doomward'&&t)t.witchDoomward={source:h,until:'endNextTurn'};
+      if(name2==='Duplicity')s.witchDuplicity=true;
+      if(name2==='Fortune'&&t)t.witchFortuneUntil='endNextTurn';
+      if(name2==='Go Unseen'){if(global.DNDCombat)global.DNDCombat.toggleCondition(h,'Невидим',true);s.witchInvisibilityUntil='endNextTurn';if(s.familiar.active)s.familiar.invisible=true;}
+      if(name2==='Mire')s.witchMire={radiusFt:30,until:'endNextTurn'};
+      if(name2==='Misfortune'&&t)t.witchMisfortuneUntil='endNextTurn';
+      if(name2==='Obfuscate')s.witchFog={radiusFt:20,until:'endNextTurn'};
+      if(name2==='Tremors')s.witchTremors={radiusFt:10,until:'endNextTurn'};
+      if(name2==='Ward'&&t)t.witchWard={amount:3,until:'endNextTurn'};
       s.hexTarget=t&&t.id||null;s.hexName=name2||null;
-      return{ok:true,target:t&&t.id,effect:Object.assign({hex:true,saveDC:s.witchSaveDC,duration:'until_end_next_turn',concentration:true,targetRequired:!def.self},def),message:'🧿 Hex применён: '+(name2||'выбранный Hex')};
+      var hx={hex:true,saveDC:s.witchSaveDC,duration:'until_end_next_turn',targetRequired:!def.self,concentration:!!def.save};
+      if(sv)hx.save=sv;
+      if(s.witchHexmaster)hx.hexmasterDisadvantage=true;
+      return{ok:true,target:t&&t.id,effect:Object.assign(hx,def),message:'🧿 Hex применён: '+name2};
     }
     if(id==='cackle'){
       if(!s.hexTarget)return{ok:false,message:'Нет активного Hex для продления.'};
@@ -1689,16 +1767,7 @@ var academy=String(s.warlordAcademy||'');
       var curseEffect=WITCH_CURSE_EFFECTS[s.witchCurse]||{};
       return{ok:true,effect:Object.assign({curse:s.witchCurse,saveDC:s.witchSaveDC},curseEffect),message:'☠️ Witch’s Curse: '+s.witchCurse};
     }
-    if(id==='craftFeature'){
-      var craft2=s.witchCraft||'Black';
-      var effects={
-        Black:{name:'Black Magic',necroticMagic:true,undead:true},
-        Green:{name:'Green Magic',natureMagic:true,familiarHpMultiplier:3,twinFamiliar:l>=6},
-        Red:{name:'Red Magic',elementalMagic:true,damageBoost:true},
-        White:{name:'White Magic',healingMagic:true,protection:true}
-      };
-      return{ok:true,effect:Object.assign({craft:craft2},effects[craft2]||{}),message:'🔮 Ремесло Ведьмы: '+craft2};
-    }
+    if(id==='craftFeature')return useWitchCraftFeature(h,String(ctx.featureId||ctx.craftFeature||''),ctx);
     if(id==='insidiousSpell'){
       if(!s.hexTarget)return{ok:false,message:'Insidious Spell требует активный Hex.'};
       if(t&&String(s.hexTarget)!==String(t.id))return{ok:false,message:'Цель заклинания должна быть той же, что и единственная цель Hex.'};
@@ -1726,7 +1795,7 @@ var academy=String(s.warlordAcademy||'');
     if(id==='hexmasterAutoFail'){
       if(l<20)return{ok:false,message:'Hexmaster доступен только с 20 уровня.'};
       if(!s.hexmasterUses)return{ok:false,message:'Нет доступных применений Hexmaster.'};
-      s.hexmasterUses--;return{ok:true,effect:{autoFailHexSave:true},message:'👑 Hexmaster: цель автоматически проваливает спасбросок.'};
+      s.hexmasterUses--;s.hexmasterForceFailNext=true;return{ok:true,effect:{autoFailHexSave:true},message:'👑 Hexmaster: следующий спасбросок Hex автоматически провален.'};
     }
     return{ok:false,unsupported:true,message:'Ведьма: неизвестная активная способность '+id};
   }
@@ -1742,7 +1811,7 @@ var academy=String(s.warlordAcademy||'');
   function witchTurnEnd(h){var s=state(h);if(s.familiar)s.familiar.attackUsedTurn=false;}
   var witchPack={id:'mh-witch',name:'Witch',displayName:'Ведьма',source:'Mage Hand Press Complete Witch / 5E 2014',license:'Original runtime implementation; feature names paraphrased',features:[
     {id:'spellcasting',name:'Колдовство',level:1,action:'spell'},{id:'chooseHex',name:'Выбор Hex',level:1,action:'choice'},{id:'hex',name:'Hex',level:1,action:'action',target:'enemy'},{id:'chooseCurse',name:'Проклятие ведьмы',level:1,action:'choice'},{id:'curse',name:'Проклятие ведьмы',level:1,action:'action',target:'enemy'},{id:'cackle',name:'Cackle',level:2,action:'bonus'},{id:'familiar',name:'Фамильяр',level:2,action:'utility'},{id:'familiarAttack',name:'Атака фамильяра',level:2,action:'bonus'},{id:'chooseCraft',name:'Ведьмин Craft',level:3,action:'choice'},{id:'insidiousSpell',name:'Insidious Spell',level:5,action:'passive'},{id:'improvedFamiliar',name:'Улучшенный фамильяр',level:7,action:'passive'},{id:'dyingCurse',name:'Dying Curse',level:9,action:'reaction'},{id:'chooseGrandHex',name:'Выбор Grand Hex',level:11,action:'choice'},{id:'grandHex',name:'Grand Hex',level:11,action:'special'},{id:'hexmaster',name:'Hexmaster',level:20,action:'passive'},{id:'hexmasterAutoFail',name:'Мастерское проклятие',level:20,action:'special'}
-  ],subclasses:[{id:'black',name:'Black Magic',features:[]},{id:'green',name:'Green Magic',features:[]},{id:'red',name:'Red Magic',features:[]},{id:'white',name:'White Magic',features:[]}],hooks:{sync:syncWitch,useFeature:useWitch,attackModifiers:witchAttack,onTurnEnd:witchTurnEnd}};
+  ],subclasses:Object.keys(WITCH_CRAFT_DATA).map(function(k){return{id:k.toLowerCase(),name:k+' Magic',description:WITCH_CRAFT_DATA[k].description,features:WITCH_CRAFT_DATA[k].features};}),hooks:{sync:syncWitch,useFeature:useWitch,attackModifiers:witchAttack,onTurnEnd:witchTurnEnd}};
   var packs=[bloodHunterPack,
 
     {id:'mcdm-illrigger',name:'Illrigger',displayName:'Иллиригер',source:'MCDM Productions — The Illrigger Revised 1.0',license:'Original runtime implementation; source mechanics checked against public class material',features:[{id:'balefulInterdict',name:'Зловещее запрещение',level:1,action:'bonus',target:'enemy',rangeFt:30},{id:'burnSeal',name:'Сжечь печать',level:1,action:'special',target:'enemy'},{id:'forkedTongue',name:'Раздвоенный язык',level:1,action:'passive'},{id:'combatMastery',name:'Боевая специализация',level:2,action:'utility'},{id:'interdictBoon',name:'Дар Интердикта',level:2,action:'utility'},{id:'invokeHell',name:'Призыв Ада',level:3,action:'action'},{id:'infernalConduit',name:'Инфернальный проводник',level:6,action:'action'},{id:'bloodPrice',name:'Кровавая цена',level:10,action:'reaction'},{id:'terrorizingForce',name:'Терроризирующая сила',level:11,action:'bonus'},{id:'superiorInterdict',name:'Высший интердикт',level:14,action:'passive'},{id:'infernalMajesty',name:'Инфернальное величие',level:17,action:'bonus'},{id:'masterOfHell',name:'Повелитель Ада',level:20,action:'action'}],subclasses:[
@@ -2140,6 +2209,7 @@ var academy=String(s.warlordAcademy||'');
   ];
   packs.push(occultistPack,witchPack);
   // Public bridge used by class_features_engine: one source of truth for Accursed.
+  global.WITCH_MHP_2014={VERSION:'1.1.0-deep-pass',HEXES:WITCH_HEXES,GRAND_HEXES:WITCH_GRAND_HEXES,CURSES:WITCH_CURSES,CRAFTS:WITCH_CRAFT_DATA};
   global.witchRuntime={
     sync:syncWitch,
     rest:function(h,type){
