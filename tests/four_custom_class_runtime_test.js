@@ -136,4 +136,29 @@ assert.strictEqual(selfIntercept.ok, true, 'Protector can explicitly use the sam
 assert.strictEqual(selfIntercept.reduction, 6, 'self-defense uses the existing 1d10 + proficiency reduction');
 assert.strictEqual(selfProtector.resources.protectorImpulses.current, 1, 'self-defense spends one impulse');
 assert.strictEqual(selfProtector.turnResources.reaction, 0, 'self-defense spends the reaction');
+const allyProtector = {
+  id: 'protector-ally-test',
+  classes: [{ name: 'Заступник', level: 3 }],
+  resources: { protectorImpulses: { current: 2, max: 2, recharge: 'short' } },
+  turnResources: { reaction: 1 }
+};
+const protectedAlly = { id: 'ally-test-target' };
+const invisibleAlly = runtime.interceptDamage(allyProtector, protectedAlly, 10, {
+  isAlly: true, visible: false, distanceFt: 5
+});
+assert.strictEqual(invisibleAlly.ok, false, 'cannot intercept damage for an invisible ally');
+assert.strictEqual(allyProtector.resources.protectorImpulses.current, 2, 'invisible target does not spend an impulse');
+assert.strictEqual(allyProtector.turnResources.reaction, 1, 'invisible target does not spend reaction');
+const distantAlly = runtime.interceptDamage(allyProtector, protectedAlly, 10, {
+  isAlly: true, visible: true, distanceFt: 6
+});
+assert.strictEqual(distantAlly.ok, false, 'cannot intercept damage for an ally beyond 5 feet');
+assert.strictEqual(allyProtector.resources.protectorImpulses.current, 2, 'out-of-range target does not spend an impulse');
+const allyIntercept = runtime.interceptDamage(allyProtector, protectedAlly, 10, {
+  isAlly: true, visible: true, distanceFt: 5
+});
+assert.strictEqual(allyIntercept.ok, true, 'explicitly confirmed visible ally within 5 feet can be protected');
+assert.strictEqual(allyIntercept.reduction, 6, 'ally interception uses 1d10 + proficiency');
+assert.strictEqual(allyProtector.resources.protectorImpulses.current, 1, 'successful ally interception spends one impulse');
+assert.strictEqual(allyProtector.turnResources.reaction, 0, 'successful ally interception spends reaction');
 console.log('Four custom class runtime foundation tests: PASS');
