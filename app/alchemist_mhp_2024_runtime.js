@@ -251,7 +251,7 @@ function cleanupPotionEffects(h,oldEffects,keepEffects){
 }
 function advancePotionTime(h,minutes){
  if(!h||!alvl(h)||!(Number(minutes)>0))return;var s=st(h),old=s.alchemistActiveEffects||[];
- old.forEach(function(e){if(e&&e.effect&&Number(e.effect.durationMinutes)>0){var remaining=e.remainingMinutes==null?Number(e.effect.durationMinutes):Number(e.remainingMinutes);e.remainingMinutes=Math.max(0,remaining-Number(minutes));}});
+ old.forEach(function(e){if(e&&e.effect&&Number(e.effect.durationMinutes)>0){var remaining=e.remainingMinutes==null?Number(e.effect.durationMinutes):Number(e.remainingMinutes);var nextRemaining=remaining-Number(minutes);e.remainingMinutes=nextRemaining<=0.000001?0:nextRemaining;}});
  var keep=old.filter(function(e){return e&&e.effect&&(Number(e.effect.durationMinutes)<=0||Number(e.remainingMinutes)>0);});
  cleanupPotionEffects(h,old,keep);s.alchemistActiveEffects=keep;
 }
