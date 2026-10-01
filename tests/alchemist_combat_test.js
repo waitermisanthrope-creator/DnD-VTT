@@ -166,4 +166,13 @@ const poisonedStrike=ctx.DNDCombat.attack(poisonedAttacker,poisonImmuneTarget,{b
 ctx.Math.random=oldRandomPoison;
 assert.equal(poisonedStrike.damageResult.amount,12,'Poison immunity prevents poison dice while preserving the critical physical damage');
 assert.equal(poisonImmuneTarget.hp,18,'Poison immunity prevents only the poison dice, not the physical hit');
+
+const mutableTarget={id:'mutable-target',classes:[],ac:10,hp:30,maxHp:30,abilityScores:{dexterity:10},stats:{dexterity:10},classFeaturesState:{alchemistGrafts:[{name:'Изменчивая анатомия'}]},conditions:{},resistances:[]};
+rolls=[{result:20,critical:true,fumble:false}];
+const oldRandomMutable=ctx.Math.random;ctx.Math.random=()=>0.999;
+const mutableHit=ctx.DNDCombat.attack({id:'mutant-attacker',classes:[],stats:{}},mutableTarget,{bonus:10,damage:'1d8',damageType:'дробящий',useRules:false});
+ctx.Math.random=oldRandomMutable;
+assert.equal(mutableHit.hit,true,'Variable Anatomy still allows a natural-20 hit');
+assert.equal(mutableHit.critical,false,'Variable Anatomy suppresses critical-hit damage');
+
 console.log('Alchemist combat integration tests PASS');
