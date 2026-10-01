@@ -191,7 +191,7 @@
     con.active=true;con.spellId=spell.id||spell.spellId||spell.name||null;con.spellName=spell.name||spell.spellName||'';
     return con;
   }
-  function concentrationCheck(target,damage,opts){var con=concentrationState(target);if(!con.active||num(damage)<=0)return null;opts=opts||{};var dc=Math.max(10,Math.floor(num(damage)/2)),actor=opts.saveActor||target,statBonus=0;if(global.DNDRules&&actor){statBonus=global.DNDRules.getSaveBonus(actor,'con');}else if(actor&&actor.saveBonuses)statBonus=num(actor.saveBonuses.con,0);var roll=global.DNDRules?global.DNDRules.rollD20('normal'):{result:rollDie(20)};var total=roll.result+statBonus,success=total>=dc;if(!success)breakConcentration(target);return {dc:dc,roll:roll.result,total:total,bonus:statBonus,success:success,spell:con.spellName};}
+  function concentrationCheck(target,damage,opts){var con=concentrationState(target);if(!con.active||num(damage)<=0)return null;opts=opts||{};var dc=Math.max(10,Math.floor(num(damage)/2)),actor=opts.saveActor||target,statBonus=0;if(global.DNDRules&&actor){statBonus=global.DNDRules.getSaveBonus(actor,'con');}else if(actor&&actor.saveBonuses)statBonus=num(actor.saveBonuses.con,0);var roll=global.DNDRules?global.DNDRules.rollD20('normal'):{result:rollDie(20)};if(global.DNDRules&&global.DNDRules.getD20Modifier)statBonus+=global.DNDRules.getD20Modifier(actor);var total=roll.result+statBonus,success=total>=dc;if(!success)breakConcentration(target);return {dc:dc,roll:roll.result,total:total,bonus:statBonus,success:success,spell:con.spellName};}
   function heal(target,amount){
     // Мёртвая оболочка Призрака не подлежит лечению никакими обычными
     // эффектами. Сам дух восстанавливается только собственными механиками.
