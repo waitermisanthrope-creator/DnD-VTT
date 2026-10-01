@@ -293,7 +293,7 @@ function attackModifiers(h,ctx){
  var pendingBomb=s.alchemistPendingBombEffect;
  if(isBomb&&pendingBomb){
   out.extraDice.push(pendingBomb.dice);out.damageTypes.push(pendingBomb.type);if(pendingBomb.ignoreResistance)out.ignoreResistance=true;if(pendingBomb.immunityBecomesResistance)out.immunityBecomesResistance=true;out.notes.push('Особая бомба: '+pendingBomb.name+' ('+pendingBomb.type+')');
-  var specialBombEffects={'Кислотная бомба':{save:'dex',acPenalty:3},'Большая бомба':{save:'dex',burning:true},'Резонансная бомба':{save:'con',condition:'Оглох'},'Ядовитая бомба':{save:'con',condition:'Отравлен'}};
+  var specialBombEffects={'Кислотная бомба':{save:'dex',acPenalty:3},'Большая бомба':{save:'dex',burning:true},'Резонансная бомба':{save:'con',condition:'Оглох'},'Ядовитая бомба':{save:'con',condition:'Отравлен'},'Ионизация':{save:'dex'},'Коническая бомба':{save:'con'},'Резонансная волна':{save:'str',pushFt:10},'Цветной взрыв':{save:'dex'}};
   if(specialBombEffects[pendingBomb.name])out.pendingOnHit.alchemistFormula=Object.assign({id:'special-'+pendingBomb.name,name:pendingBomb.name,dc:Number(s.alchemistSaveDC)||10,duration:'until_start_of_attacker_next_turn',saveOnHit:true},specialBombEffects[pendingBomb.name]);
   s.alchemistPendingBombEffect=null;
  }
@@ -348,7 +348,7 @@ function subclassFeatureEffect(h,sub,f,ctx){
  if(name==='Слизевая бомба')return{ok:true,effect:{damage:0,areaSlime:true,deniesActions:['dash','disengage','dodge'],removeAction:true},message:'🟢 Слизевая бомба разлита.'};
  if(name==='Жертвенная слизь'){if(!spend(h,0))return{ok:false};return{ok:true,effect:{reaction:true,redirectAttackToAlly:true,rangeFt:5},message:'🟢 Жертвенная слизь готова.'};}
  if(name==='Палитра-порталы')return{ok:true,effect:{teleportBetweenPaint:true,moveCostFt:10,rangeFt:60},message:'🎨 Палитра-порталы готовы.'};
- if(name==='Коническая бомба')return{ok:true,effect:{damageType:'thunder',damageDice:'d10',area:'cone',sizeFt:10,save:'constitution',radiusPerReagentFt:5},message:'🔊 Коническая бомба готова.'};
+ if(name==='Коническая бомба'){s.alchemistPendingBombEffect={dice:'1d10',type:'гром',name:name,save:'con',area:'cone',sizeFt:10};return{ok:true,effect:{damageType:'гром',damageDice:'d10',area:'cone',sizeFt:10,save:'con',prepared:true},message:'🔊 Коническая бомба подготовлена к следующей атаке; боевой интерфейс пока разрешает выбранную цель, но не все цели конуса.'};}
  if(name==='Светошумовая граната')return{ok:true,effect:{bonusAction:true,areaFt:10,noOpportunityAttacks:true,duration:'until_start_of_next_turn'},message:'🔊 Светошумовая граната готова.'};
  if(name==='Бомба со смехотворным газом')return{ok:true,effect:{damageType:'poison',damageDice:'d8',save:'constitution',onNatural1:{condition:'incapacitated',speed:0,duration:'until_start_of_next_turn'}},message:'☠️ Газовая бомба готова.'};
  if(name==='Токсическое возмездие'){if(!ctx.attacker||!ctx.attacker.id)return{ok:false,needsTarget:true,message:'Нужен конкретный атакующий как цель реакции.'};return{ok:true,target:ctx.attacker.id,effect:{reaction:true,save:'constitution',condition:'poisoned',duration:'1 minute',damageAtTurnStart:'1d10 poison',repeatSave:true},message:'☠️ Токсическое возмездие подготовлено против атакующего.'};}
@@ -358,7 +358,7 @@ function subclassFeatureEffect(h,sub,f,ctx){
  if(name==='Философский камень')return{ok:true,effect:{regainReagentsOnInitiativeUpTo:6,quickBrewing:true,longevity:true},message:'💎 Философский камень активен.'};
  if(name==='Реактивный двигатель')return{ok:true,effect:{bonusActionDash:true,flySpeed:30,duration:'1 minute'},message:'🚀 Реактивный двигатель активирован.'};
  if(name==='Динамо-ядро'){s.alchemistDynamoCharged=true;return{ok:true,effect:{chargeWeapon:true,extraDamage:'1d8 lightning'},message:'⚡ Следующее попадание оружием заряжено молнией.'};}
- if(name==='Ионизация')return{ok:true,effect:{damageType:'lightning',chain:true,save:'dexterity'},message:'⚡ Ионизация активирована.'};
+ if(name==='Ионизация'){s.alchemistPendingBombEffect={dice:'1d10',type:'молния',name:name,save:'dex',chain:true};return{ok:true,effect:{damageType:'lightning',damageDice:'d10',chain:true,save:'dex',prepared:true},message:'⚡ Ионизация подготовлена к следующей атаке бомбой.'};}
  if(name==='Большая бомба'){s.alchemistPendingBombEffect={dice:'3d12',type:'огонь',name:name};return{ok:true,effect:{damageDice:'3d12',areaFt:15,save:'dexterity',damageType:'fire'},message:'💣 Большая бомба подготовлена; область и спасбросок требуют боевого resolver-а.'};}
  if(name==='Грязная тактика')return{ok:true,effect:{rerollAttack:true,addDamage:'proficiencyBonus',oncePerTurn:true},message:'🎲 Грязная тактика применена.'};
  if(name==='Стабильный мутаген')return{ok:true,effect:{mutagenNoDownside:true},message:'🧬 Стабильный мутаген активен.'};
@@ -366,9 +366,9 @@ function subclassFeatureEffect(h,sub,f,ctx){
  if(name==='Большая слизь')return{ok:true,effect:{summonOoze:true,crScale:'alchemistLevel',duration:'1 hour'},message:'🟢 Большая слизь призвана.'};
  if(name==='Слизевой двойник')return{ok:true,effect:{reaction:true,createOozeDuplicate:true,duration:'1 minute'},message:'🟢 Слизевой двойник создан.'};
  if(name==='Живая палитра')return{ok:true,effect:{paintCreatures:true,temporaryHP:true},message:'🎨 Живая палитра активирована.'};
- if(name==='Цветной взрыв')return{ok:true,effect:{damageType:'choose',damageDice:'2d8',areaFt:10},message:'🌈 Цветной взрыв готов.'};
+ if(name==='Цветной взрыв'){var colorType=String(ctx.damageType||'').trim();if(['кислота','холод','огонь','молния','гром','некротический','яд','психический','излучение','силовой'].indexOf(colorType)<0)return{ok:false,needsChoice:true,message:'Выберите тип урона Цветного взрыва; способность не расходована.'};s.alchemistPendingBombEffect={dice:'2d8',type:colorType,name:name,save:'dex',areaFt:10};return{ok:true,effect:{damageType:colorType,damageDice:'2d8',areaFt:10,save:'dex',prepared:true},message:'🌈 Цветной взрыв подготовлен: '+colorType+'.'};}
  if(name==='Резонансная бомба'){s.alchemistPendingBombEffect={dice:'2d10',type:'гром',name:name};return{ok:true,effect:{damageDice:'2d10',damageType:'thunder',save:'constitution',deafened:true},message:'🔊 Резонансная бомба подготовлена к следующей атаке; оглушение слуха требует resolver-а состояний.'};}
- if(name==='Резонансная волна')return{ok:true,effect:{pushFt:10,areaFt:15,save:'strength'},message:'🔊 Резонансная волна готова.'};
+ if(name==='Резонансная волна'){s.alchemistPendingBombEffect={dice:'2d10',type:'гром',name:name,save:'str',pushFt:10,areaFt:15};return{ok:true,effect:{damageDice:'2d10',damageType:'гром',pushFt:10,areaFt:15,save:'str',prepared:true},message:'🔊 Резонансная волна подготовлена к следующей атаке; обработка всех целей области ещё ограничена.'};}
  if(name==='Ядовитая бомба'){s.alchemistPendingBombEffect={dice:'2d10',type:'яд',name:name};return{ok:true,effect:{damageDice:'2d10',damageType:'poison',save:'constitution',condition:'poisoned'},message:'☠️ Ядовитая бомба подготовлена; спасбросок и состояние требуют resolver-а.'};}
  if(name==='Мутагенная ярость')return{ok:true,effect:{bonusDamage:'1d6',resistance:true,duration:'1 minute'},message:'🧬 Мутагенная ярость активирована.'};
  var passiveFeatures={
