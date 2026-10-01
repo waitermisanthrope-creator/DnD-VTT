@@ -336,7 +336,8 @@ function rollSpellAttack(spellName) {
   var statKey = statElem ? statElem.value : 'int';
   var mod = typeof getStatModNum === 'function' ? getStatModNum(statKey) : 0;
   var prof = typeof getProfBonusNum === 'function' ? getProfBonusNum() : (hero && hero.profBonus ? hero.profBonus : 2);
-  var totalAtk = mod + prof;
+  var goldMod = hero && window.MorehodGoldModifier && typeof window.MorehodGoldModifier.getModifier === 'function' ? window.MorehodGoldModifier.getModifier(hero) : 0;
+  var totalAtk = mod + prof + goldMod;
 
   let d20Result = 0;
   const r1 = typeof rollSingleDice === 'function' ? rollSingleDice(20) : (Math.floor(Math.random() * 20) + 1);
