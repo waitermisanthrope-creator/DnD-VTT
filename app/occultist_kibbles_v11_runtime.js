@@ -142,7 +142,7 @@ if(id==='traditionFeature')return traditionFeature(h,s.occultistTradition||ctx.t
 if(id==='summonFamiliar')return traditionFeature(h,'Ведьма',Object.assign({},ctx,{action:'familiar'}));
 if(id==='summonSpirit')return traditionFeature(h,'Шаман',Object.assign({},ctx,{action:'spirit'}));
 if(id==='empowerSpirit')return traditionFeature(h,'Шаман',Object.assign({},ctx,{action:'empowerSpirit'}));
-if(id==='bloodCast'){var sl=Math.max(1,Number(ctx.spellLevel)||1);if(l<5)return{ok:false,message:'Кровавая магия доступна с 5 уровня.'};if(sl>l)return{ok:false,message:'Уровень заклинания превышает уровень Оккультиста.'};if(Number(s.occultistBloodMagic.usedLevels||0)+sl>l)return{ok:false,message:'Достигнут лимит кровавой магии до долгого отдыха.'};var hd=consumeHitDice(h,sl);if(!hd.ok)return hd;s.occultistBloodMagic.usedLevels+=sl;return{ok:true,effect:{spellLevel:sl,bloodCost:sl,hitDiceSpent:sl,necroticDamage:hd.damage},message:'🩸 Заклинание оплачено кровью.'};}
+if(id==='bloodCast'){var sl=Math.max(1,Number(ctx.spellLevel)||1);if(l<5)return{ok:false,message:'Кровавая магия доступна с 5 уровня.'};if(sl>l)return{ok:false,message:'Уровень заклинания превышает уровень Оккультиста.'};if(Number(s.occultistBloodMagic.usedLevels||0)+sl>l)return{ok:false,message:'Достигнут лимит кровавой магии до долгого отдыха.'};var hd=consumeHitDice(h,sl);if(!hd.ok)return hd;s.occultistBloodMagic.usedLevels+=sl;if(h.resources&&h.resources.occultistBloodMagic)h.resources.occultistBloodMagic.current=Math.max(0,h.resources.occultistBloodMagic.max-s.occultistBloodMagic.usedLevels);return{ok:true,effect:{spellLevel:sl,bloodCost:sl,hitDiceSpent:sl,necroticDamage:hd.damage},message:'🩸 Заклинание оплачено кровью.'};}
 if(id==='lostRitual'){var spell=String(ctx.spell||''),spellLevel=Number(ctx.spellLevel)||1;if(!spell||spellLevel>5)return{ok:false,message:'Выбери известное заклинание до 5 уровня.'};if(s.occultistLostRitual.used)return{ok:false,message:'Потерянный ритуал уже использован до отдыха.'};if(s.occultistLostRitual.spell&&s.occultistLostRitual.spell!==spell)return{ok:false,message:'Потерянный ритуал уже выбран.'};s.occultistLostRitual.spell=spell;s.occultistLostRitual.used=true;return{ok:true,effect:{castAsRitual:true,spell:spell,spellLevel:spellLevel},message:'🕯️ Потерянный ритуал применён.'};}
 if(id==='deathBeyond'){if(s.occultistDeathBeyond.used)return{ok:false,message:'За гранью смерти уже использовано до отдыха.'};s.occultistDeathBeyond.used=true;return{ok:true,effect:{castSpell:'Разговор с мёртвыми',spellLevel:3,free:true},message:'☠️ Разговор с мёртвыми применён.'};}
 if(id==='specialPoison'){s.occultistSpecialPoison.targetType=String(ctx.targetType||'');return{ok:true,effect:{poisonBypass:true,targetType:s.occultistSpecialPoison.targetType},message:'☠️ Специализированный яд настроен.'};}
@@ -236,7 +236,7 @@ var levels={};for(var i=1;i<=20;i++){levels[i]={features:[]};if(i===1)levels[i].
 function rest(h,type){
  sync(h);var s=h.classFeaturesState||{};
  if(type==='long'){
-   s.occultistBloodMagic.usedLevels=0;s.occultistLostRitual.used=false;s.occultistDeathBeyond.used=false;
+   s.occultistBloodMagic.usedLevels=0;if(h.resources&&h.resources.occultistBloodMagic)h.resources.occultistBloodMagic.current=h.resources.occultistBloodMagic.max;s.occultistLostRitual.used=false;s.occultistDeathBeyond.used=false;
    if(s.fateReadingUses!==undefined)s.fateReadingUses=prof(h);
    s.oracleReservedDie=null;s.occultistAlchemy.potion=false;s.occultistFateReadingActive=false;
    if(s.occultistSpirit)s.occultistSpirit.manifested=false;
