@@ -576,10 +576,20 @@ var academy=String(s.warlordAcademy||'');
     if(!Array.isArray(s.accursed.slotCurrent)||s.accursed.slotCurrent.length!==5||s.accursed.lastSlotLevel!==l){s.accursed.slotCurrent=s.accursed.spellSlots.slice();s.accursed.lastSlotLevel=l;}
     s.accursed.curseSpells=ACCURSED_CURSES[s.accursed.curseId]?ACCURSED_CURSES[s.accursed.curseId].curseSpells:{};
     s.accursed.ailmentList=ACCURSED_CURSES[s.accursed.curseId]?ACCURSED_CURSES[s.accursed.curseId].ailments:[];
+    s.accursed.grantedCurseSpells=s.accursed.grantedCurseSpells||{};
+    Object.keys(s.accursed.curseSpells).forEach(function(k){
+      if(Number(k)<=l){
+        var cs=String(s.accursed.curseSpells[k]||'');
+        if(cs&&!s.accursed.grantedCurseSpells[cs]){
+          if(s.accursed.spellsKnown.indexOf(cs)<0)s.accursed.spellsKnown.push(cs);
+          s.accursed.grantedCurseSpells[cs]=true;
+        }
+      }
+    });
     s.accursed.jealousBlight={curseImmunity:l>=7,noReduction:l>=7,agePossessionSleepTransformImmunity:l>=14,noDisadvantage:l>=20};
     s.accursed.extraAttack=l>=5;syncAccursedResource(h);
   }
-  function chooseAccursedCurse(h,id){syncAccursed(h);id=String(id||'');if(!ACCURSED_CURSES[id])return{ok:false,message:'Неизвестное завоёванное проклятие.'};var s=st(h).accursed;s.curseId=id;s.knownMetamorphoses=[];s.ailments=ACCURSED_CURSES[id].ailments.slice();return{ok:true,curse:id,curseName:ACCURSED_CURSES[id].name,message:'🩸 Выбрано завоёванное проклятие: '+ACCURSED_CURSES[id].name+'.'};}
+  function chooseAccursedCurse(h,id){syncAccursed(h);id=String(id||'');if(!ACCURSED_CURSES[id])return{ok:false,message:'Неизвестное завоёванное проклятие.'};var s=st(h).accursed;if(s.curseId&&s.curseId!==id)return{ok:false,message:'Завоёванное проклятие уже выбрано и не может быть заменено через этот выбор.'};s.curseId=id;s.knownMetamorphoses=[];s.ailments=ACCURSED_CURSES[id].ailments.slice();return{ok:true,curse:id,curseName:ACCURSED_CURSES[id].name,message:'🩸 Выбрано завоёванное проклятие: '+ACCURSED_CURSES[id].name+'.'};}
   function chooseAccursedAbility(h,ability){syncAccursed(h);ability=String(ability||'').toLowerCase();if(['intelligence','wisdom','charisma'].indexOf(ability)<0)return{ok:false,message:'Характеристика проклятия: Интеллект, Мудрость или Харизма.'};st(h).accursed.curseAbility=ability;syncAccursed(h);return{ok:true,message:'🩸 Характеристика проклятия выбрана.'};}
   function chooseAccursedMetamorphoses(h,names,replace){
     syncAccursed(h);var s=st(h).accursed,l=lvl(h,'Аккурсд'),arr=Array.isArray(names)?names:[names];
