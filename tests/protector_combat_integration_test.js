@@ -199,13 +199,13 @@ assert.strictEqual(zoneSave.success, true, 'zone bonus changes a boundary result
 assert(zoneSave.classFeatureNotes.some(note => note.includes('Страж рубежа')), 'zone effect is reflected in result notes');
 
 // Zone context is discovered from battlefield tokens when the caller marks a forced-movement save.
-const zoneProtectorCombatant = { id: 'zone-protector-token', name: 'Zone Protector', type: 'hero' };
+const zoneProtectorCombatant = zoneProtector;
 zoneAlly.type = 'hero';
 zoneAlly.name = 'Zone Ally';
 window.currentChar = { initiativeTracker: { round: 2, combatants: [zoneProtectorCombatant, zoneAlly] } };
 window.DNDBattleBoard = {
   findTokenForCombatant(id) {
-    if (String(id) === String(zoneProtectorCombatant.id)) return { id: 'bt-zone-protector-token', sourceId: id, type: 'hero', x: 1, y: 1, visible: true };
+    if (String(id) === String(zoneProtectorCombatant.id)) return { id: 'bt-zone-protector-token', sourceId: id, name: 'Zone Protector', type: 'hero', x: 1, y: 1, visible: true };
     if (String(id) === String(zoneAlly.id)) return { id: 'bt-zone-ally', sourceId: id, type: 'hero', x: 3, y: 1, visible: true };
     return null;
   },
