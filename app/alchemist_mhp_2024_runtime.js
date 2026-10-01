@@ -303,9 +303,14 @@ function subclassFeatureEffect(h,sub,f,ctx){
  var n=f[1],l=alvl(h),s=st(h),name=String(n||'');
  if(name==='Болеутоляющая бомба'){
   if(!ctx.target||typeof ctx.target!=='object')return{ok:false,needsTarget:true,message:'Выберите союзника для Болеутоляющей бомбы; действие не потрачено.'};
-  var relief=l+(Number(ctx.reagents)||0)*10,oldTemp=Number(ctx.target.tempHp||ctx.target.temporaryHP)||0;
+  var reagentCount=Math.max(0,Math.floor(Number(ctx.reagents)||0));
+  if(reagentCount>r.current)return{ok:false,message:'Недостаточно реагентов; Болеутоляющая бомба не применена.'};
+  var reagentRoll=Number(ctx.reagentRoll);
+  if(reagentCount>0&&(!Number.isFinite(reagentRoll)||reagentRoll<reagentCount||reagentRoll>10*reagentCount))return{ok:false,needsRoll:true,reagents:reagentCount,formula:reagentCount+'d10',message:'Бросьте '+reagentCount+'d10 для дополнительных временных HP; реагенты пока не списаны.'};
+  var relief=l+reagentRoll,oldTemp=Number(ctx.target.tempHp||ctx.target.temporaryHP)||0;
+  if(reagentCount>0&&!spend(h,reagentCount))return{ok:false,message:'Недостаточно реагентов; Болеутоляющая бомба не применена.'};
   ctx.target.tempHp=Math.max(oldTemp,relief);ctx.target.temporaryHP=ctx.target.tempHp;
-  return{ok:true,target:ctx.target.id||null,effect:{damage:0,tempHp:ctx.target.tempHp,applied:true,duration:'until_long_rest'},message:'⚗️ Болеутоляющая бомба: '+ctx.target.tempHp+' временных HP.'};
+  return{ok:true,target:ctx.target.id||null,effect:{damage:0,tempHp:ctx.target.tempHp,reagentsSpent:reagentCount,applied:true,duration:'until_long_rest'},message:'⚗️ Болеутоляющая бомба: '+ctx.target.tempHp+' временных HP.'};
  }
  if(name==='Бомба с феромонами'){
   if(!ctx.target||typeof ctx.target!=='object')return{ok:false,needsTarget:true,message:'Выберите цель для Бомбы с феромонами; действие не потрачено.'};
