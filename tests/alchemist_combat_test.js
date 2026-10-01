@@ -186,5 +186,20 @@ const oozeTarget={id:'ooze-rancher',classes:[{name:'Алхимик',level:3,subc
 assert.equal(ctx.DNDCombat.effectiveDamage(oozeTarget,10,'кислота').amount,5,'Ooze Rancher has acid resistance from level 3');
 assert.equal(ctx.DNDCombat.effectiveDamage(oozeTarget,10,'огонь').amount,10,'Ooze Rancher acid resistance does not affect fire damage');
 
+const slimeAttacker={id:'slime-attacker',classes:[{name:'Алхимик',level:6,subclass:'oozeRancher'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:3,resources:{},classFeaturesState:{}};
+hooks.sync(slimeAttacker);
+hooks.useFeature(slimeAttacker,'alchemist-subclassFeature',{featureName:'Слизевая бомба'},{subclassId:'oozeRancher'});
+const slimeVictim={id:'slime-victim',classes:[],ac:10,hp:20,maxHp:20,conditions:{},activeConditions:{},classFeaturesState:{}};
+rolls=[{result:20,critical:true,fumble:false}];
+const oldRandomSlime=ctx.Math.random;ctx.Math.random=()=>0.999;
+const slimeHit=ctx.DNDCombat.attack(slimeAttacker,slimeVictim,{bonus:10,damage:'1d10',damageType:'огонь',isBomb:true,attackKind:'bomb',useRules:false});
+ctx.Math.random=oldRandomSlime;
+assert.equal(slimeHit.hit,true,'Slime Bomb attack hits its target');
+assert.equal(slimeVictim.hp,20,'Slime Bomb applies no damage');
+assert.equal(slimeVictim.classFeaturesState.alchemistDebuffs.slimeCovered,true,'Slime Bomb applies the persistent slime status');
+assert.equal(ctx.DNDCombat.removeAlchemistSlime(slimeVictim,false).actionRequired,true,'Slime requires an action to remove');
+assert.equal(ctx.DNDCombat.removeAlchemistSlime(slimeVictim,true).ok,true,'Slime status can be removed by spending an action');
+
+
 
 console.log('Alchemist combat integration tests PASS');
