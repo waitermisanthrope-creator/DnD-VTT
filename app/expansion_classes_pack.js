@@ -209,6 +209,7 @@
   }
   function psionTalentUse(h,id,ctx){
     ctx=ctx||{};var s=st(h),l=psionLevel(h);
+    var internal={'astralArms':'Астральные руки','mentalMight':'Ментальная мощь','psionicDefenses':'Псионическая защита','psionicWeapon':'Псионическое оружие','psiCrystal':'Псионический кристалл','physicalSurge':'Физический импульс','oneStepAhead':'Предвидящий взгляд','innerStrength':'Внутренняя сила','psionicAdept':'Псионический адепт','psionicSynthesis':'Псионический синтез','phaseShot':'Фазовый выстрел','phaseCut':'Фазовый разрез','mindRider':'Телепатическая связь','reflectedAgony':'Отражённая агония','tacticalOpening':'Тактическое открытие','magicalResistance':'Магическое сопротивление','deadspot':'Мёртвая зона'};id=internal[id]||id;
     var map={'Астральные руки':'astralArms','Ментальная мощь':'mentalMight','Псионическая защита':'psionicDefenses','Псионическое оружие':'psionicWeapon','Псионический кристалл':'psiCrystal','Физический импульс':'physicalSurge','Предвидящий взгляд':'oneStepAhead','Внутренняя сила':'innerStrength','Псионический адепт':'psionicAdept','Псионический синтез':'psionicSynthesis','Фазовый выстрел':'phaseShot','Фазовый разрез':'phaseCut','Телепатическая связь':'mindRider','Отражённая агония':'reflectedAgony','Тактическое открытие':'tacticalOpening','Магическое сопротивление':'magicalResistance','Мёртвая зона':'deadspot'};
     var key=map[id]||id;
     if((s.psionTalents||[]).indexOf(id)<0&&id!=='phaseCut')return{ok:false,message:'Талант не выбран.'};
