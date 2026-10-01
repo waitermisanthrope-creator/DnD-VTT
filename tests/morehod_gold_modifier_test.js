@@ -54,6 +54,33 @@ assert.strictEqual(rules.getModifier(restoredMariner), 1, 'the wallet modifier s
   assert.strictEqual(appContext.allCharacters[0].coins.sp, 10, 'app storage preserves carried silver');
   assert.strictEqual(rules.getModifier(appContext.allCharacters[0]), 1, 'restored in-app wallet produces the same Mariner modifier');
 }
+
+// Integration: a real market purchase updates the same carried wallet read by the Mariner modifier.
+{
+  const storage = new Map();
+  const hero = { id: 'mariner-market-test', name: 'Мореход', classes: [{ name: 'Мореход', level: 1 }], coins: { gp: 2000, pp: 0, ep: 0, sp: 0, cp: 0 }, inventory: {} };
+  const marketContext = {
+    console, Math, Number, String, Array, Object, JSON, Date, RegExp, isFinite, parseInt, parseFloat,
+    currentCharacter: hero,
+    localStorage: { getItem: key => storage.has(key) ? storage.get(key) : null, setItem: (key, value) => storage.set(key, String(value)) },
+    document: { addEventListener: () => {}, getElementById: () => null },
+    addEventListener: () => {},
+    renderInventory: () => {},
+    autoSaveCurrentCharacter: () => {}
+  };
+  marketContext.window = marketContext;
+  marketContext.globalThis = marketContext;
+  vm.createContext(marketContext);
+  vm.runInContext(fs.readFileSync(require.resolve('../app/market_economy_v55.js'), 'utf8'), marketContext);
+  assert.strictEqual(rules.getModifier(hero), 5, 'the starting carried wallet grants +5');
+  const traderId = Object.keys(marketContext.DND_MARKET_V55.TRADERS)[0];
+  const item = marketContext.DND_MARKET_V55.TRADERS[traderId].stock[0];
+  assert(item, 'market fixture contains a purchasable item');
+  const purchase = marketContext.DND_MARKET_V55.buy(traderId, item.id, 1);
+  assert.strictEqual(purchase.ok, true, 'the market purchase succeeds');
+  assert.strictEqual(rules.getModifier(hero), 4, 'market spending immediately recalculates the modifier from the updated carried wallet');
+
+}
 assert.strictEqual(rules.adjustRollTotal(14, { className: 'Мореход', coins: { gp: 1200 } }), 15);
 assert.strictEqual(typeof rules.adjustDamageDie, 'undefined', 'Mariner modifier does not expose damage-die adjustment');
 // Integration: load the actual rules engine and confirm the modifier reaches weapon attacks once.
