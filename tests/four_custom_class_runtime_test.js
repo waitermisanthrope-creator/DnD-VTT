@@ -173,7 +173,7 @@ assert.strictEqual(zone.ok, true, 'Strazh Rubezha creates a zone using a bonus a
 assert.strictEqual(zone.zone.radiusFt, 10);
 assert.strictEqual(zoneHero.resources.protectorImpulses.current, 1);
 const zoneAlly = { id: 'zone-ally' };
-const zoneIncapacitated = { ...zoneHero, activeConditions: { 'Недееспособен': true } };
+const zoneIncapacitated = { ...zoneHero, classFeaturesState: JSON.parse(JSON.stringify(zoneHero.classFeaturesState)), activeConditions: { 'Недееспособен': true } };
 assert.strictEqual(runtime.protectorZoneSave(zoneIncapacitated, zoneAlly, { forcedMovementSave: true, isAlly: true, visible: true, distanceFt: 5, round: 2 }).ok, false, 'zone ends when Protector is incapacitated');
 assert.strictEqual(runtime.protectorZoneSave(zoneHero, zoneAlly, { forcedMovementSave: true, isAlly: true, visible: true, distanceFt: 10, round: 2 }).bonus, 1, 'visible ally at zone boundary receives +1');
 assert.strictEqual(runtime.protectorZoneSave(zoneHero, zoneAlly, { forcedMovementSave: true, isAlly: true, visible: true, distanceFt: 10.1, round: 2 }).ok, false, 'ally outside zone gets no bonus');
