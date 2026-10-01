@@ -564,7 +564,7 @@
     var h=ensure(),rt=global.FourCustomClassRuntime,board=global.DNDBattleBoard;
     if(!h||!rt||typeof rt.useFeature!=='function'){alert('Runtime Заступника недоступен.');return;}
     if(!board||typeof board.validateRescueMove!=='function'||typeof board.moveRescuedCombatant!=='function'){alert('Поле боя не поддерживает проверку перемещения. Обновите приложение.');return;}
-    board.ensure();board.syncFromInitiative();
+    board.ensure();
     var target=chooseTarget();if(!target)return;
     var targetToken=board.findTokenForCombatant(target.id);
     if(!targetToken||targetToken.visible===false){alert('Союзник должен быть видимым токеном на поле боя. Сначала добавьте участников боя на сетку.');return;}
