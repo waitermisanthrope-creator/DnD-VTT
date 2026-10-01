@@ -283,7 +283,7 @@ function attackModifiers(h,ctx){
   var fd=formulaDamage[preparedFormula];
   if(fd){if(preparedFormula==='holy'&&ctx.target&&/undead|fiend|нежить|исчад/i.test(String(ctx.target.creatureType||ctx.target.type||ctx.target.monsterType||'')))fd=['1d12','излучение'];out.extraDice.push(fd[0]);out.damageTypes.push(fd[1]);out.notes.push('Формула бомбы: '+preparedFormula+' ('+fd[1]+')');
    var formulaEffects={acid:{save:'dex',acPenalty:3,saveOnHit:true},bramble:{save:'str',condition:'Опутан',speed:0,saveOnHit:true},concussion:{save:'con',pushFt:10,saveOnHit:true},cryo:{save:'con',attackPenalty:3,saveOnHit:true},fear:{save:'wis',condition:'Испуган',saveOnHit:true},impact:{save:'str',condition:'Сбит с ног',saveOnHit:true},laughingGas:{save:'con',condition:'Отравлен',verbalComponentsBlocked:true,saveOnHit:true},lightning:{save:'dex',noOpportunityAttacks:true,saveOnHit:true},paint:{save:'dex',revealsInvisible:true,saveOnHit:true},incendiary:{save:'dex',burning:true,saveOnHit:true},withering:{save:'con',savePenalty:3,saveOnHit:true},seeking:{ignoreCover:true}};
-   if(formulaEffects[preparedFormula])out.pendingOnHit.alchemistFormula=Object.assign({id:preparedFormula,name:preparedFormula,dc:Number(s.alchemistSaveDC)||10,duration:'until_start_of_attacker_next_turn'},formulaEffects[preparedFormula]);
+   if(formulaEffects[preparedFormula]){if(formulaEffects[preparedFormula].ignoreCover)out.ignoreCover=true;out.pendingOnHit.alchemistFormula=Object.assign({id:preparedFormula,name:preparedFormula,dc:Number(s.alchemistSaveDC)||10,duration:'until_start_of_attacker_next_turn'},formulaEffects[preparedFormula]);}
   }else out.notes.push('Формула бомбы: '+preparedFormula+'; дополнительный урон не определён runtime-ом.');
   s.alchemistPreparedFormula=null;
  }
