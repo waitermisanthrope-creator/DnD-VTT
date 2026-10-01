@@ -31,11 +31,11 @@ assert.deepStrictEqual(Array.from(hero.classFeaturesState.bandit.studiedTargetId
 assert.strictEqual(runtime.studyTarget(hero, targetB, { visible: false, distanceFt: 10 }).ok, false);
 assert.deepStrictEqual(Array.from(hero.classFeaturesState.bandit.studiedTargetIds), ['enemy-a'], 'invalid target does not alter state');
 runtime.studyTarget(hero, targetB, { visible: true, distanceFt: 30 });
-assert.deepStrictEqual(hero.classFeaturesState.bandit.studiedTargetIds, ['enemy-b'], 'one target before level 11; new target replaces old');
+assert.deepStrictEqual(Array.from(hero.classFeaturesState.bandit.studiedTargetIds), ['enemy-b'], 'one target before level 11; new target replaces old');
 hero.classes[0].level = 11;
 runtime.studyTarget(hero, targetA, { visible: true, distanceFt: 20 });
 runtime.studyTarget(hero, targetC, { visible: true, distanceFt: 20 });
-assert.deepStrictEqual(hero.classFeaturesState.bandit.studiedTargetIds, ['enemy-a', 'enemy-c'], 'two targets from level 11');
+assert.deepStrictEqual(Array.from(hero.classFeaturesState.bandit.studiedTargetIds), ['enemy-a', 'enemy-c'], 'two targets from level 11');
 assert.deepStrictEqual(Array.from(runtime.clearInvalidTargets(hero, ['enemy-c'])), ['enemy-c']);
 assert.strictEqual(runtime.studyTarget(hero, { name: 'no id' }, { visible: true, distanceFt: 10 }).ok, false);
 console.log('Four custom class runtime foundation tests: PASS');
