@@ -541,7 +541,6 @@ var academy=String(s.warlordAcademy||'');
     scourgeSense:{name:'Чувство бичевания',level:10,requires:'scourgeSpeech'},capaciousAnathema:{name:'Ёмкая анафема',level:10,requires:'arcaneAnathema'},
     obstinateAnathema:{name:'Упрямая анафема',level:10,requires:'arcaneAnathema'},instinctualSuppression:{name:'Инстинктивное подавление',level:10,requires:'bolsteringSuppression'},
     resistantSuppression:{name:'Устойчивое подавление',level:10,requires:'bolsteringSuppression'},scourgeVisage:{name:'Лик бичевания',level:10,requires:'scourgeSpeech'},
-    mufflingImprecation2:{name:'Глухая инвектива',level:10,requires:'enshroudingImprecation'},
     startlingJinx:{name:'Пугающий сглаз',level:10,requires:'swiftJinx'},
     adaptiveMalediction:{name:'Адаптивная маледикция',level:18},cripplingJinx:{name:'Калечащий сглаз',level:18,requires:'enervatingJinx'},
     dispellingAnathema:{name:'Рассеивающая анафема',level:18,requires:'capaciousAnathema'},doublingJinx:{name:'Двойной сглаз',level:18,requires:'enervatingJinx'},
@@ -611,11 +610,12 @@ var academy=String(s.warlordAcademy||'');
     }
     if(id==='afflict'||id==='afflictAilment'){
       if(!t)return{ok:false,message:'Выбери цель для Поражения.'};var slot=Number(ctx.spellLevel)||1;
-      if(!accursedSpellSlotAvailable(h,slot))return{ok:false,message:'Нет ячейки '+slot+' уровня.'};
       var ailment=String(ctx.ailment||'');if(!ailment)return{ok:false,message:'Выбери недуг проклятия.'};
-      if(!spendAccursedSlot(h,slot))return{ok:false,message:'Ячейка уже потрачена.'};
+      var fecund=s.knownMetamorphoses.indexOf('fecundAffliction')>=0&&s.fecundReady===true;
+      if(!fecund&&!accursedSpellSlotAvailable(h,slot))return{ok:false,message:'Нет ячейки '+slot+' уровня.'};
+      if(fecund){s.fecundReady=false;}else if(!spendAccursedSlot(h,slot))return{ok:false,message:'Ячейка уже потрачена.'};
       var targets=Array.isArray(ctx.targets)?ctx.targets:[t];if(s.knownMetamorphoses.indexOf('prolificAffliction')>=0&&slot>1)targets=targets.slice(0,slot);
-      return{ok:true,targets:targets.map(function(x){return x.id||x}),effect:{save:'wis',dc:dc,ailment:ailment,duration:accursedDuration(slot),repeatSaveEndTurn:true,endsOnRemoveCurse:true,free:s.knownMetamorphoses.indexOf('fecundAffliction')>=0},message:'🩸 Поражение недугом наложено.'};
+      return{ok:true,targets:targets.map(function(x){return x.id||x}),effect:{save:'wis',dc:dc,ailment:ailment,duration:accursedDuration(slot),repeatSaveEndTurn:true,endsOnRemoveCurse:true,free:fecund},message:'🩸 Поражение недугом наложено.'};
     }
     if(id==='suppressCurse'){
       var slots=Number(ctx.spellLevel)||1;if(s.knownMetamorphoses.indexOf('facileSuppression')>=0){slots=0;}else if(!accursedSpellSlotAvailable(h,slots))return{ok:false,message:'Нет ячейки '+slots+' уровня.'};
@@ -725,7 +725,6 @@ var academy=String(s.warlordAcademy||'');
       else if(id==='umbralImprecation')me.effect={darkvision60:true,magicalDarkness:true};
       else if(id==='vengefulBane')me.effect={reactionAttackOrSingleTargetSpell:true,extraNecrotic:abilityMod};
       else if(id==='vileAffliction')me.effect={bonusActionAfflict:true,chooseAnyAilments:true};
-      else if(id==='mufflingImprecation2')me.effect={sameAs:'mufflingImprecation'};
       else me.effect={implemented:true};
       return{ok:true,effect:me.effect,message:'🩸 '+m.name+' активирована/учтена.'};
     }
@@ -1630,7 +1629,7 @@ if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ 
       {id:'suppressCurse',name:'Подавление недуга',level:2,action:'bonus'},
       {id:'chooseMetamorphosis',name:'Маледикционная метаморфоза',level:2,action:'choice'},
       {id:'maledictionVersatility',name:'Универсальность маледикции',level:4,action:'utility'}
-    ].concat(Object.keys(ACCURSED_CURSE_FEATURES).reduce(function(a,k){return a.concat(Object.keys(ACCURSED_CURSE_FEATURES[k]).map(function(id){var f=ACCURSED_CURSE_FEATURES[k][id];return{id:id,name:id,level:f.level,action:f.action,curse:k};}));},[])),subclasses:Object.keys(ACCURSED_CURSES).map(function(id){return{id:id,name:ACCURSED_CURSES[id].name,features:Object.keys(ACCURSED_CURSE_FEATURES[id]||{}).map(function(fid){return{id:fid,name:fid,level:ACCURSED_CURSE_FEATURES[id][fid].level};})};}),hooks:{sync:syncAccursed,useFeature:useAccursed,attackModifiers:accursedAttack}},
+    ].concat(Object.keys(ACCURSED_CURSE_FEATURES).reduce(function(a,k){return a.concat(Object.keys(ACCURSED_CURSE_FEATURES[k]).map(function(id){var f=ACCURSED_CURSE_FEATURES[k][id];return{id:id,name:id,level:f.level,action:f.action,curse:k};}));},[])),subclasses:Object.keys(ACCURSED_CURSES).map(function(id){return{id:id,name:ACCURSED_CURSES[id].name,pickLevel:1,features:Object.keys(ACCURSED_CURSE_FEATURES[id]||{}).map(function(fid){return{id:fid,name:fid,level:ACCURSED_CURSE_FEATURES[id][fid].level};})};}),hooks:{sync:syncAccursed,useFeature:useAccursed,attackModifiers:accursedAttack}},
     {id:'ip-runekeeper',name:'RuneKeeper',displayName:'Рунный хранитель',source:'Taron Pounds / Indestructoboy',license:'Original runtime implementation',features:[{id:'inscribeRune',name:'Вписать руну',level:1,action:'utility'},{id:'runeStance',name:'Рунная стойка',level:2,action:'bonus'},{id:'invokeRune',name:'Призвать руну',level:1,action:'action'}],subclasses:[{id:'dethek',name:'Детек',features:[]},{id:'fiendish',name:'Инфернский',features:[]},{id:'ghukliak',name:'Гуклиак',features:[]},{id:'jotun',name:'Йотун',features:[]},{id:'iokharic',name:'Иокхарик',features:[]},{id:'supernal',name:'Высший',features:[]}],hooks:{sync:syncRuneKeeper,useFeature:useRuneKeeper,attackModifiers:runeKeeperAttack}},
 
     {id:'kibbles-psion',name:'Psion',displayName:'Псионик',source:'KibblesTasty Homebrew',license:'CC-BY content source; original runtime implementation',features:[
