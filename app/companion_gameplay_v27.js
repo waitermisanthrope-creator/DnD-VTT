@@ -76,7 +76,7 @@
     var chk=rangeCheck(e,{combatant:t,token:targetToken},action);
     if(!chk.ok)return {ok:false,reason:chk.los&&!chk.los.clear?'los_blocked':'out_of_range',distance:chk.distance,range:chk.range};
     var c=findCombatant('summon_'+e.id);if(!c)return {ok:false,reason:'combatant_not_found'};
-    if(!consumeAction(c))return {ok:false,reason:'action_used'};
+    if(e.companionType==='homunculus'){var ownerActor=ownerCombatant(e);if(!ownerActor||!ownerActor.turnResources||!ownerActor.turnResources.bonusAction)return {ok:false,reason:'owner_bonus_action_used'};c.turnResources=c.turnResources||{};if(c.turnResources.reaction===false)return {ok:false,reason:'reaction_used'};ownerActor.turnResources.bonusAction=false;c.turnResources.reaction=false;}else if(!consumeAction(c))return {ok:false,reason:'action_used'};
     var rampage=!!(e.companionType==='beastheart'&&e.metadata&&e.metadata.rampage),fer=Number(e.resources&&e.resources.ferocity)||0,owner=ownerCombatant(e),bond=h&&h.classFeaturesState&&h.classFeaturesState.companionBond,extra=rampage?(bond==='ferocious'&&Number(e.beastheartLevel||1)>=11?fer:Math.floor(fer/2)):0;
     var dmg=action.damage||'1d4';
     var queued=(e.metadata&&Array.isArray(e.metadata.nextAttackExtraDice))?e.metadata.nextAttackExtraDice.slice():[];
