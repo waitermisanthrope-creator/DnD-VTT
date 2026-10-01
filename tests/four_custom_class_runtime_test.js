@@ -90,6 +90,9 @@ const fireTarget = { id: 'target-fire-1', inArea: true, distanceFt: 10, target: 
 const invalidFire = runtime.useFeature(circusHero, 'circusFireBreath', { targets: [{ ...fireTarget, inArea: false }] });
 assert.strictEqual(invalidFire.ok, false, 'invalid area fails before spending resource');
 assert.strictEqual(circusHero.resources.circusResource.current, circusHero.resources.circusResource.max);
+const duplicateFireTargets = runtime.useFeature(circusHero, 'circusFireBreath', { targets: [fireTarget, fireTarget] });
+assert.strictEqual(duplicateFireTargets.ok, false, 'duplicate target IDs are rejected before spending Circus resource');
+assert.strictEqual(circusHero.resources.circusResource.current, circusHero.resources.circusResource.max, 'duplicate target rejection does not spend resource');
 const fireResult = runtime.useFeature(circusHero, 'circusFireBreath', { targets: [fireTarget] });
 assert.strictEqual(fireResult.ok, true, 'Fire Eater ability resolves');
 assert.strictEqual(fireResult.dice, '3d6', 'Fire Eater scales at level 7');
@@ -106,6 +109,12 @@ const banditTripHero = {
 };
 runtime.sync(banditTripHero);
 const tripTarget = { id: 'trip-target', speed: 30, saveSuccess: false, classFeaturesState: {} };
+const tripResourceBeforeResolverFailure = banditTripHero.resources.banditDirtyTricks.current;
+window.DNDCombat.savingThrow = () => { throw new Error('simulated save resolver failure'); };
+const failedResolverTrip = runtime.useFeature(banditTripHero, 'banditTrip', { attackHit: true, target: tripTarget, distanceFt: 5 });
+assert.strictEqual(failedResolverTrip.ok, false, 'failed save resolver returns a clean failure');
+assert.strictEqual(banditTripHero.resources.banditDirtyTricks.current, tripResourceBeforeResolverFailure, 'resolver failure does not spend Dirty Tricks');
+window.DNDCombat.savingThrow = (target, stat, dc) => ({ success: !!target.saveSuccess, stat, dc });
 const tripResult = runtime.useFeature(banditTripHero, 'banditTrip', { attackHit: true, target: tripTarget, distanceFt: 5 });
 assert.strictEqual(tripResult.ok, true);
 assert.strictEqual(tripResult.applied, true);
@@ -190,6 +199,11 @@ const rescueInvalid = runtime.useFeature(rescuer, 'protectorRescue', { target: f
 assert.strictEqual(rescueInvalid.ok, false, 'rescue requires a confirmed free cell');
 assert.strictEqual(rescuer.resources.protectorImpulses.current, 2, 'invalid rescue does not spend resource');
 assert.strictEqual(rescuer.turnResources.reaction, 1, 'invalid rescue does not spend reaction');
+const alreadyStable = { id: 'already-stable', hp: 0, stable: true, deathSaves: { successes: 3, failures: 0 } };
+const stableRescue = runtime.useFeature(rescuer, 'protectorRescue', { target: alreadyStable, isAlly: true, visible: true, distanceFt: 5, cellAvailable: true, freeCell: {x:2,y:3}, distanceToCellFt:5 });
+assert.strictEqual(stableRescue.ok, false, 'Savior cannot spend resources rescuing an already stable ally');
+assert.strictEqual(rescuer.resources.protectorImpulses.current, 2, 'already stable ally does not spend an impulse');
+assert.strictEqual(rescuer.turnResources.reaction, 1, 'already stable ally does not spend reaction');
 const rescued = runtime.useFeature(rescuer, 'protectorRescue', { target: fallen, isAlly: true, visible: true, distanceFt: 5, cellAvailable: true, freeCell: {x:2,y:3}, distanceToCellFt:5, chosenEnemyId:'enemy', round:2 });
 assert.strictEqual(runtime.useFeature(Object.assign({},rescuer,{classes:[{name:'Заступник',level:3,subclass:'Страж рубежа'}]}),'protectorRescue',{target:fallen,isAlly:true,visible:true,distanceFt:5,cellAvailable:true,freeCell:{x:2,y:3},distanceToCellFt:5}).ok,false,'other Protector subclass cannot use Savior');
 assert.strictEqual(runtime.useFeature(rescuer,'protectorRescue',{target:fallen,isAlly:true,visible:true,distanceFt:5,cellAvailable:true,freeCell:{x:2,y:3},distanceToCellFt:6}).ok,false,'rescue refuses a destination beyond movement distance');
