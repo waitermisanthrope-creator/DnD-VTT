@@ -262,6 +262,8 @@ function attackModifiers(h,ctx){
   else out.notes.push('Формула бомбы: '+preparedFormula+'; дополнительный урон не определён runtime-ом.');
   s.alchemistPreparedFormula=null;
  }
+ var pendingBomb=s.alchemistPendingBombEffect;
+ if(isBomb&&pendingBomb){out.extraDice.push(pendingBomb.dice);out.damageTypes.push(pendingBomb.type);out.notes.push('Особая бомба: '+pendingBomb.name+' ('+pendingBomb.type+')');s.alchemistPendingBombEffect=null;}
  if(s.alchemistSeekingBombBonus&&isBomb){out.bonusDamage+=Number(s.alchemistSeekingBombBonus)||0;s.alchemistSeekingBombBonus=0;}
  if(s.alchemistSurgicalAttackReady&&ctx.unarmedGraft){out.extraDice.push('1d8');s.alchemistSurgicalAttackReady=false;out.notes.push('Хирургическая атака');}
  if(s.alchemistDynamoCharged&&ctx.weaponAttack){out.extraDice.push('1d8');out.notes.push('Динамо-ядро');s.alchemistDynamoCharged=false;}
@@ -271,8 +273,8 @@ function subclassFeatureEffect(h,sub,f,ctx){
  var n=f[1],l=alvl(h),s=st(h),name=String(n||'');
  if(name==='Болеутоляющая бомба')return{ok:true,effect:{damage:0,tempHp:l+(Number(ctx.reagents)||0)*10,targetOrArea:true},message:'⚗️ Болеутоляющая бомба: временные HP.'};
  if(name==='Бомба с феромонами')return{ok:true,effect:{damage:0,save:'wisdom',condition:'charmed',until:'start_of_next_turn',endsOnDamage:true},message:'💗 Феромонная бомба применена.'};
- if(name==='Аркано-бомба')return{ok:true,effect:{damageType:'force',damageDice:'d12',extraDice:1,spendDynamo:true},message:'⚡ Аркано-бомба готова.'};
- if(name==='Плазменная бомба')return{ok:true,effect:{damageType:'radiant',directDice:'d12',blastDice:'d6',attached:true},message:'☀️ Плазменная бомба готова.'};
+ if(name==='Аркано-бомба'){s.alchemistPendingBombEffect={dice:'1d12',type:'силовой',name:name};return{ok:true,effect:{damageType:'force',damageDice:'d12',extraDice:1,spendDynamo:true},message:'⚡ Аркано-бомба подготовлена к следующей атаке бомбой.'};}
+ if(name==='Плазменная бомба'){s.alchemistPendingBombEffect={dice:'1d12',type:'излучение',name:name};return{ok:true,effect:{damageType:'radiant',directDice:'d12',blastDice:'d6',attached:true},message:'☀️ Плазменная бомба подготовлена к следующей атаке; урон взрыва требует выбора цели в боевом интерфейсе.'};}
  if(name==='Теплоотвод'){if(!ctx.overheatedWeapon||!ctx.overheatedWeapon.id)return{ok:false,needsTarget:true,message:'Выберите конкретное перегретое оружие; реагенты не списаны.'};if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,effect:{overheatDamage:'2d6 fire',coolWeaponBonus:'2d6 cold',weaponId:ctx.overheatedWeapon.id},message:'🔥❄️ Теплоотвод применён.'};}
  if(name==='Бомба с чёрным порохом'){var r=h.resources.alchemistReagents;if(!s.blackPowderUses)s.blackPowderUses=Math.max(1,mod(h,'int'));if(s.blackPowderUses<1)return{ok:false,message:'Бомбы с чёрным порохом исчерпаны до отдыха.'};s.blackPowderUses--;return{ok:true,effect:{damageDice:'d12',damageType:'fire',ignoreResistance:true,immunityBecomesResistance:true},message:'💥 Бомба с чёрным порохом готова.'};}
  if(name==='Мутаген'){
@@ -292,12 +294,12 @@ function subclassFeatureEffect(h,sub,f,ctx){
  if(name==='Токсическое возмездие'){if(!ctx.attacker||!ctx.attacker.id)return{ok:false,needsTarget:true,message:'Нужен конкретный атакующий как цель реакции.'};return{ok:true,target:ctx.attacker.id,effect:{reaction:true,save:'constitution',condition:'poisoned',duration:'1 minute',damageAtTurnStart:'1d10 poison',repeatSave:true},message:'☠️ Токсическое возмездие подготовлено против атакующего.'};}
  if(name==='Хирургическая атака'){if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};s.alchemistSurgicalAttackReady=true;return{ok:true,effect:{attackAbility:'intelligence',extraDamage:'1d8'},message:'🧬 Следующий подходящий удар трансплантатом усилен.'};}
  if(name==='Некромантические органы'){s.xenoNecroticReady=true;return{ok:true,effect:{replaceDropToZeroWithHP:l,longRestUses:1},message:'🧬 Некромантические органы готовы.'};}
- if(name==='Кислотная бомба')return{ok:true,effect:{damageDice:'2d8',damageType:'acid',splashDice:'d8'},message:'🧪 Кислотная бомба готова.'};
+ if(name==='Кислотная бомба'){s.alchemistPendingBombEffect={dice:'2d8',type:'кислота',name:name};return{ok:true,effect:{damageDice:'2d8',damageType:'acid',splashDice:'d8'},message:'🧪 Кислотная бомба подготовлена к следующей атаке.'};}
  if(name==='Философский камень')return{ok:true,effect:{regainReagentsOnInitiativeUpTo:6,quickBrewing:true,longevity:true},message:'💎 Философский камень активен.'};
  if(name==='Реактивный двигатель')return{ok:true,effect:{bonusActionDash:true,flySpeed:30,duration:'1 minute'},message:'🚀 Реактивный двигатель активирован.'};
  if(name==='Динамо-ядро'){s.alchemistDynamoCharged=true;return{ok:true,effect:{chargeWeapon:true,extraDamage:'1d8 lightning'},message:'⚡ Следующее попадание оружием заряжено молнией.'};}
  if(name==='Ионизация')return{ok:true,effect:{damageType:'lightning',chain:true,save:'dexterity'},message:'⚡ Ионизация активирована.'};
- if(name==='Большая бомба')return{ok:true,effect:{damageDice:'3d12',areaFt:15,save:'dexterity',damageType:'fire'},message:'💣 Большая бомба готова.'};
+ if(name==='Большая бомба'){s.alchemistPendingBombEffect={dice:'3d12',type:'огонь',name:name};return{ok:true,effect:{damageDice:'3d12',areaFt:15,save:'dexterity',damageType:'fire'},message:'💣 Большая бомба подготовлена; область и спасбросок требуют боевого resolver-а.'};}
  if(name==='Грязная тактика')return{ok:true,effect:{rerollAttack:true,addDamage:'proficiencyBonus',oncePerTurn:true},message:'🎲 Грязная тактика применена.'};
  if(name==='Стабильный мутаген')return{ok:true,effect:{mutagenNoDownside:true},message:'🧬 Стабильный мутаген активен.'};
  if(name==='Адаптивная мутация')return{ok:true,effect:{chooseResistance:true,chooseMovement:true},message:'🧬 Адаптивная мутация готова.'};
@@ -305,9 +307,9 @@ function subclassFeatureEffect(h,sub,f,ctx){
  if(name==='Слизевой двойник')return{ok:true,effect:{reaction:true,createOozeDuplicate:true,duration:'1 minute'},message:'🟢 Слизевой двойник создан.'};
  if(name==='Живая палитра')return{ok:true,effect:{paintCreatures:true,temporaryHP:true},message:'🎨 Живая палитра активирована.'};
  if(name==='Цветной взрыв')return{ok:true,effect:{damageType:'choose',damageDice:'2d8',areaFt:10},message:'🌈 Цветной взрыв готов.'};
- if(name==='Резонансная бомба')return{ok:true,effect:{damageDice:'2d10',damageType:'thunder',save:'constitution',deafened:true},message:'🔊 Резонансная бомба готова.'};
+ if(name==='Резонансная бомба'){s.alchemistPendingBombEffect={dice:'2d10',type:'гром',name:name};return{ok:true,effect:{damageDice:'2d10',damageType:'thunder',save:'constitution',deafened:true},message:'🔊 Резонансная бомба подготовлена к следующей атаке; оглушение слуха требует resolver-а состояний.'};}
  if(name==='Резонансная волна')return{ok:true,effect:{pushFt:10,areaFt:15,save:'strength'},message:'🔊 Резонансная волна готова.'};
- if(name==='Ядовитая бомба')return{ok:true,effect:{damageDice:'2d10',damageType:'poison',save:'constitution',condition:'poisoned'},message:'☠️ Ядовитая бомба готова.'};
+ if(name==='Ядовитая бомба'){s.alchemistPendingBombEffect={dice:'2d10',type:'яд',name:name};return{ok:true,effect:{damageDice:'2d10',damageType:'poison',save:'constitution',condition:'poisoned'},message:'☠️ Ядовитая бомба подготовлена; спасбросок и состояние требуют resolver-а.'};}
  if(name==='Мутагенная ярость')return{ok:true,effect:{bonusDamage:'1d6',resistance:true,duration:'1 minute'},message:'🧬 Мутагенная ярость активирована.'};
  var passiveFeatures={
   'Исследования врача':1,'Концентрированное лечение':1,'Самолечение':1,'Алхимическое воскрешение':1,
