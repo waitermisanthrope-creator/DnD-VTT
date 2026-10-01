@@ -301,8 +301,20 @@ function attackModifiers(h,ctx){
 }
 function subclassFeatureEffect(h,sub,f,ctx){
  var n=f[1],l=alvl(h),s=st(h),name=String(n||'');
- if(name==='Болеутоляющая бомба')return{ok:true,effect:{damage:0,tempHp:l+(Number(ctx.reagents)||0)*10,targetOrArea:true},message:'⚗️ Болеутоляющая бомба: временные HP.'};
- if(name==='Бомба с феромонами')return{ok:true,effect:{damage:0,save:'wisdom',condition:'charmed',until:'start_of_next_turn',endsOnDamage:true},message:'💗 Феромонная бомба применена.'};
+ if(name==='Болеутоляющая бомба'){
+  if(!ctx.target||typeof ctx.target!=='object')return{ok:false,needsTarget:true,message:'Выберите союзника для Болеутоляющей бомбы; действие не потрачено.'};
+  var relief=l+(Number(ctx.reagents)||0)*10,oldTemp=Number(ctx.target.tempHp||ctx.target.temporaryHP)||0;
+  ctx.target.tempHp=Math.max(oldTemp,relief);ctx.target.temporaryHP=ctx.target.tempHp;
+  return{ok:true,target:ctx.target.id||null,effect:{damage:0,tempHp:ctx.target.tempHp,applied:true,duration:'until_long_rest'},message:'⚗️ Болеутоляющая бомба: '+ctx.target.tempHp+' временных HP.'};
+ }
+ if(name==='Бомба с феромонами'){
+  if(!ctx.target||typeof ctx.target!=='object')return{ok:false,needsTarget:true,message:'Выберите цель для Бомбы с феромонами; действие не потрачено.'};
+  var pheromoneSave=ctx.saveResult|| (g.DNDCombat&&g.DNDCombat.savingThrow?g.DNDCombat.savingThrow(ctx.target,'wis',Number(s.alchemistSaveDC)||10):null);
+  if(!pheromoneSave)return{ok:false,unsupported:true,message:'Бросок спасброска Мудрости недоступен; способность не применена.'};
+  var charmed=!pheromoneSave.success;
+  if(charmed){if(g.DNDCombat&&g.DNDCombat.toggleCondition)g.DNDCombat.toggleCondition(ctx.target,'Очарован',true);ctx.target.activeConditions=ctx.target.activeConditions||{};ctx.target.activeConditions['Очарован']=true;}
+  return{ok:true,target:ctx.target.id||null,effect:{damage:0,save:'wis',saveResult:pheromoneSave,condition:'Очарован',applied:charmed,until:'start_of_next_turn',endsOnDamage:true},message:charmed?'💗 Цель провалила спасбросок и очарована.':'💗 Цель устояла против феромонов.'};
+ }
  if(name==='Аркано-бомба'){s.alchemistPendingBombEffect={dice:'1d12',type:'силовой',name:name};return{ok:true,effect:{damageType:'force',damageDice:'d12',extraDice:1,spendDynamo:true},message:'⚡ Аркано-бомба подготовлена к следующей атаке бомбой.'};}
  if(name==='Плазменная бомба'){s.alchemistPendingBombEffect={dice:'1d12',type:'излучение',name:name};return{ok:true,effect:{damageType:'radiant',directDice:'d12',blastDice:'d6',attached:true},message:'☀️ Плазменная бомба подготовлена к следующей атаке; урон взрыва требует выбора цели в боевом интерфейсе.'};}
  if(name==='Теплоотвод'){if(!ctx.overheatedWeapon||!ctx.overheatedWeapon.id)return{ok:false,needsTarget:true,message:'Выберите конкретное перегретое оружие; реагенты не списаны.'};if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,effect:{overheatDamage:'2d6 fire',coolWeaponBonus:'2d6 cold',weaponId:ctx.overheatedWeapon.id},message:'🔥❄️ Теплоотвод применён.'};}
