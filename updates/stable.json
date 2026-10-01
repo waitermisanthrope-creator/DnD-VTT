@@ -64,13 +64,13 @@
     },
     {
       "path": "app/alchemist_mhp_2024_runtime.js",
-      "bytes": 83818,
-      "sha256": "4aeb9c6a5de1c3999f38c899d9109ccef3c591f908eb7d09287dfa8333dc8631"
+      "bytes": 85436,
+      "sha256": "ae2982897865967057e91ecb13b36c264fba387d7134991edcd72c414bb4b62d"
     },
     {
       "path": "app/data/classes/Alchemist.js",
-      "bytes": 5324,
-      "sha256": "409e039b08f79e869107505fcb9723ed5e4d95c25fd5520a4edb453c5b1289d4"
+      "bytes": 5589,
+      "sha256": "dd2f0254db53e00839dd9ab202a008afbdbb637f58a72db13d7ae3dfa6a08c23"
     },
     {
       "path": "app/classesRegistry.js",
@@ -94,8 +94,8 @@
     },
     {
       "path": "app/combat_engine.js",
-      "bytes": 44013,
-      "sha256": "c5efbe9e5bac23e7c4d7dc354d6916aee757b445c404547debdab11672f1fd1c"
+      "bytes": 44927,
+      "sha256": "453a6ec00bb391b6da3ffa38f4562fe02ae64ebace4cd797611d23d7e673f200"
     },
     {
       "path": "app/vtt_debug_error_log_v709.js",
