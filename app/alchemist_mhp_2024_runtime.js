@@ -317,7 +317,34 @@ function use(h,id,ctx,feature){
  if(id==='primeBomb'){var n=Math.min(Number(ctx.reagents)||1,s.alchemistPrimeMax,r.current);if(!spend(h,n))return{ok:false,message:'Недостаточно реагентов.'};return{ok:true,effect:{extraDamage:n+'d10',extraRadiusFt:n*5},message:'💣 Прайм-бомба: +'+n+'d10.'};}
  if(id==='reagentSynthesis'){if(!s.alchemistSynthesisReady)return{ok:false,message:'Синтез реагентов доступен после короткого отдыха; после применения нужен долгий отдых.'};if(s.alchemistSynthesisUsed)return{ok:false,message:'Синтез уже использован до долгого отдыха.'};var n=Math.min(Math.max(1,mod(h,'int')),r.max-r.current);if(n<=0)return{ok:false,message:'Реагенты уже на максимуме.'};r.current+=n;s.alchemistSynthesisUsed=true;s.alchemistSynthesisReady=false;return{ok:true,message:'⚗️ Синтез: восстановлено реагентов '+n+'.'};}
  if(id==='bomb'){return{ok:true,effect:{attack:true,damageDice:s.alchemistBombDamage,damageType:'fire',range:'30/90',saveDC:s.alchemistSaveDC,explodeRadiusFt:5,intelligentExplosion:Math.max(1,mod(h,'int'))},message:'💣 Бомба готова.'};}
- if(id==='formula'){var f=formulae.find(function(x){return x.id===ctx.formula||x.name===ctx.formula;});if(!f)return{ok:false,message:'Формула не найдена.'};if(s.alchemistFormulas.indexOf(f.id)<0&&s.alchemistFormulas.indexOf(f.name)<0)return{ok:false,message:'Формула не выбрана/не известна персонажу.'};return{ok:true,effect:{formula:f},message:'🧪 Формула применена: '+f.name+'.'};}
+ if(id==='formula'){
+  if(Array.isArray(ctx.formulas)){
+   var picks=ctx.formulas.map(function(v){var q=formulae.find(function(x){return x.id===v||x.name===v;});return q&&q.id;}).filter(Boolean);
+   if(picks.length!==ctx.formulas.length||new Set(picks).size!==picks.length)return{ok:false,message:'Выберите разные формулы из списка.'};
+   if(picks.length>s.alchemistFormulaMax)return{ok:false,message:'Лимит известных формул: '+s.alchemistFormulaMax+'.'};
+   if(s.alchemistFormulas.length&&ctx.replace!==true)return{ok:false,message:'Формулы уже выбраны. Для замены после долгого отдыха передайте replace:true.'};
+   if(ctx.replace===true&&s.alchemistRestType!=='long')return{ok:false,message:'Заменять формулы можно после долгого отдыха.'};
+   s.alchemistFormulas=picks;s.alchemistRestType=null;
+   return{ok:true,selected:picks.slice(),message:'🧪 Известные формулы сохранены: '+picks.length+'.'};
+  }
+  var f=formulae.find(function(x){return x.id===ctx.formula||x.name===ctx.formula;});
+  if(!f)return{ok:false,message:'Формула не найдена.'};
+  if(s.alchemistFormulas.indexOf(f.id)<0&&s.alchemistFormulas.indexOf(f.name)<0)return{ok:false,message:'Формула не выбрана/не известна персонажу.'};
+  return{ok:true,effect:{formula:f},message:'🧪 Формула подготовлена: '+f.name+'.'};
+ }
+ if(id==='discovery'||id==='discoveries'||id==='Открытие'){
+  var discoveryName=String(ctx.discovery||ctx.name||'');
+  var discovery=discoveries.find(function(x){return x[0]===discoveryName;});
+  if(!discovery)return{ok:false,message:'Выберите Открытие из каталога Алхимика.'};
+  var discoveryLevel=Number(ctx.level)||l;
+  if(discoveryLevel<5||[5,9,13,17].indexOf(discoveryLevel)<0)return{ok:false,message:'Открытие выбирается на 5, 9, 13 и 17 уровнях.'};
+  s.alchemistDiscovered=s.alchemistDiscovered||[];
+  if(s.alchemistDiscovered.indexOf(discoveryName)>=0)return{ok:false,message:'Это Открытие уже известно.'};
+  var expected=Math.floor((l-1)/4);
+  if(s.alchemistDiscovered.length>=expected)return{ok:false,message:'Нет свободного выбора Открытия на текущем уровне.'};
+  s.alchemistDiscovered.push(discoveryName);
+  return{ok:true,selected:discoveryName,message:'📘 Открытие изучено: '+discoveryName+'.'};
+ }
  if(id==='nuclearBomb'){if(l<20||!s.philosopherStone)return{ok:false,message:'Нужен 20 уровень и Философский камень.'};s.philosopherStone=false;return{ok:true,effect:{damage:'10d10+100',type:'force',radiusMiles:1},message:'☢️ Ядерная бомба создана. Философский камень уничтожен.'};}
  if(id==='potionBrew'){var p=potions.find(function(x){return x.name===ctx.potion;});if(!p||l<p.level)return{ok:false,message:'Этот рецепт ещё недоступен.'};if(!spend(h,p.cost))return{ok:false,message:'Недостаточно реагентов.'};s.alchemistPotions=s.alchemistPotions||[];if(s.alchemistPotions.length>=s.alchemistPotionLimit){r.current+=p.cost;return{ok:false,message:'Достигнут лимит зелий.'};}s.alchemistPotions.push({name:p.name,cost:p.cost});return{ok:true,message:'⚗️ Сварено: '+p.name+'.'};}
  if(id==='potionMix'){if(l<15)return{ok:false,message:'Миксолог доступен с 15 уровня.'};s.alchemistPotionMixReady=true;return{ok:true,effect:{mixPotions:true},message:'🍶 До конца хода можно выпить два зелья бонусным действием.'};}
