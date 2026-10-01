@@ -268,7 +268,7 @@
   }
   function resetDeathSaves(hero){hero.deathSaves={successes:0,failures:0};}
   function attack(attacker,target,opts){
-    opts=opts||{};if(!opts.target)opts.target=target; var bonus=num(opts.bonus), mode=opts.mode||'normal';
+    opts=opts||{};if(target)opts.target=target; var bonus=num(opts.bonus), mode=opts.mode||'normal';
     var perfumeClass=(target&&target.classes||[]).find(function(cl){return cl&&(cl.name==='Алхимик'||cl.englishName==='Alchemist')&&(cl.subclass==='amorist'||cl.subclass==='Аморист')&&Number(cl.level)>=10;});
     if(perfumeClass&&attacker&&target&&opts.__perfumeChecked!==true){
       var perfumeState=target.classFeaturesState=target.classFeaturesState||{},perfumeOwnerState=attacker.classFeaturesState||{},attackerId=String(attacker.id||attacker.entityId||''),roundTracker=(global.currentChar||global.currentCharacter||{}).initiativeTracker||{},currentRound=Number(roundTracker.round)||1;
