@@ -274,6 +274,7 @@ function checkModifiers(h,ctx){
  ctx=ctx||{};var out={bonus:0,minimum:0,notes:[]},l=alvl(h),sub=(h.classes||[]).find(function(x){return x.name===CLASS;}),sid=sub&&sub.subclass,s=subs.find(function(x){return x.id===sid||x.name===sid;});
  if(!s)return out;
  if(s.id==='apothecary'&&l>=3&&(ctx.skill==='medicine'||ctx.skillName==='Медицина')){out.bonus=Math.max(1,mod(h,'int'));out.notes.push('Исследования врача');}
+ if(s.id==='pigmentist'&&l>=3&&(ctx.tool==='painter'||ctx.toolName==='Инструменты художника'||ctx.skillName==='Инструменты художника')){out.bonus+=mod(h,'int');out.notes.push('Художник: бонус к инструментам художника');}
  if(s.id==='amorist'&&l>=3&&['deception','persuasion','Обман','Убеждение'].indexOf(ctx.skill)>=0){out.abilityOverride='intelligence';out.notes.push('Очарователь: Интеллект вместо Харизмы');}
  return out;
 }
