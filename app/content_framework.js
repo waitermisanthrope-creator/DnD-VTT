@@ -47,7 +47,7 @@
     return {ok:!errors.length,errors:errors};
   }
   function indexPack(pack){
-    function put(f,extra){var key=pack.id+'::'+f.id;var entry=Object.assign({packId:pack.id,className:pack.name},extra||{},clone(f));featureIndex[key]=entry;featureIds[f.id]=featureIds[f.id]||[];if(featureIds[f.id].indexOf(key)<0)featureIds[f.id].push(key);if(!featureIndex[f.id])featureIndex[f.id]=entry;}
+    function put(f,extra){var suffix=(extra&&extra.subclassId)?String(extra.subclassId)+'::':'';var key=pack.id+'::'+suffix+f.id;var entry=Object.assign({packId:pack.id,className:pack.name},extra||{},clone(f));featureIndex[key]=entry;featureIds[f.id]=featureIds[f.id]||[];if(featureIds[f.id].indexOf(key)<0)featureIds[f.id].push(key);if(!featureIndex[f.id])featureIndex[f.id]=entry;}
     (pack.features||[]).forEach(function(f){put(f);});
     (pack.subclasses||[]).forEach(function(s){(s.features||[]).forEach(function(f){put(f,{subclassId:s.id});});});
   }
