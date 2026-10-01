@@ -289,4 +289,17 @@ hooks.advanceTime(mutagenist,1.1);
 assert.equal(mutagenAlly.abilityScores.strength,12,'Shared Mutagen restores the original ability after one minute of the Alchemist time');
 assert.equal(mutagenAlly.classFeaturesState.alchemistSharedMutagenActive,undefined,'Shared Mutagen clears its active mutation state after expiry');
 
+
+const hemoragent={id:'hemoragent-owner',classes:[{name:'Алхимик',level:13,subclass:'xenoalchemist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:5,resources:{},classFeaturesState:{alchemistDiscovered:['Некробиология']},hitDiceRemaining:4};
+hooks.sync(hemoragent);
+hemoragent.resources.alchemistReagents.current=hemoragent.resources.alchemistReagents.max-2;
+const bloodAgent=hooks.useFeature(hemoragent,'alchemist-classFeature',{featureName:'Геморагент',hitDiceSpent:2});
+assert.equal(bloodAgent.ok,true,'Hemoragent spends real hit dice when the pool is available');
+assert.equal(hemoragent.hitDiceRemaining,2,'Hemoragent decrements the character hit-dice pool');
+assert.equal(bloodAgent.effect.reagentsRegained,1,'Hemoragent restores half the spent hit dice rounded down');
+assert.equal(hemoragent.resources.alchemistReagents.current,hemoragent.resources.alchemistReagents.max-1,'Hemoragent adds the recovered reagent');
+const hemoragentNoPool={id:'hemoragent-no-pool',classes:[{name:'Алхимик',level:13,subclass:'xenoalchemist'}],abilityScores:{intelligence:16,dexterity:14},proficiencyBonus:5,resources:{},classFeaturesState:{alchemistDiscovered:['Некробиология']}};
+hooks.sync(hemoragentNoPool);
+assert.equal(hooks.useFeature(hemoragentNoPool,'alchemist-classFeature',{featureName:'Геморагент',hitDiceSpent:2}).ok,false,'Hemoragent refuses to spend without an integrated hit-dice pool');
+
 console.log('Alchemist runtime regression tests PASS');
