@@ -1706,6 +1706,8 @@ var academy=String(s.warlordAcademy||'');
     if(s.pugilistHaymakerActive){o.disadvantage=true;o.maximizeDamageDice=true;o.notes.push('Сокрушительный удар');}
     var club=pugilistClub(h,ctx),target=ctx&&ctx.target||{};
     if(club==='sweetScience'&&l>=3)o.criticalRange=19;
+    if(s.pugilistStudiedTarget&&String(target.id||target.entityId||'')===String(s.pugilistStudiedTarget)&&(!s.pugilistStudiedTargetExpires||s.pugilistStudiedTargetExpires>Date.now())){o.advantage=true;o.notes.push('Дерись как сыщик: преимущество против изученной цели');}
+    if(s.pugilistCounterReady&&String(s.pugilistCounterReady.targetId||'')===String(target.id||target.entityId||'')){o.notes.push('Контрудар: доступна ответная атака');s.pugilistCounterReady=null;}
     if(club==='squaredCircle'&&l>=17&&target&&target.grappledByPugilist)o.criticalRange=19;
     if(club==='squaredCircle'&&l>=17&&target&&target.grappledByPugilist)o.advantage=true;
     if(s.pugilistDreadHandActive){o.rerollDamageOne=true;o.notes.push('Рука Ужаса');}
@@ -2362,7 +2364,7 @@ var academy=String(s.warlordAcademy||'');
       {id:'pissAndVinegar',name:'Ярость и дерзость',features:['saltySalute','heelstomper','lowBlow','pocketSand','meanOldCuss','uncouthArt']},
       {id:'squaredCircle',name:'Квадратный ринг',features:['compressionLock','quickPin','toTheMat','meatShield','heavyweight','cleanFinish']},
       {id:'sweetScience',name:'Благородное искусство',features:['bareKnuckleBoxer','crossCounter','oneTwoThreeFloor','floatLikeButterfly','knockOut']}
-    ],hooks:{sync:syncPugilist,useFeature:usePugilist,attackModifiers:pugilistAttack,onAttackResult:pugilistOnAttackResult}},
+    ],hooks:{sync:syncPugilist,useFeature:usePugilist,attackModifiers:pugilistAttack,saveModifiers:pugilistSaveModifiers,onAttackResult:pugilistOnAttackResult}},
   ];
   packs.push(occultistPack,witchPack);
   // Public bridge used by class_features_engine: one source of truth for Accursed.
@@ -2376,6 +2378,7 @@ var academy=String(s.warlordAcademy||'');
       s.familiar.attackUsedTurn=false;
     }
   };
+  function pugilistSaveModifiers(h,ctx){var l=pugilistLevel(h),s=st(h),out={bonus:0,advantage:false,disadvantage:false,notes:[]},kind=String(ctx&&ctx.saveType||'').toLowerCase();if(l>=10&&['stunned','unconscious','оглушён','бессознателен'].indexOf(kind)>=0){out.advantage=true;out.notes.push('Школа суровой жизни');}if(s.pugilistEyesWideOpenActive&&Number(s.pugilistEyesWideOpenActive.roundsRemaining)>0&&['blinded','deafened','ослеплён','оглох'].indexOf(kind)>=0){out.advantage=true;out.notes.push('Глаза широко открыты');}return out;}
   global.pugilistRuntime={sync:syncPugilist,rest:pugilistRest,onTurnEnd:pugilistTurnEnd,attackModifiers:pugilistAttack,onAttackResult:pugilistOnAttackResult};
   global.accursedRuntime={
     sync:syncAccursed,
