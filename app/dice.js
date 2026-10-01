@@ -602,13 +602,11 @@ function rollWeaponDamage(weaponName, damageString, critical) {
   const modVal = modifierMatch ? parseInt(modifierMatch[1], 10) : 0;
 
   const effectiveDiceCount = Math.max(1, diceCount * (critical ? 2 : 1));
-  const goldMod = getMorehodD20ModifierForCurrentCharacter();
 
   for (let i = 0; i < effectiveDiceCount; i++) {
     const raw = rollSingleDice(diceSides);
-    const adjusted = Math.max(0, raw + goldMod);
-    rolls.push(raw + (goldMod ? '→' + adjusted : ''));
-    totalSum += adjusted;
+    rolls.push(raw);
+    totalSum += raw;
   }
 
   totalSum += modVal;
