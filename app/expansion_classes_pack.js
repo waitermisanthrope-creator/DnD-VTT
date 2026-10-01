@@ -606,7 +606,7 @@ var academy=String(s.warlordAcademy||'');
     if(id==='chooseMetamorphosis'||id==='metamorphosis')return chooseAccursedMetamorphoses(h,ctx.names||ctx.name,false);
     if(id==='maledictionVersatility')return l<4?{ok:false,message:'Доступно с 4 уровня.'}:{ok:true,effect:{replaceMetamorphosis:true}};
     if(id==='adaptiveMalediction')return l<18?{ok:false,message:'Доступно с 18 уровня.'}:{ok:true,effect:{replaceAnyNon18Metamorphoses:true}};
-    if(id==='learnAccursedSpell'){var sp=String(ctx.spell||'');if(!sp)return{ok:false,message:'Укажи заклинание.'};if(s.spellsKnown.indexOf(sp)<0&&s.spellsKnown.length<s.spellsKnownMax)s.spellsKnown.push(sp);return{ok:true,message:'📜 Заклинание Аккурсда изучено.'};}
+    if(id==='learnAccursedSpell'){var sp=String(ctx.spell||'');if(!sp)return{ok:false,message:'Укажи заклинание.'};if(s.spellsKnown.indexOf(sp)>=0)return{ok:false,message:'Это заклинание уже известно.'};if(s.spellsKnown.length>=s.spellsKnownMax)return{ok:false,message:'Все ячейки известных заклинаний уже заняты.'};s.spellsKnown.push(sp);return{ok:true,message:'📜 Заклинание Аккурсда изучено.'};}
     if(id==='replaceAccursedSpell'){var old=String(ctx.oldSpell||''),nw=String(ctx.newSpell||'');var oi=s.spellsKnown.indexOf(old);if(oi<0)return{ok:false,message:'Известное заклинание не найдено.'};s.spellsKnown[oi]=nw;return{ok:true,message:'📜 Заклинание заменено.'};}
     if(id==='jinx'){
       if(!t)return{ok:false,message:'Выбери цель для Сглаза.'};var j=String(ctx.jinx||'abilityCheck');
