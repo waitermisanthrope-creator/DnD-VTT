@@ -261,7 +261,7 @@ function longRest(h){
  r.current=r.max;s.alchemistSynthesisUsed=false;s.alchemistSynthesisReady=false;
  var oldEffects=s.alchemistActiveEffects||[],keepEffects=oldEffects.filter(function(e){return e.effect&&e.effect.durationMinutes>=1440;});
  cleanupPotionEffects(h,oldEffects,keepEffects);s.alchemistActiveEffects=keepEffects;
- s.blackPowderUses=Math.max(1,mod(h,'int'));s.xenoNecroticReady=false;s.alchemistPotionMixReady=false;
+ s.blackPowderUses=Math.max(1,mod(h,'int'));s.xenoNecroticReady=false;s.xenoNecroticUsed=false;s.alchemistPotionMixReady=false;
  s.alchemistRestType='long';
 }
 function startTurn(h){
