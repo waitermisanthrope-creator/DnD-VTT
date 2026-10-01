@@ -118,6 +118,15 @@ const pheromone=hooks.useFeature(amorist,'alchemist-subclassFeature',{featureNam
 assert.equal(pheromone.ok,true,'pheromone bomb resolves a provided saving throw');
 assert.equal(pheromoneTarget.activeConditions['Очарован'],true,'failed pheromone save applies charmed condition');
 
+const timedHero={classes:[{name:'Алхимик',level:3,subclass:'apothecary'}],abilityScores:{intelligence:14,dexterity:14},proficiencyBonus:2,resources:{},classFeaturesState:{alchemistActiveEffects:[{name:'Зелье невидимости',effect:{condition:'Невидим',durationMinutes:0.2},remainingMinutes:0.2}]} ,activeConditions:{'Невидим':true},conditions:{'Невидим':true}};
+hooks.sync(timedHero);
+hooks.onTurnEnd(timedHero);
+assert.equal(timedHero.classFeaturesState.alchemistActiveEffects.length,1,'potion effect remains before its duration expires');
+hooks.onTurnEnd(timedHero);
+assert.equal(timedHero.classFeaturesState.alchemistActiveEffects.length,0,'potion effect is removed after duration expires');
+assert.equal(timedHero.activeConditions['Невидим'],undefined,'expired potion condition is cleared from active conditions');
+
+
 
 
 console.log('Alchemist runtime regression tests PASS');
