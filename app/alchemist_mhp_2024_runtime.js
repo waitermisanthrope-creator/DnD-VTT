@@ -282,7 +282,12 @@ function attackModifiers(h,ctx){
   s.alchemistPreparedFormula=null;
  }
  var pendingBomb=s.alchemistPendingBombEffect;
- if(isBomb&&pendingBomb){out.extraDice.push(pendingBomb.dice);out.damageTypes.push(pendingBomb.type);out.notes.push('Особая бомба: '+pendingBomb.name+' ('+pendingBomb.type+')');s.alchemistPendingBombEffect=null;}
+ if(isBomb&&pendingBomb){
+  out.extraDice.push(pendingBomb.dice);out.damageTypes.push(pendingBomb.type);out.notes.push('Особая бомба: '+pendingBomb.name+' ('+pendingBomb.type+')');
+  var specialBombEffects={'Кислотная бомба':{save:'dex',acPenalty:3},'Большая бомба':{save:'dex',burning:true},'Резонансная бомба':{save:'con',condition:'Оглох'},'Ядовитая бомба':{save:'con',condition:'Отравлен'}};
+  if(specialBombEffects[pendingBomb.name])out.pendingOnHit.alchemistFormula=Object.assign({id:'special-'+pendingBomb.name,name:pendingBomb.name,dc:Number(s.alchemistSaveDC)||10,duration:'until_start_of_attacker_next_turn',saveOnHit:true},specialBombEffects[pendingBomb.name]);
+  s.alchemistPendingBombEffect=null;
+ }
  if(s.alchemistSeekingBombBonus&&isBomb){out.bonusDamage+=Number(s.alchemistSeekingBombBonus)||0;s.alchemistSeekingBombBonus=0;}
  var activeEffects=s.alchemistActiveEffects||[];
  if(ctx.weaponAttack&&activeEffects.some(function(e){return e.name==='Зелье увеличения';})){out.extraDice.push('1d4');out.notes.push('Зелье увеличения: +1d4 урона оружием');}
@@ -291,7 +296,7 @@ function attackModifiers(h,ctx){
  if(activeEffects.some(function(e){return e.name==='Зелье полёта';})){out.flySpeed=activeEffects.filter(function(e){return e.name==='Зелье полёта';})[0].effect.flySpeed||30;}
 
  if(s.alchemistSurgicalAttackReady&&ctx.unarmedGraft){out.extraDice.push('1d8');s.alchemistSurgicalAttackReady=false;out.notes.push('Хирургическая атака');}
- if(s.alchemistDynamoCharged&&ctx.weaponAttack){out.extraDice.push('1d8');out.notes.push('Динамо-ядро');s.alchemistDynamoCharged=false;}
+ if(s.alchemistDynamoCharged&&ctx.weaponAttack){out.extraDice.push('1d8');out.damageTypes.push('молния');out.notes.push('Динамо-ядро: +1d8 молнией');s.alchemistDynamoCharged=false;}
  return out;
 }
 function subclassFeatureEffect(h,sub,f,ctx){
