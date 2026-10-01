@@ -176,6 +176,10 @@
     }
     // Falling unconscious/defeated ends concentration regardless of the CON save.
     // Otherwise a successful save at 0 HP could leave an illegal concentration state.
+    if(target.defeated&&global.FourCustomClassRuntime&&typeof global.FourCustomClassRuntime.clearStudiedTarget==='function'){
+      var activeHero=global.currentChar||global.currentCharacter||null;
+      if(activeHero&&target.id!=null)global.FourCustomClassRuntime.clearStudiedTarget(activeHero,target.id);
+    }
     if(target.hp<=0 || target.defeated){
       if(concentrationState(target).active){
         breakConcentration(target);
@@ -504,7 +508,7 @@
   function currentEncounter(){var h=ensure();if(!h)return null;if(!h.encounters.length)h.encounters.push({id:'enc_'+Date.now(),name:'Новый encounter',combatants:[]});return h.encounters[h.encounters.length-1];}
   global.dndAddMonsterPreset=function(){var s=document.getElementById('dndMonsterPreset'),name=s&&s.value;if(!name)return;var e=currentEncounter();e.combatants.push(addCombatantFromTemplate(MONSTERS[name]));save();renderEncounter();};
   global.dndAddCustomMonster=function(){var n=document.getElementById('dndMonsterName'),hp=document.getElementById('dndMonsterHp'),ac=document.getElementById('dndMonsterAc'),ini=document.getElementById('dndMonsterInit');var e=currentEncounter();e.combatants.push(addCombatantFromTemplate({name:n.value||'Монстр',hp:num(hp.value,10),maxHp:num(hp.value,10),ac:num(ac.value,10),initiative:num(ini.value)}));save();renderEncounter();};
-  global.dndRemoveEncounterCombatant=function(i){var e=currentEncounter();e.combatants.splice(i,1);save();renderEncounter();};
+  global.dndRemoveEncounterCombatant=function(i){var e=currentEncounter(),removed=e.combatants[i];if(removed&&removed.id!=null&&global.FourCustomClassRuntime&&typeof global.FourCustomClassRuntime.clearStudiedTarget==='function')global.FourCustomClassRuntime.clearStudiedTarget(hero(),removed.id);e.combatants.splice(i,1);save();renderEncounter();};
   global.dndLaunchEncounter=function(){var h=ensure(),e=currentEncounter();if(!e.combatants.length){alert('Добавьте хотя бы одного противника.');return;}h.initiativeTracker={round:1,activeIndex:0,combatants:[]};if(typeof global.addInitiativeCombatant==='function'){global.addInitiativeCombatant(h.name||'Герой',true);}h.initiativeTracker.combatants=h.initiativeTracker.combatants.concat(e.combatants.map(function(c){return addCombatantFromTemplate(c);}));if(typeof global.sortInitiativeTracker==='function')global.sortInitiativeTracker();save();if(typeof global.renderInitiativeTracker==='function')global.renderInitiativeTracker();renderCombatStatus();syncNetworkMasterCombat('launch');};
   function active(){var h=ensure();return h&&h.initiativeTracker&&h.initiativeTracker.combatants[h.initiativeTracker.activeIndex];}
   function syncHeroCombatant(c){var h=hero();if(!h||!c||c.type!=='hero')return;c.hp=Math.max(0,num(h.hpCurrent));c.maxHp=num(h.hpMax,c.maxHp);c.tempHp=num(h.hpTemp,c.tempHp);}
