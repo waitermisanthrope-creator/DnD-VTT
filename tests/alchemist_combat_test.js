@@ -124,7 +124,7 @@ const objectBomber={id:'object-bomber',classes:[{name:'Алхимик',level:3,s
 hooks.sync(objectBomber);
 const structureTarget={id:'structure-target',isObject:true,ac:10,hp:30,maxHp:30,conditions:{},activeConditions:{},classFeaturesState:{}};
 rolls=[{result:10,critical:false,fumble:false}];const oldRandomObject=ctx.Math.random;ctx.Math.random=()=>0.999;
-const structureBlast=ctx.DNDCombat.attack(objectBomber,structureTarget,{bonus:10,damage:'1d6',damageType:'огонь',isBomb:true,target:structureTarget,useRules:false});
+const structureBlast=ctx.DNDCombat.attack(objectBomber,structureTarget,{bonus:10,damage:'1d6',damageType:'огонь',isBomb:true,useRules:false});
 ctx.Math.random=oldRandomObject;
 assert.equal(structureBlast.damageResult.amount,12,'Mad Bomber doubles bomb damage against objects and structures');
 assert.equal(structureTarget.hp,18,'double bomb damage is applied to structure HP');
