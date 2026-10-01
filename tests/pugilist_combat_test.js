@@ -162,7 +162,7 @@ assert.equal(floorTarget.hp,floorHpBefore,'One-Two-Three Floor does not reduce H
 const knockoutHero=hero(17,'Благородное искусство');pack.hooks.sync(knockoutHero);const knockoutTarget=target('knockout-target');
 assert.equal(pack.hooks.useFeature(knockoutHero,'knockOut',{target:knockoutTarget,moxie:1}).ok,true,'Knockout prepares its selected target');
 const knockout=ctx.DNDCombat.attack(knockoutHero,knockoutTarget,{bonus:0,damage:'1d6',damageType:'дробящий',unarmedAttack:true,useRules:false});
-assert.equal(knockoutTarget.hp,0,'A successful Knockout roll sets target HP to zero');
+assert.equal(knockoutTarget.hp,30,'Knockout leaves HP unchanged; it is not lethal damage');
 assert.equal(knockoutTarget.conditions['Бессознателен'],true,'A successful Knockout applies unconsciousness');
 assert.ok(knockoutHero.classFeaturesState.pugilistKnockOutResult.success,'Knockout roll result is saved for the sheet/log');
 console.log('Pugilist combat integration tests: PASS (real class hooks, subclass mapping, Fisticuffs die, Haymaker, target-bound Signature Move hit/miss, Dig Deep resistance, Fighting Spirit HP shape)');
