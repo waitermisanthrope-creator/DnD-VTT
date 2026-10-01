@@ -42,4 +42,43 @@ assert.strictEqual(attack.total, 17, 'weapon attack total includes modifier once
 const other = { classes: [{ name: 'Бандит', level: 1 }], stats: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 }, proficiencyBonus: 2, coins: { gp: 2000 } };
 assert.strictEqual(context.DNDRules.weaponAttack(other, { stat: 'str' }, 'normal').bonus, 2, 'other classes are unaffected');
 assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'), 0, 'static skill bonus remains unchanged; passive values are not modified');
+// Integration: combat dice apply the modifier to each individual die, with a floor of zero.
+{
+  const combatContext = {
+    console, Math: Object.create(Math), Date, JSON, setTimeout, clearTimeout,
+    alert: () => {}, prompt: () => null, addEventListener: () => {}
+  };
+  combatContext.Math.random = () => 0; // deterministic raw d20/d6 result = 1
+  combatContext.window = combatContext;
+  combatContext.globalThis = combatContext;
+  vm.createContext(combatContext);
+  vm.runInContext(fs.readFileSync(require.resolve('../app/morehod_gold_modifier.js'), 'utf8'), combatContext);
+  combatContext.DNDRules = {
+    parseDice: (expr) => {
+      const m = String(expr).match(/(\\d+)d(\\d+)([+-]\\d+)?/i);
+      return { groups: [{ count: Number(m[1]), sides: Number(m[2]) }], constant: m[3] ? Number(m[3]) : 0 };
+    },
+    getSaveBonus: () => 0,
+    getD20Modifier: (hero) => combatContext.MorehodGoldModifier.getModifier(hero),
+    rollD20: () => ({ result: 1, critical: false, fumble: false }),
+    normalizeConditionName: (x) => x,
+    conditionModifiers: () => ({ autoFailStrDex: false }),
+    profBonus: () => 2
+  };
+  combatContext.DNDClassFeatures = { activeRage: () => false, reactionOptions: () => null, saveModifiers: () => null };
+  vm.runInContext(fs.readFileSync(require.resolve('../app/combat_engine.js'), 'utf8'), combatContext);
+  const loadedMariner = { classes: [{ name: 'Мореход', level: 1 }], stats: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 }, coins: { gp: 2000 } };
+  const highGoldDie = combatContext.DNDCombat.rollDice('1d6', false, false, loadedMariner);
+  assert.strictEqual(highGoldDie.rolls[0], 1);
+  assert.strictEqual(highGoldDie.adjustedRolls[0], 6);
+  assert.strictEqual(highGoldDie.total, 6, 'each damage die receives +5');
+  const poorMariner = Object.assign({}, loadedMariner, { coins: { gp: 0 } });
+  const lowGoldDie = combatContext.DNDCombat.rollDice('1d6', false, false, poorMariner);
+  assert.strictEqual(lowGoldDie.adjustedRolls[0], 0, 'a modified damage die cannot go below zero');
+  const save = combatContext.DNDCombat.savingThrow(loadedMariner, 'con', 6);
+  assert.strictEqual(save.total, 6, 'combat saving throw receives +5 once');
+  assert.strictEqual(save.success, true);
+  const nonMariner = Object.assign({}, loadedMariner, { classes: [{ name: 'Бандит', level: 1 }] });
+  assert.strictEqual(combatContext.DNDCombat.savingThrow(nonMariner, 'con', 6).total, 1, 'other classes receive no gold modifier');
+}
 console.log('morehod_gold_modifier_test: all assertions passed');
