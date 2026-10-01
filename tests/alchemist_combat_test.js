@@ -120,6 +120,9 @@ assert.equal(graftCriticalAttack.hit,true,'Mutable Anatomy still allows a natura
 assert.equal(graftCriticalAttack.critical,false,'Mutable Anatomy turns a critical hit into a normal hit');
 
 
+const bomberResistanceTarget={id:'bomber-resistance-target',hp:20,maxHp:20,classes:[{name:'Алхимик',level:10,subclass:'madBomber'}],classFeaturesState:{alchemistExplosionResistanceType:'огонь'},conditions:{},activeConditions:{}};
+const bomberResisted=ctx.DNDCombat.applyDamage(bomberResistanceTarget,10,'огонь');
+assert.equal(bomberResisted.amount,5,'Mad Bomber resistance halves the selected damage type in combat');
 const energySeamTarget={id:'energy-seam-target',hp:20,maxHp:20,conditions:{},activeConditions:{},classFeaturesState:{alchemistGrafts:[{name:'Энергетический шов',resistanceType:'огонь'}]}};
 const seamDamage=ctx.DNDCombat.applyDamage(energySeamTarget,10,'огонь');
 assert.equal(seamDamage.amount,5,'Energy Stitch halves damage of the selected donor type');
