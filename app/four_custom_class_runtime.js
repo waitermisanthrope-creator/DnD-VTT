@@ -119,6 +119,7 @@
       var item=targets[i],target=item&&item.target?item.target:item;
       var dist=item&&item.distanceFt!=null?Number(item.distanceFt):NaN;
       if(!target||target.id==null)return {ok:false,reason:'У каждой цели должен быть стабильный ID.'};
+      if(normalized.some(function(entry){return String(entry.target.id)===String(target.id);}))return {ok:false,reason:'Одна и та же цель не может быть указана в конусе огня дважды.'};
       if(!item||item.inArea!==true)return {ok:false,reason:'Подтвердите, что каждая цель находится в конусе огня.'};
       if(!isFinite(dist)||dist<0||dist>15)return {ok:false,reason:'Все цели должны находиться в пределах конуса длиной 15 футов.'};
       normalized.push({target:target,distanceFt:dist});
@@ -205,6 +206,7 @@
     if(!target||target.id==null)return {ok:false,reason:'Выберите конкретного союзника.'};
     if(ctx.isAlly!==true||ctx.visible!==true)return {ok:false,reason:'Цель должна быть видимым союзником.'};
     if(n(target.hp, target.hpCurrent)>0)return {ok:false,reason:'Спасение доступно, только когда союзник упал до 0 HP.'};
+    if(target.stable===true||(target.deathSaves&&Number(target.deathSaves.successes)>=3))return {ok:false,reason:'Союзник уже стабилизирован; способность не требуется.'};
     if(target.instantDeath===true||target.dead===true||target.deathState==='dead')return {ok:false,reason:'Мгновенно погибшего персонажа спасти нельзя.'};
     var distance=Number(ctx.distanceFt);
     if(!isFinite(distance)||distance<0||distance>5)return {ok:false,reason:'Союзник должен находиться в пределах 5 футов.'};
@@ -246,9 +248,11 @@
     if(!resource||Number(resource.current)<1)return {ok:false,reason:'Грязные приёмы закончились.'};
     if(!combat||typeof combat.savingThrow!=='function')return {ok:false,reason:'Боевой движок спасбросков недоступен.'};
     var dc=8+proficiency(l)+abilityMod(hero,'dex');
+    var save;
+    try{save=combat.savingThrow(target,'str',dc,'normal',{source:hero,saveType:'str'});}catch(error){return {ok:false,reason:'Не удалось выполнить спасбросок подсечки; ресурс сохранён.'};}
+    if(!save||typeof save.success!=='boolean')return {ok:false,reason:'Боевой движок не вернул результат спасброска; ресурс сохранён.'};
     resource.current-=1;
-    var save=combat.savingThrow(target,'str',dc,'normal',{source:hero,saveType:'str'});
-    if(!save||!save.success){
+    if(!save.success){
       target.classFeaturesState=target.classFeaturesState||{};
       target.classFeaturesState.banditTripSpeedLock={originalSpeed:Number(target.speed),sourceId:hero.id==null?null:String(hero.id)};
       target.speed=0;
