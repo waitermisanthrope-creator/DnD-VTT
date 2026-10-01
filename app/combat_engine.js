@@ -395,6 +395,7 @@
           if(alchemistFormula.attacksHaveAdvantage){debuffs.attacksHaveAdvantage=true;out.alchemistFormulaEffect.effects.push('attacksHaveAdvantage');}
           if(alchemistFormula.burning){debuffs.burning=true;debuffs.burningTicks=1;out.alchemistFormulaEffect.effects.push('burning');}
           if(alchemistFormula.oilCoated){debuffs.oilCoated=true;out.alchemistFormulaEffect.effects.push('oilCoated');}
+          if(alchemistFormula.slimeCovered){debuffs.slimeCovered=true;debuffs.denyBonusActions=!!alchemistFormula.denyBonusActions;debuffs.denyDashDisengageDodge=!!alchemistFormula.denyDashDisengageDodge;out.alchemistFormulaEffect.effects.push('slimeCovered','denyBonusActions','denyDashDisengageDodge');}
           if(alchemistFormula.smokeCloud){debuffs.smokeCloud=true;out.alchemistFormulaEffect.effects.push('smokeCloud');}
           if(alchemistFormula.teleportToImpact){var source=opts.__attacker;if(source&&target&&source.x!=null&&source.y!=null&&target.x!=null&&target.y!=null){var dx=Number(source.x)-Number(target.x),dy=Number(source.y)-Number(target.y);if(Math.sqrt(dx*dx+dy*dy)<=30){source.x=target.x;source.y=target.y;out.alchemistFormulaEffect.effects.push('teleportedToImpact');}else out.alchemistFormulaEffect.effects.push('teleportOutOfRange');}else out.alchemistFormulaEffect.effects.push('teleportNeedsMapCoordinates');}
           debuffs.expires='start_of_attacker_next_turn';
