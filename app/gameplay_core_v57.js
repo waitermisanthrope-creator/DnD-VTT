@@ -22,7 +22,18 @@
   function livingIndexes(t){var out=[];(t&&t.combatants||[]).forEach(function(c,i){if(!isDefeated(c))out.push(i);});return out;}
   function isCurrentHeroCombatant(c,h){if(!c||!h)return false;if(c===h)return true;var ids=[h.id,h.characterId].filter(function(x){return x!=null;});if(ids.indexOf(c.id)>=0||ids.indexOf(c.entityId)>=0||ids.indexOf(c.characterId)>=0)return true;if(c.isHero===true||c.type==='hero')return true;return !!(h.name&&c.name===h.name&&Array.isArray(c.classes)&&c.classes.some(function(x){return x.name==='Алхимик'||x.englishName==='Alchemist';}));}
   function alchemistHook(actor,name){if(!actor||!global.DNDContent||typeof global.DNDContent.getClass!=='function')return;var cls=(actor.classes||[]).some(function(x){return x.name==='Алхимик'||x.englishName==='Alchemist';});if(!cls)return;var pack=global.DNDContent.getClass('Алхимик');if(pack&&pack.hooks&&typeof pack.hooks[name]==='function')pack.hooks[name](actor,{turnResources:actor.turnResources});}
-  function startTurn(c){if(!c)return null;resetTurnResources(c);c.turnCount=num(c.turnCount)+1;if(c.preparedAction&&c.preparedAction.expiresRound&&num(c.preparedAction.expiresRound)<num(ensureTracker().round))c.preparedAction=null;var h=hero();if(isCurrentHeroCombatant(c,h)){alchemistHook(h,'startTurn');if(c!==h)alchemistHook(c,'startTurn');}return c;}
+  function expireAlchemistDebuffs(source){
+    if(!source)return;var h=hero(),list=(h&&h.initiativeTracker&&h.initiativeTracker.combatants||[]).slice();if(h&&list.indexOf(h)<0)list.push(h);
+    list.forEach(function(target){var d=target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs;if(!d)return;
+      var id=source.id||source.entityId||source.characterId,match=(d.sourceId!=null&&id!=null&&String(d.sourceId)===String(id))||(d.sourceName&&source.name&&String(d.sourceName)===String(source.name));if(!match)return;
+      (d.conditionsApplied||[]).forEach(function(condition){if(target.conditions)delete target.conditions[condition];if(target.activeConditions)delete target.activeConditions[condition];});
+      ['acPenalty','attackPenalty','savePenalty','speedZero','noOpportunityAttacks','verbalComponentsBlocked','revealsInvisible','attacksHaveAdvantage','burning'].forEach(function(key){delete d[key];});
+      if(target.turnResources&&d.speedZero)target.turnResources.movement=Math.max(0,num(target.speed,30));
+      delete d.sourceId;delete d.sourceName;delete d.conditionsApplied;delete d.expires;
+      if(!d.oilCoated&&!d.smokeCloud&&!Object.keys(d).length)delete target.classFeaturesState.alchemistDebuffs;
+    });
+  }
+  function startTurn(c){if(!c)return null;resetTurnResources(c);c.turnCount=num(c.turnCount)+1;expireAlchemistDebuffs(c);if(c.preparedAction&&c.preparedAction.expiresRound&&num(c.preparedAction.expiresRound)<num(ensureTracker().round))c.preparedAction=null;var h=hero();if(isCurrentHeroCombatant(c,h)){alchemistHook(h,'startTurn');if(c!==h)alchemistHook(c,'startTurn');}return c;}
   function endTurn(opts){opts=opts||{};var t=ensureTracker();if(!t||!t.combatants.length)return {ok:false,error:'Нет участников боя.'};var prev=t.combatants[t.activeIndex];var currentHero=hero();if(isCurrentHeroCombatant(prev,currentHero)){alchemistHook(currentHero,'onTurnEnd');if(prev!==currentHero)alchemistHook(prev,'onTurnEnd');}if(prev&&global.DNDSummoning&&typeof global.DNDSummoning.endTurn==='function')try{global.DNDSummoning.endTurn(prev);}catch(e){}
     var count=t.combatants.length,next=t.activeIndex,guard=0;do{next=(next+1)%count;if(next===0)t.round=num(t.round,1)+1;guard++;}while(guard<=count&&!opts.includeDefeated&&isDefeated(t.combatants[next]));
     if(guard>count){return {ok:false,error:'Все участники повержены.',battleOver:true,previous:prev};}
