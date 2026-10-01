@@ -517,11 +517,15 @@ function rollInitiative() {
   if (!currentChar) return;
 
   var dexMod = getStatModNum('dex');
+  var goldMod = window.MorehodGoldModifier && typeof window.MorehodGoldModifier.getModifier === 'function'
+    ? window.MorehodGoldModifier.getModifier(currentChar) : 0;
+  var totalMod = dexMod + goldMod;
   var roll = Math.floor(Math.random() * 20) + 1;
-  var total = roll + dexMod;
+  var total = roll + totalMod;
 
   var resultText = '🎲 Инициатива\n' +
-    'd20 (' + roll + ') ' + formatModStr(dexMod) + ' = ' + total;
+    'd20 (' + roll + ') ' + formatModStr(dexMod) +
+    (goldMod ? ' + Мореход ' + formatModStr(goldMod) : '') + ' = ' + total;
 
   goToTab(5);
   var resBox = document.getElementById('diceResult');
