@@ -383,6 +383,7 @@ function subclassFeatureEffect(h,sub,f,ctx){
   return{ok:true,target:toxicTarget.id||null,effect:{reaction:true,save:toxicSave,condition:'Отравлен',applied:true,durationMinutes:1,damageAtTurnStart:'1d10',repeatSave:true},message:'☠️ Атакующий отравлен: 1d10 ядом в начале хода, повторный спасбросок в конце хода.'};
  }
  if(name==='Хирургическая атака'){if(!spend(h,1))return{ok:false,message:'Недостаточно реагентов.'};s.alchemistSurgicalAttackReady=true;return{ok:true,effect:{attackAbility:'intelligence',extraDamage:'1d8'},message:'🧬 Следующий подходящий удар трансплантатом усилен.'};}
+ if(name==='Оно живое!')return createAlchemistGolem(h,ctx);
  if(name==='Некромантические органы'){s.xenoNecroticReady=true;return{ok:true,effect:{replaceDropToZeroWithHP:l,longRestUses:1},message:'🧬 Некромантические органы готовы.'};}
  if(name==='Кислотная бомба'){s.alchemistPendingBombEffect={dice:'2d8',type:'кислота',name:name};return{ok:true,effect:{damageDice:'2d8',damageType:'acid',splashDice:'d8'},message:'🧪 Кислотная бомба подготовлена к следующей атаке.'};}
  if(name==='Философский камень')return{ok:true,effect:{regainReagentsOnInitiativeUpTo:6,quickBrewing:true,longevity:true},message:'💎 Философский камень активен.'};
@@ -436,6 +437,42 @@ function createHomunculus(h,ctx){
  }
  if(typeof g.saveCurrentCharacter==='function')try{g.saveCurrentCharacter();}catch(e){}
  return{ok:true,entity:entity,effect:{companion:'homunculus',statblock:{hp:hp,ac:13,speed:20,attackBonus:intMod+pb,damage:'1d4+'+intMod},reagentsSpent:3,materialsCost:10,durationMinutes:60},message:'🧬 Гомункул создан: '+hp+' HP, КД 13, скорость 20 фт. Его отдельный статблок добавлен в систему компаньонов.'};
+}
+function createAlchemistGolem(h,ctx){
+ ctx=ctx||{};var l=alvl(h),s=st(h),ownerClass=(h.classes||[]).find(function(c){return c&&(c.name===CLASS||c.englishName==='Alchemist');});
+ if(l<14||!ownerClass||!(ownerClass.subclass==='xenoalchemist'||ownerClass.subclass==='Ксеноалхимик'))return{ok:false,message:'Оно живое! доступно Ксеноалхимику с 14 уровня.'};
+ if(!h.id)return{ok:false,unsupported:true,message:'У персонажа нет ID для привязки голема.'};
+ var registry=g.DNDSecondaryEntities;
+ if(!registry||typeof registry.create!=='function'||typeof registry.get!=='function'||typeof registry.ensure!=='function'||!registry.ensure())return{ok:false,unsupported:true,message:'Движок вторичных сущностей недоступен; тела не расходованы.'};
+ if(ctx.restoreGolem===true){
+  var old= s.alchemistGolemId&&registry.get(s.alchemistGolemId),minutes=Number(ctx.minutesSinceDeath);
+  if(!old)return{ok:false,message:'У Алхимика нет зарегистрированного голема для восстановления.'};
+  if(Number(old.hp)>0&&!old.defeated)return{ok:false,message:'Голем ещё действует; восстановление не требуется.'};
+  if(!Number.isFinite(minutes)||minutes<0||minutes>60)return{ok:false,message:'Голема можно восстановить только в течение часа после гибели.'};
+  if(!spend(h,1))return{ok:false,message:'Для восстановления голема нужен 1 реагент.'};
+  old.hp=Number(old.maxHp)||10*l;old.defeated=false;old.dead=false;old.metadata=old.metadata||{};old.metadata.rebuiltAt=Date.now();
+  if(registry.update)registry.update(old.id,{hp:old.hp,defeated:false,dead:false,metadata:old.metadata});
+  var tracker=h.initiativeTracker;if(tracker&&Array.isArray(tracker.combatants)){var combatant=tracker.combatants.find(function(c){return String(c.entityId)===String(old.id);});if(combatant){combatant.hp=old.hp;combatant.defeated=false;}}
+  return{ok:true,entity:old,effect:{restored:true,reagentsSpent:1,hp:old.hp},message:'🧬 Голем восстановлен за 1 реагент.'};
+ }
+ if(s.alchemistGolemId&&registry.get(s.alchemistGolemId)&&Number(registry.get(s.alchemistGolemId).hp)>0)return{ok:false,message:'У Алхимика уже есть действующий алхимический голем.'};
+ if(Number(ctx.bodiesCount)!==3)return{ok:false,needsMaterials:true,message:'Для создания нужны ровно три тела; передайте bodiesCount:3.'};
+ if(ctx.duringLongRest!==true&&Number(ctx.timeMinutes)<480)return{ok:false,needsTime:true,message:'Создание занимает 8 часов. Укажите timeMinutes:480 или duringLongRest:true; тела пока не расходованы.'};
+ var grafts=Array.isArray(ctx.grafts)?ctx.grafts.slice():[];
+ if(grafts.length>3)return{ok:false,message:'Голем может получить не более трёх трансплантатов.'};
+ var known=monstrousGrafts.map(function(x){return x[0];});
+ if(grafts.some(function(name){return known.indexOf(name)<0;})||new Set(grafts).size!==grafts.length)return{ok:false,message:'Выберите до трёх разных трансплантатов из каталога.'};
+ if(!h.initiativeTracker)h.initiativeTracker={round:1,activeIndex:0,combatants:[]};
+ if(!h.initiativeTracker.battlefield)h.initiativeTracker.battlefield={entities:{},tokens:{},rows:10,cols:10};
+ var pb=prof(h),im=mod(h,'int'),hp=10*l,actions=[{name:'Удар алхимического голема',attackBonus:im+pb,damage:'2d8+'+im,damageType:'дробящий',rangeFt:5,actionType:'melee'}],entity;
+ try{entity=registry.create({name:'Алхимический голем '+String(h.name||''),ownerId:String(h.id),ownerTokenId:'bt_'+String(h.id),source:'alchemist',sourceType:'class',companionType:'alchemistGolem',controlMode:'bonus_action_command',team:'party',hp:hp,maxHp:hp,ac:15,speed:30,size:2,actions:actions,resources:{},metadata:{alchemistGolem:true,ownerId:String(h.id),bodiesCount:3,grafts:grafts,statblock:{hp:hp,maxHp:hp,ac:15,speed:30,attackBonus:im+pb,damage:'2d8+'+im}}});}
+ catch(e){return{ok:false,unsupported:true,message:'Не удалось создать голема: '+String(e&&e.message||e)};}
+ if(!entity||!entity.id)return{ok:false,unsupported:true,message:'Движок не вернул ID голема; тела не списаны.'};
+ s.alchemistGolemId=entity.id;
+ var list=h.initiativeTracker.combatants,cid='summon_'+entity.id;
+ if(!list.some(function(c){return String(c.id)===cid;}))list.push({id:cid,entityId:entity.id,name:entity.name,type:'summon',team:'party',ownerId:String(h.id),hp:hp,maxHp:hp,ac:15,speed:30,size:2,actions:actions,turnResources:{action:true,bonusAction:true,reaction:true,movement:30,movementUsed:0},classFeaturesState:{alchemistGolemOwner:String(h.id),grafts:grafts.slice()}});
+ if(typeof g.saveCurrentCharacter==='function')try{g.saveCurrentCharacter();}catch(e){}
+ return{ok:true,entity:entity,effect:{companion:'alchemistGolem',statblock:{hp:hp,ac:15,speed:30,attackBonus:im+pb,damage:'2d8+'+im},bodiesSpent:3,grafts:grafts},message:'🧬 Алхимический голем создан: '+hp+' HP, КД 15, скорость 30 фт.'};
 }
 function use(h,id,ctx,feature){
  sync(h);ctx=ctx||{};var l=alvl(h),s=st(h),r=h.resources.alchemistReagents;
