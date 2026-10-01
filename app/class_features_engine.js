@@ -420,6 +420,7 @@
   function syncClassResources(h){
     if(!h)return;
     externalSync(h);
+    if(global.FourCustomClassRuntime&&typeof global.FourCustomClassRuntime.sync==='function')global.FourCustomClassRuntime.sync(h);
     var l;
     l=classLevel(h,'Варвар');if(l){h.ragesCount=rageCount(l);h.rageDamageBonus=rageBonus(l);ensureRes(h,'rages',rageCount(l),'long');}
     l=classLevel(h,'Бард');if(l){h.bardicInspirationDie=bardDie(l);ensureRes(h,'bardicInspiration',Math.max(1,abilityMod(h,'cha')),'long');if(l>=5)h.resources.bardicInspiration.recharge='short';}
