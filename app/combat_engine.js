@@ -285,7 +285,13 @@
     var duplicityMiss=false;
     if(duplicityTarget&&!roll.fumble){var dupRoll=rollDie(6);if(dupRoll%2===1){duplicityMiss=true;target.classFeaturesState.witch.witchDuplicity=false;}}
     var hit=!duplicityMiss&&(roll.critical || (!roll.fumble && total>=ac));
+    var electromagneticShield=null,defenderClasses=target&&target.classes||[],ionizerClass=defenderClasses.find(function(c){return c&&(c.name==='Алхимик'||c.englishName==='Alchemist')&&(c.subclass==='ionizer'||c.subclass==='Ионизатор');});
+    var incomingType=String(opts&&opts.damageType||'').toLowerCase(),rangedIncoming=!!(opts&&(opts.rangedAttack||opts.attackKind==='rangedWeapon'||opts.weapon&&Number(opts.weapon.rangeFt)>5));
+    if(hit&&ionizerClass&&Number(ionizerClass.level)>=10&&rangedIncoming&&['силовой','force','молния','lightning','некротический','necrotic','излучение','radiant'].indexOf(incomingType)>=0){
+      var shieldRoll=rollDie(6);if(shieldRoll===6){hit=false;target.classFeaturesState=target.classFeaturesState||{};target.classFeaturesState.alchemistEnergyCharges=Math.min(10,(Number(target.classFeaturesState.alchemistEnergyCharges)||0)+1);electromagneticShield={roll:shieldRoll,deflected:true,charges:target.classFeaturesState.alchemistEnergyCharges};}
+    }
     var out={d20:d20,bonus:bonus,classBonus:classBonus,total:total,ac:ac,hit:hit,critical:!!roll.critical,fumble:!!roll.fumble,damage:null,extraAttacks:Math.max(1,num(opts&&opts.__classFeatureMod&&opts.__classFeatureMod.extraAttacks,1))};
+    if(electromagneticShield){out.electromagneticShield=electromagneticShield;out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Электромагнитный щит: атака отражена; накоплено 1 заряд.');}
     if(hit && opts.damage){
       var fm=opts.__classFeatureMod||{bonusDamage:0,extraDice:[]};
       out.damage=fm.noDamage?{total:0,extraDice:[]}:rollDice(opts.damage,!!roll.critical);
