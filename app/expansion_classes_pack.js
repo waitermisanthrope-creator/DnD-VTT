@@ -1611,7 +1611,15 @@ var academy=String(s.warlordAcademy||'');
     if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+(feature.name||id)+' активно.'};
     return{ok:false,unsupported:true,message:'Эта способность Пугилиста зарегистрирована, но отдельная UI-команда ещё требует подключения.'};
   }
-  function pugilistClub(h,ctx){var s=st(h);return String((ctx&&ctx.fightClub)||s.pugilistFightClub||'');}
+  function pugilistClub(h,ctx){var s=st(h),chosen=String((ctx&&ctx.fightClub)||s.pugilistFightClub||'');if(chosen)return chosen;var cls=(h&&h.classes||[]).find(function(x){return x&&(['Пугилист','Pugilist'].indexOf(String(x.name))>=0||String(x.englishName||'')==='Pugilist');}),sub=String(cls&&cls.subclass||'').toLowerCase();var aliases={
+    'arena royale':'arenaRoyale','арена рояль':'arenaRoyale','arenaroyale':'arenaRoyale',
+    'bloodhound bruisers':'bloodhoundBruisers','бладхаундские громилы':'bloodhoundBruisers','bloodhoundbruisers':'bloodhoundBruisers',
+    'dog & hound':'dogAndHound','dog and hound':'dogAndHound','пёс и гончая':'dogAndHound','пес и гончая':'dogAndHound','dogandhound':'dogAndHound',
+    'hand of dread':'handOfDread','рука ужаса':'handOfDread','handofdread':'handOfDread',
+    'piss & vinegar':'pissAndVinegar','piss and vinegar':'pissAndVinegar','ярость и дерзость':'pissAndVinegar','pissandvinegar':'pissAndVinegar',
+    'the squared circle':'squaredCircle','squared circle':'squaredCircle','квадратный ринг':'squaredCircle','thesquaredcircle':'squaredCircle','squaredcircle':'squaredCircle',
+    'the sweet science':'sweetScience','sweet science':'sweetScience','благородное искусство':'sweetScience','thesweetscience':'sweetScience','sweetscience':'sweetScience'
+  };chosen=aliases[sub]||'';if(chosen)s.pugilistFightClub=chosen;return chosen;}
   function syncPugilistClub(h){
     var s=st(h),l=pugilistLevel(h),club=pugilistClub(h);
     s.pugilistFightClub=club;
