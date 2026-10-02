@@ -23,7 +23,7 @@ jobs:
         run: |
           python3 tools/build_update_manifest.py \
             --base-url "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main" \
-            --version "70.29.0" \
+            --version "70.30.0" \
             --min-app-version "70.25.71" \
             --channel "stable" \
             --output updates/stable.json
