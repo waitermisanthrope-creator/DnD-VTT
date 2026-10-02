@@ -208,8 +208,9 @@
     var resource=hero.resources&&hero.resources.protectorImpulses;
     if(!resource||n(resource.current,0)<1)return {ok:false,reason:'Защитные импульсы закончились.'};
     var round=Math.max(1,n(ctx.round,1));
-    hero.classFeaturesState=hero.classFeaturesState||{};
-    var state=hero.classFeaturesState.protector||(hero.classFeaturesState.protector={});
+    if(!hero.classFeaturesState||typeof hero.classFeaturesState!=='object'||Array.isArray(hero.classFeaturesState))hero.classFeaturesState={};
+    var state=hero.classFeaturesState.protector;
+    if(!state||typeof state!=='object'||Array.isArray(state))state=hero.classFeaturesState.protector={};
     if(state.zone&&state.zone.active&&round<state.zone.expiresRound)return {ok:false,reason:'Оборонительная зона уже активна.'};
     resource.current-=1;tr.bonusAction-=1;
     state.zone={active:true,createdRound:round,expiresRound:round+10,radiusFt:l>=11?15:10,saveBonus:1,advantageAtLevel17:l>=17,lastAdvantageRound:null};
