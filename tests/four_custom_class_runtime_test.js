@@ -197,6 +197,7 @@ assert.strictEqual(failedRescueRoll.ok, false, 'failed Protector rescue roll ret
 assert.strictEqual(rescueHero.resources.protectorImpulses.current, 2, 'failed rescue roll preserves impulse');
 assert.strictEqual(rescueHero.turnResources.reaction, 1, 'failed rescue roll preserves reaction');
 assert.strictEqual(rescueTarget.stable, false, 'failed rescue roll does not alter the ally');
+window.DNDCombat.rollDice = () => ({ total: 4 }); // Restore the deterministic fixture for the remaining Protector integration cases.
 
 assert.strictEqual(selfProtector.turnResources.reaction, 0, 'self-defense spends the reaction');
 const allyProtector = {
