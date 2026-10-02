@@ -562,7 +562,9 @@ if (typeof window !== 'undefined' && window.addEventListener) window.addEventLis
       '<button class="btn-action" onclick="dndStartConcentrationPrompt()">🧠 Концентрация</button>'+
       '<button class="btn-action" onclick="dndConcentrationDamagePrompt()">💥 Проверка концентрации</button>'+
       '<button class="btn-action" onclick="dndShowRulesSummary()">📋 Расчёты</button></div>';
-    tab.appendChild(el);
+    // V70.32.12: Rules Engine belongs with the other gameplay panels in the drawer.
+    var panelHost=document.getElementById('diceDrawerExternalPanels') || document.getElementById('dndToolsRoot') || tab;
+    panelHost.appendChild(el);
   }
 
   window.dndStartConcentrationPrompt=function(){var h=hero();if(!h)return;var name=prompt('Какое заклинание держите концентрацией?',(h.concentration&&h.concentration.spellName)||'');if(name===null)return;if(window.DNDCombat&&typeof window.DNDCombat.beginConcentration==='function')window.DNDCombat.beginConcentration(h,name?{name:name,concentration:true}:null);else h.concentration={active:!!name,spellName:name,spellId:null};save();renderRulesPanel();};
