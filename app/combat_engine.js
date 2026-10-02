@@ -486,7 +486,10 @@
         <div id="dndEncounterList" style="margin-top:8px;"></div>
         <button class="btn-action" style="width:100%;margin-top:6px;background:#4caf50;" onclick="dndLaunchEncounter()">⚔️ Запустить encounter</button>
       </div>`;
-    tab.appendChild(div);renderEncounter();renderCombatStatus();
+    // Боевые панели выводим в шторку дайсов, не в основной экран.
+    // Если шторка ещё не создана, dice.js перенесёт блок после её появления.
+    var panelHost=document.getElementById('diceDrawerExternalPanels')||document.getElementById('diceDrawerContent')||tab;
+    panelHost.appendChild(div);renderEncounter();renderCombatStatus();
   }
   function renderCombatStatus(){var h=ensure(),box=document.getElementById('dndCombatStatus');if(!h||!box)return;var t=h.initiativeTracker||{combatants:[],activeIndex:0,round:1},c=t.combatants[t.activeIndex];if(!c){box.textContent='Активного участника нет.';return;}box.innerHTML='Раунд '+num(t.round,1)+' • <strong>'+esc(c.name)+'</strong> • HP '+num(c.hp)+'/'+num(c.maxHp)+' • КД '+num(c.ac,10)+(c.defeated?' • 💀 повержен':'');}
   function syncNetworkMasterCombat(reason){var net=global.dndNetwork;if(net&&net.state&&net.state.role==='host'&&net.commitHostEvent){var h=ensure();if(h&&h.initiativeTracker)net.commitHostEvent('COMBAT_CHANGED',JSON.parse(JSON.stringify(h.initiativeTracker)),'master');}}
