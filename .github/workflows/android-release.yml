@@ -7,6 +7,8 @@ on:
     paths:
       - "android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java"
       - "app/campaign_manager.js"
+      - "app/character_builder_v2.js"
+      - "app/character_creation_pergament.js"
       - "app/dice.js"
       - "app/dnd_tools.js"
       - "app/rulesEngine.js"
