@@ -280,6 +280,13 @@ function openCharacter(id) {
         infoBox.innerHTML = '<strong>' + rObj.name + '</strong>: ' + rObj.desc;
         infoBox.style.display = 'block';
       }
+      // Расовые особенности фиксированного КД должны применяться и к уже
+      // сохранённым персонажам, даже если старый сохранённый AC ошибочен.
+      if (rObj && Number(rObj.baseAc) > 0) {
+        var racialAcInput = document.getElementById('ac');
+        if (racialAcInput) racialAcInput.value = Number(rObj.baseAc);
+        currentChar.ac = Number(rObj.baseAc);
+      }
       // Если у сохранённого персонажа почему-то не проставлена скорость
       // (например, персонаж был создан до этого исправления) — подтягиваем
       // её из расы прямо здесь, при открытии листа персонажа.
@@ -565,6 +572,19 @@ function autoSaveCurrentCharacter() {
   currentChar.raceId = selectedRaceId;
   currentChar.raceName = selectedRaceName;
   currentChar.ac = document.getElementById('ac').value;
+  // Не позволяем автосохранению перезаписать фиксированный расовый КД
+  // ошибочным значением из старой формы (например, КД 9 у тортла).
+  if (selectedRaceId && typeof getAllRaces === 'function') {
+    var saveRaces = getAllRaces();
+    for (var ri = 0; ri < saveRaces.length; ri++) {
+      if (saveRaces[ri].id === selectedRaceId && Number(saveRaces[ri].baseAc) > 0) {
+        currentChar.ac = Number(saveRaces[ri].baseAc);
+        var fixedAcInput = document.getElementById('ac');
+        if (fixedAcInput) fixedAcInput.value = Number(saveRaces[ri].baseAc);
+        break;
+      }
+    }
+  }
   if (document.getElementById('speed')) currentChar.speed = document.getElementById('speed').value;
   currentChar.hpMax = document.getElementById('hpMax').value;
   currentChar.hpCurrent = document.getElementById('hpCurrent').value;
