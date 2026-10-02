@@ -99,7 +99,29 @@ assert.strictEqual(fireResult.dice, '3d6', 'Fire Eater scales at level 7');
 assert.strictEqual(circusHero.resources.circusResource.current, circusHero.resources.circusResource.max - 1, 'shared Circus resource is spent exactly once');
 assert.strictEqual(appliedDamage.length, 1);
 assert.strictEqual(appliedDamage[0].amount, 15);
+
 assert.strictEqual(fireTarget.target.hitPoints, 5, 'damage is applied through combat resolver');
+// Runtime failures while preparing multi-target Circus breath must not spend the shared resource.
+const fireFailureHero = {
+  id: 'circus-failure',
+  classes: [{ name: 'Циркач', level: 7, subclass: 'Пожиратель огня' }],
+  abilityScores: { dex: 14, cha: 14 },
+  resources: {},
+  turnResources: { actions: 1, bonusAction: 1, reaction: 1 }
+};
+runtime.sync(fireFailureHero);
+const fireFailureTarget = { id: 'fire-failure-target', inArea: true, distanceFt: 5, target: { id: 'fire-failure-target', hitPoints: 20 } };
+window.DNDCombat.savingThrow = () => { throw new Error('simulated saving throw failure'); };
+const beforeFailedFire = fireFailureHero.resources.circusResource.current;
+const failedFireResolver = runtime.useFeature(fireFailureHero, 'circusFireBreath', { targets: [fireFailureTarget] });
+assert.strictEqual(failedFireResolver.ok, false, 'failed Circus save resolver returns a clean failure');
+assert.strictEqual(fireFailureHero.resources.circusResource.current, beforeFailedFire, 'failed Circus save resolver preserves resource');
+window.DNDCombat.savingThrow = (target, stat, dc) => ({ success: false, stat, dc });
+window.DNDCombat.rollDice = () => ({ total: NaN });
+const failedFireRoll = runtime.useFeature(fireFailureHero, 'circusFireBreath', { targets: [fireFailureTarget] });
+assert.strictEqual(failedFireRoll.ok, false, 'invalid Circus damage roll returns a clean failure');
+assert.strictEqual(fireFailureHero.resources.circusResource.current, beforeFailedFire, 'invalid Circus damage roll preserves resource');
+
 const banditTripHero = {
   id: 'bandit-trip-hero',
   classes: [{ name: 'Бандит', level: 3 }],
@@ -143,7 +165,39 @@ assert.strictEqual(selfProtector.resources.protectorImpulses.current, 2, 'reject
 const selfIntercept = runtime.interceptDamage(selfProtector, selfTarget, 10, { isSelf: true });
 assert.strictEqual(selfIntercept.ok, true, 'Protector can explicitly use the same defensive reaction on themself');
 assert.strictEqual(selfIntercept.reduction, 6, 'self-defense uses the existing 1d10 + proficiency reduction');
+
 assert.strictEqual(selfProtector.resources.protectorImpulses.current, 1, 'self-defense spends one impulse');
+// Invalid or throwing defensive rolls must not consume the Protector's reaction or impulse.
+const failedRollProtector = {
+  id: 'protector-failed-roll',
+  classes: [{ name: 'Заступник', level: 3, subclass: 'Страж' }],
+  resources: { protectorImpulses: { current: 2, max: 2, recharge: 'short' } },
+  turnResources: { reaction: 1 }
+};
+window.DNDCombat.rollDice = () => ({ total: NaN });
+const invalidGuardRoll = runtime.interceptDamage(failedRollProtector, { id: 'ally-failed-roll' }, 10, {
+  isAlly: true, visible: true, distanceFt: 5
+});
+assert.strictEqual(invalidGuardRoll.ok, false, 'invalid Protector interception roll is rejected');
+assert.strictEqual(failedRollProtector.resources.protectorImpulses.current, 2, 'invalid Protector roll preserves impulse');
+assert.strictEqual(failedRollProtector.turnResources.reaction, 1, 'invalid Protector roll preserves reaction');
+window.DNDCombat.rollDice = () => { throw new Error('simulated temporary HP roll failure'); };
+const rescueHero = {
+  id: 'protector-rescue-failure',
+  classes: [{ name: 'Заступник', level: 11, subclass: 'Спаситель' }],
+  resources: { protectorImpulses: { current: 2, max: 2, recharge: 'short' } },
+  turnResources: { reaction: 1 }
+};
+const rescueTarget = { id: 'downed-ally', hp: 0, stable: false, deathSaves: { successes: 0, failures: 1 } };
+const failedRescueRoll = runtime.useFeature(rescueHero, 'protectorRescue', {
+  target: rescueTarget, isAlly: true, visible: true, distanceFt: 5,
+  cellAvailable: true, freeCell: { x: 2, y: 1 }, moveFt: 5, distanceToCellFt: 5
+});
+assert.strictEqual(failedRescueRoll.ok, false, 'failed Protector rescue roll returns a clean failure');
+assert.strictEqual(rescueHero.resources.protectorImpulses.current, 2, 'failed rescue roll preserves impulse');
+assert.strictEqual(rescueHero.turnResources.reaction, 1, 'failed rescue roll preserves reaction');
+assert.strictEqual(rescueTarget.stable, false, 'failed rescue roll does not alter the ally');
+
 assert.strictEqual(selfProtector.turnResources.reaction, 0, 'self-defense spends the reaction');
 const allyProtector = {
   id: 'protector-ally-test',
