@@ -9,6 +9,8 @@ on:
       - "app/campaign_manager.js"
       - "app/character_builder_v2.js"
       - "app/character_creation_pergament.js"
+      - "tests/test_v755_creation_buckets.js"
+      - "tests/test_v754_update_manager.js"
       - "app/dice.js"
       - "app/dnd_tools.js"
       - "app/rulesEngine.js"
