@@ -296,6 +296,41 @@
     }
     return {ok:true,dc:dc,save:save,applied:!!(save&&!save.success),resourceRemaining:resource.current,message:save&&save.success?'Цель устояла против подсечки.':'Подсечка успешна: скорость цели равна 0 до начала её следующего хода.'};
   }
+  function useBanditReactionBreak(hero,ctx){
+    ctx=ctx||{};
+    var l=level(hero,CLASS_IDS.bandit),target=ctx.target;
+    if(l<1)return {ok:false,reason:'Нужен класс Бандит.'};
+    if(ctx.attackHit!==true)return {ok:false,reason:'Срыв реакции применяется только после подтверждённого попадания.'};
+    if(!target||target.id==null||String(target.id)===String(hero.id))return {ok:false,reason:'Выберите конкретную враждебную цель.'};
+    if(!target.turnResources||Number(target.turnResources.reaction||0)<1)return {ok:false,reason:'У цели уже нет доступной реакции.'};
+    var resource=hero.resources&&hero.resources.banditDirtyTricks;
+    if(!resource||Number(resource.current)<1)return {ok:false,reason:'Грязные приёмы закончились.'};
+    if(!hero.classFeaturesState||typeof hero.classFeaturesState!=='object'||Array.isArray(hero.classFeaturesState))hero.classFeaturesState={};
+    resource.current-=1;
+    target.turnResources.reaction=0;
+    target.classFeaturesState=target.classFeaturesState&&typeof target.classFeaturesState==='object'&&!Array.isArray(target.classFeaturesState)?target.classFeaturesState:{};
+    target.classFeaturesState.banditReactionBreak={sourceId:hero.id==null?null:String(hero.id),appliedAtTurnCount:n(target.turnCount,0)};
+    return {ok:true,targetId:String(target.id),resourceRemaining:resource.current,message:'Срыв реакции: цель теряет доступную реакцию до начала своего следующего хода.'};
+  }
+  function useBanditDistractingManeuver(hero,ctx){
+    ctx=ctx||{};
+    var l=level(hero,CLASS_IDS.bandit),target=ctx.target;
+    if(l<1)return {ok:false,reason:'Нужен класс Бандит.'};
+    if(!target||target.id==null||String(target.id)===String(hero.id))return {ok:false,reason:'Выберите конкретную цель.'};
+    if(ctx.visible!==true)return {ok:false,reason:'Подтвердите, что цель видна.'};
+    var state=hero.classFeaturesState&&hero.classFeaturesState.bandit;
+    if(!state||!Array.isArray(state.studiedTargetIds)||state.studiedTargetIds.map(String).indexOf(String(target.id))<0)return {ok:false,reason:'Сначала изучите эту цель.'};
+    var tr=hero.turnResources||(hero.turnResources={action:true,bonusAction:true,reaction:true});
+    if(n(tr.bonusAction,0)<1)return {ok:false,reason:'Бонусное действие уже использовано.'};
+    var resource=hero.resources&&hero.resources.banditDirtyTricks;
+    if(!resource||Number(resource.current)<1)return {ok:false,reason:'Грязные приёмы закончились.'};
+    hero.classFeaturesState=hero.classFeaturesState&&typeof hero.classFeaturesState==='object'&&!Array.isArray(hero.classFeaturesState)?hero.classFeaturesState:{};
+    hero.classFeaturesState.bandit=hero.classFeaturesState.bandit||state;
+    hero.classFeaturesState.bandit.distractingTargetId=String(target.id);
+    hero.classFeaturesState.bandit.distractingUntilTurnCount=n(hero.turnCount,0)+1;
+    resource.current-=1;tr.bonusAction=0;
+    return {ok:true,targetId:String(target.id),resourceRemaining:resource.current,message:'Отвлекающий манёвр подготовлен: следующая атака Бандита по изученной цели получает преимущество.'};
+  }
   function onTurnStart(hero){
     var state=hero&&hero.classFeaturesState&&hero.classFeaturesState.banditTripSpeedLock;
     if(!state)return false;
@@ -303,12 +338,12 @@
     delete hero.classFeaturesState.banditTripSpeedLock;
     return true;
   }
-  function hasFeature(id){return ['banditStudyTarget','banditTrip','circusFireBreath','protectorZone','protectorRescue'].indexOf(String(id||''))>=0;}
+  function hasFeature(id){return ['banditStudyTarget','banditTrip','banditReactionBreak','banditDistractingManeuver','circusFireBreath','protectorZone','protectorRescue'].indexOf(String(id||''))>=0;}
   function useFeature(hero,id,ctx){
     ctx=ctx||{};
     if(!hero)return {ok:false,reason:'Персонаж не найден.'};
     sync(hero);
-    if(String(id)==='banditTrip')return useBanditTrip(hero,ctx);
+    if(String(id)==='banditTrip')return useBanditTrip(hero,ctx);\n    if(String(id)==='banditReactionBreak')return useBanditReactionBreak(hero,ctx);\n    if(String(id)==='banditDistractingManeuver')return useBanditDistractingManeuver(hero,ctx);
     if(String(id)==='protectorZone')return useProtectorZone(hero,ctx);
     if(String(id)==='protectorRescue')return rescueAlly(hero,ctx);
     if(String(id)==='circusFireBreath')return useCircusFireBreath(hero,ctx);
