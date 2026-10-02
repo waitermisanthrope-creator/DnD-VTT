@@ -1017,7 +1017,7 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
     var labels = ['сетевая игра', 'поле боя'];
     function isDebug(){ return window.dndDebugEnabled === true || document.documentElement.classList.contains('debug-enabled'); }
     function syncButtons(){
-      document.querySelectorAll('button, a, [role="button"]').forEach(function(el){
+      document.querySelectorAll('#dndMainMoreModal button, #dndMainMoreModal a, #dndMainMoreModal [role="button"]').forEach(function(el){
         var text = (el.innerText || el.textContent || '').replace(/\\s+/g,' ').trim().toLowerCase();
         if(!labels.some(function(label){ return text === label || text.indexOf(label) !== -1; })) return;
         if(!el.hasAttribute('data-debug-gated-feature')) {
