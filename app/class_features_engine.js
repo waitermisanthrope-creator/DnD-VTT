@@ -843,11 +843,50 @@
   function renderClassFeatures(){var h=hero(),box=document.getElementById('classFeaturesList');if(!h||!box)return;syncClassResources(h);var ids=buildFeatureSet(h),html='';
     CLASS_NAMES.forEach(function(cls){var lvl=classLevel(h,cls);if(!lvl)return;var sub=getSubclass(h,cls);var pick=getSubclassPickLevel(cls);if(lvl>=pick&&!sub){html+='<div class="weapon-card" style="margin-bottom:8px;border:1px solid #7b1fa2"><strong>🌟 '+esc(cls)+': выберите подкласс</strong><div style="font-size:.78em;color:#aaa;margin:4px 0">Доступно с '+pick+' уровня.</div><button class="btn-action" style="padding:6px 10px;background:#7b1fa2" onclick="chooseSubclassForClass(\''+esc(cls)+'\')">Выбрать подкласс</button></div>';}});
     var grouped={};ids.forEach(function(id){var f=FEATURE_DEFS[id];if(!f)return;var key=f.cls;grouped[key]=grouped[key]||[];if(!grouped[key].some(function(x){return x.id===id;}))grouped[key].push(f);});
-    Object.keys(grouped).forEach(function(cls){html+='<div style="font-size:.85em;color:#d4af37;margin:10px 0 5px"><b>'+esc(cls)+'</b>'+(ARTIFICER_CLASSES.indexOf(cls)>=0?' <span style="color:#999">(доп. контент)</span>':'')+'</div>';grouped[cls].forEach(function(f){var resMap={rage:'rages',bardicInspiration:'bardicInspiration',secondWind:'secondWind',actionSurge:'actionSurges',indomitable:'indomitable',flurry:'ki',patientDefense:'ki',stepWind:'ki',channelDivinity:'channelDivinity',layOnHands:'layOnHands',wildShape:'wildShape',huntersMark:'huntersMark',sorceryPoints:'sorceryPoints',pactBoon:'pactSlots',eldritchInvocations:'pactSlots',flashOfGenius:'flashOfGenius'};var res=h.resources&&h.resources[resMap[f.id]];var uses=res?(res.current===Infinity?'∞':res.current+'/'+res.max):'';var active=['rage','reckless','secondWind','actionSurge','indomitable','flurry','patientDefense','stepWind','bardicInspiration','layOnHands','channelDivinity','turnUndead','wildShape','huntersMark','flashOfGenius','arcaneRecovery','divineSmite','deflectMissiles'].indexOf(f.id)>=0;var button=active?'<button class="btn-action" style="padding:5px 9px" onclick="useClassFeature(\''+f.id+'\')">Использовать</button>':'';if(f.id==='metamagic')button='<button class="btn-action" style="padding:5px 9px" onclick="chooseMetamagic()">Метамагия</button>';if(f.id==='cunningAction')button='<button class="btn-action" style="padding:5px 9px" onclick="useClassFeature(\'cunningAction\')">Использовать</button>';html+='<div class="weapon-card" style="margin-bottom:6px"><div style="display:flex;gap:7px;align-items:center"><strong style="flex:1">'+esc(f.name)+'</strong>'+(uses?'<span style="font-size:.75em;color:#aaa">'+uses+'</span>':'')+button+'</div><div style="font-size:.77em;color:#aaa;margin-top:4px">'+esc(f.description)+'</div></div>';});});
+    Object.keys(grouped).forEach(function(cls){html+='<div style="font-size:.85em;color:#d4af37;margin:10px 0 5px"><b>'+esc(cls)+'</b>'+(ARTIFICER_CLASSES.indexOf(cls)>=0?' <span style="color:#999">(доп. контент)</span>':'')+'</div>';grouped[cls].forEach(function(f){var resMap={rage:'rages',bardicInspiration:'bardicInspiration',secondWind:'secondWind',actionSurge:'actionSurges',indomitable:'indomitable',flurry:'ki',patientDefense:'ki',stepWind:'ki',channelDivinity:'channelDivinity',layOnHands:'layOnHands',wildShape:'wildShape',huntersMark:'huntersMark',sorceryPoints:'sorceryPoints',pactBoon:'pactSlots',eldritchInvocations:'pactSlots',flashOfGenius:'flashOfGenius'};var res=h.resources&&h.resources[resMap[f.id]];var uses=res?(res.current===Infinity?'∞':res.current+'/'+res.max):'';var active=['rage','reckless','secondWind','actionSurge','indomitable','flurry','patientDefense','stepWind','bardicInspiration','layOnHands','channelDivinity','turnUndead','wildShape','huntersMark','flashOfGenius','arcaneRecovery','divineSmite','deflectMissiles'].indexOf(f.id)>=0;var button=active?'<button class="btn-action" style="padding:5px 9px" onclick="useClassFeature(\''+f.id+'\')">Использовать</button>':'';if(f.id==='metamagic')button='<button class="btn-action" style="padding:5px 9px" onclick="chooseMetamagic()">Метамагия</button>';if(f.id==='cunningAction')button='<button class="btn-action" style="padding:5px 9px" onclick="useClassFeature(\'cunningAction\')">Использовать</button>';var safeFeatureId=String(f.id).replace(/[^a-zA-Z0-9_-]/g,'_');var damageButton='<button class="btn-action" style="padding:5px 9px;background:#b66a28" onclick="rollClassFeatureDamage(\''+esc(f.id)+'\')">⚔️ Кинуть на урон</button>';var d20Button='<button class="btn-action" style="padding:5px 9px" onclick="rollClassFeatureD20(\''+esc(f.id)+'\')">🎲 Кинуть d20</button>';html+='<div class="weapon-card" style="margin-bottom:7px;padding:0;overflow:hidden"><button type="button" id="classFeatureToggle_'+safeFeatureId+'" aria-expanded="false" onclick="toggleClassFeatureDetails(\''+safeFeatureId+'\')" style="display:flex;width:100%;align-items:center;justify-content:space-between;gap:8px;text-align:left;background:transparent;border:0;color:inherit;padding:13px;font:inherit;cursor:pointer"><strong style="flex:1">'+esc(f.name)+'</strong>'+(uses?'<span style="font-size:.75em;color:#aaa">'+uses+'</span>':'')+'<span id="classFeatureArrow_'+safeFeatureId+'" style="color:#d4af37">▾</span></button><div id="classFeatureDetails_'+safeFeatureId+'" style="display:none;padding:0 13px 13px"><div style="font-size:.88em;color:#ccc;white-space:pre-wrap;margin:0 0 10px">'+esc(f.description)+'</div><div style="display:flex;gap:7px;flex-wrap:wrap">'+d20Button+damageButton+button+'</div></div></div>';});});
     box.innerHTML=html||'<div style="color:#777">Добавьте класс персонажу.</div>';
   }
 
-    function spendExtendedResource(h,id,n,ctx){
+  
+  // Карточки классовых особенностей свёрнуты до названия.
+  global.toggleClassFeatureDetails=function(id){
+    var panel=document.getElementById('classFeatureDetails_'+id);
+    var btn=document.getElementById('classFeatureToggle_'+id);
+    var arrow=document.getElementById('classFeatureArrow_'+id);
+    if(!panel)return;
+    var open=panel.style.display==='none';
+    panel.style.display=open?'block':'none';
+    if(btn)btn.setAttribute('aria-expanded',open?'true':'false');
+    if(arrow)arrow.textContent=open?'▴':'▾';
+  };
+  global.rollClassFeatureD20=function(id){
+    var h=hero();if(!h)return;
+    var stat=document.getElementById('combatAbilityStat');
+    var key=stat?stat.value:'str';
+    var mod=typeof global.getStatModNum==='function'?global.getStatModNum(key):0;
+    var prof=typeof global.getProfBonusNum==='function'?global.getProfBonusNum():2;
+    var die=Math.floor(Math.random()*20)+1,total=die+mod+prof;
+    if(typeof global.goToTab==='function')global.goToTab(5);
+    var box=document.getElementById('diceResult');
+    if(box)box.textContent='Проверка способности: d20 ('+die+') '+(mod+prof>=0?'+':'')+(mod+prof)+' = '+total;
+    if(typeof global.appendDiceLog==='function')global.appendDiceLog('🎲 Проверка классовой способности: d20 ['+die+'] + '+(mod+prof)+' = '+total,'norm-roll');
+  };
+  global.rollClassFeatureDamage=function(id){
+    var formula=global.prompt('Формула урона (например 2d6+3):','1d6');
+    if(formula===null)return;
+    formula=String(formula).replace(/\\s+/g,'').toLowerCase();
+    var m=formula.match(/^(\\d*)d(\\d+)([+-]\\d+)?$/);
+    if(!m){global.alert('Укажи формулу вида 1d8, 2d6+3 или 1d10-1.');return;}
+    var count=Math.max(1,Math.min(100,parseInt(m[1]||'1',10))),sides=Math.max(2,Math.min(1000,parseInt(m[2],10))),bonus=parseInt(m[3]||'0',10),rolls=[];
+    for(var i=0;i<count;i++)rolls.push(Math.floor(Math.random()*sides)+1);
+    var total=rolls.reduce(function(a,b){return a+b;},0)+bonus;
+    if(typeof global.goToTab==='function')global.goToTab(5);
+    var box=document.getElementById('diceResult');
+    if(box)box.textContent='Урон способности: '+formula+' → '+rolls.join(' + ')+(bonus?(bonus>0?' + ':' - ')+Math.abs(bonus):'')+' = '+total;
+    if(typeof global.appendDiceLog==='function')global.appendDiceLog('⚔️ Урон способности '+id+': '+formula+' | ['+rolls.join(', ')+'] → '+total,'norm-roll');
+  };
+
+  function spendExtendedResource(h,id,n,ctx){
     if(!h)return{ok:false,reason:'Персонаж не найден.'};
     syncClassResources(h);
     var v=Math.max(1,Number(n)||1), s, rt, pack, res;
