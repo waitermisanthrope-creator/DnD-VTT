@@ -17,6 +17,11 @@ on:
       - "tests/four_custom_class_runtime_test.js"
       - "tests/protector_combat_integration_test.js"
       - "tests/protector_battle_grid_test.js"
+      - "app/data/classes/Protector.js"
+      - "app/data/classes/Morehod.js"
+      - "app/data/classes/Bandit.js"
+      - "app/data/classes/Circus.js"
+      - "tests/custom_class_catalog_test.js"
       - "app/vtt_debug_tasks_v708.js"
       - "app/class_features_engine.js"
       - "index.html"
@@ -50,6 +55,12 @@ jobs:
           node --check app/four_custom_class_runtime.js
           node --check app/class_features_engine.js
           node --check app/vtt_debug_tasks_v708.js
+          node --check app/data/classes/Protector.js
+          node --check app/data/classes/Morehod.js
+          node --check app/data/classes/Bandit.js
+          node --check app/data/classes/Circus.js
+      - name: Run unconnected class ability catalog tests
+        run: node tests/custom_class_catalog_test.js
       - name: Run Mariner gold modifier regression test
         run: node tests/morehod_gold_modifier_test.js
       - name: Run remaining custom class foundation tests
