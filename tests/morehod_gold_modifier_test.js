@@ -493,4 +493,7 @@ console.log('morehod_gold_modifier_test: all assertions passed');
   assert.strictEqual(sell.price.cp, sellQuote.cp, 'sale result records negotiated copper price');
   assert.strictEqual(api.buy(traderId, stockItem.id, 0).ok, false, 'zero purchase count is rejected');
   assert.strictEqual(api.sell(traderId, 'materials', 0, 1.5).ok, false, 'fractional sale count is rejected');
+  const beforeInvalidPrice = socialContext.DND_MARKET_V55.balanceCp();
+  assert.strictEqual(socialContext.DND_MARKET_V55.buy(traderId, stockItem.id, 1, { unitPriceCp: -1 }).ok, false, 'negative negotiated unit prices are rejected');
+  assert.strictEqual(socialContext.DND_MARKET_V55.balanceCp(), beforeInvalidPrice, 'invalid negotiated price does not mutate wallet');
 }
