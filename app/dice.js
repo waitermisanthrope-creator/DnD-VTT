@@ -235,11 +235,7 @@ function renderDiceModule() {
       <button class="dice-btn" onclick="rollDice(20)">d20</button>
     </div>
 
-    <div style="margin-top: 15px; width: 100%;">
-      <button id="quickWeaponAttackBtn" class="btn-action" onclick="executeEquippedWeaponAttack()" style="background: #ff9800; color: #000; font-weight: bold; padding: 10px 16px; font-size: 0.95em; width: 100%; border-radius: 6px; cursor: pointer; border: none; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-        ⚔️ Атака экипированным оружием (d20 + мод)
-      </button>
-    </div>
+
   `;
 
   const drawerContainer = document.createElement('div');
@@ -257,6 +253,9 @@ function renderDiceModule() {
 
         <div style="font-size: 0.9em; color: #2196F3; font-weight: bold; margin-bottom: 8px;">🎯 Навыки D&D (с учетом владения/экспертности):</div>
         <div id="diceDrawerSkillsList" style="display: flex; flex-direction: column; gap: 6px; max-height: 250px; overflow-y: auto; padding-right: 4px;"></div>
+
+        <div style="font-size: 0.9em; color: #ff9800; font-weight: bold; margin: 16px 0 8px;">⚔️ Боевые действия:</div>
+        <button id="quickWeaponAttackBtn" class="btn-action" onclick="executeEquippedWeaponAttack()" style="background: #ff9800; color: #000; font-weight: bold; padding: 10px 12px; font-size: 0.95em; width: 100%; border-radius: 6px; cursor: pointer; border: none; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">⚔️ Атака экипированным оружием (d20 + мод)</button>
       </div>
     </div>
   `;
@@ -311,7 +310,7 @@ function toggleDiceDrawer() {
   console.log(`[DICE_DRAWER] Шторка выбора бросков переключена. Состояние: ${isDrawerOpen ? 'Открыта' : 'Закрыта'}`);
   
   if (isDrawerOpen) {
-    contentDiv.style.maxHeight = '500px';
+    contentDiv.style.maxHeight = '900px';
     if (arrow) arrow.textContent = '▴';
     populateDiceDrawerData();
   } else {
