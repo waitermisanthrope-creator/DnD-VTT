@@ -38,7 +38,13 @@ function renderDndTools() {
   var tab = document.getElementById('tabDice');
   if (!tab) return;
 
-  tab.innerHTML = `
+  // V70.32.12: render into a dedicated gameplay root, never replace the whole dice tab.
+  var previousRoot = document.getElementById('dndToolsRoot');
+  if (previousRoot) previousRoot.remove();
+  var root = document.createElement('div');
+  root.id = 'dndToolsRoot';
+  root.style.cssText = 'display:flex;flex-direction:column;gap:12px;width:100%;';
+  root.innerHTML = `
     <div class="card">
       <h3>⚔️ Инициатива</h3>
       <div style="display:flex;gap:6px;align-items:center;margin-bottom:8px;">
@@ -63,6 +69,8 @@ function renderDndTools() {
       </div>
     </div>
   `;
+  var host = document.getElementById('diceDrawerExternalPanels') || tab;
+  host.appendChild(root);
   renderInitiativeTracker();
   renderCompanions();
 }
