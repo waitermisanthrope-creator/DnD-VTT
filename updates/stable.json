@@ -1215,7 +1215,7 @@
     {
       "path": "app/update_manager.js",
       "bytes": 20813,
-      "sha256": "19a844e0a9b942c3dc06e906d4f1aaece3fa150857b53d7947beb8667f8e486f"
+      "sha256": "ee24e5450fd203d1f36cba8d0b78afaf0c4c0f9c1986d7402f84a49e8217ed51"
     },
     {
       "path": "app/vessel_laserllama_v4_runtime.js",
