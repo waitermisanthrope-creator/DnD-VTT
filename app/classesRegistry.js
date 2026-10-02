@@ -33,6 +33,7 @@ window.CLASSES_REFERENCE = {
     "Мученик": { hitDie: 12, primaryStat: "wisdom", savingThrows: ["strength", "wisdom"], progression: window.martyrProgression || {} },
     "Сосуд": { hitDie: 10, primaryStat: "charisma", savingThrows: ["constitution", "charisma"], progression: window.vesselProgression || {} },
     "Алхимик": { hitDie: 8, primaryStat: "dexterity", savingThrows: ["dexterity", "intelligence"], progression: window.alchemistProgression || {} },
+    "Циркач": { hitDie: 8, primaryStat: "charisma", savingThrows: ["dexterity", "charisma"], progression: window.circusProgression || {} },
     "Кровавый охотник": { hitDie: 10, primaryStat: "dexterity", savingThrows: ["dexterity", "intelligence"], progression: window.bloodHunterProgression || {} },
     "Иллиригер": { hitDie: 10, primaryStat: "charisma", savingThrows: ["constitution", "charisma"], progression: window.illriggerProgression || {} },
     "Бистхарт": { hitDie: 8, primaryStat: "strength", savingThrows: ["strength", "wisdom"], progression: window.beastheartProgression || {} },
@@ -135,7 +136,7 @@ window.CLASSES_REFERENCE = {
  * реестра: иначе custom/runtime-классы получают пустую таблицу levels.
  */
 var LIVE_PROGRESSION_KEYS = {
-    "Оккультист": "occultistProgression", "Ведьма": "witchProgression", "Некромант": "necromancerProgression", "Мученик": "martyrProgression", "Сосуд": "vesselProgression", "Алхимик": "alchemistProgression", "Кровавый охотник": "bloodHunterProgression", "Иллиригер": "illriggerProgression", "Бистхарт": "beastheartProgression", "Пугилист": "pugilistProgression", "Аккурсд": "accursedProgression", "Гайст": "geistProgression", "Паразит": "parasiteProgression", "Паразит доктора Вальтера": "walterParasiteProgression", "Призрак": "ghostProgression", "Псионик": "psionProgression", "Рунный хранитель": "runeKeeperProgression", "Савант": "savantProgression", "Шифтер": "shifterProgression", "Рой": "swarmProgression", "Страж": "wardenProgression", "Военачальник": "warlordProgression"
+    "Оккультист": "occultistProgression", "Ведьма": "witchProgression", "Некромант": "necromancerProgression", "Мученик": "martyrProgression", "Сосуд": "vesselProgression", "Алхимик": "alchemistProgression", "Циркач": "circusProgression", "Кровавый охотник": "bloodHunterProgression", "Иллиригер": "illriggerProgression", "Бистхарт": "beastheartProgression", "Пугилист": "pugilistProgression", "Аккурсд": "accursedProgression", "Гайст": "geistProgression", "Паразит": "parasiteProgression", "Паразит доктора Вальтера": "walterParasiteProgression", "Призрак": "ghostProgression", "Псионик": "psionProgression", "Рунный хранитель": "runeKeeperProgression", "Савант": "savantProgression", "Шифтер": "shifterProgression", "Рой": "swarmProgression", "Страж": "wardenProgression", "Военачальник": "warlordProgression"
 };
 
 /**
