@@ -27,7 +27,29 @@ runtime.sync(legacyCircusHero);
 assert.strictEqual(legacyCircusHero.resources.circusResource.current, 1, 'legacy Circus resource migration preserves spent uses');
 assert.strictEqual(legacyCircusHero.resources.circusResource.max, 4, 'legacy Circus resource migration keeps the synced maximum');
 assert.strictEqual(legacyCircusHero.resources.circusZap, undefined, 'legacy Circus resource key is removed after migration');
+
 assert.strictEqual(hero.resources.protectorImpulses.max, 2, 'Protector uses proficiency bonus');
+// Corrupt saved resource counters must not silently refill spent class resources.
+const corruptedResourceHero = {
+  classes: [{ name: 'Бандит', level: 3 }, { name: 'Циркач', level: 3 }, { name: 'Заступник', level: 3 }],
+  abilityScores: { dex: 14, cha: 14 },
+  resources: {
+    banditDirtyTricks: { current: 'broken', max: 5 },
+    circusResource: { current: -2, max: 4 },
+    protectorImpulses: { current: 1.5, max: 2 }
+  }
+};
+runtime.sync(corruptedResourceHero);
+assert.strictEqual(corruptedResourceHero.resources.banditDirtyTricks.current, 0, 'malformed Bandit resource does not refill to max');
+assert.strictEqual(corruptedResourceHero.resources.circusResource.current, 0, 'negative Circus resource is clamped to zero');
+assert.strictEqual(corruptedResourceHero.resources.protectorImpulses.current, 0, 'fractional Protector resource is clamped to zero');
+const legacyMissingCounter = {
+  classes: [{ name: 'Бандит', level: 1 }], abilityScores: { dex: 12 },
+  resources: { banditDirtyTricks: { max: 3, recharge: 'long' } }
+};
+runtime.sync(legacyMissingCounter);
+assert.strictEqual(legacyMissingCounter.resources.banditDirtyTricks.current, 3, 'legacy resource without a current counter is initialized once');
+
 hero.resources.banditDirtyTricks.current = 1;
 runtime.sync(hero);
 assert.strictEqual(hero.resources.banditDirtyTricks.current, 1, 'sync does not refill spent resource');
