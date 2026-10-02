@@ -187,7 +187,7 @@ assert.strictEqual(rules.getModifier(restoredMariner), 1, 'the wallet modifier s
   vm.runInContext(fs.readFileSync(require.resolve('../app/monster_loot_engine_v37.js'), 'utf8'), lootContext);
   const hero = { classes: [{ name: 'Мореход', level: 1 }], coins: { cp: 0, sp: 0, ep: 0, gp: 1999, pp: 0 }, inventory: {} };
   assert.strictEqual(rules.getModifier(hero), 4, 'wallet starts just below the +5 threshold');
-  lootContext.DNDMonsterLoot.collect(hero, {
+  const testLoot = {
     monster: 'Тестовая добыча', createdAt: '2026-10-02T00:00:00.000Z',
     containers: { pockets: [
       { name: 'Медные монеты', category: 'currency', coinType: 'cp', count: 100 },
@@ -195,7 +195,10 @@ assert.strictEqual(rules.getModifier(restoredMariner), 1, 'the wallet modifier s
       { name: 'Мешок монет', category: 'currency', coinType: 'gp', count: 2 },
       { name: 'Смешанные монеты', category: 'currency', coinType: 'mixed-cp-sp', count: 5 }
     ], harvest: [] }
-  }, ['pockets']);
+  };
+  lootContext.DNDMonsterLoot.collect(hero, testLoot, ['pockets']);
+  assert.strictEqual(lootContext.DNDMonsterLoot.collect(hero, testLoot, ['pockets']), null, 'the same loot bundle cannot be collected twice');
+  assert.strictEqual(hero.monsterLootHistory.length, 1, 'duplicate collection does not add a second history entry');
   assert.strictEqual(hero.coins.cp, 103, 'copper and mixed coin loot reaches the personal wallet');
   assert.strictEqual(hero.coins.sp, 7, 'silver and mixed coin loot reaches the personal wallet');
   assert.strictEqual(hero.coins.gp, 2001, 'gold coin loot reaches the personal wallet');
