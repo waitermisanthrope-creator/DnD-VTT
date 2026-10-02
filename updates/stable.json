@@ -109,8 +109,8 @@
     },
     {
       "path": "app/app.js",
-      "bytes": 35102,
-      "sha256": "2a29ebc5513e46a17f3d0fe23abbdb2fd3cfad3f9a360e789746a299d1bb8bbb"
+      "bytes": 36291,
+      "sha256": "b862c6e7b14fd2b9f4f55f4c053057fbda69aaaa98f8484c1276c9340f8562c3"
     },
     {
       "path": "app/Settings.js",
