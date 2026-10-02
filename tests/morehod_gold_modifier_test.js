@@ -109,6 +109,35 @@ assert.strictEqual(rules.getModifier(restoredMariner), 1, 'the wallet modifier s
   assert.strictEqual(JSON.stringify(hero.coins), walletBefore, 'rejected purchase does not mutate wallet');
   assert.strictEqual(api.getTrader(traderId).stock.find(x => x.id === item.id).qty, stockBefore, 'rejected purchase does not consume trader stock');
 }
+// Market transactions sanitize malformed wallets and refuse unsafe totals without losing inventory.
+{
+  const storage = new Map();
+  const hero = { id: 'mariner-market-invalid-wallet', name: 'Мореход', classes: [{ name: 'Мореход', level: 1 }], coins: { gp: -100, sp: 1.5, cp: 'bad', ep: 0, pp: 0 }, inventory: {} };
+  const marketContext = {
+    console, Math, Number, String, Array, Object, JSON, Date, RegExp, isFinite, parseInt, parseFloat,
+    currentCharacter: hero,
+    localStorage: { getItem: key => storage.has(key) ? storage.get(key) : null, setItem: (key, value) => storage.set(key, String(value)) },
+    document: { addEventListener: () => {}, getElementById: () => null }, addEventListener: () => {},
+    renderInventory: () => {}, autoSaveCurrentCharacter: () => {}
+  };
+  marketContext.window = marketContext; marketContext.globalThis = marketContext; vm.createContext(marketContext);
+  vm.runInContext(fs.readFileSync(require.resolve('../app/market_economy_v55.js'), 'utf8'), marketContext);
+  const api = marketContext.DND_MARKET_V55;
+  const traderId = Object.keys(api.TRADERS)[0], item = api.TRADERS[traderId].stock[0];
+  const stockBefore = api.getTrader(traderId).stock.find(x => x.id === item.id).qty;
+  const purchase = api.buy(traderId, item.id, 1);
+  assert.strictEqual(purchase.ok, false, 'purchase refuses an insufficient malformed wallet after sanitization');
+  assert.deepStrictEqual(JSON.parse(JSON.stringify(hero.coins)), { gp: 0, sp: 0, cp: 0, ep: 0, pp: 0 }, 'market access sanitizes malformed denomination fields');
+  assert.strictEqual(api.getTrader(traderId).stock.find(x => x.id === item.id).qty, stockBefore, 'invalid wallet does not consume trader stock');
+
+  hero.coins = { cp: 0, sp: 0, ep: 0, gp: 0, pp: Number.MAX_SAFE_INTEGER };
+  hero.inventory = { materials: [{ name: 'Предмет для теста', category: 'materials', count: 1, marketPriceGp: 10 }] };
+  const inventoryBefore = JSON.stringify(hero.inventory);
+  const sale = api.sell(traderId, 'materials', 0, 1);
+  assert.strictEqual(sale.ok, false, 'sale refuses a wallet whose copper-equivalent total is unsafe');
+  assert.strictEqual(JSON.stringify(hero.inventory), inventoryBefore, 'unsafe wallet total cannot remove a sold item');
+}
+
 // Barter must reject duplicate/stale offers before changing inventory or trader stock.
 {
   const storage = new Map();
