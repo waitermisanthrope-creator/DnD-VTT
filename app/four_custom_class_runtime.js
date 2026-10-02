@@ -343,7 +343,9 @@
     ctx=ctx||{};
     if(!hero)return {ok:false,reason:'Персонаж не найден.'};
     sync(hero);
-    if(String(id)==='banditTrip')return useBanditTrip(hero,ctx);\n    if(String(id)==='banditReactionBreak')return useBanditReactionBreak(hero,ctx);\n    if(String(id)==='banditDistractingManeuver')return useBanditDistractingManeuver(hero,ctx);
+    if(String(id)==='banditTrip')return useBanditTrip(hero,ctx);
+    if(String(id)==='banditReactionBreak')return useBanditReactionBreak(hero,ctx);
+    if(String(id)==='banditDistractingManeuver')return useBanditDistractingManeuver(hero,ctx);
     if(String(id)==='protectorZone')return useProtectorZone(hero,ctx);
     if(String(id)==='protectorRescue')return rescueAlly(hero,ctx);
     if(String(id)==='circusFireBreath')return useCircusFireBreath(hero,ctx);
