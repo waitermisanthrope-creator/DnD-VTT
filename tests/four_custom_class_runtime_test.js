@@ -417,6 +417,43 @@ const zoneHigh = { id:'zone-high', classes:[{name:'Заступник',level:17,
 assert.strictEqual(runtime.useFeature(zoneHigh,'protectorZone',{actionAvailable:true,round:1}).zone.radiusFt,15,'level 11+ zone radius is 15 feet');
 assert.strictEqual(runtime.protectorZoneSave(zoneHigh,zoneAlly,{forcedMovementSave:true,isAlly:true,visible:true,distanceFt:15,round:2,requestAdvantage:true}).advantage,true,'level 17 zone can grant one chosen advantage per round');
 
+// Circus Tamer: active-animal cap, independent stat blocks/turn resources, and story-gated replacement.
+{
+  const tamer = {
+    id: 'tamer-roster', classes: [{ name: 'Циркач', level: 1, subclass: 'Дрессировщик' }],
+    resources: {}, classFeaturesState: {}
+  };
+  const animal = (id, name, hpMax, ac) => ({ id, name, statBlock: { hpMax, ac, speed: 30, attacks: [{ name: 'bite', damage: '1d6' }] } });
+  const first = runtime.useFeature(tamer, 'circusConfigureCompanions', { animals: [animal('dog-1', 'Пёс', 12, 13)] });
+  assert.strictEqual(first.ok, true, 'Tamer can register one animal at level 1');
+  assert.strictEqual(first.limit, 1, 'Tamer has one active animal at levels 1-6');
+  assert.notStrictEqual(first.companions[0].statBlock, first.companions[0], 'animal stat block is stored separately from its runtime state');
+  assert.strictEqual(first.companions[0].turnResources.actions, 1, 'animal receives independent turn resources');
+  const replacementWithoutStory = runtime.useFeature(tamer, 'circusConfigureCompanions', { animals: [animal('cat-1', 'Кошка', 8, 12)] });
+  assert.strictEqual(replacementWithoutStory.ok, false, 'animal replacement requires a story event');
+  assert.strictEqual(tamer.classFeaturesState.circus.companions[0].id, 'dog-1', 'failed replacement preserves current companion');
+  assert.strictEqual(runtime.circusAnimalTurnStart(tamer, 'dog-1').turnCount, 1, 'animal turn can start independently');
+  assert.strictEqual(tamer.classFeaturesState.circus.companions[0].turnResources.actions, 1, 'animal turn refreshes its own action');
+  tamer.classes[0].level = 7;
+  const two = runtime.configureCircusCompanions(tamer, [animal('dog-1', 'Пёс', 12, 13), animal('cat-1', 'Кошка', 8, 12)]);
+  assert.strictEqual(two.ok, true, 'Tamer can activate two animals at level 7');
+  assert.strictEqual(two.limit, 2);
+  assert.strictEqual(two.companions[1].hp, 8, 'new animal initializes its own HP from its stat block');
+  tamer.classes[0].level = 14;
+  const three = runtime.configureCircusCompanions(tamer, [animal('dog-1', 'Пёс', 12, 13), animal('cat-1', 'Кошка', 8, 12), animal('hawk-1', 'Ястреб', 5, 14)]);
+  assert.strictEqual(three.ok, true, 'Tamer can activate three animals at level 14');
+  assert.strictEqual(three.limit, 3);
+  const overLimit = runtime.configureCircusCompanions(tamer, [animal('dog-1', 'Пёс', 12, 13), animal('cat-1', 'Кошка', 8, 12), animal('hawk-1', 'Ястреб', 5, 14), animal('wolf-1', 'Волк', 11, 13)]);
+  assert.strictEqual(overLimit.ok, false, 'Tamer cannot exceed the level-based active animal cap');
+  assert.strictEqual(tamer.classFeaturesState.circus.companions.length, 3, 'rejected over-limit roster leaves current roster unchanged');
+  const storyReplacement = runtime.configureCircusCompanions(tamer, [animal('cat-1', 'Кошка', 8, 12)], { storyReplacement: true });
+  assert.strictEqual(storyReplacement.ok, true, 'explicit story event can replace the roster');
+  const invalidBlock = runtime.configureCircusCompanions(tamer, [ { id:'bad-animal', name:'Сломанный', statBlock:{hpMax:0,ac:12} } ], { storyReplacement: true });
+  assert.strictEqual(invalidBlock.ok, false, 'animal without valid independent combat stats is rejected');
+  const nonTamer = { classes: [{ name: 'Циркач', level: 7, subclass: 'Артист' }], resources: {} };
+  assert.strictEqual(runtime.configureCircusCompanions(nonTamer, [animal('pet', 'Питомец', 5, 10)]).ok, false, 'other Circus specializations cannot configure Tamer roster');
+}
+
 console.log('Four custom class runtime foundation tests: PASS');
 
 
