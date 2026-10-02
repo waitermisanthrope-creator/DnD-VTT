@@ -271,6 +271,16 @@ assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'),
   const failedSale = saleContext.DND_MARKET_V55.sell('caravan', 'materials', 0, 1);
   assert.strictEqual(failedSale.ok, false, 'selling a missing item fails safely');
   assert.strictEqual(saleContext.DND_MARKET_V55.balanceCp(), beforeFailedSale, 'failed sale does not alter carried wealth');
+
+  // Invalid trader must be rejected before inventory or wallet mutation.
+  seller.inventory.materials.push({ name: 'Сохранный товар', category: 'materials', count: 1, marketPriceGp: 2 });
+  const beforeInvalidTraderCoins = JSON.stringify(seller.coins);
+  const beforeInvalidTraderCount = seller.inventory.materials.length;
+  const invalidTraderSale = saleContext.DND_MARKET_V55.sell('missing-trader', 'materials', 0, 1);
+  assert.strictEqual(invalidTraderSale.ok, false, 'sale to an unknown trader is rejected');
+  assert.strictEqual(JSON.stringify(seller.coins), beforeInvalidTraderCoins, 'unknown trader cannot corrupt or change the wallet');
+  assert.strictEqual(seller.inventory.materials.length, beforeInvalidTraderCount, 'unknown trader cannot remove the item');
+  assert.strictEqual(seller.inventory.materials[0].name, 'Сохранный товар', 'the unsold item remains in inventory');
 }
 console.log('morehod_gold_modifier_test: all assertions passed');
 
