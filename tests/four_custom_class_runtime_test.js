@@ -163,6 +163,26 @@ const failedFireRoll = runtime.useFeature(fireFailureHero, 'circusFireBreath', {
 assert.strictEqual(failedFireRoll.ok, false, 'invalid Circus damage roll returns a clean failure');
 assert.strictEqual(fireFailureHero.resources.circusResource.current, beforeFailedFire, 'invalid Circus damage roll preserves resource');
 
+window.DNDCombat.savingThrow = (target, stat, dc) => ({ success: false, stat, dc });
+window.DNDCombat.rollDice = () => ({ total: 8 });
+let applyDamageCalls = 0;
+window.DNDCombat.applyDamage = (target, amount) => {
+  applyDamageCalls++;
+  if (applyDamageCalls === 2) return { ok: false, reason: 'damage rejected' };
+  target.hitPoints -= amount;
+  return { ok: true, applied: amount };
+};
+const partialTargetA = { id: 'partial-fire-a', inArea: true, distanceFt: 5, target: { id: 'partial-fire-a', hitPoints: 20 } };
+const partialTargetB = { id: 'partial-fire-b', inArea: true, distanceFt: 8, target: { id: 'partial-fire-b', hitPoints: 20 } };
+const resourceBeforePartialFire = fireFailureHero.resources.circusResource.current;
+const partialFire = runtime.useFeature(fireFailureHero, 'circusFireBreath', { targets: [partialTargetA, partialTargetB] });
+assert.strictEqual(partialFire.ok, false, 'a combat resolver rejection is not reported as a complete fire-breath success');
+assert.strictEqual(partialFire.partial, true, 'combat rejection after action begins is explicitly reported as partial');
+assert.strictEqual(partialFire.results.length, 1, 'partial result lists only targets already processed');
+assert.strictEqual(partialTargetA.target.hitPoints, 12, 'already processed target retains its applied damage');
+assert.strictEqual(partialTargetB.target.hitPoints, 20, 'rejected target remains unchanged');
+assert.strictEqual(fireFailureHero.resources.circusResource.current, resourceBeforePartialFire - 1, 'resource remains spent after a partial multi-target action');
+
 const banditTripHero = {
   id: 'bandit-trip-hero',
   classes: [{ name: 'Бандит', level: 3 }],
