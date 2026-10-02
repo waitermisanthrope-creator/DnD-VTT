@@ -214,7 +214,7 @@
     ctx=ctx||{};
     var l=level(protector,CLASS_IDS.protector),state=protector&&protector.classFeaturesState&&protector.classFeaturesState.protector,zone=state&&state.zone;
     if(l<3||!zone||!zone.active)return {ok:false,bonus:0,reason:'Оборонительная зона не активна.'};
-    var conditions=protector&&(protector.activeConditions||protector.conditions)||{};if(ctx.protectorIncapacitated===true||conditions['Недееспособен']||conditions['Бессознателен']||conditions['Парализован']||conditions['Оглушён']||conditions['Окаменел']){zone.active=false;return {ok:false,bonus:0,reason:'Зона заканчивается, когда Заступник недееспособен.'};}
+    var activeConditions=protector&&protector.activeConditions||{},conditions=protector&&protector.conditions||{};if(ctx.protectorIncapacitated===true||activeConditions['Недееспособен']||conditions['Недееспособен']||activeConditions['Бессознателен']||conditions['Бессознателен']||activeConditions['Парализован']||conditions['Парализован']||activeConditions['Оглушён']||conditions['Оглушён']||activeConditions['Окаменел']||conditions['Окаменел']){zone.active=false;zone.endedReason='protector-incapacitated';return {ok:false,bonus:0,reason:'Зона заканчивается, когда Заступник недееспособен.'};}
     var round=Math.max(1,n(ctx.round,1));
     if(round>=zone.expiresRound){zone.active=false;return {ok:false,bonus:0,reason:'Время оборонительной зоны истекло.'};}
     if(ctx.forcedMovementSave!==true||ctx.isAlly!==true||ctx.visible!==true)return {ok:false,bonus:0,reason:'Нужен спасбросок видимого союзника против принудительного перемещения.'};
