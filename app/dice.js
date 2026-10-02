@@ -234,8 +234,7 @@ function renderDiceModule() {
       <button class="dice-btn" onclick="rollDice(12)">d12</button>
       <button class="dice-btn" onclick="rollDice(20)">d20</button>
     </div>
-
-
+    <button id="quickWeaponAttackBtn" class="btn-action" onclick="executeEquippedWeaponAttack()" style="background:#ff9800;color:#000;font-weight:bold;padding:14px 10px;font-size:1em;width:100%;border-radius:8px;cursor:pointer;border:none;box-shadow:0 2px 4px rgba(0,0,0,.3);margin-top:8px;">⚔️ Атака экипированным оружием (d20 + мод)</button>
   `;
 
   const drawerContainer = document.createElement('div');
@@ -255,17 +254,19 @@ function renderDiceModule() {
         <div id="diceDrawerSkillsList" style="display: flex; flex-direction: column; gap: 6px; max-height: 250px; overflow-y: auto; padding-right: 4px;"></div>
 
         <div style="font-size: 0.9em; color: #ff9800; font-weight: bold; margin: 16px 0 8px;">⚔️ Боевые действия:</div>
-        <button id="quickWeaponAttackBtn" class="btn-action" onclick="executeEquippedWeaponAttack()" style="background: #ff9800; color: #000; font-weight: bold; padding: 10px 12px; font-size: 0.95em; width: 100%; border-radius: 6px; cursor: pointer; border: none; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">⚔️ Атака экипированным оружием (d20 + мод)</button>
+        
       </div>
     </div>
   `;
 
   const logWrapper = document.createElement('div');
   logWrapper.id = 'diceLogWrapper';
-  logWrapper.style.cssText = 'margin-top: 15px; padding: 10px; background: #1f1f1f; border-radius: 6px; border: 1px solid #333;';
+  logWrapper.style.cssText = 'margin-top: 15px; padding: 0; background: #1f1f1f; border-radius: 6px; border: 1px solid #333; overflow:hidden;';
   logWrapper.innerHTML = `
-    <div style="font-size: 0.9em; color: #ff9800; margin-bottom: 6px; font-weight: bold;">📜 История бросков:</div>
-    <div id="diceLogContainer" style="max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px;"></div>
+    <button id="diceLogToggle" onclick="toggleDiceLog()" style="width:100%;padding:12px;background:#252525;color:#d4af37;border:0;font-weight:bold;text-align:left;cursor:pointer;">📜 История бросков ▾</button>
+    <div id="diceLogBody" style="display:none;padding:10px;">
+      <div id="diceLogContainer" style="max-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;"></div>
+    </div>
   `;
 
   diceTab.appendChild(mainCard);
