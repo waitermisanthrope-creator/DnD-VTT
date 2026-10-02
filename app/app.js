@@ -121,6 +121,15 @@ function normalizeCharacterSave(c) {
   }
   if (!Array.isArray(c.weaponsData)) c.weaponsData = [];
   if (!Array.isArray(c.spellsData)) c.spellsData = [];
+  // Нормализуем существующий кошелёк при загрузке/импорте: только целые неотрицательные монеты.
+  // Отсутствующий coins не создаём принудительно, чтобы сохранить совместимость старых листов.
+  if (c.coins != null) {
+    if (typeof c.coins !== 'object' || Array.isArray(c.coins)) c.coins = {};
+    ['cp','sp','ep','gp','pp'].forEach(function(k) {
+      var value = Number(c.coins[k]);
+      c.coins[k] = Number.isSafeInteger(value) && value >= 0 ? value : 0;
+    });
+  }
   if (!c.activeConditions || typeof c.activeConditions !== 'object' || Array.isArray(c.activeConditions)) c.activeConditions = {};
   if (!c.spellSlotsData || typeof c.spellSlotsData !== 'object' || Array.isArray(c.spellSlotsData)) c.spellSlotsData = {};
   for (var level=1; level<=9; level++) {
