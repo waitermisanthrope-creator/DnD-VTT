@@ -29,7 +29,7 @@
   global.dndCampaignRename=function(v){var c=cur();if(c){c.name=v;save();}};
   global.dndCampaignNotes=function(v){var c=cur();if(c){c.notes=v;save();}};
   global.dndCampaignExport=function(){var c=cur();if(!c)return;var blob=new Blob([JSON.stringify({schemaVersion:SCHEMA_VERSION,type:'dnd-campaign',exportedAt:new Date().toISOString(),campaign:c},null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='dnd_campaign_'+c.name.replace(/[^a-zа-я0-9_-]+/gi,'_')+'.json';a.click();URL.revokeObjectURL(a.href);};
-  global.dndCampaignOpen=function(){inject();var tabs=document.querySelectorAll('.tab-page');for(var i=0;i<tabs.length;i++)tabs[i].style.display='none';var host=document.getElementById('tab-page-library')||tabs[6];if(host)host.style.display='block';render();};
+  global.dndCampaignOpen=function(){inject();render();var host=document.getElementById('tab-page-library');var pages=document.querySelectorAll('#swiper > .tab-page');var libraryIndex=-1;for(var i=0;i<pages.length;i++){if(pages[i]===host){libraryIndex=i;break;}}if(libraryIndex>=0&&typeof global.goToTab==='function'){global.goToTab(libraryIndex);}var panel=document.getElementById('campaignManagerPanel');if(panel){var card=panel.closest('.card');if(card&&card.scrollIntoView)card.scrollIntoView({behavior:'smooth',block:'start'});}};
   document.addEventListener('DOMContentLoaded',function(){load();setTimeout(inject,300);});
   global.DNDCampaign={SCHEMA_VERSION:SCHEMA_VERSION,load:load,save:save,getCurrent:cur,create:create,normalize:normalizeRoot};
 })(window);
