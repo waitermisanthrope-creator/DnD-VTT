@@ -310,6 +310,11 @@ const zoneHero = {
   turnResources: { actions: 1, bonusAction: 1, reaction: 1 }, classFeaturesState: {}
 };
 const zone = runtime.useFeature(zoneHero, 'protectorZone', { actionAvailable: true, round: 1 });
+const zoneWithoutTurnState = { id: 'zone-no-turn-state', classes: [{ name: 'Заступник', level: 3, subclass: 'Страж рубежа' }], resources: { protectorImpulses: { current: 2, max: 2 } }, classFeaturesState: {} };
+const rejectedZoneWithoutTurnState = runtime.useFeature(zoneWithoutTurnState, 'protectorZone', { actionAvailable: true, round: 1 });
+assert.strictEqual(rejectedZoneWithoutTurnState.ok, false, 'Protector zone cannot invent a free bonus action when turn state is missing');
+assert.strictEqual(zoneWithoutTurnState.resources.protectorImpulses.current, 2, 'missing turn state does not spend Protector impulse');
+assert.strictEqual(zoneWithoutTurnState.turnResources, undefined, 'missing turn state remains missing instead of being fabricated');
 assert.strictEqual(runtime.useFeature(Object.assign({},zoneHero,{classes:[{name:'Заступник',level:3,subclass:'Спаситель'}]}),'protectorZone',{actionAvailable:true,round:1}).ok,false,'other Protector subclass cannot use Strazh Rubezha');
 assert.strictEqual(zone.ok, true, 'Strazh Rubezha creates a zone using a bonus action');
 assert.strictEqual(zone.zone.radiusFt, 10);
