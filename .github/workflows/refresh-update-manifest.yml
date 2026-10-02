@@ -1,0 +1,41 @@
+name: Refresh in-app update manifest
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "app/**"
+      - "tools/build_update_manifest.py"
+      - ".github/workflows/refresh-update-manifest.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Generate complete stable manifest
+        run: |
+          python3 tools/build_update_manifest.py \
+            --base-url "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main" \
+            --version "70.28.0" \
+            --min-app-version "70.25.71" \
+            --channel "stable" \
+            --output updates/stable.json
+      - name: Commit manifest
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- updates/stable.json; then
+            echo "Manifest is already current"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add updates/stable.json
+          git commit -m "Refresh stable in-app update manifest"
+          git push
