@@ -257,6 +257,32 @@ function renderDiceModule() {
   diceTab.appendChild(mainCard);
   diceTab.appendChild(drawerContainer);
 
+  // Relocate known gameplay/combat panels into the drawer even if a module
+  // created them before the dice UI finished rendering.
+  const relocateGameplayPanels = () => {
+    const host = document.getElementById('diceDrawerExternalPanels');
+    const tab = document.getElementById('tabDice');
+    if (!host || !tab) return;
+    ['dndGameplayCoreV57','dndGameplayV58','combatEnginePanel','encounterBuilderPanel','dndCombatEnginePanel','dndEncounterBuilder'].forEach(id => {
+      const node = document.getElementById(id);
+      if (node && tab.contains(node) && !host.contains(node)) host.appendChild(node);
+    });
+    tab.querySelectorAll('[data-dnd-gameplay-panel="true"], .dnd-combat-panel, .dnd-gameplay-panel').forEach(node => {
+      if (node !== mainCard && node !== drawerContainer && !host.contains(node)) host.appendChild(node);
+    });
+  };
+  relocateGameplayPanels();
+  if (window.__diceGameplayRelocationObserver) window.__diceGameplayRelocationObserver.disconnect();
+  window.__diceGameplayRelocationObserver = new MutationObserver(() => {
+    if (window.__diceGameplayRelocationQueued) return;
+    window.__diceGameplayRelocationQueued = true;
+    Promise.resolve().then(() => {
+      window.__diceGameplayRelocationQueued = false;
+      relocateGameplayPanels();
+    });
+  });
+  window.__diceGameplayRelocationObserver.observe(diceTab, { childList: true });
+
   // Переносим уже существующие и вновь добавляемые панели из корня вкладки в шторку.
   // Главная карточка кубиков и сама шторка остаются единственными элементами снаружи.
   const moveExtraPanelsIntoDrawer = () => {
