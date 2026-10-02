@@ -47,7 +47,7 @@ for (const [file, key, subclassKeys] of cases) {
 
   if (file === 'Morehod.js') {
     const goldRule = data.features.goldModifier.effect;
-    for (const requiredTerm of ['d20', 'характеристик', 'навыков', 'атак', 'спасброски', 'инициатив', 'концентрации', 'урона', 'хитов']) {
+    for (const requiredTerm of ['d20', 'характеристик', 'навыков', 'атак', 'спасброс', 'инициатив', 'концентрации', 'урона', 'хитов']) {
       assert(goldRule.toLowerCase().includes(requiredTerm), file + ': gold modifier must explicitly define scope/exclusion "' + requiredTerm + '"');
     }
   }
