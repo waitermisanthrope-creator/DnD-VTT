@@ -1010,5 +1010,41 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
 <script src="./app/bestiary_catalog_v56_12.js"></script>
 <script src="./app/bestiary_catalog_v56_13.js"></script>
   <script src="./app/swipe-lock.js"></script>
+
+  <!-- Скрывать незавершённые разделы «Сетевая игра» и «Поле боя» вне debug-режима. -->
+  <script>
+  (function(){
+    var labels = ['сетевая игра', 'поле боя'];
+    function isDebug(){ return window.dndDebugEnabled === true || document.documentElement.classList.contains('debug-enabled'); }
+    function syncButtons(){
+      document.querySelectorAll('button, a, [role="button"]').forEach(function(el){
+        var text = (el.innerText || el.textContent || '').replace(/\\s+/g,' ').trim().toLowerCase();
+        if(!labels.some(function(label){ return text === label || text.indexOf(label) !== -1; })) return;
+        if(!el.hasAttribute('data-debug-gated-feature')) {
+          el.setAttribute('data-debug-gated-feature','true');
+          el.setAttribute('data-debug-original-display', el.style.display || '');
+        }
+        if(isDebug()){
+          el.style.setProperty('display', el.getAttribute('data-debug-original-display') || '', 'important');
+          el.removeAttribute('aria-hidden');
+          el.removeAttribute('tabindex');
+        } else {
+          el.style.setProperty('display','none','important');
+          el.setAttribute('aria-hidden','true');
+          el.setAttribute('tabindex','-1');
+        }
+      });
+    }
+    var observer = new MutationObserver(syncButtons);
+    function start(){
+      syncButtons();
+      observer.observe(document.body,{childList:true,subtree:true,characterData:true});
+      var previous = isDebug();
+      setInterval(function(){ var current=isDebug(); if(current!==previous){previous=current;syncButtons();} },500);
+    }
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start); else start();
+  })();
+  </script>
+
 </body>
 </html>
