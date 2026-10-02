@@ -677,40 +677,55 @@ function applyBackgroundToCharacter(backgroundName) {
 // БЛОК 5: НАВИГАЦИЯ И СЕНСОРНОЕ УПРАВЛЕНИЕ (СВАЙПЫ)
 // ==========================================
 var currentTab = 0;
-var totalTabs = 7;
+var totalTabs = 0;
 var startX = 0;
 var startY = 0;
 var isTracking = false;
 
+function getSwiperPages() {
+  var container = document.getElementById('swiper');
+  return container ? Array.prototype.filter.call(container.children, function (child) {
+    return child.classList && child.classList.contains('tab-page');
+  }) : [];
+}
+
+function syncSwiperTabCount() {
+  totalTabs = getSwiperPages().length;
+  if (totalTabs < 1) totalTabs = 1;
+  if (currentTab >= totalTabs) currentTab = totalTabs - 1;
+  return totalTabs;
+}
+
 function goToTab(tabIndex) {
   var container = document.getElementById('swiper');
+  var view = document.querySelector('.swiper-view');
   var tabs = document.querySelectorAll('.tabs-nav .tab-btn');
-  if (!container) return;
-  
-  if (tabIndex < 0) tabIndex = 0;
-  if (tabIndex >= totalTabs) tabIndex = totalTabs - 1;
-  
-  currentTab = tabIndex;
-  container.style.transform = 'translateX(-' + (currentTab * 100) + 'vw)';
-  
+  var pageCount = syncSwiperTabCount();
+  if (!container || !view) return;
+
+  var requestedIndex = Number(tabIndex);
+  if (!Number.isFinite(requestedIndex)) requestedIndex = currentTab;
+  currentTab = Math.max(0, Math.min(Math.trunc(requestedIndex), pageCount - 1));
+
+  // Measure the actual swipe viewport; 100vw can differ in Android WebView.
+  var pageWidth = view.clientWidth || view.getBoundingClientRect().width;
+  container.style.transform = 'translate3d(-' + (currentTab * pageWidth) + 'px, 0, 0)';
+
   tabs.forEach(function(tab, i) {
-    if (i === currentTab) {
-      tab.classList.add('active');
-    } else {
-      tab.classList.remove('active');
-    }
+    if (i === currentTab) tab.classList.add('active');
+    else tab.classList.remove('active');
   });
 
   if (tabs[currentTab]) {
     tabs[currentTab].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
   }
-  
-  if (currentTab === 1) {
-    setTimeout(renderProficienciesBlock, 50);
-  }
+  if (currentTab === 1) setTimeout(renderProficienciesBlock, 50);
 }
 
+window.addEventListener('resize', function() { goToTab(currentTab); });
+
 document.addEventListener('DOMContentLoaded', function() {
+  syncSwiperTabCount();
   var container = document.getElementById('swiper');
   if (container) {
     container.addEventListener('touchstart', function(e) {
@@ -733,11 +748,9 @@ document.addEventListener('DOMContentLoaded', function() {
       var diffY = endY - startY;
 
       if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
-        if (diffX < 0) {
-          goToTab(currentTab + 1);
-        } else {
-          goToTab(currentTab - 1);
-        }
+        var pageCount = syncSwiperTabCount();
+        if (diffX < 0 && currentTab < pageCount - 1) goToTab(currentTab + 1);
+        else if (diffX > 0 && currentTab > 0) goToTab(currentTab - 1);
       }
     }, { passive: true });
   }
