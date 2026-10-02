@@ -52,37 +52,71 @@ function renderCombatAbilities() {
           '</div>';
       }
 
-      html += '<div class="weapon-card">' +
-        '<div style="display:flex; gap:8px; align-items:center;">' +
-          '<input type="text" value="' + (ab.name || '').replace(/"/g, '&quot;') + '" placeholder="Название способности..." oninput="updateCombatAbility(' + i + ', \'name\', this.value)">' +
-        '</div>' +
-        '<textarea placeholder="Описание эффекта..." oninput="updateCombatAbility(' + i + ', \'description\', this.value)" style="height:60px; margin-top:8px;">' + (ab.description || '') + '</textarea>' +
-        '<div style="display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap: wrap;">' +
-          '<div style="flex:1; min-width:140px;">' +
-            '<label style="font-size:0.75em; margin:0;">Восстановление</label>' +
-            '<select onchange="updateCombatAbility(' + i + ', \'rechargeOn\', this.value)" style="margin-top:2px;">' +
-              '<option value="none" ' + (recharge === 'none' ? 'selected' : '') + '>Не тратится (пассивно)</option>' +
-              '<option value="short" ' + (recharge === 'short' ? 'selected' : '') + '>Короткий отдых</option>' +
-              '<option value="long" ' + (recharge === 'long' ? 'selected' : '') + '>Длинный отдых</option>' +
-            '</select>' +
+      var safeName = String(ab.name || 'Без названия').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      var safeDescription = String(ab.description || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      html += '<div class="weapon-card" style="margin-bottom:8px;padding:0;overflow:hidden;">' +
+        '<button type="button" onclick="toggleCombatAbilityDetails(' + i + ')" aria-expanded="false" id="combatAbilityToggle' + i + '" style="display:flex;width:100%;align-items:center;justify-content:space-between;gap:8px;text-align:left;background:transparent;border:0;color:inherit;padding:14px;font:inherit;cursor:pointer;">' +
+          '<strong style="flex:1;">' + safeName + '</strong><span id="combatAbilityArrow' + i + '" style="color:#d4af37;">▾</span>' +
+        '</button>' +
+        '<div id="combatAbilityDetails' + i + '" style="display:none;padding:0 14px 14px;">' +
+          '<div style="font-size:.9em;color:#ccc;white-space:pre-wrap;margin-bottom:10px;">' + (safeDescription || 'Описание не добавлено.') + '</div>' +
+          '<input type="text" value="' + safeName + '" placeholder="Название способности" oninput="updateCombatAbility(' + i + ', \'name\', this.value)" style="margin-bottom:6px;">' +
+          '<textarea placeholder="Описание способности" oninput="updateCombatAbility(' + i + ', \'description\', this.value)" style="height:70px;margin-bottom:8px;">' + safeDescription + '</textarea>' +
+          '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">' +
+            '<button class="btn-action" style="flex:1;min-width:120px;" onclick="rollCombatAbility(' + i + ')">🎲 Кинуть d20</button>' +
+            '<button class="btn-action" style="flex:1;min-width:120px;background:#b66a28;" onclick="rollCombatAbilityDamage(' + i + ')">⚔️ Кинуть на урон</button>' +
           '</div>' +
-          '<div style="width:110px;">' +
-            '<label style="font-size:0.75em; margin:0;">Макс. исп.</label>' +
-            '<input type="number" min="0" value="' + maxUses + '" oninput="updateCombatAbility(' + i + ', \'maxUses\', parseInt(this.value)||0)" style="margin-top:2px;">' +
-          '</div>' +
-        '</div>' +
-        usesHtml +
-        '<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">' +
-          '<button class="btn-action" style="padding: 6px 12px; font-size: 0.85em;" onclick="rollCombatAbility(' + i + ')">Бросок 🎲</button>' +
-          '<button class="btn-del" onclick="deleteCombatAbility(' + i + ')">Удалить</button>' +
-        '</div>' +
-      '</div>';
+          '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">' +
+            '<label style="flex:1;min-width:130px;font-size:.8em;">Восстановление<select onchange="updateCombatAbility(' + i + ', \'rechargeOn\', this.value)" style="margin-top:4px;"><option value="none" ' + (recharge === 'none' ? 'selected' : '') + '>Пассивно</option><option value="short" ' + (recharge === 'short' ? 'selected' : '') + '>Короткий отдых</option><option value="long" ' + (recharge === 'long' ? 'selected' : '') + '>Длинный отдых</option></select></label>' +
+            '<label style="width:100px;font-size:.8em;">Макс. исп.<input type="number" min="0" value="' + maxUses + '" oninput="updateCombatAbility(' + i + ', \'maxUses\', parseInt(this.value)||0)" style="margin-top:4px;"></label>' +
+          '</div>' + usesHtml +
+          '<button class="btn-del" style="margin-top:10px;" onclick="deleteCombatAbility(' + i + ')">Удалить способность</button>' +
+        '</div></div>';
     }
     container.innerHTML = html;
   }
 
   // Пересчитываем СЛ спасброска и бонус атаки способностей от выбранной характеристики
   calculateCombatAbilityStats();
+}
+
+
+// Раскрытие/сворачивание карточки: снаружи всегда остаётся только название.
+function toggleCombatAbilityDetails(index) {
+  var panel = document.getElementById('combatAbilityDetails' + index);
+  var button = document.getElementById('combatAbilityToggle' + index);
+  var arrow = document.getElementById('combatAbilityArrow' + index);
+  if (!panel) return;
+  var open = panel.style.display === 'none';
+  panel.style.display = open ? 'block' : 'none';
+  if (button) button.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (arrow) arrow.textContent = open ? '▴' : '▾';
+}
+
+// Запрашиваем формулу урона (например 2d6+3) и показываем результат в истории дайсов.
+function rollCombatAbilityDamage(index) {
+  if (!currentChar || !currentChar.combatAbilities || !currentChar.combatAbilities[index]) return;
+  var ab = currentChar.combatAbilities[index];
+  var formula = window.prompt('Формула урона (например 2d6+3):', ab.damage || '1d6');
+  if (formula === null) return;
+  formula = String(formula).replace(/\\s+/g, '').toLowerCase();
+  var match = formula.match(/^(\\d*)d(\\d+)([+-]\\d+)?$/);
+  if (!match) {
+    window.alert('Укажи формулу вида 1d8, 2d6+3 или 1d10-1.');
+    return;
+  }
+  var count = Math.max(1, Math.min(100, parseInt(match[1] || '1', 10)));
+  var sides = Math.max(2, Math.min(1000, parseInt(match[2], 10)));
+  var modifier = parseInt(match[3] || '0', 10);
+  var rolls = [];
+  for (var n = 0; n < count; n++) rolls.push(Math.floor(Math.random() * sides) + 1);
+  var total = rolls.reduce(function(sum, value) { return sum + value; }, 0) + modifier;
+  ab.damage = formula;
+  autoSaveCurrentCharacter();
+  if (typeof goToTab === 'function') goToTab(5);
+  var result = document.getElementById('diceResult');
+  if (result) result.textContent = 'Урон «' + (ab.name || 'Способность') + '»: ' + formula + ' → ' + rolls.join(' + ') + (modifier ? (modifier > 0 ? ' + ' : ' - ') + Math.abs(modifier) : '') + ' = ' + total;
+  if (typeof appendDiceLog === 'function') appendDiceLog('⚔️ Урон «' + (ab.name || 'Способность') + '»: ' + formula + ' | Броски [' + rolls.join(', ') + '] → Итог: ' + total, 'norm-roll');
 }
 
 // Кнопка "+ Добавить" — создаёт новую пустую способность
