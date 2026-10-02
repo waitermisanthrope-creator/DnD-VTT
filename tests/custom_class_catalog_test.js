@@ -38,7 +38,7 @@ for (const [file, key, subclassKeys] of cases) {
     }
   }
   for (const [featureKey, feature] of Object.entries(data.features || {})) {
-    assert(feature.name && feature.effect, file + ': base feature ' + featureKey + ' needs name and effect');
+    assert(feature.name && (feature.effect || feature.rules), file + ': base feature ' + featureKey + ' needs an effect or explicit resource rules');
   }
   assert(!/ведущий подтверждает|TODO|TBD|уточнить/i.test(source), file + ': contains unresolved rules text');
   assert.strictEqual(data.integration.combatEngine, false, file + ': combat engine integration must remain disabled');
