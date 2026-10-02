@@ -235,7 +235,7 @@ function renderDiceModule() {
     <button id="diceDrawerToggleBtn" onclick="toggleDiceDrawer()" style="width:100%;padding:12px;background:#252525;color:#d4af37;border:none;font-weight:bold;font-size:.95em;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
       <span>⚔️ Боевой движок и проверки персонажа</span><span id="drawerArrow">▾</span>
     </button>
-    <div id="diceDrawerContent" style="max-height:0;overflow:hidden;transition:max-height .3s ease-out;padding:0 12px;background:#161616;">
+    <div id="diceDrawerContent" style="max-height:0;overflow-y:auto;overflow-x:hidden;transition:max-height .3s ease-out;padding:0 12px;background:#161616;">
       <div style="padding:12px 0;">
         <button id="quickWeaponAttackBtn" class="btn-action" onclick="executeEquippedWeaponAttack()" style="background:#ff9800;color:#000;font-weight:bold;padding:10px 12px;font-size:.95em;width:100%;border-radius:6px;cursor:pointer;border:none;margin-bottom:14px;">⚔️ Атака экипированным оружием</button>
         <div style="font-size:.9em;color:#ff9800;font-weight:bold;margin-bottom:8px;">💪 Проверки характеристик</div>
@@ -334,7 +334,7 @@ function toggleDiceDrawer() {
   console.log(`[DICE_DRAWER] Шторка выбора бросков переключена. Состояние: ${isDrawerOpen ? 'Открыта' : 'Закрыта'}`);
   
   if (isDrawerOpen) {
-    contentDiv.style.maxHeight = '900px';
+    contentDiv.style.maxHeight = '75vh';
     if (arrow) arrow.textContent = '▴';
     populateDiceDrawerData();
   } else {
