@@ -243,7 +243,19 @@ function renderDiceModule() {
     return;
   }
 
-  diceTab.innerHTML = '';
+  // V70.32.12: preserve gameplay panels created before the dice renderer.
+  // The dice renderer owns only its own card and drawer; it must never clear #tabDice.
+  const oldDrawer = document.getElementById('diceDrawerContainer');
+  if (oldDrawer) {
+    const oldHost = oldDrawer.querySelector('#diceDrawerExternalPanels');
+    if (oldHost) {
+      Array.from(oldHost.children).forEach(node => {
+        if (node.id !== 'diceDrawerExternalHeading') diceTab.appendChild(node);
+      });
+    }
+    oldDrawer.remove();
+  }
+  diceTab.querySelectorAll(':scope > .dice-container').forEach(node => node.remove());
   const mainCard = document.createElement('div');
   mainCard.className = 'card dice-container';
   mainCard.innerHTML = `
