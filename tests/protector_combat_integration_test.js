@@ -229,3 +229,18 @@ const otherOpportunity = window.DNDCombat.attack({ id: 'other-foe', name: 'Other
 assert.strictEqual(otherOpportunity.blockedByProtectorRescue, undefined, 'rescue does not block opportunity attacks from other enemies');
 
 console.log('Protector combat integration tests: PASS');
+
+// Protector's defensive zone ends immediately when its owner becomes incapacitated.
+const zoneProtector = {
+  id: 'zone-owner',
+  classes: [{ name: 'Заступник', level: 3 }],
+  conditions: {},
+  classFeaturesState: {
+    protector: { zone: { active: true, createdRound: 1, expiresRound: 11, radiusFt: 10 } }
+  }
+};
+assert.strictEqual(window.DNDCombat.toggleCondition(zoneProtector, 'Оглушён', true), true, 'incapacitating condition is applied');
+assert.strictEqual(zoneProtector.classFeaturesState.protector.zone.active, false, 'Protector zone ends immediately on incapacitation');
+assert.strictEqual(zoneProtector.classFeaturesState.protector.zone.endedReason, 'protector-incapacitated', 'zone stores the reason it ended');
+window.DNDCombat.toggleCondition(zoneProtector, 'Оглушён', false);
+assert.strictEqual(zoneProtector.classFeaturesState.protector.zone.active, false, 'removing the condition does not reactivate an expired zone');
