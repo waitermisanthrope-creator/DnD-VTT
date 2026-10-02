@@ -291,16 +291,16 @@ function updateCoinVisibility() {
 
 function syncCoinInputsFromCharacter() {
   if (typeof currentCharacter === 'undefined' || !currentCharacter) return;
-  if (!currentCharacter.coins) {
-    currentCharacter.coins = { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
-  }
-  const c = currentCharacter.coins;
-  
-  if (document.getElementById('charPP')) document.getElementById('charPP').value = c.pp || 0;
-  if (document.getElementById('charGP')) document.getElementById('charGP').value = c.gp || 0;
-  if (document.getElementById('charEP')) document.getElementById('charEP').value = c.ep || 0;
-  if (document.getElementById('charSP')) document.getElementById('charSP').value = c.sp || 0;
-  if (document.getElementById('charCP')) document.getElementById('charCP').value = c.cp || 0;
+  const c = getCharacterCoins();
+  ['cp', 'sp', 'ep', 'gp', 'pp'].forEach(function(key) {
+    c[key] = normalizeCoinAmount(c[key]);
+  });
+
+  if (document.getElementById('charPP')) document.getElementById('charPP').value = c.pp;
+  if (document.getElementById('charGP')) document.getElementById('charGP').value = c.gp;
+  if (document.getElementById('charEP')) document.getElementById('charEP').value = c.ep;
+  if (document.getElementById('charSP')) document.getElementById('charSP').value = c.sp;
+  if (document.getElementById('charCP')) document.getElementById('charCP').value = c.cp;
 }
 
 function getCoinMultipliers() {
