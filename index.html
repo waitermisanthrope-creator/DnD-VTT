@@ -1007,5 +1007,44 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
 <script src="./app/bestiary_catalog_v56_12.js"></script>
 <script src="./app/bestiary_catalog_v56_13.js"></script>
   <script src="./app/swipe-lock.js"></script>
+
+  <!-- V70.27: Поле боя и сетевая игра скрыты до включения режима отладки.
+       Наблюдатель обрабатывает также кнопки, которые меню «Ещё» создаёт динамически. -->
+  <script>
+  (function () {
+    'use strict';
+    var targetLabels = /поле\s+боя|сетевая\s+игра/i;
+    function applyDebugVisibility(root) {
+      var nodes = [];
+      if (root && root.nodeType === 1 && root.matches && root.matches('button,[role="button"]')) nodes.push(root);
+      if (root && root.querySelectorAll) {
+        Array.prototype.forEach.call(root.querySelectorAll('button,[role="button"]'), function (el) { nodes.push(el); });
+      }
+      nodes.forEach(function (el) {
+        var label = String(el.innerText || el.textContent || '').replace(/\s+/g, ' ').trim();
+        if (!targetLabels.test(label)) return;
+        el.classList.add('debug-tool-button');
+        el.setAttribute('data-debug-gated-feature', 'true');
+      });
+    }
+    function refresh() {
+      applyDebugVisibility(document.body);
+      var debug = localStorage.getItem('dnd_debug_enabled') === 'true' ||
+        new URLSearchParams(location.search || '').get('debug') === '1';
+      document.documentElement.classList.toggle('debug-enabled', !!debug);
+    }
+    refresh();
+    if (window.MutationObserver && document.body) {
+      new MutationObserver(function (changes) {
+        changes.forEach(function (change) {
+          Array.prototype.forEach.call(change.addedNodes || [], applyDebugVisibility);
+        });
+        refresh();
+      }).observe(document.body, { childList: true, subtree: true });
+    }
+    window.addEventListener('storage', refresh);
+  })();
+  </script>
+
 </body>
 </html>
