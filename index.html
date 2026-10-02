@@ -678,7 +678,22 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
 
         <!-- Индекс 5: Дайсы -->
         <div class="tab-page" id="tabDice">
-          <!-- Весь интерфейс кубиков динамически создается в dice.js -->
+          <!-- Статический резервный интерфейс: дайсы доступны даже если dice.js не запустился. -->
+          <div class="card dice-container dice-static-fallback" style="padding:20px;margin:16px;background:#1f1f1f;color:#fff;border:1px solid #444;border-radius:12px;">
+            <h3 style="text-align:center;color:#ff9800;">🎲 Генератор бросков</h3>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">
+              <button onclick="window.__fallbackRollDice(4)" style="padding:18px 4px;background:#292929;color:#ff9800;border:1px solid #555;border-radius:8px;font-size:1.15rem;font-weight:bold;">d4</button>
+              <button onclick="window.__fallbackRollDice(6)" style="padding:18px 4px;background:#292929;color:#ff9800;border:1px solid #555;border-radius:8px;font-size:1.15rem;font-weight:bold;">d6</button>
+              <button onclick="window.__fallbackRollDice(8)" style="padding:18px 4px;background:#292929;color:#ff9800;border:1px solid #555;border-radius:8px;font-size:1.15rem;font-weight:bold;">d8</button>
+              <button onclick="window.__fallbackRollDice(10)" style="padding:18px 4px;background:#292929;color:#ff9800;border:1px solid #555;border-radius:8px;font-size:1.15rem;font-weight:bold;">d10</button>
+              <button onclick="window.__fallbackRollDice(12)" style="padding:18px 4px;background:#292929;color:#ff9800;border:1px solid #555;border-radius:8px;font-size:1.15rem;font-weight:bold;">d12</button>
+              <button onclick="window.__fallbackRollDice(20)" style="padding:18px 4px;background:#292929;color:#ff9800;border:1px solid #555;border-radius:8px;font-size:1.15rem;font-weight:bold;">d20</button>
+              <button onclick="window.__fallbackRollDice(100)" style="padding:18px 4px;background:#292929;color:#ff9800;border:1px solid #555;border-radius:8px;font-size:1.15rem;font-weight:bold;">d100</button>
+            </div>
+            <div id="diceEmergencyResult" style="padding:14px;text-align:center;color:#8bc34a;font-size:1.2rem;">Выбери кубик</div>
+            <button onclick="initializeDiceModule()" style="width:100%;padding:12px;background:#333;color:#fff;border:1px solid #555;border-radius:8px;">Запустить полный интерфейс дайсов</button>
+          </div>
+          <!-- Основной интерфейс автоматически заменит резервный при запуске dice.js -->
         </div>
 
         <!-- Индекс 6: Лор / Бестиарий -->
