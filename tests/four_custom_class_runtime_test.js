@@ -349,6 +349,39 @@ assert.strictEqual(fallen.deathSaves.failures, 2, 'rescue does not erase existin
 assert.deepStrictEqual(JSON.parse(JSON.stringify(fallen.position)), {x:2,y:3}, 'rescue moves ally to selected free cell');
 assert.strictEqual(rescuer.resources.protectorImpulses.current, 1);
 assert.strictEqual(rescuer.turnResources.reaction, 0);
+
+const gridRescuer = {
+  id: 'grid-rescuer', classes: [{ name: 'Заступник', level: 3, subclass: 'Спаситель' }],
+  resources: { protectorImpulses: { current: 2, max: 2 } }, turnResources: { reaction: 1 }
+};
+const gridFallen = { id: 'grid-fallen', hp: 0, tempHp: 0 };
+let movedRescue = null;
+window.DNDBattleBoard = {
+  moveRescuedCombatant: (id, x, y, maxFt) => {
+    movedRescue = { id, x, y, maxFt };
+    return { ok: true, tokenId: 'token-grid-fallen' };
+  }
+};
+const gridRescue = runtime.useFeature(gridRescuer, 'protectorRescue', {
+  target: gridFallen, isAlly: true, visible: true, distanceFt: 5,
+  cellAvailable: true, freeCell: { x: 4, y: 2 }, distanceToCellFt: 5, round: 1
+});
+assert.strictEqual(gridRescue.ok, true, 'rescue succeeds when battle-grid token movement succeeds');
+assert.deepStrictEqual(JSON.parse(JSON.stringify(movedRescue)), { id: 'grid-fallen', x: 4, y: 2, maxFt: 5 }, 'rescue moves the actual battle-grid token');
+assert.strictEqual(gridFallen.position.x, 4, 'combatant position remains synced with the moved grid token');
+const blockedGridRescuer = {
+  id: 'blocked-grid-rescuer', classes: [{ name: 'Заступник', level: 3, subclass: 'Спаситель' }],
+  resources: { protectorImpulses: { current: 2, max: 2 } }, turnResources: { reaction: 1 }
+};
+window.DNDBattleBoard.moveRescuedCombatant = () => ({ ok: false, reason: 'Клетка занята.' });
+const blockedGridRescue = runtime.useFeature(blockedGridRescuer, 'protectorRescue', {
+  target: { id: 'blocked-grid-fallen', hp: 0 }, isAlly: true, visible: true, distanceFt: 5,
+  cellAvailable: true, freeCell: { x: 4, y: 2 }, distanceToCellFt: 5, round: 1
+});
+assert.strictEqual(blockedGridRescue.ok, false, 'rescue fails when battle grid rejects the destination');
+assert.strictEqual(blockedGridRescuer.resources.protectorImpulses.current, 2, 'rejected grid movement preserves Protector impulse');
+assert.strictEqual(blockedGridRescuer.turnResources.reaction, 1, 'rejected grid movement preserves reaction');
+delete window.DNDBattleBoard;
 const highRescuer = {
   id: 'high-rescuer', classes: [{ name: 'Заступник', level: 17, subclass: 'Спаситель' }],
   resources: { protectorImpulses: { current: 2, max: 2 } }, turnResources: { reaction: 1 }
