@@ -84,6 +84,14 @@ runtime.studyTarget(hero, targetA, { visible: true, distanceFt: 20 });
 runtime.studyTarget(hero, targetC, { visible: true, distanceFt: 20 });
 assert.deepStrictEqual(Array.from(runtime.clearStudiedTarget(hero, 'enemy-a')), ['enemy-c'], 'clearing one target preserves other studied targets');
 assert.strictEqual(runtime.studyTarget(hero, { name: 'no id' }, { visible: true, distanceFt: 10 }).ok, false);
+assert.strictEqual(runtime.studyTarget(hero, { id: '' }, { visible: true, distanceFt: 10 }).ok, false, 'empty target IDs are rejected');
+const selfStudyingHero = { id: 'self-bandit', classes: [{ name: 'Бандит', level: 3 }], classFeaturesState: 'corrupt-legacy-state' };
+const selfStudy = runtime.studyTarget(selfStudyingHero, { id: 'self-bandit' }, { visible: true, distanceFt: 10 });
+assert.strictEqual(selfStudy.ok, false, 'Bandit cannot study themself as a target');
+assert.strictEqual(selfStudyingHero.classFeaturesState, 'corrupt-legacy-state', 'rejected self-target does not mutate existing state');
+const corruptStudyStateHero = { id: 'safe-state', classes: [{ name: 'Бандит', level: 3 }], classFeaturesState: [] };
+assert.strictEqual(runtime.studyTarget(corruptStudyStateHero, { id: 'enemy-safe' }, { visible: true, distanceFt: 10 }).ok, true, 'malformed legacy feature-state container is safely repaired');
+assert.deepStrictEqual(Array.from(corruptStudyStateHero.classFeaturesState.bandit.studiedTargetIds), ['enemy-safe']);
 const actionHero = {
   classes: [{ name: 'Бандит', level: 3 }],
   abilityScores: { dex: 14, cha: 10 },
