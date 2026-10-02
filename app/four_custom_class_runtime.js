@@ -139,6 +139,7 @@
     // In combat, Fire Breath consumes the action. Outside initiative (legacy sheet preview),
     // no turn resource object exists, so the resolver remains usable for previews/tests.
     var turns=hero.turnResources,actionKey=null;
+    if(ctx.inCombat===true&&(!turns||typeof turns!=='object'))return {ok:false,reason:'Не удалось подтвердить доступность действия в бою; ресурс не потрачен.'};
     if(turns&&typeof turns==='object'){
       actionKey=turns.actions!==undefined?'actions':(turns.action!==undefined?'action':null);
       if(actionKey===null||n(turns[actionKey],0)<1)return {ok:false,reason:'Для огненного дыхания нужно свободное действие.'};
