@@ -357,7 +357,11 @@
       }
     }
     if(opts.weapon){opts.weaponAttack=true;opts.meleeOrThrown=opts.meleeOrThrown!==undefined?opts.meleeOrThrown:(opts.weapon.rangeFt==null||Number(opts.weapon.rangeFt)<=5);}
+    var banditDistractState=attacker&&attacker.classFeaturesState&&attacker.classFeaturesState.bandit;
+    var banditDistractId=target&&(target.id!=null?target.id:target.entityId);
+    var banditDistractActive=banditDistractState&&banditDistractState.distractingTargetId!=null&&banditDistractId!=null&&String(banditDistractState.distractingTargetId)===String(banditDistractId);
     var featureMod=(global.DNDClassFeatures&&global.DNDClassFeatures.attackModifiers&&attacker)?global.DNDClassFeatures.attackModifiers(attacker,opts):{bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[],pendingOnHit:{}};
+    if(banditDistractActive){featureMod.advantage=true;featureMod.notes=featureMod.notes||[];featureMod.notes.push('Бандит: Отвлекающий манёвр — преимущество на следующую атаку.');delete banditDistractState.distractingTargetId;delete banditDistractState.distractingUntilTurnCount;}
     if(target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs&&target.classFeaturesState.alchemistDebuffs.attacksHaveAdvantage)featureMod.advantage=true;
     if(featureMod.advantage && featureMod.disadvantage) mode='normal'; else if(featureMod.advantage) mode='advantage'; else if(featureMod.disadvantage) mode='disadvantage';
     if(global.DNDRules && attacker && attacker.stats && opts.useRules!==false){
