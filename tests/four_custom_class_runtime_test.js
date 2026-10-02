@@ -363,3 +363,39 @@ assert.strictEqual(runtime.useFeature(zoneHigh,'protectorZone',{actionAvailable:
 assert.strictEqual(runtime.protectorZoneSave(zoneHigh,zoneAlly,{forcedMovementSave:true,isAlly:true,visible:true,distanceFt:15,round:2,requestAdvantage:true}).advantage,true,'level 17 zone can grant one chosen advantage per round');
 
 console.log('Four custom class runtime foundation tests: PASS');
+
+
+// Bandit: reaction break is a usable combat feature and consumes a dirty trick only on a valid hit.
+{
+  const bandit = {
+    id: 'bandit-mechanics', classes: [{ name: 'Бандит', level: 3 }],
+    abilityScores: { dex: 16 }, resources: { banditDirtyTricks: { current: 2, max: 5 } }
+  };
+  const enemy = { id: 'reaction-enemy', turnResources: { reaction: 1 }, classFeaturesState: {} };
+  const missed = runtime.useFeature(bandit, 'banditReactionBreak', { target: enemy, attackHit: false });
+  assert.strictEqual(missed.ok, false, 'reaction break cannot be used without a confirmed hit');
+  assert.strictEqual(bandit.resources.banditDirtyTricks.current, 2, 'failed reaction break preserves resource');
+  const broken = runtime.useFeature(bandit, 'banditReactionBreak', { target: enemy, attackHit: true });
+  assert.strictEqual(broken.ok, true, 'reaction break applies after a hit');
+  assert.strictEqual(enemy.turnResources.reaction, 0, 'reaction break removes the target reaction');
+  assert.strictEqual(bandit.resources.banditDirtyTricks.current, 1, 'reaction break spends one dirty trick');
+}
+
+// Bandit: distracting maneuver arms advantage for the next attack against a studied target.
+{
+  const bandit = {
+    id: 'bandit-distract', turnCount: 2,
+    classes: [{ name: 'Бандит', level: 3 }],
+    abilityScores: { dex: 16 }, resources: { banditDirtyTricks: { current: 2, max: 5 } },
+    turnResources: { action: 1, bonusAction: 1, reaction: 1 },
+    classFeaturesState: { bandit: { studiedTargetIds: ['distracted-enemy'] } }
+  };
+  const enemy = { id: 'distracted-enemy' };
+  const result = runtime.useFeature(bandit, 'banditDistractingManeuver', { target: enemy, visible: true });
+  assert.strictEqual(result.ok, true, 'distracting maneuver applies to a studied visible target');
+  assert.strictEqual(bandit.classFeaturesState.bandit.distractingTargetId, 'distracted-enemy', 'target is stored for attack integration');
+  assert.strictEqual(bandit.turnResources.bonusAction, 0, 'distracting maneuver uses bonus action');
+  assert.strictEqual(bandit.resources.banditDirtyTricks.current, 1, 'distracting maneuver spends one dirty trick');
+  const unstudied = runtime.useFeature({ ...bandit, resources: { banditDirtyTricks: { current: 1, max: 5 } }, turnResources: { bonusAction: 1 }, classFeaturesState: { bandit: { studiedTargetIds: [] } } }, 'banditDistractingManeuver', { target: enemy, visible: true });
+  assert.strictEqual(unstudied.ok, false, 'distracting maneuver requires a studied target');
+}
