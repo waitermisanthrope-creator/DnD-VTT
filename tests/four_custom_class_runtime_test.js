@@ -56,6 +56,17 @@ assert.strictEqual(hero.resources.banditDirtyTricks.current, 1, 'sync does not r
 assert.strictEqual(hero.resources.banditDirtyTricks.recharge, 'short');
 assert.deepStrictEqual(Array.from(runtime.restore(hero, 'short').restored).sort(), ['banditDirtyTricks', 'circusResource', 'protectorImpulses'].sort());
 assert.strictEqual(hero.resources.banditDirtyTricks.current, 5, 'short rest restores resource');
+hero.resources.banditDirtyTricks.current = 1;
+hero.resources.circusResource.current = 1;
+hero.resources.protectorImpulses.current = 1;
+const invalidRest = runtime.restore(hero, 'unknown-rest');
+assert.strictEqual(invalidRest.ok, false, 'unknown rest type is rejected');
+assert.strictEqual(hero.resources.banditDirtyTricks.current, 1, 'unknown rest does not refill Bandit resource');
+assert.strictEqual(hero.resources.circusResource.current, 1, 'unknown rest does not refill Circus resource');
+assert.strictEqual(hero.resources.protectorImpulses.current, 1, 'unknown rest does not refill Protector resource');
+assert.deepStrictEqual(Array.from(invalidRest.restored || []), [], 'unknown rest reports no restored resources');
+runtime.restore(hero, 'short');
+
 const targetA = { id: 'enemy-a' }, targetB = { id: 'enemy-b' }, targetC = { id: 'enemy-c' };
 assert.strictEqual(runtime.studyTarget(hero, targetA, { visible: true, distanceFt: 60 }).ok, true);
 assert.deepStrictEqual(Array.from(hero.classFeaturesState.bandit.studiedTargetIds), ['enemy-a']);
