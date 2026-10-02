@@ -28,11 +28,19 @@
   function proficiency(levelValue){return levelValue>0?Math.floor((levelValue-1)/4)+2:0;}
   function ensureResource(hero,id,max,recharge){
     hero.resources=hero.resources||{};
+    max=Number.isSafeInteger(Number(max))?Math.max(0,Number(max)):0;
     var r=hero.resources[id];
-    if(!r||typeof r!=='object')r=hero.resources[id]={current:max,max:max,recharge:recharge};
+    if(!r||typeof r!=='object'||Array.isArray(r))r=hero.resources[id]={current:max,max:max,recharge:recharge};
     else{
-      var oldMax=Math.max(0,n(r.max,max)),current=Math.max(0,n(r.current,max));
-      r.max=max;r.current=Math.min(max,Math.max(0,current));
+      // Missing current is a legacy migration case (start full); malformed stored
+      // values must never refill a spent resource merely because Number() failed.
+      var current;
+      if(r.current===undefined||r.current===null)current=max;
+      else{
+        var parsed=Number(r.current);
+        current=Number.isSafeInteger(parsed)&&parsed>=0?parsed:0;
+      }
+      r.max=max;r.current=Math.min(max,current);
       r.recharge=recharge;
     }
     return r;
