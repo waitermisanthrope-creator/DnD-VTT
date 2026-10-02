@@ -105,6 +105,34 @@ assert.strictEqual(rules.getModifier(restoredMariner), 1, 'the wallet modifier s
   assert.strictEqual(JSON.stringify(hero.coins), walletBefore, 'rejected purchase does not mutate wallet');
   assert.strictEqual(api.getTrader(traderId).stock.find(x => x.id === item.id).qty, stockBefore, 'rejected purchase does not consume trader stock');
 }
+// Barter must reject duplicate/stale offers before changing inventory or trader stock.
+{
+  const storage = new Map();
+  const hero = { id: 'mariner-barter-validation', name: 'Мореход', classes: [{ name: 'Мореход', level: 1 }], coins: { gp: 20, pp: 0, ep: 0, sp: 0, cp: 0 }, inventory: { materials: [{ name: 'Тестовый товар', category: 'materials', count: 1, marketPriceGp: 10 }] } };
+  const marketContext = {
+    console, Math, Number, String, Array, Object, JSON, Date, RegExp, isFinite, parseInt, parseFloat,
+    currentCharacter: hero,
+    localStorage: { getItem: key => storage.has(key) ? storage.get(key) : null, setItem: (key, value) => storage.set(key, String(value)) },
+    document: { addEventListener: () => {}, getElementById: () => null }, addEventListener: () => {},
+    renderInventory: () => {}, autoSaveCurrentCharacter: () => {}
+  };
+  marketContext.window = marketContext; marketContext.globalThis = marketContext; vm.createContext(marketContext);
+  vm.runInContext(fs.readFileSync(require.resolve('../app/market_economy_v55.js'), 'utf8'), marketContext);
+  vm.runInContext(fs.readFileSync(require.resolve('../app/market_trade_v55_2.js'), 'utf8'), marketContext);
+  const api = marketContext.DND_MARKET_V55;
+  const trade = marketContext.DND_MARKET_V55_2;
+  const traderId = Object.keys(api.TRADERS).find(id => ['general', 'caravan', 'caravan_master'].includes(api.TRADERS[id].type) && api.TRADERS[id].stock.some(item => trade.calculateItemValue(item, { unit: true }).cp > 0));
+  const item = api.TRADERS[traderId].stock.find(item => trade.calculateItemValue(item, { unit: true }).cp > 0);
+  const stockBefore = api.getTrader(traderId).stock.find(x => x.id === item.id).qty;
+  const inventoryBefore = JSON.stringify(hero.inventory);
+  const result = trade.barter(traderId, item.id, 1, [{ category: 'materials', index: 0, count: 1 }, { category: 'materials', index: 0, count: 1 }]);
+  assert.strictEqual(result.ok, false, 'barter rejects duplicate references to the same offered item');
+  assert.strictEqual(JSON.stringify(hero.inventory), inventoryBefore, 'rejected barter preserves offered inventory');
+  assert.strictEqual(api.getTrader(traderId).stock.find(x => x.id === item.id).qty, stockBefore, 'rejected barter preserves trader stock');
+  const stale = trade.barter(traderId, item.id, 1, [{ category: 'materials', index: 99, count: 1 }]);
+  assert.strictEqual(stale.ok, false, 'barter rejects stale inventory indices');
+  assert.strictEqual(JSON.stringify(hero.inventory), inventoryBefore, 'stale offer cannot mutate inventory');
+}
 assert.strictEqual(rules.adjustRollTotal(14, { className: 'Мореход', coins: { gp: 1200 } }), 15);
 assert.strictEqual(typeof rules.adjustDamageDie, 'undefined', 'Mariner modifier does not expose damage-die adjustment');
 // Integration: load the actual rules engine and confirm the modifier reaches weapon attacks once.
