@@ -99,6 +99,10 @@ public final class DndUpdateBridge {
                 String url = entry.optString("url", "");
                 if (url.isEmpty()) url = baseUrl.replaceAll("/+$", "") + "/" + path;
                 if (!url.startsWith("https://")) throw new Exception("HTTPS update file required");
+                // Raw GitHub/CDN can briefly serve a stale cached file after the manifest changes.
+                // Key each request by the expected content hash so bytes and manifest cannot drift.
+                String cacheKey = "dndvtt_update=" + version + "-" + expectedHash;
+                url += (url.contains("?") ? "&" : "?") + cacheKey;
                 byte[] data = readBytes(url);
                 if (expectedBytes >= 0 && expectedBytes != data.length) throw new Exception("Size mismatch: " + path);
                 if (!expectedHash.equalsIgnoreCase(sha256(data))) throw new Exception("SHA-256 mismatch: " + path);
