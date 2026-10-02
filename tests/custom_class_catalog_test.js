@@ -44,5 +44,19 @@ for (const [file, key, subclassKeys] of cases) {
   assert.strictEqual(data.integration.combatEngine, false, file + ': combat engine integration must remain disabled');
   assert.strictEqual(data.integration.characterCreation, false, file + ': character creation integration must remain disabled');
   assert.strictEqual(data.integration.ui, false, file + ': UI integration must remain disabled');
+
+  if (file === 'Morehod.js') {
+    const goldRule = data.features.goldModifier.effect;
+    for (const requiredTerm of ['d20', 'характеристик', 'навыков', 'атаки', 'спасброски', 'инициатив', 'концентрации', 'урона', 'хитов']) {
+      assert(goldRule.toLowerCase().includes(requiredTerm), file + ': gold modifier must explicitly define scope/exclusion "' + requiredTerm + '"');
+    }
+  }
+  if (file === 'Circus.js') {
+    assert.strictEqual(data.resourceRules.circusResource.sharedAcrossSpecializations, true, file + ': all specializations share one resource');
+    assert(data.specializations.deathJuggler.features.arsenal.effect.includes('инвентаря'), file + ': Death Juggler weapons must come from inventory');
+    assert(data.specializations.tamer.features.firstPartner.effect.includes('отдельный блок характеристик'), file + ': companion needs a separate stat block');
+    assert(data.specializations.tamer.features.menagerie.effect.includes('собственную инициативу'), file + ': companions need independent turns');
+    assert(data.integration.notes.includes('только через сюжет'), file + ': companion replacement must be story-gated');
+  }
   console.log('PASS ' + file + ': 20 levels, ' + subclassKeys.length + ' subclass catalogs, no engine/creation integration');
 }
