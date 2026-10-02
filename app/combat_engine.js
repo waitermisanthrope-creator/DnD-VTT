@@ -488,7 +488,8 @@
       </div>`;
     // Боевые панели выводим в шторку дайсов, не в основной экран.
     // Если шторка ещё не создана, dice.js перенесёт блок после её появления.
-    var panelHost=document.getElementById('diceDrawerExternalPanels')||document.getElementById('diceDrawerContent')||tab;
+    var panelHost=document.getElementById('diceDrawerExternalPanels');
+    if(!panelHost){if(!window.__combatPanelWaiter){window.__combatPanelWaiter=setInterval(function(){if(document.getElementById('diceDrawerExternalPanels')){clearInterval(window.__combatPanelWaiter);window.__combatPanelWaiter=null;combatPanel();}},250);}return;}
     panelHost.appendChild(div);renderEncounter();renderCombatStatus();
   }
   function renderCombatStatus(){var h=ensure(),box=document.getElementById('dndCombatStatus');if(!h||!box)return;var t=h.initiativeTracker||{combatants:[],activeIndex:0,round:1},c=t.combatants[t.activeIndex];if(!c){box.textContent='Активного участника нет.';return;}box.innerHTML='Раунд '+num(t.round,1)+' • <strong>'+esc(c.name)+'</strong> • HP '+num(c.hp)+'/'+num(c.maxHp)+' • КД '+num(c.ac,10)+(c.defeated?' • 💀 повержен':'');}
