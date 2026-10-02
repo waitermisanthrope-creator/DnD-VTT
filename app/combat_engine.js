@@ -584,10 +584,40 @@
     if(!foes.length){alert('Для спасения выберите противника, от которого союзник не спровоцирует атаку.');return;}
     var foeList=foes.map(function(c,i){return i+': '+c.name;}).join('\\n'),foeIndex=Number(prompt('Выберите противника, от которого не будет провоцированной атаки:\\n'+foeList,'0'));if(!isFinite(foeIndex)||!foes[foeIndex])return;
     if(!confirm('Проверка поля пройдена: клетка ('+x+', '+y+') свободна; расстояние '+moveCheck.distanceFt+' фт., путь '+moveCheck.pathCostFt+' фт. Подтвердить спасение?'))return;
-    var actor=protectorActorForTurn(h,protectorCombatant),result=rt.useFeature(actor,'protectorRescue',{target:target,isAlly:target.type==='hero'||target.team==='ally',visible:true,distanceFt:distance,cellAvailable:true,freeCell:{x:x,y:y},distanceToCellFt:moveCheck.distanceFt,moveFt:maxMove,chosenEnemyId:foes[foeIndex].id,round:num(h.initiativeTracker&&h.initiativeTracker.round,1)});syncProtectorTurnActor(actor);
+    var actor=protectorActorForTurn(h,protectorCombatant);
+    // Snapshot every field changed by rescue so a stale/changed board cannot leave
+    // a stabilized ally with spent resources but a token that never moved.
+    var rescueSnapshot={
+      resourceCurrent:actor.resources&&actor.resources.protectorImpulses&&actor.resources.protectorImpulses.current,
+      reaction:actor.turnResources&&actor.turnResources.reaction,
+      position:target.position&&{x:target.position.x,y:target.position.y},
+      x:target.x,y:target.y,stable:target.stable,defeated:target.defeated,
+      deathSaves:target.deathSaves?JSON.parse(JSON.stringify(target.deathSaves)):target.deathSaves,
+      tempHp:target.tempHp,
+      hadClassFeaturesState:!!target.classFeaturesState,
+      hadRescueState:!!(target.classFeaturesState&&Object.prototype.hasOwnProperty.call(target.classFeaturesState,'protectorRescue')),
+      rescueState:target.classFeaturesState&&target.classFeaturesState.protectorRescue
+    };
+    var result=rt.useFeature(actor,'protectorRescue',{target:target,isAlly:target.type==='hero'||target.team==='ally',visible:true,distanceFt:distance,cellAvailable:true,freeCell:{x:x,y:y},distanceToCellFt:moveCheck.distanceFt,moveFt:maxMove,chosenEnemyId:foes[foeIndex].id,round:num(h.initiativeTracker&&h.initiativeTracker.round,1)});
+    syncProtectorTurnActor(actor);
     if(result.ok){
       var moved=board.moveRescuedCombatant(target.id,x,y,maxMove);
-      if(!moved.ok){alert('Спасение применено, но обновить токен не удалось: '+(moved.reason||'неизвестная ошибка')+'. Проверьте позицию на поле.');}
+      if(!moved.ok){
+        if(actor.resources&&actor.resources.protectorImpulses)actor.resources.protectorImpulses.current=rescueSnapshot.resourceCurrent;
+        if(actor.turnResources)actor.turnResources.reaction=rescueSnapshot.reaction;
+        target.position=rescueSnapshot.position;target.x=rescueSnapshot.x;target.y=rescueSnapshot.y;
+        target.stable=rescueSnapshot.stable;target.defeated=rescueSnapshot.defeated;
+        target.deathSaves=rescueSnapshot.deathSaves;target.tempHp=rescueSnapshot.tempHp;
+        if(target.classFeaturesState){
+          if(rescueSnapshot.hadRescueState)target.classFeaturesState.protectorRescue=rescueSnapshot.rescueState;
+          else delete target.classFeaturesState.protectorRescue;
+          if(!rescueSnapshot.hadClassFeaturesState&&!Object.keys(target.classFeaturesState).length)delete target.classFeaturesState;
+        }
+        syncProtectorTurnActor(actor);
+        if(target.type==='hero'&&(String(target.id)===String(h.id)||String(target.name)===String(h.name)))syncBackToHero(target);
+        alert('Спасение отменено: поле не смогло переместить токен ('+(moved.reason||'неизвестная ошибка')+'). Реакция, импульс и состояние союзника восстановлены.');
+        return;
+      }
       if(target.type==='hero'&&(String(target.id)===String(h.id)||String(target.name)===String(h.name)))syncBackToHero(target);
     }
     alert(result.message||result.reason||'Спаситель: без результата.');if(result.ok){save();if(typeof global.renderInitiativeTracker==='function')global.renderInitiativeTracker();renderCombatStatus();syncNetworkMasterCombat('protector-rescue');}
