@@ -29,11 +29,35 @@ var SKILL_TO_VAR_MAP = {
   survival: 'Prof_Sur'
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('[DICE_INIT] Документ загружен. Инициализация модуля бросков.');
-  renderDiceModule();
-  injectCritStyles();
-});
+function initializeDiceModule() {
+  try {
+    const diceTab = document.getElementById('tabDice');
+    if (!diceTab) {
+      console.warn('[DICE_INIT] #tabDice пока отсутствует; повторная попытка после загрузки.');
+      return false;
+    }
+    injectCritStyles();
+    // Не стираем уже отрисованный интерфейс при повторной инициализации.
+    if (!diceTab.querySelector('.dice-container') || !diceTab.querySelector('#diceDrawerContainer')) {
+      renderDiceModule();
+    }
+    console.log('[DICE_INIT] Модуль дайсов готов.');
+    return true;
+  } catch (error) {
+    console.error('[DICE_INIT] Ошибка запуска модуля дайсов:', error);
+    const diceTab = document.getElementById('tabDice');
+    if (diceTab && !diceTab.querySelector('.dice-container')) {
+      diceTab.innerHTML = '<div class="card dice-container" style="padding:20px;color:#fff;background:#1f1f1f;border:1px solid #555;border-radius:12px;"><h3 style="color:#d4af37;text-align:center;">🎲 Генератор бросков</h3><p style="text-align:center;">Не удалось запустить модуль. Откройте журнал ошибок в режиме отладки.</p><button class="dice-btn" onclick="initializeDiceModule()" style="width:100%;padding:12px;">Повторить запуск</button></div>';
+    }
+    return false;
+  }
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeDiceModule, { once: true });
+} else {
+  initializeDiceModule();
+}
+window.addEventListener('load', initializeDiceModule, { once: true });
 
 /**
  * Внедрение стилей для анимаций критов и полноэкранных оверлеев
