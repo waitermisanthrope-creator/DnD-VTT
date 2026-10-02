@@ -259,6 +259,14 @@
       if(!roll||!Number.isSafeInteger(Number(roll.total))||Number(roll.total)<0)return {ok:false,reason:'Боевой движок вернул некорректный бросок; реакция и импульс сохранены.'};
       temp=Math.max(0,Number(roll.total)+proficiency(l));
     }
+    // When the battle grid is active, move the actual token and combatant together.
+    // Validate/move before spending the reaction/resource so a blocked cell cannot charge the feature.
+    var gridMove=null,board=global.DNDBattleBoard;
+    if(board&&typeof board.moveRescuedCombatant==='function'){
+      try{gridMove=board.moveRescuedCombatant(target.id,Number(ctx.freeCell.x),Number(ctx.freeCell.y),maxMove);}
+      catch(error){return {ok:false,reason:'Не удалось переместить союзника на поле боя; реакция и импульс сохранены.'};}
+      if(!gridMove||gridMove.ok!==true)return {ok:false,reason:gridMove&&gridMove.reason||'Поле боя отклонило перемещение; реакция и импульс сохранены.'};
+    }
     resource.current-=1;tr.reaction=0;
     target.position={x:Number(ctx.freeCell.x),y:Number(ctx.freeCell.y)};
     target.x=Number(ctx.freeCell.x);target.y=Number(ctx.freeCell.y);
