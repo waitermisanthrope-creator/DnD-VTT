@@ -1,4 +1,4 @@
-// V70.25.81 test APK: native runtime version matches the web updater version.
+// V70.32.12 release APK: native runtime version matches the web updater version and stable Pages artifact.
 plugins {
     id "com.android.application"
 }
