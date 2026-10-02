@@ -9,8 +9,8 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 80225,
-      "sha256": "93d4040bf56949454eab05207e26de5928940c1e1252cc81c6d8b30bd1c95b81"
+      "bytes": 80127,
+      "sha256": "8c2ac6e091615929257d454c8f77f5039665ac55e72e6eee15916a1834fdaa6d"
     },
     {
       "path": "app/Ambiences.js",
