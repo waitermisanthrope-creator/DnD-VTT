@@ -934,8 +934,8 @@
     },
     {
       "path": "app/dice.js",
-      "bytes": 33853,
-      "sha256": "70c6f09c1ccb3ca840d8d83e7299f150b660a61216ebff93405b57c3a0658fdc"
+      "bytes": 34739,
+      "sha256": "af8a012198ae83f19df3eb2973272e73d0b8473e7c9c3742bb328b354b8eb4cc"
     },
     {
       "path": "app/dnd_tools.js",
