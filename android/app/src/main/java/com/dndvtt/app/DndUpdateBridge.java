@@ -203,9 +203,17 @@ public final class DndUpdateBridge {
         String activeVersion = getActiveVersion();
         File active = new File(versions, activeVersion);
 
-        // Refresh persisted web assets when the installed APK is newer.
-        // This prevents an older in-app update from hiding newly bundled JS/assets.
-        if (active.isDirectory() && new File(active, "index.html").isFile()
+        // Never reuse a persisted web version unless its startup files are present.
+        // A partial/corrupt in-app update can leave index.html behind while removing a
+        // stylesheet or startup runtime; WebView then opens as a blank white screen.
+        File activeApp = new File(active, "app");
+        boolean startupFilesPresent =
+                new File(active, "index.html").isFile()
+                && new File(active, "app/styles.css").isFile()
+                && new File(active, "app/Logo.js").isFile()
+                && new File(active, "app/update_manager.js").isFile()
+                && new File(active, "app/Settings.js").isFile();
+        if (active.isDirectory() && startupFilesPresent
                 && compareVersions(activeVersion, packageVersion) >= 0) {
             // Web updates intentionally do not carry the APK-bundled icon previews.
             // Repair them in-place so an old active web version cannot leave broken <img> elements.
@@ -213,6 +221,7 @@ public final class DndUpdateBridge {
             return;
         }
 
+        // Invalid or incomplete persisted content must not shadow the known-good APK bundle.
         if (active.isDirectory()) deleteRecursive(active);
         active = new File(versions, packageVersion);
         deleteRecursive(active);
