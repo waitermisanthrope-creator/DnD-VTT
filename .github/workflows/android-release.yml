@@ -7,6 +7,11 @@ on:
     paths:
       - "android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java"
       - "app/campaign_manager.js"
+      - "app/dice.js"
+      - "app/dnd_tools.js"
+      - "app/rulesEngine.js"
+      - "app/update_manager.js"
+      - "android/app/build.gradle"
       - ".github/workflows/android-release.yml"
 
 permissions:
