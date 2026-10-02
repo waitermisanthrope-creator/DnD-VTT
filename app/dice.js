@@ -207,17 +207,9 @@ function renderDiceModule() {
   const mainCard = document.createElement('div');
   mainCard.className = 'card dice-container';
   mainCard.innerHTML = `
-    <h3 style="text-align:center;margin-top:0;">🎲 Броски</h3>
-    <div class="dice-grid" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px;">
-      <button class="dice-btn" onclick="rollDice(4)">d4</button>
-      <button class="dice-btn" onclick="rollDice(6)">d6</button>
-      <button class="dice-btn" onclick="rollDice(8)">d8</button>
-      <button class="dice-btn" onclick="rollDice(12)">d12</button>
-      <button class="dice-btn" onclick="rollDice(10)">d10</button>
-      <button class="dice-btn" onclick="rollDice(20)">d20</button>
-      <button class="dice-btn" onclick="rollDice(100)">d100</button>
-    </div>
-    <div id="diceModePanel" style="display:flex;gap:8px;margin-bottom:10px;width:100%;">
+    <h3 style="text-align:center;margin-top:0;">🎲 Генератор бросков</h3>
+    <div id="diceModePanel" style="display:flex;gap:8px;margin-bottom:12px;width:100%;">
+      <button class="dice-mode-btn active" data-mode="normal" onclick="setDiceMode('normal')" style="flex:1;padding:10px 6px;background:#2196f3;color:#fff;border:1px solid #555;border-radius:6px;font-weight:bold;cursor:pointer;">Обычный</button>
       <button class="dice-mode-btn" data-mode="advantage" onclick="toggleDiceMode('advantage')" style="flex:1;padding:10px 6px;background:#333;color:#fff;border:1px solid #555;border-radius:6px;font-weight:bold;cursor:pointer;">Преимущество</button>
       <button class="dice-mode-btn" data-mode="disadvantage" onclick="toggleDiceMode('disadvantage')" style="flex:1;padding:10px 6px;background:#333;color:#fff;border:1px solid #555;border-radius:6px;font-weight:bold;cursor:pointer;">Помеха</button>
     </div>
@@ -237,7 +229,7 @@ function renderDiceModule() {
     </button>
     <div id="diceDrawerContent" style="max-height:0;overflow-y:auto;overflow-x:hidden;transition:max-height .3s ease-out;padding:0 12px;background:#161616;">
       <div style="padding:12px 0;">
-        <button id="quickWeaponAttackBtn" class="btn-action" onclick="executeEquippedWeaponAttack()" style="background:#ff9800;color:#000;font-weight:bold;padding:10px 12px;font-size:.95em;width:100%;border-radius:6px;cursor:pointer;border:none;margin-bottom:14px;">⚔️ Атака экипированным оружием</button>
+        <div style="font-size:.9em;color:#ff9800;font-weight:bold;margin-bottom:8px;">⚔️ Боевые действия</div>
         <div style="font-size:.9em;color:#ff9800;font-weight:bold;margin-bottom:8px;">💪 Проверки характеристик</div>
         <div id="diceDrawerStatsGrid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-bottom:15px;"></div>
         <div style="font-size:.9em;color:#2196F3;font-weight:bold;margin-bottom:8px;">🎯 Проверки навыков</div>
