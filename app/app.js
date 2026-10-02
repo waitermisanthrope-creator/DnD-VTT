@@ -547,12 +547,12 @@ function rollInitiative() {
 // и другие эффекты расы переставали применяться. Дублирующую копию убрали.
 
 function autoSaveCurrentCharacter() {
-  if (!currentCharacterId || !currentChar) return;
+  if (!currentCharacterId || !currentChar) return false;
   var index = -1;
   for (var i = 0; i < allCharacters.length; i++) {
     if (allCharacters[i].id === currentCharacterId) { index = i; break; }
   }
-  if (index === -1) return;
+  if (index === -1) return false;
 
   var select = document.getElementById('charRaceSelect');
   var selectedRaceId = select ? select.value : '';
@@ -622,10 +622,12 @@ function autoSaveCurrentCharacter() {
     currentChar.initiativeTracker = { round: 1, activeIndex: 0, combatants: [] };
   }
   allCharacters[index] = currentChar;
-  saveAllCharacters();
+  var saved = saveAllCharacters();
+  if (!saved) return false;
   
   // Обновляем значения в window при автосохранении
   syncSkillsToWindow();
+  return true;
 }
 // ==========================================
 // БЛОК 4: АВТОМАТИЧЕСКОЕ ПРИМЕНЕНИЕ БОНУСОВ ПРЕДЫСТОРИИ
