@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "app": "DND_VTT",
+  "app": "DnD-VTT",
   "version": "70.32.14",
   "minAppVersion": "70.25.71",
   "channel": "stable",
-  "generated": "2026-10-02",
+  "generated": "AUTO",
   "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main",
   "files": [
     {
@@ -13,349 +13,14 @@
       "sha256": "532cf30626d4379fecc793cb9cc75b135f88b966f081fb40beacecc293865931"
     },
     {
-      "path": "app/Ambiences.js",
-      "bytes": 14648,
-      "sha256": "517d2d198c6e567f3b1b3e39d4505f95dadfd9dafd3f46b22f70004d78725634"
+      "path": "app/character_creation_pergament.js",
+      "bytes": 39660,
+      "sha256": "a5f6d4a8c5450d8865c1063850f77bd671ecfece1906b7e99aa8f10ade64eae3"
     },
     {
-      "path": "app/Backgrounds.js",
-      "bytes": 63130,
-      "sha256": "bf5e7730ba3497edd6519999b929f1a8b1abf47162838e0f00df030bd5c8269d"
-    },
-    {
-      "path": "app/Experience.js",
-      "bytes": 6150,
-      "sha256": "5bcd82423edd7f0eea17fb05955afe73c27d28af55f98db64228e048dc122a43"
-    },
-    {
-      "path": "app/Hero-info.js",
-      "bytes": 11879,
-      "sha256": "3631ffe8c5f09af3a82eedfeac86dea64ae9b51cc4f2482f5cd9290e4da0fd09"
-    },
-    {
-      "path": "app/Inventory-weight-tracker.js",
-      "bytes": 15712,
-      "sha256": "930a0da48dfade950fbfdf23a1edcf7ab41dd353eb232152f69de581c2a7890a"
-    },
-    {
-      "path": "app/Inventory.js",
-      "bytes": 36307,
-      "sha256": "90169f821f469cd9f8822affdf24588971c0fcf1e7103a269cbef45f563bc8b3"
-    },
-    {
-      "path": "app/Logo.js",
-      "bytes": 5396,
-      "sha256": "08a55a3e1c5e991065b8ed94fd89391174be982e7bba4fced3574196a1efb9c5"
-    },
-    {
-      "path": "app/Proficiencies.js",
-      "bytes": 31253,
-      "sha256": "c14a22c26df54032ab7abc3bbe843a7032dbe21ec4bbd3b5c9dd8af83e62ad8c"
-    },
-    {
-      "path": "app/Proficienciescheck.js",
-      "bytes": 10367,
-      "sha256": "bbdeedbcbe2c669e86f575b6d64a804e5ce1dede8c502cf297b9f3e556caaad5"
-    },
-    {
-      "path": "app/Settings.js",
-      "bytes": 49984,
-      "sha256": "9e3648dc4508ee1b22f98cbed65f973fbdc870d5c707fad6b259526a4fdbec03"
-    },
-    {
-      "path": "app/Settings_debug.js",
-      "bytes": 7336,
-      "sha256": "2c7e0e12b77af27a2b557a2fd1d0da1629d28d54d207dab3aa4b5f8f38d98763"
-    },
-    {
-      "path": "app/Wallpapers.js",
-      "bytes": 19298,
-      "sha256": "51edce13b9b769cca3e9065d839b5f0522782b1779e04833c90e1c0f6f7d8436"
-    },
-    {
-      "path": "app/accursed_oap_v11_runtime.js",
-      "bytes": 25292,
-      "sha256": "13122e378670a90a2f5c2df163125a2ea339d8d91a74dbae1c63bcb6c7be6c25"
-    },
-    {
-      "path": "app/alchemist_mhp_2024_runtime.js",
-      "bytes": 140155,
-      "sha256": "d77820e13b299af3c60867911f7a23298f6cb44407489f6fbf1a670da8b6ba7c"
-    },
-    {
-      "path": "app/alchemy_engine_v29.js",
-      "bytes": 40901,
-      "sha256": "1ef9b0a723a3c387147779e96234dbe2d72a7cac8aeb14a54846309bb5a3708f"
-    },
-    {
-      "path": "app/alchemy_gameplay_v30.js",
-      "bytes": 17859,
-      "sha256": "148784aa1d25d963f9109493029fdab737e2d12942ee902a8bc780fb3d99abe9"
-    },
-    {
-      "path": "app/alchemy_gathering_professions_v52.js",
-      "bytes": 11833,
-      "sha256": "52524319aca5cd4555fb1f0306531b42b183805410695cb08033bd3d312cf04a"
-    },
-    {
-      "path": "app/app.js",
-      "bytes": 36291,
-      "sha256": "b862c6e7b14fd2b9f4f55f4c053057fbda69aaaa98f8484c1276c9340f8562c3"
-    },
-    {
-      "path": "app/armors.js",
-      "bytes": 27349,
-      "sha256": "8f444f8dda16bd35e9d32847f1cffee6563e20bd35b0a218d4d197236fe2cfac"
-    },
-    {
-      "path": "app/assets/dice/.gitkeep",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "app/assets/dice/ChatGPT Image Sep 30, 2026, 07_08_07 PM.png",
-      "bytes": 2349861,
-      "sha256": "3c6c962f82b7746a6fc37a09106c798fe9b2c5bffd987e23a86f99784013849f"
-    },
-    {
-      "path": "app/assets/dice/ChatGPT Image Sep 30, 2026, 07_08_30 PM.png",
-      "bytes": 2088308,
-      "sha256": "b1df95d0f9a60792d3ab88bbeefe886dd0448f4d4e512e52217dbef005744682"
-    },
-    {
-      "path": "app/assets/dice/ChatGPT Image Sep 30, 2026, 07_13_27 PM.png",
-      "bytes": 2584925,
-      "sha256": "fc66873cd3cb438459f4b37aeb64bda8c8ee683945a26069e0608408802e8e34"
-    },
-    {
-      "path": "app/assets/dice/ChatGPT Image Sep 30, 2026, 07_23_00 PM.png",
-      "bytes": 2274607,
-      "sha256": "4524f7d716f4d8c48529f8b28f97971470a65a19dc0497ad1678e1a1e9bf37a4"
-    },
-    {
-      "path": "app/assets/dice/ChatGPT Image Sep 30, 2026, 07_24_38 PM.png",
-      "bytes": 2254958,
-      "sha256": "ebc9dc26b39c79ff00e4fc4203382695c02b790441fda7003aadc2e679ddca52"
-    },
-    {
-      "path": "app/assets/dice/ChatGPT Image Sep 30, 2026, 07_27_51 PM.png",
-      "bytes": 2389543,
-      "sha256": "accf5891e22394627d79ecbc2892f48d758b5154246d46a284918c175cd0df37"
-    },
-    {
-      "path": "app/assets/dice/ChatGPT Image Sep 30, 2026, 07_35_50 PM.png",
-      "bytes": 2486441,
-      "sha256": "34152d9673bf59329bf12419209aa8a2097b7c268e618634c64ee939a0b37c2f"
-    },
-    {
-      "path": "app/assets/dice/ChatGPT Image Sep 30, 2026, 07_41_40 PM.png",
-      "bytes": 2712929,
-      "sha256": "06099144867be54582a54fed8c2e2237e1a94126c413258d765f8a02099299af"
-    },
-    {
-      "path": "app/assets/dice/ChatGPT Image Sep 30, 2026, 07_49_58 PM.png",
-      "bytes": 2751322,
-      "sha256": "72c7ab340146cbf2969c1bc56be5e250e81a2c5492e0e159c71f111f3003d657"
-    },
-    {
-      "path": "app/assets/dice/ChatGPT Image Sep 30, 2026, 07_58_07 PM.png",
-      "bytes": 2778707,
-      "sha256": "f965553f276fe8994fb9bf0abd6f3b96c4a7cadb087cf69174eb30e1f3b3a062"
-    },
-    {
-      "path": "app/assets/dice/ChatGPT Image Sep 30, 2026, 07_58_18 PM.png",
-      "bytes": 2503466,
-      "sha256": "59987d8cb7804b6a1a7fff02f3e719315683d6b6b2738fac87e2b08bc87ad952"
-    },
-    {
-      "path": "app/assets/dice/ChatGPT Image Sep 30, 2026, 07_58_28 PM.png",
-      "bytes": 2561809,
-      "sha256": "ffbf2d9466fc462dc178a6cabeb80fe323c51f167f15771c580cd051f3cb6b6f"
-    },
-    {
-      "path": "app/assets/dice/ChatGPT Image Sep 30, 2026, 07_58_39 PM.png",
-      "bytes": 2841483,
-      "sha256": "bb2ba9fee3cff09bf2b0fa0f8c7082a31eee1405309a1583c3eb8a897ec13824"
-    },
-    {
-      "path": "app/assets/dice/dice1.png",
-      "bytes": 348916,
-      "sha256": "16d72f819febac166b5f7af7e5a78696c11d8941011c5ba78888af342d76d46e"
-    },
-    {
-      "path": "app/assets/dice/dice10-1.png",
-      "bytes": 386558,
-      "sha256": "b21f246e5be465dbb7ee4717458fef314947e033f96c6df1ef829e071f15ee5a"
-    },
-    {
-      "path": "app/assets/dice/dice10.png",
-      "bytes": 386558,
-      "sha256": "b21f246e5be465dbb7ee4717458fef314947e033f96c6df1ef829e071f15ee5a"
-    },
-    {
-      "path": "app/assets/dice/dice11.png",
-      "bytes": 307154,
-      "sha256": "eab940ffd9e8f8a9f124840a4d37e9a0b7a99149aa4cfb01be212fa08a3ef8bb"
-    },
-    {
-      "path": "app/assets/dice/dice12.png",
-      "bytes": 395864,
-      "sha256": "74b6b008a399dc5d01c11f92abc964f791d78a2676de79cfcae00429fad3ab53"
-    },
-    {
-      "path": "app/assets/dice/dice13.png",
-      "bytes": 344758,
-      "sha256": "56e4bab3a04054fcb42b772fa2f08a9c7a0422e310f1abd4debb8fbe57d2d723"
-    },
-    {
-      "path": "app/assets/dice/dice15.png",
-      "bytes": 388111,
-      "sha256": "4a51f9d6bab63d3ccdf04756de6a158ae128ca4dffde8c41ca3f44678c6bc411"
-    },
-    {
-      "path": "app/assets/dice/dice16.png",
-      "bytes": 352768,
-      "sha256": "29383f639e29f5152823d092f6ceebe367ccf50a4e14414304d3aca2f62dec6d"
-    },
-    {
-      "path": "app/assets/dice/dice17.png",
-      "bytes": 342548,
-      "sha256": "beab114e09918caebb6c1f3889107fe8705cc0882bcbe441fe592672af13602c"
-    },
-    {
-      "path": "app/assets/dice/dice2.png",
-      "bytes": 246156,
-      "sha256": "584d3d50c2f67d8cfa59506c87d436d1b32133ac0dcb89dcaad9fc692b3006b7"
-    },
-    {
-      "path": "app/assets/dice/dice3.png",
-      "bytes": 346757,
-      "sha256": "e975c0f02a3544d017104033d61a3a87a41dff7a06741ecf00ae7a0261639b3c"
-    },
-    {
-      "path": "app/assets/dice/dice4.png",
-      "bytes": 348331,
-      "sha256": "2d08bb962e9f46bb7c7528d3fbaec0678ea36da1ca737c0d283f75b4d0c1074b"
-    },
-    {
-      "path": "app/assets/dice/dice5.png",
-      "bytes": 299652,
-      "sha256": "3150b1d08e114ac2e39116a20fa026e75f0171aea982d91a99b831341b70568a"
-    },
-    {
-      "path": "app/assets/dice/dice6.png",
-      "bytes": 331669,
-      "sha256": "74676876337dec0280ed90ca0493bf0a9745e28d2a4f651f2424a53639826ee0"
-    },
-    {
-      "path": "app/assets/dice/dice7.png",
-      "bytes": 343178,
-      "sha256": "53053ab3de23cdff026da4e195f12fb934a396b8548cd158a28ecaf68976d676"
-    },
-    {
-      "path": "app/assets/dice/dice8.png",
-      "bytes": 370230,
-      "sha256": "484532a0e373e1f5ad47205f3d34496109188e3e10a448074131a4e6a0af38cd"
-    },
-    {
-      "path": "app/assets/dice/dice9.png",
-      "bytes": 336030,
-      "sha256": "6f7c33496d0d82ba63e6c1c3be4de9011c7170749e23ff9369fb151b048bba55"
-    },
-    {
-      "path": "app/battle_action_ui.js",
-      "bytes": 18386,
-      "sha256": "b33a85b4a195e0d81fcb63c54bc4b24954be78c8ffb71c57b2f478ae04652fac"
-    },
-    {
-      "path": "app/battle_board.js",
-      "bytes": 35254,
-      "sha256": "df942a9b35ab3829b6db07d44e999718d87b198ff8fea5f0a360f473e378c718"
-    },
-    {
-      "path": "app/bestiary_2_0_v56.js",
-      "bytes": 55429,
-      "sha256": "b27776649933ab71c7649670558ee020e6c6408243b261420ebf56d7df36ef4e"
-    },
-    {
-      "path": "app/bestiary_catalog_v56_1.js",
-      "bytes": 16222,
-      "sha256": "8c0fbc2e87dab601ad1648a87827b19a58afc170f09705512202180d71890dea"
-    },
-    {
-      "path": "app/bestiary_catalog_v56_10.js",
-      "bytes": 10944,
-      "sha256": "ddb9ee3071fab4efc845a3567f783fe95f665916e7cff59b3e7226900717e763"
-    },
-    {
-      "path": "app/bestiary_catalog_v56_11.js",
-      "bytes": 13164,
-      "sha256": "b753ae21ac284cf625d37c1214e3c8d4b250c1b8b8543b6078d19001c82e72be"
-    },
-    {
-      "path": "app/bestiary_catalog_v56_12.js",
-      "bytes": 10118,
-      "sha256": "611bcdc1a438473122a3b8088698130df66d7d290d74226e82d1c8010256a6d3"
-    },
-    {
-      "path": "app/bestiary_catalog_v56_13.js",
-      "bytes": 12586,
-      "sha256": "9f999d04a3e3cb2429bd7ad4321745c5bce2a2899aaac1c8295745c0b039e49d"
-    },
-    {
-      "path": "app/bestiary_catalog_v56_2.js",
-      "bytes": 13525,
-      "sha256": "098fb36b914a6e90d36bd7cb6e6fba33669f59e9b04742b04baca7e2af4d0248"
-    },
-    {
-      "path": "app/bestiary_catalog_v56_3.js",
-      "bytes": 14383,
-      "sha256": "d9e47abaee6dec32296f0e4c4bc3e7632e187aa6f73b194ab290aeef095a51e8"
-    },
-    {
-      "path": "app/bestiary_catalog_v56_4.js",
-      "bytes": 11396,
-      "sha256": "044db5a4b90b4bea5e73a0b021f7a003699db24bf2d3331119ecb4b0e942d950"
-    },
-    {
-      "path": "app/bestiary_catalog_v56_5.js",
-      "bytes": 8648,
-      "sha256": "6cd3436e2b771eefa61df2abd5dbff3a32745c7b125f4c42fc8150b36f7a9a37"
-    },
-    {
-      "path": "app/bestiary_catalog_v56_6.js",
-      "bytes": 9066,
-      "sha256": "0697f2ad358df610812b710621a1993880171a059b304ce313ae2bba79c3c909"
-    },
-    {
-      "path": "app/bestiary_catalog_v56_7.js",
-      "bytes": 9314,
-      "sha256": "c32569f0b2f4449bdf8442509c38aee5ff4bcb2de1cde03200af8548a36ad5c3"
-    },
-    {
-      "path": "app/bestiary_catalog_v56_8.js",
-      "bytes": 9559,
-      "sha256": "0b425223c28391f70d4e47becee2f09c8f4aa6d71422ab0d0af8238898b0d8b1"
-    },
-    {
-      "path": "app/bestiary_catalog_v56_9.js",
-      "bytes": 9861,
-      "sha256": "c3c07a309e5506e7f8f39c6cf00b464299f6edacb43dd7d8b39c28936191f529"
-    },
-    {
-      "path": "app/blood_hunter_engine.js",
-      "bytes": 25324,
-      "sha256": "7ec6cd9260bf78697c993003d2302aff2f17c89251b9d13a96f234d85ebdfe86"
-    },
-    {
-      "path": "app/campaign_manager.js",
-      "bytes": 7195,
-      "sha256": "7d6b8431bc5fa7ea615b20fa59a5bd2fb6857919882846443856c8025741a433"
-    },
-    {
-      "path": "app/character.js",
-      "bytes": 10055,
-      "sha256": "50bcc687e8e2ae879d328762992cba91f338412ded948482ef05cc5c2cbccbd4"
+      "path": "app/character_creation_pergament.css",
+      "bytes": 12669,
+      "sha256": "baaa140fb6f83ca8515608ced2f4588e673e4d0fd050b63b460be9a26e8adf99"
     },
     {
       "path": "app/character_builder_v2.js",
@@ -368,794 +33,9 @@
       "sha256": "225e42704f7802b50012d2af7b2cbdae9a93300823d34565abff543da903bf91"
     },
     {
-      "path": "app/character_creation_pergament.css",
-      "bytes": 12669,
-      "sha256": "baaa140fb6f83ca8515608ced2f4588e673e4d0fd050b63b460be9a26e8adf99"
-    },
-    {
-      "path": "app/character_creation_pergament.js",
-      "bytes": 39660,
-      "sha256": "a5f6d4a8c5450d8865c1063850f77bd671ecfece1906b7e99aa8f10ade64eae3"
-    },
-    {
-      "path": "app/class_features_engine.js",
-      "bytes": 133043,
-      "sha256": "779c55e05697042d39520b9b8e96ba76c7f0c6b252900ede576d7c1b39459a1c"
-    },
-    {
-      "path": "app/classesRegistry.js",
-      "bytes": 10679,
-      "sha256": "f491cea688d126aee28a3b8ffe1c4750078ab3597ce0203c9ad046e8ba913a65"
-    },
-    {
-      "path": "app/combat_abilities.js",
-      "bytes": 12824,
-      "sha256": "dc0ce8a67e47593d3771be62f0d6531eea43a2839a45df804a387e8b9e1b3b43"
-    },
-    {
-      "path": "app/combat_engine.js",
-      "bytes": 69184,
-      "sha256": "c11e5d7bd2ca59d8e2ec7aa43f11522e75008e9310aa5145a5e44eb8c53cd1b2"
-    },
-    {
-      "path": "app/companion_gameplay_v27.js",
-      "bytes": 17531,
-      "sha256": "c8c2d5a8d8d97d527ae2a46392e53012ce35ae9fc5eb47681af7411bb62ee80e"
-    },
-    {
-      "path": "app/companion_packs_v26.js",
-      "bytes": 4998,
-      "sha256": "3825538fc1a0940915aa0f2c66178fa8e6703a7373f58eb1f5824a8662ebb46f"
-    },
-    {
-      "path": "app/companions.js",
-      "bytes": 8927,
-      "sha256": "ee3bc2ca54907886a59cf6e401cf49793f43261161ff156794bf989d245d6c7e"
-    },
-    {
-      "path": "app/consumables.js",
-      "bytes": 15638,
-      "sha256": "46d20379906c77254098190c0a1e6299da18cb8004a799941a98c6e1ccd6adc4"
-    },
-    {
-      "path": "app/content_catalog.js",
-      "bytes": 9721,
-      "sha256": "fa033967d9a961d120ef46705603bdd1ed60c563279a3a7b5d328c4706f08eb6"
-    },
-    {
-      "path": "app/content_framework.js",
-      "bytes": 7847,
-      "sha256": "3ad0bbb9e1a84bef1b7ba49e18ec4b96ade291683b4f2094834a0916facd2e7e"
-    },
-    {
-      "path": "app/content_manifest.js",
-      "bytes": 3755,
-      "sha256": "94e8d48591a903ee8c12b214365905c5305018ba911c0863e0339477283233f8"
-    },
-    {
-      "path": "app/crafting_character_influence_test_v46.js",
-      "bytes": 7123,
-      "sha256": "e808d1d94f372edf744f2dbd04ee75368e7f8272597a33d8c43d59d5535398f6"
-    },
-    {
-      "path": "app/crafting_disassembly_repair_v51.js",
-      "bytes": 13334,
-      "sha256": "24fa8a8deb7eb398977de4e01bbd41331d23010d520fd9b8eea89609aa6827fe"
-    },
-    {
-      "path": "app/crafting_disassembly_v51.js",
-      "bytes": 11979,
-      "sha256": "1829470b0182845d5c23619b0ede6a9dd4af02abda8ca252a81bfea1900e3c7e"
-    },
-    {
-      "path": "app/crafting_dlc_v50.js",
-      "bytes": 8373,
-      "sha256": "9aee176291c1c8e85ade2bf3b085658c9976153df2480e79e4432dee0aadf237"
-    },
-    {
-      "path": "app/crafting_economy_v49.js",
-      "bytes": 17129,
-      "sha256": "789dd555b9be62d383e368ec12793b19a82c9f86b33fdab2bf4f0f807b71ea3c"
-    },
-    {
-      "path": "app/crafting_engine_v31.js",
-      "bytes": 20294,
-      "sha256": "86f850c806af4723e4c05e56c8e9371ba4d3dfb17ae9a1259a61f5afedbca20e"
-    },
-    {
-      "path": "app/crafting_profession_progression_test_v47.js",
-      "bytes": 5609,
-      "sha256": "10adb907c95d4e0f0123483e1d57767f6af5a5bcf7216e18b449984b7945bf73"
-    },
-    {
-      "path": "app/crafting_profession_progression_v47.js",
-      "bytes": 35781,
-      "sha256": "20f73d58c9d4eb0806ab749a0c876fccce61897d45f29edf713133326ff8fdb6"
-    },
-    {
-      "path": "app/crafting_professions_v33.js",
-      "bytes": 19300,
-      "sha256": "0ed53db462839410ebdefc4dece1efded41394b58bfab2e47f8762143247166f"
-    },
-    {
-      "path": "app/crafting_professions_v38.js",
-      "bytes": 48800,
-      "sha256": "f5829872313d1e69da0bba1fca83b7adf130c3f94d63304cb3a52c7a29b4fb80"
-    },
-    {
-      "path": "app/crafting_resources_v34.js",
-      "bytes": 35661,
-      "sha256": "2853e27d6385d629bcb8f9a6fc7ab00bb5c53af90eb5729e116a23ee23944e0a"
-    },
-    {
-      "path": "app/custom_crafting_v32.js",
-      "bytes": 15989,
-      "sha256": "56b4036d672cf8028d2df26705ee49a2f16d97d38a5c7f063673e9a225fe51b3"
-    },
-    {
-      "path": "app/data/classes/ARTIFICER.png",
-      "bytes": 891812,
-      "sha256": "8b3e003d4c22db04e65d20e9b1536b19b8c1a6b4bf08d4d8f83e7fc35fb1c629"
-    },
-    {
-      "path": "app/data/classes/Accursed.js",
-      "bytes": 3369,
-      "sha256": "fff2066168696af2ecb475e18621281f6399017527cdddc989c8231d96ddee21"
-    },
-    {
-      "path": "app/data/classes/Alchemist.js",
-      "bytes": 5589,
-      "sha256": "2d21fe67d3730950d782eb74004332f9a16140a6942d959203edafb98bf0c517"
-    },
-    {
-      "path": "app/data/classes/Artificer.js",
-      "bytes": 2124,
-      "sha256": "a5a386be281d72ff72057b755f4a2a8723394a828eecbc15070e3180698b0aa5"
-    },
-    {
-      "path": "app/data/classes/BARBARIAN.png",
-      "bytes": 815028,
-      "sha256": "4b1ac3f9c6abe250dd80bc9d1b9ab52f1a1bb356f7241602b7ef6291702793ee"
-    },
-    {
-      "path": "app/data/classes/Barbarian.js",
-      "bytes": 3822,
-      "sha256": "97c4927461132b95e72f166b12f43f5b29d9fcfebada7ecb8a98d58b6737485b"
-    },
-    {
-      "path": "app/data/classes/Bard.js",
-      "bytes": 2085,
-      "sha256": "9be8256d8e8c66d8e407f45eb00a0783fd1e8066ceee7af6b23d16adf03a74fb"
-    },
-    {
-      "path": "app/data/classes/Bard.png",
-      "bytes": 769261,
-      "sha256": "3cd4eb6779545dbdd886a274e5b7060b054518710af661b84f6aafe6b47633bf"
-    },
-    {
-      "path": "app/data/classes/Beastheart.js",
-      "bytes": 27794,
-      "sha256": "7e4114efdfd3aefed786477911e501ff872741b3d6a4c7764f1ff28ee7ba249d"
-    },
-    {
-      "path": "app/data/classes/BloodHunter.js",
-      "bytes": 5283,
-      "sha256": "dd7d313adc90357e9a3cf159aa35378d68e51dc7380b04493526779c4ae83686"
-    },
-    {
-      "path": "app/data/classes/CLERIC.png",
-      "bytes": 914579,
-      "sha256": "a66571a4a79eb93104ae08920cce1a1bc93c353b4fbee99b37f9d9ed928aab52"
-    },
-    {
-      "path": "app/data/classes/Cleric.js",
-      "bytes": 1987,
-      "sha256": "355fd98ed3be0486ab91febcdbe6fceeb48da70c0f64c19eced448947f96f387"
-    },
-    {
-      "path": "app/data/classes/DRUID.png",
-      "bytes": 776880,
-      "sha256": "e9043756c0eec43e043132ecf913c8f8e231fe5fc01fdf559ab6b8c27767be01"
-    },
-    {
-      "path": "app/data/classes/Druid.js",
-      "bytes": 1898,
-      "sha256": "7cab36b03e3aeed3efd2aafa562b07b085ea07c1cff6f2eab56a1a91fd168b3c"
-    },
-    {
-      "path": "app/data/classes/FIGHTER.png",
-      "bytes": 762812,
-      "sha256": "01aad1f981daf82d94c77d49401287f08e66958f6636860d4fb212fe3266e8ef"
-    },
-    {
-      "path": "app/data/classes/Fighter.js",
-      "bytes": 3771,
-      "sha256": "2fd07752268f54c08fbb51827974ece0974e5b5646580a65c2786b054e5a5493"
-    },
-    {
-      "path": "app/data/classes/Ghost.js",
-      "bytes": 295,
-      "sha256": "8d20e995ddf354cbd957c24ff6b95f49c0ec29c92c2c1367123d141f439e9090"
-    },
-    {
-      "path": "app/data/classes/Illigger.js",
-      "bytes": 6058,
-      "sha256": "bb9be396cb8217eb79cba46b0b32f922e1e29a4b25be6e597434fd9df6964bcf"
-    },
-    {
-      "path": "app/data/classes/Illigger.png",
-      "bytes": 1716994,
-      "sha256": "df70b6143d5f6ddcbbe8d099ac6c38a688a06e9576851e8d409febb83b58c944"
-    },
-    {
-      "path": "app/data/classes/Martyr.js",
-      "bytes": 884,
-      "sha256": "1bc37a26ec4c475fdb6435740d26c2f9cb157af0ef22609ccbf1a1510f736407"
-    },
-    {
-      "path": "app/data/classes/Monk.js",
-      "bytes": 2493,
-      "sha256": "13af518b41b0d78f697be939891ce9a05cdb2cdeabe4ea707717b73010fad8ad"
-    },
-    {
-      "path": "app/data/classes/Monk.png",
-      "bytes": 1115382,
-      "sha256": "4cf00574fa6fd1552fd145b21835acbb02c730ec717358164726f0923192c73f"
-    },
-    {
-      "path": "app/data/classes/Necromancer.js",
-      "bytes": 1013,
-      "sha256": "97014a19f06146a7362b6b7fd9eb441c84cb77bfe48903af26b4066d015f3e4f"
-    },
-    {
-      "path": "app/data/classes/Occultist.js",
-      "bytes": 8507,
-      "sha256": "74053dc4173ce7bafb6f0bb72a009c23663bb05ab3ab3fea897442027f63b1e9"
-    },
-    {
-      "path": "app/data/classes/PALADIN.png",
-      "bytes": 873991,
-      "sha256": "a47f0c8b150de834974c2c58cab4d5d7d5d52efa4a7488f880e03af517d9bc45"
-    },
-    {
-      "path": "app/data/classes/Paladin.js",
-      "bytes": 2017,
-      "sha256": "4fca538e0c058571d1852e95d30800ed70d0015353d7f12c6591d785f9281f59"
-    },
-    {
-      "path": "app/data/classes/Parasite.js",
-      "bytes": 545,
-      "sha256": "efad6a520a683207efd71a169438170f3c02d7b4d46be308b203271eabe23323"
-    },
-    {
-      "path": "app/data/classes/Psion.js",
-      "bytes": 9033,
-      "sha256": "c9772506dc92bf1c659490b09d5eaa4219ff61e686bcb19f44126d8272fd60d7"
-    },
-    {
-      "path": "app/data/classes/Pugilist.js",
-      "bytes": 11434,
-      "sha256": "039243b00c318be4f496aa72bcaa317a3a157ebaa50e22bbaa564afbb0d3f191"
-    },
-    {
-      "path": "app/data/classes/RANGER.png",
-      "bytes": 643335,
-      "sha256": "f195741786e3c0a616b0873bdce84d7af4e5cf1646eb24060da22cfa40d8687a"
-    },
-    {
-      "path": "app/data/classes/Ranger.js",
-      "bytes": 1938,
-      "sha256": "7bf4a85fe637686270cb0d2de6ce16e4a9b891d09ba8588e5140db9183f8b931"
-    },
-    {
-      "path": "app/data/classes/Rogue.js",
-      "bytes": 3244,
-      "sha256": "8e05d59f2ffdfc0399091e86e6dfa29694c0dc6e8c6addfd0223e641f0ad3699"
-    },
-    {
-      "path": "app/data/classes/Rogue.png",
-      "bytes": 579962,
-      "sha256": "fec8637b93f4e2e68ff243c70a82ce319b9cff3826f14453bcd288fe4a8aeb01"
-    },
-    {
-      "path": "app/data/classes/RuneKeeper.js",
-      "bytes": 2366,
-      "sha256": "7208188dfb38526645fff32ec81c35c04d0b120e2cf928ceb806d39ec24a3b64"
-    },
-    {
-      "path": "app/data/classes/SORCERER.png",
-      "bytes": 939797,
-      "sha256": "c3524d41c8d2e8eed3c46911f08678a708d79332030056ec6d84f2e104ea5a62"
-    },
-    {
-      "path": "app/data/classes/Savant.js",
-      "bytes": 930,
-      "sha256": "810d22eeb5900a4d730ef289c1680210fa83135ed6c852b4a0b1599c193fe659"
-    },
-    {
-      "path": "app/data/classes/Shifter.js",
-      "bytes": 734,
-      "sha256": "760c0acc304599ad71b9a73a7e74285d4263be0587e4520b8735c05ca86dcb7c"
-    },
-    {
-      "path": "app/data/classes/Sorcerer.js",
-      "bytes": 2098,
-      "sha256": "31728ae8076f0e95eb8e08c355d1134e555a6e6f234a7afd84f2098d4ecf8cc4"
-    },
-    {
-      "path": "app/data/classes/Swarm.js",
-      "bytes": 198,
-      "sha256": "b8898556a75575cc71e4301932fb6d064a8b21ce1ca95e29d2086e8f2933dc52"
-    },
-    {
-      "path": "app/data/classes/Vessel.js",
-      "bytes": 751,
-      "sha256": "60ea5f97eac297357fab4030370008ffdf36034460016968ec6276823ed09e42"
-    },
-    {
-      "path": "app/data/classes/WARLOCK.png",
-      "bytes": 981038,
-      "sha256": "c176f518d557966c3c00b2acccaf70b1fa0fb01c2663b6b7c1e4a1f946e9ce2c"
-    },
-    {
-      "path": "app/data/classes/WalterParasite.js",
-      "bytes": 303,
-      "sha256": "0c6c52f32812729dcb41e9107548146e2b4018a6783f963489a6b867e8bef091"
-    },
-    {
-      "path": "app/data/classes/Warden.js",
-      "bytes": 6623,
-      "sha256": "f6203710bc691c669e2614a89c949a223395e238d4e17a2f18e5b193db5f37e4"
-    },
-    {
-      "path": "app/data/classes/Warlock.js",
-      "bytes": 2013,
-      "sha256": "42958c9531772a79c5926f54a8824d2256ffe347373a765652035315d1d2726a"
-    },
-    {
-      "path": "app/data/classes/Warlord.js",
-      "bytes": 9480,
-      "sha256": "7034582d9d17db4b17dfbea5501ff3290be6fefcc817d08385966b79ef0ce3e4"
-    },
-    {
-      "path": "app/data/classes/Witch.js",
-      "bytes": 8032,
-      "sha256": "bdc5a3d84e43a0a5edd4f831a9e438ecb2a8a0084313b21fdcc2d473b74b90a3"
-    },
-    {
-      "path": "app/data/classes/Wizard.js",
-      "bytes": 1627,
-      "sha256": "267bd1493216ed9ff40eb552c99a1f31818cb8f172200fb5a57ae3a35e37e398"
-    },
-    {
-      "path": "app/data/classes/Wizard.png",
-      "bytes": 822251,
-      "sha256": "9d13926285a959d55a92a7999f18ed236f6ea7a3a33042155c181a57ab414e69"
-    },
-    {
-      "path": "app/data/classes/accursed.png",
-      "bytes": 2441667,
-      "sha256": "311c2eda517ddf2d5088273871beeb8ee3016752d030eb750b5b698205ccda64"
-    },
-    {
-      "path": "app/data/classes/alchemist.png",
-      "bytes": 1945616,
-      "sha256": "7c4cdd549db77ad37884e4db7c2fbd7cdc932deb89d742a06484ea9f74ad9bd8"
-    },
-    {
-      "path": "app/data/classes/beasthart.png",
-      "bytes": 2255040,
-      "sha256": "1199dfb146c2252bcf857bfd82c8a631d796c630cccf714ac6cbd3633ca3a0d0"
-    },
-    {
-      "path": "app/data/classes/blood hunter.png",
-      "bytes": 2210071,
-      "sha256": "6ac33e035fda1e14fdc92ffa4fb3021ebde97d7c8e0bf7c26557e2a6f11710f4"
-    },
-    {
-      "path": "app/data/classes/extra_class_stubs.js",
-      "bytes": 4499,
-      "sha256": "c6b682d82f36a3014b55d76fbbb30a2eb0d0992e0d90cad7acfed3ac9297ebb2"
-    },
-    {
-      "path": "app/data/classes/geist.png",
-      "bytes": 1776006,
-      "sha256": "55c3329e8de66c65ac1472d012b15164122f3a76c3015a99055c5731c2785774"
-    },
-    {
-      "path": "app/data/classes/level_up.js",
-      "bytes": 59312,
-      "sha256": "7d1b82a1b8eb09a41a3fb9cef47723c2fc19f0b114837a24afab25b2bbcc92d5"
-    },
-    {
-      "path": "app/data/classes/martyr.png",
-      "bytes": 2381724,
-      "sha256": "1b51669ed91e56a8eaef8ca5b3f5211d8a5193c381bf2430d27569221db0e87b"
-    },
-    {
-      "path": "app/data/classes/necromancer.png",
-      "bytes": 2007714,
-      "sha256": "bc314f51f3a9423594c369315f44b52e8966879641163a24b870fe85d9a43fae"
-    },
-    {
-      "path": "app/data/classes/occultist.png",
-      "bytes": 1986332,
-      "sha256": "bea699465d2defdd7d1d6bf069f63c0592658dbc03687c0e6ddef9c7323c1adf"
-    },
-    {
-      "path": "app/data/classes/parasite.png",
-      "bytes": 2144116,
-      "sha256": "962bcf5fbd9342c9ba6ce947ecba76e379a02b9e5c96a260fec118762e5a9bcc"
-    },
-    {
-      "path": "app/data/classes/progressionEngine.js",
-      "bytes": 20610,
-      "sha256": "e761a97acb8fbb14126340abc51585f9cfcacf9bff018f579482664c0c18ab6c"
-    },
-    {
-      "path": "app/data/classes/psion.png",
-      "bytes": 1951350,
-      "sha256": "fe404dd3c786c7d23b21637d6274918ec3451006ea7d816406d6a40d068724a6"
-    },
-    {
-      "path": "app/data/classes/pugilist.png",
-      "bytes": 2022336,
-      "sha256": "42de8aba373de85da26e8cee6c72462e2808692663701d4b535303f5a06b2120"
-    },
-    {
-      "path": "app/data/classes/rune keeper.png",
-      "bytes": 2582772,
-      "sha256": "d7a9185cd89e804028efeea7d507cff710caf5898b176c15c9cfe5a68c4aef27"
-    },
-    {
-      "path": "app/data/classes/savant.png",
-      "bytes": 1991433,
-      "sha256": "e4e959c1c1c2d4e2e7ec12405f6224c3abaff01c613a783c55a57cc49ed82f32"
-    },
-    {
-      "path": "app/data/classes/shifter.png",
-      "bytes": 2248497,
-      "sha256": "966783706b480102ca92d7977a58711166843fd14633a2b823d891a4b8f9f04f"
-    },
-    {
-      "path": "app/data/classes/the swam.png",
-      "bytes": 1759593,
-      "sha256": "c61eecb6934b37d1b541f371116b1cacad7b2a0d02dc57b1a58610797b94dc29"
-    },
-    {
-      "path": "app/data/classes/vessel.png",
-      "bytes": 1943431,
-      "sha256": "6c70109f84c33b01385f92296a7b3c9c8b5a83f6716c0fbbd22b07e0f58319c0"
-    },
-    {
-      "path": "app/data/classes/warden.png",
-      "bytes": 2093561,
-      "sha256": "738c52f6a0f81d44a1b472cc6570e18a5f789e20cfde2f09825be60aba5b20d9"
-    },
-    {
-      "path": "app/data/classes/warlord.png",
-      "bytes": 2460016,
-      "sha256": "79251825dd58b5a3fdac67247a886d3403c9cc520aa1da571e262915d2b382b5"
-    },
-    {
-      "path": "app/data/classes/witch.png",
-      "bytes": 1931074,
-      "sha256": "19431dd37189a5f260f6982108d46190242b5e3519a175fef480005e373f6a17"
-    },
-    {
-      "path": "app/data/feats/Feat_widget.js",
-      "bytes": 25654,
-      "sha256": "6ff29f28a984390fd777c5762047038bf68a62913fcedc6b3435b95852d78f3f"
-    },
-    {
-      "path": "app/data/feats/Feats_phb.js",
-      "bytes": 19377,
-      "sha256": "796a6c2a00ed4f14e335019960aa82fdcc08f855255d263fc9f3b2928f18af82"
-    },
-    {
-      "path": "app/data/feats/Feats_settings.js",
-      "bytes": 4392,
-      "sha256": "cfbf0410d7916d10acfbf0e820adbc5f8bd243745f5d28936dc06262b27fd237"
-    },
-    {
-      "path": "app/data/feats/Feats_tcoe.js",
-      "bytes": 5779,
-      "sha256": "a05b5686bc46b05e67ecd01907a64eaae58e47a4f52123a6f965fc90431cdb96"
-    },
-    {
-      "path": "app/data/feats/Feats_ua_homebrew.js",
-      "bytes": 11770,
-      "sha256": "78ebc395a0dd4d62cb56853d8a220564e335a45d57e8961d77c9ce563d09c6c3"
-    },
-    {
-      "path": "app/data/feats/Feats_xgte.js",
-      "bytes": 6729,
-      "sha256": "f7579e75033d0a8ebf8163af8767724df3079a95b554b90c31be83586ced0867"
-    },
-    {
-      "path": "app/data/spells/Focuses.js",
-      "bytes": 53387,
-      "sha256": "10ea6ac03167445d959f2f18635d8d8c591e9c6b77c6d93727994fd67b2f3e49"
-    },
-    {
-      "path": "app/data/spells/Spells1lvl.js",
-      "bytes": 60079,
-      "sha256": "24cb6aec3cbd2e6b873a7dd3c9918bd6d957f4af03dff20b2516db2cebc9ec39"
-    },
-    {
-      "path": "app/data/spells/Spells2lvl.js",
-      "bytes": 70401,
-      "sha256": "49d5838ae6692da30cdbf201809ad1130f26b5388ca8099e8338da3f347af7df"
-    },
-    {
-      "path": "app/data/spells/Spells3lvl.js",
-      "bytes": 48531,
-      "sha256": "774031f721d0255c5840704b76f07bd098ec4b2c62b8a9494369af25c1b8b787"
-    },
-    {
-      "path": "app/data/spells/Spells4lvl.js",
-      "bytes": 39396,
-      "sha256": "e64213aa2fd0ecff9990c0ac4ef3debcb78079a0f6e029aaead718739180188f"
-    },
-    {
-      "path": "app/data/spells/Spells5lvl.js",
-      "bytes": 41719,
-      "sha256": "043f64b0d7ed46487451835d6260823e85d9115980339f3f71afa50680597bd1"
-    },
-    {
-      "path": "app/data/spells/Spells7lvl.js",
-      "bytes": 29194,
-      "sha256": "9178053165766b6704eeb3cd4ad46d1142d40d7241e833d37bed3d4725622caa"
-    },
-    {
-      "path": "app/data/spells/Spells8lvl.js",
-      "bytes": 21355,
-      "sha256": "91b872c671d71852f0327ba9f2f6ed09caf3e56a5438601e732113ef2a8f07de"
-    },
-    {
-      "path": "app/data/spells/Spells9lvl.js",
-      "bytes": 32625,
-      "sha256": "6679daef7817589001a62d26b378ce69664a5fe285ee0dcb60f32e2dd28da0cb"
-    },
-    {
-      "path": "app/data/spells/spells6lvl.js",
-      "bytes": 37855,
-      "sha256": "8ae83de04626664f485277f06986eeef1c5db0dbf8a8ee3b88bff03f67be87f6"
-    },
-    {
-      "path": "app/data/subclasses/subclassesRegistry.js",
-      "bytes": 111083,
-      "sha256": "bf1d2f0932d057d425a0d85bcd7058d2ba5d8a7b5313098afb1c6c3bcb0a31dc"
-    },
-    {
-      "path": "app/debug.js",
-      "bytes": 5961,
-      "sha256": "667ca9602599c8ca7fb819956fcbf8b759d7fe4368009a59d6e3ad3ab9569fcd"
-    },
-    {
-      "path": "app/dice.js",
-      "bytes": 39986,
-      "sha256": "0a6a1bfc7473418e6de0be61ef6b501d22622870616711a976647a15ddbf6d58"
-    },
-    {
-      "path": "app/dnd_tools.js",
-      "bytes": 15959,
-      "sha256": "f30979dc9a812cf8df4b12c7787c8d544f8e14cf3213a81f4a1056fcc891e603"
-    },
-    {
-      "path": "app/expanded_bestiary_v39.js",
-      "bytes": 49383,
-      "sha256": "f76952560ba3c221f6ab2dcd584be61486b1385f99418de9746bed6dc492c9a5"
-    },
-    {
-      "path": "app/expanded_class_registry_bridge.js",
-      "bytes": 4257,
-      "sha256": "7bcebbf2a0e7da7c66f92855aa69d250293594e33e71553a99866d011dd62ea3"
-    },
-    {
-      "path": "app/expanded_classes_v23.js",
-      "bytes": 29760,
-      "sha256": "5d377b4bd5e86f0c8acec853379553e3c91af2a3b9d1ea8be5da2c8b0e4d4af6"
-    },
-    {
-      "path": "app/expanded_subclasses_v23.js",
-      "bytes": 2030,
-      "sha256": "4b0a8a66eaa086575dd7405a42db555b291602bedc59e99c3972d6565d6b3b05"
-    },
-    {
-      "path": "app/expansion_class_progressions.js",
-      "bytes": 6719,
-      "sha256": "93352071c1f0a30df0762c4b15c8b6dee2d6ea7710dbf235747b9daf73abe673"
-    },
-    {
-      "path": "app/expansion_classes_pack.js",
-      "bytes": 348315,
-      "sha256": "6ce26f7fca8c7b9e692cf378ae004a597b093a8819207ce4b4f6e5bdf9ec2fdc"
-    },
-    {
-      "path": "app/extra_class_ui_bridge.js",
-      "bytes": 645,
-      "sha256": "26b96b6adaf384b6081ede8031dc1791df64df39533199c7e11c607f6fa422fb"
-    },
-    {
-      "path": "app/feat_engine.js",
-      "bytes": 11457,
-      "sha256": "d2b8dfd58429c1be91e7ffd460a72150cf6328366a30525360305e31802794e3"
-    },
-    {
-      "path": "app/gameplay_core_v57.js",
-      "bytes": 15945,
-      "sha256": "0b785aa9d5238f0e9f7e7b3559e9bb57bdd697c17c65fa7d9c7d2ed25c47a813"
-    },
-    {
-      "path": "app/ghost_extra_runtime.js",
-      "bytes": 22293,
-      "sha256": "a4afe129c0139d1af851674162c15069530640fc212be35621e84b386d3a3f3f"
-    },
-    {
-      "path": "app/ghost_extra_ui.js",
-      "bytes": 2387,
-      "sha256": "f27f494a989cb8d5cad74a80deaac7d397d58f63fd5be7aa2d5229cee472785e"
-    },
-    {
-      "path": "app/icon_settings.js",
-      "bytes": 11281,
-      "sha256": "fd6c0c72b7774053161d81474bd4fc3f04675f99ae1ab3791dff956df5643958"
-    },
-    {
-      "path": "app/icon_settings_v2.js",
-      "bytes": 10484,
-      "sha256": "abc961afa680b794c6c9527c71a624f4514e247ffab11aecd7cb23d38513ec0b"
-    },
-    {
-      "path": "app/inventory-coins.js",
-      "bytes": 23961,
-      "sha256": "05192021babe86ed54c419d85a4150f8fcee047cf3a3f32dfd4a3e5496fe1ba3"
-    },
-    {
-      "path": "app/inventory-modal.js",
-      "bytes": 32494,
-      "sha256": "88784d97dcd529afbdd7b7ca924a2021683242ca9573dac5c7453bdc2bda4899"
-    },
-    {
-      "path": "app/inventory_containers_v54.js",
-      "bytes": 12772,
-      "sha256": "2b48370e34cbf7a1893ca1e8f5ae0246a0aa13b04283329d497308f57bdaba17"
-    },
-    {
-      "path": "app/junk.js",
-      "bytes": 8387,
-      "sha256": "9e8f11643e2f00b71867a2672eeae3be9ee920ea0840164d0fb2b4da64221195"
-    },
-    {
-      "path": "app/kibbles_localization_content_v71.js",
-      "bytes": 32027,
-      "sha256": "20a8c9d14a8c7728f298409d7fd4925c19d0ec68aca9ab885e2dad1bbb5731df"
-    },
-    {
-      "path": "app/library.js",
-      "bytes": 9314,
-      "sha256": "c85a60320ab2ffb7522ece0a8d22203b214ff8acc3a4bfc33742dde23c4ee5d7"
-    },
-    {
-      "path": "app/magic_engine.js",
-      "bytes": 6293,
-      "sha256": "287e1e97b97cb008f573bbf8255e36865c2e203fcef3812e3a5ff8053734ccde"
-    },
-    {
-      "path": "app/market_economy_v55.js",
-      "bytes": 17219,
-      "sha256": "b41eca9d0a9956ff999500bd7d342535ea0526195c4538b41b11c951f5e5f122"
-    },
-    {
-      "path": "app/market_expansion_v55_1.js",
-      "bytes": 21531,
-      "sha256": "4e33c8ec6df8cc412d93fcdccf6dc45e7585feb56186a81a3aa06930a7177f24"
-    },
-    {
-      "path": "app/market_social_v55_3.js",
-      "bytes": 11752,
-      "sha256": "93f90e6cc8f1dfae290e423d35b03d88af7e45676c4ba124beb91a97d22896e9"
-    },
-    {
-      "path": "app/market_trade_v55_2.js",
-      "bytes": 25582,
-      "sha256": "5ffb08be065eb5e53afcbb8b1b426d6da04e318df4d9f39f8c94a1282a09011c"
-    },
-    {
-      "path": "app/martyr_mhp_2024_runtime.js",
-      "bytes": 25375,
-      "sha256": "cde6f3ebe18d693406a0f04959227c080755e27bf810a4b92968b90ab1516b5c"
-    },
-    {
-      "path": "app/materials.js",
-      "bytes": 11976,
-      "sha256": "6101f089d48bf8ff668af8714e61467db911becaf411c657704c5bd24958d8d4"
-    },
-    {
-      "path": "app/monster_engine.js",
-      "bytes": 17873,
-      "sha256": "ef428f652498e9ba4bb9c4de92ff7420226fe7681fc5f4dda5edf00b5b734d3a"
-    },
-    {
-      "path": "app/monster_loot_crafting_bridge_v40.js",
-      "bytes": 31518,
-      "sha256": "904331ac20018afd1ef8671393132362ec9451d995ce55efd61683971ddcecf2"
-    },
-    {
-      "path": "app/monster_loot_engine_v36.js",
-      "bytes": 13559,
-      "sha256": "3b19780282b0e2c456a7fbd23088b67566ed17712d36538175fe05ef1fc00a47"
-    },
-    {
-      "path": "app/monster_loot_engine_v37.js",
-      "bytes": 18554,
-      "sha256": "f4cc9232a3d58bcf91f044cda8915848f36b87420932388df642baba84d26d80"
-    },
-    {
-      "path": "app/necromancer_mhp_2024_runtime.js",
-      "bytes": 36272,
-      "sha256": "3990aa5327e8d0338aff8d582f0676a6f17ed0f0c5275fb29b58dd582527efff"
-    },
-    {
-      "path": "app/network_engine.js",
-      "bytes": 45962,
-      "sha256": "3956981b9b943e853005a8e5d4a8dfc03bd79e9a12100da3e95fee68efcf93a1"
-    },
-    {
-      "path": "app/network_gameplay.js",
-      "bytes": 85567,
-      "sha256": "e030c37bb0ee2e21930f6ac76ae126e94544090915f462747f90ccd04fd64882"
-    },
-    {
-      "path": "app/notes.js",
-      "bytes": 4818,
-      "sha256": "f6f7e1d247e15a2f39c68dfd55f5ac16c697ada5e7cadd4c972f1988b6a9f8f0"
-    },
-    {
-      "path": "app/occultist_kibbles_v11_runtime.js",
-      "bytes": 58077,
-      "sha256": "04100e5c0bdf0dac36c0c268a5cdd401f153cf24a8d0a0d666d9604b1a3b7491"
-    },
-    {
-      "path": "app/onboarding_faq_v71.css",
-      "bytes": 6093,
-      "sha256": "ec84fee87dd5eb887abb58f6911f013230bf3c3230a1c545bf24a1a830a235cb"
-    },
-    {
-      "path": "app/onboarding_faq_v71.js",
-      "bytes": 32373,
-      "sha256": "d351dc459ddea34875c9432a6a0e715c8a0839ffea254b56701a35f9edfe5897"
-    },
-    {
-      "path": "app/parasite_extra_runtime.js",
-      "bytes": 30047,
-      "sha256": "39b589a94cea9b592c38b580250a6f144764215c0fd464a84758fdb6c45bef68"
-    },
-    {
-      "path": "app/parasite_extra_ui.js",
-      "bytes": 4710,
-      "sha256": "6a2936867d183306560c2181b8f4de780a48e250e71d0ff51c5f1ea1461afe1b"
-    },
-    {
-      "path": "app/races.js",
-      "bytes": 52239,
-      "sha256": "edebb1f1ddcb47b9a1863b4b427f7ac0721cc22f64de543188614c7444cbbdbc"
-    },
-    {
-      "path": "app/resource_gathering_v35.js",
-      "bytes": 12423,
-      "sha256": "2cc6be1e8d450c9f919f5505fb0667a7bf73512c71e16b30dab7ca644a9a4c9c"
-    },
-    {
-      "path": "app/resource_processing_v44.js",
-      "bytes": 22150,
-      "sha256": "24a0f94c589b3a5018e416553ec859ad5519d15bb44281b85fa40bee0f361cbf"
-    },
-    {
-      "path": "app/rulesEngine.js",
-      "bytes": 41605,
-      "sha256": "97d7812de8af63ec11b9834f128b54f35a28cd18997f92b164dafa07cc2ba933"
+      "path": "app/accursed_oap_v11_runtime.js",
+      "bytes": 25292,
+      "sha256": "13122e378670a90a2f5c2df163125a2ea339d8d91a74dbae1c63bcb6c7be6c25"
     },
     {
       "path": "app/runekeeper_taron_v12_runtime.js",
@@ -1168,144 +48,59 @@
       "sha256": "970fd9654dc0f4cffdaa6ddbd8c3bd4e35a17bd16b303ca0b77985d8f4b96b1c"
     },
     {
-      "path": "app/secondary_entities_engine.js",
-      "bytes": 7144,
-      "sha256": "66c266e004ff6f74f640d22ad4800df1a4236ddcd3578313a53d07852338c417"
+      "path": "app/races.js",
+      "bytes": 52239,
+      "sha256": "edebb1f1ddcb47b9a1863b4b427f7ac0721cc22f64de543188614c7444cbbdbc"
     },
     {
-      "path": "app/shifter_laserllama_v2_1_runtime.js",
-      "bytes": 26601,
-      "sha256": "d1f8383df67f31b03561cc50c777865565749100f32df40ff5adf8a93073b1f6"
+      "path": "app/Backgrounds.js",
+      "bytes": 63130,
+      "sha256": "bf5e7730ba3497edd6519999b929f1a8b1abf47162838e0f00df030bd5c8269d"
     },
     {
-      "path": "app/skills.js",
-      "bytes": 6367,
-      "sha256": "1cf43800f1df845c0b3e084d46be55a57b89f214ed871a806fdde77f97d0e268"
+      "path": "app/expansion_class_progressions.js",
+      "bytes": 6719,
+      "sha256": "93352071c1f0a30df0762c4b15c8b6dee2d6ea7710dbf235747b9daf73abe673"
     },
     {
-      "path": "app/spells.js",
-      "bytes": 39220,
-      "sha256": "ca87e03afab016a3dc83db0f7be5b43bdbe694502318911f205b31b39372349a"
+      "path": "app/alchemist_mhp_2024_runtime.js",
+      "bytes": 140155,
+      "sha256": "d77820e13b299af3c60867911f7a23298f6cb44407489f6fbf1a670da8b6ba7c"
     },
     {
-      "path": "app/styles.css",
-      "bytes": 19977,
-      "sha256": "160730ce97b817edcbf4dd2f7ebf9c4ae66dec15f8b33dbfba89092e3595beef"
+      "path": "app/data/classes/Alchemist.js",
+      "bytes": 5589,
+      "sha256": "2d21fe67d3730950d782eb74004332f9a16140a6942d959203edafb98bf0c517"
     },
     {
-      "path": "app/summoning_engine.js",
-      "bytes": 11661,
-      "sha256": "9ef3cc9f09aca6d65b9f6de3cdab402802d66ca31ee31f0bf8d8cf0cf9371f43"
+      "path": "app/classesRegistry.js",
+      "bytes": 10679,
+      "sha256": "f491cea688d126aee28a3b8ffe1c4750078ab3597ce0203c9ad046e8ba913a65"
     },
     {
-      "path": "app/swarm_extra_runtime.js",
-      "bytes": 19936,
-      "sha256": "ecfc431cb16ccd1a578e56ad8b580386524d94fa7ad35aaddb6b4115f2414608"
+      "path": "app/data/classes/progressionEngine.js",
+      "bytes": 20610,
+      "sha256": "e761a97acb8fbb14126340abc51585f9cfcacf9bff018f579482664c0c18ab6c"
     },
     {
-      "path": "app/swipe-lock.js",
-      "bytes": 1654,
-      "sha256": "08d95e0adc6fe3f7a6a33558d90764e4b431b1634670ea5a4081303bc74c9e5c"
+      "path": "app/data/subclasses/subclassesRegistry.js",
+      "bytes": 111083,
+      "sha256": "bf1d2f0932d057d425a0d85bcd7058d2ba5d8a7b5313098afb1c6c3bcb0a31dc"
     },
     {
-      "path": "app/turn_planner.js",
-      "bytes": 15930,
-      "sha256": "11b6d38ac1d88b925c156df6ea31f0f0feb36ed2fa01c241c140d5b09d44ebb4"
+      "path": "app/class_features_engine.js",
+      "bytes": 133043,
+      "sha256": "779c55e05697042d39520b9b8e96ba76c7f0c6b252900ede576d7c1b39459a1c"
     },
     {
-      "path": "app/update_manager.js",
-      "bytes": 20813,
-      "sha256": "c9cdbaf14fa04ec15dd5d6f3e6c445d201a5836c3495b22d259666366d1844b6"
+      "path": "app/combat_engine.js",
+      "bytes": 69184,
+      "sha256": "c11e5d7bd2ca59d8e2ec7aa43f11522e75008e9310aa5145a5e44eb8c53cd1b2"
     },
     {
-      "path": "app/vessel_laserllama_v4_runtime.js",
-      "bytes": 39809,
-      "sha256": "5f600d5c2a2a360b843e7200fb4f6ddcd33f097bb5fe681b63b22356bd759d17"
-    },
-    {
-      "path": "app/vtt_character_actions_v64.js",
-      "bytes": 4047,
-      "sha256": "e6d66a5bd5a1324220daf53f4d090ccb077d5036a4d996d72da4e4474d017a55"
-    },
-    {
-      "path": "app/vtt_character_sheet_v63.js",
-      "bytes": 3966,
-      "sha256": "06f638eecce1e659dc5d797f4b3073e5d7d958fa331e2ff449dab10295f14e99"
-    },
-    {
-      "path": "app/vtt_combat_event_bus_v69.js",
-      "bytes": 8287,
-      "sha256": "8a1651b84268c560a11e6744469db3b2e6a6c6f26061e5f1a796fd569f309fa2"
-    },
-    {
-      "path": "app/vtt_combat_log_v66.js",
-      "bytes": 8113,
-      "sha256": "44bb426c37d95a7e6fb445d0cae5c620406a49cadcdb8309b05382544808ea0e"
-    },
-    {
-      "path": "app/vtt_debug_character_lab_v702.js",
-      "bytes": 16566,
-      "sha256": "1e112e979c8c8d607af60c3d5fcc8f27b5c4f7a97fd73b3e5026694e1e58426c"
-    },
-    {
-      "path": "app/vtt_debug_dice_lab_v706.js",
-      "bytes": 9112,
-      "sha256": "812758bf5bbd87eed6043ca6498cc409d2b9bbe1c07f4093b32d551b66668c71"
-    },
-    {
-      "path": "app/vtt_debug_error_log_v709.js",
-      "bytes": 4816,
-      "sha256": "cd684a8c03cb0cd97e32eab9b5b88f5a2917251e419bac8bcb3da279e4fd23b8"
-    },
-    {
-      "path": "app/vtt_debug_lab_v703.js",
-      "bytes": 12151,
-      "sha256": "980ed239e1418e8585be1ceff24d69852fda53454f9ca9caad22c317d840e3ed"
-    },
-    {
-      "path": "app/vtt_debug_panel_v70.js",
-      "bytes": 17168,
-      "sha256": "eea814e1295f6bf1ae99e0b27a7b0442e43715c96439bd8923f0c7a517d5cf3b"
-    },
-    {
-      "path": "app/vtt_debug_rules_matrix_v707.js",
-      "bytes": 6881,
-      "sha256": "30ec3b30c86f54d42a72924a9c565bff88bc01e25708a63885a740beab7fac2c"
-    },
-    {
-      "path": "app/vtt_debug_sandbox_v701.js",
-      "bytes": 14634,
-      "sha256": "20685d74bb79a8819f0a10e07b3e3741d6b8c708c688ee1e6e14d9faa3884d78"
-    },
-    {
-      "path": "app/vtt_debug_scenario_editor_v705.js",
-      "bytes": 10352,
-      "sha256": "96db40d7d8d2724a906adf70e5cd793421e899a61aa0d5d2512070d97aaa0ea2"
-    },
-    {
-      "path": "app/vtt_debug_scenarios_v704.js",
-      "bytes": 8385,
-      "sha256": "fdb8ae5e2212174063dfc5fcd56b89a99cec2ef9b0b48b0459a697c3360f61e3"
-    },
-    {
-      "path": "app/vtt_debug_tasks_v708.js",
-      "bytes": 25273,
-      "sha256": "d85582905d795955eff56a63f8287d853463f9b0ab3d77b08a1ca24b7c9f24a0"
-    },
-    {
-      "path": "app/vtt_dice_resolution_v65.js",
-      "bytes": 3941,
-      "sha256": "d027228fa88f8027db37b10b4b33fe73c241f224ac63b85e9443645a67ff56b0"
-    },
-    {
-      "path": "app/vtt_encounter_checkpoint_v68.js",
-      "bytes": 9606,
-      "sha256": "3fbd46ec44089abac6dfb5fff72b6e4d1a5f0998ad6b69200b5a87f7d0045689"
-    },
-    {
-      "path": "app/vtt_encounter_map_v59.js",
-      "bytes": 9462,
-      "sha256": "cbab2228f016428beaadd7aa73a8e989b3439505b0d1961e99de2002ca7276f7"
+      "path": "app/gameplay_core_v57.js",
+      "bytes": 15945,
+      "sha256": "0b785aa9d5238f0e9f7e7b3559e9bb57bdd697c17c65fa7d9c7d2ed25c47a813"
     },
     {
       "path": "app/vtt_gameplay_ux_v58.js",
@@ -1313,74 +108,69 @@
       "sha256": "d42239954041731f440a4d4540e017b98329ea7db1750d3a8efbad3bd331cde0"
     },
     {
-      "path": "app/vtt_mobile_battle_v61.js",
-      "bytes": 4559,
-      "sha256": "901f875bb836e8f4ccc6a03035c792f27a265de6301e618981eda2b38ffc58cd"
+      "path": "app/dice.js",
+      "bytes": 39986,
+      "sha256": "0a6a1bfc7473418e6de0be61ef6b501d22622870616711a976647a15ddbf6d58"
     },
     {
-      "path": "app/vtt_mobile_combat_hud_v62.js",
-      "bytes": 9071,
-      "sha256": "bd747afa6cdb657df7e2c84ed415ba5b1fc20cd6b985bcdeac6439067cbaa036"
+      "path": "app/vtt_debug_error_log_v709.js",
+      "bytes": 4816,
+      "sha256": "cd684a8c03cb0cd97e32eab9b5b88f5a2917251e419bac8bcb3da279e4fd23b8"
     },
     {
-      "path": "app/vtt_mobile_session_v67.js",
-      "bytes": 11143,
-      "sha256": "cf403280f26d79070772aaa8f7bb20349e072b98ffc81f4811bc5a42a8ad8ff4"
+      "path": "app/Ambiences.js",
+      "bytes": 14648,
+      "sha256": "517d2d198c6e567f3b1b3e39d4505f95dadfd9dafd3f46b22f70004d78725634"
     },
     {
-      "path": "app/vtt_project_manifest_v70.js",
-      "bytes": 44405,
-      "sha256": "d5af982f1e119746142f1cf9a284310b7b3ae2ed4e5c30d83a2875f308d9fa6a"
+      "path": "app/app.js",
+      "bytes": 36291,
+      "sha256": "b862c6e7b14fd2b9f4f55f4c053057fbda69aaaa98f8484c1276c9340f8562c3"
     },
     {
-      "path": "app/vtt_token_interaction_v60.js",
-      "bytes": 8542,
-      "sha256": "51798fa0f5b18aedd50bf917edab1158949998530bfbc365ad8f252f133f8c86"
+      "path": "app/Settings.js",
+      "bytes": 49984,
+      "sha256": "9e3648dc4508ee1b22f98cbed65f973fbdc870d5c707fad6b259526a4fdbec03"
     },
     {
-      "path": "app/walter_parasite_extra_runtime.js",
-      "bytes": 33758,
-      "sha256": "78f0813aef9d1a2bc30859cf0816a13a031d84e0a01842d41e52c36c0ee65810"
+      "path": "app/icon_settings.js",
+      "bytes": 11281,
+      "sha256": "fd6c0c72b7774053161d81474bd4fc3f04675f99ae1ab3791dff956df5643958"
     },
     {
-      "path": "app/walter_parasite_ui.js",
-      "bytes": 4185,
-      "sha256": "d1f46b0be30ad6ea34535e0d9a2a768b064e2859bc62e7f783385300606ce844"
+      "path": "app/update_manager.js",
+      "bytes": 20813,
+      "sha256": "c9cdbaf14fa04ec15dd5d6f3e6c445d201a5836c3495b22d259666366d1844b6"
     },
     {
-      "path": "app/warden_mhp_2024_runtime.js",
-      "bytes": 39652,
-      "sha256": "16013b678cbbb842521b35a8439fa50614425f52a4d5c691848529cf3635965a"
+      "path": "app/onboarding_faq_v71.js",
+      "bytes": 32373,
+      "sha256": "d351dc459ddea34875c9432a6a0e715c8a0839ffea254b56701a35f9edfe5897"
     },
     {
-      "path": "app/weapons.js",
-      "bytes": 3380,
-      "sha256": "9148276af5825ceb92f862a97ee7fb281797b295e0950d27f19acd246e3ccbdf"
+      "path": "app/styles.css",
+      "bytes": 19977,
+      "sha256": "160730ce97b817edcbf4dd2f7ebf9c4ae66dec15f8b33dbfba89092e3595beef"
     },
     {
-      "path": "app/weaponsheavy.js",
-      "bytes": 8328,
-      "sha256": "df540729f7926c2883aa42f0d78b0f5f4f83d386662dba813ac198a2ee422f6c"
+      "path": "1790622844831.png",
+      "bytes": 104000,
+      "sha256": "60c9ccfc77616b10a60b454ee077d79737a6a2ff1c8ed26649d35f2ebee37fa5"
     },
     {
-      "path": "app/weaponsmelee.js",
-      "bytes": 20232,
-      "sha256": "a18ad5ce382b9d6f674e222ad25ff251f3338758548ac79b30941e6dca1c1a1a"
+      "path": "1790622696215.png",
+      "bytes": 1202179,
+      "sha256": "99987d82b27f29f4d1e71c91847fb54dbf0d546816297260d26668ed77c74cd7"
     },
     {
-      "path": "app/weaponsranged.js",
-      "bytes": 18195,
-      "sha256": "8c09bc45006c3e278f113efd5c1e1b45b8d09cbaee1a7af81c55460ca7eb3fc8"
+      "path": "1790622252250.png",
+      "bytes": 908119,
+      "sha256": "1157a229c1ddc35a06db0aff82b7b4b31262b36edfb7cf5994c03d6147bd99b2"
     },
     {
-      "path": "app/weaponsspecial.js",
-      "bytes": 5655,
-      "sha256": "aa4720e1885172787de31b72786e9f6ed1608f0a39dfe594856d97646e33c5ec"
-    },
-    {
-      "path": "app/world_resource_gathering_v53.js",
-      "bytes": 17353,
-      "sha256": "b37c2cf9766b42720116c9d724b7d434321cdcac0a4e16b2e44586aa95d63224"
+      "path": "1790718758545.png",
+      "bytes": 1889164,
+      "sha256": "0a3eab3f11aebea532709de2a29279b3a60b28bc0785bd84bceacde56167700d"
     }
   ],
   "blockedVersions": []
