@@ -244,3 +244,19 @@ assert.strictEqual(zoneOwnerForIncapacitation.classFeaturesState.protector.zone.
 assert.strictEqual(zoneOwnerForIncapacitation.classFeaturesState.protector.zone.endedReason, 'protector-incapacitated', 'zone stores the reason it ended');
 window.DNDCombat.toggleCondition(zoneOwnerForIncapacitation, 'Оглушён', false);
 assert.strictEqual(zoneOwnerForIncapacitation.classFeaturesState.protector.zone.active, false, 'removing the condition does not reactivate an expired zone');
+
+
+// Bandit distracting maneuver is connected to the real combat attack resolver.
+let capturedBanditAttackMode = null;
+window.DNDRules.rollD20 = mode => {
+  capturedBanditAttackMode = mode;
+  return { result: 15, critical: false, fumble: false };
+};
+const distractedBandit = {
+  id: 'bandit-attack-integration', classes: [{ name: 'Бандит', level: 3 }],
+  classFeaturesState: { bandit: { distractingTargetId: 'distracted-target' } }
+};
+const distractedTarget = { id: 'distracted-target', hp: 20, maxHp: 20, ac: 10, tempHp: 0 };
+window.DNDCombat.attack(distractedBandit, distractedTarget, { bonus: 0, damage: '1d4' });
+assert.strictEqual(capturedBanditAttackMode, 'advantage', 'distracting maneuver forces advantage in the real attack resolver');
+assert.strictEqual(distractedBandit.classFeaturesState.bandit.distractingTargetId, undefined, 'distracting maneuver is consumed by the matching attack');
