@@ -59,6 +59,7 @@ assert.strictEqual(rules.getModifier(restoredMariner), 1, 'the wallet modifier s
 {
   const storage = new Map();
   const hero = { id: 'mariner-market-test', name: 'Мореход', classes: [{ name: 'Мореход', level: 1 }], coins: { gp: 2000, pp: 0, ep: 0, sp: 0, cp: 0 }, inventory: {} };
+  const savedWallets = [];
   const marketContext = {
     console, Math, Number, String, Array, Object, JSON, Date, RegExp, isFinite, parseInt, parseFloat,
     currentCharacter: hero,
@@ -66,7 +67,7 @@ assert.strictEqual(rules.getModifier(restoredMariner), 1, 'the wallet modifier s
     document: { addEventListener: () => {}, getElementById: () => null },
     addEventListener: () => {},
     renderInventory: () => {},
-    autoSaveCurrentCharacter: () => {}
+    autoSaveCurrentCharacter: () => savedWallets.push(JSON.parse(JSON.stringify(hero.coins)))
   };
   marketContext.window = marketContext;
   marketContext.globalThis = marketContext;
@@ -79,6 +80,8 @@ assert.strictEqual(rules.getModifier(restoredMariner), 1, 'the wallet modifier s
   const purchase = marketContext.DND_MARKET_V55.buy(traderId, item.id, 1);
   assert.strictEqual(purchase.ok, true, 'the market purchase succeeds');
   assert.strictEqual(rules.getModifier(hero), 4, 'market spending immediately recalculates the modifier from the updated carried wallet');
+  assert(savedWallets.length >= 1, 'successful purchase persists the updated character');
+  assert.deepStrictEqual(savedWallets[savedWallets.length - 1], hero.coins, 'the final autosave contains the post-purchase wallet, not the pre-purchase balance');
 }
 // A malformed destination inventory category must not consume coins or trader stock.
 {
