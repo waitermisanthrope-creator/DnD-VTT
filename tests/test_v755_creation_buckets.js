@@ -31,6 +31,6 @@ assert.deepStrictEqual(ids(filters.races('classic')),standardRaceIds,'classic pa
 assert.deepStrictEqual(ids(filters.races('homebrew')),['aarakocra','custom_test'],'homebrew parchment must exclude standard race IDs');
 assert.deepStrictEqual(ids(filters.races('constructor')),races.map(r=>r.id),'constructor must include classic plus homebrew races');
 assert.deepStrictEqual(names(filters.backgrounds('classic')),classicBgs,'classic parchment must contain only the 13 standard backgrounds');
-assert.deepStrictEqual(names(filters.backgrounds('homebrew')),['Рунный резчик','Привратник'],'homebrew parchment must exclude standard backgrounds');
-assert.deepStrictEqual(names(filters.backgrounds('constructor')),backgrounds.map(b=>b.nameRu),'constructor must include classic plus homebrew backgrounds');
+assert.deepStrictEqual(names(filters.backgrounds('homebrew')),['Rune Carver','Gate Warden'],'homebrew parchment must exclude standard backgrounds');
+assert.deepStrictEqual(names(filters.backgrounds('constructor')),backgrounds.map(b=>b.name),'constructor must include classic plus homebrew backgrounds');
 console.log('PASS character creation content buckets');
