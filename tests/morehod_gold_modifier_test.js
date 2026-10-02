@@ -84,8 +84,8 @@ assert.strictEqual(rules.getModifier(restoredMariner), 1, 'the wallet modifier s
   const purchase = marketContext.DND_MARKET_V55.buy(traderId, item.id, 1);
   assert.strictEqual(purchase.ok, true, 'the market purchase succeeds');
   assert.strictEqual(rules.getModifier(hero), 4, 'market spending immediately recalculates the modifier from the updated carried wallet');
-  assert(savedWallets.length >= 1, 'successful purchase persists the updated character');
-  assert.deepStrictEqual(savedWallets[savedWallets.length - 1], hero.coins, 'the final autosave contains the post-purchase wallet, not the pre-purchase balance');
+  assert.strictEqual(savedWallets.length, 1, 'successful market purchase autosaves once after the inventory and wallet mutation');
+  assert.deepStrictEqual(savedWallets[savedWallets.length - 1], hero.coins, 'the autosave contains the post-purchase wallet, not the pre-purchase balance');
 }
 // A malformed destination inventory category must not consume coins or trader stock.
 {
