@@ -44,6 +44,35 @@
   function isExtra(name){return !!EXTRA[name];}
   function extraInfo(name){return EXTRA[name]||null;}
   var STANDARD_CLASS_NAMES=['Варвар','Бард','Жрец','Друид','Воин','Монах','Паладин','Следопыт','Плут','Чародей','Колдун','Волшебник','Изобретатель'];
+  var STANDARD_RACE_IDS=['human','human_variant','elf_high','elf_wood','elf_drow','dwarf_hill','dwarf_mountain','halfling_lightfoot','halfling_stout','dragonborn','gnome_rock','gnome_forest','half_elf','half_orc','tiefling'];
+  var STANDARD_BACKGROUND_NAMES=['Прислужник','Шарлатан','Преступник','Артист','Народный герой','Гильдийский ремесленник','Отшельник','Благородный','Дикарь','Мудрец','Мореход','Солдат','Беспризорник'];
+  function isExtraClassRecord(c){
+    if(!c)return true;
+    var n=String(c.name||'').trim();
+    return isExtra(n)||c.isExtra===true||c.replacesRace===true||c.isRaceClassHybrid===true||['Гайст','Geist','Ghost'].indexOf(n)>=0;
+  }
+  function filterClassesForCreation(mode){
+    var all=getClasses();
+    if(mode==='classic')return all.filter(function(c){return STANDARD_CLASS_NAMES.indexOf(c.name)>=0;});
+    if(mode==='homebrew')return all.filter(function(c){return STANDARD_CLASS_NAMES.indexOf(c.name)<0&&!isExtraClassRecord(c);});
+    if(mode==='constructor')return all.filter(function(c){return !isExtraClassRecord(c);});
+    return [];
+  }
+  function filterRacesForCreation(mode){
+    var all=getRaces();
+    if(mode==='classic')return all.filter(function(r){return STANDARD_RACE_IDS.indexOf(r.id)>=0;});
+    if(mode==='homebrew')return all.filter(function(r){return STANDARD_RACE_IDS.indexOf(r.id)<0;});
+    if(mode==='constructor')return all;
+    return [];
+  }
+  function filterBackgroundsForCreation(mode){
+    var all=typeof g.getAllBackgrounds==='function'?g.getAllBackgrounds():(g.dndBackgrounds||[]);
+    all=Array.isArray(all)?all:[];
+    if(mode==='classic')return all.filter(function(b){return STANDARD_BACKGROUND_NAMES.indexOf(b.nameRu||b.name)>=0;});
+    if(mode==='homebrew')return all.filter(function(b){return STANDARD_BACKGROUND_NAMES.indexOf(b.nameRu||b.name)<0;});
+    if(mode==='constructor')return all.slice();
+    return [];
+  }
   var CLASS_CREATION_RULES_2014={
     'Варвар':{armor:['p_armor_light','p_armor_medium','p_shields'],weapons:['p_weapon_simple','p_weapon_martial']},
     'Бард':{armor:['p_armor_light'],weapons:['p_weapon_simple','p_weap_hand_crossbow','p_weap_longsword','p_weap_rapier','p_weap_shortsword'],tools:{choose:3,from:['p_instr_lute','p_instr_flute','p_instr_drum','p_instr_horn','p_instr_pan_flute','p_instr_shawm','p_instr_lyre','p_instr_viol','p_instr_bagpipes']}},
@@ -737,7 +766,7 @@
 
   function Wizard(opts){
     this.mode=opts.mode||'create';this.hero=opts.hero||null;this.fromParchment=!!opts.fromParchment;this.step=0;this.values={};
-    this.creationMode='classic';this.race=null;this.className=null;this.classLevel=opts.classLevel||1;this.isNewClass=opts.isNewClass!==false;
+    this.creationMode=opts.creationMode||(opts.direct?'constructor':'classic');this.race=null;this.className=null;this.classLevel=opts.classLevel||1;this.isNewClass=opts.isNewClass!==false;
     this.choices=[];this.error='';
     if(this.fromParchment&&opts.draft){
       this.values={name:opts.draft.name||'',age:Number(opts.draft.age)||0,background:opts.draft.background||'',profession:opts.draft.profession||'',stats:{}};
@@ -802,19 +831,19 @@
   };
   Wizard.prototype.renderCreate=function(){
     var s=this.steps[this.step],body='';
-    if(this.step===0){var bgsRaw=typeof g.getAllBackgrounds==='function'?g.getAllBackgrounds():(g.dndBackgrounds||[]);var bgs=Array.isArray(bgsRaw)?bgsRaw:[];var professionsRaw=g.DND_CRAFT_PROFESSION_PROGRESS&&g.DND_CRAFT_PROFESSION_PROGRESS.professions;var professions=Array.isArray(professionsRaw)?professionsRaw:[];body='<div class="cb-card"><h3>Кто вы?</h3><input id="cb_name" class="cb-input" placeholder="Имя персонажа"><input id="cb_age" type="number" class="cb-input" style="margin-top:8px" placeholder="Возраст"><select id="cb_bg" class="cb-select" style="margin-top:8px"><option value="">— Предыстория —</option>'+bgs.map(function(b){var id=b.nameRu||b.name;return '<option value="'+esc(id)+'">'+esc(id)+'</option>';}).join('')+'</select><select id="cb_prof" class="cb-select" style="margin-top:8px"><option value="">— Профессия (необязательно) —</option>'+professions.map(function(p){return '<option value="'+esc(p.id||p.name)+'">'+esc(p.nameRu||p.name||p.id)+'</option>';}).join('')+'</select><p class="cb-note">Дальше мастер проведёт вас по расе, классу, характеристикам и всем обязательным выборам.</p></div>';} 
+    if(this.step===0){var bgs=filterBackgroundsForCreation(this.creationMode);var professionsRaw=g.DND_CRAFT_PROFESSION_PROGRESS&&g.DND_CRAFT_PROFESSION_PROGRESS.professions;var professions=Array.isArray(professionsRaw)?professionsRaw:[];body='<div class="cb-card"><h3>Кто вы?</h3><input id="cb_name" class="cb-input" placeholder="Имя персонажа"><input id="cb_age" type="number" class="cb-input" style="margin-top:8px" placeholder="Возраст"><select id="cb_bg" class="cb-select" style="margin-top:8px"><option value="">— Предыстория —</option>'+bgs.map(function(b){var id=b.nameRu||b.name;return '<option value="'+esc(id)+'">'+esc(id)+'</option>';}).join('')+'</select><select id="cb_prof" class="cb-select" style="margin-top:8px"><option value="">— Профессия (необязательно) —</option>'+professions.map(function(p){return '<option value="'+esc(p.id||p.name)+'">'+esc(p.nameRu||p.name||p.id)+'</option>';}).join('')+'</select><p class="cb-note">Дальше мастер проведёт вас по расе, классу, характеристикам и всем обязательным выборам.</p></div>';} 
     if(this.step===1){
-      var races=getRaces(),sel=this.race?this.race.id:'';
+      var races=filterRacesForCreation(this.creationMode),sel=this.race?this.race.id:'';
       body='<div class="cb-card"><h3>Раса или особый путь</h3><div class="cb-list">'+races.map(function(r){return '<div class="cb-option '+(sel===r.id?'active':'')+'" data-race="'+esc(r.id)+'"><b>'+esc(r.name)+'</b><small>'+esc(r.desc||'')+'</small></div>';}).join('')+'</div>';
-      body+='<div class="cb-card cb-extra"><h3>EXTRA-классы</h3><p class="cb-note">Эти пути заменяют обычную расу и имеют собственную модель тела/сущности.</p><div class="cb-list">'+Object.keys(EXTRA).map(function(n){var x=EXTRA[n];return '<div class="cb-option '+(self.className===n?'active':'')+'" data-extra="'+esc(n)+'"><b>'+esc(n)+'</b><small>'+esc(x.description||'Закрытая ветка персонажа')+'</small></div>';}).join('')+'</div></div>';
-      if(this.className&&extraInfo(this.className).host){
+      if(this.creationMode!=='constructor')body+='<div class="cb-card cb-extra"><h3>EXTRA-классы</h3><p class="cb-note">Эти пути заменяют обычную расу и имеют собственную модель тела/сущности.</p><div class="cb-list">'+Object.keys(EXTRA).map(function(n){var x=EXTRA[n];return '<div class="cb-option '+(self.className===n?'active':'')+'" data-extra="'+esc(n)+'"><b>'+esc(n)+'</b><small>'+esc(x.description||'Закрытая ветка персонажа')+'</small></div>';}).join('')+'</div></div>';
+      if(this.creationMode!=='constructor'&&this.className&&extraInfo(this.className).host){
         body+='<div class="cb-card cb-extra"><h3>Тело / хозяин</h3><p class="cb-note">'+esc(this.className==='Призрак'?'Выберите тело, которое стало оболочкой призрака.':'Выберите тело/вид хозяина, с которым связан Extra.')+'</p><div class="cb-list">'+races.map(function(r){return '<div class="cb-option '+(self.race&&self.race.id===r.id?'active':'')+'" data-host-race="'+esc(r.id)+'"><b>'+esc(r.name)+'</b><small>'+esc(r.desc||'')+'</small></div>';}).join('')+'</div></div>';
       }
       body+='</div>';
     }
     if(this.step===2){
-      var classes=getClasses(),selc=this.className||'',mode=this.creationMode||'classic';
-      var visibleClasses=classes.filter(function(c){if(isExtra(c.name))return false;if(mode==='classic')return STANDARD_CLASS_NAMES.indexOf(c.name)>=0;return true;});
+      var selc=this.className||'',mode=this.creationMode||'classic';
+      var visibleClasses=filterClassesForCreation(mode);
       body='<div class="cb-card"><h3>Класс</h3><div class="cb-list">'+visibleClasses.map(function(c){return '<div class="cb-option '+(selc===c.name?'active':'')+'" data-class="'+esc(c.name)+'"><b>'+esc(c.name)+'</b><small>d'+(c.hitDie||8)+' · '+esc(c.desc||'')+'</small></div>';}).join('')+'</div></div>';
       if(this.className&&isExtra(this.className))body='<div class="cb-card cb-extra"><h3>'+esc(this.className)+'</h3><p>Это Extra-класс. Обычный класс не выбирается. Тело/хозяин уже выбран на предыдущем шаге.</p></div>';
     }
@@ -832,7 +861,7 @@
       var savedChoiceValues=this.values;
       this.choices=collectChoices(rc,cc,this.classLevel,this.isNewClass,(this.hero&&this.hero.classes||[]).find(function(x){return norm(x.name)===norm(cc);})?.subclass,this.hero);
       var bgName=this.values.background||'';
-      var bgList=typeof g.getAllBackgrounds==='function'?g.getAllBackgrounds():(g.dndBackgrounds||[]);
+      var bgList=filterBackgroundsForCreation(this.creationMode);
       var bg=Array.isArray(bgList)?bgList.find(function(x){return (x.nameRu||x.name)===bgName||x.name===bgName;}):null;
       var startFeatures=collectStartingFeaturePreview(rc,cc,bg);
       body='<div class="cb-card"><h3>Стартовые особенности 1 уровня</h3><p class="cb-note">Эти способности будут записаны персонажу автоматически при создании. Отдельные выборы ниже нужны только там, где правила требуют выбрать вариант.</p>'+
@@ -1076,7 +1105,7 @@
     if(screen)screen.style.display=opts.fromParchment?'none':'block';
     try{
       console.warn('Builder V2 launch: startCreateFromParchment=',!!opts.fromParchment);
-      var wizard=new Wizard({mode:'create',fromParchment:!!opts.fromParchment,draft:opts.draft||null});
+      var wizard=new Wizard({mode:'create',fromParchment:!!opts.fromParchment,draft:opts.draft||null,direct:!!opts.direct,creationMode:opts.creationMode||(opts.direct?'constructor':'classic')});
       wizard.mount();
       if(!wizard.root||!wizard.root.innerHTML.trim())throw new Error('Builder V2 mount завершился пустым root');
       return wizard;
@@ -1095,7 +1124,8 @@
   }
   g.createNewCharacter=startCreate;
   g.openLevelUpModal=startLevel;
-  g.CharacterBuilderV2={Wizard:Wizard,raceChoices:raceChoices,classChoices:classChoices,collectChoices:collectChoices,applyChoice:applyChoice,startCreate:startCreate,startCreateDirect:function(){return startCreate({direct:true});},startLevel:startLevel,startCreateFromParchment:function(draft){return startCreate({fromParchment:true,draft:draft});}};
+  g.DND_CREATION_CONTENT_FILTERS={classes:filterClassesForCreation,races:filterRacesForCreation,backgrounds:filterBackgroundsForCreation,isExtraClass:isExtraClassRecord,standardClassNames:STANDARD_CLASS_NAMES.slice(),standardRaceIds:STANDARD_RACE_IDS.slice(),standardBackgroundNames:STANDARD_BACKGROUND_NAMES.slice()};
+  g.CharacterBuilderV2={Wizard:Wizard,raceChoices:raceChoices,classChoices:classChoices,collectChoices:collectChoices,applyChoice:applyChoice,startCreate:startCreate,startCreateDirect:function(){return startCreate({direct:true,creationMode:'constructor'});},startLevel:startLevel,startCreateFromParchment:function(draft){return startCreate({fromParchment:true,draft:draft,creationMode:draft&&draft.creationMode||'classic'});}};
 })(window);
 
 // V70.26.71: keep Builder array normalization fix in the stable web update payload.
