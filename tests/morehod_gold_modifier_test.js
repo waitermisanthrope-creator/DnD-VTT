@@ -481,6 +481,7 @@ console.log('morehod_gold_modifier_test: all assertions passed');
   assert.strictEqual(beforeBuy - socialContext.DND_MARKET_V55.balanceCp(), buyQuote.cp, 'purchase charges the exact negotiated price');
   assert.strictEqual(buy.price.cp, buyQuote.cp, 'base transaction records negotiated copper price');
   assert.strictEqual(buy.negotiatedPrice.display.gp, Math.floor(buyQuote.cp / 100), 'negotiated quote display matches its copper price');
+  assert.strictEqual(buy.negotiatedPrice.display.sp, Math.floor((buyQuote.cp % 100) / 10), 'negotiated quote silver display matches its copper price');
 
   const saleItem = hero.inventory.materials[0];
   assert(saleItem, 'test sale item remains in inventory');
