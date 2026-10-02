@@ -66,14 +66,14 @@
   }
   function restore(hero,kind){
     if(!hero||!hero.resources)return {ok:false,reason:'Персонаж или ресурсы не найдены.'};
+    if(kind!=='short'&&kind!=='long'&&kind!=='shortRest'&&kind!=='longRest')
+      return {ok:false,reason:'Неизвестный тип отдыха; ресурсы не восстановлены.'};
     sync(hero);
     var restored=[];
     Object.keys({banditDirtyTricks:1,circusResource:1,protectorImpulses:1}).forEach(function(id){
       var r=hero.resources[id];
       if(!r)return;
-      if(kind==='short'||kind==='long'||kind==='shortRest'||kind==='longRest'){
-        r.current=r.max;restored.push(id);
-      }
+      r.current=r.max;restored.push(id);
     });
     return {ok:true,restored:restored};
   }
