@@ -162,6 +162,9 @@
       }catch(error){
         return {ok:false,partial:true,reason:'Бой прервал применение огненного дыхания после начала действия; ресурс потрачен, проверьте уже обработанные цели.',results:results};
       }
+      if(applied===false||(applied&&applied.ok===false)){
+        return {ok:false,partial:true,reason:'Бой отклонил применение урона после начала огненного дыхания; ресурс потрачен, проверьте уже обработанные цели.',results:results};
+      }
       results.push({targetId:String(staged.entry.target.id),dc:dc,save:staged.save,rolled:staged.rolled,damage:staged.damage,applied:applied});
     }
     return {ok:true,dc:dc,dice:diceCount+'d6',results:results,message:'Огненное дыхание: '+results.length+' целей обработано.'};
