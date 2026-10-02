@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java"
+      - "app/campaign_manager.js"
       - ".github/workflows/android-release.yml"
 
 permissions:
