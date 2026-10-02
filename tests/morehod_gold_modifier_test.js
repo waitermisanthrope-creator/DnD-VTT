@@ -448,3 +448,49 @@ console.log('morehod_gold_modifier_test: all assertions passed');
   assert.strictEqual(spellContext.rollSpellAttack('Тестовое заклинание'), 15, 'spell attack uses d20 + spell attack bonus only');
   assert.match(spellLog, /Итог атаки: \*\*15\*\*/, 'spell attack log shows no gold modifier');
 }
+
+
+// Integration: negotiated market prices must be the exact amount charged/credited, both on markup and discount.
+{
+  const storage = new Map();
+  const hero = {
+    id: 'social-market-price-test', name: 'Мореход',
+    classes: [{ name: 'Мореход', level: 1 }],
+    coins: { cp: 0, sp: 0, ep: 0, gp: 500, pp: 0 },
+    inventory: { materials: [{ name: 'Тестовый товар', category: 'materials', count: 2, marketPriceGp: 10 }] }
+  };
+  const socialContext = {
+    console, Math, Number, String, Array, Object, JSON, Date, RegExp, isFinite, parseInt, parseFloat,
+    currentCharacter: hero,
+    localStorage: { getItem: key => storage.has(key) ? storage.get(key) : null, setItem: (key, value) => storage.set(key, String(value)) },
+    document: { addEventListener: () => {}, getElementById: () => null }, addEventListener: () => {},
+    renderInventory: () => {}, autoSaveCurrentCharacter: () => {}
+  };
+  socialContext.window = socialContext; socialContext.globalThis = socialContext; vm.createContext(socialContext);
+  vm.runInContext(fs.readFileSync(require.resolve('../app/market_economy_v55.js'), 'utf8'), socialContext);
+  vm.runInContext(fs.readFileSync(require.resolve('../app/market_trade_v55_2.js'), 'utf8'), socialContext);
+  vm.runInContext(fs.readFileSync(require.resolve('../app/market_social_v55_3.js'), 'utf8'), socialContext);
+  const api = socialContext.DND_MARKET_V55_3;
+  const traderId = Object.keys(socialContext.DND_MARKET_V55.TRADERS).find(id => socialContext.DND_MARKET_V55.TRADERS[id].stock.length);
+  const stockItem = socialContext.DND_MARKET_V55.TRADERS[traderId].stock[0];
+  api.haggle(traderId, 'buy', { roll: 1, difficulty: 100 });
+  const buyQuote = api.negotiatedQuote(traderId, stockItem, 'buy');
+  const beforeBuy = socialContext.DND_MARKET_V55.balanceCp();
+  const buy = api.buy(traderId, stockItem.id, 1);
+  assert.strictEqual(buy.ok, true, 'negotiated purchase with markup succeeds when affordable');
+  assert.strictEqual(beforeBuy - socialContext.DND_MARKET_V55.balanceCp(), buyQuote.cp, 'purchase charges the exact negotiated price');
+  assert.strictEqual(buy.price.cp, buyQuote.cp, 'base transaction records negotiated copper price');
+  assert.strictEqual(buy.negotiatedPrice.display.gp, Math.floor(buyQuote.cp / 100), 'negotiated quote display matches its copper price');
+
+  const saleItem = hero.inventory.materials[0];
+  assert(saleItem, 'test sale item remains in inventory');
+  api.haggle(traderId, 'sell', { roll: 20, difficulty: 1 });
+  const sellQuote = api.negotiatedQuote(traderId, saleItem, 'sell');
+  const beforeSell = socialContext.DND_MARKET_V55.balanceCp();
+  const sell = api.sell(traderId, 'materials', 0, 1);
+  assert.strictEqual(sell.ok, true, 'negotiated sale succeeds');
+  assert.strictEqual(socialContext.DND_MARKET_V55.balanceCp() - beforeSell, sellQuote.cp, 'sale credits the exact negotiated price, not the base price');
+  assert.strictEqual(sell.price.cp, sellQuote.cp, 'sale result records negotiated copper price');
+  assert.strictEqual(api.buy(traderId, stockItem.id, 0).ok, false, 'zero purchase count is rejected');
+  assert.strictEqual(api.sell(traderId, 'materials', 0, 1.5).ok, false, 'fractional sale count is rejected');
+}
