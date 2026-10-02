@@ -81,11 +81,13 @@
     ctx=ctx||{};
     var l=level(hero,CLASS_IDS.bandit);
     if(!l)return {ok:false,reason:'Для изучения цели нужен класс Бандит.'};
-    if(!target||target.id==null)return {ok:false,reason:'Выберите конкретную цель со стабильным ID.'};
+    if(!target||target.id==null||String(target.id).trim()==='')return {ok:false,reason:'Выберите конкретную цель со стабильным ID.'};
+    if(hero.id!=null&&String(target.id)===String(hero.id))return {ok:false,reason:'Нельзя изучить самого себя как цель.'};
     if(ctx.visible!==true)return {ok:false,reason:'Подтвердите, что цель видна.'};
     if(ctx.distanceFt==null||!isFinite(Number(ctx.distanceFt))||Number(ctx.distanceFt)>60||Number(ctx.distanceFt)<0)return {ok:false,reason:'Цель должна находиться в пределах 60 футов.'};
-    hero.classFeaturesState=hero.classFeaturesState||{};
-    var state=hero.classFeaturesState.bandit||(hero.classFeaturesState.bandit={studiedTargetIds:[]});
+    if(!hero.classFeaturesState||typeof hero.classFeaturesState!=='object'||Array.isArray(hero.classFeaturesState))hero.classFeaturesState={};
+    var state=hero.classFeaturesState.bandit;
+    if(!state||typeof state!=='object'||Array.isArray(state))state=hero.classFeaturesState.bandit={studiedTargetIds:[]};
     if(!Array.isArray(state.studiedTargetIds))state.studiedTargetIds=[];
     var id=String(target.id);
     var max=l>=11?2:1;
