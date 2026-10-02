@@ -102,7 +102,6 @@ assert.strictEqual(rules.getModifier(restoredMariner), 1, 'the wallet modifier s
   assert.strictEqual(JSON.stringify(hero.coins), walletBefore, 'rejected purchase does not mutate wallet');
   assert.strictEqual(api.getTrader(traderId).stock.find(x => x.id === item.id).qty, stockBefore, 'rejected purchase does not consume trader stock');
 }
-}
 assert.strictEqual(rules.adjustRollTotal(14, { className: 'Мореход', coins: { gp: 1200 } }), 15);
 assert.strictEqual(typeof rules.adjustDamageDie, 'undefined', 'Mariner modifier does not expose damage-die adjustment');
 // Integration: load the actual rules engine and confirm the modifier reaches weapon attacks once.
