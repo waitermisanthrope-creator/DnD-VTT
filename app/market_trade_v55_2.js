@@ -93,16 +93,72 @@
   function itemTags(item){var tags=[];(item&&item.tags||[]).concat(item&&item.craftTags||[],item&&item.roles||[]).forEach(function(t){if(t!=null)tags.push(String(t).toLowerCase());});var text=String(item&&item.name||'').toLowerCase();[['metal',['оруж','меч','топор','молот','арбалет','щит','брон','кольч','лат','руда','слит']],['wood',['лук','древес','дерев','копь','стрел']],['leather',['кож','шкур','сбру','ножн','сумк']],['alchemical',['зель','элик','алхим','кислот','дым','реагент']],['poison',['яд','токс']],['food',['паёк','мяс','сыр','хлеб','рыб','эль','пиво','медовух','сидр','соль','масло']],['paper',['свиток','пергамент','бумаг','чернил','карта']],['glass',['стекл','флакон','графин','хруст']],['rope',['верёв','канат','леск','сеть']],['textile',['ткан','шёлк','одеж','попон']],['stone',['камень','гранит','мрамор','сланец','кварц','обсидиан']],['gem',['аметист','гранат','опал','руб','сапфир','изумруд','алмаз','драгоцен']],['relic',['реликв','артефакт','рунич','древн','талисман']],['arcane',['аркан','магич','эссенц','кристалл']]].forEach(function(p){if(p[1].some(function(s){return text.indexOf(s)>=0;}))tags.push(p[0]);});return Array.from(new Set(tags));}
   function canTraderBuy(traderId,item){var t=market.TRADERS[traderId];if(!t)return {ok:false,error:'Торговец не найден'};var rule=ACCEPT[t.type]||ACCEPT.general;var cat=resolveFunctionalItem(item).inventoryCategory||item.category||'junk';var tags=itemTags(item);var catOk=rule.categories.indexOf(cat)>=0;var tagOk=tags.some(function(x){return rule.tags.indexOf(x)>=0;});if(t.type==='general'||t.type==='caravan'||t.type==='caravan_master')return {ok:true,reason:'универсальный ассортимент',matched:tags};if(catOk&&tagOk)return {ok:true,reason:'категория и профиль',matched:tags.filter(function(x){return rule.tags.indexOf(x)>=0;})};return {ok:false,error:'Торговец не заинтересован в этом товаре',matched:tags,acceptedTags:rule.tags,acceptedCategories:rule.categories};}
   function sellCheck(traderId,item){var c=canTraderBuy(traderId,item);if(!c.ok)return c;return {ok:true};}
-  function addResolved(item){var i=inv(),x=resolveFunctionalItem(item),cat=x.inventoryCategory||'junk';if(!i[cat])i[cat]=[];var same=i[cat].find(function(y){return y&&y.id&&x.id&&y.id===x.id&&!y.craftQuality&&!y.currentDurability;});
+  function addResolved(item){var i=inv(),x=resolveFunctionalItem(item);if(!i||!x||typeof i!=='object'||Array.isArray(i))return null;var cat=x.inventoryCategory||'junk';if(i[cat]!=null&&!Array.isArray(i[cat]))return null;if(!i[cat])i[cat]=[];var same=i[cat].find(function(y){return y&&y.id&&x.id&&y.id===x.id&&!y.craftQuality&&!y.currentDurability;});
     if(same)same.count=(Number(same.count)||0)+(Number(x.count)||1);else i[cat].push(x);if(typeof global.renderInventory==='function')global.renderInventory();if(typeof global.autoSaveCurrentCharacter==='function')global.autoSaveCurrentCharacter();return x;}
   function removeExact(category,index,count){var i=inv();if(!i||!i[category]||!i[category][index])return false;var x=i[category][index],n=Number(count)||1;if(Number(x.count||1)<n)return false;x.count=Number(x.count||1)-n;if(x.count<=0)i[category].splice(index,1);return true;}
   function wrappedBuy(traderId,itemId,count){count=Math.max(1,Math.floor(Number(count)||1));var t=market.TRADERS[traderId],base=t&&t.stock&&t.stock.find(function(x){return x.id===itemId;});if(!base)return market.buy(traderId,itemId,count);var result=market.buy(traderId,itemId,count);if(!result.ok)return result;var i=inv(),rawCat=base.category||'materials',list=i[rawCat]||[],removed=false;for(var k=list.length-1;k>=0;k--){if(list[k]&&list[k].marketSource===traderId&&list[k].name===base.name){list.splice(k,1);removed=true;break;}}var added=addResolved(Object.assign({},base,{count:count,marketSource:traderId,marketPriceGp:result.price.gp}));result.functionalItem=added;result.functionalStatus=added.marketFunctionalStatus;result.replacedGeneric=removed;return result;}
   function wrappedSell(traderId,category,index,count){var i=inv();var item=i&&i[category]&&i[category][index];if(!item)return {ok:false,error:'Предмет не найден'};var chk=sellCheck(traderId,item);if(!chk.ok)return chk;return market.sell(traderId,category,index,count);}
   function traderItemValue(traderId,itemId){var t=market.TRADERS[traderId],it=t&&t.stock&&t.stock.find(function(x){return x.id===itemId;});if(!it)return null;return calculateItemValue(it,{unit:true});}
-  function barter(traderId,itemId,count,offers){count=Math.max(1,Math.floor(Number(count)||1));var t=market.TRADERS[traderId],want=t&&t.stock&&t.stock.find(function(x){return x.id===itemId;});if(!want)return {ok:false,error:'Товар торговца не найден'};offers=Array.isArray(offers)?offers:[];if(!offers.length)return {ok:false,error:'Добавьте предметы для обмена'};
-    var offered=0,refs=[];offers.forEach(function(o){var i=inv(),item=i&&i[o.category]&&i[o.category][Number(o.index)];if(!item)return;var n=Math.max(1,Math.floor(Number(o.count)||1));if(Number(item.count||1)<n)return;var check=canTraderBuy(traderId,item);if(!check.ok)return;var v=calculateItemValue(item,{unit:true});offered+=v.cp*n;refs.push({category:o.category,index:Number(o.index),count:n,value:v.cp,item:item});});
-    var wanted=calculateItemValue(Object.assign({},want,{count:count}),{unit:true}).cp*count; if(!refs.length)return {ok:false,error:'Торговец не принимает предложенные товары'}; if(offered<wanted)return {ok:false,error:'Недостаточная стоимость обмена',offeredCp:offered,wantedCp:wanted}; if(offered>wanted*1.10)return {ok:false,error:'Предложение слишком выгодно торговцу: сократите товары до ±10% от стоимости'};
-    var state=global.localStorage?JSON.parse(global.localStorage.getItem('dnd_market_v55_state')||'{}'):{};state.traders=state.traders||{};var baseStock=(t.stock||[]).map(function(x){return {id:x.id,qty:x.qty};});state.traders[traderId]=state.traders[traderId]||{stock:baseStock,lastRestock:Date.now()};var slot=state.traders[traderId].stock.find(function(s){return s.id===itemId;});if(!slot||slot.qty<count){return {ok:false,error:'Товар закончился до завершения обмена'};} refs.sort(function(a,b){return b.index-a.index;}); refs.forEach(function(r){removeExact(r.category,r.index,r.count);}); slot.qty-=count;if(global.localStorage)global.localStorage.setItem('dnd_market_v55_state',JSON.stringify(state));var received=addResolved(Object.assign({},want,{count:count,marketSource:traderId,marketPriceGp:calculateItemValue(want,{unit:true}).gp}));return {ok:true,offeredCp:offered,wantedCp:wanted,overpayCp:offered-wanted,received:received};
+  function barter(traderId,itemId,count,offers){
+    count=Number(count);
+    if(!Number.isInteger(count)||count<1)return {ok:false,error:'Некорректное количество товара'};
+    var character=global.currentCharacter||global.currentChar;
+    if(!character)return {ok:false,error:'Персонаж не выбран'};
+    var inventory=character.inventory;
+    if(!inventory||typeof inventory!=='object'||Array.isArray(inventory))return {ok:false,error:'Инвентарь недоступен; обмен отменён'};
+    var t=market.TRADERS[traderId],want=t&&t.stock&&t.stock.find(function(x){return x.id===itemId;});
+    if(!want)return {ok:false,error:'Товар торговца не найден'};
+    offers=Array.isArray(offers)?offers:[];
+    if(!offers.length)return {ok:false,error:'Добавьте предметы для обмена'};
+    var offered=0,refs=[],seen={};
+    for(var oi=0;oi<offers.length;oi++){
+      var o=offers[oi];
+      if(!o||typeof o.category!=='string'||!Number.isInteger(Number(o.index))||Number(o.index)<0)return {ok:false,error:'Некорректный предмет в предложении; обмен отменён'};
+      var index=Number(o.index),key=o.category+'#'+index;
+      if(seen[key])return {ok:false,error:'Один предмет указан несколько раз; обмен отменён'};
+      seen[key]=true;
+      var list=inventory[o.category],item=Array.isArray(list)?list[index]:null;
+      if(!item)return {ok:false,error:'Предложенный предмет больше не найден; обмен отменён'};
+      var n=Number(o.count==null?1:o.count);
+      if(!Number.isInteger(n)||n<1||!Number.isFinite(Number(item.count==null?1:item.count))||Number(item.count==null?1:item.count)<n)return {ok:false,error:'Некорректное количество предложенного предмета'};
+      var check=canTraderBuy(traderId,item);
+      if(!check.ok)return {ok:false,error:check.error||'Торговец не принимает предложенные товары'};
+      var v=calculateItemValue(item,{unit:true});
+      if(!v||!Number.isFinite(Number(v.cp))||Number(v.cp)<0)return {ok:false,error:'Не удалось рассчитать стоимость предложения'};
+      offered+=Number(v.cp)*n;
+      refs.push({category:o.category,index:index,count:n,value:Number(v.cp),item:item});
+    }
+    var wantValue=calculateItemValue(want,{unit:true});
+    if(!wantValue||!Number.isFinite(Number(wantValue.cp))||Number(wantValue.cp)<0)return {ok:false,error:'Не удалось рассчитать стоимость товара торговца'};
+    var wanted=Number(wantValue.cp)*count;
+    if(!Number.isFinite(offered)||!Number.isFinite(wanted))return {ok:false,error:'Некорректная стоимость обмена'};
+    if(offered<wanted)return {ok:false,error:'Недостаточная стоимость обмена',offeredCp:offered,wantedCp:wanted};
+    if(offered>wanted*1.10)return {ok:false,error:'Предложение слишком выгодно торговцу: сократите товары до ±10% от стоимости'};
+    var received=resolveFunctionalItem(Object.assign({},want,{count:count,marketSource:traderId,marketPriceGp:wantValue.gp}));
+    var receiveCategory=received.inventoryCategory||'junk';
+    if(inventory[receiveCategory]!=null&&!Array.isArray(inventory[receiveCategory]))return {ok:false,error:'Категория инвентаря для получаемого предмета повреждена; обмен отменён'};
+    var state;
+    try{state=global.localStorage?JSON.parse(global.localStorage.getItem('dnd_market_v55_state')||'{}'):{};}catch(e){return {ok:false,error:'Не удалось прочитать состояние рынка; обмен отменён'};}
+    if(!state||typeof state!=='object'||Array.isArray(state))state={};
+    state.traders=state.traders&&typeof state.traders==='object'&&!Array.isArray(state.traders)?state.traders:{};
+    var baseStock=(t.stock||[]).map(function(x){return {id:x.id,qty:x.qty};});
+    state.traders[traderId]=state.traders[traderId]||{stock:baseStock,lastRestock:Date.now()};
+    var slot=Array.isArray(state.traders[traderId].stock)?state.traders[traderId].stock.find(function(s){return s.id===itemId;}):null;
+    if(!slot||!Number.isFinite(Number(slot.qty))||Number(slot.qty)<count)return {ok:false,error:'Товар закончился до завершения обмена'};
+    var inventorySnapshot=JSON.stringify(inventory),stateSnapshot=JSON.stringify(state);
+    refs.sort(function(a,b){return b.index-a.index;});
+    try{
+      for(var ri=0;ri<refs.length;ri++)if(!removeExact(refs[ri].category,refs[ri].index,refs[ri].count))throw new Error('Не удалось списать предложенный предмет');
+      slot.qty-=count;
+      var added=addResolved(Object.assign({},want,{count:count,marketSource:traderId,marketPriceGp:wantValue.gp}));
+      if(!added)throw new Error('Не удалось добавить полученный предмет');
+      if(global.localStorage)global.localStorage.setItem('dnd_market_v55_state',JSON.stringify(state));
+      return {ok:true,offeredCp:offered,wantedCp:wanted,overpayCp:offered-wanted,received:added};
+    }catch(e){
+      try{character.inventory=JSON.parse(inventorySnapshot);}catch(ignore){}
+      try{if(global.localStorage)global.localStorage.setItem('dnd_market_v55_state',stateSnapshot);}catch(ignore){}
+      return {ok:false,error:'Обмен отменён: '+(e&&e.message||'ошибка операции')};
+    }
   }
   function reportItem(item){var v=calculateItemValue(item);return Object.assign({name:item&&item.name||'—'},v);}
   function inventoryEntries(){var i=inv(),out=[];['weapons','armor','consumables','materials','junk'].forEach(function(cat){(i&&i[cat]||[]).forEach(function(item,index){out.push({category:cat,index:index,item:item,value:calculateItemValue(item,{unit:true}),sellable:true});});});return out;}
