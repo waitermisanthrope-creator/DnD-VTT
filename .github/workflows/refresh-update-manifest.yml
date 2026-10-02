@@ -35,7 +35,7 @@ jobs:
             git rebase origin/main
             python3 tools/build_update_manifest.py \
               --base-url "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main" \
-              --version "70.32.11" \
+              --version "70.32.10" \
               --min-app-version "70.25.71" \
               --channel "stable" \
               --output updates/stable.json
