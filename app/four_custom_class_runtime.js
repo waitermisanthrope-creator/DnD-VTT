@@ -64,6 +64,60 @@
     if(l){pb=proficiency(l);out.protector=ensureResource(hero,'protectorImpulses',Math.max(1,pb),'short');}
     return out;
   }
+  function circusAnimalLimit(levelValue){
+    return levelValue>=14?3:(levelValue>=7?2:1);
+  }
+  function configureCircusCompanions(hero,animals,ctx){
+    ctx=ctx||{};
+    var l=level(hero,CLASS_IDS.circus);
+    if(!l)return {ok:false,reason:'Для зверинца нужен класс Циркач.'};
+    if(selectedSubclass(hero,CLASS_IDS.circus).indexOf('дрессировщик')<0&&selectedSubclass(hero,CLASS_IDS.circus).indexOf('animal tamer')<0&&selectedSubclass(hero,CLASS_IDS.circus).indexOf('tamer')<0)
+      return {ok:false,reason:'Зверинец доступен только специализации «Дрессировщик».'};
+    if(!Array.isArray(animals))return {ok:false,reason:'Передайте список активных зверей.'};
+    var max=circusAnimalLimit(l),seen={},normalized=[];
+    if(animals.length>max)return {ok:false,reason:'На '+l+' уровне можно держать одновременно не более '+max+' активн. зверей.'};
+    for(var i=0;i<animals.length;i++){
+      var animal=animals[i];
+      if(!animal||animal.id==null||String(animal.id).trim()===''||!animal.name||typeof animal.name!=='string')
+        return {ok:false,reason:'У каждого зверя должны быть устойчивый ID и имя.'};
+      var id=String(animal.id);
+      if(seen[id])return {ok:false,reason:'ID активных зверей не должны повторяться.'};
+      seen[id]=true;
+      var block=animal.statBlock;
+      if(!block||typeof block!=='object'||Array.isArray(block))
+        return {ok:false,reason:'У каждого зверя должен быть отдельный блок характеристик.'};
+      if(!Number.isFinite(Number(block.hpMax))||Number(block.hpMax)<=0||!Number.isFinite(Number(block.ac))||Number(block.ac)<=0)
+        return {ok:false,reason:'Блок зверя должен содержать положительные hpMax и ac.'};
+      normalized.push({
+        id:id,name:animal.name,statBlock:Object.assign({},block),
+        hp:Number.isFinite(Number(animal.hp))?Math.max(0,Math.min(Number(block.hpMax),Number(animal.hp))):Number(block.hpMax),
+        active:true,turnResources:{actions:1,bonusAction:1,reaction:1},
+        turnCount:Math.max(0,n(animal.turnCount,0))
+      });
+    }
+    if(!hero.classFeaturesState||typeof hero.classFeaturesState!=='object'||Array.isArray(hero.classFeaturesState))hero.classFeaturesState={};
+    var state=hero.classFeaturesState.circus;
+    if(!state||typeof state!=='object'||Array.isArray(state))state=hero.classFeaturesState.circus={};
+    var current=Array.isArray(state.companions)?state.companions:[];
+    var nextIds=normalized.map(function(a){return a.id;});
+    var removed=current.some(function(old){return old&&old.active!==false&&nextIds.indexOf(String(old.id))<0;});
+    if(removed&&ctx.storyReplacement!==true)
+      return {ok:false,reason:'Замена или увольнение зверя требует сюжетного события; список не изменён.'};
+    state.companions=normalized;
+    state.companionLimit=max;
+    return {ok:true,limit:max,companions:normalized,independentTurns:true,message:'Зверинец сохранён: у каждого зверя отдельный блок характеристик и собственные ресурсы хода.'};
+  }
+  function circusAnimalTurnStart(hero,animalId){
+    var state=hero&&hero.classFeaturesState&&hero.classFeaturesState.circus;
+    var animals=state&&state.companions;
+    if(!Array.isArray(animals))return {ok:false,reason:'У Дрессировщика не настроен зверинец.'};
+    var animal=animals.find(function(a){return a&&String(a.id)===String(animalId)&&a.active!==false;});
+    if(!animal)return {ok:false,reason:'Активный зверь не найден.'};
+    animal.turnResources={actions:1,bonusAction:1,reaction:1};
+    animal.turnCount=Math.max(0,n(animal.turnCount,0))+1;
+    return {ok:true,animalId:String(animal.id),turnCount:animal.turnCount,turnResources:animal.turnResources};
+  }
+
   function restore(hero,kind){
     if(!hero||!hero.resources)return {ok:false,reason:'Персонаж или ресурсы не найдены.'};
     if(kind!=='short'&&kind!=='long'&&kind!=='shortRest'&&kind!=='longRest')
@@ -367,7 +421,7 @@
     }
     return changed;
   }
-  function hasFeature(id){return ['banditStudyTarget','banditTrip','banditReactionBreak','banditDistractingManeuver','circusFireBreath','protectorZone','protectorRescue'].indexOf(String(id||''))>=0;}
+  function hasFeature(id){return ['circusConfigureCompanions','circusAnimalTurnStart','banditStudyTarget','banditTrip','banditReactionBreak','banditDistractingManeuver','circusFireBreath','protectorZone','protectorRescue'].indexOf(String(id||''))>=0;}
   function useFeature(hero,id,ctx){
     ctx=ctx||{};
     if(!hero)return {ok:false,reason:'Персонаж не найден.'};
@@ -378,6 +432,8 @@
     if(String(id)==='protectorZone')return useProtectorZone(hero,ctx);
     if(String(id)==='protectorRescue')return rescueAlly(hero,ctx);
     if(String(id)==='circusFireBreath')return useCircusFireBreath(hero,ctx);
+    if(String(id)==='circusConfigureCompanions')return configureCircusCompanions(hero,ctx.animals,ctx);
+    if(String(id)==='circusAnimalTurnStart')return circusAnimalTurnStart(hero,ctx.animalId);
     if(String(id)!=='banditStudyTarget')return {ok:false,unsupported:true,reason:'Эта способность пока не подключена.'};
     if(level(hero,CLASS_IDS.bandit)<1)return {ok:false,reason:'Для изучения цели нужен класс Бандит.'};
     var tr=hero.turnResources||(hero.turnResources={actions:1,bonusAction:1,reaction:1});
@@ -395,6 +451,9 @@
     studyTarget:studyTarget,
     clearInvalidTargets:clearInvalidTargets,
     clearStudiedTarget:clearStudiedTarget,
+    configureCircusCompanions:configureCircusCompanions,
+    circusAnimalTurnStart:circusAnimalTurnStart,
+    circusAnimalLimit:circusAnimalLimit,
     interceptDamage:interceptDamage,
     protectorZoneSave:protectorZoneSave,
     hasFeature:hasFeature,
