@@ -129,6 +129,17 @@ window.DNDCombat = {
   }
 };
 const fireTarget = { id: 'target-fire-1', inArea: true, distanceFt: 10, target: { id: 'target-fire-1', hitPoints: 20, saveSuccess: false } };
+const missingCombatTurnStateHero = {
+  id: 'circus-missing-turn-state',
+  classes: [{ name: 'Циркач', level: 7, subclass: 'Пожиратель огня' }],
+  abilityScores: { dex: 14, cha: 14 },
+  resources: {}
+};
+runtime.sync(missingCombatTurnStateHero);
+const missingCombatTurnState = runtime.useFeature(missingCombatTurnStateHero, 'circusFireBreath', { inCombat: true, targets: [fireTarget] });
+assert.strictEqual(missingCombatTurnState.ok, false, 'combat Fire Breath fails closed when action availability cannot be confirmed');
+assert.strictEqual(missingCombatTurnStateHero.resources.circusResource.current, missingCombatTurnStateHero.resources.circusResource.max, 'missing combat turn state does not spend Circus resource');
+
 const invalidFire = runtime.useFeature(circusHero, 'circusFireBreath', { targets: [{ ...fireTarget, inArea: false }] });
 assert.strictEqual(invalidFire.ok, false, 'invalid area fails before spending resource');
 assert.strictEqual(circusHero.resources.circusResource.current, circusHero.resources.circusResource.max);
