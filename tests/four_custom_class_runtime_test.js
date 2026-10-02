@@ -297,6 +297,15 @@ assert.strictEqual(runtime.useFeature(Object.assign({},zoneHero,{classes:[{name:
 assert.strictEqual(zone.ok, true, 'Strazh Rubezha creates a zone using a bonus action');
 assert.strictEqual(zone.zone.radiusFt, 10);
 assert.strictEqual(zoneHero.resources.protectorImpulses.current, 1);
+const corruptZoneHero = {
+  id: 'corrupt-zone-state', classes: [{ name: 'Заступник', level: 3, subclass: 'Страж рубежа' }],
+  resources: { protectorImpulses: { current: 2, max: 2 } },
+  turnResources: { bonusAction: 1 }, classFeaturesState: []
+};
+const repairedZone = runtime.useFeature(corruptZoneHero, 'protectorZone', { actionAvailable: true, round: 1 });
+assert.strictEqual(repairedZone.ok, true, 'Protector zone safely repairs a malformed legacy state container');
+assert.strictEqual(Array.isArray(corruptZoneHero.classFeaturesState), false, 'malformed state container is replaced by an object');
+assert.strictEqual(corruptZoneHero.classFeaturesState.protector.zone.active, true, 'zone state is persisted into the repaired container');
 const zoneAlly = { id: 'zone-ally' };
 const zoneIncapacitated = { ...zoneHero, classFeaturesState: JSON.parse(JSON.stringify(zoneHero.classFeaturesState)), activeConditions: { 'Недееспособен': true } };
 assert.strictEqual(runtime.protectorZoneSave(zoneIncapacitated, zoneAlly, { forcedMovementSave: true, isAlly: true, visible: true, distanceFt: 5, round: 2 }).ok, false, 'zone ends when Protector is incapacitated');
