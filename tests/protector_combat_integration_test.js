@@ -231,7 +231,7 @@ assert.strictEqual(otherOpportunity.blockedByProtectorRescue, undefined, 'rescue
 console.log('Protector combat integration tests: PASS');
 
 // Protector's defensive zone ends immediately when its owner becomes incapacitated.
-const zoneProtector = {
+const zoneOwnerForIncapacitation = {
   id: 'zone-owner',
   classes: [{ name: 'Заступник', level: 3 }],
   conditions: {},
@@ -239,8 +239,8 @@ const zoneProtector = {
     protector: { zone: { active: true, createdRound: 1, expiresRound: 11, radiusFt: 10 } }
   }
 };
-assert.strictEqual(window.DNDCombat.toggleCondition(zoneProtector, 'Оглушён', true), true, 'incapacitating condition is applied');
-assert.strictEqual(zoneProtector.classFeaturesState.protector.zone.active, false, 'Protector zone ends immediately on incapacitation');
-assert.strictEqual(zoneProtector.classFeaturesState.protector.zone.endedReason, 'protector-incapacitated', 'zone stores the reason it ended');
-window.DNDCombat.toggleCondition(zoneProtector, 'Оглушён', false);
-assert.strictEqual(zoneProtector.classFeaturesState.protector.zone.active, false, 'removing the condition does not reactivate an expired zone');
+assert.strictEqual(window.DNDCombat.toggleCondition(zoneOwnerForIncapacitation, 'Оглушён', true), true, 'incapacitating condition is applied');
+assert.strictEqual(zoneOwnerForIncapacitation.classFeaturesState.protector.zone.active, false, 'Protector zone ends immediately on incapacitation');
+assert.strictEqual(zoneOwnerForIncapacitation.classFeaturesState.protector.zone.endedReason, 'protector-incapacitated', 'zone stores the reason it ended');
+window.DNDCombat.toggleCondition(zoneOwnerForIncapacitation, 'Оглушён', false);
+assert.strictEqual(zoneOwnerForIncapacitation.classFeaturesState.protector.zone.active, false, 'removing the condition does not reactivate an expired zone');
