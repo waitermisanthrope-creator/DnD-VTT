@@ -497,4 +497,8 @@ console.log('morehod_gold_modifier_test: all assertions passed');
   const beforeInvalidPrice = socialContext.DND_MARKET_V55.balanceCp();
   assert.strictEqual(socialContext.DND_MARKET_V55.buy(traderId, stockItem.id, 1, { unitPriceCp: -1 }).ok, false, 'negative negotiated unit prices are rejected');
   assert.strictEqual(socialContext.DND_MARKET_V55.balanceCp(), beforeInvalidPrice, 'invalid negotiated price does not mutate wallet');
+  assert.strictEqual(socialContext.DND_MARKET_V55.buy(traderId, stockItem.id, 0).ok, false, 'base market API rejects zero purchase count');
+  assert.strictEqual(socialContext.DND_MARKET_V55.buy(traderId, stockItem.id, 1.5).ok, false, 'base market API rejects fractional purchase count');
+  assert.strictEqual(socialContext.DND_MARKET_V55.sell(traderId, 'materials', 0, 0).ok, false, 'base market API rejects zero sale count');
+  assert.strictEqual(socialContext.DND_MARKET_V55.sell(traderId, 'materials', 0, 1.5).ok, false, 'base market API rejects fractional sale count');
 }
