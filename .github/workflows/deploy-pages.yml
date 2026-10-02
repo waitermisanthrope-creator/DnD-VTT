@@ -49,14 +49,14 @@ jobs:
 
           python3 tools/build_update_manifest.py \
             --base-url "https://waitermisanthrope-creator.github.io/DnD-VTT" \
-            --version "70.32.13" \
+            --version "70.32.14" \
             --min-app-version "70.25.63" \
             --channel "stable" \
             --output site/updates/stable.json
 
           python3 tools/build_update_manifest.py \
             --base-url "https://waitermisanthrope-creator.github.io/DnD-VTT" \
-            --version "70.32.13" \
+            --version "70.32.14" \
             --min-app-version "70.25.63" \
             --channel "beta" \
             --output site/updates/beta.json
@@ -80,9 +80,9 @@ jobs:
           else
             APK="app-debug.apk"
           fi
-          mv "site/downloads/$APK" site/downloads/DND-VTT-70.32.13.apk
-          cp site/downloads/DND-VTT-70.32.13.apk site/downloads/latest.apk
-          sha256sum site/downloads/DND-VTT-70.32.13.apk > site/downloads/DND-VTT-70.32.13.apk.sha256
+          mv "site/downloads/$APK" site/downloads/DND-VTT-70.32.14.apk
+          cp site/downloads/DND-VTT-70.32.14.apk site/downloads/latest.apk
+          sha256sum site/downloads/DND-VTT-70.32.14.apk > site/downloads/DND-VTT-70.32.14.apk.sha256
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
