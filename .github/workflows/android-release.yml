@@ -26,6 +26,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Run creation and updater contract tests
+        run: |
+          node tests/test_v755_creation_buckets.js
+          node tests/test_v754_update_manager.js
+
       - name: Set up JDK 17
         uses: actions/setup-java@v5
         with:
