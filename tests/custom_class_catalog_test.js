@@ -30,8 +30,19 @@ for (const [file, key, subclassKeys] of cases) {
     for (const [featureKey, feature] of Object.entries(featureCatalog)) {
       assert(feature.name && feature.effect, file + ': ' + subclassKey + '.' + featureKey + ' needs name and effect');
     }
+    const detailedNames = new Set(Object.values(featureCatalog).map(feature => feature.name));
+    for (const [level, scheduledNames] of Object.entries(subclass.levels)) {
+      for (const featureName of scheduledNames) {
+        assert(detailedNames.has(featureName), file + ': ' + subclassKey + ' level ' + level + ' schedules "' + featureName + '" without a matching detailed feature');
+      }
+    }
   }
+  for (const [featureKey, feature] of Object.entries(data.features || {})) {
+    assert(feature.name && feature.effect, file + ': base feature ' + featureKey + ' needs name and effect');
+  }
+  assert(!/ведущий подтверждает|TODO|TBD|уточнить/i.test(source), file + ': contains unresolved rules text');
   assert.strictEqual(data.integration.combatEngine, false, file + ': combat engine integration must remain disabled');
   assert.strictEqual(data.integration.characterCreation, false, file + ': character creation integration must remain disabled');
+  assert.strictEqual(data.integration.ui, false, file + ': UI integration must remain disabled');
   console.log('PASS ' + file + ': 20 levels, ' + subclassKeys.length + ' subclass catalogs, no engine/creation integration');
 }
