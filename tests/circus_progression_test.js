@@ -24,7 +24,7 @@ assert.strictEqual(circus.progression.levels[3].subclassLevel, undefined,
 
 const choices = window.getAvailableSubclasses('Циркач');
 assert.deepStrictEqual(
-  choices.map(x => x.name).sort(),
+  Array.from(choices, x => x.name).sort(),
   ['Артист', 'Дрессировщик', 'Жонглёр смерти', 'Пожиратель огня', 'Силач'].sort(),
   'all five Circus specializations must be selectable'
 );
