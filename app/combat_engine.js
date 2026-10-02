@@ -321,6 +321,13 @@
     target.conditions[key]=on===undefined?!target.conditions[key]:!!on;
     if(target.conditions[key] && ['Недееспособен','Бессознателен','Парализован','Оглушён','Окаменел'].indexOf(key)>=0){
       breakConcentration(target);
+      // «Страж рубежа» ends at the moment its owner becomes incapacitated;
+      // do not wait for a later ally saving throw to notice the condition.
+      var protectorState=target.classFeaturesState&&target.classFeaturesState.protector;
+      if(protectorState&&protectorState.zone&&protectorState.zone.active){
+        protectorState.zone.active=false;
+        protectorState.zone.endedReason='protector-incapacitated';
+      }
     }
     return target.conditions[key];
   }
