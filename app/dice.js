@@ -214,7 +214,16 @@ function renderDiceModule() {
       <button class="dice-mode-btn" data-mode="disadvantage" onclick="toggleDiceMode('disadvantage')" style="flex:1;padding:10px 6px;background:#333;color:#fff;border:1px solid #555;border-radius:6px;font-weight:bold;cursor:pointer;">Помеха</button>
     </div>
     <div class="result-box" id="diceResult" style="text-align:center;font-size:1.15em;padding:12px;background:#2a2a2a;border-radius:6px;margin-bottom:10px;">Выбери кубик</div>
-    <button id="diceLogToggle" onclick="toggleDiceLog()" style="width:100%;padding:10px;background:#252525;color:#d4af37;border:1px solid #444;border-radius:6px;font-weight:bold;cursor:pointer;">📜 Лог бросков ▾</button>
+    <div class="dice-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0;">
+      <button class="dice-btn" onclick="rollDice(4)">d4</button>
+      <button class="dice-btn" onclick="rollDice(6)">d6</button>
+      <button class="dice-btn" onclick="rollDice(8)">d8</button>
+      <button class="dice-btn" onclick="rollDice(10)">d10</button>
+      <button class="dice-btn" onclick="rollDice(12)">d12</button>
+      <button class="dice-btn" onclick="rollDice(20)">d20</button>
+    </div>
+    <button id="quickWeaponAttackBtn" class="btn-action" onclick="executeEquippedWeaponAttack()" style="background:#ff9800;color:#000;font-weight:bold;padding:12px;font-size:1em;width:100%;border-radius:6px;cursor:pointer;border:none;margin-bottom:4px;">⚔️ Атака экипированным оружием (d20 + мод)</button>
+    <button id="diceLogToggle" onclick="toggleDiceLog()" style="width:100%;padding:10px;background:#252525;color:#d4af37;border:1px solid #444;border-radius:6px;font-weight:bold;cursor:pointer;margin-top:8px;">📜 История бросков ▾</button>
     <div id="diceLogWrapper" style="display:none;margin-top:8px;padding:10px;background:#1f1f1f;border-radius:6px;border:1px solid #333;">
       <div id="diceLogContainer" style="max-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;"></div>
     </div>
