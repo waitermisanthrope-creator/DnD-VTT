@@ -505,3 +505,38 @@ console.log('morehod_gold_modifier_test: all assertions passed');
   assert.strictEqual(socialContext.DND_MARKET_V55.sell(traderId, 'materials', 0, 0).ok, false, 'base market API rejects zero sale count');
   assert.strictEqual(socialContext.DND_MARKET_V55.sell(traderId, 'materials', 0, 1.5).ok, false, 'base market API rejects fractional sale count');
 }
+
+// Regression: the social-trade wrapper must reject unknown traders before quote math.
+{
+  const storage = new Map();
+  const hero = {
+    id: 'social-market-unknown-trader',
+    name: 'Мореход',
+    classes: [{ name: 'Мореход', level: 1 }],
+    coins: { cp: 0, sp: 0, ep: 0, gp: 50, pp: 0 },
+    inventory: { materials: [{ name: 'Сохранный товар', category: 'materials', count: 1, marketPriceGp: 2 }] }
+  };
+  const ctx = {
+    console, Math, Number, String, Array, Object, JSON, Date, RegExp, isFinite, parseInt, parseFloat,
+    currentCharacter: hero,
+    localStorage: { getItem: key => storage.has(key) ? storage.get(key) : null, setItem: (key, value) => storage.set(key, String(value)) },
+    document: { addEventListener: () => {}, getElementById: () => null },
+    addEventListener: () => {}, renderInventory: () => {}, autoSaveCurrentCharacter: () => {}
+  };
+  ctx.window = ctx;
+  ctx.globalThis = ctx;
+  vm.createContext(ctx);
+  vm.runInContext(fs.readFileSync(require.resolve('../app/market_economy_v55.js'), 'utf8'), ctx);
+  vm.runInContext(fs.readFileSync(require.resolve('../app/market_trade_v55_2.js'), 'utf8'), ctx);
+  vm.runInContext(fs.readFileSync(require.resolve('../app/market_social_v55_3.js'), 'utf8'), ctx);
+  const beforeCoins = JSON.stringify(hero.coins);
+  const beforeInventory = JSON.stringify(hero.inventory);
+  const quote = ctx.DND_MARKET_V55_3.negotiatedQuote('missing-trader', hero.inventory.materials[0], 'sell');
+  assert.strictEqual(quote.ok, false, 'negotiated quote rejects an unknown trader');
+  assert.match(quote.error, /Торговец не найден/, 'quote reports the specific trader validation error');
+  const sale = ctx.DND_MARKET_V55_3.sell('missing-trader', 'materials', 0, 1);
+  assert.strictEqual(sale.ok, false, 'social sale rejects an unknown trader');
+  assert.match(sale.error, /Торговец не найден/, 'sale reports the specific trader validation error');
+  assert.strictEqual(JSON.stringify(hero.coins), beforeCoins, 'failed social sale leaves wallet unchanged');
+  assert.strictEqual(JSON.stringify(hero.inventory), beforeInventory, 'failed social sale leaves inventory unchanged');
+}
