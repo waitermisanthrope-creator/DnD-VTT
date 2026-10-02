@@ -136,6 +136,13 @@
     }
     var resource=hero.resources&&hero.resources.circusResource;
     if(!resource||Number(resource.current)<1)return {ok:false,reason:'Недостаточно Циркового ресурса.'};
+    // In combat, Fire Breath consumes the action. Outside initiative (legacy sheet preview),
+    // no turn resource object exists, so the resolver remains usable for previews/tests.
+    var turns=hero.turnResources,actionKey=null;
+    if(turns&&typeof turns==='object'){
+      actionKey=turns.actions!==undefined?'actions':(turns.action!==undefined?'action':null);
+      if(actionKey===null||n(turns[actionKey],0)<1)return {ok:false,reason:'Для огненного дыхания нужно свободное действие.'};
+    }
     var dc=8+proficiency(l)+abilityMod(hero,'dex');
     var diceCount=l>=15?5:l>=11?4:l>=7?3:2;
     // Resolve all saves and rolls before spending the shared resource or applying damage.
@@ -154,6 +161,7 @@
       return {ok:false,reason:'Не удалось безопасно рассчитать огненное дыхание; Цирковой ресурс сохранён.'};
     }
     resource.current-=1;
+    if(actionKey!==null)turns[actionKey]=typeof turns[actionKey]==='boolean'?false:Math.max(0,n(turns[actionKey],1)-1);
     var results=[];
     for(var j=0;j<prepared.length;j++){
       var staged=prepared[j],applied;
