@@ -80,6 +80,29 @@ assert.strictEqual(rules.getModifier(restoredMariner), 1, 'the wallet modifier s
   assert.strictEqual(purchase.ok, true, 'the market purchase succeeds');
   assert.strictEqual(rules.getModifier(hero), 4, 'market spending immediately recalculates the modifier from the updated carried wallet');
 }
+// A malformed destination inventory category must not consume coins or trader stock.
+{
+  const storage = new Map();
+  const hero = { id: 'mariner-market-malformed-inventory', name: 'Мореход', classes: [{ name: 'Мореход', level: 1 }], coins: { gp: 100, pp: 0, ep: 0, sp: 0, cp: 0 }, inventory: { gear: {} } };
+  const marketContext = {
+    console, Math, Number, String, Array, Object, JSON, Date, RegExp, isFinite, parseInt, parseFloat,
+    currentCharacter: hero,
+    localStorage: { getItem: key => storage.has(key) ? storage.get(key) : null, setItem: (key, value) => storage.set(key, String(value)) },
+    document: { addEventListener: () => {}, getElementById: () => null }, addEventListener: () => {}, renderInventory: () => {}, autoSaveCurrentCharacter: () => {}
+  };
+  marketContext.window = marketContext; marketContext.globalThis = marketContext; vm.createContext(marketContext);
+  vm.runInContext(fs.readFileSync(require.resolve('../app/market_economy_v55.js'), 'utf8'), marketContext);
+  const api = marketContext.DND_MARKET_V55;
+  const traderId = Object.keys(api.TRADERS).find(id => api.TRADERS[id].stock.some(item => item.category === 'gear'));
+  const item = api.TRADERS[traderId].stock.find(item => item.category === 'gear');
+  const stockBefore = api.getTrader(traderId).stock.find(x => x.id === item.id).qty;
+  const walletBefore = JSON.stringify(hero.coins);
+  const result = api.buy(traderId, item.id, 1);
+  assert.strictEqual(result.ok, false, 'purchase is rejected for a malformed destination category');
+  assert.strictEqual(JSON.stringify(hero.coins), walletBefore, 'rejected purchase does not mutate wallet');
+  assert.strictEqual(api.getTrader(traderId).stock.find(x => x.id === item.id).qty, stockBefore, 'rejected purchase does not consume trader stock');
+}
+}
 assert.strictEqual(rules.adjustRollTotal(14, { className: 'Мореход', coins: { gp: 1200 } }), 15);
 assert.strictEqual(typeof rules.adjustDamageDie, 'undefined', 'Mariner modifier does not expose damage-die adjustment');
 // Integration: load the actual rules engine and confirm the modifier reaches weapon attacks once.
