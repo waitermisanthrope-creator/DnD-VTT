@@ -400,7 +400,6 @@ function applyCoinOperation(action) {
   const inputCopper = getCalculatorInputInCopper();
   if (!Number.isSafeInteger(inputCopper) || inputCopper <= 0) {
     alert('Введите корректную целую сумму больше нуля.');
-    alert('Введите сумму больше нуля!');
     return;
   }
 
