@@ -30,34 +30,50 @@ var SKILL_TO_VAR_MAP = {
 };
 
 function initializeDiceModule() {
+  const diceTab = document.getElementById('tabDice');
+  if (!diceTab) {
+    console.warn('[DICE_INIT] #tabDice пока отсутствует.');
+    return false;
+  }
   try {
-    const diceTab = document.getElementById('tabDice');
-    if (!diceTab) {
-      console.warn('[DICE_INIT] #tabDice пока отсутствует; повторная попытка после загрузки.');
-      return false;
-    }
     injectCritStyles();
-    // Не стираем уже отрисованный интерфейс при повторной инициализации.
-    if (!diceTab.querySelector('.dice-container') || !diceTab.querySelector('#diceDrawerContainer')) {
-      renderDiceModule();
-    }
+    // Повторный вызов безопасен: не очищаем уже работающий интерфейс.
+    if (!diceTab.querySelector('.dice-container')) renderDiceModule();
+    if (!diceTab.querySelector('.dice-container')) throw new Error('renderDiceModule не создал .dice-container');
+    // Дополнительные панели могут отсутствовать, но это не должно скрывать сами кубики.
     console.log('[DICE_INIT] Модуль дайсов готов.');
     return true;
   } catch (error) {
     console.error('[DICE_INIT] Ошибка запуска модуля дайсов:', error);
-    const diceTab = document.getElementById('tabDice');
-    if (diceTab && !diceTab.querySelector('.dice-container')) {
-      diceTab.innerHTML = '<div class="card dice-container" style="padding:20px;color:#fff;background:#1f1f1f;border:1px solid #555;border-radius:12px;"><h3 style="color:#d4af37;text-align:center;">🎲 Генератор бросков</h3><p style="text-align:center;">Не удалось запустить модуль. Откройте журнал ошибок в режиме отладки.</p><button class="dice-btn" onclick="initializeDiceModule()" style="width:100%;padding:12px;">Повторить запуск</button></div>';
+    if (!diceTab.querySelector('.dice-container')) {
+      diceTab.innerHTML = '<div class="card dice-container" style="padding:20px;color:#fff;background:#1f1f1f;border:1px solid #555;border-radius:12px;"><h3 style="color:#d4af37;text-align:center;">🎲 Генератор бросков</h3><p style="text-align:center;">Основной интерфейс не загрузился. Можно бросать кубики кнопками ниже.</p><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">'+[4,6,8,10,12,20,100].map(function(n){return '<button onclick="window.__fallbackRollDice('+n+')" style="padding:18px 4px;background:#292929;color:#ff9800;border:1px solid #555;border-radius:8px;font-size:1.15rem;font-weight:bold;">d'+n+'</button>';}).join('')+'</div><div id="diceEmergencyResult" style="padding:14px;text-align:center;color:#8bc34a;font-size:1.2rem;">Выбери кубик</div><button onclick="initializeDiceModule()" style="width:100%;padding:12px;">Повторить запуск основного интерфейса</button></div>';
     }
     return false;
   }
 }
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeDiceModule, { once: true });
-} else {
+window.__fallbackRollDice = function(sides) {
+  var result = Math.floor(Math.random() * sides) + 1;
+  var box = document.getElementById('diceEmergencyResult');
+  if (box) box.textContent = '🎲 d' + sides + ': ' + result;
+  return result;
+};
+function scheduleDiceInitialization() {
   initializeDiceModule();
+  // Повторяем после завершения сборки DOM и после запуска остальных модулей.
+  [0, 150, 600, 1400].forEach(function(delay) {
+    setTimeout(function() {
+      var tab = document.getElementById('tabDice');
+      if (tab && !tab.querySelector('.dice-container')) initializeDiceModule();
+    }, delay);
+  });
 }
-window.addEventListener('load', initializeDiceModule, { once: true });
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', scheduleDiceInitialization);
+} else {
+  scheduleDiceInitialization();
+}
+window.addEventListener('load', scheduleDiceInitialization);
+window.addEventListener('pageshow', scheduleDiceInitialization);
 
 /**
  * Внедрение стилей для анимаций критов и полноэкранных оверлеев
