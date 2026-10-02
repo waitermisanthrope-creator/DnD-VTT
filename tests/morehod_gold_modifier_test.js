@@ -53,6 +53,10 @@ assert.strictEqual(rules.getModifier(restoredMariner), 1, 'the wallet modifier s
   assert.strictEqual(appContext.allCharacters[0].coins.gp, 1200, 'app storage preserves carried gold');
   assert.strictEqual(appContext.allCharacters[0].coins.sp, 10, 'app storage preserves carried silver');
   assert.strictEqual(rules.getModifier(appContext.allCharacters[0]), 1, 'restored in-app wallet produces the same Mariner modifier');
+  const normalizedWallet = appContext.normalizeCharacterSave({ id: 'mariner-wallet-normalize', coins: { gp: '1200', sp: -10, cp: 'not-a-number', pp: Number.MAX_SAFE_INTEGER + 1, ep: 2.5 } });
+  assert.deepStrictEqual(JSON.parse(JSON.stringify(normalizedWallet.coins)), { cp: 0, sp: 0, ep: 0, gp: 1200, pp: 0 }, 'load/import normalizes malformed, negative, fractional and unsafe coin values without losing valid numeric strings');
+  const invalidWallet = appContext.normalizeCharacterSave({ id: 'mariner-wallet-invalid', coins: ['not', 'a', 'wallet'] });
+  assert.deepStrictEqual(JSON.parse(JSON.stringify(invalidWallet.coins)), { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 }, 'non-object wallet data is safely normalized');
 }
 
 // Integration: a real market purchase updates the same carried wallet read by the Mariner modifier.
