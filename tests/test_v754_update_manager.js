@@ -15,7 +15,7 @@ if(u.compareVersions('70.25.10','70.25.10')!==0) throw new Error('version equali
 u.validateManifest({version:'70.25.61',baseUrl:'https://example.invalid/app',files:[{path:'app/test.js',bytes:1,sha256:'a'.repeat(64)}]});
 let rejected=false; try{u.validateManifest({version:'70.25.61',baseUrl:'https://example.invalid',files:[{path:'../evil.js',sha256:'a'.repeat(64)}]});}catch(e){rejected=true;}
 if(!rejected) throw new Error('unsafe path accepted');
-if(u.getConfig().manifestUrl!=='https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json') throw new Error('unexpected default update URL');
+if(u.getConfig().manifestUrl!=='https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json') throw new Error('unexpected default update URL');
   if(u.getConfig().version!=='70.32.14') throw new Error('runtime version mismatch');
   const compat=u.validateManifest({version:'70.32.14',minAppVersion:'70.25.63',baseUrl:'https://example.invalid',files:[{path:'app/test.js',sha256:'a'.repeat(64)}]});
 (async()=>{
