@@ -176,6 +176,28 @@ assert.strictEqual(rules.getModifier(restoredMariner), 1, 'the wallet modifier s
   walletContext.applyCoinOperation('add');
   assert.strictEqual(JSON.stringify(hero.coins), beforeOverflow, 'overflowing calculator operation leaves wallet unchanged');
 }
+// Integration: monster loot currency is added to the actual carried coin purse.
+{
+  const lootContext = { console, Math, Number, String, Array, Object, JSON, Date, isFinite, document: {}, addEventListener: () => {} };
+  lootContext.window = lootContext; lootContext.globalThis = lootContext;
+  vm.createContext(lootContext);
+  vm.runInContext(fs.readFileSync(require.resolve('../app/monster_loot_engine_v37.js'), 'utf8'), lootContext);
+  const hero = { classes: [{ name: 'Мореход', level: 1 }], coins: { cp: 0, sp: 0, ep: 0, gp: 1999, pp: 0 }, inventory: {} };
+  assert.strictEqual(rules.getModifier(hero), 4, 'wallet starts just below the +5 threshold');
+  lootContext.DNDMonsterLoot.collect(hero, {
+    monster: 'Тестовая добыча', createdAt: '2026-10-02T00:00:00.000Z',
+    containers: { pockets: [
+      { name: 'Медные монеты', category: 'currency', coinType: 'cp', count: 100 },
+      { name: 'Серебряные монеты', category: 'currency', coinType: 'sp', count: 5 },
+      { name: 'Мешок монет', category: 'currency', coinType: 'gp', count: 2 },
+      { name: 'Смешанные монеты', category: 'currency', coinType: 'mixed-cp-sp', count: 5 }
+    ], harvest: [] }
+  }, ['pockets']);
+  assert.strictEqual(hero.coins.cp, 103, 'copper and mixed coin loot reaches the personal wallet');
+  assert.strictEqual(hero.coins.sp, 7, 'silver and mixed coin loot reaches the personal wallet');
+  assert.strictEqual(hero.coins.gp, 2001, 'gold coin loot reaches the personal wallet');
+  assert.strictEqual(rules.getModifier(hero), 5, 'collected loot immediately updates the Mariner modifier');
+}
 assert.strictEqual(rules.adjustRollTotal(14, { className: 'Мореход', coins: { gp: 1200 } }), 15);
 assert.strictEqual(typeof rules.adjustDamageDie, 'undefined', 'Mariner modifier does not expose damage-die adjustment');
 // Integration: load the actual rules engine and confirm the modifier reaches weapon attacks once.
