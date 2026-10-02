@@ -273,3 +273,47 @@ assert.strictEqual(context.DNDRules.getSkillBonus(mariner, 'perception', 'wis'),
   assert.strictEqual(saleContext.DND_MARKET_V55.balanceCp(), beforeFailedSale, 'failed sale does not alter carried wealth');
 }
 console.log('morehod_gold_modifier_test: all assertions passed');
+
+
+// Regression: initiative and spell attacks are d20 rolls, but are not ability/skill checks.
+// They must never receive the Mariner's carried-gold modifier.
+{
+  const appSource = fs.readFileSync(require.resolve('../app/app.js'), 'utf8');
+  const initiativeStart = appSource.indexOf('function rollInitiative() {');
+  const initiativeEnd = appSource.indexOf('\n}\n', initiativeStart);
+  assert(initiativeStart >= 0 && initiativeEnd > initiativeStart, 'initiative handler is available');
+  const resultBox = { innerText: '' };
+  const initiativeContext = {
+    Math: Object.assign(Object.create(Math), { random: () => 0.5 }),
+    currentChar: mariner,
+    getStatModNum: stat => stat === 'dex' ? 2 : 0,
+    formatModStr: n => n >= 0 ? '+' + n : String(n),
+    goToTab: () => {},
+    document: { getElementById: id => id === 'diceResult' ? resultBox : null }
+  };
+  vm.createContext(initiativeContext);
+  vm.runInContext(appSource.slice(initiativeStart, initiativeEnd + 3), initiativeContext);
+  initiativeContext.rollInitiative();
+  assert.match(resultBox.innerText, /d20 \(11\) \+2 = 13/, 'initiative uses only the Dexterity modifier, not the Mariner gold modifier');
+
+  const spellSource = fs.readFileSync(require.resolve('../app/spells.js'), 'utf8');
+  const spellStart = spellSource.indexOf('function rollSpellAttack(spellName) {');
+  const spellEnd = spellSource.indexOf('\n}\n', spellStart);
+  assert(spellStart >= 0 && spellEnd > spellStart, 'spell attack handler is available');
+  let spellLog = '';
+  const spellContext = {
+    console: { group: () => {}, groupEnd: () => {}, log: () => {} },
+    getActiveCharacter: () => mariner,
+    getStatModNum: () => 2,
+    getProfBonusNum: () => 3,
+    rollSingleDice: () => 10,
+    currentRollMode: 'normal',
+    document: { getElementById: id => id === 'spellStat' ? { value: 'int' } : null },
+    appendDiceLog: text => { spellLog = text; },
+    triggerCritEffect: () => {}
+  };
+  vm.createContext(spellContext);
+  vm.runInContext(spellSource.slice(spellStart, spellEnd + 3), spellContext);
+  assert.strictEqual(spellContext.rollSpellAttack('Тестовое заклинание'), 15, 'spell attack uses d20 + spell attack bonus only');
+  assert.match(spellLog, /Итог атаки: \*\*15\*\*/, 'spell attack log shows no gold modifier');
+}
