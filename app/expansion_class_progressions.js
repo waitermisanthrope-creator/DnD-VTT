@@ -67,6 +67,28 @@
   p[15]={features:['Herculean']};
   p[18]={features:['Fighting Spirit']};
   g.pugilistProgression=make(p);
+  /* Циркач выбирает специализацию сразу на 1-м уровне. Прогрессия
+     является частью общего level-up контракта, а не только runtime-кнопки. */
+  var circus={};
+  for(var cl=1;cl<=20;cl++)circus[cl]={features:[]};
+  circus[1]={features:['Цирковой ресурс','Выбор специализации Циркача'],subclassLevel:true};
+  [4,8,12,16,19].forEach(function(cl){circus[cl]={features:['Увеличение характеристик / черта'],asi:true};});
+  circus[2]={features:['Цирковой трюк']};
+  circus[3]={features:['Улучшение специализации']};
+  circus[5]={features:['Дополнительная атака / развитие трюка']};
+  circus[6]={features:['Особенность специализации']};
+  circus[7]={features:['Улучшенный цирковой трюк']};
+  circus[9]={features:['Мастерство выступления']};
+  circus[10]={features:['Особенность специализации']};
+  circus[11]={features:['Улучшение циркового ресурса']};
+  circus[13]={features:['Мастерство трюка']};
+  circus[14]={features:['Особенность специализации']};
+  circus[15]={features:['Великий трюк']};
+  circus[17]={features:['Улучшение циркового ресурса']};
+  circus[18]={features:['Особенность специализации']};
+  circus[20]={features:['Легенда арены']};
+  g.circusProgression=make(circus);
+
   /* Runtime-структура для трёх ранее оставшихся классов. Эти данные дают
      Builder/Level Up единый контракт 1–20 и не выдают незавершённые
      способности за полноценно реализованные правила. Конкретные resolver-ы
