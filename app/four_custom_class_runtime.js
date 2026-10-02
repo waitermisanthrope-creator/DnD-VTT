@@ -212,7 +212,8 @@
     if(l<3)return {ok:false,reason:'Страж рубежа доступен с 3-го уровня Заступника.'};
     if(selectedSubclass(hero,CLASS_IDS.protector).indexOf('страж рубежа')<0&&selectedSubclass(hero,CLASS_IDS.protector).indexOf('bastion')<0)return {ok:false,reason:'Выберите специализацию «Страж рубежа».'};
     if(ctx.actionAvailable!==true)return {ok:false,reason:'Нужно свободное бонусное действие.'};
-    var tr=hero.turnResources||(hero.turnResources={actions:1,bonusAction:1,reaction:1});
+    var tr=hero.turnResources;
+    if(!tr||typeof tr!=='object'||Array.isArray(tr))return {ok:false,reason:'Не удалось подтвердить доступность бонусного действия; импульс не потрачен.'};
     if(n(tr.bonusAction,0)<1)return {ok:false,reason:'Бонусное действие уже использовано.'};
     var resource=hero.resources&&hero.resources.protectorImpulses;
     if(!resource||n(resource.current,0)<1)return {ok:false,reason:'Защитные импульсы закончились.'};
