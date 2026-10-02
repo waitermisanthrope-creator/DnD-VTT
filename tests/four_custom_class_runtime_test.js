@@ -396,6 +396,8 @@ console.log('Four custom class runtime foundation tests: PASS');
   assert.strictEqual(bandit.classFeaturesState.bandit.distractingTargetId, 'distracted-enemy', 'target is stored for attack integration');
   assert.strictEqual(bandit.turnResources.bonusAction, 0, 'distracting maneuver uses bonus action');
   assert.strictEqual(bandit.resources.banditDirtyTricks.current, 1, 'distracting maneuver spends one dirty trick');
+  assert.strictEqual(runtime.onTurnStart(bandit), true, 'start of Bandit next turn expires unused distraction');
+  assert.strictEqual(bandit.classFeaturesState.bandit.distractingTargetId, undefined, 'expired distraction cannot linger into later turns');
   const unstudied = runtime.useFeature({ ...bandit, resources: { banditDirtyTricks: { current: 1, max: 5 } }, turnResources: { bonusAction: 1 }, classFeaturesState: { bandit: { studiedTargetIds: [] } } }, 'banditDistractingManeuver', { target: enemy, visible: true });
   assert.strictEqual(unstudied.ok, false, 'distracting maneuver requires a studied target');
 }
