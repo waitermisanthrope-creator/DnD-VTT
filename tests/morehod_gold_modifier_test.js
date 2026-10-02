@@ -133,6 +133,49 @@ assert.strictEqual(rules.getModifier(restoredMariner), 1, 'the wallet modifier s
   assert.strictEqual(stale.ok, false, 'barter rejects stale inventory indices');
   assert.strictEqual(JSON.stringify(hero.inventory), inventoryBefore, 'stale offer cannot mutate inventory');
 }
+// Integration: direct wallet editing and calculator reject malformed/negative amounts safely.
+{
+  const values = {
+    charCP: { value: '-8' }, charSP: { value: '2.5' }, charEP: { value: '3' },
+    charGP: { value: '12' }, charPP: { value: '0' },
+    cc_inputPP: { value: '0' }, cc_inputGP: { value: '-500' }, cc_inputEP: { value: '0' },
+    cc_inputSP: { value: '0' }, cc_inputCP: { value: '0' },
+    cc_ratePlat: { value: '-10' }, cc_rateGold: { value: '0' },
+    cc_rateSilver: { value: '10' }, cc_rateCopper: { value: '10' },
+    cc_togglePP: { checked: true }, cc_toggleEP: { checked: true },
+    cc_infoEquivalent: { textContent: '' }
+  };
+  const alerts = [];
+  const hero = { coins: { cp: 1, sp: 2, ep: 3, gp: 12, pp: 0 } };
+  let saves = 0;
+  const walletContext = {
+    console, Math, Number, String, Array, Object, JSON, Date, parseInt,
+    currentCharacter: hero,
+    document: { getElementById: id => values[id] || null },
+    autoSaveCurrentCharacter: () => { saves++; },
+    updateCoinEquivalentPreview: () => {},
+    alert: message => alerts.push(message),
+    renderCoinLog: () => {}, renderInventory: () => {}
+  };
+  walletContext.window = walletContext; walletContext.globalThis = walletContext;
+  vm.createContext(walletContext);
+  vm.runInContext(fs.readFileSync(require.resolve('../app/inventory-coins.js'), 'utf8'), walletContext);
+  walletContext.updateCoinsFromInputs();
+  assert.strictEqual(hero.coins.cp, 0, 'negative direct wallet input is clamped to zero');
+  assert.strictEqual(hero.coins.sp, 0, 'fractional coin amount is not accepted');
+  assert.strictEqual(hero.coins.gp, 12, 'valid direct wallet input is preserved');
+  assert.strictEqual(values.charCP.value, 0, 'corrected wallet value is reflected in the input');
+  assert.strictEqual(walletContext.getCoinMultipliers().copperPerPlat, 1000, 'negative and zero exchange rates fall back to safe defaults');
+  const before = JSON.stringify(hero.coins);
+  walletContext.applyCoinOperation('add');
+  assert.strictEqual(JSON.stringify(hero.coins), before, 'negative calculator amount cannot alter the wallet');
+  assert(alerts.length > 0, 'invalid/zero calculator operation gives feedback');
+  values.cc_inputGP.value = '9007199254740991';
+  assert(Number.isNaN(walletContext.getCalculatorInputInCopper()), 'overflowing calculator totals are rejected instead of becoming unsafe balances');
+  const beforeOverflow = JSON.stringify(hero.coins);
+  walletContext.applyCoinOperation('add');
+  assert.strictEqual(JSON.stringify(hero.coins), beforeOverflow, 'overflowing calculator operation leaves wallet unchanged');
+}
 assert.strictEqual(rules.adjustRollTotal(14, { className: 'Мореход', coins: { gp: 1200 } }), 15);
 assert.strictEqual(typeof rules.adjustDamageDie, 'undefined', 'Mariner modifier does not expose damage-die adjustment');
 // Integration: load the actual rules engine and confirm the modifier reaches weapon attacks once.
