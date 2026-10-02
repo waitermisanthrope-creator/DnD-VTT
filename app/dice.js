@@ -246,8 +246,44 @@ function renderDiceModule() {
     </div>
   `;
 
+  // Все дополнительные игровые панели, которые другие модули добавляют прямо во вкладку
+  // «Дайсы» (инициатива, компаньоны, отдых, боевые действия и т.п.), складываем в эту шторку.
+  const drawerContent = drawerContainer.querySelector('#diceDrawerContent');
+  const externalPanels = document.createElement('div');
+  externalPanels.id = 'diceDrawerExternalPanels';
+  externalPanels.style.cssText = 'display:flex;flex-direction:column;gap:12px;padding-top:12px;';
+  drawerContent.appendChild(externalPanels);
+
   diceTab.appendChild(mainCard);
   diceTab.appendChild(drawerContainer);
+
+  // Переносим уже существующие и вновь добавляемые панели из корня вкладки в шторку.
+  // Главная карточка кубиков и сама шторка остаются единственными элементами снаружи.
+  const moveExtraPanelsIntoDrawer = () => {
+    Array.from(diceTab.children).forEach(node => {
+      if (node === mainCard || node === drawerContainer || node.id === 'diceDrawerContainer') return;
+      externalPanels.appendChild(node);
+    });
+    // Боевые элементы, созданные сторонними модулями, больше не занимают место в основном экране.
+    if (externalPanels.children.length) {
+      const label = drawerContainer.querySelector('#diceDrawerExternalHeading');
+      if (!label) {
+        const heading = document.createElement('div');
+        heading.id = 'diceDrawerExternalHeading';
+        heading.textContent = '⚔️ Поле боя, компаньоны, отдых и дополнительные игровые панели';
+        heading.style.cssText = 'color:#ff9800;font-weight:bold;padding:8px 0;border-bottom:1px solid #444;';
+        externalPanels.prepend(heading);
+      }
+    }
+  };
+  moveExtraPanelsIntoDrawer();
+  if (window.__diceTabPanelObserver) window.__diceTabPanelObserver.disconnect();
+  window.__diceTabPanelObserver = new MutationObserver(() => {
+    // MutationObserver вызывается после добавления чужих панелей в tabDice.
+    moveExtraPanelsIntoDrawer();
+  });
+  window.__diceTabPanelObserver.observe(diceTab, { childList: true });
+
   setDiceMode('normal');
 }
 
