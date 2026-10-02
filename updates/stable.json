@@ -374,8 +374,8 @@
     },
     {
       "path": "app/character_creation_pergament.js",
-      "bytes": 38991,
-      "sha256": "25e227a096b605b8041efd3366ae6bfe0160c091a86b3ad8e50f0bb6fefe8a64"
+      "bytes": 39660,
+      "sha256": "a5f6d4a8c5450d8865c1063850f77bd671ecfece1906b7e99aa8f10ade64eae3"
     },
     {
       "path": "app/class_features_engine.js",
