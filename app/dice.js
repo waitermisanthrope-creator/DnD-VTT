@@ -218,10 +218,9 @@ function renderDiceModule() {
       <button class="dice-btn" onclick="rollDice(4)">d4</button>
       <button class="dice-btn" onclick="rollDice(6)">d6</button>
       <button class="dice-btn" onclick="rollDice(8)">d8</button>
-      <button class="dice-btn" onclick="rollDice(12)">d12</button>
       <button class="dice-btn" onclick="rollDice(10)">d10</button>
+      <button class="dice-btn" onclick="rollDice(12)">d12</button>
       <button class="dice-btn" onclick="rollDice(20)">d20</button>
-      <button class="dice-btn" onclick="rollDice(100)">d100</button>
     </div>
     <button id="diceLogToggle" onclick="toggleDiceLog()" style="width:100%;padding:10px;background:#252525;color:#d4af37;border:1px solid #444;border-radius:6px;font-weight:bold;cursor:pointer;margin-top:8px;">📜 История бросков ▾</button>
     <div id="diceLogWrapper" style="display:none;margin-top:8px;padding:10px;background:#1f1f1f;border-radius:6px;border:1px solid #333;">
