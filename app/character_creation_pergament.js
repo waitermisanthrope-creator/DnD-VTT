@@ -24,6 +24,8 @@ function classRecords(){
  return out;
 }
 function creationClassItems(){
+ var filters=window.DND_CREATION_CONTENT_FILTERS;
+ if((isClassicMode()||isHomebrewMode())&&filters&&typeof filters.classes==='function')return filters.classes(isClassicMode()?'classic':'homebrew').map(function(c){return {value:c.name,label:c.displayName||c.name};});
  var all=classRecords();
  if(isClassicMode())return CLASSIC_CLASS_NAMES.map(function(name){
   var c=all.find(function(x){return x.name===name;})||{name:name,displayName:name};
@@ -33,8 +35,9 @@ function creationClassItems(){
 }
 function creationRaceItems(){
  var races=typeof getAllRaces==='function'?getAllRaces():[];
- if(isClassicMode())return races.filter(function(r){return CLASSIC_RACE_IDS.indexOf(r.id)!==-1;}).map(function(r){return {value:r.id,label:r.name};});
- if(isHomebrewMode())return races.filter(function(r){return CLASSIC_RACE_IDS.indexOf(r.id)===-1;}).map(function(r){return {value:r.id,label:r.name};});
+ var filters=window.DND_CREATION_CONTENT_FILTERS;
+ if(isClassicMode())return (filters&&typeof filters.races==='function'?filters.races('classic'):races.filter(function(r){return CLASSIC_RACE_IDS.indexOf(r.id)!==-1;})).map(function(r){return {value:r.id,label:r.name};});
+ if(isHomebrewMode())return (filters&&typeof filters.races==='function'?filters.races('homebrew'):races.filter(function(r){return CLASSIC_RACE_IDS.indexOf(r.id)===-1;})).map(function(r){return {value:r.id,label:r.name};});
  return EXTRA_TYPES.map(function(name){return {value:name,label:name};});
 }
 function extraNeedsHost(name){return name==='Призрак'||name==='Паразит'||name==='Паразит доктора Вальтера';}
@@ -44,8 +47,9 @@ function creationHostItems(){
 }
 function creationBackgroundItems(){
  var bgs=typeof getAllBackgrounds==='function'?getAllBackgrounds():(Array.isArray(window.dndBackgrounds)?window.dndBackgrounds:[]);
- if(isClassicMode())return bgs.filter(function(b){return CLASSIC_BACKGROUND_NAMES.indexOf(b.nameRu||b.name)!==-1;});
- if(isHomebrewMode())return bgs.filter(function(b){return CLASSIC_BACKGROUND_NAMES.indexOf(b.nameRu||b.name)===-1;});
+ var filters=window.DND_CREATION_CONTENT_FILTERS;
+ if(isClassicMode())return filters&&typeof filters.backgrounds==='function'?filters.backgrounds('classic'):bgs.filter(function(b){return CLASSIC_BACKGROUND_NAMES.indexOf(b.nameRu||b.name)!==-1;});
+ if(isHomebrewMode())return filters&&typeof filters.backgrounds==='function'?filters.backgrounds('homebrew'):bgs.filter(function(b){return CLASSIC_BACKGROUND_NAMES.indexOf(b.nameRu||b.name)===-1;});
  return bgs;
 }
 var CLASS_TOKEN_ART={
