@@ -4,10 +4,23 @@
 
 function getCharacterCoins() {
   if (typeof currentCharacter === 'undefined' || !currentCharacter) return { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
-  if (!currentCharacter.coins) {
+  if (!currentCharacter.coins || typeof currentCharacter.coins !== 'object' || Array.isArray(currentCharacter.coins)) {
     currentCharacter.coins = { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 };
   }
   return currentCharacter.coins;
+}
+
+// Wallet amounts must be whole, non-negative safe integers. Treat blank/invalid
+// input as zero, matching the calculator's existing empty-field behavior.
+function normalizeCoinAmount(value) {
+  const amount = typeof value === 'number' ? value : (String(value ?? '').trim() === '' ? 0 : Number(value));
+  return Number.isSafeInteger(amount) && amount >= 0 ? amount : 0;
+}
+
+function readPositiveCoinRate(elementId, fallback) {
+  const raw = document.getElementById(elementId)?.value;
+  const value = raw == null || String(raw).trim() === '' ? fallback : Number(raw);
+  return Number.isSafeInteger(value) && value > 0 ? value : fallback;
 }
 
 function updateCoinsFromInputs() {
@@ -20,11 +33,16 @@ function updateCoinsFromInputs() {
   const ppInput = document.getElementById('charPP') || document.getElementById('coinPP');
 
   const coins = getCharacterCoins();
-  coins.cp = cpInput ? parseInt(cpInput.value) || 0 : coins.cp;
-  coins.sp = spInput ? parseInt(spInput.value) || 0 : coins.sp;
-  coins.ep = epInput ? parseInt(epInput.value) || 0 : coins.ep;
-  coins.gp = gpInput ? parseInt(gpInput.value) || 0 : coins.gp;
-  coins.pp = ppInput ? parseInt(ppInput.value) || 0 : coins.pp;
+  coins.cp = cpInput ? normalizeCoinAmount(cpInput.value) : normalizeCoinAmount(coins.cp);
+  coins.sp = spInput ? normalizeCoinAmount(spInput.value) : normalizeCoinAmount(coins.sp);
+  coins.ep = epInput ? normalizeCoinAmount(epInput.value) : normalizeCoinAmount(coins.ep);
+  coins.gp = gpInput ? normalizeCoinAmount(gpInput.value) : normalizeCoinAmount(coins.gp);
+  coins.pp = ppInput ? normalizeCoinAmount(ppInput.value) : normalizeCoinAmount(coins.pp);
+  if (cpInput) cpInput.value = coins.cp;
+  if (spInput) spInput.value = coins.sp;
+  if (epInput) epInput.value = coins.ep;
+  if (gpInput) gpInput.value = coins.gp;
+  if (ppInput) ppInput.value = coins.pp;
 
   if (typeof autoSaveCurrentCharacter === 'function') {
     autoSaveCurrentCharacter();
@@ -286,41 +304,48 @@ function syncCoinInputsFromCharacter() {
 }
 
 function getCoinMultipliers() {
-  const pPerG = parseInt(document.getElementById('cc_ratePlat')?.value) || 10;
-  const gPerE = parseInt(document.getElementById('cc_rateGold')?.value) || 2;
-  const sPerG = parseInt(document.getElementById('cc_rateSilver')?.value) || 10;
-  const cPerS = parseInt(document.getElementById('cc_rateCopper')?.value) || 10;
+  let pPerG = readPositiveCoinRate('cc_ratePlat', 10);
+  let gPerE = readPositiveCoinRate('cc_rateGold', 2);
+  let sPerG = readPositiveCoinRate('cc_rateSilver', 10);
+  let cPerS = readPositiveCoinRate('cc_rateCopper', 10);
 
-  const copperPerSilver = cPerS;
-  const copperPerGold = sPerG * cPerS;
-  const copperPerElectrum = Math.round(copperPerGold / gPerE); 
-  const copperPerPlat = copperPerGold * pPerG;                  
+  let copperPerSilver = cPerS;
+  let copperPerGold = sPerG * cPerS;
+  let copperPerElectrum = Math.round(copperPerGold / gPerE);
+  let copperPerPlat = copperPerGold * pPerG;
 
-  return {
-    copperPerSilver,
-    copperPerGold,
-    copperPerElectrum,
-    copperPerPlat
-  };
+  // Extreme custom rates can overflow safe integer arithmetic. Fall back to
+  // the standard D&D conversion rather than corrupting the character wallet.
+  if (![copperPerSilver, copperPerGold, copperPerElectrum, copperPerPlat].every(Number.isSafeInteger) ||
+      copperPerElectrum < 1 || copperPerGold < 1 || copperPerPlat < 1) {
+    pPerG = 10; gPerE = 2; sPerG = 10; cPerS = 10;
+    copperPerSilver = 10;
+    copperPerGold = 100;
+    copperPerElectrum = 50;
+    copperPerPlat = 1000;
+  }
+
+  return { copperPerSilver, copperPerGold, copperPerElectrum, copperPerPlat };
 }
 
 function getCalculatorInputInCopper() {
   const showPP = document.getElementById('cc_togglePP')?.checked ?? true;
   const showEP = document.getElementById('cc_toggleEP')?.checked ?? true;
 
-  const pp = showPP ? (parseInt(document.getElementById('cc_inputPP')?.value) || 0) : 0;
-  const gp = parseInt(document.getElementById('cc_inputGP')?.value) || 0;
-  const ep = showEP ? (parseInt(document.getElementById('cc_inputEP')?.value) || 0) : 0;
-  const sp = parseInt(document.getElementById('cc_inputSP')?.value) || 0;
-  const cp = parseInt(document.getElementById('cc_inputCP')?.value) || 0;
+  const pp = showPP ? normalizeCoinAmount(document.getElementById('cc_inputPP')?.value) : 0;
+  const gp = normalizeCoinAmount(document.getElementById('cc_inputGP')?.value);
+  const ep = showEP ? normalizeCoinAmount(document.getElementById('cc_inputEP')?.value) : 0;
+  const sp = normalizeCoinAmount(document.getElementById('cc_inputSP')?.value);
+  const cp = normalizeCoinAmount(document.getElementById('cc_inputCP')?.value);
   
   const mults = getCoinMultipliers();
 
-  return (pp * mults.copperPerPlat) + 
-         (gp * mults.copperPerGold) + 
-         (ep * mults.copperPerElectrum) + 
-         (sp * mults.copperPerSilver) + 
-         cp;
+  const total = (pp * mults.copperPerPlat) +
+                (gp * mults.copperPerGold) +
+                (ep * mults.copperPerElectrum) +
+                (sp * mults.copperPerSilver) +
+                cp;
+  return Number.isSafeInteger(total) ? total : NaN;
 }
 
 function updateCoinEquivalentPreview() {
@@ -328,7 +353,7 @@ function updateCoinEquivalentPreview() {
   if (!info) return;
   const totalCopper = getCalculatorInputInCopper();
   
-  if (totalCopper <= 0) {
+  if (!Number.isSafeInteger(totalCopper) || totalCopper <= 0) {
     info.textContent = 'Сумма операции: 0';
     return;
   }
@@ -373,7 +398,8 @@ function applyCoinOperation(action) {
   }
 
   const inputCopper = getCalculatorInputInCopper();
-  if (inputCopper <= 0) {
+  if (!Number.isSafeInteger(inputCopper) || inputCopper <= 0) {
+    alert('Введите корректную целую сумму больше нуля.');
     alert('Введите сумму больше нуля!');
     return;
   }
@@ -381,29 +407,40 @@ function applyCoinOperation(action) {
   const showPP = document.getElementById('cc_togglePP')?.checked ?? true;
   const showEP = document.getElementById('cc_toggleEP')?.checked ?? true;
 
-  const ppVal = showPP ? (parseInt(document.getElementById('cc_inputPP')?.value) || 0) : 0;
-  const gpVal = parseInt(document.getElementById('cc_inputGP')?.value) || 0;
-  const epVal = showEP ? (parseInt(document.getElementById('cc_inputEP')?.value) || 0) : 0;
-  const spVal = parseInt(document.getElementById('cc_inputSP')?.value) || 0;
-  const cpVal = parseInt(document.getElementById('cc_inputCP')?.value) || 0;
+  const ppVal = showPP ? normalizeCoinAmount(document.getElementById('cc_inputPP')?.value) : 0;
+  const gpVal = normalizeCoinAmount(document.getElementById('cc_inputGP')?.value);
+  const epVal = showEP ? normalizeCoinAmount(document.getElementById('cc_inputEP')?.value) : 0;
+  const spVal = normalizeCoinAmount(document.getElementById('cc_inputSP')?.value);
+  const cpVal = normalizeCoinAmount(document.getElementById('cc_inputCP')?.value);
 
   let coins = getCharacterCoins();
   const mults = getCoinMultipliers();
 
-  let charTotalCopper = ((coins.pp || 0) * mults.copperPerPlat) + 
-                        ((coins.gp || 0) * mults.copperPerGold) + 
-                        ((coins.ep || 0) * mults.copperPerElectrum) + 
-                        ((coins.sp || 0) * mults.copperPerSilver) + 
-                        (coins.cp || 0);
+  let charTotalCopper = normalizeCoinAmount(coins.pp) * mults.copperPerPlat +
+                        normalizeCoinAmount(coins.gp) * mults.copperPerGold +
+                        normalizeCoinAmount(coins.ep) * mults.copperPerElectrum +
+                        normalizeCoinAmount(coins.sp) * mults.copperPerSilver +
+                        normalizeCoinAmount(coins.cp);
+  if (!Number.isSafeInteger(charTotalCopper)) {
+    alert('Баланс кошелька слишком велик для безопасного расчёта. Операция отменена.');
+    return;
+  }
 
   if (action === 'add') {
     charTotalCopper += inputCopper;
-  } else {
+  } else if (action === 'sub') {
     charTotalCopper -= inputCopper;
     if (charTotalCopper < 0) {
       alert('❌ У персонажа недостаточно средств для списания!');
       return;
     }
+  } else {
+    alert('Неизвестный тип операции с монетами.');
+    return;
+  }
+  if (!Number.isSafeInteger(charTotalCopper) || charTotalCopper < 0) {
+    alert('Сумма выходит за безопасный диапазон. Операция отменена.');
+    return;
   }
 
   let newPp = 0;
