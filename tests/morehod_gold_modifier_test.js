@@ -175,6 +175,9 @@ assert.strictEqual(rules.getModifier(restoredMariner), 1, 'the wallet modifier s
   const beforeOverflow = JSON.stringify(hero.coins);
   walletContext.applyCoinOperation('add');
   assert.strictEqual(JSON.stringify(hero.coins), beforeOverflow, 'overflowing calculator operation leaves wallet unchanged');
+  hero.coins = { cp: -1, sp: 2.5, ep: 'invalid', gp: 10, pp: 0 };
+  walletContext.syncCoinInputsFromCharacter();
+  assert.deepStrictEqual(JSON.parse(JSON.stringify(hero.coins)), { cp: 0, sp: 0, ep: 0, gp: 10, pp: 0 }, 'legacy malformed wallet fields are sanitized when the wallet UI opens');
 }
 // Integration: monster loot currency is added to the actual carried coin purse.
 {
