@@ -573,3 +573,51 @@ console.log('morehod_gold_modifier_test: all assertions passed');
   assert.strictEqual(JSON.stringify(hero.coins), beforeCoins, 'failed social sale leaves wallet unchanged');
   assert.strictEqual(JSON.stringify(hero.inventory), beforeInventory, 'failed social sale leaves inventory unchanged');
 }
+
+
+// Failed character persistence must roll back a market purchase across wallet, inventory, and stock.
+{
+  const storage = new Map();
+  const hero = { id: 'market-save-failure-buy', name: 'Мореход', classes: [{ name: 'Мореход', level: 1 }], coins: { cp: 0, sp: 0, ep: 0, gp: 100, pp: 0 } };
+  const ctx = {
+    console, Math, Number, String, Array, Object, JSON, Date, RegExp, isFinite, parseInt, parseFloat,
+    currentCharacter: hero,
+    localStorage: { getItem: key => storage.has(key) ? storage.get(key) : null, setItem: (key, value) => storage.set(key, String(value)) },
+    document: { addEventListener: () => {}, getElementById: () => null }, addEventListener: () => {},
+    renderInventory: () => {}, autoSaveCurrentCharacter: () => false
+  };
+  ctx.window = ctx; ctx.globalThis = ctx; vm.createContext(ctx);
+  vm.runInContext(fs.readFileSync(require.resolve('../app/market_economy_v55.js'), 'utf8'), ctx);
+  const api = ctx.DND_MARKET_V55;
+  const traderId = Object.keys(api.TRADERS).find(id => api.TRADERS[id].stock.some(item => item.category === 'gear'));
+  const item = api.TRADERS[traderId].stock.find(item => item.category === 'gear');
+  const stockBefore = api.getTrader(traderId).stock.find(x => x.id === item.id).qty;
+  const coinsBefore = JSON.stringify(hero.coins);
+  const result = api.buy(traderId, item.id, 1);
+  assert.strictEqual(result.ok, false, 'purchase reports failed character persistence');
+  assert.match(result.error, /сохранить покупку/, 'purchase explains persistence failure');
+  assert.strictEqual(JSON.stringify(hero.coins), coinsBefore, 'failed purchase restores the wallet');
+  assert.strictEqual(Object.prototype.hasOwnProperty.call(hero, 'inventory'), false, 'failed purchase removes the inventory object it created');
+  assert.strictEqual(api.getTrader(traderId).stock.find(x => x.id === item.id).qty, stockBefore, 'failed purchase restores trader stock');
+}
+
+// Failed character persistence must roll back a market sale without losing the sold item.
+{
+  const storage = new Map();
+  const hero = { id: 'market-save-failure-sell', name: 'Мореход', classes: [{ name: 'Мореход', level: 1 }], coins: { cp: 0, sp: 0, ep: 0, gp: 10, pp: 0 }, inventory: { materials: [{ name: 'Тестовый товар', category: 'materials', count: 2, marketPriceGp: 5 }] } };
+  const ctx = {
+    console, Math, Number, String, Array, Object, JSON, Date, RegExp, isFinite, parseInt, parseFloat,
+    currentCharacter: hero,
+    localStorage: { getItem: key => storage.has(key) ? storage.get(key) : null, setItem: (key, value) => storage.set(key, String(value)) },
+    document: { addEventListener: () => {}, getElementById: () => null }, addEventListener: () => {},
+    renderInventory: () => {}, autoSaveCurrentCharacter: () => false
+  };
+  ctx.window = ctx; ctx.globalThis = ctx; vm.createContext(ctx);
+  vm.runInContext(fs.readFileSync(require.resolve('../app/market_economy_v55.js'), 'utf8'), ctx);
+  const api = ctx.DND_MARKET_V55, coinsBefore = JSON.stringify(hero.coins), inventoryBefore = JSON.stringify(hero.inventory);
+  const result = api.sell('village', 'materials', 0, 1);
+  assert.strictEqual(result.ok, false, 'sale reports failed character persistence');
+  assert.match(result.error, /сохранить продажу/, 'sale explains persistence failure');
+  assert.strictEqual(JSON.stringify(hero.coins), coinsBefore, 'failed sale restores the wallet');
+  assert.strictEqual(JSON.stringify(hero.inventory), inventoryBefore, 'failed sale restores the exact inventory and item count');
+}
