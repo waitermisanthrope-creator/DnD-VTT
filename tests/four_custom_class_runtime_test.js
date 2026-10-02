@@ -113,6 +113,7 @@ const circusHero = {
   classes: [{ name: 'Циркач', level: 7, subclass: 'Пожиратель огня' }],
   abilityScores: { dex: 16, cha: 14 },
   resources: {},
+  turnResources: { actions: 1, bonusAction: 1, reaction: 1 },
   stats: { dex: 16 },
   classFeaturesState: {}
 };
@@ -134,10 +135,12 @@ assert.strictEqual(circusHero.resources.circusResource.current, circusHero.resou
 const duplicateFireTargets = runtime.useFeature(circusHero, 'circusFireBreath', { targets: [fireTarget, fireTarget] });
 assert.strictEqual(duplicateFireTargets.ok, false, 'duplicate target IDs are rejected before spending Circus resource');
 assert.strictEqual(circusHero.resources.circusResource.current, circusHero.resources.circusResource.max, 'duplicate target rejection does not spend resource');
+assert.strictEqual(circusHero.turnResources.actions, 1, 'invalid area and duplicate targets preserve the action');
 const fireResult = runtime.useFeature(circusHero, 'circusFireBreath', { targets: [fireTarget] });
 assert.strictEqual(fireResult.ok, true, 'Fire Eater ability resolves');
 assert.strictEqual(fireResult.dice, '3d6', 'Fire Eater scales at level 7');
 assert.strictEqual(circusHero.resources.circusResource.current, circusHero.resources.circusResource.max - 1, 'shared Circus resource is spent exactly once');
+assert.strictEqual(circusHero.turnResources.actions, 0, 'successful Fire Breath consumes the action');
 assert.strictEqual(appliedDamage.length, 1);
 assert.strictEqual(appliedDamage[0].amount, 15);
 
@@ -157,11 +160,13 @@ const beforeFailedFire = fireFailureHero.resources.circusResource.current;
 const failedFireResolver = runtime.useFeature(fireFailureHero, 'circusFireBreath', { targets: [fireFailureTarget] });
 assert.strictEqual(failedFireResolver.ok, false, 'failed Circus save resolver returns a clean failure');
 assert.strictEqual(fireFailureHero.resources.circusResource.current, beforeFailedFire, 'failed Circus save resolver preserves resource');
+assert.strictEqual(fireFailureHero.turnResources.actions, 1, 'failed preparation preserves the action');
 window.DNDCombat.savingThrow = (target, stat, dc) => ({ success: false, stat, dc });
 window.DNDCombat.rollDice = () => ({ total: NaN });
 const failedFireRoll = runtime.useFeature(fireFailureHero, 'circusFireBreath', { targets: [fireFailureTarget] });
 assert.strictEqual(failedFireRoll.ok, false, 'invalid Circus damage roll returns a clean failure');
 assert.strictEqual(fireFailureHero.resources.circusResource.current, beforeFailedFire, 'invalid Circus damage roll preserves resource');
+assert.strictEqual(fireFailureHero.turnResources.actions, 1, 'invalid damage roll preserves the action');
 
 window.DNDCombat.savingThrow = (target, stat, dc) => ({ success: false, stat, dc });
 window.DNDCombat.rollDice = () => ({ total: 8 });
@@ -182,6 +187,7 @@ assert.strictEqual(partialFire.results.length, 1, 'partial result lists only tar
 assert.strictEqual(partialTargetA.target.hitPoints, 12, 'already processed target retains its applied damage');
 assert.strictEqual(partialTargetB.target.hitPoints, 20, 'rejected target remains unchanged');
 assert.strictEqual(fireFailureHero.resources.circusResource.current, resourceBeforePartialFire - 1, 'resource remains spent after a partial multi-target action');
+assert.strictEqual(fireFailureHero.turnResources.actions, 0, 'partial action after combat resolution starts still consumes the action');
 
 const banditTripHero = {
   id: 'bandit-trip-hero',
