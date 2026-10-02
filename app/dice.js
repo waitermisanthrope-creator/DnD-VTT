@@ -202,71 +202,66 @@ function renderDiceModule() {
     console.warn('[DICE_RENDER] Вкладка дайсов (#tabDice) не найдена в DOM!');
     return;
   }
-  console.log('[DICE_RENDER] Рендеринг интерфейса генератора бросков...');
 
   diceTab.innerHTML = '';
-
   const mainCard = document.createElement('div');
   mainCard.className = 'card dice-container';
   mainCard.innerHTML = `
-    <h3 style="text-align: center; margin-top: 0;">🎲 Генератор бросков</h3>
-    
-    <div id="diceModePanel" style="display: flex; gap: 6px; margin-bottom: 12px; width: 100%; justify-content: space-between;">
-      <button class="dice-mode-btn active" data-mode="normal" onclick="setDiceMode('normal')" style="flex:1; padding: 8px; background: #2196F3; color: #fff; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">Обычный</button>
-      <button class="dice-mode-btn" data-mode="advantage" onclick="setDiceMode('advantage')" style="flex:1; padding: 8px; background: #333; color: #fff; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">Преимущество</button>
-      <button class="dice-mode-btn" data-mode="disadvantage" onclick="setDiceMode('disadvantage')" style="flex:1; padding: 8px; background: #333; color: #fff; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">Помеха</button>
-    </div>
-
-    <div class="result-box" id="diceResult" style="text-align: center; font-size: 1.2em; padding: 10px; background: #2a2a2a; border-radius: 6px; margin-bottom: 15px;">Выбери кубик</div>
-
-    <div class="dice-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+    <h3 style="text-align:center;margin-top:0;">🎲 Броски</h3>
+    <div class="dice-grid" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px;">
       <button class="dice-btn" onclick="rollDice(4)">d4</button>
       <button class="dice-btn" onclick="rollDice(6)">d6</button>
       <button class="dice-btn" onclick="rollDice(8)">d8</button>
-      <button class="dice-btn" onclick="rollDice(10)">d10</button>
       <button class="dice-btn" onclick="rollDice(12)">d12</button>
+      <button class="dice-btn" onclick="rollDice(10)">d10</button>
       <button class="dice-btn" onclick="rollDice(20)">d20</button>
+      <button class="dice-btn" onclick="rollDice(100)">d100</button>
     </div>
-
-    <div style="margin-top: 15px; width: 100%;">
-      <button id="quickWeaponAttackBtn" class="btn-action" onclick="executeEquippedWeaponAttack()" style="background: #ff9800; color: #000; font-weight: bold; padding: 10px 16px; font-size: 0.95em; width: 100%; border-radius: 6px; cursor: pointer; border: none; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-        ⚔️ Атака экипированным оружием (d20 + мод)
-      </button>
+    <div id="diceModePanel" style="display:flex;gap:8px;margin-bottom:10px;width:100%;">
+      <button class="dice-mode-btn" data-mode="advantage" onclick="toggleDiceMode('advantage')" style="flex:1;padding:10px 6px;background:#333;color:#fff;border:1px solid #555;border-radius:6px;font-weight:bold;cursor:pointer;">Преимущество</button>
+      <button class="dice-mode-btn" data-mode="disadvantage" onclick="toggleDiceMode('disadvantage')" style="flex:1;padding:10px 6px;background:#333;color:#fff;border:1px solid #555;border-radius:6px;font-weight:bold;cursor:pointer;">Помеха</button>
+    </div>
+    <div class="result-box" id="diceResult" style="text-align:center;font-size:1.15em;padding:12px;background:#2a2a2a;border-radius:6px;margin-bottom:10px;">Выбери кубик</div>
+    <button id="diceLogToggle" onclick="toggleDiceLog()" style="width:100%;padding:10px;background:#252525;color:#d4af37;border:1px solid #444;border-radius:6px;font-weight:bold;cursor:pointer;">📜 Лог бросков ▾</button>
+    <div id="diceLogWrapper" style="display:none;margin-top:8px;padding:10px;background:#1f1f1f;border-radius:6px;border:1px solid #333;">
+      <div id="diceLogContainer" style="max-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;"></div>
     </div>
   `;
 
   const drawerContainer = document.createElement('div');
   drawerContainer.id = 'diceDrawerContainer';
-  drawerContainer.style.cssText = 'margin: 15px 0; border: 1px solid #444; border-radius: 8px; background: #1a1a1a; overflow: hidden;';
+  drawerContainer.style.cssText = 'margin:12px 0;border:1px solid #444;border-radius:8px;background:#1a1a1a;overflow:hidden;';
   drawerContainer.innerHTML = `
-    <button id="diceDrawerToggleBtn" onclick="toggleDiceDrawer()" style="width: 100%; padding: 12px; background: #252525; color: #d4af37; border: none; font-weight: bold; font-size: 0.95em; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-      <span>📋 Выбор броска от Характеристики / Навыка</span>
-      <span id="drawerArrow">▾</span>
+    <button id="diceDrawerToggleBtn" onclick="toggleDiceDrawer()" style="width:100%;padding:12px;background:#252525;color:#d4af37;border:none;font-weight:bold;font-size:.95em;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+      <span>⚔️ Боевой движок и проверки персонажа</span><span id="drawerArrow">▾</span>
     </button>
-    <div id="diceDrawerContent" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding: 0 12px; background: #161616;">
-      <div style="padding: 12px 0;">
-        <div style="font-size: 0.9em; color: #ff9800; font-weight: bold; margin-bottom: 8px;">💪 Чистые характеристики:</div>
-        <div id="diceDrawerStatsGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 15px;"></div>
-
-        <div style="font-size: 0.9em; color: #2196F3; font-weight: bold; margin-bottom: 8px;">🎯 Навыки D&D (с учетом владения/экспертности):</div>
-        <div id="diceDrawerSkillsList" style="display: flex; flex-direction: column; gap: 6px; max-height: 250px; overflow-y: auto; padding-right: 4px;"></div>
+    <div id="diceDrawerContent" style="max-height:0;overflow:hidden;transition:max-height .3s ease-out;padding:0 12px;background:#161616;">
+      <div style="padding:12px 0;">
+        <button id="quickWeaponAttackBtn" class="btn-action" onclick="executeEquippedWeaponAttack()" style="background:#ff9800;color:#000;font-weight:bold;padding:10px 12px;font-size:.95em;width:100%;border-radius:6px;cursor:pointer;border:none;margin-bottom:14px;">⚔️ Атака экипированным оружием</button>
+        <div style="font-size:.9em;color:#ff9800;font-weight:bold;margin-bottom:8px;">💪 Проверки характеристик</div>
+        <div id="diceDrawerStatsGrid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-bottom:15px;"></div>
+        <div style="font-size:.9em;color:#2196F3;font-weight:bold;margin-bottom:8px;">🎯 Проверки навыков</div>
+        <div id="diceDrawerSkillsList" style="display:flex;flex-direction:column;gap:6px;max-height:250px;overflow-y:auto;padding-right:4px;"></div>
       </div>
     </div>
   `;
 
-  const logWrapper = document.createElement('div');
-  logWrapper.id = 'diceLogWrapper';
-  logWrapper.style.cssText = 'margin-top: 15px; padding: 10px; background: #1f1f1f; border-radius: 6px; border: 1px solid #333;';
-  logWrapper.innerHTML = `
-    <div style="font-size: 0.9em; color: #ff9800; margin-bottom: 6px; font-weight: bold;">📜 История бросков:</div>
-    <div id="diceLogContainer" style="max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 4px;"></div>
-  `;
-
   diceTab.appendChild(mainCard);
   diceTab.appendChild(drawerContainer);
-  diceTab.appendChild(logWrapper);
-
   setDiceMode('normal');
+}
+
+function toggleDiceMode(mode) {
+  setDiceMode(currentRollMode === mode ? 'normal' : mode);
+}
+
+function toggleDiceLog() {
+  const wrapper = document.getElementById('diceLogWrapper');
+  const button = document.getElementById('diceLogToggle');
+  if (!wrapper || !button) return;
+  const opening = wrapper.style.display === 'none';
+  wrapper.style.display = opening ? 'block' : 'none';
+  button.textContent = opening ? '📜 Лог бросков ▴' : '📜 Лог бросков ▾';
 }
 
 /**
@@ -279,11 +274,10 @@ function setDiceMode(mode) {
 
   modeButtons.forEach(b => {
     const btnMode = b.getAttribute('data-mode');
-    if (btnMode === mode) {
+    if (btnMode === mode && mode !== 'normal') {
       b.classList.add('active');
       if (mode === 'advantage') b.style.background = '#4CAF50';
       else if (mode === 'disadvantage') b.style.background = '#e53935';
-      else b.style.background = '#2196F3';
     } else {
       b.classList.remove('active');
       b.style.background = '#333';
@@ -304,7 +298,7 @@ function toggleDiceDrawer() {
   console.log(`[DICE_DRAWER] Шторка выбора бросков переключена. Состояние: ${isDrawerOpen ? 'Открыта' : 'Закрыта'}`);
   
   if (isDrawerOpen) {
-    contentDiv.style.maxHeight = '500px';
+    contentDiv.style.maxHeight = '900px';
     if (arrow) arrow.textContent = '▴';
     populateDiceDrawerData();
   } else {
