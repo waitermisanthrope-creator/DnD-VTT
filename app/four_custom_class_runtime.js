@@ -332,11 +332,22 @@
     return {ok:true,targetId:String(target.id),resourceRemaining:resource.current,message:'Отвлекающий манёвр подготовлен: следующая атака Бандита по изученной цели получает преимущество.'};
   }
   function onTurnStart(hero){
-    var state=hero&&hero.classFeaturesState&&hero.classFeaturesState.banditTripSpeedLock;
-    if(!state)return false;
-    hero.speed=Number(state.originalSpeed);
-    delete hero.classFeaturesState.banditTripSpeedLock;
-    return true;
+    if(!hero||!hero.classFeaturesState||typeof hero.classFeaturesState!=='object')return false;
+    var changed=false;
+    var state=hero.classFeaturesState.banditTripSpeedLock;
+    if(state){
+      hero.speed=Number(state.originalSpeed);
+      delete hero.classFeaturesState.banditTripSpeedLock;
+      changed=true;
+    }
+    // A distracting maneuver lasts only until the Bandit's next turn if unused.
+    var bandit=hero.classFeaturesState.bandit;
+    if(bandit&&bandit.distractingTargetId!=null){
+      delete bandit.distractingTargetId;
+      delete bandit.distractingUntilTurnCount;
+      changed=true;
+    }
+    return changed;
   }
   function hasFeature(id){return ['banditStudyTarget','banditTrip','banditReactionBreak','banditDistractingManeuver','circusFireBreath','protectorZone','protectorRescue'].indexOf(String(id||''))>=0;}
   function useFeature(hero,id,ctx){
