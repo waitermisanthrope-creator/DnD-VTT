@@ -128,16 +128,32 @@
     if(!resource||Number(resource.current)<1)return {ok:false,reason:'Недостаточно Циркового ресурса.'};
     var dc=8+proficiency(l)+abilityMod(hero,'dex');
     var diceCount=l>=15?5:l>=11?4:l>=7?3:2;
-    // Reserve the resource only after all input and engine prerequisites pass.
+    // Resolve all saves and rolls before spending the shared resource or applying damage.
+    // A failed resolver/invalid roll must not charge the Circus resource.
+    var prepared=[];
+    try{
+      normalized.forEach(function(entry){
+        var save=combat.savingThrow(entry.target,'dex',dc,'normal',{source:hero,saveType:'dex'});
+        if(!save||typeof save.success!=='boolean')throw new Error('invalid save result');
+        var roll=combat.rollDice(diceCount+'d6',false,false,hero);
+        if(!roll||!Number.isSafeInteger(Number(roll.total))||Number(roll.total)<0)throw new Error('invalid damage roll');
+        var total=Number(roll.total);
+        prepared.push({entry:entry,save:save,rolled:total,damage:save.success?Math.floor(total/2):total});
+      });
+    }catch(error){
+      return {ok:false,reason:'Не удалось безопасно рассчитать огненное дыхание; Цирковой ресурс сохранён.'};
+    }
     resource.current-=1;
     var results=[];
-    normalized.forEach(function(entry){
-      var save=combat.savingThrow(entry.target,'dex',dc,'normal',{source:hero,saveType:'dex'});
-      var roll=combat.rollDice(diceCount+'d6',false,false,hero);
-      var amount=save&&save.success?Math.floor(roll.total/2):roll.total;
-      var applied=combat.applyDamage(entry.target,amount,'огонь',{attackerId:hero.id,source:hero,damageSource:'circusFireBreath'});
-      results.push({targetId:String(entry.target.id),dc:dc,save:save,rolled:roll.total,damage:amount,applied:applied});
-    });
+    for(var j=0;j<prepared.length;j++){
+      var staged=prepared[j],applied;
+      try{
+        applied=combat.applyDamage(staged.entry.target,staged.damage,'огонь',{attackerId:hero.id,source:hero,damageSource:'circusFireBreath'});
+      }catch(error){
+        return {ok:false,partial:true,reason:'Бой прервал применение огненного дыхания после начала действия; ресурс потрачен, проверьте уже обработанные цели.',results:results};
+      }
+      results.push({targetId:String(staged.entry.target.id),dc:dc,save:staged.save,rolled:staged.rolled,damage:staged.damage,applied:applied});
+    }
     return {ok:true,dc:dc,dice:diceCount+'d6',results:results,message:'Огненное дыхание: '+results.length+' целей обработано.'};
   }
   function interceptDamage(protector,target,amount,ctx){
@@ -159,9 +175,11 @@
     var combat=global.DNDCombat;
     if(!combat||typeof combat.rollDice!=='function')return {ok:false,reason:'Боевой движок не поддерживает защитный перехват.'};
     var diceCount=l>=17?3:l>=11?2:1;
-    var roll=combat.rollDice(diceCount+'d10',false,false,protector);
-    var reduction=Math.max(0,n(roll&&roll.total,0)+proficiency(l));
-    // Spend the reaction and impulse only after all preconditions and the roll are valid.
+    var roll;
+    try{roll=combat.rollDice(diceCount+'d10',false,false,protector);}catch(error){return {ok:false,reason:'Не удалось выполнить защитный бросок; реакция и импульс сохранены.'};}
+    if(!roll||!Number.isSafeInteger(Number(roll.total))||Number(roll.total)<0)return {ok:false,reason:'Боевой движок вернул некорректный защитный бросок; ресурсы сохранены.'};
+    var reduction=Math.max(0,Number(roll.total)+proficiency(l));
+    // Spend the reaction and impulse only after a valid roll.
     resource.current-=1;
     turns.reaction=0;
     return {ok:true,reduction:Math.min(Math.max(0,n(amount,0)),reduction),rolled:roll.total,dice:diceCount+'d10',resourceRemaining:resource.current};
@@ -221,7 +239,12 @@
     var combat=global.DNDCombat;
     if(l>=11&&(!combat||typeof combat.rollDice!=='function'))return {ok:false,reason:'Боевой движок для временных HP недоступен.'};
     var temp=0;
-    if(l>=11){var roll=combat.rollDice('1d8',false,false,hero);temp=Math.max(0,n(roll&&roll.total,0)+proficiency(l));}
+    if(l>=11){
+      var roll;
+      try{roll=combat.rollDice('1d8',false,false,hero);}catch(error){return {ok:false,reason:'Не удалось рассчитать временные HP; реакция и импульс сохранены.'};}
+      if(!roll||!Number.isSafeInteger(Number(roll.total))||Number(roll.total)<0)return {ok:false,reason:'Боевой движок вернул некорректный бросок; реакция и импульс сохранены.'};
+      temp=Math.max(0,Number(roll.total)+proficiency(l));
+    }
     resource.current-=1;tr.reaction=0;
     target.position={x:Number(ctx.freeCell.x),y:Number(ctx.freeCell.y)};
     target.x=Number(ctx.freeCell.x);target.y=Number(ctx.freeCell.y);
