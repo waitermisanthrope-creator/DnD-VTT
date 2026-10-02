@@ -2,6 +2,11 @@ name: Build Android signed release APK
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java"
+      - ".github/workflows/android-release.yml"
 
 permissions:
   contents: read
