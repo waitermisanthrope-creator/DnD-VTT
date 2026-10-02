@@ -264,6 +264,9 @@ assert.strictEqual(runtime.protectorZoneSave(zoneIncapacitated, zoneAlly, { forc
 const zonePetrified = { ...zoneHero, classFeaturesState: JSON.parse(JSON.stringify(zoneHero.classFeaturesState)), conditions: { 'Окаменел': true } };
 assert.strictEqual(runtime.protectorZoneSave(zonePetrified, zoneAlly, { forcedMovementSave: true, isAlly: true, visible: true, distanceFt: 5, round: 2 }).ok, false, 'zone also ends when Protector is petrified');
 assert.strictEqual(zonePetrified.classFeaturesState.protector.zone.active, false, 'petrification permanently ends the active zone');
+const zoneSplitConditionStores = { ...zoneHero, classFeaturesState: JSON.parse(JSON.stringify(zoneHero.classFeaturesState)), activeConditions: {}, conditions: { 'Оглушён': true } };
+assert.strictEqual(runtime.protectorZoneSave(zoneSplitConditionStores, zoneAlly, { forcedMovementSave: true, isAlly: true, visible: true, distanceFt: 5, round: 2 }).ok, false, 'zone detects incapacitation in conditions even when activeConditions is an empty object');
+assert.strictEqual(zoneSplitConditionStores.classFeaturesState.protector.zone.active, false, 'zone closes when condition is stored in the secondary condition map');
 assert.strictEqual(runtime.protectorZoneSave(zoneHero, zoneAlly, { forcedMovementSave: true, isAlly: true, visible: true, distanceFt: 10, round: 2 }).bonus, 1, 'visible ally at zone boundary receives +1');
 assert.strictEqual(runtime.protectorZoneSave(zoneHero, zoneAlly, { forcedMovementSave: true, isAlly: true, visible: true, distanceFt: 10.1, round: 2 }).ok, false, 'ally outside zone gets no bonus');
 assert.strictEqual(runtime.protectorZoneSave(zoneHero, zoneAlly, { forcedMovementSave: false, isAlly: true, visible: true, distanceFt: 5, round: 2 }).ok, false, 'zone does not protect against unrelated saves');
