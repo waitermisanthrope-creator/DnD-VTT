@@ -38,15 +38,19 @@ function initializeDiceModule() {
   try {
     injectCritStyles();
     // Повторный вызов безопасен: не очищаем уже работающий интерфейс.
-    if (!diceTab.querySelector('.dice-container')) renderDiceModule();
-    if (!diceTab.querySelector('.dice-container')) throw new Error('renderDiceModule не создал .dice-container');
+    if (!diceTab.querySelector('#dicePrimaryCard')) renderDiceModule();
+    if (!diceTab.querySelector('#dicePrimaryCard')) throw new Error('renderDiceModule не создал #dicePrimaryCard');
     // Дополнительные панели могут отсутствовать, но это не должно скрывать сами кубики.
     console.log('[DICE_INIT] Модуль дайсов готов.');
     return true;
   } catch (error) {
     console.error('[DICE_INIT] Ошибка запуска модуля дайсов:', error);
-    if (!diceTab.querySelector('.dice-container')) {
-      diceTab.innerHTML = '<div class="card dice-container" style="padding:20px;color:#fff;background:#1f1f1f;border:1px solid #555;border-radius:12px;"><h3 style="color:#d4af37;text-align:center;">🎲 Генератор бросков</h3><p style="text-align:center;">Основной интерфейс не загрузился. Можно бросать кубики кнопками ниже.</p><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">'+[4,6,8,10,12,20,100].map(function(n){return '<button onclick="window.__fallbackRollDice('+n+')" style="padding:18px 4px;background:#292929;color:#ff9800;border:1px solid #555;border-radius:8px;font-size:1.15rem;font-weight:bold;">d'+n+'</button>';}).join('')+'</div><div id="diceEmergencyResult" style="padding:14px;text-align:center;color:#8bc34a;font-size:1.2rem;">Выбери кубик</div><button onclick="initializeDiceModule()" style="width:100%;padding:12px;">Повторить запуск основного интерфейса</button></div>';
+    if (!diceTab.querySelector('#dicePrimaryCard') && !diceTab.querySelector('.dice-static-fallback')) {
+      var fallback = document.createElement('div');
+      fallback.className = 'card dice-container dice-static-fallback';
+      fallback.style.cssText = 'padding:20px;color:#fff;background:#1f1f1f;border:1px solid #555;border-radius:12px;';
+      fallback.innerHTML = '<h3 style="color:#d4af37;text-align:center;">🎲 Генератор бросков</h3><p style="text-align:center;">Основной интерфейс не загрузился. Можно бросать кубики кнопками ниже.</p><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;">'+[4,6,8,10,12,20,100].map(function(n){return '<button onclick="window.__fallbackRollDice('+n+')" style="padding:18px 4px;background:#292929;color:#ff9800;border:1px solid #555;border-radius:8px;font-size:1.15rem;font-weight:bold;">d'+n+'</button>';}).join('')+'</div><div id="diceEmergencyResult" style="padding:14px;text-align:center;color:#8bc34a;font-size:1.2rem;">Выбери кубик</div><button onclick="initializeDiceModule()" style="width:100%;padding:12px;">Повторить запуск основного интерфейса</button>';
+      diceTab.insertBefore(fallback, diceTab.firstChild);
     }
     return false;
   }
@@ -63,7 +67,7 @@ function scheduleDiceInitialization() {
   [0, 150, 600, 1400].forEach(function(delay) {
     setTimeout(function() {
       var tab = document.getElementById('tabDice');
-      if (tab && !tab.querySelector('.dice-container')) initializeDiceModule();
+      if (tab && !tab.querySelector('#dicePrimaryCard')) initializeDiceModule();
     }, delay);
   });
 }
@@ -243,7 +247,7 @@ function renderDiceModule() {
     return;
   }
 
-  // V70.32.12: preserve gameplay panels created before the dice renderer.
+  // V70.32.13: dice renderer owns the primary card and drawer; preserve other modules.
   // The dice renderer owns only its own card and drawer; it must never clear #tabDice.
   const oldDrawer = document.getElementById('diceDrawerContainer');
   if (oldDrawer) {
@@ -257,6 +261,7 @@ function renderDiceModule() {
   }
   diceTab.querySelectorAll(':scope > .dice-container').forEach(node => node.remove());
   const mainCard = document.createElement('div');
+  mainCard.id = 'dicePrimaryCard';
   mainCard.className = 'card dice-container';
   mainCard.innerHTML = `
     <h3 style="text-align:center;margin-top:0;">🎲 Генератор бросков</h3>
@@ -308,8 +313,9 @@ function renderDiceModule() {
   externalPanels.style.cssText = 'display:flex;flex-direction:column;gap:12px;padding-top:12px;';
   drawerContent.appendChild(externalPanels);
 
-  diceTab.appendChild(mainCard);
-  diceTab.appendChild(drawerContainer);
+  // Force a deterministic order: dice controls first, gameplay drawer second.
+  diceTab.insertBefore(mainCard, diceTab.firstChild);
+  diceTab.insertBefore(drawerContainer, mainCard.nextSibling);
 
   // Relocate known gameplay/combat panels into the drawer even if a module
   // created them before the dice UI finished rendering.
