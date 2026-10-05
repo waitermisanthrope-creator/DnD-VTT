@@ -6,12 +6,12 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.33.6'
+  var APP_VERSION = '70.33.7'
   // V70.25.91: parchment asset/update audit; stable manifest includes index.html and required root parchment assets. Trigger manifest regeneration with current workflow policy.
   // Public manifest is stored in the repository; do not depend on GitHub Pages.
   var DEFAULT_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
   var FALLBACK_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
-  var MANIFEST_CACHE_BUSTER = 'dnd-vtt-113-pages-fallback'
+  var MANIFEST_CACHE_BUSTER = 'dnd-vtt-114-scene-render-lock'
   var STORAGE_KEY = 'dnd_update_manifest_url';
   var CHANNEL_KEY = 'dnd_update_channel';
   var STAGED_KEY = 'dnd_update_staged_manifest';
@@ -371,11 +371,11 @@
   function showStartupUpdatePrompt(state, options) {
     options = options || {};
     if (!state || !state.updateAvailable || !state.manifest) return null;
-    if (document.getElementById('dndForestFireUpdateScene')) return document.getElementById('dndForestFireUpdateScene');
 
-    var scene = (global.DND_UPDATE_SCENE && typeof global.DND_UPDATE_SCENE.create === 'function')
-      ? global.DND_UPDATE_SCENE.create(state)
-      : null;
+    var scene = null;
+    if (global.DND_UPDATE_SCENE && typeof global.DND_UPDATE_SCENE.create === 'function') {
+      scene = global.DND_UPDATE_SCENE.create(state);
+    }
 
     if (!scene) {
       var overlay = document.createElement('div');
@@ -383,7 +383,21 @@
       overlay.style.cssText = 'position:fixed;inset:0;z-index:120000;display:flex;align-items:center;justify-content:center;background:#111;color:#fff;font-family:system-ui,sans-serif';
       overlay.innerHTML = '<div style="padding:24px;text-align:center"><h2>Обновление приложения</h2><p id="dndStartupUpdateStatus">Подготавливаю обновление…</p></div>';
       document.body.appendChild(overlay);
-      return overlay;
+      return {
+        overlay: overlay,
+        setProgress: function () {},
+        finish: function () {},
+        enableApply: function () {},
+        setStatus: function (message) {
+          var e = document.getElementById('dndStartupUpdateStatus');
+          if (e) e.textContent = String(message || '');
+        },
+        fail: function (message) {
+          var e = document.getElementById('dndStartupUpdateStatus');
+          if (e) e.textContent = 'Ошибка загрузки: ' + String(message || 'неизвестная ошибка');
+        },
+        destroy: function () { overlay.remove(); }
+      };
     }
 
     scene.onApply = async function () {
@@ -400,7 +414,20 @@
       }
     };
 
-    return scene.overlay || scene;
+    return scene;
+  }
+
+  function nextPaint() {
+    return new Promise(function (resolve) {
+      var raf = global.requestAnimationFrame;
+      if (typeof raf !== 'function') {
+        setTimeout(resolve, 32);
+        return;
+      }
+      raf(function () {
+        raf(function () { resolve(); });
+      });
+    });
   }
 
   function autoCheckForUpdates(options) {
@@ -409,46 +436,62 @@
 
     var run = async function () {
       var scene = null;
+      var applyTimer = null;
+      var applyStarted = false;
       try {
-        // WebView's navigator.onLine can be false even when HTTPS fetches work.
-        // Never use it as a hard gate for the updater; let the manifest request decide.
         var state = await inspect();
         if (!state || !state.updateAvailable) return state;
 
         scene = showStartupUpdatePrompt(state);
-        var stagePromise = checkAndStage({
+        if (!scene) throw new Error('Не удалось создать окно обновления');
+
+        // Let WebView commit the newly inserted overlay before native staging starts.
+        // Without this yield, the native download/apply path can win the first paint
+        // and the user sees only a blank/white WebView followed by Activity.recreate().
+        if (scene.setStatus) scene.setStatus('Окно обновления запущено. Подготавливаю файлы…');
+        await nextPaint();
+
+        var stageResult = await checkAndStage({
           onProgress: function (p) {
-            if (scene && scene.__sceneApi) scene.__sceneApi.setProgress(p);
-            else if (scene && scene.setProgress) scene.setProgress(p);
+            if (scene && scene.setProgress) scene.setProgress(p);
           }
         });
 
-        stagePromise.then(function (result) {
-          if (result && result.stageResult && result.stageResult.staged) {
-            if (scene && scene.__sceneApi) {
-              scene.__sceneApi.finish();
-              scene.__sceneApi.enableApply();
-              // IMPORTANT: native apply restarts the WebView/application. Keep the
-              // cinematic scene visible long enough for the user to actually see it.
-              // Previously 850ms was too short and looked like an unexplained restart.
-              scene.__sceneApi.setStatus('Проверка завершена. Дракон скрывается в дыму…');
-              setTimeout(function () {
-                if (scene && scene.__sceneApi && typeof scene.__sceneApi.onApply === 'function') {
-                  scene.__sceneApi.onApply();
-                }
-              }, 6000);
+        if (!stageResult || !stageResult.stageResult || !stageResult.stageResult.staged) {
+          return stageResult;
+        }
+
+        if (scene.finish) scene.finish();
+        if (scene.enableApply) scene.enableApply();
+        if (scene.setStatus) scene.setStatus('Проверка завершена. Дракон скрывается в дыму…');
+
+        // Keep the flow promise alive until apply is actually requested. This prevents
+        // DOMContentLoaded/pageshow/setTimeout checks from starting a second stage while
+        // the first staged package is waiting for the cinematic apply moment.
+        await new Promise(function (resolve, reject) {
+          applyTimer = setTimeout(async function () {
+            applyTimer = null;
+            if (applyStarted) return;
+            applyStarted = true;
+            try {
+              if (!scene || typeof scene.onApply !== 'function') {
+                throw new Error('Обработчик применения обновления недоступен');
+              }
+              await scene.onApply();
+              resolve();
+            } catch (e) {
+              reject(e);
             }
-          }
-        }).catch(function (e) {
-          if (scene && scene.__sceneApi) scene.__sceneApi.fail(e && e.message || e);
+          }, 7000);
         });
 
-        return await stagePromise;
+        return stageResult;
       } catch (e) {
         try { console.warn('DND update check failed:', e); } catch (_) {}
-        if (scene && scene.__sceneApi) scene.__sceneApi.fail(e && e.message || e);
+        if (scene && scene.fail) scene.fail(e && e.message || e);
         return null;
       } finally {
+        if (applyTimer) clearTimeout(applyTimer);
         global.__dndUpdateCheckRunning = null;
       }
     };
@@ -460,42 +503,83 @@
   // V70.33.4: public deterministic scene test. Keep this in the updater module itself
   // so the debug button does not depend on another settings/debug script being loaded.
   function runSceneTest() {
-    if (!global.DND_UPDATE_SCENE || typeof global.DND_UPDATE_SCENE.create !== 'function') {
-      try { alert('Сцена обновления не загружена.'); } catch (_) {}
+    try {
+      if (!global.DND_UPDATE_SCENE || typeof global.DND_UPDATE_SCENE.create !== 'function') {
+        throw new Error('Сцена обновления не загружена');
+      }
+
+      // The test is a foreground diagnostic. Hide the settings/debug modal so it
+      // cannot intercept touches or visually obscure the scene.
+      ['settingsModal', 'devMenuModal'].forEach(function (id) {
+        var modal = document.getElementById(id);
+        if (modal) modal.style.display = 'none';
+      });
+
+      var files = [
+        ['index.html', 286000], ['app/app.js', 42000], ['app/update_manager.js', 21000],
+        ['app/update_scene_v755.js', 15000], ['app/class_features_engine.js', 52000],
+        ['app/combat_engine.js', 68000], ['app/assets/ui/forest_green.jpg', 980000],
+        ['app/assets/ui/forest_burned.jpg', 1010000], ['app/assets/ui/fire_front.png', 214000],
+        ['app/assets/ui/dragon.png', 118000], ['app/assets/ui/dragon_fire.png', 96000],
+        ['app/assets/ui/update_scene_smoke.svg', 18000]
+      ].map(function (item) {
+        return { path:item[0], bytes:item[1], sha256:'0'.repeat(64) };
+      });
+      var totalBytes = files.reduce(function (sum, f) { return sum + f.bytes; }, 0);
+      var scene = global.DND_UPDATE_SCENE.create({
+        testMode:true,
+        manifest:{version:'TEST', files:files}
+      });
+      if (!scene || typeof scene.setProgress !== 'function') {
+        throw new Error('API тестовой сцены не создан');
+      }
+
+      var index=0, start=0, done=0, raf=0;
+      function finish() {
+        if (raf) cancelAnimationFrame(raf);
+        scene.setProgress({
+          current:files.length,total:files.length,
+          bytesDone:totalBytes,bytesTotal:totalBytes,phase:'skip',path:''
+        });
+        scene.setStatus('Проверка завершена: все файлы условно проверены, ошибок нет.');
+        scene.enableApply();
+      }
+      function frame(now) {
+        if (!start) start=now;
+        var elapsed=Math.min(380,now-start), file=files[index];
+        var local=elapsed/380;
+        scene.setProgress({
+          current:index+1,total:files.length,
+          bytesDone:done+Math.round(file.bytes*local),
+          bytesTotal:totalBytes,phase:'skip',path:file.path
+        });
+        if (elapsed>=380) {
+          done+=file.bytes; index++; start=now;
+          if (index>=files.length) { finish(); return; }
+        }
+        raf=requestAnimationFrame(frame);
+      }
+
+      scene.setProgress({
+        current:0,total:files.length,bytesDone:0,
+        bytesTotal:totalBytes,phase:'skip',path:'подготовка…'
+      });
+      scene.setStatus('Имитация проверки файлов — реальные файлы не изменяются.');
+
+      // Force at least one real frame before progress starts, so the diagnostic
+      // also verifies that the WebView can paint the update overlay itself.
+      nextPaint().then(function () {
+        raf=requestAnimationFrame(frame);
+      }).catch(function (e) {
+        scene.fail(e && e.message || e);
+      });
+      return true;
+    } catch (e) {
+      var message = e && e.message ? e.message : String(e);
+      try { alert('Тест окна обновления не запустился: ' + message); } catch (_) {}
+      try { console.error('DND update scene test failed:', e); } catch (_) {}
       return false;
     }
-    var files = [
-      ['index.html', 286000], ['app/app.js', 42000], ['app/update_manager.js', 21000],
-      ['app/update_scene_v755.js', 15000], ['app/class_features_engine.js', 52000],
-      ['app/combat_engine.js', 68000], ['app/assets/ui/forest_green.jpg', 980000],
-      ['app/assets/ui/forest_burned.jpg', 1010000], ['app/assets/ui/fire_front.png', 214000],
-      ['app/assets/ui/dragon.png', 118000], ['app/assets/ui/dragon_fire.png', 96000],
-      ['app/assets/ui/update_scene_smoke.svg', 18000]
-    ].map(function (item) { return { path:item[0], bytes:item[1], sha256:'0'.repeat(64) }; });
-    var totalBytes = files.reduce(function (sum, f) { return sum + f.bytes; }, 0);
-    var scene = global.DND_UPDATE_SCENE.create({ testMode:true, manifest:{version:'TEST', files:files} });
-    var index=0, start=0, done=0, raf=0;
-    function finish() {
-      if (raf) cancelAnimationFrame(raf);
-      scene.setProgress({current:files.length,total:files.length,bytesDone:totalBytes,bytesTotal:totalBytes,phase:'skip',path:''});
-      scene.setStatus('Проверка завершена: все файлы условно проверены, ошибок нет.');
-      scene.enableApply();
-    }
-    function frame(now) {
-      if (!start) start=now;
-      var elapsed=Math.min(380,now-start), file=files[index];
-      var local=elapsed/380;
-      scene.setProgress({current:index+1,total:files.length,bytesDone:done+Math.round(file.bytes*local),bytesTotal:totalBytes,phase:'skip',path:file.path});
-      if (elapsed>=380) {
-        done+=file.bytes; index++; start=now;
-        if (index>=files.length) { finish(); return; }
-      }
-      raf=requestAnimationFrame(frame);
-    }
-    scene.setProgress({current:0,total:files.length,bytesDone:0,bytesTotal:totalBytes,phase:'skip',path:'подготовка…'});
-    scene.setStatus('Имитация проверки файлов — реальные файлы не изменяются.');
-    raf=requestAnimationFrame(frame);
-    return true;
   }
 
   var settingsProgressAnimator=null;
