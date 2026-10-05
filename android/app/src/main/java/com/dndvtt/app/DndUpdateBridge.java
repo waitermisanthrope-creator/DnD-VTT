@@ -232,9 +232,9 @@ public final class DndUpdateBridge {
             File updateRoot = new File(files, "vtt-updates");
             File versions = new File(files, "vtt-versions");
             long apkBytes = apkSize(context)[0];
+            long cacheBytes = directorySize(cache);
             long dataBytes = Math.max(0L, directorySize(dataRoot) - cacheBytes);
             long filesBytes = directorySize(files);
-            long cacheBytes = directorySize(cache);
             long updateBytes = directorySize(updateRoot);
             long versionsBytes = directorySize(versions);
             long totalBytes = apkBytes + dataBytes + cacheBytes;
