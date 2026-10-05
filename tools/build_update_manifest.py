@@ -12,6 +12,16 @@ import argparse, hashlib, json, datetime
 
 ROOT=Path(__file__).resolve().parents[1]
 
+def app_version_from_source():
+    p=ROOT/'app/update_manager.js'
+    try:
+        text=p.read_text(encoding='utf-8')
+        import re
+        m=re.search(r"APP_VERSION\\s*=\\s*['\"]([^'\"]+)['\"]",text)
+        return m.group(1) if m else None
+    except OSError:
+        return None
+
 def sha256(path):
     h=hashlib.sha256()
     with path.open('rb') as f:
@@ -27,6 +37,14 @@ def main():
     ap.add_argument('--channel',default='stable',choices=['stable','beta'])
     ap.add_argument('--output',required=True)
     args=ap.parse_args()
+    detected=app_version_from_source()
+    version=args.version
+    if detected:
+        def parts(v):
+            return tuple(int(x) if x.isdigit() else 0 for x in v.lstrip('v').split('.'))
+        if parts(detected)>parts(version):
+            version=detected
+            print(f'using APP_VERSION from app/update_manager.js: {version}')
     files=[]
     candidates=[ROOT/'index.html']+sorted((ROOT/'app').rglob('*'))
     for p in candidates:
@@ -37,7 +55,7 @@ def main():
     manifest={
         'schema':1,
         'app':'DND_VTT',
-        'version':args.version,
+        'version':version,
         'minAppVersion':args.min_app_version,
         'channel':args.channel,
         'generated':datetime.date.today().isoformat(),
