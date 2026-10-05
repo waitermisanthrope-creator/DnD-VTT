@@ -6,7 +6,7 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.33.3'
+  var APP_VERSION = '70.33.4'
   // V70.25.91: parchment asset/update audit; stable manifest includes index.html and required root parchment assets. Trigger manifest regeneration with current workflow policy.
   // Public manifest is stored in the repository; do not depend on GitHub Pages.
   var DEFAULT_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
@@ -380,7 +380,8 @@
     var run = async function () {
       var scene = null;
       try {
-        if (global.navigator && global.navigator.onLine === false) return;
+        // WebView's navigator.onLine can be false even when HTTPS fetches work.
+        // Never use it as a hard gate for the updater; let the manifest request decide.
         var state = await inspect();
         if (!state || !state.updateAvailable) return state;
 
@@ -425,6 +426,47 @@
     return global.__dndUpdateCheckRunning;
   }
 
+  // V70.33.4: public deterministic scene test. Keep this in the updater module itself
+  // so the debug button does not depend on another settings/debug script being loaded.
+  function runSceneTest() {
+    if (!global.DND_UPDATE_SCENE || typeof global.DND_UPDATE_SCENE.create !== 'function') {
+      try { alert('Сцена обновления не загружена.'); } catch (_) {}
+      return false;
+    }
+    var files = [
+      ['index.html', 286000], ['app/app.js', 42000], ['app/update_manager.js', 21000],
+      ['app/update_scene_v755.js', 15000], ['app/class_features_engine.js', 52000],
+      ['app/combat_engine.js', 68000], ['app/assets/ui/forest_green.jpg', 980000],
+      ['app/assets/ui/forest_burned.jpg', 1010000], ['app/assets/ui/fire_front.png', 214000],
+      ['app/assets/ui/dragon.png', 118000], ['app/assets/ui/dragon_fire.png', 96000],
+      ['app/assets/ui/update_scene_smoke.svg', 18000]
+    ].map(function (item) { return { path:item[0], bytes:item[1], sha256:'0'.repeat(64) }; });
+    var totalBytes = files.reduce(function (sum, f) { return sum + f.bytes; }, 0);
+    var scene = global.DND_UPDATE_SCENE.create({ testMode:true, manifest:{version:'TEST', files:files} });
+    var index=0, start=0, done=0, raf=0;
+    function finish() {
+      if (raf) cancelAnimationFrame(raf);
+      scene.setProgress({current:files.length,total:files.length,bytesDone:totalBytes,bytesTotal:totalBytes,phase:'skip',path:''});
+      scene.setStatus('Проверка завершена: все файлы условно проверены, ошибок нет.');
+      scene.enableApply();
+    }
+    function frame(now) {
+      if (!start) start=now;
+      var elapsed=Math.min(380,now-start), file=files[index];
+      var local=elapsed/380;
+      scene.setProgress({current:index+1,total:files.length,bytesDone:done+Math.round(file.bytes*local),bytesTotal:totalBytes,phase:'skip',path:file.path});
+      if (elapsed>=380) {
+        done+=file.bytes; index++; start=now;
+        if (index>=files.length) { finish(); return; }
+      }
+      raf=requestAnimationFrame(frame);
+    }
+    scene.setProgress({current:0,total:files.length,bytesDone:0,bytesTotal:totalBytes,phase:'skip',path:'подготовка…'});
+    scene.setStatus('Имитация проверки файлов — реальные файлы не изменяются.');
+    raf=requestAnimationFrame(frame);
+    return true;
+  }
+
   var settingsProgressAnimator=null;
   function updateUiProgress(show,current,total,path){
     var box=document.getElementById('settingsUpdateProgress'),bar=document.getElementById('settingsUpdateProgressBar'),label=document.getElementById('settingsUpdateProgressLabel');
@@ -460,12 +502,19 @@
     clearStaged: clearStaged,
     canApplyNatively: canApplyNatively,
     getNativeStorageStats: getNativeStorageStats,
-    applyStaged: applyStaged
+    applyStaged: applyStaged,
+    runSceneTest: runSceneTest
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', autoCheckForUpdates);
-  } else {
-    autoCheckForUpdates();
+  function scheduleStartupUpdateCheck() {
+    // Run after the DOM, after the splash, and once on pageshow. The shared guard
+    // prevents duplicate network/staging work when several lifecycle events fire.
+    var run = function () { try { autoCheckForUpdates(); } catch (_) {} };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once:true });
+    else run();
+    global.addEventListener('dnd:splash-complete', run, { once:true });
+    global.addEventListener('pageshow', run, { once:true });
+    setTimeout(run, 1800);
   }
+  scheduleStartupUpdateCheck();
 })(window);
