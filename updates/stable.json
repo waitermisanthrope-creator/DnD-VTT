@@ -1224,8 +1224,8 @@
     },
     {
       "path": "app/styles.css",
-      "bytes": 24172,
-      "sha256": "7256ec166da10684ee25465ea0cf5ad7b17eca8fbc306d9b62a236c70bfbf983"
+      "bytes": 24174,
+      "sha256": "83f23e2e50e1911664995a42deadde6f1fd65e2232e362fb52a996f2d64e2d69"
     },
     {
       "path": "app/summoning_engine.js",
