@@ -21,6 +21,8 @@ assert(manager.includes('setTimeout(function ()')&&manager.includes('scene.__sce
 assert(manager.includes('runSceneTest'),'update scene test must be exposed by updater module');
 assert(manager.includes("navigator.onLine === false")===false,'updater must not hard-block checks on navigator.onLine');
 assert(manager.includes('dnd:splash-complete'),'updater must retry after splash completion');
+assert(manager.includes('waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json'),'updater must use GitHub Pages manifest as primary endpoint');
+assert(manager.includes('FALLBACK_MANIFEST_URL'),'updater must have raw GitHub manifest fallback');
 assert(manager.includes('bytesDone')&&manager.includes('bytesTotal'),'JS updater must expose byte progress');
 assert(bridge.includes('readBytesWithProgress'),'native updater must report byte progress');
 assert(bridge.includes('bytesDone')&&bridge.includes('bytesTotal'),'native progress payload missing byte fields');
