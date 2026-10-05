@@ -45,10 +45,10 @@
       '#' + ID + ' .ffs-green{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}' +
       '#' + ID + ' .ffs-burned{position:absolute;left:0;top:0;bottom:0;width:0%;overflow:hidden;transition:width .06s linear;}' +
       '#' + ID + ' .ffs-burned img{display:block;width:100vw;max-width:none;height:100%;object-fit:cover;}' +
-      '#' + ID + ' .ffs-front{position:absolute;top:0;bottom:0;width:clamp(64px,12vw,170px);transform:translateX(-50%);pointer-events:none;transition:left .06s linear;z-index:6;}' +
+      '#' + ID + ' .ffs-front{position:absolute;top:0;bottom:0;width:clamp(74px,13vw,190px);transform:translateX(-50%);pointer-events:none;transition:left .06s linear,opacity .18s linear;z-index:6;mix-blend-mode:normal;}' +
       '#' + ID + ' .ffs-front img{display:block;width:100%;height:100%;object-fit:fill;filter:drop-shadow(0 0 12px rgba(255,99,20,.55));}' +
-      '#' + ID + ' .ffs-dragon{position:absolute;left:-2%;bottom:17%;width:min(38vw,420px);max-height:58%;object-fit:contain;animation:ffsDragon 3.8s ease-in-out infinite;filter:drop-shadow(0 14px 20px rgba(0,0,0,.42));z-index:8;}' +
-      '#' + ID + ' .ffs-breath{position:absolute;left:18%;bottom:39%;width:min(48vw,620px);z-index:7;transform-origin:left center;animation:ffsBreath 1.2s ease-in-out infinite;}' +
+      '#' + ID + ' .ffs-dragon{position:absolute;left:-3%;bottom:17%;width:min(32vw,360px);max-height:52%;object-fit:contain;animation:ffsDragon 3.8s ease-in-out infinite;filter:drop-shadow(0 14px 20px rgba(0,0,0,.42));z-index:8;transition:opacity .25s linear;}' +
+      '#' + ID + ' .ffs-breath{position:absolute;left:17%;bottom:39%;width:min(45vw,560px);max-height:30%;object-fit:contain;z-index:7;transform-origin:left center;animation:ffsBreath 1.2s ease-in-out infinite;transition:opacity .25s linear;}' +
       '#' + ID + ' .ffs-vfx{position:absolute;pointer-events:none;z-index:10;}' +
       '#' + ID + ' .ffs-smoke{right:10%;bottom:27%;width:min(25vw,300px);opacity:.65;animation:ffsSmoke 7s ease-in-out infinite;}' +
       '#' + ID + ' .ffs-embers{left:25%;bottom:16%;width:58%;height:68%;opacity:.85;animation:ffsEmbers 4s linear infinite;}' +
@@ -70,7 +70,7 @@
       '@keyframes ffsSmoke{0%,100%{transform:translate(0,0) scale(.92);opacity:.35}50%{transform:translate(-25px,-35px) scale(1.12);opacity:.72}}' +
       '@keyframes ffsEmbers{0%{transform:translate(0,15px)}100%{transform:translate(20px,-35px)}}' +
       '@keyframes ffsAsh{0%{transform:translate(0,-10px)}100%{transform:translate(-30px,50px)}}' +
-      '@media(max-width:600px){#' + ID + ' .ffs-green{object-position:center center;}#' + ID + ' .ffs-dragon{left:-8%;bottom:18%;width:42vw;}#' + ID + ' .ffs-breath{left:14%;bottom:38%;width:62vw;}#' + ID + ' .ffs-ui{bottom:3%;}#' + ID + ' .ffs-meta{font-size:11px;}}' +
+      '@media(max-width:600px){#' + ID + ' .ffs-green{object-position:center center;}#' + ID + ' .ffs-burned img{object-position:center center;}#' + ID + ' .ffs-dragon{left:-9%;bottom:18%;width:40vw;max-height:46%;}#' + ID + ' .ffs-breath{left:13%;bottom:39%;width:60vw;max-height:27%;}#' + ID + ' .ffs-front{width:clamp(70px,16vw,125px);}#' + ID + ' .ffs-ui{bottom:3%;}#' + ID + ' .ffs-meta{font-size:11px;}}' +
       '</style>' +
       '<div class="ffs-scene">' +
         '<img class="ffs-green" src="' + ASSET + 'forest_green.jpg" alt="">' +
@@ -114,11 +114,17 @@
       var p = display / 100;
       burned.style.width = display + '%';
       front.style.left = display + '%';
+      front.style.opacity = display >= 99.5 ? '0' : display >= 96 ? String(Math.max(.12, (100 - display) / 4)) : '1';
+      var actorOpacity = display >= 92 ? String(Math.max(0, (100 - display) / 8)) : '1';
+      var dragon = overlay.querySelector('.ffs-dragon');
+      var breath = overlay.querySelector('.ffs-breath');
+      if (dragon) dragon.style.opacity = actorOpacity;
+      if (breath) breath.style.opacity = actorOpacity;
       bar.style.width = display + '%';
       percentEl.textContent = Math.round(display) + '%';
       if (display >= 99.95) {
         front.style.opacity = '.42';
-        status.textContent = 'Лес выгорел. Остался только дым…';
+        status.textContent = 'Лес выгорел. Дракон скрывается в дыму…';
       } else if (display >= 75) {
         status.textContent = 'Пламя добралось до дальней опушки…';
       } else if (display >= 40) {
