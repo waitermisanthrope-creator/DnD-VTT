@@ -548,7 +548,7 @@ async function refreshAppStorageDebug() {
   var stats = await window.DND_UPDATE_MANAGER.getNativeStorageStats();
   if (!stats || !stats.ok) {
     total.textContent = 'Ошибка';
-    details.textContent = 'Не удалось получить размеры файлов приложения.';
+    details.textContent = 'Не удалось получить размеры файлов приложения.' + (stats && stats.value ? '\nAndroid: ' + stats.value : '');
     return;
   }
 
