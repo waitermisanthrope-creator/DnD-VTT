@@ -541,7 +541,7 @@ input:focus, textarea:focus, select:focus {
   background-repeat: no-repeat, no-repeat;
   background-position: left center, left bottom;
   background-size: auto 100%, auto 100%;
-  transition: width .22s ease; filter: drop-shadow(0 0 6px rgba(255,102,0,.78));
+  transition: width .08s linear; filter: drop-shadow(0 0 6px rgba(255,102,0,.78));
   z-index: 2;
 }
 .dnd-loader-fire::after {
