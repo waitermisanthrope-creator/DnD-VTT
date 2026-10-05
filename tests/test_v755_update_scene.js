@@ -21,7 +21,7 @@ assert(manager.includes('setTimeout(async function ()')&&manager.includes('scene
 assert(manager.includes('await nextPaint()'),'startup update must yield for a first WebView paint before staging');
 assert(manager.includes("global.__dndUpdateCheckRunning = null"),'startup flow must keep a single lifecycle lock');
 assert(manager.includes('runSceneTest'),'update scene test must be exposed by updater module');
-assert(manager.includes("settingsModal", "devMenuModal"),'scene test must hide parent debug/settings modals');
+assert(manager.includes("settingsModal")&&manager.includes("devMenuModal"),'scene test must hide parent debug/settings modals');
 assert(manager.includes("Тест окна обновления не запустился"),'scene test must report runtime failures instead of silently doing nothing');
 assert(manager.includes("navigator.onLine === false")===false,'updater must not hard-block checks on navigator.onLine');
 assert(manager.includes('dnd:splash-complete'),'updater must retry after splash completion');
