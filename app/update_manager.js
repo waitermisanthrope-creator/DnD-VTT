@@ -469,18 +469,29 @@
         if (scene.enableApply) scene.enableApply();
         if (scene.setStatus) scene.setStatus('Проверка завершена. Дракон скрывается в дыму…');
 
+        // Wrap the button handler as a one-shot operation. A user tap before the
+        // cinematic timer expires must cancel the timer, not trigger a second apply.
+        var originalOnApply = scene.onApply;
+        scene.onApply = async function () {
+          if (applyStarted) return;
+          applyStarted = true;
+          if (applyTimer) {
+            clearTimeout(applyTimer);
+            applyTimer = null;
+          }
+          if (typeof originalOnApply !== 'function') {
+            throw new Error('Обработчик применения обновления недоступен');
+          }
+          return await originalOnApply();
+        };
+
         // Keep the flow promise alive until apply is actually requested. This prevents
         // DOMContentLoaded/pageshow/setTimeout checks from starting a second stage while
         // the first staged package is waiting for the cinematic apply moment.
         await new Promise(function (resolve, reject) {
           applyTimer = setTimeout(async function () {
             applyTimer = null;
-            if (applyStarted) return;
-            applyStarted = true;
             try {
-              if (!scene || typeof scene.onApply !== 'function') {
-                throw new Error('Обработчик применения обновления недоступен');
-              }
               await scene.onApply();
               resolve();
             } catch (e) {
