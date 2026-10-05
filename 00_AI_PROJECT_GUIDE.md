@@ -7446,3 +7446,70 @@ Extra-классы Рой, Призрак, Паразит и Паразит до
 - Финальный `updates/stable.json`: version `70.33.0`, minAppVersion `70.32.21`, 282 deployable files, все 7 новых visual assets присутствуют, SHA-256 каждого валиден (64 hex chars).
 - Pages workflow metadata синхронизирован с V70.33.
 - Android debug/release больше не должны перезаписывать stable manifest.
+
+---
+
+# V755 — НОВЫЙ ЭКРАН ОБНОВЛЕНИЯ «ЛЕС СГОРАЕТ»
+
+Дата: 2026-10-05
+
+## Решение
+
+Старый экран обновления признан визуально неудовлетворительным и заменяется с нуля. Новый renderer — `app/update_scene_v755.js`.
+
+Сцена построена из независимых слоёв и не является одной цельной картинкой:
+
+- `update_scene_background.svg` — фон;
+- `update_scene_forest_green.svg` — живой лес;
+- `update_scene_forest_burned.svg` — та же геометрия леса после пожара;
+- `update_scene_dragon.svg` — отдельный дракон;
+- `update_scene_dragon_fire.svg` — отдельное дыхание;
+- `update_scene_fire_front.svg` — огненный фронт;
+- `update_scene_smoke.svg`, `update_scene_embers.svg`, `update_scene_ash.svg` — независимые VFX.
+
+## Progress contract
+
+Единым источником истины остаётся updater. Сцена не создаёт собственный таймер прогресса.
+
+Для Android/native updater V755 добавлен byte-level progress: `bytesDone / bytesTotal`. Java bridge сообщает прогресс по мере чтения сетевого потока, а JS fallback использует `ReadableStream` при наличии и возвращается к file-level progress только при отсутствии stream API.
+
+Прогресс управляет одновременно:
+
+1. процентом;
+2. progress bar;
+3. шириной видимой области burned forest;
+4. положением fire front.
+
+Таким образом, при 50% сгорает левая половина леса, при 100% весь лес становится burned-state.
+
+## Updater safety
+
+Не создавался новый updater. Расширены существующие `app/update_manager.js` и `android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java`. Сохранены manifest validation, SHA-256 verification, staging, native apply и существующий GitHub manifest flow.
+
+## UI
+
+Старое техническое startup-окно больше не используется для startup update prompt. `update_manager.js` подключает `DND_UPDATE_SCENE.create()` из `update_scene_v755.js`.
+
+Кнопка «Позже» закрывает сцену. «Установить обновление» вызывает существующий `applyStaged()`. Ошибки updater показываются внутри новой сцены.
+
+## Regression checklist
+
+- [x] updater не заменён параллельной системой;
+- [x] renderer подключён перед update_manager;
+- [x] ассеты загружаются отдельными слоями;
+- [x] progress не создаётся фальшивым таймером;
+- [x] Android native updater сообщает byte-level progress;
+- [x] JS fallback поддерживает byte-level stream progress;
+- [x] 0% = зелёный лес;
+- [x] 50% = примерно половина burned-layer;
+- [x] 100% = весь burned-layer;
+- [x] fire front движется слева направо;
+- [x] дракон остаётся отдельным слоем;
+- [x] apply использует существующий native updater;
+- [ ] физический APK/device smoke-test — требуется выполнить в Android build environment;
+- [ ] визуальная проверка на реальном Android-экране — требуется после сборки.
+
+## Важное ограничение
+
+V755 намеренно использует самостоятельные SVG-ассеты, чтобы сцена была действительно слоистой и управляемой. Они являются первой рабочей версией художественного набора; при появлении финальных hand-drawn PNG ассетов их можно заменить без переписывания renderer, сохранив имена/слойную структуру.
+

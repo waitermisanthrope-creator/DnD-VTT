@@ -67,6 +67,9 @@ public final class DndUpdateBridge {
             String version = manifest.getString("version");
             JSONArray files = manifest.getJSONArray("files");
             final int totalFiles = files.length();
+            long totalBytes = 0L;
+            for (int ti = 0; ti < totalFiles; ti++) totalBytes += Math.max(0L, files.getJSONObject(ti).optLong("bytes", 0L));
+            long downloadedBytes = 0L;
             String baseUrl = manifest.optString("baseUrl", "");
             File root = new File(context.getFilesDir(), "vtt-updates");
             deleteRecursive(root);
@@ -92,12 +95,13 @@ public final class DndUpdateBridge {
                     if (expectedBytes >= 0 && activeFile.length() != expectedBytes) {
                         throw new Exception("Local size mismatch: " + path);
                     }
-                    postProgress(reply, id, "skip", i + 1, totalFiles, path);
+                    downloadedBytes += Math.max(0L, activeFile.length());
+                    postProgress(reply, id, "skip", i + 1, totalFiles, path, downloadedBytes, totalBytes);
                     copyFile(activeFile, target);
                     continue;
                 }
 
-                postProgress(reply, id, "download", i + 1, totalFiles, path);
+                postProgress(reply, id, "download", i + 1, totalFiles, path, downloadedBytes, totalBytes);
                 String url = entry.optString("url", "");
                 if (url.isEmpty()) url = baseUrl.replaceAll("/+$", "") + "/" + path;
                 if (!url.startsWith("https://")) throw new Exception("HTTPS update file required");
@@ -105,8 +109,10 @@ public final class DndUpdateBridge {
                 // Key each request by the expected content hash so bytes and manifest cannot drift.
                 String cacheKey = "dndvtt_update=" + version + "-" + expectedHash;
                 url += (url.contains("?") ? "&" : "?") + cacheKey;
-                byte[] data = readBytes(url);
+                byte[] data = readBytesWithProgress(url, reply, id, i + 1, totalFiles, path, downloadedBytes, totalBytes);
                 if (expectedBytes >= 0 && expectedBytes != data.length) throw new Exception("Size mismatch: " + path);
+                downloadedBytes += data.length;
+                postProgress(reply, id, "download", i + 1, totalFiles, path, downloadedBytes, totalBytes);
                 if (!expectedHash.equalsIgnoreCase(sha256(data))) throw new Exception("SHA-256 mismatch: " + path);
                 try (FileOutputStream out = new FileOutputStream(target)) {
                     out.write(data);
@@ -532,6 +538,38 @@ public final class DndUpdateBridge {
         } finally { c.disconnect(); }
     }
 
+    private static byte[] readBytesWithProgress(
+            String url,
+            JavaScriptReplyProxy reply,
+            String id,
+            int current,
+            int total,
+            String path,
+            long downloadedBefore,
+            long totalBytes) throws Exception {
+        HttpURLConnection c = (HttpURLConnection) new URL(url).openConnection();
+        c.setConnectTimeout(15000);
+        c.setReadTimeout(60000);
+        c.setUseCaches(false);
+        if (c.getResponseCode() < 200 || c.getResponseCode() >= 300) {
+            throw new IOException("HTTP " + c.getResponseCode());
+        }
+        long received = 0L;
+        try (InputStream in = c.getInputStream(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            byte[] buf = new byte[16384];
+            int n;
+            while ((n = in.read(buf)) >= 0) {
+                if (n == 0) continue;
+                out.write(buf, 0, n);
+                received += n;
+                postProgress(reply, id, "download", current, total, path, downloadedBefore + received, totalBytes);
+            }
+            return out.toByteArray();
+        } finally {
+            c.disconnect();
+        }
+    }
+
     private static String sha256(File file) throws Exception {
         try (InputStream in = new FileInputStream(file)) {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -556,6 +594,10 @@ public final class DndUpdateBridge {
     }
 
     private static void postProgress(JavaScriptReplyProxy reply, String id, String phase, int current, int total, String path) {
+        postProgress(reply, id, phase, current, total, path, -1L, -1L);
+    }
+
+    private static void postProgress(JavaScriptReplyProxy reply, String id, String phase, int current, int total, String path, long bytesDone, long bytesTotal) {
         JSONObject o = new JSONObject();
         try {
             o.put("id", id);
@@ -565,6 +607,8 @@ public final class DndUpdateBridge {
             o.put("current", current);
             o.put("total", total);
             o.put("path", path);
+            if (bytesDone >= 0) o.put("bytesDone", bytesDone);
+            if (bytesTotal >= 0) o.put("bytesTotal", bytesTotal);
         } catch (Exception ignored) {}
         postReply(reply, o.toString());
     }
