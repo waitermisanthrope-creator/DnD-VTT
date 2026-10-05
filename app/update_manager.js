@@ -410,14 +410,15 @@
             if (scene && scene.__sceneApi) {
               scene.__sceneApi.finish();
               scene.__sceneApi.enableApply();
-              // Startup updates are fully automatic after successful verification.
-              // Keep the completed scene visible briefly before applying the staged tree.
-              scene.__sceneApi.setStatus('Проверка завершена. Устанавливаю обновление…');
+              // IMPORTANT: native apply restarts the WebView/application. Keep the
+              // cinematic scene visible long enough for the user to actually see it.
+              // Previously 850ms was too short and looked like an unexplained restart.
+              scene.__sceneApi.setStatus('Проверка завершена. Дракон скрывается в дыму…');
               setTimeout(function () {
                 if (scene && scene.__sceneApi && typeof scene.__sceneApi.onApply === 'function') {
                   scene.__sceneApi.onApply();
                 }
-              }, 850);
+              }, 6000);
             }
           }
         }).catch(function (e) {
