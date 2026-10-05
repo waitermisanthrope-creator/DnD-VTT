@@ -1,7 +1,3 @@
-/* V70.33 final manifest ownership: refresh-update-manifest.yml only */
-/* V70.33 manifest publish retry trigger */
-/* V70.33 manifest workflow trigger 2 */
-/* V70.33 manifest workflow trigger: regenerate complete stable asset manifest from main. */
 /* DND VTT — lightweight application updater contract.
  * The Android/native shell performs the final filesystem replacement.
  * The browser layer is responsible for manifest fetch, version checks,
@@ -10,11 +6,11 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.33.0'
+  var APP_VERSION = '70.33.1'
   // V70.25.91: parchment asset/update audit; stable manifest includes index.html and required root parchment assets. Trigger manifest regeneration with current workflow policy.
   // Public manifest is stored in the repository; do not depend on GitHub Pages.
   var DEFAULT_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
-  var MANIFEST_CACHE_BUSTER = 'dnd-vtt-111-fantasy-assets'
+  var MANIFEST_CACHE_BUSTER = 'dnd-vtt-112-smooth-loader'
   var STORAGE_KEY = 'dnd_update_manifest_url';
   var CHANNEL_KEY = 'dnd_update_channel';
   var STAGED_KEY = 'dnd_update_staged_manifest';
@@ -269,6 +265,32 @@
     return result || true;
   }
 
+  function createSmoothProgress(bar, pct) {
+    var target=0,display=0,raf=0,last=0;
+    function render(value) {
+      display=value;
+      if(bar) bar.style.width=(Math.round(value*10)/10)+'%';
+      if(pct) pct.textContent=Math.round(value)+'%';
+    }
+    function frame(now) {
+      if(!last) last=now;
+      var dt=Math.min(64,now-last); last=now;
+      var gap=target-display;
+      if(Math.abs(gap)<0.08) { render(target); raf=0; last=0; return; }
+      var duration=Math.max(220,Math.min(1400,280+Math.abs(gap)*11));
+      var step=gap*(1-Math.pow(0.001,dt/duration));
+      render(Math.max(0,Math.min(100,display+step)));
+      raf=requestAnimationFrame(frame);
+    }
+    return {
+      set:function(value) {
+        target=Math.max(target,Math.max(0,Math.min(100,Number(value)||0)));
+        if(!raf) { last=0; raf=requestAnimationFrame(frame); }
+      },
+      finish:function() { target=100; if(!raf) { last=0; raf=requestAnimationFrame(frame); } }
+    };
+  }
+
   function showStartupUpdatePrompt(state, options) {
     options = options || {};
     if (!state || !state.updateAvailable || !state.manifest) return null;
@@ -288,11 +310,13 @@
       '<div style="display:flex;gap:8px;margin-top:14px"><button id="dndStartupUpdateLater" style="flex:1;padding:11px;border-radius:8px;border:1px solid #555;background:#333;color:#fff">Позже</button><button id="dndStartupUpdateApply" disabled style="flex:1;padding:11px;border-radius:8px;border:1px solid #d4af37;background:#5b4618;color:#aaa;font-weight:700">Загрузка…</button></div>';
     overlay.appendChild(card); document.body.appendChild(overlay);
     var status=card.querySelector('#dndStartupUpdateStatus'),bar=card.querySelector('#dndStartupUpdateBar'),pct=card.querySelector('#dndStartupUpdatePercent'),apply=card.querySelector('#dndStartupUpdateApply'),later=card.querySelector('#dndStartupUpdateLater');
+    var smoothProgress=createSmoothProgress(bar,pct);
+    overlay.__dndSmoothProgress=smoothProgress;
     function progress(p){
       var total=Number(p&&p.total)||0,current=Number(p&&p.current)||0;
-      var percent=total?Math.max(0,Math.min(100,Math.round(current/total*100))):0;
-      if(bar)bar.style.width=percent+'%'; if(pct)pct.textContent=percent+'%';
-      if(status)status.textContent=(p&&p.phase==='apply'?'Применяю обновление…':(p&&p.phase==='skip'?'Уже установлено, повторная загрузка не нужна…':'Загрузка обновления…'))+' '+percent+'%'+(p&&p.path?' · '+p.path:'');
+      var percent=total?Math.max(0,Math.min(100,current/total*100)):0;
+      smoothProgress.set(percent);
+      if(status)status.textContent=(p&&p.phase==='apply'?'Применяю обновление…':(p&&p.phase==='skip'?'Уже установлено, повторная загрузка не нужна…':'Загрузка обновления…'))+' '+Math.round(percent)+'%'+(p&&p.path?' · '+p.path:'');
     }
     later.onclick=function(){overlay.remove();};
     apply.onclick=async function(){
@@ -325,17 +349,17 @@
         var prompt=showStartupUpdatePrompt(state);
         var stagePromise=checkAndStage({onProgress:function(p){
           var card=prompt&&prompt.querySelector?prompt.querySelector('#dndStartupUpdateStatus'):null;
-          var bar=prompt&&prompt.querySelector?prompt.querySelector('#dndStartupUpdateBar'):null;
-          var pct=prompt&&prompt.querySelector?prompt.querySelector('#dndStartupUpdatePercent'):null;
-          var total=Number(p&&p.total)||0,current=Number(p&&p.current)||0,percent=total?Math.round(current/total*100):0;
-          if(bar)bar.style.width=percent+'%';if(pct)pct.textContent=percent+'%';if(card)card.textContent=(p&&p.phase==='apply'?'Применяю обновление…':(p&&p.phase==='skip'?'Уже установлено, повторная загрузка не нужна…':'Загрузка обновления…'))+' '+percent+'%'+(p&&p.path?' · '+p.path:'');
+          var smooth=prompt&&prompt.__dndSmoothProgress;
+          var total=Number(p&&p.total)||0,current=Number(p&&p.current)||0,percent=total?Math.max(0,Math.min(100,current/total*100)):0;
+          if(smooth)smooth.set(percent);
+          if(card)card.textContent=(p&&p.phase==='apply'?'Применяю обновление…':(p&&p.phase==='skip'?'Уже установлено, повторная загрузка не нужна…':'Загрузка обновления…'))+' '+Math.round(percent)+'%'+(p&&p.path?' · '+p.path:'');
         }});
         stagePromise.then(function(result){
           var st=prompt&&prompt.querySelector?prompt.querySelector('#dndStartupUpdateStatus'):null;
           var bar=prompt&&prompt.querySelector?prompt.querySelector('#dndStartupUpdateBar'):null;
           var pc=prompt&&prompt.querySelector?prompt.querySelector('#dndStartupUpdatePercent'):null;
           if(result&&result.stageResult&&result.stageResult.staged){
-            if(bar)bar.style.width='100%'; if(pc)pc.textContent='100%';
+            if(prompt&&prompt.__dndSmoothProgress)prompt.__dndSmoothProgress.finish();
             if(st)st.textContent='Обновление загружено и проверено. Можно устанавливать.';
             var ap=prompt&&prompt.querySelector?prompt.querySelector('#dndStartupUpdateApply'):null;
             if(ap){ap.disabled=false;ap.textContent='Установить обновление';ap.style.background='#9b6e13';ap.style.color='#fff';}
@@ -351,8 +375,20 @@
     global.__dndUpdateCheckRunning=run(); return global.__dndUpdateCheckRunning;
   }
 
-  function updateUiProgress(show,current,total,path){var box=document.getElementById('settingsUpdateProgress'),bar=document.getElementById('settingsUpdateProgressBar'),label=document.getElementById('settingsUpdateProgressLabel');if(!box)return;box.style.display=show?'block':'none';if(total>0){var pct=Math.round(current/total*100);if(bar)bar.style.width=pct+'%';if(label)label.textContent='Загрузка обновления: '+pct+'% — '+current+' из '+total+(path?' · '+path:'');}}
-  async function settingsCheck(){var status=document.getElementById('settingsUpdateStatus'),apply=document.getElementById('settingsUpdateApplyButton');if(status)status.textContent='Проверяю GitHub…';if(apply)apply.style.display='none';updateUiProgress(true,0,0,'');try{var state=await checkAndStage({onProgress:function(p){updateUiProgress(true,p.current||0,p.total||0,p.path||'');}});if(state&&state.updateAvailable){if(status)status.textContent='Доступно обновление до v'+state.manifest.version+'. Загружено и проверено.';if(apply)apply.style.display='block';updateUiProgress(true,state.manifest.files.length,state.manifest.files.length,'готово');}else{if(status)status.textContent='Установлена актуальная версия v'+(state&&state.currentVersion||APP_VERSION)+'.';updateUiProgress(false,0,0,'');}return state;}catch(e){if(status)status.textContent='Ошибка проверки: '+(e&&e.message||e);updateUiProgress(false,0,0,'');return null;}}
+  var settingsProgressAnimator=null;
+  function updateUiProgress(show,current,total,path){
+    var box=document.getElementById('settingsUpdateProgress'),bar=document.getElementById('settingsUpdateProgressBar'),label=document.getElementById('settingsUpdateProgressLabel');
+    if(!box)return;
+    box.style.display=show?'block':'none';
+    if(show && !settingsProgressAnimator && bar) settingsProgressAnimator=createSmoothProgress(bar,null);
+    if(!show){settingsProgressAnimator=null;return;}
+    if(total>0){
+      var pct=Math.max(0,Math.min(100,current/total*100));
+      if(settingsProgressAnimator)settingsProgressAnimator.set(pct);
+      if(label)label.textContent='Загрузка обновления: '+Math.round(pct)+'% — '+current+' из '+total+(path?' · '+path:'');
+    }
+  }
+  async function settingsCheck(){var status=document.getElementById('settingsUpdateStatus'),apply=document.getElementById('settingsUpdateApplyButton');if(status)status.textContent='Проверяю GitHub…';if(apply)apply.style.display='none';updateUiProgress(true,0,0,'');try{var state=await checkAndStage({onProgress:function(p){updateUiProgress(true,p.current||0,p.total||0,p.path||'');}});if(state&&state.updateAvailable){if(status)status.textContent='Доступно обновление до v'+state.manifest.version+'. Загружено и проверено.';if(apply)apply.style.display='block';updateUiProgress(true,state.manifest.files.length,state.manifest.files.length,'готово');if(settingsProgressAnimator)settingsProgressAnimator.finish();}else{if(status)status.textContent='Установлена актуальная версия v'+(state&&state.currentVersion||APP_VERSION)+'.';updateUiProgress(false,0,0,'');}return state;}catch(e){if(status)status.textContent='Ошибка проверки: '+(e&&e.message||e);updateUiProgress(false,0,0,'');return null;}}
   async function settingsApply(){var status=document.getElementById('settingsUpdateStatus'),apply=document.getElementById('settingsUpdateApplyButton');if(apply)apply.disabled=true;if(status)status.textContent='Применяю обновление… 0%';try{await applyStaged({onProgress:function(p){var t=Number(p&&p.total)||0,c=Number(p&&p.current)||0;if(status)status.textContent='Применяю обновление… '+(t?Math.round(c/t*100):0)+'%';}});if(status)status.textContent='Обновление применено. Перезапускаю приложение…';}catch(e){if(status)status.textContent='Не удалось применить: '+(e&&e.message||e);if(apply)apply.disabled=false;}}
   function refreshSettingsVersion(){var e=document.getElementById('settingsCurrentVersion');if(!e)return;inspect().then(function(s){if(s&&s.currentVersion)e.textContent='v'+s.currentVersion;}).catch(function(){});}
   global.DND_UPDATE_UI={check:settingsCheck,apply:settingsApply,refresh:refreshSettingsVersion};
