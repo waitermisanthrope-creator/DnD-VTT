@@ -9,8 +9,8 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 82549,
-      "sha256": "532cf30626d4379fecc793cb9cc75b135f88b966f081fb40beacecc293865931"
+      "bytes": 82602,
+      "sha256": "e535477a0f91f7216888794f442e2df8f8c4c955f3a2b5e9d8630a1aff687f44"
     },
     {
       "path": "app/Ambiences.js",
@@ -291,6 +291,51 @@
       "path": "app/assets/ui/loader_sparks.svg",
       "bytes": 626,
       "sha256": "c0bff80fd191e69738e7c96b7d985406f0383876c2548e58e88d512db503b856"
+    },
+    {
+      "path": "app/assets/ui/update_scene_ash.svg",
+      "bytes": 432,
+      "sha256": "3db49164052e040eea7690bc52702d9c7513209c8630c844eb75d0be9ee94510"
+    },
+    {
+      "path": "app/assets/ui/update_scene_background.svg",
+      "bytes": 1141,
+      "sha256": "e3822dee310c0763e1bb01cea0358c944184f0db767c8161a146f50a898c8ca6"
+    },
+    {
+      "path": "app/assets/ui/update_scene_dragon.svg",
+      "bytes": 1324,
+      "sha256": "26adb83cdef7d6cae5ab5dc73ec28d04fbdad7e5196622e863b6eb77fa5e00f6"
+    },
+    {
+      "path": "app/assets/ui/update_scene_dragon_fire.svg",
+      "bytes": 733,
+      "sha256": "06b8233c38d4551b0eb10d57abe7b163c80f870d921de80198916f78af7045d4"
+    },
+    {
+      "path": "app/assets/ui/update_scene_embers.svg",
+      "bytes": 474,
+      "sha256": "12383456266efc0dc17be4330b3022ba2bdf72af954c0cf469a7dfa99f267fd5"
+    },
+    {
+      "path": "app/assets/ui/update_scene_fire_front.svg",
+      "bytes": 837,
+      "sha256": "244ec8f84ca4ccc0a2cbbacbdcd147458e29792b93a507c68f6758f1cba9217e"
+    },
+    {
+      "path": "app/assets/ui/update_scene_forest_burned.svg",
+      "bytes": 1417,
+      "sha256": "8d90f47b5e056de8e19c57b7c47120bc87c7be13ac4923003bbee387b4fbfd8d"
+    },
+    {
+      "path": "app/assets/ui/update_scene_forest_green.svg",
+      "bytes": 1181,
+      "sha256": "bae6e0eb2dceacce706d963279abe2e49c12f647d2e0cea1f6865742b1ae0dd0"
+    },
+    {
+      "path": "app/assets/ui/update_scene_smoke.svg",
+      "bytes": 417,
+      "sha256": "fc780a47f40b3eacb2719a1da7d626bfd88a66c1a495427e37d06583cc77c62a"
     },
     {
       "path": "app/assets/ui/vine_bone_frame_strip.svg",
@@ -1249,8 +1294,13 @@
     },
     {
       "path": "app/update_manager.js",
-      "bytes": 22353,
-      "sha256": "e4da0fb5a43a1397f3ccccc4f18caa5a84631becc175145d8adfec60eaafae42"
+      "bytes": 20289,
+      "sha256": "d4b578bc5ce85d50f9d9576bc15400ade005c87c359cea0a8fa40d679c651e3c"
+    },
+    {
+      "path": "app/update_scene_v755.js",
+      "bytes": 11707,
+      "sha256": "a0ec6a731e308b8fdb2ee7705442c9978dbd2a2f5436ad5fb1a843d74303c06f"
     },
     {
       "path": "app/vessel_laserllama_v4_runtime.js",
