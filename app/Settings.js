@@ -98,6 +98,14 @@ function openSettingsModal() {
             <div id="settingsDebugButtonWrapper" style="display: none; margin-top: 8px;">
               <button onclick="openDevMenuModal()" class="btn-action" style="background: #37474F; width: 100%; padding: 10px; font-size: 0.85em; font-weight: bold; cursor: pointer; border: 1px solid #546E7A; border-radius: 6px; color: #fff;">🛠️ Меню разработчика</button>
               <button onclick="openDebugLogsModal()" class="btn-action" style="background:#455a64; width:100%; margin-top:8px; padding:10px; font-size:0.85em; font-weight:bold; cursor:pointer; border:1px solid #607d8b; border-radius:6px; color:#fff;">📜 Логи отладки</button>
+              <div style="margin-top:8px;background:#172126;border:1px solid #31515f;border-radius:7px;padding:10px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+                  <div style="font-size:.86em;font-weight:bold;color:#80cbc4;">💾 Фактический вес приложения</div>
+                  <button onclick="refreshAppStorageDebug()" style="background:#263238;color:#fff;border:1px solid #546e7a;border-radius:5px;padding:5px 8px;font-size:.72em;font-weight:bold;">🔄 Обновить</button>
+                </div>
+                <div id="settingsAppStorageTotal" style="font-size:1.05em;font-weight:bold;color:#fff;margin-top:8px;">—</div>
+                <div id="settingsAppStorageDetails" style="font-size:.72em;color:#aaa;line-height:1.5;margin-top:5px;white-space:pre-line;">Нажмите «Обновить», чтобы получить данные Android.</div>
+              </div>
             </div>
           </div>
           <div style="background: #252525; padding: 12px; border-radius: 6px; border: 1px solid #333;">
@@ -146,6 +154,7 @@ function openSettingsModal() {
   const debugWrapper = document.getElementById('settingsDebugButtonWrapper');
   if (debugToggle) debugToggle.checked = isDebug;
   if (debugWrapper) debugWrapper.style.display = isDebug ? 'block' : 'none';
+  if (isDebug) setTimeout(refreshAppStorageDebug, 0);
 
   const themeSelect = document.getElementById('settingsThemeSelect');
   if (themeSelect) {
@@ -509,6 +518,52 @@ function closeDebugLogsModal() {
   if (modal) modal.style.display = 'none';
 }
 
+function formatDebugStorageBytes(bytes) {
+  var n = Number(bytes);
+  if (!Number.isFinite(n) || n < 0) return '—';
+  if (n < 1024) return Math.round(n) + ' Б';
+  var units = ['КБ', 'МБ', 'ГБ', 'ТБ'];
+  var value = n;
+  var unit = -1;
+  while (value >= 1024 && unit < units.length - 1) {
+    value /= 1024;
+    unit++;
+  }
+  return value.toFixed(2) + ' ' + units[unit];
+}
+
+async function refreshAppStorageDebug() {
+  var total = document.getElementById('settingsAppStorageTotal');
+  var details = document.getElementById('settingsAppStorageDetails');
+  if (!total || !details) return;
+  total.textContent = 'Считаю размер…';
+  details.textContent = 'Получаю фактические размеры из Android…';
+
+  if (!window.DND_UPDATE_MANAGER || typeof window.DND_UPDATE_MANAGER.getNativeStorageStats !== 'function') {
+    total.textContent = 'Недоступно';
+    details.textContent = 'Нативный мост хранения недоступен. Нужна Android-версия с диагностикой памяти.';
+    return;
+  }
+
+  var stats = await window.DND_UPDATE_MANAGER.getNativeStorageStats();
+  if (!stats || !stats.ok) {
+    total.textContent = 'Ошибка';
+    details.textContent = 'Не удалось получить размеры файлов приложения.';
+    return;
+  }
+
+  total.textContent = 'Всего: ' + (stats.totalBytes != null ? formatDebugStorageBytes(stats.totalBytes) : '—');
+  details.textContent =
+    'APK: ' + (stats.apkText || formatDebugStorageBytes(stats.apkBytes)) + '\n' +
+    'Данные: ' + (stats.dataText || formatDebugStorageBytes(stats.dataBytes)) + '\n' +
+    'Кэш: ' + (stats.cacheText || formatDebugStorageBytes(stats.cacheBytes)) + '\n' +
+    'Файлы приложения: ' + (stats.filesText || formatDebugStorageBytes(stats.filesBytes)) + '\n' +
+    'Обновления: ' + (stats.updateText || formatDebugStorageBytes(stats.updateBytes)) + '\n' +
+    'Версии ВТТ: ' + (stats.versionsText || formatDebugStorageBytes(stats.versionsBytes)) + '\n' +
+    'Свободно на разделе: ' + (stats.freeText || formatDebugStorageBytes(stats.freeBytes)) + '\n' +
+    'Активная версия: ' + (stats.activeVersion || '—');
+}
+
 function toggleDebugMode(isEnabled) {
   localStorage.setItem('dnd_debug_enabled', isEnabled ? 'true' : 'false');
   const debugWrapper = document.getElementById('settingsDebugButtonWrapper');
@@ -517,6 +572,7 @@ function toggleDebugMode(isEnabled) {
     document.documentElement.classList.add('debug-enabled');
     if (typeof window.enableDndDebugRuntime === 'function') window.enableDndDebugRuntime();
     else if (typeof window.enableDndDebugLogger === 'function') window.enableDndDebugLogger();
+    setTimeout(refreshAppStorageDebug, 0);
   } else {
     document.documentElement.classList.remove('debug-enabled');
     if (typeof window.disableDndDebugRuntime === 'function') window.disableDndDebugRuntime();
