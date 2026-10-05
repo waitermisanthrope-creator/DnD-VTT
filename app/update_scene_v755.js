@@ -40,7 +40,7 @@
     overlay.setAttribute('aria-label', 'Обновление приложения');
     overlay.innerHTML =
       '<style>' +
-      '#' + ID + '{position:fixed;inset:0;z-index:120000;overflow:hidden;background:#111713;color:#f6ead0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}' +
+      '#' + ID + '{position:fixed!important;inset:0!important;z-index:2147483647!important;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;isolation:isolate;overflow:hidden;background:#111713;color:#f6ead0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}' +
       '#' + ID + ' *{box-sizing:border-box}' +
       '#' + ID + ' .ffs-scene{position:absolute;inset:0;overflow:hidden;background:#2b3428;}' +
       '#' + ID + ' .ffs-green{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}' +
