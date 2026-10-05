@@ -6,11 +6,12 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.33.4'
+  var APP_VERSION = '70.33.5'
   // V70.25.91: parchment asset/update audit; stable manifest includes index.html and required root parchment assets. Trigger manifest regeneration with current workflow policy.
   // Public manifest is stored in the repository; do not depend on GitHub Pages.
-  var DEFAULT_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
-  var MANIFEST_CACHE_BUSTER = 'dnd-vtt-112-smooth-loader'
+  var DEFAULT_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
+  var FALLBACK_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
+  var MANIFEST_CACHE_BUSTER = 'dnd-vtt-113-pages-fallback'
   var STORAGE_KEY = 'dnd_update_manifest_url';
   var CHANNEL_KEY = 'dnd_update_channel';
   var STAGED_KEY = 'dnd_update_staged_manifest';
@@ -127,11 +128,22 @@
 
   async function fetchManifest(url) {
     if (!url) throw new Error('Update manifest URL is not configured');
-    var response = await global.fetch(url, { cache: 'no-store' });
-    if (!response.ok) throw new Error('Update manifest HTTP ' + response.status);
-    var manifest = await response.json();
-    validateManifest(manifest);
-    return manifest;
+    var candidates = [String(url).trim(), DEFAULT_MANIFEST_URL, FALLBACK_MANIFEST_URL].filter(function (item, index, list) {
+      return item && list.indexOf(item) === index;
+    });
+    var lastError = null;
+    for (var i = 0; i < candidates.length; i++) {
+      try {
+        var response = await global.fetch(candidates[i], { cache: 'no-store' });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        var manifest = await response.json();
+        validateManifest(manifest);
+        return manifest;
+      } catch (e) {
+        lastError = e;
+      }
+    }
+    throw new Error('Не удалось получить манифест обновления: ' + (lastError && lastError.message || 'нет связи'));
   }
 
   function validateManifest(m) {
