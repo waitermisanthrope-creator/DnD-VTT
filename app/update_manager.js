@@ -132,18 +132,33 @@
       return item && list.indexOf(item) === index;
     });
     var lastError = null;
+    var found = [];
     for (var i = 0; i < candidates.length; i++) {
+      var candidate = candidates[i];
       try {
-        var response = await global.fetch(candidates[i], { cache: 'no-store' });
+        // Add the cache buster to every candidate, not only the configured URL.
+        // GitHub Pages may otherwise return an older cached stable.json while raw
+        // GitHub already contains the newer manifest.
+        var requestUrl = candidate + (candidate.indexOf('?') >= 0 ? '&' : '?') + 'cb=' + MANIFEST_CACHE_BUSTER;
+        var response = await global.fetch(requestUrl, { cache: 'no-store' });
         if (!response.ok) throw new Error('HTTP ' + response.status);
         var manifest = await response.json();
         validateManifest(manifest);
-        return manifest;
+        found.push({ manifest: manifest, url: candidate });
       } catch (e) {
         lastError = e;
       }
     }
-    throw new Error('Не удалось получить манифест обновления: ' + (lastError && lastError.message || 'нет связи'));
+    if (!found.length) {
+      throw new Error('Не удалось получить манифест обновления: ' + (lastError && lastError.message || 'нет связи'));
+    }
+
+    // Never trust the first endpoint blindly. Pages/CDN/localStorage can be stale;
+    // choose the newest valid manifest returned by any configured fallback.
+    found.sort(function (a, b) {
+      return compareVersions(String(b.manifest.version), String(a.manifest.version));
+    });
+    return found[0];
   }
 
   function validateManifest(m) {
@@ -174,7 +189,9 @@
   async function inspect() {
     var cfg = getConfig();
     if (!cfg.manifestUrl) return { configured: false, currentVersion: APP_VERSION, channel: cfg.channel };
-    var manifest = await fetchManifest(cfg.manifestUrl + (cfg.manifestUrl.indexOf('?') >= 0 ? '&' : '?') + 'cb=' + MANIFEST_CACHE_BUSTER);
+    var fetched = await fetchManifest(cfg.manifestUrl);
+    var manifest = fetched.manifest;
+    var manifestUrl = fetched.url;
     var runtimeVersion = await getRuntimeAppVersion();
     var compat = compatibility(manifest, runtimeVersion);
     return {
@@ -182,6 +199,7 @@
       currentVersion: runtimeVersion,
       channel: cfg.channel,
       manifest: manifest,
+      manifestUrl: manifestUrl,
       compatibility: compat,
       updateAvailable: compat.ok && compareVersions(manifest.version, runtimeVersion) > 0
     };
@@ -284,7 +302,7 @@
     if (!state.configured || !state.updateAvailable) return state;
     var native;
     if (options.onProgress) setProgressHandler(options.onProgress);
-    native = nativeRequest('stage', getConfig().manifestUrl);
+    native = nativeRequest('stage', state.manifestUrl || getConfig().manifestUrl);
     if (native) {
       try {
         var nativeResult = await native;
