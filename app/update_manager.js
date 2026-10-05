@@ -6,7 +6,7 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.33.5'
+  var APP_VERSION = '70.33.6'
   // V70.25.91: parchment asset/update audit; stable manifest includes index.html and required root parchment assets. Trigger manifest regeneration with current workflow policy.
   // Public manifest is stored in the repository; do not depend on GitHub Pages.
   var DEFAULT_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
