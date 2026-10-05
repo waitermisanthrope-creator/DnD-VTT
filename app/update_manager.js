@@ -6,11 +6,11 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.32.21'
+  var APP_VERSION = '70.32.20'
   // V70.25.91: parchment asset/update audit; stable manifest includes index.html and required root parchment assets. Trigger manifest regeneration with current workflow policy.
   // Public manifest is stored in the repository; do not depend on GitHub Pages.
   var DEFAULT_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
-  var MANIFEST_CACHE_BUSTER = 'dnd-vtt-110-settings-scroll-fix'
+  var MANIFEST_CACHE_BUSTER = 'dnd-vtt-109-fantasy-ui-settings-scroll-fix'
   var STORAGE_KEY = 'dnd_update_manifest_url';
   var CHANNEL_KEY = 'dnd_update_channel';
   var STAGED_KEY = 'dnd_update_staged_manifest';
