@@ -14,6 +14,19 @@ const APP_FONTS = {
   cinzel: { name: 'Чинзель (Фэнтези манускрипт)', family: "'Cinzel Decorative', cursive, serif" }
 };
 
+const APP_FRAME_STYLES = {
+  dragon: { name: '🐉 Восточный дракон', art: "url('./assets/ui/dragon_frame_strip.svg')" },
+  vine: { name: '🌿 Лоза и кости', art: "url('./assets/ui/vine_bone_frame_strip.svg')" }
+};
+
+const APP_FRAME_COLORS = {
+  gold:   { name: 'Золото', color: '#d4af37', filter: 'none' },
+  crimson:{ name: 'Багровый', color: '#c84b45', filter: 'hue-rotate(-22deg) saturate(1.2)' },
+  jade:   { name: 'Нефрит', color: '#49a889', filter: 'hue-rotate(58deg) saturate(.95)' },
+  azure:  { name: 'Лазурь', color: '#4b91c8', filter: 'hue-rotate(105deg) saturate(1.05)' },
+  violet: { name: 'Фиолетовый', color: '#9b6ac8', filter: 'hue-rotate(-68deg) saturate(1.1)' }
+};
+
 function openSettingsModal() {
   let modal = document.getElementById('settingsModal');
   if (!modal) {
@@ -165,6 +178,10 @@ function openSettingsModal() {
   if (fontSelect) {
     fontSelect.value = localStorage.getItem('dnd_app_font') || 'inter';
   }
+  const frameStyleSelect = document.getElementById('settingsFrameStyleSelect');
+  if (frameStyleSelect) frameStyleSelect.value = localStorage.getItem('dnd_app_frame_style') || 'dragon';
+  const frameColorSelect = document.getElementById('settingsFrameColorSelect');
+  if (frameColorSelect) frameColorSelect.value = localStorage.getItem('dnd_app_frame_color') || 'gold';
 
   if (window.DND_CRAFTING_DLC_V50) window.DND_CRAFTING_DLC_V50.renderStatus();
 
@@ -461,6 +478,58 @@ function applyAppFont(fontKey) {
   `;
 }
 
+function applyAppFrameStyle(frameKey) {
+  const key = APP_FRAME_STYLES[frameKey] ? frameKey : 'dragon';
+  localStorage.setItem('dnd_app_frame_style', key);
+  document.documentElement.style.setProperty('--dnd-frame-art', APP_FRAME_STYLES[key].art);
+  document.documentElement.setAttribute('data-dnd-frame-style', key);
+  decorateAllDndModals();
+}
+
+function applyAppFrameColor(colorKey) {
+  const key = APP_FRAME_COLORS[colorKey] ? colorKey : 'gold';
+  localStorage.setItem('dnd_app_frame_color', key);
+  const color = APP_FRAME_COLORS[key];
+  document.documentElement.style.setProperty('--dnd-frame-color', color.color);
+  document.documentElement.style.setProperty('--dnd-frame-filter', color.filter);
+  document.documentElement.setAttribute('data-dnd-frame-color', key);
+  decorateAllDndModals();
+}
+
+function decorateDndModal(root) {
+  if (!root || !root.id && !root.classList) return;
+  const id = String(root.id || '');
+  const looksLikeModal = /modal|prompt|dialog/i.test(id) || root.getAttribute('role') === 'dialog';
+  if (!looksLikeModal) return;
+  let card = root;
+  if (root.children && root.children.length === 1 && root.firstElementChild) card = root.firstElementChild;
+  if (!card || card === document.body) return;
+  if (card.classList.contains('dnd-theme-frame')) return;
+  card.classList.add('dnd-theme-frame');
+  const key = localStorage.getItem('dnd_app_frame_style') || 'dragon';
+  card.classList.add(key === 'vine' ? 'dnd-frame-vine' : 'dnd-frame-dragon');
+}
+
+function decorateAllDndModals() {
+  document.querySelectorAll('[id*="Modal"],[id*="modal"],[id*="Prompt"],[id*="prompt"],[role="dialog"]').forEach(decorateDndModal);
+}
+
+function installDndModalFrameObserver() {
+  if (window.__dndModalFrameObserverInstalled) return;
+  window.__dndModalFrameObserverInstalled = true;
+  decorateAllDndModals();
+  const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(m) {
+      m.addedNodes && m.addedNodes.forEach(function(node) {
+        if (node.nodeType !== 1) return;
+        decorateDndModal(node);
+        node.querySelectorAll && node.querySelectorAll('[id*="Modal"],[id*="modal"],[id*="Prompt"],[id*="prompt"],[role="dialog"]').forEach(decorateDndModal);
+      });
+    });
+  });
+  observer.observe(document.body, { childList:true, subtree:true });
+}
+
 function openDebugLogsModal() {
   let modal = document.getElementById('settingsDebugLogsModal');
   if (!modal) {
@@ -663,6 +732,9 @@ document.addEventListener('DOMContentLoaded', () => {
   applyAppTheme(savedTheme);
   const savedFont = localStorage.getItem('dnd_app_font') || 'playfair';
   applyAppFont(savedFont);
+  applyAppFrameStyle(localStorage.getItem('dnd_app_frame_style') || 'dragon');
+  applyAppFrameColor(localStorage.getItem('dnd_app_frame_color') || 'gold');
+  installDndModalFrameObserver();
 
   if (typeof applyAppTransparency === 'function') {
     const savedAlpha = localStorage.getItem('dnd_app_alpha') || '0.65';
