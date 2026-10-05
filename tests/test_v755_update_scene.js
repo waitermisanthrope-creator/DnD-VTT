@@ -18,6 +18,9 @@ const settings=fs.readFileSync(path.join(__dirname,'..','app','Settings.js'),'ut
 assert(settings.includes('runDndUpdateSceneTest'),'debug menu must expose update scene test');
 assert(settings.includes('🔥 Тест окна обновления'),'settings must show a visible update-scene test button');
 assert(manager.includes('setTimeout(function ()')&&manager.includes('scene.__sceneApi.onApply'),'startup update must auto-apply after verified staging');
+assert(manager.includes('runSceneTest'),'update scene test must be exposed by updater module');
+assert(manager.includes("navigator.onLine === false")===false,'updater must not hard-block checks on navigator.onLine');
+assert(manager.includes('dnd:splash-complete'),'updater must retry after splash completion');
 assert(manager.includes('bytesDone')&&manager.includes('bytesTotal'),'JS updater must expose byte progress');
 assert(bridge.includes('readBytesWithProgress'),'native updater must report byte progress');
 assert(bridge.includes('bytesDone')&&bridge.includes('bytesTotal'),'native progress payload missing byte fields');
