@@ -1,0 +1,18 @@
+/** V755 — layered forest-fire update scene contract test. */
+const fs=require('fs'), path=require('path'), vm=require('vm');
+const scene=fs.readFileSync(path.join(__dirname,'..','app','update_scene_v755.js'),'utf8');
+const manager=fs.readFileSync(path.join(__dirname,'..','app','update_manager.js'),'utf8');
+const index=fs.readFileSync(path.join(__dirname,'..','index.html'),'utf8');
+const bridge=fs.readFileSync(path.join(__dirname,'..','android','app','src','main','java','com','dndvtt','app','DndUpdateBridge.java'),'utf8');
+function assert(c,m){if(!c)throw new Error(m);}
+new Function(scene);
+new Function(manager);
+assert(index.indexOf('update_scene_v755.js')<index.indexOf('update_manager.js'),'scene renderer must load before updater');
+assert(scene.includes('update_scene_forest_green.svg'),'green forest asset missing');
+assert(scene.includes('update_scene_forest_burned.svg'),'burned forest asset missing');
+assert(scene.includes('update_scene_fire_front.svg'),'fire front asset missing');
+assert(scene.includes('DND_UPDATE_SCENE'),'scene API missing');
+assert(manager.includes('bytesDone')&&manager.includes('bytesTotal'),'JS updater must expose byte progress');
+assert(bridge.includes('readBytesWithProgress'),'native updater must report byte progress');
+assert(bridge.includes('bytesDone')&&bridge.includes('bytesTotal'),'native progress payload missing byte fields');
+console.log('PASS V755 layered forest-fire update contract');
