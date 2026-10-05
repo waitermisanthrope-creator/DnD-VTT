@@ -504,9 +504,9 @@ function decorateDndModal(root) {
   let card = root;
   if (root.children && root.children.length === 1 && root.firstElementChild) card = root.firstElementChild;
   if (!card || card === document.body) return;
-  if (card.classList.contains('dnd-theme-frame')) return;
-  card.classList.add('dnd-theme-frame');
   const key = localStorage.getItem('dnd_app_frame_style') || 'dragon';
+  card.classList.add('dnd-theme-frame');
+  card.classList.remove('dnd-frame-vine', 'dnd-frame-dragon');
   card.classList.add(key === 'vine' ? 'dnd-frame-vine' : 'dnd-frame-dragon');
 }
 
