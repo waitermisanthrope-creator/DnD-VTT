@@ -1,3 +1,4 @@
+/* V70.33 manifest workflow trigger 2 */
 /* V70.33 manifest workflow trigger: regenerate complete stable asset manifest from main. */
 /* DND VTT — lightweight application updater contract.
  * The Android/native shell performs the final filesystem replacement.
