@@ -16,6 +16,8 @@ assert(scene.includes('testMode'),'scene must support safe debug test mode');
 assert(scene.includes('Закрыть тест'),'test mode must never expose real apply action');
 const settings=fs.readFileSync(path.join(__dirname,'..','app','Settings.js'),'utf8');
 assert(settings.includes('runDndUpdateSceneTest'),'debug menu must expose update scene test');
+assert(settings.includes('🔥 Тест окна обновления'),'settings must show a visible update-scene test button');
+assert(manager.includes('setTimeout(function ()')&&manager.includes('scene.__sceneApi.onApply'),'startup update must auto-apply after verified staging');
 assert(manager.includes('bytesDone')&&manager.includes('bytesTotal'),'JS updater must expose byte progress');
 assert(bridge.includes('readBytesWithProgress'),'native updater must report byte progress');
 assert(bridge.includes('bytesDone')&&bridge.includes('bytesTotal'),'native progress payload missing byte fields');
