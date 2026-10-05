@@ -229,15 +229,20 @@ public final class DndUpdateBridge {
             File dataRoot = context.getDataDir();
             File files = context.getFilesDir();
             File cache = context.getCacheDir();
+            File noBackup = context.getNoBackupFilesDir();
+            File codeCache = context.getCodeCacheDir();
             File updateRoot = new File(files, "vtt-updates");
             File versions = new File(files, "vtt-versions");
+
             long apkBytes = apkSize(context)[0];
-            long cacheBytes = directorySize(cache);
-            long dataBytes = Math.max(0L, directorySize(dataRoot) - cacheBytes);
-            long filesBytes = directorySize(files);
-            long updateBytes = directorySize(updateRoot);
-            long versionsBytes = directorySize(versions);
-            long totalBytes = apkBytes + dataBytes + cacheBytes;
+            long cacheBytes = safeDirectorySize(cache);
+            long filesBytes = safeDirectorySize(files);
+            long noBackupBytes = safeDirectorySize(noBackup);
+            long codeCacheBytes = safeDirectorySize(codeCache);
+            long dataBytes = safeDirectorySize(dataRoot);
+            long updateBytes = safeDirectorySize(updateRoot);
+            long versionsBytes = safeDirectorySize(versions);
+            long totalBytes = apkBytes + dataBytes;
 
             out.put("id", id);
             out.put("ok", true);
@@ -246,6 +251,8 @@ public final class DndUpdateBridge {
             out.put("dataBytes", dataBytes);
             out.put("filesBytes", filesBytes);
             out.put("cacheBytes", cacheBytes);
+            out.put("noBackupBytes", noBackupBytes);
+            out.put("codeCacheBytes", codeCacheBytes);
             out.put("updateBytes", updateBytes);
             out.put("versionsBytes", versionsBytes);
             out.put("totalBytes", totalBytes);
@@ -253,6 +260,8 @@ public final class DndUpdateBridge {
             out.put("dataText", formatBytes(dataBytes));
             out.put("filesText", formatBytes(filesBytes));
             out.put("cacheText", formatBytes(cacheBytes));
+            out.put("noBackupText", formatBytes(noBackupBytes));
+            out.put("codeCacheText", formatBytes(codeCacheBytes));
             out.put("updateText", formatBytes(updateBytes));
             out.put("versionsText", formatBytes(versionsBytes));
             out.put("freeBytes", dataRoot.getUsableSpace());
@@ -263,10 +272,35 @@ public final class DndUpdateBridge {
                 out.put("id", id);
                 out.put("ok", false);
                 out.put("status", "storage-failed");
-                out.put("value", e.toString());
+                out.put("value", e.getClass().getSimpleName() + ": " + String.valueOf(e.getMessage()));
             } catch (Exception ignored) {}
         }
         return out.toString();
+    }
+
+    private static long safeDirectorySize(File root) {
+        if (root == null || !root.exists()) return 0L;
+        long total = 0L;
+        java.util.ArrayDeque<File> stack = new java.util.ArrayDeque<>();
+        java.util.HashSet<String> visited = new java.util.HashSet<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            File file = stack.pop();
+            try {
+                String canonical = file.getCanonicalPath();
+                if (!visited.add(canonical)) continue;
+                if (file.isFile()) {
+                    total += Math.max(0L, file.length());
+                    continue;
+                }
+                File[] children = file.listFiles();
+                if (children == null) continue;
+                for (File child : children) {
+                    if (child != null) stack.push(child);
+                }
+            } catch (Exception ignored) {}
+        }
+        return total;
     }
 
     private static void validateVersion(String version) throws Exception {
