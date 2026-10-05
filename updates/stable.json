@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DnD-VTT",
-  "version": "70.32.21",
+  "version": "70.33.0",
   "minAppVersion": "70.25.71",
   "channel": "stable",
   "generated": "AUTO",
@@ -139,8 +139,8 @@
     },
     {
       "path": "app/update_manager.js",
-      "bytes": 21090,
-      "sha256": "92467b62f72d6de8619944cf91dcaf888d2cc5dfcf7d03bd7b3543591b2ffca6"
+      "bytes": 21089,
+      "sha256": "e632ff4476ceadb81b6d38399ee570c223d373ea69526ffa0be11b6e094788a1"
     },
     {
       "path": "app/onboarding_faq_v71.js",
@@ -149,28 +149,8 @@
     },
     {
       "path": "app/styles.css",
-      "bytes": 23212,
-      "sha256": "2661f157bb7de35d5c8e28a8869bb54ecfa1fc05ee074efd5d332d8451c97352"
-    },
-    {
-      "path": "app/assets/ui/loader_dragon_head.svg",
-      "bytes": 1343,
-      "sha256": "6704a8c0268432ca896b1470839dd8408661108e7d863c0a2d4d6034a135a485"
-    },
-    {
-      "path": "app/assets/ui/loader_fire.svg",
-      "bytes": 646,
-      "sha256": "02f763553c574d36f5d049c979c283f2d498aa8062fb85b577388fd68a8696ab"
-    },
-    {
-      "path": "app/assets/ui/dragon_frame_strip.svg",
-      "bytes": 1090,
-      "sha256": "04d35f1ad3c523f2b2fd0589aa85e83a0c63a44c202477a412b09e5fe25d3788"
-    },
-    {
-      "path": "app/assets/ui/vine_bone_frame_strip.svg",
-      "bytes": 1155,
-      "sha256": "53ff9d40cf2c7acb8a8d3712b08a846d36fe09fbdba8fcc38fc87ca3a7c6d5c3"
+      "bytes": 24172,
+      "sha256": "7256ec166da10684ee25465ea0cf5ad7b17eca8fbc306d9b62a236c70bfbf983"
     },
     {
       "path": "1790622844831.png",
