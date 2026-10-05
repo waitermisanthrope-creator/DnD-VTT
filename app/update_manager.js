@@ -10,7 +10,7 @@
   // V70.25.91: parchment asset/update audit; stable manifest includes index.html and required root parchment assets. Trigger manifest regeneration with current workflow policy.
   // Public manifest is stored in the repository; do not depend on GitHub Pages.
   var DEFAULT_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
-  var MANIFEST_CACHE_BUSTER = 'dnd-vtt-110-settings-scroll-fix'
+  var MANIFEST_CACHE_BUSTER = 'dnd-vtt-111-fantasy-assets'
   var STORAGE_KEY = 'dnd_update_manifest_url';
   var CHANNEL_KEY = 'dnd_update_channel';
   var STAGED_KEY = 'dnd_update_staged_manifest';
@@ -278,7 +278,7 @@
       '<p style="margin:0 0 8px;line-height:1.5;color:#ddd">Версия <strong>'+String(state.manifest.version)+'</strong> найдена.</p>' +
       '<p id="dndStartupUpdateStatus" style="margin:0 0 10px;line-height:1.45;color:#aaa">Подготавливаю обновление…</p>' +
       '<div class="dnd-loader-art">' +
-      '<img class="dnd-loader-dragon" src="./assets/ui/loader_dragon_head.svg" alt="" aria-hidden="true">' +
+      '<img class="dnd-loader-dragon" src="./app/assets/ui/loader_dragon_head.svg" alt="" aria-hidden="true">' +
       '<div><div class="dnd-loader-track"><div id="dndStartupUpdateBar" class="dnd-loader-fire"></div></div><div id="dndStartupUpdatePercent" class="dnd-loader-percent">0%</div></div>' +
       '</div>' +
       '<div style="display:flex;gap:8px;margin-top:14px"><button id="dndStartupUpdateLater" style="flex:1;padding:11px;border-radius:8px;border:1px solid #555;background:#333;color:#fff">Позже</button><button id="dndStartupUpdateApply" disabled style="flex:1;padding:11px;border-radius:8px;border:1px solid #d4af37;background:#5b4618;color:#aaa;font-weight:700">Загрузка…</button></div>';
