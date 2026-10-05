@@ -8,9 +8,9 @@ function assert(c,m){if(!c)throw new Error(m);}
 new Function(scene);
 new Function(manager);
 assert(index.indexOf('update_scene_v755.js')<index.indexOf('update_manager.js'),'scene renderer must load before updater');
-assert(scene.includes('update_scene_forest_green.svg'),'green forest asset missing');
-assert(scene.includes('update_scene_forest_burned.svg'),'burned forest asset missing');
-assert(scene.includes('update_scene_fire_front.svg'),'fire front asset missing');
+assert(scene.includes('forest_green.jpg'),'green forest asset missing');
+assert(scene.includes('forest_burned.jpg'),'burned forest asset missing');
+assert(scene.includes('fire_front.png'),'fire front asset missing');
 assert(scene.includes('DND_UPDATE_SCENE'),'scene API missing');
 assert(manager.includes('bytesDone')&&manager.includes('bytesTotal'),'JS updater must expose byte progress');
 assert(bridge.includes('readBytesWithProgress'),'native updater must report byte progress');
