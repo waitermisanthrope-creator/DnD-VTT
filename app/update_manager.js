@@ -1,3 +1,4 @@
+/* V70.33 manifest publish retry trigger */
 /* V70.33 manifest workflow trigger 2 */
 /* V70.33 manifest workflow trigger: regenerate complete stable asset manifest from main. */
 /* DND VTT — lightweight application updater contract.
