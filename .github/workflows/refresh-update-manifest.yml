@@ -32,12 +32,15 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           for attempt in 1 2 3 4 5; do
+            # Always regenerate from the latest remote main. Do not rebase the
+            # automation checkout: another workflow may publish to main while
+            # this job is running.
             git fetch origin main
-            git rebase origin/main
+            git reset --hard origin/main
             python3 tools/build_update_manifest.py \
               --base-url "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main" \
               --version "70.33.0" \
-              --min-app-version "70.25.71" \
+              --min-app-version "70.32.21" \
               --channel "stable" \
               --output updates/stable.json
             python3 - <<'PY'
@@ -67,7 +70,7 @@ PY
               exit 0
             fi
             echo "main moved during publish; retrying against latest main"
-            git reset --hard HEAD~1
+            git reset --hard origin/main
           done
           echo "Could not publish manifest after retries"
           exit 1
