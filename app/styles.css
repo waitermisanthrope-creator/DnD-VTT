@@ -464,7 +464,7 @@ input:focus, textarea:focus, select:focus {
 @keyframes dndTourMenuPulse{0%,100%{filter:none;box-shadow:none}20%,70%{filter:brightness(1.65);box-shadow:0 0 0 3px rgba(255,210,70,.55),0 0 22px rgba(255,210,70,.55)}}
 
 
-/* V70.32.20 — global fantasy modal frame system. The frame scales with any modal size. */
+/* V70.33 — premium fantasy visual asset layer. Existing modal/loading system preserved. */
 :root {
   --dnd-frame-color: #d4af37;
   --dnd-frame-filter: none;
@@ -501,32 +501,59 @@ input:focus, textarea:focus, select:focus {
 .dnd-theme-frame.dnd-frame-dragon::after { background-image: url('./app/assets/ui/dragon_frame_strip.svg'); }
 
 .dnd-loader-art {
-  display: grid; grid-template-columns: 92px minmax(0,1fr); align-items: end;
-  min-height: 86px; margin: 2px 0 6px;
+  display: grid; grid-template-columns: 108px minmax(0,1fr); align-items: end;
+  min-height: 118px; margin: 2px 0 6px;
 }
 .dnd-loader-dragon {
-  width: 105px; height: 112px; object-fit: contain; object-position: center bottom;
-  align-self: end; filter: drop-shadow(0 0 7px rgba(255,150,25,.42)); z-index: 2;
+  width: 126px; height: 116px; object-fit: contain; object-position: center bottom;
+  align-self: end; filter: drop-shadow(0 0 8px rgba(255,150,25,.48)); z-index: 2;
+  transform-origin: 62% 90%;
 }
 .dnd-loader-track {
-  position: relative; height: 30px; margin-left: -14px; border-radius: 999px;
+  position: relative; height: 42px; margin-left: -18px; border-radius: 999px;
   overflow: hidden; border: 1px solid color-mix(in srgb, var(--dnd-frame-color) 55%, #444);
-  background: rgba(15,15,15,.78); box-shadow: inset 0 0 9px #000, 0 0 12px rgba(255,120,0,.12);
+  background: rgba(8,10,9,.92);
+  box-shadow: inset 0 0 12px #000, 0 0 16px rgba(255,120,0,.15);
+}
+.dnd-loader-track::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:url('./app/assets/ui/loader_forest.svg');
+  background-repeat:no-repeat; background-position:center bottom; background-size:auto 100%;
+  opacity:.96;
+  filter:saturate(.9) contrast(1.08);
+  pointer-events:none;
+}
+.dnd-loader-track::after {
+  content:'';
+  position:absolute; inset:0;
+  background-image:url('./app/assets/ui/loader_sparks.svg');
+  background-repeat:no-repeat; background-position:center; background-size:cover;
+  opacity:.65;
+  pointer-events:none;
+  animation:dnd-loader-sparks 2.8s linear infinite;
 }
 .dnd-loader-fire {
   position: absolute; left: 0; top: 0; bottom: 0; width: 0%;
-  background-image: url('./app/assets/ui/loader_fire.svg'); background-repeat: no-repeat;
-  background-position: left center; background-size: auto 100%;
-  transition: width .22s ease; filter: drop-shadow(0 0 5px rgba(255,102,0,.75));
+  background-image:
+    url('./app/assets/ui/loader_fire.svg'),
+    url('./app/assets/ui/loader_forest_burning.svg');
+  background-repeat: no-repeat, no-repeat;
+  background-position: left center, left bottom;
+  background-size: auto 100%, auto 100%;
+  transition: width .22s ease; filter: drop-shadow(0 0 6px rgba(255,102,0,.78));
+  z-index: 2;
 }
 .dnd-loader-fire::after {
-  content:''; position:absolute; right:-4px; top:3px; bottom:3px; width:9px; border-radius:50%;
-  background:#fff1a0; box-shadow:0 0 9px #ff8a00,0 0 18px #ff3d00;
+  content:''; position:absolute; right:-4px; top:5px; bottom:5px; width:10px; border-radius:50%;
+  background:#fff1a0; box-shadow:0 0 10px #ff8a00,0 0 20px #ff3d00;
 }
-.dnd-loader-percent { text-align:center; color:#ffd85e; font-weight:800; margin-top:5px; }
+.dnd-loader-percent { text-align:center; color:#ffd85e; font-weight:800; margin-top:5px; text-shadow:0 1px 5px #000; }
 @media (prefers-reduced-motion: no-preference) {
-  .dnd-loader-fire { animation: dnd-loader-flicker .7s ease-in-out infinite alternate; }
-  .dnd-loader-dragon { animation: dnd-loader-breathe 1.8s ease-in-out infinite; }
+  .dnd-loader-fire { animation:dnd-loader-flicker .7s ease-in-out infinite alternate; }
+  .dnd-loader-dragon { animation:dnd-loader-breathe 1.8s ease-in-out infinite; }
 }
-@keyframes dnd-loader-flicker { from { filter: drop-shadow(0 0 4px rgba(255,102,0,.55)); } to { filter: drop-shadow(0 0 9px rgba(255,174,45,.9)); } }
-@keyframes dnd-loader-breathe { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-1px) scale(1.015); } }
+@keyframes dnd-loader-flicker { from { filter:drop-shadow(0 0 4px rgba(255,102,0,.55)); } to { filter:drop-shadow(0 0 10px rgba(255,174,45,.95)); } }
+@keyframes dnd-loader-breathe { 0%,100% { transform:translateY(0) scale(1); } 50% { transform:translateY(-1px) scale(1.015); } }
+@keyframes dnd-loader-sparks { 0% { transform:translateY(1px); opacity:.42; } 50% { transform:translateY(-2px); opacity:.82; } 100% { transform:translateY(-5px); opacity:.48; } }
+
