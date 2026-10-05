@@ -48,6 +48,8 @@ public final class DndUpdateBridge {
             } else if ("set-icon".equals(type)) {
                 String iconId = request.optString("iconId", "default");
                 executor.execute(() -> setLauncherIcon(id, iconId, reply));
+            } else if ("storage".equals(type)) {
+                executor.execute(() -> postReply(reply, storageResponse(id)));
             } else {
                 Log.e("DndUpdateBridge", "Unknown request: " + raw);
                 postReply(reply, response(id, false, "unknown-request", "type=" + type));
@@ -129,30 +131,147 @@ public final class DndUpdateBridge {
             File staged = candidates[candidates.length - 1];
             JSONObject manifest = new JSONObject(readFile(new File(staged, "manifest.json")));
             String version = manifest.getString("version");
+            validateVersion(version);
+
             File versions = new File(context.getFilesDir(), "vtt-versions");
+            if (!versions.exists() && !versions.mkdirs()) throw new Exception("Cannot create versions directory");
+
             File active = new File(versions, getActiveVersion());
             File next = new File(versions, version);
             deleteRecursive(next);
-            copyRecursive(active, next);
-            JSONArray files = manifest.getJSONArray("files");
-            for (int i = 0; i < files.length(); i++) {
-                String path = files.getJSONObject(i).getString("path");
-                postProgress(reply, id, "apply", i + 1, files.length(), path);
-                validatePath(path);
-                File src = new File(staged, path);
-                File dst = new File(next, path);
-                File parent = dst.getParentFile();
-                if (!parent.mkdirs() && !parent.isDirectory()) throw new Exception("Cannot create update directory");
-                copyFile(src, dst);
+
+            // The staged tree is already a complete, hash-verified web version.
+            // Promote it atomically instead of copying the whole active version again.
+            // This keeps peak storage around 2x the web payload instead of 3x+.
+            postProgress(reply, id, "apply", 0, 1, "Переключение версии");
+            if (!staged.renameTo(next)) {
+                throw new Exception("Cannot promote staged update without copying; update aborted to protect storage");
             }
+
             SharedPreferences prefs = context.getSharedPreferences("dnd_vtt_update", Context.MODE_PRIVATE);
             String previous = prefs.getString("active", "");
             prefs.edit().putString("previous", previous).putString("active", version).putString("pending", version).commit();
-            deleteRecursive(staged);
+
             postReply(reply, response(id, true, "applied", version));
             new Handler(Looper.getMainLooper()).postDelayed(activity::recreate, 500);
         } catch (Exception e) {
             postReply(reply, response(id, false, "apply-failed", e.toString()));
+        }
+    }
+
+    private void cleanupVersionStorage(boolean keepPrevious) {
+        try {
+            File versions = new File(context.getFilesDir(), "vtt-versions");
+            if (!versions.isDirectory()) return;
+            SharedPreferences prefs = context.getSharedPreferences("dnd_vtt_update", Context.MODE_PRIVATE);
+            String active = prefs.getString("active", getPackageVersion());
+            String previous = keepPrevious ? prefs.getString("previous", "") : "";
+            File[] dirs = versions.listFiles(File::isDirectory);
+            if (dirs == null) return;
+            for (File dir : dirs) {
+                String name = dir.getName();
+                if (name.equals(active) || (keepPrevious && name.equals(previous))) continue;
+                deleteRecursive(dir);
+            }
+        } catch (Exception e) {
+            Log.w("DndUpdateBridge", "Version cleanup failed", e);
+        }
+    }
+
+    private void cleanupStagingStorage() {
+        try {
+            File updateRoot = new File(context.getFilesDir(), "vtt-updates");
+            File[] dirs = updateRoot.listFiles(File::isDirectory);
+            if (dirs != null) for (File dir : dirs) deleteRecursive(dir);
+        } catch (Exception e) {
+            Log.w("DndUpdateBridge", "Staging cleanup failed", e);
+        }
+    }
+
+    private static long directorySize(File root) {
+        if (root == null || !root.exists()) return 0L;
+        if (root.isFile()) return root.length();
+        long total = 0L;
+        File[] children = root.listFiles();
+        if (children != null) {
+            for (File child : children) total += directorySize(child);
+        }
+        return total;
+    }
+
+    private static long[] apkSize(Context context) {
+        long total = 0L;
+        try {
+            android.content.pm.ApplicationInfo info = context.getApplicationInfo();
+            if (info.sourceDir != null) total += new File(info.sourceDir).length();
+            if (info.splitSourceDirs != null) {
+                for (String split : info.splitSourceDirs) if (split != null) total += new File(split).length();
+            }
+        } catch (Exception ignored) {}
+        return new long[]{total};
+    }
+
+    private static String formatBytes(long bytes) {
+        if (bytes < 1024L) return bytes + " Б";
+        double value = bytes;
+        String[] units = {"КБ", "МБ", "ГБ", "ТБ"};
+        int unit = -1;
+        while (value >= 1024.0 && unit < units.length - 1) {
+            value /= 1024.0;
+            unit++;
+        }
+        return String.format(java.util.Locale.ROOT, "%.2f %s", value, units[unit]);
+    }
+
+    private String storageResponse(String id) {
+        JSONObject out = new JSONObject();
+        try {
+            File dataRoot = context.getDataDir();
+            File files = context.getFilesDir();
+            File cache = context.getCacheDir();
+            File updateRoot = new File(files, "vtt-updates");
+            File versions = new File(files, "vtt-versions");
+            long apkBytes = apkSize(context)[0];
+            long dataBytes = directorySize(dataRoot);
+            long filesBytes = directorySize(files);
+            long cacheBytes = directorySize(cache);
+            long updateBytes = directorySize(updateRoot);
+            long versionsBytes = directorySize(versions);
+            long totalBytes = apkBytes + dataBytes + cacheBytes;
+
+            out.put("id", id);
+            out.put("ok", true);
+            out.put("status", "storage");
+            out.put("apkBytes", apkBytes);
+            out.put("dataBytes", dataBytes);
+            out.put("filesBytes", filesBytes);
+            out.put("cacheBytes", cacheBytes);
+            out.put("updateBytes", updateBytes);
+            out.put("versionsBytes", versionsBytes);
+            out.put("totalBytes", totalBytes);
+            out.put("apkText", formatBytes(apkBytes));
+            out.put("dataText", formatBytes(dataBytes));
+            out.put("filesText", formatBytes(filesBytes));
+            out.put("cacheText", formatBytes(cacheBytes));
+            out.put("updateText", formatBytes(updateBytes));
+            out.put("versionsText", formatBytes(versionsBytes));
+            out.put("freeBytes", dataRoot.getUsableSpace());
+            out.put("freeText", formatBytes(dataRoot.getUsableSpace()));
+            out.put("activeVersion", getActiveVersion());
+        } catch (Exception e) {
+            try {
+                out.put("id", id);
+                out.put("ok", false);
+                out.put("status", "storage-failed");
+                out.put("value", e.toString());
+            } catch (Exception ignored) {}
+        }
+        return out.toString();
+    }
+
+    private static void validateVersion(String version) throws Exception {
+        if (version == null || version.isEmpty() || !version.matches("[0-9]+\\.[0-9]+\\.[0-9]+")) {
+            throw new Exception("Unsafe update version: " + version);
         }
     }
 
@@ -206,6 +325,12 @@ public final class DndUpdateBridge {
         String packageVersion = getPackageVersion();
         String activeVersion = getActiveVersion();
         File active = new File(versions, activeVersion);
+
+        // Remove abandoned staging data and all obsolete web versions.
+        // Keep only the active version and, while a rollout is pending, the rollback version.
+        cleanupStagingStorage();
+        boolean keepPrevious = prefs.getString("pending", "").length() > 0;
+        cleanupVersionStorage(keepPrevious);
 
         // Refresh persisted web assets when the installed APK is newer.
         // This prevents an older in-app update from hiding newly bundled JS/assets.
@@ -326,6 +451,8 @@ public final class DndUpdateBridge {
         String active = getActiveVersion();
         context.getSharedPreferences("dnd_vtt_update", Context.MODE_PRIVATE)
                 .edit().putString("healthy", active).remove("pending").commit();
+        cleanupVersionStorage(false);
+        cleanupStagingStorage();
     }
 
     private void copyRootImageAssets(File targetRoot) throws Exception {
