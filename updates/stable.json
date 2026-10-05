@@ -263,9 +263,34 @@
       "sha256": "6f7c33496d0d82ba63e6c1c3be4de9011c7170749e23ff9369fb151b048bba55"
     },
     {
+      "path": "app/assets/ui/dragon.png",
+      "bytes": 274924,
+      "sha256": "6b2c7b25f8d9850029262ed1b13f932dee3dbb51efc987eabd5b408690993ee8"
+    },
+    {
+      "path": "app/assets/ui/dragon_fire.png",
+      "bytes": 267960,
+      "sha256": "da533552e5e3f58f96c7c9e85c2b9c20780df7f5df7339f518aa14b8c9acd975"
+    },
+    {
       "path": "app/assets/ui/dragon_frame_strip.svg",
       "bytes": 858,
       "sha256": "f7b86bca2db02039045f917fb1ca120ccc71b3b88d390b2a97d5c1983fb7fb7b"
+    },
+    {
+      "path": "app/assets/ui/fire_front.png",
+      "bytes": 1276760,
+      "sha256": "5c68f1e49f7771890878581b48b3b6d731dfa4e68b5f763f5e8c665f661a3081"
+    },
+    {
+      "path": "app/assets/ui/forest_burned.jpg",
+      "bytes": 211523,
+      "sha256": "23a24713f8d1afb7de2d70edfd64fa3baf7b46d50a6940a942161a638bdc257b"
+    },
+    {
+      "path": "app/assets/ui/forest_green.jpg",
+      "bytes": 309184,
+      "sha256": "1661adf628a655695a50b9e0b1da9d3cc3ab99d59115eecec49f3d1d3d5e22ec"
     },
     {
       "path": "app/assets/ui/loader_dragon_head.svg",
@@ -1299,8 +1324,8 @@
     },
     {
       "path": "app/update_scene_v755.js",
-      "bytes": 11707,
-      "sha256": "a0ec6a731e308b8fdb2ee7705442c9978dbd2a2f5436ad5fb1a843d74303c06f"
+      "bytes": 11430,
+      "sha256": "5036d31b74583c49bfa3581cf227c762de42a857b993bec645a6de3748369149"
     },
     {
       "path": "app/vessel_laserllama_v4_runtime.js",
