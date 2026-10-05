@@ -40,6 +40,22 @@ jobs:
               --min-app-version "70.25.71" \
               --channel "stable" \
               --output updates/stable.json
+            python3 - <<'PY'
+import json
+from pathlib import Path
+required = [
+  "app/assets/ui/loader_dragon_head.svg",
+  "app/assets/ui/loader_fire.svg",
+  "app/assets/ui/dragon_frame_strip.svg",
+  "app/assets/ui/vine_bone_frame_strip.svg",
+]
+manifest = json.loads(Path("updates/stable.json").read_text(encoding="utf-8"))
+paths = {item["path"] for item in manifest["files"]}
+missing = [p for p in required if p not in paths]
+if missing:
+    raise SystemExit("Fantasy UI assets missing from stable manifest: " + ", ".join(missing))
+print("Verified fantasy UI assets in stable manifest")
+PY
             if git diff --quiet -- updates/stable.json; then
               echo "Manifest is already current"
               exit 0
