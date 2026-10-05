@@ -373,7 +373,10 @@
     if (!state || !state.updateAvailable || !state.manifest) return null;
 
     var scene = null;
-    if (global.DND_UPDATE_SCENE && typeof global.DND_UPDATE_SCENE.create === 'function') {
+    var existingScene = document.getElementById('dndForestFireUpdateScene');
+    if (existingScene && existingScene.__sceneApi) {
+      scene = existingScene.__sceneApi;
+    } else if (global.DND_UPDATE_SCENE && typeof global.DND_UPDATE_SCENE.create === 'function') {
       scene = global.DND_UPDATE_SCENE.create(state);
     }
 
