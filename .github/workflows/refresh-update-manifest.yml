@@ -14,6 +14,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: stable-update-manifest
+  cancel-in-progress: false
+
 jobs:
   manifest:
     runs-on: ubuntu-latest
@@ -63,4 +67,18 @@ jobs:
           fi
           git add updates/stable.json
           git commit -m "Refresh stable in-app update manifest"
-          git push origin HEAD:main
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git rebase origin/main || {
+              echo "Rebase conflict; aborting retry"
+              git rebase --abort
+              exit 1
+            }
+            if git push origin HEAD:main; then
+              echo "Published complete stable manifest"
+              exit 0
+            fi
+            echo "main moved during publish; retrying"
+          done
+          echo "Could not publish stable manifest after retries"
+          exit 1
