@@ -247,8 +247,12 @@ function renderDiceModule() {
     return;
   }
 
-  // V70.32.13: dice renderer owns the primary card and drawer; preserve other modules.
-  // The dice renderer owns only its own card and drawer; it must never clear #tabDice.
+  // V70.32.15: primary dice card is rendered before any secondary panel work.
+  // A failure in drawer/panel integration must never leave the Dice tab blank.
+  const staticFallback = diceTab.querySelector('.dice-static-fallback');
+  if (staticFallback) staticFallback.remove();
+  const oldPrimary = document.getElementById('dicePrimaryCard');
+  if (oldPrimary) oldPrimary.remove();
   const oldDrawer = document.getElementById('diceDrawerContainer');
   if (oldDrawer) {
     const oldHost = oldDrawer.querySelector('#diceDrawerExternalPanels');
@@ -287,6 +291,10 @@ function renderDiceModule() {
     </div>
   `;
 
+  // Критически важное правило: основную карточку дайсов вставляем сразу.
+  // Даже если код шторки/дополнительных панелей упадёт, d4–d100 останутся видимыми.
+  diceTab.insertBefore(mainCard, diceTab.firstChild);
+
   const drawerContainer = document.createElement('div');
   drawerContainer.id = 'diceDrawerContainer';
   drawerContainer.style.cssText = 'margin:12px 0;border:1px solid #444;border-radius:8px;background:#1a1a1a;overflow:hidden;';
@@ -314,7 +322,6 @@ function renderDiceModule() {
   drawerContent.appendChild(externalPanels);
 
   // Force a deterministic order: dice controls first, gameplay drawer second.
-  diceTab.insertBefore(mainCard, diceTab.firstChild);
   diceTab.insertBefore(drawerContainer, mainCard.nextSibling);
 
   // Relocate known gameplay/combat panels into the drawer even if a module
