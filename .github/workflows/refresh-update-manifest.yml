@@ -1,5 +1,5 @@
 name: Refresh in-app update manifest
-# V70.33: regenerate after final visual asset pass
+# V70.33 — stable manifest publisher
 
 on:
   push:
@@ -14,63 +14,53 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: stable-update-manifest
-  cancel-in-progress: false
-
 jobs:
   manifest:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout main
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-      - name: Generate and publish complete stable manifest
+          ref: main
+          fetch-depth: 1
+
+      - name: Generate stable manifest
+        run: |
+          set -euo pipefail
+          python3 tools/build_update_manifest.py             --base-url "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main"             --version "70.33.0"             --min-app-version "70.32.21"             --channel "stable"             --output updates/stable.json
+
+      - name: Verify required visual assets
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          required = [
+            "app/assets/ui/loader_dragon_head.svg",
+            "app/assets/ui/loader_fire.svg",
+            "app/assets/ui/dragon_frame_strip.svg",
+            "app/assets/ui/vine_bone_frame_strip.svg",
+            "app/assets/ui/loader_forest.svg",
+            "app/assets/ui/loader_forest_burning.svg",
+            "app/assets/ui/loader_sparks.svg",
+          ]
+          m=json.loads(Path("updates/stable.json").read_text(encoding="utf-8"))
+          files={x["path"]:x for x in m["files"]}
+          missing=[p for p in required if p not in files]
+          invalid=[p for p in required if p in files and len(str(files[p].get("sha256","")))!=64]
+          if missing or invalid:
+              raise SystemExit(f"missing={missing} invalid_sha={invalid}")
+          print(f"Manifest OK: {len(m['files'])} files")
+          PY
+
+      - name: Publish stable manifest
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          for attempt in 1 2 3 4 5; do
-            # Always regenerate from the latest remote main. Do not rebase the
-            # automation checkout: another workflow may publish to main while
-            # this job is running.
-            git fetch origin main
-            git reset --hard origin/main
-            python3 tools/build_update_manifest.py \
-              --base-url "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main" \
-              --version "70.33.0" \
-              --min-app-version "70.32.21" \
-              --channel "stable" \
-              --output updates/stable.json
-            python3 - <<'PY'
-import json
-from pathlib import Path
-required = [
-  "app/assets/ui/loader_dragon_head.svg",
-  "app/assets/ui/loader_fire.svg",
-  "app/assets/ui/dragon_frame_strip.svg",
-  "app/assets/ui/vine_bone_frame_strip.svg",
-]
-manifest = json.loads(Path("updates/stable.json").read_text(encoding="utf-8"))
-paths = {item["path"] for item in manifest["files"]}
-missing = [p for p in required if p not in paths]
-if missing:
-    raise SystemExit("Fantasy UI assets missing from stable manifest: " + ", ".join(missing))
-print("Verified fantasy UI assets in stable manifest")
-PY
-            if git diff --quiet -- updates/stable.json; then
-              echo "Manifest is already current"
-              exit 0
-            fi
-            git add updates/stable.json
-            git commit -m "Refresh stable in-app update manifest"
-            if git push origin HEAD:main; then
-              echo "Published complete stable manifest"
-              exit 0
-            fi
-            echo "main moved during publish; retrying against latest main"
-            git reset --hard origin/main
-          done
-          echo "Could not publish manifest after retries"
-          exit 1
+          if git diff --quiet -- updates/stable.json; then
+            echo "Manifest is already current"
+            exit 0
+          fi
+          git add updates/stable.json
+          git commit -m "Refresh stable in-app update manifest"
+          git push origin HEAD:main
