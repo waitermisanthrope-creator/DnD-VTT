@@ -263,6 +263,26 @@
       "sha256": "6f7c33496d0d82ba63e6c1c3be4de9011c7170749e23ff9369fb151b048bba55"
     },
     {
+      "path": "app/assets/ui/dragon_frame_strip.svg",
+      "bytes": 1090,
+      "sha256": "04d35f1ad3c523f2b2fd0589aa85e83a0c63a44c202477a412b09e5fe25d3788"
+    },
+    {
+      "path": "app/assets/ui/loader_dragon_head.svg",
+      "bytes": 1343,
+      "sha256": "6704a8c0268432ca896b1470839dd8408661108e7d863c0a2d4d6034a135a485"
+    },
+    {
+      "path": "app/assets/ui/loader_fire.svg",
+      "bytes": 646,
+      "sha256": "02f763553c574d36f5d049c979c283f2d498aa8062fb85b577388fd68a8696ab"
+    },
+    {
+      "path": "app/assets/ui/vine_bone_frame_strip.svg",
+      "bytes": 1155,
+      "sha256": "53ff9d40cf2c7acb8a8d3712b08a846d36fe09fbdba8fcc38fc87ca3a7c6d5c3"
+    },
+    {
       "path": "app/battle_action_ui.js",
       "bytes": 18386,
       "sha256": "b33a85b4a195e0d81fcb63c54bc4b24954be78c8ffb71c57b2f478ae04652fac"
