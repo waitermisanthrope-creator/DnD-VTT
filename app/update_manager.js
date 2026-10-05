@@ -277,8 +277,10 @@
     card.innerHTML = '<h2 style="margin:0 0 10px;color:#ffd85e;font-size:1.25rem">🔄 Доступно обновление</h2>' +
       '<p style="margin:0 0 8px;line-height:1.5;color:#ddd">Версия <strong>'+String(state.manifest.version)+'</strong> найдена.</p>' +
       '<p id="dndStartupUpdateStatus" style="margin:0 0 10px;line-height:1.45;color:#aaa">Подготавливаю обновление…</p>' +
-      '<div style="height:10px;background:#292929;border-radius:99px;overflow:hidden;border:1px solid #444"><div id="dndStartupUpdateBar" style="height:100%;width:0%;background:#d4af37;transition:width .15s ease"></div></div>' +
-      '<div id="dndStartupUpdatePercent" style="margin-top:7px;text-align:center;color:#ffd85e;font-weight:700">0%</div>' +
+      '<div class="dnd-loader-art">' +
+      '<img class="dnd-loader-dragon" src="./assets/ui/loader_dragon_head.svg" alt="" aria-hidden="true">' +
+      '<div><div class="dnd-loader-track"><div id="dndStartupUpdateBar" class="dnd-loader-fire"></div></div><div id="dndStartupUpdatePercent" class="dnd-loader-percent">0%</div></div>' +
+      '</div>' +
       '<div style="display:flex;gap:8px;margin-top:14px"><button id="dndStartupUpdateLater" style="flex:1;padding:11px;border-radius:8px;border:1px solid #555;background:#333;color:#fff">Позже</button><button id="dndStartupUpdateApply" disabled style="flex:1;padding:11px;border-radius:8px;border:1px solid #d4af37;background:#5b4618;color:#aaa;font-weight:700">Загрузка…</button></div>';
     overlay.appendChild(card); document.body.appendChild(overlay);
     var status=card.querySelector('#dndStartupUpdateStatus'),bar=card.querySelector('#dndStartupUpdateBar'),pct=card.querySelector('#dndStartupUpdatePercent'),apply=card.querySelector('#dndStartupUpdateApply'),later=card.querySelector('#dndStartupUpdateLater');
