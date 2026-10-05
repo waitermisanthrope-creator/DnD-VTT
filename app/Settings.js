@@ -76,6 +76,21 @@ function openSettingsModal() {
             <div style="font-size: 0.76em; color: #aaa; line-height: 1.4; margin-bottom: 8px;">Выберите, какая иконка будет отображаться у Карманного ВТТ на рабочем столе.</div>
             <button onclick="window.openIconSettingsModal()" class="btn-action" style="background:#594a31; width:100%; padding:10px; font-size:0.85em; font-weight:bold; cursor:pointer; color:#fff; border:1px solid #806b45; border-radius:6px;">🖼️ Параметры иконки</button>
           </div>
+          <div style="background: #252525; padding: 12px; border-radius: 6px; border: 1px solid #5d492a;">
+            <div style="font-size: 0.95em; font-weight: bold; margin-bottom: 8px; color: #e5c878;">🪄 Оформление рамок</div>
+            <div style="font-size:.76em;color:#aaa;line-height:1.4;margin-bottom:8px;">Рамка применяется ко всем модальным окнам приложения. Размер окна не влияет на оформление.</div>
+            <select id="settingsFrameStyleSelect" onchange="applyAppFrameStyle(this.value)" style="width:100%;padding:8px;background:#1e1e1e;color:#fff;border:1px solid #444;border-radius:4px;box-sizing:border-box;margin-bottom:7px;">
+              <option value="dragon">🐉 Восточный дракон</option>
+              <option value="vine">🌿 Лоза и кости</option>
+            </select>
+            <select id="settingsFrameColorSelect" onchange="applyAppFrameColor(this.value)" style="width:100%;padding:8px;background:#1e1e1e;color:#fff;border:1px solid #444;border-radius:4px;box-sizing:border-box;">
+              <option value="gold">Золото</option>
+              <option value="crimson">Багровый</option>
+              <option value="jade">Нефрит</option>
+              <option value="azure">Лазурь</option>
+              <option value="violet">Фиолетовый</option>
+            </select>
+          </div>
           <div style="background: #252525; padding: 12px; border-radius: 6px; border: 1px solid #333;">
             <div style="font-size: 0.95em; font-weight: bold; margin-bottom: 8px; color: var(--theme-primary, #ff9800);">🖼️ Обои и арты</div>
             <button onclick="if(typeof openWallpapersModal === 'function') openWallpapersModal()" class="btn-action" style="background: #673AB7; width: 100%; padding: 10px; font-size: 0.85em; font-weight: bold; cursor: pointer; color: #fff; border: 1px solid #7E57C2; border-radius: 6px;">Открыть настройки обоев</button>
