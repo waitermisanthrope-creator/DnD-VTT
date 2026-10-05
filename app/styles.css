@@ -468,7 +468,7 @@ input:focus, textarea:focus, select:focus {
 :root {
   --dnd-frame-color: #d4af37;
   --dnd-frame-filter: none;
-  --dnd-frame-art: url('./assets/ui/dragon_frame_strip.svg');
+  --dnd-frame-art: url('./app/assets/ui/dragon_frame_strip.svg');
 }
 .dnd-theme-frame {
   position: relative !important;
@@ -496,9 +496,9 @@ input:focus, textarea:focus, select:focus {
 .dnd-theme-frame::after { bottom: 3px; transform: scaleY(-1); }
 .dnd-theme-frame > * { position: relative; z-index: 4; }
 .dnd-theme-frame.dnd-frame-vine::before,
-.dnd-theme-frame.dnd-frame-vine::after { background-image: url('./assets/ui/vine_bone_frame_strip.svg'); }
+.dnd-theme-frame.dnd-frame-vine::after { background-image: url('./app/assets/ui/vine_bone_frame_strip.svg'); }
 .dnd-theme-frame.dnd-frame-dragon::before,
-.dnd-theme-frame.dnd-frame-dragon::after { background-image: url('./assets/ui/dragon_frame_strip.svg'); }
+.dnd-theme-frame.dnd-frame-dragon::after { background-image: url('./app/assets/ui/dragon_frame_strip.svg'); }
 
 .dnd-loader-art {
   display: grid; grid-template-columns: 92px minmax(0,1fr); align-items: end;
@@ -515,7 +515,7 @@ input:focus, textarea:focus, select:focus {
 }
 .dnd-loader-fire {
   position: absolute; left: 0; top: 0; bottom: 0; width: 0%;
-  background-image: url('./assets/ui/loader_fire.svg'); background-repeat: no-repeat;
+  background-image: url('./app/assets/ui/loader_fire.svg'); background-repeat: no-repeat;
   background-position: left center; background-size: auto 100%;
   transition: width .22s ease; filter: drop-shadow(0 0 5px rgba(255,102,0,.75));
 }
