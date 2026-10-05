@@ -139,8 +139,8 @@
     },
     {
       "path": "app/update_manager.js",
-      "bytes": 21083,
-      "sha256": "1a0325312248594897118293dfb79f66a79362410d026d140740a9bfcefdbe9f"
+      "bytes": 21082,
+      "sha256": "93a4b8de01cf6d69a7fd0f5db9f378509ace515d959154bb11a60c1c86267cad"
     },
     {
       "path": "app/onboarding_faq_v71.js",
