@@ -1,5 +1,6 @@
 /* V755 — layered forest-fire update scene.
  * Presentation only: never owns updater state or invents progress.
+ * Uses full-screen forest layers, alpha fire front and PNG dragon VFX.
  */
 (function (global) {
   'use strict';
@@ -41,13 +42,11 @@
       '#' + ID + '{position:fixed;inset:0;z-index:120000;overflow:hidden;background:#111713;color:#f6ead0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}' +
       '#' + ID + ' *{box-sizing:border-box}' +
       '#' + ID + ' .ffs-scene{position:absolute;inset:0;overflow:hidden;background:#2b3428;}' +
-      '#' + ID + ' .ffs-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}' +
-      '#' + ID + ' .ffs-forest{position:absolute;left:0;right:0;bottom:0;height:78%;overflow:hidden;}' +
-      '#' + ID + ' .ffs-forest img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;}' +
+      '#' + ID + ' .ffs-green{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}' +
       '#' + ID + ' .ffs-burned{position:absolute;left:0;top:0;bottom:0;width:0%;overflow:hidden;transition:width .06s linear;}' +
-      '#' + ID + ' .ffs-burned img{width:100vw;max-width:none;height:100%;}' +
-      '#' + ID + ' .ffs-front{position:absolute;top:2%;bottom:0;width:118px;transform:translateX(-50%);pointer-events:none;transition:left .06s linear;}' +
-      '#' + ID + ' .ffs-front img{width:100%;height:100%;object-fit:fill;filter:drop-shadow(0 0 12px rgba(255,99,20,.55));}' +
+      '#' + ID + ' .ffs-burned img{display:block;width:100vw;max-width:none;height:100%;object-fit:cover;}' +
+      '#' + ID + ' .ffs-front{position:absolute;top:0;bottom:0;width:clamp(64px,12vw,170px);transform:translateX(-50%);pointer-events:none;transition:left .06s linear;z-index:6;}' +
+      '#' + ID + ' .ffs-front img{display:block;width:100%;height:100%;object-fit:fill;filter:drop-shadow(0 0 12px rgba(255,99,20,.55));}' +
       '#' + ID + ' .ffs-dragon{position:absolute;left:-2%;bottom:17%;width:min(38vw,420px);max-height:58%;object-fit:contain;animation:ffsDragon 3.8s ease-in-out infinite;filter:drop-shadow(0 14px 20px rgba(0,0,0,.42));z-index:8;}' +
       '#' + ID + ' .ffs-breath{position:absolute;left:18%;bottom:39%;width:min(48vw,620px);z-index:7;transform-origin:left center;animation:ffsBreath 1.2s ease-in-out infinite;}' +
       '#' + ID + ' .ffs-vfx{position:absolute;pointer-events:none;z-index:10;}' +
@@ -71,20 +70,17 @@
       '@keyframes ffsSmoke{0%,100%{transform:translate(0,0) scale(.92);opacity:.35}50%{transform:translate(-25px,-35px) scale(1.12);opacity:.72}}' +
       '@keyframes ffsEmbers{0%{transform:translate(0,15px)}100%{transform:translate(20px,-35px)}}' +
       '@keyframes ffsAsh{0%{transform:translate(0,-10px)}100%{transform:translate(-30px,50px)}}' +
-      '@media(max-width:600px){#' + ID + ' .ffs-forest{height:67%;}#' + ID + ' .ffs-dragon{left:-8%;bottom:18%;width:48vw;}#' + ID + ' .ffs-breath{left:14%;bottom:38%;width:62vw;}#' + ID + ' .ffs-front{width:82px;}#' + ID + ' .ffs-ui{bottom:3%;}#' + ID + ' .ffs-meta{font-size:11px;}}' +
+      '@media(max-width:600px){#' + ID + ' .ffs-green{object-position:center center;}#' + ID + ' .ffs-dragon{left:-8%;bottom:18%;width:42vw;}#' + ID + ' .ffs-breath{left:14%;bottom:38%;width:62vw;}#' + ID + ' .ffs-ui{bottom:3%;}#' + ID + ' .ffs-meta{font-size:11px;}}' +
       '</style>' +
       '<div class="ffs-scene">' +
-        '<img class="ffs-bg" src="' + ASSET + 'update_scene_background.svg" alt="">' +
-        '<div class="ffs-forest">' +
-          '<img src="' + ASSET + 'update_scene_forest_green.svg" alt="">' +
-          '<div class="ffs-burned"><img src="' + ASSET + 'update_scene_forest_burned.svg" alt=""></div>' +
-          '<div class="ffs-front" style="left:0%"><img src="' + ASSET + 'update_scene_fire_front.svg" alt=""></div>' +
-        '</div>' +
+        '<img class="ffs-green" src="' + ASSET + 'forest_green.jpg" alt="">' +
+        '<div class="ffs-burned"><img src="' + ASSET + 'forest_burned.jpg" alt=""></div>' +
+        '<div class="ffs-front" style="left:0%"><img src="' + ASSET + 'fire_front.png" alt=""></div>' +
         '<img class="ffs-vfx ffs-smoke" src="' + ASSET + 'update_scene_smoke.svg" alt="">' +
         '<img class="ffs-vfx ffs-embers" src="' + ASSET + 'update_scene_embers.svg" alt="">' +
         '<img class="ffs-vfx ffs-ash" src="' + ASSET + 'update_scene_ash.svg" alt="">' +
-        '<img class="ffs-breath" src="' + ASSET + 'update_scene_dragon_fire.svg" alt="">' +
-        '<img class="ffs-dragon" src="' + ASSET + 'update_scene_dragon.svg" alt="">' +
+        '<img class="ffs-breath" src="' + ASSET + 'dragon_fire.png" alt="">' +
+        '<img class="ffs-dragon" src="' + ASSET + 'dragon.png" alt="">' +
         '<div class="ffs-vignette"></div>' +
         '<div class="ffs-ui">' +
           '<div class="ffs-title">Обновление приложения</div>' +
