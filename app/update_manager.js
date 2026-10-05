@@ -383,7 +383,7 @@
       overlay.style.cssText = 'position:fixed;inset:0;z-index:120000;display:flex;align-items:center;justify-content:center;background:#111;color:#fff;font-family:system-ui,sans-serif';
       overlay.innerHTML = '<div style="padding:24px;text-align:center"><h2>Обновление приложения</h2><p id="dndStartupUpdateStatus">Подготавливаю обновление…</p></div>';
       document.body.appendChild(overlay);
-      return {
+      var fallbackScene = {
         overlay: overlay,
         setProgress: function () {},
         finish: function () {},
@@ -398,6 +398,10 @@
         },
         destroy: function () { overlay.remove(); }
       };
+      fallbackScene.onApply = async function () {
+        await applyStaged({});
+      };
+      return fallbackScene;
     }
 
     scene.onApply = async function () {
