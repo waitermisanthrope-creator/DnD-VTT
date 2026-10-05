@@ -474,7 +474,13 @@ input:focus, textarea:focus, select:focus {
   position: relative !important;
   border-color: var(--dnd-frame-color) !important;
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--dnd-frame-color) 45%, transparent), 0 16px 55px rgba(0,0,0,.62), inset 0 0 24px rgba(0,0,0,.18) !important;
-  overflow: hidden !important;
+  overflow: visible !important;
+}
+#settingsModal > .dnd-theme-frame {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
 }
 .dnd-theme-frame::before,
 .dnd-theme-frame::after {
