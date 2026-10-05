@@ -17,8 +17,12 @@ assert(scene.includes('Закрыть тест'),'test mode must never expose re
 const settings=fs.readFileSync(path.join(__dirname,'..','app','Settings.js'),'utf8');
 assert(settings.includes('runDndUpdateSceneTest'),'debug menu must expose update scene test');
 assert(settings.includes('🔥 Тест окна обновления'),'settings must show a visible update-scene test button');
-assert(manager.includes('setTimeout(function ()')&&manager.includes('scene.__sceneApi.onApply'),'startup update must auto-apply after verified staging');
+assert(manager.includes('setTimeout(async function ()')&&manager.includes('scene.onApply'),'startup update must auto-apply only through the rendered scene API');
+assert(manager.includes('await nextPaint()'),'startup update must yield for a first WebView paint before staging');
+assert(manager.includes("global.__dndUpdateCheckRunning = null"),'startup flow must keep a single lifecycle lock');
 assert(manager.includes('runSceneTest'),'update scene test must be exposed by updater module');
+assert(manager.includes("settingsModal", "devMenuModal"),'scene test must hide parent debug/settings modals');
+assert(manager.includes("Тест окна обновления не запустился"),'scene test must report runtime failures instead of silently doing nothing');
 assert(manager.includes("navigator.onLine === false")===false,'updater must not hard-block checks on navigator.onLine');
 assert(manager.includes('dnd:splash-complete'),'updater must retry after splash completion');
 assert(manager.includes('waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json'),'updater must use GitHub Pages manifest as primary endpoint');
