@@ -1,5 +1,5 @@
 name: Refresh in-app update manifest
-# V70.32.20: regenerate after fantasy UI assets
+# V70.33: regenerate after final visual asset pass
 
 on:
   push:
