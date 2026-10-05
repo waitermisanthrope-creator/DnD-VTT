@@ -6,7 +6,7 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.33.2'
+  var APP_VERSION = '70.33.3'
   // V70.25.91: parchment asset/update audit; stable manifest includes index.html and required root parchment assets. Trigger manifest regeneration with current workflow policy.
   // Public manifest is stored in the repository; do not depend on GitHub Pages.
   var DEFAULT_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
@@ -397,6 +397,14 @@
             if (scene && scene.__sceneApi) {
               scene.__sceneApi.finish();
               scene.__sceneApi.enableApply();
+              // Startup updates are fully automatic after successful verification.
+              // Keep the completed scene visible briefly before applying the staged tree.
+              scene.__sceneApi.setStatus('Проверка завершена. Устанавливаю обновление…');
+              setTimeout(function () {
+                if (scene && scene.__sceneApi && typeof scene.__sceneApi.onApply === 'function') {
+                  scene.__sceneApi.onApply();
+                }
+              }, 850);
             }
           }
         }).catch(function (e) {
