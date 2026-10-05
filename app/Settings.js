@@ -373,6 +373,77 @@ function devTriggerLevelUpModal() {
 }
 
 /**
+ * Запускает безопасную локальную имитацию обновления.
+ * Реальный manifest, сеть, скачивание, staging и native apply не используются.
+ * Используется тот же DND_UPDATE_SCENE, что и при настоящем обновлении.
+ */
+function runDndUpdateSceneTest() {
+  if (!window.DND_UPDATE_SCENE || typeof window.DND_UPDATE_SCENE.create !== 'function') {
+    alert('Сцена обновления не загружена.');
+    return;
+  }
+  if (typeof closeDevMenuModal === 'function') closeDevMenuModal();
+
+  const files = [
+    ['index.html', 286000], ['app/app.js', 42000],
+    ['app/update_manager.js', 18000], ['app/update_scene_v755.js', 15000],
+    ['app/class_features_engine.js', 52000], ['app/combat_engine.js', 68000],
+    ['app/assets/ui/forest_green.jpg', 980000], ['app/assets/ui/forest_burned.jpg', 1010000],
+    ['app/assets/ui/fire_front.png', 214000], ['app/assets/ui/dragon.png', 118000],
+    ['app/assets/ui/dragon_fire.png', 96000], ['app/assets/ui/update_scene_smoke.svg', 18000]
+  ].map(function(item) {
+    return { path: item[0], bytes: item[1], sha256: '0'.repeat(64) };
+  });
+
+  const totalBytes = files.reduce(function(sum, f) { return sum + f.bytes; }, 0);
+  const scene = window.DND_UPDATE_SCENE.create({
+    testMode: true,
+    manifest: { version: 'TEST', files: files }
+  });
+
+  let fileIndex = 0, fileStart = 0, completedBytes = 0, raf = 0;
+
+  function finishTest() {
+    if (raf) cancelAnimationFrame(raf);
+    scene.setProgress({
+      current: files.length, total: files.length,
+      bytesDone: totalBytes, bytesTotal: totalBytes,
+      phase: 'apply', path: ''
+    });
+    scene.setStatus('Проверка завершена: все файлы условно проверены, ошибок нет.');
+    scene.enableApply();
+  }
+
+  function frame(now) {
+    if (!fileStart) fileStart = now;
+    const elapsed = Math.min(420, now - fileStart);
+    const local = elapsed / 420;
+    const file = files[fileIndex];
+    const bytesDone = completedBytes + Math.round(file.bytes * local);
+    scene.setProgress({
+      current: fileIndex + 1, total: files.length,
+      bytesDone: bytesDone, bytesTotal: totalBytes,
+      phase: 'skip', path: file.path
+    });
+    if (elapsed >= 420) {
+      completedBytes += file.bytes;
+      fileIndex++;
+      fileStart = now;
+      if (fileIndex >= files.length) { finishTest(); return; }
+    }
+    raf = requestAnimationFrame(frame);
+  }
+
+  scene.setProgress({
+    current: 0, total: files.length,
+    bytesDone: 0, bytesTotal: totalBytes,
+    phase: 'skip', path: 'подготовка списка файлов…'
+  });
+  scene.setStatus('Имитация проверки файлов — реальные файлы не изменяются.');
+  raf = requestAnimationFrame(frame);
+}
+
+/**
  * Модальное окно Меню разработчика
  */
 function openDevMenuModal() {
@@ -436,6 +507,7 @@ function openDevMenuModal() {
           <div style="background: #252525; padding: 12px; border-radius: 6px; border: 1px solid #37474F;">
             <div style="font-size: 0.9em; color: #aaa; margin-bottom: 8px;">Инструменты отладки и тестирования:</div>
             <button onclick="exportDebugLogs()" class="btn-action" style="background: #37474F; width: 100%; padding: 10px; font-size: 0.85em; cursor: pointer; border-radius: 6px; border: 1px solid #546E7A; color: #fff; font-weight: bold;">📥 Выгрузить логи дебага (.txt)</button>
+             <button onclick="runDndUpdateSceneTest()" class="btn-action" style="background:#8e3518; width:100%; margin-top:8px; padding:10px; font-size:.85em; cursor:pointer; border-radius:6px; border:1px solid #d97727; color:#fff; font-weight:bold;">🔥 Тест окна обновления</button>
           </div>
         </div>
         <div style="margin-top: 20px; display: flex; justify-content: flex-end;">

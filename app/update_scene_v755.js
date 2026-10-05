@@ -28,6 +28,7 @@
     if (old && old.__sceneApi) return old.__sceneApi;
 
     var manifest = state && state.manifest || {};
+    var testMode = !!(state && state.testMode);
     var totalFiles = Array.isArray(manifest.files) ? manifest.files.length : 0;
     var totalBytes = Array.isArray(manifest.files) ? manifest.files.reduce(function (sum, f) {
       return sum + Math.max(0, Number(f && f.bytes) || 0);
@@ -83,12 +84,12 @@
         '<img class="ffs-dragon" src="' + ASSET + 'dragon.png" alt="">' +
         '<div class="ffs-vignette"></div>' +
         '<div class="ffs-ui">' +
-          '<div class="ffs-title">Обновление приложения</div>' +
+          '<div class="ffs-title">' + (testMode ? 'Тест обновления' : 'Обновление приложения') + '</div>' +
           '<div class="ffs-percent" id="ffsPercent">0%</div>' +
           '<div class="ffs-track"><div class="ffs-bar" id="ffsBar"></div></div>' +
-          '<div class="ffs-sub" id="ffsStatus">Дракон разжигает огонь…</div>' +
+          '<div class="ffs-sub" id="ffsStatus">' + (testMode ? 'Имитация проверки файлов…' : 'Дракон разжигает огонь…') + '</div>' +
           '<div class="ffs-meta"><span id="ffsFile">Файл 0 из ' + totalFiles + '</span><span>•</span><span id="ffsBytes">0 Б из ' + formatBytes(totalBytes) + '</span></div>' +
-          '<div class="ffs-actions"><button id="ffsLater">Позже</button><button class="primary" id="ffsApply" disabled>Загрузка…</button></div>' +
+          '<div class="ffs-actions"><button id="ffsLater">' + (testMode ? 'Закрыть' : 'Позже') + '</button><button class="primary" id="ffsApply" disabled>' + (testMode ? 'Проверка…' : 'Загрузка…') + '</button></div>' +
         '</div>' +
       '</div>';
 
@@ -179,7 +180,10 @@
     api.finish = function () { setProgress(100); };
     api.enableApply = function () {
       apply.disabled = false;
-      apply.textContent = 'Установить обновление';
+      apply.textContent = testMode ? 'Закрыть тест' : 'Установить обновление';
+    };
+    api.setStatus = function (message) {
+      if (status) status.textContent = String(message || '');
     };
     api.fail = function (message) {
       status.textContent = 'Ошибка загрузки: ' + String(message || 'неизвестная ошибка');
@@ -193,6 +197,10 @@
 
     later.onclick = function () { api.destroy(); };
     apply.onclick = function () {
+      if (testMode) {
+        api.destroy();
+        return;
+      }
       if (typeof api.onApply === 'function') api.onApply();
     };
 
