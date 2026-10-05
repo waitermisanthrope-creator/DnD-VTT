@@ -17,7 +17,7 @@ def app_version_from_source():
     try:
         text=p.read_text(encoding='utf-8')
         import re
-        m=re.search(r"APP_VERSION\\s*=\\s*['\"]([^'\"]+)['\"]",text)
+        m=re.search(r"APP_VERSION\s*=\s*['\"]([^'\"]+)['\"]",text)
         return m.group(1) if m else None
     except OSError:
         return None
