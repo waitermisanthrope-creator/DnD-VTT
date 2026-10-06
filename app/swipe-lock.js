@@ -30,6 +30,8 @@
       }
 
       document.body.classList.toggle('modal-open', hasActiveModal);
+      // Modal backdrop may lock the page, but it must never disable vertical touch gestures inside modal panels.
+      document.body.style.touchAction = hasActiveModal ? 'auto' : '';
     }
 
     var observer = new MutationObserver(syncModalTouchLock);
