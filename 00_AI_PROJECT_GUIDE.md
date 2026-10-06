@@ -8017,3 +8017,12 @@ Implemented:
 - Invisible/effect tokens are excluded from initiative order.
 - Old token saves migrate safely to the new combat fields.
 - This is the bridge layer for later integration with the existing D&D combat/action engine; it intentionally does not duplicate the full rules engine yet.
+
+
+## V70.36.10 — боевой режим перемещения
+
+- В 3D-редактор добавлен переключатель «⚔️ Боевой режим» с сохранением состояния в карте.
+- Выключен: свободное перемещение не ограничивается скоростью персонажа.
+- Включен: скорость активного токена напрямую ограничивает пройденную дистанцию движения; при отсутствии значения используется стандартные 30 ft.
+- Бег применяет существующий множитель бега.
+- Переключение режима не меняет геометрию/коллизии, а только лимит движения.
