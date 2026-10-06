@@ -2,7 +2,7 @@
   "schema": 1,
   "app": "DND_VTT",
   "version": "70.34.1",
-  "minAppVersion": "70.33.8",
+  "minAppVersion": "70.34.0",
   "channel": "stable",
   "generated": "2026-10-06",
   "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main",
@@ -1330,12 +1330,12 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 16303,
-      "sha256": "b97dde3c2eab81f6a491950e2cb90212aa20dd0e"
+      "sha256": "86883bc54022fd7f318f83ea85fc15a93c74bb479545f1fa6abbdac96378922a"
     },
     {
       "path": "app/update_scene_v2.js",
-      "bytes": 10956,
-      "sha256": "eb6d606bb8e1c02c9beb296c847e6f8abfbcb4e9aa84a6e71638dafb5bad2c57"
+      "bytes": 11764,
+      "sha256": "3a4f6dca196ebcddb49de5e467d0318add2025859599de487ddcd5b4d82b5529"
     },
     {
       "path": "app/vessel_laserllama_v4_runtime.js",
