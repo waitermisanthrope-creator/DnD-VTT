@@ -5,7 +5,7 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.34.0';
+  var APP_VERSION = '70.34.1';
   var DEFAULT_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
   var FALLBACK_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url_v2';
@@ -254,7 +254,7 @@
       ['settingsModal','devMenuModal'].forEach(function(id){
         var e=document.getElementById(id); if(e) e.style.display='none';
       });
-      var ui = scene({testMode:true,updateAvailable:false,manifest:{version:'70.34.0',files:[]}});
+      var ui = scene({testMode:true,updateAvailable:false,manifest:{version:'70.34.1',files:[]}});
       ui.setStatus('Тест новой сцены. Файлы не скачиваются и ничего не устанавливается.');
       var total=18, i=0, timer=null;
       ui.setProgress({current:0,total:total,bytesDone:0,bytesTotal:100,path:'Запуск'});
