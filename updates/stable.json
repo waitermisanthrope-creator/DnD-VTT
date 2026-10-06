@@ -1319,8 +1319,8 @@
     },
     {
       "path": "app/swipe-lock.js",
-      "bytes": 1654,
-      "sha256": "08d95e0adc6fe3f7a6a33558d90764e4b431b1634670ea5a4081303bc74c9e5c"
+      "bytes": 1838,
+      "sha256": "213a34dbcd67ecba0b4b99eaf2defa73c82ec6a268e5e566505353734315b6ea"
     },
     {
       "path": "app/turn_planner.js",
