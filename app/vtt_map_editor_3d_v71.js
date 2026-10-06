@@ -6,7 +6,7 @@
  */
 (function(global){
   'use strict';
-  var VERSION='0.9.0';
+  var VERSION='0.9.1';
   var state={
     open:false, cols:20, rows:20, minLevel:0, maxLevel:0, currentLevel:0, cell:1,
     cells:{}, objects:[], walls:{}, connectors:[], tokens:[], combat:{active:false,round:1,currentId:null,order:[],startedAt:0,mode:true,turns:{}},
@@ -138,8 +138,8 @@
     Object.keys(state.walls).forEach(function(k){var w=state.walls[k];if(Number(w.level)!==state.currentLevel)return;wallQuads(w).forEach(function(q){items.push({d:(q[0].depth+q[1].depth+q[2].depth+q[3].depth)/4,kind:'wall',w:w,p:q});});});
     state.objects.forEach(function(o){
       if(Number(o.level||0)!==state.currentLevel)return;var z=cellHeight(o.x,o.y,state.currentLevel)+Number(o.z||0),s=Number(o.size||.8),sx=s*Number(o.scaleX||1),sy=s*Number(o.scaleY||1),sz=s*Number(o.scaleZ||1),ang=Number(o.rotation||0)*Math.PI/180,cs=Math.cos(ang),sn=Math.sin(ang),cx=o.x+s/2,cy=o.y+s/2;function P(dx,dy,zz){var rx=dx*cs-dy*sn,ry=dx*sn+dy*cs;return project(cx+rx,cy+ry,z+zz);}
-      var a=project(o.x+.1,o.y+.1,z),b=project(o.x+s,o.y+.1,z),c=project(o.x+s,o.y+s,z),d=project(o.x+.1,o.y+s,z);
-      var za=project(o.x+.1,o.y+.1,z+s),zb=project(o.x+s,o.y+.1,z+s),zc=project(o.x+s,o.y+s,z+s),zd=project(o.x+.1,o.y+s,z+s);
+      var a=P(-sx/2,-sy/2,0),b=P(sx/2,-sy/2,0),c=P(sx/2,sy/2,0),d=P(-sx/2,sy/2,0);
+      var za=P(-sx/2,-sy/2,sz),zb=P(sx/2,-sy/2,sz),zc=P(sx/2,sy/2,sz),zd=P(-sx/2,sy/2,sz);
       items.push({d:(a.depth+b.depth+c.depth+d.depth)/4,kind:'obj',o:o,p:[a,b,c,d],top:[za,zb,zc,zd]});
     });
     items.sort(function(a,b){return (state.cameraMode==='firstPerson'||state.cameraMode==='thirdPerson')?b.d-a.d:a.d-b.d;});
@@ -150,11 +150,11 @@
       }else if(it.kind==='side'){
         poly(it.p,'#14181d','#343b44');
       }else if(it.kind==='wall'){
-        var wi=it.w.texture&&loadTexture(it.w.texture);if(wi&&wi.complete&&wi.naturalWidth){ctx.save();ctx.globalAlpha=.92;poly(it.p,'#777','#222');ctx.restore();}else poly(it.p,'#777','#222');
+        var wi=it.w.texture&&loadTexture(it.w.texture),wm=materialOf(it.w);texturedPoly(it.p,wi,wm,it.w.material&&it.w.material.type==='glass'?'rgba(170,210,230,.35)':it.w.material&&it.w.material.type==='wood'?'#76502d':it.w.material&&it.w.material.type==='metal'?'#666':'#777','#222');
       }else if(it.kind==='connector'){
         drawConnector(it.c);
       }else{
-        var oi=textureForObject(it.o),img=oi&&loadTexture(oi);var oi=textureForObject(it.o),img=oi&&loadTexture(oi),mat=materialOf(it.o);texturedPoly([it.p[0],it.p[1],it.top[1],it.top[0]],img,mat,it.o.color||'#8b5a2b','#111');texturedPoly([it.p[1],it.p[2],it.top[2],it.top[1]],img,mat,it.o.color2||'#6f461f','#111');texturedPoly(it.top,img,mat,it.o.color||'#a8733a','#111');
+        var oi=textureForObject(it.o),img=oi&&loadTexture(oi),mat=materialOf(it.o);texturedPoly([it.p[0],it.p[1],it.top[1],it.top[0]],img,mat,it.o.color||'#8b5a2b','#111');texturedPoly([it.p[1],it.p[2],it.top[2],it.top[1]],img,mat,it.o.color2||'#6f461f','#111');texturedPoly(it.top,img,mat,it.o.color||'#a8733a','#111');
         if(it.o.id===state.selected){ctx.strokeStyle='#ffd54f';ctx.lineWidth=3;poly(it.top,null,'#ffd54f');ctx.lineWidth=1;}
       }
     });
@@ -162,12 +162,12 @@
     drawHud();
   }
   function drawHud(){
-    ctx.fillStyle='rgba(10,10,10,.78)';ctx.fillRect(10,10,Math.min(330,canvas.clientWidth-20),86);
+    ctx.fillStyle='rgba(10,10,10,.78)';ctx.fillRect(10,10,Math.min(360,canvas.clientWidth-20),112);
     ctx.fillStyle='#f0d27a';ctx.font='700 14px sans-serif';ctx.fillText('3D РЕДАКТОР КАРТ • '+VERSION,20,31);
     ctx.fillStyle='#bbb';ctx.font='12px sans-serif';
     ctx.fillText('1 палец: выбор  •  2 пальца: камера/zoom/поворот',20,51);
     ctx.fillText('Размер: '+state.cols+'×'+state.rows+'  •  уровни: '+levelLabel(state.minLevel)+'…'+levelLabel(state.maxLevel),20,69);ctx.fillText('Текущий уровень: '+levelLabel(state.currentLevel)+'  •  высотных клеток: '+Object.keys(state.cells).length,20,87);
-    ctx.fillText('Игрок: '+state.playerCharacter.name+' • '+state.playerCharacter.className+'  '+state.playerCharacter.tokenGlyph,20,87);
+    ctx.fillText('Игрок: '+state.playerCharacter.name+' • '+state.playerCharacter.className+'  '+state.playerCharacter.tokenGlyph,20,105);
   }
   function resize(){if(!canvas)return;var r=canvas.getBoundingClientRect(),d=global.devicePixelRatio||1;canvas.width=Math.max(1,Math.floor(r.width*d));canvas.height=Math.max(1,Math.floor(r.height*d));ctx.setTransform(d,0,0,d,0,0);draw();}
   function screenToCell(px,py){
@@ -193,7 +193,8 @@
     state.gesture.lastX=e.clientX;state.gesture.lastY=e.clientY;
     state.camera.targetX-=dx/(35/state.camera.distance);state.camera.targetY-=dy/(35/state.camera.distance);draw();
   }
-  function pointerUp(e){if(e.pointerType==='touch')return;if(state.gesture.mode==='look'){state.gesture.mode=null;return;}if(state.gesture.mode==='pan'&&Math.abs(e.clientX-state.gesture.lastX)<8){var t=tokenAtScreen(e.clientX,e.clientY),o=objectAtScreen(e.clientX,e.clientY);if(t){state.selected=t.id;renderTools();draw();}else if(o){state.selected=o.id;renderTools();draw();}else{var p=screenToCell(e.clientX,e.clientY);if(p)selectCell(p.x,p.y);}}state.gesture.mode=null;}
+  function canvasPoint(e){var r=canvas.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top};}
+  function pointerUp(e){if(e.pointerType==='touch')return;if(state.gesture.mode==='look'){state.gesture.mode=null;return;}if(state.gesture.mode==='pan'&&Math.abs(e.clientX-state.gesture.lastX)<8){var cp=canvasPoint(e),t=tokenAtScreen(cp.x,cp.y),o=objectAtScreen(cp.x,cp.y);if(t){state.selected=t.id;renderTools();draw();}else if(o){state.selected=o.id;renderTools();draw();}else{var p=screenToCell(cp.x,cp.y);if(p)selectCell(p.x,p.y);}}state.gesture.mode=null;}
   function touchStart(e){
     if(e.touches.length===1){state.gesture.mode=state.cameraMode==='editor'?'tap':'look';state.gesture.lastX=e.touches[0].clientX;state.gesture.lastY=e.touches[0].clientY;}
     if(e.touches.length>=2){var a=e.touches[0],b=e.touches[1];state.gesture.mode='two';state.gesture.lastDist=Math.hypot(b.clientX-a.clientX,b.clientY-a.clientY);state.gesture.lastAngle=Math.atan2(b.clientY-a.clientY,b.clientX-a.clientX);state.gesture.lastX=(a.clientX+b.clientX)/2;state.gesture.lastY=(a.clientY+b.clientY)/2;}
@@ -217,7 +218,7 @@
   function touchEnd(e){
     if(state.cameraMode!=='editor'){if(!e.touches.length)state.gesture.mode=null;return;}
     if(state.gesture.mode==='tap'&&e.changedTouches&&e.changedTouches[0]){
-      var t=e.changedTouches[0];if(Math.hypot(t.clientX-state.gesture.lastX,t.clientY-state.gesture.lastY)<12){var tk=tokenAtScreen(t.clientX,t.clientY);if(tk){state.selected=tk.id;renderTools();draw();}else{var p=screenToCell(t.clientX,t.clientY);if(p)selectCell(p.x,p.y);}}
+      var t=e.changedTouches[0];if(Math.hypot(t.clientX-state.gesture.lastX,t.clientY-state.gesture.lastY)<12){var r=canvas.getBoundingClientRect(),tx=t.clientX-r.left,ty=t.clientY-r.top,tk=tokenAtScreen(tx,ty);if(tk){state.selected=tk.id;renderTools();draw();}else{var p=screenToCell(tx,ty);if(p)selectCell(p.x,p.y);}}
     }
     if(!e.touches.length)state.gesture.mode=null;
   }
@@ -245,7 +246,7 @@
   function setCameraMode(mode){mode=String(mode||'editor');if(['editor','firstPerson','thirdPerson'].indexOf(mode)<0)mode='editor';state.cameraMode=mode;state.camera.targetX=state.player.x;state.camera.targetY=state.player.y;state.camera.targetZ=state.player.elevation;draw();renderTools();}
   function setPlayerPosition(x,y,level){state.player.x=clamp(Number(x)||0,0,Math.max(0,state.cols-.05));state.player.y=clamp(Number(y)||0,0,Math.max(0,state.rows-.05));state.player.level=clamp(Math.floor(Number(level)||0),state.minLevel,state.maxLevel);state.currentLevel=state.player.level;updatePlayerElevation();state.camera.targetX=state.player.x;state.camera.targetY=state.player.y;state.camera.targetZ=state.player.elevation;draw();renderLevelBar();}
   function rotatePlayer(dYaw,dPitch){state.player.yaw+=Number(dYaw||0);state.player.pitch=clamp(state.player.pitch+Number(dPitch||0),-1.35,1.35);draw();}
-  function moveByFacing(forward,strafe,run){var c=ensureCombat(),t=tokenById(state.activeTokenId),speed;if(c.mode&&c.active&&c.currentId&&t&&c.currentId!==t.id)return false;if(!c.mode){speed=state.view.walkSpeed*(run?state.view.runMultiplier:1);}else{var rem=movementRemainingFt(t);if(rem<=0)return false;speed=Math.min(rem,tokenSpeedFt(t)) / 5 / 60;if(run)speed*=state.view.runMultiplier;}var f=Number(forward||0)*speed,s=Number(strafe||0)*speed,dx=Math.cos(state.player.yaw)*f-Math.sin(state.player.yaw)*s,dy=Math.sin(state.player.yaw)*f+Math.cos(state.player.yaw)*s;var beforeX=state.player.x,beforeY=state.player.y,result=movePlayer(dx,dy,0);if(c.mode&&c.active&&t&&result!==false){var used=Math.hypot(state.player.x-beforeX,state.player.y-beforeY)*5;combatTurn(t).movementUsed=Math.min(tokenSpeedFt(t),combatTurn(t).movementUsed+used);}return result;}
+  function moveByFacing(forward,strafe,run){var c=ensureCombat(),t=tokenById(state.activeTokenId),speed;if(c.mode&&c.active&&c.currentId&&t&&c.currentId!==t.id)return false;if(!c.mode){speed=state.view.walkSpeed*(run?state.view.runMultiplier:1);}else{var rem=movementRemainingFt(t);if(rem<=0)return false;speed=(Math.min(rem,tokenSpeedFt(t))/5)/60;if(run)speed*=state.view.runMultiplier;}var f=Number(forward||0)*speed,s=Number(strafe||0)*speed,dx=Math.cos(state.player.yaw)*f-Math.sin(state.player.yaw)*s,dy=Math.sin(state.player.yaw)*f+Math.cos(state.player.yaw)*s;var beforeX=state.player.x,beforeY=state.player.y,result=movePlayer(dx,dy,0);if(c.mode&&c.active&&t&&result!==false){var used=Math.hypot(state.player.x-beforeX,state.player.y-beforeY)*5;combatTurn(t).movementUsed=Math.min(tokenSpeedFt(t),combatTurn(t).movementUsed+used);}return result;}
   function getPlayerState(){return {x:state.player.x,y:state.player.y,level:state.player.level,elevation:state.player.elevation,yaw:state.player.yaw,pitch:state.player.pitch,cameraMode:state.cameraMode,characterId:state.playerCharacter.id,characterName:state.playerCharacter.name,className:state.playerCharacter.className,tokenGlyph:state.playerCharacter.tokenGlyph};}
   function saveMap(){normalizeWalls();var data={version:12,grid:{cols:state.cols,rows:state.rows,cellSizeFt:5},levels:{min:state.minLevel,max:state.maxLevel,current:state.currentLevel},cells:state.cells,objects:state.objects,walls:state.walls,connectors:state.connectors,tokens:state.tokens,combat:ensureCombat(),player:{x:state.player.x,y:state.player.y,level:state.player.level,elevation:state.player.elevation,yaw:state.player.yaw,pitch:state.player.pitch},playerCharacter:state.playerCharacter,activeTokenId:state.activeTokenId,cameraMode:state.cameraMode};try{localStorage.setItem('dnd_vtt_3d_map',JSON.stringify(data));alert('3D-карта сохранена локально.');}catch(e){alert('Не удалось сохранить карту: '+e.message);}}
   function loadMap(){try{var d=JSON.parse(localStorage.getItem('dnd_vtt_3d_map')||'null');if(!d)return alert('Сохранённой 3D-карты пока нет.');state.cols=clamp(Number(d.grid&&d.grid.cols)||20,1,200);state.rows=clamp(Number(d.grid&&d.grid.rows)||20,1,200);if(d.version>=2&&d.levels){state.minLevel=Number(d.levels.min)||0;state.maxLevel=Number(d.levels.max)||0;state.currentLevel=Number(d.levels.current)||0;state.cells=d.cells||{};state.objects=(d.objects||[]).map(function(o){if(o.level==null)o.level=0;o.scaleX=Number(o.scaleX)||1;o.scaleY=Number(o.scaleY)||1;o.scaleZ=Number(o.scaleZ)||1;o.rotation=Number(o.rotation)||0;o.name=o.name||'Мебель';return o;});state.walls=d.walls||{};state.connectors=Array.isArray(d.connectors)?d.connectors.map(function(c){c.dir=c.dir||'n';c.length=Number(c.length)||.8;return c;}):[];state.combat=d.combat||{active:false,round:1,currentId:null,order:[],startedAt:0,mode:true,turns:{}};state.combat.mode=state.combat.mode!==false;state.combat.turns=d.combat&&d.combat.turns||{};state.tokens=Array.isArray(d.tokens)?d.tokens.map(function(t){t.kind=t.kind||'player';t.layer=t.layer||(t.kind==='npc'?'npcs':t.kind==='monster'?'monsters':t.kind==='effect'?'effects':'players');t.visible=t.visible!==false;t.hp=isFinite(Number(t.hp))?Number(t.hp):10;t.maxHp=Number(t.maxHp)||10;t.statuses=Array.isArray(t.statuses)?t.statuses:[];t.initiative=Number(t.initiative)||0;t.actions=t.actions||{action:1,bonus:1,reaction:1,movement:1};return t;}):[];normalizeWalls();state.playerCharacter=d.playerCharacter||state.playerCharacter;state.player={x:(d.player&&Number(d.player.x))||((state.cols-1)/2),y:(d.player&&Number(d.player.y))||((state.rows-1)/2),level:(d.player&&Number(d.player.level))||0,yaw:(d.player&&Number(d.player.yaw))||0,pitch:(d.player&&Number(d.player.pitch))||0,elevation:(d.player&&Number(d.player.elevation))||0};state.cameraMode=['editor','firstPerson','thirdPerson'].indexOf(d.cameraMode)>=0?d.cameraMode:'editor';state.activeTokenId=d.activeTokenId||null;}else{state.minLevel=0;state.maxLevel=0;state.currentLevel=0;var oldCells=d.cells||{};state.cells={};Object.keys(oldCells).forEach(function(k){var p=k.split(':');if(p.length===2)state.cells[key(0,Number(p[0]),Number(p[1]))]=oldCells[k];});state.objects=(d.objects||[]).map(function(o){o.level=0;return o;});state.walls={};state.connectors=[];}normalizeWalls();normalizeLevels();state.player.level=clamp(state.player.level,state.minLevel,state.maxLevel);state.currentLevel=state.player.level;updatePlayerElevation();state.camera.targetX=state.player.x;state.camera.targetY=state.player.y;state.camera.targetZ=state.player.elevation;state.selected=null;draw();renderLevelBar();positionBoundaryButtons();}catch(e){alert('Не удалось загрузить карту.');}}
@@ -277,7 +278,7 @@
   function handleKey(e){if(!state.open||state.cameraMode==='editor')return;var k=String(e.key||'').toLowerCase(),m={w:[1,0],arrowup:[1,0],s:[-1,0],arrowdown:[-1,0],a:[0,-1],arrowleft:[0,-1],d:[0,1],arrowright:[0,1]};if(m[k]){e.preventDefault();moveByFacing(m[k][0],m[k][1],e.shiftKey);}else if(k==='q'){e.preventDefault();rotatePlayer(-.12,0);}else if(k==='e'){e.preventDefault();rotatePlayer(.12,0);}}
   function init(){
     var modal=document.createElement('div');modal.id='map3dEditorModal';modal.style.cssText='display:none;position:fixed;inset:0;z-index:31000;background:#090a0c;color:#fff;padding:8px;box-sizing:border-box;';
-    modal.innerHTML='<div style="height:100%;display:flex;flex-direction:column;background:#11151a;border:1px solid #555;border-radius:12px;overflow:hidden"><div style="display:flex;align-items:center;gap:8px;padding:9px;border-bottom:1px solid #333;flex-wrap:wrap"><strong style="color:#d4af37">🏗️ 3D Редактор карт</strong><span style="color:#888;font-size:.8em">прототип</span><span style="flex:1"></span><button class="btn-action" onclick="dndMap3DClose()" style="background:#b71c1c">✕ Закрыть</button></div><div id="map3dCanvasWrap" style="position:relative;flex:1;min-height:0;overflow:hidden;touch-action:none"><canvas id="map3dCanvas" style="width:100%;height:100%;display:block;touch-action:none"></canvas><div id="map3dLevels" style="position:absolute;left:10px;bottom:10px;z-index:21;display:flex;gap:4px;flex-wrap:wrap;max-width:75%"></div></div><div id="map3dTools" style="display:flex;gap:6px;flex-wrap:wrap;padding:8px;background:#1a1d21;border-top:1px solid #333;max-height:27vh;overflow:auto"></div></div>';
+    modal.innerHTML='<div style="height:100%;display:flex;flex-direction:column;background:#11151a;border:1px solid #555;border-radius:12px;overflow:hidden"><div style="display:flex;align-items:center;gap:8px;padding:9px;border-bottom:1px solid #333;flex-wrap:wrap"><strong style="color:#d4af37">🏗️ 3D Редактор карт</strong><span style="color:#888;font-size:.8em">V70.36.13</span><span style="flex:1"></span><button class="btn-action" onclick="dndMap3DClose()" style="background:#b71c1c">✕ Закрыть</button></div><div id="map3dCanvasWrap" style="position:relative;flex:1;min-height:0;overflow:hidden;touch-action:none"><canvas id="map3dCanvas" style="width:100%;height:100%;display:block;touch-action:none"></canvas><div id="map3dLevels" style="position:absolute;left:10px;bottom:10px;z-index:21;display:flex;gap:4px;flex-wrap:wrap;max-width:75%"></div></div><div id="map3dTools" style="display:flex;gap:6px;flex-wrap:wrap;padding:8px;background:#1a1d21;border-top:1px solid #333;max-height:27vh;overflow:auto"></div></div>';
     document.body.appendChild(modal);
     canvas=document.getElementById('map3dCanvas');
     canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);
