@@ -6,7 +6,7 @@
  */
 (function(global){
   'use strict';
-  var VERSION='0.1.0';
+  var VERSION='0.2.0';
   var state={
     open:false, cols:20, rows:20, minLevel:0, maxLevel:0, currentLevel:0, cell:1,
     cells:{}, objects:[],
@@ -143,11 +143,11 @@
   function remove(){if(typeof state.selected==='string'){state.objects=state.objects.filter(function(o){return o.id!==state.selected;});state.selected=null;}else if(state.selected){setCellHeight(state.selected.x,state.selected.y,0);state.selected=null;}draw();}
   function saveMap(){var data={version:2,grid:{cols:state.cols,rows:state.rows,cellSizeFt:5},levels:{min:state.minLevel,max:state.maxLevel,current:state.currentLevel},cells:state.cells,objects:state.objects};try{localStorage.setItem('dnd_vtt_3d_map',JSON.stringify(data));alert('3D-карта сохранена локально.');}catch(e){alert('Не удалось сохранить карту: '+e.message);}}
   function loadMap(){try{var d=JSON.parse(localStorage.getItem('dnd_vtt_3d_map')||'null');if(!d)return alert('Сохранённой 3D-карты пока нет.');state.cols=clamp(Number(d.grid&&d.grid.cols)||20,1,200);state.rows=clamp(Number(d.grid&&d.grid.rows)||20,1,200);if(d.version>=2&&d.levels){state.minLevel=Number(d.levels.min)||0;state.maxLevel=Number(d.levels.max)||0;state.currentLevel=Number(d.levels.current)||0;state.cells=d.cells||{};state.objects=(d.objects||[]).map(function(o){if(o.level==null)o.level=0;return o;});}else{state.minLevel=0;state.maxLevel=0;state.currentLevel=0;var oldCells=d.cells||{};state.cells={};Object.keys(oldCells).forEach(function(k){var p=k.split(':');if(p.length===2)state.cells[key(0,Number(p[0]),Number(p[1]))]=oldCells[k];});state.objects=(d.objects||[]).map(function(o){o.level=0;return o;});}normalizeLevels();state.selected=null;draw();renderLevelBar();positionBoundaryButtons();}catch(e){alert('Не удалось загрузить карту.');}}
-  function reset(){state.cells={};state.objects=[];state.selected=null;draw();}
+  function reset(){makeNewMap(20,20,1,0);}
   function expand(dir){
-    if(dir==='left'){var copy={};Object.keys(state.cells).forEach(function(k){var p=k.split(':');if(p.length===3){p[1]=Number(p[1])+1;copy[p.join(':')]=state.cells[k];}});Object.keys(copy).forEach(function(k){state.cells[k]=copy[k];});state.objects.forEach(function(o){o.x++;});state.cols++;}
+    if(dir==='left'){var copy={};Object.keys(state.cells).forEach(function(k){var p=k.split(':');if(p.length===3){p[1]=Number(p[1])+1;copy[p.join(':')]=state.cells[k];delete state.cells[k];}});Object.keys(copy).forEach(function(k){state.cells[k]=copy[k];});state.objects.forEach(function(o){o.x++;});state.cols++;}
     if(dir==='right')state.cols++;
-    if(dir==='top'){var copy2={};Object.keys(state.cells).forEach(function(k){var p=k.split(':');if(p.length===3){p[2]=Number(p[2])+1;copy2[p.join(':')]=state.cells[k];}});Object.keys(copy2).forEach(function(k){state.cells[k]=copy2[k];});state.objects.forEach(function(o){o.y++;});state.rows++;}
+    if(dir==='top'){var copy2={};Object.keys(state.cells).forEach(function(k){var p=k.split(':');if(p.length===3){p[2]=Number(p[2])+1;copy2[p.join(':')]=state.cells[k];delete state.cells[k];}});Object.keys(copy2).forEach(function(k){state.cells[k]=copy2[k];});state.objects.forEach(function(o){o.y++;});state.rows++;}
     if(dir==='bottom')state.rows++;
     if(dir==='up'){state.maxLevel++;state.currentLevel=state.maxLevel;}
     if(dir==='down'){state.minLevel--;state.currentLevel=state.minLevel;}
@@ -170,7 +170,7 @@
   function close(){state.open=false;var m=document.getElementById('map3dEditorModal');if(m)m.style.display='none';}
   function init(){
     var modal=document.createElement('div');modal.id='map3dEditorModal';modal.style.cssText='display:none;position:fixed;inset:0;z-index:31000;background:#090a0c;color:#fff;padding:8px;box-sizing:border-box;';
-    modal.innerHTML='<div style="height:100%;display:flex;flex-direction:column;background:#11151a;border:1px solid #555;border-radius:12px;overflow:hidden"><div style="display:flex;align-items:center;gap:8px;padding:9px;border-bottom:1px solid #333;flex-wrap:wrap"><strong style="color:#d4af37">🏗️ 3D Редактор карт</strong><span style="color:#888;font-size:.8em">прототип</span><span style="flex:1"></span><button class="btn-action" onclick="dndMap3DClose()" style="background:#b71c1c">✕ Закрыть</button></div><div id="map3dCanvasWrap" style="position:relative;flex:1;min-height:0;overflow:hidden;touch-action:none"><canvas id="map3dCanvas" style="width:100%;height:100%;display:block;touch-action:none"></canvas></div><div id="map3dTools" style="display:flex;gap:6px;flex-wrap:wrap;padding:8px;background:#1a1d21;border-top:1px solid #333;max-height:27vh;overflow:auto"></div></div>';
+    modal.innerHTML='<div style="height:100%;display:flex;flex-direction:column;background:#11151a;border:1px solid #555;border-radius:12px;overflow:hidden"><div style="display:flex;align-items:center;gap:8px;padding:9px;border-bottom:1px solid #333;flex-wrap:wrap"><strong style="color:#d4af37">🏗️ 3D Редактор карт</strong><span style="color:#888;font-size:.8em">прототип</span><span style="flex:1"></span><button class="btn-action" onclick="dndMap3DClose()" style="background:#b71c1c">✕ Закрыть</button></div><div id="map3dCanvasWrap" style="position:relative;flex:1;min-height:0;overflow:hidden;touch-action:none"><canvas id="map3dCanvas" style="width:100%;height:100%;display:block;touch-action:none"></canvas><div id="map3dLevels" style="position:absolute;left:10px;bottom:10px;z-index:21;display:flex;gap:4px;flex-wrap:wrap;max-width:75%"></div></div><div id="map3dTools" style="display:flex;gap:6px;flex-wrap:wrap;padding:8px;background:#1a1d21;border-top:1px solid #333;max-height:27vh;overflow:auto"></div></div>';
     document.body.appendChild(modal);
     canvas=document.getElementById('map3dCanvas');
     canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);
