@@ -1,6 +1,6 @@
-/* DND VTT — Updater scene v4.
- * Gradual animation step: fire column + smoke + sparks.
- * Dragon remains disabled. Transition line remains tied to real progress.
+/* DND VTT — Updater scene v5.
+ * Dedicated fire-front asset is locked to the exact progress boundary.
+ * Burn mask, fire-front, transition line, smoke and sparks share one progress value.
  */
 (function (global) {
   'use strict';
@@ -19,6 +19,7 @@
       '#dndUpdateV2 .scene-burn{object-fit:cover;opacity:1;clip-path:inset(0 100% 0 0);filter:saturate(1.08) brightness(.68);will-change:clip-path}',
       '#dndUpdateV2 .transition-line{position:absolute;top:0;bottom:0;left:0;width:3px;transform:translateX(-50%);background:linear-gradient(180deg,rgba(255,221,142,.15),rgba(255,236,180,.95) 18%,rgba(255,177,54,.95) 82%,rgba(255,120,24,.15));box-shadow:0 0 10px rgba(255,183,63,.7),0 0 24px rgba(255,125,20,.35);z-index:5;pointer-events:none;will-change:left}',
       '#dndUpdateV2 .transition-line::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:100%;transform:translate(-50%,-50%);background:linear-gradient(90deg,transparent,rgba(255,191,72,.12),transparent);filter:blur(5px)}',
+      '#dndUpdateV2 .fire-front{position:absolute;top:50%;left:0;width:clamp(44px,10vw,150px);height:92%;transform:translate(-50%,-50%);z-index:7;pointer-events:none;object-fit:fill;filter:drop-shadow(0 0 8px rgba(255,98,18,.55));mix-blend-mode:screen;opacity:0;will-change:left,opacity}',
       '#dndUpdateV2 .fire-column{position:absolute;top:0;bottom:0;left:0;width:12px;transform:translateX(-50%);z-index:4;pointer-events:none;opacity:.72;filter:blur(.2px);background:linear-gradient(180deg,transparent 0%,rgba(255,190,52,.05) 12%,rgba(255,113,17,.72) 50%,rgba(255,221,101,.18) 82%,transparent 100%);mix-blend-mode:screen;will-change:left,opacity}',
       '#dndUpdateV2 .fire-column::before{content:"";position:absolute;inset:8% -9px 8%;background:radial-gradient(ellipse at center,rgba(255,238,150,.95) 0%,rgba(255,135,22,.7) 28%,rgba(255,52,8,.28) 58%,transparent 78%);filter:blur(7px);}',
       '#dndUpdateV2 .smoke{position:absolute;top:0;bottom:0;left:0;width:70px;transform:translateX(-50%);z-index:3;pointer-events:none;opacity:.26;filter:blur(8px);background:radial-gradient(ellipse at center,rgba(205,209,190,.48) 0%,rgba(118,126,115,.23) 38%,transparent 72%);mix-blend-mode:screen;will-change:left,opacity}',
@@ -56,6 +57,7 @@
       '<img class="scene-bg" src="' + asset('forest_green.jpg') + '" alt="">' +
       '<img class="scene-burn" src="' + asset('forest_burned.jpg') + '" alt="">' +
       '<div class="transition-line" aria-hidden="true"></div>' +
+      '<img class="fire-front" src="' + asset('update_scene_fire_front.svg') + '" alt="" aria-hidden="true">' +
       '<div class="fire-column" aria-hidden="true"></div>' +
       '<div class="smoke" aria-hidden="true"></div>' +
       '<div class="sparks" aria-hidden="true"></div>' +
@@ -69,6 +71,7 @@
     var bar = root.querySelector('.bar');
     var burn = root.querySelector('.scene-burn');
     var line = root.querySelector('.transition-line');
+    var fireFront = root.querySelector('.fire-front');
     var fire = root.querySelector('.fire-column');
     var smoke = root.querySelector('.smoke');
     var sparks = root.querySelector('.sparks');
@@ -84,8 +87,10 @@
       pct.textContent = Math.round(value) + '%';
       if (burn) burn.style.clipPath = 'inset(0 ' + Math.max(0, 100 - value).toFixed(2) + '% 0 0)';
       if (line) line.style.left = value.toFixed(2) + '%';
+      // The dedicated fire-front is the visual boundary. It follows the exact same smoothed progress.
+      if (fireFront) { fireFront.style.left = value.toFixed(2) + '%'; fireFront.style.opacity = value > 1 && value < 99.5 ? '1' : '0'; }
       // Fire/smoke/sparks deliberately follow the same progress boundary: no independent timing.
-      if (fire) { fire.style.left = value.toFixed(2) + '%'; fire.style.opacity = value > 2 && value < 99 ? '.72' : '0'; }
+      if (fire) { fire.style.left = value.toFixed(2) + '%'; fire.style.opacity = value > 2 && value < 99 ? '.42' : '0'; }
       if (smoke) { smoke.style.left = value.toFixed(2) + '%'; smoke.style.opacity = value > 4 && value < 99 ? '.26' : '0'; }
       if (sparks) { sparks.style.left = value.toFixed(2) + '%'; sparks.style.opacity = value > 3 && value < 99 ? '.55' : '0'; }
     }
