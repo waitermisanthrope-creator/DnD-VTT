@@ -6,7 +6,7 @@
  */
 (function(global){
   'use strict';
-  var VERSION='0.9.4';
+  var VERSION='0.9.5';
   var state={
     open:false, mapName:'Новая карта', mapNotes:'', cols:20, rows:20, minLevel:0, maxLevel:0, currentLevel:0, cell:1,
     cells:{}, surfaces:{}, objects:[], walls:{}, connectors:[], tokens:[], combat:{active:false,round:1,currentId:null,order:[],startedAt:0,mode:true,turns:{}},
@@ -138,17 +138,6 @@
     var p1=project(r.x1,r.y1,z),p2=project(r.x2+1,r.y1,z),p3=project(r.x2+1,r.y2+1,z),p4=project(r.x1,r.y2+1,z);
     ctx.save();ctx.fillStyle='rgba(255,213,79,.16)';ctx.strokeStyle='#ffd54f';ctx.lineWidth=2;poly([p1,p2,p3,p4],ctx.fillStyle,ctx.strokeStyle);ctx.restore();
   }
-  function duplicateSelection(){
-    var r=selectionRect();if(!r){alert('Сначала выделите область протягиванием.');return;}
-    var dx=Number(prompt('Смещение X',String(r.x2-r.x1+2)));if(!isFinite(dx))return;
-    var dy=Number(prompt('Смещение Y','0'));if(!isFinite(dy))return;
-    var level=state.currentLevel,objs=state.objects.filter(function(o){return Number(o.level||0)===level&&o.x>=r.x1&&o.x<=r.x2&&o.y>=r.y1&&o.y<=r.y2;});
-    objs.forEach(function(o){var n=JSON.parse(JSON.stringify(o));n.id='obj_'+Date.now()+'_'+Math.random().toString(36).slice(2);n.x+=dx;n.y+=dy;if(n.x>=0&&n.y>=0&&n.x<state.cols&&n.y<state.rows)state.objects.push(n);});
-    var walls=[];Object.keys(state.walls).forEach(function(k){var w=state.walls[k];if(Number(w.level||0)===level&&w.x>=r.x1&&w.x<=r.x2&&w.y>=r.y1&&w.y<=r.y2)walls.push(JSON.parse(JSON.stringify(w));});
-    walls.forEach(function(w){w.x+=dx;w.y+=dy;if(w.x>=0&&w.y>=0&&w.x<state.cols&&w.y<state.rows){w.id='wall_'+Date.now()+'_'+Math.random().toString(36).slice(2);var cc=canonicalWall(w.level,w.x,w.y,w.dir);state.walls[wallKey(cc.level,cc.x,cc.y,cc.dir)]=w;}});
-    draw();renderTools();
-  }
-  function clearSelection(){state.gesture.selectStart=null;state.gesture.selectEnd=null;draw();}
   function addWallEdge(dir){if(!state.selected||typeof state.selected==='string')return;var w=wallForSelected(dir);state.wallEditDir=dir;if(w)setWall(state.selected.x,state.selected.y,dir,false);else setWall(state.selected.x,state.selected.y,dir,true);draw();renderTools();}
   function selectionBounds(){
     var a=state.gesture.selectStart,b=state.gesture.selectEnd;
@@ -438,7 +427,7 @@
   function handleKey(e){if(!state.open||state.cameraMode==='editor')return;var k=String(e.key||'').toLowerCase(),m={w:[1,0],arrowup:[1,0],s:[-1,0],arrowdown:[-1,0],a:[0,-1],arrowleft:[0,-1],d:[0,1],arrowright:[0,1]};if(m[k]){e.preventDefault();moveByFacing(m[k][0],m[k][1],e.shiftKey);}else if(k==='q'){e.preventDefault();rotatePlayer(-.12,0);}else if(k==='e'){e.preventDefault();rotatePlayer(.12,0);}}
   function init(){
     var modal=document.createElement('div');modal.id='map3dEditorModal';modal.style.cssText='display:none;position:fixed;inset:0;z-index:31000;background:#090a0c;color:#fff;padding:8px;box-sizing:border-box;';
-    modal.innerHTML='<div style="height:100%;display:flex;flex-direction:column;background:#11151a;border:1px solid #555;border-radius:12px;overflow:hidden"><div style="display:flex;align-items:center;gap:8px;padding:9px;border-bottom:1px solid #333;flex-wrap:wrap"><strong style="color:#d4af37">🏗️ 3D Редактор карт</strong><span style="color:#888;font-size:.8em">V70.36.19</span><span style="flex:1"></span><button class="btn-action" onclick="dndMap3DClose()" style="background:#b71c1c">✕ Закрыть</button></div><div id="map3dCanvasWrap" style="position:relative;flex:1;min-height:0;overflow:hidden;touch-action:none"><canvas id="map3dCanvas" style="width:100%;height:100%;display:block;touch-action:none"></canvas><div id="map3dLevels" style="position:absolute;left:10px;bottom:10px;z-index:21;display:flex;gap:4px;flex-wrap:wrap;max-width:75%"></div></div><div id="map3dTools" style="display:flex;gap:6px;flex-wrap:wrap;padding:8px;background:#1a1d21;border-top:1px solid #333;max-height:27vh;overflow:auto"></div></div>';
+    modal.innerHTML='<div style="height:100%;display:flex;flex-direction:column;background:#11151a;border:1px solid #555;border-radius:12px;overflow:hidden"><div style="display:flex;align-items:center;gap:8px;padding:9px;border-bottom:1px solid #333;flex-wrap:wrap"><strong style="color:#d4af37">🏗️ 3D Редактор карт</strong><span style="color:#888;font-size:.8em">V70.36.21</span><span style="flex:1"></span><button class="btn-action" onclick="dndMap3DClose()" style="background:#b71c1c">✕ Закрыть</button></div><div id="map3dCanvasWrap" style="position:relative;flex:1;min-height:0;overflow:hidden;touch-action:none"><canvas id="map3dCanvas" style="width:100%;height:100%;display:block;touch-action:none"></canvas><div id="map3dLevels" style="position:absolute;left:10px;bottom:10px;z-index:21;display:flex;gap:4px;flex-wrap:wrap;max-width:75%"></div></div><div id="map3dTools" style="display:flex;gap:6px;flex-wrap:wrap;padding:8px;background:#1a1d21;border-top:1px solid #333;max-height:27vh;overflow:auto"></div></div>';
     document.body.appendChild(modal);
     canvas=document.getElementById('map3dCanvas');
     canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);
