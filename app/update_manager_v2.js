@@ -5,14 +5,14 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.34.5';
+  var APP_VERSION = '70.34.6';
   var DEFAULT_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
   var FALLBACK_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url_v2';
   var CHANNEL_KEY = 'dnd_update_channel_v2';
   var STAGED_KEY = 'dnd_update_staged_v2';
   var DEFAULT_CHANNEL = 'stable';
-  var CACHE_BUSTER = 'dnd-v2-' + APP_VERSION;
+  var CACHE_BUSTER = 'dnd-v2-' + APP_VERSION + '-' + Date.now();
   var pending = Object.create(null);
   var counter = 0;
   var progressHandler = null;
