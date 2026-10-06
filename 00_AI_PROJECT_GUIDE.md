@@ -7976,3 +7976,5 @@ Implemented in `app/vtt_map_editor_3d_v71.js`:
 3. Implement real texture/material rendering for floors, walls and furniture.
 4. Add token layers for monsters/NPCs, initiative, HP/status and DM control.
 5. Connect the stable shared world state to combat/initiative; multiplayer binding remains later.
+
+- Final V70.36.7 refinement: connector rendering is direction-aware and first/third-person scene sorting uses perspective depth order.
