@@ -145,7 +145,7 @@
 
   function setProgressHandler(fn) { progressHandler = typeof fn === 'function' ? fn : null; }
 
-  async function stage(manifest, onProgress) {
+  async function stage(manifest, onProgress, sourceManifestUrl) {
     validateManifest(manifest);
     var current = await runtimeVersion();
     var compat = compatibility(manifest, current);
@@ -155,7 +155,7 @@
     if (global.dndNative && typeof global.dndNative.postMessage === 'function') {
       if (onProgress) setProgressHandler(onProgress);
       try {
-        var native = await nativeRequest('stage', manifestUrl());
+        var native = await nativeRequest('stage', sourceManifestUrl || manifestUrl());
         return { staged: true, native: true, version: native && native.value || manifest.version };
       } finally {
         setProgressHandler(null);
@@ -187,7 +187,7 @@
     options = options || {};
     var state = await inspect();
     if (!state.updateAvailable) return state;
-    var result = await stage(state.manifest, options.onProgress);
+    var result = await stage(state.manifest, options.onProgress, state.manifestUrl);
     state.stageResult = result;
     return state;
   }
