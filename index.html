@@ -330,6 +330,10 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
 
     <button class="btn-action" onclick="openDndNetworkModal()" style="position: fixed; right: 15px; bottom: 15px; background: #7b1fa2; color: #fff; border: 1px solid #9c4dcc; padding: 10px 14px; border-radius: 8px; z-index: 100; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.4);">🎲 Игра: <span id="dndNetworkStatus">Одиночная игра</span></button>
 
+    <button id="mainMenuUpdateButton" class="btn-action" type="button" onclick="if(window.DND_UPDATE_UI&&DND_UPDATE_UI.openMainMenuUpdate)DND_UPDATE_UI.openMainMenuUpdate()" style="position: fixed; left: 15px; bottom: 68px; background: #9b2c1f; color: #fff; border: 1px solid #d05a42; padding: 10px 14px; border-radius: 8px; z-index: 100; display: none; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.4);">
+      ⬆️ Доступно новое обновление
+    </button>
+
     <button class="btn-action" onclick="openSettingsModal()" style="position: fixed; left: 15px; bottom: 15px; background: #333; color: #fff; border: 1px solid #555; padding: 10px 14px; border-radius: 8px; z-index: 100; display: flex; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.4);">
       ⚙️ Настройки
     </button>
