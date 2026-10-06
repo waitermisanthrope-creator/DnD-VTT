@@ -5,7 +5,7 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.34.13';
+  var APP_VERSION = '70.34.14';
   var DEFAULT_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
   var FALLBACK_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url_v2';
@@ -304,8 +304,8 @@
       var ui=scene(state);
       ui.setStatus('Найдено обновление v'+state.manifest.version+'. Загружаю…');
       return checkAndStage({onProgress:function(p){if(bar&&p.total)bar.style.width=Math.round((p.current/p.total)*100)+'%';ui.setProgress(p);}}).then(function(s){
+        ui.onApply=function(){return applyStaged({}).then(function(result){ui.setStatus('Обновление применено. Перезапускаю приложение…');return result;}).catch(function(e){ui.fail(e&&e.message||e);ui.enableApply();throw e;});};
         ui.finish(); ui.enableApply();
-        ui.onApply=function(){return applyStaged({}).then(function(){ui.setStatus('Готово. Перезапускаю приложение…');});};
         if(status) status.textContent='Обновление v'+state.manifest.version+' подготовлено.';
         if(apply) apply.style.display='block';
         return s;
@@ -345,12 +345,21 @@
         var ui=scene(state);
         ui.setStatus('Найдено обновление v'+state.manifest.version+'. Загружаю…');
         return checkAndStage({onProgress:function(p){ui.setProgress(p);}}).then(function(s) {
+          // Wire the installation action BEFORE exposing the button. This avoids a
+          // race on Android WebView where the finished scene could receive a tap
+          // before the callback was attached, leaving the files only staged.
+          ui.onApply=function(){
+            return applyStaged({}).then(function(result){
+              ui.setStatus('Обновление применено. Перезапускаю приложение…');
+              return result;
+            }).catch(function(e){
+              ui.fail(e&&e.message||e);
+              ui.enableApply();
+              throw e;
+            });
+          };
           ui.finish();
           ui.enableApply();
-          ui.onApply=function(){
-            return applyStaged({}).then(function(){ui.setStatus('Готово. Перезапускаю приложение…');})
-              .catch(function(e){ui.fail(e&&e.message||e);ui.enableApply();});
-          };
           return s;
         });
       }).catch(function(e) {
