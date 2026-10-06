@@ -411,7 +411,7 @@ function refreshMainVersionBadge(manual) {
   if (check) check.textContent = '⏳';
 
   if (!window.DND_UPDATE_MANAGER || typeof window.DND_UPDATE_MANAGER.inspect !== 'function') {
-    if (versionText) versionText.textContent = 'Версия 70.25.81';
+    if (versionText) versionText.textContent = 'Версия 70.36.62';
     if (statusText) statusText.textContent = 'Проверка недоступна';
     if (check) check.textContent = '⚠️';
     return Promise.resolve(null);
