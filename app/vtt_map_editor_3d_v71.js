@@ -9,7 +9,7 @@
   var VERSION='0.2.0';
   var state={
     open:false, cols:20, rows:20, minLevel:0, maxLevel:0, currentLevel:0, cell:1,
-    cells:{}, objects:[],
+    cells:{}, objects:[], walls:{},
     player:{x:9.5,y:9.5,level:0,yaw:0,pitch:0},
     cameraMode:'editor',
     camera:{yaw:-0.75,pitch:0.72,distance:18,targetX:9.5,targetY:9.5,targetZ:0},
@@ -25,7 +25,7 @@
   function levelLabel(n){return n===0?'0':(n>0?'+'+n:String(n));}
   function mapHeight(){return Math.max(1,state.maxLevel-state.minLevel+1);}
   function normalizeLevels(){state.minLevel=Math.min(0,Math.floor(Number(state.minLevel)||0));state.maxLevel=Math.max(0,Math.floor(Number(state.maxLevel)||0));state.currentLevel=clamp(Math.floor(Number(state.currentLevel)||0),state.minLevel,state.maxLevel);}
-  function makeNewMap(cols,rows,height,depth){state.cols=clamp(Math.floor(Number(cols)||20),1,200);state.rows=clamp(Math.floor(Number(rows)||20),1,200);state.minLevel=-clamp(Math.floor(Number(depth)||0),0,50);state.maxLevel=clamp(Math.floor(Number(height)||1),1,50)-1;state.currentLevel=0;state.cells={};state.objects=[];state.player={x:(state.cols-1)/2,y:(state.rows-1)/2,level:0,yaw:0,pitch:0};state.cameraMode='editor';state.selected=null;state.camera.targetX=(state.cols-1)/2;state.camera.targetY=(state.rows-1)/2;state.camera.targetZ=0;draw();renderLevelBar();positionBoundaryButtons();}
+  function makeNewMap(cols,rows,height,depth){state.cols=clamp(Math.floor(Number(cols)||20),1,200);state.rows=clamp(Math.floor(Number(rows)||20),1,200);state.minLevel=-clamp(Math.floor(Number(depth)||0),0,50);state.maxLevel=clamp(Math.floor(Number(height)||1),1,50)-1;state.currentLevel=0;state.cells={};state.objects=[];state.walls={};state.player={x:(state.cols-1)/2,y:(state.rows-1)/2,level:0,yaw:0,pitch:0};state.cameraMode='editor';state.selected=null;state.camera.targetX=(state.cols-1)/2;state.camera.targetY=(state.rows-1)/2;state.camera.targetZ=0;draw();renderLevelBar();positionBoundaryButtons();}
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 
   function project(x,y,z){
@@ -36,6 +36,14 @@
     var scale=Math.min(canvas.clientWidth,canvas.clientHeight)*0.055*(18/c.distance);
     return {x:canvas.clientWidth/2+sx*scale,y:canvas.clientHeight/2+sy2*scale,depth:depth,scale:scale};
   }
+  function wallKey(level,x,y,dir){return level+':'+x+':'+y+':'+dir;}
+  function setWall(x,y,dir,enabled,level){level=level==null?state.currentLevel:level;var k=wallKey(level,x,y,dir);if(enabled)state.walls[k]={level:level,x:x,y:y,dir:dir,height:2.5};else delete state.walls[k];}
+  function wallHeight(w){return Math.max(0,Number(w.height)||2.5);}
+  function wallQuad(w){var z=cellHeight(w.x,w.y,w.level);var h=wallHeight(w),t=.09, x=w.x,y=w.y;
+    if(w.dir==='n'||w.dir==='s'){var yy=w.dir==='n'?y:y+1;return [project(x,yy,z),project(x+1,yy,z),project(x+1,yy,z+h),project(x,yy,z+h)];}
+    var xx=w.dir==='w'?x:x+1;return [project(xx,y,z),project(xx,y+1,z),project(xx,y+1,z+h),project(xx,y,z+h)];
+  }
+  function addWallEdge(dir){if(!state.selected||typeof state.selected==='string')return;var x=state.selected.x,y=state.selected.y;var enabled=!!state.walls[wallKey(state.currentLevel,x,y,dir)];setWall(x,y,dir,!enabled);draw();}
   function poly(points,fill,stroke){
     ctx.beginPath();points.forEach(function(p,i){i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);});ctx.closePath();
     if(fill){ctx.fillStyle=fill;ctx.fill();}
@@ -57,6 +65,7 @@
         items.push({d:(b2.depth+b3.depth+b4.depth+b1.depth)/4-0.02,kind:'side',p:[p2,p3,b3,b2]});
       }
     }
+    Object.keys(state.walls).forEach(function(k){var w=state.walls[k];if(Number(w.level)!==state.currentLevel)return;var q=wallQuad(w);items.push({d:(q[0].depth+q[1].depth+q[2].depth+q[3].depth)/4,kind:'wall',w:w,p:q});});
     state.objects.forEach(function(o){
       if(Number(o.level||0)!==state.currentLevel)return;var z=cellHeight(o.x,o.y,state.currentLevel)+Number(o.z||0),s=Number(o.size||.8);
       var a=project(o.x+.1,o.y+.1,z),b=project(o.x+s,o.y+.1,z),c=project(o.x+s,o.y+s,z),d=project(o.x+.1,o.y+s,z);
@@ -70,6 +79,8 @@
         if(it.x===0||it.y===0){ctx.strokeStyle='rgba(255,255,255,.08)';}
       }else if(it.kind==='side'){
         poly(it.p,'#14181d','#343b44');
+      }else if(it.kind==='wall'){
+        poly(it.p,'#777','#222');
       }else{
         poly([it.p[0],it.p[1],it.top[1],it.top[0]],it.o.color||'#8b5a2b','#111');
         poly([it.p[1],it.p[2],it.top[2],it.top[1]],it.o.color2||'#6f461f','#111');
@@ -148,8 +159,8 @@
   function movePlayer(dx,dy,dz){state.player.x=clamp(state.player.x+Number(dx||0),0,Math.max(0,state.cols-1));state.player.y=clamp(state.player.y+Number(dy||0),0,Math.max(0,state.rows-1));state.player.level=clamp(state.player.level+Math.floor(Number(dz)||0),state.minLevel,state.maxLevel);state.currentLevel=state.player.level;state.camera.targetX=state.player.x;state.camera.targetY=state.player.y;state.camera.targetZ=state.player.level;draw();renderLevelBar();}
   function rotatePlayer(dYaw,dPitch){state.player.yaw+=Number(dYaw||0);state.player.pitch=clamp(state.player.pitch+Number(dPitch||0),-1.45,1.45);draw();}
   function getPlayerState(){return {x:state.player.x,y:state.player.y,level:state.player.level,yaw:state.player.yaw,pitch:state.player.pitch,cameraMode:state.cameraMode};}
-  function saveMap(){var data={version:3,grid:{cols:state.cols,rows:state.rows,cellSizeFt:5},levels:{min:state.minLevel,max:state.maxLevel,current:state.currentLevel},cells:state.cells,objects:state.objects,player:{x:state.player.x,y:state.player.y,level:state.player.level,yaw:state.player.yaw,pitch:state.player.pitch},cameraMode:state.cameraMode};try{localStorage.setItem('dnd_vtt_3d_map',JSON.stringify(data));alert('3D-карта сохранена локально.');}catch(e){alert('Не удалось сохранить карту: '+e.message);}}
-  function loadMap(){try{var d=JSON.parse(localStorage.getItem('dnd_vtt_3d_map')||'null');if(!d)return alert('Сохранённой 3D-карты пока нет.');state.cols=clamp(Number(d.grid&&d.grid.cols)||20,1,200);state.rows=clamp(Number(d.grid&&d.grid.rows)||20,1,200);if(d.version>=2&&d.levels){state.minLevel=Number(d.levels.min)||0;state.maxLevel=Number(d.levels.max)||0;state.currentLevel=Number(d.levels.current)||0;state.cells=d.cells||{};state.objects=(d.objects||[]).map(function(o){if(o.level==null)o.level=0;return o;});state.player={x:(d.player&&Number(d.player.x))||((state.cols-1)/2),y:(d.player&&Number(d.player.y))||((state.rows-1)/2),level:(d.player&&Number(d.player.level))||0,yaw:(d.player&&Number(d.player.yaw))||0,pitch:(d.player&&Number(d.player.pitch))||0};state.cameraMode=['editor','firstPerson','thirdPerson'].indexOf(d.cameraMode)>=0?d.cameraMode:'editor';}else{state.minLevel=0;state.maxLevel=0;state.currentLevel=0;var oldCells=d.cells||{};state.cells={};Object.keys(oldCells).forEach(function(k){var p=k.split(':');if(p.length===2)state.cells[key(0,Number(p[0]),Number(p[1]))]=oldCells[k];});state.objects=(d.objects||[]).map(function(o){o.level=0;return o;});}normalizeLevels();state.player.level=clamp(state.player.level,state.minLevel,state.maxLevel);state.currentLevel=state.player.level;state.camera.targetX=state.player.x;state.camera.targetY=state.player.y;state.camera.targetZ=state.player.level;state.selected=null;draw();renderLevelBar();positionBoundaryButtons();}catch(e){alert('Не удалось загрузить карту.');}}
+  function saveMap(){var data={version:4,grid:{cols:state.cols,rows:state.rows,cellSizeFt:5},levels:{min:state.minLevel,max:state.maxLevel,current:state.currentLevel},cells:state.cells,objects:state.objects,walls:state.walls,player:{x:state.player.x,y:state.player.y,level:state.player.level,yaw:state.player.yaw,pitch:state.player.pitch},cameraMode:state.cameraMode};try{localStorage.setItem('dnd_vtt_3d_map',JSON.stringify(data));alert('3D-карта сохранена локально.');}catch(e){alert('Не удалось сохранить карту: '+e.message);}}
+  function loadMap(){try{var d=JSON.parse(localStorage.getItem('dnd_vtt_3d_map')||'null');if(!d)return alert('Сохранённой 3D-карты пока нет.');state.cols=clamp(Number(d.grid&&d.grid.cols)||20,1,200);state.rows=clamp(Number(d.grid&&d.grid.rows)||20,1,200);if(d.version>=2&&d.levels){state.minLevel=Number(d.levels.min)||0;state.maxLevel=Number(d.levels.max)||0;state.currentLevel=Number(d.levels.current)||0;state.cells=d.cells||{};state.objects=(d.objects||[]).map(function(o){if(o.level==null)o.level=0;return o;});state.walls=d.walls||{};state.player={x:(d.player&&Number(d.player.x))||((state.cols-1)/2),y:(d.player&&Number(d.player.y))||((state.rows-1)/2),level:(d.player&&Number(d.player.level))||0,yaw:(d.player&&Number(d.player.yaw))||0,pitch:(d.player&&Number(d.player.pitch))||0};state.cameraMode=['editor','firstPerson','thirdPerson'].indexOf(d.cameraMode)>=0?d.cameraMode:'editor';}else{state.minLevel=0;state.maxLevel=0;state.currentLevel=0;var oldCells=d.cells||{};state.cells={};Object.keys(oldCells).forEach(function(k){var p=k.split(':');if(p.length===2)state.cells[key(0,Number(p[0]),Number(p[1]))]=oldCells[k];});state.objects=(d.objects||[]).map(function(o){o.level=0;return o;});state.walls={};}normalizeLevels();state.player.level=clamp(state.player.level,state.minLevel,state.maxLevel);state.currentLevel=state.player.level;state.camera.targetX=state.player.x;state.camera.targetY=state.player.y;state.camera.targetZ=state.player.level;state.selected=null;draw();renderLevelBar();positionBoundaryButtons();}catch(e){alert('Не удалось загрузить карту.');}}
   function reset(){makeNewMap(20,20,1,0);setPlayerPosition(9.5,9.5,0);}
   function expand(dir){
     if(dir==='left'){var copy={};Object.keys(state.cells).forEach(function(k){var p=k.split(':');if(p.length===3){p[1]=Number(p[1])+1;copy[p.join(':')]=state.cells[k];delete state.cells[k];}});Object.keys(copy).forEach(function(k){state.cells[k]=copy[k];});state.objects.forEach(function(o){o.x++;});state.cols++;}
@@ -183,7 +194,7 @@
     canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);
     canvas.addEventListener('touchstart',touchStart,{passive:false});canvas.addEventListener('touchmove',touchMove,{passive:false});canvas.addEventListener('touchend',touchEnd,{passive:false});
     global.addEventListener('resize',resize);
-    global.dndMap3DOpen=open;global.dndMap3DClose=close;global.dndMap3DSetCameraMode=setCameraMode;global.dndMap3DSetPlayerPosition=setPlayerPosition;global.dndMap3DMovePlayer=movePlayer;global.dndMap3DRotatePlayer=rotatePlayer;global.dndMap3DGetPlayerState=getPlayerState;global.dndMap3DNew=newMapDialog;global.dndMap3DCreateFromDialog=createFromDialog;global.dndMap3DDim=dim;global.dndMap3DLevel=switchLevel;global.dndMap3DSelect=function(){state.tool='select';draw();};global.dndMap3DUp=raise;global.dndMap3DDown=lower;global.dndMap3DCube=addCube;global.dndMap3DWall=addWall;global.dndMap3DRemove=remove;global.dndMap3DSave=saveMap;global.dndMap3DLoad=loadMap;global.dndMap3DReset=reset;
+    global.dndMap3DOpen=open;global.dndMap3DClose=close;global.dndMap3DSetCameraMode=setCameraMode;global.dndMap3DSetPlayerPosition=setPlayerPosition;global.dndMap3DMovePlayer=movePlayer;global.dndMap3DRotatePlayer=rotatePlayer;global.dndMap3DGetPlayerState=getPlayerState;global.dndMap3DNew=newMapDialog;global.dndMap3DCreateFromDialog=createFromDialog;global.dndMap3DDim=dim;global.dndMap3DLevel=switchLevel;global.dndMap3DSelect=function(){state.tool='select';draw();};global.dndMap3DUp=raise;global.dndMap3DDown=lower;global.dndMap3DCube=addCube;global.dndMap3DWall=addWall;global.dndMap3DWallDir=addWallEdge;global.dndMap3DRemove=remove;global.dndMap3DSave=saveMap;global.dndMap3DLoad=loadMap;global.dndMap3DReset=reset;
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })(window);
