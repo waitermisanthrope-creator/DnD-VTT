@@ -8006,3 +8006,14 @@ Implemented:
 3. Better door animation and collision around the opening.
 4. Camera collision and movement polish.
 5. Connect 3D world state to the existing combat/initiative systems.
+
+
+## V70.36.9 — initiative/combat state in 3D map
+
+- 3D tokens now carry combat kind (player/NPC/monster/effect), initiative, HP/status/action-state defaults.
+- Initiative can be entered manually or rolled with d20.
+- Combat state persists with the map: active flag, round, current token and initiative order.
+- Basic turn flow is available: start combat, next turn, end combat.
+- Invisible/effect tokens are excluded from initiative order.
+- Old token saves migrate safely to the new combat fields.
+- This is the bridge layer for later integration with the existing D&D combat/action engine; it intentionally does not duplicate the full rules engine yet.
