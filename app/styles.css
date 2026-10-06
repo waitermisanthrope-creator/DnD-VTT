@@ -162,7 +162,7 @@ textarea { height: 100px; resize: vertical; }
 /* ==========================================
    БЛОК 13: МОДАЛЬНЫЕ ОКНА
    ========================================== */
-body.modal-open { overflow: hidden !important; touch-action: none !important; }
+body.modal-open { overflow: hidden !important; touch-action: auto !important; }
 
 /* ==========================================
    БЛОК 14: ПОЛИРОВКА И МИКРО-АНИМАЦИИ
