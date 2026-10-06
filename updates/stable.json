@@ -1374,8 +1374,8 @@
     },
     {
       "path": "app/vtt_debug_error_log_v709.js",
-      "bytes": 4816,
-      "sha256": "cd684a8c03cb0cd97e32eab9b5b88f5a2917251e419bac8bcb3da279e4fd23b8"
+      "bytes": 5965,
+      "sha256": "b24588aa9a5d758739594a20afe089f37d091ceceb00de7255a76e99bdf883ef"
     },
     {
       "path": "app/vtt_debug_lab_v703.js",
