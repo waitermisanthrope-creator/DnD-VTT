@@ -212,7 +212,7 @@
       var sc=canonicalWall(state.currentLevel,state.selected.x,state.selected.y,state.wallEditDir||'n');
       if(wallKey(sc.level,sc.x,sc.y,sc.dir)!==k)return;
       var sq=wallQuadAt(sw,cellHeight(sw.x,sw.y,sw.level),Math.min(wallHeight(sw),.08),.002);
-      items.push({d:(sq[0].depth+sq[1].depth+sq[2].depth+sq[3].depth)/4-0.05,kind:'wallSelect',p:sq});
+      items.push({d:(sq[0].depth+sq[1].depth+sq[2].depth+sq[3].depth)/4+0.05,kind:'wallSelect',p:sq});
     });
     state.objects.forEach(function(o){
       if(Number(o.level||0)!==state.currentLevel)return;var z=cellHeight(o.x,o.y,state.currentLevel)+Number(o.z||0),s=Number(o.size||.8),sx=s*Number(o.scaleX||1),sy=s*Number(o.scaleY||1),sz=s*Number(o.scaleZ||1),ang=Number(o.rotation||0)*Math.PI/180,cs=Math.cos(ang),sn=Math.sin(ang),cx=o.x+s/2,cy=o.y+s/2;function P(dx,dy,zz){var rx=dx*cs-dy*sn,ry=dx*sn+dy*cs;return project(cx+rx,cy+ry,z+zz);}
