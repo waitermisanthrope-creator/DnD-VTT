@@ -2,14 +2,11 @@
  * Модуль управления обоями, прозрачностью интерфейса, модалок, цветностью фона, затемнением и автосменой (wallpapers.js)
  */
 
-// Генерация списка обоев: с 1 по 19 включительно, 20 пропуск, с 21 по 30 включительно
+// Полный старый каталог обоев: 1–30 без пропусков.
+// Важно: №20 используется также заставкой Logo.js, поэтому его нельзя исключать.
 const availableWallpapers = [];
 
-for (let i = 1; i <= 19; i++) {
-  availableWallpapers.push({ name: `Обои №${i}`, file: `./wallpapers/${i}.png` });
-}
-
-for (let i = 21; i <= 30; i++) {
+for (let i = 1; i <= 30; i++) {
   availableWallpapers.push({ name: `Обои №${i}`, file: `./wallpapers/${i}.png` });
 }
 
@@ -356,7 +353,7 @@ function openWallpapersModal() {
   });
 
   modal.innerHTML = `
-    <div style="background: #1e1e1e; padding: 22px; border-radius: 10px; width: 100%; max-width: 500px; border: 1px solid #444; box-shadow: 0 10px 25px rgba(0,0,0,0.5); color: #fff; max-height: 90vh; overflow-y: auto;">
+    <div style="background: #1e1e1e; padding: 22px; border-radius: 10px; width: 100%; max-width: 500px; border: 1px solid #444; box-shadow: 0 10px 25px rgba(0,0,0,0.5); color: #fff; max-height: 90vh; overflow-y: auto; -webkit-overflow-scrolling: touch; touch-action: pan-y;">
       
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444; padding-bottom: 10px; margin-bottom: 15px;">
         <h3 style="margin: 0; color: #ff9800; font-size: 1.2em;">🖼️ Графические настройки</h3>
@@ -421,7 +418,7 @@ function openWallpapersModal() {
         <!-- Плитка выбора -->
         <div style="background: #252525; padding: 12px; border-radius: 6px; border: 1px solid #333;">
           <div style="font-size: 0.9em; font-weight: bold; margin-bottom: 8px; color: #ff9800;">🖼️ Выбрать вручную (Плитка)</div>
-          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; max-height: 180px; overflow-y: auto; padding-right: 4px;">
+          <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; height: 280px; max-height: 45vh; overflow-y: scroll; overflow-x: hidden; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; touch-action: pan-y; padding-right: 6px;">
             ${wallpapersGridHtml}
           </div>
         </div>
