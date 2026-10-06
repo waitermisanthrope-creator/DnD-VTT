@@ -46,11 +46,13 @@ def main():
             version=detected
             print(f'using APP_VERSION from app/update_manager.js: {version}')
     files=[]
-    candidates=[ROOT/'index.html']+sorted((ROOT/'app').rglob('*'))+sorted((ROOT/'wallpapers').rglob('*')) if (ROOT/'wallpapers').exists() else [ROOT/'index.html']+sorted((ROOT/'app').rglob('*'))
-    for p in candidates:
+    candidates=[(ROOT/'index.html','index.html')]
+    candidates += [(p,p.relative_to(ROOT).as_posix()) for p in sorted((ROOT/'app').rglob('*'))]
+    candidates += [(p,'wallpapers/'+p.name) for p in sorted(ROOT.glob('*.png'))]
+    if (ROOT/'wallpapers').exists(): candidates += [(p,p.relative_to(ROOT).as_posix()) for p in sorted((ROOT/'wallpapers').rglob('*'))]
+    for p, rel in candidates:
         if not p.is_file() or p.name.endswith('.map'):
             continue
-        rel=p.relative_to(ROOT).as_posix()
         files.append({'path':rel,'bytes':p.stat().st_size,'sha256':sha256(p)})
     manifest={
         'schema':1,
