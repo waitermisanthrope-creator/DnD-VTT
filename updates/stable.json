@@ -69,8 +69,8 @@
     },
     {
       "path": "app/Wallpapers.js",
-      "bytes": 20465,
-      "sha256": "59c8ae14a664efcd2cd6813b9f8391af788701caff235102836b0c74e4837982"
+      "bytes": 20354,
+      "sha256": "2b6c5a9880a2efd76190d0a4e9188568038a7e5a5379029720bafce560d25690"
     },
     {
       "path": "app/accursed_oap_v11_runtime.js",
