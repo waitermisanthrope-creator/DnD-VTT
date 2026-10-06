@@ -7878,3 +7878,40 @@ Implemented in `app/vtt_map_editor_3d_v71.js`:
 4. Implement third-person follow camera.
 5. Add door interaction range/animation and optional lock/key hooks.
 6. Connect movement to combat/initiative after navigation is stable.
+
+
+## V70.36.5 — player character selection, 2D class token, stairs/ramps (2026-10-06)
+
+Implemented in `app/vtt_map_editor_3d_v71.js`:
+- 3D map editor now reads the existing saved character roster from `dnd_multi_characters_v2` and provides a character selector directly in the 3D tools.
+- The selector is intentionally future-proof: it currently selects a saved character locally; later the same field can be bound to the real network/session player roster without changing the map/player model.
+- The selected character is represented on the 3D map by a lightweight software-rendered **2D class token**, not a character portrait or 3D model. The token shows a class glyph and character name.
+- Primary class is resolved from the character's multiclass list by highest class level; common built-in classes and Blood Hunter have dedicated glyphs, with a generic fallback glyph for other classes.
+- The token is attached to the existing shared player state, so the same x/y/level position used for collision is also the token's world position.
+- Added explicit map connectors: `stairs` and `ramp`. Connectors are stored per source cell and target level.
+- Added editor controls for `Лестница ↑/↓` and `Рампа ↑/↓`, plus removal of transitions from the selected cell.
+- Vertical movement is no longer an unrestricted `dz`: changing level is allowed only when a matching stair/ramp connector exists at the player's current cell.
+- Added player `elevation` state derived from cell height and level; it is persisted with the map and exposed by `dndMap3DGetPlayerState()`.
+- Save format advanced to V7. V1–V6 remain loadable; missing connector/character data receives safe defaults.
+- Fixed an existing `renderTools()` reference to undefined `ds`, which could break the 3D editor controls when rendering the wall tool panel.
+- Legacy `battle_board.js` remains untouched.
+
+### QA V70.36.5
+- Open 3D editor and confirm the character selector lists locally saved characters from the character screen.
+- Select different characters and confirm the token glyph/name changes.
+- Move the shared player state and confirm the 2D class token follows the exact collision position.
+- Verify a level change is rejected when no stair/ramp exists.
+- Create a stair/ramp to an adjacent level and verify the same movement API can transition there.
+- Save/load a V7 map and confirm selected character, connectors and player elevation persist.
+- Load older V1–V6 maps and verify no crash and safe defaults.
+- Verify the wall controls still render correctly after the `ds` fix.
+- Confirm legacy `battle_board.js` remains untouched.
+
+### Next 3D steps
+1. Give stairs/ramps real directional geometry and traversal along their length instead of cell-center level switching.
+2. Add true vertical collision/elevation limits for raised surfaces and multi-level edges.
+3. Implement first-person walking with keyboard/touch controls using the same player/token/collision state.
+4. Implement third-person follow camera using the same state.
+5. Add interaction range/animation for doors and later key/lock integration.
+6. Later bind the local character selector to the real session/network player roster (target capacity remains 1 DM + up to 15 players).
+7. Connect movement to combat/initiative after navigation is stable.
