@@ -5,7 +5,7 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.34.9';
+  var APP_VERSION = '70.34.11';
   var DEFAULT_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
   var FALLBACK_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url_v2';
@@ -231,18 +231,32 @@
       var staged = await checkAndStage({ onProgress:function(p){ui.setProgress(p);} });
       if (!staged.stageResult || !staged.stageResult.staged) return staged;
       ui.setProgress({current:1,total:1,bytesDone:1,bytesTotal:1,path:'Проверено'});
-      ui.setStatus('Все файлы проверены. Дракон готов к переходу.');
-      ui.finish();
+      ui.setStatus('Все файлы проверены. Переношу обновление…');
+      var applyStarted = false;
       ui.onApply = async function () {
+        if (applyStarted) return;
+        applyStarted = true;
         ui.setStatus('Переношу мир в новый лес…');
         try {
           await applyStaged({onProgress:function(p){ui.setProgress(p);}});
           ui.setStatus('Готово. Перезапускаю приложение…');
         } catch (e) {
+          applyStarted = false;
           ui.fail(e && e.message || e);
           ui.enableApply();
         }
       };
+      ui.finish();
+      // The automatic updater must not leave a staged update stranded behind
+      // the Settings screen. Apply it automatically; the visible button remains
+      // as a fallback if the automatic click is interrupted.
+      setTimeout(function () {
+        try {
+          if (document.getElementById('dndUpdateV2') === ui.overlay && !applyStarted && typeof ui.onApply === 'function') {
+            ui.onApply();
+          }
+        } catch (_) {}
+      }, 700);
       return staged;
     })();
     global.__dndUpdateV2Running = run;
