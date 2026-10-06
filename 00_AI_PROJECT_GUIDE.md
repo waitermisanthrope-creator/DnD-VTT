@@ -7757,3 +7757,34 @@ Implemented in `app/vtt_map_editor_3d_v71.js`:
 - Verify level buttons switch the active floor and object visibility.
 - Verify save/load retains dimensions, levels, cells and objects.
 - Verify V1 localStorage maps migrate without data loss.
+
+
+## V70.36.1 — 3D player/camera architecture groundwork (2026-10-06)
+
+Implemented in `app/vtt_map_editor_3d_v71.js`:
+- Added persistent `player` state: `x`, `y`, `level`, `yaw`, `pitch`.
+- Added `cameraMode` state with three reserved modes: `editor`, `firstPerson`, `thirdPerson`.
+- Added a player spawn/position API and basic movement/rotation APIs. These APIs intentionally do **not** implement collision, navigation or final walking controls yet.
+- Added public hooks: `dndMap3DSetCameraMode()`, `dndMap3DSetPlayerPosition()`, `dndMap3DMovePlayer()`, `dndMap3DRotatePlayer()`, `dndMap3DGetPlayerState()`.
+- Save format advanced to V3 and persists player position/orientation plus camera mode. Existing V2/V1 maps remain loadable; missing player data receives a safe center/ground default.
+- Level expansion/switching keeps the player level synchronized with the active level.
+- Reset creates a valid player spawn at the map center.
+- This is architecture-first: first-person/third-person rendering is deliberately deferred until base 3D geometry, walls, doors, stairs and collision rules are stable. No fake walking mode is presented as complete.
+
+### Agreed 3D roadmap
+1. Stabilize base 3D geometry and map model.
+2. Add real wall/edge geometry and object blocking.
+3. Add doors, stairs and multi-level traversal.
+4. Add collision and navigation.
+5. Implement first-person walking using the shared player/camera state.
+6. Implement third-person follow camera using the same state.
+7. Allow switching between editor / first-person / third-person without creating separate map engines.
+8. Later connect the shared 3D world to combat, initiative and network state.
+
+### QA V70.36.1
+- New map creates a valid player state.
+- Save/load retains player position, level, yaw/pitch and camera mode.
+- V2 and V1 local maps still load with a safe default player.
+- Adding/switching levels updates the player level.
+- Public player/camera APIs exist and do not require the legacy `battle_board.js`.
+- No collision/walking behavior is claimed complete at this stage.
