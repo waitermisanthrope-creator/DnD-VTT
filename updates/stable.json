@@ -4,7 +4,7 @@
   "version": "70.33.7",
   "minAppVersion": "70.32.21",
   "channel": "stable",
-  "generated": "2026-10-05",
+  "generated": "2026-10-06",
   "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main",
   "files": [
     {
@@ -99,8 +99,8 @@
     },
     {
       "path": "app/app.js",
-      "bytes": 36291,
-      "sha256": "b862c6e7b14fd2b9f4f55f4c053057fbda69aaaa98f8484c1276c9340f8562c3"
+      "bytes": 36459,
+      "sha256": "78135f04302efeaba184c11264d06454c8d136472c1d23f4ecf2c7d1069070df"
     },
     {
       "path": "app/armors.js",
