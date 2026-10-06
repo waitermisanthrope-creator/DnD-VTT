@@ -7,6 +7,8 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.JavascriptInterface;
+import android.util.Log;
+import android.os.Handler;
 import java.io.File;
 import java.util.Collections;
 import androidx.webkit.WebViewAssetLoader;
@@ -70,7 +72,29 @@ public class MainActivity extends Activity {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                updater.markHealthy();
+                if (!updater.hasPendingUpdate()) {
+                    updater.markHealthy();
+                    return;
+                }
+
+                // onPageFinished can fire even when the new web version renders
+                // only a blank shell after a fatal JS/runtime failure. A staged
+                // update is healthy only after the recreated WebView proves that
+                // the application booted and its core navigation API exists.
+                new Handler(getMainLooper()).postDelayed(() -> {
+                    if (webView == null) return;
+                    webView.evaluateJavascript(
+                            "(function(){return !!(window.__DND_APP_BOOT_READY===true && typeof window.goToTab==='function' && document.body && document.body.children.length>0);})()",
+                            value -> {
+                                boolean healthy = "true".equalsIgnoreCase(String.valueOf(value).replace("\"", ""));
+                                if (healthy) {
+                                    updater.markHealthy();
+                                } else {
+                                    Log.w("MainActivity", "Pending web update failed boot validation; rolling back");
+                                    updater.rollbackPending();
+                                }
+                            });
+                }, 2500L);
             }
         });
 
