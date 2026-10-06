@@ -21,18 +21,18 @@
       '#dndUpdateV2.burning .scene-bg{transform:scale(1.11)}',
       '#dndUpdateV2.burning .scene-burn{transform:scale(1.02)}',
       '#dndUpdateV2 .vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 28%,rgba(0,0,0,.24) 58%,rgba(0,0,0,.78) 100%)}',
-      '#dndUpdateV2 .scene-fire{object-fit:cover;opacity:0;mix-blend-mode:screen;transform:translateY(12%);transition:opacity 1.2s ease,transform 1.4s ease;filter:saturate(1.3) contrast(1.08);will-change:transform}',
-      '#dndUpdateV2.burning .scene-fire{opacity:.9;transform:translateY(0)}',
+      '#dndUpdateV2 .scene-fire{position:absolute;left:0;top:18%;width:100%;height:82%;object-fit:cover;opacity:.88;mix-blend-mode:screen;transform:translate3d(-50%,0,0);transition:none;filter:saturate(1.3) contrast(1.08);will-change:transform;z-index:4}',
+      '#dndUpdateV2 .scene-fire{pointer-events:none}',
       '#dndUpdateV2 .scene-smoke{object-fit:cover;opacity:0;mix-blend-mode:screen;filter:blur(.2px);transition:opacity 2s ease}',
       '#dndUpdateV2.burning .scene-smoke{opacity:.58;animation:dndSmoke 10s ease-in-out infinite alternate}',
       '#dndUpdateV2 .scene-embers{object-fit:cover;opacity:0;mix-blend-mode:screen;transition:opacity 1s ease}',
       '#dndUpdateV2.burning .scene-embers{opacity:.8;animation:dndEmbers 4s linear infinite}',
-      '#dndUpdateV2 .dragon-rig{position:absolute;left:50%;bottom:-9%;width:min(74vw,760px);height:min(76vh,620px);transform:translate(-50%,18%) scale(.72);opacity:0;filter:drop-shadow(0 18px 28px rgba(0,0,0,.7));transition:transform 2.4s cubic-bezier(.18,.8,.18,1),opacity 1.4s ease;transform-origin:50% 70%;will-change:transform}',
+      '#dndUpdateV2 .dragon-rig{position:absolute;left:50%;bottom:-9%;width:min(74vw,760px);height:min(76vh,620px);transform:translate(-50%,18%) scale(.72);opacity:0;filter:drop-shadow(0 18px 28px rgba(0,0,0,.7));transition:transform 2.4s cubic-bezier(.18,.8,.18,1),opacity 1.4s ease;transform-origin:50% 70%;will-change:transform;z-index:6;animation:dndDragonHover 2.8s ease-in-out infinite}',
       '#dndUpdateV2.ready .dragon-rig{transform:translate(-50%,-2%) scale(.9);opacity:.96}',
       '#dndUpdateV2.burning .dragon-rig{transform:translate(-50%,-5%) scale(1);opacity:.98}',
       '#dndUpdateV2 .dragon-flight,#dndUpdateV2 .dragon-fire{position:absolute;inset:0;width:100%;height:100%;background-repeat:no-repeat;background-position:0 0;background-size:800% 100%;background-position-y:center;background-color:transparent;pointer-events:none}',
-      '#dndUpdateV2 .dragon-flight{background-image:url(\'./app/assets/ui/dragon_flight_v2_sprite.png\');animation:dndDragonFlight .96s steps(8,end) infinite;filter:drop-shadow(0 18px 28px rgba(0,0,0,.7));}',
-      '#dndUpdateV2 .dragon-fire{background-image:url(\'./app/assets/ui/dragon_fire_burst_v2_sprite.png\');opacity:0;mix-blend-mode:screen;filter:drop-shadow(0 0 20px rgba(255,100,0,.7));transition:opacity 1.1s ease;animation:dndDragonFire 1.05s steps(8,end) infinite;}',
+      '#dndUpdateV2 .dragon-flight{background-image:url(\'./app/assets/ui/dragon_flight_v2_sprite.png\');background-size:800% 100%;animation:dndDragonFlight .82s steps(8) infinite;filter:drop-shadow(0 18px 28px rgba(0,0,0,.7));will-change:background-position;}',
+      '#dndUpdateV2 .dragon-fire{background-image:url(\'./app/assets/ui/dragon_fire_burst_v2_sprite.png\');opacity:0;mix-blend-mode:screen;filter:drop-shadow(0 0 20px rgba(255,100,0,.7));transition:opacity 1.1s ease;animation:dndDragonFire .9s steps(8) infinite;will-change:background-position;}',
       '#dndUpdateV2.burning .dragon-fire{opacity:.94}',
       '#dndUpdateV2 .title{position:absolute;top:8%;left:50%;transform:translateX(-50%);width:min(92vw,760px);text-align:center;text-shadow:0 3px 18px #000;transition:opacity .8s ease,transform .8s ease}',
       '#dndUpdateV2 .title h1{margin:0;font-size:clamp(28px,5vw,54px);letter-spacing:.08em;text-transform:uppercase;font-weight:800}',
@@ -51,10 +51,11 @@
       '@keyframes dndSmoke{from{transform:translate3d(-1%,0,0) scale(1.03)}to{transform:translate3d(2%,-1%,0) scale(1.09)}}',
       '@keyframes dndEmbers{0%{transform:translateY(3%);opacity:.25}35%{opacity:.82}100%{transform:translateY(-2%);opacity:.5}}',
       '@keyframes dndFlash{0%,74%,100%{opacity:0}78%{opacity:.13}79%{opacity:0}}',
-      '@keyframes dndDragonFlight{from{background-position:0 0}to{background-position:100% 0}}',
-      '@keyframes dndDragonFire{from{background-position:0 0}to{background-position:100% 0}}',
+      '@keyframes dndDragonFlight{0%{background-position:0 0}14.285%{background-position:14.285% 0}28.57%{background-position:28.57% 0}42.855%{background-position:42.855% 0}57.14%{background-position:57.14% 0}71.425%{background-position:71.425% 0}85.71%{background-position:85.71% 0}100%{background-position:100% 0}}',
+      '@keyframes dndDragonFire{0%{background-position:0 0}14.285%{background-position:14.285% 0}28.57%{background-position:28.57% 0}42.855%{background-position:42.855% 0}57.14%{background-position:57.14% 0}71.425%{background-position:71.425% 0}85.71%{background-position:85.71% 0}100%{background-position:100% 0}}',
       '@keyframes dndDragonIdle{0%,100%{transform:translate3d(0,0,0) rotate(0deg)}50%{transform:translate3d(0,-7px,0) rotate(-.8deg)}}',
       '@keyframes dndFirePulse{0%,100%{opacity:.72;transform:scale(.985)}50%{opacity:1;transform:scale(1.015)}}',
+      '@keyframes dndDragonHover{0%,100%{margin-top:0}50%{margin-top:-9px}}',
       '@media(max-width:600px){#dndUpdateV2 .dragon-rig{width:104vw;height:76vh;bottom:1%}#dndUpdateV2 .title{top:7%}#dndUpdateV2 .panel{bottom:3%;padding:12px}.title p{max-width:88vw;margin-left:auto;margin-right:auto}}'
     ].join('');
     document.head.appendChild(s);
@@ -131,7 +132,7 @@
       if (test || !state || !state.updateAvailable) api.destroy();
     });
 
-    // The cinematic sequence starts only after at least one paint.
+    // The cinematic sequence starts only after at least one paint. The fire front is tied to progress: it starts off-screen left and sweeps to the right edge, revealing burned terrain behind it.
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
         root.classList.add('ready');
