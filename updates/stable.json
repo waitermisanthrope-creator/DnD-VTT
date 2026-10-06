@@ -1330,12 +1330,12 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 16381,
-      "sha256": "476a619c61447a491c356171b5b14fbc7e6f8e6b999b39b97e95a012ae51bb81"
+      "sha256": "2dc0f1ba2dca867fa1696077c52b17decb1034a4cebc60b7fafce8bf25a9eeaa"
     },
     {
       "path": "app/update_scene_v2.js",
-      "bytes": 11859,
-      "sha256": "5f09cde3e57c73d106b1f6293636815b992ca140b57e2ed203852664c77826c2"
+      "bytes": 8128,
+      "sha256": "4c62b7f3e12ea35d18c4a493e4a2c7f0ef976aa270fc8deb025383e6d14d4ad0"
     },
     {
       "path": "app/vessel_laserllama_v4_runtime.js",
