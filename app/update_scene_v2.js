@@ -21,7 +21,7 @@
       '#dndUpdateV2.burning .scene-bg{transform:scale(1.11)}',
       '#dndUpdateV2.burning .scene-burn{transform:scale(1.02)}',
       '#dndUpdateV2 .vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 28%,rgba(0,0,0,.24) 58%,rgba(0,0,0,.78) 100%)}',
-      '#dndUpdateV2 .scene-fire{position:absolute;left:0;top:18%;width:100%;height:82%;object-fit:cover;opacity:.88;mix-blend-mode:screen;transform:translate3d(-50%,0,0);transition:none;filter:saturate(1.3) contrast(1.08);will-change:transform;z-index:4}',
+      '#dndUpdateV2 .scene-fire{position:absolute;left:0;top:18%;width:100%;height:82%;object-fit:cover;opacity:.88;mix-blend-mode:screen;transform:none;transition:none;filter:saturate(1.3) contrast(1.08);will-change:clip-path;z-index:4}',
       '#dndUpdateV2 .scene-fire{pointer-events:none}',
       '#dndUpdateV2 .scene-smoke{object-fit:cover;opacity:0;mix-blend-mode:screen;filter:blur(.2px);transition:opacity 2s ease}',
       '#dndUpdateV2.burning .scene-smoke{opacity:.58;animation:dndSmoke 10s ease-in-out infinite alternate}',
@@ -106,7 +106,7 @@
         bar.style.width = percent.toFixed(1) + '%';
         pct.textContent = Math.round(percent) + '%';
         if (burn) burn.style.clipPath = 'inset(0 ' + Math.max(0, 100 - percent).toFixed(2) + '% 0 0)';
-        if (fireFront) fireFront.style.transform = 'translate3d(' + (percent - 50).toFixed(2) + '%,0,0)';
+        if (fireFront) { var edge = Math.max(0, Math.min(100, percent)); var half = 2.2; fireFront.style.clipPath = 'inset(0 ' + Math.max(0, 100 - edge - half).toFixed(2) + '% 0 ' + Math.max(0, edge - half).toFixed(2) + '%)'; }
         if (p.path) file.textContent = String(p.path).split('/').slice(-1)[0];
       },
       setStatus: function (message) { status.textContent = String(message || ''); },
@@ -132,7 +132,7 @@
       if (test || !state || !state.updateAvailable) api.destroy();
     });
 
-    // The cinematic sequence starts only after at least one paint. The fire front is tied to progress: it starts off-screen left and sweeps to the right edge, revealing burned terrain behind it.
+    // The cinematic sequence starts only after at least one paint. The fire front is a narrow clipped band whose center is exactly the same progress coordinate as the burned-forest reveal boundary.
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
         root.classList.add('ready');
