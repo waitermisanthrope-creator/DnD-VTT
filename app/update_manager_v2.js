@@ -247,16 +247,7 @@
         }
       };
       ui.finish();
-      // The automatic updater must not leave a staged update stranded behind
-      // the Settings screen. Apply it automatically; the visible button remains
-      // as a fallback if the automatic click is interrupted.
-      setTimeout(function () {
-        try {
-          if (document.getElementById('dndUpdateV2') === ui.overlay && !applyStarted && typeof ui.onApply === 'function') {
-            ui.onApply();
-          }
-        } catch (_) {}
-      }, 700);
+      // No automatic installation. This function is not called during normal boot.
       return staged;
     })();
     global.__dndUpdateV2Running = run;
@@ -328,7 +319,46 @@
     return applyStaged({}).then(function(){if(status)status.textContent='Готово. Перезапуск…';}).catch(function(e){if(status)status.textContent='Ошибка: '+(e&&e.message||e);});
   }
 
-  global.DND_UPDATE_UI = { check:settingsCheck, apply:settingsApply, refresh:function(){ensureSettingsPanel();} };
+  global.DND_UPDATE_UI = {
+    check:settingsCheck,
+    apply:settingsApply,
+    refresh:function(){ensureSettingsPanel();},
+    setMainMenuAvailability:function(available, state) {
+      var button=document.getElementById('mainMenuUpdateButton');
+      if (!button) return;
+      button.style.display=available?'flex':'none';
+      button.setAttribute('aria-hidden',available?'false':'true');
+      if (available && state && state.manifest && state.manifest.version) {
+        button.setAttribute('data-update-version',String(state.manifest.version));
+        button.title='Доступно обновление v'+String(state.manifest.version);
+      } else {
+        button.removeAttribute('data-update-version');
+        button.removeAttribute('title');
+      }
+    },
+    openMainMenuUpdate:function() {
+      return inspect().then(function(state) {
+        if (!state.updateAvailable) {
+          global.DND_UPDATE_UI.setMainMenuAvailability(false,state);
+          return state;
+        }
+        var ui=scene(state);
+        ui.setStatus('Найдено обновление v'+state.manifest.version+'. Загружаю…');
+        return checkAndStage({onProgress:function(p){ui.setProgress(p);}}).then(function(s) {
+          ui.finish();
+          ui.enableApply();
+          ui.onApply=function(){
+            return applyStaged({}).then(function(){ui.setStatus('Готово. Перезапускаю приложение…');})
+              .catch(function(e){ui.fail(e&&e.message||e);ui.enableApply();});
+          };
+          return s;
+        });
+      }).catch(function(e) {
+        try { alert('Не удалось проверить обновление: '+(e&&e.message||e)); } catch (_) {}
+        return null;
+      });
+    }
+  };
   global.DND_UPDATE_MANAGER = {
     VERSION:APP_VERSION, compareVersions:compareVersions, inspect:inspect, stage:stage,
     checkAndStage:checkAndStage, applyStaged:applyStaged, autoCheckForUpdates:autoCheckForUpdates,
@@ -338,8 +368,21 @@
   };
 
   function boot() {
+    // Updates are NEVER started automatically. Only availability is checked.
     try { ensureSettingsPanel(); } catch (_) {}
-    setTimeout(function(){ try { autoCheckForUpdates(); } catch (_) {} }, 1600);
+    setTimeout(function () {
+      try {
+        inspect().then(function (state) {
+          if (global.DND_UPDATE_UI && typeof global.DND_UPDATE_UI.setMainMenuAvailability === 'function') {
+            global.DND_UPDATE_UI.setMainMenuAvailability(!!state.updateAvailable, state);
+          }
+        }).catch(function () {
+          if (global.DND_UPDATE_UI && typeof global.DND_UPDATE_UI.setMainMenuAvailability === 'function') {
+            global.DND_UPDATE_UI.setMainMenuAvailability(false, null);
+          }
+        });
+      } catch (_) {}
+    }, 900);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',boot,{once:true}); else boot();
 })(window);
