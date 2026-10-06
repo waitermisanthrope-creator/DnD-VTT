@@ -6,7 +6,7 @@
  */
 (function(global){
   'use strict';
-  var VERSION='0.4.0';
+  var VERSION='0.5.0';
   var state={
     open:false, cols:20, rows:20, minLevel:0, maxLevel:0, currentLevel:0, cell:1,
     cells:{}, objects:[], walls:{}, connectors:[],
