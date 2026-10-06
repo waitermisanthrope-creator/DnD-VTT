@@ -2,26 +2,22 @@
  * Модуль управления обоями, прозрачностью интерфейса, модалок, цветностью фона, затемнением и автосменой (wallpapers.js)
  */
 
-// V70.34.13: the legacy ./wallpapers/*.png directory is not part of the
-// deployable update manifest, so those URLs became 404 after an in-app update.
-// Use artwork that is guaranteed to ship with the current app instead.
-const wallpaperFallbackSources = [
-  './app/assets/ui/forest_green.jpg',
-  './app/assets/ui/forest_burned.jpg',
-  './app/assets/ui/dragon.png',
-  './app/assets/ui/dragon_fire.png',
-  './app/assets/ui/update_scene_background.svg',
-  './app/assets/ui/update_scene_forest_green.svg',
-  './app/assets/ui/update_scene_forest_burned.svg',
-  './app/assets/ui/update_scene_dragon.svg',
-  './app/assets/ui/loader_forest.svg',
-  './app/assets/ui/loader_forest_burning.svg'
-];
+// Каталог обоев: штатные PNG из папки wallpapers + две дополнительные сцены
+// из загрузчика, скопированные в ту же папку как SVG.
+const availableWallpapers = [];
 
-const availableWallpapers = wallpaperFallbackSources.map((file, index) => ({
-  name: `Обои №${index + 1}`,
-  file
-}));
+for (let i = 1; i <= 19; i++) {
+  availableWallpapers.push({ name: `Обои №${i}`, file: `wallpapers/${i}.png` });
+}
+
+for (let i = 21; i <= 30; i++) {
+  availableWallpapers.push({ name: `Обои №${i}`, file: `wallpapers/${i}.png` });
+}
+
+availableWallpapers.push(
+  { name: 'Обои №31 — Зелёная поляна', file: 'wallpapers/31.svg' },
+  { name: 'Обои №32 — Выжженная поляна', file: 'wallpapers/32.svg' }
+);
 
 // Предопределенная палитра цветов для фона карточек и модальных окон
 const BG_COLOR_PALETTE = {
