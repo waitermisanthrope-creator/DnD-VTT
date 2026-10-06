@@ -46,9 +46,11 @@ function openSettingsModal() {
       padding: 15px;
       box-sizing: border-box;
       backdrop-filter: blur(4px);
+      overflow: hidden;
+      touch-action: auto;
     `;
     modal.innerHTML = `
-      <div style="background: #1e1e1e; padding: 22px; border-radius: 10px; width: 100%; max-width: 450px; border: 1px solid #444; box-shadow: 0 10px 25px rgba(0,0,0,0.5); color: #fff; position: relative; max-height: 90vh; overflow-y: auto;">
+      <div style="background: #1e1e1e; padding: 22px; border-radius: 10px; width: 100%; max-width: 450px; border: 1px solid #444; box-shadow: 0 10px 25px rgba(0,0,0,0.5); color: #fff; position: relative; max-height: calc(100dvh - 30px); max-height: 90vh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; touch-action: pan-y;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444; padding-bottom: 10px; margin-bottom: 15px;">
           <h3 style="margin: 0; color: var(--theme-primary, #ff9800); font-size: 1.2em;">⚙️ Настройки приложения</h3>
           <button onclick="closeSettingsModal()" style="background: #e53935; color: #fff; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-weight: bold;">✕</button>
@@ -203,6 +205,15 @@ function openSettingsModal() {
   if (window.DND_CRAFTING_DLC_V50) window.DND_CRAFTING_DLC_V50.renderStatus();
 
   modal.style.display = 'flex';
+  const settingsPanel = modal.firstElementChild;
+  if (settingsPanel) {
+    settingsPanel.scrollTop = 0;
+    settingsPanel.style.overflowY = 'auto';
+    settingsPanel.style.overflowX = 'hidden';
+    settingsPanel.style.webkitOverflowScrolling = 'touch';
+    settingsPanel.style.touchAction = 'pan-y';
+    settingsPanel.style.maxHeight = 'calc(100dvh - 30px)';
+  }
 }
 
 window.openSettingsModal = openSettingsModal;
