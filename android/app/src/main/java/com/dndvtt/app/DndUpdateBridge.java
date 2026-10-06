@@ -161,7 +161,10 @@ public final class DndUpdateBridge {
             prefs.edit().putString("previous", previous).putString("active", version).putString("pending", version).commit();
 
             postReply(reply, response(id, true, "applied", version));
-            new Handler(Looper.getMainLooper()).postDelayed(activity::recreate, 500);
+            // Recreate the activity after promotion. MainActivity performs a hard
+            // WebView cache reset before loading the active version, so a promoted
+            // web build cannot remain visually stuck on the previous cached assets.
+            new Handler(Looper.getMainLooper()).postDelayed(activity::recreate, 350);
         } catch (Exception e) {
             postReply(reply, response(id, false, "apply-failed", e.toString()));
         }
