@@ -380,71 +380,12 @@ function devTriggerLevelUpModal() {
  * Используется тот же DND_UPDATE_SCENE, что и при настоящем обновлении.
  */
 function runDndUpdateSceneTest() {
-  if (!window.DND_UPDATE_SCENE || typeof window.DND_UPDATE_SCENE.create !== 'function') {
-    alert('Сцена обновления не загружена.');
-    return;
+  if (window.DND_UPDATE_MANAGER && typeof window.DND_UPDATE_MANAGER.runSceneTest === 'function') {
+    if (typeof closeDevMenuModal === 'function') closeDevMenuModal();
+    return window.DND_UPDATE_MANAGER.runSceneTest();
   }
-  if (typeof closeDevMenuModal === 'function') closeDevMenuModal();
-
-  const files = [
-    ['index.html', 286000], ['app/app.js', 42000],
-    ['app/update_manager.js', 18000], ['app/update_scene_v755.js', 15000],
-    ['app/class_features_engine.js', 52000], ['app/combat_engine.js', 68000],
-    ['app/assets/ui/forest_green.jpg', 980000], ['app/assets/ui/forest_burned.jpg', 1010000],
-    ['app/assets/ui/fire_front.png', 214000], ['app/assets/ui/dragon.png', 118000],
-    ['app/assets/ui/dragon_fire.png', 96000], ['app/assets/ui/update_scene_smoke.svg', 18000]
-  ].map(function(item) {
-    return { path: item[0], bytes: item[1], sha256: '0'.repeat(64) };
-  });
-
-  const totalBytes = files.reduce(function(sum, f) { return sum + f.bytes; }, 0);
-  const scene = window.DND_UPDATE_SCENE.create({
-    testMode: true,
-    manifest: { version: 'TEST', files: files }
-  });
-
-  let fileIndex = 0, fileStart = 0, completedBytes = 0, raf = 0;
-
-  function finishTest() {
-    if (raf) cancelAnimationFrame(raf);
-    scene.setProgress({
-      current: files.length, total: files.length,
-      bytesDone: totalBytes, bytesTotal: totalBytes,
-      phase: 'apply', path: ''
-    });
-    scene.setStatus('Проверка завершена: все файлы условно проверены, ошибок нет.');
-    scene.enableApply();
-  }
-
-  function frame(now) {
-    if (!fileStart) fileStart = now;
-    const elapsed = Math.min(420, now - fileStart);
-    const local = elapsed / 420;
-    const file = files[fileIndex];
-    const bytesDone = completedBytes + Math.round(file.bytes * local);
-    scene.setProgress({
-      current: fileIndex + 1, total: files.length,
-      bytesDone: bytesDone, bytesTotal: totalBytes,
-      phase: 'skip', path: file.path
-    });
-    if (elapsed >= 420) {
-      completedBytes += file.bytes;
-      fileIndex++;
-      fileStart = now;
-      if (fileIndex >= files.length) { finishTest(); return; }
-    }
-    raf = requestAnimationFrame(frame);
-  }
-
-  scene.setProgress({
-    current: 0, total: files.length,
-    bytesDone: 0, bytesTotal: totalBytes,
-    phase: 'skip', path: 'подготовка списка файлов…'
-  });
-  scene.setStatus('Имитация проверки файлов — реальные файлы не изменяются.');
-  raf = requestAnimationFrame(frame);
+  alert('Новая система обновления не загружена.');
 }
-
 /**
  * Модальное окно Меню разработчика
  */
@@ -834,27 +775,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
 (function(global){
   function setStatus(text){ var el=document.getElementById('settingsUpdateStatus'); if(el) el.textContent=text; }
-  function updateProgress(p){var w=document.getElementById('settingsUpdateProgress'),b=document.getElementById('settingsUpdateProgressBar'),l=document.getElementById('settingsUpdateProgressLabel');if(!w||!b||!l)return;w.style.display='block';var t=Number(p&&p.total||0),c=Number(p&&p.current||0),pc=t?Math.max(0,Math.min(100,Math.round(c*100/t))):0;b.style.width=pc+'%';l.textContent='Загрузка обновления: '+pc+'% — '+c+' из '+t+(p&&p.path?' — '+p.path:'');}
+  function updateProgress(p){
+    var w=document.getElementById('settingsUpdateProgress'),b=document.getElementById('settingsUpdateProgressBar'),l=document.getElementById('settingsUpdateProgressLabel');
+    if(!w||!b||!l)return;
+    w.style.display='block';
+    var t=Number(p&&p.total||0),c=Number(p&&p.current||0);
+    var pc=t?Math.max(0,Math.min(100,Math.round(c*100/t))):0;
+    b.style.width=pc+'%';
+    l.textContent='Загрузка обновления: '+pc+'% — '+c+' из '+t+(p&&p.path?' — '+p.path:'');
+  }
   global.DND_UPDATE_UI={
     check: async function(){
-      if(!global.DND_UPDATE_MANAGER){ setStatus('Модуль обновлений недоступен.'); return; }
-      setStatus('Проверяю канал обновлений…'); updateProgress({current:0,total:1});
-      try {
+      if(!global.DND_UPDATE_MANAGER){setStatus('Новая система обновлений недоступна.');return;}
+      setStatus('Проверяю новую систему обновлений…'); updateProgress({current:0,total:1});
+      try{
         var state=await global.DND_UPDATE_MANAGER.checkAndStage({onProgress:updateProgress});
         var btn=document.getElementById('settingsUpdateApplyButton');
-        if(!state.configured){ setStatus('Канал обновлений ещё не настроен.'); if(btn) btn.style.display='none'; return; }
-        if(!state.compatibility.ok){ setStatus('Текущая версия несовместима с этим обновлением: '+state.compatibility.reason); if(btn) btn.style.display='none'; return; }
-        if(!state.updateAvailable){ setStatus('Установлена актуальная версия '+state.currentVersion+'.'); var p=document.getElementById('settingsUpdateProgress'); if(p) p.style.display='none'; if(btn) btn.style.display='none'; return; }
-        updateProgress({current:1,total:1,path:'готово'}); setStatus('Доступно обновление '+state.manifest.version+'. Файлы проверены SHA-256 и подготовлены.');
-        if(btn) btn.style.display=global.DND_UPDATE_MANAGER.canApplyNatively()?'block':'none';
-      } catch(e){ setStatus('Ошибка обновления: '+(e&&e.message||e)); }
+        if(!state.configured){setStatus('Канал обновлений недоступен.');if(btn)btn.style.display='none';return;}
+        if(state.compatibility&&!state.compatibility.ok){setStatus('Обновление несовместимо: '+state.compatibility.reason);if(btn)btn.style.display='none';return;}
+        if(!state.updateAvailable){setStatus('Установлена актуальная версия v'+state.currentVersion+'.');var p=document.getElementById('settingsUpdateProgress');if(p)p.style.display='none';if(btn)btn.style.display='none';return;}
+        updateProgress({current:1,total:1,path:'готово'});
+        setStatus('Обновление v'+state.manifest.version+' подготовлено. Откройте сцену перехода для установки.');
+        if(btn)btn.style.display=global.DND_UPDATE_MANAGER.canApplyNatively()?'block':'none';
+        if(global.DND_UPDATE_MANAGER.runSceneTest) global.DND_UPDATE_MANAGER.runSceneTest();
+        return state;
+      }catch(e){setStatus('Ошибка обновления: '+(e&&e.message||e));}
     },
     apply: async function(){
-      try {
+      try{
         setStatus('Применяю обновление…');
         await global.DND_UPDATE_MANAGER.applyStaged();
-        setStatus('Обновление применено. Перезапустите приложение.');
-      } catch(e){ setStatus('Обновление подготовлено, но native-слой пока не может его применить: '+(e&&e.message||e)); }
+        setStatus('Готово. Перезапускаю приложение…');
+      }catch(e){setStatus('Не удалось применить: '+(e&&e.message||e));}
     }
   };
 })(window);
