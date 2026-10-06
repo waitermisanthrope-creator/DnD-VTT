@@ -30,7 +30,9 @@
       '#dndUpdateV2 .dragon-rig{position:absolute;left:50%;bottom:-9%;width:min(74vw,760px);height:min(76vh,620px);transform:translate(-50%,18%) scale(.72);opacity:0;filter:drop-shadow(0 18px 28px rgba(0,0,0,.7));transition:transform 2.4s cubic-bezier(.18,.8,.18,1),opacity 1.4s ease;transform-origin:50% 70%;will-change:transform}',
       '#dndUpdateV2.ready .dragon-rig{transform:translate(-50%,-2%) scale(.9);opacity:.96}',
       '#dndUpdateV2.burning .dragon-rig{transform:translate(-50%,-5%) scale(1);opacity:.98}',
-      '#dndUpdateV2 .dragon-fire{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom;transform:none;opacity:0;mix-blend-mode:screen;filter:drop-shadow(0 0 20px rgba(255,100,0,.7));transition:opacity 1.1s ease;pointer-events:none}',
+      '#dndUpdateV2 .dragon-flight,#dndUpdateV2 .dragon-fire{position:absolute;inset:0;width:100%;height:100%;background-repeat:no-repeat;background-position:0 0;background-size:800% 100%;background-position-y:center;background-color:transparent;pointer-events:none}',
+      '#dndUpdateV2 .dragon-flight{background-image:url(\'./app/assets/ui/dragon_flight_v2_sprite.png\');animation:dndDragonFlight .96s steps(8,end) infinite;filter:drop-shadow(0 18px 28px rgba(0,0,0,.7));}',
+      '#dndUpdateV2 .dragon-fire{background-image:url(\'./app/assets/ui/dragon_fire_burst_v2_sprite.png\');opacity:0;mix-blend-mode:screen;filter:drop-shadow(0 0 20px rgba(255,100,0,.7));transition:opacity 1.1s ease;animation:dndDragonFire 1.05s steps(8,end) infinite;}',
       '#dndUpdateV2.burning .dragon-fire{opacity:.94}',
       '#dndUpdateV2 .title{position:absolute;top:8%;left:50%;transform:translateX(-50%);width:min(92vw,760px);text-align:center;text-shadow:0 3px 18px #000;transition:opacity .8s ease,transform .8s ease}',
       '#dndUpdateV2 .title h1{margin:0;font-size:clamp(28px,5vw,54px);letter-spacing:.08em;text-transform:uppercase;font-weight:800}',
@@ -49,6 +51,8 @@
       '@keyframes dndSmoke{from{transform:translate3d(-1%,0,0) scale(1.03)}to{transform:translate3d(2%,-1%,0) scale(1.09)}}',
       '@keyframes dndEmbers{0%{transform:translateY(3%);opacity:.25}35%{opacity:.82}100%{transform:translateY(-2%);opacity:.5}}',
       '@keyframes dndFlash{0%,74%,100%{opacity:0}78%{opacity:.13}79%{opacity:0}}',
+      '@keyframes dndDragonFlight{from{background-position:0 0}to{background-position:100% 0}}',
+      '@keyframes dndDragonFire{from{background-position:0 0}to{background-position:100% 0}}',
       '@keyframes dndDragonIdle{0%,100%{transform:translate3d(0,0,0) rotate(0deg)}50%{transform:translate3d(0,-7px,0) rotate(-.8deg)}}',
       '@keyframes dndFirePulse{0%,100%{opacity:.72;transform:scale(.985)}50%{opacity:1;transform:scale(1.015)}}',
       '@media(max-width:600px){#dndUpdateV2 .dragon-rig{width:104vw;height:76vh;bottom:1%}#dndUpdateV2 .title{top:7%}#dndUpdateV2 .panel{bottom:3%;padding:12px}.title p{max-width:88vw;margin-left:auto;margin-right:auto}}'
@@ -73,7 +77,7 @@
       '<img class="scene-fire" src="' + asset('fire_front.png') + '" alt="">' +
       '<img class="scene-smoke" src="' + asset('update_scene_smoke.svg') + '" alt="">' +
       '<img class="scene-embers" src="' + asset('update_scene_embers.svg') + '" alt="">' +
-      '<div class="dragon-rig"><img class="dragon" src="' + asset('dragon.png') + '" alt=""><img class="dragon-fire" src="' + asset('dragon_fire.png') + '" alt=""></div>' +
+      '<div class="dragon-rig"><div class="dragon-flight" aria-hidden="true"></div><div class="dragon-fire" aria-hidden="true"></div></div>' +
       '<div class="vignette"></div><div class="flash"></div>' +
       '<div class="title"><h1>Пламя обновления</h1><p>Версия v' + String(version).replace(/</g,'&lt;') + ' уже готовит новый мир.</p></div>' +
       '<button class="skip" type="button">Закрыть</button>' +

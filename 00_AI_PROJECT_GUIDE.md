@@ -7528,3 +7528,10 @@ V755 намеренно использует самостоятельные SVG-
 - Native download/apply pipeline не изменён: реальный progress продолжает поступать из `DndUpdateBridge.java` → `update_manager_v2.js` → `update_scene_v2.js`.
 - Следующий обязательный QA: Android 9:16 на реальном устройстве; отдельно проверить 0%, 25%, 50%, 75%, 100%, совпадение пасти и dragon fire, а также отсутствие скачка progress до 100% до фактического завершения stage.
 - Sprite-sheet из 8 перерисованных кадров намеренно НЕ добавлялся в этот проход: нельзя подменять исходного дракона новым artwork. Текущий проход сначала фиксирует архитектурную синхронизацию существующего дракона/огня и реальный progress-driven reveal.
+
+
+## V70.34.1 — loading-screen dragon animation
+- Connected the uploaded 8-frame dragon wing-flight sprite `1791286066716.png` as `app/assets/ui/dragon_flight_v2_sprite.png`.
+- Connected the uploaded 8-frame dragon fire burst sprite `1791286130717.png` as `app/assets/ui/dragon_fire_burst_v2_sprite.png`.
+- `update_scene_v2.js` now plays the wing animation continuously with `steps(8)` and the fire animation independently during the burning phase.
+- The original uploaded files are removed from the repository root after relocation; no source artwork is discarded.
