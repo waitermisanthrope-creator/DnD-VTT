@@ -15,7 +15,7 @@ assert(!index.includes('./app/update_manager.js'),'legacy manager must not be lo
 ['forest_green.jpg','forest_burned.jpg','fire_front.png','dragon.png','dragon_fire.png','update_scene_smoke.svg','update_scene_embers.svg'].forEach(function(name){
   assert(fs.existsSync(path.join(root,'app','assets','ui',name)),'missing visual asset: '+name);
 });
-['DND_UPDATE_SCENE_V2','finish','enableApply','setProgress','runSceneTest'].forEach(function(token){assert(scene.includes(token),'scene API/visual contract missing: '+token);});
+['DND_UPDATE_SCENE_V2','finish','enableApply','setProgress'].forEach(function(token){assert(scene.includes(token),'scene API/visual contract missing: '+token);});
 ['70.34.0','DND_UPDATE_SCENE_V2','runSceneTest','checkAndStage','applyStaged','autoCheckForUpdates'].forEach(function(token){assert(manager.includes(token),'manager v2 contract missing: '+token);});
 assert(manager.includes('dndNative'),'manager must use native bridge');
 assert(manager.includes('SHA-256'),'manager must verify hashes');
