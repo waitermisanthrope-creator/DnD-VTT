@@ -423,12 +423,16 @@ public final class DndUpdateBridge {
         boolean keepPrevious = prefs.getString("pending", "").length() > 0;
         cleanupVersionStorage(keepPrevious);
 
-        // Refresh persisted web assets when the installed APK is newer.
-        // This prevents an older in-app update from hiding newly bundled JS/assets.
+        // A new native APK must get one clean seed from its own bundled web assets.
+        // This is especially important when an older APK already promoted a broken
+        // web update with the same version name: the old native bridge cannot perform
+        // the new boot-health rollback. Once this package version has seeded and booted
+        // successfully, the marker prevents needless reseeding on normal launches.
+        boolean nativeSeedValidated = packageVersion.equals(
+                prefs.getString("nativeSeedValidated", ""));
         if (active.isDirectory() && new File(active, "index.html").isFile()
-                && compareVersions(activeVersion, packageVersion) >= 0) {
-            // Web updates intentionally do not carry the APK-bundled icon previews.
-            // Repair them in-place so an old active web version cannot leave broken <img> elements.
+                && compareVersions(activeVersion, packageVersion) >= 0
+                && nativeSeedValidated) {
             ensureIconPreviewAssets(active);
             return;
         }
@@ -443,7 +447,11 @@ public final class DndUpdateBridge {
         copyAssetTree("icon_previews", active);
         copyAssetTree("wallpapers", active);
         copyAssetTree("ambience", active);
-        prefs.edit().putString("active", packageVersion).putString("healthy", packageVersion).commit();
+        prefs.edit()
+                .putString("active", packageVersion)
+                .putString("healthy", packageVersion)
+                .putString("nativeSeedValidated", packageVersion)
+                .commit();
     }
 
     public void setLauncherIcon(String id, String iconId, JavaScriptReplyProxy reply) {
