@@ -2,15 +2,31 @@
  * Модуль управления обоями, прозрачностью интерфейса, модалок, цветностью фона, затемнением и автосменой (wallpapers.js)
  */
 
-// Генерация списка обоев: с 1 по 19 включительно, 20 пропуск, с 21 по 30 включительно
+// V70.34.13: the legacy ./wallpapers/*.png directory is not part of the
+// deployable update manifest, so those URLs became 404 after an in-app update.
+// Use artwork that is guaranteed to ship with the current app instead.
+const wallpaperFallbackSources = [
+  './app/assets/ui/forest_green.jpg',
+  './app/assets/ui/forest_burned.jpg',
+  './app/assets/ui/dragon.png',
+  './app/assets/ui/dragon_fire.png',
+  './app/assets/ui/update_scene_background.svg',
+  './app/assets/ui/update_scene_forest_green.svg',
+  './app/assets/ui/update_scene_forest_burned.svg',
+  './app/assets/ui/update_scene_dragon.svg',
+  './app/assets/ui/loader_forest.svg',
+  './app/assets/ui/loader_forest_burning.svg',
+  './app/data/classes/Alchemist.png',
+  './app/data/classes/BloodHunter.png'
+];
+
 const availableWallpapers = [];
-
-for (let i = 1; i <= 19; i++) {
-  availableWallpapers.push({ name: `Обои №${i}`, file: `./wallpapers/${i}.png` });
-}
-
-for (let i = 21; i <= 30; i++) {
-  availableWallpapers.push({ name: `Обои №${i}`, file: `./wallpapers/${i}.png` });
+for (let i = 1; i <= 30; i++) {
+  if (i === 20) continue;
+  availableWallpapers.push({
+    name: `Обои №${i}`,
+    file: wallpaperFallbackSources[(i - 1) % wallpaperFallbackSources.length]
+  });
 }
 
 // Предопределенная палитра цветов для фона карточек и модальных окон
@@ -302,7 +318,7 @@ function openWallpapersModal() {
     modal.id = 'wallpapersModal';
     modal.style.cssText = `
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.85); z-index: 20010; justify-content: center; align-items: center;
+      background: rgba(0, 0, 0, 0.85); z-index: 20010; justify-content: center; align-items: center; overflow: hidden; touch-action: auto;
       padding: 15px; box-sizing: border-box; backdrop-filter: blur(4px);
     `;
     document.body.appendChild(modal);
@@ -350,7 +366,7 @@ function openWallpapersModal() {
   });
 
   modal.innerHTML = `
-    <div style="background: #1e1e1e; padding: 22px; border-radius: 10px; width: 100%; max-width: 500px; border: 1px solid #444; box-shadow: 0 10px 25px rgba(0,0,0,0.5); color: #fff; max-height: 90vh; overflow-y: auto;">
+    <div style="background: #1e1e1e; padding: 22px; border-radius: 10px; width: 100%; max-width: 500px; border: 1px solid #444; box-shadow: 0 10px 25px rgba(0,0,0,0.5); color: #fff; max-height: calc(100dvh - 30px); max-height: 90vh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; touch-action: pan-y;">
       
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444; padding-bottom: 10px; margin-bottom: 15px;">
         <h3 style="margin: 0; color: #ff9800; font-size: 1.2em;">🖼️ Графические настройки</h3>
@@ -430,6 +446,16 @@ function openWallpapersModal() {
   `;
 
   modal.style.display = 'flex';
+  // Android WebView: keep the panel as the only vertical scroller.
+  const panel = modal.firstElementChild;
+  if (panel) {
+    panel.scrollTop = 0;
+    panel.style.overflowY = 'auto';
+    panel.style.overflowX = 'hidden';
+    panel.style.webkitOverflowScrolling = 'touch';
+    panel.style.touchAction = 'pan-y';
+    panel.style.maxHeight = 'calc(100dvh - 30px)';
+  }
 }
 
 function closeWallpapersModal() {
