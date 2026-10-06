@@ -12,6 +12,11 @@ assert(index.includes('./app/update_scene_v2.js'),'v2 scene must be loaded');
 assert(index.includes('./app/update_manager_v2.js'),'v2 manager must be loaded');
 assert(!index.includes('./app/update_scene_v755.js'),'legacy scene must not be loaded');
 assert(!index.includes('./app/update_manager.js'),'legacy manager must not be loaded');
+assert(!scene.includes('dragon-rig'),'dragon animation must be disabled');
+assert(!scene.includes('scene-fire'),'fire animation must be disabled');
+assert(!scene.includes('dragon_flight_v2_sprite'),'dragon sprite must not be used by updater scene');
+assert(scene.includes('transition-line'),'progress transition line must be present');
+assert(scene.includes('requestAnimationFrame(animateProgress)'),'transition line must move smoothly between progress updates');
 ['forest_green.jpg','forest_burned.jpg','fire_front.png','dragon.png','dragon_fire.png','update_scene_smoke.svg','update_scene_embers.svg'].forEach(function(name){
   assert(fs.existsSync(path.join(root,'app','assets','ui',name)),'missing visual asset: '+name);
 });
