@@ -49,8 +49,8 @@ jobs:
 
           python3 tools/build_update_manifest.py \
             --base-url "https://waitermisanthrope-creator.github.io/DnD-VTT" \
-            --version "70.33.7" \
-            --min-app-version "70.32.21" \
+            --version "70.34.1" \
+            --min-app-version "70.33.8" \
             --channel "stable" \
             --output site/updates/stable.json
 
@@ -80,7 +80,7 @@ jobs:
           else
             APK="app-debug.apk"
           fi
-          mv "site/downloads/$APK" site/downloads/DND-VTT-70.33.7.apk
+          mv "site/downloads/$APK" site/downloads/DND-VTT-70.34.1.apk
           cp site/downloads/DND-VTT-70.33.7.apk site/downloads/latest.apk
           sha256sum site/downloads/DND-VTT-70.33.7.apk > site/downloads/DND-VTT-70.33.7.apk.sha256
 
