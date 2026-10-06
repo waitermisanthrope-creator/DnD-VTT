@@ -16,7 +16,7 @@ assert(!index.includes('./app/update_manager.js'),'legacy manager must not be lo
   assert(fs.existsSync(path.join(root,'app','assets','ui',name)),'missing visual asset: '+name);
 });
 ['DND_UPDATE_SCENE_V2','finish','enableApply','setProgress'].forEach(function(token){assert(scene.includes(token),'scene API/visual contract missing: '+token);});
-['70.34.0','DND_UPDATE_SCENE_V2','runSceneTest','checkAndStage','applyStaged','autoCheckForUpdates'].forEach(function(token){assert(manager.includes(token),'manager v2 contract missing: '+token);});
+['70.34.6','DND_UPDATE_SCENE_V2','runSceneTest','checkAndStage','applyStaged','autoCheckForUpdates'].forEach(function(token){assert(manager.includes(token),'manager v2 contract missing: '+token);});
 assert(manager.includes('dndNative'),'manager must use native bridge');
 assert(manager.includes('SHA-256'),'manager must verify hashes');
 assert(manager.includes('cache: \'no-store\''),'manifest/file requests must bypass stale cache');
