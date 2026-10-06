@@ -1,6 +1,6 @@
-/* DND VTT — Updater scene v3.
- * Intentionally static: no dragon, flame, smoke or ember animation.
- * The only scene motion is a smooth transition line that follows real download progress.
+/* DND VTT — Updater scene v4.
+ * Gradual animation step: fire column + smoke + sparks.
+ * Dragon remains disabled. Transition line remains tied to real progress.
  */
 (function (global) {
   'use strict';
@@ -19,6 +19,11 @@
       '#dndUpdateV2 .scene-burn{object-fit:cover;opacity:1;clip-path:inset(0 100% 0 0);filter:saturate(1.08) brightness(.68);will-change:clip-path}',
       '#dndUpdateV2 .transition-line{position:absolute;top:0;bottom:0;left:0;width:3px;transform:translateX(-50%);background:linear-gradient(180deg,rgba(255,221,142,.15),rgba(255,236,180,.95) 18%,rgba(255,177,54,.95) 82%,rgba(255,120,24,.15));box-shadow:0 0 10px rgba(255,183,63,.7),0 0 24px rgba(255,125,20,.35);z-index:5;pointer-events:none;will-change:left}',
       '#dndUpdateV2 .transition-line::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:100%;transform:translate(-50%,-50%);background:linear-gradient(90deg,transparent,rgba(255,191,72,.12),transparent);filter:blur(5px)}',
+      '#dndUpdateV2 .fire-column{position:absolute;top:0;bottom:0;left:0;width:12px;transform:translateX(-50%);z-index:4;pointer-events:none;opacity:.72;filter:blur(.2px);background:linear-gradient(180deg,transparent 0%,rgba(255,190,52,.05) 12%,rgba(255,113,17,.72) 50%,rgba(255,221,101,.18) 82%,transparent 100%);mix-blend-mode:screen;will-change:left,opacity}',
+      '#dndUpdateV2 .fire-column::before{content:"";position:absolute;inset:8% -9px 8%;background:radial-gradient(ellipse at center,rgba(255,238,150,.95) 0%,rgba(255,135,22,.7) 28%,rgba(255,52,8,.28) 58%,transparent 78%);filter:blur(7px);}',
+      '#dndUpdateV2 .smoke{position:absolute;top:0;bottom:0;left:0;width:70px;transform:translateX(-50%);z-index:3;pointer-events:none;opacity:.26;filter:blur(8px);background:radial-gradient(ellipse at center,rgba(205,209,190,.48) 0%,rgba(118,126,115,.23) 38%,transparent 72%);mix-blend-mode:screen;will-change:left,opacity}',
+      '#dndUpdateV2 .sparks{position:absolute;top:0;bottom:0;left:0;width:90px;transform:translateX(-50%);z-index:6;pointer-events:none;opacity:.55;will-change:left}',
+      '#dndUpdateV2 .sparks::before,#dndUpdateV2 .sparks::after{content:"";position:absolute;inset:8% 0; background-image:radial-gradient(circle,rgba(255,213,96,.95) 0 1px,transparent 2px),radial-gradient(circle,rgba(255,105,28,.8) 0 1px,transparent 2px);background-size:31px 67px,43px 91px;background-position:7px 12px,21px 41px;filter:blur(.2px);}',
       '#dndUpdateV2 .vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 28%,rgba(0,0,0,.24) 58%,rgba(0,0,0,.78) 100%);pointer-events:none}',
       '#dndUpdateV2 .title{position:absolute;top:8%;left:50%;transform:translateX(-50%);width:min(92vw,760px);text-align:center;text-shadow:0 3px 18px #000}',
       '#dndUpdateV2 .title h1{margin:0;font-size:clamp(28px,5vw,54px);letter-spacing:.08em;text-transform:uppercase;font-weight:800}',
@@ -51,6 +56,9 @@
       '<img class="scene-bg" src="' + asset('forest_green.jpg') + '" alt="">' +
       '<img class="scene-burn" src="' + asset('forest_burned.jpg') + '" alt="">' +
       '<div class="transition-line" aria-hidden="true"></div>' +
+      '<div class="fire-column" aria-hidden="true"></div>' +
+      '<div class="smoke" aria-hidden="true"></div>' +
+      '<div class="sparks" aria-hidden="true"></div>' +
       '<div class="vignette"></div>' +
       '<div class="title"><h1>Переход обновления</h1><p>Версия v' + String(version).replace(/</g,'&lt;') + ' — новый мир открывается постепенно.</p></div>' +
       '<button class="skip" type="button">Закрыть</button>' +
@@ -61,6 +69,9 @@
     var bar = root.querySelector('.bar');
     var burn = root.querySelector('.scene-burn');
     var line = root.querySelector('.transition-line');
+    var fire = root.querySelector('.fire-column');
+    var smoke = root.querySelector('.smoke');
+    var sparks = root.querySelector('.sparks');
     var file = root.querySelector('.file');
     var pct = root.querySelector('.pct');
     var apply = root.querySelector('.apply');
@@ -73,6 +84,10 @@
       pct.textContent = Math.round(value) + '%';
       if (burn) burn.style.clipPath = 'inset(0 ' + Math.max(0, 100 - value).toFixed(2) + '% 0 0)';
       if (line) line.style.left = value.toFixed(2) + '%';
+      // Fire/smoke/sparks deliberately follow the same progress boundary: no independent timing.
+      if (fire) { fire.style.left = value.toFixed(2) + '%'; fire.style.opacity = value > 2 && value < 99 ? '.72' : '0'; }
+      if (smoke) { smoke.style.left = value.toFixed(2) + '%'; smoke.style.opacity = value > 4 && value < 99 ? '.26' : '0'; }
+      if (sparks) { sparks.style.left = value.toFixed(2) + '%'; sparks.style.opacity = value > 3 && value < 99 ? '.55' : '0'; }
     }
     function animateProgress() {
       progressFrame = null;
