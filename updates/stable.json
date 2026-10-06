@@ -1334,8 +1334,8 @@
     },
     {
       "path": "app/update_scene_v2.js",
-      "bytes": 11774,
-      "sha256": "d8c4eb427bd3e4f95fdc3586aa65d049940b63d7bf16998fa6e09d235bada2ea"
+      "bytes": 11758,
+      "sha256": "60eaecee47bf6bbacef99723451ee3c1ea3b2ab59cd6ff61728ef8a794482758"
     },
     {
       "path": "app/vessel_laserllama_v4_runtime.js",
