@@ -5,7 +5,7 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION = '70.36.6';
+  var APP_VERSION = '70.36.62';
   var DEFAULT_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
   var FALLBACK_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url_v2';
@@ -220,38 +220,13 @@
   }
 
   async function autoCheckForUpdates(options) {
+    // Startup must only determine whether an update exists.
+    // Download/install starts only after the user presses the main-screen update button.
     options = options || {};
-    if (global.__dndUpdateV2Running) return global.__dndUpdateV2Running;
-    var run = (async function () {
-      var state = await inspect();
-      if (!state.updateAvailable) return state;
-      var ui = scene(state);
-      await nextPaint();
-      ui.setStatus('Проверяю файлы нового мира…');
-      var staged = await checkAndStage({ onProgress:function(p){ui.setProgress(p);} });
-      if (!staged.stageResult || !staged.stageResult.staged) return staged;
-      ui.setProgress({current:1,total:1,bytesDone:1,bytesTotal:1,path:'Проверено'});
-      ui.setStatus('Все файлы проверены. Переношу обновление…');
-      var applyStarted = false;
-      ui.onApply = async function () {
-        if (applyStarted) return;
-        applyStarted = true;
-        ui.setStatus('Переношу мир в новый лес…');
-        try {
-          await applyStaged({onProgress:function(p){ui.setProgress(p);}});
-          ui.setStatus('Готово. Перезапускаю приложение…');
-        } catch (e) {
-          applyStarted = false;
-          ui.fail(e && e.message || e);
-          ui.enableApply();
-        }
-      };
-      ui.finish();
-      // No automatic installation. This function is not called during normal boot.
-      return staged;
-    })();
-    global.__dndUpdateV2Running = run;
-    try { return await run; } finally { global.__dndUpdateV2Running = null; }
+    if (global.__dndUpdateV2CheckRunning) return global.__dndUpdateV2CheckRunning;
+    var run = inspect();
+    global.__dndUpdateV2CheckRunning = run;
+    try { return await run; } finally { global.__dndUpdateV2CheckRunning = null; }
   }
 
   function runSceneTest() {
@@ -287,36 +262,53 @@
     var box = document.createElement('div');
     box.id='dndUpdateV2Settings';
     box.style.cssText='margin:12px 0;padding:12px;border:1px solid #55472c;border-radius:10px;background:#171510;color:#eee';
-    box.innerHTML='<div style="font-weight:800;color:#e0b65a;margin-bottom:6px">🔥 Обновление приложения</div><div id="settingsUpdateStatusV2" style="font-size:13px;color:#aaa">Нажмите «Проверить».</div><div style="height:7px;margin-top:8px;background:#2b2b2b;border-radius:99px;overflow:hidden"><div id="settingsUpdateBarV2" style="height:100%;width:0;background:linear-gradient(90deg,#d49a2e,#ff6a1a);transition:width .2s"></div></div><div style="display:flex;gap:7px;margin-top:9px"><button id="settingsUpdateCheckV2" type="button" style="flex:1;padding:9px">Проверить обновление</button><button id="settingsUpdateApplyV2" type="button" style="flex:1;padding:9px;display:none">Установить</button><button id="settingsUpdateTestV2" type="button" style="flex:1;padding:9px">Тест окна</button></div>';
+    box.innerHTML='<div style="font-weight:800;color:#e0b65a;margin-bottom:6px">🔥 Обновление приложения</div><div id="settingsUpdateStatusV2" style="font-size:13px;color:#aaa">Нажмите «Проверить».</div><div style="height:7px;margin-top:8px;background:#2b2b2b;border-radius:99px;overflow:hidden"><div id="settingsUpdateBarV2" style="height:100%;width:0;background:linear-gradient(90deg,#d49a2e,#ff6a1a);transition:width .2s"></div></div><div style="display:flex;gap:7px;margin-top:9px"><button id="settingsUpdateCheckV2" type="button" style="flex:1;padding:9px">Проверить и обновить</button><button id="settingsUpdateTestV2" type="button" style="flex:1;padding:9px">Тест окна</button></div>';
     host.appendChild(box);
     box.querySelector('#settingsUpdateCheckV2').onclick=function(){ settingsCheck(); };
-    box.querySelector('#settingsUpdateApplyV2').onclick=function(){ settingsApply(); };
     box.querySelector('#settingsUpdateTestV2').onclick=function(){ runSceneTest(); };
     return box;
   }
 
   function settingsCheck() {
-    var box=ensureSettingsPanel(), status=box&&box.querySelector('#settingsUpdateStatusV2'), apply=box&&box.querySelector('#settingsUpdateApplyV2'), bar=box&&box.querySelector('#settingsUpdateBarV2');
+    var box=ensureSettingsPanel(),
+        status=box&&box.querySelector('#settingsUpdateStatusV2'),
+        bar=box&&box.querySelector('#settingsUpdateBarV2');
     if(status) status.textContent='Проверяю новую систему обновлений…';
-    if(apply) apply.style.display='none';
     return inspect().then(function(state){
-      if(!state.updateAvailable){ if(status) status.textContent='Версия v'+state.currentVersion+' актуальна.'; return state; }
+      if(!state.updateAvailable){
+        if(status) status.textContent='Версия v'+state.currentVersion+' актуальна.';
+        return state;
+      }
       var ui=scene(state);
       ui.setStatus('Найдено обновление v'+state.manifest.version+'. Загружаю…');
-      return checkAndStage({onProgress:function(p){if(bar&&p.total)bar.style.width=Math.round((p.current/p.total)*100)+'%';ui.setProgress(p);}}).then(function(s){
-        ui.onApply=function(){return applyStaged({}).then(function(result){ui.setStatus('Обновление применено. Перезапускаю приложение…');return result;}).catch(function(e){ui.fail(e&&e.message||e);ui.enableApply();throw e;});};
-        ui.finish(); ui.enableApply();
-        if(status) status.textContent='Обновление v'+state.manifest.version+' подготовлено.';
-        if(apply) apply.style.display='block';
-        return s;
+      return checkAndStage({
+        onProgress:function(p){
+          if(bar&&p.total) bar.style.width=Math.round((p.current/p.total)*100)+'%';
+          ui.setProgress(p);
+        }
+      }).then(function(s){
+        if(!s.stageResult || !s.stageResult.staged) return s;
+        ui.setProgress({current:1,total:1,bytesDone:1,bytesTotal:1,path:'Проверено'});
+        ui.setStatus('Файлы скачаны и проверены. Устанавливаю обновление…');
+        return applyStaged({
+          onProgress:function(p){ui.setProgress(p);}
+        }).then(function(result){
+          ui.setStatus('Готово. Перезапускаю приложение…');
+          if(status) status.textContent='Обновление v'+state.manifest.version+' установлено.';
+          return result;
+        }).catch(function(e){
+          ui.fail(e&&e.message||e);
+          throw e;
+        });
       });
-    }).catch(function(e){if(status)status.textContent='Ошибка: '+(e&&e.message||e);return null;});
+    }).catch(function(e){
+      if(status) status.textContent='Ошибка: '+(e&&e.message||e);
+      return null;
+    });
   }
 
   function settingsApply() {
-    var box=ensureSettingsPanel(), status=box&&box.querySelector('#settingsUpdateStatusV2');
-    if(status)status.textContent='Применяю обновление…';
-    return applyStaged({}).then(function(){if(status)status.textContent='Готово. Перезапуск…';}).catch(function(e){if(status)status.textContent='Ошибка: '+(e&&e.message||e);});
+    return applyStaged({});
   }
 
   global.DND_UPDATE_UI = {
@@ -337,35 +329,38 @@
       }
     },
     openMainMenuUpdate:function() {
-      return inspect().then(function(state) {
+      if (global.__dndUpdateV2MainRunning) return global.__dndUpdateV2MainRunning;
+      var run = inspect().then(function(state) {
         if (!state.updateAvailable) {
           global.DND_UPDATE_UI.setMainMenuAvailability(false,state);
           return state;
         }
+        global.DND_UPDATE_UI.setMainMenuAvailability(false,state);
         var ui=scene(state);
         ui.setStatus('Найдено обновление v'+state.manifest.version+'. Загружаю…');
-        return checkAndStage({onProgress:function(p){ui.setProgress(p);}}).then(function(s) {
-          // Wire the installation action BEFORE exposing the button. This avoids a
-          // race on Android WebView where the finished scene could receive a tap
-          // before the callback was attached, leaving the files only staged.
-          ui.onApply=function(){
-            return applyStaged({}).then(function(result){
-              ui.setStatus('Обновление применено. Перезапускаю приложение…');
-              return result;
-            }).catch(function(e){
-              ui.fail(e&&e.message||e);
-              ui.enableApply();
-              throw e;
-            });
-          };
-          ui.finish();
-          ui.enableApply();
-          return s;
+        return checkAndStage({
+          onProgress:function(p){ui.setProgress(p);}
+        }).then(function(s) {
+          if(!s.stageResult || !s.stageResult.staged) return s;
+          ui.setProgress({current:1,total:1,bytesDone:1,bytesTotal:1,path:'Проверено'});
+          ui.setStatus('Файлы скачаны и проверены. Устанавливаю обновление…');
+          return applyStaged({
+            onProgress:function(p){ui.setProgress(p);}
+          }).then(function(result){
+            ui.setStatus('Готово. Перезапускаю приложение…');
+            return result;
+          }).catch(function(e){
+            ui.fail(e&&e.message||e);
+            throw e;
+          });
         });
       }).catch(function(e) {
-        try { alert('Не удалось проверить обновление: '+(e&&e.message||e)); } catch (_) {}
+        try { alert('Не удалось обновить приложение: '+(e&&e.message||e)); } catch (_) {}
         return null;
       });
+      global.__dndUpdateV2MainRunning = run;
+      run.then(function(){global.__dndUpdateV2MainRunning=null;},function(){global.__dndUpdateV2MainRunning=null;});
+      return run;
     }
   };
   global.DND_UPDATE_MANAGER = {
@@ -377,7 +372,7 @@
   };
 
   function boot() {
-    // Updates are NEVER started automatically. Only availability is checked.
+    // On startup we only check availability. Download/install starts from the main-screen update button.
     try { ensureSettingsPanel(); } catch (_) {}
     setTimeout(function () {
       try {
