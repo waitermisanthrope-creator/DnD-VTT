@@ -6,17 +6,19 @@
 // из загрузчика, скопированные в ту же папку как SVG.
 const availableWallpapers = [];
 
+// Основной каталог: реальные PNG из корневой папки wallpapers.
 for (let i = 1; i <= 19; i++) {
-  availableWallpapers.push({ name: `Обои №${i}`, file: `wallpapers/${i}.png` });
+  availableWallpapers.push({ name: `Обои №${i}`, file: `./wallpapers/${i}.png` });
 }
 
 for (let i = 21; i <= 30; i++) {
-  availableWallpapers.push({ name: `Обои №${i}`, file: `wallpapers/${i}.png` });
+  availableWallpapers.push({ name: `Обои №${i}`, file: `./wallpapers/${i}.png` });
 }
 
+// Дополнительные сцены в той же папке.
 availableWallpapers.push(
-  { name: 'Обои №31 — Зелёная поляна', file: 'wallpapers/31.svg' },
-  { name: 'Обои №32 — Выжженная поляна', file: 'wallpapers/32.svg' }
+  { name: 'Зелёная поляна', file: './wallpapers/31.svg' },
+  { name: 'Выжженная поляна', file: './wallpapers/32.svg' }
 );
 
 // Предопределенная палитра цветов для фона карточек и модальных окон
