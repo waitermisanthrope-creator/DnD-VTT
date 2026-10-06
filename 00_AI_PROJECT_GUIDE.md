@@ -7944,3 +7944,35 @@ Implemented in `app/vtt_map_editor_3d_v71.js`:
 4. Real texture rendering/material slots for walls, floors and furniture.
 5. Token layers for monsters/NPCs, initiative, HP/status rings and DM control.
 6. Later bind the local token/character system to the actual multiplayer player roster.
+
+
+## V70.36.7 — directional traversal, vertical collision and first/third-person movement (2026-10-06)
+
+Implemented in `app/vtt_map_editor_3d_v71.js`:
+- Stair/ramp connectors now store a traversal direction (`n/e/s/w`) and length metadata instead of being only a cell-center level switch.
+- Connector progress is calculated continuously across the connector cell. Player elevation interpolates between source and target level while traversing a connector.
+- Level changes are triggered at the directional end of the connector; arbitrary vertical teleportation is rejected unless a valid connector is reached.
+- Raised-cell movement now checks the change in surface elevation against a maximum step height. Large vertical changes require an aligned connector, preventing ordinary walking from climbing arbitrary walls/ledges.
+- Added connector direction cycling in the editor and explicit controls for stairs/ramps up/down plus connector removal.
+- Added real camera modes for editor, first-person and third-person. First-person uses an eye-height camera; third-person follows behind the possessed player token.
+- Added facing-relative movement, walking/running controls, keyboard WASD/arrow movement and Q/E rotation, plus touch-drag look controls in first/third person.
+- Existing collision, wall/door rules, active token possession and shared player state remain the single movement source of truth.
+- Save format advanced to V9; V8 and older maps remain loadable, with old connectors receiving safe default direction/length values.
+- Network/session roster is still intentionally deferred; local character/token selection remains the current source for the possessed player.
+
+### QA V70.36.7
+- Create a two-level map and a directional stair/ramp. Verify movement along the connector changes elevation continuously and changes level only at its end.
+- Approach the same height difference from a non-connector direction and verify the raised surface blocks movement.
+- Test all four connector directions and both ascending/descending variants.
+- Possess a token, switch to first-person, use buttons/keyboard and touch drag, and verify the same player coordinates move the active token.
+- Switch to third-person and verify the camera follows the active player position and yaw.
+- Verify walls, closed/locked doors, furniture collision and map boundaries still block movement.
+- Save/load V9 and verify connectors, token possession, player position/orientation and elevation persist.
+- Load V8/V7 and older maps and verify safe migration without crashes.
+
+### Next 3D block
+1. Finish camera polish and movement feel (look sensitivity, acceleration, touch dead-zone and camera collision).
+2. Replace placeholder stair/ramp meshes with directional geometry matching connector dimensions.
+3. Implement real texture/material rendering for floors, walls and furniture.
+4. Add token layers for monsters/NPCs, initiative, HP/status and DM control.
+5. Connect the stable shared world state to combat/initiative; multiplayer binding remains later.
