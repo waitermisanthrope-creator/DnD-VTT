@@ -42,6 +42,9 @@ jobs:
             [ -f "$f" ] || continue
             cp "$f" "site/wallpapers/$(basename "$f")"
           done
+          if [ -d wallpapers ]; then
+            cp -R wallpapers/. site/wallpapers/
+          fi
           for f in ./*.mp3; do
             [ -f "$f" ] || continue
             cp "$f" "site/ambience/$(basename "$f")"
