@@ -7978,3 +7978,31 @@ Implemented in `app/vtt_map_editor_3d_v71.js`:
 5. Connect the stable shared world state to combat/initiative; multiplayer binding remains later.
 
 - Final V70.36.7 refinement: connector rendering is direction-aware and first/third-person scene sorting uses perspective depth order.
+
+
+## V70.36.8 — materials, token layers/status and spatial doors (2026-10-06)
+
+Implemented:
+- Material metadata is now persisted for walls and furniture: texture repeat X/Y and offsets, with safe defaults for old maps.
+- Texture loading now handles failures without leaving a broken cache entry.
+- Save format advanced to V10 during the material block and then V11 after token/door additions; older maps receive safe defaults.
+- Tokens now support layers: players, NPCs, monsters, effects; visibility can be toggled.
+- Tokens now persist HP/max HP and status-effect labels; the editor shows HP bars and up to three visible status labels.
+- DM/editor controls were added for token layer, HP +/- , status add/remove and visibility.
+- Door interaction is now spatial in first/third person: the player can interact with a nearby door in front of the facing direction (F key/API), rather than relying only on the editor-selected wall.
+- Existing locked-door logic remains enforced.
+- The common player/token state remains the basis for later initiative/combat integration.
+
+### QA V70.36.8
+- Create and select a wall/furniture object, assign a texture and repeat scale, save/load, and verify metadata persists.
+- Place several tokens and cycle their layers; verify all remain selectable and persist.
+- Change HP/status/visibility and save/load; verify values persist and render correctly.
+- Enter first person, approach a door, press F and verify open/close; verify locked doors remain blocked.
+- Verify token movement, stair/ramp traversal, walls, furniture collision and level switching still use the same player state.
+
+### Next block
+1. Real material rendering (texture mapping, UV/repeat, floor textures).
+2. Token roles/initiative/combat state and DM ownership controls.
+3. Better door animation and collision around the opening.
+4. Camera collision and movement polish.
+5. Connect 3D world state to the existing combat/initiative systems.
