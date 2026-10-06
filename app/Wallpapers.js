@@ -306,7 +306,7 @@ function openWallpapersModal() {
     modal.style.cssText = `
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0, 0, 0, 0.85); z-index: 20010; justify-content: center; align-items: center;
-      padding: 15px; box-sizing: border-box; backdrop-filter: blur(4px);
+      padding: 15px; box-sizing: border-box; backdrop-filter: blur(4px); overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; touch-action: pan-y; overscroll-behavior: contain;
     `;
     document.body.appendChild(modal);
   }
@@ -353,7 +353,7 @@ function openWallpapersModal() {
   });
 
   modal.innerHTML = `
-    <div style="background: #1e1e1e; padding: 22px; border-radius: 10px; width: 100%; max-width: 500px; border: 1px solid #444; box-shadow: 0 10px 25px rgba(0,0,0,0.5); color: #fff; max-height: 90vh; overflow-y: auto; -webkit-overflow-scrolling: touch; touch-action: pan-y;">
+    <div style="background: #1e1e1e; padding: 22px; border-radius: 10px; width: 100%; max-width: 500px; border: 1px solid #444; box-shadow: 0 10px 25px rgba(0,0,0,0.5); color: #fff; max-height: calc(100dvh - 30px); overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; touch-action: pan-y; overscroll-behavior: contain; box-sizing: border-box;">
       
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444; padding-bottom: 10px; margin-bottom: 15px;">
         <h3 style="margin: 0; color: #ff9800; font-size: 1.2em;">🖼️ Графические настройки</h3>
