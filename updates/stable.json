@@ -273,6 +273,16 @@
       "sha256": "da533552e5e3f58f96c7c9e85c2b9c20780df7f5df7339f518aa14b8c9acd975"
     },
     {
+      "path": "app/assets/ui/dragon_fire_burst_v2_sprite.png",
+      "bytes": 237749,
+      "sha256": "a0eabca42b509850647f3543060d47240ab00d6f7e66aa694e1fb64ae64e04d7"
+    },
+    {
+      "path": "app/assets/ui/dragon_flight_v2_sprite.png",
+      "bytes": 573207,
+      "sha256": "e37b58ee2fd1c7df5289226ecbb1155edcc47d8b676b31bb505313954cacbb9b"
+    },
+    {
       "path": "app/assets/ui/dragon_frame_strip.svg",
       "bytes": 858,
       "sha256": "f7b86bca2db02039045f917fb1ca120ccc71b3b88d390b2a97d5c1983fb7fb7b"
@@ -1324,8 +1334,8 @@
     },
     {
       "path": "app/update_scene_v2.js",
-      "bytes": 10322,
-      "sha256": "448eace2ddb1dca11b39a248cf5496404ed4603d35a2029b02ba4b2422232a03"
+      "bytes": 10956,
+      "sha256": "eb6d606bb8e1c02c9beb296c847e6f8abfbcb4e9aa84a6e71638dafb5bad2c57"
     },
     {
       "path": "app/vessel_laserllama_v4_runtime.js",
