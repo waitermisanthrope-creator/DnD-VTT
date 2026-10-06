@@ -8376,3 +8376,8 @@ Implemented:
 - Не отключать SHA-256 проверку.
 - При изменении файлов обновления обязательно запускать генерацию updates/stable.json через workflow.
 - При любых изменениях updater проверять цепочку: startup check → кнопка → сцена → download → SHA-256 → automatic apply → recreate → healthy boot/rollback.
+
+
+## V70.36.63 — тест обновления
+- Тестовый релиз после V70.36.62.
+- Функциональные изменения не вносились: изменён только номер web-версии для проверки цепочки `startup check → кнопка → сцена → download → SHA-256 → automatic apply`.
