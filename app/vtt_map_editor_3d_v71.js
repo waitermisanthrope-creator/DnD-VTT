@@ -6,7 +6,7 @@
  */
 (function(global){
   'use strict';
-  var VERSION='0.9.5';
+  var VERSION='0.9.6';
   var state={
     open:false, mapName:'Новая карта', mapNotes:'', cols:20, rows:20, minLevel:0, maxLevel:0, currentLevel:0, cell:1,
     cells:{}, surfaces:{}, objects:[], walls:{}, connectors:[], tokens:[], combat:{active:false,round:1,currentId:null,order:[],startedAt:0,mode:true,turns:{}},
@@ -439,7 +439,7 @@
     if(initialized)return;
     initialized=true;
     var modal=document.createElement('div');modal.id='map3dEditorModal';modal.style.cssText='display:none;position:fixed;inset:0;z-index:31000;background:#090a0c;color:#fff;padding:8px;box-sizing:border-box;';
-    modal.innerHTML='<div style="height:100%;display:flex;flex-direction:column;background:#11151a;border:1px solid #555;border-radius:12px;overflow:hidden"><div style="display:flex;align-items:center;gap:8px;padding:9px;border-bottom:1px solid #333;flex-wrap:wrap"><strong style="color:#d4af37">🏗️ 3D Редактор карт</strong><span style="color:#888;font-size:.8em">V70.36.21</span><span style="flex:1"></span><button class="btn-action" onclick="dndMap3DClose()" style="background:#b71c1c">✕ Закрыть</button></div><div id="map3dCanvasWrap" style="position:relative;flex:1;min-height:0;overflow:hidden;touch-action:none"><canvas id="map3dCanvas" style="width:100%;height:100%;display:block;touch-action:none"></canvas><div id="map3dLevels" style="position:absolute;left:10px;bottom:10px;z-index:21;display:flex;gap:4px;flex-wrap:wrap;max-width:75%"></div></div><div id="map3dTools" style="display:flex;gap:6px;flex-wrap:wrap;padding:8px;background:#1a1d21;border-top:1px solid #333;max-height:27vh;overflow:auto"></div></div>';
+    modal.innerHTML='<div style="height:100%;display:flex;flex-direction:column;background:#11151a;border:1px solid #555;border-radius:12px;overflow:hidden"><div style="display:flex;align-items:center;gap:8px;padding:9px;border-bottom:1px solid #333;flex-wrap:wrap"><strong style="color:#d4af37">🏗️ 3D Редактор карт</strong><span style="color:#888;font-size:.8em">V70.36.61</span><span style="flex:1"></span><button class="btn-action" onclick="dndMap3DClose()" style="background:#b71c1c">✕ Закрыть</button></div><div id="map3dCanvasWrap" style="position:relative;flex:1;min-height:0;overflow:hidden;touch-action:none"><canvas id="map3dCanvas" style="width:100%;height:100%;display:block;touch-action:none"></canvas><div id="map3dLevels" style="position:absolute;left:10px;bottom:10px;z-index:21;display:flex;gap:4px;flex-wrap:wrap;max-width:75%"></div></div><div id="map3dTools" style="display:flex;gap:6px;flex-wrap:wrap;padding:8px;background:#1a1d21;border-top:1px solid #333;max-height:27vh;overflow:auto"></div></div>';
     document.body.appendChild(modal);
     canvas=document.getElementById('map3dCanvas');
     canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);
