@@ -1501,6 +1501,16 @@
       "path": "app/world_resource_gathering_v53.js",
       "bytes": 17353,
       "sha256": "b37c2cf9766b42720116c9d724b7d434321cdcac0a4e16b2e44586aa95d63224"
+    },
+    {
+      "path": "wallpapers/31.svg",
+      "bytes": 1181,
+      "sha256": "bae6e0eb2dceacce706d963279abe2e49c12f647d2e0cea1f6865742b1ae0dd0"
+    },
+    {
+      "path": "wallpapers/32.svg",
+      "bytes": 1417,
+      "sha256": "8d90f47b5e056de8e19c57b7c47120bc87c7be13ac4923003bbee387b4fbfd8d"
     }
   ],
   "blockedVersions": []
