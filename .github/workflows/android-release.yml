@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java"
+      - "android/app/src/main/java/com/dndvtt/app/MainActivity.java"
       - "app/campaign_manager.js"
       - "app/character_builder_v2.js"
       - "app/character_creation_pergament.js"
@@ -14,6 +15,8 @@ on:
       - "app/dnd_tools.js"
       - "app/rulesEngine.js"
       - "app/update_manager.js"
+      - "app/update_manager_v2.js"
+      - "app/update_scene_v2.js"
       - "app/update_scene_v755.js"
       - "app/assets/ui/update_scene_*.svg"
       - "tests/test_v755_update_scene.js"
