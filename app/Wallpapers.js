@@ -15,19 +15,13 @@ const wallpaperFallbackSources = [
   './app/assets/ui/update_scene_forest_burned.svg',
   './app/assets/ui/update_scene_dragon.svg',
   './app/assets/ui/loader_forest.svg',
-  './app/assets/ui/loader_forest_burning.svg',
-  './app/data/classes/Alchemist.png',
-  './app/data/classes/BloodHunter.png'
+  './app/assets/ui/loader_forest_burning.svg'
 ];
 
-const availableWallpapers = [];
-for (let i = 1; i <= 30; i++) {
-  if (i === 20) continue;
-  availableWallpapers.push({
-    name: `Обои №${i}`,
-    file: wallpaperFallbackSources[(i - 1) % wallpaperFallbackSources.length]
-  });
-}
+const availableWallpapers = wallpaperFallbackSources.map((file, index) => ({
+  name: `Обои №${index + 1}`,
+  file
+}));
 
 // Предопределенная палитра цветов для фона карточек и модальных окон
 const BG_COLOR_PALETTE = {
