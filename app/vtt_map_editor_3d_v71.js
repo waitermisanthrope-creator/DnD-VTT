@@ -70,7 +70,7 @@
         items.push({d:(b2.depth+b3.depth+b4.depth+b1.depth)/4-0.02,kind:'side',p:[p2,p3,b3,b2]});
       }
     }
-    Object.keys(state.walls).forEach(function(k){var w=state.walls[k];if(Number(w.level)!==state.currentLevel)return;var q=wallQuads(w).forEach(function(q){items.push({d:(q[0].depth+q[1].depth+q[2].depth+q[3].depth)/4,kind:'wall',w:w,p:q});});});
+    Object.keys(state.walls).forEach(function(k){var w=state.walls[k];if(Number(w.level)!==state.currentLevel)return;wallQuads(w).forEach(function(q){items.push({d:(q[0].depth+q[1].depth+q[2].depth+q[3].depth)/4,kind:'wall',w:w,p:q});});});
     state.objects.forEach(function(o){
       if(Number(o.level||0)!==state.currentLevel)return;var z=cellHeight(o.x,o.y,state.currentLevel)+Number(o.z||0),s=Number(o.size||.8);
       var a=project(o.x+.1,o.y+.1,z),b=project(o.x+s,o.y+.1,z),c=project(o.x+s,o.y+s,z),d=project(o.x+.1,o.y+s,z);
