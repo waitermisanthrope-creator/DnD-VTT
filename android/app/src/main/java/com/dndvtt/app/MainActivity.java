@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
+import android.webkit.WebSettings;
 import android.webkit.JavascriptInterface;
 import android.util.Log;
 import android.os.Handler;
@@ -42,6 +43,11 @@ public class MainActivity extends Activity {
         }
 
         webView = new WebView(this);
+        // In-app updates replace the local WebView asset tree. Never let a
+        // recreated Activity reuse the previous document/resource cache.
+        webView.clearCache(true);
+        webView.clearHistory();
+        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
         webView.getSettings().setAllowFileAccess(false);
