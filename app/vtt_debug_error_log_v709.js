@@ -34,14 +34,21 @@
     }).join('');
     root.innerHTML='<div style="min-height:100%;box-sizing:border-box;padding:calc(12px + env(safe-area-inset-top)) 10px calc(20px + env(safe-area-inset-bottom));font-family:system-ui,sans-serif;color:#fff;">'+
       '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><div><b>🐞 Ошибки здесь и сейчас</b><div style="font-size:.7em;color:#999">Runtime, rejected promises, console.error/warn и ошибки загрузки ресурсов</div></div><button class="btn-action" onclick="dndV709Close()" style="padding:7px 10px">✕</button></div>'+
-      '<div style="display:flex;gap:6px;margin:10px 0;position:sticky;top:0;background:#050505;padding:5px 0;z-index:2"><button class="btn-action" onclick="dndV709Refresh()" style="flex:1">↻ Обновить</button><button class="btn-action" onclick="dndV709Clear()" style="flex:1">🧹 Очистить</button></div>'+
+      '<div style="display:flex;gap:6px;margin:10px 0;position:sticky;top:0;background:#050505;padding:5px 0;z-index:2"><button class="btn-action" onclick="dndV709Refresh()" style="flex:1">↻ Обновить</button><button class="btn-action" onclick="dndV709Copy()" style="flex:1">📋 Скопировать</button><button class="btn-action" onclick="dndV709Clear()" style="flex:1">🧹 Очистить</button></div>'+
       '<div style="font-size:.75em;color:#aaa;margin-bottom:6px">Записей: '+state.entries.length+'</div>'+
       '<div style="background:#111;border:1px solid #444;border-radius:9px;padding:8px;max-width:1000px;margin:auto">'+(rows||'<div style="color:#777;padding:20px;text-align:center">Ошибок пока не зафиксировано.</div>')+'</div></div>';
   }
+  function copy(){
+    var payload=state.entries.map(function(e){return '['+e.at+'] '+e.type+'\\n'+e.message+(Object.keys(e.meta||{}).length?'\\n'+JSON.stringify(e.meta,null,2):'');}).join('\\n\\n');
+    if(!payload)payload='Ошибок в дебаг-логе не зафиксировано.';
+    function done(){try{var b=document.querySelector('#'+ROOT+' [data-copy-status]');if(b){b.textContent='✓ Скопировано';setTimeout(function(){b.textContent='';},1400);}}catch(_){} }
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(payload).then(done).catch(function(){fallback(payload,done);});}else fallback(payload,done);
+  }
+  function fallback(payload,done){try{var ta=document.createElement('textarea');ta.value=payload;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.focus();ta.select();document.execCommand('copy');ta.remove();done();}catch(e){try{alert('Не удалось скопировать лог: '+e.message);}catch(_){} }}
   function build(){if(document.getElementById(ROOT))return;var d=document.createElement('div');d.id=ROOT;d.style.cssText='display:none;position:fixed;inset:0;z-index:100060;background:rgba(3,3,3,.995);color:#fff;overflow:auto;box-sizing:border-box;touch-action:pan-y;';document.body.appendChild(d);render();}
   function open(){build();state.open=true;render()} function close(){state.open=false;render()} function clear(){state.entries=[];render()} function refresh(){render()}
   install();
-  global.dndV709Open=open;global.dndV709Close=close;global.dndV709Clear=clear;global.dndV709Refresh=refresh;
+  global.dndV709Open=open;global.dndV709Close=close;global.dndV709Clear=clear;global.dndV709Refresh=refresh;global.dndV709Copy=copy;
   global.DNDErrorLogV709={VERSION:'70.26.3',open:open,close:close,clear:clear,entries:function(){return state.entries.slice()}};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build,{once:true});else build();
 })(window);
