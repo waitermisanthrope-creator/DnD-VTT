@@ -34,9 +34,7 @@
       '#dndUpdateV2 .progress{height:9px;border-radius:99px;overflow:hidden;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.12)}',
       '#dndUpdateV2 .bar{height:100%;width:0;background:linear-gradient(90deg,#d39b31,#ff5b1a,#f8d26a);box-shadow:0 0 18px rgba(255,93,20,.55);transition:width .16s linear}',
       '#dndUpdateV2 .meta{display:flex;justify-content:space-between;margin-top:7px;color:#aeb3ad;font-size:11px}',
-      '#dndUpdateV2 button{display:none;width:100%;margin-top:12px;border:0;border-radius:11px;padding:12px 16px;font-weight:800;font-size:15px;color:#1b1208;background:linear-gradient(135deg,#f0c86a,#ff7b22);box-shadow:0 8px 24px rgba(255,105,30,.3)}',
-      '#dndUpdateV2 button:active{transform:scale(.985)}',
-      '#dndUpdateV2.done button{display:block}',
+
       '#dndUpdateV2 .skip{position:absolute;right:12px;top:12px;border:1px solid rgba(255,255,255,.22);border-radius:9px;background:rgba(0,0,0,.35);padding:7px 10px;color:#ddd;font-size:11px}',
       '@media(max-width:600px){#dndUpdateV2 .title{top:7%}#dndUpdateV2 .panel{bottom:3%;padding:12px}}'
     ].join('');
@@ -64,7 +62,7 @@
       '<div class="vignette"></div>' +
       '<div class="title"><h1>Переход обновления</h1><p>Версия v' + String(version).replace(/</g,'&lt;') + ' — новый мир открывается постепенно.</p></div>' +
       '<button class="skip" type="button">Закрыть</button>' +
-      '<div class="panel"><div class="status">Подготавливаем новый мир…</div><div class="progress"><div class="bar"></div></div><div class="meta"><span class="file">Подготовка</span><span class="pct">0%</span></div><button class="apply" type="button">Установить обновление</button></div>';
+      '<div class="panel"><div class="status">Подготавливаем новый мир…</div><div class="progress"><div class="bar"></div></div><div class="meta"><span class="file">Подготовка</span><span class="pct">0%</span></div></div>';
     document.body.appendChild(root);
 
     var status = root.querySelector('.status');
@@ -77,7 +75,6 @@
     var sparks = root.querySelector('.sparks');
     var file = root.querySelector('.file');
     var pct = root.querySelector('.pct');
-    var apply = root.querySelector('.apply');
     var skip = root.querySelector('.skip');
     var currentProgress = 0, targetProgress = 0, progressFrame = null;
 
@@ -124,8 +121,9 @@
         if (p.path) file.textContent = String(p.path).split('/').slice(-1)[0];
       },
       setStatus: function (message) { status.textContent = String(message || ''); },
-      enableApply: function () { root.classList.add('done'); },
-      finish: function () { setTargetProgress(100); root.classList.add('done'); },
+      // Kept as a compatibility no-op for older callers. Installation is automatic.
+      enableApply: function () {},
+      finish: function () { setTargetProgress(100); },
       fail: function (message) {
         root.classList.remove('done');
         status.textContent = 'Не удалось подготовить обновление: ' + String(message || 'неизвестная ошибка');
@@ -135,7 +133,6 @@
       testMode: test
     };
 
-    apply.addEventListener('click', function () { if (typeof api.onApply === 'function') api.onApply(); });
     skip.addEventListener('click', function () { if (test || !state || !state.updateAvailable) api.destroy(); });
     requestAnimationFrame(function () { requestAnimationFrame(function () { renderProgress(0); }); });
     return api;
