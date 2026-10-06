@@ -31,7 +31,7 @@ jobs:
       - name: Generate stable manifest
         run: |
           set -euo pipefail
-          python3 tools/build_update_manifest.py             --base-url "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main"             --version "70.33.7"             --min-app-version "70.32.21"             --channel "stable"             --output updates/stable.json
+          python3 tools/build_update_manifest.py             --base-url "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main"             --version "70.33.8"             --min-app-version "70.33.8"             --channel "stable"             --output updates/stable.json
 
       - name: Verify required visual assets
         run: |
