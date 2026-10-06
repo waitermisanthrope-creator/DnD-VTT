@@ -1503,6 +1503,246 @@
       "sha256": "b37c2cf9766b42720116c9d724b7d434321cdcac0a4e16b2e44586aa95d63224"
     },
     {
+      "path": "wallpapers/1.png",
+      "bytes": 1460744,
+      "sha256": "8469241f4d37a639ca6d1e9180e9f7e346544649b9ad0bca9ef89bb981f1453c"
+    },
+    {
+      "path": "wallpapers/10.png",
+      "bytes": 1667723,
+      "sha256": "08cfe1090baf3466ea0e6de010988260e76d7a1d5aff3ffb6ae45c08ba529d5f"
+    },
+    {
+      "path": "wallpapers/11.png",
+      "bytes": 1815959,
+      "sha256": "4c0515de5b48c54cd781cd3997ce9b9f572ae817c92703ffd5dcd79328808a88"
+    },
+    {
+      "path": "wallpapers/12.png",
+      "bytes": 1548677,
+      "sha256": "7928ea85c67e085f0e02768e6afca98443673170c1cc99992b50965f4817eb9f"
+    },
+    {
+      "path": "wallpapers/13.png",
+      "bytes": 1599093,
+      "sha256": "a68722953de1e794ca987b275b54ee67d760f2dd46baf8f44cb44c49bf6781c8"
+    },
+    {
+      "path": "wallpapers/14.png",
+      "bytes": 1596513,
+      "sha256": "f783d3eb3626db4ccadc5eb30f1ba5ad25ac8dd11dc0ac824d0d38d60c0b5878"
+    },
+    {
+      "path": "wallpapers/15.png",
+      "bytes": 233043,
+      "sha256": "0358e2b66114a1d51f4bb20b03ae7ddce528560c536b81a30b9d4652338a4e49"
+    },
+    {
+      "path": "wallpapers/16.png",
+      "bytes": 212684,
+      "sha256": "100577fa912800411ab8117605112757c3468fa862eb0989003495c3686d17a5"
+    },
+    {
+      "path": "wallpapers/17.png",
+      "bytes": 1585122,
+      "sha256": "bd185e51f5dd35a62f83df1098e35a40630f49d787560f5b90848cb396a67b1d"
+    },
+    {
+      "path": "wallpapers/1790622252250.png",
+      "bytes": 908119,
+      "sha256": "1157a229c1ddc35a06db0aff82b7b4b31262b36edfb7cf5994c03d6147bd99b2"
+    },
+    {
+      "path": "wallpapers/1790622696215.png",
+      "bytes": 1202179,
+      "sha256": "99987d82b27f29f4d1e71c91847fb54dbf0d546816297260d26668ed77c74cd7"
+    },
+    {
+      "path": "wallpapers/1790622844831.png",
+      "bytes": 104000,
+      "sha256": "60c9ccfc77616b10a60b454ee077d79737a6a2ff1c8ed26649d35f2ebee37fa5"
+    },
+    {
+      "path": "wallpapers/1790718758545.png",
+      "bytes": 1889164,
+      "sha256": "0a3eab3f11aebea532709de2a29279b3a60b28bc0785bd84bceacde56167700d"
+    },
+    {
+      "path": "wallpapers/1790788500741.png",
+      "bytes": 1468216,
+      "sha256": "c0aebfe39dc4af2cf95cfd5892f92b20588d13229ed3d0bae7aef7ee94dd2020"
+    },
+    {
+      "path": "wallpapers/18.png",
+      "bytes": 2095852,
+      "sha256": "269e707d25e59302f8d3630311fe432b08374bab9ef4919caf3c6fe30362a395"
+    },
+    {
+      "path": "wallpapers/19.png",
+      "bytes": 8605503,
+      "sha256": "f44157dfaa3541805ea94254e58bc5849468d72f67fa8fc1be0e21dfda0596b8"
+    },
+    {
+      "path": "wallpapers/2.png",
+      "bytes": 1590206,
+      "sha256": "6afa226101338696eb7499e2d0468a54a637213152c80e0efaf510d0a2644ae6"
+    },
+    {
+      "path": "wallpapers/20.png",
+      "bytes": 1284815,
+      "sha256": "5e21f31646e2942cb8792a1b032854a5defbe94556c41d0958c2cc6c6cfaed16"
+    },
+    {
+      "path": "wallpapers/21.png",
+      "bytes": 179307,
+      "sha256": "27aa545e93db58834388a0a16d47f06727b6f92130e82987015d726a2458c0ab"
+    },
+    {
+      "path": "wallpapers/22.png",
+      "bytes": 344279,
+      "sha256": "f6d96a3578eca0aff3a8369f0d38737c3f68b596ae633605665d9c4b375cc0ed"
+    },
+    {
+      "path": "wallpapers/23.png",
+      "bytes": 210291,
+      "sha256": "6d99198fdf3aec7a75a3fad42d966bf4112f2fe75a655318c99c5ae117d18868"
+    },
+    {
+      "path": "wallpapers/24.png",
+      "bytes": 141215,
+      "sha256": "ef8dd3f1e0da6808a2e4e8bd211801c50e81a1f62d170f6e66f6e8364829b2d3"
+    },
+    {
+      "path": "wallpapers/25.png",
+      "bytes": 160892,
+      "sha256": "f4d3fafb823378ad51a301cfc837d61bb03fd9d325ac3b531e430fdc249560f5"
+    },
+    {
+      "path": "wallpapers/26.png",
+      "bytes": 187259,
+      "sha256": "25b0be0437a9abe4cb07e7f8c59bf2ae7c9729c78d6f63ac28a6503a4c1d1c86"
+    },
+    {
+      "path": "wallpapers/27.png",
+      "bytes": 213194,
+      "sha256": "ceccb5a08dd70e5a4655664bba99583b0d48cae9457e2bd21cd69c7b45fb1705"
+    },
+    {
+      "path": "wallpapers/28.png",
+      "bytes": 202417,
+      "sha256": "36ffc0dab7e33816686c2685a4b2c1396badd53c3a73f7d7facaaa24f0867397"
+    },
+    {
+      "path": "wallpapers/29.png",
+      "bytes": 166942,
+      "sha256": "e4b4db60d591d1e489aab96a58ca72604aed37c0f43bc3f7a67612936e35c82b"
+    },
+    {
+      "path": "wallpapers/3.png",
+      "bytes": 1662340,
+      "sha256": "0abb868668419d5daa605a3f4326b0c429220a9fee257db572dcc541f81c1001"
+    },
+    {
+      "path": "wallpapers/30.png",
+      "bytes": 237556,
+      "sha256": "2196593f889b45a28ec5eb4a92f54ab9221206dcc1b748d879a6db4ecce23389"
+    },
+    {
+      "path": "wallpapers/4.png",
+      "bytes": 1816114,
+      "sha256": "112d9e2fdb4e94d982e2d20ea7a8bb57f9bd309245badfc2cd09d040ee79ed35"
+    },
+    {
+      "path": "wallpapers/5.png",
+      "bytes": 1742466,
+      "sha256": "da0d1929b957490d0186e7bd9e6edce45c14f37078dcfaf78280b724ed35a9d5"
+    },
+    {
+      "path": "wallpapers/6.png",
+      "bytes": 1591016,
+      "sha256": "aed583259239e24e4503ecba03f6b0ab1921822b96909caced42b804e5464d3c"
+    },
+    {
+      "path": "wallpapers/7.png",
+      "bytes": 1815665,
+      "sha256": "6af18149f1debcb20b9b8e4f9423f962ad5e3fbc4e18f6ba9ee0f7560793e07a"
+    },
+    {
+      "path": "wallpapers/8.png",
+      "bytes": 1492730,
+      "sha256": "5af61303a9cac5807c0cd979e94b428fb3d2c83580bee70d17a78892d1ce5a95"
+    },
+    {
+      "path": "wallpapers/9.png",
+      "bytes": 1715179,
+      "sha256": "34f7d7049a18d8e8efaefbf15b31ee2262aa639bfcc88854510322e042e545a4"
+    },
+    {
+      "path": "wallpapers/ash_v2_sprite.png",
+      "bytes": 442476,
+      "sha256": "6c1e18fcb5b29d6c9bd139f6265679ac95fd7126444bfcc3f20cd4176435874d"
+    },
+    {
+      "path": "wallpapers/dragon_fire_v2_sprite.png",
+      "bytes": 1013123,
+      "sha256": "61a1aec3a118c257fa48ebab828daa475d1d2cbc3d06e68ec0077315d941a051"
+    },
+    {
+      "path": "wallpapers/embers_v2_sprite.png",
+      "bytes": 698014,
+      "sha256": "de1286eb711d778f2c7720e5c1838f6f93a2dc188f16fb5c770a9a08a095c92d"
+    },
+    {
+      "path": "wallpapers/fire_front_v2_sprite.png",
+      "bytes": 2249732,
+      "sha256": "8ed04019d13439348764e016576cd6212387fdb5c8ad06f6567e07b2f433c4cb"
+    },
+    {
+      "path": "wallpapers/fire_spread_mask_v2_sprite.png",
+      "bytes": 1373284,
+      "sha256": "70edb7cbd35c6c819f164b0756839d1ea4d95496c6902afbae855fe07ed85198"
+    },
+    {
+      "path": "wallpapers/flash_v2_sprite.png",
+      "bytes": 803264,
+      "sha256": "f3c4d9e0b5acb795fdbc885707f86cd1411b23a0c40426205f70ed9960631337"
+    },
+    {
+      "path": "wallpapers/heat_glow_v2_sprite.png",
+      "bytes": 836371,
+      "sha256": "98922a27429de20b26099eef5653388354ace703cde5632e7ebabc5b5fefd3a9"
+    },
+    {
+      "path": "wallpapers/smoke_back_v2_sprite-1.png",
+      "bytes": 1707378,
+      "sha256": "65ad0052c01c2079e392adb9c2c00d22641b25380f3c5580808ca57c487f6c14"
+    },
+    {
+      "path": "wallpapers/smoke_back_v2_sprite.png",
+      "bytes": 1814587,
+      "sha256": "08d53a3bae525f62a0d55a78862855dbd9f9c3a8adf7a8e225f091db591ad3db"
+    },
+    {
+      "path": "wallpapers/smoke_front_v2_sprite-1.png",
+      "bytes": 1890480,
+      "sha256": "91b49d1084c54c741a5e2e0b93838fd92bc8b4483dc6a7ced0ed490108100046"
+    },
+    {
+      "path": "wallpapers/smoke_front_v2_sprite.png",
+      "bytes": 2064687,
+      "sha256": "4cbcdfa80f6cfc334c1b60cecdaee9c2a14665262b2afed79c9a89406b7ef965"
+    },
+    {
+      "path": "wallpapers/smoke_mid_v2_sprite.png",
+      "bytes": 1898516,
+      "sha256": "f80c33b26b1d7fc61c31c7bac8ea174b764c473cc94dfe3b782cc1d0d2478d56"
+    },
+    {
+      "path": "wallpapers/vignette_v2_sprite.png",
+      "bytes": 1213593,
+      "sha256": "aa5ecba99b6ac6946f3a49fe220580ead374f86a557f53fa5d7eff63a40859bf"
+    },
+    {
       "path": "wallpapers/31.svg",
       "bytes": 1181,
       "sha256": "bae6e0eb2dceacce706d963279abe2e49c12f647d2e0cea1f6865742b1ae0dd0"
