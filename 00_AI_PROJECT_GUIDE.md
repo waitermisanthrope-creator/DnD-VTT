@@ -7734,3 +7734,26 @@ V755 намеренно использует самостоятельные SVG-
 - Важно: этот прототип не заменяет боевую механику и пока не подключён к initiative/combat/network state.
 - QA V70.35.0: проверить открытие кнопкой с главного экрана; один палец выбирает клетку; два пальца изменяют масштаб, вращение, положение и наклон; `Высота +/−`, `Куб`, `Стена`, `Удалить`; сохранить и загрузить карту; убедиться, что старый VTT/обновления не ломаются.
 - Commits: `b5a6bedf5c0fc4d3e776b8fffbddec7f467b2852`, `8dc1cd5cf2f351ba928bbf1b1234bd61e293fd8a`, `9d7222a9c4144a9ecf3786cf4eef61d01d9fcc06`, `1caadb05a7f28b701feed2d92c8a227b70a09036`, `d55fcda31e7eb1e870b8b906d0b1130a35d31abe`.
+
+
+## V70.36.0 — Dynamic 3D Map Dimensions / Levels
+
+Implemented in `app/vtt_map_editor_3d_v71.js`:
+- Added «Новая 3D-карта» dialog with Length, Width, Height and Depth controls.
+- Height/Depth are map levels: level 0 is ground, positive levels are above ground, negative levels are underground.
+- Added level switching bar for all available levels.
+- Added boundary + buttons: expand length/width by one cell and add one upper/underground level.
+- Expanding a side preserves existing cells and objects by shifting coordinates only where necessary.
+- Objects now carry a `level` field and are rendered only on the active level.
+- Save format is V2 with grid dimensions and level range; old V1 local maps are migrated to level 0 on load.
+- Legacy `battle_board.js` remains untouched.
+- Web/Android/Pages versions bumped to V70.36.0 / versionCode 7036000.
+
+### QA / regression checklist
+- Verify New Map opens and all four dimensions can be changed with −/+ and numeric input.
+- Verify minimums: length/width >= 1, height >= 1, depth >= 0.
+- Verify side + buttons preserve existing map content.
+- Verify upper + creates +1 and lower + creates a new negative level.
+- Verify level buttons switch the active floor and object visibility.
+- Verify save/load retains dimensions, levels, cells and objects.
+- Verify V1 localStorage maps migrate without data loss.
