@@ -351,7 +351,7 @@ function openWallpapersModal() {
         cursor: pointer; overflow: hidden; display: flex; flex-direction: column; transition: 0.2s;
         box-shadow: ${isActive ? '0 0 8px rgba(255,152,0,0.6)' : 'none'};
       ">
-        <div style="width: 100%; height: 65px; background: url('${wp.file}') center/cover no-repeat; background-color: #111;"></div>
+        <div style="width:100%;height:65px;background:#111;overflow:hidden;display:flex;align-items:center;justify-content:center;">\n          <img src="${wp.file}" alt="${wp.name}" loading="eager" draggable="false" style="display:block;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'; this.parentElement.style.background='#401515';">\n        </div>
         <div style="padding: 4px; text-align: center; font-size: 0.75em; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
           ${wp.name}
         </div>
@@ -425,7 +425,7 @@ function openWallpapersModal() {
         <!-- Плитка выбора -->
         <div style="background: #252525; padding: 12px; border-radius: 6px; border: 1px solid #333;">
           <div style="font-size: 0.9em; font-weight: bold; margin-bottom: 8px; color: #ff9800;">🖼️ Выбрать вручную (Плитка)</div>
-          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; max-height: 180px; overflow-y: auto; padding-right: 4px;">
+          <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding-right:4px;overflow:visible;">
             ${wallpapersGridHtml}
           </div>
         </div>
