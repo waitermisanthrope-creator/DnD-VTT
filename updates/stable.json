@@ -9,8 +9,8 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 83202,
-      "sha256": "9feeaf55796696c61b78d5bcd8d1d05b23a5b5804437fb7b67ab8fadfffa76db"
+      "bytes": 83586,
+      "sha256": "81b070648758b466d11c93bb3a4bd121c443fbbda8d88a24a560ea3ee70e3f38"
     },
     {
       "path": "app/Ambiences.js",
@@ -1431,6 +1431,11 @@
       "path": "app/vtt_gameplay_ux_v58.js",
       "bytes": 8641,
       "sha256": "d42239954041731f440a4d4540e017b98329ea7db1750d3a8efbad3bd331cde0"
+    },
+    {
+      "path": "app/vtt_map_editor_3d_v71.js",
+      "bytes": 12931,
+      "sha256": "929882017859297ef0b7aa39e9af74a9908a4fff86b73187881d021923ae2113"
     },
     {
       "path": "app/vtt_mobile_battle_v61.js",
