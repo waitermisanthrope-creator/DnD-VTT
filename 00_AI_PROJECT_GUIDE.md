@@ -7788,3 +7788,28 @@ Implemented in `app/vtt_map_editor_3d_v71.js`:
 - Adding/switching levels updates the player level.
 - Public player/camera APIs exist and do not require the legacy `battle_board.js`.
 - No collision/walking behavior is claimed complete at this stage.
+
+
+## V70.36.2 — real wall-edge groundwork (2026-10-06)
+
+- Added a dedicated `walls` map layer separate from decorative/object cubes.
+- Walls are stored per level and cell edge with direction `n/e/s/w`, so future collision logic can treat them as actual boundaries rather than generic props.
+- Added wall-edge rendering as vertical geometry tied to the selected cell's surface height.
+- Added directional wall controls N/E/S/W to the 3D editor.
+- Save format advanced to V4 and persists walls. V1/V2/V3 maps remain loadable; older maps receive an empty wall layer.
+- This is intentionally the first step toward collision: walls currently render and persist, but movement does not yet block against them.
+
+### Next immediate 3D steps
+1. Normalize shared wall-edge coordinates so neighboring cells cannot create duplicate opposite walls.
+2. Add wall height/thickness editing.
+3. Add doors/windows/openings as wall entities.
+4. Build collision tests against wall edges and blocked cubes.
+5. Add stairs/ramps linking levels.
+6. Then activate first-person/third-person movement on the shared player state.
+
+### QA V70.36.2
+- Add N/E/S/W wall edges and verify they appear on the active level.
+- Switch levels and verify wall visibility is level-specific.
+- Save/load and verify wall edges persist.
+- Load older V1/V2/V3 maps and verify no crash and empty/default wall layer.
+- Confirm legacy `battle_board.js` is untouched.
