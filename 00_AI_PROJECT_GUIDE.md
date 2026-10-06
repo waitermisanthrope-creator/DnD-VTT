@@ -7535,3 +7535,12 @@ V755 намеренно использует самостоятельные SVG-
 - Connected the uploaded 8-frame dragon fire burst sprite `1791286130717.png` as `app/assets/ui/dragon_fire_burst_v2_sprite.png`.
 - `update_scene_v2.js` now plays the wing animation continuously with `steps(8)` and the fire animation independently during the burning phase.
 - The original uploaded files are removed from the repository root after relocation; no source artwork is discarded.
+
+
+## V70.34.1 hotfix — update discovery/manifest publication
+- Причина: код и ассеты V70.34.1 уже находились в `main`, но `updates/stable.json` оставался на версии `70.34.0`, поэтому установленное приложение корректно считало себя актуальным и не показывало обновление.
+- Исправлено: `app/update_manager_v2.js` теперь сообщает fallback-версию `70.34.1`.
+- Исправлено: `.github/workflows/refresh-update-manifest.yml` переведён на публикацию stable manifest `70.34.1`.
+- Исправлено: опубликованный `updates/stable.json` вручную синхронизирован с V70.34.1 и содержит SHA/размер нового updater-файла.
+- В manifest уже присутствуют `dragon_flight_v2_sprite.png` и `dragon_fire_burst_v2_sprite.png`.
+- QA: после публикации manifest его версия проверена как `70.34.1`, количество deployable-файлов — 299.
