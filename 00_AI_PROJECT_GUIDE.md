@@ -7846,3 +7846,35 @@ Implemented in `app/vtt_map_editor_3d_v71.js`:
 5. Activate first-person walking.
 6. Activate third-person follow camera.
 7. Connect the shared 3D world to combat/initiative after movement is stable.
+
+
+## V70.36.4 — collision and interactive doors (2026-10-06)
+
+Implemented in `app/vtt_map_editor_3d_v71.js`:
+- Player movement now uses incremental collision checks instead of teleporting through geometry.
+- Canonical wall edges block player movement; open doors are passable.
+- Decorative/solid cubes are treated as blocking volumes with a small player radius.
+- Map boundaries prevent the player from leaving the playable grid.
+- Door openings now have state: `closed`, `open`, or `locked`.
+- Door state persists in the V6 save format and older maps still migrate safely.
+- Added door toggle/lock/interaction APIs: `dndMap3DDoorToggle()`, `dndMap3DLockDoor()`, `dndMap3DInteractDoor()`.
+- Added a visible door state control to the wall editor.
+- Player movement returns the updated player state, making it suitable for later first/third-person controls.
+- Legacy `battle_board.js` remains untouched.
+
+### QA V70.36.4
+- Put a wall across a cell boundary and verify movement stops at the wall.
+- Create a door and verify closed/locked doors block movement.
+- Open the door and verify movement through the same edge works.
+- Add a cube and verify the player cannot occupy its blocking volume.
+- Test diagonal movement and confirm collision does not allow tunneling through a wall.
+- Save/load and verify door state persists.
+- Load older V1–V5 maps without a crash.
+
+### Next 3D steps
+1. Add stairs/ramps and explicit vertical transitions between levels.
+2. Add player elevation/collision against raised cells.
+3. Implement first-person camera and walking controls using the collision API.
+4. Implement third-person follow camera.
+5. Add door interaction range/animation and optional lock/key hooks.
+6. Connect movement to combat/initiative after navigation is stable.
