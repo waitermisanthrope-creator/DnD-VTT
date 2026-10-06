@@ -823,4 +823,8 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     renderProficienciesBlock();
   }, 400);
+
+  // Explicit native startup health marker. Set only after the main DOM
+  // initialization callback has completed successfully.
+  window.__DND_APP_BOOT_READY = true;
 });

@@ -30,4 +30,17 @@ assert(manager.includes('FALLBACK_MANIFEST_URL'),'updater must have raw GitHub m
 assert(manager.includes('bytesDone')&&manager.includes('bytesTotal'),'JS updater must expose byte progress');
 assert(bridge.includes('readBytesWithProgress'),'native updater must report byte progress');
 assert(bridge.includes('bytesDone')&&bridge.includes('bytesTotal'),'native progress payload missing byte fields');
+assert(bridge.includes('hasPendingUpdate'),'native bridge must expose pending-update health state');
+assert(bridge.includes('rollbackPending'),'native bridge must support rollback after failed WebView boot');
+assert(bridge.includes('previous'),'native updater must retain a rollback version while update is pending');
+assert(bridge.includes('activity::recreate'),'native apply/rollback lifecycle must recreate Activity explicitly');
+assert(index.includes('__DND_APP_BOOT_READY') || fs.readFileSync(path.join(__dirname,'..','app','app.js'),'utf8').includes('__DND_APP_BOOT_READY'),'web app must expose an explicit boot health marker');
+const sceneAssets=[
+  'forest_green.jpg','forest_burned.jpg','fire_front.png','dragon.png','dragon_fire.png',
+  'update_scene_smoke.svg','update_scene_embers.svg','update_scene_ash.svg'
+];
+sceneAssets.forEach(name=>assert(
+  fs.existsSync(path.join(__dirname,'..','app','assets','ui',name)),
+  'required V755 scene asset missing from repository: '+name
+));
 console.log('PASS V755 layered forest-fire update contract');

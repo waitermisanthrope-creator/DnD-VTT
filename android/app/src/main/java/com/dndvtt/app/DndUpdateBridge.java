@@ -45,6 +45,8 @@ public final class DndUpdateBridge {
                 executor.execute(() -> stage(id, manifestUrl, reply));
             } else if ("apply".equals(type)) {
                 executor.execute(() -> apply(id, reply));
+            } else if ("rollback".equals(type)) {
+                executor.execute(() -> rollbackPending(id, reply));
             } else if ("set-icon".equals(type)) {
                 String iconId = request.optString("iconId", "default");
                 executor.execute(() -> setLauncherIcon(id, iconId, reply));
@@ -340,6 +342,55 @@ public final class DndUpdateBridge {
     public String getActiveVersion() {
         SharedPreferences prefs = context.getSharedPreferences("dnd_vtt_update", Context.MODE_PRIVATE);
         return prefs.getString("active", getPackageVersion());
+    }
+
+    public boolean hasPendingUpdate() {
+        SharedPreferences prefs = context.getSharedPreferences("dnd_vtt_update", Context.MODE_PRIVATE);
+        String pending = prefs.getString("pending", "");
+        String active = prefs.getString("active", "");
+        return !pending.isEmpty() && pending.equals(active);
+    }
+
+    /**
+     * Revert a newly promoted web version when the recreated WebView cannot
+     * prove that the application booted. The failed version is deliberately
+     * left on disk until the next healthy startup, where normal cleanup removes
+     * obsolete versions.
+     */
+    public void rollbackPending() {
+        try {
+            SharedPreferences prefs = context.getSharedPreferences("dnd_vtt_update", Context.MODE_PRIVATE);
+            String pending = prefs.getString("pending", "");
+            String previous = prefs.getString("previous", "");
+            String active = prefs.getString("active", "");
+            if (pending.isEmpty() || !pending.equals(active) || previous.isEmpty()) {
+                Log.w("DndUpdateBridge", "Rollback skipped: no valid pending update");
+                return;
+            }
+            File previousDir = new File(new File(context.getFilesDir(), "vtt-versions"), previous);
+            if (!previousDir.isDirectory()) {
+                Log.e("DndUpdateBridge", "Rollback failed: previous version missing: " + previous);
+                return;
+            }
+            prefs.edit()
+                    .putString("active", previous)
+                    .remove("pending")
+                    .remove("previous")
+                    .commit();
+            cleanupStagingStorage();
+            new Handler(Looper.getMainLooper()).postDelayed(activity::recreate, 150);
+        } catch (Exception e) {
+            Log.e("DndUpdateBridge", "Rollback failed", e);
+        }
+    }
+
+    private void rollbackPending(String id, JavaScriptReplyProxy reply) {
+        try {
+            rollbackPending();
+            postReply(reply, response(id, true, "rolled-back", getActiveVersion()));
+        } catch (Exception e) {
+            postReply(reply, response(id, false, "rollback-failed", e.toString()));
+        }
     }
 
     /** Ensure icon preview assets exist in the active web root even when that root was created by an older web update. */
