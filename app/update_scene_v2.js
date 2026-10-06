@@ -27,11 +27,11 @@
       '#dndUpdateV2.burning .scene-smoke{opacity:.58;animation:dndSmoke 10s ease-in-out infinite alternate}',
       '#dndUpdateV2 .scene-embers{object-fit:cover;opacity:0;mix-blend-mode:screen;transition:opacity 1s ease}',
       '#dndUpdateV2.burning .scene-embers{opacity:.8;animation:dndEmbers 4s linear infinite}',
-      '#dndUpdateV2 .dragon-rig{position:absolute;left:50%;bottom:-9%;width:min(68vw,520px);height:auto;aspect-ratio:256/172;transform:translate(-50%,18%) scale(.72);opacity:0;filter:drop-shadow(0 18px 28px rgba(0,0,0,.7));transition:transform 2.4s cubic-bezier(.18,.8,.18,1),opacity 1.4s ease;transform-origin:50% 70%;will-change:transform;z-index:6;animation:dndDragonHover 2.8s ease-in-out infinite}',
+      '#dndUpdateV2 .dragon-rig{position:absolute;left:50%;bottom:-9%;width:min(78vw,620px);height:auto;aspect-ratio:384/344;transform:translate(-50%,18%) scale(.72);opacity:0;filter:drop-shadow(0 18px 28px rgba(0,0,0,.7));transition:transform 2.4s cubic-bezier(.18,.8,.18,1),opacity 1.4s ease;transform-origin:50% 70%;will-change:transform;z-index:6;animation:dndDragonHover 2.8s ease-in-out infinite}',
       '#dndUpdateV2.ready .dragon-rig{transform:translate(-50%,-2%) scale(.9);opacity:.96}',
       '#dndUpdateV2.burning .dragon-rig{transform:translate(-50%,-5%) scale(1);opacity:.98}',
-      '#dndUpdateV2 .dragon-flight,#dndUpdateV2 .dragon-fire{position:absolute;inset:0;width:100%;height:100%;background-repeat:no-repeat;background-position:0 0;background-size:300% 800%;background-position-x:0%;background-color:transparent;pointer-events:none}',
-      '#dndUpdateV2 .dragon-flight{background-image:url(\'./app/assets/ui/dragon_flight_v2_sprite.png\');background-size:300% 800%;animation:dndDragonFlight 1.25s steps(8) infinite;filter:drop-shadow(0 18px 28px rgba(0,0,0,.7));will-change:background-position;}',
+      '#dndUpdateV2 .dragon-flight,#dndUpdateV2 .dragon-fire{position:absolute;inset:0;width:100%;height:100%;background-repeat:no-repeat;background-position:0 0;background-size:200% 400%;background-position-x:0%;background-color:transparent;pointer-events:none}',
+      '#dndUpdateV2 .dragon-flight{background-image:url(\'./app/assets/ui/dragon_flight_v2_sprite.png\');background-size:200% 400%;animation:dndDragonFlight 1.2s steps(8) infinite;filter:drop-shadow(0 18px 28px rgba(0,0,0,.7));will-change:background-position;}',
       '#dndUpdateV2 .dragon-fire{background-image:url(\'./app/assets/ui/dragon_fire_burst_v2_sprite.png\');opacity:0;mix-blend-mode:screen;filter:drop-shadow(0 0 20px rgba(255,100,0,.7));transition:opacity 1.1s ease;animation:dndDragonFire .9s steps(8) infinite;will-change:background-position;}',
       '#dndUpdateV2.burning .dragon-fire{opacity:.94}',
       '#dndUpdateV2 .title{position:absolute;top:8%;left:50%;transform:translateX(-50%);width:min(92vw,760px);text-align:center;text-shadow:0 3px 18px #000;transition:opacity .8s ease,transform .8s ease}',
@@ -51,12 +51,12 @@
       '@keyframes dndSmoke{from{transform:translate3d(-1%,0,0) scale(1.03)}to{transform:translate3d(2%,-1%,0) scale(1.09)}}',
       '@keyframes dndEmbers{0%{transform:translateY(3%);opacity:.25}35%{opacity:.82}100%{transform:translateY(-2%);opacity:.5}}',
       '@keyframes dndFlash{0%,74%,100%{opacity:0}78%{opacity:.13}79%{opacity:0}}',
-      '@keyframes dndDragonFlight{0%{background-position:0 0}14.285%{background-position:0 14.285%}28.57%{background-position:0 28.57%}42.855%{background-position:0 42.855%}57.14%{background-position:0 57.14%}71.425%{background-position:0 71.425%}85.71%{background-position:0 85.71%}100%{background-position:0 100%}}',
-      '@keyframes dndDragonFire{0%{background-position:0 0}14.285%{background-position:0 14.285%}28.57%{background-position:0 28.57%}42.855%{background-position:0 42.855%}57.14%{background-position:0 57.14%}71.425%{background-position:0 71.425%}85.71%{background-position:0 85.71%}100%{background-position:0 100%}}',
+      '@keyframes dndDragonFlight{0%{background-position:0 0}12.5%{background-position:100% 0}25%{background-position:0 33.333%}37.5%{background-position:100% 33.333%}50%{background-position:0 66.666%}62.5%{background-position:100% 66.666%}75%{background-position:0 100%}87.5%,100%{background-position:100% 100%}}',
+      '@keyframes dndDragonFire{0%{background-position:0 0}12.5%{background-position:100% 0}25%{background-position:0 33.333%}37.5%{background-position:100% 33.333%}50%{background-position:0 66.666%}62.5%{background-position:100% 66.666%}75%{background-position:0 100%}87.5%,100%{background-position:100% 100%}}',
       '@keyframes dndDragonIdle{0%,100%{transform:translate3d(0,0,0) rotate(0deg)}50%{transform:translate3d(0,-7px,0) rotate(-.8deg)}}',
       '@keyframes dndFirePulse{0%,100%{opacity:.72;transform:scale(.985)}50%{opacity:1;transform:scale(1.015)}}',
       '@keyframes dndDragonHover{0%,100%{margin-top:0}50%{margin-top:-9px}}',
-      '@media(max-width:600px){#dndUpdateV2 .dragon-rig{width:82vw;bottom:2%}#dndUpdateV2 .title{top:7%}#dndUpdateV2 .panel{bottom:3%;padding:12px}.title p{max-width:88vw;margin-left:auto;margin-right:auto}}'
+      '@media(max-width:600px){#dndUpdateV2 .dragon-rig{width:86vw;bottom:2%}#dndUpdateV2 .title{top:7%}#dndUpdateV2 .panel{bottom:3%;padding:12px}.title p{max-width:88vw;margin-left:auto;margin-right:auto}}'
     ].join('');
     document.head.appendChild(s);
   }
