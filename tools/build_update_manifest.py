@@ -4,7 +4,7 @@
 Usage:
   python tools/build_update_manifest.py --base-url https://example.github.io/repo/updates/files --output /tmp/update.json
 
-Only the deployable web application is included: index.html + app/**.
+Only the deployable web application and wallpaper assets are included: index.html + app/** + wallpapers/**.
 Tests, docs, tools and the local integrity manifest are intentionally excluded.
 """
 from pathlib import Path
@@ -46,7 +46,7 @@ def main():
             version=detected
             print(f'using APP_VERSION from app/update_manager.js: {version}')
     files=[]
-    candidates=[ROOT/'index.html']+sorted((ROOT/'app').rglob('*'))
+    candidates=[ROOT/'index.html']+sorted((ROOT/'app').rglob('*'))+sorted((ROOT/'wallpapers').rglob('*')) if (ROOT/'wallpapers').exists() else [ROOT/'index.html']+sorted((ROOT/'app').rglob('*'))
     for p in candidates:
         if not p.is_file() or p.name.endswith('.map'):
             continue
