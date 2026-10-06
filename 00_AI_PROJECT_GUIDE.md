@@ -7813,3 +7813,36 @@ Implemented in `app/vtt_map_editor_3d_v71.js`:
 - Save/load and verify wall edges persist.
 - Load older V1/V2/V3 maps and verify no crash and empty/default wall layer.
 - Confirm legacy `battle_board.js` is untouched.
+
+
+## V70.36.3 — normalized walls, wall editing and openings (2026-10-06)
+
+Implemented in `app/vtt_map_editor_3d_v71.js`:
+- Wall edges are now canonicalized: N/S and E/W references resolve to one shared edge, preventing neighboring cells from creating duplicate opposite walls.
+- Existing V4 wall data is normalized automatically on load and when saving.
+- Save format advanced to V5. V1–V4 maps remain loadable.
+- Each wall now has editable `height` (0.5–12), `thickness` (0.03–0.50) and `opening` fields.
+- Added wall editing controls for N/E/S/W, height +/−, thickness +/− and opening cycling.
+- Added opening types: `none`, `door`, `window`. Door openings leave a walk-through-height gap; window openings split the wall into lower and upper segments.
+- Wall rendering now uses the edited dimensions/opening state rather than a fixed 2.5-unit strip.
+- Added public wall editing hooks `dndMap3DWallAdjust()` and `dndMap3DWallOpening()` alongside the existing directional wall hook.
+- Fixed Pages APK publication naming: the completed APK is now published as `DND-VTT-70.36.3.apk`, `latest.apk`, plus a matching SHA-256 file instead of stale 70.35/70.36.0 names.
+- Legacy `battle_board.js` remains untouched.
+
+### QA V70.36.3
+- Create a wall from one cell edge, then activate the neighboring cell's opposite edge and verify it refers to the same canonical wall rather than creating a duplicate.
+- Change wall height and thickness and verify the rendered wall changes.
+- Cycle opening from none → door → window → none and verify the geometry changes accordingly.
+- Save/load and verify V5 wall properties persist.
+- Load an older V4/V3/V2/V1 local map and verify migration does not crash.
+- Confirm Pages workflow uses the current stable version and current APK filename.
+- Confirm legacy `battle_board.js` is untouched.
+
+### Next 3D steps
+1. Build collision tests against canonical wall edges and blocked cubes.
+2. Add explicit door state (open/closed/locked) and interaction points.
+3. Add stairs/ramps linking levels.
+4. Implement player collision/navigation on the shared player state.
+5. Activate first-person walking.
+6. Activate third-person follow camera.
+7. Connect the shared 3D world to combat/initiative after movement is stable.
