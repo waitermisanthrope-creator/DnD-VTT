@@ -69,8 +69,8 @@
     },
     {
       "path": "app/Wallpapers.js",
-      "bytes": 20354,
-      "sha256": "2b6c5a9880a2efd76190d0a4e9188568038a7e5a5379029720bafce560d25690"
+      "bytes": 40446,
+      "sha256": "c57dea7c0302f3c96317d41e527c8558a48e590412a976d0098d29399f2df95b"
     },
     {
       "path": "app/accursed_oap_v11_runtime.js",
@@ -1330,7 +1330,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 19296,
-      "sha256": "621f9ad4ce371a3f907567d376016452cf958068c3f2b4b74e683bdc79c3d191"
+      "sha256": "2368efe27d3a00cc9be60d659e733e368519b622decd790799ab133a2f0af171"
     },
     {
       "path": "app/update_scene_v2.js",
