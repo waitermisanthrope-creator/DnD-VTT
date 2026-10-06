@@ -7915,3 +7915,32 @@ Implemented in `app/vtt_map_editor_3d_v71.js`:
 5. Add interaction range/animation for doors and later key/lock integration.
 6. Later bind the local character selector to the real session/network player roster (target capacity remains 1 DM + up to 15 players).
 7. Connect movement to combat/initiative after navigation is stable.
+
+
+## V70.36.6 — token placement/possession and texture-ready map surfaces (2026-10-06)
+
+- Added persistent map `tokens[]`. A selected character can be placed on a chosen cell as a lightweight 2D class token.
+- Tokens store character id/name/class/glyph plus x/y/level and are saved with the map.
+- Clicking a placed token selects it; `🎮 Вселиться` makes it the active player token.
+- The active token follows the shared player movement/collision state, so future first-person movement will move the same token.
+- Multiple tokens can coexist; the current local character selector determines which character is placed next.
+- Added texture-ready fields and controls for walls and furniture. A wall/object can store a texture path/URL now; real texture packs/rendering can be added later without redesigning the map data.
+- Added image-cache groundwork for future same-origin texture rendering.
+- Map save format advanced to V8 with token persistence and active token id. Older maps remain loadable with safe empty-token defaults.
+- New map resets placed tokens but keeps the character selector.
+
+### QA V70.36.6
+- Select character → select cell → place token → click token → “Вселиться”.
+- Confirm the active token follows movement/collision coordinates.
+- Place several tokens and confirm they remain independent.
+- Save/load and confirm tokens and active token persist.
+- Verify wall/furniture texture controls accept a future asset path without breaking the editor.
+- Verify older V1–V7 maps load without errors.
+
+### Next 3D steps
+1. Real directional stair/ramp traversal and vertical collision.
+2. First-person camera + keyboard/touch movement for the possessed token.
+3. Third-person follow camera.
+4. Real texture rendering/material slots for walls, floors and furniture.
+5. Token layers for monsters/NPCs, initiative, HP/status rings and DM control.
+6. Later bind the local token/character system to the actual multiplayer player roster.
