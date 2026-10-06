@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "70.34.7",
+  "version": "70.34.8",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-06",
@@ -1330,12 +1330,12 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 16381,
-      "sha256": "2dc0f1ba2dca867fa1696077c52b17decb1034a4cebc60b7fafce8bf25a9eeaa"
+      "sha256": "26ed18183c558782c403f06918d32ec3918005fbaf5648ff1c957fc1477046a0"
     },
     {
       "path": "app/update_scene_v2.js",
       "bytes": 10344,
-      "sha256": "25caf8814366728f670217c3be85deb85bc761a11bb71cd8fd52c95d0bd6d07d"
+      "sha256": "468433f91e76b004832617af686eec640fdd5300e64fa019f2f28f5eb876e13f"
     },
     {
       "path": "app/vessel_laserllama_v4_runtime.js",
