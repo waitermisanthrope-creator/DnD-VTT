@@ -1343,6 +1343,11 @@
       "sha256": "538d4f151d86cc2dff07d1240d7f10a7b99d712f77adaafcb87c6c6ed20be7bd"
     },
     {
+      "path": "app/vendor/BufferGeometryUtils.legacy.js",
+      "bytes": 1164,
+      "sha256": "bf62e961fd588f7b06cb51cf6b50022da313ece102d0903f8bc87e508ffc0f69"
+    },
+    {
       "path": "app/vendor/GLTFLoader.js",
       "bytes": 114755,
       "sha256": "004e207049f38d8684fba3d4b08933b62f63038e1db23f23a0e159fa9a1eccc8"
