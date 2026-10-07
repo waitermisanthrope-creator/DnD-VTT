@@ -246,6 +246,8 @@ function open(){
      document.head.appendChild(s);
     });
    }
+   await loadClassic('./vendor/three.core.legacy.js');
+   if(!global.THREECore) throw new Error('Three.js core legacy bridge not loaded');
    await loadClassic('./vendor/three.legacy.js');
    if(!global.DND_BufferGeometryUtils) throw new Error('BufferGeometryUtils legacy bridge not loaded');
    await loadClassic('./vendor/GLTFLoader.legacy.js');
