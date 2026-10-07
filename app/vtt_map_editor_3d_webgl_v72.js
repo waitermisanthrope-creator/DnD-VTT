@@ -253,7 +253,7 @@ function wallMesh(w){
    var ow=Math.min(len,Math.max(.1,Number(op.width)||.9)),oh=Math.min(h,Math.max(.1,Number(op.height)||2.1)),os=Math.max(0,Math.min(h-oh,Number(op.sill)||0)),c=Math.max(0,Math.min(len-ow,Number(op.offset)||0));
    if(c>0)part('wall:'+w.level+':'+x+':'+y,x,y-t/2,z,c,t,h);
    if(os>0)part('wall:'+w.level+':'+x+':'+y,x+c,y-t/2,z+os,ow,t,os);
-   if(c>0)part('wall:'+w.level+':'+x+':'+y,x+c+ow,y-t/2,z,len-c-ow,t,h);
+   if(len-c-ow>0)part('wall:'+w.level+':'+x+':'+y,x+c+ow,y-t/2,z,len-c-ow,t,h);
    if(h-os-oh>0)part('wall:'+w.level+':'+x+':'+y,x+c,y-t/2,z+os+oh,ow,t,h-os-oh);
    return;
  }
@@ -261,7 +261,7 @@ function wallMesh(w){
  var ow2=Math.min(len,Math.max(.1,Number(op.width)||.9)),oh2=Math.min(h,Math.max(.1,Number(op.height)||2.1)),os2=Math.max(0,Math.min(h-oh2,Number(op.sill)||0)),c2=Math.max(0,Math.min(len-ow2,Number(op.offset)||0));
  if(c2>0)part('wall:'+w.level+':'+x+':'+y,x+1-t/2,y,z,t,h,c2);
  if(os2>0)part('wall:'+w.level+':'+x+':'+y,x+1-t/2,y+c2,z+os2,t,os2,ow2);
- if(c2>0)part('wall:'+w.level+':'+x+':'+y,x+1-t/2,y+c2+ow2,z,t,h,len-c2-ow2);
+ if(len-c2-ow2>0)part('wall:'+w.level+':'+x+':'+y,x+1-t/2,y+c2+ow2,z,t,h,len-c2-ow2);
  if(h-os2-oh2>0)part('wall:'+w.level+':'+x+':'+y,x+1-t/2,y+c2,z+os2+oh2,t,h-os2-oh2,ow2);
 }
 function addOpeningHandles(w){
