@@ -93,4 +93,5 @@ jobs:
 # V70.36.66 wallpaper module rollback trigger
 
 # V70.37.12 force manifest regeneration after editor OTA changes
+# V70.37.12 second pass: regenerate against current main after editor commit
 # V70.36.66 3D map syntax fix manifest refresh
