@@ -13,6 +13,7 @@
   var STAGED_KEY = 'dnd_update_staged_v2';
   var DEFAULT_CHANNEL = 'stable';
   var CACHE_BUSTER = 'dnd-v2-' + APP_VERSION + '-' + Date.now();
+  // V70.37.32: native stage must receive a cache-busted manifest URL too.
   var pending = Object.create(null);
   var counter = 0;
   var progressHandler = null;
