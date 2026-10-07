@@ -638,13 +638,17 @@ function applyRootTexture(file,kind,which){
  }
 }
 function openRootTexturePicker(kind){
+ // Каталог отделён от DOM-слоя редактора: открываем его напрямую в body.
+ // Это исключает проблемы с flex-контейнером canvas/toolbar и гарантирует кликабельность.
  var old=document.getElementById('map3dRootTextures');
  if(old){old.remove();return;}
  var list=ROOT_TEXTURE_CATALOG[kind]||[],box=document.createElement('div');
  box.id='map3dRootTextures';
- box.style.cssText='position:absolute;right:8px;top:58px;bottom:68px;width:min(170px,42vw);overflow-y:auto;overflow-x:hidden;background:#171c24;border:1px solid #66717f;border-radius:14px;padding:8px;z-index:2000;box-shadow:0 12px 40px #000c;pointer-events:auto;touch-action:pan-y;overscroll-behavior:contain;';
+ box.setAttribute('role','dialog');
+ box.setAttribute('aria-label',kind==='wall'?'Текстуры стен':'Текстуры пола');
+ box.style.cssText='position:fixed;right:0;top:58px;bottom:68px;width:min(210px,46vw);max-width:210px;box-sizing:border-box;overflow-y:auto;overflow-x:hidden;background:#171c24;border:1px solid #66717f;border-right:0;border-radius:14px 0 0 14px;padding:8px;z-index:40000;box-shadow:-8px 0 28px #000c;pointer-events:auto;touch-action:pan-y;overscroll-behavior:contain;';
  var title=kind==='wall'?'🧱 Стены':'🟫 Пол';
- box.innerHTML='<div style="position:sticky;top:0;z-index:2;background:#171c24;padding:4px 2px 8px;display:flex;align-items:center;justify-content:space-between"><b>'+title+'</b><button id="rootTexClose" type="button" style="padding:5px 8px">✕</button></div>';
+ box.innerHTML='<div style="position:sticky;top:0;z-index:2;background:#171c24;padding:4px 2px 8px;display:flex;align-items:center;justify-content:space-between"><b>'+title+'</b><button id="rootTexClose" type="button" style="padding:5px 8px;cursor:pointer">✕</button></div>';
  var grid=document.createElement('div');grid.style.cssText='display:flex;flex-direction:column;gap:7px';
  list.forEach(function(rec){
    var card=document.createElement('div');card.style.cssText='display:flex;flex-direction:column;gap:5px;padding:6px;background:#222933;color:#fff;border:1px solid #46515f;border-radius:10px;';
@@ -653,8 +657,8 @@ function openRootTexturePicker(kind){
    card.appendChild(img);card.appendChild(label);
    if(kind==='wall'){
      var actions=document.createElement('div');actions.style.cssText='display:flex;gap:4px';
-     var front=document.createElement('button');front.type='button';front.textContent='Внутри';front.style.cssText='flex:1;padding:6px 2px;font-size:10px';
-     var back=document.createElement('button');back.type='button';back.textContent='Снаружи';back.style.cssText='flex:1;padding:6px 2px;font-size:10px';
+     var front=document.createElement('button');front.type='button';front.textContent='Внутри';front.style.cssText='flex:1;padding:7px 2px;font-size:10px;cursor:pointer';
+     var back=document.createElement('button');back.type='button';back.textContent='Снаружи';back.style.cssText='flex:1;padding:7px 2px;font-size:10px;cursor:pointer';
      front.onclick=function(ev){ev.preventDefault();ev.stopPropagation();applyRootTexture(rec.file,'wall','front');};
      back.onclick=function(ev){ev.preventDefault();ev.stopPropagation();applyRootTexture(rec.file,'wall','back');};
      actions.appendChild(front);actions.appendChild(back);card.appendChild(actions);
@@ -666,7 +670,7 @@ function openRootTexturePicker(kind){
  });
  box.appendChild(grid);
  box.querySelector('#rootTexClose').onclick=function(ev){ev.preventDefault();ev.stopPropagation();box.remove();};
- var host=document.getElementById('map3dRealModal');if(host)host.appendChild(box);
+ document.body.appendChild(box);
 }
 function openAssetLibrary(){openAssetDB().then(function(db){var tx=db.transaction('assets','readonly'),q=tx.objectStore('assets').getAll();q.onsuccess=function(){var items=q.result||[],box=document.createElement('div');box.style.cssText='position:absolute;right:10px;top:58px;width:min(390px,92vw);max-height:76vh;overflow:auto;background:#171c24;border:1px solid #555;border-radius:14px;padding:12px;z-index:20;box-shadow:0 12px 40px #000';box.innerHTML='<b>📚 Библиотека ассетов</b><button id="libClose" style="float:right">✕</button><div style="clear:both;color:#aaa;margin:8px 0">GLB — модели. PNG/JPG/WebP — текстуры.</div><button id="libAddModel" style="width:49%;margin:4px 0">🧩 Добавить GLB</button><button id="libAddTex" style="width:49%;margin:4px 0">🖼️ Добавить текстуру</button>';var grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px';items.forEach(function(rec){var b=document.createElement('button');b.style.cssText='display:flex;flex-direction:column;gap:5px;text-align:left;padding:7px;background:#222933;color:#fff;border:1px solid #394454;border-radius:9px';var title=document.createElement('span');title.textContent=(rec.meta&&rec.meta.kind==='texture'?'🖼️ ':'🧩 ')+(rec.meta&&rec.meta.name||rec.id);b.appendChild(title);if(rec.meta&&rec.meta.kind==='texture'&&rec.buffer){try{var u=URL.createObjectURL(new Blob([rec.buffer],{type:rec.meta.type||'image/png'})),im=document.createElement('img');im.src=u;im.style.cssText='width:100%;height:74px;object-fit:cover;border-radius:6px';b.insertBefore(im,title);setTimeout(function(){URL.revokeObjectURL(u);},60000);}catch(e){}}if(rec.meta&&rec.meta.kind==='texture'){var apply=document.createElement('div');apply.style.cssText='display:flex;gap:4px';var fi=document.createElement('button');fi.textContent='Внутри';fi.onclick=function(ev){ev.stopPropagation();applyTextureAsset(rec.id,'front');};var bo=document.createElement('button');bo.textContent='Снаружи';bo.onclick=function(ev){ev.stopPropagation();applyTextureAsset(rec.id,'back');};apply.appendChild(fi);apply.appendChild(bo);b.appendChild(apply);}else{var pv=document.createElement('canvas');pv.width=160;pv.height=120;pv.style.cssText='width:100%;height:92px;display:block;border-radius:7px;background:#20252c';b.insertBefore(pv,title);previewGLB(rec,pv);b.draggable=true;b.addEventListener('dragstart',function(ev){if(ev.dataTransfer){ev.dataTransfer.effectAllowed='copy';ev.dataTransfer.setData('text/plain',rec.id);}});b.onclick=function(){var p=lastScenePoint;if(p){placeLibraryAsset(rec.id,rec.meta&&rec.meta.name||'Asset',p);box.remove();}else{pendingLibraryAsset={id:rec.id,name:rec.meta&&rec.meta.name||'Asset'};box.remove();var h=document.getElementById('r3dQuickHint');if(h)h.textContent='📍 Ассет выбран. Теперь тапните по полу в нужном месте — модель будет поставлена туда.';}};}grid.appendChild(b);});box.appendChild(grid);box.querySelector('#libClose').onclick=function(){box.remove();};box.querySelector('#libAddModel').onclick=function(){box.remove();addModel();};box.querySelector('#libAddTex').onclick=function(){box.remove();addTexture('front');};modal.appendChild(box);};});}
 function sceneEditableHit(ev){
