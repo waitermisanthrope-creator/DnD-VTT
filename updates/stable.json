@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "70.37.06",
+  "version": "70.36.91",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-07",
@@ -1479,8 +1479,8 @@
     },
     {
       "path": "app/vtt_map_editor_3d_webgl_v72.js",
-      "bytes": 80516,
-      "sha256": "c266cebdc632a6304903a4d240e10ab86c8678f51958f51946532bb585d78f45"
+      "bytes": 80947,
+      "sha256": "c713190d73f9af1906845d955804e8f0e1d6c6e60de53def4a5faeff6613f607"
     },
     {
       "path": "app/vtt_mobile_battle_v61.js",
