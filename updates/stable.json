@@ -1364,8 +1364,8 @@
     },
     {
       "path": "app/vendor/three.legacy.js",
-      "bytes": 338443,
-      "sha256": "c52d246f6ed175e0c4ddb6f04db8eac7c5765a1c605cc531f04f56fa9b51fb32"
+      "bytes": 337879,
+      "sha256": "2d6a3377f2da07a3a1ba6f448bff1f14239557f40869661ff6b98f8fef25c9e8"
     },
     {
       "path": "app/vendor/three.module.min.js",
