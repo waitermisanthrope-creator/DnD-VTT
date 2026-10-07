@@ -14,7 +14,7 @@
 (function(global){
 'use strict';
 var THREE=null,GLTFLoader=null,renderer=null,scene=null,camera=null,root=null,gizmo=null,gizmoAxis=null,gizmoDragging=false,gizmoStartX=0,gizmoStartY=0,gizmoStartPos=null,gizmoStartRot=0,gizmoStartScale=null,raf=0,map=null,selected=null,mode='orbit',editorMode='build',transformMode='translate',raycaster=null,mouse=null,assetDB=null,assetCache={},controls={yaw:.8,pitch:.8,distance:24,target:{x:0,y:0,z:0}},touches={},touchGesture=null,snapGrid=true,snapSize=0.25;
-var VERSION='V70.37.07';
+var VERSION='V70.37.09';
 var cutawayWalls=true,cutawayTick=0;
 var undoStack=[],redoStack=[],historyBusy=false;
 var openingDrag=null,roomPreview=null,wallDrag=null,selectedItems=[],buildGeneration=0,lastScenePoint=null,pendingLibraryAsset=null,paintMode=false,painting=false,paintHistoryStarted=false,paintMaterial='stone',paintSide='front',paintedDuringStroke={},roomToolArmed=false,simpleToolsRefresh=null;
@@ -84,6 +84,7 @@ function restoreSnapshot(snap){if(!snap)return;historyBusy=true;try{map=JSON.par
 function undo(){if(!undoStack.length){alert('Отменять больше нечего.');return;}var cur=snapshotMap(),prev=undoStack.pop();if(cur)redoStack.push(cur);restoreSnapshot(prev);}
 function redo(){if(!redoStack.length){alert('Повторять больше нечего.');return;}var cur=snapshotMap(),next=redoStack.pop();if(cur)undoStack.push(cur);restoreSnapshot(next);}
 function wallKey(level,x,y){return String(level)+':'+String(x)+':'+String(y);}
+function roomWallKey(level,x,y,dir){return String(level)+':'+String(x)+':'+String(y)+':'+String(dir||'n');}
 function roomBounds(a,b){
  var cols=Number(map&&map.grid&&map.grid.cols)||20,rows=Number(map&&map.grid&&map.grid.rows)||20;
  return {x1:Math.max(0,Math.min(cols,Math.floor(Math.min(a.x,b.x)))),y1:Math.max(0,Math.min(rows,Math.floor(Math.min(a.y,b.y)))),x2:Math.max(0,Math.min(cols,Math.ceil(Math.max(a.x,b.x)))),y2:Math.max(0,Math.min(rows,Math.ceil(Math.max(a.y,b.y))))};
@@ -104,7 +105,7 @@ function showRoomPreview(a,b){
 }
 function hideRoomPreview(){if(roomPreview){roomPreview.visible=false;while(roomPreview.children.length)roomPreview.remove(roomPreview.children[0]);}}
 function ensureRoomWall(level,s){
- var k=wallKey(level,s[0],s[1]),old=map.walls[k],sx=Number(s[0])||0,sy=Number(s[1])||0,sl=Math.max(.25,Number(s[3])||.25),dir=s[2];
+ var k=roomWallKey(level,s[0],s[1],s[2]),old=map.walls[k],sx=Number(s[0])||0,sy=Number(s[1])||0,sl=Math.max(.25,Number(s[3])||.25),dir=s[2];
  if(!old){
    var keys=Object.keys(map.walls||{}),merged=null;
    for(var i=0;i<keys.length;i++){
@@ -118,10 +119,10 @@ function ensureRoomWall(level,s){
      delete map.walls[merged.key];
      var nx=dir==='n'?merged.start:sx,ny=dir==='e'?merged.start:sy;
      if(dir==='n'){nx=merged.start;ny=sy;}else{nx=sx;ny=merged.start;}
-     map.walls[wallKey(level,nx,ny)]={level:level,x:nx,y:ny,dir:dir,length:merged.end-merged.start,height:Number(merged.w.height)||2.5,thickness:Number(merged.w.thickness)||.09,color:merged.w.color||'#777777',material:merged.w.material||'stone',front:merged.w.front||{texture:'none',color:'#777777'},back:merged.w.back||{texture:'none',color:'#777777'},__roomAuto:true};
+     var nk=roomWallKey(level,nx,ny,dir);map.walls[nk]={level:level,x:nx,y:ny,dir:dir,length:merged.end-merged.start,height:Number(merged.w.height)||2.5,thickness:Number(merged.w.thickness)||.09,color:merged.w.color||'#777777',material:merged.w.material||'stone',front:merged.w.front||{texture:'none',color:'#777777'},back:merged.w.back||{texture:'none',color:'#777777'},__roomAuto:true,__key:nk};
      return;
    }
-   map.walls[k]={level:level,x:sx,y:sy,dir:dir,length:sl,height:2.5,thickness:.09,color:'#777777',material:'stone',front:{texture:'none',color:'#777777'},back:{texture:'none',color:'#777777'},__roomAuto:true};
+   map.walls[k]={level:level,x:sx,y:sy,dir:dir,length:sl,height:2.5,thickness:.09,color:'#777777',material:'stone',front:{texture:'none',color:'#777777'},back:{texture:'none',color:'#777777'},__roomAuto:true,__key:k};
    return;
  }
  if(old.__roomAuto&&old.dir===dir&&!old.opening){
@@ -174,7 +175,7 @@ function inferRoomFromWall(w){
    var candidates=keys.map(function(k){return walls[k];}).filter(function(q){return q&&q.__roomAuto&&q.dir==='n'&&Number(q.level||0)===level&&Number(q.x||0)!==x&&overlap(x,x+len,Number(q.x)||0,(Number(q.x)||0)+(Number(q.length)||0));});
    for(var ci=0;ci<candidates.length;ci++){
      var bb=candidates[ci],bx=Number(bb.x)||0,bl=Number(bb.length)||0,rx1=Math.max(x,bx),rx2=Math.min(x+len,bx+bl),y1=Math.min(y,Number(bb.y)||0),y2=Math.max(y,Number(bb.y)||0);
-     var left=walls[wallKey(level,rx1,y1)],right=walls[wallKey(level,rx2-1,y1)];
+     var left=walls[roomWallKey(level,rx1,y1,'e')],right=walls[roomWallKey(level,rx2-1,y1,'e')];
      if(left&&right&&left.dir==='e'&&right.dir==='e')return {level:level,x1:rx1,x2:rx2,y1:y1,y2:y2,top:w,bottom:bb,left:left,right:right,axis:'x'};
    }
  }
@@ -182,7 +183,7 @@ function inferRoomFromWall(w){
    var candidates2=keys.map(function(k){return walls[k];}).filter(function(q){return q&&q.__roomAuto&&q.dir==='e'&&Number(q.level||0)===level&&Number(q.y||0)!==y&&overlap(y,y+len,Number(q.y)||0,(Number(q.y)||0)+(Number(q.length)||0));});
    for(var cj=0;cj<candidates2.length;cj++){
      var bb2=candidates2[cj],by=Number(bb2.y)||0,bl2=Number(bb2.length)||0,ry1=Math.max(y,by),ry2=Math.min(y+len,by+bl2),x1=Math.min(x,Number(bb2.x)||0),x2=Math.max(x,Number(bb2.x)||0);
-     var top=walls[wallKey(level,x1,ry1)],bottom=walls[wallKey(level,x1,ry2-1)];
+     var top=walls[roomWallKey(level,x1,ry1,'n')],bottom=walls[roomWallKey(level,x1,ry2-1,'n')];
      if(top&&bottom&&top.dir==='n'&&bottom.dir==='n')return {level:level,x1:x1,x2:x2+1,y1:ry1,y2:ry2,top:top,bottom:bb2,left:w,right:bb2,axis:'y'};
    }
  }
@@ -391,7 +392,7 @@ function addBox(name,x,y,z,w,h,d,mats,rot){
 function wallMesh(w){
  var h=Math.max(.5,Number(w.height)||2.5),t=Math.max(.03,Number(w.thickness)||.09),len=Math.max(.1,Number(w.length)||1),levelY=(Number(w.level)||0)*3;
  var front=side(w,'front'),back=side(w,'back'),base=w.color||'#777777',end=material(base),top=material(base),bottom=material(base),fm=matFromSide(front,base),bm=matFromSide(back,base),mats=w.dir==='n'?[end,end,top,bottom,fm,bm]:[fm,bm,top,bottom,end,end],x=Number(w.x)||0,y=Number(w.y)||0,op=w.opening;
- function part(name,px,py,pz,pw,ph,pd){var q=addBox(name,px,py,pz,pw,ph,pd,mats);q.userData.editorKind='wall';q.userData.wallKey=(Number(w.level)||0)+':'+x+':'+y;return q;}
+ function part(name,px,py,pz,pw,ph,pd){var q=addBox(name,px,py,pz,pw,ph,pd,mats);q.userData.editorKind='wall';q.userData.wallKey=w.__key||((Number(w.level)||0)+':'+x+':'+y);return q;}
  // Three.js: X/Z are the map plane, Y is vertical.
  if(w.dir==='n'){
    if(!op)return part('wall:'+w.level+':'+x+':'+y,x,levelY,y-t/2,len,h,t);
@@ -413,7 +414,7 @@ function addOpeningHandles(w){
  if(editorMode!=='build'||!w||!w.opening)return;
  var op=w.opening,x=Number(w.x)||0,y=Number(w.y)||0,len=Math.max(.1,Number(w.length)||1),ow=Math.min(len,Math.max(.1,Number(op.width)||.9)),off=Math.max(0,Math.min(len-ow,Number(op.offset)||0)),z=(Number(w.level)||0)*3+Math.max(.15,Number(w.height)||2.5)*.5;
  var pts=w.dir==='n'?[[x+off,y],[x+off+ow,y]]:[[x+1,y+off],[x+1,y+off+ow]];
- pts.forEach(function(p,idx){var m=new THREE.Mesh(new THREE.SphereGeometry(.12,10,8),new THREE.MeshBasicMaterial({color:0xffb74d,depthTest:false}));m.position.set(p[0],z,p[1]);m.name='openingHandle:'+wallKey(Number(w.level)||0,x,y)+':'+(idx?'end':'start');m.userData.editorKind='openingHandle';m.userData.openingHandle=true;m.userData.wallKey=wallKey(Number(w.level)||0,x,y);m.userData.handle=idx?'end':'start';m.renderOrder=1001;root.add(m);});
+ pts.forEach(function(p,idx){var m=new THREE.Mesh(new THREE.SphereGeometry(.12,10,8),new THREE.MeshBasicMaterial({color:0xffb74d,depthTest:false}));m.position.set(p[0],z,p[1]);m.name='openingHandle:'+(w.__key||wallKey(Number(w.level)||0,x,y))+':'+(idx?'end':'start');m.userData.editorKind='openingHandle';m.userData.openingHandle=true;m.userData.wallKey=w.__key||wallKey(Number(w.level)||0,x,y);m.userData.handle=idx?'end':'start';m.renderOrder=1001;root.add(m);});
 }
 function openingHandleHit(ev){
  if(editorMode!=='build')return null;
@@ -440,10 +441,10 @@ function updateOpeningHandleDrag(ev){
  op.width=next;op.offset=Math.max(0,Math.min(max-next,Number(op.offset)||0));openingDrag.changed=true;build();updateInfo();
 }
 function addWallHandles(w){
- if(editorMode!=='build'||!selected||!selected.name||selected.name.slice(5)!==wallKey(Number(w.level)||0,Number(w.x)||0,Number(w.y)||0))return;
+ if(editorMode!=='build'||!selected||!selected.name||selected.name.slice(5)!=(w.__key||((Number(w.level)||0)+':'+Number(w.x||0)+':'+Number(w.y||0))))return;
  var x=Number(w.x)||0,y=Number(w.y)||0,len=Math.max(.1,Number(w.length)||1),z=(Number(w.level)||0)*3+Math.max(.15,Number(w.height)||2.5)*.5;
  var pts=w.dir==='n'?[[x,y],[x+len,y]]:[[x+1,y],[x+1,y+len]];
- pts.forEach(function(p,idx){var m=new THREE.Mesh(new THREE.SphereGeometry(.14,12,8),new THREE.MeshBasicMaterial({color:0xffff66,depthTest:false}));m.position.set(p[0],z,p[1]);m.name='wallHandle:'+wallKey(Number(w.level)||0,x,y)+':'+(idx?'end':'start');m.userData.editorKind='wallHandle';m.userData.wallHandle=true;m.userData.wallKey=wallKey(Number(w.level)||0,x,y);m.userData.handle=idx?'end':'start';m.renderOrder=1000;root.add(m);});
+ pts.forEach(function(p,idx){var m=new THREE.Mesh(new THREE.SphereGeometry(.14,12,8),new THREE.MeshBasicMaterial({color:0xffff66,depthTest:false}));m.position.set(p[0],z,p[1]);m.name='wallHandle:'+(w.__key||wallKey(Number(w.level)||0,x,y))+':'+(idx?'end':'start');m.userData.editorKind='wallHandle';m.userData.wallHandle=true;m.userData.wallKey=w.__key||wallKey(Number(w.level)||0,x,y);m.userData.handle=idx?'end':'start';m.renderOrder=1000;root.add(m);});
 }
 function build(){
  if(!THREE||!map)return;
@@ -620,32 +621,32 @@ function openRootTexturePicker(kind){
  if(old){old.remove();return;}
  var list=ROOT_TEXTURE_CATALOG[kind]||[],box=document.createElement('div');
  box.id='map3dRootTextures';
- box.style.cssText='position:absolute;left:10px;top:58px;width:min(390px,92vw);max-height:78vh;overflow:auto;background:#171c24;border:1px solid #555;border-radius:14px;padding:12px;z-index:25;box-shadow:0 12px 40px #000';
- var title=kind==='wall'?'🧱 Текстуры стен':'🟫 Текстуры пола';
- box.innerHTML='<b>'+title+'</b><button id="rootTexClose" style="float:right">✕</button><div style="clear:both;color:#aaa;margin:8px 0">Встроенные PNG из корневой папки проекта. Они не копируются в IndexedDB.</div>';
- var grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px';
+ box.style.cssText='position:absolute;right:8px;top:58px;bottom:68px;width:min(170px,42vw);overflow-y:auto;overflow-x:hidden;background:#171c24;border:1px solid #66717f;border-radius:14px;padding:8px;z-index:100;box-shadow:0 12px 40px #000c;pointer-events:auto;touch-action:pan-y;';
+ var title=kind==='wall'?'🧱 Стены':'🟫 Пол';
+ box.innerHTML='<div style="position:sticky;top:0;z-index:2;background:#171c24;padding:4px 2px 8px;display:flex;align-items:center;justify-content:space-between"><b>'+title+'</b><button id="rootTexClose" type="button" style="padding:5px 8px">✕</button></div>';
+ var grid=document.createElement('div');grid.style.cssText='display:flex;flex-direction:column;gap:7px';
  list.forEach(function(rec){
-   var card=document.createElement('button');card.type='button';card.style.cssText='display:flex;flex-direction:column;gap:5px;text-align:left;padding:7px;background:#222933;color:#fff;border:1px solid #394454;border-radius:9px';
-   var img=document.createElement('img');img.src='./'+rec.file;img.alt=rec.name;img.loading='lazy';img.style.cssText='width:100%;height:78px;object-fit:cover;border-radius:6px;background:#10151c';
-   var label=document.createElement('span');label.textContent=rec.name;
+   var card=document.createElement('div');card.style.cssText='display:flex;flex-direction:column;gap:5px;padding:6px;background:#222933;color:#fff;border:1px solid #46515f;border-radius:10px;';
+   var img=document.createElement('img');img.src='./'+rec.file;img.alt=rec.name;img.loading='lazy';img.draggable=false;img.style.cssText='width:100%;height:72px;object-fit:cover;border-radius:7px;background:#10151c;pointer-events:none';
+   var label=document.createElement('div');label.textContent=rec.name;label.style.cssText='font-size:10px;line-height:1.15;color:#dbe2ea';
    card.appendChild(img);card.appendChild(label);
-   card.onclick=function(){
-     if(kind==='wall'){
-       var front=document.createElement('button');front.textContent='Внутри';front.style.cssText='margin-right:4px;padding:6px';
-       var back=document.createElement('button');back.textContent='Снаружи';back.style.cssText='padding:6px';
-       front.onclick=function(ev){ev.stopPropagation();applyRootTexture(rec.file,'wall','front');box.remove();};
-       back.onclick=function(ev){ev.stopPropagation();applyRootTexture(rec.file,'wall','back');box.remove();};
-       var actions=document.createElement('div');actions.style.cssText='margin-top:4px';actions.appendChild(front);actions.appendChild(back);
-       if(!card.querySelector('.rootTexActions')){actions.className='rootTexActions';card.appendChild(actions);}
-     }else{applyRootTexture(rec.file,'floor');box.remove();}
-   };
+   if(kind==='wall'){
+     var actions=document.createElement('div');actions.style.cssText='display:flex;gap:4px';
+     var front=document.createElement('button');front.type='button';front.textContent='Внутри';front.style.cssText='flex:1;padding:6px 2px;font-size:10px';
+     var back=document.createElement('button');back.type='button';back.textContent='Снаружи';back.style.cssText='flex:1;padding:6px 2px;font-size:10px';
+     front.onclick=function(ev){ev.preventDefault();ev.stopPropagation();applyRootTexture(rec.file,'wall','front');};
+     back.onclick=function(ev){ev.preventDefault();ev.stopPropagation();applyRootTexture(rec.file,'wall','back');};
+     actions.appendChild(front);actions.appendChild(back);card.appendChild(actions);
+   }else{
+     card.style.cursor='pointer';
+     card.onclick=function(ev){ev.preventDefault();ev.stopPropagation();applyRootTexture(rec.file,'floor');};
+   }
    grid.appendChild(card);
  });
  box.appendChild(grid);
- box.querySelector('#rootTexClose').onclick=function(){box.remove();};
+ box.querySelector('#rootTexClose').onclick=function(ev){ev.preventDefault();ev.stopPropagation();box.remove();};
  var host=document.getElementById('map3dRealModal');if(host)host.appendChild(box);
 }
-
 function openAssetLibrary(){openAssetDB().then(function(db){var tx=db.transaction('assets','readonly'),q=tx.objectStore('assets').getAll();q.onsuccess=function(){var items=q.result||[],box=document.createElement('div');box.style.cssText='position:absolute;right:10px;top:58px;width:min(390px,92vw);max-height:76vh;overflow:auto;background:#171c24;border:1px solid #555;border-radius:14px;padding:12px;z-index:20;box-shadow:0 12px 40px #000';box.innerHTML='<b>📚 Библиотека ассетов</b><button id="libClose" style="float:right">✕</button><div style="clear:both;color:#aaa;margin:8px 0">GLB — модели. PNG/JPG/WebP — текстуры.</div><button id="libAddModel" style="width:49%;margin:4px 0">🧩 Добавить GLB</button><button id="libAddTex" style="width:49%;margin:4px 0">🖼️ Добавить текстуру</button>';var grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px';items.forEach(function(rec){var b=document.createElement('button');b.style.cssText='display:flex;flex-direction:column;gap:5px;text-align:left;padding:7px;background:#222933;color:#fff;border:1px solid #394454;border-radius:9px';var title=document.createElement('span');title.textContent=(rec.meta&&rec.meta.kind==='texture'?'🖼️ ':'🧩 ')+(rec.meta&&rec.meta.name||rec.id);b.appendChild(title);if(rec.meta&&rec.meta.kind==='texture'&&rec.buffer){try{var u=URL.createObjectURL(new Blob([rec.buffer],{type:rec.meta.type||'image/png'})),im=document.createElement('img');im.src=u;im.style.cssText='width:100%;height:74px;object-fit:cover;border-radius:6px';b.insertBefore(im,title);setTimeout(function(){URL.revokeObjectURL(u);},60000);}catch(e){}}if(rec.meta&&rec.meta.kind==='texture'){var apply=document.createElement('div');apply.style.cssText='display:flex;gap:4px';var fi=document.createElement('button');fi.textContent='Внутри';fi.onclick=function(ev){ev.stopPropagation();applyTextureAsset(rec.id,'front');};var bo=document.createElement('button');bo.textContent='Снаружи';bo.onclick=function(ev){ev.stopPropagation();applyTextureAsset(rec.id,'back');};apply.appendChild(fi);apply.appendChild(bo);b.appendChild(apply);}else{var pv=document.createElement('canvas');pv.width=160;pv.height=120;pv.style.cssText='width:100%;height:92px;display:block;border-radius:7px;background:#20252c';b.insertBefore(pv,title);previewGLB(rec,pv);b.draggable=true;b.addEventListener('dragstart',function(ev){if(ev.dataTransfer){ev.dataTransfer.effectAllowed='copy';ev.dataTransfer.setData('text/plain',rec.id);}});b.onclick=function(){var p=lastScenePoint;if(p){placeLibraryAsset(rec.id,rec.meta&&rec.meta.name||'Asset',p);box.remove();}else{pendingLibraryAsset={id:rec.id,name:rec.meta&&rec.meta.name||'Asset'};box.remove();var h=document.getElementById('r3dQuickHint');if(h)h.textContent='📍 Ассет выбран. Теперь тапните по полу в нужном месте — модель будет поставлена туда.';}};}grid.appendChild(b);});box.appendChild(grid);box.querySelector('#libClose').onclick=function(){box.remove();};box.querySelector('#libAddModel').onclick=function(){box.remove();addModel();};box.querySelector('#libAddTex').onclick=function(){box.remove();addTexture('front');};modal.appendChild(box);};});}
 function sceneEditableHit(ev){
  if(!raycaster||!renderer||!root)return false;
