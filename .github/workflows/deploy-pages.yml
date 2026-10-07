@@ -84,8 +84,8 @@ jobs:
             APK="app-debug.apk"
           fi
           mv "site/downloads/$APK" site/downloads/DND-VTT-70.36.87.apk
-          cp site/downloads/DND-VTT-70.36.6.apk site/downloads/latest.apk
-          sha256sum site/downloads/DND-VTT-70.36.6.apk > site/downloads/DND-VTT-70.36.6.apk.sha256
+          cp site/downloads/DND-VTT-70.36.87.apk site/downloads/latest.apk
+          sha256sum site/downloads/DND-VTT-70.36.87.apk > site/downloads/DND-VTT-70.36.87.apk.sha256
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
