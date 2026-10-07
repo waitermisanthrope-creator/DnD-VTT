@@ -1,3 +1,14 @@
+## V70.36.84 — portable 3D asset-pack (2026-10-07)
+
+- Added `app/vtt_asset_pack_v84.js`, loaded immediately after the WebGL 3D editor.
+- Export creates a single `.dndpack.json` containing the current 3D map plus referenced IndexedDB GLB/texture binaries as base64.
+- Import validates package format/version and referenced asset IDs, writes binaries back to `dnd_vtt_3d_assets`, restores the map in `dnd_vtt_3d_map`, and asks before replacing same-ID assets.
+- No JSZip, CDN, server, or online dependency; intended for offline WebView/Capacitor APK operation.
+- Asset collection includes map library assets plus asset IDs referenced by objects, walls, wall sides, and surfaces.
+- Added compact export/import buttons (📦 / 📥) to the 3D editor toolbar without rewriting the existing 52 KB WebGL editor.
+- Mobile safety: export uses Blob + download anchor; import uses native file picker; package import has a 150 MB safety limit.
+- Next priority: full legacy renderer/APK/WebView audit — absolute/root paths, case-sensitive asset mismatches, script load order, duplicate handlers, and mobile memory/rebuild hotspots.
+
 ## V70.36.83 — visual GLB preview cards
 
 - Библиотека 3D-ассетов получила реальные миниатюры GLB: модель разбирается через существующий GLTFLoader и один уже созданный WebGL-контекст, затем кратко рисуется в `WebGLRenderTarget` 160×120.
