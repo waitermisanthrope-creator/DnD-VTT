@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "70.37.35",
+  "version": "70.37.36",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-07",
@@ -10,7 +10,7 @@
     {
       "path": "index.html",
       "bytes": 83783,
-      "sha256": "59ad0c330ad6d90a0c9a55677c2e60c8a9658bf8cd31094779211de9dbf815c9"
+      "sha256": "5fd9841d8f67c8660e8d79dd7120f5a07f3452818f70d4d4c9c0b23ae529872d"
     },
     {
       "path": "app/Ambiences.js",
