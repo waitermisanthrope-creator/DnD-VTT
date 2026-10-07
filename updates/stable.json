@@ -1330,7 +1330,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 18532,
-      "sha256": "42ee06f11fc5730af12d439bb7042c19af1c364df1ac53fae30cc8c8bbf18a53"
+      "sha256": "a6e8a4ae0d8a1ff3edee5d192d4b098c2c672f6d35a69556bd10811d1d7ce417"
     },
     {
       "path": "app/update_scene_v2.js",
@@ -1480,7 +1480,7 @@
     {
       "path": "app/vtt_map_editor_3d_webgl_v72.js",
       "bytes": 87934,
-      "sha256": "2300d78b799db182993ac76cf7bb4588b783bb0b4462173e18f1e15b048e597a"
+      "sha256": "13a366709b7b8329ef0d9052bdac8e50ac31aa5508fa7e7d10cfa1eba4624dfe"
     },
     {
       "path": "app/vtt_mobile_battle_v61.js",
