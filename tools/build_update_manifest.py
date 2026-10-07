@@ -48,7 +48,7 @@ def main():
     files=[]
     candidates=[(ROOT/'index.html','index.html')]
     candidates += [(p,p.relative_to(ROOT).as_posix()) for p in sorted((ROOT/'app').rglob('*'))]
-    candidates += [(p,'wallpapers/'+p.name) for p in sorted(ROOT.glob('*.png'))]
+    candidates += [(p,p.name) for p in sorted(ROOT.glob('*.png'))]
     if (ROOT/'wallpapers').exists(): candidates += [(p,p.relative_to(ROOT).as_posix()) for p in sorted((ROOT/'wallpapers').rglob('*'))]
     for p, rel in candidates:
         if not p.is_file() or p.name.endswith('.map'):
