@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "70.36.71",
+  "version": "70.36.72",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-07",
@@ -1330,7 +1330,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 18212,
-      "sha256": "e064f1d8ca0ad893b6b25e158b6b6ba17da42e1350c3d4121ab91cc99b826a29"
+      "sha256": "b0495216d4c08d8334725a5956beecbf5969fed67f87d4c8b42c87a36b2ba22d"
     },
     {
       "path": "app/update_scene_v2.js",
@@ -1450,7 +1450,7 @@
     {
       "path": "app/vtt_map_editor_3d_webgl_v72.js",
       "bytes": 19209,
-      "sha256": "722157342384d5bf1442ee24fe9b4b65a1bf3a7301a79e4e0ad40e66192bca1f"
+      "sha256": "145cb228e0d5cd0697eb3cbb3a511a46c550de5c7fe43a5af6b20cf34c5739fc"
     },
     {
       "path": "app/vtt_mobile_battle_v61.js",
