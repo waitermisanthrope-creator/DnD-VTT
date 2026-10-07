@@ -505,94 +505,8 @@
   function positionBoundaryButtons(){if(!canvas||!state.open)return;var rect=canvas.getBoundingClientRect(),pts=[project(0,0,0),project(state.cols,0,0),project(state.cols,state.rows,0),project(0,state.rows,0)];function pos(id,p,dx,dy){var b=document.getElementById(id);if(b){b.style.left=(p.x-rect.left+dx-18)+'px';b.style.top=(p.y-rect.top+dy-18)+'px';}}pos('map3dPlusLeft',pts[0],-12,0);pos('map3dPlusRight',pts[2],12,0);pos('map3dPlusTop',pts[1],0,-12);pos('map3dPlusBottom',pts[3],0,12);var up=document.getElementById('map3dPlusUp'),down=document.getElementById('map3dPlusDown'),a=project(state.cols/2,0,0),b=project(state.cols/2,state.rows,0);if(up){up.style.left=(a.x-rect.left-18)+'px';up.style.top=(a.y-rect.top-52)+'px';}if(down){down.style.left=(b.x-rect.left-18)+'px';down.style.top=(b.y-rect.top+16)+'px';}}
   function createBoundaryButtons(){boundaryButton('map3dPlusLeft','Увеличить длину слева',function(){expand('left');});boundaryButton('map3dPlusRight','Увеличить длину справа',function(){expand('right');});boundaryButton('map3dPlusTop','Увеличить ширину сверху',function(){expand('top');});boundaryButton('map3dPlusBottom','Увеличить ширину снизу',function(){expand('bottom');});boundaryButton('map3dPlusUp','Добавить уровень вверх',function(){expand('up');});boundaryButton('map3dPlusDown','Добавить подземный уровень',function(){expand('down');});}
   function renderTools(){
-    var box=document.getElementById('map3dTools');if(!box)return;
-    var header=document.getElementById('map3dEditorHeader'),levels=document.getElementById('map3dLevels');
-    if(header)header.style.display=state.playMode?'none':'flex';
-    if(levels)levels.style.display=state.playMode?'none':'flex';
-    if(state.playMode){box.style.display='none';return;}
-    box.style.display='flex';
-    box.style.flexDirection='column';
-    box.style.alignItems='stretch';
-    box.style.gap='5px';
-    box.style.padding='5px 7px calc(5px + env(safe-area-inset-bottom,0px))';
-    box.style.background='rgba(20,24,30,.96)';
-    box.style.borderTop='1px solid #3d4652';
-    box.style.maxHeight='none';
-    box.style.overflow='hidden';box.style.width='100%';box.style.maxWidth='100%';box.style.minWidth='0';box.style.boxSizing='border-box';
-    var mode=box.getAttribute('data-mode')||'build';
-    var row=document.createElement('div');
-    row.style.cssText='display:flex;width:100%;max-width:100%;min-width:0;box-sizing:border-box;gap:4px;align-items:stretch;justify-content:stretch;overflow:hidden;padding:0 2px;';
-    var tools=document.createElement('div');
-    tools.style.cssText='display:flex;width:100%;max-width:100%;min-width:0;box-sizing:border-box;gap:4px;align-items:center;justify-content:flex-start;flex-wrap:wrap;overflow:hidden;min-height:42px;padding:0 2px;';
-    var make=function(text,fn,active){
-      var b=document.createElement('button');b.type='button';b.textContent=text;
-      b.style.cssText='flex:1 1 0;min-width:0;max-width:100%;height:40px;padding:0 6px;border:1px solid '+(active?'#d4af37':'#59636f')+';border-radius:12px;background:'+(active?'#6d5319':'#202730')+';color:#fff;font-weight:700;font-size:12px;box-shadow:0 2px 8px #0007;touch-action:manipulation;white-space:nowrap;';
-      b.onclick=fn;return b;
-    };
-    var modes=[
-      ['🧱','build','Строить'],
-      ['🛋','furnish','Обставить'],
-      ['🎨','finish','Отделка'],
-      ['👁','view','Вид']
-    ];
-    modes.forEach(function(m){
-      row.appendChild(make(m[0]+' '+m[2],function(){box.setAttribute('data-mode',m[1]);renderTools();},mode===m[1]));
-    });
-    box.innerHTML='';box.appendChild(tools);box.insertBefore(row,tools);
-
-    var add=function(label,fn){tools.appendChild(make(label,fn,false));};
-    var selected=state.selected;
-    var dir=state.wallEditDir||'n';
-    var w=wallForSelected(dir);
-
-    if(mode==='build'){
-      add('🧱 Стена',function(){dndMap3DWall();});
-      add('🟫 Пол',function(){dndMap3DSurface();});
-      add('🛋 Мебель',function(){dndMap3DCube();});
-      add('📐 Высота',function(){dndMap3DMassHeight();});
-      if(selected){
-        add('⬆ Высота +',function(){dndMap3DUp();});
-        add('⬇ Высота −',function(){dndMap3DDown();});
-        add('🗑 Удалить',function(){dndMap3DRemove();});
-      }
-    }else if(mode==='furnish'){
-      add('🛋 Мебель',function(){dndMap3DCube();});
-      add('🧩 Пресет',function(){dndMap3DObjectPreset();});
-      add('⧉ Дублировать',function(){dndMap3DDuplicateSelection();});
-      add('📋 Копировать',function(){dndMap3DCopySelection();});
-      add('📌 Вставить',function(){dndMap3DPasteSelection();});
-      if(selected)add('🗑 Удалить',function(){dndMap3DRemove();});
-    }else if(mode==='finish'){
-      add('🧱 Стена',function(){dndMap3DWallPreset();});
-      add('🖼 Текстура',function(){dndMap3DTexture('wall');});
-      add('🟫 Пол',function(){dndMap3DSurfacePreset();});
-      add('⚙ Свойства пола',function(){dndMap3DSurfaceEdit();});
-      add('🪑 Мебель',function(){dndMap3DTexture('object');});
-    }else{
-      add('🛠 Редактор',function(){dndMap3DSetCameraMode('editor');});
-      add('👁 1-е лицо',function(){dndMap3DSetCameraMode('firstPerson');});
-      add('🎥 3-е лицо',function(){dndMap3DSetCameraMode('thirdPerson');});
-      add('↶',function(){dndMap3DRotatePlayer(-.2,0);});
-      add('↷',function(){dndMap3DRotatePlayer(.2,0);});
-    }
-
-    var mapBtn=make('⚙ Карта',function(){
-      var old=box.querySelector('.r3dMapMenu');
-      if(old){old.remove();return;}
-      var menu=document.createElement('div');menu.className='r3dMapMenu';
-      menu.style.cssText='display:flex;gap:5px;align-items:center;justify-content:center;overflow-x:auto;padding:4px 0 0;';
-      var items=[
-        ['🗺 Новая',function(){dndMap3DNew();}],
-        ['📝 Имя',function(){dndMap3DInfo();}],
-        ['💾 Сохранить',function(){dndMap3DSave();}],
-        ['📂 Загрузить',function(){dndMap3DLoad();}],
-        ['⬇ JSON',function(){dndMap3DExport();}],
-        ['⬆ JSON',function(){dndMap3DImport();}]
-      ];
-      items.forEach(function(x){var b=make(x[0],function(){menu.remove();x[1]();},false);menu.appendChild(b);});
-      box.appendChild(menu);
-    },false);
-    row.appendChild(mapBtn);
+    // Панель старого редактора полностью удалена. UI будет собран заново.
+    return;
   }
   var initialized=false;
   function open(){
@@ -612,7 +526,7 @@
     if(initialized)return;
     initialized=true;
     var modal=document.createElement('div');modal.id='map3dEditorModal';modal.style.cssText='display:none;position:fixed!important;left:0!important;top:0!important;right:0!important;bottom:0!important;width:100vw!important;height:100dvh!important;z-index:31000;background:#090a0c;color:#fff;padding:0!important;margin:0!important;box-sizing:border-box;transform:none!important;zoom:1!important;';
-    modal.innerHTML='<div id="map3dEditorShell" style="width:100%;height:100%;display:flex;flex-direction:column;background:#11151a;border:0;border-radius:0;overflow:hidden;box-sizing:border-box"><div id="map3dEditorHeader" style="display:flex;align-items:center;gap:6px;padding:7px 9px;border-bottom:1px solid #333;flex-wrap:nowrap"><strong style="color:#d4af37;white-space:nowrap">🏗️ 3D</strong><span style="color:#888;font-size:.72em">V70.37.06</span><button class="btn-action" onclick="dndMap3DNew()" title="Новая карта" style="padding:7px 9px">🗺️</button><button class="btn-action" onclick="dndMap3DInfo()" title="Имя и описание" style="padding:7px 9px">📝</button><span style="flex:1"></span><button class="btn-action" onclick="dndMap3DClose()" style="background:#8f2424;padding:7px 10px">✕</button></div><div id="map3dCanvasWrap" style="position:relative;flex:1 1 auto;min-height:0;width:100%;overflow:hidden;background:#11161a;touch-action:none"><canvas id="map3dCanvas" style="width:100%;height:100%;display:block;min-width:0;min-height:0;touch-action:none"></canvas><div id="map3dLevels" style="position:absolute;left:10px;bottom:10px;z-index:21;display:flex;gap:4px;flex-wrap:wrap;max-width:75%"></div></div><div id="map3dTools" data-mode="build" style="display:flex;flex-direction:column;gap:5px;padding:5px 7px;background:#14181e;border-top:1px solid #333;max-height:none;overflow:visible"></div></div>';
+    modal.innerHTML='<div id="map3dEditorShell" style="width:100%;height:100%;display:flex;flex-direction:column;background:#11151a;border:0;border-radius:0;overflow:hidden;box-sizing:border-box"><div id="map3dEditorHeader" style="display:flex;align-items:center;gap:6px;padding:7px 9px;border-bottom:1px solid #333;flex-wrap:nowrap"><strong style="color:#d4af37;white-space:nowrap">🏗️ 3D</strong><span style="color:#888;font-size:.72em">V70.37.15</span><button class="btn-action" onclick="dndMap3DNew()" title="Новая карта" style="padding:7px 9px">🗺️</button><button class="btn-action" onclick="dndMap3DInfo()" title="Имя и описание" style="padding:7px 9px">📝</button><span style="flex:1"></span><button class="btn-action" onclick="dndMap3DClose()" style="background:#8f2424;padding:7px 10px">✕</button></div><div id="map3dCanvasWrap" style="position:relative;flex:1 1 auto;min-height:0;width:100%;overflow:hidden;background:#11161a;touch-action:none"><canvas id="map3dCanvas" style="width:100%;height:100%;display:block;min-width:0;min-height:0;touch-action:none"></canvas><div id="map3dLevels" style="position:absolute;left:10px;bottom:10px;z-index:21;display:flex;gap:4px;flex-wrap:wrap;max-width:75%"></div></div></div>';
     document.body.appendChild(modal);
     canvas=document.getElementById('map3dCanvas');
     canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);
