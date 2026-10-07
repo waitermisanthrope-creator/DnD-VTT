@@ -13,7 +13,7 @@
 (function(global){
 'use strict';
 var THREE=null,GLTFLoader=null,renderer=null,scene=null,camera=null,root=null,gizmo=null,gizmoAxis=null,gizmoDragging=false,gizmoStartX=0,gizmoStartY=0,gizmoStartPos=null,gizmoStartRot=0,gizmoStartScale=null,raf=0,map=null,selected=null,mode='orbit',editorMode='build',transformMode='translate',raycaster=null,mouse=null,assetDB=null,assetCache={},controls={yaw:.8,pitch:.8,distance:24,target:{x:0,y:0,z:0}},touches={},touchGesture=null,snapGrid=true,snapSize=0.25;
-var VERSION='V70.37.04';
+var VERSION='V70.37.05';
 var cutawayWalls=true,cutawayTick=0;
 var undoStack=[],redoStack=[],historyBusy=false;
 var openingDrag=null,roomPreview=null,wallDrag=null,selectedItems=[],buildGeneration=0,lastScenePoint=null,pendingLibraryAsset=null,paintMode=false,painting=false,paintHistoryStarted=false,paintMaterial='stone',paintSide='front',paintedDuringStroke={};
@@ -81,13 +81,28 @@ function showRoomPreview(a,b){
 }
 function hideRoomPreview(){if(roomPreview){roomPreview.visible=false;while(roomPreview.children.length)roomPreview.remove(roomPreview.children[0]);}}
 function ensureRoomWall(level,s){
- var k=wallKey(level,s[0],s[1]),old=map.walls[k];
+ var k=wallKey(level,s[0],s[1]),old=map.walls[k],sx=Number(s[0])||0,sy=Number(s[1])||0,sl=Math.max(.25,Number(s[3])||.25),dir=s[2];
  if(!old){
-   map.walls[k]={level:level,x:s[0],y:s[1],dir:s[2],length:s[3],height:2.5,thickness:.09,color:'#777777',material:'stone',front:{texture:'none',color:'#777777'},back:{texture:'none',color:'#777777'},__roomAuto:true};
+   var keys=Object.keys(map.walls||{}),merged=null;
+   for(var i=0;i<keys.length;i++){
+     var q=map.walls[keys[i]];
+     if(!q||!q.__roomAuto||q.opening||q.dir!==dir||Number(q.level||0)!==level)continue;
+     var qx=Number(q.x)||0,qy=Number(q.y)||0,ql=Math.max(.25,Number(q.length)||.25);
+     if(dir==='n'&&qy===sy&&sx<=qx+ql&&sx+sl>=qx){merged={key:keys[i],w:q,start:Math.min(sx,qx),end:Math.max(sx+sl,qx+ql)};break;}
+     if(dir==='e'&&qx===sx&&sy<=qy+ql&&sy+sl>=qy){merged={key:keys[i],w:q,start:Math.min(sy,qy),end:Math.max(sy+sl,qy+ql)};break;}
+   }
+   if(merged){
+     delete map.walls[merged.key];
+     var nx=dir==='n'?merged.start:sx,ny=dir==='e'?merged.start:sy;
+     if(dir==='n'){nx=merged.start;ny=sy;}else{nx=sx;ny=merged.start;}
+     map.walls[wallKey(level,nx,ny)]={level:level,x:nx,y:ny,dir:dir,length:merged.end-merged.start,height:Number(merged.w.height)||2.5,thickness:Number(merged.w.thickness)||.09,color:merged.w.color||'#777777',material:merged.w.material||'stone',front:merged.w.front||{texture:'none',color:'#777777'},back:merged.w.back||{texture:'none',color:'#777777'},__roomAuto:true};
+     return;
+   }
+   map.walls[k]={level:level,x:sx,y:sy,dir:dir,length:sl,height:2.5,thickness:.09,color:'#777777',material:'stone',front:{texture:'none',color:'#777777'},back:{texture:'none',color:'#777777'},__roomAuto:true};
    return;
  }
- if(old.__roomAuto&&old.dir===s[2]){
-   old.length=Math.max(Number(old.length)||0,Number(s[3])||0);
+ if(old.__roomAuto&&old.dir===dir&&!old.opening){
+   old.length=Math.max(Number(old.length)||0,sl);
  }
 }
 function createRoomFromPoints(a,b){
