@@ -224,7 +224,7 @@ var pendingLevelUpData = window.pendingLevelUpData || null;
     `;
     const div = document.createElement('div');
     div.innerHTML = modalHTML;
-    document.body.appendChild(div);
+    if (document.body) { document.body.appendChild(div); } else { document.addEventListener('DOMContentLoaded', function(){ if (!document.getElementById('dndModal')) document.body.appendChild(div); }, { once: true }); }
   }
 
   document.addEventListener('DOMContentLoaded', function() {
