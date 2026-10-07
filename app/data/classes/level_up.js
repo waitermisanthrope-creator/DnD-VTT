@@ -42,7 +42,7 @@
  * ------------------------------------------------------------------
  */
 
-let pendingLevelUpData = null;
+var pendingLevelUpData = window.pendingLevelUpData || null;
 
 // 1. Создаем и внедряем HTML-разметку модального окна выбора классов (с иконками) в документ при загрузке
 (function() {
