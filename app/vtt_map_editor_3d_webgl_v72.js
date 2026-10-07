@@ -1,4 +1,5 @@
-/* V70.36.75 — true WebGL 3D map editor
+/* V70.36.77 — Sims-like UX + texture asset library
+ * V70.36.75 — true WebGL 3D map editor
  * Three.js renderer + GLB/GLTF loading. Reads the existing V15 map format from localStorage.
  * The legacy canvas editor remains available as fallback.
  */
