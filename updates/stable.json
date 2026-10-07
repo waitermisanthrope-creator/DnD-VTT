@@ -1330,7 +1330,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 18532,
-      "sha256": "e11103cc1d3f30814ab4ce88acc920f065664a1eac939f2cb8b62139d78c8950"
+      "sha256": "144ef9cc3a5128c641421ec186d893c1ec5120512d0872b9668411ad6eb58642"
     },
     {
       "path": "app/update_scene_v2.js",
@@ -1479,8 +1479,8 @@
     },
     {
       "path": "app/vtt_map_editor_3d_webgl_v72.js",
-      "bytes": 91062,
-      "sha256": "7555b545a4c2bed5d2197aa06c136dc2cf4135b57a1dfbed0b0404b5c2ea01b2"
+      "bytes": 91053,
+      "sha256": "466cfaa162604a37ad1af854667b2c7f67b35affa92ad7e427be5b6e1b63d082"
     },
     {
       "path": "app/vtt_mobile_battle_v61.js",
@@ -1551,31 +1551,6 @@
       "path": "app/world_resource_gathering_v53.js",
       "bytes": 17353,
       "sha256": "b37c2cf9766b42720116c9d724b7d434321cdcac0a4e16b2e44586aa95d63224"
-    },
-    {
-      "path": "1790622252250.png",
-      "bytes": 908119,
-      "sha256": "1157a229c1ddc35a06db0aff82b7b4b31262b36edfb7cf5994c03d6147bd99b2"
-    },
-    {
-      "path": "1790622696215.png",
-      "bytes": 1202179,
-      "sha256": "99987d82b27f29f4d1e71c91847fb54dbf0d546816297260d26668ed77c74cd7"
-    },
-    {
-      "path": "1790622844831.png",
-      "bytes": 104000,
-      "sha256": "60c9ccfc77616b10a60b454ee077d79737a6a2ff1c8ed26649d35f2ebee37fa5"
-    },
-    {
-      "path": "1790718758545.png",
-      "bytes": 1889164,
-      "sha256": "0a3eab3f11aebea532709de2a29279b3a60b28bc0785bd84bceacde56167700d"
-    },
-    {
-      "path": "1790788500741.png",
-      "bytes": 1468216,
-      "sha256": "c0aebfe39dc4af2cf95cfd5892f92b20588d13229ed3d0bae7aef7ee94dd2020"
     },
     {
       "path": "ash_v2_sprite.png",
