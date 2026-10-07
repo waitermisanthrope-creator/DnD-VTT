@@ -1479,8 +1479,8 @@
     },
     {
       "path": "app/vtt_map_editor_3d_webgl_v72.js",
-      "bytes": 80947,
-      "sha256": "c713190d73f9af1906845d955804e8f0e1d6c6e60de53def4a5faeff6613f607"
+      "bytes": 87876,
+      "sha256": "03f10354d44c6ab0da0304afcbc3f90295a96051e72786eac1a5f96d9d5bb16e"
     },
     {
       "path": "app/vtt_mobile_battle_v61.js",
@@ -1758,6 +1758,96 @@
       "sha256": "f3c4d9e0b5acb795fdbc885707f86cd1411b23a0c40426205f70ed9960631337"
     },
     {
+      "path": "wallpapers/floor_ceramic_tile_dark.png",
+      "bytes": 83469,
+      "sha256": "f33bfb74314903e2f5fa4620c43dabb2c218fe21fe2c4075b2fbe9667d53cf0c"
+    },
+    {
+      "path": "wallpapers/floor_ceramic_tile_light.png",
+      "bytes": 94086,
+      "sha256": "f69cfa0718af07766bce044c7308c0eb6fa63e92402ddaf39f0caa51b2e0ce82"
+    },
+    {
+      "path": "wallpapers/floor_checker_tile.png",
+      "bytes": 84123,
+      "sha256": "077b2256e26265d466f6b5dc91796f4a73083b566dc0b5b0655371d6011e6629"
+    },
+    {
+      "path": "wallpapers/floor_cobblestone.png",
+      "bytes": 128808,
+      "sha256": "8381729afd257e4d5649c859edcc8ca8c1795985cd9ec02a3e3c707e0b6c8ffa"
+    },
+    {
+      "path": "wallpapers/floor_earth.png",
+      "bytes": 110714,
+      "sha256": "5383b24754b106edf6039d792e9d9629f3c3552d6cf8f19eff41b4e2aa580354"
+    },
+    {
+      "path": "wallpapers/floor_grass.png",
+      "bytes": 124328,
+      "sha256": "b55fd716ff1fd757a10ab024c01d6d63d276919063cd2df2f9d2960289a7b6a7"
+    },
+    {
+      "path": "wallpapers/floor_hex_tile.png",
+      "bytes": 122290,
+      "sha256": "26f2441f307344662f37af7d4fb014d17d836846d34e22da9a0363b38a5aaafc"
+    },
+    {
+      "path": "wallpapers/floor_marble_dark.png",
+      "bytes": 111428,
+      "sha256": "b6906ea0302e35383e2d19eb30f0f884bd4bb24dcc8badb8a789d3572d3182ce"
+    },
+    {
+      "path": "wallpapers/floor_marble_light.png",
+      "bytes": 88698,
+      "sha256": "f7b468f8a3f5f83cb507a0388a387eadb429f92933a5e2e30cbce30395c2bdc4"
+    },
+    {
+      "path": "wallpapers/floor_parquet_herringbone.png",
+      "bytes": 126070,
+      "sha256": "e36a8a572bdf208eb95fb3e0a93dfa6a72726511d9f2108918337d5cd1d4c887"
+    },
+    {
+      "path": "wallpapers/floor_rug_blue.png",
+      "bytes": 118109,
+      "sha256": "2350c76c19848346127ac65040ec6944ffb3442137fed85c0d5f9c34e9093e68"
+    },
+    {
+      "path": "wallpapers/floor_rug_green.png",
+      "bytes": 113771,
+      "sha256": "d7e6f9f5ab130ddd79b0966319e117a251775e36a983a0fc7a314b9212811824"
+    },
+    {
+      "path": "wallpapers/floor_rug_red.png",
+      "bytes": 117912,
+      "sha256": "94588e8f575a9d18aa5dd35f20ce4cf3e8302548320cd3197a7d7a8485c75ee3"
+    },
+    {
+      "path": "wallpapers/floor_stone_tile_dark.png",
+      "bytes": 91828,
+      "sha256": "42dcbf382e423d8006fc3140069878a834d80cce03b9961896aac2a5c9d32e96"
+    },
+    {
+      "path": "wallpapers/floor_stone_tile_light.png",
+      "bytes": 101714,
+      "sha256": "44f90014d5d14906fed9bfe156af72aa07bc88c439b7e69cf9e742cf8acedbd8"
+    },
+    {
+      "path": "wallpapers/floor_tatami.png",
+      "bytes": 91917,
+      "sha256": "2f3f375bc5edf041a4f9df0f39c094c538c10d6ac3d947d03c5d843b227bad60"
+    },
+    {
+      "path": "wallpapers/floor_wood_dark.png",
+      "bytes": 76168,
+      "sha256": "1b02da6ad880d2ac6a6558a93abdaedb5f61d26e57f63d76d55e283f935ed6bb"
+    },
+    {
+      "path": "wallpapers/floor_wood_light.png",
+      "bytes": 83659,
+      "sha256": "01f1d82f2dfc409433580d5d595492259ae288f9c0f10594fee51e846caffc16"
+    },
+    {
       "path": "wallpapers/heat_glow_v2_sprite.png",
       "bytes": 836371,
       "sha256": "98922a27429de20b26099eef5653388354ace703cde5632e7ebabc5b5fefd3a9"
@@ -1791,6 +1881,96 @@
       "path": "wallpapers/vignette_v2_sprite.png",
       "bytes": 1213593,
       "sha256": "aa5ecba99b6ac6946f3a49fe220580ead374f86a557f53fa5d7eff63a40859bf"
+    },
+    {
+      "path": "wallpapers/wall_brick_red.png",
+      "bytes": 111128,
+      "sha256": "b27a7edf7fa02583a0f16f04f75eebf8eb2a94d3f8b6454422c75d2923397706"
+    },
+    {
+      "path": "wallpapers/wall_concrete.png",
+      "bytes": 91074,
+      "sha256": "de0b8be04e6178da9beea8458acde166e169a1955a06f066f9e6a93220420b80"
+    },
+    {
+      "path": "wallpapers/wall_half_timber.png",
+      "bytes": 109537,
+      "sha256": "7842a656fb37334d4a6c072afb9212f747d9f3ae038448a23667034e9167ebfe"
+    },
+    {
+      "path": "wallpapers/wall_marble_dark.png",
+      "bytes": 123621,
+      "sha256": "17fba8143f63e8bf6114420df6414ad05cd1663401ed7309a3469649fcc394f8"
+    },
+    {
+      "path": "wallpapers/wall_marble_light.png",
+      "bytes": 90457,
+      "sha256": "7accf1a831f34cec725b8168ad539aa5ea23e36d94eb1d19c2616cb3d36bd7e7"
+    },
+    {
+      "path": "wallpapers/wall_moss_stone.png",
+      "bytes": 128985,
+      "sha256": "165dcdbb6b744d124cb77befe568af85a5d3e69ec6d683678fa0b5e7a992b579"
+    },
+    {
+      "path": "wallpapers/wall_old_plaster.png",
+      "bytes": 107725,
+      "sha256": "921b6c10d5bc86161b573546e5d6705931bfc2aff707b1382ebde1e371063690"
+    },
+    {
+      "path": "wallpapers/wall_plaster_dark.png",
+      "bytes": 95153,
+      "sha256": "e33ebf57eb51980e7a4b511f216614ff4bb95c42ad319ca97be0a5fd2eec8567"
+    },
+    {
+      "path": "wallpapers/wall_plaster_light.png",
+      "bytes": 91767,
+      "sha256": "8ed7d38fd14ecb170530bfb6fd047064605a47a99116abe23313865c50db908a"
+    },
+    {
+      "path": "wallpapers/wall_plaster_panel.png",
+      "bytes": 89722,
+      "sha256": "396b31b6f3ce344612ec19dbdbc28f61ec212d4dda6fcf4392215c7d64f774a3"
+    },
+    {
+      "path": "wallpapers/wall_slate.png",
+      "bytes": 103822,
+      "sha256": "294be97ea615d61a77886389182a5d79638c5f23fb0e1d9ee0b8ffb8a4318e02"
+    },
+    {
+      "path": "wallpapers/wall_stone_dark.png",
+      "bytes": 120617,
+      "sha256": "44605c517008b9699ae9aaca13820cc7f946d6dc0c30357ba3ac7c36af0f940d"
+    },
+    {
+      "path": "wallpapers/wall_stone_light.png",
+      "bytes": 127689,
+      "sha256": "53e389cf5474c2345a2e724a42bd5f46ff66a0ac6ebd96b0761e95808537b47f"
+    },
+    {
+      "path": "wallpapers/wall_stone_masonry.png",
+      "bytes": 129908,
+      "sha256": "d2ac2cbb339003eb38628f63e9c947da74494ddcda95a6078e1e56c23d473894"
+    },
+    {
+      "path": "wallpapers/wall_wallpaper.png",
+      "bytes": 106442,
+      "sha256": "03bcd88415d29d71edcc15934399bf25eaa5f1d26d71b94956b74313c14ea2e9"
+    },
+    {
+      "path": "wallpapers/wall_white_plaster.png",
+      "bytes": 120869,
+      "sha256": "35ddea32266b39b8f016e545059819a920f8a449f3125a13074ea3e84a440364"
+    },
+    {
+      "path": "wallpapers/wall_wood_dark.png",
+      "bytes": 81144,
+      "sha256": "02dd332d198a6f829b0fd1b3dffa5fb12363fdc70918caea73f3a5ac5a12eb7f"
+    },
+    {
+      "path": "wallpapers/wall_wood_light.png",
+      "bytes": 93079,
+      "sha256": "f6529f1062f39a7d3a4f1376084fe0d81fa824f6085527959e573809593b6a53"
     },
     {
       "path": "wallpapers/31.svg",
