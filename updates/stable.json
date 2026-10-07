@@ -1348,6 +1348,16 @@
       "sha256": "004e207049f38d8684fba3d4b08933b62f63038e1db23f23a0e159fa9a1eccc8"
     },
     {
+      "path": "app/vendor/GLTFLoader.legacy.js",
+      "bytes": 114750,
+      "sha256": "e40c1b38481bda20e80837e0d1a56e3bef71a627a44497531abfeeaea6f63bde"
+    },
+    {
+      "path": "app/vendor/three.legacy.js",
+      "bytes": 666210,
+      "sha256": "6ad0516fcd7c5a5086c4797005204854664776b6fff8ba07fd5795698950e5f8"
+    },
+    {
       "path": "app/vendor/three.module.min.js",
       "bytes": 338908,
       "sha256": "e2b5ee6bccd38fd6d8a2428546b83c5f2426d84b152ef82be8055556e3b40eb6"
