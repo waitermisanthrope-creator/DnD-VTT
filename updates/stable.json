@@ -100,7 +100,7 @@
     {
       "path": "app/app.js",
       "bytes": 36459,
-      "sha256": "c6e90a03150db6f59c81d94c9a3d839c337a2d7d55539861eb6de996a44eae39"
+      "sha256": "ad642b9625d726254a675fac95bbaacb9f27d2a989eade543e2ed7e9d100478a"
     },
     {
       "path": "app/armors.js",
@@ -1330,7 +1330,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 18212,
-      "sha256": "0cd677855989d6e439487e71e00e1d93e00f5b593192dd038afc01f3b337b655"
+      "sha256": "ed36a39a16ca16c0351b5a874adaa6bb3e75444acdbc21b21631c3e6b26086a0"
     },
     {
       "path": "app/update_scene_v2.js",
