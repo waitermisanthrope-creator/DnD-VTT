@@ -9,9 +9,8 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 83789,
-      "sha256": "d9daba334f0b9c21e77a4ec284573b4e6be2ff2e82a7ea5fd9ecf4b39fccec1b",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/index.html?ota=70.37.32-1"
+      "bytes": 83783,
+      "sha256": "6604baa5f463a1ae873ae328506a3da51e8ef7b78f0ab3cf4e0046eadf18aab4"
     },
     {
       "path": "app/Ambiences.js",
@@ -880,8 +879,8 @@
     },
     {
       "path": "app/data/classes/level_up.js",
-      "bytes": 59341,
-      "sha256": "b8d28ace58945031869877c7b7a7d9b47494e8c0efb2df2abc6f7fa009dbf647"
+      "bytes": 59525,
+      "sha256": "ce171938815f14f58606d686bf24c462e367a7ea2a0f67ba5af6f4fd8548562d"
     },
     {
       "path": "app/data/classes/martyr.png",
@@ -1485,8 +1484,8 @@
     },
     {
       "path": "app/vtt_map_editor_3d_webgl_v72.js",
-      "bytes": 194922,
-      "sha256": "741f46d850d0af721ad128cb4e12ca7d8769ae48701433ea934871dc9b211243"
+      "bytes": 194918,
+      "sha256": "fd0dfbb48441594a4b8b81b8df2d851316a8380ea80c939f9b29bfb004ec97fc"
     },
     {
       "path": "app/vtt_mobile_battle_v61.js",
