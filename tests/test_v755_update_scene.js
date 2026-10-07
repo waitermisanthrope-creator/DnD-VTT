@@ -21,7 +21,7 @@ assert(scene.includes('requestAnimationFrame(animateProgress)'),'transition line
   assert(fs.existsSync(path.join(root,'app','assets','ui',name)),'missing visual asset: '+name);
 });
 ['DND_UPDATE_SCENE_V2','finish','enableApply','setProgress'].forEach(function(token){assert(scene.includes(token),'scene API/visual contract missing: '+token);});
-['70.34.8','DND_UPDATE_SCENE_V2','runSceneTest','checkAndStage','applyStaged','autoCheckForUpdates'].forEach(function(token){assert(manager.includes(token),'manager v2 contract missing: '+token);});
+assert(/var APP_VERSION='70\\.\\d+\\.\\d+';/.test(manager),'manager v2 must expose a semantic V70.x.y APP_VERSION');\n['DND_UPDATE_SCENE_V2','runSceneTest','checkAndStage','applyStaged','autoCheckForUpdates'].forEach(function(token){assert(manager.includes(token),'manager v2 contract missing: '+token);});
 assert(manager.includes('dndNative'),'manager must use native bridge');
 assert(manager.includes('SHA-256'),'manager must verify hashes');
 assert(manager.includes('cache: \'no-store\''),'manifest/file requests must bypass stale cache');
@@ -33,7 +33,7 @@ assert(bridge.includes('hasPendingUpdate'),'native rollback health contract must
 assert(bridge.includes('rollbackPending'),'native rollback implementation must remain');
 console.log('PASS updater v2 cinematic scene contract');
 
-// V70.34.8 visual contract: fire, smoke and sparks follow the same progress boundary.
+// Visual contract: fire, smoke and sparks follow the same progress boundary.
 assert(scene.includes('fire-column'),'fire column must be present');
 assert(scene.includes('smoke'),'smoke must be present');
 assert(scene.includes('sparks'),'sparks must be present');
