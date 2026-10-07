@@ -1,11 +1,11 @@
-/* DND VTT — NEW updater v2.
+/* DND VTT — NEW updater v2. V70.37.19
  * The legacy updater is intentionally not loaded. This module owns the complete
  * update UX and talks only to the native storage/apply bridge.
  */
 (function (global) {
   'use strict';
 
-  var APP_VERSION='70.37.18';
+  var APP_VERSION='70.37.19';
   var DEFAULT_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
   var FALLBACK_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url_v2';
