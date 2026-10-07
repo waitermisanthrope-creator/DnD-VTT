@@ -13,7 +13,7 @@
 (function(global){
 'use strict';
 var THREE=null,GLTFLoader=null,renderer=null,scene=null,camera=null,root=null,gizmo=null,gizmoAxis=null,gizmoDragging=false,gizmoStartX=0,gizmoStartY=0,gizmoStartPos=null,gizmoStartRot=0,gizmoStartScale=null,raf=0,map=null,selected=null,mode='orbit',editorMode='build',transformMode='translate',raycaster=null,mouse=null,assetDB=null,assetCache={},controls={yaw:.8,pitch:.8,distance:24,target:{x:0,y:0,z:0}},touches={},touchGesture=null,snapGrid=true,snapSize=0.25;
-var VERSION='V70.37.03';
+var VERSION='V70.37.04';
 var cutawayWalls=true,cutawayTick=0;
 var undoStack=[],redoStack=[],historyBusy=false;
 var openingDrag=null,roomPreview=null,wallDrag=null,selectedItems=[],buildGeneration=0,lastScenePoint=null,pendingLibraryAsset=null,paintMode=false,painting=false,paintHistoryStarted=false,paintMaterial='stone',paintSide='front',paintedDuringStroke={};
@@ -80,6 +80,16 @@ function showRoomPreview(a,b){
  var mesh=new THREE.Mesh(new THREE.BoxGeometry(w,.035,h),m);mesh.position.set(q.x1+w/2,.03,q.y1+h/2);roomPreview.add(mesh);
 }
 function hideRoomPreview(){if(roomPreview){roomPreview.visible=false;while(roomPreview.children.length)roomPreview.remove(roomPreview.children[0]);}}
+function ensureRoomWall(level,s){
+ var k=wallKey(level,s[0],s[1]),old=map.walls[k];
+ if(!old){
+   map.walls[k]={level:level,x:s[0],y:s[1],dir:s[2],length:s[3],height:2.5,thickness:.09,color:'#777777',material:'stone',front:{texture:'none',color:'#777777'},back:{texture:'none',color:'#777777'},__roomAuto:true};
+   return;
+ }
+ if(old.__roomAuto&&old.dir===s[2]){
+   old.length=Math.max(Number(old.length)||0,Number(s[3])||0);
+ }
+}
 function createRoomFromPoints(a,b){
  if(!map)return;
  var level=Number(map.levels&&map.levels.current)||0;
@@ -93,7 +103,7 @@ function createRoomFromPoints(a,b){
   [x1,y1,'e',y2-y1],
   [x2-1,y1,'e',y2-y1]
  ];
- specs.forEach(function(s){var k=wallKey(level,s[0],s[1]);if(!map.walls[k])map.walls[k]={level:level,x:s[0],y:s[1],dir:s[2],length:s[3],height:2.5,thickness:.09,color:'#777777',material:'stone',front:{texture:'none',color:'#777777'},back:{texture:'none',color:'#777777'},__roomAuto:true};});
+ specs.forEach(function(s){ensureRoomWall(level,s);});
  saveMap();build();updateInfo();return true;
 }
 function deleteSelected(){
