@@ -13,7 +13,7 @@
 (function(global){
 'use strict';
 var THREE=null,GLTFLoader=null,renderer=null,scene=null,camera=null,root=null,gizmo=null,gizmoAxis=null,gizmoDragging=false,gizmoStartX=0,gizmoStartY=0,gizmoStartPos=null,gizmoStartRot=0,gizmoStartScale=null,raf=0,map=null,selected=null,mode='orbit',editorMode='build',transformMode='translate',raycaster=null,mouse=null,assetDB=null,assetCache={},controls={yaw:.8,pitch:.8,distance:24,target:{x:0,y:0,z:0}},touches={},touchGesture=null,snapGrid=true,snapSize=0.25;
-var VERSION='V70.37.05';
+var VERSION='V70.37.06';
 var cutawayWalls=true,cutawayTick=0;
 var undoStack=[],redoStack=[],historyBusy=false;
 var openingDrag=null,roomPreview=null,wallDrag=null,selectedItems=[],buildGeneration=0,lastScenePoint=null,pendingLibraryAsset=null,paintMode=false,painting=false,paintHistoryStarted=false,paintMaterial='stone',paintSide='front',paintedDuringStroke={};
@@ -145,23 +145,23 @@ function wallHandleHit(ev){
 }
 function inferRoomFromWall(w){
  if(!w||!map||!map.walls)return null;
- var level=Number(w.level)||0,x=Number(w.x)||0,y=Number(w.y)||0,len=Number(w.length)||0,dir=w.dir;
- var walls=map.walls,keys=Object.keys(walls);
+ var level=Number(w.level)||0,x=Number(w.x)||0,y=Number(w.y)||0,len=Number(w.length)||0,dir=w.dir,walls=map.walls,keys=Object.keys(walls);
+ function overlap(a1,a2,b1,b2){return Math.min(a2,b2)>Math.max(a1,b1)+.01;}
  if(dir==='n'){
-   var opp=keys.find(function(k){var q=walls[k];return Number(q.level||0)===level&&q.dir==='n'&&Number(q.length||0)===len&&Number(q.x||0)===x&&Number(q.y||0)!==y;});
-   if(!opp)return null;
-   var b=walls[opp],y1=Math.min(y,Number(b.y)||0),y2=Math.max(y,Number(b.y)||0);
-   var left=walls[wallKey(level,x,y1)],right=walls[wallKey(level,x+len-1,y1)];
-   if(!left||!right||left.dir!=='e'||right.dir!=='e')return null;
-   return {level:level,x1:x,x2:x+len,y1:y1,y2:y2,top:w,bottom:b,left:left,right:right,axis:'x'};
+   var candidates=keys.map(function(k){return walls[k];}).filter(function(q){return q&&q.__roomAuto&&q.dir==='n'&&Number(q.level||0)===level&&Number(q.x||0)!==x&&overlap(x,x+len,Number(q.x)||0,(Number(q.x)||0)+(Number(q.length)||0));});
+   for(var ci=0;ci<candidates.length;ci++){
+     var bb=candidates[ci],bx=Number(bb.x)||0,bl=Number(bb.length)||0,rx1=Math.max(x,bx),rx2=Math.min(x+len,bx+bl),y1=Math.min(y,Number(bb.y)||0),y2=Math.max(y,Number(bb.y)||0);
+     var left=walls[wallKey(level,rx1,y1)],right=walls[wallKey(level,rx2-1,y1)];
+     if(left&&right&&left.dir==='e'&&right.dir==='e')return {level:level,x1:rx1,x2:rx2,y1:y1,y2:y2,top:w,bottom:bb,left:left,right:right,axis:'x'};
+   }
  }
  if(dir==='e'){
-   var opp2=keys.find(function(k){var q=walls[k];return Number(q.level||0)===level&&q.dir==='e'&&Number(q.length||0)===len&&Number(q.y||0)===y&&Number(q.x||0)!==x;});
-   if(!opp2)return null;
-   var b2=walls[opp2],x1=Math.min(x,Number(b2.x)||0),x2=Math.max(x,Number(b2.x)||0);
-   var top=walls[wallKey(level,x1,y)],bottom=walls[wallKey(level,x1,y+len-1)];
-   if(!top||!bottom||top.dir!=='n'||bottom.dir!=='n')return null;
-   return {level:level,x1:x1,x2:x2+1,y1:y,y2:y+len,top:top,bottom:bottom,left:w,right:b2,axis:'y'};
+   var candidates2=keys.map(function(k){return walls[k];}).filter(function(q){return q&&q.__roomAuto&&q.dir==='e'&&Number(q.level||0)===level&&Number(q.y||0)!==y&&overlap(y,y+len,Number(q.y)||0,(Number(q.y)||0)+(Number(q.length)||0));});
+   for(var cj=0;cj<candidates2.length;cj++){
+     var bb2=candidates2[cj],by=Number(bb2.y)||0,bl2=Number(bb2.length)||0,ry1=Math.max(y,by),ry2=Math.min(y+len,by+bl2),x1=Math.min(x,Number(bb2.x)||0),x2=Math.max(x,Number(bb2.x)||0);
+     var top=walls[wallKey(level,x1,ry1)],bottom=walls[wallKey(level,x1,ry2-1)];
+     if(top&&bottom&&top.dir==='n'&&bottom.dir==='n')return {level:level,x1:x1,x2:x2+1,y1:ry1,y2:ry2,top:top,bottom:bb2,left:w,right:bb2,axis:'y'};
+   }
  }
  return null;
 }
