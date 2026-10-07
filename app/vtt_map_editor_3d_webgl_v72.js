@@ -13,7 +13,7 @@
 (function(global){
 'use strict';
 var THREE=null,GLTFLoader=null,renderer=null,scene=null,camera=null,root=null,gizmo=null,gizmoAxis=null,gizmoDragging=false,gizmoStartX=0,gizmoStartY=0,gizmoStartPos=null,gizmoStartRot=0,gizmoStartScale=null,raf=0,map=null,selected=null,mode='orbit',editorMode='build',transformMode='translate',raycaster=null,mouse=null,assetDB=null,assetCache={},controls={yaw:.8,pitch:.8,distance:24,target:{x:0,y:0,z:0}},touches={},touchGesture=null,snapGrid=true,snapSize=0.25;
-var VERSION='V70.37.01';
+var VERSION='V70.37.02';
 var cutawayWalls=true,cutawayTick=0;
 var undoStack=[],redoStack=[],historyBusy=false;
 var openingDrag=null,roomPreview=null,wallDrag=null,selectedItems=[],buildGeneration=0,lastScenePoint=null,pendingLibraryAsset=null,paintMode=false,painting=false,paintHistoryStarted=false,paintMaterial='stone',paintSide='front',paintedDuringStroke={};
@@ -86,7 +86,7 @@ function createRoomFromPoints(a,b){
  var q=roomBounds(a,b),x1=q.x1,y1=q.y1,x2=q.x2,y2=q.y2;
  if(x2-x1<1||y2-y1<1){hideRoomPreview();alert('Комната слишком маленькая. Потяните рамку хотя бы на 1 клетку.');return false;}
  pushHistory();map.walls=map.walls||{};map.surfaces=map.surfaces||{};
- for(var fy=y1;fy<y2;fy++)for(var fx=x1;fx<x2;fx++){var fk=wallKey(level,fx,fy);if(!map.surfaces[fk])map.surfaces[fk]={level:level,x:fx,y:fy,material:'stone',texture:'none',color:'#3d403a'};}
+ for(var fy=y1;fy<y2;fy++)for(var fx=x1;fx<x2;fx++){var fk=wallKey(level,fx,fy);if(!map.surfaces[fk])map.surfaces[fk]={level:level,x:fx,y:fy,material:'stone',texture:'none',color:'#3d403a',__roomAuto:true};}
  var specs=[
   [x1,y1,'n',x2-x1],
   [x1,y2,'n',x2-x1],
@@ -118,6 +118,52 @@ function wallHandleHit(ev){
  for(var i=0;i<hits.length;i++){var o=hits[i].object;if(o&&o.userData&&o.userData.wallHandle)return o;}
  return null;
 }
+function inferRoomFromWall(w){
+ if(!w||!map||!map.walls)return null;
+ var level=Number(w.level)||0,x=Number(w.x)||0,y=Number(w.y)||0,len=Number(w.length)||0,dir=w.dir;
+ var walls=map.walls,keys=Object.keys(walls);
+ if(dir==='n'){
+   var opp=keys.find(function(k){var q=walls[k];return Number(q.level||0)===level&&q.dir==='n'&&Number(q.length||0)===len&&Number(q.x||0)===x&&Number(q.y||0)!==y;});
+   if(!opp)return null;
+   var b=walls[opp],y1=Math.min(y,Number(b.y)||0),y2=Math.max(y,Number(b.y)||0);
+   var left=walls[wallKey(level,x,y1)],right=walls[wallKey(level,x+len-1,y1)];
+   if(!left||!right||left.dir!=='e'||right.dir!=='e')return null;
+   return {level:level,x1:x,x2:x+len,y1:y1,y2:y2,top:w,bottom:b,left:left,right:right,axis:'x'};
+ }
+ if(dir==='e'){
+   var opp2=keys.find(function(k){var q=walls[k];return Number(q.level||0)===level&&q.dir==='e'&&Number(q.length||0)===len&&Number(q.y||0)===y&&Number(q.x||0)!==x;});
+   if(!opp2)return null;
+   var b2=walls[opp2],x1=Math.min(x,Number(b2.x)||0),x2=Math.max(x,Number(b2.x)||0);
+   var top=walls[wallKey(level,x1,y)],bottom=walls[wallKey(level,x1,y+len-1)];
+   if(!top||!bottom||top.dir!=='n'||bottom.dir!=='n')return null;
+   return {level:level,x1:x1,x2:x2+1,y1:y,y2:y+len,top:top,bottom:bottom,left:w,right:b2,axis:'y'};
+ }
+ return null;
+}
+function resizeRoomBoundary(w,handle,delta){
+ var r=inferRoomFromWall(w);if(!r)return false;
+ var level=r.level;
+ if(r.axis==='x'){
+   var oldX1=r.x1,oldX2=r.x2;
+   if(handle==='start'){var nx=Math.max(0,oldX1+delta);if(nx>=oldX2-.25)return false;delta=nx-oldX1;r.x1=nx;}
+   else {var nx2=Math.min(Number(map.grid&&map.grid.cols)||20,oldX2+delta);if(nx2<=oldX1+.25)return false;delta=nx2-oldX2;r.x2=nx2;}
+   r.top.length=r.x2-r.x1;r.bottom.length=r.x2-r.x1;
+   if(handle==='start'){r.top.x=r.x1;r.bottom.x=r.x1;r.left.x=r.x1;r.left.y=r.y1;}
+   else {r.right.x=r.x2-1;r.right.y=r.y1;}
+ }else{
+   var oldY1=r.y1,oldY2=r.y2;
+   if(handle==='start'){var ny=Math.max(0,oldY1+delta);if(ny>=oldY2-.25)return false;delta=ny-oldY1;r.y1=ny;}
+   else {var ny2=Math.min(Number(map.grid&&map.grid.rows)||20,oldY2+delta);if(ny2<=oldY1+.25)return false;delta=ny2-oldY2;r.y2=ny2;}
+   r.left.length=r.y2-r.y1;r.right.length=r.y2-r.y1;
+   if(handle==='start'){r.top.y=r.y1;r.bottom.y=r.y2;r.left.y=r.y1;}
+   else {r.bottom.y=r.y2;r.right.y=r.y1;}
+ }
+ if(map.surfaces){
+   var minx=Math.floor(Math.min(oldX1,r.x1)),maxx=Math.ceil(Math.max(oldX2,r.x2)),miny=Math.floor(Math.min(oldY1,r.y1)),maxy=Math.ceil(Math.max(oldY2,r.y2));
+   for(var yy=miny;yy<maxy;yy++)for(var xx=minx;xx<maxx;xx++){var sk=wallKey(level,xx,yy);if(r.x1<=xx&&xx<r.x2&&r.y1<=yy&&yy<r.y2){if(!map.surfaces[sk])map.surfaces[sk]={level:level,x:xx,y:yy,material:'stone',texture:'none',color:'#3d403a'};}else if(map.surfaces[sk]&&map.surfaces[sk].__roomAuto)delete map.surfaces[sk];}
+ }
+ return true;
+}
 function beginWallHandleDrag(ev){
  var hit=wallHandleHit(ev);if(!hit)return false;
  var key=hit.userData.wallKey,w=map&&map.walls&&map.walls[key];if(!w)return false;
@@ -142,6 +188,8 @@ function updateWallDrag(ev){
    :(wallDrag.dir==='n'?gp.x-wallDrag.startX:gp.z-wallDrag.startY);
  var len=Math.max(.25,wallDrag.oldLength+delta);
  if(snapGrid)len=Math.max(.25,Math.round(len/snapSize)*snapSize);
+ var room=inferRoomFromWall(w);
+ if(room){var roomDelta=wallDrag.handle==='start'?(wallDrag.dir==='n'?gp.x-wallDrag.startX:gp.z-wallDrag.startY):(wallDrag.dir==='n'?gp.x-wallDrag.startX:gp.z-wallDrag.startY);if(snapGrid)roomDelta=Math.round(roomDelta/snapSize)*snapSize;if(resizeRoomBoundary(w,wallDrag.handle,roomDelta)){wallDrag.changed=true;build();updateInfo();return;}}
  if(Math.abs(len-(Number(w.length)||1))<.001)return;
  if(wallDrag.handle==='start'){
    if(wallDrag.dir==='n')w.x=wallDrag.startX+(wallDrag.oldLength-len);
