@@ -165,21 +165,87 @@ function openTextureTools(){
  colors.forEach(function(c){var b=document.createElement('button');b.style.cssText='width:34px;height:34px;border-radius:8px;border:2px solid #777;background:'+c;b.title=c;b.onclick=function(){if(!selectedWall())return alert('Выберите стену.');pushHistory();side(selectedWall(),'front').color=c;side(selectedWall(),'back').color=c;saveMap();build();};box.querySelector('#wallColors').appendChild(b);});
  modal.appendChild(box);
 }
-function openAssetLibrary(){openAssetDB().then(function(db){var tx=db.transaction('assets','readonly'),q=tx.objectStore('assets').getAll();q.onsuccess=function(){var items=q.result||[],box=document.createElement('div');box.style.cssText='position:absolute;right:10px;top:58px;width:min(360px,88vw);max-height:70vh;overflow:auto;background:#171c24;border:1px solid #555;border-radius:10px;padding:10px;z-index:5;box-shadow:0 8px 30px #000';box.innerHTML='<b>📚 Локальная библиотека</b><button id="libClose" style="float:right">✕</button><div style="clear:both;margin:8px 0;color:#aaa">Нажмите на ассет — он добавится на текущий этаж.</div>';items.forEach(function(rec){var b=document.createElement('button');b.draggable=true;b.ondragstart=function(ev){ev.dataTransfer.setData('text/plain',rec.id);};b.style.cssText='display:block;width:100%;text-align:left;margin:5px 0;padding:10px';b.textContent='🧩 '+(rec.meta&&rec.meta.name||rec.id);b.onclick=function(){placeLibraryAsset(rec.id,rec.meta&&rec.meta.name||'Asset');box.remove();};box.appendChild(b);});box.querySelector('#libClose').onclick=function(){box.remove();};modal.appendChild(box);};});}
+function openAssetLibrary(){
+ openAssetDB().then(function(db){var tx=db.transaction('assets','readonly'),q=tx.objectStore('assets').getAll();q.onsuccess=function(){
+  var items=q.result||[],box=document.createElement('div');
+  box.style.cssText='position:absolute;right:10px;top:58px;width:min(390px,92vw);max-height:76vh;overflow:auto;background:#171c24;border:1px solid #555;border-radius:14px;padding:12px;z-index:20;box-shadow:0 12px 40px #000';
+  box.innerHTML='<b>📚 Библиотека ассетов</b><button id="libClose" style="float:right">✕</button><div style="clear:both;color:#aaa;margin:8px 0">GLB — модели. PNG/JPG/WebP — текстуры. Нажмите модель, чтобы поставить её на карту, или текстуру, чтобы применить к выделению.</div><button id="libAddModel" style="width:49%;margin:4px 0">🧩 Добавить GLB</button><button id="libAddTex" style="width:49%;margin:4px 0">🖼️ Добавить текстуру</button>';
+  var grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px';
+  items.forEach(function(rec){
+    var b=document.createElement('button');b.draggable=true;b.style.cssText='display:flex;flex-direction:column;gap:5px;text-align:left;padding:7px;background:#222933;color:#fff;border:1px solid #394454;border-radius:9px;min-height:72px';
+    var title=document.createElement('span');title.textContent=(rec.meta&&rec.meta.kind==='texture'?'🖼️ ':'🧩 ')+(rec.meta&&rec.meta.name||rec.id);title.style.cssText='font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';
+    b.appendChild(title);
+    if(rec.meta&&rec.meta.kind==='texture'&&rec.buffer){try{var u=URL.createObjectURL(new Blob([rec.buffer],{type:rec.meta.type||'image/png'}));var im=document.createElement('img');im.src=u;im.style.cssText='width:100%;height:74px;object-fit:cover;border-radius:6px';b.insertBefore(im,title);setTimeout(function(){URL.revokeObjectURL(u);},60000);}catch(e){}}
+    b.ondragstart=function(ev){ev.dataTransfer.setData('text/plain',rec.id);};
+    b.onclick=function(){if(rec.meta&&rec.meta.kind==='texture'){var sidePick=selectedWall()?'front':'front';applyTextureAsset(rec.id,sidePick);box.remove();}else{placeLibraryAsset(rec.id,rec.meta&&rec.meta.name||'Asset');box.remove();}};
+    grid.appendChild(b);
+  });
+  box.appendChild(grid);box.querySelector('#libClose').onclick=function(){box.remove();};box.querySelector('#libAddModel').onclick=function(){box.remove();addModel();};box.querySelector('#libAddTex').onclick=function(){box.remove();addTexture('front');};modal.appendChild(box);
+ };});
+}
 function placeLibraryAsset(id,name){pushHistory();ensureMapCollections();var oid='obj_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,6);map.objects.push({id:oid,name:name,assetId:id,x:1,y:1,z:0,level:Number(map.levels&&map.levels.current)||0,scaleX:1,scaleY:1,scaleZ:1,rotation:0});saveMap();setEditorMode('objects');}
 function addModel(){
  ensureMapCollections();
  var input=document.createElement('input');input.type='file';input.accept='.glb,.gltf,model/gltf-binary,model/gltf+json';input.onchange=function(){var f=input.files&&input.files[0];if(!f)return;if(f.name.toLowerCase().endsWith('.gltf')){alert('Для мобильного редактора лучше использовать .GLB: он сохраняет модель и ресурсы в одном файле.');return;}var rd=new FileReader();rd.onload=function(){var id=newAssetId(),buf=rd.result,meta={name:f.name,type:f.type||'model/gltf-binary',size:f.size,createdAt:new Date().toISOString(),license:'user-imported',source:'local'};putAsset(id,{meta:meta,buffer:buf}).then(function(){map.assets.push({id:id,name:f.name,type:meta.type,size:f.size,createdAt:meta.createdAt,license:meta.license,source:meta.source});var oid='obj_'+Date.now().toString(36);map.objects.push({id:oid,name:f.name,assetId:id,x:1,y:1,z:0,level:Number(map.levels&&map.levels.current)||0,scaleX:1,scaleY:1,scaleZ:1,rotation:0});saveMap();build();updateInfo();alert('GLB сохранён в локальную библиотеку и привязан к карте как assetId: '+id);}).catch(function(e){alert('Не удалось сохранить 3D-ассет: '+e.message);});};rd.readAsArrayBuffer(f);};input.click();
 }
+function applyTextureAsset(id,which){
+ ensureMapCollections();
+ if(!selected){alert('Сначала выберите элемент.');return;}
+ var w=selectedWall();
+ var rec=map.assets.find(function(a){return String(a.id)===String(id);});
+ if(!rec)return;
+ pushHistory();
+ if(w&& (which==='front'||which==='back')){side(w,which).texture='asset:'+id;}
+ else if(w){w.texture='asset:'+id;}
+ else if(selected.userData&&selected.userData.mapObjectId){
+   var o=(map.objects||[]).find(function(x){return String(x.id)===String(selected.userData.mapObjectId);});
+   if(o)o.texture='asset:'+id;
+ }else if((selected.name||'').indexOf('surface:')===0){
+   var k=selected.name.slice(8),ss=map.surfaces&&map.surfaces[k];if(ss)ss.texture='asset:'+id;
+ }
+ saveMap();loadAssetTexture(id).then(function(){build();updateInfo();});
+}
+function loadAssetTexture(id){
+ return getAsset(id).then(function(rec){
+   if(!rec||!rec.buffer)return null;
+   if(assetCache[id]&&assetCache[id].url)return assetCache[id].url;
+   var blob=new Blob([rec.buffer],{type:(rec.meta&&rec.meta.type)||'image/png'});
+   var url=URL.createObjectURL(blob);
+   assetCache[id]=Object.assign({},rec,{url:url});
+   return url;
+ });
+}
+function addTexture(which){
+ ensureMapCollections();
+ var input=document.createElement('input');input.type='file';input.accept='image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp';
+ input.onchange=function(){
+   var file=input.files&&input.files[0];if(!file)return;
+   if(file.size>12*1024*1024){alert('Текстура слишком большая. Максимум 12 MB.');return;}
+   var rd=new FileReader();
+   rd.onload=function(){
+     var id=newAssetId(),buf=rd.result,meta={name:file.name,type:file.type||'image/png',size:file.size,createdAt:new Date().toISOString(),license:'user-imported',source:'local',kind:'texture'};
+     putAsset(id,{meta:meta,buffer:buf}).then(function(){
+       map.assets.push({id:id,name:file.name,type:meta.type,size:file.size,createdAt:meta.createdAt,license:meta.license,source:meta.source,kind:'texture'});
+       saveMap();
+       return loadAssetTexture(id);
+     }).then(function(){
+       if(which==='front'||which==='back')applyTextureAsset(id,which);else applyTextureAsset(id);
+     }).catch(function(e){alert('Не удалось сохранить текстуру: '+e.message);});
+   };
+   rd.readAsArrayBuffer(file);
+ };
+ input.click();
+}
+function textureSide(which){addTexture(which==='front'||which==='back'?which:'front');}
 function open(){
  if(document.getElementById('map3dRealModal'))return;
  map=loadMap();if(!map){alert('Сначала создайте или сохраните 3D-карту в редакторе.');return;}
  var modal=document.createElement('div');modal.id='map3dRealModal';modal.style.cssText='position:fixed;inset:0;z-index:32000;background:#080b10;color:#fff;display:flex;flex-direction:column;';
- modal.innerHTML='<div style="min-height:48px;display:flex;align-items:center;gap:6px;padding:6px 10px;box-sizing:border-box;background:#151a20;border-bottom:1px solid #444;overflow:auto;white-space:nowrap"><b>🏗️ 3D</b><span style="color:#888">'+VERSION+'</span><button data-r3d-mode="build">🏗️ Строительство</button><button data-r3d-mode="objects">🪑 Объекты</button><button data-r3d-mode="finish">🎨 Отделка</button><button data-r3d-mode="levels">🏢 Уровни</button><span id="map3dRealInfo" style="flex:1;color:#aaa;min-width:180px">Загрузка WebGL…</span><button id="r3dLevelDown">− Этаж</button><button id="r3dLevelUp">+ Этаж</button><button id="r3dLibrary">📚 Библиотека</button><button id="r3dMaterials">🎨 Материалы</button><button id="r3dFill">🪣 Заливка этажа</button><button id="r3dWallTools">🏗️ Стена</button><button id="r3dUndo">↶ Отмена</button><button id="r3dRedo">↷ Повтор</button><button id="r3dDup">⧉ Дубликат</button><button id="r3dFront">🎨 Внутри</button><button id="r3dBack">🎨 Снаружи</button><button id="r3dTextures">🖼️ Текстуры</button><button id="r3dModel">🧩 GLB</button><button id="r3dMove">↔ Перемещение</button><button id="r3dRotate">⟳ Вращение</button><button id="r3dScale">⤢ Масштаб</button><button id="r3dSnap">🧲 Сетка: ВКЛ</button><button id="r3dLeft">←</button><button id="r3dRight">→</button><button id="r3dForward">↑</button><button id="r3dBackMove">↓</button><button id="r3dRotL">↶</button><button id="r3dRotR">↷</button><button id="r3dScaleDown">−</button><button id="r3dScaleUp">＋</button><button id="r3dSave">💾 Сохранить</button><button id="r3dClose">✕</button></div><div id="map3dRealCanvas" style="position:relative;flex:1;min-height:0;overflow:hidden"></div>';
+ modal.innerHTML='<div style="min-height:50px;display:flex;align-items:center;gap:6px;padding:7px 9px;box-sizing:border-box;background:#151a20;border-bottom:1px solid #444;overflow:auto;white-space:nowrap"><b>🏗️ 3D Карты</b><span style="color:#888">'+VERSION+'</span><button data-r3d-mode="build">🏗️ Строить</button><button data-r3d-mode="objects">🪑 Объекты</button><button data-r3d-mode="finish">🎨 Отделка</button><button data-r3d-mode="levels">🏢 Этажи</button><button data-r3d-mode="objects">👁️ Просмотр</button><span id="map3dRealInfo" style="flex:1;color:#aaa;min-width:150px">Загрузка…</span><button id="r3dLibrary">📚</button><button id="r3dMaterials">🎨</button><button id="r3dMore">☰ Ещё</button><button id="r3dSave">💾</button><button id="r3dClose">✕</button></div><div id="r3dQuickHint" style="padding:6px 9px;background:#1b2028;color:#b8c1cc;font-size:12px;border-bottom:1px solid #333">Выберите режим — инструменты появятся ниже.</div><div id="r3dMorePanel" style="display:none;max-height:30vh;overflow:auto;padding:7px;background:#11161c;border-bottom:1px solid #333"><div style="display:flex;flex-wrap:wrap;gap:5px"><button id="r3dLevelDown">− Этаж</button><button id="r3dLevelUp">+ Этаж</button><button id="r3dFill">🪣 Заливка</button><button id="r3dWallTools">🏗️ Стена</button><button id="r3dUndo">↶ Отмена</button><button id="r3dRedo">↷ Повтор</button><button id="r3dDup">⧉ Дубликат</button><button id="r3dFront">🎨 Внутри</button><button id="r3dBack">🎨 Снаружи</button><button id="r3dFrontTex">🖼️ Текстура внутри</button><button id="r3dBackTex">🖼️ Текстура снаружи</button><button id="r3dTexture">🖼️ Текстура</button><button id="r3dModel">🧩 GLB</button><button id="r3dMove">↔ Перемещение</button><button id="r3dRotate">⟳ Вращение</button><button id="r3dScale">⤢ Масштаб</button><button id="r3dSnap">🧲 Сетка: ВКЛ</button><button id="r3dLeft">←</button><button id="r3dRight">→</button><button id="r3dForward">↑</button><button id="r3dBackMove">↓</button><button id="r3dRotL">↶</button><button id="r3dRotR">↷</button><button id="r3dScaleDown">−</button><button id="r3dScaleUp">＋</button></div></div><div id="map3dRealCanvas" style="position:relative;flex:1;min-height:0;overflow:hidden"></div>';
  document.body.appendChild(modal);
- modal.querySelectorAll('[data-r3d-mode]').forEach(function(b){b.onclick=function(){setEditorMode(b.getAttribute('data-r3d-mode'));};});modal.querySelector('#r3dLevelDown').onclick=function(){changeLevel(-1);};modal.querySelector('#r3dLevelUp').onclick=function(){changeLevel(1);};modal.querySelector('#r3dLibrary').onclick=function(){openAssetLibrary();};modal.querySelector('#r3dMaterials').onclick=openMaterialCatalog;modal.querySelector('#r3dFill').onclick=function(){var k=prompt('Материал: stone, wood, brick, plaster, metal, dark','stone');if(k&&MATERIAL_CATALOG[k])applySurfaceFill(k);};modal.querySelector('#r3dWallTools').onclick=openWallTools;modal.querySelector('#r3dUndo').onclick=undo;modal.querySelector('#r3dRedo').onclick=redo;modal.querySelector('#r3dDup').onclick=duplicateSelected;modal.querySelector('#r3dClose').onclick=function(){cancelAnimationFrame(raf);if(gizmo&&gizmo.parent)gizmo.parent.remove(gizmo);modal.remove();};
+ modal.querySelectorAll('[data-r3d-mode]').forEach(function(b){b.onclick=function(){setEditorMode(b.getAttribute('data-r3d-mode'));};});modal.querySelector('#r3dMore').onclick=function(){var p=modal.querySelector('#r3dMorePanel');p.style.display=p.style.display==='none'?'block':'none';};modal.querySelector('#r3dLevelDown').onclick=function(){changeLevel(-1);};modal.querySelector('#r3dLevelUp').onclick=function(){changeLevel(1);};modal.querySelector('#r3dLibrary').onclick=function(){openAssetLibrary();};modal.querySelector('#r3dMaterials').onclick=openMaterialCatalog;modal.querySelector('#r3dFill').onclick=function(){var k=prompt('Материал: stone, wood, brick, plaster, metal, dark','stone');if(k&&MATERIAL_CATALOG[k])applySurfaceFill(k);};modal.querySelector('#r3dWallTools').onclick=openWallTools;modal.querySelector('#r3dUndo').onclick=undo;modal.querySelector('#r3dRedo').onclick=redo;modal.querySelector('#r3dDup').onclick=duplicateSelected;modal.querySelector('#r3dClose').onclick=function(){cancelAnimationFrame(raf);if(gizmo&&gizmo.parent)gizmo.parent.remove(gizmo);modal.remove();};
  modal.querySelector('#r3dMove').onclick=function(){setGizmoMode('translate');};modal.querySelector('#r3dRotate').onclick=function(){setGizmoMode('rotate');};modal.querySelector('#r3dScale').onclick=function(){setGizmoMode('scale');};modal.querySelector('#r3dSnap').onclick=function(){snapGrid=!snapGrid;this.textContent='🧲 Сетка: '+(snapGrid?'ВКЛ':'ВЫКЛ');if(snapGrid){applySnap();syncSelectedTransform();updateGizmo();}};
- modal.querySelector('#r3dFront').onclick=function(){colorSide('front');};modal.querySelector('#r3dBack').onclick=function(){colorSide('back');};modal.querySelector('#r3dTextures').onclick=openTextureTools;modal.querySelector('#r3dModel').onclick=addModel;modal.querySelector('#r3dLeft').onclick=function(){nudgeSelected(-.25,0);};modal.querySelector('#r3dRight').onclick=function(){nudgeSelected(.25,0);};modal.querySelector('#r3dForward').onclick=function(){nudgeSelected(0,-.25);};modal.querySelector('#r3dBackMove').onclick=function(){nudgeSelected(0,.25);};modal.querySelector('#r3dRotL').onclick=function(){rotateSelected(-15);};modal.querySelector('#r3dRotR').onclick=function(){rotateSelected(15);};modal.querySelector('#r3dScaleDown').onclick=function(){scaleSelected(.9);};modal.querySelector('#r3dScaleUp').onclick=function(){scaleSelected(1.1);};modal.querySelector('#r3dSave').onclick=function(){saveMap();alert('Карта и assetRef сохранены.');};setEditorMode('objects');
+ modal.querySelector('#r3dFront').onclick=function(){colorSide('front');};modal.querySelector('#r3dBack').onclick=function(){colorSide('back');};modal.querySelector('#r3dTextures').onclick=openTextureTools;modal.querySelector('#r3dModel').onclick=addModel;modal.querySelector('#r3dTexture').onclick=function(){addTexture('front');};modal.querySelector('#r3dFrontTex').onclick=function(){textureSide('front');};modal.querySelector('#r3dBackTex').onclick=function(){textureSide('back');};modal.querySelector('#r3dLeft').onclick=function(){nudgeSelected(-.25,0);};modal.querySelector('#r3dRight').onclick=function(){nudgeSelected(.25,0);};modal.querySelector('#r3dForward').onclick=function(){nudgeSelected(0,-.25);};modal.querySelector('#r3dBackMove').onclick=function(){nudgeSelected(0,.25);};modal.querySelector('#r3dRotL').onclick=function(){rotateSelected(-15);};modal.querySelector('#r3dRotR').onclick=function(){rotateSelected(15);};modal.querySelector('#r3dScaleDown').onclick=function(){scaleSelected(.9);};modal.querySelector('#r3dScaleUp').onclick=function(){scaleSelected(1.1);};modal.querySelector('#r3dSave').onclick=function(){saveMap();alert('Карта и assetRef сохранены.');};setEditorMode('objects');
  (async function(){
   try{
    var T=await import('./vendor/three.module.min.js');
