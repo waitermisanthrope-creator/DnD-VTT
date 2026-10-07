@@ -1,6 +1,7 @@
 package com.dndvtt.app;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.net.Uri;
 import android.webkit.WebResourceRequest;
@@ -22,6 +23,31 @@ import androidx.webkit.WebMessageCompat;
 public class MainActivity extends Activity {
     private DndUpdateBridge updater;
     private WebView webView;
+
+    private final class OrientationJsBridge {
+        private int previousRequestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+        private boolean landscapeActive = false;
+
+        @JavascriptInterface
+        public void landscape() {
+            runOnUiThread(() -> {
+                if (!landscapeActive) {
+                    previousRequestedOrientation = getRequestedOrientation();
+                    landscapeActive = true;
+                }
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            });
+        }
+
+        @JavascriptInterface
+        public void restore() {
+            runOnUiThread(() -> {
+                int restore = previousRequestedOrientation;
+                landscapeActive = false;
+                setRequestedOrientation(restore);
+            });
+        }
+    }
 
     public class LauncherIconJsBridge {
         @JavascriptInterface
@@ -62,6 +88,9 @@ public class MainActivity extends Activity {
                 .build();
 
         webView.addJavascriptInterface(new LauncherIconJsBridge(), "DndLauncherIcon");
+        // Native orientation bridge: Android WebView often rejects screen.orientation.lock()
+        // even after fullscreen, so 1st/3rd person explicitly asks the Activity for landscape.
+        webView.addJavascriptInterface(new OrientationJsBridge(), "DndOrientation");
 
         webView.setWebViewClient(new WebViewClientCompat() {
             @Override
