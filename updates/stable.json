@@ -1329,7 +1329,7 @@
     },
     {
       "path": "app/update_manager_v2.js",
-      "bytes": 18232,
+      "bytes": 18212,
       "sha256": "6d68ab592275c43ea3a047a88fedd8c1c15a8774bb953259b7eecec7a018e19b"
     },
     {
@@ -1434,7 +1434,7 @@
     },
     {
       "path": "app/vtt_map_editor_3d_v71.js",
-      "bytes": 101496,
+      "bytes": 101440,
       "sha256": "2fb0863ecc437cf88745b43d8bfa5131f087cad5e735e062bc688e1ccea22114"
     },
     {
