@@ -10,7 +10,7 @@
     {
       "path": "index.html",
       "bytes": 83789,
-      "sha256": "3d32c1abe27b669ca509f1d31447547c7be80c6366d6ffa00b85af22146f1730"
+      "sha256": "f37273e19cc1239a3b6a86d80f692b12b8b4888bee53df1e75cff174b4fef157"
     },
     {
       "path": "app/Ambiences.js",
@@ -1474,8 +1474,8 @@
     },
     {
       "path": "app/vtt_map_editor_3d_ui_v1.js",
-      "bytes": 7815,
-      "sha256": "076ce4d1e24b809776760db8ee2d7fd4c9abe61e28a955973cf322fef06ed5bb"
+      "bytes": 7862,
+      "sha256": "dc2fb0f0b2d9df8703d6530fd74ff6788957bf9854466056d124bcd817215f54"
     },
     {
       "path": "app/vtt_map_editor_3d_v71.js",
