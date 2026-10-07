@@ -1330,7 +1330,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 18542,
-      "sha256": "ce85c2cdfd33112d61c6b67b0ca7d99a738a4ed468705ac77799b5fc7a07ead1"
+      "sha256": "1532763076e17d80e35ca7ee6119d71b1eaab423bc00e48bc214cc23bb52492a"
     },
     {
       "path": "app/update_scene_v2.js",
