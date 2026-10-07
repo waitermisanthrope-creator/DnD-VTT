@@ -257,3 +257,5 @@ function open(){
 global.dndMap3DOpenReal=open;
 global.dndMap3DOpen=open;
 })(window);
+
+// V70.36.80 OTA delivery marker
