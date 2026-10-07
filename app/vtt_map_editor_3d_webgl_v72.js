@@ -246,12 +246,12 @@ function open(){
      document.head.appendChild(s);
     });
    }
-   await loadClassic('./vendor/three.core.legacy.js');
+   await loadClassic('./app/vendor/three.core.legacy.js');
    if(!global.THREECore) throw new Error('Three.js core legacy bridge not loaded');
-   await loadClassic('./vendor/three.legacy.js');
-   await loadClassic('./vendor/BufferGeometryUtils.legacy.js');
+   await loadClassic('./app/vendor/three.legacy.js');
+   await loadClassic('./app/vendor/BufferGeometryUtils.legacy.js');
    if(!global.DND_BufferGeometryUtils) throw new Error('BufferGeometryUtils legacy bridge not loaded');
-   await loadClassic('./vendor/GLTFLoader.legacy.js');
+   await loadClassic('./app/vendor/GLTFLoader.legacy.js');
    if(!global.THREE||!global.DND_GLTFLoader) throw new Error('Three.js legacy bridge not loaded');
    THREE=global.THREE;GLTFLoader=global.DND_GLTFLoader.GLTFLoader;
    var host=modal.querySelector('#map3dRealCanvas');renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(global.devicePixelRatio||1,1.6));renderer.setSize(host.clientWidth,host.clientHeight,false);renderer.domElement.style.touchAction='none';renderer.outputColorSpace=THREE.SRGBColorSpace;host.appendChild(renderer.domElement);cameraControlPanel(host);
