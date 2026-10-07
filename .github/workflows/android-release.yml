@@ -13,6 +13,7 @@ on:
       - "tests/test_v755_creation_buckets.js"
       - "app/dice.js"
       - "app/vtt_map_editor_3d_webgl_v72.js"
+      - "app/vtt_map_editor_3d_ui_v1.js"
       - "app/dnd_tools.js"
       - "app/rulesEngine.js"
       - "app/update_manager.js"

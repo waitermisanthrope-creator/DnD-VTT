@@ -1,4 +1,4 @@
-/* V70.37.15 — removed all bottom editor control bars; clean UI reset
+/* V70.37.17 — standalone editor UI API; old bottom bars remain removed
  * V70.37.14 — removed experimental wall/floor/finish controls; reset for clean rebuild
  * V70.37.12 — right-side popup system for all editor panels
  * V70.37.08 — editor controls, room perimeter, cutaway scope + toolbar hit-testing
@@ -728,6 +728,7 @@ modal.querySelector('#r3dMore').onclick=function(){var p=modal.querySelector('#r
   }catch(e){var em=e&&e.message||String(e);modal.querySelector('#map3dRealInfo').textContent='Ошибка WebGL: '+em;try{console.error('[DND 3D] startup failed',e);if(typeof global.dndDebugLog==='function')global.dndDebugLog('3D map startup failed: '+em,'error');}catch(_){}alert('Не удалось запустить настоящий 3D: '+em+'\nСтарый редактор не удалён.');}
  })();
 }
+global.R3DEditorAPI={setMode:function(m){setEditorMode(m);},buildRoom:function(){setEditorMode('build');roomToolArmed=true;wallToolArmed=false;},buildWall:function(){setEditorMode('build');wallToolArmed=true;roomToolArmed=false;},buildFloor:function(){setEditorMode('build');togglePaintMode(true);},openTexture:function(kind){setEditorMode('finish');openRootTexturePicker(kind||'wall');},paint:function(){setEditorMode('finish');togglePaintMode(true);},selectWindow:function(){setEditorMode('build');},addModel:openAssetLibrary,editWall:editSelectedWall,view:function(m){setEditorMode(m==='editor'?'build':'view');},cutaway:function(){setEditorMode('build');toggleCutaway();}};
 global.dndMap3DOpenReal=open;
 global.dndMap3DOpen=open;
 })(window);
