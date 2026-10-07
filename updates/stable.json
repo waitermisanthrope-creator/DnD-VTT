@@ -1338,6 +1338,16 @@
       "sha256": "de23c8c18f3e38dd6c35514c1e3c8f2b362e2434dbbedc7d89f77d17c0330f7e"
     },
     {
+      "path": "app/vendor/GLTFLoader.js",
+      "bytes": 114755,
+      "sha256": "004e207049f38d8684fba3d4b08933b62f63038e1db23f23a0e159fa9a1eccc8"
+    },
+    {
+      "path": "app/vendor/three.module.min.js",
+      "bytes": 338908,
+      "sha256": "e2b5ee6bccd38fd6d8a2428546b83c5f2426d84b152ef82be8055556e3b40eb6"
+    },
+    {
       "path": "app/vessel_laserllama_v4_runtime.js",
       "bytes": 39809,
       "sha256": "5f600d5c2a2a360b843e7200fb4f6ddcd33f097bb5fe681b63b22356bd759d17"
