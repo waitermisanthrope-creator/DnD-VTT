@@ -1353,6 +1353,11 @@
       "sha256": "5f600d5c2a2a360b843e7200fb4f6ddcd33f097bb5fe681b63b22356bd759d17"
     },
     {
+      "path": "app/vtt_asset_pack_v84.js",
+      "bytes": 7388,
+      "sha256": "53858daffb2b8b661c8668cb2f339a609ee75e722881991899182d73e60f1e56"
+    },
+    {
       "path": "app/vtt_character_actions_v64.js",
       "bytes": 4047,
       "sha256": "e6d66a5bd5a1324220daf53f4d090ccb077d5036a4d996d72da4e4474d017a55"
