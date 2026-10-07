@@ -1,7 +1,7 @@
 (function(g){
 'use strict';
 function hero(){return g.currentChar||null}
-function arr(h){h.companions=Array.isArray(h.companions)?h.companions:[];return h.companions}
+function arr(h){if(!h)return [];h.companions=Array.isArray(h.companions)?h.companions:[];return h.companions}
 function uid(){return 'cmp_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7)}
 function num(v,d){v=Number(v);return isFinite(v)?v:d}
 function prof(l){return 2+Math.floor((Math.max(1,num(l,1))-1)/4)}
