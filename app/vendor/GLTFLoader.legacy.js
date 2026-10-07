@@ -1,5 +1,6 @@
 /* Offline WebView legacy bridge generated from GLTFLoader.js. */
 (function(){
+(function(){
 /* Offline WebView legacy bridge generated from GLTFLoader.js. */
 const {AnimationClip,
 Bone,
@@ -4888,5 +4889,7 @@ function addPrimitiveAttributes( geometry, primitiveDef, parser ) {
  **/
 
 globalThis.DND_GLTFLoader={GLTFLoader};
+
+})();
 
 })();
