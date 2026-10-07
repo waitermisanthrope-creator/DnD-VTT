@@ -1479,9 +1479,8 @@
     },
     {
       "path": "app/vtt_map_editor_3d_webgl_v72.js",
-      "bytes": 96150,
-      "sha256": "ca6a97eae0424a97e4ae8fcf929000023cfc049f113526ee344f6e278b0e6e22",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/6a64e188b513fee1e94755ebc3dc10760becd484/app/vtt_map_editor_3d_webgl_v72.js"
+      "bytes": 95134,
+      "sha256": "f7a9e89613b9a09e947b61aeb6ace81cc0dca9faf4a1266da8abbe3bf6d43253"
     },
     {
       "path": "app/vtt_mobile_battle_v61.js",
