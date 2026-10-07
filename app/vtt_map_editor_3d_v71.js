@@ -508,8 +508,90 @@
     var header=document.getElementById('map3dEditorHeader'),levels=document.getElementById('map3dLevels');
     if(header)header.style.display=state.playMode?'none':'flex';
     if(levels)levels.style.display=state.playMode?'none':'flex';
-    box.style.display=state.playMode?'none':'flex';
-    var cb=ensureCombat(),ct=cb.active?combatTurn(tokenById(cb.currentId)):null,cur=tokenById(cb.currentId),turn=cb.active?' • Раунд '+cb.round+' • Ход: '+((cur||{}).name||'—')+(ct?' • Движение '+Math.max(0,tokenSpeedFt(cur)-Number(ct.movementUsed||0))+' ft':''):' • Бой не запущен',dir=state.wallEditDir||'n',w=wallForSelected(dir),wh=w?Number(w.height).toFixed(1):'—',wt=w?Number(w.thickness).toFixed(2):'—',wo=w?(w.opening||'none'):'—',ds=w&&w.opening==='door'?(w.doorState||'closed'):'—';box.innerHTML="<label style=\"display:flex;align-items:center;gap:5px;color:#ccc\">👤 Персонаж <select onchange=\"dndMap3DSelectCharacter(this.value)\" style=\"max-width:230px;background:#11151a;color:#fff;border:1px solid #555;border-radius:6px;padding:6px\">'+playerCharacterOptions()+'</select></label><button class=\"btn-action\" onclick=\"dndMap3DNew()\">🗺️ Новая карта</button><button class=\"btn-action\" onclick=\"dndMap3DInfo()\">📝 Имя/описание</button><button class=\"btn-action\" onclick=\"dndMap3DSetCameraMode('editor')\">🛠️ Редактор</button><button class=\"btn-action\" onclick=\"dndMap3DSetCameraMode('firstPerson')\">👁️ 1-е лицо</button><button class=\"btn-action\" onclick=\"dndMap3DSetCameraMode('thirdPerson')\">🎥 3-е лицо</button><button class=\"btn-action\" onclick=\"dndMap3DMoveByFacing(1,0,false)\">⬆️ Вперёд</button><button class=\"btn-action\" onclick=\"dndMap3DMoveByFacing(-1,0,false)\">⬇️ Назад</button><button class=\"btn-action\" onclick=\"dndMap3DMoveByFacing(0,-1,false)\">◀️ Влево</button><button class=\"btn-action\" onclick=\"dndMap3DMoveByFacing(0,1,false)\">▶️ Вправо</button><button class=\"btn-action\" onclick=\"dndMap3DRun()\">🏃 Бег</button><button class=\"btn-action\" onclick=\"dndMap3DRotatePlayer(-.2,0)\">↶</button><button class=\"btn-action\" onclick=\"dndMap3DRotatePlayer(.2,0)\">↷</button><button class=\"btn-action\" onclick=\"dndMap3DPlaceToken()\">📍 Поставить токен</button><button class=\"btn-action\" onclick=\"dndMap3DTokenKind()\">🏷️ Тип</button><button class=\"btn-action\" onclick=\"dndMap3DTokenInit()\">🎲 Инициатива</button><button class=\"btn-action\" onclick=\"dndMap3DTokenInitRoll()\">🎲 d20</button><button class=\"btn-action\" onclick=\"dndMap3DCombatStart()\">⚔️ Начать бой</button><button class=\"btn-action\" onclick=\"dndMap3DCombatNext()\">▶️ Следующий ход</button><button class=\"btn-action\" onclick=\"dndMap3DCombatEnd()\">⏹️ Завершить бой</button><label style=\"display:flex;align-items:center;gap:7px;color:#ddd;padding:7px 2px\"><input type=\"checkbox\" '+(cb.mode?'checked':'')+' onchange=\"dndMap3DCombatMode(this.checked)\"> ⚔️ Боевой режим <span style=\"color:#999\">'+(cb.mode?'скорость ограничивает ход':'свободное перемещение')+'</span></label><button class=\"btn-action\" onclick=\"dndMap3DPossessToken()\">🎮 Вселиться</button><button class=\"btn-action\" onclick=\"dndMap3DSelect()\">👆 Выбор</button><button class=\"btn-action\" onclick=\"dndMap3DUp()\">⬆️ Высота +</button><button class=\"btn-action\" onclick=\"dndMap3DDown()\">⬇️ Высота −</button><button class=\"btn-action\" onclick=\"dndMap3DCube()\">🧱 Мебель</button><button class=\"btn-action\" onclick=\"dndMap3DMassHeight()\">📐 Область</button><button class=\"btn-action\" onclick=\"dndMap3DCopySelection()\">📋 Копировать</button><button class=\"btn-action\" onclick=\"dndMap3DPasteSelection()\">📌 Вставить</button><button class=\"btn-action\" onclick=\"dndMap3DFillArea()\">🟫 Заполнить</button><button class=\"btn-action\" onclick=\"dndMap3DLongWall()\">🧱 Длинная стена</button><button class=\"btn-action\" onclick=\"dndMap3DWallPreset()\">🧱 Пресет стены</button><button class=\"btn-action\" onclick=\"dndMap3DObjectPreset()\">🪑 Пресет объекта</button><button class=\"btn-action\" onclick=\"dndMap3DSurface()\">🟩 Поверхность</button><button class=\"btn-action\" onclick=\"dndMap3DSurfaceEdit()\">⚙️ Свойства пола</button><button class=\"btn-action\" onclick=\"dndMap3DSurfacePreset()\">🧩 Пресет пола</button><button class=\"btn-action\" onclick=\"dndMap3DSavePreset()\">💾 Сохранить участок</button><button class=\"btn-action\" onclick=\"dndMap3DPlacePreset()\">📚 Вставить участок</button><button class=\"btn-action\" onclick=\"dndMap3DManagePresets()\">🗂️ Библиотека участков</button><button class=\"btn-action\" onclick=\"dndMap3DDuplicateSelection()\">📋 Дублировать область</button><button class=\"btn-action\" onclick=\"dndMap3DMoveSelection(-1,0)\">⬅️</button><button class=\"btn-action\" onclick=\"dndMap3DMoveSelection(1,0)\">➡️</button><button class=\"btn-action\" onclick=\"dndMap3DMoveSelection(0,-1)\">⬆️</button><button class=\"btn-action\" onclick=\"dndMap3DMoveSelection(0,1)\">⬇️</button><button class=\"btn-action\" onclick=\"dndMap3DClearSelection()\">✖️ Снять выделение</button><button class=\"btn-action\" onclick=\"dndMap3DObjEdit('x')\">X</button><button class=\"btn-action\" onclick=\"dndMap3DObjEdit('y')\">Y</button><button class=\"btn-action\" onclick=\"dndMap3DObjEdit('z')\">Z</button><button class=\"btn-action\" onclick=\"dndMap3DObjEdit('scaleX')\">↔️ Ширина</button><button class=\"btn-action\" onclick=\"dndMap3DObjEdit('scaleY')\">↕️ Глубина</button><button class=\"btn-action\" onclick=\"dndMap3DObjEdit('scaleZ')\">⬆️ Высота</button><button class=\"btn-action\" onclick=\"dndMap3DObjEdit('rotation')\">🔄 Поворот</button><button class=\"btn-action\" onclick=\"dndMap3DObjEdit('name')\">🏷️ Имя</button><button class=\"btn-action\" onclick=\"dndMap3DMaterialType()\">🧱 Материал</button><button class=\"btn-action\" onclick=\"dndMap3DTexture('object')\">🖼️ Текстура мебели</button><span style=\"color:#aaa;padding:7px 2px\">Стена:</span><button class=\"btn-action\" onclick=\"dndMap3DWallDir('n')\">N</button><button class=\"btn-action\" onclick=\"dndMap3DWallDir('e')\">E</button><button class=\"btn-action\" onclick=\"dndMap3DWallDir('s')\">S</button><button class=\"btn-action\" onclick=\"dndMap3DWallDir('w')\">W</button><button class=\"btn-action\" onclick=\"dndMap3DWallAdjust(''+dir+'','height',.5)\">H+</button><button class=\"btn-action\" onclick=\"dndMap3DWallAdjust(''+dir+'','height',-.5)\">H−</button><button class=\"btn-action\" onclick=\"dndMap3DWallAdjust(''+dir+'','thickness',.03)\">T+</button><button class=\"btn-action\" onclick=\"dndMap3DWallAdjust(''+dir+'','thickness',-.03)\">T−</button><button class=\"btn-action\" onclick=\"dndMap3DWallOpening(''+dir+'')\">Отверстие: '+wo+'</button><button class=\"btn-action\" onclick=\"dndMap3DAddConnector('stairs',1)\">🪜 Лестница ↑</button><button class=\"btn-action\" onclick=\"dndMap3DAddConnector('stairs',-1)\">🪜 Лестница ↓</button><button class=\"btn-action\" onclick=\"dndMap3DAddConnector('ramp',1)\">↗️ Рампа ↑</button><button class=\"btn-action\" onclick=\"dndMap3DAddConnector('ramp',-1)\">↘️ Рампа ↓</button><button class=\"btn-action\" onclick=\"dndMap3DRemoveConnector()\">✖️ Переход</button><button class=\"btn-action\" onclick=\"dndMap3DTexture('wall')\">🧱 Текстура стены</button><button class=\"btn-action\" onclick=\"dndMap3DWallSides()\">🎨 Стороны стены</button><button class=\"btn-action\" onclick=\"dndMap3DCopyWallSide()\">↔️ Фронт→тыл</button><button class=\"btn-action\" onclick=\"dndMap3DClearWallSides()\">✖️ Сбросить стороны</button><button class=\"btn-action\" onclick=\"dndMap3DConnectorDir()\">🧭 Переход: '+String(state.connectorDir||'n').toUpperCase()+'</button><button class=\"btn-action\" onclick=\"dndMap3DDoorToggle(''+dir+'')\">🚪 '+ds+'</button><span style=\"color:#aaa;padding:7px 2px\">H='+wh+' T='+wt+'</span><button class=\"btn-action\" style=\"background:#7f1d1d\" onclick=\"dndMap3DRemove()\">🗑 Удалить</button><button class=\"btn-action\" onclick=\"dndMap3DSave()\">💾 Сохранить</button><button class=\"btn-action\" onclick=\"dndMap3DLoad()\">📂 Загрузить</button><button class=\"btn-action\" onclick=\"dndMap3DExport()\">⬇️ JSON</button><button class=\"btn-action\" onclick=\"dndMap3DImport()\">⬆️ JSON</button><button class=\"btn-action\" onclick=\"dndMap3DReset()\">↺ Сбросить</button>";
+    if(state.playMode){box.style.display='none';return;}
+    box.style.display='flex';
+    box.style.flexDirection='column';
+    box.style.alignItems='stretch';
+    box.style.gap='5px';
+    box.style.padding='5px 7px calc(5px + env(safe-area-inset-bottom,0px))';
+    box.style.background='rgba(20,24,30,.96)';
+    box.style.borderTop='1px solid #3d4652';
+    box.style.maxHeight='none';
+    box.style.overflow='visible';
+    var mode=box.getAttribute('data-mode')||'build';
+    var row=document.createElement('div');
+    row.style.cssText='display:flex;gap:5px;align-items:center;justify-content:center;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;';
+    var tools=document.createElement('div');
+    tools.style.cssText='display:flex;gap:5px;align-items:center;justify-content:center;overflow-x:auto;overflow-y:hidden;min-height:42px;-webkit-overflow-scrolling:touch;';
+    var make=function(text,fn,active){
+      var b=document.createElement('button');b.type='button';b.textContent=text;
+      b.style.cssText='flex:0 0 auto;min-width:44px;height:40px;padding:0 11px;border:1px solid '+(active?'#d4af37':'#59636f')+';border-radius:12px;background:'+(active?'#6d5319':'#202730')+';color:#fff;font-weight:700;font-size:13px;box-shadow:0 2px 8px #0007;touch-action:manipulation;';
+      b.onclick=fn;return b;
+    };
+    var modes=[
+      ['🧱','build','Строить'],
+      ['🛋','furnish','Обставить'],
+      ['🎨','finish','Отделка'],
+      ['👁','view','Вид']
+    ];
+    modes.forEach(function(m){
+      row.appendChild(make(m[0]+' '+m[2],function(){box.setAttribute('data-mode',m[1]);renderTools();},mode===m[1]));
+    });
+    box.innerHTML='';box.appendChild(tools);box.insertBefore(row,tools);
+
+    var add=function(label,fn){tools.appendChild(make(label,fn,false));};
+    var selected=state.selected;
+    var dir=state.wallEditDir||'n';
+    var w=wallForSelected(dir);
+
+    if(mode==='build'){
+      add('🧱 Стена',function(){dndMap3DWall();});
+      add('🟫 Пол',function(){dndMap3DSurface();});
+      add('🛋 Мебель',function(){dndMap3DCube();});
+      add('📐 Высота',function(){dndMap3DMassHeight();});
+      if(selected){
+        add('⬆ Высота +',function(){dndMap3DUp();});
+        add('⬇ Высота −',function(){dndMap3DDown();});
+        add('🗑 Удалить',function(){dndMap3DRemove();});
+      }
+    }else if(mode==='furnish'){
+      add('🛋 Мебель',function(){dndMap3DCube();});
+      add('🧩 Пресет',function(){dndMap3DObjectPreset();});
+      add('⧉ Дублировать',function(){dndMap3DDuplicateSelection();});
+      add('📋 Копировать',function(){dndMap3DCopySelection();});
+      add('📌 Вставить',function(){dndMap3DPasteSelection();});
+      if(selected)add('🗑 Удалить',function(){dndMap3DRemove();});
+    }else if(mode==='finish'){
+      add('🧱 Стена',function(){dndMap3DWallPreset();});
+      add('🖼 Текстура',function(){dndMap3DTexture('wall');});
+      add('🟫 Пол',function(){dndMap3DSurfacePreset();});
+      add('⚙ Свойства пола',function(){dndMap3DSurfaceEdit();});
+      add('🪑 Мебель',function(){dndMap3DTexture('object');});
+    }else{
+      add('🛠 Редактор',function(){dndMap3DSetCameraMode('editor');});
+      add('👁 1-е лицо',function(){dndMap3DSetCameraMode('firstPerson');});
+      add('🎥 3-е лицо',function(){dndMap3DSetCameraMode('thirdPerson');});
+      add('↶',function(){dndMap3DRotatePlayer(-.2,0);});
+      add('↷',function(){dndMap3DRotatePlayer(.2,0);});
+    }
+
+    var mapBtn=make('⚙ Карта',function(){
+      var old=box.querySelector('.r3dMapMenu');
+      if(old){old.remove();return;}
+      var menu=document.createElement('div');menu.className='r3dMapMenu';
+      menu.style.cssText='display:flex;gap:5px;align-items:center;justify-content:center;overflow-x:auto;padding:4px 0 0;';
+      var items=[
+        ['🗺 Новая',function(){dndMap3DNew();}],
+        ['📝 Имя',function(){dndMap3DInfo();}],
+        ['💾 Сохранить',function(){dndMap3DSave();}],
+        ['📂 Загрузить',function(){dndMap3DLoad();}],
+        ['⬇ JSON',function(){dndMap3DExport();}],
+        ['⬆ JSON',function(){dndMap3DImport();}]
+      ];
+      items.forEach(function(x){var b=make(x[0],function(){menu.remove();x[1]();},false);menu.appendChild(b);});
+      box.appendChild(menu);
+    },false);
+    row.appendChild(mapBtn);
   }
   var initialized=false;
   function open(){
@@ -529,7 +611,7 @@
     if(initialized)return;
     initialized=true;
     var modal=document.createElement('div');modal.id='map3dEditorModal';modal.style.cssText='display:none;position:fixed;inset:0;z-index:31000;background:#090a0c;color:#fff;padding:8px;box-sizing:border-box;';
-    modal.innerHTML='<div id="map3dEditorShell" style="height:100%;display:flex;flex-direction:column;background:#11151a;border:1px solid #555;border-radius:12px;overflow:hidden"><div id="map3dEditorHeader" style="display:flex;align-items:center;gap:8px;padding:9px;border-bottom:1px solid #333;flex-wrap:wrap"><strong style="color:#d4af37">🏗️ 3D Редактор карт</strong><span style="color:#888;font-size:.8em">V70.36.69</span><span style="flex:1"></span><button class="btn-action" onclick="dndMap3DClose()" style="background:#b71c1c">✕ Закрыть</button></div><div id="map3dCanvasWrap" style="position:relative;flex:1;min-height:0;overflow:hidden;touch-action:none"><canvas id="map3dCanvas" style="width:100%;height:100%;display:block;touch-action:none"></canvas><div id="map3dLevels" style="position:absolute;left:10px;bottom:10px;z-index:21;display:flex;gap:4px;flex-wrap:wrap;max-width:75%"></div></div><div id="map3dTools" style="display:flex;gap:6px;flex-wrap:wrap;padding:8px;background:#1a1d21;border-top:1px solid #333;max-height:27vh;overflow:auto"></div></div>';
+    modal.innerHTML='<div id="map3dEditorShell" style="height:100%;display:flex;flex-direction:column;background:#11151a;border:1px solid #555;border-radius:12px;overflow:hidden"><div id="map3dEditorHeader" style="display:flex;align-items:center;gap:6px;padding:7px 9px;border-bottom:1px solid #333;flex-wrap:nowrap"><strong style="color:#d4af37;white-space:nowrap">🏗️ 3D</strong><span style="color:#888;font-size:.72em">V70.37.03</span><button class="btn-action" onclick="dndMap3DNew()" title="Новая карта" style="padding:7px 9px">🗺️</button><button class="btn-action" onclick="dndMap3DInfo()" title="Имя и описание" style="padding:7px 9px">📝</button><span style="flex:1"></span><button class="btn-action" onclick="dndMap3DClose()" style="background:#8f2424;padding:7px 10px">✕</button></div><div id="map3dCanvasWrap" style="position:relative;flex:1;min-height:0;overflow:hidden;touch-action:none"><canvas id="map3dCanvas" style="width:100%;height:100%;display:block;touch-action:none"></canvas><div id="map3dLevels" style="position:absolute;left:10px;bottom:10px;z-index:21;display:flex;gap:4px;flex-wrap:wrap;max-width:75%"></div></div><div id="map3dTools" data-mode="build" style="display:flex;flex-direction:column;gap:5px;padding:5px 7px;background:#14181e;border-top:1px solid #333;max-height:none;overflow:visible"></div></div>';
     document.body.appendChild(modal);
     canvas=document.getElementById('map3dCanvas');
     canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);
