@@ -236,38 +236,16 @@ function open(){
  modal.querySelector('#r3dFront').onclick=function(){colorSide('front');};modal.querySelector('#r3dBack').onclick=function(){colorSide('back');};modal.querySelector('#r3dModel').onclick=addModel;modal.querySelector('#r3dTexture').onclick=function(){addTexture('front');};modal.querySelector('#r3dFrontTex').onclick=function(){textureSide('front');};modal.querySelector('#r3dBackTex').onclick=function(){textureSide('back');};modal.querySelector('#r3dLeft').onclick=function(){nudgeSelected(-.25,0);};modal.querySelector('#r3dRight').onclick=function(){nudgeSelected(.25,0);};modal.querySelector('#r3dForward').onclick=function(){nudgeSelected(0,-.25);};modal.querySelector('#r3dBackMove').onclick=function(){nudgeSelected(0,.25);};modal.querySelector('#r3dRotL').onclick=function(){rotateSelected(-15);};modal.querySelector('#r3dRotR').onclick=function(){rotateSelected(15);};modal.querySelector('#r3dScaleDown').onclick=function(){scaleSelected(.9);};modal.querySelector('#r3dScaleUp').onclick=function(){scaleSelected(1.1);};modal.querySelector('#r3dSave').onclick=function(){saveMap();alert('Карта и assetRef сохранены.');};setEditorMode('objects');
  (async function(){
   try{
-   function loadClassic(src){
-    return new Promise(function(resolve,reject){
-     var s=document.createElement('script');
-     s.src=src;
-     s.async=false;
-     s.onload=function(){resolve();};
-     s.onerror=function(){reject(new Error('Не удалось загрузить '+src));};
-     document.head.appendChild(s);
-    });
-   }
-   await loadClassic('./app/vendor/three.core.legacy.js');
-   if(!global.THREECore) throw new Error('Three.js core legacy bridge not loaded');
-   await loadClassic('./app/vendor/three.legacy.js');
-   await loadClassic('./app/vendor/BufferGeometryUtils.legacy.js');
-   if(!global.DND_BufferGeometryUtils) throw new Error('BufferGeometryUtils legacy bridge not loaded');
-   await loadClassic('./app/vendor/GLTFLoader.legacy.js');
-   if(!global.THREE||!global.DND_GLTFLoader) throw new Error('Three.js legacy bridge not loaded');
-   THREE=global.THREE;GLTFLoader=global.DND_GLTFLoader.GLTFLoader;
+   var threeModule=await import('./app/vendor/three.module.min.js');
+   var loaderModule=await import('./app/vendor/GLTFLoader.js');
+   THREE=threeModule;
+   GLTFLoader=loaderModule.GLTFLoader;
+   if(!THREE||!GLTFLoader)throw new Error('Three.js modules loaded without required exports');
    var host=modal.querySelector('#map3dRealCanvas');renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(global.devicePixelRatio||1,1.6));renderer.setSize(host.clientWidth,host.clientHeight,false);renderer.domElement.style.touchAction='none';renderer.outputColorSpace=THREE.SRGBColorSpace;host.appendChild(renderer.domElement);cameraControlPanel(host);
    scene=new THREE.Scene();scene.background=new THREE.Color('#10151c');root=new THREE.Group();scene.add(root);camera=new THREE.PerspectiveCamera(55,1,.05,1000);raycaster=new THREE.Raycaster();mouse=new THREE.Vector2();
    scene.add(new THREE.HemisphereLight(0xffffff,0x223344,2));var dl=new THREE.DirectionalLight(0xffffff,2);dl.position.set(10,20,5);scene.add(dl);makeGizmo();
    var dragging=false,lastX=0,lastY=0,button=0;
-   renderer.domElement.addEventListener('pointerdown',function(ev){var gp=sceneGroundPoint(ev);if(gp)lastScenePoint=gp;if(gp&&pendingLibraryAsset&&ev.button===0){placeLibraryAsset(pendingLibraryAsset.id,pendingLibraryAsset.name,gp);var h=document.getElementById('r3dQuickHint');if(h)h.textContent='Модель поставлена. Выберите следующий инструмент.';ev.preventDefault();return;}touches[ev.pointerId]={clientX:ev.clientX,clientY:ev.clientY};if(ev.pointerType==='touch'&&Object.keys(touches).length>=2){beginTouchGesture();dragging=false;return;}var gh=ev.button===0?gizmoHit(ev):null;if(gh&&selected&&editorMode==='objects'){gizmoAxis=gh;gizmoDragging=true;gizmoStartX=ev.clientX;gizmoStartY=ev.clientY;gizmoStartPos=selected.position.clone();gizmoStartRot=selected.rotation.y;gizmoStartScale=selected.scale.clone();renderer.domElement.setPointerCapture&&renderer.domElement.setPointerCapture(ev.pointerId);return;}dragging=true;lastX=ev.clientX;lastY=ev.clientY;button=ev.button;renderer.domElement.setPointerCapture&&renderer.domElement.setPointerCapture(ev.pointerId);if(button===0){if(paintMode&&editorMode==='finish'){painting=true;paintHistoryStarted=false;paintedDuringStroke={};paintRay(ev);}else pick(ev);}});
-   renderer.domElement.addEventListener('dblclick',function(){if(selected&&selected.userData&&selected.userData.mapObjectId){var o=(map.objects||[]).find(function(x){return String(x.id)===String(selected.userData.mapObjectId);});if(o){var v=prompt('Точный X Y Z, например 2 3 0',Number(o.x||0)+' '+Number(o.y||0)+' '+Number(o.z||0));if(v){var p=v.trim().split(/\\s+/).map(Number);if(p.length===3&&p.every(function(n){return Number.isFinite(n)})){selected.position.set(p[0]+.5,p[2],p[1]+.5);syncSelectedTransform();updateInfo();}}}}});
-   renderer.domElement.addEventListener('pointermove',function(ev){if(touches[ev.pointerId]){touches[ev.pointerId].clientX=ev.clientX;touches[ev.pointerId].clientY=ev.clientY;}if(Object.keys(touches).length>=2){updateTouchGesture();return;}if(gizmoDragging){gizmoMove(ev);return;}if(painting&&paintMode&&editorMode==='finish'){paintRay(ev);return;}if(!dragging)return;var dx=ev.clientX-lastX,dy=ev.clientY;lastX=ev.clientX;lastY=ev.clientY;if(button===0){controls.yaw-=dx*.008;controls.pitch=Math.max(.15,Math.min(1.45,controls.pitch-dy*.006));}else if(button===1||ev.shiftKey){var pan=.015*controls.distance;controls.target.x-=dx*pan;controls.target.z+=dy*pan;}});
-   renderer.domElement.addEventListener('pointerup',function(ev){delete touches[ev.pointerId];painting=false;paintHistoryStarted=false;paintedDuringStroke={};dragging=false;gizmoDragging=false;gizmoAxis=null;setGizmoHighlight(null);if(Object.keys(touches).length<2)touchGesture=null;});renderer.domElement.addEventListener('pointercancel',function(ev){delete touches[ev.pointerId];painting=false;paintHistoryStarted=false;paintedDuringStroke={};dragging=false;gizmoDragging=false;gizmoAxis=null;touchGesture=null;setGizmoHighlight(null);});
-   renderer.domElement.addEventListener('pointermove',function(ev){if(!gizmoDragging){var gh=gizmoHit(ev);setGizmoHighlight(gh);}});renderer.domElement.addEventListener('wheel',function(ev){ev.preventDefault();controls.distance=Math.max(3,Math.min(150,controls.distance*Math.exp(ev.deltaY*.001)));},{passive:false});
-   renderer.domElement.addEventListener('dragover',function(ev){ev.preventDefault();});renderer.domElement.addEventListener('drop',function(ev){ev.preventDefault();var id=ev.dataTransfer&&ev.dataTransfer.getData('text/plain');if(!id)return;var rr=renderer.domElement.getBoundingClientRect();mouse.x=((ev.clientX-rr.left)/rr.width)*2-1;mouse.y=-((ev.clientY-rr.top)/rr.height)*2+1;raycaster.setFromCamera(mouse,camera);var g=root.children.find(function(x){return x.userData&&x.userData.editorKind==='ground';});var hit=g?raycaster.intersectObject(g,true)[0]:null;getAsset(id).then(function(rec){ensureMapCollections();pushHistory();map.objects.push({id:'obj_'+Date.now().toString(36),name:rec&&rec.meta&&rec.meta.name||'Asset',assetId:id,x:hit?hit.point.x-.5:1,y:hit?hit.point.z-.5:1,z:0,level:Number(map.levels&&map.levels.current)||0,scaleX:1,scaleY:1,scaleZ:1,rotation:0});saveMap();build();});});renderer.domElement.addEventListener('contextmenu',function(ev){ev.preventDefault();});
-   window.addEventListener('resize',resize);resize();ensureMapCollections();updateGizmo();openAssetDB().catch(function(e){console.warn('IndexedDB unavailable; asset persistence disabled',e);});build();frame();
-   modal.querySelector('#map3dRealInfo').textContent='WebGL готов • '+(map.name||'Новая карта');
-  }catch(e){var em=e&&e.message||String(e);modal.querySelector('#map3dRealInfo').textContent='Ошибка WebGL: '+em;try{console.error('[DND 3D] startup failed',e);if(typeof global.dndDebugLog==='function')global.dndDebugLog('3D map startup failed: '+em,'error');}catch(_){}alert('Не удалось запустить настоящий 3D: '+em+'\nСтарый редактор не удалён.');}
- })();
+})();;
 }
 global.dndMap3DOpenReal=open;
 global.dndMap3DOpen=open;
