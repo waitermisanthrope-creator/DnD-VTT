@@ -127,12 +127,12 @@
     if(l===20) progression.levels[l].features.push("Древнее проклятие","Улучшение Ревнивого проклятия");
     if([3,5,11,15,20].includes(l)) progression.levels[l].features.push("Особенность выбранного проклятия");
   }
-  window.ACCURSED_V11={PB,SPELLS_KNOWN,SLOTS,METAS,curses,spellList,progression,MECHANICS};
-  window.accursedProgression=Object.assign(window.accursedProgression||{},progression);
-
   const MECHANICS={curseAbility:"wis",hex:{action:"bonus_action",rangeFt:90,durationRounds:10,targetKey:"accursedHexTargetId"},afflictionControl:{knownAtLevel:2,selection:"choose_one_or_more"},metamorphosis:{level2:1,level6:2,level10:3,level18:4,replaceOnRest:true},jealousy:{levels:[3,7,14,20],extraDamageByLevel:{3:"1d6",7:"1d8",14:"2d8",20:"2d10"}}};
   function state(h){h.classFeaturesState=h.classFeaturesState||{};return h.classFeaturesState.accursed=h.classFeaturesState.accursed||{};}
   function level(h){return ((h&&h.classes)||[]).reduce((n,c)=>String(c.name||"")==="Аккурсд"?Math.max(n,Number(c.level)||0):n,0);}
+  window.ACCURSED_V11={PB,SPELLS_KNOWN,SLOTS,METAS,curses,spellList,progression,MECHANICS};
+  window.accursedProgression=Object.assign(window.accursedProgression||{},progression);
+
   function chooseCurse(h,name){if(!curses[name])return {ok:false,reason:"Неизвестное проклятие: "+name};state(h).curse=name;return {ok:true,curse:name,data:curses[name]};}
   function chooseMetamorphoses(h,names){var l=level(h),max=l>=18?4:l>=10?3:l>=6?2:l>=2?1:0,all=[...(METAS[2]||[]),...(l>=10?METAS[10]||[]:[]),...(l>=18?METAS[18]||[]:[])];var list=(Array.isArray(names)?names:[names]).filter(x=>all.some(m=>m[0]===x)).slice(0,max);state(h).metamorphoses=list;return {ok:true,max:max,selected:list};}
   function useHex(h,target,ctx){if(!h||!target)return {ok:false,reason:"Нужен персонаж и цель."};var s=state(h);if(!s.curse)return {ok:false,reason:"Сначала выберите проклятие."};ctx=ctx||{};var l=level(h),pb=PB[l]||2,mod=Number(ctx.modifier!=null?ctx.modifier:(h.stats&&h.stats.wis!=null?Math.floor((Number(h.stats.wis)-10)/2):0));s.hexTargetId=target.id||target.name||null;s.hexActive=true;return {ok:true,dc:8+pb+mod,curse:s.curse,targetId:s.hexTargetId,durationRounds:MECHANICS.hex.durationRounds};}
