@@ -1069,8 +1069,8 @@
     },
     {
       "path": "app/expanded_classes_v23.js",
-      "bytes": 29760,
-      "sha256": "5d377b4bd5e86f0c8acec853379553e3c91af2a3b9d1ea8be5da2c8b0e4d4af6"
+      "bytes": 29764,
+      "sha256": "bcf2639c859bb8b573e0ac0639b38b3f71cbb2f877e17ebb79d5486cfba6bbc9"
     },
     {
       "path": "app/expanded_subclasses_v23.js",
@@ -1344,8 +1344,8 @@
     },
     {
       "path": "app/vendor/BufferGeometryUtils.legacy.js",
-      "bytes": 1164,
-      "sha256": "bf62e961fd588f7b06cb51cf6b50022da313ece102d0903f8bc87e508ffc0f69"
+      "bytes": 1184,
+      "sha256": "c1330442f366e2da23db79a4a826bc9711b1f627fdd51c7f147198d845b13864"
     },
     {
       "path": "app/vendor/GLTFLoader.js",
@@ -1359,8 +1359,8 @@
     },
     {
       "path": "app/vendor/three.core.legacy.js",
-      "bytes": 375717,
-      "sha256": "90abbc1ff7871d11585ee4eecdc77e7143e5bc8f7afece894cb515f04fcd5521"
+      "bytes": 375797,
+      "sha256": "9203755eb21540975d73f4bd62a84624889e338fc2fc07a188047b6af2146f50"
     },
     {
       "path": "app/vendor/three.legacy.js",
