@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "70.36.91",
+  "version": "70.36.92",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-07",
@@ -1479,7 +1479,7 @@
     },
     {
       "path": "app/vtt_map_editor_3d_webgl_v72.js",
-      "bytes": 62408,
+      "bytes": 60157,
       "sha256": "446584c410872648c4995de65e0921150407cb5ad6389d9f3afbcbdab9576595"
     },
     {
