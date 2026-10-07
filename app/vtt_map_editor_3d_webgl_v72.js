@@ -1,4 +1,5 @@
-/* V70.36.78 — editor stabilization: fill, openings, asset drag/drop
+/* V70.36.79 — touch paint brush for mobile finishing
+ * V70.36.78 — editor stabilization: fill, openings, asset drag/drop
  * V70.36.77 — Sims-like UX + texture asset library
  * V70.36.75 — true WebGL 3D map editor
  * Three.js renderer + GLB/GLTF loading. Reads the existing V15 map format from localStorage.
@@ -7,7 +8,7 @@
 (function(global){
 'use strict';
 var THREE=null,GLTFLoader=null,renderer=null,scene=null,camera=null,root=null,gizmo=null,gizmoAxis=null,gizmoDragging=false,gizmoStartX=0,gizmoStartY=0,gizmoStartPos=null,gizmoStartRot=0,gizmoStartScale=null,raf=0,map=null,selected=null,mode='orbit',editorMode='objects',transformMode='translate',raycaster=null,mouse=null,assetDB=null,assetCache={},controls={yaw:.8,pitch:.8,distance:24,target:{x:0,y:0,z:0}},touches={},touchGesture=null,snapGrid=true,snapSize=0.25;
-var VERSION='V70.36.78';
+var VERSION='V70.36.79';
 var undoStack=[],redoStack=[],historyBusy=false;
 var openingDrag=null,paintMode=false,painting=false,paintHistoryStarted=false,paintMaterial='stone',paintSide='front',paintedDuringStroke={};
 function openingForSelected(){var w=selectedWall();return w&&w.opening?w.opening:null;}
@@ -41,14 +42,15 @@ function paintRay(ev){
    key=o.name.indexOf('surface:')===0?o.name.slice(8):'';
    var ss=map.surfaces&&map.surfaces[key];
    if(!ss)return false;
-   if(ss.material!==paintMaterial||ss.color!==e.color){ss.material=paintMaterial;ss.color=e.color;changed=true;}
+   if(ss.material!==paintMaterial||ss.color!==e.color){changed=true;}
  }else{
    key=o.userData.wallKey||'';var w=map.walls&&map.walls[key];if(!w)return false;
    var s=side(w,paintSide);
-   if(s.color!==e.color){s.color=e.color;w.material=paintMaterial;w.color=e.color;changed=true;}
+   if(s.color!==e.color){changed=true;}
  }
  if(!changed)return false;
  if(!paintHistoryStarted){pushHistory();paintHistoryStarted=true;}
+ if(o.userData.editorKind==='surface'){var s2=map.surfaces&&map.surfaces[key];if(s2){s2.material=paintMaterial;s2.color=e.color;}}else{var w2=map.walls&&map.walls[key];if(w2){var side2=side(w2,paintSide);side2.color=e.color;w2.material=paintMaterial;w2.color=e.color;}}
  paintedDuringStroke[key]=1;saveMap();build();updateInfo();return true;
 }
 function togglePaintMode(force){
