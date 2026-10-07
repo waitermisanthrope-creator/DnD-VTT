@@ -13,7 +13,7 @@
     player:{x:9.5,y:9.5,level:0,yaw:0,pitch:0,elevation:0},
     playerCharacter:{id:null,name:'Персонаж',className:'Воин',tokenGlyph:'⚔️'},
     activeTokenId:null,
-    cameraMode:'editor',
+    cameraMode:'editor', playMode:false, fullscreenOwned:false,
     camera:{yaw:-0.75,pitch:0.72,distance:18,targetX:9.5,targetY:9.5,targetZ:0},
     gesture:{mode:null,lastX:0,lastY:0,lastDist:0,lastAngle:0,selectStart:null,selectEnd:null},
     tool:'select', selectionMode:true, selected:null, wallEditDir:'n', connectorDir:'n', view:{eyeHeight:1.6,walkSpeed:.16,runMultiplier:1.7,maxStep:.75,thirdPersonDistance:5,thirdPersonHeight:2.4}
@@ -303,6 +303,7 @@
     drawHud();
   }
   function drawHud(){
+    if(state.playMode)return;
     ctx.fillStyle='rgba(10,10,10,.78)';ctx.fillRect(10,10,Math.min(360,canvas.clientWidth-20),112);
     ctx.fillStyle='#f0d27a';ctx.font='700 14px sans-serif';ctx.fillText('3D РЕДАКТОР КАРТ • '+VERSION,20,31);
     ctx.fillStyle='#bbb';ctx.font='12px sans-serif';
@@ -311,14 +312,31 @@
     ctx.fillText('Игрок: '+state.playerCharacter.name+' • '+state.playerCharacter.className+'  '+state.playerCharacter.tokenGlyph,20,105);
   }
   function resize(){if(!canvas)return;var r=canvas.getBoundingClientRect(),d=global.devicePixelRatio||1;canvas.width=Math.max(1,Math.floor(r.width*d));canvas.height=Math.max(1,Math.floor(r.height*d));ctx.setTransform(d,0,0,d,0,0);draw();}
-  function screenToCell(px,py){
-    var best=null,bestD=1e9;
-    for(var y=0;y<state.rows;y++)for(var x=0;x<state.cols;x++){
-      var z=cellHeight(x,y),q=project(x+.5,y+.5,z);
-      var d=Math.hypot(px-q.x,py-q.y);
-      if(d<bestD){bestD=d;best={x:x,y:y};}
+  function pointInPolygon(px,py,pts){
+    var inside=false;
+    for(var i=0,j=pts.length-1;i<pts.length;j=i++){
+      var xi=pts[i].x,yi=pts[i].y,xj=pts[j].x,yj=pts[j].y;
+      var hit=((yi>py)!==(yj>py))&&(px<(xj-xi)*(py-yi)/(yj-yi)+xi);
+      if(hit)inside=!inside;
     }
-    return bestD<Math.max(45,canvas.clientWidth*.12)?best:null;
+    return inside;
+  }
+  function screenToCell(px,py){
+    var best=null,bestDepth=-1e9;
+    for(var y=0;y<state.rows;y++)for(var x=0;x<state.cols;x++){
+      var z=cellHeight(x,y),pts=[project(x,y,z),project(x+1,y,z),project(x+1,y+1,z),project(x,y+1,z)];
+      if(pointInPolygon(px,py,pts)){
+        var depth=(pts[0].depth+pts[1].depth+pts[2].depth+pts[3].depth)/4;
+        if(depth>bestDepth){bestDepth=depth;best={x:x,y:y};}
+      }
+    }
+    if(best)return best;
+    var nearest=null,nearestD=1e9;
+    for(var yy=0;yy<state.rows;yy++)for(var xx=0;xx<state.cols;xx++){
+      var q=project(xx+.5,yy+.5,cellHeight(xx,yy)),d=Math.hypot(px-q.x,py-q.y);
+      if(d<nearestD){nearestD=d;nearest={x:xx,y:yy};}
+    }
+    return nearestD<Math.max(28,canvas.clientWidth*.055)?nearest:null;
   }
   function pointerDown(e){
     if(e.pointerType==='touch')return;
@@ -399,14 +417,14 @@
     var wrap=document.getElementById('map3dCanvasWrap');if(!wrap)return;
     var oldHud=document.getElementById('map3dMobileHud');if(oldHud)oldHud.remove();
     var hud=document.createElement('div');hud.id='map3dMobileHud';hud.style.cssText='position:absolute;inset:0;z-index:30;pointer-events:none;display:none;font-family:system-ui,sans-serif;';
-    hud.innerHTML='<div id="map3dMoveJoy" style="position:absolute;left:22px;bottom:22px;width:132px;height:132px;border-radius:50%;background:rgba(20,24,30,.58);border:2px solid rgba(255,255,255,.35);box-shadow:0 4px 18px #0008;pointer-events:auto;touch-action:none"><div style="position:absolute;inset:34px;border-radius:50%;border:1px solid #ffffff33"></div><div id="map3dMoveKnob" style="position:absolute;left:43px;top:43px;width:46px;height:46px;border-radius:50%;background:#d4af37;border:2px solid #fff8;box-shadow:0 3px 10px #0008"></div></div>'+
+    hud.innerHTML='<button id="map3dBackEditor" type="button" style="position:absolute;right:18px;top:18px;padding:11px 15px;border-radius:10px;border:1px solid #fff8;background:rgba(25,25,25,.78);color:#fff;font-weight:700;font-size:14px;pointer-events:auto;touch-action:manipulation;box-shadow:0 3px 14px #0009">↩️ Назад в редактор</button>'+ '<div id="map3dMoveJoy" style="position:absolute;left:22px;bottom:22px;width:132px;height:132px;border-radius:50%;background:rgba(20,24,30,.58);border:2px solid rgba(255,255,255,.35);box-shadow:0 4px 18px #0008;pointer-events:auto;touch-action:none"><div style="position:absolute;inset:34px;border-radius:50%;border:1px solid #ffffff33"></div><div id="map3dMoveKnob" style="position:absolute;left:43px;top:43px;width:46px;height:46px;border-radius:50%;background:#d4af37;border:2px solid #fff8;box-shadow:0 3px 10px #0008"></div></div>'+
     '<div id="map3dLookJoy" style="position:absolute;right:22px;bottom:22px;width:132px;height:132px;border-radius:50%;background:rgba(20,24,30,.58);border:2px solid rgba(255,255,255,.35);box-shadow:0 4px 18px #0008;pointer-events:auto;touch-action:none"><div style="position:absolute;inset:34px;border-radius:50%;border:1px solid #ffffff33"></div><div id="map3dLookKnob" style="position:absolute;left:43px;top:43px;width:46px;height:46px;border-radius:50%;background:#777;border:2px solid #fff8;box-shadow:0 3px 10px #0008"></div></div>'+
     '<button id="map3dInteractBtn" type="button" style="position:absolute;right:42px;bottom:178px;width:76px;height:76px;border-radius:50%;border:2px solid #fff8;background:#8a641b;color:#fff;font-size:30px;font-weight:700;box-shadow:0 4px 16px #0009;pointer-events:auto;touch-action:manipulation">✋</button>'+
     '<div style="position:absolute;left:28px;bottom:164px;color:#fff9;font-size:11px;text-shadow:0 2px 4px #000;pointer-events:none">ДВИЖЕНИЕ</div><div style="position:absolute;right:28px;bottom:164px;color:#fff9;font-size:11px;text-shadow:0 2px 4px #000;pointer-events:none">КАМЕРА</div>';
     wrap.appendChild(hud);
     function bindJoy(id,knob,kind){
       var el=document.getElementById(id),kb=document.getElementById(knob),active=false,pid=null,cx=0,cy=0,max=43,nx=0,ny=0,rafId=0,lastFrame=0;
-      function frame(now){if(!active)return;var dt=Math.min(32,Math.max(8,now-(lastFrame||now)));lastFrame=now;if(kind==='move'){var mag=Math.min(1,Math.hypot(nx,ny));if(mag>.10)moveByFacing(-ny*mag,nx*mag,false,.45);}else{if(Math.abs(nx)>.08||Math.abs(ny)>.08)rotatePlayer(nx*.012*(dt/16),-ny*.009*(dt/16));}rafId=requestAnimationFrame(frame);}
+      function frame(now){if(!active)return;var dt=Math.min(32,Math.max(8,now-(lastFrame||now)));lastFrame=now;if(kind==='move'){var mag=Math.min(1,Math.hypot(nx,ny));if(mag>.10)moveByFacing(-ny*mag,nx*mag,false,.45*(dt/16));}else{if(Math.abs(nx)>.08||Math.abs(ny)>.08)rotatePlayer(nx*.012*(dt/16),-ny*.009*(dt/16));}rafId=requestAnimationFrame(frame);}
       function reset(){active=false;pid=null;nx=0;ny=0;lastFrame=0;if(rafId)cancelAnimationFrame(rafId);rafId=0;kb.style.transform='translate(0px,0px)';}
       el.addEventListener('pointerdown',function(e){active=true;pid=e.pointerId;var r=el.getBoundingClientRect();cx=r.left+r.width/2;cy=r.top+r.height/2;el.setPointerCapture&&el.setPointerCapture(e.pointerId);e.preventDefault();if(!rafId)rafId=requestAnimationFrame(frame);});
       el.addEventListener('pointermove',function(e){if(!active||e.pointerId!==pid)return;var dx=e.clientX-cx,dy=e.clientY-cy,len=Math.hypot(dx,dy);if(len>max){dx*=max/len;dy*=max/len;}kb.style.transform='translate('+dx+'px,'+dy+'px)';nx=dx/max;ny=dy/max;e.preventDefault();});
@@ -415,12 +433,40 @@
     }
     bindJoy('map3dMoveJoy','map3dMoveKnob','move');bindJoy('map3dLookJoy','map3dLookKnob','look');
     document.getElementById('map3dInteractBtn').addEventListener('click',function(){interactDoor();});
+    document.getElementById('map3dBackEditor').addEventListener('click',function(){backToEditor();});
   }
   function updateMobileHud(){var hud=document.getElementById('map3dMobileHud');if(hud)hud.style.display=(state.open&&state.cameraMode!=='editor')?'block':'none';}
-  function setCameraMode(mode){mode=String(mode||'editor');if(['editor','firstPerson','thirdPerson'].indexOf(mode)<0)mode='editor';state.cameraMode=mode;state.camera.targetX=state.player.x;state.camera.targetY=state.player.y;state.camera.targetZ=state.player.elevation;draw();renderTools();updateMobileHud();}
+  function requestPlayFullscreen(){
+    try{
+      if(document.fullscreenElement)state.fullscreenOwned=false;
+      else if(document.documentElement.requestFullscreen){var p=document.documentElement.requestFullscreen();if(p&&p.catch)p.catch(function(){});state.fullscreenOwned=true;}
+    }catch(e){}
+    try{if(global.screen&&screen.orientation&&screen.orientation.lock){var q=screen.orientation.lock('landscape');if(q&&q.catch)q.catch(function(){});}}catch(e){}
+  }
+  function leavePlayFullscreen(){
+    try{if(global.screen&&screen.orientation&&screen.orientation.unlock)screen.orientation.unlock();}catch(e){}
+    try{if(state.fullscreenOwned&&document.fullscreenElement&&document.exitFullscreen){var p=document.exitFullscreen();if(p&&p.catch)p.catch(function(){});}}catch(e){}
+    state.fullscreenOwned=false;
+  }
+  function setPlayMode(on){
+    state.playMode=!!on;
+    if(state.playMode){requestPlayFullscreen();}
+    else{leavePlayFullscreen();}
+    updateMobileHud();draw();renderTools();
+  }
+  function setCameraMode(mode){
+    mode=String(mode||'editor');
+    if(['editor','firstPerson','thirdPerson'].indexOf(mode)<0)mode='editor';
+    if(mode==='editor'){setPlayMode(false);}
+    else{state.cameraMode=mode;setPlayMode(true);}
+    state.cameraMode=mode;
+    state.camera.targetX=state.player.x;state.camera.targetY=state.player.y;state.camera.targetZ=state.player.elevation;
+    draw();renderTools();updateMobileHud();
+  }
+  function backToEditor(){state.cameraMode='editor';setPlayMode(false);draw();renderTools();updateMobileHud();}
   function setPlayerPosition(x,y,level){state.player.x=clamp(Number(x)||0,0,Math.max(0,state.cols-.05));state.player.y=clamp(Number(y)||0,0,Math.max(0,state.rows-.05));state.player.level=clamp(Math.floor(Number(level)||0),state.minLevel,state.maxLevel);state.currentLevel=state.player.level;updatePlayerElevation();state.camera.targetX=state.player.x;state.camera.targetY=state.player.y;state.camera.targetZ=state.player.elevation;draw();renderLevelBar();}
   function rotatePlayer(dYaw,dPitch){state.player.yaw+=Number(dYaw||0);state.player.pitch=clamp(state.player.pitch+Number(dPitch||0),-1.35,1.35);draw();}
-  function moveByFacing(forward,strafe,run,scale){var c=ensureCombat(),t=tokenById(state.activeTokenId),speed;if(c.mode&&c.active&&c.currentId&&t&&c.currentId!==t.id)return false;if(!c.mode){speed=state.view.walkSpeed*(run?state.view.runMultiplier:1);}else{var rem=movementRemainingFt(t);if(rem<=0)return false;speed=(Math.min(rem,tokenSpeedFt(t))/5)/60;if(run)speed*=state.view.runMultiplier;}speed*=isFinite(Number(scale))?Math.max(0,Number(scale)):1;var f=Number(forward||0)*speed,s=Number(strafe||0)*speed,dx=Math.cos(state.player.yaw)*f-Math.sin(state.player.yaw)*s,dy=Math.sin(state.player.yaw)*f+Math.cos(state.player.yaw)*s;var beforeX=state.player.x,beforeY=state.player.y,result=movePlayer(dx,dy,0);if(c.mode&&c.active&&t&&result!==false){var used=Math.hypot(state.player.x-beforeX,state.player.y-beforeY)*5;combatTurn(t).movementUsed=Math.min(tokenSpeedFt(t),combatTurn(t).movementUsed+used);}return result;}
+  function moveByFacing(forward,strafe,run,scale){var c=ensureCombat(),t=tokenById(state.activeTokenId),speed;if(c.mode&&c.active&&c.currentId&&t&&c.currentId!==t.id)return false;if(!c.mode||!t){speed=state.view.walkSpeed*(run?state.view.runMultiplier:1);}else{var rem=movementRemainingFt(t);if(rem<=0)return false;speed=(Math.min(rem,tokenSpeedFt(t))/5)/60;if(run)speed*=state.view.runMultiplier;}speed*=isFinite(Number(scale))?Math.max(0,Number(scale)):1;var f=Number(forward||0)*speed,s=Number(strafe||0)*speed,dx=Math.cos(state.player.yaw)*f-Math.sin(state.player.yaw)*s,dy=Math.sin(state.player.yaw)*f+Math.cos(state.player.yaw)*s;var beforeX=state.player.x,beforeY=state.player.y,result=movePlayer(dx,dy,0);if(c.mode&&c.active&&t&&result!==false){var used=Math.hypot(state.player.x-beforeX,state.player.y-beforeY)*5;combatTurn(t).movementUsed=Math.min(tokenSpeedFt(t),combatTurn(t).movementUsed+used);}return result;}
   function getPlayerState(){return {x:state.player.x,y:state.player.y,level:state.player.level,elevation:state.player.elevation,yaw:state.player.yaw,pitch:state.player.pitch,cameraMode:state.cameraMode,characterId:state.playerCharacter.id,characterName:state.playerCharacter.name,className:state.playerCharacter.className,tokenGlyph:state.playerCharacter.tokenGlyph};}
   function buildMapData(){normalizeWalls();normalizeSurfaces();return {version:15,name:state.mapName||'Новая карта',notes:state.mapNotes||'',grid:{cols:state.cols,rows:state.rows,cellSizeFt:5},levels:{min:state.minLevel,max:state.maxLevel,current:state.currentLevel},cells:state.cells,surfaces:state.surfaces,objects:state.objects,walls:state.walls,connectors:state.connectors,tokens:state.tokens,combat:ensureCombat(),player:{x:state.player.x,y:state.player.y,level:state.player.level,elevation:state.player.elevation,yaw:state.player.yaw,pitch:state.player.pitch},playerCharacter:state.playerCharacter,activeTokenId:state.activeTokenId,cameraMode:state.cameraMode};}
   function saveMap(){var data=buildMapData();try{localStorage.setItem('dnd_vtt_3d_map',JSON.stringify(data));alert('3D-карта «'+(data.name||'Новая карта')+'» сохранена локально.');}catch(e){alert('Не удалось сохранить карту: '+e.message);}}
@@ -443,6 +489,10 @@
   function createBoundaryButtons(){boundaryButton('map3dPlusLeft','Увеличить длину слева',function(){expand('left');});boundaryButton('map3dPlusRight','Увеличить длину справа',function(){expand('right');});boundaryButton('map3dPlusTop','Увеличить ширину сверху',function(){expand('top');});boundaryButton('map3dPlusBottom','Увеличить ширину снизу',function(){expand('bottom');});boundaryButton('map3dPlusUp','Добавить уровень вверх',function(){expand('up');});boundaryButton('map3dPlusDown','Добавить подземный уровень',function(){expand('down');});}
   function renderTools(){
     var box=document.getElementById('map3dTools');if(!box)return;
+    var header=document.getElementById('map3dEditorHeader'),levels=document.getElementById('map3dLevels');
+    if(header)header.style.display=state.playMode?'none':'flex';
+    if(levels)levels.style.display=state.playMode?'none':'flex';
+    box.style.display=state.playMode?'none':'flex';
     var cb=ensureCombat(),ct=cb.active?combatTurn(tokenById(cb.currentId)):null,cur=tokenById(cb.currentId),turn=cb.active?' • Раунд '+cb.round+' • Ход: '+((cur||{}).name||'—')+(ct?' • Движение '+Math.max(0,tokenSpeedFt(cur)-Number(ct.movementUsed||0))+' ft':''):' • Бой не запущен',dir=state.wallEditDir||'n',w=wallForSelected(dir),wh=w?Number(w.height).toFixed(1):'—',wt=w?Number(w.thickness).toFixed(2):'—',wo=w?(w.opening||'none'):'—',ds=w&&w.opening==='door'?(w.doorState||'closed'):'—';box.innerHTML="<label style=\"display:flex;align-items:center;gap:5px;color:#ccc\">👤 Персонаж <select onchange=\"dndMap3DSelectCharacter(this.value)\" style=\"max-width:230px;background:#11151a;color:#fff;border:1px solid #555;border-radius:6px;padding:6px\">'+playerCharacterOptions()+'</select></label><button class=\"btn-action\" onclick=\"dndMap3DNew()\">🗺️ Новая карта</button><button class=\"btn-action\" onclick=\"dndMap3DInfo()\">📝 Имя/описание</button><button class=\"btn-action\" onclick=\"dndMap3DSetCameraMode('editor')\">🛠️ Редактор</button><button class=\"btn-action\" onclick=\"dndMap3DSetCameraMode('firstPerson')\">👁️ 1-е лицо</button><button class=\"btn-action\" onclick=\"dndMap3DSetCameraMode('thirdPerson')\">🎥 3-е лицо</button><button class=\"btn-action\" onclick=\"dndMap3DMoveByFacing(1,0,false)\">⬆️ Вперёд</button><button class=\"btn-action\" onclick=\"dndMap3DMoveByFacing(-1,0,false)\">⬇️ Назад</button><button class=\"btn-action\" onclick=\"dndMap3DMoveByFacing(0,-1,false)\">◀️ Влево</button><button class=\"btn-action\" onclick=\"dndMap3DMoveByFacing(0,1,false)\">▶️ Вправо</button><button class=\"btn-action\" onclick=\"dndMap3DRun()\">🏃 Бег</button><button class=\"btn-action\" onclick=\"dndMap3DRotatePlayer(-.2,0)\">↶</button><button class=\"btn-action\" onclick=\"dndMap3DRotatePlayer(.2,0)\">↷</button><button class=\"btn-action\" onclick=\"dndMap3DPlaceToken()\">📍 Поставить токен</button><button class=\"btn-action\" onclick=\"dndMap3DTokenKind()\">🏷️ Тип</button><button class=\"btn-action\" onclick=\"dndMap3DTokenInit()\">🎲 Инициатива</button><button class=\"btn-action\" onclick=\"dndMap3DTokenInitRoll()\">🎲 d20</button><button class=\"btn-action\" onclick=\"dndMap3DCombatStart()\">⚔️ Начать бой</button><button class=\"btn-action\" onclick=\"dndMap3DCombatNext()\">▶️ Следующий ход</button><button class=\"btn-action\" onclick=\"dndMap3DCombatEnd()\">⏹️ Завершить бой</button><label style=\"display:flex;align-items:center;gap:7px;color:#ddd;padding:7px 2px\"><input type=\"checkbox\" '+(cb.mode?'checked':'')+' onchange=\"dndMap3DCombatMode(this.checked)\"> ⚔️ Боевой режим <span style=\"color:#999\">'+(cb.mode?'скорость ограничивает ход':'свободное перемещение')+'</span></label><button class=\"btn-action\" onclick=\"dndMap3DPossessToken()\">🎮 Вселиться</button><button class=\"btn-action\" onclick=\"dndMap3DSelect()\">👆 Выбор</button><button class=\"btn-action\" onclick=\"dndMap3DUp()\">⬆️ Высота +</button><button class=\"btn-action\" onclick=\"dndMap3DDown()\">⬇️ Высота −</button><button class=\"btn-action\" onclick=\"dndMap3DCube()\">🧱 Мебель</button><button class=\"btn-action\" onclick=\"dndMap3DMassHeight()\">📐 Область</button><button class=\"btn-action\" onclick=\"dndMap3DCopySelection()\">📋 Копировать</button><button class=\"btn-action\" onclick=\"dndMap3DPasteSelection()\">📌 Вставить</button><button class=\"btn-action\" onclick=\"dndMap3DFillArea()\">🟫 Заполнить</button><button class=\"btn-action\" onclick=\"dndMap3DLongWall()\">🧱 Длинная стена</button><button class=\"btn-action\" onclick=\"dndMap3DWallPreset()\">🧱 Пресет стены</button><button class=\"btn-action\" onclick=\"dndMap3DObjectPreset()\">🪑 Пресет объекта</button><button class=\"btn-action\" onclick=\"dndMap3DSurface()\">🟩 Поверхность</button><button class=\"btn-action\" onclick=\"dndMap3DSurfaceEdit()\">⚙️ Свойства пола</button><button class=\"btn-action\" onclick=\"dndMap3DSurfacePreset()\">🧩 Пресет пола</button><button class=\"btn-action\" onclick=\"dndMap3DSavePreset()\">💾 Сохранить участок</button><button class=\"btn-action\" onclick=\"dndMap3DPlacePreset()\">📚 Вставить участок</button><button class=\"btn-action\" onclick=\"dndMap3DManagePresets()\">🗂️ Библиотека участков</button><button class=\"btn-action\" onclick=\"dndMap3DDuplicateSelection()\">📋 Дублировать область</button><button class=\"btn-action\" onclick=\"dndMap3DMoveSelection(-1,0)\">⬅️</button><button class=\"btn-action\" onclick=\"dndMap3DMoveSelection(1,0)\">➡️</button><button class=\"btn-action\" onclick=\"dndMap3DMoveSelection(0,-1)\">⬆️</button><button class=\"btn-action\" onclick=\"dndMap3DMoveSelection(0,1)\">⬇️</button><button class=\"btn-action\" onclick=\"dndMap3DClearSelection()\">✖️ Снять выделение</button><button class=\"btn-action\" onclick=\"dndMap3DObjEdit('x')\">X</button><button class=\"btn-action\" onclick=\"dndMap3DObjEdit('y')\">Y</button><button class=\"btn-action\" onclick=\"dndMap3DObjEdit('z')\">Z</button><button class=\"btn-action\" onclick=\"dndMap3DObjEdit('scaleX')\">↔️ Ширина</button><button class=\"btn-action\" onclick=\"dndMap3DObjEdit('scaleY')\">↕️ Глубина</button><button class=\"btn-action\" onclick=\"dndMap3DObjEdit('scaleZ')\">⬆️ Высота</button><button class=\"btn-action\" onclick=\"dndMap3DObjEdit('rotation')\">🔄 Поворот</button><button class=\"btn-action\" onclick=\"dndMap3DObjEdit('name')\">🏷️ Имя</button><button class=\"btn-action\" onclick=\"dndMap3DMaterialType()\">🧱 Материал</button><button class=\"btn-action\" onclick=\"dndMap3DTexture('object')\">🖼️ Текстура мебели</button><span style=\"color:#aaa;padding:7px 2px\">Стена:</span><button class=\"btn-action\" onclick=\"dndMap3DWallDir('n')\">N</button><button class=\"btn-action\" onclick=\"dndMap3DWallDir('e')\">E</button><button class=\"btn-action\" onclick=\"dndMap3DWallDir('s')\">S</button><button class=\"btn-action\" onclick=\"dndMap3DWallDir('w')\">W</button><button class=\"btn-action\" onclick=\"dndMap3DWallAdjust(''+dir+'','height',.5)\">H+</button><button class=\"btn-action\" onclick=\"dndMap3DWallAdjust(''+dir+'','height',-.5)\">H−</button><button class=\"btn-action\" onclick=\"dndMap3DWallAdjust(''+dir+'','thickness',.03)\">T+</button><button class=\"btn-action\" onclick=\"dndMap3DWallAdjust(''+dir+'','thickness',-.03)\">T−</button><button class=\"btn-action\" onclick=\"dndMap3DWallOpening(''+dir+'')\">Отверстие: '+wo+'</button><button class=\"btn-action\" onclick=\"dndMap3DAddConnector('stairs',1)\">🪜 Лестница ↑</button><button class=\"btn-action\" onclick=\"dndMap3DAddConnector('stairs',-1)\">🪜 Лестница ↓</button><button class=\"btn-action\" onclick=\"dndMap3DAddConnector('ramp',1)\">↗️ Рампа ↑</button><button class=\"btn-action\" onclick=\"dndMap3DAddConnector('ramp',-1)\">↘️ Рампа ↓</button><button class=\"btn-action\" onclick=\"dndMap3DRemoveConnector()\">✖️ Переход</button><button class=\"btn-action\" onclick=\"dndMap3DTexture('wall')\">🧱 Текстура стены</button><button class=\"btn-action\" onclick=\"dndMap3DConnectorDir()\">🧭 Переход: '+String(state.connectorDir||'n').toUpperCase()+'</button><button class=\"btn-action\" onclick=\"dndMap3DDoorToggle(''+dir+'')\">🚪 '+ds+'</button><span style=\"color:#aaa;padding:7px 2px\">H='+wh+' T='+wt+'</span><button class=\"btn-action\" style=\"background:#7f1d1d\" onclick=\"dndMap3DRemove()\">🗑 Удалить</button><button class=\"btn-action\" onclick=\"dndMap3DSave()\">💾 Сохранить</button><button class=\"btn-action\" onclick=\"dndMap3DLoad()\">📂 Загрузить</button><button class=\"btn-action\" onclick=\"dndMap3DExport()\">⬇️ JSON</button><button class=\"btn-action\" onclick=\"dndMap3DImport()\">⬆️ JSON</button><button class=\"btn-action\" onclick=\"dndMap3DReset()\">↺ Сбросить</button>";
   }
   var initialized=false;
@@ -452,17 +502,18 @@
       if(!initialized)return;
     }
     state.open=true;
+    state.playMode=false;state.cameraMode=state.cameraMode==='editor'?'editor':state.cameraMode;
     var m=document.getElementById('map3dEditorModal');if(m)m.style.display='flex';
     canvas=document.getElementById('map3dCanvas');if(!canvas)return;
     ctx=canvas.getContext('2d');resize();renderTools();renderLevelBar();createBoundaryButtons();draw();positionBoundaryButtons();
   }
-  function close(){state.open=false;updateMobileHud();var m=document.getElementById('map3dEditorModal');if(m)m.style.display='none';}
+  function close(){state.open=false;setPlayMode(false);var m=document.getElementById('map3dEditorModal');if(m)m.style.display='none';}
   function handleKey(e){if(!state.open||state.cameraMode==='editor')return;var k=String(e.key||'').toLowerCase(),m={w:[1,0],arrowup:[1,0],s:[-1,0],arrowdown:[-1,0],a:[0,-1],arrowleft:[0,-1],d:[0,1],arrowright:[0,1]};if(m[k]){e.preventDefault();moveByFacing(m[k][0],m[k][1],e.shiftKey);}else if(k==='q'){e.preventDefault();rotatePlayer(-.12,0);}else if(k==='e'){e.preventDefault();rotatePlayer(.12,0);}}
   function init(){
     if(initialized)return;
     initialized=true;
     var modal=document.createElement('div');modal.id='map3dEditorModal';modal.style.cssText='display:none;position:fixed;inset:0;z-index:31000;background:#090a0c;color:#fff;padding:8px;box-sizing:border-box;';
-    modal.innerHTML='<div style="height:100%;display:flex;flex-direction:column;background:#11151a;border:1px solid #555;border-radius:12px;overflow:hidden"><div style="display:flex;align-items:center;gap:8px;padding:9px;border-bottom:1px solid #333;flex-wrap:wrap"><strong style="color:#d4af37">🏗️ 3D Редактор карт</strong><span style="color:#888;font-size:.8em">V70.36.66</span><span style="flex:1"></span><button class="btn-action" onclick="dndMap3DClose()" style="background:#b71c1c">✕ Закрыть</button></div><div id="map3dCanvasWrap" style="position:relative;flex:1;min-height:0;overflow:hidden;touch-action:none"><canvas id="map3dCanvas" style="width:100%;height:100%;display:block;touch-action:none"></canvas><div id="map3dLevels" style="position:absolute;left:10px;bottom:10px;z-index:21;display:flex;gap:4px;flex-wrap:wrap;max-width:75%"></div></div><div id="map3dTools" style="display:flex;gap:6px;flex-wrap:wrap;padding:8px;background:#1a1d21;border-top:1px solid #333;max-height:27vh;overflow:auto"></div></div>';
+    modal.innerHTML='<div id="map3dEditorShell" style="height:100%;display:flex;flex-direction:column;background:#11151a;border:1px solid #555;border-radius:12px;overflow:hidden"><div id="map3dEditorHeader" style="display:flex;align-items:center;gap:8px;padding:9px;border-bottom:1px solid #333;flex-wrap:wrap"><strong style="color:#d4af37">🏗️ 3D Редактор карт</strong><span style="color:#888;font-size:.8em">V70.36.67</span><span style="flex:1"></span><button class="btn-action" onclick="dndMap3DClose()" style="background:#b71c1c">✕ Закрыть</button></div><div id="map3dCanvasWrap" style="position:relative;flex:1;min-height:0;overflow:hidden;touch-action:none"><canvas id="map3dCanvas" style="width:100%;height:100%;display:block;touch-action:none"></canvas><div id="map3dLevels" style="position:absolute;left:10px;bottom:10px;z-index:21;display:flex;gap:4px;flex-wrap:wrap;max-width:75%"></div></div><div id="map3dTools" style="display:flex;gap:6px;flex-wrap:wrap;padding:8px;background:#1a1d21;border-top:1px solid #333;max-height:27vh;overflow:auto"></div></div>';
     document.body.appendChild(modal);
     canvas=document.getElementById('map3dCanvas');
     canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);
