@@ -10,7 +10,7 @@
     {
       "path": "index.html",
       "bytes": 83710,
-      "sha256": "78a907d95153422cd34013bae357b967f4e93100a6f7c336dd568c8803d44cd5"
+      "sha256": "3cde7ac921ea97dad228a061de6b68559bde8e38126dd5cfd204c924ada7b968"
     },
     {
       "path": "app/Ambiences.js",
@@ -1330,7 +1330,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 18532,
-      "sha256": "f8a85747c920b5acad2169865210416edabcb45ac2fb556b861c4bf00b668ffc"
+      "sha256": "8285f553545368516a1e971894c702670d67095f74c4b5eb1b399c26cc7749b6"
     },
     {
       "path": "app/update_scene_v2.js",
