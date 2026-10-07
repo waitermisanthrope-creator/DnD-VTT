@@ -1,4 +1,4 @@
-/* V70.36.86 — Sims-style mobile camera pad\n * V70.36.85 — Sims-style cutaway camera walls\n * V70.36.81 — GLB placement and async build race hardening
+/* V70.36.89 — local ES-module WebView loader\n * V70.36.85 — Sims-style cutaway camera walls\n * V70.36.81 — GLB placement and async build race hardening
  * V70.36.80 — multi-selection and mass material finishing
  * V70.36.79 — touch paint brush for mobile finishing
  * V70.36.78 — editor stabilization: fill, openings, asset drag/drop
@@ -10,7 +10,7 @@
 (function(global){
 'use strict';
 var THREE=null,GLTFLoader=null,renderer=null,scene=null,camera=null,root=null,gizmo=null,gizmoAxis=null,gizmoDragging=false,gizmoStartX=0,gizmoStartY=0,gizmoStartPos=null,gizmoStartRot=0,gizmoStartScale=null,raf=0,map=null,selected=null,mode='orbit',editorMode='objects',transformMode='translate',raycaster=null,mouse=null,assetDB=null,assetCache={},controls={yaw:.8,pitch:.8,distance:24,target:{x:0,y:0,z:0}},touches={},touchGesture=null,snapGrid=true,snapSize=0.25;
-var VERSION='V70.36.87';
+var VERSION='V70.36.89';
 var undoStack=[],redoStack=[],historyBusy=false;
 var openingDrag=null,selectedItems=[],buildGeneration=0,lastScenePoint=null,pendingLibraryAsset=null,paintMode=false,painting=false,paintHistoryStarted=false,paintMaterial='stone',paintSide='front',paintedDuringStroke={};
 function openingForSelected(){var w=selectedWall();return w&&w.opening?w.opening:null;}
