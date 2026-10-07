@@ -524,8 +524,8 @@
     },
     {
       "path": "app/companions.js",
-      "bytes": 8927,
-      "sha256": "ee3bc2ca54907886a59cf6e401cf49793f43261161ff156794bf989d245d6c7e"
+      "bytes": 8943,
+      "sha256": "57dc438359610d80f783035cd390b32dfb486ed70abfd86514a15a0fcbb1740b"
     },
     {
       "path": "app/consumables.js",
@@ -879,8 +879,8 @@
     },
     {
       "path": "app/data/classes/level_up.js",
-      "bytes": 59312,
-      "sha256": "7d1b82a1b8eb09a41a3fb9cef47723c2fc19f0b114837a24afab25b2bbcc92d5"
+      "bytes": 59341,
+      "sha256": "b8d28ace58945031869877c7b7a7d9b47494e8c0efb2df2abc6f7fa009dbf647"
     },
     {
       "path": "app/data/classes/martyr.png",
@@ -1474,8 +1474,8 @@
     },
     {
       "path": "app/vtt_map_editor_3d_v71.js",
-      "bytes": 104525,
-      "sha256": "35433a850a4578b08a73a6ff18910dbf11bd4258e52d49dcbfd9f8624aaeb4a0"
+      "bytes": 104524,
+      "sha256": "067e3170790039ea70c548e0e591c25f1bc2c598b753a2fb6fc6d3fdc6c498b1"
     },
     {
       "path": "app/vtt_map_editor_3d_webgl_v72.js",
