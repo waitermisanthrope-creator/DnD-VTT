@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "70.37.14",
+  "version": "70.37.15",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-07",
@@ -10,7 +10,7 @@
     {
       "path": "index.html",
       "bytes": 83710,
-      "sha256": "3cde7ac921ea97dad228a061de6b68559bde8e38126dd5cfd204c924ada7b968"
+      "sha256": "572d5563c36392b4269d3fc5ac3438cd1e618fea7f1589de808eb449e5cab887"
     },
     {
       "path": "app/Ambiences.js",
@@ -1330,7 +1330,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 18532,
-      "sha256": "8285f553545368516a1e971894c702670d67095f74c4b5eb1b399c26cc7749b6"
+      "sha256": "56531a77bbc52391e9f257c6a85752ea9833753d2635c1d8fa999667ce824800"
     },
     {
       "path": "app/update_scene_v2.js",
