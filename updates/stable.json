@@ -1353,6 +1353,11 @@
       "sha256": "e40c1b38481bda20e80837e0d1a56e3bef71a627a44497531abfeeaea6f63bde"
     },
     {
+      "path": "app/vendor/three.core.legacy.js",
+      "bytes": 375717,
+      "sha256": "90abbc1ff7871d11585ee4eecdc77e7143e5bc8f7afece894cb515f04fcd5521"
+    },
+    {
       "path": "app/vendor/three.legacy.js",
       "bytes": 666210,
       "sha256": "6ad0516fcd7c5a5086c4797005204854664776b6fff8ba07fd5795698950e5f8"
