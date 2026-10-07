@@ -172,6 +172,7 @@
     if(id==='exploit'){if(!exploit(h))return{ok:false,message:'Нет кубов Тактических приёмов.'};return{ok:true,target:t&&t.id,effect:{exploitDie:true},message:'🎯 Тактический приём применён.'};
     return{ok:false,unsupported:true,message:'Военачальник: неизвестная активная способность '+id};
   }
+  }
   function warAttack(h,ctx){
     var o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]},s=state(h);
     if(s.warlordAttackBonus)o.bonusDamage+=Number(s.warlordAttackBonus)||0;
