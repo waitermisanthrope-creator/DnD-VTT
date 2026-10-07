@@ -160,7 +160,9 @@
     if (global.dndNative && typeof global.dndNative.postMessage === 'function') {
       if (onProgress) setProgressHandler(onProgress);
       try {
-        var native = await nativeRequest('stage', sourceManifestUrl || manifestUrl());
+        var stageManifestUrl = sourceManifestUrl || manifestUrl();
+        stageManifestUrl += (stageManifestUrl.indexOf('?') >= 0 ? '&' : '?') + 'cb=' + encodeURIComponent(CACHE_BUSTER);
+        var native = await nativeRequest('stage', stageManifestUrl);
         return { staged: true, native: true, version: native && native.value || manifest.version };
       } finally {
         setProgressHandler(null);
