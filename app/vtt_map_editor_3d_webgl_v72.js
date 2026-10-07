@@ -57,8 +57,8 @@ function open(){
  modal.querySelector('#r3dFront').onclick=function(){colorSide('front');};modal.querySelector('#r3dBack').onclick=function(){colorSide('back');};modal.querySelector('#r3dModel').onclick=addModel;modal.querySelector('#r3dSave').onclick=function(){saveMap();alert('Карта сохранена.');};
  (async function(){
   try{
-   var T=await import('https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.min.js');
-   var L=await import('https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/loaders/GLTFLoader.js');
+   var T=await import('./vendor/three.module.min.js');
+   var L=await import('./vendor/GLTFLoader.js');
    THREE=T;GLTFLoader=L.GLTFLoader;
    var host=modal.querySelector('#map3dRealCanvas');renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(global.devicePixelRatio||1,1.6));renderer.setSize(host.clientWidth,host.clientHeight,false);renderer.outputColorSpace=THREE.SRGBColorSpace;host.appendChild(renderer.domElement);
    scene=new THREE.Scene();scene.background=new THREE.Color('#10151c');root=new THREE.Group();scene.add(root);camera=new THREE.PerspectiveCamera(55,1,.05,1000);raycaster=new THREE.Raycaster();mouse=new THREE.Vector2();
