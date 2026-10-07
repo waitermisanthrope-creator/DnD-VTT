@@ -1,4 +1,4 @@
-/* V70.37.04 — compact Sims bar + real selection orbit camera
+/* V70.37.05 — compact Sims bar + real selection orbit camera
  * V70.36.91 — Sims-style build camera, cutaway walls and floor controls
  * V70.36.90 — OTA release
  * V70.36.89 — local ES-module WebView loader\n * V70.36.85 — Sims-style cutaway camera walls\n * V70.36.81 — GLB placement and async build race hardening
@@ -13,7 +13,7 @@
 (function(global){
 'use strict';
 var THREE=null,GLTFLoader=null,renderer=null,scene=null,camera=null,root=null,gizmo=null,gizmoAxis=null,gizmoDragging=false,gizmoStartX=0,gizmoStartY=0,gizmoStartPos=null,gizmoStartRot=0,gizmoStartScale=null,raf=0,map=null,selected=null,mode='orbit',editorMode='build',transformMode='translate',raycaster=null,mouse=null,assetDB=null,assetCache={},controls={yaw:.8,pitch:.8,distance:24,target:{x:0,y:0,z:0}},touches={},touchGesture=null,snapGrid=true,snapSize=0.25;
-var VERSION='V70.37.04';
+var VERSION='V70.37.05';
 var cutawayWalls=true,cutawayTick=0;
 var undoStack=[],redoStack=[],historyBusy=false;
 var openingDrag=null,roomPreview=null,wallDrag=null,selectedItems=[],buildGeneration=0,lastScenePoint=null,pendingLibraryAsset=null,paintMode=false,painting=false,paintHistoryStarted=false,paintMaterial='stone',paintSide='front',paintedDuringStroke={},roomToolArmed=false;
