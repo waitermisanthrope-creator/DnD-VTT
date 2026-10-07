@@ -4,7 +4,7 @@
  */
 (function(global){
 'use strict';
-var THREE=null,GLTFLoader=null,renderer=null,scene=null,camera=null,root=null,raf=0,map=null,selected=null,mode='orbit',raycaster=null,mouse=null,controls={yaw:.8,pitch:.8,distance:24,target:new (global.Object3D||function(){})()};
+var THREE=null,GLTFLoader=null,renderer=null,scene=null,camera=null,root=null,raf=0,map=null,selected=null,mode='orbit',raycaster=null,mouse=null,controls={yaw:.8,pitch:.8,distance:24,target:{x:0,y:0,z:0}};
 var VERSION='V70.36.70';
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
 function hex(v,f){return /^#[0-9a-f]{6}$/i.test(String(v||''))?String(v):f;}
@@ -63,7 +63,13 @@ function open(){
    var host=modal.querySelector('#map3dRealCanvas');renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(global.devicePixelRatio||1,1.6));renderer.setSize(host.clientWidth,host.clientHeight,false);renderer.outputColorSpace=THREE.SRGBColorSpace;host.appendChild(renderer.domElement);
    scene=new THREE.Scene();scene.background=new THREE.Color('#10151c');root=new THREE.Group();scene.add(root);camera=new THREE.PerspectiveCamera(55,1,.05,1000);raycaster=new THREE.Raycaster();mouse=new THREE.Vector2();
    scene.add(new THREE.HemisphereLight(0xffffff,0x223344,2));var dl=new THREE.DirectionalLight(0xffffff,2);dl.position.set(10,20,5);scene.add(dl);
-   renderer.domElement.addEventListener('pointerdown',pick);window.addEventListener('resize',resize);resize();build();frame();
+   var dragging=false,lastX=0,lastY=0,button=0;
+   renderer.domElement.addEventListener('pointerdown',function(ev){dragging=true;lastX=ev.clientX;lastY=ev.clientY;button=ev.button;renderer.domElement.setPointerCapture&&renderer.domElement.setPointerCapture(ev.pointerId);if(button===0)pick(ev);});
+   renderer.domElement.addEventListener('pointermove',function(ev){if(!dragging)return;var dx=ev.clientX-lastX,dy=ev.clientY-lastY;lastX=ev.clientX;lastY=ev.clientY;if(button===0){controls.yaw-=dx*.008;controls.pitch=Math.max(.15,Math.min(1.45,controls.pitch-dy*.006));}else if(button===1||ev.shiftKey){var pan=.015*controls.distance;controls.target.x-=dx*pan;controls.target.z+=dy*pan;}});
+   renderer.domElement.addEventListener('pointerup',function(){dragging=false;});
+   renderer.domElement.addEventListener('wheel',function(ev){ev.preventDefault();controls.distance=Math.max(3,Math.min(150,controls.distance*Math.exp(ev.deltaY*.001)));},{passive:false});
+   renderer.domElement.addEventListener('contextmenu',function(ev){ev.preventDefault();});
+   window.addEventListener('resize',resize);resize();build();frame();
    modal.querySelector('#map3dRealInfo').textContent='WebGL готов • '+(map.name||'Новая карта');
   }catch(e){modal.querySelector('#map3dRealInfo').textContent='WebGL/Three.js не загрузился';alert('Не удалось запустить настоящий 3D: '+e.message+'\nСтарый редактор не удалён.');}
  })();
