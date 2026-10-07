@@ -52,7 +52,7 @@ function scaleSelected(mult){
  pushHistory();if(!selected||!selected.userData||!selected.userData.mapObjectId){alert('Выберите объект.');return;}selected.scale.multiplyScalar(mult);syncSelectedTransform();updateInfo();}
 function side(w,n){w[n]=w[n]||{texture:'none',color:null};return w[n];}
 function material(color,rough){return new THREE.MeshStandardMaterial({color:hex(color,'#777777'),roughness:rough==null?.82:rough,metalness:0});}
-function tex(url){if(!url||url==='none')return null;try{var l=new THREE.TextureLoader();var t=l.load(url);t.wrapS=t.wrapT=THREE.RepeatWrapping;return t;}catch(e){return null;}}
+function tex(url){if(!url||url==='none')return null;try{if(String(url).indexOf('asset:')===0){var id=String(url).slice(6),cached=assetCache[id];if(cached&&cached.url)url=cached.url;else{loadAssetTexture(id).then(function(){if(typeof build==='function')build();});return null;}}var l=new THREE.TextureLoader(),t=l.load(url);t.wrapS=t.wrapT=THREE.RepeatWrapping;return t;}catch(e){return null;}}
 function matFromSide(s,base){var m=material((s&&s.color)||base);var t=tex(s&&s.texture);if(t)m.map=t;return m;}
 function addBox(name,x,y,z,w,h,d,mats,rot){
  var g=new THREE.BoxGeometry(w,h,d);var ms=Array.isArray(mats)?mats:[mats||material('#777')];var o=new THREE.Mesh(g,ms);o.name=name;o.position.set(x+w*.5,y+d*.5,z+h*.5);if(rot)o.rotation.y=Number(rot)*Math.PI/180;root.add(o);return o;
