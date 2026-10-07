@@ -14,7 +14,7 @@
     playerCharacter:{id:null,name:'Персонаж',className:'Воин',tokenGlyph:'⚔️'},
     activeTokenId:null,
     cameraMode:'editor', playMode:false, fullscreenOwned:false,
-    camera:{yaw:-0.75,pitch:0.72,distance:18,targetX:9.5,targetY:9.5,targetZ:0},
+    camera:{yaw:-0.75,pitch:0.58,distance:18,targetX:9.5,targetY:9.5,targetZ:0},
     gesture:{mode:null,lastX:0,lastY:0,lastDist:0,lastAngle:0,selectStart:null,selectEnd:null},
     tool:'select', selectionMode:true, selected:null, wallEditDir:'n', connectorDir:'n', view:{eyeHeight:1.6,walkSpeed:.16,runMultiplier:1.7,maxStep:.75,thirdPersonDistance:5,thirdPersonHeight:2.4}
   };
@@ -248,7 +248,16 @@
     if(!canvas||!state.open)return;
     var w=canvas.clientWidth,h=canvas.clientHeight;
     ctx.clearRect(0,0,w,h);
-    ctx.fillStyle='#0d0f12';ctx.fillRect(0,0,w,h);
+    ctx.fillStyle='#11161a';ctx.fillRect(0,0,w,h);
+    // Бесконечная рабочая плоскость: редактор больше не оставляет чёрные пустоты вокруг карты.
+    var bgMinX=-15,bgMaxX=state.cols+15,bgMinY=-15,bgMaxY=state.rows+15;
+    for(var by=bgMinY;by<bgMaxY;by++)for(var bx=bgMinX;bx<bgMaxX;bx++){
+      var bp1=project(bx,by,0),bp2=project(bx+1,by,0),bp3=project(bx+1,by+1,0),bp4=project(bx,by+1,0);
+      if([bp1,bp2,bp3,bp4].every(function(p){return p.depth>.05;})){
+        ctx.beginPath();ctx.moveTo(bp1.x,bp1.y);ctx.lineTo(bp2.x,bp2.y);ctx.lineTo(bp3.x,bp3.y);ctx.lineTo(bp4.x,bp4.y);ctx.closePath();
+        ctx.fillStyle='#182025';ctx.fill();ctx.strokeStyle='#303b42';ctx.lineWidth=1;ctx.stroke();
+      }
+    }
     var items=[];
     for(var y=0;y<state.rows;y++)for(var x=0;x<state.cols;x++){
       var z=cellHeight(x,y);var sf=surfaceAt(x,y,state.currentLevel);
@@ -610,8 +619,8 @@
   function init(){
     if(initialized)return;
     initialized=true;
-    var modal=document.createElement('div');modal.id='map3dEditorModal';modal.style.cssText='display:none;position:fixed;inset:0;z-index:31000;background:#090a0c;color:#fff;padding:8px;box-sizing:border-box;';
-    modal.innerHTML='<div id="map3dEditorShell" style="height:100%;display:flex;flex-direction:column;background:#11151a;border:1px solid #555;border-radius:12px;overflow:hidden"><div id="map3dEditorHeader" style="display:flex;align-items:center;gap:6px;padding:7px 9px;border-bottom:1px solid #333;flex-wrap:nowrap"><strong style="color:#d4af37;white-space:nowrap">🏗️ 3D</strong><span style="color:#888;font-size:.72em">V70.37.03</span><button class="btn-action" onclick="dndMap3DNew()" title="Новая карта" style="padding:7px 9px">🗺️</button><button class="btn-action" onclick="dndMap3DInfo()" title="Имя и описание" style="padding:7px 9px">📝</button><span style="flex:1"></span><button class="btn-action" onclick="dndMap3DClose()" style="background:#8f2424;padding:7px 10px">✕</button></div><div id="map3dCanvasWrap" style="position:relative;flex:1;min-height:0;overflow:hidden;touch-action:none"><canvas id="map3dCanvas" style="width:100%;height:100%;display:block;touch-action:none"></canvas><div id="map3dLevels" style="position:absolute;left:10px;bottom:10px;z-index:21;display:flex;gap:4px;flex-wrap:wrap;max-width:75%"></div></div><div id="map3dTools" data-mode="build" style="display:flex;flex-direction:column;gap:5px;padding:5px 7px;background:#14181e;border-top:1px solid #333;max-height:none;overflow:visible"></div></div>';
+    var modal=document.createElement('div');modal.id='map3dEditorModal';modal.style.cssText='display:none;position:fixed!important;left:0!important;top:0!important;right:0!important;bottom:0!important;width:100vw!important;height:100dvh!important;z-index:31000;background:#090a0c;color:#fff;padding:0!important;margin:0!important;box-sizing:border-box;transform:none!important;zoom:1!important;';
+    modal.innerHTML='<div id="map3dEditorShell" style="width:100%;height:100%;display:flex;flex-direction:column;background:#11151a;border:0;border-radius:0;overflow:hidden;box-sizing:border-box"><div id="map3dEditorHeader" style="display:flex;align-items:center;gap:6px;padding:7px 9px;border-bottom:1px solid #333;flex-wrap:nowrap"><strong style="color:#d4af37;white-space:nowrap">🏗️ 3D</strong><span style="color:#888;font-size:.72em">V70.37.04</span><button class="btn-action" onclick="dndMap3DNew()" title="Новая карта" style="padding:7px 9px">🗺️</button><button class="btn-action" onclick="dndMap3DInfo()" title="Имя и описание" style="padding:7px 9px">📝</button><span style="flex:1"></span><button class="btn-action" onclick="dndMap3DClose()" style="background:#8f2424;padding:7px 10px">✕</button></div><div id="map3dCanvasWrap" style="position:relative;flex:1 1 auto;min-height:0;width:100%;overflow:hidden;background:#11161a;touch-action:none"><canvas id="map3dCanvas" style="width:100%;height:100%;display:block;min-width:0;min-height:0;touch-action:none"></canvas><div id="map3dLevels" style="position:absolute;left:10px;bottom:10px;z-index:21;display:flex;gap:4px;flex-wrap:wrap;max-width:75%"></div></div><div id="map3dTools" data-mode="build" style="display:flex;flex-direction:column;gap:5px;padding:5px 7px;background:#14181e;border-top:1px solid #333;max-height:none;overflow:visible"></div></div>';
     document.body.appendChild(modal);
     canvas=document.getElementById('map3dCanvas');
     canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);
