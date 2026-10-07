@@ -13,7 +13,7 @@
 (function(global){
 'use strict';
 var THREE=null,GLTFLoader=null,renderer=null,scene=null,camera=null,root=null,gizmo=null,gizmoAxis=null,gizmoDragging=false,gizmoStartX=0,gizmoStartY=0,gizmoStartPos=null,gizmoStartRot=0,gizmoStartScale=null,raf=0,map=null,selected=null,mode='orbit',editorMode='build',transformMode='translate',raycaster=null,mouse=null,assetDB=null,assetCache={},controls={yaw:.8,pitch:.8,distance:24,target:{x:0,y:0,z:0}},touches={},touchGesture=null,snapGrid=true,snapSize=0.25;
-var VERSION='V70.37.02';
+var VERSION='V70.37.03';
 var cutawayWalls=true,cutawayTick=0;
 var undoStack=[],redoStack=[],historyBusy=false;
 var openingDrag=null,roomPreview=null,wallDrag=null,selectedItems=[],buildGeneration=0,lastScenePoint=null,pendingLibraryAsset=null,paintMode=false,painting=false,paintHistoryStarted=false,paintMaterial='stone',paintSide='front',paintedDuringStroke={};
@@ -93,7 +93,7 @@ function createRoomFromPoints(a,b){
   [x1,y1,'e',y2-y1],
   [x2-1,y1,'e',y2-y1]
  ];
- specs.forEach(function(s){var k=wallKey(level,s[0],s[1]);map.walls[k]={level:level,x:s[0],y:s[1],dir:s[2],length:s[3],height:2.5,thickness:.09,color:'#777777',material:'stone',front:{texture:'none',color:'#777777'},back:{texture:'none',color:'#777777'}};});
+ specs.forEach(function(s){var k=wallKey(level,s[0],s[1]);if(!map.walls[k])map.walls[k]={level:level,x:s[0],y:s[1],dir:s[2],length:s[3],height:2.5,thickness:.09,color:'#777777',material:'stone',front:{texture:'none',color:'#777777'},back:{texture:'none',color:'#777777'},__roomAuto:true};});
  saveMap();build();updateInfo();return true;
 }
 function deleteSelected(){
@@ -147,6 +147,7 @@ function resizeRoomBoundary(w,handle,delta){
    var oldX1=r.x1,oldX2=r.x2;
    if(handle==='start'){var nx=Math.max(0,oldX1+delta);if(nx>=oldX2-.25)return false;delta=nx-oldX1;r.x1=nx;}
    else {var nx2=Math.min(Number(map.grid&&map.grid.cols)||20,oldX2+delta);if(nx2<=oldX1+.25)return false;delta=nx2-oldX2;r.x2=nx2;}
+   if(!r.top.__roomAuto||!r.bottom.__roomAuto||!r.left.__roomAuto||!r.right.__roomAuto)return false;
    r.top.length=r.x2-r.x1;r.bottom.length=r.x2-r.x1;
    if(handle==='start'){r.top.x=r.x1;r.bottom.x=r.x1;r.left.x=r.x1;r.left.y=r.y1;}
    else {r.right.x=r.x2-1;r.right.y=r.y1;}
@@ -154,6 +155,7 @@ function resizeRoomBoundary(w,handle,delta){
    var oldY1=r.y1,oldY2=r.y2;
    if(handle==='start'){var ny=Math.max(0,oldY1+delta);if(ny>=oldY2-.25)return false;delta=ny-oldY1;r.y1=ny;}
    else {var ny2=Math.min(Number(map.grid&&map.grid.rows)||20,oldY2+delta);if(ny2<=oldY1+.25)return false;delta=ny2-oldY2;r.y2=ny2;}
+   if(!r.top.__roomAuto||!r.bottom.__roomAuto||!r.left.__roomAuto||!r.right.__roomAuto)return false;
    r.left.length=r.y2-r.y1;r.right.length=r.y2-r.y1;
    if(handle==='start'){r.top.y=r.y1;r.bottom.y=r.y2;r.left.y=r.y1;}
    else {r.bottom.y=r.y2;r.right.y=r.y1;}
