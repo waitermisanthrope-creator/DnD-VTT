@@ -1,7 +1,7 @@
 name: Refresh in-app update manifest
-# V70.36.63 — stable manifest publisher
-# V70.36.63 wallpaper folder fix manifest refresh
-# V70.36.63 settings scroll hotfix manifest refresh
+# V70.36.64 — stable manifest publisher
+# V70.36.64 wallpaper folder fix manifest refresh
+# V70.36.64 settings scroll hotfix manifest refresh
 
 on:
   push:
@@ -34,7 +34,7 @@ jobs:
       - name: Generate stable manifest
         run: |
           set -euo pipefail
-          python3 tools/build_update_manifest.py             --base-url "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main"             --version "70.36.63"             --min-app-version "70.26.99"             --channel "stable"             --output updates/stable.json
+          python3 tools/build_update_manifest.py             --base-url "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main"             --version "70.36.64"             --min-app-version "70.26.99"             --channel "stable"             --output updates/stable.json
 
       - name: Verify required visual assets
         run: |
@@ -86,8 +86,10 @@ jobs:
           echo "Could not publish stable manifest after retries"
           exit 1
 
-# V70.36.63 manifest refresh trigger
+# V70.36.64 manifest refresh trigger
 
-# V70.36.63 final trigger
+# V70.36.64 final trigger
 
-# V70.36.63 wallpaper module rollback trigger
+# V70.36.64 wallpaper module rollback trigger
+
+# V70.36.64 3D map syntax fix manifest refresh
