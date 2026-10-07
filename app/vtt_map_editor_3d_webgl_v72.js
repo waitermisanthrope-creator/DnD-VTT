@@ -14,8 +14,9 @@
 (function(global){
 'use strict';
 var THREE=null,GLTFLoader=null,renderer=null,scene=null,camera=null,root=null,gizmo=null,gizmoAxis=null,gizmoDragging=false,gizmoStartX=0,gizmoStartY=0,gizmoStartPos=null,gizmoStartRot=0,gizmoStartScale=null,raf=0,map=null,selected=null,mode='orbit',editorMode='build',transformMode='translate',raycaster=null,mouse=null,assetDB=null,assetCache={},controls={yaw:.8,pitch:.8,distance:24,target:{x:0,y:0,z:0}},touches={},touchGesture=null,snapGrid=true,snapSize=0.25;
-var VERSION='V70.37.10';
-var cutawayWalls=true,cutawayTick=0;
+var VERSION='V70.37.11';
+// Разрез — только ручной инструмент редактора. По умолчанию стены всегда цельные.
+var cutawayWalls=false,cutawayTick=0;
 var undoStack=[],redoStack=[],historyBusy=false;
 var openingDrag=null,roomPreview=null,wallDrag=null,selectedItems=[],buildGeneration=0,lastScenePoint=null,pendingLibraryAsset=null,paintMode=false,painting=false,paintHistoryStarted=false,paintMaterial='stone',paintSide='front',paintedDuringStroke={},roomToolArmed=false,simpleToolsRefresh=null;
 function openingForSelected(){var w=selectedWall();return w&&w.opening?w.opening:null;}
@@ -142,6 +143,18 @@ function createRoomFromPoints(a,b){
   [x1-1,y1,'e',y2-y1],
   [x2-1,y1,'e',y2-y1]
  ];
+ // Создание комнаты атомарно задаёт четыре стороны. Никаких «слияний» при первичном создании:
+ // соседняя старая стена не может затереть одну из сторон новой комнаты.
+ specs.forEach(function(s){
+   var k=roomWallKey(level,s[0],s[1],s[2]), old=map.walls[k];
+   if(old&&!old.__roomAuto){
+     // Существующую пользовательскую стену не трогаем: новая сторона получает отдельный ключ.
+     k=roomWallKey(level,s[0],s[1],s[2]+'r'+Date.now());
+   }
+   var w={level:level,x:Number(s[0])||0,y:Number(s[1])||0,dir:s[2],length:Math.max(.25,Number(s[3])||.25),height:2.5,thickness:.09,color:'#777777',material:'stone',front:{texture:'none',color:'#777777'},back:{texture:'none',color:'#777777'},__roomAuto:true,__key:k};
+   map.walls[k]=w;
+ });
+ // Важно: не вызываем ensureRoomWall() здесь — он предназначен для последующего изменения границ.
  specs.forEach(function(s){ensureRoomWall(level,s);});
  saveMap();build();updateInfo();return true;
 }
@@ -350,8 +363,8 @@ function setEditorMode(m){
  if(m==='furnishing')m='objects';
  if(m!=='build'&&m!=='objects'&&m!=='view'&&m!=='finish'&&m!=='levels')m='view';
  editorMode=m;selected=null;selectedItems=[];transformMode='translate';mode=m==='view'?'orbit':'transform';roomToolArmed=false;
- // Cutaway is an editor aid only. Gameplay/1st/3rd-person view must always show solid walls.
- cutawayWalls=(m==='build');
+ // Разрез никогда не включается автоматически. Он включается только кнопкой «Разрез» в редакторе.
+ if(m!=='build')cutawayWalls=false;
  updateGizmo();build();updateCutaway();updateInfo();
  var b=document.querySelectorAll('[data-r3d-mode]');
  for(var i=0;i<b.length;i++){
@@ -521,7 +534,8 @@ function focusCameraOnSelection(o){
  return true;
 }
 
-function pick(ev){if(!raycaster||!renderer)return;var r=renderer.domElement.getBoundingClientRect();mouse.x=((ev.clientX-r.left)/r.width)*2-1;mouse.y=-((ev.clientY-r.top)/r.height)*2+1;raycaster.setFromCamera(mouse,camera);var hits=raycaster.intersectObjects(root.children,true).filter(function(h){return h.object.name!=='ground'&&!h.object.userData.gizmoAxis&&editorAllows(h.object.userData.editorKind||'object');});if(!hits.length){selected=null;selectedItems=[];updateGizmo();updateInfo();return;}var o=hits[0].object;while(o&&o.parent&&!(o.userData&&o.userData.mapObjectId)&&o.parent!==root)o=o.parent;if(ev.shiftKey||ev.ctrlKey){var ix=selectedItems.indexOf(o);if(ix>=0)selectedItems.splice(ix,1);else selectedItems.push(o);selected=selectedItems.length?selectedItems[selectedItems.length-1]:null;}else{selectedItems=[o];selected=o;}if(selected)focusCameraOnSelection(selected);updateGizmo();updateInfo();}
+function pick(ev){if(!raycaster||!renderer)return;var r=renderer.domElement.getBoundingClientRect();mouse.x=((ev.clientX-r.left)/r.width)*2-1;mouse.y=-((ev.clientY-r.top)/r.height)*2+1;raycaster.setFromCamera(mouse,camera);var hits=raycaster.intersectObjects(root.children,true).filter(function(h){return h.object.name!=='ground'&&!h.object.userData.gizmoAxis&&editorAllows(h.object.userData.editorKind||'object');});if(!hits.length){selected=null;selectedItems=[];updateGizmo();updateInfo();return;}var o=hits[0].object;while(o&&o.parent&&!(o.userData&&o.userData.mapObjectId)&&o.parent!==root)o=o.parent;
+ if(editorMode==='finish'&&window.r3dPendingTexture){var pt=window.r3dPendingTexture;var kind=pt.kind;if((kind==='wall'&&o.userData&&o.userData.editorKind==='wall')||(kind==='floor'&&o.userData&&o.userData.editorKind==='surface')){selected=o;selectedItems=[o];applyRootTexture(pt.file,kind,pt.which);window.r3dPendingTexture=null;updateGizmo();updateInfo();return;}}if(ev.shiftKey||ev.ctrlKey){var ix=selectedItems.indexOf(o);if(ix>=0)selectedItems.splice(ix,1);else selectedItems.push(o);selected=selectedItems.length?selectedItems[selectedItems.length-1]:null;}else{selectedItems=[o];selected=o;}if(selected)focusCameraOnSelection(selected);updateGizmo();updateInfo();}
 function updateFloorBar(){var label=document.getElementById('r3dFloorLabel');if(!label||!map)return;var cur=Number(map.levels&&map.levels.current)||0,max=Math.max(0,Number(map.levels&&(map.levels.count||map.levels.max))||0);label.textContent='Этаж '+(cur+1)+' / '+(max+1);}
 function resizeOpening(delta){var w=selectedWall(),op=openingForSelected();if(!w||!op)return;var max=Math.max(.1,Number(w.length)||1),next=Math.max(.1,Math.min(max,Number(op.width||.9)+delta));pushHistory();op.width=next;op.offset=Math.max(0,Math.min(max-next,Number(op.offset)||0));saveMap();build();updateInfo();}
 function updateContextPanel(){
@@ -538,7 +552,7 @@ function updateContextPanel(){
    title.textContent=selectedItems.length>1?'🪑 Объекты: '+selectedItems.length:'🪑 '+(selected.name||'Объект');
    add('↔ Переместить',function(){setGizmoMode('translate');});add('⟳ Вращать',function(){setGizmoMode('rotate');});
    add('⤢ Масштаб',function(){setGizmoMode('scale');});add('⧉ Дубликат',duplicateSelected);add('🗑 Удалить',deleteSelected);
- }else if(editorMode==='finish'&&selected&&selected.name&&selected.name.indexOf('surface:')===0){title.textContent='🟫 Пол';add('🟫 Текстуры пола',function(){openRootTexturePicker('floor');});add('🎨 Материалы',openMaterialCatalog);add('🗑 Очистить выделение',function(){selected=null;selectedItems=[];updateGizmo();updateInfo();});
+ }else if(editorMode==='finish'&&selected&&selected.name&&selected.name.indexOf('wall:')===0){title.textContent='🧱 Стена';add('🧱 Текстуры стены',function(){openRootTexturePicker('wall');});add('🎨 Материалы',openMaterialCatalog);add('🗑 Очистить выделение',function(){selected=null;selectedItems=[];updateGizmo();updateInfo();});}else if(editorMode==='finish'&&selected&&selected.name&&selected.name.indexOf('surface:')===0){title.textContent='🟫 Пол';add('🟫 Текстуры пола',function(){openRootTexturePicker('floor');});add('🎨 Материалы',openMaterialCatalog);add('🗑 Очистить выделение',function(){selected=null;selectedItems=[];updateGizmo();updateInfo();});
  }else if(editorMode==='build'){
    title.textContent='🧱 Строительство';add('▭ Создать комнату',function(){if(window.r3dRoomHint){window.r3dRoomHint.textContent='Потяните по полу от одного угла комнаты к другому.';}});add('🏗️ Стена',function(){openWallTools();});add('🗑 Удалить',deleteSelected);
  }else if(editorMode==='objects'){
@@ -603,17 +617,25 @@ function rootTextureEntry(kind,file){
 function applyRootTexture(file,kind,which){
  ensureMapCollections();
  var rec=rootTextureEntry(kind,file);
- if(!rec){alert('Текстура не найдена: '+file);return;}
+ if(!rec){alert('Текстура не найдена: '+file);return false;}
  if(kind==='wall'){
    var w=selectedWall();
-   if(!w){alert('Сначала выберите стену в режиме строительства.');return;}
+   if(!w){
+     window.r3dPendingTexture={file:rec.file,kind:'wall',which:which==='back'?'back':'front'};
+     var h=document.getElementById('r3dQuickHint');if(h)h.textContent='Текстура выбрана. Теперь коснитесь стены — она будет применена.';
+     return false;
+   }
    var sideName=which==='back'?'back':'front';
-   pushHistory();side(w,sideName).texture='root:'+rec.file;saveMap();build();updateInfo();
+   pushHistory();side(w,sideName).texture='root:'+rec.file;saveMap();build();updateInfo();return true;
  }else{
-   if(!selected||!selected.name||selected.name.indexOf('surface:')!==0){alert('Сначала выберите участок пола в режиме «Отделка».');return;}
-   var key=selected.name.slice(8),ss=map.surfaces&&map.surfaces[key];
-   if(!ss){alert('Поверхность пола не найдена.');return;}
-   pushHistory();ss.texture='root:'+rec.file;saveMap();build();updateInfo();
+   var ss=null,key='';
+   if(selected&&selected.name&&selected.name.indexOf('surface:')===0){key=selected.name.slice(8);ss=map.surfaces&&map.surfaces[key];}
+   if(!ss){
+     window.r3dPendingTexture={file:rec.file,kind:'floor',which:'front'};
+     var h2=document.getElementById('r3dQuickHint');if(h2)h2.textContent='Текстура выбрана. Теперь коснитесь участка пола — она будет применена.';
+     return false;
+   }
+   pushHistory();ss.texture='root:'+rec.file;saveMap();build();updateInfo();return true;
  }
 }
 function openRootTexturePicker(kind){
@@ -621,7 +643,7 @@ function openRootTexturePicker(kind){
  if(old){old.remove();return;}
  var list=ROOT_TEXTURE_CATALOG[kind]||[],box=document.createElement('div');
  box.id='map3dRootTextures';
- box.style.cssText='position:absolute;right:8px;top:58px;bottom:68px;width:min(170px,42vw);overflow-y:auto;overflow-x:hidden;background:#171c24;border:1px solid #66717f;border-radius:14px;padding:8px;z-index:100;box-shadow:0 12px 40px #000c;pointer-events:auto;touch-action:pan-y;';
+ box.style.cssText='position:absolute;right:8px;top:58px;bottom:68px;width:min(170px,42vw);overflow-y:auto;overflow-x:hidden;background:#171c24;border:1px solid #66717f;border-radius:14px;padding:8px;z-index:2000;box-shadow:0 12px 40px #000c;pointer-events:auto;touch-action:pan-y;overscroll-behavior:contain;';
  var title=kind==='wall'?'🧱 Стены':'🟫 Пол';
  box.innerHTML='<div style="position:sticky;top:0;z-index:2;background:#171c24;padding:4px 2px 8px;display:flex;align-items:center;justify-content:space-between"><b>'+title+'</b><button id="rootTexClose" type="button" style="padding:5px 8px">✕</button></div>';
  var grid=document.createElement('div');grid.style.cssText='display:flex;flex-direction:column;gap:7px';
