@@ -709,6 +709,20 @@ function open(){
  var modal=document.createElement('div');modal.id='map3dRealModal';modal.style.cssText='position:fixed;inset:0;z-index:32000;background:#080b10;color:#fff;display:flex;flex-direction:column;';
  modal.innerHTML='<div id="r3dTopBar" style="min-height:52px;display:flex;align-items:center;gap:6px;padding:6px 9px;box-sizing:border-box;background:#151a20;border-bottom:1px solid #333"><b style="font-size:17px">🏠 3D Карты</b><span id="map3dRealInfo" style="color:#8f9aa8;font-size:10px">'+VERSION+'</span><div style="flex:1"></div><button id="r3dFloorDown">▼</button><button id="r3dFloorLabel" style="min-width:82px;font-weight:800">Этаж 1</button><button id="r3dFloorUp">▲</button><button id="r3dFloorHome">⌂</button><button id="r3dSave">💾</button><button id="r3dClose">✕</button></div><div id="r3dQuickHint" style="padding:6px 10px;background:#10151b;color:#aeb8c5;font-size:11px;min-height:17px">Выберите режим снизу. Камера управляется жестами или кнопками справа.</div><div id="r3dContextPanel" style="display:none"></div><div id="map3dRealCanvas" style="position:relative;flex:1;min-height:0;overflow:hidden"></div><div id="r3dCompat" style="display:none"><button id="r3dMore"></button><div id="r3dMorePanel"></div><button id="r3dLevelDown"></button><button id="r3dLevelUp"></button><button id="r3dFill"></button><button id="r3dPaint"></button><button id="r3dPaintFront"></button><button id="r3dPaintBack"></button><button id="r3dWallTools"></button><button id="r3dWallTextures"></button><button id="r3dFloorTextures"></button><button id="r3dCutaway"></button><button id="r3dUndo"></button><button id="r3dRedo"></button><button id="r3dDup"></button><button id="r3dFront"></button><button id="r3dBack"></button><button id="r3dFrontTex"></button><button id="r3dBackTex"></button><button id="r3dTexture"></button><button id="r3dModel"></button><button id="r3dMove"></button><button id="r3dRotate"></button><button id="r3dScale"></button><button id="r3dSnap"></button><button id="r3dLeft"></button><button id="r3dRight"></button><button id="r3dForward"></button><button id="r3dBackMove"></button><button id="r3dRotL"></button><button id="r3dRotR"></button><button id="r3dScaleDown"></button><button id="r3dScaleUp"></button></div>';
  document.body.appendChild(modal);
+ // Embedded 3D bottom toolbar: do not depend on vtt_map_editor_3d_ui_v1.js
+ (function(){
+  if(document.getElementById('r3dEmbeddedToolbar')) return;
+  var bar=document.createElement('div');
+  bar.id='r3dEmbeddedToolbar';
+  bar.innerHTML='<style id="r3dEmbeddedToolbarStyle">#r3dEmbeddedToolbar{position:absolute;left:0;right:0;bottom:0;z-index:45000;display:flex;justify-content:center;gap:6px;padding:7px 7px calc(7px + env(safe-area-inset-bottom));pointer-events:none;box-sizing:border-box;font-family:system-ui,sans-serif}#r3dEmbeddedToolbar button{pointer-events:auto;min-width:68px;height:48px;border:1px solid #59636b;border-radius:11px;background:rgba(18,22,26,.98);color:#eee;box-shadow:0 2px 12px #0008;font-size:11px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center}#r3dEmbeddedToolbar button b{font-size:18px;line-height:18px}#r3dEmbeddedToolbar button.active{background:#34404a;border-color:#c0c8ce}</style><button data-r3dtab="build"><b>🧱</b><span>Стройка</span></button><button data-r3dtab="furniture"><b>🛋</b><span>Мебель</span></button><button data-r3dtab="texture"><b>🎨</b><span>Текстура</span></button><button data-r3dtab="view"><b>👁</b><span>Вид</span></button><button data-r3dtab="add"><b>➕</b><span>Добавить</span></button>';
+  modal.appendChild(bar);
+  bar.addEventListener('click',function(ev){
+   var b=ev.target.closest('[data-r3dtab]'); if(!b) return;
+   var t=b.getAttribute('data-r3dtab');
+   if(window.R3DNewUI&&typeof window.R3DNewUI.open==='function'){window.R3DNewUI.open(t);return;}
+   bar.querySelectorAll('button').forEach(function(x){x.classList.toggle('active',x===b);});
+  });
+ })();
  setTimeout(function(){
   try{
    if(window.R3DNewUI&&typeof window.R3DNewUI.render==='function')window.R3DNewUI.render();
