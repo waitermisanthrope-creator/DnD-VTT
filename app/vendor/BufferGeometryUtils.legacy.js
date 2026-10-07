@@ -1,3 +1,4 @@
+(function(){
 /* Offline WebView legacy bridge. */
 /**
  * Minimal Three.js BufferGeometryUtils subset required by the bundled GLTFLoader.
@@ -29,3 +30,5 @@ function toTrianglesDrawMode(geometry, drawMode) {
   return geometry;
 }
 globalThis.DND_BufferGeometryUtils={toTrianglesDrawMode};
+
+})();
