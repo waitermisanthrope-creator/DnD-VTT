@@ -450,6 +450,9 @@
   }
   function setPlayMode(on){
     state.playMode=!!on;
+    var modal=document.getElementById('map3dEditorModal'),shell=document.getElementById('map3dEditorShell');
+    if(modal)modal.style.padding=state.playMode?'0':'8px';
+    if(shell){shell.style.borderRadius=state.playMode?'0':'12px';shell.style.border=state.playMode?'0':'1px solid #555';}
     if(state.playMode){requestPlayFullscreen();}
     else{leavePlayFullscreen();}
     updateMobileHud();draw();renderTools();
