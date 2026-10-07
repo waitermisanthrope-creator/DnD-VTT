@@ -9,8 +9,8 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 83721,
-      "sha256": "4a397de0b02f11b48a85920147cc57672dcaeec8690a67f8b3fcb3daba1a7823"
+      "bytes": 83789,
+      "sha256": "91ed0443b8c02479900973cb5190e7d2ac79a4f5b072960d29308839f7a74ef8"
     },
     {
       "path": "app/Ambiences.js",
@@ -1330,7 +1330,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 18532,
-      "sha256": "00e78fd49cb0a16be8c8b0144e9d80b04c636b543367909664fe08e9a1151dcc"
+      "sha256": "50ff5e9f7b436d1b406236d2c01057963e67c7fa24464ef79eaf35d0e137a190"
     },
     {
       "path": "app/update_scene_v2.js",
@@ -1473,14 +1473,19 @@
       "sha256": "d42239954041731f440a4d4540e017b98329ea7db1750d3a8efbad3bd331cde0"
     },
     {
+      "path": "app/vtt_map_editor_3d_ui_v1.js",
+      "bytes": 5505,
+      "sha256": "6186e9d198d505b35a0a207567424980a0297e6cba4ccfe4b3879f867bc367e0"
+    },
+    {
       "path": "app/vtt_map_editor_3d_v71.js",
       "bytes": 95994,
       "sha256": "1ee64315a090dae636705a7825d361d63a05f3c6cdf70f4a63adda0ea619ada2"
     },
     {
       "path": "app/vtt_map_editor_3d_webgl_v72.js",
-      "bytes": 91822,
-      "sha256": "79f908ac0089877c4b9e8ccc734580ddc635da77d0101a20d148e24df2b7efcc"
+      "bytes": 92502,
+      "sha256": "965e1127f03c9a01924c726b4096f8db52dbeadc45a735ea23233b066ea86b03"
     },
     {
       "path": "app/vtt_mobile_battle_v61.js",
