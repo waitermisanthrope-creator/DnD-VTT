@@ -249,6 +249,7 @@ function open(){
    await loadClassic('./vendor/three.core.legacy.js');
    if(!global.THREECore) throw new Error('Three.js core legacy bridge not loaded');
    await loadClassic('./vendor/three.legacy.js');
+   await loadClassic('./vendor/BufferGeometryUtils.legacy.js');
    if(!global.DND_BufferGeometryUtils) throw new Error('BufferGeometryUtils legacy bridge not loaded');
    await loadClassic('./vendor/GLTFLoader.legacy.js');
    if(!global.THREE||!global.DND_GLTFLoader) throw new Error('Three.js legacy bridge not loaded');
