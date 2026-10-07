@@ -1998,7 +1998,6 @@ Advanced Debug Panel
 - Mobile HUD adds a dedicated `🧭 Check` action.
 - Public API: `DNDEncounterCheckpointV68`, `dndV68Open`, `dndV68Close`, `dndV68Save`, `dndV68Restore`, `dndV68Export`, `dndV68FileImport`.
 - Test: `test_v68.js` -> `V68_ENCOUNTER_CHECKPOINT_TEST_OK`.
-
 ## V69 INTEGRATION NOTES
 - `index.html` explicitly loads `vtt_combat_event_bus_v69.js` after V68.
 - V69 wraps the existing V66 log recorder only to mirror events; V66 remains the event recording owner.
@@ -3997,7 +3996,6 @@ network_gameplay USE_FEATURE
 ## V70.25.57 — APK PRE-COMPILATION PRIORITY PLAN / EXECUTION CHECKPOINT
 
 ### PRIORITY RULE — ОБЯЗАТЕЛЬНО СЛЕДОВАТЬ
-
 До компиляции APK работа выполняется в следующем порядке. Это теперь основной приоритетный план проекта; следующие сессии должны продолжать его сверху вниз и не перескакивать к APK-сборке, пока обязательные release gates не закрыты.
 
 1. **Закрыть подтверждённые V707 / V715 / V723 / V725 / V743 проблемы.**
@@ -5997,8 +5995,7 @@ Runtime содержит Усиление, Проекцию, Телекинез,
 ### C-05 — Таблица требований мультикласса устарела относительно реестра
 `Hero-info.js` содержит требования для старого набора классов и не содержит полноценные записи для всех новых классов. Для отсутствующих классов функция проверки фактически возвращает разрешение по умолчанию. Следовательно, часть новых классов сейчас может обходить проверку требований мультикласса.
 
-### C-06 — Требования Стража и Военачальника не совпадают с текущим шаблоном класса
-В реестре/гайде Страж описан как класс с Strength/Constitution и требованием мультикласса Strength 13. В `Hero-info.js` для `Warden`/Стража записаны Strength 13 + Wisdom 13, причём общий цикл требует оба значения. Для Военачальника проектный шаблон предусматривает Strength или Dexterity 13 + Charisma 13, а текущая таблица проверяет Strength 13 + Charisma 13. Это не просто текстовая разница — это реальная логика допуска к мультиклассу.
+### C-06 — Требования Стража и Военачальника не совпадают с текущим шаблоном классаВ реестре/гайде Страж описан как класс с Strength/Constitution и требованием мультикласса Strength 13. В `Hero-info.js` для `Warden`/Стража записаны Strength 13 + Wisdom 13, причём общий цикл требует оба значения. Для Военачальника проектный шаблон предусматривает Strength или Dexterity 13 + Charisma 13, а текущая таблица проверяет Strength 13 + Charisma 13. Это не просто текстовая разница — это реальная логика допуска к мультиклассу.
 
 ### C-07 — Реестр метаданных содержит риск неверной primaryStat для Стража
 `classesRegistry.js` задаёт для Стража `primaryStat: "constitution"`, тогда как текущий шаблон класса и его мультиклассирование используют Strength как основную боевую характеристику (при дополнительной роли Constitution). Нужно унифицировать источник истины.
@@ -7997,8 +7994,7 @@ Implemented in `app/vtt_map_editor_3d_v71.js`:
 - New map resets placed tokens but keeps the character selector.
 
 ### QA V70.36.6
-- Select character → select cell → place token → click token → “Вселиться”.
-- Confirm the active token follows movement/collision coordinates.
+- Select character → select cell → place token → click token → “Вселиться”.- Confirm the active token follows movement/collision coordinates.
 - Place several tokens and confirm they remain independent.
 - Save/load and confirm tokens and active token persist.
 - Verify wall/furniture texture controls accept a future asset path without breaking the editor.
@@ -8447,3 +8443,23 @@ Implemented:
 - Повторно нажать то же направление на полностью заполненной области: стены области должны удалиться.
 - Проверить, что при движении камеры возле персонажа не появляются растянутые/мигающие полигоны.
 - Проверить свободный и боевой режим движения отдельно.
+
+## V70.36.68 — нативная ориентация Android для 3D-режима (2026-10-07)
+
+- Исправлена проблема, из-за которой переход в 1-е/3-е лицо на Android WebView не переводил устройство в горизонтальную ориентацию.
+- В `MainActivity.java` добавлен защищённый JavaScript bridge `DndOrientation` с командами `landscape()` и `restore()`.
+- При входе в игровой режим Android Activity теперь явно получает `SCREEN_ORIENTATION_LANDSCAPE`; при возврате в редактор восстанавливается прежний режим ориентации.
+- В `AndroidManifest.xml` для `MainActivity` добавлен `configChanges="orientation|screenSize|keyboardHidden"`, чтобы смена ориентации не пересоздавала WebView и не сбрасывала состояние карты.
+- В `vtt_map_editor_3d_v71.js` сохранён браузерный fallback через `screen.orientation.lock('landscape')`, но теперь сначала используется нативный Android bridge.
+- Полноэкранный режим, джойстики, камера, исправление выбора клетки и ограничение боевой скорости не изменялись.
+- Версии web updater, stable manifest и Android Gradle-конфигурации синхронизированы на `70.36.68`.
+
+### QA V70.36.68
+- На новом APK открыть 3D-карту и войти в 1-е лицо: устройство должно автоматически повернуться в горизонталь.
+- Войти в 3-е лицо: устройство также должно быть горизонтальным.
+- Нажать «↩️ Назад в редактор»: должна восстановиться ориентация, бывшая до входа в игровой режим.
+- Проверить, что после поворота WebView карта не пересоздаётся и сохранённые данные/позиция игрока не сбрасываются.
+- В браузерной версии без Android bridge должен продолжать работать существующий `screen.orientation.lock` fallback.
+- Проверить, что джойстики, камера, выбор клеток и боевой режим работают как в V70.36.67.
+- Для проверки именно нативного переключения требуется APK, собранный из V70.36.68; web-обновление само по себе не может изменить Java-код уже установленного APK.
+
