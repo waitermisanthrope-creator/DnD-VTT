@@ -5,7 +5,7 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION='70.36.77';
+  var APP_VERSION='70.36.78';
   var DEFAULT_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
   var FALLBACK_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url_v2';
@@ -63,14 +63,18 @@
   }
 
   async function runtimeVersion() {
+    var nativeVersion = '';
     try {
       var r = nativeRequest('version', '');
       if (r) {
         var x = await r;
-        if (x && x.value) return String(x.value);
+        if (x && x.value) nativeVersion = String(x.value);
       }
     } catch (_) {}
-    return APP_VERSION;
+    // OTA versions are JS/app-content versions. Once an OTA is installed,
+    // the native APK version can legitimately remain older, so use the newer
+    // of the native version and this manager's content version.
+    return compareVersions(APP_VERSION, nativeVersion) >= 0 ? APP_VERSION : nativeVersion;
   }
 
   function channel() {
