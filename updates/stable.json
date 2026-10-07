@@ -10,7 +10,8 @@
     {
       "path": "index.html",
       "bytes": 83789,
-      "sha256": "d9daba334f0b9c21e77a4ec284573b4e6be2ff2e82a7ea5fd9ecf4b39fccec1b"
+      "sha256": "d9daba334f0b9c21e77a4ec284573b4e6be2ff2e82a7ea5fd9ecf4b39fccec1b",
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/index.html?ota=70.37.32-1"
     },
     {
       "path": "app/Ambiences.js",
