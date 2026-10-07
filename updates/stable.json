@@ -1484,8 +1484,8 @@
     },
     {
       "path": "app/vtt_map_editor_3d_webgl_v72.js",
-      "bytes": 197401,
-      "sha256": "7ebe1b067f2dc0fe6910c4318e4e948687d486e8b664d0eae5f0eaff1b2770c6"
+      "bytes": 197489,
+      "sha256": "4c0ad7816be41a1f7b02e0dea011c1490c4708e438457825393be815af4f7f58"
     },
     {
       "path": "app/vtt_mobile_battle_v61.js",
