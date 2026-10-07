@@ -13,7 +13,7 @@
 (function(global){
 'use strict';
 var THREE=null,GLTFLoader=null,renderer=null,scene=null,camera=null,root=null,gizmo=null,gizmoAxis=null,gizmoDragging=false,gizmoStartX=0,gizmoStartY=0,gizmoStartPos=null,gizmoStartRot=0,gizmoStartScale=null,raf=0,map=null,selected=null,mode='orbit',editorMode='build',transformMode='translate',raycaster=null,mouse=null,assetDB=null,assetCache={},controls={yaw:.8,pitch:.8,distance:24,target:{x:0,y:0,z:0}},touches={},touchGesture=null,snapGrid=true,snapSize=0.25;
-var VERSION='V70.37.06';
+var VERSION='V70.37.07';
 var cutawayWalls=true,cutawayTick=0;
 var undoStack=[],redoStack=[],historyBusy=false;
 var openingDrag=null,roomPreview=null,wallDrag=null,selectedItems=[],buildGeneration=0,lastScenePoint=null,pendingLibraryAsset=null,paintMode=false,painting=false,paintHistoryStarted=false,paintMaterial='stone',paintSide='front',paintedDuringStroke={};
@@ -233,6 +233,50 @@ function selectedWall(){if(!selected||!selected.name||selected.name.indexOf('wal
 function editSelectedWall(){var w=selectedWall();if(!w){alert('Выберите стену в режиме строительства.');return;}var old=JSON.stringify(w);var len=prompt('Длина стены в клетках',String(Number(w.length)||1));if(len===null)return;var thick=prompt('Толщина стены',String(Number(w.thickness)||.09));if(thick===null)return;var height=prompt('Высота стены',String(Number(w.height)||2.5));if(height===null)return;len=Number(len);thick=Number(thick);height=Number(height);if(!Number.isFinite(len)||!Number.isFinite(thick)||!Number.isFinite(height)){alert('Неверные значения.');return;}pushHistory();w.length=Math.max(.1,len);w.thickness=Math.max(.03,thick);w.height=Math.max(.5,height);saveMap();build();updateInfo();}
 function editOpening(type){var w=selectedWall();if(!w){alert('Сначала выберите стену.');return;}var old=w.opening||{},isDoor=type==='door',max=Math.max(.35,Number(w.length)||1);pushHistory();w.opening={type:type,width:Math.min(max,Number(old.width)||(isDoor?.9:.9)),height:Number(old.height)||(isDoor?2.1:1.2),sill:Number(old.sill)||(isDoor?0:.9),offset:Math.max(0,Math.min(max-Number(old.width||.9),Number(old.offset)||0))};saveMap();build();updateInfo();var h=document.getElementById('r3dQuickHint');if(h)h.textContent=(isDoor?'🚪 Дверь':'🪟 Окно')+' создано. Теперь используйте кнопки проёма.';}
 function clearOpening(){var w=selectedWall();if(!w)return;pushHistory();w.opening=null;saveMap();build();updateInfo();}
+
+var ROOT_TEXTURE_CATALOG={
+ wall:[
+  {file:'wall_brick_red.png',name:'Кирпич — красный'},
+  {file:'wall_concrete.png',name:'Бетон'},
+  {file:'wall_half_timber.png',name:'Фахверк'},
+  {file:'wall_marble_dark.png',name:'Мрамор — тёмный'},
+  {file:'wall_marble_light.png',name:'Мрамор — светлый'},
+  {file:'wall_moss_stone.png',name:'Камень с мхом'},
+  {file:'wall_old_plaster.png',name:'Старая штукатурка'},
+  {file:'wall_plaster_dark.png',name:'Штукатурка — тёмная'},
+  {file:'wall_plaster_light.png',name:'Штукатурка — светлая'},
+  {file:'wall_plaster_panel.png',name:'Штукатурка — панели'},
+  {file:'wall_slate.png',name:'Сланец'},
+  {file:'wall_stone_dark.png',name:'Камень — тёмный'},
+  {file:'wall_stone_light.png',name:'Камень — светлый'},
+  {file:'wall_stone_masonry.png',name:'Каменная кладка'},
+  {file:'wall_wallpaper.png',name:'Обои'},
+  {file:'wall_white_plaster.png',name:'Белая штукатурка'},
+  {file:'wall_wood_dark.png',name:'Дерево — тёмное'},
+  {file:'wall_wood_light.png',name:'Дерево — светлое'}
+ ],
+ floor:[
+  {file:'floor_ceramic_tile_dark.png',name:'Керамическая плитка — тёмная'},
+  {file:'floor_ceramic_tile_light.png',name:'Керамическая плитка — светлая'},
+  {file:'floor_checker_tile.png',name:'Шахматная плитка'},
+  {file:'floor_cobblestone.png',name:'Брусчатка'},
+  {file:'floor_earth.png',name:'Земля'},
+  {file:'floor_grass.png',name:'Трава'},
+  {file:'floor_hex_tile.png',name:'Шестигранная плитка'},
+  {file:'floor_marble_dark.png',name:'Мрамор — тёмный'},
+  {file:'floor_marble_light.png',name:'Мрамор — светлый'},
+  {file:'floor_parquet_herringbone.png',name:'Паркет — ёлочка'},
+  {file:'floor_rug_blue.png',name:'Ковёр — синий'},
+  {file:'floor_rug_green.png',name:'Ковёр — зелёный'},
+  {file:'floor_rug_red.png',name:'Ковёр — красный'},
+  {file:'floor_stone_tile_dark.png',name:'Каменная плитка — тёмная'},
+  {file:'floor_stone_tile_light.png',name:'Каменная плитка — светлая'},
+  {file:'floor_tatami.png',name:'Татами'},
+  {file:'floor_wood_dark.png',name:'Дерево — тёмное'},
+  {file:'floor_wood_light.png',name:'Дерево — светлое'}
+ ]
+};
+
 var MATERIAL_CATALOG={stone:{name:'Камень',color:'#777d82'},wood:{name:'Дерево',color:'#8b5a2b'},brick:{name:'Кирпич',color:'#9a5140'},plaster:{name:'Штукатурка',color:'#d0c6b2'},metal:{name:'Металл',color:'#59636d'},dark:{name:'Тёмный',color:'#30343a'}};
 function paintRay(ev){
  if(!paintMode||editorMode!=='finish'||!raycaster||!renderer||!map)return false;
@@ -314,7 +358,7 @@ function scaleSelected(mult){
  pushHistory();if(!selected||!selected.userData||!selected.userData.mapObjectId){alert('Выберите объект.');return;}selected.scale.multiplyScalar(mult);syncSelectedTransform();updateInfo();}
 function side(w,n){w[n]=w[n]||{texture:'none',color:null};return w[n];}
 function material(color,rough){return new THREE.MeshStandardMaterial({color:hex(color,'#777777'),roughness:rough==null?.82:rough,metalness:0});}
-function tex(url){if(!url||url==='none')return null;try{if(String(url).indexOf('asset:')===0){var id=String(url).slice(6),cached=assetCache[id];if(cached&&cached.url)url=cached.url;else{loadAssetTexture(id).then(function(){if(typeof build==='function')build();});return null;}}var l=new THREE.TextureLoader(),t=l.load(url);t.wrapS=t.wrapT=THREE.RepeatWrapping;return t;}catch(e){return null;}}
+function tex(url){if(!url||url==='none')return null;try{if(String(url).indexOf('root:')===0)url='./'+String(url).slice(5);if(String(url).indexOf('asset:')===0){var id=String(url).slice(6),cached=assetCache[id];if(cached&&cached.url)url=cached.url;else{loadAssetTexture(id).then(function(){if(typeof build==='function')build();});return null;}}var l=new THREE.TextureLoader(),t=l.load(url);t.wrapS=t.wrapT=THREE.RepeatWrapping;return t;}catch(e){return null;}}
 function matFromSide(s,base){var m=material((s&&s.color)||base);var t=tex(s&&s.texture);if(t)m.map=t;return m;}
 function addBox(name,x,y,z,w,h,d,mats,rot){
  var g=new THREE.BoxGeometry(w,h,d);var ms=Array.isArray(mats)?mats:[mats||material('#777')];var o=new THREE.Mesh(g,ms);o.name=name;o.position.set(x+w*.5,y+d*.5,z+h*.5);if(rot)o.rotation.y=Number(rot)*Math.PI/180;root.add(o);return o;
@@ -450,6 +494,7 @@ function updateContextPanel(){
    title.textContent=selectedItems.length>1?'🪑 Объекты: '+selectedItems.length:'🪑 '+(selected.name||'Объект');
    add('↔ Переместить',function(){setGizmoMode('translate');});add('⟳ Вращать',function(){setGizmoMode('rotate');});
    add('⤢ Масштаб',function(){setGizmoMode('scale');});add('⧉ Дубликат',duplicateSelected);add('🗑 Удалить',deleteSelected);
+ }else if(editorMode==='finish'&&selected&&selected.name&&selected.name.indexOf('surface:')===0){title.textContent='🟫 Пол';add('🟫 Текстуры пола',function(){openRootTexturePicker('floor');});add('🎨 Материалы',openMaterialCatalog);add('🗑 Очистить выделение',function(){selected=null;selectedItems=[];updateGizmo();updateInfo();});
  }else if(editorMode==='build'){
    title.textContent='🧱 Строительство';add('▭ Создать комнату',function(){if(window.r3dRoomHint){window.r3dRoomHint.textContent='Потяните по полу от одного угла комнаты к другому.';}});add('🏗️ Стена',function(){openWallTools();});add('🗑 Удалить',deleteSelected);
  }else if(editorMode==='objects'){
@@ -506,6 +551,58 @@ function previewGLB(rec,canvas){
    s.traverse(function(n){if(n.isMesh){var m=n.material;if(m&&m.dispose)m.dispose();if(n.geometry&&n.geometry.dispose)n.geometry.dispose();}});
  },function(e){console.warn('GLB preview failed',rec.id,e);});
 }
+
+function rootTextureEntry(kind,file){
+ var list=ROOT_TEXTURE_CATALOG[kind]||[];
+ return list.find(function(x){return x.file===file;})||null;
+}
+function applyRootTexture(file,kind,which){
+ ensureMapCollections();
+ var rec=rootTextureEntry(kind,file);
+ if(!rec){alert('Текстура не найдена: '+file);return;}
+ if(kind==='wall'){
+   var w=selectedWall();
+   if(!w){alert('Сначала выберите стену в режиме строительства.');return;}
+   var sideName=which==='back'?'back':'front';
+   pushHistory();side(w,sideName).texture='root:'+rec.file;saveMap();build();updateInfo();
+ }else{
+   if(!selected||!selected.name||selected.name.indexOf('surface:')!==0){alert('Сначала выберите клетку пола в режиме «Отделка».');return;}
+   var key=selected.name.slice(8),ss=map.surfaces&&map.surfaces[key];
+   if(!ss){alert('Поверхность пола не найдена.');return;}
+   pushHistory();ss.texture='root:'+rec.file;saveMap();build();updateInfo();
+ }
+}
+function openRootTexturePicker(kind){
+ var old=document.getElementById('map3dRootTextures');
+ if(old){old.remove();return;}
+ var list=ROOT_TEXTURE_CATALOG[kind]||[],box=document.createElement('div');
+ box.id='map3dRootTextures';
+ box.style.cssText='position:absolute;left:10px;top:58px;width:min(390px,92vw);max-height:78vh;overflow:auto;background:#171c24;border:1px solid #555;border-radius:14px;padding:12px;z-index:25;box-shadow:0 12px 40px #000';
+ var title=kind==='wall'?'🧱 Текстуры стен':'🟫 Текстуры пола';
+ box.innerHTML='<b>'+title+'</b><button id="rootTexClose" style="float:right">✕</button><div style="clear:both;color:#aaa;margin:8px 0">Встроенные PNG из корневой папки проекта. Они не копируются в IndexedDB.</div>';
+ var grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px';
+ list.forEach(function(rec){
+   var card=document.createElement('button');card.type='button';card.style.cssText='display:flex;flex-direction:column;gap:5px;text-align:left;padding:7px;background:#222933;color:#fff;border:1px solid #394454;border-radius:9px';
+   var img=document.createElement('img');img.src='./'+rec.file;img.alt=rec.name;img.loading='lazy';img.style.cssText='width:100%;height:78px;object-fit:cover;border-radius:6px;background:#10151c';
+   var label=document.createElement('span');label.textContent=rec.name;
+   card.appendChild(img);card.appendChild(label);
+   card.onclick=function(){
+     if(kind==='wall'){
+       var front=document.createElement('button');front.textContent='Внутри';front.style.cssText='margin-right:4px;padding:6px';
+       var back=document.createElement('button');back.textContent='Снаружи';back.style.cssText='padding:6px';
+       front.onclick=function(ev){ev.stopPropagation();applyRootTexture(rec.file,'wall','front');box.remove();};
+       back.onclick=function(ev){ev.stopPropagation();applyRootTexture(rec.file,'wall','back');box.remove();};
+       var actions=document.createElement('div');actions.style.cssText='margin-top:4px';actions.appendChild(front);actions.appendChild(back);
+       if(!card.querySelector('.rootTexActions')){actions.className='rootTexActions';card.appendChild(actions);}
+     }else{applyRootTexture(rec.file,'floor');box.remove();}
+   };
+   grid.appendChild(card);
+ });
+ box.appendChild(grid);
+ box.querySelector('#rootTexClose').onclick=function(){box.remove();};
+ modal.appendChild(box);
+}
+
 function openAssetLibrary(){openAssetDB().then(function(db){var tx=db.transaction('assets','readonly'),q=tx.objectStore('assets').getAll();q.onsuccess=function(){var items=q.result||[],box=document.createElement('div');box.style.cssText='position:absolute;right:10px;top:58px;width:min(390px,92vw);max-height:76vh;overflow:auto;background:#171c24;border:1px solid #555;border-radius:14px;padding:12px;z-index:20;box-shadow:0 12px 40px #000';box.innerHTML='<b>📚 Библиотека ассетов</b><button id="libClose" style="float:right">✕</button><div style="clear:both;color:#aaa;margin:8px 0">GLB — модели. PNG/JPG/WebP — текстуры.</div><button id="libAddModel" style="width:49%;margin:4px 0">🧩 Добавить GLB</button><button id="libAddTex" style="width:49%;margin:4px 0">🖼️ Добавить текстуру</button>';var grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px';items.forEach(function(rec){var b=document.createElement('button');b.style.cssText='display:flex;flex-direction:column;gap:5px;text-align:left;padding:7px;background:#222933;color:#fff;border:1px solid #394454;border-radius:9px';var title=document.createElement('span');title.textContent=(rec.meta&&rec.meta.kind==='texture'?'🖼️ ':'🧩 ')+(rec.meta&&rec.meta.name||rec.id);b.appendChild(title);if(rec.meta&&rec.meta.kind==='texture'&&rec.buffer){try{var u=URL.createObjectURL(new Blob([rec.buffer],{type:rec.meta.type||'image/png'})),im=document.createElement('img');im.src=u;im.style.cssText='width:100%;height:74px;object-fit:cover;border-radius:6px';b.insertBefore(im,title);setTimeout(function(){URL.revokeObjectURL(u);},60000);}catch(e){}}if(rec.meta&&rec.meta.kind==='texture'){var apply=document.createElement('div');apply.style.cssText='display:flex;gap:4px';var fi=document.createElement('button');fi.textContent='Внутри';fi.onclick=function(ev){ev.stopPropagation();applyTextureAsset(rec.id,'front');};var bo=document.createElement('button');bo.textContent='Снаружи';bo.onclick=function(ev){ev.stopPropagation();applyTextureAsset(rec.id,'back');};apply.appendChild(fi);apply.appendChild(bo);b.appendChild(apply);}else{var pv=document.createElement('canvas');pv.width=160;pv.height=120;pv.style.cssText='width:100%;height:92px;display:block;border-radius:7px;background:#20252c';b.insertBefore(pv,title);previewGLB(rec,pv);b.draggable=true;b.addEventListener('dragstart',function(ev){if(ev.dataTransfer){ev.dataTransfer.effectAllowed='copy';ev.dataTransfer.setData('text/plain',rec.id);}});b.onclick=function(){var p=lastScenePoint;if(p){placeLibraryAsset(rec.id,rec.meta&&rec.meta.name||'Asset',p);box.remove();}else{pendingLibraryAsset={id:rec.id,name:rec.meta&&rec.meta.name||'Asset'};box.remove();var h=document.getElementById('r3dQuickHint');if(h)h.textContent='📍 Ассет выбран. Теперь тапните по полу в нужном месте — модель будет поставлена туда.';}};}grid.appendChild(b);});box.appendChild(grid);box.querySelector('#libClose').onclick=function(){box.remove();};box.querySelector('#libAddModel').onclick=function(){box.remove();addModel();};box.querySelector('#libAddTex').onclick=function(){box.remove();addTexture('front');};modal.appendChild(box);};});}
 function sceneEditableHit(ev){
  if(!raycaster||!renderer||!root)return false;
@@ -531,9 +628,9 @@ function open(){
  if(document.getElementById('map3dRealModal'))return;
  map=loadMap();if(!map){map={version:15,name:'Новая 3D-карта',notes:'',grid:{cols:20,rows:20,cellSizeFt:5},levels:{min:0,max:0,current:0},cells:{},surfaces:{},objects:[],walls:{},connectors:[],tokens:[],combat:{},player:{x:0,y:0,level:0,elevation:0,yaw:0,pitch:0},cameraMode:'orbit'};saveMap();}
  var modal=document.createElement('div');modal.id='map3dRealModal';modal.style.cssText='position:fixed;inset:0;z-index:32000;background:#080b10;color:#fff;display:flex;flex-direction:column;';
- modal.innerHTML='<div style="min-height:54px;display:flex;align-items:center;gap:6px;padding:7px 9px;box-sizing:border-box;background:#151a20;border-bottom:1px solid #444;overflow:auto;white-space:nowrap"><b>🏗️ 3D Карты</b><span style="color:#888">'+VERSION+'</span><button data-r3d-mode="build" style="padding:9px 12px;font-weight:600">🧱 Строительство</button><button data-r3d-mode="objects" style="padding:9px 12px;font-weight:600">🛋 Обстановка</button><button data-r3d-mode="view" style="padding:9px 12px;font-weight:600">👁 Вид</button><button id="r3dFloorDown" title="Предыдущий этаж">▼</button><button id="r3dFloorLabel" style="min-width:86px;font-weight:800">Этаж 1</button><button id="r3dFloorUp" title="Следующий этаж">▲</button><button id="r3dFloorHome" title="Центрировать камеру">⌂</button><span id="map3dRealInfo" style="flex:1;color:#aaa;min-width:150px">Загрузка…</span><button id="r3dLibrary" title="Библиотека ассетов">📚</button><button id="r3dMaterials" title="Материалы">🎨</button><button id="r3dMore">☰ Ещё</button><button id="r3dSave">💾</button><button id="r3dClose">✕</button></div><div id="r3dMorePanel" style="display:none;max-height:30vh;overflow:auto;padding:7px;background:#11161c;border-bottom:1px solid #333"><div style="display:flex;flex-wrap:wrap;gap:5px"><button id="r3dLevelDown">− Этаж</button><button id="r3dLevelUp">+ Этаж</button><button data-r3d-mode="finish">🎨 Отделка</button><button data-r3d-mode="levels">🏢 Этажи</button><button id="r3dFill">🪣 Заливка</button><button id="r3dPaint">🖌️ Кисть: ВЫКЛ</button><button id="r3dPaintFront">🎨 Кисть: внутри</button><button id="r3dPaintBack">🎨 Кисть: снаружи</button><button id="r3dWallTools">🏗️ Стена</button><button id="r3dCutaway">🏠 Стены: SIMS</button><button id="r3dUndo">↶ Отмена</button><button id="r3dRedo">↷ Повтор</button><button id="r3dDup">⧉ Дубликат</button><button id="r3dFront">🎨 Внутри</button><button id="r3dBack">🎨 Снаружи</button><button id="r3dFrontTex">🖼️ Текстура внутри</button><button id="r3dBackTex">🖼️ Текстура снаружи</button><button id="r3dTexture">🖼️ Текстура</button><button id="r3dModel">🧩 GLB</button><button id="r3dMove">↔ Перемещение</button><button id="r3dRotate">⟳ Вращение</button><button id="r3dScale">⤢ Масштаб</button><button id="r3dSnap">🧲 Сетка: ВКЛ</button><button id="r3dLeft">←</button><button id="r3dRight">→</button><button id="r3dForward">↑</button><button id="r3dBackMove">↓</button><button id="r3dRotL">↶</button><button id="r3dRotR">↷</button><button id="r3dScaleDown">−</button><button id="r3dScaleUp">＋</button></div></div><div id="r3dQuickHint" style="padding:7px 9px;background:#1b2028;color:#b8c1cc;font-size:12px">🖱️ Строительство: потяните по полу, чтобы создать комнату. 🛋 Обстановка: выберите объект и двигайте его. Два пальца — камера.</div><div id="r3dContextPanel" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:7px 9px;background:#11161c;border-bottom:1px solid #333"></div><div id="map3dRealCanvas" style="position:relative;flex:1;min-height:0;overflow:hidden"></div>';
+ modal.innerHTML='<div style="min-height:54px;display:flex;align-items:center;gap:6px;padding:7px 9px;box-sizing:border-box;background:#151a20;border-bottom:1px solid #444;overflow:auto;white-space:nowrap"><b>🏗️ 3D Карты</b><span style="color:#888">'+VERSION+'</span><button data-r3d-mode="build" style="padding:9px 12px;font-weight:600">🧱 Строительство</button><button data-r3d-mode="objects" style="padding:9px 12px;font-weight:600">🛋 Обстановка</button><button data-r3d-mode="view" style="padding:9px 12px;font-weight:600">👁 Вид</button><button id="r3dFloorDown" title="Предыдущий этаж">▼</button><button id="r3dFloorLabel" style="min-width:86px;font-weight:800">Этаж 1</button><button id="r3dFloorUp" title="Следующий этаж">▲</button><button id="r3dFloorHome" title="Центрировать камеру">⌂</button><span id="map3dRealInfo" style="flex:1;color:#aaa;min-width:150px">Загрузка…</span><button id="r3dLibrary" title="Библиотека ассетов">📚</button><button id="r3dMaterials" title="Материалы">🎨</button><button id="r3dMore">☰ Ещё</button><button id="r3dSave">💾</button><button id="r3dClose">✕</button></div><div id="r3dMorePanel" style="display:none;max-height:30vh;overflow:auto;padding:7px;background:#11161c;border-bottom:1px solid #333"><div style="display:flex;flex-wrap:wrap;gap:5px"><button id="r3dLevelDown">− Этаж</button><button id="r3dLevelUp">+ Этаж</button><button data-r3d-mode="finish">🎨 Отделка</button><button data-r3d-mode="levels">🏢 Этажи</button><button id="r3dFill">🪣 Заливка</button><button id="r3dPaint">🖌️ Кисть: ВЫКЛ</button><button id="r3dPaintFront">🎨 Кисть: внутри</button><button id="r3dPaintBack">🎨 Кисть: снаружи</button><button id="r3dWallTools">🏗️ Стена</button><button id="r3dWallTextures">🧱 Текстуры стен</button><button id="r3dFloorTextures">🟫 Текстуры пола</button><button id="r3dCutaway">🏠 Стены: SIMS</button><button id="r3dUndo">↶ Отмена</button><button id="r3dRedo">↷ Повтор</button><button id="r3dDup">⧉ Дубликат</button><button id="r3dFront">🎨 Внутри</button><button id="r3dBack">🎨 Снаружи</button><button id="r3dFrontTex">🖼️ Текстура внутри</button><button id="r3dBackTex">🖼️ Текстура снаружи</button><button id="r3dTexture">🖼️ Текстура</button><button id="r3dModel">🧩 GLB</button><button id="r3dMove">↔ Перемещение</button><button id="r3dRotate">⟳ Вращение</button><button id="r3dScale">⤢ Масштаб</button><button id="r3dSnap">🧲 Сетка: ВКЛ</button><button id="r3dLeft">←</button><button id="r3dRight">→</button><button id="r3dForward">↑</button><button id="r3dBackMove">↓</button><button id="r3dRotL">↶</button><button id="r3dRotR">↷</button><button id="r3dScaleDown">−</button><button id="r3dScaleUp">＋</button></div></div><div id="r3dQuickHint" style="padding:7px 9px;background:#1b2028;color:#b8c1cc;font-size:12px">🖱️ Строительство: потяните по полу, чтобы создать комнату. 🛋 Обстановка: выберите объект и двигайте его. Два пальца — камера.</div><div id="r3dContextPanel" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:7px 9px;background:#11161c;border-bottom:1px solid #333"></div><div id="map3dRealCanvas" style="position:relative;flex:1;min-height:0;overflow:hidden"></div>';
  document.body.appendChild(modal);
- modal.querySelectorAll('[data-r3d-mode]').forEach(function(b){b.onclick=function(){setEditorMode(b.getAttribute('data-r3d-mode'));};});modal.querySelector('#r3dMore').onclick=function(){var p=modal.querySelector('#r3dMorePanel');p.style.display=p.style.display==='none'?'block':'none';};modal.querySelector('#r3dLevelDown').onclick=function(){changeLevel(-1);};modal.querySelector('#r3dLevelUp').onclick=function(){changeLevel(1);};modal.querySelector('#r3dFloorDown').onclick=function(){changeLevel(-1);};modal.querySelector('#r3dFloorUp').onclick=function(){changeLevel(1);};modal.querySelector('#r3dFloorHome').onclick=function(){cameraHome();};modal.querySelector('#r3dLibrary').onclick=function(){openAssetLibrary();};modal.querySelector('#r3dMaterials').onclick=openMaterialCatalog;modal.querySelector('#r3dFill').onclick=function(){var k=prompt('Заливка текущего этажа. Материал: stone, wood, brick, plaster, metal, dark','stone');if(k&&MATERIAL_CATALOG[k])applySurfaceFill(k);};modal.querySelector('#r3dPaint').onclick=function(){togglePaintMode();};modal.querySelector('#r3dPaintFront').onclick=function(){setPaintSide('front');togglePaintMode(true);};modal.querySelector('#r3dPaintBack').onclick=function(){setPaintSide('back');togglePaintMode(true);};modal.querySelector('#r3dWallTools').onclick=openWallTools;modal.querySelector('#r3dCutaway').onclick=function(){toggleCutaway();};modal.querySelector('#r3dUndo').onclick=undo;modal.querySelector('#r3dRedo').onclick=redo;modal.querySelector('#r3dDup').onclick=duplicateSelected;modal.querySelector('#r3dClose').onclick=function(){cancelAnimationFrame(raf);if(gizmo&&gizmo.parent)gizmo.parent.remove(gizmo);modal.remove();};
+ modal.querySelectorAll('[data-r3d-mode]').forEach(function(b){b.onclick=function(){setEditorMode(b.getAttribute('data-r3d-mode'));};});modal.querySelector('#r3dMore').onclick=function(){var p=modal.querySelector('#r3dMorePanel');p.style.display=p.style.display==='none'?'block':'none';};modal.querySelector('#r3dLevelDown').onclick=function(){changeLevel(-1);};modal.querySelector('#r3dLevelUp').onclick=function(){changeLevel(1);};modal.querySelector('#r3dFloorDown').onclick=function(){changeLevel(-1);};modal.querySelector('#r3dFloorUp').onclick=function(){changeLevel(1);};modal.querySelector('#r3dFloorHome').onclick=function(){cameraHome();};modal.querySelector('#r3dLibrary').onclick=function(){openAssetLibrary();};modal.querySelector('#r3dMaterials').onclick=openMaterialCatalog;modal.querySelector('#r3dFill').onclick=function(){var k=prompt('Заливка текущего этажа. Материал: stone, wood, brick, plaster, metal, dark','stone');if(k&&MATERIAL_CATALOG[k])applySurfaceFill(k);};modal.querySelector('#r3dPaint').onclick=function(){togglePaintMode();};modal.querySelector('#r3dPaintFront').onclick=function(){setPaintSide('front');togglePaintMode(true);};modal.querySelector('#r3dPaintBack').onclick=function(){setPaintSide('back');togglePaintMode(true);};modal.querySelector('#r3dWallTools').onclick=openWallTools;modal.querySelector('#r3dWallTextures').onclick=function(){openRootTexturePicker('wall');};modal.querySelector('#r3dFloorTextures').onclick=function(){openRootTexturePicker('floor');};modal.querySelector('#r3dCutaway').onclick=function(){toggleCutaway();};modal.querySelector('#r3dUndo').onclick=undo;modal.querySelector('#r3dRedo').onclick=redo;modal.querySelector('#r3dDup').onclick=duplicateSelected;modal.querySelector('#r3dClose').onclick=function(){cancelAnimationFrame(raf);if(gizmo&&gizmo.parent)gizmo.parent.remove(gizmo);modal.remove();};
  modal.querySelector('#r3dMove').onclick=function(){setGizmoMode('translate');};modal.querySelector('#r3dRotate').onclick=function(){setGizmoMode('rotate');};modal.querySelector('#r3dScale').onclick=function(){setGizmoMode('scale');};modal.querySelector('#r3dSnap').onclick=function(){snapGrid=!snapGrid;this.textContent='🧲 Сетка: '+(snapGrid?'ВКЛ':'ВЫКЛ');if(snapGrid){applySnap();syncSelectedTransform();updateGizmo();}};
  modal.querySelector('#r3dFront').onclick=function(){colorSide('front');};modal.querySelector('#r3dBack').onclick=function(){colorSide('back');};modal.querySelector('#r3dModel').onclick=addModel;modal.querySelector('#r3dTexture').onclick=function(){addTexture('front');};modal.querySelector('#r3dFrontTex').onclick=function(){textureSide('front');};modal.querySelector('#r3dBackTex').onclick=function(){textureSide('back');};modal.querySelector('#r3dLeft').onclick=function(){nudgeSelected(-.25,0);};modal.querySelector('#r3dRight').onclick=function(){nudgeSelected(.25,0);};modal.querySelector('#r3dForward').onclick=function(){nudgeSelected(0,-.25);};modal.querySelector('#r3dBackMove').onclick=function(){nudgeSelected(0,.25);};modal.querySelector('#r3dRotL').onclick=function(){rotateSelected(-15);};modal.querySelector('#r3dRotR').onclick=function(){rotateSelected(15);};modal.querySelector('#r3dScaleDown').onclick=function(){scaleSelected(.9);};modal.querySelector('#r3dScaleUp').onclick=function(){scaleSelected(1.1);};modal.querySelector('#r3dSave').onclick=function(){saveMap();alert('Карта и assetRef сохранены.');};setEditorMode('build');
  (async function(){
