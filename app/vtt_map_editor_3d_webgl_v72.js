@@ -154,8 +154,7 @@ function createRoomFromPoints(a,b){
    var w={level:level,x:Number(s[0])||0,y:Number(s[1])||0,dir:s[2],length:Math.max(.25,Number(s[3])||.25),height:2.5,thickness:.09,color:'#777777',material:'stone',front:{texture:'none',color:'#777777'},back:{texture:'none',color:'#777777'},__roomAuto:true,__key:k};
    map.walls[k]=w;
  });
- // Важно: не вызываем ensureRoomWall() здесь — он предназначен для последующего изменения границ.
- specs.forEach(function(s){ensureRoomWall(level,s);});
+ // Четыре стороны уже созданы атомарно выше. Слияние здесь запрещено.
  saveMap();build();updateInfo();return true;
 }
 function deleteSelected(){
