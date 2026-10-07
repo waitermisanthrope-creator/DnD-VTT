@@ -10,7 +10,7 @@
 (function(global){
 'use strict';
 var THREE=null,GLTFLoader=null,renderer=null,scene=null,camera=null,root=null,gizmo=null,gizmoAxis=null,gizmoDragging=false,gizmoStartX=0,gizmoStartY=0,gizmoStartPos=null,gizmoStartRot=0,gizmoStartScale=null,raf=0,map=null,selected=null,mode='orbit',editorMode='objects',transformMode='translate',raycaster=null,mouse=null,assetDB=null,assetCache={},controls={yaw:.8,pitch:.8,distance:24,target:{x:0,y:0,z:0}},touches={},touchGesture=null,snapGrid=true,snapSize=0.25;
-var VERSION='V70.36.86';
+var VERSION='V70.36.87';
 var undoStack=[],redoStack=[],historyBusy=false;
 var openingDrag=null,selectedItems=[],buildGeneration=0,lastScenePoint=null,pendingLibraryAsset=null,paintMode=false,painting=false,paintHistoryStarted=false,paintMaterial='stone',paintSide='front',paintedDuringStroke={};
 function openingForSelected(){var w=selectedWall();return w&&w.opening?w.opening:null;}
@@ -236,9 +236,21 @@ function open(){
  modal.querySelector('#r3dFront').onclick=function(){colorSide('front');};modal.querySelector('#r3dBack').onclick=function(){colorSide('back');};modal.querySelector('#r3dModel').onclick=addModel;modal.querySelector('#r3dTexture').onclick=function(){addTexture('front');};modal.querySelector('#r3dFrontTex').onclick=function(){textureSide('front');};modal.querySelector('#r3dBackTex').onclick=function(){textureSide('back');};modal.querySelector('#r3dLeft').onclick=function(){nudgeSelected(-.25,0);};modal.querySelector('#r3dRight').onclick=function(){nudgeSelected(.25,0);};modal.querySelector('#r3dForward').onclick=function(){nudgeSelected(0,-.25);};modal.querySelector('#r3dBackMove').onclick=function(){nudgeSelected(0,.25);};modal.querySelector('#r3dRotL').onclick=function(){rotateSelected(-15);};modal.querySelector('#r3dRotR').onclick=function(){rotateSelected(15);};modal.querySelector('#r3dScaleDown').onclick=function(){scaleSelected(.9);};modal.querySelector('#r3dScaleUp').onclick=function(){scaleSelected(1.1);};modal.querySelector('#r3dSave').onclick=function(){saveMap();alert('Карта и assetRef сохранены.');};setEditorMode('objects');
  (async function(){
   try{
-   var T=await import('./vendor/three.module.min.js');
-   var L=await import('./vendor/GLTFLoader.js');
-   THREE=T;GLTFLoader=L.GLTFLoader;
+   function loadClassic(src){
+    return new Promise(function(resolve,reject){
+     var s=document.createElement('script');
+     s.src=src;
+     s.async=false;
+     s.onload=function(){resolve();};
+     s.onerror=function(){reject(new Error('Не удалось загрузить '+src));};
+     document.head.appendChild(s);
+    });
+   }
+   await loadClassic('./vendor/three.legacy.js');
+   if(!global.DND_BufferGeometryUtils) throw new Error('BufferGeometryUtils legacy bridge not loaded');
+   await loadClassic('./vendor/GLTFLoader.legacy.js');
+   if(!global.THREE||!global.DND_GLTFLoader) throw new Error('Three.js legacy bridge not loaded');
+   THREE=global.THREE;GLTFLoader=global.DND_GLTFLoader.GLTFLoader;
    var host=modal.querySelector('#map3dRealCanvas');renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(global.devicePixelRatio||1,1.6));renderer.setSize(host.clientWidth,host.clientHeight,false);renderer.domElement.style.touchAction='none';renderer.outputColorSpace=THREE.SRGBColorSpace;host.appendChild(renderer.domElement);cameraControlPanel(host);
    scene=new THREE.Scene();scene.background=new THREE.Color('#10151c');root=new THREE.Group();scene.add(root);camera=new THREE.PerspectiveCamera(55,1,.05,1000);raycaster=new THREE.Raycaster();mouse=new THREE.Vector2();
    scene.add(new THREE.HemisphereLight(0xffffff,0x223344,2));var dl=new THREE.DirectionalLight(0xffffff,2);dl.position.set(10,20,5);scene.add(dl);makeGizmo();
@@ -258,4 +270,4 @@ global.dndMap3DOpenReal=open;
 global.dndMap3DOpen=open;
 })(window);
 
-// V70.36.80 OTA delivery marker
+// V70.36.87 OTA: Android WebView uses classic offline Three.js loader
