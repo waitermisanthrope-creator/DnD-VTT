@@ -1,11 +1,11 @@
-/* DND VTT — NEW updater v2. V70.37.34
+/* DND VTT — NEW updater v2. V70.37.35
  * The legacy updater is intentionally not loaded. This module owns the complete
  * update UX and talks only to the native storage/apply bridge.
  */
 (function (global) {
   'use strict';
 
-  var APP_VERSION='70.37.34';
+  var APP_VERSION='70.37.35';
   var DEFAULT_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
   var FALLBACK_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url_v2';
@@ -13,7 +13,7 @@
   var STAGED_KEY = 'dnd_update_staged_v2';
   var DEFAULT_CHANNEL = 'stable';
   var CACHE_BUSTER = 'dnd-v2-' + APP_VERSION + '-' + Date.now();
-  // V70.37.34: native stage must receive a cache-busted manifest URL too.
+  // V70.37.35: native stage must receive a cache-busted manifest URL too.
   var pending = Object.create(null);
   var counter = 0;
   var progressHandler = null;
