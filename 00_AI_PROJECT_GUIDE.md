@@ -1,3 +1,14 @@
+## V70.36.85 — Sims-style cutaway walls (2026-10-07)
+
+- Added automatic camera-side wall cutaway to the WebGL editor.
+- Nearby walls between the camera and editing target become semi-transparent (~16% opacity) instead of disappearing completely, preserving spatial orientation.
+- Cutaway selection is distance/angle based and throttled to reduce mobile rendering cost.
+- Only the closest limited set of candidate wall meshes is faded; walls farther from the camera remain normal.
+- Added `🏠 Стены: SIMS` toggle in the mobile "Ещё" controls.
+- Toggle allows immediate return to normal opaque walls.
+- JS syntax validated after the change.
+- Next UX priority: make camera navigation itself more Sims-like on touch — large on-screen rotate/pan/zoom controls and simpler one-hand operation.
+
 ## V70.36.84 — portable 3D asset-pack (2026-10-07)
 
 - Added `app/vtt_asset_pack_v84.js`, loaded immediately after the WebGL 3D editor.
