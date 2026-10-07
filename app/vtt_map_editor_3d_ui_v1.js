@@ -1,4 +1,4 @@
-/* V70.37.18 — standalone 3D editor controls + этажность/размер карты */
+/* V70.37.19 — standalone 3D editor controls + этажность/размер карты */
 (function(global){
 'use strict';
 var ID='r3dNewUi',tab='build',open=false,mapPanel=false;
