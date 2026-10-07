@@ -505,7 +505,7 @@ function updateContextPanel(){
  p.appendChild(title);
 }
 function updateInfo(){
- updateFloorBar();updateContextPanel();
+ updateFloorBar();updateContextPanel();if(typeof renderSimpleTools==='function')renderSimpleTools();
  var e=document.getElementById('map3dRealInfo');if(!e)return;
  var modeName={build:'Строительство',objects:'Обстановка',view:'Просмотр',finish:'Отделка',levels:'Этажи'}[editorMode]||editorMode;
  e.textContent=(selected?(selectedItems.length>1?'Выбрано элементов: '+selectedItems.length:'Выбрано: '+selected.name+(selected.userData&&selected.userData.assetId?' • GLB':'')):'')+' • '+levelInfo()+' • '+modeName;
