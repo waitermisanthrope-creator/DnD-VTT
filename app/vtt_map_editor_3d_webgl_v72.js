@@ -1,4 +1,5 @@
-/* V70.36.77 — Sims-like UX + texture asset library
+/* V70.36.78 — editor stabilization: fill, openings, asset drag/drop
+ * V70.36.77 — Sims-like UX + texture asset library
  * V70.36.75 — true WebGL 3D map editor
  * Three.js renderer + GLB/GLTF loading. Reads the existing V15 map format from localStorage.
  * The legacy canvas editor remains available as fallback.
@@ -6,7 +7,7 @@
 (function(global){
 'use strict';
 var THREE=null,GLTFLoader=null,renderer=null,scene=null,camera=null,root=null,gizmo=null,gizmoAxis=null,gizmoDragging=false,gizmoStartX=0,gizmoStartY=0,gizmoStartPos=null,gizmoStartRot=0,gizmoStartScale=null,raf=0,map=null,selected=null,mode='orbit',editorMode='objects',transformMode='translate',raycaster=null,mouse=null,assetDB=null,assetCache={},controls={yaw:.8,pitch:.8,distance:24,target:{x:0,y:0,z:0}},touches={},touchGesture=null,snapGrid=true,snapSize=0.25;
-var VERSION='V70.36.77';
+var VERSION='V70.36.78';
 var undoStack=[],redoStack=[],historyBusy=false;
 var openingDrag=null;
 function openingForSelected(){var w=selectedWall();return w&&w.opening?w.opening:null;}
