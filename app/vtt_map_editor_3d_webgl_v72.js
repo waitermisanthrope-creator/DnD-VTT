@@ -395,8 +395,8 @@ function wallMesh(w){
    var ow=Math.min(len,Math.max(.1,Number(op.width)||.9)),oh=Math.min(h,Math.max(.1,Number(op.height)||2.1)),os=Math.max(0,Math.min(h-oh,Number(op.sill)||0)),cc=Math.max(0,Math.min(len-ow,Number(op.offset)||0));
    if(cc>0)part('wall:'+w.level+':'+x+':'+y,x,levelY,y-t/2,cc,h,t);
    if(os>0)part('wall:'+w.level+':'+x+':'+y,x+cc,levelY,y-t/2,ow,os,t);
-   if(len-cc-ow>0)part('wall:'+w.level+':'+x+cc+ow+':'+y,x+cc+ow,levelY,y-t/2,len-cc-ow,h,t);
-   if(h-os-oh>0)part('wall:'+w.level+':'+x+cc+':'+y,x+cc,levelY+os,y-t/2,ow,h-os,t);
+   if(len-cc-ow>0)part('wall:'+w.level+':'+x+':'+y,x+cc+ow,levelY,y-t/2,len-cc-ow,h,t);
+   if(h-os-oh>0)part('wall:'+w.level+':'+x+':'+y,x+cc,levelY+os,y-t/2,ow,h-os,t);
    return;
  }
  if(!op)return part('wall:'+w.level+':'+x+':'+y,x+1-t/2,levelY,y,t,h,len);
