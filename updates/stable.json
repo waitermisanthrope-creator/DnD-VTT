@@ -13,6 +13,11 @@
       "sha256": "893476899ff0d7cb4997290919b8c224e48c0f0d74bf97834b2cadeae83c3318"
     },
     {
+      "path": "app/3dmap/character_system.js",
+      "bytes": 6774,
+      "sha256": "ae60519954dff577a2be41f6315e2890015f587a00aed155a7c971a4668d64a2"
+    },
+    {
       "path": "app/3dmap/gltf_catalog.js",
       "bytes": 1602,
       "sha256": "68eae4d8a52a1de4fae81a42c1c8c018a494660fc37799fcb845248766a11bad"
