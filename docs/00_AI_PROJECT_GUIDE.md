@@ -3920,3 +3920,15 @@ Character -> Race/base body/skeleton/morph ranges -> Body/morph weights -> Equip
 
 ### Текущий статус
 **Фундамент API готов. Визуальный skinning/morphing и редактор ползунков ещё НЕ подключены.** Следующий технический этап: расширить GLTF pipeline поддержкой skins, joints, animation clips и morph targets, затем подключить их к существующему WebGL renderer. После этого сделать первый реальный Human Male/Female body и один комплект брони как эталон.
+
+
+## 2026-10-08 — 3D CHARACTER: ПОДКЛЮЧЕН РЕАЛЬНЫЙ HUMAN GLB
+
+- `human-base-rigged.glb` прошёл структурный аудит: glTF 2.0, 1 mesh, 1 skin, 53 joints, 70 985 вершин, JOINTS_0/WEIGHTS_0 присутствуют.
+- В `app/3dmap/character_system.js` человек теперь использует реальный `./human-base-rigged.glb`, а не временный Quaternius Dummy.
+- `app/3dmap/gltf_loader.js` теперь умеет загружать бинарный `.glb`: разбирает JSON/BIN chunks и передаёт бинарный буфер в существующий loader.
+- `app/3dmap/gltf_character_pipeline.js` теперь вычисляет world matrices узлов, читает inverse bind matrices и выполняет CPU skinning по 53-костному скелету через JOINTS_0/WEIGHTS_0.
+- Рендерер редактора продолжает использовать существующий WebGL canvas; отдельный 3D-рендерер не создавался.
+- Важное ограничение: `human-base-rigged.glb` не содержит morph targets. Поэтому ползунки тела пока не могут менять форму этого конкретного меша через shape keys. Скелетная деформация подключена; внешний источник morph targets/MakeHuman/MPFB будет следующим этапом.
+- Настоящая GLTF-броня с деформацией пока НЕ подключена; текущий «Учебный нагрудник» остаётся UI/prototype preview.
+- Следующая проверка: Android/WebGL smoke-test реального GLB на телефоне, затем подключение внешних body morph targets и первого адаптивного комплекта брони.
