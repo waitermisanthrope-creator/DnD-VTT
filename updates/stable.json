@@ -9,8 +9,8 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 83938,
-      "sha256": "9ca9dacea117230774f01e624de3f1504fa56ef0b819b311d9889c394745337a"
+      "bytes": 84205,
+      "sha256": "3136396b455d27f7b61325a5134cadb740324ebc67bb1693b049c5adebe30a42"
     },
     {
       "path": "app/3dmap/gltf_catalog.js",
