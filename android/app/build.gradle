@@ -1,4 +1,4 @@
-// V70.37.47 release APK: native runtime version matches the web updater version and stable Pages artifact.
+// V70.37.50 release APK: native runtime version matches the web updater version and stable Pages artifact.
 plugins {
     id "com.android.application"
 }
@@ -74,8 +74,8 @@ android {
         applicationId "com.dndvtt.pocketvtt"
         minSdk 24
         targetSdk 36
-        versionCode 7037046
-        versionName '70.37.47'
+        versionCode 7037050
+        versionName '70.37.50'
     }
 
     signingConfigs {
