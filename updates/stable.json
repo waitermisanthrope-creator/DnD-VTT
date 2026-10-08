@@ -10,7 +10,7 @@
     {
       "path": "index.html",
       "bytes": 84579,
-      "sha256": "cb8fd1c09aa542e7b48a499c1a9cf06bfef4b2cfb8aaca9e7a8d1b42a423f0b4"
+      "sha256": "626399b1"
     },
     {
       "path": "app/3dmap/character_system.js",
@@ -25,7 +25,7 @@
     {
       "path": "app/3dmap/gltf_character_pipeline.js",
       "bytes": 5057,
-      "sha256": "581f5450d9a0eaefccde853fb6911d51defdd0df03d6ee32ade8e50ed65f0ee6"
+      "sha256": "e7306d67"
     },
     {
       "path": "app/3dmap/gltf_loader.js",
