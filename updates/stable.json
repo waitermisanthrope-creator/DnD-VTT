@@ -19,13 +19,13 @@
     },
     {
       "path": "app/3dmap/gltf_loader.js",
-      "bytes": 4341,
-      "sha256": "ea9ba2baadfb283bdf24f3e8bacd46ac30210b69b3b41c4daa70ee7f6d82a22d"
+      "bytes": 4423,
+      "sha256": "812249227dd21a4acfcd51a97ac1df8b62f6363398112eb959ef1c01fc8c8517"
     },
     {
       "path": "app/3dmap/map_editor.js",
-      "bytes": 32929,
-      "sha256": "c79fd79393ee436efc61a015fde67584b8f79de479b8232ab13e7edbc0cd26f7"
+      "bytes": 33313,
+      "sha256": "5a2df7569759fe8607a362eb2b45f5514ce04074313c99c7b5229ad2c4f0dbf4"
     },
     {
       "path": "app/3dmap/map_model.js",
