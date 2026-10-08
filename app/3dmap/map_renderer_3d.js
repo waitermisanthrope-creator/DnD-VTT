@@ -144,9 +144,10 @@ function draw(c,m,cam){
         ox=(o.x||0)+.5-cx*sx,oz=(o.y||0)+.5-cz*sz,oy=by+(o.z||0)-cy*sy;
     return[sx,0,0,0,0,sy,0,0,0,0,sz,0,ox,oy,oz,1];
   }
-  function getTex(url){
+  function getTex(url,sampler){
     if(!url)return null;
-    if(st.textures[url])return st.textures[url];
+    var key=url+'|'+JSON.stringify(sampler||{});
+    if(st.textures[key])return st.textures[key];
     var t=gl.createTexture();t._ready=false;
     var im=new Image();
     im.onload=function(){
@@ -154,16 +155,21 @@ function draw(c,m,cam){
       gl.bindTexture(gl.TEXTURE_2D,t);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
       gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);
       var furnitureAtlas=/T_Trim_Furniture_BaseColor\.png$/i.test(url);
-      // Quaternius furniture uses one shared atlas. Linear filtering samples neighbouring atlas islands
-      // and produces white/grey diagonal bleed on mobile GPUs. Keep the atlas nearest-filtered;
-      // ordinary floor/wall textures retain linear filtering.
-      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,furnitureAtlas?gl.NEAREST:gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,furnitureAtlas?gl.NEAREST:gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+      var mag=sampler&&sampler.magFilter===9728?gl.NEAREST:gl.LINEAR;
+      var min=sampler&&sampler.minFilter===9728?gl.NEAREST:(sampler&&sampler.minFilter===9984?gl.NEAREST_MIPMAP_NEAREST:(sampler&&sampler.minFilter===9985?gl.LINEAR_MIPMAP_NEAREST:(sampler&&sampler.minFilter===9986?gl.NEAREST_MIPMAP_LINEAR:gl.LINEAR_MIPMAP_LINEAR)));
+      var wrapS=sampler&&sampler.wrapS===33071?gl.CLAMP_TO_EDGE:(sampler&&sampler.wrapS===33648?gl.MIRRORED_REPEAT:gl.REPEAT);
+      var wrapT=sampler&&sampler.wrapT===33071?gl.CLAMP_TO_EDGE:(sampler&&sampler.wrapT===33648?gl.MIRRORED_REPEAT:gl.REPEAT);
+      // Quaternius furniture UVs cross the 0..1 atlas boundary. The previous CLAMP_TO_EDGE
+      // sampled the white/grey trim area at the atlas edge. Honor the glTF sampler instead.
+      if(furnitureAtlas){mag=gl.NEAREST;min=gl.NEAREST;}
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,min);
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,mag);
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,wrapS);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,wrapT);
+      if(min===gl.NEAREST_MIPMAP_NEAREST||min===gl.LINEAR_MIPMAP_NEAREST||min===gl.NEAREST_MIPMAP_LINEAR||min===gl.LINEAR_MIPMAP_LINEAR)gl.generateMipmap(gl.TEXTURE_2D);
       t._ready=true;draw(c,m,cam);
     };
     im.onerror=function(){if(window.console)console.warn('Texture:',url);};
-    im.src=url.indexOf('./')===0?url:'./'+url.replace(/^\//,'');st.textures[url]=t;return t;
+    im.src=url.indexOf('./')===0?url:'./'+url.replace(/^\//,'');st.textures[key]=t;return t;
   }
   // Текстуры пола/стен больше не накладываются на цветные копии.
   // Поэтому polygonOffset здесь не нужен и только маскировал проблему.
@@ -202,7 +208,7 @@ function draw(c,m,cam){
       gl.bindBuffer(gl.ARRAY_BUFFER,buf.pos);gl.vertexAttribPointer(st.pl,3,gl.FLOAT,false,0,0);gl.enableVertexAttribArray(st.pl);
       gl.uniformMatrix4fv(st.modelLoc,false,new Float32Array(modelMatrix(o,asset)));
       var cc=matColor(asset,part);gl.disableVertexAttribArray(st.cl);gl.vertexAttrib4f(st.cl,cc[0],cc[1],cc[2],cc[3]);
-      var mm=asset.materials&&asset.materials[part.material||0],tt=mm&&mm.baseColorTexture?getTex(mm.baseColorTexture):null;
+      var mm=asset.materials&&asset.materials[part.material||0],tt=mm&&mm.baseColorTexture?getTex(mm.baseColorTexture,mm.baseColorSampler):null;
       var am=mm&&mm.alphaMode==='BLEND'?1:mm&&mm.alphaMode==='MASK'?2:0;
       gl.uniform1f(st.alphaModeLoc,am);gl.uniform1f(st.alphaCutoffLoc,mm&&mm.alphaCutoff!=null?mm.alphaCutoff:0.5);
       if(am===1)gl.enable(gl.BLEND);else gl.disable(gl.BLEND);
@@ -242,4 +248,4 @@ g.DNDMapRenderer3D={draw:draw,hitTest:hitTest,projectPoint:function(m,cam,x,y,z)
 // 3D texture z-fighting fix
 // V70.37.69: alpha-aware glTF furniture textures; opaque/mask materials do not blend.
 
-// V70.37.71 — Quaternius furniture atlas uses nearest filtering to prevent atlas bleed.
+// V70.37.72 — honor glTF wrap/filter; Quaternius trim UVs intentionally cross atlas boundaries.
