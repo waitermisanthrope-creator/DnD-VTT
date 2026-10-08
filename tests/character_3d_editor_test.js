@@ -1,0 +1,20 @@
+/* Runtime test for the touch-first 3D character editor. */
+const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
+const sys=fs.readFileSync(path.join(__dirname,'../app/3dmap/character_system.js'),'utf8');
+const ed=fs.readFileSync(path.join(__dirname,'../app/3dmap/character_editor_3d.js'),'utf8');
+const ctx={window:{},console,document:{createElement:function(){return {style:{}}},body:{appendChild:function(){}}}};
+vm.runInNewContext(sys,ctx,{filename:'character_system.js'});
+vm.runInNewContext(ed,ctx,{filename:'character_editor_3d.js'});
+const api=ctx.window.DNDCharacterEditor3D;
+assert(api&&api.VERSION===1,'editor API missing');
+const c=ctx.window.DNDCharacter3D.createCharacter({raceId:'human'});
+api.open(c);
+api.setAxis('height',1);api.setAxis('width',.8);api.setAxis('chest',.6);
+assert(api.getState().body.height===1&&api.getState().body.width===.8&&api.getState().body.chest===.6,'axis update failed');
+api.setArmor(true);
+assert(api.getState().equipment.body==='editor_plate','armor equip failed');
+const m=api.metrics();
+assert(m.height>1&&m.width>1&&m.chest>1,'preview metrics failed');
+assert(api.exportJSON().indexOf('editor_plate')>=0,'export failed');
+api.close();
+console.log('CHARACTER_3D_EDITOR_TEST_OK');
