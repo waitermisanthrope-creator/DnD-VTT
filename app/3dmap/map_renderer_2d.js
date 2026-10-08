@@ -1,21 +1,2 @@
-/* 2D-рендер новой карты. Не зависит от старой карты. */
-(function(g){
-'use strict';
-function draw(canvas,m){
- const ctx=canvas.getContext('2d'); if(!ctx)return;
- const scale=Math.max(0.2,Math.min(1.5,(canvas.clientWidth||800)/(m.width*m.cell)));
- const w=m.width*m.cell*scale,h=m.height*m.cell*scale;
- canvas.width=Math.max(1,Math.floor(w));canvas.height=Math.max(1,Math.floor(h));
- ctx.clearRect(0,0,w,h);ctx.font='12px sans-serif';
- const f=g.DNDMapModel.current(m);
- for(let y=0;y<m.height;y++)for(let x=0;x<m.width;x++){
-  const k=x+','+y,t=f.tiles[k];
-  ctx.fillStyle=t==='stone'?'#666':t==='wood'?'#8b633e':t==='grass'?'#476b3d':t==='water'?'#315d78':'#171717';
-  ctx.fillRect(x*m.cell*scale,y*m.cell*scale,m.cell*scale,m.cell*scale);
-  ctx.strokeStyle='#444';ctx.strokeRect(x*m.cell*scale,y*m.cell*scale,m.cell*scale,m.cell*scale);
-  const wa=f.walls[k];if(wa){ctx.strokeStyle='#ddd';ctx.lineWidth=3; if(wa.n){ctx.beginPath();ctx.moveTo(x*m.cell*scale,y*m.cell*scale);ctx.lineTo((x+1)*m.cell*scale,y*m.cell*scale);ctx.stroke();} if(wa.e){ctx.beginPath();ctx.moveTo((x+1)*m.cell*scale,y*m.cell*scale);ctx.lineTo((x+1)*m.cell*scale,(y+1)*m.cell*scale);ctx.stroke();} if(wa.s){ctx.beginPath();ctx.moveTo(x*m.cell*scale,(y+1)*m.cell*scale);ctx.lineTo((x+1)*m.cell*scale,(y+1)*m.cell*scale);ctx.stroke();} if(wa.w){ctx.beginPath();ctx.moveTo(x*m.cell*scale,y*m.cell*scale);ctx.lineTo(x*m.cell*scale,(y+1)*m.cell*scale);ctx.stroke();}}
- }
- return {scale,width:w,height:h};
-}
-g.DNDMapRenderer2D={draw};
-})(window);
+/* 2D-рендер новой карты. */
+(function(g){'use strict';function draw(c,m){var ctx=c.getContext('2d'),f=g.DNDMapModel.current(m),s=Math.max(.25,Math.min(1.5,(c.parentElement.clientWidth-24)/(m.width*m.cell)));c.width=Math.max(240,Math.floor(m.width*m.cell*s));c.height=Math.max(240,Math.floor(m.height*m.cell*s));ctx.clearRect(0,0,c.width,c.height);for(var y=0;y<m.height;y++)for(var x=0;x<m.width;x++){var t=f.tiles[x+','+y];ctx.fillStyle=t==='wood'?'#765437':t==='grass'?'#4b7044':t==='water'?'#315f7c':t?'#555':'#101010';ctx.fillRect(x*m.cell*s,y*m.cell*s,m.cell*s,m.cell*s);ctx.strokeStyle='#303030';ctx.strokeRect(x*m.cell*s,y*m.cell*s,m.cell*s,m.cell*s);}ctx.strokeStyle='#ddd';ctx.lineWidth=3;for(var k in f.walls){var a=k.split(','),x=+a[0],y=+a[1],w=f.walls[k],X=x*m.cell*s,Y=y*m.cell*s,S=m.cell*s;if(w.n){ctx.beginPath();ctx.moveTo(X,Y);ctx.lineTo(X+S,Y);ctx.stroke();}if(w.e){ctx.beginPath();ctx.moveTo(X+S,Y);ctx.lineTo(X+S,Y+S);ctx.stroke();}if(w.s){ctx.beginPath();ctx.moveTo(X,Y+S);ctx.lineTo(X+S,Y+S);ctx.stroke();}if(w.w){ctx.beginPath();ctx.moveTo(X,Y);ctx.lineTo(X,Y+S);ctx.stroke();}}return{s:s};}g.DNDMapRenderer2D={draw:draw};})(window);
