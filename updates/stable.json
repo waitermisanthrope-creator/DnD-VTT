@@ -24,8 +24,8 @@
     },
     {
       "path": "app/3dmap/map_editor.js",
-      "bytes": 31242,
-      "sha256": "9be73f67192f011ab58e6294d1074d60f7ca6a7d4e50fc5a465d99d8fb3247bf"
+      "bytes": 31237,
+      "sha256": "d96ab331832698fbc4001ddfc45bbf0ffeb98761112b0944ab3cd7f4b5ef3a2a"
     },
     {
       "path": "app/3dmap/map_model.js",
@@ -39,8 +39,8 @@
     },
     {
       "path": "app/3dmap/map_renderer_3d.js",
-      "bytes": 14029,
-      "sha256": "b289a9949b991d173097ad8e574fdae3c6eccca620e13cc702dca9cb67d01a19"
+      "bytes": 14129,
+      "sha256": "3726894b950db6b41f5c3d5b467a8ecaddc63952c91ffa5025b4984b5e285feb"
     },
     {
       "path": "app/Ambiences.js",
