@@ -2023,6 +2023,11 @@
       "sha256": "f7579e75033d0a8ebf8163af8767724df3079a95b554b90c31be83586ced0867"
     },
     {
+      "path": "app/data/maps/3d_test_dungeon.json",
+      "bytes": 20092,
+      "sha256": "1368ff6552662e375c7fad537bc1935fb58883e3496bc8295591fc434d241b91"
+    },
+    {
       "path": "app/data/spells/Focuses.js",
       "bytes": 53387,
       "sha256": "10ea6ac03167445d959f2f18635d8d8c591e9c6b77c6d93727994fd67b2f3e49"
