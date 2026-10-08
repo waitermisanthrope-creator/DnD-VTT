@@ -1,0 +1,12 @@
+/* GLTF-загрузчик для мобильного 3D-редактора. Поддерживает glTF 2.0 + внешние .bin + PNG/JPG. Без внешних библиотек. */
+(function(g){'use strict';
+var cache={};
+function base64Bytes(s){var bin=atob(s),a=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)a[i]=bin.charCodeAt(i);return a.buffer;}
+function uriBytes(uri){if(/^data:/.test(uri)){var p=uri.indexOf(',');return uri.slice(p+1).indexOf('base64')>=0?base64Bytes(uri.slice(p+1)):new TextEncoder().encode(decodeURIComponent(uri.slice(p+1))).buffer;}return null;}
+function dir(path){return path.slice(0,path.lastIndexOf('/')+1);}
+function join(base,name){if(/^https?:\/\//.test(name)||name.charAt(0)==='/')return name;return base+name;}
+function componentCount(t){return({SCALAR:1,VEC2:2,VEC3:3,VEC4:4,MAT2:4,MAT3:9,MAT4:16})[t]||1;}
+function componentType(t){return({5121:Uint8Array,5123:Uint16Array,5125:Uint32Array,5126:Float32Array,5122:Int16Array,5120:Int8Array})[t]||Float32Array;}
+function readAccessor(gltf,buffers,idx){var a=gltf.accessors[idx],v=gltf.bufferViews[a.bufferView],raw=buffers[v.buffer||0],C=componentType(a.componentType),n=componentCount(a.type),off=(v.byteOffset||0)+(a.byteOffset||0),len=a.count*n,arr=new C(raw,off,len);if(a.componentType===5121||a.componentType===5123||a.componentType===5125||a.componentType===5122||a.componentType===5120)return new C(arr);return arr;}
+function load(url){if(cache[url])return cache[url];cache[url]=fetch(url).then(function(r){if(!r.ok)throw Error('GLTF '+r.status+': '+url);return r.json();}).then(function(gltf){var base=dir(url),bs=(gltf.buffers||[]).map(function(b){var d=uriBytes(b.uri||'');return d?Promise.resolve(d):fetch(join(base,b.uri)).then(function(r){if(!r.ok)throw Error('BIN '+r.status);return r.arrayBuffer();});});return Promise.all(bs).then(function(buffers){var meshes=(gltf.meshes||[]).map(function(mesh){return(mesh.primitives||[]).map(function(p){var pos=p.attributes&&p.attributes.POSITION,idx=p.indices,uv=p.attributes&&p.attributes.TEXCOORD_0,norm=p.attributes&&p.attributes.NORMAL;return{pos:pos!=null?readAccessor(gltf,buffers,pos):null,idx:idx!=null?readAccessor(gltf,buffers,idx):null,uv:uv!=null?readAccessor(gltf,buffers,uv):null,norm:norm!=null?readAccessor(gltf,buffers,norm):null,mode:p.mode==null?4:p.mode,material:p.material==null?0:p.material};});});return{url:url,gltf:gltf,buffers:buffers,meshes:meshes};});}).then(function(asset){return asset;});return cache[url];}
+g.DNDGLTF={load:load,clear:function(){cache={};}};})(window);
