@@ -14,13 +14,13 @@
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
-      "bytes": 6606,
-      "sha256": "69f7157ecf48cee9063d621fa46068442046d50dc58c78875fc63c182cf0a6f0"
+      "bytes": 9351,
+      "sha256": "5e1a2d0895d94739322e1f91f012a43b8b2766c9b02ac4c806026ebcbcec7d5f"
     },
     {
       "path": "app/3dmap/character_system.js",
-      "bytes": 6774,
-      "sha256": "ae60519954dff577a2be41f6315e2890015f587a00aed155a7c971a4668d64a2"
+      "bytes": 6818,
+      "sha256": "f624f9bb220760e5dd1ce9285a9aa90f0e5012b03fae4d0d15b27aa441632be4"
     },
     {
       "path": "app/3dmap/gltf_catalog.js",
