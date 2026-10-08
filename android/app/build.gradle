@@ -1,4 +1,4 @@
-// V70.37.72 release APK.
+// V74.0.0 release APK — controlled Android launch window.
 plugins {
     id "com.android.application"
 }
