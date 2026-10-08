@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "70.37.73",
+  "version": "74.0.0",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-08",
