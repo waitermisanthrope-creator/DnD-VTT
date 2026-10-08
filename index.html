@@ -71,7 +71,7 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
     .debug-enabled .debug-tool-button {
       display: block !important;
     }
-  </style>
+    /* Глобально скрываем декоративный заголовок «Карманный ВТТ» из UI.\n       Системное имя Android-приложения при этом не меняется. */\n    .app-title { display: none !important; }\n  </style>
   <!-- Справочники и данные -->
   <script src="./app/weaponsmelee.js"></script>
   <script src="./app/weaponsheavy.js"></script>
@@ -323,7 +323,6 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
 
   <!-- Экран выбора персонажа (стартовый экран) -->
   <div id="characterSelectScreen" style="position: relative; min-height: 100vh; box-sizing: border-box; padding-bottom: 60px;">
-    <h2 class="app-title">📜 Карманный ВТТ — персонажи</h2>
     <div id="characterList"></div>
     <div class="author-link-card" aria-label="Страница автора">
       <div class="author-link-card-title">✒️ Страница автора</div>
