@@ -1358,54 +1358,9 @@
       "sha256": "de23c8c18f3e38dd6c35514c1e3c8f2b362e2434dbbedc7d89f77d17c0330f7e"
     },
     {
-      "path": "app/utils/BufferGeometryUtils.js",
-      "bytes": 1101,
-      "sha256": "538d4f151d86cc2dff07d1240d7f10a7b99d712f77adaafcb87c6c6ed20be7bd"
-    },
-    {
-      "path": "app/vendor/BufferGeometryUtils.legacy.js",
-      "bytes": 1204,
-      "sha256": "b1cd5abe83dc7f906310a16719cf4d74237b9152b08a6afc7aa1a32d23da0246"
-    },
-    {
-      "path": "app/vendor/GLTFLoader.js",
-      "bytes": 114755,
-      "sha256": "004e207049f38d8684fba3d4b08933b62f63038e1db23f23a0e159fa9a1eccc8"
-    },
-    {
-      "path": "app/vendor/GLTFLoader.legacy.js",
-      "bytes": 114856,
-      "sha256": "e48cb98aa22acfbfadfa7e9b0a28da2d48cda7114064acf61351cdc2bf43282f"
-    },
-    {
-      "path": "app/vendor/three.core.legacy.js",
-      "bytes": 375817,
-      "sha256": "942c0f8c7936bc267d14088380d3d3cc797d8412645a8e793ac4a066abcf2531"
-    },
-    {
-      "path": "app/vendor/three.core.min.js",
-      "bytes": 381124,
-      "sha256": "61ba0df005b05991361d040d8ff670e1aadfd0ce7aeebd1fdb0725957a8957de"
-    },
-    {
-      "path": "app/vendor/three.legacy.js",
-      "bytes": 334125,
-      "sha256": "19875fa2d1bf3827ff6f7c20ec2c4fbc146d5b90905a279d8c3c6d6cdfab87e2"
-    },
-    {
-      "path": "app/vendor/three.module.min.js",
-      "bytes": 338908,
-      "sha256": "e2b5ee6bccd38fd6d8a2428546b83c5f2426d84b152ef82be8055556e3b40eb6"
-    },
-    {
       "path": "app/vessel_laserllama_v4_runtime.js",
       "bytes": 39809,
       "sha256": "5f600d5c2a2a360b843e7200fb4f6ddcd33f097bb5fe681b63b22356bd759d17"
-    },
-    {
-      "path": "app/vtt_asset_pack_v84.js",
-      "bytes": 7388,
-      "sha256": "53858daffb2b8b661c8668cb2f339a609ee75e722881991899182d73e60f1e56"
     },
     {
       "path": "app/vtt_character_actions_v64.js",
@@ -1496,21 +1451,6 @@
       "path": "app/vtt_gameplay_ux_v58.js",
       "bytes": 8641,
       "sha256": "d42239954041731f440a4d4540e017b98329ea7db1750d3a8efbad3bd331cde0"
-    },
-    {
-      "path": "app/vtt_map_editor_3d_ui_v1.js",
-      "bytes": 7862,
-      "sha256": "680f0c76b0b5fe643bdd963479597be1b719f0f33b0a0be8e71ce5615344ef37"
-    },
-    {
-      "path": "app/vtt_map_editor_3d_v71.js",
-      "bytes": 96652,
-      "sha256": "50716dd845f39946f0a0e7d1d9b315c360b62ba3b8fd64dd8bc1b85533aa4572"
-    },
-    {
-      "path": "app/vtt_map_editor_3d_webgl_v72.js",
-      "bytes": 97714,
-      "sha256": "be85e085bfad40a7e3544e0e7962465ff450af9647eab0d9cf3e2cb2d70d6dee"
     },
     {
       "path": "app/vtt_mobile_battle_v61.js",
