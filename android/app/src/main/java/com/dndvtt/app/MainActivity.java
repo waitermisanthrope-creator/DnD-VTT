@@ -1,6 +1,7 @@
 package com.dndvtt.app;
 
 import android.app.Activity;
+import android.view.Window;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.net.Uri;
@@ -59,6 +60,10 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // WebView UI has its own navigation; the native Activity title bar only
+        // wastes vertical space and duplicated the app name above every screen.
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (getActionBar() != null) getActionBar().hide();
 
         updater = new DndUpdateBridge(this);
         try {
