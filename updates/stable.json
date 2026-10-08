@@ -13,6 +13,16 @@
       "sha256": "2e36b540ea246fcfa58957f320862cb20d736c071d970edce850893ec0b6ea6a"
     },
     {
+      "path": "app/3dmap/map_model.js",
+      "bytes": 2657,
+      "sha256": "a13c705034c4a1985bf63880c58262bd9a7ec91112677eb0b7bcfae4e83bd79d"
+    },
+    {
+      "path": "app/3dmap/map_renderer_2d.js",
+      "bytes": 1553,
+      "sha256": "aac921134caab8f79b77f0a908e7dc5e79064dc6080249771215995f113ed9cb"
+    },
+    {
       "path": "app/Ambiences.js",
       "bytes": 14648,
       "sha256": "517d2d198c6e567f3b1b3e39d4505f95dadfd9dafd3f46b22f70004d78725634"
