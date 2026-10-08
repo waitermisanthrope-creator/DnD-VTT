@@ -123,9 +123,12 @@ function draw(c,m,cam){
   gl.uniform1f(st.useTexLoc,0);
   gl.drawArrays(gl.TRIANGLES,0,verts.length/3);
 
-  function modelMatrix(o){
-    var sx=Number(o.scale)||1,sy=Number(o.scaleY)||sx,sz=Number(o.scaleZ)||sx,
-        ox=(o.x||0)+.5,oz=(o.y||0)+.5,oy=by+(o.z||0);
+  function modelMatrix(o,asset){
+    var base=Number(o.scale)||1,b=asset&&asset.bounds,fit=1;
+    if(b){var md=Math.max(b.size[0],b.size[1],b.size[2]);if(md>2.5)fit=2.5/md;}
+    var sx=base*fit,sy=(Number(o.scaleY)||base)*fit,sz=(Number(o.scaleZ)||base)*fit,
+        cx=b?b.center[0]:0,cy=b?b.min[1]:0,cz=b?b.center[2]:0,
+        ox=(o.x||0)+.5-cx*sx,oz=(o.y||0)+.5-cz*sz,oy=by+(o.z||0)-cy*sy;
     return[sx,0,0,0,0,sy,0,0,0,0,sz,0,ox,oy,oz,1];
   }
   function getTex(url){
@@ -178,7 +181,7 @@ function draw(c,m,cam){
         part[key]=buf;
       }
       gl.bindBuffer(gl.ARRAY_BUFFER,buf.pos);gl.vertexAttribPointer(st.pl,3,gl.FLOAT,false,0,0);gl.enableVertexAttribArray(st.pl);
-      gl.uniformMatrix4fv(st.modelLoc,false,new Float32Array(modelMatrix(o)));
+      gl.uniformMatrix4fv(st.modelLoc,false,new Float32Array(modelMatrix(o,asset)));
       var cc=matColor(asset,part);gl.disableVertexAttribArray(st.cl);gl.vertexAttrib4f(st.cl,cc[0],cc[1],cc[2],cc[3]);
       var mm=asset.materials&&asset.materials[part.material||0],tt=mm&&mm.baseColorTexture?getTex(mm.baseColorTexture):null;
       gl.uniform1f(st.useTexLoc,tt&&tt._ready?1:0);
