@@ -86,9 +86,11 @@ jobs:
           else
             APK="app-debug.apk"
           fi
-          mv "site/downloads/$APK" site/downloads/DND-VTT-70.37.60.apk
-          cp site/downloads/DND-VTT-70.37.60.apk site/downloads/latest.apk
-          sha256sum site/downloads/DND-VTT-70.37.60.apk > site/downloads/DND-VTT-70.37.60.apk.sha256
+          VERSION=$(sed -n "s/.*versionName '\([^']*\)'.*/\1/p" android/app/build.gradle | head -1)
+          test -n "$VERSION"
+          mv "site/downloads/$APK" "site/downloads/DND-VTT-$VERSION.apk"
+          cp "site/downloads/DND-VTT-$VERSION.apk" site/downloads/latest.apk
+          sha256sum "site/downloads/DND-VTT-$VERSION.apk" > "site/downloads/DND-VTT-$VERSION.apk.sha256"
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
