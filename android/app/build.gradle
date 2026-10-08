@@ -1,4 +1,5 @@
 // V74.0.0 release APK — controlled Android launch window.
+// Launch-title fix included in MainActivity.
 plugins {
     id "com.android.application"
 }
