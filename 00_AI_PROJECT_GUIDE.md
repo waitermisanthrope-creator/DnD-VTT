@@ -9082,3 +9082,28 @@ Implemented:
 - «Стройка → Пол» создаёт плитки проведением пальцем по клеткам.
 - Высота пола, стен, объектов и токенов теперь учитывает текущий этаж.
 - В WebGL API добавлена проверка наличия пола для будущей/игровой коллизии; старый v71 сохраняется для существующей 1/3-лицевой игровой логики.
+
+
+# 3D персонажи — визуальный редактор и GLTF skin/morph foundation — 2026-10-08
+
+## Сделано
+- Добавлен горизонтальный touch-first экран «3D-редактор персонажа» с кнопкой на главном экране.
+- Редактор принудительно запрашивает landscape на поддерживаемых Android/WebView.
+- Состояние персонажа использует существующий DNDCharacter3D: пол, раса, 11 морф-осей тела, экипировка, сериализация.
+- GLTF pipeline теперь сохраняет JOINTS_0/WEIGHTS_0, skin, inverse bind matrices, morph targets и их имена.
+- Добавлена CPU-деформация vertex mesh: morph targets применяются до skeletal skinning, затем применяется transform узла.
+- Редактор использует деформированные вершины GLTF в WebGL; для rigged/morphed моделей больше не применяется грубое глобальное масштабирование тела.
+- Исправлена критическая ошибка character_editor_3d.js: повторное присваивание DNDCharacterEditor3D больше не затирает весь API.
+- Добавлен regression test character_3d_skin_morph_test.js и он подключён в android-debug workflow.
+
+## Важно
+- Текущий Dummy.gltf остаётся временным preview-ассетом и не является полноценным humanoid body с morph targets/skin.
+- Настоящая адаптивная броня GLTF ещё не подключена: текущий «Учебный нагрудник» — procedural preview. Следующий этап должен использовать отдельный skinned armor mesh с тем же skeleton/bind-space и armor-specific morph targets.
+- Для настоящего Kenshi-подобного результата нужен реальный humanoid GLTF/GLB с skeleton + weights + morph targets и набор совместимой брони.
+
+## Следующий этап
+1. Добавить/подключить реальный humanoid body asset.
+2. Подключить gender presets и body morph mapping к именованным morph targets.
+3. Сделать реальную GLTF-броню, деформируемую тем же skeleton + body morphs.
+4. Затем перенести тот же character render descriptor в 3D-карту вместо плоского token.
+5. Проверить Android WebView физически после APK-сборки; CI сам по себе не считается физическим QA.
