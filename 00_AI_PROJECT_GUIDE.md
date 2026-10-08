@@ -9107,3 +9107,24 @@ Implemented:
 3. Сделать реальную GLTF-броню, деформируемую тем же skeleton + body morphs.
 4. Затем перенести тот же character render descriptor в 3D-карту вместо плоского token.
 5. Проверить Android WebView физически после APK-сборки; CI сам по себе не считается физическим QA.
+
+
+# V70+ / 3D CHARACTER JOURNAL — 2026-10-09
+
+## Универсальная система morphs — архитектурное решение
+- Не делать отдельный ручной пайплайн для каждого body slider.
+- Один общий Morph Bridge/Registry должен принимать MakeHuman targets, выполнять surface/barycentric transfer и выдавать стандартный GLB morph target.
+- UI-ползунок должен только менять значение именованного morph/набора morphs. Renderer, GLTF loader и skinning не дублируются.
+- torso-vshape-incr.target.gz используется как первый технический fixture, а не как отдельная одноразовая функция.
+- После проверки fixture новые параметры подключаются декларативно: имя, группа, диапазон, target/incr/decr или набор target'ов, веса/макро-правила.
+- Исходный human-base-rigged.glb не изменять во время разработки bridge; тестовые GLB должны быть отдельными производными файлами.
+
+## Последний численный gate
+- Reverse transfer: 70,985/70,985 GLB vertices mapped, misses 0.
+- Non-zero mapped GLB vertices: 24,896 (35.07%).
+- Mapped displacement mean: 0.0086968143; P95/max: 0.0273084040; RMS: 0.0152599759.
+- surfaceMeanDistance этого reverse метода = 0.4125242, поэтому результат считается достаточным для технического fixture/runtime-теста, но НЕ доказательством production-качества переноса.
+
+## Журнал продолжения
+- docs/3d_character_journal/2026-10-09_01_morph_architecture.md — зафиксирована универсальная архитектура и точка продолжения.
+- После каждого законченного крупного этапа добавлять новый отдельный файл в docs/3d_character_journal/, чтобы новый чат мог восстановить контекст независимо от истории диалога.
