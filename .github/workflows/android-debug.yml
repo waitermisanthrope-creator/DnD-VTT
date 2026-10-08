@@ -44,6 +44,15 @@ jobs:
         run: node tests/alchemist_runtime_test.js
       - name: Test Alchemist combat integration
         run: node tests/alchemist_combat_test.js
+      - name: Test 3D character foundation
+        run: node tests/character_3d_foundation_test.js
+      - name: Test 3D character editor
+        run: node tests/character_3d_editor_test.js
+      - name: Syntax check 3D character modules
+        run: |
+          node --check app/3dmap/character_system.js
+          node --check app/3dmap/gltf_character_pipeline.js
+          node --check app/3dmap/character_editor_3d.js
 
       - name: Build debug APK
         working-directory: android
