@@ -25,7 +25,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+          # Always build the Pages manifest/site from current main.
+          # workflow_run still supplies the exact completed APK artifact below.
+          ref: main
 
       - name: Prepare Pages site
         shell: bash
