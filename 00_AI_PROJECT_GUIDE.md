@@ -9128,3 +9128,22 @@ Implemented:
 ## Журнал продолжения
 - docs/3d_character_journal/2026-10-09_01_morph_architecture.md — зафиксирована универсальная архитектура и точка продолжения.
 - После каждого законченного крупного этапа добавлять новый отдельный файл в docs/3d_character_journal/, чтобы новый чат мог восстановить контекст независимо от истории диалога.
+
+
+# V70+ / 3D CHARACTER JOURNAL — 2026-10-09 / Morph Bridge implementation
+
+## Сделано
+- Создан общий `tests/makehuman_morph_bridge.js` — единый слой чтения MakeHuman OBJ/target, GLB geometry и reverse surface/barycentric transfer.
+- Создан `tests/generate_makehuman_glb_morph_fixture.js` — генератор производного GLB с morph POSITION accessor. Исходный human-base-rigged.glb не перезаписывается.
+- Создан `tests/makehuman_glb_morph_fixture_audit.js` — структурная проверка созданного morph GLB.
+- Архитектура теперь рассчитана на подключение множества targets через один bridge, а не на ручную реализацию каждого ползунка.
+
+## Текущая точка
+- Следующее действие: локально на Termux запустить генератор на `torso-vshape-incr.target.gz`, затем прогнать fixture audit.
+- После успешного fixture audit следующий этап — подключить generic morph registry к существующему `gltf_character_pipeline.js` и один UI-контроллер, который сможет управлять любым именованным morph.
+- Это ещё не production body-morph quality gate: текущий reverse transfer остаётся техническим мостом и требует визуальной проверки деформации.
+
+## Коммиты этапа
+- Morph Bridge: `68b0d15ef0f6a2ce29615a985f4ea278d899326e`
+- Fixture generator: `3ddac7cbe829ecaf00ef73e4f8bddb0b387aff49`
+- Fixture audit: `c5c61dd9f9edf37e5b8c63a7234ef3ecbf7701b`
