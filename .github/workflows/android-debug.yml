@@ -48,6 +48,7 @@ jobs:
         run: node tests/character_3d_foundation_test.js
       - name: Test 3D character editor
         run: node tests/character_3d_editor_test.js
+      node tests/character_3d_skin_morph_test.js
       - name: Syntax check 3D character modules
         run: |
           node --check app/3dmap/character_system.js
