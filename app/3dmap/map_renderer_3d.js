@@ -57,7 +57,7 @@ function draw(c,m,cam){
           power=clamp(Number(l.intensity==null?1:l.intensity),0,1);
       if(dist<rad)best=Math.max(best,(1-dist/rad)*power);
     }
-    return clamp(1-dark*(1-best),.02,1);
+    return clamp(1-dark*(1-best),.12,1);
   }
   function baseColor(t){return t==='wood'?[.36,.23,.13]:t==='grass'?[.20,.38,.20]:t==='water'?[.12,.30,.42]:[.48,.50,.54];}
   function tileCol(t,x,z){var b=baseColor(t),q=illum(x,z);return[b[0]*q,b[1]*q,b[2]*q,1];}
@@ -141,7 +141,7 @@ function draw(c,m,cam){
       t._ready=true;draw(c,m,cam);
     };
     im.onerror=function(){if(window.console)console.warn('Texture:',url);};
-    im.src=url;st.textures[url]=t;return t;
+    im.src=url.indexOf('./')===0?url:'./'+url.replace(/^\//,'');st.textures[url]=t;return t;
   }
   Object.keys(texBatches).forEach(function(name){
     var q=texBatches[name],tt=getTex(name+'.png');
