@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "70.37.70",
+  "version": "70.37.71",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-08",
@@ -39,8 +39,8 @@
     },
     {
       "path": "app/3dmap/map_renderer_3d.js",
-      "bytes": 16465,
-      "sha256": "08c6d81b99627f48d5feacd0c616f2207ff580c77755b6deaed2c27866297d16"
+      "bytes": 16946,
+      "sha256": "2517853571212bb514ba2c17d1c27fc1d51e21cec93c3f94bfeea610ad820888"
     },
     {
       "path": "app/Ambiences.js",
@@ -2375,7 +2375,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 18786,
-      "sha256": "7832eaec21d5e128db428163da2027d72a3fe189d718b8c9f2c197d2230547fc"
+      "sha256": "feea2b52b6ba34e8f5166ee0eb4a85d90c971acc3a11e1ae93d0848646a19df2"
     },
     {
       "path": "app/update_scene_v2.js",
