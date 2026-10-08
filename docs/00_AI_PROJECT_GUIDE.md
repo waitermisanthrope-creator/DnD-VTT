@@ -3894,3 +3894,29 @@ Shared asset catalog
 - Android version: 70.37.73 / versionCode 7037073.
 - Signed release APK собран успешно. SHA-256: a0ed63810195eeda84cb8883c4f3534739ea390010fc9f9fc62fc129521691c8.
 - OTA stable manifest обновлён до 70.37.73.
+
+## 2026-10-08 — 3D CHARACTER FOUNDATION V74.00.04
+
+Начата архитектура будущего полноценного 3D-персонажа по принципу, близкому к Kenshi, но встроенная в существующий 3D-движок без второго рендера.
+
+### Что уже реализовано
+- app/3dmap/character_system.js — единый runtime-слой DNDCharacter3D.
+- Общие параметры тела: рост, ширина, мускулатура, жир, плечи, грудь, талия, бёдра, руки, ноги, голова.
+- У каждой расы может быть собственный baseModel, skeleton и диапазоны морфов.
+- Пресеты тела являются наборами параметров, а не отдельными моделями.
+- Экипировка имеет стабильный assetId, слот и профиль подгонки к телу.
+- Одежда/броня может получать собственные morph channels, сопоставленные с параметрами тела.
+- Добавлена реальная функция CPU-деформации вершин applyMorphTargets() для shape-key-подобных морфов.
+- getRenderDescriptor() собирает единое описание тела, экипировки и текущей позы для будущего WebGL skin/morph renderer.
+- Состояние персонажа сериализуется в компактный JSON и не содержит копий 3D-моделей.
+- tests/character_3d_foundation_test.js проверяет регистрацию расы/пресета, morph targets, fitting экипировки и сериализацию.
+
+### Архитектура следующего этапа
+
+Character -> Race/base body/skeleton/morph ranges -> Body/morph weights -> Equipment/assetId/fit/morph channels -> Skeleton/bones -> Pose/animation clip -> WebGL character renderer -> body + clothing + armor + weapon.
+
+### Важное решение
+Не создавать 50 независимых моделей персонажей. Сначала довести одну эталонную гуманоидную расу до полного цикла body morphs -> skeleton -> animation -> armor fitting -> weapon attachment, затем переносить тот же pipeline на остальные расы.
+
+### Текущий статус
+**Фундамент API готов. Визуальный skinning/morphing и редактор ползунков ещё НЕ подключены.** Следующий технический этап: расширить GLTF pipeline поддержкой skins, joints, animation clips и morph targets, затем подключить их к существующему WebGL renderer. После этого сделать первый реальный Human Male/Female body и один комплект брони как эталон.
