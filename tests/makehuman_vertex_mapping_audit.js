@@ -54,10 +54,14 @@ function readGlb(path) {
     if (!a || !view || a.componentType!==5126 || a.type!=='VEC3') continue;
     const stride=view.byteStride||12;
     const start=(view.byteOffset||0)+(a.byteOffset||0);
+    if (view.buffer !== 0) die(`GLB POSITION references unsupported buffer index ${view.buffer}; expected buffer 0`);
+    const requiredEnd=start+(a.count-1)*stride+12;
+    if (requiredEnd > view.byteOffset + view.byteLength) die(`POSITION accessor exceeds bufferView bounds: end ${requiredEnd}, viewEnd ${view.byteOffset + view.byteLength}`);
     const arr=new Array(a.count);
     for(let i=0;i<a.count;i++){
       const o=start+i*stride;
-      arr[i]=[b.readFloatLE(o),b.readFloatLE(o+4),b.readFloatLE(o+8)];
+      if (o < 0 || o+12 > bin.length) die(`POSITION accessor out of BIN bounds at vertex ${i}: offset ${o}, BIN ${bin.length}`);
+      arr[i]=[bin.readFloatLE(o),bin.readFloatLE(o+4),bin.readFloatLE(o+8)];
     }
     out.push(arr);
   }
