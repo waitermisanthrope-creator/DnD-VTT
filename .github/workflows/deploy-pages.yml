@@ -50,9 +50,12 @@ jobs:
             cp "$f" "site/ambience/$(basename "$f")"
           done
 
+          VERSION=$(sed -n "s/.*versionName '\([^']*\)'.*/\1/p" android/app/build.gradle | head -1)
+          test -n "$VERSION"
+          echo "Publishing stable version: $VERSION"
           python3 tools/build_update_manifest.py \
             --base-url "https://waitermisanthrope-creator.github.io/DnD-VTT" \
-            --version "70.37.60" \
+            --version "$VERSION" \
             --min-app-version "70.26.99" \
             --channel "stable" \
             --output site/updates/stable.json
