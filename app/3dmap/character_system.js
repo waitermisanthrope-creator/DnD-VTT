@@ -26,7 +26,7 @@ function applyMorphTargets(base,targets,weights){if(!base)return new Float32Arra
 function getRenderDescriptor(c){var r=getBodyState(c),items=[];Object.keys(c.equipment||{}).forEach(function(slot){var e=equipment[c.equipment[slot]];if(e)items.push(resolveEquipment(c,e));});return{version:VERSION,characterId:c.id,raceId:c.raceId,gender:c.gender,body:r.body,baseModel:r.baseModel,skeleton:r.skeleton,equipment:items,pose:clone(c.pose||{})};}
 function serialize(c){return JSON.stringify(clone(c));}
 function deserialize(v){var c=typeof v==='string'?JSON.parse(v):clone(v);return createCharacter(c);}
-registerRace({id:'human',name:'Человек',baseModel:'',skeleton:'humanoid',presets:['human_average']});
+registerRace({id:'human',name:'Человек',baseModel:'./app/assets/3d/quaternius/models/Dummy.gltf',skeleton:'humanoid',presets:['human_average']});
 registerPreset({id:'human_average',name:'Среднее телосложение',body:{}});
 g.DNDCharacter3D={VERSION:VERSION,AXES:clone(AXES),registerRace:registerRace,registerPreset:registerPreset,registerEquipment:registerEquipment,getRace:getRace,createCharacter:createCharacter,applyPreset:applyPreset,getBodyState:getBodyState,resolveEquipment:resolveEquipment,equip:equip,unequip:unequip,applyMorphTargets:applyMorphTargets,getRenderDescriptor:getRenderDescriptor,serialize:serialize,deserialize:deserialize,listRaces:function(){return Object.keys(races).map(function(k){return clone(races[k]);});},listPresets:function(){return Object.keys(presets).map(function(k){return clone(presets[k]);});},listEquipment:function(){return Object.keys(equipment).map(function(k){return clone(equipment[k]);});}};
 })(window);
