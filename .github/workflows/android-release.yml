@@ -77,9 +77,14 @@ jobs:
           else:
               alphas=[255]*(w*h)
           print("FURNITURE_PNG",w,h,"color_type",ct,"alpha_min",min(alphas),"alpha_max",max(alphas),"alpha_zero",sum(a==0 for a in alphas),"pixels",len(alphas))
-          for name in ["Barrel","Shelf_Simple","Bookcase_2"]:
+          for name in ["Anvil","Anvil_Log","Barrel","Barrel_Apples","Shelf_Simple","Bookcase_2"]:
               g=json.loads((root/f"app/assets/3d/quaternius/models/{name}.gltf").read_text())
               print("MODEL",name,"samplers",g.get("samplers"),"materials",[(m.get("name"),m.get("alphaMode"),m.get("alphaCutoff")) for m in g.get("materials",[])])
+              for mi,m in enumerate(g.get("meshes",[])):
+                  for pi,p in enumerate(m.get("primitives",[])):
+                      ai=p.get("attributes",{}).get("TEXCOORD_0")
+                      if ai is not None:
+                          a=g["accessors"][ai]; print("UV_ACCESSOR",name,mi,pi,ai,"min",a.get("min"),"max",a.get("max"),"count",a.get("count"))
           PY
       - name: Upload furniture diagnostic assets
         uses: actions/upload-artifact@v4
