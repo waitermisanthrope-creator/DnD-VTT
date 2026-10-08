@@ -153,8 +153,12 @@ function draw(c,m,cam){
       if(gl.isContextLost&&gl.isContextLost())return;
       gl.bindTexture(gl.TEXTURE_2D,t);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
       gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);
-      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+      var furnitureAtlas=/T_Trim_Furniture_BaseColor\.png$/i.test(url);
+      // Quaternius furniture uses one shared atlas. Linear filtering samples neighbouring atlas islands
+      // and produces white/grey diagonal bleed on mobile GPUs. Keep the atlas nearest-filtered;
+      // ordinary floor/wall textures retain linear filtering.
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,furnitureAtlas?gl.NEAREST:gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,furnitureAtlas?gl.NEAREST:gl.LINEAR);
       gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
       t._ready=true;draw(c,m,cam);
     };
@@ -237,3 +241,5 @@ function hitTest(c,m,cam,clientX,clientY){var r=c.getBoundingClientRect(),mx=(cl
 g.DNDMapRenderer3D={draw:draw,hitTest:hitTest,projectPoint:function(m,cam,x,y,z){return project(m,cam,x,floorBase(m,m.currentFloor)+z,y);}};})(window);
 // 3D texture z-fighting fix
 // V70.37.69: alpha-aware glTF furniture textures; opaque/mask materials do not blend.
+
+// V70.37.71 — Quaternius furniture atlas uses nearest filtering to prevent atlas bleed.

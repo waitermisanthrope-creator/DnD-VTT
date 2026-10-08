@@ -63,6 +63,10 @@ public class MainActivity extends Activity {
         // WebView UI has its own navigation; the native Activity title bar only
         // wastes vertical space and duplicated the app name above every screen.
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // The launcher alias keeps the user-facing app name, but the running Activity must
+        // not expose that label as its window/task title. setTitle() is the final runtime guard.
+        setTitle("");
+        getWindow().setTitle("");
         if (getActionBar() != null) getActionBar().hide();
 
         updater = new DndUpdateBridge(this);
