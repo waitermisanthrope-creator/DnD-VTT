@@ -23,15 +23,35 @@ function readObj(path) {
   const text = fs.readFileSync(path, 'utf8');
   let vertices = 0;
   let faces = 0;
-  for (const raw of text.split(/\\r?\\n/)) {
+  let firstVertex = null;
+  let lastVertex = null;
+  let firstFace = null;
+  let lastFace = null;
+
+  for (const raw of text.split(/\r?\n/)) {
     const line = raw.trim();
     if (!line || line[0] === '#') continue;
-    if (/^v(?:\s|$)/.test(line)) vertices++;
-    else if (/^f(?:\s|$)/.test(line)) faces++;
-  }
-  return { vertices, faces };
-}
 
+    const parts = line.split(/\s+/);
+    const kind = parts[0];
+
+    if (kind === 'v') {
+      if (parts.length >= 4) {
+        vertices++;
+        if (!firstVertex) firstVertex = parts.slice(1, 4).map(Number);
+        lastVertex = parts.slice(1, 4).map(Number);
+      }
+    } else if (kind === 'f') {
+      if (parts.length >= 4) {
+        faces++;
+        if (!firstFace) firstFace = parts.slice(1);
+        lastFace = parts.slice(1);
+      }
+    }
+  }
+
+  return { vertices, faces, firstVertex, lastVertex, firstFace, lastFace };
+}
 function readGlb(path) {
   const b = fs.readFileSync(path);
   if (b.length < 20 || b.toString('ascii', 0, 4) !== 'glTF') die('Invalid GLB: ' + path);
