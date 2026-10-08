@@ -1,0 +1,22 @@
+/* Runtime test for the 3D character foundation. Loads the real module in an isolated window-like context. */
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const src=fs.readFileSync(require('path').join(__dirname,'../app/3dmap/character_system.js'),'utf8');
+const ctx={window:{},console};vm.runInNewContext(src,ctx,{filename:'character_system.js'});
+const api=ctx.window.DNDCharacter3D;
+assert(api&&api.VERSION===1,'DNDCharacter3D API missing');
+api.registerRace({id:'orc_test',name:'Тестовый орк',baseModel:'orc_body',skeleton:'humanoid',morphs:{height:{min:-.5,max:1,default:.2}},presets:[]});
+api.registerPreset({id:'big_orc_test',name:'Большой орк',body:{height:.8,width:.7,muscle:.9}});
+api.registerEquipment({id:'plate_test',name:'Тестовый доспех',assetId:'Plate_Test',slot:'body',fit:{width:.25,height:.1,depth:.2},morphChannels:{chestShape:{source:'chest',scale:.8}}});
+let c=api.createCharacter({raceId:'orc_test',presetId:'big_orc_test'});
+assert(c.body.height===.8&&c.body.muscle===.9,'preset/morph state failed');
+api.equip(c,'plate_test');
+const fitted=api.resolveEquipment(c,'plate_test');
+assert(fitted.scale[0]>1&&fitted.morphs.chestShape===0,'equipment fitting failed');
+c.body.chest=.5;
+assert(api.resolveEquipment(c,'plate_test').morphs.chestShape===.4,'equipment morph channel failed');
+const base=new Float32Array([0,0,0,1,1,1]),delta=new Float32Array([1,0,0,0,1,0]);
+const morphed=api.applyMorphTargets(base,[{name:'test',delta}],{test:.5});
+assert(Math.abs(morphed[0]-.5)<1e-6&&Math.abs(morphed[4]-.5)<1e-6,'vertex morph failed');
+const restored=api.deserialize(api.serialize(c));
+assert(restored.raceId==='orc_test'&&restored.equipment.body==='plate_test','serialization failed');
+console.log('CHARACTER_3D_FOUNDATION_TEST_OK');
