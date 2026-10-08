@@ -17,7 +17,7 @@
 (function(global){
 'use strict';
 var THREE=null,GLTFLoader=null,renderer=null,scene=null,camera=null,root=null,gizmo=null,gizmoAxis=null,gizmoDragging=false,gizmoStartX=0,gizmoStartY=0,gizmoStartPos=null,gizmoStartRot=0,gizmoStartScale=null,raf=0,map=null,selected=null,mode='orbit',editorMode='build',transformMode='translate',raycaster=null,mouse=null,assetDB=null,assetCache={},controls={yaw:.8,pitch:.8,distance:24,target:{x:0,y:0,z:0}},touches={},touchGesture=null,snapGrid=true,snapSize=0.25;
-var VERSION='V70.37.38';
+var VERSION='V70.37.37';
 // Разрез — только ручной инструмент редактора. По умолчанию стены всегда цельные.
 var cutawayWalls=false,cutawayTick=0;
 var undoStack=[],redoStack=[],historyBusy=false;
@@ -736,7 +736,7 @@ document.querySelectorAll('#r3dBottomToolbar [data-r3dtab]').forEach(function(b)
   }catch(e){var em=e&&e.message||String(e);modal.querySelector('#map3dRealInfo').textContent='Ошибка WebGL: '+em;try{console.error('[DND 3D] startup failed',e);if(typeof global.dndDebugLog==='function')global.dndDebugLog('3D map startup failed: '+em,'error');}catch(_){}alert('Не удалось запустить настоящий 3D: '+em+'\nСтарый редактор не удалён.');}
  })();
 }
-global.R3DEditorAPI={setMode:function(m){setEditorMode(m);},buildRoom:function(){setEditorMode('build');roomToolArmed=true;wallToolArmed=false;floorToolArmed=false;var h=document.getElementById('r3dQuickHint');if(h)h.textContent='Комната: потяните по карте от угла до угла.';},buildWall:function(){setEditorMode('build');wallToolArmed=true;roomToolArmed=false;floorToolArmed=false;var h=document.getElementById('r3dQuickHint');if(h)h.textContent='Стена: нажимайте по клеткам, чтобы создавать стены.';},buildFloor:function(){setEditorMode('build');roomToolArmed=false;wallToolArmed=false;floorToolArmed=true;togglePaintMode(false);var h=document.getElementById('r3dQuickHint');if(h)h.textContent='Пол: проведите пальцем по клеткам. Нет плитки — пустота и /* V70.37.18 — этажность, пустоты пола, размер карты и редакторские инструменты
+/* V70.37.18 — этажность, пустоты пола, размер карты и редакторские инструменты
  * V70.37.14 — removed experimental wall/floor/finish controls; reset for clean rebuild
  * V70.37.12 — right-side popup system for all editor panels
  * V70.37.08 — editor controls, room perimeter, cutaway scope + toolbar hit-testing
@@ -755,7 +755,7 @@ global.R3DEditorAPI={setMode:function(m){setEditorMode(m);},buildRoom:function()
 (function(global){
 'use strict';
 var THREE=null,GLTFLoader=null,renderer=null,scene=null,camera=null,root=null,gizmo=null,gizmoAxis=null,gizmoDragging=false,gizmoStartX=0,gizmoStartY=0,gizmoStartPos=null,gizmoStartRot=0,gizmoStartScale=null,raf=0,map=null,selected=null,mode='orbit',editorMode='build',transformMode='translate',raycaster=null,mouse=null,assetDB=null,assetCache={},controls={yaw:.8,pitch:.8,distance:24,target:{x:0,y:0,z:0}},touches={},touchGesture=null,snapGrid=true,snapSize=0.25;
-var VERSION='V70.37.18';
+var VERSION='V70.37.38';
 // Разрез — только ручной инструмент редактора. По умолчанию стены всегда цельные.
 var cutawayWalls=false,cutawayTick=0;
 var undoStack=[],redoStack=[],historyBusy=false;
