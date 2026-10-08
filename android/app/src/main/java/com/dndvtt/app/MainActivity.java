@@ -116,6 +116,9 @@ public class MainActivity extends Activity {
 
             @Override
             public void onPageFinished(WebView view, String url) {
+                setTitle("");
+                getWindow().setTitle("");
+                view.evaluateJavascript("document.title='';", null);
                 if (!updater.hasPendingUpdate()) {
                     updater.markHealthy();
                     return;
