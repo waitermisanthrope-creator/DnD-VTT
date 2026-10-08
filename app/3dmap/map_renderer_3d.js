@@ -153,15 +153,23 @@ function draw(c,m,cam){
     im.onload=function(){
       if(gl.isContextLost&&gl.isContextLost())return;
       gl.bindTexture(gl.TEXTURE_2D,t);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
-      gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);
+      if(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL!==undefined)gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL,gl.NONE);
       var furnitureAtlas=/T_Trim_Furniture_BaseColor\.png$/i.test(url);
+      var maxTex=gl.getParameter(gl.MAX_TEXTURE_SIZE)||4096,tw=im.width,th=im.height;
+      function potFloor(v){var p=1;while((p<<1)<=v)p<<=1;return p;}
+      var targetW=Math.min(tw,maxTex),targetH=Math.min(th,maxTex);
+      if((targetW&(targetW-1))!==0)targetW=potFloor(targetW);
+      if((targetH&(targetH-1))!==0)targetH=potFloor(targetH);
+      var source=im;
+      if(targetW!==tw||targetH!==th){var cv=document.createElement('canvas');cv.width=Math.max(1,targetW);cv.height=Math.max(1,targetH);var cx=cv.getContext('2d');cx.imageSmoothingEnabled=false;cx.drawImage(im,0,0,cv.width,cv.height);source=cv;}
+      gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,source);
       var mag=sampler&&sampler.magFilter===9728?gl.NEAREST:gl.LINEAR;
       var min=sampler&&sampler.minFilter===9728?gl.NEAREST:(sampler&&sampler.minFilter===9984?gl.NEAREST_MIPMAP_NEAREST:(sampler&&sampler.minFilter===9985?gl.LINEAR_MIPMAP_NEAREST:(sampler&&sampler.minFilter===9986?gl.NEAREST_MIPMAP_LINEAR:gl.LINEAR_MIPMAP_LINEAR)));
       var wrapS=sampler&&sampler.wrapS===33071?gl.CLAMP_TO_EDGE:(sampler&&sampler.wrapS===33648?gl.MIRRORED_REPEAT:gl.REPEAT);
       var wrapT=sampler&&sampler.wrapT===33071?gl.CLAMP_TO_EDGE:(sampler&&sampler.wrapT===33648?gl.MIRRORED_REPEAT:gl.REPEAT);
       // Quaternius furniture UVs cross the 0..1 atlas boundary. The previous CLAMP_TO_EDGE
       // sampled the white/grey trim area at the atlas edge. Honor the glTF sampler instead.
-      if(furnitureAtlas){mag=gl.NEAREST;min=gl.NEAREST;}
+      if(furnitureAtlas){mag=gl.NEAREST;min=gl.NEAREST;wrapS=gl.REPEAT;wrapT=gl.REPEAT;}
       gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,min);
       gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,mag);
       gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,wrapS);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,wrapT);
@@ -248,4 +256,4 @@ g.DNDMapRenderer3D={draw:draw,hitTest:hitTest,projectPoint:function(m,cam,x,y,z)
 // 3D texture z-fighting fix
 // V70.37.69: alpha-aware glTF furniture textures; opaque/mask materials do not blend.
 
-// V70.37.72 — honor glTF wrap/filter; Quaternius trim UVs intentionally cross atlas boundaries.
+// V70.37.73 — robust Quaternius trim-atlas upload: explicit REPEAT/NEAREST + device-size guard.
