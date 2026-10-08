@@ -143,6 +143,8 @@ function draw(c,m,cam){
     im.onerror=function(){if(window.console)console.warn('Texture:',url);};
     im.src=url.indexOf('./')===0?url:'./'+url.replace(/^\//,'');st.textures[url]=t;return t;
   }
+  gl.enable(gl.POLYGON_OFFSET_FILL);
+  gl.polygonOffset(-1,-1);
   Object.keys(texBatches).forEach(function(name){
     var q=texBatches[name],tt=getTex(name+'.png');
     if(!tt||!tt._ready)return;
@@ -155,6 +157,7 @@ function draw(c,m,cam){
     gl.uniform1f(st.useTexLoc,1);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,tt);
     gl.drawArrays(gl.TRIANGLES,0,q.v.length/3);
   });
+  gl.disable(gl.POLYGON_OFFSET_FILL);
   function matColor(asset,part){
     var mm=(asset.materials||[])[part.material||0],fc=mm&&mm.baseColorFactor;
     return fc?[fc[0],fc[1],fc[2],fc[3]==null?1:fc[3]]:[.72,.48,.22,1];
