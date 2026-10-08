@@ -1,4 +1,4 @@
-// V70.37.68 release APK.
+// V70.37.69 release APK.
 plugins {
     id "com.android.application"
 }
