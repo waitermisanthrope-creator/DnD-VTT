@@ -10,7 +10,7 @@
     {
       "path": "index.html",
       "bytes": 84407,
-      "sha256": "13118f4ea038e4debf2efc9068879a0fa13d9c2cc5c20d6d6d2a36afa9484a18"
+      "sha256": "893476899ff0d7cb4997290919b8c224e48c0f0d74bf97834b2cadeae83c3318"
     },
     {
       "path": "app/3dmap/gltf_catalog.js",
@@ -40,7 +40,7 @@
     {
       "path": "app/3dmap/map_renderer_3d.js",
       "bytes": 18454,
-      "sha256": "87e71f44f505f728c50b4cb2f7b1df6ea8bd20aebad70ff595d352b4060e65dd"
+      "sha256": "38f58a7ff5533e988f39d0a1da45df6b856599eaadf4b1f0cb2d05f169034fc4"
     },
     {
       "path": "app/Ambiences.js",
@@ -2375,7 +2375,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 18786,
-      "sha256": "96fdd4e333bacc5e575c62e7316d101bd4a61cf3bfa37f89e8bbaeb6e53dfd07"
+      "sha256": "de7d1166b999fd254fde98ad7e4da5ecc0deb123a89a5c94e719d6172391a37a"
     },
     {
       "path": "app/update_scene_v2.js",
