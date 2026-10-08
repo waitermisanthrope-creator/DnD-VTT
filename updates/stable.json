@@ -9,8 +9,8 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 84884,
-      "sha256": "b83e585b8499d511210080ecd28002af0a95aa5e14b60c35b47c2a2ebf1aa336"
+      "bytes": 85235,
+      "sha256": "5aa8617abd73fcabbe6f8a5f1fce4adc09a32ce72450c9507059367f51a16a53"
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
