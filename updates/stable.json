@@ -2023,6 +2023,11 @@
       "sha256": "f7579e75033d0a8ebf8163af8767724df3079a95b554b90c31be83586ced0867"
     },
     {
+      "path": "app/data/maps/3d_stress_test_all.json",
+      "bytes": 165139,
+      "sha256": "48164eeecebd0f5a0bb628edc2a8c2c766fb1f70d57c107f7526590a8ea39c0c"
+    },
+    {
       "path": "app/data/maps/3d_test_dungeon.json",
       "bytes": 20092,
       "sha256": "1368ff6552662e375c7fad537bc1935fb58883e3496bc8295591fc434d241b91"
