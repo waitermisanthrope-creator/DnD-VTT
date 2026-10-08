@@ -1,4 +1,4 @@
-// V70.37.71 release APK.
+// V70.37.72 release APK.
 plugins {
     id "com.android.application"
 }
@@ -72,8 +72,8 @@ android {
         applicationId "com.dndvtt.pocketvtt"
         minSdk 24
         targetSdk 36
-        versionCode 7037071
-        versionName '70.37.71'
+        versionCode 7037072
+        versionName '70.37.72'
     }
 
     signingConfigs {
