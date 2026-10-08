@@ -44,7 +44,9 @@ const bvIndex=json.bufferViews.length;
 json.bufferViews.push({buffer:0,byteOffset:morphOffset,byteLength:morphBytes.length,target:34962});
 json.accessors=json.accessors||[];
 const accIndex=json.accessors.length;
-json.accessors.push({bufferView:bvIndex,componentType:5126,count:result.geo.vertices.length,type:'VEC3'});
+let mn=[Infinity,Infinity,Infinity],mx=[-Infinity,-Infinity,-Infinity];
+for(let i=0;i<result.morph.length;i+=3)for(let k=0;k<3;k++){mn[k]=Math.min(mn[k],result.morph[i+k]);mx[k]=Math.max(mx[k],result.morph[i+k]);}
+json.accessors.push({bufferView:bvIndex,componentType:5126,count:result.geo.vertices.length,type:'VEC3',min:mn,max:mx});
 
 targetPrim.targets=targetPrim.targets||[];
 targetPrim.targets.push({POSITION:accIndex});
