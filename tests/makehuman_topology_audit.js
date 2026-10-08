@@ -26,8 +26,8 @@ function readObj(path) {
   for (const raw of text.split(/\\r?\\n/)) {
     const line = raw.trim();
     if (!line || line[0] === '#') continue;
-    if (/^v(?:\\s|$)/.test(line)) vertices++;
-    else if (/^f(?:\\s|$)/.test(line)) faces++;
+    if (/^v(?:\s|$)/.test(line)) vertices++;
+    else if (/^f(?:\s|$)/.test(line)) faces++;
   }
   return { vertices, faces };
 }
@@ -109,7 +109,7 @@ function readTarget(path) {
   for (const rawLine of text.split(/\\r?\\n/)) {
     const line = rawLine.trim();
     if (!line || line[0] === '#' || line[0] === '"') continue;
-    const parts = line.split(/\\s+/);
+    const parts = line.split(/\s+/);
     if (parts.length < 4) continue;
     const idx = Number(parts[0]);
     if (!Number.isInteger(idx) || idx < 0) { bad++; continue; }
