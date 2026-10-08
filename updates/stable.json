@@ -39,8 +39,8 @@
     },
     {
       "path": "app/3dmap/map_renderer_3d.js",
-      "bytes": 15657,
-      "sha256": "9acc943619c2758f3aa965ac2bd2d6a67dd03c0496c79124aaa188c08b122bf7"
+      "bytes": 16444,
+      "sha256": "a4b7f8a2f1f4549cecbcf4383f7eddec5f20efe6d92d5fc573e63f55b2b36b05"
     },
     {
       "path": "app/Ambiences.js",
@@ -2375,7 +2375,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 18786,
-      "sha256": "05c5afa02b408459f926e2e53582e0887e136af575de098eae3df66ff4aea80d"
+      "sha256": "463eea736d965a30264ba14ba66ecf1e9fa911731b70565dc7342314d9f64d2e"
     },
     {
       "path": "app/update_scene_v2.js",
