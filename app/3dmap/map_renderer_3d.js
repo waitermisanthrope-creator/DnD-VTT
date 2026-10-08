@@ -13,7 +13,7 @@ function project(m,cam,x,y,z){var c=cameraState(m,cam),dx=x-c.pos[0],dy=y-c.pos[
 function draw(c,m,cam){
   var st=c.__dnd3dState;
   if(!st){
-    var gl=c.getContext('webgl',{antialias:true,alpha:false,depth:true})||c.getContext('experimental-webgl');
+    var gl=c.getContext('webgl',{antialias:false,alpha:true,depth:true,stencil:true,powerPreference:'high-performance'})||c.getContext('experimental-webgl',{antialias:false,alpha:true,depth:true,stencil:true});
     if(!gl){
       c.style.background='#252525';
       var e=c.parentElement&&c.parentElement.querySelector('[data-webgl-error]');
