@@ -19,8 +19,8 @@
     },
     {
       "path": "app/3dmap/gltf_loader.js",
-      "bytes": 5157,
-      "sha256": "c2e06b96b9fc90961d1a1a0eb996e23dbbeddd3145541fbcdbdc32327127369f"
+      "bytes": 5236,
+      "sha256": "3f18b0c30ee7cb6e5ea52b69746c29f89f1ca79bb15a59234889a9634d174f76"
     },
     {
       "path": "app/3dmap/map_editor.js",
