@@ -1,99 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET" />
-    <application android:label="" android:icon="@drawable/icon_default" android:theme="@style/Theme.DndVtt">
+    <application android:label="Карманный ВТТ" android:icon="@drawable/icon_default" android:theme="@style/Theme.DndVtt">
         <activity android:name=".MainActivity" android:exported="false" android:label="" android:configChanges="orientation|screenSize|keyboardHidden" />
-        <activity-alias android:name=".LauncherDefault" android:enabled="true" android:exported="true" android:icon="@drawable/icon_default" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDefault" android:enabled="true" android:exported="true" android:icon="@drawable/icon_default" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice01" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_01" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice01" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_01" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice02" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_02" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice02" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_02" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice03" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_03" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice03" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_03" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice04" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_04" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice04" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_04" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice05" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_05" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice05" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_05" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice06" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_06" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice06" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_06" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice07" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_07" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice07" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_07" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice08" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_08" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice08" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_08" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice09" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_09" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice09" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_09" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice10" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_10" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice10" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_10" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice11" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_11" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice11" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_11" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice12" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_12" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice12" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_12" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice13" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_13" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice13" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_13" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice14" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_14" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice14" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_14" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice15" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_15" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice15" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_15" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice16" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_16" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice16" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_16" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice17" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_17" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice17" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_17" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice18" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_18" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice18" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_18" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice19" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_19" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice19" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_19" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice20" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_20" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice20" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_20" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice21" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_21" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice21" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_21" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice22" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_22" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice22" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_22" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice23" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_23" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice23" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_23" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice24" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_24" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice24" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_24" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice25" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_25" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice25" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_25" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice26" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_26" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice26" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_26" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice27" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_27" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice27" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_27" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice28" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_28" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice28" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_28" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice29" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_29" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice29" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_29" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
-        <activity-alias android:name=".LauncherDice30" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_30" android:label="Карманный ВТТ" android:targetActivity=".MainActivity">
+        <activity-alias android:name=".LauncherDice30" android:enabled="false" android:exported="true" android:icon="@drawable/icon_dice_30" android:label="" android:targetActivity=".MainActivity">
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
         </activity-alias>
     </application>
