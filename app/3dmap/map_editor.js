@@ -5,7 +5,7 @@ function ensurePlayerToken(){map.tokens=Array.isArray(map.tokens)?map.tokens:[];
 function playerToken(){ensurePlayerToken();return map.tokens.find(function(x){return x&&x.controlled;});}
 function wallBlocked(x,y,nx,ny){var f=g.DNDMapModel.current(map),w=f.walls||{},a=w[x+','+y]||{},b=w[nx+','+ny]||{};if(nx>x&&(a.e||b.w))return true;if(nx<x&&(a.w||b.e))return true;if(ny>y&&(a.s||b.n))return true;if(ny<y&&(a.n||b.s))return true;return false;}
 function playerCanMove(nx,ny){
-  var radius=.22,pts=[[nx-radius,ny-radius],[nx+radius,ny-radius],[nx-radius,ny+radius],[nx+radius,ny+radius]];
+  var radius=.22,cx=nx+.5,cy=ny+.5,pts=[[cx-radius,cy-radius],[cx+radius,cy-radius],[cx-radius,cy+radius],[cx+radius,cy+radius]];
   for(var i=0;i<pts.length;i++){
     var tx=Math.floor(pts[i][0]),ty=Math.floor(pts[i][1]);
     if(!g.DNDMapModel.canWalk(map,tx,ty,map.currentFloor))return false;
