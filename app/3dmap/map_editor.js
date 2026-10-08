@@ -57,7 +57,7 @@ function bindJoystick(el,type){
     if(len>max){dx=dx/len*max;dy=dy/len*max;}
     knob.style.transform='translate('+dx+'px,'+dy+'px)';
     if(type==='move'){joyState.x=dx/max;joyState.y=dy/max;}
-    else{cam.yaw+=dx*.004;cam.pitch=Math.max(-.9,Math.min(.9,cam.pitch+dy*.003));syncCamera();draw();}
+    else{cam.yaw+=dx*.004;cam.pitch=Math.max(-.9,Math.min(.9,cam.pitch-dy*.003));syncCamera();draw();}
   });
   el.addEventListener('pointerup',function(e){if(active===e.pointerId)reset();});
   el.addEventListener('pointercancel',reset);
