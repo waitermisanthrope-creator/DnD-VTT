@@ -21,7 +21,7 @@ function draw(c,m,cam){
       return false;
     }
     var vs='attribute vec3 p;attribute vec4 col;attribute vec2 uv;uniform mat4 vp;uniform mat4 model;varying vec4 v;varying vec2 vu;void main(){gl_Position=vp*model*vec4(p,1.0);v=col;vu=uv;}',
-        fs='precision mediump float;varying vec4 v;varying vec2 vu;uniform sampler2D tex;uniform float useTex;void main(){if(useTex>0.5){gl_FragColor=texture2D(tex,vu);}else{gl_FragColor=v;}}';
+        fs='precision mediump float;varying vec4 v;varying vec2 vu;uniform sampler2D tex;uniform float useTex;void main(){if(useTex>0.5){vec4 t=texture2D(tex,vu);gl_FragColor=vec4(t.rgb,1.0);}else{gl_FragColor=v;}}';
     function sh(t,x){var q=gl.createShader(t);gl.shaderSource(q,x);gl.compileShader(q);if(!gl.getShaderParameter(q,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(q)||'shader');return q;}
     var prog=gl.createProgram();gl.attachShader(prog,sh(gl.VERTEX_SHADER,vs));gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(prog);
     if(!gl.getProgramParameter(prog,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(prog)||'program');
@@ -82,15 +82,15 @@ function draw(c,m,cam){
   }
 
   for(var y=0;y<m.height;y++)for(var x=0;x<m.width;x++){
-    var t=f.tiles[x+','+y];if(t){var ft=floorTex(t);quad([x,by,y],[x+1,by,y],[x,by,y+1],[x+1,by,y+1],tileCol(t,x+.5,y+.5));texQuad(ft,[x,by+.002,y],[x+1,by+.002,y],[x,by+.002,y+1],[x+1,by+.002,y+1]);}
+    var t=f.tiles[x+','+y];if(t){var ft=floorTex(t);quad([x,by,y],[x+1,by,y],[x,by,y+1],[x+1,by,y+1],tileCol(t,x+.5,y+.5));texQuad(ft,[x,by+.02,y],[x+1,by+.02,y],[x,by+.02,y+1],[x+1,by+.02,y+1]);}
   }
   var walls=f.walls||{};
   Object.keys(walls).forEach(function(k){
     var p=k.split(','),x=+p[0],z=+p[1],w=walls[k]||{};
-    if(w.n){var wn=w.nTexture||m.selectedWallTexture||'wall_stone_dark';quad([x,by,z],[x+1,by,z],[x,by+fh,z],[x+1,by+fh,z],[.38,.38,.42,1]);texQuad(wn,[x,by,z-.002],[x+1,by,z-.002],[x,by+fh,z-.002],[x+1,by+fh,z-.002]);}
-    if(w.s){var ws=w.sTexture||m.selectedWallTexture||'wall_stone_dark';quad([x,by,z+1],[x+1,by,z+1],[x,by+fh,z+1],[x+1,by+fh,z+1],[.34,.34,.38,1]);texQuad(ws,[x,by,z+1+.002],[x+1,by,z+1+.002],[x,by+fh,z+1+.002],[x+1,by+fh,z+1+.002]);}
-    if(w.w){var ww=w.wTexture||m.selectedWallTexture||'wall_stone_dark';quad([x,by,z],[x,by,z+1],[x,by+fh,z],[x,by+fh,z+1],[.36,.36,.40,1]);texQuad(ww,[x-.002,by,z],[x-.002,by,z+1],[x-.002,by+fh,z],[x-.002,by+fh,z+1]);}
-    if(w.e){var we=w.eTexture||m.selectedWallTexture||'wall_stone_dark';quad([x+1,by,z],[x+1,by,z+1],[x+1,by+fh,z],[x+1,by+fh,z+1],[.32,.32,.36,1]);texQuad(we,[x+1+.002,by,z],[x+1+.002,by,z+1],[x+1+.002,by+fh,z],[x+1+.002,by+fh,z+1]);}
+    if(w.n){var wn=w.nTexture||m.selectedWallTexture||'wall_stone_dark';quad([x,by,z],[x+1,by,z],[x,by+fh,z],[x+1,by+fh,z],[.38,.38,.42,1]);texQuad(wn,[x,by,z-.02],[x+1,by,z-.02],[x,by+fh,z-.02],[x+1,by+fh,z-.02]);}
+    if(w.s){var ws=w.sTexture||m.selectedWallTexture||'wall_stone_dark';quad([x,by,z+1],[x+1,by,z+1],[x,by+fh,z+1],[x+1,by+fh,z+1],[.34,.34,.38,1]);texQuad(ws,[x,by,z+1+.02],[x+1,by,z+1+.02],[x,by+fh,z+1+.02],[x+1,by+fh,z+1+.02]);}
+    if(w.w){var ww=w.wTexture||m.selectedWallTexture||'wall_stone_dark';quad([x,by,z],[x,by,z+1],[x,by+fh,z],[x,by+fh,z+1],[.36,.36,.40,1]);texQuad(ww,[x-.02,by,z],[x-.02,by,z+1],[x-.02,by+fh,z],[x-.02,by+fh,z+1]);}
+    if(w.e){var we=w.eTexture||m.selectedWallTexture||'wall_stone_dark';quad([x+1,by,z],[x+1,by,z+1],[x+1,by+fh,z],[x+1,by+fh,z+1],[.32,.32,.36,1]);texQuad(we,[x+1+.02,by,z],[x+1+.02,by,z+1],[x+1+.02,by+fh,z],[x+1+.02,by+fh,z+1]);}
   });
   for(var oi=0;oi<objs.length;oi++){
     var o=objs[oi],ox=o.x||0,oz=o.y||0,oy=by+(o.z||0),
@@ -149,8 +149,8 @@ function draw(c,m,cam){
     im.src=url.indexOf('./')===0?url:'./'+url.replace(/^\//,'');st.textures[url]=t;return t;
   }
   gl.enable(gl.POLYGON_OFFSET_FILL);
-  gl.polygonOffset(-1,-1);
-  gl.depthMask(false);
+  gl.polygonOffset(-2,-2);
+  gl.depthMask(true);
   Object.keys(texBatches).forEach(function(name){
     var q=texBatches[name],tt=getTex(name+'.png');
     if(!tt||!tt._ready)return;
