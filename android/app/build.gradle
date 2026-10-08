@@ -1,4 +1,4 @@
-// V74.0.0 release APK — controlled Android launch window.
+// V74.00.01 release APK — controlled Android launch window.
 // Launch-title fix included in MainActivity.
 plugins {
     id "com.android.application"
@@ -73,8 +73,8 @@ android {
         applicationId "com.dndvtt.pocketvtt"
         minSdk 24
         targetSdk 36
-        versionCode 7400000
-        versionName '74.0.0'
+        versionCode 7400001
+        versionName '74.00.01'
     }
 
     signingConfigs {
