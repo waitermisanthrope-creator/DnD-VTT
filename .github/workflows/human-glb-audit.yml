@@ -1,0 +1,23 @@
+name: Audit human GLB
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "human-base-rigged.glb"
+      - "tests/human_base_glb_audit.js"
+      - ".github/workflows/human-glb-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check human-base-rigged.glb
+        run: node tests/human_base_glb_audit.js
