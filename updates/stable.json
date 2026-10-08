@@ -14,8 +14,8 @@
     },
     {
       "path": "app/3dmap/map_editor.js",
-      "bytes": 17429,
-      "sha256": "ff938da7c60e5d870b0e6450a6099302a3ebcf204e9158b1cc680ff0c27f81f9"
+      "bytes": 23076,
+      "sha256": "49fb0d4d40b568ea684fb3e364faf13fc596b220e55a2f13832ae8b30a8d0eed"
     },
     {
       "path": "app/3dmap/map_model.js",
