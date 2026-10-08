@@ -9147,3 +9147,10 @@ Implemented:
 - Morph Bridge: `68b0d15ef0f6a2ce29615a985f4ea278d899326e`
 - Fixture generator: `3ddac7cbe829ecaf00ef73e4f8bddb0b387aff49`
 - Fixture audit: `c5c61dd9f9edf37e5b8c63a7234ef3ecbf7701b`
+
+
+## 3D Morph Bridge — fixture launch correction
+- Первый присланный запуск не содержит вывода генератора, поэтому fixture пока не считается созданным/проверенным.
+- Перед повторным запуском генератора исправлен обязательный glTF `POSITION` morph accessor: добавлены `min/max`.
+- Fixture audit теперь также проверяет наличие `min/max`.
+- Commits: generator `59ebc4f3a6764788cebf9254bc56a1d04d9ddd2d`; audit `ceab2a7bd91adf704662e39fafaf8c89d08ed870`.
