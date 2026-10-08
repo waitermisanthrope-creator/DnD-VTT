@@ -107,3 +107,4 @@ jobs:
           name: dnd-vtt-release-apk
           path: android/app/build/outputs/apk/release/app-release.apk
           retention-days: 90
+# release 70.37.57 trigger
