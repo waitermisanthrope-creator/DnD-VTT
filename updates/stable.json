@@ -29,8 +29,8 @@
     },
     {
       "path": "app/3dmap/map_renderer_3d.js",
-      "bytes": 3819,
-      "sha256": "b9e9f9149b48b481951cde8ea1ce44d35e59eca97b1a382fdb9fddee903b5c94"
+      "bytes": 5996,
+      "sha256": "0629782cb6aee136dfb9745b064558f261c2da03c2769518a449b0df9604e8fe"
     },
     {
       "path": "app/Ambiences.js",
