@@ -66,13 +66,13 @@ function draw(c,m,cam){
   function baseColor(t){return t==='wood'?[.36,.23,.13]:t==='grass'?[.20,.38,.20]:t==='water'?[.12,.30,.42]:[.48,.50,.54];}
   function tileCol(t,x,z){var b=baseColor(t),q=illum(x,z);return[b[0]*q,b[1]*q,b[2]*q,1];}
   function quad(a,b,d,e,col){
-    verts.push(a[0],a[1],a[2],b[0],b[1],b[2],d[0],d[1],d[2],a[0],a[1],a[2],d[0],d[1],d[2],e[0],e[1],e[2]);
+    verts.push(a[0],a[1],a[2],b[0],b[1],b[2],e[0],e[1],e[2],a[0],a[1],a[2],e[0],e[1],e[2],d[0],d[1],d[2]);
     for(var i=0;i<6;i++)cols.push(col[0],col[1],col[2],col[3]);
   }
   function texQuad(name,a,b,d,e){
     if(!name)return;
     var q=texBatches[name]||(texBatches[name]={v:[],u:[]}),uv=[0,0,1,0,0,1,0,0,0,1,1,1];
-    q.v.push(a[0],a[1],a[2],b[0],b[1],b[2],d[0],d[1],d[2],a[0],a[1],a[2],d[0],d[1],d[2],e[0],e[1],e[2]);
+    q.v.push(a[0],a[1],a[2],b[0],b[1],b[2],e[0],e[1],e[2],a[0],a[1],a[2],e[0],e[1],e[2],d[0],d[1],d[2]);
     for(var j=0;j<uv.length;j++)q.u.push(uv[j]);
   }
   // Поверхность должна рисоваться либо базовым цветом, либо текстурой,
