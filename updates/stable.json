@@ -9,8 +9,13 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 83783,
-      "sha256": "2e36b540ea246fcfa58957f320862cb20d736c071d970edce850893ec0b6ea6a"
+      "bytes": 83835,
+      "sha256": "5cc1a07bb25fe5be7779510acaf9437a7b3ef1ce9ec6fc82adf3d8c25a71a367"
+    },
+    {
+      "path": "app/3dmap/map_editor.js",
+      "bytes": 5894,
+      "sha256": "b9b4bd1dd37606b94dd3ef3ab8f7611e268088cab43a19cc12dcdce01e6bf250"
     },
     {
       "path": "app/3dmap/map_model.js",
@@ -21,6 +26,11 @@
       "path": "app/3dmap/map_renderer_2d.js",
       "bytes": 1553,
       "sha256": "aac921134caab8f79b77f0a908e7dc5e79064dc6080249771215995f113ed9cb"
+    },
+    {
+      "path": "app/3dmap/map_renderer_3d.js",
+      "bytes": 1780,
+      "sha256": "4a0179de251f8612860a0c152cebf48125b2e81792c4b67a76eb9df3e1bf9b89"
     },
     {
       "path": "app/Ambiences.js",
