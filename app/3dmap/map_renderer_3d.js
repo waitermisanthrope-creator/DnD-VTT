@@ -65,6 +65,19 @@ function draw(c,m,cam){
     verts.push(a[0],a[1],a[2],b[0],b[1],b[2],d[0],d[1],d[2],a[0],a[1],a[2],d[0],d[1],d[2],e[0],e[1],e[2]);
     for(var i=0;i<6;i++)cols.push(col[0],col[1],col[2],col[3]);
   }
+  function texQuad(name,a,b,d,e){
+    if(!name)return;
+    var q=texBatches[name]||(texBatches[name]={v:[],u:[]}),uv=[0,0,1,0,0,1,0,0,0,1,1,1];
+    q.v.push(a[0],a[1],a[2],b[0],b[1],b[2],d[0],d[1],d[2],a[0],a[1],a[2],d[0],d[1],d[2],e[0],e[1],e[2]);
+    for(var j=0;j<uv.length;j++)q.u.push(uv[j]);
+  }
+  function floorTex(t){
+    if(t==='stone')return 'floor_stone_tile_dark';
+    if(t==='wood')return 'floor_wood_light';
+    if(t==='grass')return 'floor_grass';
+    if(t==='water')return 'floor_ceramic_tile_light';
+    return t;
+  }
 
   for(var y=0;y<m.height;y++)for(var x=0;x<m.width;x++){
     var t=f.tiles[x+','+y];if(t)quad([x,by,y],[x+1,by,y],[x,by,y+1],[x+1,by,y+1],tileCol(t,x+.5,y+.5));
@@ -72,10 +85,10 @@ function draw(c,m,cam){
   var walls=f.walls||{};
   Object.keys(walls).forEach(function(k){
     var p=k.split(','),x=+p[0],z=+p[1],w=walls[k]||{};
-    if(w.n)quad([x,by,z],[x+1,by,z],[x,by+fh,z],[x+1,by+fh,z],[.38,.38,.42,1]);
-    if(w.s)quad([x,by,z+1],[x+1,by,z+1],[x,by+fh,z+1],[x+1,by+fh,z+1],[.34,.34,.38,1]);
-    if(w.w)quad([x,by,z],[x,by,z+1],[x,by+fh,z],[x,by+fh,z+1],[.36,.36,.40,1]);
-    if(w.e)quad([x+1,by,z],[x+1,by,z+1],[x+1,by+fh,z],[x+1,by+fh,z+1],[.32,.32,.36,1]);
+    if(w.n){var wn=w.nTexture||m.selectedWallTexture||'wall_stone_dark';quad([x,by,z],[x+1,by,z],[x,by+fh,z],[x+1,by+fh,z],[.38,.38,.42,1]);texQuad(wn,[x,by,z],[x+1,by,z],[x,by+fh,z],[x+1,by+fh,z]);}
+    if(w.s){var ws=w.sTexture||m.selectedWallTexture||'wall_stone_dark';quad([x,by,z+1],[x+1,by,z+1],[x,by+fh,z+1],[x+1,by+fh,z+1],[.34,.34,.38,1]);texQuad(ws,[x,by,z+1],[x+1,by,z+1],[x,by+fh,z+1],[x+1,by+fh,z+1]);}
+    if(w.w){var ww=w.wTexture||m.selectedWallTexture||'wall_stone_dark';quad([x,by,z],[x,by,z+1],[x,by+fh,z],[x,by+fh,z+1],[.36,.36,.40,1]);texQuad(ww,[x,by,z],[x,by,z+1],[x,by+fh,z],[x,by+fh,z+1]);}
+    if(w.e){var we=w.eTexture||m.selectedWallTexture||'wall_stone_dark';quad([x+1,by,z],[x+1,by,z+1],[x+1,by+fh,z],[x+1,by+fh,z+1],[.32,.32,.36,1]);texQuad(we,[x+1,by,z],[x+1,by,z+1],[x+1,by+fh,z],[x+1,by+fh,z+1]);}
   });
   for(var oi=0;oi<objs.length;oi++){
     var o=objs[oi],ox=o.x||0,oz=o.y||0,oy=by+(o.z||0),
@@ -122,14 +135,26 @@ function draw(c,m,cam){
       if(gl.isContextLost&&gl.isContextLost())return;
       gl.bindTexture(gl.TEXTURE_2D,t);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
       gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);
-      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
       gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT);
-      gl.generateMipmap(gl.TEXTURE_2D);t._ready=true;draw(c,m,cam);
+      gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+      t._ready=true;draw(c,m,cam);
     };
     im.onerror=function(){if(window.console)console.warn('Texture:',url);};
     im.src=url;st.textures[url]=t;return t;
   }
+  Object.keys(texBatches).forEach(function(name){
+    var q=texBatches[name],tt=getTex(name+'.png');
+    if(!tt||!tt._ready)return;
+    var pb=gl.createBuffer(),ub=gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER,pb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(q.v),gl.STATIC_DRAW);
+    gl.vertexAttribPointer(st.pl,3,gl.FLOAT,false,0,0);gl.enableVertexAttribArray(st.pl);
+    gl.bindBuffer(gl.ARRAY_BUFFER,ub);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(q.u),gl.STATIC_DRAW);
+    gl.vertexAttribPointer(st.uvLoc,2,gl.FLOAT,false,0,0);gl.enableVertexAttribArray(st.uvLoc);
+    gl.uniformMatrix4fv(st.modelLoc,false,new Float32Array(identity));
+    gl.uniform1f(st.useTexLoc,1);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,tt);
+    gl.drawArrays(gl.TRIANGLES,0,q.v.length/3);
+  });
   function matColor(asset,part){
     var mm=(asset.materials||[])[part.material||0],fc=mm&&mm.baseColorFactor;
     return fc?[fc[0],fc[1],fc[2],fc[3]==null?1:fc[3]]:[.72,.48,.22,1];
