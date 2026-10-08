@@ -23,14 +23,14 @@ function draw(c,m,cam){
     var fragHighp=gl.getShaderPrecisionFormat&&gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER,gl.HIGH_FLOAT),
         fragPrec=fragHighp&&fragHighp.precision>0?'highp':'mediump',
         vs='precision highp float;attribute vec3 p;attribute vec4 col;attribute vec2 uv;uniform mat4 vp;uniform mat4 model;varying vec4 v;varying vec2 vu;void main(){gl_Position=vp*model*vec4(p,1.0);v=col;vu=uv;}',
-        fs='precision '+fragPrec+' float;varying vec4 v;varying vec2 vu;uniform sampler2D tex;uniform float useTex;void main(){if(useTex>0.5){vec4 t=texture2D(tex,vu);if(t.a<0.08)discard;gl_FragColor=t;}else{gl_FragColor=v;}}';
+        fs='precision '+fragPrec+' float;varying vec4 v;varying vec2 vu;uniform sampler2D tex;uniform float useTex;uniform float alphaMode;uniform float alphaCutoff;void main(){if(useTex>0.5){vec4 t=texture2D(tex,vu);if(alphaMode>1.5){if(t.a<alphaCutoff)discard;gl_FragColor=vec4(t.rgb,1.0);}else if(alphaMode>0.5){if(t.a<0.01)discard;gl_FragColor=t;}else{gl_FragColor=vec4(t.rgb,1.0);}}else{gl_FragColor=v;}}';
     function sh(t,x){var q=gl.createShader(t);gl.shaderSource(q,x);gl.compileShader(q);if(!gl.getShaderParameter(q,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(q)||'shader');return q;}
     var prog=gl.createProgram();gl.attachShader(prog,sh(gl.VERTEX_SHADER,vs));gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(prog);
     if(!gl.getProgramParameter(prog,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(prog)||'program');
     st={gl:gl,prog:prog,pl:gl.getAttribLocation(prog,'p'),cl:gl.getAttribLocation(prog,'col'),
       uvLoc:gl.getAttribLocation(prog,'uv'),vpLoc:gl.getUniformLocation(prog,'vp'),
       modelLoc:gl.getUniformLocation(prog,'model'),texLoc:gl.getUniformLocation(prog,'tex'),
-      useTexLoc:gl.getUniformLocation(prog,'useTex'),base:null,loaded:Object.create(null),
+      useTexLoc:gl.getUniformLocation(prog,'useTex'),alphaModeLoc:gl.getUniformLocation(prog,'alphaMode'),alphaCutoffLoc:gl.getUniformLocation(prog,'alphaCutoff'),base:null,loaded:Object.create(null),
       loading:Object.create(null),textures:Object.create(null)};
     c.__dnd3dState=st;
   }
@@ -151,7 +151,7 @@ function draw(c,m,cam){
     var im=new Image();
     im.onload=function(){
       if(gl.isContextLost&&gl.isContextLost())return;
-      gl.bindTexture(gl.TEXTURE_2D,t);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
+      gl.bindTexture(gl.TEXTURE_2D,t);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
       gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);
       gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
       gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
@@ -165,6 +165,7 @@ function draw(c,m,cam){
   // Поэтому polygonOffset здесь не нужен и только маскировал проблему.
   gl.disable(gl.POLYGON_OFFSET_FILL);
   gl.depthMask(true);
+  gl.uniform1f(st.alphaModeLoc,0);gl.uniform1f(st.alphaCutoffLoc,0.5);gl.enable(gl.BLEND);
   Object.keys(texBatches).forEach(function(name){
     var q=texBatches[name],tt=getTex(name+'.png');
     if(!tt||!tt._ready)return;
@@ -198,6 +199,9 @@ function draw(c,m,cam){
       gl.uniformMatrix4fv(st.modelLoc,false,new Float32Array(modelMatrix(o,asset)));
       var cc=matColor(asset,part);gl.disableVertexAttribArray(st.cl);gl.vertexAttrib4f(st.cl,cc[0],cc[1],cc[2],cc[3]);
       var mm=asset.materials&&asset.materials[part.material||0],tt=mm&&mm.baseColorTexture?getTex(mm.baseColorTexture):null;
+      var am=mm&&mm.alphaMode==='BLEND'?1:mm&&mm.alphaMode==='MASK'?2:0;
+      gl.uniform1f(st.alphaModeLoc,am);gl.uniform1f(st.alphaCutoffLoc,mm&&mm.alphaCutoff!=null?mm.alphaCutoff:0.5);
+      if(am===1)gl.enable(gl.BLEND);else gl.disable(gl.BLEND);
       gl.uniform1f(st.useTexLoc,tt&&tt._ready?1:0);
       if(tt&&tt._ready){gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,tt);}
       if(part.uv){
@@ -225,6 +229,8 @@ function draw(c,m,cam){
     }
   }
   gl.uniformMatrix4fv(st.modelLoc,false,new Float32Array(identity));
+  gl.enable(gl.BLEND);
+  gl.uniform1f(st.alphaModeLoc,0);gl.uniform1f(st.alphaCutoffLoc,0.5);
   return true;
 }
 function hitTest(c,m,cam,clientX,clientY){var r=c.getBoundingClientRect(),mx=(clientX-r.left)/r.width*2-1,my=1-(clientY-r.top)/r.height*2,objs=g.DNDMapModel.current(m).objects||[],best=null,bd=999;for(var i=0;i<objs.length;i++){var o=objs[i],p=project(m,cam,(o.x||0)+.5,floorBase(m,m.currentFloor)+(o.z||0)+.8,(o.y||0)+.5),d=Math.hypot(mx-p[0],my-p[1]);if(d<.12&&d<bd){bd=d;best=o.id;}}return best;}
