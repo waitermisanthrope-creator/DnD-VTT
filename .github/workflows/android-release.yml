@@ -81,6 +81,20 @@ jobs:
               g=json.loads((root/f"app/assets/3d/quaternius/models/{name}.gltf").read_text())
               print("MODEL",name,"samplers",g.get("samplers"),"materials",[(m.get("name"),m.get("alphaMode"),m.get("alphaCutoff")) for m in g.get("materials",[])])
           PY
+      - name: Upload furniture diagnostic assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: furniture-diagnostic
+          path: |
+            app/assets/3d/quaternius/textures/T_Trim_Furniture_BaseColor.png
+            app/assets/3d/quaternius/models/Barrel.gltf
+            app/assets/3d/quaternius/models/Barrel.bin
+            app/assets/3d/quaternius/models/Shelf_Simple.gltf
+            app/assets/3d/quaternius/models/Shelf_Simple.bin
+            app/assets/3d/quaternius/models/Bookcase_2.gltf
+            app/assets/3d/quaternius/models/Bookcase_2.bin
+          retention-days: 1
+
       - name: Set up JDK 17
         uses: actions/setup-java@v5
         with:
