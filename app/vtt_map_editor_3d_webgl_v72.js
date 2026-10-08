@@ -17,7 +17,7 @@
 (function(global){
 'use strict';
 var THREE=null,GLTFLoader=null,renderer=null,scene=null,camera=null,root=null,gizmo=null,gizmoAxis=null,gizmoDragging=false,gizmoStartX=0,gizmoStartY=0,gizmoStartPos=null,gizmoStartRot=0,gizmoStartScale=null,raf=0,map=null,selected=null,mode='orbit',editorMode='build',transformMode='translate',raycaster=null,mouse=null,assetDB=null,assetCache={},controls={yaw:.8,pitch:.8,distance:24,target:{x:0,y:0,z:0}},touches={},touchGesture=null,snapGrid=true,snapSize=0.25;
-var VERSION='V70.37.37';
+var VERSION='V70.37.38';
 // Разрез — только ручной инструмент редактора. По умолчанию стены всегда цельные.
 var cutawayWalls=false,cutawayTick=0;
 var undoStack=[],redoStack=[],historyBusy=false;
@@ -1490,11 +1490,3 @@ global.R3DEditorAPI={setMode:function(m){setEditorMode(m);},buildRoom:function()
 global.dndMap3DOpenReal=open;
 global.dndMap3DOpen=open;
 })(window);
-
-// V70.36.87 OTA: Android WebView uses classic offline Three.js loader
- {cols:Number(map.grid&&map.grid.cols)||20,rows:Number(map.grid&&map.grid.rows)||20,minLevel:Number(map.levels.min)||0,maxLevel:Number(map.levels.max)||0,currentLevel:Number(map.levels.current)||0,floors:mapLevelCount()};},hasFloor:function(level,x,y){return !!floorAt(level,x,y);}};
-global.dndMap3DOpenReal=open;
-global.dndMap3DOpen=open;
-})(window);
-
-// V70.36.87 OTA: Android WebView uses classic offline Three.js loader
