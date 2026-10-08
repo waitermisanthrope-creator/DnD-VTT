@@ -4,7 +4,7 @@
   "version": "70.37.36",
   "minAppVersion": "70.26.99",
   "channel": "stable",
-  "generated": "2026-10-07",
+  "generated": "2026-10-08",
   "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main",
   "files": [
     {
@@ -1363,6 +1363,11 @@
       "sha256": "942c0f8c7936bc267d14088380d3d3cc797d8412645a8e793ac4a066abcf2531"
     },
     {
+      "path": "app/vendor/three.core.min.js",
+      "bytes": 381124,
+      "sha256": "61ba0df005b05991361d040d8ff670e1aadfd0ce7aeebd1fdb0725957a8957de"
+    },
+    {
       "path": "app/vendor/three.legacy.js",
       "bytes": 334125,
       "sha256": "19875fa2d1bf3827ff6f7c20ec2c4fbc146d5b90905a279d8c3c6d6cdfab87e2"
@@ -1484,8 +1489,8 @@
     },
     {
       "path": "app/vtt_map_editor_3d_webgl_v72.js",
-      "bytes": 197489,
-      "sha256": "4c0ad7816be41a1f7b02e0dea011c1490c4708e438457825393be815af4f7f58"
+      "bytes": 196993,
+      "sha256": "aa9271f1d7921d23bfb81d52d5ac4013567fe77481d78280f6ef2eb3d171a00c"
     },
     {
       "path": "app/vtt_mobile_battle_v61.js",
