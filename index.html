@@ -269,10 +269,11 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
 <script src="./app/companion_packs_v26.js"></script>
 <script src="./app/companion_gameplay_v27.js"></script>
 <script src="./app/battle_board.js"></script>
-<script src="./app/vtt_map_editor_3d_v71.js?v=70.37.38"></script>
-<script src="./app/vtt_map_editor_3d_webgl_v72.js?v=70.37.38"></script>
-<script src="./app/vtt_map_editor_3d_ui_v1.js?v=70.37.38"></script>
-<script src="./app/vtt_asset_pack_v84.js"></script>
+<!-- Новая единая карта: все файлы изолированы в app/3dmap/ -->
+<script src="./app/3dmap/map_model.js"></script>
+<script src="./app/3dmap/map_renderer_2d.js"></script>
+<script src="./app/3dmap/map_renderer_3d.js"></script>
+<script src="./app/3dmap/map_editor.js"></script>
 <script src="./app/turn_planner.js"></script>
 <script src="./app/battle_action_ui.js"></script>
 <script src="./app/vtt_token_interaction_v60.js"></script>
@@ -334,7 +335,7 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
 
     <button class="btn-action" onclick="openDndNetworkModal()" style="position: fixed; right: 15px; bottom: 15px; background: #7b1fa2; color: #fff; border: 1px solid #9c4dcc; padding: 10px 14px; border-radius: 8px; z-index: 100; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.4);">🎲 Игра: <span id="dndNetworkStatus">Одиночная игра</span></button>
 
-    <button id="mainMenu3DMapButton" class="btn-action" type="button" onclick="dndMap3DOpen()" style="position:fixed;right:15px;bottom:62px;background:#6a4a12;color:#fff;border:1px solid #c89b3c;padding:10px 14px;border-radius:8px;z-index:100;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.4);">🏗️ 3D Карты</button>
+    <button id="mainMenu3DMapButton" class="btn-action" type="button" onclick="DND3DMap.open()" style="position:fixed;right:15px;bottom:62px;background:#6a4a12;color:#fff;border:1px solid #c89b3c;padding:10px 14px;border-radius:8px;z-index:100;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.4);">🏗️ 3D Карты</button>
 
     <button id="mainMenuUpdateButton" class="btn-action" type="button" onclick="if(window.DND_UPDATE_UI&&DND_UPDATE_UI.openMainMenuUpdate)DND_UPDATE_UI.openMainMenuUpdate()" style="position: fixed; left: 15px; bottom: 68px; background: #9b2c1f; color: #fff; border: 1px solid #d05a42; padding: 10px 14px; border-radius: 8px; z-index: 100; display: none; align-items: center; gap: 6px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.4);">
       ⬆️ Доступно новое обновление
