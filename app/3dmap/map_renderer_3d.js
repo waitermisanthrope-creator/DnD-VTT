@@ -44,7 +44,7 @@ function draw(c,m,cam){
   gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
 
   var identity=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
-      f=g.DNDMapModel.current(m),verts=[],cols=[],objs=f.objects||[],
+      f=g.DNDMapModel.current(m),verts=[],cols=[],texBatches=Object.create(null),objs=f.objects||[],
       dark=clamp(Number((m.lighting||{}).darkness)||0,0,1),
       by=floorBase(m,m.currentFloor),fh=Number(f.height)||3;
 
@@ -80,7 +80,7 @@ function draw(c,m,cam){
   }
 
   for(var y=0;y<m.height;y++)for(var x=0;x<m.width;x++){
-    var t=f.tiles[x+','+y];if(t)quad([x,by,y],[x+1,by,y],[x,by,y+1],[x+1,by,y+1],tileCol(t,x+.5,y+.5));
+    var t=f.tiles[x+','+y];if(t){var ft=floorTex(t);quad([x,by,y],[x+1,by,y],[x,by,y+1],[x+1,by,y+1],tileCol(t,x+.5,y+.5));texQuad(ft,[x,by,y],[x+1,by,y],[x,by,y+1],[x+1,by,y+1]);}
   }
   var walls=f.walls||{};
   Object.keys(walls).forEach(function(k){
