@@ -3883,3 +3883,14 @@ Shared asset catalog
 - 70.37.72: loader передаёт sampler в material; renderer уважает wrapS/wrapT и filter. Для mipmap-фильтров генерируются mipmaps. Для мебельного atlas сохраняется NEAREST, но критический фикс — REPEAT вместо прежнего CLAMP_TO_EDGE.
 - Версия Android/OTA: 70.37.72; versionCode 7037072.
 - Ручная проверка обязательна: Barrel, Shelf_Simple, Bookcase_2 должны перестать показывать белые/серые области и диагональные полосы. Верхняя надпись «Карманный ВТТ» также должна отсутствовать.
+
+
+## 2026-10-08 — 70.37.73: повторный аудит мебели и полного скрытия native/document title
+- Пользовательская проверка подтвердила, что 70.37.72 не устранил артефакты мебели и верхнее имя приложения.
+- Проверено: общий Quaternius atlas T_Trim_Furniture_BaseColor.png существует в app/assets/3d/quaternius/textures/, размер 2048×2048, RGB без альфы.
+- Проверены модели: Anvil, Anvil_Log, Barrel, Barrel_Apples, Shelf_Simple, Bookcase_2. Они используют общий набор Quaternius trim-текстур; у примеров glTF sampler: magFilter LINEAR / minFilter LINEAR_MIPMAP_LINEAR.
+- Renderer 70.37.73: мебельный BaseColor явно NEAREST + REPEAT; добавлена защита загрузки текстур от NPOT/превышения MAX_TEXTURE_SIZE и отключено нежелательное colorspace conversion при WebGL upload.
+- Верхнее «Карманный ВТТ»: title в index.html очищен, document.title принудительно очищается, MainActivity после каждой загрузки страницы повторно обнуляет native Activity/window title.
+- Android version: 70.37.73 / versionCode 7037073.
+- Signed release APK собран успешно. SHA-256: a0ed63810195eeda84cb8883c4f3534739ea390010fc9f9fc62fc129521691c8.
+- OTA stable manifest обновлён до 70.37.73.
