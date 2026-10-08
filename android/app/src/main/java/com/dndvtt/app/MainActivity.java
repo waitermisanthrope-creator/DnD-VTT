@@ -59,10 +59,12 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Must be requested before Activity.onCreate(): otherwise Android may already
+        // create the launch/title window before we remove its native title feature.
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         // WebView UI has its own navigation; the native Activity title bar only
-        // wastes vertical space and duplicated the app name above every screen.
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // wastes vertical space and duplicates the app name above every screen.
         // The launcher alias keeps the user-facing app name, but the running Activity must
         // not expose that label as its window/task title. setTitle() is the final runtime guard.
         setTitle("");
