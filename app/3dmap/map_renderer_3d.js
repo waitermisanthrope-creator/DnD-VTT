@@ -73,6 +73,13 @@ function draw(c,m,cam){
     q.v.push(a[0],a[1],a[2],b[0],b[1],b[2],d[0],d[1],d[2],a[0],a[1],a[2],d[0],d[1],d[2],e[0],e[1],e[2]);
     for(var j=0;j<uv.length;j++)q.u.push(uv[j]);
   }
+  // Поверхность должна рисоваться либо базовым цветом, либо текстурой,
+  // но никогда обоими слоями одновременно. Это полностью исключает
+  // z-fighting между двумя копиями одного пола/стены на мобильном WebGL.
+  function hasReadyTexture(name){
+    var t=st.textures[name+'.png'];
+    return !!(t&&t._ready);
+  }
   function floorTex(t){
     if(t==='stone')return 'floor_stone_tile_dark';
     if(t==='wood')return 'floor_wood_light';
@@ -82,15 +89,19 @@ function draw(c,m,cam){
   }
 
   for(var y=0;y<m.height;y++)for(var x=0;x<m.width;x++){
-    var t=f.tiles[x+','+y];if(t){var ft=floorTex(t);quad([x,by,y],[x+1,by,y],[x,by,y+1],[x+1,by,y+1],tileCol(t,x+.5,y+.5));texQuad(ft,[x,by+.02,y],[x+1,by+.02,y],[x,by+.02,y+1],[x+1,by+.02,y+1]);}
+    var t=f.tiles[x+','+y];if(t){
+      var ft=floorTex(t);
+      if(!hasReadyTexture(ft))quad([x,by,y],[x+1,by,y],[x,by,y+1],[x+1,by,y+1],tileCol(t,x+.5,y+.5));
+      texQuad(ft,[x,by,y],[x+1,by,y],[x,by,y+1],[x+1,by,y+1]);
+    }
   }
   var walls=f.walls||{};
   Object.keys(walls).forEach(function(k){
     var p=k.split(','),x=+p[0],z=+p[1],w=walls[k]||{};
-    if(w.n){var wn=w.nTexture||m.selectedWallTexture||'wall_stone_dark';quad([x,by,z],[x+1,by,z],[x,by+fh,z],[x+1,by+fh,z],[.38,.38,.42,1]);texQuad(wn,[x,by,z-.02],[x+1,by,z-.02],[x,by+fh,z-.02],[x+1,by+fh,z-.02]);}
-    if(w.s){var ws=w.sTexture||m.selectedWallTexture||'wall_stone_dark';quad([x,by,z+1],[x+1,by,z+1],[x,by+fh,z+1],[x+1,by+fh,z+1],[.34,.34,.38,1]);texQuad(ws,[x,by,z+1+.02],[x+1,by,z+1+.02],[x,by+fh,z+1+.02],[x+1,by+fh,z+1+.02]);}
-    if(w.w){var ww=w.wTexture||m.selectedWallTexture||'wall_stone_dark';quad([x,by,z],[x,by,z+1],[x,by+fh,z],[x,by+fh,z+1],[.36,.36,.40,1]);texQuad(ww,[x-.02,by,z],[x-.02,by,z+1],[x-.02,by+fh,z],[x-.02,by+fh,z+1]);}
-    if(w.e){var we=w.eTexture||m.selectedWallTexture||'wall_stone_dark';quad([x+1,by,z],[x+1,by,z+1],[x+1,by+fh,z],[x+1,by+fh,z+1],[.32,.32,.36,1]);texQuad(we,[x+1+.02,by,z],[x+1+.02,by,z+1],[x+1+.02,by+fh,z],[x+1+.02,by+fh,z+1]);}
+    if(w.n){var wn=w.nTexture||m.selectedWallTexture||'wall_stone_dark';if(!hasReadyTexture(wn))quad([x,by,z],[x+1,by,z],[x,by+fh,z],[x+1,by+fh,z],[.38,.38,.42,1]);texQuad(wn,[x,by,z],[x+1,by,z],[x,by+fh,z],[x+1,by+fh,z]);}
+    if(w.s){var ws=w.sTexture||m.selectedWallTexture||'wall_stone_dark';if(!hasReadyTexture(ws))quad([x,by,z+1],[x+1,by,z+1],[x,by+fh,z+1],[x+1,by+fh,z+1],[.34,.34,.38,1]);texQuad(ws,[x,by,z+1],[x+1,by,z+1],[x,by+fh,z+1],[x+1,by+fh,z+1]);}
+    if(w.w){var ww=w.wTexture||m.selectedWallTexture||'wall_stone_dark';if(!hasReadyTexture(ww))quad([x,by,z],[x,by,z+1],[x,by+fh,z],[x,by+fh,z+1],[.36,.36,.40,1]);texQuad(ww,[x,by,z],[x,by,z+1],[x,by+fh,z],[x,by+fh,z+1]);}
+    if(w.e){var we=w.eTexture||m.selectedWallTexture||'wall_stone_dark';if(!hasReadyTexture(we))quad([x+1,by,z],[x+1,by,z+1],[x+1,by+fh,z],[x+1,by+fh,z+1],[.32,.32,.36,1]);texQuad(we,[x+1,by,z],[x+1,by,z+1],[x+1,by+fh,z],[x+1,by+fh,z+1]);}
   });
   for(var oi=0;oi<objs.length;oi++){
     var o=objs[oi],ox=o.x||0,oz=o.y||0,oy=by+(o.z||0),
@@ -148,8 +159,9 @@ function draw(c,m,cam){
     im.onerror=function(){if(window.console)console.warn('Texture:',url);};
     im.src=url.indexOf('./')===0?url:'./'+url.replace(/^\//,'');st.textures[url]=t;return t;
   }
-  gl.enable(gl.POLYGON_OFFSET_FILL);
-  gl.polygonOffset(-2,-2);
+  // Текстуры пола/стен больше не накладываются на цветные копии.
+  // Поэтому polygonOffset здесь не нужен и только маскировал проблему.
+  gl.disable(gl.POLYGON_OFFSET_FILL);
   gl.depthMask(true);
   Object.keys(texBatches).forEach(function(name){
     var q=texBatches[name],tt=getTex(name+'.png');
