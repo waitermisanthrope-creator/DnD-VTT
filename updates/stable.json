@@ -29,13 +29,13 @@
     },
     {
       "path": "app/3dmap/gltf_character_pipeline.js",
-      "bytes": 5057,
-      "sha256": "581f5450d9a0eaefccde853fb6911d51defdd0df03d6ee32ade8e50ed65f0ee6"
+      "bytes": 5081,
+      "sha256": "314ed846f11a4f7aaf6c673b97851f599bb37b0d92fe7897c96435dae9fb3566"
     },
     {
       "path": "app/3dmap/gltf_loader.js",
-      "bytes": 6042,
-      "sha256": "c9364f89bd2d497c0e7dda8c71768b0135a242f9679b7cccf04afb8338816f52"
+      "bytes": 6186,
+      "sha256": "6cc9d83f4c6389b122fec4460b250e87721ef4fb85bc0cea6ea2bbcee1579577"
     },
     {
       "path": "app/3dmap/map_editor.js",
