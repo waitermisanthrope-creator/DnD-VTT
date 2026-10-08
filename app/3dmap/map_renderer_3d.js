@@ -1,22 +1,3 @@
-/* Минимальный автономный WebGL-рендер. Никаких импортов и внешних библиотек. */
-(function(g){
-'use strict';
-function draw(canvas,m){
- const gl=canvas.getContext('webgl',{antialias:true,alpha:false});
- if(!gl){canvas.innerHTML='WebGL недоступен на этом устройстве';return;}
- const vs='attribute vec3 p;uniform mat4 mvp;void main(){gl_Position=mvp*vec4(p,1.0);}';
- const fs='precision mediump float;uniform vec4 c;void main(){gl_FragColor=c;}';
- function shader(t,s){const x=gl.createShader(t);gl.shaderSource(x,s);gl.compileShader(x);return x;}
- const pr=gl.createProgram();gl.attachShader(pr,shader(gl.VERTEX_SHADER,vs));gl.attachShader(pr,shader(gl.FRAGMENT_SHADER,fs));gl.linkProgram(pr);gl.useProgram(pr);
- const verts=[];const f=g.DNDMapModel.current(m),S=2/Math.max(m.width,m.height),z=m.currentFloor*.22;
- for(let y=0;y<m.height;y++)for(let x=0;x<m.width;x++)if(f.tiles[x+','+y]){
-  const x0=-1+x*S,y0=1-y*S,x1=x0+S,y1=y0-S,h=0.08+z;
-  verts.push(x0,y0,h,x1,y0,h,x1,y1,h,x0,y0,h,x1,y1,h,x0,y1,h);
- }
- const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(verts),gl.STATIC_DRAW);
- const loc=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,3,gl.FLOAT,false,0,0);
- const mvp=new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);gl.uniformMatrix4fv(gl.getUniformLocation(pr,'mvp'),false,mvp);gl.uniform4f(gl.getUniformLocation(pr,'c'),.45,.48,.52,1);
- gl.viewport(0,0,canvas.width=canvas.height?canvas.height:canvas.clientHeight);gl.clearColor(.035,.035,.04,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.drawArrays(gl.TRIANGLES,0,verts.length/3);
-}
-g.DNDMapRenderer3D={draw};
-})(window);
+/* Автономный WebGL 3D-рендер. Без Three.js и внешних импортов. */
+(function(g){'use strict';
+function draw(c,m,cam){var gl=c.getContext('webgl',{antialias:true,alpha:false});if(!gl)return false;var vs='attribute vec3 p;uniform mat4 m;void main(){gl_Position=m*vec4(p,1.0);}',fs='precision mediump float;uniform vec4 c;void main(){gl_FragColor=c;}';function sh(t,s){var q=gl.createShader(t);gl.shaderSource(q,s);gl.compileShader(q);return q;}var p=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,vs));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);gl.useProgram(p);var f=g.DNDMapModel.current(m),S=2/Math.max(m.width,m.height),v=[],yaw=cam.yaw,pitch=cam.pitch,zoom=cam.zoom,cx=Math.cos(yaw),sx=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch);function P(x,y,z){x*=zoom;y*=zoom;z*=zoom;var a=x*cx-z*sx,b=x*sx+z*cx;return[a, y*cp-b*sp];}for(var y=0;y<m.height;y++)for(var x=0;x<m.width;x++)if(f.tiles[x+','+y]){var X=x/m.width*2-1,Y=1-y/m.height*2,Z=f.id*.18,a=P(X,Y,Z),b=P(X+S,Y,Z),d=P(X,Y-S,Z),e=P(X+S,Y-S,Z);v.push(a[0],a[1],0,b[0],b[1],0,e[0],e[1],0,a[0],a[1],0,e[0],e[1],0,d[0],d[1],0);}var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(v),gl.STATIC_DRAW);var loc=gl.getAttribLocation(p,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,3,gl.FLOAT,false,0,0);gl.uniformMatrix4fv(gl.getUniformLocation(p,'m'),false,new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]));gl.uniform4f(gl.getUniformLocation(p,'c'),.48,.5,.54,1);gl.viewport(0,0,c.width,c.height);gl.clearColor(.025,.025,.03,1);gl.clear(gl.COLOR_BUFFER_BIT);gl.drawArrays(gl.TRIANGLES,0,v.length/3);return true;}g.DNDMapRenderer3D={draw:draw};})(window);
