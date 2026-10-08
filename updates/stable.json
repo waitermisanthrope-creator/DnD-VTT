@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.02",
+  "version": "74.00.03",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-08",
@@ -89,8 +89,8 @@
     },
     {
       "path": "app/Settings.js",
-      "bytes": 60817,
-      "sha256": "3d8e4cf7e00926ff8b8160238238551eed113d9c666f562412b69b7020d62415"
+      "bytes": 61074,
+      "sha256": "3a9453b5d1d69cdc15a10baedc856f7bbc130dd9658151e2bdd7c93bc40af6f4"
     },
     {
       "path": "app/Settings_debug.js",

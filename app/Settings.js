@@ -1057,14 +1057,14 @@ window.closeSettingsModal = closeSettingsModal;
       modal.id = 'iconSettingsModal';
       modal.style.cssText = 'display:none;position:fixed;inset:0;z-index:20100;background:rgba(0,0,0,.9);backdrop-filter:blur(5px);align-items:center;justify-content:center;padding:12px;box-sizing:border-box;';
       modal.innerHTML =
-        '<div style="background:#1b1b1b;color:#fff;width:100%;max-width:520px;max-height:92vh;overflow:auto;border:1px solid #66502e;border-radius:12px;padding:16px;box-sizing:border-box;box-shadow:0 15px 45px rgba(0,0,0,.7);">' +
+        '<div style="background:#1b1b1b;color:#fff;width:100%;max-width:520px;max-height:92vh;overflow:hidden;border:1px solid #66502e;border-radius:12px;padding:16px;box-sizing:border-box;box-shadow:0 15px 45px rgba(0,0,0,.7);touch-action:pan-y;-webkit-overflow-scrolling:touch;">' +
           '<div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #444;padding-bottom:10px;margin-bottom:10px;">' +
             '<h3 style="margin:0;color:#e5c878;font-size:1.15em;">🖼️ Параметры иконки</h3>' +
             '<button onclick="closeIconSettingsModal()" style="background:#e53935;color:#fff;border:0;border-radius:6px;padding:6px 10px;font-weight:bold;">✕</button>' +
           '</div>' +
           '<div style="font-size:.78em;color:#aaa;line-height:1.45;margin-bottom:12px;">Выберите изображение, которое Android будет использовать как иконку Карманного ВТТ на рабочем столе.</div>' +
           '<div id="iconSettingsStatus" style="display:none;font-size:.78em;padding:8px;border-radius:6px;margin-bottom:10px;"></div>' +
-          '<div id="iconSettingsGrid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;"></div>' +
+          '<div id="iconSettingsGrid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;max-height:calc(92vh - 180px);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-y;overscroll-behavior:contain;padding-right:4px;box-sizing:border-box;"></div>' +
         '</div>';
       modal.addEventListener('click', function(e){ if(e.target === modal) closeIconSettingsModal(); });
       document.body.appendChild(modal);
@@ -1079,7 +1079,7 @@ window.closeSettingsModal = closeSettingsModal;
     const selected = selectedId();
     grid.innerHTML = ICONS.map(function(icon){
       const active = icon.id === selected;
-      return '<button type="button" onclick="selectLauncherIcon(\'' + icon.id + '\')" style="position:relative;min-width:0;background:#252525;color:#fff;border:2px solid ' + (active ? 'var(--theme-primary,#ff9800)' : '#3b3b3b') + ';border-radius:9px;padding:7px;cursor:pointer;text-align:center;box-sizing:border-box;">' +
+      return '<button type="button" onclick="selectLauncherIcon(\'' + icon.id + '\')" style="position:relative;min-width:0;background:#252525;color:#fff;border:2px solid ' + (active ? 'var(--theme-primary,#ff9800)' : '#3b3b3b') + ';border-radius:9px;padding:7px;cursor:pointer;text-align:center;box-sizing:border-box;touch-action:pan-y;">' +
         '<div style="height:105px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#303030 0,#202020 55%,#191919 100%);border-radius:6px;overflow:hidden;">' +
           '<img src="' + icon.src + '" alt="" style="width:92px;height:92px;object-fit:contain;display:block;">' +
         '</div>' +

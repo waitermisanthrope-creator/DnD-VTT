@@ -1,5 +1,5 @@
-// V74.00.02 release APK — controlled Android launch window.
-// Launch-title fix included in MainActivity.
+// V74.00.03 release APK — wallpaper packaging and icon picker touch fix.
+// Launch-title fix included in MainActivity. V74.00.03 packages the real wallpapers directory.
 plugins {
     id "com.android.application"
 }
@@ -31,7 +31,8 @@ tasks.register("prepareVttAssets", Sync) {
     into(vttAssets)
     from("../../index.html")
     from("../../app") { into("app") }
-    from("../../") { include("*.png"); into("wallpapers") }
+    from("../../wallpapers") { include("*.png"); into("wallpapers") }
+    from("../../wallpapers") { include("*.svg"); into("wallpapers") }
     from("../../") { include("*.png"); into("") }
     from("../../") { include("*.jpg"); into("") }
     from("../../") { include("*.mp3"); into("ambience") }
@@ -73,8 +74,8 @@ android {
         applicationId "com.dndvtt.pocketvtt"
         minSdk 24
         targetSdk 36
-        versionCode 7400002
-        versionName '74.00.02'
+        versionCode 7400003
+        versionName '74.00.03'
     }
 
     signingConfigs {
