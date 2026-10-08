@@ -13,10 +13,15 @@ function project(m,cam,x,y,z){var c=cameraState(m,cam),dx=x-c.pos[0],dy=y-c.pos[
 function draw(c,m,cam){
   var st=c.__dnd3dState;
   if(!st){
-    var gl=c.getContext('webgl',{antialias:true,alpha:false,depth:true});
-    if(!gl)return false;
-    var vs='attribute vec3 p;attribute vec4 col;attribute vec2 uv;uniform mat4 vp;uniform mat4 model;uniform sampler2D tex;uniform float useTex;varying vec4 v;varying vec2 vu;void main(){gl_Position=vp*model*vec4(p,1.0);v=col;vu=uv;}',
-        fs='precision mediump float;varying vec4 v;varying vec2 vu;uniform sampler2D tex;uniform float useTex;void main(){vec4 t=texture2D(tex,vu);gl_FragColor=mix(v,t,useTex);}';
+    var gl=c.getContext('webgl',{antialias:true,alpha:false,depth:true})||c.getContext('experimental-webgl');
+    if(!gl){
+      c.style.background='#252525';
+      var e=c.parentElement&&c.parentElement.querySelector('[data-webgl-error]');
+      if(!e&&c.parentElement){e=document.createElement('div');e.setAttribute('data-webgl-error','1');e.style.cssText='position:absolute;left:10px;top:55px;z-index:20;padding:8px 10px;background:#5b2020;color:#fff;border:1px solid #a55;border-radius:8px;font:12px Arial';e.textContent='3D: WebGL недоступен в WebView';c.parentElement.appendChild(e);}
+      return false;
+    }
+    var vs='attribute vec3 p;attribute vec4 col;attribute vec2 uv;uniform mat4 vp;uniform mat4 model;varying vec4 v;varying vec2 vu;void main(){gl_Position=vp*model*vec4(p,1.0);v=col;vu=uv;}',
+        fs='precision mediump float;varying vec4 v;varying vec2 vu;uniform sampler2D tex;uniform float useTex;void main(){if(useTex>0.5){gl_FragColor=texture2D(tex,vu);}else{gl_FragColor=v;}}';
     function sh(t,x){var q=gl.createShader(t);gl.shaderSource(q,x);gl.compileShader(q);if(!gl.getShaderParameter(q,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(q)||'shader');return q;}
     var prog=gl.createProgram();gl.attachShader(prog,sh(gl.VERTEX_SHADER,vs));gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(prog);
     if(!gl.getProgramParameter(prog,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(prog)||'program');
@@ -33,6 +38,8 @@ function draw(c,m,cam){
   gl.useProgram(prog);
   gl.enable(gl.DEPTH_TEST);
   gl.depthFunc(gl.LEQUAL);
+  gl.disable(gl.CULL_FACE);
+  gl.clearDepth(1);
   gl.clearColor(.025,.025,.03,1);
   gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
 
@@ -91,6 +98,7 @@ function draw(c,m,cam){
   gl.uniformMatrix4fv(st.vpLoc,false,new Float32Array(vp));
   gl.uniformMatrix4fv(st.modelLoc,false,new Float32Array(identity));
   gl.uniform1i(st.texLoc,0);
+  gl.activeTexture(gl.TEXTURE0);
 
   if(!st.base)st.base={ctx:gl,pos:gl.createBuffer(),col:gl.createBuffer()};
   gl.bindBuffer(gl.ARRAY_BUFFER,st.base.pos);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(verts),gl.DYNAMIC_DRAW);
