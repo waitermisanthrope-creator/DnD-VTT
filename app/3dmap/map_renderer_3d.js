@@ -39,6 +39,8 @@ function draw(c,m,cam){
   gl.enable(gl.DEPTH_TEST);
   gl.depthFunc(gl.LEQUAL);
   gl.disable(gl.CULL_FACE);
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
   gl.clearDepth(1);
   gl.clearColor(.025,.025,.03,1);
   gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
@@ -145,6 +147,7 @@ function draw(c,m,cam){
   }
   gl.enable(gl.POLYGON_OFFSET_FILL);
   gl.polygonOffset(-1,-1);
+  gl.depthMask(false);
   Object.keys(texBatches).forEach(function(name){
     var q=texBatches[name],tt=getTex(name+'.png');
     if(!tt||!tt._ready)return;
@@ -157,6 +160,7 @@ function draw(c,m,cam){
     gl.uniform1f(st.useTexLoc,1);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,tt);
     gl.drawArrays(gl.TRIANGLES,0,q.v.length/3);
   });
+  gl.depthMask(true);
   gl.disable(gl.POLYGON_OFFSET_FILL);
   function matColor(asset,part){
     var mm=(asset.materials||[])[part.material||0],fc=mm&&mm.baseColorFactor;
