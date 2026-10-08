@@ -236,4 +236,4 @@ function draw(c,m,cam){
 function hitTest(c,m,cam,clientX,clientY){var r=c.getBoundingClientRect(),mx=(clientX-r.left)/r.width*2-1,my=1-(clientY-r.top)/r.height*2,objs=g.DNDMapModel.current(m).objects||[],best=null,bd=999;for(var i=0;i<objs.length;i++){var o=objs[i],p=project(m,cam,(o.x||0)+.5,floorBase(m,m.currentFloor)+(o.z||0)+.8,(o.y||0)+.5),d=Math.hypot(mx-p[0],my-p[1]);if(d<.12&&d<bd){bd=d;best=o.id;}}return best;}
 g.DNDMapRenderer3D={draw:draw,hitTest:hitTest,projectPoint:function(m,cam,x,y,z){return project(m,cam,x,floorBase(m,m.currentFloor)+z,y);}};})(window);
 // 3D texture z-fighting fix
-// V70.37.69: preserve alpha cutouts for glTF furniture textures.
+// V70.37.69: alpha-aware glTF furniture textures; opaque/mask materials do not blend.
