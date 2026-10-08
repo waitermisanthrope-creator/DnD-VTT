@@ -40,6 +40,47 @@ jobs:
           node tests/test_v755_creation_buckets.js
           node tests/test_v755_update_scene.js
 
+      - name: Deep furniture texture diagnostic
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, struct, zlib
+          from pathlib import Path
+          root=Path(".")
+          png=root/"app/assets/3d/quaternius/textures/T_Trim_Furniture_BaseColor.png"
+          data=png.read_bytes()
+          assert data[:8]==b"\x89PNG\r\n\x1a\n"
+          pos=8; w=h=ct=None; idat=b""
+          while pos<len(data):
+              n=struct.unpack(">I",data[pos:pos+4])[0]; typ=data[pos+4:pos+8]; chunk=data[pos+8:pos+8+n]; pos+=12+n
+              if typ==b"IHDR": w,h,bd,ct,_,_,_=struct.unpack(">IIBBBBB",chunk)
+              if typ==b"IDAT": idat+=chunk
+              if typ==b"IEND": break
+          raw=zlib.decompress(idat)
+          channels={0:1,2:3,3:1,4:2,6:4}[ct]; bpp=channels
+          rows=[]; prev=[0]*(w*bpp); off=0
+          for y in range(h):
+              f=raw[off]; off+=1; row=list(raw[off:off+w*bpp]); off+=w*bpp
+              for i in range(len(row)):
+                  a=row[i-bpp] if i>=bpp else 0; b=prev[i]; c=prev[i-bpp] if i>=bpp else 0
+                  if f==1: row[i]=(row[i]+a)&255
+                  elif f==2: row[i]=(row[i]+b)&255
+                  elif f==3: row[i]=(row[i]+((a+b)//2))&255
+                  elif f==4:
+                      p=a+b-c; pa=abs(p-a); pb=abs(p-b); pc=abs(p-c); pr=a if pa<=pb and pa<=pc else (b if pb<=pc else c); row[i]=(row[i]+pr)&255
+              rows.append(row); prev=row
+          alphas=[]
+          if ct==6:
+              for row in rows: alphas.extend(row[3::4])
+          elif ct==4:
+              for row in rows: alphas.extend(row[1::2])
+          else:
+              alphas=[255]*(w*h)
+          print("FURNITURE_PNG",w,h,"color_type",ct,"alpha_min",min(alphas),"alpha_max",max(alphas),"alpha_zero",sum(a==0 for a in alphas),"pixels",len(alphas))
+          for name in ["Barrel","Shelf_Simple","Bookcase_2"]:
+              g=json.loads((root/f"app/assets/3d/quaternius/models/{name}.gltf").read_text())
+              print("MODEL",name,"samplers",g.get("samplers"),"materials",[(m.get("name"),m.get("alphaMode"),m.get("alphaCutoff")) for m in g.get("materials",[])])
+          PY
       - name: Set up JDK 17
         uses: actions/setup-java@v5
         with:
