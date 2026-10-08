@@ -22,6 +22,9 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
   <!-- Builder V2 is loaded before legacy creation scripts so the parchment handoff always sees its global. -->
   <script src="./app/character_builder_v2.js"></script>
   <style>
+    /* 3D map editor is a full-screen landscape workspace. Hide the app shell behind it. */
+    body.dnd-map-active > *:not(#dnd3dmap) { display: none !important; }
+    body.dnd-map-active { margin: 0 !important; padding: 0 !important; overflow: hidden !important; }
     .author-link-card {
       max-width: 620px;
       margin: 24px auto 0;
