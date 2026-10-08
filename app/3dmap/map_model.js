@@ -1,7 +1,7 @@
 /* Карта v2: единая модель, этажи, стены, объекты и перемещение. */
 (function(g){'use strict';
 const KEY='dnd_vtt_3dmap_v2',DEFAULT={version:2,name:'Новая карта',width:12,height:12,cell:64,currentFloor:0,view:'2d',selectedTool:'floor',selectedTexture:'stone',floors:[{id:0,name:'Этаж 0',height:3,tiles:{},walls:{},objects:[],zones:[]}],tokens:[]};
-function clone(v){return JSON.parse(JSON.stringify(v));} function floor(id){return{id:id,name:'Этаж '+id,height:3,tiles:{},walls:{},objects:[]};}
+function clone(v){return JSON.parse(JSON.stringify(v));} function floor(id){return{id:id,name:'Этаж '+id,height:3,tiles:{},walls:{},objects:[],zones:[]};}
 function normalize(m){m=m&&typeof m==='object'?m:clone(DEFAULT);m.version=2;m.width=Math.max(1,Math.min(200,Number(m.width)||12));m.height=Math.max(1,Math.min(200,Number(m.height)||12));m.cell=Number(m.cell)||64;m.floors=Array.isArray(m.floors)&&m.floors.length?m.floors:[floor(0)];m.floors.forEach(function(f,i){f.id=Number.isFinite(f.id)?f.id:i;f.name=f.name||('Этаж '+f.id);f.height=Math.max(1,Number(f.height)||3);f.tiles=f.tiles||{};f.walls=f.walls||{};f.objects=Array.isArray(f.objects)?f.objects:[];f.zones=Array.isArray(f.zones)?f.zones:[];});m.tokens=Array.isArray(m.tokens)?m.tokens:[];m.currentFloor=Math.max(0,Math.min(m.floors.length-1,Number(m.currentFloor)||0));return m;}
 function key(x,y){return x+','+y;} function current(m){return m.floors[m.currentFloor];}
 function load(){try{return normalize(JSON.parse(localStorage.getItem(KEY)||'null'));}catch(e){return clone(DEFAULT);}} function save(m){m=normalize(m);localStorage.setItem(KEY,JSON.stringify(m));return m;} function reset(){localStorage.removeItem(KEY);return load();}
