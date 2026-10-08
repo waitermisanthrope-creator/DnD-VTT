@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.03",
+  "version": "74.00.04",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-08",
@@ -9,8 +9,8 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 84407,
-      "sha256": "893476899ff0d7cb4997290919b8c224e48c0f0d74bf97834b2cadeae83c3318"
+      "bytes": 84463,
+      "sha256": "7dab05b00d9602a4f227882cee8c809da3ee9620f8afb95ac870202a9fcad6e7"
     },
     {
       "path": "app/3dmap/character_system.js",
