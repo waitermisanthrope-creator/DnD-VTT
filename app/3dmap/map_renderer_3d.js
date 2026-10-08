@@ -80,15 +80,15 @@ function draw(c,m,cam){
   }
 
   for(var y=0;y<m.height;y++)for(var x=0;x<m.width;x++){
-    var t=f.tiles[x+','+y];if(t){var ft=floorTex(t);quad([x,by,y],[x+1,by,y],[x,by,y+1],[x+1,by,y+1],tileCol(t,x+.5,y+.5));texQuad(ft,[x,by,y],[x+1,by,y],[x,by,y+1],[x+1,by,y+1]);}
+    var t=f.tiles[x+','+y];if(t){var ft=floorTex(t);quad([x,by,y],[x+1,by,y],[x,by,y+1],[x+1,by,y+1],tileCol(t,x+.5,y+.5));texQuad(ft,[x,by+.002,y],[x+1,by+.002,y],[x,by+.002,y+1],[x+1,by+.002,y+1]);}
   }
   var walls=f.walls||{};
   Object.keys(walls).forEach(function(k){
     var p=k.split(','),x=+p[0],z=+p[1],w=walls[k]||{};
-    if(w.n){var wn=w.nTexture||m.selectedWallTexture||'wall_stone_dark';quad([x,by,z],[x+1,by,z],[x,by+fh,z],[x+1,by+fh,z],[.38,.38,.42,1]);texQuad(wn,[x,by,z],[x+1,by,z],[x,by+fh,z],[x+1,by+fh,z]);}
-    if(w.s){var ws=w.sTexture||m.selectedWallTexture||'wall_stone_dark';quad([x,by,z+1],[x+1,by,z+1],[x,by+fh,z+1],[x+1,by+fh,z+1],[.34,.34,.38,1]);texQuad(ws,[x,by,z+1],[x+1,by,z+1],[x,by+fh,z+1],[x+1,by+fh,z+1]);}
-    if(w.w){var ww=w.wTexture||m.selectedWallTexture||'wall_stone_dark';quad([x,by,z],[x,by,z+1],[x,by+fh,z],[x,by+fh,z+1],[.36,.36,.40,1]);texQuad(ww,[x,by,z],[x,by,z+1],[x,by+fh,z],[x,by+fh,z+1]);}
-    if(w.e){var we=w.eTexture||m.selectedWallTexture||'wall_stone_dark';quad([x+1,by,z],[x+1,by,z+1],[x+1,by+fh,z],[x+1,by+fh,z+1],[.32,.32,.36,1]);texQuad(we,[x+1,by,z],[x+1,by,z+1],[x+1,by+fh,z],[x+1,by+fh,z+1]);}
+    if(w.n){var wn=w.nTexture||m.selectedWallTexture||'wall_stone_dark';quad([x,by,z],[x+1,by,z],[x,by+fh,z],[x+1,by+fh,z],[.38,.38,.42,1]);texQuad(wn,[x,by,z-.002],[x+1,by,z-.002],[x,by+fh,z-.002],[x+1,by+fh,z-.002]);}
+    if(w.s){var ws=w.sTexture||m.selectedWallTexture||'wall_stone_dark';quad([x,by,z+1],[x+1,by,z+1],[x,by+fh,z+1],[x+1,by+fh,z+1],[.34,.34,.38,1]);texQuad(ws,[x,by,z+1+.002],[x+1,by,z+1+.002],[x,by+fh,z+1+.002],[x+1,by+fh,z+1+.002]);}
+    if(w.w){var ww=w.wTexture||m.selectedWallTexture||'wall_stone_dark';quad([x,by,z],[x,by,z+1],[x,by+fh,z],[x,by+fh,z+1],[.36,.36,.40,1]);texQuad(ww,[x-.002,by,z],[x-.002,by,z+1],[x-.002,by+fh,z],[x-.002,by+fh,z+1]);}
+    if(w.e){var we=w.eTexture||m.selectedWallTexture||'wall_stone_dark';quad([x+1,by,z],[x+1,by,z+1],[x+1,by+fh,z],[x+1,by+fh,z+1],[.32,.32,.36,1]);texQuad(we,[x+1+.002,by,z],[x+1+.002,by,z+1],[x+1+.002,by+fh,z],[x+1+.002,by+fh,z+1]);}
   });
   for(var oi=0;oi<objs.length;oi++){
     var o=objs[oi],ox=o.x||0,oz=o.y||0,oy=by+(o.z||0),
