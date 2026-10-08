@@ -23,7 +23,7 @@ function draw(c,m,cam){
     var fragHighp=gl.getShaderPrecisionFormat&&gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER,gl.HIGH_FLOAT),
         fragPrec=fragHighp&&fragHighp.precision>0?'highp':'mediump',
         vs='precision highp float;attribute vec3 p;attribute vec4 col;attribute vec2 uv;uniform mat4 vp;uniform mat4 model;varying vec4 v;varying vec2 vu;void main(){gl_Position=vp*model*vec4(p,1.0);v=col;vu=uv;}',
-        fs='precision '+fragPrec+' float;varying vec4 v;varying vec2 vu;uniform sampler2D tex;uniform float useTex;void main(){if(useTex>0.5){vec4 t=texture2D(tex,vu);gl_FragColor=vec4(t.rgb,1.0);}else{gl_FragColor=v;}}';
+        fs='precision '+fragPrec+' float;varying vec4 v;varying vec2 vu;uniform sampler2D tex;uniform float useTex;void main(){if(useTex>0.5){vec4 t=texture2D(tex,vu);if(t.a<0.08)discard;gl_FragColor=t;}else{gl_FragColor=v;}}';
     function sh(t,x){var q=gl.createShader(t);gl.shaderSource(q,x);gl.compileShader(q);if(!gl.getShaderParameter(q,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(q)||'shader');return q;}
     var prog=gl.createProgram();gl.attachShader(prog,sh(gl.VERTEX_SHADER,vs));gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(prog);
     if(!gl.getProgramParameter(prog,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(prog)||'program');
