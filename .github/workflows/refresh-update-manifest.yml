@@ -34,7 +34,15 @@ jobs:
       - name: Generate stable manifest
         run: |
           set -euo pipefail
-          python3 tools/build_update_manifest.py             --base-url "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main"             --version "70.37.47"             --min-app-version "70.26.99"             --channel "stable"             --output updates/stable.json
+          VERSION="$(sed -n "s/.*versionName ['\"]\([^'\"]*\)['\"].*/\1/p" android/app/build.gradle | head -n 1)"
+          test -n "$VERSION" || { echo "Не удалось определить versionName из android/app/build.gradle"; exit 1; }
+          echo "Publishing stable manifest for version $VERSION"
+          python3 tools/build_update_manifest.py \
+            --base-url "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main" \
+            --version "$VERSION" \
+            --min-app-version "70.26.99" \
+            --channel "stable" \
+            --output updates/stable.json
 
       - name: Verify required visual assets
         run: |
