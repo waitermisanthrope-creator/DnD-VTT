@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "70.37.52",
+  "version": "70.37.53",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-08",
@@ -2370,7 +2370,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 18787,
-      "sha256": "407efec48008c0c624a67598a14fbb9a9376ec0e1dcc55d9c739c2f857836d2e"
+      "sha256": "09c70ab97f9ee13b6350d84b7d14bff5518717a530327589ccbe4abb5fc81db8"
     },
     {
       "path": "app/update_scene_v2.js",
