@@ -284,6 +284,7 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
 <script>DNDGLTFCharacterPipeline.install();</script>
 <script src="./app/3dmap/gltf_catalog.js"></script>
 <script src="./app/3dmap/character_system.js"></script>
+<script src="./app/3dmap/character_editor_3d.js"></script>
 <script src="./app/3dmap/map_renderer_3d.js"></script>
 <script src="./app/3dmap/map_editor.js"></script>
 <script src="./app/turn_planner.js"></script>
@@ -958,6 +959,7 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
   <button class="debug-tool-button btn-action" onclick="dndV708Open()" style="position:fixed;right:10px;bottom:260px;z-index:55000;background:#1565c0;color:#fff;padding:8px 10px;border-radius:9px;">☑️ Задачи</button>
   <button class="debug-tool-button btn-action" onclick="dndV66OpenLog()" style="position:fixed;right:10px;bottom:215px;z-index:55000;background:#455a64;color:#fff;padding:8px 10px;border-radius:9px;">📜 Combat Log</button>
   <button class="debug-tool-button btn-action" onclick="dndV709Open()" style="position:fixed;right:10px;bottom:305px;z-index:100050;background:#c62828;color:#fff;padding:8px 10px;border-radius:9px;">🐞 Ошибки здесь</button>
+  <button class="debug-tool-button btn-action" onclick="dndOpenCharacterEditor3D()" style="position:fixed;right:10px;bottom:350px;z-index:100050;background:#6d5421;color:#fff;padding:8px 10px;border-radius:9px;">🧍 3D персонаж</button>
 
   <!-- Сетевая комната / режим игры -->
   <div id="dndNetworkModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:26000;justify-content:center;align-items:center;padding:15px;box-sizing:border-box;backdrop-filter:blur(4px);">
