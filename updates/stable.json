@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.17",
+  "version": "74.00.18",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-09",
@@ -10,7 +10,7 @@
     {
       "path": "index.html",
       "bytes": 85334,
-      "sha256": "690e9d626a5faaeabad82533fec635f8ca0ba740877deac40eee1a2e7f6fff38"
+      "sha256": "d865921fb1cfc9ebb6c0bc55838c122a835e9d81657f05d0b29f7a1d3f1bff84"
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
