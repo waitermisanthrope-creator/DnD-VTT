@@ -4,7 +4,7 @@
   "version": "74.00.05",
   "minAppVersion": "70.26.99",
   "channel": "stable",
-  "generated": "2026-10-08",
+  "generated": "2026-10-09",
   "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main",
   "files": [
     {
@@ -14,8 +14,8 @@
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
-      "bytes": 9930,
-      "sha256": "3885d092105d2b5d79f074d56ed342d5d328368595e8f9268910120f16831eb2"
+      "bytes": 13273,
+      "sha256": "30b305c1ef23fb99508f917a8c319d0f4e6c1412a424506cc8338c294baed550"
     },
     {
       "path": "app/3dmap/character_system.js",
