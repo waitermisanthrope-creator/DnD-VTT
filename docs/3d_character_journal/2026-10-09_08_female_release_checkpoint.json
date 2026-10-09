@@ -25,5 +25,36 @@
     "seconds": 6.94
   },
   "physicalAndroidQA": false,
-  "publication": "pending main and workflow verification"
+  "publication": {
+    "status": "verified",
+    "releaseCommit": "b9f3f1c7cb9559c6c72449b8b832f47e2b4b02b4",
+    "stableVersion": "74.00.16",
+    "files": 599,
+    "allManifestEntriesMatchPhysicalZIP": true,
+    "workflows": {
+      "manifest": {
+        "id": 37941444696,
+        "conclusion": "success"
+      },
+      "androidDebug": {
+        "id": 37941444704,
+        "conclusion": "success",
+        "artifact": "dnd-vtt-debug-apk",
+        "artifactBytes": 309990926,
+        "artifactDigest": "sha256:c30ea7d75ea214180f17b5dd846abe46c8603924ce3016983d4d3594d78465f4"
+      },
+      "androidSignedRelease": {
+        "id": 37941444999,
+        "conclusion": "success",
+        "artifact": "dnd-vtt-release-apk",
+        "artifactBytes": 309017253,
+        "artifactDigest": "sha256:593289b8f258d2d14b35d4ebee0f1abd58f370e6abadb8b21a6db69d23a0725d"
+      },
+      "pages": {
+        "id": 37941444663,
+        "conclusion": "success"
+      }
+    }
+  },
+  "nextAction": "physical phone QA after OTA V74.00.16; stages 1/2/3 complete"
 }

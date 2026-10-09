@@ -9,7 +9,7 @@
   затем поручил третий этап. Workflow run `37940431446` успешно выполнил генерацию,
   SHA256 и профильные тесты; GLB сохранён ботом в коммите
   `6b7fe736218f4b3fef46cfb28355ea8bc2656027` ветки female-model-stage2.
-- Этот binary blob без повторной передачи/изменения включается в основной релиз.
+- Этот binary blob без повторной передачи/изменения включён в основной релиз.
   Git blob SHA: `0b1acc2524f2ad81f89e31526c3ba6ff11978645`.
 - human-body-morphs.glb: 12 671 780 bytes, 9 targets, 70 985 вершин, 53 joints.
   SHA256: `3628ff521db93f28a12f7e68bf59961dc48d7a2c1a3d0e82b661dafb9131120b`.
@@ -21,7 +21,7 @@
   Реальный asset-test корректно отделяет query от пути при локальном чтении.
 - Android debug CI дополнен gender-recipe regression; release CI теперь также
   проверяет character foundation, real morph asset, editor, skin/morph и recipe.
-- В main переносится результат задачи, а workflow сборки тестовой ветки остаётся
+- В main перенесён результат задачи, а workflow сборки тестовой ветки остаётся
   в female-model-stage2; новые права автоматизации основной ветке не добавляются.
 
 ## Проверки до публикации
@@ -48,13 +48,19 @@
   SHA256 архива: `ca2ea7663b20a26a312ddb8653e4426f17b5f497272bad68f4d61f58d4e94b14`.
   Этот ZIP — проверочный пакет из кандидата релиза, не обещанный отдельный APK.
 
-## Статус публикации
-Кандидат подготовлен и проверен. После записи релиза в main проверить
-Refresh in-app update manifest, Android debug и signed release workflows.
-До успешного завершения соответствующего workflow не заявлять APK готовым.
-Stable должен показывать 74.00.16 и приведённую SHA256 body GLB; hashes changed
-JS/index должны совпадать с проверенным кандидатом. Финальное подтверждение
-публикации записать отдельной строкой в начало guide и в этот журнал.
+## Статус публикации — подтверждено
+- Релиз main: `b9f3f1c7cb9559c6c72449b8b832f47e2b4b02b4`.
+- Refresh in-app update manifest run `37941444696` — success.
+  Live `updates/stable.json`: **74.00.16**, **599 файлов**. Весь массив files
+  точно совпадает с проверенным ZIP-манифестом: все пути, bytes и SHA256.
+- [Android debug run 37941444704](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/37941444704) — success;
+  artifact `dnd-vtt-debug-apk`, 309990926 bytes, не просрочен.
+- [Signed release run 37941444999](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/37941444999) — success;
+  artifact `dnd-vtt-release-apk`, 309017253 bytes, не просрочен.
+  Эти размеры относятся к Actions artifacts, а не к отдельным APK.
+- Pages run `37941444663` — success.
+- Три этапа реализации/доставки закончены. Физическое Android/WebGL QA ещё
+  не выполнено; следующая проверка — на телефоне после OTA V74.00.16.
 
 ## Физический тест на телефоне
 Обновиться через OTA до **V74.00.16**, открыть «3D-персонаж»:
