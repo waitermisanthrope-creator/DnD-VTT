@@ -19,8 +19,8 @@
     },
     {
       "path": "app/3dmap/character_system.js",
-      "bytes": 6797,
-      "sha256": "0b4b495aae44b2d1609a16ba7f613487b39e7ee0d1a0aca97b988f216c7e6363"
+      "bytes": 6841,
+      "sha256": "5c58e106bb46ab6a7b3ab75257f3d87a40f1a9b47ac3c1b32ae743b6dc95e581"
     },
     {
       "path": "app/3dmap/gltf_catalog.js",
