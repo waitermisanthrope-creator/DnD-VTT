@@ -1,4 +1,4 @@
-// V74.00.10 release APK — touch orbit and localized body-shape controls.
+// V74.00.11 release APK — fix character editor JavaScript syntax.
 // Launch-title fix included in MainActivity. V74.00.03 packages the real wallpapers directory.
 plugins {
     id "com.android.application"
@@ -75,8 +75,8 @@ android {
         applicationId "com.dndvtt.pocketvtt"
         minSdk 24
         targetSdk 36
-        versionCode 7400010
-        versionName '74.00.10'
+        versionCode 7400011
+        versionName '74.00.11'
     }
 
     signingConfigs {
