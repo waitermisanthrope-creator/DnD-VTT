@@ -22,10 +22,23 @@ for(const p of [objPath,glbPath,targetPath])if(!fs.existsSync(p))die('File not f
 const result=transfer(objPath,glbPath,targetPath);
 if(result.misses)die('Surface transfer has misses: '+result.misses);
 
-const g=result.glb.json;
-let targetPrim=null;
-for(const mesh of g.meshes||[])for(const prim of mesh.primitives||[])if(prim.attributes&&prim.attributes.POSITION!=null){targetPrim=prim;break;}
-if(!targetPrim)die('No POSITION primitive found');
+const json=JSON.parse(JSON.stringify(result.glb.json));
+let targetMeshIndex=-1,targetPrimIndex=-1;
+for(let mi=0;mi<(json.meshes||[]).length;mi++){
+  const mesh=json.meshes[mi];
+  for(let pi=0;pi<(mesh.primitives||[]).length;pi++){
+    const prim=mesh.primitives[pi];
+    if(prim.attributes&&prim.attributes.POSITION!=null){
+      targetMeshIndex=mi;
+      targetPrimIndex=pi;
+      break;
+    }
+  }
+  if(targetMeshIndex>=0)break;
+}
+if(targetMeshIndex<0)die('No POSITION primitive found');
+const mesh=json.meshes[targetMeshIndex];
+const targetPrim=mesh.primitives[targetPrimIndex];
 
 const oldBin=result.glb.bin;
 let bin=Buffer.from(oldBin);
@@ -34,7 +47,6 @@ if(morphOffset>bin.length)bin=Buffer.concat([bin,Buffer.alloc(morphOffset-bin.le
 const morphBytes=Buffer.from(result.morph.buffer,result.morph.byteOffset,result.morph.byteLength);
 bin=Buffer.concat([bin,morphBytes]);
 
-const json=JSON.parse(JSON.stringify(g));
 json.buffers=json.buffers||[{byteLength:oldBin.length}];
 if(!json.buffers[0])json.buffers[0]={byteLength:oldBin.length};
 json.buffers[0].byteLength=bin.length;
@@ -50,13 +62,12 @@ json.accessors.push({bufferView:bvIndex,componentType:5126,count:result.geo.vert
 
 targetPrim.targets=targetPrim.targets||[];
 targetPrim.targets.push({POSITION:accIndex});
-const mesh=json.meshes.find(m=>(m.primitives||[]).includes(targetPrim));
 mesh.extras=mesh.extras||{};
 mesh.extras.targetNames=Array.isArray(mesh.extras.targetNames)?mesh.extras.targetNames.slice():[];
 while(mesh.extras.targetNames.length<targetPrim.targets.length)mesh.extras.targetNames.push('morph_'+mesh.extras.targetNames.length);
 mesh.extras.targetNames[targetPrim.targets.length-1]=morphName;
-targetPrim.weights=targetPrim.weights||[];
-while(targetPrim.weights.length<targetPrim.targets.length)targetPrim.weights.push(0);
+mesh.weights=Array.isArray(mesh.weights)?mesh.weights.slice():[];
+while(mesh.weights.length<targetPrim.targets.length)mesh.weights.push(0);
 
 const jsonBytes0=Buffer.from(JSON.stringify(json),'utf8');
 const jsonPad=Buffer.alloc(align4(jsonBytes0.length)-jsonBytes0.length,0x20);
