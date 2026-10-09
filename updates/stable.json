@@ -29,8 +29,8 @@
     },
     {
       "path": "app/3dmap/gltf_character_pipeline.js",
-      "bytes": 5523,
-      "sha256": "3784775a6fcef8b75bcf038ebd782674606dccebeaaed474d911272a85d31d38"
+      "bytes": 5672,
+      "sha256": "cd0445e113ab5a88cd881d70557bda107fb3930f6c4d3c58ed8a2c46db998e9f"
     },
     {
       "path": "app/3dmap/gltf_loader.js",
