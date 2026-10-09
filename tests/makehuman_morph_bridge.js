@@ -74,11 +74,36 @@ function nearest(v,f,root,p){
     else{const dl=pointBoxDistanceSq(p,node.left.mn,node.left.mx),dr=pointBoxDistanceSq(p,node.right.mn,node.right.mx);if(dl<dr){if(dr<=bestD)stack.push(node.right);if(dl<=bestD)stack.push(node.left);}else{if(dl<=bestD)stack.push(node.left);if(dr<=bestD)stack.push(node.right);}}
   }return best;
 }
-function readGlbGeometry(glb){const g=glb.json,buffers=[glb.bin],accessors=g.accessors||[],views=g.bufferViews||[],vertices=[],triangles=[];function getAcc(i){const a=accessors[i],v=views[a.bufferView],K={5126:Float32Array,5121:Uint8Array,5123:Uint16Array,5125:Uint32Array}[a.componentType],n=a.type==='VEC3'?3:1,raw=buffers[v.buffer||0],off=(v.byteOffset||0)+(a.byteOffset||0),stride=v.byteStride||K.BYTES_PER_ELEMENT*n,out=new K(a.count*n);for(let q=0;q<a.count;q++)for(let j=0;j<n;j++)out[q*n+j]=new K(raw,off+q*stride+j*K.BYTES_PER_ELEMENT,1)[0];return out;}
-  for(const m of g.meshes||[])for(const p of m.primitives||[]){const ai=p.attributes&&p.attributes.POSITION;if(ai==null)continue;const pos=getAcc(ai),base=vertices.length;for(let i=0;i<pos.length;i+=3)vertices.push([pos[i],pos[i+1],pos[i+2]]);if(p.indices!=null){const idx=getAcc(p.indices);for(let i=0;i+2<idx.length;i+=3)triangles.push([base+idx[i],base+idx[i+1],base+idx[i+2]]);}}
+function readGlbGeometry(glb){
+  const g=glb.json,buffers=[glb.bin],accessors=g.accessors||[],views=g.bufferViews||[],vertices=[],triangles=[];
+  const component={
+    5126:{K:Float32Array,get:'getFloat32',bytes:4},
+    5121:{K:Uint8Array,get:'getUint8',bytes:1},
+    5123:{K:Uint16Array,get:'getUint16',bytes:2},
+    5125:{K:Uint32Array,get:'getUint32',bytes:4}
+  };
+  function getAcc(i){
+    const a=accessors[i],v=views[a.bufferView],spec=component[a.componentType];
+    if(!a||!v||!spec)throw Error('Unsupported/missing GLB accessor: '+i);
+    const n=a.type==='VEC3'?3:1,raw=buffers[v.buffer||0],off=(v.byteOffset||0)+(a.byteOffset||0),stride=v.byteStride||spec.bytes*n;
+    const dv=new DataView(raw.buffer,raw.byteOffset,raw.byteLength),out=new spec.K(a.count*n);
+    for(let q=0;q<a.count;q++)for(let j=0;j<n;j++){
+      const at=off+q*stride+j*spec.bytes;
+      out[q*n+j]=spec.bytes===1?dv[spec.get](at):dv[spec.get](at,true);
+    }
+    return out;
+  }
+  console.log('[Morph Bridge] Разбираю геометрию GLB...');
+  for(const m of g.meshes||[])for(const p of m.primitives||[]){
+    const ai=p.attributes&&p.attributes.POSITION;if(ai==null)continue;
+    const pos=getAcc(ai),base=vertices.length;
+    for(let i=0;i<pos.length;i+=3)vertices.push([pos[i],pos[i+1],pos[i+2]]);
+    if(p.indices!=null){const idx=getAcc(p.indices);for(let i=0;i+2<idx.length;i+=3)triangles.push([base+idx[i],base+idx[i+1],base+idx[i+2]]);}
+  }
+  console.log('[Morph Bridge] Геометрия GLB готова: '+vertices.length+' вершин, '+triangles.length+' треугольников');
   return{vertices,triangles};
 }
-function transfer(objPath,glbPath,targetPath){const started=Date.now();console.log('[Morph Bridge] Читаю MakeHuman OBJ...');const hm=readObj(objPath);console.log('[Morph Bridge] OBJ: '+hm.v.length+' вершин, '+hm.f.length+' треугольников');console.log('[Morph Bridge] Читаю GLB и target...');const glb=readGlb(glbPath),geo=readGlbGeometry(glb),target=readTarget(targetPath,hm.v.length);if(!hm.v.length||!hm.f.length||!geo.vertices.length)throw Error('Missing geometry');console.log('[Morph Bridge] GLB: '+geo.vertices.length+' вершин; target entries: '+target.entries.length);const hb=bbox(hm.v),gb=bbox(geo.vertices),scale=Math.hypot(...gb.size)/Math.hypot(...hb.size),bvh=buildTriangleBvh(hm.v,hm.f),morph=new Float32Array(geo.vertices.length*3);let misses=0,nonZero=0;const distances=[];
+function transfer(objPath,glbPath,targetPath){const started=Date.now();console.log('[Morph Bridge] Читаю MakeHuman OBJ...');const hm=readObj(objPath);console.log('[Morph Bridge] OBJ: '+hm.v.length+' вершин, '+hm.f.length+' треугольников');console.log('[Morph Bridge] Читаю GLB...');const glb=readGlb(glbPath);console.log('[Morph Bridge] GLB-файл прочитан; разбираю геометрию...');const geo=readGlbGeometry(glb);console.log('[Morph Bridge] Читаю target...');const target=readTarget(targetPath,hm.v.length);if(!hm.v.length||!hm.f.length||!geo.vertices.length)throw Error('Missing geometry');console.log('[Morph Bridge] GLB: '+geo.vertices.length+' вершин; target entries: '+target.entries.length);const hb=bbox(hm.v),gb=bbox(geo.vertices),scale=Math.hypot(...gb.size)/Math.hypot(...hb.size),bvh=buildTriangleBvh(hm.v,hm.f),morph=new Float32Array(geo.vertices.length*3);let misses=0,nonZero=0;const distances=[];
   for(let vi=0;vi<geo.vertices.length;vi++){if(vi%1000===0)console.log('[Morph Bridge] Перенесено '+vi+'/'+geo.vertices.length+' ('+(vi/geo.vertices.length*100).toFixed(1)+'%), '+((Date.now()-started)/1000).toFixed(1)+'с');const gp=geo.vertices[vi],hp=gp.map((x,k)=>(x-gb.center[k])/scale+hb.center[k]),hit=nearest(hm.v,hm.f,bvh,hp);if(!hit){misses++;continue;}distances.push(Math.sqrt(hit.h.d2));const t=hm.f[hit.ti],w=hit.h.w,a=target.d[t[0]],b=target.d[t[1]],c=target.d[t[2]],o=vi*3;for(let k=0;k<3;k++)morph[o+k]=(a[k]*w[0]+b[k]*w[1]+c[k]*w[2])*scale;if(Math.hypot(morph[o],morph[o+1],morph[o+2])>1e-7)nonZero++;}
   distances.sort((a,b)=>a-b);const mean=distances.reduce((s,x)=>s+x,0)/Math.max(1,distances.length);return{glb,target,geo,morph,scale,misses,nonZero,surfaceMeanDistance:mean,surfaceMedianDistance:distances[Math.floor(distances.length*.5)]||0,surfaceP95Distance:distances[Math.floor(distances.length*.95)]||0};
 }
