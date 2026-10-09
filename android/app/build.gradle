@@ -1,4 +1,4 @@
-// V74.00.16 — Female anatomical morph, touch gender selector and verified OTA assets.
+// V74.00.17 — Automatic post-logo OTA with real download/install progress.
 // Launch-title fix included in MainActivity. V74.00.03 packages the real wallpapers directory.
 plugins {
     id "com.android.application"
@@ -75,8 +75,8 @@ android {
         applicationId "com.dndvtt.pocketvtt"
         minSdk 24
         targetSdk 36
-        versionCode 7400016
-        versionName '74.00.16'
+        versionCode 7400017
+        versionName '74.00.17'
     }
 
     signingConfigs {

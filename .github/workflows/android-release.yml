@@ -39,6 +39,7 @@ jobs:
         run: |
           node tests/test_v755_creation_buckets.js
           node tests/test_v755_update_scene.js
+          node tests/update_ota_flow_test.js
 
       - name: Run 3D character regressions
         run: |

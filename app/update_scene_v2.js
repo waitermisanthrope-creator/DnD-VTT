@@ -62,6 +62,7 @@
       '<div class="vignette"></div>' +
       '<div class="title"><h1>Переход обновления</h1><p>Версия v' + String(version).replace(/</g,'&lt;') + ' — новый мир открывается постепенно.</p></div>' +
       '<button class="skip" type="button">Закрыть</button>' +
+      '<button class="retry" type="button" style="display:none;position:absolute;left:12px;top:12px;padding:10px;color:#fff;background:#783719;border:1px solid #d39743;border-radius:9px">Повторить</button>' +
       '<div class="panel"><div class="status">Подготавливаем новый мир…</div><div class="progress"><div class="bar"></div></div><div class="meta"><span class="file">Подготовка</span><span class="pct">0%</span></div></div>';
     document.body.appendChild(root);
 
@@ -76,12 +77,15 @@
     var file = root.querySelector('.file');
     var pct = root.querySelector('.pct');
     var skip = root.querySelector('.skip');
+    var retry = root.querySelector('.retry');
+    var canClose = test || !state || !state.updateAvailable;
+    skip.style.display = canClose ? 'block' : 'none';
     var currentProgress = 0, targetProgress = 0, progressFrame = null;
 
     function renderProgress(value) {
       value = Math.max(0, Math.min(100, value));
       bar.style.width = value.toFixed(2) + '%';
-      pct.textContent = Math.round(value) + '%';
+      pct.textContent = Math.floor(value) + '%';
       if (burn) burn.style.clipPath = 'inset(0 ' + Math.max(0, 100 - value).toFixed(2) + '% 0 0)';
       if (line) line.style.left = value.toFixed(2) + '%';
       // The dedicated fire-front is the visual boundary. It follows the exact same smoothed progress.
@@ -104,37 +108,56 @@
       progressFrame = requestAnimationFrame(animateProgress);
     }
     function setTargetProgress(value) {
-      targetProgress = Math.max(0, Math.min(100, value));
+      targetProgress = Math.max(targetProgress, Math.min(100, value));
       if (!progressFrame) progressFrame = requestAnimationFrame(animateProgress);
     }
 
     var api = {
       overlay: root,
       onApply: null,
+      onRetry: null,
       setProgress: function (p) {
         p = p || {};
         var total = Number(p.total) || 0, current = Number(p.current) || 0;
         var percent = total ? Math.max(0, Math.min(100, current / total * 100)) : 0;
+        // Native current is the file being downloaded, not a completed-file count.
+        // Byte progress is authoritative, especially for a large final asset.
         if (Number.isFinite(Number(p.bytesDone)) && Number(p.bytesTotal) > 0)
-          percent = Math.max(percent, Math.min(100, Number(p.bytesDone) / Number(p.bytesTotal) * 100));
+          percent = Math.max(0, Math.min(100, Number(p.bytesDone) / Number(p.bytesTotal) * 100));
+        if (!test) percent = p.phase === 'apply' ? 90 + percent * 0.09 : percent * 0.9;
         setTargetProgress(percent);
         if (p.path) file.textContent = String(p.path).split('/').slice(-1)[0];
       },
       setStatus: function (message) { status.textContent = String(message || ''); },
       // Kept as a compatibility no-op for older callers. Installation is automatic.
       enableApply: function () {},
-      finish: function () { setTargetProgress(100); },
+      finish: function () {
+        if (progressFrame) cancelAnimationFrame(progressFrame);
+        progressFrame = null;
+        currentProgress = targetProgress = 100;
+        renderProgress(100);
+      },
       fail: function (message) {
         root.classList.remove('done');
-        status.textContent = 'Не удалось подготовить обновление: ' + String(message || 'неизвестная ошибка');
+        status.textContent = 'Не удалось обновить приложение: ' + String(message || 'неизвестная ошибка');
         status.style.color = '#ffb4a6';
+        canClose = true;
+        skip.style.display = 'block';
+        retry.style.display = typeof api.onRetry === 'function' ? 'block' : 'none';
       },
-      destroy: function () { root.remove(); },
+      destroy: function () {
+        if (progressFrame) cancelAnimationFrame(progressFrame);
+        progressFrame = null;
+        root.remove();
+      },
       testMode: test
     };
 
-    skip.addEventListener('click', function () { if (test || !state || !state.updateAvailable) api.destroy(); });
-    requestAnimationFrame(function () { requestAnimationFrame(function () { renderProgress(0); }); });
+    skip.addEventListener('click', function () { if (canClose) api.destroy(); });
+    retry.addEventListener('click', function () {
+      if (typeof api.onRetry === 'function') api.onRetry();
+    });
+    renderProgress(0);
     return api;
   }
 

@@ -1,11 +1,11 @@
-/* DND VTT — NEW updater v2. V74.00.09
+/* DND VTT — unified automatic OTA updater. V74.00.17
  * The legacy updater is intentionally not loaded. This module owns the complete
  * update UX and talks only to the native storage/apply bridge.
  */
 (function (global) {
   'use strict';
 
-  var APP_VERSION='74.00.09';
+  var APP_VERSION='74.00.17';
   var DEFAULT_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
   var FALLBACK_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url_v2';
@@ -25,8 +25,9 @@
         var p = pending[message.id];
         if (!p) return;
         if (message.status === 'progress') {
-          if (typeof progressHandler === 'function') {
-            try { progressHandler(message); } catch (_) {}
+          var handler = p.onProgress || progressHandler;
+          if (typeof handler === 'function') {
+            try { handler(message); } catch (_) {}
           }
           return;
         }
@@ -52,14 +53,16 @@
     return 0;
   }
 
-  function nativeRequest(type, manifestUrl) {
+  function nativeRequest(type, manifestUrl, onProgress) {
     if (!global.dndNative || typeof global.dndNative.postMessage !== 'function') return null;
     return new Promise(function (resolve, reject) {
       var id = 'v2_' + Date.now() + '_' + (++counter);
-      pending[id] = { resolve: resolve, reject: reject };
-      global.dndNative.postMessage(JSON.stringify({
-        id: id, type: type, manifestUrl: manifestUrl || ''
-      }));
+      pending[id] = { resolve: resolve, reject: reject, onProgress: onProgress };
+      try {
+        global.dndNative.postMessage(JSON.stringify({
+          id: id, type: type, manifestUrl: manifestUrl || ''
+        }));
+      } catch (e) { delete pending[id]; reject(e); }
     });
   }
 
@@ -107,14 +110,17 @@
     var found = [];
     var last = null;
     for (var i = 0; i < list.length; i++) {
+      var controller = typeof global.AbortController === 'function' ? new global.AbortController() : null;
+      var timeout = controller ? setTimeout(function() { controller.abort(); }, 15000) : null;
       try {
         var u = list[i] + (list[i].indexOf('?') >= 0 ? '&' : '?') + 'cb=' + encodeURIComponent(CACHE_BUSTER);
-        var response = await global.fetch(u, { cache: 'no-store' });
+        var response = await global.fetch(u, { cache: 'no-store', signal: controller ? controller.signal : undefined });
         if (!response.ok) throw new Error('HTTP ' + response.status);
         var m = await response.json();
         validateManifest(m);
         found.push({ manifest: m, url: list[i] });
       } catch (e) { last = e; }
+      finally { if (timeout) clearTimeout(timeout); }
     }
     if (!found.length) throw new Error('Не удалось получить манифест: ' + (last && last.message || 'нет связи'));
     found.sort(function (a, b) { return compareVersions(b.manifest.version, a.manifest.version); });
@@ -158,15 +164,10 @@
     if (compareVersions(manifest.version, current) <= 0) return { staged: false, reason: 'not-newer' };
 
     if (global.dndNative && typeof global.dndNative.postMessage === 'function') {
-      if (onProgress) setProgressHandler(onProgress);
-      try {
-        var stageManifestUrl = sourceManifestUrl || manifestUrl();
-        stageManifestUrl += (stageManifestUrl.indexOf('?') >= 0 ? '&' : '?') + 'cb=' + encodeURIComponent(CACHE_BUSTER);
-        var native = await nativeRequest('stage', stageManifestUrl);
-        return { staged: true, native: true, version: native && native.value || manifest.version };
-      } finally {
-        setProgressHandler(null);
-      }
+      var stageManifestUrl = sourceManifestUrl || manifestUrl();
+      stageManifestUrl += (stageManifestUrl.indexOf('?') >= 0 ? '&' : '?') + 'cb=' + encodeURIComponent(CACHE_BUSTER);
+      var native = await nativeRequest('stage', stageManifestUrl, onProgress);
+      return { staged: true, native: true, version: native && native.value || manifest.version };
     }
 
     var total = manifest.files.reduce(function (n, f) { return n + Math.max(0, Number(f.bytes) || 0); }, 0);
@@ -202,12 +203,7 @@
   async function applyStaged(options) {
     options = options || {};
     if (global.dndNative && typeof global.dndNative.postMessage === 'function') {
-      if (options.onProgress) setProgressHandler(options.onProgress);
-      try {
-        return await nativeRequest('apply', '');
-      } finally {
-        setProgressHandler(null);
-      }
+      return await nativeRequest('apply', '', options.onProgress);
     }
     throw new Error('Native установщик недоступен. Файлы не будут заменены.');
   }
@@ -226,17 +222,89 @@
     });
   }
 
-  async function autoCheckForUpdates(options) {
-    // Startup must only determine whether an update exists.
-    // Download/install starts only after the user presses the main-screen update button.
+  var updateRun = null;
+  var startupRun = null;
+
+  function settingsStatus(message) {
+    ['settingsUpdateStatus', 'settingsUpdateStatusV2'].forEach(function(id) {
+      var e = document.getElementById(id); if (e) e.textContent = message;
+    });
+  }
+
+  // One pipeline for startup, Settings and the main-menu button. Never open the
+  // demo scene here and never inspect a second manifest between inspect and stage.
+  function runUpdate(options) {
     options = options || {};
-    if (global.__dndUpdateV2CheckRunning) return global.__dndUpdateV2CheckRunning;
-    var run = inspect();
-    global.__dndUpdateV2CheckRunning = run;
-    try { return await run; } finally { global.__dndUpdateV2CheckRunning = null; }
+    if (updateRun) return updateRun;
+    var ui = null;
+    var run = (async function() {
+      settingsStatus('Проверяю обновления…');
+      var state = await inspect();
+      global.DND_UPDATE_UI.setMainMenuAvailability(!!state.updateAvailable, state);
+      if (!state.compatibility.ok) {
+        settingsStatus('Обновление несовместимо: ' + state.compatibility.reason);
+        return state;
+      }
+      if (!state.updateAvailable) {
+        settingsStatus('Версия v' + state.currentVersion + ' актуальна.');
+        return state;
+      }
+      ['settingsModal', 'devMenuModal'].forEach(function(id) {
+        var e = document.getElementById(id); if (e) e.style.display = 'none';
+      });
+      ui = scene(state);
+      ui.onRetry = function() { return runUpdate({}); };
+      if (!global.DND_UPDATE_MANAGER.canApplyNatively()) {
+        throw new Error('Для установки обновления откройте приложение Android.');
+      }
+      ui.setStatus('Загружаю и проверяю обновление v' + state.manifest.version + '…');
+      await nextPaint();
+      state.stageResult = await stage(state.manifest, function(p) {
+        ui.setProgress(p);
+      }, state.manifestUrl);
+      if (!state.stageResult || !state.stageResult.staged) {
+        ui.destroy(); return state;
+      }
+      ui.setProgress({phase:'apply', current:0, total:1, path:'Установка'});
+      ui.setStatus('Файлы проверены. Устанавливаю обновление…');
+      settingsStatus('Устанавливаю обновление v' + state.stageResult.version + '…');
+      await nextPaint();
+      state.applyResult = await applyStaged({onProgress:function(p) { ui.setProgress(p); }});
+      ui.finish();
+      ui.setStatus('Обновление установлено. Перезапускаю приложение…');
+      settingsStatus('Обновление установлено. Перезапускаю приложение…');
+      global.DND_UPDATE_UI.setMainMenuAvailability(false, state);
+      return state;
+    })().catch(function(e) {
+      var message = e && e.message || String(e);
+      settingsStatus('Ошибка обновления: ' + message);
+      if (ui) ui.fail(message);
+      else if (!options.silentCheck) {
+        ui = scene({updateAvailable:false, manifest:{version:APP_VERSION}});
+        ui.onRetry = function() { return runUpdate({}); };
+        ui.fail(message);
+      }
+      return {error:message};
+    });
+    updateRun = run;
+    // Keep successful installation locked until native recreation; a second tap
+    // must not try to apply an already-promoted staging directory.
+    run.then(function(state) {
+      if (!state || !state.applyResult) updateRun = null;
+    });
+    return run;
+  }
+
+  function autoCheckForUpdates() {
+    // Logo.js emits this only after the splash has left the screen. Calls from
+    // other screens cannot download under the splash or restart the pipeline.
+    if (global.dndSplashFinished === false) return Promise.resolve(null);
+    if (!startupRun) startupRun = runUpdate({silentCheck:true});
+    return startupRun;
   }
 
   function runSceneTest() {
+    if (updateRun) return false;
     try {
       ['settingsModal','devMenuModal'].forEach(function(id){
         var e=document.getElementById(id); if(e) e.style.display='none';
@@ -260,10 +328,10 @@
     }
   }
 
-  var settingsProgressAnimator = null;
   function ensureSettingsPanel() {
     var old = document.getElementById('dndUpdateV2Settings');
     if (old) return old;
+    if (document.getElementById('settingsUpdateStatus')) return document.getElementById('settingsModal');
     var host = document.querySelector('#settingsModal .modal-content,#settingsModal .modal-body,#settingsModal');
     if (!host) return null;
     var box = document.createElement('div');
@@ -276,53 +344,18 @@
     return box;
   }
 
-  function settingsCheck() {
-    var box=ensureSettingsPanel(),
-        status=box&&box.querySelector('#settingsUpdateStatusV2'),
-        bar=box&&box.querySelector('#settingsUpdateBarV2');
-    if(status) status.textContent='Проверяю новую систему обновлений…';
-    return inspect().then(function(state){
-      if(!state.updateAvailable){
-        if(status) status.textContent='Версия v'+state.currentVersion+' актуальна.';
-        return state;
-      }
-      var ui=scene(state);
-      ui.setStatus('Найдено обновление v'+state.manifest.version+'. Загружаю…');
-      return checkAndStage({
-        onProgress:function(p){
-          if(bar&&p.total) bar.style.width=Math.round((p.current/p.total)*100)+'%';
-          ui.setProgress(p);
-        }
-      }).then(function(s){
-        if(!s.stageResult || !s.stageResult.staged) return s;
-        ui.setProgress({current:1,total:1,bytesDone:1,bytesTotal:1,path:'Проверено'});
-        ui.setStatus('Файлы скачаны и проверены. Устанавливаю обновление…');
-        return applyStaged({
-          onProgress:function(p){ui.setProgress(p);}
-        }).then(function(result){
-          ui.setStatus('Готово. Перезапускаю приложение…');
-          if(status) status.textContent='Обновление v'+state.manifest.version+' установлено.';
-          return result;
-        }).catch(function(e){
-          ui.fail(e&&e.message||e);
-          throw e;
-        });
-      });
-    }).catch(function(e){
-      if(status) status.textContent='Ошибка: '+(e&&e.message||e);
-      return null;
-    });
-  }
-
-  function settingsApply() {
-    return applyStaged({});
-  }
+  function settingsCheck() { return runUpdate({}); }
+  function settingsApply() { return runUpdate({}); }
 
   global.DND_UPDATE_UI = {
     check:settingsCheck,
     apply:settingsApply,
     refresh:function(){ensureSettingsPanel();},
     setMainMenuAvailability:function(available, state) {
+      var versionText = document.getElementById('dndMainVersionText');
+      var statusText = document.getElementById('dndMainVersionStatus');
+      if (state && versionText) versionText.textContent = 'Версия v' + state.currentVersion;
+      if (state && statusText) statusText.textContent = available ? '🆕 Доступна v' + state.manifest.version : '✅ Актуально';
       var button=document.getElementById('mainMenuUpdateButton');
       if (!button) return;
       button.style.display=available?'flex':'none';
@@ -335,41 +368,9 @@
         button.removeAttribute('title');
       }
     },
-    openMainMenuUpdate:function() {
-      if (global.__dndUpdateV2MainRunning) return global.__dndUpdateV2MainRunning;
-      var run = inspect().then(function(state) {
-        if (!state.updateAvailable) {
-          global.DND_UPDATE_UI.setMainMenuAvailability(false,state);
-          return state;
-        }
-        global.DND_UPDATE_UI.setMainMenuAvailability(false,state);
-        var ui=scene(state);
-        ui.setStatus('Найдено обновление v'+state.manifest.version+'. Загружаю…');
-        return checkAndStage({
-          onProgress:function(p){ui.setProgress(p);}
-        }).then(function(s) {
-          if(!s.stageResult || !s.stageResult.staged) return s;
-          ui.setProgress({current:1,total:1,bytesDone:1,bytesTotal:1,path:'Проверено'});
-          ui.setStatus('Файлы скачаны и проверены. Устанавливаю обновление…');
-          return applyStaged({
-            onProgress:function(p){ui.setProgress(p);}
-          }).then(function(result){
-            ui.setStatus('Готово. Перезапускаю приложение…');
-            return result;
-          }).catch(function(e){
-            ui.fail(e&&e.message||e);
-            throw e;
-          });
-        });
-      }).catch(function(e) {
-        try { alert('Не удалось обновить приложение: '+(e&&e.message||e)); } catch (_) {}
-        return null;
-      });
-      global.__dndUpdateV2MainRunning = run;
-      run.then(function(){global.__dndUpdateV2MainRunning=null;},function(){global.__dndUpdateV2MainRunning=null;});
-      return run;
-    }
+    openMainMenuUpdate:function() { return runUpdate({}); }
   };
+
   global.DND_UPDATE_MANAGER = {
     VERSION:APP_VERSION, compareVersions:compareVersions, inspect:inspect, stage:stage,
     checkAndStage:checkAndStage, applyStaged:applyStaged, autoCheckForUpdates:autoCheckForUpdates,
@@ -379,21 +380,12 @@
   };
 
   function boot() {
-    // On startup we only check availability. Download/install starts from the main-screen update button.
     try { ensureSettingsPanel(); } catch (_) {}
-    setTimeout(function () {
-      try {
-        inspect().then(function (state) {
-          if (global.DND_UPDATE_UI && typeof global.DND_UPDATE_UI.setMainMenuAvailability === 'function') {
-            global.DND_UPDATE_UI.setMainMenuAvailability(!!state.updateAvailable, state);
-          }
-        }).catch(function () {
-          if (global.DND_UPDATE_UI && typeof global.DND_UPDATE_UI.setMainMenuAvailability === 'function') {
-            global.DND_UPDATE_UI.setMainMenuAvailability(false, null);
-          }
-        });
-      } catch (_) {}
-    }, 900);
+    if (global.dndSplashFinished === false) {
+      global.addEventListener('dnd:splash-complete', autoCheckForUpdates, {once:true});
+    } else {
+      autoCheckForUpdates();
+    }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded',boot,{once:true}); else boot();
 })(window);

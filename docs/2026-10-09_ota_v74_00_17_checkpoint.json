@@ -1,0 +1,33 @@
+{
+  "version": "74.00.17",
+  "versionCode": 7400017,
+  "rootCause": "Settings.js replaced the manager UI and ran a demo after staging instead of applying",
+  "flow": [
+    "Logo complete",
+    "inspect",
+    "scene",
+    "verified stage",
+    "apply",
+    "native success 100%",
+    "recreate"
+  ],
+  "regression": {
+    "pass": 86,
+    "fail": 6,
+    "legacy": 12
+  },
+  "productionSyntaxFiles": 217,
+  "runtimeOTARegression": "PASS",
+  "physicalZIP": {
+    "version": "74.00.17",
+    "files": 599,
+    "archiveBytes": 200901961,
+    "zipSha256": "6dceb8053d79e5f0975be6e05581a5a26dc65d10db2c36574ca81a4a58854a66",
+    "CRC": "PASS",
+    "allUnpackedSizesAndSHA256": "PASS",
+    "seconds": 1.44
+  },
+  "physicalAndroidQA": false,
+  "chromiumQA": "not run: executable unavailable",
+  "publication": "pending main/workflow verification"
+}

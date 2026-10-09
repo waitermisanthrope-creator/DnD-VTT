@@ -407,6 +407,11 @@ function refreshMainVersionBadge(manual) {
   var versionText = document.getElementById('dndMainVersionText');
   var statusText = document.getElementById('dndMainVersionStatus');
   var check = document.getElementById('dndMainVersionCheck');
+  if (!manual && window.dndSplashFinished === false) {
+    if (versionText && window.DND_UPDATE_MANAGER) versionText.textContent = 'Версия v' + window.DND_UPDATE_MANAGER.VERSION;
+    if (statusText) statusText.textContent = 'Проверка после заставки';
+    return Promise.resolve(null);
+  }
   if (statusText) statusText.textContent = manual ? 'Проверяю…' : 'Проверка…';
   if (check) check.textContent = '⏳';
 
@@ -449,16 +454,8 @@ function showCharacterSelect() {
   renderCharacterList();
   ensureMainVersionBadge();
   refreshMainVersionBadge(false);
-  // Проверяем обновления именно в момент появления главного экрана после логотипа.
-  if (window.DND_UPDATE_MANAGER && typeof window.DND_UPDATE_MANAGER.autoCheckForUpdates === 'function') {
-    window.DND_UPDATE_MANAGER.autoCheckForUpdates().then(function(state) {
-      if (state && state.updateAvailable) {
-        refreshMainVersionBadge(false);
-      } else if (state) {
-        refreshMainVersionBadge(false);
-      }
-    }).catch(function(){});
-  }
+  // Automatic OTA is started once by update_manager_v2 after dnd:splash-complete.
+
 }
 
 // Экспорт текущего открытого персонажа в отдельный JSON-файл (кнопка "Экспорт в JSON" на листе персонажа)

@@ -116,8 +116,7 @@ function openSettingsModal() {
 <div style="font-size:.76em;color:#d9b65a;line-height:1.45;margin:0 0 9px;padding:8px 9px;background:#2a2418;border:1px solid #5d492a;border-radius:6px;">🌐 Для подключения к GitHub и проверки обновлений может потребоваться VPN. Если GitHub недоступен из вашей сети, проверка обновлений не пройдёт.</div>
             <div id="settingsUpdateStatus" style="font-size: 0.78em; color: #aaa; line-height: 1.4; margin-bottom: 8px;">Проверка обновлений доступна, когда настроен канал распространения.</div>
             <div style="display:flex; gap:8px;">
-              <button onclick="if(window.DND_UPDATE_UI) DND_UPDATE_UI.check()" class="btn-action" style="background:#1976D2; flex:1; padding:9px; font-size:0.8em; font-weight:bold; cursor:pointer; color:#fff; border:none; border-radius:6px;">🔎 Проверить</button>
-              <button id="settingsUpdateApplyButton" onclick="if(window.DND_UPDATE_UI) DND_UPDATE_UI.apply()" class="btn-action" style="display:none; background:#2E7D32; flex:1; padding:9px; font-size:0.8em; font-weight:bold; cursor:pointer; color:#fff; border:none; border-radius:6px;">⬇️ Установить</button>
+              <button onclick="if(window.DND_UPDATE_UI) DND_UPDATE_UI.check()" class="btn-action" style="background:#1976D2; flex:1; padding:9px; font-size:0.8em; font-weight:bold; cursor:pointer; color:#fff; border:none; border-radius:6px;">🔎 Проверить и обновить</button>
             </div>
           </div>
           <div style="background: #252525; padding: 12px; border-radius: 6px; border: 1px solid #333;">
@@ -784,43 +783,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-(function(global){
-  function setStatus(text){ var el=document.getElementById('settingsUpdateStatus'); if(el) el.textContent=text; }
-  function updateProgress(p){
-    var w=document.getElementById('settingsUpdateProgress'),b=document.getElementById('settingsUpdateProgressBar'),l=document.getElementById('settingsUpdateProgressLabel');
-    if(!w||!b||!l)return;
-    w.style.display='block';
-    var t=Number(p&&p.total||0),c=Number(p&&p.current||0);
-    var pc=t?Math.max(0,Math.min(100,Math.round(c*100/t))):0;
-    b.style.width=pc+'%';
-    l.textContent='Загрузка обновления: '+pc+'% — '+c+' из '+t+(p&&p.path?' — '+p.path:'');
-  }
-  global.DND_UPDATE_UI={
-    check: async function(){
-      if(!global.DND_UPDATE_MANAGER){setStatus('Новая система обновлений недоступна.');return;}
-      setStatus('Проверяю новую систему обновлений…'); updateProgress({current:0,total:1});
-      try{
-        var state=await global.DND_UPDATE_MANAGER.checkAndStage({onProgress:updateProgress});
-        var btn=document.getElementById('settingsUpdateApplyButton');
-        if(!state.configured){setStatus('Канал обновлений недоступен.');if(btn)btn.style.display='none';return;}
-        if(state.compatibility&&!state.compatibility.ok){setStatus('Обновление несовместимо: '+state.compatibility.reason);if(btn)btn.style.display='none';return;}
-        if(!state.updateAvailable){setStatus('Установлена актуальная версия v'+state.currentVersion+'.');var p=document.getElementById('settingsUpdateProgress');if(p)p.style.display='none';if(btn)btn.style.display='none';return;}
-        updateProgress({current:1,total:1,path:'готово'});
-        setStatus('Обновление v'+state.manifest.version+' подготовлено. Откройте сцену перехода для установки.');
-        if(btn)btn.style.display=global.DND_UPDATE_MANAGER.canApplyNatively()?'block':'none';
-        if(global.DND_UPDATE_MANAGER.runSceneTest) global.DND_UPDATE_MANAGER.runSceneTest();
-        return state;
-      }catch(e){setStatus('Ошибка обновления: '+(e&&e.message||e));}
-    },
-    apply: async function(){
-      try{
-        setStatus('Применяю обновление…');
-        await global.DND_UPDATE_MANAGER.applyStaged();
-        setStatus('Готово. Перезапускаю приложение…');
-      }catch(e){setStatus('Не удалось применить: '+(e&&e.message||e));}
-    }
-  };
-})(window);
+// OTA UI is owned by update_manager_v2.js; Settings must not replace it.
 
 window.openSettingsModal = openSettingsModal;
 window.closeSettingsModal = closeSettingsModal;

@@ -142,13 +142,22 @@
 
     if (autoCloseTimer) clearTimeout(autoCloseTimer);
 
-    overlay.classList.add('fade-out');
-    overlay.addEventListener('transitionend', () => {
+    let completed = false;
+    let fadeTimer = null;
+    function finishSplash(event) {
+      if (event && event.target !== overlay) return;
+      if (completed) return;
+      completed = true;
+      clearTimeout(fadeTimer);
       overlay.remove();
       style.remove();
       window.dndSplashFinished = true;
       window.dispatchEvent(new CustomEvent('dnd:splash-complete'));
-    }, { once: true });
+    }
+    overlay.addEventListener('transitionend', finishSplash);
+    overlay.classList.add('fade-out');
+    // Android may suppress transitionend when animations are disabled/backgrounded.
+    fadeTimer = setTimeout(finishSplash, 650);
   }
 
   // Время таймера выставлено с запасом на всю длинную анимацию (15 секунд)
