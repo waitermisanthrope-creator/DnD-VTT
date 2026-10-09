@@ -40,6 +40,14 @@ jobs:
           node tests/test_v755_creation_buckets.js
           node tests/test_v755_update_scene.js
 
+      - name: Run 3D character regressions
+        run: |
+          node tests/character_3d_foundation_test.js
+          node tests/character_3d_morph_assets_test.js
+          node tests/character_3d_editor_test.js
+          node tests/character_3d_skin_morph_test.js
+          node tests/makehuman_gender_recipe_test.js
+
       - name: Deep furniture texture diagnostic
         shell: bash
         run: |

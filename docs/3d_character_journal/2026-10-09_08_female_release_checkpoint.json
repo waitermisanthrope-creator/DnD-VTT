@@ -1,0 +1,29 @@
+{
+  "version": "74.00.16",
+  "versionCode": 7400016,
+  "regression": {
+    "pass": 85,
+    "fail": 6,
+    "legacy": 12
+  },
+  "productionSyntaxFiles": 217,
+  "model": {
+    "bytes": 12671780,
+    "targets": 9,
+    "vertices": 70985,
+    "joints": 53,
+    "sha256": "3628ff521db93f28a12f7e68bf59961dc48d7a2c1a3d0e82b661dafb9131120b",
+    "gitBlob": "0b1acc2524f2ad81f89e31526c3ba6ff11978645"
+  },
+  "zip": {
+    "version": "74.00.16",
+    "files": 599,
+    "archiveBytes": 200901950,
+    "zipSha256": "ca2ea7663b20a26a312ddb8653e4426f17b5f497272bad68f4d61f58d4e94b14",
+    "CRC": "PASS",
+    "allUnpackedSizesAndSHA256": "PASS",
+    "seconds": 6.94
+  },
+  "physicalAndroidQA": false,
+  "publication": "pending main and workflow verification"
+}

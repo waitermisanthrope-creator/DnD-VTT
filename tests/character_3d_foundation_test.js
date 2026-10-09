@@ -30,3 +30,13 @@ assert.strictEqual(api.deserialize(api.serialize(human)).skinId,'human_young_fem
 assert.strictEqual(api.getRenderDescriptor(human).skin.id,'human_young_female');
 assert.strictEqual(api.resolveSkin(c),null,'a human skin must not override another race');
 human.skinId='invalid';assert.strictEqual(api.resolveSkin(human).id,'human_young_male');
+
+const female=api.createCharacter({raceId:'human',gender:'female',body:{chest:.6,hips:-.4}});
+assert.strictEqual(female.skinId,'human_young_female','new female gets female default skin');
+assert.strictEqual(api.getRenderDescriptor(female).morphWeights['human-female'],1);assert(!Object.hasOwn(female.body,'human-female'));
+const roundTrip=api.deserialize(api.serialize(female));assert.strictEqual(roundTrip.gender,'female');assert.strictEqual(roundTrip.body.chest,.6);assert.strictEqual(roundTrip.body.hips,-.4);
+const explicit=api.createCharacter({raceId:'human',gender:'female',skinId:'human_young_male'});assert.strictEqual(api.resolveSkin(explicit).id,'human_young_male','explicit skin is independent');
+const originalBody=JSON.stringify(female.body);assert(api.setGender(female,'male'));assert.strictEqual(api.getMorphWeights(female)['human-female'],0);assert.strictEqual(JSON.stringify(female.body),originalBody);assert.strictEqual(female.skinId,'human_young_female');
+assert.strictEqual(api.setGender(female,'invalid'),false);assert.strictEqual(female.gender,'male');
+assert.strictEqual(api.getMorphWeights(legacyHuman)['human-female'],0);assert(!Object.hasOwn(api.getMorphWeights(c),'human-female'),'human gender morph must not leak to another race');
+console.log('CHARACTER_3D_GENDER_STATE_OK: defaults, independent skin, derived weights, serialization, legacy neutral, race isolation');

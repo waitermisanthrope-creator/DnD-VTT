@@ -34,6 +34,7 @@ function makeGL(){
 const document={createElement:tag=>new Element(tag),getElementById:id=>elements[id]||null,body:new Element('body')};
 const part={positions:new Float32Array([0,0,0,1,0,0,0,1,0,1,1,0]),indices:new Uint32Array([0,2,1]),uv:new Float32Array([0,0,1,0,0,1,1,1]),material:0};
 part.basePositions=part.positions;part.morphNames=['shoulder-grow','shoulder-shrink'];part.morphTargets=[{POSITION:new Float32Array([.1,0,0,0,0,0,0,0,0,0,0,0])},{POSITION:new Float32Array([-.1,0,0,0,0,0,0,0,0,0,0,0])}];
+part.morphNames.push('human-female');part.morphTargets.push({POSITION:new Float32Array([.2,-.1,0,.2,-.1,0,.2,-.1,0,.2,-.1,0])});
 const asset={gltf:{extras:{dndMorphChannels:{shoulders:{positive:'shoulder-grow',negative:'shoulder-shrink'}}}},buffers:[],parts:[part],materials:[{baseColorFactor:[.48,.51,.54,1]}],bounds:{min:[0,0,0],max:[1,1,1]}};
 const win={addEventListener(){},devicePixelRatio:1,DNDGLTF:{load:()=>Promise.resolve(asset)}};
 function Image(){this.width=2048;this.height=2048;images.push(this);}
@@ -50,17 +51,28 @@ const api=win.DNDCharacterEditor3D,sys=win.DNDCharacter3D,flush=()=>new Promise(
  assert.strictEqual(asset.materials[0].baseColorFactor[0],.48,'shared GLB must not be mutated');
  elements.ceSliders.children[4].input.oninput.call({value:'1'});assert(Math.abs(gl.draws.at(-1).positions[0]-.1)<1e-6,'morph must reach WebGL without procedural shoulder scaling');
  elements.ceSliders.children[4].input.oninput.call({value:'0'});assert.strictEqual(gl.draws.at(-1).positions[0],0,'reset must reach WebGL');
+ const malePositions=gl.draws.at(-1).positions.slice(),bodyBefore=JSON.stringify(api.getState().body),initialId=api.getState().id;
+ assert.strictEqual(elements.ceGender.value,'male');assert(api.setGender('female'));assert.strictEqual(elements.ceGender.value,'female');assert.strictEqual(api.getState().gender,'female');
+ assert(Math.abs(gl.draws.at(-1).positions[0]-.2)<1e-6,'female morph must reach WebGL vertex buffer');assert.strictEqual(JSON.stringify(api.getState().body),bodyBefore,'gender must preserve sliders');
+ assert.strictEqual(api.getState().skinId,'human_young_male','chosen skin remains independent');assert.strictEqual(api.getState().id,initialId);assert.strictEqual(api.setGender('invalid'),false);
+ assert(api.setGender('male'));assert.deepStrictEqual(gl.draws.at(-1).positions,malePositions,'male toggle restores exact vertex buffer');
  api.setAxis('height',1);api.setAxis('width',.8);api.setAxis('chest',.6);
  assert.strictEqual(api.getState().body.height,1);assert(api.metrics().width>1);
  api.setArmor(true);assert.strictEqual(api.getState().equipment.body,'editor_plate');
  assert(api.setSkin('human_young_female'));assert(images[1].src.endsWith('young_lightskinned_female_diffuse.png'));
  images[1].onload();assert.strictEqual(gl.draws.at(-1).useTex,1);
  assert.strictEqual(sys.deserialize(api.exportJSON()).skinId,'human_young_female');assert.strictEqual(api.setSkin('bad-id'),false);
+ assert.strictEqual(api.getState().gender,'male','skin choice must not change gender');assert(api.setGender('female'));assert.strictEqual(sys.deserialize(api.exportJSON()).gender,'female');
  const oldBuffer=part.__ceBuf;const saved=api.getState();api.close();assert(oldBuffer.deleted);
  api.open(saved);await flush();assert.strictEqual(contexts.length,2);assert.notStrictEqual(part.__ceBuf,oldBuffer);assert.strictEqual(contexts[1].draws.at(-1).useTex,0);
+ assert.strictEqual(api.getState().gender,'female');assert.strictEqual(elements.ceGender.value,'female');
  images[2].onerror();assert(elements.ceGLStatus.textContent.includes('Ошибка текстуры'));api.setAxis('width',0);elements.ceSliders.children[0].input.oninput.call({value:'.2'});assert(elements.ceGLStatus.textContent.includes('Ошибка текстуры'),'error must survive redraw');
  const late=images[2];api.close();api.open(c);late.onload();await flush();assert.strictEqual(contexts.length,3);assert.strictEqual(contexts[2].draws.at(-1).useTex,0,'stale image callback must not affect new context');
  images.at(-1).width=1500;images.at(-1).height=2000;images.at(-1).onload();assert(contexts[2].calls.some(c=>c[1]===contexts[2].TEXTURE_MIN_FILTER&&c[2]===contexts[2].LINEAR),'NPOT fallback must use non-mipmap filtering');
+ assert(api.setGender('female'));assert(api.setSkin('human_young_female'));api.setAxis('hips',.8);api.setArmor(true);const beforeReset=api.getState(),resetBuffer=part.__ceBuf;elements.ceReset.onclick();await flush();
+ const reset=api.getState();assert(resetBuffer.deleted);assert.strictEqual(reset.gender,'female');assert.strictEqual(reset.skinId,'human_young_female');assert.strictEqual(reset.id,beforeReset.id);assert(Object.values(reset.body).every(v=>v===0));assert.strictEqual(Object.keys(reset.equipment).length,0);assert.strictEqual(elements.ceGender.value,'female');
+ assert(Math.abs(contexts.at(-1).draws.at(-1).positions[0]-.2)<1e-6,'reset keeps female anatomical base');
+ const names=part.morphNames;part.morphNames=['shoulder-grow','shoulder-shrink'];api.setGender('female');assert(elements.ceGLStatus.textContent.includes('Женская форма недоступна'),'old asset must not silently pretend to be female');part.morphNames=names;
  api.close();
- console.log('CHARACTER_3D_EDITOR_TEST_OK: skins, serialization, uint32 UV fallback, glTF orientation, errors, reopen, async isolation, NPOT');
+ console.log('CHARACTER_3D_EDITOR_TEST_OK: gender geometry/toggle/reset/reopen, skins, serialization, uint32 UV fallback, glTF orientation, errors, reopen, async isolation, NPOT');
 })().catch(e=>{console.error(e);process.exitCode=1;});

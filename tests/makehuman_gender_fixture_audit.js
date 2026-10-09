@@ -6,7 +6,7 @@ const root=path.resolve(__dirname,'..'),file=process.argv[2];
 if(!file)throw Error('Usage: node tests/makehuman_gender_fixture_audit.js fixture.glb');
 function bytes(g,i){const a=g.json.accessors[i],v=g.json.bufferViews[a.bufferView],n={VEC3:3,VEC2:2,VEC4:4,MAT4:16,SCALAR:1}[a.type],size={5126:4,5125:4,5123:2,5121:1}[a.componentType],off=(v.byteOffset||0)+(a.byteOffset||0);assert(!v.byteStride&&!a.sparse);return g.bin.subarray(off,off+a.count*n*size);}
 function hash(b){return crypto.createHash('sha256').update(b).digest('hex');}
-const built=readGlb(file),base=readGlb(path.join(root,'human-base-rigged.glb')),shipped=readGlb(path.join(root,'app/assets/3d/makehuman/human-body-morphs.glb'));
+const built=readGlb(file),base=readGlb(path.join(root,'human-base-rigged.glb')),shipped=readGlb(process.argv[3]||path.join(root,'app/assets/3d/makehuman/human-body-morphs.glb'));
 const bp=base.json.meshes[0].primitives[0],mp=built.json.meshes[0].primitives[0],sp=shipped.json.meshes[0].primitives[0];
 assert.strictEqual(built.bytes.readUInt32LE(8),built.bytes.length);
 assert.strictEqual(mp.targets.length,9);assert.deepStrictEqual(built.json.nodes,base.json.nodes);assert.deepStrictEqual(built.json.skins,base.json.skins);

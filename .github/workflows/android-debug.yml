@@ -50,6 +50,8 @@ jobs:
         run: node tests/character_3d_skin_assets_test.js
       - name: Test MakeHuman UV transfer
         run: node tests/makehuman_uv_bridge_test.js
+      - name: Test anatomical gender recipe
+        run: node tests/makehuman_gender_recipe_test.js
       - name: Audit shipped MakeHuman morphs
         run: node tests/character_3d_morph_assets_test.js
       - name: Test 3D character editor
