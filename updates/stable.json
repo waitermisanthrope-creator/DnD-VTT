@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.06",
+  "version": "74.00.07",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-09",
@@ -14,8 +14,8 @@
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
-      "bytes": 13273,
-      "sha256": "30b305c1ef23fb99508f917a8c319d0f4e6c1412a424506cc8338c294baed550"
+      "bytes": 13305,
+      "sha256": "25099138d49b232ef2c00522076a3239578d3c33d6cd6c00d9711aaa7d0f03a9"
     },
     {
       "path": "app/3dmap/character_system.js",
