@@ -52,6 +52,11 @@ jobs:
         run: node tests/character_3d_skin_morph_test.js
       - name: Audit real human GLB
         run: node tests/human_base_glb_audit.js
+      - name: Syntax check Morph Bridge tools
+        run: |
+          node --check tests/makehuman_morph_bridge.js
+          node --check tests/generate_makehuman_glb_morph_fixture.js
+          node --check tests/makehuman_glb_morph_fixture_audit.js
       - name: Syntax check 3D character modules
         run: |
           node --check app/3dmap/character_system.js
