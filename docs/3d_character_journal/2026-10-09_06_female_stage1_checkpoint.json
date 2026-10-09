@@ -1,0 +1,81 @@
+{
+  "sources": {
+    "sourceProject": "makehumancommunity/mpfb2",
+    "recommendedSourceCommit": "d0a32e57a7f915cb2f2b95410e2117648c7bbb7e",
+    "declaredSourceCommit": "d0a32e57a7f915cb2f2b95410e2117648c7bbb7e",
+    "sourceGlbSha256": "7135e03b6259e970458deff3e0458610914d7c35164cae12611101361e4a5749",
+    "macroConfigSha256": "5b6dfabced7b7912df45d3c39f6ef34bca55a72cb6de8ee6c8d66c371de4447c",
+    "exportedMacros": {
+      "race": {
+        "caucasian": 0.699999988079071,
+        "asian": 0.20000000298023224,
+        "african": 0.10000000149011612
+      },
+      "gender": 1,
+      "age": 0.46000000834465027,
+      "muscle": 0.4300000071525574,
+      "weight": 0.49000000953674316,
+      "proportions": 0.5799999833106995,
+      "height": 0.5,
+      "cupsize": 0.5,
+      "firmness": 0.5
+    },
+    "destinationGender": 0,
+    "cutoff": 0.01,
+    "sourceStackTerms": 14,
+    "femaleStackTerms": 14,
+    "compositeTerms": 28,
+    "sourceHashes": {
+      "macrodetails/african-female-child.target.gz": "71478670a8285dc6469e10e74e4746c75fef0592190e4eb3a63130178e4fd865",
+      "macrodetails/african-female-young.target.gz": "1147ae55ecb0f66bade3f45176b3af187e265878322db172ad1090e9f3108e84",
+      "macrodetails/african-male-child.target.gz": "578c3aad252de0868da7445d095f5acd8925b182c80812154065a37687c29b72",
+      "macrodetails/african-male-young.target.gz": "05ed84d6df36e788cdfa8da0be15376850524b960cf2f17f3e592b9cf7d21c85",
+      "macrodetails/asian-female-child.target.gz": "3791c73a4a0e05e475d88341ce32f29a6eeefb054217e900497a1723e89bf70d",
+      "macrodetails/asian-female-young.target.gz": "ee17da733288434e5b6fa120497f1fa6e72bf7faad5d694b0431d7275139170d",
+      "macrodetails/asian-male-child.target.gz": "f2a9d1ba67aa79b613ff4ce245787b1ff2c7420f34d63bc7cfb5df2950b623e2",
+      "macrodetails/asian-male-young.target.gz": "0928ed8b9f08f60afb9884cf9e9f33a939ed3a85d7f136de9ccc88a76981d6d7",
+      "macrodetails/caucasian-female-child.target.gz": "ad1ce6b7955e4d610b75648ebdcc456cc8aa7e9e46af399f65265164ea39c844",
+      "macrodetails/caucasian-female-young.target.gz": "e9d6212373ac5f1e2c596fa145e363385f4d169c3c6c88ede3bab93b681af041",
+      "macrodetails/caucasian-male-child.target.gz": "18188350f6cfca20725f4057ba207ac5c7c759bfcc5badb212edabfd8563a544",
+      "macrodetails/caucasian-male-young.target.gz": "ffe69537e53148edff2776204ba48cf3bf1f3cbc72966592c8a562ab80b07333",
+      "macrodetails/proportions/female-child-averagemuscle-averageweight-idealproportions.target.gz": "44497687c0983196e46f39763754249dc91e9cfef9ffe6e81f6c7a179e69c0ac",
+      "macrodetails/proportions/female-young-averagemuscle-averageweight-idealproportions.target.gz": "e23ce571fde4469264a520c5631f19b8a75f20a2bb0a56d315ca7fbeb683d19f",
+      "macrodetails/proportions/female-young-minmuscle-averageweight-idealproportions.target.gz": "edec15421cbc7161e281d7f2c0bb22eb3fdaef966a14931c37a174f4b2abc7a2",
+      "macrodetails/proportions/male-child-averagemuscle-averageweight-idealproportions.target.gz": "b579f97704b087f51dfad460dd3ccbb9ab40b29331abcea8df051d5d6d4c637b",
+      "macrodetails/proportions/male-young-averagemuscle-averageweight-idealproportions.target.gz": "b6cccc61b5f5af2e7c668b0a18013e5f3fa8ff082bf8513dcb9578c41275baeb",
+      "macrodetails/proportions/male-young-minmuscle-averageweight-idealproportions.target.gz": "dd4ce096af65e70a0d481b3545fd74c24a53e4049f15f110c16c06f2e0985e24",
+      "macrodetails/universal-female-child-averagemuscle-averageweight.target.gz": "8cd73335ac6f84b1f85b2fa2f44a5b23586aa7f152f0beb189b184761a8cc0ed",
+      "macrodetails/universal-female-child-minmuscle-averageweight.target.gz": "9b42a424040b43f67e9176f73a70764a6de6b3470233af238bda349c2a194b1f",
+      "macrodetails/universal-female-young-averagemuscle-averageweight.target.gz": "30046c85a461249824548d5319d74c16392842a1ee00ca9a4485ea3eeb06e2e8",
+      "macrodetails/universal-female-young-averagemuscle-minweight.target.gz": "5c65527e5d6e83b98ffa3da5bd61372eff70f89e95585bdacd0e3f70e48062aa",
+      "macrodetails/universal-female-young-minmuscle-averageweight.target.gz": "2d939513053fb4a58b6752457c00419c0a2b6a658f0f034dc079d59e19931627",
+      "macrodetails/universal-male-child-averagemuscle-averageweight.target.gz": "2249784050014a68afac7efdbb9cae9e427fd8bdd2d7965f7898a6e8aec019dc",
+      "macrodetails/universal-male-child-minmuscle-averageweight.target.gz": "d6744fb32500d8e0c83be2aebfb20dca1ba4e0f20f0639e164ce6cee12244e86",
+      "macrodetails/universal-male-young-averagemuscle-averageweight.target.gz": "e814651195c53971503d9823d6841216718a561951ef064f81d132297f4fa494",
+      "macrodetails/universal-male-young-averagemuscle-minweight.target.gz": "e4a993057e265088e082ee2aeccc860505e759b27251dc63a78314e1f8c78a16",
+      "macrodetails/universal-male-young-minmuscle-averageweight.target.gz": "d1c0a768f42219e9630f08805939510efbe2a390b451fa52cc575205bc761d7e"
+    },
+    "limitations": [
+      "Fixed exported macros; not a full runtime macro editor",
+      "Neutral height/cupsize/firmness only",
+      "Skeleton and bind pose unchanged; animation fit needs later QA"
+    ]
+  },
+  "audit": {
+    "status": "PASS",
+    "fixtureSha256": "3628ff521db93f28a12f7e68bf59961dc48d7a2c1a3d0e82b661dafb9131120b",
+    "sourceSha256": "7135e03b6259e970458deff3e0458610914d7c35164cae12611101361e4a5749",
+    "shippedSha256": "3fa12e921112a4aa65d03ef622aeba1218eaa89225b76b1d457ae93e074923bd",
+    "bytes": 12671780,
+    "vertices": 70985,
+    "joints": 53,
+    "targets": 9,
+    "changedVertices": 70985,
+    "maxDisplacementMeters": 0.14280746196746358,
+    "rmsDisplacementMeters": 0.10863501127490313,
+    "seamMaxMeters": 1.0203743920184171e-06,
+    "unchanged": "base attributes, indices, nodes, skin, eight shipped targets",
+    "runtime": "real loader, morph before skin, signed body sliders, repeat draw, exact reset",
+    "physicalAndroidQA": false
+  }
+}

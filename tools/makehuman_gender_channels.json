@@ -1,0 +1,167 @@
+{
+  "shoulders": {
+    "positive": "measure-shoulder-dist-incr",
+    "negative": "measure-shoulder-dist-decr",
+    "folder": "torso"
+  },
+  "chest": {
+    "positive": "measure-bust-circ-incr",
+    "negative": "measure-bust-circ-decr",
+    "folder": "torso"
+  },
+  "waist": {
+    "positive": "measure-waist-circ-incr",
+    "negative": "measure-waist-circ-decr",
+    "folder": "torso"
+  },
+  "hips": {
+    "positive": "measure-hips-circ-incr",
+    "negative": "measure-hips-circ-decr",
+    "folder": "torso"
+  },
+  "human-female": {
+    "target": "human-female",
+    "sources": [
+      {
+        "folder": "macrodetails",
+        "name": "african-female-child",
+        "weight": 0.012664658188718111
+      },
+      {
+        "folder": "macrodetails",
+        "name": "african-female-young",
+        "weight": 0.08635534328679487
+      },
+      {
+        "folder": "macrodetails",
+        "name": "african-male-child",
+        "weight": -0.012664658188718111
+      },
+      {
+        "folder": "macrodetails",
+        "name": "african-male-young",
+        "weight": -0.08635534328679487
+      },
+      {
+        "folder": "macrodetails",
+        "name": "asian-female-child",
+        "weight": 0.025329316377436222
+      },
+      {
+        "folder": "macrodetails",
+        "name": "asian-female-young",
+        "weight": 0.17271068657358973
+      },
+      {
+        "folder": "macrodetails",
+        "name": "asian-male-child",
+        "weight": -0.025329316377436222
+      },
+      {
+        "folder": "macrodetails",
+        "name": "asian-male-young",
+        "weight": -0.17271068657358973
+      },
+      {
+        "folder": "macrodetails",
+        "name": "caucasian-female-child",
+        "weight": 0.08865260449025512
+      },
+      {
+        "folder": "macrodetails",
+        "name": "caucasian-female-young",
+        "weight": 0.604487383705641
+      },
+      {
+        "folder": "macrodetails",
+        "name": "caucasian-male-child",
+        "weight": -0.08865260449025512
+      },
+      {
+        "folder": "macrodetails",
+        "name": "caucasian-male-young",
+        "weight": -0.604487383705641
+      },
+      {
+        "folder": "macrodetails/proportions",
+        "name": "female-child-averagemuscle-averageweight-idealproportions",
+        "weight": 0.01680853446842119
+      },
+      {
+        "folder": "macrodetails/proportions",
+        "name": "female-young-averagemuscle-averageweight-idealproportions",
+        "weight": 0.11461081243088442
+      },
+      {
+        "folder": "macrodetails/proportions",
+        "name": "female-young-minmuscle-averageweight-idealproportions",
+        "weight": 0.018225085147794782
+      },
+      {
+        "folder": "macrodetails/proportions",
+        "name": "male-child-averagemuscle-averageweight-idealproportions",
+        "weight": -0.01680853446842119
+      },
+      {
+        "folder": "macrodetails/proportions",
+        "name": "male-young-averagemuscle-averageweight-idealproportions",
+        "weight": -0.11461081243088442
+      },
+      {
+        "folder": "macrodetails/proportions",
+        "name": "male-young-minmuscle-averageweight-idealproportions",
+        "weight": -0.018225085147794782
+      },
+      {
+        "folder": "macrodetails",
+        "name": "universal-female-child-averagemuscle-averageweight",
+        "weight": 0.10712896410720962
+      },
+      {
+        "folder": "macrodetails",
+        "name": "universal-female-child-minmuscle-averageweight",
+        "weight": 0.0170353429247904
+      },
+      {
+        "folder": "macrodetails",
+        "name": "universal-female-young-averagemuscle-averageweight",
+        "weight": 0.7304704425167904
+      },
+      {
+        "folder": "macrodetails",
+        "name": "universal-female-young-averagemuscle-minweight",
+        "weight": 0.014603448259209598
+      },
+      {
+        "folder": "macrodetails",
+        "name": "universal-female-young-minmuscle-averageweight",
+        "weight": 0.11615733045120957
+      },
+      {
+        "folder": "macrodetails",
+        "name": "universal-male-child-averagemuscle-averageweight",
+        "weight": -0.10712896410720962
+      },
+      {
+        "folder": "macrodetails",
+        "name": "universal-male-child-minmuscle-averageweight",
+        "weight": -0.0170353429247904
+      },
+      {
+        "folder": "macrodetails",
+        "name": "universal-male-young-averagemuscle-averageweight",
+        "weight": -0.7304704425167904
+      },
+      {
+        "folder": "macrodetails",
+        "name": "universal-male-young-averagemuscle-minweight",
+        "weight": -0.014603448259209598
+      },
+      {
+        "folder": "macrodetails",
+        "name": "universal-male-young-minmuscle-averageweight",
+        "weight": -0.11615733045120957
+      }
+    ]
+  }
+}
