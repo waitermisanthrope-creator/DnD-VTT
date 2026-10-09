@@ -26,18 +26,19 @@ function makeGL(){
  gl.pixelStorei=(...args)=>gl.calls.push(args);gl.texParameteri=(...args)=>gl.calls.push(args);
  gl.getShaderParameter=gl.getProgramParameter=()=>true;gl.getParameter=()=>4096;gl.getError=()=>gl.NO_ERROR;
  gl.deleteBuffer=gl.deleteTexture=gl.deleteProgram=r=>{r.deleted=true;};
- const draw=(count)=>{assert(gl.attrs.p.data.length>=count*3);assert(gl.attrs.uv.data.length>=count*2,'UV buffer shorter than expanded geometry');gl.draws.push({uv:gl.attrs.uv.data.slice(),col:gl.uniforms.col.slice(),useTex:gl.uniforms.useTex,src:gl.texture&&gl.texture.src});};
+ const draw=(count)=>{assert(gl.attrs.p.data.length>=count*3);assert(gl.attrs.uv.data.length>=count*2,'UV buffer shorter than expanded geometry');gl.draws.push({uv:gl.attrs.uv.data.slice(),col:gl.uniforms.col.slice(),useTex:gl.uniforms.useTex,positions:gl.attrs.p.data.slice(),src:gl.texture&&gl.texture.src});};
  gl.drawArrays=(mode,first,count)=>draw(count);gl.drawElements=(mode,count)=>draw(3);
  for(const n of ['viewport','clearColor','clear','enable','shaderSource','compileShader','attachShader','linkProgram','useProgram','enableVertexAttribArray','disableVertexAttribArray','vertexAttrib2f','uniformMatrix4fv','activeTexture','generateMipmap'])gl[n]=()=>{};
  return gl;
 }
 const document={createElement:tag=>new Element(tag),getElementById:id=>elements[id]||null,body:new Element('body')};
 const part={positions:new Float32Array([0,0,0,1,0,0,0,1,0,1,1,0]),indices:new Uint32Array([0,2,1]),uv:new Float32Array([0,0,1,0,0,1,1,1]),material:0};
-const asset={parts:[part],materials:[{baseColorFactor:[.48,.51,.54,1]}],bounds:{min:[0,0,0],max:[1,1,1]}};
+part.basePositions=part.positions;part.morphNames=['shoulder-grow','shoulder-shrink'];part.morphTargets=[{POSITION:new Float32Array([.1,0,0,0,0,0,0,0,0,0,0,0])},{POSITION:new Float32Array([-.1,0,0,0,0,0,0,0,0,0,0,0])}];
+const asset={gltf:{extras:{dndMorphChannels:{shoulders:{positive:'shoulder-grow',negative:'shoulder-shrink'}}}},buffers:[],parts:[part],materials:[{baseColorFactor:[.48,.51,.54,1]}],bounds:{min:[0,0,0],max:[1,1,1]}};
 const win={addEventListener(){},devicePixelRatio:1,DNDGLTF:{load:()=>Promise.resolve(asset)}};
 function Image(){this.width=2048;this.height=2048;images.push(this);}
 const ctx={window:win,document,Image,console,Float32Array,Uint32Array,Uint16Array,Uint8Array};
-vm.runInNewContext(code('character_system'),ctx);vm.runInNewContext(code('character_editor_3d'),ctx);
+vm.runInNewContext(code('gltf_character_pipeline'),ctx);win.DNDGLTFCharacterPipeline.install();vm.runInNewContext(code('character_system'),ctx);vm.runInNewContext(code('character_editor_3d'),ctx);
 const api=win.DNDCharacterEditor3D,sys=win.DNDCharacter3D,flush=()=>new Promise(resolve=>setImmediate(resolve));
 (async()=>{
  assert(api&&api.VERSION===1);const c=sys.createCharacter({raceId:'human'});api.open(c);await flush();
@@ -47,6 +48,8 @@ const api=win.DNDCharacterEditor3D,sys=win.DNDCharacter3D,flush=()=>new Promise(
  assert.deepStrictEqual(last.uv,[0,0,0,1,1,0],'uint32 fallback must expand UV with the same indices as positions');
  assert(gl.calls.some(c=>c[0]===gl.UNPACK_FLIP_Y_WEBGL&&c[1]===false),'glTF texture must not be flipped');
  assert.strictEqual(asset.materials[0].baseColorFactor[0],.48,'shared GLB must not be mutated');
+ elements.ceSliders.children[4].input.oninput.call({value:'1'});assert(Math.abs(gl.draws.at(-1).positions[0]-.1)<1e-6,'morph must reach WebGL without procedural shoulder scaling');
+ elements.ceSliders.children[4].input.oninput.call({value:'0'});assert.strictEqual(gl.draws.at(-1).positions[0],0,'reset must reach WebGL');
  api.setAxis('height',1);api.setAxis('width',.8);api.setAxis('chest',.6);
  assert.strictEqual(api.getState().body.height,1);assert(api.metrics().width>1);
  api.setArmor(true);assert.strictEqual(api.getState().equipment.body,'editor_plate');

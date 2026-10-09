@@ -28,7 +28,7 @@ function applyMorphTargets(base,targets,weights){if(!base)return new Float32Arra
 function getRenderDescriptor(c){var r=getBodyState(c),items=[];Object.keys(c.equipment||{}).forEach(function(slot){var e=equipment[c.equipment[slot]];if(e)items.push(resolveEquipment(c,e));});return{version:VERSION,characterId:c.id,raceId:c.raceId,gender:c.gender,skinId:c.skinId||'',skin:resolveSkin(c),body:r.body,baseModel:r.baseModel,skeleton:r.skeleton,equipment:items,pose:clone(c.pose||{})};}
 function serialize(c){return JSON.stringify(clone(c));}
 function deserialize(v){var c=typeof v==='string'?JSON.parse(v):clone(v);return createCharacter(c);}
-registerRace({id:'human',name:'Человек',baseModel:'https://appassets.androidplatform.net/vtt-apk/human-base-rigged.glb',skeleton:'humanoid',skinMaterial:0,defaultSkinId:'human_young_male',presets:['human_average']});
+registerRace({id:'human',name:'Человек',baseModel:'./app/assets/3d/makehuman/human-body-morphs.glb',skeleton:'humanoid',skinMaterial:0,defaultSkinId:'human_young_male',presets:['human_average']});
 registerSkin({id:'human_young_male',name:'Мужская кожа',raceId:'human',texture:'./app/assets/3d/makehuman/skins/young_caucasian_male/young_lightskinned_male_diffuse.png'});
 registerSkin({id:'human_young_female',name:'Женская кожа',raceId:'human',texture:'./app/assets/3d/makehuman/skins/young_caucasian_female/young_lightskinned_female_diffuse.png'});
 registerPreset({id:'human_average',name:'Среднее телосложение',body:{}});

@@ -48,6 +48,10 @@ jobs:
         run: node tests/character_3d_foundation_test.js
       - name: Audit shipped skin textures and human UVs
         run: node tests/character_3d_skin_assets_test.js
+      - name: Test MakeHuman UV transfer
+        run: node tests/makehuman_uv_bridge_test.js
+      - name: Audit shipped MakeHuman morphs
+        run: node tests/character_3d_morph_assets_test.js
       - name: Test 3D character editor
         run: node tests/character_3d_editor_test.js
       - name: Test 3D character skin and morph pipeline
@@ -56,6 +60,7 @@ jobs:
         run: node tests/human_base_glb_audit.js
       - name: Syntax check Morph Bridge tools
         run: |
+          node --check tools/build_makehuman_morphs.js
           node --check tests/makehuman_morph_bridge.js
           node --check tests/generate_makehuman_glb_morph_fixture.js
           node --check tests/makehuman_glb_morph_fixture_audit.js

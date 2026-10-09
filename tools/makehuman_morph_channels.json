@@ -1,0 +1,6 @@
+{
+  "shoulders": {"positive": "measure-shoulder-dist-incr", "negative": "measure-shoulder-dist-decr", "folder": "torso"},
+  "chest": {"positive": "measure-bust-circ-incr", "negative": "measure-bust-circ-decr", "folder": "torso"},
+  "waist": {"positive": "measure-waist-circ-incr", "negative": "measure-waist-circ-decr", "folder": "torso"},
+  "hips": {"positive": "measure-hips-circ-incr", "negative": "measure-hips-circ-decr", "folder": "torso"}
+}
