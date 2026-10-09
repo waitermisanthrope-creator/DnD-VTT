@@ -2,7 +2,8 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
 const sys=fs.readFileSync(path.join(__dirname,'../app/3dmap/character_system.js'),'utf8');
 const ed=fs.readFileSync(path.join(__dirname,'../app/3dmap/character_editor_3d.js'),'utf8');
-const ctx={window:{},console,document:{createElement:function(){return {style:{}}},body:{appendChild:function(){}}}};
+const win={addEventListener:function(){},removeEventListener:function(){}};
+const ctx={window:win,console,document:{createElement:function(){return {style:{},remove:function(){},appendChild:function(){},addEventListener:function(){},querySelector:function(){return null}},body:{appendChild:function(){}}}};
 vm.runInNewContext(sys,ctx,{filename:'character_system.js'});
 vm.runInNewContext(ed,ctx,{filename:'character_editor_3d.js'});
 const api=ctx.window.DNDCharacterEditor3D;
