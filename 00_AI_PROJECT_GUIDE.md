@@ -9189,3 +9189,10 @@ Implemented:
 - Коммит: `1a9740089bc9c08b4d6610b3ab6d24d1c5311124`.
 - Статус: код обновлён в GitHub; APK и фактическое отображение на HONOR ещё не проверены. Следующий шаг пользователя: `git pull`, затем открыть кнопку «3D-персонаж». Если модель не появится, прислать текст ошибки, который теперь выводится поверх области предпросмотра.
 - Ограничение: это исправляет показ модели; sliders ещё не подключены к настоящим MakeHuman morph targets. Fixture `torso-vshape-test` структурно валиден, но визуальная форма и morph runtime ещё требуют отдельной проверки.
+
+
+## 3D CHARACTER PREVIEW — delivery/version note
+- Чтобы установленное приложение могло получить исправление через OTA, Android version повышен с `74.00.05` до `74.00.06` (`versionCode 7400006`).
+- `.github/workflows/refresh-update-manifest.yml` теперь запускается также при изменении `android/app/build.gradle`, чтобы stable-манифест получил новую версию и свежие SHA-256.
+- Коммиты: renderer `1a9740089bc9c08b4d6610b3ab6d24d1c5311124`; guide/diagnostics `c16a6a480d10cb5f8731c569829f64d397ad4002`; workflow `85124ffd1b9a9afb33c4b6d7c7451b6cdb70c679`; version bump `c4ebf29bae8414febdf78f6e70f141a7c621b6f6`.
+- CI/build и публикация нового stable-манифеста пока не подтверждены результатом Actions; не объявлять APK/OTA готовыми до проверки соответствующих workflow.
