@@ -46,6 +46,8 @@ jobs:
         run: node tests/alchemist_combat_test.js
       - name: Test 3D character foundation
         run: node tests/character_3d_foundation_test.js
+      - name: Audit shipped skin textures and human UVs
+        run: node tests/character_3d_skin_assets_test.js
       - name: Test 3D character editor
         run: node tests/character_3d_editor_test.js
       - name: Test 3D character skin and morph pipeline

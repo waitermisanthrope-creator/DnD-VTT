@@ -20,3 +20,13 @@ assert(Math.abs(morphed[0]-.5)<1e-6&&Math.abs(morphed[4]-1.5)<1e-6,'vertex morph
 const restored=api.deserialize(api.serialize(c));
 assert(restored.raceId==='orc_test'&&restored.equipment.body==='plate_test','serialization failed');
 console.log('CHARACTER_3D_FOUNDATION_TEST_OK');
+const human=api.createCharacter({raceId:'human'});
+assert.strictEqual(human.skinId,'human_young_male');
+assert(api.resolveSkin(human).texture.endsWith('young_lightskinned_male_diffuse.png'));
+const legacyHuman=api.deserialize({raceId:'human',body:{},equipment:{}});
+assert.strictEqual(legacyHuman.skinId,'human_young_male','old characters need a default skin');
+human.skinId='human_young_female';
+assert.strictEqual(api.deserialize(api.serialize(human)).skinId,'human_young_female');
+assert.strictEqual(api.getRenderDescriptor(human).skin.id,'human_young_female');
+assert.strictEqual(api.resolveSkin(c),null,'a human skin must not override another race');
+human.skinId='invalid';assert.strictEqual(api.resolveSkin(human).id,'human_young_male');

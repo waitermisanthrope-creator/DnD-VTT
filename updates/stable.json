@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.13",
+  "version": "74.00.14",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-09",
@@ -9,18 +9,18 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 85235,
-      "sha256": "5aa8617abd73fcabbe6f8a5f1fce4adc09a32ce72450c9507059367f51a16a53"
+      "bytes": 85257,
+      "sha256": "07383e3cd86cade58d04bd5158a6f0f6d1058c450a8b6eadbc5777a1f4efb136"
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
-      "bytes": 19797,
-      "sha256": "8f070dc60320e5eeca82ecfb69c5011be69f692a273b3a936d5468e4648df61a"
+      "bytes": 23373,
+      "sha256": "7abc1b13d1e97c4a824a9d91af9b0531af64548b4df0f6d7717fb046ee3eebe3"
     },
     {
       "path": "app/3dmap/character_system.js",
-      "bytes": 6841,
-      "sha256": "5c58e106bb46ab6a7b3ab75257f3d87a40f1a9b47ac3c1b32ae743b6dc95e581"
+      "bytes": 7980,
+      "sha256": "59cfb8a7c0d9e47722f449c246e38b3fdb134d9d95af31ef2a9783e0dd2bdbd8"
     },
     {
       "path": "app/3dmap/gltf_catalog.js",
@@ -151,6 +151,31 @@
       "path": "app/armors.js",
       "bytes": 27349,
       "sha256": "8f444f8dda16bd35e9d32847f1cffee6563e20bd35b0a218d4d197236fe2cfac"
+    },
+    {
+      "path": "app/assets/3d/makehuman/README.md",
+      "bytes": 734,
+      "sha256": "6d87944c33422660e3914a72b1453dca3bb9527fa2f861ca40e5cff61bf4424c"
+    },
+    {
+      "path": "app/assets/3d/makehuman/skins/young_caucasian_female/young_caucasian_female.mhmat",
+      "bytes": 1464,
+      "sha256": "0bdea7786201f0b1132a24088336a97496ccdc54e9984db65d253a6a6d66f24f"
+    },
+    {
+      "path": "app/assets/3d/makehuman/skins/young_caucasian_female/young_lightskinned_female_diffuse.png",
+      "bytes": 4391156,
+      "sha256": "b2a6ac8cd4f9febdb447368e29c76cd68410bb66e46d9dcfa2d5f75126eea8fc"
+    },
+    {
+      "path": "app/assets/3d/makehuman/skins/young_caucasian_male/young_caucasian_male.mhmat",
+      "bytes": 1462,
+      "sha256": "6eda60b07ff2afbde078a2535ef3913593d84e9de92b2eb76c30f396a181fe2e"
+    },
+    {
+      "path": "app/assets/3d/makehuman/skins/young_caucasian_male/young_lightskinned_male_diffuse.png",
+      "bytes": 3693828,
+      "sha256": "862a26e335e958b70534cb5f0d7c47ef30ab148a56c42b3e9da969cf76f12963"
     },
     {
       "path": "app/assets/3d/quaternius/models/Anvil.bin",
