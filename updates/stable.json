@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.15",
+  "version": "74.00.16",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-09",
@@ -10,17 +10,17 @@
     {
       "path": "index.html",
       "bytes": 85279,
-      "sha256": "d03d9ae19e74159e3794db3224ff95fc1f30d42033ff01b1bea946d8e39a392b"
+      "sha256": "058a5d4c5661ab7d6a005778cf3e12928a45e846e49e5b601210dad9eeb495fe"
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
-      "bytes": 24124,
-      "sha256": "a917cf72947e67027d6fbacf5549d0ab7b37683580009e9e6306b3706cf82a19"
+      "bytes": 25611,
+      "sha256": "16ab84ea18772648566d1448a385f2c9e5772008bb89626e774e3fcedc8b7dc1"
     },
     {
       "path": "app/3dmap/character_system.js",
-      "bytes": 7960,
-      "sha256": "d8bc26bc3e1da60b7a5f2d19901b74c873d84084d1d12c71db84c87c20d69efe"
+      "bytes": 8833,
+      "sha256": "363e95f708e66bcbe8768af692ae7fb3b46963bfdb5d983ba08d82cd5ea1645a"
     },
     {
       "path": "app/3dmap/gltf_catalog.js",
@@ -164,8 +164,8 @@
     },
     {
       "path": "app/assets/3d/makehuman/human-body-morphs.glb",
-      "bytes": 11812992,
-      "sha256": "3fa12e921112a4aa65d03ef622aeba1218eaa89225b76b1d457ae93e074923bd"
+      "bytes": 12671780,
+      "sha256": "3628ff521db93f28a12f7e68bf59961dc48d7a2c1a3d0e82b661dafb9131120b"
     },
     {
       "path": "app/assets/3d/makehuman/skins/young_caucasian_female/young_caucasian_female.mhmat",
