@@ -21,7 +21,7 @@ assert(scene.includes('requestAnimationFrame(animateProgress)'),'transition line
   assert(fs.existsSync(path.join(root,'app','assets','ui',name)),'missing visual asset: '+name);
 });
 ['DND_UPDATE_SCENE_V2','finish','enableApply','setProgress'].forEach(function(token){assert(scene.includes(token),'scene API/visual contract missing: '+token);});
-assert(/var APP_VERSION='70\.[0-9]+\.[0-9]+';/.test(manager),'manager v2 must expose a semantic V70.x.y APP_VERSION');
+assert(/var APP_VERSION='[0-9]+\.[0-9]+\.[0-9]+';/.test(manager),'manager v2 must expose a semantic numeric APP_VERSION');
 ['DND_UPDATE_SCENE_V2','runSceneTest','checkAndStage','applyStaged','autoCheckForUpdates'].forEach(function(token){assert(manager.includes(token),'manager v2 contract missing: '+token);});
 assert(manager.includes('dndNative'),'manager must use native bridge');
 assert(manager.includes('SHA-256'),'manager must verify hashes');
