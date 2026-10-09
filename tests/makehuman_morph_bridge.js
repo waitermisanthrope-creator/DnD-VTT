@@ -47,14 +47,39 @@ function closestTriangle(p,a,b,c){
   const t=(ap[0]*n[0]+ap[1]*n[1]+ap[2]*n[2])/nn,q=[p[0]-n[0]*t,p[1]-n[1]*t,p[2]-n[2]*t],v0=ab,v1=ac,v2=q.map((v,i)=>v-a[i]),d00=sq(v0,[0,0,0]),d01=v0[0]*v1[0]+v0[1]*v1[1]+v0[2]*v1[2],d11=sq(v1,[0,0,0]),d20=v2[0]*v0[0]+v2[1]*v0[1]+v2[2]*v0[2],d21=v2[0]*v1[0]+v2[1]*v1[1]+v2[2]*v1[2],den=d00*d11-d01*d01;if(Math.abs(den)<1e-18)return{w:[1,0,0],d2:sq(p,a)};
   const wb=(d11*d20-d01*d21)/den,wc=(d00*d21-d01*d20)/den;return{w:[1-wb-wc,wb,wc],d2:sq(p,q)};
 }
-function buildGrid(v,f,cell){const m=new Map();for(let ti=0;ti<f.length;ti++){const t=f[ti],a=v[t[0]],b=v[t[1]],c=v[t[2]],mn=[0,1,2].map(k=>Math.min(a[k],b[k],c[k])),mx=[0,1,2].map(k=>Math.max(a[k],b[k],c[k])),lo=mn.map(x=>Math.floor(x/cell)),hi=mx.map(x=>Math.floor(x/cell));for(let x=lo[0];x<=hi[0];x++)for(let y=lo[1];y<=hi[1];y++)for(let z=lo[2];z<=hi[2];z++){const k=x+','+y+','+z,a=m.get(k);if(a)a.push(ti);else m.set(k,[ti]);}}return m;}
-function nearest(v,f,g,p,cell){const c=p.map(x=>Math.floor(x/cell));let best=null;for(const r of [1,2,3,5,8,12]){for(let x=-r;x<=r;x++)for(let y=-r;y<=r;y++)for(let z=-r;z<=r;z++){const a=g.get((c[0]+x)+','+(c[1]+y)+','+(c[2]+z));if(!a)continue;for(const ti of a){const t=f[ti],h=closestTriangle(p,v[t[0]],v[t[1]],v[t[2]]);if(!best||h.d2<best.d2)best={ti,h};}}if(best)break;}return best;}
+function buildTriangleBvh(v,f,leafSize=12){
+  let built=0;
+  const items=f.map((t,id)=>{
+    const a=v[t[0]],b=v[t[1]],c=v[t[2]],mn=[0,1,2].map(k=>Math.min(a[k],b[k],c[k])),mx=[0,1,2].map(k=>Math.max(a[k],b[k],c[k]));
+    return{id,mn,mx,center:mn.map((x,k)=>(x+mx[k])*.5)};
+  });
+  function build(list,depth=0){
+    const mn=[Infinity,Infinity,Infinity],mx=[-Infinity,-Infinity,-Infinity],cmn=[Infinity,Infinity,Infinity],cmx=[-Infinity,-Infinity,-Infinity];
+    for(const it of list)for(let k=0;k<3;k++){mn[k]=Math.min(mn[k],it.mn[k]);mx[k]=Math.max(mx[k],it.mx[k]);cmn[k]=Math.min(cmn[k],it.center[k]);cmx[k]=Math.max(cmx[k],it.center[k]);}
+    built++;if(built%5000===0)console.log('[Morph Bridge] BVH nodes '+built+', depth '+depth);
+    if(list.length<=leafSize)return{mn,mx,items:list.map(x=>x.id),left:null,right:null};
+    const span=cmx.map((x,k)=>x-cmn[k]);let axis=span[1]>span[0]?1:0;if(span[2]>span[axis])axis=2;
+    if(span[axis]<1e-12)return{mn,mx,items:list.map(x=>x.id),left:null,right:null};
+    list.sort((a,b)=>a.center[axis]-b.center[axis]);const mid=list.length>>1;
+    return{mn,mx,items:null,left:build(list.slice(0,mid),depth+1),right:build(list.slice(mid),depth+1)};
+  }
+  console.log('[Morph Bridge] Строю BVH для '+f.length+' треугольников...');
+  const root=build(items);console.log('[Morph Bridge] BVH готов: '+built+' узлов');return root;
+}
+function pointBoxDistanceSq(p,mn,mx){let d=0;for(let k=0;k<3;k++){const x=p[k]<mn[k]?mn[k]-p[k]:p[k]>mx[k]?p[k]-mx[k]:0;d+=x*x;}return d;}
+function nearest(v,f,root,p){
+  if(!root)return null;let best=null,bestD=Infinity;const stack=[root];
+  while(stack.length){const node=stack.pop();if(pointBoxDistanceSq(p,node.mn,node.mx)>bestD)continue;
+    if(node.items){for(const ti of node.items){const t=f[ti],h=closestTriangle(p,v[t[0]],v[t[1]],v[t[2]]);if(h.d2<bestD){bestD=h.d2;best={ti,h};}}}
+    else{const dl=pointBoxDistanceSq(p,node.left.mn,node.left.mx),dr=pointBoxDistanceSq(p,node.right.mn,node.right.mx);if(dl<dr){if(dr<=bestD)stack.push(node.right);if(dl<=bestD)stack.push(node.left);}else{if(dl<=bestD)stack.push(node.left);if(dr<=bestD)stack.push(node.right);}}
+  }return best;
+}
 function readGlbGeometry(glb){const g=glb.json,buffers=[glb.bin],accessors=g.accessors||[],views=g.bufferViews||[],vertices=[],triangles=[];function getAcc(i){const a=accessors[i],v=views[a.bufferView],K={5126:Float32Array,5121:Uint8Array,5123:Uint16Array,5125:Uint32Array}[a.componentType],n=a.type==='VEC3'?3:1,raw=buffers[v.buffer||0],off=(v.byteOffset||0)+(a.byteOffset||0),stride=v.byteStride||K.BYTES_PER_ELEMENT*n,out=new K(a.count*n);for(let q=0;q<a.count;q++)for(let j=0;j<n;j++)out[q*n+j]=new K(raw,off+q*stride+j*K.BYTES_PER_ELEMENT,1)[0];return out;}
   for(const m of g.meshes||[])for(const p of m.primitives||[]){const ai=p.attributes&&p.attributes.POSITION;if(ai==null)continue;const pos=getAcc(ai),base=vertices.length;for(let i=0;i<pos.length;i+=3)vertices.push([pos[i],pos[i+1],pos[i+2]]);if(p.indices!=null){const idx=getAcc(p.indices);for(let i=0;i+2<idx.length;i+=3)triangles.push([base+idx[i],base+idx[i+1],base+idx[i+2]]);}}
   return{vertices,triangles};
 }
-function transfer(objPath,glbPath,targetPath){const hm=readObj(objPath),glb=readGlb(glbPath),geo=readGlbGeometry(glb),target=readTarget(targetPath,hm.v.length);if(!hm.v.length||!hm.f.length||!geo.vertices.length)throw Error('Missing geometry');const hb=bbox(hm.v),gb=bbox(geo.vertices),scale=Math.hypot(...gb.size)/Math.hypot(...hb.size),cell=Math.max(Math.hypot(...hb.size)/70,1e-5),grid=buildGrid(hm.v,hm.f,cell),morph=new Float32Array(geo.vertices.length*3);let misses=0,nonZero=0;const distances=[];
-  for(let vi=0;vi<geo.vertices.length;vi++){if(vi>0&&vi%5000===0)console.log('[Morph Bridge] Перенесено '+vi+'/'+geo.vertices.length+' ('+(vi/geo.vertices.length*100).toFixed(1)+'%), '+((Date.now()-started)/1000).toFixed(1)+'с');const gp=geo.vertices[vi],hp=gp.map((x,k)=>(x-gb.center[k])/scale+hb.center[k]),hit=nearest(hm.v,hm.f,grid,hp,cell);if(!hit){misses++;continue;}distances.push(Math.sqrt(hit.h.d2));const t=hm.f[hit.ti],w=hit.h.w,a=target.d[t[0]],b=target.d[t[1]],c=target.d[t[2]],o=vi*3;for(let k=0;k<3;k++)morph[o+k]=(a[k]*w[0]+b[k]*w[1]+c[k]*w[2])*scale;if(Math.hypot(morph[o],morph[o+1],morph[o+2])>1e-7)nonZero++;}
+function transfer(objPath,glbPath,targetPath){const started=Date.now();console.log('[Morph Bridge] Читаю MakeHuman OBJ...');const hm=readObj(objPath);console.log('[Morph Bridge] OBJ: '+hm.v.length+' вершин, '+hm.f.length+' треугольников');console.log('[Morph Bridge] Читаю GLB и target...');const glb=readGlb(glbPath),geo=readGlbGeometry(glb),target=readTarget(targetPath,hm.v.length);if(!hm.v.length||!hm.f.length||!geo.vertices.length)throw Error('Missing geometry');console.log('[Morph Bridge] GLB: '+geo.vertices.length+' вершин; target entries: '+target.entries.length);const hb=bbox(hm.v),gb=bbox(geo.vertices),scale=Math.hypot(...gb.size)/Math.hypot(...hb.size),bvh=buildTriangleBvh(hm.v,hm.f),morph=new Float32Array(geo.vertices.length*3);let misses=0,nonZero=0;const distances=[];
+  for(let vi=0;vi<geo.vertices.length;vi++){if(vi%1000===0)console.log('[Morph Bridge] Перенесено '+vi+'/'+geo.vertices.length+' ('+(vi/geo.vertices.length*100).toFixed(1)+'%), '+((Date.now()-started)/1000).toFixed(1)+'с');const gp=geo.vertices[vi],hp=gp.map((x,k)=>(x-gb.center[k])/scale+hb.center[k]),hit=nearest(hm.v,hm.f,bvh,hp);if(!hit){misses++;continue;}distances.push(Math.sqrt(hit.h.d2));const t=hm.f[hit.ti],w=hit.h.w,a=target.d[t[0]],b=target.d[t[1]],c=target.d[t[2]],o=vi*3;for(let k=0;k<3;k++)morph[o+k]=(a[k]*w[0]+b[k]*w[1]+c[k]*w[2])*scale;if(Math.hypot(morph[o],morph[o+1],morph[o+2])>1e-7)nonZero++;}
   distances.sort((a,b)=>a-b);const mean=distances.reduce((s,x)=>s+x,0)/Math.max(1,distances.length);return{glb,target,geo,morph,scale,misses,nonZero,surfaceMeanDistance:mean,surfaceMedianDistance:distances[Math.floor(distances.length*.5)]||0,surfaceP95Distance:distances[Math.floor(distances.length*.95)]||0};
 }
 module.exports={readObj,readTarget,readGlb,readGlbGeometry,transfer};
