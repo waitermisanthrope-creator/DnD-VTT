@@ -29,5 +29,31 @@
   },
   "physicalAndroidQA": false,
   "chromiumQA": "not run: executable unavailable",
-  "publication": "pending main/workflow verification"
+  "publication": {
+    "status": "verified",
+    "releaseCommit": "dbae96895b3afbc4f634d9e2e888debe7b57672f",
+    "stableVersion": "74.00.17",
+    "files": 599,
+    "allManifestEntriesMatchPhysicalZIP": true,
+    "workflows": {
+      "manifest": {
+        "id": 37947134493,
+        "conclusion": "success"
+      },
+      "debug": {
+        "id": 37947134581,
+        "conclusion": "success",
+        "artifact": "dnd-vtt-debug-apk",
+        "artifactBytes": 309991050,
+        "artifactDigest": "sha256:f7682fe6af1862d192f49b6e3cdc141cae64eafebaf8a4ca8204fc6b233b1dfa"
+      },
+      "signedRelease": {
+        "id": 37947134412,
+        "conclusion": "success",
+        "artifact": "dnd-vtt-release-apk",
+        "artifactBytes": 309016850,
+        "artifactDigest": "sha256:a51bae36e7cae26bf4073cea39acbcdcf178014dbecad19326f7f3ed7662e295"
+      }
+    }
+  }
 }
