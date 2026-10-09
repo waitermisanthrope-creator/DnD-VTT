@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "fixtureSha256": "3628ff521db93f28a12f7e68bf59961dc48d7a2c1a3d0e82b661dafb9131120b",
+  "sourceSha256": "7135e03b6259e970458deff3e0458610914d7c35164cae12611101361e4a5749",
+  "shippedSha256": "3628ff521db93f28a12f7e68bf59961dc48d7a2c1a3d0e82b661dafb9131120b",
+  "bytes": 12671780,
+  "vertices": 70985,
+  "joints": 53,
+  "targets": 9,
+  "changedVertices": 70985,
+  "maxDisplacementMeters": 0.14280746196746358,
+  "rmsDisplacementMeters": 0.10863501127490313,
+  "seamMaxMeters": 1.0203743920184171e-06,
+  "unchanged": "base attributes, indices, nodes, skin, eight shipped targets",
+  "runtime": "real loader, morph before skin, signed body sliders, repeat draw, exact reset",
+  "physicalAndroidQA": false,
+  "stage": 2,
+  "localRuntimeTests": "PASS",
+  "binaryTransfer": "pending GitHub workflow",
+  "release": "not published; main stays V74.00.15"
+}

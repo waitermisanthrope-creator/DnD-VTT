@@ -6,7 +6,7 @@ for(const name of ['character_system','gltf_loader','gltf_character_pipeline'])v
 function accessorBytes(g,i){const a=g.json.accessors[i],v=g.json.bufferViews[a.bufferView];return g.bin.subarray((v.byteOffset||0)+(a.byteOffset||0),(v.byteOffset||0)+(a.byteOffset||0)+a.count*({VEC3:3,VEC2:2,VEC4:4,MAT4:16,SCALAR:1}[a.type])*({5126:4,5125:4,5123:2,5121:1}[a.componentType]));}
 (async()=>{
 win.DNDGLTFCharacterPipeline.install();const url=win.DNDCharacter3D.getRace('human').baseModel;assert(url.startsWith('./app/assets/'),'morph body must be available through OTA');const file=path.join(root,url),source=readGlb(path.join(root,'human-base-rigged.glb')),built=readGlb(file),sm=source.json.meshes[0].primitives[0],bm=built.json.meshes[0].primitives[0];
-assert.strictEqual(built.bytes.readUInt32LE(8),built.bytes.length);assert.strictEqual(bm.targets.length,8);assert.strictEqual(built.json.skins[0].joints.length,53);
+assert.strictEqual(built.bytes.readUInt32LE(8),built.bytes.length);assert.strictEqual(bm.targets.length,9);assert.strictEqual(built.json.skins[0].joints.length,53);
 for(const k of Object.keys(sm.attributes))assert(accessorBytes(source,sm.attributes[k]).equals(accessorBytes(built,bm.attributes[k])),'original '+k+' changed');assert(accessorBytes(source,sm.indices).equals(accessorBytes(built,bm.indices)));assert.deepStrictEqual(built.json.nodes,source.json.nodes);assert.deepStrictEqual(built.json.skins,source.json.skins);
 const a=await win.DNDGLTF.load(url),p=a.parts[0],pipe=win.DNDGLTFCharacterPipeline,rules=a.character.morphChannels;assert.strictEqual(p.basePositions.length,70985*3);assert.strictEqual(Object.keys(rules).length,4);assert(p.meshWeights.every(w=>w===0));
 pipe.deformAsset(a,{});const neutral=new Float32Array(p.deformedPositions);let seamMax=0;
@@ -17,5 +17,11 @@ for(const [axis,rule] of Object.entries(rules))for(const value of [-1,1]){
 }
 assert(seamMax<.001,'UV seam displacements exceed 1 mm: '+seamMax);
 pipe.deformAsset(a,{chest:.7,waist:-.4,hips:1,shoulders:-1});const mixed=new Float32Array(p.deformedPositions);pipe.deformAsset(a,{chest:.7,waist:-.4,hips:1,shoulders:-1});assert.deepStrictEqual(p.deformedPositions,mixed,'repeated draws accumulate deformation');pipe.deformAsset(a,{});assert.deepStrictEqual(p.deformedPositions,neutral,'zero must restore exact neutral');
-console.log('CHARACTER_3D_MORPH_ASSETS_TEST_OK: 8 real targets, 4 signed axes, unchanged base/rig/UV, finite extremes, reset; seam max '+seamMax.toFixed(7)+' m');
+const female=win.DNDCharacter3D.createCharacter({raceId:'human',gender:'female'}),descriptor=win.DNDCharacter3D.getRenderDescriptor(female);
+assert.strictEqual(descriptor.morphWeights['human-female'],1);assert(!Object.hasOwn(female.body,'human-female'),'derived gender must not become a slider');
+pipe.deformAsset(a,descriptor.morphWeights);const femalePositions=new Float32Array(p.deformedPositions);assert(p.morphHandledAxes['human-female']);assert.notDeepStrictEqual(femalePositions,neutral);
+for(const axis of Object.keys(rules))for(const value of [-1,0,1]){female.body[axis]=value;pipe.deformAsset(a,win.DNDCharacter3D.getMorphWeights(female));assert(Array.from(p.deformedPositions).every(Number.isFinite));female.body[axis]=0;}
+pipe.deformAsset(a,win.DNDCharacter3D.getMorphWeights(female));assert.deepStrictEqual(p.deformedPositions,femalePositions,'female sliders reset precisely');
+win.DNDCharacter3D.setGender(female,'male');pipe.deformAsset(a,win.DNDCharacter3D.getMorphWeights(female));assert.deepStrictEqual(p.deformedPositions,neutral,'male toggle must restore original geometry');
+console.log('CHARACTER_3D_MORPH_ASSETS_TEST_OK: 9 real targets, female preset, 4 signed axes, unchanged base/rig/UV, finite extremes, reset; seam max '+seamMax.toFixed(7)+' m');
 })().catch(e=>{console.error(e);process.exitCode=1;});

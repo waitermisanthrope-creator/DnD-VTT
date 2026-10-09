@@ -1,0 +1,54 @@
+name: Prepare female model - stage 2
+on:
+  push:
+    branches: [female-model-stage2]
+    paths:
+      - .github/workflows/female-model-stage2.yml
+      - tools/prepare_makehuman_gender.js
+      - tools/build_makehuman_morphs.js
+      - tools/makehuman_gender_channels.json
+      - app/3dmap/character_system.js
+      - app/3dmap/character_editor_3d.js
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prepare:
+    if: github.ref == 'refs/heads/female-model-stage2'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: female-model-stage2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Get pinned MakeHuman source data
+        run: |
+          git clone --filter=blob:none --no-checkout https://github.com/makehumancommunity/mpfb2.git /tmp/mpfb-source
+          git -C /tmp/mpfb-source fetch --depth 1 origin d0a32e57a7f915cb2f2b95410e2117648c7bbb7e
+          git -C /tmp/mpfb-source sparse-checkout set --no-cone '/src/mpfb/data/3dobjs/base.obj' '/src/mpfb/data/targets/macrodetails/' '/src/mpfb/data/targets/torso/'
+          git -C /tmp/mpfb-source checkout --detach d0a32e57a7f915cb2f2b95410e2117648c7bbb7e
+      - name: Generate and verify the exact female body
+        env:
+          MAKEHUMAN_SOURCE_COMMIT: d0a32e57a7f915cb2f2b95410e2117648c7bbb7e
+        run: |
+          cp app/assets/3d/makehuman/human-body-morphs.glb /tmp/previous-body.glb
+          node tools/prepare_makehuman_gender.js /tmp/mpfb-source/src/mpfb/data human-base-rigged.glb /tmp/female-channels.json
+          node tools/build_makehuman_morphs.js /tmp/mpfb-source/src/mpfb/data human-base-rigged.glb app/assets/3d/makehuman/human-body-morphs.glb /tmp/female-channels.json
+          echo '3628ff521db93f28a12f7e68bf59961dc48d7a2c1a3d0e82b661dafb9131120b  app/assets/3d/makehuman/human-body-morphs.glb' | sha256sum --check
+          node tests/makehuman_gender_fixture_audit.js app/assets/3d/makehuman/human-body-morphs.glb /tmp/previous-body.glb
+          node tests/makehuman_gender_recipe_test.js
+          node tests/makehuman_uv_bridge_test.js
+          node tests/character_3d_foundation_test.js
+          node tests/character_3d_skin_morph_test.js
+          node tests/character_3d_editor_test.js
+          node tests/character_3d_morph_assets_test.js
+      - name: Preserve verified model as an artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: human-body-female-stage2
+          path: app/assets/3d/makehuman/human-body-morphs.glb
+          if-no-files-found: error
+          retention-days: 14
