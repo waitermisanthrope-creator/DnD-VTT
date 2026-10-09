@@ -16,7 +16,7 @@ c.body.chest=.5;
 assert(api.resolveEquipment(c,'plate_test').morphs.chestShape===.4,'equipment morph channel failed');
 const base=new Float32Array([0,0,0,1,1,1]),delta=new Float32Array([1,0,0,0,1,0]);
 const morphed=api.applyMorphTargets(base,[{name:'test',delta}],{test:.5});
-assert(Math.abs(morphed[0]-.5)<1e-6&&Math.abs(morphed[4]-.5)<1e-6,'vertex morph failed');
+assert(Math.abs(morphed[0]-.5)<1e-6&&Math.abs(morphed[4]-1.5)<1e-6,'vertex morph failed');
 const restored=api.deserialize(api.serialize(c));
 assert(restored.raceId==='orc_test'&&restored.equipment.body==='plate_test','serialization failed');
 console.log('CHARACTER_3D_FOUNDATION_TEST_OK');
