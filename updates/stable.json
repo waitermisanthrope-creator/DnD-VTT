@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.16",
+  "version": "74.00.17",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-09",
@@ -9,8 +9,8 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 85279,
-      "sha256": "058a5d4c5661ab7d6a005778cf3e12928a45e846e49e5b601210dad9eeb495fe"
+      "bytes": 85334,
+      "sha256": "690e9d626a5faaeabad82533fec635f8ca0ba740877deac40eee1a2e7f6fff38"
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
@@ -89,8 +89,8 @@
     },
     {
       "path": "app/Logo.js",
-      "bytes": 5396,
-      "sha256": "08a55a3e1c5e991065b8ed94fd89391174be982e7bba4fced3574196a1efb9c5"
+      "bytes": 5742,
+      "sha256": "134d8a11b16203b19b10e9c98bdaecb24d37392df071342da237610488b1de6b"
     },
     {
       "path": "app/Proficiencies.js",
@@ -104,8 +104,8 @@
     },
     {
       "path": "app/Settings.js",
-      "bytes": 61074,
-      "sha256": "3a9453b5d1d69cdc15a10baedc856f7bbc130dd9658151e2bdd7c93bc40af6f4"
+      "bytes": 58233,
+      "sha256": "f84a11e909e885625220d738d0742aa5fbe5f829060aabf833a1ade8f450b9f9"
     },
     {
       "path": "app/Settings_debug.js",
@@ -144,8 +144,8 @@
     },
     {
       "path": "app/app.js",
-      "bytes": 36459,
-      "sha256": "ad642b9625d726254a675fac95bbaacb9f27d2a989eade543e2ed7e9d100478a"
+      "bytes": 36337,
+      "sha256": "6655e8a76e9c978e5c44bc7230e07ce98504066cfebf4526a403e0aa100ffc5e"
     },
     {
       "path": "app/armors.js",
@@ -2424,13 +2424,13 @@
     },
     {
       "path": "app/update_manager_v2.js",
-      "bytes": 18786,
-      "sha256": "d1d983ba2291a88532d0ebbdc8e5e34f4e236e1dfa040ca6fc9946056d9635b3"
+      "bytes": 19013,
+      "sha256": "ff4cdcaced1705feb93b656dcc7454700d5f16c45e643bb64a2d525cc8bb4624"
     },
     {
       "path": "app/update_scene_v2.js",
-      "bytes": 10494,
-      "sha256": "de23c8c18f3e38dd6c35514c1e3c8f2b362e2434dbbedc7d89f77d17c0330f7e"
+      "bytes": 11560,
+      "sha256": "e8e43c81e6e90eb644257796b778218c1888572c066d3f54a36b5555bbe9b8fc"
     },
     {
       "path": "app/vessel_laserllama_v4_runtime.js",
