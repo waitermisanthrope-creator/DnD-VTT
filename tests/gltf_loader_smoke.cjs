@@ -16,12 +16,16 @@ async function run(){
  const sparseJson={...base,buffers:[{byteLength:26}],bufferViews:[{buffer:0,byteOffset:0,byteLength:2},{buffer:0,byteOffset:2,byteLength:24}],accessors:[{componentType:5126,count:3,type:'VEC3',sparse:{count:2,indices:{bufferView:0,componentType:5121},values:{bufferView:1}}}]};
  ctx.fetch=async()=>({ok:true,arrayBuffer:async()=>glb(sparseJson,sparse)});
  const parsed=await loader.load('sparse.glb');assert.equal(parsed.bounds.size[0],1);assert.equal(parsed.bounds.size[1],1);assert.equal(parsed.parts[0].positions.length,9);
+ // GLB with an external secondary buffer: fetch and resolve it before flattening.
+ const externalJson={...base,buffers:[{byteLength:4},{uri:'positions.bin',byteLength:36}],bufferViews:[{buffer:1,byteOffset:0,byteLength:36}],accessors:[{bufferView:0,componentType:5126,count:3,type:'VEC3'}]};
+ let externalCalls=[];ctx.fetch=async url=>{externalCalls.push(url);return {ok:true,arrayBuffer:async()=>url.endsWith('.bin')?Uint8Array.from(positions).buffer:glb(externalJson,Buffer.alloc(4))}};
+ const external=await loader.load('models/external.glb');assert.equal(external.bounds.size[0],1);assert.equal(external.bounds.size[1],1);assert.deepEqual(externalCalls,['models/external.glb','models/positions.bin']);
  // A failed fetch must not poison the loader cache.
  let attempts=0;ctx.fetch=async()=>{attempts++;if(attempts===1)throw Error('temporary');return {ok:true,arrayBuffer:async()=>glb(json,positions)}};
  await assert.rejects(loader.load('retry.glb'),/temporary/);await loader.load('retry.glb');assert.equal(attempts,2);
  // Truncated binary must fail cleanly.
  ctx.fetch=async()=>({ok:true,arrayBuffer:async()=>glb(json,positions).slice(0,25)});
  await assert.rejects(loader.load('truncated.glb'),/Truncated GLB/);
- console.log('PASS: ordinary, sparse, retry, truncated GLB');
+ console.log('PASS: ordinary, sparse, external buffer, retry, truncated GLB');
 }
 run().catch(e=>{console.error(e);process.exitCode=1;});
