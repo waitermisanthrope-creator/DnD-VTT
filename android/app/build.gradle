@@ -1,4 +1,4 @@
-// V74.00.18 — Automatic post-logo OTA with real download/install progress.
+// V74.00.19 — Automatic post-logo OTA with real download/install progress.
 // Launch-title fix included in MainActivity. V74.00.03 packages the real wallpapers directory.
 plugins {
     id "com.android.application"
@@ -75,8 +75,8 @@ android {
         applicationId "com.dndvtt.pocketvtt"
         minSdk 24
         targetSdk 36
-        versionCode 7400018
-        versionName '74.00.18'
+        versionCode 7400019
+        versionName '74.00.19'
     }
 
     signingConfigs {

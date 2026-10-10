@@ -11,6 +11,7 @@ function floorBase(m,i){var y=0;for(var q=0;q<i;q++)y+=Number(m.floors[q].height
 function cameraState(m,cam){var yaw=Number(cam.yaw)||0,pitch=clamp(Number(cam.pitch)||0,-1.35,1.35),pos=cam.position||[m.width/2,2,m.height/2],target=cam.target||[pos[0],pos[1],pos[2]-1];return{pos:pos,target:target,yaw:yaw,pitch:pitch};}
 function project(m,cam,x,y,z){var c=cameraState(m,cam),dx=x-c.pos[0],dy=y-c.pos[1],dz=z-c.pos[2],cy=Math.cos(-c.yaw),sy=Math.sin(-c.yaw),cx=Math.cos(-c.pitch),sx=Math.sin(-c.pitch),rx=dx*cy-dz*sy,rz=dx*sy+dz*cy,ry=dy*cx-rz*sx,rz2=dy*sx+rz*cx;if(rz2>=-.05)return[999,999];var f=1/Math.tan((cam.fov||70)*Math.PI/360);return[(rx/-rz2)*f,(ry/-rz2)*f];}
 function draw(c,m,cam){
+  if(c.__closed)return false;
   var st=c.__dnd3dState;
   if(!st){
     var gl=c.getContext('webgl',{antialias:false,alpha:true,depth:true,stencil:true,powerPreference:'high-performance'})||c.getContext('experimental-webgl',{antialias:false,alpha:true,depth:true,stencil:true});
@@ -23,7 +24,7 @@ function draw(c,m,cam){
     var fragHighp=gl.getShaderPrecisionFormat&&gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER,gl.HIGH_FLOAT),
         fragPrec=fragHighp&&fragHighp.precision>0?'highp':'mediump',
         vs='precision highp float;attribute vec3 p;attribute vec4 col;attribute vec2 uv;uniform mat4 vp;uniform mat4 model;varying vec4 v;varying vec2 vu;void main(){gl_Position=vp*model*vec4(p,1.0);v=col;vu=uv;}',
-        fs='precision '+fragPrec+' float;varying vec4 v;varying vec2 vu;uniform sampler2D tex;uniform float useTex;uniform float alphaMode;uniform float alphaCutoff;void main(){if(useTex>0.5){vec4 t=texture2D(tex,vu);if(alphaMode>1.5){if(t.a<alphaCutoff)discard;gl_FragColor=vec4(t.rgb,1.0);}else if(alphaMode>0.5){if(t.a<0.01)discard;gl_FragColor=t;}else{gl_FragColor=vec4(t.rgb,1.0);}}else{gl_FragColor=v;}}';
+        fs='precision '+fragPrec+' float;varying vec4 v;varying vec2 vu;uniform sampler2D tex;uniform float useTex;uniform float alphaMode;uniform float alphaCutoff;void main(){if(useTex>0.5){vec4 t=texture2D(tex,vu);if(alphaMode>1.5){if(t.a<alphaCutoff)discard;gl_FragColor=vec4(t.rgb*v.rgb,1.0);}else if(alphaMode>0.5){if(t.a<0.01)discard;gl_FragColor=t*v;}else{gl_FragColor=vec4(t.rgb*v.rgb,1.0);}}else{gl_FragColor=v;}}';
     function sh(t,x){var q=gl.createShader(t);gl.shaderSource(q,x);gl.compileShader(q);if(!gl.getShaderParameter(q,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(q)||'shader');return q;}
     var prog=gl.createProgram();gl.attachShader(prog,sh(gl.VERTEX_SHADER,vs));gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(prog);
     if(!gl.getProgramParameter(prog,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(prog)||'program');
@@ -44,7 +45,7 @@ function draw(c,m,cam){
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
   gl.clearDepth(1);
-  gl.clearColor(.025,.025,.03,1);
+  var sky={day:[.40,.65,.88],dusk:[.45,.28,.38],night:[.025,.04,.09]}[m.sky||'day'];gl.clearColor(sky[0],sky[1],sky[2],1);
   gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
 
   var identity=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
@@ -52,17 +53,7 @@ function draw(c,m,cam){
       dark=clamp(Number((m.lighting||{}).darkness)||0,0,1),
       by=floorBase(m,m.currentFloor),fh=Number(f.height)||3;
 
-  function illum(x,z){
-    if(dark<=0)return 1;
-    var best=0;
-    for(var i=0;i<objs.length;i++){
-      var l=objs[i];if(l.type!=='light')continue;
-      var dist=Math.hypot((l.x+.5)-x,(l.y+.5)-z),rad=Math.max(.1,Number(l.radius)||4),
-          power=clamp(Number(l.intensity==null?1:l.intensity),0,1);
-      if(dist<rad)best=Math.max(best,(1-dist/rad)*power);
-    }
-    return clamp(1-dark*(1-best),.12,1);
-  }
+  var fogShade=1;function illum(x,z){return fogShade* g.DNDMapModel.illuminationAt(m,x,z,m.currentFloor);}
   function baseColor(t){return t==='wood'?[.36,.23,.13]:t==='grass'?[.20,.38,.20]:t==='water'?[.12,.30,.42]:[.48,.50,.54];}
   function tileCol(t,x,z){var b=baseColor(t),q=illum(x,z);return[b[0]*q,b[1]*q,b[2]*q,1];}
   function quad(a,b,d,e,col){
@@ -71,7 +62,7 @@ function draw(c,m,cam){
   }
   function texQuad(name,a,b,d,e){
     if(!name)return;
-    var q=texBatches[name]||(texBatches[name]={v:[],u:[]}),uv=[0,0,1,0,0,1,0,0,0,1,1,1];
+    var q=texBatches[name]||(texBatches[name]={v:[],u:[],colors:[]}),uv=[0,0,1,0,1,1,0,0,1,1,0,1];var light=illum((a[0]+e[0])/2,(a[2]+e[2])/2);for(var ci=0;ci<6;ci++)q.colors.push(light,light,light,1);
     q.v.push(a[0],a[1],a[2],b[0],b[1],b[2],e[0],e[1],e[2],a[0],a[1],a[2],e[0],e[1],e[2],d[0],d[1],d[2]);
     for(var j=0;j<uv.length;j++)q.u.push(uv[j]);
   }
@@ -79,7 +70,7 @@ function draw(c,m,cam){
   // но никогда обоими слоями одновременно. Это полностью исключает
   // z-fighting между двумя копиями одного пола/стены на мобильном WebGL.
   function hasReadyTexture(name){
-    var t=st.textures[name+'.png'];
+    var t=st.textures[name+'.png|{}'];
     return !!(t&&t._ready);
   }
   function floorTex(t){
@@ -90,29 +81,26 @@ function draw(c,m,cam){
     return t;
   }
 
-  for(var y=0;y<m.height;y++)for(var x=0;x<m.width;x++){
-    var t=f.tiles[x+','+y];if(t){
-      var ft=floorTex(t);
-      if(!hasReadyTexture(ft))quad([x,by,y],[x+1,by,y],[x,by,y+1],[x+1,by,y+1],tileCol(t,x+.5,y+.5));
-      texQuad(ft,[x,by,y],[x+1,by,y],[x,by,y+1],[x+1,by,y+1]);
-    }
-  }
-  var walls=f.walls||{};
-  Object.keys(walls).forEach(function(k){
-    var p=k.split(','),x=+p[0],z=+p[1],w=walls[k]||{};
-    if(w.n){var wn=w.nTexture||m.selectedWallTexture||'wall_stone_dark';if(!hasReadyTexture(wn))quad([x,by,z],[x+1,by,z],[x,by+fh,z],[x+1,by+fh,z],[.38,.38,.42,1]);texQuad(wn,[x,by,z],[x+1,by,z],[x,by+fh,z],[x+1,by+fh,z]);}
-    if(w.s){var ws=w.sTexture||m.selectedWallTexture||'wall_stone_dark';if(!hasReadyTexture(ws))quad([x,by,z+1],[x+1,by,z+1],[x,by+fh,z+1],[x+1,by+fh,z+1],[.34,.34,.38,1]);texQuad(ws,[x,by,z+1],[x+1,by,z+1],[x,by+fh,z+1],[x+1,by+fh,z+1]);}
-    if(w.w){var ww=w.wTexture||m.selectedWallTexture||'wall_stone_dark';if(!hasReadyTexture(ww))quad([x,by,z],[x,by,z+1],[x,by+fh,z],[x,by+fh,z+1],[.36,.36,.40,1]);texQuad(ww,[x,by,z],[x,by,z+1],[x,by+fh,z],[x,by+fh,z+1]);}
-    if(w.e){var we=w.eTexture||m.selectedWallTexture||'wall_stone_dark';if(!hasReadyTexture(we))quad([x+1,by,z],[x+1,by,z+1],[x+1,by+fh,z],[x+1,by+fh,z+1],[.32,.32,.36,1]);texQuad(we,[x+1,by,z],[x+1,by,z+1],[x+1,by+fh,z],[x+1,by+fh,z+1]);}
+  function surface(texture,a,b,d,e){if(!hasReadyTexture(texture))quad(a,b,d,e,[.4,.4,.4,1]);texQuad(texture,a,b,d,e);}
+  var indices=[m.currentFloor];if(m.showBelow&&!(m.gameplay&&m.fogEnabled))for(var fi=0;fi<m.currentFloor;fi++)indices.push(fi);if(m.showAbove&&!m.gameplay)for(var fi=m.currentFloor+1;fi<m.floors.length;fi++)indices.push(fi);
+  indices.forEach(function(fi){var ff=m.floors[fi],base=floorBase(m,fi),height=Number(ff.height)||3;
+    Object.keys(ff.tiles).forEach(function(k){var xy=k.split(',').map(Number),x=xy[0],z=xy[1];if(m.gameplay&&m.fogEnabled&&m.__vision&&!m.__vision.explored[k])return;fogShade=m.__vision&&!m.__vision.visible[k]?.22:1;surface(floorTex(ff.tiles[k]),[x,base,z],[x+1,base,z],[x,base,z+1],[x+1,base,z+1]);});
+    fogShade=1;g.DNDMapModel.wallSegments(m,fi).forEach(function(w){var keys=[w.x+','+w.y];if(w.side==='n')keys.push(w.x+','+(w.y-1));if(w.side==='s')keys.push(w.x+','+(w.y+1));if(w.side==='w')keys.push((w.x-1)+','+w.y);if(w.side==='e')keys.push((w.x+1)+','+w.y);if(m.gameplay&&m.fogEnabled&&m.__vision){if(!keys.some(k=>m.__vision.explored[k]))return;fogShade=keys.some(k=>m.__vision.visible[k])?1:.22;}if(w.open&&(!w.secret||w.revealed))return;var ax=w.a[0],az=w.a[1],bx=w.b[0],bz=w.b[1],dx=bx-ax,dz=bz-az,len=Math.hypot(dx,dz),nx=-dz/len*.025,nz=dx/len*.025;var side=(cam.position[0]-ax)*(-dz)+(cam.position[2]-az)*dx,tx=side>=0?w.front:w.back;
+      if(w.kind==='window'&&(!w.secret||w.revealed)){surface(tx,[ax,base,az],[bx,base,bz],[ax,base+1,az],[bx,base+1,bz]);surface(tx,[ax,base+2.2,az],[bx,base+2.2,bz],[ax,base+height,az],[bx,base+height,bz]);}
+      else surface(tx,[ax+nx,base,az+nz],[bx+nx,base,bz+nz],[ax+nx,base+height,az+nz],[bx+nx,base+height,bz+nz]);
+    });
   });
+  fogShade=1;if(m.showCeilings!==false&&cam.view!=='top'&&!(!m.gameplay&&cam.position[1]>by+fh))g.DNDMapModel.ceilings(m,m.currentFloor).forEach(function(cel){if(m.__vision&&!m.__vision.visible[cel.key])return;var p=cel.key.split(',').map(Number),x=p[0],z=p[1];surface(floorTex(cel.texture),[x,cel.height,z],[x+1,cel.height,z],[x,cel.height,z+1],[x+1,cel.height,z+1]);});
+  objs=indices.flatMap(function(fi){return(m.floors[fi].objects||[]).filter(o=>!m.__vision||m.__vision.visible[Math.floor(o.x)+','+Math.floor(o.y)]).map(function(o){return Object.assign({},o,{__base:floorBase(m,fi)});});});
+  if(m.placementPreview){var p=m.placementPreview,x=p.x,z=p.y;quad([x,by+.02,z],[x+1,by+.02,z],[x,by+.02,z+1],[x+1,by+.02,z+1],[.4,.9,.65,.4]);}
   for(var oi=0;oi<objs.length;oi++){
-    var o=objs[oi],ox=o.x||0,oz=o.y||0,oy=by+(o.z||0),
+    var o=objs[oi],ox=o.x||0,oz=o.y||0,oy=(o.__base??by)+(o.z||0),
         ow=Math.max(.25,o.w||1),od=Math.max(.25,o.d||1),oh=Math.max(.15,o.h||1),
         cc=o.id===m.selectedObjectId?[.95,.65,.15,1]:o.type==='light'?[1,.78,.25,1]:[.72,.48,.22,1];
     if(o.type==='light'){
       var ls=.18;
       quad([ox+.5-ls,oy+.1,oz+.5-ls],[ox+.5+ls,oy+.1,oz+.5-ls],[ox+.5-ls,oy+.5,oz+.5-ls],[ox+.5+ls,oy+.5,oz+.5-ls],cc);
-    }else{
+    }else if(!o.model){
       quad([ox,oy,oz],[ox+ow,oy,oz],[ox,oy+oh,oz],[ox+ow,oy+oh,oz],cc);
       quad([ox,oy,oz+od],[ox+ow,oy,oz+od],[ox,oy+oh,oz+od],[ox+ow,oy+oh,oz+od],cc);
       quad([ox,oy,oz],[ox,oy,oz+od],[ox,oy+oh,oz],[ox,oy+oh,oz+od],cc);
@@ -141,8 +129,8 @@ function draw(c,m,cam){
     if(b){var md=Math.max(b.size[0],b.size[1],b.size[2]);if(md>2.5)fit=2.5/md;}
     var sx=base*fit,sy=(Number(o.scaleY)||base)*fit,sz=(Number(o.scaleZ)||base)*fit,
         cx=b?b.center[0]:0,cy=b?b.min[1]:0,cz=b?b.center[2]:0,
-        ox=(o.x||0)+.5-cx*sx,oz=(o.y||0)+.5-cz*sz,oy=by+(o.z||0)-cy*sy;
-    return[sx,0,0,0,0,sy,0,0,0,0,sz,0,ox,oy,oz,1];
+        ox=(o.x||0)+.5-cx*sx,oz=(o.y||0)+.5-cz*sz,oy=(o.__base??by)+(o.z||0)-cy*sy;
+    var a=(Number(o.rotation)||0)*Math.PI/180,co=Math.cos(a),si=Math.sin(a);ox=(o.x||0)+.5-co*cx*sx-si*cz*sz;oz=(o.y||0)+.5+si*cx*sx-co*cz*sz;return[co*sx,0,-si*sx,0,0,sy,0,0,si*sz,0,co*sz,0,ox,oy,oz,1];
   }
   function getTex(url,sampler){
     if(!url)return null;
@@ -177,7 +165,7 @@ function draw(c,m,cam){
       t._ready=true;draw(c,m,cam);
     };
     im.onerror=function(){if(window.console)console.warn('Texture:',url);};
-    im.src=url.indexOf('./')===0?url:'./'+url.replace(/^\//,'');st.textures[key]=t;return t;
+    im.src=/^(data:|blob:|https?:|\.\/)/i.test(url)?url:'./'+url.replace(/^\//,'');st.textures[key]=t;return t;
   }
   // Текстуры пола/стен больше не накладываются на цветные копии.
   // Поэтому polygonOffset здесь не нужен и только маскировал проблему.
@@ -187,14 +175,15 @@ function draw(c,m,cam){
   Object.keys(texBatches).forEach(function(name){
     var q=texBatches[name],tt=getTex(name+'.png');
     if(!tt||!tt._ready)return;
-    var pb=gl.createBuffer(),ub=gl.createBuffer();
+    var pb=gl.createBuffer(),ub=gl.createBuffer(),cb=gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER,pb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(q.v),gl.STATIC_DRAW);
     gl.vertexAttribPointer(st.pl,3,gl.FLOAT,false,0,0);gl.enableVertexAttribArray(st.pl);
     gl.bindBuffer(gl.ARRAY_BUFFER,ub);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(q.u),gl.STATIC_DRAW);
     gl.vertexAttribPointer(st.uvLoc,2,gl.FLOAT,false,0,0);gl.enableVertexAttribArray(st.uvLoc);
+    gl.bindBuffer(gl.ARRAY_BUFFER,cb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(q.colors),gl.STATIC_DRAW);gl.enableVertexAttribArray(st.cl);gl.vertexAttribPointer(st.cl,4,gl.FLOAT,false,0,0);
     gl.uniformMatrix4fv(st.modelLoc,false,new Float32Array(identity));
     gl.uniform1f(st.useTexLoc,1);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,tt);
-    gl.drawArrays(gl.TRIANGLES,0,q.v.length/3);
+    gl.drawArrays(gl.TRIANGLES,0,q.v.length/3);gl.deleteBuffer(pb);gl.deleteBuffer(ub);gl.deleteBuffer(cb);
   });
   gl.depthMask(true);
   gl.disable(gl.POLYGON_OFFSET_FILL);
@@ -215,7 +204,7 @@ function draw(c,m,cam){
       }
       gl.bindBuffer(gl.ARRAY_BUFFER,buf.pos);gl.vertexAttribPointer(st.pl,3,gl.FLOAT,false,0,0);gl.enableVertexAttribArray(st.pl);
       gl.uniformMatrix4fv(st.modelLoc,false,new Float32Array(modelMatrix(o,asset)));
-      var cc=matColor(asset,part);gl.disableVertexAttribArray(st.cl);gl.vertexAttrib4f(st.cl,cc[0],cc[1],cc[2],cc[3]);
+      var cc=matColor(asset,part),light=illum(o.x+.5,o.y+.5);cc=[cc[0]*light,cc[1]*light,cc[2]*light,cc[3]];gl.disableVertexAttribArray(st.cl);gl.vertexAttrib4f(st.cl,cc[0],cc[1],cc[2],cc[3]);
       var mm=asset.materials&&asset.materials[part.material||0],tt=mm&&mm.baseColorTexture?getTex(mm.baseColorTexture,mm.baseColorSampler):null;
       var am=mm&&mm.alphaMode==='BLEND'?1:mm&&mm.alphaMode==='MASK'?2:0;
       gl.uniform1f(st.alphaModeLoc,am);gl.uniform1f(st.alphaCutoffLoc,mm&&mm.alphaCutoff!=null?mm.alphaCutoff:0.5);
@@ -233,7 +222,7 @@ function draw(c,m,cam){
   }
 
   for(var mi=0;mi<objs.length;mi++){
-    var mo=objs[mi];if(!mo.model)continue;
+    var mo=objs[mi];if(!mo.model)continue;if(m.gameplay&&m.fogEnabled&&m.__vision&&!m.__vision.visible[Math.floor(mo.x)+','+Math.floor(mo.y)])continue;
     if(st.loaded[mo.model])drawLoadedModel(mo,st.loaded[mo.model]);
     else if(!st.loading[mo.model]&&g.DNDGLTF){
       st.loading[mo.model]=true;
@@ -251,9 +240,8 @@ function draw(c,m,cam){
   gl.uniform1f(st.alphaModeLoc,0);gl.uniform1f(st.alphaCutoffLoc,0.5);
   return true;
 }
-function hitTest(c,m,cam,clientX,clientY){var r=c.getBoundingClientRect(),mx=(clientX-r.left)/r.width*2-1,my=1-(clientY-r.top)/r.height*2,objs=g.DNDMapModel.current(m).objects||[],best=null,bd=999;for(var i=0;i<objs.length;i++){var o=objs[i],p=project(m,cam,(o.x||0)+.5,floorBase(m,m.currentFloor)+(o.z||0)+.8,(o.y||0)+.5),d=Math.hypot(mx-p[0],my-p[1]);if(d<.12&&d<bd){bd=d;best=o.id;}}return best;}
-g.DNDMapRenderer3D={draw:draw,hitTest:hitTest,projectPoint:function(m,cam,x,y,z){return project(m,cam,x,floorBase(m,m.currentFloor)+z,y);}};})(window);
-// 3D texture z-fighting fix
-// V70.37.69: alpha-aware glTF furniture textures; opaque/mask materials do not blend.
-
-// V70.37.73 — robust Quaternius trim-atlas upload: explicit REPEAT/NEAREST + device-size guard.
+function ray(c,m,cam,x,y){var r=c.getBoundingClientRect(),eye=cam.position,forward=norm(sub(cam.target,eye)),right=norm(cross(forward,[0,1,0])),up=cross(right,forward),f=Math.tan((cam.fov||70)*Math.PI/360),mx=((x-r.left)/r.width*2-1)*f*r.width/r.height,my=(1-(y-r.top)/r.height*2)*f;return{origin:eye,direction:norm(forward.map(function(v,i){return v+right[i]*mx+up[i]*my;}))};}
+function pickFloor(c,m,cam,x,y){var r=ray(c,m,cam,x,y),height=floorBase(m,m.currentFloor),t=(height-r.origin[1])/r.direction[1];if(!isFinite(t)||t<0)return null;return{x:Math.floor(r.origin[0]+r.direction[0]*t),y:Math.floor(r.origin[2]+r.direction[2]*t)};}
+function hitInfo(c,m,cam,x,y){var r=ray(c,m,cam,x,y),best=null,depth=Infinity;var st=c.__dnd3dState; (g.DNDMapModel.current(m).objects||[]).forEach(function(o){if(o.type==='light')return;var asset=st&&st.loaded[o.model],b=asset&&asset.bounds,scale=Number(o.scale)||1,fit=b&&Math.max.apply(null,b.size)>2.5?2.5/Math.max.apply(null,b.size):1,w=b?b.size[0]*scale*fit:(o.w||1),h=b?b.size[1]*(o.scaleY||scale)*fit:(o.h||1),d=b?b.size[2]*(o.scaleZ||scale)*fit:(o.d||1),angle=(o.rotation||0)*Math.PI/180,ww=Math.abs(Math.cos(angle))*w+Math.abs(Math.sin(angle))*d,dd=Math.abs(Math.cos(angle))*d+Math.abs(Math.sin(angle))*w,lo=[o.x+.5-ww/2,floorBase(m,m.currentFloor)+(o.z||0),o.y+.5-dd/2],hi=[lo[0]+ww,lo[1]+h,lo[2]+dd],tmin=0,tmax=Infinity;for(var i=0;i<3;i++){if(Math.abs(r.direction[i])<1e-8){if(r.origin[i]<lo[i]||r.origin[i]>hi[i])return;}else{var a=(lo[i]-r.origin[i])/r.direction[i],b1=(hi[i]-r.origin[i])/r.direction[i];tmin=Math.max(tmin,Math.min(a,b1));tmax=Math.min(tmax,Math.max(a,b1));}}if(tmax>=tmin&&tmin<depth){depth=tmin;best={id:o.id,depth:tmin,origin:r.origin,point:r.origin.map(function(v,i){return v+r.direction[i]*tmin;})};}});return best;}
+function dispose(c){if(c)c.__closed=true;var st=c&&c.__dnd3dState;if(!st)return;var gl=st.gl;Object.values(st.loaded).forEach(function(a){a.parts.forEach(function(p){if(p.__gpu3d){gl.deleteBuffer(p.__gpu3d.pos);if(p.__gpu3d.idx)gl.deleteBuffer(p.__gpu3d.idx);delete p.__gpu3d;}if(p.__uv_gpu3d){gl.deleteBuffer(p.__uv_gpu3d.buf);delete p.__uv_gpu3d;}});});Object.values(st.textures).forEach(function(t){gl.deleteTexture(t);});if(st.base){gl.deleteBuffer(st.base.pos);gl.deleteBuffer(st.base.col);}gl.deleteProgram(st.prog);var ext=gl.getExtension('WEBGL_lose_context');if(ext)ext.loseContext();delete c.__dnd3dState;}
+g.DNDMapRenderer3D={projectScreen:function(c,m,cam,p){var vp=mul(perspective((cam.fov||70)*Math.PI/180,c.width/Math.max(1,c.height),.1,500),lookAt(cam.position,cam.target,[0,1,0])),v=[p[0],p[1],p[2],1],r=[0,0,0,0];for(var i=0;i<4;i++)for(var j=0;j<4;j++)r[i]+=vp[j*4+i]*v[j];if(r[3]<=0)return null;return[(r[0]/r[3]+1)/2,(1-r[1]/r[3])/2];},draw:draw,pickFloor:pickFloor,hitInfo:hitInfo,dispose:dispose,hitTest:function(c,m,cam,x,y){var h=hitInfo(c,m,cam,x,y);return h&&h.id;},projectPoint:function(m,cam,x,y,z){return project(m,cam,x,floorBase(m,m.currentFloor)+z,y);}};})(window);

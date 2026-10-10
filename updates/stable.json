@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.18",
+  "version": "74.00.19",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-10",
@@ -9,8 +9,8 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 85514,
-      "sha256": "9be27b6b7345f69e836131c33d534c25fa3a651c4cf4c93f56a4adc2390ef34f"
+      "bytes": 85599,
+      "sha256": "2982970873705021bd266d7936cef4d6872f2043842bc6013fb4ee53462f2b24"
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
@@ -39,13 +39,13 @@
     },
     {
       "path": "app/3dmap/map_editor.js",
-      "bytes": 35133,
-      "sha256": "0c1d38a7c6e9c8b860c954b6fa546d655ebce7ca055d92daee6a020a1a85ab11"
+      "bytes": 38268,
+      "sha256": "f0681db1422571ebafd303712c103ff5e2171163f9bf8aaa8d1911ba97c3e0ed"
     },
     {
       "path": "app/3dmap/map_model.js",
-      "bytes": 7712,
-      "sha256": "7e7580a2b19081e95923c573b13915b07e3877a06c1c7ec52fe4a783dedfe966"
+      "bytes": 7783,
+      "sha256": "2e6f94d5aa10317d55b8644adc6abcfc84e38e204dd9152743c7ce24c3570b34"
     },
     {
       "path": "app/3dmap/map_renderer_2d.js",
@@ -54,8 +54,13 @@
     },
     {
       "path": "app/3dmap/map_renderer_3d.js",
-      "bytes": 18454,
-      "sha256": "38f58a7ff5533e988f39d0a1da45df6b856599eaadf4b1f0cb2d05f169034fc4"
+      "bytes": 22415,
+      "sha256": "ec8dea1db59ef7fb18126243bcff60c100c23eaf884ac10d46282fb04e3192c0"
+    },
+    {
+      "path": "app/3dmap/map_world.js",
+      "bytes": 8530,
+      "sha256": "1d689a7fae5a027bda30bcc3a689c5eae6f5e7b36922306abcb9fe1b8d32a005"
     },
     {
       "path": "app/Ambiences.js",
@@ -2455,7 +2460,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 19013,
-      "sha256": "ff4cdcaced1705feb93b656dcc7454700d5f16c45e643bb64a2d525cc8bb4624"
+      "sha256": "19a78e720fd4f2930bffc74d8533b8e1432e902550e9164f2d4946127a191822"
     },
     {
       "path": "app/update_scene_v2.js",
