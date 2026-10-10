@@ -64,3 +64,7 @@
 ## Подготовленная партия F06 (2026-10-10)
 
 Из `model (1).glb` выделены `manuscript_in_progress.glb` (153128 байт), `gold_leaf_cushion.glb` (30624), `quill_inkhorn_set.glb` (36956), `ruling_board.glb` (98032), `finished_codex.glb` (29792). Модели нормированы и повторно прочитаны через trimesh. Локальный архив `DND_VTT_FURNITURE_READY_06.zip` (89087 байт) содержит пять GLB, инструкцию и каталог с 31 пользовательским предметом (6 `UserFurniture_` + 25 `User_`). **Бинарные файлы не загружены в GitHub; работа в Android не проверена.**
+
+## Подготовленная партия F07 (2026-10-10)
+
+Из `model (1).glb` извлечены 5 GLB: `hanging_oil_lamp.glb` (50924 байт), `kitchen_hearth.glb` (38460), `cooking_cauldron.glb` (34300), `hand_cart.glb` (75012), `brewhouse_tun.glb` (68616). Каждая модель экспортирована в GLB и успешно повторно прочитана trimesh. Локальный архив `DND_VTT_FURNITURE_READY_07.zip` (73932 байта) проверен ZIP CRC; содержит пять GLB, инструкцию и каталог для 36 пользовательских моделей из F01–F07. **В GitHub бинарные файлы ещё не загружены, в Android не проверено.**
