@@ -63,6 +63,11 @@
       "sha256": "67bec80e7232563bebe3dfc82df528aae6bc7b99b61d9e53467639bc8b9903a9"
     },
     {
+      "path": "app/3dmap/stair_navigation.js",
+      "bytes": 934,
+      "sha256": "a0c069a0b4efbfd7c77e88dd0d5ce47dec0901884e0af774ba3b8dae9b5dd157"
+    },
+    {
       "path": "app/3dmap/stress_map.js",
       "bytes": 3272,
       "sha256": "575e1f042601e33a4347c10a6d129f2043bae6368ce94ce138f4847348203658"
