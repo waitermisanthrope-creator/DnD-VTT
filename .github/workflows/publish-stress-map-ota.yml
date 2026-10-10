@@ -1,4 +1,4 @@
-name: Publish stress map OTA 74.00.25
+name: Publish stress map OTA 74.00.26
 on:
   push:
     branches: [main]
@@ -27,10 +27,10 @@ jobs:
           root=pathlib.Path.cwd()
           p=root/'updates/stable.json'
           manifest=json.loads(p.read_text())
-          manifest['version']='74.00.25'
+          manifest['version']='74.00.26'
           manifest['generated']='2026-10-10'
           existing={f['path'] for f in manifest['files']}
-          required=['index.html','app/update_manager_v2.js']
+          required=['index.html','app/update_manager_v2.js','app/data/maps/3d_stress_v740026.json']
           required += [str(f.relative_to(root)) for f in (root/'app/3dmap').glob('*.js')]
           required += [str(f.relative_to(root)) for f in (root/'app/assets/3d/user_furniture').glob('*.glb')]
           existing.update(required)
@@ -53,7 +53,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add updates/stable.json
           if ! git diff --cached --quiet; then
-            git commit -m "release: publish OTA 74.00.25 with stress map and imported furniture"
+            git commit -m "release: publish OTA 74.00.26 with stress map and imported furniture"
             git pull --rebase
             git push
           fi
