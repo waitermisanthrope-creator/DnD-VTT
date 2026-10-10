@@ -91,7 +91,7 @@ function draw(c,m,cam){
     });
   });
   fogShade=1;if(m.showCeilings!==false&&cam.view!=='top')indices.forEach(function(fi){lightFloor=fi;g.DNDMapModel.ceilings(m,fi).forEach(function(cel){if(cam.position[1]>=cel.height||m.__vision&&!m.__vision.visible[cel.key])return;var p=cel.key.split(',').map(Number),x=p[0],z=p[1];surface(floorTex(cel.texture),[x,cel.height,z],[x+1,cel.height,z],[x,cel.height,z+1],[x+1,cel.height,z+1]);});});lightFloor=m.currentFloor;
-  objs=indices.flatMap(function(fi){return(m.floors[fi].objects||[]).filter(o=>!m.__vision||m.__vision.visible[Math.floor(o.x)+','+Math.floor(o.y)]).map(function(o){return Object.assign({},o,{__base:floorBase(m,fi),__floor:fi});});});
+  objs=indices.flatMap(function(fi){return(m.floors[fi].objects||[]).filter(o=>nearCamera(Number(o.x)||0,Number(o.y)||0)&&(!m.__vision||m.__vision.visible[Math.floor(o.x)+','+Math.floor(o.y)])).map(function(o){return Object.assign({},o,{__base:floorBase(m,fi),__floor:fi});});});
   if(m.placementPreview){var p=m.placementPreview,x=p.x,z=p.y;quad([x,by+.02,z],[x+1,by+.02,z],[x,by+.02,z+1],[x+1,by+.02,z+1],[.4,.9,.65,.4]);}
   for(var oi=0;oi<objs.length;oi++){
     lightFloor=objs[oi].__floor;var o=objs[oi],ox=o.x||0,oz=o.y||0,oy=(o.__base??by)+(o.z||0),
