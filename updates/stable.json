@@ -64,8 +64,8 @@
     },
     {
       "path": "app/3dmap/stress_map.js",
-      "bytes": 3269,
-      "sha256": "519e45ea6735fba6fc51776d41f24b95338f9b98eb2066453ceb24add06f3d7d"
+      "bytes": 3272,
+      "sha256": "575e1f042601e33a4347c10a6d129f2043bae6368ce94ce138f4847348203658"
     },
     {
       "path": "app/Ambiences.js",
