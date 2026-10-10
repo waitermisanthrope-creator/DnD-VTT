@@ -184,15 +184,16 @@ function draw(c,m,cam){
   Object.keys(texBatches).forEach(function(name){
     var q=texBatches[name],tt=getTex(name+'.png');
     if(!tt||!tt._ready)return;
-    var pb=gl.createBuffer(),ub=gl.createBuffer(),cb=gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER,pb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(q.v),gl.STATIC_DRAW);
+    var buffers=st.surfaceBuffers||(st.surfaceBuffers={pos:gl.createBuffer(),uv:gl.createBuffer(),col:gl.createBuffer()});
+    gl.bindBuffer(gl.ARRAY_BUFFER,buffers.pos);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(q.v),gl.DYNAMIC_DRAW);
     gl.vertexAttribPointer(st.pl,3,gl.FLOAT,false,0,0);gl.enableVertexAttribArray(st.pl);
-    gl.bindBuffer(gl.ARRAY_BUFFER,ub);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(q.u),gl.STATIC_DRAW);
+    gl.bindBuffer(gl.ARRAY_BUFFER,buffers.uv);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(q.u),gl.DYNAMIC_DRAW);
     gl.vertexAttribPointer(st.uvLoc,2,gl.FLOAT,false,0,0);gl.enableVertexAttribArray(st.uvLoc);
-    gl.bindBuffer(gl.ARRAY_BUFFER,cb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(q.colors),gl.STATIC_DRAW);gl.enableVertexAttribArray(st.cl);gl.vertexAttribPointer(st.cl,4,gl.FLOAT,false,0,0);
+    gl.bindBuffer(gl.ARRAY_BUFFER,buffers.col);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(q.colors),gl.DYNAMIC_DRAW);
+    gl.enableVertexAttribArray(st.cl);gl.vertexAttribPointer(st.cl,4,gl.FLOAT,false,0,0);
     gl.uniformMatrix4fv(st.modelLoc,false,new Float32Array(identity));
     gl.uniform1f(st.useTexLoc,1);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,tt);
-    gl.drawArrays(gl.TRIANGLES,0,q.v.length/3);gl.deleteBuffer(pb);gl.deleteBuffer(ub);gl.deleteBuffer(cb);
+    gl.drawArrays(gl.TRIANGLES,0,q.v.length/3);
   });
   gl.depthMask(true);
   gl.disable(gl.POLYGON_OFFSET_FILL);
