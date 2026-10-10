@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.30",
+  "version": "74.00.21",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-10",
@@ -39,8 +39,8 @@
     },
     {
       "path": "app/3dmap/map_editor.js",
-      "bytes": 44422,
-      "sha256": "36787ede533d3c2ab4eb0fada3be2cd46710d8d7ac4ed8a3e89d1b3e9d12bf92"
+      "bytes": 45961,
+      "sha256": "55794b4f13c175a95983c5af7832bb7236590a691ddccb897308f289b40bd6d4"
     },
     {
       "path": "app/3dmap/map_model.js",
