@@ -167,3 +167,10 @@
 - `9cd8d43`: canvas dimensions now update only on size changes, avoiding per-frame WebGL drawing-buffer resets.
 - `f00958d`: distant GLB furniture culled before async asset loading and GPU rendering.
 - CI pass and Android FPS not yet confirmed. No OTA released in this stage.
+
+### Этап 18 — 2026-10-10: исполнение проверок лестниц
+- При непосредственном выполнении `stair_navigation.js` со стресс-картой обнаружено: исходный порог перехода 0.985/0.015 пропускался между кадрами. Все четыре маршрута не завершались.
+- `201761b`: пороги безопасного входа на площадку расширены до 0.95/0.05.
+- После исправления исполнен код модуля на реальной JSON-карте: 4/4 маршрута проходят. Дополнительно 20/20 комбинаций направления и шага движения 0.01/0.04/0.08/0.12/0.16 проходят.
+- `4b77f49`: регрессия для пяти скоростей добавлена в `tests/stair_navigation.cjs`.
+- Это тест логики, не подтверждение WebGL или FPS на Android. Результат GitHub Actions отдельно не подтверждён; OTA не выпускался.
