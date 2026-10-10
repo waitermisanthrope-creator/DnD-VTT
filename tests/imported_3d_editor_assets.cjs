@@ -1,0 +1,30 @@
+'use strict';
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const storage=new Map(),localStorage={getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v),removeItem:k=>storage.delete(k)};
+const context={window:{},localStorage,Date,Math,JSON};vm.createContext(context);
+for(const file of ['app/3dmap/map_model.js','app/3dmap/gltf_catalog.js'])vm.runInContext(fs.readFileSync(file,'utf8'),context,{filename:file});
+const catalog=context.window.DND3DAssetCatalog,model=context.window.DNDMapModel;
+assert.ok(catalog&&model,'editor catalog and map model must load');
+const imported=Object.entries(catalog).filter(([id])=>id.startsWith('UserRoot_'));
+assert.ok(imported.length>=200,'expected imported assets in catalog');
+assert.ok(!catalog.UserRoot_human_base_rigged,'character rig must not appear as furniture');
+for(const [id,asset] of imported){
+ assert.equal(asset.packName,'Импортированные 3D-модели',id);
+ assert.ok(['furniture','storage','lights','decor','architecture','nature'].includes(asset.category),id);
+ assert.ok(asset.path.startsWith('./app/assets/3d/user_furniture/'),id);
+ assert.ok(asset.path.endsWith('.glb'),id);
+ assert.ok(Number(asset.scale)>0,id);
+}
+const sample=imported.find(([id])=>id==='UserRoot_bed')||imported[0];
+const [assetId,asset]=sample;
+const map=model.normalize(model.clone(model.DEFAULT));
+const obj=model.addObject(map,{x:3,y:4,type:'model',name:asset.nameRus||asset.name,assetId,model:asset.path,scale:asset.scale||1,w:1,d:1,h:1});
+obj.rotation=45;obj.scale=1.5;
+model.save(map);
+const restored=model.load();
+const saved=model.getObject(restored,obj.id);
+assert.ok(saved,'placed object must survive save/load');
+assert.equal(saved.assetId,assetId);assert.equal(saved.model,asset.path);
+assert.equal(saved.x,3);assert.equal(saved.y,4);assert.equal(saved.rotation,45);assert.equal(saved.scale,1.5);
+assert.ok(model.getLibraryManifest(restored).requiredAssets.includes(assetId),'export manifest must include imported asset');
+console.log('PASS: '+imported.length+' imported catalog assets; placement, persistence, rotation, scale and export manifest');
