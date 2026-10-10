@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.29",
+  "version": "74.00.21",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-10",
@@ -3426,6 +3426,11 @@
       "path": "app/data/feats/Feats_xgte.js",
       "bytes": 6729,
       "sha256": "f7579e75033d0a8ebf8163af8767724df3079a95b554b90c31be83586ced0867"
+    },
+    {
+      "path": "app/data/maps/3d_castle_black_rose_v740030.json",
+      "bytes": 177758,
+      "sha256": "4e7afb3b026ad1f288c7511ce443d7eb5b88648dd6891b857e70a445cd53becf"
     },
     {
       "path": "app/data/maps/3d_castle_v740019.json",
