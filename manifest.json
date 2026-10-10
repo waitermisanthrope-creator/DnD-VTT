@@ -1,0 +1,32 @@
+[
+  {
+    "id": "table",
+    "source": "furniture.glb",
+    "meshes": 1,
+    "bytes": 6217412
+  },
+  {
+    "id": "chair",
+    "source": "furniture.glb",
+    "meshes": 1,
+    "bytes": 4643004
+  },
+  {
+    "id": "bed",
+    "source": "furniture.glb",
+    "meshes": 1,
+    "bytes": 5718760
+  },
+  {
+    "id": "closet",
+    "source": "furniture.glb",
+    "meshes": 1,
+    "bytes": 6550260
+  },
+  {
+    "id": "commode",
+    "source": "furniture.glb",
+    "meshes": 1,
+    "bytes": 4845868
+  }
+]
