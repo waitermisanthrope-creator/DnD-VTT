@@ -1,0 +1,59 @@
+name: Publish stress map OTA 74.00.22
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-stress-map-ota.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Validate JavaScript and publish complete OTA manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check app/3dmap/stress_map.js
+          node --check app/3dmap/map_editor.js
+          node --check app/3dmap/map_renderer_3d.js
+          python3 - <<'PY'
+          import pathlib,json,hashlib
+          root=pathlib.Path.cwd()
+          p=root/'updates/stable.json'
+          manifest=json.loads(p.read_text())
+          manifest['version']='74.00.22'
+          manifest['generated']='2026-10-10'
+          existing={f['path'] for f in manifest['files']}
+          required=['index.html','app/update_manager_v2.js']
+          required += [str(f.relative_to(root)) for f in (root/'app/3dmap').glob('*.js')]
+          required += [str(f.relative_to(root)) for f in (root/'app/assets/3d/user_furniture').glob('*.glb')]
+          existing.update(required)
+          result=[]
+          for name in sorted(existing):
+              file=root/name
+              if not file.is_file():
+                  print('SKIP missing:',name)
+                  continue
+              b=file.read_bytes()
+              result.append({'path':name,'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()})
+          assert any(f['path']=='app/3dmap/stress_map.js' for f in result)
+          manifest['files']=result
+          p.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
+          print('OTA files:',len(result))
+          PY
+      - name: Commit OTA manifest
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add updates/stable.json
+          if ! git diff --cached --quiet; then
+            git commit -m "release: publish OTA 74.00.22 with stress map and imported furniture"
+            git pull --rebase
+            git push
+          fi
