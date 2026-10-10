@@ -36,7 +36,7 @@
   };
 
   var CLASS_KEYS = {
-    'воин': 'fighter', 'fighter': 'fighter',
+    'воин': 'fighter', 'fighter': 'fighter','кровавый охотник':'bloodhunter','blood hunter':'bloodhunter','bloodhunter':'bloodhunter',
     'заклинатель клинка':'spellblade', 'spellblade':'spellblade',
     'варвар': 'barbarian', 'barbarian': 'barbarian',
     'бард': 'bard', 'bard': 'bard',
@@ -111,9 +111,9 @@
     17:{count:4,level:5},18:{count:4,level:5},19:{count:4,level:5},20:{count:4,level:5}
   };
 
-  function getStats(hero) {
+  function getStats(hero, raw) {
     var s = (hero && hero.stats) || {};
-    var out = {};
+    var out={},bh=!raw&&global.DNDBloodHunter?global.DNDBloodHunter.abilityBonuses(hero):{};
     Object.keys(STAT_ALIASES).forEach(function (key) {
       var value = 10;
       STAT_ALIASES[key].some(function (alias) {
@@ -121,7 +121,7 @@
         if (hero && hero[alias] !== undefined && hero[alias] !== '') { value = Number(hero[alias]); return true; }
         return false;
       });
-      out[key] = isFinite(value) ? value : 10;
+      out[key]=(isFinite(value)?value:10)+(Number(bh[key])||0);
     });
     return out;
   }
@@ -148,7 +148,7 @@
   function normalize(hero) {
     if (!hero) return hero;
     hero.stats = hero.stats || {};
-    var s = getStats(hero);
+    var s = getStats(hero,true);
     Object.keys(s).forEach(function (k) {
       if (hero.stats[k] === undefined) hero.stats[k] = s[k];
     });
@@ -315,7 +315,7 @@
   function spellSlotTable(hero) {
     normalize(hero);
     var casterLevel = 0;
-    var pactLevel = classLevel(hero, 'warlock');
+    var pactLevel = classLevel(hero, 'warlock');var bhPact=(hero.classes||[]).find(function(c){return classKey(c.name)==='bloodhunter'&&Number(c.level)>=3&&/profane|оскверн/i.test(c.subclass||'');}),bhLevel=bhPact?Number(bhPact.level):0;if(pactLevel&&bhLevel)pactLevel+=Math.floor(bhLevel/3);
     var spellbladeOnly=classLevels(hero).every(function(c){var k=classKey(c.name);return k==='spellblade'||(FULL_CASTERS.indexOf(k)<0&&HALF_CASTERS.indexOf(k)<0&&k!==ARTIFICER_KEY&&!(THIRD_CASTERS.indexOf(k)>=0&&/мистич|eldritch|arcane trickster|трикстер/.test(String(c.subclass||'').toLowerCase())));});
     classLevels(hero).forEach(function(c) {
       var key = classKey(c.name), lvl = Number(c.level) || 0;
@@ -330,7 +330,7 @@
     });
     casterLevel = Math.min(20, Math.max(0, casterLevel));
     var normal = Object.assign({}, FULL_SLOTS[casterLevel] || {});
-    var pact = pactLevel ? (PACT_SLOTS[Math.min(20,pactLevel)] || null) : null;
+    var pact=pactLevel?(PACT_SLOTS[Math.min(20,pactLevel)]||null):bhLevel?{count:bhLevel>=6?2:1,level:bhLevel>=19?4:bhLevel>=13?3:bhLevel>=7?2:1}:null;
     return { casterLevel: casterLevel, normal: normal, pact: pact };
   }
 
@@ -348,7 +348,7 @@
     normalize(hero); Object.keys(hero.resources).forEach(function(id){ var r=hero.resources[id]; if (r && (r.recharge === type || (type === 'long' && r.recharge === 'short'))) r.current = r.max; });
   }
   function applyASI(hero, changes) {
-    normalize(hero); var stats=getStats(hero); var result={};
+    normalize(hero); var stats=getStats(hero,true); var result={};
     Object.keys(changes || {}).forEach(function(k){ var key=STAT_ALIASES[k] ? k : Object.keys(STAT_ALIASES).find(function(x){return STAT_ALIASES[x].indexOf(k)>=0;}); if(!key)return; var before=stats[key], after=Math.min(20,before + Number(changes[k]||0)); hero.stats[key]=after; result[key]={before:before,after:after,applied:after-before}; });
     return result;
   }

@@ -134,7 +134,7 @@
     if(!found&&requested)return {ok:false,error:'Источник заклинания не принадлежит персонажу.'};
     if(found&&num(found.level)<=0)return {ok:false,error:'Источник заклинания не имеет уровня класса.'};
     if(found&&['spellblade','заклинатель клинка'].includes(String(found.name).toLowerCase())&&num(found.level)<2&&num(spell.level)>0)return {ok:false,error:'Заклинания этого класса доступны со 2 уровня.'};
-    var expected=found&&classSpellAbility(found.name);
+    var isBlood=found&&['кровавый охотник','blood hunter','bloodhunter'].indexOf(String(found.name).toLowerCase())>=0;if(isBlood&&(num(found.level)<3||!/profane|оскверн/i.test(found.subclass||'')))return {ok:false,error:'Магия договора доступна только ордену осквернённых душ с 3 уровня.'};var expected=isBlood?String(profile.classFeaturesState&&profile.classFeaturesState.hemocraftAbility||'intelligence').slice(0,3):found&&classSpellAbility(found.name);
     if(ability&&expected&&ability!==expected)return {ok:false,error:'Характеристика заклинания не соответствует выбранному источнику.'};
     if(ability&&!requested&&!classes.some(function(c){return num(c.level)>0&&classSpellAbility(c.name)===ability;}))return {ok:false,error:'Характеристика заклинания не соответствует ни одному классу персонажа.'};
     return {ok:true,className:found&&found.name||requested,ability:expected||ability};

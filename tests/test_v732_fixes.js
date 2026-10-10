@@ -6,11 +6,14 @@ assert.strictEqual(D.invoke('Кровавый охотник', low, 'brandOfCast
 const wrong = hero('Кровавый охотник', 10, 'Орден мутантов');
 assert.strictEqual(D.invoke('Кровавый охотник', wrong, 'hybridTransformation', {}).unavailable, true);
 const h = hero('Кровавый охотник', 10, 'Орден ликантропов');
+h.weapons = [{id:'sword',name:'Меч',damageDice:'1d6',rangeFt:5}];
+assert.strictEqual(D.invoke('Кровавый охотник', h, 'chooseCrimsonRites', {rites:['flame']}).ok, true);
+assert.strictEqual(D.invoke('Кровавый охотник', h, 'chooseBloodCurses', {curses:['binding']}).ok, true);
 h.hpCurrent = 2;
 g.Math.random = () => 0.999; // Deterministic d6 cost of 6 exceeds current HP.
 g.DNDBloodHunter.sync(h);
 const before = JSON.stringify({hp:h.hpCurrent, resources:h.resources});
-const badR = D.invoke('Кровавый охотник', h, 'crimsonRite', {riteType:'fire'});
+const badR = D.invoke('Кровавый охотник', h, 'crimsonRite', {riteType:'fire',weaponId:'sword'});
 assert.strictEqual(badR.ok, false);
 assert.strictEqual(JSON.stringify({hp:h.hpCurrent, resources:h.resources}), before);
 assert(!h.classFeaturesState.crimsonRite, 'failed activation never enables a rite');
@@ -18,13 +21,16 @@ assert(!h.classFeaturesState.crimsonRite, 'failed activation never enables a rit
 const beforeCurse = h.resources.bloodMaledict.current;
 assert.strictEqual(D.invoke('Кровавый охотник', h, 'bloodMaledict', {}).ok, false);
 assert.strictEqual(h.resources.bloodMaledict.current, beforeCurse);
-const amplified = D.invoke('Кровавый охотник', h, 'bloodMaledict', {target:hero('Enemy'), amplify:true});
+const enemy=hero('Enemy');enemy.id='bh-transaction-enemy';
+const amplified = D.invoke('Кровавый охотник', h, 'bloodMaledict', {curse:'binding',target:enemy,distanceFt:10,amplify:true});
 assert.strictEqual(amplified.ok, false);
 assert.strictEqual(h.resources.bloodMaledict.current, beforeCurse);
 assert.strictEqual(h.hpCurrent, 2);
 h.hpCurrent = 30;
 assert.strictEqual(D.invoke('Кровавый охотник', h, 'hybridTransformation', {}).ok, true);
 const spent = h.resources.hybridTransformation.current;
+assert.strictEqual(D.invoke('Кровавый охотник', h, 'hybridTransformation', {}).ok, false, 'ending the form still needs a bonus action');
+g.DNDClassFeatures.resetTurn(h);
 assert.strictEqual(D.invoke('Кровавый охотник', h, 'hybridTransformation', {}).ok, true);
 assert.strictEqual(h.resources.hybridTransformation.current, spent);
 assert.strictEqual(h.classFeaturesState.hybridForm, false);

@@ -15,11 +15,13 @@ D.setEnabled('audit-selected',true);D.registerClass({...pack('Проверяем
 assert.equal(D.getFeature('collision','audit-selected'),null,'replacement removes stale features');
 h=hero('Кровавый охотник',10,'Орден ликантропов');
 assert.equal(C.featureAvailableForCurrentBuild(h,'crimsonRite'),true);
-const before=h.hpCurrent;assert.equal(C.useFeature(h,'crimsonRite',{riteType:'fire'}).ok,true);assert(h.hpCurrent<before);assert.equal(h.hp.current,h.hpCurrent);
+h.weapons=[{id:'audit-sword',name:'Меч',damageDice:'1d6',rangeFt:5}];
+assert.equal(C.useFeature(h,'chooseCrimsonRites',{rites:['flame']}).ok,true);
+const before=h.hpCurrent;assert.equal(C.useFeature(h,'crimsonRite',{riteType:'fire',weaponId:'audit-sword'}).ok,true);assert(h.hpCurrent<before);assert.equal(h.hp.current,h.hpCurrent);
 assert.equal(h.classFeaturesState.hemocraftSaveDC,15,'canonical INT score and proficiency contribute to DC');
 assert.equal(C.attackModifiers(h,{}).extraAttacks,2);
 assert.equal(C.useFeature(h,'fightingStyle',{style:'Стрельба'}).ok,true);
-assert.equal(C.attackModifiers(h,{rangedAttack:true}).bonusAttack,2);
+assert.equal(C.attackModifiers(h,{rangedAttack:true,weaponAttack:true}).bonusAttack,2);
 const low=hero('Кровавый охотник',1,'Орден ликантропов');assert.equal(C.useFeature(low,'crimsonRite',{}).ok,false);assert.equal(C.useFeature(low,'hybridTransformation',{}).ok,false);
 const wrong=hero('Кровавый охотник',10,'Орден мутантов');assert.equal(C.useFeature(wrong,'hybridTransformation',{}).ok,false);
 h=hero('Кровавый охотник',11,'Орден ликантропов');assert.equal(C.useFeature(h,'hybridTransformation',{}).ok,true);h.hpCurrent=5;C.resetTurn(h);assert.equal(h.hpCurrent,8,'turn-start regeneration reaches real runtime');

@@ -48,7 +48,7 @@
     function effectiveDamage(target,amount,type,opts){
     opts=opts||{};
     amount=Math.max(0,Math.floor(num(amount)));
-    var note='';
+    var bhDamage=global.DNDBloodHunter?global.DNDBloodHunter.damageModifiers(target,type,opts):{};opts=Object.assign({},opts,{ignoreResistance:!!(opts.ignoreResistance||bhDamage.ignoreResistance),ignoreImmunity:!!(opts.ignoreImmunity||bhDamage.ignoreImmunity),immunityBecomesResistance:!!(opts.immunityBecomesResistance||bhDamage.immunityBecomesResistance)});var note='';
     type=String(type||'').toLowerCase().trim();
     var homunculusState=target&&target.classFeaturesState||{},homunculusOwner=homunculusState.alchemistHomunculusOwner;
     if(opts.isBomb&&homunculusOwner!=null&&opts.attackerId!=null&&String(homunculusOwner)===String(opts.attackerId))return{raw:amount,amount:0,mode:'owner-bomb-immunity',note:'Гомункул невосприимчив к бомбам создателя',type:type};
@@ -63,7 +63,7 @@
     var raceImmune=(type==='яд'&&(rm.poisonImmunity||venomsmithPoisonImmune));
     var oozeRancherAcidResistance=type==='кислота'&&(target&&target.classes||[]).some(function(cl){return cl&&(cl.name==='Алхимик'||cl.englishName==='Alchemist')&&(cl.subclass==='oozeRancher'||cl.subclass==='Разводчик слизи')&&Number(cl.level)>=3;});
     var raceResistant=(type==='яд'&&rm.poisonResistance)||(type==='огонь'&&rm.fireResistance)||(type==='холод'&&rm.coldResistance)||(type==='кислота'&&(rm.acidResistance||oozeRancherAcidResistance))||(type==='некротический'&&rm.necroticResistance)||(type==='излучение'&&rm.radiantResistance)||(type==='психический'&&rm.psychicResistance);
-    if(!opts.ignoreImmunity&&(raceImmune||hasType(target && target.immunities,type))){if(opts.immunityBecomesResistance)return {raw:amount,amount:Math.floor(amount/2),mode:'immunity-as-resistance',note:'Иммунитет считается сопротивлением',type:type};return {raw:amount,amount:0,mode:'immune',note:'Иммунитет',type:type};}
+    if(!opts.ignoreImmunity&&(bhDamage.immunity||raceImmune||hasType(target && target.immunities,type))){if(opts.immunityBecomesResistance)return {raw:amount,amount:Math.floor(amount/2),mode:'immunity-as-resistance',note:'Иммунитет считается сопротивлением',type:type};return {raw:amount,amount:0,mode:'immune',note:'Иммунитет',type:type};}
     var witchImperil=target&&target.witchImperil&&String(target.witchImperil.damageType||'').toLowerCase()===type;
     var witchElemental=target&&target.witchElementalResistance&&String(target.witchElementalResistance).toLowerCase()===type;
     var grafts=target&&target.classFeaturesState&&Array.isArray(target.classFeaturesState.alchemistGrafts)?target.classFeaturesState.alchemistGrafts:[];var graftResistant=grafts.some(function(g){return g&&['Энергетический шов','Шкура дракона'].indexOf(g.name)>=0&&String(g.resistanceType||'')===String(type||'');});
@@ -72,8 +72,8 @@
     var targetResistances=target&&target.resistances,nonmagicalVariants=['nonmagical '+type,'немагический '+type,'немагическое '+type,type+' from nonmagical attacks',type+' от немагических атак'];
     var nonmagicalResistance=nonmagicalVariants.some(function(v){return hasType(targetResistances,v);});
     var wardenResistant=!!(global.WARDEN_MHP_2024&&global.WARDEN_MHP_2024.resistance(target,type));
-    var resistant=!opts.ignoreResistance&&!witchImperil&&(wardenResistant||raging||pugilistDigDeepResistant||pugilistPsychicResistant||raceResistant||witchElemental||graftResistant||madBomberResistance||slimeAcidResistance||hasType(targetResistances,type)||(!opts.magicalAttack&&nonmagicalResistance));
-    var vulnerable=hasType(target && target.vulnerabilities,type);
+    var resistant=!opts.ignoreResistance&&!witchImperil&&(bhDamage.resistance||wardenResistant||raging||pugilistDigDeepResistant||pugilistPsychicResistant||raceResistant||witchElemental||graftResistant||madBomberResistance||slimeAcidResistance||hasType(targetResistances,type)||(!opts.magicalAttack&&nonmagicalResistance));
+    var vulnerable=!!bhDamage.vulnerability||hasType(target && target.vulnerabilities,type);
     if(resistant&&vulnerable){
       note='Сопротивление и уязвимость взаимно компенсированы';
     }else if(vulnerable){
@@ -100,7 +100,7 @@
     var reaction=null, reactionResult=null;
     var rawParts=normalizeDamageParts(amount,type,opts);
     if(target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs&&target.classFeaturesState.alchemistDebuffs.oilCoated&&rawParts.some(function(p){return p.damageType==='огонь';})){var oilDamage=rollDice('1d6').total;rawParts.push({amount:oilDamage,damageType:'огонь',label:'Масляная бомба'});target.classFeaturesState.alchemistDebuffs.oilCoated=false;}
-    var rawTotal=rawParts.reduce(function(sum,p){return sum+p.amount;},0);
+    var rawTotal=rawParts.reduce(function(sum,p){return sum+p.amount;},0);if(opts.defenderReaction==='blood-curse-exposure'&&global.DNDBloodHunter){var exposureActor=opts.bloodCurseActor||target;opts.__bloodCurseExposure=global.DNDBloodHunter.useFeature(exposureActor,'bloodMaledict',{curse:'exposure',amplify:!!opts.bloodCurseAmplify,target:target,distanceFt:exposureActor===target?0:opts.bloodCurseDistanceFt,visible:opts.visible!==false,pendingDamage:true,damageTypes:rawParts.map(function(p){return p.damageType;})});}
     var counterState=target&&target.classFeaturesState&&target.classFeaturesState.pugilistCounterCounter;
     if(counterState&&opts.attackerId!=null&&String(counterState.targetId||'')===String(opts.attackerId)&&!counterState.consumed){
       var counterReduction=Math.min(rawTotal,Math.max(0,num(counterState.reducedBy))),counterLeft=counterReduction;
@@ -135,6 +135,7 @@
     var damageTaken=r.amount;
     var absorbed=Math.min(temp,damageTaken); writeTempHp(target,temp-absorbed);
     var hpDamage=damageTaken-absorbed; writeHp(target,Math.max(0,hp-hpDamage));
+    var bloodRiteRevival=null;if(hp>0&&readHp(target)===0&&opts.zeroHpReaction==='blood-rite-revival'&&global.DNDBloodHunter){bloodRiteRevival=global.DNDBloodHunter.reviveRite(target,{instantDeath:hpDamage-hp>=num(target.hpMax,target.maxHp)});r.bloodRiteRevival=bloodRiteRevival;}
     var wardenSurvive=null;if(hp>0&&readHp(target)===0&&opts.zeroHpReaction==='warden-survive'&&global.WARDEN_MHP_2024){wardenSurvive=global.WARDEN_MHP_2024.useFeature(target,'survive',{instantDeath:hpDamage-hp>=num(target.hpMax,target.maxHp)});}
     var pugilistLevelEntry=(target&&target.classes||[]).find(function(cl){return cl&&(['Пугилист','Pugilist'].indexOf(String(cl.name))>=0||cl.englishName==='Pugilist');}),pugilistMaxHp=Number(target&&(target.maxHp||target.hpMax||target.maxHP||target.maxHitPoints))||0;
     if(hpDamage>0&&pugilistLevelEntry&&Number(pugilistLevelEntry.level)>=3&&pugilistMaxHp>0&&hp>pugilistMaxHp/2&&readHp(target)<=pugilistMaxHp/2&&!(target.turnResources&&(target.turnResources.reaction===false||Number(target.turnResources.reaction)===0))){
@@ -185,8 +186,9 @@
       // Temporary HP still means the creature took damage for concentration purposes.
       concentration=concentrationCheck(target,damageTaken);
     }
+    if(global.DNDBloodHunter)global.DNDBloodHunter.afterDamage(target,r,opts);if(opts.__bloodCurseExposure)r.bloodCurseExposure=opts.__bloodCurseExposure;
     if(global.DNDClassFeatures&&global.DNDClassFeatures.onDamage)global.DNDClassFeatures.onDamage(target,{amount:damageTaken,hpDamage:hpDamage,damageType:type});
-    return {amount:r.amount+wardAbsorbed,hpDamage:hpDamage,tempAbsorbed:absorbed,wardAbsorbed:wardAbsorbed,hp:readHp(target),tempHp:readTempHp(target),defeated:target.defeated,deathSaveFailures:deathSaveFailures,instantDeath:instantDeath,note:r.note,damageParts:resolvedParts.map(function(p){return {raw:num(p.raw),amount:num(p.amount),damageType:p.damageType,note:p.note||'',wardAbsorbed:num(p.wardAbsorbed)};}),concentration:concentration,wardenSurvive:wardenSurvive,reaction:reactionResult||null,reactionWindow:reaction&&!reactionResult?reaction.window:null};
+    return {amount:r.amount+wardAbsorbed,hpDamage:hpDamage,tempAbsorbed:absorbed,wardAbsorbed:wardAbsorbed,hp:readHp(target),tempHp:readTempHp(target),defeated:target.defeated,deathSaveFailures:deathSaveFailures,instantDeath:instantDeath,note:r.note,damageParts:resolvedParts.map(function(p){return {raw:num(p.raw),amount:num(p.amount),damageType:p.damageType,note:p.note||'',wardAbsorbed:num(p.wardAbsorbed)};}),concentration:concentration,bloodRiteRevival:bloodRiteRevival,bloodCurseExposure:opts.__bloodCurseExposure||null,wardenSurvive:wardenSurvive,reaction:reactionResult||null,reactionWindow:reaction&&!reactionResult?reaction.window:null};
   }
   function concentrationState(target){target.concentration=target.concentration||{active:false,spellId:null,spellName:''};return target.concentration;}
   function breakConcentration(target){var con=concentrationState(target);con.active=false;con.spellId=null;con.spellName='';return con;}
@@ -199,7 +201,7 @@
     con.active=true;con.spellId=spell.id||spell.spellId||spell.name||null;con.spellName=spell.name||spell.spellName||'';
     return con;
   }
-  function concentrationCheck(target,damage,opts){var con=concentrationState(target);if(!con.active||num(damage)<=0)return null;opts=opts||{};var dc=Math.max(10,Math.floor(num(damage)/2)),actor=opts.saveActor||target,statBonus=0;if(global.DNDRules&&actor){statBonus=global.DNDRules.getSaveBonus(actor,'con');}else if(actor&&actor.saveBonuses)statBonus=num(actor.saveBonuses.con,0);var roll=global.DNDRules?global.DNDRules.rollD20('normal'):{result:rollDie(20)};var total=roll.result+statBonus,success=total>=dc;if(!success)breakConcentration(target);return {dc:dc,roll:roll.result,total:total,bonus:statBonus,success:success,spell:con.spellName};}
+  function concentrationCheck(target,damage,opts){var con=concentrationState(target);if(!con.active||num(damage)<=0)return null;opts=opts||{};var dc=Math.max(10,Math.floor(num(damage)/2)),actor=opts.saveActor||target,r=savingThrow(actor,'con',dc,'normal',{concentrationCheck:true});if(!r.success)breakConcentration(target);return {dc:dc,roll:r.roll.result,total:r.total,bonus:r.bonus,success:r.success,spell:con.spellName};}
   // A health cost bypasses shields, resistances and damage reactions. It is
   // separate from incoming damage, while sharing the canonical HP writers.
   function payHitPointCost(target,amount){
@@ -279,7 +281,7 @@
     var h=actor && actor.stats ? actor : null, bonus=0, featureMode=mode||'normal';
     if(h && global.DNDRules){bonus=global.DNDRules.getSaveBonus(h,stat);} else bonus=num(actor && actor.saveBonuses && actor.saveBonuses[stat]);
     ctx=ctx||{};var sm=(global.DNDClassFeatures&&global.DNDClassFeatures.saveModifiers&&actor)?global.DNDClassFeatures.saveModifiers(actor,{stat:stat,dexSaveVisible:stat==='dex',fromSpell:!!(ctx.fromSpell||actor&&actor.saveFromSpell),allyWithinAura:!!(ctx.allyWithinAura||actor&&actor.allyWithinAura),auraSource:ctx.auraSource||null,saveType:ctx.saveType||stat,halfDamageEffect:ctx.halfDamageEffect===true,frightenedEffect:!!ctx.frightenedEffect,courageSource:ctx.courageSource||null,allyWithinCourage:!!ctx.allyWithinCourage,charmEffect:!!ctx.charmEffect,fromFiendOrUndead:!!ctx.fromFiendOrUndead,flashOfGeniusAvailable:!!(actor&&actor.useFlashOfGenius)}):null;
-    if(sm){bonus+=num(sm.bonus);if(sm.advantage)featureMode=featureMode==='disadvantage'?'normal':'advantage';}
+    var curseSaveMods=global.DNDBloodHunter?global.DNDBloodHunter.cursedSaveModifiers(actor,Object.assign({},ctx,{stat:stat})):{};if(sm)bonus+=num(sm.bonus);var saveAdv=featureMode==='advantage'||!!(sm&&sm.advantage)||!!curseSaveMods.advantage,saveDis=featureMode==='disadvantage'||!!(sm&&sm.disadvantage)||!!curseSaveMods.disadvantage;featureMode=saveAdv===saveDis?'normal':saveAdv?'advantage':'disadvantage';
     var normalizedCondition=global.DNDRules&&global.DNDRules.normalizeConditionName?global.DNDRules.normalizeConditionName:null;
     var conds=(actor&&actor.activeConditions)|| (actor&&actor.conditions)||{};
     var autoFail=!!(global.DNDRules&&global.DNDRules.conditionModifiers&&global.DNDRules.conditionModifiers(actor).autoFailStrDex&&(stat==='str'||stat==='dex'));
@@ -298,7 +300,7 @@
   }
   function toggleCondition(target,condition,on){
     if(!target.conditions) target.conditions={};
-    var key=global.DNDRules&&global.DNDRules.normalizeConditionName?global.DNDRules.normalizeConditionName(condition):String(condition||'').trim(); if(!key)return false;
+    var key=global.DNDRules&&global.DNDRules.normalizeConditionName?global.DNDRules.normalizeConditionName(condition):String(condition||'').trim(); if(!key)return false;var willActivate=on===undefined?!target.conditions[key]:!!on;if(willActivate&&(normList(target.conditionImmunities).some(function(x){return (global.DNDRules&&global.DNDRules.normalizeConditionName?global.DNDRules.normalizeConditionName(x):x)===key;})))return false;if(willActivate&&global.DNDBloodHunter&&global.DNDBloodHunter.conditionImmune(target,key))return false;
     if((key==='Отравлен'||key==='Poisoned')&&on!==false&&(target.classes||[]).some(function(cl){return cl&&(cl.name==='Алхимик'||cl.englishName==='Alchemist')&&(cl.subclass==='venomsmith'||cl.subclass==='Веномсмит')&&Number(cl.level)>=10;}))return false;
     target.conditions[key]=on===undefined?!target.conditions[key]:!!on;
     if(target.conditions[key] && ['Недееспособен','Бессознателен','Парализован','Оглушён','Окаменел'].indexOf(key)>=0){
@@ -331,7 +333,7 @@
         if(perfumeSave){perfumeState.alchemistPerfumeLastRound=currentRound;if(target.turnResources)target.turnResources.reaction=false;opts.__perfumeResult={dc:perfumeDC,save:perfumeSave,targetId:attackerId};if(!perfumeSave.success)opts.__perfumeCancelled=true;}
       }
     }
-    if(opts.weapon){opts.weaponAttack=true;opts.meleeOrThrown=opts.meleeOrThrown!==undefined?opts.meleeOrThrown:(opts.weapon.rangeFt==null||Number(opts.weapon.rangeFt)<=5);}
+    if(opts.weapon){if(!opts.damage)opts.damage=opts.weapon.damageDice||opts.weapon.damage;opts.weaponAttack=true;opts.meleeOrThrown=opts.meleeOrThrown!==undefined?opts.meleeOrThrown:(opts.weapon.rangeFt==null||Number(opts.weapon.rangeFt)<=5);}
     if(global.SPELLBLADE_RUNTIME)opts.__spellbladeReservation=global.SPELLBLADE_RUNTIME.takeAttack(attacker,target,opts);
     var featureMod=(global.DNDClassFeatures&&global.DNDClassFeatures.attackModifiers&&attacker)?global.DNDClassFeatures.attackModifiers(attacker,opts):{bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[],pendingOnHit:{}};
     if(opts.defenderReaction==='wardenInterrupt'&&global.WARDEN_MHP_2024){var wi=global.WARDEN_MHP_2024.useFeature(target,'interrupt',{target:attacker,pendingAttack:true,beforeRoll:true,multiAttackAction:opts.multiAttackAction===true,distanceFt:opts.distanceFt});if(wi.ok)return {hit:false,interrupted:true,damage:null,wardenInterrupt:wi};}
@@ -342,7 +344,7 @@
     if(global.WARDEN_MHP_2024&&target&&global.WARDEN_MHP_2024.incomingAttackModifiers(target,{}).removeAdvantage){featureMod.advantage=false;if(mode==='advantage')mode='normal';}
     if(featureMod.advantage && featureMod.disadvantage) mode='normal'; else if(featureMod.advantage) mode='advantage'; else if(featureMod.disadvantage) mode='disadvantage';
     if(global.DNDRules && attacker && attacker.stats && opts.useRules!==false){
-      if(opts.weapon) { var wa=global.DNDRules.weaponAttack(attacker,opts.weapon,mode); opts.__classFeatureMod=featureMod; opts.__attacker=attacker; opts.__forceCritical=!!featureMod.forceCritical; if(featureMod.unarmedDie&&(opts.unarmedAttack||opts.isUnarmed||opts.pugilistWeapon))opts.damage=featureMod.unarmedDie; return resolveAttack(target,wa.roll.result,wa.bonus,opts); }
+      if(opts.weapon) { var wa=global.DNDRules.weaponAttack(attacker,opts.weapon,mode); opts.__classFeatureMod=featureMod; opts.__attacker=attacker; opts.__forceCritical=!!featureMod.forceCritical; if(featureMod.unarmedDie&&(opts.unarmedAttack||opts.isUnarmed||opts.pugilistWeapon))opts.damage=featureMod.unarmedDie; return resolveAttack(target,wa.roll.result,wa.bonus+num(opts.attackBonusAdjustment),opts); }
     }
     var roll=global.DNDRules ? global.DNDRules.rollD20(mode) : {result:rollDie(20),critical:false,fumble:false};
     opts.__classFeatureMod=featureMod; opts.__attacker=attacker; opts.__forceCritical=!!featureMod.forceCritical;
@@ -358,7 +360,7 @@
     var attackerDebuffs=opts&&opts.__attacker&&opts.__attacker.classFeaturesState&&opts.__attacker.classFeaturesState.alchemistDebuffs||{};
     classBonus-=num(attackerDebuffs.attackPenalty,0);
     var witchAttackPenalty=target&&target.witchAttackPenaltyDice?rollDie(6):0;
-    var total=d20+bonus+classBonus-witchAttackPenalty;
+    var total=d20+bonus+classBonus-witchAttackPenalty;var bloodCurseReaction=null;if(global.DNDBloodHunter){total-=global.DNDBloodHunter.cursedAttackPenalty(opts.__attacker);if(opts.defenderReaction==='blood-curse-eyeless'){var curseActor=opts.bloodCurseActor||target,pendingBloodAttack={total:total,critical:!!roll.critical};bloodCurseReaction=global.DNDBloodHunter.useFeature(curseActor,'bloodMaledict',{curse:'eyeless',target:opts.__attacker,attackResult:pendingBloodAttack,amplify:!!opts.bloodCurseAmplify,distanceFt:curseActor===target?opts.distanceFt:opts.bloodCurseDistanceFt,visible:opts.visible!==false});total=pendingBloodAttack.total;}}
     var alchemistDebuffs=target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs||{};
     var coverBonus=(opts&&opts.__classFeatureMod&&opts.__classFeatureMod.ignoreCover)?0:num(opts&&opts.coverBonus, num(target&&target.coverBonus,0));
     var targetGrafts=target&&target.classFeaturesState&&Array.isArray(target.classFeaturesState.alchemistGrafts)?target.classFeaturesState.alchemistGrafts.map(function(x){return typeof x==='string'?x:x&&x.name||'';}):[];
@@ -387,6 +389,7 @@
     if(opts.defenderReaction==='warlordParry'&&global.WARLORD_LASERLLAMA_V330){var pa={total:total,ac:ac,critical:!!roll.critical,hit:!roll.fumble&&total>=ac};warlordParry=global.WARLORD_LASERLLAMA_V330.useFeature(target,'parry',{pendingAttack:true,visible:opts.visible!==false,attackResult:pa,triggerId:opts.triggerId});if(warlordParry.ok)ac=pa.ac;}
     var savantFlourish=null;
     if(opts.defenderReaction==='calculatedFlourish'&&global.savantRuntime){var pendingSavantAttack={total:total,ac:ac,critical:!!roll.critical,hit:!roll.fumble&&total>=ac};savantFlourish=global.savantRuntime.calculatedFlourish(target,{pendingAttack:true,visible:opts.visible!==false,attackResult:pendingSavantAttack,triggerId:opts.triggerId});if(savantFlourish.ok)ac=pendingSavantAttack.ac;}
+    if(global.DNDBloodHunter)ac+=global.DNDBloodHunter.incomingAC(target);
     var hit=!opts.__perfumeCancelled&&!duplicityMiss&&(naturalTwenty || (!roll.fumble && total>=ac));
     var electromagneticShield=null,defenderClasses=target&&target.classes||[],ionizerClass=defenderClasses.find(function(c){return c&&(c.name==='Алхимик'||c.englishName==='Alchemist')&&(c.subclass==='ionizer'||c.subclass==='Ионизатор');});
     var incomingType=String(opts&&opts.damageType||'').toLowerCase(),rangedIncoming=!!(opts&&(opts.rangedAttack||opts.attackKind==='rangedWeapon'||opts.weapon&&Number(opts.weapon.rangeFt)>5));
@@ -394,6 +397,7 @@
       var shieldRoll=rollDie(6);if(shieldRoll===6){hit=false;target.classFeaturesState=target.classFeaturesState||{};target.classFeaturesState.alchemistEnergyCharges=Math.min(10,(Number(target.classFeaturesState.alchemistEnergyCharges)||0)+1);electromagneticShield={roll:shieldRoll,deflected:true,charges:target.classFeaturesState.alchemistEnergyCharges};}
     }
     var out={d20:d20,bonus:bonus,classBonus:classBonus,total:total,ac:ac,hit:hit,critical:!!roll.critical,fumble:!!roll.fumble,damage:null,extraAttacks:Math.max(1,num(opts&&opts.__classFeatureMod&&opts.__classFeatureMod.extraAttacks,1))};
+    if(bloodCurseReaction)out.bloodCurseReaction=bloodCurseReaction;
     if(savantFlourish)out.savantFlourish=savantFlourish;
     if(warlordParry)out.warlordParry=warlordParry;
     if(spellbladeDeflection)out.spellbladeDeflection=spellbladeDeflection;
@@ -401,9 +405,9 @@
     if(electromagneticShield){out.electromagneticShield=electromagneticShield;out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Электромагнитный щит: атака отражена; накоплено 1 заряд.');}
     if(hit && opts.damage){
       var fm=opts.__classFeatureMod||{bonusDamage:0,extraDice:[]};
-      out.damage=fm.noDamage?{total:0,extraDice:[]}:rollDice(opts.damage,!!roll.critical,!!fm.maximizeDamageDice);
+      out.damage=fm.noDamage?{total:0,extraDice:[]}:rollDice(opts.damage,!!roll.critical,!!fm.maximizeDamageDice);if(!fm.noDamage&&global.DNDBloodHunter)global.DNDBloodHunter.adjustWeaponDamage(opts.__attacker,out.damage,opts);
       if(!fm.noDamage&&Array.isArray(fm.extraDice)) fm.extraDice.forEach(function(expr){var er=rollDice(expr,!!roll.critical,!!fm.maximizeDamageDice);out.damage.total+=er.total;(out.damage.extraDice||(out.damage.extraDice=[])).push(er);});
-      if(!fm.noDamage&&Array.isArray(fm.typedExtraDice))fm.typedExtraDice.forEach(function(entry){var er=rollDice(entry.dice,!!roll.critical,!!fm.maximizeDamageDice);out.damage.total+=er.total;(out.damage.typedExtraDice||(out.damage.typedExtraDice=[])).push({total:er.total,type:entry.type,label:entry.label||'Дополнительный урон'});});
+      if(!fm.noDamage&&Array.isArray(fm.typedExtraDice))fm.typedExtraDice.forEach(function(entry){var er=rollDice(entry.dice,!!roll.critical,!!fm.maximizeDamageDice);if(entry.label==='Алый обряд'&&global.DNDBloodHunter)global.DNDBloodHunter.adjustRiteDamage(opts.__attacker,er,opts);out.damage.total+=er.total;(out.damage.typedExtraDice||(out.damage.typedExtraDice=[])).push({total:er.total,type:entry.type,label:entry.label||'Дополнительный урон',magicalAttack:!!entry.magicalAttack});});
       if(!fm.noDamage)out.damage.total+=num(fm.bonusDamage);
       if(!fm.noDamage&&fm.doubleDamageAgainstObjects){out.damage.total*=2;(out.damage.typedExtraDice||[]).forEach(function(p){p.total*=2;});out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Взрывная специализация: двойной урон объекту/сооружению.');}
       var pending=(global.DNDClassFeatures&&global.DNDClassFeatures.consumePendingOnHit&&opts.__attacker)?global.DNDClassFeatures.consumePendingOnHit(opts.__attacker,{hit:true}):{};
@@ -446,7 +450,7 @@
       if(out.assassinDeathStrike&&out.assassinDeathStrike.damageDoubled)out.classFeatureNotes.push('Смертельный удар: урон удвоен');
       if(opts.__spellbladeReservation&&global.SPELLBLADE_RUNTIME){out.spellstrike=global.SPELLBLADE_RUNTIME.completeAttack(opts.__attacker,target,opts.__spellbladeReservation,out);if(out.spellstrike.rollResolved&&out.spellstrike.amount>0){out.damage.total+=out.spellstrike.amount;(out.damage.typedExtraDice||(out.damage.typedExtraDice=[])).push({total:out.spellstrike.amount,type:out.spellstrike.damageType,magicalAttack:true,label:'Заклинательный удар: '+out.spellstrike.spellName});}}
       if(opts.target){
-        var damageOpts={source:'attack',defenderReaction:opts.defenderReaction,zeroHpReaction:opts.zeroHpReaction,attackKind:opts.attackKind||((opts.weapon&&Number(opts.weapon.rangeFt)>5)?'rangedWeapon':'weapon'),visible:opts.visible!==false,projectile:!!opts.projectile,critical:!!roll.critical,attacker:opts.__attacker||null};
+        var damageOpts={source:'attack',silvered:!!(opts.silvered||opts.weapon&&opts.weapon.silvered),bloodCurseActor:opts.bloodCurseActor,bloodCurseAmplify:opts.bloodCurseAmplify,bloodCurseDistanceFt:opts.bloodCurseDistanceFt,brandAllyDistanceFt:opts.brandAllyDistanceFt,defenderReaction:opts.defenderReaction,zeroHpReaction:opts.zeroHpReaction,attackKind:opts.attackKind||((opts.weapon&&Number(opts.weapon.rangeFt)>5)?'rangedWeapon':'weapon'),visible:opts.visible!==false,projectile:!!opts.projectile,critical:!!roll.critical,attacker:opts.__attacker||null};
         var damageParts=[{amount:rollDice(opts.damage,!!roll.critical).total,damageType:opts.damageType||''}];
         // Rebuild the exact rolled base damage used above so resistance is applied per type.
         var typedExtraTotal=(out.damage.typedExtraDice||[]).reduce(function(sum,p){return sum+num(p.total);},0);damageParts[0].amount=out.damage.total-num(fm.bonusDamage)-typedExtraTotal;(out.damage.typedExtraDice||[]).forEach(function(p){damageParts.push({amount:num(p.total),damageType:p.type||opts.damageType||'',magicalAttack:!!p.magicalAttack,label:p.label||'Дополнительный урон'});});
@@ -464,7 +468,7 @@
     if(opts.__spellbladeDeferred)out.spellstrike={ok:false,unsupported:true,reservationRetained:true,message:'Отложенный сетевой урон требует отдельного Spellstrike resolver.'};
     var consumedJinx=opts.__attacker&&opts.__attacker.classFeaturesState&&opts.__attacker.classFeaturesState.accursedJinx;
     if(consumedJinx&&consumedJinx.kind==='attackAgainstChosenCreature'&&String(consumedJinx.chosenCreatureId)===String(target&&(target.id||target.entityId)))delete opts.__attacker.classFeaturesState.accursedJinx;
-    if(global.DNDClassFeatures&&global.DNDClassFeatures.onAttackResult)global.DNDClassFeatures.onAttackResult(opts.__attacker||{}, {sneakApplied:!!(hit&&opts.__classFeatureMod&&Array.isArray(opts.__classFeatureMod.extraDice)&&opts.__classFeatureMod.extraDice.length>0),hit:hit,critical:!!roll.critical,target:target,targetId:String(target&&(target.id||target.entityId)||''),damageResult:out.damageResult||null,attackResult:out,pendingOnHit:pending||{}});
+    if(global.DNDClassFeatures&&global.DNDClassFeatures.onAttackResult)global.DNDClassFeatures.onAttackResult(opts.__attacker||{}, {sneakApplied:!!(hit&&opts.__classFeatureMod&&Array.isArray(opts.__classFeatureMod.extraDice)&&opts.__classFeatureMod.extraDice.length>0),hit:hit,critical:!!roll.critical,target:target,targetId:String(target&&(target.id||target.entityId)||''),damageResult:out.damageResult||null,attackResult:out,pendingOnHit:pending||{},attackContext:opts,brandCastigation:!!opts.brandCastigation,bloodHunterPuppet:!!opts.bloodHunterPuppet});
     var attacker=opts&&opts.__attacker;
     var attackerState=attacker&&attacker.classFeaturesState;
     if(attackerState&&Array.isArray(attackerState.alchemistActiveEffects)){
