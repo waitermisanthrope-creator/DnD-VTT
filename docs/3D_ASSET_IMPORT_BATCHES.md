@@ -60,3 +60,7 @@
 ## Подготовленная партия F05 (2026-10-10)
 
 Из `model (1).glb` выделены 5 GLB: `rush_light_stand.glb` (19052 байт), `parchment_stretching_frame.glb` (55508), `pigment_tray.glb` (39864), `candle_stand.glb` (21372), `bread_oven.glb` (45200). Каждый экспорт повторно открыт trimesh; архив `DND_VTT_FURNITURE_READY_05.zip` (54294 байт) прошёл тест ZIP. В архиве находятся 5 GLB, инструкция и каталог с 26 пользовательскими моделями из F01–F05. **Не загружено в GitHub; работа в Android не проверена.**
+
+## Подготовленная партия F06 (2026-10-10)
+
+Из `model (1).glb` выделены `manuscript_in_progress.glb` (153128 байт), `gold_leaf_cushion.glb` (30624), `quill_inkhorn_set.glb` (36956), `ruling_board.glb` (98032), `finished_codex.glb` (29792). Модели нормированы и повторно прочитаны через trimesh. Локальный архив `DND_VTT_FURNITURE_READY_06.zip` (89087 байт) содержит пять GLB, инструкцию и каталог с 31 пользовательским предметом (6 `UserFurniture_` + 25 `User_`). **Бинарные файлы не загружены в GitHub; работа в Android не проверена.**
