@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.21",
+  "version": "74.00.24",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-10",
@@ -2104,13 +2104,13 @@
     },
     {
       "path": "app/data/maps/3d_town_v740019.json",
-      "bytes": 72971,
-      "sha256": "1fc39135ba71d18c32ef09c91c46b25ef7ce254e6d0847dcddc6af3439f860cd"
+      "bytes": 76690,
+      "sha256": "d88b7bb7da98305126377b18901fe277a3d14cee4c6bc663e2853e0425618351"
     },
     {
       "path": "app/data/maps/3d_village_v740019.json",
-      "bytes": 33855,
-      "sha256": "b12fa4447b5fe2effb4e6ed27ded815aa74245f3561118ac9587019b8982f7ff"
+      "bytes": 37758,
+      "sha256": "f455de9f378f6483078425ec7188cdb1f55b8faed8757e9af3e2986b33841702"
     },
     {
       "path": "app/data/spells/Focuses.js",
