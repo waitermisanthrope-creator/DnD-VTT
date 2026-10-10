@@ -2104,13 +2104,13 @@
     },
     {
       "path": "app/data/maps/3d_town_v740019.json",
-      "bytes": 42678,
-      "sha256": "8dc00207320493d04e6aa5d7f3d4422164467a75e1e8371430987f7e6ec5207c"
+      "bytes": 71031,
+      "sha256": "2d8019d3aa5fdedc26ae6febc1c31c994396f06a4261e4b63f2b78f57f07db21"
     },
     {
       "path": "app/data/maps/3d_village_v740019.json",
-      "bytes": 29210,
-      "sha256": "986d9b9ff6a312f9acc784603e6c1f1f79e86b3f3eee48dff63a5f77fcef4189"
+      "bytes": 33273,
+      "sha256": "68ce346b79e886565be31cb9e19fbe80be3fe558c49a50ff959c288dd92c4b35"
     },
     {
       "path": "app/data/spells/Focuses.js",
