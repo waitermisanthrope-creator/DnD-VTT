@@ -5,6 +5,9 @@ on:
     paths:
       - 'app/3dmap/gltf_loader.js'
       - 'tests/gltf_loader_smoke.cjs'
+      - 'tests/imported_3d_editor_assets.cjs'
+      - 'app/3dmap/gltf_catalog.js'
+      - 'app/3dmap/map_model.js'
       - '.github/workflows/test-gltf-loader.yml'
 permissions:
   contents: read
@@ -20,3 +23,4 @@ jobs:
         run: |
           node --check app/3dmap/gltf_loader.js
           node tests/gltf_loader_smoke.cjs
+          node tests/imported_3d_editor_assets.cjs
