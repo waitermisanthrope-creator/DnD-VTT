@@ -1,12 +1,17 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.23",
+  "version": "74.00.21",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-10",
   "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main",
   "files": [
+    {
+      "path": "index.html",
+      "bytes": 85658,
+      "sha256": "0f2482e91f4bfe0e58bffdbfee37c8113e549b638a53c13e2f21a71efa5f8723"
+    },
     {
       "path": "app/3dmap/character_editor_3d.js",
       "bytes": 25611,
@@ -34,8 +39,8 @@
     },
     {
       "path": "app/3dmap/map_editor.js",
-      "bytes": 43005,
-      "sha256": "e92621212f128a9870e0127fc0fe6d5a36a4b0f76c83ce238e4b36cb8fff4f3a"
+      "bytes": 43675,
+      "sha256": "f94ed9e7608b1432fc8e4306b4952e59bd96556d43c76d20d73278776fd77425"
     },
     {
       "path": "app/3dmap/map_model.js",
@@ -4101,11 +4106,6 @@
       "path": "heat_glow_v2_sprite.png",
       "bytes": 836371,
       "sha256": "98922a27429de20b26099eef5653388354ace703cde5632e7ebabc5b5fefd3a9"
-    },
-    {
-      "path": "index.html",
-      "bytes": 85658,
-      "sha256": "0f2482e91f4bfe0e58bffdbfee37c8113e549b638a53c13e2f21a71efa5f8723"
     },
     {
       "path": "smoke_back_v2_sprite-1.png",
