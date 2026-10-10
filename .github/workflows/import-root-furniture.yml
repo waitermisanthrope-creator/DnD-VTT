@@ -1,0 +1,68 @@
+name: Import furniture uploaded to repository root
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Unpack furniture archives and relocate GLB files
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import pathlib, zipfile, shutil, json, re
+          root=pathlib.Path.cwd()
+          target=root/'app/assets/3d/user_furniture'
+          target.mkdir(parents=True,exist_ok=True)
+          catalog=root/'app/3dmap/gltf_catalog.js'
+          imported={}
+          archives=sorted(root.glob('DND_VTT_FURNITURE_READY_*.zip'))+sorted(root.glob('DND_VTT_REMAINING_GLB_BULK.zip'))
+          for archive in archives:
+              with zipfile.ZipFile(archive) as z:
+                  for item in z.infolist():
+                      if item.is_dir():continue
+                      p=pathlib.PurePosixPath(item.filename)
+                      if '..' in p.parts or p.is_absolute():continue
+                      if p.suffix.lower()=='.glb':
+                          name=p.name
+                          dest=target/name
+                          if not dest.exists():
+                              with z.open(item) as src, dest.open('wb') as dst:shutil.copyfileobj(src,dst)
+                          imported[dest.name]=dest
+          # Preserve any GLB the user uploaded loose into the root.
+          for src in sorted(root.glob('*.glb')):
+              dest=target/src.name
+              if not dest.exists():shutil.copy2(src,dest)
+              imported[dest.name]=dest
+          # Preserve existing catalog entries and add entries for real files only.
+          text=catalog.read_text(encoding='utf8')
+          marker='/* ROOT FURNITURE IMPORT START */'
+          if marker in text:text=text.split(marker)[0].rstrip()+'\n'
+          lines=[marker,'(function(g){"use strict";var c=g.DND3DAssetCatalog,n=g.DND3DAssetNames;if(!c||!n)return;']
+          for filename in sorted(imported):
+              stem=pathlib.Path(filename).stem
+              ident='UserRoot_'+re.sub('[^A-Za-z0-9_]+','_',stem)
+              label=stem.replace('_',' ')
+              item=dict(id=ident,name=label,nameRus=label,path='./app/assets/3d/user_furniture/'+filename,category='furniture',scale=1)
+              k=json.dumps(ident)
+              lines.append('if(!c['+k+']){c['+k+']='+json.dumps(item,ensure_ascii=False)+';n.push('+k+');}')
+          lines.append('})(window);')
+          catalog.write_text(text+'\n'.join(lines)+'\n',encoding='utf8')
+          (root/'docs/ROOT_FURNITURE_IMPORT_REPORT.md').write_text('# Root furniture import\n\n'+str(len(imported))+' GLB files registered.\n\n'+''.join('- '+s+'\n' for s in sorted(imported)),encoding='utf8')
+          print('Registered',len(imported),'GLB files')
+          PY
+      - name: Commit imported models and catalog
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/assets/3d/user_furniture app/3dmap/gltf_catalog.js docs/ROOT_FURNITURE_IMPORT_REPORT.md
+          if ! git diff --cached --quiet; then
+            git commit -m "assets: import furniture uploaded to repository root"
+            git push
+          fi
