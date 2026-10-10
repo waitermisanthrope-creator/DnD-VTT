@@ -32,7 +32,7 @@ function draw(c,m,cam){
       uvLoc:gl.getAttribLocation(prog,'uv'),vpLoc:gl.getUniformLocation(prog,'vp'),
       modelLoc:gl.getUniformLocation(prog,'model'),texLoc:gl.getUniformLocation(prog,'tex'),
       useTexLoc:gl.getUniformLocation(prog,'useTex'),alphaModeLoc:gl.getUniformLocation(prog,'alphaMode'),alphaCutoffLoc:gl.getUniformLocation(prog,'alphaCutoff'),base:null,loaded:Object.create(null),
-      loading:Object.create(null),textures:Object.create(null)};
+      loading:Object.create(null),failed:Object.create(null),textures:Object.create(null)};
     c.__dnd3dState=st;
   }
   var gl=st.gl,prog=st.prog;
@@ -224,13 +224,13 @@ function draw(c,m,cam){
   for(var mi=0;mi<objs.length;mi++){
     var mo=objs[mi];if(!mo.model)continue;if(m.gameplay&&m.fogEnabled&&m.__vision&&!m.__vision.visible[Math.floor(mo.x)+','+Math.floor(mo.y)])continue;
     if(st.loaded[mo.model])drawLoadedModel(mo,st.loaded[mo.model]);
-    else if(!st.loading[mo.model]&&g.DNDGLTF){
+    else if(!st.loading[mo.model]&&!st.failed[mo.model]&&g.DNDGLTF){
       st.loading[mo.model]=true;
       (function(o,path){
         g.DNDGLTF.load(path).then(function(asset){
           st.loaded[path]=asset;delete st.loading[path];draw(c,m,cam);
         }).catch(function(err){
-          delete st.loading[path];if(window.console)console.warn('glTF:',path,err);draw(c,m,cam);
+          delete st.loading[path];st.failed[path]=String(err&&err.message||err);if(window.console)console.warn('glTF:',path,err);draw(c,m,cam);
         });
       })(mo,mo.model);
     }
