@@ -42,6 +42,10 @@ jobs:
           # Preserve existing catalog entries and add entries for real files only.
           text=catalog.read_text(encoding='utf8')
           marker='/* ROOT FURNITURE IMPORT START */'
+          fix_marker='/* USER ASSET CATEGORY FIX v1:'
+          suffix=''
+          if fix_marker in text:
+              suffix=fix_marker+text.split(fix_marker,1)[1]
           if marker in text:text=text.split(marker)[0].rstrip()+'\n'
           lines=[marker,'(function(g){"use strict";var c=g.DND3DAssetCatalog,n=g.DND3DAssetNames;if(!c||!n)return;']
           for filename in sorted(imported):
@@ -52,7 +56,7 @@ jobs:
               k=json.dumps(ident)
               lines.append('if(!c['+k+']){c['+k+']='+json.dumps(item,ensure_ascii=False)+';n.push('+k+');}')
           lines.append('})(window);')
-          catalog.write_text(text+'\n'.join(lines)+'\n',encoding='utf8')
+          catalog.write_text(text+'\n'.join(lines)+'\n'+suffix,encoding='utf8')
           (root/'docs/ROOT_FURNITURE_IMPORT_REPORT.md').write_text('# Root furniture import\n\n'+str(len(imported))+' GLB files registered.\n\n'+''.join('- '+s+'\n' for s in sorted(imported)),encoding='utf8')
           print('Registered',len(imported),'GLB files')
           PY
