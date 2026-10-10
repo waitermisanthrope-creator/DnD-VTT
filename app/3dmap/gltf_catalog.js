@@ -285,3 +285,6 @@ function category(s){
 }
 Object.keys(c).forEach(function(id){var a=c[id];if(!a||!/^UserRoot_/.test(id))return;var type=category(id.slice(9));if(type==='actor'){delete c[id];var at=n.indexOf(id);if(at>=0)n.splice(at,1);return;}a.category=type;});
 })(window);
+
+/* USER ASSET EDITOR INTEGRATION v1: expose imported GLB models as an editor pack. */
+(function(g){'use strict';var c=g.DND3DAssetCatalog;if(!c)return;Object.keys(c).forEach(function(id){if(!/^UserRoot_/.test(id))return;var a=c[id];if(!a)return;a.packName='Импортированные 3D-модели';a.nameRus=a.nameRus&&a.nameRus!==a.name?a.nameRus:a.name;a.path=a.path||('./app/assets/3d/user_furniture/'+id.slice(9)+'.glb');a.scale=Number.isFinite(Number(a.scale))&&Number(a.scale)>0?Number(a.scale):1;});})(window);
