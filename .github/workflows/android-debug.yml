@@ -58,6 +58,10 @@ jobs:
         run: node tests/character_3d_morph_assets_test.js
       - name: Test 3D character editor
         run: node tests/character_3d_editor_test.js
+      - name: Test appearance persistence and real editor morph assets
+        run: |
+          node tests/character_appearance_store_test.js
+          node tests/character_editor_morph_assets_test.js
       - name: Test 3D character skin and morph pipeline
         run: node tests/character_3d_skin_morph_test.js
       - name: Audit real human GLB

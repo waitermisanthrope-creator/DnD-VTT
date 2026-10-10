@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.31",
+  "version": "74.00.22",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-10",
@@ -9,18 +9,33 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 85723,
-      "sha256": "1d97c43895e77f6128c70f9cd978e3b2e770c8e1e7139d736f18f9da52cefd6f"
+      "bytes": 85947,
+      "sha256": "870a309f673f3883c21c1eef62b1e2e9071893b9ec910fdb0f9b5c4606210513"
+    },
+    {
+      "path": "app/3dmap/character_appearance_store.js",
+      "bytes": 2008,
+      "sha256": "1be832ccc280055ec9a0ff771f6bc32a5992ed41bffa04a966cb650ea4af6ace"
+    },
+    {
+      "path": "app/3dmap/character_body_geometry.js",
+      "bytes": 5936,
+      "sha256": "8fb3b65b3578723457afba52d538215d0706a97655c9ae9613d2e78a8d6b54c8"
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
-      "bytes": 25611,
-      "sha256": "16ab84ea18772648566d1448a385f2c9e5772008bb89626e774e3fcedc8b7dc1"
+      "bytes": 29218,
+      "sha256": "a70d1870f1ffdcf16308aefaf1dcc3611cba21ef9a035c89239e72c5327db38b"
+    },
+    {
+      "path": "app/3dmap/character_morph_assets.js",
+      "bytes": 3322,
+      "sha256": "56e88c3ee00ad71f9afb55982e5953f12d91e1702909509beedf3a1ee4ca4ac7"
     },
     {
       "path": "app/3dmap/character_system.js",
-      "bytes": 8833,
-      "sha256": "363e95f708e66bcbe8768af692ae7fb3b46963bfdb5d983ba08d82cd5ea1645a"
+      "bytes": 9081,
+      "sha256": "ba1abc3da5e51257a7d398195f80221f92946b36f6f26156def6fe556e1be20a"
     },
     {
       "path": "app/3dmap/gltf_catalog.js",
@@ -174,8 +189,18 @@
     },
     {
       "path": "app/assets/3d/makehuman/README.md",
-      "bytes": 734,
-      "sha256": "6d87944c33422660e3914a72b1453dca3bb9527fa2f861ca40e5cff61bf4424c"
+      "bytes": 1510,
+      "sha256": "bef0f12958ac0a73de8c1dd2fdc69b6a0a0eb66dc5e6f2a0016387bb62a4fa22"
+    },
+    {
+      "path": "app/assets/3d/makehuman/editor-morphs.bin",
+      "bytes": 2340320,
+      "sha256": "3750f9c8ff476e43443d74935fb987b305a3029a4ef77c0a358b808f629c658b"
+    },
+    {
+      "path": "app/assets/3d/makehuman/editor-morphs.json",
+      "bytes": 11573,
+      "sha256": "b584849b6cb2efdc0ebe4d92ba3347a63b7bd1a58614e859cad1befb61388c34"
     },
     {
       "path": "app/assets/3d/makehuman/human-body-morphs.glb",
@@ -3820,7 +3845,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 19013,
-      "sha256": "2815e729ca147e30184cce4e874294cf31d67a20bcc3bc74e59cbcfac8f687ef"
+      "sha256": "1925af426dd39b9dc1b4222b963eea385adf6d33f923898b0095f443fe63dfd5"
     },
     {
       "path": "app/update_scene_v2.js",

@@ -5,7 +5,7 @@
  */
 (function(g){'use strict';
 var VERSION=1;
-var AXES={height:{min:-1,max:1,default:0},width:{min:-1,max:1,default:0},muscle:{min:-1,max:1,default:0},fat:{min:-1,max:1,default:0},shoulders:{min:-1,max:1,default:0},chest:{min:-1,max:1,default:0},waist:{min:-1,max:1,default:0},hips:{min:-1,max:1,default:0},arms:{min:-1,max:1,default:0},legs:{min:-1,max:1,default:0},head:{min:-1,max:1,default:0}};
+var AXES={height:{min:-1,max:1,default:0},width:{min:-1,max:1,default:0},muscle:{min:-1,max:1,default:0},fat:{min:-1,max:1,default:0},shoulders:{min:-1,max:1,default:0},chest:{min:-1,max:1,default:0},waist:{min:-1,max:1,default:0},hips:{min:-1,max:1,default:0},arms:{min:-1,max:1,default:0},legs:{min:-1,max:1,default:0},head:{min:-1,max:1,default:0},breastSize:{min:-1,max:1,default:0},pectorals:{min:-1,max:1,default:0},armLength:{min:-1,max:1,default:0},legLength:{min:-1,max:1,default:0}};
 var races=Object.create(null),presets=Object.create(null),equipment=Object.create(null),skins=Object.create(null);
 function clone(v){return JSON.parse(JSON.stringify(v));}
 function num(v,d){v=Number(v);return isFinite(v)?v:d;}
@@ -24,7 +24,7 @@ function getBodyState(c){var r=getRace(c.raceId),body=normalizeAxes(c.body,r&&r.
 function setGender(c,gender){if(!c||(gender!=='male'&&gender!=='female'))return false;c.gender=gender;return true;}
 /* Derived render weights keep anatomical presets outside the body sliders and
  * serialized body state. Missing/legacy neutral uses the original male mesh. */
-function getMorphWeights(c){var r=getRace(c.raceId),out=getBodyState(c).body,defs=r&&r.genderMorphs||{},preset=defs[c.gender]||defs.male||{};Object.keys(preset).forEach(function(name){out[name]=clamp(num(preset[name],0),-1,1);});return out;}
+function getMorphWeights(c){var r=getRace(c.raceId),out=getBodyState(c).body,defs=r&&r.genderMorphs||{},preset=defs[c.gender]||defs.male||{};if(c.gender!=='female')out.breastSize=0;Object.keys(preset).forEach(function(name){out[name]=clamp(num(preset[name],0),-1,1);});return out;}
 function resolveMorphChannels(body,channels){var out={};Object.keys(channels||{}).forEach(function(target){var rule=channels[target],src=typeof rule==='string'?rule:rule&&rule.source,scale=typeof rule==='object'&&rule.scale!=null?num(rule.scale,1):1,offset=typeof rule==='object'&&rule.offset!=null?num(rule.offset,0):0;out[target]=clamp(num(body[src],0)*scale+offset,-1,1);});return out;}
 function resolveEquipment(c,item){var e=typeof item==='string'?equipment[item]:item;if(!e)throw Error('Unknown equipment: '+item);var b=getBodyState(c).body,fit=e.fit||{},sx=1+num(fit.width,0)*b.width+num(fit.muscleWidth,0)*b.muscle+num(fit.shoulderWidth,0)*b.shoulders+num(fit.chestWidth,0)*b.chest+num(fit.hipWidth,0)*b.hips,sy=1+num(fit.height,0)*b.height+num(fit.legHeight,0)*b.legs,sz=1+num(fit.depth,0)*b.width+num(fit.fatDepth,0)*b.fat+num(fit.chestDepth,0)*b.chest;return{equipmentId:e.id,assetId:e.assetId,slot:e.slot,scale:[clamp(sx,.5,1.8),clamp(sy,.5,1.8),clamp(sz,.5,1.8)],morphs:resolveMorphChannels(b,e.morphChannels),fit:clone(fit),raceId:c.raceId};}
 function equip(c,id){var e=equipment[id];if(!e)throw Error('Unknown equipment: '+id);c.equipment[e.slot]=e.id;return c;}
@@ -33,7 +33,7 @@ function applyMorphTargets(base,targets,weights){if(!base)return new Float32Arra
 function getRenderDescriptor(c){var r=getBodyState(c),items=[];Object.keys(c.equipment||{}).forEach(function(slot){var e=equipment[c.equipment[slot]];if(e)items.push(resolveEquipment(c,e));});return{version:VERSION,characterId:c.id,raceId:c.raceId,gender:c.gender,skinId:c.skinId||'',skin:resolveSkin(c),body:r.body,morphWeights:getMorphWeights(c),baseModel:r.baseModel,skeleton:r.skeleton,equipment:items,pose:clone(c.pose||{})};}
 function serialize(c){return JSON.stringify(clone(c));}
 function deserialize(v){var c=typeof v==='string'?JSON.parse(v):clone(v);return createCharacter(c);}
-registerRace({id:'human',name:'Человек',baseModel:'./app/assets/3d/makehuman/human-body-morphs.glb?v=74.00.16',skeleton:'humanoid',skinMaterial:0,defaultSkinId:'human_young_male',defaultSkinByGender:{female:'human_young_female',male:'human_young_male'},genderMorphs:{female:{'human-female':1},male:{'human-female':0}},presets:['human_average']});
+registerRace({id:'human',name:'Человек',baseModel:'./app/assets/3d/makehuman/human-body-morphs.glb?v=74.00.16',morphSet:'./app/assets/3d/makehuman/editor-morphs.json?v=74.00.22',skeleton:'humanoid',skinMaterial:0,defaultSkinId:'human_young_male',defaultSkinByGender:{female:'human_young_female',male:'human_young_male'},genderMorphs:{female:{'human-female':1},male:{'human-female':0}},presets:['human_average']});
 registerSkin({id:'human_young_male',name:'Мужская кожа',raceId:'human',texture:'./app/assets/3d/makehuman/skins/young_caucasian_male/young_lightskinned_male_diffuse.png'});
 registerSkin({id:'human_young_female',name:'Женская кожа',raceId:'human',texture:'./app/assets/3d/makehuman/skins/young_caucasian_female/young_lightskinned_female_diffuse.png'});
 registerPreset({id:'human_average',name:'Среднее телосложение',body:{}});

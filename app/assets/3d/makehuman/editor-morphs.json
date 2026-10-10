@@ -1,0 +1,340 @@
+{
+  "schema": 1,
+  "vertexCount": 70985,
+  "basePositionsSha256": "5a5b1a2dbb01216ec0f4e8e21c2854ec645d76eebd7b7d1d2e7005df4ea6dc80",
+  "binary": "editor-morphs.bin",
+  "binarySha256": "3750f9c8ff476e43443d74935fb987b305a3029a4ef77c0a358b808f629c658b",
+  "bytes": 2340320,
+  "channels": {
+    "arms": {
+      "positive": "measure-upperarm-circ-incr",
+      "negative": "measure-upperarm-circ-decr",
+      "scale": 1
+    },
+    "legs": {
+      "positive": "measure-thigh-circ-incr",
+      "negative": "measure-thigh-circ-decr",
+      "scale": 1
+    },
+    "pectorals": {
+      "positive": "torso-muscle-pectoral-incr",
+      "negative": "torso-muscle-pectoral-decr",
+      "scale": 0.7
+    },
+    "armLength": {
+      "positive": "armLength-incr",
+      "negative": "armLength-decr",
+      "scale": 0.65
+    },
+    "legLength": {
+      "positive": "legLength-incr",
+      "negative": "legLength-decr",
+      "scale": 0.65
+    },
+    "head": {
+      "positive": "head-incr",
+      "negative": "head-decr",
+      "scale": 0.35
+    },
+    "breastSize": {
+      "positive": "breast-volume-incr",
+      "negative": "breast-volume-decr",
+      "scale": 0.8
+    }
+  },
+  "targets": [
+    {
+      "name": "measure-upperarm-circ-incr",
+      "offset": 0,
+      "count": 2714
+    },
+    {
+      "name": "measure-upperarm-circ-decr",
+      "offset": 43424,
+      "count": 2714
+    },
+    {
+      "name": "measure-thigh-circ-incr",
+      "offset": 86848,
+      "count": 3037
+    },
+    {
+      "name": "measure-thigh-circ-decr",
+      "offset": 135440,
+      "count": 3013
+    },
+    {
+      "name": "torso-muscle-pectoral-incr",
+      "offset": 183648,
+      "count": 2531
+    },
+    {
+      "name": "torso-muscle-pectoral-decr",
+      "offset": 224144,
+      "count": 2435
+    },
+    {
+      "name": "armLength-incr",
+      "offset": 263104,
+      "count": 21092
+    },
+    {
+      "name": "armLength-decr",
+      "offset": 600576,
+      "count": 21034
+    },
+    {
+      "name": "legLength-incr",
+      "offset": 937120,
+      "count": 17581
+    },
+    {
+      "name": "legLength-decr",
+      "offset": 1218416,
+      "count": 18341
+    },
+    {
+      "name": "head-incr",
+      "offset": 1511872,
+      "count": 23684
+    },
+    {
+      "name": "head-decr",
+      "offset": 1890816,
+      "count": 23684
+    },
+    {
+      "name": "breast-volume-incr",
+      "offset": 2269760,
+      "count": 2218
+    },
+    {
+      "name": "breast-volume-decr",
+      "offset": 2305248,
+      "count": 2192
+    }
+  ],
+  "source": {
+    "project": "makehumancommunity/mpfb2",
+    "commit": "d0a32e57a7f915cb2f2b95410e2117648c7bbb7e",
+    "license": "CC0-1.0",
+    "method": "native Y-up deltas, UV barycentric transfer, scale 0.1",
+    "sourceHashes": {
+      "baseObj": "8e761e6624b8f54536409135d1636da63b32486a90d4897f84e121d144f6fb4c",
+      "arms/measure-upperarm-circ-incr.target.gz": "fb7eafc4c8887700b7091a1bbdf402e47c768f4589e1cf50bc2976e6379f406f",
+      "arms/measure-upperarm-circ-decr.target.gz": "0f915952a09af9e7fc534c753dc5d57076425d459bf3771afcf56d8f64fb78b1",
+      "legs/measure-thigh-circ-incr.target.gz": "4647cb6dae7ed984712e81c5b394cfa545ca6a27d938903ba6cca1b410450cc1",
+      "legs/measure-thigh-circ-decr.target.gz": "c2d3443faab27d443dc7396e118837ea1da587bb81875fa8cdc20dc7721d62bd",
+      "torso/torso-muscle-pectoral-incr.target.gz": "83831fd65509c729bc0b5b3311b5f63bf35a37728e7c22d4425a3c620f2e4069",
+      "torso/torso-muscle-pectoral-decr.target.gz": "75b0f348f885eca2f94d261c1141c6f0fad232659d282dc2aa03001eb7cd62ca",
+      "arms/measure-upperarm-length-incr.target.gz": "72890d3448778f6d25e3c9abd540582ad36598a832c28fd0b1e16073b1b3f962",
+      "arms/measure-lowerarm-length-incr.target.gz": "d725e5b7a35dad30a2a68fae52ea0efad72ed8ac77b186409a2cdc59d3e2368d",
+      "arms/measure-upperarm-length-decr.target.gz": "8f9b7a3494ce54b7560c10cf2ae5b350752a56c6918e28230b9035d43b139afc",
+      "arms/measure-lowerarm-length-decr.target.gz": "c2ebdaf38b9fedc6db399039d95303adc6bc7614f007416f4ace0b573ecfd4c2",
+      "legs/measure-upperleg-height-incr.target.gz": "97b2de6960da43cdcce12d5139db868d96764faba6c8ba454635789b423d8180",
+      "legs/measure-lowerleg-height-incr.target.gz": "82a085a996d2c5a7fd9e44e0333801127992edee9aae7fdac5f17e1f6522a635",
+      "legs/measure-upperleg-height-decr.target.gz": "a0a5390594d3f33fc9f3688af6323e50fbe358bcb46ca5363f24b3fcdea23d07",
+      "legs/measure-lowerleg-height-decr.target.gz": "f9dfdad1d34966804da611eeccad4aace5e03fec3006eef58ba40148a1a93054",
+      "head/head-scale-horiz-incr.target.gz": "671542640aec14d1740c1263deb0e274f3044edec761e6d4171329f0419be084",
+      "head/head-scale-vert-incr.target.gz": "be8b270ec67817578128396433d6e8ab9d530c9d81ea21db92cd1b9627a8110b",
+      "head/head-scale-depth-incr.target.gz": "2e7eb5bf8cf73c780ff66610cb15d97a2496c5c2855612bbf6c6f8fcf36c7ddd",
+      "head/head-scale-horiz-decr.target.gz": "ddec139b27d1f9b7a90f6474450c56897a4e417334af083e87e988fdf94ca343",
+      "head/head-scale-vert-decr.target.gz": "64e86d59a469eeeb0201026880bcd6ebb0cbd590a74b179f58efa879b3772f6c",
+      "head/head-scale-depth-decr.target.gz": "2bc2c4906b12000800c10e938bcab102814a33c2db0fbe021b3bba1be4c356bf",
+      "breast/female-child-minmuscle-averageweight-maxcup-averagefirmness.target.gz": "3f28a72e0c89d67ebaf2932168692823af263894c7c92ec0dba1b4ebd3a006f2",
+      "breast/female-child-averagemuscle-averageweight-maxcup-averagefirmness.target.gz": "ed82d42b9e44132a3a46d0f7ebc7230bd7b75a1793841f5c116046634218f082",
+      "breast/female-young-minmuscle-averageweight-maxcup-averagefirmness.target.gz": "7baf8b2512208ba77aca20549eb3443ed9dc476ed2fe8870dfc4c23bf04eeba5",
+      "breast/female-young-averagemuscle-minweight-maxcup-averagefirmness.target.gz": "31b4dcc0df8fde6e11199e50fac9e0b52155c204fdd5efd74be276fc982fb2c4",
+      "breast/female-young-averagemuscle-averageweight-maxcup-averagefirmness.target.gz": "70e67e082034a80cb6a88abac95d6e11d305f769c98f2d70374dea97fa98c604",
+      "breast/female-child-minmuscle-averageweight-mincup-averagefirmness.target.gz": "93fc7b8f2a28df02b875c6963c0ee4d8916d90d41332c13074e8a8eceb25163a",
+      "breast/female-child-averagemuscle-averageweight-mincup-averagefirmness.target.gz": "85c22a95bf8a1cb76175ba236f83460d43012c52dbf24d92f0821eb387c6c879",
+      "breast/female-young-minmuscle-averageweight-mincup-averagefirmness.target.gz": "f059ed6f7594cfc3f492f1a5ead9a7e4ecb48eb91f042e51d19db9245787211d",
+      "breast/female-young-averagemuscle-minweight-mincup-averagefirmness.target.gz": "f7062509f91c066071f0e79f85fccd4c925f8a8b7007641aa2fe8107f2c16ef4",
+      "breast/female-young-averagemuscle-averageweight-mincup-averagefirmness.target.gz": "d891d82f4514e72f7d5691d8c83b934a195006ecd7b37954158b7b5fd9fb0804"
+    },
+    "compositions": {
+      "measure-upperarm-circ-incr": [
+        {
+          "folder": "arms",
+          "name": "measure-upperarm-circ-incr",
+          "weight": 1
+        }
+      ],
+      "measure-upperarm-circ-decr": [
+        {
+          "folder": "arms",
+          "name": "measure-upperarm-circ-decr",
+          "weight": 1
+        }
+      ],
+      "measure-thigh-circ-incr": [
+        {
+          "folder": "legs",
+          "name": "measure-thigh-circ-incr",
+          "weight": 1
+        }
+      ],
+      "measure-thigh-circ-decr": [
+        {
+          "folder": "legs",
+          "name": "measure-thigh-circ-decr",
+          "weight": 1
+        }
+      ],
+      "torso-muscle-pectoral-incr": [
+        {
+          "folder": "torso",
+          "name": "torso-muscle-pectoral-incr",
+          "weight": 1
+        }
+      ],
+      "torso-muscle-pectoral-decr": [
+        {
+          "folder": "torso",
+          "name": "torso-muscle-pectoral-decr",
+          "weight": 1
+        }
+      ],
+      "armLength-incr": [
+        {
+          "folder": "arms",
+          "name": "measure-upperarm-length-incr",
+          "weight": 1
+        },
+        {
+          "folder": "arms",
+          "name": "measure-lowerarm-length-incr",
+          "weight": 1
+        }
+      ],
+      "armLength-decr": [
+        {
+          "folder": "arms",
+          "name": "measure-upperarm-length-decr",
+          "weight": 1
+        },
+        {
+          "folder": "arms",
+          "name": "measure-lowerarm-length-decr",
+          "weight": 1
+        }
+      ],
+      "legLength-incr": [
+        {
+          "folder": "legs",
+          "name": "measure-upperleg-height-incr",
+          "weight": 1
+        },
+        {
+          "folder": "legs",
+          "name": "measure-lowerleg-height-incr",
+          "weight": 1
+        }
+      ],
+      "legLength-decr": [
+        {
+          "folder": "legs",
+          "name": "measure-upperleg-height-decr",
+          "weight": 1
+        },
+        {
+          "folder": "legs",
+          "name": "measure-lowerleg-height-decr",
+          "weight": 1
+        }
+      ],
+      "head-incr": [
+        {
+          "folder": "head",
+          "name": "head-scale-horiz-incr",
+          "weight": 1
+        },
+        {
+          "folder": "head",
+          "name": "head-scale-vert-incr",
+          "weight": 1
+        },
+        {
+          "folder": "head",
+          "name": "head-scale-depth-incr",
+          "weight": 1
+        }
+      ],
+      "head-decr": [
+        {
+          "folder": "head",
+          "name": "head-scale-horiz-decr",
+          "weight": 1
+        },
+        {
+          "folder": "head",
+          "name": "head-scale-vert-decr",
+          "weight": 1
+        },
+        {
+          "folder": "head",
+          "name": "head-scale-depth-decr",
+          "weight": 1
+        }
+      ],
+      "breast-volume-incr": [
+        {
+          "folder": "breast",
+          "name": "female-child-minmuscle-averageweight-maxcup-averagefirmness",
+          "weight": 0.016863370948721288
+        },
+        {
+          "folder": "breast",
+          "name": "female-child-averagemuscle-averageweight-maxcup-averagefirmness",
+          "weight": 0.10604749602446593
+        },
+        {
+          "folder": "breast",
+          "name": "female-young-minmuscle-averageweight-maxcup-averagefirmness",
+          "weight": 0.11498472090992833
+        },
+        {
+          "folder": "breast",
+          "name": "female-young-averagemuscle-minweight-maxcup-averagefirmness",
+          "weight": 0.014456026286805116
+        },
+        {
+          "folder": "breast",
+          "name": "female-young-averagemuscle-averageweight-maxcup-averagefirmness",
+          "weight": 0.7230963352848845
+        }
+      ],
+      "breast-volume-decr": [
+        {
+          "folder": "breast",
+          "name": "female-child-minmuscle-averageweight-mincup-averagefirmness",
+          "weight": 0.016863370948721288
+        },
+        {
+          "folder": "breast",
+          "name": "female-child-averagemuscle-averageweight-mincup-averagefirmness",
+          "weight": 0.10604749602446593
+        },
+        {
+          "folder": "breast",
+          "name": "female-young-minmuscle-averageweight-mincup-averagefirmness",
+          "weight": 0.11498472090992833
+        },
+        {
+          "folder": "breast",
+          "name": "female-young-averagemuscle-minweight-mincup-averagefirmness",
+          "weight": 0.014456026286805116
+        },
+        {
+          "folder": "breast",
+          "name": "female-young-averagemuscle-averageweight-mincup-averagefirmness",
+          "weight": 0.7230963352848845
+        }
+      ]
+    },
+    "limitations": [
+      "Fixed exported macro composition for breast volume",
+      "Static body; rig is unchanged and animation fitting needs separate QA"
+    ]
+  }
+}
