@@ -3439,8 +3439,8 @@
     },
     {
       "path": "app/data/maps/3d_stress_v740026.json",
-      "bytes": 507045,
-      "sha256": "9c846a750ccb8a6c215bc5e29c6d6174e0f32505f2b226698060d9195f820f0b"
+      "bytes": 506389,
+      "sha256": "fdf66899e0662299715722ed401b8277abaf43c710aa71f36320ec5cbd5d8abf"
     },
     {
       "path": "app/data/maps/3d_tavern_v740019.json",
