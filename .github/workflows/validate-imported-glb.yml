@@ -1,0 +1,48 @@
+name: Validate imported GLB assets
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'app/assets/3d/user_furniture/**'
+      - 'app/3dmap/gltf_catalog.js'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate GLB headers, JSON, buffers and referenced catalog files
+        run: |
+          python3 - <<'PY'
+          import pathlib,struct,json,re,sys
+          root=pathlib.Path('app/assets/3d/user_furniture')
+          files=sorted(root.glob('*.glb'))
+          errors=[]
+          for p in files:
+              try:
+                  data=p.read_bytes()
+                  if len(data)<20:raise ValueError('too short')
+                  magic,version,total=struct.unpack_from('<III',data)
+                  if magic!=0x46546c67 or version!=2 or total!=len(data):raise ValueError('invalid GLB header or length')
+                  pos=12; gltf=None; binary=0
+                  while pos<total:
+                      if pos+8>total:raise ValueError('incomplete chunk header')
+                      length,kind=struct.unpack_from('<II',data,pos);pos+=8
+                      if pos+length>total:raise ValueError('truncated chunk')
+                      if kind==0x4e4f534a:gltf=json.loads(data[pos:pos+length].decode('utf8').rstrip(' \t\r\n\0'))
+                      if kind==0x004e4942:binary=length
+                      pos+=length
+                  if not gltf:raise ValueError('missing glTF JSON')
+                  if not gltf.get('meshes'):raise ValueError('no meshes')
+                  for i,b in enumerate(gltf.get('buffers',[])):
+                      if not b.get('uri') and b.get('byteLength',0)>binary:raise ValueError('BIN buffer too small: '+str(i))
+              except Exception as e:errors.append(f'{p}: {e}')
+          catalog=pathlib.Path('app/3dmap/gltf_catalog.js').read_text(encoding='utf8')
+          refs=set(re.findall(r'app/assets/3d/user_furniture/([^"\s]+\.glb)',catalog))
+          names={p.name for p in files}
+          for name in sorted(refs-names):errors.append('Missing referenced model: '+name)
+          print('GLB files:',len(files),'catalog references:',len(refs),'errors:',len(errors))
+          for err in errors[:100]:print('ERROR:',err)
+          if errors:sys.exit(1)
+          PY
