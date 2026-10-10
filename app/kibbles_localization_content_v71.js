@@ -223,6 +223,10 @@
     Object.keys(core).forEach(function(cn){
       var p=g.DNDContent.getClass(cn); if(!p)return;
       p.displayName=CLASS_I18N[cn].ru; p.displayIcon=CLASS_I18N[cn].icon; p.localizedRole=CLASS_I18N[cn].role;
+      // Canonical runtimes already supply translated names and executable IDs.
+      // Adding source-only entries here creates duplicate subclasses and actions
+      // with no handler, and can replace the metadata of real runtime features.
+      if(p.authoritativeSubclasses){p.localizedCatalog=true;return;}
       core[cn].forEach(function(a){addFeature(p,{id:'src-'+cn.toLowerCase()+'-'+String(a[0]).toLowerCase().replace(/[^a-z0-9а-яё]+/gi,'-'),name:a[1],level:a[0],action:a[3],description:a[2],sourceKey:cn+':'+a[0]+':'+a[1],source:'KibblesTasty public class source'});});
       var subByName={}; (p.subclasses||[]).forEach(function(s){subByName[s.name]=s;});
       (subclasses[cn]||[]).forEach(function(s){

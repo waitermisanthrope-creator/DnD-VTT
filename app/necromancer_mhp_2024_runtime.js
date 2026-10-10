@@ -116,8 +116,17 @@ const features={1:["Заклинания","Могильное касание"],2
 const levels={}; for(let i=1;i<=20;i++) levels[i]={features:features[i]||[],proficiencyBonus:PB[i],cantrips:CAN[i],preparedSpells:PREP[i],thralls:THR[i],crTotal:CR[i],spellSlots:SLOTS[i]};
 const progression={className:"Некромант",englishName:"Necromancer",edition:"5.5E",source:"Mage Hand Press — Necromancer 2024 / Complete Necromancer 2024",status:"implemented_2024_runtime",hitDie:6,primaryStat:"intelligence",savingThrows:["constitution","intelligence"],armor:[],weapons:["simple"],tools:[],skills:{choose:2,from:["arcana","deception","history","intimidation","investigation","medicine","persuasion","religion","stealth"]},multiclassRequirement:{intelligence:13},subclassFeatureLevels:[3,6,10,20],levels,spellcasting:{type:"full_caster",ability:"intelligence",cantripsByLevel:CAN,preparedByLevel:PREP,slotsByLevel:SLOTS,spells},subclasses};
 function getState(h){h.classFeaturesState=h.classFeaturesState||{};h.classFeaturesState.necromancer=h.classFeaturesState.necromancer||{};return h.classFeaturesState.necromancer;}
-function classLevel(h){return Math.max(1,Math.min(20,Number(h&&h.level)||Number((h&&h.classes||[]).find(function(c){return c.name==='Некромант'||c.englishName==='Necromancer';})?.level)||1));}
-function syncState(h){var l=classLevel(h),s=getState(h);h.resources=h.resources||{};var r=h.resources.charnelTouch;if(!r||r.max!==l*5)h.resources.charnelTouch={max:l*5,current:r?Math.min(Number(r.current)||0,l*5):l*5,recharge:'long'};var u=h.resources.undyingServitude;var um=l>=18?1:0;if(!u||u.max!==um)h.resources.undyingServitude={max:um,current:u?Math.min(Number(u.current)||0,um):um,recharge:'long'};s.charnelTouchMax=l*5;s.thrallLimit=THR[l];s.deadSpaceCapacity=12;s.darkArcanaReady=l>=2;s.animateDeadReady=l>=5;return s;}
+function classEntry(h){return (h&&h.classes||[]).find(c=>c&&(['Некромант','Necromancer'].includes(c.name)||c.englishName==='Necromancer'));}
+function classLevel(h){var c=classEntry(h);return Math.max(0,Math.min(20,c?Number(c.level)||0:Array.isArray(h&&h.classes)?0:Number(h&&h.level)||1));}
+function intMod(h){var a=h.abilityScores||h.stats||h.abilities||h;return Math.floor((Number(a.intelligence??a.int??10)-10)/2);}
+function syncState(h){
+ var l=classLevel(h),s=getState(h);if(!l)return s;h.resources=h.resources||{};
+ [['charnelTouch',l*5],['undyingServitude',l>=18?1:0]].forEach(([id,max])=>{var r=h.resources[id];h.resources[id]={max,current:r?Math.min(Math.max(0,Number(r.current)||0),max):max,recharge:'long'};});
+ var c=classEntry(h),chosen=c&&c.subclass,key=order.find(k=>k===chosen||subclasses[k].name===chosen);if(key)s.graveAmbition=key;else if(c)s.graveAmbition=null;
+ s.thrallLimit=THR[l];s.crTotal=CR[l];s.deadSpaceCapacity=12;s.thrallIds=s.thrallIds||[];s.deadSpace=s.deadSpace||[];
+ h.spellSaveDC=8+(Number(h.proficiencyBonus)||PB[l])+intMod(h);h.spellAttackBonus=(Number(h.proficiencyBonus)||PB[l])+intMod(h);
+ return s;
+}
 function spend(h,id,n){var r=h.resources&&h.resources[id];n=Math.max(0,Number(n)||0);if(!r||r.current<n)return false;r.current-=n;return true;}
 function subclassFeatureEffect(h,sub,level,ctx){
  ctx=ctx||{};var l=classLevel(h),s=getState(h),id=Object.keys(subclasses).find(function(k){return subclasses[k]===sub;})||sub.id||'';
@@ -138,17 +147,92 @@ function subclassFeatureEffect(h,sub,level,ctx){
  E.toymaker={3:{effect:{slaymateRitual:true,deadSpaceSlots:2,thrallSlots:2},message:'🧸 Игрушечник активирован.'},6:{effect:{soulToyConversion:true},message:'🧸 Запечатление души готово.'},10:{effect:{toyArmy:true},message:'🧸 Армия игрушек готова.'},20:{effect:{toySoulVault:true,immortalityAnchor:true},message:'🧸 Великий игрушечник активирован.'}};
  var byLevel=E[id]&&E[id][Number(level)];if(!byLevel)return null;return Object.assign({ok:true,subclass:id,level:Number(level)},byLevel);
 }
-function useFeature(h,id,ctx){ctx=ctx||{};syncState(h);var l=classLevel(h),s=getState(h),fid=String(id||'').replace(/^necromancer-/,'');
- if(fid==='charnelTouch'||fid==='graveTouch'){var n=Math.max(1,Math.min(Number(ctx.points)||1,Math.min(5*(Number(h.proficiencyBonus)||PB[l]),5*l)));var t=ctx.target;if(!t)return{ok:false,reason:'Для Могильного касания нужна цель.'};if(!spend(h,'charnelTouch',n))return{ok:false,reason:'Недостаточно очков Могильного касания.'};return{ok:true,target:t.id,effect:{damage:n+'d8',damageType:'necrotic',spellAttack:true,criticalDoubles:true,refundOnMiss:true},message:'☠️ Могильное касание: '+n+'d8 некротического урона.'};}
- if(fid==='darkArcana'){if(l<2)return{ok:false,reason:'Тёмная аркана доступна со 2 уровня.'};var sl=Math.max(1,Number(ctx.spellLevel)||1);if(sl>9)return{ok:false,reason:'Недопустимый круг.'};if(!spend(h,'charnelTouch',Math.min(5*l,sl)))return{ok:false,reason:'Недостаточно Могильного касания.'};return{ok:true,effect:{spellSlotToBonus:true,slotLevel:sl,bonusInt:true,extraDamage:'1d8'},message:'🕯️ Тёмная аркана применена.'};}
- if(fid==='animateDead'||fid==='raiseDead'){if(l<5)return{ok:false,reason:'Оживление мёртвых доступно с 5 уровня.'};return{ok:true,effect:{summonUndead:true,types:['Skeleton','Spirit','Zombie'],thrall:true,rangeFt:30},message:'💀 Оживление мёртвых: создана нежить.'};}
- if(fid==='deadSpace'){if(l<2)return{ok:false,reason:'Мёртвое пространство доступно со 2 уровня.'};var mode=ctx.mode||'store';return{ok:true,effect:{deadSpace:true,capacity:12,mode:mode},message:'⚰️ Мёртвое пространство: вместимость 12 слотов.'};}
- if(fid==='undyingServitude'){if(l<18)return{ok:false,reason:'Неумирающее служение доступно с 18 уровня.'};if(!spend(h,'undyingServitude',1))return{ok:false,reason:'Неумирающее служение уже использовано.'};return{ok:true,effect:{restoreUndead:true,returnAtHP:1},message:'💀 Неумирающее служение восстановлено.'};}
- if(fid==='subclassFeature'||fid==='graveAmbition'){var subId=ctx.subclass;var sub=subclasses[subId]||Object.keys(subclasses).map(function(k){return subclasses[k];}).find(function(x){return x.name===subId||x.id===subId;});if(!sub)return{ok:false,reason:'Сначала выберите Могильное стремление.'};var levelReq=Number(ctx.level||ctx.featureLevel||3),entry=sub.features[levelReq];if(!entry)return{ok:false,reason:'Особенность подкласса на этом уровне не найдена.'};var fx=subclassFeatureEffect(h,sub,levelReq,ctx);if(fx)return fx;return{ok:true,passive:true,effect:{subclass:sub.name,feature:entry[0]||entry},message:'☠️ '+(entry[0]||entry)+' отмечено как пассивное.'};}
- return null;
+function actorContext(h){var owner=window.currentChar||window.currentCharacter;return owner&&String(owner.id)===String(h.id)&&window.DNDSecondaryEntities&&window.DNDSummoning;}
+function ownedThrall(h,id){var E=window.DNDSecondaryEntities,e=E&&E.get(id),s=syncState(h);return e&&s.thrallIds.includes(e.id)&&String(e.ownerId)===String(h.id)?e:null;}
+function useFeature(h,id,ctx){
+ ctx=ctx||{};var l=classLevel(h),s=syncState(h),fid=String(id||'').replace(/^necromancer[-:]/,'');
+ if(!l)return {ok:false,unavailable:true,reason:'Нет уровней Некроманта.'};
+ var D=window.DNDContent,f=D&&D.getFeature(id,'mh-necromancer');
+ if(f&&!D.resolveFeature(h,id,'Некромант'))return {ok:false,unavailable:true,reason:'Способность недоступна текущему уровню или стремлению.'};
+ if(fid==='chooseAmbition'){
+   var key=order.find(k=>k===ctx.subclass||subclasses[k].name===ctx.subclass);
+   if(l<3||!key)return {ok:false,reason:'Выберите доступное Могильное стремление.'};
+   s.graveAmbition=key;var c=classEntry(h);if(c)c.subclass=key;return {ok:true,subclass:key,message:'Могильное стремление: '+subclasses[key].name};
+ }
+ if(fid==='charnelTouch'||fid==='graveTouch'){
+   var n=ctx.points==null?1:Number(ctx.points),t=ctx.target,B=window.DNDCombat;
+   if(!Number.isInteger(n)||n<1||n>Math.min(5*(Number(h.proficiencyBonus)||PB[l]),5*l))return {ok:false,reason:'Недопустимое число очков касания.'};
+   if(!t||!B||!B.attack||!B.applyDamage)return {ok:false,reason:'Нужны цель и боевой движок.'};
+   if(ctx.distanceFt!=null&&Number(ctx.distanceFt)>5)return {ok:false,reason:'Цель вне досягаемости касания.'};
+   if(h.resources.charnelTouch.current<n)return {ok:false,reason:'Недостаточно очков Могильного касания.'};
+   if(ctx.mode==='heal'){
+     var e=ownedThrall(h,t.entityId||t.id);if(!e||!actorContext(h))return {ok:false,reason:'Лечение доступно только своему слуге.'};
+     var healed=window.DNDSummoning.heal(e.id,n);if(!healed||!healed.ok)return {ok:false,reason:'Не удалось вылечить слугу.'};
+     spend(h,'charnelTouch',n);return {ok:true,healed,message:'Слуга исцелён Могильным касанием.'};
+   }
+   // Pool points buy fixed damage, not one d8 per point.
+   var attack=B.attack(h,t,{bonus:h.spellAttackBonus,spellAttack:true,useRules:false,distanceFt:ctx.distanceFt});
+   if(!attack.hit)return {ok:true,attack,spent:0,message:'Промах: очки Могильного касания сохранены.'};
+   var damage=B.applyDamage(t,n*(attack.critical?2:1),'necrotic',{attacker:h,source:'charnelTouch',critical:attack.critical});
+   spend(h,'charnelTouch',n);return {ok:true,attack,damage,spent:n,targetId:t.id,message:'Могильное касание: '+damage.hpDamage+' урона HP.'};
+ }
+ if(fid==='darkArcana'){
+   var sl=Number(ctx.spellLevel),slot=h.spellSlotsData&&h.spellSlotsData[sl],r=h.resources.charnelTouch;
+   if(l<3||!Number.isInteger(sl)||sl<1||sl>9||!slot||Number(slot.used||0)>=Number(slot.max))return {ok:false,reason:'Нужна доступная ячейка заклинания.'};
+   if(r.current>=r.max)return {ok:false,reason:'Запас Могильного касания полон.'};
+   var gain=Math.max(0,intMod(h));for(var i=0;i<sl;i++)gain+=1+Math.floor(Math.random()*8);
+   slot.used=(Number(slot.used)||0)+1;var actual=Math.min(gain,r.max-r.current);r.current+=actual;
+   return {ok:true,restored:actual,slotLevel:sl,message:'Тёмная аркана: восстановлено '+actual+' очков.'};
+ }
+ if(fid==='thralls'||fid==='animateDead'){
+   if(l<(fid==='thralls'?2:5)||!actorContext(h))return {ok:false,reason:'Недоступен ритуал или поле боя персонажа.'};
+   var corpse=ctx.corpse,block=ctx.statBlock,sl=Number(ctx.spellLevel||3),slot=h.spellSlotsData&&h.spellSlotsData[sl];
+   if(fid==='animateDead'&&(!Number.isInteger(sl)||sl<3||sl>9||!slot||Number(slot.used||0)>=Number(slot.max)))return {ok:false,reason:'Нужна ячейка 3 круга или выше.'};
+   if(!corpse||corpse.necromancerRaised||Number(corpse.hpCurrent??corpse.hp??1)>0)return {ok:false,reason:'Нужно неиспользованное мёртвое тело.'};
+   if(!block||!Number.isFinite(Number(block.cr))||Number(block.cr)<0||!(Number(block.maxHp||block.hp)>0)||!(Number(block.ac)>0)||!Array.isArray(block.actions)||!block.actions.length)return {ok:false,reason:'Нужен полный статблок слуги: CR, HP, КД и действия.'};
+   var E=window.DNDSecondaryEntities;s.thrallIds=s.thrallIds.filter(id=>E.get(id)||s.deadSpace.some(x=>x.id===id));
+   var all=s.thrallIds.map(id=>E.get(id)||s.deadSpace.find(x=>x.id===id)),total=all.reduce((n,e)=>n+Number(e.metadata&&e.metadata.cr||0),0);
+   if(all.length>=s.thrallLimit||total+Number(block.cr)>s.crTotal)return {ok:false,reason:'Превышен лимит числа или общего CR слуг.'};
+   var spec=Object.assign({},block,{ownerId:h.id,ownerTokenId:'bt_'+h.id,source:'necromancer-thrall',sourceType:'class',controlMode:'shared_turn',metadata:Object.assign({},block.metadata,{cr:Number(block.cr),corpseId:corpse.id})});
+   var e;try{e=window.DNDSummoning.create(spec);}catch(err){return {ok:false,reason:'Не удалось создать слугу.'};}
+   s.thrallIds.push(e.id);corpse.necromancerRaised=e.id;if(fid==='animateDead')slot.used=(Number(slot.used)||0)+1;
+   return {ok:true,entity:e,message:'Неживый слуга создан.'};
+ }
+ if(fid==='deadSpace'){
+   if(l<2||!actorContext(h))return {ok:false,reason:'Мёртвое пространство недоступно.'};
+   var E=window.DNDSecondaryEntities,mode=ctx.mode||'store',eid=ctx.entityId||(ctx.target&&(ctx.target.entityId||ctx.target.id));
+   if(mode==='store'){
+     var e=ownedThrall(h,eid);if(!e)return {ok:false,reason:'Выберите своего слугу.'};
+     var slots=Math.max(1,Number(e.metadata&&e.metadata.deadSpaceSlots)||1),used=s.deadSpace.reduce((n,x)=>n+Math.max(1,Number(x.metadata&&x.metadata.deadSpaceSlots)||1),0);
+     if(used+slots>s.deadSpaceCapacity)return {ok:false,reason:'Мёртвое пространство заполнено.'};
+     var copy=JSON.parse(JSON.stringify(e));if(!E.remove(e.id))return {ok:false,reason:'Не удалось убрать слугу.'};
+     s.deadSpace.push(copy);window.DNDSummoning.sync();return {ok:true,stored:e.id,message:'Слуга помещён в Мёртвое пространство.'};
+   }
+   if(mode==='release'){
+     var index=s.deadSpace.findIndex(x=>x.id===eid);if(index<0||E.get(eid))return {ok:false,reason:'Слуга не хранится в пространстве или ID занят.'};
+     var e;try{e=window.DNDSummoning.create(s.deadSpace[index]);}catch(err){return {ok:false,reason:'Не удалось выпустить слугу.'};}
+     s.deadSpace.splice(index,1);return {ok:true,entity:e,message:'Слуга выпущен из Мёртвого пространства.'};
+   }
+   return {ok:false,reason:'Выберите помещение или выпуск слуги.'};
+ }
+ if(fid==='undyingServitude'){
+   var eid=ctx.entityId||(ctx.target&&(ctx.target.entityId||ctx.target.id)),e=ownedThrall(h,eid);
+   if(l<18||!e||e.hp>0||!actorContext(h)||h.resources.undyingServitude.current<1)return {ok:false,reason:'Нужны павший собственный слуга и использование служения.'};
+   window.DNDSecondaryEntities.update(e.id,{hp:1,defeated:false});window.DNDSummoning.sync();spend(h,'undyingServitude',1);
+   return {ok:true,targetId:e.id,message:'Слуга возвращён к 1 HP.'};
+ }
+ return {ok:false,unsupported:true,reason:'Эта способность требует отдельного исполняемого обработчика.'};
 }
+function rest(h,type){syncState(h);if(type==='long')['charnelTouch','undyingServitude'].forEach(id=>{var r=h.resources&&h.resources[id];if(r)r.current=r.max;});}
+function attackModifiers(h,ctx){var l=classLevel(h),sub=syncState(h).graveAmbition;return {criticalRange:ctx&&ctx.spellAttack?(l>=14?18:l>=5?19:20):20,extraAttacks:(sub==='deathKnight'||sub==='blackRider')&&l>=6?(sub==='deathKnight'&&l>=20?3:2):1};}
 
-const runtime={progression,subclasses,thrallTypes:[["bloodlurk","Кровосос",2],["boneBeast","Костяной зверь",1],["deadnaught","Мёртвый страж",1],["gorger","Пожиратель",1],["skeleton","Скелет",.25],["spirit","Дух",.25],["zombie","Зомби",.25]],mechanics:{charnelTouch:{pool:"5×уровень",maxSpend:"5×PB",recovery:"long_rest",damage:"necrotic",criticalDoubles:true,missRefunds:true},thralls:{ritualMinutes:10,range:30,sharedReaction:true,sharedBonusAction:true,turn:"before_or_after_necromancer"},deadSpace:{capacity:12,ritualMinutes:60},darkArcana:"bonus_action: slot -> Int mod + 1d8/slot",animateDead:"always_prepared; action; Spirit; Small/Medium corpse -> Skeleton/Spirit/Zombie",criticalSpellcasting:{5:{save1:true,attackCrit:[19,20]},14:{save1or2:true,attackCrit:[18,19,20]}},improvedThralls:7,undyingServitude:18,lichdom:20},variants:{necromancyUnleashed:true,alternateNecromancers:["wisdom","charisma"]},getSubclass(id){return subclasses[id]||null},listSubclasses(){return order.map(id=>({id,name:subclasses[id].name,description:subclasses[id].description}))},sync(c){const l=Math.max(1,Math.min(20,Number(c?.level)||1)),a=Number(c?.intelligence??c?.abilities?.intelligence??10),m=Math.floor((a-10)/2);return Object.assign({},levels[l],{charnelTouchMax:l*5,charnelTouchSpendMax:5*PB[l],spellSaveDC:8+PB[l]+m,spellAttackBonus:PB[l]+m})}};
+const runtime={progression,subclasses,useFeature,rest,attackModifiers,thrallTypes:[["bloodlurk","Кровосос",2],["boneBeast","Костяной зверь",1],["deadnaught","Мёртвый страж",1],["gorger","Пожиратель",1],["skeleton","Скелет",.25],["spirit","Дух",.25],["zombie","Зомби",.25]],mechanics:{charnelTouch:{pool:"5×уровень",maxSpend:"5×PB",recovery:"long_rest",damage:"necrotic",criticalDoubles:true,missRefunds:true},thralls:{ritualMinutes:10,range:30,sharedReaction:true,sharedBonusAction:true,turn:"before_or_after_necromancer"},deadSpace:{capacity:12,ritualMinutes:60},darkArcana:"bonus_action: slot -> Int mod + 1d8/slot",animateDead:"always_prepared; action; Spirit; Small/Medium corpse -> Skeleton/Spirit/Zombie",criticalSpellcasting:{5:{save1:true,attackCrit:[19,20]},14:{save1or2:true,attackCrit:[18,19,20]}},improvedThralls:7,undyingServitude:18,lichdom:20},variants:{necromancyUnleashed:true,alternateNecromancers:["wisdom","charisma"]},getSubclass(id){return subclasses[id]||null},listSubclasses(){return order.map(id=>({id,name:subclasses[id].name,description:subclasses[id].description}))},sync(c){var l=classLevel(c);syncState(c);return Object.assign({},levels[l]||{},{charnelTouchMax:l*5,charnelTouchSpendMax:5*(Number(c.proficiencyBonus)||PB[l]||0),spellSaveDC:c.spellSaveDC,spellAttackBonus:c.spellAttackBonus});}};
+
+const pack={id:'mh-necromancer',name:'Некромант',aliases:['Necromancer'],source:progression.source,authoritativeSubclasses:true,subclassLevel:3,
+features:[['charnelTouch','Могильное касание',1,'action'],['thralls','Неживые слуги',2,'utility'],['deadSpace','Мёртвое пространство',2,'utility'],['necromancer-chooseAmbition','Могильное стремление',3,'choice'],['darkArcana','Тёмная аркана',3,'bonus'],['animateDead','Оживление мёртвых',5,'utility'],['criticalSpellcasting','Критическое колдовство',5,'passive'],['improvedThralls','Улучшенные слуги',7,'passive'],['improvedCriticalSpellcasting','Улучшенное критическое колдовство',14,'passive'],['undyingServitude','Неумирающее служение',18,'reaction'],['lichdom','Личествование',20,'passive']].map(([id,name,level,action])=>({id,name,level,action})),
+subclasses:order.map(id=>({id,name:subclasses[id].name,description:subclasses[id].description,pickLevel:3,features:[3,6,10,20].map(level=>({id:'necromancer-'+id+'-'+level,name:subclasses[id].name+' — '+level+' уровень',description:subclasses[id].features[level].join(' '),level,action:'utility'}))})),
+hooks:{sync:syncState,useFeature,rest,attackModifiers}};
+if(window.DNDContent)window.DNDContent.registerClass(pack);else (window.DND_PENDING_CLASS_PACKS=window.DND_PENDING_CLASS_PACKS||[]).push(pack);
 
 window.NECROMANCER_2024=runtime;window.necromancerRuntime=runtime;window.necromancerProgression=progression;window.NECROMANCER_SUBCLASSES=subclasses;
 })();

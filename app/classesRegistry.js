@@ -144,6 +144,8 @@ var LIVE_PROGRESSION_KEYS = {
 window.getClassData = function(className) {
     if (!className) return null;
     var key = className.trim();
+    var content = window.DNDContent && window.DNDContent.getClass && window.DNDContent.getClass(key);
+    if (content && LIVE_PROGRESSION_KEYS[content.name]) key = content.name;
     var base = window.CLASSES_REFERENCE[key] || null;
     var liveKey = LIVE_PROGRESSION_KEYS[key];
     var live = liveKey ? window[liveKey] : null;

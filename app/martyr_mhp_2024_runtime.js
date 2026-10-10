@@ -1,6 +1,6 @@
 /**
  * martyr_mhp_2024_runtime.js
- * Полный runtime Мученика 2024/5.5E.
+ * Данные и частично исполняемый runtime Мученика 2024/5.5E.
  * API: window.martyrRuntime / window.martyrProgression.
  * Заклинания используют HP-жертву, а 14 Mortal Burdens подключаются как
  * структурированные подклассы с уровнями 3/6/14/18.
@@ -65,20 +65,98 @@ burden("Бремя тирании","Тёмный мученик, предназ�
 },{3:["Властное присутствие: бонус к Запугиванию; атаки/заклинания получают преимущества против запуганных целей."],6:["Аура подчинения: враги в области получают штраф к инициативе и спасброскам против ваших эффектов страха/контроля."],14:["Раздавить волю: реакцией/жертвой HP можно усилить контроль и навязать состояние Frightened/Charmed."],18:["Верховный тиран: после Sacrificial Strike союзник не требуется — вы можете продолжить цепочку атак/контроля против подавленных врагов."]});
 const levels={};for(let l=1;l<=20;l++)levels[l]={proficiencyBonus:PB[l],preparedSpells:PREP[l],maxSpellLevel:MAX[l],spellUses:USES[l],features:{
 1:["Доспех веры","Использование заклинаний","Мастерство оружия"],2:["Чудесное исцеление","Воздаяние"],3:["Подкласс Мученика","Жертва"],4:["Увеличение характеристик / Черта"],5:["Дополнительная атака"],6:["Способность подкласса"],7:["Жертва врага"],8:["Увеличение характеристик / Черта"],9:["Божественная передышка"],10:["Неумирающий"],11:["Улучшенный жертвенный удар"],12:["Увеличение характеристик / Черта"],13:["Божественная передышка — улучшение"],14:["Способность подкласса"],15:["Шествие к судьбе"],16:["Увеличение характеристик / Черта"],17:["Божественная передышка и улучшенный жертвенный удар"],18:["Способность подкласса"],19:["Эпический дар"],20:["Последнее мученичество"]}[l]||[]};
-const progression={className:"Мученик",englishName:"Martyr",edition:"5.5E",source:"Mage Hand Press — Martyr 2024 / Complete Martyr 2024",status:"implemented_2024_runtime",hitDie:12,primaryStat:"wisdom",secondaryStatChoice:["strength","dexterity"],savingThrows:["strength","wisdom"],armor:["light","shields"],weapons:["simple","martial"],skills:{choose:2,from:["athletics","history","insight","intimidation","medicine","persuasion","religion"]},multiclassRequirement:{wisdom:13,strengthOrDexterity:13},levels,spellcasting:{ability:"wisdom",preparedByLevel:PREP,maxSpellLevelByLevel:MAX,spellUsesByLevel:USES,hpDamageBySlot:HIT_COST,spellList:spells,focus:"holy_symbol",cantrips:[]},burdens};
+const progression={className:"Мученик",englishName:"Martyr",edition:"5.5E",source:"Mage Hand Press — Martyr 2024 / Complete Martyr 2024",status:"implemented_partial_2024_runtime",hitDie:12,primaryStat:"wisdom",secondaryStatChoice:["strength","dexterity"],savingThrows:["strength","wisdom"],armor:["light","shields"],weapons:["simple","martial"],skills:{choose:2,from:["athletics","history","insight","intimidation","medicine","persuasion","religion"]},multiclassRequirement:{wisdom:13,strengthOrDexterity:13},levels,spellcasting:{ability:"wisdom",preparedByLevel:PREP,maxSpellLevelByLevel:MAX,spellUsesByLevel:USES,hpDamageBySlot:HIT_COST,spellList:spells,focus:"holy_symbol",cantrips:[]},burdens};
 const runtime={progression,burdens,spellList:spells,mechanics:{armorOfFaith:["medium+Wis AC","unarmored 10+Dex+Wis"],spellcasting:{damageType:"radiant",ignoresResistance:true,ignoresImmunity:true,bypassesTempHP:true,noConcentrationCheck:true,noHealingFromOwnSpells:true},miraculousHealing:"bonus_action: spend up to floor(level/2) Hit Dice, each + Con",reprisal:"reaction: halve visible melee damage; attacker takes radiant/necrotic d6 (2d6 lv5,3d6 lv11,4d6 lv17)",sacrifice:{bonusAction:true,selfDamage:5,targetExtraRadiant:10,improvedAt11:{selfDamage:10,targetExtraRadiant:20},freeAt17:true},sacrificeFoe:"kill with Sacrifice removes self-damage",divineRespite:{levels:{9:3,13:6,17:10},oncePerLongRest:true},undying:"0 HP -> 1 HP + Miraculous Healing, 1/long rest",marchUntoDestiny:["no food/drink","immune paralyzed/petrified/stunned"],finalMartyrdom:"10 minutes: advantage all D20, immune all damage/conditions except grappled/invisible/prone/unconscious, free Wish, then irreversible death"},sync(c){const l=Math.max(1,Math.min(20,Number(c?.level)||1)),w=Number(c?.wisdom??c?.abilities?.wisdom??10),m=Math.floor((w-10)/2);return Object.assign({},levels[l],{spellSaveDC:8+PB[l]+m,spellAttackBonus:PB[l]+m,hpCostBySlot:HIT_COST})}};
 
 function martyrState(c){c.classFeaturesState=c.classFeaturesState||{};return c.classFeaturesState.martyr=c.classFeaturesState.martyr||{};}
-function martyrLevel(c){return Math.max(1,Math.min(20,Number(c&&c.level)||1));}
-function martyrSync(c){var l=martyrLevel(c),s=martyrState(c),w=Number(c&&((c.wisdom??c.stats?.wisdom??c.abilities?.wisdom)))||10,m=Math.floor((w-10)/2);s.level=l;s.proficiencyBonus=PB[l];s.preparedMax=PREP[l];s.maxSpellLevel=MAX[l];s.spellUsesMax=USES[l];s.spellUses=s.spellUses==null?USES[l]:Math.min(Math.max(0,Number(s.spellUses)||0),USES[l]);s.spellSaveDC=8+PB[l]+m;s.spellAttackBonus=PB[l]+m;s.divineRespiteMax=l>=17?10:l>=13?6:l>=9?3:0;s.divineRespiteUses=s.divineRespiteUses==null?(s.divineRespiteMax?1:0):s.divineRespiteUses;s.undyingAvailable=l>=10;s.sacrificialStrikeImproved=l>=11;s.finalMartyrdom=l>=20;return s;}
-function martyrPrepareBurden(c,name){if(!burdens[name])return {ok:false,reason:"Неизвестное Бремя."};martyrState(c).burden=name;return {ok:true,burden:name,data:burdens[name]};}
-function martyrCast(c,spellLevel,spellName){var l=martyrLevel(c),s=martyrSync(c),sl=Number(spellLevel)||0;if(sl<1||sl>5||sl>MAX[l])return {ok:false,reason:"Этот уровень заклинания недоступен Мученику."};if(s.spellUses<=0)return {ok:false,reason:"Использования заклинаний Мученика закончились."};var list=spells[sl]||[];if(spellName&&list.indexOf(spellName)<0){var b=s.burden&&burdens[s.burden];var extra=b&&b.alwaysPrepared&&b.alwaysPrepared[sl]||[];if(extra.indexOf(spellName)<0)return {ok:false,reason:"Заклинание отсутствует в списке Мученика/его Бремени."};}s.spellUses--;return {ok:true,spell:spellName||null,spellLevel:sl,hpCost:HIT_COST[sl]||0,remaining:s.spellUses,maxUses:s.spellUsesMax,damageType:"radiant",ignoreResistance:true,ignoreImmunity:true};}
-function martyrRest(c,type){var s=martyrSync(c);if(type==="long"){s.spellUses=s.spellUsesMax;s.divineRespiteUses=s.divineRespiteMax?1:0;s.undyingUsed=false;}return s;}
-function martyrHeal(c,dice){var l=martyrLevel(c),s=martyrSync(c),max=Math.floor(l/2),n=Math.max(0,Math.min(Number(dice)||0,max));return {ok:n>0,hitDiceSpent:n,healingFormula:n+"d12 + "+(Number(c&&c.constitutionModifier)||0)*n,remainingBudget:max-n};}
-function martyrUseDivineRespite(c,amount){var s=martyrSync(c);if(!s.divineRespiteMax)return {ok:false,reason:"Божественная передышка доступна с 9 уровня."};if(!s.divineRespiteUses)return {ok:false,reason:"Божественная передышка уже использована после последнего долгого отдыха."};var n=Math.max(0,Math.min(Number(amount)||s.divineRespiteMax,s.divineRespiteMax));s.divineRespiteUses=0;return {ok:true,hitDiceRestored:n,max:s.divineRespiteMax};}
-function martyrUndying(c){var s=martyrSync(c);if(!s.undyingAvailable)return {ok:false,reason:"Неумирающий доступен с 10 уровня."};if(s.undyingUsed)return {ok:false,reason:"Неумирающий уже использован после долгого отдыха."};s.undyingUsed=true;return {ok:true,hitPointsAfter:1,triggerHealing:true};}
-function martyrSacrifice(c,target,improved){var l=martyrLevel(c),amount=improved&&l>=11?10:5,extra=improved&&l>=11?20:10;return {ok:true,selfDamage:amount,targetExtraRadiant:extra,freeAt17:l>=17,sacrificeFoe:l>=7};}
-function martyrFinalMartyrdom(c){if(martyrLevel(c)<20)return {ok:false,reason:"Последнее мученичество доступно только на 20 уровне."};return {ok:true,durationMinutes:10,freeWish:true,advantageAllD20:true,immuneToDamage:true,irreversibleDeath:true};}
-window.martyrRuntime=runtime;window.MARTYR_2024=runtime;window.martyrRuntime.state=martyrState;window.martyrRuntime.sync=martyrSync;window.martyrRuntime.prepareBurden=martyrPrepareBurden;window.martyrRuntime.cast=martyrCast;window.martyrRuntime.rest=martyrRest;window.martyrRuntime.miraculousHealing=martyrHeal;window.martyrRuntime.useDivineRespite=martyrUseDivineRespite;window.martyrRuntime.undying=martyrUndying;window.martyrRuntime.sacrifice=martyrSacrifice;window.martyrRuntime.finalMartyrdom=martyrFinalMartyrdom;window.martyrProgression=progression;window.MARTYR_BURDENS=burdens;
+function martyrEntry(c){return (c&&c.classes||[]).find(x=>x&&(['Мученик','Martyr'].includes(x.name)||x.englishName==='Martyr'));}
+function martyrLevel(c){var e=martyrEntry(c);return Math.max(0,Math.min(20,e?Number(e.level)||0:Array.isArray(c&&c.classes)?0:Number(c&&c.level)||0));}
+function ability(c,k){var a=c.abilityScores||c.stats||c.abilities||c;return Math.floor((Number(a[k]??a[k.slice(0,3)]??10)-10)/2);}
+function hp(c){return Number(c.hpCurrent??c.hp?.current??c.hp)||0;}
+function pool(c,id,max,legacy){c.resources=c.resources||{};var r=c.resources[id];if(!r)r=c.resources[id]={current:legacy==null?max:legacy};r.max=max;r.current=Math.max(0,Math.min(max,Number(r.current)||0));r.recharge='long';return r;}
+const burdenAliases={mercy:'Бремя милосердия',revolution:'Бремя революции',truth:'Бремя истины',awakening:'Бремя возрождения'};
+function burdenName(n){return burdens[n]?n:burdenAliases[n]||Object.keys(burdens).find(k=>k.replace('Бремя ','').toLowerCase()===String(n).replace(/^Burden of /i,'').toLowerCase());}
+function martyrSync(c){
+ var l=martyrLevel(c),s=martyrState(c);if(!l)return s;var e=martyrEntry(c),selected=e&&e.subclass;
+ s.burden=burdenName(selected)||(!selected?burdenName(s.burden):null)||null;s.level=l;s.proficiencyBonus=Number(c.proficiencyBonus)||PB[l];
+ s.preparedMax=PREP[l];s.maxSpellLevel=MAX[l];s.spellUsesMax=USES[l];s.spellSaveDC=8+s.proficiencyBonus+ability(c,'wisdom');s.spellAttackBonus=s.proficiencyBonus+ability(c,'wisdom');
+ var r=pool(c,'martyrSpellUses',USES[l],s.spellUses);s.spellUses=r.current;
+ s.divineRespiteMax=l>=17?10:l>=13?6:l>=9?3:0;r=pool(c,'martyrDivineRespite',l>=9?1:0,s.divineRespiteUses);s.divineRespiteUses=r.current;
+ r=pool(c,'martyrUndying',l>=10?1:0,s.undyingUsed?0:undefined);s.undyingAvailable=l>=10;s.undyingUsed=r.current===0;
+ return s;
+}
+function martyrPrepareBurden(c,name){name=burdenName(name);if(martyrLevel(c)<3||!name)return {ok:false,reason:'Нужны 3 уровень Мученика и известное Бремя.'};martyrState(c).burden=name;var e=martyrEntry(c);if(e)e.subclass=name;return {ok:true,burden:name,data:burdens[name]};}
+function martyrCast(c,spellLevel,spellName){
+ var l=martyrLevel(c),s=martyrSync(c),sl=Number(spellLevel),B=window.DNDCombat;
+ if(!l||!Number.isInteger(sl)||sl<1||sl>MAX[l]||!spellName)return {ok:false,reason:'Нужны доступный уровень и конкретное заклинание.'};
+ var extra=s.burden&&burdens[s.burden].alwaysPrepared||{},available=(spells[sl]||[]).slice();
+ // Burden keys are class levels 3/5/9/13/17, not spell levels.
+ Object.keys(extra).forEach(k=>{if(Number(k)<=l&&Math.max(1,Math.floor((Number(k)+3)/4))===sl)available.push(...extra[k]);});
+ if(!available.includes(spellName)||c.resources.martyrSpellUses.current<1)return {ok:false,reason:'Заклинание или использование недоступно.'};
+ var cost=HIT_COST[sl];if(s.burden==='Бремя милосердия'&&Object.values(extra).flat().includes(spellName))cost=0;
+ if(!B||!B.payHitPointCost||hp(c)<=cost)return {ok:false,reason:'Недостаточно HP или нет обработчика оплаты.'};
+ var paid=B.payHitPointCost(c,cost);if(!paid.ok)return paid;c.resources.martyrSpellUses.current--;martyrSync(c);
+ return {ok:true,reserved:true,spell:spellName,spellLevel:sl,hpCost:cost,remaining:s.spellUses,message:'Оплата зарезервирована; эффект заклинания требует общего spell executor.'};
+}
+function hitDicePool(c){
+ var r=c.resources&&c.resources.hitDice;if(r&&typeof r==='object'&&Number.isFinite(Number(r.current))&&Number.isFinite(Number(r.max)))return {current:Number(r.current),max:Number(r.max),write:n=>r.current=n};
+ if(Number.isFinite(Number(c.hitDiceRemaining))&&Number.isFinite(Number(c.hitDiceMax)))return {current:Number(c.hitDiceRemaining),max:Number(c.hitDiceMax),write:n=>c.hitDiceRemaining=n};
+ return null;
+}
+function martyrHeal(c,dice){
+ var l=martyrLevel(c),n=Number(dice),p=hitDicePool(c),B=window.DNDCombat;
+ if(l<2||!Number.isInteger(n)||n<1||n>Math.floor(l/2)||!p||p.current<n||!B)return {ok:false,reason:'Нужны доступные Кости хитов и допустимое целое количество.'};
+ var rolled=B.rollDice(n+'d12').total,amount=Math.max(0,rolled+ability(c,'constitution')*n);p.write(p.current-n);var healed=B.heal(c,amount);
+ return {ok:true,hitDiceSpent:n,rolled,healing:healed,remaining:p.current-n,message:'Чудесное исцеление: +'+healed.amount+' HP.'};
+}
+function martyrUseDivineRespite(c,amount){
+ var s=martyrSync(c),p=hitDicePool(c),r=c.resources&&c.resources.martyrDivineRespite,n=amount==null?s.divineRespiteMax:Number(amount);
+ if(martyrLevel(c)<9||!r||r.current<1||!p||!Number.isInteger(n)||n<1||n>s.divineRespiteMax||p.current>=p.max)return {ok:false,reason:'Передышка требует потраченные Кости хитов и дневное использование.'};
+ n=Math.min(n,p.max-p.current);p.write(p.current+n);r.current--;martyrSync(c);return {ok:true,hitDiceRestored:n,message:'Восстановлено Костей хитов: '+n};
+}
+function martyrUndying(c){
+ var s=martyrSync(c),r=c.resources&&c.resources.martyrUndying,B=window.DNDCombat;
+ if(martyrLevel(c)<10||!r||r.current<1||hp(c)!==0||c.dead||c.instantDeath||!B)return {ok:false,reason:'Неумирающий применяется при 0 HP один раз за долгий отдых.'};
+ var healed=B.heal(c,1);if(!healed.amount)return {ok:false,reason:'Восстановление HP заблокировано.'};r.current--;martyrSync(c);return {ok:true,hitPointsAfter:hp(c),triggerHealing:true,message:'Неумирающий: 1 HP; доступно Чудесное исцеление.'};
+}
+function martyrSacrifice(c,target,improved){
+ var l=martyrLevel(c),B=window.DNDCombat;if(l<3||!target||target===c||hp(target)<=0||!B)return {ok:false,reason:'Нужна живая цель Жертвенного удара.'};
+ var cost=improved&&l>=11?10:5,extra=improved&&l>=11?20:10;
+ if(l<17&&hp(c)<=cost)return {ok:false,reason:'Недостаточно HP для жертвы.'};
+ var hit=B.applyDamage(target,extra,'radiant',{ignoreResistance:true,ignoreImmunity:true,source:'martyr-sacrifice'});
+ var waived=l>=17||l>=7&&hp(target)===0;if(!waived)B.payHitPointCost(c,cost);
+ return {ok:true,selfDamage:waived?0:cost,targetExtraRadiant:extra,damage:hit,message:'Жертвенный удар применён.'};
+}
+function martyrReprisal(c,ctx){
+ var l=martyrLevel(c),B=window.DNDCombat,attacker=ctx.returnTarget||ctx.attacker;
+ if(l<2||ctx.source!=='attack'||!['weapon','meleeWeapon'].includes(ctx.attackKind)||ctx.visible===false||Number(ctx.amount)<=0||!attacker||!B||c.turnResources&&(c.turnResources.reaction===false||c.turnResources.reaction===0))return {ok:false,reason:'Нужна доступная реакция на видимую рукопашную атаку.'};
+ var amount=Math.ceil(Number(ctx.amount)/2),rolled=B.rollDice((l>=17?4:l>=11?3:l>=5?2:1)+'d6').total;
+ var hit=B.applyDamage(attacker,rolled,ctx.returnDamageType==='necrotic'?'necrotic':'radiant',{source:'martyr-reprisal'});if(c.turnResources)c.turnResources.reaction=false;
+ return {ok:true,id:'reprisal',applied:true,reduced:Number(ctx.amount)-amount,remainingAmount:amount,returnDamage:hit,message:'Воздаяние: входящий урон уменьшен вдвое.'};
+}
+function martyrArmor(c){
+ if(c.armorEquipped||c.equippedArmor||c.equipment&&(c.equipment.armor||c.equipment.armour))return {ok:false,unsupported:true,reason:'Вариант с бронёй требует единый расчёт КД экипировки.'};
+ var ac=10+ability(c,'dexterity')+ability(c,'wisdom')+(c.shieldEquipped||c.equippedShield||c.equipment&&c.equipment.shield?2:0);c.ac=Math.max(Number(c.ac)||0,ac);return {ok:true,ac:c.ac,message:'Доспех веры: КД '+c.ac};
+}
+function martyrRest(c,type){var s=martyrSync(c);if(type==='long'){['martyrSpellUses','martyrDivineRespite','martyrUndying'].forEach(k=>{var r=c.resources[k];r.current=r.max;});martyrSync(c);}return s;}
+function martyrFinalMartyrdom(c){return {ok:false,unsupported:true,reason:'Полный цикл Последнего мученичества ещё не реализован.'};}
+function martyrUse(c,id,ctx){
+ ctx=ctx||{};var D=window.DNDContent;if(!D||!D.resolveFeature(c,id,'Мученик'))return {ok:false,unavailable:true,reason:'Способность Мученика недоступна.'};martyrSync(c);
+ if(id==='martyr-chooseBurden')return martyrPrepareBurden(c,ctx.burden||ctx.choice);
+ if(id==='armorOfFaith')return martyrArmor(c);
+ if(id==='miraculousHealing')return martyrHeal(c,ctx.dice??ctx.hitDice);
+ if(id==='divineRespite')return martyrUseDivineRespite(c,ctx.amount);
+ if(id==='undying')return martyrUndying(c);
+ if(id==='sacrifice'||id==='sacrificialStrike'||id==='improvedSacrificialStrike')return martyrSacrifice(c,ctx.target,id==='improvedSacrificialStrike'||ctx.improved);
+ if(id==='reprisal')return martyrReprisal(c,ctx);
+ return {ok:false,unsupported:true,reason:'Эффект этой особенности ещё не подключён.'};
+}
+const pack={id:'mh-martyr',name:'Мученик',aliases:['Martyr'],source:progression.source,authoritativeSubclasses:true,subclassLevel:3,
+ features:[['armorOfFaith','Доспех веры',1,'utility'],['martyrMagic','Заклинания Мученика',1,'utility'],['miraculousHealing','Чудесное исцеление',2,'bonus'],['reprisal','Воздаяние',2,'reaction'],['martyr-chooseBurden','Выбор Бремени',3,'choice'],['sacrifice','Жертвенный удар',3,'bonus'],['sacrificialStrike','Жертвенный удар',3,'bonus'],['martyrExtraAttack','Дополнительная атака',5,'passive'],['sacrificeFoe','Жертва врага',7,'passive'],['divineRespite','Божественная передышка',9,'utility'],['undying','Неумирающий',10,'reaction'],['improvedSacrificialStrike','Улучшенный жертвенный удар',11,'bonus'],['marchUntoDestiny','Шествие к судьбе',15,'passive'],['finalMartyrdom','Последнее мученичество',20,'action']].map(([id,name,level,action])=>({id,name,level,action})),
+ subclasses:Object.keys(burdens).map(name=>({id:name,name,description:burdens[name].description,pickLevel:3,features:[3,6,14,18].map(level=>({id:'martyr-'+name+'-'+level,name:name+' — '+level+' уровень',level,action:'utility',description:(burdens[name].features[level]||[]).join(' ')}))})),
+ hooks:{sync:martyrSync,useFeature:martyrUse,rest:martyrRest,attackModifiers:()=>({extraAttacks:0}),reactionOptions:(c,ctx)=>martyrLevel(c)>=2&&ctx.source==='attack'&&['weapon','meleeWeapon'].includes(ctx.attackKind)&&ctx.visible!==false&&ctx.returnTarget&&Number(ctx.amount)>0?[{id:'reprisal',priority:15,label:'Воздаяние',description:'Уменьшить рукопашный урон вдвое и ответить излучением.'}]:[]}};
+pack.hooks.attackModifiers=c=>({extraAttacks:martyrLevel(c)>=5?2:1});
+if(window.DNDContent)window.DNDContent.registerClass(pack);else (window.DND_PENDING_CLASS_PACKS=window.DND_PENDING_CLASS_PACKS||[]).push(pack);
+window.martyrRuntime=runtime;window.MARTYR_2024=runtime;window.martyrRuntime.useFeature=martyrUse;window.martyrRuntime.state=martyrState;window.martyrRuntime.sync=martyrSync;window.martyrRuntime.prepareBurden=martyrPrepareBurden;window.martyrRuntime.cast=martyrCast;window.martyrRuntime.rest=martyrRest;window.martyrRuntime.miraculousHealing=martyrHeal;window.martyrRuntime.useDivineRespite=martyrUseDivineRespite;window.martyrRuntime.undying=martyrUndying;window.martyrRuntime.sacrifice=martyrSacrifice;window.martyrRuntime.finalMartyrdom=martyrFinalMartyrdom;window.martyrProgression=progression;window.MARTYR_BURDENS=burdens;
 })();
 /* V70.26.92 closure pass: executable spell-use, burden, rest and martyr-resource APIs. */

@@ -33,12 +33,13 @@ function lvl(h){var c=(h&&h.classes||[]).find(function(x){return String(x.name)=
 function st(h){h.classFeaturesState=h.classFeaturesState||{};return h.classFeaturesState}
 function res(h,id,max,recharge){h.resources=h.resources||{};var r=h.resources[id];if(!r)r=h.resources[id]={max:max,current:max,recharge:recharge||'short'};r.max=max;r.current=Math.min(Number(r.current)||0,max);return r}
 function prof(h){return Number(h.proficiencyBonus)||2}
-function mod(h,a){var v=Number((h.abilities||{})[a]);return Math.floor((v-10)/2)}
+function mod(h,a){var short=a.slice(0,3),sources=[h.abilityScores,h.stats,h.abilities];for(var i=0;i<sources.length;i++){var scores=sources[i]||{},v=scores[a];if(v==null)v=scores[short];if(v!=null&&isFinite(Number(v)))return Math.floor((Number(v)-10)/2);}return 0;}
 function dc(h){return 8+prof(h)+mod(h,'wisdom')}
 function ownerCompanion(h){var s=st(h);if(s.beastheartCompanionId&&g.DNDSecondaryEntities&&g.DNDSecondaryEntities.get)return g.DNDSecondaryEntities.get(s.beastheartCompanionId);return null}
 function sync(h){
  var l=lvl(h);if(!l)return;var s=st(h);
- s.primalExploitSaveDC=dc(h);s.companionBond=s.companionBond||null;s.primalExploitsKnown=l>=17?7:l>=10?5:3;s.beyondInstinctBonus=l>=15?5:l>=10?3:l>=5?1:0;s.signatureAttackDice=l>=17?3:l>=11?2:l>=5?1:0;
+ var selected=(h.classes||[]).find(function(c){return c.name===CLASS||c.name==='Beastheart';}),bond=Object.keys(bonds).find(function(k){return k===(selected&&selected.subclass)||bonds[k].name===(selected&&selected.subclass);});
+ s.primalExploitSaveDC=dc(h);s.companionBond=bond||s.companionBond||null;s.primalExploitsKnown=l>=17?7:l>=10?5:3;s.beyondInstinctBonus=l>=15?5:l>=10?3:l>=5?1:0;s.signatureAttackDice=l>=17?3:l>=11?2:l>=5?1:0;
  var fr=res(h,'beastheartFerocity',9999,'encounter');fr.unbounded=true;fr.displayMax=null;fr.current=Number((ownerCompanion(h)||{}).resources&&ownerCompanion(h).resources.ferocity)||0;
  s.beyondInstinct=l>=5?s.beyondInstinctBonus:0;
  s.faithfulCompanion=l>=6;s.masterCaregiver=l>=3;s.loyalToEnd=l>=13;s.keenSenses=l>=14;s.primalStrikeDice=l>=14?2:l>=8?1:0;
@@ -48,16 +49,17 @@ function sync(h){
 }
 function chooseCompanion(h,id){
  var c=creatures[id];if(!c)return{ok:false,message:'Неизвестный вид компаньона.'};
- var s=st(h),l=lvl(h);if(s.beastheartCompanionId&&g.DNDSecondaryEntities&&g.DNDSecondaryEntities.remove)g.DNDSecondaryEntities.remove(s.beastheartCompanionId);
- var spec={name:c.name,source:'Бистхарт',sourceType:'class',companionType:'beastheart',controlMode:'command',team:'party',hp:c.hp,maxHp:c.hp,ac:c.ac,speed:c.speed,size:c.size,actions:c.actions,resources:{ferocity:0,ferocityMax:9999},beastheartLevel:l,metadata:{вид:id,масштабируетсяСБистхартом:true}};
- var e=g.DNDCompanionPacks&&g.DNDCompanionPacks.create?g.DNDCompanionPacks.create('beastheart',spec):null;
+ var s=st(h),l=lvl(h),previous=s.beastheartCompanionId;
+ var spec={name:c.name,ownerId:String(h.id||''),ownerTokenId:String(h.tokenId||h.id||''),source:'Бистхарт',sourceType:'class',companionType:'beastheart',controlMode:'command',team:'party',hp:c.hp,maxHp:c.hp,ac:c.ac,speed:c.speed,size:c.size,actions:c.actions,resources:{ferocity:0,ferocityMax:9999},beastheartLevel:l,metadata:{вид:id,масштабируетсяСБистхартом:true}};
+ var e=null;try{e=g.DNDCompanionPacks&&g.DNDCompanionPacks.create?g.DNDCompanionPacks.create('beastheart',spec):null;}catch(error){return{ok:false,message:'Не удалось создать компаньона: '+error.message};}
+ if(e&&previous&&g.DNDSecondaryEntities&&g.DNDSecondaryEntities.remove)g.DNDSecondaryEntities.remove(previous);
  if(!e)return{ok:false,message:'Система спутников недоступна.'};s.beastheartCompanionId=e.id;s.beastheartCompanionType=id;sync(h);return{ok:true,companion:e,message:'Компаньон выбран: '+c.name+'.'};
 }
-function chooseBond(h,id){if(!bonds[id])return{ok:false,message:'Неизвестный союз.'};st(h).companionBond=id;return{ok:true,message:'Выбран '+bonds[id].name+'.'}}
+function chooseBond(h,id){if(!bonds[id])return{ok:false,message:'Неизвестный союз.'};st(h).companionBond=id;var selected=(h.classes||[]).find(function(c){return c.name===CLASS||c.name==='Beastheart';});if(selected)selected.subclass=id;return{ok:true,message:'Выбран '+bonds[id].name+'.'}}
 function gainFerocity(h,n){var e=ownerCompanion(h);if(!e)return{ok:false,message:'Сначала выбери компаньона.'};e.resources=e.resources||{};e.resources.ferocity=Math.max(0,(Number(e.resources.ferocity)||0)+Math.max(0,Number(n)||0));if(g.DNDSecondaryEntities&&g.DNDSecondaryEntities.update)g.DNDSecondaryEntities.update(e.id,{resources:e.resources});h.resources=h.resources||{};h.resources.beastheartFerocity=h.resources.beastheartFerocity||{};h.resources.beastheartFerocity.max=9999;h.resources.beastheartFerocity.unbounded=true;h.resources.beastheartFerocity.displayMax=null;h.resources.beastheartFerocity.current=e.resources.ferocity;h.resources.beastheartFerocity.recharge='encounter';return{ok:true,ferocity:e.resources.ferocity}}
 function startTurn(h,ctx){sync(h);ctx=ctx||{};var e=ownerCompanion(h),l=lvl(h),s=st(h);if(!e)return{ok:false,message:'Компаньон не найден.'};if(ctx.combat===false)return{ok:true,ferocity:Number(e.resources&&e.resources.ferocity)||0};var base=1+Math.floor(Math.random()*4),hostiles=Math.max(0,Number(ctx.hostilesWithin5)||0),bonus=l>=15?5:l>=10?3:l>=5?1:0;var gain=base+hostiles+bonus;gainFerocity(h,gain);var f=Number(e.resources&&e.resources.ferocity)||0;if(f<10||e.hp<=0||ctx.incapacitated)return{ok:true,gained:gain,ferocity:f,rampage:false};var roll=Number(ctx.animalHandlingRoll);var dc=5+f;if(!Number.isFinite(roll))return{ok:true,gained:gain,ferocity:f,rampage:false,rampagePending:true,animalHandlingDC:dc,message:'⚠️ Компаньон достиг 10+ Ferocity. Требуется проверка Ухода за животными, чтобы предотвратить буйство.'};if(roll>=dc){return{ok:true,gained:gain,ferocity:f,rampage:false,animalHandlingDC:dc,message:'Компаньон удержан от буйства.'};}e.metadata=e.metadata||{};e.metadata.rampage=true;if(g.DNDSecondaryEntities&&g.DNDSecondaryEntities.update)g.DNDSecondaryEntities.update(e.id,{metadata:e.metadata});return{ok:true,gained:gain,ferocity:f,rampage:true,animalHandlingDC:dc,message:'⚠️ Компаньон вошёл в буйство.'}}
 function endRampage(h){var e=ownerCompanion(h);if(!e)return{ok:false,message:'Компаньон не найден.'};e.resources=e.resources||{};e.resources.ferocity=0;e.metadata=e.metadata||{};e.metadata.rampage=false;if(g.DNDSecondaryEntities&&g.DNDSecondaryEntities.update)g.DNDSecondaryEntities.update(e.id,{resources:e.resources,metadata:e.metadata});if(h.resources&&h.resources.beastheartFerocity)h.resources.beastheartFerocity.current=0;return{ok:true,ferocity:0}}
-function spendFerocity(h,n){var e=ownerCompanion(h);if(!e)return{ok:false,message:'Сначала выбери компаньона.'};e.resources=e.resources||{};var cur=Number(e.resources.ferocity)||0;if(cur<n)return{ok:false,message:'Недостаточно ярости компаньона.'};e.resources.ferocity=cur-n;if(g.DNDSecondaryEntities&&g.DNDSecondaryEntities.update)g.DNDSecondaryEntities.update(e.id,{resources:e.resources});h.resources=h.resources||{};h.resources.beastheartFerocity=h.resources.beastheartFerocity||{};h.resources.beastheartFerocity.max=9999;h.resources.beastheartFerocity.unbounded=true;h.resources.beastheartFerocity.displayMax=null;h.resources.beastheartFerocity.current=Number(e.resources.ferocity)||0;h.resources.beastheartFerocity.recharge='encounter';return{ok:true,spent:n,remaining:e.resources.ferocity}}
+function spendFerocity(h,n){n=Math.floor(Number(n));if(!isFinite(n)||n<1)return{ok:false,message:'Расход ярости должен быть положительным целым числом.'};var e=ownerCompanion(h);if(!e)return{ok:false,message:'Сначала выбери компаньона.'};e.resources=e.resources||{};var cur=Number(e.resources.ferocity)||0;if(cur<n)return{ok:false,message:'Недостаточно ярости компаньона.'};e.resources.ferocity=cur-n;if(g.DNDSecondaryEntities&&g.DNDSecondaryEntities.update)g.DNDSecondaryEntities.update(e.id,{resources:e.resources});h.resources=h.resources||{};h.resources.beastheartFerocity=h.resources.beastheartFerocity||{};h.resources.beastheartFerocity.max=9999;h.resources.beastheartFerocity.unbounded=true;h.resources.beastheartFerocity.displayMax=null;h.resources.beastheartFerocity.current=Number(e.resources.ferocity)||0;h.resources.beastheartFerocity.recharge='encounter';return{ok:true,spent:n,remaining:e.resources.ferocity}}
 function use(h,id,ctx){
  sync(h);ctx=ctx||{};var s=st(h),l=lvl(h),e=ownerCompanion(h);
  if(id==='chooseCompanion')return chooseCompanion(h,String(ctx.companion||''));
@@ -116,9 +118,10 @@ function endEncounter(h){
 
 var progression={className:'Бистхарт',englishName:'Beastheart',source:'MCDM Beastheart and Monstrous Companions',status:'implemented_full',hitDie:8,primaryAbilities:['strength','dexterity'],secondaryAbility:'wisdom',savingThrows:['strength','wisdom'],armor:['light','medium','shields'],weapons:['simple','battleaxe','greataxe','longbow','net','scimitar','shortsword'],tools:[],skills:{choose:3,from:['Уход за животными','Атлетика','Запугивание','Природа','Внимательность','Скрытность','Выживание']},multiclass:{requires:[['strength','dexterity'],13,'wisdom',13]},subclassLevel:3,subclasses:Object.keys(bonds).map(function(k){return bonds[k].name;}),levels:{1:{features:['Компаньон','Природный язык']},2:{features:['Природные приёмы','Превосходная ярость']},3:{features:['Союз с компаньоном','Успокоить зверя','Мастерство заботы']},4:{features:['Увеличение характеристик / Черта']},5:{features:['За пределами инстинкта','Улучшенная фирменная атака']},6:{features:['Верный компаньон','Восстанавливающая ярость']},7:{features:['Способность союза']},8:{features:['Увеличение характеристик / Черта','Первобытный удар (1к8)']},9:{features:['Мистическая связь']},10:{features:['Улучшение за пределами инстинкта','Природные приёмы']},11:{features:['Улучшенная фирменная атака (2 кости)','Способность союза']},12:{features:['Увеличение характеристик / Черта']},13:{features:['Верность до конца']},14:{features:['Острые чувства','Первобытный удар (2к8)']},15:{features:['Улучшение за пределами инстинкта','Способность союза']},16:{features:['Увеличение характеристик / Черта']},17:{features:['Улучшенная фирменная атака (3 кости)','Природные приёмы']},18:{features:['Призыв дикой природы']},19:{features:['Увеличение характеристик / Черта']},20:{features:['Неразрывная дружба']}},mechanics:{status:'fully_closed',companionActor:true,ferocity:true,rampage:true,subclassBonds:true,resourceBridge:true,combatTurnGate:true}};
 g.beastheartProgression=progression;
-g.BeastheartRuntime={version:'1.3.0',bonds:bonds,companions:creatures,sync:sync,use:use,attack:attack,chooseCompanion:chooseCompanion,chooseBond:chooseBond,startTurn:startTurn,endRampage:endRampage,gainFerocity:gainFerocity,endEncounter:endEncounter};
-if(g.DNDContent&&g.DNDContent.registerClass)g.DNDContent.registerClass({
- id:'mcdm-beastheart',name:'Бистхарт',displayName:'Бистхарт',source:'MCDM Beastheart and Monstrous Companions',
+function rest(h,type){if(type==='long'){st(h).rejuvenatingFerocityUses=0;st(h).undyingProtectorCost=2;}}
+g.BeastheartRuntime={rest:rest,version:'1.3.0',bonds:bonds,companions:creatures,sync:sync,use:use,attack:attack,chooseCompanion:chooseCompanion,chooseBond:chooseBond,startTurn:startTurn,endRampage:endRampage,gainFerocity:gainFerocity,endEncounter:endEncounter};
+var pack={
+ id:'mcdm-beastheart',name:'Бистхарт',aliases:['Beastheart'],authoritativeSubclasses:true,displayName:'Бистхарт',source:'MCDM Beastheart and Monstrous Companions',
  features:[
   {id:'chooseCompanion',name:'Компаньон',level:1,action:'choice'},
   {id:'startTurn',name:'Ярость компаньона',level:1,action:'combat'},
@@ -157,5 +160,7 @@ if(g.DNDContent&&g.DNDContent.registerClass)g.DNDContent.registerClass({
  ],
  subclasses:Object.keys(bonds).map(function(k){return{id:k,name:bonds[k].name,features:Object.keys(bonds[k].levels).reduce(function(a,l){return a.concat(bonds[k].levels[l].map(function(n){return{id:k+'_'+l+'_'+n,name:n,level:Number(l),action:'passive'};}));},[])};}),
  hooks:{sync:sync,useFeature:use,attackModifiers:attack}
-});
+};
+if(g.DNDContent&&g.DNDContent.registerClass)g.DNDContent.registerClass(pack);
+else{g.DND_PENDING_CLASS_PACKS=g.DND_PENDING_CLASS_PACKS||[];g.DND_PENDING_CLASS_PACKS.push(pack);}
 })(window);

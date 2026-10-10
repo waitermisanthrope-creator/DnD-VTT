@@ -2,7 +2,7 @@
  * warden_mhp_2024_runtime.js
  * ------------------------------------------------------------------
  * ЧТО ЭТО:
- * Полный runtime-пак класса «Страж» версии 2024/5.5E для Карманного ВТТ.
+ * Частично реализованный runtime-пак класса «Страж» версии 2024/5.5E для Карманного ВТТ.
  *
  * КАК РАБОТАЕТ:
  * - заменяет старый смешанный runtime Стража отдельным паком Mage Hand Press;
@@ -23,18 +23,17 @@
   if(!D)return;
 
   var SOURCE='Mage Hand Press — Warden 2024 / 5.5E';
-  var PACK_ID='mhp-warden-2024';
+  var PACK_ID='mh-warden';
   var CLASS='Страж';
 
-  function cls(h){return (h&&h.classes||[]).find(function(c){return String(c.name)===CLASS;})||null;}
+  function cls(h){return (h&&h.classes||[]).find(function(c){return [CLASS,'Warden'].indexOf(String(c.name))>=0;})||null;}
   function lvl(h){var c=cls(h);return c?Number(c.level)||0:0;}
   function state(h){h.classFeaturesState=h.classFeaturesState||{};return h.classFeaturesState;}
   function res(h,id,max,recharge){
-    h.resources=h.resources||{};
-    var r=h.resources[id];
-    if(!r||Number(r.max)!==Number(max)) h.resources[id]={max:Number(max),current:r?Math.min(Number(r.current)||0,Number(max)):Number(max),recharge:recharge||'none'};
-    else h.resources[id].recharge=recharge||r.recharge||'none';
-    return h.resources[id];
+    h.resources=h.resources||{};var r=h.resources[id],n=Math.max(0,Number(max)||0);
+    if(!r)r=h.resources[id]={max:n,current:n};
+    else {var used=Math.max(0,(Number(r.max)||0)-(Number(r.current)||0));r.current=Math.max(0,n-used);r.max=n;}
+    r.recharge=recharge||'none';return r;
   }
   function spend(h,id,n){
     var r=h.resources&&h.resources[id],v=Math.max(1,Number(n)||1);
@@ -49,11 +48,9 @@
   function prof(h){return Math.max(2,Number(h&&h.proficiencyBonus)||Math.floor((levelTotal(h)-1)/4)+2);}
   function levelTotal(h){return (h&&h.classes||[]).reduce(function(a,c){return a+(Number(c.level)||0);},0);}
   function target(ctx){return ctx&&ctx.target||null;}
-  function bloodied(h){
-    var max=Number(h&&((h.maxHitPoints)||(h.hpMax)||(h.maxHP)||(h.hp&&h.hp.max)))||0;
-    var cur=Number(h&&((h.hitPoints)||(h.hpCurrent)||(h.currentHP)||(h.hp&&h.hp.current)))||0;
-    return max>0&&cur<=max/2;
-  }
+  function hp(h){return Number(h.hpCurrent!=null?h.hpCurrent:h.hp&&typeof h.hp==='object'?h.hp.current:h.hp!=null?h.hp:h.hitPoints)||0;}
+  function maxHp(h){return Number(h.hpMax!=null?h.hpMax:h.maxHp!=null?h.maxHp:h.hp&&h.hp.max!=null?h.hp.max:h.maxHitPoints)||0;}
+  function bloodied(h){return maxHp(h)>0&&hp(h)>0&&hp(h)<=maxHp(h)/2;}
   function interruptMax(l){return l>=17?6:l>=13?5:l>=9?4:l>=5?3:0;}
   function masteryCount(l){return l>=10?4:l>=4?3:2;}
   function battleDie(l){return l>=13?'1d8':'1d6';}
@@ -171,6 +168,7 @@
     ['legendaryResistance','Легендарное сопротивление',20,'Три раза за долгий отдых можете превратить провал спасброска в успех.','reaction']
   ];
 
+  BASE.push(['chooseCall','Выбор Призвания стража',3,'Выберите одно из 13 Призваний.','choice']);
   var features=BASE.map(function(x){return{id:'warden-'+x[0],name:x[1],level:x[2],action:x[4],description:x[3]};});
   var subclassPacks=SUBS.map(function(s){
     return {id:s.id,name:s.name,description:s.desc,features:s.f.map(function(x){
@@ -178,178 +176,134 @@
     }),magic:s.magic||[]};
   });
 
+  var CONDITIONS={blinded:'Ослеплён',charmed:'Очарован',deafened:'Оглохший',frightened:'Испуган',paralyzed:'Парализован',poisoned:'Отравлен',stunned:'Оглушён',restrained:'Опутан'};
+  var LABELS={stalwartSpirit:'Стойкий дух',steadfastToughness:'Несокрушимая стойкость',towerShield:'Башенный щит',interdict:'Запрет',shieldSlam:'Удар щитом',sweep:'Размашистый удар',allSeeing:'Всевидящий',fortified:'Укреплённый',unstoppable:'Неостановимый'};
+  function chosen(h){var c=cls(h);return c&&SUBS.find(function(x){return x.id===c.subclass||x.name===c.subclass;})||null;}
+  function available(h,id){return !!(D.resolveFeature&&D.resolveFeature(h,'warden-'+id,CLASS));}
+  function fail(message){return {ok:false,unsupported:true,message:message||'Исполнение этой способности Стража ещё не подключено.'};}
+  function normalizeCondition(v){var raw=String(v||''),key=CONDITIONS[raw.toLowerCase()]||raw;return g.DNDRules&&g.DNDRules.normalizeConditionName?g.DNDRules.normalizeConditionName(key):key;}
+  function hasCondition(h,key){return [h.conditions,h.activeConditions].some(function(m){return m&&Object.keys(m).some(function(k){return m[k]&&normalizeCondition(k)===key;});});}
+  function clearCondition(h,key){
+    [h.conditions,h.activeConditions].forEach(function(m){if(m)Object.keys(m).forEach(function(k){if(normalizeCondition(k)===key)delete m[k];});});
+    if(g.DNDCombat)g.DNDCombat.toggleCondition(h,key,false);
+  }
+  function canAct(h){return hp(h)>0&&!['Недееспособен','Оглушён','Парализован','Бессознателен','Окаменел'].some(function(k){return hasCondition(h,k);});}
+  function canReact(h){return hp(h)>0&&!['Недееспособен','Оглушён','Парализован','Бессознателен','Окаменел'].some(function(k){return hasCondition(h,k);})&&!(h.turnResources&&(h.turnResources.reaction===false||Number(h.turnResources.reaction)===0));}
+  function takeReaction(h){h.turnResources=h.turnResources||{};h.turnResources.reaction=0;}
   function sync(h){
-    var l=lvl(h);if(!l)return;
-    var s=state(h);
-    var ir=res(h,'wardenInterrupt',interruptMax(l),'short');ir.max=interruptMax(l);
-    res(h,'wardenFontOfLife',l>=13?2:0,'short');
-    res(h,'wardenLegendaryResistance',l>=20?3:0,'long');
-    res(h,'wardenSecondWind',1,'short');
-    s.wardenMasteryCount=masteryCount(l);
-    s.wardenGuardianRange=l>=14?10:5;
-    s.wardenSentinelStand=s.wardenSentinelStand||'stalwartSpirit';
-    s.wardenSentinelStrike=s.wardenSentinelStrike||'interdict';
-    s.wardenSentinelSoul=s.wardenSentinelSoul||'allSeeing';
-    s.wardenSurviveReady=s.wardenSurviveReady!==false;
-    s.wardenMettle=l>=7;
-    s.wardenBloodied=bloodied(h);
-    s.wardenImprovedResolve=l>=15;
-    s.wardenChosenCall=s.wardenChosenCall||null;
-    s.wardenWeaponMasteries=s.wardenWeaponMasteries||[];
-    if(l>=4&&s.wardenWeaponMasteries.length<3)s.wardenWeaponMasteries.length=3;
-    if(l>=10&&s.wardenWeaponMasteries.length<4)s.wardenWeaponMasteries.length=4;
+    var l=lvl(h);if(!l)return;var s=state(h),call=chosen(h);
+    res(h,'wardenInterrupt',interruptMax(l),'short');res(h,'wardenFontOfLife',l>=13?2:0,'short');
+    if(!h.resources.wardenSurvive&&s.wardenSurviveReady===false)h.resources.wardenSurvive={max:1,current:0};
+    res(h,'wardenSurvive',l>=9?1:0,'long');res(h,'wardenLegendaryResistance',l>=20?3:0,'long');
+    s.wardenSurviveReady=h.resources.wardenSurvive.current>0;
+    s.wardenMasteryCount=masteryCount(l);s.wardenGuardianRange=l>=14?10:5;
+    s.wardenBloodied=bloodied(h);s.wardenMettle=l>=7;s.wardenImprovedResolve=l>=15;
+    s.wardenChosenCall=call?call.id:null;
+    s.wardenWeaponMasteries=Array.isArray(s.wardenWeaponMasteries)?s.wardenWeaponMasteries.filter(Boolean):[];
+    if(call&&call.id==='greyWatchman'&&l>=3)res(h,'wardenBattleDice',2,'short');
+    if(call&&call.id==='stoneheartDefender'&&l>=10)res(h,'wardenStoneShield',1,'short');
+    if(call&&call.id==='witchbaneHunter'&&l>=6)res(h,'wardenBreakSpell',1,'short');
+    // Old scalar fields remain in the save but cannot grant another Call's mechanics.
+    if(s.wardenMarkedExpiresAt&&s.wardenMarkedExpiresAt<=Date.now()){delete s.wardenMarkedTargetId;delete s.wardenMarkedExpiresAt;}
   }
-
-  function choice(h,id,v){
-    sync(h);var s=state(h);
-    var maps={
-      sentinelStand:['stalwartSpirit','steadfastToughness','towerShield'],
-      sentinelStrike:['interdict','shieldSlam','sweep'],
-      sentinelSoul:['allSeeing','fortified','unstoppable']
-    };
-    if(!maps[id]||maps[id].indexOf(v)<0)return{ok:false,message:'Недопустимый вариант выбора Стража.'};
-    s['warden'+id.charAt(0).toUpperCase()+id.slice(1)]=v;
-    return{ok:true,message:'Выбор Стража сохранён: '+v+'.'};
+  function choose(h,id,v){
+    var maps={sentinelStand:['stalwartSpirit','steadfastToughness','towerShield'],sentinelStrike:['interdict','shieldSlam','sweep'],sentinelSoul:['allSeeing','fortified','unstoppable']};
+    if(!maps[id]||maps[id].indexOf(v)<0)return fail('Недопустимый вариант выбора Стража.');
+    state(h)['warden'+id.charAt(0).toUpperCase()+id.slice(1)]=v;
+    return {ok:true,choiceSaved:true,message:'Выбор сохранён: '+LABELS[v]+'.',mechanicsPending:id==='sentinelStand'||(id==='sentinelSoul'&&v!=='fortified')};
   }
-
-  function subclassFeature(h,sub,id,ctx){
-    var s=state(h),l=lvl(h),t=target(ctx),key=sub.id+':'+id;
-    if(sub.id==='greyWatchman'){
-      if(id==='3'){res(h,'wardenBattleDice',2,'short');return{ok:true,message:'⚔️ Боевые кости: 2d6.'};}
-      if(id==='6')return{ok:true,effect:{restoreResource:'wardenBattleDice',trigger:'bloodied'},message:'⚔️ Непоколебимый импульс подготовлен.'};
-      if(id==='10')return{ok:true,effect:{guardianGraspSaveAdvantage:true},message:'🛡️ Удержание линии активно.'};
-      if(id==='17')return{ok:true,effect:{battleDiceRecovery:true,bonusBattleDieDamage:true,extraManeuverBonusAction:true},message:'⚔️ Нерушимый часовой активирован.'};
-    }
-    if(sub.id==='diabolist'&&id==='3'){s.wardenMarkedTargetId=t&&t.id;return{ok:true,target:t&&t.id,effect:{mark:'infernal',extraDamage:'1d6 fire'},message:'🔥 Инфернальная печать наложена.'};}
-    if(sub.id==='nightgaunt'&&id==='6')return{ok:true,effect:{teleportFt:30,advantageNextMelee:true},message:'🌑 Шаг кошмара выполнен.'};
-    if(sub.id==='stormSentinel'&&id==='6')return{ok:true,target:t&&t.id,effect:{reaction:true,damage:'2d6 lightning',moveTowardFt:10},message:'⚡ Разряд стража подготовлен.'};
-    if(sub.id==='stoneheartDefender'&&id==='10')return{ok:true,effect:{damageReduction:'1d12 + CON',recharge:'short'},message:'🪨 Каменный щит готов.'};
-    if(sub.id==='witchbaneHunter'&&id==='6')return{ok:true,effect:{spellDamageReduction:'1d10 + proficiency',recharge:'short'},message:'🔮 Разрыв чар готов.'};
-    if(sub.id==='rimekeeper'&&id==='10')return{ok:true,effect:{graspDifficultTerrain:true,forcedMoveSave:'str'},message:'❄️ Заморозка земли активна.'};
-    if(sub.id==='verdantProtector'&&id==='10')return{ok:true,effect:{graspRestrainedReaction:true,save:'str'},message:'🌿 Лесной страж готов.'};
-    if(sub.id==='steelShepherd'&&id==='6')return{ok:true,effect:{redirectBlockDamage:true,reduceBy:'shieldAC'},message:'🛡️ Перенаправление удара готово.'};
-    if(sub.id==='beastbloodGuardian'&&id==='3'){s.wardenBeastFuryReady=true;return{ok:true,message:'🐺 Звериная ярость доступна при кровоточащем состоянии.'};}
-    if(sub.id==='carrionKing'&&id==='6')return{ok:true,effect:{tempHpOnEnemyDeath:'1d8 + CON',reactionMoveHalfSpeed:true},message:'☠️ Падальная стая активна.'};
-    if(sub.id==='drakeBlooded'&&id==='6')return{ok:true,target:t&&t.id,effect:{reactionDamage:'1d8 elemental',pushOnSaveFailFt:10},message:'🐉 Драконий ответ готов.'};
-    if(sub.id==='godsworn'&&id==='6')return{ok:true,effect:{blockTempHp:'proficiency'},message:'✨ Знак покровительства активен.'};
-    return{ok:true,passive:true,message:'✨ '+sub.name+': '+(id||'особенность')+' активна.'};
-  }
-
-  function use(h,id,ctx,feature){
-    id=String(id||'').replace(/^warden-/,'');
-    sync(h);ctx=ctx||{};var s=state(h),l=lvl(h),t=target(ctx),range=s.wardenGuardianRange||5;
-    if(id==='sentinelStand'){
-      if(!choice(h,id,ctx.choice).ok)return choice(h,id,ctx.choice);
-      var v=ctx.choice,s=state(h);
-      s.wardenStand=v;
-      if(v==='stalwartSpirit')return{ok:true,effect:{savingThrowProficiencyChoice:true},message:'🛡️ Стойкий дух: выберите спасбросок для владения.'};
-      if(v==='steadfastToughness')return{ok:true,effect:{bonusMaxHP:'CON modifier + Warden level'},message:'❤️ Несокрушимая стойкость: максимум HP увеличен.'};
-      return{ok:true,effect:{shieldACBonus:lvl(h)>=10?4:3},message:'🛡️ Башенный щит: бонус щита +3, с 10 уровня +4.'};
-    }
-    if(id==='sentinelSoul'){
-      var ch=choice(h,id,ctx.choice);if(!ch.ok)return ch;
-      var sv=ctx.choice,s2=state(h);s2.wardenSentinelSoul=sv;
-      if(sv==='allSeeing')return{ok:true,effect:{blindsightFt:30},message:'👁️ Всевидящий: слепое зрение 30 фт.'};
-      if(sv==='fortified')return{ok:true,effect:{noAttackAdvantage:true},message:'🛡️ Укреплённый: атаки не получают преимущество против вас.'};
-      return{ok:true,effect:{moveThroughCreatureSpaces:true,proneOnEnter:true},message:'⚔️ Неостановимый: проход сквозь пространство существ.'};
-    }
-    if(id==='sentinelStrike')return choice(h,id,ctx.choice);
-    if(id==='guardianBlock'){
-      if(!t)return{ok:false,message:'Выберите союзника.'};
-      s.wardenBlockedAllyId=t.id;return{ok:true,target:t.id,effect:{guardianTactic:'block',rangeFt:range,acEqualsSelf:true,duration:'untilStartOfTurn'},message:'🛡️ Блок применён.'};
-    }
-    if(id==='guardianChallenge'){
-      if(!t)return{ok:false,message:'Выберите врага.'};
-      s.wardenChallengedTargetId=t.id;return{ok:true,target:t.id,effect:{guardianTactic:'challenge',rangeFt:range,disadvantageAgainstOthers:true,duration:'untilStartOfTurn'},message:'🎯 Вызов применён.'};
-    }
-    if(id==='guardianGrasp')return{ok:true,effect:{guardianTactic:'grasp',emanationFt:range,requiresDisengage:true,duration:'untilStartOfTurn'},message:'⛓️ Захват активирован.'};
-    if(id==='interrupt'){
-      if(!spend(h,'wardenInterrupt',1))return{ok:false,message:'Нет доступных Перехватов.'};
-      return{ok:true,target:t&&t.id,effect:{reaction:true,interruptOneAttackOrAbility:true,chooseBeforeRoll:true},message:'✋ Перехват выполнен.'};
+  function use(h,id,ctx){
+    id=String(id||'').replace(/^warden-/,'');ctx=ctx||{};
+    if(!available(h,id))return {ok:false,unavailable:true,message:'Способность недоступна текущему уровню или Призванию.'};
+    sync(h);var l=lvl(h),s=state(h),t=target(ctx),B=g.DNDCombat,call=chosen(h);
+    if(['sentinelStand','sentinelStrike','sentinelSoul'].indexOf(id)>=0)return choose(h,id,ctx.choice);
+    if(id==='chooseCall'){
+      var pick=SUBS.find(function(x){return x.id===ctx.call||x.name===ctx.call;});
+      if(!pick)return fail('Выберите Призвание из списка.');
+      if(cls(h).subclass&&(!call||call.id!==pick.id))return fail('Смена выбранного Призвания требует отдельной миграции.');
+      cls(h).subclass=pick.name;sync(h);return {ok:true,message:'Призвание: '+pick.name+'.'};
     }
     if(id==='survive'){
-      if(!s.wardenSurviveReady)return{ok:false,message:'Выжить уже использовано.'};
-      s.wardenSurviveReady=false;return{ok:true,effect:{setHP:1,healHP:2*l},message:'🛡️ Выжить: 1 HP + '+(2*l)+' HP.'};
+      if(!B||hp(h)!==0||h.dead||h.instantDeath||ctx.instantDeath||h.deathSaves&&Number(h.deathSaves.failures)>=3)return fail('Выжить доступно при падении до 0 HP без мгновенной смерти.');
+      if(!spend(h,'wardenSurvive',1))return fail('Выжить уже использовано до долгого отдыха.');
+      var healing=B.heal(h,1+2*l);if('hitPoints' in h)h.hitPoints=hp(h);clearCondition(h,'Бессознателен');s.wardenSurviveReady=false;
+      return {ok:true,healing:healing,hitPointsAfter:hp(h),message:'Выжить: восстановлено '+healing.amount+' HP.'};
     }
     if(id==='fontOfLife'){
-      if(!spend(h,'wardenFontOfLife',1))return{ok:false,message:'Источник жизни исчерпан.'};
-      return{ok:true,effect:{endCondition:true,conditions:['blinded','charmed','deafened','frightened','paralyzed','poisoned','stunned','restrained'],noAction:true},message:'✨ Источник жизни снял состояние.'};
+      var key=normalizeCondition(ctx.condition),allowed=Object.keys(CONDITIONS).map(function(k){return normalizeCondition(CONDITIONS[k]);});
+      if(ctx.atStartOfTurn!==true||allowed.indexOf(key)<0||!hasCondition(h,key))return fail('В начале хода выберите одно действующее состояние для снятия.');
+      if(!spend(h,'wardenFontOfLife',1))return fail('Источник жизни исчерпан.');
+      clearCondition(h,key);return {ok:true,conditionRemoved:key,message:'Источник жизни: снято состояние «'+key+'».'};
     }
     if(id==='legendaryResistance'){
-      if(!spend(h,'wardenLegendaryResistance',1))return{ok:false,message:'Легендарное сопротивление исчерпано.'};
-      return{ok:true,effect:{saveSucceeds:true},message:'👑 Спасбросок считается успешным.'};
+      var save=ctx.saveResult;
+      if(!save||save.success!==false||save.completed===true||!Number.isFinite(Number(save.dc))||!Number.isFinite(Number(save.total)))return fail('Нужен текущий проваленный спасбросок.');
+      if(!spend(h,'wardenLegendaryResistance',1))return fail('Легендарное сопротивление исчерпано.');
+      save.success=true;save.legendaryResistance=true;return {ok:true,saveResult:save,message:'Легендарное сопротивление: спасбросок успешен.'};
     }
-    if(id==='sentinelStrikeInterdict'){
-      if(s.wardenSentinelStrike!=='interdict')return{ok:false,message:'Выбран другой Удар часового.'};
-      if(!spend(h,'wardenInterrupt',1))return{ok:false,message:'Нет Перехвата.'};
-      return{ok:true,target:t&&t.id,effect:{reaction:true,interruptOneAttackOrAbility:true,bonusMeleeAttack:true,restoreInterruptOnInitiative:true},message:'⚔️ Запрет: Перехват с ответной атакой.'};
+    if(id==='interrupt'){
+      if(!canReact(h)||ctx.pendingAttack!==true||ctx.multiAttackAction!==true||ctx.beforeRoll!==true||!t||!Number.isFinite(ctx.distanceFt)||ctx.distanceFt<0||ctx.distanceFt>s.wardenGuardianRange)return fail('Перехват требует реакцию и одну предстоящую атаку многоатакующего действия рядом.');
+      if(!spend(h,'wardenInterrupt',1))return fail('Нет доступных Перехватов.');
+      takeReaction(h);return {ok:true,interrupted:true,target:t.id,message:'Перехват: одна атака отменена до броска.'};
     }
-    if(id==='sentinelStrikeShieldSlam'){
-      if(s.wardenSentinelStrike!=='shieldSlam')return{ok:false,message:'Выбран другой Удар часового.'};
-      return{ok:true,target:t&&t.id,effect:{shieldSlam:true,damage:'1d8 + shield AC bonus',oncePerTurn:true},message:'🛡️ Удар щитом.'};
+    if(call&&id===call.id+'-3'&&call.id==='drakeBlooded'){
+      var types={acid:'кислота',cold:'холод',fire:'огонь',lightning:'молния',poison:'яд'},el=String(ctx.damageType||'').toLowerCase();
+      if(!types[el])el=Object.keys(types).find(function(k){return types[k]===el;});
+      if(!el)return fail('Выберите кислоту, холод, огонь, молнию или яд.');
+      if(s.wardenDragonType&&s.wardenDragonType!==el)return fail('Драконья стихия уже выбрана.');
+      s.wardenDragonType=el;return {ok:true,message:'Драконья стихия: '+types[el]+'.'};
     }
-    if(id==='sentinelStrikeSweep'){
-      if(s.wardenSentinelStrike!=='sweep')return{ok:false,message:'Выбран другой Удар часового.'};
-      return{ok:true,effect:{sweepAttack:true,rangeFt:5},message:'⚔️ Размашистый удар.'};
+    if(call&&id===call.id+'-3'&&call.id==='diabolist'){
+      if(!t||!t.id||ctx.visible===false||!Number.isFinite(ctx.distanceFt)||ctx.distanceFt<0||ctx.distanceFt>30||!canAct(h)||h.turnResources&&Number(h.turnResources.bonusAction)===0)return fail('Нужна видимая цель в пределах 30 футов и бонусное действие.');
+      s.wardenMarkedTargetId=t.id;s.wardenMarkedExpiresAt=Date.now()+60000;s.wardenMarkedRounds=10;
+      h.turnResources=h.turnResources||{};h.turnResources.bonusAction=0;
+      return {ok:true,target:t.id,message:'Инфернальная печать наложена на 1 минуту.'};
     }
-    if(id==='wardenSubclassFeature'){
-      var sub=SUBS.find(function(x){return x.name===ctx.subclass||x.id===ctx.subclass;})||SUBS.find(function(x){return x.name===s.wardenChosenCall||x.id===s.wardenChosenCall;});
-      if(!sub)return{ok:false,message:'Сначала выберите Призвание стража.'};
-      return subclassFeature(h,sub,ctx.featureId||String(ctx.level||3),ctx);
+    if(call&&((call.id==='stoneheartDefender'&&id==='stoneheartDefender-10')||(call.id==='witchbaneHunter'&&id==='witchbaneHunter-6'))){
+      var stone=call.id==='stoneheartDefender';
+      if(!canReact(h)||ctx.pendingDamage!==true||!(Number(ctx.amount)>0)||!B||(!stone&&(ctx.source!=='spell'||ctx.visible===false)))return fail('Нужен подходящий входящий урон и доступная реакция.');
+      var rid=stone?'wardenStoneShield':'wardenBreakSpell';if(!spend(h,rid,1))return fail('Защитная реакция исчерпана.');
+      var reduce=B.rollDice(stone?'1d12':'1d10').total+(stone?mod(h,'con'):prof(h));takeReaction(h);
+      return {ok:true,reduction:Math.min(Number(ctx.amount),Math.max(0,reduce)),message:stone?'Каменный щит уменьшил урон.':'Разрыв чар уменьшил урон заклинания.'};
     }
-    var selected=feature&&feature.subclassId?SUBS.find(function(x){return x.id===feature.subclassId;}):SUBS.find(function(x){return x.name===ctx.subclass||x.id===ctx.subclass;});
-    if(selected&&feature&&feature.subclassId)return subclassFeature(h,selected,String(feature.level),ctx);
-    if(feature&&feature.action==='passive')return{ok:true,passive:true,message:'✨ '+feature.name+' активно.'};
-    return{ok:true,message:'🛡️ '+(feature&&feature.name||id)+' подготовлено.'};
+    return fail();
   }
-
+  function resistance(h,type){
+    if(!cls(h)||!D.isEnabled(PACK_ID))return false;var l=lvl(h),c=chosen(h),s=state(h);
+    var aliases={bludgeoning:'дробящий',piercing:'колющий',slashing:'рубящий',force:'сила',necrotic:'некротический',psychic:'психический',radiant:'излучение',poison:'яд',fire:'огонь',cold:'холод',acid:'кислота',lightning:'молния'};
+    var t=aliases[type]||type;
+    if(l>=2&&bloodied(h)&&['дробящий','колющий','рубящий'].indexOf(t)>=0)return true;
+    if(l>=15&&bloodied(h)&&Object.values(aliases).concat(['гром','кислота','холод','огонь','молния','яд']).indexOf(t)>=0&&['сила','силовой','некротический','психический','излучение','сияние'].indexOf(t)<0)return true;
+    if(c&&l>=3){if(['carrionKing','stoneheartDefender'].indexOf(c.id)>=0&&t==='яд')return true;if(c.id==='diabolist'&&t==='огонь')return true;if(c.id==='rimekeeper'&&t==='холод')return true;if(c.id==='drakeBlooded'&&aliases[s.wardenDragonType]===t)return true;}
+    return false;
+  }
+  function incoming(h,ctx){return {removeAdvantage:available(h,'sentinelSoul')&&state(h).wardenSentinelSoul==='fortified'&&canAct(h)};}
+  function reduction(h,ctx){
+    var id=ctx.defenderReaction==='warden-stoneShield'?'stoneheartDefender-10':ctx.defenderReaction==='warden-breakSpell'?'witchbaneHunter-6':null;
+    if(!id||!available(h,id))return {reduction:0};var r=use(h,id,Object.assign({},ctx,{pendingDamage:true}));return {reduction:r.ok?r.reduction:0};
+  }
   function attack(h,ctx){
-    sync(h);var s=state(h),o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[]};
-    if(bloodied(h)&&s.wardenBeastFuryReady&&!s.wardenBeastFuryUsed){o.advantage=true;o.notes.push('Звериная ярость');s.wardenBeastFuryUsed=true;}
-    if(s.wardenMarkedTargetId&&ctx&&ctx.target&&String(s.wardenMarkedTargetId)===String(ctx.target.id)){o.extraDice.push('1d6');o.notes.push('Инфернальная печать');}
-    if(s.wardenSentinelSoul==='fortified')o.notes.push('Укреплённый');
+    sync(h);ctx=ctx||{};var s=state(h),c=chosen(h),o={extraAttacks:lvl(h)>=5?2:1,typedExtraDice:[],notes:[]};
+    if(!c||lvl(h)<3||s.wardenDamageUsed||ctx.weaponAttack!==true)return o;
+    if(c.id==='diabolist'&&s.wardenMarkedExpiresAt>Date.now()&&ctx.target&&String(ctx.target.id)===String(s.wardenMarkedTargetId))o.typedExtraDice.push({dice:'1d6',type:'fire',label:'Инфернальная печать'});
+    if(c.id==='stormSentinel')o.typedExtraDice.push({dice:'1d6',type:'lightning',label:'Грозовая метка'});
+    if(c.id==='witchbaneHunter'&&ctx.target&&ctx.target.concentration&&ctx.target.concentration.active)o.typedExtraDice.push({dice:'1d6',type:'force',label:'Охотник на колдовство'});
     return o;
   }
-  function saveMod(h,ctx){
-    sync(h);var s=state(h),o={bonus:0,advantage:false,disadvantage:false,notes:[]};
-    if(s.wardenMettle&&ctx&&ctx.ability==='constitution'&&ctx.halfDamageEffect){o.mettle=true;o.notes.push('Стойкость');}
-    if(s.wardenSentinelSoul==='fortified')o.noAttackAdvantage=true;
-    return o;
-  }
-
-  var pack={
-    id:PACK_ID,name:CLASS,source:SOURCE,license:'Structured implementation; no source-book text embedded',
-    features:features,
-    subclasses:subclassPacks,
-    hooks:{sync:sync,useFeature:use,attackModifiers:attack,saveModifiers:saveMod},
-    metadata:{
-      edition:'2024 / 5.5E',hitDie:10,primaryAbilities:['strength','constitution'],
-      savingThrows:['strength','constitution'],armor:['light','medium','heavy','shields'],
-      weapons:['simple','martial'],multiclass:{all:[['strength',13]]},
-      subclassLevel:3,subclassFeatureLevels:[3,6,10,17],
-      weaponMasteryLevels:{1:2,4:3,10:4},
-      interruptUses:{5:3,9:4,13:5,17:6},
-      calls:SUBS.map(function(s){return s.name;})
-    }
-  };
-
+  function afterAttack(h,ctx){var a=ctx&&ctx.attackResult;if(a&&a.hit&&a.damage&&Array.isArray(a.damage.typedExtraDice)&&a.damage.typedExtraDice.some(function(x){return ['Инфернальная печать','Грозовая метка','Охотник на колдовство'].indexOf(x.label)>=0;}))state(h).wardenDamageUsed=true;}
+  function saveMod(h,ctx){var c=chosen(h);return {mettle:lvl(h)>=7&&['con','constitution'].indexOf(ctx.stat)>=0&&ctx.halfDamageEffect===true,advantage:!!(c&&lvl(h)>=3&&((c.id==='witchbaneHunter'&&ctx.fromSpell)||(c.id==='carrionKing'&&['poisoned','Отравлен'].indexOf(ctx.saveType)>=0))),notes:[]};}
+  function start(h){sync(h);state(h).wardenDamageUsed=false;}
+  function end(h){var s=state(h);if(s.wardenMarkedRounds){s.wardenMarkedRounds--;if(!s.wardenMarkedRounds){delete s.wardenMarkedTargetId;delete s.wardenMarkedExpiresAt;}}}
+  function rest(h,type){sync(h);if(type==='short'||type==='long'){var s=state(h);delete s.wardenMarkedTargetId;delete s.wardenMarkedExpiresAt;delete s.wardenMarkedRounds;s.wardenDamageUsed=false;}if(type==='long')state(h).wardenSurviveReady=lvl(h)>=9;}
+  var pack={id:PACK_ID,name:CLASS,aliases:['Warden'],source:SOURCE,license:'Structured implementation; no source-book text embedded',authoritativeSubclasses:true,subclassLevel:3,
+    features:features,subclasses:subclassPacks,hooks:{sync:sync,useFeature:use,attackModifiers:attack,saveModifiers:saveMod,damageReduction:reduction,onAttackResult:afterAttack,startTurn:start,onTurnEnd:end,rest:rest},
+    metadata:{status:'implemented_partial_runtime',edition:'2024 / 5.5E',hitDie:10,savingThrows:['strength','constitution'],subclassLevel:3,subclassFeatureLevels:[3,6,10,17],calls:SUBS.map(function(x){return x.name;})}};
   D.registerClass(pack);
-
-  if(g.SUBCLASSES_REFERENCE){
-    g.SUBCLASSES_REFERENCE[CLASS]={};
-    subclassPacks.forEach(function(s){
-      var levels={};
-      s.features.forEach(function(f){levels[f.level]=levels[f.level]||{features:[]};levels[f.level].features.push(f.name);});
-      g.SUBCLASSES_REFERENCE[CLASS][s.name]={source:SOURCE,description:s.description,pickLevel:3,levels:levels,magic:s.magic||[]};
-    });
-  }
-
-  g.CLASSES_REFERENCE=g.CLASSES_REFERENCE||{};
-  g.CLASSES_REFERENCE[CLASS]={hitDie:10,primaryStat:'strength',primaryAbilities:['strength','constitution'],savingThrows:['strength','constitution'],progression:{levels:(function(){var z={};for(var i=1;i<=20;i++)z[i]={features:[]};features.forEach(function(f){z[f.level].features.push(f.name);});[4,8,12,16,19].forEach(function(i){z[i].asi=true;z[i].features.push(i===19?'Эпический дар':'Увеличение характеристик / черта');});z[3].subclassLevel=true;z[6].features.push('Способность Призвания стража');z[10].features.push('Способность Призвания стража');z[17].features.push('Способность Призвания стража');z[5].features.push('Дополнительная атака','Перехват');return z;})()},subclassLevel:3,subclassFeatureLevels:[3,6,10,17],source:SOURCE,contentPackId:PACK_ID};
-  g.WARDEN_MHP_2024={
-    VERSION:'1.0.0',PACK_ID:PACK_ID,
-    subclasses:SUBS.map(function(s){return{id:s.id,name:s.name};}),
-    baseFeatures:features.map(function(f){return f.name;}),
-    sync:sync,useFeature:use
-  };
+  g.wardenProgression.status='implemented_partial_runtime';g.wardenProgression.mechanics.notes='Есть исполняемые базовые и отдельные защитные эффекты; остальные механики и Призвания требуют реализации. См. аудит.';
+  var ref={hitDie:10,primaryStat:'strength',savingThrows:['strength','constitution'],progression:{levels:g.wardenProgression.levels},subclassLevel:3,subclassFeatureLevels:[3,6,10,17],source:SOURCE,contentPackId:PACK_ID};
+  g.CLASSES_REFERENCE=g.CLASSES_REFERENCE||{};g.SUBCLASSES_REFERENCE=g.SUBCLASSES_REFERENCE||{};
+  [CLASS,'Warden'].forEach(function(name){g.CLASSES_REFERENCE[name]=ref;g.SUBCLASSES_REFERENCE[name]={};subclassPacks.forEach(function(x){var levels={};x.features.forEach(function(f){levels[f.level]={features:[f.name]};});g.SUBCLASSES_REFERENCE[name][x.name]={source:SOURCE,description:x.description,pickLevel:3,levels:levels,magic:x.magic};});});
+  if(Array.isArray(g.DND_CLASSES_LIST)){var i=g.DND_CLASSES_LIST.findIndex(function(x){return x.name==='Warden';});if(i>=0)g.DND_CLASSES_LIST.splice(i,1);}
+  g.MULTICLASS_CLASS_REQUIREMENTS=g.MULTICLASS_CLASS_REQUIREMENTS||{};g.MULTICLASS_CLASS_REQUIREMENTS[CLASS]=g.MULTICLASS_CLASS_REQUIREMENTS.Warden={all:[['strength',13]]};
+  g.WARDEN_MHP_2024={VERSION:'1.1.0-audit',PACK_ID:PACK_ID,subclasses:SUBS.map(function(x){return {id:x.id,name:x.name};}),baseFeatures:features.map(function(x){return x.name;}),sync:sync,useFeature:use,resistance:resistance,incomingAttackModifiers:incoming,rest:rest};
 })(window);

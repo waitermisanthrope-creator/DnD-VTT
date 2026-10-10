@@ -216,14 +216,14 @@
 
   function hero(){return global.currentChar||global.currentCharacter||null;}
   function num(v,d){var n=Number(v);return isFinite(n)?n:(d||0);}
-  function classLevel(h,name){var c=(h&&h.classes||[]).find(function(x){return String(x.name)===name;});return c?num(c.level):0;}
+  function classLevel(h,name){var d=global.DNDContent,p=d&&d.getClass&&d.getClass(name);var c=(h&&h.classes||[]).find(function(x){return String(x.name)===name||(p&&d.getClass(x.name)===p);});return c?num(c.level):0;}
   function hasClass(h,name){return classLevel(h,name)>0;}
   function abilityMod(h,a){var s=h&&h.abilityScores||h&&h.stats||{};var aliases={str:'strength',dex:'dexterity',con:'constitution',int:'intelligence',wis:'wisdom',cha:'charisma'};var v=s[a]!==undefined?s[a]:s[aliases[a]];return Math.floor((num(v,10)-10)/2);}
   function ensureState(h){if(!h.classFeaturesState)h.classFeaturesState={};if(!h.resources)h.resources={};return h.classFeaturesState;}
   function ensureRes(h,id,max,recharge){ensureState(h);max=num(max);var old=h.resources[id];if(!old||Number(old.max)!==Number(max)){var cur=old?Math.min(num(old.current),max):max;h.resources[id]={max:max,current:cur,recharge:recharge||'none'};}else h.resources[id].recharge=recharge||old.recharge||'none';return h.resources[id];}
   function spend(h,id,n){var r=h.resources&&h.resources[id];n=Math.max(1,num(n,1));if(!r||num(r.current)<n)return false;r.current-=n;return true;}
-  function restore(h,type){if(!h)return;if(h.resources)Object.keys(h.resources).forEach(function(k){var r=h.resources[k];if(r&&(r.recharge===type||(type==='long'&&r.recharge==='short')))r.current=r.max;});if(type==='short'&&h.resources&&h.resources.shifterPrimevalForm){var pf=h.resources.shifterPrimevalForm;pf.current=Math.min(Number(pf.max)||0,(Number(pf.current)||0)+1);}if(type==='short'&&hasClass(h,'Чародей')&&h.resources&&h.resources.sorceryPoints){h.resources.sorceryPoints.current=Math.min(h.resources.sorceryPoints.max,h.resources.sorceryPoints.current+Math.floor(classLevel(h,'Чародей')/2));h.sorceryPoints=h.resources.sorceryPoints.current;}if(type==='short'||type==='long'){var s=ensureState(h);s.relentlessRageUses={used:0};}if(type==='encounter'&&hasClass(h,'Бистхарт')&&global.BeastheartRuntime&&typeof global.BeastheartRuntime.endEncounter==='function')global.BeastheartRuntime.endEncounter(h);if(hasClass(h,'Аккурсд')&&global.accursedRuntime&&typeof global.accursedRuntime.rest==='function')global.accursedRuntime.rest(h,type);if(hasClass(h,'Ведьма')&&global.witchRuntime&&typeof global.witchRuntime.rest==='function')global.witchRuntime.rest(h,type);if(hasClass(h,'Оккультист')&&global.occultistRuntime&&typeof global.occultistRuntime.rest==='function')global.occultistRuntime.rest(h,type);if(hasClass(h,'Псионик')&&global.DNDContent&&typeof global.DNDContent.getClass==='function'){var pp=global.DNDContent.getClass('Псионик');if(pp&&pp.hooks&&typeof pp.hooks.rest==='function')pp.hooks.rest(h,type);}if(hasClass(h,'Рунный хранитель')&&global.runeKeeperRuntime){if(type==='long'&&typeof global.runeKeeperRuntime.longRest==='function')global.runeKeeperRuntime.longRest(h);else if(type==='short'&&typeof global.runeKeeperRuntime.shortRest==='function')global.runeKeeperRuntime.shortRest(h);}if(hasClass(h,'Савант')&&global.savantRuntime){if(type==='long'&&typeof global.savantRuntime.longRest==='function')global.savantRuntime.longRest(h);else if(type==='short'&&typeof global.savantRuntime.shortRest==='function')global.savantRuntime.shortRest(h);}if(hasClass(h,'Пугилист')&&global.pugilistRuntime&&typeof global.pugilistRuntime.rest==='function')global.pugilistRuntime.rest(h,type);if(hasClass(h,'Алхимик')&&global.DNDContent&&typeof global.DNDContent.getClass==='function'){var ap=global.DNDContent.getClass('Алхимик');if(ap&&ap.hooks){var ah=type==='long'?ap.hooks.longRest:ap.hooks.shortRest;if(typeof ah==='function')ah(h);}}}
-  function heal(h,n){var characterShape=h&&('hpCurrent' in h||'hpMax' in h);var max=characterShape?num(h.hpMax,h.maxHitPoints||h.maxHP||h.maxHp):num(h.maxHitPoints,h.maxHP||h.hpMax);var cur=characterShape?num(h.hpCurrent,h.hitPoints||h.hp||h.currentHP):num(h.hitPoints,h.hp||h.currentHP);var v=Math.max(0,Math.min(n,max>0?max-cur:n));var next=cur+v;if(characterShape){h.hpCurrent=next;h.hpMax=max;h.hp=h.hp||{};h.hp.current=next;h.hp.max=max;}else if('hitPoints' in h)h.hitPoints=next;else h.hp=next;return v;}
+  function restore(h,type){if(!h)return;['Некромант','Сосуд','Шифтер','Мученик','Страж','Военачальник','Заклинатель клинка'].forEach(function(name){var p=global.DNDContent&&global.DNDContent.getClass(name);if(hasClass(h,name)&&p&&p.hooks.rest)p.hooks.rest(h,type);});if(h.resources)Object.keys(h.resources).forEach(function(k){var r=h.resources[k];if(r&&(r.recharge===type||(type==='long'&&r.recharge==='short')))r.current=r.max;});if(type==='short'&&hasClass(h,'Чародей')&&h.resources&&h.resources.sorceryPoints){h.resources.sorceryPoints.current=Math.min(h.resources.sorceryPoints.max,h.resources.sorceryPoints.current+Math.floor(classLevel(h,'Чародей')/2));h.sorceryPoints=h.resources.sorceryPoints.current;}if(type==='short'||type==='long'){var s=ensureState(h);s.relentlessRageUses={used:0};}if(hasClass(h,'Бистхарт')&&global.BeastheartRuntime&&typeof global.BeastheartRuntime.rest==='function')global.BeastheartRuntime.rest(h,type);if(type==='encounter'&&hasClass(h,'Бистхарт')&&global.BeastheartRuntime&&typeof global.BeastheartRuntime.endEncounter==='function')global.BeastheartRuntime.endEncounter(h);if(hasClass(h,'Аккурсд')&&global.accursedRuntime&&typeof global.accursedRuntime.rest==='function')global.accursedRuntime.rest(h,type);if(hasClass(h,'Ведьма')&&global.witchRuntime&&typeof global.witchRuntime.rest==='function')global.witchRuntime.rest(h,type);if(hasClass(h,'Оккультист')&&global.occultistRuntime&&typeof global.occultistRuntime.rest==='function')global.occultistRuntime.rest(h,type);if(hasClass(h,'Псионик')&&global.DNDContent&&typeof global.DNDContent.getClass==='function'){var pp=global.DNDContent.getClass('Псионик');if(pp&&pp.hooks&&typeof pp.hooks.rest==='function')pp.hooks.rest(h,type);}if(hasClass(h,'Рунный хранитель')&&global.runeKeeperRuntime){if(type==='long'&&typeof global.runeKeeperRuntime.longRest==='function')global.runeKeeperRuntime.longRest(h);else if(type==='short'&&typeof global.runeKeeperRuntime.shortRest==='function')global.runeKeeperRuntime.shortRest(h);}if(hasClass(h,'Савант')&&global.savantRuntime){if(type==='long'&&typeof global.savantRuntime.longRest==='function')global.savantRuntime.longRest(h);else if(type==='short'&&typeof global.savantRuntime.shortRest==='function')global.savantRuntime.shortRest(h);}if(hasClass(h,'Пугилист')&&global.pugilistRuntime&&typeof global.pugilistRuntime.rest==='function')global.pugilistRuntime.rest(h,type);if(hasClass(h,'Алхимик')&&global.DNDContent&&typeof global.DNDContent.getClass==='function'){var ap=global.DNDContent.getClass('Алхимик');if(ap&&ap.hooks){var ah=type==='long'?ap.hooks.longRest:ap.hooks.shortRest;if(typeof ah==='function')ah(h);}}}
+  function heal(h,n){var characterShape=h&&('hpCurrent' in h||'hpMax' in h);var max=characterShape?num(h.hpMax,h.maxHitPoints||h.maxHP||h.maxHp):num(h.maxHitPoints,h.maxHP||h.hpMax);var cur=characterShape?num(h.hpCurrent,h.hitPoints||h.hp||h.currentHP):num(h.hitPoints,h.hp||h.currentHP);var v=Math.max(0,Math.min(n,max>0?max-cur:n));var next=cur+v;if(characterShape){h.hpCurrent=next;h.hpMax=max;if(!h.hp||typeof h.hp!=='object')h.hp={};h.hp.current=next;h.hp.max=max;}else if('hitPoints' in h)h.hitPoints=next;else h.hp=next;return v;}
   function roll(s){return Math.floor(Math.random()*s)+1;}
   function dice(expr){var m=String(expr).match(/^(\d+)d(\d+)(?:([+-])\s*(\d+))?$/i);if(!m)return 0;var t=0;for(var i=0;i<num(m[1]);i++)t+=roll(num(m[2]));if(m[3])t+=(m[3]==='-'?-1:1)*num(m[4]);return t;}
   function bardDie(l){return l>=15?12:l>=10?10:l>=5?8:6;}
@@ -240,10 +240,10 @@
   function getSubclassPickLevel(cls){var list=typeof global.getAvailableSubclasses==='function'?global.getAvailableSubclasses(cls):[];return list.length?num(list[0].pickLevel,3):3;}
   function externalPack(cls){return global.DNDContent&&global.DNDContent.getClass?global.DNDContent.getClass(cls):null;}
   function externalFeatureList(h,cls){return global.DNDContent&&global.DNDContent.availableFeatures?global.DNDContent.availableFeatures(h,cls):[];}
-  function externalUse(h,id,ctx){var f=null,classes=(h&&h.classes)||[];if(global.DNDContent&&global.DNDContent.getFeature){for(var i=0;i<classes.length&&!f;i++){var c=classes[i],p=global.DNDContent.getClass&&global.DNDContent.getClass(c.name);if(p)f=global.DNDContent.getFeature(id,p.id);}}if(!f&&global.DNDContent)f=global.DNDContent.getFeature(id);if(!f||!global.DNDContent.invoke)return null;return global.DNDContent.invoke(f.className||f.name,h,id,ctx||{});}
+  function externalUse(h,id,ctx){var d=global.DNDContent;if(!d||!d.resolveFeature||!d.invoke)return null;var f=d.resolveFeature(h,id,ctx&&ctx.className);return f?d.invoke(f.className,h,id,ctx||{}):null;}
   function externalSync(h){if(!global.DNDContent||!global.DNDContent.listClasses)return;global.DNDContent.listClasses().forEach(function(x){var p=global.DNDContent.getClass(x.name);if(p&&p.hooks&&typeof p.hooks.sync==='function'&&classLevel(h,x.name)>0)p.hooks.sync(h);});}
   function isSubclassFeatureAvailable(h,cls,id){var sub=getSubclass(h,cls),arr=sub&&SUBCLASS_MAP[cls]&&SUBCLASS_MAP[cls][sub];if(!arr)return false;var lvl=classLevel(h,cls);return arr.some(function(x){return x.id===id&&lvl>=x.level;});}
-  function featureAvailableForCurrentBuild(h,id){if(!h||!id)return false;var ok=false;(h.classes||[]).forEach(function(c){var cls=String(c.name||''),lvl=num(c.level);if(!lvl)return;var core=(CORE[cls]||[]).some(function(f){var req=(function(){var m={rage:1,rele:0,reckless:2,dangerSense:2,fastMovement:5,feralInstinct:7,brutalCritical:9,relentlessRage:11,persistentRage:15,indomitableMight:18,primalChampion:20,bardicInspiration:1,jackOfAllTrades:2,songOfRest:2,countercharm:6,magicalSecrets:10,superiorInspiration:20,secondWind:1,actionSurge:2,indomitable:9,fightingStyle:1,extraAttack:5,fighterRemarkableAthlete:7,survivor:18,arcaneRecovery:1,spellMastery:18,signatureSpells:20,arcaneMastery:20,druidic:1,wildShape:2,timelessBody:18,beastSpells:18,archdruid:20,channelDivinity:2,turnUndead:2,destroyUndead:5,divineIntervention:10,greaterDivineIntervention:20,flurry:2,patientDefense:2,stepWind:2,stunningStrike:5,deflectMissiles:3,slowFall:4,evasionMonk:7,stillnessOfMind:7,diamondSoul:14,perfectSelf:20,divineSense:1,layOnHands:1,divineSmite:2,auraOfProtection:6,auraOfCourage:10,improvedDivineSmite:11,cleansingTouch:14,holyNexus:20,sneakAttack:1,cunningAction:2,uncannyDodge:5,evasion:7,reliableTalent:11,blindsense:14,slipperyMind:15,strokeOfLuck:20,favoredEnemy:1,naturalExplorer:1,rangerFightingStyle:2,huntersMark:2,landsStrideRanger:8,hideInPlainSight:10,vanish:14,feralSenses:18,foeSlayer:20,fontOfMagic:2,metamagic:3,sorcerousRestoration:20,sorcerousOriginMastery:18,pactBoon:3,eldritchInvocations:2,mysticArcanum:11,eldritchMaster:20,magicalTinkering:1,infuseItem:2,flashOfGenius:7,spellStoringItem:11,magicItemAdept:10,soulOfArtifice:20};return m[f[0]]||1;})();return f[0]===id&&lvl>=req;});if(core)ok=true;var sub=getSubclass(h,cls),arr=sub&&SUBCLASS_MAP[cls]&&SUBCLASS_MAP[cls][sub];if(arr&&arr.some(function(x){return x.id===id&&lvl>=x.level;}))ok=true;});if(!ok&&global.DNDFeats&&global.DNDFeats.has)ok=!!global.DNDFeats.has(h,id);if(!ok&&global.DNDContent&&global.DNDContent.getFeature){var f=global.DNDContent.getFeature(id);if(f&&f.className&&classLevel(h,f.className)>0)ok=true;}return ok;}
+  function featureAvailableForCurrentBuild(h,id){if(!h||!id)return false;var ok=false;(h.classes||[]).forEach(function(c){var cls=String(c.name||''),lvl=num(c.level);if(!lvl)return;var core=(CORE[cls]||[]).some(function(f){var req=(function(){var m={rage:1,rele:0,reckless:2,dangerSense:2,fastMovement:5,feralInstinct:7,brutalCritical:9,relentlessRage:11,persistentRage:15,indomitableMight:18,primalChampion:20,bardicInspiration:1,jackOfAllTrades:2,songOfRest:2,countercharm:6,magicalSecrets:10,superiorInspiration:20,secondWind:1,actionSurge:2,indomitable:9,fightingStyle:1,extraAttack:5,fighterRemarkableAthlete:7,survivor:18,arcaneRecovery:1,spellMastery:18,signatureSpells:20,arcaneMastery:20,druidic:1,wildShape:2,timelessBody:18,beastSpells:18,archdruid:20,channelDivinity:2,turnUndead:2,destroyUndead:5,divineIntervention:10,greaterDivineIntervention:20,flurry:2,patientDefense:2,stepWind:2,stunningStrike:5,deflectMissiles:3,slowFall:4,evasionMonk:7,stillnessOfMind:7,diamondSoul:14,perfectSelf:20,divineSense:1,layOnHands:1,divineSmite:2,auraOfProtection:6,auraOfCourage:10,improvedDivineSmite:11,cleansingTouch:14,holyNexus:20,sneakAttack:1,cunningAction:2,uncannyDodge:5,evasion:7,reliableTalent:11,blindsense:14,slipperyMind:15,strokeOfLuck:20,favoredEnemy:1,naturalExplorer:1,rangerFightingStyle:2,huntersMark:2,landsStrideRanger:8,hideInPlainSight:10,vanish:14,feralSenses:18,foeSlayer:20,fontOfMagic:2,metamagic:3,sorcerousRestoration:20,sorcerousOriginMastery:18,pactBoon:3,eldritchInvocations:2,mysticArcanum:11,eldritchMaster:20,magicalTinkering:1,infuseItem:2,flashOfGenius:7,spellStoringItem:11,magicItemAdept:10,soulOfArtifice:20};return m[f[0]]||1;})();return f[0]===id&&lvl>=req;});if(core)ok=true;var sub=getSubclass(h,cls),arr=sub&&SUBCLASS_MAP[cls]&&SUBCLASS_MAP[cls][sub];if(arr&&arr.some(function(x){return x.id===id&&lvl>=x.level;}))ok=true;});if(!ok&&global.DNDFeats&&global.DNDFeats.has)ok=!!global.DNDFeats.has(h,id);if(!ok&&global.DNDContent&&global.DNDContent.resolveFeature)ok=!!global.DNDContent.resolveFeature(h,id);return ok;}
   function activeRage(h){return !!(h&&h.classFeaturesState&&h.classFeaturesState.raging);}
 
   function orderKeyForBridge(h){var c=(h&&h.classes||[]).find(function(x){return String(x.name)==='Кровавый охотник';});var s=c&&String(c.subclass||'').toLowerCase();return s.indexOf('призрач')>=0?'ghostslayer':s;}
@@ -271,22 +271,13 @@
       if(rt&&typeof rt.sync==='function')rt.sync(h);
       s=h.classFeaturesState&&h.classFeaturesState.runekeeper;
       if(s){
-        ensureRes(h,'runicCharges',Number(s.runicChargeMax)||Math.floor(l/2),'long');
+        ensureRes(h,'runicCharges',Number.isFinite(Number(s.runicChargeMax))?Number(s.runicChargeMax):l>=5?Math.floor(l/2):0,'long');
         h.resources.runicCharges.current=Math.max(0,Math.min(Number(s.runicCharges)||0,h.resources.runicCharges.max));
       }
     }
 
-    // Savant: reactions are runtime-owned. Focuses are selections, not a pool.
-    l=classLevel(h,'Савант');
-    if(l){
-      rt=global.savantRuntime;
-      if(rt&&typeof rt.sync==='function')rt.sync(h);
-      s=h.classFeaturesState&&h.classFeaturesState.savant;
-      if(s){
-        ensureRes(h,'savantReactions',Number(s.reactionMax)||1,'long');
-        h.resources.savantReactions.current=Math.max(0,Math.min(Number(s.reactionUses)||0,h.resources.savantReactions.max));
-      }
-    }
+    // Savant runtime owns the canonical round resource.
+    if(classLevel(h,'Савант')&&global.savantRuntime)global.savantRuntime.sync(h);
 
     // Alchemist / Warden already keep their live pools in h.resources through
     // their DNDContent hooks. We only ensure the hooks have had a chance to run.
@@ -309,26 +300,10 @@
     l=classLevel(h,'Псионик');
     if(l)ensureRes(h,'psiPoints',l,'short');
 
-    l=classLevel(h,'Военачальник');
-    if(l){
-      ensureRes(h,'warlordExploitDice',l>=15?6:4,'short');
-      ensureRes(h,'warlordInspiringWord',l>=17?7:l>=13?6:l>=9?5:l>=4?4:3,'short');
-      ensureRes(h,'warlordRally',l>=17?3:l>=13?2:1,'short');
-    }
+    if(classLevel(h,'Военачальник')&&global.WARLORD_LASERLLAMA_V330)global.WARLORD_LASERLLAMA_V330.sync(h);
 
-    l=classLevel(h,'Заклинатель клинка');
-    if(l)ensureRes(h,'arcaneSurges',Math.max(2,Math.ceil((Number(h.proficiencyBonus)||2))),'short');
+    if(classLevel(h,'Заклинатель клинка')&&global.SPELLBLADE_RUNTIME)global.SPELLBLADE_RUNTIME.sync(h);
 
-    l=classLevel(h,'Страж');
-    if(l){
-      pack=global.DNDContent&&global.DNDContent.getClass?global.DNDContent.getClass('Страж'):null;
-      if(pack&&pack.hooks&&typeof pack.hooks.sync==='function')pack.hooks.sync(h);
-      ensureRes(h,'wardenInterrupt',l>=17?6:l>=13?5:l>=9?4:l>=5?3:0,'short');
-      ensureRes(h,'wardenFontOfLife',l>=13?2:0,'short');
-      ensureRes(h,'wardenSurvive',l>=9?1:0,'long');
-      ensureRes(h,'wardenLegendaryResistance',l>=20?3:0,'long');
-      ensureRes(h,'wardenSecondWind',1,'short');
-    }
     l=classLevel(h,'Пугилист');
     if(l){
       pack=global.DNDContent&&global.DNDContent.getClass?global.DNDContent.getClass('Пугилист'):null;
@@ -364,14 +339,12 @@
 
     l=classLevel(h,'Шифтер');
     if(l){
-      var maxAdr=Math.max(1,abilityMod(h,'con'));
-      ensureRes(h,'shifterAdrenaline',maxAdr,'short');
-      ensureRes(h,'shifterPrimevalForm',l>=11?3:0,'long');
+      if(global.shifterRuntime&&typeof global.shifterRuntime.sync==='function')global.shifterRuntime.sync(h);
     }
 
     l=classLevel(h,'Сосуд');
     if(l){
-      ensureRes(h,'vesselMagicSlots',l>=18?4:l>=11?3:2,'short');
+      if(global.vesselRuntime&&typeof global.vesselRuntime.sync==='function')global.vesselRuntime.sync(h);
     }
 
     l=classLevel(h,'Некромант');
@@ -379,14 +352,7 @@
       ensureRes(h,'charnelTouch',l*5,'long');
       ensureRes(h,'undyingServitude',l>=18?1:0,'long');
     }
-    l=classLevel(h,'Мученик');
-    if(l){
-      var mr=global.martyrRuntime;
-      var mp=mr&&mr.progression&&mr.progression.levels?mr.progression.levels[l]:null;
-      if(mp&&Number.isFinite(Number(mp.spellUses)))ensureRes(h,'martyrSpellUses',Number(mp.spellUses),'long');
-      var dr=l>=17?10:l>=13?6:l>=9?3:0;
-      ensureRes(h,'martyrDivineRespite',dr,'long');
-    }
+    if(classLevel(h,'Мученик')&&global.martyrRuntime)global.martyrRuntime.sync(h);
     // Beastheart: Ferocity lives on the companion entity; hero.resources is a live mirror for the common UI/resolver.
     l=classLevel(h,'Бистхарт');
     if(l){
@@ -487,7 +453,7 @@
   function useDeflectMissiles(h,damage,ctx){if(!hasClass(h,'Монах'))return {ok:false,reason:'Нет уровня монаха.'};ctx=ctx||{};var red=Math.min(num(damage),num(10*classLevel(h,'Монах'))+abilityMod(h,'dex'));var remaining=Math.max(0,num(damage)-red),out={ok:true,reduced:red,remainingAmount:remaining,returnedAttack:false};if(num(damage)>0&&red>=num(damage)&&ctx.returnTarget&&ctx.returnAttackBonus!=null){var cost=1;out.returnedAttack=true;out.returnTargetId=ctx.returnTarget.id;out.returnAttack={bonus:num(ctx.returnAttackBonus),damage:ctx.returnDamage||('1d'+(ctx.projectileDie||6)),damageType:ctx.damageType||'дробящий'};}out.message=out.returnedAttack?'🏹 Отражение стрел: урон полностью поглощён, можно вернуть снаряд атакой.':'🏹 Отражение стрел: урон уменьшен на '+red+'.';return out;}
   function reactionOptions(h,ctx){
     ctx=ctx||{};if(!h)return null;syncClassResources(h);var r=h.turnResources||{},ids=buildFeatureSet(h),out=[];
-    if(r.reaction===false)return null;
+    if(r.reaction===false||r.reaction===0)return null;
     var state=ensureState(h);
     if(ids.indexOf('uncannyDodge')>=0&&ctx.source==='attack'&&ctx.visible!==false&&num(ctx.amount)>0)out.push({id:'uncannyDodge',priority:10,label:'Невероятное уклонение',description:'Уменьшить урон от атаки вдвое.'});
     if(ids.indexOf('deflectMissiles')>=0&&ctx.source==='attack'&&ctx.attackKind==='rangedWeapon'&&ctx.projectile&&num(ctx.amount)>0)out.push({id:'deflectMissiles',priority:20,label:'Отражение стрел',description:'Уменьшить дальнобойный урон.'});
@@ -500,10 +466,12 @@
     if(ctx.source==='spell'&&ctx.spellLevel>0&&ctx.visible!==false&&num(ctx.distanceFt,0)<=60){
       for(var sl=Math.max(1,num(ctx.spellLevel));sl<=9;sl++){var cs=slots[sl];if((cs&&num(cs.max)>num(cs.used))||(pact&&num(pact.max)>num(pact.used)&&num(pact.slotLevel)>=sl)){out.push({id:'counterspell',priority:1,label:'Контрзаклинание',description:'Попытаться прервать заклинание '+ctx.spellName+'.'});break;}}
     }
+    if(hasClass(h,'Мученик')){var mp=externalPack('Мученик');if(mp&&mp.hooks.reactionOptions)out=out.concat(mp.hooks.reactionOptions(h,ctx)||[]);}
     out.sort(function(a,b){return a.priority-b.priority;});
     return out.length?{options:out,window:{type:'REACTION_WINDOW',options:out,damage:num(ctx.amount),damageType:ctx.damageType||'',source:ctx.source||'generic'}}:null;
   }
   function resolveReaction(h,id,ctx){
+    if(id==='reprisal')return externalUse(h,id,ctx||{})||{ok:false,reason:'Воздаяние недоступно.'};
     ctx=ctx||{};var opts=reactionOptions(h,ctx);if(!opts)return {ok:false,reason:'Нет доступной реакции.'};var found=opts.options.filter(function(x){return x.id===id;})[0];if(!found)return {ok:false,reason:'Эта реакция сейчас недоступна.'};
     var r=h.turnResources||{};if(r.reaction===false)return {ok:false,reason:'Реакция уже использована.'};
     var result={ok:true,id:id,remainingAmount:num(ctx.amount),reduced:0,applied:false};
@@ -590,7 +558,7 @@
             String(feat.name)===String(fid)||String(feat.name)===String(ctx.featureName));
         })[0]||null;
       }
-      var result=pack.hooks.useFeature(h,fid,ctx,featureMeta);
+      var result=featureMeta&&global.DNDContent.invoke?global.DNDContent.invoke(cls,h,featureMeta.id,ctx):null;
       if(result)return result;
     }
 
@@ -802,9 +770,9 @@
     if(race.brave&&ctx.saveType==='frightened'){out.advantage=true;out.notes.push('Расовая храбрость');}
     if(ensureState(h).immuneCharm&&ctx.saveType==='wis'&&ctx.charmEffect)out.advantage=true;
     if(ensureState(h).holyNimbus&&ctx.fromFiendOrUndead)out.bonus+=abilityMod(h,'cha');
-    if(global.DNDContent&&global.DNDContent.listClasses)global.DNDContent.listClasses().forEach(function(x){if(classLevel(h,x.name)>0){var p=global.DNDContent.getClass(x.name);if(p&&p.hooks&&typeof p.hooks.saveModifiers==='function'){var e=p.hooks.saveModifiers(h,ctx)||{};out.bonus+=num(e.bonus);if(e.advantage)out.advantage=true;if(e.disadvantage)out.disadvantage=true;(e.notes||[]).forEach(function(v){out.notes.push(v);});}}});if(global.DNDFeats&&global.DNDFeats.saveModifiers){var ff=global.DNDFeats.saveModifiers(h,ctx)||{};out.bonus+=num(ff.bonus);if(ff.advantage)out.advantage=true;if(ff.disadvantage)out.disadvantage=true;(ff.notes||[]).forEach(function(v){out.notes.push(v);});}return out;}
+    if(global.DNDContent&&global.DNDContent.listClasses)global.DNDContent.listClasses().forEach(function(x){if(classLevel(h,x.name)>0){var p=global.DNDContent.getClass(x.name);if(p&&p.hooks&&typeof p.hooks.saveModifiers==='function'){var e=p.hooks.saveModifiers(h,ctx)||{};out.bonus+=num(e.bonus);if(e.advantage)out.advantage=true;if(e.disadvantage)out.disadvantage=true;if(e.mettle)out.mettle=true;(e.notes||[]).forEach(function(v){out.notes.push(v);});}}});if(global.DNDFeats&&global.DNDFeats.saveModifiers){var ff=global.DNDFeats.saveModifiers(h,ctx)||{};out.bonus+=num(ff.bonus);if(ff.advantage)out.advantage=true;if(ff.disadvantage)out.disadvantage=true;(ff.notes||[]).forEach(function(v){out.notes.push(v);});}return out;}
 
-  function useFeature(h,id,ctx){ctx=ctx||{};var known=!!FEATURE_DEFS[id]||(global.DNDFeats&&global.DNDFeats.has&&global.DNDFeats.has(h,id))||(global.DNDContent&&global.DNDContent.getFeature&&!!global.DNDContent.getFeature(id));if(!known)return {ok:false,unsupported:true,reason:'Неизвестная способность: '+id};if(!featureAvailableForCurrentBuild(h,id))return {ok:false,reason:'Эта способность недоступна текущему уровню/классу/подклассу.'};var routed=useFeatureAction(h,id,ctx);if(routed)return routed;if(global.DNDFeats&&global.DNDFeats.has&&global.DNDFeats.has(h,id))return global.DNDFeats.useFeature(h,id,ctx);var ext=externalUse(h,id,ctx);if(ext)return ext;switch(id){
+  function useFeature(h,id,ctx){ctx=ctx||{};var known=!!FEATURE_DEFS[id]||(global.DNDFeats&&global.DNDFeats.has&&global.DNDFeats.has(h,id))||(global.DNDContent&&global.DNDContent.resolveFeature&&!!global.DNDContent.resolveFeature(h,id,ctx.className));if(!known)return {ok:false,unsupported:true,reason:'Неизвестная способность: '+id};if(!featureAvailableForCurrentBuild(h,id))return {ok:false,reason:'Эта способность недоступна текущему уровню/классу/подклассу.'};var coreOwned=(h.classes||[]).some(function(c){return (CORE[c.name]||[]).some(function(f){return f[0]===id;});});if(!coreOwned||ctx.className){var scoped=externalUse(h,id,ctx);if(scoped)return scoped;}var routed=useFeatureAction(h,id,ctx);if(routed)return routed;if(global.DNDFeats&&global.DNDFeats.has&&global.DNDFeats.has(h,id))return global.DNDFeats.useFeature(h,id,ctx);var ext=externalUse(h,id,ctx);if(ext)return ext;switch(id){
     case'rage':return useRage(h);case'reckless':return toggleReckless(h);case'secondWind':return useSecondWind(h);case'actionSurge':return useActionSurge(h);case'indomitable':return useIndomitable(h);case'cunningAction':return useCunningAction(h,ctx.kind);case'flurry':case'patientDefense':case'stepWind':return useMonk(h,id);case'bardicInspiration':return giveBardic(h,ctx.target);case'consumeBardic':return useBardicDie(h);case'metamagic':return applyMetamagic(h,ctx.meta,ctx.spell);case'layOnHands':return useLayOnHands(h,ctx.amount,ctx.target);case'channelDivinity':return useChannel(h,id,ctx);case'turnUndead':return useChannel(h,id,ctx);case'wildShape':return useWildShape(h);case'huntersMark':return useHuntersMark(h);case'flashOfGenius':return useFlashOfGenius(h);case'arcaneRecovery':return useArcaneRecovery(h,ctx);case'divineSmite':return useDivineSmite(h,ctx.spellLevel);case'relentlessRage':return useRelentlessRage(h,ctx);case'deflectMissiles':return useDeflectMissiles(h,ctx.damage,ctx);default:return useSubclassFeature(h,id,ctx);}}
 
   function spellDamageModifiers(h,ctx){
@@ -827,6 +795,10 @@
     return out;
   }
   function resetTurn(h){if(!h)return;syncClassResources(h);if(!h.turnResources)h.turnResources={};h.turnResources.actions=1;h.turnResources.bonusAction=1;h.turnResources.reaction=1;h.turnResources.movement=num(h.speed,30);var s=ensureState(h);if(s.pugilistHighFlyerActive){h.turnResources.movement+=10;s.pugilistJumpMultiplier=2;s.pugilistBonusDashAvailable=true;}if(s.pugilistSlowed){if(s.pugilistSlowed.originalSpeed==null)s.pugilistSlowed.originalSpeed=num(h.speed,30);h.speed=Math.max(0,Math.floor(num(s.pugilistSlowed.originalSpeed,30)/2));}else if(s.pugilistOriginalSpeed!=null){h.speed=num(s.pugilistOriginalSpeed,h.speed);delete s.pugilistOriginalSpeed;}s.sneakUsedThisTurn=false;s.foeSlayerUsedThisTurn=false;s.recklessThisTurn=false;s.actionSurgeUsed=false;s.rageMaintained=false;if(activeRage(h)&&classLevel(h,'Варвар')>=15)s.rageMaintained=true;if(global.DNDContent&&global.DNDContent.listClasses)global.DNDContent.listClasses().forEach(function(x){if(classLevel(h,x.name)>0){var p=global.DNDContent.getClass(x.name);if(p&&p.hooks&&typeof p.hooks.startTurn==='function')p.hooks.startTurn(h,{turnResources:h.turnResources});}});}
+  function onDamage(h,ctx){if(global.DNDContent)global.DNDContent.listClasses().forEach(function(x){if(classLevel(h,x.name)>0){var p=global.DNDContent.getClass(x.name);if(p.hooks&&p.hooks.onDamage)p.hooks.onDamage(h,ctx);}});}
+  function onCondition(h,ctx){if(global.DNDContent)global.DNDContent.listClasses().forEach(function(x){if(classLevel(h,x.name)>0){var p=global.DNDContent.getClass(x.name);if(p.hooks&&p.hooks.onCondition)p.hooks.onCondition(h,ctx);}});}
+  function onSavingThrow(h,ctx){if(global.DNDContent)global.DNDContent.listClasses().forEach(function(x){if(classLevel(h,x.name)>0){var p=global.DNDContent.getClass(x.name);if(p.hooks&&p.hooks.onSavingThrow)p.hooks.onSavingThrow(h,ctx);}});}
+  function damageReduction(h,ctx){var reduction=0;if(global.DNDContent)global.DNDContent.listClasses().forEach(function(x){if(classLevel(h,x.name)>0){var p=externalPack(x.name);if(p&&p.hooks.damageReduction){var v=p.hooks.damageReduction(h,ctx)||{};reduction+=Math.max(0,num(v.reduction));}}});return Math.min(Math.max(0,num(ctx.amount)),reduction);}
   function onAttackResult(h,ctx){if(!h)return;var s=ensureState(h);if(ctx&&ctx.sneakApplied)s.sneakUsedThisTurn=true;if(classLevel(h,'Кровавый охотник')>=20&&ctx&&ctx.critical&&s.crimsonRite&&s.crimsonRite.active&&h.resources&&h.resources.bloodMaledict){h.resources.bloodMaledict.current=Math.min(h.resources.bloodMaledict.max,h.resources.bloodMaledict.current+1);s.sanguineMasteryRefundedThisTurn=true;}if(ctx&&ctx.foeSlayerApplied&&ctx.hit)s.foeSlayerUsedThisTurn=true;if(ctx&&ctx.pendingOnHit&&ctx.pendingOnHit.divineSmite){if(s.pendingOnHit)s.pendingOnHit.divineSmite=null;}if(ctx&&ctx.pendingOnHit&&ctx.pendingOnHit.stunningStrike){if(s.pendingOnHit)s.pendingOnHit.stunningStrike=null;}if(activeRage(h))s.rageMaintained=true;if(global.DNDContent&&global.DNDContent.listClasses)global.DNDContent.listClasses().forEach(function(x){if(classLevel(h,x.name)>0){var p=global.DNDContent.getClass(x.name);if(p&&p.hooks&&typeof p.hooks.onAttackResult==='function')p.hooks.onAttackResult(h,ctx||{});}});}
 
   function consumePendingOnHit(h,ctx){var s=ensureState(h),p=s.pendingOnHit||{},out={};if(ctx&&ctx.hit){if(p.divineSmite)out.divineSmite=JSON.parse(JSON.stringify(p.divineSmite));if(p.stunningStrike)out.stunningStrike=JSON.parse(JSON.stringify(p.stunningStrike));}return out;}
@@ -892,6 +864,12 @@
     var v=Math.max(1,Number(n)||1), s, rt, pack, res;
     id=String(id||'');
 
+    if(id==='accursedSpellSlots'){
+      var sl=Number(ctx&&ctx.spellLevel),ar=h.resources&&h.resources.accursedSpellSlots;
+      if(v!==1||!Number.isInteger(sl)||sl<1||sl>5||!ar||!ar.byLevel||ar.byLevel[sl-1]<1)return {ok:false,reason:'Нужна одна доступная ячейка конкретного уровня.'};
+      ar.byLevel[sl-1]--;if(global.accursedRuntime)global.accursedRuntime.sync(h);
+      return {ok:true,remaining:ar.byLevel[sl-1],spellLevel:sl};
+    }
     if(id==='runicCharges'){
       s=h.classFeaturesState&&h.classFeaturesState.runekeeper;rt=global.runeKeeperRuntime;
       if(!s||!rt||typeof rt.charge!=='function')return{ok:false,reason:'Расход рунного заряда не поддержан runtime.'};
@@ -905,6 +883,7 @@
       if(!s||!rt)return{ok:false,reason:'Runtime Саванта недоступен.'};
       if(Number(s.reactionUses)<v)return{ok:false,reason:'Реакции Саванта закончились.'};
       if(v!==1)return{ok:false,reason:'Реакция Саванта расходуется по одной за активацию.'};
+      if(typeof rt.spendReaction==='function')return rt.spendReaction(h,ctx||{});
       if(typeof rt.observe==='function'){var sr=rt.observe(h,'resource',{});if(sr&&sr.ok&&h.resources&&h.resources.savantReactions)h.resources.savantReactions.current=Math.max(0,Math.min(Number(sr.remaining)||0,h.resources.savantReactions.max));return sr;}
       s.reactionUses=Number(s.reactionUses)-v;
       return{ok:true,remaining:s.reactionUses};
@@ -948,7 +927,7 @@
     return out;
   }
 
-global.DNDClassFeatures={VERSION:'3.2.0',CLASS_NAMES:CLASS_NAMES,CORE:CORE,SUBCLASS_FEATURES:SUBCLASS_FEATURES,FEATURE_DEFS:FEATURE_DEFS,META_COST:META_COST,META_NAMES:META_NAMES,getSubclass:getSubclass,isAssassin:isAssassin,featureAvailableForCurrentBuild:featureAvailableForCurrentBuild,syncClassResources:syncClassResources,buildFeatureSet:buildFeatureSet,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,spellDamageModifiers:spellDamageModifiers,checkModifiers:checkModifiers,resetTurn:resetTurn,onAttackResult:onAttackResult,consumePendingOnHit:consumePendingOnHit,onTurnEnd:onTurnEnd,restore:restore,spendExtendedResource:spendExtendedResource,extendedResourceState:extendedResourceState,activeRage:activeRage,reactionOptions:reactionOptions,resolveReaction:resolveReaction};
+global.DNDClassFeatures={VERSION:'3.2.0',CLASS_NAMES:CLASS_NAMES,CORE:CORE,SUBCLASS_FEATURES:SUBCLASS_FEATURES,FEATURE_DEFS:FEATURE_DEFS,META_COST:META_COST,META_NAMES:META_NAMES,getSubclass:getSubclass,isAssassin:isAssassin,featureAvailableForCurrentBuild:featureAvailableForCurrentBuild,syncClassResources:syncClassResources,buildFeatureSet:buildFeatureSet,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,spellDamageModifiers:spellDamageModifiers,checkModifiers:checkModifiers,resetTurn:resetTurn,damageReduction:damageReduction,onDamage:onDamage,onCondition:onCondition,onSavingThrow:onSavingThrow,onAttackResult:onAttackResult,consumePendingOnHit:consumePendingOnHit,onTurnEnd:onTurnEnd,restore:restore,spendExtendedResource:spendExtendedResource,extendedResourceState:extendedResourceState,activeRage:activeRage,reactionOptions:reactionOptions,resolveReaction:resolveReaction};
   global.renderClassFeatures=renderClassFeatures;global.useClassFeature=useClassFeatureUI;global.chooseMetamagic=chooseMetamagic;global.chooseAssassinSubclass=chooseAssassinSubclass;global.chooseSubclassForClass=chooseSubclassForClass;
   global.addEventListener('dnd-character-rendered',function(){setTimeout(renderClassFeatures,0);});
 })(window);

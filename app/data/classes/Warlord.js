@@ -29,7 +29,7 @@ levels[20]={features:['Dauntless — Неустрашимый']};
 
 g.warlordProgression={
  className:'Военачальник',englishName:'Warlord',
- source:'Laserllama — Warlord v3.3.0',status:'implemented_core',edition:'5E',
+ source:'Laserllama — Warlord v3.3.0',status:'implemented_partial_runtime',edition:'5E',
  hitDie:8,primaryStat:'strength_or_dexterity',leadershipAbility:'choose',
  leadershipChoices:['charisma','wisdom','intelligence'],
  savingThrows:['wisdom','charisma'],
@@ -44,7 +44,7 @@ g.warlordProgression={
  progression:{
    inspiringWordUses:[3,3,3,4,4,4,4,5,5,5,5,5,6,6,6,6,7,7,7,7],
    exploitsKnown:[0,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,10,10],
-   exploitDice:[0,0,2,2,3,3,3,3,3,3,4,4,4,4,4,4,5,5,5,5],
+   exploitDice:[0,0,2,2,2,3,3,3,3,3,3,4,4,4,4,4,4,5,5,5,5],
    exploitDie:['','', 'd4','d4','d4','d6','d6','d6','d6','d6','d6','d8','d8','d8','d8','d8','d8','d10','d10','d10','d10']
  },
  leadershipStyles:{
@@ -83,7 +83,7 @@ g.warlordProgression={
   dauntless:'Боевой клич без ограничения; Вдохновляющее слово восстанавливает максимально возможные HP'
  },
  mechanics:{
-  status:'implemented_core',
+  status:'implemented_partial_runtime',
   orders:'implemented_core',
   exploits:'implemented_core',
   leadershipModifier:'implemented_core',

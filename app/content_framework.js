@@ -53,33 +53,49 @@
   }
   function registerClass(pack){
     var check=validatePack(pack);if(!check.ok)return check;
+    Object.keys(registry.classes).forEach(function(name){if(registry.classes[name].id===pack.id)delete registry.classes[name];});
+    // A replacement must not retain feature metadata from the old revision.
+    Object.keys(featureIndex).forEach(function(key){if(key.indexOf(pack.id+'::')===0)delete featureIndex[key];});
+    Object.keys(featureIds).forEach(function(id){featureIds[id]=featureIds[id].filter(function(key){return !!featureIndex[key];});delete featureIndex[id];if(featureIds[id].length===1)featureIndex[id]=featureIndex[featureIds[id][0]];});
     registry.classes[pack.name]=clone(pack);registry.enabled[pack.id]=loadEnabled(pack.id);if(pack.hooks)registry.classes[pack.name].hooks=pack.hooks;registry.sources[pack.id]={id:pack.id,name:pack.name,source:pack.source,license:pack.license||'unspecified'};indexPack(pack);
     return {ok:true,pack:registry.classes[pack.name]};
   }
-  function getClass(name){return registry.classes[name]||null;}
-  function getFeature(id,packId){if(packId&&featureIndex[packId+'::'+id])return featureIndex[packId+'::'+id];var keys=featureIds[id]||[];return keys.length===1?featureIndex[keys[0]]:featureIndex[id]||null;}
+  function classMatches(name,p){return p&&(name===p.name||(p.aliases||[]).indexOf(name)>=0);}
+  function getClass(name){return registry.classes[name]||Object.keys(registry.classes).map(function(k){return registry.classes[k];}).find(function(p){return classMatches(name,p);})||null;}
+  function getFeature(id,packId){var keys=(featureIds[id]||[]).filter(function(k){return featureIndex[k]&&(!packId||featureIndex[k].packId===packId);});if(packId&&featureIndex[packId+'::'+id])return featureIndex[packId+'::'+id];return keys.length===1?featureIndex[keys[0]]:null;}
+  function resolveFeature(hero,id,name){
+    var classes=hero&&hero.classes||[];
+    for(var i=0;i<classes.length;i++){
+      var c=classes[i],p=getClass(c.name);if(!p||(name&&name!==p.id&&!classMatches(name,p))||registry.enabled[p.id]===false)continue;
+      var selected=(p.subclasses||[]).find(function(s){return s.id===c.subclass||s.name===c.subclass;});
+      var choices=(featureIds[id]||[]).map(function(k){return featureIndex[k];}).filter(function(f){return f&&f.packId===p.id&&(!f.subclassId||(selected&&f.subclassId===selected.id))&&Number(c.level)>=(Number(f.level)||1);});
+      var f=choices.find(function(x){return x.subclassId;})||choices.find(function(x){return !x.subclassId;});if(f)return f;
+    }
+    return null;
+  }
   function listClasses(){return Object.keys(registry.classes).filter(function(k){var p=registry.classes[k];return registry.enabled[p.id]!==false;}).map(function(k){var p=registry.classes[k];return {id:p.id,name:p.name,source:p.source,license:p.license||'unspecified',enabled:true};});}
   function listAllClasses(){return Object.keys(registry.classes).map(function(k){var p=registry.classes[k];return {id:p.id,name:p.name,source:p.source,license:p.license||'unspecified',enabled:registry.enabled[p.id]!==false};});}
   function isEnabled(id){return registry.enabled[id]!==false;}
   function setEnabled(id,on){if(!registry.sources[id])return false;registry.enabled[id]=!!on;saveEnabled();return true;}
   function listSubclasses(name){var p=getClass(name);return p?(p.subclasses||[]).map(clone):[];}
-  function availableFeatures(hero,name){var p=getClass(name),lvl=0;if(!p||!hero)return[];var c=(hero.classes||[]).find(function(x){return String(x.name)===name;});lvl=c?Number(c.level)||0:0;var out=(p.features||[]).filter(function(f){return lvl>=(Number(f.level)||1);}).map(clone);var sub=c&&c.subclass;var s=(p.subclasses||[]).find(function(x){return x.name===sub||x.id===sub;});if(s)(s.features||[]).forEach(function(f){if(lvl>=(Number(f.level)||1))out.push(clone(f));});return out;}
+  function availableFeatures(hero,name){var p=getClass(name),lvl=0;if(!p||!hero||registry.enabled[p.id]===false)return[];var c=(hero.classes||[]).find(function(x){return classMatches(String(x.name),p);});lvl=c?Number(c.level)||0:0;if(lvl<1)return[];var out=(p.features||[]).filter(function(f){return lvl>=(Number(f.level)||1);}).map(clone);var sub=c&&c.subclass;var s=(p.subclasses||[]).find(function(x){return x.name===sub||x.id===sub;});if(s)(s.features||[]).forEach(function(f){if(lvl>=(Number(f.level)||1))out.push(clone(f));});return out;}
   function invoke(packName,hero,id,ctx){
     var p=getClass(packName),f=getFeature(id,p&&p.id);
     // If an ID is shared by multiple subclass features, resolve it against the
     // hero's actually selected subclass instead of whichever duplicate was
     // indexed last.
     if(p&&hero&&hero.classes){
-      var c0=hero.classes.find(function(x){return String(x.name)===String(p.name);});
+      var c0=hero.classes.find(function(x){return classMatches(String(x.name),p);});
       var selected0=c0&&c0.subclass;
       var candidates=(featureIds[id]||[]).map(function(k){return featureIndex[k];}).filter(function(x){return x&&x.packId===p.id;});
-      var exact=candidates.find(function(x){return x.subclassId&&String(x.subclassId)===String(selected0);});
+      var selectedSub=(p.subclasses||[]).find(function(x){return x.id===selected0||x.name===selected0;});
+      var exact=candidates.find(function(x){return x.subclassId&&selectedSub&&x.subclassId===selectedSub.id;});
       var base=candidates.find(function(x){return !x.subclassId;});
       if(exact)f=exact;else if(base)f=base;
     }
     if(p&&registry.enabled[p.id]===false)return {ok:false,message:'Контент-пак отключён в каталоге.'};
     if(!p||!f||f.packId!==p.id)return null;
-    var c=(hero&&hero.classes||[]).find(function(x){return String(x.name)===String(p.name);});
+    var c=(hero&&hero.classes||[]).find(function(x){return classMatches(String(x.name),p);});
     var heroLevel=c?Number(c.level)||0:0, featureLevel=Number(f.level)||1;
     if(!c||heroLevel<featureLevel)return {ok:false,unavailable:true,message:'Способность недоступна на текущем уровне класса.'};
     if(f.subclassId){
@@ -92,5 +108,7 @@
     if(typeof p.hooks==='object'&&typeof p.hooks.useFeature==='function')return p.hooks.useFeature(hero,id,ctx||{},f);
     return null;
   }
-  global.DNDContent={VERSION:'1.1.0',registry:registry,validatePack:validatePack,registerClass:registerClass,getClass:getClass,getFeature:getFeature,listClasses:listClasses,listAllClasses:listAllClasses,isEnabled:isEnabled,setEnabled:setEnabled,listSubclasses:listSubclasses,availableFeatures:availableFeatures,invoke:invoke};
+  global.DNDContent={VERSION:'1.2.0',registry:registry,validatePack:validatePack,registerClass:registerClass,getClass:getClass,getFeature:getFeature,resolveFeature:resolveFeature,listClasses:listClasses,listAllClasses:listAllClasses,isEnabled:isEnabled,setEnabled:setEnabled,listSubclasses:listSubclasses,availableFeatures:availableFeatures,invoke:invoke};
+  var pending=global.DND_PENDING_CLASS_PACKS||[];global.DND_PENDING_CLASS_PACKS=[];
+  registry.registrationErrors=[];pending.forEach(function(p){var result=registerClass(p);if(!result.ok)registry.registrationErrors.push({id:p.id,errors:result.errors});});
 })(window);

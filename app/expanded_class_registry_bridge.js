@@ -66,6 +66,15 @@
 
   // Generic helper used by level-up and tests.
   g.getExpandedClassPack=function(name){return pack(name);};
-  g.getExpandedClassDefinition=function(name){return CLASS_DEFS[name]||null;};
+  // Late authoritative runtimes replace early bridge definitions. Always expose
+  // the live pack/reference through both canonical names and old saved aliases.
+  g.getExpandedClassDefinition=function(name){
+    var p=pack(name),base=CLASS_DEFS[name]||null;if(!p)return base;
+    var r=g.CLASSES_REFERENCE&&(g.CLASSES_REFERENCE[name]||g.CLASSES_REFERENCE[p.name])||{},m=p.metadata||{};
+    return Object.assign({},base||{}, {id:p.id,displayName:p.name,source:p.source,
+      hitDie:r.hitDie||m.hitDie||(base&&base.hitDie),primaryStat:r.primaryStat||m.primaryStat||(base&&base.primaryStat),
+      savingThrows:(r.savingThrows||m.savingThrows||(base&&base.savingThrows)||[]).slice(),
+      multiclass:g.MULTICLASS_CLASS_REQUIREMENTS&&(g.MULTICLASS_CLASS_REQUIREMENTS[name]||g.MULTICLASS_CLASS_REQUIREMENTS[p.name])||(base&&base.multiclass)});
+  };
   g.listIntegratedExpandedClasses=function(){return Object.keys(CLASS_DEFS).filter(function(n){return !!pack(n);});};
 })(window);

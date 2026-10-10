@@ -161,13 +161,14 @@ ctx.DNDCombat.attack(floorHero,floorTarget,{bonus:0,damage:'1d6',damageType:'д�
 const floorHpBefore=floorTarget.hp;
 assert.equal(pack.hooks.useFeature(floorHero,'oneTwoThreeFloor',{target:floorTarget}).ok,true,'One-Two-Three Floor unlocks after two hits on the same target');
 const floorAttack=ctx.DNDCombat.attack(floorHero,floorTarget,{bonus:0,damage:'1d6',damageType:'дробящий',unarmedAttack:true,useRules:false});
-assert.equal(floorAttack.damage.total,0,'One-Two-Three Floor deals no damage');
+assert.ok(floorAttack.damage.total>0,'One-Two-Three Floor retains normal attack damage (guide contract)');
 assert.equal(floorTarget.conditions['Сбит с ног'],true,'One-Two-Three Floor knocks the target prone on a hit');
-assert.equal(floorTarget.hp,floorHpBefore,'One-Two-Three Floor does not reduce HP');
+assert.equal(floorTarget.hp,Math.max(0,floorHpBefore-floorAttack.damage.total),'One-Two-Three Floor applies its damage to actual HP');
 const knockoutHero=hero(17,'Благородное искусство');pack.hooks.sync(knockoutHero);randomValue=0.99;const knockoutTarget=target('knockout-target');
 assert.equal(pack.hooks.useFeature(knockoutHero,'knockOut',{target:knockoutTarget,moxie:1}).ok,true,'Knockout prepares its selected target');
 const knockout=ctx.DNDCombat.attack(knockoutHero,knockoutTarget,{bonus:0,damage:'1d6',damageType:'дробящий',unarmedAttack:true,useRules:false});
-assert.equal(knockoutTarget.hp,30,'Knockout leaves HP unchanged; it is not lethal damage');
+assert.equal(knockoutTarget.hp,0,'Knockout sets zero HP as specified in the project guide');
+assert.equal(knockoutTarget.defeated,false,'Knockout preserves nonlethal unconsciousness');
 assert.equal(knockoutTarget.conditions['Бессознателен'],true,'A successful Knockout applies unconsciousness');
 assert.ok(knockoutHero.classFeaturesState.pugilistKnockOutResult.success,'Knockout roll result is saved for the sheet/log');
 const missedKnockoutHero=hero(17,'Благородное искусство');pack.hooks.sync(missedKnockoutHero);const missedKnockoutTarget=target('missed-knockout-target',99);

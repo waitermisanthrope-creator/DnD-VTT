@@ -698,6 +698,11 @@ window.SUBCLASSES_REFERENCE["Призрак"] = {
   }
   function collect(className){
     var out=[];
+    var canonical=g.DNDContent&&g.DNDContent.getClass&&g.DNDContent.getClass(className);
+    if(canonical&&canonical.authoritativeSubclasses){
+      (canonical.subclasses||[]).forEach(function(sc){var levels={};(sc.features||[]).forEach(function(f){if(!f||typeof f!=='object')return;var level=Number(f.level)||1;levels[level]=levels[level]||{features:[]};levels[level].features.push(f.name||f.id);});addUnique(out,{id:sc.id,name:sc.name,source:canonical.source,description:sc.description,pickLevel:sc.pickLevel||canonical.subclassLevel||3,levels:levels});});
+      return out;
+    }
     var local=R[className]||{};
     Object.keys(local).forEach(function(k){var x=local[k];addUnique(out,{id:k,name:k,source:x.source,description:x.description,pickLevel:x.pickLevel,levels:x.levels});});
     fromContent(className).forEach(function(x){addUnique(out,x);});
@@ -709,7 +714,8 @@ window.SUBCLASSES_REFERENCE["Призрак"] = {
   };
   g.getSubclassData=function(className,subclassName){
     var local=R[className]||{};
-    if(local[subclassName])return local[subclassName];
+    var canonical=g.DNDContent&&g.DNDContent.getClass&&g.DNDContent.getClass(className);
+    if((!canonical||!canonical.authoritativeSubclasses)&&local[subclassName])return local[subclassName];
     var list=collect(className);
     var hit=list.find(function(x){return String(x.name)===String(subclassName)||String(x.key)===String(subclassName);});
     return hit||null;

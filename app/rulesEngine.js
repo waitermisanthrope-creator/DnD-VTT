@@ -37,6 +37,7 @@
 
   var CLASS_KEYS = {
     'воин': 'fighter', 'fighter': 'fighter',
+    'заклинатель клинка':'spellblade', 'spellblade':'spellblade',
     'варвар': 'barbarian', 'barbarian': 'barbarian',
     'бард': 'bard', 'bard': 'bard',
     'волшебник': 'wizard', 'wizard': 'wizard',
@@ -315,9 +316,11 @@
     normalize(hero);
     var casterLevel = 0;
     var pactLevel = classLevel(hero, 'warlock');
+    var spellbladeOnly=classLevels(hero).every(function(c){var k=classKey(c.name);return k==='spellblade'||(FULL_CASTERS.indexOf(k)<0&&HALF_CASTERS.indexOf(k)<0&&k!==ARTIFICER_KEY&&!(THIRD_CASTERS.indexOf(k)>=0&&/мистич|eldritch|arcane trickster|трикстер/.test(String(c.subclass||'').toLowerCase())));});
     classLevels(hero).forEach(function(c) {
       var key = classKey(c.name), lvl = Number(c.level) || 0;
       if (FULL_CASTERS.indexOf(key) >= 0) casterLevel += lvl;
+      else if (key === 'spellblade'&&lvl>=2) casterLevel += spellbladeOnly?Math.ceil(lvl/2):Math.floor(lvl/2);
       else if (key === ARTIFICER_KEY) casterLevel += Math.ceil(lvl / 2);
       else if (HALF_CASTERS.indexOf(key) >= 0) casterLevel += Math.floor(lvl / 2);
       else if (THIRD_CASTERS.indexOf(key) >= 0) {

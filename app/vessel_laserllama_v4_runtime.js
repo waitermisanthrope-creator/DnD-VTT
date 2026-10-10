@@ -43,7 +43,7 @@ aspect("Эфирная хватка","Требование: 7 уровень, С
 aspect("Призыв духа","Требование: 7 уровень. Получаете заклинание conjure familiar как заклинание Сосуда и можете применять его ритуалом. Фамильяр — крошечная версия вашего духа, с типом Архонта, способная атаковать.");
 aspect("Малая магия","Требование: 7 уровень. 1/долгий отдых можете применить одно из своих Sealed Magic на минимальном уровне без траты ячейки; этот аспект можно взять несколько раз, но каждый экземпляр не может повторно применять одно и то же заклинание.");
 aspect("Иридесцентная эгида","Требование: 7 уровень, Иридесцентный щит. Если после вашего щита другое существо всё ещё получает урон, реакцией можете принять на себя половину оставшегося урона.");
-aspect("Иной пасть","Требование: 7 уровень. 1/ход в Архонтской форме можете отказаться от одной атаки и заставить существо в пределах досягаемости сделать спасбросок Харизмы. При провале 2d6 некротического урона, а временные HP увеличиваются на половину нанесённого урона; максимум временных HP = 2×уровень.");
+aspect("Иная пасть","Требование: 7 уровень. 1/ход в Архонтской форме можете отказаться от одной атаки и заставить существо в пределах досягаемости сделать спасбросок Харизмы. При провале 2d6 некротического урона, а временные HP увеличиваются на половину нанесённого урона; максимум временных HP = 2×уровень.");
 aspect("Пронзающий взор","Требование: 7 уровень, Чувство духов. Под Покровом духа нормально видите в магической и немагической тьме/полумраке до 60 футов. Для проверок, основанных на зрении, можете использовать Харизму вместо обычной характеристики.");
 aspect("Ослепляющее копьё","Требование: 10 уровень, Мерцающий клинок. Дальность становится 100/300, половина укрытия игнорируется, три четверти считается половиной. При попадании дальней Иридесцентной атакой можно потратить ячейку Сосуда: существа в 30 футах от цели делают спасбросок Ловкости, получая 6d8 урона типа удара при провале или половину при успехе; 7d8 на 13 уровне, 8d8 на 17.");
 aspect("Опасный лик","Требование: 10 уровень. При превращении в Архонта выбранные видящие вас существа в пределах 60 футов делают спасбросок Мудрости; при провале Испуганы на 1 минуту. Повторяют спасбросок в конце ходов; пока видят Архонта, имеют помеху.");
@@ -176,14 +176,87 @@ const progression={
 };
 
 function vesselState(c){c.classFeaturesState=c.classFeaturesState||{};return c.classFeaturesState.vessel=c.classFeaturesState.vessel||{};}
-function vesselLevel(c){return Math.max(1,Math.min(20,Number(c&&c.level)||1));}
-function vesselSync(c){var l=vesselLevel(c),s=vesselState(c);s.level=l;s.proficiencyBonus=PB[l];s.aspectMax=ASPECTS[l];s.cantripsMax=CANTRIPS[l];s.spellsKnownMax=KNOWN[l];s.vesselSlotsMax=SLOTS[l];s.vesselSlots=s.vesselSlots==null?SLOTS[l]:Math.min(Math.max(0,Number(s.vesselSlots)||0),SLOTS[l]);s.spellSlotLevel=SLOT_LEVEL[l];s.archonFreeUsesMax=1;s.archonFreeUses=s.archonFreeUses==null?1:s.archonFreeUses;s.archonActive=!!s.archonActive;s.archonTempHP=s.archonTempHP||0;return s;}
-function vesselChooseAspect(c,name){var l=vesselLevel(c),s=vesselSync(c),a=aspects[name];if(!a)return {ok:false,reason:"Неизвестный аспект."};if(a.prerequisite){var nums=String(a.prerequisite).match(/\\d+/g);if(nums&&l<Number(nums[0]))return {ok:false,reason:"Недостаточный уровень для этого аспекта."};}if((s.aspects||[]).indexOf(name)<0&&(s.aspects||[]).length>=s.aspectMax)return {ok:false,reason:"Достигнут лимит нераскрытых аспектов."};s.aspects=s.aspects||[];if(s.aspects.indexOf(name)<0)s.aspects.push(name);return {ok:true,selected:s.aspects.slice(),max:s.aspectMax};}
-function vesselSelectSpirit(c,name){var s=vesselSync(c);if(!spirits[name])return {ok:false,reason:"Неизвестный Запечатанный дух."};s.spirit=name;return {ok:true,spirit:name,data:spirits[name]};}
-function vesselCast(c,spellLevel,spellName){var l=vesselLevel(c),s=vesselSync(c),sl=Number(spellLevel)||s.spellSlotLevel;if(!s.vesselSlots)return {ok:false,reason:"Ячейки магии Сосуда закончились."};if(sl!==s.spellSlotLevel)return {ok:false,reason:"Все ячейки Сосуда имеют текущий уровень "+s.spellSlotLevel+"."};var list=spellList[sl]||[];if(spellName&&list.indexOf(spellName)<0)return {ok:false,reason:"Заклинание отсутствует в списке Сосуда."};s.vesselSlots--;return {ok:true,spell:spellName||null,slotLevel:sl,remaining:s.vesselSlots,maxSlots:s.vesselSlotsMax};}
-function vesselArchon(c,forceSlot){var l=vesselLevel(c),s=vesselSync(c);if(l<3)return {ok:false,reason:"Форма архонта доступна с 3 уровня."};if(s.archonActive)return {ok:false,reason:"Форма архонта уже активна."};if(s.archonFreeUses>0){s.archonFreeUses--;s.archonActive=true;s.archonTempHP=2*l;return {ok:true,free:true,tempHP:s.archonTempHP,durationMinutes:10};}if(forceSlot&&s.vesselSlots>0){s.vesselSlots--;s.archonActive=true;s.archonTempHP=2*l;return {ok:true,free:false,tempHP:s.archonTempHP,durationMinutes:10,remainingSlots:s.vesselSlots};}return {ok:false,reason:"Нет бесплатного использования и не выбрана трата ячейки Сосуда."};}
-function vesselEndArchon(c){var s=vesselSync(c);s.archonActive=false;s.archonTempHP=0;return s;}
-function vesselRest(c,type){var s=vesselSync(c);if(type==="short"||type==="long"){s.vesselSlots=s.vesselSlotsMax;s.archonFreeUses=s.archonFreeUsesMax;}return s;}
+function vesselEntry(c){return (c&&c.classes||[]).find(x=>x&&(['Сосуд','Vessel'].includes(x.name)||x.englishName==='Vessel'));}
+function spiritName(name){return ({ascended:'Вознесённый',cataclysm:'Катаклизм',cursed:'Проклятый',fallen:'Падший',formless:'Бесформенный',trickster:'Трикстер'})[name]||name;}
+function vesselLevel(c){var x=vesselEntry(c);return Math.max(0,Math.min(20,x?Number(x.level)||0:Array.isArray(c&&c.classes)?0:Number(c&&c.level)||1));}
+function ability(c,key){var a=c.abilityScores||c.stats||c.abilities||c;return Math.floor((Number(a[key]??a[key.slice(0,3)]??10)-10)/2);}
+function pool(c,id,max,recharge,legacy){c.resources=c.resources||{};var r=c.resources[id];if(!r)r=c.resources[id]={current:legacy==null?max:legacy};r.max=max;r.current=Math.max(0,Math.min(max,Number(r.current)||0));r.recharge=recharge;return r;}
+function vesselSync(c){
+ var l=vesselLevel(c),s=vesselState(c),entry=vesselEntry(c);if(!l)return s;
+ var selected=spiritName(entry&&entry.subclass),key=Object.keys(spirits).find(k=>k===selected||spirits[k].key===selected);
+ if(key)s.spirit=key;else if(entry)s.spirit=null;
+ s.level=l;s.proficiencyBonus=Number(c.proficiencyBonus)||PB[l];s.aspectMax=ASPECTS[l];s.cantripsMax=CANTRIPS[l];s.spellsKnownMax=KNOWN[l];s.spellSlotLevel=SLOT_LEVEL[l];
+ var r=pool(c,'vesselMagicSlots',SLOTS[l],'short',s.vesselSlots),u=pool(c,'vesselArchonUses',l>=3?1:0,'short',s.archonFreeUses);
+ s.vesselSlotsMax=r.max;s.vesselSlots=r.current;s.archonFreeUsesMax=u.max;s.archonFreeUses=u.current;s.aspects=(s.aspects||[]).map(x=>x==='Иной пасть'?'Иная пасть':x);
+ s.spellSaveDC=8+s.proficiencyBonus+ability(c,'charisma');s.spellAttackBonus=s.proficiencyBonus+ability(c,'charisma');
+ if(s.archonActive&&(Number(c.hpCurrent??c.hp?.current??c.hp??1)<=0||(c.conditions&&c.conditions['Бессознателен']||c.activeConditions&&c.activeConditions['Бессознателен'])||s.archonExpiresAt<=Date.now()))vesselEndArchon(c);
+ return s;
+}
+function vesselChooseAspect(c,name){
+ var l=vesselLevel(c),s=vesselSync(c),a=aspects[name];if(!l||!a)return {ok:false,reason:'Неизвестный аспект.'};
+ var req=a.prerequisite||(a.description.match(/^Требование:\s*([^.]*)\./)||[])[1]||'',n=(req.match(/\d+/)||[])[0];
+ if(n&&l<Number(n))return {ok:false,reason:'Недостаточный уровень для этого аспекта.'};
+ var required=req.split(',').slice(1).map(x=>x.trim());if(required.some(x=>!s.aspects.includes(x)))return {ok:false,reason:'Сначала изучите необходимый аспект.'};
+ if(!s.aspects.includes(name)&&s.aspects.length>=s.aspectMax)return {ok:false,reason:'Достигнут лимит аспектов.'};
+ if(!s.aspects.includes(name))s.aspects.push(name);return {ok:true,selected:s.aspects.slice(),max:s.aspectMax,message:'Выбран аспект: '+name};
+}
+function vesselSelectSpirit(c,name,affinity){
+ name=spiritName(name);
+ if(vesselLevel(c)<3||!spirits[name])return {ok:false,reason:'Выберите доступного Запечатанного духа.'};
+ if(name==='Катаклизм'&&!spirits[name].affinities[affinity])return {ok:false,reason:'Выберите стихию Катаклизма.'};
+ var s=vesselSync(c);if(s.archonActive)return {ok:false,reason:'Завершите форму перед сменой духа.'};
+ s.spirit=name;s.affinity=affinity||null;var entry=vesselEntry(c);if(entry)entry.subclass=name;return {ok:true,spirit:name,data:spirits[name],message:'Запечатанный дух: '+name};
+}
+function vesselCast(c,spellLevel,spellName){
+ var s=vesselSync(c),sl=Number(spellLevel)||s.spellSlotLevel,r=c.resources&&c.resources.vesselMagicSlots;
+ if(!r||!r.current||sl!==s.spellSlotLevel)return {ok:false,reason:'Нет доступной ячейки нужного круга.'};
+ if(spellName&&!(spellList[sl]||[]).includes(spellName))return {ok:false,reason:'Заклинание отсутствует в списке Сосуда.'};
+ r.current--;s.vesselSlots=r.current;return {ok:true,reserved:true,spell:spellName||null,slotLevel:sl,remaining:r.current,maxSlots:r.max};
+}
+function addTypes(list){var aliases={'огонь':'fire','яд':'poison','кислота':'acid','холод':'cold','гром':'thunder','молния':'lightning','некротический':'necrotic','радиант':'radiant'};return (list||[]).filter(t=>!/весь|заклинаний/.test(t)).flatMap(t=>aliases[t]?[t,aliases[t]]:[t]);}
+function setFormField(c,s,key,value){s.archonSnapshot[key]={present:Object.prototype.hasOwnProperty.call(c,key),value:JSON.parse(JSON.stringify(c[key]??null)),applied:value};c[key]=value;}
+function vesselArchon(c,forceSlot){
+ var l=vesselLevel(c),s=vesselSync(c),data=spirits[s.spirit],block=data&&(data.archon||data.archons&&data.affinities[s.affinity]&&data.archons[data.affinities[s.affinity].archon]);
+ if(l<3||!data||!block)return {ok:false,reason:'Сначала выберите духа и доступный статблок Архонта.'};
+ if(s.archonActive)return {ok:false,reason:'Форма архонта уже активна.'};
+ var free=c.resources.vesselArchonUses,slots=c.resources.vesselMagicSlots,isFree=free.current>0;
+ if(!isFree&&(!forceSlot||slots.current<1))return {ok:false,reason:'Нет бесплатного использования и не выбрана трата ячейки.'};
+ s.archonSnapshot={};setFormField(c,s,'ac',(Number(c.ac)||10)+(Number(block.acBonus)||0));setFormField(c,s,'creatureType',block.type);
+ var speed=String(block.speed||''),walk=(speed.match(/^(\d+)/)||[])[1];if(walk)setFormField(c,s,'speed',Number(walk));
+ [['flySpeed','полёт'],['climbSpeed','лазание'],['burrowSpeed','рытьё'],['swimSpeed','плавание']].forEach(([key,label])=>{var m=speed.match(new RegExp(label+' '+String.fromCharCode(92)+'d+'));if(m)setFormField(c,s,key,Number(m[0].match(/\d+/)[0]));});
+ s.archonResistances=addTypes(block.resistances);setFormField(c,s,'resistances',[...new Set([...(Array.isArray(c.resistances)?c.resistances:[]),...s.archonResistances])]);
+ s.archonBlock=JSON.parse(JSON.stringify(block));s.archonActive=true;s.archonTempHP=2*l;s.archonExpiresAt=Date.now()+600000;s.archonRounds=100;
+ c.hpTemp=Math.max(Number(c.hpTemp??c.tempHp)||0,2*l);c.tempHp=c.hpTemp;if(c.hp&&typeof c.hp==='object')c.hp.temp=c.hpTemp;
+ if(isFree)free.current--;else slots.current--;s.archonFreeUses=free.current;s.vesselSlots=slots.current;
+ return {ok:true,free:isFree,tempHP:c.hpTemp,durationMinutes:10,block:s.archonBlock,message:'Форма Архонта принята.'};
+}
+function vesselEndArchon(c){
+ var s=vesselState(c);Object.keys(s.archonSnapshot||{}).forEach(key=>{var x=s.archonSnapshot[key];if(key==='resistances'&&Array.isArray(c[key])){var old=Array.isArray(x.value)?x.value:[];c[key]=c[key].filter(t=>old.includes(t)||!(s.archonResistances||[]).includes(t));if(!x.present&&!c[key].length)delete c[key];}else if(JSON.stringify(c[key])===JSON.stringify(x.applied)){if(x.present)c[key]=x.value;else delete c[key];}});
+ s.archonActive=false;s.archonTempHP=0;delete s.archonSnapshot;delete s.archonBlock;delete s.archonExpiresAt;delete s.archonRounds;return {ok:true,message:'Форма Архонта завершена.'};
+}
+function vesselRest(c,type){var s=vesselSync(c);if(type==='short'||type==='long'){vesselEndArchon(c);['vesselMagicSlots','vesselArchonUses'].forEach(id=>{var r=c.resources&&c.resources[id];if(r)r.current=r.max;});vesselSync(c);}return s;}
+function vesselUse(c,id,ctx){
+ ctx=ctx||{};var s=vesselSync(c),fid=String(id).replace(/^vessel[-:]/,''),D=window.DNDContent,f=D&&D.getFeature(id,'ll-vessel');
+ if(!vesselLevel(c)||f&&!D.resolveFeature(c,id,'Сосуд'))return {ok:false,unavailable:true,reason:'Способность Сосуда недоступна.'};
+ if(fid==='unsealedAspects')return vesselChooseAspect(c,ctx.aspect||ctx.choice);
+ if(fid==='chooseSpirit')return vesselSelectSpirit(c,ctx.spirit||ctx.choice,ctx.affinity);
+ if(fid==='archonForm')return vesselArchon(c,!!ctx.forceSlot);
+ if(fid==='endArchon')return vesselEndArchon(c);
+ if(fid==='spiritMantle'){
+   if(s.archonActive)return {ok:false,reason:'Сначала завершите форму Архонта.'};s.mantleActive=!s.mantleActive;
+   if(s.mantleActive&&!(c.armorEquipped||c.equippedArmor||c.shieldEquipped||c.equippedShield||(c.equipment&&(c.equipment.armor||c.equipment.shield)))){s.mantleOriginalAC=c.ac;s.mantleAC=Math.max(Number(c.ac)||10,10+ability(c,'constitution')+ability(c,'charisma'));c.ac=s.mantleAC;}
+   else if(!s.mantleActive&&c.ac===s.mantleAC){c.ac=s.mantleOriginalAC;delete s.mantleAC;delete s.mantleOriginalAC;}
+   return {ok:true,active:s.mantleActive,message:'Покров духа '+(s.mantleActive?'проявлён.':'рассеян.')};
+ }
+ if(fid==='iridescentStrike'){
+   if(!s.mantleActive||!ctx.target||!window.DNDCombat)return {ok:false,reason:'Нужны Покров духа, цель и боевой движок.'};
+   var l=vesselLevel(c),die=l>=17?12:l>=11?10:l>=5?8:6;
+   var attack=window.DNDCombat.attack(c,ctx.target,{bonus:s.spellAttackBonus,damage:'1d'+die+(ability(c,'charisma')>=0?'+':'')+ability(c,'charisma'),damageType:'radiant',spellAttack:true,vesselStrike:true});
+   return {ok:true,attack,message:'Иридесцентная атака выполнена.'};
+ }
+ return {ok:false,unsupported:true,reason:'Для этой способности требуется исполняемый обработчик.'};
+}
+function vesselTurnEnd(c){var s=vesselState(c);if(s.archonActive){s.archonRounds--;if(s.archonRounds<=0)vesselEndArchon(c);}vesselSync(c);}
 window.VESSEL_V4={
 version:"4.0.0",updated:"2026-02-10",source:"laserllama / GM Binder",
 progression,PB,ASPECTS,CANTRIPS,KNOWN,SLOTS,SLOT_LEVEL,
@@ -202,12 +275,18 @@ unsealedAspectReplacement:true
 
 window.vesselProgression={
 className:"Сосуд",englishName:"Vessel",source:"laserllama",edition:"5E",sourceVersion:"4.0.0",
-status:"implemented_full_v4_runtime",hitDie:10,primaryStat:"charisma",savingThrows:["constitution","charisma"],
+status:"implemented_partial_v4_runtime",hitDie:10,primaryStat:"charisma",savingThrows:["constitution","charisma"],
 armor:["light"],weapons:["simple","scimitar","shortsword"],skills:{choose:2,from:["acrobatics","athletics","insight","intimidation","perception","religion","survival"]},
 multiclassRequirement:{constitution:13,charisma:13},subclassLevel:3,subclassFeatureLevels:[3,6,15,20],
-progression,mechanics:window.VESSEL_V4.mechanics,spellcasting:"half_pact_warlock_style"
+progression,levels:Object.fromEntries(Object.entries(progression).map(([level,features])=>[level,{features,proficiencyBonus:PB[level],vesselSlots:SLOTS[level],slotLevel:SLOT_LEVEL[level]}])),mechanics:window.VESSEL_V4.mechanics,spellcasting:"half_pact_warlock_style"
 };
-window.vesselRuntime=window.VESSEL_V4;window.vesselRuntime.state=vesselState;window.vesselRuntime.sync=vesselSync;window.vesselRuntime.chooseAspect=vesselChooseAspect;window.vesselRuntime.selectSpirit=vesselSelectSpirit;window.vesselRuntime.cast=vesselCast;window.vesselRuntime.archonForm=vesselArchon;window.vesselRuntime.endArchon=vesselEndArchon;window.vesselRuntime.rest=vesselRest;
+window.vesselRuntime=window.VESSEL_V4;window.vesselRuntime.state=vesselState;window.vesselRuntime.sync=vesselSync;window.vesselRuntime.chooseAspect=vesselChooseAspect;window.vesselRuntime.selectSpirit=vesselSelectSpirit;window.vesselRuntime.cast=vesselCast;window.vesselRuntime.archonForm=vesselArchon;window.vesselRuntime.endArchon=vesselEndArchon;window.vesselRuntime.rest=vesselRest;window.vesselRuntime.useFeature=vesselUse;
+
+const pack={id:'ll-vessel',name:'Сосуд',aliases:['Vessel'],source:'laserllama Vessel v4.0.0',authoritativeSubclasses:true,subclassLevel:3,
+features:[['spiritMantle','Покров духа',1,'bonus'],['iridescentStrike','Иридесцентный удар',1,'attack'],['unsealedAspects','Нераскрытые аспекты',1,'choice'],['vesselMagic','Магия Сосуда',2,'utility'],['vessel-chooseSpirit','Запечатанный дух',3,'choice'],['archonForm','Форма Архонта',3,'bonus'],['vessel-endArchon','Завершить форму Архонта',3,'bonus'],['vesselExtraAttack','Дополнительная атака Сосуда',5,'passive']].map(([id,name,level,action])=>({id,name,level,action})),
+subclasses:Object.keys(spirits).map(id=>({id,name:id,description:spirits[id].description,pickLevel:3,features:[3,6,15,20].map(level=>({id:'vessel-'+id+'-'+level,name:id+' — '+level+' уровень',description:(spirits[id].features[level]||[]).join(' '),level,action:'utility'}))})),
+hooks:{sync:vesselSync,useFeature:vesselUse,rest:vesselRest,attackModifiers:c=>({extraAttacks:vesselLevel(c)>=5?2:1}),startTurn:vesselSync,onDamage:vesselSync,onCondition:vesselSync,onTurnEnd:vesselTurnEnd}};
+if(window.DNDContent)window.DNDContent.registerClass(pack);else (window.DND_PENDING_CLASS_PACKS=window.DND_PENDING_CLASS_PACKS||[]).push(pack);
 
 window.getVesselSpellList=function(level){return (window.VESSEL_V4.spellList[level]||[]).slice();};
 window.getVesselAspects=function(level){

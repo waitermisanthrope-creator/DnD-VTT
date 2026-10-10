@@ -12,19 +12,18 @@ function lvl(h){var c=(h&&h.classes||[]).find(function(x){return String(x.name)=
 function st(h){h.classFeaturesState=h.classFeaturesState||{};return h.classFeaturesState;}
 function res(h,id,max,recharge){h.resources=h.resources||{};var r=h.resources[id];if(!r){r={max:max,current:max,recharge:recharge||'short'};h.resources[id]=r;}else{r.max=max;r.current=Math.min(num(r.current,max),max);r.recharge=recharge||r.recharge;}return r;}
 function spend(h,id,n){var r=h.resources&&h.resources[id];if(!r||num(r.current)<n)return false;r.current-=n;return true;}
-function ability(h,key){var a=h.abilities||{};var v=a[key];if(v===undefined)v=a[key.slice(0,3).toUpperCase()];if(v===undefined)v=a[key.toUpperCase()];return num(v);}
-function mod(h,key){var v=ability(h,key);return v>10?Math.floor((v-10)/2):v;}
+function mod(h,key){var short=key.slice(0,3),sources=[h.abilityScores,h.stats,h.abilities];for(var i=0;i<sources.length;i++){var a=sources[i];if(!a)continue;var v=a[key];if(v==null)v=a[short];if(v==null)v=a[short.toUpperCase()];if(v==null)v=a[key.toUpperCase()];if(v!=null&&isFinite(Number(v)))return Math.floor((Number(v)-10)/2);}return 0;}
 function hemMod(h){var s=st(h),a=s.hemocraftAbility||'intelligence';return mod(h,a);}
 function dc(h){return 8+num(h.proficiencyBonus,Math.max(2,Math.floor((num(h.level)||lvl(h)-1)/4)+2))+hemMod(h);}
 function dieSides(l){var d=4;Object.keys(DIE).forEach(function(k){if(l>=Number(k))d=DIE[k];});return d;}
 function die(l){return '1d'+dieSides(l);}
 function roll(s){return Math.floor(Math.random()*s)+1;}
 function bloodLoss(h){return roll(dieSides(lvl(h)));}
-function hp(h){return num(h.hpCurrent,h.hitPoints||h.currentHP||h.hp);}
-function setHp(h,v){if('hpCurrent'in h)h.hpCurrent=v;else if('hitPoints'in h)h.hitPoints=v;else if('currentHP'in h)h.currentHP=v;else h.hp=v;}
+function hp(h){if(h.hpCurrent!=null)return num(h.hpCurrent);if(h.hitPoints!=null)return num(h.hitPoints);if(h.currentHP!=null)return num(h.currentHP);return num(h.hp&&typeof h.hp==='object'?h.hp.current:h.hp);}
+function setHp(h,v){v=Math.max(0,num(v));if('hpCurrent'in h){h.hpCurrent=v;if(!h.hp||typeof h.hp!=='object')h.hp={};h.hp.current=v;if(h.hpMax!=null)h.hp.max=num(h.hpMax);}else if('hitPoints'in h)h.hitPoints=v;else if('currentHP'in h)h.currentHP=v;else if(h.hp&&typeof h.hp==='object')h.hp.current=v;else h.hp=v;}
 function target(ctx){return ctx&&ctx.target||null;}
 function sub(h){var c=(h.classes||[]).find(function(x){return String(x.name)===CLASS;});return c&&String(c.subclass||'');}
-function orderKey(h){var x=sub(h);return x.indexOf('призрач')>=0?'ghostslayer':x.indexOf('ликантроп')>=0?'lycan':x.indexOf('мутант')>=0?'mutant':x.indexOf('оскверн')>=0?'profaneSoul':x;}
+function orderKey(h){var x=sub(h).toLowerCase();return x.indexOf('призрач')>=0?'ghostslayer':x.indexOf('ликантроп')>=0?'lycan':x.indexOf('мутант')>=0?'mutant':x.indexOf('оскверн')>=0||x==='profanesoul'?'profaneSoul':x;}
 function ensureChoices(h){
  var s=st(h),l=lvl(h);s.hemocraftAbility=s.hemocraftAbility||'intelligence';
  s.crimsonRitesKnown=s.crimsonRitesKnown||['flame'];if(l>=7&&s.crimsonRitesKnown.length<2)s.crimsonRitesKnown.push('frozen');if(l>=14&&s.crimsonRitesKnown.length<3)s.crimsonRitesKnown.push('dead');
@@ -88,7 +87,7 @@ hexblade:{focus:{curseBonusDamage:'proficiency'},revealed:'branding smite',unsea
 undying:{focus:{healOnKill:'hemocraftDie'},revealed:'silence',unsealed:'bestow curse'}
 };
 function useRite(h,ctx){
- sync(h);var s=st(h),type=String(ctx&&ctx.riteType||s.crimsonRiteType||'flame');if(s.crimsonRite&&s.crimsonRite.active)return{ok:false,reason:'Уже есть активный обряд.'};
+ sync(h);var s=st(h),type=String(ctx&&ctx.riteType||s.crimsonRiteType||'flame');type=({fire:'flame',cold:'frozen',lightning:'storm','огонь':'flame','холод':'frozen','молния':'storm','некротический':'dead','излучение':'dawn'})[type]||type;if(s.crimsonRite&&s.crimsonRite.active)return{ok:false,reason:'Уже есть активный обряд.'};
  if(s.crimsonRitesKnown.indexOf(type)<0)return{ok:false,reason:'Этот Обряд не изучен.'};var loss=requireHp(h);if(loss===null)return{ok:false,reason:'Недостаточно HP.'};
  s.crimsonRite={active:true,type:type,weaponId:ctx&&ctx.weaponId||null};return{ok:true,message:'🩸 Алый обряд: '+type+'. Потеряно '+loss+' HP.',lossHp:loss};
 }
@@ -152,7 +151,7 @@ function useProfane(h,id,ctx){
  return{ok:false,unsupported:true};
 }
 function useFeature(h,id,ctx,feature){
- sync(h);ctx=ctx||{};
+ sync(h);ctx=ctx||{};var known=D.getFeature&&D.getFeature(id,'blood-hunter');if(known&&(!D.resolveFeature||!D.resolveFeature(h,id,CLASS)))return{ok:false,unavailable:true,reason:'Способность недоступна текущему уровню или ордену.'};
  if(id==='setHemocraftAbility'){var a=String(ctx.ability||'intelligence');if(['intelligence','wisdom'].indexOf(a)<0)return{ok:false,reason:'Только Intelligence или Wisdom.'};st(h).hemocraftAbility=a;sync(h);return{ok:true,ability:a,saveDC:dc(h)};}
  if(id==='crimsonRite')return useRite(h,ctx);
  if(id==='bloodMaledict')return useCurse(h,ctx);
@@ -168,19 +167,19 @@ function useFeature(h,id,ctx,feature){
  if(id==='hardenedSoul')return{ok:true,effect:{advantageSaves:['charmed','frightened']}};
  if(id==='grimPsychometry')return{ok:true,effect:{historyAdvantageOnSinisterObjectOrPlace:true}};
  if(id==='extraAttack')return{ok:true,effect:{extraAttack:true}};
- if(id==='fightingStyle')return{ok:true,effect:{fightingStyle:st(h).fightingStyle||ctx.style||null}};
+ if(id==='fightingStyle'){var style=String(ctx.style||'');if(['Стрельба','Дуэлянт','Сражение большим оружием','Сражение двумя оружиями','Archery','Dueling','Great Weapon Fighting','Two-Weapon Fighting'].indexOf(style)<0)return{ok:false,reason:'Выберите боевой стиль.'};st(h).fightingStyle=style;return{ok:true,message:'Боевой стиль: '+style};}
  return{ok:false,unsupported:true,message:'Эта способность пока не имеет отдельного действия.'};
 }
 function attackModifiers(h,ctx){
- sync(h);var s=st(h),l=lvl(h),o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[],attackBonus:0};
+ sync(h);var s=st(h),l=lvl(h),o={bonusDamage:0,extraDice:[],advantage:false,disadvantage:false,notes:[],bonusAttack:0,extraAttacks:l>=5?2:1};
  if(s.crimsonRite&&s.crimsonRite.active)o.extraDice.push(die(l)),o.notes.push('Crimson Rite: '+s.crimsonRite.type);
  if(s.brandTargetId&&ctx&&ctx.target&&String(s.brandTargetId)===String(ctx.target.id))o.bonusDamage+=Math.max(1,hemMod(h)),o.notes.push('Brand of Castigation');
  if(s.brandTether&&s.brandTargetId&&ctx&&ctx.target&&String(s.brandTargetId)===String(ctx.target.id))o.bonusDamage+=Math.max(1,hemMod(h)),o.notes.push('Brand of Tethering');
- if(s.hybridForm){o.bonusDamage+=l>=18?3:l>=11?2:1;o.notes.push('Feral Might');if(ctx&&ctx.unarmed&&l>=7)o.attackBonus+=l>=18?3:l>=11?2:1;}
- if(s.fightingStyle==='Стрельба'||s.fightingStyle==='Archery')o.attackBonus+=2;
- if(s.fightingStyle==='Дуэлянт'||s.fightingStyle==='Dueling')o.bonusDamage+=2;
+ if(s.hybridForm){if(ctx&&ctx.usesStrength&&ctx.meleeOrThrown)o.bonusDamage+=l>=18?3:l>=11?2:1;o.notes.push('Звериная мощь');if(ctx&&(ctx.unarmed||ctx.unarmedAttack)&&l>=7)o.bonusAttack+=l>=18?3:l>=11?2:1;}
+ if((s.fightingStyle==='Стрельба'||s.fightingStyle==='Archery')&&ctx&&(ctx.rangedAttack||ctx.attackKind==='ranged'))o.bonusAttack+=2;
+ if((s.fightingStyle==='Дуэлянт'||s.fightingStyle==='Dueling')&&ctx&&ctx.duelingEligible)o.bonusDamage+=2;
  if(s.fightingStyle==='Сражение двумя оружиями'||s.fightingStyle==='Two-Weapon Fighting')o.notes.push('Add ability modifier to second attack');
- if(s.activeMutagens&&s.activeMutagens.some(function(x){return x.id==='precision';}))o.critRange=19;
+ if(s.activeMutagens&&s.activeMutagens.some(function(x){return x.id==='precision';}))o.criticalRange=19;
  if(orderKey(h)==='lycan'&&s.hybridForm&&s.brandTargetId&&ctx&&ctx.target&&String(s.brandTargetId)===String(ctx.target.id)&&l>=15)o.advantage=true;
  return o;
 }
@@ -207,7 +206,9 @@ var subclasses=[
 {id:'mutant',name:'Орден мутантов',features:[{id:'mutagencraft',name:'Mutagencraft',level:3,action:'bonus'},{id:'strangeMetabolism',name:'Strange Metabolism',level:7,action:'bonus'},{id:'brandOfAxiom',name:'Brand of Axiom',level:11,action:'passive'},{id:'bloodCurseOfCorrosion',name:'Blood Curse of Corrosion',level:15,action:'bonus'},{id:'exaltedMutation',name:'Exalted Mutation',level:18,action:'bonus'}]},
 {id:'profaneSoul',name:'Орден осквернённых душ',features:[{id:'otherworldlyPatron',name:'Otherworldly Patron',level:3,action:'choice'},{id:'pactMagic',name:'Pact Magic',level:3,action:'spell'},{id:'riteFocus',name:'Rite Focus',level:3,action:'passive'},{id:'mysticFrenzy',name:'Mystic Frenzy',level:7,action:'passive'},{id:'revealedArcana',name:'Revealed Arcana',level:7,action:'spell'},{id:'brandSappingScar',name:'Brand of the Sapping Scar',level:11,action:'passive'},{id:'unsealedArcana',name:'Unsealed Arcana',level:15,action:'spell'},{id:'soulEater',name:'Blood Curse of the Soul Eater',level:18,action:'reaction'}]}
 ];
+var labels={huntersBane:'Погибель охотника',bloodMaledict:'Кровавое проклятие',fightingStyle:'Боевой стиль',crimsonRite:'Алый обряд',extraAttack:'Дополнительная атака',brandOfCastigation:'Клеймо наказания',grimPsychometry:'Мрачная психометрия',darkAugmentation:'Тёмное усиление',brandOfTethering:'Клеймо привязки',hardenedSoul:'Закалённая душа',sanguineMastery:'Мастерство крови',riteOfTheDawn:'Обряд рассвета',curseSpecialist:'Мастер проклятий',aetherWalk:'Эфирная поступь',brandOfSundering:'Клеймо разрушения',bloodCurseOfTheExorcist:'Кровавое проклятие экзорциста',riteRevival:'Возрождение обрядом',heightenedSenses:'Обострённые чувства',hybridTransformation:'Гибридное превращение',stalkersProwess:'Мастерство преследователя',advancedTransformation:'Улучшенное превращение',brandOfVoracious:'Клеймо ненасытности',hybridTransformationMastery:'Мастерство гибридного превращения',mutagencraft:'Создание мутагенов',strangeMetabolism:'Необычный метаболизм',brandOfAxiom:'Клеймо аксиомы',bloodCurseOfCorrosion:'Кровавое проклятие коррозии',exaltedMutation:'Возвышенная мутация',otherworldlyPatron:'Потусторонний покровитель',pactMagic:'Магия договора',riteFocus:'Фокус обряда',mysticFrenzy:'Мистическое неистовство',revealedArcana:'Открытая аркана',brandSappingScar:'Клеймо истощающего шрама',unsealedArcana:'Освобождённая аркана',soulEater:'Кровавое проклятие пожирателя душ'};
+features.forEach(function(f){f.name=labels[f.id]||f.name;});subclasses.forEach(function(s){s.features.forEach(function(f){f.name=labels[f.id]||f.name;});});
 var pack={id:'blood-hunter',name:CLASS,source:'Matthew Mercer / Critical Role — partner third-party content',license:'Original runtime implementation',
-features:features,subclasses:subclasses,hooks:{sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,onTurnStart:turnStart,onTurnEnd:turnEnd}};
+features:features,subclasses:subclasses,hooks:{sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,startTurn:turnStart,onTurnEnd:turnEnd}};
 var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'2.0.0',CLASS:CLASS,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
 })(window);

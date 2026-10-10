@@ -1,6 +1,7 @@
 /**
  * shifter_laserllama_v2_1_runtime.js
- * Полный runtime Шифтера laserllama v2.1.0.
+ * Данные и частично исполняемый runtime Шифтера laserllama v2.1.0.
+ * Проверенный объём и незавершённые эффекты: docs/DND_VTT_CLASS_AUDIT_V74_00_17.md.
  * Источник сверки: публичный GM Binder / laserllama Shifter;
  * v2.1.0 опубликована 25 июня 2026.
  * API: window.shifterRuntime / window.shifterProgression / window.SHIFTER_V21.
@@ -156,26 +157,129 @@ forceOfNature:{level:20,effect:"CR 5 и 6 без ограничений; в бо
 };
 
 function shifterState(c){c.classFeaturesState=c.classFeaturesState||{};return c.classFeaturesState.shifter=c.classFeaturesState.shifter||{};}
-function shifterLevel(c){return Math.max(1,Math.min(20,Number(c&&c.level)||1));}
-function shifterSync(c){var l=shifterLevel(c),s=shifterState(c),con=Number(c&&((c.constitution??c.stats?.constitution??c.abilities?.constitution)))||10,mod=Math.max(1,Math.floor((con-10)/2));s.level=l;s.proficiencyBonus=PB[l];s.maxCR=MAX_CR[l];s.bloodline=s.bloodline||Object.keys(bloodlines)[0];s.adrenalineMax=l>=6?mod:0;s.adrenaline=s.adrenaline==null?s.adrenalineMax:Math.min(Math.max(0,Number(s.adrenaline)||0),s.adrenalineMax);s.primevalFormMax=l>=11?3:0;s.primevalForm=s.primevalForm==null?s.primevalFormMax:Math.min(Math.max(0,Number(s.primevalForm)||0),s.primevalFormMax);s.knownShapes=s.knownShapes||[];return s;}
-function shifterChooseBloodline(c,name){if(!bloodlines[name])return {ok:false,reason:"Неизвестная кровная линия."};shifterState(c).bloodline=name;return {ok:true,bloodline:name,data:bloodlines[name]};}
-function shifterLearnShape(c,shape,cr,source){var l=shifterLevel(c),s=shifterSync(c),n=Number(cr)||0;if(n>s.maxCR)return {ok:false,reason:"CR формы выше доступного лимита."};s.knownShapes=s.knownShapes||[];if(s.knownShapes.some(x=>x.name===shape))return {ok:true,alreadyKnown:true,shape};s.knownShapes.push({name:shape,cr:n,source:source||"bloodline"});return {ok:true,shape,cr:n,known:s.knownShapes.length};}
-function shifterShift(c,shape,context){var l=shifterLevel(c),s=shifterSync(c);var found=(s.knownShapes||[]).find(x=>x.name===shape);if(!found)return {ok:false,reason:"Эта звериная форма ещё не изучена."};if(found.cr>s.maxCR)return {ok:false,reason:"CR формы превышает текущий лимит."};s.activeShape=found;s.primalBondSource=context&&context.source||found.source;s.bloodlineActive=true;return {ok:true,shape:found.name,cr:found.cr,bloodline:s.bloodline,naturalArmor:(bloodlines[s.bloodline].normalForm||{}).naturalArmor};}
-function shifterRevert(c,reason){var s=shifterSync(c);s.activeShape=null;s.bloodlineActive=false;return {ok:true,reason:reason||"bonus_action"};}
-function shifterAdrenaline(c,damage){var s=shifterSync(c);if(s.adrenaline<=0)return {ok:false,reason:"Всплеск адреналина закончился."};s.adrenaline--;var hp=Math.max(0,Number(damage)||0);return {ok:true,tempHP:hp,remaining:s.adrenaline};}
-function shifterResilience(c,failedSave){var l=shifterLevel(c),s=shifterSync(c),con=Number(c&&((c.constitution??c.stats?.constitution??c.abilities?.constitution)))||10;if(l<10||!failedSave)return {ok:false,reason:"Первобытная стойкость доступна с 10 уровня после провала спасброска."};if(s.adrenaline<=0)return {ok:false,reason:"Нет Всплеска адреналина."};s.adrenaline--;var bonus=Math.max(1,Math.floor((con-10)/2));return {ok:true,bonus:bonus,remaining:s.adrenaline};}
-function shifterPrimeval(c){var l=shifterLevel(c),s=shifterSync(c);if(l<11)return {ok:false,reason:"Первобытная форма доступна с 11 уровня."};if(s.primevalForm<=0)return {ok:false,reason:"Использования Первобытной формы закончились."};s.primevalForm--;s.primevalActive=true;return {ok:true,remaining:s.primevalForm,effects:mechanics.primevalForm.effects};}
-function shifterRest(c,type){var s=shifterSync(c);if(type==="short"||type==="long"){if(s.adrenalineMax)s.adrenaline=s.adrenalineMax;if(s.primevalFormMax&&type==="short")s.primevalForm=Math.min(s.primevalFormMax,s.primevalForm+1);}if(type==="long"){if(s.primevalFormMax)s.primevalForm=s.primevalFormMax;s.primevalActive=false;}return s;}
+function shifterEntry(c){return (c&&c.classes||[]).find(x=>x&&(['Шифтер','Shifter'].includes(x.name)||x.englishName==='Shifter'));}
+function shifterLevel(c){var x=shifterEntry(c);return Math.max(0,Math.min(20,x?Number(x.level)||0:Array.isArray(c&&c.classes)?0:Number(c&&c.level)||1));}
+function bloodlineName(name){return Object.keys(bloodlines).find(k=>k===name||bloodlines[k].englishName.toLowerCase()===String(name).toLowerCase());}
+function mod(c,key){var a=c.abilityScores||c.stats||c.abilities||c;return Math.floor((Number(a[key]??a[key.slice(0,3)]??10)-10)/2);}
+function normalCon(c){var s=shifterState(c);return s.activeShape?s.normalConModifier:mod(c,'constitution');}
+function resource(c,id,max,recharge,legacy){c.resources=c.resources||{};var r=c.resources[id];if(!r)r=c.resources[id]={current:legacy==null?max:legacy};r.max=max;r.current=Math.max(0,Math.min(max,Number(r.current)||0));r.recharge=recharge;return r;}
+function shifterSync(c){
+ var l=shifterLevel(c),s=shifterState(c);if(!l)return s;var entry=shifterEntry(c),selected=entry&&entry.subclass;
+ s.bloodline=bloodlineName(selected)||(!selected?bloodlineName(s.bloodline):null)||null;
+ s.level=l;s.proficiencyBonus=Number(c.proficiencyBonus)||PB[l];s.maxCR=MAX_CR[l];s.knownShapes=s.knownShapes||[];
+ var adr=resource(c,'shifterAdrenaline',l>=6?Math.max(1,normalCon(c)):0,'short',s.adrenaline),pf=resource(c,'shifterPrimevalForm',l>=11?3:0,'long',s.primevalForm);
+ s.adrenalineMax=adr.max;s.adrenaline=adr.current;s.primevalFormMax=pf.max;s.primevalForm=pf.current;
+ s.saveDC=8+s.proficiencyBonus+normalCon(c);s.attackModifier=s.proficiencyBonus+normalCon(c);
+ if(s.activeShape&&(s.shapeExpiresAt<=Date.now()||Number(c.hpCurrent??c.hp?.current??c.hp??1)<=0||['Бессознателен','Недееспособен','Парализован','Оглушён','Окаменел'].some(k=>c.conditions&&c.conditions[k]||c.activeConditions&&c.activeConditions[k])))shifterRevert(c,'incapacitated_or_expired');
+ return s;
+}
+function shifterChooseBloodline(c,name){name=bloodlineName(name);var s=shifterSync(c);if(!shifterLevel(c)||!name)return {ok:false,reason:'Неизвестная кровная линия.'};if(s.activeShape)return {ok:false,reason:'Сначала вернитесь в обычную форму.'};s.bloodline=name;var entry=shifterEntry(c);if(entry)entry.subclass=name;return {ok:true,bloodline:name,data:bloodlines[name],message:'Кровная линия: '+name};}
+function shapeStats(block){var a=block&&(block.stats||block.abilityScores||block.abilities||block);return a&&['strength','dexterity','constitution'].map(k=>Number(a[k]??a[k.slice(0,3)]));}
+function validBlock(block){var scores=shapeStats(block);return !!(block&&scores&&scores.every(n=>Number.isFinite(n)&&n>=1&&n<=30)&&Number(block.ac)>0&&Number(block.speed)>=0&&Array.isArray(block.actions)&&block.actions.length);}
+function shifterLearnShape(c,shape,cr,source,block){
+ var s=shifterSync(c),n=Number(cr);if(!s.bloodline||!shape||!Number.isFinite(n)||n<0||n>s.maxCR)return {ok:false,reason:'Нужны выбранная кровная линия и допустимый CR формы.'};
+ if(block&&(!validBlock(block)||!Number.isFinite(Number(block.cr))||Number(block.cr)!==n||!['beast','зверь'].includes(String(block.creatureType||block.type||'beast').toLowerCase())))return {ok:false,reason:'Нужен полный статблок зверя с соответствующим CR.'};
+ var previous=s.knownShapes.find(x=>x.name===shape);if(previous){if(block)previous.statBlock=JSON.parse(JSON.stringify(block));return {ok:true,alreadyKnown:true,shape};}
+ s.knownShapes.push({name:shape,cr:n,source:source||'bloodline',statBlock:block?JSON.parse(JSON.stringify(block)):null});return {ok:true,shape,cr:n,known:s.knownShapes.length,message:'Изучена звериная форма: '+shape};
+}
+function setField(c,s,key,value){s.shapeSnapshot[key]={present:Object.prototype.hasOwnProperty.call(c,key),value:JSON.parse(JSON.stringify(c[key]??null)),applied:JSON.parse(JSON.stringify(value))};c[key]=value;}
+function restoreFields(c,s){
+ Object.keys(s.shapeSnapshot||{}).forEach(key=>{var x=s.shapeSnapshot[key];if(key==='resistances'&&Array.isArray(c[key])){var old=Array.isArray(x.value)?x.value:[];c[key]=c[key].filter(t=>old.includes(t)||!(s.formResistances||[]).includes(t));if(!x.present&&!c[key].length)delete c[key];}else if(JSON.stringify(c[key])===JSON.stringify(x.applied)){if(x.present)c[key]=x.value;else delete c[key];}});
+ (s.physicalSnapshot||[]).forEach(x=>{var a=c[x.source];if(a&&a[x.key]===x.applied){if(x.present)a[x.key]=x.value;else delete a[x.key];}});
+}
+function shifterShift(c,shape,context){
+ context=context||{};var l=shifterLevel(c),s=shifterSync(c),found=s.knownShapes.find(x=>x.name===shape),block=found&&found.statBlock;
+ if(!s.bloodline||!found||found.cr>s.maxCR||!validBlock(block))return {ok:false,reason:'Нужна изученная форма с доступным CR и полным статблоком.'};
+ s.mythicUsed=s.mythicUsed||[];if(l<20&&found.cr>=5&&s.mythicUsed.includes(found.name))return {ok:false,reason:'Эта мифическая форма уже использована до отдыха.'};
+ var expires=s.activeShape?s.shapeExpiresAt:Date.now()+3600000,rounds=s.activeShape?s.shapeRounds:600,con=normalCon(c);
+ if(s.activeShape)restoreFields(c,s);s.shapeSnapshot={};s.physicalSnapshot=[];s.formResistances=[];s.normalConModifier=con;
+ var scores=shapeStats(block);
+ ['abilityScores','stats','abilities'].filter(key=>c[key]&&typeof c[key]==='object').forEach(source=>{['strength','dexterity','constitution'].forEach((key,i)=>{[key,key.slice(0,3)].forEach(k=>{var a=c[source];if(k===key||Object.prototype.hasOwnProperty.call(a,k)){s.physicalSnapshot.push({source,key:k,present:Object.prototype.hasOwnProperty.call(a,k),value:a[k],applied:scores[i]});a[k]=scores[i];}});});
+ });
+ var natural=bloodlines[s.bloodline].normalForm&&bloodlines[s.bloodline].normalForm.naturalArmor||'',physicalKey=/Strength/.test(natural)?'strength':'dexterity',originalPhysical=mod(c,physicalKey);
+ var before=s.physicalSnapshot.find(x=>x.present&&(x.key===physicalKey||x.key===physicalKey.slice(0,3)));if(before)originalPhysical=Math.floor((Number(before.value)-10)/2);
+ setField(c,s,'ac',Math.max(Number(block.ac),10+con+originalPhysical));setField(c,s,'speed',Number(block.speed));setField(c,s,'attacks',JSON.parse(JSON.stringify(block.actions)));setField(c,s,'creatureType','beast');setField(c,s,'size',Number(block.size)||1);
+ ['flySpeed','climbSpeed','swimSpeed','burrowSpeed'].forEach(key=>setField(c,s,key,Number(block[key])||0));
+ s.activeShape=found;s.shapeExpiresAt=expires;s.shapeRounds=rounds;s.primalBondSource=found.source;s.bloodlineActive=true;s.primevalActive=false;
+ if(l<20&&found.cr>=5)s.mythicUsed.push(found.name);return {ok:true,shape:shape,cr:found.cr,bloodline:s.bloodline,message:'Принята звериная форма: '+shape};
+}
+function shifterRevert(c,reason){
+ var s=shifterState(c);restoreFields(c,s);s.activeShape=null;s.bloodlineActive=false;s.primevalActive=false;delete s.shapeSnapshot;delete s.physicalSnapshot;delete s.shapeExpiresAt;delete s.shapeRounds;delete s.normalConModifier;return {ok:true,reason:reason||'bonus_action',message:'Шифтер вернулся в обычную форму.'};
+}
+function shifterAdrenaline(c,damage){
+ var l=shifterLevel(c),s=shifterSync(c),n=Number(damage),r=c.resources&&c.resources.shifterAdrenaline;
+ if(l<6||!r||r.current<1||!Number.isInteger(n)||n<=0)return {ok:false,reason:'Нужны полученный урон и использование адреналина.'};
+ r.current--;s.adrenaline=r.current;c.hpTemp=Math.max(Number(c.hpTemp??c.tempHp)||0,n);c.tempHp=c.hpTemp;if(c.hp&&typeof c.hp==='object')c.hp.temp=c.hpTemp;
+ s.adrenalineTempHP=n;s.adrenalineRounds=10;return {ok:true,tempHP:c.hpTemp,remaining:r.current,message:'Всплеск адреналина: временные HP '+c.hpTemp};
+}
+function shifterResilience(c,failedSave,save){
+ var s=shifterSync(c),r=c.resources&&c.resources.shifterAdrenaline,bonus=Math.max(1,normalCon(c));
+ if(shifterLevel(c)<10||!failedSave||!r||r.current<1)return {ok:false,reason:'Стойкость требует проваленный спасбросок и адреналин.'};
+ r.current--;s.adrenaline=r.current;if(save){save.total=(Number(save.total)||0)+bonus;if(Number.isFinite(Number(save.dc)))save.success=save.total>=Number(save.dc);}
+ return {ok:true,bonus,remaining:r.current,save:save||null,message:'Первобытная стойкость: +'+bonus};
+}
+function shifterPrimeval(c){
+ var s=shifterSync(c),r=c.resources&&c.resources.shifterPrimevalForm;
+ if(shifterLevel(c)<11||!s.activeShape||s.primevalActive||!r||r.current<1)return {ok:false,reason:'Нужны звериная форма и использование Первобытной формы.'};
+ r.current--;s.primevalForm=r.current;s.primevalActive=true;
+ var category=String(s.activeShape.statBlock.sizeCategory||({1:'medium',2:'large',3:'huge',4:'gargantuan'})[c.size]||'medium').toLowerCase(),sizes=['tiny','small','medium','large','huge','gargantuan'],next=Math.min(5,Math.max(0,sizes.indexOf(category))+1);
+ var key='size';c[key]=[1,1,1,2,3,4][next];s.shapeSnapshot[key].applied=c[key];
+ var types=['nonmagical bludgeoning','nonmagical piercing','nonmagical slashing','немагический дробящий','немагический колющий','немагический рубящий'];s.formResistances.push(...types);
+ if(!s.shapeSnapshot.resistances)s.shapeSnapshot.resistances={present:Object.prototype.hasOwnProperty.call(c,'resistances'),value:JSON.parse(JSON.stringify(c.resistances??null))};
+ c.resistances=[...new Set([...(Array.isArray(c.resistances)?c.resistances:[]),...types])];s.shapeSnapshot.resistances.applied=c.resistances.slice();
+ return {ok:true,remaining:r.current,message:'Первобытная форма принята.'};
+}
+function shifterRest(c,type){
+ var s=shifterSync(c);if(type==='short'||type==='long'){var a=c.resources.shifterAdrenaline,p=c.resources.shifterPrimevalForm;a.current=a.max;p.current=type==='long'?p.max:Math.min(p.max,p.current+1);s.mythicUsed=[];shifterSync(c);}return s;
+}
+function shifterUse(c,id,ctx){
+ ctx=ctx||{};var s=shifterSync(c),D=window.DNDContent,f=D&&D.getFeature(id,'ll-shifter'),fid=String(id).replace(/^shifter[-:]/,'');
+ if(!shifterLevel(c)||f&&!D.resolveFeature(c,id,'Шифтер'))return {ok:false,unavailable:true,reason:'Способность Шифтера недоступна.'};
+ if(fid==='chooseBloodline')return shifterChooseBloodline(c,ctx.bloodline||ctx.choice);
+ if(fid==='learnShape'){
+   var beast=ctx.target,block=ctx.statBlock||beast;
+   if(!beast||Number(beast.hpCurrent??beast.hp??1)<=0||beast.hostile===true||beast.team==='enemy'||ctx.distanceFt!=null&&Number(ctx.distanceFt)>5)return {ok:false,reason:'Нужен живой невраждебный зверь в пределах касания.'};
+   return shifterLearnShape(c,ctx.shape||block.name,ctx.cr??block.cr,'bond',block);
+ }
+ if(fid==='bloodlineShape'){
+   var name=ctx.shape,block=ctx.statBlock,known=bloodlines[s.bloodline]&&Object.values(bloodlines[s.bloodline].shapes).flat();
+   if(!known||!known.includes(name)||!block)return {ok:false,reason:'Выберите кровную форму и её статблок.'};
+   return shifterLearnShape(c,name,block.cr,'bloodline',block);
+ }
+ if(fid==='shift')return shifterShift(c,ctx.shape,ctx);
+ if(fid==='revert')return shifterRevert(c);
+ if(fid==='adrenalineSurge')return shifterAdrenaline(c,ctx.damage);
+ if(fid==='primalResilience')return shifterResilience(c,ctx.failedSave||ctx.saveResult&&ctx.saveResult.success===false,ctx.saveResult);
+ if(fid==='primevalForm')return shifterPrimeval(c);
+ if(fid==='formAttack'){
+   var block=s.activeShape&&s.activeShape.statBlock,action=block&&block.actions[Number(ctx.actionIndex)||0];
+   if(!action||!ctx.target||!window.DNDCombat)return {ok:false,reason:'Нужны звериная форма, её атака и цель.'};
+   var attack=window.DNDCombat.attack(c,ctx.target,{bonus:Math.max(Number(action.attackBonus??action.bonus)||0,s.attackModifier),damage:action.damage,damageType:action.damageType||action.type||'',shifterNaturalWeapon:true,weaponAttack:true,magicalAttack:shifterLevel(c)>=5});
+   return {ok:true,attack,message:'Природная атака выполнена.'};
+ }
+ return {ok:false,unsupported:true,reason:'Эта способность требует исполняемого обработчика.'};
+}
+function shifterTurnEnd(c){var s=shifterState(c);if(s.activeShape&&--s.shapeRounds<=0)shifterRevert(c,'duration');if(s.adrenalineRounds&&--s.adrenalineRounds<=0&&Number(c.hpTemp??c.tempHp)<=s.adrenalineTempHP){c.hpTemp=0;c.tempHp=0;if(c.hp&&typeof c.hp==='object')c.hp.temp=0;}shifterSync(c);}
+function shifterTurnStart(c){var s=shifterSync(c);if(shifterLevel(c)>=20){var r=c.resources.shifterAdrenaline;r.current=Math.min(r.max,r.current+1);s.adrenaline=r.current;}}
+function shifterDamage(c,ctx){var s=shifterState(c);if(s.activeShape&&s.activeShape.statBlock.diminutive&&ctx.amount>0)shifterRevert(c,'diminutive_damage');shifterSync(c);}
 window.SHIFTER_V21={version:"2.1.0",updated:"2026-06-25",source:"laserllama / GM Binder",PB,MAX_CR,ASI,progression,bloodlines,mechanics};
-window.shifterRuntime=window.SHIFTER_V21;window.shifterRuntime.state=shifterState;window.shifterRuntime.sync=shifterSync;window.shifterRuntime.chooseBloodline=shifterChooseBloodline;window.shifterRuntime.learnShape=shifterLearnShape;window.shifterRuntime.shift=shifterShift;window.shifterRuntime.revert=shifterRevert;window.shifterRuntime.adrenalineSurge=shifterAdrenaline;window.shifterRuntime.primalResilience=shifterResilience;window.shifterRuntime.primevalForm=shifterPrimeval;window.shifterRuntime.rest=shifterRest;
+window.shifterRuntime=window.SHIFTER_V21;window.shifterRuntime.state=shifterState;window.shifterRuntime.sync=shifterSync;window.shifterRuntime.chooseBloodline=shifterChooseBloodline;window.shifterRuntime.learnShape=shifterLearnShape;window.shifterRuntime.shift=shifterShift;window.shifterRuntime.revert=shifterRevert;window.shifterRuntime.adrenalineSurge=shifterAdrenaline;window.shifterRuntime.primalResilience=shifterResilience;window.shifterRuntime.primevalForm=shifterPrimeval;window.shifterRuntime.rest=shifterRest;window.shifterRuntime.useFeature=shifterUse;
 var __shifterProgression={
 className:"Шифтер",englishName:"Shifter",source:"laserllama",sourceVersion:"2.1.0",edition:"5E",
-status:"implemented_full_v2_1_runtime",hitDie:10,primaryStat:"constitution",secondaryStats:["strength","dexterity"],
+status:"implemented_partial_v2_1_runtime",hitDie:10,primaryStat:"constitution",secondaryStats:["strength","dexterity"],
 savingThrows:["strength","dexterity"],armor:["light"],weapons:["simple","blowgun","longbow","net"],
 skills:mechanics.skills,multiclassRequirement:{constitution:13},subclassFeatureLevels:[1,7,13,18],
-progression,mechanics,bloodlines:Object.keys(bloodlines)
+progression,levels:Object.fromEntries(Object.entries(progression).map(([level,features])=>[level,{features,proficiencyBonus:PB[level],maxCR:MAX_CR[level]}])),mechanics,bloodlines:Object.keys(bloodlines)
 };
 window.shifterProgression=Object.assign(window.shifterProgression||{},__shifterProgression);
+const pack={id:'ll-shifter',name:'Шифтер',aliases:['Shifter'],source:'laserllama Shifter v2.1.0',authoritativeSubclasses:true,subclassLevel:1,
+features:[['shifter-chooseBloodline','Кровная линия',1,'choice'],['shift','Дикая форма',1,'bonus'],['shifter-revert','Вернуться в обычную форму',1,'bonus'],['shifter-bloodlineShape','Изучить кровную форму',1,'choice'],['shifter-formAttack','Природная атака формы',1,'attack'],['learnShape','Первобытная связь',2,'action'],['adrenalineSurge','Всплеск адреналина',6,'reaction'],['primalResilience','Первобытная стойкость',10,'reaction'],['primevalForm','Первобытная форма',11,'bonus']].map(([id,name,level,action])=>({id,name,level,action})),
+subclasses:Object.keys(bloodlines).map(id=>({id,name:id,description:bloodlines[id].description,pickLevel:1,features:[1,7,13,18].map(level=>({id:'shifter-'+id+'-'+level,name:id+' — '+level+' уровень',description:(bloodlines[id].features[level]||[]).join(' '),level,action:'utility'}))})),
+hooks:{sync:shifterSync,useFeature:shifterUse,rest:shifterRest,startTurn:shifterTurnStart,onTurnEnd:shifterTurnEnd,onDamage:shifterDamage,onCondition:shifterSync,onSavingThrow:(c,ctx)=>{var s=shifterState(c);if(!ctx.success&&s.activeShape&&s.activeShape.statBlock.diminutive)shifterRevert(c,'diminutive_save');},
+attackModifiers:(c,ctx)=>({extraAttacks:shifterLevel(c)>=5&&ctx.shifterNaturalWeapon?2:1,magicalAttack:shifterLevel(c)>=5&&ctx.shifterNaturalWeapon}),
+saveModifiers:(c,ctx)=>({advantage:!!shifterState(c).primevalActive&&['str','dex','strength','dexterity'].includes(ctx.saveType)})}};
+if(window.DNDContent)window.DNDContent.registerClass(pack);else (window.DND_PENDING_CLASS_PACKS=window.DND_PENDING_CLASS_PACKS||[]).push(pack);
+
 window.getShifterBloodlines=function(){return Object.values(window.SHIFTER_V21.bloodlines);};
 window.getShifterBloodline=function(name){return window.SHIFTER_V21.bloodlines[name]||null;};
 window.getShifterMaxCR=function(level){return window.SHIFTER_V21.MAX_CR[Math.max(0,Math.min(20,Number(level)||0))]||0;};

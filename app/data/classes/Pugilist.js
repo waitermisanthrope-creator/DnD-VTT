@@ -34,6 +34,7 @@
   levels[20]={features:['Peak Physical Condition — Пиковая физическая форма']};
 
   g.pugilistProgression={
+    levels:levels,
     className:'Пугилист',
     englishName:'Pugilist',
     source:'Benjamin Huffman / Sterling Vermin Adventuring Co.',
