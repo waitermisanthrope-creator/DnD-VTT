@@ -4,13 +4,13 @@
   "version": "74.00.18",
   "minAppVersion": "70.26.99",
   "channel": "stable",
-  "generated": "2026-10-09",
+  "generated": "2026-10-10",
   "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main",
   "files": [
     {
       "path": "index.html",
-      "bytes": 85334,
-      "sha256": "d865921fb1cfc9ebb6c0bc55838c122a835e9d81657f05d0b29f7a1d3f1bff84"
+      "bytes": 85514,
+      "sha256": "9be27b6b7345f69e836131c33d534c25fa3a651c4cf4c93f56a4adc2390ef34f"
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
@@ -119,8 +119,8 @@
     },
     {
       "path": "app/accursed_oap_v11_runtime.js",
-      "bytes": 25292,
-      "sha256": "2681a76b052a1b7b0d3914ca0346a1abf648eecd3452191098c51d871ee3c6f2"
+      "bytes": 31365,
+      "sha256": "364f759cc7234f5aaf2f42d419f5c66f0e036f8d49532310b558001343c4362b"
     },
     {
       "path": "app/alchemist_mhp_2024_runtime.js",
@@ -1544,8 +1544,8 @@
     },
     {
       "path": "app/blood_hunter_engine.js",
-      "bytes": 25324,
-      "sha256": "7ec6cd9260bf78697c993003d2302aff2f17c89251b9d13a96f234d85ebdfe86"
+      "bytes": 70830,
+      "sha256": "b1554ba1dc0b9d109b9bccddefa0af4c8c64ad0283887009cc34a0f364d222af"
     },
     {
       "path": "app/campaign_manager.js",
@@ -1579,13 +1579,13 @@
     },
     {
       "path": "app/class_features_engine.js",
-      "bytes": 133043,
-      "sha256": "779c55e05697042d39520b9b8e96ba76c7f0c6b252900ede576d7c1b39459a1c"
+      "bytes": 133622,
+      "sha256": "103f6c47142e296cb86ed09429e9ba3af0537fda671583c32f54b16b46a82157"
     },
     {
       "path": "app/classesRegistry.js",
-      "bytes": 10679,
-      "sha256": "f491cea688d126aee28a3b8ffe1c4750078ab3597ce0203c9ad046e8ba913a65"
+      "bytes": 10857,
+      "sha256": "25f51fd092b638a69a85d9e0e3edb8c92f8a0d4de05ec68da7dadc421a68372e"
     },
     {
       "path": "app/combat_abilities.js",
@@ -1594,8 +1594,8 @@
     },
     {
       "path": "app/combat_engine.js",
-      "bytes": 69184,
-      "sha256": "c11e5d7bd2ca59d8e2ec7aa43f11522e75008e9310aa5145a5e44eb8c53cd1b2"
+      "bytes": 80361,
+      "sha256": "82a7e05d7899c5cac2099d10ebabe9cf39d6c785aba1c8b4f2a6e8e2051242c6"
     },
     {
       "path": "app/companion_gameplay_v27.js",
@@ -1624,8 +1624,8 @@
     },
     {
       "path": "app/content_framework.js",
-      "bytes": 7847,
-      "sha256": "3ad0bbb9e1a84bef1b7ba49e18ec4b96ade291683b4f2094834a0916facd2e7e"
+      "bytes": 9884,
+      "sha256": "6320f55034a7b38e7fdb766760702469acf1562f7a4f96297f1366228ccab273"
     },
     {
       "path": "app/content_manifest.js",
@@ -1734,8 +1734,8 @@
     },
     {
       "path": "app/data/classes/Beastheart.js",
-      "bytes": 27794,
-      "sha256": "7e4114efdfd3aefed786477911e501ff872741b3d6a4c7764f1ff28ee7ba249d"
+      "bytes": 28992,
+      "sha256": "6f89c90c08dab8d508f67123ed110b4a7d1c568ef2877459e5fc9ec37433122f"
     },
     {
       "path": "app/data/classes/BloodHunter.js",
@@ -1834,8 +1834,8 @@
     },
     {
       "path": "app/data/classes/Pugilist.js",
-      "bytes": 11434,
-      "sha256": "039243b00c318be4f496aa72bcaa317a3a157ebaa50e22bbaa564afbb0d3f191"
+      "bytes": 11453,
+      "sha256": "b568c20e6087010c24fe33abb3ceed14ab6d01e792abdefca854956661c421e1"
     },
     {
       "path": "app/data/classes/RANGER.png",
@@ -1904,8 +1904,8 @@
     },
     {
       "path": "app/data/classes/Warden.js",
-      "bytes": 6623,
-      "sha256": "f6203710bc691c669e2614a89c949a223395e238d4e17a2f18e5b193db5f37e4"
+      "bytes": 6678,
+      "sha256": "42c316ef4661e09197cc1ea6a716dd8b4905d9364c8cf263e25da2d797994587"
     },
     {
       "path": "app/data/classes/Warlock.js",
@@ -1914,8 +1914,8 @@
     },
     {
       "path": "app/data/classes/Warlord.js",
-      "bytes": 9480,
-      "sha256": "7034582d9d17db4b17dfbea5501ff3290be6fefcc817d08385966b79ef0ce3e4"
+      "bytes": 9504,
+      "sha256": "72453c39f064b0c5565a1ba799f533d046019b6f3a70377feae8b7b336a8d34c"
     },
     {
       "path": "app/data/classes/Witch.js",
@@ -2073,9 +2073,24 @@
       "sha256": "f7579e75033d0a8ebf8163af8767724df3079a95b554b90c31be83586ced0867"
     },
     {
+      "path": "app/data/maps/3d_castle_v740019.json",
+      "bytes": 80650,
+      "sha256": "9967bb2ae363ffcf05fb951f55992f090bcbfbdd9fd3ce8bd00a32930ee0d735"
+    },
+    {
+      "path": "app/data/maps/3d_house_v740019.json",
+      "bytes": 12106,
+      "sha256": "5a4b5f0c47e6d95ea3123a8f65b97d3447943241b65299fdbe521133d73e0442"
+    },
+    {
       "path": "app/data/maps/3d_stress_test_all.json",
       "bytes": 165139,
       "sha256": "48164eeecebd0f5a0bb628edc2a8c2c766fb1f70d57c107f7526590a8ea39c0c"
+    },
+    {
+      "path": "app/data/maps/3d_tavern_v740019.json",
+      "bytes": 21171,
+      "sha256": "90fdd133216d679758420c89a52b5864a3a059d8f9a3ce08048e064a53b739fc"
     },
     {
       "path": "app/data/maps/3d_test_dungeon.json",
@@ -2134,8 +2149,8 @@
     },
     {
       "path": "app/data/subclasses/subclassesRegistry.js",
-      "bytes": 111083,
-      "sha256": "bf1d2f0932d057d425a0d85bcd7058d2ba5d8a7b5313098afb1c6c3bcb0a31dc"
+      "bytes": 111805,
+      "sha256": "07276d1c985a314603db9078b654d281a9806cef2e5517809e086a2fe0987566"
     },
     {
       "path": "app/debug.js",
@@ -2159,13 +2174,13 @@
     },
     {
       "path": "app/expanded_class_registry_bridge.js",
-      "bytes": 4257,
-      "sha256": "7bcebbf2a0e7da7c66f92855aa69d250293594e33e71553a99866d011dd62ea3"
+      "bytes": 5025,
+      "sha256": "5af0ee57f150c85d1825cc048a6da80a8978aa4d167def85cece088668f55f4e"
     },
     {
       "path": "app/expanded_classes_v23.js",
-      "bytes": 29764,
-      "sha256": "bcf2639c859bb8b573e0ac0639b38b3f71cbb2f877e17ebb79d5486cfba6bbc9"
+      "bytes": 30269,
+      "sha256": "6c22f97d9d627f59f3c76596d80f073af770e0560dd1a9894ab0b7bb167e32ff"
     },
     {
       "path": "app/expanded_subclasses_v23.js",
@@ -2179,8 +2194,8 @@
     },
     {
       "path": "app/expansion_classes_pack.js",
-      "bytes": 348315,
-      "sha256": "6ce26f7fca8c7b9e692cf378ae004a597b093a8819207ce4b4f6e5bdf9ec2fdc"
+      "bytes": 352830,
+      "sha256": "6ce62fce81aa853c15bd5b8f8d54208e430266b125200c35bb53887582906fdf"
     },
     {
       "path": "app/extra_class_ui_bridge.js",
@@ -2239,8 +2254,8 @@
     },
     {
       "path": "app/kibbles_localization_content_v71.js",
-      "bytes": 32027,
-      "sha256": "20a8c9d14a8c7728f298409d7fd4925c19d0ec68aca9ab885e2dad1bbb5731df"
+      "bytes": 32339,
+      "sha256": "d3ca22465ddc39ca23c232a6f562a448c4e84bcd96debbdb5782980c7bdd9701"
     },
     {
       "path": "app/library.js",
@@ -2249,8 +2264,8 @@
     },
     {
       "path": "app/magic_engine.js",
-      "bytes": 6293,
-      "sha256": "287e1e97b97cb008f573bbf8255e36865c2e203fcef3812e3a5ff8053734ccde"
+      "bytes": 7570,
+      "sha256": "00a8f6517cac132cec55aa43f17cb979b589abf14705dfb800205f621df94248"
     },
     {
       "path": "app/market_economy_v55.js",
@@ -2274,8 +2289,8 @@
     },
     {
       "path": "app/martyr_mhp_2024_runtime.js",
-      "bytes": 25375,
-      "sha256": "317de95243cd863d7356140b6403d50f623363ee641419f6af0daf6fbed16451"
+      "bytes": 33254,
+      "sha256": "6b09d89c87f363e8f08c2d86a1bbd91f7972d262d1b04885b5da46a620b7fd38"
     },
     {
       "path": "app/materials.js",
@@ -2304,8 +2319,8 @@
     },
     {
       "path": "app/necromancer_mhp_2024_runtime.js",
-      "bytes": 36272,
-      "sha256": "3990aa5327e8d0338aff8d582f0676a6f17ed0f0c5275fb29b58dd582527efff"
+      "bytes": 43556,
+      "sha256": "247c9dbc788192abc860884828ca81b602821e7c294d1f175c53c0c3760912cc"
     },
     {
       "path": "app/network_engine.js",
@@ -2314,8 +2329,8 @@
     },
     {
       "path": "app/network_gameplay.js",
-      "bytes": 85567,
-      "sha256": "e030c37bb0ee2e21930f6ac76ae126e94544090915f462747f90ccd04fd64882"
+      "bytes": 86776,
+      "sha256": "8cbec7c160d9af2e924c974ada577775b5b91d83a3e9b10e84ea8846bdf34204"
     },
     {
       "path": "app/notes.js",
@@ -2324,8 +2339,8 @@
     },
     {
       "path": "app/occultist_kibbles_v11_runtime.js",
-      "bytes": 58077,
-      "sha256": "04100e5c0bdf0dac36c0c268a5cdd401f153cf24a8d0a0d666d9604b1a3b7491"
+      "bytes": 60686,
+      "sha256": "69074c897d765eec73235e09b6e40a0dde44b93b29edb87aa54b637cd7f10359"
     },
     {
       "path": "app/onboarding_faq_v71.css",
@@ -2364,18 +2379,18 @@
     },
     {
       "path": "app/rulesEngine.js",
-      "bytes": 41605,
-      "sha256": "97d7812de8af63ec11b9834f128b54f35a28cd18997f92b164dafa07cc2ba933"
+      "bytes": 42653,
+      "sha256": "b1c2d68a47643440ea1b37b6e763583e53d56b499b3be2959a2a5b70e279d5af"
     },
     {
       "path": "app/runekeeper_taron_v12_runtime.js",
-      "bytes": 22330,
-      "sha256": "8144c7a9bb3aa1d7320866b5390c546de5e4480f436014ae5968935b71a72223"
+      "bytes": 27697,
+      "sha256": "51aafad454469a0eb1d77312a966aaf6fcaa16f124f2de3845715fad2bae5c55"
     },
     {
       "path": "app/savant_laserllama_v561_runtime.js",
-      "bytes": 21947,
-      "sha256": "970fd9654dc0f4cffdaa6ddbd8c3bd4e35a17bd16b303ca0b77985d8f4b96b1c"
+      "bytes": 29860,
+      "sha256": "bce9dc28ce005fdcf20d6990230652465dbe45e86b72037e3d4cdfc47e3586d8"
     },
     {
       "path": "app/secondary_entities_engine.js",
@@ -2384,13 +2399,18 @@
     },
     {
       "path": "app/shifter_laserllama_v2_1_runtime.js",
-      "bytes": 26601,
-      "sha256": "d1f8383df67f31b03561cc50c777865565749100f32df40ff5adf8a93073b1f6"
+      "bytes": 38454,
+      "sha256": "a4a12c3a564f883030b7a313bb48ee7a8752d7b1d9cc8c4e95d005331f924f55"
     },
     {
       "path": "app/skills.js",
       "bytes": 6367,
       "sha256": "1cf43800f1df845c0b3e084d46be55a57b89f214ed871a806fdde77f97d0e268"
+    },
+    {
+      "path": "app/spellblade_kibbles_runtime.js",
+      "bytes": 14140,
+      "sha256": "6be4bb6a370682be4a1fd668032eeb817577ca4c947a6b79c5beaf2b916cafc0"
     },
     {
       "path": "app/spells.js",
@@ -2434,8 +2454,8 @@
     },
     {
       "path": "app/vessel_laserllama_v4_runtime.js",
-      "bytes": 39809,
-      "sha256": "5f600d5c2a2a360b843e7200fb4f6ddcd33f097bb5fe681b63b22356bd759d17"
+      "bytes": 48055,
+      "sha256": "4e6fce23bf9bd29532fb9872a09f12d9ace58721e1a1f31eac5f8665f9c559c0"
     },
     {
       "path": "app/vtt_character_actions_v64.js",
@@ -2564,8 +2584,13 @@
     },
     {
       "path": "app/warden_mhp_2024_runtime.js",
-      "bytes": 39652,
-      "sha256": "16013b678cbbb842521b35a8439fa50614425f52a4d5c691848529cf3635965a"
+      "bytes": 41820,
+      "sha256": "8d8d10c31688e045f34fb7caf3f10e9b8de79d41b6ba2b3f80274ab16732c10c"
+    },
+    {
+      "path": "app/warlord_laserllama_v330_runtime.js",
+      "bytes": 15866,
+      "sha256": "23cfdde6c6ef6dc056e73939adae478682edbb798d8c4fe88dbcf0a43cbf9808"
     },
     {
       "path": "app/weapons.js",
