@@ -72,3 +72,7 @@
 ## Подготовленная партия F08 (2026-10-10)
 
 Из `model (1).glb` выделены `wood_stack.glb` (71136 байт), `rain_water_butt.glb` (45168), `altar_table.glb` (36228), `reliquary_casket.glb` (59728), `mortar_pestle.glb` (31516). Каждый экспорт повторно открыт trimesh. Локальный архив `DND_VTT_FURNITURE_READY_08.zip` (67621 байт) прошёл проверку ZIP; содержит 5 GLB, инструкцию и обновлённый каталог с 41 пользовательской моделью F01–F08. **Файлы моделей не загружены в GitHub; работа в Android не проверена.**
+
+## Подготовленная партия F09 — 20 моделей (2026-10-10)
+
+Источник: `model (3).glb`. Подготовлены и повторно открыты 20 отдельных GLB: `table_and_stools`, `town_bench`, `crate_stack`, `town_barrel`, `town_hand_cart`, `lamp_post`, `banner_pole`, `hitching_post`, `road_signpost`, `rug`, `shop_counter`, `weapon_rack`, `armour_stand`, `town_anvil`, `spinning_wheel`, `loom`, `range_and_oven`, `town_chandelier`, `torch_sconce`, `treasure_chest`. Исходные группы геометрии объединены по префиксам 149,150,151,152,153,154,158,160,161,162,163,164,165,166,167,168,169,170,171,175. Каждая модель центрирована и нормирована, проверена повторным открытием GLB. Архив `DND_VTT_FURNITURE_READY_09_20_MODELS.zip` (101933 байт) содержит 20 GLB, README и каталог на 61 пользовательскую модель (F01–F09). ZIP CRC проверен. **Бинарные файлы в GitHub не загружены, работа в Android не проверена.**
