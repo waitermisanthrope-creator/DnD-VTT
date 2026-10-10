@@ -271,3 +271,17 @@ if(!c["UserRoot_trestle_table"]){c["UserRoot_trestle_table"]={"id": "UserRoot_tr
 if(!c["UserRoot_weapon_rack"]){c["UserRoot_weapon_rack"]={"id": "UserRoot_weapon_rack", "name": "weapon rack", "nameRus": "weapon rack", "path": "./app/assets/3d/user_furniture/weapon_rack.glb", "category": "furniture", "scale": 1};n.push("UserRoot_weapon_rack");}
 if(!c["UserRoot_wood_stack"]){c["UserRoot_wood_stack"]={"id": "UserRoot_wood_stack", "name": "wood stack", "nameRus": "wood stack", "path": "./app/assets/3d/user_furniture/wood_stack.glb", "category": "furniture", "scale": 1};n.push("UserRoot_wood_stack");}
 })(window);
+
+/* USER ASSET CATEGORY FIX v1: classify imported objects; exclude actor rigs. */
+(function(g){'use strict';var c=g.DND3DAssetCatalog,n=g.DND3DAssetNames;if(!c||!n)return;
+function category(s){
+ if(/(?:^|_)(?:human|character|rigged|avatar|actor|skeleton)(?:_|$)/i.test(s))return 'actor';
+ if(/(?:tree|birch|oak|pine|palm|willow|bush|fern|grass|flower|hedge|rock|boulder|cliff|mushroom|stump|root|pebble|sapling|meadow|reed|lily|topiary|garden|field|allotment)/i.test(s))return 'nature';
+ if(/(?:wall|roof|tower|bridge|floor|road|path|gate|window|door|stair|church|house|cottage|tavern|hut|barn|shop|hall|arcade|vault|cloister|plaza|paving|river|bank|well|mine|cave|fence|slab|buttress|screen|arch|building|windmill|ground|walk|bay)/i.test(s))return 'architecture';
+ if(/(?:chest|crate|barrel|butt|sack|casket|cabinet|closet|commode|bookshelf)/i.test(s))return 'storage';
+ if(/(?:lamp|torch|candle|chandelier|lantern|light|sconce|hearth|campfire)/i.test(s))return 'lights';
+ if(/(?:bed|cot|table|chair|stool|bench|desk|shelf|counter|lectern|pulpit|rack|stand|loom|anvil|oven|cart|wheel|press|trough)/i.test(s))return 'furniture';
+ return 'decor';
+}
+Object.keys(c).forEach(function(id){var a=c[id];if(!a||!/^UserRoot_/.test(id))return;var type=category(id.slice(9));if(type==='actor'){delete c[id];var at=n.indexOf(id);if(at>=0)n.splice(at,1);return;}a.category=type;});
+})(window);
