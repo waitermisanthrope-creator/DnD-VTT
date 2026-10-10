@@ -10,7 +10,7 @@ function step(map,t){
  if(!o){t.stairHeight=0;return null;}
  var p=Math.max(0,Math.min(1,(t.y+.5-o.y)/o.d)),down=o.stairDirection==='down',h=Number(o.h)||4;
  t.stairHeight=down?-(1-p)*h:p*h;
- if((!down&&p>=.985)||(down&&p<=.015)){
+ if((!down&&p>=.95)||(down&&p<=.05)){
   var dest=Number(o.stairTo);
   if(!Number.isInteger(dest)||dest<0||dest>=map.floors.length)return null;
   map.currentFloor=dest;t.floor=dest;t.stairHeight=0;
