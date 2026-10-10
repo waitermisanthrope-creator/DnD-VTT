@@ -2098,6 +2098,16 @@
       "sha256": "1368ff6552662e375c7fad537bc1935fb58883e3496bc8295591fc434d241b91"
     },
     {
+      "path": "app/data/maps/3d_town_v740019.json",
+      "bytes": 42678,
+      "sha256": "8dc00207320493d04e6aa5d7f3d4422164467a75e1e8371430987f7e6ec5207c"
+    },
+    {
+      "path": "app/data/maps/3d_village_v740019.json",
+      "bytes": 29210,
+      "sha256": "986d9b9ff6a312f9acc784603e6c1f1f79e86b3f3eee48dff63a5f77fcef4189"
+    },
+    {
       "path": "app/data/spells/Focuses.js",
       "bytes": 53387,
       "sha256": "10ea6ac03167445d959f2f18635d8d8c591e9c6b77c6d93727994fd67b2f3e49"
