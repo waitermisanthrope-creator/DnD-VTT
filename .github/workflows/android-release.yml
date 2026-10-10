@@ -22,6 +22,7 @@ on:
       - "app/update_scene_v755.js"
       - "app/assets/ui/update_scene_*.svg"
       - "tests/test_v755_update_scene.js"
+      - "tests/update_ota_flow_test.js"
       - "android/app/build.gradle"
       - ".github/workflows/android-release.yml"
 
