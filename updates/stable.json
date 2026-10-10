@@ -24,8 +24,8 @@
     },
     {
       "path": "app/3dmap/gltf_catalog.js",
-      "bytes": 1602,
-      "sha256": "68eae4d8a52a1de4fae81a42c1c8c018a494660fc37799fcb845248766a11bad"
+      "bytes": 88181,
+      "sha256": "aa242a49069e1886497246840d7e26c4344ec6f3bd23e0f301d574cb947f3376"
     },
     {
       "path": "app/3dmap/gltf_character_pipeline.js",
@@ -1196,6 +1196,1346 @@
       "path": "app/assets/3d/quaternius/textures/T_Trim_Props_ORM.png",
       "bytes": 3017151,
       "sha256": "2d83d8df79aca2c8f630d389b43f09113afee98e746dfd42ddc3ce3302a136a2"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/altar_table.glb",
+      "bytes": 36228,
+      "sha256": "c918a589e4fc206c51578b791e96e9065409bf951df5bcf9926e17aae77991cf"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/apothecary_jar_shelf.glb",
+      "bytes": 106668,
+      "sha256": "0fa52095d31d75652cd384d7e1df253c079ede899659dda682022a3036a934f6"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/apothecary_shelf.glb",
+      "bytes": 107148,
+      "sha256": "4745df28dc59f4677b9708be80be10e45ef8d97b39251e6973fdd39787597632"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/armour_stand.glb",
+      "bytes": 16340,
+      "sha256": "ab65341de5de4acea79ed32d896d46a7cb8c4bd8d71e4c43488be14d5ba37bc7"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/banner_pole.glb",
+      "bytes": 17136,
+      "sha256": "5b0ee30f082a6511df27151f7b60c86ce93f2389ace7bec2630d446c381ee3d3"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/bed.glb",
+      "bytes": 5718760,
+      "sha256": "b2b7e0277ecac3256347983b85e54f5816fadc657a4317e171fabb7e1bd05719"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/book_chest.glb",
+      "bytes": 45816,
+      "sha256": "252b7da2f0451ead40153a742a7c4ef58c90c0e3f60abbfe99643b8f3656afd5"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/book_press.glb",
+      "bytes": 59492,
+      "sha256": "a4cd9b49d7f66e7af3f4740dca82e8516def1ad2542dc253bd18ab7a1ae13223"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/bookshelf.glb",
+      "bytes": 7818348,
+      "sha256": "5cbf3a2c9cc98ec6305ea551e00efb4694574d52a9f4c938116827d56f5ae1e1"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/bread_oven.glb",
+      "bytes": 45200,
+      "sha256": "04190ae0a2a6eafea796a4b800ce469fa44805585831f0dec170b5be1007bb80"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/brewhouse_tun.glb",
+      "bytes": 68616,
+      "sha256": "cf51d17584be4153b9bd7e6de9b5abff4b09092d8caaa6963e5476a9e0837d10"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/candle_stand.glb",
+      "bytes": 21372,
+      "sha256": "3d10ec2fc36e2e6811d79ab4e3c56cc3c3aed262bd70468ea064d455db7415ed"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/chained_library_desk.glb",
+      "bytes": 190612,
+      "sha256": "bcc11ee6fccc4be7caee3bddaeec6849e7e557a99fdd66f286625ca51829c30b"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/chair.glb",
+      "bytes": 4643004,
+      "sha256": "214745a1d76b87bb770cf7158939d0ecd9601fecd8f3b6085394323060f03d0d"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/closet.glb",
+      "bytes": 6550260,
+      "sha256": "9ac3118cc2c94e341b24a01e4a1b1721c538ce488b4c65f3fec150f14303a807"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/commode.glb",
+      "bytes": 4845868,
+      "sha256": "ca9b39c9a23222a0076767a29c39daebc3c47eb169a99029040a1628d12200ff"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/cooking_cauldron.glb",
+      "bytes": 34300,
+      "sha256": "ce01efa713fa3d29c6760527b861983d9aedcf44b6cf3a82d64c874efe01ecbe"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/crate_stack.glb",
+      "bytes": 39644,
+      "sha256": "58ebc14bb380825fd0a4225a951adf33e467563cd0aced2c4a1a61675c8e9463"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/dormitory_cot.glb",
+      "bytes": 70976,
+      "sha256": "ce389a74dde18f955d6a27ac3377eb15672be9fa6e4a89abf56d2f0d6e2a706c"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/finished_codex.glb",
+      "bytes": 29792,
+      "sha256": "6a0b41d0c6ab846cc5a99f2b1aa79fc625f5052db86d69fe8df7c16e50369098"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/gold_leaf_cushion.glb",
+      "bytes": 30624,
+      "sha256": "e2e3a2b316729b67e215b9b357279edb7c887ac9cd6a800dc890bffe52e476b2"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/hand_cart.glb",
+      "bytes": 75012,
+      "sha256": "36c78808011a81871b13bcfd55316b469794f7ac636c2ade54a916e35929dcb4"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/hanging_oil_lamp.glb",
+      "bytes": 50924,
+      "sha256": "a793ba4dd50f90b6e84067a432c32dc1fec14c7f68a4279ecca4f429268833c5"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/hitching_post.glb",
+      "bytes": 22232,
+      "sha256": "8d67ee94e686984c675421a252a7895378b173c73cfd8d0a238f67d5302aa83d"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/human-base-rigged.glb",
+      "bytes": 4994640,
+      "sha256": "7135e03b6259e970458deff3e0458610914d7c35164cae12611101361e4a5749"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/infirmary_cot.glb",
+      "bytes": 71696,
+      "sha256": "1e530307167f71d3f174e4dd3f5c3a5100755feb353854ea964720914c24057a"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/kitchen_hearth.glb",
+      "bytes": 38460,
+      "sha256": "13528f163594282bd05dcaee84d11b315d66c3948a01e112dee5246a0c68cb96"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/lamp_post.glb",
+      "bytes": 16960,
+      "sha256": "00b6c9517c7cb545db06e3237a6b6d2346509e67188fb1c703ce7ed91d8d0953"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/loom.glb",
+      "bytes": 46728,
+      "sha256": "ff57ac4b74c9ef98d385814c9ab35b144915d9cfec6686a38734887019ca91d7"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/manuscript_in_progress.glb",
+      "bytes": 153128,
+      "sha256": "3ff7025b5d06b89f7b94328ae12b5359f75fe18771de800e73387226b42fdfd8"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_altar_table.glb",
+      "bytes": 36248,
+      "sha256": "b68fbd893d7ad564a65e94ee1786165d0a15cbdef57fa41954288b344182f673"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_apothecary_jar_shelf.glb",
+      "bytes": 106620,
+      "sha256": "bf0628d2cb503fc7b8df6bcf8ae8be1f64e93d2a4329924340c9098d9d7fb560"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_bell_tower_section.glb",
+      "bytes": 456868,
+      "sha256": "f15e485a2029eb0e2ec88f7784a7167393423519c6dee44f331df770ad7fe687"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_book_chest.glb",
+      "bytes": 45320,
+      "sha256": "fe9f2f9b4c718147607d1930df824d3fdb364abdcbdba27f86c8746216b2962b"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_book_press.glb",
+      "bytes": 59492,
+      "sha256": "0c218d4df3bd503adbea09e1c32675d300da4dba390d961261fce51c8d6a2de5"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_bread_oven.glb",
+      "bytes": 45296,
+      "sha256": "2819b18c5b2127cef592026e74e023dc10a32d7d8712ad02a2ab5369b38ed09c"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_brewhouse_tun.glb",
+      "bytes": 68216,
+      "sha256": "b4044c1a1154429cb68fcca7f53b1bed31d748749bf5455b20064495595383f1"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_candle_stand.glb",
+      "bytes": 21376,
+      "sha256": "218bcdee688e2d87058a5364729048384f0ec9f291f5fa0da7bdc3fb9aaf7330"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_censer.glb",
+      "bytes": 49336,
+      "sha256": "d3f19d5077f0e9fd87d6eb2e65e8895935a3010917e559c682fd37574e434b37"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_chained_library_desk.glb",
+      "bytes": 148408,
+      "sha256": "11b2ab785b511dad8e67b8b48276326df649967a1931abdcefbb81c38f4f94e3"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_chapel_screen.glb",
+      "bytes": 333728,
+      "sha256": "6e8c27f4a670544ee4b0104005a3ed187dc411bfc908154363c13af723df9706"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_chapter_house_bay.glb",
+      "bytes": 151904,
+      "sha256": "83869551a8851d2ad6837c7c4826c2256cd998d9f214aec246fc5466ee688a27"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_cloister_arcade_bay.glb",
+      "bytes": 130972,
+      "sha256": "75181f2852eb6808f04e98f3e935246297d149716a9a005cb65de467e4db1d2a"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_cloister_arcade_corner.glb",
+      "bytes": 73924,
+      "sha256": "ac40ec129467f71e6981aa7448f1df82415850200216ecff7b9df92ce51c39a1"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_cloister_garth_lawn.glb",
+      "bytes": 13732,
+      "sha256": "c065384040d8e6834b950cf99ce954665f20e1ad04b7213d7fb65b0b9411a234"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_cloister_lean_to_roof.glb",
+      "bytes": 18724,
+      "sha256": "a1cc050cf411862afd15b4c83898e0af445d63b16ca11bb40b471a743fb231d4"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_cloister_vault_section.glb",
+      "bytes": 73928,
+      "sha256": "5fb012e96998ed24e7f7f6d613562db47debe553a8df32a78435034ca5e473e6"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_cloister_well.glb",
+      "bytes": 41568,
+      "sha256": "46280c673bf6c8b7786683a7acf560c5bc7c3a29b403efb349827a69fb7e8ebc"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_compost_bay.glb",
+      "bytes": 55596,
+      "sha256": "19a44b4a952c3441e4fe74516c9e45aa7a962eb5653680e86b0061b21f222dbb"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_cooking_cauldron.glb",
+      "bytes": 33800,
+      "sha256": "76cd8f20dabc15cf4bb91b483fe0864aefc9e5628d2b6ca16c376c0e161ab085"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_dormitory_cot.glb",
+      "bytes": 54832,
+      "sha256": "ad4fd72ed48eeda174508c684ac389a95cb9a16026eaf9064bbd000e70ccc7ff"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_finished_codex.glb",
+      "bytes": 29792,
+      "sha256": "3b2359ff2a7c1d79b36729ef0fed2e662396ae9eb8abdaf5eefd8b0cfad6ef5e"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_flagstone_floor_slab.glb",
+      "bytes": 9900,
+      "sha256": "66a33c37813774ae921078d68463a91df5d91c6654ba744bda759b138798e394"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_gold_leaf_cushion.glb",
+      "bytes": 30624,
+      "sha256": "e2ec2b583a0bd8eba06547e961867207bd39617d422bf9686b7451a6ed81adb1"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_hand_cart.glb",
+      "bytes": 86864,
+      "sha256": "b676bd5a830716d8a3fd44da4da18144c3212f73132b782612ea25cb3d542d57"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_hanging_oil_lamp.glb",
+      "bytes": 47156,
+      "sha256": "7beb317d992368050e47a7f249e6530d4f6cd7378069ca4e78977ee944c1eccd"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_herb_garden_bed.glb",
+      "bytes": 94584,
+      "sha256": "a92e4b66708dc7c432a12328f5d90b458ab2f3eb15bc0177ae0395c7957f301d"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_hung_bell.glb",
+      "bytes": 40368,
+      "sha256": "b5e0428397d854e2dfa14667d78fcdad008fe8570182f9bc0202f6949f6f9dfd"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_infirmary_cot.glb",
+      "bytes": 71700,
+      "sha256": "5bd4e9396efb48d4aa5a007e0e8ca113e33f08f0a19311996d135aca1f7c6869"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_kitchen_hearth.glb",
+      "bytes": 37972,
+      "sha256": "002114dd5b06a6772f220a85eff5f10329e6b56104de2cb27800994d4e8facee"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_manuscript_in_progress.glb",
+      "bytes": 153132,
+      "sha256": "a9387144cfd117adbfa3424a89f4b6532e44774ab3616924b29e9ead4b613064"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_monastery_buttress.glb",
+      "bytes": 18440,
+      "sha256": "79df93914cd7dff4ebfa91713db3d8db7c56021193a0d3d755b2d0ff875479e7"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_monastery_door_bay.glb",
+      "bytes": 87284,
+      "sha256": "be3306a461e86e9a1725bf05526427b541eb24a9d627db736db8cfd8fcb2c45c"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_monastery_lancet_window_bay.glb",
+      "bytes": 64048,
+      "sha256": "db14941990b3dc2e6d3c8fd02a26c2292346a1fd3502247bf360568df1a24990"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_monastery_wall_bay.glb",
+      "bytes": 29336,
+      "sha256": "6bfa69069f0b5286c30626217695a915ccc49be8864735ce1671c2c5a9708e7c"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_monks_chest.glb",
+      "bytes": 30432,
+      "sha256": "bb064b84d2be325c310262423858f9de83929ad61a2d479a5c65380f3ed5621e"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_mortar_and_pestle_set.glb",
+      "bytes": 31476,
+      "sha256": "4830eb5acbc60d25e5eb96f1d7e86a4e4d4eb46874d2612220c56000e1a83aed"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_parchment_stretching_frame.glb",
+      "bytes": 66292,
+      "sha256": "80571bdd0318682fc97910721b20d9dfb9bc0761d049c23f785f25cfedff0ae0"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_physic_bench.glb",
+      "bytes": 46424,
+      "sha256": "cb572d38310628f60e59ce09d61604ed8f9c37fcc4d9b45d988824ebc046356f"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_pigment_tray.glb",
+      "bytes": 42180,
+      "sha256": "c1aeea33a29dc7973c8411620cca8f72d4ac25944b23cd3ee23ef4a4c72d0340"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_quill_and_inkhorn_set.glb",
+      "bytes": 36912,
+      "sha256": "1aaba2da3dea7db9bf601cf831eb386fc928c3f727a83215134f866e75ee5005"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_rain_water_butt.glb",
+      "bytes": 45160,
+      "sha256": "9d59892894d365431f48fe922873eebdd6a03b9b9f7933f18fd26a7dcd13f0ad"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_readers_pulpit.glb",
+      "bytes": 70796,
+      "sha256": "3af56385f12f37ff77704c09aa7bb457e536e9ed9e0fef9105e901f8127bdb35"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_reading_lectern.glb",
+      "bytes": 48744,
+      "sha256": "16e0222b15055bed5758e90347c787e5cac0008ca641f373fa685547ed159998"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_refectory_bench.glb",
+      "bytes": 20408,
+      "sha256": "7db653b7073c013b4fa05e4f5723d01b7d20aa8961c46e7c0eabc725fd201c72"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_refectory_long_table.glb",
+      "bytes": 51672,
+      "sha256": "ee85d9016fddd310f59ed4f83794177b638fb7113c21b446784cfe51620bc932"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_reliquary_casket.glb",
+      "bytes": 59680,
+      "sha256": "8648ac64e117d31b2575f9c3cea1a5b294fa1e1f04125e178f7756e98fd52161"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_ruling_board.glb",
+      "bytes": 98044,
+      "sha256": "4d7a96712954081238c8029568dcb0a9502960f06670637b7b535cccd9f90f89"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_rush_light_stand.glb",
+      "bytes": 19044,
+      "sha256": "0992cd6890f0a07a30fc2702230cd32e75f13e2100ae2964a57adf6e0a9f841f"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_scribes_stool.glb",
+      "bytes": 19900,
+      "sha256": "e2f19b6824094a2ac9f4d3a61231b7043ceb1f642edfc3819a6ebe7fd3dcaf42"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_sloped_writing_desk.glb",
+      "bytes": 247044,
+      "sha256": "0808054dad63c82c6a1dfc470cbc2ef20776aa9d6fde3f1a85b6322e891232fd"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_stone_drain.glb",
+      "bytes": 12360,
+      "sha256": "64169588537210637f3b7b1e28b8d1663d42c6caef7a8a643f0cb422b7295fc6"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_stone_font.glb",
+      "bytes": 55200,
+      "sha256": "91f55f9a156663ac804d8b443b47f87301e16e32e4aa078e52c83b84c4d436f1"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_stone_stair_vice.glb",
+      "bytes": 130164,
+      "sha256": "6bfda4a9096fcf689b7948db336084d994d24a4871935fe6cbcb1bc2fd460527"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_tomb_slab.glb",
+      "bytes": 47852,
+      "sha256": "1d61ba4492a6c58e99526d3991781deae3bc6f77bcf275b71e38b537427a3b44"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_trestle_table.glb",
+      "bytes": 39912,
+      "sha256": "bf76332c2483de1e619a31c7695aa3a17cd3ca272d7f850518ae5acd737ac984"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_wall_torch_bracket.glb",
+      "bytes": 38324,
+      "sha256": "4f0b14dd021768b0ea476050f5b32a61951f4e02223ff862b9b046bfbf7da375"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monastery_wood_stack.glb",
+      "bytes": 71140,
+      "sha256": "e7c35afe0df6c63ede5f566358174fcf1b205b106f67bf791033d8bf49340ea6"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/monks_chest.glb",
+      "bytes": 30508,
+      "sha256": "48e3297859cd63157eb445f83ee2c50e2a7e279ddf7195e1c5358fcfe8bcd377"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/mortar_pestle.glb",
+      "bytes": 31516,
+      "sha256": "16bdc9390aff93fbe7506fde301afc6ddd907c728d43412a7c22c287d6612f17"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_birch_leaning.glb",
+      "bytes": 14804,
+      "sha256": "9b8873d064fad73c2bcadefd12a1a719143b0bc288e82821bd4744e6f1e90f91"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_birch_mature.glb",
+      "bytes": 15636,
+      "sha256": "b706e17cead6b0d988d1289b1d3ffdf5f7b84e9808886319c43c0682addddcaa"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_birch_young.glb",
+      "bytes": 13980,
+      "sha256": "0735e660ad89f32f597fef6755f43f0deaa543e37e12bfa0e59fbecd1c491188"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_boulder_large.glb",
+      "bytes": 6660,
+      "sha256": "1a2f1b2fcb7c6a7c8ecc515fb61790e71dfac8a945dbc409b1efc9d66b36d813"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_boulder_medium.glb",
+      "bytes": 6192,
+      "sha256": "fb8b0a0f01d82bac129ba711941f43fd9bd435118f9d4c43f5c69a7877c049b4"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_boulder_mossy.glb",
+      "bytes": 24232,
+      "sha256": "493d13121f9fc7281121f3d0801353105e155714405d92b3bf7d0053e29db25d"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_boulder_small.glb",
+      "bytes": 4760,
+      "sha256": "004d7eb3bc06d2ccae2b3e03460e364a5bf70d46075ff62bf161e8260453e2d9"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_bush_berry.glb",
+      "bytes": 12316,
+      "sha256": "286f4b9697708a9d7e345cfca4ad2d4b08a56d710d0e95cf991050d50321b523"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_bush_flat.glb",
+      "bytes": 5980,
+      "sha256": "20c961c9206e8de2cf53ea89345f26e57880db140509c195dd2fca2e98d7edb7"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_bush_flowering.glb",
+      "bytes": 16248,
+      "sha256": "9461d040de2992fb1ea873377c7c8e67cb8d107c6ddd0e190d93bf812c404ff5"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_bush_round.glb",
+      "bytes": 5152,
+      "sha256": "d31c9b8f47acd498af3bcedcc44aa180e0c04959177c2227f4b780545d55da26"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_bush_tall.glb",
+      "bytes": 5968,
+      "sha256": "ac59d0847a75f69cd28c6538e08b76d0d4f5dbc09d548e783d6976275970fd1c"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_cliff_block.glb",
+      "bytes": 29492,
+      "sha256": "bab90900442d03b7f8e2272b48aad67d0eaeb0a0f798559abf781eaf59b0b1c6"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_dead_snag_short.glb",
+      "bytes": 8596,
+      "sha256": "f67412886cfd0d725d398d8c24a335cff302604aa8a419250e16f9592cf58b01"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_dead_snag_tall.glb",
+      "bytes": 16784,
+      "sha256": "15fb454035bafb853072cdb5646a070b24270d55d8f026043765693609d61202"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_fern_clump.glb",
+      "bytes": 29024,
+      "sha256": "a43c86360a29a1d9b308b3f7276dd326c29f16efcc224def365fa4349846d16c"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_fern_single.glb",
+      "bytes": 13176,
+      "sha256": "57570bf9de1a421636b4f1e245bd27aa1aea8028dff55b33f77a1a2e2cc75269"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_flower_red.glb",
+      "bytes": 12412,
+      "sha256": "0fc5ae0cd1bb9979d651fcbba08b989dcc233fc97d0c23fc083345980b30d848"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_flower_yellow.glb",
+      "bytes": 12216,
+      "sha256": "019b64c114323b17f347f01effaa0f40630189ef3e2329c01e91705773fdb66b"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_grass_tuft_tall.glb",
+      "bytes": 6628,
+      "sha256": "c8e3beb3aafa87141b6e34d3edf1305a0a0c5860ab731ae72dca5974f86ca631"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_hedge_block.glb",
+      "bytes": 2444,
+      "sha256": "751122683c5466dde1fc9fae99f1cc73988549e8254abad565b2b53a12b63ac0"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_meadow_disc.glb",
+      "bytes": 8780,
+      "sha256": "f54355b2d2a19df1d2dff5b93101b13e1e03954296745695a62faaa44b1790c3"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_mushroom_group.glb",
+      "bytes": 39600,
+      "sha256": "842ff4a49c530c4fc673e6895037b935de2cd8dfe652daf99c93d5a4a908e029"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_oak_ancient.glb",
+      "bytes": 292756,
+      "sha256": "08849a584c16730e622e7af0c97715fb86c2f81cce931e61d601d633312f7192"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_oak_mature.glb",
+      "bytes": 279624,
+      "sha256": "840fd1d08f48211b705b19dbee530f68ac885c0b8cbcb33464dde8faed48606d"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_oak_sapling.glb",
+      "bytes": 266084,
+      "sha256": "3ef8c51ec06966f95fa02e41b9567932a9f6fb71e279deff6bb530503ec59e19"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_oak_young.glb",
+      "bytes": 266536,
+      "sha256": "f8686983755a690514b2f4864a33bc697e3afb62ff2d7bdcb4ca1eb612c1a5f5"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_palm_leaning.glb",
+      "bytes": 50808,
+      "sha256": "f4398e2877fb6f5280e16554e022d6f9f305c6a64204e1f9e792fd50bb84824b"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_palm_mature.glb",
+      "bytes": 57076,
+      "sha256": "b7277818f1a5a64fd9c01f895fae0455f978e38da96ec24781058b8ede0c52d8"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_palm_young.glb",
+      "bytes": 37688,
+      "sha256": "0da82080e26a9b19144317d1b85c4820823559197fd58031022d0fbc0f774180"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_pebble_cluster.glb",
+      "bytes": 12184,
+      "sha256": "8034c20c52e6196606ab79b0223067635572150d61f9995b6b5d25b27a152fec"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_pine_columnar.glb",
+      "bytes": 265888,
+      "sha256": "21ef2b21356bc9c919031d14af733c6c11afef874ef694f2ec0bdd7c23d92b8e"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_pine_sapling.glb",
+      "bytes": 264192,
+      "sha256": "2cdc1a0c4266a89108496b00fd8244d11b1498674c33e1742db74a01fe3924ed"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_pine_spreading.glb",
+      "bytes": 265024,
+      "sha256": "bf5e2f0552c359214e0142c728e674d52d52ba6e867093e17b928c586286b0f4"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_pine_windswept.glb",
+      "bytes": 265012,
+      "sha256": "fabe2a18c8f35675b28afb9b5b1c1428608235cdf8bab64648bbea3abdc24329"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_rock_pile.glb",
+      "bytes": 11840,
+      "sha256": "152d311b26b30fe497baea380750b74e2980f132f2df072e5a868e4eac2376f2"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_root_cluster.glb",
+      "bytes": 18436,
+      "sha256": "51a9e9aa707a2b85486fc6ebac0cdc0f934a9933f726080a43b484b9da96c055"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_sapling_pair.glb",
+      "bytes": 267912,
+      "sha256": "cc761e639b1cb9eb8607013dab86b8d3ee91f05d4315d12fd74edef4db656d3c"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_slab_flat.glb",
+      "bytes": 2744,
+      "sha256": "d123b33124e7755738483ad46bd7ba5aeac4a710aceea66fcd502bc09a93ca4e"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_slab_upright.glb",
+      "bytes": 2484,
+      "sha256": "b388623589a84502c2a07b95ed4576e02a4d7608e9ae02be967de442283fa0bd"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_stump_mossy.glb",
+      "bytes": 6616,
+      "sha256": "5678e5aa448569f742cc670169d9caf48a4b0a42f475e564b0587e0e5b0d77cf"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_stump_oak.glb",
+      "bytes": 273776,
+      "sha256": "27872801aaa6436ab0a98a8b70bbd38f12ece7244526164c1baf3ed0e2c343ba"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_stump_pine.glb",
+      "bytes": 261388,
+      "sha256": "639a9138f470cb0235b67d5eb36d03fd211846d5cef018ed03e8c12bd8463a47"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/nature_topiary_cone.glb",
+      "bytes": 7524,
+      "sha256": "6999bb378334b6ba3db93e962d30060bb1ba0d45db7e39683cdb9d9925a62d9a"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/parchment_stretching_frame.glb",
+      "bytes": 55508,
+      "sha256": "6be0632d55883aa6fdf50a3f7601426257717a7cec09821fc9c823e1768c3c2d"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/physic_bench.glb",
+      "bytes": 60316,
+      "sha256": "5cb870401afc338ad711cf8242078b41a64a652089013fc374634079daf0bad6"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/pigment_tray.glb",
+      "bytes": 39864,
+      "sha256": "ef4aff2af1bfd4ba49500f266f4b0f1ccec8820a0c71e66d4a09d4a3f2fdf311"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/quill_inkhorn_set.glb",
+      "bytes": 36956,
+      "sha256": "afc9ce6aaa40c3537301fcd328a45c1bb074686c597f331e4e7272b5f46b3b86"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/rain_water_butt.glb",
+      "bytes": 45168,
+      "sha256": "a4df05ce2d8d94268feb33f9db458fa8b3cb10f9323e036a9062256f3ec1df7a"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/range_and_oven.glb",
+      "bytes": 19732,
+      "sha256": "d04879d71d9ad79fcf196167c6a350516e98a6746246521ad3d359da88b1a8bc"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/reading_lectern.glb",
+      "bytes": 48844,
+      "sha256": "c62c7e491c7c0d2733f9a7b3c389d0420fc52683f1988c8c630c02c614d24930"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/refectory_bench.glb",
+      "bytes": 20560,
+      "sha256": "fe9d36f502bae302adeaca1299cd0c46239e39e305e18ddf6f7bf7492c7a26c0"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/refectory_long_table.glb",
+      "bytes": 51672,
+      "sha256": "e4d09e3dc07468fc591d71267eeec0947c097928489b740b9d8c71368d3bc2ab"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/reliquary_casket.glb",
+      "bytes": 59728,
+      "sha256": "573223cd64f492614cf2779a075b2db0fe58a91469a6608ffedae68161ecac2d"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/road_signpost.glb",
+      "bytes": 8044,
+      "sha256": "1aa20d7140e5f1e98d742dd6dc8d49cc3e49e14aeaf413b7ebf3fa9591b25f1c"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/rug.glb",
+      "bytes": 16540,
+      "sha256": "4d273b73683be1db338839b111547bda66c7c476f7aa22199302d3c69a933778"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/ruling_board.glb",
+      "bytes": 98032,
+      "sha256": "71d2a5c23903ea88213651f9c9bb29fe408197703e374593d142ec1df3ffeae7"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/rush_light_stand.glb",
+      "bytes": 19052,
+      "sha256": "f8a5073bbfe9167ef71632d45a60dacb6cb96b9ddd788c7f70ec7bf71a443e85"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/scribes_stool.glb",
+      "bytes": 20040,
+      "sha256": "923e546d0fcd7988e86f8ea4ee192b00c776ddd3765ccff1bcfa88de3baffdd1"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/shop_counter.glb",
+      "bytes": 58488,
+      "sha256": "91e395b038c8b587c5bd986ea56fe0cb7460133aafa88a41b3f5d10b26b9a242"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/sloped_writing_desk.glb",
+      "bytes": 341476,
+      "sha256": "12a4509838207205800ec2efed5c29bc2617757ffd571760d515c7ef2b20a750"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/spinning_wheel.glb",
+      "bytes": 21900,
+      "sha256": "f0f420a708499ff340c433a52e6034869ff2079e4e160c6c5aedb4ecde031988"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/stone_stone_stair_vice_0.glb",
+      "bytes": 130164,
+      "sha256": "8e9d09d602beeeb87ebb613fe8bc1b71c1a052d244e503697a5d58b4f723e74d"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/table.glb",
+      "bytes": 6217412,
+      "sha256": "fc1ac4d7c19841706c6a9cf8d02dd906d5a158667fff62f898027b7de11b5991"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/table_and_stools.glb",
+      "bytes": 34088,
+      "sha256": "f1f33698fe02ce6fa6f49a324dde4fd8c88dbc12e41a83c954f3d820d145d0d9"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/torch_sconce.glb",
+      "bytes": 8692,
+      "sha256": "3d0e2d22b1ccb082c28b87c64fdeaf319a06e187eb1a11e72ec08da2137a0bb7"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_allotment_bed.glb",
+      "bytes": 42940,
+      "sha256": "da0054b92041bbd52645c0e130df6f4a0710a1b8614ef6e6041baaa993f06e12"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_altar_with_candles.glb",
+      "bytes": 28704,
+      "sha256": "2a3dfa04ca7645aff7f2934a6d93fe959df8789449c83228d170aef8b229eb02"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_anvil.glb",
+      "bytes": 7820,
+      "sha256": "d2edd2c6f52a2696f0aaa60202958a495b79140c4ed3e9c38b89bdf43917406c"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_apple_tree.glb",
+      "bytes": 21880,
+      "sha256": "5d7913ae0b65a1ac5a5ed83303840b060826edbf73bda03f89e5d04520f49bc8"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_armour_stand.glb",
+      "bytes": 16180,
+      "sha256": "344fed03a3e196ea2138d9f74cb5dad48c9dc746407997445f68c7c9a8a68bd2"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_banner_pole.glb",
+      "bytes": 16800,
+      "sha256": "59188ef25bddf29c7258cc468e63550415fa3fa15ac454d3850d88d9e3f6f1ab"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_barrel.glb",
+      "bytes": 13340,
+      "sha256": "1e2d8c8354595c8eaf36ad3c76b62c4c57664e55d0164a6748f842be8514144c"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_bedroll.glb",
+      "bytes": 8964,
+      "sha256": "fa0823cfbe20985ed9a0bb2aa3110eed5dd96c6a2c9190200ef7acb234912434"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_bench.glb",
+      "bytes": 16564,
+      "sha256": "fc8f1c19b70da21d6aa58398e0be93fb2c09b51f19cef0d21f5d6b6db4b3647c"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_boulder_large.glb",
+      "bytes": 9404,
+      "sha256": "aec8c66f50aa40b9dad796f81bc4d9bb773fcbdd8caa7268bad63776f617889b"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_boulder_small.glb",
+      "bytes": 4768,
+      "sha256": "e403ca7458274add09d0a62c5ced254718903f8d4012e790c9b2d7f449b58c0a"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_bush.glb",
+      "bytes": 9188,
+      "sha256": "da560c8fa9aea9fa7398d6049edfdf8686020102478f8a72dc1d242487a69e23"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_campfire_with_spit.glb",
+      "bytes": 33304,
+      "sha256": "7f410e19e49b9be42491d34259b35adf539c743191942a2599ffed320691a3f2"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_canoe.glb",
+      "bytes": 15568,
+      "sha256": "d8028c0c5e79a196b1831d6e1d71068216e19db15df2e01d7276e9d35bc9bf61"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_cargo_cart.glb",
+      "bytes": 70964,
+      "sha256": "f5f6cdc8018f76bae0deaa0673538d492e9624c8103b8e05c1b27e8098d2e7ad"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_cauldron_on_tripod.glb",
+      "bytes": 32232,
+      "sha256": "9b87e32664eaf330a0be7bb7b2852b527f123a08a7a807d4af2017cd95d9291d"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_cave_mouth.glb",
+      "bytes": 21616,
+      "sha256": "573951bea08f6c8107f641847729e812e01149ab7969c16a854c2f985168aaef"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_chandelier.glb",
+      "bytes": 24996,
+      "sha256": "9ec121e982565627014c5eaf6f6495dc5e0c0ad164fa2b8dede6b5ee266563a6"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_chicken_coop.glb",
+      "bytes": 26176,
+      "sha256": "4c276da68e33e5f12333f5ad1cadd38e0d52ead6124897e95e805283d639251c"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_cobble_road_corner.glb",
+      "bytes": 18268,
+      "sha256": "eef3a786bf9e7957d98d3021e4469aa101935de742e93c6c1371a9e30e8eda3c"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_cobble_road_junction.glb",
+      "bytes": 26024,
+      "sha256": "7cbb97adc20af4e03bc3ebe7ba513d4403923d77041841a6d314da31c24e54a2"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_cobble_road_tile.glb",
+      "bytes": 20612,
+      "sha256": "5abae95b5990fbc30a4461196586020bbdaa85daa7eaaf76abd452e0f255b0fd"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_cooks_kitchen.glb",
+      "bytes": 96404,
+      "sha256": "4ed2ccdf7d887f730b6e28177dfe825533ae3d6697438a2e6ae70f247855be8e"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_cow_pen_fence.glb",
+      "bytes": 11268,
+      "sha256": "221a9bbdb53ad29aabe26ba8b8e9882748caeb1787b63087ad3b8cde9d9a1c07"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_crate_stack.glb",
+      "bytes": 39416,
+      "sha256": "ba193eb3fa2a16cf6ea5e69dd5ffa592338f66c2af0b8aa6d03062fc7e964e02"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_dead_tree.glb",
+      "bytes": 6196,
+      "sha256": "61c1ecc1e7c90b210a10115e6257fe1afd0920a5258b2fd0e18fa89920eec68b"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_dirt_path_tile.glb",
+      "bytes": 9152,
+      "sha256": "c703d22a2551b1865dffd8e7c2c8a55e914ae2c11d1e7f6df5f65df9abe8a05b"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_farmhouse_and_barn.glb",
+      "bytes": 161272,
+      "sha256": "81dd82746721e1b70a1bb59fac47b9af8df5deb86092636f18e027e8d2d66d09"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_fence_gate.glb",
+      "bytes": 14544,
+      "sha256": "13296ee4d3702ec55ec83279164f49b2eb7e1f409b52ff7762c422c52ac6a2b9"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_fence_run.glb",
+      "bytes": 28988,
+      "sha256": "eb1a78afe54c9277aaf4d0e2e5a431dbc1e4103671546bda75e252fea6ab6460"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_fern_clump.glb",
+      "bytes": 15892,
+      "sha256": "8b8d01d2c03a58f453a82cda5490aadfbf6235b1332212f4f45803500e7cdb88"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_ferry_raft.glb",
+      "bytes": 31140,
+      "sha256": "25183c3e8020807baa7e9117c418bc4a58e874d329d177480e5074e1da260cfa"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_fishing_boat.glb",
+      "bytes": 25960,
+      "sha256": "4800518f328505d333ea578c15823a45001cd970cf1ca2f49a47060ec6c41f1c"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_fishing_hut_on_stilts.glb",
+      "bytes": 110516,
+      "sha256": "b6fdfcee1d6b2fd4fc870d8ede8d4e34d8c53e2a26d011eafb562572064d50da"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_fletcher_shop.glb",
+      "bytes": 117300,
+      "sha256": "017dc4b94726600bfdcfa1e5ebdfa82ef734f3fb2234cb8be89d385765fe9e57"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_flower_patch.glb",
+      "bytes": 34768,
+      "sha256": "5134c960dd96fa43ed753b02f2a91b2fa6b07f54e944823e3fc5f0bda40a75f3"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_general_store.glb",
+      "bytes": 137904,
+      "sha256": "b6beb29b58623206a9f0ecb7a294db739b77684426fc04f568febba21e3fcd16"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_goblin_tent.glb",
+      "bytes": 15120,
+      "sha256": "d33dd915f27b68ba34efbdf65a81a1fe4145e23ff3ed99bb89aee72686981b26"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_goblin_totem.glb",
+      "bytes": 27832,
+      "sha256": "9e6465fa88a8d1d58c1efd449228642578cb715882dd02f333fe47a530a92240"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_grass_ground_tile.glb",
+      "bytes": 8564,
+      "sha256": "d19fa467a72da367ff0a58e14e14ac935528e1d2a51e4b170c1583afd04ba68e"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_grass_tuft_cluster.glb",
+      "bytes": 5080,
+      "sha256": "8a6c89d4547c90190e4b0dbf03899181fb43344744a6e1a8bcfa0a63a8028582"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_gravestone_set.glb",
+      "bytes": 23812,
+      "sha256": "b9378a79eae5e5b4bae1c578accd6456cd265d2a9583e3015d8df73ba7f24322"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_guard_barracks.glb",
+      "bytes": 162732,
+      "sha256": "46ba55a8ba162328c17218d036a2064af7708b292e2944a565d73e03cbbdf13b"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_hand_cart.glb",
+      "bytes": 25308,
+      "sha256": "45759d761c756ffcb6a202540db4b170d9464d1e2c31564c9718eab833f062d1"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_hay_bale.glb",
+      "bytes": 16340,
+      "sha256": "7ef25bb259de4578e1efd8ccfbf4b2969f7b0132a2bb537543c9fdd61f5fd52e"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_hitching_post.glb",
+      "bytes": 22008,
+      "sha256": "bfd2f3b4ff564a1177d585a5cb5aab8c785b2a96fd2c826d9ecdecc754e418e5"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_hunters_hide.glb",
+      "bytes": 33880,
+      "sha256": "fc3fb3b0d0df7d07a3548c7dbaf1ff5dc7baef8bde05756e19fe2d087f3e32d6"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_lamp_post.glb",
+      "bytes": 16804,
+      "sha256": "eb602d1d24e01d21bbba5cfb4ce7b817b3c098abedef34c1ed5b335f8b7e69b0"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_lily_pads.glb",
+      "bytes": 16632,
+      "sha256": "efe1dfa072cfb0dde246d7e74605d67c34caadbfdbceadf66422b2deab6de0b6"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_log_pile.glb",
+      "bytes": 37732,
+      "sha256": "28aaa73f33bb05bcf45963ca62716651ec30118c541bd51a30f07844ed5eb510"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_loom.glb",
+      "bytes": 46480,
+      "sha256": "c35ebec7e1852a4f5314ad7a3e3ae886acf6e2a21a69c2a0dd465fab90115bba"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_loot_sack.glb",
+      "bytes": 11820,
+      "sha256": "c1efc53a64083228c3d702f9ad9a1bd9dd4e6e0224f75a4ff1d72a2d6497489d"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_market_stall.glb",
+      "bytes": 61536,
+      "sha256": "9c0a2b84e4723ad88ed8cf8d474449b6d37c1aea7223411c67029001959e702a"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_market_stall_blue.glb",
+      "bytes": 61540,
+      "sha256": "1f659b0a516f563f23cc6a94c1a469dc01c8bb39651fc435a6611b0288f81f22"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_market_stall_cream.glb",
+      "bytes": 60756,
+      "sha256": "cacb1a73910e9b36e9e89646c52e94aab44a813151822d5c1a15895fc1c4c933"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_mine_entrance.glb",
+      "bytes": 41744,
+      "sha256": "ee989338a0af2db27d3444d43a907beac0f80a50b7eac8c0ad5bede9c3a8606c"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_mushroom_ring.glb",
+      "bytes": 22884,
+      "sha256": "efdc04ec174dc4935865dc88dbafd00977e8cbd59388eb6cc2ecdd447ec534d5"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_notice_board.glb",
+      "bytes": 15924,
+      "sha256": "f3d38d0c9050a9276828cb330f724e52efe70ce85bccbb1cf571867275c35de5"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_oak_tree.glb",
+      "bytes": 19492,
+      "sha256": "090ce093728f311daa6b2fb43779d14d12d76f4e50cd586809e0358d34e47223"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_pine_tree.glb",
+      "bytes": 7096,
+      "sha256": "89fce49ed439df36a1e2bf2022243b7bf9ff2e3fcf70faa4b943faaac311c648"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_plaza_paving_tile.glb",
+      "bytes": 40396,
+      "sha256": "ff3cba452f73c8c244f9317247eba7893972ef504d4f3606a776ccd8d16464ef"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_ploughed_field_tile.glb",
+      "bytes": 24992,
+      "sha256": "1bc413161e754728392a9a3829a0698bdf2f361e204cf2d349661fd8913bf333"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_range_and_oven.glb",
+      "bytes": 19440,
+      "sha256": "747d5b619e947cfec79d63c4e0af83a6c0dd8a89fa433f1fbc02dd61f0a590ea"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_reed_clump.glb",
+      "bytes": 8672,
+      "sha256": "ae4f3859667cbdb756ec4e75834e8a52f8eeafb603a35becf90b2be2045590ea"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_river_bank_tile.glb",
+      "bytes": 17528,
+      "sha256": "07cf951c1ba8876cc4dbf09f6547c5f94792c08a17584acdba6f8ce45c7b3290"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_river_bend_tile.glb",
+      "bytes": 27100,
+      "sha256": "35775a7d875af3b3644d306eefb065a45be1518a3c6e2d282f6ae3d56e06179b"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_river_tile_straight.glb",
+      "bytes": 19108,
+      "sha256": "64059f2528af4b40c674b2e9aacb37fb049f0aab7bd143c93d7a7efc02574278"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_road_signpost.glb",
+      "bytes": 7824,
+      "sha256": "67d93bc8f64131279c009e7c0da78fff0d843e8594cc2cbd3ea55a9224171d2f"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_rock_outcrop.glb",
+      "bytes": 10020,
+      "sha256": "e78be1865a03dd656719447d5aca0fb49df9d47fb018238670baf734a29ce409"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_rope_bridge.glb",
+      "bytes": 104548,
+      "sha256": "86268d624cad6838a83da217dbeef8376d735ae820fabc159c997dd08e5f103a"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_rowing_boat.glb",
+      "bytes": 26056,
+      "sha256": "71d95aea4ba055c164ddd40af09c976d37e70f6d12374a7f9873eb050699d048"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_rug.glb",
+      "bytes": 16352,
+      "sha256": "4554ff8381870d39ba3940ed73db4ce96a37a98b4a38885d01de40319890520f"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_scarecrow.glb",
+      "bytes": 22344,
+      "sha256": "31957a620c1353bdeb783b966322b2fe49c7de44ed60b91ed6a9e0644c4343ab"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_shop_counter.glb",
+      "bytes": 61556,
+      "sha256": "2a1c012859975f0f2679e3d5e82bcb0099eaf0e39407ef2b03c94bafa77c8667"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_smithy.glb",
+      "bytes": 105612,
+      "sha256": "75717709b7e82062a58410bc478bc0a95e0842a782082715a73fcdc1e6bdc568"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_spinning_wheel.glb",
+      "bytes": 21608,
+      "sha256": "0029ad8c9b5be2620fa07640201b92737a78f490de0fcd4c2d55be77161c4b6e"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_standing_stone.glb",
+      "bytes": 13276,
+      "sha256": "2c40554634133377b0b3b58c9a15a3f6ec9687efc38d9adb92177ecf57f0ff4b"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_stone_arch_bridge.glb",
+      "bytes": 51536,
+      "sha256": "8c6eac6446628738a18d5d3c7bac0d13a42e1c73c63053b3f73f84b3043a97e1"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_stone_church.glb",
+      "bytes": 145052,
+      "sha256": "38efbfd93c72c06bddcb53867534d3e73506b3c7297466d45f35b301f0573fa8"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_stone_circle_slab.glb",
+      "bytes": 31656,
+      "sha256": "4d7ed6190654ab91a0fec7f8773ff73c43c5b9a2215774afae6fe88a7e84eacf"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_straw_target.glb",
+      "bytes": 15176,
+      "sha256": "010cbe099e9b998a07532508c2bfc763e016970e33f5882bb1bfdffdd4fe78a6"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_stump_with_axe.glb",
+      "bytes": 11880,
+      "sha256": "e77dca89e1fec74dd3aedbaa3dabc09df5d22e02270dbd0157be03a3923dd743"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_table_and_stools.glb",
+      "bytes": 33848,
+      "sha256": "06a987a40d4bd9adc00aa09242f061a37dd7857993fbd234e46e72e5ce0df5c6"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_thatched_cottage.glb",
+      "bytes": 106096,
+      "sha256": "28115ba2da86412905fb4dcc79172ab97054a56913fbf2a599f2d866a480dc7f"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_timber_house_large.glb",
+      "bytes": 262356,
+      "sha256": "17dec77ed84749e9bd6d2a941cf8b6aca8036a3477e8059276b93acd669ea75f"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_timber_house_medium.glb",
+      "bytes": 169188,
+      "sha256": "4070a915ec585902427927c3e72d887492fb56b048988299589ae74ff6769a94"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_timber_house_small.glb",
+      "bytes": 119348,
+      "sha256": "da453d2bc4ac61d14b4a0fb194c9d0e247dd5f650512be8e6691c823b4b5a1b6"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_timber_plank_bridge.glb",
+      "bytes": 60076,
+      "sha256": "3d58f054d04fb77ce66cdb0b359332ae860582f325bb5eb2e6b8abfeed4be98a"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_torch_sconce.glb",
+      "bytes": 8460,
+      "sha256": "50a89fff4e35c1d82b0e1effc809e19c394ef2366437644a6ff3d4e4ac24a7e0"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_town_bank.glb",
+      "bytes": 116184,
+      "sha256": "880f608c8482fa421138502879e1510b1036ef8a8bf73ac39c5ac5df7524fa15"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_town_hall.glb",
+      "bytes": 252584,
+      "sha256": "258efd1854c95b7cbfe0437862ca02d730e4f4244792055f0c181c3fcb0dd6a7"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_town_wall_segment.glb",
+      "bytes": 9696,
+      "sha256": "626041d1f93063314c7105864469a4fa58a4c21e9c2426b7fa7c65a5e8423786"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_town_well.glb",
+      "bytes": 32492,
+      "sha256": "3fd40e3cc1f8a1871fd4bcbb6f83341845156157932066d6a5b273b6fb273f53"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_treasure_chest.glb",
+      "bytes": 12404,
+      "sha256": "8e9d0b3d1873c32ed9400b442935e05c3321a5d4d7af79e1292480b33c724ef4"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_village_tavern.glb",
+      "bytes": 220336,
+      "sha256": "68709587c67bda50d65a47aa2809256fc3e512172be644c2e78265de79199c76"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_wall_corner_tower.glb",
+      "bytes": 79592,
+      "sha256": "61068fb905c653cea582d94a0f42ede57aaf7f3fc5bfafdcbc94278668b3f809"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_wall_gatehouse.glb",
+      "bytes": 77180,
+      "sha256": "ff8e02a3d6cd78592bd9c3a6961e2e4f675a002fd16a32d2e8abc2683fbd1a6e"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_wall_stair.glb",
+      "bytes": 34040,
+      "sha256": "aaaaa070f4b51d65a44d9cb85bac3ae46895d72c37b149c9fdc68f06eaa3f427"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_wall_walk_crenellated.glb",
+      "bytes": 15296,
+      "sha256": "dd45691af89067a4dee97bde1e7a8c79fdf53d4306bd53c4ec0f3764ed0cc616"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_watchtower.glb",
+      "bytes": 109556,
+      "sha256": "27daf6c9029351cbce0e28aab06fb4bd864f6bd8b7cf2d298863bc08f6529d03"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_water_trough.glb",
+      "bytes": 18172,
+      "sha256": "57a50f948b13a666f67e9a038649c10d324d3470dce99f44e90834e937767e62"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_weapon_rack.glb",
+      "bytes": 23152,
+      "sha256": "f4bec577c3602ea9e83aab49ab73eb82b512c0f0690cd1c0c63e96add13e2bfb"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_wheat_field_tile.glb",
+      "bytes": 55508,
+      "sha256": "b344bfcdf307bdfdcd45b736dbe32ebd1bcf3b1d27edb95ca8f5d6572127d4fc"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_willow_tree.glb",
+      "bytes": 26360,
+      "sha256": "cfd31088c55f17c3cb8bae8234d88e518af464b4aa9150870b16f57caaec3b1d"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_windmill.glb",
+      "bytes": 121768,
+      "sha256": "0369037a9a2e742b252595b48d203308dc47676cda1b494a282f0d71d0871ca4"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_wizard_tower_base.glb",
+      "bytes": 64292,
+      "sha256": "700913c464ed0eb71f5fbee86adb15eb2de4d3bcb76010dee450da30fa4052d6"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_wizard_tower_mid.glb",
+      "bytes": 70456,
+      "sha256": "2ae0ab19922548f9a6821a2234a5ebea18233f50d16ef8417e11a34e74303ef3"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/town_wizard_tower_top.glb",
+      "bytes": 50984,
+      "sha256": "126fe36ed56a19ea04db737f9af56d9a35c41642c9a385eed8e82328eb300bcf"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/treasure_chest.glb",
+      "bytes": 12772,
+      "sha256": "b2f4ea54804fa6403b25d7c2b0b2878cad7ef50c16ba94de663414bf33f6a3a6"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/trestle_table.glb",
+      "bytes": 40424,
+      "sha256": "2588a1ac87c400d3ef89dd65a8ad2ff350035b047ba66100b45ff8412d8bc0dd"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/weapon_rack.glb",
+      "bytes": 23300,
+      "sha256": "d554e545e0f50cc106982f2d6459f91a604ffe18dfa79af673220273b9867e46"
+    },
+    {
+      "path": "app/assets/3d/user_furniture/wood_stack.glb",
+      "bytes": 71136,
+      "sha256": "f80d904ab002ef0144a52722b42b09e953f92f212bf0f4470613e0211acce9ab"
     },
     {
       "path": "app/assets/dice/.gitkeep",
