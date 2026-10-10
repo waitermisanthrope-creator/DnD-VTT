@@ -97,7 +97,13 @@ function draw(c,m,cam){
     lightFloor=objs[oi].__floor;var o=objs[oi],ox=o.x||0,oz=o.y||0,oy=(o.__base??by)+(o.z||0),
         ow=Math.max(.25,o.w||1),od=Math.max(.25,o.d||1),oh=Math.max(.15,o.h||1),
         cc=o.id===m.selectedObjectId?[.95,.65,.15,1]:o.type==='light'?[1,.78,.25,1]:[.72,.48,.22,1];
-    var ol=illum(ox+.5,oz+.5);cc=[cc[0]*ol,cc[1]*ol,cc[2]*ol,cc[3]];if(o.type==='light'){
+    var ol=illum(ox+.5,oz+.5);cc=[cc[0]*ol,cc[1]*ol,cc[2]*ol,cc[3]];if(o.type==='stairs'&&o.walkable){
+      var steps=Math.max(2,o.steps||12),rise=oh/steps,run=od/steps;
+      for(var si=0;si<steps;si++){var z0=oz+si*run,z1=z0+run,y0=oy+si*rise,y1=y0+rise;
+        quad([ox,y1,z0],[ox+ow,y1,z0],[ox,y1,z1],[ox+ow,y1,z1],cc);
+        quad([ox,y0,z0],[ox+ow,y0,z0],[ox,y1,z0],[ox+ow,y1,z0],cc);
+      }
+    }else if(o.type==='light'){
       var ls=.18;
       quad([ox+.5-ls,oy+.1,oz+.5-ls],[ox+.5+ls,oy+.1,oz+.5-ls],[ox+.5-ls,oy+.5,oz+.5-ls],[ox+.5+ls,oy+.5,oz+.5-ls],cc);
     }else if(!o.model){
