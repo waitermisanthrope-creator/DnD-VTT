@@ -1,0 +1,47 @@
+name: Convert remaining FBX and BLEND furniture
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tools/convert_remaining_furniture.py'
+      - '.github/workflows/convert-remaining-furniture.yml'
+permissions:
+  contents: write
+concurrency:
+  group: convert-remaining-furniture
+  cancel-in-progress: false
+jobs:
+  convert:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Blender
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender
+          blender --version
+      - name: Convert source archives and standalone models
+        run: blender -b -t 2 --python tools/convert_remaining_furniture.py -- .
+      - name: Verify exported GLB files
+        run: |
+          python3 - <<'PY'
+          import json,pathlib,struct
+          report=json.loads(pathlib.Path('docs/FURNITURE_CONVERSION_REPORT.json').read_text())
+          print('Converted:',len(report['converted']),'Skipped:',len(report['skipped']),'Errors:',len(report['errors']))
+          for item in report['converted']:
+              p=pathlib.Path('app/assets/3d/user_furniture')/item['file']
+              with p.open('rb') as f:header=f.read(12)
+              assert header[:4]==b'glTF' and struct.unpack_from('<I',header,4)[0]==2 and struct.unpack_from('<I',header,8)[0]==p.stat().st_size,p
+          assert report['converted'] or report['skipped'],'No converted models'
+          PY
+      - name: Commit converted models and report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/assets/3d/user_furniture app/3dmap/gltf_catalog.js docs/FURNITURE_CONVERSION_REPORT.json
+          if ! git diff --cached --quiet; then
+            git commit -m "assets: convert remaining FBX and BLEND furniture to GLB"
+            git pull --rebase
+            git push
+          fi
