@@ -44,3 +44,7 @@
 **Общий охват:** 13 исходных 3D-файлов: `model.glb`, `model (1).glb`, `model (2).glb`, `model (3).glb`, `furniture.glb`, `Mini-RPG-Bundle Part2.zip`, `Medieval_Inn_Beds.zip`, `medv-cafe.zip`, `3D Retro Medieval Fantasy Kit.zip`, `medievaltavern.blend`, `medievalbenchesexport.blend`, `medievalstonestairs.blend`, `bed.fbx`. `DND_VTT_CLASS_FIXES_STAGE_1.patch` не относится к ассетам.
 
 **Следующее действие:** загрузить пять подготовленных GLB в `app/assets/3d/user_furniture/`, проверить доступность путей, затем добавить их в `app/3dmap/gltf_catalog.js`. Не менять карты и не публиковать обновление до завершения импорта.
+
+## Подготовленная партия F02 (2026-10-10)
+
+Источник `model (1).glb`: выделены 5 самостоятельных GLB: `scribes_stool.glb`, `book_chest.glb`, `trestle_table.glb`, `apothecary_shelf.glb`, `refectory_bench.glb`. Геометрия центрирована, приведена к максимальному габариту 2 условные единицы, GLB повторно прочитаны trimesh. Архив `DND_VTT_FURNITURE_READY_02.zip` (65111 байт) содержит 5 моделей, каталог с 11 пользовательскими предметами (F01+F02) и инструкцию. Пользователь будет загружать файлы в корень репозитория; после фактической загрузки нужно переместить их по путям `app/assets/3d/user_furniture/` и заменить `app/3dmap/gltf_catalog.js`. **В GitHub модели ещё не загружены; запуск в приложении не проверен.**
