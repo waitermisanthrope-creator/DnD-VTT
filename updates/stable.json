@@ -2079,13 +2079,13 @@
     },
     {
       "path": "app/data/maps/3d_castle_v740019.json",
-      "bytes": 92829,
-      "sha256": "e48ac29daae3e91c13b864be37d57464305e53f417c033ec9439df269421216f"
+      "bytes": 99593,
+      "sha256": "16649405fe47aa5e4369505b7d919afbc5ea31d4e6cb89de916839e31728169e"
     },
     {
       "path": "app/data/maps/3d_house_v740019.json",
-      "bytes": 15592,
-      "sha256": "92bca7c02f0fb23381b646218e626b39c157a91107cc9f1cefc943a4b1c5638b"
+      "bytes": 18959,
+      "sha256": "1b14aa1396391f7a92d2315838c77e87cfec15a3c7b135ac5b2021c55cd07194"
     },
     {
       "path": "app/data/maps/3d_stress_test_all.json",
@@ -2094,8 +2094,8 @@
     },
     {
       "path": "app/data/maps/3d_tavern_v740019.json",
-      "bytes": 25237,
-      "sha256": "662055effb2be158cd52563557b12b4964c8d86264f3cbfa642b1c8275b46e71"
+      "bytes": 28601,
+      "sha256": "1371be2da148178404209f3a1c4186d51bf9bbd1fe2fced7f0c69b23226a7711"
     },
     {
       "path": "app/data/maps/3d_test_dungeon.json",
