@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.19",
+  "version": "74.00.20",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-10",
@@ -10,7 +10,7 @@
     {
       "path": "index.html",
       "bytes": 85599,
-      "sha256": "2982970873705021bd266d7936cef4d6872f2043842bc6013fb4ee53462f2b24"
+      "sha256": "44769f85883c39ea44915a950b30fdc0c94d050d24fd19ea3e6a3c0f4af9c661"
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
@@ -39,8 +39,8 @@
     },
     {
       "path": "app/3dmap/map_editor.js",
-      "bytes": 38268,
-      "sha256": "f0681db1422571ebafd303712c103ff5e2171163f9bf8aaa8d1911ba97c3e0ed"
+      "bytes": 38363,
+      "sha256": "4f690d422486973a6ebed65d7dbfc75dc1ebadd33812c774d2c6cfb0bea6e801"
     },
     {
       "path": "app/3dmap/map_model.js",
@@ -2460,7 +2460,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 19013,
-      "sha256": "19a78e720fd4f2930bffc74d8533b8e1432e902550e9164f2d4946127a191822"
+      "sha256": "99b8d5287a895f82111a0eeedf11be0779928a702c752ac7f69e80e406173555"
     },
     {
       "path": "app/update_scene_v2.js",

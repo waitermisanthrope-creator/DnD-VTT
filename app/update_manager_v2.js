@@ -5,7 +5,7 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION='74.00.19';
+  var APP_VERSION='74.00.20';
   var DEFAULT_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
   var FALLBACK_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url_v2';
