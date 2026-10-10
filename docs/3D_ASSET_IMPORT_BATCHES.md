@@ -162,3 +162,8 @@
 - `f08588f`: тесты Node для маршрута 1→2→3→2→1, промежуточных высот и сброса высоты вне лестниц.
 - `0f76021`: GitHub Actions CI для синтаксиса и тестов лестниц.
 - Статус: код и тесты закоммичены, успешное выполнение CI и проверка Android пока не подтверждены; OTA не выпускать до подтверждения.
+
+### Этап 17 — 2026-10-10: WebGL FPS
+- `9cd8d43`: canvas dimensions now update only on size changes, avoiding per-frame WebGL drawing-buffer resets.
+- `f00958d`: distant GLB furniture culled before async asset loading and GPU rendering.
+- CI pass and Android FPS not yet confirmed. No OTA released in this stage.
