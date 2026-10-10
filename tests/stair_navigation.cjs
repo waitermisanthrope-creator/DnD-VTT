@@ -40,4 +40,12 @@ function descend(from,to,x){
 climb(0,1,9.5);climb(1,2,16.5);descend(2,1,16.5);descend(1,0,9.5);
 assert.equal(N.at(map,0,40,40),null);
 t.stairHeight=2;N.step(map,t);assert.equal(t.stairHeight,0,'height resets off stairs');
-console.log('PASS: stress map, 4 stair transitions, intermediate camera heights and reset');
+// Test the full range of movement deltas (including the maximum editor frame step).
+for(const delta of [.01,.04,.08,.12,.16]){
+ for(const [from,to,x,dir] of [[0,1,9.5,1],[1,2,16.5,1],[2,1,16.5,-1],[1,0,9.5,-1]]){
+  t.floor=from;map.currentFloor=from;t.x=x;t.y=dir===1?9.5:14.5;
+  for(let i=0;i<Math.ceil(6/delta)&&t.floor===from;i++){t.y+=dir*delta;N.step(map,t);}
+  assert.equal(t.floor,to,'landing must not be skipped at movement delta '+delta+' on '+from+'->'+to);
+ }
+}
+console.log('PASS: stress map, 4 stair transitions, intermediate camera heights, reset and 20 delta cases');
