@@ -45,7 +45,7 @@ function draw(c,m,cam){
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
   gl.clearDepth(1);
-  var sky={day:[.40,.65,.88],dusk:[.45,.28,.38],night:[.025,.04,.09]}[m.sky||'day'];gl.clearColor(sky[0],sky[1],sky[2],1);
+  var sky={day:'radial-gradient(circle at 78% 18%,#fffbd9 0%,#ffeaa477 4%,transparent 12%),radial-gradient(ellipse at 22% 28%,#ffffffaa 0%,transparent 26%),linear-gradient(#3675ba,#acd9ef)',dusk:'radial-gradient(circle at 78% 72%,#ffd491 0%,#ef986844 8%,transparent 22%),linear-gradient(#3a345f,#bb667b 65%,#ffb980)',night:'radial-gradient(circle at 78% 18%,#f6f2dc 0%,#eee7cc 2%,transparent 2.5%),radial-gradient(circle,#dde8ff 1px,transparent 1.5px) 0 0 / 83px 67px,linear-gradient(#040b20,#25344f)'};c.style.background=sky[m.sky]||sky.day;gl.clearColor(0,0,0,0);
   gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
 
   var identity=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
@@ -53,7 +53,7 @@ function draw(c,m,cam){
       dark=clamp(Number((m.lighting||{}).darkness)||0,0,1),
       by=floorBase(m,m.currentFloor),fh=Number(f.height)||3;
 
-  var fogShade=1;function illum(x,z){return fogShade* g.DNDMapModel.illuminationAt(m,x,z,m.currentFloor);}
+  var fogShade=1,lightFloor=m.currentFloor,wallCache={};function illum(x,z){return fogShade*g.DNDMapModel.illuminationAt(m,x,z,lightFloor,wallCache[lightFloor]||(wallCache[lightFloor]=g.DNDMapModel.wallSegments(m,lightFloor)));}
   function baseColor(t){return t==='wood'?[.36,.23,.13]:t==='grass'?[.20,.38,.20]:t==='water'?[.12,.30,.42]:[.48,.50,.54];}
   function tileCol(t,x,z){var b=baseColor(t),q=illum(x,z);return[b[0]*q,b[1]*q,b[2]*q,1];}
   function quad(a,b,d,e,col){
@@ -81,23 +81,23 @@ function draw(c,m,cam){
     return t;
   }
 
-  function surface(texture,a,b,d,e){if(!hasReadyTexture(texture))quad(a,b,d,e,[.4,.4,.4,1]);texQuad(texture,a,b,d,e);}
-  var indices=[m.currentFloor];if(m.showBelow&&!(m.gameplay&&m.fogEnabled))for(var fi=0;fi<m.currentFloor;fi++)indices.push(fi);if(m.showAbove&&!m.gameplay)for(var fi=m.currentFloor+1;fi<m.floors.length;fi++)indices.push(fi);
-  indices.forEach(function(fi){var ff=m.floors[fi],base=floorBase(m,fi),height=Number(ff.height)||3;
+  function surface(texture,a,b,d,e){var q=illum((a[0]+e[0])/2,(a[2]+e[2])/2);if(!hasReadyTexture(texture))quad(a,b,d,e,[.4*q,.4*q,.4*q,1]);texQuad(texture,a,b,d,e);}
+  var indices=g.DNDMapModel.visibleFloors(m);
+  indices.forEach(function(fi){lightFloor=fi;var ff=m.floors[fi],base=floorBase(m,fi),height=Number(ff.height)||3;
     Object.keys(ff.tiles).forEach(function(k){var xy=k.split(',').map(Number),x=xy[0],z=xy[1];if(m.gameplay&&m.fogEnabled&&m.__vision&&!m.__vision.explored[k])return;fogShade=m.__vision&&!m.__vision.visible[k]?.22:1;surface(floorTex(ff.tiles[k]),[x,base,z],[x+1,base,z],[x,base,z+1],[x+1,base,z+1]);});
-    fogShade=1;g.DNDMapModel.wallSegments(m,fi).forEach(function(w){var keys=[w.x+','+w.y];if(w.side==='n')keys.push(w.x+','+(w.y-1));if(w.side==='s')keys.push(w.x+','+(w.y+1));if(w.side==='w')keys.push((w.x-1)+','+w.y);if(w.side==='e')keys.push((w.x+1)+','+w.y);if(m.gameplay&&m.fogEnabled&&m.__vision){if(!keys.some(k=>m.__vision.explored[k]))return;fogShade=keys.some(k=>m.__vision.visible[k])?1:.22;}if(w.open&&(!w.secret||w.revealed))return;var ax=w.a[0],az=w.a[1],bx=w.b[0],bz=w.b[1],dx=bx-ax,dz=bz-az,len=Math.hypot(dx,dz),nx=-dz/len*.025,nz=dx/len*.025;var side=(cam.position[0]-ax)*(-dz)+(cam.position[2]-az)*dx,tx=side>=0?w.front:w.back;
+    fogShade=1;g.DNDMapModel.wallSegments(m,fi).forEach(function(w){var keys=[w.x+','+w.y];if(w.side==='n')keys.push(w.x+','+(w.y-1));if(w.side==='s')keys.push(w.x+','+(w.y+1));if(w.side==='w')keys.push((w.x-1)+','+w.y);if(w.side==='e')keys.push((w.x+1)+','+w.y);if(m.gameplay&&m.fogEnabled&&m.__vision){if(!keys.some(k=>m.__vision.explored[k]))return;fogShade=keys.some(k=>m.__vision.visible[k])?1:.22;}if(w.open&&(!w.secret||w.revealed))return;var ax=w.a[0],az=w.a[1],bx=w.b[0],bz=w.b[1],dx=bx-ax,dz=bz-az,len=Math.hypot(dx,dz),nx=-dz/len*.025,nz=dx/len*.025;var side=(cam.position[0]-ax)*(-dz)+(cam.position[2]-az)*dx,tx=g.DNDMapModel.wallTexture(w,cam.position);if(side<0){nx=-nx;nz=-nz;}
       if(w.kind==='window'&&(!w.secret||w.revealed)){surface(tx,[ax,base,az],[bx,base,bz],[ax,base+1,az],[bx,base+1,bz]);surface(tx,[ax,base+2.2,az],[bx,base+2.2,bz],[ax,base+height,az],[bx,base+height,bz]);}
       else surface(tx,[ax+nx,base,az+nz],[bx+nx,base,bz+nz],[ax+nx,base+height,az+nz],[bx+nx,base+height,bz+nz]);
     });
   });
-  fogShade=1;if(m.showCeilings!==false&&cam.view!=='top'&&!(!m.gameplay&&cam.position[1]>by+fh))g.DNDMapModel.ceilings(m,m.currentFloor).forEach(function(cel){if(m.__vision&&!m.__vision.visible[cel.key])return;var p=cel.key.split(',').map(Number),x=p[0],z=p[1];surface(floorTex(cel.texture),[x,cel.height,z],[x+1,cel.height,z],[x,cel.height,z+1],[x+1,cel.height,z+1]);});
-  objs=indices.flatMap(function(fi){return(m.floors[fi].objects||[]).filter(o=>!m.__vision||m.__vision.visible[Math.floor(o.x)+','+Math.floor(o.y)]).map(function(o){return Object.assign({},o,{__base:floorBase(m,fi)});});});
+  fogShade=1;if(m.showCeilings!==false&&cam.view!=='top')indices.forEach(function(fi){lightFloor=fi;g.DNDMapModel.ceilings(m,fi).forEach(function(cel){if(cam.position[1]>=cel.height||m.__vision&&!m.__vision.visible[cel.key])return;var p=cel.key.split(',').map(Number),x=p[0],z=p[1];surface(floorTex(cel.texture),[x,cel.height,z],[x+1,cel.height,z],[x,cel.height,z+1],[x+1,cel.height,z+1]);});});lightFloor=m.currentFloor;
+  objs=indices.flatMap(function(fi){return(m.floors[fi].objects||[]).filter(o=>!m.__vision||m.__vision.visible[Math.floor(o.x)+','+Math.floor(o.y)]).map(function(o){return Object.assign({},o,{__base:floorBase(m,fi),__floor:fi});});});
   if(m.placementPreview){var p=m.placementPreview,x=p.x,z=p.y;quad([x,by+.02,z],[x+1,by+.02,z],[x,by+.02,z+1],[x+1,by+.02,z+1],[.4,.9,.65,.4]);}
   for(var oi=0;oi<objs.length;oi++){
-    var o=objs[oi],ox=o.x||0,oz=o.y||0,oy=(o.__base??by)+(o.z||0),
+    lightFloor=objs[oi].__floor;var o=objs[oi],ox=o.x||0,oz=o.y||0,oy=(o.__base??by)+(o.z||0),
         ow=Math.max(.25,o.w||1),od=Math.max(.25,o.d||1),oh=Math.max(.15,o.h||1),
         cc=o.id===m.selectedObjectId?[.95,.65,.15,1]:o.type==='light'?[1,.78,.25,1]:[.72,.48,.22,1];
-    if(o.type==='light'){
+    var ol=illum(ox+.5,oz+.5);cc=[cc[0]*ol,cc[1]*ol,cc[2]*ol,cc[3]];if(o.type==='light'){
       var ls=.18;
       quad([ox+.5-ls,oy+.1,oz+.5-ls],[ox+.5+ls,oy+.1,oz+.5-ls],[ox+.5-ls,oy+.5,oz+.5-ls],[ox+.5+ls,oy+.5,oz+.5-ls],cc);
     }else if(!o.model){
@@ -191,7 +191,7 @@ function draw(c,m,cam){
     var mm=(asset.materials||[])[part.material||0],fc=mm&&mm.baseColorFactor;
     return fc?[fc[0],fc[1],fc[2],fc[3]==null?1:fc[3]]:[.72,.48,.22,1];
   }
-  function drawLoadedModel(o,asset){
+  function drawLoadedModel(o,asset){lightFloor=o.__floor??m.currentFloor;
     for(var pi=0;pi<asset.parts.length;pi++){
       var part=asset.parts[pi],key='__gpu3d',buf=part[key];
       if(!buf||buf.ctx!==gl){
