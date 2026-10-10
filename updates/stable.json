@@ -9,8 +9,8 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 85599,
-      "sha256": "b92b283b1f7dd7c62b7c1acf3113d1e5b5785dfa0f5f518496ad3a3b50dc362a"
+      "bytes": 85658,
+      "sha256": "0f2482e91f4bfe0e58bffdbfee37c8113e549b638a53c13e2f21a71efa5f8723"
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
@@ -39,8 +39,8 @@
     },
     {
       "path": "app/3dmap/map_editor.js",
-      "bytes": 42483,
-      "sha256": "09b6473ffbbf49bc980b4d7234130ae3e95585f4fff03baeb1da71b5633b2767"
+      "bytes": 43005,
+      "sha256": "e92621212f128a9870e0127fc0fe6d5a36a4b0f76c83ce238e4b36cb8fff4f3a"
     },
     {
       "path": "app/3dmap/map_model.js",
