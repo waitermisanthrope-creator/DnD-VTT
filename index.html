@@ -287,11 +287,28 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
 <script src="./app/3dmap/gltf_character_pipeline.js?v=74.00.16"></script>
 <script>DNDGLTFCharacterPipeline.install();</script>
 <script src="./app/3dmap/gltf_catalog.js"></script>
-<script src="./app/3dmap/character_system.js?v=74.00.33"></script>
-<script src="./app/3dmap/character_morph_assets.js?v=74.00.33"></script>
-<script src="./app/3dmap/character_body_geometry.js?v=74.00.33"></script>
-<script src="./app/3dmap/character_appearance_store.js?v=74.00.33"></script>
-<script src="./app/3dmap/character_editor_3d.js?v=74.00.33"></script>
+<script src="./app/3dmap/character_system.js?v=74.00.34"></script>
+<script src="./app/3dmap/character_morph_assets.js?v=74.00.34"></script>
+<script src="./app/3dmap/character_body_geometry.js?v=74.00.34"></script>
+<script src="./app/3dmap/character_appearance_store.js?v=74.00.34"></script>
+<script src="./app/3dmap/character_editor_3d.js?v=74.00.34"></script>
+<script>
+/* Keep the launch boundary in index.html: a failed editor script must not leave a dead button. */
+(function(g){
+ var pending=null;
+ var modules=[['gltf_loader','DNDGLTF'],['gltf_character_pipeline','DNDGLTFCharacterPipeline'],['character_system','DNDCharacter3D'],['character_morph_assets','DNDCharacterMorphAssets'],['character_body_geometry','DNDCharacterBodyGeometry'],['character_appearance_store','DNDCharacterAppearanceStore'],['character_editor_3d','DNDCharacterEditor3D']];
+ function notice(message){
+  var box=document.getElementById('ceLaunchNotice');if(!box){box=document.createElement('div');box.id='ceLaunchNotice';box.setAttribute('role','alert');box.style.cssText='position:fixed;inset:20% 15px auto;z-index:2147483500;background:#202633;color:#fff;padding:20px;border:1px solid #bd9b54;border-radius:12px;';var text=document.createElement('p');text.id='ceLaunchMessage';box.appendChild(text);var close=document.createElement('button');close.textContent='Закрыть';close.onclick=function(){box.remove();};box.appendChild(close);document.body.appendChild(box);}document.getElementById('ceLaunchMessage').textContent=message;
+ }
+ function load(name){return new Promise(function(resolve,reject){var s=document.createElement('script'),timer=setTimeout(function(){s.remove();reject(Error('Время загрузки '+name+' истекло'));},15000);s.src='./app/3dmap/'+name+'.js?v=74.00.34&editor_retry=1';s.onload=function(){clearTimeout(timer);resolve();};s.onerror=function(){clearTimeout(timer);s.remove();reject(Error('Не загрузился '+name));};document.head.appendChild(s);});}
+ g.dndCharacterEditorLaunchError=notice;
+ g.dndLaunchCharacterEditor3D=function(){
+  if(pending)return pending;
+  pending=Promise.resolve().then(function(){var chain=Promise.resolve();modules.forEach(function(m){chain=chain.then(function(){if(!g[m[1]]||(m[0]==='character_system'&&!g.DNDCharacter3D.AXES.breastSize)){notice('Подготовка 3D-редактора…');return load(m[0]).then(function(){if(!g[m[1]])throw Error('Модуль '+m[0]+' не запустился');});}});});return chain;}).then(function(){g.DNDGLTFCharacterPipeline.install();var box=document.getElementById('ceLaunchNotice');if(box)box.remove();var result=g.DNDCharacterEditor3D.open();if(!result&&!document.getElementById('dnd3dCharacterEditor'))throw Error(g.DNDCharacterEditor3D.lastError||'Не удалось создать окно редактора');return result;}).catch(function(e){notice('Не удалось открыть 3D-редактор: '+e.message);if(g.console)g.console.error('[3D editor launch]',e);return null;}).then(function(result){pending=null;return result;});return pending;
+ };
+})(window);
+</script>
+
 <script src="./app/3dmap/map_renderer_3d.js?v=740029"></script>
 <script src="./app/3dmap/stair_navigation.js?v=740029"></script>
 <script src="./app/3dmap/stress_map.js?v=740022"></script>
@@ -356,7 +373,7 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
 
     <button class="btn-action" onclick="openDndNetworkModal()" style="position: fixed; right: 15px; bottom: 15px; background: #7b1fa2; color: #fff; border: 1px solid #9c4dcc; padding: 10px 14px; border-radius: 8px; z-index: 100; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.4);">🎲 Игра: <span id="dndNetworkStatus">Одиночная игра</span></button>
 
-    <button id="mainMenuCharacter3DButton" class="btn-action" type="button" onclick="dndOpenCharacterEditor3D()" style="position:fixed;left:15px;bottom:62px;width:calc((100% - 38px)/2);max-width:180px;min-height:44px;background:#4b3b69;color:#fff;border:1px solid #8e75bd;padding:10px 14px;border-radius:8px;z-index:100;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.4);">🧍 3D Персонаж</button>
+    <button id="mainMenuCharacter3DButton" class="btn-action" type="button" onclick="dndLaunchCharacterEditor3D()" style="position:fixed;left:15px;bottom:62px;width:calc((100% - 38px)/2);max-width:180px;min-height:44px;background:#4b3b69;color:#fff;border:1px solid #8e75bd;padding:10px 14px;border-radius:8px;z-index:100;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.4);">🧍 3D Персонаж</button>
 
     <button id="mainMenu3DMapButton" class="btn-action" type="button" onclick="DND3DMap.open()" style="position:fixed;right:15px;bottom:62px;width:calc((100% - 38px)/2);max-width:180px;min-height:44px;background:#6a4a12;color:#fff;border:1px solid #c89b3c;padding:10px 14px;border-radius:8px;z-index:100;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.4);">🏗️ 3D Карты</button>
 
@@ -970,7 +987,7 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
   <button class="debug-tool-button btn-action" onclick="dndV708Open()" style="position:fixed;right:10px;bottom:260px;z-index:55000;background:#1565c0;color:#fff;padding:8px 10px;border-radius:9px;">☑️ Задачи</button>
   <button class="debug-tool-button btn-action" onclick="dndV66OpenLog()" style="position:fixed;right:10px;bottom:215px;z-index:55000;background:#455a64;color:#fff;padding:8px 10px;border-radius:9px;">📜 Combat Log</button>
   <button class="debug-tool-button btn-action" onclick="dndV709Open()" style="position:fixed;right:10px;bottom:305px;z-index:100050;background:#c62828;color:#fff;padding:8px 10px;border-radius:9px;">🐞 Ошибки здесь</button>
-  <button class="debug-tool-button btn-action" onclick="dndOpenCharacterEditor3D()" style="position:fixed;right:10px;bottom:350px;z-index:100050;background:#6d5421;color:#fff;padding:8px 10px;border-radius:9px;">🧍 3D персонаж</button>
+  <button class="debug-tool-button btn-action" onclick="dndLaunchCharacterEditor3D()" style="position:fixed;right:10px;bottom:350px;z-index:100050;background:#6d5421;color:#fff;padding:8px 10px;border-radius:9px;">🧍 3D персонаж</button>
 
   <!-- Сетевая комната / режим игры -->
   <div id="dndNetworkModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:26000;justify-content:center;align-items:center;padding:15px;box-sizing:border-box;backdrop-filter:blur(4px);">
