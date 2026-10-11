@@ -246,6 +246,11 @@ function prepareDiorama(current){
  function stalactites(c){for(var i=-4;i<=4;i++)tapered(x+i*H*.25,floor+H*1.56,z-H*.76,0,H*.10,H*(.24+(i%3)*.14),6,c);}
  function meadowFlowers(px,pz){for(var i=0;i<7;i++){var a=i*2.399;var xx=px+Math.cos(a)*.22,zz=pz+Math.sin(a)*.15;tapered(x+xx*H,floor,z+zz*H,H*.014,H*.009,H*.22,5,[.28,.53,.24]);boulder(x+xx*H,floor+H*.23,z+zz*H,H*.055,H*.045,H*.055,i%2?[.83,.53,.69]:[.90,.75,.37]);}}
  function totem(px,pz){tapered(x+px*H,floor,z+pz*H,H*.16,H*.10,H*.94,6,[.46,.32,.22]);beam(px,.81,pz+.11,.26,.12,.11,[.63,.48,.30]);beam(px,.54,pz+.11,.19,.08,.11,[.30,.46,.34]);}
+
+ function sceneBlock(px,pz,w,h,c){cube(x+px*H,floor+h*H/2,z+pz*H,w*H,h*H,.25*H,c);}
+ function cluster(px,pz,c){for(var i=0;i<6;i++){var a=i*Math.PI/3;boulder(x+(px+Math.cos(a)*.24)*H,floor+H*.15,z+(pz+Math.sin(a)*.19)*H,H*.18,H*.23,H*.15,c);}}
+ function spikes(px,pz,c){for(var i=0;i<5;i++)spire(px+(i-2)*.16,pz+(i%2)*.11,.36+(i%3)*.15,c);}
+ function branch(px,pz,c){for(var i=0;i<4;i++)beam(px+i*.17,.24+i*.18,pz,.24,.06,.09,c);}
  var scenes={
  kingdom:function(){paved([.42,.40,.36]);house(-.78,-.62,[.63,.55,.43],[.40,.21,.18]);house(.80,-.66,[.54,.51,.47],[.29,.34,.39]);battlement(0,1.24,-.72,.76,[.61,.60,.56]);stairs([.51,.47,.40]);lanternPair([.98,.70,.30]);},
  elfcity:function(){paved([.64,.71,.64]);arch([.80,.83,.72]);for(var i=-1;i<=1;i++){spire(i*.54,-.69,1.45+(i===0?.22:0),[.78,.84,.79]);crystal(i*.60,-.39,[.42,.83,.77]);}shrine([.75,.79,.63]);stairs([.74,.79,.73]);},
@@ -268,11 +273,11 @@ function prepareDiorama(current){
  laboratory:function(){arch([.44,.50,.54]);shelf(-.89,-.52);shelf(.89,-.54);apparatus(-.47,-.39);apparatus(.50,-.41);paved([.42,.44,.47]);crystal(0,-.65,[.37,.83,.85]);lanternPair([.52,.80,.89]);},
  slime:function(){pool([.29,.58,.39]);stalactites([.37,.55,.46]);slimeBubble(-.88,-.43,[.32,.67,.46]);slimeBubble(.89,-.44,[.42,.75,.55]);slimeBubble(-.49,-.69,[.40,.60,.38]);slimeBubble(.53,-.70,[.48,.68,.40]);fungi(0,-.69,[.62,.77,.35]);},
  wildwood:function(){canopy(-.96,-.52,[.26,.47,.22]);canopy(.98,-.57,[.20,.42,.19]);canopy(-.52,-.72,[.29,.50,.23]);meadowFlowers(-.70,-.20);meadowFlowers(.74,-.25);totem(.55,-.62);shrine([.46,.42,.29]);fungi(-.39,-.45,[.79,.57,.37]);},
- labyrinth:function(){arch([.52,.44,.35]);stone(-.93,-.15,.45,.68,[.39,.32,.27]);stone(.93,-.15,.45,.68,[.39,.32,.27]);},
- nightforest:function(){tree(-.95,-.47,[.11,.22,.28]);tree(.95,-.46,[.13,.25,.31]);crystal(0,-.63,[.42,.58,.77]);},
- sewer:function(){arch([.34,.38,.32]);pool([.31,.41,.22]);stone(.95,-.24,.39,.36,[.33,.28,.20]);},
- hive:function(){arch([.40,.32,.19]);stone(-.92,-.25,.48,.66,[.48,.37,.19]);stone(.92,-.25,.48,.66,[.48,.37,.19]);},
- organic:function(){arch([.53,.15,.19]);pool([.60,.16,.21]);crystal(-.93,-.31,[.71,.23,.28]);crystal(.93,-.31,[.71,.23,.28]);}
+ labyrinth:function(){sceneBlock(-.94,-.62,.40,1.25,[.45,.40,.34]);sceneBlock(.94,-.62,.40,1.25,[.45,.40,.34]);sceneBlock(-.59,-.72,.49,.92,[.52,.45,.37]);sceneBlock(.60,-.72,.49,.92,[.52,.45,.37]);arch([.53,.44,.37]);paved([.47,.42,.35]);lanternPair([.94,.59,.23]);stairs([.49,.43,.37]);},
+ nightforest:function(){deadCanopy(-.96,-.53);deadCanopy(.95,-.56);canopy(-.46,-.73,[.13,.24,.31]);canopy(.48,-.74,[.12,.23,.30]);crystal(-.77,-.25,[.53,.67,.84]);crystal(.76,-.27,[.51,.62,.80]);fungi(-.31,-.51,[.41,.59,.77]);fungi(.34,-.53,[.39,.52,.72]);},
+ sewer:function(){arch([.35,.37,.33]);sceneBlock(-.87,-.70,.55,.93,[.38,.39,.35]);sceneBlock(.88,-.70,.55,.93,[.38,.39,.35]);pool([.29,.40,.22]);cluster(-.74,-.25,[.33,.29,.24]);cluster(.72,-.32,[.34,.30,.23]);reeds(.65,-.38,[.35,.42,.25]);},
+ hive:function(){cluster(-.88,-.55,[.49,.35,.20]);cluster(.88,-.55,[.50,.36,.20]);arch([.43,.33,.20]);for(var i=-2;i<=2;i++){tapered(x+i*H*.27,floor+H*.95,z-H*.70,H*.17,H*.13,H*.19,6,[.58,.43,.23]);}spikes(-.69,-.30,[.65,.47,.23]);spikes(.70,-.34,[.61,.42,.20]);},
+ organic:function(){cluster(-.90,-.56,[.57,.20,.25]);cluster(.91,-.57,[.59,.22,.27]);branch(-.91,-.69,[.72,.26,.31]);branch(.23,-.70,[.74,.27,.32]);pool([.64,.22,.27]);arch([.62,.24,.29]);for(var i=-1;i<=1;i++)boulder(x+i*H*.49,floor+H*.29,z-H*.68,H*.27,H*.38,H*.25,[.70,.29,.35]);}
  };scenes[habitat]();
  // Second layer: silhouettes and fine landmarks differentiate biomes at character scale.
  var details={
