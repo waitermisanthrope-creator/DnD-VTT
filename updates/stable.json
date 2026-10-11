@@ -1,16 +1,16 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.22",
+  "version": "74.00.32",
   "minAppVersion": "70.26.99",
   "channel": "stable",
-  "generated": "2026-10-10",
+  "generated": "2026-10-11",
   "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main",
   "files": [
     {
       "path": "index.html",
       "bytes": 85947,
-      "sha256": "870a309f673f3883c21c1eef62b1e2e9071893b9ec910fdb0f9b5c4606210513"
+      "sha256": "df10140496e07bee2c3dd4ea91699c0a69b29719f26fd8bc587d73b151a73b61"
     },
     {
       "path": "app/3dmap/character_appearance_store.js",
@@ -3845,7 +3845,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 19013,
-      "sha256": "1925af426dd39b9dc1b4222b963eea385adf6d33f923898b0095f443fe63dfd5"
+      "sha256": "486e276faf023bd5e8415369d90eee45b377966af8df2d02a45acf54da3e13bf"
     },
     {
       "path": "app/update_scene_v2.js",
