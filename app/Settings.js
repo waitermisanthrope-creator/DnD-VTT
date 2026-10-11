@@ -537,6 +537,8 @@ function applyAppFrameColor(colorKey) {
 }
 
 function decorateDndModal(root) {
+  // Full-screen workspaces own their layout; a decorative card must not change their fixed positioning.
+  if (root && root.getAttribute && root.getAttribute('data-dnd-frame') === 'none') return;
   if (!root || !root.id && !root.classList) return;
   const id = String(root.id || '');
   const looksLikeModal = /modal|prompt|dialog/i.test(id) || root.getAttribute('role') === 'dialog';

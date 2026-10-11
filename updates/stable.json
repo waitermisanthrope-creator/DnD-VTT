@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.34",
+  "version": "74.00.35",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-11",
@@ -9,8 +9,8 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 88846,
-      "sha256": "f5efe9466a681a05a275d367a294957b41c4492464c0ba984fe31a7b7bdb55be"
+      "bytes": 88855,
+      "sha256": "54a14368017ba360f0be752a5ebaf7c6a178186f43fabf1dd9580b4176625a59"
     },
     {
       "path": "app/3dmap/character_appearance_store.js",
@@ -24,8 +24,8 @@
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
-      "bytes": 29924,
-      "sha256": "b30b586b765569ea1fa11c2205ebefbfcb5b951c0c9d85ea778af835b4db7b30"
+      "bytes": 30347,
+      "sha256": "695a9aafa65f493ad03677d266441ac4b2fc015abfb3858d24b2e3f24b2e7d13"
     },
     {
       "path": "app/3dmap/character_morph_assets.js",
@@ -134,8 +134,8 @@
     },
     {
       "path": "app/Settings.js",
-      "bytes": 58233,
-      "sha256": "f84a11e909e885625220d738d0742aa5fbe5f829060aabf833a1ade8f450b9f9"
+      "bytes": 58429,
+      "sha256": "91ec99ee0975c62ca318001faa996350f25eadb40c9e3c6317f8d0eaa1ed6e21"
     },
     {
       "path": "app/Settings_debug.js",
@@ -3845,7 +3845,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 19013,
-      "sha256": "137b1e6e977d349f651eba5f5b0406eaebed068a2cc14368528ab9678040b1c1"
+      "sha256": "029b35f647cbcdb8fa6ab40556dd750930b87a4ea392b9b6227207108039b45e"
     },
     {
       "path": "app/update_scene_v2.js",

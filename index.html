@@ -287,20 +287,20 @@ JS-модулями; подключён dnd_tools.js. Wallpapers.js и Ambiences
 <script src="./app/3dmap/gltf_character_pipeline.js?v=74.00.16"></script>
 <script>DNDGLTFCharacterPipeline.install();</script>
 <script src="./app/3dmap/gltf_catalog.js"></script>
-<script src="./app/3dmap/character_system.js?v=74.00.34"></script>
-<script src="./app/3dmap/character_morph_assets.js?v=74.00.34"></script>
-<script src="./app/3dmap/character_body_geometry.js?v=74.00.34"></script>
-<script src="./app/3dmap/character_appearance_store.js?v=74.00.34"></script>
-<script src="./app/3dmap/character_editor_3d.js?v=74.00.34"></script>
+<script src="./app/3dmap/character_system.js?v=74.00.35"></script>
+<script src="./app/3dmap/character_morph_assets.js?v=74.00.35"></script>
+<script src="./app/3dmap/character_body_geometry.js?v=74.00.35"></script>
+<script src="./app/3dmap/character_appearance_store.js?v=74.00.35"></script>
+<script src="./app/3dmap/character_editor_3d.js?v=74.00.35"></script>
 <script>
 /* Keep the launch boundary in index.html: a failed editor script must not leave a dead button. */
 (function(g){
  var pending=null;
  var modules=[['gltf_loader','DNDGLTF'],['gltf_character_pipeline','DNDGLTFCharacterPipeline'],['character_system','DNDCharacter3D'],['character_morph_assets','DNDCharacterMorphAssets'],['character_body_geometry','DNDCharacterBodyGeometry'],['character_appearance_store','DNDCharacterAppearanceStore'],['character_editor_3d','DNDCharacterEditor3D']];
  function notice(message){
-  var box=document.getElementById('ceLaunchNotice');if(!box){box=document.createElement('div');box.id='ceLaunchNotice';box.setAttribute('role','alert');box.style.cssText='position:fixed;inset:20% 15px auto;z-index:2147483500;background:#202633;color:#fff;padding:20px;border:1px solid #bd9b54;border-radius:12px;';var text=document.createElement('p');text.id='ceLaunchMessage';box.appendChild(text);var close=document.createElement('button');close.textContent='Закрыть';close.onclick=function(){box.remove();};box.appendChild(close);document.body.appendChild(box);}document.getElementById('ceLaunchMessage').textContent=message;
+  var box=document.getElementById('ceLaunchNotice');if(!box){box=document.createElement('div');box.id='ceLaunchNotice';box.setAttribute('role','alert');box.style.cssText='position:fixed;top:20%;left:15px;right:15px;z-index:2147483500;background:#202633;color:#fff;padding:20px;border:1px solid #bd9b54;border-radius:12px;';var text=document.createElement('p');text.id='ceLaunchMessage';box.appendChild(text);var close=document.createElement('button');close.textContent='Закрыть';close.onclick=function(){box.remove();};box.appendChild(close);document.body.appendChild(box);}document.getElementById('ceLaunchMessage').textContent=message;
  }
- function load(name){return new Promise(function(resolve,reject){var s=document.createElement('script'),timer=setTimeout(function(){s.remove();reject(Error('Время загрузки '+name+' истекло'));},15000);s.src='./app/3dmap/'+name+'.js?v=74.00.34&editor_retry=1';s.onload=function(){clearTimeout(timer);resolve();};s.onerror=function(){clearTimeout(timer);s.remove();reject(Error('Не загрузился '+name));};document.head.appendChild(s);});}
+ function load(name){return new Promise(function(resolve,reject){var s=document.createElement('script'),timer=setTimeout(function(){s.remove();reject(Error('Время загрузки '+name+' истекло'));},15000);s.src='./app/3dmap/'+name+'.js?v=74.00.35&editor_retry=1';s.onload=function(){clearTimeout(timer);resolve();};s.onerror=function(){clearTimeout(timer);s.remove();reject(Error('Не загрузился '+name));};document.head.appendChild(s);});}
  g.dndCharacterEditorLaunchError=notice;
  g.dndLaunchCharacterEditor3D=function(){
   if(pending)return pending;
