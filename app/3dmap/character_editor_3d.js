@@ -308,6 +308,29 @@ function prepareDiorama(current){
  hive:function(){for(var i=-1;i<=1;i++)boulder(x+i*H*.39,floor+H*.30,z-H*.63,H*.25,H*.44,H*.23,[.52,.39,.22]);},
  organic:function(){for(var i=-1;i<=1;i++)boulder(x+i*H*.40,floor+H*.47,z-H*.66,H*.27,H*.58,H*.23,[.65,.19,.24]);}
  };details[habitat]();
+
+ // Merge static scenery by quantized material to reduce draw calls and WebGL buffers.
+ // All race/class combinations use the same habitat for a given race; no class equipment is added.
+ var groups=Object.create(null),merged=[],maxVertices=60000;
+ parts.forEach(function(p){
+  var c=p.customColor||[.5,.5,.5],q=c.map(function(v){return Math.max(0,Math.min(15,Math.round(v*15)));});
+  var id=q.join('_'),verts=p.positions.length/3,group=groups[id];
+  if(!group||group.vertexCount+verts>maxVertices){
+   group={positions:[],normals:[],indices:[],vertexCount:0,color:q.map(function(v){return v/15;})};
+   groups[id]=group;merged.push(group);
+  }
+  var offset=group.vertexCount;
+  for(var a=0;a<p.positions.length;a++)group.positions.push(p.positions[a]);
+  for(var b=0;b<p.__ceNormals.length;b++)group.normals.push(p.__ceNormals[b]);
+  for(var d=0;d<p.indices.length;d++)group.indices.push(p.indices[d]+offset);
+  group.vertexCount+=verts;
+ });
+ parts=merged.map(function(group){
+  var pos=new Float32Array(group.positions);
+  return {positions:pos,__ceShapedPositions:pos,__ceNormals:new Float32Array(group.normals),
+   indices:new Uint16Array(group.indices),customColor:group.color};
+ });
+ root.__dioramaStats={meshes:parts.length,vertices:parts.reduce(function(n,p){return n+p.positions.length/3;},0)};
  root.__diorama=parts;root.__dioramaKey=key;
 }
 function drawDiorama(gl,current,center,sx,sy,sz){
