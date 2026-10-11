@@ -1,0 +1,8 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert'),g={};
+vm.runInNewContext(fs.readFileSync('app/3dmap/character_clothing.js','utf8'),{window:g});
+const c=g.DNDCharacterClothing;
+const n=c.normalize({top:'shirt_long',customizations:{shirt_long:{material:'silk',color:'#CC3311',buttonColor:'#123456',roughness:.2,scale:2,sleeves:'rolled',knot:true,buttons:[false,true,false,true,false,true,false]},bad:{color:'#abcdef'},boots:{material:'leather',color:'#123abc'}}},'female');
+assert.strictEqual(n.customizations.shirt_long.color,'#cc3311');assert.strictEqual(n.customizations.shirt_long.sleeves,'rolled');assert.strictEqual(n.customizations.shirt_long.buttons.length,7);assert(!n.customizations.bad);assert.strictEqual(n.customizations.boots.material,'leather');
+assert.deepStrictEqual(JSON.parse(JSON.stringify(c.normalize(n,'male').customizations)),JSON.parse(JSON.stringify(n.customizations)));
+const bad=c.optionsFor('shirt_short',{material:'missing',color:'javascript:bad',buttonColor:'#fff',scale:100,roughness:-5,sleeves:'bad',buttons:[false]});assert.strictEqual(bad.material,'linen');assert.strictEqual(bad.color,'#c2b899');assert.strictEqual(bad.scale,4);assert.strictEqual(bad.roughness,0);assert.strictEqual(bad.sleeves,'short');assert.strictEqual(bad.buttons[0],false);assert.strictEqual(bad.buttons[6],true);
+assert(!('sleeves' in c.optionsFor('skirt',{})));assert.strictEqual(c.optionsFor('stockings',{}).material,'nylon');assert.strictEqual(c.normalize({},'female').underwearTop,'bra');console.log('CLOTHING_OPTIONS_OK: validated options, bounded data, migration, per-item storage, gender changes');
