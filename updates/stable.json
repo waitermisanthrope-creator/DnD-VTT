@@ -39,8 +39,8 @@
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
-      "bytes": 101610,
-      "sha256": "07e09a35b38a057fd3dab8ecae83a3d84f1a3e6074646fd401ebc3a8dfaf72cb"
+      "bytes": 102380,
+      "sha256": "0ca20cbec06f8fd707a4e78d86b9da57ead6d5c513148f417f121720c19ee707"
     },
     {
       "path": "app/3dmap/character_morph_assets.js",
