@@ -44,3 +44,5 @@
 
 - Регресс: CHARACTER_3D_FOUNDATION/GENDER_STATE, CHARACTER_3D_SKIN_MORPH/MORPH_REGISTRY, CHARACTER_3D_SKIN_ASSETS, CHARACTER_3D_EDITOR, CHARACTER_APPEARANCE_STORE, CLOTHING_OPTIONS, HEAD_GEOMETRY, HEAD_BROWSER и OTA — PASS. Манифест 887 файлов проверен по байтам/SHA-256; git diff --check PASS.
 - Общая Chromium/WebGL проверка редактора PASS: открытие, контекст WebGL, сохранение, повторное открытие, мобильная прокрутка; переполнения экрана нет. Первый этап допускается к выпуску, полная готовность рас на карте не заявляется.
+
+- Выпуск 74.00.48 опубликован в main. Коммит: `9e8723aada3083f0a9e0c5cb4182dad8c5c7829b`. Следующий этап — орк и полуорк с клыками и расовой геометрией головы.
