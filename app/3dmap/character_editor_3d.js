@@ -184,6 +184,14 @@ function prepareDiorama(current){
  function vine(px,pz,color){tapered(x+px*H,floor+H*.32,z+pz*H,H*.035,H*.015,H*.83,6,color);}
  var habitats={"human":"kingdom","human_variant":"kingdom","half_elf":"kingdom","changeling":"kingdom","kalashtar":"kingdom","elf_high":"elfcity","elf_wood":"forest","gnome_forest":"forest","firbolg":"forest","fairy":"forest","elf_drow":"underdark","myconid":"underdark","dwarf_mountain":"forge","dwarf_hill":"forge","gnome_rock":"forge","autognome":"forge","halfling_lightfoot":"hills","halfling_stout":"hills","kender":"hills","full_orc":"orcsteppe","half_orc":"orcsteppe","goblin":"orcsteppe","hobgoblin":"orcsteppe","bugbear":"orcsteppe","goliath":"alpine","aarakocra":"alpine","tiefling":"inferno","genasi_fire":"inferno","dragonborn":"dragon","kobold":"dragon","tabaxi":"jungle","hadozee":"jungle","yuan_ti":"jungle","loxodon":"jungle","lizardfolk":"swamp","tortle":"swamp","triton":"ocean","genasi_water":"ocean","simic_hybrid":"ocean","genasi_air":"elemental","genasi_earth":"elemental","githyanki":"astral","githzerai":"astral","aasimar":"celestial","dhampir":"cursed","hexblood":"cursed","reborn":"cursed","ghost":"ghost","warforged":"laboratory","vedalken":"laboratory","plasmoid":"slime","shifter":"wildwood","harengon":"wildwood","centaur":"wildwood","satyr":"wildwood","minotaur":"labyrinth","owlin":"nightforest","kenku":"nightforest","swarm_rats":"sewer","swarm_beetles":"hive","parasite":"organic","walter_parasite":"organic"},palettes={"kingdom":[[0.37,0.35,0.32],[0.29,0.27,0.24]],"elfcity":[[0.65,0.67,0.59],[0.43,0.52,0.43]],"forest":[[0.16,0.28,0.19],[0.22,0.3,0.18]],"underdark":[[0.16,0.15,0.27],[0.18,0.17,0.23]],"forge":[[0.3,0.27,0.24],[0.28,0.26,0.23]],"hills":[[0.41,0.35,0.25],[0.32,0.39,0.22]],"orcsteppe":[[0.36,0.29,0.22],[0.37,0.31,0.2]],"alpine":[[0.55,0.59,0.65],[0.65,0.7,0.74]],"inferno":[[0.37,0.13,0.11],[0.25,0.15,0.14]],"dragon":[[0.35,0.23,0.21],[0.29,0.23,0.21]],"jungle":[[0.11,0.28,0.17],[0.18,0.29,0.15]],"swamp":[[0.22,0.28,0.2],[0.2,0.25,0.17]],"ocean":[[0.09,0.26,0.37],[0.12,0.33,0.4]],"elemental":[[0.35,0.36,0.44],[0.39,0.36,0.29]],"astral":[[0.24,0.17,0.39],[0.26,0.21,0.36]],"celestial":[[0.65,0.6,0.46],[0.69,0.67,0.57]],"cursed":[[0.2,0.23,0.24],[0.23,0.23,0.23]],"ghost":[[0.15,0.22,0.29],[0.18,0.24,0.29]],"laboratory":[[0.31,0.37,0.41],[0.3,0.33,0.36]],"slime":[[0.21,0.35,0.3],[0.24,0.35,0.29]],"wildwood":[[0.21,0.3,0.2],[0.25,0.34,0.18]],"labyrinth":[[0.4,0.32,0.27],[0.33,0.28,0.24]],"nightforest":[[0.13,0.18,0.24],[0.17,0.22,0.25]],"sewer":[[0.2,0.24,0.2],[0.26,0.27,0.21]],"hive":[[0.27,0.23,0.17],[0.33,0.27,0.19]],"organic":[[0.36,0.09,0.13],[0.43,0.14,0.17]]};
  var habitat=habitats[race]||'kingdom',colors=palettes[habitat],wall=colors[0],ground=colors[1];
+ // Scene atmosphere is derived from the habitat palette, never from character class.
+ // Keeping it on the root lets the clear pass use the same color without rebuilding geometry.
+ root.__dioramaHabitat=habitat;
+ root.__dioramaAtmosphere=[
+  Math.max(.015,Math.min(.42,wall[0]*.32+ground[0]*.09)),
+  Math.max(.015,Math.min(.42,wall[1]*.32+ground[1]*.09)),
+  Math.max(.020,Math.min(.48,wall[2]*.34+ground[2]*.11))
+ ];
  cube(x,floor-H*.055,z,H*2.6,H*.10,H*1.45,ground);cube(x,floor+H*.85,z-H*.78,H*2.6,H*1.9,H*.09,wall);
  // Rear wall and short side returns frame the stage without hiding the character.
  cube(x-H*1.26,floor+H*.85,z-H*.53,H*.09,H*1.9,H*.48,wall);cube(x+H*1.26,floor+H*.85,z-H*.53,H*.09,H*1.9,H*.48,wall);
@@ -311,7 +319,7 @@ function prepareDiorama(current){
 
  // Merge static scenery by quantized material to reduce draw calls and WebGL buffers.
  // All race/class combinations use the same habitat for a given race; no class equipment is added.
- var groups=Object.create(null),merged=[],maxVertices=60000;
+ var groups=Object.create(null),merged=[],maxVertices=60000,sourceMeshCount=parts.length;
  parts.forEach(function(p){
   var c=p.customColor||[.5,.5,.5],q=c.map(function(v){return Math.max(0,Math.min(15,Math.round(v*15)));});
   var id=q.join('_'),verts=p.positions.length/3,group=groups[id];
@@ -330,7 +338,12 @@ function prepareDiorama(current){
   return {positions:pos,__ceShapedPositions:pos,__ceNormals:new Float32Array(group.normals),
    indices:new Uint16Array(group.indices),customColor:group.color};
  });
- root.__dioramaStats={meshes:parts.length,vertices:parts.reduce(function(n,p){return n+p.positions.length/3;},0)};
+ root.__dioramaStats={
+ habitat:habitat,meshes:parts.length,sourceMeshes:sourceMeshCount,
+ vertices:parts.reduce(function(n,p){return n+p.positions.length/3;},0),
+ triangles:parts.reduce(function(n,p){return n+p.indices.length/3;},0),
+ savedDrawCalls:Math.max(0,sourceMeshCount-parts.length)
+ };
  root.__diorama=parts;root.__dioramaKey=key;
 }
 function drawDiorama(gl,current,center,sx,sy,sz){
@@ -340,7 +353,9 @@ function drawDiorama(gl,current,center,sx,sy,sz){
  (root.__diorama||[]).forEach(function(p){drawPart(gl,p,current);});
 }
 function drawGL(){
- if(!root||!root.__gl||root.__contextLost||!state)return;var gl=root.__gl,c=el('ceGL');resizeGL();gl.viewport(0,0,c.width,c.height);gl.clearColor(.055,.065,.085,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.enable(gl.DEPTH_TEST);
+ if(!root||!root.__gl||root.__contextLost||!state)return;var gl=root.__gl,c=el('ceGL');resizeGL();gl.viewport(0,0,c.width,c.height);
+ var backdrop=root.__focus==='full'&&root.__dioramaAtmosphere?root.__dioramaAtmosphere:[.055,.065,.085];
+ gl.clearColor(backdrop[0],backdrop[1],backdrop[2],1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.enable(gl.DEPTH_TEST);
  if(!root.__asset){if(!root.__loading&&!root.__loadFailed)loadAsset();return;}var current=comparing?baseline:state;
  try{
  syncGhostWeapon(current);geometry(current);prepareClothing(current);prepareArmor(current);prepareHead(current);prepareWeapon(current);if(g.DNDCharacterBodyGeometry.isSwarm(current))g.DNDCharacterBodyGeometry.updateSwarm(root.__headParts,(g.performance?g.performance.now():Date.now())/1000,!!root.__swarmMoving&&!comparing);getProgram(gl);gl.useProgram(root.__prog);var b=root.__bounds,center=b.center.slice(),fit=root.__fitSize,zoom=root.__zoom||1;if(root.__focus==='torso'){center[1]=b.min[1]+b.size[1]*.69;fit=root.__fitSize*.5;}else if(root.__focus==='face'){center[1]=b.min[1]+b.size[1]*.92;fit=root.__fitSize*.27;}
