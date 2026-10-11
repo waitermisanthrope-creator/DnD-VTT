@@ -1,0 +1,16 @@
+{
+  "version": "74.00.57",
+  "files": 887,
+  "bytes": 285695109,
+  "zip_sha256": "b0c49cc3790b0e0fd9bb58e2536ed9a9d157219ca6b6fb0933a7fbedf3a69fed",
+  "required_editor_assets": [
+    "index.html",
+    "app/update_manager_v2.js",
+    "app/3dmap/character_system.js",
+    "app/3dmap/character_body_geometry.js",
+    "app/3dmap/character_editor_3d.js"
+  ],
+  "zip_crc_and_all_entry_sha256": "PASS",
+  "ota_install_contract": "PASS",
+  "physical_android_test": "pending"
+}

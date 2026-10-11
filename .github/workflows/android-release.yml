@@ -48,6 +48,8 @@ jobs:
           node tests/character_3d_morph_assets_test.js
           node tests/character_3d_editor_test.js
           node tests/character_appearance_store_test.js
+          node tests/character_ghost_geometry_test.js
+          node tests/character_parasites_geometry_test.js
           node tests/character_editor_morph_assets_test.js
           node tests/character_3d_skin_morph_test.js
           node tests/makehuman_gender_recipe_test.js
