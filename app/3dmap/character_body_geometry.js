@@ -1,8 +1,8 @@
 /* Anatomy follows skin weights, never fixed heights on the opposite gender. */
 (function(g){'use strict';
 function masks(asset,part){
- if(part.__bodyMasks)return part.__bodyMasks;var count=part.positions.length/3,skin=asset.character&&asset.character.skins[part.skin],nodes=asset.gltf.nodes||[],names=skin?skin.joints.map(function(id){return (nodes[id].name||'').toLowerCase();}):[],out={torso:new Float32Array(count),arm:new Float32Array(count),leg:new Float32Array(count),head:new Float32Array(count),neck:new Float32Array(count)};
- for(var i=0;i<count;i++)for(var k=0;k<4;k++){var w=part.weights&&part.weights[i*4+k]||0,n=names[part.joints&&part.joints[i*4+k]]||'',group=/^(spine|pelvis)/.test(n)?'torso':/^(upperarm|lowerarm|clavicle)/.test(n)?'arm':/^(thigh|calf)/.test(n)?'leg':/^head/.test(n)?'head':/^neck/.test(n)?'neck':null;if(group)out[group][i]+=w;}
+ if(part.__bodyMasks)return part.__bodyMasks;var count=part.positions.length/3,skin=asset.character&&asset.character.skins[part.skin],nodes=asset.gltf.nodes||[],names=skin?skin.joints.map(function(id){return (nodes[id].name||'').toLowerCase();}):[],out={torso:new Float32Array(count),arm:new Float32Array(count),leg:new Float32Array(count),head:new Float32Array(count),neck:new Float32Array(count),foot:new Float32Array(count)};
+ for(var i=0;i<count;i++)for(var k=0;k<4;k++){var w=part.weights&&part.weights[i*4+k]||0,n=names[part.joints&&part.joints[i*4+k]]||'',group=/^(spine|pelvis)/.test(n)?'torso':/^(upperarm|lowerarm|clavicle)/.test(n)?'arm':/^(thigh|calf)/.test(n)?'leg':/^head/.test(n)?'head':/^neck/.test(n)?'neck':/^(foot|toe)/.test(n)?'foot':null;if(group)out[group][i]+=w;}
  part.__bodyMasks=out;return out;
 }
 function bounds(parts,key){var min=[Infinity,Infinity,Infinity],max=[-Infinity,-Infinity,-Infinity];parts.forEach(function(p){var v=p[key]||p.positions;for(var i=0;i<v.length;i+=3)for(var k=0;k<3;k++){min[k]=Math.min(min[k],v[i+k]);max[k]=Math.max(max[k],v[i+k]);}});return {min:min,max:max,size:max.map(function(v,k){return v-min[k];}),center:max.map(function(v,k){return (v+min[k])/2;})};}
