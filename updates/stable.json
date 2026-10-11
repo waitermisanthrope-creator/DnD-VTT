@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.52",
+  "version": "74.00.53",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-11",
@@ -10,7 +10,7 @@
     {
       "path": "index.html",
       "bytes": 88970,
-      "sha256": "f235630a6732a8c79bb52daf7c48b2d9d99fbf6ec52bbff5448eca4df0d8f4aa"
+      "sha256": "bc19c17c0a8589cbc4bb897e4baaea6fd00fd8cfb6525ff3bdbd46bec2b03639"
     },
     {
       "path": "app/3dmap/assets/clothing/fantasy-materials.webp",
@@ -39,8 +39,8 @@
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
-      "bytes": 67094,
-      "sha256": "f07f373b73d08aba8cfb50567dbb2396af137cf877aa406f8452c0508edba4b2"
+      "bytes": 69311,
+      "sha256": "9bfcc3fff4bbebdf6db2d283ce0b722c232ca9e08b2d1d3999ad0ee62ab37286"
     },
     {
       "path": "app/3dmap/character_morph_assets.js",
@@ -49,8 +49,8 @@
     },
     {
       "path": "app/3dmap/character_system.js",
-      "bytes": 19956,
-      "sha256": "f4fe2aff8cb26f147ce98ceec2c01b3e48b3b33a171c378eb4e3edacf276effd"
+      "bytes": 21798,
+      "sha256": "6e222e8029e2f459e93b41d7e726736494523c1806998e08c99c5679ee422e10"
     },
     {
       "path": "app/3dmap/gltf_catalog.js",
@@ -3860,7 +3860,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 19013,
-      "sha256": "eefc355987168d73f938be754369dd5b5c6dc6a7a03253c1c31b8360d430e2c9"
+      "sha256": "b0bc8cea90c696007b274ec85745fcae9fc0f2a92c756af625917140be2b259c"
     },
     {
       "path": "app/update_scene_v2.js",

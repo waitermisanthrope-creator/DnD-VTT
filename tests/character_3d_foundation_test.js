@@ -40,3 +40,5 @@ const originalBody=JSON.stringify(female.body);assert(api.setGender(female,'male
 assert.strictEqual(api.setGender(female,'invalid'),false);assert.strictEqual(female.gender,'male');
 assert.strictEqual(api.getMorphWeights(legacyHuman)['human-female'],0);assert(!Object.hasOwn(api.getMorphWeights(c),'human-female'),'human gender morph must not leak to another race');
 console.log('CHARACTER_3D_GENDER_STATE_OK: defaults, independent skin, derived weights, serialization, legacy neutral, race isolation');
+
+const surface=api.normalizeHead({skinSurface:'ember',skinDetail:2,skinGlow:-1});assert.strictEqual(surface.skinDetail,1);assert.strictEqual(surface.skinGlow,0);assert.strictEqual(surface.skinSurface,'ember');assert.strictEqual(api.normalizeHead({skinSurface:'__proto__'}).skinSurface,'none');assert.strictEqual(api.normalizeHead({}).skinDetail,0);assert.strictEqual(api.normalizeHead({}).skinGlow,0);assert.strictEqual(api.deserialize(api.serialize(api.createCharacter({head:surface}))).head.skinSurface,'ember');console.log('SKIN_SURFACE_STATE_OK: bounded, whitelisted, migrated, saved');
