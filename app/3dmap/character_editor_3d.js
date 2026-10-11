@@ -178,17 +178,43 @@ function prepareDiorama(current){
  var habitat=habitats[race]||'kingdom',colors=palettes[habitat],wall=colors[0],ground=colors[1];
  cube(x,floor-H*.055,z,H*2.6,H*.10,H*1.45,ground);cube(x,floor+H*.85,z-H*.78,H*2.6,H*1.9,H*.09,wall);
  cube(x-H*1.26,floor+H*.85,z-H*.12,H*.09,H*1.9,H*1.4,wall);cube(x+H*1.26,floor+H*.85,z-H*.12,H*.09,H*1.9,H*1.4,wall);
- // Distinct low-poly landmarks; keep geometry deliberately cheap on Android.
- if(/forest|jungle|wildwood|nightforest|swamp|hills/.test(habitat)){for(var t=-1;t<=1;t+=2){cube(x+t*H*.92,floor+H*.46,z-H*.45,H*.13,H*.93,H*.13,[.30,.22,.13]);cube(x+t*H*.92,floor+H*.97,z-H*.45,H*.48,H*.47,H*.42,[.13,.35,.18]);}}
- if(/forge|laboratory|elfcity|celestial|kingdom/.test(habitat)){for(var t=-1;t<=1;t+=2){cube(x+t*H*.98,floor+H*.57,z-H*.62,H*.18,H*1.14,H*.18,[.55,.52,.45]);cube(x+t*H*.98,floor+H*1.17,z-H*.62,H*.33,H*.12,H*.31,[.60,.58,.51]);}}
- if(/underdark|alpine|dragon|elemental|astral|labyrinth|hive/.test(habitat)){for(var t=-1;t<=1;t+=2){cube(x+t*H*.93,floor+H*.42,z-H*.48,H*.27,H*.84,H*.29,[.35,.38,.47]);cube(x+t*H*.93,floor+H*.94,z-H*.48,H*.17,H*.23,H*.17,[.40,.59,.64]);}}
- if(/organic|slime|ocean|sewer/.test(habitat)){for(var t=-1;t<=1;t+=2){cube(x+t*H*.96,floor+H*.18,z-H*.43,H*.35,H*.36,H*.34,[.35,.29,.32]);}}
- if(/inferno|cursed|ghost|orcsteppe/.test(habitat)){for(var t=-1;t<=1;t+=2){cube(x+t*H*.94,floor+H*.38,z-H*.45,H*.20,H*.76,H*.20,[.23,.20,.21]);cube(x+t*H*.94,floor+H*.81,z-H*.45,H*.29,H*.13,H*.28,[.60,.23,.13]);}}
- var wood=[.28,.18,.11],metal=[.47,.48,.50],magic=[.24,.52,.64];
- if(/wizard|mage|sorcer|warlock|колдун|волшеб|чарод/.test(classId)){cube(x+H*.85,floor+H*.37,z-H*.25,H*.46,H*.08,H*.33,wood);cube(x+H*.85,floor+H*.50,z-H*.25,H*.15,H*.18,H*.15,magic);}
- else if(/rogue|плут/.test(classId)){cube(x+H*.88,floor+H*.20,z-H*.27,H*.43,H*.38,H*.30,wood);cube(x+H*.88,floor+H*.42,z-H*.27,H*.44,H*.05,H*.32,metal);}
- else if(/druid|друид/.test(classId)){cube(x+H*.85,floor+H*.18,z-H*.27,H*.34,H*.36,H*.30,wood);cube(x+H*.85,floor+H*.43,z-H*.27,H*.12,H*.20,H*.12,magic);}
- else {cube(x+H*.94,floor+H*.52,z-H*.48,H*.06,H*.95,H*.06,wood);cube(x+H*.94,floor+H*.78,z-H*.43,H*.26,H*.07,H*.08,metal);}
+ // Race-only scenic set dressing: no class props until class registry integration.
+ function stone(px,pz,w,h,color){cube(x+px*H,floor+h*H/2,z+pz*H,w*H,h*H,w*H,color);}
+ function tree(px,pz,leaf){stone(px,pz,.10,.78,[.28,.19,.12]);cube(x+px*H,floor+H*.90,z+pz*H,H*.44,H*.52,H*.43,leaf);cube(x+px*H,floor+H*1.23,z+pz*H,H*.30,H*.30,H*.31,leaf);}
+ function pillar(px,pz,c){stone(px,pz,.20,1.25,c);cube(x+px*H,floor+H*1.29,z+pz*H,H*.32,H*.10,H*.32,c);}
+ function crystal(px,pz,c){stone(px,pz,.23,.43,c);cube(x+px*H,floor+H*.55,z+pz*H,H*.13,H*.35,H*.13,c);}
+ function arch(c){pillar(-.85,-.58,c);pillar(.85,-.58,c);cube(x,floor+H*1.27,z-H*.58,H*1.95,H*.15,H*.22,c);}
+ function shrine(c){stone(0,-.58,.62,.23,c);stone(0,-.58,.30,.56,c);}
+ function pool(c){cube(x,floor+H*.025,z-H*.37,H*1.38,H*.045,H*.60,c);}
+ function lantern(px,pz,c){stone(px,pz,.09,.79,[.25,.24,.22]);cube(x+px*H,floor+H*.87,z+pz*H,H*.19,H*.18,H*.19,c);}
+ var scenes={
+ kingdom:function(){arch([.56,.53,.47]);lantern(-1,-.26,[.95,.65,.26]);lantern(1,-.26,[.95,.65,.26]);},
+ elfcity:function(){arch([.75,.76,.66]);shrine([.52,.68,.55]);crystal(-.9,-.18,[.65,.85,.79]);},
+ forest:function(){tree(-.95,-.44,[.13,.39,.20]);tree(.95,-.50,[.17,.43,.25]);shrine([.32,.39,.26]);},
+ underdark:function(){crystal(-.96,-.4,[.38,.24,.68]);crystal(.96,-.4,[.29,.60,.76]);stone(0,-.66,.60,.31,[.23,.20,.34]);},
+ forge:function(){arch([.38,.36,.34]);stone(.87,-.20,.45,.48,[.36,.32,.29]);lantern(-.9,-.3,[.94,.40,.16]);},
+ hills:function(){tree(-.98,-.48,[.32,.49,.22]);stone(.94,-.48,.63,.38,[.55,.42,.26]);lantern(.95,-.12,[.97,.70,.35]);},
+ orcsteppe:function(){stone(-.94,-.45,.24,.93,[.38,.28,.19]);stone(.94,-.45,.24,.93,[.38,.28,.19]);stone(0,-.67,.56,.32,[.50,.36,.22]);},
+ alpine:function(){stone(-.93,-.49,.51,1.06,[.71,.77,.81]);stone(.94,-.49,.41,.82,[.58,.68,.75]);crystal(0,-.68,[.72,.88,.96]);},
+ inferno:function(){arch([.33,.18,.17]);crystal(-.91,-.26,[.95,.26,.08]);crystal(.91,-.26,[.96,.37,.11]);},
+ dragon:function(){arch([.49,.32,.25]);shrine([.69,.42,.25]);crystal(.92,-.33,[.88,.36,.13]);},
+ jungle:function(){tree(-.94,-.44,[.10,.40,.19]);tree(.94,-.45,[.12,.47,.22]);stone(0,-.65,.45,.54,[.38,.43,.25]);},
+ swamp:function(){tree(-.95,-.47,[.25,.32,.19]);pool([.23,.39,.30]);stone(.94,-.46,.35,.48,[.30,.33,.25]);},
+ ocean:function(){pool([.10,.45,.60]);pillar(-.95,-.53,[.28,.62,.67]);pillar(.95,-.53,[.25,.59,.65]);},
+ elemental:function(){crystal(-.95,-.47,[.64,.78,.86]);crystal(.95,-.47,[.66,.52,.32]);shrine([.48,.48,.57]);},
+ astral:function(){arch([.46,.32,.65]);crystal(-.92,-.24,[.71,.40,.92]);crystal(.92,-.24,[.42,.70,.91]);},
+ celestial:function(){arch([.88,.79,.58]);shrine([.91,.86,.68]);lantern(-.95,-.19,[.97,.88,.51]);},
+ cursed:function(){tree(-.96,-.48,[.20,.24,.26]);stone(.92,-.45,.37,.86,[.37,.37,.38]);lantern(.96,-.13,[.56,.25,.41]);},
+ ghost:function(){arch([.30,.43,.52]);stone(-.92,-.24,.39,.52,[.24,.33,.43]);crystal(.91,-.30,[.42,.70,.83]);},
+ laboratory:function(){arch([.42,.53,.58]);stone(-.93,-.23,.43,.61,[.44,.49,.53]);crystal(.93,-.32,[.26,.82,.84]);},
+ slime:function(){pool([.32,.55,.37]);crystal(-.91,-.42,[.34,.73,.48]);crystal(.92,-.43,[.51,.78,.32]);},
+ wildwood:function(){tree(-.96,-.45,[.23,.47,.20]);tree(.96,-.45,[.24,.45,.19]);shrine([.45,.42,.28]);},
+ labyrinth:function(){arch([.52,.44,.35]);stone(-.93,-.15,.45,.68,[.39,.32,.27]);stone(.93,-.15,.45,.68,[.39,.32,.27]);},
+ nightforest:function(){tree(-.95,-.47,[.11,.22,.28]);tree(.95,-.46,[.13,.25,.31]);crystal(0,-.63,[.42,.58,.77]);},
+ sewer:function(){arch([.34,.38,.32]);pool([.31,.41,.22]);stone(.95,-.24,.39,.36,[.33,.28,.20]);},
+ hive:function(){arch([.40,.32,.19]);stone(-.92,-.25,.48,.66,[.48,.37,.19]);stone(.92,-.25,.48,.66,[.48,.37,.19]);},
+ organic:function(){arch([.53,.15,.19]);pool([.60,.16,.21]);crystal(-.93,-.31,[.71,.23,.28]);crystal(.93,-.31,[.71,.23,.28]);}
+ };scenes[habitat]();
  root.__diorama=parts;root.__dioramaKey=key;
 }
 function drawDiorama(gl,current,center,sx,sy,sz){
