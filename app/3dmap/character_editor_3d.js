@@ -212,6 +212,16 @@ function prepareDiorama(current){
  function oreVein(c){for(var i=0;i<5;i++){var a=i*1.256;spire(Math.cos(a)*.75,-.60+Math.sin(a)*.11,.28+(i%3)*.16,c);}}
  function rollingHill(px,pz,c){boulder(x+px*H,floor+H*.04,z+pz*H,H*.51,H*.18,H*.35,c);}
  function fence(px,pz,c){for(var i=0;i<4;i++)beam(px+i*.19,.26,pz,.055,.52,.055,c);beam(px+.29,.32,pz,.71,.055,.06,c);}
+
+ // Batch two: landmarks are placed behind the actor and use low-poly silhouettes.
+ function palisade(){for(var i=-5;i<=5;i++){var px=i*.22;if(Math.abs(px)<.31)continue;tapered(x+px*H,floor,z-H*.70,H*.095,H*.045,H*1.02,5,[.39,.28,.19]);}beam(0,.70,-.75,2.36,.08,.12,[.33,.23,.17]);}
+ function banner(px,pz,cloth){beam(px,.67,pz,.065,1.32,.065,[.31,.25,.19]);beam(px+.15,1.07,pz,.30,.36,.045,cloth);beam(px+.12,.84,pz,.20,.08,.05,cloth);}
+ function firepit(px,pz){for(var i=0;i<6;i++){var a=i*Math.PI/3;boulder(x+(px+Math.cos(a)*.20)*H,floor+H*.055,z+(pz+Math.sin(a)*.16)*H,H*.10,H*.09,H*.10,[.29,.27,.25]);}spire(px,pz,.37,[.98,.42,.10]);spire(px+.07,pz-.04,.24,[.99,.68,.18]);}
+ function cliff(px,pz,height,rock){tapered(x+px*H,floor,z+pz*H,H*.43,H*.13,H*height,7,rock);boulder(x+px*H,floor+H*height,z+pz*H,H*.21,H*.10,H*.23,[.84,.87,.89]);}
+ function lavaCrack(px,pz){for(var i=0;i<4;i++)beam(px+i*.16,.018,pz+i*.085,.20,.022,.055,[.98,.25,.06]);}
+ function dragonRib(px,pz){for(var i=0;i<4;i++){var q=i*.17;spire(px+q,pz-q*.12,.68-i*.12,[.68,.61,.49]);}}
+ function tropicalPalm(px,pz){tapered(x+px*H,floor,z+pz*H,H*.10,H*.055,H*.99,7,[.46,.32,.18]);for(var i=0;i<5;i++){var a=i*6.283/5;var dx=Math.cos(a)*.29,dz=Math.sin(a)*.25;boulder(x+(px+dx)*H,floor+H*1.05,z+(pz+dz)*H,H*.34,H*.09,H*.13,[.13,.48,.25]);}}
+ function jungleRuins(){beam(0,.20,-.66,.63,.40,.40,[.47,.49,.32]);for(var i=-1;i<=1;i++)spire(i*.24,-.67,.70+(i===0?.28:0),[.42,.46,.32]);}
  var scenes={
  kingdom:function(){paved([.42,.40,.36]);house(-.78,-.62,[.63,.55,.43],[.40,.21,.18]);house(.80,-.66,[.54,.51,.47],[.29,.34,.39]);battlement(0,1.24,-.72,.76,[.61,.60,.56]);stairs([.51,.47,.40]);lanternPair([.98,.70,.30]);},
  elfcity:function(){paved([.64,.71,.64]);arch([.80,.83,.72]);for(var i=-1;i<=1;i++){spire(i*.54,-.69,1.45+(i===0?.22:0),[.78,.84,.79]);crystal(i*.60,-.39,[.42,.83,.77]);}shrine([.75,.79,.63]);stairs([.74,.79,.73]);},
@@ -219,11 +229,11 @@ function prepareDiorama(current){
  underdark:function(){arch([.22,.21,.33]);for(var i=-1;i<=1;i++){spire(i*.70,-.72,1.12+(i===0?.42:0),[.32,.27,.49]);crystal(i*.69,-.36,[.42,.31,.73]);}mushroomRing([.53,.34,.67]);oreVein([.26,.67,.79]);},
  forge:function(){arch([.46,.42,.38]);paved([.42,.38,.33]);forgeAnvil(-.70,-.34);beam(.72,.43,-.53,.47,.82,.35,[.42,.38,.34]);beam(.72,.88,-.53,.53,.10,.40,[.25,.25,.27]);oreVein([.73,.47,.23]);lanternPair([.96,.45,.18]);},
  hills:function(){rollingHill(-.83,-.57,[.38,.49,.26]);rollingHill(.83,-.58,[.44,.55,.28]);house(-.72,-.70,[.65,.54,.37],[.43,.35,.22]);canopy(.94,-.58,[.28,.50,.22]);fence(.35,-.18,[.55,.40,.25]);fungi(.61,-.46,[.82,.56,.33]);},
- orcsteppe:function(){stone(-.94,-.45,.24,.93,[.38,.28,.19]);stone(.94,-.45,.24,.93,[.38,.28,.19]);stone(0,-.67,.56,.32,[.50,.36,.22]);},
- alpine:function(){stone(-.93,-.49,.51,1.06,[.71,.77,.81]);stone(.94,-.49,.41,.82,[.58,.68,.75]);crystal(0,-.68,[.72,.88,.96]);},
- inferno:function(){arch([.33,.18,.17]);crystal(-.91,-.26,[.95,.26,.08]);crystal(.91,-.26,[.96,.37,.11]);},
- dragon:function(){arch([.49,.32,.25]);shrine([.69,.42,.25]);crystal(.92,-.33,[.88,.36,.13]);},
- jungle:function(){tree(-.94,-.44,[.10,.40,.19]);tree(.94,-.45,[.12,.47,.22]);stone(0,-.65,.45,.54,[.38,.43,.25]);},
+ orcsteppe:function(){palisade();banner(-.95,-.26,[.51,.19,.14]);banner(.93,-.30,[.44,.32,.13]);firepit(-.63,-.31);boulder(x+H*.74,floor+H*.16,z-H*.38,H*.35,H*.21,H*.30,[.44,.37,.29]);for(var i=0;i<3;i++)spire(.43+i*.18,-.62,.48+i*.12,[.57,.48,.34]);},
+ alpine:function(){cliff(-.96,-.52,1.34,[.59,.65,.72]);cliff(.96,-.59,1.53,[.62,.70,.77]);cliff(-.54,-.71,.91,[.69,.75,.82]);cliff(.48,-.74,1.16,[.71,.79,.86]);for(var i=-2;i<=2;i++)boulder(x+i*H*.37,floor+H*.05,z+H*.08,H*.20,H*.10,H*.17,[.80,.85,.90]);},
+ inferno:function(){arch([.29,.18,.18]);cliff(-.96,-.56,1.16,[.28,.20,.22]);cliff(.96,-.59,1.25,[.32,.18,.18]);lavaCrack(-.78,-.12);lavaCrack(.30,-.37);firepit(.76,-.42);spire(0,-.68,1.02,[.46,.23,.22]);},
+ dragon:function(){arch([.49,.34,.27]);shrine([.69,.47,.30]);dragonRib(-.96,-.39);dragonRib(.48,-.45);firepit(-.62,-.28);spire(-.54,-.68,1.13,[.46,.33,.29]);spire(.58,-.67,1.22,[.44,.31,.28]);},
+ jungle:function(){tropicalPalm(-1.02,-.45);tropicalPalm(.98,-.54);canopy(-.57,-.68,[.13,.48,.20]);canopy(.58,-.72,[.14,.43,.18]);jungleRuins();for(var i=0;i<4;i++){vine(-.82+i*.53,-.61,[.21,.51,.22]);}fungi(.68,-.30,[.84,.39,.19]);},
  swamp:function(){tree(-.95,-.47,[.25,.32,.19]);pool([.23,.39,.30]);stone(.94,-.46,.35,.48,[.30,.33,.25]);},
  ocean:function(){pool([.10,.45,.60]);pillar(-.95,-.53,[.28,.62,.67]);pillar(.95,-.53,[.25,.59,.65]);},
  elemental:function(){crystal(-.95,-.47,[.64,.78,.86]);crystal(.95,-.47,[.66,.52,.32]);shrine([.48,.48,.57]);},
