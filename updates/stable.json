@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.47",
+  "version": "74.00.48",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-11",
@@ -10,7 +10,7 @@
     {
       "path": "index.html",
       "bytes": 88970,
-      "sha256": "c0cbfd5db559fbcfe818576452c2f4ec74b32c7f4ec624a667f07b3457652db6"
+      "sha256": "23dbd68cae8ae7bc309141ca50771676246761ba87bcee2e0def01e2f6091cd9"
     },
     {
       "path": "app/3dmap/assets/clothing/fantasy-materials.webp",
@@ -24,13 +24,13 @@
     },
     {
       "path": "app/3dmap/character_appearance_store.js",
-      "bytes": 2008,
-      "sha256": "1be832ccc280055ec9a0ff771f6bc32a5992ed41bffa04a966cb650ea4af6ace"
+      "bytes": 2133,
+      "sha256": "5e2fdda33667d06819b19d05640244282dd92ebf9d744973ae5a3f84e68bc8bc"
     },
     {
       "path": "app/3dmap/character_body_geometry.js",
-      "bytes": 16137,
-      "sha256": "881aeee9cd57fb393d8bbf1977e9e7fc4c39d69e66cb214bda386ab99dee0b18"
+      "bytes": 16424,
+      "sha256": "35786944dc86e298fbc93653e1323ebbcbdc7fbcbb82f284da88a84838bb6ec9"
     },
     {
       "path": "app/3dmap/character_clothing.js",
@@ -39,8 +39,8 @@
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
-      "bytes": 62814,
-      "sha256": "6fccf35bd92d1a6e32f336425c51195c83f383fea1526d9bb98292ed2878afde"
+      "bytes": 64244,
+      "sha256": "1f0d123f67f18222fcc308d16ef927e5dd1ea835191291d18f7a11b7b261416e"
     },
     {
       "path": "app/3dmap/character_morph_assets.js",
@@ -49,8 +49,8 @@
     },
     {
       "path": "app/3dmap/character_system.js",
-      "bytes": 11900,
-      "sha256": "e728d0ee2d32b42f58b3c2399f9c49320672409b4094fe0bb1b2bed6aea69ae6"
+      "bytes": 13880,
+      "sha256": "5bd669c060340f078e215e01f82e8a487dd8593d5d0373b96e53951f7d05e36a"
     },
     {
       "path": "app/3dmap/gltf_catalog.js",
@@ -3860,7 +3860,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 19013,
-      "sha256": "17d7539ff47e25117d7fee263aef9d46ba9ce6c307c02d48297e0bf24f2e5864"
+      "sha256": "b6e52e4ed65f65a21246563be1bb76d0af8fdfd8a0917ea64112295aefba06d3"
     },
     {
       "path": "app/update_scene_v2.js",

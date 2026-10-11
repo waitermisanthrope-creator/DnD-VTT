@@ -44,6 +44,7 @@ function shapeHead(asset,part,options){var f=headFrame(asset,part);if(!f)return;
  out[i]+=H*x*options.mouthWidth*.18*bell(x,0,.15)*bell(y,.20,.075)*front*w;
  out[i+2]+=H*options.lipVolume*.012*bell(x,0,.13)*bell(y,.20,.043)*front*w;
  out[i+1]+=H*options.browHeight*.025*bell(x,ex,.11)*bell(y,ey+.09,.05)*front*w;
+ var ear=Math.max(0,Math.min(1,(Math.abs(x)-.27)/.085))*bell(y,.46,.19)*Math.max(0,Math.min(1,(.35-z)/.12)),tip=bell(y,.56,.085);out[i]+=Math.sign(x)*H*(options.earLength||0)*.13*ear;out[i+1]+=H*(options.earPointiness||0)*.15*ear*tip;out[i+2]-=H*(options.earPointiness||0)*.025*ear*tip;
  }part.__ceShapedPositions=out;return headFrame(asset,part);
 }
 function headAccessories(asset,part,options,frame,hat){var f=frame||headFrame(asset,part);if(!f)return [];var H=f.H,src=part.__ceShapedPositions,n=part.__ceNormals,m=masks(asset,part),result=[];
