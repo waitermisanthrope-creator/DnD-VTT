@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.50",
+  "version": "74.00.51",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-11",
@@ -10,7 +10,7 @@
     {
       "path": "index.html",
       "bytes": 88970,
-      "sha256": "5ec503374f3f2d3a1f051654426269bd0e71b83751844f5455ecef18f966681e"
+      "sha256": "eebf68275ae05ea25bee6c9e3ddf526dead6d0636dfc2df10620825a5ec29009"
     },
     {
       "path": "app/3dmap/assets/clothing/fantasy-materials.webp",
@@ -49,8 +49,8 @@
     },
     {
       "path": "app/3dmap/character_system.js",
-      "bytes": 16459,
-      "sha256": "eb6166962187f37586033721db2a05f6919b3e5b5f0476c9aa00fc06b79406c8"
+      "bytes": 18147,
+      "sha256": "ea2ae3fd564902891f3353392e334e932b190498a2bb5ae27b84c398cc92d6f0"
     },
     {
       "path": "app/3dmap/gltf_catalog.js",
@@ -3860,7 +3860,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 19013,
-      "sha256": "83cb5619787261c464428074bdf0cc225dbd1f2a2113df8a01430d6fca853ee3"
+      "sha256": "33b395135692baf70bcd06a0139cb591d6ba22cecb8aa0a7278e364e5990e3c1"
     },
     {
       "path": "app/update_scene_v2.js",
