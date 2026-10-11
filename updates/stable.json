@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.40",
+  "version": "74.00.41",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-11",
@@ -10,12 +10,17 @@
     {
       "path": "index.html",
       "bytes": 88970,
-      "sha256": "c8cb6429a1028039baffd7795d60002c4cbde090961b48e39f6aab108bc28d6f"
+      "sha256": "877f51bee58d013a9d413d6745355fa64fff3409c96815ce5c7b832064f2f07f"
     },
     {
       "path": "app/3dmap/assets/clothing/fantasy-materials.webp",
       "bytes": 434234,
       "sha256": "b864e1e7252437dd25d1f5d4f6ce7ebd3e4312e993ded102b1f709b735ee61fa"
+    },
+    {
+      "path": "app/3dmap/assets/clothing/lingerie-nylon.webp",
+      "bytes": 289830,
+      "sha256": "8fb425cbb07110631cf92e54971a96bea0884a760e454feb26817f3862841d88"
     },
     {
       "path": "app/3dmap/character_appearance_store.js",
@@ -29,13 +34,13 @@
     },
     {
       "path": "app/3dmap/character_clothing.js",
-      "bytes": 16126,
-      "sha256": "7bd3f3bb47d4e06354c4eff6e07e4aa8ccc4fc9091d75c97fb34914c8b30bf2f"
+      "bytes": 21880,
+      "sha256": "3adfde0397363488e953d888de8812c5f47da5aadd9933faf0ceb2590ad290a4"
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
-      "bytes": 34411,
-      "sha256": "4d46ea538e05e527632a8169f25163d90c1f787ff34c9c77bb3339e129cfbf74"
+      "bytes": 36414,
+      "sha256": "cf0c3c8e5f8c65ba420029e1d474ebc604b4d4bff28516968e78415582ee56b6"
     },
     {
       "path": "app/3dmap/character_morph_assets.js",
@@ -3855,7 +3860,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 19013,
-      "sha256": "b78315c0b7a03123678c89d036e10a7e4621fa422edd339392acb36aee4c0633"
+      "sha256": "eb47fcb6812e5965a88eba7e4abb38e99bb5b2b8d202cc3922fddfb4a84a1567"
     },
     {
       "path": "app/update_scene_v2.js",
