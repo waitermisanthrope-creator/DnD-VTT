@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.32",
+  "version": "74.00.33",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-11",
@@ -9,8 +9,8 @@
   "files": [
     {
       "path": "index.html",
-      "bytes": 85947,
-      "sha256": "df10140496e07bee2c3dd4ea91699c0a69b29719f26fd8bc587d73b151a73b61"
+      "bytes": 86096,
+      "sha256": "de8adf47944dc474806e9d9d0923fc59d01894081ea8ca2d89eb45c91845addb"
     },
     {
       "path": "app/3dmap/character_appearance_store.js",
@@ -3845,7 +3845,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 19013,
-      "sha256": "486e276faf023bd5e8415369d90eee45b377966af8df2d02a45acf54da3e13bf"
+      "sha256": "9fbac833bde563466a9d99c2e95004f7c8c9a9cd4096feee2d2217f029730bcf"
     },
     {
       "path": "app/update_scene_v2.js",
