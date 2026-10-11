@@ -170,17 +170,25 @@ function drawSpectral(gl,current,rotation){
 }
 /* Compact class-aware diorama, rendered independently from character rotation. */
 function prepareDiorama(current){
- var race=current.raceId||'human',classId=String(current.classId||current.class||'').toLowerCase(),key=[race,classId,root.__geometryKey].join('|');if(root.__dioramaKey===key)return;
+ var race=current.raceId||'human',key=[race,root.__geometryKey].join('|');if(root.__dioramaKey===key)return;
  var gl=root.__gl;(root.__diorama||[]).forEach(function(p){['__ceBuf','__ceNormalBuf','__ceIndexBuf'].forEach(function(k){if(p[k]&&gl)gl.deleteBuffer(p[k]);});});
  var b=root.__bounds,H=b.size[1],x=b.center[0],z=b.center[2],floor=b.min[1],parts=[],geo=g.DNDCharacterBodyGeometry;
  function cube(px,py,pz,w,h,d,color){var a=[px-w/2,py-h/2,pz-d/2],v=[px+w/2,py+h/2,pz+d/2],corners=[[a[0],a[1],a[2]],[v[0],a[1],a[2]],[v[0],v[1],a[2]],[a[0],v[1],a[2]],[a[0],a[1],v[2]],[v[0],a[1],v[2]],[v[0],v[1],v[2]],[a[0],v[1],v[2]]],faces=[[0,3,2,1],[4,5,6,7],[0,4,7,3],[5,1,2,6],[3,7,6,2],[0,1,5,4]],verts=[],ids=[];faces.forEach(function(f){var n=verts.length/3;f.forEach(function(i){verts.push.apply(verts,corners[i]);});ids.push(n,n+1,n+2,n,n+2,n+3);});var p={positions:new Float32Array(verts),indices:new Uint16Array(ids),customColor:color,__ceShapedPositions:new Float32Array(verts)};p.__ceNormals=geo.normals(p.__ceShapedPositions,p.indices);parts.push(p);}
+ // Faceted organic and architectural meshes: one mesh per object, no textures or external downloads.
+ function mesh(vertices,indices,color){var p={positions:new Float32Array(vertices),indices:new Uint16Array(indices),customColor:color};p.__ceShapedPositions=p.positions;p.__ceNormals=geo.normals(p.positions,p.indices);parts.push(p);}
+ function tapered(px,py,pz,rBottom,rTop,height,sides,color){var v=[],idx=[];for(var k=0;k<2;k++)for(var i=0;i<sides;i++){var angle=2*Math.PI*i/sides,r=k?rTop:rBottom;v.push(px+Math.cos(angle)*r,py+(k?height:0),pz+Math.sin(angle)*r);}for(var i=0;i<sides;i++){var j=(i+1)%sides;idx.push(i,j,sides+j,i,sides+j,sides+i);}mesh(v,idx,color);}
+ function boulder(px,py,pz,rx,ry,rz,color){var v=[px,py+ry,pz],idx=[],n=8;for(var i=0;i<n;i++){var a=2*Math.PI*i/n;v.push(px+Math.cos(a)*rx,py,pz+Math.sin(a)*rz);}v.push(px,py-ry*.65,pz);for(var i=0;i<n;i++){var j=(i+1)%n+1;idx.push(0,i+1,j, n+1,j,i+1);}mesh(v,idx,color);}
+ function spire(px,pz,height,color){tapered(x+px*H,floor,z+pz*H,H*.19,0,height*H,7,color);}
+ function fungi(px,pz,color){tapered(x+px*H,floor,z+pz*H,H*.055,H*.04,H*.45,7,[.67,.64,.54]);boulder(x+px*H,floor+H*.47,z+pz*H,H*.25,H*.14,H*.25,color);}
+ function foliage(px,pz,color){boulder(x+px*H,floor+H*.94,z+pz*H,H*.30,H*.35,H*.29,color);boulder(x+(px+.14)*H,floor+H*1.17,z+(pz-.05)*H,H*.24,H*.28,H*.22,color);}
+ function vine(px,pz,color){tapered(x+px*H,floor+H*.32,z+pz*H,H*.035,H*.015,H*.83,6,color);}
  var habitats={"human":"kingdom","human_variant":"kingdom","half_elf":"kingdom","changeling":"kingdom","kalashtar":"kingdom","elf_high":"elfcity","elf_wood":"forest","gnome_forest":"forest","firbolg":"forest","fairy":"forest","elf_drow":"underdark","myconid":"underdark","dwarf_mountain":"forge","dwarf_hill":"forge","gnome_rock":"forge","autognome":"forge","halfling_lightfoot":"hills","halfling_stout":"hills","kender":"hills","full_orc":"orcsteppe","half_orc":"orcsteppe","goblin":"orcsteppe","hobgoblin":"orcsteppe","bugbear":"orcsteppe","goliath":"alpine","aarakocra":"alpine","tiefling":"inferno","genasi_fire":"inferno","dragonborn":"dragon","kobold":"dragon","tabaxi":"jungle","hadozee":"jungle","yuan_ti":"jungle","loxodon":"jungle","lizardfolk":"swamp","tortle":"swamp","triton":"ocean","genasi_water":"ocean","simic_hybrid":"ocean","genasi_air":"elemental","genasi_earth":"elemental","githyanki":"astral","githzerai":"astral","aasimar":"celestial","dhampir":"cursed","hexblood":"cursed","reborn":"cursed","ghost":"ghost","warforged":"laboratory","vedalken":"laboratory","plasmoid":"slime","shifter":"wildwood","harengon":"wildwood","centaur":"wildwood","satyr":"wildwood","minotaur":"labyrinth","owlin":"nightforest","kenku":"nightforest","swarm_rats":"sewer","swarm_beetles":"hive","parasite":"organic","walter_parasite":"organic"},palettes={"kingdom":[[0.37,0.35,0.32],[0.29,0.27,0.24]],"elfcity":[[0.65,0.67,0.59],[0.43,0.52,0.43]],"forest":[[0.16,0.28,0.19],[0.22,0.3,0.18]],"underdark":[[0.16,0.15,0.27],[0.18,0.17,0.23]],"forge":[[0.3,0.27,0.24],[0.28,0.26,0.23]],"hills":[[0.41,0.35,0.25],[0.32,0.39,0.22]],"orcsteppe":[[0.36,0.29,0.22],[0.37,0.31,0.2]],"alpine":[[0.55,0.59,0.65],[0.65,0.7,0.74]],"inferno":[[0.37,0.13,0.11],[0.25,0.15,0.14]],"dragon":[[0.35,0.23,0.21],[0.29,0.23,0.21]],"jungle":[[0.11,0.28,0.17],[0.18,0.29,0.15]],"swamp":[[0.22,0.28,0.2],[0.2,0.25,0.17]],"ocean":[[0.09,0.26,0.37],[0.12,0.33,0.4]],"elemental":[[0.35,0.36,0.44],[0.39,0.36,0.29]],"astral":[[0.24,0.17,0.39],[0.26,0.21,0.36]],"celestial":[[0.65,0.6,0.46],[0.69,0.67,0.57]],"cursed":[[0.2,0.23,0.24],[0.23,0.23,0.23]],"ghost":[[0.15,0.22,0.29],[0.18,0.24,0.29]],"laboratory":[[0.31,0.37,0.41],[0.3,0.33,0.36]],"slime":[[0.21,0.35,0.3],[0.24,0.35,0.29]],"wildwood":[[0.21,0.3,0.2],[0.25,0.34,0.18]],"labyrinth":[[0.4,0.32,0.27],[0.33,0.28,0.24]],"nightforest":[[0.13,0.18,0.24],[0.17,0.22,0.25]],"sewer":[[0.2,0.24,0.2],[0.26,0.27,0.21]],"hive":[[0.27,0.23,0.17],[0.33,0.27,0.19]],"organic":[[0.36,0.09,0.13],[0.43,0.14,0.17]]};
  var habitat=habitats[race]||'kingdom',colors=palettes[habitat],wall=colors[0],ground=colors[1];
  cube(x,floor-H*.055,z,H*2.6,H*.10,H*1.45,ground);cube(x,floor+H*.85,z-H*.78,H*2.6,H*1.9,H*.09,wall);
  cube(x-H*1.26,floor+H*.85,z-H*.12,H*.09,H*1.9,H*1.4,wall);cube(x+H*1.26,floor+H*.85,z-H*.12,H*.09,H*1.9,H*1.4,wall);
  // Race-only scenic set dressing: no class props until class registry integration.
  function stone(px,pz,w,h,color){cube(x+px*H,floor+h*H/2,z+pz*H,w*H,h*H,w*H,color);}
- function tree(px,pz,leaf){stone(px,pz,.10,.78,[.28,.19,.12]);cube(x+px*H,floor+H*.90,z+pz*H,H*.44,H*.52,H*.43,leaf);cube(x+px*H,floor+H*1.23,z+pz*H,H*.30,H*.30,H*.31,leaf);}
+ function tree(px,pz,leaf){stone(px,pz,.10,.78,[.28,.19,.12]);foliage(px,pz,leaf);}
  function pillar(px,pz,c){stone(px,pz,.20,1.25,c);cube(x+px*H,floor+H*1.29,z+pz*H,H*.32,H*.10,H*.32,c);}
  function crystal(px,pz,c){stone(px,pz,.23,.43,c);cube(x+px*H,floor+H*.55,z+pz*H,H*.13,H*.35,H*.13,c);}
  function arch(c){pillar(-.85,-.58,c);pillar(.85,-.58,c);cube(x,floor+H*1.27,z-H*.58,H*1.95,H*.15,H*.22,c);}
@@ -215,6 +223,35 @@ function prepareDiorama(current){
  hive:function(){arch([.40,.32,.19]);stone(-.92,-.25,.48,.66,[.48,.37,.19]);stone(.92,-.25,.48,.66,[.48,.37,.19]);},
  organic:function(){arch([.53,.15,.19]);pool([.60,.16,.21]);crystal(-.93,-.31,[.71,.23,.28]);crystal(.93,-.31,[.71,.23,.28]);}
  };scenes[habitat]();
+ // Second layer: silhouettes and fine landmarks differentiate biomes at character scale.
+ var details={
+ kingdom:function(){for(var i=-2;i<=2;i++)cube(x+i*H*.28,floor+H*1.48,z-H*.76,H*.16,H*.17,H*.12,[.51,.49,.44]);},
+ elfcity:function(){spire(-.63,-.65,1.53,[.79,.80,.73]);spire(.63,-.65,1.53,[.79,.80,.73]);},
+ forest:function(){foliage(-.62,-.66,[.18,.46,.25]);fungi(.61,-.61,[.78,.42,.54]);},
+ underdark:function(){fungi(-.52,-.62,[.43,.29,.65]);fungi(.58,-.61,[.31,.56,.72]);},
+ forge:function(){tapered(x-H*.64,floor,z-H*.65,H*.26,H*.21,H*.73,8,[.39,.37,.34]);spire(.64,-.68,.72,[.69,.40,.19]);},
+ hills:function(){boulder(x-H*.58,floor+H*.12,z-H*.64,H*.37,H*.24,H*.28,[.45,.46,.28]);fungi(.60,-.63,[.83,.65,.41]);},
+ orcsteppe:function(){spire(-.64,-.67,.97,[.46,.35,.26]);spire(.64,-.67,.97,[.46,.35,.26]);},
+ alpine:function(){spire(-.57,-.64,1.35,[.84,.89,.93]);spire(.60,-.65,1.17,[.70,.79,.87]);},
+ inferno:function(){spire(-.55,-.66,1.20,[.31,.22,.24]);spire(.60,-.67,.92,[.81,.22,.09]);},
+ dragon:function(){spire(-.60,-.68,1.29,[.42,.33,.30]);spire(.59,-.68,1.29,[.42,.33,.30]);},
+ jungle:function(){vine(-.53,-.65,[.18,.42,.19]);vine(.57,-.62,[.18,.48,.21]);foliage(.58,-.68,[.15,.49,.24]);},
+ swamp:function(){fungi(-.62,-.66,[.45,.56,.29]);vine(.59,-.64,[.26,.36,.20]);},
+ ocean:function(){spire(-.60,-.63,.95,[.25,.63,.69]);spire(.58,-.64,.84,[.34,.71,.74]);},
+ elemental:function(){boulder(x-H*.55,floor+H*.98,z-H*.66,H*.29,H*.20,H*.26,[.65,.67,.77]);spire(.58,-.68,1.16,[.67,.51,.31]);},
+ astral:function(){boulder(x-H*.57,floor+H*1.12,z-H*.65,H*.27,H*.23,H*.27,[.61,.46,.79]);boulder(x+H*.55,floor+H*.95,z-H*.65,H*.24,H*.20,H*.24,[.44,.65,.87]);},
+ celestial:function(){spire(-.59,-.67,1.23,[.95,.88,.68]);spire(.59,-.67,1.23,[.95,.88,.68]);},
+ cursed:function(){spire(-.58,-.67,.88,[.29,.31,.32]);boulder(x+H*.57,floor+H*.21,z-H*.65,H*.24,H*.35,H*.20,[.38,.37,.40]);},
+ ghost:function(){spire(-.60,-.66,1.06,[.26,.42,.53]);boulder(x+H*.57,floor+H*.70,z-H*.66,H*.22,H*.24,H*.22,[.33,.53,.63]);},
+ laboratory:function(){spire(-.59,-.65,.96,[.52,.61,.65]);boulder(x+H*.58,floor+H*.72,z-H*.65,H*.23,H*.27,H*.22,[.23,.76,.84]);},
+ slime:function(){boulder(x-H*.58,floor+H*.19,z-H*.60,H*.32,H*.30,H*.27,[.31,.62,.45]);boulder(x+H*.58,floor+H*.15,z-H*.61,H*.30,H*.24,H*.30,[.38,.70,.48]);},
+ wildwood:function(){fungi(-.61,-.62,[.81,.57,.33]);foliage(.60,-.66,[.28,.49,.19]);},
+ labyrinth:function(){spire(-.56,-.68,.83,[.51,.43,.34]);spire(.56,-.68,.83,[.51,.43,.34]);},
+ nightforest:function(){foliage(-.55,-.65,[.14,.28,.33]);fungi(.57,-.63,[.42,.46,.72]);},
+ sewer:function(){boulder(x-H*.58,floor+H*.16,z-H*.60,H*.29,H*.23,H*.30,[.28,.34,.28]);boulder(x+H*.58,floor+H*.13,z-H*.60,H*.25,H*.20,H*.24,[.27,.30,.23]);},
+ hive:function(){for(var i=-1;i<=1;i++)boulder(x+i*H*.39,floor+H*.30,z-H*.63,H*.25,H*.44,H*.23,[.52,.39,.22]);},
+ organic:function(){for(var i=-1;i<=1;i++)boulder(x+i*H*.40,floor+H*.47,z-H*.66,H*.27,H*.58,H*.23,[.65,.19,.24]);}
+ };details[habitat]();
  root.__diorama=parts;root.__dioramaKey=key;
 }
 function drawDiorama(gl,current,center,sx,sy,sz){
