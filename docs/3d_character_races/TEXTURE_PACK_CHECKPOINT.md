@@ -15,8 +15,12 @@ main e042b69c: собственные кисти/стопы 12 рас. Сохр�
 ## Правила продолжения
 После каждого этапа: конкретные пути, SHA256 карт, выполненные команды/результаты, ограничения и следующий шаг; commit [skip ci]. Не объявлять 2K/фотореализм/бесшовность без проверки. Не выпускать OTA/APK в рамках восстановления текстур. Не повторять выполненные этапы; не менять классы/карты.
 
-## Исправление изоляции материалов
-applySkin теперь исключает headAccessory/customColor, включая editorWeapon/ареал. CHARACTER_3D_EDITOR_TEST_OK; node --check и git diff --check PASS. Визуальная WebGL проверка этого изменения ещё не выполнена. Git push без авторизации; сохранение через GitHub connector.
 
-## Первый новый bitmap — кандидат, не подключён
-Imagegen: neutral gray taupe small irregular reptile scales, flat orthographic albedo, uniform diffuse light, seamless edges requested, no text/body/background. Requested 2048², actual 1254×1254. SHA256 d0c33789b73914c8914061dc8c6469d763eb0ec9f0c146230847ba362261eefb. Local candidate: /workspace/scratch/f7120719492c/DnD-VTT/app/assets/3d/race_surfaces/reptile-scales-v1.png; generated original /workspace/scratch/f7120719492c/generated_images/exec-f4190929-06ef-43b2-b27e-beb3f22d8308.png. Image shown in conversation. Bitmap is NOT committed in GitHub and NOT connected to renderer; seam/scale and baked lighting need QA. Keep it a candidate; do not announce 2K/PBR completion. Next step: finalise and persist bitmap, then add independent sampler and skin/native-parts-only triplanar mapping, validate real WebGL.
+## Этап 1 — рептильная bitmap-кожа подключена (2026-10-12)
+- Восстановлены сохранённый PNG-кандидат и незакоммиченная интеграция. Новая карта сохраняется в app/assets/3d/race_surfaces/reptile-scales-v1.webp: 1254×1254, 730360 bytes, WebP quality 92. Это albedo/detail; не 2K и не полный PBR.
+- Отдельный texture unit 1, трипланарная зеркальная раскладка с 12 повторами на высоту тела; пригодна для NPOT/WebGL1. Старый крупный процедурный рисунок отключается после загрузки bitmap, остаётся fallback до загрузки.
+- Карта применяется при skinSurface=reptile только к базовой коже, reptileSkin, рептильным кистям/стопам и хвосту. Каждый draw сбрасывает uniform; одежда, броня, customColor исключены.
+- Реальный Chromium/SwiftShader WebGL: 4 расы × 2 пола, загрузка карты, тело/кисти, исключение глаз/зубов/когтей и посторонних материалов, skinDetail=0 и возврат к человеку — PASS. Скриншоты тела и кистей просмотрены; узор уменьшен после визуального QA.
+- character_reptile_heads_test, character_native_limbs_test (72 cases), character_3d_editor_test, syntax/diff-check — PASS.
+- Проверка WebGL использует tools/check_reptile_surface_browser.js; физический Android не проверен. Релиз/APK/OTA не выпускались.
+- Следующий этап: отдельная карта меха и согласование с существующими fur shells; далее перья и особая кожа. Пакет 31 карты не восстановлен и не объявляется готовым.
