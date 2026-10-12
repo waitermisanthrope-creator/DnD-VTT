@@ -7,8 +7,8 @@ main e042b69c: собственные кисти/стопы 12 рас. Сохр�
 
 ## Последовательные этапы
 1. Восстановление: git main и ветки проверены; пакет не найден. DONE.
-2. Рептилии: создать карту мелкой чешуи, записать фактическое разрешение/hash; подключить только к коже/новым рептильным частям. IN PROGRESS.
-3. Мех/перья: отдельно по группам и обоим полам. TODO.
+2. Рептилии: bitmap-карта подключена и проверена. DONE (d092cb22).
+3. Мех: bitmap-подшёрсток подключён, проверки ниже. Перья — следующий этап.
 4. Складчатая кожа/панцирь/металл/особые формы: отдельно по группам. TODO.
 5. Регресс: отсутствие расового материала на одежде/оружии/ареале, смена рас, save/reopen, WebGL. TODO.
 
@@ -24,3 +24,18 @@ main e042b69c: собственные кисти/стопы 12 рас. Сохр�
 - character_reptile_heads_test, character_native_limbs_test (72 cases), character_3d_editor_test, syntax/diff-check — PASS.
 - Проверка WebGL использует tools/check_reptile_surface_browser.js; физический Android не проверен. Релиз/APK/OTA не выпускались.
 - Следующий этап: отдельная карта меха и согласование с существующими fur shells; далее перья и особая кожа. Пакет 31 карты не восстановлен и не объявляется готовым.
+
+
+## Этап 2 — bitmap-подшёрсток меховых рас (2026-10-12)
+- app/assets/3d/race_surfaces/mammal-underfur-v1.webp: 1254×1254, 544064 bytes; SHA256 10cfed5753f0b37e23d3b3375fbb1d003b0b3fd372656d35f302215b67f7c295. Imagegen built-in, WebP quality 92 без изменения разрешения. Не 2K, не комплект normal/roughness/PBR.
+- Prompt: square orthographic dense short mammalian underfur, fine predominantly vertical fibers, neutral gray taupe monochrome, flat diffuse lighting, edge-to-edge repeat requested, no animal/skin/body/text/shadows. Requested 2048²; actual 1254².
+- Подключение: app/3dmap/character_editor_3d.js, прежний отдельный texture unit 1; материал fur/reptile выбирается и обнуляется для каждой части. Для меха зеркальная трипланарная раскладка 3 повтора на высоту, боковая проекция сохраняет вертикальное направление волосков. Цвет задаётся прежними furColor/body/face настройками.
+- Подшёрсток работает на существующих furShell; реальные guard-hair ribbons и перфорация оболочек сохранены. Для coat/shaggy с полным покрытием добавлена карта базовой кожи и кошачьих/заячьих/бычьих голов, кошачьих/заячьих кистей/стоп, подходящих ушей/хвоста. Голое лицо хадози, глаза, носы/рот, зубы, когти, подушечки, копыта и рога исключены. Центральное гуманоидное лицо и внутренняя поверхность уха защищены shader mask.
+- Шифтер: только готовые участки оболочек, без bitmap на всём торсе. Сатир: только готовые оболочки ног и меховые детали. Полурослики: прежние отдельные волоски на стопах, bitmap на коже не добавлен.
+- tools/check_fur_surface_browser.js: реальный Chromium/SwiftShader WebGL — 9 рас × 2 пола (18 случаев): tabaxi, harengon, bugbear, hadozee, minotaur, shifter, satyr, halfling_lightfoot, halfling_stout. PASS. Последние две — регресс сохранения волосков стоп. Проверены active material, отсутствие утечек, GL errors и просмотр кадров.
+- Управление: density .2 против .75 меняет число реальных волосков; length .9 и color #eeeeee сохраняются; density=0, amount=0, profile=none, skinDetail=0 выключают bitmap. Save/reopen сохраняет полное состояние и повторно загружает карту. Одежда/кираса/оружие и реально отрисованный ареал — без утечек. Возврат к человеку — чистый.
+- character_fur_test.js PASS: 18 race/form cases, density variation, finite indexed shells/cards, feet only, off, hidden skin, boots, saved state/legacy; max vertices per mesh 60000. character_3d_editor_test.js, syntax/diff-check PASS.
+- Визуально просмотрены табакси, хадози, сатир и шифтер. Ограничение существующей геометрии: границы меховых участков у шифтера и переходы воротника местами угловатые; bitmap это не исправляет. Бесшовность на всех направлениях и физический Android performance не заявляются. Новых слоёв/вершин не добавлено; bitmap даёт 3 дополнительных texture samples на фрагмент только выбранных частей.
+- Следующий этап: отдельная карта перьев и проверка кенку/совлинов/ааракокр. Релиз/APK/OTA не выпускались.
+
+- Финальный проход после защиты внутренней поверхности уха: WebGL табакси × 2 пола плюс controls/save/reopen/ареал PASS; регресс рептилий × 4 расы × 2 пола PASS.
