@@ -29,7 +29,7 @@ main 482067ef2979b97214fe1557d7eabc1ebd582d59. Отдельная рабочая
 
 ## Последовательные проверяемые этапы
 - 0 — аудит/архитектура/контрольная точка: DONE.
-- 1 — adult state, persistence/migration, regional hair controls и bounded real hair geometry: IN PROGRESS. Это не готовая паховая геометрия и не PBR.
+- 1 — adult state, persistence/migration, regional hair controls и bounded real hair geometry: DONE: реализация, целевые проверки и регресс одежды завершены. Это не готовая паховая геометрия и не PBR.
 - 2 — male/female наружные модули: seams/UV/skin weights/варианты, geometry morph sliders и нейтральная визуальная QA. TODO.
 - 3 — согласованные PBR loader/shader и skin maps; проверка освещения/полов/UV/цветовых переходов. TODO.
 - 4 — общий pose evaluator, animation skinning модулей/волос/одежды; сгибы таза/коленей/плеч и walking/sitting stress cases. TODO.
@@ -37,3 +37,27 @@ main 482067ef2979b97214fe1557d7eabc1ebd582d59. Отдельная рабочая
 - 6 — race modules/adapters (каждая группа отдельно), отличные от human/нечеловеческие скелеты отдельно. TODO.
 - 7 — физические Body LOD assets/перенос морфов и Android FPS/память. TODO.
 - После каждого этапа записывать реальные файлы, проверки, ограничения, следующий шаг; отдельный commit [skip ci]. Не объявлять весь проект завершённым после этапа 1.
+
+
+## Этап 1 — реализованные файлы и поведение
+- app/3dmap/character_anatomy.js: nested version=1/maturity=adult, default legacy hair disabled, bounded normalization, отказ неизвестной версии/не-adult state; external mode/variant пока только данные, descriptor.externalGeometryReady=false. Расы описаны семействами; человеческая региональная волосатость включена только для humanoid/mammalian.
+- app/3dmap/character_system.js: миграция/serialize/deserialize anatomy и render descriptor. При смене пола/расы anatomy сохраняется. index.html загружает модуль перед character_system. Отсутствие модуля в legacy harness сохраняет неизвестные данные, не выбрасывает их.
+- app/3dmap/character_editor_3d.js: в «Тело → Волосы на теле» 20 отдельных регионов, enabled, density 0–100%, length, color; обе подмышки отдельно. Общая бритость скрывает все региональные волоски с сохранением настроек для восстановления. Есть отдельный reset и три уровня детализации. Сохранение внешности и undo/compare используют общий appearance state.
+- app/3dmap/character_body_geometry.js: существующий генератор guard-hair ribbons расширен optional vertexMask/maxStrands для регионов. Это реальные curved meshes, не нарисованные волосы; расовая шерсть работает отдельно. Regional hair не создаёт furShell.
+- Бюджеты только дополнительного regional hair: low 300 ribbons (до 3000 triangles), medium 1200 (до 12000), high 2400 (до 24000); распределяются между enabled видимыми регионами. Общий бюджет тела/расового меха пока не решён. Новые parts остаются ниже 65536 vertices.
+- Размещение использует skin/bone groups, стороны по world matrix upperarm_l, текущие bounds/нормали; маски кешируются по текущей форме. Подмышки ограничены внутренней/нижней поверхностью, тыльные кисти и верх стоп отделены от ладоней/подошв. Не меняется identity/UV/skin weights исходного GLB.
+- Clothing masks и near-cloth margin учитываются генератором. Дополнительные region guards консервативно скрывают волосы под закрывающей регион одеждой: бельё скрывает pubic/buttocks, закрытая верхняя одежда — верхние участки. Для открытых рубашек, вырезов и коротких рукавов пока возможно избыточное скрытие; точная collision/triangle coverage следующего этапа обязательна.
+- Найден и исправлен существовавший UI bug: снятие всех вещей очищало DOM customizer, сохраняя box.__item; повторное надевание той же вещи пропускало построение DOM и падало на null.disabled. Теперь empty customizer сбрасывает identity. Проверено надеванием белья обратно на обоих полах после нейтрального обзора.
+
+### Проверки этапа 1
+- tests/character_adult_anatomy_test.js: ADULT_ANATOMY_FOUNDATION_OK, 6 gender/extreme body cases; все 20 semantic masks непусты; finite indexed hair; три budgets; обе стороны независимы; shaved/off; underwear coverage; legacy migration/roundtrip/gender/race state preservation; unsupported version/adult guards — PASS.
+- tools/check_adult_anatomy_browser.js: ADULT_ANATOMY_BROWSER_OK на финальной маске; оба пола, реальные UI controls, pubic + одна armpit, density/length/color, shaved/restore/reset, underwear hiding, save/reopen, budget, камера не перестраивает geometry/head caches, species guard, реальные WebGL/page errors — PASS.
+- character_3d_editor_test.js, character_3d_foundation_test.js, character_appearance_store_test.js — PASS.
+- character_fur_test.js: 18 race/forms, прежние shells/cards/feet, saved/legacy/clothing — PASS.
+- Финальные syntax/diff-check — PASS. Нейтральные кадры обоих базовых тел и волос просмотрены.
+
+### Незавершённое после этапа 1
+Наружные male/female genital modules, новые anatomical volume morphs, PBR normal/roughness/AO, полная pose/animation evaluation и skinning модулей/волос/одежды, точные garment collisions, species-specific anatomy, реальные Body LOD/Android FPS — TODO. Наличие nested anatomy данных не означает готовность этой геометрии. Следующий шаг — skinned male/female attachment patch и нейтральные resting варианты, начиная с проверенных seam anchors на текущих adult morph surfaces. APK/OTA/релиз не выпускались.
+
+### Финальное подтверждение этапа 1
+character_clothing_test.js PASS: оба пола, крайние морфы, все fantasy variants, съёмное бельё, fitting waist, DEN/nylon, gloves/capes/dresses/corsets/shirts, save/load и migration. Полный финальный browser проход после уточнения axilla mask PASS; расовый fur regression PASS; state/store/foundation/editor tests и syntax/diff-check PASS. Сохраняются только перечисленные исходники/тесты/прогресс, source GLB и morph binaries не изменены. Этап 2 ещё не начат; не объявлять наличие genital geometry или PBR по этому commit.
