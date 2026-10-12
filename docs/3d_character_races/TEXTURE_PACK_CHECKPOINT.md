@@ -17,3 +17,6 @@ main e042b69c: собственные кисти/стопы 12 рас. Сохр�
 
 ## Исправление изоляции материалов
 applySkin теперь исключает headAccessory/customColor, включая editorWeapon/ареал. CHARACTER_3D_EDITOR_TEST_OK; node --check и git diff --check PASS. Визуальная WebGL проверка этого изменения ещё не выполнена. Git push без авторизации; сохранение через GitHub connector.
+
+## Первый новый bitmap — кандидат, не подключён
+Imagegen: neutral gray taupe small irregular reptile scales, flat orthographic albedo, uniform diffuse light, seamless edges requested, no text/body/background. Requested 2048², actual 1254×1254. SHA256 d0c33789b73914c8914061dc8c6469d763eb0ec9f0c146230847ba362261eefb. Local candidate: /workspace/scratch/f7120719492c/DnD-VTT/app/assets/3d/race_surfaces/reptile-scales-v1.png; generated original /workspace/scratch/f7120719492c/generated_images/exec-f4190929-06ef-43b2-b27e-beb3f22d8308.png. Image shown in conversation. Bitmap is NOT committed in GitHub and NOT connected to renderer; seam/scale and baked lighting need QA. Keep it a candidate; do not announce 2K/PBR completion. Next step: finalise and persist bitmap, then add independent sampler and skin/native-parts-only triplanar mapping, validate real WebGL.
