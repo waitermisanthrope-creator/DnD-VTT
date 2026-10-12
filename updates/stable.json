@@ -1,16 +1,16 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.60",
+  "version": "74.00.61",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-12",
-  "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main",
+  "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/c20f2916720a44570cb2ff786e3827fd42ec19e0",
   "files": [
     {
       "path": "index.html",
       "bytes": 89195,
-      "sha256": "78a40715d4d72aabc1365b51f078fa1b1a2d6ac5fa0fb22cc7ecc9d5b7c18399"
+      "sha256": "ee2cf104b85f68d8cc72ea2d99d2b7c1d6bce3ed3f04ba2951e9eeb3a171709f"
     },
     {
       "path": "app/3dmap/assets/clothing/fantasy-materials.webp",
@@ -29,8 +29,8 @@
     },
     {
       "path": "app/3dmap/character_anatomy_geometry.js",
-      "bytes": 21658,
-      "sha256": "956d870c89ca36853496399e8c33ddda65d775457434ac26785393ae15f20429"
+      "bytes": 22774,
+      "sha256": "d74a1c67284574f33832c9e279d0d19e9758a259d18a3ffabed53167b6e6bec1"
     },
     {
       "path": "app/3dmap/character_appearance_store.js",
@@ -49,8 +49,8 @@
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
-      "bytes": 162447,
-      "sha256": "110ad9690a16166b30a443628049d2974092f9f3c1b127b65851940c5ad5eb13"
+      "bytes": 164408,
+      "sha256": "07c5ae70489ff5dbf7c601c41eb243ccb6484f1354496aca92adaec6df6f2331"
     },
     {
       "path": "app/3dmap/character_morph_assets.js",
@@ -236,6 +236,11 @@
       "path": "app/assets/3d/makehuman/human-body-morphs.glb",
       "bytes": 12671780,
       "sha256": "3628ff521db93f28a12f7e68bf59961dc48d7a2c1a3d0e82b661dafb9131120b"
+    },
+    {
+      "path": "app/assets/3d/makehuman/materials/skin_micro_normal_roughness.png",
+      "bytes": 22965,
+      "sha256": "d09fb28ac46e75bf9e01801d2dc667ed34f7343746948cfb51c2d9df769c17a3"
     },
     {
       "path": "app/assets/3d/makehuman/skins/young_caucasian_female/young_caucasian_female.mhmat",
@@ -3895,7 +3900,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 19013,
-      "sha256": "61adc983b342cf995d681c9a3867b1529c97606c20b293c68fcabd972c25e4ff"
+      "sha256": "f831f1af3cf0c4ce57f4c482e95c52a7484d37c2ed35932a81d692421c8ffb6a"
     },
     {
       "path": "app/update_scene_v2.js",
