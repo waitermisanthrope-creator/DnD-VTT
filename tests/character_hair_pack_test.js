@@ -1,0 +1,14 @@
+const fs=require('fs'),vm=require('vm'),path=require('path'),assert=require('assert'),crypto=require('crypto');
+const root=path.resolve(__dirname,'..'),g={crypto:crypto.webcrypto},ctx={window:g,console,TextDecoder,DataView,Float32Array,Uint32Array,Uint16Array,Uint8Array,Int8Array,Int16Array,atob,btoa};ctx.fetch=async url=>{const b=fs.readFileSync(path.join(root,url.replace(/^\.\//,'').split('?')[0]));return {ok:true,json:async()=>JSON.parse(b),arrayBuffer:async()=>b.buffer.slice(b.byteOffset,b.byteOffset+b.length)}};
+for(const n of ['character_clothing','character_system','gltf_loader','gltf_character_pipeline','character_morph_assets','character_body_geometry'])vm.runInNewContext(fs.readFileSync(path.join(root,'app/3dmap',n+'.js'),'utf8'),ctx);
+
+(async()=>{const sys=g.DNDCharacter3D,geo=g.DNDCharacterBodyGeometry,pipe=g.DNDGLTFCharacterPipeline;pipe.install();const asset=await g.DNDGLTF.load(sys.getRace('human').baseModel);await g.DNDCharacterMorphAssets.attach(asset,sys.getRace('human').morphSet);
+const styles=Object.keys(sys.HEAD_STYLES.hair).filter(x=>x!=='none');assert(styles.length>=25);
+const signatures=new Set();let maxVertices=0;
+for(const raceId of ['human','elf_high'])for(const gender of ['male','female']){
+ const c=sys.createCharacter({raceId,gender});Object.assign(c.head,{earLength:1,earPointiness:1});pipe.deformAsset(asset,sys.getMorphWeights(c));const ref=geo.bounds(asset.parts,'deformedPositions'),frames=new Map();
+ for(const p of asset.parts){p.__ceShapedPositions=geo.shape(asset,p,c.body,ref);frames.set(p,geo.shapeHead(asset,p,c.head));p.__ceNormals=geo.normals(p.__ceShapedPositions,p.indices,p.positions);}
+ for(const style of styles){c.head.hair=style;assert.deepEqual(sys.deserialize(sys.serialize(c)),c);let hairs=[];
+ for(const p of asset.parts){const frame=frames.get(p);hairs=hairs.concat(geo.headAccessories(asset,p,c.head,frame,false));const covered=geo.headAccessories(asset,p,c.head,frame,true);assert(covered.every(p=>p.positions.every(Number.isFinite)));}
+ assert(!hairs.some(p=>p.headAccessory==='hairBase'));const locks=hairs.filter(p=>p.headAccessory==='hair');assert(locks.length);for(const p of locks){assert(p.hairLocks>=32);assert(p.positions.every(Number.isFinite));assert(p.indices.every(i=>i<p.positions.length/3));assert(p.positions.length/3<65536);maxVertices=Math.max(maxVertices,p.positions.length/3);if(raceId==='human'&&gender==='male')signatures.add(crypto.createHash('sha256').update(Buffer.from(p.positions.buffer)).digest('hex'));}
+}console.log('HAIR_FORM_OK',raceId,gender);}assert.equal(signatures.size,styles.length,'each hairstyle has distinct geometry');console.log('HAIR_PACK_GEOMETRY_OK',styles.length,'styles, human/elf, two forms, exact saves, hats, unique silhouettes, max vertices',maxVertices);})().catch(e=>{console.error(e);process.exitCode=1});
