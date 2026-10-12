@@ -5,7 +5,7 @@
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-12",
-  "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/081f11746ade8788572efb9124181ebb28ef48c7",
+  "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main",
   "files": [
     {
       "path": "index.html",
