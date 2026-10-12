@@ -1,16 +1,16 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.61",
+  "version": "74.00.62",
   "minAppVersion": "70.26.99",
   "channel": "stable",
   "generated": "2026-10-12",
-  "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/c20f2916720a44570cb2ff786e3827fd42ec19e0",
+  "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main",
   "files": [
     {
       "path": "index.html",
       "bytes": 89195,
-      "sha256": "ee2cf104b85f68d8cc72ea2d99d2b7c1d6bce3ed3f04ba2951e9eeb3a171709f"
+      "sha256": "59ae50919830b25b91e2a6eb8896c0f6fdced2fbcce671d71436b070dfc9b101"
     },
     {
       "path": "app/3dmap/assets/clothing/fantasy-materials.webp",
@@ -29,8 +29,8 @@
     },
     {
       "path": "app/3dmap/character_anatomy_geometry.js",
-      "bytes": 22774,
-      "sha256": "d74a1c67284574f33832c9e279d0d19e9758a259d18a3ffabed53167b6e6bec1"
+      "bytes": 22797,
+      "sha256": "70782b7b830c0ad136fe58bd26b2b145a6cb437d31a9c99ae4a58dc24aee4c7c"
     },
     {
       "path": "app/3dmap/character_appearance_store.js",
@@ -49,8 +49,8 @@
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
-      "bytes": 164408,
-      "sha256": "07c5ae70489ff5dbf7c601c41eb243ccb6484f1354496aca92adaec6df6f2331"
+      "bytes": 166537,
+      "sha256": "989d0f1d52b058b860e2b93584b5f99860551bbc82573160c82655d52a78e6bf"
     },
     {
       "path": "app/3dmap/character_morph_assets.js",
@@ -64,8 +64,8 @@
     },
     {
       "path": "app/3dmap/character_system.js",
-      "bytes": 49724,
-      "sha256": "dde8ec01c51a6e29f4574eee760b4b923fc93ce45f27e2fdc80319c45f22c697"
+      "bytes": 49923,
+      "sha256": "c1bbe13fd7949b96e53843f0cdeb570ff5d92d802c0edbda431c875fed17460b"
     },
     {
       "path": "app/3dmap/gltf_catalog.js",
@@ -236,6 +236,11 @@
       "path": "app/assets/3d/makehuman/human-body-morphs.glb",
       "bytes": 12671780,
       "sha256": "3628ff521db93f28a12f7e68bf59961dc48d7a2c1a3d0e82b661dafb9131120b"
+    },
+    {
+      "path": "app/assets/3d/makehuman/materials/skin_color_detail_v1.png",
+      "bytes": 2922380,
+      "sha256": "449aa5fa2c74fbeac1f1a7dde28a9e2abdad90c33228ca09461ff060dce1900c"
     },
     {
       "path": "app/assets/3d/makehuman/materials/skin_micro_normal_roughness.png",
@@ -3900,7 +3905,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 19013,
-      "sha256": "f831f1af3cf0c4ce57f4c482e95c52a7484d37c2ed35932a81d692421c8ffb6a"
+      "sha256": "03e16ec0031fca9d5ce8d4b3b5e16df97572c915223231c302b0fe04f1a2959d"
     },
     {
       "path": "app/update_scene_v2.js",
