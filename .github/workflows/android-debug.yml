@@ -67,6 +67,7 @@ jobs:
           node tests/character_elf_details_test.js
           node tests/character_hair_pack_test.js
           node tests/character_tiefling_details_test.js
+          node tests/character_reptile_heads_test.js
           node tests/character_editor_morph_assets_test.js
       - name: Test 3D character skin and morph pipeline
         run: node tests/character_3d_skin_morph_test.js
