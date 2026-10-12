@@ -44,8 +44,8 @@ vm.runInNewContext(code('gltf_character_pipeline'),ctx);win.DNDGLTFCharacterPipe
 const api=win.DNDCharacterEditor3D,sys=win.DNDCharacter3D,flush=()=>new Promise(resolve=>setImmediate(resolve));
 (async()=>{
  assert(api&&api.VERSION===2);const c=sys.createCharacter({raceId:'human'});api.open(c);await flush();
- const gl=contexts[0];assert.strictEqual(images.length,1);assert(images[0].src.endsWith('young_lightskinned_male_diffuse.png'));
- images[0].onload();let last=gl.draws.at(-1);
+ const skinImages=()=>images.filter(i=>!i.src.includes('skin_micro_normal_roughness'));const gl=contexts[0];assert.strictEqual(skinImages().length,1);assert.strictEqual(images.length,2,'colour and micro-material textures are loaded separately');assert(images[0].src.endsWith('young_lightskinned_male_diffuse.png'));
+ images[0].onload();images.find(i=>i.src.includes('skin_micro_normal_roughness')).onload();let last=gl.draws.at(-1);
  assert.strictEqual(last.useTex,1);assert.deepStrictEqual(last.col,[1,1,1,1],'gray GLB factor must not tint skin');
  assert.deepStrictEqual(last.uv,[0,0,0,1,1,0],'uint32 fallback must expand UV with the same indices as positions');
  assert(gl.calls.some(c=>c[0]===gl.UNPACK_FLIP_Y_WEBGL&&c[1]===false),'glTF texture must not be flipped');
@@ -60,16 +60,16 @@ const api=win.DNDCharacterEditor3D,sys=win.DNDCharacter3D,flush=()=>new Promise(
  api.setAxis('height',1);api.setAxis('width',.8);api.setAxis('chest',.6);
  assert.strictEqual(api.getState().body.height,1);assert(api.metrics().width>1);
  api.setArmor(true);assert.strictEqual(api.getState().equipment.body,'editor_plate');
- assert(api.setSkin('human_young_female'));assert(images[1].src.endsWith('young_lightskinned_female_diffuse.png'));
- images[1].onload();assert.strictEqual(gl.draws.at(-1).useTex,1);
+ assert(api.setSkin('human_young_female'));assert(skinImages()[1].src.endsWith('young_lightskinned_female_diffuse.png'));
+ skinImages()[1].onload();assert.strictEqual(gl.draws.at(-1).useTex,1);
  assert.strictEqual(sys.deserialize(api.exportJSON()).skinId,'human_young_female');assert.strictEqual(api.setSkin('bad-id'),false);
  assert.strictEqual(api.getState().gender,'male','skin choice must not change gender');assert(api.setGender('female'));assert.strictEqual(sys.deserialize(api.exportJSON()).gender,'female');
  const oldBuffer=part.__ceBuf;const saved=api.getState();api.close();assert(oldBuffer.deleted);
  api.open(saved);await flush();assert.strictEqual(contexts.length,2);assert.notStrictEqual(part.__ceBuf,oldBuffer);assert.strictEqual(contexts[1].draws.at(-1).useTex,0);
  assert.strictEqual(api.getState().gender,'female');assert.strictEqual(elements.ceGender.value,'female');
- images[2].onerror();assert(elements.ceGLStatus.textContent.includes('Ошибка текстуры'));api.setAxis('width',0);elements.ceAxis_height.oninput.call({value:'.2'});assert(elements.ceGLStatus.textContent.includes('Ошибка текстуры'),'error must survive redraw');
- const late=images[2];api.close();api.open(c);late.onload();await flush();assert.strictEqual(contexts.length,3);assert.strictEqual(contexts[2].draws.at(-1).useTex,0,'stale image callback must not affect new context');
- images.at(-1).width=1500;images.at(-1).height=2000;images.at(-1).onload();assert(contexts[2].calls.some(c=>c[1]===contexts[2].TEXTURE_MIN_FILTER&&c[2]===contexts[2].LINEAR),'NPOT fallback must use non-mipmap filtering');
+ skinImages()[2].onerror();assert(elements.ceGLStatus.textContent.includes('Ошибка текстуры'));api.setAxis('width',0);elements.ceAxis_height.oninput.call({value:'.2'});assert(elements.ceGLStatus.textContent.includes('Ошибка текстуры'),'error must survive redraw');
+ const late=skinImages()[2];api.close();api.open(c);late.onload();await flush();assert.strictEqual(contexts.length,3);assert.strictEqual(contexts[2].draws.at(-1).useTex,0,'stale image callback must not affect new context');
+ skinImages().at(-1).width=1500;skinImages().at(-1).height=2000;skinImages().at(-1).onload();assert(contexts[2].calls.some(c=>c[1]===contexts[2].TEXTURE_MIN_FILTER&&c[2]===contexts[2].LINEAR),'NPOT fallback must use non-mipmap filtering');
  assert(api.setGender('female'));assert(api.setSkin('human_young_female'));api.setAxis('hips',.8);api.setArmor(true);const beforeReset=api.getState(),resetBuffer=part.__ceBuf;elements.ceReset.onclick();await flush();
  const reset=api.getState();assert.strictEqual(part.__ceBuf,resetBuffer,'body reset reuses buffers');assert.strictEqual(reset.gender,'female');assert.strictEqual(reset.skinId,'human_young_female');assert.strictEqual(reset.id,beforeReset.id);assert(Object.values(reset.body).every(v=>v===0));assert.strictEqual(reset.equipment.body,'editor_plate');assert.strictEqual(elements.ceGender.value,'female');
  assert(Math.abs(contexts.at(-1).draws.at(-1).positions[0]-.2)<1e-6,'reset keeps female anatomical base');
