@@ -10,7 +10,7 @@ class Element {
  querySelector(s){return s==='input'?this.input:s==='output'?this.output:null;}
  remove(){this.children.forEach(c=>c.remove());if(elements[this.id]===this)delete elements[this.id];}
  setAttribute(k,v){this[k]=v;} addEventListener(n,f){this.events=this.events||{};this.events[n]=f;} getBoundingClientRect(){return{width:480,height:320};}
- getContext(){if(!this.gl){this.gl=makeGL();contexts.push(this.gl);}return this.gl;}
+ getContext(type){if(type==='2d'){const canvas=this;return {drawImage(img){canvas.src=img.src;}};}if(!this.gl){this.gl=makeGL();contexts.push(this.gl);}return this.gl;}
 }
 function makeGL(){
  const gl={calls:[],draws:[],attrs:{},uniforms:{},next:0};
@@ -23,13 +23,14 @@ function makeGL(){
  gl.getAttribLocation=(p,n)=>n;gl.getUniformLocation=(p,n)=>n;
  gl.uniform4f=(n,...v)=>{gl.uniforms[n]=v;};gl.uniform1i=gl.uniform1f=(n,v)=>{gl.uniforms[n]=v;};
  gl.bindTexture=(t,tex)=>{assert(tex.owner===gl&&!tex.deleted);gl.texture=tex;};
- gl.texImage2D=(...args)=>{if(args.length===6)gl.texture.src=args[5].src;};
+ gl.texImage2D=(...args)=>{if(args.length===6){gl.texture.src=args[5].src;gl.texture.width=args[5].width;gl.texture.height=args[5].height;}};
  gl.pixelStorei=(...args)=>gl.calls.push(args);gl.texParameteri=(...args)=>gl.calls.push(args);
  gl.getShaderParameter=gl.getProgramParameter=()=>true;gl.getParameter=()=>4096;gl.getError=()=>gl.NO_ERROR;
  gl.deleteBuffer=gl.deleteTexture=gl.deleteProgram=r=>{r.deleted=true;};
  const draw=(count)=>{assert(gl.attrs.p.data.length>=count*3);assert(gl.attrs.uv.data.length>=count*2,'UV buffer shorter than expanded geometry');gl.draws.push({uv:gl.attrs.uv.data.slice(),col:gl.uniforms.col.slice(),useTex:gl.uniforms.useTex,positions:gl.attrs.p.data.slice(),src:gl.texture&&gl.texture.src});};
  gl.uniformMatrix4fv=(n,transpose,value)=>{gl.matrix=Array.from(value);};gl.drawArrays=(mode,first,count)=>draw(count);gl.drawElements=(mode,count)=>draw(3);
- for(const n of ['viewport','clearColor','clear','enable','shaderSource','compileShader','attachShader','linkProgram','useProgram','enableVertexAttribArray','disableVertexAttribArray','vertexAttrib2f','uniformMatrix3fv','activeTexture','generateMipmap'])gl[n]=()=>{};
+ for(const n of ['viewport','clearColor','clear','enable','shaderSource','compileShader','attachShader','linkProgram','useProgram','enableVertexAttribArray','disableVertexAttribArray','vertexAttrib2f','uniformMatrix3fv','activeTexture'])gl[n]=()=>{};
+ gl.generateMipmap=()=>gl.calls.push(['mipmap',gl.texture.src,gl.texture.width,gl.texture.height]);
  return gl;
 }
 const document={createElement:tag=>new Element(tag),getElementById:id=>elements[id]||null,body:new Element('body')};
@@ -44,8 +45,8 @@ vm.runInNewContext(code('gltf_character_pipeline'),ctx);win.DNDGLTFCharacterPipe
 const api=win.DNDCharacterEditor3D,sys=win.DNDCharacter3D,flush=()=>new Promise(resolve=>setImmediate(resolve));
 (async()=>{
  assert(api&&api.VERSION===2);const c=sys.createCharacter({raceId:'human'});api.open(c);await flush();
- const skinImages=()=>images.filter(i=>!i.src.includes('skin_micro_normal_roughness'));const gl=contexts[0];assert.strictEqual(skinImages().length,1);assert.strictEqual(images.length,2,'colour and micro-material textures are loaded separately');assert(images[0].src.endsWith('young_lightskinned_male_diffuse.png'));
- images[0].onload();images.find(i=>i.src.includes('skin_micro_normal_roughness')).onload();let last=gl.draws.at(-1);
+ const skinImages=()=>images.filter(i=>!i.src.includes('skin_micro_normal_roughness')&&!i.src.includes('skin_color_detail'));const gl=contexts[0];assert.strictEqual(skinImages().length,1);assert.strictEqual(images.length,3,'base colour, colour detail and micro-material textures are loaded separately');assert(images[0].src.endsWith('young_lightskinned_male_diffuse.png'));
+ images[0].onload();images.find(i=>i.src.includes('skin_micro_normal_roughness')).onload();const colourDetail=images.find(i=>i.src.includes('skin_color_detail'));colourDetail.width=colourDetail.height=1254;colourDetail.onload();assert(gl.calls.some(c=>c[0]==='mipmap'&&c[1]===colourDetail.src&&c[2]===1024&&c[3]===1024),'NPOT colour detail must upload a POT mipmapped texture');let last=gl.draws.at(-1);
  assert.strictEqual(last.useTex,1);assert.deepStrictEqual(last.col,[1,1,1,1],'gray GLB factor must not tint skin');
  assert.deepStrictEqual(last.uv,[0,0,0,1,1,0],'uint32 fallback must expand UV with the same indices as positions');
  assert(gl.calls.some(c=>c[0]===gl.UNPACK_FLIP_Y_WEBGL&&c[1]===false),'glTF texture must not be flipped');
@@ -55,7 +56,7 @@ const api=win.DNDCharacterEditor3D,sys=win.DNDCharacter3D,flush=()=>new Promise(
  const malePositions=gl.draws.at(-1).positions.slice(),bodyBefore=JSON.stringify(api.getState().body),initialId=api.getState().id;
  assert.strictEqual(elements.ceGender.value,'male');assert(api.setGender('female'));assert.strictEqual(elements.ceGender.value,'female');assert.strictEqual(api.getState().gender,'female');
  assert(Math.abs(gl.draws.at(-1).positions[0]-.2)<1e-6,'female morph must reach WebGL vertex buffer');assert.strictEqual(JSON.stringify(api.getState().body),bodyBefore,'gender must preserve sliders');
- assert.strictEqual(api.getState().skinId,'human_young_male','chosen skin remains independent');assert.strictEqual(api.getState().id,initialId);assert.strictEqual(api.setGender('invalid'),false);
+ assert.strictEqual(api.getState().skinId,'human_young_female','standard skin follows gender because the skin selector is hidden');assert.strictEqual(api.getState().id,initialId);assert.strictEqual(api.setGender('invalid'),false);
  assert(api.setGender('male'));assert.deepStrictEqual(gl.draws.at(-1).positions,malePositions,'male toggle restores exact vertex buffer');
  api.setAxis('height',1);api.setAxis('width',.8);api.setAxis('chest',.6);
  assert.strictEqual(api.getState().body.height,1);assert(api.metrics().width>1);

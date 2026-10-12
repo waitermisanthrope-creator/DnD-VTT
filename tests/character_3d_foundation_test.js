@@ -36,10 +36,11 @@ assert.strictEqual(female.skinId,'human_young_female','new female gets female de
 assert.strictEqual(api.getRenderDescriptor(female).morphWeights['human-female'],1);assert(!Object.hasOwn(female.body,'human-female'));
 const roundTrip=api.deserialize(api.serialize(female));assert.strictEqual(roundTrip.gender,'female');assert.strictEqual(roundTrip.body.chest,.6);assert.strictEqual(roundTrip.body.hips,-.4);
 const explicit=api.createCharacter({raceId:'human',gender:'female',skinId:'human_young_male'});assert.strictEqual(api.resolveSkin(explicit).id,'human_young_male','explicit skin is independent');
-const originalBody=JSON.stringify(female.body);assert(api.setGender(female,'male'));assert.strictEqual(api.getMorphWeights(female)['human-female'],0);assert.strictEqual(JSON.stringify(female.body),originalBody);assert.strictEqual(female.skinId,'human_young_female');
+const originalBody=JSON.stringify(female.body);assert(api.setGender(female,'male'));assert.strictEqual(api.getMorphWeights(female)['human-female'],0);assert.strictEqual(JSON.stringify(female.body),originalBody);assert.strictEqual(female.skinId,'human_young_male','standard map follows gender');
+api.registerSkin({id:'qa_custom_skin',raceId:'human',texture:'qa-custom.png'});const customSkinCharacter=api.createCharacter({gender:'female',skinId:'qa_custom_skin'});assert(api.setGender(customSkinCharacter,'male'));assert.equal(customSkinCharacter.skinId,'qa_custom_skin','custom skin selection remains independent');
 assert.strictEqual(api.setGender(female,'invalid'),false);assert.strictEqual(female.gender,'male');
 assert.strictEqual(api.getMorphWeights(legacyHuman)['human-female'],0);assert(!Object.hasOwn(api.getMorphWeights(c),'human-female'),'human gender morph must not leak to another race');
-console.log('CHARACTER_3D_GENDER_STATE_OK: defaults, independent skin, derived weights, serialization, legacy neutral, race isolation');
+console.log('CHARACTER_3D_GENDER_STATE_OK: defaults, automatic standard maps, independent custom skin, derived weights, serialization, legacy neutral, race isolation');
 
 const surface=api.normalizeHead({skinSurface:'ember',skinDetail:2,skinGlow:-1});assert.strictEqual(surface.skinDetail,1);assert.strictEqual(surface.skinGlow,0);assert.strictEqual(surface.skinSurface,'ember');assert.strictEqual(api.normalizeHead({skinSurface:'__proto__'}).skinSurface,'none');assert.strictEqual(api.normalizeHead({}).skinDetail,0);assert.strictEqual(api.normalizeHead({}).skinGlow,0);assert.strictEqual(api.deserialize(api.serialize(api.createCharacter({head:surface}))).head.skinSurface,'ember');console.log('SKIN_SURFACE_STATE_OK: bounded, whitelisted, migrated, saved');
 
