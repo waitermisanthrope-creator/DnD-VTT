@@ -8,7 +8,7 @@ main e042b69c: собственные кисти/стопы 12 рас. Сохр�
 ## Последовательные этапы
 1. Восстановление: git main и ветки проверены; пакет не найден. DONE.
 2. Рептилии: bitmap-карта подключена и проверена. DONE (d092cb22).
-3. Мех: bitmap-подшёрсток подключён, проверки ниже. Перья — следующий этап.
+3. Мех и перья: bitmap-карты подключены, проверки ниже. DONE.
 4. Складчатая кожа/панцирь/металл/особые формы: отдельно по группам. TODO.
 5. Регресс: отсутствие расового материала на одежде/оружии/ареале, смена рас, save/reopen, WebGL. TODO.
 
@@ -39,3 +39,25 @@ main e042b69c: собственные кисти/стопы 12 рас. Сохр�
 - Следующий этап: отдельная карта перьев и проверка кенку/совлинов/ааракокр. Релиз/APK/OTA не выпускались.
 
 - Финальный проход после защиты внутренней поверхности уха: WebGL табакси × 2 пола плюс controls/save/reopen/ареал PASS; регресс рептилий × 4 расы × 2 пола PASS.
+
+
+## Этап 3 — покровные и маховые перья (2026-10-12)
+- app/assets/3d/race_surfaces/bird-contour-feathers-v1.webp — 1254×1254, 510226 bytes, SHA256 1d0c4f0e98a5d45f2b2ed7a39df0c418d9a0f116f78e8aae6fe7bec924e8843d.
+- app/assets/3d/race_surfaces/flight-feather-vane-v1.webp — 1254×1254, 555662 bytes, SHA256 6ce6390442d097d264f1d40588a46586a1a654af05dbed54f45f4b1b8b66ec48.
+- Обе карты: built-in Imagegen; requested 2048², actual 1254²; WebP quality 92 без изменения разрешения. Это albedo/detail, не 2K и не полный PBR.
+- app/3dmap/character_editor_3d.js: материал выбирается отдельно для покровных перьев тела/птичьей головы, маховых перьев крыльев/хвоста, плоских перьев головы/ушей и радиального лицевого диска совлина. Используется прежний texture unit 1, uniform сбрасывается для каждой части.
+- Покровная карта: трипланарная раскладка 8 повторов на высоту тела; масштаб уменьшен после просмотра. Маховая карта: UV каждого настоящего пера, ось стержня посередине обеих сторон его окружности. Плоское головное оперение — прямые UV. Лицевой диск совлина — 36 радиальных секторов. Старые процедурные рисунки остаются fallback до загрузки bitmap, после загрузки не наслаиваются на новый рисунок.
+- Кенку сохраняет отсутствие крыльев. Совлин/ааракокра сохраняют текущие крылья, хвост, клюв и оперение головы. Клювы, глаза, когти, собственные чешуйчатые птичьи кисти/стопы, одежда, броня, оружие и customColor исключены из карт перьев. Добавлена защита глаз UV основного тела при bitmap-картах.
+- tools/check_feather_surface_browser.js: первый реальный Chromium/SwiftShader проход 3 расы × 2 пола (6 случаев) PASS. Проверены покровная/маховая карты, голова/тело/крылья/хвост, отсутствие bitmap на клювах/глазах/птичьих конечностях, изменение цвета/размера крыла с изменением canvas pixels, skinDetail=0 и skinSurface=none, wing/tail size=0, save/reopen полного состояния, реальные одежда/кираса/оружие/ареал, возврат к человеку, отсутствие GL/page errors.
+- Финальная раскладка после визуального QA: более мелкое тело и радиальный совиный диск. После паузы браузер восстановлен отдельно; карты и код повторно не генерировались.
+- character_avian_elephant_heads_test.js PASS: 4 profiles × 2 forms × 3 muzzle positions, native heads/beaks/disc/plumage, finite indexed geometry, masked human head, legacy migration; max mesh vertices 15401. character_3d_editor_test.js, syntax/diff-check PASS. Регресс WebGL чешуи: 4 расы × 2 пола PASS.
+- Просмотрены контрольные кадры совлина, кенку, ааракокры (включая спину и оба крыла). Ограничения: прежние геометрические переходы воротника и отдельные жёсткие края головного оперения требуют отдельной доводки; полёт/анимация крыльев этим этапом не добавлены. Бесшовность на всех направлениях и физический Android performance не заявляются.
+- Новые вершины/слои не добавлены. Покровная карта использует три sample на выбранный фрагмент; отдельные перья и лицевой диск — один sample. Общий размер двух WebP 1065888 bytes.
+- Следующий этап: складчатая кожа (локсодон), затем панцирь/пластины и особые поверхности. Не повторять чешую, мех и перья. Релиз/APK/OTA не выпускались.
+
+### Промпты генерации перьев
+Contour: square orthographic close-up of dense short overlapping contour feathers, neutral mid-gray monochrome, fine barbs and slender shafts, staggered rounded tips, downward growth, flat diffuse lighting, seamless edges requested, edge-to-edge, no animal/body/skin/scene/text/border/watermark, requested 2048².
+Vane: full-frame square swatch of ONE flight feather vane, straight central vertical rachis at x=50%, dense symmetric diagonal barbs extending to all edges, neutral mid-gray, flat diffuse light, no outer silhouette/taper/quill/empty background/transparency/bird/text/border, requested 2048². Mapped geometry supplies feather silhouette.
+
+### Финальное подтверждение этапа перьев
+После восстановления Chromium 153 выполнен полный повторный WebGL проход финального кода: FEATHER_SURFACE_BROWSER_OK 6 race/form cases, color/size/off/save/reopen, equipment/diorama isolation, human recovery — PASS. FUR_SURFACE_BROWSER_OK 2 tabaxi forms + все controls/save/reopen/isolation — PASS. Регресс рептилий 8 forms ранее выполнен на той же финальной версии shader — PASS. Финальные node syntax/character_3d_editor_test и git diff --check PASS. Код/обе WebP/QA script/журнал сохраняются одним commit [skip ci]. Результаты не означают проверку физического Android или окончательное устранение прежних геометрических переходов.
