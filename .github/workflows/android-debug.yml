@@ -58,6 +58,8 @@ jobs:
         run: node tests/character_3d_morph_assets_test.js
       - name: Test 3D character editor
         run: node tests/character_3d_editor_test.js
+      - name: Verify male profiles and unchanged female geometry
+        run: node tests/character_male_anatomy_fix_test.js
       - name: Test appearance persistence and real editor morph assets
         run: |
           node tests/character_appearance_store_test.js

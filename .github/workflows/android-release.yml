@@ -47,6 +47,7 @@ jobs:
           node tests/character_3d_foundation_test.js
           node tests/character_3d_morph_assets_test.js
           node tests/character_3d_editor_test.js
+          node tests/character_male_anatomy_fix_test.js
           node tests/character_appearance_store_test.js
           node tests/character_ghost_geometry_test.js
           node tests/character_parasites_geometry_test.js
