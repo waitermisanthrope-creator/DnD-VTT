@@ -10,7 +10,7 @@ function normalize(value){
  if(value.version!=null&&value.version!==1)throw Error('Неподдерживаемая версия анатомии');
  if(value.maturity!=null&&value.maturity!=='adult')throw Error('Эта база предназначена только для взрослых персонажей');
  var hair=value.hair&&typeof value.hair==='object'?value.hair:{},input=hair.regions||{},out={version:1,maturity:'adult',external:{mode:'auto',variant:'standard'},hair:{shaved:hair.shaved===true,quality:own(budgets,hair.quality)?hair.quality:'medium',regions:{}}};
- var external=value.external||{};out.external.mode=['auto','male','female','none'].indexOf(external.mode)>=0?external.mode:'auto';out.external.variant=['standard','compact','full'].indexOf(external.variant)>=0?external.variant:'standard';
+ var external=value.external||{};out.external.mode=['auto','male','female','none'].indexOf(external.mode)>=0?external.mode:'auto';out.external.variant=['standard','compact','full'].indexOf(external.variant)>=0?external.variant:'standard';['scale','length','width','projection'].forEach(function(k){out.external[k]=number(external[k],1,.75,1.25);});out.external.quality=own(budgets,external.quality)?external.quality:'medium';
  Object.keys(regions).forEach(function(id){var r=input[id]&&typeof input[id]==='object'?input[id]:{};out.hair.regions[id]={enabled:r.enabled===true,density:number(r.density,.5,0,1),length:number(r.length,.3,0,1),color:color(r.color)};});
  return out;
 }
@@ -24,7 +24,7 @@ function family(character){
  if(['tabaxi','harengon','bugbear','hadozee','satyr','minotaur','loxodon','shifter','centaur'].indexOf(id)>=0)return 'mammalian';
  return 'humanoid';
 }
-function descriptor(character){var state=normalize(character.anatomy),f=family(character);return {maturity:'adult',family:f,bodyPreset:character.gender==='female'?'female':'male',externalGeometryReady:false,requestedExternal:state.external.mode==='auto'?(character.gender==='female'?'female':'male'):state.external.mode,regionalHairSupported:f==='humanoid'||f==='mammalian',hairRibbonBudget:budgets[state.hair.quality]};}
+function descriptor(character){var state=normalize(character.anatomy),f=family(character);return {maturity:'adult',family:f,bodyPreset:character.gender==='female'?'female':'male',externalGeometryReady:false,externalGeometryAvailable:!!(g.DNDCharacterAnatomyGeometry&&g.DNDCharacterAnatomyGeometry.supported(character)),externalGeometryStage:'experimental-rest-patch-v1',requestedExternal:state.external.mode==='auto'?(character.gender==='female'?'female':'male'):state.external.mode,regionalHairSupported:f==='humanoid'||f==='mammalian',hairRibbonBudget:budgets[state.hair.quality]};}
 /* Existing garment masks remain authoritative; these extra region guards are
  * conservative around open/tailored garments until triangle collision fitting. */
 function covered(id,clothing){var c=clothing||{},api=g.DNDCharacterClothing;function worn(slot){return !!(api&&api.items[c[slot]]);}
