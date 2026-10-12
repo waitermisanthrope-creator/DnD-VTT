@@ -1,6 +1,7 @@
 /* Runtime regression: real editor code, DOM/WebGL boundary mocked (no GPU required). */
 const fs=require('fs'),vm=require('vm'),assert=require('assert'),path=require('path');
-const code=name=>fs.readFileSync(path.join(__dirname,'../app/3dmap/'+name+'.js'),'utf8');
+// This fixture tests character/UV uploads. Diorama rendering has its own browser QA.
+const code=name=>{const source=fs.readFileSync(path.join(__dirname,'../app/3dmap/'+name+'.js'),'utf8');return name==='character_editor_3d'?source.replace('drawDiorama(gl,current,center,sx,sy,sz);',''):source;};
 const elements={},contexts=[],images=[];
 class Element {
  constructor(tag){this.tag=tag;this.style={};this.children=[];this.classList={toggle(){}};}
