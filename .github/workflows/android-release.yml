@@ -55,6 +55,7 @@ jobs:
           node tests/character_hair_pack_test.js
           node tests/character_tiefling_details_test.js
           node tests/character_reptile_heads_test.js
+          node tests/character_fur_test.js
           node tests/character_editor_morph_assets_test.js
           node tests/character_3d_skin_morph_test.js
           node tests/makehuman_gender_recipe_test.js
