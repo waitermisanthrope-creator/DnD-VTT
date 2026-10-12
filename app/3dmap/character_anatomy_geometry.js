@@ -16,33 +16,21 @@ function landmarks(asset,body,geo){
 function sampleDepth(vertices,x,y){var near=vertices.map(function(v){return {v:v,d:Math.pow(v.p[0]-x,2)+Math.pow(v.p[1]-y,2)};}).sort(function(a,b){return a.d-b.d;}).slice(0,8),sum=0,z=0;near.forEach(function(q){var w=1/Math.max(q.d,1e-12);sum+=w;z+=q.v.p[2]*w;});return z/sum;}
 function refined(vertices,faces,boundary,maxFaces,selected,registry){
  var middles={},out=[];
- function midpoint(a,b){var k=edge(a,b);if(boundary.has(k)||selected&&!selected.has(edge(vertices[a].weld,vertices[b].weld)))return null;if(middles[k]!=null)return middles[k];var A=vertices[a],B=vertices[b],influence=mixInfluences(A,B),weldKey='m:'+edge(A.weld,B.weld);if(registry.ids[weldKey]==null)registry.ids[weldKey]=registry.next++;var v={p:A.p.map(function(x,i){return (x+B.p[i])*.5;}),uv:A.uv.map(function(x,i){return (x+B.uv[i])*.5;}),j:influence.j,w:influence.w,weld:registry.ids[weldKey],source:null,boundary:false};middles[k]=vertices.length;vertices.push(v);return middles[k];}
+ function midpoint(a,b){var k=edge(a,b);if(boundary.has(k)||selected&&!selected.has(edge(vertices[a].weld,vertices[b].weld)))return null;if(middles[k]!=null)return middles[k];var A=vertices[a],B=vertices[b],influence=mixInfluences(A,B),weldKey='m:'+edge(A.weld,B.weld);if(registry.ids[weldKey]==null)registry.ids[weldKey]=registry.next++;var v={p:A.p.map(function(x,i){return (x+B.p[i])*.5;}),uv:A.uv.map(function(x,i){return (x+B.uv[i])*.5;}),n:A.n.map(function(x,i){return (x+B.n[i])*.5;}),j:influence.j,w:influence.w,weld:registry.ids[weldKey],source:null,boundary:false};middles[k]=vertices.length;vertices.push(v);return middles[k];}
  faces.forEach(function(f){var a=f[0],b=f[1],c=f[2],ab=midpoint(a,b),bc=midpoint(b,c),ca=midpoint(c,a),bits=(ab!=null?1:0)+(bc!=null?2:0)+(ca!=null?4:0);
   if(bits===0)out.push(f);else if(bits===1)out.push([a,ab,c],[ab,b,c]);else if(bits===2)out.push([b,bc,a],[bc,c,a]);else if(bits===4)out.push([c,ca,b],[ca,a,b]);else if(bits===3)out.push([b,bc,ab],[a,ab,bc],[a,bc,c]);else if(bits===5)out.push([a,ab,ca],[b,c,ca],[b,ca,ab]);else if(bits===6)out.push([c,ca,bc],[a,b,bc],[a,bc,ca]);else out.push([a,ab,ca],[ab,b,bc],[ca,bc,c],[ab,bc,ca]);
  });if(out.length>maxFaces)throw Error('Anatomy refinement exceeds budget');return out;
 }
 function femalePoint(p,f,a){
- var H=f.H,x=(p[0]-f.cx)/H,y=(p[1]-f.lowest)/H,k=a.variant==='compact'?.80:a.variant==='full'?1.20:1,s=a.scale*k,span=.023*a.length*s,cy=.014;
+ var H=f.H,x=(p[0]-f.cx)/H,y=(p[1]-f.lowest)/H,k=a.variant==='compact'?.80:a.variant==='full'?1.20:1,s=a.scale*k,span=.016*a.length*s,cy=.023;
  var envelope=Math.exp(-Math.pow((y-cy)/span,4)),sep=.0048*a.width*s,outerWidth=.0034*a.width*s;
  var outer=Math.exp(-Math.pow((Math.abs(x)-sep)/outerWidth,2))*envelope;
- var inner=Math.exp(-Math.pow((Math.abs(x)-.0018*a.width*s)/(.0012*a.width*s),2))*Math.exp(-Math.pow((y-.014)/(.017*a.length*s),4));
- var cleft=Math.exp(-Math.pow(x/.0008,2))*Math.exp(-Math.pow((y-.013)/(.017*a.length*s),4));
+ var inner=Math.exp(-Math.pow((Math.abs(x)-.0018*a.width*s)/(.0012*a.width*s),2))*Math.exp(-Math.pow((y-.023)/(.012*a.length*s),4));
+ var cleft=Math.exp(-Math.pow(x/.0008,2))*Math.exp(-Math.pow((y-.023)/(.012*a.length*s),4));
  var hood=Math.exp(-Math.pow(x/(.0024*s),2)-Math.pow((y-.033)/(.0035*s),2));
- return [p[0],p[1],p[2]+H*a.projection*s*(.0058*outer+.0028*inner-.0012*cleft+.0028*hood)];
+ var front=smooth(f.rootZ-H*.009,f.rootZ-H*.003,p[2]),lower=smooth(.003,.011,y);return [p[0],p[1],p[2]+H*a.projection*s*front*lower*(.0035*outer+.0018*inner-.0008*cleft+.0018*hood)];
 }
-function malePoint(p,f,a){
- var H=f.H,k=a.variant==='compact'?.80:a.variant==='full'?1.20:1,s=a.scale*k,rootY=f.rootY,x=(p[0]-f.rootX)/H,y=(p[1]-rootY)/H;
- var bagY=-.016,bagWidth=.0115*a.width*s,bagHeight=.014*s;
- var l=Math.pow((x+.0065*s)/bagWidth,2)+Math.pow((y-bagY)/bagHeight,2),r=Math.pow((x-.0065*s)/bagWidth,2)+Math.pow((y-bagY)/bagHeight,2),bag=Math.pow(Math.max(0,1-Math.min(l,r)),2);
- var base=[p[0],p[1]-H*.023*s*bag,p[2]+H*.017*s*a.projection*Math.pow(bag,.65)];
- var radius=.0105*a.width*s,rr=Math.hypot(x,y)/radius;if(rr>=1)return base;
- var angle=Math.atan2(x,y),t=rr<.45?1-rr/.45:0,L=H*.052*a.length*s;
- var dz=H*(.010+.014*t+.007*Math.sin(t*Math.PI*.5))*a.projection,derivative=H*(.014+.007*Math.PI*.5*Math.cos(t*Math.PI*.5))*a.projection,n=Math.hypot(L,derivative),ny=derivative/n,nz=L/n;
- var shaftRadius=H*.0064*a.width*s*(.95-.06*t+.26*Math.exp(-Math.pow((t-.84)/.13,2)));
- if(t>.90)shaftRadius*=Math.sqrt(Math.max(0,1-Math.pow((t-.90)/.10,2)));
- var q=[f.rootX+shaftRadius*Math.sin(angle),rootY-L*t+shaftRadius*Math.cos(angle)*ny,f.rootZ+dz+shaftRadius*Math.cos(angle)*nz];
- var blend=rr>.45?1-smooth(.45,1,rr):1;return q.map(function(v,i){return base[i]+(v-base[i])*blend;});
-}
+function malePoint(p,f,a){return p.slice();}
 function inverse(a){var m=a.slice(),out=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];for(var i=0;i<4;i++){var pivot=i;for(var r=i+1;r<4;r++)if(Math.abs(m[r*4+i])>Math.abs(m[pivot*4+i]))pivot=r;if(Math.abs(m[pivot*4+i])<1e-12)throw Error('Singular anatomy skin bind');for(var c=0;c<4;c++){var v=m[i*4+c];m[i*4+c]=m[pivot*4+c];m[pivot*4+c]=v;v=out[i*4+c];out[i*4+c]=out[pivot*4+c];out[pivot*4+c]=v;}var d=m[i*4+i];for(var c=0;c<4;c++){m[i*4+c]/=d;out[i*4+c]/=d;}for(var r=0;r<4;r++)if(r!==i){var d=m[r*4+i];for(var c=0;c<4;c++){m[r*4+c]-=d*m[i*4+c];out[r*4+c]-=d*out[i*4+c];}}}return out;}
 function multiply(a,b){var out=new Array(16);for(var r=0;r<4;r++)for(var c=0;c<4;c++){var value=0;for(var k=0;k<4;k++)value+=a[k*4+r]*b[c*4+k];out[c*4+r]=value;}return out;}
 function palette(asset,world){var skin=asset.character.skins[0];return skin.joints.map(function(id,i){return multiply(world[id],skin.inverseBindMatrices[i]);});}
@@ -52,7 +40,7 @@ function build(asset,body,c){
  if(!supported(c)||type==='none'||api.covered('pubic',c.clothing))return {parts:[],removed:new Set(),boundary:[]};
  if(!body.joints||!body.weights||!body.uv||!asset.character||asset.parts.length!==1)throw Error('Несовместимый skin для анатомического модуля');
  var f=landmarks(asset,body,geo),H=f.H,src=body.__ceShapedPositions,n=body.__ceNormals,indices=body.indices,ids={},vertices=[],faces=[],removed=new Set(),counts={},registry={ids:{},next:0};
- function vertex(id){if(ids[id]!=null)return ids[id];ids[id]=vertices.length;var original=Array.from((body.basePositions||src).slice(id*3,id*3+3)).map(function(v){return v.toFixed(6);}).join(','),weldKey='v:'+original;if(registry.ids[weldKey]==null)registry.ids[weldKey]=registry.next++;vertices.push({p:Array.from(src.slice(id*3,id*3+3)),uv:Array.from(body.uv.slice(id*2,id*2+2)),j:Array.from(body.joints.slice(id*4,id*4+4)),w:Array.from(body.weights.slice(id*4,id*4+4)),weld:registry.ids[weldKey],source:id,boundary:false});return ids[id];}
+ function vertex(id){if(ids[id]!=null)return ids[id];ids[id]=vertices.length;var original=Array.from((body.basePositions||src).slice(id*3,id*3+3)).map(function(v){return v.toFixed(6);}).join(','),weldKey='v:'+original;if(registry.ids[weldKey]==null)registry.ids[weldKey]=registry.next++;vertices.push({p:Array.from(src.slice(id*3,id*3+3)),uv:Array.from(body.uv.slice(id*2,id*2+2)),n:Array.from(n.slice(id*3,id*3+3)),j:Array.from(body.joints.slice(id*4,id*4+4)),w:Array.from(body.weights.slice(id*4,id*4+4)),weld:registry.ids[weldKey],source:id,boundary:false});return ids[id];}
  for(var i=0;i<indices.length;i+=3){var tri=[indices[i],indices[i+1],indices[i+2]],x=0,y=0,z=0;tri.forEach(function(id){x+=src[id*3]/3;y+=src[id*3+1]/3;z+=n[id*3+2]/3;});var ellipse=Math.pow((x-f.cx)/(H*.043),2)+Math.pow((y-f.centerY)/(H*.054),2);if(ellipse>1||z<.05)continue;var face=tri.map(vertex);faces.push(face);removed.add(key(tri[0],tri[1],tri[2]));[edge(vertices[face[0]].weld,vertices[face[1]].weld),edge(vertices[face[1]].weld,vertices[face[2]].weld),edge(vertices[face[2]].weld,vertices[face[0]].weld)].forEach(function(e){counts[e]=(counts[e]||0)+1;});}
  if(faces.length<8)throw Error('Недостаточно геометрии для анатомического крепления');
  var weldedBoundary=new Set(Object.keys(counts).filter(function(e){return counts[e]===1;})),boundaryEdges=new Set(),boundary=[];faces.forEach(function(face){[[face[0],face[1]],[face[1],face[2]],[face[2],face[0]]].forEach(function(pair){if(weldedBoundary.has(edge(vertices[pair[0]].weld,vertices[pair[1]].weld)))boundaryEdges.add(edge(pair[0],pair[1]));});});
@@ -64,8 +52,49 @@ function build(asset,body,c){
   var oldLength=vertices.length;try{var next=refined(vertices,faces,boundaryEdges,maxFaces,selected,registry);faces=next;level++;}catch(error){if(error.message!=='Anatomy refinement exceeds budget')throw error;vertices.length=oldLength;break;}
  }
  var seamGroups={};vertices.forEach(function(v){(seamGroups[v.weld]||(seamGroups[v.weld]=[])).push(v);});Object.keys(seamGroups).forEach(function(id){var group=seamGroups[id];if(group.length<2||group.some(function(v){return v.boundary;}))return;var mean=[0,0,0];group.forEach(function(v){for(var k=0;k<3;k++)mean[k]+=v.p[k]/group.length;});group.forEach(function(v){v.p=mean.slice();});});var pole=vertices.filter(function(v){return v.source===rootSurface.source;})[0];f.rootX=pole.p[0];f.rootY=pole.p[1];f.rootZ=pole.p[2];
- var positions=[],uv=[],joints=[],weights=[];vertices.forEach(function(v){var p=v.boundary?v.p:(type==='female'?femalePoint(v.p,f,a):malePoint(v.p,f,a));positions.push.apply(positions,p);uv.push.apply(uv,v.uv);joints.push.apply(joints,v.j);weights.push.apply(weights,v.w);});
+
+ /* The shaft uses explicit longitudinal rings instead of stretching a disk into a pole. */
+ var shaftSources=new Set();
+ if(type==='male'){
+  var cutFaces=[],keepFaces=[],holeCounts={},holeVertices={};
+  faces.forEach(function(face){var x=0,y=0,z=0;face.forEach(function(id){x+=(vertices[id].p[0]-f.rootX)/3;y+=(vertices[id].p[1]-f.rootY)/3;z+=vertices[id].p[2]/3;});
+   if(Math.hypot(x,y)<H*.006&&z>f.rootZ-H*.004){cutFaces.push(face);face.forEach(function(id){holeVertices[vertices[id].weld]=id;});[[face[0],face[1]],[face[1],face[2]],[face[2],face[0]]].forEach(function(pair){var k=edge(vertices[pair[0]].weld,vertices[pair[1]].weld);holeCounts[k]=(holeCounts[k]||0)+1;});}else keepFaces.push(face);
+  });
+  var adjacent={};Object.keys(holeCounts).forEach(function(k){if(holeCounts[k]===1){var ids=k.split(':').map(Number);ids.forEach(function(id,i){(adjacent[id]||(adjacent[id]=[])).push(ids[1-i]);});}});
+  var first=Number(Object.keys(adjacent)[0]),order=[first],prev=-1,current=first;
+  do{var links=adjacent[current];if(!links||links.length!==2)throw Error('Non-simple anatomy attachment perimeter');var next=links[0]===prev?links[1]:links[0];if(next===first)break;order.push(next);prev=current;current=next;if(order.length>Object.keys(adjacent).length)throw Error('Unclosed anatomy attachment perimeter');}while(true);
+  if(order.length!==Object.keys(adjacent).length)throw Error('Multiple anatomy attachment loops');
+  var loop=order.map(function(id){return holeVertices[id];}),area=0;loop.forEach(function(id,i){var p=vertices[id].p,q=vertices[loop[(i+1)%loop.length]].p;area+=(p[0]-f.rootX)*(q[1]-f.rootY)-(q[0]-f.rootX)*(p[1]-f.rootY);});if(area<0)loop.reverse();
+  if(loop.length<8)throw Error('Anatomy shaft attachment has insufficient perimeter');
+  faces=keepFaces;var previous=loop,k=a.variant==='compact'?.8:a.variant==='full'?1.2:1,scale=a.scale*k,L=H*.047*a.length*scale,ringCount=a.quality==='low'?12:a.quality==='high'?28:20;
+
+  for(var collar=1;collar<5;collar++){var blend=smooth(0,1,collar/5),next=[];loop.forEach(function(id,angularIndex){var source=vertices[id],angle=Math.atan2(vertices[loop[0]].p[1]-f.rootY,vertices[loop[0]].p[0]-f.rootX)+angularIndex*Math.PI*2/loop.length,radius=H*.0065*a.width*scale,norm=Math.hypot(L,H*.012*a.projection),target=[f.rootX+radius*Math.cos(angle),f.rootY+radius*Math.sin(angle)*H*.012*a.projection/norm,f.rootZ+H*.011*a.projection+radius*Math.sin(angle)*L/norm],index=vertices.length;vertices.push({p:source.p.map(function(x,k){return x+(target[k]-x)*blend;}),uv:source.uv.slice(),j:source.j.slice(),w:source.w.slice(),weld:registry.next++,boundary:false,source:null});shaftSources.add(index);next.push(index);});for(var j=0;j<loop.length;j++){var q=(j+1)%loop.length;faces.push([previous[j],previous[q],next[q]],[previous[j],next[q],next[j]]);}previous=next;}
+  for(var ring=0;ring<=ringCount;ring++){
+   var t=ring/ringCount,next=[];loop.forEach(function(id,angularIndex){var source=vertices[id],angle=Math.atan2(vertices[loop[0]].p[1]-f.rootY,vertices[loop[0]].p[0]-f.rootX)+angularIndex*Math.PI*2/loop.length,radius=H*.0065*a.width*scale*(1-.06*t+.23*Math.exp(-Math.pow((t-.84)/.13,2))),dz=H*(.011+.012*t)*a.projection,norm=Math.hypot(L,H*.012*a.projection),ny=H*.012*a.projection/norm,nz=L/norm;
+    if(t>.9)radius*=Math.sqrt(Math.max(.01,1-Math.pow((t-.9)/.105,2)));
+    var pos=[f.rootX+radius*Math.cos(angle),f.rootY-L*t+radius*Math.sin(angle)*ny,f.rootZ+dz+radius*Math.sin(angle)*nz],index=vertices.length;
+    vertices.push({p:pos,uv:source.uv.slice(),j:source.j.slice(),w:source.w.slice(),weld:registry.next++,boundary:false,source:null});shaftSources.add(index);next.push(index);
+   });
+   for(var j=0;j<loop.length;j++){var q=(j+1)%loop.length;faces.push([previous[j],previous[q],next[q]],[previous[j],next[q],next[j]]);}previous=next;
+  }
+  var tip=vertices.length,anchor=vertices[loop[0]];vertices.push({p:[f.rootX,f.rootY-L-H*.001*scale,f.rootZ+H*.023*a.projection],uv:anchor.uv.slice(),j:anchor.j.slice(),w:anchor.w.slice(),weld:registry.next++,boundary:false,source:null});shaftSources.add(tip);
+  for(var j=0;j<loop.length;j++)faces.push([previous[j],previous[(j+1)%loop.length],tip]);
+  /* Closed neutral scrotal envelope; the upper/back surface enters the pelvis. */
+  var segments=a.quality==='low'?20:a.quality==='high'?48:32,latitudes=a.quality==='low'?12:a.quality==='high'?28:20,bagCenter=[f.rootX,f.rootY-H*.019*scale,f.rootZ+H*.003*scale],bagAnchor=vertices[loop[0]],bagRings=[];
+  function bagVertex(pos){var id=vertices.length;vertices.push({p:pos,uv:bagAnchor.uv.slice(),j:bagAnchor.j.slice(),w:bagAnchor.w.slice(),weld:registry.next++,boundary:false,source:null});shaftSources.add(id);return id;}
+  var top=bagVertex([bagCenter[0],bagCenter[1]+H*.017*scale,bagCenter[2]]);
+  for(var latitude=1;latitude<latitudes;latitude++){var phi=Math.PI*latitude/latitudes,ids=[];for(var longitude=0;longitude<segments;longitude++){var theta=Math.PI*2*longitude/segments,sin=Math.sin(phi),raphe=1-.035*Math.exp(-Math.pow(Math.cos(theta)/.14,2));ids.push(bagVertex([bagCenter[0]+H*.014*a.width*scale*sin*Math.cos(theta),bagCenter[1]+H*.017*scale*Math.cos(phi)-H*.0008*scale*Math.sin(theta)*sin,bagCenter[2]+H*.012*a.projection*scale*sin*Math.sin(theta)*raphe]));}bagRings.push(ids);}
+  var bottom=bagVertex([bagCenter[0],bagCenter[1]-H*.017*scale,bagCenter[2]]);
+  for(var longitude=0;longitude<segments;longitude++){var next=(longitude+1)%segments;faces.push([top,bagRings[0][next],bagRings[0][longitude]]);for(var latitude=0;latitude<bagRings.length-1;latitude++){var upper=bagRings[latitude],lower=bagRings[latitude+1];faces.push([upper[longitude],upper[next],lower[next]],[upper[longitude],lower[next],lower[longitude]]);}var last=bagRings[bagRings.length-1];faces.push([last[longitude],last[next],bottom]);}
+
+ }
+ var positions=[],uv=[],joints=[],weights=[];vertices.forEach(function(v,id){var p=v.boundary||shaftSources.has(id)?v.p:(type==='female'?femalePoint(v.p,f,a):malePoint(v.p,f,a));positions.push.apply(positions,p);uv.push.apply(uv,v.uv);joints.push.apply(joints,v.j);weights.push.apply(weights,v.w);});
  var p=new Float32Array(positions),ix=new Uint16Array(faces.flat()),normals=geo.normals(p,ix,p);
+ /* Preserve the smooth base normals across adaptive refinement, then transform them by the deformation Jacobian. */
+ vertices.forEach(function(v,id){if(shaftSources.has(id)||v.boundary)return;var N=v.n,length=Math.hypot.apply(null,N)||1;N=N.map(function(x){return x/length;});var T=Math.abs(N[1])<.9?[N[2],0,-N[0]]:[0,-N[2],N[1]],tl=Math.hypot.apply(null,T)||1;T=T.map(function(x){return x/tl;});var B=[N[1]*T[2]-N[2]*T[1],N[2]*T[0]-N[0]*T[2],N[0]*T[1]-N[1]*T[0]],eps=H*.00001,fn=type==='female'?femalePoint:malePoint;
+  function tangent(D){var plus=v.p.map(function(x,k){return x+D[k]*eps;}),minus=v.p.map(function(x,k){return x-D[k]*eps;}),P=fn(plus,f,a),M=fn(minus,f,a);return P.map(function(x,k){return (x-M[k])/(2*eps);});}
+  var U=tangent(T),V=tangent(B),Q=[U[1]*V[2]-U[2]*V[1],U[2]*V[0]-U[0]*V[2],U[0]*V[1]-U[1]*V[0]],ql=Math.hypot.apply(null,Q)||1;normals.set(Q.map(function(x){return x/ql;}),id*3);
+ });
  boundary.forEach(function(v){normals.set(body.__ceNormals.slice(v.source*3,v.source*3+3),v.local*3);});
  var part={positions:p,__ceShapedPositions:p,__ceNormals:normals,indices:ix,uv:new Float32Array(uv),joints:new Uint16Array(joints),weights:new Float32Array(weights),skin:body.skin,material:body.material,headAccessory:'externalAnatomy',anatomySkin:true,__ceHeadFrame:body.__ceHeadFrame,anatomyType:type,anatomyVariant:a.variant,anatomyLevel:level,boundary:boundary,frame:f,bindPositions:new Float32Array(p.length)};
  var matrices=palette(asset,asset.character.worldMatrices);
