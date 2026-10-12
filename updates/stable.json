@@ -1,16 +1,16 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.58",
+  "version": "74.00.59",
   "minAppVersion": "70.26.99",
   "channel": "stable",
-  "generated": "2026-10-11",
-  "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main",
+  "generated": "2026-10-12",
+  "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/081f11746ade8788572efb9124181ebb28ef48c7",
   "files": [
     {
       "path": "index.html",
-      "bytes": 88970,
-      "sha256": "79e03d52151d15dcf1555060165077d9e1152f866cc3e16103bbf5e8874e7a82"
+      "bytes": 89195,
+      "sha256": "20baf1bbc63eeb5aca209f9fcddb709185900158b2dc11e2a9b81e745efcfde6"
     },
     {
       "path": "app/3dmap/assets/clothing/fantasy-materials.webp",
@@ -23,24 +23,34 @@
       "sha256": "8fb425cbb07110631cf92e54971a96bea0884a760e454feb26817f3862841d88"
     },
     {
+      "path": "app/3dmap/character_anatomy.js",
+      "bytes": 8424,
+      "sha256": "01ad13dc6a7c21bb5b2e8ca62baccc1c62ab9ab2724df84af1687767b9a4f6af"
+    },
+    {
+      "path": "app/3dmap/character_anatomy_geometry.js",
+      "bytes": 20093,
+      "sha256": "2d249128b8ed91a1edc8d514d4295faba521aae6b0b9bbbd1abb5070f881179d"
+    },
+    {
       "path": "app/3dmap/character_appearance_store.js",
       "bytes": 2133,
       "sha256": "5e2fdda33667d06819b19d05640244282dd92ebf9d744973ae5a3f84e68bc8bc"
     },
     {
       "path": "app/3dmap/character_body_geometry.js",
-      "bytes": 64956,
-      "sha256": "2ab891804ed9e6b5296694b90d7fb54368154be910c0418abd0ba2d122dad0fd"
+      "bytes": 120619,
+      "sha256": "a2aa7b422438a1c11c96bd5dc8e700b8597c926d82df438fc148de7a6425ecc6"
     },
     {
       "path": "app/3dmap/character_clothing.js",
-      "bytes": 51225,
-      "sha256": "402f78413f367e05388dded1573768ef06bf8864ffe6a9660f153a1898894bdd"
+      "bytes": 51618,
+      "sha256": "57ddc17bcee0e1e6c7f58cddb9cce82b626d47dd4bdffd23640175ef5fb96314"
     },
     {
       "path": "app/3dmap/character_editor_3d.js",
-      "bytes": 130504,
-      "sha256": "6933ce92628b42a476d0973b812c128fea3ef72979ef3a9aa710656c3a11d3ab"
+      "bytes": 161190,
+      "sha256": "f046b538a81a8fac7cf36b8b1b9c5fad3d6447eeaab62c83dd2349c203bce075"
     },
     {
       "path": "app/3dmap/character_morph_assets.js",
@@ -48,9 +58,14 @@
       "sha256": "56e88c3ee00ad71f9afb55982e5953f12d91e1702909509beedf3a1ee4ca4ac7"
     },
     {
+      "path": "app/3dmap/character_pose.js",
+      "bytes": 4749,
+      "sha256": "3d1935d709dfed21e0b2fafc377a82d3591f181dc0b25de547393fc884ba2ff1"
+    },
+    {
       "path": "app/3dmap/character_system.js",
-      "bytes": 43888,
-      "sha256": "1cd6b5693b6235b6b5bbeab43e57d640e681d0d584962c9ca196caeb3d020cb8"
+      "bytes": 49724,
+      "sha256": "dde8ec01c51a6e29f4574eee760b4b923fc93ce45f27e2fdc80319c45f22c697"
     },
     {
       "path": "app/3dmap/gltf_catalog.js",
@@ -1246,6 +1261,26 @@
       "path": "app/assets/3d/quaternius/textures/T_Trim_Props_ORM.png",
       "bytes": 3017151,
       "sha256": "2d83d8df79aca2c8f630d389b43f09113afee98e746dfd42ddc3ce3302a136a2"
+    },
+    {
+      "path": "app/assets/3d/race_surfaces/bird-contour-feathers-v1.webp",
+      "bytes": 510226,
+      "sha256": "1d0c4f0e98a5d45f2b2ed7a39df0c418d9a0f116f78e8aae6fe7bec924e8843d"
+    },
+    {
+      "path": "app/assets/3d/race_surfaces/flight-feather-vane-v1.webp",
+      "bytes": 555662,
+      "sha256": "6ce6390442d097d264f1d40588a46586a1a654af05dbed54f45f4b1b8b66ec48"
+    },
+    {
+      "path": "app/assets/3d/race_surfaces/mammal-underfur-v1.webp",
+      "bytes": 544064,
+      "sha256": "10cfed5753f0b37e23d3b3375fbb1d003b0b3fd372656d35f302215b67f7c295"
+    },
+    {
+      "path": "app/assets/3d/race_surfaces/reptile-scales-v1.webp",
+      "bytes": 730360,
+      "sha256": "7fce4ed118ad75fe9f07c3ee989a59bde9b5035a03229038b094115a2776efc5"
     },
     {
       "path": "app/assets/3d/user_furniture/altar_table.glb",
@@ -3860,7 +3895,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 19013,
-      "sha256": "288ffdec902239cab1221e4d8d15f9ef81c83ce526ac272d31af56a5cc8e7014"
+      "sha256": "774017329cf4e4f075d5fccab11ac65996ffbabdb6857c1b5d9fa7afc3816634"
     },
     {
       "path": "app/update_scene_v2.js",
