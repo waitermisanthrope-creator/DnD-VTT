@@ -197,7 +197,7 @@ function startActorTurn(t){observe(t);st(t).bhAttacksThisTurn=0;
 Object.keys(actors).forEach(function(k){effects(actors[k]).slice().filter(function(e){return e.id==='fathomlessSlow'&&e.ownerId===actorId(t);}).forEach(function(e){removeEffect(actors[k],e);});});
 st(t).bhFathomlessUsed=false;if(effects(t).some(function(e){return e.id==='binding';})&&t.turnResources){t.turnResources.movement=0;t.turnResources.reaction=0;}if(enabled(t))st(t).bhHemocraftRerolled=false;}
 function afterActorAttack(t,ctx){if(!t||ctx.bloodHunterPuppet)return;var count=st(t).bhAttacksThisTurn=num(st(t).bhAttacksThisTurn)+1;if(count===2)effects(t).filter(function(e){return e.id==='bloatedAgony';}).slice(0,1).forEach(function(e){var owner=actors[e.ownerId];if(owner)curseDamage(owner,t,'1d8','necrotic');});}
-function bloodHunterRest(h,type){if(type!=='short'&&type!=='long')return;var s=st(h);delete s.bhGenieFlight;Object.keys(actors).forEach(function(k){var a=actors[k];effects(a).slice().filter(function(e){return e.id!=='howlImmunity'&&(a===h||e.ownerId===actorId(h));}).forEach(function(e){removeEffect(a,e);});});rites(h).forEach(function(r){r.active=false;});if(h.pactMagicData)h.pactMagicData.used=0;if(h.pactMagic)h.pactMagic.used=0;s.hybridForm=false;s.activeMutagens=[];s.bhPreparedMutagens=[];s.bhMayPrepareMutagens=true;delete s.bhIgnoreMutagenSide;delete s.bhAetherWalk;delete s.bhBloodlust;projectSpeed(h);sync(h);if(type==='long')s.bhSoulEaterAmplified=false;}
+function bloodHunterRest(h,type){if(type!=='short'&&type!=='long')return;var s=st(h);if(s.bhGenieFlight){if(s.bhGenieFlight.priorSpeed==null)delete h.flySpeed;else h.flySpeed=s.bhGenieFlight.priorSpeed;delete s.bhGenieFlight;}Object.keys(actors).forEach(function(k){var a=actors[k];effects(a).slice().filter(function(e){return e.id!=='howlImmunity'&&(a===h||e.ownerId===actorId(h));}).forEach(function(e){removeEffect(a,e);});});rites(h).forEach(function(r){r.active=false;});if(h.pactMagicData)h.pactMagicData.used=0;if(h.pactMagic)h.pactMagic.used=0;s.hybridForm=false;s.activeMutagens=[];s.bhPreparedMutagens=[];s.bhMayPrepareMutagens=true;delete s.bhIgnoreMutagenSide;delete s.bhAetherWalk;delete s.bhBloodlust;projectSpeed(h);sync(h);if(type==='long')s.bhSoulEaterAmplified=false;}
 
 function useBrand(h,ctx){
  sync(h);ctx=ctx||{};var t=target(ctx),r=ctx.attackResult,ac=ctx.attackContext||ctx,s=st(h);
@@ -279,7 +279,7 @@ function turnStart(h){
  if(s.hybridForm&&hp(h)>0&&hp(h)<num(h.hpMax,h.maxHp)/2){var automatic=global.DNDCombat.concentrationState(h).active||s.raging,sv=automatic?{success:false,autoFailed:true}:global.DNDCombat.savingThrow(h,'wis',8,l>=15?'advantage':'normal');s.bhBloodlust={save:sv,requiresNearestAttack:!sv.success};}
  else delete s.bhBloodlust;
 }
-function turnEnd(h){var s=st(h);if(s.bhGenieFlight){s.bhGenieFlight.rounds--;if(s.bhGenieFlight.rounds<=0)delete s.bhGenieFlight;}if(s.bhIgnoreMutagenSide){s.bhIgnoreMutagenSide.turns--;if(s.bhIgnoreMutagenSide.turns<=0)delete s.bhIgnoreMutagenSide;}if(s.bhAetherWalk){if(h.insideObject===true)curseDamage(h,h,'1d10','force');s.bhAetherWalk.turns--;if(s.bhAetherWalk.turns<=0){if(h.insideObject===true)s.bhAetherShuntRequired=true;delete s.bhAetherWalk;}}projectSpeed(h);}
+function turnEnd(h){var s=st(h);if(s.bhGenieFlight){s.bhGenieFlight.rounds--;if(s.bhGenieFlight.rounds<=0){if(s.bhGenieFlight.priorSpeed==null)delete h.flySpeed;else h.flySpeed=s.bhGenieFlight.priorSpeed;delete s.bhGenieFlight;}}if(s.bhIgnoreMutagenSide){s.bhIgnoreMutagenSide.turns--;if(s.bhIgnoreMutagenSide.turns<=0)delete s.bhIgnoreMutagenSide;}if(s.bhAetherWalk){if(h.insideObject===true)curseDamage(h,h,'1d10','force');s.bhAetherWalk.turns--;if(s.bhAetherWalk.turns<=0){if(h.insideObject===true)s.bhAetherShuntRequired=true;delete s.bhAetherWalk;}}projectSpeed(h);}
 
 function spellTable(l){if(l<3)return{cantrips:0,spells:0,slots:0,slotLevel:0};return{cantrips:l>=10?3:2,spells:l>=20?11:l>=19?10:l>=17?9:l>=15?8:l>=13?7:l>=11?6:l>=9?5:l>=7?4:l>=5?3:2,slots:l>=6?2:1,slotLevel:l>=19?4:l>=13?3:l>=7?2:1};}
 function useProfane(h,id,ctx){
@@ -296,7 +296,7 @@ function useProfane(h,id,ctx){
   if(p==='undead')return {ok:true,passive:true,message:'Реакция на некротический урон доступна в бою.'};
   if(p==='genie'){
    if(!hasRite(h)||!actionReady(h,'bonus')||!h.resources.bloodMaledict||h.resources.bloodMaledict.current<1||s.bhGenieFlight)return error('Полёт требует активного обряда, бонусного действия и использования проклятия.');
-   spend(h,'bloodMaledict',1);takeAction(h,'bonus');s.bhGenieFlight={speed:30,rounds:Math.max(1,hemMod(h))};
+   spend(h,'bloodMaledict',1);takeAction(h,'bonus');s.bhGenieFlight={speed:30,rounds:Math.max(1,hemMod(h)),priorSpeed:h.flySpeed==null?null:num(h.flySpeed)};h.flySpeed=Math.max(30,num(h.flySpeed));
    return {ok:true,flightSpeed:30,rounds:s.bhGenieFlight.rounds,message:'Полёт Джинна: 30 футов.'};
   }
   if(p==='fiend')return {ok:true,passive:true,message:'Исчадие: переброс 1–2 огненного обряда применяется при расчёте урона.'};
