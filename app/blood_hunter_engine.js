@@ -408,7 +408,41 @@ function turnStart(h){
  if(s.hybridForm&&hp(h)>0&&hp(h)<num(h.hpMax,h.maxHp)/2){var automatic=global.DNDCombat.concentrationState(h).active||s.raging,sv=automatic?{success:false,autoFailed:true}:global.DNDCombat.savingThrow(h,'wis',8,l>=15?'advantage':'normal');s.bhBloodlust={save:sv,requiresNearestAttack:!sv.success};}
  else delete s.bhBloodlust;
 }
-function turnEnd(h){var s=st(h);if(s.bhGenieFlight){s.bhGenieFlight.rounds--;if(s.bhGenieFlight.rounds<=0){if(s.bhGenieFlight.priorSpeed==null)delete h.flySpeed;else h.flySpeed=s.bhGenieFlight.priorSpeed;delete s.bhGenieFlight;}}if(s.bhIgnoreMutagenSide){s.bhIgnoreMutagenSide.turns--;if(s.bhIgnoreMutagenSide.turns<=0)delete s.bhIgnoreMutagenSide;}if(s.bhAetherWalk){if(h.insideObject===true)curseDamage(h,h,'1d10','force');s.bhAetherWalk.turns--;if(s.bhAetherWalk.turns<=0){if(h.insideObject===true)s.bhAetherShuntRequired=true;delete s.bhAetherWalk;}}projectSpeed(h);}
+// Authoritative battle-grid geometry for Aether Walk (not an untrusted flag).
+function aetherMap(h){
+ var B=global.DNDBattleBoard,board=B&&typeof B.ensure==='function'?B.ensure():null;
+ var t=B&&B.findToken&&(B.findToken('bt_'+actorId(h))||B.findToken(actorId(h)));
+ return board&&t?{board:board,token:t}:null;
+}
+function aetherInsideObject(h){
+ var map=aetherMap(h);
+ if(!map)return !!(h&&h.insideObject===true); // Legacy non-map encounters.
+ var token=map.token,obstacles=map.board.obstacles||{},size=Math.max(1,num(token.size,1));
+ for(var y=token.y;y<token.y+size;y++)for(var x=token.x;x<token.x+size;x++){
+  if(obstacles[String(x)+':'+String(y)])return true;
+ }
+ return false;
+}
+function aetherShunt(h){
+ var found=aetherMap(h);
+ if(!found)return {ok:false,reason:'Для вытеснения необходима боевая карта.'};
+ var map=found.board,t=found.token,size=Math.max(1,num(t.size,1)),columns=Math.max(0,num(map.cols)),rows=Math.max(0,num(map.rows)),origin={x:t.x,y:t.y};
+ if(!columns||!rows)return {ok:false,reason:'Размеры карты неизвестны.'};
+ var candidates=[],obstacles=map.obstacles||{},others=Object.keys(map.tokens||{}).map(function(k){return map.tokens[k];}).filter(function(a){return a&&a!==t;});
+ for(var y=0;y<=rows-size;y++)for(var x=0;x<=columns-size;x++){
+  var blocked=false;
+  for(var iy=y;iy<y+size;iy++)for(var ix=x;ix<x+size;ix++){if(obstacles[String(ix)+':'+String(iy)])blocked=true;}
+  if(blocked)continue;
+  if(others.some(function(o){var z=Math.max(1,num(o.size,1));return x<o.x+z&&x+size>o.x&&y<o.y+z&&y+size>o.y;}))continue;
+  candidates.push({x:x,y:y,distance:Math.max(Math.abs(x-origin.x),Math.abs(y-origin.y))});
+ }
+ if(!candidates.length)return {ok:false,reason:'Нет свободного места для вытеснения.'};
+ candidates.sort(function(a,b){return a.distance-b.distance||a.y-b.y||a.x-b.x;});
+ var chosen=candidates[0];t.x=chosen.x;t.y=chosen.y;h.insideObject=false;
+ delete st(h).bhAetherShuntRequired;
+ return {ok:true,from:origin,to:{x:chosen.x,y:chosen.y},distanceFt:chosen.distance*num(map.cellFt,5)};
+}
+function turnEnd(h){var s=st(h);if(s.bhGenieFlight){s.bhGenieFlight.rounds--;if(s.bhGenieFlight.rounds<=0){if(s.bhGenieFlight.priorSpeed==null)delete h.flySpeed;else h.flySpeed=s.bhGenieFlight.priorSpeed;delete s.bhGenieFlight;}}if(s.bhIgnoreMutagenSide){s.bhIgnoreMutagenSide.turns--;if(s.bhIgnoreMutagenSide.turns<=0)delete s.bhIgnoreMutagenSide;}if(s.bhAetherWalk){var inside=aetherInsideObject(h);if(inside)curseDamage(h,h,'1d10','force');s.bhAetherWalk.turns--;if(s.bhAetherWalk.turns<=0){if(inside){var shunt=aetherShunt(h);if(!shunt.ok)s.bhAetherShuntRequired=true;else s.bhLastAetherShunt=shunt;}delete s.bhAetherWalk;}}projectSpeed(h);}
 
 function spellTable(l){if(l<3)return{cantrips:0,spells:0,slots:0,slotLevel:0};return{cantrips:l>=10?3:2,spells:l>=20?11:l>=19?10:l>=17?9:l>=15?8:l>=13?7:l>=11?6:l>=9?5:l>=7?4:l>=5?3:2,slots:l>=6?2:1,slotLevel:l>=19?4:l>=13?3:l>=7?2:1};}
 function arcanaInfo(h,kind){
@@ -647,5 +681,5 @@ var labels={huntersBane:'Погибель охотника',bloodMaledict:'Кр�
 features.forEach(function(f){f.name=labels[f.id]||f.name;});subclasses.forEach(function(s){s.features.forEach(function(f){f.name=labels[f.id]||f.name;});});
 var pack={id:'blood-hunter',name:CLASS,aliases:['Blood Hunter','BloodHunter'],authoritativeSubclasses:true,source:'Matthew Mercer / Critical Role — partner third-party content',license:'Original runtime implementation',
 features:features,subclasses:subclasses,hooks:{sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,checkModifiers:skillModifiers,startTurn:turnStart,onTurnEnd:turnEnd,rest:bloodHunterRest,onDamage:onDamage,onCondition:onCondition,onAttackResult:onAttackResult}};
-var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'3.0.0',CLASS:CLASS,adjustWeaponDamage:adjustWeaponDamage,adjustRiteDamage:adjustRiteDamage,renderControls:renderControls,gameActors:gameActors,abilityBonuses:abilityBonuses,incomingAC:incomingAC,conditionImmune:conditionImmune,reviveRite:reviveRite,currentBrand:currentBrand,canDash:canDash,canPhaseThroughObjects:canPhaseThroughObjects,brandedByAxiom:brandedByAxiom,attemptBrandedShapeChange:attemptBrandedShapeChange,resolveBrandTravel:resolveBrandTravel,canBreatheUnderwater:canBreatheUnderwater,isRevealed:isRevealed,flightSpeed:flightSpeed,recordCantripCast:recordCantripCast,arcanaInfo:arcanaInfo,ensureArcanaSpells:ensureArcanaSpells,deathSaveMode:deathSaveMode,projectMutagenTraits:projectMutagenTraits,resolveBloodlust:resolveBloodlust,beginTurn:turnStart,halveNecroticRiteDamage:halveNecroticRiteDamage,sappingScarSaveModifiers:sappingScarSaveModifiers,chooseKnown:chooseKnown,activeRite:activeRite,observe:observe,damageModifiers:damageModifiers,cursedSaveModifiers:cursedSaveModifiers,cursedCheckModifiers:cursedCheckModifiers,cursedAttackPenalty:cursedAttackPenalty,endActorTurn:endActorTurn,startActorTurn:startActorTurn,afterActorAttack:afterActorAttack,afterDamage:afterDamage,rest:bloodHunterRest,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
+var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'3.0.0',CLASS:CLASS,adjustWeaponDamage:adjustWeaponDamage,adjustRiteDamage:adjustRiteDamage,renderControls:renderControls,gameActors:gameActors,abilityBonuses:abilityBonuses,incomingAC:incomingAC,conditionImmune:conditionImmune,reviveRite:reviveRite,currentBrand:currentBrand,canDash:canDash,canPhaseThroughObjects:canPhaseThroughObjects,brandedByAxiom:brandedByAxiom,attemptBrandedShapeChange:attemptBrandedShapeChange,resolveBrandTravel:resolveBrandTravel,canBreatheUnderwater:canBreatheUnderwater,isRevealed:isRevealed,flightSpeed:flightSpeed,recordCantripCast:recordCantripCast,arcanaInfo:arcanaInfo,ensureArcanaSpells:ensureArcanaSpells,deathSaveMode:deathSaveMode,projectMutagenTraits:projectMutagenTraits,resolveBloodlust:resolveBloodlust,beginTurn:turnStart,halveNecroticRiteDamage:halveNecroticRiteDamage,sappingScarSaveModifiers:sappingScarSaveModifiers,chooseKnown:chooseKnown,activeRite:activeRite,observe:observe,damageModifiers:damageModifiers,cursedSaveModifiers:cursedSaveModifiers,cursedCheckModifiers:cursedCheckModifiers,cursedAttackPenalty:cursedAttackPenalty,endActorTurn:endActorTurn,endTurn:turnEnd,aetherInsideObject:aetherInsideObject,aetherShunt:aetherShunt,startActorTurn:startActorTurn,afterActorAttack:afterActorAttack,afterDamage:afterDamage,rest:bloodHunterRest,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
 })(window);
