@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   windows:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -24,25 +24,18 @@ jobs:
       - name: Dependencies and shared checks
         run: |
           npm install --package-lock=false --no-audit --no-fund
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           node tests/cloud_sync_test.cjs
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           npm run desktop:check
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Windows Portable (no release or signing)
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
         run: |
           npm run desktop:prepare
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          npx electron-builder --win portable --x64 --publish never -c.win.signAndEditExecutable=false
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          New-Item -ItemType Directory -Force dist/cloud-test | Out-Null
-          $exes = @(Get-ChildItem dist/windows/DnD-VTT-Portable-*.exe)
-          if ($exes.Count -ne 1) { throw "Expected exactly one Portable EXE" }
-          Copy-Item $exes[0].FullName dist/cloud-test/DnD-VTT-Cloud-Test-Windows-x64.exe
-          $hash = (Get-FileHash dist/cloud-test/DnD-VTT-Cloud-Test-Windows-x64.exe -Algorithm SHA256).Hash.ToLower()
-          "$hash  DnD-VTT-Cloud-Test-Windows-x64.exe" | Set-Content -Encoding ascii dist/cloud-test/SHA256SUMS.txt
+          npx electron-builder --win portable --x64 --publish never -c.win.signAndEditExecutable=false -c.electronDownload.cache="$RUNNER_TEMP/electron-cache"
+          mkdir -p dist/cloud-test
+          cp dist/windows/DnD-VTT-Portable-*.exe dist/cloud-test/DnD-VTT-Cloud-Test-Windows-x64.exe
+          cd dist/cloud-test
+          sha256sum DnD-VTT-Cloud-Test-Windows-x64.exe > SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         with:
           name: DnD-VTT-Cloud-Test-Windows-x64
