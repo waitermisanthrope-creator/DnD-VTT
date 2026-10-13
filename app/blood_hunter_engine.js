@@ -195,6 +195,29 @@ function useRite(h,ctx){
  var loss=hemRoll(h,ctx,false);if(hp(h)<=loss)return error('Недостаточно HP.');if(!payBlood(h,loss))return error('Невозможно оплатить обряд.');if(lvl(h)>=20&&ctx.rerollHemocraft)s.bhHemocraftRerolled=true;
  var r={active:true,type:type,weaponId:key};rites(h).push(r);s.crimsonRite=r;takeAction(h,'bonus');return {ok:true,lossHp:loss,weaponId:key,message:'Алый обряд: '+riteNames[type]+'. Потеряно '+loss+' HP.'};
 }
+// Reaction windows receive attacker and geometry from the host's pending attack,
+// never from the answering player's payload.
+function bloodHunterReactionOptions(h,ctx){
+ ctx=ctx||{};if(!enabled(h)||ctx.source!=='attack'||ctx.visible===false||ctx.natural20===true)return [];
+ if(!ctx.returnTarget||!actorId(ctx.returnTarget)||!Number.isFinite(Number(ctx.attackTotal))||!Number.isFinite(Number(ctx.targetAc)))return [];
+ if(!Number.isFinite(Number(ctx.distanceFt))||Number(ctx.distanceFt)>30||Number(ctx.distanceFt)<0)return [];
+ var s=st(h);
+ if(!(s.bloodCursesKnown||[]).includes('eyeless')||!h.resources||!h.resources.bloodMaledict||num(h.resources.bloodMaledict.current)<1||!actionReady(h,'reaction'))return [];
+ if((ctx.returnTarget.conditionImmunities||[]).some(function(k){return /blind|ослеп/i.test(String(k));}))return [];
+ return [{id:'bloodCurseEyeless',priority:3,label:'Проклятие Безглазого',description:'Реакция: вычесть кость гемокрафта из подтверждённого мастерского броска атаки.'}];
+}
+function bloodHunterResolveReaction(h,id,ctx){
+ if(id!=='bloodCurseEyeless')return error('Неизвестная реакция.');
+ ctx=ctx||{};
+ if(!bloodHunterReactionOptions(h,ctx).length)return error('Реакция Безглазого недоступна для этого удара.');
+ var attack={total:Number(ctx.attackTotal)};
+ var spell=useCurse(h,{curse:'eyeless',target:ctx.returnTarget,attackResult:attack,visible:true,distanceFt:Number(ctx.distanceFt)});
+ if(!spell.ok)return spell;
+ var negated=attack.total<Number(ctx.targetAc);
+ return {ok:true,id:id,applied:true,remainingAmount:negated?0:Math.max(0,num(ctx.amount)),
+   attackNegated:negated,reduced:negated?Math.max(0,num(ctx.amount)):0,attackTotal:attack.total,
+   deduction:spell.deduction,curse:spell,preEffect:true};
+}
 function useCurse(h,ctx){
  sync(h);ctx=ctx||{};var id=String(ctx.curse||''),c=curses[id],t=target(ctx),s=st(h),B=global.DNDCombat;
  if(!c||!B)return error('Выберите кровавое проклятие.');
@@ -708,5 +731,5 @@ var labels={huntersBane:'Погибель охотника',bloodMaledict:'Кр�
 features.forEach(function(f){f.name=labels[f.id]||f.name;});subclasses.forEach(function(s){s.features.forEach(function(f){f.name=labels[f.id]||f.name;});});
 var pack={id:'blood-hunter',name:CLASS,aliases:['Blood Hunter','BloodHunter'],authoritativeSubclasses:true,source:'Matthew Mercer / Critical Role — partner third-party content',license:'Original runtime implementation',
 features:features,subclasses:subclasses,hooks:{sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,checkModifiers:skillModifiers,startTurn:turnStart,onTurnEnd:turnEnd,rest:bloodHunterRest,onDamage:onDamage,onCondition:onCondition,onAttackResult:onAttackResult}};
-var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'3.0.0',CLASS:CLASS,adjustWeaponDamage:adjustWeaponDamage,adjustRiteDamage:adjustRiteDamage,renderControls:renderControls,gameActors:gameActors,abilityBonuses:abilityBonuses,incomingAC:incomingAC,conditionImmune:conditionImmune,reviveRite:reviveRite,currentBrand:currentBrand,canDash:canDash,canPhaseThroughObjects:canPhaseThroughObjects,brandedByAxiom:brandedByAxiom,attemptBrandedShapeChange:attemptBrandedShapeChange,resolveBrandTravel:resolveBrandTravel,canBreatheUnderwater:canBreatheUnderwater,isRevealed:isRevealed,flightSpeed:flightSpeed,recordCantripCast:recordCantripCast,arcanaInfo:arcanaInfo,ensureArcanaSpells:ensureArcanaSpells,deathSaveMode:deathSaveMode,projectMutagenTraits:projectMutagenTraits,resolveBloodlust:resolveBloodlust,beginTurn:turnStart,halveNecroticRiteDamage:halveNecroticRiteDamage,sappingScarSaveModifiers:sappingScarSaveModifiers,chooseKnown:chooseKnown,activeRite:activeRite,observe:observe,damageModifiers:damageModifiers,cursedSaveModifiers:cursedSaveModifiers,cursedCheckModifiers:cursedCheckModifiers,cursedAttackPenalty:cursedAttackPenalty,endActorTurn:endActorTurn,endTurn:turnEnd,aetherInsideObject:aetherInsideObject,aetherShunt:aetherShunt,aetherPathCost:aetherPathCost,startActorTurn:startActorTurn,afterActorAttack:afterActorAttack,afterDamage:afterDamage,rest:bloodHunterRest,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
+var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'3.0.0',CLASS:CLASS,adjustWeaponDamage:adjustWeaponDamage,adjustRiteDamage:adjustRiteDamage,renderControls:renderControls,gameActors:gameActors,abilityBonuses:abilityBonuses,incomingAC:incomingAC,conditionImmune:conditionImmune,reviveRite:reviveRite,currentBrand:currentBrand,canDash:canDash,canPhaseThroughObjects:canPhaseThroughObjects,brandedByAxiom:brandedByAxiom,attemptBrandedShapeChange:attemptBrandedShapeChange,resolveBrandTravel:resolveBrandTravel,reactionOptions:bloodHunterReactionOptions,resolveReaction:bloodHunterResolveReaction,canBreatheUnderwater:canBreatheUnderwater,isRevealed:isRevealed,flightSpeed:flightSpeed,recordCantripCast:recordCantripCast,arcanaInfo:arcanaInfo,ensureArcanaSpells:ensureArcanaSpells,deathSaveMode:deathSaveMode,projectMutagenTraits:projectMutagenTraits,resolveBloodlust:resolveBloodlust,beginTurn:turnStart,halveNecroticRiteDamage:halveNecroticRiteDamage,sappingScarSaveModifiers:sappingScarSaveModifiers,chooseKnown:chooseKnown,activeRite:activeRite,observe:observe,damageModifiers:damageModifiers,cursedSaveModifiers:cursedSaveModifiers,cursedCheckModifiers:cursedCheckModifiers,cursedAttackPenalty:cursedAttackPenalty,endActorTurn:endActorTurn,endTurn:turnEnd,aetherInsideObject:aetherInsideObject,aetherShunt:aetherShunt,aetherPathCost:aetherPathCost,startActorTurn:startActorTurn,afterActorAttack:afterActorAttack,afterDamage:afterDamage,rest:bloodHunterRest,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
 })(window);
