@@ -16,6 +16,7 @@ g.DNDBattleBoard={ensure:()=>({tokens}),distanceFt:(a,b)=>Math.abs(a.x-b.x)*5,li
 g.currentChar={id:'master',initiativeTracker:{round:1,activeIndex:0,combatants:[actor,target]}};
 g.currentCharacter=g.currentChar;
 g.autoSaveCurrentCharacter=()=>{};g.renderInitiativeTracker=()=>{};g.dndRenderCombatV3=()=>{};g.dndNetworkGameplayRender=()=>{};
+g.addEventListener=(event,fn)=>{if(event==='DOMContentLoaded')fn();};
 const peers={p1:{profile:h}};
 g.dndNetwork={state:{role:'host'},getPeer:id=>peers[id],registerActionHandler:fn=>{handler=fn;},sendActionResult:(id,req,r)=>sent.push(r),commitHostEvent:()=>({seq:1})};
 vm.runInContext(fs.readFileSync(path.join(root,'app/network_gameplay.js'),'utf8'),g,{filename:'app/network_gameplay.js'});
