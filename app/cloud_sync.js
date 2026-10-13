@@ -120,8 +120,9 @@
       var r = await g.fetch(c.projectUrl + path, { method:method || (body ? 'POST' : 'GET'),headers:headers,body:body ? JSON.stringify(body) : undefined,signal:controller.signal });
       var text = await r.text(), data = text ? JSON.parse(text) : null;
       if (!r.ok) {
-        var code=data&&(data.code||data.error_code);
-        var err = Error(code==='email_not_confirmed'?'Подтвердите почту перед входом.':code==='invalid_credentials'?'Неверная почта или пароль.':r.status === 401 ? 'Сессия истекла. Войдите снова.' : r.status === 429 ? 'Слишком много запросов. Повторите позже.' : (r.status === 400||r.status===422) && path.indexOf('/auth/') === 0 ? 'Проверьте почту, пароль или код подтверждения.' : 'Облачный запрос не выполнен (' + r.status + '). Проверьте подключение и настройки проекта.');
+        // GoTrue sends a numeric HTTP `code` alongside the semantic `error_code`.
+        var code=data&&(data.error_code||data.code);
+        var err = Error(code==='email_not_confirmed'?'Почта ещё не подтверждена. Подтвердите адрес по письму и повторите вход. До этого вы остаётесь гостем.':code==='invalid_credentials'?'Неверная почта или пароль.':r.status === 401 ? 'Сессия истекла. Войдите снова.' : r.status === 429 ? 'Слишком много запросов. Повторите позже.' : (r.status === 400||r.status===422) && path.indexOf('/auth/') === 0 ? 'Проверьте почту, пароль или код подтверждения.' : 'Облачный запрос не выполнен (' + r.status + '). Проверьте подключение и настройки проекта.');
         err.status = r.status; throw err;
       }
       return data;
@@ -166,7 +167,7 @@
     var s=await request('/auth/v1/signup',{email:email,password:password});
     if(generation!==epoch)return;
     if(s.access_token) { storeSession(s);activate();blocked=false;await sync(); }
-    else { message='Проверьте почту. Введите код подтверждения из письма.';notify(); }
+    else { message='Для входа подтвердите почту по ссылке или коду из письма, затем нажмите «Войти». Пока почта не подтверждена, вы остаётесь гостем.';notify(); }
   }
   async function verify(email,code,type) {
     beforeAccountSwitch();

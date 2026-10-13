@@ -129,6 +129,14 @@ async function main(){
     const server=new Server(),pc=device(server,{[KEY]:JSON.stringify([hero])});await pc.api.login('a@example.com','password123');pc.g.navigator.onLine=false;pc.api.importLocal();const id=pc.roster()[0].id;pc.save([]);pc.api.copyDeleted(id);assert.equal(pc.roster().length,1);assert.notEqual(pc.roster()[0].id,id);assert.deepEqual(pc.roster()[0].appearance3d,hero.appearance3d);pc.g.navigator.onLine=true;await pc.api.sync();assert.equal(server.rows.size,2);assert.equal([...server.rows.values()].filter(r=>r.deleted).length,1);
     pc.g.dndNetwork={state:{mode:'host'}};await assert.rejects(pc.api.logout(),/Завершите сетевую игру/);assert.equal(pc.api.snapshot().email,'a@example.com');pc.g.dndNetwork.state.mode='single';await pc.api.logout();
   });
+  await test('real GoTrue error_code takes priority over numeric HTTP code',async()=>{
+    const server=new Server(),raw=JSON.stringify([hero]),pc=device(server,{[KEY]:raw});
+    pc.g.fetch=async()=>({ok:false,status:400,text:async()=>JSON.stringify({code:400,error_code:'email_not_confirmed',msg:'Email not confirmed'})});
+    await assert.rejects(pc.api.login('a@example.com','password123'),/Почта ещё не подтверждена/);
+    assert.equal(pc.api.snapshot().email,'');assert.equal(pc.api.snapshot().status,'Гость');assert.equal(pc.map.get(KEY),raw);assert(!pc.map.has('dnd_cloud_session_v1'));
+    pc.g.fetch=async()=>({ok:false,status:400,text:async()=>JSON.stringify({code:400,error_code:'invalid_credentials',msg:'Invalid login credentials'})});
+    await assert.rejects(pc.api.login('a@example.com','password123'),/Неверная почта или пароль/);
+  });
   console.log('CLOUD_SYNC_TEST_OK: '+passed+' scenarios');
 }
 module.exports={Server,hero};
