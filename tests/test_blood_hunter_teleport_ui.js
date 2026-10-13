@@ -16,6 +16,7 @@ g.dndTurnPlannerQuick('wizard','','CAST_SPELL');
 g.dndTurnPlannerPickTeleport();
 g.dndTurnPlannerConfirm();
 assert(sent.length===0,'teleport cannot be cast until a destination is selected');
+g.dndTurnPlannerPickTeleport();
 g.dndTurnPlannerCellSelected({x:2,y:0},null);
 g.dndTurnPlannerConfirm();
 assert.strictEqual(sent.length,1);
