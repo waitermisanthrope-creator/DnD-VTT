@@ -37,6 +37,7 @@ assert.strictEqual(cast(mist,7,0).ok,false,'Misty Step range is only 30ft');
 assert.strictEqual(cast(mist,-1,0).ok,false);
 assert.strictEqual(cast(mist,1.5,0).ok,false,'floating cell invalid');
 assert.strictEqual(tokens.bt_wizard.x,0);
+assert.strictEqual(caster.hp,40,'invalid destination does not cause combat damage');
 assert.strictEqual(h.spellSlotsData[2].used,0,'invalid move never spends slot');
 assert.strictEqual(cast('Мерцание (Blink)',1,0).ok,false,'unsupported movement spells fail closed');
 assert.strictEqual(cast('Волшебная стрела',1,0).ok,false,'non-teleport spells reject client movement');
