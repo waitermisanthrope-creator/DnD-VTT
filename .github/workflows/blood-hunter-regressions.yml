@@ -36,7 +36,7 @@ jobs:
           node tests/test_v731_fixes.js
           node tests/test_v732_fixes.js
           (cd app && node ../tests/test_v733_logic_audit.js)
-          node tests/test_v734_network_concentration.js
-          node tests/test_v737_spellcasting_transaction.js
-          node tests/test_v738_multiclass_spell_sources.js
-          node tests/test_v739_prepared_transaction.js
+          (cd app && node ../tests/test_v734_network_concentration.js)
+          (cd app && node ../tests/test_v737_spellcasting_transaction.js)
+          (cd app && node ../tests/test_v738_multiclass_spell_sources.js)
+          (cd app && node ../tests/test_v739_prepared_transaction.js)
