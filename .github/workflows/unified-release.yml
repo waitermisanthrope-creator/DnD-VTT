@@ -176,9 +176,16 @@ jobs:
           node-version: "24"
       - name: Validate version
         run: python tools/unified_version.py
+      - name: Install Wine for NSIS uninstaller creation
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends wine wine64 wine32:i386
+          wine --version
       - name: Build Windows Setup and Portable
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+          USE_SYSTEM_WINE: 'true'
         run: |
           npm install --package-lock=false --no-audit --no-fund
           npm run desktop:check

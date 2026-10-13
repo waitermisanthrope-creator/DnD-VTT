@@ -15,9 +15,6 @@
     "electron-builder": "^26.0.0"
   },
   "build": {
-    "toolsets": {
-      "wine": "1.0.1"
-    },
     "appId": "com.dndvtt.desktop",
     "productName": "DnD VTT",
     "asar": true,
