@@ -2984,8 +2984,8 @@
     },
     {
       "path": "app/blood_hunter_engine.js",
-      "bytes": 72477,
-      "sha256": "817814077ea355d7b4df69f5304051d26da47184a0d4ae7a4faccd9da17dd622"
+      "bytes": 74973,
+      "sha256": "e52b0c4090c2d5ab1e94015b64d26b26d90b3fac82c84ebf027fa868e5655a40"
     },
     {
       "path": "app/campaign_manager.js",
