@@ -383,8 +383,10 @@
 var requestedClass=String(action.payload&&action.payload.className||''),externalDef=!def&&global.DNDContent&&global.DNDContent.resolveFeature?global.DNDContent.resolveFeature(profile,id,requestedClass||undefined):null;
 if(externalDef&&externalDef.packId!=='blood-hunter')externalDef=null;
 def=def||externalDef;
+var bhMeta=global.DNDContent&&global.DNDContent.resolveFeature?global.DNDContent.resolveFeature(profile,id,'Кровавый охотник'):null;
+var bloodHunterScoped=!!(bhMeta&&bhMeta.packId==='blood-hunter'&&(!requestedClass||['Кровавый охотник','Blood Hunter','BloodHunter','blood-hunter'].indexOf(requestedClass)>=0));
 if(!def)return actionError(peerId,action,'Неизвестная или недоступная способность.');if(typeof global.DNDClassFeatures.featureAvailableForCurrentBuild==='function'&&!global.DNDClassFeatures.featureAvailableForCurrentBuild(profile,id))return actionError(peerId,action,'Эта способность недоступна вашему персонажу.');if(def.action==='on-hit')return actionError(peerId,action,'Эта способность может применяться только как часть соответствующего боевого события.');var actor=t.combatants.find(function(c){return c.ownerPeerId===peerId;});if(!actor)return actionError(peerId,action,'Персонаж игрока не найден в инициативе.');var resourceKind=def.action==='reaction'?'reaction':(def.action==='bonus'?'bonusAction':(def.action==='action'&&id!=='actionSurge'?'action':null));if(resourceKind&&resourceKind!=='reaction'&&(!currentActive()||currentActive()!==actor))return actionError(peerId,action,'Эта способность доступна только в ваш ход.');if(resourceKind&&resources(actor)[resourceKind]===false)return actionError(peerId,action,'Ресурс '+resourceKind+' уже использован.');var target=action.payload&&action.payload.targetId?findTarget(action.payload.targetId):null;var vr=validateFeatureTarget(actor,target,id);if(!vr.ok)return actionError(peerId,action,vr.error);var proxy=clone(profile)||{};proxy.id=profile.characterId;proxy.characterId=profile.characterId;proxy.name=profile.name;proxy.hpCurrent=actor.hp;proxy.hpMax=actor.maxHp;proxy.hp=actor.hp;proxy.maxHitPoints=actor.maxHp;proxy.hitPoints=actor.hp;proxy.turnResources=clone(actor.turnResources)||resources(actor);proxy.resources=clone(profile.resources)||{};proxy.classFeaturesState=clone(profile.classFeaturesState)||{};proxy.classes=clone(profile.classes)||[];proxy.stats=clone(profile.stats)||{};var ctx=clone(action.payload)||{};ctx.target=target;
-if(externalDef&&externalDef.packId==='blood-hunter'){
+if(bloodHunterScoped){
  ctx.className='Кровавый охотник';
  var safe=['chooseBloodCurses','chooseCrimsonRites','setHemocraftAbility','chooseBloodOrder','fightingStyle','otherworldlyPatron','crimsonRite','riteFocus','bloodMaledict'];
  if(safe.indexOf(id)<0)return actionError(peerId,action,'Для этой способности необходим подтверждённый боевой триггер или отдельная сетевая реализация.');
@@ -399,7 +401,7 @@ if(externalDef&&externalDef.packId==='blood-hunter'){
  }else{delete ctx.distanceFt;delete ctx.visible;}
 }
 var result=global.DNDClassFeatures&&typeof global.DNDClassFeatures.useFeature==='function'?global.DNDClassFeatures.useFeature(proxy,id,ctx):{ok:false,reason:'Class feature engine unavailable.'};if(!result||!result.ok)return actionError(peerId,action,result&&result.reason||'Способность не выполнена.');if(resourceKind&&resources(actor)[resourceKind]!==false&&resourceKind!=='reaction')resources(actor)[resourceKind]=false;if(resourceKind==='reaction'&&resources(actor).reaction!==false)resources(actor).reaction=false;profile.resources=clone(proxy.resources)||{};profile.classFeaturesState=clone(proxy.classFeaturesState)||{};profile.turnResources=clone(proxy.turnResources)||{};
-if(externalDef&&externalDef.packId==='blood-hunter'){
+if(bloodHunterScoped){
  actor.turnResources=clone(proxy.turnResources)||actor.turnResources;
  actor.hp=Math.max(0,Math.min(num(actor.maxHp,proxy.hpMax||actor.maxHp),num(proxy.hpCurrent,proxy.hitPoints)));
 }else{
