@@ -27,7 +27,7 @@
     keys.forEach(function(k){if(!/^DND|^dnd/.test(k))return;var v=safe(function(){return global[k];},null),type=typeof v;var methods=[];if(v&&type==='object'){methods=safe(function(){return Object.keys(v).filter(function(x){return typeof v[x]==='function';}).slice(0,80);},[]);}out.push({path:k,type:type,callable:type==='function'||methods.length>0,methods:methods});});
     return out.sort(function(a,b){return a.path.localeCompare(b.path);});
   }
-  function storage(){return safe(function(){var o={};for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i),v=localStorage.getItem(k);o[k]={length:v?v.length:0,preview:v&&v.length>600?v.slice(0,600)+'…':v};}return o;},{});}
+  function storage(){return safe(function(){var o={};for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k.indexOf('dnd_cloud_')===0){o[k]={length:0,preview:'[Данные аккаунта скрыты]'};continue;}var v=localStorage.getItem(k);o[k]={length:v?v.length:0,preview:v&&v.length>600?v.slice(0,600)+'…':v};}return o;},{});}
   function engineSnapshot(){
     var candidates=['DNDGameplayV57','DNDEncounterMapV59','DNDTokenInteractionV60','DNDCombatLogV66','DNDMobileSessionV67','DNDEncounterCheckpointV68','DNDCombatEventBusV69','DNDCombat','DNDRules','DNDNetworkEngine','DNDNetwork','dndNetwork','DNDCampaign','DNDBattleBoard'];
     var o={};candidates.forEach(function(k){var v=safe(function(){return global[k];},null);o[k]={present:!!v,type:typeof v,keys:v&&typeof v==='object'?safe(function(){return Object.keys(v).slice(0,80);},[]):[]};if(v&&typeof v==='object'&&typeof v.snapshot==='function')o[k].snapshot=safe(function(){return clone(v.snapshot());},null);});return o;

@@ -1,5 +1,6 @@
 /**
- * Модуль общих настроек приложения (settings.js)
+ * Модуль общих настроек приложения (settings.js). Аккаунт: DNDCloudSync,
+ * DNDCloudAccount; резервные копии исключают сессии и журнал аккаунтов.
  */
 const APP_THEMES = {
   orange: { name: 'D&D Оранжевый', primary: '#ff9800', accent: '#e53935' },
@@ -56,6 +57,11 @@ function openSettingsModal() {
           <button onclick="closeSettingsModal()" style="background: #e53935; color: #fff; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-weight: bold;">✕</button>
         </div>
         <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="background:#252525;padding:12px;border-radius:6px;border:1px solid #66502e;">
+            <strong>☁ Аккаунт и облачные персонажи</strong>
+            <p id="settingsCloudAccountStatus" style="overflow-wrap:anywhere;">Гостевой режим</p>
+            <button class="btn-action" onclick="DNDCloudAccount.open()" style="width:100%;min-height:44px;">Управление аккаунтом и синхронизацией</button>
+          </div>
           <div style="background: #252525; padding: 12px; border-radius: 6px; border: 1px solid #333;">
             <div style="font-size: 0.95em; font-weight: bold; margin-bottom: 8px; color: var(--theme-primary, #ff9800);">🎨 Тема оформления (Акцент)</div>
             <select id="settingsThemeSelect" onchange="applyAppTheme(this.value)" style="width: 100%; padding: 8px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; box-sizing: border-box;">
@@ -172,6 +178,12 @@ function openSettingsModal() {
     document.body.appendChild(modal);
   }
 
+  const cloudStatus = document.getElementById('settingsCloudAccountStatus');
+  if (cloudStatus && window.DNDCloudSync) {
+    const updateCloudStatus = s => { cloudStatus.textContent = (s.email ? s.email + ' · ' : '') + s.status; };
+    updateCloudStatus(DNDCloudSync.snapshot());
+    if (!cloudStatus.dataset.bound && DNDCloudSync.onChange) { DNDCloudSync.onChange(updateCloudStatus); cloudStatus.dataset.bound = 'true'; }
+  }
   const currentVersion = document.getElementById('settingsCurrentVersion');
   if (currentVersion) {
     const version = (window.DND_UPDATE_MANAGER && window.DND_UPDATE_MANAGER.VERSION) ||
@@ -718,6 +730,7 @@ function exportAllDataBackup() {
     const backupData = {};
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
+      if (key.startsWith('dnd_cloud_')) continue;
       backupData[key] = localStorage.getItem(key);
     }
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
@@ -744,6 +757,7 @@ function importAllDataBackup(event) {
       const protectedKeys = ['length'];
       for (const key in backupData) {
         if (protectedKeys.indexOf(key) !== -1 || typeof backupData[key] !== 'string') throw new Error('invalid-entry');
+        if (key.startsWith('dnd_cloud_')) throw new Error('account-data-in-backup');
       }
       if (confirm("Внимание! Текущие данные будут перезаписаны. Продолжить?")) {
         const oldData = {};

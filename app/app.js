@@ -171,21 +171,25 @@ function renderCharacterList() {
     return;
   }
 
+  function escapeCharacterText(value) { return String(value == null ? '' : value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
   var html = '';
   for (var i = 0; i < allCharacters.length; i++) {
     var char = allCharacters[i];
     html += '<div class="char-card">' +
       '<div class="char-info">' +
-        '<h4>' + (char.name || 'Без имени') + '</h4>' +
-        '<p>' + (char.class || char.className || 'Класс не указан') + ' • ' + (char.raceName || char.race || 'Раса не выбрана') + '</p>' +
+        '<h4>' + escapeCharacterText(char.name || 'Без имени') + '</h4>' +
+        '<p>' + escapeCharacterText(char.class || char.className || 'Класс не указан') + ' • ' + escapeCharacterText(char.raceName || char.race || 'Раса не выбрана') + '</p>' +
       '</div>' +
       '<div class="char-actions">' +
-        '<button class="btn-action" onclick="openCharacter(\'' + char.id + '\')">Играть</button>' +
+        '<button class="btn-action" data-open-character-id="' + escapeCharacterText(char.id) + '">Играть</button>' +
         '<button type="button" class="btn-del" data-character-id="' + String(char.id).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '" onclick="deleteCharacter(this.getAttribute(&quot;data-character-id&quot;))">✕</button>' +
       '</div>' +
     '</div>';
   }
   container.innerHTML = html;
+  Array.prototype.forEach.call(container.querySelectorAll('[data-open-character-id]'), function(btn) {
+    btn.addEventListener('click', function() { openCharacter(btn.getAttribute('data-open-character-id')); });
+  });
   // V70.25.94: deletion is intentionally a plain button action.
   // The previous pointerup/click de-duplication was unnecessary and could fail in
   // some Android WebView touch paths. The button passes its own data-id directly

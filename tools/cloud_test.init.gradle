@@ -1,0 +1,13 @@
+// Build-only overrides: separate test APK identity and output directory.
+// Production Gradle sources, release signing and existing installed app are unchanged.
+def cloudTestRoot = System.getenv('CLOUD_TEST_BUILD_ROOT') ?: '/workspace/cloud-tools/android-build'
+def cloudTestKey = System.getenv('CLOUD_TEST_KEYSTORE') ?: '/workspace/cloud-tools/cloud-test.keystore'
+gradle.beforeProject { p ->
+    p.layout.buildDirectory.set(new File(cloudTestRoot, p.name))
+    p.plugins.withId('com.android.application') {
+        p.extensions.getByName('android').defaultConfig.applicationIdSuffix = '.cloudtest'
+        if (new File(cloudTestKey).exists()) {
+            p.extensions.getByName('android').signingConfigs.getByName('debug').storeFile = new File(cloudTestKey)
+        }
+    }
+}

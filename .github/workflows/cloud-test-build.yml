@@ -1,0 +1,94 @@
+name: Cloud sync test builds (no release)
+
+on:
+  push:
+    branches: [feature/cloud-character-sync]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cloud-test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Dependencies and shared checks
+        run: |
+          npm install --package-lock=false --no-audit --no-fund
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node tests/cloud_sync_test.cjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npm run desktop:check
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Windows Portable (no release or signing)
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+        run: |
+          npm run desktop:prepare
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          npx electron-builder --win portable --x64 --publish never -c.win.signAndEditExecutable=false
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          New-Item -ItemType Directory -Force dist/cloud-test | Out-Null
+          $exes = @(Get-ChildItem dist/windows/DnD-VTT-Portable-*.exe)
+          if ($exes.Count -ne 1) { throw "Expected exactly one Portable EXE" }
+          Copy-Item $exes[0].FullName dist/cloud-test/DnD-VTT-Cloud-Test-Windows-x64.exe
+          $hash = (Get-FileHash dist/cloud-test/DnD-VTT-Cloud-Test-Windows-x64.exe -Algorithm SHA256).Hash.ToLower()
+          "$hash  DnD-VTT-Cloud-Test-Windows-x64.exe" | Set-Content -Encoding ascii dist/cloud-test/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DnD-VTT-Cloud-Test-Windows-x64
+          path: dist/cloud-test/*
+          compression-level: 0
+          retention-days: 14
+          if-no-files-found: error
+
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      CLOUD_TEST_BUILD_ROOT: ${{ runner.temp }}/cloud-android-build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: android-actions/setup-android@v4
+      - run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "9.6.0"
+      - name: Separate Android test app
+        run: |
+          gradle -p android -I "$GITHUB_WORKSPACE/tools/cloud_test.init.gradle" :app:assembleDebug --max-workers=4 --console=plain
+          mkdir -p dist/cloud-test
+          cp "$CLOUD_TEST_BUILD_ROOT/app/outputs/apk/debug/app-debug.apk" dist/cloud-test/DnD-VTT-Cloud-Test-Android.apk
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify dist/cloud-test/DnD-VTT-Cloud-Test-Android.apk
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging dist/cloud-test/DnD-VTT-Cloud-Test-Android.apk > "$RUNNER_TEMP/cloud-apk-badging.txt"
+          grep -F "name='com.dndvtt.pocketvtt.cloudtest'" "$RUNNER_TEMP/cloud-apk-badging.txt"
+          cd dist/cloud-test
+          sha256sum DnD-VTT-Cloud-Test-Android.apk > SHA256SUMS.txt
+      - name: Verify packaged cloud source
+        run: |
+          python3 - <<'PY'
+          import zipfile, pathlib
+          with zipfile.ZipFile('dist/cloud-test/DnD-VTT-Cloud-Test-Android.apk') as archive:
+              for name in ['index.html', 'app/cloud_config.js', 'app/cloud_sync.js', 'app/cloud_account.js', 'app/3dmap/character_appearance_store.js']:
+                  assert archive.read('assets/' + name) == pathlib.Path(name).read_bytes(), name
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DnD-VTT-Cloud-Test-Android
+          path: dist/cloud-test/*
+          compression-level: 0
+          retention-days: 14
+          if-no-files-found: error
