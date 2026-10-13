@@ -8,6 +8,7 @@ on:
       - 'app/combat_engine.js'
       - 'app/class_features_engine.js'
       - 'app/magic_engine.js'
+      - 'app/network_gameplay.js'
       - 'tests/test_blood_hunter_*.js'
       - '.github/workflows/blood-hunter-regressions.yml'
   workflow_dispatch:
