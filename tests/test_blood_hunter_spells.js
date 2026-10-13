@@ -28,7 +28,7 @@ assert.deepEqual(Array.from(stable.classFeaturesState.bhProfaneCantrips),['Ка�
 assert.strictEqual(pick(h,['Кантрип А','Кантрип В'],['Пакт А','Пакт Б']).ok,false,'no repeated respec same level');
 let level5=hunter(5);
 assert.strictEqual(C.useFeature(level5,'otherworldlyPatron',{className:H.CLASS,patron:'fiend'}).ok,true);
-assert.strictEqual(pick(level5,['Кантрип А','Кантрип Б'],['Пакт А','Пакт Б','Пакт Г']).ok,true);
+assert.strictEqual(pick(level5,['Кантрип А','Кантрип Б'],['Пакт А','Пакт Б','Пакт В']).ok,true);
 assert.strictEqual(level5.spellsData.filter(x=>x.castingClass===H.CLASS&&x.level>0).length,3);
 let unavailable=hunter(3);C.useFeature(unavailable,'otherworldlyPatron',{className:H.CLASS,patron:'celestial'});
 g.getAllSpellsDatabase=()=>[];
