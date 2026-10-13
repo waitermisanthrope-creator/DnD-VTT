@@ -94,6 +94,49 @@ function hasRite(h){return rites(h).some(function(r){return r.active;});}
 function canBreatheUnderwater(h){return profanePatron(h)==='fathomless';}
 function isRevealed(t){return effects(t).some(function(e){return e.id==='archfeyGlow';});}
 function flightSpeed(h){return Math.max(0,num(st(h).bhGenieFlight&&st(h).bhGenieFlight.speed));}
+// Brand restrictions are read from the marked actor, not an untrusted action payload.
+function currentBrand(t){var b=t&&t.classFeaturesState&&t.classFeaturesState.bloodHunterBrand;return b&&b.ownerId&&D.isEnabled('blood-hunter')?b:null;}
+function canDash(t){var b=currentBrand(t);return !(b&&num(b.level)>=13);}
+function canPhaseThroughObjects(t){var b=currentBrand(t);return !(b&&b.order==='ghostslayer'&&num(b.level)>=11);}
+function brandedByAxiom(t){var b=currentBrand(t);return !!(b&&b.order==='mutant'&&num(b.level)>=11);}
+function clearAxiomIllusions(t){
+ var B=global.DNDCombat,cleared=[];
+ if(!t)return cleared;
+ ['Невидим','Невидимый','invisible','Invisible'].forEach(function(k){if(conditionPresent(t,k)){if(B&&B.toggleCondition)B.toggleCondition(t,k,false);if(t.conditions)t.conditions[k]=false;if(t.activeConditions)t.activeConditions[k]=false;cleared.push(k);}});
+ if(t.illusionActive){t.illusionActive=false;cleared.push('illusionActive');}
+ if(t.illusoryAppearance){t.illusoryAppearance=false;cleared.push('illusoryAppearance');}
+ if(Array.isArray(t.illusionEffects)&&t.illusionEffects.length){t.illusionEffects=[];cleared.push('illusionEffects');}
+ return cleared;
+}
+function formIsAltered(t){return !!(t&&(t.alternativeForm||t.polymorphed||t.shapechanged||t.transformedForm));}
+function revertAxiomForm(t){
+ var old=t.alternativeForm||t.transformedForm||null;
+ delete t.alternativeForm;delete t.transformedForm;t.polymorphed=false;t.shapechanged=false;
+ return old;
+}
+function axiomShapeSave(t,b){
+ var B=global.DNDCombat;
+ if(!B||!B.savingThrow)return {ok:false,reason:'Недоступен движок спасбросков.'};
+ var save=B.savingThrow(t,'wis',num(b.dc,10));
+ if(!save.success){revertAxiomForm(t);addEffect(actors[b.ownerId]||{id:b.ownerId,classes:[{name:CLASS,level:num(b.level)}]},t,'axiomStun',{}, {condition:'Оглушён',ownerTurns:2});}
+ return {ok:true,save:save,reverted:!save.success,stunned:!save.success};
+}
+function attemptBrandedShapeChange(t,ctx){
+ var b=currentBrand(t);if(!b||b.order!=='mutant'||num(b.level)<11)return {ok:true,branded:false};
+ if(!ctx||ctx.isShapeChange!==true)return {ok:true,branded:true};
+ var out=axiomShapeSave(t,b);
+ return Object.assign({branded:true,allowed:!!(out.ok&&!out.reverted)},out);
+}
+function resolveBrandTravel(t,ctx){
+ var b=currentBrand(t),kind=String(ctx&&ctx.kind||'');
+ if(!['teleport','planeShift'].includes(kind))return {ok:false,reason:'Укажите подтверждённый вид перемещения.'};
+ if(!b||num(b.level)<13)return {ok:true,allowed:true,branded:false};
+ var B=global.DNDCombat;
+ if(!B||!B.applyDamage||!B.rollDice||!B.savingThrow)return {ok:false,allowed:false,reason:'Боевой движок недоступен.'};
+ var rolled=B.rollDice('4d6'),damage=B.applyDamage(t,rolled.total,'psychic',{source:'blood-hunter-tether',magicalAttack:true});
+ var save=B.savingThrow(t,'wis',num(b.dc,10));
+ return {ok:true,branded:true,allowed:!!save.success,damage:damage,damageRoll:rolled,save:save,reason:save.success?'Переход состоялся после психического урона.':'Клеймо привязки остановило переход.'};
+}
 function sappingScarSaveModifiers(t,ctx){
  ctx=ctx||{};var b=t&&t.classFeaturesState&&t.classFeaturesState.bloodHunterBrand,owner=b&&actors[b.ownerId];
  if(!b||b.order!=='profaneSoul'||num(b.level)<11||!D.isEnabled('blood-hunter')||!ctx.fromSpell||!ctx.caster||actorId(ctx.caster)!==b.ownerId)return {disadvantage:false};
@@ -212,7 +255,9 @@ function useBrand(h,ctx){
  if(lvl(h)<6||!able(h)||!t||!r||!r.hit||!r.damageResult||num(r.damageResult.damageTaken,r.damageResult.amount)<=0||!activeRite(h,ac))return error('Клеймо требует реального урона попадания своим оружием с активным обрядом.');
  if(!spend(h,'brandCastigation',1))return error('Клеймо уже использовано до отдыха.');
  if(s.brandTargetId&&actors[s.brandTargetId]&&st(actors[s.brandTargetId]).bloodHunterBrand&&st(actors[s.brandTargetId]).bloodHunterBrand.ownerId===actorId(h))delete st(actors[s.brandTargetId]).bloodHunterBrand;
- s.brandTargetId=actorId(t);s.brandTether=lvl(h)>=13;st(t).bloodHunterBrand={ownerId:actorId(h),hemMod:hemMod(h),dc:dc(h),level:lvl(h),order:orderKey(h)};observe(t);return {ok:true,targetId:actorId(t),message:'Клеймо наказания наложено.'};
+ s.brandTargetId=actorId(t);s.brandTether=lvl(h)>=13;st(t).bloodHunterBrand={ownerId:actorId(h),hemMod:hemMod(h),dc:dc(h),level:lvl(h),order:orderKey(h)};observe(t);
+ var axiom=null;if(orderKey(h)==='mutant'&&lvl(h)>=11){var cleared=clearAxiomIllusions(t);axiom={clearedIllusions:cleared};if(formIsAltered(t))axiom.shapeChange=axiomShapeSave(t,st(t).bloodHunterBrand);}
+ return {ok:true,targetId:actorId(t),axiom:axiom,message:'Клеймо наказания наложено.'};
 }
 function afterDamage(t,result,opts){var attacker=opts&&opts.attacker;if(!attacker||opts.source==='blood-hunter-brand'||num(result.damageTaken,result.amount)<=0)return;
 if(profanePatron(attacker)==='undying'&&opts.bhHostile===true&&opts.bhMildThreat===true&&num(opts.bhHpBefore)>0&&hp(t)===0&&t!==attacker&&global.DNDCombat&&global.DNDCombat.heal){result.undyingRiteHealing=global.DNDCombat.heal(attacker,bloodLoss(attacker));}
@@ -247,7 +292,7 @@ function mutationModifiers(h,ctx,save){var out={advantage:false,disadvantage:fal
 function projectSpeed(h){if(!enabled(h))return;var s=st(h),bonus=lvl(h)>=10?5:0;if(orderKey(h)==='lycan'&&lvl(h)>=7)bonus+=10;activeMutations(h).forEach(function(m){if(m.id==='rapidity')bonus+=lvl(h)>=15?15:10;if(m.id==='reconstruction'&&!sideIgnored(h,m.id))bonus-=10;});var previous=num(s.bhAppliedSpeed),base=st(h).bhBoundSpeed!=null?num(st(h).bhBoundSpeed):num(h.speed,30);if(st(h).bhBoundSpeed!=null)st(h).bhBoundSpeed=Math.max(0,base-previous+bonus);else h.speed=Math.max(0,base-previous+bonus);s.bhAppliedSpeed=bonus;}
 function heavyArmor(h){var a=h.inventory&&h.inventory.armor;return Array.isArray(a)&&a.some(function(x){return x&&x.equipped&&/heavy|тяжел/i.test(x.category||x.armorCategory||'');})||/heavy|тяжел/i.test(String(h.armorCategory||''));}
 function incomingAC(h){if(!enabled(h))return 0;var bonus=st(h).hybridForm&&!heavyArmor(h)?1:0,dx=abilityBonuses(h).dex;if(dx&&!heavyArmor(h)){var raw=global.DNDRules.getStats(h,true),old=raw.dex,a=h.inventory&&h.inventory.armor,medium=Array.isArray(a)&&a.some(function(x){return x.equipped&&/medium|средн/i.test(x.category||x.armorCategory||'');}),before=Math.floor((old-10)/2),after=Math.floor((old+dx-10)/2);bonus+=(medium?Math.min(2,after)-Math.min(2,before):after-before);}return bonus;}
-function conditionImmune(h,key){if(!enabled(h)||orderKey(h)!=='mutant')return false;if(lvl(h)>=7&&/poison|отрав/i.test(key))return true;return activeMutations(h).some(function(m){return m.id==='mobility'&&(/grapple|restrain|захвачен|опутан/i.test(key)||lvl(h)>=11&&/paraly|парализ/i.test(key));});}
+function conditionImmune(h,key){if(brandedByAxiom(h)&&/невидим|invisib/i.test(String(key)))return true;if(!enabled(h)||orderKey(h)!=='mutant')return false;if(lvl(h)>=7&&/poison|отрав/i.test(key))return true;return activeMutations(h).some(function(m){return m.id==='mobility'&&(/grapple|restrain|захвачен|опутан/i.test(key)||lvl(h)>=11&&/paraly|парализ/i.test(key));});}
 function mutationDamage(h,k){var out={resistance:false,vulnerability:false};if(!enabled(h)||orderKey(h)!=='mutant')return out;var map={embers:['fire','cold'],gelid:['cold','fire'],impermeable:['piercing','slashing'],shielded:['slashing','bludgeoning'],unbreakable:['bludgeoning','piercing']};activeMutations(h).forEach(function(m){var a=map[m.id];if(a&&a[0]===k)out.resistance=true;if(a&&a[1]===k&&!sideIgnored(h,m.id))out.vulnerability=true;});return out;}
 function useMutant(h,id,ctx){
  sync(h);ctx=ctx||{};var s=st(h),l=lvl(h),known=s.mutagenFormulasKnown||[];
@@ -473,5 +518,5 @@ var labels={huntersBane:'Погибель охотника',bloodMaledict:'Кр�
 features.forEach(function(f){f.name=labels[f.id]||f.name;});subclasses.forEach(function(s){s.features.forEach(function(f){f.name=labels[f.id]||f.name;});});
 var pack={id:'blood-hunter',name:CLASS,aliases:['Blood Hunter','BloodHunter'],authoritativeSubclasses:true,source:'Matthew Mercer / Critical Role — partner third-party content',license:'Original runtime implementation',
 features:features,subclasses:subclasses,hooks:{sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,checkModifiers:skillModifiers,startTurn:turnStart,onTurnEnd:turnEnd,rest:bloodHunterRest,onDamage:onDamage,onCondition:onCondition,onAttackResult:onAttackResult}};
-var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'3.0.0',CLASS:CLASS,adjustWeaponDamage:adjustWeaponDamage,adjustRiteDamage:adjustRiteDamage,renderControls:renderControls,gameActors:gameActors,abilityBonuses:abilityBonuses,incomingAC:incomingAC,conditionImmune:conditionImmune,reviveRite:reviveRite,canBreatheUnderwater:canBreatheUnderwater,isRevealed:isRevealed,flightSpeed:flightSpeed,halveNecroticRiteDamage:halveNecroticRiteDamage,sappingScarSaveModifiers:sappingScarSaveModifiers,chooseKnown:chooseKnown,activeRite:activeRite,observe:observe,damageModifiers:damageModifiers,cursedSaveModifiers:cursedSaveModifiers,cursedCheckModifiers:cursedCheckModifiers,cursedAttackPenalty:cursedAttackPenalty,endActorTurn:endActorTurn,startActorTurn:startActorTurn,afterActorAttack:afterActorAttack,afterDamage:afterDamage,rest:bloodHunterRest,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
+var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'3.0.0',CLASS:CLASS,adjustWeaponDamage:adjustWeaponDamage,adjustRiteDamage:adjustRiteDamage,renderControls:renderControls,gameActors:gameActors,abilityBonuses:abilityBonuses,incomingAC:incomingAC,conditionImmune:conditionImmune,reviveRite:reviveRite,currentBrand:currentBrand,canDash:canDash,canPhaseThroughObjects:canPhaseThroughObjects,brandedByAxiom:brandedByAxiom,attemptBrandedShapeChange:attemptBrandedShapeChange,resolveBrandTravel:resolveBrandTravel,canBreatheUnderwater:canBreatheUnderwater,isRevealed:isRevealed,flightSpeed:flightSpeed,halveNecroticRiteDamage:halveNecroticRiteDamage,sappingScarSaveModifiers:sappingScarSaveModifiers,chooseKnown:chooseKnown,activeRite:activeRite,observe:observe,damageModifiers:damageModifiers,cursedSaveModifiers:cursedSaveModifiers,cursedCheckModifiers:cursedCheckModifiers,cursedAttackPenalty:cursedAttackPenalty,endActorTurn:endActorTurn,startActorTurn:startActorTurn,afterActorAttack:afterActorAttack,afterDamage:afterDamage,rest:bloodHunterRest,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
 })(window);
