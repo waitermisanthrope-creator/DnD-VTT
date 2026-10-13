@@ -4,9 +4,6 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Build Android debug APK", "Build Android signed release APK"]
-    types: [completed]
 
 permissions:
   contents: read
@@ -52,15 +49,8 @@ jobs:
             cp "$f" "site/ambience/$(basename "$f")"
           done
 
-          VERSION=$(sed -n "s/.*versionName '\([^']*\)'.*/\1/p" android/app/build.gradle | head -1)
-          test -n "$VERSION"
-          echo "Publishing stable version: $VERSION"
-          python3 tools/build_update_manifest.py \
-            --base-url "https://waitermisanthrope-creator.github.io/DnD-VTT" \
-            --version "$VERSION" \
-            --min-app-version "70.26.99" \
-            --channel "stable" \
-            --output site/updates/stable.json
+          # Serve only the stable manifest approved by unified multi-platform CI.
+          cp updates/stable.json site/updates/stable.json
 
           python3 tools/build_update_manifest.py \
             --base-url "https://waitermisanthrope-creator.github.io/DnD-VTT" \
@@ -68,31 +58,6 @@ jobs:
             --min-app-version "70.32.21" \
             --channel "beta" \
             --output site/updates/beta.json
-
-      - name: Download Android APK from completed build
-        if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' }}
-        uses: actions/download-artifact@v5
-        with:
-          name: ${{ github.event.workflow_run.name == 'Build Android signed release APK' && 'dnd-vtt-release-apk' || 'dnd-vtt-debug-apk' }}
-          path: site/downloads
-          run-id: ${{ github.event.workflow_run.id }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Publish stable APK names
-        if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          if [ "${{ github.event.workflow_run.name }}" = "Build Android signed release APK" ]; then
-            APK="app-release.apk"
-          else
-            APK="app-debug.apk"
-          fi
-          VERSION=$(sed -n "s/.*versionName '\([^']*\)'.*/\1/p" android/app/build.gradle | head -1)
-          test -n "$VERSION"
-          mv "site/downloads/$APK" "site/downloads/DND-VTT-$VERSION.apk"
-          cp "site/downloads/DND-VTT-$VERSION.apk" site/downloads/latest.apk
-          sha256sum "site/downloads/DND-VTT-$VERSION.apk" > "site/downloads/DND-VTT-$VERSION.apk.sha256"
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
