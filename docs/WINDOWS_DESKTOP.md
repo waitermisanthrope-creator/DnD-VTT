@@ -34,7 +34,8 @@ The installable and portable EXEs are created in `dist/windows/`. Start with `de
 - The 3D map editor automatically triggers landscape-sized window and restores previous portrait bounds on exit.
 - **F11** toggles fullscreen. **Ctrl+Shift+L** toggles the landscape-sized window manually (useful for the 3D character editor).
 - Each Windows installation shares its local Electron user-data directory for saves/settings. Android localStorage saves are *not* copied automatically; export/import must be tested separately.
-- The Android native OTA update mechanism is deliberately disabled on Windows. For now download the next desktop EXE and install it manually. Auto-updater comes later, with platform-specific verification.
+- Windows now implements the same SHA-256 verified web-content OTA contract as Android, including a previous-version rollback on failed boot. It uses the same stable manifest after the unified release gates pass.
+- Updating the **Electron/native shell** (not shared web game code) still requires a newer Setup/Portable EXE; existing Portable EXEs do not self-replace.
 - The Windows build is unsigned; SmartScreen may warn. Do not disable system protection globally.
 - Some wallpapers / music require existing repository media. Any asset missing from GitHub cannot be magically added by the build.
 - Browser features requiring Android-only native APIs need targeted desktop tests; a successful build does not prove every feature works.
@@ -53,6 +54,6 @@ The installable and portable EXEs are created in `dist/windows/`. Start with `de
 ## Follow-up work
 
 - QA and repairs from Windows logs/screenshots; keyboard/mouse controls where necessary.
-- Windows auto-updates with separate installer manifest, signing and rollback.
+- Installer/portable binary self-update, Windows code signing and stronger on-device smoke testing.
 - Desktop icon, automated smoke tests, file import/export dialog UX.
 - Release management and tested Windows installers.
