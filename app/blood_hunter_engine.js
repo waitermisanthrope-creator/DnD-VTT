@@ -94,6 +94,13 @@ function hasRite(h){return rites(h).some(function(r){return r.active;});}
 function canBreatheUnderwater(h){return profanePatron(h)==='fathomless';}
 function isRevealed(t){return effects(t).some(function(e){return e.id==='archfeyGlow';});}
 function flightSpeed(h){return Math.max(0,num(st(h).bhGenieFlight&&st(h).bhGenieFlight.speed));}
+function sappingScarSaveModifiers(t,ctx){
+ ctx=ctx||{};var b=t&&t.classFeaturesState&&t.classFeaturesState.bloodHunterBrand,owner=b&&actors[b.ownerId];
+ if(!owner||!enabled(owner)||orderKey(owner)!=='profaneSoul'||lvl(owner)<11||!ctx.fromSpell||ctx.caster!==owner)return {disadvantage:false};
+ var spellClass=String(ctx.castingClass||'');
+ if(['Кровавый охотник','Blood Hunter','BloodHunter'].indexOf(spellClass)<0&&ctx.fromBloodHunterPact!==true)return {disadvantage:false};
+ return {disadvantage:true,note:'Клеймо истощающего шрама'};
+}
 function halveNecroticRiteDamage(h,parts,ctx){
  ctx=ctx||{};
  if(profanePatron(h)!=='undead'||!actionReady(h,'reaction')||!Array.isArray(parts))return {ok:false};
@@ -314,7 +321,7 @@ function useProfane(h,id,ctx){
  }
  if(id==='mysticFrenzy')return error('Дополнительная атака после заговора ещё не подключена к боевому ходу.');
  if(id==='revealedArcana')return error('Открытая аркана ещё не подключена к исполнению заклинаний.');
- if(id==='brandSappingScar')return error('Клеймо истощающего шрама ещё не влияет на спасброски боевого движка.');
+ if(id==='brandSappingScar')return {ok:true,passive:true,message:'Помеха спасброскам по заклинаниям договора для отмеченной вашей меткой цели.'};
  if(id==='unsealedArcana')return error('Освобождённая аркана ещё не подключена к исполнению заклинаний.');
  if(id==='soulEater')return useCurse(h,{curse:'soulEater',target:target(ctx),amplify:ctx&&ctx.amplify});
  return{ok:false,unsupported:true};
@@ -429,5 +436,5 @@ var labels={huntersBane:'Погибель охотника',bloodMaledict:'Кр�
 features.forEach(function(f){f.name=labels[f.id]||f.name;});subclasses.forEach(function(s){s.features.forEach(function(f){f.name=labels[f.id]||f.name;});});
 var pack={id:'blood-hunter',name:CLASS,aliases:['Blood Hunter','BloodHunter'],authoritativeSubclasses:true,source:'Matthew Mercer / Critical Role — partner third-party content',license:'Original runtime implementation',
 features:features,subclasses:subclasses,hooks:{sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,checkModifiers:skillModifiers,startTurn:turnStart,onTurnEnd:turnEnd,rest:bloodHunterRest,onDamage:onDamage,onCondition:onCondition,onAttackResult:onAttackResult}};
-var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'3.0.0',CLASS:CLASS,adjustWeaponDamage:adjustWeaponDamage,adjustRiteDamage:adjustRiteDamage,renderControls:renderControls,gameActors:gameActors,abilityBonuses:abilityBonuses,incomingAC:incomingAC,conditionImmune:conditionImmune,reviveRite:reviveRite,canBreatheUnderwater:canBreatheUnderwater,isRevealed:isRevealed,flightSpeed:flightSpeed,halveNecroticRiteDamage:halveNecroticRiteDamage,chooseKnown:chooseKnown,activeRite:activeRite,observe:observe,damageModifiers:damageModifiers,cursedSaveModifiers:cursedSaveModifiers,cursedCheckModifiers:cursedCheckModifiers,cursedAttackPenalty:cursedAttackPenalty,endActorTurn:endActorTurn,startActorTurn:startActorTurn,afterActorAttack:afterActorAttack,afterDamage:afterDamage,rest:bloodHunterRest,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
+var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'3.0.0',CLASS:CLASS,adjustWeaponDamage:adjustWeaponDamage,adjustRiteDamage:adjustRiteDamage,renderControls:renderControls,gameActors:gameActors,abilityBonuses:abilityBonuses,incomingAC:incomingAC,conditionImmune:conditionImmune,reviveRite:reviveRite,canBreatheUnderwater:canBreatheUnderwater,isRevealed:isRevealed,flightSpeed:flightSpeed,halveNecroticRiteDamage:halveNecroticRiteDamage,sappingScarSaveModifiers:sappingScarSaveModifiers,chooseKnown:chooseKnown,activeRite:activeRite,observe:observe,damageModifiers:damageModifiers,cursedSaveModifiers:cursedSaveModifiers,cursedCheckModifiers:cursedCheckModifiers,cursedAttackPenalty:cursedAttackPenalty,endActorTurn:endActorTurn,startActorTurn:startActorTurn,afterActorAttack:afterActorAttack,afterDamage:afterDamage,rest:bloodHunterRest,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
 })(window);
