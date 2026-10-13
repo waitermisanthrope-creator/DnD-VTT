@@ -414,6 +414,33 @@ function aetherMap(h){
  var t=B&&B.findToken&&(B.findToken('bt_'+actorId(h))||B.findToken(actorId(h)));
  return board&&t?{board:board,token:t}:null;
 }
+function aetherPathCost(h,from,to){
+ if(!enabled(h)||orderKey(h)!=='ghostslayer'||!st(h).bhAetherWalk)return Infinity;
+ var board=global.DNDBattleBoard&&typeof global.DNDBattleBoard.ensure==='function'?global.DNDBattleBoard.ensure():null;
+ if(!board||!from||!to)return Infinity;
+ var cols=num(board.cols),rows=num(board.rows),sx=Number(from.x),sy=Number(from.y),tx=Number(to.x),ty=Number(to.y);
+ if(![cols,rows,sx,sy,tx,ty].every(Number.isFinite)||!Number.isInteger(tx)||!Number.isInteger(ty)||!Number.isInteger(sx)||!Number.isInteger(sy)||!cols||!rows||tx<0||ty<0||tx>=cols||ty>=rows||sx<0||sy<0||sx>=cols||sy>=rows)return Infinity;
+ var obstacles=board.obstacles||{},difficult=board.difficultTerrain||{},tokens=board.tokens||{},walls=board.walls||[];
+ var occupied=Object.keys(tokens).map(function(k){return tokens[k];}).filter(function(x){return x&&String(x.id||'')!=='bt_'+actorId(h)&&String(x.sourceId||'')!==actorId(h);});
+ function key(x,y){return x+':'+y;}
+ function hasWall(a,b){var left=key(a.x,a.y),right=key(b.x,b.y);return walls.indexOf(left<right?left+'|'+right:right+'|'+left)>=0;}
+ var frontier=[{x:sx,y:sy,cost:0}],best={};best[key(sx,sy)]=0,cellFt=Math.max(5,num(board.cellFt,5));
+ while(frontier.length){
+  frontier.sort(function(a,b){return a.cost-b.cost;});
+  var cur=frontier.shift(),curKey=key(cur.x,cur.y);
+  if(cur.cost>best[curKey])continue;
+  if(cur.x===tx&&cur.y===ty)return cur.cost;
+  for(var yy=-1;yy<=1;yy++)for(var xx=-1;xx<=1;xx++){
+   if(xx===0&&yy===0)continue;
+   var nx=cur.x+xx,ny=cur.y+yy;if(nx<0||ny<0||nx>=cols||ny>=rows)continue;
+   var nextKey=key(nx,ny),solid=!!obstacles[nextKey],other=occupied.some(function(t){var size=Math.max(1,num(t.size,1));return nx>=t.x&&nx<t.x+size&&ny>=t.y&&ny<t.y+size;});
+   var across=hasWall(cur,{x:nx,y:ny}),slow=solid||other||across||!!difficult[nextKey];
+   var cost=cur.cost+(xx&&yy?cellFt*1.5:cellFt)*(slow?2:1);
+   if(best[nextKey]===undefined||cost<best[nextKey]){best[nextKey]=cost;frontier.push({x:nx,y:ny,cost:cost});}
+  }
+ }
+ return Infinity;
+}
 function aetherInsideObject(h){
  var map=aetherMap(h);
  if(!map)return !!(h&&h.insideObject===true); // Legacy non-map encounters.
@@ -681,5 +708,5 @@ var labels={huntersBane:'Погибель охотника',bloodMaledict:'Кр�
 features.forEach(function(f){f.name=labels[f.id]||f.name;});subclasses.forEach(function(s){s.features.forEach(function(f){f.name=labels[f.id]||f.name;});});
 var pack={id:'blood-hunter',name:CLASS,aliases:['Blood Hunter','BloodHunter'],authoritativeSubclasses:true,source:'Matthew Mercer / Critical Role — partner third-party content',license:'Original runtime implementation',
 features:features,subclasses:subclasses,hooks:{sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,checkModifiers:skillModifiers,startTurn:turnStart,onTurnEnd:turnEnd,rest:bloodHunterRest,onDamage:onDamage,onCondition:onCondition,onAttackResult:onAttackResult}};
-var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'3.0.0',CLASS:CLASS,adjustWeaponDamage:adjustWeaponDamage,adjustRiteDamage:adjustRiteDamage,renderControls:renderControls,gameActors:gameActors,abilityBonuses:abilityBonuses,incomingAC:incomingAC,conditionImmune:conditionImmune,reviveRite:reviveRite,currentBrand:currentBrand,canDash:canDash,canPhaseThroughObjects:canPhaseThroughObjects,brandedByAxiom:brandedByAxiom,attemptBrandedShapeChange:attemptBrandedShapeChange,resolveBrandTravel:resolveBrandTravel,canBreatheUnderwater:canBreatheUnderwater,isRevealed:isRevealed,flightSpeed:flightSpeed,recordCantripCast:recordCantripCast,arcanaInfo:arcanaInfo,ensureArcanaSpells:ensureArcanaSpells,deathSaveMode:deathSaveMode,projectMutagenTraits:projectMutagenTraits,resolveBloodlust:resolveBloodlust,beginTurn:turnStart,halveNecroticRiteDamage:halveNecroticRiteDamage,sappingScarSaveModifiers:sappingScarSaveModifiers,chooseKnown:chooseKnown,activeRite:activeRite,observe:observe,damageModifiers:damageModifiers,cursedSaveModifiers:cursedSaveModifiers,cursedCheckModifiers:cursedCheckModifiers,cursedAttackPenalty:cursedAttackPenalty,endActorTurn:endActorTurn,endTurn:turnEnd,aetherInsideObject:aetherInsideObject,aetherShunt:aetherShunt,startActorTurn:startActorTurn,afterActorAttack:afterActorAttack,afterDamage:afterDamage,rest:bloodHunterRest,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
+var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'3.0.0',CLASS:CLASS,adjustWeaponDamage:adjustWeaponDamage,adjustRiteDamage:adjustRiteDamage,renderControls:renderControls,gameActors:gameActors,abilityBonuses:abilityBonuses,incomingAC:incomingAC,conditionImmune:conditionImmune,reviveRite:reviveRite,currentBrand:currentBrand,canDash:canDash,canPhaseThroughObjects:canPhaseThroughObjects,brandedByAxiom:brandedByAxiom,attemptBrandedShapeChange:attemptBrandedShapeChange,resolveBrandTravel:resolveBrandTravel,canBreatheUnderwater:canBreatheUnderwater,isRevealed:isRevealed,flightSpeed:flightSpeed,recordCantripCast:recordCantripCast,arcanaInfo:arcanaInfo,ensureArcanaSpells:ensureArcanaSpells,deathSaveMode:deathSaveMode,projectMutagenTraits:projectMutagenTraits,resolveBloodlust:resolveBloodlust,beginTurn:turnStart,halveNecroticRiteDamage:halveNecroticRiteDamage,sappingScarSaveModifiers:sappingScarSaveModifiers,chooseKnown:chooseKnown,activeRite:activeRite,observe:observe,damageModifiers:damageModifiers,cursedSaveModifiers:cursedSaveModifiers,cursedCheckModifiers:cursedCheckModifiers,cursedAttackPenalty:cursedAttackPenalty,endActorTurn:endActorTurn,endTurn:turnEnd,aetherInsideObject:aetherInsideObject,aetherShunt:aetherShunt,aetherPathCost:aetherPathCost,startActorTurn:startActorTurn,afterActorAttack:afterActorAttack,afterDamage:afterDamage,rest:bloodHunterRest,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
 })(window);
