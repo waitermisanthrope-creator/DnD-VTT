@@ -424,7 +424,7 @@ function aetherPathCost(h,from,to){
  var occupied=Object.keys(tokens).map(function(k){return tokens[k];}).filter(function(x){return x&&String(x.id||'')!=='bt_'+actorId(h)&&String(x.sourceId||'')!==actorId(h);});
  function key(x,y){return x+':'+y;}
  function hasWall(a,b){var left=key(a.x,a.y),right=key(b.x,b.y);return walls.indexOf(left<right?left+'|'+right:right+'|'+left)>=0;}
- var frontier=[{x:sx,y:sy,cost:0}],best={};best[key(sx,sy)]=0,cellFt=Math.max(5,num(board.cellFt,5));
+ var frontier=[{x:sx,y:sy,cost:0}],best={},cellFt=Math.max(5,num(board.cellFt,5));best[key(sx,sy)]=0;
  while(frontier.length){
   frontier.sort(function(a,b){return a.cost-b.cost;});
   var cur=frontier.shift(),curKey=key(cur.x,cur.y);
