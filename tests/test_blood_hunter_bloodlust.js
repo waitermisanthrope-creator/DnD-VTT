@@ -20,7 +20,7 @@ function boardFor(h,others){
   pathCells:(a,b)=>{let list=[];let dx=a.x<=b.x?1:-1;for(let x=a.x;dx>0?x<=b.x:x>=b.x;x+=dx)list.push({x,y:0});return list;}};
  g.DNDBattleBoard=obj;return obj;
 }
-g.Math.random=()=>0;g.DNDRules.rollD20=()=>({result:11,critical:false,fumble:false});
+g.Math.random=()=>0.5;g.DNDRules.rollD20=()=>({result:11,critical:false,fumble:false});
 let h=lycan(),friend=creature('party',1),enemy=creature('enemy',4);h.team='party';boardFor(h,[friend,enemy]);C.resetTurn(h);
 assert.strictEqual(h.classFeaturesState.bhBloodlust.requiresNearestAttack,true);
 let result=H.resolveBloodlust(h,{combatants:[friend,enemy]});
@@ -39,7 +39,7 @@ assert.strictEqual(result.targetId,enemy.id,'random tie-break can choose second 
 
 // The wolf moves towards an out-of-reach target without entering its tile,
 // uses the actual path cost, and attacks after reaching melee range.
-g.Math.random=()=>0;h=lycan();enemy=creature('enemy',4);boardFor(h,[enemy]);C.resetTurn(h);
+g.Math.random=()=>0.5;h=lycan();enemy=creature('enemy',4);boardFor(h,[enemy]);C.resetTurn(h);
 result=H.resolveBloodlust(h,{combatants:[enemy]});
 assert.strictEqual(result.targetId,enemy.id);
 assert.strictEqual(result.movedFt,15);
@@ -64,7 +64,7 @@ assert.strictEqual(H.resolveBloodlust(h,{combatants:[enemy]}).triggered,false);
 assert.strictEqual(h.turnResources.action,1);
 
 // Host must execute the mandatory move and attack before allowing normal RPC.
-g.DNDRules.rollD20=()=>({result:11,critical:false,fumble:false});g.Math.random=()=>0;
+g.DNDRules.rollD20=()=>({result:11,critical:false,fumble:false});g.Math.random=()=>0.5;
 const player=lycan();player.characterId='char-wolf';player.id='wolf-network';player.team='party';
 const starter={id:'starter',name:'Воин игрока',ownerPeerId:'p0',type:'hero',team:'party',hp:30,maxHp:40,ac:10,turnResources:{action:true}};
 const actor={id:'wolf-network',characterId:player.characterId,name:'Ликантроп',ownerPeerId:'p1',type:'hero',team:'party',hp:5,maxHp:40,ac:10,speed:player.speed,turnResources:{action:true}};
