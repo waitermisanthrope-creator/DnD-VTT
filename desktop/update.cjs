@@ -8,7 +8,7 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 
 const SEMVER = /^\d+\.\d+\.\d+$/;
-const SAFE_FILE = /^(?:index\.html|app\/[a-zA-Z0-9_ .()@+\-\/]+\.[a-zA-Z0-9]+|wallpapers\/[^\u0000-\u001f\\:]+|ambience\/[^\u0000-\u001f\\:]+|[a-zA-Z0-9_ .()@+\-]+\.(?:png|jpg|jpeg|svg|webp|glb|mp3))$/;
+const SAFE_FILE = /^(?:index\.html|app\/[^\u0000-\u001f\\:]+\.[a-zA-Z0-9]+|wallpapers\/[^\u0000-\u001f\\:]+|ambience\/[^\u0000-\u001f\\:]+|[a-zA-Z0-9_ .()@+\-]+\.(?:png|jpg|jpeg|svg|webp|glb|mp3))$/;
 const MAX_FILES = 12000;
 const MAX_TOTAL_BYTES = 3 * 1024 ** 3;
 const BASE_HOSTS = new Set(['raw.githubusercontent.com', 'waitermisanthrope-creator.github.io']);
