@@ -5,8 +5,10 @@ const fs = require('node:fs');
 const fsp = require('node:fs/promises');
 const path = require('node:path');
 const { Readable } = require('node:stream');
+const { DesktopWebUpdater } = require('./update.cjs');
 
 const webRoot = path.join(__dirname, 'web');
+let updater = null;
 let mainWindow = null;
 let portraitBounds = null;
 let isLandscape = false;
@@ -44,8 +46,9 @@ async function respondWithLocalFile(request) {
     return new Response('Invalid URL', { status: 400 });
   }
 
-  const fullPath = path.resolve(webRoot, relative);
-  const rel = path.relative(webRoot, fullPath);
+  const liveRoot = updater ? updater.getWebRoot() : webRoot;
+  const fullPath = path.resolve(liveRoot, relative);
+  const rel = path.relative(liveRoot, fullPath);
   if (rel.startsWith('..') || path.isAbsolute(rel)) {
     return new Response('Forbidden', { status: 403 });
   }
@@ -138,6 +141,27 @@ function createWindow() {
     }
   });
   mainWindow.on('closed', () => { mainWindow = null; });
+  // Treat newly installed web payload as pending until core navigation booted.
+  // A broken OTA version is rolled back rather than trapping the user in a blank page.
+  mainWindow.webContents.on('did-finish-load', () => {
+    if (!updater || !updater.state.pending) return;
+    const win = mainWindow;
+    setTimeout(async () => {
+      if (!win || win.isDestroyed() || !updater.state.pending) return;
+      let booted = false;
+      try {
+        booted = await win.webContents.executeJavaScript(
+          "!!(window.__DND_APP_BOOT_READY===true && typeof window.goToTab==='function' && document.body && document.body.children.length>0)",
+          true);
+      } catch (_) {}
+      if (booted) {
+        await updater.bootHealthy();
+      } else if (await updater.rollback()) {
+        app.relaunch();
+        app.exit(0);
+      }
+    }, 5000);
+  });
   mainWindow.loadURL('dnd://app/index.html');
 }
 
@@ -168,7 +192,21 @@ ipcMain.on('dnd:icon', (event, id) => {
   } catch (_) {}
 });
 
+ipcMain.on('dnd:native', async (event, raw) => {
+  if (!updater || !mainWindow || event.sender !== mainWindow.webContents ||
+      !event.senderFrame?.url.startsWith('dnd://app/')) return;
+  let message;
+  try { message = JSON.parse(String(raw)); }
+  catch (_) { return; }
+  const send = value => {
+    if (!event.sender.isDestroyed()) event.sender.send('dnd:native-reply', value);
+  };
+  const result = await updater.handle(message, send);
+  send(result);
+});
+
 app.whenReady().then(() => {
+  updater = new DesktopWebUpdater(app, webRoot);
   protocol.handle('dnd', respondWithLocalFile);
 
   // Legacy Settings.js uses absolute Android asset URLs for icon previews.
