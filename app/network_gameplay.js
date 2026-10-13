@@ -88,7 +88,7 @@
     return best;
   }
   function saveContextForTarget(caster,target,stat,spell){
-    var aura=findAuraSource(target,10),ctx={saveType:stat,fromSpell:true,frightenedEffect:!!(spell&&spell.frightenedEffect)};if(aura){ctx.allyWithinAura=true;ctx.auraSource=aura;if(aura.classes&&aura.classes.some(function(c){return String(c.name)==='Паладин'&&Number(c.level)>=10;})){ctx.allyWithinCourage=true;ctx.courageSource=aura;}}if(spell&&spell.fromFiendOrUndead)ctx.fromFiendOrUndead=true;return ctx;
+    var aura=findAuraSource(target,10),source=String(spell&&spell.castingClass||''),ctx={saveType:stat,fromSpell:!!spell,caster:caster||null,castingClass:source,fromBloodHunterPact:/^(кровавый охотник|blood hunter|bloodhunter)$/i.test(source),frightenedEffect:!!(spell&&spell.frightenedEffect)};if(aura){ctx.allyWithinAura=true;ctx.auraSource=aura;if(aura.classes&&aura.classes.some(function(c){return String(c.name)==='Паладин'&&Number(c.level)>=10;})){ctx.allyWithinCourage=true;ctx.courageSource=aura;}}if(spell&&spell.fromFiendOrUndead)ctx.fromFiendOrUndead=true;return ctx;
   }
   function spellDamageRoll(actor,spell,critical,opts){
     opts=opts||{};var expr=String(spell&&spell.damage||'1d6'),mods=opts.modifiers|| (global.DNDClassFeatures&&global.DNDClassFeatures.spellDamageModifiers?global.DNDClassFeatures.spellDamageModifiers(actor,{damageType:spell&&spell.damageType||'',spellLevel:num(spell&&spell.level,0),cantrip:num(spell&&spell.level,0)===0,usesAlchemistSupplies:!!opts.usesAlchemistSupplies,applyOverchannel:!!opts.applyOverchannel}):{bonus:0,maximize:false,rerollOne:false,notes:[]});
