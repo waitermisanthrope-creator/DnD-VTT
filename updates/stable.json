@@ -4,7 +4,7 @@
   "version": "74.00.62",
   "minAppVersion": "70.26.99",
   "channel": "stable",
-  "generated": "2026-10-12",
+  "generated": "2026-10-13",
   "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main",
   "files": [
     {
@@ -2984,8 +2984,8 @@
     },
     {
       "path": "app/blood_hunter_engine.js",
-      "bytes": 70830,
-      "sha256": "b1554ba1dc0b9d109b9bccddefa0af4c8c64ad0283887009cc34a0f364d222af"
+      "bytes": 72477,
+      "sha256": "817814077ea355d7b4df69f5304051d26da47184a0d4ae7a4faccd9da17dd622"
     },
     {
       "path": "app/campaign_manager.js",
