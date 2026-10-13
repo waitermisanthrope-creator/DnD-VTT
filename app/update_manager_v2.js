@@ -5,13 +5,13 @@
 (function (global) {
   'use strict';
 
-  var APP_VERSION='74.00.62';
+  var APP_VERSION='74.00.63';
   var DEFAULT_MANIFEST_URL = 'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json';
   var FALLBACK_MANIFEST_URL = 'https://waitermisanthrope-creator.github.io/DnD-VTT/updates/stable.json';
   var STORAGE_KEY = 'dnd_update_manifest_url_v2';
   var CHANNEL_KEY = 'dnd_update_channel_v2';
   var STAGED_KEY = 'dnd_update_staged_v2';
-  var DEFAULT_CHANNEL = 'stable';
+  var DEFAULT_CHANNEL = global.DND_UPDATE_CHANNEL || 'stable';
   var CACHE_BUSTER = 'dnd-v2-' + APP_VERSION + '-' + Date.now();
   // V70.37.38: native stage must receive a cache-busted manifest URL too.
   var pending = Object.create(null);
@@ -104,7 +104,11 @@
   }
 
   async function fetchManifest(url) {
-    var list = [url, DEFAULT_MANIFEST_URL, FALLBACK_MANIFEST_URL].filter(function (x, i, a) {
+    // A custom/test source must stay isolated even when unavailable. Otherwise
+    // a newer stable release could silently replace the cloud test application.
+    var sources = url === DEFAULT_MANIFEST_URL || url === FALLBACK_MANIFEST_URL
+      ? [url, DEFAULT_MANIFEST_URL, FALLBACK_MANIFEST_URL] : [url];
+    var list = sources.filter(function (x, i, a) {
       return x && a.indexOf(x) === i;
     });
     var found = [];
@@ -255,7 +259,7 @@
       ui = scene(state);
       ui.onRetry = function() { return runUpdate({}); };
       if (!global.DND_UPDATE_MANAGER.canApplyNatively()) {
-        throw new Error('Для установки обновления откройте приложение Android.');
+        throw new Error('Для установки обновления откройте приложение Windows или Android.');
       }
       ui.setStatus('Загружаю и проверяю обновление v' + state.manifest.version + '…');
       await nextPaint();

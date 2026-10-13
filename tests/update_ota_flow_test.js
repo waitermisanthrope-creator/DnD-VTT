@@ -20,6 +20,7 @@ function harness(options={}) {
  const manifest={version:options.version||nextVersion,minAppVersion:options.min||'70.26.99',baseUrl:'https://example.test',files:[{path:'index.html',bytes:100,sha256:'a'.repeat(64)}]};
  const ctx={document:doc,console,Date,Math,JSON,Number,Promise,localStorage:{getItem(){return null},setItem(){}},CustomEvent:function(type){this.type=type},alert(){throw Error('unexpected alert')},setTimeout(fn,delay){const id=++serial;timers.set(id,{fn,delay});return id;},clearTimeout(id){timers.delete(id)},requestAnimationFrame(fn){const id=++serial;raf.set(id,fn);return id;},cancelAnimationFrame(id){raf.delete(id)},addEventListener(n,f){(events[n]||=[]).push(f)},dispatchEvent(e){for(const f of events[e.type]||[])f(e)},fetch:async url=>{fetches.push(url);if(options.offline)throw Error('offline');return {ok:true,json:async()=>manifest};}};
  ctx.window=ctx;
+ if(options.custom){ctx.DND_UPDATE_MANIFEST_URL="https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/feature/cloud-character-sync/updates/cloud-test.json";ctx.DND_UPDATE_CHANNEL="beta";}
  function respond(req,extra){for(const fn of nativeListeners)fn({data:JSON.stringify({id:req.id,ok:true,...extra})});}
  if(!options.browser)ctx.dndNative={addEventListener(n,f){nativeListeners.push(f)},postMessage(raw){const r=JSON.parse(raw);requests.push(r);if(r.type==='version')queueMicrotask(()=>respond(r,{value:'74.00.16'}));}};
  vm.createContext(ctx);
@@ -62,6 +63,13 @@ async function edgeCases(){
  for(const options of [{version:currentVersion},{version:'74.00.16'},{min:'99.0.0'},{offline:true},{browser:true}]){
   const h=harness(options);h.splash();await h.settle();assert(!h.latest('stage'));assert(!h.latest('apply'));
   if(options.browser){assert(h.ids.dndUpdateV2.querySelector('.status').textContent.includes('Android'));assert.notEqual(h.pct(),'100%');}else assert(!h.ids.dndUpdateV2,'unneeded startup overlay');
+ }
+ for(const offline of [false,true]){
+  const isolated=harness({custom:true,offline});
+  if(offline)await assert.rejects(isolated.ctx.DND_UPDATE_MANAGER.inspect(),/манифест/);
+  else {const state=await isolated.ctx.DND_UPDATE_MANAGER.inspect();assert.equal(state.channel,'beta');assert.equal(state.manifestUrl,isolated.ctx.DND_UPDATE_MANIFEST_URL);}
+  assert.equal(isolated.fetches.length,1,'test channel requested stable fallback');
+  assert(isolated.fetches[0].startsWith(isolated.ctx.DND_UPDATE_MANIFEST_URL));
  }
  const h=harness();h.overlay.fire('dblclick');assert.equal(h.ctx.dndSplashFinished,false);
  const fallback=[...h.timers.values()].find(t=>t.delay===650);assert(fallback);fallback.fn();await h.settle();assert(h.latest('stage'),'missing transitionend prevented OTA');

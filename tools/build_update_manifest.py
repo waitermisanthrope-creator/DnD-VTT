@@ -13,7 +13,7 @@ import argparse, hashlib, json, datetime
 ROOT=Path(__file__).resolve().parents[1]
 
 def app_version_from_source():
-    p=ROOT/'app/update_manager.js'
+    p=ROOT/'app/update_manager_v2.js'
     try:
         text=p.read_text(encoding='utf-8')
         import re
@@ -44,7 +44,7 @@ def main():
             return tuple(int(x) if x.isdigit() else 0 for x in v.lstrip('v').split('.'))
         if parts(detected)>parts(version):
             version=detected
-            print(f'using APP_VERSION from app/update_manager.js: {version}')
+            print(f'using APP_VERSION from app/update_manager_v2.js: {version}')
     from urllib.parse import quote
     files=[]
     # (source file, destination path, explicit URL for destination aliases)
