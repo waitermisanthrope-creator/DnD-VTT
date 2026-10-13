@@ -94,6 +94,15 @@ function hasRite(h){return rites(h).some(function(r){return r.active;});}
 function canBreatheUnderwater(h){return profanePatron(h)==='fathomless';}
 function isRevealed(t){return effects(t).some(function(e){return e.id==='archfeyGlow';});}
 function flightSpeed(h){return Math.max(0,num(st(h).bhGenieFlight&&st(h).bhGenieFlight.speed));}
+function halveNecroticRiteDamage(h,parts,ctx){
+ ctx=ctx||{};
+ if(profanePatron(h)!=='undead'||!actionReady(h,'reaction')||!Array.isArray(parts))return {ok:false};
+ var necrotic=parts.filter(function(p){return normalizeDamageType(p.damageType)==='necrotic'&&num(p.amount)>0;});
+ if(!necrotic.length)return {ok:false};
+ var total=0;necrotic.forEach(function(p){var before=num(p.amount);p.amount=Math.floor(before/2);total+=before-p.amount;});
+ takeAction(h,'reaction');
+ return {ok:true,prevented:total,message:'Защита покровителя Нежить: некротический урон уменьшен наполовину.'};
+}
 function able(h){var c=Object.assign({},h&&h.conditions,h&&h.activeConditions);return hp(h)>0&&!h.defeated&&!['Недееспособен','Бессознателен','Оглушён','Парализован','Окаменел','incapacitated','unconscious','stunned','paralyzed','petrified'].some(function(k){return c[k];});}
 function error(message){return {ok:false,reason:message};}
 function actionReady(h,kind){return able(h)&&(!h.turnResources||!!(kind==='action'?(h.turnResources.actions!=null?h.turnResources.actions:h.turnResources.action):h.turnResources[kind==='bonus'?'bonusAction':'reaction']));}
@@ -420,5 +429,5 @@ var labels={huntersBane:'Погибель охотника',bloodMaledict:'Кр�
 features.forEach(function(f){f.name=labels[f.id]||f.name;});subclasses.forEach(function(s){s.features.forEach(function(f){f.name=labels[f.id]||f.name;});});
 var pack={id:'blood-hunter',name:CLASS,aliases:['Blood Hunter','BloodHunter'],authoritativeSubclasses:true,source:'Matthew Mercer / Critical Role — partner third-party content',license:'Original runtime implementation',
 features:features,subclasses:subclasses,hooks:{sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,checkModifiers:skillModifiers,startTurn:turnStart,onTurnEnd:turnEnd,rest:bloodHunterRest,onDamage:onDamage,onCondition:onCondition,onAttackResult:onAttackResult}};
-var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'3.0.0',CLASS:CLASS,adjustWeaponDamage:adjustWeaponDamage,adjustRiteDamage:adjustRiteDamage,renderControls:renderControls,gameActors:gameActors,abilityBonuses:abilityBonuses,incomingAC:incomingAC,conditionImmune:conditionImmune,reviveRite:reviveRite,canBreatheUnderwater:canBreatheUnderwater,isRevealed:isRevealed,flightSpeed:flightSpeed,chooseKnown:chooseKnown,activeRite:activeRite,observe:observe,damageModifiers:damageModifiers,cursedSaveModifiers:cursedSaveModifiers,cursedCheckModifiers:cursedCheckModifiers,cursedAttackPenalty:cursedAttackPenalty,endActorTurn:endActorTurn,startActorTurn:startActorTurn,afterActorAttack:afterActorAttack,afterDamage:afterDamage,rest:bloodHunterRest,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
+var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'3.0.0',CLASS:CLASS,adjustWeaponDamage:adjustWeaponDamage,adjustRiteDamage:adjustRiteDamage,renderControls:renderControls,gameActors:gameActors,abilityBonuses:abilityBonuses,incomingAC:incomingAC,conditionImmune:conditionImmune,reviveRite:reviveRite,canBreatheUnderwater:canBreatheUnderwater,isRevealed:isRevealed,flightSpeed:flightSpeed,halveNecroticRiteDamage:halveNecroticRiteDamage,chooseKnown:chooseKnown,activeRite:activeRite,observe:observe,damageModifiers:damageModifiers,cursedSaveModifiers:cursedSaveModifiers,cursedCheckModifiers:cursedCheckModifiers,cursedAttackPenalty:cursedAttackPenalty,endActorTurn:endActorTurn,startActorTurn:startActorTurn,afterActorAttack:afterActorAttack,afterDamage:afterDamage,rest:bloodHunterRest,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
 })(window);
