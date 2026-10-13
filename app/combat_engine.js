@@ -99,6 +99,7 @@
     opts=opts||{};
     var reaction=null, reactionResult=null;
     var rawParts=normalizeDamageParts(amount,type,opts);
+    if(opts.defenderReaction==='blood-hunter-undead-focus'&&global.DNDBloodHunter){var necrotic=rawParts.filter(function(p){return /^(necrotic|некротический)$/.test(p.damageType);}),pendingNecrotic={amount:necrotic.reduce(function(sum,p){return sum+p.amount;},0),damageType:'necrotic'};var undeadFocus=global.DNDBloodHunter.useFeature(target,'riteFocus',{pendingDamage:pendingNecrotic});if(undeadFocus.ok){var left=necrotic.reduce(function(sum,p){return sum+p.amount;},0)-pendingNecrotic.amount;necrotic.forEach(function(p){var take=Math.min(left,p.amount);p.amount-=take;left-=take;});}}
     if(target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs&&target.classFeaturesState.alchemistDebuffs.oilCoated&&rawParts.some(function(p){return p.damageType==='огонь';})){var oilDamage=rollDice('1d6').total;rawParts.push({amount:oilDamage,damageType:'огонь',label:'Масляная бомба'});target.classFeaturesState.alchemistDebuffs.oilCoated=false;}
     var rawTotal=rawParts.reduce(function(sum,p){return sum+p.amount;},0);if(opts.defenderReaction==='blood-curse-exposure'&&global.DNDBloodHunter){var exposureActor=opts.bloodCurseActor||target;opts.__bloodCurseExposure=global.DNDBloodHunter.useFeature(exposureActor,'bloodMaledict',{curse:'exposure',amplify:!!opts.bloodCurseAmplify,target:target,distanceFt:exposureActor===target?0:opts.bloodCurseDistanceFt,visible:opts.visible!==false,pendingDamage:true,damageTypes:rawParts.map(function(p){return p.damageType;})});}
     var counterState=target&&target.classFeaturesState&&target.classFeaturesState.pugilistCounterCounter;
@@ -112,7 +113,8 @@
     var perfumeSource=opts.attacker,perfumeTargetId=target&&(target.id||target.entityId),perfumeSourceClass=(perfumeSource&&perfumeSource.classes||[]).find(function(cl){return cl&&(cl.name==='Алхимик'||cl.englishName==='Alchemist')&&(cl.subclass==='amorist'||cl.subclass==='Аморист')&&Number(cl.level)>=10;});if(perfumeSourceClass&&perfumeTargetId){var perfumeHero=global.currentChar||global.currentCharacter||{},perfumeRound=Number(perfumeHero.initiativeTracker&&perfumeHero.initiativeTracker.round)||1,perfumeState=perfumeSource.classFeaturesState=perfumeSource.classFeaturesState||{};perfumeState.alchemistPerfumeImmuneUntilByTarget=perfumeState.alchemistPerfumeImmuneUntilByTarget||{};perfumeState.alchemistPerfumeImmuneUntilByTarget[String(perfumeTargetId)]=perfumeRound+600;}
     if(global.DNDClassFeatures&&typeof global.DNDClassFeatures.reactionOptions==='function') reaction=global.DNDClassFeatures.reactionOptions(target,reactionCtx);
     if(opts.reactionChoice&&global.DNDClassFeatures&&typeof global.DNDClassFeatures.resolveReaction==='function'){ reactionResult=global.DNDClassFeatures.resolveReaction(target,opts.reactionChoice,reactionCtx); if(reactionResult&&reactionResult.ok) amount=reactionResult.remainingAmount; }
-     if(reactionResult&&reactionResult.ok&&reactionResult.applied&&reactionResult.id!=='relentlessRage'){var reactionReduction=Math.max(0,rawTotal-num(reactionResult.remainingAmount));if(reactionReduction>0){var leftReaction=reactionReduction;rawParts.forEach(function(part){var take=Math.min(Math.max(0,num(part.amount)),leftReaction);part.amount=Math.max(0,num(part.amount)-take);leftReaction-=take;});rawTotal=rawParts.reduce(function(sum,p){return sum+p.amount;},0);}}
+    if(reactionResult&&reactionResult.ok&&reactionResult.id==='bloodHunterUndeadFocus'){rawParts=normalizeDamageParts(reactionResult.remainingAmount,type,{damageParts:reactionResult.damageParts});rawTotal=reactionResult.remainingAmount;}
+     if(reactionResult&&reactionResult.ok&&reactionResult.applied&&reactionResult.id!=='relentlessRage'&&reactionResult.id!=='bloodHunterUndeadFocus'){var reactionReduction=Math.max(0,rawTotal-num(reactionResult.remainingAmount));if(reactionReduction>0){var leftReaction=reactionReduction;rawParts.forEach(function(part){var take=Math.min(Math.max(0,num(part.amount)),leftReaction);part.amount=Math.max(0,num(part.amount)-take);leftReaction-=take;});rawTotal=rawParts.reduce(function(sum,p){return sum+p.amount;},0);}}
     var wardAbsorbed=0,wardState=target&&target.classFeaturesState;
     // Resolve resistance/vulnerability/immunity per damage component. This is required
     // for mixed hits such as weapon damage + Divine Smite (different damage types).
@@ -280,7 +282,7 @@
   function savingThrow(actor,stat,dc,mode,ctx){
     var h=actor && actor.stats ? actor : null, bonus=0, featureMode=mode||'normal';
     if(h && global.DNDRules){bonus=global.DNDRules.getSaveBonus(h,stat);} else bonus=num(actor && actor.saveBonuses && actor.saveBonuses[stat]);
-    ctx=ctx||{};var sm=(global.DNDClassFeatures&&global.DNDClassFeatures.saveModifiers&&actor)?global.DNDClassFeatures.saveModifiers(actor,{stat:stat,dexSaveVisible:stat==='dex',fromSpell:!!(ctx.fromSpell||actor&&actor.saveFromSpell),allyWithinAura:!!(ctx.allyWithinAura||actor&&actor.allyWithinAura),auraSource:ctx.auraSource||null,saveType:ctx.saveType||stat,halfDamageEffect:ctx.halfDamageEffect===true,frightenedEffect:!!ctx.frightenedEffect,courageSource:ctx.courageSource||null,allyWithinCourage:!!ctx.allyWithinCourage,charmEffect:!!ctx.charmEffect,fromFiendOrUndead:!!ctx.fromFiendOrUndead,flashOfGeniusAvailable:!!(actor&&actor.useFlashOfGenius)}):null;
+    ctx=ctx||{};var sm=(global.DNDClassFeatures&&global.DNDClassFeatures.saveModifiers&&actor)?global.DNDClassFeatures.saveModifiers(actor,Object.assign({},ctx,{stat:stat,dexSaveVisible:stat==='dex',fromSpell:!!(ctx.fromSpell||actor&&actor.saveFromSpell),allyWithinAura:!!(ctx.allyWithinAura||actor&&actor.allyWithinAura),auraSource:ctx.auraSource||null,saveType:ctx.saveType||stat,halfDamageEffect:ctx.halfDamageEffect===true,frightenedEffect:!!ctx.frightenedEffect,courageSource:ctx.courageSource||null,allyWithinCourage:!!ctx.allyWithinCourage,charmEffect:!!ctx.charmEffect,fromFiendOrUndead:!!ctx.fromFiendOrUndead,flashOfGeniusAvailable:!!(actor&&actor.useFlashOfGenius)})):null;
     var curseSaveMods=global.DNDBloodHunter?global.DNDBloodHunter.cursedSaveModifiers(actor,Object.assign({},ctx,{stat:stat})):{};if(sm)bonus+=num(sm.bonus);var saveAdv=featureMode==='advantage'||!!(sm&&sm.advantage)||!!curseSaveMods.advantage,saveDis=featureMode==='disadvantage'||!!(sm&&sm.disadvantage)||!!curseSaveMods.disadvantage;featureMode=saveAdv===saveDis?'normal':saveAdv?'advantage':'disadvantage';
     var normalizedCondition=global.DNDRules&&global.DNDRules.normalizeConditionName?global.DNDRules.normalizeConditionName:null;
     var conds=(actor&&actor.activeConditions)|| (actor&&actor.conditions)||{};
@@ -317,7 +319,7 @@
   }
   function resetDeathSaves(hero){hero.deathSaves={successes:0,failures:0};}
   function attack(attacker,target,opts){
-    opts=opts||{};if(target)opts.target=target; var bonus=num(opts.bonus), mode=opts.mode||'normal';
+    opts=opts||{};if(target)opts.target=target;opts.__bloodHunterTargetHp=target?readHp(target):0; var bonus=num(opts.bonus), mode=opts.mode||'normal';
     var perfumeClass=(target&&target.classes||[]).find(function(cl){return cl&&(cl.name==='Алхимик'||cl.englishName==='Alchemist')&&(cl.subclass==='amorist'||cl.subclass==='Аморист')&&Number(cl.level)>=10;});
     if(perfumeClass&&attacker&&target&&opts.__perfumeChecked!==true){
       var perfumeState=target.classFeaturesState=target.classFeaturesState||{},perfumeOwnerState=attacker.classFeaturesState||{},attackerId=String(attacker.id||attacker.entityId||''),roundTracker=(global.currentChar||global.currentCharacter||{}).initiativeTracker||{},currentRound=Number(roundTracker.round)||1;
@@ -342,6 +344,7 @@
     if(jinx&&jinx.expiresAt>Date.now()&&jinx.kind==='attackAgainstChosenCreature'&&String(jinx.chosenCreatureId)===String(target&&(target.id||target.entityId)))featureMod.disadvantage=true;
     if(target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs&&target.classFeaturesState.alchemistDebuffs.attacksHaveAdvantage)featureMod.advantage=true;
     if(global.WARDEN_MHP_2024&&target&&global.WARDEN_MHP_2024.incomingAttackModifiers(target,{}).removeAdvantage){featureMod.advantage=false;if(mode==='advantage')mode='normal';}
+    if((opts.targetInvisible||target&&((target.conditions||{}).Невидим||(target.activeConditions||{}).Невидим))&&!featureMod.ignoreInvisibility)featureMod.disadvantage=true;
     if(featureMod.advantage && featureMod.disadvantage) mode='normal'; else if(featureMod.advantage) mode='advantage'; else if(featureMod.disadvantage) mode='disadvantage';
     if(global.DNDRules && attacker && attacker.stats && opts.useRules!==false){
       if(opts.weapon) { var wa=global.DNDRules.weaponAttack(attacker,opts.weapon,mode); opts.__classFeatureMod=featureMod; opts.__attacker=attacker; opts.__forceCritical=!!featureMod.forceCritical; if(featureMod.unarmedDie&&(opts.unarmedAttack||opts.isUnarmed||opts.pugilistWeapon))opts.damage=featureMod.unarmedDie; return resolveAttack(target,wa.roll.result,wa.bonus+num(opts.attackBonusAdjustment),opts); }
@@ -572,3 +575,4 @@
   }
   if(global.addEventListener)global.addEventListener('DOMContentLoaded',function(){patch();patchRest('shortRestCharacter','short');patchRest('longRestCharacter','long');setTimeout(function(){if(hero())combatPanel();},50);});
 })(window);
+

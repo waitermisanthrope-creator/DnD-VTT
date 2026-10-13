@@ -22,7 +22,7 @@ assert.strictEqual(snapshot.classFeaturesState.profanePatron,'celestial','Patron
 assert.strictEqual(C.useFeature(h,'otherworldlyPatron',{className:H.CLASS,patron:'fiend'}).ok,false,'Patron cannot silently change');
 assert.strictEqual(h.classFeaturesState.profanePatron,'celestial');
 assert.strictEqual(C.useFeature(h,'otherworldlyPatron',{className:H.CLASS,patron:'invalid'}).ok,false);
-for(const id of ['riteFocus','mysticFrenzy','revealedArcana','brandSappingScar','unsealedArcana']){
+for(const id of ['mysticFrenzy','revealedArcana','unsealedArcana']){
   const high=hunter(20);
   assert.strictEqual(C.useFeature(high,'otherworldlyPatron',{className:H.CLASS,patron:'archfey'}).ok,true);
   const before=JSON.stringify(high.resources);
@@ -68,3 +68,4 @@ assert.strictEqual(celestial.turnResources.bonusAction,false);
 assert.strictEqual(C.useFeature(celestial,'riteFocus',{className:H.CLASS,target:patient,distanceFt:30}).ok,false);
 assert.strictEqual(patient.hpCurrent,14);
 console.log('PASS: Blood Hunter patron selection, Russian UI, save/load and fail-closed unfinished effects');
+
