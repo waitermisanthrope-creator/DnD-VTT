@@ -404,6 +404,14 @@ if(bloodHunterScoped){
  }else{delete ctx.distanceFt;delete ctx.visible;}
 }
 var result=global.DNDClassFeatures&&typeof global.DNDClassFeatures.useFeature==='function'?global.DNDClassFeatures.useFeature(proxy,id,ctx):{ok:false,reason:'Class feature engine unavailable.'};if(!result||!result.ok)return actionError(peerId,action,result&&result.reason||'Способность не выполнена.');if(resourceKind&&resources(actor)[resourceKind]!==false&&resourceKind!=='reaction')resources(actor)[resourceKind]=false;if(resourceKind==='reaction'&&resources(actor).reaction!==false)resources(actor).reaction=false;profile.resources=clone(proxy.resources)||{};profile.classFeaturesState=clone(proxy.classFeaturesState)||{};profile.turnResources=clone(proxy.turnResources)||{};
+if(bloodHunterScoped&&id==='chooseProfaneSpells'){
+ profile.spellsData=clone(proxy.spellsData)||[];
+ var foreignSpells=(profile.spells||[]).filter(function(sp){return !sp||['Кровавый охотник','Blood Hunter','BloodHunter'].indexOf(String(sp.castingClass||''))<0;});
+ var chosenSpells=profile.spellsData.filter(function(sp){return sp&&sp.castingClass==='Кровавый охотник';}).map(function(sp){
+  return {name:sp.name,level:num(sp.level),castingClass:'Кровавый охотник',castingStat:sp.castingStat,damage:sp.damage||'',damageType:sp.damageType||'',attackType:sp.attackType||null,savingThrow:sp.savingThrow||null,castingTime:sp.castingTime||'',rangeFt:num(sp.rangeFt,0),concentration:!!sp.concentration,aoe:clone(sp.aoe)||null,aoeShape:sp.aoeShape||null,aoeRadiusFt:num(sp.aoeRadiusFt,0)};
+ });
+ profile.spells=foreignSpells.concat(chosenSpells);
+}
 if(bloodHunterScoped){
  actor.turnResources=clone(proxy.turnResources)||actor.turnResources;
  actor.hp=Math.max(0,Math.min(num(actor.maxHp,proxy.hpMax||actor.maxHp),num(proxy.hpCurrent,proxy.hitPoints)));
