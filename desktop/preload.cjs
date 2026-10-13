@@ -20,12 +20,15 @@ window.addEventListener('DOMContentLoaded', () => {
   if (!body) return;
   let landscape = false;
   const sync = () => {
-    const next = body.classList.contains('dnd-map-active');
+    // The character editor is a separate fullscreen overlay, not a body class.
+    const editor = document.getElementById('dnd3dCharacterEditor');
+    const next = body.classList.contains('dnd-map-active') ||
+      !!(editor && editor.isConnected && getComputedStyle(editor).display !== 'none');
     if (next !== landscape) {
       landscape = next;
       ipcRenderer.send('dnd:orientation', next ? 'landscape' : 'portrait');
     }
   };
-  new MutationObserver(sync).observe(body, { attributes: true, attributeFilter: ['class'] });
+  new MutationObserver(sync).observe(body, { attributes: true, attributeFilter: ['class'], childList: true });
   sync();
 });
