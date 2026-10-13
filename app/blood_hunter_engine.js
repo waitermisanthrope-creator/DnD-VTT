@@ -309,6 +309,49 @@ function useMutant(h,id,ctx){
  if(id==='brandOfAxiom')return {ok:true,passive:true,message:'Клеймо раскрывает истинную форму; применяется при наложении клейма.'};
  return {ok:false,unsupported:true,reason:'Действие мутанта ещё не реализовано.'};
 }
+// Resolve Bloodlust from trusted initiative actors and authoritative board tokens.
+// Allies are eligible and equal-distance candidates are selected randomly.
+function resolveBloodlust(h,ctx){
+ ctx=ctx||{};var state=st(h),bloodlust=state.bhBloodlust;
+ if(!enabled(h)||orderKey(h)!=='lycan'||!state.hybridForm||!bloodlust||!bloodlust.requiresNearestAttack)return {ok:true,triggered:false};
+ if(bloodlust.resolved)return error('Кровожадность уже исполнена в этом ходе.');
+ var board=global.DNDBattleBoard,combat=global.DNDCombat;
+ if(!able(h)||!actionReady(h,'action')||!board||!board.findToken||!board.distanceFt||!board.pathCost||!board.pathCells||!combat||!combat.attack)return error('Для автоматической кровожадности требуется доступное действие и актуальная боевая карта.');
+ var actorToken=board.findToken('bt_'+actorId(h))||board.findToken(actorId(h));
+ if(!actorToken)return error('На карте отсутствует жетон ликантропа.');
+ var candidates=(Array.isArray(ctx.combatants)?ctx.combatants:[]).filter(function(t){return t&&actorId(t)!==actorId(h)&&hp(t)>0&&!t.defeated;}).map(function(t){
+  var token=board.findToken('bt_'+actorId(t))||board.findToken(actorId(t));
+  return token?{target:t,token:token,distance:board.distanceFt(actorToken,token)}:null;
+ }).filter(function(x){return x&&Number.isFinite(x.distance)&&x.distance>=0;});
+ if(!candidates.length)return error('Не найдено ни одного живого существа с известным положением.');
+ var nearest=Math.min.apply(Math,candidates.map(function(x){return x.distance;}));
+ var tied=candidates.filter(function(x){return x.distance===nearest;});
+ var chosen=tied[Math.floor(Math.random()*tied.length)]||tied[0],before={x:actorToken.x,y:actorToken.y},movedFt=0;
+ var budget=Math.max(0,num(h.turnResources&&h.turnResources.movement,num(h.speed,30))-num(h.turnResources&&h.turnResources.movementUsed));
+ if(chosen.distance>5&&budget>0){
+  var path=board.pathCells(actorToken,chosen.token),position=null,travel=0;
+  if(Array.isArray(path)){
+   path.forEach(function(cell){
+    if(!cell||cell.x===before.x&&cell.y===before.y)return;
+    var c=board.pathCost(before,cell);
+    if(!Number.isFinite(c)||c<0||c>budget)return;
+    // Never move into another creature, even if the path finder ignores occupied cells.
+    var crowded=(Array.isArray(ctx.combatants)?ctx.combatants:[]).some(function(other){if(!other||actorId(other)===actorId(h))return false;var token=board.findToken('bt_'+actorId(other))||board.findToken(actorId(other));return !!(token&&token.x===cell.x&&token.y===cell.y);});
+    if(!crowded){position=cell;travel=c;}
+   });
+  }
+  if(position){actorToken.x=position.x;actorToken.y=position.y;movedFt=travel;if(h.turnResources)h.turnResources.movementUsed=num(h.turnResources.movementUsed)+travel;}
+ }
+ var remainingDistance=board.distanceFt(actorToken,chosen.token);
+ takeAction(h,'action');
+ bloodlust.resolved=true;bloodlust.targetId=actorId(chosen.target);bloodlust.movedFt=movedFt;
+ var attack=null;
+ if(remainingDistance<=5){
+  var claw={id:'unarmed',name:'Когти ликантропа',damageDice:lvl(h)>=11?'1d8':'1d6',damageType:'slashing',rangeFt:5,stat:'str'};
+  attack=combat.attack(h,chosen.target,{weapon:claw,unarmedAttack:true,inAttackAction:true,damageType:'slashing',distanceFt:remainingDistance});
+ }
+ return {ok:true,triggered:true,targetId:actorId(chosen.target),targetName:chosen.target.name||'',alliedTarget:chosen.target.team!=null&&h.team!=null&&chosen.target.team===h.team,movedFt:movedFt,from:before,to:{x:actorToken.x,y:actorToken.y},distanceFt:remainingDistance,attack:attack,actionSpent:true,message:attack?'Кровожадность: вынужденная атака по ближайшему существу.':'Кровожадность: движение к ближайшему существу; цель пока вне досягаемости.'};
+}
 function useLycan(h,id,ctx){
  sync(h);ctx=ctx||{};var s=st(h),l=lvl(h);
  if(id==='hybridTransformation'){if(!actionReady(h,'bonus'))return error('Требуется бонусное действие.');if(s.hybridForm){s.hybridForm=false;takeAction(h,'bonus');return {ok:true,message:'Гибридная форма снята.'};}if(!s.bhUnlimitedHybrid&&!spend(h,'hybridTransformation',1))return error('Нет использования превращения.');s.hybridForm=true;s.bhHybridExpiresAt=l>=18?null:Date.now()+3600000;takeAction(h,'bonus');return {ok:true,message:'Гибридная форма активна.'};}
@@ -518,5 +561,5 @@ var labels={huntersBane:'Погибель охотника',bloodMaledict:'Кр�
 features.forEach(function(f){f.name=labels[f.id]||f.name;});subclasses.forEach(function(s){s.features.forEach(function(f){f.name=labels[f.id]||f.name;});});
 var pack={id:'blood-hunter',name:CLASS,aliases:['Blood Hunter','BloodHunter'],authoritativeSubclasses:true,source:'Matthew Mercer / Critical Role — partner third-party content',license:'Original runtime implementation',
 features:features,subclasses:subclasses,hooks:{sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,checkModifiers:skillModifiers,startTurn:turnStart,onTurnEnd:turnEnd,rest:bloodHunterRest,onDamage:onDamage,onCondition:onCondition,onAttackResult:onAttackResult}};
-var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'3.0.0',CLASS:CLASS,adjustWeaponDamage:adjustWeaponDamage,adjustRiteDamage:adjustRiteDamage,renderControls:renderControls,gameActors:gameActors,abilityBonuses:abilityBonuses,incomingAC:incomingAC,conditionImmune:conditionImmune,reviveRite:reviveRite,currentBrand:currentBrand,canDash:canDash,canPhaseThroughObjects:canPhaseThroughObjects,brandedByAxiom:brandedByAxiom,attemptBrandedShapeChange:attemptBrandedShapeChange,resolveBrandTravel:resolveBrandTravel,canBreatheUnderwater:canBreatheUnderwater,isRevealed:isRevealed,flightSpeed:flightSpeed,halveNecroticRiteDamage:halveNecroticRiteDamage,sappingScarSaveModifiers:sappingScarSaveModifiers,chooseKnown:chooseKnown,activeRite:activeRite,observe:observe,damageModifiers:damageModifiers,cursedSaveModifiers:cursedSaveModifiers,cursedCheckModifiers:cursedCheckModifiers,cursedAttackPenalty:cursedAttackPenalty,endActorTurn:endActorTurn,startActorTurn:startActorTurn,afterActorAttack:afterActorAttack,afterDamage:afterDamage,rest:bloodHunterRest,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
+var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'3.0.0',CLASS:CLASS,adjustWeaponDamage:adjustWeaponDamage,adjustRiteDamage:adjustRiteDamage,renderControls:renderControls,gameActors:gameActors,abilityBonuses:abilityBonuses,incomingAC:incomingAC,conditionImmune:conditionImmune,reviveRite:reviveRite,currentBrand:currentBrand,canDash:canDash,canPhaseThroughObjects:canPhaseThroughObjects,brandedByAxiom:brandedByAxiom,attemptBrandedShapeChange:attemptBrandedShapeChange,resolveBrandTravel:resolveBrandTravel,canBreatheUnderwater:canBreatheUnderwater,isRevealed:isRevealed,flightSpeed:flightSpeed,resolveBloodlust:resolveBloodlust,beginTurn:turnStart,halveNecroticRiteDamage:halveNecroticRiteDamage,sappingScarSaveModifiers:sappingScarSaveModifiers,chooseKnown:chooseKnown,activeRite:activeRite,observe:observe,damageModifiers:damageModifiers,cursedSaveModifiers:cursedSaveModifiers,cursedCheckModifiers:cursedCheckModifiers,cursedAttackPenalty:cursedAttackPenalty,endActorTurn:endActorTurn,startActorTurn:startActorTurn,afterActorAttack:afterActorAttack,afterDamage:afterDamage,rest:bloodHunterRest,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
 })(window);
