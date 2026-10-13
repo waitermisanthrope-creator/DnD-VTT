@@ -8,7 +8,7 @@
     "desktop:prepare": "node desktop/prepare.cjs",
     "desktop:dev": "npm run desktop:prepare && electron .",
     "desktop:build:win": "npm run desktop:prepare && electron-builder --win nsis portable --x64 --publish never",
-    "desktop:check": "node --check desktop/main.cjs && node --check desktop/preload.cjs && node --check desktop/prepare.cjs"
+    "desktop:check": "node --check desktop/main.cjs && node --check desktop/preload.cjs && node --check desktop/prepare.cjs && node --check desktop/update.cjs && node tests/desktop_update_contract.cjs"
   },
   "devDependencies": {
     "electron": "^40.0.0",
@@ -22,7 +22,8 @@
       "package.json",
       "desktop/main.cjs",
       "desktop/preload.cjs",
-      "desktop/web/**/*"
+      "desktop/web/**/*",
+      "desktop/update.cjs"
     ],
     "directories": {
       "output": "dist/windows"
