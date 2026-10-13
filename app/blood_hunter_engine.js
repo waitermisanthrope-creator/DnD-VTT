@@ -89,6 +89,11 @@ var curseNames={anxious:'Тревога',binding:'Связывание',bloatedA
 function actorId(h){return String(h&&(h.id||h.entityId||h.characterId)||'');}
 function observe(h){var id=actorId(h);if(id)actors[id]=h;return h;}
 function enabled(h){return lvl(h)>0&&D.isEnabled('blood-hunter');}
+function profanePatron(h){return enabled(h)&&orderKey(h)==='profaneSoul'?String(st(h).profanePatron||''):'';}
+function hasRite(h){return rites(h).some(function(r){return r.active;});}
+function canBreatheUnderwater(h){return profanePatron(h)==='fathomless';}
+function isRevealed(t){return effects(t).some(function(e){return e.id==='archfeyGlow';});}
+function flightSpeed(h){return Math.max(0,num(st(h).bhGenieFlight&&st(h).bhGenieFlight.speed));}
 function able(h){var c=Object.assign({},h&&h.conditions,h&&h.activeConditions);return hp(h)>0&&!h.defeated&&!['Недееспособен','Бессознателен','Оглушён','Парализован','Окаменел','incapacitated','unconscious','stunned','paralyzed','petrified'].some(function(k){return c[k];});}
 function error(message){return {ok:false,reason:message};}
 function actionReady(h,kind){return able(h)&&(!h.turnResources||!!(kind==='action'?(h.turnResources.actions!=null?h.turnResources.actions:h.turnResources.action):h.turnResources[kind==='bonus'?'bonusAction':'reaction']));}
@@ -115,8 +120,10 @@ function hemRoll(h,ctx,commit){var a=bloodLoss(h),s=st(h);if(lvl(h)>=20&&ctx&&ct
 function payBlood(h,amount){var B=global.DNDCombat;if(!B||!B.payHitPointCost)return false;return B.payHitPointCost(h,amount).ok;}
 function effects(t){if(!t)return [];observe(t);return st(t).bloodHunterEffects||(st(t).bloodHunterEffects=[]);}
 function conditionPresent(t,k){return !!(t.conditions&&t.conditions[k]||t.activeConditions&&t.activeConditions[k]);}
-function removeEffect(t,e){var list=effects(t);st(t).bloodHunterEffects=list.filter(function(x){return x!==e;});if(e.condition&&!e.conditionWasPresent&&!effects(t).some(function(x){return x.condition===e.condition;})){global.DNDCombat.toggleCondition(t,e.condition,false);if(t.activeConditions)t.activeConditions[e.condition]=false;}if(e.id==='binding'&&!effects(t).some(function(x){return x.id==='binding';})&&st(t).bhBoundSpeed!=null){if(t.speed===0)t.speed=st(t).bhBoundSpeed;delete st(t).bhBoundSpeed;}}
-function addEffect(h,t,id,ctx,extra){var old=effects(t).filter(function(e){return e.ownerId===actorId(h)&&e.id===id;});old.forEach(function(e){removeEffect(t,e);});var e=Object.assign({id:id,ownerId:actorId(h),dc:dc(h),amplified:!!ctx.amplify,serial:++effectSerial,createdAt:Date.now()},extra||{});effects(t).push(e);if(e.condition){e.conditionWasPresent=conditionPresent(t,e.condition);global.DNDCombat.toggleCondition(t,e.condition,true);}if(id==='binding'){if(st(t).bhBoundSpeed==null)st(t).bhBoundSpeed=num(t.speed,30);t.speed=0;if(t.turnResources){t.turnResources.movement=0;t.turnResources.reaction=0;}}return e;}
+function removeEffect(t,e){var list=effects(t);st(t).bloodHunterEffects=list.filter(function(x){return x!==e;});if(e.condition&&!e.conditionWasPresent&&!effects(t).some(function(x){return x.condition===e.condition;})){global.DNDCombat.toggleCondition(t,e.condition,false);if(t.activeConditions)t.activeConditions[e.condition]=false;}if(e.id==='binding'&&!effects(t).some(function(x){return x.id==='binding';})&&st(t).bhBoundSpeed!=null){if(t.speed===0)t.speed=st(t).bhBoundSpeed;delete st(t).bhBoundSpeed;}if(e.id==='fathomlessSlow'&&!effects(t).some(function(x){return x.id==='fathomlessSlow';})&&st(t).bhFathomlessOriginalSpeed!=null){t.speed=num(st(t).bhFathomlessOriginalSpeed,30);delete st(t).bhFathomlessOriginalSpeed;}}
+function addEffect(h,t,id,ctx,extra){var old=effects(t).filter(function(e){return e.ownerId===actorId(h)&&e.id===id;});old.forEach(function(e){removeEffect(t,e);});var e=Object.assign({id:id,ownerId:actorId(h),dc:dc(h),amplified:!!ctx.amplify,serial:++effectSerial,createdAt:Date.now()},extra||{});effects(t).push(e);if(e.condition){e.conditionWasPresent=conditionPresent(t,e.condition);global.DNDCombat.toggleCondition(t,e.condition,true);}if(id==='binding'){if(st(t).bhBoundSpeed==null)st(t).bhBoundSpeed=num(t.speed,30);t.speed=0;if(t.turnResources){t.turnResources.movement=0;t.turnResources.reaction=0;}}
+if(id==='fathomlessSlow'){if(st(t).bhFathomlessOriginalSpeed==null)st(t).bhFathomlessOriginalSpeed=num(t.speed,30);t.speed=Math.max(0,num(t.speed)-10);if(t.turnResources)t.turnResources.movement=Math.max(0,num(t.turnResources.movement)-10);}
+return e;}
 function curseSave(t,stat,saveDC,ctx){return global.DNDCombat.savingThrow(t,stat,saveDC,'normal',ctx||{});}
 function curseDamage(h,t,formula,type){var r=global.DNDCombat.rollDice(formula);return global.DNDCombat.applyDamage(t,r.total,type,{source:'blood-hunter',attacker:h,magicalAttack:true});}
 function useRite(h,ctx){
@@ -164,7 +171,8 @@ function useCurse(h,ctx){
  if(id==='fallenPuppet'){out.attack=B.attack(t,puppetTarget,{weapon:puppetWeapon,damage:puppetWeapon.damageDice,damageType:puppetWeapon.damageType||'slashing',bonus:num(puppetWeapon.attackBonus),attackBonusAdjustment:ctx.amplify?Math.max(1,hemMod(h)):0,distanceFt:ctx.attackDistanceFt,bloodHunterPuppet:true});out.applied=true;if(ctx.amplify&&ctx.moveFt)out.movementRequiredFt=num(ctx.moveFt);}
  if(id==='howl'){out.results=howlTargets.map(function(x){var immunity=effects(x.target).some(function(e){return e.id==='howlImmunity'&&e.ownerId===actorId(h)&&e.expiresAt>Date.now();});if(immunity)return {targetId:actorId(x.target),immune:true};var sv=curseSave(x.target,'wis',dc(h));if(sv.success)addEffect(h,x.target,'howlImmunity',ctx,{expiresAt:Date.now()+86400000});else{addEffect(h,x.target,'howl',ctx,{condition:'Испуган',targetTurns:10,repeatSave:'wis'});if(conditionPresent(x.target,'Испуган')&&sv.total<=dc(h)-5)addEffect(h,x.target,'howlStun',ctx,{condition:'Оглушён',linkedHowl:true});}return {targetId:actorId(x.target),save:sv,applied:!sv.success};});out.applied=out.results.some(function(x){return x.applied;});}
  if(id==='soulEater'){addEffect(h,h,id,ctx,{ownerTurns:2});out.applied=true;if(ctx.amplify){h.pactMagicData.used--;if(h.pactMagic)h.pactMagic.used=h.pactMagicData.used;s.bhSoulEaterAmplified=true;}}
- s.lastBloodCurse=out;return out;
+ if(out.applied&&t&&profanePatron(h)==='hexblade')effects(t).filter(function(e){return e.ownerId===actorId(h)&&e.id===id;}).forEach(function(e){e.hexbladeBonusReady=true;});
+s.lastBloodCurse=out;return out;
 }
 function normalizeDamageType(t){return ({'огонь':'fire','холод':'cold','молния':'lightning','некротический':'necrotic','психический':'psychic','силовой':'force','излучение':'radiant','дробящий':'bludgeoning','колющий':'piercing','рубящий':'slashing','яд':'poison','кислота':'acid','гром':'thunder'})[String(t).toLowerCase()]||String(t).toLowerCase();}
 function damageModifiers(t,type,ctx){var k=normalizeDamageType(type),out={resistance:false,vulnerability:false,immunity:false,ignoreResistance:false,ignoreImmunity:false,immunityBecomesResistance:false},s=st(t);ctx=ctx||{};
@@ -176,9 +184,11 @@ function cursedSaveModifiers(t,ctx){var out={advantage:false,disadvantage:false}
 function cursedCheckModifiers(t,ctx){var out={advantage:false,disadvantage:false};effects(t).forEach(function(e){if(e.id==='bloatedAgony'&&['str','dex'].indexOf(ctx.stat)>=0)out.disadvantage=true;});if(ctx.target&&ctx.skill==='intimidation'&&effects(ctx.target).some(function(e){return e.id==='anxious';}))out.advantage=true;return out;}
 function cursedAttackPenalty(t){var e=effects(t).find(function(e){return e.id==='eyeless';});var owner=e&&actors[e.ownerId];return owner&&enabled(owner)?hemRoll(owner,{}):0;}
 function endActorTurn(t){observe(t);Object.keys(actors).forEach(function(k){var a=actors[k];effects(a).slice().forEach(function(e){if(e.expiresAt&&e.expiresAt<=Date.now()){removeEffect(a,e);return;}if(e.ownerId===actorId(t)&&e.ownerTurns!=null){e.ownerTurns--;if(e.ownerTurns<=0)removeEffect(a,e);}if(a===t&&e.repeatSave){var sv=curseSave(t,e.repeatSave,e.dc);if(sv.success){removeEffect(t,e);if(e.id==='howl')effects(t).slice().filter(function(x){return x.ownerId===e.ownerId&&x.linkedHowl;}).forEach(function(x){removeEffect(t,x);});}else if(e.id==='corrosion'&&e.amplified&&actors[e.ownerId])curseDamage(actors[e.ownerId],t,'4d6','necrotic');}if(a===t&&e.targetTurns!=null){e.targetTurns--;if(e.targetTurns<=0){removeEffect(t,e);if(e.id==='howl')effects(t).slice().filter(function(x){return x.ownerId===e.ownerId&&x.linkedHowl;}).forEach(function(x){removeEffect(t,x);});}}});});}
-function startActorTurn(t){observe(t);st(t).bhAttacksThisTurn=0;if(effects(t).some(function(e){return e.id==='binding';})&&t.turnResources){t.turnResources.movement=0;t.turnResources.reaction=0;}if(enabled(t))st(t).bhHemocraftRerolled=false;}
+function startActorTurn(t){observe(t);st(t).bhAttacksThisTurn=0;
+Object.keys(actors).forEach(function(k){effects(actors[k]).slice().filter(function(e){return e.id==='fathomlessSlow'&&e.ownerId===actorId(t);}).forEach(function(e){removeEffect(actors[k],e);});});
+st(t).bhFathomlessUsed=false;if(effects(t).some(function(e){return e.id==='binding';})&&t.turnResources){t.turnResources.movement=0;t.turnResources.reaction=0;}if(enabled(t))st(t).bhHemocraftRerolled=false;}
 function afterActorAttack(t,ctx){if(!t||ctx.bloodHunterPuppet)return;var count=st(t).bhAttacksThisTurn=num(st(t).bhAttacksThisTurn)+1;if(count===2)effects(t).filter(function(e){return e.id==='bloatedAgony';}).slice(0,1).forEach(function(e){var owner=actors[e.ownerId];if(owner)curseDamage(owner,t,'1d8','necrotic');});}
-function bloodHunterRest(h,type){if(type!=='short'&&type!=='long')return;var s=st(h);Object.keys(actors).forEach(function(k){var a=actors[k];effects(a).slice().filter(function(e){return e.id!=='howlImmunity'&&(a===h||e.ownerId===actorId(h));}).forEach(function(e){removeEffect(a,e);});});rites(h).forEach(function(r){r.active=false;});if(h.pactMagicData)h.pactMagicData.used=0;if(h.pactMagic)h.pactMagic.used=0;s.hybridForm=false;s.activeMutagens=[];s.bhPreparedMutagens=[];s.bhMayPrepareMutagens=true;delete s.bhIgnoreMutagenSide;delete s.bhAetherWalk;delete s.bhBloodlust;projectSpeed(h);sync(h);if(type==='long')s.bhSoulEaterAmplified=false;}
+function bloodHunterRest(h,type){if(type!=='short'&&type!=='long')return;var s=st(h);delete s.bhGenieFlight;Object.keys(actors).forEach(function(k){var a=actors[k];effects(a).slice().filter(function(e){return e.id!=='howlImmunity'&&(a===h||e.ownerId===actorId(h));}).forEach(function(e){removeEffect(a,e);});});rites(h).forEach(function(r){r.active=false;});if(h.pactMagicData)h.pactMagicData.used=0;if(h.pactMagic)h.pactMagic.used=0;s.hybridForm=false;s.activeMutagens=[];s.bhPreparedMutagens=[];s.bhMayPrepareMutagens=true;delete s.bhIgnoreMutagenSide;delete s.bhAetherWalk;delete s.bhBloodlust;projectSpeed(h);sync(h);if(type==='long')s.bhSoulEaterAmplified=false;}
 
 function useBrand(h,ctx){
  sync(h);ctx=ctx||{};var t=target(ctx),r=ctx.attackResult,ac=ctx.attackContext||ctx,s=st(h);
@@ -187,11 +197,29 @@ function useBrand(h,ctx){
  if(s.brandTargetId&&actors[s.brandTargetId]&&st(actors[s.brandTargetId]).bloodHunterBrand&&st(actors[s.brandTargetId]).bloodHunterBrand.ownerId===actorId(h))delete st(actors[s.brandTargetId]).bloodHunterBrand;
  s.brandTargetId=actorId(t);s.brandTether=lvl(h)>=13;st(t).bloodHunterBrand={ownerId:actorId(h),hemMod:hemMod(h),dc:dc(h),level:lvl(h),order:orderKey(h)};observe(t);return {ok:true,targetId:actorId(t),message:'Клеймо наказания наложено.'};
 }
-function afterDamage(t,result,opts){var attacker=opts&&opts.attacker;if(!attacker||opts.source==='blood-hunter-brand'||num(result.damageTaken,result.amount)<=0)return;var b=st(attacker).bloodHunterBrand,owner=b&&actors[b.ownerId];if(!owner||!enabled(owner))return;var d=owner===t?0:distance(owner,t,{distanceFt:opts.brandAllyDistanceFt});if(d!==null&&d<=5&&opts.visible!==false)global.DNDCombat.applyDamage(attacker,b.level>=13?Math.max(2,2*b.hemMod):Math.max(1,b.hemMod),'psychic',{source:'blood-hunter-brand',magicalAttack:true});}
+function afterDamage(t,result,opts){var attacker=opts&&opts.attacker;if(!attacker||opts.source==='blood-hunter-brand'||num(result.damageTaken,result.amount)<=0)return;
+if(profanePatron(attacker)==='undying'&&opts.bhHostile===true&&opts.bhMildThreat===true&&num(opts.bhHpBefore)>0&&hp(t)===0&&t!==attacker&&global.DNDCombat&&global.DNDCombat.heal){result.undyingRiteHealing=global.DNDCombat.heal(attacker,bloodLoss(attacker));}
+var b=st(attacker).bloodHunterBrand,owner=b&&actors[b.ownerId];if(!owner||!enabled(owner))return;var d=owner===t?0:distance(owner,t,{distanceFt:opts.brandAllyDistanceFt});if(d!==null&&d<=5&&opts.visible!==false)global.DNDCombat.applyDamage(attacker,b.level>=13?Math.max(2,2*b.hemMod):Math.max(1,b.hemMod),'psychic',{source:'blood-hunter-brand',magicalAttack:true});}
 function onAttackResult(h,ctx){var r=ctx.attackResult,ac=ctx.attackContext||{};if(!enabled(h))return;var rite=activeRite(h,ac),s=st(h);if(lvl(h)>=20&&ctx.hit&&ctx.critical&&rite&&h.resources.bloodMaledict)h.resources.bloodMaledict.current=Math.min(h.resources.bloodMaledict.max,num(h.resources.bloodMaledict.current)+1);
  if(rite&&ctx.brandCastigation&&ctx.target)useBrand(h,{target:ctx.target,attackResult:r,attackContext:ac});
  if(ctx.attackContext&&(ctx.attackContext.unarmedAttack||ctx.attackContext.unarmed)&&ctx.attackContext.inAttackAction)s.bhUnarmedAttackThisTurn=true;
- if(ctx.target){var mark=effects(ctx.target).find(function(e){return e.id==='marked'&&e.ownerId===actorId(h)&&e.amplified;});if(mark)mark.amplified=false;}
+ if(ctx.target){
+ var mark=effects(ctx.target).find(function(e){return e.id==='marked'&&e.ownerId===actorId(h)&&e.amplified;});if(mark)mark.amplified=false;
+ if(ctx.hit&&profanePatron(h)==='hexblade')effects(ctx.target).filter(function(e){return e.ownerId===actorId(h)&&e.hexbladeBonusReady;}).forEach(function(e){e.hexbladeBonusReady=false;});
+ if(rite&&ctx.hit&&r&&r.damageResult&&num(r.damageResult.amount)>0){
+  var patron=profanePatron(h);
+  if(patron==='archfey')addEffect(h,ctx.target,'archfeyGlow',{}, {ownerTurns:2});
+  if(patron==='fathomless'&&!s.bhFathomlessUsed){addEffect(h,ctx.target,'fathomlessSlow',{},{});s.bhFathomlessUsed=true;}
+ }
+ if(ctx.hit&&ctx.critical&&profanePatron(h)==='greatOldOne'){
+  var selected=[ctx.target],extra=ac.critFearTargets;
+  if(Array.isArray(extra))extra.forEach(function(entry){
+   var other=entry&&entry.target,d=distance(ctx.target,other,entry);
+   if(other&&other!==ctx.target&&selected.indexOf(other)<0&&d!==null&&d<=10&&entry.visible!==false)selected.push(other);
+  });
+  selected.forEach(function(t){if(actorId(t))addEffect(h,t,'greatOldOneFear',{}, {condition:'Испуган',ownerTurns:2});});
+ }
+}
 }
 
 function mutationLimit(l){return l>=18?8:l>=15?7:l>=11?6:l>=7?5:4;}
@@ -242,7 +270,7 @@ function turnStart(h){
  if(s.hybridForm&&hp(h)>0&&hp(h)<num(h.hpMax,h.maxHp)/2){var automatic=global.DNDCombat.concentrationState(h).active||s.raging,sv=automatic?{success:false,autoFailed:true}:global.DNDCombat.savingThrow(h,'wis',8,l>=15?'advantage':'normal');s.bhBloodlust={save:sv,requiresNearestAttack:!sv.success};}
  else delete s.bhBloodlust;
 }
-function turnEnd(h){var s=st(h);if(s.bhIgnoreMutagenSide){s.bhIgnoreMutagenSide.turns--;if(s.bhIgnoreMutagenSide.turns<=0)delete s.bhIgnoreMutagenSide;}if(s.bhAetherWalk){if(h.insideObject===true)curseDamage(h,h,'1d10','force');s.bhAetherWalk.turns--;if(s.bhAetherWalk.turns<=0){if(h.insideObject===true)s.bhAetherShuntRequired=true;delete s.bhAetherWalk;}}projectSpeed(h);}
+function turnEnd(h){var s=st(h);if(s.bhGenieFlight){s.bhGenieFlight.rounds--;if(s.bhGenieFlight.rounds<=0)delete s.bhGenieFlight;}if(s.bhIgnoreMutagenSide){s.bhIgnoreMutagenSide.turns--;if(s.bhIgnoreMutagenSide.turns<=0)delete s.bhIgnoreMutagenSide;}if(s.bhAetherWalk){if(h.insideObject===true)curseDamage(h,h,'1d10','force');s.bhAetherWalk.turns--;if(s.bhAetherWalk.turns<=0){if(h.insideObject===true)s.bhAetherShuntRequired=true;delete s.bhAetherWalk;}}projectSpeed(h);}
 
 function spellTable(l){if(l<3)return{cantrips:0,spells:0,slots:0,slotLevel:0};return{cantrips:l>=10?3:2,spells:l>=20?11:l>=19?10:l>=17?9:l>=15?8:l>=13?7:l>=11?6:l>=9?5:l>=7?4:l>=5?3:2,slots:l>=6?2:1,slotLevel:l>=19?4:l>=13?3:l>=7?2:1};}
 function useProfane(h,id,ctx){
@@ -251,6 +279,17 @@ function useProfane(h,id,ctx){
  if(!pt)return error('Сначала выберите потустороннего покровителя.');
  if(id==='castPactSpell'||id==='pactMagic')return {ok:false,reason:'Заклинание должно выполняться через проверяемый боевой resolver магии.'};
  if(id==='riteFocus'){
+  if(p==='archfey')return {ok:true,passive:true,message:'Оружие обряда раскрывает поражённую цель до конца следующего хода.'};
+  if(p==='fathomless')return {ok:true,passive:true,message:'Подводное дыхание и замедление первой поражённой обрядом цели за ход.'};
+  if(p==='greatOldOne')return {ok:true,passive:true,message:'Критическое попадание пугает выбранные существа в пределах 10 футов.'};
+  if(p==='hexblade')return {ok:true,passive:true,message:'Первое попадание по проклятой цели получает бонус мастерства к урону.'};
+  if(p==='undying')return {ok:true,passive:true,message:'Победа над опасным враждебным существом восстанавливает кость гемокрафта HP.'};
+  if(p==='undead')return {ok:true,passive:true,message:'Реакция на некротический урон доступна в бою.'};
+  if(p==='genie'){
+   if(!hasRite(h)||!actionReady(h,'bonus')||!h.resources.bloodMaledict||h.resources.bloodMaledict.current<1||s.bhGenieFlight)return error('Полёт требует активного обряда, бонусного действия и использования проклятия.');
+   spend(h,'bloodMaledict',1);takeAction(h,'bonus');s.bhGenieFlight={speed:30,rounds:Math.max(1,hemMod(h))};
+   return {ok:true,flightSpeed:30,rounds:s.bhGenieFlight.rounds,message:'Полёт Джинна: 30 футов.'};
+  }
   if(p==='fiend')return {ok:true,passive:true,message:'Исчадие: переброс 1–2 огненного обряда применяется при расчёте урона.'};
   if(p==='celestial'){
    var recipient=target(ctx),healer=h,visible=ctx&&ctx.visible!==false;
@@ -300,7 +339,8 @@ function attackModifiers(h,ctx){
  if(r){var count=1,t=ctx.target;if(r.type==='dawn'&&t&&/undead|нежить/i.test(t.creatureType||t.typeName||''))count++;if(t&&effects(t).some(function(e){return e.id==='marked'&&e.ownerId===actorId(h);}))count++;if(orderKey(h)==='ghostslayer'&&l>=11&&t&&st(t).bloodHunterBrand&&st(t).bloodHunterBrand.ownerId===actorId(h))count++;o.typedExtraDice.push({dice:count+'d'+dieSides(l),type:riteTypes[r.type],label:'Алый обряд',magicalAttack:true});o.magicalAttack=true;}
  if(ctx.target&&effects(ctx.target).some(function(e){return e.id==='marked'&&e.ownerId===actorId(h)&&e.amplified;}))o.advantage=true;
  if(effects(h).some(function(e){return e.id==='soulEater';}))o.advantage=true;
- if(orderKey(h)==='mutant'){if(activeMutations(h).some(function(m){return m.id==='precision';}))o.criticalRange=19;if(activeMutations(h).some(function(m){return m.id==='nighteye';})&&ctx.directSunlight)o.disadvantage=true;}
+ if(profanePatron(h)==='hexblade'&&ctx.target&&effects(ctx.target).some(function(e){return e.ownerId===actorId(h)&&e.hexbladeBonusReady;}))o.bonusDamage+=Math.max(2,num(h.proficiencyBonus,2));
+if(orderKey(h)==='mutant'){if(activeMutations(h).some(function(m){return m.id==='precision';}))o.criticalRange=19;if(activeMutations(h).some(function(m){return m.id==='nighteye';})&&ctx.directSunlight)o.disadvantage=true;}
  if(s.hybridForm){if(ctx.meleeOrThrown)o.bonusDamage+=l>=18?3:l>=11?2:1;if(ctx.unarmed||ctx.unarmedAttack){o.unarmedDie=l>=11?'1d8':'1d6';if(l>=7)o.bonusAttack+=l>=18?3:l>=11?2:1;}}
  if((style==='Стрельба'||style==='Archery')&&ctx.weaponAttack&&(ctx.rangedAttack||ctx.attackKind==='ranged'||ctx.weapon&&num(ctx.weapon.rangeFt)>5))o.bonusAttack+=2;
  if((style==='Дуэлянт'||style==='Dueling')&&ctx.weaponAttack&&ctx.duelingEligible)o.bonusDamage+=2;
@@ -318,7 +358,7 @@ var mutagenNames={aether:'Эфир',alluring:'Обаяние',celerity:'Пров
 function escUI(v){return String(v).replace(/[&<>"']/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];});}
 function gameActors(){var h=global.currentChar||global.currentCharacter,all=[];if(h)all.push(h);if(h&&h.initiativeTracker)all=all.concat(h.initiativeTracker.combatants||[]);if(Array.isArray(global.characters))all=all.concat(global.characters);all.forEach(observe);return Object.keys(actors).map(function(k){return actors[k];});}
 function selectUI(title,list,label,many){if(!list.length){global.alert('Нет доступных вариантов.');return null;}var raw=global.prompt(title+'\n'+list.map(function(x,i){return (i+1)+'. '+label(x);}).join('\n')+(many?'\nВведите номера через запятую.':''),'');if(raw===null)return null;var parts=raw.split(/[,;\s]+/).filter(Boolean);if(!parts.length||!many&&parts.length!==1||parts.some(function(x){return !/^\d+$/.test(x)||!list[Number(x)-1];})){global.alert('Укажите номера из списка.');return null;}return parts.map(function(x){return list[Number(x)-1];});}
-function renderControls(h){if(!enabled(h))return '';sync(h);var s=st(h),buttons=[['chooseBloodCurses','Изученные проклятия'],['setHemocraftAbility','Гемокрафт']];if(lvl(h)>=2)buttons=buttons.concat([['chooseCrimsonRites','Изученные обряды'],['fightingStyle','Боевой стиль'],['crimsonRite','Активировать обряд']]);if(lvl(h)>=3)buttons.push(['chooseBloodOrder','Орден']);buttons.push(['bloodMaledict','Наложить проклятие']);if(orderKey(h)==='lycan'&&lvl(h)>=3)buttons.push(['hybridTransformation','Гибридная форма'],['predatoryStrike','Хищный удар']);if(orderKey(h)==='profaneSoul'&&lvl(h)>=3){buttons.push(['otherworldlyPatron','Потусторонний покровитель']);if(s.profanePatron==='celestial')buttons.push(['riteFocus','Исцеление Небожителя']);}if(orderKey(h)==='mutant'&&lvl(h)>=3){buttons.push(['chooseMutagenFormulas','Формулы'],['prepareMutagens','Приготовить мутагены'],['mutagencraft','Принять мутаген'],['flushMutagens','Вывести мутагены']);if(lvl(h)>=7)buttons.push(['strangeMetabolism','Подавить побочный эффект']);if(lvl(h)>=18)buttons.push(['exaltedMutation','Заменить активный мутаген']);}
+function renderControls(h){if(!enabled(h))return '';sync(h);var s=st(h),buttons=[['chooseBloodCurses','Изученные проклятия'],['setHemocraftAbility','Гемокрафт']];if(lvl(h)>=2)buttons=buttons.concat([['chooseCrimsonRites','Изученные обряды'],['fightingStyle','Боевой стиль'],['crimsonRite','Активировать обряд']]);if(lvl(h)>=3)buttons.push(['chooseBloodOrder','Орден']);buttons.push(['bloodMaledict','Наложить проклятие']);if(orderKey(h)==='lycan'&&lvl(h)>=3)buttons.push(['hybridTransformation','Гибридная форма'],['predatoryStrike','Хищный удар']);if(orderKey(h)==='profaneSoul'&&lvl(h)>=3){buttons.push(['otherworldlyPatron','Потусторонний покровитель']);if(s.profanePatron==='celestial')buttons.push(['riteFocus','Исцеление Небожителя']);if(s.profanePatron==='genie')buttons.push(['riteFocus','Полёт Джинна']);}if(orderKey(h)==='mutant'&&lvl(h)>=3){buttons.push(['chooseMutagenFormulas','Формулы'],['prepareMutagens','Приготовить мутагены'],['mutagencraft','Принять мутаген'],['flushMutagens','Вывести мутагены']);if(lvl(h)>=7)buttons.push(['strangeMetabolism','Подавить побочный эффект']);if(lvl(h)>=18)buttons.push(['exaltedMutation','Заменить активный мутаген']);}
  var r=h.resources.bloodMaledict,summary='Проклятия: '+(s.bloodCursesKnown.map(function(k){return curseNames[k];}).join(', ')||'не выбраны')+' · '+r.current+'/'+r.max;var riteText=rites(h).filter(function(r){return r.active;}).map(function(r){return riteNames[r.type]+' — '+r.weaponId;}).join(', ');
  return '<div class="weapon-card"><strong>Кровавый охотник — выборы и действия</strong><p>'+escUI(summary)+'</p>'+(orderKey(h)==='profaneSoul'?'<p>Покровитель: '+escUI(patronNames[s.profanePatron]||'не выбран')+'</p>':'')+(riteText?'<p>Активные обряды: '+escUI(riteText)+'</p>':'')+'<div style="display:flex;gap:6px;flex-wrap:wrap">'+buttons.map(function(b){return '<button class="btn-action" onclick="useBloodHunterFeature(\''+b[0]+'\')">'+escUI(b[1])+'</button>';}).join('')+'</div></div>';
 }
@@ -329,6 +369,7 @@ global.useBloodHunterFeature=function(id){
  else if(id==='setHemocraftAbility'){picked=selectUI('Характеристика гемокрафта',['intelligence','wisdom'],function(k){return k==='wisdom'?'Мудрость (вариант с разрешения мастера)':'Интеллект';});if(!picked)return;ctx.ability=picked[0];}
  else if(id==='chooseBloodOrder'){picked=selectUI('Орден кровавого охотника',subclasses,function(sc){return sc.name;});if(!picked)return;ctx.order=picked[0].id;}
   else if(id==='otherworldlyPatron'){picked=selectUI('Потусторонний покровитель',Object.keys(patrons),function(k){return patronNames[k]+(s.profanePatron===k?' (выбран)':'');});if(!picked)return;ctx.patron=picked[0];}
+  else if(id==='riteFocus'&&s.profanePatron==='genie'){}
   else if(id==='riteFocus'){
    picked=selectUI('Цель лечения Небожителя (60 футов)',gameActors(),function(a){return a.name||actorId(a);});if(!picked)return;var recipient=picked[0];ctx.target=recipient;
    if(recipient===h)ctx.distanceFt=0;
@@ -379,5 +420,5 @@ var labels={huntersBane:'Погибель охотника',bloodMaledict:'Кр�
 features.forEach(function(f){f.name=labels[f.id]||f.name;});subclasses.forEach(function(s){s.features.forEach(function(f){f.name=labels[f.id]||f.name;});});
 var pack={id:'blood-hunter',name:CLASS,aliases:['Blood Hunter','BloodHunter'],authoritativeSubclasses:true,source:'Matthew Mercer / Critical Role — partner third-party content',license:'Original runtime implementation',
 features:features,subclasses:subclasses,hooks:{sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,checkModifiers:skillModifiers,startTurn:turnStart,onTurnEnd:turnEnd,rest:bloodHunterRest,onDamage:onDamage,onCondition:onCondition,onAttackResult:onAttackResult}};
-var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'3.0.0',CLASS:CLASS,adjustWeaponDamage:adjustWeaponDamage,adjustRiteDamage:adjustRiteDamage,renderControls:renderControls,gameActors:gameActors,abilityBonuses:abilityBonuses,incomingAC:incomingAC,conditionImmune:conditionImmune,reviveRite:reviveRite,chooseKnown:chooseKnown,activeRite:activeRite,observe:observe,damageModifiers:damageModifiers,cursedSaveModifiers:cursedSaveModifiers,cursedCheckModifiers:cursedCheckModifiers,cursedAttackPenalty:cursedAttackPenalty,endActorTurn:endActorTurn,startActorTurn:startActorTurn,afterActorAttack:afterActorAttack,afterDamage:afterDamage,rest:bloodHunterRest,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
+var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'3.0.0',CLASS:CLASS,adjustWeaponDamage:adjustWeaponDamage,adjustRiteDamage:adjustRiteDamage,renderControls:renderControls,gameActors:gameActors,abilityBonuses:abilityBonuses,incomingAC:incomingAC,conditionImmune:conditionImmune,reviveRite:reviveRite,canBreatheUnderwater:canBreatheUnderwater,isRevealed:isRevealed,flightSpeed:flightSpeed,chooseKnown:chooseKnown,activeRite:activeRite,observe:observe,damageModifiers:damageModifiers,cursedSaveModifiers:cursedSaveModifiers,cursedCheckModifiers:cursedCheckModifiers,cursedAttackPenalty:cursedAttackPenalty,endActorTurn:endActorTurn,startActorTurn:startActorTurn,afterActorAttack:afterActorAttack,afterDamage:afterDamage,rest:bloodHunterRest,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
 })(window);
