@@ -6,4 +6,3 @@ window.DNDCloudConfig = {
   projectUrl: 'https://rrjqxbfgwsjhgshajnob.supabase.co',
   publishableKey: 'sb_publishable_tEMVCTm-Pzd7lG6iGUPcjw_yGw9LcsD'
 };
-
