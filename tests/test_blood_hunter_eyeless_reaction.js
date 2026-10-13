@@ -40,7 +40,7 @@ assert.strictEqual(hunter.resources.bloodMaledict.current,initialUses);
 handler('p2',{type:'REACTION_RESPONSE',requestId:'answer',payload:{reactionId,choice:'bloodCurseEyeless'}});
 const response=replies.at(-1).result;
 assert(response.ok&&response.kind==='reaction_resolved',JSON.stringify(response));
-assert(response.reaction&&response.reaction.id==='bloodCurseEyeless'&&response.reaction.attackNegated,'curse turns the true attack into miss');
+assert(response.reaction&&response.reaction.id==='bloodCurseEyeless'&&response.reaction.attackNegated,'curse turns the true attack into miss: '+JSON.stringify(response));
 assert.strictEqual(response.damage.amount,0,'no damage after attack downgraded');
 assert.strictEqual(target.hp,40,'defender health must remain unchanged');
 assert.strictEqual(hunter.resources.bloodMaledict.current,initialUses-1,'host spends one curse use');
