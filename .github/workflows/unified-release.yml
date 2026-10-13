@@ -51,12 +51,17 @@ jobs:
               echo "Publishing is allowed only from the main branch" >&2
               exit 1
             fi
-            python3 tools/unified_version.py --bump "$RELEASE_VERSION"
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add package.json app/update_manager_v2.js android/app/build.gradle
-            git commit -m "Release both platforms: $(python3 tools/unified_version.py)"
-            git push origin HEAD:main
+            if [[ "$RELEASE_VERSION" != "current" ]]; then
+              python3 tools/unified_version.py --bump "$RELEASE_VERSION"
+              git config user.name "github-actions[bot]"
+              git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+              git add package.json app/update_manager_v2.js android/app/build.gradle
+              git commit -m "Release both platforms: $(python3 tools/unified_version.py)"
+              git push origin HEAD:main
+            else
+              echo "Retrying existing version without another bump"
+              python3 tools/unified_version.py
+            fi
             echo "publish=true" >> "$GITHUB_OUTPUT"
           else
             echo "publish=false" >> "$GITHUB_OUTPUT"
