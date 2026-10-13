@@ -234,6 +234,12 @@
   // One pipeline for startup, Settings and the main-menu button. Never open the
   // demo scene here and never inspect a second manifest between inspect and stage.
   function runUpdate(options) {
+    // Windows is installed through a separate EXE. Never offer an Android OTA
+    // manifest as a downloadable Windows update or pretend native apply exists.
+    if (global.DND_DESKTOP) {
+      settingsStatus('ПК-версия: обновление через новый Windows .exe (GitHub Actions).');
+      return Promise.resolve({ desktop: true, updateAvailable: false });
+    }
     options = options || {};
     if (updateRun) return updateRun;
     var ui = null;
@@ -296,6 +302,7 @@
   }
 
   function autoCheckForUpdates() {
+    if (global.DND_DESKTOP) return Promise.resolve(null);
     // Logo.js emits this only after the splash has left the screen. Calls from
     // other screens cannot download under the splash or restart the pipeline.
     if (global.dndSplashFinished === false) return Promise.resolve(null);
