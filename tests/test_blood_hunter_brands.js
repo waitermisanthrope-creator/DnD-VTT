@@ -11,7 +11,7 @@ function hunter(order,level){
 }
 function victim(){const t=hero('Воин',1);t.id='bh-brand-target-'+(++serial);t.ac=10;t.hpCurrent=100;t.hpMax=100;return t;}
 function hit(a,t){
- g.DNDRules.rollD20=()=>({result:20,critical:true,fumble:false});
+ g.DNDRules.rollD20=()=>({result:11,critical:false,fumble:false});
  const attack=B.attack(a,t,{weapon:a.weapons[0],weaponAttack:true,damage:'1d6',damageType:'slashing',bonus:10,useRules:false,brandCastigation:true,distanceFt:5});
  assert(attack.hit,'branded attack must hit');
  assert(t.classFeaturesState.bloodHunterBrand,'on-hit must store the brand on its actual victim');
