@@ -1,0 +1,45 @@
+const assert=require('assert'),fs=require('fs'),vm=require('vm'),path=require('path');
+const {runtime,hero,root}=require('./helpers/class_runtime_harness');
+const g=runtime();
+g.Math.random=()=>0.5;
+const caster=hero('Волшебник',9);caster.id='wizard';caster.characterId='wizard';
+caster.spells=[{name:'Туманный шаг (Misty Step)',level:2,castingClass:'Волшебник',castingStat:'int',castingTime:'1 бонусное действие',rangeFt:30}];
+caster.spellSlotsData={2:{max:3,used:0}};
+const reactionHero=hero('Волшебник',9);reactionHero.id='ward';reactionHero.characterId='ward';
+const a={id:'a',characterId:'wizard',ownerPeerId:'p1',type:'hero',team:'party',hp:35,maxHp:40,turnResources:{action:true,bonusAction:true,reaction:true,movement:30}};
+const ward={id:'b',characterId:'ward',ownerPeerId:'p2',type:'hero',team:'enemy',hp:35,maxHp:40,turnResources:{action:true,bonusAction:true,reaction:true,movement:30}};
+const tokens={bt_a:{x:0,y:0,size:1},bt_b:{x:1,y:0,size:1}},battle={tokens,cols:30,rows:15,cellFt:5,obstacles:{}};
+g.DNDBattleBoard={ensure:()=>battle,findToken:id=>tokens[id],distanceFt:(a,b)=>Math.max(Math.abs(a.x-b.x),Math.abs(a.y-b.y))*5,lineOfSight:()=>({clear:true,cover:0}),pathCost:()=>0};
+g.currentChar={id:'master',initiativeTracker:{round:1,activeIndex:0,combatants:[a,ward],battlefield:battle}};g.currentCharacter=g.currentChar;
+g.autoSaveCurrentCharacter=()=>{};g.renderInitiativeTracker=()=>{};g.dndRenderCombatV3=()=>{};g.dndNetworkGameplayRender=()=>{};
+const peers={p1:{profile:caster},p2:{profile:reactionHero}},responses=[],reactionRequests=[];let handler;
+g.DNDClassFeatures.reactionOptions=(h,ctx)=>h.characterId==='ward'?{options:[{id:'counterspell',label:'Контрзаклинание'}]}:null;
+g.DNDClassFeatures.resolveReaction=(h,choice)=>({ok:true,id:choice,spellCountered:choice==='counterspell'});
+g.dndNetwork={state:{role:'host'},getPeer:id=>peers[id],roster:()=>[],registerActionHandler:fn=>handler=fn,
+ sendActionResult:(id,req,r)=>responses.push({id,r}),sendReactionRequest:(id,payload)=>reactionRequests.push({id,payload}),commitHostEvent:()=>({seq:1})};
+g.addEventListener=(type,fn)=>{if(type==='DOMContentLoaded')fn();};
+vm.runInContext(fs.readFileSync(path.join(root,'app/network_gameplay.js'),'utf8'),g,{filename:'app/network_gameplay.js'});
+assert(handler);
+function cast(id,x){handler('p1',{type:'CAST_SPELL',requestId:id,payload:{spellName:caster.spells[0].name,teleportTo:{x,y:0}}});return responses.at(-1).r;}
+function answer(choice,id){handler('p2',{type:'REACTION_RESPONSE',requestId:id,payload:{reactionId:reactionRequests.at(-1).payload.reactionId,choice}});return responses.at(-1).r;}
+let pending=cast('teleport-blocked',3);
+assert(pending.ok&&pending.reactionPending,'counterspell should defer movement');
+assert.strictEqual(tokens.bt_a.x,0,'no pre-counterspell teleport');
+assert.strictEqual(caster.spellSlotsData[2].used,1,'slot reserved before counterspell');
+let resolved=answer('counterspell','counterspell');
+assert(resolved.ok&&resolved.countered,'counterspell prevents magical effect');
+assert.strictEqual(tokens.bt_a.x,0,'counterspelled teleport must not happen');
+assert.strictEqual(a.hp,35,'counterspell must prevent Tethering damage');
+a.turnResources.bonusAction=true;
+pending=cast('teleport-resume',4);
+assert(pending.ok&&pending.reactionPending);
+resolved=answer('none','decline');
+assert(resolved.ok,JSON.stringify(resolved));
+assert(resolved.teleport&&resolved.teleport.allowed,'declining reaction should resume real teleport');
+assert.strictEqual(tokens.bt_a.x,4);
+assert.strictEqual(caster.spellSlotsData[2].used,2,'no second slot on counterspell resume');
+assert.strictEqual(a.turnResources.bonusAction,false);
+a.turnResources.action=true;
+handler('p1',{type:'PREPARE_ACTION',requestId:'prepared-teleport',payload:{type:'CAST_SPELL',spellName:caster.spells[0].name,targetId:'a'}});
+assert.strictEqual(responses.at(-1).r.ok,false,'teleport may not bypass counterspell via prepared action');
+console.log('PASS: counterspell prevents teleport and Tethering, declined reaction resumes without extra slot');
