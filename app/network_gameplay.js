@@ -313,6 +313,24 @@
   function applyCondition(peerId,action){return actionError(peerId,action,'Изменение состояний через сетевой RPC выполняет мастер.');}
   // Mandatory Lycan Bloodlust is resolved by the host at the start of each turn.
   // Host-owned initiative actors and board coordinates decide the nearest target.
+  // Resolve class-owned end-of-turn clocks before moving initiative forward.
+  function endBloodHunterTurn(actor){
+    if(!actor||!actor.ownerPeerId||!global.DNDBloodHunter)return null;
+    var peer=global.dndNetwork&&global.dndNetwork.getPeer(actor.ownerPeerId),profile=peer&&peer.profile;
+    if(!profile||!(profile.classes||[]).some(function(c){return ['Кровавый охотник','Blood Hunter','BloodHunter'].indexOf(c.name)>=0&&num(c.level)>0;}))return null;
+    var h=clone(profile)||{};h.id=actor.id;h.characterId=actor.characterId||profile.characterId||actor.id;
+    h.hpCurrent=num(actor.hp);h.hpMax=num(actor.maxHp,profile.hpMax);h.hitPoints=h.hpCurrent;h.speed=num(actor.speed,profile.speed||30);
+    h.classFeaturesState=clone(profile.classFeaturesState)||{};h.resources=clone(profile.resources)||{};
+    h.turnResources=clone(actor.turnResources)||{};
+    if(typeof global.DNDBloodHunter.endActorTurn==='function')global.DNDBloodHunter.endActorTurn(h);
+    if(typeof global.DNDBloodHunter.endTurn==='function')global.DNDBloodHunter.endTurn(h);
+    actor.hp=Math.max(0,Math.min(num(actor.maxHp,h.hpMax),num(h.hpCurrent)));
+    actor.speed=num(h.speed,actor.speed||30);
+    profile.classFeaturesState=clone(h.classFeaturesState)||{};profile.resources=clone(h.resources)||{};
+    profile.hpCurrent=actor.hp;
+    if(profile.hp&&typeof profile.hp==='object')profile.hp.current=actor.hp;
+    return h.classFeaturesState&&h.classFeaturesState.bhLastAetherShunt||null;
+  }
   function beginBloodHunterTurn(actor){
     if(!actor||!actor.ownerPeerId||!global.DNDBloodHunter)return null;
     var peer=global.dndNetwork&&global.dndNetwork.getPeer(actor.ownerPeerId),profile=peer&&peer.profile;
@@ -340,6 +358,7 @@
     for(var guard=0;guard<t.combatants.length;guard++){
       var previous=t.combatants[t.activeIndex];
       if(previous&&previous.entityId&&global.DNDSummoning&&typeof global.DNDSummoning.endTurn==='function')global.DNDSummoning.endTurn(previous);
+      if(previous)endBloodHunterTurn(previous);
       t.activeIndex=(t.activeIndex+1)%t.combatants.length;if(t.activeIndex===0){t.round=Math.max(1,num(t.round,1)+1);(t.combatants||[]).forEach(function(c){if(c&&c.type!=='hero'&&global.DNDMonsters&&typeof global.DNDMonsters.resetLairRound==='function')global.DNDMonsters.resetLairRound(c,t.round);});}
       var next=t.combatants[t.activeIndex];resetResources(next);
       var bloodlust=beginBloodHunterTurn(next);if(bloodlust)autoResults.push({actor:next.name,result:bloodlust,kind:'lycan-bloodlust'});
