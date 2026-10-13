@@ -33,7 +33,7 @@ function sync(h){
  if(o==='lycan'){res(h,'hybridTransformation',l>=11?2:l>=3?1:0,'short');s.bhUnlimitedHybrid=l>=18;}
  if(o==='mutant'&&l>=3){s.mutagenFormulasKnown=s.mutagenFormulasKnown||[];res(h,'mutagenConcoctions',l>=15?3:l>=7?2:1,'prepared');if(!s.bhPreparedMutagens)s.bhPreparedMutagens=[];h.resources.mutagenConcoctions.current=s.bhPreparedMutagens.length;res(h,'strangeMetabolism',l>=7?1:0,'long');res(h,'exaltedMutation',l>=18?Math.max(1,hemMod(h)):0,'long');}
  var verm=activeMutations(h).some(function(m){return m.id==='vermillion';});if(verm)res(h,'bloodMaledict',h.resources.bloodMaledict.max+1,'short');projectSpeed(h);projectMutagenTraits(h);
- if(o==='profaneSoul'&&l>=3){var table=spellTable(l);var old=h.pactMagicData,legacy=h.resources.profaneSoulSlots;if(!old&&legacy)h.pactMagicData={max:legacy.max,used:Math.max(0,num(legacy.max)-num(legacy.current)),slotLevel:table.slotLevel};if(global.DNDMagic)global.DNDMagic.rebuild(h);delete h.resources.profaneSoulSlots;s.profaneSoulSlotLevel=table.slotLevel;s.profaneSoulCantrips=table.cantrips;s.profaneSoulSpellsKnown=table.spells;}
+ if(o==='profaneSoul'&&l>=3){var table=spellTable(l);var old=h.pactMagicData,legacy=h.resources.profaneSoulSlots;if(!old&&legacy)h.pactMagicData={max:legacy.max,used:Math.max(0,num(legacy.max)-num(legacy.current)),slotLevel:table.slotLevel};if(global.DNDMagic)global.DNDMagic.rebuild(h);delete h.resources.profaneSoulSlots;s.profaneSoulSlotLevel=table.slotLevel;s.profaneSoulCantrips=table.cantrips;s.profaneSoulSpellsKnown=table.spells;ensureArcanaSpells(h);}
  ['bhPactSlots','bhAetherWalk','bhHybridTransformation','bhExaltedMutation'].forEach(function(k){delete h.resources[k];});
 }
 
@@ -248,7 +248,7 @@ function startActorTurn(t){observe(t);st(t).bhMysticFrenzyReady=false;st(t).bhAt
 Object.keys(actors).forEach(function(k){effects(actors[k]).slice().filter(function(e){return e.id==='fathomlessSlow'&&e.ownerId===actorId(t);}).forEach(function(e){removeEffect(actors[k],e);});});
 st(t).bhFathomlessUsed=false;if(effects(t).some(function(e){return e.id==='binding';})&&t.turnResources){t.turnResources.movement=0;t.turnResources.reaction=0;}if(enabled(t))st(t).bhHemocraftRerolled=false;}
 function afterActorAttack(t,ctx){if(!t||ctx.bloodHunterPuppet)return;var count=st(t).bhAttacksThisTurn=num(st(t).bhAttacksThisTurn)+1;if(count===2)effects(t).filter(function(e){return e.id==='bloatedAgony';}).slice(0,1).forEach(function(e){var owner=actors[e.ownerId];if(owner)curseDamage(owner,t,'1d8','necrotic');});}
-function bloodHunterRest(h,type){if(type!=='short'&&type!=='long')return;var s=st(h);if(s.bhGenieFlight){if(s.bhGenieFlight.priorSpeed==null)delete h.flySpeed;else h.flySpeed=s.bhGenieFlight.priorSpeed;delete s.bhGenieFlight;}Object.keys(actors).forEach(function(k){var a=actors[k];effects(a).slice().filter(function(e){return e.id!=='howlImmunity'&&(a===h||e.ownerId===actorId(h));}).forEach(function(e){removeEffect(a,e);});});rites(h).forEach(function(r){r.active=false;});if(h.pactMagicData)h.pactMagicData.used=0;if(h.pactMagic)h.pactMagic.used=0;s.hybridForm=false;s.activeMutagens=[];s.bhPreparedMutagens=[];s.bhMayPrepareMutagens=true;delete s.bhIgnoreMutagenSide;delete s.bhAetherWalk;delete s.bhBloodlust;projectSpeed(h);projectMutagenTraits(h);sync(h);if(type==='long')s.bhSoulEaterAmplified=false;}
+function bloodHunterRest(h,type){if(type!=='short'&&type!=='long')return;var s=st(h);if(s.bhGenieFlight){if(s.bhGenieFlight.priorSpeed==null)delete h.flySpeed;else h.flySpeed=s.bhGenieFlight.priorSpeed;delete s.bhGenieFlight;}Object.keys(actors).forEach(function(k){var a=actors[k];effects(a).slice().filter(function(e){return e.id!=='howlImmunity'&&(a===h||e.ownerId===actorId(h));}).forEach(function(e){removeEffect(a,e);});});rites(h).forEach(function(r){r.active=false;});if(h.pactMagicData)h.pactMagicData.used=0;if(h.pactMagic)h.pactMagic.used=0;s.hybridForm=false;s.activeMutagens=[];s.bhPreparedMutagens=[];s.bhMayPrepareMutagens=true;delete s.bhIgnoreMutagenSide;delete s.bhAetherWalk;delete s.bhBloodlust;projectSpeed(h);projectMutagenTraits(h);sync(h);if(type==='long'){s.bhSoulEaterAmplified=false;s.bhRevealedArcanaUsed=false;s.bhUnsealedArcanaUsed=false;}}
 
 function useBrand(h,ctx){
  sync(h);ctx=ctx||{};var t=target(ctx),r=ctx.attackResult,ac=ctx.attackContext||ctx,s=st(h);
@@ -411,6 +411,33 @@ function turnStart(h){
 function turnEnd(h){var s=st(h);if(s.bhGenieFlight){s.bhGenieFlight.rounds--;if(s.bhGenieFlight.rounds<=0){if(s.bhGenieFlight.priorSpeed==null)delete h.flySpeed;else h.flySpeed=s.bhGenieFlight.priorSpeed;delete s.bhGenieFlight;}}if(s.bhIgnoreMutagenSide){s.bhIgnoreMutagenSide.turns--;if(s.bhIgnoreMutagenSide.turns<=0)delete s.bhIgnoreMutagenSide;}if(s.bhAetherWalk){if(h.insideObject===true)curseDamage(h,h,'1d10','force');s.bhAetherWalk.turns--;if(s.bhAetherWalk.turns<=0){if(h.insideObject===true)s.bhAetherShuntRequired=true;delete s.bhAetherWalk;}}projectSpeed(h);}
 
 function spellTable(l){if(l<3)return{cantrips:0,spells:0,slots:0,slotLevel:0};return{cantrips:l>=10?3:2,spells:l>=20?11:l>=19?10:l>=17?9:l>=15?8:l>=13?7:l>=11?6:l>=9?5:l>=7?4:l>=5?3:2,slots:l>=6?2:1,slotLevel:l>=19?4:l>=13?3:l>=7?2:1};}
+function arcanaInfo(h,kind){
+ var s=st(h),p=patrons[String(s.profanePatron||'')],lv=lvl(h);
+ var key=String(kind||''),needed=key==='revealedArcana'?7:key==='unsealedArcana'?15:999;
+ if(!p||lv<needed||orderKey(h)!=='profaneSoul')return null;
+ return {id:key,englishName:key==='revealedArcana'?p.revealed:p.unsealed,
+   used:!!s[key==='revealedArcana'?'bhRevealedArcanaUsed':'bhUnsealedArcanaUsed'],free:key==='unsealedArcana'};
+}
+function findArcanaCatalogSpell(english){
+ if(!english||typeof global.getAllSpellsDatabase!=='function')return null;
+ var list=global.getAllSpellsDatabase(),needle=String(english).toLowerCase().trim();
+ if(!Array.isArray(list))return null;
+ return list.find(function(sp){if(!sp||!sp.name)return false;var name=String(sp.name).toLowerCase().trim();
+  return name===needle||name.endsWith('('+needle+')');})||null;
+}
+function ensureArcanaSpells(h){
+ if(!h||orderKey(h)!=='profaneSoul'||!st(h).profanePatron||lvl(h)<7)return;
+ h.spellsData=Array.isArray(h.spellsData)?h.spellsData:[];
+ ['revealedArcana','unsealedArcana'].forEach(function(kind){
+  var info=arcanaInfo(h,kind);if(!info)return;
+  var spell=findArcanaCatalogSpell(info.englishName);
+  if(!spell)return; // Never fabricate a spell effect when catalog data is missing.
+  if(h.spellsData.some(function(sp){return sp&&sp.specialArcana===kind&&sp.name===spell.name;}))return;
+  h.spellsData=h.spellsData.filter(function(sp){return !sp||sp.specialArcana!==kind;});
+  var data=profaneSpellEntry(spell,h);data.specialArcana=kind;data.prepared=true;
+  h.spellsData.push(data);
+ });
+}
 function profaneSpellCatalog(){
  var all=typeof global.getAllSpellsDatabase==='function'?global.getAllSpellsDatabase():[];
  return Array.isArray(all)?all.filter(function(sp){return sp&&sp.name&&Array.isArray(sp.classes)&&sp.classes.some(function(k){return /^(колдун|warlock)$/i.test(String(k).trim());})&&num(sp.level)>=0&&num(sp.level)<=4;}):[];
@@ -434,8 +461,8 @@ function chooseProfaneKnownSpells(h,ctx){
  var oldCan=s.bhProfaneCantrips||[],oldKnown=s.bhProfaneSpells||[],swaps=oldCan.filter(function(x){return can.indexOf(x)<0;}).length+oldKnown.filter(function(x){return known.indexOf(x)<0;}).length;
  if(swaps&&(swaps>1||s.bhProfaneSelectionLevel===level))return error('На повышении уровня можно заменить не более одного известного заклинания.');
  s.bhProfaneCantrips=can.slice();s.bhProfaneSpells=known.slice();s.bhProfaneSelectionLevel=level;
- var other=(h.spellsData||[]).filter(function(sp){return !sp||['Кровавый охотник','Blood Hunter','BloodHunter'].indexOf(String(sp.castingClass||''))<0;});
- h.spellsData=other.concat(options.map(function(sp){return profaneSpellEntry(sp,h);}));
+ var other=(h.spellsData||[]).filter(function(sp){return !sp||sp.specialArcana||['Кровавый охотник','Blood Hunter','BloodHunter'].indexOf(String(sp.castingClass||''))<0;});
+ h.spellsData=other.concat(options.map(function(sp){return profaneSpellEntry(sp,h);}));ensureArcanaSpells(h);
  if(global.DNDMagic&&global.DNDMagic.ensure)global.DNDMagic.ensure(h);
  return {ok:true,message:'Заклинания Осквернённой души изучены: '+can.length+' заговоров и '+known.length+' заклинаний.',cantrips:can.slice(),spells:known.slice()};
 }
@@ -449,7 +476,7 @@ function recordCantripCast(h,ctx){
 }
 function useProfane(h,id,ctx){
  sync(h);var s=st(h),p=String(s.profanePatron||''),pt=patrons[p],l=lvl(h);
- if(id==='choosePatron'||id==='otherworldlyPatron'){var chosen=String(ctx&&ctx.patron||'');if(!patrons[chosen])return error('Выберите одного из девяти доступных покровителей.');if(s.profanePatron&&s.profanePatron!==chosen)return error('Покровитель уже выбран; смена возможна только при отдельной переподготовке персонажа.');s.profanePatron=chosen;return{ok:true,patron:chosen,message:'Потусторонний покровитель выбран: '+patronNames[chosen]+'.'};}
+ if(id==='choosePatron'||id==='otherworldlyPatron'){var chosen=String(ctx&&ctx.patron||'');if(!patrons[chosen])return error('Выберите одного из девяти доступных покровителей.');if(s.profanePatron&&s.profanePatron!==chosen)return error('Покровитель уже выбран; смена возможна только при отдельной переподготовке персонажа.');s.profanePatron=chosen;ensureArcanaSpells(h);return{ok:true,patron:chosen,message:'Потусторонний покровитель выбран: '+patronNames[chosen]+'.'};}
  if(!pt)return error('Сначала выберите потустороннего покровителя.');
  if(id==='chooseProfaneSpells')return chooseProfaneKnownSpells(h,ctx);
  if(id==='castPactSpell'||id==='pactMagic')return {ok:false,reason:'Заклинание должно выполняться через проверяемый боевой resolver магии.'};
@@ -487,9 +514,9 @@ function useProfane(h,id,ctx){
   var attack=global.DNDCombat.attack(h,enemy,{weapon:weapon,damage:weapon.damageDice||weapon.damage||'1d6',damageType:weapon.damageType||'slashing',distanceFt:ctx.distanceFt,weaponAttack:true});
   return {ok:true,attack:attack,targetId:actorId(enemy),message:'Мистическое неистовство: бонусная атака после заговора.'};
  }
- if(id==='revealedArcana')return error('Открытая аркана ещё не подключена к исполнению заклинаний.');
+ if(id==='revealedArcana')return error('Используйте специальное заклинание «Открытой арканы» в панели заклинаний; его расход проверяет мастер боя.');
  if(id==='brandSappingScar')return {ok:true,passive:true,message:'Помеха спасброскам по заклинаниям договора для отмеченной вашей меткой цели.'};
- if(id==='unsealedArcana')return error('Освобождённая аркана ещё не подключена к исполнению заклинаний.');
+ if(id==='unsealedArcana')return error('Используйте специальное заклинание «Освобождённой арканы» в панели заклинаний; его расход проверяет мастер боя.');
  if(id==='soulEater')return useCurse(h,{curse:'soulEater',target:target(ctx),amplify:ctx&&ctx.amplify});
  return{ok:false,unsupported:true};
 }
@@ -620,5 +647,5 @@ var labels={huntersBane:'Погибель охотника',bloodMaledict:'Кр�
 features.forEach(function(f){f.name=labels[f.id]||f.name;});subclasses.forEach(function(s){s.features.forEach(function(f){f.name=labels[f.id]||f.name;});});
 var pack={id:'blood-hunter',name:CLASS,aliases:['Blood Hunter','BloodHunter'],authoritativeSubclasses:true,source:'Matthew Mercer / Critical Role — partner third-party content',license:'Original runtime implementation',
 features:features,subclasses:subclasses,hooks:{sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,checkModifiers:skillModifiers,startTurn:turnStart,onTurnEnd:turnEnd,rest:bloodHunterRest,onDamage:onDamage,onCondition:onCondition,onAttackResult:onAttackResult}};
-var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'3.0.0',CLASS:CLASS,adjustWeaponDamage:adjustWeaponDamage,adjustRiteDamage:adjustRiteDamage,renderControls:renderControls,gameActors:gameActors,abilityBonuses:abilityBonuses,incomingAC:incomingAC,conditionImmune:conditionImmune,reviveRite:reviveRite,currentBrand:currentBrand,canDash:canDash,canPhaseThroughObjects:canPhaseThroughObjects,brandedByAxiom:brandedByAxiom,attemptBrandedShapeChange:attemptBrandedShapeChange,resolveBrandTravel:resolveBrandTravel,canBreatheUnderwater:canBreatheUnderwater,isRevealed:isRevealed,flightSpeed:flightSpeed,recordCantripCast:recordCantripCast,deathSaveMode:deathSaveMode,projectMutagenTraits:projectMutagenTraits,resolveBloodlust:resolveBloodlust,beginTurn:turnStart,halveNecroticRiteDamage:halveNecroticRiteDamage,sappingScarSaveModifiers:sappingScarSaveModifiers,chooseKnown:chooseKnown,activeRite:activeRite,observe:observe,damageModifiers:damageModifiers,cursedSaveModifiers:cursedSaveModifiers,cursedCheckModifiers:cursedCheckModifiers,cursedAttackPenalty:cursedAttackPenalty,endActorTurn:endActorTurn,startActorTurn:startActorTurn,afterActorAttack:afterActorAttack,afterDamage:afterDamage,rest:bloodHunterRest,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
+var result=D.registerClass(pack);if(result&&result.ok)global.DNDBloodHunter={VERSION:'3.0.0',CLASS:CLASS,adjustWeaponDamage:adjustWeaponDamage,adjustRiteDamage:adjustRiteDamage,renderControls:renderControls,gameActors:gameActors,abilityBonuses:abilityBonuses,incomingAC:incomingAC,conditionImmune:conditionImmune,reviveRite:reviveRite,currentBrand:currentBrand,canDash:canDash,canPhaseThroughObjects:canPhaseThroughObjects,brandedByAxiom:brandedByAxiom,attemptBrandedShapeChange:attemptBrandedShapeChange,resolveBrandTravel:resolveBrandTravel,canBreatheUnderwater:canBreatheUnderwater,isRevealed:isRevealed,flightSpeed:flightSpeed,recordCantripCast:recordCantripCast,arcanaInfo:arcanaInfo,ensureArcanaSpells:ensureArcanaSpells,deathSaveMode:deathSaveMode,projectMutagenTraits:projectMutagenTraits,resolveBloodlust:resolveBloodlust,beginTurn:turnStart,halveNecroticRiteDamage:halveNecroticRiteDamage,sappingScarSaveModifiers:sappingScarSaveModifiers,chooseKnown:chooseKnown,activeRite:activeRite,observe:observe,damageModifiers:damageModifiers,cursedSaveModifiers:cursedSaveModifiers,cursedCheckModifiers:cursedCheckModifiers,cursedAttackPenalty:cursedAttackPenalty,endActorTurn:endActorTurn,startActorTurn:startActorTurn,afterActorAttack:afterActorAttack,afterDamage:afterDamage,rest:bloodHunterRest,sync:sync,useFeature:useFeature,attackModifiers:attackModifiers,saveModifiers:saveModifiers,skillModifiers:skillModifiers,spellTable:spellTable,mutagens:mutagens,patrons:patrons,curses:curses};
 })(window);
