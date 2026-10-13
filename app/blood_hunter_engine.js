@@ -250,7 +250,20 @@ function useProfane(h,id,ctx){
  if(id==='choosePatron'||id==='otherworldlyPatron'){var chosen=String(ctx&&ctx.patron||'');if(!patrons[chosen])return error('Выберите одного из девяти доступных покровителей.');if(s.profanePatron&&s.profanePatron!==chosen)return error('Покровитель уже выбран; смена возможна только при отдельной переподготовке персонажа.');s.profanePatron=chosen;return{ok:true,patron:chosen,message:'Потусторонний покровитель выбран: '+patronNames[chosen]+'.'};}
  if(!pt)return error('Сначала выберите потустороннего покровителя.');
  if(id==='castPactSpell'||id==='pactMagic')return {ok:false,reason:'Заклинание должно выполняться через проверяемый боевой resolver магии.'};
- if(id==='riteFocus')return error('Фокус обряда ещё не имеет исполняемого эффекта для выбранного покровителя.');
+ if(id==='riteFocus'){
+  if(p==='fiend')return {ok:true,passive:true,message:'Исчадие: переброс 1–2 огненного обряда применяется при расчёте урона.'};
+  if(p==='celestial'){
+   var recipient=target(ctx),healer=h,visible=ctx&&ctx.visible!==false;
+   if(!able(h)||!actionReady(h,'bonus')||!rites(h).some(function(r){return r.active;}))return error('Для исцеления Небожителя нужен действующий алый обряд и бонусное действие.');
+   if(!recipient||!visible||recipient!==h&&!inRange(h,recipient,ctx,60))return error('Нужна видимая цель лечения не далее 60 футов.');
+   if(!h.resources.bloodMaledict||h.resources.bloodMaledict.current<1)return error('Нет использования Кровавого проклятия для исцеления.');
+   if(!global.DNDCombat||!global.DNDCombat.heal)return error('Боевой обработчик лечения недоступен.');
+   var amount=Math.max(1,roll(dieSides(l))+Math.max(1,hemMod(h)));
+   spend(h,'bloodMaledict',1);takeAction(h,'bonus');var healed=global.DNDCombat.heal(recipient,amount);
+   return {ok:true,heal:healed,amount:amount,targetId:actorId(recipient),message:'Фокус Небожителя: исцеление '+amount+' HP.'};
+  }
+  return error('Фокус этого покровителя пока не подключён к игровой механике.');
+ }
  if(id==='mysticFrenzy')return error('Дополнительная атака после заговора ещё не подключена к боевому ходу.');
  if(id==='revealedArcana')return error('Открытая аркана ещё не подключена к исполнению заклинаний.');
  if(id==='brandSappingScar')return error('Клеймо истощающего шрама ещё не влияет на спасброски боевого движка.');
@@ -305,7 +318,7 @@ var mutagenNames={aether:'Эфир',alluring:'Обаяние',celerity:'Пров
 function escUI(v){return String(v).replace(/[&<>"']/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];});}
 function gameActors(){var h=global.currentChar||global.currentCharacter,all=[];if(h)all.push(h);if(h&&h.initiativeTracker)all=all.concat(h.initiativeTracker.combatants||[]);if(Array.isArray(global.characters))all=all.concat(global.characters);all.forEach(observe);return Object.keys(actors).map(function(k){return actors[k];});}
 function selectUI(title,list,label,many){if(!list.length){global.alert('Нет доступных вариантов.');return null;}var raw=global.prompt(title+'\n'+list.map(function(x,i){return (i+1)+'. '+label(x);}).join('\n')+(many?'\nВведите номера через запятую.':''),'');if(raw===null)return null;var parts=raw.split(/[,;\s]+/).filter(Boolean);if(!parts.length||!many&&parts.length!==1||parts.some(function(x){return !/^\d+$/.test(x)||!list[Number(x)-1];})){global.alert('Укажите номера из списка.');return null;}return parts.map(function(x){return list[Number(x)-1];});}
-function renderControls(h){if(!enabled(h))return '';sync(h);var s=st(h),buttons=[['chooseBloodCurses','Изученные проклятия'],['setHemocraftAbility','Гемокрафт']];if(lvl(h)>=2)buttons=buttons.concat([['chooseCrimsonRites','Изученные обряды'],['fightingStyle','Боевой стиль'],['crimsonRite','Активировать обряд']]);if(lvl(h)>=3)buttons.push(['chooseBloodOrder','Орден']);buttons.push(['bloodMaledict','Наложить проклятие']);if(orderKey(h)==='lycan'&&lvl(h)>=3)buttons.push(['hybridTransformation','Гибридная форма'],['predatoryStrike','Хищный удар']);if(orderKey(h)==='profaneSoul'&&lvl(h)>=3)buttons.push(['otherworldlyPatron','Потусторонний покровитель']);if(orderKey(h)==='mutant'&&lvl(h)>=3){buttons.push(['chooseMutagenFormulas','Формулы'],['prepareMutagens','Приготовить мутагены'],['mutagencraft','Принять мутаген'],['flushMutagens','Вывести мутагены']);if(lvl(h)>=7)buttons.push(['strangeMetabolism','Подавить побочный эффект']);if(lvl(h)>=18)buttons.push(['exaltedMutation','Заменить активный мутаген']);}
+function renderControls(h){if(!enabled(h))return '';sync(h);var s=st(h),buttons=[['chooseBloodCurses','Изученные проклятия'],['setHemocraftAbility','Гемокрафт']];if(lvl(h)>=2)buttons=buttons.concat([['chooseCrimsonRites','Изученные обряды'],['fightingStyle','Боевой стиль'],['crimsonRite','Активировать обряд']]);if(lvl(h)>=3)buttons.push(['chooseBloodOrder','Орден']);buttons.push(['bloodMaledict','Наложить проклятие']);if(orderKey(h)==='lycan'&&lvl(h)>=3)buttons.push(['hybridTransformation','Гибридная форма'],['predatoryStrike','Хищный удар']);if(orderKey(h)==='profaneSoul'&&lvl(h)>=3){buttons.push(['otherworldlyPatron','Потусторонний покровитель']);if(s.profanePatron==='celestial')buttons.push(['riteFocus','Исцеление Небожителя']);}if(orderKey(h)==='mutant'&&lvl(h)>=3){buttons.push(['chooseMutagenFormulas','Формулы'],['prepareMutagens','Приготовить мутагены'],['mutagencraft','Принять мутаген'],['flushMutagens','Вывести мутагены']);if(lvl(h)>=7)buttons.push(['strangeMetabolism','Подавить побочный эффект']);if(lvl(h)>=18)buttons.push(['exaltedMutation','Заменить активный мутаген']);}
  var r=h.resources.bloodMaledict,summary='Проклятия: '+(s.bloodCursesKnown.map(function(k){return curseNames[k];}).join(', ')||'не выбраны')+' · '+r.current+'/'+r.max;var riteText=rites(h).filter(function(r){return r.active;}).map(function(r){return riteNames[r.type]+' — '+r.weaponId;}).join(', ');
  return '<div class="weapon-card"><strong>Кровавый охотник — выборы и действия</strong><p>'+escUI(summary)+'</p>'+(orderKey(h)==='profaneSoul'?'<p>Покровитель: '+escUI(patronNames[s.profanePatron]||'не выбран')+'</p>':'')+(riteText?'<p>Активные обряды: '+escUI(riteText)+'</p>':'')+'<div style="display:flex;gap:6px;flex-wrap:wrap">'+buttons.map(function(b){return '<button class="btn-action" onclick="useBloodHunterFeature(\''+b[0]+'\')">'+escUI(b[1])+'</button>';}).join('')+'</div></div>';
 }
@@ -316,6 +329,11 @@ global.useBloodHunterFeature=function(id){
  else if(id==='setHemocraftAbility'){picked=selectUI('Характеристика гемокрафта',['intelligence','wisdom'],function(k){return k==='wisdom'?'Мудрость (вариант с разрешения мастера)':'Интеллект';});if(!picked)return;ctx.ability=picked[0];}
  else if(id==='chooseBloodOrder'){picked=selectUI('Орден кровавого охотника',subclasses,function(sc){return sc.name;});if(!picked)return;ctx.order=picked[0].id;}
   else if(id==='otherworldlyPatron'){picked=selectUI('Потусторонний покровитель',Object.keys(patrons),function(k){return patronNames[k]+(s.profanePatron===k?' (выбран)':'');});if(!picked)return;ctx.patron=picked[0];}
+  else if(id==='riteFocus'){
+   picked=selectUI('Цель лечения Небожителя (60 футов)',gameActors(),function(a){return a.name||actorId(a);});if(!picked)return;var recipient=picked[0];ctx.target=recipient;
+   if(recipient===h)ctx.distanceFt=0;
+   else{var d=distance(h,recipient,{});if(d===null){var raw=global.prompt('Расстояние до цели в футах (по решению мастера)','');if(raw===null)return;d=Number(raw);if(raw.trim()===''||!Number.isFinite(d)||d<0){global.alert('Укажите действительное расстояние.');return;}}ctx.distanceFt=d;}
+  }
  else if(id==='fightingStyle'){picked=selectUI('Боевой стиль',['Стрельба','Дуэлянт','Сражение большим оружием','Сражение двумя оружиями'],function(k){return k;});if(!picked)return;ctx.style=picked[0];}
  else if(id==='crimsonRite'){var ws=weaponList(h).slice();if(s.hybridForm&&orderKey(h)==='lycan')ws.push({id:'unarmed',name:'Когти'});picked=selectUI('Оружие в руке',ws,function(w){return w.name||weaponKey(w);});if(!picked)return;ctx.weaponId=weaponKey(picked[0]);var rs=s.crimsonRitesKnown.slice();if(orderKey(h)==='ghostslayer'&&lvl(h)>=3)rs.push('dawn');picked=selectUI('Обряд (цена: кость гемокрафта в HP)',rs,function(k){return riteNames[k];});if(!picked)return;ctx.riteType=picked[0];}
  else if(id==='chooseMutagenFormulas'){picked=selectUI('Изученные формулы: до '+mutationLimit(lvl(h)),Object.keys(mutagens).filter(function(k){return lvl(h)>=num(mutagens[k].req,3);}),function(k){return mutagenNames[k];},true);if(!picked)return;ctx.formulas=picked;}
@@ -333,7 +351,18 @@ global.useBloodHunterFeature=function(id){
 function onDamage(h){if(hp(h)<=0)st(h).hybridForm=false;}
 function onCondition(h,ctx){if(ctx.active&&['Бессознателен','unconscious'].indexOf(ctx.condition)>=0)st(h).hybridForm=false;}
 function adjustWeaponDamage(h,damage,ctx){if(!enabled(h)||!damage||!damage.rolls||!ctx.weaponAttack||!ctx.twoHanded||(st(h).bhFightingStyle||st(h).fightingStyle)!=='Сражение большим оружием')return damage;var groups=global.DNDRules.parseDice(damage.expression).groups,idx=0;groups.forEach(function(group){for(var i=0;i<group.count*(damage.critical?2:1);i++,idx++){if(damage.rolls[idx]===1||damage.rolls[idx]===2){var v=roll(group.sides);damage.total+=v-damage.rolls[idx];damage.rolls[idx]=v;}}});return damage;}
-function adjustRiteDamage(h,damage,ctx){if(!enabled(h)||!damage||!damage.rolls||lvl(h)<20||!ctx.rerollHemocraft||st(h).bhHemocraftRerolled)return damage;var i=damage.rolls.indexOf(Math.min.apply(Math,damage.rolls)),value=bloodLoss(h);if(value>damage.rolls[i]){damage.total+=value-damage.rolls[i];damage.rolls[i]=value;}st(h).bhHemocraftRerolled=true;return damage;}
+function adjustRiteDamage(h,damage,ctx){
+ if(!enabled(h)||!damage||!Array.isArray(damage.rolls))return damage;ctx=ctx||{};
+ var active=activeRite(h,ctx);
+ if(orderKey(h)==='profaneSoul'&&st(h).profanePatron==='fiend'&&active&&active.type==='flame'&&ctx.disableFiendReroll!==true){
+  damage.rolls.forEach(function(old,i){if(old!==1&&old!==2)return;var next=roll(dieSides(lvl(h))),chosen=ctx.fiendKeepOriginal===true?old:Math.max(old,next);damage.total+=chosen-old;damage.rolls[i]=chosen;});
+ }
+ if(lvl(h)>=20&&ctx.rerollHemocraft&&!st(h).bhHemocraftRerolled&&damage.rolls.length){
+  var i=damage.rolls.indexOf(Math.min.apply(Math,damage.rolls)),value=bloodLoss(h);
+  if(value>damage.rolls[i]){damage.total+=value-damage.rolls[i];damage.rolls[i]=value;}st(h).bhHemocraftRerolled=true;
+ }
+ return damage;
+}
 
 function featureList(h){return D.availableFeatures(h,CLASS);}
 var features=[
