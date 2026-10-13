@@ -4,11 +4,12 @@
 
 ## Build the two Windows EXEs with GitHub Actions
 
-1. Open **Actions** in the repository.
-2. Select **Build Windows Desktop EXE**.
-3. Use **Run workflow** (choose branch `windows-desktop`), or open a build triggered by a push to that branch.
-4. When the Windows job finishes successfully, download the **DnD-VTT-Windows-Test** artifact (ZIP).
-5. Unzip it to get `DnD-VTT-Setup-74.0.62-x64.exe` and `DnD-VTT-Portable-74.0.62-x64.exe`.
+1. Open the repository's **Actions** tab. Pushing to `windows-desktop` automatically requests a Windows build.
+2. Select the latest **Build Windows Desktop EXE** run for the `windows-desktop` branch.
+3. When the Windows job finishes successfully, download the **DnD-VTT-Windows-Test** artifact (ZIP).
+4. Unzip it to get `DnD-VTT-Setup-74.0.62-x64.exe` and `DnD-VTT-Portable-74.0.62-x64.exe`.
+
+Note: the manual **Run workflow** option may not appear until GitHub registers this workflow from the default branch; the branch push trigger does not require merging into `main`.
 
 A GitHub Actions artifact is a ZIP containing the two executables; it is not an APK. If the build is red, read the logs and do not assume an installer has been produced.
 
