@@ -78,6 +78,32 @@ jobs:
           python3 tools/unified_version.py
           node tests/update_ota_flow_test.js
           node tests/character_3d_editor_test.js
+      - name: Audit complete cross-platform OTA manifest
+        shell: bash
+        env:
+          SOURCE_SHA: ${{ needs.prepare.outputs.sha }}
+          VERSION: ${{ needs.prepare.outputs.version }}
+        run: |
+          set -euo pipefail
+          python3 tools/build_update_manifest.py \
+            --base-url "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/$SOURCE_SHA" \
+            --version "$VERSION" --min-app-version "70.26.99" \
+            --channel stable --output /tmp/unified_ota_preview.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('/tmp/unified_ota_preview.json').read_text())
+          paths={f['path'] for f in m['files']}
+          for required in ['index.html','app/update_manager_v2.js']:
+              assert required in paths, required
+          for mp3 in Path('.').glob('*.mp3'):
+              assert 'ambience/'+mp3.name in paths, mp3
+          for glb in Path('.').glob('*.glb'):
+              assert glb.name in paths, glb
+          for png in Path('.').glob('*.png'):
+              assert 'wallpapers/'+png.name in paths, png
+          print('Unified OTA manifest verified:',len(paths),'files')
+          PY
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
