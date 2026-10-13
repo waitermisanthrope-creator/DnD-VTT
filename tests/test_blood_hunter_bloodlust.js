@@ -61,7 +61,7 @@ h=lycan();enemy=creature('enemy',1);boardFor(h,[enemy]);
 B.breakConcentration(h);g.DNDRules.rollD20=()=>({result:20,critical:true,fumble:false});C.resetTurn(h);
 assert.strictEqual(h.classFeaturesState.bhBloodlust.requiresNearestAttack,false);
 assert.strictEqual(H.resolveBloodlust(h,{combatants:[enemy]}).triggered,false);
-assert.strictEqual(h.turnResources.action,1);
+assert.strictEqual(h.turnResources.actions,1);
 
 // Host must execute the mandatory move and attack before allowing normal RPC.
 g.DNDRules.rollD20=()=>({result:11,critical:false,fumble:false});g.Math.random=()=>0.5;
