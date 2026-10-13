@@ -39,11 +39,12 @@ g.getAllSpellsDatabase=()=>[
  {name:'Заговор 1',level:0,classes:['Колдун'],damage:'1d6'},
  {name:'Заговор 2',level:0,classes:['Колдун'],damage:'1d6'},
  {name:'Пакт 1',level:1,classes:['Колдун'],damage:'1d8',castingTime:'1 действие'},
- {name:'Пакт 2',level:1,classes:['Колдун'],damage:'1d8',castingTime:'1 действие'}
+ {name:'Пакт 2',level:1,classes:['Колдун'],damage:'1d8',castingTime:'1 действие'},
+ {name:'Пакт 3',level:1,classes:['Колдун'],damage:'1d8',castingTime:'1 действие'}
 ];
-const knownSpellResult=use('chooseProfaneSpells',{cantrips:['Заговор 1','Заговор 2'],spells:['Пакт 1','Пакт 2']});
+const knownSpellResult=use('chooseProfaneSpells',{cantrips:['Заговор 1','Заговор 2'],spells:['Пакт 1','Пакт 2','Пакт 3']});
 assert.strictEqual(knownSpellResult.ok,true,JSON.stringify(knownSpellResult));
-assert.strictEqual(h.classFeaturesState.bhProfaneSpells.length,2);
+assert.strictEqual(h.classFeaturesState.bhProfaneSpells.length,3);
 assert(h.spellsData.some(x=>x.name==='Пакт 1'&&x.castingClass===H.CLASS));
 
 // Bogus client distance and visibility do not trump the master's token geometry.
