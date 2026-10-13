@@ -7,7 +7,7 @@
   "scripts": {
     "desktop:prepare": "node desktop/prepare.cjs",
     "desktop:dev": "npm run desktop:prepare && electron .",
-    "desktop:build:win": "npm run desktop:prepare && electron-builder --win nsis portable --x64",
+    "desktop:build:win": "npm run desktop:prepare && electron-builder --win nsis portable --x64 --publish never",
     "desktop:check": "node --check desktop/main.cjs && node --check desktop/preload.cjs && node --check desktop/prepare.cjs"
   },
   "devDependencies": {
@@ -29,8 +29,18 @@
     },
     "win": {
       "target": [
-        {"target": "nsis", "arch": ["x64"]},
-        {"target": "portable", "arch": ["x64"]}
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
       ]
     },
     "nsis": {
