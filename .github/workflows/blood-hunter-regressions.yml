@@ -1,0 +1,37 @@
+name: Blood Hunter class regressions
+on:
+  push:
+    branches:
+      - fix/blood-hunter-closure-20261013
+    paths:
+      - 'app/blood_hunter_engine.js'
+      - 'app/combat_engine.js'
+      - 'app/class_features_engine.js'
+      - 'app/magic_engine.js'
+      - 'tests/test_blood_hunter_*.js'
+      - '.github/workflows/blood-hunter-regressions.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  blood-hunter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check syntax
+        run: |
+          node --check app/blood_hunter_engine.js
+          node --check tests/test_blood_hunter_patron_selection.js
+      - name: Core and orders tests
+        run: |
+          node tests/test_class_audit_runtime.js
+          node tests/test_blood_hunter_completion.js
+          node tests/test_blood_hunter_orders.js
+          node tests/test_blood_hunter_patron_selection.js
+          node tests/test_v731_fixes.js
+          node tests/test_v732_fixes.js
+          node tests/test_v733_logic_audit.js
