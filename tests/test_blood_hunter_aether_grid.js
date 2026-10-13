@@ -1,0 +1,35 @@
+const assert=require('assert');
+const {runtime,hero}=require('./helpers/class_runtime_harness');
+const g=runtime(),H=g.DNDBloodHunter,C=g.DNDClassFeatures,B=g.DNDCombat;
+let h=hero(H.CLASS,7,'Орден призрачных убийц');h.id='aether-ghost';h.hpCurrent=40;h.hpMax=50;
+C.buildFeatureSet(h);
+const tokens={['bt_'+h.id]:{x:3,y:3,size:1},bt_ally:{x:2,y:2,size:1}};
+const board={cols:8,rows:8,cellFt:5,obstacles:{'3:3':true},tokens};
+g.DNDBattleBoard={ensure:()=>board,findToken:k=>tokens[k]||null};
+g.Math.random=()=>0;
+assert.strictEqual(H.aetherInsideObject(h),true,'standing in a solid tile must be detected from board obstacles');
+let used=C.useFeature(h,'aetherWalk',{className:H.CLASS,atStartOfTurn:true});
+assert(used.ok,'aether walk should start at turn beginning: '+JSON.stringify(used));
+const turns=Math.max(1,Math.floor((h.stats.intelligence-10)/2));
+const initial=h.hpCurrent;
+for(let i=0;i<turns;i++)C.onTurnEnd(h);
+assert.strictEqual(h.hpCurrent,initial-turns,'force damage should apply each end turn spent inside a real obstacle');
+assert.strictEqual(H.aetherInsideObject(h),false);
+assert.strictEqual(h.classFeaturesState.bhAetherWalk,undefined);
+assert.strictEqual(h.classFeaturesState.bhAetherShuntRequired,undefined);
+assert(h.classFeaturesState.bhLastAetherShunt.ok);
+assert.notStrictEqual(tokens['bt_'+h.id].x+':'+tokens['bt_'+h.id].y,'2:2','aether shunt cannot occupy another actor');
+assert.notStrictEqual(tokens['bt_'+h.id].x+':'+tokens['bt_'+h.id].y,'3:3','aether shunt cannot remain inside an obstacle');
+const save=JSON.parse(JSON.stringify(h));C.buildFeatureSet(save);
+assert.strictEqual(H.aetherInsideObject(save),false);
+
+// No available cell: must fail closed and retain the unresolved shunt marker.
+h=hero(H.CLASS,7,'Орден призрачных убийц');h.id='trapped';h.hpCurrent=40;h.hpMax=50;C.buildFeatureSet(h);
+board.cols=2;board.rows=2;board.obstacles={'0:0':true,'0:1':true,'1:0':true,'1:1':true};
+tokens.bt_trapped={x:0,y:0,size:1};
+assert.strictEqual(H.aetherInsideObject(h),true);
+assert(C.useFeature(h,'aetherWalk',{className:H.CLASS,atStartOfTurn:true}).ok);
+for(let i=0;i<turns;i++)C.onTurnEnd(h);
+assert.strictEqual(h.classFeaturesState.bhAetherShuntRequired,true,'blocked terrain must not produce a fake safe location');
+assert.strictEqual(tokens.bt_trapped.x,0);
+console.log('PASS: Aether Walk authoritative obstacle checks, force damage, nearest free shunt and blocked grid failure');
