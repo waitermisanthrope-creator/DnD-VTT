@@ -1,12 +1,12 @@
 # D&D APP — AI PROJECT GUIDE / FIRST READ
 
-## Development branch: cloud character sync (no release)
+## Cloud character sync in the main application
 
-- Branch `feature/cloud-character-sync`: shared managed Supabase Auth/REST and character CAS synchronization. See `CLOUD_CHARACTER_SYNC.md` for architecture, configuration, migration, validation and remaining live QA.
+- Main application: shared managed Supabase Auth/REST and character CAS synchronization. See `CLOUD_CHARACTER_SYNC.md` for architecture, configuration, migration, validation and remaining live QA.
 - New owners: `app/cloud_sync.js`, `app/cloud_account.js`, `app/cloud_config.js`, `app/cloud_account.css`; SQL in `supabase/migrations/202610130001_characters.sql`. The three scripts load before legacy creation/gameplay scripts in `index.html`; there is no new runtime package dependency.
 - Existing `dnd_multi_characters_v2`, global character APIs and full JSON profiles remain authoritative locally. Storage interception covers direct writes, including 3D appearance. Account/guest caches remain separate; migration into accounts is explicit. Account switch requires ending the current multiplayer session.
 - Tests: `tests/cloud_sync_test.cjs`, `tools/check_cloud_account_browser.cjs`, `tools/test_cloud_sql.sh`; SQL Auth fixture is for a disposable test database only. Do not use service_role in a client or run fixtures in production.
-- No version bump, native change, release, OTA publication or main update. Real Supabase and Windows/Android validation remain outstanding until a Cloud project exists.
+- Unified source version 74.00.64. Main builds use the normal stable updater; the previous feature branch retains its isolated test channel. Stable OTA publication is gated by the manual unified release workflow. The Supabase project and public configuration exist; SMTP and real end-to-end account verification remain external QA prerequisites.
 
 > **BUILD:** v70.25.56 audit-reconciliation checkpoint (source manifest remains V70.25.53 until regenerated)
 > **PURPOSE:** this file is the first technical map for any AI/agent working on the project.

@@ -33,11 +33,11 @@ const server=http.createServer((req,res)=>{
       page.on('pageerror',e=>errors.push(e.message));
       await page.goto('http://127.0.0.1:'+server.address().port);
       await page.waitForFunction(()=>window.__DND_APP_BOOT_READY);
+      assert.equal(await page.evaluate(()=>window.DND_UPDATE_MANIFEST_URL || ''),'','main distribution uses a test update override');
       await page.evaluate(()=>DNDCloudAccount.open());
-      await page.getByText('Подключение к облаку',{exact:true}).click();
-      await page.getByLabel('Project URL',{exact:true}).fill('https://example.supabase.co');
-      await page.getByLabel('Публичный publishable key',{exact:true}).fill('sb_publishable_test');
-      await page.getByRole('button',{name:'Сохранить подключение',exact:true}).click();
+      assert.equal(await page.getByLabel('Project URL',{exact:true}).count(),0,'distribution exposes project setup to new users');
+      assert.equal(await page.getByLabel('Публичный publishable key',{exact:true}).count(),0);
+      await page.evaluate(()=>DNDCloudSync.configure({projectUrl:'https://example.supabase.co',publishableKey:'sb_publishable_test'}));
       await page.getByLabel('Электронная почта',{exact:true}).fill('a@example.com');
       await page.getByLabel('Пароль',{exact:true}).fill(page===pc?'123456':'password123');
     }

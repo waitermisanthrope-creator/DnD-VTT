@@ -75,8 +75,8 @@ android {
         applicationId "com.dndvtt.pocketvtt"
         minSdk 24
         targetSdk 36
-        versionCode 7400062
-        versionName '74.00.62'
+        versionCode 7400064
+        versionName '74.00.64'
     }
 
     signingConfigs {

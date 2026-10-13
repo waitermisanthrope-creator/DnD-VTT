@@ -51,10 +51,14 @@
     account=el('p','',panel);status=el('p','',panel);status.setAttribute('role','status');
     info=el('p','',panel);info.setAttribute('role','status');
     if(!api.login){render(api.snapshot());return;}
-    var settings=el('details','',panel);el('summary','Подключение к облаку',settings);
-    el('p','Укажите один и тот же проект на ПК и Android. Здесь допустимы только Project URL и публичный publishable key.',settings);
-    var url=field('Project URL','url',settings),key=field('Публичный publishable key','text',settings);
-    button('Сохранить подключение',function(){api.configure({projectUrl:url.value.trim(),publishableKey:key.value.trim()});},settings);
+    // Distributions already know their project. Connection fields belong only
+    // to unconfigured development builds, not the new-user registration flow.
+    if(!g.DNDCloudConfig || !g.DNDCloudConfig.projectUrl || !g.DNDCloudConfig.publishableKey){
+      var settings=el('details','',panel);el('summary','Подключение к облаку',settings);
+      el('p','Укажите один и тот же проект на ПК и Android. Здесь допустимы только Project URL и публичный publishable key.',settings);
+      var url=field('Project URL','url',settings),key=field('Публичный publishable key','text',settings);
+      button('Сохранить подключение',function(){api.configure({projectUrl:url.value.trim(),publishableKey:key.value.trim()});},settings);
+    }
     var form=el('form','',panel);form.addEventListener('submit',function(e){e.preventDefault();});
     var email=field('Электронная почта','email',form);email.autocomplete='email';
     var password=field('Пароль','password',form);password.autocomplete='current-password';
