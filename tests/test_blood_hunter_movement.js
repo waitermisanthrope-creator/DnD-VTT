@@ -32,12 +32,13 @@ assert.strictEqual(check(3,{phaseThroughObjects:true}).ok,false,'Sundering forbi
 assert.strictEqual(g.__testApplyPlannedMove(a,{moveTo:{x:3,y:0},movementMode:'dash'}),false);
 assert.strictEqual(g.__testApplyPlannedMove(a,{moveTo:{x:3,y:0},phaseThroughObjects:true}),false);
 assert.strictEqual(tokens.bt_a.x,2,'forbidden movement must not mutate token');
-assert.strictEqual(check(7).ok,false,'branded target must not spend Dash-extended movement allowance');
-assert.strictEqual(g.__testApplyPlannedMove(a,{moveTo:{x:7,y:0}}),false);
 assert.strictEqual(check(3).ok,true,'ordinary walking remains available');
 assert.strictEqual(g.__testApplyPlannedMove(a,{moveTo:{x:3,y:0}}),true);
 assert.strictEqual(tokens.bt_a.x,3);
 assert.strictEqual(a.turnResources.movementUsed,15);
+tokens.bt_b.x=8; // Keep an attack target within 5 ft of the projected destination.
+assert.strictEqual(check(7).ok,false,'branded target must not spend Dash-extended movement allowance');
+assert.strictEqual(g.__testApplyPlannedMove(a,{moveTo:{x:7,y:0}}),false);
 delete a.classFeaturesState.bloodHunterBrand;
 assert.strictEqual(H.canDash(a),true);
 assert.strictEqual(check(7).ok,true,'without Tethering, speed beyond 30 may be used');
