@@ -1,0 +1,50 @@
+const assert=require('assert'),fs=require('fs'),vm=require('vm'),path=require('path');
+const {runtime,hero,root}=require('./helpers/class_runtime_harness');
+const g=runtime(),H=g.DNDBloodHunter,C=g.DNDClassFeatures,D=g.DNDContent;
+assert(H&&C&&D);
+g.Math.random=()=>0;
+const sent=[];let handler;
+const h=hero('Кровавый охотник',6,'Орден осквернённых душ');
+h.id='net-hunter';h.characterId='net-hunter';h.name='Охотник';h.turnResources={action:true,actions:true,bonusAction:true,reaction:true,movement:30};
+h.hpCurrent=22;h.hpMax=40;h.weapons=[{id:'sword',name:'Меч',damageDice:'1d6',damageType:'slashing',rangeFt:5}];
+C.buildFeatureSet(h);
+const actor={id:'a',characterId:h.id,ownerPeerId:'p1',type:'hero',name:h.name,team:'party',hp:h.hpCurrent,maxHp:40,ac:12,turnResources:{action:true,actions:true,bonusAction:true,reaction:true,movement:30}};
+const target={id:'b',type:'monster',name:'Враг',team:'enemy',hp:30,maxHp:30,speed:30,ac:12,turnResources:{action:true,actions:true,bonusAction:true,reaction:true,movement:30}};
+const tokens={'bt_a':{x:0,y:0,size:1},'bt_b':{x:4,y:0,size:1}};
+let los=true;
+g.DNDBattleBoard={ensure:()=>({tokens}),distanceFt:(a,b)=>Math.abs(a.x-b.x)*5,lineOfSight:()=>({clear:los,cover:0}),findToken:k=>tokens[k]};
+g.currentChar={id:'master',initiativeTracker:{round:1,activeIndex:0,combatants:[actor,target]}};
+g.currentCharacter=g.currentChar;
+g.autoSaveCurrentCharacter=()=>{};g.renderInitiativeTracker=()=>{};g.dndRenderCombatV3=()=>{};g.dndNetworkGameplayRender=()=>{};
+const peers={p1:{profile:h}};
+g.dndNetwork={state:{role:'host'},getPeer:id=>peers[id],registerActionHandler:fn=>{handler=fn;},sendActionResult:(id,req,r)=>sent.push(r),commitHostEvent:()=>({seq:1})};
+vm.runInContext(fs.readFileSync(path.join(root,'app/network_gameplay.js'),'utf8'),g,{filename:'app/network_gameplay.js'});
+assert(handler,'host action handler must register');
+function use(id,payload={}){
+ const request={type:'USE_FEATURE',requestId:'bh-'+(sent.length+1),payload:{featureId:id,className:H.CLASS,...payload}};
+ return handler('p1',request)||sent.at(-1);
+}
+// The host accepts declared external choices and updates the authoritative profile.
+let result=use('otherworldlyPatron',{patron:'fiend'});
+assert(result.ok,'Profane Soul patron should be available via network');
+assert.strictEqual(h.classFeaturesState.profanePatron,'fiend');
+assert.strictEqual(use('otherworldlyPatron',{patron:'hexblade'}).ok,false,'patron cannot silently change');
+assert.strictEqual(h.classFeaturesState.profanePatron,'fiend');
+assert.strictEqual(use('chooseBloodCurses',{curses:['binding']}).ok,true);
+// Bogus client distance and visibility do not trump the master's token geometry.
+tokens.bt_b.x=9;
+const before=h.resources.bloodMaledict.current;
+result=use('bloodMaledict',{curse:'binding',targetId:'b',distanceFt:1,visible:true});
+assert.strictEqual(result.ok,false,'host must reject a curse outside the genuine 30ft');
+assert.strictEqual(h.resources.bloodMaledict.current,before);
+tokens.bt_b.x=4;los=false;
+result=use('bloodMaledict',{curse:'binding',targetId:'b',distanceFt:0});
+assert.strictEqual(result.ok,false,'host must reject when LOS blocked');
+los=true;
+result=use('bloodMaledict',{curse:'binding',targetId:'b',distanceFt:999,visible:false});
+assert.strictEqual(result.ok,true,'host must recalculate real distance and LOS');
+assert.strictEqual(h.resources.bloodMaledict.current,before-1);
+assert.strictEqual(actor.turnResources.bonusAction,false);
+assert.strictEqual(target.speed,0,'enemy combatant must have real speed restriction');
+assert.strictEqual(use('riteRevival',{targetId:'b'}).ok,false,'reaction with pending trigger cannot be used freely');
+console.log('PASS: host-scoped Blood Hunter feature RPC, untrusted range/LOS rejection, authoritative target/resources');
