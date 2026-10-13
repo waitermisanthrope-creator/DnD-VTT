@@ -107,7 +107,7 @@
     h=h||{};var stats=h.stats||{},classes=Array.isArray(h.classes)?h.classes.map(function(c){return {name:c.name||'',level:Number(c.level)||0,subclass:c.subclass||''};}):[];
     var weapons=[];var sourceWeapons=Array.isArray(h.weaponsData)?h.weaponsData:(Array.isArray(h.weapons)?h.weapons:[]);
     sourceWeapons.forEach(function(w){var stat=String(w.stat||'str').toLowerCase();var statMod=abilityMod(stats[stat]);var proficient=w.proficient!==false;var prof=proficient?num(global.DNDRules&&global.DNDRules.profBonus?global.DNDRules.profBonus(h):2,2):0;var extraAtk=num(w.extraAtk,0),extraDmg=num(w.extraDmg,0);var atk=statMod+prof+extraAtk;var expr=String(w.diceCount||1)+String(w.diceSides||'d6')+(statMod+extraDmg?((statMod+extraDmg>0?'+':'')+(statMod+extraDmg)): '');weapons.push({id:w.id||'',name:w.name||'Оружие',attackBonus:atk,damage:expr,damageType:w.damageType||'',stat:stat,proficient:proficient,extraAtk:extraAtk,extraDmg:extraDmg,diceCount:Number(w.diceCount)||1,diceSides:Number(w.diceSides)||6,rangeFt:num(w.rangeFt,5)});});
-    var spells=Array.isArray(h.spellsData)?h.spellsData.map(function(sp){return {name:sp.name||'',level:Number(sp.level)||0,damage:sp.damage||'',damageType:sp.damageType||'',attackType:sp.attackType||null,savingThrow:sp.savingThrow||null,castingClass:sp.castingClass||'',castingStat:sp.castingStat||'',concentration:!!sp.concentration,castingTime:sp.castingTime||'',rangeFt:num(sp.rangeFt,0),aoe:clone(sp.aoe)||null,aoeShape:sp.aoeShape||null,aoeRadiusFt:num(sp.aoeRadiusFt,0),aoeLengthFt:num(sp.aoeLengthFt,0),aoeWidthFt:num(sp.aoeWidthFt,0)};}):[];
+    var spells=Array.isArray(h.spellsData)?h.spellsData.map(function(sp){return {name:sp.name||'',level:Number(sp.level)||0,damage:sp.damage||'',damageType:sp.damageType||'',attackType:sp.attackType||null,savingThrow:sp.savingThrow||null,castingClass:sp.castingClass||'',castingStat:sp.castingStat||'',specialArcana:sp.specialArcana||null,concentration:!!sp.concentration,castingTime:sp.castingTime||'',rangeFt:num(sp.rangeFt,0),aoe:clone(sp.aoe)||null,aoeShape:sp.aoeShape||null,aoeRadiusFt:num(sp.aoeRadiusFt,0),aoeLengthFt:num(sp.aoeLengthFt,0),aoeWidthFt:num(sp.aoeWidthFt,0)};}):[];
     if(global.DNDClassFeatures&&typeof global.DNDClassFeatures.syncClassResources==='function')try{global.DNDClassFeatures.syncClassResources(h);}catch(e){}
     var featureIds=global.DNDClassFeatures&&typeof global.DNDClassFeatures.buildFeatureSet==='function'?global.DNDClassFeatures.buildFeatureSet(h):[];
     return {classes:classes,characterId:String(h.id||h.characterId||''),name:String(h.name||'Игрок'),hpCurrent:Number(h.hpCurrent!=null?h.hpCurrent:(h.hp&&h.hp.current)||0),hpMax:Number(h.hpMax!=null?h.hpMax:(h.hp&&h.hp.max)||0),ac:Number(h.ac)||10,className:String(h.class||h.className||''),level:Number(h.level)||classes.reduce(function(a,c){return a+c.level;},0),stats:clone(stats)||{},proficiencyBonus:global.DNDRules&&global.DNDRules.profBonus?global.DNDRules.profBonus(h):2,weapons:weapons,spells:spells,spellSlotsData:clone(h.spellSlotsData)||{},pactMagicData:clone(h.pactMagicData)||null,classFeatureIds:featureIds.slice(),resources:clone(h.resources)||{},classFeaturesState:clone(h.classFeaturesState)||{},turnResources:clone(h.turnResources)||{action:true,bonusAction:true,reaction:true,movement:30,movementUsed:0}};
@@ -135,8 +135,13 @@
     if(found&&num(found.level)<=0)return {ok:false,error:'Источник заклинания не имеет уровня класса.'};
     if(found&&['spellblade','заклинатель клинка'].includes(String(found.name).toLowerCase())&&num(found.level)<2&&num(spell.level)>0)return {ok:false,error:'Заклинания этого класса доступны со 2 уровня.'};
     var isBlood=found&&['кровавый охотник','blood hunter','bloodhunter'].indexOf(String(found.name).toLowerCase())>=0;if(isBlood&&(num(found.level)<3||!/profane|оскверн/i.test(found.subclass||'')))return {ok:false,error:'Магия договора доступна только ордену осквернённых душ с 3 уровня.'};if(isBlood){
- var learned=(profile.classFeaturesState&&profile.classFeaturesState.bhProfaneCantrips||[]).concat(profile.classFeaturesState&&profile.classFeaturesState.bhProfaneSpells||[]);
- if(learned.indexOf(String(spell.name||''))<0)return {ok:false,error:'Заклинание не изучено Орденом осквернённых душ.'};
+ var arcanaKind=String(spell.specialArcana||''),learned=(profile.classFeaturesState&&profile.classFeaturesState.bhProfaneCantrips||[]).concat(profile.classFeaturesState&&profile.classFeaturesState.bhProfaneSpells||[]);
+ if(arcanaKind){
+  var info=global.DNDBloodHunter&&global.DNDBloodHunter.arcanaInfo?global.DNDBloodHunter.arcanaInfo(profile,arcanaKind):null;
+  var documented=Array.isArray(profile.spellsData)?profile.spellsData.find(function(item){return item&&item.specialArcana===arcanaKind&&item.name===spell.name&&num(item.level)===num(spell.level);}):null;
+  var suffix=info?'('+String(info.englishName).toLowerCase()+')':'';
+  if(!info||!documented||!suffix||!String(spell.name||'').toLowerCase().trim().endsWith(suffix))return {ok:false,error:'Аркана не открыта, отсутствует в каталоге или не соответствует покровителю.'};
+ }else if(learned.indexOf(String(spell.name||''))<0)return {ok:false,error:'Заклинание не изучено Орденом осквернённых душ.'};
 }var expected=isBlood?String(profile.classFeaturesState&&profile.classFeaturesState.hemocraftAbility||'intelligence').slice(0,3):found&&classSpellAbility(found.name);
     if(ability&&expected&&ability!==expected)return {ok:false,error:'Характеристика заклинания не соответствует выбранному источнику.'};
     if(ability&&!requested&&!classes.some(function(c){return num(c.level)>0&&classSpellAbility(c.name)===ability;}))return {ok:false,error:'Характеристика заклинания не соответствует ни одному классу персонажа.'};
@@ -228,7 +233,7 @@
     if(p.type!=='ATTACK'&&p.type!=='CAST_SPELL')return actionError(peerId,action,'Можно подготовить только атаку или заклинание.');
     var target=p.targetId?findTarget(p.targetId):null;if(p.type==='ATTACK'&&!target)return actionError(peerId,action,'Для атаки нужна цель.');
     if(target){var g=geometryCheck(actor,target,p);if(g.pathFt!=null&&g.pathFt>num(actor.speed,30))return actionError(peerId,action,'Маршрут уже сейчас превышает скорость.');p.preview=clone(g);}
-    if(p.type==='CAST_SPELL'){var peer=global.dndNetwork&&global.dndNetwork.getPeer(peerId),profile=profileForPeer(peer),sp=(profile.spells||[]).find(function(x){return x.name===p.spellName;});if(!sp)return actionError(peerId,action,'Заклинание не найдено в авторитетном профиле игрока.');var sourceCheck=validateSpellSource(profile,sp);if(!sourceCheck.ok)return actionError(peerId,action,sourceCheck.error);var reserved=consumeSpellSlot(profile,sp.level,sp.name);if(num(sp.level)>0&&!reserved.used)return actionError(peerId,action,'Нельзя подготовить заклинание: нет подходящего spell slot/Pact Magic.');p.preparedSpellSlot=clone(reserved);p.preparedSpellReserved=true;}
+    if(p.type==='CAST_SPELL'){var peer=global.dndNetwork&&global.dndNetwork.getPeer(peerId),profile=profileForPeer(peer),sp=(profile.spells||[]).find(function(x){return x.name===p.spellName;});if(!sp)return actionError(peerId,action,'Заклинание не найдено в авторитетном профиле игрока.');var sourceCheck=validateSpellSource(profile,sp);if(!sourceCheck.ok)return actionError(peerId,action,sourceCheck.error);if(sp.specialArcana)return actionError(peerId,action,'Особые арканы нельзя откладывать подготовленным действием.');var reserved=consumeSpellSlot(profile,sp.level,sp.name);if(num(sp.level)>0&&!reserved.used)return actionError(peerId,action,'Нельзя подготовить заклинание: нет подходящего spell slot/Pact Magic.');p.preparedSpellSlot=clone(reserved);p.preparedSpellReserved=true;}
     ar.action=false;p.preparedResource='reaction';p.preparedRound=num(t.round,1);p.expiresRound=num(t.round,1);actor.preparedAction=p;save();var ev=commit('COMBAT_CHANGED',clone(t),peerId);sendResult(peerId,action,{ok:true,kind:'prepared',plan:p,eventSeq:ev&&ev.seq},ev);
   }
   function cancelPrepared(peerId,action){var t=combat(),actor=t&&t.combatants.find(function(c){return c.ownerPeerId===peerId;});if(!actor)return actionError(peerId,action,'Персонаж не найден.');var plan=clone(actor.preparedAction);var peer=global.dndNetwork&&global.dndNetwork.getPeer(peerId),profile=profileForPeer(peer);actor.preparedAction=null;var refunded=refundPreparedSpell(profile,plan);save();var ev=commit('COMBAT_CHANGED',clone(t),peerId);sendResult(peerId,action,{ok:true,kind:'prepared_cancelled',refundedSpellSlot:refunded},ev);}
@@ -401,6 +406,8 @@
     if(requestedAoe&&!hasAoe)return actionError(peerId,action,'У этого заклинания нет авторитетной AoE-геометрии.');
     var target=findTarget(action.payload&&action.payload.targetId);if(!target&&!hasAoe)return actionError(peerId,action,'Цель не найдена.');
     var sourceCheck=validateSpellSource(p,sp);if(!sourceCheck.ok)return actionError(peerId,action,sourceCheck.error);
+    var specialArcana=sp.specialArcana?global.DNDBloodHunter&&global.DNDBloodHunter.arcanaInfo&&global.DNDBloodHunter.arcanaInfo(p,sp.specialArcana):null;
+    if(sp.specialArcana&&(!specialArcana||specialArcana.used&&!resumeSpell))return actionError(peerId,action,'Эта аркана уже использована до долгого отдыха.');
     var spellPayload=clone(action.payload)||{};spellPayload.rangeFt=num(sp.rangeFt,0)||150;
     if(hasAoe)spellPayload.aoe=Object.assign({},authoritativeAoe,{cell:requestedAoe&&requestedAoe.cell||null,direction:requestedAoe&&requestedAoe.direction||null});
     if(target){var geo=geometryCheck(actor,target,spellPayload);if(!geo.ok)return actionError(peerId,action,geo.error);}
@@ -410,10 +417,26 @@
     var plannedMove=action.payload&&action.payload.moveTo?clone(action.payload.moveTo):null;
     var bonusAction=spellUsesBonusAction(sp),resource=preparedReaction?'reaction':(bonusAction?'bonusAction':'action');if(!resumeSpell&&!preparedReaction&&!consume(actor,resource))return actionError(peerId,action,'Ресурс '+(preparedReaction?'реакции':(bonusAction?'бонусного действия':'действия'))+' уже использован.');
     var slotSnapshot={spellSlotsData:clone(p.spellSlotsData)||{},pactMagicData:clone(p.pactMagicData)||null,classFeaturesState:clone(p.classFeaturesState)||{}};
-    var slot=preparedReservation?clone(preparedReservation):(resumeSpell?{used:true,kind:'resume',slotLevel:num(sp.level)}:consumeSpellSlot(p,sp.level,sp.name));if(!resumeSpell&&!preparedReservation&&num(sp.level)>0&&!slot.used){resources(actor)[resource]=true;return actionError(peerId,action,'Нет подходящего spell slot/Pact Magic.');}
+    var slot;
+    if(preparedReservation)slot=clone(preparedReservation);
+    else if(resumeSpell)slot={used:true,kind:'resume',slotLevel:num(sp.level)};
+    else if(specialArcana){
+      if(specialArcana.free)slot={used:true,kind:'arcana-free',slotLevel:num(sp.level),free:true};
+      else {
+        var pact=p.pactMagicData;
+        if(pact&&num(pact.max)>num(pact.used)&&num(pact.slotLevel)>=num(sp.level)){
+          pact.used=num(pact.used)+1;slot={used:true,kind:'pact',slotLevel:num(pact.slotLevel)};
+        }else slot={used:false,kind:'pact',slotLevel:0};
+      }
+    }else slot=consumeSpellSlot(p,sp.level,sp.name);
+    if(!resumeSpell&&!preparedReservation&&num(sp.level)>0&&!slot.used){resources(actor)[resource]=true;return actionError(peerId,action,'Нет подходящего spell slot/Pact Magic.');}
     if(plannedMove&&!applyPlannedMove(actor,Object.assign({},action.payload,{moveTo:plannedMove}))) {
       resources(actor)[resource]=true; p.spellSlotsData=slotSnapshot.spellSlotsData; p.pactMagicData=slotSnapshot.pactMagicData; p.classFeaturesState=slotSnapshot.classFeaturesState;
       return actionError(peerId,action,'Не удалось выполнить запланированное движение.');
+    }
+    if(specialArcana&&!resumeSpell){
+      p.classFeaturesState=p.classFeaturesState||{};
+      p.classFeaturesState[sp.specialArcana==='revealedArcana'?'bhRevealedArcanaUsed':'bhUnsealedArcanaUsed']=true;
     }
     if(!sp.name)return actionError(peerId,action,'Заклинание не найдено в профиле игрока.');var stat=String(sp.castingStat||'').toLowerCase(),bonus=num(p.proficiencyBonus,2)+abilityMod((p.stats||{})[stat]),dc=8+bonus;var result={ok:true,kind:'spell',spell:sp.name,level:num(sp.level),slot:slot,attacker:p.name,target:target&&target.name||'AoE',castingStat:stat,attackBonus:bonus,saveDc:dc,hit:null,damage:null,resources:clone(actor.turnResources),spellSlots:clone(p.spellSlotsData),pactMagic:clone(p.pactMagicData)};var con=null;
     if(!resumeSpell&&sp.level>0&&actor.ownerPeerId===peerId){var spellReaction=requestSpellReaction({id:'spellreact_'+action.requestId,kind:'spell',caster:actor,attackerPeerId:peerId,action:action,spell:sp,context:{source:'spell',spellLevel:num(sp.level),spellName:sp.name,visible:true},expiresAt:Date.now()+15000});if(spellReaction&&spellReaction.pendingReaction){result.reaction=spellReaction;result.reactionPending=true;var rev=commit('COMBAT_CHANGED',clone(t),peerId);sendResult(peerId,action,result,rev);return result;}}    var spellDamageMods=global.DNDClassFeatures&&global.DNDClassFeatures.spellDamageModifiers?global.DNDClassFeatures.spellDamageModifiers(actor,{damageType:sp.damageType||'',spellLevel:num(sp.level,0),cantrip:num(sp.level,0)===0,hasDamage:!!sp.damage,usesAlchemistSupplies:!!(action.payload&&action.payload.usesAlchemistSupplies),applyOverchannel:true}):{bonus:0,maximize:false,rerollOne:false,notes:[]};
@@ -458,7 +481,7 @@ if(bloodHunterScoped&&id==='chooseProfaneSpells'){
  profile.spellsData=clone(proxy.spellsData)||[];
  var foreignSpells=(profile.spells||[]).filter(function(sp){return !sp||['Кровавый охотник','Blood Hunter','BloodHunter'].indexOf(String(sp.castingClass||''))<0;});
  var chosenSpells=profile.spellsData.filter(function(sp){return sp&&sp.castingClass==='Кровавый охотник';}).map(function(sp){
-  return {name:sp.name,level:num(sp.level),castingClass:'Кровавый охотник',castingStat:sp.castingStat,damage:sp.damage||'',damageType:sp.damageType||'',attackType:sp.attackType||null,savingThrow:sp.savingThrow||null,castingTime:sp.castingTime||'',rangeFt:num(sp.rangeFt,0),concentration:!!sp.concentration,aoe:clone(sp.aoe)||null,aoeShape:sp.aoeShape||null,aoeRadiusFt:num(sp.aoeRadiusFt,0)};
+  return {name:sp.name,level:num(sp.level),castingClass:'Кровавый охотник',castingStat:sp.castingStat,specialArcana:sp.specialArcana||null,damage:sp.damage||'',damageType:sp.damageType||'',attackType:sp.attackType||null,savingThrow:sp.savingThrow||null,castingTime:sp.castingTime||'',rangeFt:num(sp.rangeFt,0),concentration:!!sp.concentration,aoe:clone(sp.aoe)||null,aoeShape:sp.aoeShape||null,aoeRadiusFt:num(sp.aoeRadiusFt,0)};
  });
  profile.spells=foreignSpells.concat(chosenSpells);
 }
