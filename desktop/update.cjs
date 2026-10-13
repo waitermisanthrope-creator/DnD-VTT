@@ -61,7 +61,9 @@ class DesktopWebUpdater {
     return this.getWebRoot() === this.bundledWebroot ? this.embeddedVersion() : this.state.active;
   }
   getWebRoot() {
-    if (this.state.active === this.embeddedVersion()) return this.bundledWebroot;
+    // Installing a newer EXE must supersede an older user-data web version.
+    // Ignore cosmetic zero padding such as 74.00.63 vs 74.0.63.
+    if (compare(this.embeddedVersion(), this.state.active) >= 0) return this.bundledWebroot;
     const candidate = path.join(this.versions, this.state.active);
     return fs.existsSync(path.join(candidate, 'index.html')) ? candidate : this.bundledWebroot;
   }
