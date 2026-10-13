@@ -9,7 +9,7 @@ assert(C.useFeature(h,'crimsonRite',{className:H.CLASS,weaponId:'sword',riteType
 const brandUses=h.resources.brandCastigation.current;
 const wizard=hero('Волшебник',5);wizard.id='ward';wizard.characterId='ward';C.buildFeatureSet(wizard);
 const actor={id:'attacker',characterId:'hunter',ownerPeerId:'p1',name:'Охотник',type:'hero',team:'party',hp:30,maxHp:40,ac:12,turnResources:{action:true,bonusAction:true,reaction:true,movement:30}};
-const defender={id:'defender',characterId:'ward',ownerPeerId:'p2',name:'Защитник',type:'hero',team:'enemy',hp:50,maxHp:50,ac:14,turnResources:{action:true,bonusAction:true,reaction:true,movement:30}};
+const defender={id:'defender',characterId:'ward',ownerPeerId:'p2',name:'Защитник',type:'hero',team:'enemy',hp:50,maxHp:50,ac:16,turnResources:{action:true,bonusAction:true,reaction:true,movement:30}};
 const tokens={bt_attacker:{x:0,y:0,size:1},bt_defender:{x:1,y:0,size:1}},battle={tokens};
 g.DNDBattleBoard={ensure:()=>battle,findToken:k=>tokens[k],distanceFt:(a,b)=>Math.abs(a.x-b.x)*5,lineOfSight:()=>({clear:true,cover:0}),pathCost:()=>5};
 g.currentChar={id:'master',initiativeTracker:{round:1,activeIndex:0,combatants:[actor,defender],battlefield:battle}};g.currentCharacter=g.currentChar;
