@@ -1,0 +1,55 @@
+const assert=require('assert'),fs=require('fs'),vm=require('vm'),path=require('path');
+const {runtime,hero,root}=require('./helpers/class_runtime_harness');
+const g=runtime(),C=g.DNDClassFeatures,H=g.DNDBloodHunter;
+const h=hero(H.CLASS,13,'Орден призрачных убийц');h.id='blood-owner';h.characterId=h.id;h.hpCurrent=30;
+h.weapons=[{id:'sword',name:'Меч',damageDice:'1d8',damageType:'slashing',rangeFt:5,proficient:true}];
+C.buildFeatureSet(h);
+assert(C.useFeature(h,'chooseCrimsonRites',{className:H.CLASS,rites:['flame']}).ok);
+assert(C.useFeature(h,'crimsonRite',{className:H.CLASS,weaponId:'sword',riteType:'flame'}).ok);
+const brandUses=h.resources.brandCastigation.current;
+const actor={id:'owner-combatant',characterId:h.id,ownerPeerId:'p1',name:'Охотник',type:'hero',team:'party',hp:30,maxHp:40,ac:12,turnResources:{action:true,bonusAction:true,reaction:true,movement:30,movementUsed:0}};
+const target={id:'goblin',name:'Гоблин',team:'enemy',type:'monster',hp:200,maxHp:200,ac:10,turnResources:{action:true,bonusAction:true,reaction:true,movement:30,movementUsed:0}};
+const tokens={'bt_owner-combatant':{x:0,y:0,size:1},bt_goblin:{x:1,y:0,size:1}},battle={tokens};
+g.DNDBattleBoard={ensure:()=>battle,findToken:id=>tokens[id],tokenList:()=>Object.values(tokens),distanceFt:(a,b)=>Math.abs(a.x-b.x)*5,lineOfSight:()=>({clear:true,cover:0}),pathCost:(a,b)=>Math.abs(a.x-b.x)*5};
+g.currentChar={id:'master',initiativeTracker:{round:1,activeIndex:0,combatants:[actor,target],battlefield:battle}};
+g.currentCharacter=g.currentChar;g.autoSaveCurrentCharacter=()=>{};g.renderInitiativeTracker=()=>{};g.dndRenderCombatV3=()=>{};g.dndNetworkGameplayRender=()=>{};
+let handler;const replies=[],peers={p1:{profile:h}};
+g.dndNetwork={state:{role:'host'},getPeer:k=>peers[k],roster:()=>[],registerActionHandler:fn=>handler=fn,sendActionResult:(id,request,r)=>replies.push(r),commitHostEvent:()=>({seq:1})};
+g.addEventListener=(event,fn)=>{if(event==='DOMContentLoaded')fn();};
+vm.runInContext(fs.readFileSync(path.join(root,'app/network_gameplay.js'),'utf8'),g,{filename:'app/network_gameplay.js'});
+assert(handler);
+let counter=0;
+function attack(brandOnHit,random,extra={}){
+ g.Math.random=()=>random;actor.turnResources.action=true;
+ handler('p1',{type:'ATTACK',requestId:'attack-'+(++counter),payload:{targetId:'goblin',weaponId:'sword',brandOnHit,...extra}});
+ return replies.at(-1);
+}
+// A forged client intent cannot brand if the authoritative d20 is a fumble.
+let r=attack(true,0,{hit:true,damage:500,attackResult:{hit:true,damageResult:{amount:500}}});
+assert(r.ok);assert.strictEqual(r.hit,false);
+assert.strictEqual(r.brandOnHit.ok,false,'network cannot apply client-forged hit');
+assert.strictEqual(target.classFeaturesState&&target.classFeaturesState.bloodHunterBrand,undefined);
+assert.strictEqual(h.resources.brandCastigation.current,brandUses,'a miss does not consume brand');
+const hp=target.hp;
+r=attack(true,0.7,{hit:false,damage:0});
+assert(r.ok&&r.hit,JSON.stringify(r));
+assert(r.brandOnHit&&r.brandOnHit.ok,JSON.stringify(r.brandOnHit));
+assert(target.hp<hp,'real hit changed target HP');
+assert.strictEqual(target.classFeaturesState.bloodHunterBrand.ownerId,actor.id);
+assert.strictEqual(target.classFeaturesState.bloodHunterBrand.level,13);
+assert.strictEqual(h.resources.brandCastigation.current,brandUses-1);
+assert.strictEqual(h.classFeaturesState.brandTargetId,target.id);
+assert.strictEqual(H.canDash(target),false,'actual branded target cannot Dash');
+assert.strictEqual(H.canPhaseThroughObjects(target),false,'Ghostslayer brand blocks phasing');
+const marked=target.classFeaturesState.bloodHunterBrand;
+r=attack(true,0.7);
+assert(r.ok&&r.hit);assert.strictEqual(r.brandOnHit.ok,false,'brand only once per rest');
+assert.strictEqual(h.resources.brandCastigation.current,brandUses-1);
+assert.strictEqual(target.classFeaturesState.bloodHunterBrand.ownerId,marked.ownerId);
+// New attacks without an explicit choice may not place a brand.
+h.resources.brandCastigation.current=1;delete target.classFeaturesState.bloodHunterBrand;
+r=attack(false,0.7);
+assert(r.ok);assert.strictEqual(r.brandOnHit,null);
+assert.strictEqual(target.classFeaturesState.bloodHunterBrand,undefined);
+assert.strictEqual(h.resources.brandCastigation.current,1);
+console.log('PASS: host Blood Hunter confirmed on-hit brand with trusted damage, owner and once-per-rest resource');
