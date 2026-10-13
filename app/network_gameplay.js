@@ -167,14 +167,34 @@
     var board=global.DNDBattleBoard;if(!board||!board.distanceFt)return {ok:true};
     var at=tokenForCombatant(actor),tt=tokenForCombatant(target);if(!at||!tt)return {ok:true};
     var move=payload&&payload.moveTo;
-    if(move){var path=board.pathCost(at,move);var speed=num(actor.turnResources&&actor.turnResources.movement,actor.speed||30)-num(actor.turnResources&&actor.turnResources.movementUsed,0);if(path===Infinity||path>speed)return {ok:false,error:'Путь движения больше доступного движения или заблокирован.',pathFt:path,speedFt:speed};}
+    if(move){
+      var bh=global.DNDBloodHunter,blockedDash=bh&&bh.canDash&&bh.canDash(actor)===false;
+      if(blockedDash&&(payload.movementMode==='dash'||actor.turnResources&&actor.turnResources.dashActive))return {ok:false,error:'Клеймо привязки запрещает действие Рывок.'};
+      if(bh&&bh.canPhaseThroughObjects&&bh.canPhaseThroughObjects(actor)===false&&payload.phaseThroughObjects===true)return {ok:false,error:'Клеймо разрушения запрещает движение сквозь объекты.'};
+      var path=board.pathCost(at,move),used=num(actor.turnResources&&actor.turnResources.movementUsed,0);
+      var speed=num(actor.turnResources&&actor.turnResources.movement,actor.speed||30)-used;
+      if(blockedDash)speed=Math.min(speed,num(actor.speed,30)-used);
+      if(path===Infinity||path>speed)return {ok:false,error:'Путь движения больше доступного движения или заблокирован.',pathFt:path,speedFt:speed};
+    }
     var dist=board.distanceFt(move?{x:move.x,y:move.y}:at,tt),range=num(payload&&payload.rangeFt,5);var los=board.lineOfSight(move?{x:move.x,y:move.y,size:at.size}:at,tt);
     if(dist>range)return {ok:false,error:'Цель вне дальности.',distanceFt:dist,rangeFt:range};
     if(!los.clear)return {ok:false,error:'Линия видимости заблокирована.',distanceFt:dist,cover:los.cover};
     return {ok:true,distanceFt:dist,cover:los.cover,pathFt:move?board.pathCost(at,move):0};
   }
   function applyPlannedMove(actor,move){
-    if(!move)return true;var b=battlefield(),t=tokenForCombatant(actor);if(!b||!t)return true;var path=global.DNDBattleBoard.pathCost(t,move);if(path===Infinity)return false;t.x=Math.floor(move.x);t.y=Math.floor(move.y);actor.turnResources=actor.turnResources||{};actor.turnResources.movementUsed=num(actor.turnResources.movementUsed)+path;return true;
+    if(!move)return true;
+    var destination=move.moveTo||move,b=battlefield(),t=tokenForCombatant(actor);
+    if(!destination||!Number.isInteger(Number(destination.x))||!Number.isInteger(Number(destination.y)))return false;
+    if(!b||!t)return false;
+    var bh=global.DNDBloodHunter;
+    if(bh&&bh.canDash&&bh.canDash(actor)===false&&(move.movementMode==='dash'||actor.turnResources&&actor.turnResources.dashActive))return false;
+    if(bh&&bh.canPhaseThroughObjects&&bh.canPhaseThroughObjects(actor)===false&&move.phaseThroughObjects===true)return false;
+    var path=global.DNDBattleBoard.pathCost(t,destination);
+    var used=num(actor.turnResources&&actor.turnResources.movementUsed,0),max=num(actor.turnResources&&actor.turnResources.movement,actor.speed||30);
+    if(bh&&bh.canDash&&bh.canDash(actor)===false)max=Math.min(max,num(actor.speed,30));
+    if(!Number.isFinite(path)||path<0||used+path>max)return false;
+    t.x=Math.floor(Number(destination.x));t.y=Math.floor(Number(destination.y));
+    actor.turnResources=actor.turnResources||{};actor.turnResources.movementUsed=used+path;return true;
   }
   function normalizePlan(action,peerId){
     var p=clone(action&&action.payload)||{};p.ownerPeerId=peerId;p.preparedAt=Date.now();p.planId=action.requestId||('plan_'+Date.now()+'_'+Math.random().toString(36).slice(2,7));return p;
