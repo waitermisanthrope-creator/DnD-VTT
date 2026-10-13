@@ -26,7 +26,7 @@ assert.strictEqual(h.classFeaturesState.bhBloodlust.requiresNearestAttack,true);
 let result=H.resolveBloodlust(h,{combatants:[friend,enemy]});
 assert(result.ok&&result.triggered,'failed save forces the Bloodlust resolution');
 assert.strictEqual(result.targetId,friend.id,'nearest ally is not excluded');
-assert(result.attack&&result.attack.hit,'forced melee attack should execute');
+assert(result.attack&&result.attack.hit,'forced melee attack should execute: '+JSON.stringify(result));
 assert(friend.hpCurrent<30,'actual ally HP must be modified');
 assert.strictEqual(h.turnResources.action,false);
 assert.strictEqual(H.resolveBloodlust(h,{combatants:[friend,enemy]}).ok,false,'cannot attack twice from one Bloodlust turn');
