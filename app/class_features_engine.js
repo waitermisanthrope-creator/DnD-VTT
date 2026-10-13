@@ -452,11 +452,13 @@
     if(ctx.source==='spell'&&ctx.spellLevel>0&&ctx.visible!==false&&num(ctx.distanceFt,0)<=60){
       for(var sl=Math.max(1,num(ctx.spellLevel));sl<=9;sl++){var cs=slots[sl];if((cs&&num(cs.max)>num(cs.used))||(pact&&num(pact.max)>num(pact.used)&&num(pact.slotLevel)>=sl)){out.push({id:'counterspell',priority:1,label:'Контрзаклинание',description:'Попытаться прервать заклинание '+ctx.spellName+'.'});break;}}
     }
+    if(global.DNDBloodHunter&&typeof global.DNDBloodHunter.reactionOptions==='function')out=out.concat(global.DNDBloodHunter.reactionOptions(h,ctx)||[]);
     if(hasClass(h,'Мученик')){var mp=externalPack('Мученик');if(mp&&mp.hooks.reactionOptions)out=out.concat(mp.hooks.reactionOptions(h,ctx)||[]);}
     out.sort(function(a,b){return a.priority-b.priority;});
     return out.length?{options:out,window:{type:'REACTION_WINDOW',options:out,damage:num(ctx.amount),damageType:ctx.damageType||'',source:ctx.source||'generic'}}:null;
   }
   function resolveReaction(h,id,ctx){
+    if(id==='bloodCurseEyeless')return global.DNDBloodHunter&&typeof global.DNDBloodHunter.resolveReaction==='function'?global.DNDBloodHunter.resolveReaction(h,id,ctx||{}):{ok:false,reason:'Реакция Кровавого охотника недоступна.'};
     if(id==='reprisal')return externalUse(h,id,ctx||{})||{ok:false,reason:'Воздаяние недоступно.'};
     ctx=ctx||{};var opts=reactionOptions(h,ctx);if(!opts)return {ok:false,reason:'Нет доступной реакции.'};var found=opts.options.filter(function(x){return x.id===id;})[0];if(!found)return {ok:false,reason:'Эта реакция сейчас недоступна.'};
     var r=h.turnResources||{};if(r.reaction===false)return {ok:false,reason:'Реакция уже использована.'};
