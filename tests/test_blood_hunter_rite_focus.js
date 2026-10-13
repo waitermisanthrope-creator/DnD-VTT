@@ -97,4 +97,17 @@ for(const patron of ['archfey','fathomless','fiend','greatOldOne','hexblade','un
  assert.strictEqual(C.useFeature(a,'riteFocus',{className:H.CLASS}).ok,true,patron);
  assert.strictEqual(a.resources.bloodMaledict.current,uses,patron);
 }
+// Sapping Scar: only the owner's pact spell save against a branded creature has disadvantage.
+h=hunter('fiend',11);t=foe();fixedRoll(11);
+result=attack(h,t,{brandCastigation:true});
+assert.strictEqual(result.hit,true);
+assert.strictEqual(t.classFeaturesState.bloodHunterBrand.ownerId,h.id);
+const modes=[];
+g.DNDRules.rollD20=mode=>{modes.push(mode);return {result:11,critical:false,fumble:false};};
+B.savingThrow(t,'wis',15,'normal',{fromSpell:true,caster:h,castingClass:H.CLASS});
+B.savingThrow(t,'wis',15,'normal',{fromSpell:true,caster:h,castingClass:'Волшебник'});
+B.savingThrow(t,'wis',15,'normal',{fromSpell:true,caster:foe(),castingClass:H.CLASS});
+B.savingThrow(t,'wis',15,'normal',{fromSpell:false,caster:h,castingClass:H.CLASS});
+assert.deepStrictEqual(modes,['disadvantage','normal','normal','normal']);
+assert.strictEqual(C.useFeature(h,'brandSappingScar',{className:H.CLASS}).ok,true);
 console.log('PASS: all nine Profane Soul patron rite-focus paths and effect lifecycle');
