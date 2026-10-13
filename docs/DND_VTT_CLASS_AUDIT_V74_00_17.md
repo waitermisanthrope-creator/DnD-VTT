@@ -83,6 +83,8 @@
 
 ### Шаг 22 — сетевое клеймо, телепортация, реакция Безглазого и UI (13 октября 2026)
 
+**ВНИМАНИЕ — обнаружено конкурентное изменение main:** commit `5dc98fb7b76c460f7b0a5ecec03e9bcbd77bbac7` («execute profane focus effects and typed damage reaction») изменил **те же** `app/blood_hunter_engine.js`, `app/class_features_engine.js`, `app/combat_engine.js`, `app/network_gameplay.js` и аудит. Ветка сейчас diverged: 105 коммитов впереди, 1 коммит позади `main`. НЕ сливать автоматически и НЕ заменять файлы main версиями из ветки. Перед интеграцией потребуется файловое объединение двух наборов механик и общий CI, включая новые тесты `test_blood_hunter_focus_network.js` и `test_blood_hunter_profane_focus.js` из main. Последний зелёный CI ветки проверял её версию файлов, НЕ последние изменения main.
+
 **Статус Кровавого охотника: 🔴 НЕ ЗАКРЫТ.** Продолжать из ветки `fix/blood-hunter-closure-20261013`; не сливать в `main`, не менять версии и не запускать релизы. Последний **успешный полный профильный CI**: [GitHub Actions #38398394971](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/38398394971), commit `cd1f81bed2b3d7aa17ff1ec88b1b28f16bae9ac1`. Проверяется Node runtime с настоящими host RPC/боевыми обработчиками и имитацией UI, не физический Android/два устройства.
 
 **Выполнено и подтверждено тестами:**
