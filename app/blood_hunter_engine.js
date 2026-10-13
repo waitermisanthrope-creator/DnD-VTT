@@ -96,7 +96,8 @@ function isRevealed(t){return effects(t).some(function(e){return e.id==='archfey
 function flightSpeed(h){return Math.max(0,num(st(h).bhGenieFlight&&st(h).bhGenieFlight.speed));}
 function sappingScarSaveModifiers(t,ctx){
  ctx=ctx||{};var b=t&&t.classFeaturesState&&t.classFeaturesState.bloodHunterBrand,owner=b&&actors[b.ownerId];
- if(!owner||!enabled(owner)||orderKey(owner)!=='profaneSoul'||lvl(owner)<11||!ctx.fromSpell||ctx.caster!==owner)return {disadvantage:false};
+ if(!b||b.order!=='profaneSoul'||num(b.level)<11||!D.isEnabled('blood-hunter')||!ctx.fromSpell||!ctx.caster||actorId(ctx.caster)!==b.ownerId)return {disadvantage:false};
+ if(owner&&(!enabled(owner)||orderKey(owner)!=='profaneSoul'))return {disadvantage:false};
  var spellClass=String(ctx.castingClass||'');
  if(['Кровавый охотник','Blood Hunter','BloodHunter'].indexOf(spellClass)<0&&ctx.fromBloodHunterPact!==true)return {disadvantage:false};
  return {disadvantage:true,note:'Клеймо истощающего шрама'};
