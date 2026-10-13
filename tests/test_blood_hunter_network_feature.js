@@ -43,7 +43,7 @@ result=use('bloodMaledict',{curse:'binding',targetId:'b',distanceFt:0});
 assert.strictEqual(result.ok,false,'host must reject when LOS blocked');
 los=true;
 result=use('bloodMaledict',{curse:'binding',targetId:'b',distanceFt:999,visible:false});
-assert.strictEqual(result.ok,true,'host must recalculate real distance and LOS');
+assert.strictEqual(result.ok,true,'host must recalculate real distance and LOS: '+JSON.stringify(result));
 assert.strictEqual(h.resources.bloodMaledict.current,before-1);
 assert.strictEqual(actor.turnResources.bonusAction,false);
 assert.strictEqual(target.speed,0,'enemy combatant must have real speed restriction');
