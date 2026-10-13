@@ -1,0 +1,5 @@
+# Generated Electron staging and binaries
+node_modules/
+desktop/web/
+dist/
+*.log
