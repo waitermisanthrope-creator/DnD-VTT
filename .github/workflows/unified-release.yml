@@ -1,0 +1,270 @@
+name: Unified Android + Windows release
+
+# Push of this workflow to the staging branch runs both platform smoke builds.
+# After review/merge into main, one manual Run workflow -> publish=true
+# bumps the shared version, builds both platforms and publishes OTA only if
+# both builds have succeeded.
+on:
+  push:
+    branches: [windows-desktop]
+    paths:
+      - ".github/workflows/unified-release.yml"
+  workflow_dispatch:
+    inputs:
+      publish:
+        type: boolean
+        description: "Release both platforms (main only); false = test both builds"
+        required: true
+        default: false
+      version:
+        description: "New version, or auto to increment the patch number"
+        required: true
+        default: auto
+
+permissions:
+  contents: write
+
+concurrency:
+  group: unified-release
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      sha: ${{ steps.snapshot.outputs.sha }}
+      version: ${{ steps.snapshot.outputs.version }}
+      publish: ${{ steps.snapshot.outputs.publish }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: snapshot
+        shell: bash
+        env:
+          RELEASE_REQUEST: ${{ inputs.publish || false }}
+          RELEASE_VERSION: ${{ inputs.version || 'auto' }}
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" && "$RELEASE_REQUEST" == "true" ]]; then
+            if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
+              echo "Publishing is allowed only from the main branch" >&2
+              exit 1
+            fi
+            if [[ "$RELEASE_VERSION" != "current" ]]; then
+              python3 tools/unified_version.py --bump "$RELEASE_VERSION"
+              git config user.name "github-actions[bot]"
+              git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+              git add package.json app/update_manager_v2.js android/app/build.gradle
+              git commit -m "Release both platforms: $(python3 tools/unified_version.py)"
+              git push origin HEAD:main
+            else
+              echo "Retrying existing version without another bump"
+              python3 tools/unified_version.py
+            fi
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          fi
+          VERSION="$(python3 tools/unified_version.py)"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "Shared version: $VERSION"
+  android:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 80
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
+      - name: Validate version and gameplay tests
+        run: |
+          python3 tools/unified_version.py
+          node tests/update_ota_flow_test.js
+          node tests/character_3d_editor_test.js
+      - name: Audit complete cross-platform OTA manifest
+        shell: bash
+        env:
+          SOURCE_SHA: ${{ needs.prepare.outputs.sha }}
+          VERSION: ${{ needs.prepare.outputs.version }}
+        run: |
+          set -euo pipefail
+          python3 tools/build_update_manifest.py \
+            --base-url "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/$SOURCE_SHA" \
+            --version "$VERSION" --min-app-version "70.26.99" \
+            --channel stable --output /tmp/unified_ota_preview.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('/tmp/unified_ota_preview.json').read_text())
+          paths={f['path'] for f in m['files']}
+          for required in ['index.html','app/update_manager_v2.js']:
+              assert required in paths, required
+          for mp3 in Path('.').glob('*.mp3'):
+              assert 'ambience/'+mp3.name in paths, mp3
+          for glb in Path('.').glob('*.glb'):
+              assert glb.name in paths, glb
+          for png in Path('.').glob('*.png'):
+              assert 'wallpapers/'+png.name in paths, png
+          print('Unified OTA manifest verified:',len(paths),'files')
+          PY
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: android-actions/setup-android@v4
+      - run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "9.6.0"
+      - name: Build Android debug APK
+        working-directory: android
+        run: gradle :app:assembleDebug --stacktrace
+      - name: Upload test Android APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: unified-android-debug
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+      - name: Restore Android release signing
+        if: needs.prepare.outputs.publish == 'true'
+        shell: bash
+        env:
+          KEYSTORE_B64: ${{ secrets.DND_VTT_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.DND_VTT_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.DND_VTT_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.DND_VTT_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$KEYSTORE_B64" && test -n "$KEYSTORE_PASSWORD" && test -n "$KEY_ALIAS" && test -n "$KEY_PASSWORD" || {
+            echo "Android signing secrets are missing; release blocked (debug APK cannot replace signed APK)" >&2
+            exit 1
+          }
+          printf "%s" "$KEYSTORE_B64" | base64 --decode > "$RUNNER_TEMP/dnd-vtt-release.jks"
+          chmod 600 "$RUNNER_TEMP/dnd-vtt-release.jks"
+          echo "DND_VTT_KEYSTORE_FILE=$RUNNER_TEMP/dnd-vtt-release.jks" >> "$GITHUB_ENV"
+      - name: Build signed Android release
+        if: needs.prepare.outputs.publish == 'true'
+        working-directory: android
+        env:
+          DND_VTT_KEYSTORE_PASSWORD: ${{ secrets.DND_VTT_KEYSTORE_PASSWORD }}
+          DND_VTT_KEY_ALIAS: ${{ secrets.DND_VTT_KEY_ALIAS }}
+          DND_VTT_KEY_PASSWORD: ${{ secrets.DND_VTT_KEY_PASSWORD }}
+        run: gradle :app:assembleRelease --stacktrace
+      - name: Verify Android signature
+        if: needs.prepare.outputs.publish == 'true'
+        run: |
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose android/app/build/outputs/apk/release/app-release.apk
+      - name: Upload signed APK
+        if: needs.prepare.outputs.publish == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: unified-android-signed
+          path: android/app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
+
+  windows:
+    needs: prepare
+    runs-on: windows-latest
+    timeout-minutes: 80
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate version
+        run: python tools/unified_version.py
+      - name: Build Windows Setup and Portable
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+        run: |
+          npm install --no-audit --no-fund
+          npm run desktop:check
+          npm run desktop:build:win
+      - name: Confirm both EXE formats
+        shell: pwsh
+        run: |
+          if (!(Get-ChildItem dist/windows/DnD-VTT-Setup-*.exe -ErrorAction SilentlyContinue)) { throw "Missing Setup.exe" }
+          if (!(Get-ChildItem dist/windows/DnD-VTT-Portable-*.exe -ErrorAction SilentlyContinue)) { throw "Missing Portable.exe" }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: unified-windows
+          path: dist/windows/*.exe
+          retention-days: 30
+          if-no-files-found: error
+
+  publish:
+    if: needs.prepare.outputs.publish == 'true'
+    needs: [prepare, android, windows]
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: unified-windows
+          path: release/files
+      - uses: actions/download-artifact@v4
+        with:
+          name: unified-android-signed
+          path: release/files
+      - name: Verify and publish one multi-platform GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.prepare.outputs.version }}
+          SOURCE_SHA: ${{ needs.prepare.outputs.sha }}
+        run: |
+          set -euo pipefail
+          test -f release/files/app-release.apk
+          test -f "release/files/DnD-VTT-Setup-$(echo "$VERSION" | awk -F. '{print $1"."int($2)"."int($3)}')-x64.exe"
+          test -f "release/files/DnD-VTT-Portable-$(echo "$VERSION" | awk -F. '{print $1"."int($2)"."int($3)}')-x64.exe"
+          TAG="v$VERSION"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Version already released: $TAG" >&2
+            exit 1
+          fi
+          sha256sum release/files/* > release/files/SHA256SUMS.txt
+          gh release create "$TAG" release/files/* --target "$SOURCE_SHA" --title "DnD VTT $VERSION (Android + Windows)" --notes "One source commit: $SOURCE_SHA. Windows Setup/Portable and signed Android APK. In-app web updates for both platforms use a shared SHA-256 manifest." --draft
+          gh release edit "$TAG" --draft=false
+
+      - name: Generate immutable shared OTA manifest after both builds
+        shell: bash
+        env:
+          VERSION: ${{ needs.prepare.outputs.version }}
+          SOURCE_SHA: ${{ needs.prepare.outputs.sha }}
+        run: |
+          set -euo pipefail
+          python3 tools/build_update_manifest.py \
+            --base-url "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/$SOURCE_SHA" \
+            --version "$VERSION" \
+            --min-app-version "70.26.99" \
+            --channel stable \
+            --output updates/stable.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path("updates/stable.json").read_text())
+          assert m["files"] and m["version"]
+          assert m["baseUrl"].startswith("https://raw.githubusercontent.com/")
+          assert any(f["path"]=="index.html" for f in m["files"])
+          PY
+      - name: Activate the same update for Windows and Android
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add updates/stable.json
+          git commit -m "Publish verified Android + Windows OTA manifest"
+          # This is deliberately last: never advertise an update before both
+          # platform packages have passed their build + artifact checks.
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main

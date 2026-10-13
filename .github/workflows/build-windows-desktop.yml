@@ -1,0 +1,45 @@
+name: Build Windows Desktop EXE
+
+on:
+  push:
+    branches: [windows-desktop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout desktop branch
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install desktop build dependencies
+        run: npm install --no-audit --no-fund
+      - name: Validate desktop JavaScript
+        run: npm run desktop:check
+      - name: Package Windows installer and portable EXE
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+        run: npm run desktop:build:win
+      - name: Verify both EXEs exist
+        shell: pwsh
+        run: |
+          $installers = @(Get-ChildItem dist/windows/DnD-VTT-Setup-*.exe -ErrorAction SilentlyContinue)
+          $portable = @(Get-ChildItem dist/windows/DnD-VTT-Portable-*.exe -ErrorAction SilentlyContinue)
+          if ($installers.Count -lt 1 -or $portable.Count -lt 1) {
+            throw 'Expected both Windows Setup.exe and Portable.exe'
+          }
+          Get-ChildItem dist/windows/*.exe | Select-Object Name, Length
+      - name: Upload Windows EXE files
+        uses: actions/upload-artifact@v4
+        with:
+          name: DnD-VTT-Windows-Test
+          path: dist/windows/*.exe
+          if-no-files-found: error
+          retention-days: 14

@@ -1,61 +1,17 @@
-name: Publish stress map OTA 74.00.31
+name: Legacy stress-map OTA (disabled)
+
+# Superseded by Unified Android + Windows release. This historical workflow
+# hardcoded an old version (74.00.31) and must never publish stable.json.
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/publish-stress-map-ota.yml'
   workflow_dispatch:
+
 permissions:
-  contents: write
+  contents: read
+
 jobs:
-  publish:
+  notice:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-      - name: Validate JavaScript and publish complete OTA manifest
-        shell: bash
-        run: |
-          set -euo pipefail
-          node --check app/3dmap/stress_map.js
-          node --check app/3dmap/stair_navigation.js
-          node --check app/3dmap/map_editor.js
-          node --check app/3dmap/map_renderer_3d.js
-          node tests/stair_navigation.cjs
-          python3 - <<'PY'
-          import pathlib,json,hashlib
-          root=pathlib.Path.cwd()
-          p=root/'updates/stable.json'
-          manifest=json.loads(p.read_text())
-          manifest['version']='74.00.31'
-          manifest['generated']='2026-10-10'
-          existing={f['path'] for f in manifest['files']}
-          required=['index.html','app/update_manager_v2.js','app/data/maps/3d_stress_v740026.json','app/data/maps/3d_castle_black_rose_v740030.json']
-          required += [str(f.relative_to(root)) for f in (root/'app/3dmap').glob('*.js')]
-          required += [str(f.relative_to(root)) for f in (root/'app/assets/3d/user_furniture').glob('*.glb')]
-          existing.update(required)
-          result=[]
-          for name in sorted(existing):
-              file=root/name
-              if not file.is_file():
-                  print('SKIP missing:',name)
-                  continue
-              b=file.read_bytes()
-              result.append({'path':name,'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()})
-          assert any(f['path']=='app/3dmap/stress_map.js' for f in result)
-          manifest['files']=result
-          p.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
-          print('OTA files:',len(result))
-          PY
-      - name: Commit OTA manifest
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add updates/stable.json
-          if ! git diff --cached --quiet; then
-            git commit -m "release: publish OTA 74.00.31 with stress map and imported furniture"
-            git pull --rebase
-            git push
-          fi
+      - run: |
+          echo "Legacy stress-map OTA publication is disabled."
+          echo "Use Actions -> Unified Android + Windows release instead."

@@ -1,0 +1,59 @@
+{
+  "name": "dnd-vtt-desktop",
+  "version": "74.0.62",
+  "private": true,
+  "description": "Windows desktop shell for DnD VTT",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "desktop:prepare": "node desktop/prepare.cjs",
+    "desktop:dev": "npm run desktop:prepare && electron .",
+    "desktop:build:win": "npm run desktop:prepare && electron-builder --win nsis portable --x64 --publish never",
+    "desktop:check": "node --check desktop/main.cjs && node --check desktop/preload.cjs && node --check desktop/prepare.cjs && node --check desktop/update.cjs && node tests/desktop_update_contract.cjs"
+  },
+  "devDependencies": {
+    "electron": "^40.0.0",
+    "electron-builder": "^26.0.0"
+  },
+  "build": {
+    "appId": "com.dndvtt.desktop",
+    "productName": "DnD VTT",
+    "asar": true,
+    "files": [
+      "package.json",
+      "desktop/main.cjs",
+      "desktop/preload.cjs",
+      "desktop/web/**/*",
+      "desktop/update.cjs"
+    ],
+    "directories": {
+      "output": "dist/windows"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "artifactName": "DnD-VTT-Setup-${version}-${arch}.${ext}",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "portable": {
+      "artifactName": "DnD-VTT-Portable-${version}-${arch}.${ext}"
+    }
+  }
+}

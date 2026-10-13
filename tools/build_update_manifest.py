@@ -45,15 +45,36 @@ def main():
         if parts(detected)>parts(version):
             version=detected
             print(f'using APP_VERSION from app/update_manager.js: {version}')
+    from urllib.parse import quote
     files=[]
-    candidates=[(ROOT/'index.html','index.html')]
-    candidates += [(p,p.relative_to(ROOT).as_posix()) for p in sorted((ROOT/'app').rglob('*'))]
-    candidates += [(p,p.name) for p in sorted(ROOT.glob('*.png')) if not p.stem.isdigit()]
-    if (ROOT/'wallpapers').exists(): candidates += [(p,p.relative_to(ROOT).as_posix()) for p in sorted((ROOT/'wallpapers').rglob('*'))]
-    for p, rel in candidates:
-        if not p.is_file() or p.name.endswith('.map'):
+    # (source file, destination path, explicit URL for destination aliases)
+    candidates=[(ROOT/'index.html','index.html',None)]
+    candidates += [(p,p.relative_to(ROOT).as_posix(),None) for p in sorted((ROOT/'app').rglob('*'))]
+    if (ROOT/'wallpapers').exists():
+        candidates += [(p,p.relative_to(ROOT).as_posix(),None) for p in sorted((ROOT/'wallpapers').rglob('*'))]
+    if (ROOT/'ambience').exists():
+        candidates += [(p,p.relative_to(ROOT).as_posix(),None) for p in sorted((ROOT/'ambience').rglob('*'))]
+    # The APK copies root assets into its webroot; full OTA replacements must
+    # also include them. Legacy root PNGs serve as wallpapers and root MP3s
+    # are mounted under ambience/. Pinned raw GitHub URLs refer to root files.
+    for p in sorted(ROOT.iterdir()):
+        if not p.is_file(): continue
+        ext=p.suffix.lower()
+        root_url=args.base_url.rstrip('/')+'/'+quote(p.name)
+        if ext in {'.png','.jpg','.jpeg','.svg','.glb','.gltf','.bin','.webp'}:
+            candidates.append((p,p.name,None))
+        if ext in {'.png','.jpg','.jpeg','.svg'}:
+            candidates.append((p,'wallpapers/'+p.name,root_url))
+        if ext in {'.mp3','.wav','.ogg'}:
+            candidates.append((p,'ambience/'+p.name,root_url))
+    seen=set()
+    for p, rel, url in candidates:
+        if not p.is_file() or p.name.endswith('.map') or rel in seen:
             continue
-        files.append({'path':rel,'bytes':p.stat().st_size,'sha256':sha256(p)})
+        seen.add(rel)
+        entry={'path':rel,'bytes':p.stat().st_size,'sha256':sha256(p)}
+        if url: entry['url']=url
+        files.append(entry)
     manifest={
         'schema':1,
         'app':'DND_VTT',
