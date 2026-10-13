@@ -156,7 +156,12 @@ class DesktopWebUpdater {
               received += chunk.length;
               if (received > file.bytes) throw Error('Oversized asset: ' + file.path);
               hash.update(chunk);
-              await handle.write(chunk);
+              let offset=0;
+              while (offset < chunk.length) {
+                const {bytesWritten}=await handle.write(chunk,offset,chunk.length-offset);
+                if (!bytesWritten) throw Error('Cannot write update file: ' + file.path);
+                offset+=bytesWritten;
+              }
               reply({id,status:'progress',phase:'download',current:i+1,total:manifest.files.length,path:file.path,bytesDone:completedBytes+received,bytesTotal:total});
             }
           } finally {await handle.close();}
