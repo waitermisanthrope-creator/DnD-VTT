@@ -74,6 +74,7 @@ shielded:{effect:{resistance:['slashing'],vulnerability:['bludgeoning']}},
 unbreakable:{effect:{resistance:['bludgeoning'],vulnerability:['piercing']}},
 vermillion:{effect:{extraBloodMaledictUse:true},side:{deathSaveDisadvantage:true}}
 };
+var patronNames={archfey:'Архифея',celestial:'Небожитель',fathomless:'Бездонный',fiend:'Исчадие',genie:'Джинн',greatOldOne:'Великий Древний',hexblade:'Проклятый клинок',undead:'Нежить',undying:'Бессмертный'};
 var patrons={
 archfey:{focus:{noCoverOrInvisibility:true},revealed:'blur',unsealed:'slow'},celestial:{focus:{heal:'1d'+4,healMod:'hemocraft',cost:'bloodMaledict'},revealed:'lesser restoration',unsealed:'revivify'},
 fathomless:{focus:{waterBreathing:true,slowFt:10},revealed:'gust of wind',unsealed:'lightning bolt'},fiend:{focus:{flameReroll12:true},revealed:'scorching ray',unsealed:'fireball'},
@@ -245,14 +246,15 @@ function turnEnd(h){var s=st(h);if(s.bhIgnoreMutagenSide){s.bhIgnoreMutagenSide.
 
 function spellTable(l){if(l<3)return{cantrips:0,spells:0,slots:0,slotLevel:0};return{cantrips:l>=10?3:2,spells:l>=20?11:l>=19?10:l>=17?9:l>=15?8:l>=13?7:l>=11?6:l>=9?5:l>=7?4:l>=5?3:2,slots:l>=6?2:1,slotLevel:l>=19?4:l>=13?3:l>=7?2:1};}
 function useProfane(h,id,ctx){
- sync(h);var s=st(h),p=String(s.profanePatron||'fiend'),pt=patrons[p]||patrons.fiend,l=lvl(h);
- if(id==='choosePatron'){if(!patrons[String(ctx&&ctx.patron)])return{ok:false,reason:'Неизвестный покровитель.'};s.profanePatron=String(ctx.patron);return{ok:true,patron:s.profanePatron};}
- if(id==='castPactSpell'||id==='pactMagic')return {ok:false,unsupported:true,reason:'Заклинание должно выполняться через проверяемый боевой resolver магии.'};
- if(id==='riteFocus')return{ok:true,effect:pt.focus};
- if(id==='mysticFrenzy')return{ok:true,effect:{cantripPlusWeaponAttack:true}};
- if(id==='revealedArcana')return{ok:true,effect:{spell:pt.revealed,freeUseAfterCasting:true,recharge:'long'}};
- if(id==='brandSappingScar')return{ok:true,effect:{brandedDisadvantageOnSavesVsPactSpells:true}};
- if(id==='unsealedArcana')return{ok:true,effect:{spell:pt.unsealed,freeUse:true,recharge:'long'}};
+ sync(h);var s=st(h),p=String(s.profanePatron||''),pt=patrons[p],l=lvl(h);
+ if(id==='choosePatron'||id==='otherworldlyPatron'){var chosen=String(ctx&&ctx.patron||'');if(!patrons[chosen])return error('Выберите одного из девяти доступных покровителей.');if(s.profanePatron&&s.profanePatron!==chosen)return error('Покровитель уже выбран; смена возможна только при отдельной переподготовке персонажа.');s.profanePatron=chosen;return{ok:true,patron:chosen,message:'Потусторонний покровитель выбран: '+patronNames[chosen]+'.'};}
+ if(!pt)return error('Сначала выберите потустороннего покровителя.');
+ if(id==='castPactSpell'||id==='pactMagic')return {ok:false,reason:'Заклинание должно выполняться через проверяемый боевой resolver магии.'};
+ if(id==='riteFocus')return error('Фокус обряда ещё не имеет исполняемого эффекта для выбранного покровителя.');
+ if(id==='mysticFrenzy')return error('Дополнительная атака после заговора ещё не подключена к боевому ходу.');
+ if(id==='revealedArcana')return error('Открытая аркана ещё не подключена к исполнению заклинаний.');
+ if(id==='brandSappingScar')return error('Клеймо истощающего шрама ещё не влияет на спасброски боевого движка.');
+ if(id==='unsealedArcana')return error('Освобождённая аркана ещё не подключена к исполнению заклинаний.');
  if(id==='soulEater')return useCurse(h,{curse:'soulEater',target:target(ctx),amplify:ctx&&ctx.amplify});
  return{ok:false,unsupported:true};
 }
@@ -303,9 +305,9 @@ var mutagenNames={aether:'Эфир',alluring:'Обаяние',celerity:'Пров
 function escUI(v){return String(v).replace(/[&<>"']/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];});}
 function gameActors(){var h=global.currentChar||global.currentCharacter,all=[];if(h)all.push(h);if(h&&h.initiativeTracker)all=all.concat(h.initiativeTracker.combatants||[]);if(Array.isArray(global.characters))all=all.concat(global.characters);all.forEach(observe);return Object.keys(actors).map(function(k){return actors[k];});}
 function selectUI(title,list,label,many){if(!list.length){global.alert('Нет доступных вариантов.');return null;}var raw=global.prompt(title+'\n'+list.map(function(x,i){return (i+1)+'. '+label(x);}).join('\n')+(many?'\nВведите номера через запятую.':''),'');if(raw===null)return null;var parts=raw.split(/[,;\s]+/).filter(Boolean);if(!parts.length||!many&&parts.length!==1||parts.some(function(x){return !/^\d+$/.test(x)||!list[Number(x)-1];})){global.alert('Укажите номера из списка.');return null;}return parts.map(function(x){return list[Number(x)-1];});}
-function renderControls(h){if(!enabled(h))return '';sync(h);var s=st(h),buttons=[['chooseBloodCurses','Изученные проклятия'],['setHemocraftAbility','Гемокрафт']];if(lvl(h)>=2)buttons=buttons.concat([['chooseCrimsonRites','Изученные обряды'],['fightingStyle','Боевой стиль'],['crimsonRite','Активировать обряд']]);if(lvl(h)>=3)buttons.push(['chooseBloodOrder','Орден']);buttons.push(['bloodMaledict','Наложить проклятие']);if(orderKey(h)==='lycan'&&lvl(h)>=3)buttons.push(['hybridTransformation','Гибридная форма'],['predatoryStrike','Хищный удар']);if(orderKey(h)==='mutant'&&lvl(h)>=3){buttons.push(['chooseMutagenFormulas','Формулы'],['prepareMutagens','Приготовить мутагены'],['mutagencraft','Принять мутаген'],['flushMutagens','Вывести мутагены']);if(lvl(h)>=7)buttons.push(['strangeMetabolism','Подавить побочный эффект']);if(lvl(h)>=18)buttons.push(['exaltedMutation','Заменить активный мутаген']);}
+function renderControls(h){if(!enabled(h))return '';sync(h);var s=st(h),buttons=[['chooseBloodCurses','Изученные проклятия'],['setHemocraftAbility','Гемокрафт']];if(lvl(h)>=2)buttons=buttons.concat([['chooseCrimsonRites','Изученные обряды'],['fightingStyle','Боевой стиль'],['crimsonRite','Активировать обряд']]);if(lvl(h)>=3)buttons.push(['chooseBloodOrder','Орден']);buttons.push(['bloodMaledict','Наложить проклятие']);if(orderKey(h)==='lycan'&&lvl(h)>=3)buttons.push(['hybridTransformation','Гибридная форма'],['predatoryStrike','Хищный удар']);if(orderKey(h)==='profaneSoul'&&lvl(h)>=3)buttons.push(['otherworldlyPatron','Потусторонний покровитель']);if(orderKey(h)==='mutant'&&lvl(h)>=3){buttons.push(['chooseMutagenFormulas','Формулы'],['prepareMutagens','Приготовить мутагены'],['mutagencraft','Принять мутаген'],['flushMutagens','Вывести мутагены']);if(lvl(h)>=7)buttons.push(['strangeMetabolism','Подавить побочный эффект']);if(lvl(h)>=18)buttons.push(['exaltedMutation','Заменить активный мутаген']);}
  var r=h.resources.bloodMaledict,summary='Проклятия: '+(s.bloodCursesKnown.map(function(k){return curseNames[k];}).join(', ')||'не выбраны')+' · '+r.current+'/'+r.max;var riteText=rites(h).filter(function(r){return r.active;}).map(function(r){return riteNames[r.type]+' — '+r.weaponId;}).join(', ');
- return '<div class="weapon-card"><strong>Кровавый охотник — выборы и действия</strong><p>'+escUI(summary)+'</p>'+(riteText?'<p>Активные обряды: '+escUI(riteText)+'</p>':'')+'<div style="display:flex;gap:6px;flex-wrap:wrap">'+buttons.map(function(b){return '<button class="btn-action" onclick="useBloodHunterFeature(\''+b[0]+'\')">'+escUI(b[1])+'</button>';}).join('')+'</div></div>';
+ return '<div class="weapon-card"><strong>Кровавый охотник — выборы и действия</strong><p>'+escUI(summary)+'</p>'+(orderKey(h)==='profaneSoul'?'<p>Покровитель: '+escUI(patronNames[s.profanePatron]||'не выбран')+'</p>':'')+(riteText?'<p>Активные обряды: '+escUI(riteText)+'</p>':'')+'<div style="display:flex;gap:6px;flex-wrap:wrap">'+buttons.map(function(b){return '<button class="btn-action" onclick="useBloodHunterFeature(\''+b[0]+'\')">'+escUI(b[1])+'</button>';}).join('')+'</div></div>';
 }
 global.useBloodHunterFeature=function(id){
  var h=global.currentChar||global.currentCharacter;if(!h||!enabled(h))return;sync(h);var s=st(h),ctx={className:CLASS},picked,t;
@@ -313,6 +315,7 @@ global.useBloodHunterFeature=function(id){
  else if(id==='chooseCrimsonRites'){picked=selectUI('Изученные обряды: до '+riteLimit(lvl(h)),Object.keys(riteTypes).filter(function(k){return k!=='dawn'&&(lvl(h)>=14||['flame','frozen','storm'].indexOf(k)>=0);}),function(k){return riteNames[k];},true);if(!picked)return;ctx.rites=picked;}
  else if(id==='setHemocraftAbility'){picked=selectUI('Характеристика гемокрафта',['intelligence','wisdom'],function(k){return k==='wisdom'?'Мудрость (вариант с разрешения мастера)':'Интеллект';});if(!picked)return;ctx.ability=picked[0];}
  else if(id==='chooseBloodOrder'){picked=selectUI('Орден кровавого охотника',subclasses,function(sc){return sc.name;});if(!picked)return;ctx.order=picked[0].id;}
+  else if(id==='otherworldlyPatron'){picked=selectUI('Потусторонний покровитель',Object.keys(patrons),function(k){return patronNames[k]+(s.profanePatron===k?' (выбран)':'');});if(!picked)return;ctx.patron=picked[0];}
  else if(id==='fightingStyle'){picked=selectUI('Боевой стиль',['Стрельба','Дуэлянт','Сражение большим оружием','Сражение двумя оружиями'],function(k){return k;});if(!picked)return;ctx.style=picked[0];}
  else if(id==='crimsonRite'){var ws=weaponList(h).slice();if(s.hybridForm&&orderKey(h)==='lycan')ws.push({id:'unarmed',name:'Когти'});picked=selectUI('Оружие в руке',ws,function(w){return w.name||weaponKey(w);});if(!picked)return;ctx.weaponId=weaponKey(picked[0]);var rs=s.crimsonRitesKnown.slice();if(orderKey(h)==='ghostslayer'&&lvl(h)>=3)rs.push('dawn');picked=selectUI('Обряд (цена: кость гемокрафта в HP)',rs,function(k){return riteNames[k];});if(!picked)return;ctx.riteType=picked[0];}
  else if(id==='chooseMutagenFormulas'){picked=selectUI('Изученные формулы: до '+mutationLimit(lvl(h)),Object.keys(mutagens).filter(function(k){return lvl(h)>=num(mutagens[k].req,3);}),function(k){return mutagenNames[k];},true);if(!picked)return;ctx.formulas=picked;}
