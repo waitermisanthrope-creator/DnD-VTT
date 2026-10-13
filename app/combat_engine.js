@@ -117,6 +117,9 @@
     // Resolve resistance/vulnerability/immunity per damage component. This is required
     // for mixed hits such as weapon damage + Divine Smite (different damage types).
     var resolvedParts=rawParts.map(function(part){return Object.assign({},part,effectiveDamage(target,part.amount,part.damageType,Object.assign({},opts,{magicalAttack:!!(part.magicalAttack||opts.magicalAttack)})));});
+    var undeadRiteFocus=null;
+    if(opts.defenderReaction==='profane-undead'&&global.DNDBloodHunter&&typeof global.DNDBloodHunter.halveNecroticRiteDamage==='function')
+      undeadRiteFocus=global.DNDBloodHunter.halveNecroticRiteDamage(target,resolvedParts,opts);
     var damageBeforeWard=resolvedParts.reduce(function(sum,p){return sum+num(p.amount);},0);
     var classReduction=global.DNDClassFeatures&&global.DNDClassFeatures.damageReduction?global.DNDClassFeatures.damageReduction(target,Object.assign({},opts,{amount:damageBeforeWard,damageType:type})):0;
     if(classReduction>0){var remainingReduction=classReduction;resolvedParts.forEach(function(part){var take=Math.min(part.amount,remainingReduction);part.amount-=take;remainingReduction-=take;});damageBeforeWard-=classReduction;}
@@ -126,7 +129,7 @@
       var left=wardAbsorbed;
       resolvedParts.forEach(function(part){var take=Math.min(num(part.amount),left);part.wardAbsorbed=take;part.amount-=take;left-=take;});
     }
-    var r={raw:rawTotal,amount:resolvedParts.reduce(function(sum,p){return sum+num(p.amount);},0),note:resolvedParts.map(function(p){return p.note;}).filter(Boolean).filter(function(v,i,a){return a.indexOf(v)===i;}).join('; ')};
+    var r={raw:rawTotal,undeadRiteFocus:undeadRiteFocus,amount:resolvedParts.reduce(function(sum,p){return sum+num(p.amount);},0),note:resolvedParts.map(function(p){return p.note;}).filter(Boolean).filter(function(v,i,a){return a.indexOf(v)===i;}).join('; ')};
     if(target&&target.witchWard&&r.amount>0){var wardReduce=Math.min(3,r.amount);r.amount-=wardReduce;r.note=(r.note?r.note+'; ':'')+'Hex Ward: -'+wardReduce+' урона';}
     if(target&&target.witchBleedingUntil&&r.amount>0){var bleed=rollDice('1d4').total;r.amount+=bleed;r.note=(r.note?r.note+'; ':'')+'Bleeding: +'+bleed+' урона';}
     if(target&&target.classFeaturesState&&target.classFeaturesState&&target.classFeaturesState.invulnerability50&&r.amount>0){var inv=Math.min(50,r.amount);r.amount-=inv;target.classFeaturesState.witch.invulnerability50=false;r.note=(r.note?r.note+'; ':'')+'Неуязвимость: -'+inv+' урона';}
@@ -186,7 +189,7 @@
       // Temporary HP still means the creature took damage for concentration purposes.
       concentration=concentrationCheck(target,damageTaken);
     }
-    if(global.DNDBloodHunter)global.DNDBloodHunter.afterDamage(target,r,opts);if(opts.__bloodCurseExposure)r.bloodCurseExposure=opts.__bloodCurseExposure;
+    if(global.DNDBloodHunter)global.DNDBloodHunter.afterDamage(target,r,Object.assign({},opts,{bhHpBefore:hp}));if(opts.__bloodCurseExposure)r.bloodCurseExposure=opts.__bloodCurseExposure;
     if(global.DNDClassFeatures&&global.DNDClassFeatures.onDamage)global.DNDClassFeatures.onDamage(target,{amount:damageTaken,hpDamage:hpDamage,damageType:type});
     return {amount:r.amount+wardAbsorbed,hpDamage:hpDamage,tempAbsorbed:absorbed,wardAbsorbed:wardAbsorbed,hp:readHp(target),tempHp:readTempHp(target),defeated:target.defeated,deathSaveFailures:deathSaveFailures,instantDeath:instantDeath,note:r.note,damageParts:resolvedParts.map(function(p){return {raw:num(p.raw),amount:num(p.amount),damageType:p.damageType,note:p.note||'',wardAbsorbed:num(p.wardAbsorbed)};}),concentration:concentration,bloodRiteRevival:bloodRiteRevival,bloodCurseExposure:opts.__bloodCurseExposure||null,wardenSurvive:wardenSurvive,reaction:reactionResult||null,reactionWindow:reaction&&!reactionResult?reaction.window:null};
   }
@@ -362,7 +365,7 @@
     var witchAttackPenalty=target&&target.witchAttackPenaltyDice?rollDie(6):0;
     var total=d20+bonus+classBonus-witchAttackPenalty;var bloodCurseReaction=null;if(global.DNDBloodHunter){total-=global.DNDBloodHunter.cursedAttackPenalty(opts.__attacker);if(opts.defenderReaction==='blood-curse-eyeless'){var curseActor=opts.bloodCurseActor||target,pendingBloodAttack={total:total,critical:!!roll.critical};bloodCurseReaction=global.DNDBloodHunter.useFeature(curseActor,'bloodMaledict',{curse:'eyeless',target:opts.__attacker,attackResult:pendingBloodAttack,amplify:!!opts.bloodCurseAmplify,distanceFt:curseActor===target?opts.distanceFt:opts.bloodCurseDistanceFt,visible:opts.visible!==false});total=pendingBloodAttack.total;}}
     var alchemistDebuffs=target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs||{};
-    var coverBonus=(opts&&opts.__classFeatureMod&&opts.__classFeatureMod.ignoreCover)?0:num(opts&&opts.coverBonus, num(target&&target.coverBonus,0));
+    var revealedByRite=global.DNDBloodHunter&&global.DNDBloodHunter.isRevealed(target);var coverBonus=(revealedByRite||opts&&opts.__classFeatureMod&&opts.__classFeatureMod.ignoreCover)?0:num(opts&&opts.coverBonus, num(target&&target.coverBonus,0));
     var targetGrafts=target&&target.classFeaturesState&&Array.isArray(target.classFeaturesState.alchemistGrafts)?target.classFeaturesState.alchemistGrafts.map(function(x){return typeof x==='string'?x:x&&x.name||'';}):[];
     if(roll.critical&&targetGrafts.indexOf('Изменчивая анатомия')>=0){roll.critical=false;roll.graftCriticalSuppressed=true;}
     var dexScore=Number(target&&target.abilityScores&&target.abilityScores.dexterity!=null?target.abilityScores.dexterity:target&&target.stats&&target.stats.dexterity!=null?target.stats.dexterity:10),dexMod=Math.floor((dexScore-10)/2);
