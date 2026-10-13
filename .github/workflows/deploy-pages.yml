@@ -59,6 +59,32 @@ jobs:
             --channel "beta" \
             --output site/updates/beta.json
 
+      # Keep the historical /downloads/latest.apk URL usable, but serve only
+      # the signed APK from the last approved unified GitHub Release.
+      - name: Preserve approved Android APK download
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p site/downloads
+          TAG="$(gh release view --json tagName --jq .tagName 2>/dev/null || true)"
+          if [ -n "$TAG" ] && gh release download "$TAG" --pattern app-release.apk --dir site/downloads --clobber >/dev/null 2>&1; then
+            cp site/downloads/app-release.apk site/downloads/latest.apk
+            mv site/downloads/app-release.apk "site/downloads/DND-VTT-${TAG#v}.apk"
+            sha256sum site/downloads/latest.apk > site/downloads/latest.apk.sha256
+            echo "Published approved signed Android APK from $TAG"
+          else
+            # A repo without a unified release may still have an older signed
+            # APK on Pages. Preserve it instead of publishing a new debug APK.
+            curl --fail --location --silent --show-error --max-time 120 \
+              "https://waitermisanthrope-creator.github.io/DnD-VTT/downloads/latest.apk" \
+              -o site/downloads/latest.apk || {
+                rm -f site/downloads/latest.apk
+                echo "No previously approved APK available; Pages update stays web-only"
+              }
+          fi
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:
