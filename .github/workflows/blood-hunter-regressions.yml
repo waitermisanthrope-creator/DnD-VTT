@@ -48,6 +48,7 @@ jobs:
           node tests/test_blood_hunter_teleport_reactions.js
           node tests/test_blood_hunter_eyeless_reaction.js
           node tests/test_blood_hunter_brand_deferred.js
+          node tests/test_blood_hunter_teleport_ui.js
           node tests/test_blood_hunter_spells.js
           node tests/test_blood_hunter_network_feature.js
           node tests/test_v731_fixes.js
