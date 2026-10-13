@@ -168,6 +168,16 @@
   function applyDamageWithConcentration(peerId,target,amount,type,opts){opts=opts||{};var usedCombat=!!(global.DNDCombat&&global.DNDCombat.applyDamage);var r=usedCombat?global.DNDCombat.applyDamage(target,amount,type,opts):{amount:amount,hp:Math.max(0,num(target.hp)-amount),maxHp:target.maxHp};var con=r&&r.concentration||null;if(!con&&target.ownerPeerId&&global.dndNetwork){var p=global.dndNetwork.getPeer(target.ownerPeerId);if(p)con=concentrationCheck(peerId,target,r.hpDamage||r.amount,p.profile||{});}return {damage:r,concentration:con};}
   function battlefield(){return global.DNDBattleBoard&&global.DNDBattleBoard.ensure?global.DNDBattleBoard.ensure():null;}
   function tokenForCombatant(c){var b=battlefield();if(!b||!c)return null;return b.tokens['bt_'+String(c.id)]||null;}
+  function hostMovementCost(actor,from,to,phase){
+    var board=global.DNDBattleBoard,bh=global.DNDBloodHunter;
+    if(!board||!board.pathCost)return Infinity;
+    if(phase!==true)return board.pathCost(from,to);
+    if(!actor||!actor.ownerPeerId||!bh||!bh.aetherPathCost||!bh.canPhaseThroughObjects||bh.canPhaseThroughObjects(actor)===false)return Infinity;
+    var peer=global.dndNetwork&&global.dndNetwork.getPeer(actor.ownerPeerId),profile=peer&&peer.profile;
+    if(!profile)return Infinity;
+    var h=clone(profile)||{};h.id=actor.id;h.characterId=actor.characterId||profile.characterId||actor.id;
+    return bh.aetherPathCost(h,from,to);
+  }
   function geometryCheck(actor,target,payload){
     var board=global.DNDBattleBoard;if(!board||!board.distanceFt)return {ok:true};
     var at=tokenForCombatant(actor),tt=tokenForCombatant(target);if(!at||!tt)return {ok:true};
@@ -176,7 +186,7 @@
       var bh=global.DNDBloodHunter,blockedDash=bh&&bh.canDash&&bh.canDash(actor)===false;
       if(blockedDash&&(payload.movementMode==='dash'||actor.turnResources&&actor.turnResources.dashActive))return {ok:false,error:'Клеймо привязки запрещает действие Рывок.'};
       if(bh&&bh.canPhaseThroughObjects&&bh.canPhaseThroughObjects(actor)===false&&payload.phaseThroughObjects===true)return {ok:false,error:'Клеймо разрушения запрещает движение сквозь объекты.'};
-      var path=board.pathCost(at,move),used=num(actor.turnResources&&actor.turnResources.movementUsed,0);
+      var path=hostMovementCost(actor,at,move,payload.phaseThroughObjects===true),used=num(actor.turnResources&&actor.turnResources.movementUsed,0);
       var speed=num(actor.turnResources&&actor.turnResources.movement,actor.speed||30)-used;
       if(blockedDash)speed=Math.min(speed,num(actor.speed,30)-used);
       if(path===Infinity||path>speed)return {ok:false,error:'Путь движения больше доступного движения или заблокирован.',pathFt:path,speedFt:speed};
@@ -184,7 +194,7 @@
     var dist=board.distanceFt(move?{x:move.x,y:move.y}:at,tt),range=num(payload&&payload.rangeFt,5);var los=board.lineOfSight(move?{x:move.x,y:move.y,size:at.size}:at,tt);
     if(dist>range)return {ok:false,error:'Цель вне дальности.',distanceFt:dist,rangeFt:range};
     if(!los.clear)return {ok:false,error:'Линия видимости заблокирована.',distanceFt:dist,cover:los.cover};
-    return {ok:true,distanceFt:dist,cover:los.cover,pathFt:move?board.pathCost(at,move):0};
+    return {ok:true,distanceFt:dist,cover:los.cover,pathFt:move?hostMovementCost(actor,at,move,payload.phaseThroughObjects===true):0};
   }
   function applyPlannedMove(actor,move){
     if(!move)return true;
@@ -194,7 +204,7 @@
     var bh=global.DNDBloodHunter;
     if(bh&&bh.canDash&&bh.canDash(actor)===false&&(move.movementMode==='dash'||actor.turnResources&&actor.turnResources.dashActive))return false;
     if(bh&&bh.canPhaseThroughObjects&&bh.canPhaseThroughObjects(actor)===false&&move.phaseThroughObjects===true)return false;
-    var path=global.DNDBattleBoard.pathCost(t,destination);
+    var path=hostMovementCost(actor,t,destination,move.phaseThroughObjects===true);
     var used=num(actor.turnResources&&actor.turnResources.movementUsed,0),max=num(actor.turnResources&&actor.turnResources.movement,actor.speed||30);
     if(bh&&bh.canDash&&bh.canDash(actor)===false)max=Math.min(max,num(actor.speed,30));
     if(!Number.isFinite(path)||path<0||used+path>max)return false;
