@@ -37,4 +37,3 @@ if [ ! -f /workspace/cloud-tools/android-sdk/platforms/android-36/android.jar ] 
 fi
 GRADLE_USER_HOME=/workspace/.gradle /workspace/cloud-tools/gradle-9.6.0/bin/gradle --version
 /workspace/cloud-tools/jdk/usr/lib/jvm/java-21-openjdk-amd64/bin/javac -version
-
