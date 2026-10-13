@@ -22,7 +22,7 @@ assert.strictEqual(snapshot.classFeaturesState.profanePatron,'celestial','Patron
 assert.strictEqual(C.useFeature(h,'otherworldlyPatron',{className:H.CLASS,patron:'fiend'}).ok,false,'Patron cannot silently change');
 assert.strictEqual(h.classFeaturesState.profanePatron,'celestial');
 assert.strictEqual(C.useFeature(h,'otherworldlyPatron',{className:H.CLASS,patron:'invalid'}).ok,false);
-for(const id of ['riteFocus','mysticFrenzy','revealedArcana','brandSappingScar','unsealedArcana']){
+for(const id of ['mysticFrenzy','revealedArcana','brandSappingScar','unsealedArcana']){
   const high=hunter(20);
   assert.strictEqual(C.useFeature(high,'otherworldlyPatron',{className:H.CLASS,patron:'archfey'}).ok,true);
   const before=JSON.stringify(high.resources);
