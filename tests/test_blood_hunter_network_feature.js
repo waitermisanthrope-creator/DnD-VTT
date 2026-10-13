@@ -41,7 +41,8 @@ g.getAllSpellsDatabase=()=>[
  {name:'Пакт 1',level:1,classes:['Колдун'],damage:'1d8',castingTime:'1 действие'},
  {name:'Пакт 2',level:1,classes:['Колдун'],damage:'1d8',castingTime:'1 действие'}
 ];
-assert.strictEqual(use('chooseProfaneSpells',{cantrips:['Заговор 1','Заговор 2'],spells:['Пакт 1','Пакт 2']}).ok,true);
+const knownSpellResult=use('chooseProfaneSpells',{cantrips:['Заговор 1','Заговор 2'],spells:['Пакт 1','Пакт 2']});
+assert.strictEqual(knownSpellResult.ok,true,JSON.stringify(knownSpellResult));
 assert.strictEqual(h.classFeaturesState.bhProfaneSpells.length,2);
 assert(h.spellsData.some(x=>x.name==='Пакт 1'&&x.castingClass===H.CLASS));
 
