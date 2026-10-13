@@ -1,106 +1,18 @@
-name: Refresh in-app update manifest
-# V70.37.60 — stable manifest publisher
-# V70.36.66 wallpaper folder fix manifest refresh
-# V70.36.66 settings scroll hotfix manifest refresh
+name: Legacy stable manifest publisher (disabled)
 
+# IMPORTANT: Do not publish new stable manifests from source pushes.
+# Publishing before Windows and Android both pass would create a mixed release.
+# Use "Unified Android + Windows release" workflow instead.
 on:
-  push:
-    branches: [main]
-    paths:
-      - "index.html"
-      - "app/**"
-      - "android/app/build.gradle"
-      - "wallpapers/**"
-      - "tools/build_update_manifest.py"
-      - ".github/workflows/refresh-update-manifest.yml"
   workflow_dispatch:
 
 permissions:
-  contents: write
-
-concurrency:
-  group: stable-update-manifest
-  cancel-in-progress: false
+  contents: read
 
 jobs:
-  manifest:
+  notice:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout main
-        uses: actions/checkout@v4
-        with:
-          ref: main
-          fetch-depth: 1
-
-      - name: Generate stable manifest
-        run: |
-          set -euo pipefail
-          VERSION="$(sed -n "s/.*versionName ['\"]\([^'\"]*\)['\"].*/\1/p" android/app/build.gradle | head -n 1)"
-          test -n "$VERSION" || { echo "Не удалось определить versionName из android/app/build.gradle"; exit 1; }
-          echo "Publishing stable manifest for version $VERSION"
-          python3 tools/build_update_manifest.py \
-            --base-url "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main" \
-            --version "$VERSION" \
-            --min-app-version "70.26.99" \
-            --channel "stable" \
-            --output updates/stable.json
-
-      - name: Verify required visual assets
-        run: |
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-          required = [
-            "app/assets/ui/loader_dragon_head.svg",
-            "app/assets/ui/loader_fire.svg",
-            "app/assets/ui/dragon_frame_strip.svg",
-            "app/assets/ui/vine_bone_frame_strip.svg",
-            "app/assets/ui/loader_forest.svg",
-            "app/assets/ui/loader_forest_burning.svg",
-            "app/assets/ui/loader_sparks.svg",
-          ]
-          m=json.loads(Path("updates/stable.json").read_text(encoding="utf-8"))
-          files={x["path"]:x for x in m["files"]}
-          missing=[p for p in required if p not in files]
-          invalid=[p for p in required if p in files and len(str(files[p].get("sha256","")))!=64]
-          if missing or invalid:
-              raise SystemExit(f"missing={missing} invalid_sha={invalid}")
-          print(f"Manifest OK: {len(m['files'])} files")
-          PY
-
-      - name: Publish stable manifest
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- updates/stable.json; then
-            echo "Manifest is already current"
-            exit 0
-          fi
-          git add updates/stable.json
-          git commit -m "Refresh stable in-app update manifest"
-          for attempt in 1 2 3 4 5; do
-            git fetch origin main
-            git rebase origin/main || {
-              echo "Rebase conflict; aborting retry"
-              git rebase --abort
-              exit 1
-            }
-            if git push origin HEAD:main; then
-              echo "Published complete stable manifest"
-              exit 0
-            fi
-            echo "main moved during publish; retrying"
-          done
-          echo "Could not publish stable manifest after retries"
-          exit 1
-
-# V70.36.66 manifest refresh trigger
-
-# V70.36.66 final trigger
-
-# V70.36.66 wallpaper module rollback trigger
-
-# V70.37.12 force manifest regeneration after editor OTA changes
-# V70.37.12 second pass: regenerate against current main after editor commit
-# V70.36.66 3D map syntax fix manifest refresh
+      - run: |
+          echo "This legacy workflow no longer publishes stable.json."
+          echo "Use Actions -> Unified Android + Windows release -> Run workflow."
