@@ -428,18 +428,59 @@
   function aoeGeometryCheck(actor,payload){
     if(!payload||!payload.aoe||!global.DNDBattleBoard)return {ok:true};var at=tokenForCombatant(actor),cell=payload.aoe.cell;if(!at||!cell)return {ok:false,error:'Для AoE не выбрана точка.'};var b=global.DNDBattleBoard.ensure();var dx=(at.x+at.size/2)-(cell.x+.5),dy=(at.y+at.size/2)-(cell.y+.5),dist=Math.sqrt(dx*dx+dy*dy)*num(b&&b.cellFt,5),range=num(payload.rangeFt,150);if(dist>range)return {ok:false,error:'Точка AoE вне дальности заклинания.',distanceFt:dist,rangeFt:range};var los=global.DNDBattleBoard.lineOfSight({x:cell.x,y:cell.y,size:1},at);if(!los.clear)return {ok:false,error:'Точка AoE не имеет линии видимости.'};return {ok:true,distanceFt:dist,rangeFt:range};
   }
+  // Spell identity and level are read only from the authoritative profile.
+  // No generic client-controlled 'teleport' action is accepted.
+  function localTeleportSpec(sp){
+    var name=String(sp&&sp.name||'').toLowerCase().trim(),level=num(sp&&sp.level);
+    if(level===2&&(name==='туманный шаг (misty step)'||name==='misty step'))return {kind:'teleport',distanceFt:30,needsSight:true};
+    if(level===4&&(name==='дверь измерений (dimension door)'||name==='dimension door'))return {kind:'teleport',distanceFt:500,needsSight:false};
+    return null;
+  }
+  function unsupportedTravelMagic(sp){
+    var name=String(sp&&sp.name||'').toLowerCase();
+    return /\((?:teleport|plane shift|teleportation circle|far step|tree stride|blink|word of recall|gate|shapechange)\)/.test(name)||
+      ['teleport','plane shift','teleportation circle','far step','tree stride','blink','word of recall','gate','shapechange'].indexOf(name)>=0;
+  }
+  function validateLocalTeleport(actor,sp,requested){
+    var spec=localTeleportSpec(sp),board=battlefield(),token=tokenForCombatant(actor),B=global.DNDBattleBoard;
+    if(!spec)return {ok:false,error:'Заклинание не является локальной телепортацией.'};
+    if(!board||!token||!B||!B.distanceFt||!B.lineOfSight)return {ok:false,error:'Телепортация требует мастерской карты.'};
+    if(!requested||!Number.isInteger(requested.x)||!Number.isInteger(requested.y))return {ok:false,error:'Выберите целую координату назначения.'};
+    var x=requested.x,y=requested.y,size=Math.max(1,num(token.size,1));
+    if(x<0||y<0||x+size>num(board.cols)||y+size>num(board.rows))return {ok:false,error:'Назначение вне карты.'};
+    for(var iy=y;iy<y+size;iy++)for(var ix=x;ix<x+size;ix++){
+      if((board.obstacles||{})[ix+':'+iy])return {ok:false,error:'Телепортация в твёрдый объект запрещена.'};
+    }
+    var blocked=Object.keys(board.tokens||{}).some(function(key){
+      var other=board.tokens[key],z=Math.max(1,num(other&&other.size,1));
+      return other&&other!==token&&x<other.x+z&&x+size>other.x&&y<other.y+z&&y+size>other.y;
+    });
+    if(blocked)return {ok:false,error:'Назначение занято другим существом.'};
+    var dest={x:x,y:y,size:size},range=B.distanceFt(token,dest);
+    if(!Number.isFinite(range)||range>spec.distanceFt)return {ok:false,error:'Телепортация вне дальности заклинания.'};
+    if(spec.needsSight&&!B.lineOfSight(token,dest).clear)return {ok:false,error:'Место назначения не видно заклинателю.'};
+    return {ok:true,destination:{x:x,y:y},token:token,kind:spec.kind,distanceFt:range};
+  }
   function applySpell(peerId,action,prepared,preparedReaction,resumeSpell,preparedReservation){
     var t=combat();if(!t)return actionError(peerId,action,'Бой ещё не запущен.');if(!requireActiveOwner(peerId,action))return;
     var actor=currentActive(),p=profileForPeer(global.dndNetwork.getPeer(peerId));var sp=(p.spells||[]).find(function(x){return x.name===action.payload.spellName;})||null;if(!sp)return actionError(peerId,action,'Заклинание не найдено в авторитетном профиле игрока.');
     var authoritativeAoe=sp.aoe||null;var requestedAoe=action.payload&&action.payload.aoe;var hasAoe=!!authoritativeAoe;
+    var teleportSpec=localTeleportSpec(sp),wantsTeleport=action.payload&&action.payload.teleportTo;
+    if(!teleportSpec&&wantsTeleport)return actionError(peerId,action,'Клиент не может произвольно телепортировать персонажа.');
+    if(!teleportSpec&&unsupportedTravelMagic(sp))return actionError(peerId,action,'Для этого заклинания перемещения ещё нет безопасного боевого обработчика.');
+    if(teleportSpec&&(prepared||preparedReaction||resumeSpell))return actionError(peerId,action,'Телепортацию нельзя запускать как подготовленную реакцию.');
+    if(teleportSpec&&action.payload&&action.payload.moveTo)return actionError(peerId,action,'Телепортация не является обычным движением.');
+    if(teleportSpec&&action.payload&&action.payload.targetId&&String(action.payload.targetId)!==String(actor.id))return actionError(peerId,action,'Перемещение других существ пока не поддерживается — выберите самого заклинателя.');
+    var localTeleport=teleportSpec?validateLocalTeleport(actor,sp,wantsTeleport):null;
+    if(localTeleport&&!localTeleport.ok)return actionError(peerId,action,localTeleport.error);
     if(requestedAoe&&!hasAoe)return actionError(peerId,action,'У этого заклинания нет авторитетной AoE-геометрии.');
-    var target=findTarget(action.payload&&action.payload.targetId);if(!target&&!hasAoe)return actionError(peerId,action,'Цель не найдена.');
+    var target=teleportSpec?actor:findTarget(action.payload&&action.payload.targetId);if(!target&&!hasAoe)return actionError(peerId,action,'Цель не найдена.');
     var sourceCheck=validateSpellSource(p,sp);if(!sourceCheck.ok)return actionError(peerId,action,sourceCheck.error);
     var specialArcana=sp.specialArcana?global.DNDBloodHunter&&global.DNDBloodHunter.arcanaInfo&&global.DNDBloodHunter.arcanaInfo(p,sp.specialArcana):null;
     if(sp.specialArcana&&(!specialArcana||specialArcana.used&&!resumeSpell))return actionError(peerId,action,'Эта аркана уже использована до долгого отдыха.');
     var spellPayload=clone(action.payload)||{};spellPayload.rangeFt=num(sp.rangeFt,0)||150;
     if(hasAoe)spellPayload.aoe=Object.assign({},authoritativeAoe,{cell:requestedAoe&&requestedAoe.cell||null,direction:requestedAoe&&requestedAoe.direction||null});
-    if(target){var geo=geometryCheck(actor,target,spellPayload);if(!geo.ok)return actionError(peerId,action,geo.error);}
+    if(target&&!teleportSpec){var geo=geometryCheck(actor,target,spellPayload);if(!geo.ok)return actionError(peerId,action,geo.error);}
     if(hasAoe){if(!spellPayload.aoe.cell)return actionError(peerId,action,'Для AoE не выбрана точка.');var ag=aoeGeometryCheck(actor,spellPayload);if(!ag.ok)return actionError(peerId,action,ag.error);}
     // Movement is committed only after the action and spell-slot preconditions pass.
     // Otherwise a rejected cast (e.g. no slot) must not leave a partial state change.
@@ -468,6 +509,16 @@
       p.classFeaturesState[sp.specialArcana==='revealedArcana'?'bhRevealedArcanaUsed':'bhUnsealedArcanaUsed']=true;
     }
     if(!sp.name)return actionError(peerId,action,'Заклинание не найдено в профиле игрока.');var stat=String(sp.castingStat||'').toLowerCase(),bonus=num(p.proficiencyBonus,2)+abilityMod((p.stats||{})[stat]),dc=8+bonus;var result={ok:true,kind:'spell',spell:sp.name,level:num(sp.level),slot:slot,attacker:p.name,target:target&&target.name||'AoE',castingStat:stat,attackBonus:bonus,saveDc:dc,hit:null,damage:null,resources:clone(actor.turnResources),spellSlots:clone(p.spellSlotsData),pactMagic:clone(p.pactMagicData)};var con=null;
+    if(localTeleport){
+      var bh=global.DNDBloodHunter,brand=bh&&bh.currentBrand&&bh.currentBrand(actor);
+      var travel=brand&&num(brand.level)>=13&&bh.resolveBrandTravel?bh.resolveBrandTravel(actor,{kind:'teleport'}):{ok:true,allowed:true,branded:false};
+      if(!travel.ok)return actionError(peerId,action,travel.reason||'Переход заблокирован.');
+      result.teleport={attempted:true,allowed:!!travel.allowed,branded:!!travel.branded,destination:clone(localTeleport.destination),
+        distanceFt:localTeleport.distanceFt,damage:travel.damage||null,save:travel.save||null};
+      if(travel.allowed){localTeleport.token.x=localTeleport.destination.x;localTeleport.token.y=localTeleport.destination.y;}
+      // Tethering damage and slot/action loss persist even on a failed travel save.
+      if(travel.branded){result.teleport.appliedDamage=travel.damage||null;result.actorHp=num(actor.hp);p.hpCurrent=num(actor.hp);if(p.hp&&typeof p.hp==='object')p.hp.current=p.hpCurrent;}
+    }
     if(!resumeSpell&&sp.level>0&&actor.ownerPeerId===peerId){var spellReaction=requestSpellReaction({id:'spellreact_'+action.requestId,kind:'spell',caster:actor,attackerPeerId:peerId,action:action,spell:sp,context:{source:'spell',spellLevel:num(sp.level),spellName:sp.name,visible:true},expiresAt:Date.now()+15000});if(spellReaction&&spellReaction.pendingReaction){result.reaction=spellReaction;result.reactionPending=true;var rev=commit('COMBAT_CHANGED',clone(t),peerId);sendResult(peerId,action,result,rev);return result;}}    var spellDamageMods=global.DNDClassFeatures&&global.DNDClassFeatures.spellDamageModifiers?global.DNDClassFeatures.spellDamageModifiers(actor,{damageType:sp.damageType||'',spellLevel:num(sp.level,0),cantrip:num(sp.level,0)===0,hasDamage:!!sp.damage,usesAlchemistSupplies:!!(action.payload&&action.payload.usesAlchemistSupplies),applyOverchannel:true}):{bonus:0,maximize:false,rerollOne:false,notes:[]};
     if(hasAoe&&global.DNDBattleBoard){var ao=spellPayload.aoe,ts=global.DNDBattleBoard.tokenList(),source=global.DNDBattleBoard.tokenList().find(function(x){return String(x.sourceId)===String(actor.id);}),cell=ao.cell||null,hits=ts.filter(function(x){if(!source||!cell||String(x.sourceId)===String(actor.id))return false;var dir=ao.direction||null;if(!dir&&cell&&(ao.shape==='line'||ao.shape==='cone'))dir={x:(cell.x+0.5)-(source.x+source.size/2),y:(cell.y+0.5)-(source.y+source.size/2)};var inside=global.DNDBattleBoard.aoeContainsPoint?global.DNDBattleBoard.aoeContainsPoint(ao.shape||'circle',source,x,num(ao.radiusFt,20),dir):false;return inside;}).filter(function(x){return global.DNDBattleBoard.lineOfSight({x:source.x,y:source.y,size:source.size||1},x).clear;}),batchEntries=[],aoeMeta=[];result.aoeTargets=hits.map(function(x){return x.sourceId;});result.aoeTargetNames=hits.map(function(x){return x.name;});for(var hi=0;hi<hits.length;hi++){var tc=findTarget(hits[hi].sourceId);if(!tc||tc.defeated&&num(tc.deathSaves&&tc.deathSaves.failures)>=3)continue;var sr=global.DNDCombat.savingThrow(tc,String(sp.savingThrow||'dex').toLowerCase(),dc,'normal',Object.assign(saveContextForTarget(actor,tc,String(sp.savingThrow||'dex').toLowerCase(),sp),{halfDamageEffect:true})),dr=spellDamageRoll(actor,sp,false,{modifiers:spellDamageMods,usesAlchemistSupplies:!!(action.payload&&action.payload.usesAlchemistSupplies)});batchEntries.push({target:tc,amount:sr.success?((sr.evasion||sr.mettle)?0:Math.floor(dr.total/2)):dr.total,type:sp.damageType||'',opts:{source:'spell',visible:true,damageParts:[{amount:sr.success?((sr.evasion||sr.mettle)?0:Math.floor(dr.total/2)):dr.total,damageType:sp.damageType||''}]}});aoeMeta.push({target:tc.name,save:sr.success,damageRoll:dr,saveRoll:sr});}var batch=global.DNDCombat.applyDamageBatch?global.DNDCombat.applyDamageBatch(batchEntries):{ok:true,results:batchEntries.map(function(e){return global.DNDCombat.applyDamage(e.target,e.amount,e.type,e.opts||{});})};if(!batch.ok)return actionError(peerId,action,'AoE-транзакция отменена: '+batch.error);result.aoeResults=aoeMeta.map(function(m,i){var dr=batch.results[i]||null;return {target:m.target,save:m.save,damageRoll:m.damageRoll,saveRoll:m.saveRoll,damage:dr,concentration:dr&&dr.concentration||null};});}    if(!hasAoe&&sp.attackType){var r=rollD20();result.d20=r.result;result.total=r.result+bonus;result.hit=r.critical||(!r.fumble&&result.total>=num(target.ac,10));if(result.hit&&sp.damage&&global.DNDCombat){var dr=spellDamageRoll(actor,sp,!!r.critical,{modifiers:spellDamageMods,usesAlchemistSupplies:!!(action.payload&&action.payload.usesAlchemistSupplies)});var pack=applyDamageWithConcentration(peerId,target,dr.total,sp.damageType||'',{critical:!!r.critical});result.damage=pack.damage;con=pack.concentration;}}
     else if(!hasAoe&&sp.savingThrow&&sp.damage&&global.DNDCombat){var saveRoll=global.DNDCombat.savingThrow(target,String(sp.savingThrow||'dex').toLowerCase(),dc,'normal',Object.assign(saveContextForTarget(actor,target,String(sp.savingThrow||'dex').toLowerCase(),sp),{halfDamageEffect:true}));result.saveD20=saveRoll.roll.result;result.saveTotal=saveRoll.total;result.success=saveRoll.success;var dr=spellDamageRoll(actor,sp,false,{modifiers:spellDamageMods,usesAlchemistSupplies:!!(action.payload&&action.payload.usesAlchemistSupplies)});var pack=applyDamageWithConcentration(peerId,target,saveRoll.success?((saveRoll.evasion||saveRoll.mettle)?0:Math.floor(dr.total/2)):dr.total,sp.damageType||'');result.damage=pack.damage;con=pack.concentration;}
