@@ -94,6 +94,7 @@ jobs:
           python3 tools/unified_version.py
           node tests/cloud_sync_test.cjs
           node tests/update_ota_flow_test.js
+          node tests/creation_signature_asset_test.cjs
           node tests/character_3d_editor_test.js
       - name: Audit complete cross-platform OTA manifest
         shell: bash
@@ -195,6 +196,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends wine wine64 wine32:i386
           wine --version
+      - name: Verify creation seal OTA delivery
+        run: node tests/creation_signature_asset_test.cjs
       - name: Build Windows Setup and Portable
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'

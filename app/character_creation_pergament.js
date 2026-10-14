@@ -2,8 +2,7 @@
 /* Character creation parchment flow v2 — ordinary/extra sheets, progressive reveal, signature transition. */
 (function(){
 'use strict';
-var ROOT='./';
-var SIGNATURE=ROOT+'1790622252250.png';
+// The animated seal is an eagerly loaded <img> in index.html, under app/assets.
 var CHARACTER_CREATION_MODE=null;
 var BYPASS_PARCHMENT_ONCE=false;
 /* Creation content buckets: classic = core 5e + Artificer; homebrew = every non-core option; extra stays isolated. */
