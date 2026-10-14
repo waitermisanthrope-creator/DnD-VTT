@@ -139,5 +139,5 @@ async function main(){
   });
   console.log('CLOUD_SYNC_TEST_OK: '+passed+' scenarios');
 }
-module.exports={Server,hero};
+module.exports={Server,hero,device};
 if(require.main===module)main().catch(e=>{console.error(e);process.exitCode=1;});

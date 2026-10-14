@@ -161,6 +161,7 @@ function addInitiativeCombatant(name, isHero, initiative, hp, maxHp, ac, type) {
     maxHp: Number(maxHp) || 0,
     ac: Number(ac) || 10,
     type: type || 'enemy',
+    characterId: isHero ? currentChar.id : null,
     stats: (isHero && currentChar && currentChar.stats) ? JSON.parse(JSON.stringify(currentChar.stats)) : {},
     notes: '',
     turnResources: { action: true, bonusAction: true, reaction: true, movement: 30, movementUsed: 0 },
@@ -196,6 +197,14 @@ function nextInitiativeTurn() {
   var t = currentChar.initiativeTracker;
   if (!t.combatants.length) return;
   var previousActive = t.combatants[t.activeIndex];
+  // Open a finite, free draw window only for the owner's actual completed turn.
+  // Online play needs private authoritative deck commands in a later stage.
+  if (window.DNDPredictor && currentChar.predictorState && previousActive && previousActive.type === 'hero' &&
+      (previousActive.characterId === currentChar.id || (!previousActive.characterId && previousActive.name === currentChar.name)) &&
+      !(window.dndNetwork && window.dndNetwork.state && window.dndNetwork.state.connected)) {
+    var drawWindow = window.DNDPredictor.endTurn(currentChar, 'initiative:' + previousActive.id + ':' + t.round);
+    if (!drawWindow.ok) { alert(drawWindow.reason); return; }
+  }
   if (previousActive && previousActive.entityId && window.DNDSummoning && typeof window.DNDSummoning.endTurn === 'function') window.DNDSummoning.endTurn(previousActive);
   t.activeIndex = (t.activeIndex + 1) % t.combatants.length;
   if (t.activeIndex === 0) t.round = (Number(t.round) || 1) + 1;
@@ -315,6 +324,7 @@ function longRestCharacter() {
     currentChar.defeated = false;
   }
   currentChar.lastRest = { type: 'long', at: new Date().toISOString() };
+  if (window.DNDPredictor && currentChar.predictorState) window.DNDPredictor.rest(currentChar, 'long', 'tools:' + window.crypto.randomUUID());
   _dndSave();
   if (typeof renderSpellSlots === 'function') renderSpellSlots();
   var hp = document.getElementById('hpCurrent');

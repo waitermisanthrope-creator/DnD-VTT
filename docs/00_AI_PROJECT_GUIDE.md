@@ -1,5 +1,14 @@
 # D&D APP — AI PROJECT GUIDE / FIRST READ
 
+## Предсказатель — этап 1, без выпуска
+
+- ТЗ и решения: `docs/PREDICTOR_CLASS_SPEC.md`. Пользователь сам предоставит отдельную таблицу замен сюжетных эффектов; не придумывать её.
+- `app/predictor_runtime.js` владеет двумя колодами и `character.predictorState`; `app/predictor_deck_ui.js` показывает локальную руку и использует существующий autosave.
+- Это частичный класс: действия/эффекты и способности ещё не реализованы. `recordApplication` — учёт уже выполненного эффекта, не боевой resolver.
+- Проверки: `tests/predictor_runtime_test.cjs`, `tests/predictor_deck_ui_test.cjs`, `tests/predictor_cloud_sync_test.cjs`. Сетевые комнаты заблокированы до приватного транспорта; собственные устройства используют существующий full-profile CloudSync.
+- Не выпускать обновление без нового запроса пользователя.
+- Продолжение: `beginBlind` сохраняет обязательный слепой результат и возвращает неподходящие реакции. `tests/predictor_blind_test.cjs` проверяет 8 сценариев; CloudSync-тест покрывает перенос результата. Реальное исполнение и кнопки слепой тяги ждут утверждённой таблицы действий/эффектов.
+
 ## Cloud character sync in the main application
 
 - Main application: shared managed Supabase Auth/REST and character CAS synchronization. See `CLOUD_CHARACTER_SYNC.md` for architecture, configuration, migration, validation and remaining live QA.
