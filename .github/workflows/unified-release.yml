@@ -7,6 +7,7 @@ name: Unified Android + Windows release
 on:
   push:
     branches: [main, windows-desktop]
+    tags: [release-request-*]
   workflow_dispatch:
     inputs:
       publish:
@@ -44,7 +45,19 @@ jobs:
           RELEASE_VERSION: ${{ inputs.version || 'auto' }}
         run: |
           set -euo pipefail
-          if [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" && "$RELEASE_REQUEST" == "true" ]]; then
+          if [[ "$GITHUB_EVENT_NAME" == "push" && "$GITHUB_REF" == refs/tags/release-request-* ]]; then
+            git fetch origin main
+            git merge-base --is-ancestor HEAD origin/main || {
+              echo "Release request must point to a commit on main" >&2
+              exit 1
+            }
+            VERSION="$(python3 tools/unified_version.py)"
+            test "$GITHUB_REF_NAME" = "release-request-$VERSION" || {
+              echo "Release request tag must match the checked source version" >&2
+              exit 1
+            }
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          elif [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" && "$RELEASE_REQUEST" == "true" ]]; then
             if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
               echo "Publishing is allowed only from the main branch" >&2
               exit 1
