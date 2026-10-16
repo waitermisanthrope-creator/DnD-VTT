@@ -1,6 +1,6 @@
 {
   "name": "dnd-vtt-desktop",
-  "version": "74.0.67",
+  "version": "74.0.68",
   "private": true,
   "description": "Windows desktop shell for DnD VTT",
   "main": "desktop/main.cjs",
