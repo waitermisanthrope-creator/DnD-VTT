@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 1f1739beeb4a. Git содержит 1342 файлов.
+Снимок кода 9123ba593d2a. Git содержит 1342 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1021,7 +1021,7 @@
 | №1000 docs/NETWORK_APK_NOTES.md | 7296 B | документация или отчёт: NETWORK APK NOTES |
 | №1001 docs/PREDICTOR_APPROVED_CARD_STATUS.md | 19972 B | документация или отчёт: PREDICTOR APPROVED CARD STATUS |
 | №1002 docs/PREDICTOR_CLASS_SPEC.md | 90126 B | документация или отчёт: PREDICTOR CLASS SPEC |
-| №1003 docs/PRODUCT_ACCESS_AND_MONETIZATION.md | 7602 B | документация или отчёт: PRODUCT ACCESS AND MONETIZATION |
+| №1003 docs/PRODUCT_ACCESS_AND_MONETIZATION.md | 11210 B | документация или отчёт: PRODUCT ACCESS AND MONETIZATION |
 | №1004 docs/ROOT_FURNITURE_IMPORT_REPORT.md | 6882 B | документация или отчёт: ROOT FURNITURE IMPORT REPORT |
 | №1005 docs/SIGNATURE_ASSET_FIX_74_00_66.md | 1729 B | документация или отчёт: SIGNATURE ASSET FIX 74 00 66 |
 | №1006 docs/SUPABASE_MAIL_SETUP_PROMPT_RU.md | 2853 B | документация или отчёт: SUPABASE MAIL SETUP PROMPT RU |

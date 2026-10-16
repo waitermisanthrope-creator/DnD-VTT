@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 1f1739beeb4a. Файлов: 1342
+Коммит 9123ba593d2a. Файлов: 1342
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1016,7 +1016,7 @@
 1000. docs/NETWORK_APK_NOTES.md — документация или отчёт: NETWORK APK NOTES (7296 B)
 1001. docs/PREDICTOR_APPROVED_CARD_STATUS.md — документация или отчёт: PREDICTOR APPROVED CARD STATUS (19972 B)
 1002. docs/PREDICTOR_CLASS_SPEC.md — документация или отчёт: PREDICTOR CLASS SPEC (90126 B)
-1003. docs/PRODUCT_ACCESS_AND_MONETIZATION.md — документация или отчёт: PRODUCT ACCESS AND MONETIZATION (7602 B)
+1003. docs/PRODUCT_ACCESS_AND_MONETIZATION.md — документация или отчёт: PRODUCT ACCESS AND MONETIZATION (11210 B)
 1004. docs/ROOT_FURNITURE_IMPORT_REPORT.md — документация или отчёт: ROOT FURNITURE IMPORT REPORT (6882 B)
 1005. docs/SIGNATURE_ASSET_FIX_74_00_66.md — документация или отчёт: SIGNATURE ASSET FIX 74 00 66 (1729 B)
 1006. docs/SUPABASE_MAIL_SETUP_PROMPT_RU.md — документация или отчёт: SUPABASE MAIL SETUP PROMPT RU (2853 B)
