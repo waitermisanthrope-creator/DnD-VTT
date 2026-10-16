@@ -47,3 +47,11 @@
 - Oracle/Weaver exact rules remain open, not silently approved by this stage. Full class and Trickster are still partial; Issue #9 remains unchecked.
 - Verification: shared regression gate **25/25 suites PASS** (including latest owner stat-generation/level-up changes); final inventory/reward suite **23 scenarios PASS**, including real wall/hidden-target and source-unconscious wager cases. JS syntax checks and `git diff --check` PASS. Physical Windows/Android and live Supabase were not tested; cloud continuation is mocked.
 - Published gameplay commit: `ccee4bfbbe44688dccb47f636aed438993819281` on main. Native/regression CI started: https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/38900449214 ; **in progress** at observation, not a completed build or stable release.
+
+## 2026-10-16 — event reactions / initiative / summons / World
+- Added eight executable handlers: cups_05, pentacles_14, wands_02, pentacles_01, pentacles_10, major_05, major_21, wands_03. **72/78**; remaining six and whole class are not complete.
+- Reactions are persisted intent, cash in only on actual attack/save/initiative events. Nested card saves share the transaction; rollback preserves live actor references.
+- Coin: physical 50 gp object, exclusive exchange/throw; ancestor: real existing secondary-entity pipeline with explicit-profile creation, attack/range/turn checks and expiry. Fixed explicit/automatic entity token placement; regular damage/heal cannot be undone by summon resync.
+- World action/movement and freeze, truth/deception intent, loaded-scene magic search have real engine hooks and documented limits. No semantic truth AI or fictional all-world item database claimed.
+- Targeted tests: 12 reaction/initiative, 10 coin/summon, 8 World/truth/search scenarios; UI/cloud regressions also run. The first broad pass exposed a stale-reference assumption in the new World test; the corrected test refetches the committed actor. Final broad conclusion recorded below after completion.
+- Final broad gate: **28/28 suites PASS**; changed JavaScript syntax and `git diff --check` PASS. No native/device or live Supabase claim for this checkpoint.

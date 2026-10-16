@@ -590,6 +590,8 @@ function rollStatCheck(statId, statName) {
  * Выполнение проверки навыка с детальной отладкой
  */
 function rollSkillCheck(skillId, skillName, statId) {
+  if(skillId==='deception'&&window.DNDPredictorCards&&window.DNDPredictorCards.cannotLie(window.currentChar||window.currentCharacter)&&confirm('Эта проверка Обмана включает намеренную ложь?')){alert('Иерофант: намеренная ложь невозможна. Бросок не выполнен.');return;}
+
   console.group(`[DICE_SKILL_CHECK] Проверка навыка: "${skillName}" (ID: ${skillId}, Базовая характеристика: ${statId})`);
 
   if (typeof updateSkillsState === 'function') {

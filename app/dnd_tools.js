@@ -145,6 +145,7 @@ function addInitiativeCombatant(name, isHero, initiative, hp, maxHp, ac, type) {
   if (isHero) {
     name = currentChar.name || 'Герой';
     initiative = getStatModNum('dex');
+    if(window.DNDPredictorCards&&window.DNDPredictorCards.interceptInitiative){var tarotInitiative=window.DNDPredictorCards.interceptInitiative(currentChar,initiative);if(tarotInitiative)initiative=tarotInitiative.total;}
     hp = Number(currentChar.hpCurrent) || 0;
     maxHp = Number(currentChar.hpMax) || hp;
     ac = Number(currentChar.ac) || 10;
@@ -164,7 +165,7 @@ function addInitiativeCombatant(name, isHero, initiative, hp, maxHp, ac, type) {
     characterId: isHero ? currentChar.id : null,
     stats: (isHero && currentChar && currentChar.stats) ? JSON.parse(JSON.stringify(currentChar.stats)) : {},
     notes: '',
-    turnResources: { action: true, bonusAction: true, reaction: true, movement: 30, movementUsed: 0 },
+    turnResources: isHero&&currentChar.turnResources?JSON.parse(JSON.stringify(currentChar.turnResources)):{ action: true, bonusAction: true, reaction: true, movement: 30, movementUsed: 0 },
     concentration: { active: false, spellId: null, spellName: '' }
   });
   sortInitiativeTracker();

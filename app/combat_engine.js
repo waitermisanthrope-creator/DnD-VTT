@@ -99,6 +99,7 @@
   }
   function applyDamage(target,amount,type,opts){
     opts=opts||{};
+    if(global.DNDPredictorCards&&global.DNDPredictorCards.noteAffect)global.DNDPredictorCards.noteAffect(target,opts);
     if(global.DNDPredictorCards){var tarotScene=global.DNDPredictorCards.sceneFrom(target,opts);if(opts.attacker&&global.DNDPredictorCards.peaceBlocked(tarotScene,opts.attacker,target))return {amount:0,hpDamage:0,hp:readHp(target),peaceBlocked:true,note:'Аура покоя'};var shared=global.DNDPredictorCards.shareDamage(target,amount,type,opts);if(shared)return shared;}
     var reaction=null, reactionResult=null;
     var rawParts=normalizeDamageParts(amount,type,opts);
@@ -198,6 +199,7 @@
     if(global.DNDBloodHunter)global.DNDBloodHunter.afterDamage(target,r,opts);if(opts.__bloodCurseExposure)r.bloodCurseExposure=opts.__bloodCurseExposure;
     if(global.DNDClassFeatures&&global.DNDClassFeatures.onDamage)global.DNDClassFeatures.onDamage(target,{amount:damageTaken,hpDamage:hpDamage,damageType:type});
     if(global.DNDPredictorCards)global.DNDPredictorCards.afterDamage(target,{damageTaken:damageTaken,hpDamage:hpDamage,previousHp:hp,instantDeath:instantDeath});
+    if(global.DNDPredictorCards&&global.DNDPredictorCards.syncTarotEntity)global.DNDPredictorCards.syncTarotEntity(target,opts);
     if(global.DNDPredictorCards)global.DNDPredictorCards.recordDamage(target,{damageTaken:damageTaken,previousHp:hp},opts);
     return {amount:r.amount+wardAbsorbed,hpDamage:hpDamage,tempAbsorbed:absorbed,wardAbsorbed:wardAbsorbed,hp:readHp(target),tempHp:readTempHp(target),defeated:target.defeated,deathSaveFailures:deathSaveFailures,instantDeath:instantDeath,note:r.note,damageParts:resolvedParts.map(function(p){return {raw:num(p.raw),amount:num(p.amount),damageType:p.damageType,note:p.note||'',wardAbsorbed:num(p.wardAbsorbed)};}),concentration:concentration,bloodRiteRevival:bloodRiteRevival,bloodCurseExposure:opts.__bloodCurseExposure||null,wardenSurvive:wardenSurvive,reaction:reactionResult||null,reactionWindow:reaction&&!reactionResult?reaction.window:null};
   }
@@ -222,7 +224,8 @@
     return {ok:true,amount:amount,hp:readHp(target)};
   }
   function grantTemporaryHitPoints(target,amount){if(!target||!Number.isInteger(amount)||amount<0)return {ok:false};var before=readTempHp(target),after=Math.max(before,amount);if(('hpCurrent' in target||'hpMax' in target)&&(!target.hp||typeof target.hp!=='object'))target.hp={current:readHp(target),max:num(target.hpMax,target.maxHp),temp:before};writeTempHp(target,after);return {ok:true,added:after-before,tempHp:after};}
-  function heal(target,amount){
+  function heal(target,amount,opts){
+    if(global.DNDPredictorCards&&global.DNDPredictorCards.noteAffect)global.DNDPredictorCards.noteAffect(target,opts);
     // Мёртвая оболочка Призрака не подлежит лечению никакими обычными
     // эффектами. Сам дух восстанавливается только собственными механиками.
     if(target && target.extraClassType==='ghost'){
@@ -248,6 +251,7 @@
         names.forEach(function(name){var key=global.DNDRules&&global.DNDRules.normalizeConditionName?global.DNDRules.normalizeConditionName(name):name;if(conds[key]!==undefined)conds[key]=false;});
       }
     }
+    if(global.DNDPredictorCards&&global.DNDPredictorCards.syncTarotEntity)global.DNDPredictorCards.syncTarotEntity(target,opts);
     return {amount:after-before,hp:after,maxHp:max,revivedFromZero:revivedFromZero};
   }
   function cloneValue(v){try{return JSON.parse(JSON.stringify(v));}catch(e){return null;}}
@@ -289,21 +293,22 @@
     return {ok:true,attacks:results,attackCount:results.length,hitCount:results.filter(function(r){return r&&r.hit;}).length,targetDefeated:!!(target&&(target.defeated||num(target.hp)<=0))};
   }
   function savingThrow(actor,stat,dc,mode,ctx){
+    ctx=ctx||{};if(global.DNDPredictorCards&&global.DNDPredictorCards.noteAffect)global.DNDPredictorCards.noteAffect(actor,ctx);var tarotForced=global.DNDPredictorCards&&global.DNDPredictorCards.interceptSave&&global.DNDPredictorCards.interceptSave(actor,ctx);
     var h=actor && actor.stats ? actor : null, bonus=0, featureMode=mode||'normal';
     if(h && global.DNDRules){bonus=global.DNDRules.getSaveBonus(h,stat);} else bonus=num(actor && actor.saveBonuses && actor.saveBonuses[stat]);
     ctx=ctx||{};var sm=(global.DNDClassFeatures&&global.DNDClassFeatures.saveModifiers&&actor)?global.DNDClassFeatures.saveModifiers(actor,Object.assign({},ctx,{stat:stat,dexSaveVisible:stat==='dex',fromSpell:!!(ctx.fromSpell||actor&&actor.saveFromSpell),allyWithinAura:!!(ctx.allyWithinAura||actor&&actor.allyWithinAura),auraSource:ctx.auraSource||null,saveType:ctx.saveType||stat,halfDamageEffect:ctx.halfDamageEffect===true,frightenedEffect:!!ctx.frightenedEffect,courageSource:ctx.courageSource||null,allyWithinCourage:!!ctx.allyWithinCourage,charmEffect:!!ctx.charmEffect,fromFiendOrUndead:!!ctx.fromFiendOrUndead,flashOfGeniusAvailable:!!(actor&&actor.useFlashOfGenius)})):null;
     var curseSaveMods=global.DNDBloodHunter?global.DNDBloodHunter.cursedSaveModifiers(actor,Object.assign({},ctx,{stat:stat})):{};if(sm)bonus+=num(sm.bonus);var tarotSave=global.DNDPredictorCards?global.DNDPredictorCards.d20Modifiers(actor,'save',{stat:stat}):{};var saveAdv=featureMode==='advantage'||!!(sm&&sm.advantage)||!!curseSaveMods.advantage||!!tarotSave.advantage,saveDis=featureMode==='disadvantage'||!!(sm&&sm.disadvantage)||!!curseSaveMods.disadvantage||!!tarotSave.disadvantage;featureMode=saveAdv===saveDis?'normal':saveAdv?'advantage':'disadvantage';
     var normalizedCondition=global.DNDRules&&global.DNDRules.normalizeConditionName?global.DNDRules.normalizeConditionName:null;
     var conds=(actor&&actor.activeConditions)|| (actor&&actor.conditions)||{};
-    var autoFail=!!(global.DNDRules&&global.DNDRules.conditionModifiers&&global.DNDRules.conditionModifiers(actor).autoFailStrDex&&(stat==='str'||stat==='dex'));
-    var roll=global.DNDRules ? global.DNDRules.rollD20(featureMode,null,actor,{kind:'save',stat:stat,tarotModeApplied:true,autoFailed:autoFail}) : {result:rollDie(20),critical:false};
+    var autoFail=!!tarotForced||!!(global.DNDRules&&global.DNDRules.conditionModifiers&&global.DNDRules.conditionModifiers(actor).autoFailStrDex&&(stat==='str'||stat==='dex'));
+    var roll=tarotForced?{result:0,critical:false,forced:true,mode:'forced'}:global.DNDRules ? global.DNDRules.rollD20(featureMode,null,actor,{kind:'save',stat:stat,tarotModeApplied:true,autoFailed:autoFail}) : {result:rollDie(20),critical:false};
     var saveDebuffs=actor&&actor.classFeaturesState&&actor.classFeaturesState.alchemistDebuffs||{};
     bonus-=num(saveDebuffs.savePenalty,0);
     bonus+=num(ctx.extraSaveBonus);
     var total=roll.result+bonus;
     var success=autoFail?false:total>=num(dc);var evasion=!!(sm&&sm.evasion&&String(stat).toLowerCase()==='dex'&&success&&!autoFail);
     var mettle=!!(sm&&sm.mettle&&success&&!autoFail);
-    var saveResult={stat:stat,dc:num(dc),bonus:bonus,roll:roll,total:total,success:success,autoFailed:autoFail,evasion:evasion,mettle:mettle,classFeatureNotes:sm&&sm.notes||[]};
+    var saveResult={tarotReaction:tarotForced||null,stat:stat,dc:num(dc),bonus:bonus,roll:roll,total:total,success:success,autoFailed:autoFail,evasion:evasion,mettle:mettle,classFeatureNotes:sm&&sm.notes||[]};
     if(ctx.defenderReaction==='wardenLegendaryResistance'&&global.WARDEN_MHP_2024)saveResult.wardenLegendaryResistance=global.WARDEN_MHP_2024.useFeature(actor,'legendaryResistance',{saveResult:saveResult});
     saveResult.mettle=!!(sm&&sm.mettle&&saveResult.success&&!autoFail);
     if(global.DNDClassFeatures&&global.DNDClassFeatures.onSavingThrow)global.DNDClassFeatures.onSavingThrow(actor,{success:saveResult.success,total:total,dc:num(dc)});
@@ -312,6 +317,7 @@
   function abilityCheck(actor,stat,dc,mode,ctx){
     ctx=ctx||{};var R=global.DNDRules;
     if(!actor||!R||['str','dex','con','int','wis','cha'].indexOf(stat)<0||dc!=null&&!Number.isFinite(Number(dc)))return {ok:false,reason:'Неверные параметры проверки.'};
+    if(global.DNDPredictorCards&&global.DNDPredictorCards.deceptionBlocked&&global.DNDPredictorCards.deceptionBlocked(actor,ctx))return {ok:false,reason:'Иерофант не позволяет произносить намеренную ложь.'};
     var conditions=Object.assign({},actor.conditions,actor.activeConditions);
     if(readHp(actor)<=0||global.DNDPredictorCards&&global.DNDPredictorCards.blocked(actor,'check')||['Бессознателен','Недееспособен','Оглушён','Парализован'].some(function(c){return conditions[c];}))return {ok:false,reason:'Состояние не позволяет выполнить проверку.'};
     var rank=Math.max(0,Math.min(2,num(ctx.proficiencyRank,ctx.proficient?1:0))),proficient=rank>0;
@@ -429,13 +435,15 @@
     if(opts.defenderReaction==='calculatedFlourish'&&global.savantRuntime){var pendingSavantAttack={total:total,ac:ac,critical:!!roll.critical,hit:!roll.fumble&&total>=ac};savantFlourish=global.savantRuntime.calculatedFlourish(target,{pendingAttack:true,visible:opts.visible!==false,attackResult:pendingSavantAttack,triggerId:opts.triggerId});if(savantFlourish.ok)ac=pendingSavantAttack.ac;}
     if(global.DNDBloodHunter)ac+=global.DNDBloodHunter.incomingAC(target);
     var hit=!opts.__perfumeCancelled&&!duplicityMiss&&(naturalTwenty || (!roll.fumble && total>=ac));
+    var tarotReroll=hit&&global.DNDPredictorCards&&global.DNDPredictorCards.interceptAttack&&global.DNDPredictorCards.interceptAttack(opts.__attacker,target,opts);
+    if(tarotReroll){roll=tarotReroll.result.roll;d20=roll.result;total=d20+bonus+classBonus;roll.critical=d20===20||d20!==1&&(opts.__forceCritical||d20>=criticalRange);roll.fumble=d20===1;naturalTwenty=d20===20;if(targetGrafts.indexOf('Изменчивая анатомия')>=0)roll.critical=false;hit=!opts.__perfumeCancelled&&!duplicityMiss&&(naturalTwenty||!roll.fumble&&total>=ac);}
     var electromagneticShield=null,defenderClasses=target&&target.classes||[],ionizerClass=defenderClasses.find(function(c){return c&&(c.name==='Алхимик'||c.englishName==='Alchemist')&&(c.subclass==='ionizer'||c.subclass==='Ионизатор');});
     var incomingType=String(opts&&opts.damageType||'').toLowerCase(),rangedIncoming=!!(opts&&(opts.rangedAttack||opts.attackKind==='rangedWeapon'||opts.weapon&&Number(opts.weapon.rangeFt)>5));
     if(hit&&ionizerClass&&Number(ionizerClass.level)>=10&&rangedIncoming&&['силовой','force','молния','lightning','некротический','necrotic','излучение','radiant'].indexOf(incomingType)>=0){
       var shieldRoll=rollDie(6);if(shieldRoll===6){hit=false;target.classFeaturesState=target.classFeaturesState||{};target.classFeaturesState.alchemistEnergyCharges=Math.min(10,(Number(target.classFeaturesState.alchemistEnergyCharges)||0)+1);electromagneticShield={roll:shieldRoll,deflected:true,charges:target.classFeaturesState.alchemistEnergyCharges};}
     }
     if(hit&&opts.__tarotCritOnHit)roll.critical=true;
-    var out={d20:d20,bonus:bonus,classBonus:classBonus,total:total,ac:ac,hit:hit,critical:!!roll.critical,fumble:!!roll.fumble,damage:null,extraAttacks:Math.max(1,num(opts&&opts.__classFeatureMod&&opts.__classFeatureMod.extraAttacks,1))};
+    var out={tarotReaction:tarotReroll||null,d20:d20,bonus:bonus,classBonus:classBonus,total:total,ac:ac,hit:hit,critical:!!roll.critical,fumble:!!roll.fumble,damage:null,extraAttacks:Math.max(1,num(opts&&opts.__classFeatureMod&&opts.__classFeatureMod.extraAttacks,1))};
     if(bloodCurseReaction)out.bloodCurseReaction=bloodCurseReaction;
     if(savantFlourish)out.savantFlourish=savantFlourish;
     if(warlordParry)out.warlordParry=warlordParry;

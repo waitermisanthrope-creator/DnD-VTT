@@ -118,7 +118,7 @@
     if(target!==h&&(!ctx.visible||!Number.isFinite(ctx.distanceFt)||ctx.distanceFt<0||ctx.distanceFt>30))return fail('Цель должна быть видна в пределах 30 футов.');
     if(reward.kind==='swords'&&(target===h||ctx.relation!=='enemy'))return fail('Нужна враждебная цель.');if(reward.kind==='cups'&&target!==h&&ctx.relation!=='ally')return fail('Нужен союзник или сам владелец.');
     var ownerCopy=copy(h),embedded=h.initiativeTracker&&Array.isArray(h.initiativeTracker.combatants)?h.initiativeTracker.combatants.indexOf(target):-1,targetCopy=target===h?ownerCopy:embedded>=0?ownerCopy.initiativeTracker.combatants[embedded]:copy(target),r=ownerCopy.predictorState.trickster.rewards.find(function(x){return x.id===rewardId;}),result;
-    try{if(r.kind==='swords')result=g.DNDCombat.applyDamage(targetCopy,r.amount,'сила',{source:'predictor-wager',attacker:ownerCopy,tarotScene:ownerCopy});else if(r.kind==='cups')result=g.DNDCombat.heal(targetCopy,r.amount);else result=g.DNDCombat.grantTemporaryHitPoints(targetCopy,r.amount);}catch(e){return fail(e.message);}
+    try{if(r.kind==='swords')result=g.DNDCombat.applyDamage(targetCopy,r.amount,'сила',{source:'predictor-wager',attacker:ownerCopy,tarotScene:ownerCopy});else if(r.kind==='cups')result=g.DNDCombat.heal(targetCopy,r.amount,{tarotScene:ownerCopy,attacker:ownerCopy});else result=g.DNDCombat.grantTemporaryHitPoints(targetCopy,r.amount);}catch(e){return fail(e.message);}
     if(!result||result.blocked||result.peaceBlocked||result.ok===false)return fail('Награда не применена.');
     r.status='claimed';ownerCopy.predictorState.revision++;Object.assign(h,ownerCopy);if(target!==h)Object.assign(target,targetCopy);return {ok:true,result:result};
   }
