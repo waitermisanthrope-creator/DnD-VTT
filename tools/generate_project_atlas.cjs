@@ -129,13 +129,14 @@ const md=['# DnD-VTT — полный атлас проекта','',
 const txt=['АТЛАС РЕПОЗИТОРИЯ DnD-VTT','Коммит '+revision+'. Файлов: '+files.length,'',
  'ЕДИНЫЙ СТАНДАРТ','',...rules.map((x,i)=>(i+1)+'. '+x),'','ВСЕ ФАЙЛЫ'];
 const esc=s=>String(s).replace(/\|/g,'\\|').replace(/\n/g,' ');
+const fileNo=new Map(files.map((f,i)=>[f,String(i+1).padStart(4,'0')]));
 for(let i=0;i<files.length;i++){
  const f=files[i],size=fileSizes.get(f)===null?'генерируется':fileSizes.get(f)+' B';
- md.push('| '+esc(f)+' | '+size+' | '+esc(role(f))+' |');
+ md.push('| №'+fileNo.get(f)+' '+esc(f)+' | '+size+' | '+esc(role(f))+' |');
  txt.push(String(i+1).padStart(4,'0')+'. '+f+' — '+role(f)+' ('+size+')');
 }
 md.push('','## Реестр имён, переменных и ключей','',
- 'Имена сгруппированы по роли. Каждый идентификатор приводится отдельно, с первым исходным файлом и количеством остальных мест. Для всех ссылок ищите имя в коде.',
+ 'Имена сгруппированы по роли. Ссылка №NNNN указывает на путь в таблице файлов выше; остальные вхождения ищите в исходниках.',
  'Локальные параметры нельзя путать с полями сериализуемого персонажа, глобальными API или ключами localStorage.','');
 txt.push('','РЕЕСТР СТАТИЧЕСКИ ОБНАРУЖЕННЫХ ИМЁН');
 for(const category of types){
@@ -143,7 +144,7 @@ for(const category of types){
  md.push('','### '+category+' ('+arr.length+')','','| Имя | Исходные файлы |','|---|---|');
  txt.push('','--- '+category+' ('+arr.length+') ---');
  for(const [key,set] of arr){
-   const ref=[...set].sort(),list=ref[0]+(ref.length>1?' (+ '+(ref.length-1)+' других файлов)':'');
+   const ref=[...set].sort(),list='№'+fileNo.get(ref[0])+(ref.length>1?' (+ '+(ref.length-1)+' других файлов)':'');
    md.push('| '+esc(key)+' | '+esc(list)+' |');
    txt.push(key+' — '+list);
  }
