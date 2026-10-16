@@ -104,10 +104,10 @@
   }
 
   async function fetchManifest(url) {
-    // A custom/test source must stay isolated even when unavailable. Otherwise
-    // a newer stable release could silently replace the cloud test application.
-    var sources = url === DEFAULT_MANIFEST_URL || url === FALLBACK_MANIFEST_URL
-      ? [url, DEFAULT_MANIFEST_URL, FALLBACK_MANIFEST_URL] : [url];
+    // Explicit beta/test sources stay isolated. A legacy saved URL must
+    // not pin a stable installation to an obsolete manifest indefinitely.
+    var customTestSource = !!global.DND_UPDATE_MANIFEST_URL || channel() !== 'stable';
+    var sources = customTestSource ? [url] : [url, DEFAULT_MANIFEST_URL, FALLBACK_MANIFEST_URL];
     var list = sources.filter(function (x, i, a) {
       return x && a.indexOf(x) === i;
     });
@@ -122,6 +122,8 @@
         if (!response.ok) throw new Error('HTTP ' + response.status);
         var m = await response.json();
         validateManifest(m);
+        if (!customTestSource && list[i] !== DEFAULT_MANIFEST_URL && list[i] !== FALLBACK_MANIFEST_URL &&
+            String(m.channel || 'stable') !== 'stable') continue;
         found.push({ manifest: m, url: list[i] });
       } catch (e) { last = e; }
       finally { if (timeout) clearTimeout(timeout); }
@@ -250,7 +252,8 @@
         return state;
       }
       if (!state.updateAvailable) {
-        settingsStatus('Версия v' + state.currentVersion + ' актуальна.');
+        settingsStatus('Проверено: установлена v' + state.currentVersion +
+          ', опубликована v' + state.manifest.version + '. Обновлений нет.');
         return state;
       }
       ['settingsModal', 'devMenuModal'].forEach(function(id) {
@@ -281,7 +284,9 @@
       return state;
     })().catch(function(e) {
       var message = e && e.message || String(e);
-      settingsStatus('Ошибка обновления: ' + message);
+      var statusText = document.getElementById('dndMainVersionStatus');
+      if (statusText) statusText.textContent = '⚠️ Проверка не удалась';
+      settingsStatus('Не удалось проверить обновления: ' + message + '. Повторите проверку в настройках.');
       if (ui) ui.fail(message);
       else if (!options.silentCheck) {
         ui = scene({updateAvailable:false, manifest:{version:APP_VERSION}});
