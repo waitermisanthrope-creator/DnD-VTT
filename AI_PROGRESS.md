@@ -26,3 +26,9 @@
 - Added an explicit tracked `paid_api_authorized=false` gate: even accidentally pre-existing repository variables/secrets cannot enable paid execution. Added explicit dispatch of existing unified test build after autonomous GITHUB_TOKEN pushes (GitHub does not trigger push workflows for those pushes).
 
 - Final local verification: **23/23 suites PASS** with progression matrix and isolated-Git finalizer integration tests (successful push; protected-path refusal; concurrent main left intact with local commits preserved; failed-model cooldown excludes staged unfinished code). Both workflows pass actionlint; source syntax/diff checks pass.
+
+## Published / observed results
+- Gameplay audit + authorization hardening: `d7c92e1977cd0dd6d8abcb7fd620f5ea69f6a3e1` pushed to main. Local shared gate **23/23 PASS**. Real cloud checkpoint for this SHA **SUCCESS**: https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/38889496005 ; model execution remains disabled.
+- Preserved gameplay source `c34f025bfbc34231ba8deb23a2e7c1f4be228db8`: unified native test build **SUCCESS**, https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/38888249156 ; debug Android + Windows artifacts are on that run. This is not a signed stable release or physical-device QA.
+- Subsequent unified builds: https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/38889102940 was running; https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/38889496028 was pending at last observation. Do not infer their eventual results. No stable release/version bump performed.
+- Next gameplay stage: remaining 18 effects / Oracle and Weaver actual ability implementation per approved specification, with tests; progress matrix already covered, do not repeat it. Continuous model execution remains blocked as documented in AI_BLOCKERS.md; hourly checks themselves are deployed and tested.
