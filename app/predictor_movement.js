@@ -46,5 +46,16 @@
     }
     var path=[];for(var node=best;node;node=node.parent)path.push({x:node.x,y:node.y});path.reverse();return {path:path,cost:best.cost,end:{x:best.x,y:best.y},stopped:best.cost<budget};
   }
-  g.DNDPredictorMovement={validate:validate,reach:reach,ray:ray,retreat:retreat};
+  function route(b,p,destination,budget,allow){
+    validate(b,p);if(!destination||!Number.isInteger(destination.x)||!Number.isInteger(destination.y)||!Number.isFinite(budget)||budget<0||budget>10000)invalid('Некорректная точка или запас движения.');
+    if(destination.x<0||destination.y<0||destination.x+p.size>b.cols||destination.y+p.size>b.rows)invalid('Точка вне поля.');
+    var start={x:p.x,y:p.y,d:0,cost:0,parent:null},q=[start],seen=new Map(),settled=new Set(),iterations=0;seen.set(p.x+':'+p.y+':0',0);
+    while(q.length&&iterations<b.cols*b.rows*2){
+      var at=pop(q),key=at.x+':'+at.y+':'+at.d;if(settled.has(key)||at.cost!==seen.get(key))continue;settled.add(key);iterations++;
+      if(at.x===destination.x&&at.y===destination.y){var path=[];for(var node=at;node;node=node.parent)path.push({x:node.x,y:node.y});path.reverse();return {ok:true,path:path,end:{x:at.x,y:at.y},cost:at.cost};}
+      DIRS.forEach(function(d){var z={x:at.x+d[0],y:at.y+d[1]},s=step(b,p,at,z,at.d);if(s.blocked||at.cost+s.cost>budget||allow&&!allow(at,z))return;var next={x:z.x,y:z.y,d:(at.d+(s.diagonal?1:0))%2,cost:at.cost+s.cost,parent:at},k=next.x+':'+next.y+':'+next.d;if(!settled.has(k)&&(!seen.has(k)||next.cost<seen.get(k))){seen.set(k,next.cost);push(q,next);}});
+    }
+    return {ok:false,reason:'Нет доступного маршрута в пределах награды.'};
+  }
+  g.DNDPredictorMovement={validate:validate,route:route,reach:reach,ray:ray,retreat:retreat};
 })(window);

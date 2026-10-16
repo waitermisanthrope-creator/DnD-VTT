@@ -180,7 +180,12 @@
   function invisible(t){return !!Object.assign({},t&&t.conditions,t&&t.activeConditions)['Невидим']||effects(t).some(function(e){return active(t,e)&&e.invisible;});}
   function sceneFor(h,ctx){return ctx&&ctx.tarotScene||(h&&h.initiativeTracker?h:g.currentChar);}
   function canSee(scene,observer,t,options){
-    if(!observer||!t)return false;if(hp(observer)<=0||['Бессознателен','Недееспособен','Оглушён','Unconscious'].some(function(k){return Object.assign({},observer.conditions,observer.activeConditions)[k];}))return false;if(observer===t)return true;options=options||{};
+    if(!observer||!t)return false;if(hp(observer)<=0||['Бессознателен','Недееспособен','Оглушён','Unconscious'].some(function(k){return Object.assign({},observer.conditions,observer.activeConditions)[k];}))return false;return sightGeometry(scene,observer,t,options);
+  }
+  // Pending wager magic is passive: unconsciousness cannot cancel its payout.
+  // Keep range, walls, hidden targets, blindness and special-sight rules.
+  function sightGeometry(scene,observer,t,options){
+    if(observer===t)return true;options=options||{};
     var p=scene&&token(scene,observer),q=scene&&token(scene,t);if(!p||!q||p.visible===false||q.visible===false||t.visible===false)return false;
     var bf=scene.initiativeTracker&&scene.initiativeTracker.battlefield;if(bf&&g.DNDBattleBoard&&!g.DNDBattleBoard.lineOfSight(p,q,bf).clear)return false;
     var d=distance(scene,observer,t),blind=effects(observer).find(function(e){return active(observer,e)&&e.blindBeyond;});
@@ -333,6 +338,92 @@
   HANDLERS.swords_01=function(h){put(h,'swords_01',{typedDice:step(h)+'d6',damageType:'сила',weaponOnly:true,untilOwnEnd:true});return {buff:true};};
   HANDLERS.cups_12=function(h){put(h,'cups_12',{typedDice:step(h)+'d6',damageType:'психический',consumeOn:'hit',untilOwnEndAfterNext:true});return {buff:true};};
   HANDLERS.wands_01=function(h){put(h,'wands_01',{typedDice:step(h)+'d6',damageType:'огонь',consumeOn:'hit',untilOwnEndAfterNext:true});return {buff:true};};
+  // Inventory effects edit the transactional profile, never the global inventory UI.
+  var INVENTORY_CATEGORIES=['weapons','armor','consumables','materials','junk'];
+  function inventoryEntries(h){
+    var entries=[];INVENTORY_CATEGORIES.forEach(function(category){var list=h.inventory&&h.inventory[category];if(Array.isArray(list))list.forEach(function(item,index){if(item&&typeof item.name==='string')entries.push({name:item.name,ref:{category:category,index:index,signature:JSON.stringify(item)}});});});return entries;
+  }
+  function inventoryItem(h,ref){
+    if(!ref||!INVENTORY_CATEGORIES.includes(ref.category)||!Number.isInteger(ref.index)||ref.index<0)error('Выберите предмет в инвентаре.');
+    var list=h.inventory&&h.inventory[ref.category],item=Array.isArray(list)&&list[ref.index];
+    if(!item||typeof ref.signature!=='string'||JSON.stringify(item)!==ref.signature)error('Предмет изменился; выберите его заново.');
+    var count=item.count==null?1:Number(item.count);if(!Number.isFinite(count)||count<1)error('Нет целого предмета для применения карты.');
+    if(item.containerId||Array.isArray(item.contents)&&item.contents.length)error('Сначала извлеките предмет или опустошите контейнер.');
+    return {list:list,item:item,count:count};
+  }
+  function addInventory(h,category,item){
+    h.inventory=h.inventory||{};if(h.inventory[category]!=null&&!Array.isArray(h.inventory[category]))error('Повреждена категория инвентаря.');
+    var list=h.inventory[category]||(h.inventory[category]=[]);list.push(item);return item;
+  }
+  function priceGold(value){
+    if(typeof value!=='string')return null;
+    var m=/^(\d+(?:[.,]\d+)?)\s*(зм|зл|gp|см|сер\.?|sp|мм|мед\.?|cp|эм|ep|пм|pp)$/i.exec(value.trim());if(!m)return null;
+    var unit=m[2].toLowerCase(),factor=/^(см|сер\.?|sp)$/.test(unit)?0.1:/^(мм|мед\.?|cp)$/.test(unit)?0.01:/^(эм|ep)$/.test(unit)?0.5:/^(пм|pp)$/.test(unit)?10:1;
+    return Number(m[1].replace(',','.'))*factor;
+  }
+  function creationOptions(){
+    var out=[],names=['defaultWeapons','defaultArmors','defaultConsumables','defaultMaterials','defaultJunk'];
+    INVENTORY_CATEGORIES.forEach(function(category,i){var list=g[names[i]];if(!Array.isArray(list))return;list.forEach(function(item,index){var gp=item&&priceGold(item.cost);if(item&&typeof item.name==='string'&&gp!==null&&gp<=100)out.push({key:category+':'+index,name:item.name,category:category,cost:item.cost});});});return out;
+  }
+  function catalogueItem(key){
+    var choice=creationOptions().find(function(x){return x.key===key;});if(!choice)error('Выберите предмет из каталога стоимостью не выше 100 зм.');
+    var names={weapons:'defaultWeapons',armor:'defaultArmors',consumables:'defaultConsumables',materials:'defaultMaterials',junk:'defaultJunk'},item=copy(g[names[choice.category]][Number(key.split(':')[1])]);
+    item.count=1;item.equipped=false;delete item.contents;delete item.containerId;return {category:choice.category,item:item};
+  }
+  HANDLERS.major_17=function(h,r){var created=catalogueItem(r.catalogKey);addInventory(h,created.category,created.item);return {created:created.item.name,category:created.category,cost:created.item.cost};};
+  HANDLERS.pentacles_11=function(h){
+    var choices=Array.isArray(g.defaultJunk)?g.defaultJunk.filter(function(x){return x&&typeof x.name==='string'&&!x.contents&&!x.containerId;}):[];
+    if(!choices.length)error('Каталог безделушек недоступен.');var item=copy(choices[roll(1,choices.length)-1]);item.count=1;item.equipped=false;addInventory(h,'junk',item);return {found:item.name};
+  };
+  HANDLERS.swords_07=function(h,r){
+    var t=target(h,r,5);if(t===h||!canSee(h,h,t))error('Нужно другое видимое существо в пределах 5 футов.');
+    var selected=inventoryItem(t,r.inventoryRef);if(r.inventoryRef.category==='weapons'&&selected.item.equipped)error('Нельзя украсть оружие в руках.');
+    var item=copy(selected.item);item.count=1;item.equipped=false;delete item.containerId;
+    if(selected.count===1)selected.list.splice(r.inventoryRef.index,1);else selected.item.count=selected.count-1;
+    addInventory(h,r.inventoryRef.category,item);return {stolen:item.name,from:t.id,count:1};
+  };
+  function weightPounds(item){
+    var value=item.weight;if(typeof value==='number')return Number.isFinite(value)&&value>=0?value*2.2046226218:null;
+    if(typeof value!=='string')return null;var m=/^(\d+(?:[.,]\d+)?)\s*(фунт(?:а|ов)?|lb(?:s)?|кг|kg)$/i.exec(value.trim());
+    return m?Number(m[1].replace(',','.'))*(/^(кг|kg)$/i.test(m[2])?2.2046226218:1):null;
+  }
+  HANDLERS.pentacles_13=function(h,r){
+    var owner=r.targetId?target(h,r,5):h;if(owner!==h&&!canSee(h,h,owner))error('Предмет должен быть в пределах видимого касания.');
+    var selected=inventoryItem(owner,r.inventoryRef),pounds=weightPounds(selected.item);
+    if(pounds===null||pounds>10)error('Нужен известный вес предмета не более 10 фунтов.');
+    if(selected.item.tarotTransmutation)error('Предмет уже превращён в золото.');
+    var item=selected.item;if(selected.count>1){selected.item.count=selected.count-1;item=copy(selected.item);item.count=1;addInventory(owner,r.inventoryRef.category,item);}
+    item.tarotTransmutation={seconds:600,name:item.name,hadMaterial:Object.prototype.hasOwnProperty.call(item,'material'),material:item.material==null?null:copy(item.material)};
+    item.name='Золотая форма: '+item.name;item.material='gold';return {transformed:item.name,seconds:600};
+  };
+  function advanceInventory(h,seconds,inspectOnly){
+    var seen=new Set(),found=false;function walk(list,depth){if(!Array.isArray(list)||depth>20)return;list.forEach(function(item){if(!item||typeof item!=='object'||seen.has(item))return;seen.add(item);var effect=item.tarotTransmutation;if(effect){found=true;if(inspectOnly)return;effect.seconds-=seconds;if(effect.seconds<=0){item.name=effect.name;if(effect.hadMaterial)item.material=effect.material;else delete item.material;delete item.tarotTransmutation;}}walk(item.contents,depth+1);});}
+    Object.keys(h.inventory||{}).forEach(function(key){walk(h.inventory[key],0);});return found;
+  }
+  function hasInventoryEffects(h){return advanceInventory(h,0,true);}
+  function claimReward(h,id,targetId){
+    if(g.dndNetwork&&g.dndNetwork.state&&g.dndNetwork.state.connected)return {ok:false,reason:'Приватное сетевое исполнение пока не подключено.'};
+    var draft=copy(h);try{
+      var status=A.tricksterStatus(draft);if(!status.ok)error(status.reason);var reward=status.rewards.find(function(x){return x.id===id;});if(!reward)error('Награда не найдена.');
+      var t=reward.kind==='pentacles'?draft:actor(draft,targetId||draft.id),dist=t===draft?0:distance(draft,draft,t);
+      if(reward.kind==='swords'&&peaceBlocked(draft,draft,t))error('Аура покоя запрещает урон награды.');
+      var result=A.claimWagerReward(draft,id,{expectedRevision:draft.predictorState.revision,target:t,visible:t===draft||sightGeometry(draft,draft,t),distanceFt:dist,relation:allies(draft,t)?'ally':'enemy'});if(!result.ok)return result;
+      syncOwner(draft);Object.assign(h,draft);return result;
+    }catch(e){return {ok:false,reason:e.message};}
+  }
+  function moveReward(h,id,destination){
+    if(g.dndNetwork&&g.dndNetwork.state&&g.dndNetwork.state.connected)return {ok:false,reason:'Приватное сетевое исполнение пока не подключено.'};
+    var draft=copy(h);try{
+      var c=movementContext(draft),status=A.tricksterStatus(draft);if(!status.ok)error(status.reason);var reward=status.rewards.find(function(x){return x.id===id&&x.status==='pending';});
+      if(!reward||!['wands','slip'].includes(reward.kind))error('Нет награды перемещения.');
+      if(blocked(draft,'movement')||g.DNDRules&&g.DNDRules.conditionModifiers(draft).speed===0||['Бессознателен','Недееспособен','Оглушён','Парализован'].some(function(k){return Object.assign({},draft.conditions,draft.activeConditions)[k];}))error('Состояние не позволяет перемещаться.');
+      var remaining=reward.remainingFeet==null?(reward.kind==='slip'?10:Number(draft.speed)):reward.remainingFeet;
+      var plan=c.M.route(c.field,c.token,destination,remaining,function(a,b){return canMove(draft,a,b,{direct:true});});if(!plan.ok)error(plan.reason||'Маршрут недоступен.');
+      if(!canMove(draft,c.token,plan.end,{direct:true}))error('Карта запрещает это перемещение.');
+      var paid=A.spendMovementReward(draft,id,plan.cost,draft.predictorState.revision);if(!paid.ok)return paid;
+      applyWalk(draft,c,plan,true);syncOwner(draft);Object.assign(h,draft);return {ok:true,result:{movedFt:plan.cost,noOpportunityAttacks:true}};
+    }catch(e){return {ok:false,reason:e.message};}
+  }
   function definition(id){var d=DEFS[id];return d?Object.assign({},d,{implemented:!!HANDLERS[id]}):null;}
   function play(h,cardId,req){
     req=req||{};var check=A.inspect(h),def=DEFS[cardId];if(!check.ok)return check;if(!def)return {ok:false,reason:'Неизвестная карта.'};if(!HANDLERS[cardId])return {ok:false,reason:'Для этой карты ещё не подключён полный обработчик: '+def.name};
@@ -444,7 +535,7 @@
   function participantTurnStart(h,id,turnId){var t=actor(h,id);return turnStart(t,turnId,true);}
   function combatEnd(h){if(h.initiativeTracker)delete h.initiativeTracker.tarotDamageTotals;actors(h).forEach(function(t){t.tarotEffects=effects(t).filter(function(e){if(e.combatOnly||e.untilOwnStart||e.untilOwnerStart||e.untilOwnEnd||e.untilOwnerEnd||e.untilOwnEndAfterNext){expireEffect(t,e);return false;}return true;});delete t.tarotLastStartedTurn;});syncOwner(h);}
   function turnEnd(h){actors(h).forEach(function(t){t.tarotEffects=effects(t).filter(function(e){if(t===h&&e.repeatSave){var frightened=!!Object.assign({},h.conditions,h.activeConditions)['Испуган'];if(!frightened||g.DNDCombat.savingThrow(h,e.repeatSave,e.saveDC).success){expireEffect(h,e);return false;}}if(t===h&&e.restrictionUntilOwnEnd){delete e.noHide;delete e.noDisengage;delete e.restrictionUntilOwnEnd;}if(e.untilOwnerEnd===h.id||t===h&&(e.untilOwnEnd||e.untilOwnEndAfterNext&&e.startedNext)){expireEffect(t,e);return false;}return true;});});syncOwner(h);}
-  function advanceTime(h,seconds,context){if(!Number.isFinite(seconds)||seconds<0)return {ok:false};actors(h).forEach(function(t){t.tarotEffects=effects(t).filter(function(e){if(e.seconds!=null&&!(context&&context.round&&(e.sleep||e.untilOwnStart))){e.seconds-=seconds;if(e.seconds<=0){expireEffect(t,e);if(e.concentration&&t.concentration&&t.concentration.spellId==='tarot:'+e.id)g.DNDCombat.breakConcentration(t);return false;}}return true;});});syncOwner(h);return {ok:true};}
+  function advanceTime(h,seconds,context){if(!Number.isFinite(seconds)||seconds<0)return {ok:false};actors(h).forEach(function(t){advanceInventory(t,seconds);t.tarotEffects=effects(t).filter(function(e){if(e.seconds!=null&&!(context&&context.round&&(e.sleep||e.untilOwnStart))){e.seconds-=seconds;if(e.seconds<=0){expireEffect(t,e);if(e.concentration&&t.concentration&&t.concentration.spellId==='tarot:'+e.id)g.DNDCombat.breakConcentration(t);return false;}}return true;});});syncOwner(h);return {ok:true};}
   function longRestEffects(h){advanceTime(h,28800);combatEnd(h);actors(h).forEach(function(t){if(t.concentration&&String(t.concentration.spellId||'').startsWith('tarot:'))g.DNDCombat.breakConcentration(t);});syncOwner(h);}
-  g.DNDPredictorCards={definitions:DEFS,definition:definition,play:play,consumeMaximum:consumeMaximum,onCondition:onCondition,canCast:canCast,canSee:canSee,attackSight:attackSight,revealedSight:revealedSight,shareDamage:shareDamage,recordDamage:recordDamage,peaceBlocked:peaceBlocked,sceneFrom:sceneFrom,setElevation:setElevation,noteMove:noteMove,prepareInspiration:prepareInspiration,setCeiling:setCeiling,modifyStats:modifyStats,d20Modifiers:d20Modifiers,noteD20Roll:noteD20Roll,checkModifiers:checkModifiers,attackModifiers:attackModifiers,afterAttack:afterAttack,afterDamage:afterDamage,incoming:incoming,asleep:asleep,immune:immune,resistant:resistant,ignoresResistance:ignoresResistance,immuneCondition:immuneCondition,speedMultiplier:speedMultiplier,blocked:blocked,canMove:canMove,beforeAttack:beforeAttack,preventsOpportunity:preventsOpportunity,opportunityAttack:opportunityAttack,hostileAction:hostileAction,roundStart:roundStart,spendReaction:spendReaction,turnStart:turnStart,participantTurnStart:participantTurnStart,combatEnd:combatEnd,turnEnd:turnEnd,advanceTime:advanceTime,longRestEffects:longRestEffects};
+  g.DNDPredictorCards={hasInventoryEffects:hasInventoryEffects,inventoryEntries:inventoryEntries,creationOptions:creationOptions,claimReward:claimReward,moveReward:moveReward,definitions:DEFS,definition:definition,play:play,consumeMaximum:consumeMaximum,onCondition:onCondition,canCast:canCast,canSee:canSee,attackSight:attackSight,revealedSight:revealedSight,shareDamage:shareDamage,recordDamage:recordDamage,peaceBlocked:peaceBlocked,sceneFrom:sceneFrom,setElevation:setElevation,noteMove:noteMove,prepareInspiration:prepareInspiration,setCeiling:setCeiling,modifyStats:modifyStats,d20Modifiers:d20Modifiers,noteD20Roll:noteD20Roll,checkModifiers:checkModifiers,attackModifiers:attackModifiers,afterAttack:afterAttack,afterDamage:afterDamage,incoming:incoming,asleep:asleep,immune:immune,resistant:resistant,ignoresResistance:ignoresResistance,immuneCondition:immuneCondition,speedMultiplier:speedMultiplier,blocked:blocked,canMove:canMove,beforeAttack:beforeAttack,preventsOpportunity:preventsOpportunity,opportunityAttack:opportunityAttack,hostileAction:hostileAction,roundStart:roundStart,spendReaction:spendReaction,turnStart:turnStart,participantTurnStart:participantTurnStart,combatEnd:combatEnd,turnEnd:turnEnd,advanceTime:advanceTime,longRestEffects:longRestEffects};
 })(window);
