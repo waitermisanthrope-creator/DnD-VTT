@@ -185,11 +185,11 @@
     if(!r.ok||r.state.trickster&&r.state.trickster.lastTrumpUsed||hp<=0||!Number.isFinite(ctx.amount)||ctx.amount-temp<hp)return [];
     return r.state.hand.map(function(id){return {id:'predictorTrump:'+id,priority:45,label:'Последний козырь: '+BY_ID[id].name,description:'Если итоговый урон опустит хиты до 0, сбросить эту карту и потратить реакцию, оставшись с 1 хитом. Не отменяет мгновенную смерть.'};});
   }
-  function rest(h,type,restId){if(type!=='long')return inspect(h);var result=mutate(h,function(s){
+  function rest(h,type,restId){if(type!=='long')return inspect(h);if(h&&h.dead)return fail('Мёртвый персонаж не восстанавливается отдыхом.');var result=mutate(h,function(s){
     if(typeof restId!=='string'||!restId)return fail('Нужен идентификатор продолжительного отдыха.');if(s.lastRestId===restId)return fail('Этот отдых уже учтён.');
     var next=fresh();next.revision=s.revision;next.lastRestId=restId;Object.keys(s).forEach(function(k){delete s[k];});Object.assign(s,next);
     var cap=capacity(h);if(cap!==null)s.window={kind:'initial',id:'rest:'+restId,remaining:cap};return {ok:true};
-  });if(result.ok&&g.DNDPredictorCards)g.DNDPredictorCards.longRestEffects(h);return result;}
+  });if(result.ok&&g.DNDRules&&g.DNDRules.restoreExhaustion)g.DNDRules.restoreExhaustion(h,restId);if(result.ok&&g.DNDPredictorCards)g.DNDPredictorCards.longRestEffects(h);return result;}
   function sync(h){return h&&h.predictorState?inspect(h):initialize(h);}
   var api={rules:copy(RULES),cards:CARDS,subclasses:copy(SUBS),initialize:initialize,inspect:inspect,capacity:capacity,beginInitial:beginInitial,endTurn:endTurn,draw:draw,offer:offer,choose:choose,beginBlind:beginBlind,recordApplication:recordApplication,rest:rest,sync:sync,swapCard:swapCard,wagerOdds:wagerOdds,beginWager:beginWager,tricksterStatus:tricksterStatus,lastTrump:lastTrump,beginOwnTurn:beginOwnTurn,spendMovementReward:spendMovementReward,claimWagerReward:claimWagerReward};
   g.DNDPredictor=api;
@@ -202,5 +202,5 @@
   g.SUBCLASSES_REFERENCE['Предсказатель']={};
   var TRICK_FEATURES=[{id:'predictorSwap',name:'Смена расклада',level:3,action:'utility'},{id:'predictorWager',name:'Ва-банк',level:3,action:'utility'},{id:'predictorSlip',name:'Скользкий тип',level:6,action:'passive'},{id:'predictorMarked',name:'Краплёная судьба',level:10,action:'passive'},{id:'predictorTrump',name:'Последний козырь',level:14,action:'reaction'}];
   Object.keys(SUBS).forEach(function(k){g.SUBCLASSES_REFERENCE['Предсказатель'][SUBS[k].name]={pickLevel:3,source:'User homebrew',description:k==='trickster'?'Обмен расклада, ставки на масть и защитные приёмы. Доступны подключённые эффекты карт; неподдержанные результаты блокируются.':'Этап 1: состояние колод; способности подкласса ещё не реализованы.',levels:k==='trickster'?{3:{features:['Смена расклада','Ва-банк']},6:{features:['Скользкий тип']},10:{features:['Краплёная судьба']},14:{features:['Последний козырь']}}:{}};});
-  if(g.DNDContent)g.DNDContent.registerClass({id:'custom-predictor',name:'Предсказатель',source:'User-authored homebrew, stage 1',license:'Original implementation',metadata:{status:'deck_and_trickster_runtime_partial_cards',hitDie:8,primaryAbilities:['charisma'],subclassLevel:3},features:[],subclasses:Object.keys(SUBS).map(function(k){return {id:k,name:SUBS[k].name,features:k==='trickster'?TRICK_FEATURES:[]};}),hooks:{sync:sync,rest:function(h,type){if(h.predictorState)return rest(h,type,'rest:'+(h.lastRest&&h.lastRest.at||h.predictorState.revision));}}});
+  if(g.DNDContent)g.DNDContent.registerClass({id:'custom-predictor',name:'Предсказатель',source:'User-authored homebrew, stage 1',license:'Original implementation',metadata:{status:'deck_and_trickster_runtime_partial_cards',hitDie:8,primaryAbilities:['charisma'],subclassLevel:3},features:[],subclasses:Object.keys(SUBS).map(function(k){return {id:k,name:SUBS[k].name,features:k==='trickster'?TRICK_FEATURES:[]};}),hooks:{sync:sync,rest:function(h,type){if(h.predictorState)return rest(h,type,'rest:'+(h.lastRest&&(h.lastRest.id||h.lastRest.at)||h.predictorState.revision));}}});
 })(window);

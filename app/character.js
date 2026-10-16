@@ -178,6 +178,7 @@ function shortRest() {
 }
 
 function longRest() {
+  if(currentChar&&currentChar.dead){alert('Мёртвый персонаж не восстанавливается отдыхом.');return;}
   // Extra-классы Паразит/Призрак не получают HP от долгого отдыха:
   // их тело восстанавливается только собственными сверхъестественными/
   // биологическими механизмами.
@@ -214,7 +215,12 @@ function longRest() {
     window.WALTER_PARASITE_EXTRA.resetRestResources(currentChar);
   }
 
-  if (window.DNDPredictor && currentChar.predictorState) window.DNDPredictor.rest(currentChar, 'long', 'sheet:' + window.crypto.randomUUID());
+  currentChar.lastRest={type:'long',at:new Date().toISOString(),id:window.crypto.randomUUID()};
+  if(!suppressBodyHP&&Number(hpMax)>0)currentChar.hpMax=Number(hpMax);
+  var exhaustionRestKey='rest:'+currentChar.lastRest.id;
+  if(window.DNDRules&&window.DNDRules.restoreExhaustion)window.DNDRules.restoreExhaustion(currentChar,exhaustionRestKey);
+  if(!suppressBodyHP&&hpMax&&window.DNDRules&&window.DNDRules.effectiveMaxHp){currentChar.hpCurrent=window.DNDRules.effectiveMaxHp(currentChar);document.getElementById('hpCurrent').value=currentChar.hpCurrent;if(currentChar.hp&&typeof currentChar.hp==='object')currentChar.hp.current=currentChar.hpCurrent;}
+  if (window.DNDPredictor && currentChar.predictorState) window.DNDPredictor.rest(currentChar, 'long', exhaustionRestKey);
   if (typeof renderSpellSlots === 'function') renderSpellSlots();
   autoSaveCurrentCharacter();
   alert(suppressBodyHP

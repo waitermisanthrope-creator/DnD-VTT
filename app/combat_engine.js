@@ -194,7 +194,7 @@
       }
     } else if(damageTaken>0){
       // Temporary HP still means the creature took damage for concentration purposes.
-      concentration=concentrationCheck(target,damageTaken);
+      concentration=concentrationCheck(target,damageTaken,{tarotScene:opts.tarotScene});
     }
     if(global.DNDBloodHunter)global.DNDBloodHunter.afterDamage(target,r,opts);if(opts.__bloodCurseExposure)r.bloodCurseExposure=opts.__bloodCurseExposure;
     if(global.DNDClassFeatures&&global.DNDClassFeatures.onDamage)global.DNDClassFeatures.onDamage(target,{amount:damageTaken,hpDamage:hpDamage,damageType:type});
@@ -214,7 +214,7 @@
     con.active=true;con.spellId=spell.id||spell.spellId||spell.name||null;con.spellName=spell.name||spell.spellName||'';
     return con;
   }
-  function concentrationCheck(target,damage,opts){var con=concentrationState(target);if(!con.active||num(damage)<=0)return null;opts=opts||{};var dc=Math.max(10,Math.floor(num(damage)/2)),actor=opts.saveActor||target,r=savingThrow(actor,'con',dc,'normal',{concentrationCheck:true});if(!r.success)breakConcentration(target);return {dc:dc,roll:r.roll.result,total:r.total,bonus:r.bonus,success:r.success,spell:con.spellName};}
+  function concentrationCheck(target,damage,opts){var con=concentrationState(target);if(!con.active||num(damage)<=0)return null;opts=opts||{};var dc=Math.max(10,Math.floor(num(damage)/2)),actor=opts.saveActor||target,r=savingThrow(actor,'con',dc,'normal',{concentrationCheck:true,tarotScene:opts.tarotScene});if(!r.success)breakConcentration(target);return {dc:dc,roll:r.roll.result,total:r.total,bonus:r.bonus,success:r.success,spell:con.spellName};}
   // A health cost bypasses shields, resistances and damage reactions. It is
   // separate from incoming damage, while sharing the canonical HP writers.
   function payHitPointCost(target,amount){
@@ -225,6 +225,8 @@
   }
   function grantTemporaryHitPoints(target,amount){if(!target||!Number.isInteger(amount)||amount<0)return {ok:false};var before=readTempHp(target),after=Math.max(before,amount);if(('hpCurrent' in target||'hpMax' in target)&&(!target.hp||typeof target.hp!=='object'))target.hp={current:readHp(target),max:num(target.hpMax,target.maxHp),temp:before};writeTempHp(target,after);return {ok:true,added:after-before,tempHp:after};}
   function heal(target,amount,opts){
+    if(target&&target.dead)return {amount:0,hp:readHp(target),blocked:true,note:'Обычное лечение не воскрешает умершего.'};
+    var healingRedirect=global.DNDPredictorCards&&global.DNDPredictorCards.interceptHealing&&global.DNDPredictorCards.interceptHealing(target,amount,opts),originalHealingTarget=target;if(healingRedirect)target=healingRedirect.target;
     if(global.DNDPredictorCards&&global.DNDPredictorCards.noteAffect)global.DNDPredictorCards.noteAffect(target,opts);
     // Мёртвая оболочка Призрака не подлежит лечению никакими обычными
     // эффектами. Сам дух восстанавливается только собственными механиками.
@@ -233,10 +235,10 @@
     }
     // Accept both combatant fields (hp/maxHp/tempHp) and the canonical character fields (hpCurrent/hpMax/hpTemp).
     var characterShape=target && ('hpCurrent' in target || 'hpMax' in target);
-    var max=characterShape?num(target.hpMax,target.maxHp):num(target.maxHp,target.hp);
+    var baseMax=characterShape?num(target.hpMax,target.maxHp):num(target.maxHp,target.hp),max=global.DNDRules&&global.DNDRules.effectiveMaxHp?global.DNDRules.effectiveMaxHp(target):baseMax;
     var before=characterShape?num(target.hpCurrent,target.hp):num(target.hp);
     var after=Math.min(max,before+Math.max(0,num(amount)));
-    if(characterShape){target.hpCurrent=after;target.hpMax=max;if(!target.hp||typeof target.hp!=='object')target.hp={};target.hp.current=after;target.hp.max=max;target.hp.temp=num(target.hpTemp, target.hp.temp||0);}
+    if(characterShape){target.hpCurrent=after;target.hpMax=baseMax;if(!target.hp||typeof target.hp!=='object')target.hp={};target.hp.current=after;target.hp.max=baseMax;target.hp.temp=num(target.hpTemp, target.hp.temp||0);}
     else target.hp=after;
     // In 5e, regaining HP from 0 ends the unconscious/death-save state and clears
     // the accumulated death-save successes/failures. Do this only when the heal
@@ -245,21 +247,18 @@
     if(after>0) target.defeated=false;
     if(revivedFromZero){
       resetDeathSaves(target);
-      var conds=target.conditions||target.activeConditions;
-      if(conds){
-        var names=['Бессознателен','Unconscious','без сознания'];
-        names.forEach(function(name){var key=global.DNDRules&&global.DNDRules.normalizeConditionName?global.DNDRules.normalizeConditionName(name):name;if(conds[key]!==undefined)conds[key]=false;});
-      }
+      [target.conditions,target.activeConditions].forEach(function(conds){if(!conds)return;var names=['Бессознателен','Unconscious','без сознания'];names.forEach(function(name){var key=global.DNDRules&&global.DNDRules.normalizeConditionName?global.DNDRules.normalizeConditionName(name):name;if(conds[key]!==undefined)conds[key]=false;});});
     }
     if(global.DNDPredictorCards&&global.DNDPredictorCards.syncTarotEntity)global.DNDPredictorCards.syncTarotEntity(target,opts);
-    return {amount:after-before,hp:after,maxHp:max,revivedFromZero:revivedFromZero};
+    var healingResult={amount:after-before,hp:after,maxHp:max,revivedFromZero:revivedFromZero};if(healingRedirect){healingResult.redirectedFrom=originalHealingTarget.id;healingResult.targetId=target.id;healingResult.tarotReaction=healingRedirect.receipt;}return healingResult;
   }
   function cloneValue(v){try{return JSON.parse(JSON.stringify(v));}catch(e){return null;}}
-  function restoreObject(target,snapshot){if(!target||!snapshot)return;Object.keys(target).forEach(function(k){delete target[k];});Object.keys(snapshot).forEach(function(k){target[k]=cloneValue(snapshot[k]);});}
+  function restoreObject(target,snapshot){if(!target||!snapshot)return;Object.keys(target).forEach(function(k){if(!Object.prototype.hasOwnProperty.call(snapshot,k))delete target[k];});Object.keys(snapshot).forEach(function(k){var a=target[k],b=snapshot[k];if(a&&b&&typeof a==='object'&&typeof b==='object'&&Array.isArray(a)===Array.isArray(b))restoreObject(a,b);else target[k]=cloneValue(b);});if(Array.isArray(target))target.length=snapshot.length;}
   function applyDamageBatch(entries){
     entries=Array.isArray(entries)?entries:[];
     var snapshots=[],seen=[];
-    entries.forEach(function(e){var t=e&&e.target;if(!t||seen.indexOf(t)>=0)return;seen.push(t);snapshots.push({target:t,state:cloneValue(t)});});
+    function capture(t){if(!t||seen.indexOf(t)>=0)return;seen.push(t);snapshots.push({target:t,state:cloneValue(t)});}
+    entries.forEach(function(e){if(!e)return;capture(e.target);var source=e.opts&&e.opts.tarotScene||global.currentChar;if(global.DNDPredictorCards&&source&&source.predictorState)capture(source);});
     var results=[];
     try{
       entries.forEach(function(e){if(!e||!e.target)throw new Error('Batch damage target missing');results.push(applyDamage(e.target,e.amount,e.type,e.opts||{}));});
@@ -272,10 +271,11 @@
   function healBatch(entries){
     entries=Array.isArray(entries)?entries:[];
     var snapshots=[],seen=[];
-    entries.forEach(function(e){var t=e&&e.target;if(!t||seen.indexOf(t)>=0)return;seen.push(t);snapshots.push({target:t,state:cloneValue(t)});});
+    function capture(t){if(!t||seen.indexOf(t)>=0)return;seen.push(t);snapshots.push({target:t,state:cloneValue(t)});}
+    entries.forEach(function(e){if(!e)return;capture(e.target);var source=e.opts&&e.opts.tarotScene||global.currentChar;if(global.DNDPredictorCards&&source&&source.predictorState)capture(source);});
     var results=[];
     try{
-      entries.forEach(function(e){if(!e||!e.target)throw new Error('Batch heal target missing');results.push(heal(e.target,e.amount));});
+      entries.forEach(function(e){if(!e||!e.target)throw new Error('Batch heal target missing');results.push(heal(e.target,e.amount,e.opts||{}));});
       return {ok:true,results:results,count:results.length};
     }catch(err){
       snapshots.forEach(function(x){restoreObject(x.target,x.state);});
@@ -384,8 +384,8 @@
     if(global.WARDEN_MHP_2024&&target&&global.WARDEN_MHP_2024.incomingAttackModifiers(target,{}).removeAdvantage){featureMod.advantage=false;if(mode==='advantage')mode='normal';}
     if(global.DNDPredictorCards&&global.DNDPredictorCards.attackSight(attacker,target,opts).ignoreInvisibility)featureMod.ignoreInvisibility=true;
     if((opts.targetInvisible||target&&((target.conditions||{}).Невидим||(target.activeConditions||{}).Невидим))&&!featureMod.ignoreInvisibility)featureMod.disadvantage=true;
-    if(global.DNDPredictorCards){var tarotMod=global.DNDPredictorCards.attackModifiers(attacker,opts);featureMod.typedExtraDice=(featureMod.typedExtraDice||[]).concat(tarotMod.typedExtraDice);featureMod.bonusAttack=num(featureMod.bonusAttack)+num(tarotMod.bonusAttack);if(tarotMod.advantage)featureMod.advantage=true;if(tarotMod.disadvantage)featureMod.disadvantage=true;if(tarotMod.doubleDamage)featureMod.tarotDoubleDamage=true;if(tarotMod.forceCritical)opts.__tarotCritOnHit=true;if(tarotMod.ignoreCover)featureMod.ignoreCover=true;if(global.DNDPredictorCards.incoming(target,attacker,opts).disadvantage)featureMod.disadvantage=true;if(global.DNDPredictorCards.incoming(target,attacker,opts).advantage)featureMod.advantage=true;}
-    if(global.DNDPredictorCards&&attacker&&attacker.tarotEffects&&attacker.tarotEffects.length){var tarotAdv=mode==='advantage'||featureMod.advantage,tarotDis=mode==='disadvantage'||featureMod.disadvantage;mode=!!tarotAdv===!!tarotDis?'normal':tarotAdv?'advantage':'disadvantage';}else if(featureMod.advantage && featureMod.disadvantage) mode='normal'; else if(featureMod.advantage) mode='advantage'; else if(featureMod.disadvantage) mode='disadvantage';
+    if(global.DNDPredictorCards){var tarotMod=global.DNDPredictorCards.attackModifiers(attacker,opts);featureMod.typedExtraDice=(featureMod.typedExtraDice||[]).concat(tarotMod.typedExtraDice);featureMod.bonusAttack=num(featureMod.bonusAttack)+num(tarotMod.bonusAttack);if(tarotMod.advantage)featureMod.advantage=true;if(tarotMod.disadvantage)featureMod.disadvantage=true;if(tarotMod.doubleDamage)featureMod.tarotDoubleDamage=true;if(tarotMod.forceCritical)opts.__tarotCritOnHit=true;if(tarotMod.maximizeDamageDice)featureMod.maximizeDamageDice=true;if(tarotMod.ignoreCover)featureMod.ignoreCover=true;if(global.DNDPredictorCards.incoming(target,attacker,opts).disadvantage)featureMod.disadvantage=true;if(global.DNDPredictorCards.incoming(target,attacker,opts).advantage)featureMod.advantage=true;}
+    var tarotAdv=mode==='advantage'||featureMod.advantage,tarotDis=mode==='disadvantage'||featureMod.disadvantage;mode=!!tarotAdv===!!tarotDis?'normal':tarotAdv?'advantage':'disadvantage';
     if(global.DNDRules && attacker && attacker.stats && opts.useRules!==false){
       if(opts.weapon) { var wa=global.DNDRules.weaponAttack(attacker,opts.weapon,mode,{tarotModeApplied:true,conditionModeApplied:!!(attacker.tarotEffects&&attacker.tarotEffects.length)}); opts.__classFeatureMod=featureMod; opts.__attacker=attacker; opts.__forceCritical=!!featureMod.forceCritical; if(featureMod.unarmedDie&&(opts.unarmedAttack||opts.isUnarmed||opts.pugilistWeapon))opts.damage=featureMod.unarmedDie; return resolveAttack(target,wa.roll.result,wa.bonus+num(opts.attackBonusAdjustment),opts); }
     }

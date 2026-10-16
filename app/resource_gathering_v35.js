@@ -43,7 +43,7 @@ function rollDie(sides){return 1+Math.floor(Math.random()*sides);}
 function addExhaustion(amount,reason){
   const c=ensure(char()); if(!c)return {ok:false,error:'Нет активного персонажа'};
   const before=c.exhaustionLevel, after=Math.min(6,before+Math.max(0,Number(amount)||0));
-  c.exhaustionLevel=after;
+  if(global.DNDRules&&global.DNDRules.addExhaustion)global.DNDRules.addExhaustion(c,Math.max(0,Math.floor(Number(amount)||0)));else c.exhaustionLevel=after;
   c.resourceGathering.lastExhaustion={before,after,reason:reason||'Тяжёлая работа',at:Date.now()};
   return {before,after};
 }

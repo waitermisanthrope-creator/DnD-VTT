@@ -34,8 +34,8 @@
     return p&&Number.isFinite(p.x)&&Number.isFinite(p.y)?p:null;
   }
   function hp(t){return Number(t.hpCurrent!=null?t.hpCurrent:t.hp&&typeof t.hp==='object'?t.hp.current:t.hp);}
-  function maxHp(t){return Number(t.hpMax||t.maxHp||t.hp&&t.hp.max);}
-  function syncOwner(h){(h.initiativeTracker&&h.initiativeTracker.combatants||[]).forEach(function(t){if(owned(h,t)){t.hp=hp(h);t.maxHp=maxHp(h);t.tempHp=Number(h.hpTemp||h.tempHp)||0;['turnResources','tarotEffects','conditions','activeConditions','concentration','deathSaves','position','inspiration','tarotInspirationReady'].forEach(function(key){if(h[key]!=null)t[key]=copy(h[key]);});}});}
+  function maxHp(t){return g.DNDRules&&g.DNDRules.effectiveMaxHp?g.DNDRules.effectiveMaxHp(t):Number(t.hpMax||t.maxHp||t.hp&&t.hp.max);}
+  function syncOwner(h){(h.initiativeTracker&&h.initiativeTracker.combatants||[]).forEach(function(t){if(owned(h,t)){t.hp=hp(h);t.maxHp=Number(h.hpMax||h.maxHp||h.hp&&h.hp.max);if(h.exhaustionLevel!=null)t.exhaustionLevel=h.exhaustionLevel;t.tempHp=Number(h.hpTemp||h.tempHp)||0;['turnResources','tarotEffects','conditions','activeConditions','concentration','deathSaves','position','inspiration','tarotInspirationReady'].forEach(function(key){if(h[key]!=null)t[key]=copy(h[key]);});}});}
   function distance(h,a,b){if(a===b)return 0;var p=token(h,a),q=token(h,b);if(!p||!q)error('Для проверки расстояния нужны позиции участников на карте.');var cell=h.initiativeTracker&&h.initiativeTracker.battlefield&&h.initiativeTracker.battlefield.cellFt||5;return Math.hypot((p.x-q.x)*cell,(p.y-q.y)*cell,(Number(p.elevationFt)||0)-(Number(q.elevationFt)||0));}
   function target(h,req,range){var t=actor(h,req.targetId);if(distance(h,h,t)>range)error('Цель вне дальности карты.');return t;}
   function allies(h,t){return t===h||t.team==='party'||t.type==='hero';}
@@ -424,6 +424,10 @@
       applyWalk(draft,c,plan,true);syncOwner(draft);Object.assign(h,draft);return {ok:true,result:{movedFt:plan.cost,noOpportunityAttacks:true}};
     }catch(e){return {ok:false,reason:e.message};}
   }
+  HANDLERS.wands_10=function(h){
+    if(!g.DNDRules||!g.DNDRules.addExhaustion)error('Движок истощения недоступен.');var result=g.DNDRules.addExhaustion(h,1);if(!result.ok)error('Не удалось учесть истощение.');
+    if(!result.dead)put(h,'wands_10',{maximizeAttack:true,consumeOn:'attack',untilOwnEndAfterNext:true});return {exhaustion:result.after,dead:result.dead,maximizeNextAttack:!result.dead};
+  };
   HANDLERS.major_21=function(h){
     encounter(h);var r=h.turnResources,key=r.actions!=null?'actions':'action',n=r[key]===true?1:Number(r[key])||0;r[key]=n+1;
     put(h,'major_21',{timeStop:true,speedMultiplier:2,untilOwnEnd:true,combatOnly:true});return {extraAction:1,extraMovement:true,untilOwnEnd:true};
@@ -470,7 +474,7 @@
   function removeTarotEntity(h,id){var fight=h.initiativeTracker,bf=fight&&fight.battlefield;if(!bf)return;var active=fight.combatants[fight.activeIndex],activeId=active&&active.id;if(bf.entities)delete bf.entities[id];delete bf.tokens['bt_'+id];fight.combatants=fight.combatants.filter(function(t){return t.entityId!==id;});var at=fight.combatants.findIndex(function(t){return t.id===activeId;});fight.activeIndex=at>=0?at:Math.min(fight.activeIndex,Math.max(0,fight.combatants.length-1));}
   function syncTarotEntity(t,opts){
     if(!t||!t.entityId)return;var scene=opts&&opts.tarotScene||executionScene||g.currentChar,bf=scene&&scene.initiativeTracker&&scene.initiativeTracker.battlefield,e=bf&&bf.entities&&bf.entities[t.entityId];
-    if(!e||e.source!=='tarot:pentacles_10')return;e.hp=hp(t);e.maxHp=maxHp(t);e.tempHp=Number(t.hpTemp||t.tempHp)||0;e.conditions=copy(t.conditions||{});e.defeated=e.hp<=0;var p=bf.tokens['bt_'+e.id];if(p){p.hp=e.hp;p.maxHp=e.maxHp;}
+    if(!e||e.source!=='tarot:pentacles_10')return;e.hp=hp(t);e.maxHp=Number(t.hpMax||t.maxHp||t.hp&&t.hp.max);if(t.exhaustionLevel!=null)e.exhaustionLevel=t.exhaustionLevel;e.tempHp=Number(t.hpTemp||t.tempHp)||0;e.conditions=copy(t.conditions||{});e.defeated=e.hp<=0;var p=bf.tokens['bt_'+e.id];if(p){p.hp=e.hp;p.maxHp=e.maxHp;}
   }
   function canAncestorAttack(h,c,t){
     var bf=h&&h.initiativeTracker&&h.initiativeTracker.battlefield,a=bf&&bf.tokens&&bf.tokens['bt_'+c.entityId],b=bf&&token(h,t),active=h&&h.initiativeTracker&&h.initiativeTracker.combatants[h.initiativeTracker.activeIndex];
@@ -481,10 +485,10 @@
   function armReaction(h,id,req){
     req=req||{};var check=A.inspect(h),def=DEFS[id];if(!check.ok)return check;
     if(g.dndNetwork&&g.dndNetwork.state&&g.dndNetwork.state.connected)return {ok:false,reason:'Приватные сетевые реакции ещё не подключены.'};
-    if(!def||!['cups_05','pentacles_14','wands_02'].includes(id)||!check.state.hand.includes(id))return {ok:false,reason:'Нет поддержанной реакции в руке.'};
+    if(!def||!['cups_05','cups_13','pentacles_14','wands_02'].includes(id)||!check.state.hand.includes(id))return {ok:false,reason:'Нет поддержанной реакции в руке.'};
     if(typeof req.operationId!=='string'||!req.operationId||check.state.applications.some(function(x){return x.id===req.operationId;}))return {ok:false,reason:'Нужен новый ID реакции.'};
     if(req.expectedRevision!==check.state.revision)return {ok:false,reason:'Профиль изменился.'};
-    try{var t=id==='wands_02'?h:actor(h,req.targetId);if(id==='wands_02'){if((h.initiativeTracker&&h.initiativeTracker.combatants||[]).some(function(x){return owned(h,x);}))error('Двойка Жезлов готовится перед включением персонажа в инициативу.');}else if(allies(h,t)||!canSee(h,h,t)||distance(h,h,t)>(id==='cups_05'?30:60))error('Выберите видимого врага в пределах дальности реакции.');
+    try{var t=id==='wands_02'?h:actor(h,req.targetId);if(id==='cups_13'){if(!canSee(h,h,t)||maxHp(t)<=0||t.dead)error('Выберите видимое живое существо для перенаправления лечения.');}else if(id==='wands_02'){if((h.initiativeTracker&&h.initiativeTracker.combatants||[]).some(function(x){return owned(h,x);}))error('Двойка Жезлов готовится перед включением персонажа в инициативу.');}else if(allies(h,t)||!canSee(h,h,t)||distance(h,h,t)>(id==='cups_05'?30:60))error('Выберите видимого врага в пределах дальности реакции.');
       var draft=copy(h);if(id==='wands_02'&&!draft.turnResources)draft.turnResources={action:true,bonusAction:true,reaction:true,movement:Number(h.speed)||30};payAction(draft,'reaction',{cardId:id,event:def.trigger});
       if(id==='pentacles_14'&&(!h.coins||!Number.isFinite(h.coins.gp)||h.coins.gp<100))error('Для Короля Пентаклей нужно 100 золотых в кошельке.');
       h.classFeaturesState=h.classFeaturesState||{};h.classFeaturesState.predictorReaction={cardId:id,targetId:t.id,operationId:req.operationId};h.predictorState.revision++;return {ok:true};
@@ -497,8 +501,8 @@
   }
   function consumeEventReaction(scene,id,subject,fn){
     var pending=scene&&scene.classFeaturesState&&scene.classFeaturesState.predictorReaction;
-    if(!pending||pending.cardId!==id||!subject||String(pending.targetId)!==String(subject.id)||g.dndNetwork&&g.dndNetwork.state&&g.dndNetwork.state.connected)return null;
-    var check=A.inspect(scene);if(!check.ok||!check.state.hand.includes(id)||allies(scene,subject)||!canSee(scene,scene,subject)||distance(scene,scene,subject)>(id==='cups_05'?30:60))return null;
+    if(!pending||pending.cardId!==id||!subject||id!=='cups_13'&&String(pending.targetId)!==String(subject.id)||g.dndNetwork&&g.dndNetwork.state&&g.dndNetwork.state.connected)return null;
+    var check=A.inspect(scene);if(!check.ok||!check.state.hand.includes(id)||id!=='cups_13'&&allies(scene,subject)||!canSee(scene,scene,subject)||distance(scene,scene,subject)>(id==='cups_05'?30:60))return null;
     try{if(actor(scene,subject.id)!==subject)return null;}catch(_){return null;}
     var snapshot=copy(scene);try{
       payAction(scene,'reaction',{cardId:id,event:DEFS[id].trigger});delete scene.classFeaturesState.predictorReaction;
@@ -518,6 +522,30 @@
       if(!scene.coins||!Number.isFinite(scene.coins.gp)||scene.coins.gp<100)error('Недостаточно золота.');scene.coins.gp-=100;return {forcedFailure:true,goldSpent:100};
     });
   }
+  function healingTargetLegal(scene,caster,t,opts){
+    if(!t||t.dead||maxHp(t)<=0||['prop','object'].includes(t.type)||distance(scene,caster,t)>opts.rangeFt)return false;
+    if(opts.requiresSight&&t!==caster&&!canSee(scene,caster,t))return false;
+    if(opts.excludeUndeadConstructs&&/undead|нежит|construct|конструкт/i.test(t.creatureType||''))return false;
+    return !Array.isArray(opts.eligibleTargetIds)||opts.eligibleTargetIds.some(function(id){return String(id)===String(t.id);});
+  }
+  function interceptHealing(original,amount,opts){
+    opts=opts||{};if(opts.healingSpell!==true||!Number.isFinite(amount)||amount<=0||!Number.isFinite(opts.rangeFt)||opts.rangeFt<0)return null;
+    var scene=opts.tarotScene||executionScene||g.currentChar,pending=scene&&scene.classFeaturesState&&scene.classFeaturesState.predictorReaction;if(!pending||pending.cardId!=='cups_13')return null;
+    var caster=opts.caster,destination;try{if(!caster||actor(scene,caster.id)!==caster||actor(scene,original.id)!==original)return null;destination=actor(scene,pending.targetId);if(destination===original||!healingTargetLegal(scene,caster,destination,opts))return null;}catch(_){return null;}
+    var result=consumeEventReaction(scene,'cups_13',caster,function(){return {redirectTargetId:destination.id};});return result?{target:destination,receipt:result}:null;
+  }
+  // Records an already-cast healing spell, like the existing damage/heal logs.
+  // This is event resolution, never a free spell cast or slot/resource grant.
+  function resolveHealingEvent(h,req){
+    if(g.dndNetwork&&g.dndNetwork.state&&g.dndNetwork.state.connected)return {ok:false,reason:'Приватное сетевое исполнение пока не подключено.'};
+    var check=A.inspect(h);if(!check.ok)return check;var draft=copy(h);try{
+      if(!req||req.expectedRevision!==check.state.revision||typeof req.eventId!=='string'||!req.eventId||req.alreadyCast!==true||!Number.isInteger(req.amount)||req.amount<1||req.amount>10000||!Number.isFinite(req.rangeFt)||req.rangeFt<0||req.rangeFt>5280)error('Укажите параметры уже сотворённого заклинания лечения.');
+      draft.classFeaturesState=draft.classFeaturesState||{};var events=draft.classFeaturesState.predictorHealingEvents||[];if(events.includes(req.eventId))error('Лечение этого события уже учтено.');
+      var caster=actor(draft,req.casterId),targetActor=actor(draft,req.targetId),opts={tarotScene:draft,caster:caster,healingSpell:true,rangeFt:req.rangeFt,requiresSight:!!req.requiresSight,excludeUndeadConstructs:!!req.excludeUndeadConstructs};
+      if(hp(caster)<=0||!healingTargetLegal(draft,caster,targetActor,opts))error('Исходная цель недопустима для этого лечения.');
+      var result=g.DNDCombat.heal(targetActor,req.amount,opts);if(result.blocked)error(result.note||'Лечение недоступно.');draft.classFeaturesState.predictorHealingEvents=events.concat(req.eventId);draft.predictorState.revision++;syncOwner(draft);Object.assign(h,draft);return {ok:true,result:result};
+    }catch(e){return {ok:false,reason:e.message};}
+  }
   function interceptInitiative(h,bonus){
     var pending=h.classFeaturesState&&h.classFeaturesState.predictorReaction,check=A.inspect(h);
     if(!check.ok||!pending||pending.cardId!=='wands_02'||!check.state.hand.includes('wands_02')||(h.initiativeTracker&&h.initiativeTracker.combatants||[]).some(function(x){return owned(h,x);})||g.dndNetwork&&g.dndNetwork.state&&g.dndNetwork.state.connected)return null;
@@ -527,7 +555,7 @@
       var recorded=A.recordApplication(h,'wands_02',pending.operationId,h.predictorState.revision);if(!recorded.ok)error(recorded.reason);delete h.classFeaturesState.predictorReaction;h.tarotLastInitiative=copy(result);return result;
     }catch(e){restoreInPlace(h,snapshot);return null;}
   }
-  HANDLERS.wands_02=HANDLERS.cups_05=HANDLERS.pentacles_14=function(){error('Реакция применяется только боевым событием.');};
+  HANDLERS.cups_13=HANDLERS.wands_02=HANDLERS.cups_05=HANDLERS.pentacles_14=function(){error('Реакция применяется только боевым событием.');};
   function definition(id){var d=DEFS[id];return d?Object.assign({},d,{implemented:!!HANDLERS[id]}):null;}
   function play(h,cardId,req){
     req=req||{};var check=A.inspect(h),def=DEFS[cardId];if(!check.ok)return check;if(!def)return {ok:false,reason:'Неизвестная карта.'};if(!HANDLERS[cardId])return {ok:false,reason:'Для этой карты ещё не подключён полный обработчик: '+def.name};if(def.action==='reaction')return {ok:false,reason:'Сначала подготовьте реакцию: она сработает на настоящее событие.'};
@@ -550,7 +578,8 @@
     effects(h).filter(function(e){return active(h,e);}).forEach(function(e){Object.keys(e.abilityChanges||{}).forEach(function(key){var value=Number(out[key])||10,delta=e.abilityChanges[key],next=value+delta;if(delta>0&&e.abilityMax&&e.abilityMax[key]!=null)next=Math.max(value,Math.min(e.abilityMax[key],next));if(delta<0&&e.abilityMin&&e.abilityMin[key]!=null)next=Math.min(value,Math.max(e.abilityMin[key],next));out[key]=next;});});
     effects(h).forEach(function(e){if(active(h,e)&&e.strengthFloor)out.str=Math.max(Number(out.str)||10,e.strengthFloor);});return out;
   }
-  function d20Modifiers(h,kind,ctx){var out={advantage:false,disadvantage:false};ctx=ctx||{};if(h&&h.tarotInspirationReady&&['attack','check','save'].includes(kind))out.advantage=true;effects(h).forEach(function(e){
+  function d20Modifiers(h,kind,ctx){var out={advantage:false,disadvantage:false};ctx=ctx||{};if(h&&h.tarotInspirationReady&&['attack','check','save'].includes(kind))out.advantage=true;if(g.DNDRules&&g.DNDRules.getExhaustion&&(g.DNDRules.getExhaustion(h)>=3||kind==='check'&&g.DNDRules.getExhaustion(h)>=1))out.disadvantage=true;
+    effects(h).forEach(function(e){
     if(!active(h,e))return;
     if(['attack','check','save'].includes(kind)&&e.fortuneMode)out[e.fortuneMode]=true;
     if((kind==='check'||kind==='save')&&ctx.stat==='str'&&e.strengthAdvantage)out.advantage=true;
@@ -558,7 +587,7 @@
   });return out;}
   function noteD20Roll(h,kind){var revealed=null;if(h&&h.tarotInspirationReady&&['attack','check','save'].includes(kind)){h.tarotInspirationReady=false;h.inspiration=false;}effects(h).forEach(function(e){if(active(h,e)&&e.fortuneMode&&['attack','check','save'].includes(kind)){e.fortuneRevealed=true;revealed=e.fortuneMode;}});syncOwner(h);return revealed;}
   function checkModifiers(h,ctx){var out=d20Modifiers(h,'check',ctx);out.bonus=0;if(ctx&&ctx.tool&&!ctx.proficient&&effects(h).some(function(e){return active(h,e)&&e.toolMastery;})){out.bonus=g.DNDRules?g.DNDRules.profBonus(h):2;out.fullProficiencyBonus=true;}return out;}
-  function attackModifiers(h,ctx){var out=Object.assign({typedExtraDice:[],bonusAttack:teamBonus(h,ctx),doubleDamage:highGround(h,ctx&&ctx.target,ctx)},d20Modifiers(h,'attack',ctx));if(sunBlinded(sceneFor(h,ctx),h)&&!(ctx&&ctx.target&&canSee(sceneFor(h,ctx),h,ctx.target)))out.disadvantage=true;if(bondNear(sceneFor(h,ctx),h))out.advantage=true;if(effects(h).length&&g.DNDRules){var cm=g.DNDRules.conditionModifiers(h);if(cm.advantage)out.advantage=true;if(cm.disadvantage)out.disadvantage=true;}effects(h).forEach(function(e){if(!active(h,e))return;if(ctx&&ctx.opportunityAttack&&e.opportunityAdvantage)out.advantage=true;if(e.attackDisadvantage||e.blinded||e.blindBeyond&&!(ctx&&ctx.target&&canSee(sceneFor(h,ctx),h,ctx.target)))out.disadvantage=true;if(e.forceCritical)out.forceCritical=true;if(e.ignoreCover)out.ignoreCover=true;if(e.typedDice&&(!e.weaponOnly||(ctx.weaponAttack||ctx.weapon)))out.typedExtraDice.push({dice:e.typedDice,type:e.damageType});});return out;}
+  function attackModifiers(h,ctx){var out=Object.assign({typedExtraDice:[],bonusAttack:teamBonus(h,ctx),doubleDamage:highGround(h,ctx&&ctx.target,ctx)},d20Modifiers(h,'attack',ctx));if(sunBlinded(sceneFor(h,ctx),h)&&!(ctx&&ctx.target&&canSee(sceneFor(h,ctx),h,ctx.target)))out.disadvantage=true;if(bondNear(sceneFor(h,ctx),h))out.advantage=true;if(effects(h).length&&g.DNDRules){var cm=g.DNDRules.conditionModifiers(h);if(cm.advantage)out.advantage=true;if(cm.disadvantage)out.disadvantage=true;}effects(h).forEach(function(e){if(!active(h,e))return;if(ctx&&ctx.opportunityAttack&&e.opportunityAdvantage)out.advantage=true;if(e.attackDisadvantage||e.blinded||e.blindBeyond&&!(ctx&&ctx.target&&canSee(sceneFor(h,ctx),h,ctx.target)))out.disadvantage=true;if(e.forceCritical)out.forceCritical=true;if(e.maximizeAttack)out.maximizeDamageDice=true;if(e.ignoreCover)out.ignoreCover=true;if(e.typedDice&&(!e.weaponOnly||(ctx.weaponAttack||ctx.weapon)))out.typedExtraDice.push({dice:e.typedDice,type:e.damageType});});return out;}
   function afterAttack(h,result){h.tarotEffects=effects(h).filter(function(e){return !(e.consumeOn==='attack'||e.consumeOn==='hit'&&result.hit);});syncOwner(h);}
   function hostileAction(h){
     var ended=effects(h).filter(function(e){return e.endsOnHostile;});if(!ended.length)return;
@@ -596,7 +625,7 @@
   function resistant(h,type){return effects(h).some(function(e){return active(h,e)&&Array.isArray(e.resist)&&e.resist.includes(type);});}
   function ignoresResistance(h,type,ctx){return !!(ctx&&ctx.weaponAttack&&['дробящий','колющий','рубящий','bludgeoning','piercing','slashing'].includes(type)&&effects(h).some(function(e){return active(h,e)&&e.ignorePhysicalResistance;}));}
   function immuneCondition(h,condition){return effects(h).some(function(e){return active(h,e)&&Array.isArray(e.immuneConditions)&&e.immuneConditions.includes(condition);});}
-  function speedMultiplier(h){return effects(h).reduce(function(n,e){return active(h,e)&&e.speedMultiplier!=null?n*e.speedMultiplier:n;},1);}
+  function speedMultiplier(h){var ex=g.DNDRules&&g.DNDRules.getExhaustion?g.DNDRules.getExhaustion(h):0;return effects(h).reduce(function(n,e){return active(h,e)&&e.speedMultiplier!=null?n*e.speedMultiplier:n;},ex>=5?0:ex>=2?0.5:1);}
   function blocked(h,kind){if(timeFrozen(h)&&['action','bonus','reaction','movement','attack','spell','check'].includes(kind))return true;return effects(h).some(function(e){return active(h,e)&&(e.sleep&&['action','bonus','reaction','movement','check'].includes(kind)||e.noActions&&(kind==='action'||kind==='bonus')||e.noMainAction&&kind==='action'||e.noReactions&&kind==='reaction'||e.noMovement&&kind==='movement'||e.noHide&&kind==='hide'||e.noDisengage&&kind==='disengage'||e.noHelp&&kind==='help'||e.noTransfer&&kind==='transfer'||e.noAttacks&&kind==='attack'||e.noSpells&&kind==='spell');});}
   function canMove(h,from,to,context){
     if(blocked(h,'movement'))return false;
@@ -642,5 +671,5 @@
   function turnEnd(h){actors(h).forEach(function(t){t.tarotEffects=effects(t).filter(function(e){if(t===h&&e.repeatSave){var frightened=!!Object.assign({},h.conditions,h.activeConditions)['Испуган'];if(!frightened||g.DNDCombat.savingThrow(h,e.repeatSave,e.saveDC).success){expireEffect(h,e);return false;}}if(t===h&&e.restrictionUntilOwnEnd){delete e.noHide;delete e.noDisengage;delete e.restrictionUntilOwnEnd;}if(e.untilOwnerEnd===h.id||t===h&&(e.untilOwnEnd||e.untilOwnEndAfterNext&&e.startedNext)){expireEffect(t,e);return false;}return true;});});syncOwner(h);}
   function advanceTime(h,seconds,context){if(!Number.isFinite(seconds)||seconds<0)return {ok:false};actors(h).forEach(function(t){advanceInventory(t,seconds);t.tarotEffects=effects(t).filter(function(e){if(e.seconds!=null&&!(context&&context.round&&(e.sleep||e.untilOwnStart))){e.seconds-=seconds;if(e.seconds<=0){expireEffect(t,e);if(e.concentration&&t.concentration&&t.concentration.spellId==='tarot:'+e.id)g.DNDCombat.breakConcentration(t);return false;}}return true;});});syncOwner(h);return {ok:true};}
   function longRestEffects(h){advanceTime(h,28800);combatEnd(h);actors(h).forEach(function(t){if(t.concentration&&String(t.concentration.spellId||'').startsWith('tarot:'))g.DNDCombat.breakConcentration(t);});syncOwner(h);}
-  g.DNDPredictorCards={interceptInitiative:interceptInitiative,timeFrozen:timeFrozen,noteAffect:noteAffect,cannotLie:cannotLie,deceptionBlocked:deceptionBlocked,syncTarotEntity:syncTarotEntity,canAncestorAttack:canAncestorAttack,spendCoin:spendCoin,armReaction:armReaction,cancelReaction:cancelReaction,interceptAttack:interceptAttack,interceptSave:interceptSave,hasInventoryEffects:hasInventoryEffects,inventoryEntries:inventoryEntries,creationOptions:creationOptions,claimReward:claimReward,moveReward:moveReward,definitions:DEFS,definition:definition,play:play,consumeMaximum:consumeMaximum,onCondition:onCondition,canCast:canCast,canSee:canSee,attackSight:attackSight,revealedSight:revealedSight,shareDamage:shareDamage,recordDamage:recordDamage,peaceBlocked:peaceBlocked,sceneFrom:sceneFrom,setElevation:setElevation,noteMove:noteMove,prepareInspiration:prepareInspiration,setCeiling:setCeiling,modifyStats:modifyStats,d20Modifiers:d20Modifiers,noteD20Roll:noteD20Roll,checkModifiers:checkModifiers,attackModifiers:attackModifiers,afterAttack:afterAttack,afterDamage:afterDamage,incoming:incoming,asleep:asleep,immune:immune,resistant:resistant,ignoresResistance:ignoresResistance,immuneCondition:immuneCondition,speedMultiplier:speedMultiplier,blocked:blocked,canMove:canMove,beforeAttack:beforeAttack,preventsOpportunity:preventsOpportunity,opportunityAttack:opportunityAttack,hostileAction:hostileAction,roundStart:roundStart,spendReaction:spendReaction,turnStart:turnStart,participantTurnStart:participantTurnStart,combatEnd:combatEnd,turnEnd:turnEnd,advanceTime:advanceTime,longRestEffects:longRestEffects};
+  g.DNDPredictorCards={interceptHealing:interceptHealing,resolveHealingEvent:resolveHealingEvent,interceptInitiative:interceptInitiative,timeFrozen:timeFrozen,noteAffect:noteAffect,cannotLie:cannotLie,deceptionBlocked:deceptionBlocked,syncTarotEntity:syncTarotEntity,canAncestorAttack:canAncestorAttack,spendCoin:spendCoin,armReaction:armReaction,cancelReaction:cancelReaction,interceptAttack:interceptAttack,interceptSave:interceptSave,hasInventoryEffects:hasInventoryEffects,inventoryEntries:inventoryEntries,creationOptions:creationOptions,claimReward:claimReward,moveReward:moveReward,definitions:DEFS,definition:definition,play:play,consumeMaximum:consumeMaximum,onCondition:onCondition,canCast:canCast,canSee:canSee,attackSight:attackSight,revealedSight:revealedSight,shareDamage:shareDamage,recordDamage:recordDamage,peaceBlocked:peaceBlocked,sceneFrom:sceneFrom,setElevation:setElevation,noteMove:noteMove,prepareInspiration:prepareInspiration,setCeiling:setCeiling,modifyStats:modifyStats,d20Modifiers:d20Modifiers,noteD20Roll:noteD20Roll,checkModifiers:checkModifiers,attackModifiers:attackModifiers,afterAttack:afterAttack,afterDamage:afterDamage,incoming:incoming,asleep:asleep,immune:immune,resistant:resistant,ignoresResistance:ignoresResistance,immuneCondition:immuneCondition,speedMultiplier:speedMultiplier,blocked:blocked,canMove:canMove,beforeAttack:beforeAttack,preventsOpportunity:preventsOpportunity,opportunityAttack:opportunityAttack,hostileAction:hostileAction,roundStart:roundStart,spendReaction:spendReaction,turnStart:turnStart,participantTurnStart:participantTurnStart,combatEnd:combatEnd,turnEnd:turnEnd,advanceTime:advanceTime,longRestEffects:longRestEffects};
 })(window);

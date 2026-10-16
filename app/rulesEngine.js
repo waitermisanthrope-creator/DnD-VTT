@@ -201,6 +201,21 @@
     return mod(stats[statKey]) + (proficient ? profBonus(hero) : 0);
   }
 
+  function getExhaustion(h){return Math.max(0,Math.min(6,Math.floor(Number(h&&h.exhaustionLevel)||0)));}
+  function effectiveMaxHp(h){var base=Number(h&&(h.hpMax!=null?h.hpMax:h.maxHp!=null?h.maxHp:h.hp&&typeof h.hp==='object'?h.hp.max:h.hp));if(!Number.isFinite(base))return 0;return getExhaustion(h)>=4?Math.floor(base/2):base;}
+  function clampExhaustionHp(h){
+    if(getExhaustion(h)<4)return;var cap=effectiveMaxHp(h),n=Number(h.hpCurrent!=null?h.hpCurrent:h.hp&&typeof h.hp==='object'?h.hp.current:h.hp);
+    if(Number.isFinite(n)&&n>cap){if(h.hpCurrent!=null)h.hpCurrent=cap;if(h.hp&&typeof h.hp==='object')h.hp.current=cap;else if(h.hpCurrent==null)h.hp=cap;}
+  }
+  function addExhaustion(h,amount){
+    if(!h||!Number.isInteger(amount)||amount<0)return {ok:false};var before=getExhaustion(h);h.exhaustionLevel=Math.min(6,before+amount);clampExhaustionHp(h);
+    if(h.exhaustionLevel>=6){h.dead=true;h.defeated=true;if(h.hpCurrent!=null)h.hpCurrent=0;if(h.hp&&typeof h.hp==='object')h.hp.current=0;else if(h.hpCurrent==null)h.hp=0;h.deathSaves={successes:0,failures:3};h.conditions=h.conditions||{};h.conditions['Бессознателен']=true;if(global.DNDCombat)global.DNDCombat.breakConcentration(h);}
+    return {ok:true,before:before,after:h.exhaustionLevel,dead:!!h.dead};
+  }
+  function restoreExhaustion(h,restId){
+    if(!h||h.dead||!getExhaustion(h)||typeof restId!=='string'||!restId)return;
+    var state=h.classFeaturesState||(h.classFeaturesState={});if(state.exhaustionRestId===restId)return;h.exhaustionLevel=getExhaustion(h)-1;state.exhaustionRestId=restId;clampExhaustionHp(h);
+  }
   function conditionModifiers(hero) {
     var result = { attack: 0, attacksAgainst: 0, checks: 0, speed: null, autoFailStrDex: false, advantage: false, disadvantage: false };
     var active = (hero && (hero.activeConditions || hero.conditions)) || {};
@@ -213,6 +228,7 @@
       if (c.speed===0) result.speed=0;
       result.autoFailStrDex=result.autoFailStrDex||!!c.autoFailStrDex;
     });
+    if(getExhaustion(hero)>=5)result.speed=0;
     result.attack = result.disadvantage ? -1 : 0;
     if(global.DNDPredictorCards&&global.DNDPredictorCards.asleep(hero)){result.disadvantage=true;result.attack=-1;result.autoFailStrDex=true;}
     return result;
@@ -243,6 +259,7 @@
 
   function rollD20(mode, roller, actor, context) {
     context=context||{};
+    if(actor&&!global.DNDPredictorCards&&(getExhaustion(actor)>=3||context.kind==='check'&&getExhaustion(actor)>=1))mode=mode==='advantage'?'normal':'disadvantage';
     if(actor&&global.DNDPredictorCards&&!context.tarotModeApplied){
       var tarot=global.DNDPredictorCards.d20Modifiers(actor,context.kind,context),adv=mode==='advantage'||tarot.advantage,dis=mode==='disadvantage'||tarot.disadvantage;
       mode=adv===dis?'normal':adv?'advantage':'disadvantage';
@@ -363,7 +380,7 @@
   }
 
   global.DNDRules = {
-    VERSION: '2.0.0', STAT_ALIASES: STAT_ALIASES, CONDITIONS: CONDITIONS,
+    getExhaustion:getExhaustion,effectiveMaxHp:effectiveMaxHp,addExhaustion:addExhaustion,restoreExhaustion:restoreExhaustion,VERSION: '2.0.0', STAT_ALIASES: STAT_ALIASES, CONDITIONS: CONDITIONS,
     normalize: normalize, getStats: getStats, mod: mod, totalLevel: totalLevel, profBonus: profBonus,
     classKey: classKey, classLevel: classLevel, getSkillBonus: getSkillBonus, getSaveBonus: getSaveBonus,
     conditionModifiers: conditionModifiers, normalizeConditionName: normalizeConditionName, attackAgainstMode: attackAgainstMode, resolveRollMode: resolveRollMode, rollD20: rollD20,

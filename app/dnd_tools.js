@@ -313,6 +313,7 @@ function shortRestCharacter() {
 
 function longRestCharacter() {
   if (!currentChar) return;
+  if(currentChar.dead){alert('Мёртвый персонаж не восстанавливается отдыхом.');return;}
   if (window.dndNetwork && window.dndNetwork.state && window.dndNetwork.state.role === 'player' && window.dndNetwork.state.connected) { window.dndNetwork.playerAction('LONG_REST', {}); alert('Длинный отдых отправлен мастеру.'); return; }
   currentChar.hpCurrent = currentChar.hpMax;
   if (currentChar.hp) {
@@ -341,8 +342,11 @@ function longRestCharacter() {
     }
     currentChar.defeated = false;
   }
-  currentChar.lastRest = { type: 'long', at: new Date().toISOString() };
-  if (window.DNDPredictor && currentChar.predictorState) window.DNDPredictor.rest(currentChar, 'long', 'tools:' + window.crypto.randomUUID());
+  currentChar.lastRest = { type: 'long', at: new Date().toISOString(),id:window.crypto.randomUUID() };
+  var exhaustionRestKey='rest:'+currentChar.lastRest.id;
+  if(window.DNDRules&&window.DNDRules.restoreExhaustion)window.DNDRules.restoreExhaustion(currentChar,exhaustionRestKey);
+  if(window.DNDRules&&window.DNDRules.effectiveMaxHp){currentChar.hpCurrent=window.DNDRules.effectiveMaxHp(currentChar);if(currentChar.hp&&typeof currentChar.hp==='object')currentChar.hp.current=currentChar.hpCurrent;}
+  if (window.DNDPredictor && currentChar.predictorState) window.DNDPredictor.rest(currentChar, 'long', exhaustionRestKey);
   _dndSave();
   if (typeof renderSpellSlots === 'function') renderSpellSlots();
   var hp = document.getElementById('hpCurrent');
