@@ -93,8 +93,8 @@
   }
   function coverText(v){return v===3?'полное укрытие':v===2?'укрытие 3/4':v===1?'укрытие 1/2':'нет укрытия';}
   function tokenAtCell(x,y){var b=ensureBattlefield();if(!b)return null;return tokenList().find(function(t){return x>=t.x&&x<t.x+t.size&&y>=t.y&&y<t.y+t.size;})||null;}
-  function aoeContainsPoint(shape,origin,point,radiusFt,direction){
-    var b=ensureBattlefield(),cellFt=b?(isFinite(Number(b.cellFt))?Number(b.cellFt):CELL_FT):CELL_FT;
+  function aoeContainsPoint(shape,origin,point,radiusFt,direction,battlefield){
+    var b=battlefield||ensureBattlefield(),cellFt=b?(isFinite(Number(b.cellFt))?Number(b.cellFt):CELL_FT):CELL_FT;
     shape=String(shape||'circle').toLowerCase();radiusFt=Math.max(0,isFinite(Number(radiusFt))?Number(radiusFt):20);
     var ox=origin.x+0.5,oy=origin.y+0.5,px=point.x+0.5,py=point.y+0.5,dx=px-ox,dy=py-oy;
     var dist=Math.sqrt(dx*dx+dy*dy)*cellFt;
@@ -102,6 +102,7 @@
     if(shape==='circle')return dist<=radiusFt;
     var dir=direction||{x:dx,y:dy},vx=Number(dir.x)||0,vy=Number(dir.y)||0,len=Math.sqrt(vx*vx+vy*vy)||1;
     var forward=(dx*vx+dy*vy)/len*cellFt,side=Math.abs(dx*vy-dy*vx)/len*cellFt;
+    if(shape==='forward-cube')return forward>=0&&forward<=radiusFt&&side<=radiusFt/2;
     if(shape==='line')return forward>=0&&forward<=radiusFt&&side<=cellFt*0.5;
     if(shape==='cone')return forward>=0&&forward<=radiusFt&&side<=Math.max(cellFt,forward);
     return dist<=radiusFt;

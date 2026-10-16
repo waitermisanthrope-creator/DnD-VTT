@@ -202,13 +202,13 @@
     }
     if(global.DNDBloodHunter)global.DNDBloodHunter.afterDamage(target,r,opts);if(opts.__bloodCurseExposure)r.bloodCurseExposure=opts.__bloodCurseExposure;
     if(global.DNDClassFeatures&&global.DNDClassFeatures.onDamage)global.DNDClassFeatures.onDamage(target,{amount:damageTaken,hpDamage:hpDamage,damageType:type});
-    if(global.DNDPredictorCards)global.DNDPredictorCards.afterDamage(target,{damageTaken:damageTaken,hpDamage:hpDamage,previousHp:hp,instantDeath:instantDeath});
+    if(global.DNDPredictorCards)global.DNDPredictorCards.afterDamage(target,{damageTaken:damageTaken,hpDamage:hpDamage,previousHp:hp,instantDeath:instantDeath,tarotScene:opts.tarotScene});
     if(global.DNDPredictorCards&&global.DNDPredictorCards.syncTarotEntity)global.DNDPredictorCards.syncTarotEntity(target,opts);
     if(global.DNDPredictorCards)global.DNDPredictorCards.recordDamage(target,{damageTaken:damageTaken,previousHp:hp},opts);
     return {amount:r.amount+wardAbsorbed,hpDamage:hpDamage,tempAbsorbed:absorbed,wardAbsorbed:wardAbsorbed,hp:readHp(target),tempHp:readTempHp(target),defeated:target.defeated,deathSaveFailures:deathSaveFailures,instantDeath:instantDeath,note:r.note,damageParts:resolvedParts.map(function(p){return {raw:num(p.raw),amount:num(p.amount),damageType:p.damageType,note:p.note||'',wardAbsorbed:num(p.wardAbsorbed)};}),concentration:concentration,bloodRiteRevival:bloodRiteRevival,bloodCurseExposure:opts.__bloodCurseExposure||null,wardenSurvive:wardenSurvive,reaction:reactionResult||null,reactionWindow:reaction&&!reactionResult?reaction.window:null};
   }
   function concentrationState(target){target.concentration=target.concentration||{active:false,spellId:null,spellName:''};return target.concentration;}
-  function breakConcentration(target){var con=concentrationState(target);con.active=false;con.spellId=null;con.spellName='';return con;}
+  function breakConcentration(target){var con=concentrationState(target),oldId=con.spellId;con.active=false;con.spellId=null;con.spellName='';delete con.mageSeconds;if(global.DNDPredictorCards&&global.DNDPredictorCards.endSpellConcentration)global.DNDPredictorCards.endSpellConcentration(target,oldId);return con;}
   function beginConcentration(target,spell){
     var con=concentrationState(target);
     if(!spell||!spell.concentration){breakConcentration(target);return con;}
@@ -227,7 +227,7 @@
     writeHp(target,readHp(target)-amount);
     return {ok:true,amount:amount,hp:readHp(target)};
   }
-  function grantTemporaryHitPoints(target,amount){if(!target||!Number.isInteger(amount)||amount<0)return {ok:false};var before=readTempHp(target),after=Math.max(before,amount);if(('hpCurrent' in target||'hpMax' in target)&&(!target.hp||typeof target.hp!=='object'))target.hp={current:readHp(target),max:num(target.hpMax,target.maxHp),temp:before};writeTempHp(target,after);return {ok:true,added:after-before,tempHp:after};}
+  function grantTemporaryHitPoints(target,amount,opts){if(!target||!Number.isInteger(amount)||amount<0)return {ok:false};var before=readTempHp(target),after=Math.max(before,amount);if(('hpCurrent' in target||'hpMax' in target)&&(!target.hp||typeof target.hp!=='object'))target.hp={current:readHp(target),max:num(target.hpMax,target.maxHp),temp:before};writeTempHp(target,after);if(amount>=before){var state=target.classFeaturesState||(target.classFeaturesState={});if(opts&&opts.sourceId)state.tarotTempSource=opts.sourceId;else delete state.tarotTempSource;}if(global.DNDPredictorCards)global.DNDPredictorCards.syncTarotEntity(target);return {ok:true,added:after-before,tempHp:after};}
   function heal(target,amount,opts){
     if(global.DNDPredictorCards){target=global.DNDPredictorCards.executionActor(target,opts);if(opts&&opts.caster)opts=Object.assign({},opts,{caster:global.DNDPredictorCards.executionActor(opts.caster,opts)});}
     if(target&&target.dead)return {amount:0,hp:readHp(target),blocked:true,note:'Обычное лечение не воскрешает умершего.'};
@@ -312,11 +312,12 @@
     var roll=tarotForced?{result:0,critical:false,forced:true,mode:'forced'}:global.DNDRules ? global.DNDRules.rollD20(featureMode,null,actor,{kind:'save',stat:stat,tarotModeApplied:true,autoFailed:autoFail}) : {result:rollDie(20),critical:false};
     var saveDebuffs=actor&&actor.classFeaturesState&&actor.classFeaturesState.alchemistDebuffs||{};
     bonus-=num(saveDebuffs.savePenalty,0);
-    bonus+=num(ctx.extraSaveBonus);
+    bonus+=num(ctx.extraSaveBonus);if(!autoFail&&global.DNDPredictorCards)bonus+=global.DNDPredictorCards.mageD20Bonus(actor,'save');
     var total=roll.result+bonus;
     var success=autoFail?false:total>=num(dc);var evasion=!!(sm&&sm.evasion&&String(stat).toLowerCase()==='dex'&&success&&!autoFail);
     var mettle=!!(sm&&sm.mettle&&success&&!autoFail);
     var saveResult={tarotReaction:tarotForced||null,stat:stat,dc:num(dc),bonus:bonus,roll:roll,total:total,success:success,autoFailed:autoFail,evasion:evasion,mettle:mettle,classFeatureNotes:sm&&sm.notes||[]};
+    if(sm&&sm.evasion&&ctx.halfDamageEffect&&!saveResult.success&&!autoFail)saveResult.evasionHalfOnFailure=true;
     if(ctx.defenderReaction==='wardenLegendaryResistance'&&global.WARDEN_MHP_2024)saveResult.wardenLegendaryResistance=global.WARDEN_MHP_2024.useFeature(actor,'legendaryResistance',{saveResult:saveResult});
     saveResult.mettle=!!(sm&&sm.mettle&&saveResult.success&&!autoFail);
     if(global.DNDClassFeatures&&global.DNDClassFeatures.onSavingThrow)global.DNDClassFeatures.onSavingThrow(actor,{success:saveResult.success,total:total,dc:num(dc)});
@@ -410,7 +411,7 @@
     if(roll.result>=criticalRange&&roll.result!==1)roll.critical=true;
     var classBonus=opts&&opts.__classFeatureMod?num(opts.__classFeatureMod.bonusAttack):0;
     var attackerDebuffs=opts&&opts.__attacker&&opts.__attacker.classFeaturesState&&opts.__attacker.classFeaturesState.alchemistDebuffs||{};
-    classBonus-=num(attackerDebuffs.attackPenalty,0);
+    classBonus-=num(attackerDebuffs.attackPenalty,0);if(global.DNDPredictorCards)classBonus+=global.DNDPredictorCards.mageD20Bonus(opts&&opts.__attacker,'attack');
     var witchAttackPenalty=target&&target.witchAttackPenaltyDice?rollDie(6):0;
     var total=d20+bonus+classBonus-witchAttackPenalty;var bloodCurseReaction=null;if(global.DNDBloodHunter){total-=global.DNDBloodHunter.cursedAttackPenalty(opts.__attacker);if(opts.defenderReaction==='blood-curse-eyeless'){var curseActor=opts.bloodCurseActor||target,pendingBloodAttack={total:total,critical:!!roll.critical};bloodCurseReaction=global.DNDBloodHunter.useFeature(curseActor,'bloodMaledict',{curse:'eyeless',target:opts.__attacker,attackResult:pendingBloodAttack,amplify:!!opts.bloodCurseAmplify,distanceFt:curseActor===target?opts.distanceFt:opts.bloodCurseDistanceFt,visible:opts.visible!==false});total=pendingBloodAttack.total;}}
     var alchemistDebuffs=target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs||{};
@@ -518,7 +519,7 @@
         }
         if(num(fm.bonusDamage)){damageParts.push({amount:num(fm.bonusDamage),damageType:opts.damageType||'',label:'Бонус урона'});}
         if(opts.deferDamage){out.damageResult=null;out.pendingDamage={amount:out.damage.total,damageType:opts.damageType||'',context:Object.assign({},damageOpts,{damageParts:damageParts,isBomb:!!opts.isBomb,attackerId:opts.__attacker&&(opts.__attacker.id||opts.__attacker.entityId)||null})};}
-        else out.damageResult=applyDamage(target,out.damage.total,opts.damageType||'',Object.assign({},damageOpts,{damageParts:damageParts,ignoreResistance:!!fm.ignoreResistance,magicalAttack:!!fm.magicalAttack,immunityBecomesResistance:!!fm.immunityBecomesResistance,isBomb:!!opts.isBomb,attackerId:opts.__attacker&&(opts.__attacker.id||opts.__attacker.entityId)||null}));
+        else out.damageResult=applyDamage(target,out.damage.total,opts.damageType||'',Object.assign({},damageOpts,{damageParts:damageParts,ignoreResistance:!!fm.ignoreResistance,magicalAttack:!!(fm.magicalAttack||opts.magicalAttack),immunityBecomesResistance:!!fm.immunityBecomesResistance,isBomb:!!opts.isBomb,attackerId:opts.__attacker&&(opts.__attacker.id||opts.__attacker.entityId)||null}));
       }
     }
     if(opts.__spellbladeReservation&&global.SPELLBLADE_RUNTIME){if(!out.spellstrike)out.spellstrike=global.SPELLBLADE_RUNTIME.completeAttack(opts.__attacker,target,opts.__spellbladeReservation,out);if(out.spellstrike.rollResolved){out.spellstrike.executed=!!out.damageResult;out.spellstrike.damageResult=out.damageResult;}}

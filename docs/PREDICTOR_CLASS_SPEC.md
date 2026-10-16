@@ -426,3 +426,16 @@ As of the 75/78 checkpoint, do not silently approve these:
 User: «Делай дальше. Семёрку утверждаю». This explicitly approves the proposed seven equal outcomes above: 10 gp; CON DC14 or 1d6 poison + poisoned 60s with repeated own-end save; ordinary healing potion; actual Poisonous Snake; empty; illusory zero-value gem for 600s; real 25 gp gem. Mage scope and Devil ranking remain unresolved. Seven Cups is no longer awaiting approval.
 
 Implementation: choose cup 1–7 without preview; the outcome is uniformly sampled and saved with its operation ID when applied. Prepare a visible unoccupied neighboring cell for possible snake before randomness, using the existing scene/map. Validate every possible outcome's prerequisites before sampling; no failed branch may reveal an outcome for rerolling. Snake is an ordinary independent neutral beast, not an automatically friendly temporary companion; existing turn controls manage it. The approval does not invent a creature-attitude AI.
+
+
+## Owner decision — Mage and Devil (current authority)
+
+Owner explicitly answered: «Маг = любое заклинание 1 уровня. Дьявол = по максимально возможному урону. Давай дальше Делай».
+
+- Mage has NO approved restricted spell list: the target is any first-level spell regardless of class. Do not ask the owner the same scope question again or call a limited implementation the final rule. Slots/components are waived by the card; the approved card action is the action paid by the current supported direct casts. Later reaction, delayed and world effects require actual execution, not descriptions.
+- Devil ranks damage by its maximum possible value. The current pure planner reports normal and potential critical maxima, without granting a critical or maximizing actual dice. It intentionally has no forced controller yet. Extra attacks, class modifiers, expenditures, movement, cantrips/upcasting/higher-level sources and unquantified special abilities need an actual execution audit before enabling the card; do not silently choose a weaker weapon when an unresolved stronger source exists.
+- Current Mage executor is an intermediate **21/60 entries in the current catalogue**, not the full spell universe. Known wrongly listed Beast Sense / Find Steed are excluded as second-level. The base catalogue also needs a completeness audit (e.g. missing core first-level spells); the full-Mage readiness flag remains false until that audit and full executors are finished.
+
+
+### Pending timing clarification (scope/ranking already approved)
+Mage's approved table says action, while five catalogue spells have native reaction triggers. Asked: (A) action prepares the free spell, actual event costs a reaction; or (B) at the real trigger Mage itself costs the reaction instead of the action. Neither timing exception is silently approved. Non-reaction spell work can continue. Do not re-ask the already answered any-spell scope or maximum-damage metric.
