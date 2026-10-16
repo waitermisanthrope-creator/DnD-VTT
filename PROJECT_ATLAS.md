@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода b3ed7b3e34d2. Git содержит 1354 файлов.
+Снимок кода 4e77af99eec8. Git содержит 1354 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -51,7 +51,7 @@
 | №0030 AGENTS.md | 4903 B | документация или отчёт: AGENTS |
 | №0031 AI_BLOCKERS.md | 3041 B | документация или отчёт: AI BLOCKERS |
 | №0032 AI_NEXT_TASK.md | 3887 B | документация или отчёт: AI NEXT TASK |
-| №0033 AI_PROGRESS.md | 23105 B | документация или отчёт: AI PROGRESS |
+| №0033 AI_PROGRESS.md | 24739 B | документация или отчёт: AI PROGRESS |
 | №0034 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0035 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0036 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1318,9 +1318,9 @@
 | №1297 tools/test_cloud_sql.sh | 1088 B | скрипт разработчика: test cloud sql |
 | №1298 tools/unified_version.py | 3403 B | скрипт разработчика: unified version |
 | №1299 updates/beta.json | 211 B | метаданные обновлений: beta |
-| №1300 updates/previous-stable.json | 179170 B | метаданные обновлений: previous stable |
+| №1300 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №1301 updates/README.md | 233 B | документация или отчёт: README |
-| №1302 updates/stable.json | 179808 B | метаданные обновлений: stable |
+| №1302 updates/stable.json | 179809 B | метаданные обновлений: stable |
 | №1303 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №1304 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
 | №1305 wall_brick_red.png | 111128 B | текстура/изображение: wall brick red |

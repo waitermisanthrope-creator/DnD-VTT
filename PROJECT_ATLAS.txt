@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит b3ed7b3e34d2. Файлов: 1354
+Коммит 4e77af99eec8. Файлов: 1354
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -46,7 +46,7 @@
 0030. AGENTS.md — документация или отчёт: AGENTS (4903 B)
 0031. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (3041 B)
 0032. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (3887 B)
-0033. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (23105 B)
+0033. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (24739 B)
 0034. android/.gitignore — Android компонент: .gitignore (44 B)
 0035. android/app/build.gradle — Android компонент: build (4122 B)
 0036. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1313,9 +1313,9 @@
 1297. tools/test_cloud_sql.sh — скрипт разработчика: test cloud sql (1088 B)
 1298. tools/unified_version.py — скрипт разработчика: unified version (3403 B)
 1299. updates/beta.json — метаданные обновлений: beta (211 B)
-1300. updates/previous-stable.json — метаданные обновлений: previous stable (179170 B)
+1300. updates/previous-stable.json — метаданные обновлений: previous stable (179808 B)
 1301. updates/README.md — документация или отчёт: README (233 B)
-1302. updates/stable.json — метаданные обновлений: stable (179808 B)
+1302. updates/stable.json — метаданные обновлений: stable (179809 B)
 1303. vignette_v2_sprite.png — текстура/изображение: vignette v2 sprite (1213593 B)
 1304. VTT_PROJECT_MANIFEST_V70.json — устаревший список V70, не актуален (44370 B)
 1305. wall_brick_red.png — текстура/изображение: wall brick red (111128 B)
