@@ -1,0 +1,107 @@
+name: Autonomous development checkpoint
+on:
+  schedule:
+    - cron: '30 6-20 * * *' # 09:30–23:30 UTC+3, inclusive
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/autonomous-development.yml'
+      - 'tools/ai_*.cjs'
+      - 'tests/ai_automation_test.cjs'
+permissions:
+  contents: read
+concurrency:
+  group: autonomous-development-main
+  cancel-in-progress: false
+jobs:
+  checkpoint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check saved project state and regressions
+        run: node tools/ai_checks.cjs
+      - name: Explain developer authorization gate
+        env:
+          AI_DEVELOPMENT_ENABLED: ${{ vars.AI_DEVELOPMENT_ENABLED }}
+          AI_ALLOW_PAID_API: ${{ vars.AI_ALLOW_PAID_API }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          node tools/ai_automation.cjs
+          echo 'Hourly checks are active. Model development requires explicit API authorization, repository variables and a secret; ChatGPT login is not inherited by this runner.' >> "$GITHUB_STEP_SUMMARY"
+  develop:
+    needs: checkpoint
+    if: vars.AI_DEVELOPMENT_ENABLED == 'true' && vars.AI_ALLOW_PAID_API == 'true'
+    permissions:
+      contents: write
+      issues: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Record clean source and download current Issue 9
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp tools/ai_finalize.cjs /tmp/dnd-ai-finalize.cjs
+          echo "AI_BASE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+          gh issue view 9 --repo "$GITHUB_REPOSITORY" --json title,body,url > /tmp/dnd-issue9.json
+      - id: gate
+        env:
+          AI_DEVELOPMENT_ENABLED: ${{ vars.AI_DEVELOPMENT_ENABLED }}
+          AI_ALLOW_PAID_API: ${{ vars.AI_ALLOW_PAID_API }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node tools/ai_automation.cjs
+      - name: One bounded official Codex session
+        id: codex
+        if: steps.gate.outputs.ready == 'true'
+        continue-on-error: true
+        uses: openai/codex-action@1d82a3dba7c7988ec71ecae1ed5b8e8db96495c5 # v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          prompt-file: .github/prompts/autonomous-development.md
+          output-file: /tmp/dnd-codex-result.md
+          sandbox: workspace-write
+          safety-strategy: drop-sudo
+          effort: medium
+      - name: Preserve bounded failure cooldown
+        if: steps.codex.outcome == 'failure'
+        run: |
+          if [ ! -f /tmp/dnd-codex-result.md ]; then echo 'Execution failure; inspect Actions logs for quota scope' > /tmp/dnd-codex-result.md; fi
+          node tools/ai_automation.cjs failure /tmp/dnd-codex-result.md
+      - name: Save only checked changes
+        if: steps.codex.outcome == 'success' || steps.codex.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh auth setup-git
+          if [ '${{ steps.codex.outcome }}' = 'failure' ]; then node /tmp/dnd-ai-finalize.cjs --cooldown; else node /tmp/dnd-ai-finalize.cjs; fi
+      - name: Preserve unpushed checkpoint on any failure
+        if: failure() || steps.codex.outcome == 'failure'
+        run: |
+          git diff HEAD > /tmp/dnd-checkpoint.patch
+          git ls-files --others --exclude-standard -z | tar --null -T - -czf /tmp/dnd-untracked.tar.gz
+          git bundle create /tmp/dnd-checkpoint.bundle --all
+      - uses: actions/upload-artifact@v4
+        if: failure() || steps.codex.outcome == 'failure'
+        with:
+          name: autonomous-unpushed-${{ github.run_id }}
+          path: |
+            /tmp/dnd-checkpoint.patch
+            /tmp/dnd-checkpoint.bundle
+            /tmp/dnd-untracked.tar.gz
+          retention-days: 30

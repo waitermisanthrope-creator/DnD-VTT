@@ -8,6 +8,8 @@ on:
   push:
     branches: [main, windows-desktop]
     tags: [release-request-*]
+  schedule:
+    - cron: '30 9,18 * * *' # 12:30 / 21:30 UTC+3; explicit readiness required
   workflow_dispatch:
     inputs:
       publish:
@@ -34,10 +36,14 @@ jobs:
       sha: ${{ steps.snapshot.outputs.sha }}
       version: ${{ steps.snapshot.outputs.version }}
       publish: ${{ steps.snapshot.outputs.publish }}
+      build: ${{ steps.snapshot.outputs.build }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
       - id: snapshot
         shell: bash
         env:
@@ -45,6 +51,20 @@ jobs:
           RELEASE_VERSION: ${{ inputs.version || 'auto' }}
         run: |
           set -euo pipefail
+          echo "build=true" >> "$GITHUB_OUTPUT"
+          if [[ "$GITHUB_EVENT_NAME" == "push" && "$GITHUB_REF" == refs/heads/* && "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]]; then
+            if git cat-file -e '${{ github.event.before }}' 2>/dev/null && ! git diff --name-only '${{ github.event.before }}' HEAD | grep -Eq '^(app/|android/|desktop/|index.html$|package.json$|tools/|tests/|.github/workflows/)'; then
+              echo "build=false" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+          if [[ "$GITHUB_EVENT_NAME" == "schedule" ]]; then
+            if ! node tools/ai_automation.cjs release; then
+              echo "No finished release-ready stage; no version bump or builds"
+              echo "build=false" >> "$GITHUB_OUTPUT"
+              echo "publish=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          fi
           if [[ "$GITHUB_EVENT_NAME" == "push" && "$GITHUB_REF" == refs/tags/release-request-* ]]; then
             git fetch origin main
             git merge-base --is-ancestor HEAD origin/main || {
@@ -57,7 +77,7 @@ jobs:
               exit 1
             }
             echo "publish=true" >> "$GITHUB_OUTPUT"
-          elif [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" && "$RELEASE_REQUEST" == "true" ]]; then
+          elif [[ "$GITHUB_EVENT_NAME" == "schedule" || ( "$GITHUB_EVENT_NAME" == "workflow_dispatch" && "$RELEASE_REQUEST" == "true" ) ]]; then
             if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
               echo "Publishing is allowed only from the main branch" >&2
               exit 1
@@ -81,8 +101,23 @@ jobs:
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           echo "Shared version: $VERSION"
-  android:
+  checks:
     needs: prepare
+    if: github.event_name != 'schedule' || needs.prepare.outputs.build == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node tools/ai_checks.cjs
+
+  android:
+    if: needs.prepare.outputs.build == 'true'
+    needs: [prepare, checks]
     runs-on: ubuntu-latest
     timeout-minutes: 80
     steps:
@@ -178,7 +213,8 @@ jobs:
           if-no-files-found: error
 
   windows:
-    needs: prepare
+    if: needs.prepare.outputs.build == 'true'
+    needs: [prepare, checks]
     runs-on: ubuntu-latest
     timeout-minutes: 80
     steps:
@@ -222,7 +258,7 @@ jobs:
 
   publish:
     if: needs.prepare.outputs.publish == 'true'
-    needs: [prepare, android, windows]
+    needs: [prepare, checks, android, windows]
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
@@ -265,6 +301,7 @@ jobs:
           SOURCE_SHA: ${{ needs.prepare.outputs.sha }}
         run: |
           set -euo pipefail
+          cp updates/stable.json updates/previous-stable.json
           python3 tools/build_update_manifest.py \
             --base-url "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/$SOURCE_SHA" \
             --version "$VERSION" \
@@ -285,7 +322,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add updates/stable.json
+          git add updates/stable.json updates/previous-stable.json
           git commit -m "Publish verified Android + Windows OTA manifest"
           # This is deliberately last: never advertise an update before both
           # platform packages have passed their build + artifact checks.

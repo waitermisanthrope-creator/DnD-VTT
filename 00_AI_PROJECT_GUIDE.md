@@ -1,3 +1,6 @@
+# Current cloud checkpoint — 2026-10-16
+Read `AI_NEXT_TASK.md`, `AI_PROGRESS.md`, `AI_BLOCKERS.md` first. Issue #9: finish Tarot class (canonical Предсказатель), then all classes. Current owner authorizes verified main pushes and gated releases; older no-push/no-release notes below are historical. No paid API use authorized. Technical Predictor details: `docs/00_AI_PROJECT_GUIDE.md` and card-status document. Use targeted atlas/source lookup; preserve old work.
+
 ## Классы: контрольная точка 13 октября 2026 — Кровавый охотник НЕ ЗАКРЫТ
 
 Продолжение от общего main `91b5e1f`: фокусы Осквернённой души получили игровые пути в локальных attack/damage/save/lifecycle; Фокус Нежити подключён к общему окну реакций и проверенному VM host/client-пути с типизированным уроном и запретом replay. Добавлены tests/test_blood_hunter_profane_focus.js и tests/test_blood_hunter_focus_network.js. Пять профильных Blood Hunter-тестов, четыре этапа аудита и боевые проверки Пугилиста/Алхимика проходят. Живой браузер, 3D-геометрия полёта и полный класс НЕ проверены. Это промежуточный checkpoint одного класса, не завершение прохода.

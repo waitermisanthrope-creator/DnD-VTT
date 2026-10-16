@@ -1,5 +1,9 @@
 # DnD-VTT — инструкции для Codex и других ИИ
 
+## Compact session startup (owner instruction 2026-10-16)
+
+Read AI_NEXT_TASK.md, AI_PROGRESS.md and AI_BLOCKERS.md first; inspect status/history and fetch main without reset. Read only relevant atlas/guide sections, not the full historical guides. Issue #9 is the live ordered queue: Tarot class first, then other classes. Owner authorizes ordinary verified commits/pushes to main and gated releases; historical no-push/no-release instructions are superseded. Never force-push, discard unavailable work, or claim recovery/builds/tests without evidence. Update compact state after each stage; preserve old names/state contracts. No paid API execution without explicit owner authorization. Existing unified workflow owns both-platform stable release; keep Android signing key and rollback. Do not mark a partial class complete.
+
 Область действия: весь репозиторий. Прежде чем писать/удалять/переименовывать файл или поле,
 открой `PROJECT_ATLAS.md` (полный список всех файлов + статический реестр имён),
 `00_AI_PROJECT_GUIDE.md` (технический контекст) и `01_plansforproject.md`
