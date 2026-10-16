@@ -91,3 +91,4 @@
 - New real wager preflight checks every possible action type without changing odds or drawing/spending on refusal, preventing commitment when a required action/bonus is already gone. Passive payout after Seven Cups knocks the owner unconscious still works. General mandatory-card/no-legal-target policy remains unresolved for the Trickster phase; no invented fizzle/reroll rule.
 - No stable version bump, no claim of live Supabase / physical Windows-Android QA, and no whole-class completion.
 - Final shared regression gate after the real wager preflight: **32/32 suites PASS**, including 21 Seven Cups scenarios, actual UI interactions and mock cross-device tests. Syntax / diff checks PASS. Physical-device QA and live Supabase were not run.
+- Verified 76-card source commit: `6066c633` (https://github.com/waitermisanthrope-creator/DnD-VTT/commit/6066c633). Next: remaining Major handlers, then complete Trickster and approved Oracle/Weaver rules in owner order.
