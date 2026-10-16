@@ -761,6 +761,7 @@
     if(g.document.getElementById('cbv2_styles'))return;
     var st=g.document.createElement('style');st.id='cbv2_styles';
     st.textContent='.cb-wrap{max-width:720px;margin:0 auto;padding:16px;color:#eee;font-family:Inter,system-ui}.cb-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.cb-step{font-size:12px;color:#aaa}.cb-progress{height:6px;background:#292929;border-radius:6px;overflow:hidden}.cb-progress>i{display:block;height:100%;background:#d4af37}.cb-card{background:#202020;border:1px solid #444;border-radius:12px;padding:14px;margin:10px 0}.cb-card h3{margin:0 0 10px;color:#d4af37}.cb-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cb-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.cb-stat-control{min-width:0}.cb-stat-control>label{display:block;margin-bottom:5px}.cb-stat-row{display:grid;grid-template-columns:34px minmax(0,1fr) 34px;gap:5px;align-items:center}.cb-stat-input{text-align:center;min-width:0}.cb-stat-btn{height:42px;padding:0;border:1px solid #555;border-radius:8px;background:#303030;color:#fff;font-size:24px;line-height:1;touch-action:manipulation}.cb-stat-btn:active{background:#6b5414;border-color:#d4af37}.cb-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:360px;overflow:auto}.cb-option{padding:10px;border:1px solid #444;border-radius:9px;background:#292929;cursor:pointer}.cb-option.active{border-color:#d4af37;background:#35301d}.cb-option small{display:block;color:#aaa;margin-top:4px}.cb-input,.cb-select{width:100%;box-sizing:border-box;padding:10px;background:#151515;color:#fff;border:1px solid #555;border-radius:8px}.cb-choice{margin:10px 0;padding:11px;border:1px solid #3e3e3e;border-radius:9px;background:#181818}.cb-choice select{width:100%;box-sizing:border-box;margin-top:7px;padding:9px;background:#111;color:#fff;border:1px solid #555;border-radius:7px}.cb-choice-desc{font-size:12px;color:#aaa;margin-top:6px}.cb-feature-list{display:grid;gap:6px}.cb-feature{padding:9px 10px;border:1px solid #3e3e3e;border-radius:8px;background:#181818;color:#ddd;font-size:13px;line-height:1.35}.cb-feature b{color:#d4af37}.cb-actions{display:flex;gap:8px;justify-content:space-between;margin-top:14px}.cb-btn{padding:11px 15px;border:1px solid #555;border-radius:9px;background:#303030;color:#fff}.cb-btn.primary{background:#6b5414;border-color:#d4af37}.cb-summary{display:grid;grid-template-columns:1fr 1fr;gap:7px}.cb-badge{padding:8px;background:#292929;border-radius:8px;font-size:12px}.cb-error{color:#ff8a80;margin-top:8px}.cb-note{font-size:12px;color:#aaa;line-height:1.4}.cb-extra{border-color:#8e44ad}.cb-mobile{font-size:13px}@media(max-width:560px){.cb-list{grid-template-columns:1fr}.cb-grid3{grid-template-columns:1fr 1fr}.cb-wrap{padding:10px}.cb-card{padding:11px}}';
+    st.textContent+=' .cb-stat-modes{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.cb-stat-mode-btn{flex:1 1 195px;padding:11px;background:#292929;border:1px solid #8a7430;border-radius:9px;color:#e8d39a;cursor:pointer;touch-action:manipulation}.cb-stat-mode-btn:disabled{opacity:.5;cursor:default}.cb-stat-input:not([readonly]){border-color:#d4af37}.cb-stat-btn:disabled{opacity:.4;cursor:default}.cb-option.owned{outline:2px solid #d4af37;outline-offset:-3px}';
     g.document.head.appendChild(st);
   }
 
@@ -768,6 +769,8 @@
     this.mode=opts.mode||'create';this.hero=opts.hero||null;this.fromParchment=!!opts.fromParchment;this.step=0;this.values={};
     this.creationMode=opts.creationMode||(opts.direct?'constructor':'classic');this.race=null;this.className=null;this.classLevel=opts.classLevel||1;this.isNewClass=opts.isNewClass!==false;
     this.choices=[];this.error='';
+    // Режим и число бросков принадлежат только этому мастеру, сохраняются при шаге Назад.
+    this.statMode='pointbuy';this.randomRollsLeft=5;
     if(this.fromParchment&&opts.draft){
       this.values={name:opts.draft.name||'',age:Number(opts.draft.age)||0,background:opts.draft.background||'',profession:opts.draft.profession||'',stats:{}};
       this.className=opts.draft.extra?opts.draft.extraType:(opts.draft.className||null);
@@ -848,12 +851,25 @@
       if(this.className&&isExtra(this.className))body='<div class="cb-card cb-extra"><h3>'+esc(this.className)+'</h3><p>Это Extra-класс. Обычный класс не выбирается. Тело/хозяин уже выбран на предыдущем шаге.</p></div>';
     }
     if(this.step===3){
-      var stats=this.values.stats||{};
+      var stats=this.values.stats||{},mode=this.statMode||'pointbuy';
+      var statMin=mode==='broken'?1:(mode==='random'?3:8);
+      var statMax=mode==='broken'?20:(mode==='random'?18:15);
       var statList=Array.isArray(STATS)&&STATS.length?STATS:[
         {id:'str',name:'Сила'},{id:'dex',name:'Ловкость'},{id:'con',name:'Телосложение'},
         {id:'int',name:'Интеллект'},{id:'wis',name:'Мудрость'},{id:'cha',name:'Харизма'}
       ];
-      body='<div class="cb-card"><h3>Характеристики</h3><p class="cb-note">27 очков. Значения 8–15 до расовых и специальных бонусов. Используйте кнопки − / +; ручной ввод отключён.</p><div class="cb-grid3">'+statList.map(function(x){var raw=Number(stats[x.id]);var value=Number.isFinite(raw)?Math.max(8,Math.min(15,raw)):8;return '<div class="cb-stat-control"><label>'+x.name+'</label><div class="cb-stat-row"><button type="button" class="cb-stat-btn" data-stat-minus="'+x.id+'">−</button><input class="cb-input cb-stat-input" type="number" min="8" max="15" readonly data-stat="'+x.id+'" value="'+value+'"><button type="button" class="cb-stat-btn" data-stat-plus="'+x.id+'">+</button></div></div>';}).join('')+'</div><div id="cb_pointbuy" class="cb-note" style="margin-top:8px"></div></div>';
+      var instructions=mode==='random'
+        ? '4d6, отбросить наименьший кубик. Всего пять бросков на персонажа. После первого броска покупка очков и сломанный режим недоступны.'
+        : mode==='broken'
+        ? 'Сломанный персонаж: выставьте любые целые значения от 1 до 20. Без стоимости и общего лимита.'
+        : '27 очков. Значения 8–15 до расовых и специальных бонусов. Используйте кнопки − / +; ручной ввод отключён.';
+      body='<div class="cb-card"><h3>Характеристики</h3><p class="cb-note">'+instructions+'</p><div class="cb-grid3">'+statList.map(function(x){
+        var raw=Number(stats[x.id]),value=Number.isInteger(raw)&&raw>=statMin&&raw<=statMax?raw:8;
+        return '<div class="cb-stat-control"><label>'+x.name+'</label><div class="cb-stat-row"><button type="button" class="cb-stat-btn" data-stat-minus="'+x.id+'" '+(mode==='random'?'disabled':'')+'>−</button><input class="cb-input cb-stat-input" type="number" step="1" min="'+statMin+'" max="'+statMax+'" '+(mode==='broken'?'':'readonly')+' data-stat="'+x.id+'" value="'+value+'"><button type="button" class="cb-stat-btn" data-stat-plus="'+x.id+'" '+(mode==='random'?'disabled':'')+'>+</button></div></div>';
+      }).join('')+'</div><div id="cb_pointbuy" class="cb-note" style="margin-top:8px" aria-live="polite"></div>'+
+        '<div class="cb-stat-modes"><button type="button" class="cb-stat-mode-btn" id="cbRollStats" '+(this.randomRollsLeft<=0?'disabled':'')+'>Или рандом '+this.randomRollsLeft+' попыток</button>'+
+        (mode!=='random'?'<button type="button" class="cb-stat-mode-btn" id="cbBrokenStats" '+(mode==='broken'?'disabled':'')+'>Или сломанный персонаж</button>':'')+
+        '</div></div>';
     }
     if(this.step===4){
       var rc=this.race,cc=this.className;
@@ -894,32 +910,77 @@
     this.root.querySelectorAll('[data-class]').forEach(function(el){el.onclick=function(){self.className=el.dataset.class;self.render();};});
   };
   Wizard.prototype.bindStats=function(){
-     var self=this,costs={8:0,9:1,10:2,11:3,12:4,13:5,14:7,15:9};
-     this.values.stats=this.values.stats||{};
-     this.root.querySelectorAll('[data-stat]').forEach(function(el){
-       var id=el.dataset.stat,raw=Number(self.values.stats[id]),value=Number.isFinite(raw)?Math.max(8,Math.min(15,raw)):8;
-       self.values.stats[id]=value;el.value=value;
-     });
-     function change(id,delta){
-       var current=Number(self.values.stats[id]);if(!Number.isFinite(current))current=8;
-       var next=Math.max(8,Math.min(15,current+delta));
-       if(next===current)return;
-       if(delta>0){
-         var spent=0;Object.keys(self.values.stats).forEach(function(k){var v=Number(self.values.stats[k]);spent+=costs[v]||0;});
-         if((costs[next]||0)-(costs[current]||0)>27-spent)return;
-       }
-       self.values.stats[id]=next;
-       var input=self.root.querySelector('[data-stat="'+id+'"]');if(input)input.value=next;
-       self.updatePointBuy();
-     }
-     this.root.querySelectorAll('[data-stat-minus]').forEach(function(btn){btn.onclick=function(){change(btn.dataset.statMinus,-1);};});
-     this.root.querySelectorAll('[data-stat-plus]').forEach(function(btn){btn.onclick=function(){change(btn.dataset.statPlus,1);};});
-     this.updatePointBuy();
-   };
+    var self=this,mode=this.statMode||'pointbuy';
+    var costs={8:0,9:1,10:2,11:3,12:4,13:5,14:7,15:9};
+    var lower=mode==='broken'?1:(mode==='random'?3:8),upper=mode==='broken'?20:(mode==='random'?18:15);
+    this.values.stats=this.values.stats||{};
+    this.root.querySelectorAll('[data-stat]').forEach(function(el){
+      var id=el.dataset.stat,raw=Number(self.values.stats[id]);
+      var value=Number.isInteger(raw)&&raw>=lower&&raw<=upper?raw:8;
+      self.values.stats[id]=value;el.value=value;
+      if(mode==='broken'){
+        el.oninput=function(){
+          // Проверка полного значения происходит при переходе дальше.
+          if(el.value.trim()!==''&&Number.isInteger(Number(el.value))){
+            self.values.stats[id]=Number(el.value);
+          }
+        };
+      }
+    });
+    function change(id,delta){
+      if(self.statMode==='random')return;
+      var current=Number(self.values.stats[id]);
+      if(!Number.isInteger(current))return;
+      var next=Math.max(lower,Math.min(upper,current+delta));
+      if(next===current)return;
+      if(self.statMode==='pointbuy'&&delta>0){
+        var spent=0;Object.keys(self.values.stats).forEach(function(k){spent+=costs[Number(self.values.stats[k])]||0;});
+        if((costs[next]||0)-(costs[current]||0)>27-spent)return;
+      }
+      self.values.stats[id]=next;
+      var input=self.root.querySelector('[data-stat="'+id+'"]');if(input)input.value=next;
+      self.updatePointBuy();
+    }
+    this.root.querySelectorAll('[data-stat-minus]').forEach(function(btn){btn.onclick=function(){change(btn.dataset.statMinus,-1);};});
+    this.root.querySelectorAll('[data-stat-plus]').forEach(function(btn){btn.onclick=function(){change(btn.dataset.statPlus,1);};});
+    var rollBtn=this.root.querySelector('#cbRollStats');
+    if(rollBtn)rollBtn.onclick=function(){self.rollStats();};
+    var brokenBtn=this.root.querySelector('#cbBrokenStats');
+    if(brokenBtn)brokenBtn.onclick=function(){
+      if(self.statMode==='random')return;
+      self.statMode='broken';self.render();
+    };
+    this.updatePointBuy();
+  };
+  Wizard.prototype.rollStats=function(){
+    if(this.mode!=='create'||this.randomRollsLeft<=0)return false;
+    var result={};
+    var keys=['str','dex','con','int','wis','cha'];
+    keys.forEach(function(key){
+      var dice=[];
+      for(var i=0;i<4;i++)dice.push(Math.floor(Math.random()*6)+1);
+      dice.sort(function(a,b){return a-b;});
+      result[key]=dice[1]+dice[2]+dice[3];
+    });
+    this.randomRollsLeft--;
+    this.statMode='random'; // Не возвращать покупку очков даже через кнопку «Назад».
+    this.values.stats=result;
+    this.render();
+    return true;
+  };
   Wizard.prototype.updatePointBuy=function(){
+    var el=this.root.querySelector('#cb_pointbuy');if(!el)return;
+    if(this.statMode==='random'){
+      el.textContent='Результат 4d6 (минус худший). Осталось попыток: '+this.randomRollsLeft+' из 5.';
+      return;
+    }
+    if(this.statMode==='broken'){
+      el.textContent='Свободное распределение: от 1 до 20 для каждой характеристики.';
+      return;
+    }
     var costs={8:0,9:1,10:2,11:3,12:4,13:5,14:7,15:9},sum=0;
     Object.values(this.values.stats||{}).forEach(function(v){sum+=costs[v]||0;});
-    var el=this.root.querySelector('#cb_pointbuy');if(el)el.textContent='Потрачено: '+sum+' / 27 · Осталось: '+(27-sum);
+    el.textContent='Потрачено: '+sum+' / 27 · Осталось: '+(27-sum);
   };
   Wizard.prototype.bindChoiceDescriptions=function(){
     var self=this;
@@ -932,7 +993,19 @@
   Wizard.prototype.readStep=function(){
     if(this.mode==='create'){
       if(this.step===0){this.values.name=(this.root.querySelector('#cb_name')||{}).value?.trim();this.values.age=Number((this.root.querySelector('#cb_age')||{}).value)||0;this.values.background=(this.root.querySelector('#cb_bg')||{}).value||'';this.values.profession=(this.root.querySelector('#cb_prof')||{}).value||'';if(!this.values.name){this.error='Введите имя.';return false;}}
-      if(this.step===3){this.values.stats={};var sum=0,costs={8:0,9:1,10:2,11:3,12:4,13:5,14:7,15:9};var self=this;this.root.querySelectorAll('[data-stat]').forEach(function(el){var v=Math.max(8,Math.min(15,Number(el.value)||8));self.values.stats[el.dataset.stat]=v;sum+=costs[v];});if(sum>27){this.error='Превышен лимит 27 очков.';return false;}}
+      if(this.step===3){
+        var mode=this.statMode||'pointbuy',lower=mode==='broken'?1:(mode==='random'?3:8),upper=mode==='broken'?20:(mode==='random'?18:15);
+        var sum=0,valid=true,stats={},costs={8:0,9:1,10:2,11:3,12:4,13:5,14:7,15:9};
+        this.root.querySelectorAll('[data-stat]').forEach(function(el){
+          var v=Number(el.value);
+          if(el.value.trim()===''||!Number.isInteger(v)||v<lower||v>upper){valid=false;return;}
+          stats[el.dataset.stat]=v;
+          if(mode==='pointbuy')sum+=costs[v];
+        });
+        if(!valid||Object.keys(stats).length!==6){this.error='Каждая характеристика должна быть целым числом от '+lower+' до '+upper+'.';return false;}
+        if(mode==='pointbuy'&&sum>27){this.error='Превышен лимит 27 очков.';return false;}
+        this.values.stats=stats;
+      }
       if(this.step===4){for(var i=0;i<this.choices.length;i++){var c=this.choices[i],v=choiceValue(c,i);if(!validChoice(c,v)){this.error='Нужно заполнить: '+c.label;return false;}this.values[c.key]=v;}}
     }else{
       if(this.step===0){var sel=this.root.querySelector('[data-lu-class].active');if(!sel){this.error='Выберите класс.';return false;}this.className=sel.dataset.luClass;}
@@ -964,7 +1037,7 @@
         if(hero.extraClassType==='swarm'||hero.extraClassType==='parasite'||hero.extraClassType==='walter_parasite'||hero.extraClassType==='ghost')return false;
         return true;
       });
-      this.root.innerHTML='<div class="cb-wrap"><div class="cb-top"><b>Повышение уровня</b><span class="cb-step">1 / 4 · Класс</span></div><div class="cb-card"><h3>Что повышаем?</h3><div class="cb-list">'+classes.map(function(c){return '<div class="cb-option" data-lu-class="'+esc(c.name)+'"><b>'+esc(c.name)+'</b><small>'+esc((getClass(c.name)||{}).desc||c.desc||'')+'</small></div>';}).join('')+'</div><div class="cb-error" id="cb_error">'+esc(this.error)+'</div></div><div class="cb-actions"><button id="cbBack" class="cb-btn">Отмена</button><button id="cbNext" class="cb-btn primary">Далее</button></div></div>';
+      this.root.innerHTML='<div class="cb-wrap"><div class="cb-top"><b>Повышение уровня</b><span class="cb-step">1 / 4 · Класс</span></div><div class="cb-card"><h3>Что повышаем?</h3><div class="cb-list">'+classes.map(function(c){var owned=(hero.classes||[]).some(function(entry){return norm(entry.name)===norm(c.name);});return '<div class="cb-option '+(owned?'owned':'')+'" data-lu-class="'+esc(c.name)+'"><b>'+esc(c.name)+'</b>'+(owned?'<small>✓ Уже есть у персонажа</small>':'')+'<small>'+esc((getClass(c.name)||{}).desc||c.desc||'')+'</small></div>';}).join('')+'</div><div class="cb-error" id="cb_error">'+esc(this.error)+'</div></div><div class="cb-actions"><button id="cbBack" class="cb-btn">Отмена</button><button id="cbNext" class="cb-btn primary">Далее</button></div></div>';
       this.root.querySelectorAll('[data-lu-class]').forEach(function(el){el.onclick=function(){self.root.querySelectorAll('[data-lu-class]').forEach(function(x){x.classList.remove('active');});el.classList.add('active');};});
     }else if(this.step===1){
       var cls=this.className;this.classLevel=this.nextClassLevel();var hd=(getClass(cls)||{}).hitDie||8;var avg=Math.floor(hd/2)+1;
@@ -993,6 +1066,7 @@
       background:this.values.background||'',profession:this.values.profession||'',raceId:this.race?this.race.id:'',raceName:this.race?this.race.name:'',
       baseAC:10,ac:'10',speed:(this.race&&this.race.speed)||'30 футов',
       profBonus:2,stats:Object.assign({},this.values.stats),_builderBaseStats:Object.assign({},this.values.stats),
+      statGenerationMode:this.statMode||'pointbuy',statRollsUsed:5-this.randomRollsLeft,
       savesData:{},skillsData:{},proficiencies:[],feats:[],features:[],choiceState:{},choiceHistory:[],pendingChoices:[],
       activeConditions:{},weaponsData:[],spellSlotsData:{},spellsData:[],folders:[],library:[]
     };
