@@ -1,7 +1,7 @@
 {
   "release_ready": false,
   "release_source_sha": "",
-  "release_reason": "Predictor remains partial (75/78 effects); remaining cards and subclasses are not release-ready.",
+  "release_reason": "Predictor remains partial (76/78 effects); remaining cards and subclasses are not release-ready.",
   "retry_after": null,
   "quota_scope": null,
   "paid_api_authorized": false

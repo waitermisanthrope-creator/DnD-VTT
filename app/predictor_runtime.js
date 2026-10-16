@@ -91,6 +91,7 @@
     var odds=wagerOdds(h,suit,event,rules);if(!odds.ok)return odds;
     if(odds.revision!==expectedRevision)return fail('Расклад изменился: обновите вероятность.');
     if(!odds.denominator)return fail('Нет применимых карт для ставки.');
+    if(g.DNDPredictorCards&&g.DNDPredictorCards.wagerStartCheck){var playable=g.DNDPredictorCards.wagerStartCheck(h,event);if(!playable.ok)return playable;}
     var draft=copy(h),s=draft.predictorState,t=trick(s),max=2+Math.floor((level(h)-1)/4);
     if(t.wagers.length>=max)return fail('Ставки исчерпаны до продолжительного отдыха.');
     var result=beginBlind(draft,'minor',operationId,event,rules);if(!result.ok)return result;

@@ -419,3 +419,10 @@ As of the 75/78 checkpoint, do not silently approve these:
 - Mage: full any-list first-level spell automation requires executable spell effects, not just current descriptions. Owner was asked whether to implement all allowed spells as a separate large stage or begin with an explicitly limited fully executable list; no explicit choice recorded.
 - Devil: strongest available attack ranking (maximum possible versus average declared damage, including attack count) is not chosen. No inference of enemy hidden defenses.
 - Seven Cups proposed automated, seven equal outcomes: 10 gp; CON DC14 or 1d6 poison + poisoned for 60 seconds, repeat save end of own turn; ordinary healing potion; actual Poisonous Snake; empty; illusory gem for 600 seconds with zero sale value; actual gem 25 gp. Hidden cup choice, final result with no reroll. Submitted asynchronously for approval; no reply recorded at this checkpoint. These numerical values are a proposal, not active rules.
+
+
+## Owner approval — Seven Cups
+
+User: «Делай дальше. Семёрку утверждаю». This explicitly approves the proposed seven equal outcomes above: 10 gp; CON DC14 or 1d6 poison + poisoned 60s with repeated own-end save; ordinary healing potion; actual Poisonous Snake; empty; illusory zero-value gem for 600s; real 25 gp gem. Mage scope and Devil ranking remain unresolved. Seven Cups is no longer awaiting approval.
+
+Implementation: choose cup 1–7 without preview; the outcome is uniformly sampled and saved with its operation ID when applied. Prepare a visible unoccupied neighboring cell for possible snake before randomness, using the existing scene/map. Validate every possible outcome's prerequisites before sampling; no failed branch may reveal an outcome for rerolling. Snake is an ordinary independent neutral beast, not an automatically friendly temporary companion; existing turn controls manage it. The approval does not invent a creature-attitude AI.
