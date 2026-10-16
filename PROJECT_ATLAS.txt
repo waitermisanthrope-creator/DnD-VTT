@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит ccee4bfbbe44. Файлов: 1343
+Коммит 993047b768db. Файлов: 1343
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -46,7 +46,7 @@
 0030. AGENTS.md — документация или отчёт: AGENTS (4903 B)
 0031. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (2253 B)
 0032. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (1991 B)
-0033. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (8454 B)
+0033. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (8718 B)
 0034. android/.gitignore — Android компонент: .gitignore (44 B)
 0035. android/app/build.gradle — Android компонент: build (4122 B)
 0036. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
