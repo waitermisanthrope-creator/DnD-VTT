@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 5394086d296c. Git содержит 1347 файлов.
+Снимок кода d0e7f032c0e3. Git содержит 1348 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -36,7 +36,7 @@
 | №0015 .github/workflows/refresh-update-manifest.yml | 540 B | автоматизация GitHub Actions: refresh update manifest |
 | №0016 .github/workflows/test-gltf-loader.yml | 717 B | автоматизация GitHub Actions: test gltf loader |
 | №0017 .github/workflows/test-stair-navigation.yml | 752 B | автоматизация GitHub Actions: test stair navigation |
-| №0018 .github/workflows/unified-release.yml | 14002 B | автоматизация GitHub Actions: unified release |
+| №0018 .github/workflows/unified-release.yml | 14076 B | автоматизация GitHub Actions: unified release |
 | №0019 .github/workflows/unpack-project.yml | 2987 B | автоматизация GitHub Actions: unpack project |
 | №0020 .github/workflows/validate-imported-glb.yml | 2317 B | автоматизация GitHub Actions: validate imported glb |
 | №0021 .gitignore | 81 B | вспомогательный файл: .gitignore |
@@ -51,7 +51,7 @@
 | №0030 AGENTS.md | 4903 B | документация или отчёт: AGENTS |
 | №0031 AI_BLOCKERS.md | 2253 B | документация или отчёт: AI BLOCKERS |
 | №0032 AI_NEXT_TASK.md | 1955 B | документация или отчёт: AI NEXT TASK |
-| №0033 AI_PROGRESS.md | 10086 B | документация или отчёт: AI PROGRESS |
+| №0033 AI_PROGRESS.md | 11424 B | документация или отчёт: AI PROGRESS |
 | №0034 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0035 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0036 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1312,60 +1312,61 @@
 | №1291 tools/test_cloud_sql.sh | 1088 B | скрипт разработчика: test cloud sql |
 | №1292 tools/unified_version.py | 3403 B | скрипт разработчика: unified version |
 | №1293 updates/beta.json | 211 B | метаданные обновлений: beta |
-| №1294 updates/README.md | 233 B | документация или отчёт: README |
-| №1295 updates/stable.json | 179170 B | метаданные обновлений: stable |
-| №1296 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
-| №1297 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
-| №1298 wall_brick_red.png | 111128 B | текстура/изображение: wall brick red |
-| №1299 wall_concrete.png | 91074 B | текстура/изображение: wall concrete |
-| №1300 wall_half_timber.png | 109537 B | текстура/изображение: wall half timber |
-| №1301 wall_marble_dark.png | 123621 B | текстура/изображение: wall marble dark |
-| №1302 wall_marble_light.png | 90457 B | текстура/изображение: wall marble light |
-| №1303 wall_moss_stone.png | 128985 B | текстура/изображение: wall moss stone |
-| №1304 wall_old_plaster.png | 107725 B | текстура/изображение: wall old plaster |
-| №1305 wall_plaster_dark.png | 95153 B | текстура/изображение: wall plaster dark |
-| №1306 wall_plaster_light.png | 91767 B | текстура/изображение: wall plaster light |
-| №1307 wall_plaster_panel.png | 89722 B | текстура/изображение: wall plaster panel |
-| №1308 wall_slate.png | 103822 B | текстура/изображение: wall slate |
-| №1309 wall_stone_dark.png | 120617 B | текстура/изображение: wall stone dark |
-| №1310 wall_stone_light.png | 127689 B | текстура/изображение: wall stone light |
-| №1311 wall_stone_masonry.png | 129908 B | текстура/изображение: wall stone masonry |
-| №1312 wall_wallpaper.png | 106442 B | текстура/изображение: wall wallpaper |
-| №1313 wall_white_plaster.png | 120869 B | текстура/изображение: wall white plaster |
-| №1314 wall_wood_dark.png | 81144 B | текстура/изображение: wall wood dark |
-| №1315 wall_wood_light.png | 93079 B | текстура/изображение: wall wood light |
-| №1316 wallpapers/1.png | 1460744 B | ассет графики/3D/интерфейса: 1 |
-| №1317 wallpapers/10.png | 1667723 B | ассет графики/3D/интерфейса: 10 |
-| №1318 wallpapers/11.png | 1815959 B | ассет графики/3D/интерфейса: 11 |
-| №1319 wallpapers/12.png | 1548677 B | ассет графики/3D/интерфейса: 12 |
-| №1320 wallpapers/13.png | 1599093 B | ассет графики/3D/интерфейса: 13 |
-| №1321 wallpapers/14.png | 1596513 B | ассет графики/3D/интерфейса: 14 |
-| №1322 wallpapers/15.png | 233043 B | ассет графики/3D/интерфейса: 15 |
-| №1323 wallpapers/16.png | 212684 B | ассет графики/3D/интерфейса: 16 |
-| №1324 wallpapers/17.png | 1585122 B | ассет графики/3D/интерфейса: 17 |
-| №1325 wallpapers/18.png | 2095852 B | ассет графики/3D/интерфейса: 18 |
-| №1326 wallpapers/19.png | 8605503 B | ассет графики/3D/интерфейса: 19 |
-| №1327 wallpapers/2.png | 1590206 B | ассет графики/3D/интерфейса: 2 |
-| №1328 wallpapers/20.png | 1284815 B | ассет графики/3D/интерфейса: 20 |
-| №1329 wallpapers/21.png | 179307 B | ассет графики/3D/интерфейса: 21 |
-| №1330 wallpapers/22.png | 344279 B | ассет графики/3D/интерфейса: 22 |
-| №1331 wallpapers/23.png | 210291 B | ассет графики/3D/интерфейса: 23 |
-| №1332 wallpapers/24.png | 141215 B | ассет графики/3D/интерфейса: 24 |
-| №1333 wallpapers/25.png | 160892 B | ассет графики/3D/интерфейса: 25 |
-| №1334 wallpapers/26.png | 187259 B | ассет графики/3D/интерфейса: 26 |
-| №1335 wallpapers/27.png | 213194 B | ассет графики/3D/интерфейса: 27 |
-| №1336 wallpapers/28.png | 202417 B | ассет графики/3D/интерфейса: 28 |
-| №1337 wallpapers/29.png | 166942 B | ассет графики/3D/интерфейса: 29 |
-| №1338 wallpapers/3.png | 1662340 B | ассет графики/3D/интерфейса: 3 |
-| №1339 wallpapers/30.png | 237556 B | ассет графики/3D/интерфейса: 30 |
-| №1340 wallpapers/31.svg | 1181 B | ассет графики/3D/интерфейса: 31 |
-| №1341 wallpapers/32.svg | 1417 B | ассет графики/3D/интерфейса: 32 |
-| №1342 wallpapers/4.png | 1816114 B | ассет графики/3D/интерфейса: 4 |
-| №1343 wallpapers/5.png | 1742466 B | ассет графики/3D/интерфейса: 5 |
-| №1344 wallpapers/6.png | 1591016 B | ассет графики/3D/интерфейса: 6 |
-| №1345 wallpapers/7.png | 1815665 B | ассет графики/3D/интерфейса: 7 |
-| №1346 wallpapers/8.png | 1492730 B | ассет графики/3D/интерфейса: 8 |
-| №1347 wallpapers/9.png | 1715179 B | ассет графики/3D/интерфейса: 9 |
+| №1294 updates/previous-stable.json | 179170 B | метаданные обновлений: previous stable |
+| №1295 updates/README.md | 233 B | документация или отчёт: README |
+| №1296 updates/stable.json | 179808 B | метаданные обновлений: stable |
+| №1297 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
+| №1298 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
+| №1299 wall_brick_red.png | 111128 B | текстура/изображение: wall brick red |
+| №1300 wall_concrete.png | 91074 B | текстура/изображение: wall concrete |
+| №1301 wall_half_timber.png | 109537 B | текстура/изображение: wall half timber |
+| №1302 wall_marble_dark.png | 123621 B | текстура/изображение: wall marble dark |
+| №1303 wall_marble_light.png | 90457 B | текстура/изображение: wall marble light |
+| №1304 wall_moss_stone.png | 128985 B | текстура/изображение: wall moss stone |
+| №1305 wall_old_plaster.png | 107725 B | текстура/изображение: wall old plaster |
+| №1306 wall_plaster_dark.png | 95153 B | текстура/изображение: wall plaster dark |
+| №1307 wall_plaster_light.png | 91767 B | текстура/изображение: wall plaster light |
+| №1308 wall_plaster_panel.png | 89722 B | текстура/изображение: wall plaster panel |
+| №1309 wall_slate.png | 103822 B | текстура/изображение: wall slate |
+| №1310 wall_stone_dark.png | 120617 B | текстура/изображение: wall stone dark |
+| №1311 wall_stone_light.png | 127689 B | текстура/изображение: wall stone light |
+| №1312 wall_stone_masonry.png | 129908 B | текстура/изображение: wall stone masonry |
+| №1313 wall_wallpaper.png | 106442 B | текстура/изображение: wall wallpaper |
+| №1314 wall_white_plaster.png | 120869 B | текстура/изображение: wall white plaster |
+| №1315 wall_wood_dark.png | 81144 B | текстура/изображение: wall wood dark |
+| №1316 wall_wood_light.png | 93079 B | текстура/изображение: wall wood light |
+| №1317 wallpapers/1.png | 1460744 B | ассет графики/3D/интерфейса: 1 |
+| №1318 wallpapers/10.png | 1667723 B | ассет графики/3D/интерфейса: 10 |
+| №1319 wallpapers/11.png | 1815959 B | ассет графики/3D/интерфейса: 11 |
+| №1320 wallpapers/12.png | 1548677 B | ассет графики/3D/интерфейса: 12 |
+| №1321 wallpapers/13.png | 1599093 B | ассет графики/3D/интерфейса: 13 |
+| №1322 wallpapers/14.png | 1596513 B | ассет графики/3D/интерфейса: 14 |
+| №1323 wallpapers/15.png | 233043 B | ассет графики/3D/интерфейса: 15 |
+| №1324 wallpapers/16.png | 212684 B | ассет графики/3D/интерфейса: 16 |
+| №1325 wallpapers/17.png | 1585122 B | ассет графики/3D/интерфейса: 17 |
+| №1326 wallpapers/18.png | 2095852 B | ассет графики/3D/интерфейса: 18 |
+| №1327 wallpapers/19.png | 8605503 B | ассет графики/3D/интерфейса: 19 |
+| №1328 wallpapers/2.png | 1590206 B | ассет графики/3D/интерфейса: 2 |
+| №1329 wallpapers/20.png | 1284815 B | ассет графики/3D/интерфейса: 20 |
+| №1330 wallpapers/21.png | 179307 B | ассет графики/3D/интерфейса: 21 |
+| №1331 wallpapers/22.png | 344279 B | ассет графики/3D/интерфейса: 22 |
+| №1332 wallpapers/23.png | 210291 B | ассет графики/3D/интерфейса: 23 |
+| №1333 wallpapers/24.png | 141215 B | ассет графики/3D/интерфейса: 24 |
+| №1334 wallpapers/25.png | 160892 B | ассет графики/3D/интерфейса: 25 |
+| №1335 wallpapers/26.png | 187259 B | ассет графики/3D/интерфейса: 26 |
+| №1336 wallpapers/27.png | 213194 B | ассет графики/3D/интерфейса: 27 |
+| №1337 wallpapers/28.png | 202417 B | ассет графики/3D/интерфейса: 28 |
+| №1338 wallpapers/29.png | 166942 B | ассет графики/3D/интерфейса: 29 |
+| №1339 wallpapers/3.png | 1662340 B | ассет графики/3D/интерфейса: 3 |
+| №1340 wallpapers/30.png | 237556 B | ассет графики/3D/интерфейса: 30 |
+| №1341 wallpapers/31.svg | 1181 B | ассет графики/3D/интерфейса: 31 |
+| №1342 wallpapers/32.svg | 1417 B | ассет графики/3D/интерфейса: 32 |
+| №1343 wallpapers/4.png | 1816114 B | ассет графики/3D/интерфейса: 4 |
+| №1344 wallpapers/5.png | 1742466 B | ассет графики/3D/интерфейса: 5 |
+| №1345 wallpapers/6.png | 1591016 B | ассет графики/3D/интерфейса: 6 |
+| №1346 wallpapers/7.png | 1815665 B | ассет графики/3D/интерфейса: 7 |
+| №1347 wallpapers/8.png | 1492730 B | ассет графики/3D/интерфейса: 8 |
+| №1348 wallpapers/9.png | 1715179 B | ассет графики/3D/интерфейса: 9 |
 
 ## Реестр имён, переменных и ключей
 
@@ -13582,7 +13583,7 @@
 | androidDebug | №0911 |
 | androidSignedRelease | №0911 |
 | animationClips | №0900 |
-| app | №1293 (+ 1 других файлов) |
+| app | №1293 (+ 2 других файлов) |
 | appId | №1044 |
 | arch | №1044 |
 | archiveBytes | №0894 (+ 1 других файлов) |
@@ -13606,22 +13607,22 @@
 | baseColorFactor | №0900 |
 | baseObj | №0075 (+ 1 других файлов) |
 | basePositionsSha256 | №0075 (+ 1 других файлов) |
-| baseUrl | №1293 (+ 1 других файлов) |
+| baseUrl | №1293 (+ 2 других файлов) |
 | binary | №0075 (+ 1 других файлов) |
 | binarySha256 | №0075 (+ 1 других файлов) |
 | binaryTransfer | №0909 |
-| blockedVersions | №1293 (+ 1 других файлов) |
+| blockedVersions | №1293 (+ 2 других файлов) |
 | bones | №0900 |
 | breast-volume-decr | №0075 (+ 1 других файлов) |
 | breast-volume-incr | №0075 (+ 1 других файлов) |
 | breastSize | №0075 (+ 1 других файлов) |
 | build | №1044 |
-| bytes | №1297 (+ 8 других файлов) |
-| category | №1297 |
+| bytes | №1298 (+ 9 других файлов) |
+| category | №1298 |
 | caucasian | №0907 |
 | cell | №0740 (+ 8 других файлов) |
 | changedVertices | №0907 (+ 1 других файлов) |
-| channel | №1293 (+ 1 других файлов) |
+| channel | №1293 (+ 2 других файлов) |
 | channels | №0075 (+ 1 других файлов) |
 | chest | №0900 (+ 2 других файлов) |
 | chromiumQA | №0894 |
@@ -13659,8 +13660,8 @@
 | exportedMacros | №0907 |
 | fail | №0894 (+ 1 других файлов) |
 | femaleStackTerms | №0907 |
-| fileCount | №1297 |
-| files | №1297 (+ 7 других файлов) |
+| fileCount | №1298 |
+| files | №1298 (+ 8 других файлов) |
 | firmness | №0907 |
 | fixtureSha256 | №0907 (+ 1 других файлов) |
 | floor | №0740 (+ 1 других файлов) |
@@ -13668,7 +13669,7 @@
 | flow | №0894 |
 | folder | №0075 (+ 3 других файлов) |
 | gender | №0907 |
-| generated | №1297 (+ 2 других файлов) |
+| generated | №1298 (+ 3 других файлов) |
 | gitBlob | №0911 |
 | h | №0740 (+ 8 других файлов) |
 | head | №0075 (+ 1 других файлов) |
@@ -13683,7 +13684,7 @@
 | interactive | №0746 |
 | joints | №0907 (+ 2 других файлов) |
 | JOINTS_0 | №0900 |
-| kind | №1297 |
+| kind | №1298 |
 | legacy | №0894 (+ 1 других файлов) |
 | legLength | №0075 (+ 1 других файлов) |
 | legLength-decr | №0075 (+ 1 других файлов) |
@@ -13713,7 +13714,7 @@
 | method | №0075 (+ 1 других файлов) |
 | MhObjectType | №0900 |
 | MhScaleFactor | №0900 |
-| minAppVersion | №1293 (+ 1 других файлов) |
+| minAppVersion | №1293 (+ 2 других файлов) |
 | model | №0740 (+ 9 других файлов) |
 | morphNames | №0900 |
 | MPFB_GEN_object_type | №0900 |
@@ -13748,7 +13749,7 @@
 | pages | №0911 |
 | paid_api_authorized | №0001 |
 | pass | №0894 (+ 1 других файлов) |
-| path | №1297 (+ 2 других файлов) |
+| path | №1298 (+ 3 других файлов) |
 | pbrMetallicRoughness | №0900 |
 | pectorals | №0075 (+ 1 других файлов) |
 | perMachine | №1044 |
@@ -13789,7 +13790,7 @@
 | runtimeOTARegression | №0894 |
 | s | №0740 (+ 7 других файлов) |
 | scale | №0075 (+ 10 других файлов) |
-| schema | №0075 (+ 3 других файлов) |
+| schema | №0075 (+ 4 других файлов) |
 | schemaVersion | №0740 (+ 6 других файлов) |
 | scripts | №1044 |
 | seamDuplicates | №0900 |
@@ -13799,7 +13800,7 @@
 | selectedTexture | №0740 (+ 8 других файлов) |
 | selectedTool | №0740 (+ 8 других файлов) |
 | selectedWallTexture | №0740 (+ 8 других файлов) |
-| sha256 | №1297 (+ 3 других файлов) |
+| sha256 | №1298 (+ 4 других файлов) |
 | shippedSha256 | №0907 (+ 1 других файлов) |
 | shoulders | №0900 (+ 2 других файлов) |
 | showAbove | №0740 |
@@ -13839,10 +13840,10 @@
 | type | №0740 (+ 8 других файлов) |
 | unchanged | №0907 (+ 1 других файлов) |
 | uniquePositions | №0900 |
-| url | №1295 |
+| url | №1294 (+ 1 других файлов) |
 | uvOutsideUnitSquare | №0900 |
 | uvRange | №0900 |
-| version | №1297 (+ 15 других файлов) |
+| version | №1298 (+ 16 других файлов) |
 | versionCode | №0894 (+ 1 других файлов) |
 | vertexCount | №0075 (+ 1 других файлов) |
 | vertices | №0900 (+ 3 других файлов) |

@@ -6,7 +6,7 @@ name: Unified Android + Windows release
 # both builds have succeeded.
 on:
   push:
-    branches: [main, windows-desktop]
+    branches: [main, windows-desktop, 'release-request-*']
     tags: [release-request-*]
   schedule:
     - cron: '30 9,18 * * *' # 12:30 / 21:30 UTC+3; explicit readiness required
@@ -65,7 +65,7 @@ jobs:
               exit 0
             fi
           fi
-          if [[ "$GITHUB_EVENT_NAME" == "push" && "$GITHUB_REF" == refs/tags/release-request-* ]]; then
+          if [[ "$GITHUB_EVENT_NAME" == "push" && ( "$GITHUB_REF" == refs/tags/release-request-* || "$GITHUB_REF" == refs/heads/release-request-* ) ]]; then
             git fetch origin main
             git merge-base --is-ancestor HEAD origin/main || {
               echo "Release request must point to a commit on main" >&2
