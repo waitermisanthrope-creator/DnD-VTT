@@ -1,0 +1,37 @@
+name: Refresh project atlas
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'PROJECT_ATLAS.md'
+      - 'PROJECT_ATLAS.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: project-atlas-main
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Generate complete atlas
+        run: node tools/generate_project_atlas.cjs
+      - name: Commit updated indexes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add PROJECT_ATLAS.md PROJECT_ATLAS.txt
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'docs: regenerate project atlas [skip ci]'
+          git push origin HEAD:main
