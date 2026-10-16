@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 048f87888bff. Git содержит 1354 файлов.
+Снимок кода afb8b6a8e4d8. Git содержит 1354 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -849,7 +849,7 @@
 | №0828 app/swarm_extra_runtime.js | 19936 B | логический модуль: swarm extra runtime |
 | №0829 app/swipe-lock.js | 1838 B | логический модуль: swipe lock |
 | №0830 app/turn_planner.js | 15930 B | логический модуль: turn planner |
-| №0831 app/update_manager_v2.js | 19323 B | логический модуль: update manager v2 |
+| №0831 app/update_manager_v2.js | 19885 B | логический модуль: update manager v2 |
 | №0832 app/update_scene_v2.js | 11560 B | логический модуль: update scene v2 |
 | №0833 app/vessel_laserllama_v4_runtime.js | 48055 B | логический модуль: vessel laserllama v4 runtime |
 | №0834 app/vtt_character_actions_v64.js | 4047 B | логический модуль: vtt character actions v64 |
@@ -1257,7 +1257,7 @@
 | №1236 tests/test_v754_update_manager.js | 2816 B | автотест: test v754 update manager |
 | №1237 tests/test_v755_creation_buckets.js | 3973 B | автотест: test v755 creation buckets |
 | №1238 tests/test_v755_update_scene.js | 3625 B | автотест: test v755 update scene |
-| №1239 tests/update_ota_flow_test.js | 8469 B | автотест: update ota flow test |
+| №1239 tests/update_ota_flow_test.js | 9661 B | автотест: update ota flow test |
 | №1240 tools/ai_automation.cjs | 2383 B | скрипт разработчика: ai automation |
 | №1241 tools/ai_checks.cjs | 1068 B | скрипт разработчика: ai checks |
 | №1242 tools/ai_finalize.cjs | 2199 B | скрипт разработчика: ai finalize |
@@ -1380,7 +1380,7 @@
 Локальные параметры нельзя путать с полями сериализуемого персонажа, глобальными API или ключами localStorage.
 
 
-### JS объявления/параметры (4900)
+### JS объявления/параметры (4906)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -2420,6 +2420,7 @@
 | customGather | №0814 |
 | customRaces | №0813 |
 | customSkinCharacter | №1060 |
+| customTestSource | №0831 |
 | cut | №0050 (+ 1 других файлов) |
 | cutFaces | №0047 |
 | cv | №0050 (+ 2 других файлов) |
@@ -3588,6 +3589,8 @@
 | isMoreStep | №0804 |
 | isNewClass | №0689 (+ 1 других файлов) |
 | isolated | №1239 |
+| isolatedFound | №1239 |
+| isolatedLegacy | №1239 |
 | isOverLimit | №0825 |
 | isOverweight | №0781 |
 | isParasite | №0635 (+ 1 других файлов) |
@@ -3739,6 +3742,7 @@
 | legacyCurses | №0066 |
 | legacyHuman | №1060 |
 | legacyPact | №0787 |
+| legacyUrl | №1239 |
 | legend | №0052 |
 | legPhase | №0050 |
 | len | №0050 (+ 12 других файлов) |
@@ -5543,6 +5547,8 @@
 | ss | №0644 (+ 1 других файлов) |
 | st | №0050 (+ 7 других файлов) |
 | stability | №0068 (+ 1 других файлов) |
+| stableFound | №1239 |
+| stableLegacy | №1239 |
 | stack | №0653 (+ 1 других файлов) |
 | stageCount | №1239 |
 | staged | №1093 (+ 2 других файлов) |
@@ -6959,7 +6965,7 @@
 | weaponsData | №0636 |
 | worldMatrices | №0048 (+ 3 других файлов) |
 
-### Поля JS объектов (6495)
+### Поля JS объектов (6497)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -12036,9 +12042,11 @@
 | savedAt | №0849 (+ 2 других файлов) |
 | saveDc | №0800 |
 | saveDC | №0067 (+ 6 других файлов) |
+| savedChannel | №1239 |
 | savedDrawCalls | №0052 |
 | saveDisadvantage | №0768 (+ 1 других файлов) |
 | saveDisadvantageForPugilistFeatures | №0768 |
+| savedUrl | №1239 |
 | saveEpoch | №0854 |
 | saveId | №0854 |
 | saveModifiers | №0630 (+ 8 других файлов) |
