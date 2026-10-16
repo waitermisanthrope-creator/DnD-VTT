@@ -242,7 +242,14 @@ window.checkMulticlassRequirements = function(hero, className) {
     const reqs = MULTICLASS_REQUIREMENTS[className];
     if (!reqs) return true; // нет данных о требованиях — не блокируем
 
-    const getStat = (key) => Number(stats[key]) || 0;
+    // Старые сохранения используют полные имена, Builder V2 — str/dex/con/int/wis/cha.
+    // Проверки мультикласса обязаны читать оба формата, не мигрируя данные персонажа.
+    const shortKeys = {strength:'str',dexterity:'dex',constitution:'con',intelligence:'int',wisdom:'wis',charisma:'cha'};
+    const getStat = (key) => {
+        const value = stats[key] !== undefined ? stats[key] : stats[shortKeys[key]];
+        const num = Number(value);
+        return Number.isFinite(num) ? num : 0;
+    };
 
     // Воин и Монах формально требуют "13 в СИЛ ИЛИ ЛОВ" / оба по D&D 5e
     // соответственно; для Воина условие — любая из двух.

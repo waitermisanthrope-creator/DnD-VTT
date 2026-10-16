@@ -50,10 +50,11 @@ var pendingLevelUpData = window.pendingLevelUpData || null;
   if (!document.getElementById('dndModal')) {
     console.log("[LevelUp Debug] Создаем HTML-разметку модального окна выбора классов в DOM");
     const modalHTML = `
-      <div id="dndModal" class="modal-overlay" style="display: none;">
+      <div id="dndModal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Выбор класса для повышения" style="display: none;">
         <div class="modal-content">
           <span class="modal-close" id="closeClassesModal">&times;</span>
           <h2 style="text-align: center; margin-top: 0; color: #d4af37;">Выберите класс для повышения</h2>
+          <p style="text-align:center;color:#aaa;font-size:12px;margin:0 0 12px;">Золотая рамка — класс уже есть у персонажа.</p>
           <div class="classes-grid">
             <div class="class-item" data-class="Кровавый охотник"><span>🩸 Кровавый охотник</span></div>
             <div class="class-item" data-class="Алхимик"><span>🧪 Алхимик</span></div>
@@ -220,6 +221,59 @@ var pendingLevelUpData = window.pendingLevelUpData || null;
           color: #ff9800;
           margin-top: 2px;
         }
+
+        /* Explicitly override theme-frame overflow:visible !important on Android. */
+        #dndModal.modal-overlay {
+          position: fixed !important;
+          inset: 0 !important;
+          width: 100% !important;
+          height: 100% !important;
+          height: 100dvh !important;
+          box-sizing: border-box;
+          padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+          align-items: flex-start !important;
+          overflow-y: auto !important;
+          overflow-x: hidden !important;
+          overscroll-behavior: contain;
+          -webkit-overflow-scrolling: touch !important;
+          touch-action: pan-y !important;
+        }
+        #dndModal .modal-content {
+          box-sizing: border-box;
+          width: min(550px, 100%);
+          max-width: 100%;
+          max-height: calc(100vh - 24px);
+          max-height: calc(100dvh - 24px);
+          min-height: 0;
+          margin: auto;
+          overflow-y: auto !important;
+          overflow-x: hidden !important;
+          -webkit-overflow-scrolling: touch !important;
+          touch-action: pan-y !important;
+          overscroll-behavior: contain;
+        }
+        #dndModal .classes-grid { padding: 3px; }
+        #dndModal .class-item { pointer-events: auto; min-width: 0; }
+        #dndModal .class-item.class-item-owned {
+          outline: 3px solid #d4af37;
+          outline-offset: -3px;
+          border-color: #d4af37;
+          background: #393121;
+          opacity: 1;
+          filter: none;
+        }
+        #dndModal .class-item.class-item-owned::before {
+          content: "✓ Уже ваш класс";
+          color: #f3d36f;
+          font-size: 11px;
+          margin-bottom: 6px;
+        }
+        @media (max-width: 600px) {
+          #dndModal .classes-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+          #dndModal .center-item { grid-column: auto; }
+          #dndModal .class-item { min-height: 95px; }
+          #dndModal .modal-content { padding: 15px 12px; }
+        }
       </style>
     `;
     const div = document.createElement('div');
@@ -313,7 +367,11 @@ var pendingLevelUpData = window.pendingLevelUpData || null;
           alert("Паразит доктора Вальтера — Extra-класс. Повышать можно только его.");
           return;
         }
-        if (!isSwarmHero && !isParasiteHero && !isWalterParasiteHero && (isSwarm || isParasite || isWalterParasite)) {
+        if (isGhostHero && !isGhost) {
+          alert("Призрак — Extra-класс. Повышать можно только «Призрак».");
+          return;
+        }
+        if (!isSwarmHero && !isParasiteHero && !isWalterParasiteHero && !isGhostHero && (isSwarm || isParasite || isWalterParasite || isGhost)) {
           alert("Extra-классы нельзя взять мультиклассом. Рой, Паразит и Паразит доктора Вальтера выбираются как отдельная закрытая ветка.");
           return;
         }
@@ -321,10 +379,12 @@ var pendingLevelUpData = window.pendingLevelUpData || null;
         // Требования мультикласса относятся только к ВЗЯТИЮ НОВОГО КЛАССА.
         // Повышение уже имеющегося класса не проверяется как multiclass entry.
         const selectedClassKey = normalizeClassKey(selectedClassName);
-        const alreadyHasSelectedClass = !!(hero && Array.isArray(hero.classes) &&
-          hero.classes.some(function(c){
+        const alreadyHasSelectedClass = !!(hero && (
+          (Array.isArray(hero.classes) && hero.classes.some(function(c){
             return c && normalizeClassKey(c.name) === selectedClassKey;
-          }));
+          })) ||
+          (!(hero.classes||[]).length && normalizeClassKey(hero.className||hero.class) === selectedClassKey)
+        ));
         if (hero && !alreadyHasSelectedClass &&
             typeof window.checkMulticlassRequirements === 'function' &&
             !window.checkMulticlassRequirements(hero, selectedClassName)) {
@@ -354,15 +414,23 @@ var pendingLevelUpData = window.pendingLevelUpData || null;
     const hero = window.currentCharacter || window.currentChar;
     const items = document.querySelectorAll('#dndModal .class-item');
     const extraType = hero && hero.extraClassType;
-    const isExtraHero = extraType === "swarm" || extraType === "parasite" || extraType === "walter_parasite" ||
+    const isExtraHero = extraType === "swarm" || extraType === "parasite" || extraType === "walter_parasite" || extraType === "ghost" ||
       !!(hero && Array.isArray(hero.classes) && hero.classes.some(function(c){
         var n=String(c&&c.name||"").replace(/[0-9]/g,"").trim();
-        return n==="Рой" || n==="Паразит" || n==="Паразит доктора Вальтера";
+        return n==="Рой" || n==="Паразит" || n==="Паразит доктора Вальтера" || n==="Призрак";
       }));
-    const extraClass = extraType === "parasite" ? "Паразит" : (extraType === "walter_parasite" ? "Паразит доктора Вальтера" : "Рой");
+    const extraClass = extraType === "parasite" ? "Паразит" : (extraType === "walter_parasite" ? "Паразит доктора Вальтера" : (extraType === "ghost" ? "Призрак" : "Рой"));
 
     items.forEach(item => {
       const cls = item.getAttribute('data-class');
+      const key = String(cls||'').replace(/[0-9]/g,'').trim().toLowerCase();
+      const owned = !!(hero && (
+        (Array.isArray(hero.classes) && hero.classes.some(function(entry){
+          return String(entry && entry.name || '').replace(/[0-9]/g,'').trim().toLowerCase() === key;
+        })) ||
+        (!(hero.classes||[]).length && String(hero.className||hero.class||'').replace(/[0-9]/g,'').trim().toLowerCase() === key)
+      ));
+      item.classList.toggle('class-item-owned', owned);
       if (isExtraHero) {
         const allowed = cls === extraClass;
         item.style.display = allowed ? "flex" : "none";
@@ -372,7 +440,7 @@ var pendingLevelUpData = window.pendingLevelUpData || null;
       }
 
       // Extra-классы всегда видимы обычным персонажам только как заблокированные карточки.
-      if (cls === "Рой" || cls === "Паразит" || cls === "Паразит доктора Вальтера") {
+      if (cls === "Рой" || cls === "Паразит" || cls === "Паразит доктора Вальтера" || cls === "Призрак") {
         item.style.display = "flex";
         item.classList.add('class-item-locked');
         item.setAttribute('aria-disabled', 'true');
@@ -381,7 +449,8 @@ var pendingLevelUpData = window.pendingLevelUpData || null;
       }
 
       item.style.display = "flex";
-      const ok = !hero || typeof window.checkMulticlassRequirements !== 'function' ||
+      // Existing class is always eligible for another level, even below multiclass minimum.
+      const ok = owned || !hero || typeof window.checkMulticlassRequirements !== 'function' ||
                  window.checkMulticlassRequirements(hero, cls);
       item.classList.toggle('class-item-locked', !ok);
       item.setAttribute('aria-disabled', ok ? 'false' : 'true');
