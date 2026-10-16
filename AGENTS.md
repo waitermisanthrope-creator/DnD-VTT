@@ -1,6 +1,6 @@
 # DnD-VTT — инструкции для Codex и других ИИ
 
-## Compact session startup (owner instruction 2026-10-16)
+> Для будущих ограничений Free/Premium, прав Homebrew/DLC, хостинга мастера и публикации RuStore см. `docs/PRODUCT_ACCESS_AND_MONETIZATION.md`. В бета-тесте весь доступ остаётся бесплатным. Эти правила пока не реализованы и не заменяют приоритеты Issue #9.\n\n## Compact session startup (owner instruction 2026-10-16)
 
 Read AI_NEXT_TASK.md, AI_PROGRESS.md and AI_BLOCKERS.md first; inspect status/history and fetch main without reset. Read only relevant atlas/guide sections, not the full historical guides. Issue #9 is the live ordered queue: Tarot class first, then other classes. Owner authorizes ordinary verified commits/pushes to main and gated releases; historical no-push/no-release instructions are superseded. Never force-push, discard unavailable work, or claim recovery/builds/tests without evidence. Update compact state after each stage; preserve old names/state contracts. No paid API execution without explicit owner authorization. Existing unified workflow owns both-platform stable release; keep Android signing key and rollback. Do not mark a partial class complete.
 
