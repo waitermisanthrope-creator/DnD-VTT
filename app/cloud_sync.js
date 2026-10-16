@@ -17,6 +17,30 @@
   function set(k, v) { nativeSet.call(storage, k, v); }
   function clone(v) { return JSON.parse(JSON.stringify(v)); }
   function uuid() { return g.crypto.randomUUID ? g.crypto.randomUUID() : '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, function(c) { return (Number(c) ^ g.crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> Number(c)/4).toString(16); }); }
+  // A copied profile has a new identity; keep its own combat/effect links intact.
+  function copyProfile(original, identity) {
+    var c=clone(original),old=String(c.id),next=identity||uuid();
+    if(old===next)return c;
+    var refs=new Set(['characterId','combatantId','sourceId','ownerId','source','untilOwnerStart','untilOwnerEnd','sceneOwnerId','roundOwnerId','charmSourceId','bondPartnerId','bondOwnerId','fearSourceId','nearAllyId','attackerId','targetId','casterId','actorId']);
+    var selfActor=(c.initiativeTracker&&c.initiativeTracker.combatants||[]).some(function(a){return String(a.id)===old;});
+    function walk(v){
+      if(!v||typeof v!=='object')return;
+      Object.keys(v).forEach(function(k){
+        var x=v[k];
+        if(refs.has(k)&&x===old)v[k]=next;
+        else if(typeof x==='string'&&selfActor&&['id','ownTurnId','tarotLastStartedTurn'].includes(k)&&x.indexOf('initiative:'+old+':')===0)v[k]='initiative:'+next+':'+x.slice(('initiative:'+old+':').length);
+        else if(Array.isArray(x)&&selfActor&&['turnIds','swappedTurns','slipTurns'].includes(k))v[k]=x.map(function(t){return typeof t==='string'&&t.indexOf('initiative:'+old+':')===0?'initiative:'+next+':'+t.slice(('initiative:'+old+':').length):t;});
+        else walk(x);
+      });
+    }
+    walk(c);
+    (c.initiativeTracker&&c.initiativeTracker.combatants||[]).forEach(function(a){if(String(a.id)===old)a.id=next;});
+    var tokens=c.initiativeTracker&&c.initiativeTracker.battlefield&&c.initiativeTracker.battlefield.tokens;
+    if(tokens)Object.keys(tokens).forEach(function(k){var t=tokens[k];if(t.id===old)t.id=next;else if(t.id==='bt_'+old)t.id='bt_'+next;if(k===old||k==='bt_'+old){tokens[k===old?next:'bt_'+next]=t;delete tokens[k];}});
+    if(c.tarotKnowledge&&Object.prototype.hasOwnProperty.call(c.tarotKnowledge,old)){c.tarotKnowledge[next]=c.tarotKnowledge[old];delete c.tarotKnowledge[old];}
+    var totals=c.initiativeTracker&&c.initiativeTracker.tarotDamageTotals;if(selfActor&&totals&&Object.prototype.hasOwnProperty.call(totals,old)){totals[next]=totals[old];delete totals[old];}
+    c.id=next;return c;
+  }
   function list(raw) {
     var v = raw ? JSON.parse(raw) : [], a = Array.isArray(v) ? v : v && v.characters;
     if (!Array.isArray(a) || a.some(function(c) { return !c || typeof c !== 'object' || c.id == null; })) throw Error('Повреждён список персонажей. Восстановите резервную копию.');
@@ -194,7 +218,7 @@
     });
     s.raw=serialize(s.raw,a);persist();if(s===scope())set(KEY,s.raw);
   }
-  function updateRemote(e,r) { e.revision=r.revision;e.json=JSON.stringify(Object.assign({},r.profile,{id:e.localId}));e.deleted=r.deleted;e.dirty=false;delete e.conflict; }
+  function updateRemote(e,r) { e.revision=r.revision;e.json=JSON.stringify(copyProfile(r.profile,e.localId));e.deleted=r.deleted;e.dirty=false;delete e.conflict; }
   async function sync() {
     if(running || !session || !scope())return;
     if(g.navigator.onLine===false){status='Офлайн';notify();return;}
@@ -237,7 +261,7 @@
   function importLocal() {
     var s=scope();if(!s)throw Error('Сначала войдите в аккаунт');
     var a=list(s.raw);
-    list(state.guest).forEach(function(c) {var copy=clone(c);copy.id=uuid();a.push(copy);});
+    list(state.guest).forEach(function(c) {var copy=copyProfile(c);a.push(copy);});
     // Originals remain in the guest roster, including their legacy IDs.
     storage.setItem(KEY,serialize(s.raw,a));refreshView(false);
     message='Созданы облачные копии локальных героев. Гостевые оригиналы сохранены.';notify();
@@ -247,7 +271,7 @@
     var s=scope(),e=s&&s.entries[id];if(!e||!e.conflict)throw Error('Конфликт не найден');
     var conflict=e.conflict,local=JSON.parse(e.json),deleted=e.deleted,r=conflict.remote;
     if(choice==='copy') {
-      var copy=clone(local);copy.id=uuid();copy.name=(copy.name || 'Персонаж')+' (копия)';
+      var copy=copyProfile(local);copy.name=(copy.name || 'Персонаж')+' (копия)';
       s.entries[copy.id]={localId:copy.id,cloudId:uuid(),revision:0,json:JSON.stringify(copy),deleted:false,dirty:true};
     }
     if(choice==='local') {e.revision=r?r.revision:0;e.dirty=true;delete e.pending;delete e.conflict;}
@@ -268,20 +292,20 @@
     var r=rows.find(function(r){return r.revision===Number(revision);});if(!r)throw Error('Версия не найдена');
     var e=s.entries[id];if(e.conflict)throw Error('Сначала разрешите конфликт');
     s.resolved=s.resolved||[];s.resolved.push({at:Date.now(),local:JSON.parse(e.json),deleted:e.deleted});
-    e.json=JSON.stringify(Object.assign({},r.profile,{id:e.localId}));e.deleted=r.deleted;e.dirty=true;
+    e.json=JSON.stringify(copyProfile(r.profile,e.localId));e.deleted=r.deleted;e.dirty=true;
     writeScope(s);refreshView(String(g.currentCharacterId)===String(id));blocked=false;schedule(0);notify();
   }
   function configure(c) {if(session)throw Error('Выйдите из аккаунта перед сменой проекта');config=validateConfig(c);set(CONFIG,JSON.stringify(config));blocked=false;message='Подключение сохранено';notify();}
   function localBackups(){var s=scope();return s?(s.resolved||[]).map(function(b,i){return {index:i,at:b.at,name:b.local.name||'Персонаж'};}):[];}
   function copyDeleted(id){
     var s=scope(),e=s&&s.entries[id];if(!e||!e.deleted)throw Error('Удалённый персонаж не найден');
-    var c=JSON.parse(e.json);c.id=uuid();c.name=(c.name||'Персонаж')+' (восстановленная копия)';
+    var c=copyProfile(JSON.parse(e.json));c.name=(c.name||'Персонаж')+' (восстановленная копия)';
     s.entries[c.id]={localId:c.id,cloudId:uuid(),revision:0,json:JSON.stringify(c),deleted:false,dirty:true};
     writeScope(s);refreshView(false);blocked=false;schedule(0);notify();
   }
   function restoreLocalCopy(index){
     var s=scope(),backup=s&&s.resolved&&s.resolved[index];if(!backup)throw Error('Локальная резервная версия не найдена');
-    var c=clone(backup.local);c.id=uuid();c.name=(c.name||'Персонаж')+' (восстановленная копия)';
+    var c=copyProfile(backup.local);c.name=(c.name||'Персонаж')+' (восстановленная копия)';
     s.entries[c.id]={localId:c.id,cloudId:uuid(),revision:0,json:JSON.stringify(c),deleted:false,dirty:true};
     writeScope(s);refreshView(false);blocked=false;schedule(0);notify();
   }

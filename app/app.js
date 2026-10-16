@@ -784,6 +784,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function getStatModNum(statId) {
   var elem = document.getElementById(statId);
   var val = elem ? parseInt(elem.value) || 10 : 10;
+  // Temporary Tarot scores affect calculations, never the editable base score.
+  if (window.DNDPredictorCards && window.DNDRules && typeof currentChar !== 'undefined' && currentChar) {
+    var base = window.DNDRules.getStats(currentChar, true);
+    if (elem) base[statId] = val;
+    val = window.DNDPredictorCards.modifyStats(currentChar, base)[statId];
+  }
   return Math.floor((val - 10) / 2);
 }
 

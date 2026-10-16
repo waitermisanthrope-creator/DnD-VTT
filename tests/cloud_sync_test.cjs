@@ -137,7 +137,14 @@ async function main(){
     pc.g.fetch=async()=>({ok:false,status:400,text:async()=>JSON.stringify({code:400,error_code:'invalid_credentials',msg:'Invalid login credentials'})});
     await assert.rejects(pc.api.login('a@example.com','password123'),/Неверная почта или пароль/);
   });
+  await test('copied and downloaded profiles rebind internal combat links without changing guest originals',async()=>{
+    const old='legacy-owner',turn='initiative:'+old+':2';
+    const h={...hero,id:old,notes:old,initiativeTracker:{combatants:[{id:old,characterId:old},{id:'other',characterId:'other'}],battlefield:{tokens:{[old]:{id:old,sourceId:old,combatantId:old,x:1,y:2}}}},tarotEffects:[{id:'pentacles_03',sceneOwnerId:old,untilOwnerEnd:old,nearAllyId:'other'}],tarotKnowledge:{[old]:{ac:12}},tarotLastStartedTurn:turn,predictorState:{turnIds:[turn],window:{id:turn},trickster:{ownTurnId:turn,swappedTurns:[turn]}}};
+    const server=new Server(),raw=JSON.stringify([h]),pc=device(server,{[KEY]:raw});await pc.api.login('a@example.com','password123');pc.api.importLocal();
+    function check(c){const id=c.id;assert.notEqual(id,old);assert.equal(c.notes,old);assert.equal(c.initiativeTracker.combatants[0].characterId,id);assert.equal(c.initiativeTracker.combatants[0].id,id);assert.equal(c.initiativeTracker.combatants[1].characterId,'other');assert.equal(c.initiativeTracker.battlefield.tokens[id].sourceId,id);assert.equal(c.initiativeTracker.battlefield.tokens[id].combatantId,id);assert.equal(c.tarotEffects[0].sceneOwnerId,id);assert.equal(c.tarotEffects[0].untilOwnerEnd,id);assert.equal(c.tarotEffects[0].nearAllyId,'other');assert.equal(c.tarotKnowledge[id].ac,12);assert.equal(c.tarotLastStartedTurn,'initiative:'+id+':2');assert.equal(c.predictorState.window.id,c.tarotLastStartedTurn);assert.equal(c.predictorState.turnIds[0],c.tarotLastStartedTurn);assert.equal(c.predictorState.trickster.swappedTurns[0],c.tarotLastStartedTurn);}
+    check(pc.roster()[0]);await pc.api.sync();const phone=device(server);await phone.api.login('a@example.com','password123');check(phone.roster()[0]);await phone.api.sync();await pc.api.sync();check(pc.roster()[0]);await pc.api.logout();assert.equal(pc.map.get(KEY),raw);
+  });
   console.log('CLOUD_SYNC_TEST_OK: '+passed+' scenarios');
 }
-module.exports={Server,hero};
+module.exports={Server,hero,device};
 if(require.main===module)main().catch(e=>{console.error(e);process.exitCode=1;});

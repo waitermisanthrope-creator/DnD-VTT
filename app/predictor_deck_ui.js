@@ -1,0 +1,94 @@
+/** Local owner-only deck panel for stage-one Predictor. Uses DNDPredictor and
+ * autoSaveCurrentCharacter; holds no separate character/deck state. Effects are
+ * available only where a complete executor exists. Opened from the class sheet.
+ * Network sessions are blocked until private hand transport is implemented.
+ */
+(function(g){
+  'use strict';
+  var panel=null,openedHero=null,selectedTarget=null,reveal='ac',advice='woundedAlly',willingTargetIds=[],toolStat='dex',toolProficient=false,teleportX='',teleportY='',chargeDirection=1,bondWilling=false,kingAlly='',opportunityAttacker='',leavingReach=false,teleportAllyId='',allyX='',allyY='',allyWilling=false;
+  function networkActive(){return !!(g.dndNetwork&&g.dndNetwork.state&&g.dndNetwork.state.connected);}
+  function button(parent,text,fn,disabled){var b=document.createElement('button');b.type='button';b.className='btn-action';b.textContent=text;b.style.cssText='min-height:44px;margin:4px;';b.disabled=!!disabled;b.onclick=fn;parent.appendChild(b);}
+  function paragraph(text){var p=document.createElement('p');p.textContent=text;panel.appendChild(p);}
+  function close(){if(panel)panel.remove();panel=null;openedHero=null;willingTargetIds=[];selectedTarget=null;teleportX='';teleportY='';teleportAllyId='';allyX='';allyY='';allyWilling=false;opportunityAttacker='';kingAlly='';chargeDirection=1;bondWilling=false;leavingReach=false;}
+  function save(){if(typeof g.autoSaveCurrentCharacter!=='function')throw Error('Сохранение профиля недоступно.');g.autoSaveCurrentCharacter();}
+  function change(fn){if(openedHero!==g.currentChar||networkActive()){close();return;}var r=fn();if(!r.ok){g.alert(r.reason);return;}['hpCurrent','hpMax','hpTemp'].forEach(function(id){var input=document.getElementById&&document.getElementById(id);if(input&&openedHero[id]!=null)input.value=openedHero[id];});save();if(g.DNDBattleBoard&&g.DNDBattleBoard.render)g.DNDBattleBoard.render();render();if(r.result)g.alert(JSON.stringify(r.result));}
+  function coordinate(label,value,set){var input=document.createElement('input');input.type='number';input.min='0';input.step='1';input.value=value;input.setAttribute('aria-label',label);input.style.cssText='min-height:44px;max-width:120px';input.oninput=function(){set(input.value);};paragraph(label);panel.appendChild(input);}
+  function point(x,y){return x!==''&&y!==''?{x:Number(x),y:Number(y)}:null;}
+  function select(label,choices,value,onchange){paragraph(label);var el=document.createElement('select');el.style.cssText='min-height:44px;max-width:100%';choices.forEach(function(c){var o=document.createElement('option');o.value=c[0];o.textContent=c[1];el.appendChild(o);});el.value=value;el.onchange=function(){onchange(el.value);};panel.appendChild(el);}
+  function playButton(h,id){var cards=g.DNDPredictorCards;if(!cards)return;var d=cards.definition(id);button(panel,'Применить: '+d.name+' ('+({action:'действие',bonus:'бонусное',reaction:'реакция'}[d.action])+')',function(){var attack=null;if(id==='wands_14'||id==='swords_12'){var bonus=g.prompt('Бонус атаки оружием:','0');if(bonus===null||!String(bonus).trim())return;var dice=g.prompt('Урон оружия:','1d6');if(dice===null)return;var type=g.prompt('Тип урона:','рубящий');if(type===null)return;attack={bonus:Number(bonus),damage:dice,damageType:type};}change(function(){return cards.play(h,id,{targetId:selectedTarget||h.id,allyId:kingAlly,attack:attack,direction:Number(chargeDirection),bondWilling:bondWilling,reveal:reveal,advice:advice,willingTargetIds:willingTargetIds.slice(),destination:point(teleportX,teleportY),teleportAllyId:teleportAllyId,allyDestination:point(allyX,allyY),allyWilling:allyWilling,operationId:h.predictorState.blind?h.predictorState.blind.operationId:g.crypto.randomUUID(),expectedRevision:h.predictorState.revision});});},!d.implemented);if(!d.implemented)paragraph('Обработчик этой карты ещё не подключён; карта и действия сохраняются.');}
+  function render(){
+    if(!panel||openedHero!==g.currentChar){close();return;}panel.replaceChildren();button(panel,'Закрыть',close);
+    var a=g.DNDPredictor,h=openedHero,r=a.inspect(h);if(!r.ok){paragraph(r.reason);return;}
+    var s=r.state;paragraph('Предсказатель — колоды и розыгрыш.');
+    paragraph('Рука: '+s.hand.length+' / '+(r.capacity===null?'выберите подкласс':r.capacity)+'. Ресурс Старших: '+r.majorCurrent+' / '+r.majorMax+'.');
+    var effects=(h.tarotEffects||[]).filter(function(e){return !e.concentration||h.concentration&&h.concentration.active&&h.concentration.spellId==='tarot:'+e.id;});
+    effects.forEach(function(e){var d=g.DNDPredictorCards&&g.DNDPredictorCards.definition(e.id);if(!d)return;var text=d.name;if(e.childAppearance)text+=': детский облик; Харизма +2 (до 22), Сила −2 (не ниже 1)';if(e.fortuneMode)text+=': '+(e.fortuneRevealed?(e.fortuneMode==='advantage'?'преимущество':'помеха'):'исход скрыт до первого затронутого броска');if(e.gravity)text+=': инверсия гравитации; подъём '+e.riseFt+' футов, затем падение';if(e.retreatFrom)text+=': движение только от центра боя до конца хода';if(e.bondPartnerId)text+=': связь с союзником; разделение урона и преимущество рядом';if(e.sunAura)text+=': солнечная аура 30 футов; ослепление врагов, +2 КД союзникам';if(e.peaceAura)text+=': аура покоя 30 футов';if(e.killInspiration)text+=': вдохновение за поверженного врага до конца хода';if(e.highGround)text+=': двойной урон с возвышения; защита при неподвижности';if(e.invisible)text+=': невидимость и тишина; нельзя атаковать и колдовать';if(e.blindBeyond)text+=': слепое зрение 30 футов; +3 КД';if(e.seeInvisible)text+=': видеть невидимость и иллюзии в 60 футах';if(e.noVerbal)text+=': нельзя использовать вербальные компоненты';if(e.maximizeNextRoll)text+=': следующий бросок получает максимум';if(e.noForcedMovement)text+=': нельзя сбить с ног или принудительно переместить';if(e.sleep)text+=': магический сон; урон пробуждает';if(e.guardDC)text+=': перед атакой спасбросок Мудрости СЛ '+e.guardDC;if(e.noHide||e.noDisengage)text+='; нельзя прятаться и отходить до конца этого хода';if(e.noHelp||e.noTransfer)text+=': +3 КД; нельзя помогать и передавать предметы';if(e.teamAttackBonus)text+=': +2 к атакам против врагов рядом с выбранным союзником';if(e.preventOpportunity)text+=': скорость ×3; движение не провоцирует атаки';if(e.opportunityAdvantage)text+=': преимущество на провоцированные атаки до конца раунда';if(e.pendingInitiativeBonus)text+=': +5 к инициативе с раунда '+e.applyFromRound;paragraph(text+(e.seconds!=null?' — осталось '+e.seconds+' с.':''));});
+    if(g.DNDPredictorCards&&effects.length&&!(h.initiativeTracker&&h.initiativeTracker.combatants&&h.initiativeTracker.combatants.length)){
+      paragraph('Время вне боя: отметьте прошедший промежуток. Сроки карт обновятся и сохранятся.');
+      [[6,'Прошло 6 секунд'],[60,'Прошла 1 минута'],[600,'Прошло 10 минут'],[3600,'Прошёл 1 час']].forEach(function(t){button(panel,t[1],function(){change(function(){return g.DNDPredictorCards.advanceTime(h,t[0]);});});});
+    }
+    if(g.DNDRules&&effects.some(function(e){return e.abilityChanges||e.strengthFloor;})){var scores=g.DNDRules.getStats(h);paragraph('С учётом карт: Сила '+scores.str+', Харизма '+scores.cha+'. Базовые значения не меняются.');}
+    if(g.DNDCombat&&g.DNDCombat.abilityCheck&&effects.some(function(e){return e.toolMastery;})){
+      select('Проверка инструментом: характеристика',[['str','Сила'],['dex','Ловкость'],['con','Телосложение'],['int','Интеллект'],['wis','Мудрость'],['cha','Харизма']],toolStat,function(v){toolStat=v;});
+      var toolLabel=document.createElement('label'),toolBox=document.createElement('input');toolBox.type='checkbox';toolBox.checked=toolProficient;toolBox.setAttribute('aria-label','Владею выбранным инструментом');toolBox.onchange=function(){toolProficient=toolBox.checked;};toolLabel.appendChild(toolBox);var toolText=document.createElement('span');toolText.textContent='Владею выбранным инструментом';toolLabel.appendChild(toolText);panel.appendChild(toolLabel);
+      button(panel,'Проверить инструмент',function(){change(function(){var rolled=g.DNDCombat.abilityCheck(h,toolStat,null,'normal',{tool:true,proficient:toolProficient});return rolled.ok?{ok:true,result:rolled}:rolled;});});
+    }
+    if(g.DNDPredictorCards&&h.initiativeTracker&&(h.initiativeTracker.combatants||[]).length>1){
+      var fighters=h.initiativeTracker.combatants;
+      select('Кто совершает провоцированную атаку',fighters.map(function(t){return [t.id,t.name||t.id];}),opportunityAttacker||fighters[0].id,function(v){opportunityAttacker=v;});
+      var eventLabel=document.createElement('label'),eventBox=document.createElement('input');eventBox.type='checkbox';eventBox.checked=leavingReach;eventBox.onchange=function(){leavingReach=eventBox.checked;};eventLabel.appendChild(eventBox);var eventText=document.createElement('span');eventText.textContent='Выбранная цель сейчас покидает досягаемость атакующего своим движением';eventLabel.appendChild(eventText);panel.appendChild(eventLabel);
+      button(panel,'Провоцированная атака',function(){
+        if(!leavingReach){g.alert('Сначала укажите событие выхода из досягаемости.');return;}
+        var raw=g.prompt('Бонус атаки оружием:','0');if(raw===null||!String(raw).trim())return;var bonus=Number(raw),dice=g.prompt('Урон оружия, например 1d8+3:','1d6');if(dice===null)return;var type=g.prompt('Тип урона:','рубящий');if(type===null)return;
+        change(function(){var r=g.DNDPredictorCards.opportunityAttack(h,{attackerId:opportunityAttacker||fighters[0].id,targetId:selectedTarget||h.id,leavingReach:leavingReach,bonus:bonus,damage:dice,damageType:type});if(r.ok)leavingReach=false;return r;});
+      });
+    }
+    paragraph('В колодах: '+s.decks.minor.length+' Младших, '+s.decks.major.length+' Старших (включая ещё не открытые). В сбросе: '+(s.discard.minor.length+s.discard.major.length)+'.');
+    var names={};a.cards.forEach(function(c){names[c.id]=c.name;});
+    if(s.hand.includes('swords_06')||s.blind&&s.blind.card==='swords_06'){
+      paragraph('Шестёрка Мечей: координаты клеток начинаются с 0. Выберите видимую свободную точку в пределах 30 футов.');
+      coordinate('Ваша точка X',teleportX,function(v){teleportX=v;});coordinate('Ваша точка Y',teleportY,function(v){teleportY=v;});
+      select('Спутник телепортации',[['','Без спутника']].concat((h.initiativeTracker&&h.initiativeTracker.combatants||[]).filter(function(t){return t.characterId!==h.id&&t.id!==h.id&&(t.type==='hero'||t.team==='party');}).map(function(t){return [t.id,t.name||t.id];})),teleportAllyId,function(v){teleportAllyId=v;allyWilling=false;render();});
+      if(teleportAllyId){coordinate('Точка спутника X',allyX,function(v){allyX=v;});coordinate('Точка спутника Y',allyY,function(v){allyY=v;});var label=document.createElement('label'),yes=document.createElement('input');yes.type='checkbox';yes.checked=allyWilling;yes.onchange=function(){allyWilling=yes.checked;};label.appendChild(yes);var text=document.createElement('span');text.textContent='Союзник согласен на телепортацию';label.appendChild(text);panel.appendChild(label);}
+    }
+    if(g.DNDPredictorCards){select('Цель карты / провоцированной атаки',[[h.id,'Себя']].concat((h.initiativeTracker&&h.initiativeTracker.combatants||[]).filter(function(t){return t.characterId!==h.id;}).map(function(t){return [t.id,t.name||t.id];})),selectedTarget||h.id,function(v){selectedTarget=v;bondWilling=false;render();});select('Жрица: раскрыть',[['ac','КД'],['resistances','Сопротивления'],['immunities','Иммунитеты'],['vulnerabilities','Уязвимости']],reveal,function(v){reveal=v;});select('Паж Кубков: совет',[['woundedAlly','Наиболее раненый союзник'],['weakestEnemy','Враг с наименьшими хитами'],['knownVulnerability','Ранее раскрытая уязвимость']],advice,function(v){advice=v;});}
+    if(s.hand.includes('swords_12')||s.blind&&s.blind.card==='swords_12')select('Рыцарь Мечей: направление рывка',[['1','Север'],['2','Северо-восток'],['3','Восток'],['4','Юго-восток'],['5','Юг'],['6','Юго-запад'],['7','Запад'],['8','Северо-запад']],String(chargeDirection),function(v){chargeDirection=Number(v);});
+    if(s.hand.includes('major_12')||s.blind&&s.blind.card==='major_12'){button(panel,'Повешенный: открытое небо',function(){change(function(){return g.DNDPredictorCards.setCeiling(h,true);});});button(panel,'Повешенный: задать потолок',function(){var raw=g.prompt('Высота потолка над нулевой отметкой, футы:','10');if(raw===null||!String(raw).trim())return;change(function(){return g.DNDPredictorCards.setCeiling(h,false,Number(raw));});});}
+    if(h.tarotLastMovement)paragraph('Последнее перемещение: '+h.tarotLastMovement.cardId+', пройдено '+h.tarotLastMovement.movedFt+' футов'+(h.tarotLastMovement.rolledDistanceFt!=null?' из выпавших '+h.tarotLastMovement.rolledDistanceFt+'; направление '+h.tarotLastMovement.direction:''));
+    if(s.hand.includes('major_06')||s.blind&&s.blind.card==='major_06'){var bondLabel=document.createElement('label'),bondBox=document.createElement('input');bondBox.type='checkbox';bondBox.checked=bondWilling;bondBox.onchange=function(){bondWilling=bondBox.checked;};bondLabel.appendChild(bondBox);var bondText=document.createElement('span');bondText.textContent='Выбранный союзник согласен на связь Влюблённых';bondLabel.appendChild(bondText);panel.appendChild(bondLabel);}
+    if(h.inspiration&&!h.tarotInspirationReady)button(panel,'Использовать вдохновение на следующий d20',function(){change(function(){return g.DNDPredictorCards.prepareInspiration(h);});});
+    if(h.tarotInspirationReady)paragraph('Вдохновение готово: преимущество на следующий d20.');
+    if(h.initiativeTracker&&h.initiativeTracker.battlefield)button(panel,'Задать высоту выбранного участника',function(){var raw=g.prompt('Высота над землёй в футах:','0');if(raw===null||!String(raw).trim())return;change(function(){return g.DNDPredictorCards.setElevation(h,selectedTarget||h.id,Number(raw));});});
+    if(s.hand.includes('wands_14')||s.blind&&s.blind.card==='wands_14')select('Король Жезлов: союзник для команды',[['','Выберите союзника']].concat((h.initiativeTracker&&h.initiativeTracker.combatants||[]).filter(function(t){return t.characterId!==h.id&&t.id!==h.id&&(t.type==='hero'||t.team==='party');}).map(function(t){return [t.id,t.name||t.id];})),kingAlly,function(v){kingAlly=v;});
+    if(g.DNDPredictorCards)g.DNDPredictorCards.revealedSight(h).forEach(function(t){paragraph('Особое зрение: '+(t.name||t.id)+(t.invisible?' — невидимое существо':'')+(t.illusion?' — иллюзия':''));});
+    if(s.hand.includes('pentacles_06')||s.blind&&s.blind.card==='pentacles_06'){
+      paragraph('Шестёрка Пентаклей: отметьте согласных союзников. Получатель выбирается случайно; дальность проверяется при применении.');
+      (h.initiativeTracker&&h.initiativeTracker.combatants||[]).filter(function(t){return t.characterId!==h.id&&t.id!==h.id&&(t.type==='hero'||t.team==='party');}).forEach(function(t){
+        var label=document.createElement('label'),box=document.createElement('input');box.type='checkbox';box.checked=willingTargetIds.includes(t.id);box.setAttribute('aria-label','Согласен: '+(t.name||t.id));box.onchange=function(){willingTargetIds=willingTargetIds.filter(function(id){return id!==t.id;});if(box.checked)willingTargetIds.push(t.id);};label.appendChild(box);var name=document.createElement('span');name.textContent=t.name||t.id;label.appendChild(name);panel.appendChild(label);
+      });
+    }
+    if(s.blind){paragraph('Обязательная слепая карта: '+names[s.blind.card]+'. Результат сохранён.');playButton(h,s.blind.card);return;}
+    if(!s.hand.length)paragraph('Рука пока пуста.');s.hand.forEach(function(id){paragraph(names[id]);playButton(h,id);});
+    var trick=a.tricksterStatus(h);
+    if(trick.ok){
+      paragraph('Шулер. Ва-банк: '+trick.wagerCurrent+' / '+trick.wagerMax+' ставок. Кость удачи: d'+trick.die+'.');
+      var cards=g.DNDPredictorCards,ready=cards&&s.decks.minor.every(function(id){return cards.definition(id).implemented;});
+      paragraph(ready?'Для ставки выберите масть.':'Ва-банк пока закрыт: в колоде есть карты без полного обработчика.');
+      if(cards&&ready)['swords','cups','pentacles','wands'].forEach(function(suit){var odds=a.wagerOdds(h,suit,'',cards.definitions);button(panel,'Ва-банк: '+suit+' ('+(odds.ok&&odds.denominator?odds.numerator+'/'+odds.denominator:'нет карт')+')',function(){change(function(){return a.beginWager(h,suit,g.crypto.randomUUID(),'',cards.definitions,h.predictorState.revision);});},!odds.ok||!odds.denominator||!trick.wagerCurrent);});
+      trick.rewards.filter(function(x){return x.status==='pending';}).forEach(function(x){paragraph('Сохранённая награда: '+x.kind+(x.amount!=null?' — '+x.amount:''));});
+      if(!s.offer&&s.window&&s.window.kind==='turn')s.hand.filter(function(id){return a.cards.find(function(c){return c.id===id;}).deck==='minor';}).forEach(function(id){button(panel,'Смена расклада: '+names[id],function(){change(function(){return a.swapCard(h,id);});});});
+    }
+    if(s.offer){paragraph('Выберите карту. Невыбранная вернётся в колоду, которая перемешается.');s.offer.cards.forEach(function(id){button(panel,names[id],function(){change(function(){return a.choose(h,id);});});});return;}
+    if(!s.window){button(panel,'Заполнить стартовую руку',function(){change(function(){return a.beginInitial(h);});},r.capacity===null);return;}
+    paragraph('Осталось добора: '+s.window.remaining+'. После отдыха выбирайте колоду для каждого места.');
+    var mode=a.rules.choiceMode;if(!mode){paragraph('Способ открытого добора ещё уточняется. Получение новых карт временно недоступно.');return;}
+    ['minor','major'].forEach(function(deck){button(panel,deck==='minor'?'Добрать Младшую':'Добрать Старшую',function(){change(function(){return mode==='always'||(mode==='initial'&&s.window.kind==='initial')?a.offer(h,deck):a.draw(h,deck);});},r.capacity===null||s.hand.length>=r.capacity||s.window.remaining<1);});
+  }
+  function open(){
+    close();if(networkActive()){g.alert('Первый этап доступен вне сетевой сессии: приватная передача руки ещё не реализована.');return;}
+    var h=g.currentChar,a=g.DNDPredictor;if(!h||!a)return;var r=a.initialize(h);if(!r.ok){g.alert(r.reason);return;}openedHero=h;save();
+    panel=document.createElement('section');panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Колоды Предсказателя');panel.style.cssText='position:fixed;inset:4%;z-index:10020;background:#211f1b;color:#eee;padding:16px;overflow:auto;border:2px solid #a88c50;border-radius:12px;';document.body.appendChild(panel);render();
+  }
+  g.DNDPredictorUI={open:open,close:close,refresh:render};
+  if(g.addEventListener)g.addEventListener('dnd-character-rendered',function(){if(panel)render();});
+})(window);

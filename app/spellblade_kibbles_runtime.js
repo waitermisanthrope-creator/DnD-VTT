@@ -37,6 +37,7 @@ function formula(s){return typeof s==='string'&&/^\d+d(?:4|6|8|10|12)(?:\s*[+-]\
 function prepare(h,ctx){
  var s=state(h),B=g.DNDCombat,sp=(h.spellsData||[]).find(function(x){return x.name===ctx.spellName&&[NAME,'Spellblade'].indexOf(x.castingClass)>=0;});
  if(!B||!canAct(h)||s.prepared||!sp||Number(sp.level)<0||!Number.isInteger(Number(sp.level))||!formula(sp.damage)||!sp.damageType||sp.concentration||sp.aoe||sp.aoeShape||sp.heal||sp.conditions||sp.condition||!/^((1\s+)?action|(1\s+)?действие)$/i.test(String(sp.castingTime||''))||(sp.castingStat&&sp.castingStat!=='int')||(!sp.attackType&&!sp.savingThrow)||h.turnResources&&Number(h.turnResources.bonusAction)===0)return fail('Выберите поддержанное сохранённое заклинание своего класса: одиночный урон, действие, без концентрации/области/дополнительных состояний.');
+ if(g.DNDPredictorCards){var tarotCast=g.DNDPredictorCards.canCast(h,sp);if(!tarotCast.ok)return fail(tarotCast.error);}
  var base=Number(sp.level),n=ctx.slotLevel==null?base:Number(ctx.slotLevel),maxSpell=level(h)>=17?5:level(h)>=13?4:level(h)>=9?3:level(h)>=5?2:1;
  if(!Number.isInteger(n)||n<base||n>maxSpell||(base===0&&(level(h)<5||n!==0))||(base>0&&n<1))return fail('Круг или заговор недоступен для Заклинательного удара.');
  if(sp.savingThrow&&!['str','dex','con','int','wis','cha'].includes(String(sp.savingThrow)))return fail('Не поддержан тип спасброска этого заклинания.');

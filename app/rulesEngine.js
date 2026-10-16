@@ -75,7 +75,7 @@
     'испуган':'Испуган','сбит с ног':'Сбит с ног','сбит с ног':'Сбит с ног',
     'парализован':'Парализован','захвачен':'Захвачен','очарован':'Очарован',
     'невидимость':'Невидим','невидим':'Невидим','недееспособен':'Недееспособен',
-    'окаменел':'Окаменел','опутан':'Опутан','истощение':'Истощение','бессознателен':'Бессознателен','без сознания':'Бессознателен','unconscious':'Бессознателен'
+    'prone':'Сбит с ног','окаменел':'Окаменел','опутан':'Опутан','истощение':'Истощение','бессознателен':'Бессознателен','без сознания':'Бессознателен','unconscious':'Бессознателен'
   };
   function normalizeConditionName(name) {
     var raw=String(name||'').trim().toLowerCase().replace(/ё/g,'ё').replace(/\s+/g,' ');
@@ -123,7 +123,7 @@
       });
       out[key]=(isFinite(value)?value:10)+(Number(bh[key])||0);
     });
-    return out;
+    return !raw&&global.DNDPredictorCards?global.DNDPredictorCards.modifyStats(hero,out):out;
   }
 
   function mod(value) { return Math.floor((Number(value || 10) - 10) / 2); }
@@ -214,6 +214,7 @@
       result.autoFailStrDex=result.autoFailStrDex||!!c.autoFailStrDex;
     });
     result.attack = result.disadvantage ? -1 : 0;
+    if(global.DNDPredictorCards&&global.DNDPredictorCards.asleep(hero)){result.disadvantage=true;result.attack=-1;result.autoFailStrDex=true;}
     return result;
   }
 
@@ -240,17 +241,25 @@
     return mode;
   }
 
-  function rollD20(mode, roller) {
+  function rollD20(mode, roller, actor, context) {
+    context=context||{};
+    if(actor&&global.DNDPredictorCards&&!context.tarotModeApplied){
+      var tarot=global.DNDPredictorCards.d20Modifiers(actor,context.kind,context),adv=mode==='advantage'||tarot.advantage,dis=mode==='disadvantage'||tarot.disadvantage;
+      mode=adv===dis?'normal':adv?'advantage':'disadvantage';
+    }
+    if(actor&&global.DNDPredictorCards&&!context.autoFailed&&global.DNDPredictorCards.consumeMaximum(actor))roller=function(){return 20;};
     roller = roller || function () { return Math.floor(Math.random() * 20) + 1; };
     var a = roller(), b = null, result = a;
     if (mode === 'advantage' || mode === 'disadvantage') {
       b = roller();
       result = mode === 'advantage' ? Math.max(a, b) : Math.min(a, b);
     }
-    return { first: a, second: b, result: result, critical: result === 20, fumble: result === 1, mode: mode || 'normal' };
+    var out={ first: a, second: b, result: result, critical: result === 20, fumble: result === 1, mode: mode || 'normal' };
+    if(actor&&global.DNDPredictorCards&&!context.autoFailed){var fortune=global.DNDPredictorCards.noteD20Roll(actor,context.kind);if(fortune)out.tarotFortune=fortune;}
+    return out;
   }
 
-  function weaponAttack(hero, weapon, mode) {
+  function weaponAttack(hero, weapon, mode, context) {
     normalize(hero);
     weapon = weapon || {};
     var stats = getStats(hero);
@@ -258,7 +267,7 @@
     var proficient = weapon.proficient !== false;
     var bonus = mod(stats[stat]) + (proficient ? profBonus(hero) : 0) + (Number(weapon.extraAtk) || 0);
     var conditions = conditionModifiers(hero);
-    var roll = rollD20(resolveRollMode(hero, mode), global.rollSingleDice ? function(){ return global.rollSingleDice(20); } : null);
+    var roll = rollD20(context&&context.conditionModeApplied?mode:resolveRollMode(hero, mode), global.rollSingleDice ? function(){ return global.rollSingleDice(20); } : null,hero,Object.assign({kind:'attack'},context));
     bonus += conditions.attack;
     return { bonus: bonus, roll: roll, total: roll.result + bonus, critical: roll.critical, fumble: roll.fumble, stat: stat };
   }
@@ -457,7 +466,7 @@ if (typeof window !== 'undefined' && window.addEventListener) window.addEventLis
       }
       var stats = R.spellStats(h, src || undefined);
       var mode = (typeof window.currentRollMode !== 'undefined') ? window.currentRollMode : 'normal';
-      var roll = R.rollD20(R.resolveRollMode(h, mode), typeof window.rollSingleDice === 'function' ? function(){ return window.rollSingleDice(20); } : null);
+      var roll = R.rollD20(R.resolveRollMode(h, mode), typeof window.rollSingleDice === 'function' ? function(){ return window.rollSingleDice(20); } : null,h,{kind:'attack'});
       var total = roll.result + stats.attack;
       var text = '✨ ' + spellName + ' [' + (stats.className || 'Заклинание') + ': ' + stats.ability.toUpperCase() + ']\n' +
         'd20 (' + roll.result + ') ' + (stats.attack >= 0 ? '+' : '') + stats.attack + ' = ' + total +
@@ -571,7 +580,7 @@ if (typeof window !== 'undefined' && window.addEventListener) window.addEventLis
   }
 
   window.dndStartConcentrationPrompt=function(){var h=hero();if(!h)return;var name=prompt('Какое заклинание держите концентрацией?',(h.concentration&&h.concentration.spellName)||'');if(name===null)return;if(window.DNDCombat&&typeof window.DNDCombat.beginConcentration==='function')window.DNDCombat.beginConcentration(h,name?{name:name,concentration:true}:null);else h.concentration={active:!!name,spellName:name,spellId:null};save();renderRulesPanel();};
-  window.dndConcentrationDamagePrompt=function(){var h=hero();if(!h)return;var dmg=Number(prompt('Полученный урон:','10'));if(!isFinite(dmg))return;var dc=R.concentrationDC(h,dmg), stats=R.getSaveBonus(h,'con');var roll=R.rollD20('normal');var total=roll.result+stats;var ok=total>=dc;alert('Проверка концентрации\nDC '+dc+'\nCON: d20 '+roll.result+' '+(stats>=0?'+':'')+stats+' = '+total+'\n'+(ok?'✅ Концентрация сохранена':'❌ Концентрация потеряна'));if(!ok)h.concentration={active:false,spellId:null,spellName:''};save();renderRulesPanel();};
+  window.dndConcentrationDamagePrompt=function(){var h=hero();if(!h)return;var dmg=Number(prompt('Полученный урон:','10'));if(!isFinite(dmg))return;var dc=R.concentrationDC(h,dmg), stats=R.getSaveBonus(h,'con');var roll=R.rollD20('normal',null,h,{kind:'save',stat:'con'});var total=roll.result+stats;var ok=total>=dc;alert('Проверка концентрации\nDC '+dc+'\nCON: d20 '+roll.result+' '+(stats>=0?'+':'')+stats+' = '+total+'\n'+(ok?'✅ Концентрация сохранена':'❌ Концентрация потеряна'));if(!ok)h.concentration={active:false,spellId:null,spellName:''};save();renderRulesPanel();};
   window.dndShowRulesSummary=function(){var h=hero();if(!h)return;var s=R.getStats(h),lines=['D&D 5e Rules Engine','Уровень '+R.totalLevel(h),'Бонус мастерства +'+R.profBonus(h),'КД '+R.calculateAC(h),'Спасброски: '+Object.keys(s).map(function(k){return k.toUpperCase()+' '+(R.getSaveBonus(h,k)>=0?'+':'')+R.getSaveBonus(h,k);}).join(', ')];alert(lines.join('\n'));};
 
   var oldRenderDndTools=window.renderDndTools;

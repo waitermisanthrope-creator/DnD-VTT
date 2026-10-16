@@ -36,8 +36,8 @@
   function hasType(list,type){ return normList(list).indexOf(String(type||'').toLowerCase().trim())>=0; }
   function rollDie(sides){return Math.floor(Math.random()*sides)+1;}
   function parseDice(expr){ return global.DNDRules && global.DNDRules.parseDice ? global.DNDRules.parseDice(expr) : {groups:[{count:1,sides:6}],constant:0}; }
-  function rollDice(expr,critical,maximize){
-    var p=parseDice(expr), total=num(p.constant), rolls=[];
+  function rollDice(expr,critical,maximize,actor){
+    var p=parseDice(expr), total=num(p.constant), rolls=[];if(actor&&/\d*d\d+/i.test(String(expr))&&p.groups.length&&global.DNDPredictorCards){var maximum=global.DNDPredictorCards.consumeMaximum(actor);maximize=maximize||maximum;}
     p.groups.forEach(function(g){
       var count=Math.max(0,num(g.count,1))*(critical?2:1);
       for(var i=0;i<count;i++){var r=maximize?Math.max(1,num(g.sides,6)):rollDie(Math.max(1,num(g.sides,6)));rolls.push(r);total+=r;}
@@ -50,6 +50,7 @@
     amount=Math.max(0,Math.floor(num(amount)));
     var bhDamage=global.DNDBloodHunter?global.DNDBloodHunter.damageModifiers(target,type,opts):{};opts=Object.assign({},opts,{ignoreResistance:!!(opts.ignoreResistance||bhDamage.ignoreResistance),ignoreImmunity:!!(opts.ignoreImmunity||bhDamage.ignoreImmunity),immunityBecomesResistance:!!(opts.immunityBecomesResistance||bhDamage.immunityBecomesResistance)});var note='';
     type=String(type||'').toLowerCase().trim();
+    if(global.DNDPredictorCards&&global.DNDPredictorCards.immune(target,type))return {raw:amount,amount:0,mode:'immunity',note:'Иммунитет карты',type:type};
     var homunculusState=target&&target.classFeaturesState||{},homunculusOwner=homunculusState.alchemistHomunculusOwner;
     if(opts.isBomb&&homunculusOwner!=null&&opts.attackerId!=null&&String(homunculusOwner)===String(opts.attackerId))return{raw:amount,amount:0,mode:'owner-bomb-immunity',note:'Гомункул невосприимчив к бомбам создателя',type:type};
     var physical=(type==='дробящий'||type==='колющий'||type==='рубящий'||type==='bludgeoning'||type==='piercing'||type==='slashing');
@@ -72,7 +73,8 @@
     var targetResistances=target&&target.resistances,nonmagicalVariants=['nonmagical '+type,'немагический '+type,'немагическое '+type,type+' from nonmagical attacks',type+' от немагических атак'];
     var nonmagicalResistance=nonmagicalVariants.some(function(v){return hasType(targetResistances,v);});
     var wardenResistant=!!(global.WARDEN_MHP_2024&&global.WARDEN_MHP_2024.resistance(target,type));
-    var resistant=!opts.ignoreResistance&&!witchImperil&&(bhDamage.resistance||wardenResistant||raging||pugilistDigDeepResistant||pugilistPsychicResistant||raceResistant||witchElemental||graftResistant||madBomberResistance||slimeAcidResistance||hasType(targetResistances,type)||(!opts.magicalAttack&&nonmagicalResistance));
+    var tarotIgnoresResistance=!!(global.DNDPredictorCards&&global.DNDPredictorCards.ignoresResistance(opts.attacker,type,opts));
+    var resistant=!tarotIgnoresResistance&&!opts.ignoreResistance&&!witchImperil&&((global.DNDPredictorCards&&global.DNDPredictorCards.resistant(target,type))||bhDamage.resistance||wardenResistant||raging||pugilistDigDeepResistant||pugilistPsychicResistant||raceResistant||witchElemental||graftResistant||madBomberResistance||slimeAcidResistance||hasType(targetResistances,type)||(!opts.magicalAttack&&nonmagicalResistance));
     var vulnerable=!!bhDamage.vulnerability||hasType(target && target.vulnerabilities,type);
     if(resistant&&vulnerable){
       note='Сопротивление и уязвимость взаимно компенсированы';
@@ -97,6 +99,7 @@
   }
   function applyDamage(target,amount,type,opts){
     opts=opts||{};
+    if(global.DNDPredictorCards){var tarotScene=global.DNDPredictorCards.sceneFrom(target,opts);if(opts.attacker&&global.DNDPredictorCards.peaceBlocked(tarotScene,opts.attacker,target))return {amount:0,hpDamage:0,hp:readHp(target),peaceBlocked:true,note:'Аура покоя'};var shared=global.DNDPredictorCards.shareDamage(target,amount,type,opts);if(shared)return shared;}
     var reaction=null, reactionResult=null;
     var rawParts=normalizeDamageParts(amount,type,opts);
     if(opts.defenderReaction==='blood-hunter-undead-focus'&&global.DNDBloodHunter){var necrotic=rawParts.filter(function(p){return /^(necrotic|некротический)$/.test(p.damageType);}),pendingNecrotic={amount:necrotic.reduce(function(sum,p){return sum+p.amount;},0),damageType:'necrotic'};var undeadFocus=global.DNDBloodHunter.useFeature(target,'riteFocus',{pendingDamage:pendingNecrotic});if(undeadFocus.ok){var left=necrotic.reduce(function(sum,p){return sum+p.amount;},0)-pendingNecrotic.amount;necrotic.forEach(function(p){var take=Math.min(left,p.amount);p.amount-=take;left-=take;});}}
@@ -137,6 +140,10 @@
     var damageTaken=r.amount;
     var absorbed=Math.min(temp,damageTaken); writeTempHp(target,temp-absorbed);
     var hpDamage=damageTaken-absorbed; writeHp(target,Math.max(0,hp-hpDamage));
+    if(hp>0&&readHp(target)===0&&(opts.zeroHpReaction==='predictor-last-trump'||reactionResult&&reactionResult.predictorCardId)&&global.DNDPredictor){
+      var predictorTrump=global.DNDPredictor.lastTrump(target,opts.predictorCardId||(reactionResult&&reactionResult.predictorCardId),{previousHp:hp,hpDamage:hpDamage});
+      if(predictorTrump.ok){r.note=(r.note?r.note+'; ':'')+'Последний козырь: сохранён 1 хит.';if(reactionResult)reactionResult.applied=true;}
+    }
     var bloodRiteRevival=null;if(hp>0&&readHp(target)===0&&opts.zeroHpReaction==='blood-rite-revival'&&global.DNDBloodHunter){bloodRiteRevival=global.DNDBloodHunter.reviveRite(target,{instantDeath:hpDamage-hp>=num(target.hpMax,target.maxHp)});r.bloodRiteRevival=bloodRiteRevival;}
     var wardenSurvive=null;if(hp>0&&readHp(target)===0&&opts.zeroHpReaction==='warden-survive'&&global.WARDEN_MHP_2024){wardenSurvive=global.WARDEN_MHP_2024.useFeature(target,'survive',{instantDeath:hpDamage-hp>=num(target.hpMax,target.maxHp)});}
     var pugilistLevelEntry=(target&&target.classes||[]).find(function(cl){return cl&&(['Пугилист','Pugilist'].indexOf(String(cl.name))>=0||cl.englishName==='Pugilist');}),pugilistMaxHp=Number(target&&(target.maxHp||target.hpMax||target.maxHP||target.maxHitPoints))||0;
@@ -190,6 +197,8 @@
     }
     if(global.DNDBloodHunter)global.DNDBloodHunter.afterDamage(target,r,opts);if(opts.__bloodCurseExposure)r.bloodCurseExposure=opts.__bloodCurseExposure;
     if(global.DNDClassFeatures&&global.DNDClassFeatures.onDamage)global.DNDClassFeatures.onDamage(target,{amount:damageTaken,hpDamage:hpDamage,damageType:type});
+    if(global.DNDPredictorCards)global.DNDPredictorCards.afterDamage(target,{damageTaken:damageTaken,hpDamage:hpDamage,previousHp:hp,instantDeath:instantDeath});
+    if(global.DNDPredictorCards)global.DNDPredictorCards.recordDamage(target,{damageTaken:damageTaken,previousHp:hp},opts);
     return {amount:r.amount+wardAbsorbed,hpDamage:hpDamage,tempAbsorbed:absorbed,wardAbsorbed:wardAbsorbed,hp:readHp(target),tempHp:readTempHp(target),defeated:target.defeated,deathSaveFailures:deathSaveFailures,instantDeath:instantDeath,note:r.note,damageParts:resolvedParts.map(function(p){return {raw:num(p.raw),amount:num(p.amount),damageType:p.damageType,note:p.note||'',wardAbsorbed:num(p.wardAbsorbed)};}),concentration:concentration,bloodRiteRevival:bloodRiteRevival,bloodCurseExposure:opts.__bloodCurseExposure||null,wardenSurvive:wardenSurvive,reaction:reactionResult||null,reactionWindow:reaction&&!reactionResult?reaction.window:null};
   }
   function concentrationState(target){target.concentration=target.concentration||{active:false,spellId:null,spellName:''};return target.concentration;}
@@ -283,11 +292,11 @@
     var h=actor && actor.stats ? actor : null, bonus=0, featureMode=mode||'normal';
     if(h && global.DNDRules){bonus=global.DNDRules.getSaveBonus(h,stat);} else bonus=num(actor && actor.saveBonuses && actor.saveBonuses[stat]);
     ctx=ctx||{};var sm=(global.DNDClassFeatures&&global.DNDClassFeatures.saveModifiers&&actor)?global.DNDClassFeatures.saveModifiers(actor,Object.assign({},ctx,{stat:stat,dexSaveVisible:stat==='dex',fromSpell:!!(ctx.fromSpell||actor&&actor.saveFromSpell),allyWithinAura:!!(ctx.allyWithinAura||actor&&actor.allyWithinAura),auraSource:ctx.auraSource||null,saveType:ctx.saveType||stat,halfDamageEffect:ctx.halfDamageEffect===true,frightenedEffect:!!ctx.frightenedEffect,courageSource:ctx.courageSource||null,allyWithinCourage:!!ctx.allyWithinCourage,charmEffect:!!ctx.charmEffect,fromFiendOrUndead:!!ctx.fromFiendOrUndead,flashOfGeniusAvailable:!!(actor&&actor.useFlashOfGenius)})):null;
-    var curseSaveMods=global.DNDBloodHunter?global.DNDBloodHunter.cursedSaveModifiers(actor,Object.assign({},ctx,{stat:stat})):{};if(sm)bonus+=num(sm.bonus);var saveAdv=featureMode==='advantage'||!!(sm&&sm.advantage)||!!curseSaveMods.advantage,saveDis=featureMode==='disadvantage'||!!(sm&&sm.disadvantage)||!!curseSaveMods.disadvantage;featureMode=saveAdv===saveDis?'normal':saveAdv?'advantage':'disadvantage';
+    var curseSaveMods=global.DNDBloodHunter?global.DNDBloodHunter.cursedSaveModifiers(actor,Object.assign({},ctx,{stat:stat})):{};if(sm)bonus+=num(sm.bonus);var tarotSave=global.DNDPredictorCards?global.DNDPredictorCards.d20Modifiers(actor,'save',{stat:stat}):{};var saveAdv=featureMode==='advantage'||!!(sm&&sm.advantage)||!!curseSaveMods.advantage||!!tarotSave.advantage,saveDis=featureMode==='disadvantage'||!!(sm&&sm.disadvantage)||!!curseSaveMods.disadvantage||!!tarotSave.disadvantage;featureMode=saveAdv===saveDis?'normal':saveAdv?'advantage':'disadvantage';
     var normalizedCondition=global.DNDRules&&global.DNDRules.normalizeConditionName?global.DNDRules.normalizeConditionName:null;
     var conds=(actor&&actor.activeConditions)|| (actor&&actor.conditions)||{};
     var autoFail=!!(global.DNDRules&&global.DNDRules.conditionModifiers&&global.DNDRules.conditionModifiers(actor).autoFailStrDex&&(stat==='str'||stat==='dex'));
-    var roll=global.DNDRules ? global.DNDRules.rollD20(featureMode) : {result:rollDie(20),critical:false};
+    var roll=global.DNDRules ? global.DNDRules.rollD20(featureMode,null,actor,{kind:'save',stat:stat,tarotModeApplied:true,autoFailed:autoFail}) : {result:rollDie(20),critical:false};
     var saveDebuffs=actor&&actor.classFeaturesState&&actor.classFeaturesState.alchemistDebuffs||{};
     bonus-=num(saveDebuffs.savePenalty,0);
     bonus+=num(ctx.extraSaveBonus);
@@ -300,11 +309,33 @@
     if(global.DNDClassFeatures&&global.DNDClassFeatures.onSavingThrow)global.DNDClassFeatures.onSavingThrow(actor,{success:saveResult.success,total:total,dc:num(dc)});
     return saveResult;
   }
+  function abilityCheck(actor,stat,dc,mode,ctx){
+    ctx=ctx||{};var R=global.DNDRules;
+    if(!actor||!R||['str','dex','con','int','wis','cha'].indexOf(stat)<0||dc!=null&&!Number.isFinite(Number(dc)))return {ok:false,reason:'Неверные параметры проверки.'};
+    var conditions=Object.assign({},actor.conditions,actor.activeConditions);
+    if(readHp(actor)<=0||global.DNDPredictorCards&&global.DNDPredictorCards.blocked(actor,'check')||['Бессознателен','Недееспособен','Оглушён','Парализован'].some(function(c){return conditions[c];}))return {ok:false,reason:'Состояние не позволяет выполнить проверку.'};
+    var rank=Math.max(0,Math.min(2,num(ctx.proficiencyRank,ctx.proficient?1:0))),proficient=rank>0;
+    if(ctx.skillId)rank=Math.max(0,Math.min(2,num(actor.skillsData&&actor.skillsData[ctx.skillId]))),proficient=rank>0;
+    var stats=R.getStats(actor),bonus=ctx.bonusOverride!=null?num(ctx.bonusOverride):R.mod(stats[stat])+R.profBonus(actor)*rank;
+    var context=Object.assign({},ctx,{stat:stat,proficient:proficient,skillProficient:proficient});
+    var tarot=global.DNDPredictorCards?global.DNDPredictorCards.checkModifiers(actor,context):{},conditionMods=R.conditionModifiers(actor);
+    // A full PB from the card replaces partial PB (e.g. Jack of All Trades),
+    // while retaining unrelated class bonuses and actual training/expertise.
+    var classContext=Object.assign({},context,{proficient:proficient||!!tarot.fullProficiencyBonus}),mods=global.DNDClassFeatures?global.DNDClassFeatures.checkModifiers(actor,classContext):{};
+    if(mods.abilityOverride&&stats[mods.abilityOverride]!=null)bonus+=R.mod(stats[mods.abilityOverride])-R.mod(stats[stat]);
+    bonus+=num(mods.bonus)+num(tarot.bonus);
+    var adv=mode==='advantage'||!!mods.advantage||!!tarot.advantage,dis=mode==='disadvantage'||!!mods.disadvantage||!!tarot.disadvantage||!!conditionMods.disadvantage;
+    var actualMode=adv===dis?'normal':adv?'advantage':'disadvantage',roll=R.rollD20(actualMode,null,actor,{kind:'check',stat:stat,tool:!!ctx.tool,tarotModeApplied:true});
+    var effectiveD20=Math.max(roll.result,num(mods.minimum)),total=effectiveD20+bonus;
+    return {ok:true,stat:stat,tool:!!ctx.tool,roll:roll,effectiveD20:effectiveD20,bonus:bonus,total:total,dc:dc==null?null:Number(dc),success:dc==null?null:total>=Number(dc)};
+  }
   function toggleCondition(target,condition,on){
     if(!target.conditions) target.conditions={};
     var key=global.DNDRules&&global.DNDRules.normalizeConditionName?global.DNDRules.normalizeConditionName(condition):String(condition||'').trim(); if(!key)return false;var willActivate=on===undefined?!target.conditions[key]:!!on;if(willActivate&&(normList(target.conditionImmunities).some(function(x){return (global.DNDRules&&global.DNDRules.normalizeConditionName?global.DNDRules.normalizeConditionName(x):x)===key;})))return false;if(willActivate&&global.DNDBloodHunter&&global.DNDBloodHunter.conditionImmune(target,key))return false;
     if((key==='Отравлен'||key==='Poisoned')&&on!==false&&(target.classes||[]).some(function(cl){return cl&&(cl.name==='Алхимик'||cl.englishName==='Alchemist')&&(cl.subclass==='venomsmith'||cl.subclass==='Веномсмит')&&Number(cl.level)>=10;}))return false;
+    if(willActivate&&global.DNDPredictorCards&&global.DNDPredictorCards.immuneCondition(target,key))return false;
     target.conditions[key]=on===undefined?!target.conditions[key]:!!on;
+    if(global.DNDPredictorCards)global.DNDPredictorCards.onCondition(target,key,target.conditions[key]);
     if(target.conditions[key] && ['Недееспособен','Бессознателен','Парализован','Оглушён','Окаменел'].indexOf(key)>=0){
       breakConcentration(target);
     }
@@ -319,7 +350,8 @@
   }
   function resetDeathSaves(hero){hero.deathSaves={successes:0,failures:0};}
   function attack(attacker,target,opts){
-    opts=opts||{};if(target)opts.target=target;opts.__bloodHunterTargetHp=target?readHp(target):0; var bonus=num(opts.bonus), mode=opts.mode||'normal';
+    if(global.DNDPredictorCards&&(global.DNDPredictorCards.blocked(attacker,'action')||global.DNDPredictorCards.blocked(attacker,'attack')))return {ok:false,hit:false,blocked:true,reason:'Карта запрещает атаку.'};
+    opts=opts||{};if(opts.opportunityAttack&&global.DNDPredictorCards&&global.DNDPredictorCards.preventsOpportunity(target))return {ok:false,hit:false,blocked:true,reason:'Перемещение цели не провоцирует атаки.'};if(target)opts.target=target;if(global.DNDPredictorCards){var ward=global.DNDPredictorCards.beforeAttack(attacker,target,opts);if(!ward.allowed)return {ok:true,hit:false,blocked:true,wardDenied:true,ward:ward,damage:null};}opts.__bloodHunterTargetHp=target?readHp(target):0; var bonus=num(opts.bonus), mode=opts.mode||'normal';
     var perfumeClass=(target&&target.classes||[]).find(function(cl){return cl&&(cl.name==='Алхимик'||cl.englishName==='Alchemist')&&(cl.subclass==='amorist'||cl.subclass==='Аморист')&&Number(cl.level)>=10;});
     if(perfumeClass&&attacker&&target&&opts.__perfumeChecked!==true){
       var perfumeState=target.classFeaturesState=target.classFeaturesState||{},perfumeOwnerState=attacker.classFeaturesState||{},attackerId=String(attacker.id||attacker.entityId||''),roundTracker=(global.currentChar||global.currentCharacter||{}).initiativeTracker||{},currentRound=Number(roundTracker.round)||1;
@@ -344,12 +376,14 @@
     if(jinx&&jinx.expiresAt>Date.now()&&jinx.kind==='attackAgainstChosenCreature'&&String(jinx.chosenCreatureId)===String(target&&(target.id||target.entityId)))featureMod.disadvantage=true;
     if(target&&target.classFeaturesState&&target.classFeaturesState.alchemistDebuffs&&target.classFeaturesState.alchemistDebuffs.attacksHaveAdvantage)featureMod.advantage=true;
     if(global.WARDEN_MHP_2024&&target&&global.WARDEN_MHP_2024.incomingAttackModifiers(target,{}).removeAdvantage){featureMod.advantage=false;if(mode==='advantage')mode='normal';}
+    if(global.DNDPredictorCards&&global.DNDPredictorCards.attackSight(attacker,target,opts).ignoreInvisibility)featureMod.ignoreInvisibility=true;
     if((opts.targetInvisible||target&&((target.conditions||{}).Невидим||(target.activeConditions||{}).Невидим))&&!featureMod.ignoreInvisibility)featureMod.disadvantage=true;
-    if(featureMod.advantage && featureMod.disadvantage) mode='normal'; else if(featureMod.advantage) mode='advantage'; else if(featureMod.disadvantage) mode='disadvantage';
+    if(global.DNDPredictorCards){var tarotMod=global.DNDPredictorCards.attackModifiers(attacker,opts);featureMod.typedExtraDice=(featureMod.typedExtraDice||[]).concat(tarotMod.typedExtraDice);featureMod.bonusAttack=num(featureMod.bonusAttack)+num(tarotMod.bonusAttack);if(tarotMod.advantage)featureMod.advantage=true;if(tarotMod.disadvantage)featureMod.disadvantage=true;if(tarotMod.doubleDamage)featureMod.tarotDoubleDamage=true;if(tarotMod.forceCritical)opts.__tarotCritOnHit=true;if(tarotMod.ignoreCover)featureMod.ignoreCover=true;if(global.DNDPredictorCards.incoming(target,attacker,opts).disadvantage)featureMod.disadvantage=true;if(global.DNDPredictorCards.incoming(target,attacker,opts).advantage)featureMod.advantage=true;}
+    if(global.DNDPredictorCards&&attacker&&attacker.tarotEffects&&attacker.tarotEffects.length){var tarotAdv=mode==='advantage'||featureMod.advantage,tarotDis=mode==='disadvantage'||featureMod.disadvantage;mode=!!tarotAdv===!!tarotDis?'normal':tarotAdv?'advantage':'disadvantage';}else if(featureMod.advantage && featureMod.disadvantage) mode='normal'; else if(featureMod.advantage) mode='advantage'; else if(featureMod.disadvantage) mode='disadvantage';
     if(global.DNDRules && attacker && attacker.stats && opts.useRules!==false){
-      if(opts.weapon) { var wa=global.DNDRules.weaponAttack(attacker,opts.weapon,mode); opts.__classFeatureMod=featureMod; opts.__attacker=attacker; opts.__forceCritical=!!featureMod.forceCritical; if(featureMod.unarmedDie&&(opts.unarmedAttack||opts.isUnarmed||opts.pugilistWeapon))opts.damage=featureMod.unarmedDie; return resolveAttack(target,wa.roll.result,wa.bonus+num(opts.attackBonusAdjustment),opts); }
+      if(opts.weapon) { var wa=global.DNDRules.weaponAttack(attacker,opts.weapon,mode,{tarotModeApplied:true,conditionModeApplied:!!(attacker.tarotEffects&&attacker.tarotEffects.length)}); opts.__classFeatureMod=featureMod; opts.__attacker=attacker; opts.__forceCritical=!!featureMod.forceCritical; if(featureMod.unarmedDie&&(opts.unarmedAttack||opts.isUnarmed||opts.pugilistWeapon))opts.damage=featureMod.unarmedDie; return resolveAttack(target,wa.roll.result,wa.bonus+num(opts.attackBonusAdjustment),opts); }
     }
-    var roll=global.DNDRules ? global.DNDRules.rollD20(mode) : {result:rollDie(20),critical:false,fumble:false};
+    var roll=global.DNDRules ? global.DNDRules.rollD20(mode,null,attacker,{kind:'attack',tarotModeApplied:true}) : {result:rollDie(20),critical:false,fumble:false};
     opts.__classFeatureMod=featureMod; opts.__attacker=attacker; opts.__forceCritical=!!featureMod.forceCritical;
     if(featureMod.unarmedDie&&(opts.unarmedAttack||opts.isUnarmed||opts.pugilistWeapon||opts.attackKind==='unarmed'))opts.damage=featureMod.unarmedDie;
     return resolveAttack(target,roll.result,bonus,opts,roll);
@@ -377,7 +411,8 @@
       else if(targetGrafts.indexOf('Звериная шкура')>=0)graftAC=13+dexMod;
     }
     var normalAC=Math.max(10,num(target && target.ac,10)-num(target&&target.witchACPenalty,0))-num(alchemistDebuffs.acPenalty,0);
-    var ac=(opts&&opts.acOverride!=null?num(opts.acOverride,10):graftAC!=null?graftAC:normalAC)+coverBonus;
+    var tarotAC=global.DNDPredictorCards?global.DNDPredictorCards.incoming(target,opts&&opts.__attacker,opts).ac:0;
+    var ac=tarotAC+(opts&&opts.acOverride!=null?num(opts.acOverride,10):graftAC!=null?graftAC:normalAC)+coverBonus;
     var pugilistStudy=target&&target.classFeaturesState&&target.classFeaturesState.pugilistStudiedTarget,attackerIdForStudy=opts&&opts.__attacker&&(opts.__attacker.id||opts.__attacker.entityId),targetIsPugilist=(target&&target.classes||[]).some(function(cl){return cl&&(['Пугилист','Pugilist'].indexOf(String(cl.name))>=0||cl.englishName==='Pugilist');});if(targetIsPugilist&&pugilistStudy&&attackerIdForStudy!=null&&String(pugilistStudy)===String(attackerIdForStudy))ac+=Number(opts.__attacker.proficiencyBonus)||2;
     var pugilistDefender=(target&&target.classes||[]).find(function(cl){return cl&&(['Пугилист','Pugilist'].indexOf(String(cl.name))>=0||cl.englishName==='Pugilist')&&Number(cl.level)>=1;});
     if(pugilistDefender){var armorObj=target.armorEquipped||target.equippedArmor||(target.equipment&&(target.equipment.armor||target.equipment.armour))||target.armor||null,armorName=String(armorObj&&(armorObj.type||armorObj.armorType||armorObj.name)||armorObj||'').toLowerCase(),shield=!!(target.shieldEquipped||target.equippedShield||target.shield||(target.equipment&&target.equipment.shield)),lightArmor=!armorObj||/light|лёгк|легк|padded|leather|studded|hide|chain shirt|light armor/.test(armorName);if(lightArmor&&!shield){var conScore=Number(target.abilityScores&&target.abilityScores.constitution!=null?target.abilityScores.constitution:target.stats&&target.stats.con!=null?target.stats.con:target.stats&&target.stats.constitution!=null?target.stats.constitution:10),pugilistAC=12+Math.floor((conScore-10)/2);ac=Math.max(ac,pugilistAC);}}
@@ -399,6 +434,7 @@
     if(hit&&ionizerClass&&Number(ionizerClass.level)>=10&&rangedIncoming&&['силовой','force','молния','lightning','некротический','necrotic','излучение','radiant'].indexOf(incomingType)>=0){
       var shieldRoll=rollDie(6);if(shieldRoll===6){hit=false;target.classFeaturesState=target.classFeaturesState||{};target.classFeaturesState.alchemistEnergyCharges=Math.min(10,(Number(target.classFeaturesState.alchemistEnergyCharges)||0)+1);electromagneticShield={roll:shieldRoll,deflected:true,charges:target.classFeaturesState.alchemistEnergyCharges};}
     }
+    if(hit&&opts.__tarotCritOnHit)roll.critical=true;
     var out={d20:d20,bonus:bonus,classBonus:classBonus,total:total,ac:ac,hit:hit,critical:!!roll.critical,fumble:!!roll.fumble,damage:null,extraAttacks:Math.max(1,num(opts&&opts.__classFeatureMod&&opts.__classFeatureMod.extraAttacks,1))};
     if(bloodCurseReaction)out.bloodCurseReaction=bloodCurseReaction;
     if(savantFlourish)out.savantFlourish=savantFlourish;
@@ -408,9 +444,9 @@
     if(electromagneticShield){out.electromagneticShield=electromagneticShield;out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Электромагнитный щит: атака отражена; накоплено 1 заряд.');}
     if(hit && opts.damage){
       var fm=opts.__classFeatureMod||{bonusDamage:0,extraDice:[]};
-      out.damage=fm.noDamage?{total:0,extraDice:[]}:rollDice(opts.damage,!!roll.critical,!!fm.maximizeDamageDice);if(!fm.noDamage&&global.DNDBloodHunter)global.DNDBloodHunter.adjustWeaponDamage(opts.__attacker,out.damage,opts);
-      if(!fm.noDamage&&Array.isArray(fm.extraDice)) fm.extraDice.forEach(function(expr){var er=rollDice(expr,!!roll.critical,!!fm.maximizeDamageDice);out.damage.total+=er.total;(out.damage.extraDice||(out.damage.extraDice=[])).push(er);});
-      if(!fm.noDamage&&Array.isArray(fm.typedExtraDice))fm.typedExtraDice.forEach(function(entry){var er=rollDice(entry.dice,!!roll.critical,!!fm.maximizeDamageDice);if(entry.label==='Алый обряд'&&global.DNDBloodHunter)global.DNDBloodHunter.adjustRiteDamage(opts.__attacker,er,opts);out.damage.total+=er.total;(out.damage.typedExtraDice||(out.damage.typedExtraDice=[])).push({total:er.total,type:entry.type,label:entry.label||'Дополнительный урон',magicalAttack:!!entry.magicalAttack});});
+      out.damage=fm.noDamage?{total:0,extraDice:[]}:rollDice(opts.damage,!!roll.critical,!!fm.maximizeDamageDice,opts.__attacker);if(!fm.noDamage&&global.DNDBloodHunter)global.DNDBloodHunter.adjustWeaponDamage(opts.__attacker,out.damage,opts);
+      if(!fm.noDamage&&Array.isArray(fm.extraDice)) fm.extraDice.forEach(function(expr){var er=rollDice(expr,!!roll.critical,!!fm.maximizeDamageDice,opts.__attacker);out.damage.total+=er.total;(out.damage.extraDice||(out.damage.extraDice=[])).push(er);});
+      if(!fm.noDamage&&Array.isArray(fm.typedExtraDice))fm.typedExtraDice.forEach(function(entry){var er=rollDice(entry.dice,!!roll.critical,!!fm.maximizeDamageDice,opts.__attacker);if(entry.label==='Алый обряд'&&global.DNDBloodHunter)global.DNDBloodHunter.adjustRiteDamage(opts.__attacker,er,opts);out.damage.total+=er.total;(out.damage.typedExtraDice||(out.damage.typedExtraDice=[])).push({total:er.total,type:entry.type,label:entry.label||'Дополнительный урон',magicalAttack:!!entry.magicalAttack});});
       if(!fm.noDamage)out.damage.total+=num(fm.bonusDamage);
       if(!fm.noDamage&&fm.doubleDamageAgainstObjects){out.damage.total*=2;(out.damage.typedExtraDice||[]).forEach(function(p){p.total*=2;});out.classFeatureNotes=(out.classFeatureNotes||[]);out.classFeatureNotes.push('Взрывная специализация: двойной урон объекту/сооружению.');}
       var pending=(global.DNDClassFeatures&&global.DNDClassFeatures.consumePendingOnHit&&opts.__attacker)?global.DNDClassFeatures.consumePendingOnHit(opts.__attacker,{hit:true}):{};
@@ -453,7 +489,8 @@
       if(out.assassinDeathStrike&&out.assassinDeathStrike.damageDoubled)out.classFeatureNotes.push('Смертельный удар: урон удвоен');
       if(opts.__spellbladeReservation&&global.SPELLBLADE_RUNTIME){out.spellstrike=global.SPELLBLADE_RUNTIME.completeAttack(opts.__attacker,target,opts.__spellbladeReservation,out);if(out.spellstrike.rollResolved&&out.spellstrike.amount>0){out.damage.total+=out.spellstrike.amount;(out.damage.typedExtraDice||(out.damage.typedExtraDice=[])).push({total:out.spellstrike.amount,type:out.spellstrike.damageType,magicalAttack:true,label:'Заклинательный удар: '+out.spellstrike.spellName});}}
       if(opts.target){
-        var damageOpts={source:'attack',silvered:!!(opts.silvered||opts.weapon&&opts.weapon.silvered),bloodCurseActor:opts.bloodCurseActor,bloodCurseAmplify:opts.bloodCurseAmplify,bloodCurseDistanceFt:opts.bloodCurseDistanceFt,brandAllyDistanceFt:opts.brandAllyDistanceFt,defenderReaction:opts.defenderReaction,zeroHpReaction:opts.zeroHpReaction,attackKind:opts.attackKind||((opts.weapon&&Number(opts.weapon.rangeFt)>5)?'rangedWeapon':'weapon'),visible:opts.visible!==false,projectile:!!opts.projectile,critical:!!roll.critical,attacker:opts.__attacker||null};
+        var damageOpts={tarotScene:opts.tarotScene,source:'attack',weaponAttack:!!(opts.weaponAttack||opts.weapon),silvered:!!(opts.silvered||opts.weapon&&opts.weapon.silvered),bloodCurseActor:opts.bloodCurseActor,bloodCurseAmplify:opts.bloodCurseAmplify,bloodCurseDistanceFt:opts.bloodCurseDistanceFt,brandAllyDistanceFt:opts.brandAllyDistanceFt,defenderReaction:opts.defenderReaction,zeroHpReaction:opts.zeroHpReaction,attackKind:opts.attackKind||((opts.weapon&&Number(opts.weapon.rangeFt)>5)?'rangedWeapon':'weapon'),visible:opts.visible!==false,projectile:!!opts.projectile,critical:!!roll.critical,attacker:opts.__attacker||null};
+        var tarotFactor=(fm.tarotDoubleDamage?2:1)*(opts.__tarotChargeDouble?2:1);if(tarotFactor>1){out.damage.total*=tarotFactor;(out.damage.typedExtraDice||[]).forEach(function(p){p.total*=tarotFactor;});if(out.divineSmite)out.divineSmite.total*=tarotFactor;fm.bonusDamage=num(fm.bonusDamage)*tarotFactor;}
         var damageParts=[{amount:rollDice(opts.damage,!!roll.critical).total,damageType:opts.damageType||''}];
         // Rebuild the exact rolled base damage used above so resistance is applied per type.
         var typedExtraTotal=(out.damage.typedExtraDice||[]).reduce(function(sum,p){return sum+num(p.total);},0);damageParts[0].amount=out.damage.total-num(fm.bonusDamage)-typedExtraTotal;(out.damage.typedExtraDice||[]).forEach(function(p){damageParts.push({amount:num(p.total),damageType:p.type||opts.damageType||'',magicalAttack:!!p.magicalAttack,label:p.label||'Дополнительный урон'});});
@@ -471,6 +508,7 @@
     if(opts.__spellbladeDeferred)out.spellstrike={ok:false,unsupported:true,reservationRetained:true,message:'Отложенный сетевой урон требует отдельного Spellstrike resolver.'};
     var consumedJinx=opts.__attacker&&opts.__attacker.classFeaturesState&&opts.__attacker.classFeaturesState.accursedJinx;
     if(consumedJinx&&consumedJinx.kind==='attackAgainstChosenCreature'&&String(consumedJinx.chosenCreatureId)===String(target&&(target.id||target.entityId)))delete opts.__attacker.classFeaturesState.accursedJinx;
+    if(global.DNDPredictorCards)global.DNDPredictorCards.afterAttack(opts.__attacker||{},out);
     if(global.DNDClassFeatures&&global.DNDClassFeatures.onAttackResult)global.DNDClassFeatures.onAttackResult(opts.__attacker||{}, {sneakApplied:!!(hit&&opts.__classFeatureMod&&Array.isArray(opts.__classFeatureMod.extraDice)&&opts.__classFeatureMod.extraDice.length>0),hit:hit,critical:!!roll.critical,target:target,targetId:String(target&&(target.id||target.entityId)||''),damageResult:out.damageResult||null,attackResult:out,pendingOnHit:pending||{},attackContext:opts,brandCastigation:!!opts.brandCastigation,bloodHunterPuppet:!!opts.bloodHunterPuppet});
     var attacker=opts&&opts.__attacker;
     var attackerState=attacker&&attacker.classFeaturesState;
@@ -504,7 +542,7 @@
     if(!Object.keys(d).length)delete target.classFeaturesState.alchemistDebuffs;
     return{ok:true,actionSpent:true,message:'Слизь удалена Действием.'};
   }
-  global.DNDCombat={VERSION:'3.4.0-alchemist-slime',removeAlchemistSlime:removeAlchemistSlime,DAMAGE_TYPES:DAMAGE_TYPES,CONDITIONS:CONDITIONS,rollDice:rollDice,payHitPointCost:payHitPointCost,applyDamage:applyDamage,applyDamageBatch:applyDamageBatch,heal:heal,grantTemporaryHitPoints:grantTemporaryHitPoints,healBatch:healBatch,effectiveDamage:effectiveDamage,savingThrow:savingThrow,toggleCondition:toggleCondition,concentrationState:concentrationState,concentrationCheck:concentrationCheck,breakConcentration:breakConcentration,beginConcentration:beginConcentration,deathSave:deathSave,resetDeathSaves:resetDeathSaves,attack:attack,attackSequence:attackSequence,resolveAttack:attack,addCombatantFromTemplate:addCombatantFromTemplate,MONSTERS:MONSTERS};
+  global.DNDCombat={VERSION:'3.4.0-alchemist-slime',removeAlchemistSlime:removeAlchemistSlime,DAMAGE_TYPES:DAMAGE_TYPES,CONDITIONS:CONDITIONS,rollDice:rollDice,payHitPointCost:payHitPointCost,applyDamage:applyDamage,applyDamageBatch:applyDamageBatch,heal:heal,grantTemporaryHitPoints:grantTemporaryHitPoints,healBatch:healBatch,effectiveDamage:effectiveDamage,savingThrow:savingThrow,abilityCheck:abilityCheck,toggleCondition:toggleCondition,concentrationState:concentrationState,concentrationCheck:concentrationCheck,breakConcentration:breakConcentration,beginConcentration:beginConcentration,deathSave:deathSave,resetDeathSaves:resetDeathSaves,attack:attack,attackSequence:attackSequence,resolveAttack:attack,addCombatantFromTemplate:addCombatantFromTemplate,MONSTERS:MONSTERS};
 
   function hero(){return global.currentChar||global.currentCharacter||null;}
   function save(){if(typeof global.autoSaveCurrentCharacter==='function')global.autoSaveCurrentCharacter();}

@@ -126,6 +126,7 @@
   function spellUsesBonusAction(sp){var s=String(sp.castingTime||'').toLowerCase();return s.indexOf('bonus')>=0||s.indexOf('бонус')>=0;}
   function classSpellAbility(name){var s=String(name||'').toLowerCase();if(s==='spellblade'||s==='заклинатель клинка')return'int';if(s.indexOf('бард')>=0||s==='bard')return'cha';if(s.indexOf('жрец')>=0||s.indexOf('клерик')>=0||s==='cleric')return'wis';if(s.indexOf('друид')>=0||s==='druid')return'wis';if(s.indexOf('чародей')>=0||s==='sorcerer')return'cha';if(s.indexOf('волшебник')>=0||s==='wizard')return'int';if(s.indexOf('колдун')>=0||s==='warlock')return'cha';if(s.indexOf('паладин')>=0||s==='paladin')return'cha';if(s.indexOf('следопыт')>=0||s==='ranger')return'wis';if(s.indexOf('изобретатель')>=0||s==='artificer')return'int';return null;}
   function validateSpellSource(profile,spell){
+    if(global.DNDPredictorCards){var tarotCheck=global.DNDPredictorCards.canCast(profile,spell);if(!tarotCheck.ok)return tarotCheck;}
     if(profile&&profile.classFeaturesState&&profile.classFeaturesState.shifter&&profile.classFeaturesState.shifter.activeShape)return {ok:false,error:'В звериной форме Шифтера нельзя накладывать заклинания.'};
     var requested=String(spell&&spell.castingClass||'').trim(), ability=String(spell&&spell.castingStat||'').toLowerCase().trim();
     if(!requested&&!ability)return {ok:true};

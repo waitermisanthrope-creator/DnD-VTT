@@ -52,7 +52,10 @@ function initializeDiceModule() {
   }
 }
 window.__fallbackRollDice = function(sides) {
-  var result = Math.floor(Math.random() * sides) + 1;
+  if(!Number.isInteger(Number(sides))||Number(sides)<1)return;
+  var maximum=window.DNDPredictorCards&&window.currentChar&&window.DNDPredictorCards.consumeMaximum(window.currentChar);
+  var result = maximum?Number(sides):Math.floor(Math.random() * sides) + 1;
+  if(maximum&&typeof autoSaveCurrentCharacter==='function')autoSaveCurrentCharacter();
   var box = document.getElementById('diceEmergencyResult');
   if (box) box.textContent = '🎲 d' + sides + ': ' + result;
   return result;
@@ -437,15 +440,19 @@ function rollSingleDice(sides) {
  * Стандартный бросок кубика
  */
 function rollDice(sides) {
+  if(!Number.isInteger(Number(sides))||Number(sides)<1)return;
   console.group(`[DICE_ROLL_BASIC] Бросок d${sides}`);
-  const { effectiveMode, forceCrit1, conditionNotes } = applyConditionsToRoll(sides === 20);
+  let { effectiveMode, forceCrit1, conditionNotes } = applyConditionsToRoll(sides === 20);
+  if(sides===20&&window.currentChar&&window.DNDPredictorCards){var tm=window.DNDPredictorCards.d20Modifiers(window.currentChar,'check',{}),adv=effectiveMode==='advantage'||tm.advantage,dis=effectiveMode==='disadvantage'||tm.disadvantage;effectiveMode=adv===dis?'normal':adv?'advantage':'disadvantage';}
   console.log(`Текущий режим: ${currentRollMode}, С учетом состояний: ${effectiveMode}`);
 
   let result = 0;
   let detailText = '';
   let rollTypeClass = 'norm-roll';
 
-  const r1 = rollSingleDice(sides);
+  const maximum = !(forceCrit1&&sides===20)&&window.DNDPredictorCards&&window.currentChar&&window.DNDPredictorCards.consumeMaximum(window.currentChar);
+  if(maximum&&typeof autoSaveCurrentCharacter==='function')autoSaveCurrentCharacter();
+  const r1 = maximum?Number(sides):rollSingleDice(sides);
   console.log(`Первый бросок (r1): ${r1}`);
 
   if (forceCrit1 && sides === 20) {
@@ -453,7 +460,7 @@ function rollDice(sides) {
     detailText = `d20 [Принудительный провал из-за состояния] ➔ Итог: **1**`;
     rollTypeClass = 'dis-roll';
   } else if (effectiveMode === 'advantage') {
-    const r2 = rollSingleDice(sides);
+    const r2 = maximum?Number(sides):rollSingleDice(sides);
     console.log(`Второй бросок [Преимущество] (r2): ${r2}`);
     result = Math.max(r1, r2);
     const fR1 = r1 === result ? `**${r1}**` : r1;
@@ -461,7 +468,7 @@ function rollDice(sides) {
     detailText = `d${sides} [Преимущество] ➔ Броски: [${fR1}, ${fR2}] (Итог: ${result})`;
     rollTypeClass = 'adv-roll';
   } else if (effectiveMode === 'disadvantage') {
-    const r2 = rollSingleDice(sides);
+    const r2 = maximum?Number(sides):rollSingleDice(sides);
     console.log(`Второй бросок [Помеха] (r2): ${r2}`);
     result = Math.min(r1, r2);
     const fR1 = r1 === result ? `**${r1}**` : r1;
@@ -489,6 +496,7 @@ function rollDice(sides) {
   const resBox = document.getElementById('diceResult');
   if (resBox) resBox.textContent = `Результат: ${result}`;
 
+  if(sides===20&&!forceCrit1&&window.currentChar&&window.DNDPredictorCards){window.DNDPredictorCards.noteD20Roll(window.currentChar,'check');if(typeof autoSaveCurrentCharacter==='function')autoSaveCurrentCharacter();}
   appendDiceLog(detailText, rollTypeClass);
   return result;
 }
@@ -574,7 +582,7 @@ function rollStatCheck(statId, statName) {
   console.group(`[DICE_STAT_CHECK] Проверка характеристики: ${statName} (${statId})`);
   const mod = typeof getStatModNum === 'function' ? getStatModNum(statId) : 0;
   console.log(`Характеристика: ${statId}, Вычисленный мод: ${mod}`);
-  executeD20Check(`Проверка: ${statName}`, mod);
+  executeD20Check(`Проверка: ${statName}`, mod, '', {stat:statId});
   console.groupEnd();
 }
 
@@ -618,14 +626,27 @@ function rollSkillCheck(skillId, skillName, statId) {
     finalSkillModifier = Number(window[variableNameUsed]) || totalMod;
   }
 
-  executeD20Check(`Навык: ${skillName}${statusText}`, finalSkillModifier, variableNameUsed);
+  executeD20Check(`Навык: ${skillName}${statusText}`, finalSkillModifier, variableNameUsed, {stat:statId,skillId:skillId});
   console.groupEnd();
 }
 
 /**
  * Выполнение стандартной проверки d20 + модификатор с учетом состояний
  */
-function executeD20Check(title, modifier, varName = '') {
+function executeD20Check(title, modifier, varName = '', context = {}) {
+  var tarotActor = typeof currentChar !== 'undefined' ? currentChar : null;
+  if (tarotActor && (Array.isArray(tarotActor.tarotEffects) && tarotActor.tarotEffects.length || tarotActor.tarotInspirationReady) && window.DNDCombat && window.DNDCombat.abilityCheck) {
+    var options = Object.assign({}, context);
+    if (!options.stat) options.bonusOverride = modifier;
+    var result = window.DNDCombat.abilityCheck(tarotActor, options.stat || 'dex', null, currentRollMode, options);
+    if (!result.ok) { alert(result.reason); return result; }
+    var text = '🎲 ' + title + ': d20 [' + result.roll.first + (result.roll.second == null ? '' : ', ' + result.roll.second) + '] (' + result.roll.mode + ') ' + (result.bonus >= 0 ? '+' : '') + result.bonus + ' ➔ ' + result.total;
+    if (result.roll.tarotFortune) text += ' • Колесо Фортуны: ' + (result.roll.tarotFortune === 'advantage' ? 'преимущество' : 'помеха');
+    appendDiceLog(text, result.roll.mode === 'advantage' ? 'adv-roll' : result.roll.mode === 'disadvantage' ? 'dis-roll' : 'norm-roll');
+    var box = document.getElementById('diceResult'); if (box) box.textContent = 'Итог: ' + result.total;
+    if (typeof autoSaveCurrentCharacter === 'function') autoSaveCurrentCharacter();
+    return result;
+  }
   console.group(`[DICE_EXECUTE_D20] Запуск d20 проверки для: "${title}" с модификатором: ${modifier}`);
   const { effectiveMode, forceCrit1, conditionNotes } = applyConditionsToRoll(true);
 

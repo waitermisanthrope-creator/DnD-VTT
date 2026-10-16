@@ -1,3 +1,5 @@
+/** Character sheet actions and rest. Predictor deck restoration uses DNDPredictor
+ * before the existing profile autosave; no separate storage is created. */
 // --- СОСТОЯНИЯ (CONDITIONS) ---
 function renderConditions() {
   var container = document.getElementById('conditionsContainer');
@@ -212,6 +214,7 @@ function longRest() {
     window.WALTER_PARASITE_EXTRA.resetRestResources(currentChar);
   }
 
+  if (window.DNDPredictor && currentChar.predictorState) window.DNDPredictor.rest(currentChar, 'long', 'sheet:' + window.crypto.randomUUID());
   if (typeof renderSpellSlots === 'function') renderSpellSlots();
   autoSaveCurrentCharacter();
   alert(suppressBodyHP
