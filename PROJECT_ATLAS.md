@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода aa932703a67e. Git содержит 1307 файлов.
+Снимок кода b7db627a86b3. Git содержит 1308 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -45,6 +45,7 @@
 | 1790788500741.png | 1468216 B | текстура/изображение: 1790788500741 |
 | 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
+| AGENTS.md | 3677 B | документация или отчёт: AGENTS |
 | android/.gitignore | 44 B | Android компонент: .gitignore |
 | android/app/build.gradle | 4122 B | Android компонент: build |
 | android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1262,7 +1263,7 @@
 | tools/cloud_test.init.gradle | 781 B | скрипт разработчика: cloud test.init |
 | tools/convert_remaining_furniture.py | 4297 B | скрипт разработчика: convert remaining furniture |
 | tools/finalize_v741.py | 3280 B | скрипт разработчика: finalize v741 |
-| tools/generate_project_atlas.cjs | 12567 B | автоматический генератор этого атласа |
+| tools/generate_project_atlas.cjs | 12649 B | автоматический генератор этого атласа |
 | tools/install_native_build_tools.sh | 2975 B | скрипт разработчика: install native build tools |
 | tools/makehuman_gender_channels.json | 4749 B | скрипт разработчика: makehuman gender channels |
 | tools/makehuman_morph_channels.json | 448 B | скрипт разработчика: makehuman morph channels |
@@ -1329,7 +1330,7 @@
 
 ## Реестр имён, переменных и ключей
 
-Имена сгруппированы по роли. Каждый идентификатор приводится отдельно, с местами нахождения (первые четыре файла).
+Имена сгруппированы по роли. Каждый идентификатор приводится отдельно, с первым исходным файлом и количеством остальных мест. Для всех ссылок ищите имя в коде.
 Локальные параметры нельзя путать с полями сериализуемого персонажа, глобальными API или ключами localStorage.
 
 
@@ -1337,39 +1338,39 @@
 
 | Имя | Исходные файлы |
 |---|---|
-| _ | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_clothing.js, app/3dmap/gltf_character_pipeline.js, app/3dmap/map_world.js (+ 6 ещё) |
-| __ls | tests/test_v701.js, tests/test_v702.js, tests/test_v703.js, tests/test_v704.js (+ 1 ещё) |
+| _ | app/3dmap/character_anatomy_geometry.js (+ 9 других файлов) |
+| __ls | tests/test_v701.js (+ 4 других файлов) |
 | __shifterProgression | app/shifter_laserllama_v2_1_runtime.js |
-| __TEST_SRC__ | tests/test_v701.js, tests/test_v702.js, tests/test_v703.js, tests/test_v704.js (+ 1 ещё) |
+| __TEST_SRC__ | tests/test_v701.js (+ 4 других файлов) |
 | _event | desktop/preload.cjs |
 | _wc | desktop/main.cjs |
-| a | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 123 ещё) |
-| A | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_clothing.js, app/alchemy_gameplay_v30.js, app/alchemy_gathering_professions_v52.js (+ 1 ещё) |
-| a0 | tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| a1 | tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| a2 | tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| aa | app/3dmap/character_body_geometry.js, app/update_manager_v2.js |
-| ab | app/3dmap/character_anatomy_geometry.js, app/3dmap/gltf_loader.js, app/character.js, app/combat_abilities.js (+ 7 ещё) |
+| a | app/3dmap/character_anatomy.js (+ 126 других файлов) |
+| A | app/3dmap/character_anatomy_geometry.js (+ 4 других файлов) |
+| a0 | tests/makehuman_surface_mapping_audit.js (+ 1 других файлов) |
+| a1 | tests/makehuman_surface_mapping_audit.js (+ 1 других файлов) |
+| a2 | tests/makehuman_surface_mapping_audit.js (+ 1 других файлов) |
+| aa | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| ab | app/3dmap/character_anatomy_geometry.js (+ 10 других файлов) |
 | abilities | app/ghost_extra_runtime.js |
-| ability | app/accursed_oap_v11_runtime.js, app/data/classes/progressionEngine.js, app/expansion_classes_pack.js, app/network_gameplay.js (+ 3 ещё) |
+| ability | app/accursed_oap_v11_runtime.js (+ 6 других файлов) |
 | ABILITY | app/magic_engine.js |
 | abilityMod | app/expansion_classes_pack.js |
 | abName | app/combat_abilities.js |
 | AbortController | tests/cloud_sync_test.cjs |
-| above | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, tests/character_skin_material_test.js |
+| above | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | absent | app/crafting_engine_v31.js |
-| absorbed | app/combat_engine.js, app/summoning_engine.js |
-| ac | app/3dmap/character_body_geometry.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js (+ 22 ещё) |
+| absorbed | app/combat_engine.js (+ 1 других файлов) |
+| ac | app/3dmap/character_body_geometry.js (+ 25 других файлов) |
 | ACADEMIES | app/warlord_laserllama_v330_runtime.js |
-| academy | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| academy | app/expanded_classes_v23.js (+ 1 других файлов) |
 | academyEffects | app/expansion_classes_pack.js |
 | acBase | app/inventory-modal.js |
 | acBaseInp | app/inventory-modal.js |
-| acc | app/spells.js, tests/character_3d_morph_assets_test.js, tests/human_base_glb_audit.js, tests/makehuman_glb_morph_fixture_audit.js (+ 1 ещё) |
+| acc | app/spells.js (+ 4 других файлов) |
 | acCalcBaseSel | app/inventory-modal.js |
 | ACCEPT | app/market_trade_v55_2.js |
-| access | app/crafting_profession_progression_v47.js, app/world_resource_gathering_v53.js |
-| accessors | tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_surface_transfer_audit.js, tests/makehuman_topology_audit.js (+ 1 ещё) |
+| access | app/crafting_profession_progression_v47.js (+ 1 других файлов) |
+| accessors | tests/makehuman_morph_bridge.js (+ 4 других файлов) |
 | accessory | app/3dmap/character_editor_3d.js |
 | accIndex | tests/generate_makehuman_glb_morph_fixture.js |
 | account | app/cloud_account.js |
@@ -1377,49 +1378,49 @@
 | ACCURSED_CURSES | app/expansion_classes_pack.js |
 | ACCURSED_METAMORPHOSES | app/expansion_classes_pack.js |
 | acidAttack | tests/alchemist_runtime_test.js |
-| acInput | app/app.js, app/races.js |
+| acInput | app/app.js (+ 1 других файлов) |
 | acInputEl | app/Inventory.js |
 | across | app/3dmap/character_body_geometry.js |
-| action | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/class_features_engine.js, app/companion_gameplay_v27.js (+ 17 ещё) |
+| action | app/accursed_oap_v11_runtime.js (+ 20 других файлов) |
 | actionBtn | app/Inventory-weight-tracker.js |
 | actionHandler | app/network_engine.js |
 | actionId | app/resource_gathering_v35.js |
 | actionIndex | app/summoning_engine.js |
 | actionName | app/network_gameplay.js |
 | actionResultsByPeer | app/network_engine.js |
-| actions | app/alchemist_mhp_2024_runtime.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js (+ 2 ещё) |
+| actions | app/alchemist_mhp_2024_runtime.js (+ 5 других файлов) |
 | ACTIONS | app/gameplay_core_v57.js |
 | actionSpent | app/combat_engine.js |
 | actionStr | app/inventory-coins.js |
 | actionTokenId | app/battle_action_ui.js |
-| active | app/3dmap/character_body_geometry.js, app/Settings.js, app/alchemy_gameplay_v30.js, app/blood_hunter_engine.js (+ 10 ещё) |
+| active | app/3dmap/character_body_geometry.js (+ 13 других файлов) |
 | ACTIVE | app/feat_engine.js |
 | activeBonuses | app/Inventory.js |
 | activeBtns | app/dice.js |
 | activeCat | app/inventory-modal.js |
-| activeCategory | app/Inventory.js, app/inventory-modal.js |
+| activeCategory | app/Inventory.js (+ 1 других файлов) |
 | activeClass | app/notes.js |
 | activeColsWallet | app/inventory-coins.js |
 | activeEffects | app/alchemist_mhp_2024_runtime.js |
 | activeFolder | app/notes.js |
-| activeHero | app/Settings.js, app/Settings_debug.js |
+| activeHero | app/Settings.js (+ 1 других файлов) |
 | activeLvl | app/Settings.js |
 | activeNow | app/dnd_tools.js |
 | activeStats | app/Inventory.js |
 | activeTab | app/3dmap/character_editor_3d.js |
 | activeWp | app/Wallpapers.js |
-| actor | app/combat_engine.js, app/gameplay_core_v57.js, app/monster_engine.js, app/network_gameplay.js (+ 6 ещё) |
-| actorId | app/gameplay_core_v57.js, app/secondary_entities_engine.js |
+| actor | app/combat_engine.js (+ 9 других файлов) |
+| actorId | app/gameplay_core_v57.js (+ 1 других файлов) |
 | actors | app/blood_hunter_engine.js |
-| acts | app/bestiary_catalog_v56_2.js, app/bestiary_catalog_v56_3.js, app/bestiary_catalog_v56_4.js, app/bestiary_catalog_v56_5.js (+ 4 ещё) |
-| actual | app/market_social_v55_3.js, app/necromancer_mhp_2024_runtime.js, app/vtt_debug_rules_matrix_v707.js, tests/character_races_geometry_test.js |
+| acts | app/bestiary_catalog_v56_2.js (+ 7 других файлов) |
+| actual | app/market_social_v55_3.js (+ 3 других файлов) |
 | acVal | app/Inventory.js |
 | ad | app/3dmap/character_body_geometry.js |
-| add | app/inventory_containers_v54.js, app/market_social_v55_3.js, app/warlord_laserllama_v330_runtime.js, tools/prepare_makehuman_gender.js |
+| add | app/inventory_containers_v54.js (+ 3 других файлов) |
 | addBtn | app/inventory-modal.js |
-| added | app/data/classes/progressionEngine.js, app/market_trade_v55_2.js, app/parasite_extra_runtime.js |
+| added | app/data/classes/progressionEngine.js (+ 2 других файлов) |
 | addedLangs | app/character_creation.js |
-| addedWeight | app/Inventory-weight-tracker.js, app/inventory-modal.js |
+| addedWeight | app/Inventory-weight-tracker.js (+ 1 других файлов) |
 | addExhaustion | app/resource_gathering_v35.js |
 | addGroup | app/crafting_resources_v34.js |
 | addToContainer | app/inventory_containers_v54.js |
@@ -1427,25 +1428,25 @@
 | adj | app/monster_engine.js |
 | adjacent | app/3dmap/character_anatomy_geometry.js |
 | adjusted | app/monster_engine.js |
-| adr | app/shifter_laserllama_v2_1_runtime.js, tests/test_class_audit_stage2_runtime.js |
+| adr | app/shifter_laserllama_v2_1_runtime.js (+ 1 других файлов) |
 | adv | app/rulesEngine.js |
 | aether | app/blood_hunter_engine.js |
 | af | app/3dmap/character_body_geometry.js |
 | affected | app/alchemist_mhp_2024_runtime.js |
-| affinity | app/class_features_engine.js, app/vessel_laserllama_v4_runtime.js |
-| after | app/combat_engine.js, app/resource_gathering_v35.js, app/rulesEngine.js, app/vtt_gameplay_ux_v58.js (+ 5 ещё) |
+| affinity | app/class_features_engine.js (+ 1 других файлов) |
+| after | app/combat_engine.js (+ 8 других файлов) |
 | afterBounds | tests/character_races_geometry_test.js |
-| ag | app/expansion_classes_pack.js, app/network_gameplay.js |
-| age | app/Backgrounds.js, app/character_creation.js, tools/build_character_editor_morphs.js |
-| ageEl | app/Backgrounds.js, app/character_creation.js |
-| ageInput | app/Backgrounds.js, app/character_creation.js |
+| ag | app/expansion_classes_pack.js (+ 1 других файлов) |
+| age | app/Backgrounds.js (+ 2 других файлов) |
+| ageEl | app/Backgrounds.js (+ 1 других файлов) |
+| ageInput | app/Backgrounds.js (+ 1 других файлов) |
 | agents | app/bestiary_catalog_v56_13.js |
-| ah | app/3dmap/character_body_geometry.js, app/class_features_engine.js |
-| ai | app/3dmap/character_body_geometry.js, app/3dmap/gltf_character_pipeline.js, app/3dmap/map_model.js, app/gameplay_core_v57.js (+ 8 ещё) |
+| ah | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| ai | app/3dmap/character_body_geometry.js (+ 11 других файлов) |
 | ailment | app/expansion_classes_pack.js |
 | aim | app/3dmap/map_editor.js |
 | aimed | tests/map_editor_dom_test.js |
-| ain | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
+| ain | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | al | app/3dmap/character_body_geometry.js |
 | alchemistCombatant | tests/alchemist_combat_test.js |
 | alchemistDebuffs | app/combat_engine.js |
@@ -1453,12 +1454,12 @@
 | alchemistLevel | app/combat_engine.js |
 | alchemistState | app/combat_engine.js |
 | alchemistVariants | app/alchemist_mhp_2024_runtime.js |
-| alias | app/data/classes/level_up.js, app/market_trade_v55_2.js, app/rulesEngine.js |
+| alias | app/data/classes/level_up.js (+ 2 других файлов) |
 | ALIAS | app/data/subclasses/subclassesRegistry.js |
-| aliases | app/alchemist_mhp_2024_runtime.js, app/class_features_engine.js, app/crafting_engine_v31.js, app/crafting_professions_v38.js (+ 4 ещё) |
-| ALIASES | app/crafting_professions_v38.js, app/world_resource_gathering_v53.js |
+| aliases | app/alchemist_mhp_2024_runtime.js (+ 7 других файлов) |
+| ALIASES | app/crafting_professions_v38.js (+ 1 других файлов) |
 | align | tools/build_makehuman_morphs.js |
-| all | app/3dmap/character_editor_3d.js, app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js, app/alchemy_gathering_professions_v52.js (+ 2 ещё) |
+| all | app/3dmap/character_editor_3d.js (+ 5 других файлов) |
 | ALL_RECIPES | app/crafting_professions_v38.js |
 | allBgs | app/Backgrounds.js |
 | allCharacters | app/app.js |
@@ -1467,15 +1468,15 @@
 | allElements | app/inventory-coins.js |
 | allFeats | app/data/feats/Feat_widget.js |
 | allItems | app/Inventory.js |
-| allowed | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/class_features_engine.js, app/data/classes/level_up.js (+ 7 ещё) |
+| allowed | app/3dmap/character_body_geometry.js (+ 10 других файлов) |
 | allowed2 | app/occultist_kibbles_v11_runtime.js |
 | allowMastery | app/expansion_classes_pack.js |
-| allPanels | app/Proficiencies.js, app/data/feats/Feat_widget.js |
-| allRaces | app/Backgrounds.js, app/character_creation.js, app/races.js |
+| allPanels | app/Proficiencies.js (+ 1 других файлов) |
+| allRaces | app/Backgrounds.js (+ 2 других файлов) |
 | allRollsDetails | app/spells.js |
 | allSources | app/data/feats/Feat_widget.js |
 | allSpells | app/spells.js |
-| ally | app/alchemist_mhp_2024_runtime.js, tests/test_class_audit_runtime.js, tests/test_v726_fixes.js |
+| ally | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | allyState | app/alchemist_mhp_2024_runtime.js |
 | alone | tests/character_adult_anatomy_test.js |
 | already | app/expansion_classes_pack.js |
@@ -1485,7 +1486,7 @@
 | alreadyHasSubclass | app/data/classes/level_up.js |
 | alternates | app/alchemy_gathering_professions_v52.js |
 | always | app/necromancer_mhp_2024_runtime.js |
-| am | app/3dmap/map_renderer_3d.js, app/network_gameplay.js, tests/test_v725_fixes.js, tests/test_v727_fixes.js |
+| am | app/3dmap/map_renderer_3d.js (+ 3 других файлов) |
 | am2 | tests/test_v727_fixes.js |
 | amap | app/expansion_classes_pack.js |
 | AMBIENCE_STATE_KEY | app/Ambiences.js |
@@ -1493,87 +1494,87 @@
 | ambienceStateLoaded | app/Ambiences.js |
 | AMBIENT_TRACKS | app/Ambiences.js |
 | amorist | tests/alchemist_runtime_test.js |
-| amount | app/3dmap/character_body_geometry.js, app/alchemy_gathering_professions_v52.js, app/blood_hunter_engine.js, app/class_features_engine.js (+ 19 ещё) |
+| amount | app/3dmap/character_body_geometry.js (+ 22 других файлов) |
 | amp | app/expansion_classes_pack.js |
 | amphibian | tests/alchemist_runtime_test.js |
 | amphibianMods | tests/alchemist_runtime_test.js |
 | amplified | tests/test_v732_fixes.js |
 | anatomy | tests/character_3d_foundation_test.js |
-| anchor | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js |
-| anchors | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
-| angle | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 3 ещё) |
+| anchor | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
+| anchors | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| angle | app/3dmap/character_anatomy_geometry.js (+ 6 других файлов) |
 | angularIndex | app/3dmap/character_anatomy_geometry.js |
 | animal | app/3dmap/character_body_geometry.js |
 | animalCfg | app/3dmap/character_body_geometry.js |
 | animalParts | app/3dmap/character_body_geometry.js |
 | animalSelect | app/3dmap/character_editor_3d.js |
-| ankle | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
+| ankle | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | answered | app/network_gameplay.js |
 | ao | app/network_gameplay.js |
-| ap | app/class_features_engine.js, app/network_gameplay.js, tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js (+ 3 ещё) |
-| api | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_editor_3d.js, app/cloud_account.js (+ 34 ещё) |
-| API | app/alchemy_engine_v29.js, app/alchemy_gathering_professions_v52.js, app/crafting_disassembly_repair_v51.js, app/crafting_economy_v49.js (+ 9 ещё) |
-| app | desktop/main.cjs, tests/desktop_update_contract.cjs, tests/test_v716_fixes.js |
+| ap | app/class_features_engine.js (+ 6 других файлов) |
+| api | app/3dmap/character_anatomy.js (+ 37 других файлов) |
+| API | app/alchemy_engine_v29.js (+ 12 других файлов) |
+| app | desktop/main.cjs (+ 2 других файлов) |
 | APP_FONTS | app/Settings.js |
 | APP_FRAME_COLORS | app/Settings.js |
 | APP_FRAME_STYLES | app/Settings.js |
 | APP_THEMES | app/Settings.js |
-| APP_VERSION | app/update_manager_v2.js, tests/test_v755_update_scene.js |
-| appearance | app/3dmap/character_appearance_store.js, app/3dmap/character_clothing.js, app/alchemist_mhp_2024_runtime.js |
+| APP_VERSION | app/update_manager_v2.js (+ 1 других файлов) |
+| appearance | app/3dmap/character_appearance_store.js (+ 2 других файлов) |
 | appearanceSource | tests/cloud_sync_test.cjs |
-| applied | tests/creation_signature_asset_test.cjs, tests/desktop_update_contract.cjs, tests/test_v747_event_race_compaction.js |
+| applied | tests/creation_signature_asset_test.cjs (+ 2 других файлов) |
 | appliedBonusText | app/data/feats/Feat_widget.js |
 | applySkin | app/3dmap/character_editor_3d.js |
-| ar | app/class_features_engine.js, app/network_gameplay.js, app/onboarding_faq_v71.js, tests/test_v725_fixes.js (+ 1 ещё) |
+| ar | app/class_features_engine.js (+ 4 других файлов) |
 | arc | app/3dmap/character_body_geometry.js |
 | arch | app/3dmap/character_body_geometry.js |
 | archetypeFeatureIds | app/expansion_classes_pack.js |
-| area | app/3dmap/character_body_geometry.js, app/Inventory.js, app/inventory_containers_v54.js |
+| area | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | arena | tests/pugilist_combat_test.js |
 | arg | app/debug.js |
-| args | app/debug.js, app/expansion_class_progressions.js, tests/makehuman_topology_audit.js |
+| args | app/debug.js (+ 2 других файлов) |
 | arm | app/3dmap/character_body_geometry.js |
 | armLine | app/3dmap/character_body_geometry.js |
-| armor | app/crafting_dlc_v50.js, app/rulesEngine.js, app/savant_laserllama_v561_runtime.js, tests/character_editor_morph_assets_test.js (+ 1 ещё) |
+| armor | app/crafting_dlc_v50.js (+ 4 других файлов) |
 | armorCategories | app/inventory-modal.js |
 | armored | app/savant_laserllama_v561_runtime.js |
 | armorFields | app/inventory-modal.js |
 | armorName | app/combat_engine.js |
 | armorObj | app/combat_engine.js |
 | armorOn | app/3dmap/character_body_geometry.js |
-| arr | app/3dmap/gltf_loader.js, app/alchemy_gameplay_v30.js, app/class_features_engine.js, app/crafting_professions_v38.js (+ 9 ещё) |
-| Array | app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js (+ 20 ещё) |
+| arr | app/3dmap/gltf_loader.js (+ 12 других файлов) |
+| Array | app/crafting_character_influence_test_v46.js (+ 23 других файлов) |
 | ArrayBuffer | tests/gltf_loader_smoke.cjs |
 | arrays | app/crafting_professions_v38.js |
-| arrow | app/class_features_engine.js, app/combat_abilities.js, app/dice.js, app/inventory-coins.js |
+| arrow | app/class_features_engine.js (+ 3 других файлов) |
 | ARTIFICER_CLASSES | app/class_features_engine.js |
 | ARTIFICER_KEY | app/rulesEngine.js |
-| ASI | app/parasite_extra_runtime.js, app/shifter_laserllama_v2_1_runtime.js |
+| ASI | app/parasite_extra_runtime.js (+ 1 других файлов) |
 | ASI_LEVELS | app/swarm_extra_runtime.js |
 | asiContainer | app/data/classes/level_up.js |
 | asiHtml | app/data/classes/level_up.js |
 | asiLevels | app/expansion_class_progressions.js |
 | asiPrompt | app/data/classes/level_up.js |
-| aspect | app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js |
+| aspect | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | aspects | app/vessel_laserllama_v4_runtime.js |
 | ASPECTS | app/vessel_laserllama_v4_runtime.js |
-| assert | tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js, tests/character_3d_editor_test.js, tests/character_3d_foundation_test.js (+ 148 ещё) |
+| assert | tests/alchemist_combat_test.js (+ 151 других файлов) |
 | assertSource | tests/desktop_update_contract.cjs |
-| asset | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 27 ещё) |
+| asset | app/3dmap/character_anatomy.js (+ 30 других файлов) |
 | assetId | tests/imported_3d_editor_assets.cjs |
 | assets | app/3dmap/stress_map.js |
 | assetSet | app/3dmap/map_model.js |
 | assigned | app/expansion_classes_pack.js |
-| at | app/3dmap/character_anatomy.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 9 ещё) |
-| atk | app/combat_abilities.js, app/network_gameplay.js, app/rulesEngine.js, app/spells.js (+ 2 ещё) |
-| atkBonus | app/bestiary_catalog_v56_2.js, app/bestiary_catalog_v56_3.js, app/bestiary_catalog_v56_4.js, app/bestiary_catalog_v56_5.js (+ 6 ещё) |
-| atkElem | app/combat_abilities.js, app/spells.js |
+| at | app/3dmap/character_anatomy.js (+ 12 других файлов) |
+| atk | app/combat_abilities.js (+ 5 других файлов) |
+| atkBonus | app/bestiary_catalog_v56_2.js (+ 9 других файлов) |
+| atkElem | app/combat_abilities.js (+ 1 других файлов) |
 | atlas | app/3dmap/character_clothing.js |
-| atob | tests/character_3d_morph_assets_test.js, tests/character_3d_skin_assets_test.js, tests/character_adult_anatomy_test.js, tests/character_animal_heads_test.js (+ 18 ещё) |
+| atob | tests/character_3d_morph_assets_test.js (+ 21 других файлов) |
 | aTok | app/combat_engine.js |
 | attachment | app/3dmap/character_clothing.js |
-| attack | app/necromancer_mhp_2024_runtime.js, app/savant_laserllama_v561_runtime.js, app/shifter_laserllama_v2_1_runtime.js, app/vessel_laserllama_v4_runtime.js (+ 1 ещё) |
-| attacker | app/blood_hunter_engine.js, app/combat_engine.js, app/crafting_dlc_v50.js, app/martyr_mhp_2024_runtime.js (+ 5 ещё) |
+| attack | app/necromancer_mhp_2024_runtime.js (+ 4 других файлов) |
+| attacker | app/blood_hunter_engine.js (+ 8 других файлов) |
 | attackerBack | app/network_gameplay.js |
 | attackerDebuffs | app/combat_engine.js |
 | attackerId | app/combat_engine.js |
@@ -1582,10 +1583,10 @@
 | attackModifiers | app/necromancer_mhp_2024_runtime.js |
 | attackPayload | app/network_gameplay.js |
 | attackRolls | tests/test_class_audit_stage4_runtime.js |
-| attacks | app/combat_engine.js, app/monster_engine.js, app/rulesEngine.js |
-| attempts | app/cloud_sync.js, tests/gltf_loader_smoke.cjs |
+| attacks | app/combat_engine.js (+ 2 других файлов) |
+| attempts | app/cloud_sync.js (+ 1 других файлов) |
 | attributes | tests/test_class_audit_stage2_runtime.js |
-| aura | app/network_gameplay.js, tests/test_v726_fixes.js |
+| aura | app/network_gameplay.js (+ 1 других файлов) |
 | auraActive | app/class_features_engine.js |
 | auraCha | app/class_features_engine.js |
 | auraSource | app/class_features_engine.js |
@@ -1601,36 +1602,36 @@
 | autoRotateState | app/Wallpapers.js |
 | autoRotateTimer | app/Wallpapers.js |
 | autos | app/network_gameplay.js |
-| av | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/update_manager_v2.js |
+| av | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | avail | app/class_features_engine.js |
-| available | app/expansion_classes_pack.js, app/martyr_mhp_2024_runtime.js, app/resource_gathering_v35.js, app/update_manager_v2.js |
+| available | app/expansion_classes_pack.js (+ 3 других файлов) |
 | availableCharges | app/alchemist_mhp_2024_runtime.js |
 | availableWallpapers | app/Wallpapers.js |
 | avg | app/data/classes/level_up.js |
 | avianHybrid | tests/character_3d_foundation_test.js |
-| aw | app/3dmap/character_body_geometry.js, tools/build_character_editor_morphs.js |
-| ax | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/map_renderer_3d.js |
+| aw | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| ax | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | axes | app/3dmap/character_body_geometry.js |
 | AXES | app/3dmap/character_system.js |
-| axis | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_morph_assets.js, app/3dmap/character_pose.js (+ 7 ещё) |
+| axis | app/3dmap/character_body_geometry.js (+ 10 других файлов) |
 | ay | app/3dmap/character_clothing.js |
-| az | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js |
-| b | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 104 ещё) |
-| B | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_clothing.js, app/accursed_oap_v11_runtime.js, app/blood_hunter_engine.js (+ 13 ещё) |
-| b1 | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js |
-| back | app/3dmap/character_anatomy.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/expansion_classes_pack.js |
+| az | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| b | app/3dmap/character_anatomy.js (+ 107 других файлов) |
+| B | app/3dmap/character_anatomy_geometry.js (+ 16 других файлов) |
+| b1 | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| back | app/3dmap/character_anatomy.js (+ 3 других файлов) |
 | backAnchor | app/3dmap/character_body_geometry.js |
 | backCount | app/3dmap/character_body_geometry.js |
 | backDepth | app/3dmap/character_clothing.js |
 | backdrop | app/3dmap/character_editor_3d.js |
-| backgroundName | app/Backgrounds.js, app/character_creation.js |
+| backgroundName | app/Backgrounds.js (+ 1 других файлов) |
 | backgrounds | tests/test_v755_creation_buckets.js |
-| backgroundsList | app/Backgrounds.js, app/character_creation.js |
+| backgroundsList | app/Backgrounds.js (+ 1 других файлов) |
 | backTop | app/3dmap/character_clothing.js |
-| backup | app/cloud_sync.js, app/rulesEngine.js, tools/check_cloud_account_browser.cjs |
+| backup | app/cloud_sync.js (+ 2 других файлов) |
 | backupData | app/Settings.js |
 | backups | app/cloud_account.js |
-| bad | app/blood_hunter_engine.js, app/custom_crafting_v32.js, tests/character_clothing_options_test.js, tests/character_head_geometry_test.js (+ 2 ещё) |
+| bad | app/blood_hunter_engine.js (+ 5 других файлов) |
 | badgeTag | app/dice.js |
 | badR | tests/test_v732_fixes.js |
 | bag | tests/character_male_anatomy_fix_test.js |
@@ -1645,15 +1646,15 @@
 | bandLo | app/3dmap/character_clothing.js |
 | bandSection | app/3dmap/character_clothing.js |
 | bar | app/update_scene_v2.js |
-| barb | tests/test_v728_fixes.js, tests/test_v730_fixes.js |
+| barb | tests/test_v728_fixes.js (+ 1 других файлов) |
 | barbarian | tests/test_v721_fixes.js |
 | barFill | app/Inventory-weight-tracker.js |
 | barter | tests/test_v55_2.js |
 | barWrapper | app/Inventory-weight-tracker.js |
-| base | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_morph_assets.js, app/3dmap/character_system.js (+ 60 ещё) |
-| BASE | app/crafting_disassembly_repair_v51.js, app/warden_mhp_2024_runtime.js |
+| base | app/3dmap/character_body_geometry.js (+ 63 других файлов) |
+| BASE | app/crafting_disassembly_repair_v51.js (+ 1 других файлов) |
 | BASE_HOSTS | desktop/update.cjs |
-| baseAc | app/Backgrounds.js, app/character_creation.js |
+| baseAc | app/Backgrounds.js (+ 1 других файлов) |
 | baseAC | app/Inventory.js |
 | baseACInput | app/Inventory.js |
 | baseActions | app/occultist_kibbles_v11_runtime.js |
@@ -1661,10 +1662,10 @@
 | baseCount | app/crafting_professions_v38.js |
 | baseFeatures | app/occultist_kibbles_v11_runtime.js |
 | baseGain | app/data/classes/level_up.js |
-| baseH | app/3dmap/character_clothing.js, app/3dmap/map_renderer_2d.js |
+| baseH | app/3dmap/character_clothing.js (+ 1 других файлов) |
 | baseIds | app/warlord_laserllama_v330_runtime.js |
 | baseJinx | app/expansion_classes_pack.js |
-| baseline | app/3dmap/character_editor_3d.js, tests/character_external_anatomy_test.js, tools/check_mechanical_races_browser.js |
+| baseline | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
 | baseMod | app/dice.js |
 | baseMode | app/rulesEngine.js |
 | baseNameEng | app/data/feats/Feat_widget.js |
@@ -1678,11 +1679,11 @@
 | baseW | app/3dmap/map_renderer_2d.js |
 | baseX | app/3dmap/character_body_geometry.js |
 | baseY | app/3dmap/character_body_geometry.js |
-| bat | app/3dmap/character_body_geometry.js, tests/character_swarm_geometry_test.js |
+| bat | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | batch | app/network_gameplay.js |
 | batchFail | tests/test_v748_full_combat_transaction.js |
 | batchTarget | tests/test_v748_full_combat_transaction.js |
-| bb | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/update_manager_v2.js, tests/test_v61.js (+ 1 ещё) |
+| bb | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
 | bbu | app/expansion_classes_pack.js |
 | bbuDamage | tests/pugilist_combat_test.js |
 | bbuHero | tests/pugilist_combat_test.js |
@@ -1690,7 +1691,7 @@
 | bbuResource | app/combat_engine.js |
 | bbuResult | app/combat_engine.js |
 | bbuTemp | app/expansion_classes_pack.js |
-| bc | app/3dmap/character_anatomy_geometry.js, app/class_features_engine.js, app/expansion_classes_pack.js |
+| bc | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
 | bCha | app/races.js |
 | bCon | app/races.js |
 | bd | tests/makehuman_vertex_mapping_audit.js |
@@ -1705,7 +1706,7 @@
 | bearer | app/cloud_sync.js |
 | beast | app/shifter_laserllama_v2_1_runtime.js |
 | beetle | app/3dmap/character_body_geometry.js |
-| before | app/cloud_sync.js, app/combat_engine.js, app/crafting_profession_progression_v47.js, app/market_social_v55_3.js (+ 37 ещё) |
+| before | app/cloud_sync.js (+ 40 других файлов) |
 | beforeBounds | tests/character_races_geometry_test.js |
 | beforeBurn | tests/alchemist_combat_test.js |
 | beforeCurse | tests/test_v732_fixes.js |
@@ -1717,48 +1718,48 @@
 | belly | app/3dmap/character_body_geometry.js |
 | belt | app/crafting_character_influence_test_v46.js |
 | bend | app/3dmap/character_body_geometry.js |
-| best | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/map_model.js, app/3dmap/map_renderer_3d.js (+ 7 ещё) |
+| best | app/3dmap/character_body_geometry.js (+ 10 других файлов) |
 | bestD | tests/makehuman_morph_bridge.js |
 | bestDist | app/network_gameplay.js |
 | bestiary | app/monster_loot_crafting_bridge_v40.js |
 | bestTrans | tests/makehuman_vertex_mapping_audit.js |
 | bestTri | tests/makehuman_surface_mapping_audit.js |
 | bev | app/network_gameplay.js |
-| bf | app/3dmap/gltf_loader.js, app/class_features_engine.js |
-| bg | app/crafting_professions_v38.js, tools/check_ghost_browser.js |
+| bf | app/3dmap/gltf_loader.js (+ 1 других файлов) |
+| bg | app/crafting_professions_v38.js (+ 1 других файлов) |
 | BG_COLOR_PALETTE | app/Wallpapers.js |
-| BG3_POINT_BUY | app/Backgrounds.js, app/character_creation.js |
+| BG3_POINT_BUY | app/Backgrounds.js (+ 1 других файлов) |
 | bgBody | app/Wallpapers.js |
 | bgInput | app/app.js |
-| bgs | app/character_creation_pergament.js, app/crafting_professions_v38.js |
-| bgSelect | app/Backgrounds.js, app/character_creation.js |
+| bgs | app/character_creation_pergament.js (+ 1 других файлов) |
+| bgSelect | app/Backgrounds.js (+ 1 других файлов) |
 | bgStyle | app/dice.js |
-| bgVal | app/Backgrounds.js, app/character_creation.js |
-| bh | app/rulesEngine.js, tests/makehuman_gender_recipe_test.js, tests/test_v731_fixes.js, tools/build_makehuman_morphs.js |
+| bgVal | app/Backgrounds.js (+ 1 других файлов) |
+| bh | app/rulesEngine.js (+ 3 других файлов) |
 | bhDamage | app/combat_engine.js |
 | bhPact | app/rulesEngine.js |
 | bi | app/network_gameplay.js |
 | bIdx | app/Backgrounds.js |
-| bin | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_pose.js, app/3dmap/gltf_loader.js (+ 13 ещё) |
+| bin | app/3dmap/character_body_geometry.js (+ 16 других файлов) |
 | binary | tools/build_character_editor_morphs.js |
 | binBytes | tests/human_base_glb_audit.js |
 | binPad | tests/generate_makehuman_glb_morph_fixture.js |
 | bins | app/3dmap/character_clothing.js |
 | bInt | app/races.js |
 | bird | app/3dmap/character_body_geometry.js |
-| bits | app/3dmap/character_anatomy_geometry.js, app/vtt_combat_event_bus_v69.js |
+| bits | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | bl | app/data/classes/Beastheart.js |
 | blackPowder | tests/alchemist_runtime_test.js |
 | blackPowderAttack | tests/alchemist_runtime_test.js |
 | blade | app/3dmap/character_body_geometry.js |
 | bladeSpan | app/3dmap/character_body_geometry.js |
 | bleed | app/combat_engine.js |
-| blend | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js |
+| blend | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | blended | app/3dmap/character_anatomy_geometry.js |
-| blob | app/Settings.js, app/rulesEngine.js, app/vtt_combat_event_bus_v69.js, app/vtt_combat_log_v66.js (+ 4 ещё) |
+| blob | app/Settings.js (+ 7 других файлов) |
 | blobs | tools/generate_project_atlas.cjs |
-| block | app/Proficiencies.js, app/crafting_profession_progression_v47.js, app/data/feats/Feat_widget.js, app/necromancer_mhp_2024_runtime.js (+ 3 ещё) |
-| blocked | app/cloud_sync.js, app/network_gameplay.js, tests/test_v53.js, tools/check_character_editor_browser.js |
+| block | app/Proficiencies.js (+ 6 других файлов) |
+| blocked | app/cloud_sync.js (+ 3 других файлов) |
 | bloodAbility | app/alchemist_mhp_2024_runtime.js |
 | bloodAgent | tests/alchemist_runtime_test.js |
 | bloodCurseReaction | app/combat_engine.js |
@@ -1769,47 +1770,47 @@
 | bloodRiteRevival | app/combat_engine.js |
 | bloodShort | app/alchemist_mhp_2024_runtime.js |
 | bloodSnapshots | app/alchemist_mhp_2024_runtime.js |
-| bm | app/network_gameplay.js, tests/character_3d_morph_assets_test.js, tests/test_v728_fixes.js |
+| bm | app/network_gameplay.js (+ 2 других файлов) |
 | board | app/network_gameplay.js |
 | boardBox | app/battle_board.js |
 | boardCtx | tests/test_v709_fixes.js |
-| body | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 18 ещё) |
+| body | app/3dmap/character_anatomy_geometry.js (+ 21 других файлов) |
 | bodyArmor | app/Inventory.js |
 | bodyBefore | tests/character_3d_editor_test.js |
 | bodyExtras | tests/character_avian_elephant_heads_test.js |
 | bodyStats | app/ghost_extra_runtime.js |
-| bomb | app/alchemist_mhp_2024_runtime.js, tests/alchemist_runtime_test.js, tests/test_v726_fixes.js |
+| bomb | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | bomber | tests/alchemist_runtime_test.js |
 | bomberGuard | tests/alchemist_runtime_test.js |
 | bomberResistanceTarget | tests/alchemist_combat_test.js |
 | bomberResisted | tests/alchemist_combat_test.js |
 | bond | app/companion_gameplay_v27.js |
 | bonds | app/data/classes/Beastheart.js |
-| bone | app/3dmap/gltf_character_pipeline.js, tests/character_tiefling_details_test.js |
+| bone | app/3dmap/gltf_character_pipeline.js (+ 1 других файлов) |
 | bonesChecked | tools/check_tiefling_details_browser.js |
 | boneStyle | app/3dmap/character_body_geometry.js |
 | boneVertexMap | app/3dmap/character_body_geometry.js |
-| bonus | app/3dmap/map_world.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/blood_hunter_engine.js (+ 19 ещё) |
+| bonus | app/3dmap/map_world.js (+ 22 других файлов) |
 | bonusAction | app/network_gameplay.js |
 | bonuses | app/inventory-modal.js |
-| bonusesText | app/Backgrounds.js, app/character_creation.js |
+| bonusesText | app/Backgrounds.js (+ 1 других файлов) |
 | bonusMultiplier | app/dice.js |
 | bonusText | app/data/feats/Feat_widget.js |
-| Boolean | app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js |
+| Boolean | app/crafting_character_influence_test_v46.js (+ 1 других файлов) |
 | booted | desktop/main.cjs |
 | borderLeftColor | app/dice.js |
-| bottom | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_clothing.js, tests/character_clothing_test.js, tools/check_character_clothing_closeups.js (+ 1 ещё) |
+| bottom | app/3dmap/character_anatomy_geometry.js (+ 4 других файлов) |
 | bought | tests/test_v55_2.js |
-| boundary | app/3dmap/character_anatomy_geometry.js, tests/character_races_geometry_test.js |
+| boundary | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | boundaryEdges | app/3dmap/character_anatomy_geometry.js |
 | boundaryWelds | app/3dmap/character_anatomy_geometry.js |
-| bounds | tests/character_clothing_customizer_geometry_test.js, tests/character_clothing_test.js |
-| box | app/3dmap/character_editor_3d.js, app/Inventory.js, app/alchemy_gathering_professions_v52.js, app/class_features_engine.js (+ 22 ещё) |
+| bounds | tests/character_clothing_customizer_geometry_test.js (+ 1 других файлов) |
+| box | app/3dmap/character_editor_3d.js (+ 25 других файлов) |
 | boxer | tests/pugilist_combat_test.js |
 | boxesHtml | app/spells.js |
 | boxIndex | app/spells.js |
-| bp | app/crafting_professions_v38.js, app/expansion_classes_pack.js, app/network_gameplay.js, tests/makehuman_gender_fixture_audit.js (+ 4 ещё) |
-| bParts | app/Backgrounds.js, app/character_creation.js |
+| bp | app/crafting_professions_v38.js (+ 7 других файлов) |
+| bParts | app/Backgrounds.js (+ 1 других файлов) |
 | br | tests/test_v721_fixes.js |
 | brandedHp | tests/test_blood_hunter_completion.js |
 | braPanels | tests/character_races_geometry_test.js |
@@ -1820,63 +1821,63 @@
 | breathTargets | app/alchemist_mhp_2024_runtime.js |
 | breathTwo | tests/alchemist_runtime_test.js |
 | breathType | app/alchemist_mhp_2024_runtime.js |
-| bridge | tests/makehuman_gender_recipe_test.js, tests/makehuman_uv_bridge_test.js, tests/test_v714_fixes.js, tests/test_v755_update_scene.js (+ 1 ещё) |
-| broken | app/3dmap/character_body_geometry.js, tests/cloud_sync_test.cjs |
+| bridge | tests/makehuman_gender_recipe_test.js (+ 4 других файлов) |
+| broken | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | browColor | app/3dmap/character_editor_3d.js |
-| browser | tools/check_adult_anatomy_browser.js, tools/check_adult_base_browser.js, tools/check_animal_heads_browser.js, tools/check_avian_elephant_heads_browser.js (+ 35 ещё) |
+| browser | tools/check_adult_anatomy_browser.js (+ 38 других файлов) |
 | BrowserWindow | desktop/main.cjs |
 | bStr | app/races.js |
-| bt | app/3dmap/character_body_geometry.js, app/3dmap/gltf_loader.js, app/network_gameplay.js |
-| btn | app/Inventory-weight-tracker.js, app/Inventory.js, app/class_features_engine.js, app/inventory-modal.js (+ 1 ещё) |
+| bt | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
+| btn | app/Inventory-weight-tracker.js (+ 4 других файлов) |
 | btnCat | app/Inventory.js |
 | btnContainer | app/inventory-modal.js |
 | btnMode | app/dice.js |
-| btoa | tests/character_3d_morph_assets_test.js, tests/character_3d_skin_assets_test.js, tests/makehuman_gender_fixture_audit.js |
-| bucket | app/3dmap/character_body_geometry.js, app/3dmap/character_pose.js, tests/character_external_anatomy_test.js |
+| btoa | tests/character_3d_morph_assets_test.js (+ 2 других файлов) |
+| bucket | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | buckets | app/3dmap/character_body_geometry.js |
 | bucketStep | app/3dmap/character_body_geometry.js |
 | budgets | app/3dmap/character_anatomy.js |
-| buf | app/3dmap/gltf_loader.js, app/3dmap/map_renderer_3d.js, tests/desktop_update_contract.cjs |
-| buffers | app/3dmap/character_body_geometry.js, app/3dmap/gltf_loader.js, app/3dmap/map_renderer_3d.js, tests/makehuman_morph_bridge.js |
+| buf | app/3dmap/gltf_loader.js (+ 2 других файлов) |
+| buffers | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
 | bufs | app/3dmap/gltf_loader.js |
-| build | app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js |
-| built | tests/character_3d_morph_assets_test.js, tests/makehuman_gender_fixture_audit.js, tests/makehuman_gender_recipe_test.js, tests/makehuman_morph_bridge.js |
+| build | app/3dmap/character_clothing.js (+ 1 других файлов) |
+| built | tests/character_3d_morph_assets_test.js (+ 3 других файлов) |
 | bulge | app/3dmap/character_body_geometry.js |
-| bundled | tests/creation_signature_asset_test.cjs, tests/desktop_update_contract.cjs |
+| bundled | tests/creation_signature_asset_test.cjs (+ 1 других файлов) |
 | burdenAliases | app/martyr_mhp_2024_runtime.js |
 | burdens | app/martyr_mhp_2024_runtime.js |
-| burn | app/expansion_classes_pack.js, app/update_scene_v2.js |
+| burn | app/expansion_classes_pack.js (+ 1 других файлов) |
 | burningOwner | tests/alchemist_combat_test.js |
 | burningTarget | tests/alchemist_combat_test.js |
-| bus | app/vtt_debug_panel_v70.js, tests/test_v69.js |
+| bus | app/vtt_debug_panel_v70.js (+ 1 других файлов) |
 | busy | app/cloud_account.js |
-| button | app/3dmap/character_editor_3d.js, app/class_features_engine.js, app/combat_abilities.js, app/dice.js (+ 2 ещё) |
-| buttons | app/3dmap/character_editor_3d.js, app/crafting_dlc_v50.js, app/summoning_engine.js |
+| button | app/3dmap/character_editor_3d.js (+ 5 других файлов) |
+| buttons | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
 | buttonsHtml | app/data/feats/Feat_widget.js |
 | buyFactor | app/market_expansion_v55_1.js |
-| bv | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/update_manager_v2.js |
+| bv | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | bvh | tests/makehuman_morph_bridge.js |
 | bvIndex | tests/generate_makehuman_glb_morph_fixture.js |
 | bWis | app/races.js |
-| bx | app/3dmap/character_clothing.js, app/3dmap/map_renderer_3d.js |
+| bx | app/3dmap/character_clothing.js (+ 1 других файлов) |
 | by | app/3dmap/character_clothing.js |
-| byFamily | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 9 ещё) |
+| byFamily | app/bestiary_catalog_v56_1.js (+ 12 других файлов) |
 | byLevel | app/necromancer_mhp_2024_runtime.js |
-| byName | app/crafting_disassembly_repair_v51.js, app/magic_engine.js |
+| byName | app/crafting_disassembly_repair_v51.js (+ 1 других файлов) |
 | BYPASS_PARCHMENT_ONCE | app/character_creation_pergament.js |
-| bySource | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js |
+| bySource | app/bestiary_catalog_v56_1.js (+ 2 других файлов) |
 | byteOffset | app/3dmap/gltf_loader.js |
-| bytes | app/3dmap/character_morph_assets.js, app/Settings.js, tests/character_external_anatomy_test.js, tests/creation_signature_asset_test.cjs |
+| bytes | app/3dmap/character_morph_assets.js (+ 3 других файлов) |
 | bytesWritten | desktop/update.cjs |
 | bz | app/3dmap/map_renderer_3d.js |
-| c | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_appearance_store.js, app/3dmap/character_body_geometry.js (+ 191 ещё) |
-| C | app/alchemy_gathering_professions_v52.js, tests/test_blood_hunter_completion.js, tests/test_blood_hunter_focus_network.js, tests/test_blood_hunter_orders.js (+ 10 ещё) |
+| c | app/3dmap/character_anatomy.js (+ 194 других файлов) |
+| C | app/alchemy_gathering_professions_v52.js (+ 13 других файлов) |
 | c0 | app/content_framework.js |
 | c2 | tests/test_v752_replay_hash_authority.js |
-| ca | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js |
+| ca | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | cache | app/3dmap/gltf_loader.js |
 | CACHE_BUSTER | app/update_manager_v2.js |
-| cached | app/3dmap/character_clothing.js, app/cloud_sync.js |
+| cached | app/3dmap/character_clothing.js (+ 1 других файлов) |
 | calcAtk | app/character.js |
 | calcDmgBonus | app/character.js |
 | calcInput | app/Experience.js |
@@ -1884,128 +1885,128 @@
 | calcWidget | app/inventory-coins.js |
 | calf | app/3dmap/character_anatomy.js |
 | call | app/warden_mhp_2024_runtime.js |
-| callback | desktop/main.cjs, tools/check_adult_anatomy_browser.js, tools/check_adult_base_browser.js, tools/check_animal_heads_browser.js (+ 16 ещё) |
+| callback | desktop/main.cjs (+ 19 других файлов) |
 | called | tests/test_class_audit_runtime.js |
-| calls | tests/gltf_loader_smoke.cjs, tests/test_v734_network_concentration.js |
-| cam | app/3dmap/map_editor.js, app/3dmap/map_renderer_3d.js |
+| calls | tests/gltf_loader_smoke.cjs (+ 1 других файлов) |
+| cam | app/3dmap/map_editor.js (+ 1 других файлов) |
 | campaign | tests/test_v58.js |
 | campaigns | app/campaign_manager.js |
 | CAN | app/necromancer_mhp_2024_runtime.js |
 | canClose | app/update_scene_v2.js |
 | candidate | desktop/update.cjs |
-| candidates | app/3dmap/character_body_geometry.js, app/alchemist_mhp_2024_runtime.js, app/content_framework.js, app/inventory_containers_v54.js (+ 3 ещё) |
+| candidates | app/3dmap/character_body_geometry.js (+ 6 других файлов) |
 | canonical | app/data/subclasses/subclassesRegistry.js |
 | cantrip | app/alchemist_mhp_2024_runtime.js |
-| cantrips | app/data/spells/Focuses.js, app/occultist_kibbles_v11_runtime.js |
+| cantrips | app/data/spells/Focuses.js (+ 1 других файлов) |
 | CANTRIPS | app/vessel_laserllama_v4_runtime.js |
 | cantripsList | app/spells.js |
-| canvas | app/3dmap/map_editor.js, app/battle_board.js, app/vtt_mobile_battle_v61.js, tests/character_3d_editor_test.js |
-| cap | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/blood_hunter_engine.js, tests/test_blood_hunter_completion.js |
+| canvas | app/3dmap/map_editor.js (+ 3 других файлов) |
+| cap | app/3dmap/character_anatomy_geometry.js (+ 3 других файлов) |
 | caps | tests/character_elf_details_test.js |
 | capStart | app/3dmap/character_anatomy_geometry.js |
-| card | app/Inventory-weight-tracker.js, app/Settings.js, app/Wallpapers.js, app/companion_gameplay_v27.js (+ 4 ещё) |
-| cards | app/crafting_profession_progression_v47.js, app/rulesEngine.js, tests/character_fur_test.js |
-| cases | app/crafting_character_influence_test_v46.js, tests/character_adult_anatomy_test.js |
+| card | app/Inventory-weight-tracker.js (+ 7 других файлов) |
+| cards | app/crafting_profession_progression_v47.js (+ 2 других файлов) |
+| cases | app/crafting_character_influence_test_v46.js (+ 1 других файлов) |
 | caster | app/network_gameplay.js |
 | casterLevel | app/rulesEngine.js |
-| cat | app/3dmap/gltf_catalog.js, app/3dmap/map_world.js, app/Inventory.js, app/Proficiencies.js (+ 19 ещё) |
-| catalog | app/3dmap/character_editor_3d.js, app/accursed_oap_v11_runtime.js, app/resource_gathering_v35.js, app/spellblade_kibbles_runtime.js (+ 2 ещё) |
-| CATALOG | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 12 ещё) |
+| cat | app/3dmap/gltf_catalog.js (+ 22 других файлов) |
+| catalog | app/3dmap/character_editor_3d.js (+ 5 других файлов) |
+| CATALOG | app/bestiary_catalog_v56_1.js (+ 15 других файлов) |
 | catalogContainer | app/Proficiencies.js |
 | catalogHtml | app/Proficiencies.js |
 | catalogState | app/content_catalog.js |
 | catalogue | tools/check_character_editor_browser.js |
 | catalyst | app/alchemy_gathering_professions_v52.js |
-| catalystId | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js |
+| catalystId | app/alchemy_engine_v29.js (+ 1 других файлов) |
 | CATALYSTS | app/alchemy_engine_v29.js |
 | catContainer | app/inventory-modal.js |
-| category | app/3dmap/map_editor.js, app/Inventory-weight-tracker.js, app/Inventory.js, app/crafting_engine_v31.js (+ 12 ещё) |
+| category | app/3dmap/map_editor.js (+ 15 других файлов) |
 | CATEGORY | app/content_catalog.js |
 | catLower | app/inventory-modal.js |
 | catOk | app/market_trade_v55_2.js |
 | cats | app/crafting_disassembly_repair_v51.js |
 | catStr | app/Proficienciescheck.js |
 | catTitle | app/inventory-modal.js |
-| cb | tests/makehuman_topology_audit.js, tests/test_v721_fixes.js |
-| cc | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js |
+| cb | tests/makehuman_topology_audit.js (+ 1 других файлов) |
+| cc | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | cd | app/expansion_classes_pack.js |
-| ce | tests/test_v744_sync_authority_save.js, tests/test_v748_full_combat_transaction.js |
+| ce | tests/test_v744_sync_authority_save.js (+ 1 других файлов) |
 | cel | app/3dmap/map_renderer_3d.js |
 | celestial | tests/test_blood_hunter_patron_selection.js |
-| cell | app/3dmap/character_body_geometry.js, app/network_gameplay.js, app/vtt_mobile_battle_v61.js, tests/makehuman_surface_mapping_audit.js (+ 3 ещё) |
+| cell | app/3dmap/character_body_geometry.js (+ 6 других файлов) |
 | CELL_FT | app/battle_board.js |
 | cellFt | app/companion_gameplay_v27.js |
-| cells | app/3dmap/character_pose.js, tests/character_external_anatomy_test.js |
+| cells | app/3dmap/character_pose.js (+ 1 других файлов) |
 | cellU | app/3dmap/character_body_geometry.js |
 | cellV | app/3dmap/character_body_geometry.js |
-| center | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js, app/3dmap/map_world.js |
+| center | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
 | centre | app/3dmap/character_body_geometry.js |
 | centres | app/3dmap/character_body_geometry.js |
-| cf | app/expansion_classes_pack.js, tests/test_v721_fixes.js |
-| cfg | app/3dmap/character_body_geometry.js, tests/cloud_sync_test.cjs, tests/makehuman_vertex_mapping_audit.js |
+| cf | app/expansion_classes_pack.js (+ 1 других файлов) |
+| cfg | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | cg | app/vtt_gameplay_ux_v58.js |
-| ch | app/3dmap/gltf_character_pipeline.js, app/monster_loot_crafting_bridge_v40.js, app/monster_loot_engine_v37.js, tests/character_skin_material_test.js |
-| cha | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/bestiary_catalog_v56_2.js (+ 8 ещё) |
-| chain | app/3dmap/character_body_geometry.js, index.html |
-| chance | app/alchemy_gameplay_v30.js, app/monster_loot_engine_v36.js, app/monster_loot_engine_v37.js |
+| ch | app/3dmap/gltf_character_pipeline.js (+ 3 других файлов) |
+| cha | app/bestiary_catalog_v56_1.js (+ 11 других файлов) |
+| chain | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| chance | app/alchemy_gameplay_v30.js (+ 2 других файлов) |
 | change | index.html |
-| changed | app/world_resource_gathering_v53.js, tests/character_3d_morph_assets_test.js, tests/character_editor_morph_assets_test.js, tests/makehuman_gender_fixture_audit.js |
+| changed | app/world_resource_gathering_v53.js (+ 3 других файлов) |
 | CHANGELOG | app/onboarding_faq_v71.js |
-| changes | app/rulesEngine.js, index.html |
+| changes | app/rulesEngine.js (+ 1 других файлов) |
 | channel | app/3dmap/character_editor_3d.js |
 | CHANNEL_KEY | app/update_manager_v2.js |
-| channels | app/3dmap/character_system.js, app/3dmap/gltf_character_pipeline.js, tests/character_3d_skin_morph_test.js, tests/makehuman_gender_recipe_test.js (+ 3 ещё) |
-| char | app/Settings_debug.js, app/monster_loot_crafting_bridge_v40.js, app/monster_loot_engine_v36.js, app/monster_loot_engine_v37.js (+ 2 ещё) |
-| character | app/3dmap/character_anatomy.js, app/3dmap/character_editor_3d.js, app/Inventory-weight-tracker.js, app/Proficienciescheck.js (+ 1 ещё) |
+| channels | app/3dmap/character_system.js (+ 6 других файлов) |
+| char | app/Settings_debug.js (+ 5 других файлов) |
+| character | app/3dmap/character_anatomy.js (+ 4 других файлов) |
 | CHARACTER_CREATION_MODE | app/character_creation_pergament.js |
 | CHARACTER_SAVE_SCHEMA_VERSION | app/app.js |
 | characters | app/Settings_debug.js |
-| characterShape | app/class_features_engine.js, app/combat_engine.js |
+| characterShape | app/class_features_engine.js (+ 1 других файлов) |
 | charClassInputs | app/data/classes/level_up.js |
 | charge | app/expansion_classes_pack.js |
 | chargeCount | app/alchemist_mhp_2024_runtime.js |
-| charges | tests/test_blood_hunter_completion.js, tests/test_blood_hunter_orders.js, tests/test_blood_hunter_profane_focus.js |
+| charges | tests/test_blood_hunter_completion.js (+ 2 других файлов) |
 | charId | app/Settings_debug.js |
 | charIndex | app/Settings_debug.js |
 | charInfo | app/Settings.js |
 | charLevel | app/Settings_debug.js |
 | charmed | app/alchemist_mhp_2024_runtime.js |
 | charName | app/Settings_debug.js |
-| chars | app/Settings.js, app/cloud_sync.js |
+| chars | app/Settings.js (+ 1 других файлов) |
 | charTotalCopper | app/inventory-coins.js |
-| check | app/class_features_engine.js, app/content_framework.js, app/crafting_disassembly_v51.js, app/gameplay_core_v57.js (+ 4 ещё) |
-| checkbox | app/Inventory-weight-tracker.js, app/inventory-modal.js |
-| checked | app/vtt_debug_tasks_v708.js, tests/character_native_limbs_test.js, tools/check_animal_heads_browser.js, tools/check_avian_elephant_heads_browser.js (+ 8 ещё) |
-| checkedAttr | app/Backgrounds.js, app/skills.js |
+| check | app/class_features_engine.js (+ 7 других файлов) |
+| checkbox | app/Inventory-weight-tracker.js (+ 1 других файлов) |
+| checked | app/vtt_debug_tasks_v708.js (+ 11 других файлов) |
+| checkedAttr | app/Backgrounds.js (+ 1 других файлов) |
 | cheek | app/3dmap/character_body_geometry.js |
 | chest | tests/map_editor_dom_test.js |
 | chestUnderwear | app/3dmap/character_body_geometry.js |
-| child | app/inventory_containers_v54.js, tests/cloud_sql_concurrency.cjs |
+| child | app/inventory_containers_v54.js (+ 1 других файлов) |
 | childId | app/inventory_containers_v54.js |
 | children | app/inventory_containers_v54.js |
 | chin | app/3dmap/character_body_geometry.js |
-| chk | app/companion_gameplay_v27.js, app/market_trade_v55_2.js |
-| choice | app/cloud_sync.js, app/data/classes/level_up.js, app/data/classes/progressionEngine.js, app/network_gameplay.js |
+| chk | app/companion_gameplay_v27.js (+ 1 других файлов) |
+| choice | app/cloud_sync.js (+ 3 других файлов) |
 | choiceBlocks | app/data/classes/level_up.js |
-| choices | app/3dmap/character_editor_3d.js, app/blood_hunter_engine.js, app/content_framework.js, app/data/classes/progressionEngine.js |
-| chosen | app/blood_hunter_engine.js, app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js, tests/test_class_audit_stage3_runtime.js |
+| choices | app/3dmap/character_editor_3d.js (+ 3 других файлов) |
+| chosen | app/blood_hunter_engine.js (+ 3 других файлов) |
 | chosenD20 | app/character.js |
-| chosenFeat | app/data/classes/level_up.js, app/data/feats/Feat_widget.js |
+| chosenFeat | app/data/classes/level_up.js (+ 1 других файлов) |
 | chosenMod | app/dice.js |
 | chosenPatron | app/expansion_classes_pack.js |
 | chosenResistance | app/alchemist_mhp_2024_runtime.js |
 | chosenTrad | app/occultist_kibbles_v11_runtime.js |
-| chromium | tools/check_adult_anatomy_browser.js, tools/check_adult_base_browser.js, tools/check_animal_heads_browser.js, tools/check_avian_elephant_heads_browser.js (+ 34 ещё) |
-| chunk | app/3dmap/gltf_loader.js, desktop/update.cjs, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js (+ 3 ещё) |
-| chunks | tools/build_character_editor_morphs.js, tools/build_makehuman_morphs.js |
-| ci | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js |
+| chromium | tools/check_adult_anatomy_browser.js (+ 37 других файлов) |
+| chunk | app/3dmap/gltf_loader.js (+ 6 других файлов) |
+| chunks | tools/build_character_editor_morphs.js (+ 1 других файлов) |
+| ci | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | cid | app/alchemist_mhp_2024_runtime.js |
 | cId | app/Settings.js |
-| cl | app/3dmap/character_body_geometry.js, app/combat_engine.js, app/crafting_professions_v38.js, app/expansion_classes_pack.js |
+| cl | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
 | claim | app/3dmap/map_world.js |
 | clamp | app/alchemy_gameplay_v30.js |
 | class | app/data/classes/level_up.js |
-| CLASS | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/data/classes/Beastheart.js, app/occultist_kibbles_v11_runtime.js (+ 1 ещё) |
+| CLASS | app/alchemist_mhp_2024_runtime.js (+ 4 других файлов) |
 | CLASS_DEFS | app/expanded_class_registry_bridge.js |
 | CLASS_I18N | app/kibbles_localization_content_v71.js |
 | CLASS_KEYS | app/rulesEngine.js |
@@ -2013,10 +2014,10 @@
 | CLASS_SPELLCASTING_ABILITIES_2014 | app/data/classes/progressionEngine.js |
 | CLASS_TOKEN_ART | app/character_creation_pergament.js |
 | classBonus | app/combat_engine.js |
-| classData | app/data/classes/level_up.js, app/data/classes/progressionEngine.js |
+| classData | app/data/classes/level_up.js (+ 1 других файлов) |
 | classDescriptions | app/crafting_character_influence_test_v46.js |
 | classEntry | app/data/classes/level_up.js |
-| classes | app/Hero-info.js, app/content_framework.js, app/network_gameplay.js, app/spells.js (+ 2 ещё) |
+| classes | app/Hero-info.js (+ 5 других файлов) |
 | CLASSIC_BACKGROUND_NAMES | app/character_creation_pergament.js |
 | CLASSIC_CLASS_NAMES | app/character_creation_pergament.js |
 | CLASSIC_RACE_IDS | app/character_creation_pergament.js |
@@ -2025,71 +2026,71 @@
 | classLevel | app/data/classes/level_up.js |
 | classMatch | app/spells.js |
 | classMeta | app/Hero-info.js |
-| className | app/Backgrounds.js, app/Hero-info.js, app/Settings.js, app/character_creation.js (+ 4 ещё) |
+| className | app/Backgrounds.js (+ 7 других файлов) |
 | classNameBase | app/character_creation.js |
-| classNameOnly | app/Backgrounds.js, app/character_creation.js |
+| classNameOnly | app/Backgrounds.js (+ 1 других файлов) |
 | classReduction | app/combat_engine.js |
-| classSelect | app/Backgrounds.js, app/character_creation.js |
+| classSelect | app/Backgrounds.js (+ 1 других файлов) |
 | classStr | app/spells.js |
 | clawLen | app/3dmap/character_body_geometry.js |
-| clean | app/bestiary_catalog_v56_2.js, app/bestiary_catalog_v56_3.js, app/bestiary_catalog_v56_4.js, app/bestiary_catalog_v56_5.js (+ 7 ещё) |
+| clean | app/bestiary_catalog_v56_2.js (+ 10 других файлов) |
 | cleanName | app/character_creation.js |
-| cleanStr | app/dice.js, app/spells.js |
+| cleanStr | app/dice.js (+ 1 других файлов) |
 | cleanTool | app/character_creation.js |
-| clear | app/3dmap/character_clothing.js, tools/check_ghost_browser.js |
+| clear | app/3dmap/character_clothing.js (+ 1 других файлов) |
 | clearContainer | app/inventory_containers_v54.js |
-| clearInterval | tests/test_v701.js, tests/test_v702.js, tests/test_v703.js, tests/test_v704.js (+ 2 ещё) |
-| clearTimeout | tests/test_v701.js, tests/test_v702.js, tests/test_v703.js, tests/test_v704.js (+ 25 ещё) |
-| cleft | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js |
+| clearInterval | tests/test_v701.js (+ 5 других файлов) |
+| clearTimeout | tests/test_v701.js (+ 28 других файлов) |
+| cleft | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | cleric | tests/test_v728_fixes.js |
 | click | tests/map_editor_dom_test.js |
 | CLIENT_KEY | app/network_engine.js |
 | clipped | app/3dmap/character_body_geometry.js |
-| close | app/onboarding_faq_v71.js, index.html |
+| close | app/onboarding_faq_v71.js (+ 1 других файлов) |
 | closeBtn | app/data/classes/level_up.js |
 | closedPixels | tools/check_character_clothing_customizer.js |
-| cloth | app/3dmap/character_editor_3d.js, tests/character_clothing_customizer_geometry_test.js, tests/character_clothing_test.js, tests/character_races_geometry_test.js |
+| cloth | app/3dmap/character_editor_3d.js (+ 3 других файлов) |
 | clothBuckets | app/3dmap/character_body_geometry.js |
-| clothed | tests/character_tiefling_details_test.js, tools/check_character_editor_browser.js |
-| clothes | tests/character_3d_foundation_test.js, tests/character_races_geometry_test.js, tools/check_last_races_browser.js |
+| clothed | tests/character_tiefling_details_test.js (+ 1 других файлов) |
+| clothes | tests/character_3d_foundation_test.js (+ 2 других файлов) |
 | clothFaces | app/3dmap/character_body_geometry.js |
-| clothing | app/3dmap/character_anatomy.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
+| clothing | app/3dmap/character_anatomy.js (+ 2 других файлов) |
 | cloud | tests/cloud_sync_test.cjs |
 | cloudStatus | app/Settings.js |
-| cls | app/Hero-info.js, app/class_features_engine.js, app/data/classes/level_up.js, app/data/subclasses/subclassesRegistry.js (+ 4 ещё) |
-| club | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| cls | app/Hero-info.js (+ 7 других файлов) |
+| club | app/expanded_classes_v23.js (+ 1 других файлов) |
 | clubFeatures | app/expansion_classes_pack.js |
 | clubIds | tests/test_class_audit_runtime.js |
-| cm | app/expansion_classes_pack.js, tests/test_v725_fixes.js |
+| cm | app/expansion_classes_pack.js (+ 1 других файлов) |
 | cmn | tests/makehuman_morph_bridge.js |
 | cmx | tests/makehuman_morph_bridge.js |
-| cn | app/kibbles_localization_content_v71.js, app/vtt_debug_character_lab_v702.js |
+| cn | app/kibbles_localization_content_v71.js (+ 1 других файлов) |
 | cName | app/spells.js |
 | co | app/3dmap/map_renderer_3d.js |
-| code | app/cloud_account.js, app/cloud_sync.js, app/network_engine.js, tests/character_3d_editor_test.js (+ 2 ещё) |
+| code | app/cloud_account.js (+ 5 других файлов) |
 | coins | app/inventory-coins.js |
-| col | app/3dmap/character_pose.js, app/3dmap/map_renderer_3d.js |
+| col | app/3dmap/character_pose.js (+ 1 других файлов) |
 | cold | app/3dmap/character_editor_3d.js |
 | colEP | app/inventory-coins.js |
-| collar | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
+| collar | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
 | collarCount | app/3dmap/character_anatomy_geometry.js |
 | collisions | tests/makehuman_vertex_mapping_audit.js |
 | colno | app/debug.js |
-| color | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/Settings.js (+ 1 ещё) |
+| color | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
 | coloredDrink | tests/alchemist_runtime_test.js |
 | coloredPotionMaker | tests/alchemist_runtime_test.js |
 | colorHex | app/Wallpapers.js |
 | colorKey | app/Settings.js |
-| colors | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js |
+| colors | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | colorType | app/alchemist_mhp_2024_runtime.js |
 | colour | tests/character_skin_material_test.js |
 | colourDetail | tests/character_3d_editor_test.js |
 | colourIdat | tests/character_skin_material_test.js |
 | colourRaw | tests/character_skin_material_test.js |
 | colPP | app/inventory-coins.js |
-| cols | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
-| combat | app/crafting_dlc_v50.js, tests/test_v726_fixes.js, tests/test_v748_full_combat_transaction.js |
-| combatant | app/alchemist_mhp_2024_runtime.js, tests/test_v742_character_combatant_sync.js |
+| cols | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| combat | app/crafting_dlc_v50.js (+ 2 других файлов) |
+| combatant | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | combatants | app/alchemist_mhp_2024_runtime.js |
 | command | app/secondary_entities_engine.js |
 | commit | app/blood_hunter_engine.js |
@@ -2099,7 +2100,7 @@
 | companionId | tests/test_class_audit_runtime.js |
 | compare | tests/desktop_update_contract.cjs |
 | comparing | app/3dmap/character_editor_3d.js |
-| compat | app/update_manager_v2.js, tests/test_v754_update_manager.js, tools/run_tests_v731.js |
+| compat | app/update_manager_v2.js (+ 2 других файлов) |
 | compatFs | tools/run_tests_v731.js |
 | compatRequire | tools/run_tests_v731.js |
 | completed | app/Logo.js |
@@ -2108,49 +2109,49 @@
 | componentBytes | tests/makehuman_topology_audit.js |
 | compositions | tools/build_makehuman_morphs.js |
 | comps | tests/makehuman_surface_mapping_audit.js |
-| con | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/bestiary_catalog_v56_2.js (+ 12 ещё) |
+| con | app/bestiary_catalog_v56_1.js (+ 15 других файлов) |
 | conc | app/rulesEngine.js |
 | concentration | app/combat_engine.js |
-| cond | app/character.js, app/dice.js, app/rulesEngine.js |
-| condition | app/combat_engine.js, app/crafting_character_influence_test_v46.js, app/gameplay_core_v57.js |
+| cond | app/character.js (+ 2 других файлов) |
+| condition | app/combat_engine.js (+ 2 других файлов) |
 | CONDITION_ALIASES | app/rulesEngine.js |
 | conditionHero | tests/pugilist_combat_test.js |
 | conditionNotes | app/dice.js |
-| conditions | app/dice.js, app/rulesEngine.js |
-| CONDITIONS | app/combat_engine.js, app/network_gameplay.js, app/rulesEngine.js, app/warden_mhp_2024_runtime.js |
+| conditions | app/dice.js (+ 1 других файлов) |
+| CONDITIONS | app/combat_engine.js (+ 3 других файлов) |
 | CONDITIONS_CONFIG | app/app.js |
 | conds | app/combat_engine.js |
 | conduit | app/data/classes/Illigger.js |
-| config | app/3dmap/map_world.js, app/cloud_sync.js, tests/makehuman_gender_recipe_test.js, tools/build_character_editor_morphs.js (+ 2 ещё) |
+| config | app/3dmap/map_world.js (+ 5 других файлов) |
 | CONFIG | app/cloud_sync.js |
 | confirmed | app/alchemist_mhp_2024_runtime.js |
 | conflict | app/cloud_sync.js |
 | CONFLICT | app/alchemy_engine_v29.js |
-| conflicts | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js, app/cloud_account.js |
+| conflicts | app/alchemy_engine_v29.js (+ 2 других файлов) |
 | conflictSet | app/alchemy_engine_v29.js |
-| conMod | app/Backgrounds.js, app/Hero-info.js, app/alchemist_mhp_2024_runtime.js, app/character_creation.js (+ 1 ещё) |
-| conModFinal | app/Backgrounds.js, app/character_creation.js |
+| conMod | app/Backgrounds.js (+ 4 других файлов) |
+| conModFinal | app/Backgrounds.js (+ 1 других файлов) |
 | conScore | app/combat_engine.js |
-| console | app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js, tests/character_3d_editor_test.js, tests/character_3d_morph_assets_test.js (+ 25 ещё) |
-| constant | app/network_gameplay.js, app/rulesEngine.js |
+| console | app/crafting_character_influence_test_v46.js (+ 28 других файлов) |
+| constant | app/network_gameplay.js (+ 1 других файлов) |
 | consumed | app/crafting_professions_v38.js |
 | consumedJinx | app/combat_engine.js |
-| container | app/Backgrounds.js, app/Inventory-weight-tracker.js, app/Inventory.js, app/app.js (+ 12 ещё) |
-| containerId | app/Proficiencies.js, app/alchemy_engine_v29.js, app/data/feats/Feat_widget.js, app/inventory_containers_v54.js |
-| containers | app/gameplay_core_v57.js, app/monster_loot_crafting_bridge_v40.js, app/monster_loot_engine_v36.js, app/monster_loot_engine_v37.js |
-| content | app/Inventory.js, app/classesRegistry.js |
+| container | app/Backgrounds.js (+ 15 других файлов) |
+| containerId | app/Proficiencies.js (+ 3 других файлов) |
+| containers | app/gameplay_core_v57.js (+ 3 других файлов) |
+| content | app/Inventory.js (+ 1 других файлов) |
 | contentBox | app/data/classes/level_up.js |
 | contentDiv | app/dice.js |
 | contentsWeight | app/inventory_containers_v54.js |
-| context | app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js, app/occultist_kibbles_v11_runtime.js, app/runekeeper_taron_v12_runtime.js (+ 4 ещё) |
+| context | app/crafting_character_influence_test_v46.js (+ 7 других файлов) |
 | contextBridge | desktop/preload.cjs |
-| contexts | tests/character_3d_editor_test.js, tools/check_cloud_account_browser.cjs |
+| contexts | tests/character_3d_editor_test.js (+ 1 других файлов) |
 | contract | app/expansion_classes_pack.js |
 | control | app/3dmap/character_editor_3d.js |
-| controller | app/cloud_sync.js, app/update_manager_v2.js, tests/test_blood_hunter_completion.js |
-| controls | app/3dmap/character_editor_3d.js, app/rulesEngine.js |
+| controller | app/cloud_sync.js (+ 2 других файлов) |
+| controls | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | conVal | app/data/classes/level_up.js |
-| converted | app/alchemy_gathering_professions_v52.js, tests/character_races_geometry_test.js |
+| converted | app/alchemy_gathering_professions_v52.js (+ 1 других файлов) |
 | cooledAttack | tests/alchemist_runtime_test.js |
 | cooling | tests/alchemist_runtime_test.js |
 | COPPER | app/market_economy_v55.js |
@@ -2158,44 +2159,44 @@
 | copperPerGold | app/inventory-coins.js |
 | copperPerPlat | app/inventory-coins.js |
 | copperPerSilver | app/inventory-coins.js |
-| copy | app/3dmap/character_appearance_store.js, app/3dmap/map_model.js, app/Inventory.js, app/cloud_sync.js (+ 4 ещё) |
-| core | app/3dmap/character_body_geometry.js, app/class_features_engine.js, app/kibbles_localization_content_v71.js, tests/test_v725_fixes.js (+ 3 ещё) |
+| copy | app/3dmap/character_appearance_store.js (+ 7 других файлов) |
+| core | app/3dmap/character_body_geometry.js (+ 6 других файлов) |
 | CORE | app/class_features_engine.js |
 | CORE_CLASSES | app/content_catalog.js |
 | coreOwned | app/class_features_engine.js |
 | corePositions | app/3dmap/character_body_geometry.js |
 | corner | tests/character_skin_material_test.js |
-| corners | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js |
+| corners | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | corona | app/3dmap/character_anatomy_geometry.js |
-| corpse | app/necromancer_mhp_2024_runtime.js, app/parasite_extra_runtime.js, tests/test_class_audit_stage2_runtime.js |
+| corpse | app/necromancer_mhp_2024_runtime.js (+ 2 других файлов) |
 | corrupt | tests/character_editor_morph_assets_test.js |
-| cost | app/class_features_engine.js, app/companion_gameplay_v27.js, app/crafting_disassembly_repair_v51.js, app/crafting_economy_v49.js (+ 9 ещё) |
+| cost | app/class_features_engine.js (+ 12 других файлов) |
 | costDie | app/expansion_classes_pack.js |
 | costInp | app/inventory-modal.js |
-| count | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/gltf_loader.js (+ 37 ещё) |
-| counter | app/Inventory.js, app/Settings.js, app/icon_settings.js, app/icon_settings_v2.js (+ 2 ещё) |
-| counterDamage | app/expansion_classes_pack.js, tests/pugilist_combat_test.js |
+| count | app/3dmap/character_body_geometry.js (+ 40 других файлов) |
+| counter | app/Inventory.js (+ 5 других файлов) |
+| counterDamage | app/expansion_classes_pack.js (+ 1 других файлов) |
 | counterHero | tests/pugilist_combat_test.js |
 | counterLeft | app/combat_engine.js |
-| counterReduction | app/combat_engine.js, app/expansion_classes_pack.js |
+| counterReduction | app/combat_engine.js (+ 1 других файлов) |
 | counterState | app/combat_engine.js |
 | countInput | app/Inventory.js |
-| counts | app/3dmap/character_anatomy_geometry.js, app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js, tests/character_external_anatomy_test.js |
+| counts | app/3dmap/character_anatomy_geometry.js (+ 3 других файлов) |
 | countToRead | app/3dmap/gltf_loader.js |
-| coverBonus | app/combat_engine.js, app/network_gameplay.js |
-| covered | app/3dmap/character_clothing.js, tests/character_hair_pack_test.js |
+| coverBonus | app/combat_engine.js (+ 1 других файлов) |
+| covered | app/3dmap/character_clothing.js (+ 1 других файлов) |
 | coveredCount | tools/check_tiefling_browser.js |
-| cp | app/3dmap/character_body_geometry.js, app/alchemy_gathering_professions_v52.js, app/inventory-coins.js, app/market_economy_v55.js (+ 8 ещё) |
+| cp | app/3dmap/character_body_geometry.js (+ 11 других файлов) |
 | cPerS | app/inventory-coins.js |
 | cpInput | app/inventory-coins.js |
 | cpVal | app/inventory-coins.js |
-| cr | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/bestiary_catalog_v56_2.js (+ 12 ещё) |
+| cr | app/bestiary_catalog_v56_1.js (+ 15 других файлов) |
 | CR | app/necromancer_mhp_2024_runtime.js |
 | CR_BY_MONSTER | app/monster_loot_engine_v37.js |
 | CR_RANK | app/monster_loot_engine_v37.js |
-| craft | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 18 ещё) |
+| craft | app/bestiary_catalog_v56_1.js (+ 21 других файлов) |
 | craftBase | app/bestiary_2_0_v56.js |
-| craftBonus | app/crafting_disassembly_v51.js, app/crafting_professions_v38.js |
+| craftBonus | app/crafting_disassembly_v51.js (+ 1 других файлов) |
 | crafted | app/crafting_disassembly_repair_v51.js |
 | CRAFTING_BACKGROUND_PROFILES | app/crafting_professions_v38.js |
 | CRAFTING_CLASS_PROFILES | app/crafting_professions_v38.js |
@@ -2205,17 +2206,17 @@
 | craftModifier | app/crafting_professions_v38.js |
 | craftNotes | app/crafting_professions_v38.js |
 | createContainer | app/inventory_containers_v54.js |
-| creationScreen | app/Backgrounds.js, app/character_creation.js |
+| creationScreen | app/Backgrounds.js (+ 1 других файлов) |
 | creatures | app/data/classes/Beastheart.js |
 | CREATURES | app/expanded_bestiary_v39.js |
 | crest | app/3dmap/character_body_geometry.js |
 | crit | tests/pugilist_combat_test.js |
-| critical | app/combat_engine.js, app/dice.js, app/network_gameplay.js, app/vtt_combat_log_v66.js |
+| critical | app/combat_engine.js (+ 3 других файлов) |
 | criticalRange | app/combat_engine.js |
-| critNote | app/dice.js, app/spells.js |
+| critNote | app/dice.js (+ 1 других файлов) |
 | critTarget | tests/pugilist_combat_test.js |
-| cross | app/3dmap/character_clothing.js, app/3dmap/map_world.js |
-| crowd | app/combat_engine.js, tests/pugilist_combat_test.js |
+| cross | app/3dmap/character_clothing.js (+ 1 других файлов) |
+| crowd | app/combat_engine.js (+ 1 других файлов) |
 | crowdCondition | app/expansion_classes_pack.js |
 | crowdDC | app/expansion_classes_pack.js |
 | crowdHero | tests/pugilist_combat_test.js |
@@ -2226,20 +2227,20 @@
 | crown | app/3dmap/character_body_geometry.js |
 | crownDiagnostics | tools/check_character_races_browser.js |
 | crownOff | tools/check_character_races_browser.js |
-| crypto | desktop/update.cjs, tests/character_adult_anatomy_test.js, tests/character_animal_heads_test.js, tests/character_avian_elephant_heads_test.js (+ 24 ещё) |
-| cs | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js, app/blood_hunter_engine.js, app/class_features_engine.js (+ 7 ещё) |
+| crypto | desktop/update.cjs (+ 27 других файлов) |
+| cs | app/3dmap/character_body_geometry.js (+ 10 других файлов) |
 | csel | app/monster_loot_crafting_bridge_v40.js |
 | ct | app/3dmap/character_body_geometry.js |
-| ctx | app/3dmap/map_renderer_2d.js, app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/battle_board.js (+ 130 ещё) |
+| ctx | app/3dmap/map_renderer_2d.js (+ 133 других файлов) |
 | ctx2d | app/3dmap/character_editor_3d.js |
 | cuff | app/3dmap/character_clothing.js |
 | cum | app/3dmap/character_body_geometry.js |
-| cup | app/3dmap/character_clothing.js, tools/build_character_editor_morphs.js |
+| cup | app/3dmap/character_clothing.js (+ 1 других файлов) |
 | cups | app/3dmap/character_clothing.js |
-| cur | app/alchemy_gameplay_v30.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/companion_gameplay_v27.js (+ 1 ещё) |
+| cur | app/alchemy_gameplay_v30.js (+ 4 других файлов) |
 | curHp | app/expansion_classes_pack.js |
 | curl | app/3dmap/character_body_geometry.js |
-| current | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/campaign_manager.js (+ 8 ещё) |
+| current | app/3dmap/character_anatomy_geometry.js (+ 11 других файлов) |
 | currentActiveId | app/Settings_debug.js |
 | currentChar | app/app.js |
 | currentCharacterId | app/app.js |
@@ -2248,14 +2249,14 @@
 | currentCurrHp | app/races.js |
 | currentDim | app/Wallpapers.js |
 | currentExp | app/Experience.js |
-| currentHero | app/Settings.js, app/gameplay_core_v57.js |
+| currentHero | app/Settings.js (+ 1 других файлов) |
 | currentHound | app/expansion_classes_pack.js |
-| currentHp | app/alchemist_mhp_2024_runtime.js, app/races.js |
+| currentHp | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | currentHP | app/walter_parasite_extra_runtime.js |
 | currentInventoryCategory | app/Inventory.js |
 | currentLevelExpReq | app/Experience.js |
 | currentLevelInClass | app/data/classes/progressionEngine.js |
-| currentLvl | app/Experience.js, app/Settings.js |
+| currentLvl | app/Experience.js (+ 1 других файлов) |
 | currentMax | app/data/classes/level_up.js |
 | currentModalColor | app/Wallpapers.js |
 | currentModalOpacity | app/Wallpapers.js |
@@ -2265,13 +2266,13 @@
 | currentProgress | app/update_scene_v2.js |
 | currentRollMode | app/dice.js |
 | currentRound | app/combat_engine.js |
-| currentSpent | app/Backgrounds.js, app/character_creation.js |
+| currentSpent | app/Backgrounds.js (+ 1 других файлов) |
 | currentStep | app/Ambiences.js |
 | currentTime | app/Logo.js |
 | currentTrack | app/Ambiences.js |
 | currentTrackIndex | app/Ambiences.js |
-| currentVal | app/Backgrounds.js, app/character_creation.js, app/data/classes/level_up.js, app/races.js |
-| currentVersion | app/Settings.js, tests/update_ota_flow_test.js |
+| currentVal | app/Backgrounds.js (+ 3 других файлов) |
+| currentVersion | app/Settings.js (+ 1 других файлов) |
 | currentVolume | app/Ambiences.js |
 | currentWallpaperIndex | app/Wallpapers.js |
 | currId | app/Settings.js |
@@ -2282,45 +2283,45 @@
 | curseKnown | app/data/classes/BloodHunter.js |
 | curseMax | app/expansion_classes_pack.js |
 | curseNames | app/blood_hunter_engine.js |
-| curses | app/accursed_oap_v11_runtime.js, app/blood_hunter_engine.js |
+| curses | app/accursed_oap_v11_runtime.js (+ 1 других файлов) |
 | curseSaveMods | app/combat_engine.js |
 | curSides | app/character.js |
 | curStat | app/character.js |
 | curve | app/3dmap/character_body_geometry.js |
-| custom | app/3dmap/character_clothing.js, app/class_features_engine.js |
-| customBtn | app/Inventory.js, app/inventory-modal.js |
+| custom | app/3dmap/character_clothing.js (+ 1 других файлов) |
+| customBtn | app/Inventory.js (+ 1 других файлов) |
 | customElem | app/library.js |
 | customGather | app/resource_gathering_v35.js |
 | customRaces | app/races.js |
 | customSkinCharacter | tests/character_3d_foundation_test.js |
-| cut | app/3dmap/character_body_geometry.js, tests/character_races_geometry_test.js |
+| cut | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | cutFaces | app/3dmap/character_anatomy_geometry.js |
-| cv | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js, app/occultist_kibbles_v11_runtime.js |
+| cv | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | cw | tests/character_skin_material_test.js |
-| cx | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js (+ 4 ещё) |
-| cy | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js (+ 4 ещё) |
+| cx | app/3dmap/character_body_geometry.js (+ 7 других файлов) |
+| cy | app/3dmap/character_anatomy_geometry.js (+ 7 других файлов) |
 | cycles | app/crafting_disassembly_v51.js |
-| cz | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js (+ 2 ещё) |
-| d | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 65 ещё) |
-| D | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js (+ 20 ещё) |
-| d00 | tests/makehuman_morph_bridge.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| d01 | tests/makehuman_morph_bridge.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| d1 | tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| d11 | tests/makehuman_morph_bridge.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| d2 | tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| d20 | app/combat_engine.js, app/world_resource_gathering_v53.js, tests/makehuman_morph_bridge.js, tests/makehuman_target_reverse_transfer_audit.js (+ 1 ещё) |
+| cz | app/3dmap/character_body_geometry.js (+ 5 других файлов) |
+| d | app/3dmap/character_anatomy.js (+ 68 других файлов) |
+| D | app/3dmap/character_anatomy_geometry.js (+ 23 других файлов) |
+| d00 | tests/makehuman_morph_bridge.js (+ 2 других файлов) |
+| d01 | tests/makehuman_morph_bridge.js (+ 2 других файлов) |
+| d1 | tests/makehuman_morph_bridge.js (+ 3 других файлов) |
+| d11 | tests/makehuman_morph_bridge.js (+ 2 других файлов) |
+| d2 | tests/makehuman_morph_bridge.js (+ 3 других файлов) |
+| d20 | app/combat_engine.js (+ 4 других файлов) |
 | d20_1 | app/character.js |
 | d20_2 | app/character.js |
 | d20Button | app/class_features_engine.js |
 | d20Details | app/character.js |
-| d20Result | app/dice.js, app/spells.js |
-| d21 | tests/makehuman_morph_bridge.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| d3 | tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| d4 | tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| d5 | tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| d6 | tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
+| d20Result | app/dice.js (+ 1 других файлов) |
+| d21 | tests/makehuman_morph_bridge.js (+ 2 других файлов) |
+| d3 | tests/makehuman_morph_bridge.js (+ 3 других файлов) |
+| d4 | tests/makehuman_morph_bridge.js (+ 3 других файлов) |
+| d5 | tests/makehuman_morph_bridge.js (+ 3 других файлов) |
+| d6 | tests/makehuman_morph_bridge.js (+ 3 других файлов) |
 | da | tests/character_skin_material_test.js |
-| damage | app/3dmap/map_world.js, app/bestiary_catalog_v56_2.js, app/bestiary_catalog_v56_3.js, app/bestiary_catalog_v56_4.js (+ 18 ещё) |
+| damage | app/3dmap/map_world.js (+ 21 других файлов) |
 | DAMAGE_TYPES | app/combat_engine.js |
 | damageBeforeWard | app/combat_engine.js |
 | damageButton | app/class_features_engine.js |
@@ -2329,113 +2330,113 @@
 | damageParts | app/combat_engine.js |
 | damageResult | app/network_gameplay.js |
 | damageStr | app/inventory-modal.js |
-| damageString | app/dice.js, app/spells.js |
+| damageString | app/dice.js (+ 1 других файлов) |
 | damageTaken | app/combat_engine.js |
-| dark | app/3dmap/character_body_geometry.js, app/3dmap/map_model.js, app/3dmap/map_renderer_2d.js |
-| data | app/3dmap/character_editor_3d.js, app/cloud_sync.js, app/crafting_profession_progression_v47.js, app/rulesEngine.js (+ 35 ещё) |
-| dataDir | tools/build_makehuman_morphs.js, tools/prepare_makehuman_gender.js |
+| dark | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
+| data | app/3dmap/character_editor_3d.js (+ 38 других файлов) |
+| dataDir | tools/build_makehuman_morphs.js (+ 1 других файлов) |
 | dataStr | app/Settings.js |
-| DataView | tests/character_3d_morph_assets_test.js, tests/character_3d_skin_assets_test.js, tests/character_adult_anatomy_test.js, tests/character_animal_heads_test.js (+ 18 ещё) |
-| Date | app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js (+ 63 ещё) |
+| DataView | tests/character_3d_morph_assets_test.js (+ 21 других файлов) |
+| Date | app/crafting_character_influence_test_v46.js (+ 66 других файлов) |
 | dateStr | app/Settings.js |
 | day | app/market_economy_v55.js |
-| db | app/data/classes/progressionEngine.js, app/expansion_classes_pack.js, app/market_trade_v55_2.js, tests/character_skin_material_test.js |
-| dbg | tests/test_v70.js, tests/test_v710_fixes.js |
-| dbItem | app/Inventory-weight-tracker.js, app/character_creation.js |
+| db | app/data/classes/progressionEngine.js (+ 3 других файлов) |
+| dbg | tests/test_v70.js (+ 1 других файлов) |
+| dbItem | app/Inventory-weight-tracker.js (+ 1 других файлов) |
 | dbNameLower | app/character_creation.js |
-| dc | app/3dmap/map_world.js, app/class_features_engine.js, app/combat_abilities.js, app/combat_engine.js (+ 23 ещё) |
-| dcElem | app/combat_abilities.js, app/spells.js |
+| dc | app/3dmap/map_world.js (+ 26 других файлов) |
+| dcElem | app/combat_abilities.js (+ 1 других файлов) |
 | dcValue | app/parasite_extra_runtime.js |
-| dd | app/3dmap/map_renderer_3d.js, app/expansion_classes_pack.js |
+| dd | app/3dmap/map_renderer_3d.js (+ 1 других файлов) |
 | deadAlly | tests/alchemist_runtime_test.js |
 | dealUses | app/expansion_classes_pack.js |
 | deathSaveFailures | app/combat_engine.js |
 | deb | app/alchemist_mhp_2024_runtime.js |
-| debuffs | app/combat_engine.js, app/gameplay_core_v57.js |
+| debuffs | app/combat_engine.js (+ 1 других файлов) |
 | debug | index.html |
 | debugBtn | app/debug.js |
-| debugContainer | app/Settings.js, app/debug.js |
+| debugContainer | app/Settings.js (+ 1 других файлов) |
 | debugToggle | app/Settings.js |
 | debugWrapper | app/Settings.js |
 | deception | app/alchemist_mhp_2024_runtime.js |
 | DECLARATIVE_FEATURES | app/class_features_engine.js |
-| decodeURIComponent | tests/test_v714_fixes.js, tests/test_v753_replay_transaction_rng.js |
+| decodeURIComponent | tests/test_v714_fixes.js (+ 1 других файлов) |
 | deduction | app/blood_hunter_engine.js |
-| def | app/3dmap/character_system.js, app/crafting_profession_progression_v47.js, app/expansion_classes_pack.js, app/monster_loot_crafting_bridge_v40.js (+ 2 ещё) |
+| def | app/3dmap/character_system.js (+ 5 других файлов) |
 | DEFAULT | app/3dmap/map_model.js |
 | DEFAULT_CAPACITY | app/inventory_containers_v54.js |
 | DEFAULT_CHANNEL | app/update_manager_v2.js |
 | DEFAULT_COLS | app/battle_board.js |
 | DEFAULT_ENABLED | app/crafting_dlc_v50.js |
-| DEFAULT_ICON | app/Settings.js, app/icon_settings.js, app/icon_settings_v2.js |
+| DEFAULT_ICON | app/Settings.js (+ 2 других файлов) |
 | DEFAULT_MANIFEST_URL | app/update_manager_v2.js |
 | DEFAULT_RACES | app/races.js |
 | DEFAULT_ROWS | app/battle_board.js |
 | defaultIcon | desktop/prepare.cjs |
 | defaultMode | app/inventory-modal.js |
 | defaultModel | app/monster_loot_crafting_bridge_v40.js |
-| defaults | app/3dmap/character_system.js, tools/check_last_races_browser.js, tools/check_quartet_races_browser.js |
+| defaults | app/3dmap/character_system.js (+ 2 других файлов) |
 | defaultType | app/inventory-modal.js |
 | defaultValue | app/inventory-modal.js |
-| defender | tests/pugilist_combat_test.js, tests/test_blood_hunter_focus_network.js |
+| defender | tests/pugilist_combat_test.js (+ 1 других файлов) |
 | defenderClasses | app/combat_engine.js |
 | defenses | app/inventory-modal.js |
 | defensesContainer | app/inventory-modal.js |
 | defer | app/network_gameplay.js |
 | deflect | app/combat_engine.js |
 | deflected | tests/alchemist_combat_test.js |
-| defs | app/3dmap/character_system.js, tools/build_character_editor_morphs.js |
-| delay | app/cloud_sync.js, app/dice.js |
+| defs | app/3dmap/character_system.js (+ 1 других файлов) |
+| delay | app/cloud_sync.js (+ 1 других файлов) |
 | delayedBomb | tests/alchemist_runtime_test.js |
-| delBtn | app/Inventory.js, app/inventory-modal.js |
+| delBtn | app/Inventory.js (+ 1 других файлов) |
 | deleteBtn | app/notes.js |
 | deleted | app/cloud_sync.js |
-| delta | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_morph_assets.js, app/3dmap/character_pose.js (+ 15 ещё) |
+| delta | app/3dmap/character_anatomy_geometry.js (+ 18 других файлов) |
 | demolitionOwner | tests/alchemist_runtime_test.js |
 | demolitionResult | tests/alchemist_runtime_test.js |
-| demolitionTarget | app/alchemist_mhp_2024_runtime.js, tests/alchemist_runtime_test.js |
-| den | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/map_world.js (+ 4 ещё) |
+| demolitionTarget | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
+| den | app/3dmap/character_body_geometry.js (+ 7 других файлов) |
 | denLabel | app/3dmap/character_editor_3d.js |
 | denOpacity | app/3dmap/character_clothing.js |
 | dense | tools/check_fur_surface_browser.js |
 | denValues | app/3dmap/character_clothing.js |
-| depth | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js, tests/makehuman_morph_bridge.js |
+| depth | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
 | derivedAssets | app/3dmap/map_model.js |
-| desc | app/crafting_profession_progression_v47.js, app/data/classes/level_up.js, app/data/feats/Feat_widget.js, app/library.js (+ 4 ещё) |
-| descBox | app/Backgrounds.js, app/character_creation.js, app/data/classes/level_up.js |
+| desc | app/crafting_profession_progression_v47.js (+ 7 других файлов) |
+| descBox | app/Backgrounds.js (+ 2 других файлов) |
 | descElem | app/library.js |
 | descInp | app/inventory-modal.js |
 | descInput | app/races.js |
-| description | app/class_features_engine.js, app/inventory-modal.js, app/vessel_laserllama_v4_runtime.js |
-| descriptor | tests/character_3d_morph_assets_test.js, tests/character_ghost_geometry_test.js |
-| descText | app/Backgrounds.js, app/character_creation.js |
+| description | app/class_features_engine.js (+ 2 других файлов) |
+| descriptor | tests/character_3d_morph_assets_test.js (+ 1 других файлов) |
+| descText | app/Backgrounds.js (+ 1 других файлов) |
 | descVal | app/races.js |
-| desired | app/3dmap/character_anatomy_geometry.js, app/market_social_v55_3.js, app/parasite_extra_runtime.js |
-| DesktopWebUpdater | desktop/main.cjs, tests/creation_signature_asset_test.cjs, tests/desktop_update_contract.cjs |
-| dest | app/3dmap/stair_navigation.js, app/companion_gameplay_v27.js, desktop/update.cjs |
-| detail | app/vtt_debug_dice_lab_v706.js, app/vtt_debug_rules_matrix_v707.js, app/vtt_debug_scenario_editor_v705.js, app/vtt_debug_scenarios_v704.js |
-| details | app/3dmap/character_editor_3d.js, app/Settings.js, app/cloud_account.js, app/rulesEngine.js (+ 1 ещё) |
+| desired | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
+| DesktopWebUpdater | desktop/main.cjs (+ 2 других файлов) |
+| dest | app/3dmap/stair_navigation.js (+ 2 других файлов) |
+| detail | app/vtt_debug_dice_lab_v706.js (+ 3 других файлов) |
+| details | app/3dmap/character_editor_3d.js (+ 4 других файлов) |
 | detailsElem | app/library.js |
 | detailsHtml | app/Inventory.js |
-| detailText | app/dice.js, app/spells.js |
+| detailText | app/dice.js (+ 1 других файлов) |
 | devModal | app/Settings.js |
-| dex | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/bestiary_catalog_v56_2.js (+ 10 ещё) |
-| dexHero | tests/pugilist_combat_test.js, tests/test_v726_fixes.js |
+| dex | app/bestiary_catalog_v56_1.js (+ 13 других файлов) |
+| dexHero | tests/pugilist_combat_test.js (+ 1 других файлов) |
 | dexInput | app/races.js |
-| dexMod | app/Backgrounds.js, app/Inventory.js, app/character_creation.js, app/combat_engine.js (+ 3 ещё) |
+| dexMod | app/Backgrounds.js (+ 6 других файлов) |
 | dexSave | tests/pugilist_combat_test.js |
-| dexScore | app/combat_engine.js, app/races.js |
+| dexScore | app/combat_engine.js (+ 1 других файлов) |
 | dexStats | app/combat_engine.js |
 | df | app/expansion_classes_pack.js |
-| di | app/combat_engine.js, app/expansion_classes_pack.js |
-| diag | tests/character_editor_morph_assets_test.js, tools/check_avian_races_browser.js, tools/check_kobold_tabaxi_browser.js, tools/check_last_races_browser.js (+ 6 ещё) |
+| di | app/combat_engine.js (+ 1 других файлов) |
+| diag | tests/character_editor_morph_assets_test.js (+ 9 других файлов) |
 | diagnostics | tools/build_makehuman_morphs.js |
 | diagonal | tests/map_rebuild_world_test.js |
 | dialectAliases | app/runekeeper_taron_v12_runtime.js |
 | DIALECTS | app/runekeeper_taron_v12_runtime.js |
-| dice | app/expansion_classes_pack.js, app/inventory-modal.js, app/martyr_mhp_2024_runtime.js, tests/test_blood_hunter_patron_selection.js |
-| DICE_ICONS | app/Settings.js, app/icon_settings.js, app/icon_settings_v2.js |
-| diceCount | app/dice.js, app/expansion_classes_pack.js, app/inventory-modal.js, app/spells.js |
+| dice | app/expansion_classes_pack.js (+ 3 других файлов) |
+| DICE_ICONS | app/Settings.js (+ 2 других файлов) |
+| diceCount | app/dice.js (+ 3 других файлов) |
 | diceCountInp | app/inventory-modal.js |
 | diceDir | desktop/prepare.cjs |
 | diceFiles | desktop/prepare.cjs |
@@ -2443,26 +2444,26 @@
 | diceOptions | app/character.js |
 | diceRegex | app/spells.js |
 | dices | app/inventory-modal.js |
-| diceSides | app/dice.js, app/spells.js |
+| diceSides | app/dice.js (+ 1 других файлов) |
 | diceSpent | app/alchemist_mhp_2024_runtime.js |
 | diceTab | app/dice.js |
 | diceTypes | app/character.js |
-| die | app/alchemy_gathering_professions_v52.js, app/class_features_engine.js, app/expanded_classes_v23.js, app/expansion_classes_pack.js (+ 2 ещё) |
-| DIE | app/blood_hunter_engine.js, app/savant_laserllama_v561_runtime.js |
+| die | app/alchemy_gathering_professions_v52.js (+ 5 других файлов) |
+| DIE | app/blood_hunter_engine.js (+ 1 других файлов) |
 | dieSides | app/network_gameplay.js |
-| diff | app/data/classes/level_up.js, app/market_social_v55_3.js |
+| diff | app/data/classes/level_up.js (+ 1 других файлов) |
 | dig | tests/pugilist_runtime_test.js |
 | digDeep | app/combat_engine.js |
 | digDeepTypes | app/combat_engine.js |
 | digit | app/3dmap/character_body_geometry.js |
 | digits | app/3dmap/character_body_geometry.js |
 | dimLayer | app/Wallpapers.js |
-| dir | app/3dmap/character_body_geometry.js, app/3dmap/map_model.js, app/network_gameplay.js, desktop/prepare.cjs (+ 6 ещё) |
+| dir | app/3dmap/character_body_geometry.js (+ 9 других файлов) |
 | dire | app/expansion_classes_pack.js |
 | direct | app/3dmap/character_pose.js |
 | directCompatible | tests/makehuman_topology_audit.js |
 | direMax | app/expansion_classes_pack.js |
-| dirty | app/expansion_classes_pack.js, tests/pugilist_combat_test.js |
+| dirty | app/expansion_classes_pack.js (+ 1 других файлов) |
 | dirtyApplied | app/expansion_classes_pack.js |
 | dirtyDC | app/expansion_classes_pack.js |
 | dirtyHero | tests/pugilist_combat_test.js |
@@ -2472,7 +2473,7 @@
 | dis | app/rulesEngine.js |
 | disable | app/Inventory-weight-tracker.js |
 | disBtn | app/Inventory.js |
-| disc | app/3dmap/character_body_geometry.js, app/expansion_classes_pack.js, tests/character_avian_elephant_heads_test.js |
+| disc | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | discharge | tests/alchemist_combat_test.js |
 | dischargeTarget | tests/alchemist_combat_test.js |
 | disciplineAliases | app/savant_laserllama_v561_runtime.js |
@@ -2485,46 +2486,46 @@
 | discoveryName | app/alchemist_mhp_2024_runtime.js |
 | discoveryRecipes | app/alchemist_mhp_2024_runtime.js |
 | displacement | tests/makehuman_gender_fixture_audit.js |
-| display | app/data/classes/level_up.js, desktop/main.cjs |
-| displayName | app/Backgrounds.js, app/character_creation.js, app/data/feats/Feat_widget.js, app/inventory-modal.js |
+| display | app/data/classes/level_up.js (+ 1 других файлов) |
+| displayName | app/Backgrounds.js (+ 3 других файлов) |
 | displayStyle | app/spells.js |
-| dist | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/map_model.js, app/network_gameplay.js (+ 1 ещё) |
+| dist | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
 | distal | app/3dmap/character_body_geometry.js |
-| distance | app/3dmap/character_body_geometry.js, app/combat_engine.js, app/companion_gameplay_v27.js, tests/character_clothing_test.js (+ 1 ещё) |
+| distance | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
 | distanceFt | app/rulesEngine.js |
-| distances | tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_surface_transfer_audit.js |
+| distances | tests/makehuman_morph_bridge.js (+ 2 других файлов) |
 | div | app/data/classes/level_up.js |
-| dl | app/3dmap/character_body_geometry.js, tests/makehuman_morph_bridge.js |
-| dm | app/network_gameplay.js, tests/test_v727_fixes.js |
-| dmg | app/alchemist_mhp_2024_runtime.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/companion_gameplay_v27.js (+ 4 ещё) |
+| dl | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| dm | app/network_gameplay.js (+ 1 других файлов) |
+| dmg | app/alchemist_mhp_2024_runtime.js (+ 7 других файлов) |
 | dmgBonus | app/character.js |
 | dn | app/3dmap/character_body_geometry.js |
-| DND_CLASSES_LIST | app/Backgrounds.js, app/character_creation.js |
+| DND_CLASSES_LIST | app/Backgrounds.js (+ 1 других файлов) |
 | DND_DAMAGE_TYPES | app/inventory-modal.js |
 | DND_SKILLS_LIST | app/inventory-modal.js |
 | DND_WEAPON_CATEGORIES | app/inventory-modal.js |
 | DND_WEAPON_PROPERTIES | app/inventory-modal.js |
 | dndBackgrounds | app/Backgrounds.js |
 | dndModal | app/data/classes/level_up.js |
-| doc | tests/test_v70.js, tests/test_v743_authority_recharge_events.js, tools/run_tests_v731.js |
+| doc | tests/test_v70.js (+ 2 других файлов) |
 | document | tests/character_3d_editor_test.js |
 | dom | tests/map_editor_dom_test.js |
 | dome | app/3dmap/character_body_geometry.js |
-| domReady | tests/test_v722_fixes.js, tests/test_v723_fixes.js |
-| done | app/update_manager_v2.js, app/vtt_debug_tasks_v708.js, app/vtt_gameplay_ux_v58.js, desktop/main.cjs |
+| domReady | tests/test_v722_fixes.js (+ 1 других файлов) |
+| done | app/update_manager_v2.js (+ 3 других файлов) |
 | donor | app/occultist_kibbles_v11_runtime.js |
 | dot | app/3dmap/character_anatomy_geometry.js |
 | down | app/3dmap/stair_navigation.js |
 | download | tools/check_cloud_account_browser.cjs |
 | downloadAnchor | app/Settings.js |
 | downloads | tests/creation_signature_asset_test.cjs |
-| dr | app/expansion_classes_pack.js, app/network_gameplay.js, tests/makehuman_morph_bridge.js |
+| dr | app/expansion_classes_pack.js (+ 2 других файлов) |
 | draft | tests/character_appearance_store_test.js |
 | DRAFT | app/3dmap/character_appearance_store.js |
 | drag | app/vtt_mobile_battle_v61.js |
 | dragon | tests/test_v726_fixes.js |
 | dragonGraft | app/alchemist_mhp_2024_runtime.js |
-| draw | tests/character_3d_editor_test.js, tools/check_elf_details_browser.js, tools/check_ghost_browser.js, tools/check_hair_pack_browser.js |
+| draw | tests/character_3d_editor_test.js (+ 3 других файлов) |
 | drawer | app/Inventory.js |
 | drawerContainer | app/dice.js |
 | drawerContent | app/dice.js |
@@ -2535,57 +2536,57 @@
 | dress | tests/character_clothing_options_test.js |
 | drop | app/3dmap/character_body_geometry.js |
 | dry | tests/crafting_economy_v49_test.js |
-| ds | app/combat_engine.js, app/expansion_classes_pack.js |
-| dst | app/3dmap/gltf_loader.js, desktop/prepare.cjs |
-| dt | app/3dmap/character_body_geometry.js, app/inventory-modal.js, tests/test_v746_authoritative_save_recharge.js |
+| ds | app/combat_engine.js (+ 1 других файлов) |
+| dst | app/3dmap/gltf_loader.js (+ 1 других файлов) |
+| dt | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | du | app/3dmap/character_anatomy_geometry.js |
 | duplicates | tools/generate_project_atlas.cjs |
 | duplicityMiss | app/combat_engine.js |
 | duplicityTarget | app/combat_engine.js |
 | dupRoll | app/combat_engine.js |
-| durability | app/market_economy_v55.js, app/market_trade_v55_2.js |
+| durability | app/market_economy_v55.js (+ 1 других файлов) |
 | duration | app/walter_parasite_extra_runtime.js |
 | durationMs | app/Ambiences.js |
 | durationSeconds | app/walter_parasite_extra_runtime.js |
-| dv | app/3dmap/character_anatomy_geometry.js, app/3dmap/gltf_loader.js, app/expansion_classes_pack.js, tests/makehuman_morph_bridge.js |
+| dv | app/3dmap/character_anatomy_geometry.js (+ 3 других файлов) |
 | dwarf | app/3dmap/character_system.js |
 | dwarfDesc | app/crafting_character_influence_test_v46.js |
-| dx | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 9 ещё) |
-| dy | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 8 ещё) |
+| dx | app/3dmap/character_anatomy_geometry.js (+ 12 других файлов) |
+| dy | app/3dmap/character_anatomy_geometry.js (+ 11 других файлов) |
 | dynamicContainer | app/Inventory.js |
 | dynamoAttack | tests/alchemist_runtime_test.js |
-| dz | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 2 ещё) |
+| dz | app/3dmap/character_anatomy_geometry.js (+ 5 других файлов) |
 | dzdt | app/3dmap/character_anatomy_geometry.js |
-| e | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/character_morph_assets.js (+ 130 ещё) |
+| e | app/3dmap/character_anatomy_geometry.js (+ 133 других файлов) |
 | E | app/necromancer_mhp_2024_runtime.js |
-| e0 | app/3dmap/character_editor_3d.js, app/occultist_kibbles_v11_runtime.js |
+| e0 | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | each | app/class_features_engine.js |
 | ear | app/3dmap/character_body_geometry.js |
 | earOuter | app/3dmap/character_body_geometry.js |
-| ears | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js |
+| ears | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | earVertices | tests/character_elf_details_test.js |
-| eb | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js |
+| eb | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | ec | app/expansion_classes_pack.js |
 | eco | tests/test_v56.js |
-| econ | app/crafting_disassembly_v51.js, app/crafting_dlc_v50.js |
+| econ | app/crafting_disassembly_v51.js (+ 1 других файлов) |
 | ECON | app/crafting_disassembly_repair_v51.js |
 | edge | app/3dmap/character_body_geometry.js |
 | edges | app/3dmap/character_body_geometry.js |
-| editor | desktop/preload.cjs, tests/cloud_sync_test.cjs |
+| editor | desktop/preload.cjs (+ 1 других файлов) |
 | editorWeaponPresets | app/3dmap/character_editor_3d.js |
-| ef | app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js |
+| ef | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | eff | app/expansion_classes_pack.js |
-| effect | app/alchemist_mhp_2024_runtime.js, app/class_features_engine.js |
+| effect | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | effectApplies | app/combat_engine.js |
 | effectiveDiceCount | app/dice.js |
 | effectiveMode | app/dice.js |
 | effectMap | app/alchemist_mhp_2024_runtime.js |
-| effects | app/custom_crafting_v32.js, app/expanded_classes_v23.js |
+| effects | app/custom_crafting_v32.js (+ 1 других файлов) |
 | EFFECTS | app/alchemy_gameplay_v30.js |
 | effectSerial | app/blood_hunter_engine.js |
-| eid | app/necromancer_mhp_2024_runtime.js, tests/test_class_audit_stage2_runtime.js |
+| eid | app/necromancer_mhp_2024_runtime.js (+ 1 других файлов) |
 | eInput | app/inventory-coins.js |
-| el | app/3dmap/map_editor.js, app/3dmap/map_world.js, app/Inventory.js, app/Wallpapers.js (+ 23 ещё) |
+| el | app/3dmap/map_editor.js (+ 26 других файлов) |
 | elapsed | app/world_resource_gathering_v53.js |
 | elBar | app/Experience.js |
 | elCurExp | app/Experience.js |
@@ -2595,7 +2596,7 @@
 | elem | tests/test_v726_fixes.js |
 | element | app/expansion_classes_pack.js |
 | elementId | app/Inventory.js |
-| elements | tests/character_3d_editor_test.js, tests/test_v724_fixes.js |
+| elements | tests/character_3d_editor_test.js (+ 1 других файлов) |
 | elementsToHide | app/Wallpapers.js |
 | elId | app/Inventory-weight-tracker.js |
 | elInputCur | app/Experience.js |
@@ -2603,79 +2604,79 @@
 | elName | app/races.js |
 | elNextExp | app/Experience.js |
 | elSpeed | app/races.js |
-| email | app/cloud_account.js, app/cloud_sync.js |
+| email | app/cloud_account.js (+ 1 других файлов) |
 | emojis | app/dice.js |
 | empty | app/3dmap/character_body_geometry.js |
 | emptyMsg | app/inventory-modal.js |
-| enabled | app/3dmap/character_anatomy.js, app/3dmap/character_editor_3d.js, app/crafting_dlc_v50.js |
-| encodeURIComponent | tests/test_v714_fixes.js, tests/test_v753_replay_transaction_rng.js |
+| enabled | app/3dmap/character_anatomy.js (+ 2 других файлов) |
+| encodeURIComponent | tests/test_v714_fixes.js (+ 1 других файлов) |
 | encounter | app/monster_engine.js |
-| end | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/gltf_loader.js, desktop/main.cjs (+ 1 ещё) |
+| end | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
 | ends | app/3dmap/map_world.js |
 | endY | app/3dmap/character_clothing.js |
-| enemy | app/warlord_laserllama_v330_runtime.js, tests/test_v732_fixes.js |
+| enemy | app/warlord_laserllama_v330_runtime.js (+ 1 других файлов) |
 | enemyHP | tests/test_class_audit_stage3_runtime.js |
 | energyDamage | app/alchemist_mhp_2024_runtime.js |
 | energyResult | app/alchemist_mhp_2024_runtime.js |
 | energySeamTarget | tests/alchemist_combat_test.js |
 | engine | tests/test_v713_fixes.js |
 | englishName | app/expansion_class_progressions.js |
-| engName | app/data/classes/level_up.js, app/data/feats/Feat_widget.js |
+| engName | app/data/classes/level_up.js (+ 1 других файлов) |
 | enhancedAttack | tests/pugilist_combat_test.js |
 | enhancedTarget | tests/pugilist_combat_test.js |
-| entity | app/alchemist_mhp_2024_runtime.js, tests/alchemist_runtime_test.js |
-| entries | app/cloud_sync.js, app/combat_engine.js, app/crafting_professions_v38.js, tests/makehuman_morph_bridge.js (+ 3 ещё) |
-| entry | app/3dmap/character_editor_3d.js, app/3dmap/map_world.js, app/3dmap/stress_map.js, app/Inventory.js (+ 13 ещё) |
+| entity | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
+| entries | app/cloud_sync.js (+ 6 других файлов) |
+| entry | app/3dmap/character_editor_3d.js (+ 16 других файлов) |
 | entryId | app/library.js |
 | env | tests/map_rebuild_world_test.js |
 | envelope | app/3dmap/character_anatomy_geometry.js |
-| ep | app/expansion_classes_pack.js, app/inventory-coins.js, app/network_gameplay.js |
+| ep | app/expansion_classes_pack.js (+ 2 других файлов) |
 | epInput | app/inventory-coins.js |
 | epoch | app/cloud_sync.js |
 | eprof | app/network_gameplay.js |
-| eps | app/3dmap/character_anatomy_geometry.js, app/3dmap/map_world.js, tests/character_external_anatomy_test.js |
+| eps | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
 | epsilon | app/3dmap/character_clothing.js |
 | epVal | app/inventory-coins.js |
 | equipCheckbox | app/Inventory.js |
 | equipLabel | app/Inventory.js |
 | equipment | app/3dmap/character_system.js |
 | equippedWeapon | app/dice.js |
-| er | app/3dmap/character_body_geometry.js, app/combat_engine.js |
-| err | app/3dmap/character_editor_3d.js, app/3dmap/gltf_loader.js, app/3dmap/map_renderer_3d.js, app/Ambiences.js (+ 1 ещё) |
-| error | app/3dmap/character_editor_3d.js, app/debug.js |
+| er | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| err | app/3dmap/character_editor_3d.js (+ 4 других файлов) |
+| error | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | errorCount | app/debug.js |
-| errors | app/content_framework.js, app/vtt_debug_panel_v70.js, tests/cloud_sql_concurrency.cjs, tools/check_adult_anatomy_browser.js (+ 37 ещё) |
+| errors | app/content_framework.js (+ 40 других файлов) |
 | es | app/alchemy_gameplay_v30.js |
-| esc | app/3dmap/map_editor.js, tools/generate_project_atlas.cjs |
-| escape | tests/test_v714_fixes.js, tests/test_v752_replay_hash_authority.js, tests/test_v753_replay_transaction_rng.js |
-| ev | app/gameplay_core_v57.js, app/network_gameplay.js, app/vtt_combat_event_bus_v69.js, app/vtt_combat_log_v66.js (+ 3 ещё) |
+| esc | app/3dmap/map_editor.js (+ 1 других файлов) |
+| escape | tests/test_v714_fixes.js (+ 2 других файлов) |
+| ev | app/gameplay_core_v57.js (+ 6 других файлов) |
 | evasion | app/combat_engine.js |
-| event | app/3dmap/map_world.js, app/Ambiences.js, app/Logo.js, app/Settings.js (+ 10 ещё) |
+| event | app/3dmap/map_world.js (+ 13 других файлов) |
 | EVENT_LIMIT | app/network_engine.js |
 | eventAttacker | app/combat_engine.js |
 | eventChainHeadHash | app/network_engine.js |
 | eventLogBaseHash | app/network_engine.js |
 | eventLogBaseSeq | app/network_engine.js |
-| events | app/network_engine.js, app/vtt_combat_event_bus_v69.js, app/vtt_combat_log_v66.js, tests/cloud_sync_test.cjs (+ 2 ещё) |
+| events | app/network_engine.js (+ 5 других файлов) |
 | evo | tests/test_v726_fixes.js |
 | evt | tests/character_3d_editor_test.js |
-| ex | app/3dmap/character_body_geometry.js, app/resource_gathering_v35.js |
-| exact | app/content_framework.js, app/crafting_disassembly_repair_v51.js, app/magic_engine.js |
+| ex | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| exact | app/content_framework.js (+ 2 других файлов) |
 | excess | app/expansion_classes_pack.js |
 | exhaustion | app/resource_gathering_v35.js |
 | exhaustionNow | app/combat_engine.js |
 | exhaustionText | app/resource_gathering_v35.js |
-| existing | app/3dmap/map_world.js, app/Inventory.js, app/character_creation.js, app/crafting_disassembly_repair_v51.js (+ 4 ещё) |
+| existing | app/3dmap/map_world.js (+ 7 других файлов) |
 | existingClass | app/Hero-info.js |
 | existingClassEntry | app/data/classes/level_up.js |
 | existingOverlay | app/dice.js |
-| exists | app/character_creation.js, app/companion_packs_v26.js |
+| exists | app/character_creation.js (+ 1 других файлов) |
 | existsL | app/character_creation.js |
 | exp | app/Experience.js |
 | expand | app/3dmap/character_clothing.js |
 | expanded | app/3dmap/character_editor_3d.js |
 | expBasedLevel | app/Experience.js |
-| expected | app/alchemist_mhp_2024_runtime.js, app/network_gameplay.js, app/vtt_debug_rules_matrix_v707.js, tests/character_clothing_test.js (+ 1 ещё) |
+| expected | app/alchemist_mhp_2024_runtime.js (+ 4 других файлов) |
 | expiration | tests/test_class_audit_stage2_runtime.js |
 | expired | tests/pugilist_combat_test.js |
 | expires | app/shifter_laserllama_v2_1_runtime.js |
@@ -2684,14 +2685,14 @@
 | exploits | app/warlord_laserllama_v330_runtime.js |
 | explored | app/3dmap/map_world.js |
 | exposureActor | app/combat_engine.js |
-| expr | app/class_features_engine.js, app/combat_engine.js, app/expansion_classes_pack.js, app/network_gameplay.js (+ 4 ещё) |
+| expr | app/class_features_engine.js (+ 7 других файлов) |
 | expression | app/expansion_classes_pack.js |
-| ext | app/3dmap/map_renderer_3d.js, app/class_features_engine.js, tools/check_character_clothing_customizer.js, tools/check_character_editor_browser.js (+ 1 ещё) |
-| external | app/3dmap/character_anatomy.js, tests/gltf_loader_smoke.cjs |
+| ext | app/3dmap/map_renderer_3d.js (+ 4 других файлов) |
+| external | app/3dmap/character_anatomy.js (+ 1 других файлов) |
 | externalCalls | tests/gltf_loader_smoke.cjs |
 | externalJson | tests/gltf_loader_smoke.cjs |
 | externalPanels | app/dice.js |
-| extra | app/3dmap/character_body_geometry.js, app/blood_hunter_engine.js, app/companion_gameplay_v27.js, app/content_framework.js (+ 16 ещё) |
+| extra | app/3dmap/character_body_geometry.js (+ 19 других файлов) |
 | EXTRA | app/character_builder_v2.js |
 | EXTRA_RULES | app/alchemy_engine_v29.js |
 | EXTRA_TRIGGER | app/alchemy_gameplay_v30.js |
@@ -2701,22 +2702,22 @@
 | extraClass | app/data/classes/level_up.js |
 | extraClasses | tests/test_v755_creation_buckets.js |
 | extraDamages | app/inventory-modal.js |
-| extraData | app/Inventory.js, app/inventory-modal.js |
+| extraData | app/Inventory.js (+ 1 других файлов) |
 | extraDmg | app/network_gameplay.js |
 | extraDmgContainer | app/inventory-modal.js |
 | extraLine | app/data/feats/Feat_widget.js |
 | extraLocked | app/data/classes/level_up.js |
-| extraName | app/data/classes/level_up.js, app/data/classes/progressionEngine.js |
+| extraName | app/data/classes/level_up.js (+ 1 других файлов) |
 | extrapolated | tools/build_makehuman_morphs.js |
-| extras | app/3dmap/character_editor_3d.js, app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js, tools/prepare_makehuman_gender.js |
+| extras | app/3dmap/character_editor_3d.js (+ 3 других файлов) |
 | extraType | app/data/classes/level_up.js |
 | exts | desktop/prepare.cjs |
 | ey | app/3dmap/character_body_geometry.js |
-| eye | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js |
+| eye | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | eyeBtn | app/Wallpapers.js |
 | eyeIsland | app/3dmap/character_body_geometry.js |
 | eyePart | app/3dmap/character_body_geometry.js |
-| eyes | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, tests/character_3d_foundation_test.js |
+| eyes | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | eyeSave | tools/check_character_races_browser.js |
 | eyesDiag | tools/check_character_races_browser.js |
 | eyesOff | tools/check_character_races_browser.js |
@@ -2725,34 +2726,34 @@
 | eyeY | app/3dmap/character_body_geometry.js |
 | eyeZ | app/3dmap/character_body_geometry.js |
 | ez | app/3dmap/character_body_geometry.js |
-| f | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 97 ещё) |
-| F | tests/test_v725_fixes.js, tests/test_v726_fixes.js, tests/test_v727_fixes.js, tests/test_v728_fixes.js (+ 1 ещё) |
+| f | app/3dmap/character_anatomy.js (+ 100 других файлов) |
+| F | tests/test_v725_fixes.js (+ 4 других файлов) |
 | fa | app/expansion_classes_pack.js |
-| face | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js |
+| face | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
 | faceParts | app/3dmap/character_editor_3d.js |
-| faces | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_editor_3d.js, app/savant_laserllama_v561_runtime.js, tests/makehuman_topology_audit.js |
+| faces | app/3dmap/character_anatomy_geometry.js (+ 3 других файлов) |
 | facing | app/3dmap/character_body_geometry.js |
 | FACTIONS | app/bestiary_catalog_v56_13.js |
-| factor | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_editor_3d.js, app/market_economy_v55.js, app/market_social_v55_3.js |
+| factor | app/3dmap/character_anatomy_geometry.js (+ 3 других файлов) |
 | factory | app/rulesEngine.js |
 | fadeInterval | app/Ambiences.js |
 | fadeTimer | app/Logo.js |
-| fail | tests/test_v55_3.js, tools/run_tests_v731.js |
+| fail | tests/test_v55_3.js (+ 1 других файлов) |
 | failed | tests/test_v739_prepared_transaction.js |
 | failedSave | app/shifter_laserllama_v2_1_runtime.js |
 | fall | tests/test_v721_fixes.js |
-| fallback | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/cloud_sync.js, app/expansion_class_progressions.js (+ 4 ещё) |
+| fallback | app/3dmap/character_body_geometry.js (+ 7 других файлов) |
 | FALLBACK_MANIFEST_URL | app/update_manager_v2.js |
 | fallbackName | app/data/classes/progressionEngine.js |
 | fallbackText | app/dice.js |
-| false | app/expansion_classes_pack.js, app/network_gameplay.js, tests/character_adult_anatomy_test.js, tests/character_avian_elephant_heads_test.js (+ 2 ещё) |
-| fam | app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/bestiary_catalog_v56_2.js (+ 7 ещё) |
+| false | app/expansion_classes_pack.js (+ 5 других файлов) |
+| fam | app/bestiary_catalog_v56_10.js (+ 10 других файлов) |
 | familiarForms | app/expansion_classes_pack.js |
 | FAMILIES | app/bestiary_catalog_v56_1.js |
-| family | app/bestiary_catalog_v56_1.js, app/monster_loot_crafting_bridge_v40.js |
+| family | app/bestiary_catalog_v56_1.js (+ 1 других файлов) |
 | FAMILY_BY_CREATURE | app/expanded_bestiary_v39.js |
 | FAMILY_DEFS | app/expanded_bestiary_v39.js |
-| FAMILY_NAMES | app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js (+ 8 ещё) |
+| FAMILY_NAMES | app/bestiary_catalog_v56_10.js (+ 11 других файлов) |
 | familyId | app/expanded_bestiary_v39.js |
 | familyOpts | app/expanded_bestiary_v39.js |
 | fangs | app/3dmap/character_body_geometry.js |
@@ -2763,7 +2764,7 @@
 | fApplied | app/expansion_classes_pack.js |
 | faq | app/onboarding_faq_v71.js |
 | FAQ | app/onboarding_faq_v71.js |
-| far | app/3dmap/map_renderer_3d.js, tests/test_blood_hunter_profane_focus.js |
+| far | app/3dmap/map_renderer_3d.js (+ 1 других файлов) |
 | fat | app/3dmap/character_body_geometry.js |
 | fatalHit | tests/pugilist_combat_test.js |
 | fateMax | app/class_features_engine.js |
@@ -2772,7 +2773,7 @@
 | fdc | app/expansion_classes_pack.js |
 | fdmg | app/expansion_classes_pack.js |
 | fearSave | app/expansion_classes_pack.js |
-| feat | app/class_features_engine.js, app/data/classes/level_up.js, app/data/feats/Feat_widget.js |
+| feat | app/class_features_engine.js (+ 2 других файлов) |
 | FEAT_STAT_LABELS | app/data/feats/Feat_widget.js |
 | FEAT_VALID_STATS | app/data/feats/Feat_widget.js |
 | featActionHtml | app/data/feats/Feat_widget.js |
@@ -2781,15 +2782,15 @@
 | featherKind | app/3dmap/character_editor_3d.js |
 | featherPart | app/3dmap/character_editor_3d.js |
 | featName | app/data/feats/Feat_widget.js |
-| featObj | app/data/classes/level_up.js, app/data/feats/Feat_widget.js |
-| feats | app/battle_action_ui.js, app/data/classes/progressionEngine.js, app/kibbles_localization_content_v71.js |
+| featObj | app/data/classes/level_up.js (+ 1 других файлов) |
+| feats | app/battle_action_ui.js (+ 2 других файлов) |
 | featsOptions | app/data/classes/level_up.js |
-| feature | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/data/classes/progressionEngine.js, app/expansion_classes_pack.js |
+| feature | app/alchemist_mhp_2024_runtime.js (+ 3 других файлов) |
 | FEATURE_DEFS | app/class_features_engine.js |
 | FEATURE_TARGET_RULES | app/network_gameplay.js |
-| featureDescStr | app/Backgrounds.js, app/character_creation.js |
-| featureHtml | app/Backgrounds.js, app/battle_action_ui.js, app/character_creation.js |
-| featureIds | app/content_framework.js, app/network_gameplay.js |
+| featureDescStr | app/Backgrounds.js (+ 1 других файлов) |
+| featureHtml | app/Backgrounds.js (+ 2 других файлов) |
+| featureIds | app/content_framework.js (+ 1 других файлов) |
 | featureIndex | app/content_framework.js |
 | featureLevel | app/content_framework.js |
 | featureList | app/data/classes/progressionEngine.js |
@@ -2797,39 +2798,39 @@
 | featureMeta | app/class_features_engine.js |
 | featureMod | app/combat_engine.js |
 | featureMode | app/combat_engine.js |
-| features | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/martyr_mhp_2024_runtime.js, app/necromancer_mhp_2024_runtime.js (+ 6 ещё) |
+| features | app/alchemist_mhp_2024_runtime.js (+ 9 других файлов) |
 | featuresHtml | app/data/classes/level_up.js |
 | featuresList | app/data/classes/level_up.js |
-| featureStr | app/Backgrounds.js, app/character_creation.js |
+| featureStr | app/Backgrounds.js (+ 1 других файлов) |
 | fecund | app/expansion_classes_pack.js |
-| feet | app/3dmap/character_body_geometry.js, app/gameplay_core_v57.js |
-| female | app/3dmap/character_clothing.js, tests/character_3d_foundation_test.js, tests/character_3d_morph_assets_test.js, tests/makehuman_gender_fixture_audit.js (+ 2 ещё) |
+| feet | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| female | app/3dmap/character_clothing.js (+ 5 других файлов) |
 | femalePositions | tests/character_3d_morph_assets_test.js |
 | fer | app/companion_gameplay_v27.js |
 | ferocity | tests/test_class_audit_runtime.js |
 | fetched | app/update_manager_v2.js |
-| ff | app/3dmap/map_renderer_3d.js, app/class_features_engine.js |
+| ff | app/3dmap/map_renderer_3d.js (+ 1 других файлов) |
 | fgm | tests/test_v728_fixes.js |
-| fi | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js, app/3dmap/stress_map.js, app/class_features_engine.js |
-| fid | app/class_features_engine.js, app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js, app/shifter_laserllama_v2_1_runtime.js (+ 1 ещё) |
-| field | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/character.js (+ 5 ещё) |
+| fi | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
+| fid | app/class_features_engine.js (+ 4 других файлов) |
+| field | app/3dmap/character_body_geometry.js (+ 8 других файлов) |
 | fieldLengths | tests/makehuman_target_reverse_transfer_audit.js |
-| fields | tools/check_last_races_browser.js, tools/check_modular_races_browser.js, tools/check_quartet_races_browser.js |
+| fields | tools/check_last_races_browser.js (+ 2 других файлов) |
 | fiend | tests/test_blood_hunter_patron_selection.js |
-| fighter | tests/test_v725_fixes.js, tests/test_v728_fixes.js |
+| fighter | tests/test_v725_fixes.js (+ 1 других файлов) |
 | fightingPack | app/combat_engine.js |
 | fightingResource | app/combat_engine.js |
 | fightingResult | app/combat_engine.js |
 | fightingStyleEffects | app/expansion_classes_pack.js |
-| file | app/Settings.js, app/crafting_character_influence_test_v46.js, app/rulesEngine.js, app/update_scene_v2.js (+ 52 ещё) |
+| file | app/Settings.js (+ 55 других файлов) |
 | filePath | app/Wallpapers.js |
-| files | app/crafting_profession_progression_test_v47.js, app/update_manager_v2.js, desktop/prepare.cjs, tests/creation_signature_asset_test.cjs (+ 5 ещё) |
+| files | app/crafting_profession_progression_test_v47.js (+ 8 других файлов) |
 | fileUrl | desktop/update.cjs |
-| filter | app/alchemy_gathering_professions_v52.js, app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js, tests/character_skin_material_test.js |
+| filter | app/alchemy_gathering_professions_v52.js (+ 3 других файлов) |
 | filteredItems | app/spells.js |
-| filters | app/character_creation_pergament.js, tests/test_v755_creation_buckets.js |
+| filters | app/character_creation_pergament.js (+ 1 других файлов) |
 | filterText | app/data/feats/Feat_widget.js |
-| final | app/expansion_classes_pack.js, app/vtt_debug_dice_lab_v706.js |
+| final | app/expansion_classes_pack.js (+ 1 других файлов) |
 | finalAC | app/Inventory.js |
 | finalAttackTotal | app/dice.js |
 | finalCount | app/crafting_professions_v38.js |
@@ -2837,42 +2838,42 @@
 | finalName | app/inventory-modal.js |
 | finalPropsString | app/inventory-modal.js |
 | finalSkillModifier | app/dice.js |
-| finalStats | app/Backgrounds.js, app/character_creation.js |
-| finalTotal | app/dice.js, app/spells.js |
+| finalStats | app/Backgrounds.js (+ 1 других файлов) |
+| finalTotal | app/dice.js (+ 1 других файлов) |
 | fingerless | app/3dmap/character_body_geometry.js |
 | fins | app/3dmap/character_body_geometry.js |
 | finsOff | tools/check_character_races_browser.js |
 | fire | app/update_scene_v2.js |
 | fireFront | app/update_scene_v2.js |
 | fireRoll | app/alchemist_mhp_2024_runtime.js |
-| first | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/gameplay_core_v57.js, tests/alchemist_runtime_test.js (+ 1 ещё) |
+| first | app/3dmap/character_anatomy_geometry.js (+ 4 других файлов) |
 | firstFace | tests/makehuman_topology_audit.js |
 | firstVertex | tests/makehuman_topology_audit.js |
-| fit | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/3dmap/map_renderer_3d.js, tests/character_clothing_test.js (+ 2 ещё) |
-| fitted | app/3dmap/character_body_geometry.js, tests/character_3d_foundation_test.js, tests/character_clothing_customizer_geometry_test.js |
+| fit | app/3dmap/character_editor_3d.js (+ 5 других файлов) |
+| fitted | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | fixture | tests/character_male_anatomy_fix_test.js |
 | flags | app/companion_gameplay_v27.js |
 | flare | app/3dmap/character_clothing.js |
 | flat | tests/character_races_geometry_test.js |
 | flexible | tests/alchemist_runtime_test.js |
 | flexibleInstall | tests/alchemist_runtime_test.js |
-| Float32Array | tests/character_3d_editor_test.js, tests/character_3d_morph_assets_test.js, tests/character_3d_skin_assets_test.js, tests/character_adult_anatomy_test.js (+ 20 ещё) |
-| Float64Array | tests/character_adult_anatomy_test.js, tests/character_external_anatomy_test.js, tests/character_male_anatomy_fix_test.js |
-| floor | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/stair_navigation.js, tests/stair_navigation.cjs |
+| Float32Array | tests/character_3d_editor_test.js (+ 23 других файлов) |
+| Float64Array | tests/character_adult_anatomy_test.js (+ 2 других файлов) |
+| floor | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
 | FLOOR | app/3dmap/map_renderer_2d.js |
 | floorAttack | tests/pugilist_combat_test.js |
 | floorHero | tests/pugilist_combat_test.js |
 | floorHpBefore | tests/pugilist_combat_test.js |
 | floorMod | tests/pugilist_runtime_test.js |
 | floors | app/3dmap/stress_map.js |
-| floorTarget | tests/pugilist_combat_test.js, tests/pugilist_runtime_test.js |
+| floorTarget | tests/pugilist_combat_test.js (+ 1 других файлов) |
 | floorTypes | app/3dmap/stress_map.js |
 | flush | tests/character_3d_editor_test.js |
 | flyer | tests/pugilist_combat_test.js |
-| fm | app/combat_engine.js, tests/test_v728_fixes.js |
+| fm | app/combat_engine.js (+ 1 других файлов) |
 | fm2 | tests/test_v728_fixes.js |
-| fn | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/map_world.js, app/cloud_account.js (+ 13 ещё) |
-| focus | app/3dmap/character_anatomy_geometry.js, tools/check_character_clothing_closeups.js |
+| fn | app/3dmap/character_anatomy_geometry.js (+ 16 других файлов) |
+| focus | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | focusEl | app/onboarding_faq_v71.js |
 | focusSources | app/spells.js |
 | fog | tests/map_rebuild_world_test.js |
@@ -2884,54 +2885,54 @@
 | fontObj | app/Settings.js |
 | fontSelect | app/Settings.js |
 | fontStyleTag | app/Settings.js |
-| foot | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
+| foot | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | footH | app/3dmap/character_body_geometry.js |
-| force | app/market_economy_v55.js, app/onboarding_faq_v71.js |
+| force | app/market_economy_v55.js (+ 1 других файлов) |
 | forceCrit1 | app/dice.js |
 | forceSlot | app/vessel_laserllama_v4_runtime.js |
 | forearmHigh | app/3dmap/character_body_geometry.js |
 | forearmLow | app/3dmap/character_body_geometry.js |
 | foreign | tests/test_class_audit_stage2_runtime.js |
 | fork | app/3dmap/character_body_geometry.js |
-| form | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/cloud_account.js, app/expansion_classes_pack.js (+ 2 ещё) |
+| form | app/3dmap/character_body_geometry.js (+ 5 других файлов) |
 | formattedText | app/data/classes/level_up.js |
-| formula | app/blood_hunter_engine.js, app/class_features_engine.js, app/combat_abilities.js, app/expansion_classes_pack.js |
+| formula | app/blood_hunter_engine.js (+ 3 других файлов) |
 | formulaDamage | app/alchemist_mhp_2024_runtime.js |
 | formulae | app/alchemist_mhp_2024_runtime.js |
 | formulaEffects | app/alchemist_mhp_2024_runtime.js |
 | formulaHero | tests/alchemist_runtime_test.js |
 | formulaIds | app/expansion_classes_pack.js |
-| formulas | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| formulas | app/blood_hunter_engine.js (+ 1 других файлов) |
 | fortifying | app/expansion_classes_pack.js |
-| forward | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js |
-| found | app/3dmap/character_clothing.js, app/3dmap/stress_map.js, app/Settings.js, app/Wallpapers.js (+ 12 ещё) |
+| forward | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| found | app/3dmap/character_clothing.js (+ 15 других файлов) |
 | foundIdx | app/Wallpapers.js |
 | foundItemData | app/Inventory-weight-tracker.js |
 | foundProf | app/Proficiencies.js |
-| foundWeapon | app/Proficienciescheck.js, app/weapons.js |
+| foundWeapon | app/Proficienciescheck.js (+ 1 других файлов) |
 | fov | app/3dmap/map_renderer_3d.js |
-| fr | app/data/classes/Beastheart.js, app/expansion_classes_pack.js |
-| fR1 | app/dice.js, app/spells.js |
-| fR2 | app/dice.js, app/spells.js |
+| fr | app/data/classes/Beastheart.js (+ 1 других файлов) |
+| fR1 | app/dice.js (+ 1 других файлов) |
+| fR2 | app/dice.js (+ 1 других файлов) |
 | fragHighp | app/3dmap/map_renderer_3d.js |
-| frame | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/map_editor.js, tests/character_elf_details_test.js (+ 21 ещё) |
+| frame | app/3dmap/character_body_geometry.js (+ 24 других файлов) |
 | frameColorSelect | app/Settings.js |
 | frameKey | app/Settings.js |
 | frames | tests/character_hair_pack_test.js |
 | frameStyleSelect | app/Settings.js |
-| free | app/3dmap/character_body_geometry.js, app/expansion_classes_pack.js, app/vessel_laserllama_v4_runtime.js |
+| free | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | freeGather | app/world_resource_gathering_v53.js |
-| fresh | app/3dmap/character_body_geometry.js, app/network_gameplay.js, tests/character_editor_morph_assets_test.js, tests/test_v744_sync_authority_save.js |
+| fresh | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
 | frill | app/3dmap/character_body_geometry.js |
-| from | app/bestiary_catalog_v56_13.js, app/companion_gameplay_v27.js, tests/stair_navigation.cjs, tools/prepare_makehuman_gender.js |
-| front | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 1 ещё) |
+| from | app/bestiary_catalog_v56_13.js (+ 3 других файлов) |
+| front | app/3dmap/character_anatomy.js (+ 4 других файлов) |
 | frontal | app/3dmap/character_body_geometry.js |
 | frontCount | app/3dmap/character_body_geometry.js |
 | frontPlate | app/3dmap/character_body_geometry.js |
 | frontTop | app/3dmap/character_clothing.js |
-| fs | app/3dmap/character_editor_3d.js, app/class_features_engine.js, app/companion_gameplay_v27.js, app/crafting_character_influence_test_v46.js (+ 192 ещё) |
+| fs | app/3dmap/character_editor_3d.js (+ 195 других файлов) |
 | fsave | app/expansion_classes_pack.js |
-| fsp | desktop/main.cjs, desktop/update.cjs |
+| fsp | desktop/main.cjs (+ 1 других файлов) |
 | ft | app/expansion_classes_pack.js |
 | full | tests/creation_signature_asset_test.cjs |
 | FULL | app/magic_engine.js |
@@ -2941,7 +2942,7 @@
 | fullCoat | app/3dmap/character_editor_3d.js |
 | fullData | app/data/feats/Feat_widget.js |
 | fullPath | desktop/main.cjs |
-| fur | app/3dmap/character_editor_3d.js, tests/character_animal_heads_test.js |
+| fur | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | furEnabled | app/3dmap/character_editor_3d.js |
 | furryAccessory | app/3dmap/character_editor_3d.js |
 | furryLimb | app/3dmap/character_editor_3d.js |
@@ -2949,15 +2950,15 @@
 | furSelect | app/3dmap/character_editor_3d.js |
 | fuseMinutes | app/alchemist_mhp_2024_runtime.js |
 | fuseRounds | app/alchemist_mhp_2024_runtime.js |
-| future | app/3dmap/character_editor_3d.js, app/3dmap/map_editor.js |
+| future | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | fv | app/expansion_classes_pack.js |
-| fx | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/expansion_classes_pack.js |
-| fy | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js |
-| g | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_appearance_store.js, app/3dmap/character_body_geometry.js (+ 121 ещё) |
+| fx | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
+| fy | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| g | app/3dmap/character_anatomy.js (+ 124 других файлов) |
 | G | app/alchemy_gathering_professions_v52.js |
 | g1 | app/3dmap/map_renderer_2d.js |
-| gain | app/crafting_profession_progression_test_v47.js, app/data/classes/Beastheart.js, app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js (+ 1 ещё) |
-| gained | app/companion_gameplay_v27.js, app/crafting_profession_progression_v47.js |
+| gain | app/crafting_profession_progression_test_v47.js (+ 4 других файлов) |
+| gained | app/companion_gameplay_v27.js (+ 1 других файлов) |
 | gainedHp | app/Hero-info.js |
 | gameplay | tests/test_v713_fixes.js |
 | gameTool | app/character_creation.js |
@@ -2967,18 +2968,18 @@
 | GATE_TOWNS | app/bestiary_catalog_v56_13.js |
 | gather | app/resource_gathering_v35.js |
 | GATHERING_ACTIONS | app/resource_gathering_v35.js |
-| gb | tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js (+ 1 ещё) |
-| gdiag | tests/makehuman_surface_mapping_audit.js, tests/makehuman_vertex_mapping_audit.js |
+| gb | tests/makehuman_morph_bridge.js (+ 4 других файлов) |
+| gdiag | tests/makehuman_surface_mapping_audit.js (+ 1 других файлов) |
 | ge | app/expansion_classes_pack.js |
-| gender | app/3dmap/character_clothing.js, app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tests/character_adult_anatomy_test.js (+ 4 ещё) |
+| gender | app/3dmap/character_clothing.js (+ 7 других файлов) |
 | generated | tests/test_v56.js |
 | generatedHarvest | tests/test_v56.js |
 | generation | app/cloud_sync.js |
 | GENERIC_SPECIALTIES | app/crafting_profession_progression_v47.js |
-| geo | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/character_pose.js (+ 21 ещё) |
+| geo | app/3dmap/character_anatomy.js (+ 24 других файлов) |
 | geometryKey | tests/character_clothing_customizer_geometry_test.js |
 | geoTarget | app/network_gameplay.js |
-| gesture | app/3dmap/character_editor_3d.js, app/3dmap/map_editor.js |
+| gesture | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | getData | app/data/classes/progressionEngine.js |
 | getStat | app/Hero-info.js |
 | getSub | app/data/classes/progressionEngine.js |
@@ -2989,12 +2990,12 @@
 | gi | app/combat_engine.js |
 | gills | app/3dmap/character_body_geometry.js |
 | git | tools/generate_project_atlas.cjs |
-| gl | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js, tests/character_3d_editor_test.js (+ 20 ещё) |
-| glb | tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js (+ 4 ещё) |
-| glbPath | tests/generate_makehuman_glb_morph_fixture.js, tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js (+ 3 ещё) |
+| gl | app/3dmap/character_body_geometry.js (+ 23 других файлов) |
+| glb | tests/makehuman_morph_bridge.js (+ 7 других файлов) |
+| glbPath | tests/generate_makehuman_glb_morph_fixture.js (+ 6 других файлов) |
 | glbVertices | tests/makehuman_topology_audit.js |
 | glen | app/3dmap/character_body_geometry.js |
-| global | app/Settings.js, app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js, app/alchemy_gathering_professions_v52.js (+ 81 ещё) |
+| global | app/Settings.js (+ 84 других файлов) |
 | globalAudio | app/Ambiences.js |
 | glove | app/3dmap/character_body_geometry.js |
 | gn | app/expansion_classes_pack.js |
@@ -3007,9 +3008,9 @@
 | golemEntities | tests/alchemist_runtime_test.js |
 | golemEntity | tests/alchemist_runtime_test.js |
 | golemRestore | tests/alchemist_runtime_test.js |
-| good | app/blood_hunter_engine.js, tests/makehuman_vertex_mapping_audit.js |
-| got | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js, app/class_features_engine.js |
-| gp | app/inventory-coins.js, app/market_economy_v55.js, tests/makehuman_morph_bridge.js, tests/makehuman_target_reverse_transfer_audit.js (+ 3 ещё) |
+| good | app/blood_hunter_engine.js (+ 1 других файлов) |
+| got | app/alchemy_engine_v29.js (+ 2 других файлов) |
+| gp | app/inventory-coins.js (+ 6 других файлов) |
 | gPerE | app/inventory-coins.js |
 | gpInput | app/inventory-coins.js |
 | gpVal | app/inventory-coins.js |
@@ -3025,17 +3026,17 @@
 | graftName | app/alchemist_mhp_2024_runtime.js |
 | graftRemoved | tests/alchemist_runtime_test.js |
 | graftResistant | app/combat_engine.js |
-| grafts | app/alchemist_mhp_2024_runtime.js, app/combat_engine.js |
+| grafts | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | grant | app/crafting_resources_v34.js |
-| granted | app/alchemist_mhp_2024_runtime.js, app/alchemy_gathering_professions_v52.js |
+| granted | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | grantMaterial | app/crafting_engine_v31.js |
 | gray | app/3dmap/character_editor_3d.js |
-| grid | app/Settings.js, app/icon_settings.js, app/icon_settings_v2.js, tests/makehuman_surface_mapping_audit.js (+ 4 ещё) |
-| grip | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js |
+| grid | app/Settings.js (+ 7 других файлов) |
+| grip | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | groom | app/3dmap/character_body_geometry.js |
 | groove | app/3dmap/character_anatomy_geometry.js |
-| ground | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js |
-| group | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 5 ещё) |
+| ground | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| group | app/3dmap/character_anatomy_geometry.js (+ 8 других файлов) |
 | grouped | app/class_features_engine.js |
 | groupedFeats | app/data/classes/level_up.js |
 | groupFeats | app/data/classes/level_up.js |
@@ -3044,33 +3045,33 @@
 | groupName | app/Proficiencies.js |
 | groupOrder | app/data/feats/Feat_widget.js |
 | groupRolls | app/spells.js |
-| groups | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/blood_hunter_engine.js (+ 1 ещё) |
+| groups | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
 | groupsMap | app/Proficiencies.js |
 | groupTitle | app/inventory-modal.js |
 | growth | tests/pugilist_combat_test.js |
 | growthAttack | tests/pugilist_combat_test.js |
 | growthTarget | tests/pugilist_combat_test.js |
 | gs | tests/makehuman_surface_mapping_audit.js |
-| guard | app/gameplay_core_v57.js, app/network_gameplay.js, app/rulesEngine.js |
-| guide | tests/test_v59.js, tests/test_v60.js, tests/test_v61.js, tests/test_v62.js |
+| guard | app/gameplay_core_v57.js (+ 2 других файлов) |
+| guide | tests/test_v59.js (+ 3 других файлов) |
 | guildDesc | app/crafting_character_influence_test_v46.js |
 | gw | tools/prepare_makehuman_gender.js |
-| h | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 98 ещё) |
-| H | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 7 ещё) |
+| h | app/3dmap/character_anatomy.js (+ 101 других файлов) |
+| H | app/3dmap/character_anatomy.js (+ 10 других файлов) |
 | h2 | tests/test_v725_fixes.js |
 | h3 | tests/test_v725_fixes.js |
 | h4 | tests/test_v725_fixes.js |
 | hab | app/bestiary_catalog_v56_1.js |
-| habitat | app/3dmap/character_editor_3d.js, tests/test_v56.js |
+| habitat | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | habitats | app/3dmap/character_editor_3d.js |
 | hadSpeedZero | app/gameplay_core_v57.js |
-| hair | app/3dmap/character_anatomy.js, app/3dmap/character_body_geometry.js, tests/character_elf_details_test.js |
+| hair | app/3dmap/character_anatomy.js (+ 2 других файлов) |
 | hairLength | app/3dmap/character_body_geometry.js |
 | hairProfiles | app/3dmap/character_body_geometry.js |
-| hairs | app/3dmap/character_body_geometry.js, tests/character_hair_pack_test.js |
-| half | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js, app/expansion_classes_pack.js |
+| hairs | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| half | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | HALF_CASTERS | app/rulesEngine.js |
-| hand | app/3dmap/character_body_geometry.js, tests/character_editor_morph_assets_test.js |
+| hand | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | handle | desktop/update.cjs |
 | handleAdd | app/inventory-modal.js |
 | handleAddClick | app/inventory-modal.js |
@@ -3079,14 +3080,14 @@
 | handleDel | app/inventory-modal.js |
 | handleDiceSelect | app/inventory-modal.js |
 | handlePropToggle | app/inventory-modal.js |
-| handler | app/update_manager_v2.js, tests/test_blood_hunter_focus_network.js |
-| handlers | app/class_features_engine.js, tests/test_v714_fixes.js |
+| handler | app/update_manager_v2.js (+ 1 других файлов) |
+| handlers | app/class_features_engine.js (+ 1 других файлов) |
 | handleTabClick | app/Inventory.js |
 | handMax | tests/character_editor_morph_assets_test.js |
 | handoffCalls | tests/test_v748_full_combat_transaction.js |
 | hands | app/3dmap/character_body_geometry.js |
 | harness | tools/check_map_browser.js |
-| harvest | tests/test_v56_11.js, tests/test_v56_12.js |
+| harvest | tests/test_v56_11.js (+ 1 других файлов) |
 | hasActiveModal | app/swipe-lock.js |
 | hasAoe | app/network_gameplay.js |
 | hasAutoStarted | app/Ambiences.js |
@@ -3094,80 +3095,80 @@
 | hasDice | app/spells.js |
 | hasFirearmsAll | app/Proficienciescheck.js |
 | hasGraft | app/alchemist_mhp_2024_runtime.js |
-| hash | app/update_manager_v2.js, desktop/update.cjs, tests/creation_signature_asset_test.cjs, tests/test_v754_update_manager.js (+ 1 ещё) |
-| hashes | tests/character_male_anatomy_fix_test.js, tests/makehuman_gender_recipe_test.js, tools/build_makehuman_morphs.js, tools/check_external_anatomy_browser.js (+ 3 ещё) |
+| hash | app/update_manager_v2.js (+ 4 других файлов) |
+| hashes | tests/character_male_anatomy_fix_test.js (+ 6 других файлов) |
 | hasMagic | app/spells.js |
 | hasMartialAll | app/Proficienciescheck.js |
 | hasProf | app/weapons.js |
 | hasProficiency | app/Inventory.js |
 | hasSimpleAll | app/Proficienciescheck.js |
 | hasSpecificProf | app/Proficienciescheck.js |
-| hasTool | app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js |
+| hasTool | app/crafting_engine_v31.js (+ 2 других файлов) |
 | hasUV | app/3dmap/character_editor_3d.js |
-| hat | app/3dmap/character_body_geometry.js, tests/character_animal_heads_test.js, tests/character_avian_elephant_heads_test.js, tests/character_races_geometry_test.js (+ 1 ещё) |
-| have | app/crafting_disassembly_v51.js, app/resource_processing_v44.js |
-| hay | app/Inventory.js, tests/pugilist_combat_test.js |
+| hat | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
+| have | app/crafting_disassembly_v51.js (+ 1 других файлов) |
+| hay | app/Inventory.js (+ 1 других файлов) |
 | haymaker | tests/pugilist_combat_test.js |
 | hayTarget | tests/pugilist_combat_test.js |
-| hb | tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js (+ 1 ещё) |
+| hb | tests/makehuman_morph_bridge.js (+ 4 других файлов) |
 | hCls | app/spells.js |
 | hctx | tests/test_v748_full_combat_transaction.js |
-| hd | app/occultist_kibbles_v11_runtime.js, app/warlord_laserllama_v330_runtime.js |
+| hd | app/occultist_kibbles_v11_runtime.js (+ 1 других файлов) |
 | hdiag | tests/makehuman_vertex_mapping_audit.js |
-| head | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/inventory_containers_v54.js (+ 2 ещё) |
+| head | app/3dmap/character_anatomy_geometry.js (+ 5 других файлов) |
 | HEAD_AXES | app/3dmap/character_system.js |
 | HEAD_FORMS | app/3dmap/character_system.js |
 | HEAD_STYLES | app/3dmap/character_system.js |
-| header | app/rulesEngine.js, tools/build_makehuman_morphs.js |
+| header | app/rulesEngine.js (+ 1 других файлов) |
 | headerAC | app/app.js |
-| headers | app/cloud_sync.js, desktop/main.cjs, tools/check_cloud_account_browser.cjs |
+| headers | app/cloud_sync.js (+ 2 других файлов) |
 | heading | app/dice.js |
 | headMax | tests/character_editor_morph_assets_test.js |
-| heal | app/expansion_classes_pack.js, tests/alchemist_runtime_test.js, tests/test_v748_full_combat_transaction.js |
+| heal | app/expansion_classes_pack.js (+ 2 других файлов) |
 | heal2 | app/expansion_classes_pack.js |
 | healBatch | tests/test_v748_full_combat_transaction.js |
-| healed | app/alchemist_mhp_2024_runtime.js, app/alchemy_gameplay_v30.js, app/blood_hunter_engine.js, app/class_features_engine.js (+ 6 ещё) |
+| healed | app/alchemist_mhp_2024_runtime.js (+ 9 других файлов) |
 | healer | app/blood_hunter_engine.js |
-| healing | app/warden_mhp_2024_runtime.js, app/warlord_laserllama_v330_runtime.js |
+| healing | app/warden_mhp_2024_runtime.js (+ 1 других файлов) |
 | healMap | app/alchemist_mhp_2024_runtime.js |
 | healRoll | app/alchemist_mhp_2024_runtime.js |
 | healTarget | tests/test_v748_full_combat_transaction.js |
 | healv | app/class_features_engine.js |
 | heatDamage | tests/alchemist_runtime_test.js |
 | heatMode | app/alchemist_mhp_2024_runtime.js |
-| height | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js, app/3dmap/stress_map.js (+ 2 ещё) |
+| height | app/3dmap/character_body_geometry.js (+ 5 других файлов) |
 | heights | tests/stair_navigation.cjs |
 | help | app/onboarding_faq_v71.js |
 | hem | app/3dmap/character_clothing.js |
 | hemoragent | tests/alchemist_runtime_test.js |
 | hemoragentNoPool | tests/alchemist_runtime_test.js |
-| hero | app/Hero-info.js, app/Settings.js, app/alchemy_gameplay_v30.js, app/combat_engine.js (+ 27 ещё) |
+| hero | app/Hero-info.js (+ 30 других файлов) |
 | heroClassNames | app/spells.js |
 | heroFeats | app/data/feats/Feat_widget.js |
 | heroFeatsRef | app/data/feats/Feat_widget.js |
 | heroIsExtra | app/data/classes/level_up.js |
 | heroLevel | app/content_framework.js |
 | heroLevels | app/monster_engine.js |
-| hex | app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/Wallpapers.js, app/update_manager_v2.js |
-| hi | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/map_renderer_3d.js, app/alchemist_mhp_2024_runtime.js (+ 7 ещё) |
+| hex | app/3dmap/character_clothing.js (+ 3 других файлов) |
+| hi | app/3dmap/character_body_geometry.js (+ 10 других файлов) |
 | hidden | app/alchemy_gameplay_v30.js |
 | hiddenBuckets | app/3dmap/character_body_geometry.js |
-| high | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, tests/character_external_anatomy_test.js, tests/makehuman_gender_recipe_test.js (+ 1 ещё) |
+| high | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
 | highlight | app/3dmap/character_editor_3d.js |
 | hint | app/3dmap/character_editor_3d.js |
-| hip | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
+| hip | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | hipCenter | app/3dmap/character_clothing.js |
 | hipMax | app/3dmap/character_clothing.js |
 | hipMin | app/3dmap/character_clothing.js |
 | hipRadius | app/3dmap/character_clothing.js |
-| history | app/3dmap/character_editor_3d.js, app/3dmap/map_editor.js, app/cloud_account.js, app/monster_loot_engine_v37.js (+ 1 ещё) |
-| hit | app/combat_engine.js, app/companion_gameplay_v27.js, app/crafting_dlc_v50.js, app/data/subclasses/subclassesRegistry.js (+ 8 ещё) |
+| history | app/3dmap/character_editor_3d.js (+ 4 других файлов) |
+| hit | app/combat_engine.js (+ 11 других файлов) |
 | HIT_COST | app/martyr_mhp_2024_runtime.js |
-| hitDie | app/data/classes/extra_class_stubs.js, app/data/classes/level_up.js, app/expansion_class_progressions.js |
+| hitDie | app/data/classes/extra_class_stubs.js (+ 2 других файлов) |
 | hitDieMax | app/Hero-info.js |
 | hiX | app/3dmap/character_body_geometry.js |
 | hiY | app/3dmap/character_body_geometry.js |
-| hm | tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js (+ 4 ещё) |
+| hm | tests/makehuman_morph_bridge.js (+ 7 других файлов) |
 | hole | app/3dmap/character_body_geometry.js |
 | holeCounts | app/3dmap/character_anatomy_geometry.js |
 | holes | app/3dmap/character_body_geometry.js |
@@ -3177,84 +3178,84 @@
 | homebrewClasses | tests/test_v755_creation_buckets.js |
 | homunculusCraft | tests/alchemist_runtime_test.js |
 | homunculusEntities | tests/alchemist_runtime_test.js |
-| homunculusOwner | app/combat_engine.js, tests/alchemist_runtime_test.js |
+| homunculusOwner | app/combat_engine.js (+ 1 других файлов) |
 | homunculusState | app/combat_engine.js |
-| hood | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js |
+| hood | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | hoof | tests/character_native_limbs_test.js |
 | hoofScale | app/3dmap/character_body_geometry.js |
 | hoofY | app/3dmap/character_body_geometry.js |
 | hook | app/3dmap/character_body_geometry.js |
-| hooks | tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js, tests/pugilist_runtime_test.js, tests/test_v56_11.js |
+| hooks | tests/alchemist_combat_test.js (+ 3 других файлов) |
 | HORN_STYLES | app/3dmap/character_system.js |
 | hornAttack | tests/alchemist_runtime_test.js |
 | hornInstall | tests/alchemist_runtime_test.js |
 | hornPart | app/3dmap/character_body_geometry.js |
-| horns | app/3dmap/character_body_geometry.js, tests/character_tiefling_details_test.js |
+| horns | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | hornSelect | app/3dmap/character_editor_3d.js |
 | hornSize | tests/character_tiefling_details_test.js |
-| hornStyle | app/3dmap/character_body_geometry.js, tools/check_tiefling_details_browser.js |
-| horror | app/bestiary_catalog_v56_10.js, tests/test_v56_10.js |
+| hornStyle | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| horror | app/bestiary_catalog_v56_10.js (+ 1 других файлов) |
 | horseY | app/3dmap/character_body_geometry.js |
 | hosiery | app/3dmap/character_editor_3d.js |
 | hosieryDen | tests/character_clothing_test.js |
-| host | app/alchemy_gathering_professions_v52.js, app/cloud_account.js, app/companion_packs_v26.js, app/crafting_disassembly_repair_v51.js (+ 21 ещё) |
+| host | app/alchemy_gathering_professions_v52.js (+ 24 других файлов) |
 | hostBox | app/network_engine.js |
 | hostDestroyed | app/parasite_extra_runtime.js |
-| hostiles | app/companion_gameplay_v27.js, app/data/classes/Beastheart.js |
+| hostiles | app/companion_gameplay_v27.js (+ 1 других файлов) |
 | houndHP | app/expansion_classes_pack.js |
 | houndTemplate | app/expansion_classes_pack.js |
 | howlTargets | app/blood_hunter_engine.js |
-| hp | app/alchemist_mhp_2024_runtime.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js (+ 16 ещё) |
+| hp | app/alchemist_mhp_2024_runtime.js (+ 19 других файлов) |
 | hpAfter | tests/test_v722_fixes.js |
 | hpAfterTick | tests/alchemist_combat_test.js |
 | hpBeforeShift | tests/test_class_audit_stage2_runtime.js |
-| hpCurrentInput | app/data/classes/level_up.js, app/races.js |
+| hpCurrentInput | app/data/classes/level_up.js (+ 1 других файлов) |
 | hpDamage | app/combat_engine.js |
 | hpGain | app/data/classes/level_up.js |
-| hpMax | app/character.js, app/expansion_classes_pack.js |
-| hpMaxInput | app/data/classes/level_up.js, app/races.js |
+| hpMax | app/character.js (+ 1 других файлов) |
+| hpMaxInput | app/data/classes/level_up.js (+ 1 других файлов) |
 | hpNow | app/expansion_classes_pack.js |
 | hpObj | app/alchemist_mhp_2024_runtime.js |
 | hpRes | app/data/classes/level_up.js |
 | hpShape | tests/pugilist_combat_test.js |
 | hs | tests/makehuman_surface_mapping_audit.js |
-| html | app/Ambiences.js, app/Backgrounds.js, app/Proficiencies.js, app/character.js (+ 48 ещё) |
-| http | tools/check_adult_anatomy_browser.js, tools/check_adult_base_browser.js, tools/check_animal_heads_browser.js, tools/check_avian_elephant_heads_browser.js (+ 34 ещё) |
-| hud | tests/test_v68.js, tests/test_v69.js |
+| html | app/Ambiences.js (+ 51 других файлов) |
+| http | tools/check_adult_anatomy_browser.js (+ 37 других файлов) |
+| hud | tests/test_v68.js (+ 1 других файлов) |
 | hugeHands | tests/alchemist_runtime_test.js |
-| human | tests/character_3d_foundation_test.js, tests/character_fur_test.js, tests/character_ghost_geometry_test.js |
+| human | tests/character_3d_foundation_test.js (+ 2 других файлов) |
 | hunter | tests/test_v731_fixes.js |
 | hv | tests/test_v56.js |
 | hx | app/expansion_classes_pack.js |
 | hy | app/3dmap/character_body_geometry.js |
 | hybrid | app/expansion_classes_pack.js |
-| i | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 157 ещё) |
-| ia | tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
+| i | app/3dmap/character_anatomy.js (+ 160 других файлов) |
+| ia | tests/makehuman_surface_mapping_audit.js (+ 2 других файлов) |
 | ib | app/3dmap/gltf_character_pipeline.js |
-| icon | app/Inventory-weight-tracker.js, app/Settings.js, app/icon_settings.js, app/icon_settings_v2.js |
+| icon | app/Inventory-weight-tracker.js (+ 3 других файлов) |
 | iconEl | app/Inventory-weight-tracker.js |
-| iconId | app/Settings.js, app/icon_settings.js, app/icon_settings_v2.js, desktop/preload.cjs |
+| iconId | app/Settings.js (+ 3 других файлов) |
 | iconPath | desktop/main.cjs |
-| ICONS | app/Settings.js, app/icon_settings.js, app/icon_settings_v2.js |
-| id | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_appearance_store.js, app/3dmap/character_body_geometry.js (+ 124 ещё) |
-| ID | app/spellblade_kibbles_runtime.js, app/warlord_laserllama_v330_runtime.js |
+| ICONS | app/Settings.js (+ 2 других файлов) |
+| id | app/3dmap/character_anatomy.js (+ 127 других файлов) |
+| ID | app/spellblade_kibbles_runtime.js (+ 1 других файлов) |
 | idat | tests/character_skin_material_test.js |
 | identity | app/3dmap/map_renderer_3d.js |
 | idName | app/data/feats/Feat_widget.js |
 | idOrName | app/crafting_professions_v38.js |
-| ids | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 24 ещё) |
-| idv | app/3dmap/gltf_loader.js, app/inventory_containers_v54.js |
-| idx | app/3dmap/character_editor_3d.js, app/3dmap/gltf_loader.js, app/Ambiences.js, app/Settings.js (+ 27 ещё) |
+| ids | app/3dmap/character_anatomy_geometry.js (+ 27 других файлов) |
+| idv | app/3dmap/gltf_loader.js (+ 1 других файлов) |
+| idx | app/3dmap/character_editor_3d.js (+ 30 других файлов) |
 | ignoreWeight | app/inventory_containers_v54.js |
-| ii | tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_surface_transfer_audit.js |
+| ii | tests/makehuman_surface_mapping_audit.js (+ 1 других файлов) |
 | illIds | tests/test_class_audit_runtime.js |
-| im | app/3dmap/gltf_loader.js, app/3dmap/map_renderer_2d.js, app/3dmap/map_renderer_3d.js, app/alchemist_mhp_2024_runtime.js |
+| im | app/3dmap/gltf_loader.js (+ 3 других файлов) |
 | Image | tests/character_3d_editor_test.js |
 | images | tests/character_3d_editor_test.js |
-| img | app/3dmap/character_editor_3d.js, app/3dmap/gltf_loader.js, app/Logo.js, app/dice.js |
+| img | app/3dmap/character_editor_3d.js (+ 3 других файлов) |
 | IMG | app/3dmap/map_renderer_2d.js |
 | imitation | app/alchemist_mhp_2024_runtime.js |
-| immune | app/vtt_debug_dice_lab_v706.js, tests/test_blood_hunter_profane_focus.js |
+| immune | app/vtt_debug_dice_lab_v706.js (+ 1 других файлов) |
 | immuneCharm | app/expansion_classes_pack.js |
 | immuneFire | tests/alchemist_combat_test.js |
 | immuneUntil | app/combat_engine.js |
@@ -3262,42 +3263,42 @@
 | imported | tests/imported_3d_editor_assets.cjs |
 | improved | app/martyr_mhp_2024_runtime.js |
 | inCombat | app/blood_hunter_engine.js |
-| incoming | tests/desktop_update_contract.cjs, tests/test_class_audit_stage2_runtime.js |
+| incoming | tests/desktop_update_contract.cjs (+ 1 других файлов) |
 | incomingType | app/combat_engine.js |
 | incompatible | app/3dmap/character_editor_3d.js |
 | indent | app/inventory_containers_v54.js |
-| index | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/Ambiences.js (+ 21 ещё) |
+| index | app/3dmap/character_anatomy_geometry.js (+ 24 других файлов) |
 | indexed | app/Inventory.js |
-| indices | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 1 ещё) |
-| Infinity | app/3dmap/character_body_geometry.js, app/3dmap/gltf_loader.js, tests/generate_makehuman_glb_morph_fixture.js, tests/makehuman_morph_bridge.js (+ 5 ещё) |
+| indices | app/3dmap/character_anatomy_geometry.js (+ 4 других файлов) |
+| Infinity | app/3dmap/character_body_geometry.js (+ 8 других файлов) |
 | influence | app/3dmap/character_anatomy_geometry.js |
 | influences | app/3dmap/character_anatomy_geometry.js |
-| info | app/cloud_account.js, app/inventory-coins.js, tests/test_v747_event_race_compaction.js, tests/test_v752_replay_hash_authority.js |
+| info | app/cloud_account.js (+ 3 других файлов) |
 | infoBox | app/races.js |
 | infoText | app/Inventory-weight-tracker.js |
-| ing | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js, app/alchemy_gathering_professions_v52.js |
+| ing | app/alchemy_engine_v29.js (+ 2 других файлов) |
 | INGREDIENT_SOURCES | app/alchemy_gathering_professions_v52.js |
 | INGREDIENTS | app/alchemy_engine_v29.js |
-| ings | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js |
+| ings | app/alchemy_engine_v29.js (+ 1 других файлов) |
 | ini | app/network_gameplay.js |
-| initElem | app/Backgrounds.js, app/skills.js |
-| initial | tests/character_3d_editor_test.js, tests/character_swarm_geometry_test.js, tools/check_character_head_browser.js |
+| initElem | app/Backgrounds.js (+ 1 других файлов) |
+| initial | tests/character_3d_editor_test.js (+ 2 других файлов) |
 | initialAngle | app/3dmap/character_clothing.js |
 | initialId | tests/character_3d_editor_test.js |
 | initialProficiencies | app/character_creation.js |
-| initialSkillsData | app/Backgrounds.js, app/character_creation.js |
-| initiative | app/dnd_tools.js, app/summoning_engine.js |
+| initialSkillsData | app/Backgrounds.js (+ 1 других файлов) |
+| initiative | app/dnd_tools.js (+ 1 других файлов) |
 | inline | app/3dmap/gltf_loader.js |
-| inner | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js |
+| inner | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | innerDivs | app/Proficiencies.js |
 | innerHtml | app/spells.js |
 | innerList | app/Inventory.js |
 | inp | app/inventory-modal.js |
-| input | app/3dmap/character_anatomy.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js (+ 18 ещё) |
+| input | app/3dmap/character_anatomy.js (+ 21 других файлов) |
 | inputColEP | app/inventory-coins.js |
 | inputColPP | app/inventory-coins.js |
 | inputCopper | app/inventory-coins.js |
-| inputElem | app/Experience.js, app/data/classes/level_up.js |
+| inputElem | app/Experience.js (+ 1 других файлов) |
 | inputField | app/Inventory-weight-tracker.js |
 | inputGrid | app/inventory-coins.js |
 | inputId | app/resource_processing_v44.js |
@@ -3307,18 +3308,18 @@
 | inside | app/network_gameplay.js |
 | insight | app/alchemist_mhp_2024_runtime.js |
 | inspect | app/alchemy_engine_v29.js |
-| installed | app/content_catalog.js, app/vtt_debug_error_log_v709.js |
+| installed | app/content_catalog.js (+ 1 других файлов) |
 | installedGrafts | app/alchemist_mhp_2024_runtime.js |
 | instantDeath | app/combat_engine.js |
-| int | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/bestiary_catalog_v56_2.js (+ 7 ещё) |
-| Int16Array | tests/character_3d_morph_assets_test.js, tests/character_3d_skin_assets_test.js, tests/character_adult_anatomy_test.js, tests/character_animal_heads_test.js (+ 18 ещё) |
-| Int8Array | tests/character_3d_morph_assets_test.js, tests/character_3d_skin_assets_test.js, tests/character_adult_anatomy_test.js, tests/character_animal_heads_test.js (+ 18 ещё) |
+| int | app/bestiary_catalog_v56_1.js (+ 10 других файлов) |
+| Int16Array | tests/character_3d_morph_assets_test.js (+ 21 других файлов) |
+| Int8Array | tests/character_3d_morph_assets_test.js (+ 21 других файлов) |
 | internal | app/expansion_classes_pack.js |
 | intervalVal | app/Wallpapers.js |
-| intMod | app/Backgrounds.js, app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js (+ 2 ещё) |
-| inv | app/3dmap/character_anatomy_geometry.js, app/Proficienciescheck.js, app/alchemy_engine_v29.js, app/alchemy_gathering_professions_v52.js (+ 11 ещё) |
+| intMod | app/Backgrounds.js (+ 5 других файлов) |
+| inv | app/3dmap/character_anatomy_geometry.js (+ 14 других файлов) |
 | invalidDead | tests/alchemist_runtime_test.js |
-| inventory | app/Proficienciescheck.js, app/weapons.js |
+| inventory | app/Proficienciescheck.js (+ 1 других файлов) |
 | inventorySearchState | app/Inventory.js |
 | invHeaderACEl | app/Inventory.js |
 | invis | tests/alchemist_runtime_test.js |
@@ -3334,13 +3335,13 @@
 | ip | app/character_creation.js |
 | ipcMain | desktop/main.cjs |
 | ipcRenderer | desktop/preload.cjs |
-| ir | app/3dmap/gltf_loader.js, app/expansion_classes_pack.js |
+| ir | app/3dmap/gltf_loader.js (+ 1 других файлов) |
 | ironChinAttack | tests/pugilist_combat_test.js |
 | ironChinTarget | tests/pugilist_combat_test.js |
 | irregular | app/3dmap/character_body_geometry.js |
 | is | tests/makehuman_surface_mapping_audit.js |
 | isActionProcessed | app/inventory-modal.js |
-| isActive | app/Wallpapers.js, app/character.js |
+| isActive | app/Wallpapers.js (+ 1 других файлов) |
 | isAlreadyHas | app/Proficiencies.js |
 | isAsiLevel | app/data/classes/level_up.js |
 | isAttackOrCheck | app/dice.js |
@@ -3348,22 +3349,22 @@
 | isAvailable | app/spells.js |
 | isBlood | app/network_gameplay.js |
 | isBomb | app/alchemist_mhp_2024_runtime.js |
-| isChecked | app/Backgrounds.js, app/Inventory.js, app/inventory-modal.js, app/skills.js (+ 1 ещё) |
+| isChecked | app/Backgrounds.js (+ 4 других файлов) |
 | isCrit | app/spells.js |
 | isDead | app/alchemist_mhp_2024_runtime.js |
 | isDebug | app/Settings.js |
 | isDebugEnabled | app/debug.js |
 | isDestroyed | app/Logo.js |
 | isDrawerOpen | app/dice.js |
-| isEnabled | app/Settings.js, app/Wallpapers.js |
+| isEnabled | app/Settings.js (+ 1 других файлов) |
 | isExpert | app/dice.js |
 | isExtraHero | app/data/classes/level_up.js |
 | isFinesse | app/dice.js |
 | isFinger | app/3dmap/character_body_geometry.js |
-| isFinite | tests/test_v55.js, tests/test_v55_2.js, tests/test_v55_3.js, tests/test_v56.js (+ 12 ещё) |
+| isFinite | tests/test_v55.js (+ 15 других файлов) |
 | isFirearm | app/Proficienciescheck.js |
 | isFree | app/vessel_laserllama_v4_runtime.js |
-| isGhost | app/character_creation.js, app/data/classes/level_up.js |
+| isGhost | app/character_creation.js (+ 1 других файлов) |
 | isGhostExtra | app/character_creation.js |
 | isGhostHero | app/data/classes/level_up.js |
 | isGrouped | app/inventory-modal.js |
@@ -3376,85 +3377,85 @@
 | isLeft | app/3dmap/character_anatomy.js |
 | isMartial | app/Proficienciescheck.js |
 | isMoreStep | app/onboarding_faq_v71.js |
-| isNewClass | app/data/classes/level_up.js, app/data/classes/progressionEngine.js |
+| isNewClass | app/data/classes/level_up.js (+ 1 других файлов) |
 | isolated | tests/update_ota_flow_test.js |
 | isOverLimit | app/spells.js |
 | isOverweight | app/Inventory-weight-tracker.js |
-| isParasite | app/character_creation.js, app/data/classes/level_up.js |
+| isParasite | app/character_creation.js (+ 1 других файлов) |
 | isParasiteExtra | app/character_creation.js |
 | isParasiteHero | app/data/classes/level_up.js |
 | isPhbA | app/spells.js |
 | isPlayingAmbience | app/Ambiences.js |
 | isPOT | app/3dmap/map_renderer_3d.js |
 | isPrepared | app/spells.js |
-| isProf | app/Backgrounds.js, app/character.js, app/skills.js |
+| isProf | app/Backgrounds.js (+ 2 других файлов) |
 | isProficient | app/dice.js |
 | isRanged | app/dice.js |
 | isRepeatOneOn | app/Ambiences.js |
 | isRight | app/3dmap/character_anatomy.js |
 | isRite | app/blood_hunter_engine.js |
 | isRowActionProcessed | app/inventory-modal.js |
-| isSelected | app/Ambiences.js, app/inventory-modal.js |
+| isSelected | app/Ambiences.js (+ 1 других файлов) |
 | isShield | app/Inventory.js |
 | isShuffleOn | app/Ambiences.js |
 | isSimple | app/Proficienciescheck.js |
 | isSuccess | app/dice.js |
 | issues | app/crafting_professions_v38.js |
-| isSwarm | app/character_creation.js, app/data/classes/level_up.js |
+| isSwarm | app/character_creation.js (+ 1 других файлов) |
 | isSwarmExtra | app/character_creation.js |
 | isSwarmHero | app/data/classes/level_up.js |
 | isWalterHero | app/data/classes/level_up.js |
-| isWalterParasite | app/character_creation.js, app/data/classes/level_up.js |
+| isWalterParasite | app/character_creation.js (+ 1 других файлов) |
 | isWalterParasiteExtra | app/character_creation.js |
 | isWalterParasiteHero | app/data/classes/level_up.js |
-| it | app/crafting_disassembly_v51.js, app/inventory_containers_v54.js, app/market_economy_v55.js, app/market_social_v55_3.js (+ 1 ещё) |
-| item | app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/Inventory-weight-tracker.js (+ 30 ещё) |
+| it | app/crafting_disassembly_v51.js (+ 4 других файлов) |
+| item | app/3dmap/character_clothing.js (+ 33 других файлов) |
 | itemArray | app/Inventory-weight-tracker.js |
 | itemCards | app/Inventory-weight-tracker.js |
 | itemCategory | app/Inventory.js |
-| itemData | app/Inventory-weight-tracker.js, app/inventory-modal.js |
-| itemId | app/market_economy_v55.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| itemData | app/Inventory-weight-tracker.js (+ 1 других файлов) |
+| itemId | app/market_economy_v55.js (+ 2 других файлов) |
 | itemName | app/Inventory.js |
 | itemRegistry | app/Inventory-weight-tracker.js |
-| items | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_system.js, app/3dmap/map_world.js (+ 10 ещё) |
-| iv | app/3dmap/gltf_loader.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| iw | app/expansion_classes_pack.js, tests/test_class_audit_stage4_runtime.js |
-| ix | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, tests/character_external_anatomy_test.js |
-| j | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 20 ещё) |
+| items | app/3dmap/character_body_geometry.js (+ 13 других файлов) |
+| iv | app/3dmap/gltf_loader.js (+ 3 других файлов) |
+| iw | app/expansion_classes_pack.js (+ 1 других файлов) |
+| ix | app/3dmap/character_anatomy_geometry.js (+ 3 других файлов) |
+| j | app/3dmap/character_anatomy_geometry.js (+ 23 других файлов) |
 | J | app/3dmap/character_body_geometry.js |
 | jaw | app/3dmap/character_body_geometry.js |
-| jb | tests/makehuman_gender_recipe_test.js, tools/build_makehuman_morphs.js |
-| jh | tests/makehuman_gender_recipe_test.js, tools/build_makehuman_morphs.js |
+| jb | tests/makehuman_gender_recipe_test.js (+ 1 других файлов) |
+| jh | tests/makehuman_gender_recipe_test.js (+ 1 других файлов) |
 | ji | app/3dmap/gltf_character_pipeline.js |
 | jinx | app/combat_engine.js |
 | joinBox | app/network_engine.js |
 | jointIds | tests/character_external_anatomy_test.js |
-| joints | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_pose.js, app/3dmap/gltf_character_pipeline.js, tests/human_base_glb_audit.js (+ 1 ещё) |
-| journal | app/vtt_debug_sandbox_v701.js, tests/cloud_sync_test.cjs |
-| JOURNAL | app/cloud_sync.js, tests/cloud_sync_test.cjs |
+| joints | app/3dmap/character_anatomy_geometry.js (+ 4 других файлов) |
+| journal | app/vtt_debug_sandbox_v701.js (+ 1 других файлов) |
+| JOURNAL | app/cloud_sync.js (+ 1 других файлов) |
 | jp | tests/makehuman_gender_recipe_test.js |
 | jpad | tools/build_makehuman_morphs.js |
 | JSDOM | tests/map_editor_dom_test.js |
-| json | app/3dmap/gltf_loader.js, app/cloud_sync.js, tests/generate_makehuman_glb_morph_fixture.js, tests/gltf_loader_smoke.cjs (+ 9 ещё) |
-| JSON | app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js (+ 52 ещё) |
+| json | app/3dmap/gltf_loader.js (+ 12 других файлов) |
+| JSON | app/crafting_character_influence_test_v46.js (+ 55 других файлов) |
 | jsonBytes | tests/generate_makehuman_glb_morph_fixture.js |
 | jsonBytes0 | tests/generate_makehuman_glb_morph_fixture.js |
 | jsonPad | tests/generate_makehuman_glb_morph_fixture.js |
-| k | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 105 ещё) |
-| K | app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js |
-| keep | app/3dmap/character_body_geometry.js, app/alchemist_mhp_2024_runtime.js, app/companion_gameplay_v27.js, app/data/classes/Beastheart.js (+ 1 ещё) |
+| k | app/3dmap/character_anatomy.js (+ 108 других файлов) |
+| K | app/3dmap/gltf_character_pipeline.js (+ 1 других файлов) |
+| keep | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
 | keepConditions | app/alchemist_mhp_2024_runtime.js |
 | keepEffects | app/alchemist_mhp_2024_runtime.js |
 | keepFaces | app/3dmap/character_anatomy_geometry.js |
 | keepResistance | app/alchemist_mhp_2024_runtime.js |
-| key | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/character_pose.js (+ 54 ещё) |
-| KEY | app/3dmap/character_appearance_store.js, app/3dmap/map_model.js, app/campaign_manager.js, app/cloud_sync.js (+ 16 ещё) |
+| key | app/3dmap/character_body_geometry.js (+ 57 других файлов) |
+| KEY | app/3dmap/character_appearance_store.js (+ 19 других файлов) |
 | keyName | app/alchemist_mhp_2024_runtime.js |
-| keys | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js, app/content_framework.js (+ 3 ещё) |
+| keys | app/3dmap/character_body_geometry.js (+ 6 других файлов) |
 | kg | app/inventory-modal.js |
 | kgInput | app/inventory-modal.js |
 | killer | app/gameplay_core_v57.js |
-| kind | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/character_morph_assets.js, app/3dmap/map_world.js (+ 14 ещё) |
+| kind | app/3dmap/character_body_geometry.js (+ 17 других файлов) |
 | knee | app/3dmap/character_body_geometry.js |
 | kneeHigh | app/3dmap/character_body_geometry.js |
 | kneeLine | app/3dmap/character_body_geometry.js |
@@ -3463,8 +3464,8 @@
 | knockoutHero | tests/pugilist_combat_test.js |
 | knockoutTarget | tests/pugilist_combat_test.js |
 | knot | app/3dmap/character_editor_3d.js |
-| known | app/alchemist_mhp_2024_runtime.js, app/alchemy_gameplay_v30.js, app/blood_hunter_engine.js, app/class_features_engine.js (+ 4 ещё) |
-| KNOWN | app/runekeeper_taron_v12_runtime.js, app/vessel_laserllama_v4_runtime.js |
+| known | app/alchemist_mhp_2024_runtime.js (+ 7 других файлов) |
+| KNOWN | app/runekeeper_taron_v12_runtime.js (+ 1 других файлов) |
 | knownCantrips | app/alchemist_mhp_2024_runtime.js |
 | knownFormula | app/expansion_classes_pack.js |
 | knownProcessed | app/crafting_resources_v34.js |
@@ -3473,23 +3474,23 @@
 | koMod | tests/pugilist_runtime_test.js |
 | koRoll | app/expansion_classes_pack.js |
 | koTarget | tests/pugilist_runtime_test.js |
-| l | app/3dmap/character_body_geometry.js, app/3dmap/map_model.js, app/3dmap/map_renderer_2d.js, app/3dmap/map_renderer_3d.js (+ 35 ещё) |
-| L | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, tests/test_v706.js |
+| l | app/3dmap/character_body_geometry.js (+ 38 других файлов) |
+| L | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
 | la | app/network_gameplay.js |
-| label | app/3dmap/character_editor_3d.js, app/Inventory-weight-tracker.js, app/cloud_account.js, app/crafting_professions_v38.js (+ 5 ещё) |
-| labels | app/3dmap/character_editor_3d.js, app/alchemy_gameplay_v30.js, app/blood_hunter_engine.js |
+| label | app/3dmap/character_editor_3d.js (+ 8 других файлов) |
+| labels | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
 | LABELS | app/warden_mhp_2024_runtime.js |
 | lamp | tests/map_rebuild_world_test.js |
-| landscape | desktop/main.cjs, desktop/preload.cjs |
+| landscape | desktop/main.cjs (+ 1 других файлов) |
 | langCount | app/character_creation.js |
 | langs | app/runekeeper_taron_v12_runtime.js |
 | LANGS | app/runekeeper_taron_v12_runtime.js |
 | langStr | app/character_creation.js |
 | langText | app/races.js |
-| larva | app/3dmap/character_body_geometry.js, app/parasite_extra_runtime.js |
+| larva | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | larvaBounds | app/3dmap/character_editor_3d.js |
 | larval | app/3dmap/character_editor_3d.js |
-| last | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_clothing.js, app/3dmap/gltf_character_pipeline.js, app/3dmap/map_editor.js (+ 3 ещё) |
+| last | app/3dmap/character_anatomy_geometry.js (+ 6 других файлов) |
 | lastError | app/3dmap/character_editor_3d.js |
 | lastFace | tests/makehuman_topology_audit.js |
 | lastResult | app/market_social_v55_3.js |
@@ -3501,33 +3502,33 @@
 | latitudes | app/3dmap/character_anatomy_geometry.js |
 | launchTour | app/onboarding_faq_v71.js |
 | layer | app/3dmap/character_body_geometry.js |
-| layout | tools/check_character_editor_browser.js, tools/check_pose_browser.js |
+| layout | tools/check_character_editor_browser.js (+ 1 других файлов) |
 | lazarusOwner | tests/alchemist_runtime_test.js |
 | lbs | app/inventory-modal.js |
 | le | app/vtt_mobile_session_v67.js |
-| lead | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| lead | app/expanded_classes_v23.js (+ 1 других файлов) |
 | leaf | app/3dmap/character_editor_3d.js |
 | leafSize | tests/makehuman_morph_bridge.js |
 | lean | app/3dmap/character_body_geometry.js |
 | learned | app/crafting_profession_progression_v47.js |
 | leather | app/3dmap/character_editor_3d.js |
 | leatherQty | app/crafting_character_influence_test_v46.js |
-| left | app/3dmap/character_clothing.js, app/Backgrounds.js, app/blood_hunter_engine.js, app/character_creation.js (+ 9 ещё) |
+| left | app/3dmap/character_clothing.js (+ 12 других файлов) |
 | leftReaction | app/combat_engine.js |
-| leg | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
-| legacy | app/Proficienciescheck.js, app/blood_hunter_engine.js, app/martyr_mhp_2024_runtime.js, app/shifter_laserllama_v2_1_runtime.js (+ 5 ещё) |
+| leg | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| legacy | app/Proficienciescheck.js (+ 8 других файлов) |
 | legacyCount | tools/run_tests_v731.js |
 | legacyCurses | app/accursed_oap_v11_runtime.js |
 | legacyHuman | tests/character_3d_foundation_test.js |
 | legacyPact | app/magic_engine.js |
 | legend | app/3dmap/character_editor_3d.js |
 | legPhase | app/3dmap/character_body_geometry.js |
-| len | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_pose.js, app/3dmap/gltf_loader.js (+ 9 ещё) |
-| length | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, tests/character_skin_material_test.js |
+| len | app/3dmap/character_body_geometry.js (+ 12 других файлов) |
+| length | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
 | lengths | tests/makehuman_target_surface_transfer_audit.js |
-| level | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/Settings.js, app/accursed_oap_v11_runtime.js (+ 33 ещё) |
+| level | app/3dmap/character_anatomy_geometry.js (+ 36 других файлов) |
 | level1 | app/expansion_class_progressions.js |
-| levelData | app/data/classes/level_up.js, app/data/classes/progressionEngine.js |
+| levelData | app/data/classes/level_up.js (+ 1 других файлов) |
 | levelDisplays | app/data/classes/level_up.js |
 | levelFilter | app/spells.js |
 | levelFour | tests/alchemist_runtime_test.js |
@@ -3535,14 +3536,14 @@
 | levelInputs | app/data/classes/level_up.js |
 | levelOk | app/spells.js |
 | levelReq | app/expansion_classes_pack.js |
-| levels | app/data/classes/Accursed.js, app/data/classes/Alchemist.js, app/data/classes/BloodHunter.js, app/data/classes/Illigger.js (+ 20 ещё) |
+| levels | app/data/classes/Accursed.js (+ 23 других файлов) |
 | LEVELS | app/crafting_profession_progression_v47.js |
 | levelSources | app/spells.js |
 | levelSpells | app/spells.js |
 | levelUpBtn | app/Experience.js |
 | levelUpSrc | tests/test_v708_fixes.js |
 | levelVal | app/spells.js |
-| li | app/3dmap/map_renderer_2d.js, app/3dmap/stress_map.js |
+| li | app/3dmap/map_renderer_2d.js (+ 1 других файлов) |
 | lifecycle | app/Inventory.js |
 | lift | app/3dmap/character_body_geometry.js |
 | light | app/3dmap/map_renderer_3d.js |
@@ -3554,40 +3555,40 @@
 | limbRanges | app/3dmap/character_body_geometry.js |
 | limbSamples | app/3dmap/character_body_geometry.js |
 | limbSelect | app/3dmap/character_editor_3d.js |
-| limit | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/spells.js |
+| limit | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | limits | app/3dmap/character_editor_3d.js |
 | limitStr | app/Inventory-weight-tracker.js |
-| line | app/3dmap/character_body_geometry.js, app/update_scene_v2.js, tests/cloud_sql_concurrency.cjs, tests/makehuman_morph_bridge.js (+ 5 ещё) |
+| line | app/3dmap/character_body_geometry.js (+ 8 других файлов) |
 | lineno | app/debug.js |
 | lines | app/rulesEngine.js |
 | lingerie | app/3dmap/character_clothing.js |
 | lingerieAtlas | app/3dmap/character_clothing.js |
-| link | app/Logo.js, tests/desktop_update_contract.cjs |
-| links | app/3dmap/character_anatomy_geometry.js, app/vtt_combat_log_v66.js |
+| link | app/Logo.js (+ 1 других файлов) |
+| links | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | lip | app/3dmap/character_body_geometry.js |
-| list | app/3dmap/character_appearance_store.js, app/3dmap/character_body_geometry.js, app/Inventory.js, app/accursed_oap_v11_runtime.js (+ 36 ещё) |
-| listContainer | app/Ambiences.js, app/Proficiencies.js, app/data/feats/Feat_widget.js |
+| list | app/3dmap/character_appearance_store.js (+ 39 других файлов) |
+| listContainer | app/Ambiences.js (+ 2 других файлов) |
 | listContainers | app/inventory_containers_v54.js |
 | listener | desktop/preload.cjs |
-| listeners | app/cloud_sync.js, app/network_engine.js |
+| listeners | app/cloud_sync.js (+ 1 других файлов) |
 | lit | tests/map_rebuild_world_test.js |
 | lItem | app/character_creation.js |
-| live | app/3dmap/character_editor_3d.js, app/classesRegistry.js, app/cloud_sync.js, app/data/classes/progressionEngine.js (+ 2 ещё) |
+| live | app/3dmap/character_editor_3d.js (+ 5 других файлов) |
 | LIVE_PROGRESSION_KEYS | app/classesRegistry.js |
 | liveKey | app/classesRegistry.js |
 | liveRoot | desktop/main.cjs |
-| lo | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/map_renderer_3d.js, tests/character_races_geometry_test.js (+ 4 ещё) |
+| lo | app/3dmap/character_body_geometry.js (+ 7 других файлов) |
 | LOAD_FILES | app/crafting_character_influence_test_v46.js |
 | loader | tests/gltf_loader_smoke.cjs |
 | lobe | app/3dmap/character_body_geometry.js |
 | loc | tests/character_3d_editor_test.js |
-| local | app/3dmap/character_body_geometry.js, app/cloud_account.js, app/cloud_sync.js, app/data/subclasses/subclassesRegistry.js (+ 2 ещё) |
+| local | app/3dmap/character_body_geometry.js (+ 5 других файлов) |
 | localData | app/Settings.js |
 | localId | app/cloud_sync.js |
 | localStorage | tests/imported_3d_editor_assets.cjs |
 | lock | desktop/main.cjs |
-| locked | app/crafting_profession_progression_test_v47.js, app/crafting_profession_progression_v47.js |
-| locks | app/3dmap/character_body_geometry.js, tests/character_hair_pack_test.js |
+| locked | app/crafting_profession_progression_test_v47.js (+ 1 других файлов) |
+| locks | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | logBox | app/debug.js |
 | logContainer | app/dice.js |
 | logContent | app/inventory-coins.js |
@@ -3595,20 +3596,20 @@
 | logItem | app/dice.js |
 | logLine | app/debug.js |
 | logs | app/Settings.js |
-| logText | app/dice.js, app/spells.js |
-| long | app/3dmap/character_editor_3d.js, app/expansion_classes_pack.js |
+| logText | app/dice.js (+ 1 других файлов) |
+| long | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | longFired | app/vtt_mobile_battle_v61.js |
 | longitude | app/3dmap/character_anatomy_geometry.js |
 | longTimer | app/vtt_mobile_battle_v61.js |
 | looksLikeModal | app/Settings.js |
 | lookup | app/3dmap/character_body_geometry.js |
 | loop | app/3dmap/character_anatomy_geometry.js |
-| loot | app/bestiary_2_0_v56.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js (+ 15 ещё) |
+| loot | app/bestiary_2_0_v56.js (+ 18 других файлов) |
 | LOOT_MODELS | app/monster_loot_crafting_bridge_v40.js |
-| los | app/companion_gameplay_v27.js, app/network_gameplay.js |
-| loss | app/blood_hunter_engine.js, app/crafting_dlc_v50.js |
-| low | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/bestiary_catalog_v56_13.js, tests/character_external_anatomy_test.js (+ 3 ещё) |
-| lower | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 1 ещё) |
+| los | app/companion_gameplay_v27.js (+ 1 других файлов) |
+| loss | app/blood_hunter_engine.js (+ 1 других файлов) |
+| low | app/3dmap/character_body_geometry.js (+ 6 других файлов) |
+| lower | app/3dmap/character_anatomy.js (+ 4 других файлов) |
 | lowerId | app/3dmap/character_clothing.js |
 | lowerJaw | app/3dmap/character_body_geometry.js |
 | lowerLang | app/character_creation.js |
@@ -3618,10 +3619,10 @@
 | lowest | app/3dmap/character_anatomy_geometry.js |
 | loX | app/3dmap/character_body_geometry.js |
 | loY | app/3dmap/character_body_geometry.js |
-| lr | app/network_gameplay.js, app/vtt_mobile_session_v67.js |
-| ls | app/3dmap/map_renderer_3d.js, app/spellblade_kibbles_runtime.js, tests/test_v752_replay_hash_authority.js |
-| lv | app/alchemist_mhp_2024_runtime.js, app/kibbles_localization_content_v71.js |
-| lvl | app/Hero-info.js, app/class_features_engine.js, app/content_framework.js, app/crafting_professions_v38.js (+ 5 ещё) |
+| lr | app/network_gameplay.js (+ 1 других файлов) |
+| ls | app/3dmap/map_renderer_3d.js (+ 2 других файлов) |
+| lv | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
+| lvl | app/Hero-info.js (+ 8 других файлов) |
 | lvl1Options | app/character_creation.js |
 | lvlA | app/spells.js |
 | lvlB | app/spells.js |
@@ -3632,16 +3633,16 @@
 | Lx | app/3dmap/map_renderer_2d.js |
 | ly | app/3dmap/map_renderer_2d.js |
 | Ly | app/3dmap/map_renderer_2d.js |
-| m | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 96 ещё) |
-| M | app/3dmap/map_editor.js, app/3dmap/map_world.js, app/3dmap/stress_map.js, tests/map_rebuild_world_test.js (+ 3 ещё) |
+| m | app/3dmap/character_anatomy.js (+ 99 других файлов) |
+| M | app/3dmap/map_editor.js (+ 6 других файлов) |
 | m0 | tests/character_3d_editor_test.js |
-| m1 | app/custom_crafting_v32.js, tests/character_3d_editor_test.js |
+| m1 | app/custom_crafting_v32.js (+ 1 других файлов) |
 | m2 | app/custom_crafting_v32.js |
 | macro | tools/prepare_makehuman_gender.js |
 | macroFile | tools/prepare_makehuman_gender.js |
-| macros | tests/makehuman_gender_recipe_test.js, tools/build_character_editor_morphs.js, tools/prepare_makehuman_gender.js |
+| macros | tests/makehuman_gender_recipe_test.js (+ 2 других файлов) |
 | madBomber | app/combat_engine.js |
-| mag | app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js |
+| mag | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | magic | tests/test_v708_fixes.js |
 | magicFistHero | tests/pugilist_combat_test.js |
 | magicHit | tests/pugilist_combat_test.js |
@@ -3651,42 +3652,42 @@
 | male | tests/character_male_anatomy_fix_test.js |
 | malePositions | tests/character_3d_editor_test.js |
 | maleRef | tests/character_male_anatomy_fix_test.js |
-| malformed | tests/character_adult_anatomy_test.js, tests/makehuman_morph_bridge.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
+| malformed | tests/character_adult_anatomy_test.js (+ 3 других файлов) |
 | manager | tests/test_v755_update_scene.js |
-| manifest | app/kibbles_localization_content_v71.js, app/update_manager_v2.js, desktop/update.cjs, tests/creation_signature_asset_test.cjs |
-| manifestPath | desktop/update.cjs, tests/creation_signature_asset_test.cjs |
+| manifest | app/kibbles_localization_content_v71.js (+ 3 других файлов) |
+| manifestPath | desktop/update.cjs (+ 1 других файлов) |
 | manifestUrl | app/update_manager_v2.js |
-| manual | tests/character_animal_heads_test.js, tests/character_avian_elephant_heads_test.js |
-| map | app/3dmap/character_body_geometry.js, app/3dmap/map_editor.js, app/3dmap/stair_navigation.js, app/3dmap/stress_map.js (+ 21 ещё) |
-| Map | tests/helpers/class_runtime_harness.js, tests/test_v54.js, tests/test_v55.js, tests/test_v55_2.js (+ 2 ещё) |
+| manual | tests/character_animal_heads_test.js (+ 1 других файлов) |
+| map | app/3dmap/character_body_geometry.js (+ 24 других файлов) |
+| Map | tests/helpers/class_runtime_harness.js (+ 5 других файлов) |
 | mapped | app/expansion_classes_pack.js |
-| mapping | app/3dmap/character_body_geometry.js, tools/build_character_editor_morphs.js |
-| maps | app/warden_mhp_2024_runtime.js, app/warlord_laserllama_v330_runtime.js |
+| mapping | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| maps | app/warden_mhp_2024_runtime.js (+ 1 других файлов) |
 | mapToVar | app/skills.js |
 | mark | app/blood_hunter_engine.js |
-| market | app/market_expansion_v55_1.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
-| mask | app/3dmap/character_anatomy.js, tests/character_elf_details_test.js, tests/character_races_geometry_test.js |
+| market | app/market_expansion_v55_1.js (+ 2 других файлов) |
+| mask | app/3dmap/character_anatomy.js (+ 2 других файлов) |
 | MASS_HARVEST_MATERIALS | app/monster_loot_crafting_bridge_v40.js |
-| master | app/crafting_disassembly_v51.js, app/crafting_economy_v49.js, app/crafting_profession_progression_v47.js |
+| master | app/crafting_disassembly_v51.js (+ 2 других файлов) |
 | mastery | app/network_gameplay.js |
 | masteryNames | app/network_gameplay.js |
-| mat | app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/bestiary_catalog_v56_1.js, app/crafting_disassembly_v51.js (+ 5 ещё) |
-| match | app/Experience.js, app/Inventory-weight-tracker.js, app/combat_abilities.js, app/gameplay_core_v57.js (+ 3 ещё) |
-| matches | app/class_features_engine.js, app/data/feats/Feat_widget.js, app/rulesEngine.js |
-| material | app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, tools/check_character_clothing_customizer.js |
+| mat | app/3dmap/character_clothing.js (+ 8 других файлов) |
+| match | app/Experience.js (+ 6 других файлов) |
+| matches | app/class_features_engine.js (+ 2 других файлов) |
+| material | app/3dmap/character_clothing.js (+ 2 других файлов) |
 | MATERIAL_BRIDGE | app/monster_loot_crafting_bridge_v40.js |
 | MATERIAL_DEFS | app/crafting_professions_v38.js |
 | materialCells | app/3dmap/character_clothing.js |
 | materialIds | app/crafting_professions_v38.js |
-| materials | app/3dmap/character_clothing.js, app/crafting_disassembly_repair_v51.js, app/crafting_engine_v31.js, app/crafting_resources_v34.js |
-| MATERIALS | app/crafting_economy_v49.js, app/crafting_engine_v31.js, app/custom_crafting_v32.js |
-| math | tests/pugilist_combat_test.js, tests/pugilist_runtime_test.js |
-| Math | tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js, tests/cloud_sync_test.cjs, tests/crafting_disassembly_v51_test.js (+ 60 ещё) |
-| matrices | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_pose.js |
-| matrix | app/3dmap/character_anatomy_geometry.js, tests/character_3d_editor_test.js |
-| mats | app/crafting_disassembly_repair_v51.js, app/crafting_economy_v49.js, app/crafting_engine_v31.js, app/crafting_profession_progression_v47.js (+ 3 ещё) |
-| max | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/gltf_loader.js (+ 32 ещё) |
-| MAX | app/martyr_mhp_2024_runtime.js, app/vtt_combat_event_bus_v69.js, app/vtt_debug_error_log_v709.js, app/vtt_debug_sandbox_v701.js |
+| materials | app/3dmap/character_clothing.js (+ 3 других файлов) |
+| MATERIALS | app/crafting_economy_v49.js (+ 2 других файлов) |
+| math | tests/pugilist_combat_test.js (+ 1 других файлов) |
+| Math | tests/alchemist_combat_test.js (+ 63 других файлов) |
+| matrices | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
+| matrix | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
+| mats | app/crafting_disassembly_repair_v51.js (+ 6 других файлов) |
+| max | app/3dmap/character_body_geometry.js (+ 35 других файлов) |
+| MAX | app/martyr_mhp_2024_runtime.js (+ 3 других файлов) |
 | MAX_CR | app/shifter_laserllama_v2_1_runtime.js |
 | MAX_DEPTH | app/inventory_containers_v54.js |
 | MAX_ERRORS | app/vtt_debug_panel_v70.js |
@@ -3695,12 +3696,12 @@
 | MAX_TOTAL_BYTES | desktop/update.cjs |
 | max2 | app/occultist_kibbles_v11_runtime.js |
 | maxAllowedLevel | app/spells.js |
-| maxCapacityKg | app/Inventory-weight-tracker.js, app/inventory-modal.js |
+| maxCapacityKg | app/Inventory-weight-tracker.js (+ 1 других файлов) |
 | maxCapacityLb | app/Inventory-weight-tracker.js |
 | maxDisplacement | tests/makehuman_gender_fixture_audit.js |
 | maxDistance | tests/character_external_anatomy_test.js |
-| maxFaces | app/3dmap/character_anatomy_geometry.js, tests/character_external_anatomy_test.js |
-| maxHp | app/Backgrounds.js, app/alchemist_mhp_2024_runtime.js, app/character_creation.js, app/dnd_tools.js |
+| maxFaces | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
+| maxHp | app/Backgrounds.js (+ 3 других файлов) |
 | maxHP | app/walter_parasite_extra_runtime.js |
 | maximize | app/combat_engine.js |
 | maxIndex | tests/makehuman_topology_audit.js |
@@ -3712,50 +3713,50 @@
 | maxSteps | app/companion_gameplay_v27.js |
 | maxTargets | tests/makehuman_glb_morph_fixture_audit.js |
 | maxTex | app/3dmap/map_renderer_3d.js |
-| maxUses | app/combat_abilities.js, app/data/classes/Beastheart.js |
+| maxUses | app/combat_abilities.js (+ 1 других файлов) |
 | maxVal | app/spells.js |
-| maxVertices | app/3dmap/character_editor_3d.js, tests/character_animal_heads_test.js, tests/character_avian_elephant_heads_test.js, tests/character_fur_test.js (+ 3 ещё) |
+| maxVertices | app/3dmap/character_editor_3d.js (+ 6 других файлов) |
 | maxX | app/3dmap/map_model.js |
 | maxY | app/3dmap/map_model.js |
 | MC1 | app/bestiary_catalog_v56_11.js |
-| mctx | tests/test_v749_monster_authority_reaction_order.js, tests/test_v750_resignal_reaction_monster_rpc.js |
+| mctx | tests/test_v749_monster_authority_reaction_order.js (+ 1 других файлов) |
 | MCV2 | app/bestiary_catalog_v56_12.js |
-| md | app/3dmap/map_renderer_3d.js, app/blood_hunter_engine.js, tools/generate_project_atlas.cjs |
-| me | app/3dmap/gltf_loader.js, app/expansion_classes_pack.js |
-| mean | app/3dmap/character_anatomy_geometry.js, tests/character_skin_material_test.js, tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js (+ 3 ещё) |
+| md | app/3dmap/map_renderer_3d.js (+ 2 других файлов) |
+| me | app/3dmap/gltf_loader.js (+ 1 других файлов) |
+| mean | app/3dmap/character_anatomy_geometry.js (+ 6 других файлов) |
 | meanUniform | tests/character_skin_material_test.js |
 | mechanics | app/shifter_laserllama_v2_1_runtime.js |
-| MECHANICS | app/accursed_oap_v11_runtime.js, app/runekeeper_taron_v12_runtime.js, app/savant_laserllama_v561_runtime.js |
+| MECHANICS | app/accursed_oap_v11_runtime.js (+ 2 других файлов) |
 | medium | app/blood_hunter_engine.js |
 | mediumLimitKg | app/Inventory-weight-tracker.js |
 | mediumLimitLb | app/Inventory-weight-tracker.js |
 | memory | tests/character_appearance_store_test.js |
-| mental | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js |
+| mental | app/ghost_extra_runtime.js (+ 1 других файлов) |
 | menu | app/onboarding_faq_v71.js |
-| merged | app/3dmap/character_editor_3d.js, app/classesRegistry.js |
-| mesh | app/3dmap/character_body_geometry.js, app/3dmap/gltf_loader.js, tests/generate_makehuman_glb_morph_fixture.js, tests/makehuman_gender_recipe_test.js (+ 1 ещё) |
-| meshes | app/3dmap/gltf_loader.js, tests/human_base_glb_audit.js, tools/build_makehuman_morphs.js |
-| message | app/3dmap/character_editor_3d.js, app/Inventory-weight-tracker.js, app/blood_hunter_engine.js, app/cloud_sync.js (+ 13 ещё) |
+| merged | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
+| mesh | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
+| meshes | app/3dmap/gltf_loader.js (+ 2 других файлов) |
+| message | app/3dmap/character_editor_3d.js (+ 16 других файлов) |
 | messages | app/3dmap/map_world.js |
-| meta | app/3dmap/character_morph_assets.js, app/alchemy_gathering_professions_v52.js, app/class_features_engine.js, app/inventory_containers_v54.js (+ 4 ещё) |
+| meta | app/3dmap/character_morph_assets.js (+ 7 других файлов) |
 | META_COST | app/class_features_engine.js |
 | META_NAMES | app/class_features_engine.js |
 | METAS | app/accursed_oap_v11_runtime.js |
 | method | app/cloud_sync.js |
 | mettle | app/combat_engine.js |
-| mh | app/3dmap/character_body_geometry.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 2 ещё) |
-| mi | app/3dmap/gltf_loader.js, app/3dmap/map_renderer_3d.js, tests/generate_makehuman_glb_morph_fixture.js |
+| mh | app/3dmap/character_body_geometry.js (+ 5 других файлов) |
+| mi | app/3dmap/gltf_loader.js (+ 2 других файлов) |
 | microEntry | app/3dmap/character_editor_3d.js |
-| mid | app/3dmap/character_body_geometry.js, tests/makehuman_morph_bridge.js |
+| mid | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | middles | app/3dmap/character_anatomy_geometry.js |
 | migrated | app/network_gameplay.js |
 | mimeTypes | desktop/main.cjs |
-| min | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/gltf_loader.js (+ 3 ещё) |
+| min | app/3dmap/character_body_geometry.js (+ 6 других файлов) |
 | mind | app/parasite_extra_runtime.js |
 | minimumLevel | app/class_features_engine.js |
 | minIndex | tests/makehuman_topology_audit.js |
 | mins | app/Wallpapers.js |
-| minutes | app/Wallpapers.js, app/alchemist_mhp_2024_runtime.js |
+| minutes | app/Wallpapers.js (+ 1 других файлов) |
 | minutesSinceDeath | app/alchemist_mhp_2024_runtime.js |
 | minutesVal | app/Wallpapers.js |
 | minVal | app/Hero-info.js |
@@ -3764,60 +3765,60 @@
 | missArena | tests/pugilist_combat_test.js |
 | missedKnockoutHero | tests/pugilist_combat_test.js |
 | missedKnockoutTarget | tests/pugilist_combat_test.js |
-| misses | tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| missing | app/crafting_disassembly_repair_v51.js, app/crafting_disassembly_v51.js, app/crafting_economy_v49.js, app/crafting_engine_v31.js (+ 7 ещё) |
+| misses | tests/makehuman_morph_bridge.js (+ 3 других файлов) |
+| missing | app/crafting_disassembly_repair_v51.js (+ 10 других файлов) |
 | missingReliefRoll | tests/alchemist_runtime_test.js |
 | missingTools | app/crafting_professions_v38.js |
 | missTarget | tests/pugilist_combat_test.js |
-| mix | app/alchemy_engine_v29.js, tests/test_v52.js |
-| mixed | tests/character_3d_morph_assets_test.js, tests/makehuman_gender_fixture_audit.js |
+| mix | app/alchemy_engine_v29.js (+ 1 других файлов) |
+| mixed | tests/character_3d_morph_assets_test.js (+ 1 других файлов) |
 | mj | app/expansion_classes_pack.js |
 | ml | app/3dmap/character_body_geometry.js |
-| mm | app/3dmap/map_renderer_3d.js, app/blood_hunter_engine.js, app/expansion_classes_pack.js |
-| mn | app/alchemy_gathering_professions_v52.js, app/occultist_kibbles_v11_runtime.js, tests/generate_makehuman_glb_morph_fixture.js, tests/makehuman_morph_bridge.js (+ 4 ещё) |
+| mm | app/3dmap/map_renderer_3d.js (+ 2 других файлов) |
+| mn | app/alchemy_gathering_professions_v52.js (+ 7 других файлов) |
 | mo | app/3dmap/map_renderer_3d.js |
 | mobileRange | app/3dmap/map_renderer_3d.js |
-| mod | app/Backgrounds.js, app/accursed_oap_v11_runtime.js, app/character_creation.js, app/class_features_engine.js (+ 6 ещё) |
-| modal | app/Ambiences.js, app/Experience.js, app/Inventory-weight-tracker.js, app/Inventory.js (+ 10 ещё) |
+| mod | app/Backgrounds.js (+ 9 других файлов) |
+| modal | app/Ambiences.js (+ 13 других файлов) |
 | modalColorOptions | app/Wallpapers.js |
 | modalHTML | app/data/classes/level_up.js |
 | modals | app/Inventory.js |
-| modDisplay | app/dice.js, app/spells.js |
-| mode | app/3dmap/map_editor.js, app/class_features_engine.js, app/combat_engine.js, app/crafting_economy_v49.js (+ 17 ещё) |
+| modDisplay | app/dice.js (+ 1 других файлов) |
+| mode | app/3dmap/map_editor.js (+ 20 других файлов) |
 | modeButtons | app/dice.js |
-| model | app/monster_loot_crafting_bridge_v40.js, tests/imported_3d_editor_assets.cjs |
+| model | app/monster_loot_crafting_bridge_v40.js (+ 1 других файлов) |
 | modeRadio | app/character.js |
-| modes | tests/test_blood_hunter_completion.js, tests/test_blood_hunter_profane_focus.js |
+| modes | tests/test_blood_hunter_completion.js (+ 1 других файлов) |
 | modeSelect | app/inventory-modal.js |
-| modifier | app/combat_abilities.js, app/dice.js |
+| modifier | app/combat_abilities.js (+ 1 других файлов) |
 | modifierMatch | app/dice.js |
 | modifiers | tests/pugilist_combat_test.js |
 | MODIFIERS | app/custom_crafting_v32.js |
 | modMatches | app/spells.js |
 | modName | app/dice.js |
-| modNum | app/Backgrounds.js, app/skills.js |
-| mods | app/custom_crafting_v32.js, app/network_gameplay.js, app/rulesEngine.js, tests/test_blood_hunter_orders.js (+ 1 ещё) |
+| modNum | app/Backgrounds.js (+ 1 других файлов) |
+| mods | app/custom_crafting_v32.js (+ 4 других файлов) |
 | modSourceLabel | app/dice.js |
-| modStr | app/Backgrounds.js, app/character_creation.js, app/data/classes/level_up.js, app/dice.js |
-| modTag | app/Backgrounds.js, app/skills.js |
-| modules | index.html, tests/character_races_geometry_test.js, tools/check_adult_anatomy_browser.js, tools/check_adult_base_browser.js (+ 34 ещё) |
-| modVal | app/dice.js, app/spells.js |
-| monk | tests/test_v721_fixes.js, tests/test_v727_fixes.js |
-| monster | app/monster_engine.js, app/network_gameplay.js, tests/test_v749_monster_authority_reaction_order.js |
+| modStr | app/Backgrounds.js (+ 3 других файлов) |
+| modTag | app/Backgrounds.js (+ 1 других файлов) |
+| modules | index.html (+ 37 других файлов) |
+| modVal | app/dice.js (+ 1 других файлов) |
+| monk | tests/test_v721_fixes.js (+ 1 других файлов) |
+| monster | app/monster_engine.js (+ 2 других файлов) |
 | MONSTER_RECIPES | app/monster_loot_crafting_bridge_v40.js |
 | monsterCount | app/monster_engine.js |
 | monsterId | app/network_gameplay.js |
-| monsterName | app/monster_loot_engine_v36.js, app/monster_loot_engine_v37.js |
-| monsters | app/bestiary_2_0_v56.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js (+ 10 ещё) |
+| monsterName | app/monster_loot_engine_v36.js (+ 1 других файлов) |
+| monsters | app/bestiary_2_0_v56.js (+ 13 других файлов) |
 | MONSTERS | app/combat_engine.js |
 | monsterSrc | tests/test_v729_fixes.js |
 | monstrousGrafts | app/alchemist_mhp_2024_runtime.js |
-| morph | tests/makehuman_morph_bridge.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
+| morph | tests/makehuman_morph_bridge.js (+ 2 других файлов) |
 | morphBytes | tests/generate_makehuman_glb_morph_fixture.js |
 | morphed | tests/character_3d_foundation_test.js |
 | morphName | tests/generate_makehuman_glb_morph_fixture.js |
 | morphOffset | tests/generate_makehuman_glb_morph_fixture.js |
-| morphPrimitives | tests/human_base_glb_audit.js, tests/makehuman_glb_morph_fixture_audit.js |
+| morphPrimitives | tests/human_base_glb_audit.js (+ 1 других файлов) |
 | morphTargets | tests/human_base_glb_audit.js |
 | motion | app/3dmap/character_editor_3d.js |
 | mouth | app/3dmap/character_body_geometry.js |
@@ -3825,21 +3826,21 @@
 | mouthRadius | app/3dmap/character_body_geometry.js |
 | mouthRY | app/3dmap/character_body_geometry.js |
 | mouthY | app/3dmap/character_body_geometry.js |
-| move | app/3dmap/map_editor.js, app/network_gameplay.js |
-| moved | app/vtt_mobile_battle_v61.js, tests/character_external_anatomy_test.js, tests/character_races_geometry_test.js |
+| move | app/3dmap/map_editor.js (+ 1 других файлов) |
+| moved | app/vtt_mobile_battle_v61.js (+ 2 других файлов) |
 | moveExtraPanelsIntoDrawer | app/dice.js |
 | moveItemToContainer | app/inventory_containers_v54.js |
 | movement | app/3dmap/map_world.js |
 | moving | app/3dmap/character_body_geometry.js |
 | moxie | app/expansion_classes_pack.js |
 | moxieBeforeMiss | tests/pugilist_combat_test.js |
-| mp | app/class_features_engine.js, tests/character_male_anatomy_fix_test.js, tests/makehuman_gender_fixture_audit.js |
-| mr | app/class_features_engine.js, app/expansion_classes_pack.js, tests/test_v721_fixes.js |
+| mp | app/class_features_engine.js (+ 2 других файлов) |
+| mr | app/class_features_engine.js (+ 2 других файлов) |
 | mrko | app/expansion_classes_pack.js |
-| ms | app/3dmap/gltf_loader.js, app/Wallpapers.js, app/expansion_classes_pack.js |
-| msg | app/Settings.js, app/debug.js, app/icon_settings.js, app/icon_settings_v2.js (+ 8 ещё) |
+| ms | app/3dmap/gltf_loader.js (+ 2 других файлов) |
+| msg | app/Settings.js (+ 11 других файлов) |
 | msgEl | app/Inventory-weight-tracker.js |
-| mult | app/Backgrounds.js, app/alchemy_gameplay_v30.js, app/dice.js, app/market_social_v55_3.js (+ 1 ещё) |
+| mult | app/Backgrounds.js (+ 4 других файлов) |
 | multi2 | app/crafting_profession_progression_test_v47.js |
 | MULTICLASS_PROFICIENCIES_2014 | app/data/classes/progressionEngine.js |
 | MULTICLASS_REQUIREMENTS | app/Hero-info.js |
@@ -3857,36 +3858,36 @@
 | mutagenResult | tests/alchemist_runtime_test.js |
 | mutagens | app/blood_hunter_engine.js |
 | mutatedCap | app/alchemist_mhp_2024_runtime.js |
-| MUTATION_SLOTS | app/parasite_extra_runtime.js, app/swarm_extra_runtime.js |
-| mutations | app/Inventory-weight-tracker.js, app/Settings.js, app/parasite_extra_runtime.js, app/swarm_extra_runtime.js (+ 1 ещё) |
+| MUTATION_SLOTS | app/parasite_extra_runtime.js (+ 1 других файлов) |
+| mutations | app/Inventory-weight-tracker.js (+ 4 других файлов) |
 | mutCreated | app/expansion_classes_pack.js |
 | muts | app/swarm_extra_runtime.js |
-| muzzle | app/3dmap/character_body_geometry.js, tests/character_animal_heads_test.js, tests/character_avian_elephant_heads_test.js, tests/character_reptile_heads_test.js |
+| muzzle | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
 | mv | app/companion_gameplay_v27.js |
 | mw | app/3dmap/character_body_geometry.js |
-| mx | app/3dmap/map_renderer_3d.js, tests/generate_makehuman_glb_morph_fixture.js, tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js (+ 3 ещё) |
-| my | app/3dmap/map_renderer_3d.js, app/occultist_kibbles_v11_runtime.js |
+| mx | app/3dmap/map_renderer_3d.js (+ 6 других файлов) |
+| my | app/3dmap/map_renderer_3d.js (+ 1 других файлов) |
 | mysteries | app/occultist_kibbles_v11_runtime.js |
-| mythic | tests/test_class_audit_stage2_runtime.js, tests/test_v56_9.js |
-| n | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 117 ещё) |
-| N | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_pose.js, tests/stair_navigation.cjs, tools/build_makehuman_morphs.js |
+| mythic | tests/test_class_audit_stage2_runtime.js (+ 1 других файлов) |
+| n | app/3dmap/character_anatomy.js (+ 120 других файлов) |
+| N | app/3dmap/character_anatomy_geometry.js (+ 3 других файлов) |
 | n2 | tests/test_v752_replay_hash_authority.js |
 | nailLen | app/3dmap/character_body_geometry.js |
-| name | app/3dmap/character_anatomy.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 138 ещё) |
-| NAME | app/spellblade_kibbles_runtime.js, app/warlord_laserllama_v330_runtime.js |
+| name | app/3dmap/character_anatomy.js (+ 141 других файлов) |
+| NAME | app/spellblade_kibbles_runtime.js (+ 1 других файлов) |
 | NAME_ALIASES | app/market_trade_v55_2.js |
 | name2 | app/expansion_classes_pack.js |
 | nameA | app/spells.js |
 | nameB | app/spells.js |
 | nameInp | app/inventory-modal.js |
-| nameInput | app/Backgrounds.js, app/character_creation.js, app/races.js |
+| nameInput | app/Backgrounds.js (+ 2 других файлов) |
 | nameLower | app/dice.js |
 | nameRu | tests/test_v755_creation_buckets.js |
-| names | app/3dmap/character_anatomy.js, app/3dmap/character_body_geometry.js, app/3dmap/character_morph_assets.js, app/3dmap/gltf_catalog.js (+ 18 ещё) |
-| NAMES | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 9 ещё) |
-| nameSpan | app/Inventory.js, app/inventory-modal.js |
+| names | app/3dmap/character_anatomy.js (+ 21 других файлов) |
+| NAMES | app/bestiary_catalog_v56_1.js (+ 12 других файлов) |
+| nameSpan | app/Inventory.js (+ 1 других файлов) |
 | NaN | tests/test_class_audit_stage2_runtime.js |
-| native | app/update_manager_v2.js, app/warlord_laserllama_v330_runtime.js |
+| native | app/update_manager_v2.js (+ 1 других файлов) |
 | nativeBridge | app/network_engine.js |
 | nativeClear | app/cloud_sync.js |
 | nativePacketSeq | app/network_engine.js |
@@ -3900,9 +3901,9 @@
 | naturalTwenty | app/combat_engine.js |
 | nb | app/3dmap/character_body_geometry.js |
 | nctx | tests/test_v748_full_combat_transaction.js |
-| ne | tests/test_v724_fixes.js, tests/test_v743_authority_recharge_events.js, tests/test_v744_sync_authority_save.js, tests/test_v746_authoritative_save_recharge.js (+ 4 ещё) |
-| near | app/3dmap/character_anatomy_geometry.js, app/3dmap/map_renderer_3d.js, tests/test_blood_hunter_profane_focus.js |
-| nearest | app/companion_gameplay_v27.js, tests/character_avian_elephant_heads_test.js |
+| ne | tests/test_v724_fixes.js (+ 7 других файлов) |
+| near | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
+| nearest | app/companion_gameplay_v27.js (+ 1 других файлов) |
 | nearestAt | app/3dmap/character_body_geometry.js |
 | nearestDist | app/companion_gameplay_v27.js |
 | neck | app/3dmap/character_body_geometry.js |
@@ -3917,17 +3918,17 @@
 | needsSave | app/combat_engine.js |
 | needsSubclassChoice | app/data/classes/level_up.js |
 | needsTarget | app/expansion_classes_pack.js |
-| net | app/dnd_tools.js, app/gameplay_core_v57.js, app/network_gameplay.js, app/secondary_entities_engine.js (+ 1 ещё) |
-| neutral | tests/character_3d_morph_assets_test.js, tests/character_races_geometry_test.js, tests/makehuman_gender_fixture_audit.js |
-| newChar | app/Backgrounds.js, app/character_creation.js |
+| net | app/dnd_tools.js (+ 4 других файлов) |
+| neutral | tests/character_3d_morph_assets_test.js (+ 2 других файлов) |
+| newChar | app/Backgrounds.js (+ 1 других файлов) |
 | newCount | app/Inventory.js |
 | newCp | app/inventory-coins.js |
 | newEntry | app/library.js |
 | newEp | app/inventory-coins.js |
 | newFolder | app/notes.js |
 | newGp | app/inventory-coins.js |
-| newId | app/Backgrounds.js, app/character_creation.js, app/network_gameplay.js |
-| newLevel | app/Settings_debug.js, app/data/classes/level_up.js |
+| newId | app/Backgrounds.js (+ 2 других файлов) |
+| newLevel | app/Settings_debug.js (+ 1 других файлов) |
 | newLvl | app/Settings.js |
 | newMax | app/data/classes/level_up.js |
 | newPeer | tests/test_v742_character_combatant_sync.js |
@@ -3937,49 +3938,49 @@
 | newSpell | app/spells.js |
 | newTemp | app/alchemist_mhp_2024_runtime.js |
 | newTotalLevel | app/data/classes/level_up.js |
-| newVal | app/Backgrounds.js, app/character_creation.js, app/data/classes/level_up.js |
+| newVal | app/Backgrounds.js (+ 2 других файлов) |
 | newVol | app/Ambiences.js |
-| next | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/blood_hunter_engine.js (+ 10 ещё) |
+| next | app/3dmap/character_anatomy_geometry.js (+ 13 других файлов) |
 | nextHp | app/alchemist_mhp_2024_runtime.js |
 | nextLevel | app/data/classes/level_up.js |
 | nextLevelExpReq | app/Experience.js |
 | nextRemaining | app/alchemist_mhp_2024_runtime.js |
 | nf | app/3dmap/map_renderer_3d.js |
-| ng | tests/test_v743_authority_recharge_events.js, tests/test_v746_authoritative_save_recharge.js, tests/test_v748_full_combat_transaction.js |
-| ni | app/3dmap/character_body_geometry.js, app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js |
-| nk | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
+| ng | tests/test_v743_authority_recharge_events.js (+ 2 других файлов) |
+| ni | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
+| nk | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | nl | app/3dmap/character_body_geometry.js |
 | nm | app/vtt_mobile_session_v67.js |
-| nn | tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
+| nn | tests/makehuman_morph_bridge.js (+ 3 других файлов) |
 | nnx | app/3dmap/character_body_geometry.js |
 | nnz | app/3dmap/character_body_geometry.js |
 | no | tests/test_v55_2.js |
 | noChoice | tests/alchemist_runtime_test.js |
 | noClaws | tests/character_native_limbs_test.js |
-| node | app/Settings.js, app/dice.js, app/world_resource_gathering_v53.js, tests/makehuman_morph_bridge.js (+ 1 ещё) |
-| nodes | app/3dmap/character_anatomy.js, app/3dmap/character_body_geometry.js, app/3dmap/character_pose.js, app/3dmap/gltf_character_pipeline.js (+ 5 ещё) |
+| node | app/Settings.js (+ 4 других файлов) |
+| nodes | app/3dmap/character_anatomy.js (+ 8 других файлов) |
 | NODES | app/world_resource_gathering_v53.js |
 | noEars | tests/character_races_geometry_test.js |
 | noGlow | tools/check_character_races_browser.js |
-| none | app/3dmap/character_editor_3d.js, app/network_gameplay.js, tests/character_native_limbs_test.js |
+| none | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
 | nonmagicalResistance | app/combat_engine.js |
 | nonmagicalVariants | app/combat_engine.js |
-| nonZero | tests/makehuman_morph_bridge.js, tests/makehuman_target_reverse_transfer_audit.js, tools/build_makehuman_morphs.js |
+| nonZero | tests/makehuman_morph_bridge.js (+ 2 других файлов) |
 | nonzeroSource | tests/makehuman_target_surface_transfer_audit.js |
 | noReliefTarget | tests/alchemist_runtime_test.js |
 | noRiteDice | tests/test_blood_hunter_patron_selection.js |
-| norm | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_pose.js, app/data/classes/level_up.js |
-| normal | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/rulesEngine.js (+ 2 ещё) |
+| norm | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
+| normal | app/3dmap/character_body_geometry.js (+ 5 других файлов) |
 | normalAC | app/combat_engine.js |
 | normalizeClassKey | app/data/classes/level_up.js |
-| normalized | app/data/classes/progressionEngine.js, app/monster_loot_engine_v36.js, app/monster_loot_engine_v37.js, tests/test_blood_hunter_orders.js |
+| normalized | app/data/classes/progressionEngine.js (+ 3 других файлов) |
 | normalizedCondition | app/combat_engine.js |
 | normalizedCurrentClass | app/data/classes/level_up.js |
 | normalizedRequested | app/data/classes/level_up.js |
 | normalizeLevelUpClassName | app/data/classes/level_up.js |
 | normalizeYield | app/resource_processing_v44.js |
 | normalRaceLabel | app/character_creation.js |
-| normals | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_editor_3d.js |
+| normals | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | nose | app/3dmap/character_body_geometry.js |
 | noseDepth | app/3dmap/character_body_geometry.js |
 | nosePart | app/3dmap/character_body_geometry.js |
@@ -3989,30 +3990,30 @@
 | noseZ | app/3dmap/character_body_geometry.js |
 | nostril | app/3dmap/character_body_geometry.js |
 | nostrils | app/3dmap/character_body_geometry.js |
-| note | app/combat_engine.js, app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js |
-| now | app/3dmap/character_body_geometry.js, app/3dmap/character_pose.js, app/dice.js, app/gameplay_core_v57.js (+ 1 ещё) |
+| note | app/combat_engine.js (+ 2 других файлов) |
+| now | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
 | np | app/3dmap/character_body_geometry.js |
 | npot | app/3dmap/map_renderer_3d.js |
-| null | app/Settings.js, app/cloud_sync.js, app/rulesEngine.js, app/vtt_combat_event_bus_v69.js (+ 7 ещё) |
+| null | app/Settings.js (+ 10 других файлов) |
 | num | app/Wallpapers.js |
-| Number | app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js (+ 22 ещё) |
+| Number | app/crafting_character_influence_test_v46.js (+ 25 других файлов) |
 | numbers | app/3dmap/character_clothing.js |
 | nums | app/network_gameplay.js |
 | nw | app/expansion_classes_pack.js |
-| nx | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js |
-| ny | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js |
+| nx | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| ny | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | nylon | app/3dmap/character_editor_3d.js |
-| nz | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js |
-| o | app/3dmap/character_anatomy.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js (+ 46 ещё) |
+| nz | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
+| o | app/3dmap/character_anatomy.js (+ 49 других файлов) |
 | oa | app/expansion_classes_pack.js |
-| obj | app/3dmap/map_model.js, app/alchemist_mhp_2024_runtime.js, app/vtt_debug_tasks_v708.js, tests/imported_3d_editor_assets.cjs (+ 2 ещё) |
-| Object | app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js (+ 20 ещё) |
+| obj | app/3dmap/map_model.js (+ 5 других файлов) |
+| Object | app/crafting_character_influence_test_v46.js (+ 23 других файлов) |
 | objectBomber | tests/alchemist_combat_test.js |
-| objectId | app/class_features_engine.js, app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js |
+| objectId | app/class_features_engine.js (+ 2 других файлов) |
 | objectIds | app/runekeeper_taron_v12_runtime.js |
-| objPath | tests/generate_makehuman_glb_morph_fixture.js, tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js (+ 3 ещё) |
+| objPath | tests/generate_makehuman_glb_morph_fixture.js (+ 6 других файлов) |
 | objs | app/3dmap/map_renderer_2d.js |
-| observer | app/Inventory-weight-tracker.js, app/Settings.js, app/swipe-lock.js |
+| observer | app/Inventory-weight-tracker.js (+ 2 других файлов) |
 | observerTarget | app/Inventory-weight-tracker.js |
 | oc | tests/test_v726_fixes.js |
 | oc2 | tests/test_v726_fixes.js |
@@ -4021,19 +4022,19 @@
 | occupied | app/secondary_entities_engine.js |
 | od | app/network_gameplay.js |
 | odr | app/network_gameplay.js |
-| off | app/3dmap/character_editor_3d.js, app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js, tests/human_base_glb_audit.js (+ 3 ещё) |
-| offer | app/market_social_v55_3.js, tests/test_v55_2.js |
+| off | app/3dmap/character_editor_3d.js (+ 6 других файлов) |
+| offer | app/market_social_v55_3.js (+ 1 других файлов) |
 | offered | app/market_trade_v55_2.js |
-| offers | app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| offers | app/market_social_v55_3.js (+ 1 других файлов) |
 | offHoof | tests/character_native_limbs_test.js |
-| offset | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js (+ 4 ещё) |
-| oh | app/3dmap/map_renderer_2d.js, tests/test_v725_fixes.js |
-| oi | app/3dmap/map_renderer_2d.js, app/3dmap/map_renderer_3d.js, app/expansion_classes_pack.js |
+| offset | app/3dmap/character_body_geometry.js (+ 7 других файлов) |
+| oh | app/3dmap/map_renderer_2d.js (+ 1 других файлов) |
+| oi | app/3dmap/map_renderer_2d.js (+ 2 других файлов) |
 | oid | app/expansion_classes_pack.js |
 | oilDamage | app/combat_engine.js |
-| ok | app/3dmap/map_renderer_2d.js, app/class_features_engine.js, app/data/classes/level_up.js, app/expansion_classes_pack.js (+ 5 ещё) |
+| ok | app/3dmap/map_renderer_2d.js (+ 8 других файлов) |
 | ol | app/3dmap/map_renderer_3d.js |
-| old | app/3dmap/character_pose.js, app/3dmap/character_system.js, app/3dmap/gltf_character_pipeline.js, app/accursed_oap_v11_runtime.js (+ 42 ещё) |
+| old | app/3dmap/character_pose.js (+ 45 других файлов) |
 | oldAngle | app/3dmap/character_pose.js |
 | oldBin | tests/generate_makehuman_glb_morph_fixture.js |
 | oldBuffer | tests/character_3d_editor_test.js |
@@ -4050,12 +4051,12 @@
 | oldInitRender | app/rulesEngine.js |
 | oldLength | app/3dmap/character_anatomy_geometry.js |
 | oldLevel | app/crafting_profession_progression_v47.js |
-| oldMax | app/accursed_oap_v11_runtime.js, app/crafting_disassembly_v51.js |
+| oldMax | app/accursed_oap_v11_runtime.js (+ 1 других файлов) |
 | oldNet | tests/test_v742_character_combatant_sync.js |
 | oldPact | app/rulesEngine.js |
 | oldPeer | app/network_gameplay.js |
-| oldRAF | tools/check_adult_anatomy_browser.js, tools/check_adult_base_browser.js, tools/check_animal_heads_browser.js, tools/check_avian_elephant_heads_browser.js (+ 15 ещё) |
-| oldRandom | app/crafting_character_influence_test_v46.js, tests/alchemist_combat_test.js |
+| oldRAF | tools/check_adult_anatomy_browser.js (+ 18 других файлов) |
+| oldRandom | app/crafting_character_influence_test_v46.js (+ 1 других файлов) |
 | oldRandomForBurn | tests/alchemist_combat_test.js |
 | oldRandomMutable | tests/alchemist_combat_test.js |
 | oldRandomObject | tests/alchemist_combat_test.js |
@@ -4066,36 +4067,36 @@
 | oldSelect | app/inventory-modal.js |
 | oldTemp | app/alchemist_mhp_2024_runtime.js |
 | oldTotal | app/data/classes/level_up.js |
-| on | app/3dmap/character_editor_3d.js, app/combat_engine.js, app/content_catalog.js, app/content_framework.js (+ 3 ещё) |
+| on | app/3dmap/character_editor_3d.js (+ 6 других файлов) |
 | oneTwoTarget | app/expansion_classes_pack.js |
 | onProgress | app/update_manager_v2.js |
 | oozeRancher | app/combat_engine.js |
 | oozeRancherAcidResistance | app/combat_engine.js |
 | oozeTarget | tests/alchemist_combat_test.js |
-| op | app/3dmap/character_editor_3d.js, app/cloud_sync.js, tests/cloud_sql_concurrency.cjs |
-| opacity | app/Wallpapers.js, tools/check_ghost_browser.js |
+| op | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
+| opacity | app/Wallpapers.js (+ 1 других файлов) |
 | opacityVal | app/Wallpapers.js |
-| open | app/class_features_engine.js, app/cloud_account.js, app/combat_abilities.js |
+| open | app/class_features_engine.js (+ 2 других файлов) |
 | opening | app/dice.js |
 | openPanels | tests/character_races_geometry_test.js |
 | openSet | app/library.js |
-| opt | app/3dmap/character_editor_3d.js, app/Settings_debug.js, app/data/classes/level_up.js, app/inventory-modal.js (+ 1 ещё) |
+| opt | app/3dmap/character_editor_3d.js (+ 4 других файлов) |
 | option | app/3dmap/character_editor_3d.js |
-| options | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/alchemy_engine_v29.js, app/character_creation.js (+ 17 ещё) |
-| opts | app/alchemy_gameplay_v30.js, app/alchemy_gathering_professions_v52.js, app/blood_hunter_engine.js, app/class_features_engine.js (+ 24 ещё) |
+| options | app/3dmap/character_body_geometry.js (+ 20 других файлов) |
+| opts | app/alchemy_gameplay_v30.js (+ 27 других файлов) |
 | optsHtml | app/character_creation.js |
 | orbit | app/3dmap/character_body_geometry.js |
 | orc | tests/test_v728_fixes.js |
-| order | app/3dmap/character_anatomy_geometry.js, app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js, tests/test_blood_hunter_completion.js (+ 1 ещё) |
+| order | app/3dmap/character_anatomy_geometry.js (+ 4 других файлов) |
 | orderCtx | tests/test_class_audit_stage4_runtime.js |
-| origin | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tools/check_character_editor_browser.js |
-| original | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_clothing.js, app/alchemist_mhp_2024_runtime.js, app/companion_gameplay_v27.js (+ 12 ещё) |
+| origin | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
+| original | app/3dmap/character_anatomy_geometry.js (+ 15 других файлов) |
 | originalAppearance | app/alchemist_mhp_2024_runtime.js |
 | originalAttack | app/crafting_dlc_v50.js |
 | originalBody | tests/character_3d_foundation_test.js |
 | originalCalculateMods | app/spells.js |
 | originalContext | tests/character_3d_editor_test.js |
-| originalCraft | app/crafting_dlc_v50.js, app/crafting_profession_progression_v47.js |
+| originalCraft | app/crafting_dlc_v50.js (+ 1 других файлов) |
 | originalDamage | app/crafting_dlc_v50.js |
 | originalError | app/debug.js |
 | originalIndex | app/Inventory.js |
@@ -4108,54 +4109,54 @@
 | originalUiCraft | app/crafting_dlc_v50.js |
 | originLabel | app/3dmap/character_editor_3d.js |
 | orphan | app/inventory_containers_v54.js |
-| os | tests/creation_signature_asset_test.cjs, tests/desktop_update_contract.cjs, tests/makehuman_gender_recipe_test.js, tests/makehuman_uv_bridge_test.js (+ 1 ещё) |
-| ot | app/companion_gameplay_v27.js, app/expansion_classes_pack.js |
-| other | app/Inventory.js, tests/character_external_anatomy_test.js |
+| os | tests/creation_signature_asset_test.cjs (+ 4 других файлов) |
+| ot | app/companion_gameplay_v27.js (+ 1 других файлов) |
+| other | app/Inventory.js (+ 1 других файлов) |
 | otherCat | app/Inventory.js |
 | otherIndex | app/Inventory.js |
 | otherIsShield | app/Inventory.js |
 | otherName | app/Inventory.js |
 | ott | app/expansion_classes_pack.js |
-| out | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 63 ещё) |
-| outer | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_clothing.js, tests/character_clothing_test.js |
+| out | app/3dmap/character_anatomy.js (+ 66 других файлов) |
+| outer | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
 | outerWidth | app/3dmap/character_anatomy_geometry.js |
 | outPath | tests/generate_makehuman_glb_morph_fixture.js |
-| output | app/3dmap/character_editor_3d.js, tests/makehuman_gender_recipe_test.js, tools/build_makehuman_morphs.js, tools/prepare_makehuman_gender.js |
-| outputId | app/crafting_resources_v34.js, app/resource_processing_v44.js |
-| outputName | app/crafting_resources_v34.js, app/resource_processing_v44.js |
-| outside | app/3dmap/character_clothing.js, tools/build_makehuman_morphs.js |
+| output | app/3dmap/character_editor_3d.js (+ 3 других файлов) |
+| outputId | app/crafting_resources_v34.js (+ 1 других файлов) |
+| outputName | app/crafting_resources_v34.js (+ 1 других файлов) |
+| outside | app/3dmap/character_clothing.js (+ 1 других файлов) |
 | outsideBary | tests/makehuman_target_surface_transfer_audit.js |
 | overheated | app/alchemist_mhp_2024_runtime.js |
 | overheatedTarget | tests/alchemist_runtime_test.js |
-| overlay | app/Logo.js, app/Wallpapers.js, app/dice.js, tests/update_ota_flow_test.js |
+| overlay | app/Logo.js (+ 3 других файлов) |
 | overload | tests/alchemist_runtime_test.js |
 | overloadBefore | tests/alchemist_runtime_test.js |
 | overloadBomber | tests/alchemist_runtime_test.js |
 | overloadCost | app/alchemist_mhp_2024_runtime.js |
 | overrides | app/companion_packs_v26.js |
 | ow | app/3dmap/map_renderer_2d.js |
-| own | app/companion_gameplay_v27.js, app/network_gameplay.js |
-| owned | app/crafting_professions_v33.js, app/crafting_professions_v38.js |
-| owner | app/3dmap/character_editor_3d.js, app/battle_action_ui.js, app/blood_hunter_engine.js, app/companion_gameplay_v27.js (+ 4 ещё) |
+| own | app/companion_gameplay_v27.js (+ 1 других файлов) |
+| owned | app/crafting_professions_v33.js (+ 1 других файлов) |
+| owner | app/3dmap/character_editor_3d.js (+ 7 других файлов) |
 | ownerActor | app/companion_gameplay_v27.js |
 | ownerBombHit | tests/alchemist_combat_test.js |
 | ownerClass | app/alchemist_mhp_2024_runtime.js |
 | ownerId | app/secondary_entities_engine.js |
-| ox | app/3dmap/gltf_character_pipeline.js, app/3dmap/map_renderer_2d.js, app/3dmap/map_renderer_3d.js |
-| oy | app/3dmap/gltf_character_pipeline.js, app/3dmap/map_renderer_2d.js, app/3dmap/map_renderer_3d.js |
-| oz | app/3dmap/gltf_character_pipeline.js, app/3dmap/map_renderer_3d.js |
-| p | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 155 ещё) |
-| P | app/3dmap/gltf_loader.js, app/spellblade_kibbles_runtime.js, app/warlord_laserllama_v330_runtime.js |
+| ox | app/3dmap/gltf_character_pipeline.js (+ 2 других файлов) |
+| oy | app/3dmap/gltf_character_pipeline.js (+ 2 других файлов) |
+| oz | app/3dmap/gltf_character_pipeline.js (+ 1 других файлов) |
+| p | app/3dmap/character_anatomy.js (+ 158 других файлов) |
+| P | app/3dmap/gltf_loader.js (+ 2 других файлов) |
 | p0 | app/3dmap/character_body_geometry.js |
 | p1 | app/3dmap/character_body_geometry.js |
 | pa | app/combat_engine.js |
-| pack | app/3dmap/map_editor.js, app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js (+ 19 ещё) |
-| PACK_ID | app/alchemist_mhp_2024_runtime.js, app/occultist_kibbles_v11_runtime.js, app/warden_mhp_2024_runtime.js |
+| pack | app/3dmap/map_editor.js (+ 22 других файлов) |
+| PACK_ID | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | PACK_MANIFEST | app/content_manifest.js |
 | packId | app/content_framework.js |
 | packName | app/content_framework.js |
-| packs | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
-| pact | app/class_features_engine.js, app/network_gameplay.js, app/rulesEngine.js, app/spells.js |
+| packs | app/expanded_classes_v23.js (+ 1 других файлов) |
+| pact | app/class_features_engine.js (+ 3 других файлов) |
 | PACT | app/magic_engine.js |
 | PACT_SLOTS | app/rulesEngine.js |
 | pactBoxes | app/spells.js |
@@ -4164,65 +4165,65 @@
 | pactState | app/rulesEngine.js |
 | pad | app/3dmap/character_body_geometry.js |
 | pads | app/3dmap/character_body_geometry.js |
-| page | app/cloud_sync.js, tools/check_adult_anatomy_browser.js, tools/check_adult_base_browser.js, tools/check_animal_heads_browser.js (+ 35 ещё) |
+| page | app/cloud_sync.js (+ 38 других файлов) |
 | paid | app/martyr_mhp_2024_runtime.js |
 | paintAttack | tests/alchemist_runtime_test.js |
 | painter | tests/alchemist_runtime_test.js |
-| pair | app/3dmap/character_anatomy_geometry.js, app/alchemist_mhp_2024_runtime.js, app/bestiary_catalog_v56_11.js |
-| pal | tests/test_v726_fixes.js, tests/test_v727_fixes.js, tests/test_v728_fixes.js |
-| palette | app/3dmap/character_clothing.js, app/3dmap/gltf_character_pipeline.js |
+| pair | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
+| pal | tests/test_v726_fixes.js (+ 2 других файлов) |
+| palette | app/3dmap/character_clothing.js (+ 1 других файлов) |
 | palettes | app/3dmap/character_editor_3d.js |
 | palm | app/3dmap/character_body_geometry.js |
-| panel | app/3dmap/character_clothing.js, app/battle_action_ui.js, app/class_features_engine.js, app/cloud_account.js (+ 2 ещё) |
+| panel | app/3dmap/character_clothing.js (+ 5 других файлов) |
 | panelHost | app/rulesEngine.js |
 | panelsHidden | app/3dmap/map_editor.js |
 | panX | app/vtt_mobile_battle_v61.js |
 | panY | app/vtt_mobile_battle_v61.js |
 | parasiteHostTarget | app/character_creation.js |
-| parent | app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js, app/cloud_account.js |
+| parent | app/3dmap/gltf_character_pipeline.js (+ 2 других файлов) |
 | parentArea | app/Inventory.js |
 | parentId | app/swarm_extra_runtime.js |
-| parsed | app/Settings.js, app/app.js, app/combat_engine.js, tests/gltf_loader_smoke.cjs |
+| parsed | app/Settings.js (+ 3 других файлов) |
 | parsedHtml | app/dice.js |
 | parsedSides | app/dice.js |
-| parseFloat | tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js, tests/helpers/class_runtime_harness.js, tests/pugilist_combat_test.js (+ 12 ещё) |
-| parseInt | tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js, tests/helpers/class_runtime_harness.js, tests/pugilist_combat_test.js (+ 10 ещё) |
-| part | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 13 ещё) |
-| parts | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/character_pose.js (+ 25 ещё) |
+| parseFloat | tests/alchemist_combat_test.js (+ 15 других файлов) |
+| parseInt | tests/alchemist_combat_test.js (+ 13 других файлов) |
+| part | app/3dmap/character_anatomy.js (+ 16 других файлов) |
+| parts | app/3dmap/character_body_geometry.js (+ 28 других файлов) |
 | partySize | app/monster_engine.js |
-| pass | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_clothing.js, app/vtt_debug_rules_matrix_v707.js, tools/run_tests_v731.js |
+| pass | app/3dmap/character_anatomy_geometry.js (+ 3 других файлов) |
 | passed | tests/cloud_sync_test.cjs |
-| passInsight | app/Backgrounds.js, app/skills.js |
-| passInvestigation | app/Backgrounds.js, app/skills.js |
-| passive | app/expansion_classes_pack.js, tests/test_v725_fixes.js, tests/test_v731_fixes.js |
+| passInsight | app/Backgrounds.js (+ 1 других файлов) |
+| passInvestigation | app/Backgrounds.js (+ 1 других файлов) |
+| passive | app/expansion_classes_pack.js (+ 2 других файлов) |
 | passiveFeatures | app/alchemist_mhp_2024_runtime.js |
-| passPerception | app/Backgrounds.js, app/skills.js |
-| password | app/cloud_account.js, app/cloud_sync.js |
+| passPerception | app/Backgrounds.js (+ 1 других файлов) |
+| password | app/cloud_account.js (+ 1 других файлов) |
 | pat | app/3dmap/map_renderer_2d.js |
-| patch | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/secondary_entities_engine.js, tests/alchemist_runtime_test.js (+ 2 ещё) |
+| patch | app/3dmap/character_body_geometry.js (+ 5 других файлов) |
 | patchLootResult | app/resource_processing_v44.js |
-| path | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/gltf_character_pipeline.js, app/3dmap/map_renderer_3d.js (+ 104 ещё) |
+| path | app/3dmap/character_body_geometry.js (+ 107 других файлов) |
 | paths | tests/creation_signature_asset_test.cjs |
-| patient | app/alchemist_mhp_2024_runtime.js, tests/test_blood_hunter_patron_selection.js |
+| patient | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | patronNames | app/blood_hunter_engine.js |
-| patrons | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| patrons | app/blood_hunter_engine.js (+ 1 других файлов) |
 | paw | app/3dmap/character_body_geometry.js |
-| payload | app/app.js, app/cloud_sync.js, app/network_gameplay.js, app/secondary_entities_engine.js (+ 8 ещё) |
-| pb | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/combat_engine.js, app/companion_gameplay_v27.js (+ 4 ещё) |
-| PB | app/accursed_oap_v11_runtime.js, app/ghost_extra_runtime.js, app/martyr_mhp_2024_runtime.js, app/necromancer_mhp_2024_runtime.js (+ 7 ещё) |
+| payload | app/app.js (+ 11 других файлов) |
+| pb | app/accursed_oap_v11_runtime.js (+ 7 других файлов) |
+| PB | app/accursed_oap_v11_runtime.js (+ 10 других файлов) |
 | pbBreath | app/alchemist_mhp_2024_runtime.js |
-| pc | app/expansion_classes_pack.js, app/network_gameplay.js, tests/cloud_sync_test.cjs, tools/check_cloud_account_browser.cjs |
-| pct | app/update_scene_v2.js, tests/makehuman_surface_mapping_audit.js |
+| pc | app/expansion_classes_pack.js (+ 3 других файлов) |
+| pct | app/update_scene_v2.js (+ 1 других файлов) |
 | pd | app/world_resource_gathering_v53.js |
 | peak | tests/pugilist_combat_test.js |
-| peer | app/network_gameplay.js, tests/test_blood_hunter_focus_network.js, tests/test_v742_character_combatant_sync.js |
+| peer | app/network_gameplay.js (+ 2 других файлов) |
 | peerId | app/network_gameplay.js |
-| peers | app/network_engine.js, app/network_gameplay.js, tests/test_blood_hunter_focus_network.js, tests/test_v739_prepared_transaction.js |
+| peers | app/network_engine.js (+ 3 других файлов) |
 | pelvisNode | app/3dmap/character_anatomy_geometry.js |
 | penalizedAttack | tests/alchemist_combat_test.js |
 | penalizedSave | tests/alchemist_combat_test.js |
 | penalty | app/blood_hunter_engine.js |
-| pending | app/3dmap/character_morph_assets.js, app/Settings.js, app/blood_hunter_engine.js, app/class_features_engine.js (+ 8 ещё) |
+| pending | app/3dmap/character_morph_assets.js (+ 11 других файлов) |
 | pendingBloodAttack | app/combat_engine.js |
 | pendingBomb | app/alchemist_mhp_2024_runtime.js |
 | pendingContext | app/battle_action_ui.js |
@@ -4231,7 +4232,7 @@
 | pendingReactions | app/network_gameplay.js |
 | pendingSavantAttack | app/combat_engine.js |
 | pendingTargetId | app/battle_action_ui.js |
-| percent | app/3dmap/character_editor_3d.js, app/Inventory-weight-tracker.js, app/update_scene_v2.js |
+| percent | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
 | perfumeAttack | tests/alchemist_combat_test.js |
 | perfumeAttacker | tests/alchemist_combat_test.js |
 | perfumeClass | app/combat_engine.js |
@@ -4251,52 +4252,52 @@
 | pf | app/shifter_laserllama_v2_1_runtime.js |
 | ph | tests/test_v731_fixes.js |
 | PH | app/3dmap/map_renderer_2d.js |
-| phase | app/3dmap/character_body_geometry.js, tests/update_ota_flow_test.js |
+| phase | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | phases | tests/test_v56_10.js |
 | pher | app/combat_engine.js |
 | pherDebuffs | app/alchemist_mhp_2024_runtime.js |
-| pheromone | tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js |
+| pheromone | tests/alchemist_combat_test.js (+ 1 других файлов) |
 | pheromoneOwner | tests/alchemist_combat_test.js |
 | pheromoneSave | app/alchemist_mhp_2024_runtime.js |
-| pheromoneTarget | tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js |
-| phi | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
-| phone | tests/cloud_sync_test.cjs, tools/check_cloud_account_browser.cjs |
-| physical | app/combat_engine.js, app/parasite_extra_runtime.js |
+| pheromoneTarget | tests/alchemist_combat_test.js (+ 1 других файлов) |
+| phi | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
+| phone | tests/cloud_sync_test.cjs (+ 1 других файлов) |
+| physical | app/combat_engine.js (+ 1 других файлов) |
 | physicalKey | app/shifter_laserllama_v2_1_runtime.js |
-| pi | app/3dmap/gltf_character_pipeline.js, app/3dmap/map_renderer_3d.js, app/combat_engine.js, app/data/classes/extra_class_stubs.js (+ 2 ещё) |
-| pick | app/3dmap/character_body_geometry.js, app/class_features_engine.js, app/data/subclasses/subclassesRegistry.js, app/monster_loot_engine_v36.js (+ 5 ещё) |
+| pi | app/3dmap/gltf_character_pipeline.js (+ 5 других файлов) |
+| pick | app/3dmap/character_body_geometry.js (+ 8 других файлов) |
 | picked | app/blood_hunter_engine.js |
 | picker | app/3dmap/character_editor_3d.js |
 | picks | app/alchemist_mhp_2024_runtime.js |
-| pid | app/crafting_profession_progression_v47.js, app/crafting_professions_v33.js |
+| pid | app/crafting_profession_progression_v47.js (+ 1 других файлов) |
 | pigmentClass | app/alchemist_mhp_2024_runtime.js |
 | pigmentist | tests/alchemist_runtime_test.js |
 | pinch | app/vtt_mobile_battle_v61.js |
 | pink | app/3dmap/character_body_geometry.js |
 | PINNED_COMMIT | tools/prepare_makehuman_gender.js |
 | pInput | app/inventory-coins.js |
-| pipe | tests/character_3d_morph_assets_test.js, tests/character_3d_skin_morph_test.js, tests/character_adult_anatomy_test.js, tests/character_animal_heads_test.js (+ 17 ещё) |
-| pitch | app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js, tools/check_character_clothing_closeups.js, tools/check_character_editor_browser.js |
+| pipe | tests/character_3d_morph_assets_test.js (+ 20 других файлов) |
+| pitch | app/3dmap/character_editor_3d.js (+ 3 других файлов) |
 | pivot | app/3dmap/character_anatomy_geometry.js |
 | pixel | tools/check_ghost_browser.js |
-| pixels | tools/check_adult_anatomy_browser.js, tools/check_adult_base_browser.js, tools/check_animal_heads_browser.js, tools/check_avian_elephant_heads_browser.js (+ 16 ещё) |
-| pl | app/data/classes/extra_class_stubs.js, app/magic_engine.js, app/network_gameplay.js |
-| plan | app/crafting_disassembly_v51.js, app/network_gameplay.js, tests/crafting_disassembly_v51_test.js |
-| plane | app/3dmap/character_body_geometry.js, app/bestiary_catalog_v56_13.js |
+| pixels | tools/check_adult_anatomy_browser.js (+ 19 других файлов) |
+| pl | app/data/classes/extra_class_stubs.js (+ 2 других файлов) |
+| plan | app/crafting_disassembly_v51.js (+ 2 других файлов) |
+| plane | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | PLANES | app/bestiary_catalog_v56_13.js |
 | plannedMove | app/network_gameplay.js |
 | plates | app/3dmap/character_body_geometry.js |
 | playBtn | app/Ambiences.js |
 | plumage | app/3dmap/character_body_geometry.js |
 | plume | app/3dmap/character_body_geometry.js |
-| plus | app/3dmap/character_anatomy_geometry.js, tests/character_editor_morph_assets_test.js |
+| plus | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | pn | app/3dmap/character_body_geometry.js |
 | po | app/expansion_classes_pack.js |
-| point | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
-| pointCostDiff | app/Backgrounds.js, app/character_creation.js |
+| point | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| pointCostDiff | app/Backgrounds.js (+ 1 других файлов) |
 | pointers | app/vtt_mobile_battle_v61.js |
-| points | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, tests/character_external_anatomy_test.js (+ 5 ещё) |
-| pointsLeftEl | app/Backgrounds.js, app/character_creation.js |
+| points | app/3dmap/character_body_geometry.js (+ 8 других файлов) |
+| pointsLeftEl | app/Backgrounds.js (+ 1 других файлов) |
 | poisonBomb | tests/alchemist_runtime_test.js |
 | poisonedAttacker | tests/alchemist_combat_test.js |
 | poisonedCombatant | tests/alchemist_combat_test.js |
@@ -4308,41 +4309,41 @@
 | poisonWeaponId | app/alchemist_mhp_2024_runtime.js |
 | pole | app/3dmap/character_anatomy_geometry.js |
 | policy | app/crafting_professions_v38.js |
-| poly | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
+| poly | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | polygon | app/3dmap/character_body_geometry.js |
-| pool | app/alchemist_mhp_2024_runtime.js, app/alchemy_gathering_professions_v52.js, app/class_features_engine.js, app/world_resource_gathering_v53.js (+ 1 ещё) |
+| pool | app/alchemist_mhp_2024_runtime.js (+ 4 других файлов) |
 | poolKind | app/alchemist_mhp_2024_runtime.js |
 | pools | app/alchemy_engine_v29.js |
 | portraitBounds | desktop/main.cjs |
-| pos | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/character_pose.js (+ 7 ещё) |
+| pos | app/3dmap/character_anatomy_geometry.js (+ 10 других файлов) |
 | pose | app/3dmap/character_body_geometry.js |
 | posed | app/3dmap/character_pose.js |
 | poses | app/3dmap/character_pose.js |
 | positionCounts | tests/makehuman_topology_audit.js |
-| positions | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 2 ещё) |
+| positions | app/3dmap/character_anatomy_geometry.js (+ 5 других файлов) |
 | possibleIdElements | app/Inventory-weight-tracker.js |
-| potency | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js |
+| potency | app/alchemy_engine_v29.js (+ 1 других файлов) |
 | potential | app/3dmap/character_body_geometry.js |
-| potion | app/alchemist_mhp_2024_runtime.js, tests/test_v55_2.js |
+| potion | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | potionColor | app/alchemist_mhp_2024_runtime.js |
 | potionIndex | tests/test_v55_2.js |
 | potions | app/alchemist_mhp_2024_runtime.js |
-| power | app/3dmap/character_body_geometry.js, app/3dmap/map_model.js |
-| pp | app/alchemy_gathering_professions_v52.js, app/class_features_engine.js, app/expansion_classes_pack.js, app/inventory-coins.js (+ 1 ещё) |
+| power | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| pp | app/alchemy_gathering_professions_v52.js (+ 4 других файлов) |
 | pPerG | app/inventory-coins.js |
 | ppInput | app/inventory-coins.js |
 | ppVal | app/inventory-coins.js |
-| pr | app/blood_hunter_engine.js, app/crafting_resources_v34.js, app/network_gameplay.js |
+| pr | app/blood_hunter_engine.js (+ 2 других файлов) |
 | pre | app/accursed_oap_v11_runtime.js |
 | predicate | app/3dmap/character_body_geometry.js |
 | predict | tests/character_skin_material_test.js |
 | preFeatSelect | app/data/classes/level_up.js |
 | preferPact | app/class_features_engine.js |
-| prefix | app/inventory_containers_v54.js, app/market_expansion_v55_1.js, app/network_engine.js, app/secondary_entities_engine.js |
+| prefix | app/inventory_containers_v54.js (+ 3 других файлов) |
 | preloadPath | tools/run_tests_v731.js |
 | prep | tests/test_v726_fixes.js |
-| PREP | app/martyr_mhp_2024_runtime.js, app/necromancer_mhp_2024_runtime.js |
-| prepared | app/blood_hunter_engine.js, app/network_gameplay.js, tests/test_v745_host_handoff.js, tests/test_v748_full_combat_transaction.js |
+| PREP | app/martyr_mhp_2024_runtime.js (+ 1 других файлов) |
+| prepared | app/blood_hunter_engine.js (+ 3 других файлов) |
 | preparedAny | app/network_gameplay.js |
 | preparedCount | app/spells.js |
 | preparedFormula | app/alchemist_mhp_2024_runtime.js |
@@ -4353,81 +4354,81 @@
 | preS | app/data/classes/level_up.js |
 | preS1 | app/data/classes/level_up.js |
 | preS2 | app/data/classes/level_up.js |
-| preset | app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/character_pose.js, app/3dmap/character_system.js |
-| presets | app/3dmap/character_system.js, app/inventory-modal.js |
+| preset | app/3dmap/character_clothing.js (+ 3 других файлов) |
+| presets | app/3dmap/character_system.js (+ 1 других файлов) |
 | preStats | app/data/classes/level_up.js |
-| prev | app/3dmap/character_anatomy_geometry.js, app/gameplay_core_v57.js, app/network_gameplay.js |
-| preview | app/Inventory.js, app/crafting_disassembly_repair_v51.js, app/inventory-modal.js |
-| previous | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/character_morph_assets.js, app/3dmap/character_system.js (+ 7 ещё) |
+| prev | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
+| preview | app/Inventory.js (+ 2 других файлов) |
+| previous | app/3dmap/character_anatomy_geometry.js (+ 10 других файлов) |
 | previousAC | app/savant_laserllama_v561_runtime.js |
 | previousActive | app/dnd_tools.js |
 | previousCount | tests/character_fur_test.js |
-| previousFetch | tests/creation_signature_asset_test.cjs, tests/desktop_update_contract.cjs |
+| previousFetch | tests/creation_signature_asset_test.cjs (+ 1 других файлов) |
 | previousRoot | app/dnd_tools.js |
-| price | app/crafting_economy_v49.js, app/crafting_resources_v34.js |
+| price | app/crafting_economy_v49.js (+ 1 других файлов) |
 | prim | tests/generate_makehuman_glb_morph_fixture.js |
-| primary | app/alchemy_gathering_professions_v52.js, app/expansion_class_progressions.js |
+| primary | app/alchemy_gathering_professions_v52.js (+ 1 других файлов) |
 | primaryStat | app/data/classes/extra_class_stubs.js |
 | prime | app/expansion_classes_pack.js |
-| prior | tests/test_blood_hunter_focus_network.js, tests/test_blood_hunter_patron_selection.js, tests/test_blood_hunter_profane_focus.js |
+| prior | tests/test_blood_hunter_focus_network.js (+ 2 других файлов) |
 | prismaticIndex | app/alchemist_mhp_2024_runtime.js |
 | prismaticOptions | app/alchemist_mhp_2024_runtime.js |
 | prismAttack | tests/alchemist_runtime_test.js |
 | prismTester | tests/alchemist_runtime_test.js |
-| probe | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
+| probe | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | proceed | app/data/classes/level_up.js |
-| process | tests/test_v745_host_handoff.js, tests/test_v747_event_race_compaction.js, tools/run_tests_v731.js |
+| process | tests/test_v745_host_handoff.js (+ 2 других файлов) |
 | processedNames | app/resource_processing_v44.js |
-| processing | app/crafting_character_influence_test_v46.js, app/crafting_professions_v38.js |
+| processing | app/crafting_character_influence_test_v46.js (+ 1 других файлов) |
 | PROCESSING | app/crafting_professions_v38.js |
 | PROCESSING_DC_BY_RARITY | app/resource_processing_v44.js |
 | PROCESSING_RECIPES | app/crafting_resources_v34.js |
 | PROCESSING_TOOL_BY_TYPE | app/resource_processing_v44.js |
 | product | app/alchemy_gameplay_v30.js |
-| prof | app/Inventory.js, app/bestiary_2_0_v56.js, app/class_features_engine.js, app/combat_abilities.js (+ 5 ещё) |
+| prof | app/Inventory.js (+ 8 других файлов) |
 | profBlock | app/data/feats/Feat_widget.js |
-| profBonus | app/Backgrounds.js, app/character.js, app/dice.js, app/skills.js (+ 1 ещё) |
-| profession | app/crafting_resources_v34.js, app/resource_processing_v44.js, app/world_resource_gathering_v53.js |
+| profBonus | app/Backgrounds.js (+ 4 других файлов) |
+| profession | app/crafting_resources_v34.js (+ 2 других файлов) |
 | professionBonus | app/alchemy_gameplay_v30.js |
 | professionId | app/crafting_profession_progression_v47.js |
 | professionLayer | app/crafting_professions_v38.js |
 | professions | app/crafting_resources_v34.js |
-| PROFESSIONS | app/crafting_profession_progression_v47.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js |
+| PROFESSIONS | app/crafting_profession_progression_v47.js (+ 2 других файлов) |
 | PROFICIENCIES_DB | app/Proficiencies.js |
 | proficiencyBonus | app/dice.js |
 | proficiencyChoiceHtml | app/data/classes/level_up.js |
 | proficiencyType | app/Inventory.js |
-| proficient | app/network_gameplay.js, app/rulesEngine.js |
-| profId | app/Proficiencies.js, app/data/classes/progressionEngine.js |
+| proficient | app/network_gameplay.js (+ 1 других файлов) |
+| profId | app/Proficiencies.js (+ 1 других файлов) |
 | profIds | app/Proficienciescheck.js |
-| profile | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/crafting_profession_progression_v47.js (+ 7 ещё) |
-| profiles | app/3dmap/character_clothing.js, tests/test_v723_fixes.js, tests/test_v737_spellcasting_transaction.js, tests/test_v738_multiclass_spell_sources.js (+ 1 ещё) |
+| profile | app/3dmap/character_anatomy_geometry.js (+ 10 других файлов) |
+| profiles | app/3dmap/character_clothing.js (+ 4 других файлов) |
 | profInput | app/spells.js |
-| profName | app/Proficienciescheck.js, app/weapons.js |
-| profObj | app/Proficienciescheck.js, app/weapons.js |
+| profName | app/Proficienciescheck.js (+ 1 других файлов) |
+| profObj | app/Proficienciescheck.js (+ 1 других файлов) |
 | profOk | app/world_resource_gathering_v53.js |
-| profs | app/Inventory.js, app/Proficiencies.js, app/Proficienciescheck.js, app/expansion_classes_pack.js |
-| prog | app/3dmap/map_renderer_3d.js, app/alchemy_gathering_professions_v52.js, app/crafting_economy_v49.js, app/data/classes/level_up.js (+ 1 ещё) |
+| profs | app/Inventory.js (+ 3 других файлов) |
+| prog | app/3dmap/map_renderer_3d.js (+ 4 других файлов) |
 | progressFrame | app/update_scene_v2.js |
 | progressHandler | app/update_manager_v2.js |
-| progression | app/accursed_oap_v11_runtime.js, app/data/classes/Beastheart.js, app/ghost_extra_runtime.js, app/martyr_mhp_2024_runtime.js (+ 8 ещё) |
+| progression | app/accursed_oap_v11_runtime.js (+ 11 других файлов) |
 | progressPercent | app/Experience.js |
-| projected | app/inventory_containers_v54.js, tests/character_races_geometry_test.js |
+| projected | app/inventory_containers_v54.js (+ 1 других файлов) |
 | projection | app/3dmap/character_body_geometry.js |
 | projectManifest | app/vtt_debug_panel_v70.js |
-| Promise | tests/gltf_loader_smoke.cjs, tests/test_v714_fixes.js, tests/update_ota_flow_test.js |
+| Promise | tests/gltf_loader_smoke.cjs (+ 2 других файлов) |
 | prompts | tests/test_blood_hunter_orders.js |
-| prop | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/inventory-modal.js |
+| prop | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | propContainer | app/inventory-modal.js |
 | PROPERTIES | app/alchemy_engine_v29.js |
 | proportions | tools/prepare_makehuman_gender.js |
-| props | app/3dmap/character_clothing.js, app/dice.js |
+| props | app/3dmap/character_clothing.js (+ 1 других файлов) |
 | propTitle | app/inventory-modal.js |
 | protectedKeys | app/Settings.js |
 | proto | app/cloud_sync.js |
 | protocol | desktop/main.cjs |
 | proxy | app/network_gameplay.js |
-| ps | app/3dmap/gltf_loader.js, app/crafting_profession_progression_v47.js, tests/test_v56_13.js |
+| ps | app/3dmap/gltf_loader.js (+ 2 других файлов) |
 | psiLimit | app/data/classes/Psion.js |
 | psion | tests/test_v731_fixes.js |
 | psionDisciplines | app/expansion_classes_pack.js |
@@ -4448,16 +4449,16 @@
 | puppet | tests/test_blood_hunter_orders.js |
 | puppetTarget | app/blood_hunter_engine.js |
 | puppetWeapon | app/blood_hunter_engine.js |
-| purity | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js |
+| purity | app/alchemy_engine_v29.js (+ 1 других файлов) |
 | pursuits | app/savant_laserllama_v561_runtime.js |
 | pw | tools/prepare_makehuman_gender.js |
 | PW | app/3dmap/map_renderer_2d.js |
-| px | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_2d.js |
+| px | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | PX | app/3dmap/map_renderer_2d.js |
-| py | app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_2d.js |
+| py | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | PY | app/3dmap/map_renderer_2d.js |
 | pz | app/3dmap/character_editor_3d.js |
-| q | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 32 ещё) |
+| q | app/3dmap/character_anatomy_geometry.js (+ 35 других файлов) |
 | Q | app/3dmap/character_anatomy_geometry.js |
 | q0 | app/3dmap/character_body_geometry.js |
 | q1 | app/3dmap/character_body_geometry.js |
@@ -4466,40 +4467,40 @@
 | ql | app/3dmap/character_anatomy_geometry.js |
 | qn | app/3dmap/character_pose.js |
 | qr | app/expansion_classes_pack.js |
-| qty | app/crafting_disassembly_repair_v51.js, app/market_expansion_v55_1.js |
-| quality | app/3dmap/character_editor_3d.js, app/crafting_engine_v31.js, app/crafting_profession_progression_v47.js, app/crafting_professions_v33.js (+ 3 ещё) |
-| QUALITY | app/crafting_economy_v49.js, app/custom_crafting_v32.js, app/monster_loot_engine_v37.js |
+| qty | app/crafting_disassembly_repair_v51.js (+ 1 других файлов) |
+| quality | app/3dmap/character_editor_3d.js (+ 6 других файлов) |
+| QUALITY | app/crafting_economy_v49.js (+ 2 других файлов) |
 | QUALITY_GRADES | app/crafting_disassembly_repair_v51.js |
 | QUALITY_TIERS | app/crafting_disassembly_v51.js |
 | qualityFactor | app/crafting_disassembly_repair_v51.js |
 | qualityKey | app/monster_loot_engine_v37.js |
 | qualityPenalty | app/crafting_disassembly_repair_v51.js |
-| quantity | app/Inventory-weight-tracker.js, app/crafting_professions_v38.js, app/resource_processing_v44.js |
-| query | app/3dmap/map_editor.js, app/data/feats/Feat_widget.js |
+| quantity | app/Inventory-weight-tracker.js (+ 2 других файлов) |
+| query | app/3dmap/map_editor.js (+ 1 других файлов) |
 | queued | app/companion_gameplay_v27.js |
 | quickGather | app/resource_gathering_v35.js |
 | quota | app/3dmap/character_anatomy.js |
-| r | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 178 ещё) |
-| R | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_2d.js, app/3dmap/stress_map.js, app/alchemy_gathering_professions_v52.js (+ 7 ещё) |
+| r | app/3dmap/character_anatomy.js (+ 181 других файлов) |
+| R | app/3dmap/character_body_geometry.js (+ 10 других файлов) |
 | r0 | app/3dmap/character_body_geometry.js |
-| r1 | app/3dmap/character_body_geometry.js, app/dice.js, app/spells.js |
-| r2 | app/dice.js, app/spells.js |
-| race | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/class_features_engine.js, app/crafting_professions_v38.js (+ 7 ещё) |
+| r1 | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
+| r2 | app/dice.js (+ 1 других файлов) |
+| race | app/3dmap/character_editor_3d.js (+ 10 других файлов) |
 | raceDesc | app/character_creation.js |
 | raceEntry | app/3dmap/character_editor_3d.js |
-| raceId | app/3dmap/character_system.js, app/Backgrounds.js, app/character_creation.js, app/crafting_professions_v38.js (+ 4 ещё) |
+| raceId | app/3dmap/character_system.js (+ 7 других файлов) |
 | raceImmune | app/combat_engine.js |
 | raceLabel | app/character_creation.js |
 | raceList | app/crafting_professions_v38.js |
-| raceName | app/Backgrounds.js, app/character_creation.js |
+| raceName | app/Backgrounds.js (+ 1 других файлов) |
 | raceObj | app/races.js |
 | raceResistant | app/combat_engine.js |
-| races | app/3dmap/character_system.js, app/character_creation_pergament.js, tests/character_native_limbs_test.js, tests/test_v755_creation_buckets.js |
-| raceSelect | app/Backgrounds.js, app/character_creation.js, app/races.js |
-| rad | app/3dmap/character_body_geometry.js, app/3dmap/map_model.js |
+| races | app/3dmap/character_system.js (+ 3 других файлов) |
+| raceSelect | app/Backgrounds.js (+ 2 других файлов) |
+| rad | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | radial | app/3dmap/character_body_geometry.js |
 | radii | app/3dmap/character_body_geometry.js |
-| radius | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_pose.js (+ 1 ещё) |
+| radius | app/3dmap/character_anatomy_geometry.js (+ 4 других файлов) |
 | raf | app/battle_board.js |
 | raging | app/combat_engine.js |
 | raise | app/3dmap/character_body_geometry.js |
@@ -4509,47 +4510,47 @@
 | randomValue | tests/pugilist_combat_test.js |
 | randomXOffset | app/dice.js |
 | randomYOffset | app/dice.js |
-| range | app/blood_hunter_engine.js, app/companion_gameplay_v27.js, app/expansion_classes_pack.js, app/network_gameplay.js (+ 2 ещё) |
+| range | app/blood_hunter_engine.js (+ 5 других файлов) |
 | rangedIncoming | app/combat_engine.js |
 | rangeFt | app/network_gameplay.js |
 | ranger | tests/test_v728_fixes.js |
 | rangeU | tests/character_male_anatomy_fix_test.js |
 | rangeV | tests/character_male_anatomy_fix_test.js |
-| rank | app/monster_loot_engine_v37.js, app/rulesEngine.js |
+| rank | app/monster_loot_engine_v37.js (+ 1 других файлов) |
 | raphe | app/3dmap/character_anatomy_geometry.js |
 | rare | app/monster_loot_engine_v37.js |
-| rarity | app/crafting_economy_v49.js, app/crafting_resources_v34.js, app/market_trade_v55_2.js, app/resource_processing_v44.js (+ 1 ещё) |
+| rarity | app/crafting_economy_v49.js (+ 4 других файлов) |
 | RARITY | app/market_economy_v55.js |
 | RARITY_WEIGHT | app/world_resource_gathering_v53.js |
 | rarityOrder | app/Inventory.js |
-| rate | app/3dmap/character_body_geometry.js, app/crafting_disassembly_v51.js |
-| ratio | app/3dmap/map_renderer_3d.js, app/crafting_disassembly_repair_v51.js, app/resource_processing_v44.js, app/swarm_extra_runtime.js |
+| rate | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| ratio | app/3dmap/map_renderer_3d.js (+ 3 других файлов) |
 | rats | app/3dmap/character_body_geometry.js |
-| raw | app/3dmap/character_appearance_store.js, app/3dmap/character_morph_assets.js, app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js (+ 28 ещё) |
+| raw | app/3dmap/character_appearance_store.js (+ 31 других файлов) |
 | rawCat | app/market_trade_v55_2.js |
 | rawItems | app/spells.js |
 | rawParts | app/combat_engine.js |
 | rawRadial | app/3dmap/character_clothing.js |
 | rawStats | app/Inventory.js |
 | rawTotal | app/combat_engine.js |
-| rb | app/market_economy_v55.js, tests/test_v55_2.js |
+| rb | app/market_economy_v55.js (+ 1 других файлов) |
 | rBottom | app/3dmap/character_editor_3d.js |
-| rd | app/expansion_classes_pack.js, app/occultist_kibbles_v11_runtime.js |
+| rd | app/expansion_classes_pack.js (+ 1 других файлов) |
 | rd0 | app/occultist_kibbles_v11_runtime.js |
-| re | app/occultist_kibbles_v11_runtime.js, app/rulesEngine.js |
+| re | app/occultist_kibbles_v11_runtime.js (+ 1 других файлов) |
 | reach | app/3dmap/character_body_geometry.js |
-| reaction | app/combat_engine.js, app/network_gameplay.js |
+| reaction | app/combat_engine.js (+ 1 других файлов) |
 | reactionButton | tests/test_v724_fixes.js |
-| reactionCtx | app/combat_engine.js, app/network_gameplay.js |
+| reactionCtx | app/combat_engine.js (+ 1 других файлов) |
 | reactionReduction | app/combat_engine.js |
 | reactionResult | app/combat_engine.js |
 | reactions | app/network_gameplay.js |
 | REACTIONS | app/savant_laserllama_v561_runtime.js |
 | read | tools/check_cloud_account_browser.cjs |
 | Readable | desktop/main.cjs |
-| reader | app/Settings.js, app/rulesEngine.js, app/vtt_debug_scenario_editor_v705.js |
-| readGlb | tests/character_3d_morph_assets_test.js, tests/generate_makehuman_glb_morph_fixture.js, tests/makehuman_gender_fixture_audit.js, tools/build_character_editor_morphs.js (+ 2 ещё) |
-| readIndex | tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_surface_transfer_audit.js |
+| reader | app/Settings.js (+ 2 других файлов) |
+| readGlb | tests/character_3d_morph_assets_test.js (+ 5 других файлов) |
+| readIndex | tests/makehuman_surface_mapping_audit.js (+ 1 других файлов) |
 | ready | tests/test_blood_hunter_focus_network.js |
 | reagentCount | app/alchemist_mhp_2024_runtime.js |
 | reagentGain | app/alchemist_mhp_2024_runtime.js |
@@ -4559,48 +4560,48 @@
 | real | tools/run_tests_v731.js |
 | realSet | tests/cloud_sync_test.cjs |
 | rear | app/3dmap/character_body_geometry.js |
-| reason | app/crafting_dlc_v50.js, app/crafting_profession_progression_v47.js, app/dnd_tools.js, app/network_gameplay.js (+ 2 ещё) |
+| reason | app/crafting_dlc_v50.js (+ 5 других файлов) |
 | rebuildMaterialUsage | app/crafting_professions_v38.js |
-| rec | app/data/feats/Feat_widget.js, app/monster_loot_engine_v36.js, app/monster_loot_engine_v37.js, tools/check_native_limbs_browser.js (+ 1 ещё) |
+| rec | app/data/feats/Feat_widget.js (+ 4 других файлов) |
 | receipt | app/3dmap/map_world.js |
 | receiptKey | tests/cloud_sync_test.cjs |
-| received | app/market_trade_v55_2.js, desktop/update.cjs |
-| recharge | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/combat_abilities.js (+ 8 ещё) |
-| recipe | app/alchemist_mhp_2024_runtime.js, app/crafting_disassembly_repair_v51.js, app/crafting_engine_v31.js, app/crafting_profession_progression_v47.js (+ 4 ещё) |
+| received | app/market_trade_v55_2.js (+ 1 других файлов) |
+| recharge | app/alchemist_mhp_2024_runtime.js (+ 11 других файлов) |
+| recipe | app/alchemist_mhp_2024_runtime.js (+ 7 других файлов) |
 | recipeId | app/crafting_engine_v31.js |
 | recipes | app/crafting_economy_v49.js |
-| RECIPES | app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js |
+| RECIPES | app/crafting_engine_v31.js (+ 2 других файлов) |
 | recipient | app/blood_hunter_engine.js |
-| record | app/3dmap/character_appearance_store.js, app/data/feats/Feat_widget.js |
-| records | app/3dmap/character_body_geometry.js, tests/character_native_limbs_test.js, tests/test_v755_creation_buckets.js, tools/build_character_editor_morphs.js |
-| recovered | app/crafting_disassembly_v51.js, tests/cloud_sync_test.cjs |
+| record | app/3dmap/character_appearance_store.js (+ 1 других файлов) |
+| records | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
+| recovered | app/crafting_disassembly_v51.js (+ 1 других файлов) |
 | RECOVERY_BY_DURABILITY | app/crafting_disassembly_repair_v51.js |
 | RECOVERY_BY_QUALITY | app/crafting_disassembly_v51.js |
 | red | app/class_features_engine.js |
 | reduce | app/warden_mhp_2024_runtime.js |
 | reduced | app/blood_hunter_engine.js |
 | reduction | app/class_features_engine.js |
-| ref | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/character_creation_pergament.js, app/kibbles_localization_content_v71.js (+ 18 ещё) |
-| reference | app/3dmap/character_body_geometry.js, tests/character_head_geometry_test.js |
+| ref | app/3dmap/character_body_geometry.js (+ 21 других файлов) |
+| reference | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | referenceNode | app/inventory-coins.js |
 | refresh | app/custom_crafting_v32.js |
 | refreshBase | app/custom_crafting_v32.js |
 | refreshing | app/cloud_sync.js |
-| refs | app/alchemy_gameplay_v30.js, app/market_trade_v55_2.js, tests/character_swarm_geometry_test.js |
+| refs | app/alchemy_gameplay_v30.js (+ 2 других файлов) |
 | refunded | app/network_gameplay.js |
 | reg | tests/test_v725_fixes.js |
 | regeneration | tests/alchemist_runtime_test.js |
-| RegExp | app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js (+ 3 ещё) |
-| region | app/3dmap/character_editor_3d.js, app/market_economy_v55.js, app/world_resource_gathering_v53.js |
+| RegExp | app/crafting_character_influence_test_v46.js (+ 6 других файлов) |
+| region | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
 | REGION_MOD | app/market_economy_v55.js |
 | regionId | app/world_resource_gathering_v53.js |
-| regions | app/3dmap/character_anatomy.js, app/3dmap/character_body_geometry.js, app/market_expansion_v55_1.js, app/world_resource_gathering_v53.js (+ 1 ещё) |
+| regions | app/3dmap/character_anatomy.js (+ 4 других файлов) |
 | REGIONS | app/world_resource_gathering_v53.js |
-| registered | tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js, tests/pugilist_runtime_test.js, tests/test_v56_11.js (+ 5 ещё) |
-| registry | app/3dmap/character_anatomy_geometry.js, app/alchemist_mhp_2024_runtime.js, app/content_framework.js, tools/generate_project_atlas.cjs |
-| reject | app/Settings.js, app/icon_settings.js, app/icon_settings_v2.js, app/update_manager_v2.js (+ 3 ещё) |
-| rejected | tests/desktop_update_contract.cjs, tests/test_v754_update_manager.js |
-| rel | app/market_social_v55_3.js, desktop/main.cjs, desktop/update.cjs, tests/creation_signature_asset_test.cjs (+ 3 ещё) |
+| registered | tests/alchemist_combat_test.js (+ 8 других файлов) |
+| registry | app/3dmap/character_anatomy_geometry.js (+ 3 других файлов) |
+| reject | app/Settings.js (+ 6 других файлов) |
+| rejected | tests/desktop_update_contract.cjs (+ 1 других файлов) |
+| rel | app/market_social_v55_3.js (+ 6 других файлов) |
 | relative | desktop/main.cjs |
 | release | tests/cloud_sync_test.cjs |
 | relief | app/alchemist_mhp_2024_runtime.js |
@@ -4609,16 +4610,16 @@
 | reliefTarget | tests/alchemist_runtime_test.js |
 | relocateGameplayPanels | app/dice.js |
 | rem | app/inventory-coins.js |
-| remaining | app/alchemist_mhp_2024_runtime.js, app/class_features_engine.js, app/combat_abilities.js, app/expansion_classes_pack.js |
+| remaining | app/alchemist_mhp_2024_runtime.js (+ 3 других файлов) |
 | remainingReduction | app/combat_engine.js |
 | remote | app/cloud_account.js |
 | remove | app/3dmap/character_editor_3d.js |
 | removeAt | app/alchemist_mhp_2024_runtime.js |
-| removed | app/3dmap/character_anatomy_geometry.js, app/blood_hunter_engine.js, app/crafting_disassembly_repair_v51.js, app/crafting_disassembly_v51.js (+ 2 ещё) |
+| removed | app/3dmap/character_anatomy_geometry.js (+ 5 других файлов) |
 | removedGraft | app/alchemist_mhp_2024_runtime.js |
 | removeFromContainer | app/inventory_containers_v54.js |
-| render | app/alchemy_engine_v29.js, app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js (+ 4 ещё) |
-| renderList | app/crafting_engine_v31.js, app/crafting_resources_v34.js |
+| render | app/alchemy_engine_v29.js (+ 7 других файлов) |
+| renderList | app/crafting_engine_v31.js (+ 1 других файлов) |
 | renderRecipes | app/crafting_professions_v38.js |
 | renderTabs | app/crafting_professions_v33.js |
 | renderTools | app/crafting_professions_v38.js |
@@ -4632,39 +4633,39 @@
 | repairPlan | tests/crafting_disassembly_v51_test.js |
 | repCfg | app/3dmap/character_body_geometry.js |
 | repeatBtn | app/Ambiences.js |
-| replace | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
-| report | app/Inventory.js, tests/crafting_economy_v49_test.js, tests/human_base_glb_audit.js, tests/makehuman_surface_mapping_audit.js (+ 7 ещё) |
+| replace | app/blood_hunter_engine.js (+ 1 других файлов) |
+| report | app/Inventory.js (+ 10 других файлов) |
 | repSelect | app/3dmap/character_editor_3d.js |
 | reptileCoreCache | app/3dmap/character_body_geometry.js |
 | reptilePart | app/3dmap/character_editor_3d.js |
-| req | app/class_features_engine.js, app/crafting_profession_progression_v47.js, app/data/feats/Feat_widget.js, app/expansion_classes_pack.js (+ 45 ещё) |
+| req | app/class_features_engine.js (+ 48 других файлов) |
 | reqHtml | app/data/feats/Feat_widget.js |
 | reqR | app/expansion_classes_pack.js |
 | reqs | app/Hero-info.js |
-| reqText | app/crafting_profession_progression_v47.js, app/data/feats/Feat_widget.js |
-| request | desktop/main.cjs, tests/cloud_sync_test.cjs, tools/check_cloud_account_browser.cjs |
-| requested | app/class_features_engine.js, app/crafting_disassembly_repair_v51.js, app/crafting_professions_v38.js, app/network_gameplay.js |
+| reqText | app/crafting_profession_progression_v47.js (+ 1 других файлов) |
+| request | desktop/main.cjs (+ 2 других файлов) |
+| requested | app/class_features_engine.js (+ 3 других файлов) |
 | requestedAoe | app/network_gameplay.js |
 | requestedFeature | app/alchemist_mhp_2024_runtime.js |
 | requestedForm | app/expansion_classes_pack.js |
 | requestId | app/network_gameplay.js |
 | requests | tests/test_blood_hunter_focus_network.js |
-| require | tests/test_v745_host_handoff.js, tests/test_v747_event_race_compaction.js |
-| required | app/crafting_profession_progression_v47.js, app/vessel_laserllama_v4_runtime.js |
+| require | tests/test_v745_host_handoff.js (+ 1 других файлов) |
+| required | app/crafting_profession_progression_v47.js (+ 1 других файлов) |
 | requiredEnd | tests/makehuman_vertex_mapping_audit.js |
-| requiredLevel | app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js |
+| requiredLevel | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | requireLevel | app/expansion_classes_pack.js |
 | requireTool | app/crafting_profession_progression_v47.js |
-| reroll | app/class_features_engine.js, app/expansion_classes_pack.js, app/warlord_laserllama_v330_runtime.js |
-| res | app/class_features_engine.js, app/dice.js, app/gameplay_core_v57.js, tests/test_v722_fixes.js (+ 42 ещё) |
-| resBox | app/character.js, app/combat_abilities.js, app/dice.js |
+| reroll | app/class_features_engine.js (+ 2 других файлов) |
+| res | app/class_features_engine.js (+ 45 других файлов) |
+| resBox | app/character.js (+ 2 других файлов) |
 | resDiv | app/inventory-modal.js |
 | reservation | app/spellblade_kibbles_runtime.js |
 | reserved | app/network_gameplay.js |
-| reset | app/3dmap/character_editor_3d.js, app/cloud_sync.js, tests/character_3d_editor_test.js |
+| reset | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
 | resetBuffer | tests/character_3d_editor_test.js |
 | resist | app/vtt_debug_dice_lab_v706.js |
-| resistance | app/alchemist_mhp_2024_runtime.js, tests/alchemist_runtime_test.js |
+| resistance | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | resistanceType | app/alchemist_mhp_2024_runtime.js |
 | resistanceTypes | app/alchemist_mhp_2024_runtime.js |
 | resistant | app/combat_engine.js |
@@ -4672,10 +4673,10 @@
 | resistantTarget | tests/pugilist_combat_test.js |
 | resisted | tests/pugilist_combat_test.js |
 | resMap | app/class_features_engine.js |
-| resolve | app/Settings.js, app/icon_settings.js, app/icon_settings_v2.js, app/update_manager_v2.js (+ 5 ещё) |
-| resolved | app/3dmap/gltf_character_pipeline.js, app/network_gameplay.js |
+| resolve | app/Settings.js (+ 8 других файлов) |
+| resolved | app/3dmap/gltf_character_pipeline.js (+ 1 других файлов) |
 | resolvedParts | app/combat_engine.js |
-| resource | app/gameplay_core_v57.js, app/network_gameplay.js, tests/character_3d_editor_test.js |
+| resource | app/gameplay_core_v57.js (+ 2 других файлов) |
 | RESOURCE_HINTS | app/resource_gathering_v35.js |
 | RESOURCE_PROCESSING | app/resource_processing_v44.js |
 | RESOURCE_YIELDS | app/resource_processing_v44.js |
@@ -4684,27 +4685,27 @@
 | resourceId | app/resource_gathering_v35.js |
 | resourceKind | app/network_gameplay.js |
 | resources | app/world_resource_gathering_v53.js |
-| response | app/update_manager_v2.js, desktop/update.cjs, tests/cloud_sync_test.cjs, tools/check_character_editor_browser.js |
-| responses | tests/cloud_sql_concurrency.cjs, tests/desktop_update_contract.cjs |
-| rest | app/expansion_classes_pack.js, app/gameplay_core_v57.js, app/necromancer_mhp_2024_runtime.js |
+| response | app/update_manager_v2.js (+ 3 других файлов) |
+| responses | tests/cloud_sql_concurrency.cjs (+ 1 других файлов) |
+| rest | app/expansion_classes_pack.js (+ 2 других файлов) |
 | restarted | tests/cloud_sync_test.cjs |
-| restored | app/class_features_engine.js, app/network_gameplay.js, tests/character_3d_foundation_test.js, tests/imported_3d_editor_assets.cjs (+ 2 ещё) |
+| restored | app/class_features_engine.js (+ 5 других файлов) |
 | restoredShort | app/character.js |
 | restoredUse | tests/alchemist_runtime_test.js |
 | restoreFullCheckbox | app/data/classes/level_up.js |
 | restoreUsed | app/alchemist_mhp_2024_runtime.js |
 | restStr | app/spells.js |
-| result | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/map_world.js (+ 44 ещё) |
+| result | app/3dmap/character_body_geometry.js (+ 47 других файлов) |
 | resultPending | app/network_gameplay.js |
-| results | app/3dmap/character_pose.js, app/class_features_engine.js, app/combat_engine.js, app/crafting_character_influence_test_v46.js (+ 6 ещё) |
-| resultText | app/character.js, app/combat_abilities.js |
+| results | app/3dmap/character_pose.js (+ 9 других файлов) |
+| resultText | app/character.js (+ 1 других файлов) |
 | resume | app/network_gameplay.js |
 | resumeSpell | app/network_gameplay.js |
 | retry | app/update_scene_v2.js |
 | reused | desktop/update.cjs |
 | rev | app/network_gameplay.js |
 | reverse | app/3dmap/character_clothing.js |
-| revision | app/cloud_sync.js, tools/generate_project_atlas.cjs |
+| revision | app/cloud_sync.js (+ 1 других файлов) |
 | revival | tests/alchemist_combat_test.js |
 | revived | tests/alchemist_runtime_test.js |
 | revivedFromZero | app/combat_engine.js |
@@ -4713,52 +4714,52 @@
 | rgb | app/3dmap/character_editor_3d.js |
 | rht | app/expansion_classes_pack.js |
 | ri | tests/makehuman_target_reverse_transfer_audit.js |
-| rid | app/warden_mhp_2024_runtime.js, app/world_resource_gathering_v53.js, tests/test_v53.js |
+| rid | app/warden_mhp_2024_runtime.js (+ 2 других файлов) |
 | ridge | tests/character_races_geometry_test.js |
 | RIDGE_STYLES | app/3dmap/character_system.js |
 | ridges | app/3dmap/character_body_geometry.js |
 | ridgeSelect | app/3dmap/character_editor_3d.js |
 | ridgeStyle | tools/check_tiefling_details_browser.js |
-| right | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js |
+| right | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
 | rigid | tests/character_3d_skin_morph_test.js |
-| ring | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js |
+| ring | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | ringCount | app/3dmap/character_anatomy_geometry.js |
 | rings | app/3dmap/character_clothing.js |
-| rise | app/3dmap/character_clothing.js, app/3dmap/map_renderer_3d.js |
-| risk | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js |
-| rite | app/blood_hunter_engine.js, app/expansion_classes_pack.js, tests/test_v733_logic_audit.js |
+| rise | app/3dmap/character_clothing.js (+ 1 других файлов) |
+| risk | app/alchemy_engine_v29.js (+ 1 других файлов) |
+| rite | app/blood_hunter_engine.js (+ 2 других файлов) |
 | riteId | app/expansion_classes_pack.js |
 | riteKnown | app/occultist_kibbles_v11_runtime.js |
 | riteMax | app/expansion_classes_pack.js |
 | riteNames | app/blood_hunter_engine.js |
-| rites | app/expansion_classes_pack.js, app/occultist_kibbles_v11_runtime.js |
+| rites | app/expansion_classes_pack.js (+ 1 других файлов) |
 | riteTypes | app/blood_hunter_engine.js |
 | rl | app/3dmap/character_body_geometry.js |
-| rm | app/combat_engine.js, app/expansion_classes_pack.js |
+| rm | app/combat_engine.js (+ 1 других файлов) |
 | rn | app/occultist_kibbles_v11_runtime.js |
 | rn0 | app/occultist_kibbles_v11_runtime.js |
 | rn2 | app/occultist_kibbles_v11_runtime.js |
 | ro | tests/test_v721_fixes.js |
 | robe | app/3dmap/character_body_geometry.js |
 | rock | app/3dmap/character_editor_3d.js |
-| rogue | tests/test_v721_fixes.js, tests/test_v726_fixes.js, tests/test_v727_fixes.js |
-| role | app/3dmap/character_body_geometry.js, app/battle_action_ui.js, app/bestiary_catalog_v56_1.js, tests/test_v56.js |
+| rogue | tests/test_v721_fixes.js (+ 2 других файлов) |
+| role | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
 | roleName | app/bestiary_catalog_v56_10.js |
 | roles | app/crafting_resources_v34.js |
-| roll | app/3dmap/map_world.js, app/alchemy_gameplay_v30.js, app/combat_abilities.js, app/combat_engine.js (+ 14 ещё) |
-| rolled | app/alchemist_mhp_2024_runtime.js, app/gameplay_core_v57.js, app/martyr_mhp_2024_runtime.js, desktop/update.cjs |
+| roll | app/3dmap/map_world.js (+ 17 других файлов) |
+| rolled | app/alchemist_mhp_2024_runtime.js (+ 3 других файлов) |
 | rolledRelief | tests/alchemist_runtime_test.js |
-| roller | app/monster_engine.js, app/rulesEngine.js |
+| roller | app/monster_engine.js (+ 1 других файлов) |
 | rollMode | app/character.js |
 | rollResult | tests/pugilist_combat_test.js |
-| rolls | app/character.js, app/class_features_engine.js, app/combat_abilities.js, app/combat_engine.js (+ 5 ещё) |
-| rollTypeClass | app/dice.js, app/spells.js |
+| rolls | app/character.js (+ 8 других файлов) |
+| rollTypeClass | app/dice.js (+ 1 других файлов) |
 | roofColor | app/3dmap/character_editor_3d.js |
 | room | app/parasite_extra_runtime.js |
-| root | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/map_editor.js, app/Settings.js (+ 92 ещё) |
-| ROOT | app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js, app/update_scene_v2.js, app/vtt_debug_character_lab_v702.js (+ 7 ещё) |
-| rootId | app/vtt_debug_panel_v70.js, app/vtt_debug_sandbox_v701.js |
-| roots | app/3dmap/character_body_geometry.js, app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js, app/inventory_containers_v54.js (+ 1 ещё) |
+| root | app/3dmap/character_body_geometry.js (+ 95 других файлов) |
+| ROOT | app/crafting_character_influence_test_v46.js (+ 10 других файлов) |
+| rootId | app/vtt_debug_panel_v70.js (+ 1 других файлов) |
+| roots | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
 | rootSurface | app/3dmap/character_anatomy_geometry.js |
 | rootT | app/3dmap/character_body_geometry.js |
 | rootY | app/3dmap/character_body_geometry.js |
@@ -4766,46 +4767,46 @@
 | roster | app/cloud_account.js |
 | rotation | app/3dmap/character_editor_3d.js |
 | rough | tests/character_skin_material_test.js |
-| round | app/monster_engine.js, app/network_gameplay.js |
+| round | app/monster_engine.js (+ 1 других файлов) |
 | round4 | tools/prepare_makehuman_gender.js |
 | rounds | app/shifter_laserllama_v2_1_runtime.js |
 | roundTracker | app/combat_engine.js |
 | roundTrip | tests/character_3d_foundation_test.js |
-| route | tools/check_character_editor_browser.js, tools/check_cloud_account_browser.cjs |
+| route | tools/check_character_editor_browser.js (+ 1 других файлов) |
 | routed | app/class_features_engine.js |
-| row | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/character_pose.js (+ 9 ещё) |
-| rows | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/map_world.js, app/cloud_account.js (+ 8 ещё) |
+| row | app/3dmap/character_body_geometry.js (+ 12 других файлов) |
+| rows | app/3dmap/character_body_geometry.js (+ 11 других файлов) |
 | ROWS | app/bestiary_catalog_v56_1.js |
 | rp | tests/test_v55_2.js |
-| rq | tests/test_v722_fixes.js, tests/test_v723_fixes.js |
-| rr | app/3dmap/character_body_geometry.js, app/class_features_engine.js, app/companion_gameplay_v27.js, app/expansion_classes_pack.js (+ 5 ещё) |
-| rs | app/blood_hunter_engine.js, app/network_gameplay.js, app/vtt_debug_character_lab_v702.js |
-| rt | app/class_features_engine.js, app/expansion_classes_pack.js |
+| rq | tests/test_v722_fixes.js (+ 1 других файлов) |
+| rr | app/3dmap/character_body_geometry.js (+ 8 других файлов) |
+| rs | app/blood_hunter_engine.js (+ 2 других файлов) |
+| rt | app/class_features_engine.js (+ 1 других файлов) |
 | rTop | app/3dmap/character_editor_3d.js |
-| rule | app/3dmap/character_editor_3d.js, app/3dmap/character_morph_assets.js, app/3dmap/character_system.js, app/3dmap/gltf_character_pipeline.js (+ 8 ещё) |
-| rules | app/data/classes/level_up.js, app/data/classes/progressionEngine.js, tests/character_3d_morph_assets_test.js, tests/test_v708_fixes.js (+ 2 ещё) |
-| run | app/3dmap/map_renderer_3d.js, app/update_manager_v2.js |
-| ruName | app/data/classes/level_up.js, app/data/feats/Feat_widget.js |
-| rune | app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js |
+| rule | app/3dmap/character_editor_3d.js (+ 11 других файлов) |
+| rules | app/data/classes/level_up.js (+ 5 других файлов) |
+| run | app/3dmap/map_renderer_3d.js (+ 1 других файлов) |
+| ruName | app/data/classes/level_up.js (+ 1 других файлов) |
+| rune | app/expansion_classes_pack.js (+ 1 других файлов) |
 | RUNEKEEPER_INSCRIBED | app/expansion_classes_pack.js |
 | runesBefore | tests/test_class_audit_stage3_runtime.js |
 | running | app/cloud_sync.js |
-| runtime | app/martyr_mhp_2024_runtime.js, app/necromancer_mhp_2024_runtime.js, app/parasite_extra_runtime.js, tests/test_blood_hunter_completion.js (+ 10 ещё) |
+| runtime | app/martyr_mhp_2024_runtime.js (+ 13 других файлов) |
 | runtimeFeatures | app/occultist_kibbles_v11_runtime.js |
 | runtimes | app/class_features_engine.js |
 | runtimeSubclasses | app/occultist_kibbles_v11_runtime.js |
 | rw | tools/prepare_makehuman_gender.js |
-| rx | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js (+ 1 ещё) |
+| rx | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
 | rx2 | app/network_gameplay.js |
-| ry | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js |
-| rz | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js |
+| ry | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
+| rz | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
 | rz2 | app/3dmap/map_renderer_3d.js |
-| s | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 145 ещё) |
-| S | app/3dmap/map_renderer_2d.js, tests/test_class_audit_stage4_runtime.js |
+| s | app/3dmap/character_anatomy_geometry.js (+ 148 других файлов) |
+| S | app/3dmap/map_renderer_2d.js (+ 1 других файлов) |
 | s1 | app/data/classes/level_up.js |
 | s2 | app/data/classes/level_up.js |
 | sa | app/3dmap/character_body_geometry.js |
-| safe | app/app.js, app/resource_processing_v44.js |
+| safe | app/app.js (+ 1 других файлов) |
 | SAFE_FILE | desktop/update.cjs |
 | safeFeatureId | app/class_features_engine.js |
 | safeGet | app/inventory-modal.js |
@@ -4819,19 +4820,19 @@
 | saltySave | app/expansion_classes_pack.js |
 | saltyTarget | tests/pugilist_combat_test.js |
 | sam | app/3dmap/gltf_character_pipeline.js |
-| same | app/crafting_disassembly_v51.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js, app/crafting_resources_v34.js (+ 5 ещё) |
-| sample | app/3dmap/character_body_geometry.js, tests/character_races_geometry_test.js, tests/imported_3d_editor_assets.cjs, tests/makehuman_vertex_mapping_audit.js (+ 1 ещё) |
+| same | app/crafting_disassembly_v51.js (+ 8 других файлов) |
+| sample | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
 | sampleCount | tests/makehuman_vertex_mapping_audit.js |
-| sampler | app/3dmap/character_editor_3d.js, app/3dmap/gltf_character_pipeline.js, app/3dmap/map_renderer_3d.js |
-| samples | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
-| sandbox | tests/test_v706.js, tests/test_v711_fixes.js, tests/test_v713_fixes.js, tests/test_v715_fixes.js (+ 3 ещё) |
+| sampler | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
+| samples | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| sandbox | tests/test_v706.js (+ 6 других файлов) |
 | satin | app/3dmap/character_editor_3d.js |
 | savage | app/expansion_classes_pack.js |
 | savantFlourish | app/combat_engine.js |
 | savantHP | tests/test_class_audit_stage3_runtime.js |
-| save | app/3dmap/map_world.js, app/accursed_oap_v11_runtime.js, app/blood_hunter_engine.js, app/gameplay_core_v57.js (+ 8 ещё) |
+| save | app/3dmap/map_world.js (+ 11 других файлов) |
 | saveAdv | app/combat_engine.js |
-| saved | app/app.js, app/cloud_sync.js, app/races.js, app/vtt_mobile_session_v67.js (+ 31 ещё) |
+| saved | app/app.js (+ 34 других файлов) |
 | savedAlpha | app/Settings.js |
 | savedBg | app/Wallpapers.js |
 | saveDC | app/blood_hunter_engine.js |
@@ -4847,43 +4848,43 @@
 | savedTarget | tests/test_blood_hunter_profane_focus.js |
 | savedTheme | app/Settings.js |
 | saveResult | app/combat_engine.js |
-| saveRoll | app/ghost_extra_runtime.js, app/network_gameplay.js, app/parasite_extra_runtime.js |
+| saveRoll | app/ghost_extra_runtime.js (+ 2 других файлов) |
 | saves | app/data/classes/extra_class_stubs.js |
 | saveStat | app/expansion_classes_pack.js |
-| sb | app/crafting_profession_progression_v47.js, app/expansion_classes_pack.js, tests/test_v730_fixes.js |
-| sc | app/3dmap/gltf_character_pipeline.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/data/subclasses/subclassesRegistry.js (+ 5 ещё) |
-| scale | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js (+ 8 ещё) |
+| sb | app/crafting_profession_progression_v47.js (+ 2 других файлов) |
+| sc | app/3dmap/gltf_character_pipeline.js (+ 8 других файлов) |
+| scale | app/3dmap/character_anatomy_geometry.js (+ 11 других файлов) |
 | scaled | app/3dmap/character_editor_3d.js |
 | scalpBuckets | app/3dmap/character_body_geometry.js |
 | scalpCache | app/3dmap/character_body_geometry.js |
 | scalpSamples | app/3dmap/character_body_geometry.js |
-| scene | app/3dmap/gltf_loader.js, tests/test_v755_update_scene.js |
+| scene | app/3dmap/gltf_loader.js (+ 1 других файлов) |
 | scenes | app/3dmap/character_editor_3d.js |
 | scheduleUpdate | app/Inventory-weight-tracker.js |
-| SCHEMA_VERSION | app/campaign_manager.js, app/vtt_encounter_checkpoint_v68.js, app/vtt_mobile_session_v67.js |
+| SCHEMA_VERSION | app/campaign_manager.js (+ 2 других файлов) |
 | schoolDamageTarget | tests/pugilist_combat_test.js |
 | schoolHero | tests/pugilist_combat_test.js |
 | schoolSave | tests/pugilist_combat_test.js |
 | schoolText | app/spells.js |
 | scLower | app/spells.js |
 | scoped | app/class_features_engine.js |
-| score | app/3dmap/character_body_geometry.js, app/alchemy_gathering_professions_v52.js, app/bestiary_2_0_v56.js, app/crafting_disassembly_repair_v51.js (+ 5 ещё) |
-| scores | app/data/classes/Beastheart.js, app/shifter_laserllama_v2_1_runtime.js |
+| score | app/3dmap/character_body_geometry.js (+ 8 других файлов) |
+| scores | app/data/classes/Beastheart.js (+ 1 других файлов) |
 | scoreSnapshots | app/alchemist_mhp_2024_runtime.js |
 | scout | tests/map_rebuild_world_test.js |
-| screen | app/onboarding_faq_v71.js, desktop/main.cjs |
-| scripts | tests/helpers/class_runtime_harness.js, tests/test_v70.js |
+| screen | app/onboarding_faq_v71.js (+ 1 других файлов) |
+| scripts | tests/helpers/class_runtime_harness.js (+ 1 других файлов) |
 | sctx | tests/test_v746_authoritative_save_recharge.js |
-| sd | app/combat_engine.js, tests/character_skin_material_test.js |
+| sd | app/combat_engine.js (+ 1 других файлов) |
 | se | app/vtt_mobile_session_v67.js |
 | sealDamage | app/data/classes/Illigger.js |
 | sealedHp | tests/test_class_audit_runtime.js |
-| seals | app/data/classes/Illigger.js, app/expansion_classes_pack.js, tests/test_class_audit_runtime.js |
+| seals | app/data/classes/Illigger.js (+ 2 других файлов) |
 | sealTarget | tests/test_class_audit_runtime.js |
-| seam | app/3dmap/character_body_geometry.js, app/alchemist_mhp_2024_runtime.js, tests/character_3d_morph_assets_test.js, tests/makehuman_gender_fixture_audit.js |
+| seam | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
 | seamDamage | tests/alchemist_combat_test.js |
 | seamGroups | app/3dmap/character_anatomy_geometry.js |
-| seamMax | tests/character_3d_morph_assets_test.js, tests/makehuman_gender_fixture_audit.js |
+| seamMax | tests/character_3d_morph_assets_test.js (+ 1 других файлов) |
 | seams | app/3dmap/character_body_geometry.js |
 | searchInput | app/spells.js |
 | searchVal | app/spells.js |
@@ -4891,22 +4892,22 @@
 | secondary | app/3dmap/character_body_geometry.js |
 | secondDead | tests/alchemist_runtime_test.js |
 | section | app/3dmap/character_clothing.js |
-| seed | app/3dmap/character_body_geometry.js, tests/cloud_sync_test.cjs |
+| seed | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | seekingAttack | tests/alchemist_runtime_test.js |
-| seen | app/3dmap/map_world.js, app/cloud_sync.js, app/combat_engine.js, app/inventory_containers_v54.js |
+| seen | app/3dmap/map_world.js (+ 3 других файлов) |
 | seenEventIds | app/network_engine.js |
 | seenNames | app/data/feats/Feat_widget.js |
 | seg | app/3dmap/character_body_geometry.js |
-| segments | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/map_world.js |
-| sel | app/character_creation.js, app/crafting_profession_progression_v47.js, app/market_economy_v55.js, app/monster_loot_crafting_bridge_v40.js (+ 2 ещё) |
-| select | app/3dmap/character_editor_3d.js, app/Settings.js, app/Settings_debug.js, app/cloud_sync.js (+ 3 ещё) |
-| selected | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_clothing.js, app/Settings.js, app/Wallpapers.js (+ 20 ещё) |
-| selected0 | app/content_framework.js, app/occultist_kibbles_v11_runtime.js |
+| segments | app/3dmap/character_anatomy_geometry.js (+ 3 других файлов) |
+| sel | app/character_creation.js (+ 5 других файлов) |
+| select | app/3dmap/character_editor_3d.js (+ 6 других файлов) |
+| selected | app/3dmap/character_anatomy_geometry.js (+ 23 других файлов) |
+| selected0 | app/content_framework.js (+ 1 других файлов) |
 | selectedArmorCategory | app/inventory-modal.js |
 | selectedAsset | app/3dmap/map_editor.js |
-| selectedBg | app/Backgrounds.js, app/character_creation.js |
+| selectedBg | app/Backgrounds.js (+ 1 других файлов) |
 | selectedChar | app/Settings_debug.js |
-| selectedClass | app/Backgrounds.js, app/alchemist_mhp_2024_runtime.js, app/character_creation.js |
+| selectedClass | app/Backgrounds.js (+ 2 других файлов) |
 | selectedClassKey | app/data/classes/level_up.js |
 | selectedClassName | app/data/classes/level_up.js |
 | selectedClothes | tools/check_character_editor_browser.js |
@@ -4914,7 +4915,7 @@
 | selectedId | app/races.js |
 | selectedIds | app/data/classes/progressionEngine.js |
 | selectedNatural | app/alchemist_mhp_2024_runtime.js |
-| selectedRace | app/Backgrounds.js, app/character_creation.js |
+| selectedRace | app/Backgrounds.js (+ 1 других файлов) |
 | selectedSub | app/content_framework.js |
 | selectedTrader | app/market_social_v55_3.js |
 | selectedWeaponCategoryType | app/inventory-modal.js |
@@ -4924,38 +4925,38 @@
 | selectElem | app/library.js |
 | selector | app/Inventory-weight-tracker.js |
 | selectors | app/swipe-lock.js |
-| selectScreen | app/Backgrounds.js, app/character_creation.js |
+| selectScreen | app/Backgrounds.js (+ 1 других файлов) |
 | selectType | app/inventory-modal.js |
 | self | app/expansion_classes_pack.js |
 | sellFactor | app/market_expansion_v55_1.js |
 | sellResult | tests/test_v55_2.js |
 | SEMVER | desktop/update.cjs |
 | send | desktop/main.cjs |
-| sent | tests/test_v714_fixes.js, tests/test_v722_fixes.js, tests/test_v723_fixes.js, tests/test_v737_spellcasting_transaction.js (+ 4 ещё) |
+| sent | tests/test_v714_fixes.js (+ 7 других файлов) |
 | sep | app/3dmap/character_anatomy_geometry.js |
-| seq | app/gameplay_core_v57.js, app/monster_engine.js, app/summoning_engine.js, tests/test_v729_fixes.js |
-| serial | tests/test_blood_hunter_completion.js, tests/test_blood_hunter_profane_focus.js |
-| server | tests/cloud_sync_test.cjs, tools/check_adult_anatomy_browser.js, tools/check_adult_base_browser.js, tools/check_animal_heads_browser.js (+ 35 ещё) |
+| seq | app/gameplay_core_v57.js (+ 3 других файлов) |
+| serial | tests/test_blood_hunter_completion.js (+ 1 других файлов) |
+| server | tests/cloud_sync_test.cjs (+ 38 других файлов) |
 | Server | tools/check_cloud_account_browser.cjs |
-| session | app/3dmap/character_appearance_store.js, app/3dmap/character_editor_3d.js, app/cloud_sync.js, desktop/main.cjs (+ 1 ещё) |
+| session | app/3dmap/character_appearance_store.js (+ 4 других файлов) |
 | SESSION | app/cloud_sync.js |
-| set | app/inventory_containers_v54.js, tools/generate_project_atlas.cjs |
-| Set | app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js (+ 9 ещё) |
-| setInterval | tests/test_v701.js, tests/test_v702.js, tests/test_v703.js, tests/test_v704.js (+ 2 ещё) |
-| setTimeout | tests/crafting_disassembly_v51_test.js, tests/crafting_economy_v49_test.js, tests/test_v70.js, tests/test_v701.js (+ 32 ещё) |
-| settings | app/cloud_account.js, tests/test_v716_fixes.js, tests/test_v755_update_scene.js |
+| set | app/inventory_containers_v54.js (+ 1 других файлов) |
+| Set | app/crafting_character_influence_test_v46.js (+ 12 других файлов) |
+| setInterval | tests/test_v701.js (+ 5 других файлов) |
+| setTimeout | tests/crafting_disassembly_v51_test.js (+ 35 других файлов) |
+| settings | app/cloud_account.js (+ 2 других файлов) |
 | settingsPanel | app/Settings.js |
-| sf | app/class_features_engine.js, app/kibbles_localization_content_v71.js |
+| sf | app/class_features_engine.js (+ 1 других файлов) |
 | sh | app/ghost_extra_runtime.js |
-| sha | tools/build_character_editor_morphs.js, tools/build_makehuman_morphs.js |
+| sha | tools/build_character_editor_morphs.js (+ 1 других файлов) |
 | shader | tests/character_skin_material_test.js |
 | shaft | app/3dmap/character_anatomy_geometry.js |
 | shaftSources | app/3dmap/character_anatomy_geometry.js |
-| shape | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_clothing.js, app/shifter_laserllama_v2_1_runtime.js |
+| shape | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
 | shaped | tests/character_races_geometry_test.js |
 | shapeInput | app/3dmap/character_editor_3d.js |
-| shapes | app/3dmap/character_anatomy.js, app/3dmap/character_body_geometry.js |
-| shared | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js |
+| shapes | app/3dmap/character_anatomy.js (+ 1 других файлов) |
+| shared | app/alchemy_engine_v29.js (+ 1 других файлов) |
 | sharedAbility | app/alchemist_mhp_2024_runtime.js |
 | sharedAliases | app/alchemist_mhp_2024_runtime.js |
 | sharedMutagen | tests/alchemist_runtime_test.js |
@@ -4963,13 +4964,13 @@
 | sharp | app/3dmap/character_body_geometry.js |
 | shaved | app/3dmap/character_editor_3d.js |
 | sheer | app/3dmap/character_editor_3d.js |
-| sheetScreen | app/Backgrounds.js, app/character_creation.js |
-| shell | app/ghost_extra_runtime.js, desktop/main.cjs |
+| sheetScreen | app/Backgrounds.js (+ 1 других файлов) |
+| shell | app/ghost_extra_runtime.js (+ 1 других файлов) |
 | shellIX | app/3dmap/character_body_geometry.js |
 | shellN | app/3dmap/character_body_geometry.js |
 | shellP | app/3dmap/character_body_geometry.js |
 | shellUV | app/3dmap/character_body_geometry.js |
-| shield | app/combat_engine.js, app/crafting_profession_progression_test_v47.js, app/rulesEngine.js, tests/test_v738_multiclass_spell_sources.js |
+| shield | app/combat_engine.js (+ 3 других файлов) |
 | shieldAccess | app/crafting_profession_progression_test_v47.js |
 | shieldAvailable | app/class_features_engine.js |
 | shieldBonus | app/Inventory.js |
@@ -4979,12 +4980,12 @@
 | shieldSpent | app/class_features_engine.js |
 | shipped | tests/makehuman_gender_fixture_audit.js |
 | shirt | tests/character_clothing_customizer_geometry_test.js |
-| short | app/blood_hunter_engine.js, app/data/classes/Beastheart.js, app/expansion_classes_pack.js, tests/character_races_geometry_test.js |
+| short | app/blood_hunter_engine.js (+ 3 других файлов) |
 | shortage | app/crafting_disassembly_v51.js |
 | shortKeys | app/alchemist_mhp_2024_runtime.js |
 | shortToFull | app/data/classes/level_up.js |
 | shot | tools/check_character_editor_browser.js |
-| shoulder | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
+| shoulder | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | shoulderSpan | app/3dmap/character_body_geometry.js |
 | shouldRestoreFull | app/data/classes/level_up.js |
 | shouldUpdate | app/Inventory-weight-tracker.js |
@@ -4992,14 +4993,14 @@
 | showPP | app/inventory-coins.js |
 | shuffleBtn | app/Ambiences.js |
 | shutdownCalls | tests/test_v748_full_combat_transaction.js |
-| si | app/3dmap/character_body_geometry.js, app/3dmap/gltf_loader.js, app/3dmap/map_renderer_3d.js, app/3dmap/stress_map.js |
-| side | app/3dmap/character_anatomy.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_pose.js (+ 3 ещё) |
+| si | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
+| side | app/3dmap/character_anatomy.js (+ 6 других файлов) |
 | sideIndex | app/3dmap/character_body_geometry.js |
-| sides | app/3dmap/character_editor_3d.js, app/character.js, app/class_features_engine.js, app/combat_abilities.js (+ 8 ещё) |
+| sides | app/3dmap/character_editor_3d.js (+ 11 других файлов) |
 | sIdx | app/character_creation.js |
-| sig | app/network_gameplay.js, tests/pugilist_combat_test.js |
-| sign | app/3dmap/character_pose.js, app/inventory-coins.js, tools/build_character_editor_morphs.js |
-| signatures | tests/character_animal_heads_test.js, tests/character_avian_elephant_heads_test.js, tests/character_external_anatomy_test.js, tests/character_hair_pack_test.js (+ 2 ещё) |
+| sig | app/network_gameplay.js (+ 1 других файлов) |
+| sign | app/3dmap/character_pose.js (+ 2 других файлов) |
+| signatures | tests/character_animal_heads_test.js (+ 5 других файлов) |
 | signed | app/3dmap/character_body_geometry.js |
 | signup | app/cloud_account.js |
 | sigTarget | tests/pugilist_combat_test.js |
@@ -5008,42 +5009,42 @@
 | single | app/spells.js |
 | singleBox | app/network_engine.js |
 | singleWeightKg | app/Inventory-weight-tracker.js |
-| size | app/3dmap/character_body_geometry.js, app/3dmap/gltf_loader.js, app/parasite_extra_runtime.js, app/swarm_extra_runtime.js (+ 5 ещё) |
-| sizes | app/shifter_laserllama_v2_1_runtime.js, tests/character_parasites_geometry_test.js |
+| size | app/3dmap/character_body_geometry.js (+ 8 других файлов) |
+| sizes | app/shifter_laserllama_v2_1_runtime.js (+ 1 других файлов) |
 | sk | app/dice.js |
 | sKey | app/Backgrounds.js |
-| skill | app/3dmap/map_world.js, app/data/classes/progressionEngine.js, app/inventory-modal.js, app/monster_loot_engine_v37.js (+ 1 ещё) |
+| skill | app/3dmap/map_world.js (+ 4 других файлов) |
 | SKILL_STAT | app/monster_loot_engine_v37.js |
 | SKILL_TO_VAR_MAP | app/dice.js |
 | skilledDesc | app/crafting_character_influence_test_v46.js |
-| skillId | app/Backgrounds.js, app/character_creation.js, app/dice.js, app/rulesEngine.js (+ 1 ещё) |
+| skillId | app/Backgrounds.js (+ 4 других файлов) |
 | skillName | app/dice.js |
 | skillNameRu | app/Backgrounds.js |
-| skills | app/Backgrounds.js, app/expansion_class_progressions.js, app/market_social_v55_3.js, app/skills.js |
+| skills | app/Backgrounds.js (+ 3 других файлов) |
 | SKILLS_CONFIG | app/app.js |
 | skillsConfig | app/dice.js |
 | skillsDataObj | app/dice.js |
 | skillsList | app/dice.js |
 | skillsListContainer | app/Proficiencies.js |
-| skillsPanel | app/Proficiencies.js, app/data/feats/Feat_widget.js |
-| skillsStr | app/Backgrounds.js, app/character_creation.js |
-| skillStr | app/Backgrounds.js, app/character_creation.js |
-| skin | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js (+ 2 ещё) |
+| skillsPanel | app/Proficiencies.js (+ 1 других файлов) |
+| skillsStr | app/Backgrounds.js (+ 1 других файлов) |
+| skillStr | app/Backgrounds.js (+ 1 других файлов) |
+| skin | app/3dmap/character_anatomy.js (+ 5 других файлов) |
 | skinBaseline | tools/check_character_races_browser.js |
 | skinColorEntry | app/3dmap/character_editor_3d.js |
 | skinImages | tests/character_3d_editor_test.js |
 | skinned | tests/character_external_anatomy_test.js |
-| skinnedPrimitives | tests/human_base_glb_audit.js, tests/makehuman_topology_audit.js |
-| skins | app/3dmap/character_system.js, app/3dmap/gltf_character_pipeline.js, tests/human_base_glb_audit.js |
-| skip | app/3dmap/character_body_geometry.js, app/update_scene_v2.js |
+| skinnedPrimitives | tests/human_base_glb_audit.js (+ 1 других файлов) |
+| skins | app/3dmap/character_system.js (+ 2 других файлов) |
+| skip | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | skirt | tests/character_clothing_test.js |
 | skirtDepth | app/3dmap/character_clothing.js |
-| skull | app/3dmap/character_body_geometry.js, tests/character_animal_heads_test.js, tests/character_avian_elephant_heads_test.js |
+| skull | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | sky | app/3dmap/map_renderer_3d.js |
-| sl | app/3dmap/character_body_geometry.js, app/class_features_engine.js, app/expansion_classes_pack.js, app/martyr_mhp_2024_runtime.js (+ 3 ещё) |
+| sl | app/3dmap/character_body_geometry.js (+ 6 других файлов) |
 | sleeve | app/3dmap/character_clothing.js |
 | sleeveMasks | app/3dmap/character_clothing.js |
-| sleeves | app/3dmap/character_clothing.js, tests/character_clothing_customizer_geometry_test.js |
+| sleeves | app/3dmap/character_clothing.js (+ 1 других файлов) |
 | slices | app/3dmap/character_body_geometry.js |
 | slider | app/3dmap/character_editor_3d.js |
 | slimeAcid | tests/alchemist_combat_test.js |
@@ -5053,7 +5054,7 @@
 | slimeHit | tests/alchemist_combat_test.js |
 | slimeResistantTarget | tests/alchemist_combat_test.js |
 | slimeVictim | tests/alchemist_combat_test.js |
-| slot | app/3dmap/character_anatomy.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js (+ 11 ещё) |
+| slot | app/3dmap/character_anatomy.js (+ 14 других файлов) |
 | SLOT_LEVEL | app/vessel_laserllama_v4_runtime.js |
 | slot2 | app/expansion_classes_pack.js |
 | slot3 | app/expansion_classes_pack.js |
@@ -5064,53 +5065,53 @@
 | slotLevel | app/expansion_classes_pack.js |
 | slotMax | app/occultist_kibbles_v11_runtime.js |
 | slotRowHtml | app/spells.js |
-| slots | app/3dmap/character_clothing.js, app/class_features_engine.js, app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js (+ 7 ещё) |
-| SLOTS | app/accursed_oap_v11_runtime.js, app/necromancer_mhp_2024_runtime.js, app/vessel_laserllama_v4_runtime.js |
+| slots | app/3dmap/character_clothing.js (+ 10 других файлов) |
+| SLOTS | app/accursed_oap_v11_runtime.js (+ 2 других файлов) |
 | slotsBefore | tests/test_class_audit_stage3_runtime.js |
 | slotSnapshot | app/network_gameplay.js |
-| sm | app/combat_engine.js, tests/character_3d_morph_assets_test.js, tests/test_v726_fixes.js, tests/test_v728_fixes.js (+ 1 ещё) |
+| sm | app/combat_engine.js (+ 4 других файлов) |
 | small | app/network_gameplay.js |
 | smitePart | app/combat_engine.js |
 | smoke | app/update_scene_v2.js |
 | smooth | app/3dmap/character_body_geometry.js |
 | sn | app/3dmap/character_body_geometry.js |
-| snap | app/alchemist_mhp_2024_runtime.js, tests/test_v70.js, tests/test_v706.js, tests/test_v747_event_race_compaction.js (+ 1 ещё) |
-| snapshot | app/3dmap/character_appearance_store.js, app/3dmap/map_world.js, app/combat_engine.js, tests/test_blood_hunter_orders.js (+ 2 ещё) |
+| snap | app/alchemist_mhp_2024_runtime.js (+ 4 других файлов) |
+| snapshot | app/3dmap/character_appearance_store.js (+ 5 других файлов) |
 | snapshots | app/combat_engine.js |
 | snout | app/3dmap/character_body_geometry.js |
 | sorted | app/Inventory.js |
 | SOTDQ | app/bestiary_catalog_v56_12.js |
-| source | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/character_pose.js, app/3dmap/map_renderer_3d.js (+ 32 ещё) |
-| SOURCE | app/alchemist_mhp_2024_runtime.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_13.js (+ 10 ещё) |
-| SOURCE_TAG | app/crafting_profession_progression_v47.js, app/world_resource_gathering_v53.js |
+| source | app/3dmap/character_anatomy_geometry.js (+ 35 других файлов) |
+| SOURCE | app/alchemist_mhp_2024_runtime.js (+ 13 других файлов) |
+| SOURCE_TAG | app/crafting_profession_progression_v47.js (+ 1 других файлов) |
 | sourceArmor | app/Inventory.js |
 | sourceCache | app/vtt_debug_panel_v70.js |
 | sourceCheck | app/network_gameplay.js |
 | sourceCount | app/resource_processing_v44.js |
 | sourceGroups | app/data/classes/level_up.js |
-| sourceHashes | tools/build_character_editor_morphs.js, tools/build_makehuman_morphs.js |
+| sourceHashes | tools/build_character_editor_morphs.js (+ 1 других файлов) |
 | sourceHtml | app/spells.js |
 | sourceId | app/companion_gameplay_v27.js |
 | sourceManifestUrl | app/update_manager_v2.js |
 | sourceMax | tests/makehuman_target_surface_transfer_audit.js |
 | sourceMean | tests/makehuman_target_surface_transfer_audit.js |
 | sourceMeshCount | app/3dmap/character_editor_3d.js |
-| sources | app/blood_hunter_engine.js, app/crafting_profession_progression_v47.js, app/data/classes/Beastheart.js, app/expansion_classes_pack.js (+ 6 ещё) |
+| sources | app/blood_hunter_engine.js (+ 9 других файлов) |
 | sourceStats | app/parasite_extra_runtime.js |
 | sourceTag | app/data/feats/Feat_widget.js |
 | sourceToken | app/companion_gameplay_v27.js |
 | sourceWeapons | app/network_gameplay.js |
-| sp | app/3dmap/gltf_loader.js, app/crafting_profession_progression_v47.js, app/expansion_classes_pack.js, app/inventory-coins.js (+ 6 ещё) |
-| span | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/dice.js, tests/makehuman_morph_bridge.js |
+| sp | app/3dmap/gltf_loader.js (+ 9 других файлов) |
+| span | app/3dmap/character_anatomy_geometry.js (+ 3 других файлов) |
 | spanCurrent | app/Experience.js |
 | spanTotal | app/Experience.js |
 | sparks | app/update_scene_v2.js |
-| sparse | tests/gltf_loader_smoke.cjs, tools/check_fur_surface_browser.js |
+| sparse | tests/gltf_loader_smoke.cjs (+ 1 других файлов) |
 | sparseJson | tests/gltf_loader_smoke.cjs |
 | spawn | tests/cloud_sql_concurrency.cjs |
-| spd | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_2.js, app/bestiary_catalog_v56_3.js, app/bestiary_catalog_v56_4.js |
+| spd | app/bestiary_catalog_v56_1.js (+ 3 других файлов) |
 | spear | app/crafting_profession_progression_test_v47.js |
-| spec | app/companion_packs_v26.js, app/data/classes/Beastheart.js, app/necromancer_mhp_2024_runtime.js, app/secondary_entities_engine.js (+ 3 ещё) |
+| spec | app/companion_packs_v26.js (+ 6 других файлов) |
 | specHtml | app/crafting_profession_progression_v47.js |
 | specialBombEffects | app/alchemist_mhp_2024_runtime.js |
 | SPECIALIZATIONS | app/crafting_profession_progression_v47.js |
@@ -5123,30 +5124,30 @@
 | specificSources | app/data/feats/Feat_widget.js |
 | specs | app/crafting_profession_progression_v47.js |
 | spectral | app/3dmap/character_editor_3d.js |
-| speed | app/companion_gameplay_v27.js, app/gameplay_core_v57.js, app/network_gameplay.js, app/vessel_laserllama_v4_runtime.js |
+| speed | app/companion_gameplay_v27.js (+ 3 других файлов) |
 | speedInput | app/races.js |
 | speedVal | app/races.js |
-| spell | app/class_features_engine.js, app/combat_engine.js, app/expansion_classes_pack.js, app/magic_engine.js (+ 3 ещё) |
+| spell | app/class_features_engine.js (+ 6 других файлов) |
 | spellbladeDeflection | app/combat_engine.js |
 | spellbladeOnly | app/rulesEngine.js |
 | SPELLCASTING_CLASSES | app/spells.js |
 | spellcastingCard | app/spells.js |
 | spellClass | app/spells.js |
-| spellDamageMods | app/network_gameplay.js, tests/test_v727_fixes.js |
+| spellDamageMods | app/network_gameplay.js (+ 1 других файлов) |
 | spellDesc | app/spells.js |
-| spellLevel | app/class_features_engine.js, app/martyr_mhp_2024_runtime.js, app/network_gameplay.js, app/occultist_kibbles_v11_runtime.js (+ 1 ещё) |
-| spellList | app/accursed_oap_v11_runtime.js, app/vessel_laserllama_v4_runtime.js |
-| spellName | app/martyr_mhp_2024_runtime.js, app/network_gameplay.js, app/rulesEngine.js, app/spells.js (+ 1 ещё) |
+| spellLevel | app/class_features_engine.js (+ 4 других файлов) |
+| spellList | app/accursed_oap_v11_runtime.js (+ 1 других файлов) |
+| spellName | app/martyr_mhp_2024_runtime.js (+ 4 других файлов) |
 | spellNameEscaped | app/spells.js |
 | spellObj | app/spells.js |
 | spellPayload | app/network_gameplay.js |
 | spellReaction | app/network_gameplay.js |
-| spells | app/martyr_mhp_2024_runtime.js, app/necromancer_mhp_2024_runtime.js, app/network_gameplay.js, app/occultist_kibbles_v11_runtime.js (+ 1 ещё) |
+| spells | app/martyr_mhp_2024_runtime.js (+ 4 других файлов) |
 | SPELLS_KNOWN | app/accursed_oap_v11_runtime.js |
 | spellsByLevel | app/martyr_mhp_2024_runtime.js |
 | spellsHtml | app/spells.js |
 | spellSourcesNow | app/rulesEngine.js |
-| spent | app/Backgrounds.js, app/character_creation.js, app/class_features_engine.js, app/expansion_classes_pack.js (+ 7 ещё) |
+| spent | app/Backgrounds.js (+ 10 других файлов) |
 | spentLevel | app/class_features_engine.js |
 | sPerG | app/inventory-coins.js |
 | spine | app/3dmap/character_body_geometry.js |
@@ -5163,108 +5164,108 @@
 | sq | app/3dmap/character_body_geometry.js |
 | squares | tests/character_skin_material_test.js |
 | squircle | app/3dmap/character_body_geometry.js |
-| sr | app/class_features_engine.js, app/combat_engine.js, app/expansion_classes_pack.js, app/network_gameplay.js (+ 3 ещё) |
-| src | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 31 ещё) |
+| sr | app/class_features_engine.js (+ 6 других файлов) |
+| src | app/3dmap/character_anatomy.js (+ 34 других файлов) |
 | srcA | app/spells.js |
 | srcALower | app/spells.js |
 | srcB | app/spells.js |
 | srcBLower | app/spells.js |
-| ss | app/combat_engine.js, app/magic_engine.js |
-| st | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js, app/class_features_engine.js, app/dice.js (+ 4 ещё) |
-| stability | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js |
-| stack | app/crafting_disassembly_repair_v51.js, tests/makehuman_morph_bridge.js |
+| ss | app/combat_engine.js (+ 1 других файлов) |
+| st | app/3dmap/character_body_geometry.js (+ 7 других файлов) |
+| stability | app/alchemy_engine_v29.js (+ 1 других файлов) |
+| stack | app/crafting_disassembly_repair_v51.js (+ 1 других файлов) |
 | stageCount | tests/update_ota_flow_test.js |
-| staged | tests/creation_signature_asset_test.cjs, tests/desktop_update_contract.cjs, tests/test_v754_update_manager.js |
+| staged | tests/creation_signature_asset_test.cjs (+ 2 других файлов) |
 | STAGED_KEY | app/update_manager_v2.js |
 | stageManifestUrl | app/update_manager_v2.js |
-| stairs | app/3dmap/stress_map.js, tests/stair_navigation.cjs |
-| stale | tests/test_v744_sync_authority_save.js, tests/test_v746_authoritative_save_recharge.js, tests/test_v752_replay_hash_authority.js |
+| stairs | app/3dmap/stress_map.js (+ 1 других файлов) |
+| stale | tests/test_v744_sync_authority_save.js (+ 2 других файлов) |
 | stalker | tests/test_v731_fixes.js |
 | stance | app/expansion_classes_pack.js |
 | standardRaceIds | tests/test_v755_creation_buckets.js |
-| start | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/gltf_loader.js, app/3dmap/map_model.js (+ 7 ещё) |
+| start | app/3dmap/character_body_geometry.js (+ 10 других файлов) |
 | started | tests/makehuman_morph_bridge.js |
-| startI | tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
+| startI | tests/makehuman_target_reverse_transfer_audit.js (+ 1 других файлов) |
 | startingProfession | app/character_creation.js |
 | startupRun | app/update_manager_v2.js |
 | startVol | app/Ambiences.js |
 | startY | app/3dmap/character_clothing.js |
-| stat | app/3dmap/map_world.js, app/Hero-info.js, app/blood_hunter_engine.js, app/class_features_engine.js (+ 10 ещё) |
+| stat | app/3dmap/map_world.js (+ 13 других файлов) |
 | STAT_ALIASES | app/rulesEngine.js |
 | STAT_META | app/walter_parasite_extra_runtime.js |
 | STAT_NAMES | app/character_builder_v2.js |
 | stat2 | app/data/classes/level_up.js |
 | statBonus | app/data/feats/Feat_widget.js |
 | statBonusKeys | app/data/feats/Feat_widget.js |
-| state | app/3dmap/character_anatomy.js, app/3dmap/character_editor_3d.js, app/Ambiences.js, app/battle_board.js (+ 34 ещё) |
+| state | app/3dmap/character_anatomy.js (+ 37 других файлов) |
 | statElem | app/spells.js |
 | states | app/swarm_extra_runtime.js |
-| statId | app/Backgrounds.js, app/dice.js, app/skills.js |
-| statKey | app/Backgrounds.js, app/character_creation.js, app/combat_abilities.js, app/data/classes/level_up.js (+ 3 ещё) |
+| statId | app/Backgrounds.js (+ 2 других файлов) |
+| statKey | app/Backgrounds.js (+ 6 других файлов) |
 | statKeysMap | app/data/classes/level_up.js |
-| statMod | app/character.js, app/network_gameplay.js, app/skills.js |
+| statMod | app/character.js (+ 2 других файлов) |
 | statName | app/dice.js |
-| statNames | app/Backgrounds.js, app/character_creation.js |
+| statNames | app/Backgrounds.js (+ 1 других файлов) |
 | statNameShort | app/dice.js |
-| statNamesShort | app/Backgrounds.js, app/character_creation.js |
-| statOptions | app/character.js, app/data/feats/Feat_widget.js |
-| stats | app/Hero-info.js, app/Settings.js, app/dice.js, app/network_gameplay.js (+ 6 ещё) |
+| statNamesShort | app/Backgrounds.js (+ 1 других файлов) |
+| statOptions | app/character.js (+ 1 других файлов) |
+| stats | app/Hero-info.js (+ 9 других файлов) |
 | STATS | app/character_builder_v2.js |
 | STATS_CONFIG | app/app.js |
 | statsConfig | app/dice.js |
 | statSelect | app/combat_abilities.js |
 | statsGrid | app/dice.js |
 | statsList | app/character.js |
-| status | app/Settings.js, app/cloud_account.js, app/cloud_sync.js, app/icon_settings.js (+ 3 ещё) |
+| status | app/Settings.js (+ 6 других файлов) |
 | STATUS | app/content_catalog.js |
 | statusClass | app/content_catalog.js |
 | statusEl | app/Ambiences.js |
-| statusText | app/dice.js, app/update_manager_v2.js |
+| statusText | app/dice.js (+ 1 других файлов) |
 | steel | app/3dmap/character_editor_3d.js |
-| stem | app/3dmap/gltf_catalog.js, tools/build_character_editor_morphs.js, tools/prepare_makehuman_gender.js |
+| stem | app/3dmap/gltf_catalog.js (+ 2 других файлов) |
 | stems | tools/build_character_editor_morphs.js |
 | stench | tests/alchemist_runtime_test.js |
 | stenchTarget | tests/alchemist_runtime_test.js |
-| step | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/character_pose.js (+ 1 ещё) |
-| steps | app/3dmap/map_renderer_3d.js, app/Ambiences.js, app/onboarding_faq_v71.js |
+| step | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
+| steps | app/3dmap/map_renderer_3d.js (+ 2 других файлов) |
 | stepTime | app/Ambiences.js |
 | sternumSpan | app/3dmap/character_body_geometry.js |
 | stock | app/market_expansion_v55_1.js |
 | stone | app/warden_mhp_2024_runtime.js |
 | stop | app/companion_gameplay_v27.js |
-| storage | app/cloud_sync.js, tests/character_3d_editor_test.js, tests/imported_3d_editor_assets.cjs, tests/test_v754_update_manager.js |
-| STORAGE_KEY | app/crafting_dlc_v50.js, app/update_manager_v2.js, app/vtt_debug_tasks_v708.js |
-| store | tests/character_appearance_store_test.js, tests/map_rebuild_world_test.js, tests/test_v53.js, tests/test_v69.js (+ 2 ещё) |
+| storage | app/cloud_sync.js (+ 3 других файлов) |
+| STORAGE_KEY | app/crafting_dlc_v50.js (+ 2 других файлов) |
+| store | tests/character_appearance_store_test.js (+ 5 других файлов) |
 | stored | tests/test_v716_fixes.js |
-| str | app/Inventory-weight-tracker.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js (+ 8 ещё) |
+| str | app/Inventory-weight-tracker.js (+ 11 других файлов) |
 | strand | app/3dmap/character_body_geometry.js |
 | strap | app/3dmap/character_clothing.js |
 | stream | desktop/update.cjs |
 | strength | app/Inventory-weight-tracker.js |
 | strenuous | app/resource_gathering_v35.js |
-| stride | app/3dmap/character_clothing.js, app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js, tests/character_skin_material_test.js (+ 6 ещё) |
+| stride | app/3dmap/character_clothing.js (+ 9 других файлов) |
 | strikeHP | tests/test_class_audit_stage2_runtime.js |
-| String | app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js (+ 20 ещё) |
+| String | app/crafting_character_influence_test_v46.js (+ 23 других файлов) |
 | strInput | app/Inventory-weight-tracker.js |
 | stripped | app/network_gameplay.js |
 | strMod | app/dice.js |
 | structureBlast | tests/alchemist_combat_test.js |
 | structureTarget | tests/alchemist_combat_test.js |
-| studied | app/expansion_classes_pack.js, app/savant_laserllama_v561_runtime.js |
-| style | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/Logo.js, app/blood_hunter_engine.js (+ 4 ещё) |
+| studied | app/expansion_classes_pack.js (+ 1 других файлов) |
+| style | app/3dmap/character_body_geometry.js (+ 7 других файлов) |
 | STYLE_ID | app/update_scene_v2.js |
 | styleEl | app/Inventory.js |
-| styles | app/expansion_classes_pack.js, app/warlord_laserllama_v330_runtime.js, tests/character_hair_pack_test.js, tests/character_tiefling_details_test.js (+ 2 ещё) |
-| styleTag | app/Settings.js, app/Wallpapers.js |
-| sub | app/3dmap/map_world.js, app/alchemist_mhp_2024_runtime.js, app/class_features_engine.js, app/content_framework.js (+ 5 ещё) |
+| styles | app/expansion_classes_pack.js (+ 5 других файлов) |
+| styleTag | app/Settings.js (+ 1 других файлов) |
+| sub | app/3dmap/map_world.js (+ 8 других файлов) |
 | subByName | app/kibbles_localization_content_v71.js |
-| subclass | tests/helpers/class_runtime_harness.js, tests/pugilist_combat_test.js |
+| subclass | tests/helpers/class_runtime_harness.js (+ 1 других файлов) |
 | SUBCLASS_FEATURES | app/class_features_engine.js |
 | SUBCLASS_MAP | app/class_features_engine.js |
-| subclasses | app/blood_hunter_engine.js, app/expansion_class_progressions.js, app/ghost_extra_runtime.js, app/kibbles_localization_content_v71.js (+ 3 ещё) |
+| subclasses | app/blood_hunter_engine.js (+ 6 других файлов) |
 | subclassHtml | app/data/classes/level_up.js |
 | subclassLevel | app/expansion_class_progressions.js |
-| subclassName | app/data/classes/progressionEngine.js, app/data/subclasses/subclassesRegistry.js |
+| subclassName | app/data/classes/progressionEngine.js (+ 1 других файлов) |
 | subclassPacks | app/warden_mhp_2024_runtime.js |
 | subclassResult | tests/alchemist_runtime_test.js |
 | subclassSelect | app/data/classes/level_up.js |
@@ -5274,77 +5275,77 @@
 | subIds | app/warlord_laserllama_v330_runtime.js |
 | subOptionsHtml | app/data/classes/level_up.js |
 | subpacks | app/alchemist_mhp_2024_runtime.js |
-| subs | app/alchemist_mhp_2024_runtime.js, app/spellblade_kibbles_runtime.js, app/warlord_laserllama_v330_runtime.js |
+| subs | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | SUBS | app/warden_mhp_2024_runtime.js |
 | subVal | app/Experience.js |
-| success | app/3dmap/map_world.js, app/combat_engine.js, app/crafting_engine_v31.js, app/crafting_professions_v33.js (+ 3 ещё) |
+| success | app/3dmap/map_world.js (+ 6 других файлов) |
 | suffix | app/content_framework.js |
-| suite | app/vtt_debug_rules_matrix_v707.js, tests/test_v707.js |
-| sum | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 12 ещё) |
-| summary | app/3dmap/character_editor_3d.js, app/inventory_containers_v54.js, tests/test_v56.js, tests/test_v56_1.js (+ 7 ещё) |
-| sums | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, tests/character_skin_material_test.js |
+| suite | app/vtt_debug_rules_matrix_v707.js (+ 1 других файлов) |
+| sum | app/3dmap/character_anatomy_geometry.js (+ 15 других файлов) |
+| summary | app/3dmap/character_editor_3d.js (+ 10 других файлов) |
+| sums | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | sumSq | tests/makehuman_target_reverse_transfer_audit.js |
 | sUp | app/data/feats/Feat_widget.js |
 | supernatural | app/expansion_classes_pack.js |
 | supportedSave | tests/test_class_audit_stage3_runtime.js |
 | suppressBodyHP | app/character.js |
-| surface | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, tests/character_3d_foundation_test.js |
+| surface | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | surfaceDiagnostics | tools/check_character_races_browser.js |
 | surfaceKind | app/3dmap/character_editor_3d.js |
 | surfaceSelect | app/3dmap/character_editor_3d.js |
 | surfaceUrl | app/3dmap/character_editor_3d.js |
 | surge | tests/test_class_audit_stage4_runtime.js |
 | surprised | app/class_features_engine.js |
-| sv | app/3dmap/gltf_loader.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/combat_engine.js (+ 2 ещё) |
+| sv | app/3dmap/gltf_loader.js (+ 5 других файлов) |
 | sv2 | app/expansion_classes_pack.js |
 | swarm | app/3dmap/character_editor_3d.js |
 | swarmForm | app/3dmap/character_editor_3d.js |
 | swarmLimits | app/3dmap/character_system.js |
 | swarmMotion | app/3dmap/character_editor_3d.js |
 | swift | app/expansion_classes_pack.js |
-| swiperContainer | app/Proficiencies.js, app/data/feats/Feat_widget.js |
-| sx | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/3dmap/map_renderer_3d.js |
-| sy | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/3dmap/map_renderer_3d.js |
+| swiperContainer | app/Proficiencies.js (+ 1 других файлов) |
+| sx | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
+| sy | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
 | synapse | tests/alchemist_runtime_test.js |
 | synapseInstall | tests/alchemist_runtime_test.js |
 | synapseRecord | app/alchemist_mhp_2024_runtime.js |
 | sync | desktop/preload.cjs |
 | syncRequested | app/network_engine.js |
-| synergies | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js |
+| synergies | app/alchemy_engine_v29.js (+ 1 других файлов) |
 | SYNERGY | app/alchemy_engine_v29.js |
 | synergySet | app/alchemy_engine_v29.js |
-| sys | app/3dmap/character_editor_3d.js, tests/character_3d_editor_test.js, tests/character_adult_anatomy_test.js, tests/character_animal_heads_test.js (+ 15 ещё) |
-| sz | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/3dmap/map_renderer_3d.js |
-| t | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 88 ещё) |
-| T | app/3dmap/character_anatomy_geometry.js, app/companion_packs_v26.js, tests/test_v55_2.js |
+| sys | app/3dmap/character_editor_3d.js (+ 18 других файлов) |
+| sz | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
+| t | app/3dmap/character_anatomy_geometry.js (+ 91 других файлов) |
+| T | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
 | t2 | app/occultist_kibbles_v11_runtime.js |
 | ta | app/expansion_classes_pack.js |
-| tab | app/3dmap/map_editor.js, app/dice.js, app/dnd_tools.js, app/gameplay_core_v57.js (+ 1 ещё) |
+| tab | app/3dmap/map_editor.js (+ 4 других файлов) |
 | tabButtons | app/Inventory.js |
-| table | app/blood_hunter_engine.js, app/magic_engine.js, app/monster_loot_crafting_bridge_v40.js, app/monster_loot_engine_v36.js (+ 3 ещё) |
+| table | app/blood_hunter_engine.js (+ 6 других файлов) |
 | tabs | app/crafting_professions_v33.js |
 | tabsContainer | app/Inventory.js |
 | tabsNav | app/Wallpapers.js |
 | tabsWrapper | app/Inventory.js |
 | tactics | app/warlord_laserllama_v330_runtime.js |
-| tag | app/3dmap/character_body_geometry.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/bestiary_catalog_v56_2.js (+ 11 ещё) |
+| tag | app/3dmap/character_body_geometry.js (+ 14 других файлов) |
 | tagOk | app/market_trade_v55_2.js |
-| tags | app/3dmap/character_body_geometry.js, app/alchemy_gathering_professions_v52.js, app/bestiary_catalog_v56_1.js, app/crafting_economy_v49.js (+ 6 ещё) |
+| tags | app/3dmap/character_body_geometry.js (+ 9 других файлов) |
 | tail | app/3dmap/character_body_geometry.js |
 | tailEnd | app/3dmap/character_body_geometry.js |
 | tailRoot | app/3dmap/character_body_geometry.js |
-| take | app/blood_hunter_engine.js, app/combat_engine.js, app/crafting_disassembly_v51.js, app/crafting_engine_v31.js (+ 4 ещё) |
+| take | app/blood_hunter_engine.js (+ 7 других файлов) |
 | takeFromContainer | app/inventory_containers_v54.js |
 | taken | app/3dmap/map_world.js |
 | tal | app/expansion_classes_pack.js |
 | tampered | tests/test_v752_replay_hash_authority.js |
 | tangent | app/3dmap/character_body_geometry.js |
-| taper | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
+| taper | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | tapLength | app/Logo.js |
-| target | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_pose.js, app/3dmap/character_system.js (+ 40 ещё) |
+| target | app/3dmap/character_anatomy_geometry.js (+ 43 других файлов) |
 | targetChar | app/Settings_debug.js |
 | targetCharId | app/Settings_debug.js |
-| targetClass | app/Hero-info.js, app/data/classes/level_up.js |
+| targetClass | app/Hero-info.js (+ 1 других файлов) |
 | targetClasses | app/combat_engine.js |
 | targetClassesForSlime | app/combat_engine.js |
 | targetContent | app/Inventory.js |
@@ -5352,23 +5353,23 @@
 | targetGrappled | app/expansion_classes_pack.js |
 | targetH | app/3dmap/map_renderer_3d.js |
 | targetHasArmor | app/combat_engine.js |
-| targetId | app/companion_gameplay_v27.js, app/expansion_classes_pack.js, app/network_gameplay.js, app/summoning_engine.js |
+| targetId | app/companion_gameplay_v27.js (+ 3 других файлов) |
 | targetIsPugilist | app/combat_engine.js |
 | targetLabels | index.html |
-| targetLevel | app/data/classes/level_up.js, app/data/classes/progressionEngine.js |
+| targetLevel | app/data/classes/level_up.js (+ 1 других файлов) |
 | targetList | app/companion_gameplay_v27.js |
 | targetLvl | app/Settings.js |
 | targetMeshIndex | tests/generate_makehuman_glb_morph_fixture.js |
 | targetName | app/companion_gameplay_v27.js |
 | targetParent | app/inventory-coins.js |
-| targetPath | tests/generate_makehuman_glb_morph_fixture.js, tests/makehuman_morph_bridge.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
+| targetPath | tests/generate_makehuman_glb_morph_fixture.js (+ 3 других файлов) |
 | targetPrim | tests/generate_makehuman_glb_morph_fixture.js |
 | targetPrimIndex | tests/generate_makehuman_glb_morph_fixture.js |
-| targetProfId | app/Proficienciescheck.js, app/weapons.js |
+| targetProfId | app/Proficienciescheck.js (+ 1 других файлов) |
 | targetProgress | app/update_scene_v2.js |
 | targetReports | tests/makehuman_topology_audit.js |
 | targetResistances | app/combat_engine.js |
-| targets | app/3dmap/character_body_geometry.js, app/3dmap/character_morph_assets.js, app/3dmap/character_system.js, app/3dmap/gltf_character_pipeline.js (+ 5 ещё) |
+| targets | app/3dmap/character_body_geometry.js (+ 8 других файлов) |
 | targetTok | app/companion_gameplay_v27.js |
 | targetToken | app/companion_gameplay_v27.js |
 | targetType | app/occultist_kibbles_v11_runtime.js |
@@ -5376,55 +5377,55 @@
 | targetW | app/3dmap/map_renderer_3d.js |
 | TASKS | app/vtt_debug_tasks_v708.js |
 | tb | app/monster_loot_engine_v37.js |
-| tc | app/expansion_classes_pack.js, app/network_gameplay.js |
+| tc | app/expansion_classes_pack.js (+ 1 других файлов) |
 | team | app/network_gameplay.js |
 | teeth | app/3dmap/character_body_geometry.js |
-| temp | app/combat_engine.js, app/crafting_professions_v38.js, app/expansion_classes_pack.js, app/spellblade_kibbles_runtime.js (+ 2 ещё) |
+| temp | app/combat_engine.js (+ 5 других файлов) |
 | TEMPER | app/market_social_v55_3.js |
 | tempHp | app/expansion_classes_pack.js |
-| template | app/combat_engine.js, app/monster_engine.js |
+| template | app/combat_engine.js (+ 1 других файлов) |
 | term | tests/makehuman_gender_recipe_test.js |
-| terms | tests/makehuman_gender_recipe_test.js, tools/build_character_editor_morphs.js, tools/prepare_makehuman_gender.js |
+| terms | tests/makehuman_gender_recipe_test.js (+ 2 других файлов) |
 | terror | app/3dmap/character_body_geometry.js |
-| test | app/update_scene_v2.js, tests/cloud_sync_test.cjs, tools/run_tests_v731.js |
+| test | app/update_scene_v2.js (+ 2 других файлов) |
 | testDir | tools/run_tests_v731.js |
 | testRecipe | tests/crafting_disassembly_v51_test.js |
 | tets | app/3dmap/character_body_geometry.js |
-| tex | app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, tests/character_3d_editor_test.js |
-| text | app/3dmap/character_editor_3d.js, app/Inventory-weight-tracker.js, app/Settings.js, app/alchemy_engine_v29.js (+ 21 ещё) |
+| tex | app/3dmap/character_clothing.js (+ 2 других файлов) |
+| text | app/3dmap/character_editor_3d.js (+ 24 других файлов) |
 | textColor | app/dice.js |
-| TextDecoder | tests/character_3d_morph_assets_test.js, tests/character_3d_skin_assets_test.js, tests/character_adult_anatomy_test.js, tests/character_animal_heads_test.js (+ 18 ещё) |
+| TextDecoder | tests/character_3d_morph_assets_test.js (+ 21 других файлов) |
 | textSpan | app/dice.js |
-| texture | app/3dmap/gltf_loader.js, app/3dmap/map_model.js, app/3dmap/map_renderer_3d.js, app/3dmap/map_world.js |
-| th | app/3dmap/map_renderer_3d.js, app/monster_engine.js |
+| texture | app/3dmap/gltf_loader.js (+ 3 других файлов) |
+| th | app/3dmap/map_renderer_3d.js (+ 1 других файлов) |
 | theme | app/Settings.js |
 | themed | app/crafting_resources_v34.js |
 | themeKey | app/Settings.js |
 | themeSelect | app/Settings.js |
-| theta | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js |
+| theta | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | thick | tools/check_character_editor_browser.js |
 | thickness | app/3dmap/character_body_geometry.js |
 | thigh | app/3dmap/character_anatomy.js |
 | thin | tools/check_character_editor_browser.js |
 | THIRD_CASTERS | app/rulesEngine.js |
 | THR | app/necromancer_mhp_2024_runtime.js |
-| thresholds | app/monster_engine.js, tests/makehuman_surface_mapping_audit.js |
+| thresholds | app/monster_engine.js (+ 1 других файлов) |
 | THRESHOLDS | app/monster_engine.js |
 | thumbDir | app/3dmap/character_body_geometry.js |
 | thumbEnd | app/3dmap/character_body_geometry.js |
 | thumbRoot | app/3dmap/character_body_geometry.js |
 | thumbs | app/Wallpapers.js |
 | thumbSide | app/3dmap/character_body_geometry.js |
-| ti | app/3dmap/character_body_geometry.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
+| ti | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
 | tick | app/network_gameplay.js |
 | tid | app/companion_gameplay_v27.js |
 | tie | tests/character_3d_foundation_test.js |
 | tier | app/crafting_disassembly_v51.js |
 | tile | app/3dmap/character_clothing.js |
-| time | app/3dmap/gltf_character_pipeline.js, app/crafting_economy_v49.js, app/crafting_engine_v31.js, app/crafting_resources_v34.js (+ 1 ещё) |
+| time | app/3dmap/gltf_character_pipeline.js (+ 4 других файлов) |
 | timedHero | tests/alchemist_runtime_test.js |
-| timeout | app/cloud_sync.js, app/update_manager_v2.js |
-| timer | app/cloud_sync.js, app/network_gameplay.js, app/update_manager_v2.js, index.html |
+| timeout | app/cloud_sync.js (+ 1 других файлов) |
+| timer | app/cloud_sync.js (+ 3 других файлов) |
 | timers | tests/cloud_sync_test.cjs |
 | times | app/3dmap/gltf_character_pipeline.js |
 | timeSpan | app/dice.js |
@@ -5432,43 +5433,43 @@
 | timeString | app/dice.js |
 | tint | app/3dmap/character_editor_3d.js |
 | tiny | tests/test_class_audit_stage2_runtime.js |
-| tip | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js |
+| tip | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | tipSelect | app/3dmap/character_editor_3d.js |
-| title | app/3dmap/character_editor_3d.js, app/Inventory-weight-tracker.js, app/companion_gameplay_v27.js, app/dice.js (+ 4 ещё) |
-| titleEl | app/Inventory-weight-tracker.js, app/inventory-modal.js |
-| titleElem | app/library.js, app/notes.js |
+| title | app/3dmap/character_editor_3d.js (+ 7 других файлов) |
+| titleEl | app/Inventory-weight-tracker.js (+ 1 других файлов) |
+| titleElem | app/library.js (+ 1 других файлов) |
 | titleText | app/spells.js |
-| tl | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js |
+| tl | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | tm | app/market_social_v55_3.js |
 | tmax | app/3dmap/map_renderer_3d.js |
 | tmin | app/3dmap/map_renderer_3d.js |
 | tmp | desktop/update.cjs |
-| tn | tests/human_base_glb_audit.js, tests/makehuman_glb_morph_fixture_audit.js |
-| to | app/bestiary_catalog_v56_13.js, tests/stair_navigation.cjs, tools/prepare_makehuman_gender.js |
+| tn | tests/human_base_glb_audit.js (+ 1 других файлов) |
+| to | app/bestiary_catalog_v56_13.js (+ 2 других файлов) |
 | toggle | app/crafting_dlc_v50.js |
 | toggleContainer | app/inventory_containers_v54.js |
-| tok | app/companion_gameplay_v27.js, app/summoning_engine.js, tests/test_v727_fixes.js |
-| token | app/cloud_sync.js, app/summoning_engine.js, tests/test_v737_spellcasting_transaction.js, tests/test_v755_update_scene.js |
+| tok | app/companion_gameplay_v27.js (+ 2 других файлов) |
+| token | app/cloud_sync.js (+ 3 других файлов) |
 | tokens | app/3dmap/gltf_catalog.js |
-| tool | app/bestiary_catalog_v56_5.js, app/bestiary_catalog_v56_6.js, app/bestiary_catalog_v56_7.js, app/bestiary_catalog_v56_8.js (+ 7 ещё) |
+| tool | app/bestiary_catalog_v56_5.js (+ 10 других файлов) |
 | TOOL_IDS | app/crafting_engine_v31.js |
 | TOOL_LABELS | app/crafting_engine_v31.js |
 | toolbar | app/inventory_containers_v54.js |
 | toolId | app/monster_loot_engine_v37.js |
 | toolMatrix | app/crafting_professions_v38.js |
 | toolOk | app/world_resource_gathering_v53.js |
-| tools | app/alchemy_gathering_professions_v52.js, app/crafting_economy_v49.js, app/crafting_engine_v31.js, app/crafting_profession_progression_v47.js (+ 2 ещё) |
+| tools | app/alchemy_gathering_professions_v52.js (+ 5 других файлов) |
 | TOOLS | app/crafting_professions_v38.js |
-| toolsStr | app/Backgrounds.js, app/character_creation.js |
+| toolsStr | app/Backgrounds.js (+ 1 других файлов) |
 | toolStr | app/character_creation.js |
 | tooth | app/3dmap/character_body_geometry.js |
 | toothColor | tools/check_character_races_browser.js |
 | toothPart | app/3dmap/character_body_geometry.js |
-| top | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 2 ещё) |
+| top | app/3dmap/character_anatomy_geometry.js (+ 5 других файлов) |
 | topology | tests/character_external_anatomy_test.js |
 | topRow | app/Inventory.js |
-| torso | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
-| total | app/3dmap/character_body_geometry.js, app/3dmap/gltf_character_pipeline.js, app/3dmap/map_world.js, app/Backgrounds.js (+ 31 ещё) |
+| torso | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| total | app/3dmap/character_body_geometry.js (+ 34 других файлов) |
 | totalAtk | app/spells.js |
 | totalAttack | app/character.js |
 | totalAttackBonus | app/dice.js |
@@ -5477,13 +5478,13 @@
 | totalDamage | app/character.js |
 | totalDiceDamage | app/character.js |
 | totalGain | app/data/classes/level_up.js |
-| totalLevel | app/data/classes/level_up.js, app/spells.js |
+| totalLevel | app/data/classes/level_up.js (+ 1 других файлов) |
 | totalMod | app/dice.js |
 | totalObjects | app/3dmap/map_model.js |
 | totalSkillMod | app/skills.js |
-| totalSum | app/dice.js, app/spells.js |
+| totalSum | app/dice.js (+ 1 других файлов) |
 | totalWeight | app/inventory_containers_v54.js |
-| totalWeightKg | app/Inventory-weight-tracker.js, app/inventory-modal.js |
+| totalWeightKg | app/Inventory-weight-tracker.js (+ 1 других файлов) |
 | totalWeightLb | app/Inventory-weight-tracker.js |
 | totalZones | app/3dmap/map_model.js |
 | totem | app/class_features_engine.js |
@@ -5492,33 +5493,33 @@
 | toxic | tests/alchemist_runtime_test.js |
 | toxicDC | app/alchemist_mhp_2024_runtime.js |
 | toxicSave | app/alchemist_mhp_2024_runtime.js |
-| toxicTarget | app/alchemist_mhp_2024_runtime.js, tests/alchemist_runtime_test.js |
+| toxicTarget | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | tp | app/network_gameplay.js |
 | tr | app/occultist_kibbles_v11_runtime.js |
 | track | app/Ambiences.js |
-| tracker | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| tracker | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | trackNameEl | app/Ambiences.js |
 | TRADE_KEY | app/market_trade_v55_2.js |
-| traderId | app/market_economy_v55.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| traderId | app/market_economy_v55.js (+ 2 других файлов) |
 | TRADERS | app/market_economy_v55.js |
 | traditionActions | app/occultist_kibbles_v11_runtime.js |
 | traditions | app/occultist_kibbles_v11_runtime.js |
 | transfer | tests/generate_makehuman_glb_morph_fixture.js |
-| transformed | tests/makehuman_surface_mapping_audit.js, tests/makehuman_vertex_mapping_audit.js |
+| transformed | tests/makehuman_surface_mapping_audit.js (+ 1 других файлов) |
 | transforms | app/3dmap/character_pose.js |
-| translated | app/3dmap/gltf_catalog.js, tests/character_external_anatomy_test.js |
+| translated | app/3dmap/gltf_catalog.js (+ 1 других файлов) |
 | transpose | tests/character_3d_editor_test.js |
-| tri | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, tests/character_external_anatomy_test.js |
+| tri | app/3dmap/character_anatomy_geometry.js (+ 3 других файлов) |
 | triangleHits | tests/makehuman_target_surface_transfer_audit.js |
-| triangles | app/3dmap/character_body_geometry.js, tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js (+ 2 ещё) |
+| triangles | app/3dmap/character_body_geometry.js (+ 5 других файлов) |
 | triggerCustomCreation | app/inventory-modal.js |
 | tris | app/3dmap/character_body_geometry.js |
-| true | app/expansion_classes_pack.js, tests/character_clothing_customizer_geometry_test.js, tests/character_clothing_options_test.js |
+| true | app/expansion_classes_pack.js (+ 2 других файлов) |
 | trunk | app/3dmap/character_body_geometry.js |
-| ts | app/network_gameplay.js, app/walter_parasite_extra_runtime.js |
-| tt | app/3dmap/map_renderer_3d.js, app/companion_gameplay_v27.js, app/network_gameplay.js |
+| ts | app/network_gameplay.js (+ 1 других файлов) |
+| tt | app/3dmap/map_renderer_3d.js (+ 2 других файлов) |
 | tTok | app/combat_engine.js |
-| tu | tests/test_v727_fixes.js, tests/test_v728_fixes.js |
+| tu | tests/test_v727_fixes.js (+ 1 других файлов) |
 | tuft | app/3dmap/character_body_geometry.js |
 | tufts | app/3dmap/character_body_geometry.js |
 | turn | app/expansion_classes_pack.js |
@@ -5528,27 +5529,27 @@
 | turnTwo | tests/alchemist_combat_test.js |
 | tusks | app/3dmap/character_body_geometry.js |
 | tw | app/3dmap/map_renderer_3d.js |
-| tx | app/3dmap/gltf_loader.js, app/3dmap/map_renderer_2d.js, app/3dmap/map_renderer_3d.js, app/network_gameplay.js (+ 1 ещё) |
-| txt | app/Proficiencies.js, app/data/feats/Feat_widget.js, tools/generate_project_atlas.cjs |
-| typ | app/expansion_classes_pack.js, app/occultist_kibbles_v11_runtime.js |
-| type | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/gltf_catalog.js, app/3dmap/gltf_loader.js (+ 52 ещё) |
+| tx | app/3dmap/gltf_loader.js (+ 4 других файлов) |
+| txt | app/Proficiencies.js (+ 2 других файлов) |
+| typ | app/expansion_classes_pack.js (+ 1 других файлов) |
+| type | app/3dmap/character_anatomy_geometry.js (+ 55 других файлов) |
 | typeCount | tests/makehuman_topology_audit.js |
 | typedExtraTotal | app/combat_engine.js |
-| types | app/shifter_laserllama_v2_1_runtime.js, app/summoning_engine.js, app/warden_mhp_2024_runtime.js, tools/generate_project_atlas.cjs |
+| types | app/shifter_laserllama_v2_1_runtime.js (+ 3 других файлов) |
 | TYPES | app/market_expansion_v55_1.js |
 | typeSelect | app/inventory-modal.js |
-| u | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/gltf_loader.js (+ 13 ещё) |
+| u | app/3dmap/character_anatomy_geometry.js (+ 16 других файлов) |
 | U | app/3dmap/character_anatomy_geometry.js |
 | ub | app/3dmap/map_renderer_3d.js |
-| ui | app/update_manager_v2.js, tests/test_v719_fixes.js |
+| ui | app/update_manager_v2.js (+ 1 других файлов) |
 | uiColorOptions | app/Wallpapers.js |
 | uid | tests/cloud_sql_concurrency.cjs |
 | uiFreeGather | app/resource_gathering_v35.js |
 | uiGather | app/resource_gathering_v35.js |
 | uiMix | app/alchemy_engine_v29.js |
-| Uint16Array | tests/character_3d_editor_test.js, tests/character_3d_morph_assets_test.js, tests/character_3d_skin_assets_test.js, tests/character_adult_anatomy_test.js (+ 19 ещё) |
-| Uint32Array | tests/character_3d_editor_test.js, tests/character_3d_morph_assets_test.js, tests/character_3d_skin_assets_test.js, tests/character_adult_anatomy_test.js (+ 20 ещё) |
-| Uint8Array | tests/character_3d_morph_assets_test.js, tests/character_3d_skin_assets_test.js, tests/character_adult_anatomy_test.js, tests/character_animal_heads_test.js (+ 19 ещё) |
+| Uint16Array | tests/character_3d_editor_test.js (+ 22 других файлов) |
+| Uint32Array | tests/character_3d_editor_test.js (+ 23 других файлов) |
+| Uint8Array | tests/character_3d_morph_assets_test.js (+ 22 других файлов) |
 | ul | app/3dmap/character_body_geometry.js |
 | unacted | app/class_features_engine.js |
 | unarmoredBase | app/combat_engine.js |
@@ -5559,35 +5560,35 @@
 | undead | tests/test_v727_fixes.js |
 | undeadFocus | app/combat_engine.js |
 | undo | app/class_features_engine.js |
-| unescape | tests/test_v714_fixes.js, tests/test_v752_replay_hash_authority.js, tests/test_v753_replay_transaction_rng.js |
-| unique | app/3dmap/character_clothing.js, desktop/update.cjs |
+| unescape | tests/test_v714_fixes.js (+ 2 других файлов) |
+| unique | app/3dmap/character_clothing.js (+ 1 других файлов) |
 | uniqueFeatsMap | app/data/classes/level_up.js |
 | uniqueMap | app/spells.js |
 | uniqueSuffix | app/inventory-modal.js |
-| unit | app/3dmap/character_body_geometry.js, app/Inventory-weight-tracker.js, app/Settings.js, app/market_trade_v55_2.js |
+| unit | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
 | units | app/Settings.js |
-| unknown | tests/character_races_geometry_test.js, tests/test_v730_fixes.js, tests/test_v731_fixes.js |
-| up | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js |
-| update | app/custom_crafting_v32.js, app/resource_gathering_v35.js, app/world_resource_gathering_v53.js |
+| unknown | tests/character_races_geometry_test.js (+ 2 других файлов) |
+| up | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| update | app/custom_crafting_v32.js (+ 2 других файлов) |
 | updateCloudStatus | app/Settings.js |
 | updated | app/data/feats/Feat_widget.js |
 | updateListeners | desktop/preload.cjs |
-| updater | desktop/main.cjs, tests/creation_signature_asset_test.cjs, tests/desktop_update_contract.cjs |
+| updater | desktop/main.cjs (+ 2 других файлов) |
 | updateRun | app/update_manager_v2.js |
 | updateScheduled | app/Inventory-weight-tracker.js |
 | uploadImage | app/3dmap/character_editor_3d.js |
 | uploads | tests/character_3d_editor_test.js |
-| upper | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 2 ещё) |
+| upper | app/3dmap/character_anatomy.js (+ 5 других файлов) |
 | upperSnout | app/3dmap/character_body_geometry.js |
 | upTo | app/data/classes/progressionEngine.js |
 | uri | app/3dmap/gltf_loader.js |
-| url | app/3dmap/character_editor_3d.js, app/3dmap/character_morph_assets.js, app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js (+ 37 ещё) |
+| url | app/3dmap/character_editor_3d.js (+ 40 других файлов) |
 | URL | tests/cloud_sync_test.cjs |
 | urlPath | desktop/update.cjs |
 | usage | app/3dmap/character_editor_3d.js |
 | use | app/crafting_disassembly_v51.js |
 | useBtn | app/Inventory.js |
-| used | app/blood_hunter_engine.js, app/custom_crafting_v32.js, app/gameplay_core_v57.js, app/inventory_containers_v54.js (+ 5 ещё) |
+| used | app/blood_hunter_engine.js (+ 8 других файлов) |
 | usedBy | app/crafting_resources_v34.js |
 | usedCombat | app/network_gameplay.js |
 | usedCount | app/combat_abilities.js |
@@ -5596,42 +5597,42 @@
 | useFur | app/3dmap/character_editor_3d.js |
 | useReptile | app/3dmap/character_editor_3d.js |
 | userProfsIds | app/Inventory.js |
-| uses | app/class_features_engine.js, app/data/classes/Beastheart.js, app/expansion_classes_pack.js, tests/test_class_audit_stage3_runtime.js |
+| uses | app/class_features_engine.js (+ 3 других файлов) |
 | USES | app/martyr_mhp_2024_runtime.js |
 | usesHtml | app/combat_abilities.js |
 | useSkinMicro | app/3dmap/character_editor_3d.js |
-| uv | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/map_renderer_3d.js (+ 3 ещё) |
+| uv | app/3dmap/character_anatomy_geometry.js (+ 6 других файлов) |
 | uvAnchor | app/3dmap/character_anatomy_geometry.js |
 | uvDet | app/3dmap/character_anatomy_geometry.js |
 | uvFit | app/3dmap/character_anatomy_geometry.js |
 | ux | app/3dmap/character_body_geometry.js |
 | uy | app/3dmap/character_body_geometry.js |
 | uz | app/3dmap/character_body_geometry.js |
-| v | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_appearance_store.js, app/3dmap/character_body_geometry.js (+ 143 ещё) |
-| V | app/3dmap/character_anatomy_geometry.js, tests/test_v52.js |
-| v0 | tests/makehuman_morph_bridge.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| v1 | tests/makehuman_morph_bridge.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| v2 | tests/makehuman_morph_bridge.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| va | tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js (+ 1 ещё) |
-| val | app/Ambiences.js, app/Backgrounds.js, app/Inventory-weight-tracker.js, app/Inventory.js (+ 11 ещё) |
-| valEl | app/Backgrounds.js, app/character_creation.js |
+| v | app/3dmap/character_anatomy.js (+ 146 других файлов) |
+| V | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
+| v0 | tests/makehuman_morph_bridge.js (+ 2 других файлов) |
+| v1 | tests/makehuman_morph_bridge.js (+ 2 других файлов) |
+| v2 | tests/makehuman_morph_bridge.js (+ 2 других файлов) |
+| va | tests/makehuman_morph_bridge.js (+ 4 других файлов) |
+| val | app/Ambiences.js (+ 14 других файлов) |
+| valEl | app/Backgrounds.js (+ 1 других файлов) |
 | validate | app/crafting_professions_v38.js |
 | validBoons | app/expansion_classes_pack.js |
 | validRelative | tests/desktop_update_contract.cjs |
 | validStats | app/data/feats/Feat_widget.js |
 | valInput | app/inventory-modal.js |
-| valName | app/Backgrounds.js, app/character_creation.js |
-| vals | app/3dmap/gltf_character_pipeline.js, app/alchemy_gameplay_v30.js, app/crafting_professions_v38.js |
-| valStr | app/Backgrounds.js, app/skills.js |
-| value | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_appearance_store.js, app/3dmap/character_clothing.js (+ 27 ещё) |
-| values | app/3dmap/gltf_loader.js, app/3dmap/map_world.js, app/expansion_classes_pack.js, tools/check_ghost_browser.js |
+| valName | app/Backgrounds.js (+ 1 других файлов) |
+| vals | app/3dmap/gltf_character_pipeline.js (+ 2 других файлов) |
+| valStr | app/Backgrounds.js (+ 1 других файлов) |
+| value | app/3dmap/character_anatomy.js (+ 30 других файлов) |
+| values | app/3dmap/gltf_loader.js (+ 3 других файлов) |
 | variableNameUsed | app/dice.js |
 | variant | tests/test_v56.js |
 | variants | tests/character_clothing_test.js |
-| varName | app/dice.js, app/inventory-modal.js, app/skills.js |
+| varName | app/dice.js (+ 2 других файлов) |
 | vary | tests/character_skin_material_test.js |
-| vb | tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| vc | tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
+| vb | tests/makehuman_morph_bridge.js (+ 3 других файлов) |
+| vc | tests/makehuman_morph_bridge.js (+ 3 других файлов) |
 | vector | app/3dmap/character_pose.js |
 | venom | tests/alchemist_runtime_test.js |
 | venomDamage | tests/alchemist_combat_test.js |
@@ -5640,25 +5641,25 @@
 | venomsmithPoisonImmune | app/combat_engine.js |
 | venomTarget | tests/alchemist_combat_test.js |
 | verm | app/blood_hunter_engine.js |
-| version | app/Settings.js, app/update_scene_v2.js, tests/desktop_update_contract.cjs, tests/human_base_glb_audit.js (+ 1 ещё) |
-| VERSION | app/3dmap/character_system.js, app/battle_board.js, app/crafting_disassembly_repair_v51.js, app/gameplay_core_v57.js (+ 22 ещё) |
+| version | app/Settings.js (+ 4 других файлов) |
+| VERSION | app/3dmap/character_system.js (+ 25 других файлов) |
 | versionText | app/update_manager_v2.js |
-| vertex | app/3dmap/character_body_geometry.js, app/3dmap/character_pose.js |
-| vertices | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_editor_3d.js, tests/human_base_glb_audit.js, tests/makehuman_morph_bridge.js (+ 5 ещё) |
-| verts | app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js |
+| vertex | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| vertices | app/3dmap/character_anatomy_geometry.js (+ 8 других файлов) |
+| verts | app/3dmap/character_clothing.js (+ 1 других файлов) |
 | vesselHP | tests/test_class_audit_stage2_runtime.js |
-| vi | tests/makehuman_morph_bridge.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| victim | tests/test_blood_hunter_completion.js, tests/test_blood_hunter_orders.js |
-| view | app/3dmap/character_morph_assets.js, app/3dmap/map_editor.js, tests/makehuman_gender_recipe_test.js, tests/makehuman_surface_mapping_audit.js (+ 5 ещё) |
+| vi | tests/makehuman_morph_bridge.js (+ 2 других файлов) |
+| victim | tests/test_blood_hunter_completion.js (+ 1 других файлов) |
+| view | app/3dmap/character_morph_assets.js (+ 8 других файлов) |
 | viewIndex | app/3dmap/gltf_loader.js |
-| views | app/3dmap/gltf_loader.js, tests/makehuman_glb_morph_fixture_audit.js, tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js (+ 4 ещё) |
+| views | app/3dmap/gltf_loader.js (+ 7 других файлов) |
 | viscera | tests/pugilist_combat_test.js |
 | visceraTarget | tests/pugilist_combat_test.js |
-| visible | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/map_world.js, app/blood_hunter_engine.js (+ 5 ещё) |
-| vm | app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js (+ 117 ещё) |
+| visible | app/3dmap/character_body_geometry.js (+ 8 других файлов) |
+| vm | app/crafting_character_influence_test_v46.js (+ 120 других файлов) |
 | voice | tests/alchemist_runtime_test.js |
 | voiceInstall | tests/alchemist_runtime_test.js |
-| volatility | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js |
+| volatility | app/alchemy_engine_v29.js (+ 1 других файлов) |
 | volStep | app/Ambiences.js |
 | volumeRange | app/Ambiences.js |
 | volumes | app/3dmap/character_body_geometry.js |
@@ -5666,16 +5667,16 @@
 | vr | app/network_gameplay.js |
 | vs | app/3dmap/character_editor_3d.js |
 | vuln | app/vtt_debug_dice_lab_v706.js |
-| vulnerable | app/combat_engine.js, app/expansion_classes_pack.js |
-| vx | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
+| vulnerable | app/combat_engine.js (+ 1 других файлов) |
+| vx | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | vy | app/3dmap/character_body_geometry.js |
-| vz | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
-| w | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 28 ещё) |
-| W | app/3dmap/character_body_geometry.js, tests/test_class_audit_stage4_runtime.js, tests/test_v53.js |
+| vz | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| w | app/3dmap/character_anatomy.js (+ 31 других файлов) |
+| W | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | w1 | app/3dmap/character_body_geometry.js |
 | w2 | app/3dmap/character_body_geometry.js |
 | w3 | app/3dmap/character_body_geometry.js |
-| wa | app/combat_engine.js, tests/makehuman_target_surface_transfer_audit.js |
+| wa | app/combat_engine.js (+ 1 других файлов) |
 | waistPoints | tests/character_clothing_test.js |
 | waived | app/martyr_mhp_2024_runtime.js |
 | walk | app/vessel_laserllama_v4_runtime.js |
@@ -5687,10 +5688,10 @@
 | wallTypes | app/3dmap/stress_map.js |
 | walter | app/3dmap/character_body_geometry.js |
 | walterCorpseTarget | app/character_creation.js |
-| want | app/market_social_v55_3.js, app/market_trade_v55_2.js, app/parasite_extra_runtime.js |
-| wanted | app/3dmap/character_body_geometry.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| want | app/market_social_v55_3.js (+ 2 других файлов) |
+| wanted | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | wantedClass | app/data/classes/level_up.js |
-| war | app/bestiary_catalog_v56_12.js, tests/test_v56_12.js |
+| war | app/bestiary_catalog_v56_12.js (+ 1 других файлов) |
 | WAR_ACADEMIES | app/expanded_classes_v23.js |
 | ward | tests/test_v726_fixes.js |
 | wardAbsorbed | app/combat_engine.js |
@@ -5700,17 +5701,17 @@
 | wardrobeSaved | tools/check_character_editor_browser.js |
 | wardState | app/combat_engine.js |
 | warlordParry | app/combat_engine.js |
-| warp | tests/character_native_limbs_test.js, tests/character_races_geometry_test.js |
+| warp | tests/character_native_limbs_test.js (+ 1 других файлов) |
 | wasNewClass | app/data/classes/level_up.js |
 | wave | app/3dmap/character_body_geometry.js |
-| wb | tests/makehuman_morph_bridge.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| wc | tests/makehuman_morph_bridge.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| weapon | app/Proficienciescheck.js, app/alchemist_mhp_2024_runtime.js, app/crafting_dlc_v50.js, app/rulesEngine.js (+ 5 ещё) |
+| wb | tests/makehuman_morph_bridge.js (+ 2 других файлов) |
+| wc | tests/makehuman_morph_bridge.js (+ 2 других файлов) |
+| weapon | app/Proficienciescheck.js (+ 8 других файлов) |
 | weaponFields | app/inventory-modal.js |
-| weaponId | app/Proficienciescheck.js, app/expansion_classes_pack.js, app/weapons.js |
-| weaponName | app/Proficienciescheck.js, app/dice.js, app/weapons.js |
+| weaponId | app/Proficienciescheck.js (+ 2 других файлов) |
+| weaponName | app/Proficienciescheck.js (+ 2 других файлов) |
 | weapons | app/network_gameplay.js |
-| weaponsDb | app/Proficienciescheck.js, app/weapons.js |
+| weaponsDb | app/Proficienciescheck.js (+ 1 других файлов) |
 | wear | app/crafting_disassembly_v51.js |
 | webbedTarget | tests/alchemist_runtime_test.js |
 | webDebuffs | app/alchemist_mhp_2024_runtime.js |
@@ -5718,26 +5719,26 @@
 | webRoot | desktop/main.cjs |
 | webSave | app/alchemist_mhp_2024_runtime.js |
 | webTarget | app/alchemist_mhp_2024_runtime.js |
-| weight | app/3dmap/character_body_geometry.js, app/crafting_economy_v49.js, app/crafting_resources_v34.js, app/custom_crafting_v32.js (+ 2 ещё) |
+| weight | app/3dmap/character_body_geometry.js (+ 5 других файлов) |
 | weightInp | app/inventory-modal.js |
 | weightRes | app/inventory-modal.js |
-| weights | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_morph_assets.js (+ 3 ещё) |
-| weightStr | app/Inventory-weight-tracker.js, app/inventory-modal.js |
+| weights | app/3dmap/character_anatomy_geometry.js (+ 6 других файлов) |
+| weightStr | app/Inventory-weight-tracker.js (+ 1 других файлов) |
 | weightValue | tools/build_character_editor_morphs.js |
 | weldedBoundary | app/3dmap/character_anatomy_geometry.js |
 | weldKey | app/3dmap/character_anatomy_geometry.js |
 | wh | app/3dmap/character_body_geometry.js |
 | whiskers | app/3dmap/character_body_geometry.js |
 | who | app/network_gameplay.js |
-| wi | app/3dmap/stress_map.js, app/combat_engine.js |
+| wi | app/3dmap/stress_map.js (+ 1 других файлов) |
 | wide | app/3dmap/character_body_geometry.js |
-| width | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/stress_map.js, desktop/main.cjs (+ 4 ещё) |
-| wild | app/bestiary_catalog_v56_11.js, tests/test_v726_fixes.js |
+| width | app/3dmap/character_body_geometry.js (+ 7 других файлов) |
+| wild | app/bestiary_catalog_v56_11.js (+ 1 других файлов) |
 | willActivate | app/combat_engine.js |
-| win | desktop/main.cjs, tests/character_3d_editor_test.js, tests/character_3d_morph_assets_test.js, tests/character_3d_skin_assets_test.js (+ 2 ещё) |
+| win | desktop/main.cjs (+ 5 других файлов) |
 | wingAngle | app/3dmap/character_body_geometry.js |
-| wis | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/bestiary_catalog_v56_2.js (+ 8 ещё) |
-| wisMod | app/Backgrounds.js, app/skills.js |
+| wis | app/bestiary_catalog_v56_1.js (+ 11 других файлов) |
+| wisMod | app/Backgrounds.js (+ 1 других файлов) |
 | WITCH_CRAFT_DATA | app/expansion_classes_pack.js |
 | WITCH_CRAFTS | app/expansion_classes_pack.js |
 | WITCH_CURSE_EFFECTS | app/expansion_classes_pack.js |
@@ -5759,66 +5760,66 @@
 | wolf | tests/test_class_audit_stage2_runtime.js |
 | wood | app/3dmap/character_editor_3d.js |
 | words | app/3dmap/gltf_catalog.js |
-| world | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_pose.js, app/3dmap/gltf_character_pipeline.js |
+| world | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
 | WORLD_STATE | app/world_resource_gathering_v53.js |
 | woven | app/3dmap/character_editor_3d.js |
-| wp | app/Wallpapers.js, app/expansion_classes_pack.js |
-| wrap | app/battle_action_ui.js, app/character_creation.js, app/companion_gameplay_v27.js, app/companion_packs_v26.js (+ 1 ещё) |
-| wrapped | app/gameplay_core_v57.js, app/resource_processing_v44.js, app/rulesEngine.js, app/vtt_combat_event_bus_v69.js (+ 1 ещё) |
+| wp | app/Wallpapers.js (+ 1 других файлов) |
+| wrap | app/battle_action_ui.js (+ 4 других файлов) |
+| wrapped | app/gameplay_core_v57.js (+ 4 других файлов) |
 | wrappedTools | app/rulesEngine.js |
-| wrapper | app/dice.js, app/inventory-modal.js |
+| wrapper | app/dice.js (+ 1 других файлов) |
 | wrapS | app/3dmap/map_renderer_3d.js |
 | wrapT | app/3dmap/map_renderer_3d.js |
 | wrist | app/3dmap/character_body_geometry.js |
 | wrists | app/3dmap/character_body_geometry.js |
-| wrong | tests/pugilist_combat_test.js, tests/test_class_audit_runtime.js, tests/test_v732_fixes.js |
-| ws | app/3dmap/character_editor_3d.js, app/blood_hunter_engine.js, app/network_gameplay.js |
-| wt | app/3dmap/character_editor_3d.js, app/3dmap/gltf_character_pipeline.js |
+| wrong | tests/pugilist_combat_test.js (+ 2 других файлов) |
+| ws | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
+| wt | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | ww | app/3dmap/map_renderer_3d.js |
-| wx | app/3dmap/map_renderer_2d.js, app/3dmap/stress_map.js |
-| wy | app/3dmap/map_renderer_2d.js, app/3dmap/stress_map.js |
-| x | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 142 ещё) |
+| wx | app/3dmap/map_renderer_2d.js (+ 1 других файлов) |
+| wy | app/3dmap/map_renderer_2d.js (+ 1 других файлов) |
+| x | app/3dmap/character_anatomy.js (+ 145 других файлов) |
 | X | app/3dmap/map_renderer_2d.js |
 | x0 | app/3dmap/character_body_geometry.js |
-| x1 | app/3dmap/character_body_geometry.js, app/3dmap/map_model.js, app/3dmap/map_renderer_2d.js |
-| x2 | app/3dmap/map_model.js, app/3dmap/map_renderer_2d.js |
+| x1 | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
+| x2 | app/3dmap/map_model.js (+ 1 других файлов) |
 | xenoHero | tests/alchemist_combat_test.js |
 | xenoOwner | tests/alchemist_runtime_test.js |
-| xn | app/alchemy_gathering_professions_v52.js, app/market_trade_v55_2.js |
-| xp | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/bestiary_catalog_v56_2.js (+ 8 ещё) |
+| xn | app/alchemy_gathering_professions_v52.js (+ 1 других файлов) |
+| xp | app/bestiary_catalog_v56_1.js (+ 11 других файлов) |
 | XP_BY_CR | app/monster_engine.js |
 | xs | tests/test_v755_creation_buckets.js |
 | xt | app/alchemy_gathering_professions_v52.js |
-| xx | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js |
+| xx | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | xy | app/3dmap/map_renderer_3d.js |
-| y | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 47 ещё) |
-| Y | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_2d.js |
-| y0 | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js |
-| y1 | app/3dmap/character_body_geometry.js, app/3dmap/map_model.js, app/3dmap/map_renderer_2d.js, app/3dmap/map_renderer_3d.js (+ 1 ещё) |
-| y2 | app/3dmap/map_model.js, app/3dmap/map_renderer_2d.js, tests/character_races_geometry_test.js |
-| yaw | app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js, tools/check_adult_anatomy_browser.js, tools/check_adult_base_browser.js (+ 33 ещё) |
+| y | app/3dmap/character_anatomy_geometry.js (+ 50 других файлов) |
+| Y | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| y0 | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| y1 | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
+| y2 | app/3dmap/map_model.js (+ 2 других файлов) |
+| yaw | app/3dmap/character_editor_3d.js (+ 36 других файлов) |
 | yd | app/expansion_classes_pack.js |
-| yes | app/3dmap/character_anatomy.js, tests/test_v55_2.js |
+| yes | app/3dmap/character_anatomy.js (+ 1 других файлов) |
 | yf | tests/makehuman_morph_bridge.js |
 | yFile | tests/makehuman_target_reverse_transfer_audit.js |
 | ys | app/3dmap/character_body_geometry.js |
-| yuan | tests/character_animal_heads_test.js, tests/character_avian_elephant_heads_test.js, tests/character_reptile_heads_test.js |
+| yuan | tests/character_animal_heads_test.js (+ 2 других файлов) |
 | yy | app/3dmap/character_body_geometry.js |
-| z | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 15 ещё) |
-| z0 | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js |
-| z1 | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js |
+| z | app/3dmap/character_anatomy_geometry.js (+ 18 других файлов) |
+| z0 | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| z1 | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | zb | app/3dmap/character_body_geometry.js |
 | zf | app/3dmap/character_body_geometry.js |
 | zFile | tests/makehuman_target_reverse_transfer_audit.js |
 | ZH | app/3dmap/map_renderer_2d.js |
 | zi | app/3dmap/map_renderer_2d.js |
-| zlib | tests/character_skin_material_test.js, tests/makehuman_gender_recipe_test.js, tests/makehuman_morph_bridge.js, tests/makehuman_target_reverse_transfer_audit.js (+ 4 ещё) |
-| zoom | app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_2d.js, app/vtt_mobile_battle_v61.js |
+| zlib | tests/character_skin_material_test.js (+ 7 других файлов) |
+| zoom | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
 | zs | app/3dmap/map_renderer_2d.js |
 | ZW | app/3dmap/map_renderer_2d.js |
 | ZX | app/3dmap/map_renderer_2d.js |
 | ZY | app/3dmap/map_renderer_2d.js |
-| zz | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js |
+| zz | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 
 ### Глобальные JS API (547)
 
@@ -5849,65 +5850,65 @@
 | AbortController | app/update_manager_v2.js |
 | ACCURSED_V11 | app/accursed_oap_v11_runtime.js |
 | accursedAfflictions | app/accursed_oap_v11_runtime.js |
-| accursedProgression | app/accursed_oap_v11_runtime.js, app/data/classes/Accursed.js, app/data/classes/extra_class_stubs.js |
-| accursedRuntime | app/accursed_oap_v11_runtime.js, app/expansion_classes_pack.js |
-| addEventListener | tests/test_blood_hunter_focus_network.js, tests/test_v742_character_combatant_sync.js |
+| accursedProgression | app/accursed_oap_v11_runtime.js (+ 2 других файлов) |
+| accursedRuntime | app/accursed_oap_v11_runtime.js (+ 1 других файлов) |
+| addEventListener | tests/test_blood_hunter_focus_network.js (+ 1 других файлов) |
 | addExperienceValue | app/Experience.js |
-| addItemToInventory | app/Inventory-weight-tracker.js, app/crafting_engine_v31.js, app/custom_crafting_v32.js |
+| addItemToInventory | app/Inventory-weight-tracker.js (+ 2 других файлов) |
 | ALCHEMIST_MHP_2024 | app/alchemist_mhp_2024_runtime.js |
 | alchemistProgression | app/data/classes/Alchemist.js |
 | alert | app/network_gameplay.js |
-| allCharacters | app/Backgrounds.js, app/character_creation.js, app/cloud_sync.js, tests/character_appearance_store_test.js (+ 1 ещё) |
-| appDebugLogs | app/Settings.js, app/debug.js |
-| appendDiceLog | app/class_features_engine.js, app/rulesEngine.js |
+| allCharacters | app/Backgrounds.js (+ 4 других файлов) |
+| appDebugLogs | app/Settings.js (+ 1 других файлов) |
+| appendDiceLog | app/class_features_engine.js (+ 1 других файлов) |
 | applyClassProgression | app/data/classes/progressionEngine.js |
 | applyDndASI | app/rulesEngine.js |
-| applyMulticlassProficiencies | app/data/classes/level_up.js, app/data/classes/progressionEngine.js |
-| applySubclassProgression | app/class_features_engine.js, app/data/classes/progressionEngine.js |
+| applyMulticlassProficiencies | app/data/classes/level_up.js (+ 1 других файлов) |
+| applySubclassProgression | app/class_features_engine.js (+ 1 других файлов) |
 | artificerProgression | app/data/classes/Artificer.js |
-| autoSaveCurrentCharacter | app/alchemy_gathering_professions_v52.js, app/battle_board.js, app/blood_hunter_engine.js, app/class_features_engine.js (+ 29 ещё) |
+| autoSaveCurrentCharacter | app/alchemy_gathering_professions_v52.js (+ 32 других файлов) |
 | averageHpIncrease | app/data/classes/level_up.js |
 | barbarianProgression | app/data/classes/Barbarian.js |
 | bardProgression | app/data/classes/Bard.js |
-| beastheartProgression | app/data/classes/Beastheart.js, app/expansion_class_progressions.js |
+| beastheartProgression | app/data/classes/Beastheart.js (+ 1 других файлов) |
 | BeastheartRuntime | app/data/classes/Beastheart.js |
 | bloodHunterProgression | app/data/classes/BloodHunter.js |
-| calculateMods | app/rulesEngine.js, app/spells.js |
-| changePointBuyStat | app/Backgrounds.js, app/character_creation.js |
-| checkMulticlassRequirements | app/Hero-info.js, app/data/classes/level_up.js |
+| calculateMods | app/rulesEngine.js (+ 1 других файлов) |
+| changePointBuyStat | app/Backgrounds.js (+ 1 других файлов) |
+| checkMulticlassRequirements | app/Hero-info.js (+ 1 других файлов) |
 | chooseAssassinSubclass | app/class_features_engine.js |
 | chooseMetamagic | app/class_features_engine.js |
 | chooseSubclass | app/data/classes/progressionEngine.js |
 | chooseSubclassForClass | app/class_features_engine.js |
 | CLASS_SPELLCASTING_ABILITIES_2014 | app/data/classes/progressionEngine.js |
-| CLASSES_REFERENCE | app/alchemist_mhp_2024_runtime.js, app/classesRegistry.js, app/occultist_kibbles_v11_runtime.js, app/warden_mhp_2024_runtime.js |
+| CLASSES_REFERENCE | app/alchemist_mhp_2024_runtime.js (+ 3 других файлов) |
 | clericProgression | app/data/classes/Cleric.js |
 | closeAddFeatModal | app/data/feats/Feat_widget.js |
-| closeCharacterCreationModal | app/Backgrounds.js, app/character_creation.js |
+| closeCharacterCreationModal | app/Backgrounds.js (+ 1 других файлов) |
 | closeCustomAlert | app/Inventory-weight-tracker.js |
 | closeDndChangelog | app/onboarding_faq_v71.js |
 | closeDndNetworkModal | app/network_engine.js |
 | closeExperienceModal | app/Experience.js |
-| closeIconSettingsModal | app/Settings.js, app/icon_settings.js, app/icon_settings_v2.js |
+| closeIconSettingsModal | app/Settings.js (+ 2 других файлов) |
 | closeLevelUpModal | app/data/classes/level_up.js |
 | closeSettingsModal | app/Settings.js |
 | Companions | app/companions.js |
-| confirm | app/3dmap/character_editor_3d.js, app/alchemist_mhp_2024_runtime.js |
+| confirm | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | confirmAddFeatManual | app/data/feats/Feat_widget.js |
 | confirmLevelUp | app/data/classes/level_up.js |
-| createNewCharacter | app/Backgrounds.js, app/character_creation.js |
+| createNewCharacter | app/Backgrounds.js (+ 1 других файлов) |
 | createSwarmAvatar | app/swarm_extra_runtime.js |
-| currentChar | app/Settings.js, app/Settings_debug.js, app/cloud_sync.js, app/data/classes/level_up.js (+ 10 ещё) |
-| currentCharacter | app/Settings.js, app/Settings_debug.js, app/app.js, app/cloud_sync.js (+ 6 ещё) |
-| currentCharacterId | app/cloud_sync.js, tests/character_appearance_store_test.js, tests/cloud_sync_test.cjs |
+| currentChar | app/Settings.js (+ 13 других файлов) |
+| currentCharacter | app/Settings.js (+ 9 других файлов) |
+| currentCharacterId | app/cloud_sync.js (+ 2 других файлов) |
 | defaultArmors | app/armors.js |
 | defaultConsumables | app/consumables.js |
 | defaultJunk | app/junk.js |
 | defaultMaterials | app/materials.js |
-| defaultWeapons | app/Proficienciescheck.js, app/weapons.js |
-| disableDndDebugRuntime | app/Settings.js, index.html |
+| defaultWeapons | app/Proficienciescheck.js (+ 1 других файлов) |
+| disableDndDebugRuntime | app/Settings.js (+ 1 других файлов) |
 | DND_ALCHEMY_GATHERING_V52 | app/alchemy_gathering_professions_v52.js |
-| DND_APP_ICONS | app/Settings.js, app/icon_settings.js, app/icon_settings_v2.js |
+| DND_APP_ICONS | app/Settings.js (+ 2 других файлов) |
 | DND_BESTIARY_V56_1 | app/bestiary_catalog_v56_1.js |
 | DND_BESTIARY_V56_10 | app/bestiary_catalog_v56_10.js |
 | DND_BESTIARY_V56_11 | app/bestiary_catalog_v56_11.js |
@@ -5938,7 +5939,7 @@
 | DND_MARKET_V55 | app/market_economy_v55.js |
 | DND_MARKET_V55_1 | app/market_expansion_v55_1.js |
 | DND_MARKET_V55_3 | app/market_social_v55_3.js |
-| DND_PENDING_CLASS_PACKS | app/accursed_oap_v11_runtime.js, app/content_framework.js, app/data/classes/Beastheart.js, app/martyr_mhp_2024_runtime.js (+ 5 ещё) |
+| DND_PENDING_CLASS_PACKS | app/accursed_oap_v11_runtime.js (+ 8 других файлов) |
 | DND_PLANESCAPE_V56_13 | app/bestiary_catalog_v56_13.js |
 | DND_RESOURCE_GATHERING_V35 | app/resource_gathering_v35.js |
 | DND_RESOURCE_PROCESSING_V43 | app/resource_processing_v44.js |
@@ -5946,15 +5947,15 @@
 | DND_UPDATE_SCENE_V2 | app/update_scene_v2.js |
 | DND_UPDATE_UI | app/update_manager_v2.js |
 | DND_WORLD_GATHERING_V53 | app/world_resource_gathering_v53.js |
-| DND3DAssetCatalog | app/3dmap/gltf_catalog.js, gltf_catalog.js |
-| DND3DAssetNames | app/3dmap/gltf_catalog.js, gltf_catalog.js |
+| DND3DAssetCatalog | app/3dmap/gltf_catalog.js (+ 1 других файлов) |
+| DND3DAssetNames | app/3dmap/gltf_catalog.js (+ 1 других файлов) |
 | DND3DMap | app/3dmap/map_editor.js |
 | dndAddCompanionAttack | app/rulesEngine.js |
 | DNDAdvancedDebugV70 | app/vtt_debug_panel_v70.js |
 | DNDAlchemy | app/alchemy_engine_v29.js |
 | dndBackgrounds | app/Backgrounds.js |
 | dndBattleActionClose | app/battle_action_ui.js |
-| dndBattleActionOpen | app/battle_action_ui.js, app/gameplay_core_v57.js |
+| dndBattleActionOpen | app/battle_action_ui.js (+ 1 других файлов) |
 | dndBattleQuickAttack | app/battle_action_ui.js |
 | dndBattleQuickMove | app/battle_action_ui.js |
 | dndBattleQuickReady | app/battle_action_ui.js |
@@ -5972,14 +5973,14 @@
 | DNDCharacterLabV702 | app/vtt_debug_character_lab_v702.js |
 | DNDCharacterMorphAssets | app/3dmap/character_morph_assets.js |
 | DNDCharacterPose | app/3dmap/character_pose.js |
-| DNDClassFeatures | app/class_features_engine.js, tests/test_v742_character_combatant_sync.js |
+| DNDClassFeatures | app/class_features_engine.js (+ 1 других файлов) |
 | DNDCloudAccount | app/cloud_account.js |
 | DNDCloudConfig | app/cloud_config.js |
 | DNDCloudSync | app/cloud_sync.js |
 | dndCollectMonsterLootV36 | app/monster_loot_engine_v36.js |
 | dndCollectMonsterLootV37 | app/monster_loot_engine_v37.js |
 | dndCollectMonsterLootV40 | app/monster_loot_crafting_bridge_v40.js |
-| DNDCombat | app/combat_engine.js, tests/test_v742_character_combatant_sync.js |
+| DNDCombat | app/combat_engine.js (+ 1 других файлов) |
 | DNDCombatEventBusV69 | app/vtt_combat_event_bus_v69.js |
 | dndCombatLog | app/summoning_engine.js |
 | DNDCombatLogV66 | app/vtt_combat_log_v66.js |
@@ -5995,7 +5996,7 @@
 | DNDContentManifest | app/content_manifest.js |
 | dndCraft | app/crafting_engine_v31.js |
 | dndCraftProfession | app/crafting_professions_v33.js |
-| dndCraftProfessionV38 | app/crafting_disassembly_v51.js, app/crafting_economy_v49.js, app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js |
+| dndCraftProfessionV38 | app/crafting_disassembly_v51.js (+ 3 других файлов) |
 | dndCreateBeastheartCompanion | app/companion_packs_v26.js |
 | dndCreateBeastMasterCompanion | app/companion_packs_v26.js |
 | dndCreateFamiliar | app/companion_packs_v26.js |
@@ -6012,7 +6013,7 @@
 | dndGameplayCoreV57Render | app/gameplay_core_v57.js |
 | DNDGameplayV57 | app/gameplay_core_v57.js |
 | dndGenerateMonsterLootV36 | app/monster_loot_engine_v36.js |
-| dndGenerateMonsterLootV37 | app/monster_loot_crafting_bridge_v40.js, app/monster_loot_engine_v37.js |
+| dndGenerateMonsterLootV37 | app/monster_loot_crafting_bridge_v40.js (+ 1 других файлов) |
 | DNDGLTF | app/3dmap/gltf_loader.js |
 | DNDGLTFCharacterPipeline | app/3dmap/gltf_character_pipeline.js |
 | dndInitiativeActive | app/rulesEngine.js |
@@ -6026,15 +6027,15 @@
 | dndMap3DOpen | app/3dmap/map_editor.js |
 | DNDMapModel | app/3dmap/map_model.js |
 | DNDMapRenderer2D | app/3dmap/map_renderer_2d.js |
-| DNDMapRenderer3D | app/3dmap/map_renderer_3d.js, tests/map_editor_dom_test.js |
+| DNDMapRenderer3D | app/3dmap/map_renderer_3d.js (+ 1 других файлов) |
 | DndMarketV55 | app/market_economy_v55.js |
 | DndMarketV55_3 | app/market_social_v55_3.js |
 | DNDMobileBattleV61 | app/vtt_mobile_battle_v61.js |
 | DNDMobileSessionV67 | app/vtt_mobile_session_v67.js |
-| DNDMonsterLoot | app/monster_loot_engine_v36.js, app/monster_loot_engine_v37.js |
+| DNDMonsterLoot | app/monster_loot_engine_v36.js (+ 1 других файлов) |
 | DNDMonsterLootV40 | app/monster_loot_crafting_bridge_v40.js |
 | DNDMonsters | app/monster_engine.js |
-| dndNetwork | tests/cloud_sync_test.cjs, tests/test_blood_hunter_focus_network.js, tests/test_v742_character_combatant_sync.js |
+| dndNetwork | tests/cloud_sync_test.cjs (+ 2 других файлов) |
 | dndNetworkAddPlayerToInitiative | app/network_gameplay.js |
 | dndNetworkCopyHint | app/network_engine.js |
 | dndNetworkGameplayBuildProfile | app/network_gameplay.js |
@@ -6046,7 +6047,7 @@
 | dndNetworkGameplayPendingReactions | app/network_gameplay.js |
 | dndNetworkGameplayPrepareHostHandoff | app/network_gameplay.js |
 | dndNetworkGameplayReactionRequest | app/network_gameplay.js |
-| dndNetworkGameplayRender | app/gameplay_core_v57.js, app/network_gameplay.js, tests/test_v742_character_combatant_sync.js |
+| dndNetworkGameplayRender | app/gameplay_core_v57.js (+ 2 других файлов) |
 | dndNetworkGameplayResult | app/network_gameplay.js |
 | dndNetworkGameplayRoomShutdown | app/network_gameplay.js |
 | dndNetworkGameplaySnapshot | app/network_gameplay.js |
@@ -6059,14 +6060,14 @@
 | dndOpenCharacterEditor3D | app/3dmap/character_editor_3d.js |
 | dndProcessResourceV43 | app/resource_processing_v44.js |
 | dndRemoveCompanionAttack | app/rulesEngine.js |
-| dndRenderAlchemy | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js |
+| dndRenderAlchemy | app/alchemy_engine_v29.js (+ 1 других файлов) |
 | dndRenderCombat | app/blood_hunter_engine.js |
-| dndRenderCombatV3 | app/network_gameplay.js, tests/test_v742_character_combatant_sync.js |
-| DNDRules | app/rulesEngine.js, tests/test_v742_character_combatant_sync.js |
+| dndRenderCombatV3 | app/network_gameplay.js (+ 1 других файлов) |
+| DNDRules | app/rulesEngine.js (+ 1 других файлов) |
 | DNDSecondaryEntities | app/secondary_entities_engine.js |
 | dndShowRulesSummary | app/rulesEngine.js |
 | DNDSpellPreparation | app/spells.js |
-| dndSplashFinished | app/Logo.js, app/onboarding_faq_v71.js, app/update_manager_v2.js |
+| dndSplashFinished | app/Logo.js (+ 2 других файлов) |
 | DNDStairNavigation | app/3dmap/stair_navigation.js |
 | dndStartConcentrationPrompt | app/rulesEngine.js |
 | DNDStressMap | app/3dmap/stress_map.js |
@@ -6074,7 +6075,7 @@
 | dndSummonCommand | app/summoning_engine.js |
 | dndSummonHeal | app/summoning_engine.js |
 | DNDSummoning | app/summoning_engine.js |
-| dndSyncCurrentCharacterFromCombat | app/network_gameplay.js, app/vtt_mobile_session_v67.js, tests/test_v742_character_combatant_sync.js |
+| dndSyncCurrentCharacterFromCombat | app/network_gameplay.js (+ 2 других файлов) |
 | dndUseAlchemyProduct | app/alchemy_gameplay_v30.js |
 | dndV59CreateEncounter | app/vtt_encounter_map_v59.js |
 | dndV61ResetView | app/vtt_mobile_battle_v61.js |
@@ -6088,7 +6089,7 @@
 | dndV66Filter | app/vtt_combat_log_v66.js |
 | dndV66OpenDebug | app/vtt_combat_log_v66.js |
 | dndV66OpenLog | app/vtt_combat_log_v66.js |
-| dndV66Record | app/vtt_combat_event_bus_v69.js, app/vtt_combat_log_v66.js |
+| dndV66Record | app/vtt_combat_event_bus_v69.js (+ 1 других файлов) |
 | dndV66RefreshDebug | app/vtt_combat_log_v66.js |
 | dndV66SelfTest | app/vtt_combat_log_v66.js |
 | dndV67Close | app/vtt_mobile_session_v67.js |
@@ -6166,39 +6167,39 @@
 | dndV70UseAPI | app/vtt_debug_panel_v70.js |
 | document | tests/test_v742_character_combatant_sync.js |
 | druidProgression | app/data/classes/Druid.js |
-| enableDndDebugLogger | app/Settings.js, app/debug.js, index.html |
-| enableDndDebugRuntime | app/Settings.js, index.html |
-| escapeDndHtml | app/battle_board.js, app/combat_engine.js, app/vtt_mobile_combat_hud_v62.js, app/vtt_token_interaction_v60.js |
-| EXTRA_BODY_RUNTIME | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js |
+| enableDndDebugLogger | app/Settings.js (+ 2 других файлов) |
+| enableDndDebugRuntime | app/Settings.js (+ 1 других файлов) |
+| escapeDndHtml | app/battle_board.js (+ 3 других файлов) |
+| EXTRA_BODY_RUNTIME | app/ghost_extra_runtime.js (+ 1 других файлов) |
 | FEATS_PHB | app/data/feats/Feats_phb.js |
 | FEATS_SETTING | app/data/feats/Feats_settings.js |
 | FEATS_TCOE | app/data/feats/Feats_tcoe.js |
 | FEATS_UA_HOMEBREW | app/data/feats/Feats_ua_homebrew.js |
 | FEATS_XGTE | app/data/feats/Feats_xgte.js |
-| fetch | tests/cloud_sync_test.cjs, tests/creation_signature_asset_test.cjs, tests/desktop_update_contract.cjs |
+| fetch | tests/cloud_sync_test.cjs (+ 2 других файлов) |
 | fighterProgression | app/data/classes/Fighter.js |
 | filterFeatsList | app/data/feats/Feat_widget.js |
 | geistProgression | app/data/classes/extra_class_stubs.js |
 | getAllBackgrounds | app/Backgrounds.js |
-| getAvailableSubclasses | app/class_features_engine.js, app/classesRegistry.js, app/data/classes/level_up.js, app/data/subclasses/subclassesRegistry.js |
+| getAvailableSubclasses | app/class_features_engine.js (+ 3 других файлов) |
 | getCharacterCurrentLevel | app/Experience.js |
-| getCharacterLevel | app/Experience.js, app/Settings.js, app/data/classes/level_up.js, app/spells.js |
-| getClassData | app/classesRegistry.js, app/data/classes/level_up.js, app/data/subclasses/subclassesRegistry.js |
-| getCurrentInventoryWeightData | app/Inventory-weight-tracker.js, app/inventory-modal.js |
+| getCharacterLevel | app/Experience.js (+ 3 других файлов) |
+| getClassData | app/classesRegistry.js (+ 2 других файлов) |
+| getCurrentInventoryWeightData | app/Inventory-weight-tracker.js (+ 1 других файлов) |
 | getDndRules | app/rulesEngine.js |
 | getExpandedClassDefinition | app/expanded_class_registry_bridge.js |
 | getExpandedClassPack | app/expanded_class_registry_bridge.js |
 | getFormattedClassAndLevel | app/data/classes/level_up.js |
 | getKibblesClassDisplayName | app/kibbles_localization_content_v71.js |
 | getLevelByExp | app/Experience.js |
-| getProfBonusNum | app/class_features_engine.js, app/market_social_v55_3.js |
+| getProfBonusNum | app/class_features_engine.js (+ 1 других файлов) |
 | getShifterBloodline | app/shifter_laserllama_v2_1_runtime.js |
 | getShifterBloodlines | app/shifter_laserllama_v2_1_runtime.js |
 | getShifterMaxCR | app/shifter_laserllama_v2_1_runtime.js |
 | getSpellcastingAbilityForClass | app/data/classes/progressionEngine.js |
 | getSpellCastingInfo | app/magic_engine.js |
 | getStatModNum | app/class_features_engine.js |
-| getSubclassData | app/data/classes/progressionEngine.js, app/data/subclasses/subclassesRegistry.js |
+| getSubclassData | app/data/classes/progressionEngine.js (+ 1 других файлов) |
 | getSubclassesForClass | app/classesRegistry.js |
 | getSubclassFeaturesForLevel | app/data/subclasses/subclassesRegistry.js |
 | getSwarmDevourDamage | app/swarm_extra_runtime.js |
@@ -6209,28 +6210,28 @@
 | getVesselSpellList | app/vessel_laserllama_v4_runtime.js |
 | getVesselSpirit | app/vessel_laserllama_v4_runtime.js |
 | GHOST_EXTRA | app/ghost_extra_runtime.js |
-| ghostProgression | app/data/classes/Ghost.js, app/data/classes/extra_class_stubs.js, app/ghost_extra_runtime.js |
+| ghostProgression | app/data/classes/Ghost.js (+ 2 других файлов) |
 | goToTab | app/class_features_engine.js |
 | heavyWeapons | app/weaponsheavy.js |
 | Hero | app/Hero-info.js |
-| illriggerProgression | app/data/classes/Illigger.js, app/expansion_class_progressions.js |
+| illriggerProgression | app/data/classes/Illigger.js (+ 1 других файлов) |
 | KIBBLES_CLASS_I18N | app/kibbles_localization_content_v71.js |
 | KIBBLES_SOURCE_CATALOG | app/kibbles_localization_content_v71.js |
 | KIBBLES_SOURCE_INFO | app/kibbles_localization_content_v71.js |
 | listIntegratedExpandedClasses | app/expanded_class_registry_bridge.js |
 | MARTYR_2024 | app/martyr_mhp_2024_runtime.js |
 | MARTYR_BURDENS | app/martyr_mhp_2024_runtime.js |
-| martyrProgression | app/data/classes/Martyr.js, app/martyr_mhp_2024_runtime.js |
+| martyrProgression | app/data/classes/Martyr.js (+ 1 других файлов) |
 | martyrRuntime | app/martyr_mhp_2024_runtime.js |
 | maxHpIncrease | app/data/classes/level_up.js |
 | meleeWeapons | app/weaponsmelee.js |
 | monkProgression | app/data/classes/Monk.js |
-| MULTICLASS_CLASS_REQUIREMENTS | app/expanded_class_registry_bridge.js, app/warden_mhp_2024_runtime.js, app/warlord_laserllama_v330_runtime.js |
-| MULTICLASS_PROFICIENCIES_2014 | app/data/classes/progressionEngine.js, app/expanded_class_registry_bridge.js |
+| MULTICLASS_CLASS_REQUIREMENTS | app/expanded_class_registry_bridge.js (+ 2 других файлов) |
+| MULTICLASS_PROFICIENCIES_2014 | app/data/classes/progressionEngine.js (+ 1 других файлов) |
 | MULTICLASS_REQUIREMENTS | app/Hero-info.js |
 | NECROMANCER_2024 | app/necromancer_mhp_2024_runtime.js |
 | NECROMANCER_SUBCLASSES | app/necromancer_mhp_2024_runtime.js |
-| necromancerProgression | app/data/classes/Necromancer.js, app/necromancer_mhp_2024_runtime.js |
+| necromancerProgression | app/data/classes/Necromancer.js (+ 1 других файлов) |
 | necromancerRuntime | app/necromancer_mhp_2024_runtime.js |
 | nextInitiativeTurn | app/rulesEngine.js |
 | OCCULTIST_KIBBLES_V11 | app/occultist_kibbles_v11_runtime.js |
@@ -6246,15 +6247,15 @@
 | openDndNetworkModal | app/network_engine.js |
 | openExperienceModal | app/Experience.js |
 | openFeatStatChoiceModal | app/data/feats/Feat_widget.js |
-| openIconSettingsModal | app/Settings.js, app/icon_settings.js, app/icon_settings_v2.js |
+| openIconSettingsModal | app/Settings.js (+ 2 других файлов) |
 | openLevelUpModal | app/data/classes/level_up.js |
 | openLevelUpModalFromExp | app/Experience.js |
 | openSettingsModal | app/Settings.js |
 | paladinProgression | app/data/classes/Paladin.js |
 | PARASITE_EXTRA | app/parasite_extra_runtime.js |
-| parasiteProgression | app/data/classes/Parasite.js, app/data/classes/extra_class_stubs.js, app/parasite_extra_runtime.js |
+| parasiteProgression | app/data/classes/Parasite.js (+ 2 других файлов) |
 | parasiteRuntime | app/parasite_extra_runtime.js |
-| parseWeightToKg | app/Inventory-weight-tracker.js, app/inventory_containers_v54.js |
+| parseWeightToKg | app/Inventory-weight-tracker.js (+ 1 других файлов) |
 | pendingLevelUpData | app/data/classes/level_up.js |
 | populateFeatModalList | app/data/feats/Feat_widget.js |
 | Prof_Acr | app/app.js |
@@ -6276,28 +6277,28 @@
 | Prof_Stl | app/app.js |
 | Prof_Sur | app/app.js |
 | prompt | tests/test_blood_hunter_orders.js |
-| psionProgression | app/data/classes/Psion.js, app/data/classes/extra_class_stubs.js |
-| pugilistProgression | app/data/classes/Pugilist.js, app/expansion_class_progressions.js |
+| psionProgression | app/data/classes/Psion.js (+ 1 других файлов) |
+| pugilistProgression | app/data/classes/Pugilist.js (+ 1 других файлов) |
 | pugilistRuntime | app/expansion_classes_pack.js |
 | rangedWeapons | app/weaponsranged.js |
 | rangerProgression | app/data/classes/Ranger.js |
 | refreshClassModalLocks | app/data/classes/level_up.js |
 | refreshExtraClassPanels | app/extra_class_ui_bridge.js |
 | removeCharacterFeat | app/data/feats/Feat_widget.js |
-| renderClassFeatures | app/blood_hunter_engine.js, app/class_features_engine.js |
-| renderCombatAbilities | app/blood_hunter_engine.js, app/class_features_engine.js |
+| renderClassFeatures | app/blood_hunter_engine.js (+ 1 других файлов) |
+| renderCombatAbilities | app/blood_hunter_engine.js (+ 1 других файлов) |
 | renderCompanions | app/rulesEngine.js |
-| renderDndTools | app/dnd_tools.js, app/gameplay_core_v57.js, app/rulesEngine.js |
+| renderDndTools | app/dnd_tools.js (+ 2 других файлов) |
 | renderGhostExtraPanel | app/extra_class_ui_bridge.js |
-| renderInitiativeTracker | app/gameplay_core_v57.js, app/network_gameplay.js, app/rulesEngine.js, app/secondary_entities_engine.js (+ 3 ещё) |
-| renderInventory | app/alchemy_gathering_professions_v52.js, app/crafting_disassembly_repair_v51.js, app/crafting_engine_v31.js, app/crafting_professions_v33.js (+ 8 ещё) |
+| renderInitiativeTracker | app/gameplay_core_v57.js (+ 6 других файлов) |
+| renderInventory | app/alchemy_gathering_professions_v52.js (+ 11 других файлов) |
 | renderParasiteExtraPanel | app/extra_class_ui_bridge.js |
 | renderSpellSlots | app/rulesEngine.js |
 | renderWalterParasitePanel | app/extra_class_ui_bridge.js |
 | renderWeapons | app/rulesEngine.js |
-| requestAnimationFrame | tools/check_adult_anatomy_browser.js, tools/check_adult_base_browser.js, tools/check_animal_heads_browser.js, tools/check_avian_elephant_heads_browser.js (+ 15 ещё) |
-| resolveMulticlassProficiencyChoice | app/data/classes/level_up.js, app/data/classes/progressionEngine.js |
-| restorePactMagic | app/dnd_tools.js, app/magic_engine.js, app/network_gameplay.js |
+| requestAnimationFrame | tools/check_adult_anatomy_browser.js (+ 18 других файлов) |
+| resolveMulticlassProficiencyChoice | app/data/classes/level_up.js (+ 1 других файлов) |
+| restorePactMagic | app/dnd_tools.js (+ 2 других файлов) |
 | rogueProgression | app/data/classes/Rogue.js |
 | rollClassFeatureD20 | app/class_features_engine.js |
 | rollClassFeatureDamage | app/class_features_engine.js |
@@ -6305,24 +6306,24 @@
 | rollSingleDice | app/rulesEngine.js |
 | RUNEKeeper_V12 | app/runekeeper_taron_v12_runtime.js |
 | runeKeeperDialects | app/runekeeper_taron_v12_runtime.js |
-| runeKeeperProgression | app/data/classes/RuneKeeper.js, app/data/classes/extra_class_stubs.js, app/runekeeper_taron_v12_runtime.js |
-| runeKeeperRuntime | app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js |
+| runeKeeperProgression | app/data/classes/RuneKeeper.js (+ 2 других файлов) |
+| runeKeeperRuntime | app/expansion_classes_pack.js (+ 1 других файлов) |
 | SAVANT_V561 | app/savant_laserllama_v561_runtime.js |
 | savantDisciplines | app/savant_laserllama_v561_runtime.js |
-| savantProgression | app/data/classes/Savant.js, app/data/classes/extra_class_stubs.js, app/savant_laserllama_v561_runtime.js |
+| savantProgression | app/data/classes/Savant.js (+ 2 других файлов) |
 | savantRuntime | app/savant_laserllama_v561_runtime.js |
-| saveAllCharacters | tests/map_editor_dom_test.js, tests/map_rebuild_world_test.js |
-| saveCharacter | app/alchemy_gathering_professions_v52.js, app/crafting_disassembly_v51.js, app/crafting_profession_progression_v47.js, app/crafting_professions_v33.js (+ 2 ещё) |
+| saveAllCharacters | tests/map_editor_dom_test.js (+ 1 других файлов) |
+| saveCharacter | app/alchemy_gathering_professions_v52.js (+ 5 других файлов) |
 | saveCurrentCharacter | app/alchemist_mhp_2024_runtime.js |
 | savedDimBeforeHide | app/Wallpapers.js |
-| saveNewCreatedCharacter | app/Backgrounds.js, app/character_creation.js |
+| saveNewCreatedCharacter | app/Backgrounds.js (+ 1 других файлов) |
 | selectedBaseHp | app/data/classes/level_up.js |
-| selectLauncherIcon | app/Settings.js, app/icon_settings.js, app/icon_settings_v2.js |
-| setCharacterLevel | app/Settings.js, app/Settings_debug.js, app/data/classes/level_up.js |
+| selectLauncherIcon | app/Settings.js (+ 2 других файлов) |
+| setCharacterLevel | app/Settings.js (+ 2 других файлов) |
 | SHIFTER_V21 | app/shifter_laserllama_v2_1_runtime.js |
-| shifterProgression | app/data/classes/Shifter.js, app/data/classes/extra_class_stubs.js, app/shifter_laserllama_v2_1_runtime.js |
+| shifterProgression | app/data/classes/Shifter.js (+ 2 других файлов) |
 | shifterRuntime | app/shifter_laserllama_v2_1_runtime.js |
-| showCustomAlert | app/Inventory-weight-tracker.js, app/inventory_containers_v54.js |
+| showCustomAlert | app/Inventory-weight-tracker.js (+ 1 других файлов) |
 | SKILLS_CONFIG | app/app.js |
 | sorcererProgression | app/data/classes/Sorcerer.js |
 | sortInitiativeTracker | app/summoning_engine.js |
@@ -6339,14 +6340,14 @@
 | spellsLevel2 | app/data/spells/Spells2lvl.js |
 | spellsLevel7 | app/data/spells/Spells7lvl.js |
 | startDndOnboarding | app/onboarding_faq_v71.js |
-| SUBCLASSES_REFERENCE | app/alchemist_mhp_2024_runtime.js, app/data/subclasses/subclassesRegistry.js, app/expanded_subclasses_v23.js, app/spellblade_kibbles_runtime.js (+ 2 ещё) |
+| SUBCLASSES_REFERENCE | app/alchemist_mhp_2024_runtime.js (+ 5 других файлов) |
 | subtractExperienceValue | app/Experience.js |
 | SWARM_EXTRA | app/swarm_extra_runtime.js |
-| swarmProgression | app/data/classes/Swarm.js, app/data/classes/extra_class_stubs.js, app/swarm_extra_runtime.js |
+| swarmProgression | app/data/classes/Swarm.js (+ 2 других файлов) |
 | swarmRuntime | app/swarm_extra_runtime.js |
 | syncLevelUI | app/data/classes/level_up.js |
 | toggleClassFeatureDetails | app/class_features_engine.js |
-| updateCharacterSpellSlots | app/data/classes/level_up.js, app/spells.js |
+| updateCharacterSpellSlots | app/data/classes/level_up.js (+ 1 других файлов) |
 | updateExperienceModalUI | app/Experience.js |
 | updateExtraClassCreationUI | app/character_creation.js |
 | updateMagicData | app/magic_engine.js |
@@ -6355,18 +6356,18 @@
 | useClassFeature | app/class_features_engine.js |
 | useFeat | app/feat_engine.js |
 | VESSEL_V4 | app/vessel_laserllama_v4_runtime.js |
-| vesselProgression | app/data/classes/Vessel.js, app/vessel_laserllama_v4_runtime.js |
+| vesselProgression | app/data/classes/Vessel.js (+ 1 других файлов) |
 | vesselRuntime | app/vessel_laserllama_v4_runtime.js |
 | VTT_PROJECT_MANIFEST_V70 | app/vtt_project_manifest_v70.js |
 | WALTER_PARASITE_EXTRA | app/walter_parasite_extra_runtime.js |
-| walterParasiteProgression | app/data/classes/WalterParasite.js, app/data/classes/extra_class_stubs.js, app/walter_parasite_extra_runtime.js |
+| walterParasiteProgression | app/data/classes/WalterParasite.js (+ 2 других файлов) |
 | WARDEN_MHP_2024 | app/warden_mhp_2024_runtime.js |
-| wardenProgression | app/data/classes/Warden.js, app/data/classes/extra_class_stubs.js |
+| wardenProgression | app/data/classes/Warden.js (+ 1 других файлов) |
 | warlockProgression | app/data/classes/Warlock.js |
 | WARLORD_LASERLLAMA_V330 | app/warlord_laserllama_v330_runtime.js |
-| warlordProgression | app/data/classes/Warlord.js, app/data/classes/extra_class_stubs.js |
-| WEAPONS_DB | app/Proficienciescheck.js, app/weapons.js |
-| window | tests/cloud_sync_test.cjs, tests/map_rebuild_world_test.js, tests/test_v742_character_combatant_sync.js |
+| warlordProgression | app/data/classes/Warlord.js (+ 1 других файлов) |
+| WEAPONS_DB | app/Proficienciescheck.js (+ 1 других файлов) |
+| window | tests/cloud_sync_test.cjs (+ 2 других файлов) |
 | WITCH_MHP_2014 | app/expansion_classes_pack.js |
 | witchProgression | app/data/classes/Witch.js |
 | witchRuntime | app/expansion_classes_pack.js |
@@ -6376,184 +6377,184 @@
 
 | Имя | Исходные файлы |
 |---|---|
-| ac | app/Inventory.js, app/dnd_tools.js, app/ghost_extra_runtime.js, app/parasite_extra_runtime.js (+ 1 ещё) |
+| ac | app/Inventory.js (+ 4 других файлов) |
 | actionSurges | app/rulesEngine.js |
-| activeConditions | app/character.js, app/dnd_tools.js, app/rulesEngine.js, tests/alchemist_runtime_test.js (+ 2 ещё) |
+| activeConditions | app/character.js (+ 5 других файлов) |
 | activeFolderId | app/notes.js |
 | anatomy | app/3dmap/character_anatomy.js |
-| appearance3d | tests/character_appearance_store_test.js, tests/cloud_sync_test.cjs |
-| baseAC | app/Inventory.js, app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/walter_parasite_extra_runtime.js |
-| class | app/Experience.js, app/data/classes/level_up.js, app/rulesEngine.js, app/spells.js |
-| classes | app/Hero-info.js, app/Settings.js, app/content_framework.js, app/data/classes/level_up.js (+ 3 ещё) |
+| appearance3d | tests/character_appearance_store_test.js (+ 1 других файлов) |
+| baseAC | app/Inventory.js (+ 3 других файлов) |
+| class | app/Experience.js (+ 3 других файлов) |
+| classes | app/Hero-info.js (+ 6 других файлов) |
 | classFeaturesState | tests/alchemist_runtime_test.js |
-| className | app/data/classes/level_up.js, app/rulesEngine.js, app/spells.js |
-| clothing | app/3dmap/character_anatomy.js, app/3dmap/character_editor_3d.js |
+| className | app/data/classes/level_up.js (+ 2 других файлов) |
+| clothing | app/3dmap/character_anatomy.js (+ 1 других файлов) |
 | coinLog | app/inventory-coins.js |
-| coins | app/inventory-coins.js, app/market_economy_v55.js, tests/test_v55_2.js |
-| combatAbilities | app/character.js, app/combat_abilities.js |
+| coins | app/inventory-coins.js (+ 2 других файлов) |
+| combatAbilities | app/character.js (+ 1 других файлов) |
 | combatAbilityStat | app/combat_abilities.js |
 | companions | app/dnd_tools.js |
 | con | app/data/classes/level_up.js |
-| concentration | app/rulesEngine.js, tests/test_v748_full_combat_transaction.js |
-| conditions | app/dice.js, app/dnd_tools.js, app/rulesEngine.js |
+| concentration | app/rulesEngine.js (+ 1 других файлов) |
+| conditions | app/dice.js (+ 2 других файлов) |
 | constitution | app/data/classes/level_up.js |
 | craftingProfessions | app/crafting_profession_progression_test_v47.js |
-| deathSaves | app/combat_engine.js, app/dnd_tools.js, tests/test_v737_spellcasting_transaction.js, tests/test_v742_character_combatant_sync.js (+ 1 ещё) |
-| defeated | app/dnd_tools.js, tests/test_v737_spellcasting_transaction.js, tests/test_v742_character_combatant_sync.js, tests/test_v748_full_combat_transaction.js |
+| deathSaves | app/combat_engine.js (+ 4 других файлов) |
+| defeated | app/dnd_tools.js (+ 3 других файлов) |
 | encounters | index.html |
 | equipment | app/3dmap/character_editor_3d.js |
-| equippedWeapon | app/Proficienciescheck.js, app/weapons.js |
-| exp | app/Experience.js, app/data/classes/level_up.js |
+| equippedWeapon | app/Proficienciescheck.js (+ 1 других файлов) |
+| exp | app/Experience.js (+ 1 других файлов) |
 | extraACBonus | app/rulesEngine.js |
-| extraClassType | app/character.js, app/data/classes/level_up.js, app/data/classes/progressionEngine.js, app/ghost_extra_runtime.js (+ 3 ещё) |
-| feats | app/data/classes/level_up.js, app/data/feats/Feat_widget.js, app/rulesEngine.js |
+| extraClassType | app/character.js (+ 6 других файлов) |
+| feats | app/data/classes/level_up.js (+ 2 других файлов) |
 | featStatBonuses | app/data/feats/Feat_widget.js |
-| features | app/data/classes/level_up.js, app/data/classes/progressionEngine.js, app/data/feats/Feat_widget.js, app/rulesEngine.js |
+| features | app/data/classes/level_up.js (+ 3 других файлов) |
 | folders | app/notes.js |
-| gender | app/3dmap/character_anatomy.js, app/3dmap/character_editor_3d.js |
+| gender | app/3dmap/character_anatomy.js (+ 1 других файлов) |
 | ghost | app/ghost_extra_runtime.js |
-| head | app/3dmap/character_anatomy.js, app/3dmap/character_editor_3d.js |
+| head | app/3dmap/character_anatomy.js (+ 1 других файлов) |
 | heroClass | app/spells.js |
-| hostName | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/walter_parasite_extra_runtime.js |
-| hp | app/data/classes/level_up.js, app/dnd_tools.js, tests/alchemist_runtime_test.js, tests/test_v748_full_combat_transaction.js |
-| hpCurrent | app/data/classes/level_up.js, app/dnd_tools.js, app/ghost_extra_runtime.js, app/parasite_extra_runtime.js (+ 3 ещё) |
-| hpMax | app/data/classes/level_up.js, app/dnd_tools.js, app/ghost_extra_runtime.js, app/parasite_extra_runtime.js (+ 1 ещё) |
-| id | tests/cloud_sync_test.cjs, tools/check_cloud_account_browser.cjs |
-| initiativeTracker | app/dnd_tools.js, index.html, tests/test_v709_fixes.js, tests/test_v722_fixes.js (+ 5 ещё) |
-| inventory | app/Inventory-weight-tracker.js, app/Inventory.js, app/Proficienciescheck.js, app/dice.js (+ 11 ещё) |
-| isExtraClass | app/data/classes/level_up.js, app/data/classes/progressionEngine.js, app/ghost_extra_runtime.js, app/parasite_extra_runtime.js (+ 2 ещё) |
-| kiPoints | app/data/classes/progressionEngine.js, app/rulesEngine.js |
+| hostName | app/ghost_extra_runtime.js (+ 2 других файлов) |
+| hp | app/data/classes/level_up.js (+ 3 других файлов) |
+| hpCurrent | app/data/classes/level_up.js (+ 6 других файлов) |
+| hpMax | app/data/classes/level_up.js (+ 4 других файлов) |
+| id | tests/cloud_sync_test.cjs (+ 1 других файлов) |
+| initiativeTracker | app/dnd_tools.js (+ 8 других файлов) |
+| inventory | app/Inventory-weight-tracker.js (+ 14 других файлов) |
+| isExtraClass | app/data/classes/level_up.js (+ 5 других файлов) |
+| kiPoints | app/data/classes/progressionEngine.js (+ 1 других файлов) |
 | lastRest | app/dnd_tools.js |
-| level | app/Settings.js, app/data/classes/level_up.js, app/ghost_extra_runtime.js, app/parasite_extra_runtime.js (+ 3 ещё) |
+| level | app/Settings.js (+ 6 других файлов) |
 | library | app/library.js |
 | libraryData | app/library.js |
-| morphChannels | app/3dmap/character_morph_assets.js, tests/character_3d_morph_assets_test.js, tests/character_editor_morph_assets_test.js |
-| multiclassAllowed | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/walter_parasite_extra_runtime.js |
-| name | app/dnd_tools.js, tests/test_v717_fixes.js |
+| morphChannels | app/3dmap/character_morph_assets.js (+ 2 других файлов) |
+| multiclassAllowed | app/ghost_extra_runtime.js (+ 2 других файлов) |
+| name | app/dnd_tools.js (+ 1 других файлов) |
 | originRaceId | app/3dmap/character_anatomy.js |
-| pactMagic | app/dnd_tools.js, tests/test_v736_deep_rules.js, tests/test_v737_spellcasting_transaction.js |
-| pactMagicData | app/dnd_tools.js, app/spells.js, tests/test_v736_deep_rules.js, tests/test_v737_spellcasting_transaction.js |
+| pactMagic | app/dnd_tools.js (+ 2 других файлов) |
+| pactMagicData | app/dnd_tools.js (+ 3 других файлов) |
 | parasite | app/parasite_extra_runtime.js |
 | pendingProficiencyChoices | app/data/classes/progressionEngine.js |
 | profBonus | app/spells.js |
-| proficiencies | app/Inventory.js, app/Proficiencies.js, app/Proficienciescheck.js, app/data/classes/progressionEngine.js |
-| race | app/data/classes/level_up.js, app/data/classes/progressionEngine.js, app/swarm_extra_runtime.js |
-| raceId | app/3dmap/character_anatomy.js, app/3dmap/character_editor_3d.js |
-| raceName | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/walter_parasite_extra_runtime.js |
+| proficiencies | app/Inventory.js (+ 3 других файлов) |
+| race | app/data/classes/level_up.js (+ 2 других файлов) |
+| raceId | app/3dmap/character_anatomy.js (+ 1 других файлов) |
+| raceName | app/ghost_extra_runtime.js (+ 2 других файлов) |
 | rageDamageBonus | app/data/classes/progressionEngine.js |
-| ragesCount | app/data/classes/progressionEngine.js, app/rulesEngine.js |
-| replacesRace | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/swarm_extra_runtime.js, app/walter_parasite_extra_runtime.js |
+| ragesCount | app/data/classes/progressionEngine.js (+ 1 других файлов) |
+| replacesRace | app/ghost_extra_runtime.js (+ 3 других файлов) |
 | resistances | tests/alchemist_runtime_test.js |
-| resources | app/rulesEngine.js, tests/alchemist_runtime_test.js |
+| resources | app/rulesEngine.js (+ 1 других файлов) |
 | revision | app/cloud_sync.js |
-| savesData | app/Backgrounds.js, app/rulesEngine.js, app/skills.js |
+| savesData | app/Backgrounds.js (+ 2 других файлов) |
 | secondWindUses | app/rulesEngine.js |
-| skills | app/data/classes/progressionEngine.js, app/skills.js |
-| skillsData | app/Backgrounds.js, app/data/classes/progressionEngine.js, app/dice.js, app/rulesEngine.js (+ 2 ещё) |
+| skills | app/data/classes/progressionEngine.js (+ 1 других файлов) |
+| skillsData | app/Backgrounds.js (+ 5 других файлов) |
 | skillValues | app/app.js |
-| skins | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_pose.js (+ 2 ещё) |
+| skins | app/3dmap/character_anatomy.js (+ 5 других файлов) |
 | sneakAttackDice | app/data/classes/progressionEngine.js |
-| sorceryPoints | app/data/classes/progressionEngine.js, app/rulesEngine.js |
-| speed | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/walter_parasite_extra_runtime.js |
-| spellcastingSources | app/data/classes/progressionEngine.js, app/rulesEngine.js |
+| sorceryPoints | app/data/classes/progressionEngine.js (+ 1 других файлов) |
+| speed | app/ghost_extra_runtime.js (+ 2 других файлов) |
+| spellcastingSources | app/data/classes/progressionEngine.js (+ 1 других файлов) |
 | spells | app/dnd_tools.js |
-| spellsData | app/rulesEngine.js, app/spells.js |
-| spellSlotsData | app/character.js, app/dnd_tools.js, app/spells.js, tests/test_v720_fixes.js (+ 1 ещё) |
+| spellsData | app/rulesEngine.js (+ 1 других файлов) |
+| spellSlotsData | app/character.js (+ 4 других файлов) |
 | spellStat | app/data/classes/progressionEngine.js |
-| stats | app/Hero-info.js, app/Inventory.js, app/data/classes/level_up.js, app/data/feats/Feat_widget.js (+ 8 ещё) |
-| subclass | app/data/classes/progressionEngine.js, app/rulesEngine.js |
-| swarm | app/data/classes/level_up.js, app/swarm_extra_runtime.js |
+| stats | app/Hero-info.js (+ 11 других файлов) |
+| subclass | app/data/classes/progressionEngine.js (+ 1 других файлов) |
+| swarm | app/data/classes/level_up.js (+ 1 других файлов) |
 | tempHp | tests/alchemist_runtime_test.js |
 | unsaved | tests/cloud_sync_test.cjs |
 | valueOf | app/spells.js |
-| walterParasite | app/data/classes/level_up.js, app/walter_parasite_extra_runtime.js |
+| walterParasite | app/data/classes/level_up.js (+ 1 других файлов) |
 | weaponsData | app/character.js |
-| worldMatrices | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_pose.js, tests/character_external_anatomy_test.js |
+| worldMatrices | app/3dmap/character_anatomy.js (+ 3 других файлов) |
 
 ### Поля JS объектов (6094)
 
 | Имя | Исходные файлы |
 |---|---|
-| _ | tests/test_v54.js, tests/test_v55.js, tests/test_v55_2.js, tests/test_v55_3.js (+ 8 ещё) |
+| _ | tests/test_v54.js (+ 11 других файлов) |
 | __base | app/3dmap/map_renderer_3d.js |
 | __bodyMasks | tests/character_races_geometry_test.js |
 | __ceHeadFrame | app/3dmap/character_anatomy_geometry.js |
-| __ceNormals | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js |
-| __ceShapedPositions | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js |
+| __ceNormals | app/3dmap/character_anatomy_geometry.js (+ 3 других файлов) |
+| __ceShapedPositions | app/3dmap/character_anatomy_geometry.js (+ 3 других файлов) |
 | __dirname | tools/run_tests_v731.js |
 | __filename | tools/run_tests_v731.js |
 | __floor | app/3dmap/map_renderer_3d.js |
 | __TEST_ASSERT__ | tools/run_tests_v731.js |
 | _sent | tests/test_v747_event_race_compaction.js |
-| a | app/3dmap/character_body_geometry.js, app/3dmap/character_pose.js, app/3dmap/map_editor.js, app/data/classes/Alchemist.js (+ 1 ещё) |
+| a | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
 | abdomen | app/3dmap/character_anatomy.js |
-| aberration | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 9 ещё) |
-| abilities | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/bestiary_catalog_v56_2.js (+ 14 ещё) |
-| ability | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/data/classes/Occultist.js (+ 16 ещё) |
-| abilityBonus | app/alchemist_mhp_2024_runtime.js, app/necromancer_mhp_2024_runtime.js |
+| aberration | app/bestiary_catalog_v56_1.js (+ 12 других файлов) |
+| abilities | app/bestiary_catalog_v56_1.js (+ 17 других файлов) |
+| ability | app/accursed_oap_v11_runtime.js (+ 19 других файлов) |
+| abilityBonus | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | abilityBonuses | app/blood_hunter_engine.js |
 | abilityCheck | app/expansion_classes_pack.js |
 | abilityCheckBonus | app/expansion_classes_pack.js |
 | abilityCheckHigherSpell | app/expansion_classes_pack.js |
 | abilityIncrease | app/expanded_classes_v23.js |
-| abilityScores | tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js, tests/pugilist_combat_test.js, tests/test_v720_fixes.js |
+| abilityScores | tests/alchemist_combat_test.js (+ 3 других файлов) |
 | absorbedItems | app/swarm_extra_runtime.js |
 | absorbedTempHp | app/summoning_engine.js |
-| ac | app/Backgrounds.js, app/Inventory.js, app/alchemist_mhp_2024_runtime.js, app/bestiary_catalog_v56_1.js (+ 47 ещё) |
-| academies | app/data/classes/Warlord.js, app/warlord_laserllama_v330_runtime.js |
-| academy | app/expanded_classes_v23.js, tests/test_class_audit_stage4_runtime.js |
+| ac | app/Backgrounds.js (+ 50 других файлов) |
+| academies | app/data/classes/Warlord.js (+ 1 других файлов) |
+| academy | app/expanded_classes_v23.js (+ 1 других файлов) |
 | academyFeature | app/expanded_classes_v23.js |
 | academyFeatures | app/data/classes/Warlord.js |
-| acBase | app/armors.js, app/swarm_extra_runtime.js |
-| acBonus | app/expanded_classes_v23.js, app/expansion_classes_pack.js, app/occultist_kibbles_v11_runtime.js, app/savant_laserllama_v561_runtime.js (+ 4 ещё) |
+| acBase | app/armors.js (+ 1 других файлов) |
+| acBonus | app/expanded_classes_v23.js (+ 7 других файлов) |
 | acBonusAgainstTarget | app/expansion_classes_pack.js |
 | acBonusDie | app/expansion_classes_pack.js |
 | accent | app/Settings.js |
 | acceptedCategories | app/market_trade_v55_2.js |
 | acceptedTags | app/market_trade_v55_2.js |
 | access | app/crafting_profession_progression_v47.js |
-| access_token | app/cloud_sync.js, tests/cloud_sync_test.cjs |
-| accessories | app/monster_loot_engine_v36.js, app/monster_loot_engine_v37.js |
-| accessors | tests/gltf_loader_smoke.cjs, tests/makehuman_gender_recipe_test.js |
+| access_token | app/cloud_sync.js (+ 1 других файлов) |
+| accessories | app/monster_loot_engine_v36.js (+ 1 других файлов) |
+| accessors | tests/gltf_loader_smoke.cjs (+ 1 других файлов) |
 | acEqualsSelf | app/expansion_classes_pack.js |
 | acFormula | app/armors.js |
-| acid | app/alchemist_mhp_2024_runtime.js, app/class_features_engine.js, app/warden_mhp_2024_runtime.js |
+| acid | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | Acid | app/alchemy_gameplay_v30.js |
 | acidBomb | app/expansion_classes_pack.js |
 | acidReagent | app/resource_processing_v44.js |
 | acolyteOfArms | app/expansion_classes_pack.js |
-| acOverride | app/network_gameplay.js, tests/test_v712_fixes.js |
+| acOverride | app/network_gameplay.js (+ 1 других файлов) |
 | acPenalty | app/alchemist_mhp_2024_runtime.js |
 | acReduction | app/expansion_classes_pack.js |
-| acrobatics | app/dice.js, app/skills.js |
+| acrobatics | app/dice.js (+ 1 других файлов) |
 | acSaveDamageBonus | app/expansion_classes_pack.js |
-| action | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js (+ 43 ещё) |
+| action | app/accursed_oap_v11_runtime.js (+ 46 других файлов) |
 | actionId | app/monster_engine.js |
 | actionOrBonusAction | app/expansion_classes_pack.js |
 | actionRequired | app/combat_engine.js |
-| actions | app/alchemist_mhp_2024_runtime.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js (+ 20 ещё) |
-| actionSpent | app/alchemist_mhp_2024_runtime.js, app/combat_engine.js |
+| actions | app/alchemist_mhp_2024_runtime.js (+ 23 других файлов) |
+| actionSpent | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | actionSurge | app/class_features_engine.js |
 | actionSurges | app/data/classes/Fighter.js |
 | actionType | app/alchemist_mhp_2024_runtime.js |
 | activate | tests/pugilist_runtime_test.js |
-| active | app/blood_hunter_engine.js, app/class_features_engine.js, app/cloud_sync.js, app/combat_engine.js (+ 28 ещё) |
+| active | app/blood_hunter_engine.js (+ 31 других файлов) |
 | ACTIVE | app/feat_engine.js |
 | activeCharacteristics | app/walter_parasite_extra_runtime.js |
-| activeConditions | app/Backgrounds.js, app/character_creation.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js (+ 5 ещё) |
+| activeConditions | app/Backgrounds.js (+ 8 других файлов) |
 | activeEncounter | app/vtt_gameplay_ux_v58.js |
-| activeEncounterId | app/vtt_encounter_map_v59.js, tests/test_v717_fixes.js |
+| activeEncounterId | app/vtt_encounter_map_v59.js (+ 1 других файлов) |
 | activeId | app/vtt_gameplay_ux_v58.js |
-| activeIndex | app/alchemist_mhp_2024_runtime.js, app/app.js, app/combat_engine.js, app/dnd_tools.js (+ 21 ещё) |
+| activeIndex | app/alchemist_mhp_2024_runtime.js (+ 24 других файлов) |
 | activeMutations | app/swarm_extra_runtime.js |
 | activeOrgans | app/walter_parasite_extra_runtime.js |
 | activeProperties | app/alchemy_gameplay_v30.js |
-| activeRage | app/class_features_engine.js, tests/test_v741_damage_pipeline.js |
+| activeRage | app/class_features_engine.js (+ 1 других файлов) |
 | activeRite | app/blood_hunter_engine.js |
 | activeShape | tests/test_v737_spellcasting_transaction.js |
-| activity | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 9 ещё) |
-| actor | app/gameplay_core_v57.js, app/network_gameplay.js |
-| actorId | app/secondary_entities_engine.js, app/vtt_token_interaction_v60.js, tests/map_rebuild_world_test.js |
+| activity | app/bestiary_catalog_v56_1.js (+ 12 других файлов) |
+| actor | app/gameplay_core_v57.js (+ 1 других файлов) |
+| actorId | app/secondary_entities_engine.js (+ 2 других файлов) |
 | actorName | tests/test_v69.js |
 | actual | app/vtt_debug_rules_matrix_v707.js |
 | actWithArcaneAnathemaWhileDisabled | app/expansion_classes_pack.js |
@@ -6563,12 +6564,12 @@
 | addCombatantFromTemplate | app/combat_engine.js |
 | addConToEachDie | app/expansion_classes_pack.js |
 | addCreature | app/vtt_encounter_map_v59.js |
-| addCustomLoot | app/monster_loot_engine_v36.js, app/monster_loot_engine_v37.js |
+| addCustomLoot | app/monster_loot_engine_v36.js (+ 1 других файлов) |
 | addD4OnFailure | app/expansion_classes_pack.js |
 | addDamage | app/alchemist_mhp_2024_runtime.js |
 | addDie | app/expansion_classes_pack.js |
-| added | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 23 ещё) |
-| addEventListener | desktop/preload.cjs, tests/alchemist_combat_test.js, tests/cloud_sync_test.cjs, tests/crafting_disassembly_v51_test.js (+ 22 ещё) |
+| added | app/bestiary_catalog_v56_1.js (+ 26 других файлов) |
+| addEventListener | desktop/preload.cjs (+ 25 других файлов) |
 | addFeat | app/vtt_debug_character_lab_v702.js |
 | addFloor | app/3dmap/map_model.js |
 | addInventory | app/vtt_debug_character_lab_v702.js |
@@ -6596,7 +6597,7 @@
 | advancedTactics | app/expansion_classes_pack.js |
 | advancedTransformation | app/blood_hunter_engine.js |
 | advanceTime | app/alchemist_mhp_2024_runtime.js |
-| advantage | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/combat_engine.js (+ 11 ещё) |
+| advantage | app/alchemist_mhp_2024_runtime.js (+ 14 других файлов) |
 | advantageAgainst | app/expansion_classes_pack.js |
 | advantageAgainstFrightened | app/expansion_classes_pack.js |
 | advantageAgainstGrappled | app/expansion_classes_pack.js |
@@ -6611,7 +6612,7 @@
 | advantageFirstAttack | app/expansion_classes_pack.js |
 | advantageIfSameTarget | app/data/classes/Beastheart.js |
 | advantageMagicalSaves | app/expansion_classes_pack.js |
-| advantageNextAttack | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| advantageNextAttack | app/expanded_classes_v23.js (+ 1 других файлов) |
 | advantageNextSave | app/expansion_classes_pack.js |
 | advantageOnChecks | app/expanded_classes_v23.js |
 | advantageOnCon | app/expanded_classes_v23.js |
@@ -6619,7 +6620,7 @@
 | advantageOrDisadvantage | app/expansion_classes_pack.js |
 | advantagePerception | app/occultist_kibbles_v11_runtime.js |
 | advantageRecallFeyFiendsUndead | app/blood_hunter_engine.js |
-| advantageSaves | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| advantageSaves | app/blood_hunter_engine.js (+ 1 других файлов) |
 | advantageSavesAgainst | app/expansion_classes_pack.js |
 | advantageSavingThrows | app/expansion_classes_pack.js |
 | advantageStealth | app/data/classes/Beastheart.js |
@@ -6637,28 +6638,28 @@
 | afflictedDisadvantageEndSave | app/expansion_classes_pack.js |
 | afflictionControl | app/accursed_oap_v11_runtime.js |
 | african | tests/makehuman_gender_recipe_test.js |
-| afro | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
-| after | app/expansion_classes_pack.js, app/rulesEngine.js |
+| afro | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| after | app/expansion_classes_pack.js (+ 1 других файлов) |
 | afterActorAttack | app/blood_hunter_engine.js |
 | afterAttackCost | app/expansion_classes_pack.js |
 | afterAttackThreeUnarmed | app/expansion_classes_pack.js |
 | afterCarousingAdvantage | app/expansion_classes_pack.js |
 | afterDamage | app/blood_hunter_engine.js |
 | againstInterdicted | app/expansion_classes_pack.js |
-| age | app/Backgrounds.js, app/character_creation.js, tests/makehuman_gender_recipe_test.js |
+| age | app/Backgrounds.js (+ 2 других файлов) |
 | ageAppearanceLocked | app/occultist_kibbles_v11_runtime.js |
 | ageless | app/expansion_classes_pack.js |
 | agePossessionSleepTransformImmunity | app/expansion_classes_pack.js |
 | ailment | app/expansion_classes_pack.js |
-| ailments | app/accursed_oap_v11_runtime.js, app/expansion_classes_pack.js |
+| ailments | app/accursed_oap_v11_runtime.js (+ 1 других файлов) |
 | airCore | app/resource_processing_v44.js |
 | airEssence | app/resource_processing_v44.js |
 | alchemical | app/market_economy_v55.js |
 | alchemicalFat | app/resource_processing_v44.js |
 | alchemicalReagentV49 | app/crafting_economy_v49.js |
 | alchemicalSavvy | app/class_features_engine.js |
-| alchemist | app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js, app/market_social_v55_3.js, app/market_trade_v55_2.js (+ 1 ещё) |
-| alchemistActiveEffects | tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js |
+| alchemist | app/crafting_profession_progression_v47.js (+ 4 других файлов) |
+| alchemistActiveEffects | tests/alchemist_combat_test.js (+ 1 других файлов) |
 | alchemistDebuffs | tests/alchemist_combat_test.js |
 | alchemistDiscovered | tests/alchemist_runtime_test.js |
 | alchemistExplosionResistanceType | tests/alchemist_combat_test.js |
@@ -6666,21 +6667,21 @@
 | alchemistGolemOwner | app/alchemist_mhp_2024_runtime.js |
 | alchemistGrafts | tests/alchemist_combat_test.js |
 | alchemistHomunculus | app/alchemist_mhp_2024_runtime.js |
-| alchemistHomunculusOwner | app/alchemist_mhp_2024_runtime.js, tests/alchemist_combat_test.js |
+| alchemistHomunculusOwner | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | alchemistPoisonedWeaponId | tests/alchemist_combat_test.js |
 | alchemistPreparedFormula | tests/alchemist_runtime_test.js |
 | alchemistSaveDC | tests/alchemist_combat_test.js |
 | alchemistToxicVengeance | tests/alchemist_combat_test.js |
-| alchemy | app/crafting_engine_v31.js, app/crafting_professions_v33.js |
-| alchemyId | app/alchemy_gameplay_v30.js, app/alchemy_gathering_professions_v52.js |
+| alchemy | app/crafting_engine_v31.js (+ 1 других файлов) |
+| alchemyId | app/alchemy_gameplay_v30.js (+ 1 других файлов) |
 | alchemyPoints | app/expansion_classes_pack.js |
 | alchemyTools | app/occultist_kibbles_v11_runtime.js |
 | alcoholRules | app/alchemist_mhp_2024_runtime.js |
 | ale | app/crafting_professions_v38.js |
-| alert | tests/crafting_dlc_v50_test.js, tests/pugilist_combat_test.js, tests/test_v58.js, tests/test_v710_fixes.js (+ 9 ещё) |
-| aliases | app/accursed_oap_v11_runtime.js, app/blood_hunter_engine.js, app/data/classes/Beastheart.js, app/expansion_classes_pack.js (+ 9 ещё) |
-| all | app/expanded_class_registry_bridge.js, app/warden_mhp_2024_runtime.js |
-| ALL_RECIPES | tests/crafting_disassembly_v51_test.js, tests/crafting_economy_v49_test.js |
+| alert | tests/crafting_dlc_v50_test.js (+ 12 других файлов) |
+| aliases | app/accursed_oap_v11_runtime.js (+ 12 других файлов) |
+| all | app/expanded_class_registry_bridge.js (+ 1 других файлов) |
+| ALL_RECIPES | tests/crafting_disassembly_v51_test.js (+ 1 других файлов) |
 | allAttacksThisTurn | app/blood_hunter_engine.js |
 | allConcentrationSavesDisadvantage | app/blood_hunter_engine.js |
 | allDisciplines | app/expanded_classes_v23.js |
@@ -6709,10 +6710,10 @@
 | allySaveBonus | app/expansion_classes_pack.js |
 | allyStrDexSaveBonus | app/expansion_classes_pack.js |
 | allyTempHp | app/expansion_classes_pack.js |
-| allyWithinAura | app/combat_engine.js, tests/test_v726_fixes.js |
+| allyWithinAura | app/combat_engine.js (+ 1 других файлов) |
 | allyWithinCourage | app/combat_engine.js |
-| almond | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js |
-| alpha | app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js |
+| almond | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
+| alpha | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | alphaCutoff | app/3dmap/gltf_loader.js |
 | alphaCutoffLoc | app/3dmap/map_renderer_3d.js |
 | alphaMode | app/3dmap/gltf_loader.js |
@@ -6726,20 +6727,20 @@
 | altMin | app/data/feats/Feats_phb.js |
 | altStat | app/data/feats/Feats_phb.js |
 | alum | app/crafting_resources_v34.js |
-| alwaysPrepared | app/martyr_mhp_2024_runtime.js, app/necromancer_mhp_2024_runtime.js, app/occultist_kibbles_v11_runtime.js |
-| amount | app/alchemy_gathering_professions_v52.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/combat_engine.js (+ 22 ещё) |
+| alwaysPrepared | app/martyr_mhp_2024_runtime.js (+ 2 других файлов) |
+| amount | app/alchemy_gathering_professions_v52.js (+ 25 других файлов) |
 | amp | app/blood_hunter_engine.js |
 | amphibian | app/expanded_bestiary_v39.js |
-| amplified | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| amplified | app/blood_hunter_engine.js (+ 1 других файлов) |
 | amplifiedDamage | app/expansion_classes_pack.js |
 | amplifiedEffect | app/expansion_classes_pack.js |
 | amplifiedMoveFt | app/expansion_classes_pack.js |
 | amplifiedNextAttackAdvantage | app/expansion_classes_pack.js |
 | amplifiedRestoreSpellSlot | app/expansion_classes_pack.js |
-| amplify | app/blood_hunter_engine.js, app/combat_engine.js, tests/test_blood_hunter_completion.js, tests/test_blood_hunter_orders.js (+ 1 ещё) |
+| amplify | app/blood_hunter_engine.js (+ 4 других файлов) |
 | analysisAction | app/savant_laserllama_v561_runtime.js |
 | analyticalDefense | app/savant_laserllama_v561_runtime.js |
-| anatomy | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
+| anatomy | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | anatomyLevel | app/3dmap/character_anatomy_geometry.js |
 | anatomyProfile | app/3dmap/character_system.js |
 | anatomyShape | app/3dmap/character_anatomy_geometry.js |
@@ -6748,36 +6749,36 @@
 | anatomyVariant | app/3dmap/character_anatomy_geometry.js |
 | anatomyZones | app/3dmap/character_anatomy_geometry.js |
 | anchor | app/3dmap/character_body_geometry.js |
-| anchorPositions | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
+| anchorPositions | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | anchors | app/necromancer_mhp_2024_runtime.js |
 | ancient_ruins | app/world_resource_gathering_v53.js |
 | ancientMalediction | app/expansion_classes_pack.js |
 | angle | app/3dmap/character_body_geometry.js |
 | animalFrame | app/3dmap/character_body_geometry.js |
-| animalHandling | app/dice.js, app/skills.js |
+| animalHandling | app/dice.js (+ 1 других файлов) |
 | animalHandlingDC | app/data/classes/Beastheart.js |
-| animalProfile | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_animal_heads_test.js (+ 3 ещё) |
+| animalProfile | app/3dmap/character_body_geometry.js (+ 6 других файлов) |
 | animalSkin | app/3dmap/character_body_geometry.js |
 | animateDead | app/necromancer_mhp_2024_runtime.js |
 | animateThralls | app/expansion_classes_pack.js |
 | animation | app/expansion_classes_pack.js |
-| animationId | app/3dmap/character_pose.js, app/3dmap/character_system.js |
+| animationId | app/3dmap/character_pose.js (+ 1 других файлов) |
 | animations | app/3dmap/gltf_character_pipeline.js |
 | ankhBlessing | app/necromancer_mhp_2024_runtime.js |
 | annotated | app/crafting_character_influence_test_v46.js |
 | anointedMagic | app/expansion_classes_pack.js |
 | antelope | app/3dmap/character_system.js |
-| antialias | app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js |
+| antialias | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | Antidote | app/alchemy_gameplay_v30.js |
 | antiMagicAdvantage | app/necromancer_mhp_2024_runtime.js |
 | anvil | app/3dmap/gltf_catalog.js |
 | anxious | app/blood_hunter_engine.js |
-| any | app/expanded_class_registry_bridge.js, app/warlord_laserllama_v330_runtime.js |
+| any | app/expanded_class_registry_bridge.js (+ 1 других файлов) |
 | aoe | app/network_gameplay.js |
 | aoeFt | app/blood_hunter_engine.js |
 | aoeLengthFt | app/network_gameplay.js |
-| aoeRadiusFt | app/battle_board.js, app/expanded_classes_v23.js, app/expansion_classes_pack.js, app/network_gameplay.js |
-| aoeShape | app/battle_board.js, app/network_gameplay.js |
+| aoeRadiusFt | app/battle_board.js (+ 3 других файлов) |
+| aoeShape | app/battle_board.js (+ 1 других файлов) |
 | aoeWidthFt | app/network_gameplay.js |
 | ape | app/3dmap/character_body_geometry.js |
 | apexPredator | app/expansion_classes_pack.js |
@@ -6787,19 +6788,19 @@
 | apikey | app/cloud_sync.js |
 | apiPath | app/vtt_debug_panel_v70.js |
 | apis | app/vtt_debug_panel_v70.js |
-| apothecary | app/3dmap/gltf_catalog.js, app/market_economy_v55.js |
+| apothecary | app/3dmap/gltf_catalog.js (+ 1 других файлов) |
 | apothecaryRejectsHammer | tests/test_v55_2.js |
-| app | app/vtt_encounter_checkpoint_v68.js, app/vtt_mobile_session_v67.js |
-| appearance | app/3dmap/character_appearance_store.js, app/3dmap/character_editor_3d.js, app/alchemist_mhp_2024_runtime.js, tests/alchemist_runtime_test.js |
+| app | app/vtt_encounter_checkpoint_v68.js (+ 1 других файлов) |
+| appearance | app/3dmap/character_appearance_store.js (+ 3 других файлов) |
 | appearance3d | tests/cloud_sync_test.cjs |
 | appearanceAgingStopped | app/occultist_kibbles_v11_runtime.js |
 | appearanceOpacity | app/3dmap/character_system.js |
-| appendChild | tests/test_v52.js, tests/test_v53.js, tests/test_v69.js, tests/test_v70.js (+ 5 ещё) |
-| applied | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js (+ 7 ещё) |
+| appendChild | tests/test_v52.js (+ 8 других файлов) |
+| applied | app/accursed_oap_v11_runtime.js (+ 10 других файлов) |
 | appliesCalcifyingStrike | app/expansion_classes_pack.js |
 | apply | app/update_manager_v2.js |
 | applyASI | app/rulesEngine.js |
-| applyDamage | app/combat_engine.js, tests/alchemist_runtime_test.js, tests/crafting_dlc_v50_test.js, tests/test_v737_spellcasting_transaction.js (+ 2 ещё) |
+| applyDamage | app/combat_engine.js (+ 5 других файлов) |
 | applyDamageBatch | app/combat_engine.js |
 | applyFullQuality | app/crafting_disassembly_v51.js |
 | applyMorphTargets | app/3dmap/character_system.js |
@@ -6810,120 +6811,120 @@
 | applyStaged | app/update_manager_v2.js |
 | applyVisibility | app/crafting_dlc_v50.js |
 | applyWitchTouch | app/expansion_classes_pack.js |
-| arcana | app/dice.js, app/skills.js |
+| arcana | app/dice.js (+ 1 других файлов) |
 | arcanaSaveDC | app/expansion_classes_pack.js |
-| arcane | app/market_economy_v55.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| arcane | app/market_economy_v55.js (+ 2 других файлов) |
 | arcane_defender | app/feat_engine.js |
 | arcane_recovery_feat | app/feat_engine.js |
 | arcaneAnathema | app/expansion_classes_pack.js |
 | arcaneMastery | app/class_features_engine.js |
 | arcaneReagentV49 | app/crafting_economy_v49.js |
 | arcaneRecovery | app/class_features_engine.js |
-| arcaneShard | app/crafting_economy_v49.js, app/resource_processing_v44.js |
+| arcaneShard | app/crafting_economy_v49.js (+ 1 других файлов) |
 | arcaneWard | tests/test_v726_fixes.js |
 | archaeologist | app/savant_laserllama_v561_runtime.js |
 | archdruid | app/class_features_engine.js |
 | archery | app/expansion_classes_pack.js |
-| archetype | app/expansion_classes_pack.js, tests/test_class_audit_runtime.js |
+| archetype | app/expansion_classes_pack.js (+ 1 других файлов) |
 | archetypes | app/data/classes/Psion.js |
 | archfey | app/blood_hunter_engine.js |
 | architect | app/expansion_classes_pack.js |
 | archon | app/vessel_laserllama_v4_runtime.js |
 | archonForm | app/vessel_laserllama_v4_runtime.js |
 | archons | app/vessel_laserllama_v4_runtime.js |
-| area | app/alchemist_mhp_2024_runtime.js, app/data/classes/Beastheart.js |
-| areaFt | app/alchemist_mhp_2024_runtime.js, app/data/classes/Beastheart.js |
+| area | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
+| areaFt | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | areaRadiusFt | app/expansion_classes_pack.js |
 | areaSlime | app/alchemist_mhp_2024_runtime.js |
 | areaVulnerability | app/swarm_extra_runtime.js |
 | arenaRoyale | app/data/classes/Pugilist.js |
-| args | tools/check_adult_anatomy_browser.js, tools/check_adult_base_browser.js, tools/check_animal_heads_browser.js, tools/check_avian_elephant_heads_browser.js (+ 34 ещё) |
+| args | tools/check_adult_anatomy_browser.js (+ 37 других файлов) |
 | arm | app/3dmap/character_body_geometry.js |
-| armament | app/accursed_oap_v11_runtime.js, app/expansion_classes_pack.js |
+| armament | app/accursed_oap_v11_runtime.js (+ 1 других файлов) |
 | armedAndAngry | app/expansion_classes_pack.js |
-| armLength | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js |
-| armor | app/3dmap/character_body_geometry.js, app/3dmap/gltf_catalog.js, app/Inventory.js, app/Proficienciescheck.js (+ 59 ещё) |
+| armLength | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
+| armor | app/3dmap/character_body_geometry.js (+ 62 других файлов) |
 | armor_component | app/resource_processing_v44.js |
 | armorBonus | app/crafting_disassembly_v51.js |
-| armorClass | app/custom_crafting_v32.js, app/expansion_classes_pack.js |
+| armorClass | app/custom_crafting_v32.js (+ 1 других файлов) |
 | armoredAC | app/expansion_classes_pack.js |
-| armorer | app/crafting_profession_progression_v47.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| armorer | app/crafting_profession_progression_v47.js (+ 2 других файлов) |
 | armorOfFaith | app/martyr_mhp_2024_runtime.js |
 | armorProficiency | app/occultist_kibbles_v11_runtime.js |
 | armorTriangles | app/3dmap/character_editor_3d.js |
 | armorWear | tests/crafting_dlc_v50_test.js |
 | armour | app/3dmap/gltf_catalog.js |
-| armpitL | app/3dmap/character_anatomy.js, tests/character_adult_anatomy_test.js |
+| armpitL | app/3dmap/character_anatomy.js (+ 1 других файлов) |
 | armpitR | app/3dmap/character_anatomy.js |
-| arms | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_native_limbs_test.js, tests/character_races_geometry_test.js |
+| arms | app/3dmap/character_editor_3d.js (+ 3 других файлов) |
 | arr | app/market_trade_v55_2.js |
-| arrayBuffer | tests/character_3d_skin_assets_test.js, tests/character_external_anatomy_test.js, tests/character_male_anatomy_fix_test.js, tests/gltf_loader_smoke.cjs (+ 2 ещё) |
+| arrayBuffer | tests/character_3d_skin_assets_test.js (+ 5 других файлов) |
 | arrestingStrike | app/expansion_classes_pack.js |
 | ArrowDown | app/3dmap/map_editor.js |
-| arrowheads | app/crafting_economy_v49.js, app/crafting_professions_v38.js |
+| arrowheads | app/crafting_economy_v49.js (+ 1 других файлов) |
 | ArrowLeft | app/3dmap/map_editor.js |
 | ArrowRight | app/3dmap/map_editor.js |
 | ArrowUp | app/3dmap/map_editor.js |
 | art | app/Settings.js |
-| artificer | app/crafting_character_influence_test_v46.js, app/magic_engine.js, app/rulesEngine.js |
+| artificer | app/crafting_character_influence_test_v46.js (+ 2 других файлов) |
 | artOfWar | app/expansion_classes_pack.js |
 | ascended | app/vessel_laserllama_v4_runtime.js |
 | ascensionLevel | app/data/classes/Psion.js |
-| asi | app/data/classes/Accursed.js, app/data/classes/Alchemist.js, app/data/classes/Artificer.js, app/data/classes/Barbarian.js (+ 25 ещё) |
+| asi | app/data/classes/Accursed.js (+ 28 других файлов) |
 | asian | tests/makehuman_gender_recipe_test.js |
-| aspect | app/expansion_classes_pack.js, tests/test_class_audit_stage2_runtime.js |
+| aspect | app/expansion_classes_pack.js (+ 1 других файлов) |
 | assessItem | app/crafting_disassembly_repair_v51.js |
-| asset | tests/gltf_loader_smoke.cjs, tests/makehuman_gender_recipe_test.js |
-| assetId | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/3dmap/stress_map.js, tests/character_3d_foundation_test.js |
+| asset | tests/gltf_loader_smoke.cjs (+ 1 других файлов) |
+| assetId | app/3dmap/character_editor_3d.js (+ 3 других файлов) |
 | astral | app/3dmap/character_editor_3d.js |
 | astralConstruct | app/expansion_classes_pack.js |
 | asymmetric | app/3dmap/character_system.js |
-| at | app/3dmap/character_body_geometry.js, app/3dmap/stair_navigation.js, app/cloud_sync.js, app/crafting_disassembly_repair_v51.js (+ 12 ещё) |
+| at | app/3dmap/character_body_geometry.js (+ 15 других файлов) |
 | at11 | app/data/classes/Psion.js |
 | at17 | app/data/classes/Psion.js |
-| athletics | app/dice.js, app/skills.js |
-| atob | tests/test_v714_fixes.js, tests/test_v752_replay_hash_authority.js, tests/test_v753_replay_transaction_rng.js |
-| atStartOfTurn | tests/test_blood_hunter_orders.js, tests/test_class_audit_stage4_runtime.js |
-| attach | app/3dmap/character_morph_assets.js, app/companions.js |
+| athletics | app/dice.js (+ 1 других файлов) |
+| atob | tests/test_v714_fixes.js (+ 2 других файлов) |
+| atStartOfTurn | tests/test_blood_hunter_orders.js (+ 1 других файлов) |
+| attach | app/3dmap/character_morph_assets.js (+ 1 других файлов) |
 | attached | app/alchemist_mhp_2024_runtime.js |
 | attachment | app/walter_parasite_extra_runtime.js |
-| attack | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/combat_engine.js, app/companion_gameplay_v27.js (+ 12 ещё) |
+| attack | app/alchemist_mhp_2024_runtime.js (+ 15 других файлов) |
 | attackAbility | app/alchemist_mhp_2024_runtime.js |
 | attackAction | app/expansion_classes_pack.js |
 | attackAgainstMode | app/rulesEngine.js |
-| attackBonus | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/companion_packs_v26.js, app/data/classes/Beastheart.js (+ 4 ещё) |
+| attackBonus | app/alchemist_mhp_2024_runtime.js (+ 7 других файлов) |
 | attackBonusAdjustment | app/blood_hunter_engine.js |
 | attackCantripSwap | app/necromancer_mhp_2024_runtime.js |
 | attackChain | app/expanded_classes_v23.js |
-| attackContext | app/blood_hunter_engine.js, app/combat_engine.js |
-| attackCount | app/combat_engine.js, app/gameplay_core_v57.js, app/monster_engine.js, tests/test_v749_monster_authority_reaction_order.js |
+| attackContext | app/blood_hunter_engine.js (+ 1 других файлов) |
+| attackCount | app/combat_engine.js (+ 3 других файлов) |
 | attackCrit | app/necromancer_mhp_2024_runtime.js |
 | attackDamageBonus | app/crafting_disassembly_v51.js |
-| attackDisadvantage | app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js |
+| attackDisadvantage | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | attackDisadvantageUnlessTargetsSelf | app/expansion_classes_pack.js |
 | attackDistanceFt | tests/test_blood_hunter_orders.js |
-| attacker | app/blood_hunter_engine.js, app/combat_engine.js, app/necromancer_mhp_2024_runtime.js, app/network_gameplay.js (+ 4 ещё) |
-| attackerId | app/alchemist_mhp_2024_runtime.js, app/combat_engine.js, app/expansion_classes_pack.js, tests/alchemist_combat_test.js (+ 1 ещё) |
+| attacker | app/blood_hunter_engine.js (+ 7 других файлов) |
+| attackerId | app/alchemist_mhp_2024_runtime.js (+ 4 других файлов) |
 | attackerPeerId | app/network_gameplay.js |
-| attackKind | app/combat_engine.js, app/network_gameplay.js, tests/alchemist_combat_test.js, tests/test_class_audit_stage3_runtime.js (+ 3 ещё) |
+| attackKind | app/combat_engine.js (+ 6 других файлов) |
 | attackModifier | app/shifter_laserllama_v2_1_runtime.js |
-| attackModifiers | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/data/classes/Beastheart.js (+ 13 ещё) |
+| attackModifiers | app/alchemist_mhp_2024_runtime.js (+ 16 других файлов) |
 | attackOrSpell | app/expansion_classes_pack.js |
-| attackPenalty | app/alchemist_mhp_2024_runtime.js, tests/alchemist_combat_test.js |
+| attackPenalty | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | attackReplaced | tests/test_class_audit_stage4_runtime.js |
-| attackResult | app/blood_hunter_engine.js, app/combat_engine.js, app/network_gameplay.js, app/spellblade_kibbles_runtime.js (+ 2 ещё) |
+| attackResult | app/blood_hunter_engine.js (+ 5 других файлов) |
 | attackRoll | app/expansion_classes_pack.js |
-| attacks | app/combat_engine.js, app/expanded_classes_v23.js, app/expansion_classes_pack.js, app/gameplay_core_v57.js (+ 3 ещё) |
+| attacks | app/combat_engine.js (+ 6 других файлов) |
 | attacksAgainst | app/rulesEngine.js |
-| attackSequence | app/combat_engine.js, tests/test_v749_monster_authority_reaction_order.js |
+| attackSequence | app/combat_engine.js (+ 1 других файлов) |
 | attacksHaveAdvantage | app/alchemist_mhp_2024_runtime.js |
 | attackTarget | tests/test_blood_hunter_orders.js |
-| attackTotal | app/network_gameplay.js, tests/test_v738_multiclass_spell_sources.js |
-| attackType | app/data/spells/Focuses.js, app/data/spells/Spells1lvl.js, app/data/spells/Spells2lvl.js, app/data/spells/Spells3lvl.js (+ 14 ещё) |
+| attackTotal | app/network_gameplay.js (+ 1 других файлов) |
+| attackType | app/data/spells/Focuses.js (+ 17 других файлов) |
 | attitudeIndifferent | app/expansion_classes_pack.js |
 | attitudeShift | app/expansion_classes_pack.js |
-| attributeFilter | app/swipe-lock.js, desktop/preload.cjs |
-| attributes | app/swipe-lock.js, desktop/preload.cjs, tests/gltf_loader_smoke.cjs, tests/makehuman_gender_recipe_test.js |
+| attributeFilter | app/swipe-lock.js (+ 1 других файлов) |
+| attributes | app/swipe-lock.js (+ 3 других файлов) |
 | attrs | tests/character_3d_editor_test.js |
 | atWill | app/expansion_classes_pack.js |
 | atWillSuppress | app/expansion_classes_pack.js |
@@ -6932,47 +6933,47 @@
 | auraOfCourage | app/class_features_engine.js |
 | auraOfProtection | app/class_features_engine.js |
 | auraRangeFt | app/necromancer_mhp_2024_runtime.js |
-| auraSource | app/combat_engine.js, tests/test_v726_fixes.js |
+| auraSource | app/combat_engine.js (+ 1 других файлов) |
 | author | app/3dmap/map_model.js |
-| authoritativeSubclasses | app/accursed_oap_v11_runtime.js, app/blood_hunter_engine.js, app/data/classes/Beastheart.js, app/expansion_classes_pack.js (+ 10 ещё) |
-| authorityEpoch | app/network_engine.js, app/vtt_mobile_session_v67.js, tests/test_v744_sync_authority_save.js, tests/test_v745_host_handoff.js (+ 2 ещё) |
-| authorityId | app/network_engine.js, app/vtt_mobile_session_v67.js, tests/test_v745_host_handoff.js, tests/test_v746_authoritative_save_recharge.js |
+| authoritativeSubclasses | app/accursed_oap_v11_runtime.js (+ 13 других файлов) |
+| authorityEpoch | app/network_engine.js (+ 5 других файлов) |
+| authorityId | app/network_engine.js (+ 3 других файлов) |
 | authoritySnapshot | app/vtt_mobile_session_v67.js |
 | auto | app/network_gameplay.js |
 | autoAnimalHandlingRampage | app/data/classes/Beastheart.js |
 | autoCheckForUpdates | app/update_manager_v2.js |
-| autoFailed | app/blood_hunter_engine.js, app/combat_engine.js |
+| autoFailed | app/blood_hunter_engine.js (+ 1 других файлов) |
 | autoFailHexSave | app/expansion_classes_pack.js |
 | autoFailSaveUses | app/expansion_classes_pack.js |
-| autoFailStrDex | app/rulesEngine.js, tests/alchemist_combat_test.js, tests/test_v726_fixes.js |
+| autoFailStrDex | app/rulesEngine.js (+ 2 других файлов) |
 | autognome | app/crafting_professions_v38.js |
 | autoHideMenuBar | desktop/main.cjs |
 | automaticAssembly | app/3dmap/character_system.js |
 | autoPlans | app/network_gameplay.js |
-| autoSaveCurrentCharacter | tests/test_v52.js, tests/test_v53.js, tests/test_v57.js |
+| autoSaveCurrentCharacter | tests/test_v52.js (+ 2 других файлов) |
 | autoTrigger | app/alchemist_mhp_2024_runtime.js |
-| available | app/monster_engine.js, tests/test_v749_monster_authority_reaction_order.js |
+| available | app/monster_engine.js (+ 1 других файлов) |
 | availableFeatures | app/content_framework.js |
 | avatars | app/swarm_extra_runtime.js |
 | avatarStorm | app/necromancer_mhp_2024_runtime.js |
-| avian | app/3dmap/character_body_geometry.js, app/expanded_bestiary_v39.js |
+| avian | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | avoidDeath | app/expansion_classes_pack.js |
-| awakened | app/data/classes/Psion.js, app/expansion_classes_pack.js |
+| awakened | app/data/classes/Psion.js (+ 1 других файлов) |
 | Awakened | app/kibbles_localization_content_v71.js |
 | awakenedRune | app/expansion_classes_pack.js |
 | awakening | app/martyr_mhp_2024_runtime.js |
 | axes | app/3dmap/character_editor_3d.js |
 | AXES | app/3dmap/character_system.js |
 | azure | app/Settings.js |
-| b | app/Wallpapers.js, app/data/classes/Alchemist.js, app/data/classes/Warden.js |
-| back | app/3dmap/character_clothing.js, app/3dmap/map_world.js, tests/character_clothing_test.js, tools/check_character_editor_browser.js |
-| background | app/Backgrounds.js, app/Hero-info.js, app/character_creation.js, app/crafting_character_influence_test_v46.js (+ 2 ещё) |
+| b | app/Wallpapers.js (+ 2 других файлов) |
+| back | app/3dmap/character_clothing.js (+ 3 других файлов) |
+| background | app/Backgrounds.js (+ 5 других файлов) |
 | backgroundColor | desktop/main.cjs |
 | backLower | app/3dmap/character_anatomy.js |
-| backslash | app/3dmap/map_world.js, app/3dmap/stress_map.js |
+| backslash | app/3dmap/map_world.js (+ 1 других файлов) |
 | backslashTexture | app/3dmap/stress_map.js |
 | BackTexture | tests/map_rebuild_world_test.js |
-| backup | app/vtt_debug_lab_v703.js, app/vtt_debug_sandbox_v701.js |
+| backup | app/vtt_debug_lab_v703.js (+ 1 других файлов) |
 | backUpper | app/3dmap/character_anatomy.js |
 | bad | tests/character_clothing_options_test.js |
 | badlands | app/world_resource_gathering_v53.js |
@@ -6990,43 +6991,43 @@
 | bandTogether | app/expansion_classes_pack.js |
 | banished | app/expansion_classes_pack.js |
 | banner | app/3dmap/gltf_catalog.js |
-| bard | app/magic_engine.js, app/rulesEngine.js |
-| bardicInspiration | app/class_features_engine.js, app/network_gameplay.js |
+| bard | app/magic_engine.js (+ 1 других файлов) |
+| bardicInspiration | app/class_features_engine.js (+ 1 других файлов) |
 | barrel | app/3dmap/gltf_catalog.js |
 | barter | tests/test_v55_2.js |
 | barycentricOutsideTolerance | tests/makehuman_target_surface_transfer_audit.js |
-| base | app/3dmap/gltf_loader.js, app/3dmap/map_renderer_3d.js, app/vtt_debug_rules_matrix_v707.js |
-| baseAc | app/network_gameplay.js, app/races.js |
-| baseAC | app/Backgrounds.js, app/character_creation.js, app/occultist_kibbles_v11_runtime.js |
+| base | app/3dmap/gltf_loader.js (+ 2 других файлов) |
+| baseAc | app/network_gameplay.js (+ 1 других файлов) |
+| baseAC | app/Backgrounds.js (+ 2 других файлов) |
 | baseAcFormula | app/races.js |
-| baseColorFactor | app/3dmap/gltf_loader.js, tests/character_3d_editor_test.js |
+| baseColorFactor | app/3dmap/gltf_loader.js (+ 1 других файлов) |
 | baseColorSampler | app/3dmap/gltf_loader.js |
 | baseColorTexture | app/3dmap/gltf_loader.js |
 | baseCp | app/market_social_v55_3.js |
 | baseFeatures | app/warden_mhp_2024_runtime.js |
 | baseId | app/custom_crafting_v32.js |
-| baseModel | app/3dmap/character_system.js, tests/character_3d_foundation_test.js |
-| baseObj | tests/makehuman_topology_audit.js, tools/build_character_editor_morphs.js, tools/build_makehuman_morphs.js |
-| basePositions | app/3dmap/character_clothing.js, app/3dmap/gltf_loader.js, tests/character_3d_skin_morph_test.js |
+| baseModel | app/3dmap/character_system.js (+ 1 других файлов) |
+| baseObj | tests/makehuman_topology_audit.js (+ 2 других файлов) |
+| basePositions | app/3dmap/character_clothing.js (+ 2 других файлов) |
 | basePositionsSha256 | tools/build_character_editor_morphs.js |
 | baseQualityScore | app/crafting_disassembly_repair_v51.js |
-| baseUrl | tests/desktop_update_contract.cjs, tests/test_v754_update_manager.js |
+| baseUrl | tests/desktop_update_contract.cjs (+ 1 других файлов) |
 | basilisk | app/data/classes/Beastheart.js |
 | bastionOfOrder | app/expansion_classes_pack.js |
-| battleBoard | app/vtt_combat_log_v66.js, app/vtt_mobile_session_v67.js |
+| battleBoard | app/vtt_combat_log_v66.js (+ 1 других файлов) |
 | battleBoardView | app/vtt_encounter_checkpoint_v68.js |
-| battlefield | tests/test_class_audit_runtime.js, tests/test_class_audit_stage2_runtime.js, tests/test_v709_fixes.js |
+| battlefield | tests/test_class_audit_runtime.js (+ 2 других файлов) |
 | battlefieldAnalysis | app/expanded_classes_v23.js |
 | battlefieldSupport | app/data/classes/Warlord.js |
 | Battlemage | app/kibbles_localization_content_v71.js |
 | battleMagic | app/class_features_engine.js |
 | battleOver | app/gameplay_core_v57.js |
 | bboxDiagonalRatio | tests/makehuman_vertex_mapping_audit.js |
-| beakColor | app/3dmap/character_system.js, tools/check_avian_races_browser.js |
-| beakSize | app/3dmap/character_system.js, tests/character_avian_elephant_heads_test.js, tests/character_races_geometry_test.js, tools/check_avian_races_browser.js |
-| beakStyle | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tools/check_avian_races_browser.js |
-| beard | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_head_geometry_test.js, tests/character_races_geometry_test.js |
-| beast | app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/expanded_classes_v23.js |
+| beakColor | app/3dmap/character_system.js (+ 1 других файлов) |
+| beakSize | app/3dmap/character_system.js (+ 3 других файлов) |
+| beakStyle | app/3dmap/character_editor_3d.js (+ 3 других файлов) |
+| beard | app/3dmap/character_editor_3d.js (+ 3 других файлов) |
+| beast | app/bestiary_catalog_v56_10.js (+ 2 других файлов) |
 | beast_tamer | app/feat_engine.js |
 | beastCommand | app/expanded_classes_v23.js |
 | beastCompanion | app/class_features_engine.js |
@@ -7040,7 +7041,7 @@
 | beastSpells | app/class_features_engine.js |
 | becomeGhost | app/expansion_classes_pack.js |
 | bed | app/3dmap/gltf_catalog.js |
-| before | app/rulesEngine.js, app/savant_laserllama_v561_runtime.js |
+| before | app/rulesEngine.js (+ 1 других файлов) |
 | beforeRoll | app/combat_engine.js |
 | beginConcentration | app/combat_engine.js |
 | behavior | tests/test_v56.js |
@@ -7049,7 +7050,7 @@
 | benefits | app/expansion_classes_pack.js |
 | berserker_rage | app/feat_engine.js |
 | bestAxisPermutation | tests/makehuman_vertex_mapping_audit.js |
-| bestiaryVersion | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 9 ещё) |
+| bestiaryVersion | app/bestiary_catalog_v56_1.js (+ 12 других файлов) |
 | bigby | app/bestiary_catalog_v56_1.js |
 | bin_bytes | tests/human_base_glb_audit.js |
 | binary | tools/build_character_editor_morphs.js |
@@ -7063,8 +7064,8 @@
 | biomassGained | app/parasite_extra_runtime.js |
 | biomassHealing | app/swarm_extra_runtime.js |
 | black | app/Wallpapers.js |
-| Black | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
-| blackmarket | app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| Black | app/expanded_classes_v23.js (+ 1 других файлов) |
+| blackmarket | app/market_social_v55_3.js (+ 1 других файлов) |
 | blackRider | app/necromancer_mhp_2024_runtime.js |
 | blacksmith | app/market_economy_v55.js |
 | blastCoating | app/data/classes/Alchemist.js |
@@ -7081,17 +7082,17 @@
 | blindsight | app/walter_parasite_extra_runtime.js |
 | blindsightFt | app/expansion_classes_pack.js |
 | bloatedAgony | app/blood_hunter_engine.js |
-| Blob | tests/test_v69.js, tests/test_v70.js, tests/test_v717_fixes.js, tests/test_v744_sync_authority_save.js (+ 2 ещё) |
+| Blob | tests/test_v69.js (+ 5 других файлов) |
 | block | app/vessel_laserllama_v4_runtime.js |
-| blocked | app/combat_engine.js, tests/test_v54.js |
+| blocked | app/combat_engine.js (+ 1 других файлов) |
 | blocksIncorporealMovement | app/expansion_classes_pack.js |
 | blocksMovement | app/3dmap/map_world.js |
 | bloodAscendent | app/necromancer_mhp_2024_runtime.js |
 | bloodCost | app/occultist_kibbles_v11_runtime.js |
 | bloodCostPerSpellLevel | app/occultist_kibbles_v11_runtime.js |
-| bloodCurseActor | app/combat_engine.js, tests/test_blood_hunter_completion.js |
-| bloodCurseAmplify | app/combat_engine.js, tests/test_blood_hunter_completion.js |
-| bloodCurseDistanceFt | app/combat_engine.js, tests/test_blood_hunter_completion.js |
+| bloodCurseActor | app/combat_engine.js (+ 1 других файлов) |
+| bloodCurseAmplify | app/combat_engine.js (+ 1 других файлов) |
+| bloodCurseDistanceFt | app/combat_engine.js (+ 1 других файлов) |
 | bloodCurseExposure | app/combat_engine.js |
 | bloodCurseOfCorrosion | app/blood_hunter_engine.js |
 | bloodCurseOfHowl | app/blood_hunter_engine.js |
@@ -7100,12 +7101,12 @@
 | bloodCurseTargetsBloodless | app/expansion_classes_pack.js |
 | bloodhawk | app/data/classes/Beastheart.js |
 | bloodhoundBruisers | app/data/classes/Pugilist.js |
-| bloodHunterPuppet | app/blood_hunter_engine.js, app/combat_engine.js |
-| bloodiedButUnbowed | app/data/classes/Pugilist.js, app/expansion_classes_pack.js |
-| bloodline | app/shifter_laserllama_v2_1_runtime.js, tests/test_class_audit_stage2_runtime.js |
+| bloodHunterPuppet | app/blood_hunter_engine.js (+ 1 других файлов) |
+| bloodiedButUnbowed | app/data/classes/Pugilist.js (+ 1 других файлов) |
+| bloodline | app/shifter_laserllama_v2_1_runtime.js (+ 1 других файлов) |
 | bloodlines | app/shifter_laserllama_v2_1_runtime.js |
 | bloodlustAdvantage | app/expansion_classes_pack.js |
-| bloodMaledict | app/blood_hunter_engine.js, app/network_gameplay.js |
+| bloodMaledict | app/blood_hunter_engine.js (+ 1 других файлов) |
 | bloodPrice | app/data/classes/Illigger.js |
 | bloodPriceAura | app/expansion_classes_pack.js |
 | bloodRiteRevival | app/combat_engine.js |
@@ -7113,15 +7114,15 @@
 | blue | app/Settings.js |
 | blushColor | app/3dmap/character_system.js |
 | blushOpacity | tools/check_character_head_browser.js |
-| bob | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
-| bodiesCount | app/alchemist_mhp_2024_runtime.js, tests/alchemist_runtime_test.js |
+| bob | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| bodiesCount | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | bodiesSpent | app/alchemist_mhp_2024_runtime.js |
-| body | app/3dmap/character_system.js, app/cloud_sync.js, app/walter_parasite_extra_runtime.js, tests/character_3d_editor_test.js (+ 32 ещё) |
+| body | app/3dmap/character_system.js (+ 35 других файлов) |
 | bodyAccessories | app/3dmap/character_body_geometry.js |
-| bodyColor | app/3dmap/character_system.js, tools/check_avian_races_browser.js, tools/check_character_head_browser.js, tools/check_kobold_tabaxi_browser.js (+ 6 ещё) |
+| bodyColor | app/3dmap/character_system.js (+ 9 других файлов) |
 | bodyDefaults | app/3dmap/character_system.js |
 | bodyDestroyed | app/walter_parasite_extra_runtime.js |
-| bodyH | app/3dmap/character_anatomy.js, app/3dmap/character_editor_3d.js, tests/character_animal_heads_test.js |
+| bodyH | app/3dmap/character_anatomy.js (+ 2 других файлов) |
 | bodyHorror | app/bestiary_catalog_v56_10.js |
 | bodyHP | app/walter_parasite_extra_runtime.js |
 | bodyMaxHP | app/walter_parasite_extra_runtime.js |
@@ -7129,9 +7130,9 @@
 | bodyPossession | app/necromancer_mhp_2024_runtime.js |
 | bodyPreset | app/3dmap/character_anatomy.js |
 | bodyStats | app/parasite_extra_runtime.js |
-| bodyTint | app/3dmap/character_system.js, tools/check_character_head_browser.js |
+| bodyTint | app/3dmap/character_system.js (+ 1 других файлов) |
 | bolsteringSuppression | app/expansion_classes_pack.js |
-| bomb | app/data/classes/Alchemist.js, app/expansion_classes_pack.js |
+| bomb | app/data/classes/Alchemist.js (+ 1 других файлов) |
 | bombDamage | app/data/classes/Alchemist.js |
 | bombFormulas | app/data/classes/Alchemist.js |
 | bombImmunity | app/expansion_classes_pack.js |
@@ -7139,14 +7140,14 @@
 | bondedTarget | app/expansion_classes_pack.js |
 | bondOfBloodthirst | app/expansion_classes_pack.js |
 | bonds | app/data/classes/Beastheart.js |
-| bone | app/crafting_economy_v49.js, app/resource_processing_v44.js |
+| bone | app/crafting_economy_v49.js (+ 1 других файлов) |
 | boneAsh | app/crafting_resources_v34.js |
 | boneSpurring | app/expansion_classes_pack.js |
-| boneStock | app/crafting_economy_v49.js, app/resource_processing_v44.js |
+| boneStock | app/crafting_economy_v49.js (+ 1 других файлов) |
 | boneStockV49 | app/crafting_economy_v49.js |
-| bonus | app/alchemist_mhp_2024_runtime.js, app/alchemy_gathering_professions_v52.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js (+ 46 ещё) |
+| bonus | app/alchemist_mhp_2024_runtime.js (+ 49 других файлов) |
 | bonusAC | app/expansion_classes_pack.js |
-| bonusAction | app/alchemist_mhp_2024_runtime.js, app/dnd_tools.js, app/expanded_classes_v23.js, app/expansion_classes_pack.js (+ 19 ещё) |
+| bonusAction | app/alchemist_mhp_2024_runtime.js (+ 22 других файлов) |
 | bonusActionAfflict | app/expansion_classes_pack.js |
 | bonusActionAttack | app/expanded_classes_v23.js |
 | bonusActionAttackAfterExploit | app/expansion_classes_pack.js |
@@ -7164,22 +7165,22 @@
 | bonusActionSupportOrder | app/expansion_classes_pack.js |
 | bonusActionUnarmedOrGrapple | app/expansion_classes_pack.js |
 | bonusActionWeaponAttack | app/blood_hunter_engine.js |
-| bonusAttack | app/blood_hunter_engine.js, app/expansion_classes_pack.js, app/feat_engine.js, app/occultist_kibbles_v11_runtime.js |
+| bonusAttack | app/blood_hunter_engine.js (+ 3 других файлов) |
 | bonusAttackAfterInvoke | app/expansion_classes_pack.js |
 | bonusAttackVsFrightened | app/expansion_classes_pack.js |
 | bonusCantrip | app/expansion_classes_pack.js |
 | bonusCharnelTouchAfterAttack | app/necromancer_mhp_2024_runtime.js |
-| bonusDamage | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/combat_engine.js (+ 6 ещё) |
+| bonusDamage | app/alchemist_mhp_2024_runtime.js (+ 9 других файлов) |
 | bonusDamageDice | app/expansion_classes_pack.js |
 | bonusDamageDie | app/expansion_classes_pack.js |
 | bonusDamageOnHit | app/expansion_classes_pack.js |
 | bonusDash | app/expansion_classes_pack.js |
 | bonusDie | app/occultist_kibbles_v11_runtime.js |
-| bonuses | app/armors.js, app/inventory-modal.js, app/races.js, app/weaponsheavy.js (+ 3 ещё) |
+| bonuses | app/armors.js (+ 6 других файлов) |
 | bonusFireDamage | app/data/classes/Beastheart.js |
 | bonusGrapple | app/expansion_classes_pack.js |
 | bonusHealing | app/expansion_classes_pack.js |
-| bonusHp | app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js |
+| bonusHp | app/expansion_classes_pack.js (+ 1 других файлов) |
 | bonusHpDice | app/expansion_classes_pack.js |
 | bonusKnownSpells | app/expansion_classes_pack.js |
 | bonusMaxHP | app/expansion_classes_pack.js |
@@ -7192,85 +7193,85 @@
 | book | app/3dmap/gltf_catalog.js |
 | bookshelf | app/3dmap/gltf_catalog.js |
 | boon | app/expansion_classes_pack.js |
-| boots | app/3dmap/character_clothing.js, tests/character_clothing_options_test.js |
+| boots | app/3dmap/character_clothing.js (+ 1 других файлов) |
 | bottle | app/3dmap/gltf_catalog.js |
-| bottom | app/3dmap/character_system.js, tests/character_clothing_test.js, tests/character_ghost_geometry_test.js, tests/character_parasites_geometry_test.js (+ 3 ещё) |
+| bottom | app/3dmap/character_system.js (+ 6 других файлов) |
 | boundary | app/3dmap/character_anatomy_geometry.js |
-| bounds | app/3dmap/character_body_geometry.js, app/3dmap/gltf_loader.js, tests/character_3d_editor_test.js |
+| bounds | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | bountiful_luck | app/feat_engine.js |
-| bovineEarSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js |
+| bovineEarSize | app/3dmap/character_system.js (+ 1 других файлов) |
 | bowDamageBonus | app/expansion_classes_pack.js |
 | bowyer | app/crafting_profession_progression_v47.js |
 | boxingTechnique | app/expanded_classes_v23.js |
 | bra | app/3dmap/character_clothing.js |
 | braceUp | app/expansion_classes_pack.js |
-| braid | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
+| braid | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | brainsOverBrawn | app/expansion_classes_pack.js |
 | bramble | app/alchemist_mhp_2024_runtime.js |
 | brambleBomb | app/expansion_classes_pack.js |
 | brand | app/expansion_classes_pack.js |
 | brandAllyDistanceFt | app/combat_engine.js |
-| brandCastigation | app/combat_engine.js, tests/test_blood_hunter_completion.js, tests/test_blood_hunter_profane_focus.js |
+| brandCastigation | app/combat_engine.js (+ 2 других файлов) |
 | brandOfAxiom | app/blood_hunter_engine.js |
-| brandOfCastigation | app/blood_hunter_engine.js, app/network_gameplay.js |
+| brandOfCastigation | app/blood_hunter_engine.js (+ 1 других файлов) |
 | brandOfSundering | app/blood_hunter_engine.js |
-| brandOfTethering | app/blood_hunter_engine.js, app/network_gameplay.js |
+| brandOfTethering | app/blood_hunter_engine.js (+ 1 других файлов) |
 | brandOfVoracious | app/blood_hunter_engine.js |
 | brandSappingScar | app/blood_hunter_engine.js |
 | brawling | app/expansion_classes_pack.js |
 | breakConcentration | app/combat_engine.js |
-| breastSize | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_tiefling_details_test.js |
+| breastSize | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
 | Breathing | app/alchemy_gameplay_v30.js |
 | brew | app/occultist_kibbles_v11_runtime.js |
-| brewer | app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| brewer | app/crafting_profession_progression_v47.js (+ 3 других файлов) |
 | brewMinutes | app/necromancer_mhp_2024_runtime.js |
 | briefs_female | app/3dmap/character_clothing.js |
 | briefs_male | app/3dmap/character_clothing.js |
 | brightLightFt | app/expansion_classes_pack.js |
 | brightLightRadiusFt | app/expansion_classes_pack.js |
-| broken | app/3dmap/character_system.js, app/crafting_disassembly_repair_v51.js, app/crafting_dlc_v50.js |
+| broken | app/3dmap/character_system.js (+ 2 других файлов) |
 | browHeight | app/3dmap/character_system.js |
 | browRidge | app/3dmap/character_system.js |
 | browser | tests/update_ota_flow_test.js |
 | brutalCritical | app/class_features_engine.js |
 | bt_a | tests/test_v738_multiclass_spell_sources.js |
 | bt_b | tests/test_v738_multiclass_spell_sources.js |
-| btoa | tests/test_v714_fixes.js, tests/test_v752_replay_hash_authority.js, tests/test_v753_replay_transaction_rng.js |
+| btoa | tests/test_v714_fixes.js (+ 2 других файлов) |
 | bubbles | app/data/classes/level_up.js |
 | budgets | app/3dmap/character_anatomy.js |
 | buf | app/3dmap/map_renderer_3d.js |
-| buffer | tests/generate_makehuman_glb_morph_fixture.js, tests/gltf_loader_smoke.cjs, tests/makehuman_gender_recipe_test.js, tools/build_makehuman_morphs.js |
-| buffers | app/3dmap/gltf_loader.js, tests/character_3d_editor_test.js, tests/gltf_loader_smoke.cjs, tests/makehuman_gender_recipe_test.js |
-| bufferView | tests/generate_makehuman_glb_morph_fixture.js, tests/gltf_loader_smoke.cjs, tests/makehuman_gender_recipe_test.js, tools/build_makehuman_morphs.js |
-| bufferViews | tests/gltf_loader_smoke.cjs, tests/makehuman_gender_recipe_test.js |
-| build | app/3dmap/character_anatomy_geometry.js, app/vtt_combat_log_v66.js, app/vtt_encounter_checkpoint_v68.js, app/vtt_mobile_session_v67.js |
+| buffer | tests/generate_makehuman_glb_morph_fixture.js (+ 3 других файлов) |
+| buffers | app/3dmap/gltf_loader.js (+ 3 других файлов) |
+| bufferView | tests/generate_makehuman_glb_morph_fixture.js (+ 3 других файлов) |
+| bufferViews | tests/gltf_loader_smoke.cjs (+ 1 других файлов) |
+| build | app/3dmap/character_anatomy_geometry.js (+ 3 других файлов) |
 | buildAnimations | app/3dmap/gltf_character_pipeline.js |
 | builder | app/crafting_profession_progression_v47.js |
-| buildFeatureSet | app/class_features_engine.js, tests/test_v739_prepared_transaction.js, tests/test_v742_character_combatant_sync.js |
+| buildFeatureSet | app/class_features_engine.js (+ 2 других файлов) |
 | bulette | app/data/classes/Beastheart.js |
 | bull | app/3dmap/character_body_geometry.js |
-| bullMuzzleSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js |
-| bun | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
-| burden | app/martyr_mhp_2024_runtime.js, tests/test_class_audit_stage3_runtime.js |
+| bullMuzzleSize | app/3dmap/character_system.js (+ 1 других файлов) |
+| bun | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| burden | app/martyr_mhp_2024_runtime.js (+ 1 других файлов) |
 | Burned | app/expansion_classes_pack.js |
-| burning | app/alchemist_mhp_2024_runtime.js, tests/alchemist_combat_test.js |
+| burning | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | burningTicks | tests/alchemist_combat_test.js |
 | burstDamage | app/expansion_classes_pack.js |
 | burstRadiusFt | app/expansion_classes_pack.js |
 | buttocks | app/3dmap/character_anatomy.js |
-| buttonColor | app/3dmap/character_clothing.js, tests/character_clothing_customizer_geometry_test.js, tests/character_clothing_options_test.js |
-| buttons | app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, tests/character_clothing_customizer_geometry_test.js, tests/character_clothing_options_test.js |
-| buy | app/market_economy_v55.js, app/market_social_v55_3.js, tests/test_v55.js |
-| buyFactor | app/market_economy_v55.js, app/market_expansion_v55_1.js |
+| buttonColor | app/3dmap/character_clothing.js (+ 2 других файлов) |
+| buttons | app/3dmap/character_clothing.js (+ 3 других файлов) |
+| buy | app/market_economy_v55.js (+ 2 других файлов) |
+| buyFactor | app/market_economy_v55.js (+ 1 других файлов) |
 | bypassesTempHP | app/martyr_mhp_2024_runtime.js |
-| byteLength | tests/generate_makehuman_glb_morph_fixture.js, tests/gltf_loader_smoke.cjs, tests/makehuman_gender_recipe_test.js, tools/build_makehuman_morphs.js |
-| byteOffset | tests/generate_makehuman_glb_morph_fixture.js, tests/gltf_loader_smoke.cjs, tests/makehuman_gender_recipe_test.js, tools/build_makehuman_morphs.js |
-| bytes | app/update_manager_v2.js, tests/desktop_update_contract.cjs, tests/makehuman_gender_fixture_audit.js, tests/makehuman_morph_bridge.js (+ 4 ещё) |
-| bytesDone | app/update_manager_v2.js, desktop/update.cjs, tests/update_ota_flow_test.js |
-| bytesTotal | app/update_manager_v2.js, desktop/update.cjs, tests/update_ota_flow_test.js |
+| byteLength | tests/generate_makehuman_glb_morph_fixture.js (+ 3 других файлов) |
+| byteOffset | tests/generate_makehuman_glb_morph_fixture.js (+ 3 других файлов) |
+| bytes | app/update_manager_v2.js (+ 7 других файлов) |
+| bytesDone | app/update_manager_v2.js (+ 2 других файлов) |
+| bytesTotal | app/update_manager_v2.js (+ 2 других файлов) |
 | c | app/network_gameplay.js |
 | cabinet | app/3dmap/gltf_catalog.js |
-| cache | app/update_manager_v2.js, app/vtt_debug_panel_v70.js, desktop/update.cjs |
+| cache | app/update_manager_v2.js (+ 2 других файлов) |
 | cackle | app/expansion_classes_pack.js |
 | calcifyingStrike | app/expansion_classes_pack.js |
 | calculateAC | app/rulesEngine.js |
@@ -7281,9 +7282,9 @@
 | call | tests/test_class_audit_stage4_runtime.js |
 | callAPI | app/vtt_debug_panel_v70.js |
 | callFromBelow | app/expansion_classes_pack.js |
-| calligrapher | app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js |
+| calligrapher | app/crafting_profession_progression_v47.js (+ 1 других файлов) |
 | callOfIron | app/expansion_classes_pack.js |
-| calls | app/warden_mhp_2024_runtime.js, tests/character_3d_editor_test.js |
+| calls | app/warden_mhp_2024_runtime.js (+ 1 других файлов) |
 | callToHavok | app/expansion_classes_pack.js |
 | campaign | app/vtt_combat_log_v66.js |
 | campaignEvent | app/gameplay_core_v57.js |
@@ -7307,114 +7308,114 @@
 | cannotSurprise | app/expanded_classes_v23.js |
 | CANONICAL_2024_SUBCLASSES | app/alchemist_mhp_2024_runtime.js |
 | canopicJars | app/necromancer_mhp_2024_runtime.js |
-| canReceiveHealing | app/ghost_extra_runtime.js, app/walter_parasite_extra_runtime.js |
+| canReceiveHealing | app/ghost_extra_runtime.js (+ 1 других файлов) |
 | canRepair | app/crafting_disassembly_v51.js |
-| canRestHealBody | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/walter_parasite_extra_runtime.js |
+| canRestHealBody | app/ghost_extra_runtime.js (+ 2 других файлов) |
 | canTarget0Hp | app/expansion_classes_pack.js |
-| cantrip | app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js, app/network_gameplay.js, tests/alchemist_runtime_test.js |
-| cantrips | app/blood_hunter_engine.js, app/expansion_classes_pack.js, app/martyr_mhp_2024_runtime.js, app/necromancer_mhp_2024_runtime.js (+ 1 ещё) |
+| cantrip | app/alchemist_mhp_2024_runtime.js (+ 3 других файлов) |
+| cantrips | app/blood_hunter_engine.js (+ 4 других файлов) |
 | cantripsByLevel | app/necromancer_mhp_2024_runtime.js |
-| cantripsKnown | app/data/classes/Occultist.js, app/occultist_kibbles_v11_runtime.js, app/vessel_laserllama_v4_runtime.js |
+| cantripsKnown | app/data/classes/Occultist.js (+ 2 других файлов) |
 | canWalk | app/3dmap/map_model.js |
 | cap | app/3dmap/character_clothing.js |
 | capaciousAnathema | app/expansion_classes_pack.js |
-| capacity | app/expansion_classes_pack.js, app/inventory_containers_v54.js, app/necromancer_mhp_2024_runtime.js, tests/test_v54.js |
+| capacity | app/expansion_classes_pack.js (+ 3 других файлов) |
 | capacityByLevel | app/occultist_kibbles_v11_runtime.js |
 | capacityFt3 | app/occultist_kibbles_v11_runtime.js |
-| capColor | app/3dmap/character_system.js, tools/check_last_races_browser.js |
+| capColor | app/3dmap/character_system.js (+ 1 других файлов) |
 | cape | app/3dmap/character_clothing.js |
 | capeWidth | app/3dmap/character_clothing.js |
-| capSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js |
-| captain | app/data/classes/Warlord.js, app/warlord_laserllama_v330_runtime.js |
+| capSize | app/3dmap/character_system.js (+ 1 других файлов) |
+| captain | app/data/classes/Warlord.js (+ 1 других файлов) |
 | capture | app/vtt_mobile_battle_v61.js |
 | capturedAt | app/parasite_extra_runtime.js |
 | captureHost | app/parasite_extra_runtime.js |
-| caravan | app/market_economy_v55.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
-| caravan_master | app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| caravan | app/market_economy_v55.js (+ 2 других файлов) |
+| caravan_master | app/market_social_v55_3.js (+ 1 других файлов) |
 | cards | tools/check_fur_surface_browser.js |
 | careful | app/class_features_engine.js |
-| carpenter | app/crafting_profession_progression_test_v47.js, app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js, app/market_social_v55_3.js (+ 1 ещё) |
+| carpenter | app/crafting_profession_progression_test_v47.js (+ 4 других файлов) |
 | carried | app/monster_loot_crafting_bridge_v40.js |
 | carryCapacity | app/occultist_kibbles_v11_runtime.js |
 | carryingCapacityMultiplier | app/expansion_classes_pack.js |
 | cart | app/3dmap/gltf_catalog.js |
-| cartographer | app/crafting_engine_v31.js, app/crafting_profession_progression_v47.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js (+ 2 ещё) |
+| cartographer | app/crafting_engine_v31.js (+ 5 других файлов) |
 | cartographyQuality | app/crafting_professions_v33.js |
-| case | app/class_features_engine.js, app/feat_engine.js, app/network_gameplay.js |
+| case | app/class_features_engine.js (+ 2 других файлов) |
 | castAsRitual | app/occultist_kibbles_v11_runtime.js |
 | caster | app/network_gameplay.js |
-| casterLevel | app/magic_engine.js, app/rulesEngine.js, tests/test_v737_spellcasting_transaction.js |
+| casterLevel | app/magic_engine.js (+ 2 других файлов) |
 | castIllriggerActionSpell | app/expansion_classes_pack.js |
-| castingClass | app/network_gameplay.js, tests/test_blood_hunter_orders.js, tests/test_class_audit_stage4_runtime.js, tests/test_v738_multiclass_spell_sources.js (+ 1 ещё) |
-| castingStat | app/network_gameplay.js, tests/test_class_audit_stage4_runtime.js, tests/test_v738_multiclass_spell_sources.js, tests/test_v739_prepared_transaction.js |
-| castingTime | app/data/spells/Focuses.js, app/data/spells/Spells1lvl.js, app/data/spells/Spells2lvl.js, app/data/spells/Spells3lvl.js (+ 11 ещё) |
+| castingClass | app/network_gameplay.js (+ 4 других файлов) |
+| castingStat | app/network_gameplay.js (+ 3 других файлов) |
+| castingTime | app/data/spells/Focuses.js (+ 14 других файлов) |
 | castLucidSpellFree | app/expansion_classes_pack.js |
-| castSpell | app/expansion_classes_pack.js, app/occultist_kibbles_v11_runtime.js |
+| castSpell | app/expansion_classes_pack.js (+ 1 других файлов) |
 | castSpellInAttack | app/expansion_classes_pack.js |
 | castWish | app/expansion_classes_pack.js |
-| cat | app/3dmap/character_body_geometry.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js (+ 18 ещё) |
+| cat | app/3dmap/character_body_geometry.js (+ 21 других файлов) |
 | cataclysm | app/vessel_laserllama_v4_runtime.js |
 | cataclysmicStrike | app/expansion_classes_pack.js |
-| catalog | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 24 ещё) |
+| catalog | app/bestiary_catalog_v56_1.js (+ 27 других файлов) |
 | catalyst | app/alchemy_gameplay_v30.js |
 | catalystId | app/alchemy_gameplay_v30.js |
 | catalystReagent | app/resource_processing_v44.js |
 | catalysts | app/alchemy_engine_v29.js |
-| catEarSize | app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tools/check_kobold_tabaxi_browser.js |
+| catEarSize | app/3dmap/character_system.js (+ 2 других файлов) |
 | categories | app/market_trade_v55_2.js |
-| category | app/3dmap/map_world.js, app/Proficiencies.js, app/alchemy_gathering_professions_v52.js, app/armors.js (+ 44 ещё) |
-| catMuzzleSize | app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tests/character_races_geometry_test.js, tools/check_kobold_tabaxi_browser.js |
+| category | app/3dmap/map_world.js (+ 47 других файлов) |
+| catMuzzleSize | app/3dmap/character_system.js (+ 3 других файлов) |
 | caucasian | tests/makehuman_gender_recipe_test.js |
-| cauldron | app/3dmap/gltf_catalog.js, app/necromancer_mhp_2024_runtime.js |
+| cauldron | app/3dmap/gltf_catalog.js (+ 1 других файлов) |
 | causal | app/runekeeper_taron_v12_runtime.js |
 | celerity | app/blood_hunter_engine.js |
 | Celerity | app/expansion_classes_pack.js |
-| celestial | app/3dmap/character_editor_3d.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js (+ 11 ещё) |
+| celestial | app/3dmap/character_editor_3d.js (+ 14 других файлов) |
 | celestialDiscourse | app/expansion_classes_pack.js |
 | celestialStance | app/expansion_classes_pack.js |
-| cell | app/3dmap/map_model.js, app/network_gameplay.js |
-| cellFt | app/vtt_encounter_map_v59.js, tests/test_v709_fixes.js, tests/test_v723_fixes.js |
+| cell | app/3dmap/map_model.js (+ 1 других файлов) |
+| cellFt | app/vtt_encounter_map_v59.js (+ 2 других файлов) |
 | cellPx | tests/test_v717_fixes.js |
 | cellSize | tests/makehuman_surface_mapping_audit.js |
 | censurePeacemaker | app/expansion_classes_pack.js |
 | centaur | tools/check_last_races_browser.js |
 | centaurIndices | app/3dmap/character_body_geometry.js |
-| centaurSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js, tools/check_last_races_browser.js |
-| center | app/3dmap/character_body_geometry.js, app/3dmap/gltf_loader.js, tests/character_races_geometry_test.js, tests/makehuman_morph_bridge.js (+ 10 ещё) |
+| centaurSize | app/3dmap/character_system.js (+ 2 других файлов) |
+| center | app/3dmap/character_body_geometry.js (+ 13 других файлов) |
 | centerY | app/3dmap/character_anatomy_geometry.js |
-| ceramic | app/crafting_engine_v31.js, app/crafting_profession_progression_v47.js, app/crafting_professions_v33.js |
-| cha | app/Backgrounds.js, app/Inventory.js, app/alchemist_mhp_2024_runtime.js, app/app.js (+ 46 ещё) |
+| ceramic | app/crafting_engine_v31.js (+ 2 других файлов) |
+| cha | app/Backgrounds.js (+ 49 других файлов) |
 | chaChecksAdvantage | app/expansion_classes_pack.js |
-| chaChecksDisadvantage | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| chaChecksDisadvantage | app/blood_hunter_engine.js (+ 1 других файлов) |
 | chain | app/alchemist_mhp_2024_runtime.js |
 | chainReport | app/crafting_economy_v49.js |
 | chair | app/3dmap/gltf_catalog.js |
 | championCalls | app/data/classes/Warden.js |
-| chance | app/expanded_bestiary_v39.js, app/monster_loot_engine_v36.js, app/monster_loot_engine_v37.js, app/resource_processing_v44.js |
+| chance | app/expanded_bestiary_v39.js (+ 3 других файлов) |
 | chandelier | app/3dmap/gltf_catalog.js |
 | changedVertices | tests/makehuman_gender_fixture_audit.js |
 | changeShape | app/occultist_kibbles_v11_runtime.js |
-| channel | app/network_engine.js, app/update_manager_v2.js, tests/test_v745_host_handoff.js, tests/test_v748_full_combat_transaction.js |
-| channelDivinity | app/class_features_engine.js, app/expanded_classes_v23.js, app/expansion_classes_pack.js, tests/test_v736_deep_rules.js |
+| channel | app/network_engine.js (+ 3 других файлов) |
+| channelDivinity | app/class_features_engine.js (+ 3 других файлов) |
 | channels | app/3dmap/gltf_character_pipeline.js |
 | chant | app/runekeeper_taron_v12_runtime.js |
-| character | app/monster_loot_crafting_bridge_v40.js, app/monster_loot_engine_v37.js, app/vtt_combat_log_v66.js, app/vtt_debug_character_lab_v702.js (+ 3 ещё) |
-| characterId | app/3dmap/character_system.js, app/network_gameplay.js, app/vtt_encounter_checkpoint_v68.js, tests/test_blood_hunter_focus_network.js (+ 8 ещё) |
+| character | app/monster_loot_crafting_bridge_v40.js (+ 6 других файлов) |
+| characterId | app/3dmap/character_system.js (+ 11 других файлов) |
 | characterName | tests/test_v714_fixes.js |
-| characters | app/cloud_sync.js, tests/character_appearance_store_test.js, tests/cloud_sync_test.cjs |
-| charcoal | app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js, app/crafting_resources_v34.js |
+| characters | app/cloud_sync.js (+ 2 других файлов) |
+| charcoal | app/crafting_engine_v31.js (+ 3 других файлов) |
 | charcoalFine | app/crafting_resources_v34.js |
 | charge | app/expansion_classes_pack.js |
 | chargeOnDeflect | app/alchemist_mhp_2024_runtime.js |
-| charges | app/class_features_engine.js, app/combat_engine.js, tests/alchemist_combat_test.js |
+| charges | app/class_features_engine.js (+ 2 других файлов) |
 | chargesMax | app/class_features_engine.js |
-| chargesSpent | app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js |
+| chargesSpent | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | chargeTempHP | app/expansion_classes_pack.js |
 | chargeWeapon | app/alchemist_mhp_2024_runtime.js |
-| charisma | app/Hero-info.js, app/alchemist_mhp_2024_runtime.js, app/data/classes/Illigger.js, app/data/classes/Vessel.js (+ 6 ещё) |
+| charisma | app/Hero-info.js (+ 9 других файлов) |
 | charismaChecksAdvantage | app/blood_hunter_engine.js |
 | charismaReferencesUse | app/expansion_classes_pack.js |
-| charmed | app/warden_mhp_2024_runtime.js, tests/pugilist_combat_test.js |
+| charmed | app/warden_mhp_2024_runtime.js (+ 1 других файлов) |
 | charmedHours | app/expansion_classes_pack.js |
 | charmEffect | app/combat_engine.js |
 | charmOrCompel | app/expansion_classes_pack.js |
@@ -7423,29 +7424,29 @@
 | charnelTouchMax | app/necromancer_mhp_2024_runtime.js |
 | charnelTouchSpendMax | app/necromancer_mhp_2024_runtime.js |
 | chaSave | app/expansion_classes_pack.js |
-| chaSavesDisadvantage | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| chaSavesDisadvantage | app/blood_hunter_engine.js (+ 1 других файлов) |
 | cheapShot | app/expansion_classes_pack.js |
-| check | app/expansion_classes_pack.js, app/monster_loot_engine_v37.js, app/update_manager_v2.js |
+| check | app/expansion_classes_pack.js (+ 2 других файлов) |
 | checkAndStage | app/update_manager_v2.js |
-| checkBonus | app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js |
+| checkBonus | app/crafting_profession_progression_v47.js (+ 1 других файлов) |
 | checkBonusAll | app/crafting_professions_v38.js |
-| checkModifiers | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/expansion_classes_pack.js (+ 2 ещё) |
+| checkModifiers | app/alchemist_mhp_2024_runtime.js (+ 5 других файлов) |
 | checkResult | tests/test_class_audit_stage4_runtime.js |
-| checks | app/expansion_classes_pack.js, app/rulesEngine.js |
-| cheekbones | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js |
+| checks | app/expansion_classes_pack.js (+ 1 других файлов) |
+| cheekbones | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | chef | app/crafting_professions_v38.js |
-| chest | app/3dmap/character_anatomy.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/3dmap/gltf_catalog.js (+ 3 ещё) |
+| chest | app/3dmap/character_anatomy.js (+ 6 других файлов) |
 | chestShape | tests/character_3d_foundation_test.js |
 | Chieftain | app/kibbles_localization_content_v71.js |
-| childList | app/Inventory-weight-tracker.js, app/Settings.js, app/dice.js, app/swipe-lock.js (+ 2 ещё) |
-| children | tests/character_3d_skin_morph_test.js, tests/test_v724_fixes.js, tests/test_v739_prepared_transaction.js |
-| chinLength | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js |
+| childList | app/Inventory-weight-tracker.js (+ 5 других файлов) |
+| children | tests/character_3d_skin_morph_test.js (+ 2 других файлов) |
+| chinLength | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | chitin | app/resource_processing_v44.js |
-| chitinPlate | app/crafting_economy_v49.js, app/resource_processing_v44.js |
-| choice | app/network_gameplay.js, tests/test_blood_hunter_focus_network.js, tests/test_class_audit_stage4_runtime.js, tests/test_v722_fixes.js (+ 1 ещё) |
-| choices | app/blood_hunter_engine.js, app/data/classes/progressionEngine.js, app/occultist_kibbles_v11_runtime.js |
-| choiceSaved | app/warden_mhp_2024_runtime.js, app/warlord_laserllama_v330_runtime.js |
-| choose | app/data/classes/Accursed.js, app/data/classes/Alchemist.js, app/data/classes/Beastheart.js, app/data/classes/BloodHunter.js (+ 19 ещё) |
+| chitinPlate | app/crafting_economy_v49.js (+ 1 других файлов) |
+| choice | app/network_gameplay.js (+ 4 других файлов) |
+| choices | app/blood_hunter_engine.js (+ 2 других файлов) |
+| choiceSaved | app/warden_mhp_2024_runtime.js (+ 1 других файлов) |
+| choose | app/data/classes/Accursed.js (+ 22 других файлов) |
 | chooseAnyAilments | app/expansion_classes_pack.js |
 | chooseBeforeRoll | app/expansion_classes_pack.js |
 | chooseBond | app/data/classes/Beastheart.js |
@@ -7458,49 +7459,49 @@
 | chooseResistance | app/alchemist_mhp_2024_runtime.js |
 | chooseSavingThrowProficiency | app/expansion_classes_pack.js |
 | chooseSpecialization | app/crafting_profession_progression_v47.js |
-| chosenCreatureId | app/accursed_oap_v11_runtime.js, tests/test_class_audit_stage3_runtime.js |
+| chosenCreatureId | app/accursed_oap_v11_runtime.js (+ 1 других файлов) |
 | cinzel | app/Settings.js |
 | circumcised | app/3dmap/character_anatomy.js |
 | cl | app/3dmap/map_renderer_3d.js |
 | clairvoyance | app/expanded_classes_v23.js |
 | clandestineSource | app/expansion_classes_pack.js |
-| class | app/Backgrounds.js, app/character_creation.js, app/data/classes/level_up.js, tests/test_v713_fixes.js |
+| class | app/Backgrounds.js (+ 3 других файлов) |
 | CLASS | app/blood_hunter_engine.js |
 | CLASS_NAMES | app/class_features_engine.js |
 | classAbilities | app/expansion_classes_pack.js |
-| classBonus | app/combat_engine.js, app/network_gameplay.js |
-| classes | app/Hero-info.js, app/character_creation.js, app/content_framework.js, app/crafting_character_influence_test_v46.js (+ 35 ещё) |
+| classBonus | app/combat_engine.js (+ 1 других файлов) |
+| classes | app/Hero-info.js (+ 38 других файлов) |
 | CLASSES_REFERENCE | tests/test_v755_creation_buckets.js |
-| classFeatureIds | app/network_gameplay.js, tests/test_v722_fixes.js, tests/test_v723_fixes.js, tests/test_v737_spellcasting_transaction.js (+ 2 ещё) |
-| classFeatureNotes | app/combat_engine.js, app/network_gameplay.js |
-| classFeaturesState | app/alchemist_mhp_2024_runtime.js, app/network_gameplay.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js (+ 17 ещё) |
+| classFeatureIds | app/network_gameplay.js (+ 5 других файлов) |
+| classFeatureNotes | app/combat_engine.js (+ 1 других файлов) |
+| classFeaturesState | app/alchemist_mhp_2024_runtime.js (+ 20 других файлов) |
 | classKey | app/rulesEngine.js |
 | classLevel | app/rulesEngine.js |
 | classList | tests/helpers/class_runtime_harness.js |
-| className | app/Backgrounds.js, app/accursed_oap_v11_runtime.js, app/blood_hunter_engine.js, app/character_creation.js (+ 53 ещё) |
+| className | app/Backgrounds.js (+ 56 других файлов) |
 | clawColor | app/3dmap/character_system.js |
-| clawSize | app/3dmap/character_system.js, tests/character_native_limbs_test.js, tools/check_native_limbs_browser.js |
-| clay | app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js |
+| clawSize | app/3dmap/character_system.js (+ 2 других файлов) |
+| clay | app/crafting_engine_v31.js (+ 2 других файлов) |
 | cleanHead | app/3dmap/character_system.js |
 | cleansingTouch | app/class_features_engine.js |
-| clear | app/3dmap/gltf_loader.js, app/vtt_combat_event_bus_v69.js, app/vtt_combat_log_v66.js, app/vtt_encounter_map_v59.js (+ 3 ещё) |
-| clearTimeout | app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js, tests/cloud_sync_test.cjs, tests/pugilist_combat_test.js (+ 2 ещё) |
-| cleric | app/magic_engine.js, app/rulesEngine.js |
-| clientId | app/network_engine.js, app/vtt_mobile_session_v67.js, tests/test_v714_fixes.js, tests/test_v742_character_combatant_sync.js (+ 2 ещё) |
-| clientX | app/vtt_mobile_battle_v61.js, tests/character_3d_editor_test.js |
-| clientY | app/vtt_mobile_battle_v61.js, tests/character_3d_editor_test.js |
+| clear | app/3dmap/gltf_loader.js (+ 6 других файлов) |
+| clearTimeout | app/crafting_character_influence_test_v46.js (+ 5 других файлов) |
+| cleric | app/magic_engine.js (+ 1 других файлов) |
+| clientId | app/network_engine.js (+ 5 других файлов) |
+| clientX | app/vtt_mobile_battle_v61.js (+ 1 других файлов) |
+| clientY | app/vtt_mobile_battle_v61.js (+ 1 других файлов) |
 | climb | app/necromancer_mhp_2024_runtime.js |
-| climbSpeed | app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js |
+| climbSpeed | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | clingingCurse | app/expansion_classes_pack.js |
-| clone | app/3dmap/map_model.js, app/monster_engine.js |
-| close | app/3dmap/character_editor_3d.js, app/companions.js, app/content_catalog.js, app/vtt_debug_character_lab_v702.js (+ 5 ещё) |
+| clone | app/3dmap/map_model.js (+ 1 других файлов) |
+| close | app/3dmap/character_editor_3d.js (+ 8 других файлов) |
 | closed | app/inventory_containers_v54.js |
 | closedChains | app/crafting_economy_v49.js |
 | closeReplay | app/vtt_combat_event_bus_v69.js |
 | closet | app/3dmap/gltf_catalog.js |
-| cloth | app/crafting_economy_v49.js, app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js (+ 1 ещё) |
+| cloth | app/crafting_economy_v49.js (+ 4 других файлов) |
 | clothes | tools/check_swarm_browser.js |
-| clothing | app/3dmap/character_clothing.js, app/3dmap/character_system.js, app/crafting_character_influence_test_v46.js, app/crafting_disassembly_v51.js (+ 15 ещё) |
+| clothing | app/3dmap/character_clothing.js (+ 18 других файлов) |
 | clothingBuilds | app/3dmap/character_editor_3d.js |
 | clothingId | app/3dmap/character_clothing.js |
 | clothingTriangles | app/3dmap/character_editor_3d.js |
@@ -7508,38 +7509,38 @@
 | cloudScope | app/3dmap/character_appearance_store.js |
 | cls | app/class_features_engine.js |
 | club | tests/test_class_audit_runtime.js |
-| coast | app/market_economy_v55.js, app/world_resource_gathering_v53.js |
+| coast | app/market_economy_v55.js (+ 1 других файлов) |
 | coast_caves | app/world_resource_gathering_v53.js |
 | coast_cliffs | app/world_resource_gathering_v53.js |
 | coast_grotto | app/world_resource_gathering_v53.js |
-| cobbler | app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| cobbler | app/crafting_profession_progression_v47.js (+ 3 других файлов) |
 | code | tests/cloud_sync_test.cjs |
-| coins | tests/test_v55.js, tests/test_v55_2.js, tests/test_v55_3.js, tests/test_v56.js |
-| col | app/3dmap/map_renderer_3d.js, tests/character_3d_editor_test.js |
-| cold | app/blood_hunter_engine.js, app/class_features_engine.js, app/warden_mhp_2024_runtime.js |
+| coins | tests/test_v55.js (+ 3 других файлов) |
+| col | app/3dmap/map_renderer_3d.js (+ 1 других файлов) |
+| cold | app/blood_hunter_engine.js (+ 2 других файлов) |
 | Cold | app/alchemy_gameplay_v30.js |
 | collar | app/3dmap/character_clothing.js |
-| collect | app/monster_loot_crafting_bridge_v40.js, app/monster_loot_engine_v36.js, app/monster_loot_engine_v37.js, tests/test_v57.js |
+| collect | app/monster_loot_crafting_bridge_v40.js (+ 3 других файлов) |
 | collectiveBody | app/swarm_extra_runtime.js |
 | collectLoot | app/gameplay_core_v57.js |
-| color | app/3dmap/character_anatomy.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/Settings.js (+ 6 ещё) |
-| colors | app/3dmap/map_renderer_3d.js, tests/cloud_sync_test.cjs, tools/check_adult_anatomy_browser.js |
-| cols | app/alchemist_mhp_2024_runtime.js, app/vtt_encounter_map_v59.js, tests/test_class_audit_runtime.js, tests/test_class_audit_stage2_runtime.js (+ 1 ещё) |
+| color | app/3dmap/character_anatomy.js (+ 9 других файлов) |
+| colors | app/3dmap/map_renderer_3d.js (+ 2 других файлов) |
+| cols | app/alchemist_mhp_2024_runtime.js (+ 4 других файлов) |
 | column | app/vtt_debug_error_log_v709.js |
-| combat | app/vtt_combat_log_v66.js, tests/test_v744_sync_authority_save.js |
+| combat | app/vtt_combat_log_v66.js (+ 1 других файлов) |
 | combatant | app/companion_gameplay_v27.js |
-| combatantId | app/gameplay_core_v57.js, app/secondary_entities_engine.js |
-| combatants | app/alchemist_mhp_2024_runtime.js, app/app.js, app/combat_engine.js, app/dnd_tools.js (+ 26 ещё) |
+| combatantId | app/gameplay_core_v57.js (+ 1 других файлов) |
+| combatants | app/alchemist_mhp_2024_runtime.js (+ 29 других файлов) |
 | combatHooks | app/data/classes/Occultist.js |
 | combatInsight | app/occultist_kibbles_v11_runtime.js |
 | combatInspiration | app/class_features_engine.js |
 | combatLog | app/vtt_mobile_session_v67.js |
 | combatMasteries | app/data/classes/Illigger.js |
-| combatMastery | app/data/classes/Illigger.js, app/expansion_classes_pack.js |
+| combatMastery | app/data/classes/Illigger.js (+ 1 других файлов) |
 | combatTurnGate | app/data/classes/Beastheart.js |
 | combineDisciplines | app/expansion_classes_pack.js |
 | combustion | app/expansion_classes_pack.js |
-| command | app/companion_gameplay_v27.js, app/expansion_classes_pack.js, app/secondary_entities_engine.js, app/summoning_engine.js |
+| command | app/companion_gameplay_v27.js (+ 3 других файлов) |
 | commandable | app/expansion_classes_pack.js |
 | Commander | app/kibbles_localization_content_v71.js |
 | commandFamiliarAndUndeadTogether | app/expansion_classes_pack.js |
@@ -7547,12 +7548,12 @@
 | commands | app/expansion_classes_pack.js |
 | commandSpellsWithoutSlot | app/necromancer_mhp_2024_runtime.js |
 | commandWithoutFear | app/expanded_classes_v23.js |
-| commit | tools/build_character_editor_morphs.js, tools/build_makehuman_morphs.js |
-| commitHostEvent | tests/test_blood_hunter_focus_network.js, tests/test_v722_fixes.js, tests/test_v723_fixes.js, tests/test_v737_spellcasting_transaction.js (+ 4 ещё) |
+| commit | tools/build_character_editor_morphs.js (+ 1 других файлов) |
+| commitHostEvent | tests/test_blood_hunter_focus_network.js (+ 7 других файлов) |
 | committed | app/crafting_disassembly_v51.js |
-| common | app/Inventory.js, app/alchemy_gathering_professions_v52.js, app/market_economy_v55.js, app/market_trade_v55_2.js (+ 2 ещё) |
+| common | app/Inventory.js (+ 5 других файлов) |
 | commonPeopleBonus | app/expansion_classes_pack.js |
-| companion | app/alchemist_mhp_2024_runtime.js, app/data/classes/Beastheart.js, app/expanded_classes_v23.js, app/expansion_classes_pack.js (+ 1 ещё) |
+| companion | app/alchemist_mhp_2024_runtime.js (+ 4 других файлов) |
 | companionACBonus | app/data/classes/Beastheart.js |
 | companionAction | app/expanded_classes_v23.js |
 | companionActor | app/data/classes/Beastheart.js |
@@ -7563,89 +7564,89 @@
 | companionRampage | app/expanded_classes_v23.js |
 | companionResistance | app/data/classes/Beastheart.js |
 | companions | app/data/classes/Beastheart.js |
-| companionType | app/alchemist_mhp_2024_runtime.js, app/data/classes/Beastheart.js, app/secondary_entities_engine.js |
+| companionType | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | compareVersions | app/update_manager_v2.js |
 | compatibility | app/update_manager_v2.js |
 | completeAttack | app/spellblade_kibbles_runtime.js |
-| components | app/3dmap/gltf_character_pipeline.js, app/data/spells/Focuses.js, app/data/spells/Spells1lvl.js, app/data/spells/Spells2lvl.js (+ 10 ещё) |
-| componentType | tests/generate_makehuman_glb_morph_fixture.js, tests/gltf_loader_smoke.cjs, tests/makehuman_gender_recipe_test.js, tools/build_makehuman_morphs.js |
+| components | app/3dmap/gltf_character_pipeline.js (+ 13 других файлов) |
+| componentType | tests/generate_makehuman_glb_morph_fixture.js (+ 3 других файлов) |
 | compositeTerms | tools/prepare_makehuman_gender.js |
 | compositions | tools/build_character_editor_morphs.js |
 | compressionLock | app/expansion_classes_pack.js |
-| con | app/Backgrounds.js, app/Inventory.js, app/alchemist_mhp_2024_runtime.js, app/app.js (+ 51 ещё) |
+| con | app/Backgrounds.js (+ 54 других файлов) |
 | concealPsionics | app/expansion_classes_pack.js |
-| concentration | app/combat_engine.js, app/data/spells/Focuses.js, app/data/spells/Spells1lvl.js, app/data/spells/Spells2lvl.js (+ 24 ещё) |
+| concentration | app/combat_engine.js (+ 27 других файлов) |
 | concentrationCheck | app/combat_engine.js |
 | concentrationDC | app/rulesEngine.js |
 | concentrationSaveBonus | app/expansion_classes_pack.js |
 | concentrationState | app/combat_engine.js |
 | concussion | app/alchemist_mhp_2024_runtime.js |
 | concussionBomb | app/expansion_classes_pack.js |
-| condition | app/alchemist_mhp_2024_runtime.js, app/alchemy_gameplay_v30.js, app/blood_hunter_engine.js, app/combat_engine.js (+ 8 ещё) |
+| condition | app/alchemist_mhp_2024_runtime.js (+ 11 других файлов) |
 | conditionApplied | app/expansion_classes_pack.js |
 | conditionChoice | app/data/classes/Beastheart.js |
 | conditionImmune | app/blood_hunter_engine.js |
 | conditionImmunity | app/expansion_classes_pack.js |
 | conditionLabel | app/crafting_disassembly_repair_v51.js |
-| conditionModifiers | app/rulesEngine.js, tests/alchemist_combat_test.js, tests/test_v726_fixes.js |
+| conditionModifiers | app/rulesEngine.js (+ 2 других файлов) |
 | conditionRemoved | app/warden_mhp_2024_runtime.js |
-| conditions | app/combat_engine.js, app/dnd_tools.js, app/expansion_classes_pack.js, app/secondary_entities_engine.js (+ 14 ещё) |
-| CONDITIONS | app/combat_engine.js, app/rulesEngine.js, tests/test_v742_character_combatant_sync.js |
+| conditions | app/combat_engine.js (+ 17 других файлов) |
+| CONDITIONS | app/combat_engine.js (+ 2 других файлов) |
 | conditionsImmune | app/companions.js |
 | coneWisdomSave | app/expansion_classes_pack.js |
 | config | app/vtt_debug_dice_lab_v706.js |
 | configure | app/cloud_sync.js |
-| configured | app/cloud_sync.js, app/update_manager_v2.js |
-| confirm | tests/character_3d_editor_test.js, tests/test_v58.js, tests/test_v710_fixes.js, tests/test_v712_fixes.js |
-| conflict | app/alchemy_engine_v29.js, tests/cloud_sync_test.cjs |
+| configured | app/cloud_sync.js (+ 1 других файлов) |
+| confirm | tests/character_3d_editor_test.js (+ 3 других файлов) |
+| conflict | app/alchemy_engine_v29.js (+ 1 других файлов) |
 | conflicts | app/cloud_sync.js |
 | connected | app/network_engine.js |
 | conSave | app/expansion_classes_pack.js |
 | console | tests/helpers/class_runtime_harness.js |
-| constant | app/combat_engine.js, app/rulesEngine.js, tests/pugilist_combat_test.js, tests/test_v715_fixes.js (+ 4 ещё) |
-| constitution | app/Hero-info.js, app/alchemist_mhp_2024_runtime.js, app/data/classes/Pugilist.js, app/data/classes/Shifter.js (+ 9 ещё) |
+| constant | app/combat_engine.js (+ 7 других файлов) |
+| constitution | app/Hero-info.js (+ 12 других файлов) |
 | Constitution | app/alchemy_gameplay_v30.js |
 | constitutionHalfDamageFailure | app/expansion_classes_pack.js |
 | constitutionHalfDamageSuccess | app/expansion_classes_pack.js |
 | constitutionMaxBonus | app/expansion_classes_pack.js |
-| construct | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 9 ещё) |
+| construct | app/bestiary_catalog_v56_1.js (+ 12 других файлов) |
 | constructBody | app/necromancer_mhp_2024_runtime.js |
 | constructConcentration | app/expansion_classes_pack.js |
 | constructDamageBonus | app/expansion_classes_pack.js |
 | constructMode | app/expansion_classes_pack.js |
 | consumableFunctional | tests/test_v55_2.js |
-| consumables | app/Inventory.js, app/Proficienciescheck.js, app/alchemy_gameplay_v30.js, app/alchemy_gathering_professions_v52.js (+ 26 ещё) |
-| consume | app/crafting_professions_v38.js, tests/test_v52.js |
-| consumed | app/crafting_professions_v38.js, app/expansion_classes_pack.js, app/parasite_extra_runtime.js |
+| consumables | app/Inventory.js (+ 29 других файлов) |
+| consume | app/crafting_professions_v38.js (+ 1 других файлов) |
+| consumed | app/crafting_professions_v38.js (+ 2 других файлов) |
 | consumedPotion | app/alchemist_mhp_2024_runtime.js |
 | consumeLairAction | app/monster_engine.js |
 | consumeLegendaryAction | app/monster_engine.js |
 | consumeLegendaryResistance | app/monster_engine.js |
 | consumeMagicMeleeWeapon | app/expansion_classes_pack.js |
-| consumePendingOnHit | app/class_features_engine.js, tests/alchemist_combat_test.js |
-| consuming | app/data/classes/Psion.js, app/expansion_classes_pack.js |
+| consumePendingOnHit | app/class_features_engine.js (+ 1 других файлов) |
+| consuming | app/data/classes/Psion.js (+ 1 других файлов) |
 | Consuming | app/kibbles_localization_content_v71.js |
 | consumption | app/expansion_classes_pack.js |
 | container | app/inventory_containers_v54.js |
 | containerRequired | app/expansion_classes_pack.js |
-| containers | app/monster_loot_crafting_bridge_v40.js, app/monster_loot_engine_v36.js, app/monster_loot_engine_v37.js, tests/test_v54.js (+ 1 ещё) |
+| containers | app/monster_loot_crafting_bridge_v40.js (+ 4 других файлов) |
 | containerType | app/inventory_containers_v54.js |
-| content | app/3dmap/map_model.js, app/content_manifest.js |
-| contentPackId | app/alchemist_mhp_2024_runtime.js, app/expanded_class_registry_bridge.js, app/occultist_kibbles_v11_runtime.js, app/spellblade_kibbles_runtime.js (+ 2 ещё) |
-| contents | app/inventory_containers_v54.js, app/monster_loot_crafting_bridge_v40.js |
+| content | app/3dmap/map_model.js (+ 1 других файлов) |
+| contentPackId | app/alchemist_mhp_2024_runtime.js (+ 5 других файлов) |
+| contents | app/inventory_containers_v54.js (+ 1 других файлов) |
 | contentType | tools/check_cloud_account_browser.cjs |
-| context | app/combat_engine.js, app/network_gameplay.js |
+| context | app/combat_engine.js (+ 1 других файлов) |
 | contextIsolation | desktop/main.cjs |
 | contextRestore | tools/check_character_editor_browser.js |
 | contingencyPlan | app/expansion_classes_pack.js |
 | contracts | app/data/classes/Illigger.js |
-| controlMode | app/alchemist_mhp_2024_runtime.js, app/companion_packs_v26.js, app/data/classes/Beastheart.js, app/necromancer_mhp_2024_runtime.js (+ 1 ещё) |
+| controlMode | app/alchemist_mhp_2024_runtime.js (+ 4 других файлов) |
 | controlWithoutAction | app/expansion_classes_pack.js |
 | controlWithSameAction | app/expansion_classes_pack.js |
 | conversant | app/blood_hunter_engine.js |
 | Conversant | app/expansion_classes_pack.js |
 | convertDamage | app/occultist_kibbles_v11_runtime.js |
-| cook | app/crafting_profession_progression_v47.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js, app/market_social_v55_3.js (+ 1 ещё) |
+| cook | app/crafting_profession_progression_v47.js (+ 4 других файлов) |
 | coordinatedAssault | app/expansion_classes_pack.js |
 | copper | app/crafting_resources_v34.js |
 | copy | app/companions.js |
@@ -7657,15 +7658,15 @@
 | corpseFlorist | app/necromancer_mhp_2024_runtime.js |
 | corpseId | app/necromancer_mhp_2024_runtime.js |
 | corpseTypes | app/expansion_classes_pack.js |
-| corrosion | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| corrosion | app/blood_hunter_engine.js (+ 1 других файлов) |
 | corset | tests/character_clothing_test.js |
-| cost | app/alchemist_mhp_2024_runtime.js, app/alchemy_gathering_professions_v52.js, app/armors.js, app/blood_hunter_engine.js (+ 29 ещё) |
-| costGp | app/market_economy_v55.js, app/market_expansion_v55_1.js, tests/test_v55.js, tests/test_v55_2.js (+ 1 ещё) |
-| costs | app/Backgrounds.js, app/character_creation.js |
+| cost | app/alchemist_mhp_2024_runtime.js (+ 32 других файлов) |
+| costGp | app/market_economy_v55.js (+ 4 других файлов) |
+| costs | app/Backgrounds.js (+ 1 других файлов) |
 | cot | app/3dmap/gltf_catalog.js |
-| cotton | app/3dmap/character_clothing.js, app/crafting_resources_v34.js |
+| cotton | app/3dmap/character_clothing.js (+ 1 других файлов) |
 | counselorProtege | app/expansion_classes_pack.js |
-| count | app/3dmap/character_body_geometry.js, app/3dmap/map_editor.js, app/3dmap/map_renderer_3d.js, app/3dmap/map_world.js (+ 57 ещё) |
+| count | app/3dmap/character_body_geometry.js (+ 60 других файлов) |
 | counter | app/3dmap/gltf_catalog.js |
 | counterAttackIfReducedToZero | app/expansion_classes_pack.js |
 | countercharm | app/class_features_engine.js |
@@ -7674,50 +7675,50 @@
 | courageSource | app/combat_engine.js |
 | coven | app/occultist_kibbles_v11_runtime.js |
 | covens | app/data/classes/Occultist.js |
-| cover | app/network_gameplay.js, tests/test_v709_fixes.js |
-| coverBonus | app/network_gameplay.js, tests/test_blood_hunter_profane_focus.js |
+| cover | app/network_gameplay.js (+ 1 других файлов) |
+| coverBonus | app/network_gameplay.js (+ 1 других файлов) |
 | covered | app/3dmap/character_anatomy.js |
 | coversTop | app/3dmap/character_clothing.js |
-| cp | app/inventory-coins.js, app/market_economy_v55.js, app/market_social_v55_3.js, app/market_trade_v55_2.js (+ 4 ещё) |
-| cr | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/bestiary_catalog_v56_2.js (+ 15 ещё) |
-| craft | app/expansion_classes_pack.js, tests/crafting_disassembly_v51_test.js, tests/crafting_dlc_v50_test.js, tests/crafting_economy_v49_test.js (+ 1 ещё) |
+| cp | app/inventory-coins.js (+ 7 других файлов) |
+| cr | app/bestiary_catalog_v56_1.js (+ 18 других файлов) |
+| craft | app/expansion_classes_pack.js (+ 4 других файлов) |
 | craftBonus | app/monster_loot_engine_v37.js |
-| craftCheck | app/crafting_professions_v33.js, app/crafting_professions_v38.js |
-| craftDC | app/crafting_professions_v33.js, app/crafting_professions_v38.js |
-| crafted | app/alchemy_gameplay_v30.js, app/crafting_disassembly_v51.js, app/crafting_engine_v31.js, app/crafting_professions_v33.js (+ 2 ещё) |
+| craftCheck | app/crafting_professions_v33.js (+ 1 других файлов) |
+| craftDC | app/crafting_professions_v33.js (+ 1 других файлов) |
+| crafted | app/alchemy_gameplay_v30.js (+ 5 других файлов) |
 | craftedOnly | app/Inventory.js |
 | craftEffect | app/crafting_professions_v33.js |
 | craftFeature | app/expansion_classes_pack.js |
-| craftingBonus | app/crafting_character_influence_test_v46.js, app/crafting_disassembly_v51.js, app/crafting_professions_v38.js, tests/crafting_disassembly_v51_test.js |
+| craftingBonus | app/crafting_character_influence_test_v46.js (+ 3 других файлов) |
 | craftingMaterial | app/crafting_disassembly_repair_v51.js |
-| craftingProfessions | app/crafting_profession_progression_test_v47.js, tests/test_v52.js, tests/test_v53.js |
+| craftingProfessions | app/crafting_profession_progression_test_v47.js (+ 2 других файлов) |
 | craftingProfile | app/crafting_professions_v38.js |
 | craftingSources | app/crafting_professions_v38.js |
-| craftMasterworkBonus | app/crafting_disassembly_v51.js, tests/crafting_disassembly_v51_test.js, tests/crafting_economy_v49_test.js |
-| craftMaterialId | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/bestiary_catalog_v56_2.js (+ 11 ещё) |
-| craftOutcome | app/crafting_professions_v38.js, tests/crafting_disassembly_v51_test.js |
-| craftProfession | app/crafting_professions_v33.js, app/crafting_professions_v38.js |
-| craftQuality | app/crafting_disassembly_v51.js, app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js (+ 3 ещё) |
+| craftMasterworkBonus | app/crafting_disassembly_v51.js (+ 2 других файлов) |
+| craftMaterialId | app/bestiary_catalog_v56_1.js (+ 14 других файлов) |
+| craftOutcome | app/crafting_professions_v38.js (+ 1 других файлов) |
+| craftProfession | app/crafting_professions_v33.js (+ 1 других файлов) |
+| craftQuality | app/crafting_disassembly_v51.js (+ 6 других файлов) |
 | craftQualityLabel | app/custom_crafting_v32.js |
-| craftRecipe | app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js, tests/crafting_disassembly_v51_test.js |
+| craftRecipe | app/crafting_engine_v31.js (+ 3 других файлов) |
 | craftRoll | app/custom_crafting_v32.js |
 | CRAFTS | app/expansion_classes_pack.js |
 | craftTags | app/crafting_economy_v49.js |
-| craftTime | app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js |
+| craftTime | app/crafting_engine_v31.js (+ 2 других файлов) |
 | craftTools | app/crafting_engine_v31.js |
-| craftValue | app/crafting_professions_v33.js, app/crafting_resources_v34.js |
+| craftValue | app/crafting_professions_v33.js (+ 1 других файлов) |
 | craftValueNote | app/crafting_disassembly_v51.js |
 | crate | app/3dmap/gltf_catalog.js |
-| create | app/3dmap/stress_map.js, app/campaign_manager.js, app/companion_packs_v26.js, app/companions.js (+ 4 ещё) |
+| create | app/3dmap/stress_map.js (+ 7 других файлов) |
 | createAvatar | app/swarm_extra_runtime.js |
 | createBodyStatBlock | app/walter_parasite_extra_runtime.js |
 | createBoneObject | app/expansion_classes_pack.js |
 | createCharacter | app/3dmap/character_system.js |
 | created | app/expansion_classes_pack.js |
-| createdAt | app/3dmap/map_model.js, app/blood_hunter_engine.js, app/expansion_classes_pack.js, app/monster_loot_crafting_bridge_v40.js (+ 5 ещё) |
+| createdAt | app/3dmap/map_model.js (+ 8 других файлов) |
 | createdAtTurn | app/alchemist_mhp_2024_runtime.js |
-| createElement | tests/character_3d_editor_test.js, tests/helpers/class_runtime_harness.js, tests/test_v52.js, tests/test_v53.js (+ 19 ещё) |
-| createFor | app/companion_packs_v26.js, app/companions.js |
+| createElement | tests/character_3d_editor_test.js (+ 22 других файлов) |
+| createFor | app/companion_packs_v26.js (+ 1 других файлов) |
 | createHostStatBlock | app/parasite_extra_runtime.js |
 | createLarvaStatBlock | app/parasite_extra_runtime.js |
 | createObjectURL | tests/test_v717_fixes.js |
@@ -7728,10 +7729,10 @@
 | creator | app/kibbles_localization_content_v71.js |
 | creatorMind | app/expansion_classes_pack.js |
 | creatures | app/swarm_extra_runtime.js |
-| creatureType | app/character_creation.js, app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/walter_parasite_extra_runtime.js (+ 4 ещё) |
+| creatureType | app/character_creation.js (+ 7 других файлов) |
 | crescendoOfViolence | app/expansion_classes_pack.js |
 | crest | app/3dmap/character_body_geometry.js |
-| crestSize | app/3dmap/character_system.js, tools/check_reptile_races_browser.js |
+| crestSize | app/3dmap/character_system.js (+ 1 других файлов) |
 | crewLeader | app/expansion_classes_pack.js |
 | crewRangeFt | app/expansion_classes_pack.js |
 | crewSaveBonus | app/expansion_classes_pack.js |
@@ -7744,13 +7745,13 @@
 | cripplingJinx | app/expansion_classes_pack.js |
 | cripplingStrike | app/expansion_classes_pack.js |
 | critFearAoEFt | app/blood_hunter_engine.js |
-| critical | app/combat_engine.js, app/necromancer_mhp_2024_runtime.js, app/network_gameplay.js, app/rulesEngine.js (+ 31 ещё) |
-| critical_failure | app/crafting_disassembly_repair_v51.js, app/crafting_economy_v49.js |
-| criticalDoubles | app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js |
+| critical | app/combat_engine.js (+ 34 других файлов) |
+| critical_failure | app/crafting_disassembly_repair_v51.js (+ 1 других файлов) |
+| criticalDoubles | app/expansion_classes_pack.js (+ 1 других файлов) |
 | criticalHit | app/expansion_classes_pack.js |
 | criticalOn | app/expanded_classes_v23.js |
 | criticalOnHit | app/expansion_classes_pack.js |
-| criticalRange | app/class_features_engine.js, app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js |
+| criticalRange | app/class_features_engine.js (+ 2 других файлов) |
 | criticalSpellcasting | app/necromancer_mhp_2024_runtime.js |
 | critRange | app/blood_hunter_engine.js |
 | critWithRiteRestoresBloodMaledict | app/expansion_classes_pack.js |
@@ -7758,43 +7759,43 @@
 | crone | app/necromancer_mhp_2024_runtime.js |
 | crop | app/3dmap/character_body_geometry.js |
 | crow | app/3dmap/character_body_geometry.js |
-| crown | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
-| crown_braid | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
-| crownColor | app/3dmap/character_system.js, tools/check_character_races_browser.js |
-| crownSize | app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tests/character_races_geometry_test.js, tools/check_character_races_browser.js |
+| crown | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| crown_braid | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| crownColor | app/3dmap/character_system.js (+ 1 других файлов) |
+| crownSize | app/3dmap/character_system.js (+ 3 других файлов) |
 | crScale | app/alchemist_mhp_2024_runtime.js |
 | crTotal | app/necromancer_mhp_2024_runtime.js |
 | cruelty | app/blood_hunter_engine.js |
 | Cruelty | app/expansion_classes_pack.js |
 | cryo | app/alchemist_mhp_2024_runtime.js |
 | cryoBomb | app/expansion_classes_pack.js |
-| crypto | tests/character_adult_anatomy_test.js, tests/character_animal_heads_test.js, tests/character_avian_elephant_heads_test.js, tests/character_clothing_customizer_geometry_test.js (+ 17 ещё) |
-| crystal | app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js, app/crafting_resources_v34.js |
-| ctx | app/3dmap/map_renderer_3d.js, app/network_gameplay.js |
+| crypto | tests/character_adult_anatomy_test.js (+ 20 других файлов) |
+| crystal | app/crafting_engine_v31.js (+ 3 других файлов) |
+| ctx | app/3dmap/map_renderer_3d.js (+ 1 других файлов) |
 | cube | app/data/classes/Beastheart.js |
 | cunningAction | app/class_features_engine.js |
 | cunningInstinct | app/expansion_classes_pack.js |
 | cups | app/3dmap/character_clothing.js |
 | cupsize | tests/makehuman_gender_recipe_test.js |
 | curl | app/3dmap/character_body_geometry.js |
-| curly_long | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
-| curly_short | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
-| current | app/3dmap/map_model.js, app/Hero-info.js, app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js (+ 29 ещё) |
+| curly_long | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| curly_short | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| current | app/3dmap/map_model.js (+ 32 других файлов) |
 | currentCampaignId | app/campaign_manager.js |
-| currentChar | tests/test_v52.js, tests/test_v53.js, tests/test_v57.js, tests/test_v713_fixes.js (+ 2 ещё) |
+| currentChar | tests/test_v52.js (+ 5 других файлов) |
 | currentCharacter | tests/test_v57.js |
 | currentFloor | app/3dmap/map_model.js |
-| currentHP | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/swarm_extra_runtime.js, app/walter_parasite_extra_runtime.js |
+| currentHP | app/ghost_extra_runtime.js (+ 3 других файлов) |
 | currentId | app/vtt_combat_event_bus_v69.js |
 | currentLevel | app/crafting_profession_progression_v47.js |
 | currentVersion | app/update_manager_v2.js |
-| curse | app/accursed_oap_v11_runtime.js, app/blood_hunter_engine.js, app/combat_engine.js, app/expanded_classes_v23.js (+ 7 ещё) |
+| curse | app/accursed_oap_v11_runtime.js (+ 10 других файлов) |
 | curseAbility | app/accursed_oap_v11_runtime.js |
 | curseAbilityCheckDC | app/expansion_classes_pack.js |
 | curseBonusDamage | app/blood_hunter_engine.js |
 | curseCombination | app/expansion_classes_pack.js |
 | curseConcentrationAdvantage | app/occultist_kibbles_v11_runtime.js |
-| cursed | app/3dmap/character_editor_3d.js, app/vessel_laserllama_v4_runtime.js |
+| cursed | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | cursedAttackPenalty | app/blood_hunter_engine.js |
 | cursedCheckModifiers | app/blood_hunter_engine.js |
 | curseDetection30 | app/expansion_classes_pack.js |
@@ -7805,61 +7806,61 @@
 | curseName | app/expansion_classes_pack.js |
 | cursePenalty | app/necromancer_mhp_2024_runtime.js |
 | cursePower | app/expanded_classes_v23.js |
-| curses | app/blood_hunter_engine.js, tests/test_blood_hunter_completion.js, tests/test_blood_hunter_orders.js, tests/test_blood_hunter_profane_focus.js (+ 1 ещё) |
+| curses | app/blood_hunter_engine.js (+ 4 других файлов) |
 | CURSES | app/expansion_classes_pack.js |
 | curseSave | app/necromancer_mhp_2024_runtime.js |
 | curseSpecialist | app/blood_hunter_engine.js |
 | curseSpells | app/expansion_classes_pack.js |
 | curseTarget | app/expansion_classes_pack.js |
-| custom | app/3dmap/character_system.js, tests/character_3d_skin_morph_test.js, tests/update_ota_flow_test.js |
-| customColor | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js |
+| custom | app/3dmap/character_system.js (+ 2 других файлов) |
+| customColor | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | customCrafted | app/custom_crafting_v32.js |
 | customDress | app/3dmap/character_clothing.js |
-| CustomEvent | tests/helpers/class_runtime_harness.js, tests/update_ota_flow_test.js |
-| customizations | tests/character_clothing_customizer_geometry_test.js, tests/character_clothing_options_test.js |
+| CustomEvent | tests/helpers/class_runtime_harness.js (+ 1 других файлов) |
+| customizations | tests/character_clothing_customizer_geometry_test.js (+ 1 других файлов) |
 | customShirt | app/3dmap/character_clothing.js |
 | customSkirt | app/3dmap/character_clothing.js |
-| cut | app/3dmap/character_clothing.js, tests/character_clothing_customizer_geometry_test.js, tools/check_character_dress_customizer.js |
+| cut | app/3dmap/character_clothing.js (+ 2 других файлов) |
 | cutoff | tools/prepare_makehuman_gender.js |
 | cwd | tools/run_tests_v731.js |
-| cx | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
-| cycles | app/resource_gathering_v35.js, app/world_resource_gathering_v53.js |
-| cz | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
-| d | app/3dmap/character_anatomy_geometry.js, app/3dmap/map_editor.js, app/3dmap/map_model.js, app/3dmap/stress_map.js (+ 2 ещё) |
-| d2 | tests/makehuman_morph_bridge.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| d20 | app/combat_engine.js, app/network_gameplay.js, app/vtt_debug_dice_lab_v706.js |
+| cx | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
+| cycles | app/resource_gathering_v35.js (+ 1 других файлов) |
+| cz | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| d | app/3dmap/character_anatomy_geometry.js (+ 5 других файлов) |
+| d2 | tests/makehuman_morph_bridge.js (+ 2 других файлов) |
+| d20 | app/combat_engine.js (+ 2 других файлов) |
 | d6 | app/alchemist_mhp_2024_runtime.js |
-| damage | app/3dmap/map_world.js, app/alchemist_mhp_2024_runtime.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js (+ 68 ещё) |
+| damage | app/3dmap/map_world.js (+ 71 других файлов) |
 | DAMAGE_TYPES | app/combat_engine.js |
 | damageAfter | app/expansion_classes_pack.js |
 | damageAtTurnStart | app/alchemist_mhp_2024_runtime.js |
 | damageBefore | app/expansion_classes_pack.js |
-| damageBody | app/parasite_extra_runtime.js, app/walter_parasite_extra_runtime.js |
-| damageBonus | app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js |
+| damageBody | app/parasite_extra_runtime.js (+ 1 других файлов) |
+| damageBonus | app/expansion_classes_pack.js (+ 1 других файлов) |
 | damageBonusMultiplier | app/expansion_classes_pack.js |
 | damageBoost | app/expanded_classes_v23.js |
 | damageContext | app/network_gameplay.js |
-| damageDice | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/expansion_classes_pack.js, app/occultist_kibbles_v11_runtime.js (+ 11 ещё) |
-| damageDie | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| damageDice | app/alchemist_mhp_2024_runtime.js (+ 14 других файлов) |
+| damageDie | app/expanded_classes_v23.js (+ 1 других файлов) |
 | damageDoubled | app/combat_engine.js |
 | damageDurability | app/crafting_dlc_v50.js |
 | damageImmunity | app/expansion_classes_pack.js |
-| damageModifiers | app/blood_hunter_engine.js, app/feat_engine.js |
+| damageModifiers | app/blood_hunter_engine.js (+ 1 других файлов) |
 | damageMult | app/swarm_extra_runtime.js |
 | damageOnFailedSave | app/expansion_classes_pack.js |
-| damageParts | app/blood_hunter_engine.js, app/combat_engine.js, app/network_gameplay.js, tests/test_blood_hunter_profane_focus.js (+ 1 ещё) |
+| damageParts | app/blood_hunter_engine.js (+ 4 других файлов) |
 | damagePer10Ft | app/expansion_classes_pack.js |
 | damagePerTrigger | app/expansion_classes_pack.js |
 | damageRedirect | app/occultist_kibbles_v11_runtime.js |
-| damageReduction | app/class_features_engine.js, app/data/classes/Beastheart.js, app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js (+ 1 ещё) |
-| damageResistance | app/expanded_classes_v23.js, app/occultist_kibbles_v11_runtime.js |
-| damageResult | app/combat_engine.js, app/expansion_classes_pack.js |
-| damageRoll | app/alchemist_mhp_2024_runtime.js, app/network_gameplay.js, app/spellblade_kibbles_runtime.js, tests/alchemist_combat_test.js (+ 1 ещё) |
+| damageReduction | app/class_features_engine.js (+ 4 других файлов) |
+| damageResistance | app/expanded_classes_v23.js (+ 1 других файлов) |
+| damageResult | app/combat_engine.js (+ 1 других файлов) |
+| damageRoll | app/alchemist_mhp_2024_runtime.js (+ 4 других файлов) |
 | damageSelf | app/expansion_classes_pack.js |
 | damageShell | app/ghost_extra_runtime.js |
-| damageType | app/alchemist_mhp_2024_runtime.js, app/alchemy_gameplay_v30.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js (+ 68 ещё) |
+| damageType | app/alchemist_mhp_2024_runtime.js (+ 71 других файлов) |
 | damageTypeChoice | app/expansion_classes_pack.js |
-| damageTypes | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/combat_engine.js (+ 2 ещё) |
+| damageTypes | app/alchemist_mhp_2024_runtime.js (+ 5 других файлов) |
 | danceBonusByCount | app/necromancer_mhp_2024_runtime.js |
 | dangerSense | app/class_features_engine.js |
 | daringRescue | app/expansion_classes_pack.js |
@@ -7869,48 +7870,48 @@
 | darkCaptain | app/expansion_classes_pack.js |
 | darkDelirium | app/network_gameplay.js |
 | darkMagic | app/expanded_classes_v23.js |
-| darkness | app/3dmap/map_model.js, app/3dmap/stress_map.js |
+| darkness | app/3dmap/map_model.js (+ 1 других файлов) |
 | darknessAroundInterdictedFt | app/expansion_classes_pack.js |
 | darkOneDiscourse | app/expansion_classes_pack.js |
 | darkOnesBlessing | app/class_features_engine.js |
 | darkvision | app/shifter_laserllama_v2_1_runtime.js |
 | darkvision60 | app/expansion_classes_pack.js |
 | darkvisionBonusFt | app/blood_hunter_engine.js |
-| darkvisionFt | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| darkvisionFt | app/blood_hunter_engine.js (+ 1 других файлов) |
 | dash | app/expanded_classes_v23.js |
 | dastardlyTalents | app/expansion_classes_pack.js |
-| data | app/accursed_oap_v11_runtime.js, app/martyr_mhp_2024_runtime.js, app/runekeeper_taron_v12_runtime.js, app/savant_laserllama_v561_runtime.js (+ 7 ещё) |
-| date | app/campaign_manager.js, app/vtt_gameplay_ux_v58.js |
+| data | app/accursed_oap_v11_runtime.js (+ 10 других файлов) |
+| date | app/campaign_manager.js (+ 1 других файлов) |
 | dauntless | app/data/classes/Warlord.js |
 | dawn | app/blood_hunter_engine.js |
 | day | app/3dmap/map_renderer_3d.js |
-| dc | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js (+ 41 ещё) |
+| dc | app/accursed_oap_v11_runtime.js (+ 44 других файлов) |
 | dcReduction | app/crafting_professions_v38.js |
-| dead | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/expansion_classes_pack.js, app/ghost_extra_runtime.js (+ 1 ещё) |
+| dead | app/alchemist_mhp_2024_runtime.js (+ 4 других файлов) |
 | deadMistAcolyte | app/necromancer_mhp_2024_runtime.js |
 | deadShell | app/ghost_extra_runtime.js |
-| deadSpace | app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js |
+| deadSpace | app/expansion_classes_pack.js (+ 1 других файлов) |
 | deadSpaceSlots | app/necromancer_mhp_2024_runtime.js |
-| deafened | app/alchemist_mhp_2024_runtime.js, app/warden_mhp_2024_runtime.js |
+| deafened | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | deathAfterDuration | app/expansion_classes_pack.js |
 | deathCause | tests/alchemist_runtime_test.js |
 | deathExplosion | app/necromancer_mhp_2024_runtime.js |
 | deathKnight | app/necromancer_mhp_2024_runtime.js |
 | deathPenalty | app/expansion_classes_pack.js |
 | deathSave | app/combat_engine.js |
-| deathSaveDisadvantage | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| deathSaveDisadvantage | app/blood_hunter_engine.js (+ 1 других файлов) |
 | deathSaveFailures | app/combat_engine.js |
-| deathSaves | app/combat_engine.js, tests/test_v735_logic_rules.js, tests/test_v736_deep_rules.js, tests/test_v737_spellcasting_transaction.js (+ 3 ещё) |
+| deathSaves | app/combat_engine.js (+ 6 других файлов) |
 | deathWard | app/occultist_kibbles_v11_runtime.js |
 | debug | app/vtt_combat_log_v66.js |
 | decayPerHour | app/alchemist_mhp_2024_runtime.js |
-| deception | app/dice.js, app/skills.js |
-| deceptionTotal | app/alchemist_mhp_2024_runtime.js, tests/alchemist_runtime_test.js |
+| deception | app/dice.js (+ 1 других файлов) |
+| deceptionTotal | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | declaredSourceCommit | tools/prepare_makehuman_gender.js |
 | decorateItem | app/crafting_profession_progression_v47.js |
 | deepSleeper | app/expansion_classes_pack.js |
 | deerHide | app/crafting_resources_v34.js |
-| default | app/3dmap/character_system.js, app/crafting_disassembly_v51.js, tests/character_3d_foundation_test.js |
+| default | app/3dmap/character_system.js (+ 2 других файлов) |
 | DEFAULT | app/3dmap/map_model.js |
 | DEFAULT_ENABLED | app/crafting_dlc_v50.js |
 | DEFAULT_RACES | tests/test_v755_creation_buckets.js |
@@ -7918,12 +7919,12 @@
 | defaultSkinByGender | app/3dmap/character_system.js |
 | defaultSkinId | app/3dmap/character_system.js |
 | defeat | app/summoning_engine.js |
-| defeated | app/alchemist_mhp_2024_runtime.js, app/combat_engine.js, app/necromancer_mhp_2024_runtime.js, app/summoning_engine.js (+ 6 ещё) |
+| defeated | app/alchemist_mhp_2024_runtime.js (+ 9 других файлов) |
 | defenderAura | app/expanded_classes_v23.js |
-| defenderReaction | app/combat_engine.js, tests/test_blood_hunter_completion.js, tests/test_blood_hunter_profane_focus.js, tests/test_class_audit_stage3_runtime.js (+ 1 ещё) |
+| defenderReaction | app/combat_engine.js (+ 4 других файлов) |
 | defensive_duelist | app/feat_engine.js |
 | defensiveStance | app/expansion_classes_pack.js |
-| deferDamage | app/network_gameplay.js, tests/test_class_audit_stage4_runtime.js |
+| deferDamage | app/network_gameplay.js (+ 1 других файлов) |
 | deflected | app/combat_engine.js |
 | deflectMissiles | app/class_features_engine.js |
 | deformAsset | app/3dmap/gltf_character_pipeline.js |
@@ -7931,19 +7932,19 @@
 | deftness | app/blood_hunter_engine.js |
 | Deftness | app/expansion_classes_pack.js |
 | deinonychus | app/data/classes/Beastheart.js |
-| deleted | app/cloud_sync.js, tests/cloud_sync_test.cjs |
+| deleted | app/cloud_sync.js (+ 1 других файлов) |
 | denial | app/expansion_classes_pack.js |
 | deniesActions | app/alchemist_mhp_2024_runtime.js |
-| density | app/3dmap/character_anatomy.js, tests/character_adult_anatomy_test.js, tools/check_adult_anatomy_browser.js |
+| density | app/3dmap/character_anatomy.js (+ 2 других файлов) |
 | denValues | app/3dmap/character_clothing.js |
 | denyAttackAdvantage | app/expansion_classes_pack.js |
 | denyBonusActions | app/alchemist_mhp_2024_runtime.js |
 | denyDashDisengageDodge | app/alchemist_mhp_2024_runtime.js |
 | depleted | tests/test_v53.js |
-| depth | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js (+ 1 ещё) |
-| desc | app/Backgrounds.js, app/alchemist_mhp_2024_runtime.js, app/character_creation.js, app/crafting_profession_progression_v47.js (+ 10 ещё) |
+| depth | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
+| desc | app/Backgrounds.js (+ 13 других файлов) |
 | describeProfession | app/crafting_profession_progression_v47.js |
-| description | app/3dmap/map_model.js, app/Backgrounds.js, app/Proficiencies.js, app/accursed_oap_v11_runtime.js (+ 66 ещё) |
+| description | app/3dmap/map_model.js (+ 69 других файлов) |
 | descriptor | app/3dmap/character_anatomy.js |
 | deserialize | app/3dmap/character_system.js |
 | desk | app/3dmap/gltf_catalog.js |
@@ -7951,58 +7952,58 @@
 | destroy | app/update_scene_v2.js |
 | destroyThrallToHeal | app/necromancer_mhp_2024_runtime.js |
 | destroyUndead | app/class_features_engine.js |
-| detail | app/3dmap/character_system.js, app/Settings.js, app/vtt_debug_dice_lab_v706.js, app/vtt_debug_rules_matrix_v707.js |
-| details | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/swarm_extra_runtime.js, app/walter_parasite_extra_runtime.js |
+| detail | app/3dmap/character_system.js (+ 3 других файлов) |
+| details | app/ghost_extra_runtime.js (+ 3 других файлов) |
 | detectIllusionAndShapeshifter | app/expansion_classes_pack.js |
-| detectMagic | app/expansion_classes_pack.js, app/occultist_kibbles_v11_runtime.js |
-| dethek | app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js |
+| detectMagic | app/expansion_classes_pack.js (+ 1 других файлов) |
+| dethek | app/expansion_classes_pack.js (+ 1 других файлов) |
 | dethekStance | app/expansion_classes_pack.js |
-| devicePixelRatio | tests/character_3d_editor_test.js, tests/test_v70.js |
+| devicePixelRatio | tests/character_3d_editor_test.js (+ 1 других файлов) |
 | devices | app/crafting_profession_progression_v47.js |
 | deviceScaleFactor | tools/check_map_browser.js |
 | deviousTactics | app/expansion_classes_pack.js |
-| devouring | app/expansion_classes_pack.js, app/swarm_extra_runtime.js |
+| devouring | app/expansion_classes_pack.js (+ 1 других файлов) |
 | devTools | desktop/main.cjs |
-| dex | app/Backgrounds.js, app/Inventory.js, app/alchemist_mhp_2024_runtime.js, app/app.js (+ 50 ещё) |
+| dex | app/Backgrounds.js (+ 53 других файлов) |
 | dexBonus | app/blood_hunter_engine.js |
-| dexChecksAdvantage | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| dexChecksAdvantage | app/blood_hunter_engine.js (+ 1 других файлов) |
 | dexIncrease | app/expansion_classes_pack.js |
 | dexMaxBonus | app/blood_hunter_engine.js |
 | dexMaxIncrease | app/expansion_classes_pack.js |
 | dexSave | app/expansion_classes_pack.js |
-| dexSavesDisadvantage | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
-| dexSaveVisible | app/combat_engine.js, tests/test_v726_fixes.js |
-| dexterity | app/Hero-info.js, app/alchemist_mhp_2024_runtime.js, app/data/classes/Alchemist.js, app/necromancer_mhp_2024_runtime.js (+ 6 ещё) |
+| dexSavesDisadvantage | app/blood_hunter_engine.js (+ 1 других файлов) |
+| dexSaveVisible | app/combat_engine.js (+ 1 других файлов) |
+| dexterity | app/Hero-info.js (+ 9 других файлов) |
 | Dexterity | app/alchemy_gameplay_v30.js |
 | dexteritySaveProficiency | app/expansion_classes_pack.js |
-| diagnostics | app/3dmap/character_editor_3d.js, tools/check_character_editor_browser.js |
-| dialect | app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js |
+| diagnostics | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
+| dialect | app/expansion_classes_pack.js (+ 1 других файлов) |
 | diamondForm | app/expansion_classes_pack.js |
 | diamondPaste | app/crafting_resources_v34.js |
 | diamondSoul | app/class_features_engine.js |
-| dice | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js (+ 6 ещё) |
-| diceCount | app/character.js, app/network_gameplay.js, tests/test_v712_fixes.js, tests/test_v713_fixes.js |
-| diceSides | app/character.js, app/network_gameplay.js, tests/test_v712_fixes.js, tests/test_v713_fixes.js |
-| die | app/alchemy_gathering_professions_v52.js, app/class_features_engine.js, app/expansion_classes_pack.js, app/resource_gathering_v35.js (+ 2 ещё) |
-| diet | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 9 ещё) |
+| dice | app/accursed_oap_v11_runtime.js (+ 9 других файлов) |
+| diceCount | app/character.js (+ 3 других файлов) |
+| diceSides | app/character.js (+ 3 других файлов) |
+| die | app/alchemy_gathering_professions_v52.js (+ 5 других файлов) |
+| diet | app/bestiary_catalog_v56_1.js (+ 12 других файлов) |
 | difficultTerrain | tests/test_v709_fixes.js |
 | difficulty | app/monster_engine.js |
-| digDeep | app/data/classes/Pugilist.js, app/expansion_classes_pack.js |
+| digDeep | app/data/classes/Pugilist.js (+ 1 других файлов) |
 | digits | app/3dmap/character_body_geometry.js |
-| diminutive | app/shifter_laserllama_v2_1_runtime.js, tests/test_class_audit_stage2_runtime.js |
+| diminutive | app/shifter_laserllama_v2_1_runtime.js (+ 1 других файлов) |
 | dimLightAdditionalFt | app/expansion_classes_pack.js |
 | directAttackNearestIfFailed | app/expansion_classes_pack.js |
 | directDice | app/alchemist_mhp_2024_runtime.js |
-| direction | app/3dmap/map_renderer_3d.js, app/3dmap/stair_navigation.js, app/network_gameplay.js |
+| direction | app/3dmap/map_renderer_3d.js (+ 2 других файлов) |
 | directionSense | app/expansion_classes_pack.js |
 | directShift | app/shifter_laserllama_v2_1_runtime.js |
 | dirty | app/cloud_sync.js |
 | dirtyHit | app/expansion_classes_pack.js |
 | dirtyStrike | app/expanded_classes_v23.js |
-| disabled | app/crafting_disassembly_repair_v51.js, app/crafting_disassembly_v51.js, app/crafting_dlc_v50.js |
+| disabled | app/crafting_disassembly_repair_v51.js (+ 2 других файлов) |
 | disabledBlocked | tests/crafting_dlc_v50_test.js |
 | disableSense | app/expansion_classes_pack.js |
-| disadvantage | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/combat_engine.js (+ 7 ещё) |
+| disadvantage | app/alchemist_mhp_2024_runtime.js (+ 10 других файлов) |
 | disadvantageAgainstOthers | app/expansion_classes_pack.js |
 | disadvantageAgainstOthersWithinFt | app/expansion_classes_pack.js |
 | disadvantageAgainstSelf | app/expansion_classes_pack.js |
@@ -8013,15 +8014,15 @@
 | disadvantageOnSaveWhenHidden | app/expansion_classes_pack.js |
 | disadvantageSaves | app/expansion_classes_pack.js |
 | disadvantageVsBloodHunterSpells | app/expansion_classes_pack.js |
-| disarm | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
-| disassembleItem | app/crafting_disassembly_repair_v51.js, app/crafting_disassembly_v51.js |
+| disarm | app/expanded_classes_v23.js (+ 1 других файлов) |
+| disassembleItem | app/crafting_disassembly_repair_v51.js (+ 1 других файлов) |
 | disciplinaryAdept | app/expansion_classes_pack.js |
-| discipline | app/data/classes/Psion.js, app/expansion_classes_pack.js, app/savant_laserllama_v561_runtime.js, tests/test_class_audit_runtime.js (+ 1 ещё) |
-| disciplines | app/data/classes/Psion.js, app/data/classes/extra_class_stubs.js, app/expansion_classes_pack.js |
+| discipline | app/data/classes/Psion.js (+ 4 других файлов) |
+| disciplines | app/data/classes/Psion.js (+ 2 других файлов) |
 | disciplineUsesPerTurn | app/data/classes/Psion.js |
-| discovered | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js |
-| discoveries | app/alchemist_mhp_2024_runtime.js, app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js, app/data/classes/Alchemist.js |
-| discovery | app/alchemist_mhp_2024_runtime.js, tests/alchemist_runtime_test.js |
+| discovered | app/alchemy_engine_v29.js (+ 1 других файлов) |
+| discoveries | app/alchemist_mhp_2024_runtime.js (+ 3 других файлов) |
+| discovery | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | discoveryBonus | app/alchemy_gathering_professions_v52.js |
 | discoveryLevelGating | app/data/classes/Alchemist.js |
 | discoveryRecipes | app/alchemist_mhp_2024_runtime.js |
@@ -8029,49 +8030,49 @@
 | disguise | app/crafting_professions_v38.js |
 | disguiseAndHexFocus | app/occultist_kibbles_v11_runtime.js |
 | disguiseAppearance | app/alchemist_mhp_2024_runtime.js |
-| disguiser | app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js |
+| disguiser | app/crafting_profession_progression_v47.js (+ 1 других файлов) |
 | disoriented | app/expansion_classes_pack.js |
 | disorientedDice | app/expansion_classes_pack.js |
 | dispellingAnathema | app/expansion_classes_pack.js |
-| display | app/market_economy_v55.js, index.html |
-| displayName | app/character_creation_pergament.js, app/data/classes/Beastheart.js, app/expanded_class_registry_bridge.js, app/expansion_classes_pack.js |
+| display | app/market_economy_v55.js (+ 1 других файлов) |
+| displayName | app/character_creation_pergament.js (+ 3 других файлов) |
 | dispose | app/3dmap/map_renderer_3d.js |
 | dist | app/network_gameplay.js |
-| distance | app/companion_gameplay_v27.js, app/vtt_mobile_battle_v61.js, tests/test_v56.js |
-| distanceFt | app/blood_hunter_engine.js, app/combat_engine.js, app/necromancer_mhp_2024_runtime.js, app/network_gameplay.js (+ 13 ещё) |
+| distance | app/companion_gameplay_v27.js (+ 2 других файлов) |
+| distanceFt | app/blood_hunter_engine.js (+ 16 других файлов) |
 | distant | app/class_features_engine.js |
 | divineChannelUses | app/necromancer_mhp_2024_runtime.js |
 | divineIntervention | app/class_features_engine.js |
 | divineMandate | app/expansion_classes_pack.js |
 | divineRespite | app/martyr_mhp_2024_runtime.js |
 | divineSense | app/class_features_engine.js |
-| divineSmite | app/class_features_engine.js, app/network_gameplay.js, tests/test_v720_fixes.js |
+| divineSmite | app/class_features_engine.js (+ 2 других файлов) |
 | dlc | app/crafting_dlc_v50.js |
 | DND_CLASSES_LIST | tests/test_v755_creation_buckets.js |
 | DND_UPDATE_MANIFEST_URL | tests/test_v754_update_manager.js |
 | dndBackgrounds | tests/test_v755_creation_buckets.js |
 | DNDBattleBoard | tests/test_v58.js |
-| DNDCampaign | tests/test_v57.js, tests/test_v58.js |
+| DNDCampaign | tests/test_v57.js (+ 1 других файлов) |
 | DNDCloudConfig | tests/cloud_sync_test.cjs |
-| DNDCombat | tests/test_v57.js, tests/test_v749_monster_authority_reaction_order.js |
-| DNDContent | tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js, tests/pugilist_runtime_test.js |
+| DNDCombat | tests/test_v57.js (+ 1 других файлов) |
+| DNDContent | tests/alchemist_combat_test.js (+ 2 других файлов) |
 | DNDGameplayV57 | tests/test_v58.js |
 | DNDGLTF | tests/character_3d_editor_test.js |
 | DndLanBridge | tests/test_v714_fixes.js |
 | DNDMonsterLoot | tests/test_v57.js |
-| dndMorphChannels | tests/character_3d_editor_test.js, tools/build_makehuman_morphs.js |
+| dndMorphChannels | tests/character_3d_editor_test.js (+ 1 других файлов) |
 | dndMorphSource | tools/build_makehuman_morphs.js |
-| dndNetwork | tests/test_v57.js, tests/test_v750_resignal_reaction_monster_rpc.js |
+| dndNetwork | tests/test_v57.js (+ 1 других файлов) |
 | DNDRules | tests/test_v749_monster_authority_reaction_order.js |
 | DNDSummoning | tests/test_v57.js |
 | dock | app/3dmap/map_editor.js |
-| document | tests/alchemist_combat_test.js, tests/crafting_disassembly_v51_test.js, tests/crafting_dlc_v50_test.js, tests/crafting_economy_v49_test.js (+ 33 ещё) |
+| document | tests/alchemist_combat_test.js (+ 36 других файлов) |
 | documentElement | tests/helpers/class_runtime_harness.js |
 | dodge | app/expansion_classes_pack.js |
 | dogAndHound | app/data/classes/Pugilist.js |
 | dominantCharacteristics | app/walter_parasite_extra_runtime.js |
 | donorHitDieSpent | app/occultist_kibbles_v11_runtime.js |
-| donorType | app/alchemist_mhp_2024_runtime.js, tests/alchemist_runtime_test.js |
+| donorType | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | donorVerified | tests/alchemist_runtime_test.js |
 | door | app/3dmap/gltf_catalog.js |
 | doubleBreath | app/expansion_classes_pack.js |
@@ -8080,7 +8081,7 @@
 | doubleSided | app/3dmap/gltf_loader.js |
 | doubleSpeed | app/necromancer_mhp_2024_runtime.js |
 | doublingJinx | app/expansion_classes_pack.js |
-| downButNotOut | app/data/classes/Pugilist.js, app/expansion_classes_pack.js |
+| downButNotOut | app/data/classes/Pugilist.js (+ 1 других файлов) |
 | downButNotOutActive | app/expansion_classes_pack.js |
 | downstreamRecipeAvailable | app/crafting_character_influence_test_v46.js |
 | draconicDiscourse | app/expansion_classes_pack.js |
@@ -8089,46 +8090,46 @@
 | draconicStance | app/expansion_classes_pack.js |
 | draft | app/vtt_encounter_map_v59.js |
 | dragging | app/battle_board.js |
-| dragon | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/Settings.js, app/bestiary_catalog_v56_1.js (+ 14 ещё) |
+| dragon | app/3dmap/character_body_geometry.js (+ 17 других файлов) |
 | dragon_fear | app/feat_engine.js |
 | dragonArmyAffinity | app/bestiary_catalog_v56_12.js |
 | dragonFamily | tests/test_v56_5.js |
 | dragonlance | app/bestiary_catalog_v56_12.js |
-| dragonReagent | app/crafting_economy_v49.js, app/resource_processing_v44.js |
+| dragonReagent | app/crafting_economy_v49.js (+ 1 других файлов) |
 | dragonsAscent | app/expansion_classes_pack.js |
-| dragonScale | app/crafting_economy_v49.js, app/crafting_engine_v31.js |
+| dragonScale | app/crafting_economy_v49.js (+ 1 других файлов) |
 | dragonScaleRed | app/crafting_resources_v34.js |
-| draw | app/3dmap/map_renderer_2d.js, app/3dmap/map_renderer_3d.js |
+| draw | app/3dmap/map_renderer_2d.js (+ 1 других файлов) |
 | draws | tests/character_3d_editor_test.js |
 | dreadfulGlare | app/expansion_classes_pack.js |
 | dreadlord | app/expansion_classes_pack.js |
 | dreadPresence | app/expansion_classes_pack.js |
-| dress | app/3dmap/character_clothing.js, tests/character_clothing_test.js |
+| dress | app/3dmap/character_clothing.js (+ 1 других файлов) |
 | dressSleeves | app/3dmap/character_clothing.js |
 | driedHerbBundle | app/crafting_professions_v38.js |
-| driedMeat | app/crafting_professions_v38.js, app/crafting_resources_v34.js |
+| driedMeat | app/crafting_professions_v38.js (+ 1 других файлов) |
 | dropObject | app/expansion_classes_pack.js |
 | dropToOneHP | app/data/classes/Beastheart.js |
 | Drowned | app/expansion_classes_pack.js |
-| druid | app/magic_engine.js, app/rulesEngine.js |
+| druid | app/magic_engine.js (+ 1 других файлов) |
 | druidic | app/class_features_engine.js |
-| dryRun | app/crafting_character_influence_test_v46.js, app/crafting_disassembly_repair_v51.js, app/crafting_economy_v49.js, app/crafting_professions_v38.js (+ 3 ещё) |
+| dryRun | app/crafting_character_influence_test_v46.js (+ 6 других файлов) |
 | duplicate | app/vtt_debug_lab_v703.js |
 | duplicateOnPhaseRift | app/expansion_classes_pack.js |
 | duplicateTargetCollisions | tests/makehuman_vertex_mapping_audit.js |
 | dur | app/crafting_economy_v49.js |
-| durability | app/crafting_disassembly_v51.js, app/crafting_economy_v49.js, tests/crafting_disassembly_v51_test.js, tests/crafting_dlc_v50_test.js (+ 1 ещё) |
+| durability | app/crafting_disassembly_v51.js (+ 4 других файлов) |
 | durabilityBonus | app/crafting_profession_progression_test_v47.js |
-| durabilityMax | tests/crafting_disassembly_v51_test.js, tests/crafting_dlc_v50_test.js |
-| durabilityMultiplier | app/crafting_disassembly_v51.js, app/market_economy_v55.js, app/market_trade_v55_2.js |
-| duration | app/3dmap/gltf_character_pipeline.js, app/alchemist_mhp_2024_runtime.js, app/companion_packs_v26.js, app/data/spells/Focuses.js (+ 18 ещё) |
-| durationHours | app/blood_hunter_engine.js, app/combat_engine.js, app/expansion_classes_pack.js |
-| durationMinutes | app/alchemist_mhp_2024_runtime.js, app/data/classes/Beastheart.js, app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js (+ 3 ещё) |
-| durationRounds | app/accursed_oap_v11_runtime.js, app/blood_hunter_engine.js, app/data/classes/Beastheart.js, app/expansion_classes_pack.js (+ 1 ещё) |
+| durabilityMax | tests/crafting_disassembly_v51_test.js (+ 1 других файлов) |
+| durabilityMultiplier | app/crafting_disassembly_v51.js (+ 2 других файлов) |
+| duration | app/3dmap/gltf_character_pipeline.js (+ 21 других файлов) |
+| durationHours | app/blood_hunter_engine.js (+ 2 других файлов) |
+| durationMinutes | app/alchemist_mhp_2024_runtime.js (+ 6 других файлов) |
+| durationRounds | app/accursed_oap_v11_runtime.js (+ 4 других файлов) |
 | durationRule | app/shifter_laserllama_v2_1_runtime.js |
 | durationSeconds | app/walter_parasite_extra_runtime.js |
 | durationTurns | app/necromancer_mhp_2024_runtime.js |
-| durationUnit | app/companion_packs_v26.js, app/secondary_entities_engine.js |
+| durationUnit | app/companion_packs_v26.js (+ 1 других файлов) |
 | durationUntilSave | app/necromancer_mhp_2024_runtime.js |
 | durationUntilStartOfTurn | app/expansion_classes_pack.js |
 | duringShortRest | tests/alchemist_runtime_test.js |
@@ -8140,24 +8141,24 @@
 | dwarvishDiscourse | app/expansion_classes_pack.js |
 | dyingCurse | app/expansion_classes_pack.js |
 | dynamic | app/3dmap/character_body_geometry.js |
-| e | app/3dmap/map_world.js, app/3dmap/stress_map.js |
+| e | app/3dmap/map_world.js (+ 1 других файлов) |
 | earField | app/3dmap/character_body_geometry.js |
 | earFrame | app/3dmap/character_clothing.js |
-| earLength | app/3dmap/character_system.js, tests/character_elf_details_test.js, tests/character_hair_pack_test.js, tests/character_races_geometry_test.js (+ 3 ещё) |
-| earPointiness | app/3dmap/character_system.js, tests/character_elf_details_test.js, tests/character_hair_pack_test.js, tests/character_races_geometry_test.js (+ 3 ещё) |
+| earLength | app/3dmap/character_system.js (+ 6 других файлов) |
+| earPointiness | app/3dmap/character_system.js (+ 6 других файлов) |
 | earth | app/data/classes/Beastheart.js |
 | Earth | app/alchemy_gameplay_v30.js |
 | earthCore | app/resource_processing_v44.js |
 | earthEssence | app/resource_processing_v44.js |
-| earTuftSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js, tools/check_avian_races_browser.js |
-| ecology | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 9 ещё) |
-| ectoplasm | app/crafting_economy_v49.js, app/resource_processing_v44.js |
-| edition | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/data/classes/Alchemist.js, app/data/classes/Illigger.js (+ 20 ещё) |
-| effect | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/consumables.js (+ 16 ещё) |
+| earTuftSize | app/3dmap/character_system.js (+ 2 других файлов) |
+| ecology | app/bestiary_catalog_v56_1.js (+ 12 других файлов) |
+| ectoplasm | app/crafting_economy_v49.js (+ 1 других файлов) |
+| edition | app/accursed_oap_v11_runtime.js (+ 23 других файлов) |
+| effect | app/alchemist_mhp_2024_runtime.js (+ 19 других файлов) |
 | effectiveDamage | app/combat_engine.js |
 | effectiveStats | app/parasite_extra_runtime.js |
 | effectKey | app/parasite_extra_runtime.js |
-| effects | app/alchemy_gameplay_v30.js, app/bestiary_catalog_v56_13.js, app/combat_engine.js, app/companions.js (+ 2 ещё) |
+| effects | app/alchemy_gameplay_v30.js (+ 5 других файлов) |
 | elasticHide | app/resource_processing_v44.js |
 | Elderheart | app/kibbles_localization_content_v71.js |
 | eldritchBane | app/expansion_classes_pack.js |
@@ -8165,36 +8166,36 @@
 | eldritchInvocations | app/class_features_engine.js |
 | eldritchMaster | app/class_features_engine.js |
 | electricCharge | app/expansion_classes_pack.js |
-| elemental | app/3dmap/character_editor_3d.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js (+ 11 ещё) |
+| elemental | app/3dmap/character_editor_3d.js (+ 14 других файлов) |
 | Elemental | app/kibbles_localization_content_v71.js |
-| elementalAsh | app/crafting_economy_v49.js, app/resource_processing_v44.js |
+| elementalAsh | app/crafting_economy_v49.js (+ 1 других файлов) |
 | elementalBlast | app/expansion_classes_pack.js |
 | elementalPower | app/expansion_classes_pack.js |
 | elephant | app/3dmap/character_body_geometry.js |
-| elephantEarSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js |
-| elephantTuskSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js |
+| elephantEarSize | app/3dmap/character_system.js (+ 1 других файлов) |
+| elephantTuskSize | app/3dmap/character_system.js (+ 1 других файлов) |
 | elf_wood | app/crafting_professions_v38.js |
 | elfcity | app/3dmap/character_editor_3d.js |
 | eligible | tests/test_class_audit_stage3_runtime.js |
 | elixirs | app/crafting_profession_progression_v47.js |
 | eloquentSpeech | app/expansion_classes_pack.js |
 | elven_accuracy | app/feat_engine.js |
-| email | app/cloud_sync.js, tests/cloud_sync_test.cjs |
+| email | app/cloud_sync.js (+ 1 других файлов) |
 | emanationFt | app/expansion_classes_pack.js |
 | embers | app/blood_hunter_engine.js |
 | Embers | app/expansion_classes_pack.js |
 | emerald | app/Wallpapers.js |
 | emergencyReanimate | app/walter_parasite_extra_runtime.js |
 | emissaryPhaseHooks | tests/test_v56_10.js |
-| empowered | app/class_features_engine.js, app/occultist_kibbles_v11_runtime.js |
+| empowered | app/class_features_engine.js (+ 1 других файлов) |
 | enableApply | app/update_scene_v2.js |
-| enabled | app/3dmap/character_anatomy.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/content_framework.js (+ 3 ещё) |
+| enabled | app/3dmap/character_anatomy.js (+ 6 других файлов) |
 | enchant | app/crafting_profession_progression_v47.js |
 | enclosed | app/3dmap/character_anatomy.js |
-| encoding | desktop/update.cjs, tools/generate_project_atlas.cjs, tools/run_tests_v731.js |
-| encounter | app/vtt_encounter_checkpoint_v68.js, app/vtt_gameplay_ux_v58.js |
+| encoding | desktop/update.cjs (+ 2 других файлов) |
+| encounter | app/vtt_encounter_checkpoint_v68.js (+ 1 других файлов) |
 | encounterBias | app/bestiary_catalog_v56_13.js |
-| encounterId | app/vtt_gameplay_ux_v58.js, tests/test_class_audit_stage4_runtime.js |
+| encounterId | app/vtt_gameplay_ux_v58.js (+ 1 других файлов) |
 | end | app/3dmap/character_body_geometry.js |
 | endActorTurn | app/blood_hunter_engine.js |
 | endAllRites | app/expansion_classes_pack.js |
@@ -8210,14 +8211,14 @@
 | endRampage | app/data/classes/Beastheart.js |
 | ends | app/vessel_laserllama_v4_runtime.js |
 | endsAt | app/expansion_classes_pack.js |
-| endsOnAttack | app/alchemist_mhp_2024_runtime.js, tests/alchemist_combat_test.js |
+| endsOnAttack | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | endsOnAttackOrSpell | app/expansion_classes_pack.js |
 | endsOnDamage | app/alchemist_mhp_2024_runtime.js |
 | endsOnMagicHealing | app/data/classes/Beastheart.js |
 | endsOnMove | app/expansion_classes_pack.js |
 | endsOnRemoveCurse | app/expansion_classes_pack.js |
 | endsWhen | app/expansion_classes_pack.js |
-| endTurn | app/gameplay_core_v57.js, app/summoning_engine.js, tests/test_v58.js |
+| endTurn | app/gameplay_core_v57.js (+ 2 других файлов) |
 | enemiesFrightened | app/expansion_classes_pack.js |
 | enemy | tests/test_class_audit_stage4_runtime.js |
 | enemyDistanceFt | tests/test_class_audit_stage4_runtime.js |
@@ -8225,134 +8226,134 @@
 | enervatingJinx | app/expansion_classes_pack.js |
 | enervatingSpell | app/expansion_classes_pack.js |
 | eng | app/data/feats/Feat_widget.js |
-| engines | app/vtt_combat_log_v66.js, app/vtt_debug_panel_v70.js |
-| englishName | app/accursed_oap_v11_runtime.js, app/data/classes/Alchemist.js, app/data/classes/Beastheart.js, app/data/classes/Ghost.js (+ 26 ещё) |
+| engines | app/vtt_combat_log_v66.js (+ 1 других файлов) |
+| englishName | app/accursed_oap_v11_runtime.js (+ 29 других файлов) |
 | enhancement | app/expansion_classes_pack.js |
 | enhancingSurge | app/expansion_classes_pack.js |
 | enlightened | app/expansion_classes_pack.js |
 | enliveningOrder | app/expansion_classes_pack.js |
 | enshroudingImprecation | app/expansion_classes_pack.js |
-| ensure | app/ghost_extra_runtime.js, app/magic_engine.js, app/secondary_entities_engine.js, app/walter_parasite_extra_runtime.js (+ 5 ещё) |
+| ensure | app/ghost_extra_runtime.js (+ 8 других файлов) |
 | ensureCharacterProfessions | app/crafting_profession_progression_v47.js |
 | ensureMaterial | app/crafting_economy_v49.js |
 | ensureResourceState | app/monster_engine.js |
-| ensureTracker | app/gameplay_core_v57.js, tests/test_v58.js |
+| ensureTracker | app/gameplay_core_v57.js (+ 1 других файлов) |
 | enterSpiritForm | app/ghost_extra_runtime.js |
-| entities | app/alchemist_mhp_2024_runtime.js, tests/test_class_audit_runtime.js, tests/test_class_audit_stage2_runtime.js |
-| entity | app/alchemist_mhp_2024_runtime.js, app/companion_packs_v26.js, app/necromancer_mhp_2024_runtime.js, app/secondary_entities_engine.js (+ 1 ещё) |
-| entityId | app/alchemist_mhp_2024_runtime.js, app/secondary_entities_engine.js, app/summoning_engine.js, tests/test_class_audit_stage2_runtime.js |
-| entries | app/cloud_sync.js, app/vtt_debug_error_log_v709.js |
+| entities | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
+| entity | app/alchemist_mhp_2024_runtime.js (+ 4 других файлов) |
+| entityId | app/alchemist_mhp_2024_runtime.js (+ 3 других файлов) |
+| entries | app/cloud_sync.js (+ 1 других файлов) |
 | entryRoute | app/walter_parasite_extra_runtime.js |
-| ep | app/inventory-coins.js, app/market_economy_v55.js, tests/test_v55.js, tests/test_v55_2.js (+ 2 ещё) |
+| ep | app/inventory-coins.js (+ 5 других файлов) |
 | equip | app/3dmap/character_system.js |
-| equipment | app/3dmap/character_system.js, app/shifter_laserllama_v2_1_runtime.js, app/swarm_extra_runtime.js, tests/character_3d_foundation_test.js (+ 3 ещё) |
+| equipment | app/3dmap/character_system.js (+ 6 других файлов) |
 | equipmentId | app/3dmap/character_system.js |
 | equipMilitia | app/expansion_classes_pack.js |
-| equipped | app/3dmap/map_world.js, app/Inventory.js, app/crafting_disassembly_repair_v51.js |
+| equipped | app/3dmap/map_world.js (+ 2 других файлов) |
 | equippedArmor | tests/crafting_dlc_v50_test.js |
-| error | app/3dmap/character_editor_3d.js, app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js, app/alchemy_gathering_professions_v52.js (+ 29 ещё) |
+| error | app/3dmap/character_editor_3d.js (+ 32 других файлов) |
 | error_code | tests/cloud_sync_test.cjs |
-| errors | app/content_framework.js, app/vtt_debug_panel_v70.js |
+| errors | app/content_framework.js (+ 1 других файлов) |
 | essence | app/resource_processing_v44.js |
 | eTexture | app/3dmap/stress_map.js |
 | ethanol | app/crafting_resources_v34.js |
 | ethereal | app/expansion_classes_pack.js |
-| evasion | app/class_features_engine.js, app/combat_engine.js, app/data/classes/Alchemist.js, app/expansion_classes_pack.js |
+| evasion | app/class_features_engine.js (+ 3 других файлов) |
 | evasionMonk | app/class_features_engine.js |
 | event | tests/test_v747_event_race_compaction.js |
-| eventCount | app/vtt_combat_event_bus_v69.js, app/vtt_gameplay_ux_v58.js, tests/test_v70.js |
-| eventLog | app/vtt_gameplay_ux_v58.js, tests/test_v744_sync_authority_save.js, tests/test_v747_event_race_compaction.js |
+| eventCount | app/vtt_combat_event_bus_v69.js (+ 2 других файлов) |
+| eventLog | app/vtt_gameplay_ux_v58.js (+ 2 других файлов) |
 | eventLogBaseSeq | tests/test_v747_event_race_compaction.js |
-| events | app/vtt_combat_event_bus_v69.js, app/vtt_combat_log_v66.js, tests/test_v57.js, tests/test_v58.js (+ 2 ещё) |
-| eventSeq | app/network_engine.js, app/network_gameplay.js, app/vtt_mobile_session_v67.js, tests/test_v744_sync_authority_save.js (+ 2 ещё) |
+| events | app/vtt_combat_event_bus_v69.js (+ 5 других файлов) |
+| eventSeq | app/network_engine.js (+ 5 других файлов) |
 | exact | tools/check_cloud_account_browser.cjs |
 | exaltedLeader | app/data/classes/Warlord.js |
 | exaltedMutation | app/blood_hunter_engine.js |
 | exaltedProtege | app/expansion_classes_pack.js |
 | excellent | app/monster_loot_engine_v37.js |
-| exceptional | app/crafting_disassembly_repair_v51.js, app/crafting_economy_v49.js |
+| exceptional | app/crafting_disassembly_repair_v51.js (+ 1 других файлов) |
 | exceptPsychic | app/expansion_classes_pack.js |
 | exclude | app/3dmap/character_anatomy_geometry.js |
-| executablePath | tools/check_adult_anatomy_browser.js, tools/check_adult_base_browser.js, tools/check_animal_heads_browser.js, tools/check_avian_elephant_heads_browser.js (+ 34 ещё) |
+| executablePath | tools/check_adult_anatomy_browser.js (+ 37 других файлов) |
 | executeAttack | app/gameplay_core_v57.js |
-| exhaustion | app/expansion_classes_pack.js, app/resource_gathering_v35.js |
+| exhaustion | app/expansion_classes_pack.js (+ 1 других файлов) |
 | exhaustionAfter | app/expanded_classes_v23.js |
 | exhaustionApplied | app/expansion_classes_pack.js |
 | exhaustionGain | app/expanded_classes_v23.js |
 | exhaustionOnFailedSave | app/expansion_classes_pack.js |
 | exit | tests/desktop_update_contract.cjs |
-| exorcist | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| exorcist | app/blood_hunter_engine.js (+ 1 других файлов) |
 | exoskeletonArmor | app/expansion_classes_pack.js |
 | exp | app/Experience.js |
 | expand | app/content_catalog.js |
-| expanded | app/content_catalog.js, app/vtt_mobile_combat_hud_v62.js |
+| expanded | app/content_catalog.js (+ 1 других файлов) |
 | expected | app/vtt_debug_rules_matrix_v707.js |
 | expectedProcessed | app/resource_processing_v44.js |
 | expendHitDie | app/expansion_classes_pack.js |
 | experience | app/Hero-info.js |
-| experimental | app/alchemy_engine_v29.js, app/content_catalog.js |
+| experimental | app/alchemy_engine_v29.js (+ 1 других файлов) |
 | experimentalist | app/data/classes/Alchemist.js |
-| experiments | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js |
+| experiments | app/alchemy_engine_v29.js (+ 1 других файлов) |
 | expertFocus | app/expansion_classes_pack.js |
-| expertise | app/expansion_classes_pack.js, app/occultist_kibbles_v11_runtime.js |
+| expertise | app/expansion_classes_pack.js (+ 1 других файлов) |
 | expertiseSkills | app/expansion_classes_pack.js |
 | expired | app/alchemist_mhp_2024_runtime.js |
-| expires | app/alchemist_mhp_2024_runtime.js, app/class_features_engine.js, app/combat_engine.js, app/expansion_classes_pack.js |
+| expires | app/alchemist_mhp_2024_runtime.js (+ 3 других файлов) |
 | expires_at | app/cloud_sync.js |
 | expires_in | tests/cloud_sync_test.cjs |
-| expiresAt | app/accursed_oap_v11_runtime.js, app/blood_hunter_engine.js, app/network_gameplay.js, app/spellblade_kibbles_runtime.js |
+| expiresAt | app/accursed_oap_v11_runtime.js (+ 3 других файлов) |
 | expiresRounds | app/expansion_classes_pack.js |
 | exploded | app/alchemist_mhp_2024_runtime.js |
 | explodeRadiusFt | app/alchemist_mhp_2024_runtime.js |
 | explodesOncePerTurn | app/expansion_classes_pack.js |
 | exploit | app/data/classes/Beastheart.js |
 | exploitDice | app/data/classes/Warlord.js |
-| exploitDie | app/data/classes/Warlord.js, app/expanded_classes_v23.js |
-| exploits | app/data/classes/Warlord.js, app/warlord_laserllama_v330_runtime.js |
+| exploitDie | app/data/classes/Warlord.js (+ 1 других файлов) |
+| exploits | app/data/classes/Warlord.js (+ 1 других файлов) |
 | exploitsKnown | app/data/classes/Warlord.js |
 | explosiveBane | app/expansion_classes_pack.js |
 | explosiveCannon | app/network_gameplay.js |
 | exportedAt | app/vtt_combat_event_bus_v69.js |
 | exportedMacros | tools/prepare_makehuman_gender.js |
-| exportJSON | app/3dmap/character_editor_3d.js, app/vtt_debug_scenario_editor_v705.js |
+| exportJSON | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | exportReplay | app/vtt_combat_event_bus_v69.js |
-| exportSession | app/vtt_encounter_checkpoint_v68.js, app/vtt_mobile_session_v67.js |
+| exportSession | app/vtt_encounter_checkpoint_v68.js (+ 1 других файлов) |
 | exposingStrike | app/expansion_classes_pack.js |
 | exposure | app/blood_hunter_engine.js |
-| expression | app/combat_engine.js, app/network_gameplay.js, app/vtt_dice_resolution_v65.js |
+| expression | app/combat_engine.js (+ 2 других файлов) |
 | extended | app/class_features_engine.js |
 | extendedResourceState | app/class_features_engine.js |
 | extendedTactics | app/data/classes/Warden.js |
 | extendExistingDarkvisionFt | app/blood_hunter_engine.js |
 | extendHex | app/expanded_classes_v23.js |
 | extendHexRounds | app/expansion_classes_pack.js |
-| external | app/3dmap/character_anatomy.js, tests/character_external_anatomy_test.js |
+| external | app/3dmap/character_anatomy.js (+ 1 других файлов) |
 | externalGeometryAvailable | app/3dmap/character_anatomy.js |
 | externalGeometryReady | app/3dmap/character_anatomy.js |
 | externalGeometryStage | app/3dmap/character_anatomy.js |
-| extra | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js, app/vtt_debug_rules_matrix_v707.js |
+| extra | app/alchemy_engine_v29.js (+ 2 других файлов) |
 | extraAction | app/expansion_classes_pack.js |
 | extraAstralConstruct | app/expansion_classes_pack.js |
-| extraAtk | app/character.js, app/network_gameplay.js |
-| extraAttack | app/blood_hunter_engine.js, app/class_features_engine.js, app/data/classes/Illigger.js, app/data/classes/Pugilist.js (+ 4 ещё) |
+| extraAtk | app/character.js (+ 1 других файлов) |
+| extraAttack | app/blood_hunter_engine.js (+ 7 других файлов) |
 | extraAttackDamage | app/blood_hunter_engine.js |
-| extraAttacks | app/accursed_oap_v11_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/combat_engine.js (+ 10 ещё) |
-| extraBloodMaledictUse | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| extraAttacks | app/accursed_oap_v11_runtime.js (+ 13 других файлов) |
+| extraBloodMaledictUse | app/blood_hunter_engine.js (+ 1 других файлов) |
 | extraCantrips | app/occultist_kibbles_v11_runtime.js |
 | extraClassType | app/character_creation.js |
 | extraCurseArmamentAttack | app/expansion_classes_pack.js |
 | extraCursedAttunement | app/expansion_classes_pack.js |
-| extraDamage | app/alchemist_mhp_2024_runtime.js, app/data/classes/Beastheart.js, app/expansion_classes_pack.js |
+| extraDamage | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | extraDamageByLevel | app/accursed_oap_v11_runtime.js |
 | extraDamageDice | app/expansion_classes_pack.js |
 | extraDamageDie | app/expansion_classes_pack.js |
-| extraDice | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/combat_engine.js (+ 5 ещё) |
+| extraDice | app/alchemist_mhp_2024_runtime.js (+ 8 других файлов) |
 | extraDieVsUndead | app/expansion_classes_pack.js |
 | extradimensional | app/occultist_kibbles_v11_runtime.js |
 | extraDimLight | app/expansion_classes_pack.js |
 | extraDimLightDie | app/expansion_classes_pack.js |
 | extraDiscipline | app/expansion_classes_pack.js |
-| extraDmg | app/character.js, app/network_gameplay.js, tests/test_v712_fixes.js |
+| extraDmg | app/character.js (+ 2 других файлов) |
 | extraExploitDice | app/expansion_classes_pack.js |
 | extraExploitKnown | app/expansion_classes_pack.js |
 | extraFamiliarAction | app/occultist_kibbles_v11_runtime.js |
@@ -8365,7 +8366,7 @@
 | extraRadiusFt | app/alchemist_mhp_2024_runtime.js |
 | extraRampageDie | app/expansion_classes_pack.js |
 | extraRiteDie | app/expansion_classes_pack.js |
-| extras | tests/character_3d_editor_test.js, tests/makehuman_gender_recipe_test.js |
+| extras | tests/character_3d_editor_test.js (+ 1 других файлов) |
 | extraSaveBonus | app/warlord_laserllama_v330_runtime.js |
 | extraSkillChoice | app/expansion_classes_pack.js |
 | extraSuture | app/necromancer_mhp_2024_runtime.js |
@@ -8373,62 +8374,62 @@
 | extraTargets | app/expansion_classes_pack.js |
 | extraTurns | app/occultist_kibbles_v11_runtime.js |
 | extraUnarmedAfterTwoOldOneTwo | app/expansion_classes_pack.js |
-| extraUse | app/expansion_classes_pack.js, app/vessel_laserllama_v4_runtime.js |
-| eye | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
-| eyeColor | app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tests/character_head_geometry_test.js, tests/character_races_geometry_test.js |
-| eyeGlow | app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tools/check_character_races_browser.js |
-| eyeHeight | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_head_geometry_test.js |
+| extraUse | app/expansion_classes_pack.js (+ 1 других файлов) |
+| eye | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| eyeColor | app/3dmap/character_system.js (+ 3 других файлов) |
+| eyeGlow | app/3dmap/character_system.js (+ 2 других файлов) |
+| eyeHeight | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
 | eyeless | app/blood_hunter_engine.js |
 | eyeliner | tools/check_character_head_browser.js |
 | eyeShape | app/3dmap/character_system.js |
-| eyeSize | app/3dmap/character_system.js, tools/check_character_head_browser.js |
-| eyeSpacing | app/3dmap/character_system.js, tools/check_character_head_browser.js |
-| eyeTilt | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js |
-| eyeWidth | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js |
-| f | app/3dmap/character_body_geometry.js, app/alchemist_mhp_2024_runtime.js, app/warden_mhp_2024_runtime.js |
-| faceColor | app/3dmap/character_system.js, tools/check_character_head_browser.js, tools/check_last_races_browser.js, tools/check_parasites_browser.js (+ 2 ещё) |
-| faceLength | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js |
+| eyeSize | app/3dmap/character_system.js (+ 1 других файлов) |
+| eyeSpacing | app/3dmap/character_system.js (+ 1 других файлов) |
+| eyeTilt | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
+| eyeWidth | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
+| f | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
+| faceColor | app/3dmap/character_system.js (+ 5 других файлов) |
+| faceLength | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | faceShape | app/3dmap/character_system.js |
-| faceTint | app/3dmap/character_system.js, tests/character_head_geometry_test.js, tools/check_character_head_browser.js |
-| faceWidth | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tools/check_character_head_browser.js |
+| faceTint | app/3dmap/character_system.js (+ 2 других файлов) |
+| faceWidth | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
 | facileSuppression | app/expansion_classes_pack.js |
 | factionAgents | app/bestiary_catalog_v56_13.js |
 | factions | app/bestiary_catalog_v56_13.js |
-| fail | app/update_scene_v2.js, app/vtt_debug_rules_matrix_v707.js |
+| fail | app/update_scene_v2.js (+ 1 других файлов) |
 | failChance | app/alchemy_gameplay_v30.js |
-| failed | app/3dmap/character_editor_3d.js, app/3dmap/map_renderer_3d.js, app/crafting_engine_v31.js, app/crafting_professions_v33.js (+ 1 ещё) |
+| failed | app/3dmap/character_editor_3d.js (+ 4 других файлов) |
 | failedSave | tests/pugilist_combat_test.js |
 | failNextRollDisadvantage | app/expansion_classes_pack.js |
-| failure | app/alchemy_gameplay_v30.js, app/crafting_disassembly_repair_v51.js, app/crafting_economy_v49.js, tests/test_v55_3.js |
-| failures | app/combat_engine.js, app/dnd_tools.js, app/market_social_v55_3.js, app/monster_engine.js (+ 8 ещё) |
+| failure | app/alchemy_gameplay_v30.js (+ 3 других файлов) |
+| failures | app/combat_engine.js (+ 11 других файлов) |
 | fair | app/monster_loot_engine_v37.js |
-| fall | app/combat_engine.js, tests/test_v721_fixes.js |
+| fall | app/combat_engine.js (+ 1 других файлов) |
 | fallDamageReduction | app/expansion_classes_pack.js |
-| fallen | app/3dmap/map_model.js, app/vessel_laserllama_v4_runtime.js |
+| fallen | app/3dmap/map_model.js (+ 1 других файлов) |
 | fallenAttack | app/blood_hunter_engine.js |
 | fallenPuppet | app/blood_hunter_engine.js |
 | fallingStrike | app/expanded_classes_v23.js |
-| familiar | app/companion_packs_v26.js, app/expansion_classes_pack.js, app/occultist_kibbles_v11_runtime.js |
+| familiar | app/companion_packs_v26.js (+ 2 других файлов) |
 | familiarAttack | app/expansion_classes_pack.js |
 | familiarHpBonus | app/expansion_classes_pack.js |
 | familiarLink | app/occultist_kibbles_v11_runtime.js |
 | familiarSettlement | app/expansion_classes_pack.js |
 | familiarStealth | app/occultist_kibbles_v11_runtime.js |
-| families | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 21 ещё) |
-| family | app/3dmap/character_anatomy.js, app/3dmap/character_system.js, app/Settings.js, app/crafting_professions_v38.js |
-| familyByCreature | tests/test_v56_1.js, tests/test_v56_10.js, tests/test_v56_11.js, tests/test_v56_12.js (+ 7 ещё) |
-| familyId | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/bestiary_catalog_v56_2.js (+ 7 ещё) |
+| families | app/bestiary_catalog_v56_1.js (+ 24 других файлов) |
+| family | app/3dmap/character_anatomy.js (+ 3 других файлов) |
+| familyByCreature | tests/test_v56_1.js (+ 10 других файлов) |
+| familyId | app/bestiary_catalog_v56_1.js (+ 10 других файлов) |
 | fancyFootwork | app/expansion_classes_pack.js |
-| fangSize | app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tools/check_character_races_browser.js |
+| fangSize | app/3dmap/character_system.js (+ 2 других файлов) |
 | fastHands | app/class_features_engine.js |
 | fastMovement | app/class_features_engine.js |
 | fastTravel | app/expansion_classes_pack.js |
-| fat | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js |
+| fat | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | fathomless | app/blood_hunter_engine.js |
 | fatigue | app/expansion_classes_pack.js |
 | favoredEnemy | app/class_features_engine.js |
 | favoredServant | app/expansion_classes_pack.js |
-| fear | app/alchemist_mhp_2024_runtime.js, app/necromancer_mhp_2024_runtime.js |
+| fear | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | Fear | app/alchemy_gameplay_v30.js |
 | fearApplied | app/expansion_classes_pack.js |
 | fearAura | app/expanded_classes_v23.js |
@@ -8439,85 +8440,85 @@
 | fearSavePenalty | app/expansion_classes_pack.js |
 | fearTargets | tests/test_blood_hunter_profane_focus.js |
 | feat | app/data/feats/Feats_settings.js |
-| featherTailSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js, tools/check_avian_races_browser.js, tools/check_feather_surface_browser.js |
-| featherWingSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js, tools/check_avian_races_browser.js, tools/check_feather_surface_browser.js |
-| feats | app/Hero-info.js, app/crafting_character_influence_test_v46.js, app/data/classes/level_up.js, app/vtt_debug_character_lab_v702.js |
-| feature | app/Backgrounds.js, app/alchemist_mhp_2024_runtime.js |
+| featherTailSize | app/3dmap/character_system.js (+ 3 других файлов) |
+| featherWingSize | app/3dmap/character_system.js (+ 3 других файлов) |
+| feats | app/Hero-info.js (+ 3 других файлов) |
+| feature | app/Backgrounds.js (+ 1 других файлов) |
 | FEATURE_DEFS | app/class_features_engine.js |
 | featureAvailableForCurrentBuild | app/class_features_engine.js |
 | featureId | app/network_gameplay.js |
-| featureLevels | app/martyr_mhp_2024_runtime.js, app/necromancer_mhp_2024_runtime.js, app/occultist_kibbles_v11_runtime.js, app/shifter_laserllama_v2_1_runtime.js (+ 1 ещё) |
-| featureName | app/network_gameplay.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js |
-| features | app/Hero-info.js, app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js (+ 53 ещё) |
+| featureLevels | app/martyr_mhp_2024_runtime.js (+ 4 других файлов) |
+| featureName | app/network_gameplay.js (+ 2 других файлов) |
+| features | app/Hero-info.js (+ 56 других файлов) |
 | fecundAffliction | app/expansion_classes_pack.js |
 | feedOnCorpse | app/parasite_extra_runtime.js |
-| feet | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js, tests/character_clothing_test.js, tests/character_fur_test.js (+ 5 ещё) |
+| feet | app/3dmap/character_body_geometry.js (+ 8 других файлов) |
 | feint | app/expansion_classes_pack.js |
-| female | app/3dmap/character_anatomy.js, app/3dmap/character_clothing.js, app/3dmap/character_system.js |
+| female | app/3dmap/character_anatomy.js (+ 2 других файлов) |
 | femaleStackTerms | tools/prepare_makehuman_gender.js |
 | feralInstinct | app/class_features_engine.js |
-| feralSenses | app/class_features_engine.js, app/shifter_laserllama_v2_1_runtime.js |
+| feralSenses | app/class_features_engine.js (+ 1 других файлов) |
 | ferocious | app/data/classes/Beastheart.js |
-| ferocity | app/companion_gameplay_v27.js, app/companion_packs_v26.js, app/data/classes/Beastheart.js, app/expanded_classes_v23.js |
-| ferocityMax | app/companion_packs_v26.js, app/data/classes/Beastheart.js |
-| fetch | tests/character_3d_morph_assets_test.js, tests/character_3d_skin_assets_test.js, tests/cloud_sync_test.cjs, tests/gltf_loader_smoke.cjs (+ 3 ещё) |
-| fey | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 8 ещё) |
+| ferocity | app/companion_gameplay_v27.js (+ 3 других файлов) |
+| ferocityMax | app/companion_packs_v26.js (+ 1 других файлов) |
+| fetch | tests/character_3d_morph_assets_test.js (+ 6 других файлов) |
+| fey | app/bestiary_catalog_v56_1.js (+ 11 других файлов) |
 | fey_touched | app/feat_engine.js |
 | feyFiber | app/resource_processing_v44.js |
-| feyPresence | app/class_features_engine.js, app/network_gameplay.js |
-| fiber | app/crafting_economy_v49.js, app/resource_processing_v44.js |
+| feyPresence | app/class_features_engine.js (+ 1 других файлов) |
+| fiber | app/crafting_economy_v49.js (+ 1 других файлов) |
 | field | app/3dmap/character_body_geometry.js |
-| fiend | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_13.js (+ 9 ещё) |
-| fiendish | app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js |
+| fiend | app/bestiary_catalog_v56_1.js (+ 12 других файлов) |
+| fiendish | app/expansion_classes_pack.js (+ 1 других файлов) |
 | fiendishStance | app/expansion_classes_pack.js |
 | fightClubs | app/data/classes/Pugilist.js |
 | fighterRemarkableAthlete | app/class_features_engine.js |
 | fighting_initiate | app/feat_engine.js |
-| fightingSpirit | app/data/classes/Pugilist.js, app/expansion_classes_pack.js |
-| fightingStyle | app/blood_hunter_engine.js, app/class_features_engine.js, app/data/classes/Warden.js, app/expansion_classes_pack.js (+ 1 ещё) |
+| fightingSpirit | app/data/classes/Pugilist.js (+ 1 других файлов) |
+| fightingStyle | app/blood_hunter_engine.js (+ 4 других файлов) |
 | fightingStyleChoice | app/expansion_classes_pack.js |
-| fightingStyles | app/data/classes/BloodHunter.js, app/data/classes/Warlord.js |
-| file | app/Wallpapers.js, tests/makehuman_topology_audit.js |
-| filename | app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js, tests/character_3d_foundation_test.js, tests/character_3d_skin_morph_test.js (+ 64 ещё) |
+| fightingStyles | app/data/classes/BloodHunter.js (+ 1 других файлов) |
+| file | app/Wallpapers.js (+ 1 других файлов) |
+| filename | app/crafting_character_influence_test_v46.js (+ 67 других файлов) |
 | FileReader | tests/test_v717_fixes.js |
-| files | app/update_manager_v2.js, tests/creation_signature_asset_test.cjs, tests/desktop_update_contract.cjs, tests/test_v754_update_manager.js |
-| filter | app/Settings.js, app/content_catalog.js, app/vtt_combat_event_bus_v69.js, app/vtt_combat_log_v66.js |
+| files | app/update_manager_v2.js (+ 3 других файлов) |
+| filter | app/Settings.js (+ 3 других файлов) |
 | filtered | app/vtt_combat_event_bus_v69.js |
 | final | app/vtt_debug_dice_lab_v706.js |
 | finalMartyrdom | app/martyr_mhp_2024_runtime.js |
 | finalStrikeExploit | app/expansion_classes_pack.js |
 | findRecipeForItem | app/crafting_disassembly_repair_v51.js |
-| fine | app/crafting_disassembly_repair_v51.js, app/crafting_disassembly_v51.js, app/crafting_economy_v49.js, app/custom_crafting_v32.js |
+| fine | app/crafting_disassembly_repair_v51.js (+ 3 других файлов) |
 | finecarver | app/crafting_profession_progression_v47.js |
 | fineFiberV49 | app/crafting_economy_v49.js |
 | fineLeatherV49 | app/crafting_economy_v49.js |
 | finesse | app/occultist_kibbles_v11_runtime.js |
 | finesseOrRanged | tests/test_v727_fixes.js |
 | finger | app/3dmap/character_body_geometry.js |
-| finish | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/update_scene_v2.js |
-| finite | tools/check_external_anatomy_browser.js, tools/check_male_anatomy_browser.js, tools/check_pose_browser.js, tools/check_skin_material_browser.js |
-| finSize | app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tools/check_character_races_browser.js |
+| finish | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
+| finite | tools/check_external_anatomy_browser.js (+ 3 других файлов) |
+| finSize | app/3dmap/character_system.js (+ 2 других файлов) |
 | firbolg | app/crafting_professions_v38.js |
-| fire | app/blood_hunter_engine.js, app/class_features_engine.js, app/expanded_classes_v23.js, app/warden_mhp_2024_runtime.js |
+| fire | app/blood_hunter_engine.js (+ 3 других файлов) |
 | Fire | app/alchemy_gameplay_v30.js |
 | fireAffinity | app/occultist_kibbles_v11_runtime.js |
 | fireClay | app/crafting_resources_v34.js |
-| fireDamage | app/expansion_classes_pack.js, app/occultist_kibbles_v11_runtime.js |
-| fireEssence | app/crafting_economy_v49.js, app/resource_processing_v44.js |
+| fireDamage | app/expansion_classes_pack.js (+ 1 других файлов) |
+| fireEssence | app/crafting_economy_v49.js (+ 1 других файлов) |
 | fireResistance | app/occultist_kibbles_v11_runtime.js |
 | firmness | tests/makehuman_gender_recipe_test.js |
 | first | app/rulesEngine.js |
 | firstAid | app/expansion_classes_pack.js |
-| firstAttackAdvantage | app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js |
+| firstAttackAdvantage | app/expansion_classes_pack.js (+ 1 других файлов) |
 | firstHitByEachTargetRestoresMoxie | app/expansion_classes_pack.js |
 | firstMate | app/expansion_classes_pack.js |
-| fisher | app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| fisher | app/market_social_v55_3.js (+ 1 других файлов) |
 | fisticuffs | app/data/classes/Pugilist.js |
 | fisticuffsDie | app/data/classes/Pugilist.js |
-| fit | app/3dmap/character_clothing.js, app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tools/check_external_anatomy_browser.js (+ 5 ещё) |
+| fit | app/3dmap/character_clothing.js (+ 8 других файлов) |
 | fitFrame | app/3dmap/character_clothing.js |
 | fitProfile | app/3dmap/character_system.js |
-| fixed | app/data/classes/progressionEngine.js, app/expanded_class_registry_bridge.js |
+| fixed | app/data/classes/progressionEngine.js (+ 1 других файлов) |
 | fixtureSha256 | tests/makehuman_gender_fixture_audit.js |
 | fizban | app/bestiary_catalog_v56_1.js |
 | flame | app/blood_hunter_engine.js |
@@ -8525,17 +8526,17 @@
 | flameReroll12 | app/blood_hunter_engine.js |
 | flamesOfHope | app/expansion_classes_pack.js |
 | flare | app/3dmap/character_clothing.js |
-| flashOfGenius | app/class_features_engine.js, app/network_gameplay.js |
+| flashOfGenius | app/class_features_engine.js (+ 1 других файлов) |
 | flashOfGeniusAvailable | app/combat_engine.js |
 | flat | app/3dmap/character_body_geometry.js |
 | flawed | app/custom_crafting_v32.js |
 | flawlessAnalysis | app/savant_laserllama_v561_runtime.js |
 | flax | app/crafting_resources_v34.js |
-| fletcher | app/crafting_profession_progression_v47.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
-| fletchingStock | app/crafting_economy_v49.js, app/resource_processing_v44.js |
+| fletcher | app/crafting_profession_progression_v47.js (+ 2 других файлов) |
+| fletchingStock | app/crafting_economy_v49.js (+ 1 других файлов) |
 | fletchingStockV49 | app/crafting_economy_v49.js |
 | floatObjectsLb | app/expansion_classes_pack.js |
-| floor | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/map_model.js, app/3dmap/stair_navigation.js (+ 2 ещё) |
+| floor | app/3dmap/character_anatomy_geometry.js (+ 5 других файлов) |
 | FLOOR | app/3dmap/map_renderer_2d.js |
 | floor_ceramic_tile_dark | app/3dmap/map_renderer_2d.js |
 | floor_ceramic_tile_light | app/3dmap/map_renderer_2d.js |
@@ -8560,11 +8561,11 @@
 | flowers | app/resource_gathering_v35.js |
 | flurry | app/class_features_engine.js |
 | fly | app/necromancer_mhp_2024_runtime.js |
-| flyFt | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| flyFt | app/blood_hunter_engine.js (+ 1 других файлов) |
 | flyIfSelected | app/data/classes/Beastheart.js |
 | flyingSpeed | app/occultist_kibbles_v11_runtime.js |
-| flySpeed | app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js |
-| focus | app/blood_hunter_engine.js, app/expansion_classes_pack.js, app/martyr_mhp_2024_runtime.js, app/occultist_kibbles_v11_runtime.js (+ 7 ещё) |
+| flySpeed | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
+| focus | app/blood_hunter_engine.js (+ 10 других файлов) |
 | focusDebuff | app/expansion_classes_pack.js |
 | focusDuration | app/savant_laserllama_v561_runtime.js |
 | focusDurationRounds | app/expansion_classes_pack.js |
@@ -8574,8 +8575,8 @@
 | foeSlayer | app/class_features_engine.js |
 | foeSlayerApplied | tests/test_v728_fixes.js |
 | foeSlayerMode | tests/test_v728_fixes.js |
-| folder | tests/makehuman_gender_recipe_test.js, tools/build_character_editor_morphs.js, tools/prepare_makehuman_gender.js |
-| folders | app/Backgrounds.js, app/character_creation.js |
+| folder | tests/makehuman_gender_recipe_test.js (+ 2 других файлов) |
+| folders | app/Backgrounds.js (+ 1 других файлов) |
 | fontOfLife | app/data/classes/Warden.js |
 | fontOfMagic | app/class_features_engine.js |
 | food | app/market_economy_v55.js |
@@ -8584,18 +8585,18 @@
 | footprintFeet | app/3dmap/character_system.js |
 | footR | app/3dmap/character_anatomy.js |
 | foraging | app/crafting_profession_progression_v47.js |
-| force | app/warden_mhp_2024_runtime.js, desktop/prepare.cjs, desktop/update.cjs, tests/creation_signature_asset_test.cjs (+ 3 ещё) |
+| force | app/warden_mhp_2024_runtime.js (+ 6 других файлов) |
 | forceAttackRedirect | app/expansion_classes_pack.js |
 | forceCritical | app/class_features_engine.js |
 | forced | app/vtt_debug_dice_lab_v706.js |
-| forceDamage | app/data/classes/Beastheart.js, app/occultist_kibbles_v11_runtime.js |
+| forceDamage | app/data/classes/Beastheart.js (+ 1 других файлов) |
 | forceDamageInside | app/expansion_classes_pack.js |
 | forcedAttack | app/vtt_debug_dice_lab_v706.js |
 | forcedD20 | app/vtt_debug_dice_lab_v706.js |
 | forcedDamage | app/vtt_debug_dice_lab_v706.js |
 | forcedDice | app/vtt_debug_lab_v703.js |
 | forcedMeleeReaction | app/expansion_classes_pack.js |
-| forcedMoveFt | app/expanded_classes_v23.js, app/expansion_classes_pack.js, app/feat_engine.js |
+| forcedMoveFt | app/expanded_classes_v23.js (+ 2 других файлов) |
 | forcedMovementProtection | app/expansion_classes_pack.js |
 | forcedReactionAttack | app/expansion_classes_pack.js |
 | forcedSave | app/vtt_debug_dice_lab_v706.js |
@@ -8607,19 +8608,19 @@
 | forearmL | app/3dmap/character_anatomy.js |
 | forearmR | app/3dmap/character_anatomy.js |
 | foresight | app/expanded_classes_v23.js |
-| forest | app/3dmap/character_editor_3d.js, app/market_economy_v55.js |
+| forest | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | forge | app/3dmap/character_editor_3d.js |
-| forger | app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js |
+| forger | app/crafting_profession_progression_v47.js (+ 1 других файлов) |
 | forgery | app/crafting_professions_v38.js |
 | forgetAfterCast | app/expansion_classes_pack.js |
 | forgottenKnowledge | app/expansion_classes_pack.js |
 | forkedTongue | app/data/classes/Illigger.js |
-| form | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js, app/expansion_classes_pack.js, app/ghost_extra_runtime.js |
+| form | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
 | formationRole | app/bestiary_catalog_v56_12.js |
 | formless | app/vessel_laserllama_v4_runtime.js |
-| formula | app/alchemist_mhp_2024_runtime.js, app/alchemy_gameplay_v30.js, app/expansion_classes_pack.js, tests/alchemist_combat_test.js (+ 1 ещё) |
+| formula | app/alchemist_mhp_2024_runtime.js (+ 4 других файлов) |
 | formulae | app/alchemist_mhp_2024_runtime.js |
-| formulas | app/alchemist_mhp_2024_runtime.js, app/data/classes/Alchemist.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js (+ 1 ещё) |
+| formulas | app/alchemist_mhp_2024_runtime.js (+ 4 других файлов) |
 | fortified | app/warden_mhp_2024_runtime.js |
 | fortifyingDice | app/expansion_classes_pack.js |
 | fortunateCompany | app/expansion_classes_pack.js |
@@ -8627,7 +8628,7 @@
 | forward | app/3dmap/character_system.js |
 | fractureBurst | app/expansion_classes_pack.js |
 | frame | app/3dmap/character_anatomy_geometry.js |
-| free | app/expansion_classes_pack.js, app/inventory_containers_v54.js, app/network_gameplay.js, app/occultist_kibbles_v11_runtime.js (+ 1 ещё) |
+| free | app/expansion_classes_pack.js (+ 4 других файлов) |
 | freeAfflict | app/expansion_classes_pack.js |
 | freeAt17 | app/martyr_mhp_2024_runtime.js |
 | freeAtLevel17 | app/expansion_classes_pack.js |
@@ -8653,14 +8654,14 @@
 | freeUses | app/vessel_laserllama_v4_runtime.js |
 | frenzy | app/class_features_engine.js |
 | frighten | app/occultist_kibbles_v11_runtime.js |
-| frightened | app/expansion_classes_pack.js, app/warden_mhp_2024_runtime.js, tests/pugilist_combat_test.js |
-| frightenedEffect | app/blood_hunter_engine.js, app/combat_engine.js, app/network_gameplay.js, tests/test_v728_fixes.js |
+| frightened | app/expansion_classes_pack.js (+ 2 других файлов) |
+| frightenedEffect | app/blood_hunter_engine.js (+ 3 других файлов) |
 | frightenedSaveDisadvantage | app/expansion_classes_pack.js |
 | frightenedUntilEndNextTurn | app/expansion_classes_pack.js |
-| from | app/bestiary_catalog_v56_13.js, app/crafting_disassembly_repair_v51.js, app/data/classes/Accursed.js, app/data/classes/Alchemist.js (+ 21 ещё) |
-| fromFiendOrUndead | app/class_features_engine.js, app/combat_engine.js |
-| fromSpell | app/combat_engine.js, app/network_gameplay.js, app/spellblade_kibbles_runtime.js, tests/test_blood_hunter_profane_focus.js |
-| front | app/3dmap/character_clothing.js, app/3dmap/map_world.js |
+| from | app/bestiary_catalog_v56_13.js (+ 24 других файлов) |
+| fromFiendOrUndead | app/class_features_engine.js (+ 1 других файлов) |
+| fromSpell | app/combat_engine.js (+ 3 других файлов) |
+| front | app/3dmap/character_clothing.js (+ 1 других файлов) |
 | frontDigits | app/3dmap/character_body_geometry.js |
 | FrontTexture | tests/map_rebuild_world_test.js |
 | frozen | app/blood_hunter_engine.js |
@@ -8669,55 +8670,55 @@
 | fullMeanNearestDistance | tests/makehuman_vertex_mapping_audit.js |
 | fullSpeedDragging | app/expansion_classes_pack.js |
 | fulminatingFatigue | app/expansion_classes_pack.js |
-| fumble | app/combat_engine.js, app/network_gameplay.js, app/rulesEngine.js, app/vtt_debug_dice_lab_v706.js (+ 27 ещё) |
+| fumble | app/combat_engine.js (+ 30 других файлов) |
 | functionalStatus | app/market_trade_v55_2.js |
 | fur | app/3dmap/character_body_geometry.js |
-| furAmount | app/3dmap/character_anatomy.js, app/3dmap/character_system.js, tests/character_fur_test.js, tools/check_fur_surface_browser.js |
-| furColor | app/3dmap/character_system.js, tools/check_fur_surface_browser.js |
-| furDensity | app/3dmap/character_anatomy.js, app/3dmap/character_system.js, tests/character_fur_test.js, tools/check_fur_browser.js (+ 1 ещё) |
+| furAmount | app/3dmap/character_anatomy.js (+ 3 других файлов) |
+| furColor | app/3dmap/character_system.js (+ 1 других файлов) |
+| furDensity | app/3dmap/character_anatomy.js (+ 4 других файлов) |
 | furH | app/3dmap/character_body_geometry.js |
-| furLength | app/3dmap/character_anatomy.js, app/3dmap/character_system.js, tools/check_fur_surface_browser.js |
+| furLength | app/3dmap/character_anatomy.js (+ 2 других файлов) |
 | furParts | app/3dmap/character_body_geometry.js |
-| furProfile | app/3dmap/character_anatomy.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_fur_test.js (+ 1 ещё) |
+| furProfile | app/3dmap/character_anatomy.js (+ 4 других файлов) |
 | furRoots | app/3dmap/character_body_geometry.js |
 | furShell | app/3dmap/character_body_geometry.js |
 | furStrands | app/3dmap/character_body_geometry.js |
 | furyOfForge | app/expansion_classes_pack.js |
 | fuseMinutes | app/alchemist_mhp_2024_runtime.js |
-| fuseRounds | app/alchemist_mhp_2024_runtime.js, tests/alchemist_runtime_test.js |
+| fuseRounds | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | g | app/Wallpapers.js |
 | gainD4OnFailure | app/expansion_classes_pack.js |
-| gained | app/companion_gameplay_v27.js, app/data/classes/Beastheart.js |
-| gainFerocity | app/companion_gameplay_v27.js, app/data/classes/Beastheart.js |
+| gained | app/companion_gameplay_v27.js (+ 1 других файлов) |
+| gainFerocity | app/companion_gameplay_v27.js (+ 1 других файлов) |
 | gainRelaxationPerTurn | app/expansion_classes_pack.js |
 | gallantSpellcasting | app/expansion_classes_pack.js |
 | gameActors | app/blood_hunter_engine.js |
 | gameOfChance | app/expansion_classes_pack.js |
-| gameplay | app/vtt_combat_log_v66.js, app/vtt_encounter_checkpoint_v68.js, app/vtt_mobile_session_v67.js |
-| gameplayEvents | app/vtt_gameplay_ux_v58.js, tests/test_v57.js |
-| gargantuan | app/parasite_extra_runtime.js, app/swarm_extra_runtime.js |
+| gameplay | app/vtt_combat_log_v66.js (+ 2 других файлов) |
+| gameplayEvents | app/vtt_gameplay_ux_v58.js (+ 1 других файлов) |
+| gargantuan | app/parasite_extra_runtime.js (+ 1 других файлов) |
 | gaseousBody | app/necromancer_mhp_2024_runtime.js |
 | gaseousReaction | app/necromancer_mhp_2024_runtime.js |
 | gateTowns | app/bestiary_catalog_v56_13.js |
 | gather | app/alchemy_gathering_professions_v52.js |
 | gatherAction | app/alchemy_gathering_professions_v52.js |
-| gathered | app/world_resource_gathering_v53.js, tests/test_v52.js |
+| gathered | app/world_resource_gathering_v53.js (+ 1 других файлов) |
 | gatherIngredient | app/alchemy_gathering_professions_v52.js |
-| gear | app/crafting_disassembly_v51.js, app/crafting_profession_progression_v47.js, tests/crafting_disassembly_v51_test.js |
+| gear | app/crafting_disassembly_v51.js (+ 2 других файлов) |
 | gelid | app/blood_hunter_engine.js |
 | Gelid | app/expansion_classes_pack.js |
-| gem | app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js, app/crafting_resources_v34.js |
-| gemcutter | app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| gem | app/crafting_engine_v31.js (+ 3 других файлов) |
+| gemcutter | app/market_social_v55_3.js (+ 1 других файлов) |
 | gems | app/crafting_profession_progression_v47.js |
-| gender | app/3dmap/character_appearance_store.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js (+ 15 ещё) |
+| gender | app/3dmap/character_appearance_store.js (+ 18 других файлов) |
 | genderMorphs | app/3dmap/character_system.js |
-| general | app/market_social_v55_3.js, app/market_trade_v55_2.js |
-| generate | app/monster_loot_crafting_bridge_v40.js, app/monster_loot_engine_v36.js, app/monster_loot_engine_v37.js, tests/test_v57.js |
+| general | app/market_social_v55_3.js (+ 1 других файлов) |
+| generate | app/monster_loot_crafting_bridge_v40.js (+ 3 других файлов) |
 | genie | app/blood_hunter_engine.js |
 | geometryBuilds | app/3dmap/character_editor_3d.js |
 | geometryState | app/3dmap/character_clothing.js |
 | geometryUploads | app/3dmap/character_editor_3d.js |
-| get | app/companions.js, app/content_manifest.js, app/crafting_resources_v34.js, app/secondary_entities_engine.js (+ 2 ещё) |
+| get | app/companions.js (+ 5 других файлов) |
 | getAC | app/swarm_extra_runtime.js |
 | getAllBackgrounds | tests/test_v755_creation_buckets.js |
 | getAllRaces | tests/test_v755_creation_buckets.js |
@@ -8729,8 +8730,8 @@
 | getCharismaModifier | app/market_social_v55_3.js |
 | getClass | app/content_framework.js |
 | getClassSummary | app/walter_parasite_extra_runtime.js |
-| getCreature | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 9 ещё) |
-| getCurrent | app/campaign_manager.js, tests/test_v57.js, tests/test_v58.js |
+| getCreature | app/bestiary_catalog_v56_1.js (+ 12 других файлов) |
+| getCurrent | app/campaign_manager.js (+ 2 других файлов) |
 | getCurse | app/accursed_oap_v11_runtime.js |
 | getDC | app/savant_laserllama_v561_runtime.js |
 | getDevourDamage | app/swarm_extra_runtime.js |
@@ -8739,12 +8740,12 @@
 | getDie | app/savant_laserllama_v561_runtime.js |
 | getDiscipline | app/savant_laserllama_v561_runtime.js |
 | getDominantAbilityNames | app/walter_parasite_extra_runtime.js |
-| getDurability | app/crafting_economy_v49.js, tests/crafting_dlc_v50_test.js |
-| getElementById | tests/alchemist_combat_test.js, tests/character_3d_editor_test.js, tests/crafting_disassembly_v51_test.js, tests/crafting_dlc_v50_test.js (+ 33 ещё) |
+| getDurability | app/crafting_economy_v49.js (+ 1 других файлов) |
+| getElementById | tests/alchemist_combat_test.js (+ 36 других файлов) |
 | getExhaustion | app/resource_gathering_v35.js |
 | getFeature | app/content_framework.js |
 | getInscribedRunes | app/runekeeper_taron_v12_runtime.js |
-| getItem | tests/character_3d_editor_test.js, tests/character_appearance_store_test.js, tests/imported_3d_editor_assets.cjs, tests/map_rebuild_world_test.js (+ 17 ещё) |
+| getItem | tests/character_3d_editor_test.js (+ 20 других файлов) |
 | getItemQuality | app/crafting_economy_v49.js |
 | getLanguages | app/runekeeper_taron_v12_runtime.js |
 | getLarva | app/parasite_extra_runtime.js |
@@ -8758,18 +8759,18 @@
 | getMutationSlots | app/swarm_extra_runtime.js |
 | getNativeStorageStats | app/update_manager_v2.js |
 | getObject | app/3dmap/map_model.js |
-| getPath | tests/creation_signature_asset_test.cjs, tests/desktop_update_contract.cjs |
-| getPeer | tests/test_blood_hunter_focus_network.js, tests/test_v722_fixes.js, tests/test_v723_fixes.js, tests/test_v737_spellcasting_transaction.js (+ 4 ещё) |
+| getPath | tests/creation_signature_asset_test.cjs (+ 1 других файлов) |
+| getPeer | tests/test_blood_hunter_focus_network.js (+ 7 других файлов) |
 | getPersuasionModifier | app/market_social_v55_3.js |
 | getProfession | app/crafting_profession_progression_v47.js |
-| getProfile | app/crafting_profession_progression_v47.js, app/spells.js |
+| getProfile | app/crafting_profession_progression_v47.js (+ 1 других файлов) |
 | getPursuit | app/savant_laserllama_v561_runtime.js |
 | getRace | app/3dmap/character_system.js |
 | getReactions | app/savant_laserllama_v561_runtime.js |
 | getRenderDescriptor | app/3dmap/character_system.js |
 | getRunesKnown | app/runekeeper_taron_v12_runtime.js |
 | getRunicDC | app/runekeeper_taron_v12_runtime.js |
-| getSaveBonus | app/rulesEngine.js, tests/alchemist_combat_test.js, tests/test_v709_fixes.js, tests/test_v715_fixes.js (+ 10 ещё) |
+| getSaveBonus | app/rulesEngine.js (+ 13 других файлов) |
 | getSaveDC | app/accursed_oap_v11_runtime.js |
 | getSkillBonus | app/rulesEngine.js |
 | getSource | app/magic_engine.js |
@@ -8777,45 +8778,45 @@
 | getSpellInfo | app/magic_engine.js |
 | getSpellsKnown | app/accursed_oap_v11_runtime.js |
 | getSpellSlots | app/accursed_oap_v11_runtime.js |
-| getState | app/3dmap/character_editor_3d.js, app/swarm_extra_runtime.js |
+| getState | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | getStats | app/rulesEngine.js |
 | getSubclass | app/class_features_engine.js |
 | getSummary | app/ghost_extra_runtime.js |
 | getSymbiosisTier | app/parasite_extra_runtime.js |
 | getToken | app/secondary_entities_engine.js |
 | getTrader | app/market_economy_v55.js |
-| getVersion | tests/creation_signature_asset_test.cjs, tests/desktop_update_contract.cjs |
+| getVersion | tests/creation_signature_asset_test.cjs (+ 1 других файлов) |
 | getView | tests/test_v717_fixes.js |
 | getZone | app/3dmap/map_model.js |
 | ghost | app/3dmap/character_editor_3d.js |
-| ghostChainSize | app/3dmap/character_system.js, tests/character_ghost_geometry_test.js, tools/check_ghost_browser.js |
+| ghostChainSize | app/3dmap/character_system.js (+ 2 других файлов) |
 | ghostOnKill | app/necromancer_mhp_2024_runtime.js |
-| ghostOpacity | app/3dmap/character_system.js, tests/character_ghost_geometry_test.js, tools/check_ghost_browser.js |
-| ghostTerror | app/3dmap/character_system.js, tests/character_ghost_geometry_test.js, tools/check_ghost_browser.js |
-| ghostWeapon | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_ghost_geometry_test.js, tools/check_ghost_browser.js |
-| ghukliak | app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js |
+| ghostOpacity | app/3dmap/character_system.js (+ 2 других файлов) |
+| ghostTerror | app/3dmap/character_system.js (+ 2 других файлов) |
+| ghostWeapon | app/3dmap/character_editor_3d.js (+ 3 других файлов) |
+| ghukliak | app/expansion_classes_pack.js (+ 1 других файлов) |
 | giant | app/bestiary_catalog_v56_12.js |
 | Gifted | app/kibbles_localization_content_v71.js |
 | giftedStrategist | app/expansion_classes_pack.js |
-| gl | app/3dmap/map_renderer_3d.js, tools/check_external_anatomy_browser.js, tools/check_male_anatomy_browser.js, tools/check_pose_browser.js (+ 1 ещё) |
+| gl | app/3dmap/map_renderer_3d.js (+ 4 других файлов) |
 | glancingBlow | app/expansion_classes_pack.js |
 | glareParalyzeOnFailBy5 | app/expansion_classes_pack.js |
-| glass | app/crafting_economy_v49.js, app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js (+ 3 ещё) |
+| glass | app/crafting_economy_v49.js (+ 6 других файлов) |
 | glassBatch | app/crafting_resources_v34.js |
-| glassblower | app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
-| glasswork | app/crafting_engine_v31.js, app/crafting_profession_progression_v47.js, app/crafting_professions_v33.js |
-| glaze | app/crafting_professions_v38.js, app/crafting_resources_v34.js |
+| glassblower | app/crafting_profession_progression_v47.js (+ 3 других файлов) |
+| glasswork | app/crafting_engine_v31.js (+ 2 других файлов) |
+| glaze | app/crafting_professions_v38.js (+ 1 других файлов) |
 | glazedVessel | app/crafting_professions_v38.js |
 | glb | tests/makehuman_topology_audit.js |
-| glbBBox | tests/makehuman_surface_mapping_audit.js, tests/makehuman_vertex_mapping_audit.js |
-| glbTriangles | tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| glbVertices | tests/generate_makehuman_glb_morph_fixture.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js (+ 1 ещё) |
-| gliderMembraneSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js |
-| global | tests/test_v724_fixes.js, tests/test_v725_fixes.js, tests/test_v727_fixes.js, tests/test_v728_fixes.js (+ 2 ещё) |
-| globalThis | tests/test_v738_multiclass_spell_sources.js, tests/test_v739_prepared_transaction.js, tests/test_v743_authority_recharge_events.js, tests/test_v744_sync_authority_save.js (+ 1 ещё) |
+| glbBBox | tests/makehuman_surface_mapping_audit.js (+ 1 других файлов) |
+| glbTriangles | tests/makehuman_surface_mapping_audit.js (+ 2 других файлов) |
+| glbVertices | tests/generate_makehuman_glb_morph_fixture.js (+ 4 других файлов) |
+| gliderMembraneSize | app/3dmap/character_system.js (+ 1 других файлов) |
+| global | tests/test_v724_fixes.js (+ 5 других файлов) |
+| globalThis | tests/test_v738_multiclass_spell_sources.js (+ 4 других файлов) |
 | gloves | app/3dmap/character_clothing.js |
 | glow | app/3dmap/character_system.js |
-| gltf | app/3dmap/gltf_loader.js, tests/character_3d_editor_test.js, tests/character_3d_skin_morph_test.js |
+| gltf | app/3dmap/gltf_loader.js (+ 2 других файлов) |
 | gnoll | app/expanded_bestiary_v39.js |
 | gnome_forest | app/crafting_professions_v38.js |
 | gnome_rock | app/crafting_professions_v38.js |
@@ -8823,20 +8824,20 @@
 | goblinDiscourse | app/expansion_classes_pack.js |
 | goblinoid | app/expanded_bestiary_v39.js |
 | goblinStance | app/expansion_classes_pack.js |
-| gold | app/Settings.js, app/crafting_disassembly_v51.js, tests/crafting_disassembly_v51_test.js |
+| gold | app/Settings.js (+ 2 других файлов) |
 | goldBillet | app/crafting_resources_v34.js |
 | goldenSlumbers | app/expansion_classes_pack.js |
 | goldPer10 | app/crafting_disassembly_v51.js |
-| good | app/crafting_disassembly_repair_v51.js, app/monster_loot_engine_v37.js |
+| good | app/crafting_disassembly_repair_v51.js (+ 1 других файлов) |
 | goodPct | tests/makehuman_vertex_mapping_audit.js |
-| gooSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js |
-| gp | app/inventory-coins.js, app/market_economy_v55.js, app/market_social_v55_3.js, app/market_trade_v55_2.js (+ 4 ещё) |
+| gooSize | app/3dmap/character_system.js (+ 1 других файлов) |
+| gp | app/inventory-coins.js (+ 7 других файлов) |
 | graftAction | tests/alchemist_runtime_test.js |
 | graftName | tests/alchemist_runtime_test.js |
-| grafts | app/alchemist_mhp_2024_runtime.js, tests/alchemist_runtime_test.js |
-| grain | app/crafting_professions_v38.js, app/crafting_resources_v34.js |
+| grafts | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
+| grain | app/crafting_professions_v38.js (+ 1 других файлов) |
 | GRAND_HEXES | app/expansion_classes_pack.js |
-| grandHex | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| grandHex | app/expanded_classes_v23.js (+ 1 других файлов) |
 | grandRevolutionary | app/expansion_classes_pack.js |
 | grantAdvantage | app/expansion_classes_pack.js |
 | grantIngredient | app/alchemy_gathering_professions_v52.js |
@@ -8848,24 +8849,24 @@
 | grappleMastery | app/expanded_classes_v23.js |
 | grappleSizePlus | app/expansion_classes_pack.js |
 | grappleTarget | app/expanded_classes_v23.js |
-| grayColor | app/3dmap/character_system.js, tools/check_character_head_browser.js |
-| grayPercent | tests/character_head_geometry_test.js, tools/check_character_head_browser.js |
+| grayColor | app/3dmap/character_system.js (+ 1 других файлов) |
+| grayPercent | tests/character_head_geometry_test.js (+ 1 других файлов) |
 | great_weapon_master | app/feat_engine.js |
 | greaterDivineIntervention | app/class_features_engine.js |
 | greatOldOne | app/blood_hunter_engine.js |
-| Green | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| Green | app/expanded_classes_v23.js (+ 1 других файлов) |
 | greenwood | app/world_resource_gathering_v53.js |
 | greenwood_clearing | app/world_resource_gathering_v53.js |
 | greenwood_heart | app/world_resource_gathering_v53.js |
 | greenwood_stream | app/world_resource_gathering_v53.js |
-| grid | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
+| grid | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | grimPsychometry | app/blood_hunter_engine.js |
 | grip | app/3dmap/character_editor_3d.js |
 | ground | app/3dmap/character_body_geometry.js |
 | group | app/3dmap/character_body_geometry.js |
-| groupKey | app/weaponsheavy.js, app/weaponsmelee.js, app/weaponsranged.js, app/weaponsspecial.js |
-| groups | app/combat_engine.js, app/rulesEngine.js, tests/pugilist_combat_test.js, tests/test_v715_fixes.js (+ 4 ещё) |
-| guaranteed | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/bestiary_catalog_v56_2.js (+ 11 ещё) |
+| groupKey | app/weaponsheavy.js (+ 3 других файлов) |
+| groups | app/combat_engine.js (+ 7 других файлов) |
+| guaranteed | app/bestiary_catalog_v56_1.js (+ 14 других файлов) |
 | guardCraft | app/crafting_dlc_v50.js |
 | Guardian | app/kibbles_localization_content_v71.js |
 | guardianRangeFt | app/expansion_classes_pack.js |
@@ -8877,22 +8878,22 @@
 | guidedStrike | app/class_features_engine.js |
 | guild | app/crafting_character_influence_test_v46.js |
 | gumArabic | app/crafting_resources_v34.js |
-| h | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/map_model.js, app/3dmap/stress_map.js (+ 1 ещё) |
-| H | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js |
+| h | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
+| H | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | habitat | app/3dmap/character_editor_3d.js |
-| habitats | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 10 ещё) |
+| habitats | app/bestiary_catalog_v56_1.js (+ 13 других файлов) |
 | hadozee | tools/check_last_races_browser.js |
 | haggle | app/market_social_v55_3.js |
-| hair | app/3dmap/character_anatomy.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_adult_anatomy_test.js (+ 12 ещё) |
-| hairColor | app/3dmap/character_system.js, tools/check_character_head_browser.js, tools/check_character_races_browser.js, tools/check_hair_pack_browser.js |
+| hair | app/3dmap/character_anatomy.js (+ 15 других файлов) |
+| hairColor | app/3dmap/character_system.js (+ 3 других файлов) |
 | hairParts | app/3dmap/character_anatomy.js |
 | hairRibbonBudget | app/3dmap/character_anatomy.js |
 | half | app/3dmap/character_system.js |
-| half_up | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
+| half_up | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | halfCover | app/expansion_classes_pack.js |
 | halfCoverWhileGrappling | app/expansion_classes_pack.js |
-| halfDamageEffect | app/combat_engine.js, app/network_gameplay.js, app/spellblade_kibbles_runtime.js, app/warlord_laserllama_v330_runtime.js (+ 1 ещё) |
-| halfOnSave | app/expansion_classes_pack.js, app/spellblade_kibbles_runtime.js, tests/test_class_audit_stage4_runtime.js |
+| halfDamageEffect | app/combat_engine.js (+ 4 других файлов) |
+| halfOnSave | app/expansion_classes_pack.js (+ 2 других файлов) |
 | halfProficiencySkills | app/expansion_classes_pack.js |
 | halfSpeed | app/expansion_classes_pack.js |
 | Hallucination | app/alchemy_gameplay_v30.js |
@@ -8908,51 +8909,51 @@
 | handoffNeedsSignaling | app/network_engine.js |
 | handoffPending | app/network_engine.js |
 | handR | app/3dmap/character_anatomy.js |
-| hands | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js, app/weaponsheavy.js, app/weaponsmelee.js (+ 6 ещё) |
+| hands | app/3dmap/character_body_geometry.js (+ 9 других файлов) |
 | hardenedSoul | app/blood_hunter_engine.js |
-| hardwood | app/crafting_economy_v49.js, app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js (+ 1 ещё) |
+| hardwood | app/crafting_economy_v49.js (+ 4 других файлов) |
 | harmonic | app/runekeeper_taron_v12_runtime.js |
 | harmonicAttunement | app/expansion_classes_pack.js |
-| harvest | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 16 ещё) |
+| harvest | app/bestiary_catalog_v56_1.js (+ 19 других файлов) |
 | harvestMaterial | tests/test_v56.js |
 | has | app/feat_engine.js |
 | has_joints_and_weights | tests/human_base_glb_audit.js |
 | has_morph_targets | tests/human_base_glb_audit.js |
-| hasAsi | app/data/classes/level_up.js, app/expanded_class_registry_bridge.js, app/kibbles_localization_content_v71.js |
+| hasAsi | app/data/classes/level_up.js (+ 2 других файлов) |
 | hasCharacter | app/vtt_mobile_session_v67.js |
-| hasDamage | app/network_gameplay.js, tests/test_v726_fixes.js |
+| hasDamage | app/network_gameplay.js (+ 1 других файлов) |
 | hasPreparation | app/spells.js |
 | hasProfession | app/alchemy_gathering_professions_v52.js |
 | haste | app/alchemist_mhp_2024_runtime.js |
 | hasToolProficiency | app/monster_loot_engine_v37.js |
 | hatOfDisguise | app/expansion_classes_pack.js |
-| have | app/crafting_disassembly_repair_v51.js, app/crafting_economy_v49.js, app/crafting_professions_v38.js, app/resource_processing_v44.js |
+| have | app/crafting_disassembly_repair_v51.js (+ 3 других файлов) |
 | haveGold | app/crafting_disassembly_v51.js |
 | haveMaterials | app/crafting_disassembly_v51.js |
-| haymaker | app/data/classes/Pugilist.js, app/expansion_classes_pack.js |
-| head | app/3dmap/character_anatomy.js, app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js (+ 9 ещё) |
+| haymaker | app/data/classes/Pugilist.js (+ 1 других файлов) |
+| head | app/3dmap/character_anatomy.js (+ 12 других файлов) |
 | HEAD_AXES | app/3dmap/character_system.js |
 | HEAD_FORMS | app/3dmap/character_system.js |
 | HEAD_STYLES | app/3dmap/character_system.js |
 | headAccessories | app/3dmap/character_body_geometry.js |
-| headAccessory | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js |
+| headAccessory | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
 | headBuilds | app/3dmap/character_editor_3d.js |
 | headDefaults | app/3dmap/character_system.js |
-| headers | app/cloud_sync.js, desktop/main.cjs |
+| headers | app/cloud_sync.js (+ 1 других файлов) |
 | headFrame | app/3dmap/character_body_geometry.js |
-| headless | tools/check_adult_anatomy_browser.js, tools/check_adult_base_browser.js, tools/check_animal_heads_browser.js, tools/check_avian_elephant_heads_browser.js (+ 34 ещё) |
-| heal | app/blood_hunter_engine.js, app/combat_engine.js, app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js (+ 1 ещё) |
+| headless | tools/check_adult_anatomy_browser.js (+ 37 других файлов) |
+| heal | app/blood_hunter_engine.js (+ 4 других файлов) |
 | healAfterNecrotic | app/necromancer_mhp_2024_runtime.js |
 | healAfterRest | app/necromancer_mhp_2024_runtime.js |
 | healAmount | tests/alchemist_runtime_test.js |
 | healBatch | app/combat_engine.js |
 | healBody | app/walter_parasite_extra_runtime.js |
 | healCompanion | app/data/classes/Beastheart.js |
-| healed | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/walter_parasite_extra_runtime.js |
+| healed | app/ghost_extra_runtime.js (+ 2 других файлов) |
 | healHalfMaxHp | app/expansion_classes_pack.js |
 | healHitDie | app/expanded_classes_v23.js |
 | healHP | app/expansion_classes_pack.js |
-| healing | app/alchemist_mhp_2024_runtime.js, app/expanded_classes_v23.js, app/expansion_classes_pack.js, app/martyr_mhp_2024_runtime.js (+ 2 ещё) |
+| healing | app/alchemist_mhp_2024_runtime.js (+ 5 других файлов) |
 | healingAllowed | app/walter_parasite_extra_runtime.js |
 | healingBlocked | app/ghost_extra_runtime.js |
 | healingBonus | app/expansion_classes_pack.js |
@@ -8973,12 +8974,12 @@
 | healShell | app/ghost_extra_runtime.js |
 | healthCheck | app/vtt_debug_panel_v70.js |
 | healWithHitDice | app/expansion_classes_pack.js |
-| heart | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js |
+| heart | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | hearth | app/3dmap/gltf_catalog.js |
 | heartPhylactery | app/expansion_classes_pack.js |
 | heavyArmor | app/expansion_classes_pack.js |
 | heelstomper | app/expansion_classes_pack.js |
-| height | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/3dmap/map_model.js, app/3dmap/map_world.js (+ 47 ещё) |
+| height | app/3dmap/character_editor_3d.js (+ 50 других файлов) |
 | heightened | app/class_features_engine.js |
 | heightenedSenses | app/blood_hunter_engine.js |
 | hellhound | app/data/classes/Beastheart.js |
@@ -8991,17 +8992,17 @@
 | hemocraftRerollOncePerTurn | app/blood_hunter_engine.js |
 | Hemorrhage | app/alchemy_gameplay_v30.js |
 | hemp | app/crafting_resources_v34.js |
-| herb | app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js |
-| herbalism | app/crafting_professions_v38.js, app/market_economy_v55.js |
-| herbalist | app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js, app/market_social_v55_3.js, app/market_trade_v55_2.js (+ 1 ещё) |
-| herbs | app/resource_gathering_v35.js, app/world_resource_gathering_v53.js |
-| herculean | app/data/classes/Pugilist.js, app/expansion_classes_pack.js |
+| herb | app/crafting_engine_v31.js (+ 2 других файлов) |
+| herbalism | app/crafting_professions_v38.js (+ 1 других файлов) |
+| herbalist | app/crafting_profession_progression_v47.js (+ 4 других файлов) |
+| herbs | app/resource_gathering_v35.js (+ 1 других файлов) |
+| herculean | app/data/classes/Pugilist.js (+ 1 других файлов) |
 | heroicCharge | app/expansion_classes_pack.js |
 | heroicFocus | app/expansion_classes_pack.js |
 | heroicFortitude | app/expansion_classes_pack.js |
 | heroicOrderExploit | app/expansion_classes_pack.js |
 | heroicRush | app/expanded_classes_v23.js |
-| hex | app/Wallpapers.js, app/accursed_oap_v11_runtime.js, app/expansion_classes_pack.js |
+| hex | app/Wallpapers.js (+ 2 других файлов) |
 | hexArmor | app/expansion_classes_pack.js |
 | hexAura | app/expansion_classes_pack.js |
 | hexblade | app/blood_hunter_engine.js |
@@ -9014,46 +9015,46 @@
 | hexShield | app/expansion_classes_pack.js |
 | hi | app/3dmap/character_body_geometry.js |
 | hidden | tools/check_swarm_browser.js |
-| hide | app/crafting_economy_v49.js, app/resource_processing_v44.js |
+| hide | app/crafting_economy_v49.js (+ 1 других файлов) |
 | hideBonusAction | app/expansion_classes_pack.js |
 | hideInDimDark | app/expansion_classes_pack.js |
 | hideInPlainSight | app/class_features_engine.js |
 | Hideous | app/expansion_classes_pack.js |
-| high | app/3dmap/character_anatomy.js, app/3dmap/character_body_geometry.js |
-| high_ponytail | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
+| high | app/3dmap/character_anatomy.js (+ 1 других файлов) |
+| high_ponytail | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | highAuthority | app/expansion_classes_pack.js |
 | highest | tests/makehuman_gender_recipe_test.js |
 | highJumpBonusFt | app/expansion_classes_pack.js |
-| highlands | app/market_economy_v55.js, app/world_resource_gathering_v53.js |
+| highlands | app/market_economy_v55.js (+ 1 других файлов) |
 | highlands_mine | app/world_resource_gathering_v53.js |
 | highlands_quarry | app/world_resource_gathering_v53.js |
 | highlands_ridge | app/world_resource_gathering_v53.js |
-| highlightColor | app/3dmap/character_system.js, tools/check_character_head_browser.js, tools/check_character_races_browser.js |
-| highlightPercent | tests/character_head_geometry_test.js, tools/check_character_head_browser.js, tools/check_character_races_browser.js |
+| highlightColor | app/3dmap/character_system.js (+ 2 других файлов) |
+| highlightPercent | tests/character_head_geometry_test.js (+ 2 других файлов) |
 | hills | app/3dmap/character_editor_3d.js |
-| hips | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tests/character_3d_morph_assets_test.js (+ 2 ещё) |
-| history | app/alchemy_gameplay_v30.js, app/cloud_sync.js, app/dice.js, app/resource_gathering_v35.js (+ 5 ещё) |
+| hips | app/3dmap/character_editor_3d.js (+ 5 других файлов) |
+| history | app/alchemy_gameplay_v30.js (+ 8 других файлов) |
 | historyAdvantage | app/expansion_classes_pack.js |
 | historyAdvantageOnSinisterObjectOrPlace | app/blood_hunter_engine.js |
-| hit | app/combat_engine.js, app/network_gameplay.js, tests/crafting_dlc_v50_test.js, tests/pugilist_runtime_test.js (+ 5 ещё) |
-| hitCount | app/combat_engine.js, app/gameplay_core_v57.js, app/monster_engine.js, tests/test_v749_monster_authority_reaction_order.js |
-| hitDice | app/Backgrounds.js, app/character_creation.js, app/swarm_extra_runtime.js |
+| hit | app/combat_engine.js (+ 8 других файлов) |
+| hitCount | app/combat_engine.js (+ 3 других файлов) |
+| hitDice | app/Backgrounds.js (+ 2 других файлов) |
 | hitDiceMax | tests/pugilist_combat_test.js |
-| hitDiceRemaining | app/alchemist_mhp_2024_runtime.js, tests/alchemist_runtime_test.js, tests/pugilist_combat_test.js |
+| hitDiceRemaining | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | hitDiceRestored | app/martyr_mhp_2024_runtime.js |
-| hitDiceSpent | app/alchemist_mhp_2024_runtime.js, app/martyr_mhp_2024_runtime.js, app/occultist_kibbles_v11_runtime.js, tests/alchemist_runtime_test.js (+ 1 ещё) |
-| hitDiceUsed | app/Hero-info.js, tests/pugilist_combat_test.js |
-| hitDie | app/Backgrounds.js, app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/character_creation.js (+ 49 ещё) |
+| hitDiceSpent | app/alchemist_mhp_2024_runtime.js (+ 4 других файлов) |
+| hitDiceUsed | app/Hero-info.js (+ 1 других файлов) |
+| hitDie | app/Backgrounds.js (+ 52 других файлов) |
 | hitInfo | app/3dmap/map_renderer_3d.js |
-| hitPoints | app/expansion_classes_pack.js, tests/alchemist_combat_test.js, tests/test_v721_fixes.js |
-| hitPointsAfter | app/martyr_mhp_2024_runtime.js, app/warden_mhp_2024_runtime.js |
+| hitPoints | app/expansion_classes_pack.js (+ 2 других файлов) |
+| hitPointsAfter | app/martyr_mhp_2024_runtime.js (+ 1 других файлов) |
 | hits | app/expansion_classes_pack.js |
-| hitTest | app/3dmap/map_renderer_2d.js, app/3dmap/map_renderer_3d.js |
+| hitTest | app/3dmap/map_renderer_2d.js (+ 1 других файлов) |
 | hitZone | app/3dmap/map_renderer_2d.js |
 | hive | app/3dmap/character_editor_3d.js |
-| hm08BBox | tests/makehuman_surface_mapping_audit.js, tests/makehuman_vertex_mapping_audit.js |
-| hm08Triangles | tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js |
-| hm08Vertices | tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js, tests/makehuman_vertex_mapping_audit.js |
+| hm08BBox | tests/makehuman_surface_mapping_audit.js (+ 1 других файлов) |
+| hm08Triangles | tests/makehuman_surface_mapping_audit.js (+ 1 других файлов) |
+| hm08Vertices | tests/makehuman_surface_mapping_audit.js (+ 3 других файлов) |
 | hoard | app/monster_loot_crafting_bridge_v40.js |
 | hobgoblin | app/crafting_professions_v38.js |
 | holdBreathIndefinite | app/expansion_classes_pack.js |
@@ -9063,58 +9064,58 @@
 | holyBomb | app/expansion_classes_pack.js |
 | holyMagic | app/expanded_classes_v23.js |
 | holyNexus | app/class_features_engine.js |
-| homebrew | app/content_catalog.js, app/crafting_profession_progression_v47.js |
+| homebrew | app/content_catalog.js (+ 1 других файлов) |
 | honey | app/crafting_resources_v34.js |
 | honorDuel | app/expansion_classes_pack.js |
-| hoofColor | app/3dmap/character_system.js, tools/check_quartet_races_browser.js |
-| hoofSize | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_native_limbs_test.js, tests/character_races_geometry_test.js |
-| hooks | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/data/classes/Beastheart.js (+ 15 ещё) |
+| hoofColor | app/3dmap/character_system.js (+ 1 других файлов) |
+| hoofSize | app/3dmap/character_editor_3d.js (+ 3 других файлов) |
+| hooks | app/accursed_oap_v11_runtime.js (+ 18 других файлов) |
 | hope | app/expanded_classes_v23.js |
-| horde | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/swarm_extra_runtime.js, tests/character_swarm_geometry_test.js (+ 2 ещё) |
+| horde | app/3dmap/character_editor_3d.js (+ 5 других файлов) |
 | hordeCount | app/3dmap/character_system.js |
 | horn | app/resource_processing_v44.js |
 | HORN_STYLES | app/3dmap/character_system.js |
-| hornColor | app/3dmap/character_system.js, tools/check_tiefling_browser.js |
-| hornRidges | tests/character_tiefling_details_test.js, tools/check_tiefling_details_browser.js |
-| hornSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js, tools/check_tiefling_browser.js, tools/check_tiefling_details_browser.js |
-| hornStyle | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tests/character_tiefling_details_test.js (+ 2 ещё) |
-| hornThickness | tests/character_tiefling_details_test.js, tools/check_tiefling_details_browser.js |
+| hornColor | app/3dmap/character_system.js (+ 1 других файлов) |
+| hornRidges | tests/character_tiefling_details_test.js (+ 1 других файлов) |
+| hornSize | app/3dmap/character_system.js (+ 3 других файлов) |
+| hornStyle | app/3dmap/character_editor_3d.js (+ 5 других файлов) |
+| hornThickness | tests/character_tiefling_details_test.js (+ 1 других файлов) |
 | horror | app/bestiary_catalog_v56_10.js |
 | horrorEligible | app/bestiary_catalog_v56_10.js |
-| horseColor | app/3dmap/character_system.js, tools/check_last_races_browser.js |
+| horseColor | app/3dmap/character_system.js (+ 1 других файлов) |
 | hosiery | app/3dmap/character_clothing.js |
 | hosieryDen | tests/character_clothing_test.js |
-| host | app/character_builder_v2.js, app/parasite_extra_runtime.js |
+| host | app/character_builder_v2.js (+ 1 других файлов) |
 | hostDestroyed | app/parasite_extra_runtime.js |
 | hostileBane | app/expansion_classes_pack.js |
 | hostilesWithin5 | tests/test_class_audit_runtime.js |
 | hostIsSeparateStatBlock | app/parasite_extra_runtime.js |
 | hostSurvived | app/parasite_extra_runtime.js |
 | houndReactionAttack | app/expansion_classes_pack.js |
-| howl | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
-| hp | app/Hero-info.js, app/alchemist_mhp_2024_runtime.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js (+ 52 ещё) |
+| howl | app/blood_hunter_engine.js (+ 1 других файлов) |
+| hp | app/Hero-info.js (+ 55 других файлов) |
 | hpBonus | app/expansion_classes_pack.js |
 | hpBonusPerLevel | app/races.js |
 | hpCost | app/martyr_mhp_2024_runtime.js |
 | hpCostBySlot | app/martyr_mhp_2024_runtime.js |
-| hpCurrent | app/Backgrounds.js, app/character_creation.js, app/network_gameplay.js, tests/cloud_sync_test.cjs (+ 10 ещё) |
-| hpDamage | app/combat_engine.js, app/network_gameplay.js, tests/crafting_dlc_v50_test.js, tests/test_v734_network_concentration.js (+ 3 ещё) |
+| hpCurrent | app/Backgrounds.js (+ 13 других файлов) |
+| hpDamage | app/combat_engine.js (+ 6 других файлов) |
 | hpDamageBySlot | app/martyr_mhp_2024_runtime.js |
 | hpFraction | app/expanded_classes_v23.js |
-| hpMax | app/Backgrounds.js, app/character_creation.js, app/network_gameplay.js, tests/helpers/class_runtime_harness.js (+ 7 ещё) |
+| hpMax | app/Backgrounds.js (+ 10 других файлов) |
 | hpMaxBonus | app/data/classes/Beastheart.js |
 | hpPer100gp | app/expansion_classes_pack.js |
 | hpPercent | tests/test_v56.js |
-| hpTemp | app/Backgrounds.js, app/character_creation.js, tests/helpers/class_runtime_harness.js, tests/test_v733_logic_audit.js (+ 1 ещё) |
+| hpTemp | app/Backgrounds.js (+ 4 других файлов) |
 | href | tests/test_v70.js |
-| huge | app/parasite_extra_runtime.js, app/swarm_extra_runtime.js |
-| humanoid | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 10 ещё) |
+| huge | app/parasite_extra_runtime.js (+ 1 других файлов) |
+| humanoid | app/bestiary_catalog_v56_1.js (+ 13 других файлов) |
 | humanoidTorch | app/expansion_classes_pack.js |
-| hunter | app/data/classes/Beastheart.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| hunter | app/data/classes/Beastheart.js (+ 2 других файлов) |
 | hunterCompanion | app/expanded_classes_v23.js |
 | huntersBane | app/blood_hunter_engine.js |
-| huntersMark | app/class_features_engine.js, app/network_gameplay.js |
-| huntersPrey | app/class_features_engine.js, app/network_gameplay.js |
+| huntersMark | app/class_features_engine.js (+ 1 других файлов) |
+| huntersPrey | app/class_features_engine.js (+ 1 других файлов) |
 | hurlThroughHell | app/network_gameplay.js |
 | hybrid | app/expansion_classes_pack.js |
 | hybridAttackAdvantageVsBranded | app/expansion_classes_pack.js |
@@ -9124,13 +9125,13 @@
 | hyena | app/expanded_bestiary_v39.js |
 | i | app/network_gameplay.js |
 | ibex | app/3dmap/character_system.js |
-| icon | app/crafting_professions_v33.js, app/crafting_professions_v38.js, app/kibbles_localization_content_v71.js, app/world_resource_gathering_v53.js |
-| iconId | app/icon_settings.js, app/icon_settings_v2.js |
-| id | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js (+ 169 ещё) |
+| icon | app/crafting_professions_v33.js (+ 3 других файлов) |
+| iconId | app/icon_settings.js (+ 1 других файлов) |
+| id | app/3dmap/character_body_geometry.js (+ 172 других файлов) |
 | idempotent | app/vtt_mobile_session_v67.js |
 | identifyEffect | app/expansion_classes_pack.js |
 | identityDistortion | app/bestiary_catalog_v56_10.js |
-| ids | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, tools/build_makehuman_morphs.js |
+| ids | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
 | idx | app/3dmap/map_renderer_3d.js |
 | ifReducedToZero | app/expansion_classes_pack.js |
 | ifStolenSpark | app/expansion_classes_pack.js |
@@ -9140,11 +9141,11 @@
 | ignoreExtremeTemperature | app/expansion_classes_pack.js |
 | ignoreHalfCover | app/expansion_classes_pack.js |
 | ignoreHalfDamageOnSave | app/expansion_classes_pack.js |
-| ignoreImmunity | app/blood_hunter_engine.js, app/combat_engine.js, app/martyr_mhp_2024_runtime.js |
+| ignoreImmunity | app/blood_hunter_engine.js (+ 2 других файлов) |
 | ignoreOneMutagenSideEffect | app/expansion_classes_pack.js |
 | ignoreOpportunityAttacksWhileFlying | app/necromancer_mhp_2024_runtime.js |
 | ignoreRequirements | tests/test_v53.js |
-| ignoreResistance | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/combat_engine.js, app/expansion_classes_pack.js (+ 3 ещё) |
+| ignoreResistance | app/alchemist_mhp_2024_runtime.js (+ 6 других файлов) |
 | ignoresImmunity | app/martyr_mhp_2024_runtime.js |
 | ignoreSomaticInDimDark | app/expansion_classes_pack.js |
 | ignoresResistance | app/martyr_mhp_2024_runtime.js |
@@ -9152,22 +9153,22 @@
 | illuminationAt | app/3dmap/map_model.js |
 | illusoryDuplicate | app/expansion_classes_pack.js |
 | illustriousAdmiral | app/expansion_classes_pack.js |
-| imitation | app/alchemist_mhp_2024_runtime.js, tests/alchemist_runtime_test.js |
+| imitation | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | immortality | app/expansion_classes_pack.js |
 | immortalityAnchor | app/necromancer_mhp_2024_runtime.js |
-| immune | app/blood_hunter_engine.js, app/expanded_classes_v23.js, app/expansion_classes_pack.js, app/vtt_debug_dice_lab_v706.js (+ 1 ещё) |
+| immune | app/blood_hunter_engine.js (+ 4 других файлов) |
 | immuneAging | app/expansion_classes_pack.js |
-| immuneFrightened | app/class_features_engine.js, app/expansion_classes_pack.js |
+| immuneFrightened | app/class_features_engine.js (+ 1 других файлов) |
 | immuneIfBlindedImmune | app/blood_hunter_engine.js |
 | immuneNaturalDeath | app/occultist_kibbles_v11_runtime.js |
 | immuneSuppression | app/expansion_classes_pack.js |
 | immuneSurprise | app/expansion_classes_pack.js |
 | immuneToOwnerBombs | app/alchemist_mhp_2024_runtime.js |
 | immuneWhenRampageAtLeast | app/expansion_classes_pack.js |
-| immunities | app/combat_engine.js, app/companions.js, app/monster_engine.js, app/parasite_extra_runtime.js (+ 9 ещё) |
-| immunity | app/blood_hunter_engine.js, app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js, app/vtt_debug_dice_lab_v706.js |
+| immunities | app/combat_engine.js (+ 12 других файлов) |
+| immunity | app/blood_hunter_engine.js (+ 3 других файлов) |
 | immunity24hOnSave | app/expansion_classes_pack.js |
-| immunityBecomesResistance | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/combat_engine.js, tests/alchemist_combat_test.js |
+| immunityBecomesResistance | app/alchemist_mhp_2024_runtime.js (+ 3 других файлов) |
 | immunityChosen | app/expansion_classes_pack.js |
 | impact | app/alchemist_mhp_2024_runtime.js |
 | impactBomb | app/expansion_classes_pack.js |
@@ -9176,7 +9177,7 @@
 | implemented | app/expansion_classes_pack.js |
 | importJSON | app/vtt_debug_scenario_editor_v705.js |
 | importLocal | app/cloud_sync.js |
-| importText | app/vtt_encounter_checkpoint_v68.js, app/vtt_mobile_session_v67.js |
+| importText | app/vtt_encounter_checkpoint_v68.js (+ 1 других файлов) |
 | imposeDisadvantage | app/expansion_classes_pack.js |
 | imposingPresence | app/expansion_classes_pack.js |
 | improvedAt11 | app/martyr_mhp_2024_runtime.js |
@@ -9190,16 +9191,16 @@
 | incendiary | app/alchemist_mhp_2024_runtime.js |
 | incendiaryBomb | app/expansion_classes_pack.js |
 | inciteViolence | app/expansion_classes_pack.js |
-| incomingAC | app/blood_hunter_engine.js, app/spellblade_kibbles_runtime.js |
+| incomingAC | app/blood_hunter_engine.js (+ 1 других файлов) |
 | incomingAttackModifiers | app/warden_mhp_2024_runtime.js |
 | incomingDamage | tests/pugilist_combat_test.js |
 | incomparableIntellect | app/savant_laserllama_v561_runtime.js |
-| index | app/cloud_sync.js, app/market_economy_v55.js, app/market_trade_v55_2.js, app/network_gameplay.js (+ 3 ещё) |
+| index | app/cloud_sync.js (+ 6 других файлов) |
 | indexType | app/3dmap/map_renderer_3d.js |
-| indices | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 5 ещё) |
+| indices | app/3dmap/character_anatomy_geometry.js (+ 8 других файлов) |
 | individualCount | app/3dmap/character_system.js |
 | individuals | app/3dmap/character_body_geometry.js |
-| indomitable | app/class_features_engine.js, app/data/classes/Fighter.js |
+| indomitable | app/class_features_engine.js (+ 1 других файлов) |
 | indomitableMight | app/class_features_engine.js |
 | infernal | app/data/classes/Beastheart.js |
 | infernalConduit | app/data/classes/Illigger.js |
@@ -9209,19 +9210,19 @@
 | influenceSlots | app/bestiary_catalog_v56_13.js |
 | informant | app/expansion_classes_pack.js |
 | infuseItem | app/class_features_engine.js |
-| ingredient | app/alchemy_gameplay_v30.js, app/alchemy_gathering_professions_v52.js |
+| ingredient | app/alchemy_gameplay_v30.js (+ 1 других файлов) |
 | INGREDIENT_SOURCES | app/alchemy_gathering_professions_v52.js |
 | ingredientCategory | app/alchemy_gathering_professions_v52.js |
 | ingredientId | app/alchemy_gathering_professions_v52.js |
 | ingredientName | app/alchemy_gathering_professions_v52.js |
-| ingredients | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js, tests/test_v52.js |
+| ingredients | app/alchemy_engine_v29.js (+ 2 других файлов) |
 | inheritsOrigin | app/3dmap/character_system.js |
 | init | app/content_catalog.js |
 | initCreatedCharacter | app/crafting_profession_progression_v47.js |
-| initiative | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/bestiary_catalog_v56_2.js (+ 15 ещё) |
-| initiativeBonus | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| initiative | app/bestiary_catalog_v56_1.js (+ 18 других файлов) |
+| initiativeBonus | app/expanded_classes_v23.js (+ 1 других файлов) |
 | initiativeDash | app/expansion_classes_pack.js |
-| initiativeDisadvantage | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| initiativeDisadvantage | app/blood_hunter_engine.js (+ 1 других файлов) |
 | initiativeExploit | app/expansion_classes_pack.js |
 | initiativeFerocity | app/data/classes/Beastheart.js |
 | initiativeOrPerception | app/expansion_classes_pack.js |
@@ -9229,12 +9230,12 @@
 | initiativeRoll | tests/test_class_audit_stage4_runtime.js |
 | initiativeSave | app/expansion_classes_pack.js |
 | initiativeTempHp | app/expansion_classes_pack.js |
-| initiativeTracker | app/vtt_encounter_checkpoint_v68.js, tests/alchemist_combat_test.js, tests/test_blood_hunter_focus_network.js, tests/test_v57.js (+ 12 ещё) |
-| ink | app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js |
+| initiativeTracker | app/vtt_encounter_checkpoint_v68.js (+ 15 других файлов) |
+| ink | app/crafting_engine_v31.js (+ 2 других файлов) |
 | innatePsionics | app/data/classes/Psion.js |
 | inner | app/3dmap/character_anatomy_geometry.js |
 | innerHeight | tests/test_v70.js |
-| innerHTML | tests/test_v52.js, tests/test_v53.js |
+| innerHTML | tests/test_v52.js (+ 1 других файлов) |
 | innerWidth | tests/test_v70.js |
 | inscribe | app/expansion_classes_pack.js |
 | inscribedCount | app/expansion_classes_pack.js |
@@ -9245,11 +9246,11 @@
 | insectoid | app/expanded_bestiary_v39.js |
 | insidiousImprecation | app/expansion_classes_pack.js |
 | insidiousSpell | app/expansion_classes_pack.js |
-| insight | app/dice.js, app/skills.js |
+| insight | app/dice.js (+ 1 других файлов) |
 | insightAbility | app/expansion_classes_pack.js |
 | insightBonus | app/expansion_classes_pack.js |
 | insightfulOrder | app/expansion_classes_pack.js |
-| insightTotal | app/alchemist_mhp_2024_runtime.js, tests/alchemist_runtime_test.js |
+| insightTotal | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | inspect | app/update_manager_v2.js |
 | inspector | app/3dmap/map_editor.js |
 | inspectSource | app/vtt_debug_panel_v70.js |
@@ -9257,36 +9258,36 @@
 | inspiring_leader | app/feat_engine.js |
 | inspiringShout | app/expansion_classes_pack.js |
 | inspiringWord | app/data/classes/Warlord.js |
-| inspiringWordMaxHeal | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| inspiringWordMaxHeal | app/expanded_classes_v23.js (+ 1 других файлов) |
 | inspiringWordUses | app/data/classes/Warlord.js |
 | install | app/3dmap/gltf_character_pipeline.js |
-| installed | app/alchemist_mhp_2024_runtime.js, app/content_catalog.js |
+| installed | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | installedAtLevel | app/alchemist_mhp_2024_runtime.js |
 | instant | app/alchemist_mhp_2024_runtime.js |
-| instantDeath | app/combat_engine.js, tests/test_class_audit_stage4_runtime.js |
+| instantDeath | app/combat_engine.js (+ 1 других файлов) |
 | instinctualSuppression | app/expansion_classes_pack.js |
 | instruments | app/expansion_classes_pack.js |
-| int | app/Backgrounds.js, app/Inventory.js, app/alchemist_mhp_2024_runtime.js, app/app.js (+ 47 ещё) |
+| int | app/Backgrounds.js (+ 50 других файлов) |
 | intBonus | app/blood_hunter_engine.js |
-| intChecksAdvantage | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
-| intChecksDisadvantage | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| intChecksAdvantage | app/blood_hunter_engine.js (+ 1 других файлов) |
+| intChecksDisadvantage | app/blood_hunter_engine.js (+ 1 других файлов) |
 | intellectDie | app/savant_laserllama_v561_runtime.js |
-| intelligence | app/Hero-info.js, app/alchemist_mhp_2024_runtime.js, app/data/classes/Alchemist.js, app/data/classes/Necromancer.js (+ 9 ещё) |
-| intelligenceOrWisdomOrCharisma | app/accursed_oap_v11_runtime.js, app/data/classes/Warlord.js |
+| intelligence | app/Hero-info.js (+ 12 других файлов) |
+| intelligenceOrWisdomOrCharisma | app/accursed_oap_v11_runtime.js (+ 1 других файлов) |
 | intelligentExplosion | app/alchemist_mhp_2024_runtime.js |
 | intelligentExplosions | app/data/classes/Alchemist.js |
-| intensity | app/3dmap/map_editor.js, app/3dmap/map_model.js, app/3dmap/stress_map.js |
+| intensity | app/3dmap/map_editor.js (+ 2 других файлов) |
 | inter | app/Settings.js |
 | interdict | app/warden_mhp_2024_runtime.js |
 | interdictBoons | app/data/classes/Illigger.js |
 | interdiction | app/data/classes/Illigger.js |
 | interpolation | app/3dmap/gltf_character_pipeline.js |
 | interrupt | app/data/classes/Warden.js |
-| interrupted | app/combat_engine.js, app/warden_mhp_2024_runtime.js |
+| interrupted | app/combat_engine.js (+ 1 других файлов) |
 | interruptOneAttackOrAbility | app/expansion_classes_pack.js |
 | interruptUses | app/data/classes/Warden.js |
 | intimidatingCommand | app/expansion_classes_pack.js |
-| intimidation | app/dice.js, app/skills.js |
+| intimidation | app/dice.js (+ 1 других файлов) |
 | intimidationAdvantage | app/expansion_classes_pack.js |
 | intimidationPersuasionBonus | app/expansion_classes_pack.js |
 | intIncrease | app/expansion_classes_pack.js |
@@ -9296,25 +9297,25 @@
 | intuition | app/runekeeper_taron_v12_runtime.js |
 | intWisChaSavesDisadvantage | app/blood_hunter_engine.js |
 | invadeHost | app/parasite_extra_runtime.js |
-| inventory | app/Hero-info.js, app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js, app/vtt_debug_character_lab_v702.js (+ 13 ещё) |
-| inverseBindMatrices | app/3dmap/gltf_character_pipeline.js, tests/character_3d_skin_morph_test.js |
-| investigation | app/dice.js, app/skills.js |
+| inventory | app/Hero-info.js (+ 16 других файлов) |
+| inverseBindMatrices | app/3dmap/gltf_character_pipeline.js (+ 1 других файлов) |
+| investigation | app/dice.js (+ 1 других файлов) |
 | investigationExpertise | app/expanded_classes_v23.js |
 | investigator | app/savant_laserllama_v561_runtime.js |
 | invigoratingOrders | app/expansion_classes_pack.js |
 | Invisibility | app/alchemy_gameplay_v30.js |
 | invisibilityAfterCharnel | app/necromancer_mhp_2024_runtime.js |
-| invisible | app/data/classes/Beastheart.js, app/expansion_classes_pack.js |
+| invisible | app/data/classes/Beastheart.js (+ 1 других файлов) |
 | invocation | app/runekeeper_taron_v12_runtime.js |
 | invocationSlots | app/expansion_classes_pack.js |
-| invoke | app/content_framework.js, app/expansion_classes_pack.js |
+| invoke | app/content_framework.js (+ 1 других файлов) |
 | invokeCount | app/expansion_classes_pack.js |
 | invokeDebuff | app/expansion_classes_pack.js |
 | invokeHell | app/data/classes/Illigger.js |
 | invoking | app/runekeeper_taron_v12_runtime.js |
-| iokharic | app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js |
+| iokharic | app/expansion_classes_pack.js (+ 1 других файлов) |
 | iridescentStrike | app/vessel_laserllama_v4_runtime.js |
-| iron | app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js |
+| iron | app/crafting_engine_v31.js (+ 2 других файлов) |
 | Ironbound | app/kibbles_localization_content_v71.js |
 | ironChin | app/data/classes/Pugilist.js |
 | ironCommand | app/expansion_classes_pack.js |
@@ -9322,24 +9323,24 @@
 | isActive | app/feat_engine.js |
 | isAlly | tests/alchemist_runtime_test.js |
 | isAssassin | app/class_features_engine.js |
-| isBomb | app/alchemist_mhp_2024_runtime.js, app/combat_engine.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js |
+| isBomb | app/alchemist_mhp_2024_runtime.js (+ 3 других файлов) |
 | isDead | app/character_creation.js |
-| isEnabled | app/content_framework.js, app/crafting_dlc_v50.js |
-| isExtra | app/character_creation.js, app/classesRegistry.js, app/data/classes/Ghost.js, app/data/classes/Parasite.js (+ 6 ещё) |
+| isEnabled | app/content_framework.js (+ 1 других файлов) |
+| isExtra | app/character_creation.js (+ 9 других файлов) |
 | isExtraClass | app/character_creation.js |
 | isIndependentCreature | app/swarm_extra_runtime.js |
 | isLarval | app/3dmap/character_body_geometry.js |
 | isObject | tests/alchemist_combat_test.js |
-| isRaceClassHybrid | app/classesRegistry.js, app/data/classes/Ghost.js, app/data/classes/Parasite.js, app/ghost_extra_runtime.js (+ 3 ещё) |
+| isRaceClassHybrid | app/classesRegistry.js (+ 6 других файлов) |
 | isShirt | app/3dmap/character_clothing.js |
 | isSkirtDress | app/3dmap/character_clothing.js |
 | isSolid | app/3dmap/map_model.js |
 | issues | app/crafting_professions_v38.js |
 | isSwarm | app/3dmap/character_body_geometry.js |
-| item | app/3dmap/character_clothing.js, app/alchemy_gathering_professions_v52.js, app/crafting_disassembly_repair_v51.js, app/crafting_disassembly_v51.js (+ 13 ещё) |
+| item | app/3dmap/character_clothing.js (+ 16 других файлов) |
 | itemId | app/occultist_kibbles_v11_runtime.js |
-| items | app/3dmap/character_clothing.js, app/3dmap/map_world.js, app/data/classes/level_up.js, app/data/feats/Feat_widget.js (+ 3 ещё) |
-| itemValue | app/crafting_economy_v49.js, tests/crafting_dlc_v50_test.js |
+| items | app/3dmap/character_clothing.js (+ 6 других файлов) |
+| itemValue | app/crafting_economy_v49.js (+ 1 других файлов) |
 | itsAlive | app/expansion_classes_pack.js |
 | ix | app/3dmap/character_body_geometry.js |
 | j | app/3dmap/character_anatomy_geometry.js |
@@ -9349,34 +9350,34 @@
 | jar | app/3dmap/gltf_catalog.js |
 | jaw | app/3dmap/character_body_geometry.js |
 | jawProjection | app/3dmap/character_system.js |
-| jawWidth | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tools/check_character_head_browser.js |
+| jawWidth | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
 | jealousy | app/accursed_oap_v11_runtime.js |
-| jeweler | app/crafting_engine_v31.js, app/crafting_profession_progression_v47.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js (+ 2 ещё) |
+| jeweler | app/crafting_engine_v31.js (+ 5 других файлов) |
 | jinx | tests/test_class_audit_stage3_runtime.js |
 | jinxBonusAction | app/expansion_classes_pack.js |
 | jinxExtraDamage | app/expansion_classes_pack.js |
 | jinxOptions | app/expansion_classes_pack.js |
 | joinRoom | tests/test_v714_fixes.js |
-| joints | app/3dmap/character_anatomy_geometry.js, app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js, tests/character_3d_skin_morph_test.js (+ 1 ещё) |
-| jotun | app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js |
+| joints | app/3dmap/character_anatomy_geometry.js (+ 4 других файлов) |
+| jotun | app/expansion_classes_pack.js (+ 1 других файлов) |
 | jotunbrudJuggernaut | app/expansion_classes_pack.js |
 | jotunStance | app/expansion_classes_pack.js |
 | journal | app/vtt_debug_lab_v703.js |
-| json | app/cloud_sync.js, tests/character_external_anatomy_test.js, tests/character_male_anatomy_fix_test.js, tests/makehuman_gender_recipe_test.js (+ 2 ещё) |
+| json | app/cloud_sync.js (+ 5 других файлов) |
 | jumpDistanceMultiplier | app/expanded_classes_v23.js |
 | jumpFt | app/expansion_classes_pack.js |
 | jumpMultiplier | app/expansion_classes_pack.js |
 | jungle | app/3dmap/character_editor_3d.js |
-| junk | app/Inventory.js, app/Proficienciescheck.js, app/alchemy_gameplay_v30.js, app/alchemy_gathering_professions_v52.js (+ 28 ещё) |
+| junk | app/Inventory.js (+ 31 других файлов) |
 | justDroppedToZero | tests/test_blood_hunter_orders.js |
 | K | tests/makehuman_morph_bridge.js |
 | keenAwareness | app/savant_laserllama_v561_runtime.js |
 | keeperOfOrder | app/expansion_classes_pack.js |
-| key | app/3dmap/map_model.js, app/3dmap/map_world.js, app/alchemist_mhp_2024_runtime.js, app/crafting_disassembly_repair_v51.js (+ 8 ещё) |
+| key | app/3dmap/map_model.js (+ 11 других файлов) |
 | KEY | app/3dmap/map_model.js |
-| ki | tests/test_v720_fixes.js, tests/test_v725_fixes.js |
+| ki | tests/test_v720_fixes.js (+ 1 других файлов) |
 | kiln | app/crafting_profession_progression_v47.js |
-| kind | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/map_world.js, app/alchemy_gameplay_v30.js (+ 25 ещё) |
+| kind | app/3dmap/character_body_geometry.js (+ 28 других файлов) |
 | Kind | tests/map_rebuild_world_test.js |
 | kingdom | app/3dmap/character_editor_3d.js |
 | kiPoints | app/data/classes/Monk.js |
@@ -9388,8 +9389,8 @@
 | knockoutRoll | app/expansion_classes_pack.js |
 | knockProne | app/expansion_classes_pack.js |
 | knockProneSmaller | app/expansion_classes_pack.js |
-| knot | app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, tests/character_clothing_customizer_geometry_test.js, tests/character_clothing_options_test.js |
-| known | app/Hero-info.js, app/runekeeper_taron_v12_runtime.js, app/shifter_laserllama_v2_1_runtime.js |
+| knot | app/3dmap/character_clothing.js (+ 3 других файлов) |
+| known | app/Hero-info.js (+ 2 других файлов) |
 | knownAt | app/data/classes/Illigger.js |
 | knownAtLevel | app/accursed_oap_v11_runtime.js |
 | knownCantrips | app/alchemist_mhp_2024_runtime.js |
@@ -9398,10 +9399,10 @@
 | knownMetamorphoses | app/expansion_classes_pack.js |
 | knownReactions | app/alchemy_gameplay_v30.js |
 | knowYourEnemy | app/expansion_classes_pack.js |
-| kobold | app/3dmap/character_body_geometry.js, app/crafting_professions_v38.js |
+| kobold | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | krd | app/kibbles_localization_content_v71.js |
 | krynn | app/bestiary_catalog_v56_12.js |
-| label | app/Settings.js, app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/alchemy_gameplay_v30.js (+ 18 ещё) |
+| label | app/Settings.js (+ 21 других файлов) |
 | laboratory | app/3dmap/character_editor_3d.js |
 | labyrinth | app/3dmap/character_editor_3d.js |
 | lace | app/3dmap/character_clothing.js |
@@ -9411,31 +9412,31 @@
 | lampblack | app/crafting_resources_v34.js |
 | landscape | desktop/preload.cjs |
 | landsStrideRanger | app/class_features_engine.js |
-| language | app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js |
+| language | app/expansion_classes_pack.js (+ 1 других файлов) |
 | languageChoice | app/expansion_classes_pack.js |
-| languages | app/Backgrounds.js, app/companions.js, app/expansion_classes_pack.js, app/occultist_kibbles_v11_runtime.js (+ 1 ещё) |
+| languages | app/Backgrounds.js (+ 4 других файлов) |
 | lantern | app/3dmap/gltf_catalog.js |
-| large | app/3dmap/gltf_catalog.js, app/parasite_extra_runtime.js, app/swarm_extra_runtime.js |
+| large | app/3dmap/gltf_catalog.js (+ 2 других файлов) |
 | larva | app/parasite_extra_runtime.js |
-| larvaGirth | app/3dmap/character_system.js, tests/character_parasites_geometry_test.js, tools/check_parasites_browser.js |
+| larvaGirth | app/3dmap/character_system.js (+ 2 других файлов) |
 | larvaIsSeparateStatBlock | app/parasite_extra_runtime.js |
 | larval | app/3dmap/character_body_geometry.js |
-| larvaLength | app/3dmap/character_system.js, tests/character_parasites_geometry_test.js, tools/check_parasites_browser.js |
+| larvaLength | app/3dmap/character_system.js (+ 2 других файлов) |
 | larvalParts | app/3dmap/character_body_geometry.js |
-| larvaTendrilSize | app/3dmap/character_system.js, tests/character_parasites_geometry_test.js, tools/check_parasites_browser.js |
-| larvaToothSize | app/3dmap/character_system.js, tests/character_parasites_geometry_test.js, tools/check_parasites_browser.js |
-| last | app/3dmap/character_body_geometry.js, app/market_social_v55_3.js |
+| larvaTendrilSize | app/3dmap/character_system.js (+ 2 других файлов) |
+| larvaToothSize | app/3dmap/character_system.js (+ 2 других файлов) |
+| last | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | lastAttemptRound | app/monster_engine.js |
 | lastGatheredAt | app/world_resource_gathering_v53.js |
 | lastLifesMemories | app/expansion_classes_pack.js |
 | lastRest | tests/test_v736_deep_rules.js |
-| lastRestock | app/market_economy_v55.js, app/market_trade_v55_2.js |
+| lastRestock | app/market_economy_v55.js (+ 1 других файлов) |
 | lastRestoredKey | app/vtt_mobile_session_v67.js |
 | lastRoll | app/monster_engine.js |
 | lastRound | app/monster_engine.js |
 | lastRun | app/vtt_debug_rules_matrix_v707.js |
-| lastX | app/battle_board.js, app/vtt_mobile_battle_v61.js |
-| lastY | app/battle_board.js, app/vtt_mobile_battle_v61.js |
+| lastX | app/battle_board.js (+ 1 других файлов) |
+| lastY | app/battle_board.js (+ 1 других файлов) |
 | latency | app/vtt_debug_lab_v703.js |
 | latitude | app/3dmap/character_body_geometry.js |
 | laughingGas | app/alchemist_mhp_2024_runtime.js |
@@ -9444,10 +9445,10 @@
 | lawShield | app/expanded_classes_v23.js |
 | lawsShield | app/expansion_classes_pack.js |
 | layer | app/3dmap/character_clothing.js |
-| layered | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
+| layered | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | layers | app/3dmap/character_body_geometry.js |
-| layOnHands | app/class_features_engine.js, app/network_gameplay.js |
-| leadershipAbility | app/data/classes/Warlord.js, app/expansion_classes_pack.js |
+| layOnHands | app/class_features_engine.js (+ 1 других файлов) |
+| leadershipAbility | app/data/classes/Warlord.js (+ 1 других файлов) |
 | leadershipBased | app/expansion_classes_pack.js |
 | leadershipChoices | app/data/classes/Warlord.js |
 | leadershipForCheck | app/expansion_classes_pack.js |
@@ -9459,7 +9460,7 @@
 | leadershipModifier | app/data/classes/Warlord.js |
 | leadershipStyles | app/data/classes/Warlord.js |
 | leadTheCharge | app/expansion_classes_pack.js |
-| leaks | tools/check_feather_surface_browser.js, tools/check_fur_surface_browser.js, tools/check_reptile_surface_browser.js |
+| leaks | tools/check_feather_surface_browser.js (+ 2 других файлов) |
 | learnAnyCastableSpell | app/expansion_classes_pack.js |
 | learnBeastShape | app/expansion_classes_pack.js |
 | learnCantrip | app/expansion_classes_pack.js |
@@ -9474,26 +9475,26 @@
 | learnSpell | app/expansion_classes_pack.js |
 | learnTargetStatistic | app/expansion_classes_pack.js |
 | learnTool | app/expansion_classes_pack.js |
-| leather | app/3dmap/character_clothing.js, app/crafting_economy_v49.js, app/crafting_engine_v31.js, app/crafting_professions_v33.js (+ 4 ещё) |
+| leather | app/3dmap/character_clothing.js (+ 7 других файлов) |
 | leatherSole | app/crafting_professions_v38.js |
 | leatherStrapV49 | app/crafting_economy_v49.js |
-| leatherwork | app/crafting_engine_v31.js, app/crafting_professions_v33.js |
-| leatherworker | app/crafting_profession_progression_test_v47.js, app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js, app/market_social_v55_3.js (+ 1 ещё) |
+| leatherwork | app/crafting_engine_v31.js (+ 1 других файлов) |
+| leatherworker | app/crafting_profession_progression_test_v47.js (+ 4 других файлов) |
 | lectern | app/3dmap/gltf_catalog.js |
-| left | app/3dmap/character_editor_3d.js, tests/makehuman_morph_bridge.js, tests/map_editor_dom_test.js |
+| left | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
 | leg | app/3dmap/character_body_geometry.js |
 | legacy_expansions | app/bestiary_catalog_v56_1.js |
-| legendary | app/Inventory.js, app/alchemy_gathering_professions_v52.js, app/crafting_disassembly_v51.js, app/market_economy_v55.js (+ 3 ещё) |
+| legendary | app/Inventory.js (+ 6 других файлов) |
 | legendaryActionCurrent | app/network_gameplay.js |
-| legendaryActions | app/monster_engine.js, tests/test_v749_monster_authority_reaction_order.js |
+| legendaryActions | app/monster_engine.js (+ 1 других файлов) |
 | legendaryResistance | app/data/classes/Warden.js |
 | legendaryResistanceCurrent | app/network_gameplay.js |
-| legendaryResistances | app/monster_engine.js, tests/test_v749_monster_authority_reaction_order.js |
+| legendaryResistances | app/monster_engine.js (+ 1 других файлов) |
 | legendaryTandem | app/expansion_classes_pack.js |
-| legLength | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js |
-| legs | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_native_limbs_test.js |
-| length | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js (+ 15 ещё) |
-| level | app/Experience.js, app/Hero-info.js, app/Settings_debug.js, app/alchemist_mhp_2024_runtime.js (+ 67 ещё) |
+| legLength | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
+| legs | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
+| length | app/3dmap/character_anatomy.js (+ 18 других файлов) |
+| level | app/Experience.js (+ 70 других файлов) |
 | level10 | app/accursed_oap_v11_runtime.js |
 | level18 | app/accursed_oap_v11_runtime.js |
 | level2 | app/accursed_oap_v11_runtime.js |
@@ -9503,16 +9504,16 @@
 | levelData | app/data/classes/level_up.js |
 | leveledUp | app/crafting_profession_progression_v47.js |
 | levelName | app/crafting_profession_progression_v47.js |
-| levels | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/crafting_profession_progression_v47.js, app/data/classes/Alchemist.js (+ 42 ещё) |
+| levels | app/accursed_oap_v11_runtime.js (+ 45 других файлов) |
 | LEVELS | app/crafting_profession_progression_v47.js |
 | levelsRestored | app/class_features_engine.js |
-| library | app/3dmap/map_model.js, app/Backgrounds.js, app/character_creation.js |
-| license | app/3dmap/map_model.js, app/blood_hunter_engine.js, app/content_framework.js, app/content_manifest.js (+ 7 ещё) |
+| library | app/3dmap/map_model.js (+ 2 других файлов) |
+| license | app/3dmap/map_model.js (+ 10 других файлов) |
 | lichdom | app/necromancer_mhp_2024_runtime.js |
 | lieDetectionAutoFail | app/expansion_classes_pack.js |
 | lighting | app/3dmap/map_model.js |
 | lightIntensity | tests/map_rebuild_world_test.js |
-| lightning | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/warden_mhp_2024_runtime.js |
+| lightning | app/alchemist_mhp_2024_runtime.js (+ 3 других файлов) |
 | lightningArc | app/necromancer_mhp_2024_runtime.js |
 | lightningBomb | app/expansion_classes_pack.js |
 | lightRadius | tests/map_rebuild_world_test.js |
@@ -9520,27 +9521,27 @@
 | limbH | app/3dmap/character_body_geometry.js |
 | limbIndices | app/3dmap/character_body_geometry.js |
 | limbParts | app/3dmap/character_body_geometry.js |
-| limbProfile | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_native_limbs_test.js (+ 1 ещё) |
+| limbProfile | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
 | limbRecords | app/3dmap/character_body_geometry.js |
 | limbState | app/3dmap/character_body_geometry.js |
 | limestone | app/crafting_resources_v34.js |
 | limit | app/spells.js |
-| limitations | tools/build_character_editor_morphs.js, tools/prepare_makehuman_gender.js |
+| limitations | tools/build_character_editor_morphs.js (+ 1 других файлов) |
 | line | app/vtt_debug_error_log_v709.js |
 | linen | app/3dmap/character_clothing.js |
-| lineOfSight | tests/test_v723_fixes.js, tests/test_v737_spellcasting_transaction.js, tests/test_v738_multiclass_spell_sources.js |
+| lineOfSight | tests/test_v723_fixes.js (+ 2 других файлов) |
 | lingerie | app/3dmap/character_clothing.js |
 | link | app/expanded_classes_v23.js |
 | linked | app/expanded_classes_v23.js |
-| linkedClass | app/companions.js, app/expansion_classes_pack.js |
+| linkedClass | app/companions.js (+ 1 других файлов) |
 | linkedHowl | app/blood_hunter_engine.js |
-| lipColor | app/3dmap/character_system.js, tools/check_character_head_browser.js |
+| lipColor | app/3dmap/character_system.js (+ 1 других файлов) |
 | lipOpacity | tools/check_character_head_browser.js |
 | lipVolume | app/3dmap/character_system.js |
-| list | app/3dmap/character_appearance_store.js, app/3dmap/character_clothing.js, app/companion_packs_v26.js, app/content_manifest.js (+ 3 ещё) |
+| list | app/3dmap/character_appearance_store.js (+ 6 других файлов) |
 | listAllClasses | app/content_framework.js |
-| listByFamily | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 9 ещё) |
-| listBySource | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 9 ещё) |
+| listByFamily | app/bestiary_catalog_v56_1.js (+ 12 других файлов) |
+| listBySource | app/bestiary_catalog_v56_1.js (+ 12 других файлов) |
 | listClasses | app/content_framework.js |
 | listEquipment | app/3dmap/character_system.js |
 | listPresets | app/3dmap/character_system.js |
@@ -9556,26 +9557,26 @@
 | lizard | app/3dmap/character_body_geometry.js |
 | lizardfolk | app/crafting_professions_v38.js |
 | lo | app/3dmap/character_body_geometry.js |
-| load | app/3dmap/gltf_loader.js, app/3dmap/map_model.js, app/campaign_manager.js, app/vtt_encounter_map_v59.js (+ 1 ещё) |
+| load | app/3dmap/gltf_loader.js (+ 4 других файлов) |
 | loaded | app/3dmap/map_renderer_3d.js |
 | loadFailed | tools/check_dense_swarm_browser.js |
-| loading | app/3dmap/map_renderer_3d.js, app/vtt_debug_panel_v70.js |
+| loading | app/3dmap/map_renderer_3d.js (+ 1 других файлов) |
 | loadSkin | app/3dmap/gltf_character_pipeline.js |
-| local | app/3dmap/character_anatomy_geometry.js, app/cloud_sync.js |
+| local | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | localBackups | app/cloud_sync.js |
 | localId | app/cloud_sync.js |
-| localStorage | tests/character_3d_editor_test.js, tests/character_appearance_store_test.js, tests/crafting_dlc_v50_test.js, tests/helpers/class_runtime_harness.js (+ 28 ещё) |
-| location | tests/helpers/class_runtime_harness.js, tests/test_v70.js, tests/test_v743_authority_recharge_events.js, tests/test_v753_replay_transaction_rng.js |
+| localStorage | tests/character_3d_editor_test.js (+ 31 других файлов) |
+| location | tests/helpers/class_runtime_harness.js (+ 3 других файлов) |
 | locked | app/3dmap/map_world.js |
 | lockedAt1 | app/crafting_profession_progression_test_v47.js |
 | locks | app/crafting_profession_progression_v47.js |
 | log | app/vtt_combat_log_v66.js |
 | login | app/cloud_sync.js |
 | logout | app/cloud_sync.js |
-| long | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
-| longevity | app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js |
+| long | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| longevity | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | longJumpBonusFt | app/expansion_classes_pack.js |
-| longRest | app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js |
+| longRest | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | longRestAllHitDice | app/expansion_classes_pack.js |
 | longRestClears | app/alchemist_mhp_2024_runtime.js |
 | longRestExhaustionRecovery | app/expansion_classes_pack.js |
@@ -9586,39 +9587,39 @@
 | longRestTempHp | app/expansion_classes_pack.js |
 | longRestUses | app/alchemist_mhp_2024_runtime.js |
 | loom | app/3dmap/gltf_catalog.js |
-| loot | app/3dmap/map_editor.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js (+ 16 ещё) |
+| loot | app/3dmap/map_editor.js (+ 19 других файлов) |
 | lootId | app/3dmap/map_world.js |
 | lootModel | app/monster_loot_crafting_bridge_v40.js |
 | lootModels | app/monster_loot_crafting_bridge_v40.js |
 | loreRecall | app/expansion_classes_pack.js |
-| los | app/companion_gameplay_v27.js, app/network_gameplay.js |
+| los | app/companion_gameplay_v27.js (+ 1 других файлов) |
 | loss | app/vtt_debug_lab_v703.js |
 | lossHp | app/blood_hunter_engine.js |
 | lost | app/crafting_dlc_v50.js |
 | Loveless | app/expansion_classes_pack.js |
 | low | app/3dmap/character_anatomy.js |
 | lowBlow | app/expansion_classes_pack.js |
-| lowest | app/3dmap/character_anatomy_geometry.js, tests/makehuman_gender_recipe_test.js |
+| lowest | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | loxodon | tools/check_quartet_races_browser.js |
 | lucidDreaming | app/expansion_classes_pack.js |
 | lucidWaking | app/expansion_classes_pack.js |
 | lucky | app/feat_engine.js |
 | lunge | app/expansion_classes_pack.js |
-| luxury | app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| luxury | app/market_social_v55_3.js (+ 1 других файлов) |
 | lycanthropy | app/accursed_oap_v11_runtime.js |
 | lyre | app/3dmap/character_system.js |
 | macroConfigSha256 | tools/prepare_makehuman_gender.js |
 | macrotargets | tests/makehuman_gender_recipe_test.js |
 | mage_slayer | app/feat_engine.js |
 | mageArmor | app/occultist_kibbles_v11_runtime.js |
-| magFilter | app/3dmap/character_editor_3d.js, app/3dmap/gltf_loader.js |
-| magic | app/vessel_laserllama_v4_runtime.js, app/warden_mhp_2024_runtime.js |
+| magFilter | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
+| magic | app/vessel_laserllama_v4_runtime.js (+ 1 других файлов) |
 | Magic | app/alchemy_gameplay_v30.js |
 | magic_initiate | app/feat_engine.js |
 | magicAdvantage | app/necromancer_mhp_2024_runtime.js |
 | magical | app/expansion_classes_pack.js |
-| magical_beast | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_2.js, app/bestiary_catalog_v56_3.js (+ 7 ещё) |
-| magicalAttack | app/blood_hunter_engine.js, app/combat_engine.js, app/shifter_laserllama_v2_1_runtime.js, tests/test_blood_hunter_orders.js (+ 1 ещё) |
+| magical_beast | app/bestiary_catalog_v56_1.js (+ 10 других файлов) |
+| magicalAttack | app/blood_hunter_engine.js (+ 4 других файлов) |
 | magicalDarkness | app/expansion_classes_pack.js |
 | magicalFamiliarAttacks | app/expansion_classes_pack.js |
 | magicalSecrets | app/class_features_engine.js |
@@ -9631,14 +9632,14 @@
 | maintainAction | app/expansion_classes_pack.js |
 | majestySplash | app/expansion_classes_pack.js |
 | makeWeaponAttack | app/expansion_classes_pack.js |
-| male | app/3dmap/character_anatomy.js, app/3dmap/character_system.js |
+| male | app/3dmap/character_anatomy.js (+ 1 других файлов) |
 | maleProfile | app/3dmap/character_anatomy_geometry.js |
 | malformed | tests/makehuman_topology_audit.js |
-| malformedTargetLines | tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
+| malformedTargetLines | tests/makehuman_target_reverse_transfer_audit.js (+ 1 других файлов) |
 | manifest | app/update_manager_v2.js |
 | manifestations | app/kibbles_localization_content_v71.js |
 | manifested | app/occultist_kibbles_v11_runtime.js |
-| manifestUrl | app/update_manager_v2.js, tests/creation_signature_asset_test.cjs, tests/desktop_update_contract.cjs |
+| manifestUrl | app/update_manager_v2.js (+ 2 других файлов) |
 | map | app/vtt_encounter_map_v59.js |
 | mapId | app/3dmap/map_model.js |
 | mappedDisplacementMax | tests/makehuman_target_surface_transfer_audit.js |
@@ -9659,12 +9660,12 @@
 | margin | index.html |
 | mariner | app/expansion_classes_pack.js |
 | mark | app/expansion_classes_pack.js |
-| marked | app/blood_hunter_engine.js, app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| marked | app/blood_hunter_engine.js (+ 2 других файлов) |
 | markedForDeath | app/expansion_classes_pack.js |
-| marketPriceGp | app/market_economy_v55.js, app/market_trade_v55_2.js |
+| marketPriceGp | app/market_economy_v55.js (+ 1 других файлов) |
 | marketReport | app/market_economy_v55.js |
-| marketSource | app/market_economy_v55.js, app/market_trade_v55_2.js |
-| marketValue | app/crafting_disassembly_repair_v51.js, app/crafting_economy_v49.js |
+| marketSource | app/market_economy_v55.js (+ 1 других файлов) |
+| marketValue | app/crafting_disassembly_repair_v51.js (+ 1 других файлов) |
 | markPrey | app/expansion_classes_pack.js |
 | maroon | app/Wallpapers.js |
 | marsh_moss | app/world_resource_gathering_v53.js |
@@ -9675,43 +9676,43 @@
 | martialBane | app/expansion_classes_pack.js |
 | martialFocus | app/expansion_classes_pack.js |
 | masks | app/3dmap/character_body_geometry.js |
-| mason | app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| mason | app/crafting_profession_progression_v47.js (+ 3 других файлов) |
 | master | app/crafting_profession_progression_v47.js |
 | masterOfHell | app/data/classes/Illigger.js |
 | masterSpecialization | app/crafting_profession_progression_v47.js |
 | masterTactician | app/expansion_classes_pack.js |
-| masterwork | app/crafting_disassembly_v51.js, app/custom_crafting_v32.js |
+| masterwork | app/crafting_disassembly_v51.js (+ 1 других файлов) |
 | masterworkBonus | app/crafting_profession_progression_test_v47.js |
-| mastery | app/alchemy_gameplay_v30.js, app/data/classes/Alchemist.js, app/data/classes/Psion.js |
+| mastery | app/alchemy_gameplay_v30.js (+ 2 других файлов) |
 | masteryExpiry | app/expansion_classes_pack.js |
 | masterySpent | app/expansion_classes_pack.js |
-| MAT2 | app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js, tests/makehuman_topology_audit.js |
-| MAT3 | app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js, tests/makehuman_topology_audit.js |
-| MAT4 | app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js, tests/character_3d_morph_assets_test.js, tests/makehuman_gender_fixture_audit.js (+ 1 ещё) |
+| MAT2 | app/3dmap/gltf_character_pipeline.js (+ 2 других файлов) |
+| MAT3 | app/3dmap/gltf_character_pipeline.js (+ 2 других файлов) |
+| MAT4 | app/3dmap/gltf_character_pipeline.js (+ 4 других файлов) |
 | matched | app/market_trade_v55_2.js |
-| material | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/gltf_loader.js (+ 17 ещё) |
+| material | app/3dmap/character_anatomy_geometry.js (+ 20 других файлов) |
 | materialBridge | app/monster_loot_crafting_bridge_v40.js |
 | materialCost | app/alchemist_mhp_2024_runtime.js |
 | materialCostGP | app/occultist_kibbles_v11_runtime.js |
 | materialCostPerLevelGP | app/occultist_kibbles_v11_runtime.js |
 | materialCount | app/crafting_disassembly_v51.js |
-| materialId | app/crafting_disassembly_repair_v51.js, app/crafting_disassembly_v51.js, app/crafting_economy_v49.js, app/crafting_engine_v31.js (+ 8 ещё) |
+| materialId | app/crafting_disassembly_repair_v51.js (+ 11 других файлов) |
 | materialKind | app/3dmap/character_clothing.js |
 | materialOnly | app/Inventory.js |
-| materials | app/3dmap/character_clothing.js, app/3dmap/gltf_loader.js, app/Inventory.js, app/Proficienciescheck.js (+ 43 ещё) |
-| MATERIALS | tests/crafting_disassembly_v51_test.js, tests/crafting_economy_v49_test.js, tests/test_v56_1.js, tests/test_v56_10.js (+ 10 ещё) |
+| materials | app/3dmap/character_clothing.js (+ 46 других файлов) |
+| MATERIALS | tests/crafting_disassembly_v51_test.js (+ 13 других файлов) |
 | materialsCost | app/alchemist_mhp_2024_runtime.js |
 | materialsPaid | tests/alchemist_runtime_test.js |
 | materialsUsed | app/crafting_disassembly_v51.js |
-| Math | tests/helpers/class_runtime_harness.js, tests/pugilist_combat_test.js, tests/pugilist_runtime_test.js |
-| maturity | app/3dmap/character_anatomy.js, tests/character_adult_anatomy_test.js |
-| max | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js, app/3dmap/gltf_loader.js, app/Backgrounds.js (+ 45 ещё) |
+| Math | tests/helpers/class_runtime_harness.js (+ 2 других файлов) |
+| maturity | app/3dmap/character_anatomy.js (+ 1 других файлов) |
+| max | app/3dmap/character_body_geometry.js (+ 48 других файлов) |
 | max_mm | tests/character_editor_morph_assets_test.js |
 | max_morph_targets | tests/human_base_glb_audit.js |
-| maxAbility | app/alchemist_mhp_2024_runtime.js, app/necromancer_mhp_2024_runtime.js |
+| maxAbility | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | maxBloodLevels | app/occultist_kibbles_v11_runtime.js |
 | maxBuffer | tools/generate_project_atlas.cjs |
-| maxCR | app/expansion_classes_pack.js, app/shifter_laserllama_v2_1_runtime.js |
+| maxCR | app/expansion_classes_pack.js (+ 1 других файлов) |
 | maxDice | app/expansion_classes_pack.js |
 | maxDisplacementMeters | tests/makehuman_gender_fixture_audit.js |
 | maxDistanceFt | app/expansion_classes_pack.js |
@@ -9719,20 +9720,20 @@
 | maxHeal | app/expansion_classes_pack.js |
 | maxHitDice | app/expansion_classes_pack.js |
 | maxHitPoints | tests/test_v720_fixes.js |
-| maxHp | app/alchemist_mhp_2024_runtime.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js (+ 43 ещё) |
-| maxHP | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/swarm_extra_runtime.js, app/walter_parasite_extra_runtime.js |
+| maxHp | app/alchemist_mhp_2024_runtime.js (+ 46 других файлов) |
+| maxHP | app/ghost_extra_runtime.js (+ 3 других файлов) |
 | maxHpReduction | app/expansion_classes_pack.js |
 | maxHpReductionOnNecrotic | app/expansion_classes_pack.js |
-| maximize | app/class_features_engine.js, app/network_gameplay.js, app/occultist_kibbles_v11_runtime.js, tests/test_v739_prepared_transaction.js |
-| maximized | app/combat_engine.js, app/network_gameplay.js |
-| maximizeDamageDice | app/class_features_engine.js, app/expansion_classes_pack.js |
+| maximize | app/class_features_engine.js (+ 3 других файлов) |
+| maximized | app/combat_engine.js (+ 1 других файлов) |
+| maximizeDamageDice | app/class_features_engine.js (+ 1 других файлов) |
 | maximizeElementalSpell | app/expansion_classes_pack.js |
 | maximum | app/alchemist_mhp_2024_runtime.js |
 | maxIntelligence | app/savant_laserllama_v561_runtime.js |
-| maxLevels | app/class_features_engine.js, app/occultist_kibbles_v11_runtime.js |
+| maxLevels | app/class_features_engine.js (+ 1 других файлов) |
 | maxObjects | app/expansion_classes_pack.js |
 | maxOutside | tools/build_makehuman_morphs.js |
-| maxPoints | app/Backgrounds.js, app/character_creation.js |
+| maxPoints | app/Backgrounds.js (+ 1 других файлов) |
 | maxPotions | app/alchemist_mhp_2024_runtime.js |
 | maxScore | app/expansion_classes_pack.js |
 | maxSizeFt | app/expansion_classes_pack.js |
@@ -9748,17 +9749,17 @@
 | maxUses | app/combat_abilities.js |
 | maxWeightLb | app/expansion_classes_pack.js |
 | measureStartId | app/battle_board.js |
-| mechanics | app/data/classes/Alchemist.js, app/data/classes/Beastheart.js, app/data/classes/Illigger.js, app/data/classes/Occultist.js (+ 13 ещё) |
-| mechanicsPending | app/warden_mhp_2024_runtime.js, app/warlord_laserllama_v330_runtime.js |
-| mechanicsSource | app/data/classes/Martyr.js, app/data/classes/Necromancer.js, app/data/classes/Shifter.js, app/data/classes/Vessel.js |
+| mechanics | app/data/classes/Alchemist.js (+ 16 других файлов) |
+| mechanicsPending | app/warden_mhp_2024_runtime.js (+ 1 других файлов) |
+| mechanicsSource | app/data/classes/Martyr.js (+ 3 других файлов) |
 | mechanicsStatus | app/data/classes/BloodHunter.js |
-| medicine | app/crafting_profession_progression_v47.js, app/dice.js, app/monster_loot_engine_v37.js, app/skills.js |
-| medium | app/3dmap/character_anatomy.js, app/parasite_extra_runtime.js, app/swarm_extra_runtime.js |
+| medicine | app/crafting_profession_progression_v47.js (+ 3 других файлов) |
+| medium | app/3dmap/character_anatomy.js (+ 2 других файлов) |
 | mediumArmorWisInsteadOfDex | app/expansion_classes_pack.js |
-| meleeAttack | app/expansion_classes_pack.js, tests/alchemist_runtime_test.js |
+| meleeAttack | app/expansion_classes_pack.js (+ 1 других файлов) |
 | meleeDamage | app/occultist_kibbles_v11_runtime.js |
 | meleeExtraDamage | app/expansion_classes_pack.js |
-| meleeOrThrown | app/companion_gameplay_v27.js, app/summoning_engine.js |
+| meleeOrThrown | app/companion_gameplay_v27.js (+ 1 других файлов) |
 | meleeSpellAttack | app/expansion_classes_pack.js |
 | meleeWeaponAttack | app/expansion_classes_pack.js |
 | members | app/expanded_bestiary_v39.js |
@@ -9770,34 +9771,34 @@
 | mentalSource | app/parasite_extra_runtime.js |
 | mentalStats | app/ghost_extra_runtime.js |
 | mentalStatsPersist | app/ghost_extra_runtime.js |
-| mentor | app/data/classes/Warlord.js, app/savant_laserllama_v561_runtime.js, app/warlord_laserllama_v330_runtime.js |
+| mentor | app/data/classes/Warlord.js (+ 2 других файлов) |
 | mercenary | app/expansion_classes_pack.js |
 | merciless | app/expansion_classes_pack.js |
 | mercy | app/martyr_mhp_2024_runtime.js |
-| mesh | tests/gltf_loader_smoke.cjs, tests/makehuman_gender_recipe_test.js |
-| meshes | app/3dmap/character_editor_3d.js, tests/gltf_loader_smoke.cjs, tests/human_base_glb_audit.js, tests/makehuman_gender_recipe_test.js (+ 2 ещё) |
-| meshWeights | app/3dmap/gltf_loader.js, tests/character_3d_skin_morph_test.js |
-| message | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/alchemy_gameplay_v30.js, app/blood_hunter_engine.js (+ 30 ещё) |
+| mesh | tests/gltf_loader_smoke.cjs (+ 1 других файлов) |
+| meshes | app/3dmap/character_editor_3d.js (+ 5 других файлов) |
+| meshWeights | app/3dmap/gltf_loader.js (+ 1 других файлов) |
+| message | app/accursed_oap_v11_runtime.js (+ 33 других файлов) |
 | messy | app/3dmap/character_body_geometry.js |
-| messy_crop | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
+| messy_crop | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | meta | app/vtt_debug_error_log_v709.js |
 | META_COST | app/class_features_engine.js |
 | META_NAMES | app/class_features_engine.js |
-| metadata | app/alchemist_mhp_2024_runtime.js, app/companion_gameplay_v27.js, app/companion_packs_v26.js, app/data/classes/Beastheart.js (+ 7 ещё) |
-| metal | app/3dmap/character_clothing.js, app/market_economy_v55.js |
+| metadata | app/alchemist_mhp_2024_runtime.js (+ 10 других файлов) |
+| metal | app/3dmap/character_clothing.js (+ 1 других файлов) |
 | metalworker | app/crafting_profession_progression_v47.js |
 | metamagic | app/class_features_engine.js |
 | metamagic_adept | app/feat_engine.js |
 | metamorphosesKnown | app/class_features_engine.js |
 | metamorphosesMax | app/class_features_engine.js |
 | metamorphosis | app/accursed_oap_v11_runtime.js |
-| method | app/cloud_sync.js, tools/build_character_editor_morphs.js, tools/build_makehuman_morphs.js, tools/check_cloud_account_browser.cjs |
+| method | app/cloud_sync.js (+ 3 других файлов) |
 | metrics | app/3dmap/character_editor_3d.js |
-| mettle | app/combat_engine.js, app/data/classes/Warden.js, app/warden_mhp_2024_runtime.js |
+| mettle | app/combat_engine.js (+ 2 других файлов) |
 | mid | app/vtt_mobile_battle_v61.js |
 | mimic | app/data/classes/Beastheart.js |
-| min | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js, app/3dmap/gltf_loader.js, app/data/feats/Feats_phb.js (+ 14 ещё) |
-| minAppVersion | app/update_manager_v2.js, tests/test_v754_update_manager.js |
+| min | app/3dmap/character_body_geometry.js (+ 17 других файлов) |
+| minAppVersion | app/update_manager_v2.js (+ 1 других файлов) |
 | minAt11 | app/expansion_classes_pack.js |
 | Mind | app/alchemy_gameplay_v30.js |
 | mindLeech | app/expansion_classes_pack.js |
@@ -9807,16 +9808,16 @@
 | mindsightTrackingHours | app/expansion_classes_pack.js |
 | mindStats | app/parasite_extra_runtime.js |
 | mindThrust | app/expansion_classes_pack.js |
-| miner | app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| miner | app/market_social_v55_3.js (+ 1 других файлов) |
 | mineral | app/resource_processing_v44.js |
-| minFilter | app/3dmap/character_editor_3d.js, app/3dmap/gltf_loader.js |
+| minFilter | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | minHeight | desktop/main.cjs |
 | minimal | app/3dmap/character_system.js |
-| minimum | app/alchemist_mhp_2024_runtime.js, app/class_features_engine.js, app/expansion_classes_pack.js, app/feat_engine.js |
+| minimum | app/alchemist_mhp_2024_runtime.js (+ 3 других файлов) |
 | minimumAC | app/expansion_classes_pack.js |
 | minimumD20 | app/expansion_classes_pack.js |
 | minIndex | tests/makehuman_topology_audit.js |
-| mining | app/resource_gathering_v35.js, app/world_resource_gathering_v53.js |
+| mining | app/resource_gathering_v35.js (+ 1 других файлов) |
 | minion | app/expansion_classes_pack.js |
 | minionResistance | app/expansion_classes_pack.js |
 | minionRollBonus | app/expansion_classes_pack.js |
@@ -9831,12 +9832,12 @@
 | miracle | app/occultist_kibbles_v11_runtime.js |
 | miraculousHealing | app/martyr_mhp_2024_runtime.js |
 | miserableCompany | app/expansion_classes_pack.js |
-| misfortune | app/accursed_oap_v11_runtime.js, app/expansion_classes_pack.js |
+| misfortune | app/accursed_oap_v11_runtime.js (+ 1 других файлов) |
 | miss | app/expansion_classes_pack.js |
 | missed | app/spellblade_kibbles_runtime.js |
 | missedUnarmedExtraAttack | app/expansion_classes_pack.js |
-| missing | app/crafting_disassembly_repair_v51.js, app/crafting_disassembly_v51.js, app/crafting_economy_v49.js, app/crafting_profession_progression_test_v47.js (+ 2 ещё) |
-| missingTools | app/crafting_engine_v31.js, app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js |
+| missing | app/crafting_disassembly_repair_v51.js (+ 5 других файлов) |
+| missingTools | app/crafting_engine_v31.js (+ 2 других файлов) |
 | missRecoveryMinutes | app/expansion_classes_pack.js |
 | missRefund | app/expansion_classes_pack.js |
 | missRefunds | app/necromancer_mhp_2024_runtime.js |
@@ -9850,20 +9851,20 @@
 | mixPotions | app/alchemist_mhp_2024_runtime.js |
 | mobility | app/blood_hunter_engine.js |
 | Mobility | app/expansion_classes_pack.js |
-| mod | app/rulesEngine.js, app/vtt_dice_resolution_v65.js |
-| mode | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/gltf_loader.js, app/class_features_engine.js (+ 10 ещё) |
-| model | app/3dmap/map_editor.js, app/3dmap/stress_map.js, tests/imported_3d_editor_assets.cjs |
+| mod | app/rulesEngine.js (+ 1 других файлов) |
+| mode | app/3dmap/character_anatomy.js (+ 13 других файлов) |
+| model | app/3dmap/map_editor.js (+ 2 других файлов) |
 | modelFamily | app/3dmap/character_system.js |
 | modelLoc | app/3dmap/map_renderer_3d.js |
 | modes | app/runekeeper_taron_v12_runtime.js |
-| modifier | app/market_social_v55_3.js, app/rulesEngine.js, app/vtt_debug_dice_lab_v706.js, app/vtt_dice_resolution_v65.js (+ 2 ещё) |
+| modifier | app/market_social_v55_3.js (+ 5 других файлов) |
 | modifierAtLevel20 | app/savant_laserllama_v561_runtime.js |
 | modifierIds | app/custom_crafting_v32.js |
-| modifiers | app/expansion_classes_pack.js, app/network_gameplay.js |
+| modifiers | app/expansion_classes_pack.js (+ 1 других файлов) |
 | modules | app/vtt_debug_panel_v70.js |
-| mohawk | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
+| mohawk | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | monastery | app/3dmap/gltf_catalog.js |
-| monster | app/monster_loot_crafting_bridge_v40.js, app/monster_loot_engine_v36.js, app/monster_loot_engine_v37.js, tests/test_v57.js |
+| monster | app/monster_loot_crafting_bridge_v40.js (+ 3 других файлов) |
 | monster_acid_slime | app/resource_processing_v44.js |
 | monster_acolyte_cloth | app/resource_processing_v44.js |
 | monster_air_essence | app/resource_processing_v44.js |
@@ -9893,13 +9894,13 @@
 | monster_deer_antler | app/resource_processing_v44.js |
 | monster_deer_hide | app/resource_processing_v44.js |
 | monster_direwolf_fang | app/resource_processing_v44.js |
-| monster_direwolf_hide | app/monster_loot_crafting_bridge_v40.js, app/resource_processing_v44.js |
+| monster_direwolf_hide | app/monster_loot_crafting_bridge_v40.js (+ 1 других файлов) |
 | monster_displacer_hide | app/resource_processing_v44.js |
 | monster_displacer_tentacle | app/resource_processing_v44.js |
 | monster_dragon_blood | app/monster_loot_crafting_bridge_v40.js |
-| monster_dragon_bones | app/monster_loot_crafting_bridge_v40.js, app/resource_processing_v44.js |
+| monster_dragon_bones | app/monster_loot_crafting_bridge_v40.js (+ 1 других файлов) |
 | monster_dragon_heart | app/resource_processing_v44.js |
-| monster_dragon_scales | app/monster_loot_crafting_bridge_v40.js, app/resource_processing_v44.js |
+| monster_dragon_scales | app/monster_loot_crafting_bridge_v40.js (+ 1 других файлов) |
 | monster_earth_core | app/resource_processing_v44.js |
 | monster_earth_essence | app/resource_processing_v44.js |
 | monster_ectoplasm | app/resource_processing_v44.js |
@@ -9932,7 +9933,7 @@
 | monster_orc_hide | app/resource_processing_v44.js |
 | monster_owlbear_claw | app/resource_processing_v44.js |
 | monster_owlbear_feathers | app/monster_loot_crafting_bridge_v40.js |
-| monster_owlbear_hide | app/monster_loot_crafting_bridge_v40.js, app/resource_processing_v44.js |
+| monster_owlbear_hide | app/monster_loot_crafting_bridge_v40.js (+ 1 других файлов) |
 | monster_rat_fangs | app/resource_processing_v44.js |
 | monster_rat_hide | app/resource_processing_v44.js |
 | monster_rust_chitin | app/resource_processing_v44.js |
@@ -9941,37 +9942,37 @@
 | monster_slime_membrane | app/resource_processing_v44.js |
 | monster_spectral_dust | app/resource_processing_v44.js |
 | monster_spider_chitin | app/monster_loot_crafting_bridge_v40.js |
-| monster_spider_silk | app/monster_loot_crafting_bridge_v40.js, app/resource_processing_v44.js |
+| monster_spider_silk | app/monster_loot_crafting_bridge_v40.js (+ 1 других файлов) |
 | monster_spider_venom | app/resource_processing_v44.js |
-| monster_troll_blood | app/monster_loot_crafting_bridge_v40.js, app/resource_processing_v44.js |
+| monster_troll_blood | app/monster_loot_crafting_bridge_v40.js (+ 1 других файлов) |
 | monster_troll_claw | app/resource_processing_v44.js |
-| monster_troll_hide | app/monster_loot_crafting_bridge_v40.js, app/resource_processing_v44.js |
+| monster_troll_hide | app/monster_loot_crafting_bridge_v40.js (+ 1 других файлов) |
 | monster_veteran_leather_armor | app/resource_processing_v44.js |
 | monster_water_core | app/resource_processing_v44.js |
 | monster_water_essence | app/resource_processing_v44.js |
 | monster_wight_bone | app/resource_processing_v44.js |
 | monster_wight_essence | app/resource_processing_v44.js |
-| monster_wolf_hide | app/monster_loot_crafting_bridge_v40.js, app/resource_processing_v44.js |
+| monster_wolf_hide | app/monster_loot_crafting_bridge_v40.js (+ 1 других файлов) |
 | monsterCount | app/monster_engine.js |
 | monsterCR | app/monster_loot_engine_v37.js |
-| monsterId | app/gameplay_core_v57.js, app/monster_loot_crafting_bridge_v40.js, app/monster_loot_engine_v36.js, app/monster_loot_engine_v37.js (+ 2 ещё) |
+| monsterId | app/gameplay_core_v57.js (+ 5 других файлов) |
 | monsterName | app/network_gameplay.js |
-| monsterparts | app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| monsterparts | app/market_social_v55_3.js (+ 1 других файлов) |
 | MONSTERS | app/combat_engine.js |
-| monstrosity | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 10 ещё) |
+| monstrosity | app/bestiary_catalog_v56_1.js (+ 13 других файлов) |
 | monstrousGrafts | app/alchemist_mhp_2024_runtime.js |
 | monstrousMenagerie | app/expansion_classes_pack.js |
-| monstrousMinion | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| monstrousMinion | app/expanded_classes_v23.js (+ 1 других файлов) |
 | moonEffects | app/occultist_kibbles_v11_runtime.js |
 | morph_names | tests/human_base_glb_audit.js |
 | morph_primitives | tests/human_base_glb_audit.js |
 | morphAccessor | tests/generate_makehuman_glb_morph_fixture.js |
 | morphBufferView | tests/generate_makehuman_glb_morph_fixture.js |
-| morphChannels | app/3dmap/gltf_character_pipeline.js, tests/character_3d_foundation_test.js |
-| morphNames | app/3dmap/gltf_loader.js, tests/character_3d_skin_morph_test.js, tests/makehuman_glb_morph_fixture_audit.js |
-| morphs | app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tests/cloud_sync_test.cjs, tools/check_cloud_account_browser.cjs |
+| morphChannels | app/3dmap/gltf_character_pipeline.js (+ 1 других файлов) |
+| morphNames | app/3dmap/gltf_loader.js (+ 2 других файлов) |
+| morphs | app/3dmap/character_system.js (+ 3 других файлов) |
 | morphSet | app/3dmap/character_system.js |
-| morphTargets | app/3dmap/gltf_loader.js, tests/character_3d_skin_morph_test.js |
+| morphTargets | app/3dmap/gltf_loader.js (+ 1 других файлов) |
 | morphWeights | app/3dmap/character_system.js |
 | mount | app/necromancer_mhp_2024_runtime.js |
 | mountaineer | app/expansion_classes_pack.js |
@@ -9980,102 +9981,102 @@
 | mounted | app/occultist_kibbles_v11_runtime.js |
 | mountRollBonus | app/expansion_classes_pack.js |
 | mountSpeed | app/necromancer_mhp_2024_runtime.js |
-| moustache | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_head_geometry_test.js, tests/character_races_geometry_test.js |
+| moustache | app/3dmap/character_editor_3d.js (+ 3 других файлов) |
 | mouth | app/3dmap/character_body_geometry.js |
-| mouthWidth | app/3dmap/character_system.js, tools/check_character_head_browser.js |
+| mouthWidth | app/3dmap/character_system.js (+ 1 других файлов) |
 | moveAlliesHalfSpeed | app/expansion_classes_pack.js |
 | moveAndAttack | app/expansion_classes_pack.js |
 | moveCostFt | app/alchemist_mhp_2024_runtime.js |
 | moved | app/vtt_mobile_battle_v61.js |
-| moveFt | app/data/classes/Beastheart.js, app/expanded_classes_v23.js, app/expansion_classes_pack.js, app/feat_engine.js (+ 1 ещё) |
+| moveFt | app/data/classes/Beastheart.js (+ 4 других файлов) |
 | moveHalfSpeed | app/blood_hunter_engine.js |
-| movement | app/alchemist_mhp_2024_runtime.js, app/dnd_tools.js, app/gameplay_core_v57.js, app/network_gameplay.js (+ 13 ещё) |
-| movementUsed | app/alchemist_mhp_2024_runtime.js, app/dnd_tools.js, app/gameplay_core_v57.js, app/network_gameplay.js (+ 9 ещё) |
+| movement | app/alchemist_mhp_2024_runtime.js (+ 16 других файлов) |
+| movementUsed | app/alchemist_mhp_2024_runtime.js (+ 12 других файлов) |
 | movementWithoutOpportunityAttacks | app/occultist_kibbles_v11_runtime.js |
 | moveStraightFt | app/expansion_classes_pack.js |
 | moveThralls | app/necromancer_mhp_2024_runtime.js |
 | moveThroughCreatures | app/expansion_classes_pack.js |
 | moveThroughProneCreatures | app/expansion_classes_pack.js |
-| moveTo | app/network_gameplay.js, tests/test_v737_spellcasting_transaction.js |
+| moveTo | app/network_gameplay.js (+ 1 других файлов) |
 | moveToward | app/companion_gameplay_v27.js |
 | moving | app/3dmap/character_body_geometry.js |
-| moxie | app/data/classes/Pugilist.js, tests/pugilist_combat_test.js, tests/pugilist_runtime_test.js |
+| moxie | app/data/classes/Pugilist.js (+ 2 других файлов) |
 | moxieFraction | app/expanded_classes_v23.js |
 | moxieFueledFists | app/data/classes/Pugilist.js |
 | moxieOnFail | app/expansion_classes_pack.js |
 | moxieRefunded | app/expansion_classes_pack.js |
 | moxieRestored | app/expansion_classes_pack.js |
 | moxieSpent | app/expansion_classes_pack.js |
-| msg | app/vtt_debug_character_lab_v702.js, tests/cloud_sync_test.cjs |
+| msg | app/vtt_debug_character_lab_v702.js (+ 1 других файлов) |
 | muddledMind | app/blood_hunter_engine.js |
 | mufflingImprecation | app/expansion_classes_pack.js |
-| mult | app/crafting_economy_v49.js, app/custom_crafting_v32.js |
-| multiAttackAction | app/combat_engine.js, tests/test_class_audit_stage4_runtime.js |
-| multiclass | app/alchemist_mhp_2024_runtime.js, app/data/classes/Beastheart.js, app/data/classes/BloodHunter.js, app/data/classes/Psion.js (+ 4 ещё) |
-| multiclassAllowed | app/character_creation.js, app/classesRegistry.js, app/data/classes/Ghost.js, app/data/classes/Parasite.js (+ 4 ещё) |
-| multiclassProficiencies | app/data/classes/Alchemist.js, app/data/classes/Illigger.js, app/data/classes/Occultist.js, app/data/classes/Pugilist.js (+ 3 ещё) |
-| multiclassRequirement | app/accursed_oap_v11_runtime.js, app/data/classes/Alchemist.js, app/data/classes/Illigger.js, app/data/classes/Martyr.js (+ 15 ещё) |
+| mult | app/crafting_economy_v49.js (+ 1 других файлов) |
+| multiAttackAction | app/combat_engine.js (+ 1 других файлов) |
+| multiclass | app/alchemist_mhp_2024_runtime.js (+ 7 других файлов) |
+| multiclassAllowed | app/character_creation.js (+ 7 других файлов) |
+| multiclassProficiencies | app/data/classes/Alchemist.js (+ 6 других файлов) |
+| multiclassRequirement | app/accursed_oap_v11_runtime.js (+ 18 других файлов) |
 | multiplier | app/monster_engine.js |
 | mummification | app/expansion_classes_pack.js |
 | mummyLord | app/expansion_classes_pack.js |
 | mummyRot | app/expansion_classes_pack.js |
-| muscle | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tests/character_races_geometry_test.js (+ 2 ещё) |
-| mutagen | app/blood_hunter_engine.js, app/expansion_classes_pack.js, tests/test_blood_hunter_orders.js |
+| muscle | app/3dmap/character_editor_3d.js (+ 5 других файлов) |
+| mutagen | app/blood_hunter_engine.js (+ 2 других файлов) |
 | mutagenAbility | app/alchemist_mhp_2024_runtime.js |
 | mutagencraft | app/blood_hunter_engine.js |
 | mutagenMaximum | app/alchemist_mhp_2024_runtime.js |
 | mutagenNoDownside | app/alchemist_mhp_2024_runtime.js |
-| mutagens | app/blood_hunter_engine.js, tests/test_blood_hunter_orders.js |
-| mutations | app/parasite_extra_runtime.js, app/swarm_extra_runtime.js, app/walter_parasite_extra_runtime.js |
-| mutationSlots | app/parasite_extra_runtime.js, app/swarm_extra_runtime.js |
+| mutagens | app/blood_hunter_engine.js (+ 1 других файлов) |
+| mutations | app/parasite_extra_runtime.js (+ 2 других файлов) |
+| mutationSlots | app/parasite_extra_runtime.js (+ 1 других файлов) |
 | muzzle | app/3dmap/character_body_geometry.js |
-| muzzleHeight | app/3dmap/character_system.js, tests/character_animal_heads_test.js, tests/character_avian_elephant_heads_test.js, tests/character_races_geometry_test.js (+ 4 ещё) |
-| muzzleLength | app/3dmap/character_system.js, tests/character_animal_heads_test.js, tests/character_avian_elephant_heads_test.js, tests/character_races_geometry_test.js (+ 6 ещё) |
-| muzzleWidth | app/3dmap/character_system.js, tests/character_animal_heads_test.js, tests/character_avian_elephant_heads_test.js, tests/character_races_geometry_test.js (+ 4 ещё) |
+| muzzleHeight | app/3dmap/character_system.js (+ 7 других файлов) |
+| muzzleLength | app/3dmap/character_system.js (+ 9 других файлов) |
+| muzzleWidth | app/3dmap/character_system.js (+ 7 других файлов) |
 | myconid | tools/check_last_races_browser.js |
-| mysteries | app/data/classes/Occultist.js, app/occultist_kibbles_v11_runtime.js |
+| mysteries | app/data/classes/Occultist.js (+ 1 других файлов) |
 | mystery | app/occultist_kibbles_v11_runtime.js |
 | mysticArcanum | app/class_features_engine.js |
 | mysticEmpowerment | app/shifter_laserllama_v2_1_runtime.js |
 | mysticFrenzy | app/blood_hunter_engine.js |
 | mythicForms | app/shifter_laserllama_v2_1_runtime.js |
 | mythicVoice | app/expansion_classes_pack.js |
-| n | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/map_world.js (+ 1 ещё) |
-| name | app/3dmap/character_appearance_store.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js (+ 210 ещё) |
+| n | app/3dmap/character_anatomy_geometry.js (+ 4 других файлов) |
+| name | app/3dmap/character_appearance_store.js (+ 213 других файлов) |
 | NAME | app/crafting_dlc_v50.js |
-| nameRu | app/Backgrounds.js, app/data/classes/level_up.js, app/data/feats/Feat_widget.js, app/data/feats/Feats_phb.js (+ 5 ещё) |
+| nameRu | app/Backgrounds.js (+ 8 других файлов) |
 | nameRus | gltf_catalog.js |
-| names | tests/test_class_audit_stage3_runtime.js, tests/test_class_audit_stage4_runtime.js |
-| narrow | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js |
-| native | app/network_engine.js, app/update_manager_v2.js |
+| names | tests/test_class_audit_stage3_runtime.js (+ 1 других файлов) |
+| narrow | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
+| native | app/network_engine.js (+ 1 других файлов) |
 | nativeHeadH | app/3dmap/character_body_geometry.js |
 | natural | app/3dmap/character_system.js |
-| natural20 | app/network_gameplay.js, tests/test_v738_multiclass_spell_sources.js |
+| natural20 | app/network_gameplay.js (+ 1 других файлов) |
 | naturalArmor | app/shifter_laserllama_v2_1_runtime.js |
-| naturalAttacks | app/parasite_extra_runtime.js, app/walter_parasite_extra_runtime.js |
+| naturalAttacks | app/parasite_extra_runtime.js (+ 1 других файлов) |
 | naturalExplorer | app/class_features_engine.js |
 | naturalist | app/savant_laserllama_v561_runtime.js |
 | naturalRecovery | app/parasite_extra_runtime.js |
 | naturalWeapons | app/shifter_laserllama_v2_1_runtime.js |
-| nature | app/dice.js, app/expanded_classes_v23.js, app/skills.js |
+| nature | app/dice.js (+ 2 других файлов) |
 | Nausea | app/alchemy_gameplay_v30.js |
 | navigation | app/expanded_classes_v23.js |
-| navigator | tests/cloud_sync_test.cjs, tests/helpers/class_runtime_harness.js, tests/test_v70.js, tests/test_v743_authority_recharge_events.js (+ 6 ещё) |
+| navigator | tests/cloud_sync_test.cjs (+ 9 других файлов) |
 | navigatorCrew | app/expansion_classes_pack.js |
 | navy | app/Wallpapers.js |
-| neck | app/3dmap/character_body_geometry.js, tests/character_clothing_test.js, tools/check_character_editor_browser.js |
-| neckDepth | tests/character_clothing_customizer_geometry_test.js, tests/character_clothing_options_test.js, tools/check_character_dress_customizer.js |
-| neckline | tests/character_clothing_customizer_geometry_test.js, tools/check_character_dress_customizer.js |
+| neck | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
+| neckDepth | tests/character_clothing_customizer_geometry_test.js (+ 2 других файлов) |
+| neckline | tests/character_clothing_customizer_geometry_test.js (+ 1 других файлов) |
 | necrodancer | app/necromancer_mhp_2024_runtime.js |
 | necromancyDamageBonusPerCharnel | app/necromancer_mhp_2024_runtime.js |
 | necromancyUnleashed | app/necromancer_mhp_2024_runtime.js |
 | necromanticSpurs | app/expansion_classes_pack.js |
 | necromanticSustainment | app/expansion_classes_pack.js |
-| necrotic | app/expanded_classes_v23.js, app/warden_mhp_2024_runtime.js |
+| necrotic | app/expanded_classes_v23.js (+ 1 других файлов) |
 | Necrotic | app/alchemy_gameplay_v30.js |
 | necroticAffinity | app/occultist_kibbles_v11_runtime.js |
 | necroticBone | app/resource_processing_v44.js |
-| necroticDamage | app/expanded_classes_v23.js, app/expansion_classes_pack.js, app/occultist_kibbles_v11_runtime.js |
+| necroticDamage | app/expanded_classes_v23.js (+ 2 других файлов) |
 | necroticEssence | app/resource_processing_v44.js |
 | necroticIgnoreImmunity | app/necromancer_mhp_2024_runtime.js |
 | necroticIgnoreResistance | app/necromancer_mhp_2024_runtime.js |
@@ -10090,19 +10091,19 @@
 | needsTarget | app/alchemist_mhp_2024_runtime.js |
 | needsTime | app/alchemist_mhp_2024_runtime.js |
 | negatingAnathema | app/expansion_classes_pack.js |
-| negative | tests/character_3d_editor_test.js, tests/character_3d_skin_morph_test.js, tools/build_character_editor_morphs.js, tools/build_makehuman_morphs.js |
+| negative | tests/character_3d_editor_test.js (+ 3 других файлов) |
 | negotiated | app/market_social_v55_3.js |
 | negotiatedPrice | app/market_social_v55_3.js |
 | negotiatedQuote | app/market_social_v55_3.js |
 | negotiationModifier | app/market_social_v55_3.js |
-| network | app/vtt_combat_log_v66.js, app/vtt_debug_lab_v703.js, app/vtt_mobile_session_v67.js |
+| network | app/vtt_combat_log_v66.js (+ 2 других файлов) |
 | neutral | app/3dmap/character_pose.js |
 | newDraft | app/vtt_encounter_map_v59.js |
 | newJinxOptions | app/expansion_classes_pack.js |
 | newTraderIds | app/market_expansion_v55_1.js |
 | newValue | app/network_gameplay.js |
-| next | app/3dmap/character_anatomy_geometry.js, app/vtt_gameplay_ux_v58.js, tests/character_3d_editor_test.js |
-| nextAttackAdvantage | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| next | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
+| nextAttackAdvantage | app/blood_hunter_engine.js (+ 1 других файлов) |
 | nextAttackBonus | app/expansion_classes_pack.js |
 | nextAttackExtraDice | app/alchemist_mhp_2024_runtime.js |
 | nextBombOnly | app/alchemist_mhp_2024_runtime.js |
@@ -10112,7 +10113,7 @@
 | nextRiteHitExtraDie | app/blood_hunter_engine.js |
 | nextSaveAdvantage | app/expansion_classes_pack.js |
 | nextSpellOrWeaponDamageDisadvantage | app/expansion_classes_pack.js |
-| nextTick | app/alchemist_mhp_2024_runtime.js, tests/alchemist_combat_test.js |
+| nextTick | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | nextWisSaveDisadvantage | app/blood_hunter_engine.js |
 | night | app/3dmap/map_renderer_3d.js |
 | nighteye | app/blood_hunter_engine.js |
@@ -10128,10 +10129,10 @@
 | noCoverOrInvisibility | app/blood_hunter_engine.js |
 | noDamage | app/alchemist_mhp_2024_runtime.js |
 | noDash | app/expansion_classes_pack.js |
-| node | app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js, app/world_resource_gathering_v53.js, tests/character_3d_skin_morph_test.js |
+| node | app/3dmap/gltf_character_pipeline.js (+ 3 других файлов) |
 | nodeId | app/world_resource_gathering_v53.js |
 | nodeIntegration | desktop/main.cjs |
-| nodes | app/world_resource_gathering_v53.js, tests/character_3d_skin_morph_test.js, tests/gltf_loader_smoke.cjs, tests/human_base_glb_audit.js (+ 4 ещё) |
+| nodes | app/world_resource_gathering_v53.js (+ 7 других файлов) |
 | noDisadvantage | app/expansion_classes_pack.js |
 | noFallDamage | app/expansion_classes_pack.js |
 | noFoodOrDrink | app/expansion_classes_pack.js |
@@ -10143,7 +10144,7 @@
 | noMaintainAction | app/expansion_classes_pack.js |
 | nonAttackAccursedDamageBonus | app/expansion_classes_pack.js |
 | nonCombat | app/companion_packs_v26.js |
-| none | app/3dmap/character_system.js, app/monster_loot_crafting_bridge_v40.js |
+| none | app/3dmap/character_system.js (+ 1 других файлов) |
 | nonlethal | app/alchemist_mhp_2024_runtime.js |
 | nonmagicalDamageReduction | app/expansion_classes_pack.js |
 | nonManifold | tests/character_external_anatomy_test.js |
@@ -10154,28 +10155,28 @@
 | nonZeroVertices | tests/generate_makehuman_glb_morph_fixture.js |
 | noOldAgeDeath | app/occultist_kibbles_v11_runtime.js |
 | noOpportunity | app/expanded_classes_v23.js |
-| noOpportunityAttacks | app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js |
-| noReaction | app/expansion_classes_pack.js, app/network_gameplay.js |
-| noReactions | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| noOpportunityAttacks | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
+| noReaction | app/expansion_classes_pack.js (+ 1 других файлов) |
+| noReactions | app/blood_hunter_engine.js (+ 1 других файлов) |
 | noReduction | app/expansion_classes_pack.js |
 | noRest | app/expansion_classes_pack.js |
-| normal | app/rulesEngine.js, tests/test_v737_spellcasting_transaction.js |
+| normal | app/rulesEngine.js (+ 1 других файлов) |
 | normalForm | app/shifter_laserllama_v2_1_runtime.js |
-| normalize | app/3dmap/character_anatomy.js, app/3dmap/character_clothing.js, app/3dmap/character_pose.js, app/3dmap/map_model.js (+ 3 ещё) |
-| normalizeCharacter | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/swarm_extra_runtime.js, app/walter_parasite_extra_runtime.js |
+| normalize | app/3dmap/character_anatomy.js (+ 6 других файлов) |
+| normalizeCharacter | app/ghost_extra_runtime.js (+ 3 других файлов) |
 | normalizeClassName | app/spells.js |
-| normalizeConditionName | app/rulesEngine.js, tests/alchemist_combat_test.js, tests/test_v726_fixes.js |
+| normalizeConditionName | app/rulesEngine.js (+ 2 других файлов) |
 | normalizeHead | app/3dmap/character_system.js |
 | normalPaceStealth | app/expansion_classes_pack.js |
-| normals | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/character_pose.js |
+| normals | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | noseLength | app/3dmap/character_system.js |
-| noseWidth | app/3dmap/character_system.js, tools/check_character_head_browser.js |
+| noseWidth | app/3dmap/character_system.js (+ 1 других файлов) |
 | noShield | app/expansion_classes_pack.js |
 | noStandardHealing | app/swarm_extra_runtime.js |
 | noSurprise | app/expansion_classes_pack.js |
 | notation | app/savant_laserllama_v561_runtime.js |
-| note | app/combat_engine.js, app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js, app/expansion_class_progressions.js (+ 5 ещё) |
-| notes | app/Backgrounds.js, app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/campaign_manager.js (+ 24 ещё) |
+| note | app/combat_engine.js (+ 8 других файлов) |
+| notes | app/Backgrounds.js (+ 27 других файлов) |
 | noUnderwaterDrawbacks | app/expansion_classes_pack.js |
 | nourishing | app/expansion_classes_pack.js |
 | npcs | tests/test_v717_fixes.js |
@@ -10183,11 +10184,11 @@
 | nuclearBomb | app/data/classes/Alchemist.js |
 | nullification | app/expansion_classes_pack.js |
 | nylon | app/3dmap/character_clothing.js |
-| oak | app/crafting_professions_v38.js, app/crafting_resources_v34.js |
-| objectId | app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js, tests/test_class_audit_stage3_runtime.js |
+| oak | app/crafting_professions_v38.js (+ 1 других файлов) |
+| objectId | app/expansion_classes_pack.js (+ 2 других файлов) |
 | objectIds | tests/test_class_audit_stage3_runtime.js |
 | objectMeleeDamageMultiplier | app/expansion_classes_pack.js |
-| objects | app/3dmap/map_model.js, app/3dmap/stress_map.js |
+| objects | app/3dmap/map_model.js (+ 1 других файлов) |
 | obscured | app/data/classes/Beastheart.js |
 | observe | app/blood_hunter_engine.js |
 | obstacles | tests/test_v709_fixes.js |
@@ -10195,35 +10196,35 @@
 | occultFetish | app/occultist_kibbles_v11_runtime.js |
 | occultRitesKnown | app/data/classes/Occultist.js |
 | ocean | app/3dmap/character_editor_3d.js |
-| offeredCp | app/market_social_v55_3.js, app/market_trade_v55_2.js |
-| official | app/content_catalog.js, app/crafting_professions_v38.js |
+| offeredCp | app/market_social_v55_3.js (+ 1 других файлов) |
+| official | app/content_catalog.js (+ 1 других файлов) |
 | official_expansion | app/bestiary_catalog_v56_1.js |
-| offline | app/vtt_debug_lab_v703.js, tests/update_ota_flow_test.js |
+| offline | app/vtt_debug_lab_v703.js (+ 1 других файлов) |
 | oil | app/alchemist_mhp_2024_runtime.js |
 | oilBomb | app/expansion_classes_pack.js |
 | oilCoated | app/alchemist_mhp_2024_runtime.js |
-| ok | app/Settings.js, app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/alchemy_engine_v29.js (+ 71 ещё) |
+| ok | app/Settings.js (+ 74 других файлов) |
 | old | app/network_gameplay.js |
 | oldLevel | app/crafting_profession_progression_v47.js |
 | oldOneTwo | app/expansion_classes_pack.js |
-| omnipotence | app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js |
-| omnipresence | app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js |
-| omniscience | app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js |
+| omnipotence | app/expansion_classes_pack.js (+ 1 других файлов) |
+| omnipresence | app/expansion_classes_pack.js (+ 1 других файлов) |
+| omniscience | app/expansion_classes_pack.js (+ 1 других файлов) |
 | onApply | app/update_scene_v2.js |
-| onAttackResult | app/accursed_oap_v11_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/expansion_classes_pack.js (+ 5 ещё) |
-| once | app/Ambiences.js, app/Logo.js, app/data/classes/level_up.js, app/debug.js (+ 3 ещё) |
+| onAttackResult | app/accursed_oap_v11_runtime.js (+ 8 других файлов) |
+| once | app/Ambiences.js (+ 6 других файлов) |
 | oncePerLongRest | app/martyr_mhp_2024_runtime.js |
-| oncePerTurn | app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js |
+| oncePerTurn | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | onChange | app/cloud_sync.js |
 | onclick | tests/test_v724_fixes.js |
-| onCondition | app/blood_hunter_engine.js, app/class_features_engine.js, app/savant_laserllama_v561_runtime.js, app/shifter_laserllama_v2_1_runtime.js (+ 1 ещё) |
-| onDamage | app/blood_hunter_engine.js, app/class_features_engine.js, app/savant_laserllama_v561_runtime.js, app/shifter_laserllama_v2_1_runtime.js (+ 1 ещё) |
+| onCondition | app/blood_hunter_engine.js (+ 4 других файлов) |
+| onDamage | app/blood_hunter_engine.js (+ 4 других файлов) |
 | onDefeat | app/gameplay_core_v57.js |
 | onePerShortRest | app/necromancer_mhp_2024_runtime.js |
 | oneThirdCaster | app/expansion_classes_pack.js |
-| onFail | app/expanded_bestiary_v39.js, app/monster_engine.js |
+| onFail | app/expanded_bestiary_v39.js (+ 1 других файлов) |
 | ongoingDamage | app/data/classes/Beastheart.js |
-| onLine | tests/cloud_sync_test.cjs, tests/test_v70.js |
+| onLine | tests/cloud_sync_test.cjs (+ 1 других файлов) |
 | onlyDeadBodies | app/walter_parasite_extra_runtime.js |
 | onlyMisfortuneFeatures | app/expansion_classes_pack.js |
 | onNatural1 | app/alchemist_mhp_2024_runtime.js |
@@ -10231,11 +10232,11 @@
 | onProgress | app/update_manager_v2.js |
 | onRetry | app/update_scene_v2.js |
 | onSave | app/expansion_classes_pack.js |
-| onSavingThrow | app/class_features_engine.js, app/shifter_laserllama_v2_1_runtime.js |
-| onTurnEnd | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js (+ 7 ещё) |
+| onSavingThrow | app/class_features_engine.js (+ 1 других файлов) |
+| onTurnEnd | app/accursed_oap_v11_runtime.js (+ 10 других файлов) |
 | ooze | app/expanded_bestiary_v39.js |
-| opacity | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
-| open | app/3dmap/character_appearance_store.js, app/3dmap/character_editor_3d.js, app/3dmap/map_world.js, app/battle_board.js (+ 23 ещё) |
+| opacity | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| open | app/3dmap/character_appearance_store.js (+ 26 других файлов) |
 | openBoard | app/vtt_encounter_map_v59.js |
 | openDebug | app/vtt_combat_log_v66.js |
 | openHandTechnique | app/network_gameplay.js |
@@ -10249,34 +10250,34 @@
 | optics | app/crafting_profession_progression_v47.js |
 | optional | app/kibbles_localization_content_v71.js |
 | optionalSlotDice | app/expansion_classes_pack.js |
-| options | app/3dmap/character_clothing.js, app/class_features_engine.js, app/data/classes/Pugilist.js, app/expansion_classes_pack.js (+ 2 ещё) |
+| options | app/3dmap/character_clothing.js (+ 5 других файлов) |
 | optionsFor | app/3dmap/character_clothing.js |
 | opts | app/network_gameplay.js |
-| oracle | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| oracle | app/blood_hunter_engine.js (+ 1 других файлов) |
 | Oracle | app/data/classes/Occultist.js |
 | orange | app/Settings.js |
 | orcish_fury | app/feat_engine.js |
 | orcsteppe | app/3dmap/character_editor_3d.js |
-| order | app/blood_hunter_engine.js, app/data/classes/BloodHunter.js |
-| orders | app/data/classes/BloodHunter.js, app/data/classes/Warlord.js |
+| order | app/blood_hunter_engine.js (+ 1 других файлов) |
+| orders | app/data/classes/BloodHunter.js (+ 1 других файлов) |
 | organ | app/resource_processing_v44.js |
 | organic | app/3dmap/character_editor_3d.js |
 | origin | app/3dmap/map_renderer_3d.js |
 | original | app/alchemist_mhp_2024_runtime.js |
-| originalStats | app/parasite_extra_runtime.js, app/walter_parasite_extra_runtime.js |
-| originRaceId | app/3dmap/character_system.js, tests/character_3d_foundation_test.js |
+| originalStats | app/parasite_extra_runtime.js (+ 1 других файлов) |
+| originRaceId | app/3dmap/character_system.js (+ 1 других файлов) |
 | ostorianDiscourse | app/expansion_classes_pack.js |
-| other | tests/character_appearance_store_test.js, tests/cloud_sync_test.cjs |
+| other | tests/character_appearance_store_test.js (+ 1 других файлов) |
 | otherStyleEffectsPending | app/warlord_laserllama_v330_runtime.js |
 | otherworldlyPatron | app/blood_hunter_engine.js |
 | outcome | app/crafting_professions_v38.js |
 | outcomeLabel | app/crafting_professions_v38.js |
-| outer | app/3dmap/character_anatomy_geometry.js, tests/character_clothing_test.js, tools/check_character_editor_browser.js |
+| outer | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
 | outlandsEligible | app/bestiary_catalog_v56_13.js |
 | outOfOrder | app/vtt_debug_lab_v703.js |
-| output | app/crafting_economy_v49.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js, app/crafting_resources_v34.js (+ 4 ещё) |
+| output | app/crafting_economy_v49.js (+ 7 других файлов) |
 | outputBytes | tests/generate_makehuman_glb_morph_fixture.js |
-| oval | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js |
+| oval | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | oven | app/3dmap/gltf_catalog.js |
 | overCorset | app/3dmap/character_clothing.js |
 | overCuirass | app/3dmap/character_clothing.js |
@@ -10290,34 +10291,34 @@
 | owlbear | app/data/classes/Beastheart.js |
 | owner | tests/character_3d_editor_test.js |
 | owner_id | tests/cloud_sync_test.cjs |
-| ownerId | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/companions.js, app/data/classes/Beastheart.js (+ 5 ещё) |
-| ownerPeerId | tests/test_blood_hunter_focus_network.js, tests/test_v722_fixes.js, tests/test_v723_fixes.js, tests/test_v734_network_concentration.js (+ 4 ещё) |
-| ownerTokenId | app/alchemist_mhp_2024_runtime.js, app/data/classes/Beastheart.js, app/necromancer_mhp_2024_runtime.js, app/secondary_entities_engine.js (+ 1 ещё) |
+| ownerId | app/alchemist_mhp_2024_runtime.js (+ 8 других файлов) |
+| ownerPeerId | tests/test_blood_hunter_focus_network.js (+ 7 других файлов) |
+| ownerTokenId | app/alchemist_mhp_2024_runtime.js (+ 4 других файлов) |
 | ownerTurns | app/blood_hunter_engine.js |
 | ox | app/3dmap/map_renderer_2d.js |
 | oy | app/3dmap/map_renderer_2d.js |
-| p | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
+| p | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
 | p_deleted | app/cloud_sync.js |
 | p_expected_revision | app/cloud_sync.js |
 | p_id | app/cloud_sync.js |
 | p_operation_id | app/cloud_sync.js |
 | p_profile | app/cloud_sync.js |
 | p_schema_version | app/cloud_sync.js |
-| p1 | tests/test_v723_fixes.js, tests/test_v737_spellcasting_transaction.js, tests/test_v738_multiclass_spell_sources.js, tests/test_v739_prepared_transaction.js |
+| p1 | tests/test_v723_fixes.js (+ 3 других файлов) |
 | p2 | tests/test_v723_fixes.js |
 | pa | tests/test_blood_hunter_focus_network.js |
-| pack | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/content_framework.js, gltf_catalog.js (+ 4 ещё) |
-| PACK_ID | app/alchemist_mhp_2024_runtime.js, app/occultist_kibbles_v11_runtime.js, app/warden_mhp_2024_runtime.js |
+| pack | app/3dmap/character_editor_3d.js (+ 7 других файлов) |
+| PACK_ID | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | packId | app/content_framework.js |
 | packleader | app/expansion_classes_pack.js |
 | Packleader | app/kibbles_localization_content_v71.js |
-| packs | app/expanded_classes_v23.js, app/expansion_classes_pack.js, tests/pugilist_combat_test.js |
+| packs | app/expanded_classes_v23.js (+ 2 других файлов) |
 | packTactics | app/expansion_classes_pack.js |
-| pact | app/rulesEngine.js, tests/test_v737_spellcasting_transaction.js |
+| pact | app/rulesEngine.js (+ 1 других файлов) |
 | pactBoon | app/class_features_engine.js |
 | pactLevel | app/magic_engine.js |
-| pactMagic | app/blood_hunter_engine.js, app/network_gameplay.js, tests/test_v736_deep_rules.js, tests/test_v737_spellcasting_transaction.js |
-| pactMagicData | app/network_gameplay.js, tests/test_v736_deep_rules.js, tests/test_v737_spellcasting_transaction.js, tests/test_v738_multiclass_spell_sources.js (+ 1 ещё) |
+| pactMagic | app/blood_hunter_engine.js (+ 3 других файлов) |
+| pactMagicData | app/network_gameplay.js (+ 4 других файлов) |
 | padding | app/crafting_professions_v33.js |
 | painkiller | app/expansion_classes_pack.js |
 | painkillerGrandStrategist | app/expansion_classes_pack.js |
@@ -10325,81 +10326,81 @@
 | paint | app/alchemist_mhp_2024_runtime.js |
 | paintBomb | app/expansion_classes_pack.js |
 | paintCreatures | app/alchemist_mhp_2024_runtime.js |
-| painter | app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| painter | app/crafting_profession_progression_v47.js (+ 3 других файлов) |
 | paintV38 | app/crafting_professions_v38.js |
-| paladin | app/magic_engine.js, app/rulesEngine.js |
+| paladin | app/magic_engine.js (+ 1 других файлов) |
 | paleMaster | app/necromancer_mhp_2024_runtime.js |
 | panelScroll | tools/check_character_editor_browser.js |
 | panelUV | app/3dmap/character_clothing.js |
-| panX | app/3dmap/map_editor.js, app/battle_board.js, app/vtt_mobile_battle_v61.js |
-| panY | app/3dmap/map_editor.js, app/battle_board.js, app/vtt_mobile_battle_v61.js |
-| paper | app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js |
+| panX | app/3dmap/map_editor.js (+ 2 других файлов) |
+| panY | app/3dmap/map_editor.js (+ 2 других файлов) |
+| paper | app/crafting_engine_v31.js (+ 2 других файлов) |
 | Paragon | app/kibbles_localization_content_v71.js |
 | paragonOfChivalry | app/expansion_classes_pack.js |
 | paralyticReagent | app/resource_processing_v44.js |
-| paralyzed | app/expansion_classes_pack.js, app/warden_mhp_2024_runtime.js |
+| paralyzed | app/expansion_classes_pack.js (+ 1 других файлов) |
 | parasiteMind | app/parasite_extra_runtime.js |
-| parchment | app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js |
+| parchment | app/crafting_engine_v31.js (+ 2 других файлов) |
 | parentContainerId | app/inventory_containers_v54.js |
 | parentId | app/swarm_extra_runtime.js |
 | parentNode | tests/test_v724_fixes.js |
-| parentTriangles | tools/check_external_anatomy_browser.js, tools/check_male_anatomy_browser.js, tools/check_pose_browser.js, tools/check_skin_material_browser.js |
+| parentTriangles | tools/check_external_anatomy_browser.js (+ 3 других файлов) |
 | parley | app/expansion_classes_pack.js |
 | parleyFree | app/expansion_classes_pack.js |
-| parseDice | app/rulesEngine.js, tests/test_v715_fixes.js, tests/test_v720_fixes.js, tests/test_v721_fixes.js (+ 2 ещё) |
+| parseDice | app/rulesEngine.js (+ 5 других файлов) |
 | part | app/3dmap/character_pose.js |
 | partial | app/3dmap/character_anatomy.js |
-| parts | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/gltf_loader.js (+ 10 ещё) |
+| parts | app/3dmap/character_anatomy_geometry.js (+ 13 других файлов) |
 | pass | app/vtt_debug_rules_matrix_v707.js |
 | passesThroughCreatures | app/expansion_classes_pack.js |
-| passive | app/3dmap/character_editor_3d.js, app/Inventory.js, app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js (+ 6 ещё) |
+| passive | app/3dmap/character_editor_3d.js (+ 9 других файлов) |
 | password | app/cloud_sync.js |
-| patch | app/crafting_disassembly_v51.js, app/crafting_dlc_v50.js |
-| path | app/3dmap/gltf_catalog.js, app/3dmap/gltf_character_pipeline.js, app/update_manager_v2.js, app/vtt_debug_sandbox_v701.js (+ 26 ещё) |
-| pathCost | tests/test_v737_spellcasting_transaction.js, tests/test_v738_multiclass_spell_sources.js |
+| patch | app/crafting_disassembly_v51.js (+ 1 других файлов) |
+| path | app/3dmap/gltf_catalog.js (+ 29 других файлов) |
+| pathCost | tests/test_v737_spellcasting_transaction.js (+ 1 других файлов) |
 | pathFt | app/network_gameplay.js |
 | patientDefense | app/class_features_engine.js |
-| patron | app/blood_hunter_engine.js, app/data/classes/Illigger.js, app/expansion_classes_pack.js, tests/test_blood_hunter_focus_network.js (+ 2 ещё) |
+| patron | app/blood_hunter_engine.js (+ 5 других файлов) |
 | patrons | app/blood_hunter_engine.js |
 | patternScale | app/3dmap/character_clothing.js |
 | pauldrons | app/3dmap/character_clothing.js |
 | pawPadColor | app/3dmap/character_system.js |
 | payHitPointCost | app/combat_engine.js |
-| payload | app/network_gameplay.js, app/vtt_combat_log_v66.js, app/vtt_encounter_checkpoint_v68.js, app/vtt_mobile_session_v67.js (+ 13 ещё) |
+| payload | app/network_gameplay.js (+ 16 других файлов) |
 | payOwnHPForCharnel | app/necromancer_mhp_2024_runtime.js |
-| PB | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/swarm_extra_runtime.js, app/walter_parasite_extra_runtime.js |
+| PB | app/ghost_extra_runtime.js (+ 3 других файлов) |
 | pc | app/network_engine.js |
 | pd | tests/test_blood_hunter_focus_network.js |
-| peakPhysicalCondition | app/data/classes/Pugilist.js, app/expansion_classes_pack.js |
-| pectorals | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js |
+| peakPhysicalCondition | app/data/classes/Pugilist.js (+ 1 других файлов) |
+| pectorals | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | peer | app/network_gameplay.js |
 | peerId | tests/test_v714_fixes.js |
 | peerName | app/network_engine.js |
 | penaltyPerFatigue | app/expansion_classes_pack.js |
-| pending | app/alchemist_mhp_2024_runtime.js, app/class_features_engine.js, app/cloud_sync.js, desktop/update.cjs |
+| pending | app/alchemist_mhp_2024_runtime.js (+ 3 других файлов) |
 | pendingAnswer | app/network_engine.js |
-| pendingAttack | app/combat_engine.js, tests/test_class_audit_stage4_runtime.js |
-| pendingDamage | app/blood_hunter_engine.js, app/combat_engine.js, app/warden_mhp_2024_runtime.js, tests/test_blood_hunter_profane_focus.js |
+| pendingAttack | app/combat_engine.js (+ 1 других файлов) |
+| pendingDamage | app/blood_hunter_engine.js (+ 3 других файлов) |
 | pendingOffer | app/network_engine.js |
-| pendingOnHit | app/alchemist_mhp_2024_runtime.js, app/class_features_engine.js, app/combat_engine.js, tests/test_v720_fixes.js |
+| pendingOnHit | app/alchemist_mhp_2024_runtime.js (+ 3 других файлов) |
 | pendingReaction | app/network_gameplay.js |
-| pendingReactions | app/network_gameplay.js, tests/test_v748_full_combat_transaction.js |
+| pendingReactions | app/network_gameplay.js (+ 1 других файлов) |
 | pendingSelection | app/class_features_engine.js |
 | penetratesResistance | app/expansion_classes_pack.js |
 | penetratingDice | app/expansion_classes_pack.js |
-| perception | app/dice.js, app/skills.js |
+| perception | app/dice.js (+ 1 других файлов) |
 | Perception | app/alchemy_gameplay_v30.js |
 | perceptionReagent | app/resource_processing_v44.js |
 | percipient | app/blood_hunter_engine.js |
 | Percipient | app/expansion_classes_pack.js |
 | perfectSelf | app/class_features_engine.js |
-| performance | app/dice.js, app/expansion_classes_pack.js, app/skills.js, tests/test_v70.js |
+| performance | app/dice.js (+ 3 других файлов) |
 | perilousGambit | app/expansion_classes_pack.js |
 | permanentCurse | app/expansion_classes_pack.js |
 | persistent | app/expansion_classes_pack.js |
 | persistentRage | app/class_features_engine.js |
 | persona | app/expansion_classes_pack.js |
-| persuasion | app/dice.js, app/skills.js, tests/test_v55_3.js |
+| persuasion | app/dice.js (+ 2 других файлов) |
 | persuasionDeceptionIntimidationFloor | app/expansion_classes_pack.js |
 | perTargetLongRest | app/expansion_classes_pack.js |
 | perTurn | app/necromancer_mhp_2024_runtime.js |
@@ -10407,7 +10408,7 @@
 | Petrification | app/alchemy_gameplay_v30.js |
 | petrificationReagent | app/resource_processing_v44.js |
 | pharaoh | app/necromancer_mhp_2024_runtime.js |
-| phase | app/3dmap/character_body_geometry.js, app/update_manager_v2.js, desktop/update.cjs, tests/update_ota_flow_test.js |
+| phase | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
 | phaseFiber | app/resource_processing_v44.js |
 | phaseReagent | app/resource_processing_v44.js |
 | phaseRift | app/expansion_classes_pack.js |
@@ -10417,59 +10418,59 @@
 | philosophersStone | app/data/classes/Alchemist.js |
 | physicalAndroidQA | tests/makehuman_gender_fixture_audit.js |
 | physicalResistance | app/swarm_extra_runtime.js |
-| physicalStats | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js |
+| physicalStats | app/ghost_extra_runtime.js (+ 1 других файлов) |
 | physicalStatsFromShell | app/ghost_extra_runtime.js |
 | physician | app/savant_laserllama_v561_runtime.js |
 | pickFloor | app/3dmap/map_renderer_3d.js |
-| pickLevel | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/data/subclasses/subclassesRegistry.js, app/expanded_class_registry_bridge.js (+ 13 ещё) |
+| pickLevel | app/accursed_oap_v11_runtime.js (+ 16 других файлов) |
 | piercing | app/warden_mhp_2024_runtime.js |
 | pigment | app/crafting_professions_v38.js |
 | pineResin | app/crafting_resources_v34.js |
 | pissAndVinegar | app/data/classes/Pugilist.js |
-| pitch | app/3dmap/map_editor.js, app/3dmap/map_renderer_3d.js |
-| pixie | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
+| pitch | app/3dmap/map_editor.js (+ 1 других файлов) |
+| pixie | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | pl | app/3dmap/map_renderer_3d.js |
 | placeToken | app/vtt_encounter_map_v59.js |
 | plague | app/swarm_extra_runtime.js |
 | plagueLord | app/necromancer_mhp_2024_runtime.js |
 | plain | app/crafting_character_influence_test_v46.js |
-| plan | app/network_gameplay.js, app/turn_planner.js |
+| plan | app/network_gameplay.js (+ 1 других файлов) |
 | planar | app/bestiary_catalog_v56_13.js |
 | planarInfluence | app/bestiary_catalog_v56_13.js |
 | planes | app/bestiary_catalog_v56_13.js |
 | planescape | app/bestiary_catalog_v56_13.js |
 | planned | app/content_catalog.js |
 | planPreview | app/battle_board.js |
-| plant | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_13.js (+ 8 ещё) |
+| plant | app/bestiary_catalog_v56_1.js (+ 11 других файлов) |
 | plasmoid | tools/check_last_races_browser.js |
-| plateColor | app/3dmap/character_system.js, tools/check_mechanical_races_browser.js |
+| plateColor | app/3dmap/character_system.js (+ 1 других файлов) |
 | plates | app/3dmap/character_system.js |
-| plateSize | app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tools/check_mechanical_races_browser.js |
+| plateSize | app/3dmap/character_system.js (+ 2 других файлов) |
 | play | app/vtt_combat_event_bus_v69.js |
 | playerAction | tests/test_v724_fixes.js |
 | playfair | app/Settings.js |
-| playing | app/Ambiences.js, app/vtt_combat_event_bus_v69.js |
+| playing | app/Ambiences.js (+ 1 других файлов) |
 | playingTheOdds | app/expansion_classes_pack.js |
-| pleats | app/3dmap/character_clothing.js, tests/character_clothing_customizer_geometry_test.js, tests/character_clothing_options_test.js, tools/check_character_dress_customizer.js |
+| pleats | app/3dmap/character_clothing.js (+ 3 других файлов) |
 | plusDex | app/occultist_kibbles_v11_runtime.js |
-| pockets | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 15 ещё) |
+| pockets | app/bestiary_catalog_v56_1.js (+ 18 других файлов) |
 | pocketSand | app/expansion_classes_pack.js |
-| point | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js |
+| point | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | pointerId | tests/character_3d_editor_test.js |
-| points | app/3dmap/character_body_geometry.js, tests/test_class_audit_stage2_runtime.js |
-| poison | app/class_features_engine.js, app/crafting_profession_progression_v47.js, app/warden_mhp_2024_runtime.js |
+| points | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| poison | app/class_features_engine.js (+ 2 других файлов) |
 | poisonBypass | app/occultist_kibbles_v11_runtime.js |
-| poisoned | app/necromancer_mhp_2024_runtime.js, app/warden_mhp_2024_runtime.js |
-| poisoner | app/crafting_professions_v38.js, app/feat_engine.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| poisoned | app/necromancer_mhp_2024_runtime.js (+ 1 других файлов) |
+| poisoner | app/crafting_professions_v38.js (+ 3 других файлов) |
 | poisonIgnoresImmunity | app/necromancer_mhp_2024_runtime.js |
 | poisonIgnoresResistance | app/necromancer_mhp_2024_runtime.js |
 | poisonOnCharnel | app/necromancer_mhp_2024_runtime.js |
 | poisonResistance | app/expanded_classes_v23.js |
 | polearm_master | app/feat_engine.js |
-| polyglot | app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js |
-| ponytail | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
+| polyglot | app/expansion_classes_pack.js (+ 1 других файлов) |
+| ponytail | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | pool | app/necromancer_mhp_2024_runtime.js |
-| poor | app/crafting_disassembly_v51.js, app/monster_loot_engine_v37.js |
+| poor | app/crafting_disassembly_v51.js (+ 1 других файлов) |
 | porcelainClay | app/crafting_resources_v34.js |
 | portalAffinity | app/bestiary_catalog_v56_13.js |
 | portalRoute | app/bestiary_catalog_v56_13.js |
@@ -10478,30 +10479,30 @@
 | poseBuilds | app/3dmap/character_editor_3d.js |
 | poses | app/3dmap/character_pose.js |
 | position | app/3dmap/character_body_geometry.js |
-| POSITION | app/3dmap/character_morph_assets.js, tests/character_3d_editor_test.js, tests/character_3d_skin_morph_test.js, tests/generate_makehuman_glb_morph_fixture.js (+ 3 ещё) |
-| positions | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js (+ 8 ещё) |
-| positive | tests/character_3d_editor_test.js, tests/character_3d_skin_morph_test.js, tools/build_character_editor_morphs.js, tools/build_makehuman_morphs.js |
+| POSITION | app/3dmap/character_morph_assets.js (+ 6 других файлов) |
+| positions | app/3dmap/character_anatomy_geometry.js (+ 11 других файлов) |
+| positive | tests/character_3d_editor_test.js (+ 3 других файлов) |
 | Possessed | app/expansion_classes_pack.js |
-| possession | app/accursed_oap_v11_runtime.js, app/ghost_extra_runtime.js |
+| possession | app/accursed_oap_v11_runtime.js (+ 1 других файлов) |
 | possessLiving | app/ghost_extra_runtime.js |
 | postMessage | desktop/preload.cjs |
 | pot | app/3dmap/gltf_catalog.js |
 | potash | app/crafting_resources_v34.js |
-| potency | app/alchemy_gameplay_v30.js, app/blood_hunter_engine.js |
+| potency | app/alchemy_gameplay_v30.js (+ 1 других файлов) |
 | Potency | app/expansion_classes_pack.js |
 | potentObservation | app/savant_laserllama_v561_runtime.js |
-| potion | app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js, app/occultist_kibbles_v11_runtime.js, tests/alchemist_runtime_test.js |
+| potion | app/alchemist_mhp_2024_runtime.js (+ 3 других файлов) |
 | potionBrewing | app/data/classes/Alchemist.js |
 | potionCap | app/necromancer_mhp_2024_runtime.js |
-| potionColor | app/alchemist_mhp_2024_runtime.js, tests/alchemist_runtime_test.js |
+| potionColor | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | potionMixologist | app/data/classes/Alchemist.js |
 | potions | app/alchemist_mhp_2024_runtime.js |
-| potter | app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
-| pottery | app/crafting_engine_v31.js, app/crafting_professions_v33.js |
-| power | app/3dmap/character_body_geometry.js, app/data/classes/Psion.js, app/expansion_classes_pack.js |
+| potter | app/crafting_profession_progression_v47.js (+ 3 других файлов) |
+| pottery | app/crafting_engine_v31.js (+ 1 других файлов) |
+| power | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | powerOfTwo | app/3dmap/character_editor_3d.js |
 | powerPreference | app/3dmap/map_renderer_3d.js |
-| pp | app/inventory-coins.js, app/market_economy_v55.js, tests/test_v55.js, tests/test_v55_2.js (+ 2 ещё) |
+| pp | app/inventory-coins.js (+ 5 других файлов) |
 | precedence | app/vtt_debug_rules_matrix_v707.js |
 | precision | app/blood_hunter_engine.js |
 | Precision | app/expansion_classes_pack.js |
@@ -10510,22 +10511,22 @@
 | predatoryInstinct | app/expansion_classes_pack.js |
 | predictiveDodge | app/expansion_classes_pack.js |
 | preload | desktop/main.cjs |
-| prepare | app/3dmap/character_pose.js, app/3dmap/gltf_character_pipeline.js |
-| prepared | app/alchemist_mhp_2024_runtime.js, app/class_features_engine.js, app/feat_engine.js, app/spellblade_kibbles_runtime.js (+ 1 ещё) |
-| preparedActions | app/network_gameplay.js, tests/test_v748_full_combat_transaction.js |
-| preparedByLevel | app/martyr_mhp_2024_runtime.js, app/necromancer_mhp_2024_runtime.js |
+| prepare | app/3dmap/character_pose.js (+ 1 других файлов) |
+| prepared | app/alchemist_mhp_2024_runtime.js (+ 4 других файлов) |
+| preparedActions | app/network_gameplay.js (+ 1 других файлов) |
+| preparedByLevel | app/martyr_mhp_2024_runtime.js (+ 1 других файлов) |
 | preparedClasses | app/spells.js |
 | preparedLimit | app/spells.js |
 | preparedReactionAttack | app/class_features_engine.js |
-| preparedSpells | app/martyr_mhp_2024_runtime.js, app/necromancer_mhp_2024_runtime.js |
+| preparedSpells | app/martyr_mhp_2024_runtime.js (+ 1 других файлов) |
 | prepareForLibrary | app/3dmap/map_model.js |
-| prerequisite | app/data/classes/BloodHunter.js, app/data/feats/Feats_phb.js, app/data/feats/Feats_settings.js, app/data/feats/Feats_tcoe.js (+ 3 ещё) |
-| present | app/shifter_laserllama_v2_1_runtime.js, app/vessel_laserllama_v4_runtime.js |
+| prerequisite | app/data/classes/BloodHunter.js (+ 6 других файлов) |
+| present | app/shifter_laserllama_v2_1_runtime.js (+ 1 других файлов) |
 | preserved | app/expansion_classes_pack.js |
-| preserveLife | app/class_features_engine.js, app/network_gameplay.js |
-| preset | app/3dmap/character_editor_3d.js, app/3dmap/character_pose.js, app/3dmap/character_system.js, tools/check_external_anatomy_browser.js (+ 2 ещё) |
-| presetId | app/3dmap/character_system.js, tests/character_3d_foundation_test.js |
-| presets | app/3dmap/character_system.js, tests/character_3d_foundation_test.js |
+| preserveLife | app/class_features_engine.js (+ 1 других файлов) |
+| preset | app/3dmap/character_editor_3d.js (+ 5 других файлов) |
+| presetId | app/3dmap/character_system.js (+ 1 других файлов) |
+| presets | app/3dmap/character_system.js (+ 1 других файлов) |
 | press | app/3dmap/gltf_catalog.js |
 | pretendToBeVisual | tests/map_editor_dom_test.js |
 | preventDropToZero | app/expansion_classes_pack.js |
@@ -10534,70 +10535,70 @@
 | preventZeroHp | app/data/classes/Beastheart.js |
 | preview | app/3dmap/map_model.js |
 | previewDisassembly | app/crafting_disassembly_repair_v51.js |
-| previous | app/gameplay_core_v57.js, desktop/update.cjs |
+| previous | app/gameplay_core_v57.js (+ 1 других файлов) |
 | preyDamage | app/expansion_classes_pack.js |
-| price | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 17 ещё) |
+| price | app/bestiary_catalog_v56_1.js (+ 20 других файлов) |
 | priceImproved | tests/test_v55_3.js |
 | priceModifier | app/market_social_v55_3.js |
 | primalChampion | app/class_features_engine.js |
 | primalResilience | app/shifter_laserllama_v2_1_runtime.js |
 | primary | app/Settings.js |
-| primaryAbilities | app/alchemist_mhp_2024_runtime.js, app/data/classes/Beastheart.js, app/data/classes/BloodHunter.js, app/data/classes/Warden.js |
+| primaryAbilities | app/alchemist_mhp_2024_runtime.js (+ 3 других файлов) |
 | primaryResourceId | app/alchemy_gathering_professions_v52.js |
-| primaryStat | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/classesRegistry.js, app/data/classes/Alchemist.js (+ 27 ещё) |
+| primaryStat | app/accursed_oap_v11_runtime.js (+ 30 других файлов) |
 | primeBomb | app/data/classes/Alchemist.js |
 | primeval | app/expansion_classes_pack.js |
 | primevalForm | app/shifter_laserllama_v2_1_runtime.js |
 | primevalResurgence | app/shifter_laserllama_v2_1_runtime.js |
-| primitives | tests/gltf_loader_smoke.cjs, tests/makehuman_gender_recipe_test.js |
+| primitives | tests/gltf_loader_smoke.cjs (+ 1 других файлов) |
 | primordial | app/data/classes/Beastheart.js |
-| priority | app/class_features_engine.js, app/martyr_mhp_2024_runtime.js |
+| priority | app/class_features_engine.js (+ 1 других файлов) |
 | prismatic | app/alchemist_mhp_2024_runtime.js |
 | prismaticBomb | app/expansion_classes_pack.js |
 | prismaticIndex | tests/alchemist_runtime_test.js |
-| pristine | app/crafting_disassembly_repair_v51.js, app/monster_loot_engine_v37.js |
+| pristine | app/crafting_disassembly_repair_v51.js (+ 1 других файлов) |
 | privileges | desktop/main.cjs |
 | processedEach | app/crafting_character_influence_test_v46.js |
 | processedId | app/resource_processing_v44.js |
 | processedRuns | app/crafting_character_influence_test_v46.js |
 | processedUnit | app/resource_processing_v44.js |
-| processing | app/crafting_professions_v38.js, tests/test_v56.js |
+| processing | app/crafting_professions_v38.js (+ 1 других файлов) |
 | prodigy | app/crafting_professions_v38.js |
-| profBonus | app/Backgrounds.js, app/character_creation.js, app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js (+ 17 ещё) |
-| profession | app/crafting_profession_progression_v47.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js, app/vtt_debug_character_lab_v702.js (+ 1 ещё) |
+| profBonus | app/Backgrounds.js (+ 20 других файлов) |
+| profession | app/crafting_profession_progression_v47.js (+ 4 других файлов) |
 | professionBonus | tests/test_v52.js |
 | professionIds | app/crafting_profession_progression_v47.js |
 | professionProfile | app/alchemy_gathering_professions_v52.js |
 | professionRequirements | app/crafting_profession_progression_v47.js |
 | PROFESSIONS | app/crafting_profession_progression_v47.js |
-| proficiencies | app/character_creation.js, app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js, app/data/classes/BloodHunter.js (+ 7 ещё) |
-| proficiency | app/data/feats/Feats_phb.js, app/data/feats/Feats_tcoe.js, app/expanded_classes_v23.js, app/expansion_classes_pack.js (+ 1 ещё) |
-| proficiencyBonus | app/companions.js, app/data/classes/Beastheart.js, app/expansion_classes_pack.js, app/martyr_mhp_2024_runtime.js (+ 10 ещё) |
+| proficiencies | app/character_creation.js (+ 10 других файлов) |
+| proficiency | app/data/feats/Feats_phb.js (+ 4 других файлов) |
+| proficiencyBonus | app/companions.js (+ 13 других файлов) |
 | proficiencyType | app/armors.js |
-| proficient | app/character.js, app/network_gameplay.js, tests/test_class_audit_stage4_runtime.js, tests/test_v712_fixes.js |
-| profile | app/3dmap/character_body_geometry.js, app/alchemy_gameplay_v30.js, app/crafting_disassembly_v51.js, app/crafting_profession_progression_test_v47.js (+ 12 ещё) |
+| proficient | app/character.js (+ 3 других файлов) |
+| profile | app/3dmap/character_body_geometry.js (+ 15 других файлов) |
 | profileResources | app/network_gameplay.js |
 | prog | app/3dmap/map_renderer_3d.js |
-| progression | app/classesRegistry.js, app/data/classes/Alchemist.js, app/data/classes/Illigger.js, app/data/classes/Pugilist.js (+ 12 ещё) |
-| progressionSource | app/data/classes/Martyr.js, app/data/classes/Necromancer.js, app/data/classes/Shifter.js, app/data/classes/Vessel.js |
-| project | tools/build_character_editor_morphs.js, tools/build_makehuman_morphs.js |
+| progression | app/classesRegistry.js (+ 15 других файлов) |
+| progressionSource | app/data/classes/Martyr.js (+ 3 других файлов) |
+| project | tools/build_character_editor_morphs.js (+ 1 других файлов) |
 | projectedWeaponBonus | app/expansion_classes_pack.js |
-| projectile | app/combat_engine.js, app/network_gameplay.js, tests/test_v721_fixes.js, tests/test_v727_fixes.js |
-| projection | app/expansion_classes_pack.js, tools/check_external_anatomy_browser.js, tools/check_male_anatomy_browser.js, tools/check_skin_material_browser.js |
+| projectile | app/combat_engine.js (+ 3 других файлов) |
+| projection | app/expansion_classes_pack.js (+ 3 других файлов) |
 | projectItem | app/expansion_classes_pack.js |
 | projectMobility | app/blood_hunter_engine.js |
 | projectPoint | app/3dmap/map_renderer_3d.js |
 | projectScreen | app/3dmap/map_renderer_3d.js |
-| projectUrl | app/cloud_account.js, app/cloud_config.js, app/cloud_sync.js, tests/cloud_sync_test.cjs (+ 1 ещё) |
+| projectUrl | app/cloud_account.js (+ 4 других файлов) |
 | projectVariant | app/spellblade_kibbles_runtime.js |
 | prolificAffliction | app/expansion_classes_pack.js |
-| prompt | tests/pugilist_combat_test.js, tests/test_v58.js, tests/test_v717_fixes.js, tests/test_v722_fixes.js (+ 5 ещё) |
-| prone | app/expansion_classes_pack.js, app/rulesEngine.js |
+| prompt | tests/pugilist_combat_test.js (+ 8 других файлов) |
+| prone | app/expansion_classes_pack.js (+ 1 других файлов) |
 | proneOnHit | app/expansion_classes_pack.js |
 | proneOnSuccess | app/expansion_classes_pack.js |
 | pronounced | app/3dmap/character_anatomy.js |
 | prop | app/alchemist_mhp_2024_runtime.js |
-| properties | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js, app/crafting_engine_v31.js, app/crafting_professions_v38.js (+ 6 ещё) |
+| properties | app/alchemy_engine_v29.js (+ 9 других файлов) |
 | propertiesHidden | app/alchemy_gathering_professions_v52.js |
 | property | app/alchemy_gameplay_v30.js |
 | proportions | tests/makehuman_gender_recipe_test.js |
@@ -10609,53 +10610,53 @@
 | protegeAdvantageAfterExploit | app/expansion_classes_pack.js |
 | protegeUpgrade | app/expansion_classes_pack.js |
 | provokesNoOpportunity | app/expanded_classes_v23.js |
-| pseudopodSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js |
+| pseudopodSize | app/3dmap/character_system.js (+ 1 других файлов) |
 | psi | tests/test_class_audit_runtime.js |
-| psiLimit | app/data/classes/Psion.js, app/expansion_classes_pack.js |
+| psiLimit | app/data/classes/Psion.js (+ 1 других файлов) |
 | psiLimitFormula | app/data/classes/Psion.js |
 | Psion | app/kibbles_localization_content_v71.js |
 | psionicPredator | app/expansion_classes_pack.js |
 | psionSource | app/kibbles_localization_content_v71.js |
-| psiPoints | app/data/classes/Psion.js, app/data/classes/extra_class_stubs.js, app/expansion_classes_pack.js |
-| psiPointsMax | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| psiPoints | app/data/classes/Psion.js (+ 2 других файлов) |
+| psiPointsMax | app/expanded_classes_v23.js (+ 1 других файлов) |
 | psiPointsRest | app/data/classes/Psion.js |
 | psychic | app/warden_mhp_2024_runtime.js |
 | psychicDamage | app/expansion_classes_pack.js |
 | psychicDamagePerTurn | app/expansion_classes_pack.js |
 | psychokinetics | app/expansion_classes_pack.js |
-| pubic | app/3dmap/character_anatomy.js, tests/character_adult_anatomy_test.js |
-| publishableKey | app/cloud_account.js, app/cloud_config.js, app/cloud_sync.js, tests/cloud_sync_test.cjs (+ 1 ещё) |
+| pubic | app/3dmap/character_anatomy.js (+ 1 других файлов) |
+| publishableKey | app/cloud_account.js (+ 4 других файлов) |
 | pulpit | app/3dmap/gltf_catalog.js |
-| pupilOpacity | app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tools/check_character_races_browser.js |
-| pupilShape | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_3d_foundation_test.js |
+| pupilOpacity | app/3dmap/character_system.js (+ 2 других файлов) |
+| pupilShape | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
 | purity | app/alchemy_gameplay_v30.js |
-| purple | app/Settings.js, app/Wallpapers.js |
+| purple | app/Settings.js (+ 1 других файлов) |
 | pursuit | app/savant_laserllama_v561_runtime.js |
-| pushFt | app/alchemist_mhp_2024_runtime.js, app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| pushFt | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | pushProneSaveBonus | app/expansion_classes_pack.js |
 | pushRadiusFt | app/expansion_classes_pack.js |
 | q | tests/makehuman_target_surface_transfer_audit.js |
-| qty | app/market_economy_v55.js, app/market_expansion_v55_1.js, app/market_trade_v55_2.js |
-| quality | app/3dmap/character_anatomy.js, app/3dmap/character_editor_3d.js, app/crafting_disassembly_v51.js, app/crafting_professions_v38.js (+ 9 ещё) |
+| qty | app/market_economy_v55.js (+ 2 других файлов) |
+| quality | app/3dmap/character_anatomy.js (+ 12 других файлов) |
 | QUALITY | app/crafting_economy_v49.js |
 | QUALITY_GRADES | app/crafting_disassembly_repair_v51.js |
 | QUALITY_TIERS | app/crafting_disassembly_v51.js |
 | qualityBand | app/crafting_disassembly_repair_v51.js |
-| qualityBonus | app/alchemy_gathering_professions_v52.js, app/crafting_disassembly_v51.js, app/crafting_profession_progression_v47.js, app/expanded_bestiary_v39.js (+ 2 ещё) |
+| qualityBonus | app/alchemy_gathering_professions_v52.js (+ 5 других файлов) |
 | qualityEffects | app/crafting_disassembly_v51.js |
-| qualityKey | app/crafting_disassembly_repair_v51.js, app/monster_loot_engine_v37.js |
+| qualityKey | app/crafting_disassembly_repair_v51.js (+ 1 других файлов) |
 | qualityLabel | app/crafting_disassembly_repair_v51.js |
-| qualityMultiplier | app/market_economy_v55.js, app/market_trade_v55_2.js |
+| qualityMultiplier | app/market_economy_v55.js (+ 1 других файлов) |
 | qualityOf | app/crafting_disassembly_v51.js |
 | qualityReport | app/crafting_disassembly_repair_v51.js |
-| quantity | app/crafting_engine_v31.js, app/crafting_professions_v33.js |
+| quantity | app/crafting_engine_v31.js (+ 1 других файлов) |
 | quartz | app/crafting_resources_v34.js |
 | quartzForm | app/expansion_classes_pack.js |
 | query | app/Inventory.js |
 | querySelector | tests/test_v58.js |
-| querySelectorAll | tests/crafting_dlc_v50_test.js, tests/pugilist_combat_test.js, tests/test_v52.js, tests/test_v53.js (+ 1 ещё) |
+| querySelectorAll | tests/crafting_dlc_v50_test.js (+ 4 других файлов) |
 | quick | tests/test_v746_authoritative_save_recharge.js |
-| quickBrewing | app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js |
+| quickBrewing | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | quickened | app/class_features_engine.js |
 | quickPin | app/expansion_classes_pack.js |
 | quiet | app/alchemist_mhp_2024_runtime.js |
@@ -10664,12 +10665,12 @@
 | quote | app/market_economy_v55.js |
 | r | app/Wallpapers.js |
 | rabbit | app/3dmap/character_body_geometry.js |
-| rabbitEarSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js |
-| rabbitTailSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js |
+| rabbitEarSize | app/3dmap/character_system.js (+ 1 других файлов) |
+| rabbitTailSize | app/3dmap/character_system.js (+ 1 других файлов) |
 | rabbleRouser | app/expansion_classes_pack.js |
-| race | app/Hero-info.js, app/data/feats/Feats_settings.js, app/data/feats/Feats_xgte.js, app/vtt_debug_character_lab_v702.js (+ 4 ещё) |
-| raceId | app/3dmap/character_appearance_store.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/Backgrounds.js (+ 15 ещё) |
-| raceName | app/Backgrounds.js, app/character_creation.js |
+| race | app/Hero-info.js (+ 7 других файлов) |
+| raceId | app/3dmap/character_appearance_store.js (+ 18 других файлов) |
+| raceName | app/Backgrounds.js (+ 1 других файлов) |
 | raceWarp | app/3dmap/character_body_geometry.js |
 | rack | app/3dmap/gltf_catalog.js |
 | radial | app/3dmap/character_clothing.js |
@@ -10678,74 +10679,74 @@
 | radiantAttackOrder | app/expansion_classes_pack.js |
 | radiantRetaliation | app/necromancer_mhp_2024_runtime.js |
 | radiantVsUndead | app/alchemist_mhp_2024_runtime.js |
-| radius | app/3dmap/character_clothing.js, app/3dmap/map_editor.js, app/3dmap/map_model.js, app/3dmap/stress_map.js (+ 1 ещё) |
+| radius | app/3dmap/character_clothing.js (+ 4 других файлов) |
 | radiusBySlot | app/expansion_classes_pack.js |
-| radiusFt | app/data/classes/Alchemist.js, app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js |
+| radiusFt | app/data/classes/Alchemist.js (+ 2 других файлов) |
 | radiusIncreaseFt | app/expansion_classes_pack.js |
 | radiusMiles | app/alchemist_mhp_2024_runtime.js |
-| rage | app/class_features_engine.js, tests/cloud_sync_test.cjs |
+| rage | app/class_features_engine.js (+ 1 других файлов) |
 | rageDamageBonus | app/data/classes/Barbarian.js |
 | ragesCount | app/data/classes/Barbarian.js |
-| raging | tests/test_v721_fixes.js, tests/test_v730_fixes.js |
+| raging | tests/test_v721_fixes.js (+ 1 других файлов) |
 | ragingInferno | app/expansion_classes_pack.js |
 | ragPulp | app/crafting_resources_v34.js |
 | rail | app/3dmap/map_editor.js |
 | raiseThrallOnSeedKill | app/necromancer_mhp_2024_runtime.js |
 | rallyCrew | app/expansion_classes_pack.js |
 | rallyingCry | app/data/classes/Warlord.js |
-| rallyUnlimited | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| rallyUnlimited | app/expanded_classes_v23.js (+ 1 других файлов) |
 | ram | app/3dmap/character_system.js |
-| rampage | app/companion_gameplay_v27.js, app/data/classes/Beastheart.js |
+| rampage | app/companion_gameplay_v27.js (+ 1 других файлов) |
 | rampageDie | app/expansion_classes_pack.js |
 | rampagePending | app/data/classes/Beastheart.js |
-| range | app/alchemist_mhp_2024_runtime.js, app/companion_gameplay_v27.js, app/data/classes/Alchemist.js, app/data/spells/Focuses.js (+ 14 ещё) |
-| rangedAttack | tests/alchemist_combat_test.js, tests/test_class_audit_runtime.js |
+| range | app/alchemist_mhp_2024_runtime.js (+ 17 других файлов) |
+| rangedAttack | tests/alchemist_combat_test.js (+ 1 других файлов) |
 | rangedAttackBonus | app/expansion_classes_pack.js |
-| rangeFt | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/battle_board.js, app/blood_hunter_engine.js (+ 23 ещё) |
+| rangeFt | app/accursed_oap_v11_runtime.js (+ 26 других файлов) |
 | rangeFtByLevel | app/runekeeper_taron_v12_runtime.js |
 | rangeMultiplier | app/expansion_classes_pack.js |
-| ranger | app/magic_engine.js, app/rulesEngine.js |
+| ranger | app/magic_engine.js (+ 1 других файлов) |
 | rangerFightingStyle | app/class_features_engine.js |
 | rankForRecipe | app/crafting_profession_progression_v47.js |
 | rapidity | app/blood_hunter_engine.js |
 | Rapidity | app/expansion_classes_pack.js |
 | raptor | app/3dmap/character_body_geometry.js |
-| rare | app/Inventory.js, app/alchemy_gathering_professions_v52.js, app/market_economy_v55.js, app/market_trade_v55_2.js (+ 3 ещё) |
+| rare | app/Inventory.js (+ 6 других файлов) |
 | rareBonus | app/monster_loot_engine_v37.js |
 | rareChance | app/expanded_bestiary_v39.js |
-| rarity | app/Inventory.js, app/alchemy_gathering_professions_v52.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js (+ 23 ещё) |
+| rarity | app/Inventory.js (+ 26 других файлов) |
 | rate | app/crafting_disassembly_v51.js |
-| ratio | app/crafting_disassembly_repair_v51.js, app/crafting_dlc_v50.js, app/crafting_economy_v49.js, app/resource_processing_v44.js (+ 1 ещё) |
+| ratio | app/crafting_disassembly_repair_v51.js (+ 4 других файлов) |
 | rats | app/3dmap/character_body_geometry.js |
 | ravenousWeapon | app/expansion_classes_pack.js |
-| raw | app/cloud_sync.js, app/combat_engine.js, app/vtt_debug_dice_lab_v706.js, app/vtt_debug_rules_matrix_v707.js |
+| raw | app/cloud_sync.js (+ 3 других файлов) |
 | rawCopper | app/crafting_resources_v34.js |
 | rawIron | app/crafting_resources_v34.js |
 | rawUnit | app/resource_processing_v44.js |
 | rawXp | app/monster_engine.js |
 | reachBonusFt | app/expansion_classes_pack.js |
-| reachFt | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
-| reaction | app/alchemist_mhp_2024_runtime.js, app/combat_engine.js, app/data/classes/Beastheart.js, app/dnd_tools.js (+ 25 ещё) |
+| reachFt | app/expanded_classes_v23.js (+ 1 других файлов) |
+| reaction | app/alchemist_mhp_2024_runtime.js (+ 28 других файлов) |
 | reactionAction | app/expansion_classes_pack.js |
-| reactionAttack | app/data/classes/Beastheart.js, app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| reactionAttack | app/data/classes/Beastheart.js (+ 2 других файлов) |
 | reactionAttackOrSingleTargetSpell | app/expansion_classes_pack.js |
 | reactionCastHexOnDamager | app/expansion_classes_pack.js |
-| reactionChoice | tests/test_blood_hunter_profane_focus.js, tests/test_class_audit_stage3_runtime.js |
+| reactionChoice | tests/test_blood_hunter_profane_focus.js (+ 1 других файлов) |
 | reactionCounter | app/expanded_classes_v23.js |
 | reactionDamage | app/expansion_classes_pack.js |
 | reactionDamageReduction | app/necromancer_mhp_2024_runtime.js |
 | reactionDefensiveOrder | app/expansion_classes_pack.js |
 | reactionHalveDamage | app/expansion_classes_pack.js |
-| reactionId | app/network_gameplay.js, tests/test_blood_hunter_focus_network.js, tests/test_v722_fixes.js, tests/test_v723_fixes.js (+ 1 ещё) |
+| reactionId | app/network_gameplay.js (+ 4 других файлов) |
 | reactionMode | app/expansion_classes_pack.js |
 | reactionMove | app/expansion_classes_pack.js |
 | reactionMoveFt | app/expansion_classes_pack.js |
 | reactionNegateSpellUpTo5 | app/expansion_classes_pack.js |
 | reactionOpportunityAgainstAttacker | app/expansion_classes_pack.js |
-| reactionOptions | app/class_features_engine.js, app/martyr_mhp_2024_runtime.js, tests/test_v739_prepared_transaction.js, tests/test_v741_damage_pipeline.js |
+| reactionOptions | app/class_features_engine.js (+ 3 других файлов) |
 | reactionPending | app/network_gameplay.js |
 | reactionRedirectAttack | app/necromancer_mhp_2024_runtime.js |
-| reactions | app/class_features_engine.js, app/companions.js, app/savant_laserllama_v561_runtime.js |
+| reactions | app/class_features_engine.js (+ 2 других файлов) |
 | reactionsMax | app/class_features_engine.js |
 | reactionSpell | app/occultist_kibbles_v11_runtime.js |
 | reactionsRefresh | app/savant_laserllama_v561_runtime.js |
@@ -10757,11 +10758,11 @@
 | readError | app/3dmap/character_editor_3d.js |
 | readOnly | app/vtt_combat_event_bus_v69.js |
 | readWriteForkedLanguages | app/expansion_classes_pack.js |
-| ready | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/world_resource_gathering_v53.js |
-| readyState | tests/crafting_disassembly_v51_test.js, tests/crafting_dlc_v50_test.js, tests/crafting_economy_v49_test.js, tests/helpers/class_runtime_harness.js (+ 22 ещё) |
+| ready | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
+| readyState | tests/crafting_disassembly_v51_test.js (+ 25 других файлов) |
 | reagent | app/resource_processing_v44.js |
 | reagentRoll | tests/alchemist_runtime_test.js |
-| reagents | app/alchemist_mhp_2024_runtime.js, app/crafting_profession_progression_v47.js, app/data/classes/Alchemist.js, app/expansion_classes_pack.js (+ 1 ещё) |
+| reagents | app/alchemist_mhp_2024_runtime.js (+ 4 других файлов) |
 | reagentsRegained | app/alchemist_mhp_2024_runtime.js |
 | reagentsSpent | app/alchemist_mhp_2024_runtime.js |
 | reagentSynthesis | app/data/classes/Alchemist.js |
@@ -10770,24 +10771,24 @@
 | reanimator | app/necromancer_mhp_2024_runtime.js |
 | reaper | app/necromancer_mhp_2024_runtime.js |
 | rearDigits | app/3dmap/character_body_geometry.js |
-| reason | app/accursed_oap_v11_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/combat_engine.js (+ 23 ещё) |
+| reason | app/accursed_oap_v11_runtime.js (+ 26 других файлов) |
 | reassembleCorpus | app/expansion_classes_pack.js |
 | rebirthInHell | app/expansion_classes_pack.js |
 | rebuild | app/magic_engine.js |
-| rebuildMaterialUsage | tests/crafting_disassembly_v51_test.js, tests/crafting_economy_v49_test.js |
+| rebuildMaterialUsage | tests/crafting_disassembly_v51_test.js (+ 1 других файлов) |
 | recalculate | app/vtt_debug_character_lab_v702.js |
 | received | app/market_trade_v55_2.js |
-| recharge | app/alchemist_mhp_2024_runtime.js, app/class_features_engine.js, app/data/classes/Beastheart.js, app/data/classes/Illigger.js (+ 9 ещё) |
+| recharge | app/alchemist_mhp_2024_runtime.js (+ 12 других файлов) |
 | rechargeActions | app/monster_engine.js |
 | recharged | app/monster_engine.js |
 | rechargeOn | app/combat_abilities.js |
 | rechargeState | app/network_gameplay.js |
-| recipe | app/crafting_disassembly_v51.js, app/crafting_profession_progression_v47.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js (+ 2 ещё) |
+| recipe | app/crafting_disassembly_v51.js (+ 5 других файлов) |
 | recipeCount | app/crafting_professions_v38.js |
 | recipeId | app/crafting_disassembly_repair_v51.js |
 | recipeName | app/crafting_disassembly_repair_v51.js |
 | recipeRequirements | app/crafting_profession_progression_v47.js |
-| recipes | app/crafting_economy_v49.js, app/crafting_professions_v38.js, app/monster_loot_crafting_bridge_v40.js, tests/crafting_economy_v49_test.js |
+| recipes | app/crafting_economy_v49.js (+ 3 других файлов) |
 | RECIPES | app/crafting_economy_v49.js |
 | recipesList | app/crafting_economy_v49.js |
 | reciprocalRelationship | app/expansion_classes_pack.js |
@@ -10795,24 +10796,24 @@
 | recommendedSourceCommit | tools/prepare_makehuman_gender.js |
 | reconstruction | app/blood_hunter_engine.js |
 | Reconstruction | app/expansion_classes_pack.js |
-| record | app/vtt_combat_event_bus_v69.js, app/vtt_combat_log_v66.js, tests/test_v701.js, tests/test_v702.js (+ 3 ещё) |
+| record | app/vtt_combat_event_bus_v69.js (+ 6 других файлов) |
 | recordCraftResult | app/crafting_profession_progression_v47.js |
-| recordMutation | app/parasite_extra_runtime.js, app/walter_parasite_extra_runtime.js |
+| recordMutation | app/parasite_extra_runtime.js (+ 1 других файлов) |
 | recover | app/cloud_sync.js |
 | recoverable | app/crafting_disassembly_repair_v51.js |
-| recovered | app/crafting_disassembly_repair_v51.js, app/crafting_disassembly_v51.js, tests/crafting_disassembly_v51_test.js |
+| recovered | app/crafting_disassembly_repair_v51.js (+ 2 других файлов) |
 | recoveredFromCrafting | app/crafting_disassembly_v51.js |
 | recoverRatio | app/crafting_disassembly_repair_v51.js |
-| recovery | app/data/classes/Pugilist.js, app/necromancer_mhp_2024_runtime.js |
+| recovery | app/data/classes/Pugilist.js (+ 1 других файлов) |
 | Recovery | app/alchemy_gameplay_v30.js |
 | RECOVERY_BY_DURABILITY | app/crafting_disassembly_repair_v51.js |
 | RECOVERY_BY_QUALITY | app/crafting_disassembly_v51.js |
 | recoveryRate | tests/crafting_disassembly_v51_test.js |
 | recruitInformant | app/expansion_classes_pack.js |
 | recruitMercenary | app/expansion_classes_pack.js |
-| recursive | desktop/prepare.cjs, desktop/update.cjs, tests/character_male_anatomy_fix_test.js, tests/creation_signature_asset_test.cjs (+ 42 ещё) |
+| recursive | desktop/prepare.cjs (+ 45 других файлов) |
 | red | app/Settings.js |
-| Red | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| Red | app/expanded_classes_v23.js (+ 1 других файлов) |
 | redirect | app/expansion_classes_pack.js |
 | redirectAttack | app/expansion_classes_pack.js |
 | redirectAttackToAlly | app/alchemist_mhp_2024_runtime.js |
@@ -10823,16 +10824,16 @@
 | redirectOrCancel | app/expansion_classes_pack.js |
 | redirectURL | desktop/main.cjs |
 | redo | app/3dmap/character_editor_3d.js |
-| reduced | app/blood_hunter_engine.js, app/class_features_engine.js, app/martyr_mhp_2024_runtime.js |
+| reduced | app/blood_hunter_engine.js (+ 2 других файлов) |
 | reducedBy | app/expansion_classes_pack.js |
 | reduceMaxHpByDamage | app/expansion_classes_pack.js |
 | reduceNextVisibleAttackBy | app/expansion_classes_pack.js |
-| reduction | app/runekeeper_taron_v12_runtime.js, app/warden_mhp_2024_runtime.js |
+| reduction | app/runekeeper_taron_v12_runtime.js (+ 1 других файлов) |
 | reEnabled | tests/crafting_dlc_v50_test.js |
 | refinedCopper | app/crafting_resources_v34.js |
 | reflectPsychicDamage | app/expansion_classes_pack.js |
-| refresh | app/shifter_laserllama_v2_1_runtime.js, app/update_manager_v2.js |
-| refresh_token | app/cloud_sync.js, tests/cloud_sync_test.cjs |
+| refresh | app/shifter_laserllama_v2_1_runtime.js (+ 1 других файлов) |
+| refresh_token | app/cloud_sync.js (+ 1 других файлов) |
 | refreshByItsAlive | app/expansion_classes_pack.js |
 | refreshMaterial | app/3dmap/character_clothing.js |
 | refreshOrgans | app/walter_parasite_extra_runtime.js |
@@ -10846,15 +10847,15 @@
 | Regeneration | app/alchemy_gameplay_v30.js |
 | regenerationBlockedBy | app/necromancer_mhp_2024_runtime.js |
 | regenPbWhenBloodied | app/blood_hunter_engine.js |
-| region | app/3dmap/character_clothing.js, app/market_economy_v55.js, app/world_resource_gathering_v53.js, tests/test_v55.js |
+| region | app/3dmap/character_clothing.js (+ 3 других файлов) |
 | REGION_MOD | app/market_economy_v55.js |
 | regionalHairSupported | app/3dmap/character_anatomy.js |
 | regionMask | app/3dmap/character_anatomy.js |
 | regionMultiplier | app/market_economy_v55.js |
-| regions | app/3dmap/character_anatomy.js, app/market_economy_v55.js, app/market_expansion_v55_1.js, tests/character_adult_anatomy_test.js (+ 2 ещё) |
-| register | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 9 ещё) |
-| registerActionHandler | tests/test_blood_hunter_focus_network.js, tests/test_v722_fixes.js, tests/test_v723_fixes.js, tests/test_v737_spellcasting_transaction.js (+ 2 ещё) |
-| registerClass | app/content_framework.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js, tests/pugilist_runtime_test.js |
+| regions | app/3dmap/character_anatomy.js (+ 5 других файлов) |
+| register | app/bestiary_catalog_v56_1.js (+ 12 других файлов) |
+| registerActionHandler | tests/test_blood_hunter_focus_network.js (+ 5 других файлов) |
+| registerClass | app/content_framework.js (+ 3 других файлов) |
 | registerEquipment | app/3dmap/character_system.js |
 | registerPreset | app/3dmap/character_system.js |
 | registerRace | app/3dmap/character_system.js |
@@ -10863,7 +10864,7 @@
 | registry | app/content_framework.js |
 | reinforcedWoodV49 | app/crafting_economy_v49.js |
 | reinvokedRune | app/expansion_classes_pack.js |
-| reject | app/icon_settings.js, app/icon_settings_v2.js, app/update_manager_v2.js |
+| reject | app/icon_settings.js (+ 2 других файлов) |
 | rejuvenatingOrder | app/expansion_classes_pack.js |
 | relationship | app/market_social_v55_3.js |
 | relationshipChanged | tests/test_v55_3.js |
@@ -10875,33 +10876,33 @@
 | relentless | app/bestiary_catalog_v56_10.js |
 | relentlessRage | app/class_features_engine.js |
 | reliableTalent | app/class_features_engine.js |
-| relic | app/market_economy_v55.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
-| religion | app/dice.js, app/skills.js |
-| remaining | app/class_features_engine.js, app/companion_gameplay_v27.js, app/data/classes/Beastheart.js, app/expansion_classes_pack.js (+ 7 ещё) |
-| remainingAmount | app/blood_hunter_engine.js, app/class_features_engine.js, app/martyr_mhp_2024_runtime.js, app/network_gameplay.js |
+| relic | app/market_economy_v55.js (+ 2 других файлов) |
+| religion | app/dice.js (+ 1 других файлов) |
+| remaining | app/class_features_engine.js (+ 10 других файлов) |
+| remainingAmount | app/blood_hunter_engine.js (+ 3 других файлов) |
 | remainingCharges | app/alchemist_mhp_2024_runtime.js |
 | remainingHp | app/expansion_classes_pack.js |
-| remainingMinutes | app/alchemist_mhp_2024_runtime.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js |
+| remainingMinutes | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | remainingOwnerTurns | app/alchemist_mhp_2024_runtime.js |
-| remainingTurns | app/alchemist_mhp_2024_runtime.js, tests/alchemist_combat_test.js |
+| remainingTurns | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | remnant | app/swarm_extra_runtime.js |
-| remnants | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_swarm_geometry_test.js, tools/check_dense_swarm_browser.js (+ 1 ещё) |
+| remnants | app/3dmap/character_editor_3d.js (+ 4 других файлов) |
 | remote | app/cloud_sync.js |
 | remoteRoster | app/network_engine.js |
-| remove | app/companions.js, app/expansion_classes_pack.js, app/secondary_entities_engine.js, app/vtt_debug_scenarios_v704.js (+ 4 ещё) |
+| remove | app/companions.js (+ 7 других файлов) |
 | removeAction | app/alchemist_mhp_2024_runtime.js |
 | removeAdvantage | app/warden_mhp_2024_runtime.js |
 | removeAlchemistSlime | app/combat_engine.js |
 | removeClass | app/vtt_debug_character_lab_v702.js |
-| removeCondition | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| removeCondition | app/expanded_classes_v23.js (+ 1 других файлов) |
 | removeConditions | app/blood_hunter_engine.js |
-| removed | app/3dmap/character_anatomy_geometry.js, app/alchemist_mhp_2024_runtime.js, app/crafting_disassembly_repair_v51.js |
+| removed | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
 | removeEventListener | desktop/preload.cjs |
 | removeFeat | app/vtt_debug_character_lab_v702.js |
 | removeFloor | app/3dmap/map_model.js |
 | removeImmunity | app/blood_hunter_engine.js |
 | removeInventory | app/vtt_debug_character_lab_v702.js |
-| removeItem | tests/imported_3d_editor_assets.cjs, tests/map_rebuild_world_test.js, tests/test_v717_fixes.js, tests/test_v754_update_manager.js |
+| removeItem | tests/imported_3d_editor_assets.cjs (+ 3 других файлов) |
 | removeObject | app/3dmap/map_model.js |
 | removePoisonDisease | app/expansion_classes_pack.js |
 | removeRampage | app/data/classes/Beastheart.js |
@@ -10909,26 +10910,26 @@
 | removeResistanceTo | app/expansion_classes_pack.js |
 | removeSpell | app/vtt_debug_character_lab_v702.js |
 | removeZone | app/3dmap/map_model.js |
-| render | app/alchemy_gathering_professions_v52.js, app/companion_gameplay_v27.js, app/companions.js, app/content_catalog.js (+ 7 ещё) |
+| render | app/alchemy_gathering_professions_v52.js (+ 10 других файлов) |
 | renderAppearance | app/3dmap/character_body_geometry.js |
 | renderCharacterCreation | app/crafting_profession_progression_v47.js |
 | renderControls | app/blood_hunter_engine.js |
 | renderFamily | app/3dmap/character_system.js |
-| renderInventory | tests/test_v52.js, tests/test_v53.js |
+| renderInventory | tests/test_v52.js (+ 1 других файлов) |
 | renderStatus | app/crafting_dlc_v50.js |
 | rendingStrike | app/expansion_classes_pack.js |
 | repairCost | tests/crafting_economy_v49_test.js |
 | repairCount | app/crafting_disassembly_repair_v51.js |
-| repaired | app/crafting_disassembly_repair_v51.js, app/crafting_disassembly_v51.js, app/crafting_economy_v49.js, tests/crafting_dlc_v50_test.js |
+| repaired | app/crafting_disassembly_repair_v51.js (+ 3 других файлов) |
 | repairGold | tests/crafting_disassembly_v51_test.js |
-| repairItem | app/crafting_disassembly_repair_v51.js, app/crafting_disassembly_v51.js, app/crafting_economy_v49.js, tests/crafting_dlc_v50_test.js |
+| repairItem | app/crafting_disassembly_repair_v51.js (+ 3 других файлов) |
 | repairProfile | app/crafting_disassembly_v51.js |
 | repeat | app/Ambiences.js |
 | repeatDamageOnFailedSave | app/blood_hunter_engine.js |
 | repeatMissedAttack | app/expansion_classes_pack.js |
 | repeatRestriction | app/expansion_classes_pack.js |
 | repeatRollingBoulderOnSuccessfulProne | app/expansion_classes_pack.js |
-| repeatSave | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| repeatSave | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | repeatSaveAtTurnEnd | app/expansion_classes_pack.js |
 | repeatSaveEndTurn | app/expansion_classes_pack.js |
 | repeatSaveOnDamage | app/expansion_classes_pack.js |
@@ -10942,32 +10943,32 @@
 | replaceExploitOnRest | app/expansion_classes_pack.js |
 | replaceLowSpellSlotWithInspiringWord | app/expansion_classes_pack.js |
 | replaceMetamorphosis | app/expansion_classes_pack.js |
-| replaceMutagen | app/expansion_classes_pack.js, tests/test_blood_hunter_orders.js |
+| replaceMutagen | app/expansion_classes_pack.js (+ 1 других файлов) |
 | replaceOnRest | app/accursed_oap_v11_runtime.js |
 | replacePhysicalSaveWith | app/expansion_classes_pack.js |
-| replacesRace | app/character_builder_v2.js, app/character_creation.js, app/classesRegistry.js, app/data/classes/Ghost.js (+ 7 ещё) |
+| replacesRace | app/character_builder_v2.js (+ 10 других файлов) |
 | replaceStandardOrExoticAfterLongRest | app/expansion_classes_pack.js |
 | replaceWolfWithDireWolf | app/expansion_classes_pack.js |
-| report | app/crafting_disassembly_repair_v51.js, app/vtt_debug_rules_matrix_v707.js |
+| report | app/crafting_disassembly_repair_v51.js (+ 1 других файлов) |
 | reposition | app/expansion_classes_pack.js |
 | reprisal | app/martyr_mhp_2024_runtime.js |
 | reptile | app/expanded_bestiary_v39.js |
 | reptileIndices | app/3dmap/character_body_geometry.js |
-| reptileProfile | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_animal_heads_test.js (+ 2 ещё) |
+| reptileProfile | app/3dmap/character_body_geometry.js (+ 5 других файлов) |
 | reptileSkin | app/3dmap/character_body_geometry.js |
-| req | app/blood_hunter_engine.js, app/data/feats/Feat_widget.js |
+| req | app/blood_hunter_engine.js (+ 1 других файлов) |
 | requestedExternal | app/3dmap/character_anatomy.js |
-| requestId | app/network_gameplay.js, tests/test_blood_hunter_focus_network.js, tests/test_v714_fixes.js, tests/test_v722_fixes.js (+ 4 ещё) |
+| requestId | app/network_gameplay.js (+ 7 других файлов) |
 | require | tools/run_tests_v731.js |
-| required | app/data/classes/Psion.js, app/market_economy_v55.js, app/market_social_v55_3.js, app/monster_engine.js |
+| required | app/data/classes/Psion.js (+ 3 других файлов) |
 | requiredAssets | app/3dmap/map_model.js |
 | requiredGold | app/crafting_disassembly_v51.js |
 | requiredLevel | app/crafting_profession_progression_v47.js |
 | requiredMaterials | app/crafting_disassembly_v51.js |
 | requiredSpecialization | app/crafting_profession_progression_v47.js |
 | requiredTools | app/crafting_professions_v38.js |
-| requirements | app/bestiary_catalog_v56_13.js, app/crafting_profession_progression_v47.js |
-| requires | app/custom_crafting_v32.js, app/data/classes/Beastheart.js, app/data/classes/BloodHunter.js, app/data/classes/Psion.js (+ 1 ещё) |
+| requirements | app/bestiary_catalog_v56_13.js (+ 1 других файлов) |
+| requires | app/custom_crafting_v32.js (+ 4 других файлов) |
 | requiresAdvantage | app/expansion_classes_pack.js |
 | requiresArmor | app/expansion_classes_pack.js |
 | requiresDisengage | app/expansion_classes_pack.js |
@@ -10982,12 +10983,12 @@
 | rerollFlickerCost | app/expansion_classes_pack.js |
 | rerollGrappleEscape | app/expansion_classes_pack.js |
 | rerollHemocraftOncePerTurn | app/expansion_classes_pack.js |
-| rerollOne | app/class_features_engine.js, app/network_gameplay.js, app/occultist_kibbles_v11_runtime.js, tests/test_v739_prepared_transaction.js |
+| rerollOne | app/class_features_engine.js (+ 3 других файлов) |
 | rerollOneDamageDie | app/expansion_classes_pack.js |
-| rerollSave | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| rerollSave | app/expanded_classes_v23.js (+ 1 других файлов) |
 | rerollType | app/expansion_classes_pack.js |
 | reservationRetained | app/combat_engine.js |
-| reserved | app/martyr_mhp_2024_runtime.js, app/runekeeper_taron_v12_runtime.js, app/spellblade_kibbles_runtime.js, app/vessel_laserllama_v4_runtime.js |
+| reserved | app/martyr_mhp_2024_runtime.js (+ 3 других файлов) |
 | reservedDie | app/occultist_kibbles_v11_runtime.js |
 | reset | app/3dmap/character_editor_3d.js |
 | resetDeathSaves | app/combat_engine.js |
@@ -11000,23 +11001,23 @@
 | resignalSeq | app/network_engine.js |
 | resilientOrder | app/expansion_classes_pack.js |
 | resilientOrderAdvanced | app/expansion_classes_pack.js |
-| resin | app/crafting_economy_v49.js, app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js |
-| resistance | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/data/classes/Beastheart.js, app/expanded_classes_v23.js (+ 6 ещё) |
-| resistanceAll | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| resin | app/crafting_economy_v49.js (+ 3 других файлов) |
+| resistance | app/alchemist_mhp_2024_runtime.js (+ 9 других файлов) |
+| resistanceAll | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | resistanceAllDamage | app/expansion_classes_pack.js |
 | resistanceAllExceptPsychic | app/expansion_classes_pack.js |
 | resistanceChosen | app/expansion_classes_pack.js |
-| resistances | app/combat_engine.js, app/companions.js, app/monster_engine.js, app/parasite_extra_runtime.js (+ 9 ещё) |
-| resistanceType | app/alchemist_mhp_2024_runtime.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js |
+| resistances | app/combat_engine.js (+ 12 других файлов) |
+| resistanceType | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | resistanceWhileBloodied | app/expansion_classes_pack.js |
 | resistant | app/vtt_debug_rules_matrix_v707.js |
 | resistantSuppression | app/expansion_classes_pack.js |
 | resisted | app/vtt_debug_dice_lab_v706.js |
 | resize | app/3dmap/map_model.js |
-| resolution | app/vtt_dice_resolution_v65.js, tests/test_v69.js |
-| resolve | app/cloud_sync.js, app/icon_settings.js, app/icon_settings_v2.js, app/update_manager_v2.js (+ 1 ещё) |
+| resolution | app/vtt_dice_resolution_v65.js (+ 1 других файлов) |
+| resolve | app/cloud_sync.js (+ 4 других файлов) |
 | resolveAction | app/monster_engine.js |
-| resolveAttack | app/combat_engine.js, tests/test_v739_prepared_transaction.js |
+| resolveAttack | app/combat_engine.js (+ 1 других файлов) |
 | resolveCharacterRace | app/3dmap/character_system.js |
 | resolveEquipment | app/3dmap/character_system.js |
 | resolveFall | app/3dmap/map_model.js |
@@ -11026,31 +11027,31 @@
 | resolveReaction | app/class_features_engine.js |
 | resolveRollMode | app/rulesEngine.js |
 | resolveSkin | app/3dmap/character_system.js |
-| resource | app/gameplay_core_v57.js, app/occultist_kibbles_v11_runtime.js |
+| resource | app/gameplay_core_v57.js (+ 1 других файлов) |
 | resourceBridge | app/data/classes/Beastheart.js |
 | resourceInput | app/crafting_professions_v38.js |
 | resourceName | app/resource_gathering_v35.js |
 | resourceProcessing | app/resource_processing_v44.js |
 | resourceRevision | app/network_gameplay.js |
-| resources | app/alchemist_mhp_2024_runtime.js, app/class_features_engine.js, app/companion_gameplay_v27.js, app/companion_packs_v26.js (+ 34 ещё) |
+| resources | app/alchemist_mhp_2024_runtime.js (+ 37 других файлов) |
 | RESOURCES | app/crafting_resources_v34.js |
 | resourceUnit | app/resource_processing_v44.js |
 | resourceYieldMultiplier | app/crafting_professions_v38.js |
 | respawn | app/world_resource_gathering_v53.js |
-| rest | app/blood_hunter_engine.js, app/data/classes/Beastheart.js, app/expansion_classes_pack.js, app/martyr_mhp_2024_runtime.js (+ 7 ещё) |
+| rest | app/blood_hunter_engine.js (+ 10 других файлов) |
 | restAndRecover | app/expansion_classes_pack.js |
-| restHealing | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js |
+| restHealing | app/ghost_extra_runtime.js (+ 1 других файлов) |
 | restNormals | app/3dmap/character_body_geometry.js |
-| restock | app/market_economy_v55.js, tests/test_v55.js |
-| restore | app/class_features_engine.js, app/cloud_sync.js, app/vtt_encounter_checkpoint_v68.js, app/vtt_mobile_session_v67.js (+ 1 ещё) |
+| restock | app/market_economy_v55.js (+ 1 других файлов) |
+| restore | app/class_features_engine.js (+ 4 других файлов) |
 | restoreBloodMaledictOnRiteCrit | app/blood_hunter_engine.js |
 | restoreBody | app/parasite_extra_runtime.js |
-| restored | app/alchemist_mhp_2024_runtime.js, app/class_features_engine.js, app/necromancer_mhp_2024_runtime.js |
+| restored | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | restoredAt | app/vtt_mobile_session_v67.js |
 | restoreExhaustion | app/expanded_classes_v23.js |
 | restoreExploitPerAlly | app/expansion_classes_pack.js |
 | restoreGolem | tests/alchemist_runtime_test.js |
-| restoreHitDice | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| restoreHitDice | app/expanded_classes_v23.js (+ 1 других файлов) |
 | restoreHp | app/data/classes/Beastheart.js |
 | restoreHP | app/expansion_classes_pack.js |
 | restoreInterruptOnInitiative | app/expansion_classes_pack.js |
@@ -11063,20 +11064,20 @@
 | restoreReagents | app/expansion_classes_pack.js |
 | restoreResource | app/expanded_classes_v23.js |
 | restoreResources | app/rulesEngine.js |
-| restoreSnapshot | app/vtt_encounter_map_v59.js, tests/test_v717_fixes.js |
+| restoreSnapshot | app/vtt_encounter_map_v59.js (+ 1 других файлов) |
 | restoreSpellLevels | app/necromancer_mhp_2024_runtime.js |
 | restoreThrall | app/expansion_classes_pack.js |
 | restoreWithReagents | tests/alchemist_runtime_test.js |
 | restPositions | app/3dmap/character_body_geometry.js |
 | restrainAt0Hp | app/expansion_classes_pack.js |
-| restrained | app/expansion_classes_pack.js, app/warden_mhp_2024_runtime.js |
+| restrained | app/expansion_classes_pack.js (+ 1 других файлов) |
 | restrainedUntilEndOfNextTurn | app/expansion_classes_pack.js |
-| result | app/class_features_engine.js, app/combat_engine.js, app/companion_gameplay_v27.js, app/monster_engine.js (+ 34 ещё) |
+| result | app/class_features_engine.js (+ 37 других файлов) |
 | resultCp | app/inventory-coins.js |
 | resultEp | app/inventory-coins.js |
 | resultGp | app/inventory-coins.js |
 | resultPp | app/inventory-coins.js |
-| results | app/class_features_engine.js, app/combat_engine.js, app/monster_engine.js, app/network_gameplay.js (+ 1 ещё) |
+| results | app/class_features_engine.js (+ 4 других файлов) |
 | resultSp | app/inventory-coins.js |
 | retain | app/shifter_laserllama_v2_1_runtime.js |
 | retainMentalStats | app/expansion_classes_pack.js |
@@ -11084,21 +11085,21 @@
 | retaliationHealing | app/expansion_classes_pack.js |
 | retaliatoryDamage | app/expansion_classes_pack.js |
 | retaliatoryNecrotic | app/expansion_classes_pack.js |
-| retryIn | app/world_resource_gathering_v53.js, tests/test_v53.js |
+| retryIn | app/world_resource_gathering_v53.js (+ 1 других файлов) |
 | returnAfterHour | app/necromancer_mhp_2024_runtime.js |
-| returnAttackBonus | app/network_gameplay.js, tests/test_v727_fixes.js |
-| returnDamage | app/expansion_classes_pack.js, app/martyr_mhp_2024_runtime.js, app/network_gameplay.js, tests/test_v727_fixes.js |
+| returnAttackBonus | app/network_gameplay.js (+ 1 других файлов) |
+| returnDamage | app/expansion_classes_pack.js (+ 3 других файлов) |
 | returnDamageType | app/network_gameplay.js |
 | returnedAttack | app/class_features_engine.js |
-| returnTarget | app/combat_engine.js, app/network_gameplay.js, tests/test_class_audit_stage3_runtime.js, tests/test_v727_fixes.js |
+| returnTarget | app/combat_engine.js (+ 3 других файлов) |
 | returnToShell | app/ghost_extra_runtime.js |
 | reveal | app/alchemy_engine_v29.js |
-| revealed | app/3dmap/map_world.js, app/blood_hunter_engine.js |
+| revealed | app/3dmap/map_world.js (+ 1 других файлов) |
 | revealedArcana | app/blood_hunter_engine.js |
 | revealsInvisible | app/alchemist_mhp_2024_runtime.js |
 | reverseMappedGlbVertices | tests/makehuman_target_reverse_transfer_audit.js |
-| revert | app/expansion_classes_pack.js, app/shifter_laserllama_v2_1_runtime.js |
-| revision | app/cloud_sync.js, app/network_gameplay.js, tests/cloud_sync_test.cjs |
+| revert | app/expansion_classes_pack.js (+ 1 других файлов) |
+| revision | app/cloud_sync.js (+ 2 других файлов) |
 | revitalizingOrderExploit | app/expansion_classes_pack.js |
 | reviveAtDawn | app/expansion_classes_pack.js |
 | reviveAtZero | app/expanded_classes_v23.js |
@@ -11114,98 +11115,98 @@
 | rewards | app/crafting_profession_progression_v47.js |
 | rider | app/walter_parasite_extra_runtime.js |
 | RIDGE_STYLES | app/3dmap/character_system.js |
-| ridgeColor | app/3dmap/character_system.js, tools/check_tiefling_browser.js |
+| ridgeColor | app/3dmap/character_system.js (+ 1 других файлов) |
 | ridgeStyle | app/3dmap/character_editor_3d.js |
 | right | tests/makehuman_morph_bridge.js |
 | ringingStrike | app/expansion_classes_pack.js |
 | riposte | app/expansion_classes_pack.js |
 | risk | app/alchemy_gameplay_v30.js |
-| rite | app/expansion_classes_pack.js, app/occultist_kibbles_v11_runtime.js, tests/test_class_audit_runtime.js |
+| rite | app/expansion_classes_pack.js (+ 2 других файлов) |
 | riteFocus | app/blood_hunter_engine.js |
 | riteOfTheDawn | app/blood_hunter_engine.js |
 | riteRevival | app/blood_hunter_engine.js |
-| rites | app/data/classes/Occultist.js, app/occultist_kibbles_v11_runtime.js, tests/test_blood_hunter_completion.js, tests/test_blood_hunter_focus_network.js (+ 5 ещё) |
+| rites | app/data/classes/Occultist.js (+ 8 других файлов) |
 | riteSwapAtLevel | app/expansion_classes_pack.js |
-| riteType | app/blood_hunter_engine.js, tests/test_blood_hunter_completion.js, tests/test_blood_hunter_focus_network.js, tests/test_blood_hunter_patron_selection.js (+ 4 ещё) |
-| ritual | app/data/spells/Spells1lvl.js, app/data/spells/Spells2lvl.js, app/data/spells/Spells7lvl.js, app/occultist_kibbles_v11_runtime.js |
-| ritualCasting | app/data/classes/Occultist.js, app/expansion_classes_pack.js |
+| riteType | app/blood_hunter_engine.js (+ 7 других файлов) |
+| ritual | app/data/spells/Spells1lvl.js (+ 3 других файлов) |
+| ritualCasting | app/data/classes/Occultist.js (+ 1 других файлов) |
 | ritualComponentReplaced | app/occultist_kibbles_v11_runtime.js |
 | ritualDuringShortRest | app/expansion_classes_pack.js |
 | ritualizeKnownSpellsUpTo | app/occultist_kibbles_v11_runtime.js |
 | ritualMastery | app/expansion_classes_pack.js |
 | ritualMaterialSubstitution | app/expansion_classes_pack.js |
-| ritualMinutes | app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js |
+| ritualMinutes | app/expansion_classes_pack.js (+ 1 других файлов) |
 | ritualSpellLevelMax | app/occultist_kibbles_v11_runtime.js |
 | ritualTurnsBySpellLevel | app/occultist_kibbles_v11_runtime.js |
 | rmsDisplacementMeters | tests/makehuman_gender_fixture_audit.js |
-| roar | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| roar | app/blood_hunter_engine.js (+ 1 других файлов) |
 | roguishCharm | app/expansion_classes_pack.js |
-| role | app/3dmap/character_anatomy.js, app/3dmap/character_editor_3d.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js (+ 28 ещё) |
-| roles | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 15 ещё) |
-| roll | app/3dmap/map_world.js, app/alchemist_mhp_2024_runtime.js, app/class_features_engine.js, app/combat_engine.js (+ 20 ещё) |
-| rollback | app/vtt_debug_scenario_editor_v705.js, app/vtt_debug_scenarios_v704.js |
-| rollD20 | app/rulesEngine.js, tests/alchemist_combat_test.js, tests/test_v709_fixes.js, tests/test_v715_fixes.js (+ 17 ещё) |
-| rollDice | app/combat_engine.js, tests/alchemist_runtime_test.js, tests/test_v737_spellcasting_transaction.js, tests/test_v738_multiclass_spell_sources.js (+ 1 ещё) |
+| role | app/3dmap/character_anatomy.js (+ 31 других файлов) |
+| roles | app/bestiary_catalog_v56_1.js (+ 18 других файлов) |
+| roll | app/3dmap/map_world.js (+ 23 других файлов) |
+| rollback | app/vtt_debug_scenario_editor_v705.js (+ 1 других файлов) |
+| rollD20 | app/rulesEngine.js (+ 20 других файлов) |
+| rollDice | app/combat_engine.js (+ 4 других файлов) |
 | rollingAvalanche | app/expansion_classes_pack.js |
 | rollingBoulder | app/expansion_classes_pack.js |
-| rollPockets | app/monster_loot_engine_v36.js, app/monster_loot_engine_v37.js |
+| rollPockets | app/monster_loot_engine_v36.js (+ 1 других файлов) |
 | rollResolved | app/spellblade_kibbles_runtime.js |
 | rollResult | app/warlord_laserllama_v330_runtime.js |
-| rolls | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 21 ещё) |
+| rolls | app/bestiary_catalog_v56_1.js (+ 24 других файлов) |
 | rollTwiceChoose | app/expansion_classes_pack.js |
-| roomId | app/network_engine.js, app/vtt_mobile_session_v67.js, tests/test_v744_sync_authority_save.js, tests/test_v745_host_handoff.js (+ 2 ещё) |
-| rope | app/crafting_profession_progression_v47.js, app/market_economy_v55.js |
-| roster | tests/cloud_sync_test.cjs, tests/test_blood_hunter_focus_network.js, tests/test_v742_character_combatant_sync.js |
+| roomId | app/network_engine.js (+ 5 других файлов) |
+| rope | app/crafting_profession_progression_v47.js (+ 1 других файлов) |
+| roster | tests/cloud_sync_test.cjs (+ 2 других файлов) |
 | rotation | app/3dmap/stress_map.js |
 | rotFist | app/expansion_classes_pack.js |
-| roughness | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, tests/character_clothing_options_test.js, tools/check_character_clothing_customizer.js |
-| round | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/alchemist_mhp_2024_runtime.js, app/app.js (+ 29 ещё) |
-| roundEarSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js |
-| roundsRemaining | app/expansion_classes_pack.js, tests/pugilist_combat_test.js |
-| rows | app/alchemist_mhp_2024_runtime.js, app/vtt_encounter_map_v59.js, tests/test_class_audit_runtime.js, tests/test_class_audit_stage2_runtime.js (+ 1 ещё) |
+| roughness | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
+| round | app/3dmap/character_editor_3d.js (+ 32 других файлов) |
+| roundEarSize | app/3dmap/character_system.js (+ 1 других файлов) |
+| roundsRemaining | app/expansion_classes_pack.js (+ 1 других файлов) |
+| rows | app/alchemist_mhp_2024_runtime.js (+ 4 других файлов) |
 | RTCPeerConnection | tests/test_v745_host_handoff.js |
-| ru | app/data/feats/Feat_widget.js, app/kibbles_localization_content_v71.js |
+| ru | app/data/feats/Feat_widget.js (+ 1 других файлов) |
 | rug | app/3dmap/gltf_catalog.js |
-| ruined | app/crafting_disassembly_repair_v51.js, app/crafting_disassembly_v51.js |
+| ruined | app/crafting_disassembly_repair_v51.js (+ 1 других файлов) |
 | ruins | app/market_economy_v55.js |
 | ruins_courtyard | app/world_resource_gathering_v53.js |
 | ruins_vault | app/world_resource_gathering_v53.js |
 | ruins_workshop | app/world_resource_gathering_v53.js |
-| rules | app/swarm_extra_runtime.js, app/vtt_combat_log_v66.js |
-| run | app/vtt_debug_scenario_editor_v705.js, app/vtt_debug_scenarios_v704.js |
-| rune | app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js, tests/test_class_audit_stage3_runtime.js |
+| rules | app/swarm_extra_runtime.js (+ 1 других файлов) |
+| run | app/vtt_debug_scenario_editor_v705.js (+ 1 других файлов) |
+| rune | app/expansion_classes_pack.js (+ 2 других файлов) |
 | runeDoesNotCountAgainstAttunement | app/expansion_classes_pack.js |
 | runeInert | app/expansion_classes_pack.js |
-| runesKnown | app/class_features_engine.js, app/runekeeper_taron_v12_runtime.js |
+| runesKnown | app/class_features_engine.js (+ 1 других файлов) |
 | runesPerObject | app/expansion_classes_pack.js |
 | runesPersistAfterDeath | app/expansion_classes_pack.js |
 | runicCharges | app/runekeeper_taron_v12_runtime.js |
 | runicLore | app/runekeeper_taron_v12_runtime.js |
 | runSceneTest | app/update_manager_v2.js |
 | runScripts | tests/map_editor_dom_test.js |
-| runtime | app/data/classes/Occultist.js, app/vtt_combat_log_v66.js, app/vtt_debug_panel_v70.js, tests/makehuman_gender_fixture_audit.js |
+| runtime | app/data/classes/Occultist.js (+ 3 других файлов) |
 | runtimeCraft | app/expansion_classes_pack.js |
 | runtimeId | app/occultist_kibbles_v11_runtime.js |
 | runtimeKey | app/data/subclasses/subclassesRegistry.js |
-| runtimeStatus | app/data/classes/Occultist.js, app/data/classes/Psion.js |
+| runtimeStatus | app/data/classes/Occultist.js (+ 1 других файлов) |
 | runtimeVersion | app/data/classes/Alchemist.js |
 | ruthlessCommand | app/expansion_classes_pack.js |
 | ruthlessFocus | app/expansion_classes_pack.js |
-| rx | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, tools/check_fur_browser.js, tools/check_native_limbs_browser.js (+ 1 ещё) |
+| rx | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
 | ry | app/3dmap/character_body_geometry.js |
-| rz | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js |
-| s | app/3dmap/map_editor.js, app/3dmap/map_renderer_2d.js, app/3dmap/map_world.js, tests/makehuman_vertex_mapping_audit.js |
+| rz | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| s | app/3dmap/map_editor.js (+ 3 других файлов) |
 | sacredWeapon | app/class_features_engine.js |
-| sacrifice | app/martyr_mhp_2024_runtime.js, app/occultist_kibbles_v11_runtime.js |
+| sacrifice | app/martyr_mhp_2024_runtime.js (+ 1 других файлов) |
 | sacrificeFoe | app/martyr_mhp_2024_runtime.js |
 | saddler | app/crafting_profession_progression_v47.js |
 | safeAlliesMax | app/expansion_classes_pack.js |
 | sagacity | app/blood_hunter_engine.js |
 | Sagacity | app/expansion_classes_pack.js |
-| salt | app/crafting_professions_v33.js, app/crafting_professions_v38.js, app/crafting_resources_v34.js, app/monster_loot_crafting_bridge_v40.js |
+| salt | app/crafting_professions_v33.js (+ 3 других файлов) |
 | saltOfEarth | app/expansion_classes_pack.js |
-| salvage | app/resource_gathering_v35.js, app/world_resource_gathering_v53.js |
-| sample | tests/test_v56_2.js, tools/check_external_anatomy_browser.js, tools/check_pose_browser.js, tools/check_skin_material_browser.js |
+| salvage | app/resource_gathering_v35.js (+ 1 других файлов) |
+| sample | tests/test_v56_2.js (+ 3 других файлов) |
 | sampledBestMaxDistance | tests/makehuman_vertex_mapping_audit.js |
 | sampledBestMeanDistance | tests/makehuman_vertex_mapping_audit.js |
 | sampledGoodPct | tests/makehuman_vertex_mapping_audit.js |
@@ -11220,70 +11221,70 @@
 | satyr | tools/check_quartet_races_browser.js |
 | savage_attacker | app/feat_engine.js |
 | savageDice | app/expansion_classes_pack.js |
-| save | app/3dmap/character_appearance_store.js, app/3dmap/character_editor_3d.js, app/3dmap/map_model.js, app/alchemist_mhp_2024_runtime.js (+ 22 ещё) |
+| save | app/3dmap/character_appearance_store.js (+ 25 других файлов) |
 | save1 | app/necromancer_mhp_2024_runtime.js |
 | save1or2 | app/necromancer_mhp_2024_runtime.js |
 | saveAbility | app/data/classes/Alchemist.js |
-| saveBonus | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| saveBonus | app/blood_hunter_engine.js (+ 1 других файлов) |
 | saveBonuses | tests/alchemist_combat_test.js |
 | saveBottom | tools/check_character_editor_browser.js |
 | saveCustom | app/vtt_debug_scenarios_v704.js |
-| saved | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js |
-| savedAt | app/vtt_encounter_checkpoint_v68.js, app/vtt_mobile_session_v67.js, tests/test_v746_authoritative_save_recharge.js |
+| saved | app/ghost_extra_runtime.js (+ 1 других файлов) |
+| savedAt | app/vtt_encounter_checkpoint_v68.js (+ 2 других файлов) |
 | saveDc | app/network_gameplay.js |
-| saveDC | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/expansion_classes_pack.js, app/shifter_laserllama_v2_1_runtime.js (+ 2 ещё) |
+| saveDC | app/alchemist_mhp_2024_runtime.js (+ 5 других файлов) |
 | savedDrawCalls | app/3dmap/character_editor_3d.js |
-| saveDisadvantage | app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js |
+| saveDisadvantage | app/expansion_classes_pack.js (+ 1 других файлов) |
 | saveDisadvantageForPugilistFeatures | app/expansion_classes_pack.js |
 | saveEpoch | app/vtt_mobile_session_v67.js |
 | saveId | app/vtt_mobile_session_v67.js |
-| saveModifiers | app/blood_hunter_engine.js, app/class_features_engine.js, app/expansion_classes_pack.js, app/feat_engine.js (+ 5 ещё) |
+| saveModifiers | app/blood_hunter_engine.js (+ 8 других файлов) |
 | saveOnHit | app/alchemist_mhp_2024_runtime.js |
 | savePenalty | app/alchemist_mhp_2024_runtime.js |
-| saveResult | app/alchemist_mhp_2024_runtime.js, app/combat_engine.js, app/warden_mhp_2024_runtime.js, app/warlord_laserllama_v330_runtime.js (+ 4 ещё) |
+| saveResult | app/alchemist_mhp_2024_runtime.js (+ 7 других файлов) |
 | saveRevision | app/vtt_mobile_session_v67.js |
 | saveRoll | app/network_gameplay.js |
 | saves | app/expansion_classes_pack.js |
-| savesData | app/Backgrounds.js, app/character_creation.js |
+| savesData | app/Backgrounds.js (+ 1 других файлов) |
 | saveSheet | app/companions.js |
 | saveSucceeds | app/expansion_classes_pack.js |
 | saveSuccess | app/alchemist_mhp_2024_runtime.js |
-| saveType | app/combat_engine.js, app/expansion_classes_pack.js, app/network_gameplay.js, app/occultist_kibbles_v11_runtime.js (+ 4 ещё) |
-| savingThrow | app/combat_engine.js, app/data/spells/Focuses.js, app/data/spells/Spells1lvl.js, app/data/spells/Spells2lvl.js (+ 17 ещё) |
+| saveType | app/combat_engine.js (+ 7 других файлов) |
+| savingThrow | app/combat_engine.js (+ 20 других файлов) |
 | savingThrowBonusDice | app/expansion_classes_pack.js |
 | savingThrowProficiencies | tests/pugilist_combat_test.js |
-| savingThrows | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/classesRegistry.js, app/companions.js (+ 29 ещё) |
-| SCALAR | app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js, tests/character_3d_morph_assets_test.js, tests/makehuman_gender_fixture_audit.js (+ 1 ещё) |
-| scale | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_system.js, app/3dmap/gltf_catalog.js (+ 17 ещё) |
+| savingThrows | app/accursed_oap_v11_runtime.js (+ 32 других файлов) |
+| SCALAR | app/3dmap/gltf_character_pipeline.js (+ 4 других файлов) |
+| scale | app/3dmap/character_body_geometry.js (+ 20 других файлов) |
 | scalePlateV49 | app/crafting_economy_v49.js |
 | scalesPerLevel | app/expansion_classes_pack.js |
-| scaleWithOwner | app/companions.js, app/expansion_classes_pack.js |
+| scaleWithOwner | app/companions.js (+ 1 других файлов) |
 | scarf | app/3dmap/character_clothing.js |
-| scenarios | app/vtt_debug_scenario_editor_v705.js, app/vtt_debug_scenarios_v704.js |
-| scene | tests/character_3d_skin_morph_test.js, tests/gltf_loader_smoke.cjs, tests/makehuman_gender_recipe_test.js |
-| scenes | tests/character_3d_skin_morph_test.js, tests/gltf_loader_smoke.cjs, tests/makehuman_gender_recipe_test.js |
+| scenarios | app/vtt_debug_scenario_editor_v705.js (+ 1 других файлов) |
+| scene | tests/character_3d_skin_morph_test.js (+ 2 других файлов) |
+| scenes | tests/character_3d_skin_morph_test.js (+ 2 других файлов) |
 | schema | tools/build_character_editor_morphs.js |
 | schema_version | tests/cloud_sync_test.cjs |
-| SCHEMA_VERSION | app/campaign_manager.js, app/vtt_encounter_checkpoint_v68.js, app/vtt_mobile_session_v67.js |
-| schemaVersion | app/3dmap/character_system.js, app/3dmap/map_model.js, app/campaign_manager.js, app/vtt_encounter_checkpoint_v68.js (+ 3 ещё) |
+| SCHEMA_VERSION | app/campaign_manager.js (+ 2 других файлов) |
+| schemaVersion | app/3dmap/character_system.js (+ 6 других файлов) |
 | scheme | desktop/main.cjs |
 | scholarlyPursuits | app/savant_laserllama_v561_runtime.js |
-| school | app/data/spells/Focuses.js, app/data/spells/Spells1lvl.js, app/data/spells/Spells2lvl.js, app/data/spells/Spells3lvl.js (+ 7 ещё) |
+| school | app/data/spells/Focuses.js (+ 10 других файлов) |
 | schoolOfHardKnocks | app/expansion_classes_pack.js |
 | scope | app/expansion_classes_pack.js |
 | scopeId | app/cloud_sync.js |
 | scopes | app/cloud_sync.js |
-| score | app/crafting_disassembly_repair_v51.js, app/crafting_disassembly_v51.js |
+| score | app/crafting_disassembly_repair_v51.js (+ 1 других файлов) |
 | scourgeAttunement | app/expansion_classes_pack.js |
 | scourgePresence | app/expansion_classes_pack.js |
 | scourgeSense | app/expansion_classes_pack.js |
 | scourgeSpeech | app/expansion_classes_pack.js |
 | scourgeVisage | app/expansion_classes_pack.js |
-| scribe | app/crafting_engine_v31.js, app/crafting_profession_progression_v47.js, app/crafting_professions_v33.js, app/market_social_v55_3.js (+ 1 ещё) |
-| scrolls | app/crafting_profession_progression_v47.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| scribe | app/crafting_engine_v31.js (+ 4 других файлов) |
+| scrolls | app/crafting_profession_progression_v47.js (+ 2 других файлов) |
 | seafarer | app/expansion_classes_pack.js |
 | seal | app/expansion_classes_pack.js |
-| sealDamage | app/data/classes/Illigger.js, app/expansion_classes_pack.js |
+| sealDamage | app/data/classes/Illigger.js (+ 1 других файлов) |
 | sealDamageIgnoresResistance | app/expansion_classes_pack.js |
 | sealDiceDoubled | app/expansion_classes_pack.js |
 | sealedSpiritFeatureLevels | app/vessel_laserllama_v4_runtime.js |
@@ -11297,9 +11298,9 @@
 | second | app/rulesEngine.js |
 | second_chance | app/feat_engine.js |
 | secondaryAbility | app/data/classes/Beastheart.js |
-| secondaryStat | app/data/classes/Alchemist.js, app/data/classes/Pugilist.js, app/data/classes/Warden.js, app/vessel_laserllama_v4_runtime.js |
-| secondaryStatChoice | app/data/classes/Illigger.js, app/data/classes/Martyr.js, app/martyr_mhp_2024_runtime.js |
-| secondaryStats | app/data/classes/Shifter.js, app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/shifter_laserllama_v2_1_runtime.js (+ 2 ещё) |
+| secondaryStat | app/data/classes/Alchemist.js (+ 3 других файлов) |
+| secondaryStatChoice | app/data/classes/Illigger.js (+ 2 других файлов) |
+| secondaryStats | app/data/classes/Shifter.js (+ 5 других файлов) |
 | secondTarget | app/expansion_classes_pack.js |
 | secondWind | app/class_features_engine.js |
 | secret | app/3dmap/map_world.js |
@@ -11309,7 +11310,7 @@
 | seeking | app/alchemist_mhp_2024_runtime.js |
 | seekingBomb | app/expansion_classes_pack.js |
 | select | app/vtt_debug_scenarios_v704.js |
-| selected | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/vessel_laserllama_v4_runtime.js, app/vtt_debug_scenario_editor_v705.js (+ 1 ещё) |
+| selected | app/accursed_oap_v11_runtime.js (+ 4 других файлов) |
 | selectedFile | app/vtt_debug_panel_v70.js |
 | selectedRites | app/occultist_kibbles_v11_runtime.js |
 | selectedTexture | app/3dmap/map_model.js |
@@ -11318,7 +11319,7 @@
 | selectedWallTexture | app/3dmap/map_model.js |
 | selection | app/accursed_oap_v11_runtime.js |
 | selfAdvantage | app/rulesEngine.js |
-| selfDamage | app/class_features_engine.js, app/expansion_classes_pack.js, app/martyr_mhp_2024_runtime.js, app/occultist_kibbles_v11_runtime.js |
+| selfDamage | app/class_features_engine.js (+ 3 других файлов) |
 | selfDamageType | app/expansion_classes_pack.js |
 | selfDisadvantage | app/rulesEngine.js |
 | selfFireDamageUpToLevel | app/expansion_classes_pack.js |
@@ -11327,44 +11328,44 @@
 | selfRadiantDamage | app/expansion_classes_pack.js |
 | selfSuture | app/necromancer_mhp_2024_runtime.js |
 | selfUsesHitDie | app/expansion_classes_pack.js |
-| sell | app/market_economy_v55.js, app/market_social_v55_3.js, tests/test_v55.js |
+| sell | app/market_economy_v55.js (+ 2 других файлов) |
 | sellable | app/market_trade_v55_2.js |
-| sellFactor | app/market_economy_v55.js, app/market_expansion_v55_1.js |
-| sendActionResult | tests/test_blood_hunter_focus_network.js, tests/test_v722_fixes.js, tests/test_v723_fixes.js, tests/test_v737_spellcasting_transaction.js (+ 2 ещё) |
+| sellFactor | app/market_economy_v55.js (+ 1 других файлов) |
+| sendActionResult | tests/test_blood_hunter_focus_network.js (+ 5 других файлов) |
 | sendMessage | tests/test_v714_fixes.js |
-| sendReactionRequest | tests/test_blood_hunter_focus_network.js, tests/test_v722_fixes.js, tests/test_v723_fixes.js |
+| sendReactionRequest | tests/test_blood_hunter_focus_network.js (+ 2 других файлов) |
 | senseBloodCreatures | app/expansion_classes_pack.js |
-| senses | app/companions.js, app/expansion_classes_pack.js, app/parasite_extra_runtime.js, app/vessel_laserllama_v4_runtime.js (+ 1 ещё) |
+| senses | app/companions.js (+ 4 других файлов) |
 | sentinel | app/feat_engine.js |
-| sentinelSoul | app/data/classes/Warden.js, app/warden_mhp_2024_runtime.js |
+| sentinelSoul | app/data/classes/Warden.js (+ 1 других файлов) |
 | sentinelSoulChoices | app/data/classes/Warden.js |
-| sentinelStand | app/data/classes/Warden.js, app/warden_mhp_2024_runtime.js |
+| sentinelStand | app/data/classes/Warden.js (+ 1 других файлов) |
 | sentinelStandChoices | app/data/classes/Warden.js |
-| sentinelStrike | app/data/classes/Warden.js, app/warden_mhp_2024_runtime.js |
+| sentinelStrike | app/data/classes/Warden.js (+ 1 других файлов) |
 | sentinelStrikeChoices | app/data/classes/Warden.js |
-| seq | tests/test_v722_fixes.js, tests/test_v723_fixes.js, tests/test_v737_spellcasting_transaction.js, tests/test_v738_multiclass_spell_sources.js (+ 3 ещё) |
+| seq | tests/test_v722_fixes.js (+ 6 других файлов) |
 | serial | app/blood_hunter_engine.js |
 | serialize | app/3dmap/character_system.js |
-| session | app/vtt_gameplay_ux_v58.js, tests/test_v744_sync_authority_save.js, tests/test_v747_event_race_compaction.js |
-| sessionId | app/vtt_gameplay_ux_v58.js, tests/test_v58.js |
-| sessions | tests/test_v58.js, tests/test_v717_fixes.js |
+| session | app/vtt_gameplay_ux_v58.js (+ 2 других файлов) |
+| sessionId | app/vtt_gameplay_ux_v58.js (+ 1 других файлов) |
+| sessions | tests/test_v58.js (+ 1 других файлов) |
 | setArmor | app/3dmap/character_editor_3d.js |
-| setAttribute | tests/test_v52.js, tests/test_v53.js |
+| setAttribute | tests/test_v52.js (+ 1 других файлов) |
 | setAxis | app/3dmap/character_editor_3d.js |
 | setBackground | app/vtt_debug_character_lab_v702.js |
 | setBodyHair | app/3dmap/character_editor_3d.js |
 | setClassLevel | app/vtt_debug_character_lab_v702.js |
 | setClothing | app/3dmap/character_editor_3d.js |
 | setClothingCustomization | app/3dmap/character_editor_3d.js |
-| setEnabled | app/content_framework.js, app/crafting_dlc_v50.js |
+| setEnabled | app/content_framework.js (+ 1 других файлов) |
 | setExternalAnatomy | app/3dmap/character_editor_3d.js |
-| setGender | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js |
+| setGender | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | setHead | app/3dmap/character_editor_3d.js |
 | setHosieryDen | app/3dmap/character_editor_3d.js |
 | setHp | app/expansion_classes_pack.js |
 | setHP | app/expansion_classes_pack.js |
 | setIcon | desktop/preload.cjs |
-| setItem | tests/character_3d_editor_test.js, tests/character_appearance_store_test.js, tests/imported_3d_editor_assets.cjs, tests/map_rebuild_world_test.js (+ 16 ещё) |
+| setItem | tests/character_3d_editor_test.js (+ 19 других файлов) |
 | setMainMenuAvailability | app/update_manager_v2.js |
 | setMessageHandler | tests/test_v714_fixes.js |
 | setOriginRace | app/3dmap/character_system.js |
@@ -11372,7 +11373,7 @@
 | setProfession | app/vtt_debug_character_lab_v702.js |
 | setProgress | app/update_scene_v2.js |
 | setProgressHandler | app/update_manager_v2.js |
-| setRace | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/vtt_debug_character_lab_v702.js |
+| setRace | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
 | setRegion | app/market_economy_v55.js |
 | setResource | app/rulesEngine.js |
 | setSkin | app/3dmap/character_editor_3d.js |
@@ -11382,7 +11383,7 @@
 | setSwarmMoving | app/3dmap/character_editor_3d.js |
 | setSymbiosis | app/parasite_extra_runtime.js |
 | setTile | app/3dmap/map_model.js |
-| setTimeout | app/crafting_character_influence_test_v46.js, app/crafting_profession_progression_test_v47.js, tests/cloud_sync_test.cjs, tests/pugilist_combat_test.js (+ 12 ещё) |
+| setTimeout | app/crafting_character_influence_test_v46.js (+ 15 других файлов) |
 | settlementIntel | app/expansion_classes_pack.js |
 | settlementOnly | app/expansion_classes_pack.js |
 | setTotalLevel | app/vtt_debug_character_lab_v702.js |
@@ -11390,10 +11391,10 @@
 | setWeapon | app/3dmap/character_editor_3d.js |
 | sewer | app/3dmap/character_editor_3d.js |
 | sha | tools/build_character_editor_morphs.js |
-| sha256 | app/update_manager_v2.js, tests/desktop_update_contract.cjs, tests/test_v754_update_manager.js |
+| sha256 | app/update_manager_v2.js (+ 2 других файлов) |
 | shadow_dancer | app/feat_engine.js |
 | shadow_touched | app/feat_engine.js |
-| shadowColor | app/3dmap/character_system.js, tools/check_character_head_browser.js |
+| shadowColor | app/3dmap/character_system.js (+ 1 других файлов) |
 | shadowEssence | app/resource_processing_v44.js |
 | shadowForm | app/necromancer_mhp_2024_runtime.js |
 | shadowmaster | app/expansion_classes_pack.js |
@@ -11401,136 +11402,136 @@
 | shadowNoEscape | app/expansion_classes_pack.js |
 | shadowOpacity | tools/check_character_head_browser.js |
 | shadowStep | app/class_features_engine.js |
-| shag | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
-| shakeItOff | app/data/classes/Pugilist.js, app/expansion_classes_pack.js |
+| shag | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| shakeItOff | app/data/classes/Pugilist.js (+ 1 других файлов) |
 | Shaman | app/data/classes/Occultist.js |
-| shape | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/data/classes/Beastheart.js, app/shifter_laserllama_v2_1_runtime.js (+ 5 ещё) |
+| shape | app/3dmap/character_body_geometry.js (+ 8 других файлов) |
 | shapechange | app/expansion_classes_pack.js |
 | shapeChangeSave | app/expansion_classes_pack.js |
 | shapeFemale | tests/character_external_anatomy_test.js |
 | shapeHead | app/3dmap/character_body_geometry.js |
-| shapeMale | tests/character_external_anatomy_test.js, tools/check_male_anatomy_browser.js |
-| shaper | app/data/classes/Psion.js, app/expansion_classes_pack.js |
+| shapeMale | tests/character_external_anatomy_test.js (+ 1 других файлов) |
+| shaper | app/data/classes/Psion.js (+ 1 других файлов) |
 | Shaper | app/kibbles_localization_content_v71.js |
-| shapes | app/3dmap/character_anatomy.js, app/shifter_laserllama_v2_1_runtime.js |
+| shapes | app/3dmap/character_anatomy.js (+ 1 других файлов) |
 | sharedAdvantage | app/expansion_classes_pack.js |
 | shareDanceBonus | app/necromancer_mhp_2024_runtime.js |
-| sharedBonusAction | app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js |
+| sharedBonusAction | app/expansion_classes_pack.js (+ 1 других файлов) |
 | sharedHp | app/expansion_classes_pack.js |
 | sharedImmortality | app/expansion_classes_pack.js |
 | sharedInitiative | app/swarm_extra_runtime.js |
-| sharedProperties | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js |
-| sharedReaction | app/expanded_classes_v23.js, app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js |
+| sharedProperties | app/alchemy_engine_v29.js (+ 1 других файлов) |
+| sharedReaction | app/expanded_classes_v23.js (+ 2 других файлов) |
 | sharedStealth | app/data/classes/Beastheart.js |
 | shareSaves | app/occultist_kibbles_v11_runtime.js |
 | shareSensesHours | app/expansion_classes_pack.js |
 | sharpMind | app/savant_laserllama_v561_runtime.js |
 | sharpshooter | app/feat_engine.js |
-| shaved | app/3dmap/character_anatomy.js, app/3dmap/character_editor_3d.js |
+| shaved | app/3dmap/character_anatomy.js (+ 1 других файлов) |
 | shelf | app/3dmap/gltf_catalog.js |
 | shell | app/ghost_extra_runtime.js |
-| shellColor | app/3dmap/character_system.js, tools/check_quartet_races_browser.js |
+| shellColor | app/3dmap/character_system.js (+ 1 других файлов) |
 | shellDestroyed | app/ghost_extra_runtime.js |
 | shellHealing | app/ghost_extra_runtime.js |
 | shellHP | app/ghost_extra_runtime.js |
 | shellMaxHP | app/ghost_extra_runtime.js |
 | shellName | app/ghost_extra_runtime.js |
 | shells | tools/check_fur_surface_browser.js |
-| shellSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js |
+| shellSize | app/3dmap/character_system.js (+ 1 других файлов) |
 | shield_master | app/feat_engine.js |
 | shieldACBonus | app/expansion_classes_pack.js |
 | shieldAllowed | app/expansion_classes_pack.js |
 | shieldAttackBonus | app/expansion_classes_pack.js |
 | shieldDamage | app/expansion_classes_pack.js |
-| shielded | app/blood_hunter_engine.js, app/network_gameplay.js |
+| shielded | app/blood_hunter_engine.js (+ 1 других файлов) |
 | Shielded | app/expansion_classes_pack.js |
-| shieldFrame | app/crafting_economy_v49.js, app/crafting_professions_v38.js |
+| shieldFrame | app/crafting_economy_v49.js (+ 1 других файлов) |
 | shieldImpact | app/expansion_classes_pack.js |
 | shieldmaker | app/crafting_profession_progression_v47.js |
 | shieldMartial | app/expansion_classes_pack.js |
-| shieldSlam | app/expansion_classes_pack.js, app/warden_mhp_2024_runtime.js |
+| shieldSlam | app/expansion_classes_pack.js (+ 1 других файлов) |
 | shieldWarrior | app/expansion_classes_pack.js |
 | shift | app/market_social_v55_3.js |
-| shifter | app/crafting_professions_v38.js, tests/test_v737_spellcasting_transaction.js |
+| shifter | app/crafting_professions_v38.js (+ 1 других файлов) |
 | shifterNaturalWeapon | app/shifter_laserllama_v2_1_runtime.js |
 | shinL | app/3dmap/character_anatomy.js |
 | shinR | app/3dmap/character_anatomy.js |
-| shipchandler | app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| shipchandler | app/market_social_v55_3.js (+ 1 других файлов) |
 | shippedSha256 | tests/makehuman_gender_fixture_audit.js |
 | shirt | app/3dmap/character_clothing.js |
-| shirt_long | tests/character_clothing_customizer_geometry_test.js, tests/character_clothing_options_test.js |
+| shirt_long | tests/character_clothing_customizer_geometry_test.js (+ 1 других файлов) |
 | shockingStrike | app/expansion_classes_pack.js |
 | shockingStrikeDamage | app/expansion_classes_pack.js |
-| short | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
-| shortRest | app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js |
+| short | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| shortRest | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | shortRestHealing | app/swarm_extra_runtime.js |
 | shortRestHealingAllowed | app/walter_parasite_extra_runtime.js |
 | shortRestSlots | app/expansion_classes_pack.js |
-| shoulders | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_3d_editor_test.js, tests/character_3d_morph_assets_test.js (+ 3 ещё) |
-| shouldSuppressRestHP | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js |
+| shoulders | app/3dmap/character_editor_3d.js (+ 6 других файлов) |
+| shouldSuppressRestHP | app/ghost_extra_runtime.js (+ 1 других файлов) |
 | shove | app/expanded_classes_v23.js |
 | shredding | app/expansion_classes_pack.js |
 | shreddingFree | app/expansion_classes_pack.js |
 | shuffle | app/Ambiences.js |
-| side | app/3dmap/character_body_geometry.js, app/blood_hunter_engine.js, app/expansion_classes_pack.js |
-| side_part | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
+| side | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
+| side_part | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | sideEffect | app/expansion_classes_pack.js |
 | sideEffects | app/alchemy_gameplay_v30.js |
-| sides | app/combat_engine.js, app/rulesEngine.js, app/vtt_dice_resolution_v65.js, tests/pugilist_combat_test.js (+ 5 ещё) |
-| siege | app/crafting_profession_progression_v47.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| sides | app/combat_engine.js (+ 8 других файлов) |
+| siege | app/crafting_profession_progression_v47.js (+ 2 других файлов) |
 | siegeInteraction | app/bestiary_catalog_v56_12.js |
 | sightBlocked | app/3dmap/map_world.js |
 | sigilEligible | app/bestiary_catalog_v56_13.js |
 | sigilicGrace | app/expansion_classes_pack.js |
-| signal | app/cloud_sync.js, app/update_manager_v2.js, desktop/update.cjs |
+| signal | app/cloud_sync.js (+ 2 других файлов) |
 | signatureSpells | app/class_features_engine.js |
 | signup | app/cloud_sync.js |
 | silentCheck | app/update_manager_v2.js |
 | silentStalker | app/expansion_classes_pack.js |
 | silk | app/3dmap/character_clothing.js |
 | silkwormSilk | app/crafting_resources_v34.js |
-| silver | app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js |
-| silvered | app/combat_engine.js, tests/test_blood_hunter_orders.js |
+| silver | app/crafting_engine_v31.js (+ 2 других файлов) |
+| silvered | app/combat_engine.js (+ 1 других файлов) |
 | site | app/kibbles_localization_content_v71.js |
 | sixthMetamorphosis | app/expansion_classes_pack.js |
-| size | app/3dmap/character_body_geometry.js, app/3dmap/gltf_loader.js, app/3dmap/map_model.js, app/alchemist_mhp_2024_runtime.js (+ 23 ещё) |
+| size | app/3dmap/character_body_geometry.js (+ 26 других файлов) |
 | size_mb | tests/human_base_glb_audit.js |
 | sizeBytes | tests/makehuman_glb_morph_fixture_audit.js |
-| sizeCategory | app/3dmap/character_system.js, tests/test_class_audit_stage2_runtime.js |
+| sizeCategory | app/3dmap/character_system.js (+ 1 других файлов) |
 | sizeChange | app/alchemist_mhp_2024_runtime.js |
-| sizeFt | app/alchemist_mhp_2024_runtime.js, app/data/classes/Beastheart.js |
-| sizeIncrease | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
-| skeleton | app/3dmap/character_system.js, app/3dmap/gltf_character_pipeline.js, tests/character_3d_foundation_test.js |
-| skill | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/bestiary_catalog_v56_2.js (+ 10 ещё) |
+| sizeFt | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
+| sizeIncrease | app/expanded_classes_v23.js (+ 1 других файлов) |
+| skeleton | app/3dmap/character_system.js (+ 2 других файлов) |
+| skill | app/bestiary_catalog_v56_1.js (+ 13 других файлов) |
 | skillAdvantage | app/blood_hunter_engine.js |
-| skillBonus | app/expanded_classes_v23.js, app/expansion_classes_pack.js, app/monster_loot_engine_v37.js, app/occultist_kibbles_v11_runtime.js |
-| skillChoices | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/swarm_extra_runtime.js, app/walter_parasite_extra_runtime.js |
-| skilled | app/crafting_character_influence_test_v46.js, app/crafting_professions_v38.js |
+| skillBonus | app/expanded_classes_v23.js (+ 3 других файлов) |
+| skillChoices | app/ghost_extra_runtime.js (+ 3 других файлов) |
+| skilled | app/crafting_character_influence_test_v46.js (+ 1 других файлов) |
 | skilledRider | app/expansion_classes_pack.js |
 | skillModifiers | app/blood_hunter_engine.js |
 | skillProficiency | app/expansion_classes_pack.js |
 | skillProficient | tests/test_v725_fixes.js |
-| skills | app/Backgrounds.js, app/companions.js, app/data/classes/Alchemist.js, app/data/classes/Beastheart.js (+ 23 ещё) |
-| skillsChoose | app/alchemist_mhp_2024_runtime.js, app/occultist_kibbles_v11_runtime.js |
-| skillsData | app/Backgrounds.js, app/character_creation.js, tests/test_v55_3.js |
+| skills | app/Backgrounds.js (+ 26 других файлов) |
+| skillsChoose | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
+| skillsData | app/Backgrounds.js (+ 2 других файлов) |
 | skiltKrigga | app/expansion_classes_pack.js |
-| skin | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_system.js, app/3dmap/gltf_loader.js, tests/character_3d_skin_morph_test.js (+ 5 ещё) |
+| skin | app/3dmap/character_anatomy_geometry.js (+ 8 других файлов) |
 | skin_names | tests/human_base_glb_audit.js |
 | skinCompatible | app/3dmap/character_system.js |
-| skinDetail | app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tools/check_character_races_browser.js, tools/check_feather_surface_browser.js (+ 3 ещё) |
+| skinDetail | app/3dmap/character_system.js (+ 6 других файлов) |
 | skinFamily | app/3dmap/character_system.js |
-| skinGlow | app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tools/check_character_races_browser.js |
-| skinId | app/3dmap/character_system.js, tests/character_3d_foundation_test.js |
+| skinGlow | app/3dmap/character_system.js (+ 2 других файлов) |
+| skinId | app/3dmap/character_system.js (+ 1 других файлов) |
 | skinMaterial | app/3dmap/character_system.js |
 | skinned_primitives | tests/human_base_glb_audit.js |
 | skinPositions | app/3dmap/character_anatomy_geometry.js |
-| skins | app/3dmap/gltf_character_pipeline.js, tests/character_3d_skin_morph_test.js, tests/human_base_glb_audit.js, tests/makehuman_glb_morph_fixture_audit.js (+ 1 ещё) |
-| skinSurface | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_3d_foundation_test.js, tools/check_character_races_browser.js (+ 2 ещё) |
+| skins | app/3dmap/gltf_character_pipeline.js (+ 4 других файлов) |
+| skinSurface | app/3dmap/character_editor_3d.js (+ 5 других файлов) |
 | skirt | app/3dmap/character_clothing.js |
 | skirtProfile | app/3dmap/character_clothing.js |
 | slamDamage | app/expansion_classes_pack.js |
 | slamMagical | app/expansion_classes_pack.js |
-| slash | app/3dmap/map_world.js, app/3dmap/stress_map.js |
+| slash | app/3dmap/map_world.js (+ 1 других файлов) |
 | slashing | app/warden_mhp_2024_runtime.js |
 | slashTexture | app/3dmap/stress_map.js |
 | slaymateRitual | app/necromancer_mhp_2024_runtime.js |
@@ -11538,66 +11539,66 @@
 | Sleep | app/alchemy_gameplay_v30.js |
 | sleepUntilStartNextTurnOrDamage | app/expansion_classes_pack.js |
 | sleepwalker | app/expansion_classes_pack.js |
-| sleeves | app/3dmap/character_clothing.js, tests/character_clothing_options_test.js, tools/check_character_dress_customizer.js |
+| sleeves | app/3dmap/character_clothing.js (+ 2 других файлов) |
 | sleightBonus | app/expansion_classes_pack.js |
 | sleightingImprecation | app/expansion_classes_pack.js |
-| sleightOfHand | app/dice.js, app/skills.js |
-| slick_back | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
+| sleightOfHand | app/dice.js (+ 1 других файлов) |
+| slick_back | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | slime | app/3dmap/character_editor_3d.js |
 | slimeCovered | app/alchemist_mhp_2024_runtime.js |
 | slimeFiber | app/resource_processing_v44.js |
 | slimeReagent | app/resource_processing_v44.js |
 | slipperyMind | app/class_features_engine.js |
-| slit | tests/character_clothing_customizer_geometry_test.js, tests/character_clothing_options_test.js, tools/check_character_dress_customizer.js |
-| slitHeight | tests/character_clothing_customizer_geometry_test.js, tools/check_character_dress_customizer.js |
-| slot | app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/alchemist_mhp_2024_runtime.js (+ 6 ещё) |
+| slit | tests/character_clothing_customizer_geometry_test.js (+ 2 других файлов) |
+| slitHeight | tests/character_clothing_customizer_geometry_test.js (+ 1 других файлов) |
+| slot | app/3dmap/character_clothing.js (+ 9 других файлов) |
 | slotKind | app/class_features_engine.js |
-| slotLevel | app/blood_hunter_engine.js, app/class_features_engine.js, app/expansion_classes_pack.js, app/magic_engine.js (+ 9 ещё) |
+| slotLevel | app/blood_hunter_engine.js (+ 12 других файлов) |
 | slotLevels | tests/test_v727_fixes.js |
-| slots | app/3dmap/character_clothing.js, app/Hero-info.js, app/blood_hunter_engine.js, app/custom_crafting_v32.js (+ 5 ещё) |
+| slots | app/3dmap/character_clothing.js (+ 8 других файлов) |
 | slotsByLevel | app/necromancer_mhp_2024_runtime.js |
 | slotSpent | app/occultist_kibbles_v11_runtime.js |
 | slotsRefresh | app/vessel_laserllama_v4_runtime.js |
 | slotsUsed | app/Hero-info.js |
 | slowFall | app/class_features_engine.js |
 | slowFt | app/blood_hunter_engine.js |
-| small | app/3dmap/gltf_catalog.js, app/parasite_extra_runtime.js, app/swarm_extra_runtime.js |
-| smith | app/crafting_engine_v31.js, app/crafting_profession_progression_test_v47.js, app/crafting_profession_progression_v47.js, app/crafting_professions_v33.js (+ 4 ещё) |
+| small | app/3dmap/gltf_catalog.js (+ 2 других файлов) |
+| smith | app/crafting_engine_v31.js (+ 7 других файлов) |
 | smoke | app/alchemist_mhp_2024_runtime.js |
 | smokeBomb | app/expansion_classes_pack.js |
 | smokeCloud | app/alchemist_mhp_2024_runtime.js |
-| snapshot | app/cloud_sync.js, app/gameplay_core_v57.js, app/vtt_combat_event_bus_v69.js, app/vtt_combat_log_v66.js (+ 7 ещё) |
+| snapshot | app/cloud_sync.js (+ 10 других файлов) |
 | snapshots | app/alchemist_mhp_2024_runtime.js |
-| sneakApplied | app/combat_engine.js, tests/test_v727_fixes.js |
+| sneakApplied | app/combat_engine.js (+ 1 других файлов) |
 | sneakAttack | app/class_features_engine.js |
-| sneakAttackDice | app/Hero-info.js, app/data/classes/Rogue.js |
+| sneakAttackDice | app/Hero-info.js (+ 1 других файлов) |
 | sneakEligible | tests/test_v727_fixes.js |
 | sneakStyle | app/vtt_debug_rules_matrix_v707.js |
 | snout | app/3dmap/character_body_geometry.js |
-| social | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 9 ещё) |
+| social | app/bestiary_catalog_v56_1.js (+ 12 других файлов) |
 | socialAdvantage | app/expanded_classes_v23.js |
 | socialBonus | app/necromancer_mhp_2024_runtime.js |
 | socket | app/3dmap/character_body_geometry.js |
-| socks | app/3dmap/character_clothing.js, tests/character_clothing_test.js, tests/character_native_limbs_test.js, tools/check_character_editor_browser.js |
+| socks | app/3dmap/character_clothing.js (+ 3 других файлов) |
 | solidified | app/expansion_classes_pack.js |
 | soloShieldAC | app/expansion_classes_pack.js |
 | solvent | app/alchemist_mhp_2024_runtime.js |
-| somatic | app/data/spells/Focuses.js, app/data/spells/Spells1lvl.js, app/data/spells/Spells2lvl.js, app/data/spells/Spells3lvl.js (+ 6 ещё) |
+| somatic | app/data/spells/Focuses.js (+ 9 других файлов) |
 | somaticMaterialFree | app/expansion_classes_pack.js |
 | somnolence | app/expansion_classes_pack.js |
 | songOfRest | app/class_features_engine.js |
 | songsOfWarPeace | app/expansion_classes_pack.js |
 | soothingSpeech | app/expansion_classes_pack.js |
-| sorcerer | app/magic_engine.js, app/rulesEngine.js |
+| sorcerer | app/magic_engine.js (+ 1 других файлов) |
 | sorcerousOriginMastery | app/class_features_engine.js |
 | sorcerousRestoration | app/class_features_engine.js |
-| sorceryPoints | app/class_features_engine.js, app/data/classes/Sorcerer.js |
+| sorceryPoints | app/class_features_engine.js (+ 1 других файлов) |
 | sort | app/Inventory.js |
-| soulEater | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| soulEater | app/blood_hunter_engine.js (+ 1 других файлов) |
 | soulOfArtifice | app/class_features_engine.js |
 | soulSight | app/occultist_kibbles_v11_runtime.js |
 | soulToyConversion | app/necromancer_mhp_2024_runtime.js |
-| source | app/3dmap/character_anatomy_geometry.js, app/3dmap/map_world.js, app/Backgrounds.js, app/accursed_oap_v11_runtime.js (+ 102 ещё) |
+| source | app/3dmap/character_anatomy_geometry.js (+ 105 других файлов) |
 | SOURCE | app/crafting_dlc_v50.js |
 | SOURCE_TAG | app/crafting_profession_progression_v47.js |
 | sourceDead | app/walter_parasite_extra_runtime.js |
@@ -11607,97 +11608,97 @@
 | sourceGlb | tests/generate_makehuman_glb_morph_fixture.js |
 | sourceGlbSha256 | tools/prepare_makehuman_gender.js |
 | sourceHashes | tools/prepare_makehuman_gender.js |
-| sourceId | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js, app/ghost_extra_runtime.js (+ 7 ещё) |
+| sourceId | app/accursed_oap_v11_runtime.js (+ 10 других файлов) |
 | sourceIndices | app/3dmap/character_body_geometry.js |
 | sourceKey | app/kibbles_localization_content_v71.js |
-| sourceLabel | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/bestiary_catalog_v56_2.js (+ 7 ещё) |
+| sourceLabel | app/bestiary_catalog_v56_1.js (+ 10 других файлов) |
 | sourceMaxDisplacement | tests/makehuman_target_reverse_transfer_audit.js |
 | sourceMeanDisplacement | tests/makehuman_target_reverse_transfer_audit.js |
 | sourceMeshes | app/3dmap/character_editor_3d.js |
-| sourceName | app/data/classes/level_up.js, app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/walter_parasite_extra_runtime.js |
+| sourceName | app/data/classes/level_up.js (+ 3 других файлов) |
 | sourceNonZeroEntries | tests/makehuman_target_reverse_transfer_audit.js |
-| sourcePack | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js (+ 8 ещё) |
-| sourcePacks | app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js |
+| sourcePack | app/bestiary_catalog_v56_1.js (+ 11 других файлов) |
+| sourcePacks | app/bestiary_catalog_v56_11.js (+ 2 других файлов) |
 | sourceProject | tools/prepare_makehuman_gender.js |
 | sourceQuantity | app/crafting_disassembly_repair_v51.js |
 | sourceRule | app/alchemy_gathering_professions_v52.js |
-| sources | app/alchemy_gathering_professions_v52.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 9 ещё) |
+| sources | app/alchemy_gathering_professions_v52.js (+ 12 других файлов) |
 | sourceSha256 | tests/makehuman_gender_fixture_audit.js |
 | sourceStackTerms | tools/prepare_makehuman_gender.js |
 | sourceTarget | tests/generate_makehuman_glb_morph_fixture.js |
-| sourceType | app/alchemist_mhp_2024_runtime.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js (+ 12 ещё) |
-| sourceVersion | app/data/classes/Shifter.js, app/data/classes/Vessel.js, app/shifter_laserllama_v2_1_runtime.js, app/vessel_laserllama_v4_runtime.js |
+| sourceType | app/alchemist_mhp_2024_runtime.js (+ 15 других файлов) |
+| sourceVersion | app/data/classes/Shifter.js (+ 3 других файлов) |
 | sovereignOfFate | app/expansion_classes_pack.js |
-| sp | app/inventory-coins.js, app/market_economy_v55.js, tests/test_v55.js, tests/test_v55_2.js (+ 2 ещё) |
+| sp | app/inventory-coins.js (+ 5 других файлов) |
 | space | app/swarm_extra_runtime.js |
 | span | app/3dmap/character_body_geometry.js |
 | sparse | tests/gltf_loader_smoke.cjs |
 | spatialManipulation | app/expansion_classes_pack.js |
 | speakWithBeastsAndPlants | app/expansion_classes_pack.js |
 | special | app/crafting_engine_v31.js |
-| specialization | app/crafting_profession_progression_v47.js, app/expansion_classes_pack.js, app/world_resource_gathering_v53.js |
+| specialization | app/crafting_profession_progression_v47.js (+ 2 других файлов) |
 | specializationBonus | app/crafting_profession_progression_v47.js |
 | specializationList | app/crafting_profession_progression_v47.js |
 | specializations | app/crafting_profession_progression_v47.js |
 | specialReactionPerOtherCreatureTurn | app/expansion_classes_pack.js |
 | specialtyTags | app/crafting_economy_v49.js |
-| species | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js, app/companions.js, app/expansion_classes_pack.js (+ 1 ещё) |
+| species | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
 | spectral | app/3dmap/character_body_geometry.js |
-| spectralFiber | app/crafting_economy_v49.js, app/resource_processing_v44.js |
+| spectralFiber | app/crafting_economy_v49.js (+ 1 других файлов) |
 | spectralIndices | app/3dmap/character_body_geometry.js |
 | spectralMounts | app/necromancer_mhp_2024_runtime.js |
 | spectralParts | app/3dmap/character_body_geometry.js |
 | spectralReagent | app/resource_processing_v44.js |
 | spectralThreadV49 | app/crafting_economy_v49.js |
-| speed | app/Backgrounds.js, app/alchemist_mhp_2024_runtime.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js (+ 30 ещё) |
+| speed | app/Backgrounds.js (+ 33 других файлов) |
 | Speed | app/alchemy_gameplay_v30.js |
 | speedBonus | app/expansion_classes_pack.js |
-| speedBonusFt | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| speedBonusFt | app/blood_hunter_engine.js (+ 1 других файлов) |
 | speedDouble | app/expansion_classes_pack.js |
 | speedFt | app/network_gameplay.js |
 | speedHalf | app/expansion_classes_pack.js |
 | speedMultiplier | app/necromancer_mhp_2024_runtime.js |
 | speedPenalty | app/blood_hunter_engine.js |
-| speedPenaltyFt | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| speedPenaltyFt | app/blood_hunter_engine.js (+ 1 других файлов) |
 | speedReductionFt | app/data/classes/Beastheart.js |
 | speedZeroSave | app/expansion_classes_pack.js |
-| spell | app/class_features_engine.js, app/combat_engine.js, app/martyr_mhp_2024_runtime.js, app/network_gameplay.js (+ 3 ещё) |
-| spellAttack | app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js, app/vessel_laserllama_v4_runtime.js, tests/test_class_audit_stage2_runtime.js |
-| spellAttackBonus | app/expansion_classes_pack.js, app/martyr_mhp_2024_runtime.js, app/necromancer_mhp_2024_runtime.js |
+| spell | app/class_features_engine.js (+ 6 других файлов) |
+| spellAttack | app/expansion_classes_pack.js (+ 3 других файлов) |
+| spellAttackBonus | app/expansion_classes_pack.js (+ 2 других файлов) |
 | spellAttackUsesWisdom | app/expansion_classes_pack.js |
-| spellblade | app/expansion_classes_pack.js, app/magic_engine.js |
+| spellblade | app/expansion_classes_pack.js (+ 1 других файлов) |
 | Spellblade | app/kibbles_localization_content_v71.js |
 | spellbladeSource | app/kibbles_localization_content_v71.js |
-| spellCaster | app/network_gameplay.js, tests/test_blood_hunter_profane_focus.js |
-| spellcasting | app/data/classes/Occultist.js, app/data/feats/Feats_phb.js, app/data/feats/Feats_settings.js, app/data/feats/Feats_tcoe.js (+ 7 ещё) |
+| spellCaster | app/network_gameplay.js (+ 1 других файлов) |
+| spellcasting | app/data/classes/Occultist.js (+ 10 других файлов) |
 | spellcastingAbility | app/alchemist_mhp_2024_runtime.js |
 | spellcastingFocus | app/expansion_classes_pack.js |
-| spellDamageModifiers | app/class_features_engine.js, app/occultist_kibbles_v11_runtime.js, tests/test_v739_prepared_transaction.js |
+| spellDamageModifiers | app/class_features_engine.js (+ 2 других файлов) |
 | spellDamageVulnerability | app/expansion_classes_pack.js |
 | spellHealingOrDamage | app/occultist_kibbles_v11_runtime.js |
-| spellId | app/combat_engine.js, app/dnd_tools.js, app/network_gameplay.js, app/rulesEngine.js (+ 4 ещё) |
-| spellLevel | app/class_features_engine.js, app/expansion_classes_pack.js, app/martyr_mhp_2024_runtime.js, app/network_gameplay.js (+ 7 ещё) |
+| spellId | app/combat_engine.js (+ 7 других файлов) |
+| spellLevel | app/class_features_engine.js (+ 10 других файлов) |
 | spellLevelCap | app/occultist_kibbles_v11_runtime.js |
 | spellLevelMax | app/expansion_classes_pack.js |
 | spellLevels | app/occultist_kibbles_v11_runtime.js |
 | spellList | app/martyr_mhp_2024_runtime.js |
 | spellLists | app/data/classes/Psion.js |
 | spellMastery | app/class_features_engine.js |
-| spellName | app/combat_engine.js, app/dnd_tools.js, app/network_gameplay.js, app/rulesEngine.js (+ 14 ещё) |
-| spells | app/Hero-info.js, app/accursed_oap_v11_runtime.js, app/blood_hunter_engine.js, app/expanded_classes_v23.js (+ 8 ещё) |
-| spellSaveDC | app/expansion_classes_pack.js, app/martyr_mhp_2024_runtime.js, app/necromancer_mhp_2024_runtime.js |
-| spellsData | app/Backgrounds.js, app/character_creation.js, tests/cloud_sync_test.cjs, tests/test_v713_fixes.js (+ 1 ещё) |
+| spellName | app/combat_engine.js (+ 17 других файлов) |
+| spells | app/Hero-info.js (+ 11 других файлов) |
+| spellSaveDC | app/expansion_classes_pack.js (+ 2 других файлов) |
+| spellsData | app/Backgrounds.js (+ 4 других файлов) |
 | spellsDoNotCountAgainstKnown | app/expansion_classes_pack.js |
 | Spellshot | app/kibbles_localization_content_v71.js |
-| spellsKnown | app/data/classes/Occultist.js, app/expansion_classes_pack.js, app/occultist_kibbles_v11_runtime.js |
+| spellsKnown | app/data/classes/Occultist.js (+ 2 других файлов) |
 | spellSlotKind | app/class_features_engine.js |
 | spellSlotLevel | app/class_features_engine.js |
-| spellSlots | app/class_features_engine.js, app/necromancer_mhp_2024_runtime.js, app/network_gameplay.js |
-| spellSlotsData | app/Backgrounds.js, app/character_creation.js, app/network_gameplay.js, tests/helpers/class_runtime_harness.js (+ 9 ещё) |
+| spellSlots | app/class_features_engine.js (+ 2 других файлов) |
+| spellSlotsData | app/Backgrounds.js (+ 12 других файлов) |
 | spellSlotSubstitute | app/necromancer_mhp_2024_runtime.js |
-| spellSlotTable | app/rulesEngine.js, tests/test_v737_spellcasting_transaction.js |
+| spellSlotTable | app/rulesEngine.js (+ 1 других файлов) |
 | spellSources | app/rulesEngine.js |
-| spellStat | app/Backgrounds.js, app/character_creation.js |
+| spellStat | app/Backgrounds.js (+ 1 других файлов) |
 | spellStats | app/rulesEngine.js |
 | spellStoringItem | app/class_features_engine.js |
 | spellstrike | app/expansion_classes_pack.js |
@@ -11713,13 +11714,13 @@
 | spendMovement | app/gameplay_core_v57.js |
 | spendResource | app/rulesEngine.js |
 | spendSpellSlot | app/expansion_classes_pack.js |
-| spent | app/data/classes/Beastheart.js, app/expansion_classes_pack.js, app/gameplay_core_v57.js, app/necromancer_mhp_2024_runtime.js (+ 1 ещё) |
+| spent | app/data/classes/Beastheart.js (+ 4 других файлов) |
 | spices | app/crafting_resources_v34.js |
 | spider | app/data/classes/Beastheart.js |
-| spiderSilk | app/crafting_economy_v49.js, app/crafting_professions_v33.js |
+| spiderSilk | app/crafting_economy_v49.js (+ 1 других файлов) |
 | spines | app/3dmap/character_system.js |
 | spiral | app/3dmap/character_system.js |
-| spirit | app/vessel_laserllama_v4_runtime.js, tests/test_class_audit_stage2_runtime.js |
+| spirit | app/vessel_laserllama_v4_runtime.js (+ 1 других файлов) |
 | spiritAttacks | app/ghost_extra_runtime.js |
 | spiritCommunication | app/occultist_kibbles_v11_runtime.js |
 | spiritDamage | app/occultist_kibbles_v11_runtime.js |
@@ -11739,15 +11740,15 @@
 | spread | app/3dmap/character_anatomy_geometry.js |
 | springSteel | app/crafting_resources_v34.js |
 | spurredArmy | app/expansion_classes_pack.js |
-| square | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js |
+| square | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | squaredCircle | app/data/classes/Pugilist.js |
-| src | app/Ambiences.js, app/Settings.js, app/icon_settings.js, app/icon_settings_v2.js (+ 1 ещё) |
-| stability | app/alchemy_gameplay_v30.js, app/bestiary_catalog_v56_13.js |
+| src | app/Ambiences.js (+ 4 других файлов) |
+| stability | app/alchemy_gameplay_v30.js (+ 1 других файлов) |
 | Stability | app/alchemy_gameplay_v30.js |
-| stable | app/market_social_v55_3.js, app/market_trade_v55_2.js |
-| stack | app/3dmap/gltf_catalog.js, app/vtt_debug_error_log_v709.js |
+| stable | app/market_social_v55_3.js (+ 1 других файлов) |
+| stack | app/3dmap/gltf_catalog.js (+ 1 других файлов) |
 | stacks | app/data/classes/Beastheart.js |
-| stage | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/update_manager_v2.js, app/walter_parasite_extra_runtime.js |
+| stage | app/ghost_extra_runtime.js (+ 3 других файлов) |
 | stage10 | app/alchemist_mhp_2024_runtime.js |
 | staged | app/update_manager_v2.js |
 | stair | app/3dmap/gltf_catalog.js |
@@ -11759,10 +11760,10 @@
 | stalkersProwess | app/blood_hunter_engine.js |
 | stalwartDefender | app/expansion_classes_pack.js |
 | stalwartSpirit | app/warden_mhp_2024_runtime.js |
-| stance | app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js, tests/test_class_audit_stage3_runtime.js |
+| stance | app/expansion_classes_pack.js (+ 2 других файлов) |
 | stanceRadiusFt | app/expansion_classes_pack.js |
 | stand | app/3dmap/gltf_catalog.js |
-| standard | app/crafting_disassembly_v51.js, app/custom_crafting_v32.js, desktop/main.cjs |
+| standard | app/crafting_disassembly_v51.js (+ 2 других файлов) |
 | standingJump | app/expansion_classes_pack.js |
 | standTheFallen | app/expansion_classes_pack.js |
 | standUp | app/expansion_classes_pack.js |
@@ -11770,51 +11771,51 @@
 | startActorTurn | app/blood_hunter_engine.js |
 | startedAt | app/vtt_gameplay_ux_v58.js |
 | startedAtTurn | app/alchemist_mhp_2024_runtime.js |
-| startingEquipment | app/alchemist_mhp_2024_runtime.js, app/data/classes/Alchemist.js, app/data/classes/Warden.js, app/shifter_laserllama_v2_1_runtime.js |
+| startingEquipment | app/alchemist_mhp_2024_runtime.js (+ 3 других файлов) |
 | startLevel | app/shifter_laserllama_v2_1_runtime.js |
 | startlingJinx | app/expansion_classes_pack.js |
-| startTurn | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/data/classes/Beastheart.js (+ 10 ещё) |
+| startTurn | app/accursed_oap_v11_runtime.js (+ 13 других файлов) |
 | startTurnDamage | app/expansion_classes_pack.js |
 | startTurnHeal | app/expansion_classes_pack.js |
 | startTurnHealing | app/expansion_classes_pack.js |
 | startTurnNecrotic | app/expansion_classes_pack.js |
 | startX | app/vtt_mobile_battle_v61.js |
 | startY | app/vtt_mobile_battle_v61.js |
-| stat | app/accursed_oap_v11_runtime.js, app/app.js, app/blood_hunter_engine.js, app/character.js (+ 15 ещё) |
+| stat | app/accursed_oap_v11_runtime.js (+ 18 других файлов) |
 | STAT_ALIASES | app/rulesEngine.js |
 | STAT_META | app/walter_parasite_extra_runtime.js |
 | statblock | app/alchemist_mhp_2024_runtime.js |
-| statBlock | app/shifter_laserllama_v2_1_runtime.js, tests/test_class_audit_stage2_runtime.js |
-| statBonus | app/data/feats/Feats_phb.js, app/data/feats/Feats_settings.js, app/data/feats/Feats_tcoe.js, app/data/feats/Feats_ua_homebrew.js (+ 1 ещё) |
-| state | app/combat_engine.js, app/swarm_extra_runtime.js, app/vtt_debug_scenario_editor_v705.js, app/vtt_debug_scenarios_v704.js (+ 13 ещё) |
-| stateRevision | app/network_engine.js, app/vtt_mobile_session_v67.js, tests/test_blood_hunter_focus_network.js, tests/test_v744_sync_authority_save.js (+ 3 ещё) |
+| statBlock | app/shifter_laserllama_v2_1_runtime.js (+ 1 других файлов) |
+| statBonus | app/data/feats/Feats_phb.js (+ 4 других файлов) |
+| state | app/combat_engine.js (+ 16 других файлов) |
+| stateRevision | app/network_engine.js (+ 6 других файлов) |
 | states | app/swarm_extra_runtime.js |
-| stats | app/Backgrounds.js, app/Hero-info.js, app/character_creation.js, app/data/feats/Feats_phb.js (+ 42 ещё) |
-| status | app/Settings.js, app/accursed_oap_v11_runtime.js, app/cloud_sync.js, app/content_catalog.js (+ 51 ещё) |
+| stats | app/Backgrounds.js (+ 45 других файлов) |
+| status | app/Settings.js (+ 54 других файлов) |
 | STATUS | app/alchemist_mhp_2024_runtime.js |
 | steadfastOrder | app/expansion_classes_pack.js |
 | steadfastToughness | app/warden_mhp_2024_runtime.js |
-| stealth | app/dice.js, app/skills.js |
+| stealth | app/dice.js (+ 1 других файлов) |
 | stealthAdvantage | app/expansion_classes_pack.js |
 | stealthBonus | app/expansion_classes_pack.js |
 | stealthDisadvantage | app/armors.js |
 | steed | app/companion_packs_v26.js |
-| steel | app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js, app/monster_loot_crafting_bridge_v40.js |
+| steel | app/crafting_engine_v31.js (+ 3 других файлов) |
 | steelBillet | app/crafting_resources_v34.js |
 | steelWire | app/crafting_resources_v34.js |
 | steelWireV38 | tests/crafting_disassembly_v51_test.js |
 | stencil | app/3dmap/map_renderer_3d.js |
-| step | app/3dmap/stair_navigation.js, app/vtt_combat_event_bus_v69.js |
+| step | app/3dmap/stair_navigation.js (+ 1 других файлов) |
 | stepWind | app/class_features_engine.js |
 | stickAndMove | app/expansion_classes_pack.js |
 | stillnessOfMind | app/class_features_engine.js |
-| stock | app/market_economy_v55.js, app/market_expansion_v55_1.js, app/market_trade_v55_2.js |
+| stock | app/market_economy_v55.js (+ 2 других файлов) |
 | stockCount | app/market_expansion_v55_1.js |
 | stocky | app/3dmap/character_system.js |
 | stolenSpark | app/expansion_classes_pack.js |
-| stone | app/3dmap/gltf_catalog.js, app/crafting_professions_v38.js, app/market_economy_v55.js, app/resource_gathering_v35.js (+ 1 ещё) |
+| stone | app/3dmap/gltf_catalog.js (+ 4 других файлов) |
 | Stoneblood | app/kibbles_localization_content_v71.js |
-| stonecutter | app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| stonecutter | app/market_social_v55_3.js (+ 1 других файлов) |
 | stoneDust | app/crafting_professions_v38.js |
 | stoneForm | app/expansion_classes_pack.js |
 | stoneFormToggle | app/expansion_classes_pack.js |
@@ -11823,32 +11824,32 @@
 | stool | app/3dmap/gltf_catalog.js |
 | stop | app/vtt_combat_event_bus_v69.js |
 | stopIntruder | app/expanded_classes_v23.js |
-| stopOnDefeat | app/gameplay_core_v57.js, app/monster_engine.js, app/summoning_engine.js, tests/test_v729_fixes.js |
-| storage | app/occultist_kibbles_v11_runtime.js, app/vtt_combat_log_v66.js, app/vtt_debug_panel_v70.js |
+| stopOnDefeat | app/gameplay_core_v57.js (+ 3 других файлов) |
+| storage | app/occultist_kibbles_v11_runtime.js (+ 2 других файлов) |
 | STORAGE_KEY | app/crafting_dlc_v50.js |
 | stored | app/necromancer_mhp_2024_runtime.js |
 | storedHealingMax | app/expansion_classes_pack.js |
 | storm | app/blood_hunter_engine.js |
-| str | app/Backgrounds.js, app/Inventory.js, app/alchemist_mhp_2024_runtime.js, app/app.js (+ 56 ещё) |
+| str | app/Backgrounds.js (+ 59 других файлов) |
 | straight | app/3dmap/character_system.js |
 | straightLine | app/expansion_classes_pack.js |
 | strands | tools/check_adult_anatomy_browser.js |
 | strangeMetabolism | app/blood_hunter_engine.js |
 | strategicAdjustments | app/expansion_classes_pack.js |
-| strategist | app/data/classes/Warlord.js, app/warlord_laserllama_v330_runtime.js |
+| strategist | app/data/classes/Warlord.js (+ 1 других файлов) |
 | strBonus | app/blood_hunter_engine.js |
-| strChecksDisadvantage | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
-| strDexChecksDisadvantage | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| strChecksDisadvantage | app/blood_hunter_engine.js (+ 1 других файлов) |
+| strDexChecksDisadvantage | app/blood_hunter_engine.js (+ 1 других файлов) |
 | strDexSaveAdvantage | app/expansion_classes_pack.js |
 | stream | desktop/main.cjs |
 | streetSmart | app/data/classes/Pugilist.js |
 | streetwise | app/expansion_classes_pack.js |
-| strength | app/Hero-info.js, app/alchemist_mhp_2024_runtime.js, app/alchemy_gameplay_v30.js, app/data/classes/Pugilist.js (+ 7 ещё) |
+| strength | app/Hero-info.js (+ 10 других файлов) |
 | Strength | app/alchemy_gameplay_v30.js |
 | strengthInNumbers | app/expansion_classes_pack.js |
 | strengthMaxBonus | app/expansion_classes_pack.js |
-| strengthOrDexterity | app/data/classes/Illigger.js, app/data/classes/Martyr.js, app/data/classes/Warlord.js, app/martyr_mhp_2024_runtime.js |
-| strenuous | app/alchemy_gathering_professions_v52.js, app/resource_gathering_v35.js |
+| strengthOrDexterity | app/data/classes/Illigger.js (+ 3 других файлов) |
+| strenuous | app/alchemy_gathering_professions_v52.js (+ 1 других файлов) |
 | stressPressure | app/bestiary_catalog_v56_10.js |
 | strikeDice | app/expansion_classes_pack.js |
 | strIncrease | app/expansion_classes_pack.js |
@@ -11858,44 +11859,44 @@
 | strongbow | app/expansion_classes_pack.js |
 | strOrDexSave | app/expansion_classes_pack.js |
 | strSave | app/expansion_classes_pack.js |
-| strSavesDisadvantage | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
-| stubble | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
+| strSavesDisadvantage | app/blood_hunter_engine.js (+ 1 других файлов) |
+| stubble | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | student | app/expanded_classes_v23.js |
 | stun | app/expanded_classes_v23.js |
 | stunIfFailedBy5 | app/blood_hunter_engine.js |
-| stunned | app/expansion_classes_pack.js, app/warden_mhp_2024_runtime.js, tests/test_class_audit_stage4_runtime.js |
+| stunned | app/expansion_classes_pack.js (+ 2 других файлов) |
 | stunnedUntilEndOfNextTurn | app/expansion_classes_pack.js |
 | stunning | app/expansion_classes_pack.js |
-| stunningStrike | app/class_features_engine.js, app/network_gameplay.js |
+| stunningStrike | app/class_features_engine.js (+ 1 других файлов) |
 | stunOnFail | app/expansion_classes_pack.js |
 | stunOnFailBy5 | app/expansion_classes_pack.js |
-| style | app/expansion_classes_pack.js, tests/helpers/class_runtime_harness.js, tests/test_class_audit_runtime.js, tests/test_class_audit_stage4_runtime.js (+ 29 ещё) |
+| style | app/expansion_classes_pack.js (+ 32 других файлов) |
 | styles | app/occultist_kibbles_v11_runtime.js |
-| subclass | app/Hero-info.js, app/alchemist_mhp_2024_runtime.js, app/character_creation.js, app/data/classes/level_up.js (+ 11 ещё) |
+| subclass | app/Hero-info.js (+ 14 других файлов) |
 | SUBCLASS_FEATURES | app/class_features_engine.js |
 | subclassBonds | app/data/classes/Beastheart.js |
 | subclassDeepMagic | app/data/classes/Illigger.js |
-| subclasses | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/data/classes/Alchemist.js (+ 20 ещё) |
+| subclasses | app/accursed_oap_v11_runtime.js (+ 23 других файлов) |
 | subclassFeature | app/expanded_classes_v23.js |
 | subclassFeatureCatalog | app/data/classes/Pugilist.js |
 | subclassFeatureIdResolution | app/data/classes/Alchemist.js |
-| subclassFeatureLevels | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/data/classes/Alchemist.js, app/data/classes/Martyr.js (+ 17 ещё) |
-| subclassId | app/content_framework.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js |
-| subclassLevel | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/data/classes/Alchemist.js, app/data/classes/Artificer.js (+ 37 ещё) |
-| subclassSystem | app/data/classes/Alchemist.js, app/data/classes/Illigger.js, app/data/classes/Pugilist.js, app/data/classes/Warden.js (+ 1 ещё) |
+| subclassFeatureLevels | app/accursed_oap_v11_runtime.js (+ 20 других файлов) |
+| subclassId | app/content_framework.js (+ 2 других файлов) |
+| subclassLevel | app/accursed_oap_v11_runtime.js (+ 40 других файлов) |
+| subclassSystem | app/data/classes/Alchemist.js (+ 4 других файлов) |
 | subclassUse | app/expansion_classes_pack.js |
 | subjugateThrall | app/expansion_classes_pack.js |
-| subtle | app/class_features_engine.js, tests/test_v754_update_manager.js |
+| subtle | app/class_features_engine.js (+ 1 других файлов) |
 | subtractD8 | app/expansion_classes_pack.js |
 | subtractHemocraftDie | app/blood_hunter_engine.js |
-| subtree | app/Inventory-weight-tracker.js, app/Settings.js, app/swipe-lock.js, index.html |
-| success | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/combat_engine.js (+ 21 ещё) |
-| successes | app/combat_engine.js, app/dnd_tools.js, app/market_social_v55_3.js, app/monster_engine.js (+ 8 ещё) |
+| subtree | app/Inventory-weight-tracker.js (+ 3 других файлов) |
+| success | app/alchemist_mhp_2024_runtime.js (+ 24 других файлов) |
+| successes | app/combat_engine.js (+ 11 других файлов) |
 | successorClientId | tests/test_v745_host_handoff.js |
 | successTempHp | app/expansion_classes_pack.js |
 | suite | app/vtt_debug_rules_matrix_v707.js |
-| summary | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 9 ещё) |
-| summon | app/expanded_classes_v23.js, app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js, app/occultist_kibbles_v11_runtime.js |
+| summary | app/bestiary_catalog_v56_1.js (+ 12 других файлов) |
+| summon | app/expanded_classes_v23.js (+ 3 других файлов) |
 | summonDevilJurist | app/expansion_classes_pack.js |
 | summonFamiliar | app/expansion_classes_pack.js |
 | summonFiendAt0HP | app/expansion_classes_pack.js |
@@ -11910,39 +11911,39 @@
 | superiorInterdict | app/data/classes/Illigger.js |
 | superiorInterdictRestore | app/data/classes/Illigger.js |
 | superiorityDice | app/class_features_engine.js |
-| supernal | app/expansion_classes_pack.js, app/runekeeper_taron_v12_runtime.js |
-| supported | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_pose.js |
+| supernal | app/expansion_classes_pack.js (+ 1 других файлов) |
+| supported | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
 | supportFetchAPI | desktop/main.cjs |
 | supportRangeFt | app/expansion_classes_pack.js |
 | suppressAilments | app/expansion_classes_pack.js |
 | suppressResistanceAndImmunity | app/expansion_classes_pack.js |
 | surface | app/3dmap/character_system.js |
-| surfaceMaxDistance | tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js |
-| surfaceMeanDistance | tests/generate_makehuman_glb_morph_fixture.js, tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js |
-| surfaceMedianDistance | tests/generate_makehuman_glb_morph_fixture.js, tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js |
-| surfaceP95Distance | tests/generate_makehuman_glb_morph_fixture.js, tests/makehuman_morph_bridge.js, tests/makehuman_surface_mapping_audit.js, tests/makehuman_target_reverse_transfer_audit.js |
+| surfaceMaxDistance | tests/makehuman_surface_mapping_audit.js (+ 1 других файлов) |
+| surfaceMeanDistance | tests/generate_makehuman_glb_morph_fixture.js (+ 3 других файлов) |
+| surfaceMedianDistance | tests/generate_makehuman_glb_morph_fixture.js (+ 3 других файлов) |
+| surfaceP95Distance | tests/generate_makehuman_glb_morph_fixture.js (+ 3 других файлов) |
 | surpriseAttack | app/expansion_classes_pack.js |
 | surveySettlement | app/expansion_classes_pack.js |
 | surveyWilderness | app/expansion_classes_pack.js |
-| survival | app/dice.js, app/monster_loot_engine_v37.js, app/skills.js |
+| survival | app/dice.js (+ 2 других файлов) |
 | survive | app/data/classes/Warden.js |
 | survivor | app/class_features_engine.js |
 | sutureCost | app/necromancer_mhp_2024_runtime.js |
 | sutureOptions | app/necromancer_mhp_2024_runtime.js |
-| swamp | app/3dmap/character_editor_3d.js, app/market_economy_v55.js, tests/test_v56.js |
+| swamp | app/3dmap/character_editor_3d.js (+ 2 других файлов) |
 | swapWithThrallRangeFt | app/necromancer_mhp_2024_runtime.js |
-| swarm | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js, app/swarm_extra_runtime.js |
+| swarm | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | swarm_bats | tools/check_dense_swarm_browser.js |
 | swarm_beetles | tools/check_dense_swarm_browser.js |
 | swarm_rats | tools/check_dense_swarm_browser.js |
 | swarmCore | app/3dmap/character_body_geometry.js |
 | swarmFloor | app/3dmap/character_body_geometry.js |
-| swarmForm | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_swarm_geometry_test.js, tools/check_dense_swarm_browser.js |
+| swarmForm | app/3dmap/character_editor_3d.js (+ 3 других файлов) |
 | swarmParts | app/3dmap/character_body_geometry.js |
-| swarmPercent | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_swarm_geometry_test.js, tools/check_dense_swarm_browser.js |
+| swarmPercent | app/3dmap/character_editor_3d.js (+ 3 других файлов) |
 | swarmUnit | app/3dmap/character_body_geometry.js |
 | swarmVortex | app/3dmap/character_body_geometry.js |
-| sweep | app/3dmap/character_body_geometry.js, app/warden_mhp_2024_runtime.js |
+| sweep | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | sweepAttack | app/expansion_classes_pack.js |
 | sweepingStrike | app/expansion_classes_pack.js |
 | sweetDreams | app/expansion_classes_pack.js |
@@ -11957,63 +11958,63 @@
 | swine | app/expanded_bestiary_v39.js |
 | switchAlly | app/expansion_classes_pack.js |
 | symbiosis | app/parasite_extra_runtime.js |
-| sync | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/cloud_sync.js, app/companions.js (+ 15 ещё) |
+| sync | app/alchemist_mhp_2024_runtime.js (+ 18 других файлов) |
 | syncClassResources | app/class_features_engine.js |
 | syncFromInitiative | tests/test_v58.js |
 | syncState | app/accursed_oap_v11_runtime.js |
 | synergy | app/alchemy_engine_v29.js |
-| t | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_pose.js |
-| tab | app/vtt_debug_character_lab_v702.js, app/vtt_debug_lab_v703.js, app/vtt_debug_panel_v70.js, app/vtt_debug_sandbox_v701.js |
-| table | app/3dmap/gltf_catalog.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js (+ 15 ещё) |
+| t | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
+| tab | app/vtt_debug_character_lab_v702.js (+ 3 других файлов) |
+| table | app/3dmap/gltf_catalog.js (+ 18 других файлов) |
 | tacticalExploit | app/data/classes/Warlord.js |
 | tacticalReposition | app/expansion_classes_pack.js |
 | tacticalSkill | app/data/classes/Warlord.js |
 | tacticalSuperiority | app/data/classes/Warlord.js |
-| tactician | app/feat_engine.js, app/savant_laserllama_v561_runtime.js |
+| tactician | app/feat_engine.js (+ 1 других файлов) |
 | Tactician | app/kibbles_localization_content_v71.js |
-| tag | app/3dmap/character_body_geometry.js, app/vtt_debug_error_log_v709.js |
+| tag | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | tagName | tests/test_v724_fixes.js |
-| tags | app/3dmap/character_body_geometry.js, app/3dmap/map_model.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js (+ 25 ещё) |
+| tags | app/3dmap/character_body_geometry.js (+ 28 других файлов) |
 | tail | app/3dmap/character_body_geometry.js |
-| tailColor | app/3dmap/character_system.js, tools/check_kobold_tabaxi_browser.js, tools/check_reptile_races_browser.js, tools/check_tiefling_browser.js |
-| tailCurve | app/3dmap/character_system.js, tests/character_3d_foundation_test.js |
-| tailLength | app/3dmap/character_system.js, tests/character_races_geometry_test.js, tests/character_tiefling_details_test.js, tools/check_kobold_tabaxi_browser.js (+ 2 ещё) |
+| tailColor | app/3dmap/character_system.js (+ 3 других файлов) |
+| tailCurve | app/3dmap/character_system.js (+ 1 других файлов) |
+| tailLength | app/3dmap/character_system.js (+ 5 других файлов) |
 | tailoring | app/3dmap/character_clothing.js |
-| tailThickness | app/3dmap/character_system.js, tests/character_races_geometry_test.js, tools/check_kobold_tabaxi_browser.js, tools/check_reptile_races_browser.js |
-| tailTip | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js |
-| tailTuftSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js |
+| tailThickness | app/3dmap/character_system.js (+ 3 других файлов) |
+| tailTip | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
+| tailTuftSize | app/3dmap/character_system.js (+ 1 других файлов) |
 | takeAttack | app/spellblade_kibbles_runtime.js |
 | talent | app/expansion_classes_pack.js |
 | talentProgression | app/data/classes/Psion.js |
-| talents | app/data/classes/Psion.js, app/expansion_classes_pack.js |
+| talents | app/data/classes/Psion.js (+ 1 других файлов) |
 | tannin | app/crafting_resources_v34.js |
-| target | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js, app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js (+ 37 ещё) |
-| targetAc | app/network_gameplay.js, tests/test_v738_multiclass_spell_sources.js |
+| target | app/3dmap/character_body_geometry.js (+ 40 других файлов) |
+| targetAc | app/network_gameplay.js (+ 1 других файлов) |
 | targetCount | app/expansion_classes_pack.js |
-| targetDefeated | app/combat_engine.js, app/gameplay_core_v57.js, app/monster_engine.js, tests/test_v749_monster_authority_reaction_order.js |
+| targetDefeated | app/combat_engine.js (+ 3 других файлов) |
 | targetedAllyAdvantage | app/expansion_classes_pack.js |
-| targetEntries | tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
+| targetEntries | tests/makehuman_target_reverse_transfer_audit.js (+ 1 других файлов) |
 | targetExtraRadiant | app/martyr_mhp_2024_runtime.js |
-| targetFile | tests/makehuman_target_reverse_transfer_audit.js, tests/makehuman_target_surface_transfer_audit.js |
-| targetId | app/3dmap/character_appearance_store.js, app/3dmap/character_editor_3d.js, app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js (+ 16 ещё) |
+| targetFile | tests/makehuman_target_reverse_transfer_audit.js (+ 1 других файлов) |
+| targetId | app/3dmap/character_appearance_store.js (+ 19 других файлов) |
 | targetKey | app/accursed_oap_v11_runtime.js |
 | targetLevel | app/data/classes/level_up.js |
 | targetMode | app/vtt_token_interaction_v60.js |
-| targetName | app/ghost_extra_runtime.js, app/network_gameplay.js, tests/test_v724_fixes.js |
+| targetName | app/ghost_extra_runtime.js (+ 2 других файлов) |
 | targetOncePerLongRest | app/necromancer_mhp_2024_runtime.js |
 | targetPeerId | app/network_gameplay.js |
 | targetRadiantDamage | app/expansion_classes_pack.js |
 | targetRequired | app/expansion_classes_pack.js |
-| targets | app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js, tests/alchemist_runtime_test.js (+ 8 ещё) |
+| targets | app/alchemist_mhp_2024_runtime.js (+ 11 других файлов) |
 | targetSelfOrTouch | app/expansion_classes_pack.js |
 | targetsFatigueRadiusFt | app/expansion_classes_pack.js |
 | targetsUpTo | app/expansion_classes_pack.js |
 | targetTurns | app/blood_hunter_engine.js |
 | targetType | app/occultist_kibbles_v11_runtime.js |
-| taunt | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
-| team | app/alchemist_mhp_2024_runtime.js, app/companion_packs_v26.js, app/data/classes/Beastheart.js, app/network_gameplay.js (+ 4 ещё) |
+| taunt | app/expanded_classes_v23.js (+ 1 других файлов) |
+| team | app/alchemist_mhp_2024_runtime.js (+ 7 других файлов) |
 | techniques | app/spellblade_kibbles_runtime.js |
-| telekinesis | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| telekinesis | app/expanded_classes_v23.js (+ 1 других файлов) |
 | telekinesisLiftBonus | app/expansion_classes_pack.js |
 | telekinetic | app/feat_engine.js |
 | telekineticForce | app/expansion_classes_pack.js |
@@ -12026,17 +12027,17 @@
 | teleport | app/alchemist_mhp_2024_runtime.js |
 | teleportBetweenPaint | app/alchemist_mhp_2024_runtime.js |
 | teleportDamage | app/expansion_classes_pack.js |
-| teleportFt | app/data/classes/Beastheart.js, app/expanded_classes_v23.js, app/expansion_classes_pack.js, app/feat_engine.js |
+| teleportFt | app/data/classes/Beastheart.js (+ 3 других файлов) |
 | teleportNearTarget | app/expansion_classes_pack.js |
 | teleportRangeFt | app/necromancer_mhp_2024_runtime.js |
 | teleportSave | app/expansion_classes_pack.js |
 | teleportToImpact | app/alchemist_mhp_2024_runtime.js |
 | teleportWithFamiliar | app/occultist_kibbles_v11_runtime.js |
-| temp | app/Hero-info.js, app/combat_engine.js, app/companions.js, app/expansion_classes_pack.js |
+| temp | app/Hero-info.js (+ 3 других файлов) |
 | tempAbsorbed | app/combat_engine.js |
 | temperament | app/market_social_v55_3.js |
-| tempHp | app/alchemist_mhp_2024_runtime.js, app/combat_engine.js, app/expanded_classes_v23.js, app/expansion_classes_pack.js (+ 16 ещё) |
-| tempHP | app/occultist_kibbles_v11_runtime.js, app/shifter_laserllama_v2_1_runtime.js, app/spellblade_kibbles_runtime.js, app/vessel_laserllama_v4_runtime.js |
+| tempHp | app/alchemist_mhp_2024_runtime.js (+ 19 других файлов) |
+| tempHP | app/occultist_kibbles_v11_runtime.js (+ 3 других файлов) |
 | tempHpAtStartTurn | app/expansion_classes_pack.js |
 | tempHpBonus | app/expansion_classes_pack.js |
 | tempHpDice | app/expansion_classes_pack.js |
@@ -12051,7 +12052,7 @@
 | template | app/3dmap/character_body_geometry.js |
 | templateNormals | app/3dmap/character_body_geometry.js |
 | templates | app/companion_packs_v26.js |
-| temple | app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| temple | app/market_social_v55_3.js (+ 1 других файлов) |
 | temporary | app/expansion_classes_pack.js |
 | temporaryHp | app/feat_engine.js |
 | temporaryHP | app/alchemist_mhp_2024_runtime.js |
@@ -12060,15 +12061,15 @@
 | terrorDie | app/expansion_classes_pack.js |
 | terrorizingForce | app/data/classes/Illigger.js |
 | test | tests/character_3d_foundation_test.js |
-| testMode | app/update_manager_v2.js, app/update_scene_v2.js |
+| testMode | app/update_manager_v2.js (+ 1 других файлов) |
 | tests | app/vtt_debug_rules_matrix_v707.js |
 | tethered | app/expansion_classes_pack.js |
 | TEXCOORD_0 | tests/makehuman_gender_recipe_test.js |
 | texLoc | app/3dmap/map_renderer_3d.js |
-| text | app/notes.js, tests/cloud_sync_test.cjs |
+| text | app/notes.js (+ 1 других файлов) |
 | textContent | tests/test_v724_fixes.js |
 | textile | app/crafting_profession_progression_v47.js |
-| texture | app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/3dmap/map_world.js (+ 1 ещё) |
+| texture | app/3dmap/character_clothing.js (+ 4 других файлов) |
 | Texture | app/3dmap/map_editor.js |
 | textures | app/3dmap/map_renderer_3d.js |
 | textureTile | app/3dmap/character_clothing.js |
@@ -12093,7 +12094,7 @@
 | thrallSlots | app/necromancer_mhp_2024_runtime.js |
 | thrallType | app/necromancer_mhp_2024_runtime.js |
 | thrallTypes | app/necromancer_mhp_2024_runtime.js |
-| thread | app/crafting_economy_v49.js, app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js (+ 1 ещё) |
+| thread | app/crafting_economy_v49.js (+ 4 других файлов) |
 | thresholds | app/monster_engine.js |
 | thrillOfTheHunt | app/expansion_classes_pack.js |
 | thrownRange | app/expansion_classes_pack.js |
@@ -12102,44 +12103,44 @@
 | tier | app/crafting_disassembly_v51.js |
 | tights | app/3dmap/character_clothing.js |
 | tile | app/3dmap/character_clothing.js |
-| tiles | app/3dmap/map_model.js, app/3dmap/stress_map.js |
-| time | app/3dmap/character_body_geometry.js, app/3dmap/character_pose.js, app/3dmap/character_system.js, app/alchemy_gameplay_v30.js (+ 10 ещё) |
+| tiles | app/3dmap/map_model.js (+ 1 других файлов) |
+| time | app/3dmap/character_body_geometry.js (+ 13 других файлов) |
 | timelessBody | app/class_features_engine.js |
 | timeMinutes | tests/alchemist_runtime_test.js |
-| timeout | tests/helpers/class_runtime_harness.js, tools/check_adult_anatomy_browser.js, tools/check_adult_base_browser.js, tools/check_animal_heads_browser.js (+ 32 ещё) |
+| timeout | tests/helpers/class_runtime_harness.js (+ 35 других файлов) |
 | timer | app/vtt_combat_event_bus_v69.js |
 | times | app/3dmap/gltf_character_pipeline.js |
-| tinker | app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| tinker | app/crafting_profession_progression_v47.js (+ 3 других файлов) |
 | tinkerer | app/crafting_professions_v33.js |
 | tinOre | app/crafting_resources_v34.js |
-| tiny | app/parasite_extra_runtime.js, app/swarm_extra_runtime.js |
+| tiny | app/parasite_extra_runtime.js (+ 1 других файлов) |
 | tinyServant | tests/test_v56_4.js |
-| tissue | app/3dmap/character_anatomy_geometry.js, app/resource_processing_v44.js |
-| title | app/campaign_manager.js, app/library.js, app/notes.js, app/vtt_gameplay_ux_v58.js (+ 2 ещё) |
-| to | app/bestiary_catalog_v56_13.js, app/crafting_disassembly_repair_v51.js, app/occultist_kibbles_v11_runtime.js |
+| tissue | app/3dmap/character_anatomy_geometry.js (+ 1 других файлов) |
+| title | app/campaign_manager.js (+ 5 других файлов) |
+| to | app/bestiary_catalog_v56_13.js (+ 2 других файлов) |
 | toad | app/data/classes/Beastheart.js |
-| toggle | app/content_catalog.js, app/vessel_laserllama_v4_runtime.js |
-| toggleCondition | app/combat_engine.js, tests/test_v727_fixes.js, tests/test_v728_fixes.js, tests/test_v749_monster_authority_reaction_order.js |
-| toHit | app/weaponsheavy.js, app/weaponsmelee.js, app/weaponsranged.js, app/weaponsspecial.js |
-| token | app/cloud_sync.js, app/companion_gameplay_v27.js, app/network_gameplay.js |
-| tokenList | tests/test_v723_fixes.js, tests/test_v737_spellcasting_transaction.js, tests/test_v738_multiclass_spell_sources.js |
-| tokens | app/3dmap/map_model.js, app/alchemist_mhp_2024_runtime.js, app/vtt_encounter_map_v59.js, tests/test_class_audit_runtime.js (+ 5 ещё) |
+| toggle | app/content_catalog.js (+ 1 других файлов) |
+| toggleCondition | app/combat_engine.js (+ 3 других файлов) |
+| toHit | app/weaponsheavy.js (+ 3 других файлов) |
+| token | app/cloud_sync.js (+ 2 других файлов) |
+| tokenList | tests/test_v723_fixes.js (+ 2 других файлов) |
+| tokens | app/3dmap/map_model.js (+ 8 других файлов) |
 | tombGuardian | app/expansion_classes_pack.js |
-| tool | app/battle_board.js, app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js (+ 14 ещё) |
+| tool | app/battle_board.js (+ 17 других файлов) |
 | toolBonus | app/monster_loot_engine_v37.js |
 | toolName | tests/alchemist_runtime_test.js |
-| toolProficiencies | app/Backgrounds.js, tests/test_v52.js, tests/test_v53.js |
+| toolProficiencies | app/Backgrounds.js (+ 2 других файлов) |
 | toolRequired | app/world_resource_gathering_v53.js |
-| tools | app/alchemist_mhp_2024_runtime.js, app/crafting_economy_v49.js, app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js (+ 24 ещё) |
-| top | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_clothing_customizer_geometry_test.js, tests/character_clothing_options_test.js (+ 9 ещё) |
+| tools | app/alchemist_mhp_2024_runtime.js (+ 27 других файлов) |
+| top | app/3dmap/character_editor_3d.js (+ 12 других файлов) |
 | top10LargestMapped | tests/makehuman_target_surface_transfer_audit.js |
-| topknot | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
+| topknot | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | topY | app/3dmap/character_clothing.js |
-| torso | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_system.js |
-| torsoRidgeSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js, tests/character_tiefling_details_test.js, tools/check_tiefling_browser.js (+ 1 ещё) |
-| torsoRidgeWidth | app/3dmap/character_system.js, tests/character_tiefling_details_test.js, tools/check_tiefling_details_browser.js |
+| torso | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
+| torsoRidgeSize | app/3dmap/character_system.js (+ 4 других файлов) |
+| torsoRidgeWidth | app/3dmap/character_system.js (+ 2 других файлов) |
 | tortle | tools/check_quartet_races_browser.js |
-| total | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 49 ещё) |
+| total | app/bestiary_catalog_v56_1.js (+ 52 других файлов) |
 | total_length | tests/human_base_glb_audit.js |
 | totalCp | app/market_economy_v55.js |
 | totalDomination | app/expansion_classes_pack.js |
@@ -12166,16 +12167,16 @@
 | trackInscribedRunesAnyPlane | app/expansion_classes_pack.js |
 | traderCount | app/market_expansion_v55_1.js |
 | traderId | app/market_social_v55_3.js |
-| traders | app/market_economy_v55.js, tests/test_v55.js |
+| traders | app/market_economy_v55.js (+ 1 других файлов) |
 | TRADERS | app/market_economy_v55.js |
-| tradition | app/occultist_kibbles_v11_runtime.js, tests/test_class_audit_runtime.js |
+| tradition | app/occultist_kibbles_v11_runtime.js (+ 1 других файлов) |
 | traditionAction | app/occultist_kibbles_v11_runtime.js |
 | traditionRites | app/data/classes/Occultist.js |
-| traditions | app/data/classes/Occultist.js, app/occultist_kibbles_v11_runtime.js |
+| traditions | app/data/classes/Occultist.js (+ 1 других файлов) |
 | trainHumanoids | app/expansion_classes_pack.js |
-| traits | app/companions.js, app/shifter_laserllama_v2_1_runtime.js, app/vessel_laserllama_v4_runtime.js |
+| traits | app/companions.js (+ 2 других файлов) |
 | transactionRevision | app/network_gameplay.js |
-| transcended | app/data/classes/Psion.js, app/expansion_classes_pack.js |
+| transcended | app/data/classes/Psion.js (+ 1 других файлов) |
 | Transcended | app/kibbles_localization_content_v71.js |
 | transfer | app/parasite_extra_runtime.js |
 | transferCondition | app/expansion_classes_pack.js |
@@ -12187,12 +12188,12 @@
 | transposition | app/expansion_classes_pack.js |
 | traps | app/crafting_profession_progression_v47.js |
 | treasure | app/3dmap/gltf_catalog.js |
-| triangles | app/3dmap/character_editor_3d.js, tools/check_external_anatomy_browser.js, tools/check_male_anatomy_browser.js, tools/check_pose_browser.js (+ 1 ещё) |
+| triangles | app/3dmap/character_editor_3d.js (+ 4 других файлов) |
 | trickster | app/vessel_laserllama_v4_runtime.js |
 | trigger | app/expansion_classes_pack.js |
 | triggerDamageTypes | app/blood_hunter_engine.js |
 | triggerHealing | app/martyr_mhp_2024_runtime.js |
-| triggerId | app/combat_engine.js, tests/test_class_audit_stage3_runtime.js, tests/test_class_audit_stage4_runtime.js |
+| triggerId | app/combat_engine.js (+ 2 других файлов) |
 | triggerMiraculousHealing | app/expansion_classes_pack.js |
 | triggerOnNearbyKill | app/blood_hunter_engine.js |
 | triggerOnPsychicDamage | app/expansion_classes_pack.js |
@@ -12201,58 +12202,58 @@
 | trousers | app/3dmap/character_clothing.js |
 | trueSight | app/occultist_kibbles_v11_runtime.js |
 | truesightFt | app/expansion_classes_pack.js |
-| trunkSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js |
+| trunkSize | app/3dmap/character_system.js (+ 1 других файлов) |
 | truth | app/martyr_mhp_2024_runtime.js |
 | ts | app/vtt_debug_error_log_v709.js |
 | turn | app/necromancer_mhp_2024_runtime.js |
 | turned | app/class_features_engine.js |
 | turnId | tests/test_class_audit_runtime.js |
-| turnResources | app/alchemist_mhp_2024_runtime.js, app/class_features_engine.js, app/dnd_tools.js, app/gameplay_core_v57.js (+ 21 ещё) |
+| turnResources | app/alchemist_mhp_2024_runtime.js (+ 24 других файлов) |
 | turns | app/blood_hunter_engine.js |
 | turnUndead | app/class_features_engine.js |
 | turtle | app/3dmap/character_body_geometry.js |
-| tuskSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js, tools/check_character_races_browser.js |
-| twin_braids | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
-| twin_tails | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
+| tuskSize | app/3dmap/character_system.js (+ 2 других файлов) |
+| twin_braids | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| twin_tails | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | twinFamiliar | app/expansion_classes_pack.js |
 | twinned | app/class_features_engine.js |
 | twoRevelations | app/occultist_kibbles_v11_runtime.js |
-| type | app/3dmap/map_editor.js, app/3dmap/map_model.js, app/3dmap/stress_map.js, app/Inventory.js (+ 88 ещё) |
-| typedExtraDice | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/warden_mhp_2024_runtime.js |
-| typeKey | app/weaponsheavy.js, app/weaponsmelee.js, app/weaponsranged.js, app/weaponsspecial.js |
+| type | app/3dmap/map_editor.js (+ 91 других файлов) |
+| typedExtraDice | app/alchemist_mhp_2024_runtime.js (+ 3 других файлов) |
+| typeKey | app/weaponsheavy.js (+ 3 других файлов) |
 | types | app/custom_crafting_v32.js |
-| u | app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js |
+| u | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | uiGather | app/alchemy_gathering_professions_v52.js |
 | uiRequired | app/data/classes/Psion.js |
 | umbralImprecation | app/expansion_classes_pack.js |
 | unarmed | app/expansion_classes_pack.js |
-| unarmedAttack | app/blood_hunter_engine.js, tests/pugilist_combat_test.js, tests/pugilist_runtime_test.js, tests/test_class_audit_runtime.js |
+| unarmedAttack | app/blood_hunter_engine.js (+ 3 других файлов) |
 | unarmedAttackBonus | app/expansion_classes_pack.js |
 | unarmedDamage | app/expansion_classes_pack.js |
 | unarmedGraft | tests/alchemist_runtime_test.js |
 | unarmoredAC | app/expansion_classes_pack.js |
-| unavailable | app/accursed_oap_v11_runtime.js, app/blood_hunter_engine.js, app/content_framework.js, app/martyr_mhp_2024_runtime.js (+ 8 ещё) |
+| unavailable | app/accursed_oap_v11_runtime.js (+ 11 других файлов) |
 | unavoidableAccident | app/expansion_classes_pack.js |
-| unbreakable | app/blood_hunter_engine.js, app/data/classes/Pugilist.js, app/expansion_classes_pack.js |
+| unbreakable | app/blood_hunter_engine.js (+ 2 других файлов) |
 | Unbreakable | app/expansion_classes_pack.js |
 | unbreakableExploit | app/expansion_classes_pack.js |
 | unbridledChaos | app/expansion_classes_pack.js |
 | uncannyDodge | app/class_features_engine.js |
 | unchanged | tests/makehuman_gender_fixture_audit.js |
-| uncommon | app/Inventory.js, app/alchemy_gathering_professions_v52.js, app/market_economy_v55.js, app/market_trade_v55_2.js (+ 2 ещё) |
+| uncommon | app/Inventory.js (+ 5 других файлов) |
 | unconsciousAtFatigueGteCurrentHp | app/expansion_classes_pack.js |
 | unconsciousOrStunnedOnly | app/expansion_classes_pack.js |
-| undead | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 12 ещё) |
+| undead | app/bestiary_catalog_v56_1.js (+ 15 других файлов) |
 | undeadFocusAvailable | app/blood_hunter_engine.js |
 | undeadFocusReaction | app/blood_hunter_engine.js |
-| undercut | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
+| undercut | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | underdark | app/3dmap/character_editor_3d.js |
 | underwaterDarkvision | app/shifter_laserllama_v2_1_runtime.js |
 | underwear | app/3dmap/character_clothing.js |
-| underwearBottom | app/3dmap/character_system.js, tests/character_adult_anatomy_test.js, tests/character_clothing_test.js, tests/character_external_anatomy_test.js (+ 2 ещё) |
-| underwearTop | app/3dmap/character_system.js, tests/character_adult_anatomy_test.js, tests/character_clothing_test.js, tests/character_external_anatomy_test.js (+ 3 ещё) |
+| underwearBottom | app/3dmap/character_system.js (+ 5 других файлов) |
+| underwearTop | app/3dmap/character_system.js (+ 6 других файлов) |
 | undo | app/3dmap/character_editor_3d.js |
-| undying | app/blood_hunter_engine.js, app/expansion_classes_pack.js, app/martyr_mhp_2024_runtime.js |
+| undying | app/blood_hunter_engine.js (+ 2 других файлов) |
 | undyingServitude | app/necromancer_mhp_2024_runtime.js |
 | unequip | app/3dmap/character_system.js |
 | unerringEye | app/expansion_classes_pack.js |
@@ -12260,11 +12261,11 @@
 | ungulate | app/expanded_bestiary_v39.js |
 | uniforms | tests/character_3d_editor_test.js |
 | uniquePositionVertexCounts | tests/makehuman_topology_audit.js |
-| unit | app/3dmap/character_body_geometry.js, app/3dmap/character_editor_3d.js, app/market_social_v55_3.js, app/market_trade_v55_2.js (+ 1 ещё) |
+| unit | app/3dmap/character_body_geometry.js (+ 4 других файлов) |
 | unitGp | app/market_trade_v55_2.js |
 | units | app/market_economy_v55.js |
 | unknown | tests/character_adult_anatomy_test.js |
-| unleashed | app/data/classes/Psion.js, app/expansion_classes_pack.js |
+| unleashed | app/data/classes/Psion.js (+ 1 других файлов) |
 | unlimitedHybrid | app/expansion_classes_pack.js |
 | unlockRank | app/crafting_profession_progression_v47.js |
 | unreducedNecrotic | app/expansion_classes_pack.js |
@@ -12276,84 +12277,84 @@
 | unsealedAspectReplacement | app/vessel_laserllama_v4_runtime.js |
 | unseen | tests/test_v56.js |
 | unshackledPower | app/expansion_classes_pack.js |
-| unstable | app/alchemy_engine_v29.js, app/alchemy_gameplay_v30.js |
+| unstable | app/alchemy_engine_v29.js (+ 1 других файлов) |
 | unstoppable | app/warden_mhp_2024_runtime.js |
-| unsupported | app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js (+ 14 ещё) |
-| until | app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js |
+| unsupported | app/accursed_oap_v11_runtime.js (+ 17 других файлов) |
+| until | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
 | untilDismissed | app/expansion_classes_pack.js |
 | unwaveringWill | app/data/classes/Warlord.js |
 | unyieldingResolve | app/data/classes/Warden.js |
 | unyieldingWill | app/savant_laserllama_v561_runtime.js |
-| update | app/secondary_entities_engine.js, tests/alchemist_runtime_test.js |
+| update | app/secondary_entities_engine.js (+ 1 других файлов) |
 | updateAvailable | app/update_manager_v2.js |
-| updated | app/shifter_laserllama_v2_1_runtime.js, app/vessel_laserllama_v4_runtime.js |
+| updated | app/shifter_laserllama_v2_1_runtime.js (+ 1 других файлов) |
 | updated_at | tests/cloud_sync_test.cjs |
-| updatedAt | app/3dmap/map_model.js, app/world_resource_gathering_v53.js |
+| updatedAt | app/3dmap/map_model.js (+ 1 других файлов) |
 | updateSwarm | app/3dmap/character_body_geometry.js |
 | upperArmL | app/3dmap/character_anatomy.js |
 | upperArmR | app/3dmap/character_anatomy.js |
 | urbanAdvantage | app/expanded_classes_v23.js |
 | uri | tests/gltf_loader_smoke.cjs |
-| url | app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js, app/update_manager_v2.js, app/vtt_combat_log_v66.js (+ 1 ещё) |
-| URL | tests/test_v69.js, tests/test_v70.js, tests/test_v717_fixes.js, tests/test_v744_sync_authority_save.js (+ 2 ещё) |
+| url | app/3dmap/gltf_character_pipeline.js (+ 4 других файлов) |
+| URL | tests/test_v69.js (+ 5 других файлов) |
 | urls | desktop/main.cjs |
 | ursine | app/expanded_bestiary_v39.js |
-| use | app/data/classes/Beastheart.js, app/shifter_laserllama_v2_1_runtime.js |
+| use | app/data/classes/Beastheart.js (+ 1 других файлов) |
 | useCount | app/expansion_classes_pack.js |
-| used | app/Backgrounds.js, app/app.js, app/blood_hunter_engine.js, app/character_creation.js (+ 16 ещё) |
+| used | app/Backgrounds.js (+ 19 других файлов) |
 | usedBloodLevels | app/occultist_kibbles_v11_runtime.js |
-| usedBy | app/crafting_resources_v34.js, app/world_resource_gathering_v53.js |
-| usedByV38 | app/crafting_professions_v38.js, app/monster_loot_crafting_bridge_v40.js |
+| usedBy | app/crafting_resources_v34.js (+ 1 других файлов) |
+| usedByV38 | app/crafting_professions_v38.js (+ 1 других файлов) |
 | usedCount | app/combat_abilities.js |
 | usedLevels | app/occultist_kibbles_v11_runtime.js |
 | useDominantOrgan | app/walter_parasite_extra_runtime.js |
 | usedThisRound | app/monster_engine.js |
-| useFeature | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/class_features_engine.js, app/data/classes/Beastheart.js (+ 13 ещё) |
+| useFeature | app/alchemist_mhp_2024_runtime.js (+ 16 других файлов) |
 | useIntForStr | app/expansion_classes_pack.js |
 | useIntForStrengthOrDexOnSurge | app/expansion_classes_pack.js |
 | useLeadership | app/expansion_classes_pack.js |
-| user | app/cloud_sync.js, tests/cloud_sync_test.cjs |
-| userAgent | app/vtt_combat_log_v66.js, tests/test_v70.js |
-| useRules | app/gameplay_core_v57.js, app/necromancer_mhp_2024_runtime.js, app/network_gameplay.js, app/savant_laserllama_v561_runtime.js (+ 5 ещё) |
-| uses | app/data/classes/Illigger.js, app/expansion_classes_pack.js, app/ghost_extra_runtime.js, app/occultist_kibbles_v11_runtime.js (+ 2 ещё) |
+| user | app/cloud_sync.js (+ 1 других файлов) |
+| userAgent | app/vtt_combat_log_v66.js (+ 1 других файлов) |
+| useRules | app/gameplay_core_v57.js (+ 8 других файлов) |
+| uses | app/data/classes/Illigger.js (+ 5 других файлов) |
 | usesAlchemistSupplies | app/network_gameplay.js |
 | usesIntForPerception | app/expansion_classes_pack.js |
-| usesPerLongRest | app/alchemist_mhp_2024_runtime.js, app/expansion_classes_pack.js, app/necromancer_mhp_2024_runtime.js |
+| usesPerLongRest | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | usesPerRest | app/necromancer_mhp_2024_runtime.js |
 | usesPerTurn | app/expansion_classes_pack.js |
 | useSpiritAbility | app/ghost_extra_runtime.js |
-| usesStrength | app/companion_gameplay_v27.js, app/summoning_engine.js |
+| usesStrength | app/companion_gameplay_v27.js (+ 1 других файлов) |
 | useStrength | app/expansion_classes_pack.js |
 | useStrengthWithBows | app/expansion_classes_pack.js |
-| useSubclassFeature | app/ghost_extra_runtime.js, app/parasite_extra_runtime.js, app/walter_parasite_extra_runtime.js |
+| useSubclassFeature | app/ghost_extra_runtime.js (+ 2 других файлов) |
 | useTex | tests/character_3d_editor_test.js |
 | useTexLoc | app/3dmap/map_renderer_3d.js |
-| uv | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/gltf_loader.js (+ 2 ещё) |
+| uv | app/3dmap/character_anatomy_geometry.js (+ 5 других файлов) |
 | uvLoc | app/3dmap/map_renderer_3d.js |
-| v | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/map_renderer_3d.js |
+| v | app/3dmap/character_anatomy_geometry.js (+ 2 других файлов) |
 | V52 | tests/test_v52.js |
 | V53 | tests/test_v53.js |
 | valiantLeader | app/data/classes/Warlord.js |
 | validatePack | app/content_framework.js |
 | validateTurn | app/gameplay_core_v57.js |
-| value | app/3dmap/character_appearance_store.js, app/Settings.js, app/character_creation_pergament.js, app/crafting_disassembly_v51.js (+ 17 ещё) |
+| value | app/3dmap/character_appearance_store.js (+ 20 других файлов) |
 | valueMultiplier | app/crafting_disassembly_v51.js |
-| values | app/3dmap/gltf_character_pipeline.js, tests/gltf_loader_smoke.cjs |
+| values | app/3dmap/gltf_character_pipeline.js (+ 1 других файлов) |
 | vampirism | app/accursed_oap_v11_runtime.js |
 | vanish | app/class_features_engine.js |
-| variant | app/3dmap/character_anatomy.js, tools/check_external_anatomy_browser.js, tools/check_male_anatomy_browser.js, tools/check_pose_browser.js (+ 1 ещё) |
-| variantHooks | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_10.js, app/bestiary_catalog_v56_11.js, app/bestiary_catalog_v56_12.js (+ 10 ещё) |
-| variants | app/alchemist_mhp_2024_runtime.js, app/necromancer_mhp_2024_runtime.js, tests/test_v56.js |
-| VEC2 | app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js, tests/character_3d_morph_assets_test.js, tests/makehuman_gender_fixture_audit.js (+ 1 ещё) |
-| VEC3 | app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js, tests/character_3d_morph_assets_test.js, tests/makehuman_gender_fixture_audit.js (+ 1 ещё) |
-| VEC4 | app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js, tests/character_3d_morph_assets_test.js, tests/makehuman_gender_fixture_audit.js (+ 1 ещё) |
+| variant | app/3dmap/character_anatomy.js (+ 4 других файлов) |
+| variantHooks | app/bestiary_catalog_v56_1.js (+ 13 других файлов) |
+| variants | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
+| VEC2 | app/3dmap/gltf_character_pipeline.js (+ 4 других файлов) |
+| VEC3 | app/3dmap/gltf_character_pipeline.js (+ 4 других файлов) |
+| VEC4 | app/3dmap/gltf_character_pipeline.js (+ 4 других файлов) |
 | vedalken | app/crafting_professions_v38.js |
 | vengefulBane | app/expansion_classes_pack.js |
 | venom | app/crafting_economy_v49.js |
 | Venom | app/alchemy_gameplay_v30.js |
 | venomConcentrateV49 | app/crafting_economy_v49.js |
-| venomReagent | app/crafting_economy_v49.js, app/resource_processing_v44.js |
-| verbal | app/data/spells/Focuses.js, app/data/spells/Spells1lvl.js, app/data/spells/Spells2lvl.js, app/data/spells/Spells3lvl.js (+ 6 ещё) |
+| venomReagent | app/crafting_economy_v49.js (+ 1 других файлов) |
+| verbal | app/data/spells/Focuses.js (+ 9 других файлов) |
 | verbalComponentsBlocked | app/alchemist_mhp_2024_runtime.js |
 | verify | app/cloud_sync.js |
 | vermillion | app/blood_hunter_engine.js |
@@ -12361,21 +12362,21 @@
 | vermin | app/expanded_bestiary_v39.js |
 | versatileAttackBonus | app/expansion_classes_pack.js |
 | versatileFightingAdvanced | app/expansion_classes_pack.js |
-| version | app/3dmap/character_anatomy.js, app/3dmap/character_system.js, app/3dmap/map_model.js, app/accursed_oap_v11_runtime.js (+ 48 ещё) |
-| VERSION | app/3dmap/character_anatomy.js, app/3dmap/character_anatomy_geometry.js, app/3dmap/character_editor_3d.js, app/3dmap/character_system.js (+ 53 ещё) |
-| vertexCount | app/3dmap/character_editor_3d.js, tools/build_character_editor_morphs.js |
+| version | app/3dmap/character_anatomy.js (+ 51 других файлов) |
+| VERSION | app/3dmap/character_anatomy.js (+ 56 других файлов) |
+| vertexCount | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | vertexMask | app/3dmap/character_anatomy.js |
-| vertices | app/3dmap/character_editor_3d.js, tests/makehuman_gender_fixture_audit.js, tools/build_makehuman_morphs.js, tools/check_external_anatomy_browser.js (+ 3 ещё) |
+| vertices | app/3dmap/character_editor_3d.js (+ 6 других файлов) |
 | verticesPerRat | app/3dmap/character_body_geometry.js |
-| very_rare | app/Inventory.js, app/alchemy_gathering_professions_v52.js, app/market_economy_v55.js, app/market_trade_v55_2.js (+ 2 ещё) |
+| very_rare | app/Inventory.js (+ 5 других файлов) |
 | vesselMagic | app/vessel_laserllama_v4_runtime.js |
 | vessels | app/crafting_profession_progression_v47.js |
 | vesselSlots | app/vessel_laserllama_v4_runtime.js |
 | vesselStrike | app/vessel_laserllama_v4_runtime.js |
 | vials | app/crafting_profession_progression_v47.js |
 | victorySurgeExploit | app/expansion_classes_pack.js |
-| view | app/3dmap/map_model.js, app/vtt_mobile_battle_v61.js |
-| viewport | tools/check_adult_anatomy_browser.js, tools/check_adult_base_browser.js, tools/check_animal_heads_browser.js, tools/check_avian_elephant_heads_browser.js (+ 33 ещё) |
+| view | app/3dmap/map_model.js (+ 1 других файлов) |
+| viewport | tools/check_adult_anatomy_browser.js (+ 36 других файлов) |
 | viewportHeight | app/3dmap/character_editor_3d.js |
 | viewportWidth | app/3dmap/character_editor_3d.js |
 | vileAffliction | app/expansion_classes_pack.js |
@@ -12383,24 +12384,24 @@
 | vine | app/Settings.js |
 | vinegar | app/crafting_resources_v34.js |
 | violet | app/Settings.js |
-| visible | app/blood_hunter_engine.js, app/combat_engine.js, app/network_gameplay.js, app/secondary_entities_engine.js (+ 3 ещё) |
+| visible | app/blood_hunter_engine.js (+ 6 других файлов) |
 | visibleMeleeOnly | app/expansion_classes_pack.js |
 | Vitality | app/alchemy_gameplay_v30.js |
 | vitalitySplint | app/expansion_classes_pack.js |
 | voiceReagent | app/resource_processing_v44.js |
 | volatility | app/alchemy_gameplay_v30.js |
 | Volatility | app/alchemy_gameplay_v30.js |
-| volume | app/3dmap/character_body_geometry.js, app/Ambiences.js |
+| volume | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
 | volumes | app/3dmap/character_body_geometry.js |
 | voluntarilyDetach | app/parasite_extra_runtime.js |
 | voraciousWeapon | app/expansion_classes_pack.js |
-| vowOfEnmity | app/class_features_engine.js, app/network_gameplay.js |
+| vowOfEnmity | app/class_features_engine.js (+ 1 других файлов) |
 | vpLoc | app/3dmap/map_renderer_3d.js |
-| vulnerabilities | app/combat_engine.js, app/companions.js, tests/pugilist_combat_test.js, tests/test_v709_fixes.js (+ 3 ещё) |
-| vulnerability | app/blood_hunter_engine.js, app/expansion_classes_pack.js, app/vtt_debug_dice_lab_v706.js |
-| vulnerable | app/vtt_debug_dice_lab_v706.js, app/vtt_debug_rules_matrix_v707.js |
-| w | app/3dmap/character_anatomy_geometry.js, app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/map_editor.js (+ 7 ещё) |
-| waist | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, tests/character_3d_morph_assets_test.js, tests/character_3d_skin_morph_test.js (+ 3 ещё) |
+| vulnerabilities | app/combat_engine.js (+ 6 других файлов) |
+| vulnerability | app/blood_hunter_engine.js (+ 2 других файлов) |
+| vulnerable | app/vtt_debug_dice_lab_v706.js (+ 1 других файлов) |
+| w | app/3dmap/character_anatomy_geometry.js (+ 10 других файлов) |
+| waist | app/3dmap/character_editor_3d.js (+ 6 других файлов) |
 | waiveSacrificeDamage | app/expansion_classes_pack.js |
 | wall | app/3dmap/map_model.js |
 | WALL | app/3dmap/map_renderer_2d.js |
@@ -12423,10 +12424,10 @@
 | wall_wood_dark | app/3dmap/map_renderer_2d.js |
 | wall_wood_light | app/3dmap/map_renderer_2d.js |
 | wallClimb | app/necromancer_mhp_2024_runtime.js |
-| walls | app/3dmap/map_model.js, app/3dmap/stress_map.js, tests/test_v709_fixes.js |
+| walls | app/3dmap/map_model.js (+ 2 других файлов) |
 | wallStart | app/battle_board.js |
-| wandering | app/data/classes/Psion.js, app/expansion_classes_pack.js |
-| wantedCp | app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| wandering | app/data/classes/Psion.js (+ 1 других файлов) |
+| wantedCp | app/market_social_v55_3.js (+ 1 других файлов) |
 | war_caster | app/feat_engine.js |
 | warCry | app/expansion_classes_pack.js |
 | wardAbsorbed | app/combat_engine.js |
@@ -12437,7 +12438,7 @@
 | warforged | app/crafting_professions_v38.js |
 | warfront | tests/test_v56_12.js |
 | warfrontEligible | app/bestiary_catalog_v56_12.js |
-| warlock | app/magic_engine.js, app/rulesEngine.js |
+| warlock | app/magic_engine.js (+ 1 других файлов) |
 | warlockLevelEquivalent | app/expansion_classes_pack.js |
 | Warlord | app/kibbles_localization_content_v71.js |
 | warlordSource | app/kibbles_localization_content_v71.js |
@@ -12448,29 +12449,29 @@
 | warSongs | app/expanded_classes_v23.js |
 | waste | app/resource_processing_v44.js |
 | wasteland | app/market_economy_v55.js |
-| water | app/crafting_professions_v38.js, app/market_economy_v55.js |
-| waterBreathing | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| water | app/crafting_professions_v38.js (+ 1 других файлов) |
+| waterBreathing | app/alchemist_mhp_2024_runtime.js (+ 2 других файлов) |
 | waterCore | app/resource_processing_v44.js |
 | waterEssence | app/resource_processing_v44.js |
 | wave | app/3dmap/character_body_geometry.js |
-| wavy_bob | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
-| wavy_long | app/3dmap/character_body_geometry.js, app/3dmap/character_system.js |
-| wax | app/crafting_engine_v31.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js |
+| wavy_bob | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| wavy_long | app/3dmap/character_body_geometry.js (+ 1 других файлов) |
+| wax | app/crafting_engine_v31.js (+ 2 других файлов) |
 | Weakness | app/alchemy_gameplay_v30.js |
-| weapon | app/3dmap/gltf_catalog.js, app/blood_hunter_engine.js, app/expansion_classes_pack.js, app/gameplay_core_v57.js (+ 9 ещё) |
-| weaponAttack | app/rulesEngine.js, app/savant_laserllama_v561_runtime.js, app/shifter_laserllama_v2_1_runtime.js, app/warlord_laserllama_v330_runtime.js (+ 14 ещё) |
+| weapon | app/3dmap/gltf_catalog.js (+ 12 других файлов) |
+| weaponAttack | app/rulesEngine.js (+ 17 других файлов) |
 | weaponAttackBonus | app/occultist_kibbles_v11_runtime.js |
 | weaponBonus | app/occultist_kibbles_v11_runtime.js |
 | weaponDamage | app/occultist_kibbles_v11_runtime.js |
 | weaponDamageType | app/expansion_classes_pack.js |
 | weaponFunctional | tests/test_v55_2.js |
-| weaponId | app/alchemist_mhp_2024_runtime.js, app/blood_hunter_engine.js, app/expansion_classes_pack.js, tests/alchemist_combat_test.js (+ 11 ещё) |
+| weaponId | app/alchemist_mhp_2024_runtime.js (+ 14 других файлов) |
 | weaponMastery | app/data/classes/Warden.js |
 | weaponMasteryLevels | app/data/classes/Warden.js |
 | weaponProficiency | app/occultist_kibbles_v11_runtime.js |
-| weapons | app/Inventory.js, app/Proficienciescheck.js, app/accursed_oap_v11_runtime.js, app/alchemist_mhp_2024_runtime.js (+ 59 ещё) |
-| weaponsData | app/Backgrounds.js, app/character_creation.js, tests/test_v713_fixes.js |
-| weaponsmith | app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| weapons | app/Inventory.js (+ 62 других файлов) |
+| weaponsData | app/Backgrounds.js (+ 2 других файлов) |
+| weaponsmith | app/market_social_v55_3.js (+ 1 других файлов) |
 | weaponTeleportIfDistanceGtFt | app/expansion_classes_pack.js |
 | weaponValue | tests/test_v55_2.js |
 | weaponWear | tests/crafting_dlc_v50_test.js |
@@ -12478,52 +12479,52 @@
 | wearForAttack | app/crafting_dlc_v50.js |
 | wearRatio | app/crafting_disassembly_v51.js |
 | weasel | app/data/classes/Beastheart.js |
-| weaver | app/crafting_engine_v31.js, app/crafting_profession_progression_v47.js, app/crafting_professions_v33.js, app/crafting_professions_v38.js (+ 2 ещё) |
+| weaver | app/crafting_engine_v31.js (+ 5 других файлов) |
 | webgl | tools/check_character_editor_browser.js |
 | webPreferences | desktop/main.cjs |
 | webSecurity | desktop/main.cjs |
-| weight | app/3dmap/character_pose.js, app/3dmap/character_system.js, app/alchemy_gathering_professions_v52.js, app/armors.js (+ 40 ещё) |
-| weights | app/3dmap/character_anatomy_geometry.js, app/3dmap/gltf_character_pipeline.js, app/3dmap/gltf_loader.js, tests/character_3d_skin_morph_test.js |
+| weight | app/3dmap/character_pose.js (+ 43 других файлов) |
+| weights | app/3dmap/character_anatomy_geometry.js (+ 3 других файлов) |
 | weld | app/3dmap/character_anatomy_geometry.js |
-| White | app/expanded_classes_v23.js, app/expansion_classes_pack.js |
+| White | app/expanded_classes_v23.js (+ 1 других файлов) |
 | whiteHot | app/expansion_classes_pack.js |
-| width | app/3dmap/character_editor_3d.js, app/3dmap/character_system.js, app/3dmap/map_model.js, desktop/main.cjs (+ 45 ещё) |
+| width | app/3dmap/character_editor_3d.js (+ 48 других файлов) |
 | wildCharge | app/expansion_classes_pack.js |
 | wildernessIntel | app/expansion_classes_pack.js |
 | wildMagicSurge | app/class_features_engine.js |
-| wildShape | app/class_features_engine.js, app/shifter_laserllama_v2_1_runtime.js |
-| wildspace | app/bestiary_catalog_v56_11.js, tests/test_v56_11.js |
+| wildShape | app/class_features_engine.js (+ 1 других файлов) |
+| wildspace | app/bestiary_catalog_v56_11.js (+ 1 других файлов) |
 | wildspaceEligible | app/bestiary_catalog_v56_11.js |
 | wildwood | app/3dmap/character_editor_3d.js |
 | willControlledBy | app/walter_parasite_extra_runtime.js |
-| window | app/3dmap/gltf_catalog.js, app/class_features_engine.js, tests/alchemist_combat_test.js, tests/alchemist_runtime_test.js (+ 71 ещё) |
-| wingColor | app/3dmap/character_system.js, tools/check_avian_races_browser.js, tools/check_feather_surface_browser.js, tools/check_modular_races_browser.js |
-| wingSize | app/3dmap/character_system.js, tests/character_races_geometry_test.js |
-| wis | app/Backgrounds.js, app/Inventory.js, app/alchemist_mhp_2024_runtime.js, app/app.js (+ 45 ещё) |
-| wisChecksAdvantage | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
-| wisChecksDisadvantage | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
-| wisdom | app/Hero-info.js, app/alchemist_mhp_2024_runtime.js, app/data/classes/Martyr.js, app/data/classes/Occultist.js (+ 6 ещё) |
+| window | app/3dmap/gltf_catalog.js (+ 74 других файлов) |
+| wingColor | app/3dmap/character_system.js (+ 3 других файлов) |
+| wingSize | app/3dmap/character_system.js (+ 1 других файлов) |
+| wis | app/Backgrounds.js (+ 48 других файлов) |
+| wisChecksAdvantage | app/blood_hunter_engine.js (+ 1 других файлов) |
+| wisChecksDisadvantage | app/blood_hunter_engine.js (+ 1 других файлов) |
+| wisdom | app/Hero-info.js (+ 9 других файлов) |
 | wisdomCheckAdvantage | app/occultist_kibbles_v11_runtime.js |
 | wisdomSaveAdvantage | app/expansion_classes_pack.js |
 | wisSave | app/expansion_classes_pack.js |
-| wisSavesDisadvantage | app/blood_hunter_engine.js, app/expansion_classes_pack.js |
+| wisSavesDisadvantage | app/blood_hunter_engine.js (+ 1 других файлов) |
 | Witch | app/data/classes/Occultist.js |
 | witchCurse | app/expansion_classes_pack.js |
 | witchItemFlySpeed | app/necromancer_mhp_2024_runtime.js |
 | with | app/monster_engine.js |
 | withering | app/alchemist_mhp_2024_runtime.js |
-| withFileTypes | desktop/prepare.cjs, desktop/update.cjs |
+| withFileTypes | desktop/prepare.cjs (+ 1 других файлов) |
 | within10CellsPct | tests/makehuman_surface_mapping_audit.js |
 | within2CellsPct | tests/makehuman_surface_mapping_audit.js |
 | within5CellsPct | tests/makehuman_surface_mapping_audit.js |
 | within5GridCellsPct | tests/makehuman_vertex_mapping_audit.js |
 | withinCellPct | tests/makehuman_surface_mapping_audit.js |
 | withinGridCellPct | tests/makehuman_vertex_mapping_audit.js |
-| wizard | app/magic_engine.js, app/rulesEngine.js |
-| wood | app/3dmap/gltf_catalog.js, app/crafting_economy_v49.js, app/crafting_engine_v31.js, app/crafting_professions_v33.js (+ 3 ещё) |
-| woodcarver | app/crafting_profession_progression_v47.js, app/crafting_professions_v38.js, app/market_social_v55_3.js, app/market_trade_v55_2.js |
+| wizard | app/magic_engine.js (+ 1 других файлов) |
+| wood | app/3dmap/gltf_catalog.js (+ 6 других файлов) |
+| woodcarver | app/crafting_profession_progression_v47.js (+ 3 других файлов) |
 | wooden | app/3dmap/gltf_catalog.js |
-| woodwork | app/crafting_engine_v31.js, app/crafting_professions_v33.js |
+| woodwork | app/crafting_engine_v31.js (+ 1 других файлов) |
 | wool | app/3dmap/character_clothing.js |
 | wordsOfAdamance | app/expansion_classes_pack.js |
 | wordsOfBenediction | app/expansion_classes_pack.js |
@@ -12537,21 +12538,21 @@
 | worldId | app/world_resource_gathering_v53.js |
 | worldMatrices | app/3dmap/gltf_character_pipeline.js |
 | worn | app/crafting_disassembly_repair_v51.js |
-| wrapS | app/3dmap/character_editor_3d.js, app/3dmap/gltf_loader.js |
-| wrapT | app/3dmap/character_editor_3d.js, app/3dmap/gltf_loader.js |
+| wrapS | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
+| wrapT | app/3dmap/character_editor_3d.js (+ 1 других файлов) |
 | wretchedCastigation | app/expansion_classes_pack.js |
-| write | app/alchemist_mhp_2024_runtime.js, app/martyr_mhp_2024_runtime.js |
-| x | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/map_editor.js (+ 20 ещё) |
+| write | app/alchemist_mhp_2024_runtime.js (+ 1 других файлов) |
+| x | app/3dmap/character_body_geometry.js (+ 23 других файлов) |
 | xanathar | app/bestiary_catalog_v56_1.js |
 | xenoNecroticReady | tests/alchemist_combat_test.js |
-| xp | app/bestiary_catalog_v56_1.js, app/bestiary_catalog_v56_12.js, app/bestiary_catalog_v56_13.js, app/bestiary_catalog_v56_2.js (+ 13 ещё) |
+| xp | app/bestiary_catalog_v56_1.js (+ 16 других файлов) |
 | xpFor | app/monster_engine.js |
 | xu | app/3dmap/character_anatomy_geometry.js |
 | xv | app/3dmap/character_anatomy_geometry.js |
 | xx | app/3dmap/character_anatomy_geometry.js |
 | xy | app/3dmap/character_anatomy_geometry.js |
-| y | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/character_editor_3d.js, app/3dmap/map_editor.js (+ 17 ещё) |
-| yaw | app/3dmap/character_body_geometry.js, app/3dmap/map_editor.js, app/3dmap/map_renderer_3d.js |
+| y | app/3dmap/character_body_geometry.js (+ 20 других файлов) |
+| yaw | app/3dmap/character_body_geometry.js (+ 2 других файлов) |
 | yeast | app/crafting_professions_v38.js |
 | yew | app/crafting_resources_v34.js |
 | yieldMult | app/monster_loot_engine_v37.js |
@@ -12560,14 +12561,14 @@
 | yuan_ti | app/crafting_professions_v38.js |
 | yv | app/3dmap/character_anatomy_geometry.js |
 | yy | app/3dmap/character_anatomy_geometry.js |
-| z | app/3dmap/character_body_geometry.js, app/3dmap/character_clothing.js, app/3dmap/map_model.js, app/3dmap/stress_map.js |
+| z | app/3dmap/character_body_geometry.js (+ 3 других файлов) |
 | zealousWords | app/expanded_classes_v23.js |
-| zeroHpReaction | app/combat_engine.js, tests/test_blood_hunter_orders.js, tests/test_class_audit_stage4_runtime.js |
+| zeroHpReaction | app/combat_engine.js (+ 2 других файлов) |
 | zeroHpSave | app/expansion_classes_pack.js |
 | zincOre | app/crafting_resources_v34.js |
 | zoneRadiusFt | app/expansion_classes_pack.js |
-| zones | app/3dmap/map_model.js, app/3dmap/stress_map.js |
-| zoom | app/3dmap/map_editor.js, app/3dmap/map_renderer_2d.js, app/battle_board.js, app/vtt_mobile_battle_v61.js |
+| zones | app/3dmap/map_model.js (+ 1 других файлов) |
+| zoom | app/3dmap/map_editor.js (+ 3 других файлов) |
 
 ### Ключи localStorage (26)
 
@@ -12580,22 +12581,22 @@
 | dnd_app_theme | app/Settings.js |
 | dnd_autorotate_enabled | app/Wallpapers.js |
 | dnd_autorotate_interval | app/Wallpapers.js |
-| dnd_campaigns_v1 | app/network_engine.js, tests/test_v717_fixes.js |
+| dnd_campaigns_v1 | app/network_engine.js (+ 1 других файлов) |
 | dnd_character_appearance_draft_v1 | tools/check_character_editor_browser.js |
 | dnd_characters | app/Settings_debug.js |
-| dnd_current_character_id | app/Settings_debug.js, app/app.js |
+| dnd_current_character_id | app/Settings_debug.js (+ 1 других файлов) |
 | dnd_custom_races | app/races.js |
-| dnd_debug_enabled | app/Settings.js, app/debug.js, index.html |
-| dnd_launcher_icon | app/Settings.js, app/icon_settings.js, app/icon_settings_v2.js |
-| dnd_market_v55_state | app/market_trade_v55_2.js, tests/test_v55_2.js |
-| dnd_modal_color | app/3dmap/map_editor.js, app/Wallpapers.js |
-| dnd_modal_opacity | app/3dmap/map_editor.js, app/Wallpapers.js |
-| dnd_multi_characters_v2 | app/Backgrounds.js, app/Settings.js, app/Settings_debug.js, app/app.js (+ 41 ещё) |
+| dnd_debug_enabled | app/Settings.js (+ 2 других файлов) |
+| dnd_launcher_icon | app/Settings.js (+ 2 других файлов) |
+| dnd_market_v55_state | app/market_trade_v55_2.js (+ 1 других файлов) |
+| dnd_modal_color | app/3dmap/map_editor.js (+ 1 других файлов) |
+| dnd_modal_opacity | app/3dmap/map_editor.js (+ 1 других файлов) |
+| dnd_multi_characters_v2 | app/Backgrounds.js (+ 44 других файлов) |
 | dnd_selected_wallpaper | app/Wallpapers.js |
-| dnd_ui_color | app/3dmap/map_editor.js, app/Wallpapers.js |
-| dnd_ui_opacity | app/3dmap/map_editor.js, app/Wallpapers.js |
+| dnd_ui_color | app/3dmap/map_editor.js (+ 1 других файлов) |
+| dnd_ui_opacity | app/3dmap/map_editor.js (+ 1 других файлов) |
 | dnd_v53_world_id | app/world_resource_gathering_v53.js |
-| dnd_v71_onboarding_done | app/onboarding_faq_v71.js, tools/check_cloud_account_browser.cjs |
+| dnd_v71_onboarding_done | app/onboarding_faq_v71.js (+ 1 других файлов) |
 | dnd_vtt_mobile_session_v67 | tests/test_v746_authoritative_save_recharge.js |
 | dnd_wallpaper_dim | app/Wallpapers.js |
 | dndContentEnabled | app/content_framework.js |
@@ -12626,11 +12627,11 @@
 | Имя | Исходные файлы |
 |---|---|
 | __DND_APP_BOOT_READY | android/app/src/main/java/com/dndvtt/app/MainActivity.java |
-| __name__ | tools/audit_adult_body_assets.py, tools/build_update_manifest.py, tools/unified_version.py |
+| __name__ | tools/audit_adult_body_assets.py (+ 2 других файлов) |
 | a | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | aa | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | action | tools/convert_remaining_furniture.py |
-| active | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/convert_remaining_furniture.py |
+| active | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 1 других файлов) |
 | activeFile | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | activeRoot | android/app/src/main/java/com/dndvtt/app/MainActivity.java |
 | activeVersion | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
@@ -12645,11 +12646,11 @@
 | APP_VERSION | tools/unified_version.py |
 | archives | tools/convert_remaining_furniture.py |
 | area | tools/audit_adult_body_assets.py |
-| args | tools/audit_adult_body_assets.py, tools/build_update_manifest.py, tools/unified_version.py |
+| args | tools/audit_adult_body_assets.py (+ 2 других файлов) |
 | attributes | tools/audit_adult_body_assets.py |
 | av | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | axis | tools/audit_adult_body_assets.py |
-| b | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/audit_adult_body_assets.py, tools/unified_version.py |
+| b | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 2 других файлов) |
 | baseUrl | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | bb | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | binary | tools/audit_adult_body_assets.py |
@@ -12657,12 +12658,12 @@
 | buf | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | buffer | tools/audit_adult_body_assets.py |
 | bv | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
-| bytes | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/audit_adult_body_assets.py |
-| c | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/convert_remaining_furniture.py, tools/unified_version.py |
+| bytes | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 1 других файлов) |
+| c | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 2 других файлов) |
 | cache | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | cacheBytes | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | cacheKey | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
-| candidates | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/build_update_manifest.py |
+| candidates | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 1 других файлов) |
 | canonical | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | catalog | tools/convert_remaining_furniture.py |
 | category | tools/sync_manifest.py |
@@ -12675,11 +12676,11 @@
 | component | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | connectedComponents | tools/audit_adult_body_assets.py |
 | context | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
-| count | tools/audit_adult_body_assets.py, tools/unified_version.py |
+| count | tools/audit_adult_body_assets.py (+ 1 других файлов) |
 | counts | tools/audit_adult_body_assets.py |
 | current | tools/unified_version.py |
 | d | tools/build_skin_microtexture.py |
-| data | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/audit_adult_body_assets.py |
+| data | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 1 других файлов) |
 | dataBytes | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | dataRoot | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | default | tools/build_update_manifest.py |
@@ -12697,24 +12698,24 @@
 | editorMorphs | tools/audit_adult_body_assets.py |
 | embeddedMorphChannels | tools/audit_adult_body_assets.py |
 | enabled | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
-| encoding | tools/build_update_manifest.py, tools/convert_remaining_furniture.py, tools/sync_manifest.py, tools/unified_version.py |
-| ensure_ascii | tools/audit_adult_body_assets.py, tools/build_update_manifest.py, tools/convert_remaining_furniture.py, tools/finalize_v741.py (+ 2 ещё) |
-| entries | tools/finalize_v741.py, tools/sync_manifest.py |
-| entry | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/build_update_manifest.py |
+| encoding | tools/build_update_manifest.py (+ 3 других файлов) |
+| ensure_ascii | tools/audit_adult_body_assets.py (+ 5 других файлов) |
+| entries | tools/finalize_v741.py (+ 1 других файлов) |
+| entry | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 1 других файлов) |
 | errors | tools/convert_remaining_furniture.py |
 | EXCLUDE_DIRS | tools/sync_manifest.py |
 | executor | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
-| exist_ok | tools/audit_adult_body_assets.py, tools/build_update_manifest.py, tools/convert_remaining_furniture.py |
+| exist_ok | tools/audit_adult_body_assets.py (+ 2 других файлов) |
 | expectedBytes | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | expectedHash | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | export_apply | tools/convert_remaining_furniture.py |
 | export_format | tools/convert_remaining_furniture.py |
-| ext | tools/build_update_manifest.py, tools/sync_manifest.py |
+| ext | tools/build_update_manifest.py (+ 1 других файлов) |
 | f | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | faces | tools/audit_adult_body_assets.py |
-| file | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/convert_remaining_furniture.py |
+| file | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 1 других файлов) |
 | filepath | tools/convert_remaining_furniture.py |
-| files | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/audit_adult_body_assets.py, tools/build_update_manifest.py, tools/convert_remaining_furniture.py (+ 2 ещё) |
+| files | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 5 других файлов) |
 | filesBytes | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | fp | tools/finalize_v741.py |
 | GENERATED | tools/sync_manifest.py |
@@ -12723,33 +12724,33 @@
 | gradle_path | tools/unified_version.py |
 | gx | tools/build_skin_microtexture.py |
 | gy | tools/build_skin_microtexture.py |
-| h | tools/build_update_manifest.py, tools/sync_manifest.py |
+| h | tools/build_update_manifest.py (+ 1 других файлов) |
 | healthy | android/app/src/main/java/com/dndvtt/app/MainActivity.java |
 | height | tools/build_skin_microtexture.py |
 | help | tools/unified_version.py |
-| i | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/audit_adult_body_assets.py |
+| i | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 1 других файлов) |
 | iconId | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | id | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | ids | tools/audit_adult_body_assets.py |
 | image | tools/build_skin_microtexture.py |
 | in | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
-| indent | tools/audit_adult_body_assets.py, tools/build_update_manifest.py, tools/convert_remaining_furniture.py, tools/unified_version.py |
+| indent | tools/audit_adult_body_assets.py (+ 3 других файлов) |
 | indexComponentType | tools/audit_adult_body_assets.py |
 | info | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
-| item | tools/audit_adult_body_assets.py, tools/convert_remaining_furniture.py |
+| item | tools/audit_adult_body_assets.py (+ 1 других файлов) |
 | k | tools/convert_remaining_furniture.py |
 | keepPrevious | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
-| key | tools/convert_remaining_furniture.py, tools/finalize_v741.py, tools/sync_manifest.py |
-| kind | tools/audit_adult_body_assets.py, tools/sync_manifest.py |
+| key | tools/convert_remaining_furniture.py (+ 2 других файлов) |
+| kind | tools/audit_adult_body_assets.py (+ 1 других файлов) |
 | landscapeActive | android/app/src/main/java/com/dndvtt/app/MainActivity.java |
 | len | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
-| length | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/audit_adult_body_assets.py, tools/build_skin_microtexture.py |
+| length | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 2 других файлов) |
 | lines | tools/convert_remaining_furniture.py |
 | link | tools/convert_remaining_furniture.py |
 | loader | android/app/src/main/java/com/dndvtt/app/MainActivity.java |
 | lower | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
-| m | tools/build_update_manifest.py, tools/finalize_v741.py, tools/sync_manifest.py, tools/unified_version.py |
-| manifest | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/build_update_manifest.py |
+| m | tools/build_update_manifest.py (+ 3 других файлов) |
+| manifest | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 1 других файлов) |
 | MANIFEST | tools/sync_manifest.py |
 | MANIFEST_PATHS | tools/sync_manifest.py |
 | manifestUrl | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
@@ -12760,7 +12761,7 @@
 | metavar | tools/unified_version.py |
 | missing_ok | tools/convert_remaining_furniture.py |
 | morphNames | tools/audit_adult_body_assets.py |
-| n | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/convert_remaining_furniture.py |
+| n | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 1 других файлов) |
 | N | tools/build_skin_microtexture.py |
 | name | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | nativeSeedValidated | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
@@ -12771,17 +12772,17 @@
 | o | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | objects | tools/convert_remaining_furniture.py |
 | offset | tools/audit_adult_body_assets.py |
-| out | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/build_skin_microtexture.py, tools/build_update_manifest.py, tools/convert_remaining_furniture.py (+ 1 ещё) |
-| p | tools/build_update_manifest.py, tools/finalize_v741.py |
+| out | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 4 других файлов) |
+| p | tools/build_update_manifest.py (+ 1 других файлов) |
 | package | tools/unified_version.py |
 | packageVersion | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
-| parent | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/audit_adult_body_assets.py |
-| parents | tools/audit_adult_body_assets.py, tools/build_update_manifest.py, tools/convert_remaining_furniture.py |
-| parser | tools/audit_adult_body_assets.py, tools/unified_version.py |
+| parent | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 1 других файлов) |
+| parents | tools/audit_adult_body_assets.py (+ 2 других файлов) |
+| parser | tools/audit_adult_body_assets.py (+ 1 других файлов) |
 | parts | tools/audit_adult_body_assets.py |
-| path | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/audit_adult_body_assets.py |
+| path | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 1 других файлов) |
 | pending | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
-| pixels | tools/audit_adult_body_assets.py, tools/build_skin_microtexture.py |
+| pixels | tools/audit_adult_body_assets.py (+ 1 других файлов) |
 | pkg | tools/unified_version.py |
 | pkg_path | tools/unified_version.py |
 | pm | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
@@ -12800,27 +12801,27 @@
 | records | tools/convert_remaining_furniture.py |
 | rel | tools/sync_manifest.py |
 | relative | tools/convert_remaining_furniture.py |
-| report | tools/audit_adult_body_assets.py, tools/convert_remaining_furniture.py |
+| report | tools/audit_adult_body_assets.py (+ 1 других файлов) |
 | request | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
-| required | tools/audit_adult_body_assets.py, tools/build_update_manifest.py |
+| required | tools/audit_adult_body_assets.py (+ 1 других файлов) |
 | restore | android/app/src/main/java/com/dndvtt/app/MainActivity.java |
 | return_counts | tools/audit_adult_body_assets.py |
 | return_inverse | tools/audit_adult_body_assets.py |
 | rng | tools/build_skin_microtexture.py |
-| root | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/convert_remaining_furniture.py, tools/finalize_v741.py |
-| ROOT | tools/audit_adult_body_assets.py, tools/build_skin_microtexture.py, tools/build_update_manifest.py, tools/sync_manifest.py (+ 1 ещё) |
+| root | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 2 других файлов) |
+| ROOT | tools/audit_adult_body_assets.py (+ 4 других файлов) |
 | root_url | tools/build_update_manifest.py |
 | rootEntries | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | roots | tools/audit_adult_body_assets.py |
 | rough | tools/build_skin_microtexture.py |
 | RUNTIME_MANIFEST | tools/sync_manifest.py |
-| s | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/finalize_v741.py |
+| s | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 1 других файлов) |
 | schema | tools/audit_adult_body_assets.py |
 | seamDuplicates | tools/audit_adult_body_assets.py |
 | seen | tools/build_update_manifest.py |
 | selected | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | selectedIndex | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
-| separators | tools/finalize_v741.py, tools/sync_manifest.py |
+| separators | tools/finalize_v741.py (+ 1 других файлов) |
 | sha256 | tools/audit_adult_body_assets.py |
 | skins | tools/audit_adult_body_assets.py |
 | skipped | tools/convert_remaining_furniture.py |
@@ -12831,9 +12832,9 @@
 | standalone | tools/convert_remaining_furniture.py |
 | state | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | strides | tools/audit_adult_body_assets.py |
-| target | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/convert_remaining_furniture.py, tools/unified_version.py |
+| target | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 2 других файлов) |
 | temp | tools/convert_remaining_furniture.py |
-| text | tools/build_update_manifest.py, tools/convert_remaining_furniture.py, tools/unified_version.py |
+| text | tools/build_update_manifest.py (+ 2 других файлов) |
 | ti | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | title | android/app/src/main/java/com/dndvtt/app/MainActivity.java |
 | topology | tools/audit_adult_body_assets.py |
@@ -12841,7 +12842,7 @@
 | totalBytes | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | totalFiles | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | triangles | tools/audit_adult_body_assets.py |
-| type | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/audit_adult_body_assets.py, tools/convert_remaining_furniture.py |
+| type | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 2 других файлов) |
 | uniquePositions | tools/audit_adult_body_assets.py |
 | unit | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | units | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
@@ -12855,7 +12856,7 @@
 | uvOutsideUnitSquare | tools/audit_adult_body_assets.py |
 | uvRange | tools/audit_adult_body_assets.py |
 | value | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
-| version | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java, tools/build_update_manifest.py |
+| version | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java (+ 1 других файлов) |
 | VERSION | tools/sync_manifest.py |
 | versionName | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
 | versions | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
@@ -12863,7 +12864,7 @@
 | vertices | tools/audit_adult_body_assets.py |
 | view | tools/audit_adult_body_assets.py |
 | visited | android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java |
-| VTT_PROJECT_MANIFEST_V70 | tools/finalize_v741.py, tools/sync_manifest.py |
+| VTT_PROJECT_MANIFEST_V70 | tools/finalize_v741.py (+ 1 других файлов) |
 | webView | android/app/src/main/java/com/dndvtt/app/MainActivity.java |
 | weights | tools/audit_adult_body_assets.py |
 | weightSumMaxError | tools/audit_adult_body_assets.py |
@@ -12881,145 +12882,145 @@
 | action | app/data/maps/3d_test_dungeon.json |
 | african | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
 | age | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
-| allManifestEntriesMatchPhysicalZIP | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
+| allManifestEntriesMatchPhysicalZIP | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
 | allowToChangeInstallationDirectory | package.json |
-| allUnpackedSizesAndSHA256 | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
+| allUnpackedSizesAndSHA256 | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
 | androidDebug | docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
 | androidSignedRelease | docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
 | animationClips | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| app | updates/beta.json, updates/stable.json |
+| app | updates/beta.json (+ 1 других файлов) |
 | appId | package.json |
 | arch | package.json |
-| archiveBytes | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
-| armLength | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| armLength-decr | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| armLength-incr | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| arms | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| artifact | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
-| artifactBytes | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
-| artifactDigest | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
+| archiveBytes | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
+| armLength | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| armLength-decr | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| armLength-incr | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| arms | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| artifact | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
+| artifactBytes | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
+| artifactDigest | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
 | artifactName | package.json |
 | asar | package.json |
 | asian | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
-| assetId | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_v740026.json (+ 3 ещё) |
+| assetId | app/data/maps/3d_castle_black_rose_v740030.json (+ 6 других файлов) |
 | attributes | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | audit | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
-| author | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_tavern_v740019.json (+ 2 ещё) |
+| author | app/data/maps/3d_castle_black_rose_v740030.json (+ 5 других файлов) |
 | backslash | app/data/maps/3d_stress_v740026.json |
 | backslashTexture | app/data/maps/3d_stress_v740026.json |
 | balanced | tests/fixtures/female_anatomy_74_00_59.json |
 | baseColorFactor | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| baseObj | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| basePositionsSha256 | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| baseUrl | updates/beta.json, updates/stable.json |
-| binary | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| binarySha256 | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
+| baseObj | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| basePositionsSha256 | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| baseUrl | updates/beta.json (+ 1 других файлов) |
+| binary | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| binarySha256 | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
 | binaryTransfer | docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json |
-| blockedVersions | updates/beta.json, updates/stable.json |
+| blockedVersions | updates/beta.json (+ 1 других файлов) |
 | bones | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| breast-volume-decr | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| breast-volume-incr | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| breastSize | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
+| breast-volume-decr | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| breast-volume-incr | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| breastSize | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
 | build | package.json |
-| bytes | VTT_PROJECT_MANIFEST_V70.json, app/assets/3d/makehuman/editor-morphs.json, docs/2026-10-11_ota_v74_00_57_checkpoint.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json (+ 5 ещё) |
+| bytes | VTT_PROJECT_MANIFEST_V70.json (+ 8 других файлов) |
 | category | VTT_PROJECT_MANIFEST_V70.json |
 | caucasian | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
-| cell | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
-| changedVertices | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json, docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json |
-| channel | updates/beta.json, updates/stable.json |
-| channels | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| chest | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json, tools/makehuman_gender_channels.json, tools/makehuman_morph_channels.json |
+| cell | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
+| changedVertices | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json (+ 1 других файлов) |
+| channel | updates/beta.json (+ 1 других файлов) |
+| channels | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| chest | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json (+ 2 других файлов) |
 | chromiumQA | docs/2026-10-09_ota_v74_00_17_checkpoint.json |
-| commit | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
+| commit | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
 | compositeTerms | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
-| compositions | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| conclusion | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
+| compositions | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| conclusion | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
 | connectedComponents | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| controlled | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_stress_v740026.json |
-| count | app/assets/3d/makehuman/editor-morphs.json, app/data/maps/3d_castle_black_rose_v740030.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| CRC | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
+| controlled | app/data/maps/3d_castle_black_rose_v740030.json (+ 1 других файлов) |
+| count | app/assets/3d/makehuman/editor-morphs.json (+ 2 других файлов) |
+| CRC | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
 | createDesktopShortcut | package.json |
 | createStartMenuShortcut | package.json |
 | cupsize | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
-| currentFloor | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
+| currentFloor | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
 | cutoff | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
-| d | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
-| darkness | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
+| d | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
+| darkness | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
 | debug | docs/2026-10-09_ota_v74_00_17_checkpoint.json |
 | declaredSourceCommit | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
 | degenerateTriangles | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| description | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_v740026.json (+ 4 ещё) |
+| description | app/data/maps/3d_castle_black_rose_v740030.json (+ 7 других файлов) |
 | destinationGender | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
 | devDependencies | package.json |
 | directories | package.json |
 | doubleSided | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| e | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
+| e | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
 | editorMorphs | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | electron | package.json |
 | electron-builder | package.json |
 | embeddedMorphChannels | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | emitsLight | app/data/maps/3d_test_dungeon.json |
 | enclosed | tests/fixtures/female_anatomy_74_00_59.json |
-| eTexture | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
+| eTexture | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
 | exportedMacros | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
-| fail | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
+| fail | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
 | femaleStackTerms | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
 | fileCount | VTT_PROJECT_MANIFEST_V70.json |
-| files | VTT_PROJECT_MANIFEST_V70.json, docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/2026-10-11_ota_v74_00_57_checkpoint.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json (+ 4 ещё) |
+| files | VTT_PROJECT_MANIFEST_V70.json (+ 7 других файлов) |
 | firmness | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
-| fixtureSha256 | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json, docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json |
-| floor | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_stress_v740026.json |
-| floors | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
+| fixtureSha256 | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json (+ 1 других файлов) |
+| floor | app/data/maps/3d_castle_black_rose_v740030.json (+ 1 других файлов) |
+| floors | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
 | flow | docs/2026-10-09_ota_v74_00_17_checkpoint.json |
-| folder | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json, tools/makehuman_gender_channels.json, tools/makehuman_morph_channels.json |
+| folder | app/assets/3d/makehuman/editor-morphs.json (+ 3 других файлов) |
 | gender | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
-| generated | VTT_PROJECT_MANIFEST_V70.json, updates/beta.json, updates/stable.json |
+| generated | VTT_PROJECT_MANIFEST_V70.json (+ 2 других файлов) |
 | gitBlob | docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
-| h | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
-| head | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| head-decr | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| head-incr | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| height | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 6 ещё) |
-| hips | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json, tools/makehuman_gender_channels.json, tools/makehuman_morph_channels.json |
+| h | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
+| head | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| head-decr | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| head-incr | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| height | app/data/maps/3d_castle_black_rose_v740030.json (+ 9 других файлов) |
+| hips | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json (+ 2 других файлов) |
 | human-female | tools/makehuman_gender_channels.json |
-| id | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 8 ещё) |
+| id | app/data/maps/3d_castle_black_rose_v740030.json (+ 11 других файлов) |
 | indexComponentType | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| intensity | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
+| intensity | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
 | interactive | app/data/maps/3d_test_dungeon.json |
-| joints | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json, docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
+| joints | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json (+ 2 других файлов) |
 | JOINTS_0 | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | kind | VTT_PROJECT_MANIFEST_V70.json |
-| legacy | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
-| legLength | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| legLength-decr | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| legLength-incr | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| legs | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| library | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_v740026.json (+ 3 ещё) |
-| license | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| lighting | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
+| legacy | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
+| legLength | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| legLength-decr | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| legLength-incr | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| legs | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| library | app/data/maps/3d_castle_black_rose_v740030.json (+ 6 других файлов) |
+| license | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| lighting | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
 | lightIntensity | app/data/maps/3d_test_dungeon.json |
 | lightRadius | app/data/maps/3d_test_dungeon.json |
-| limitations | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json, docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
+| limitations | app/assets/3d/makehuman/editor-morphs.json (+ 2 других файлов) |
 | localRuntimeTests | docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json |
 | loot | app/data/maps/3d_castle_black_rose_v740030.json |
 | macroConfigSha256 | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
 | main | package.json |
-| manifest | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
-| mapId | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_v740026.json (+ 3 ещё) |
+| manifest | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
+| mapId | app/data/maps/3d_castle_black_rose_v740030.json (+ 6 других файлов) |
 | materials | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| maxDisplacementMeters | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json, docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json |
-| measure-thigh-circ-decr | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| measure-thigh-circ-incr | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| measure-upperarm-circ-decr | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| measure-upperarm-circ-incr | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
+| maxDisplacementMeters | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json (+ 1 других файлов) |
+| measure-thigh-circ-decr | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| measure-thigh-circ-incr | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| measure-upperarm-circ-decr | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| measure-upperarm-circ-incr | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
 | meshes | manifest.json |
 | meshMetadata | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | metallicFactor | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| method | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
+| method | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
 | MhObjectType | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | MhScaleFactor | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| minAppVersion | updates/beta.json, updates/stable.json |
-| model | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 6 ещё) |
+| minAppVersion | updates/beta.json (+ 1 других файлов) |
+| model | app/data/maps/3d_castle_black_rose_v740030.json (+ 9 других файлов) |
 | morphNames | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | MPFB_GEN_object_type | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | MPFB_GEN_scale_factor | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
@@ -13037,138 +13038,138 @@
 | MPFB_HUM_proportions | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | MPFB_HUM_weight | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | muscle | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
-| n | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
-| name | app/assets/3d/makehuman/editor-morphs.json, app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json (+ 9 ещё) |
-| negative | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json, tools/makehuman_gender_channels.json, tools/makehuman_morph_channels.json |
+| n | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
+| name | app/assets/3d/makehuman/editor-morphs.json (+ 12 других файлов) |
+| negative | app/assets/3d/makehuman/editor-morphs.json (+ 3 других файлов) |
 | nextAction | docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
 | nonFiniteValues | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | NORMAL | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | nsis | package.json |
-| nTexture | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
-| objects | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
-| offset | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
+| nTexture | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
+| objects | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
+| offset | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
 | oneClick | package.json |
 | ota_install_contract | docs/2026-10-11_ota_v74_00_57_checkpoint.json |
 | output | package.json |
 | pages | docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
-| pass | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
-| path | VTT_PROJECT_MANIFEST_V70.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json, updates/stable.json |
+| pass | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
+| path | VTT_PROJECT_MANIFEST_V70.json (+ 2 других файлов) |
 | pbrMetallicRoughness | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| pectorals | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
+| pectorals | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
 | perMachine | package.json |
 | physical_android_test | docs/2026-10-11_ota_v74_00_57_checkpoint.json |
-| physicalAndroidQA | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json, docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
+| physicalAndroidQA | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 3 других файлов) |
 | physicalZIP | docs/2026-10-09_ota_v74_00_17_checkpoint.json |
 | pixels | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | portable | package.json |
 | POSITION | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| positive | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json, tools/makehuman_gender_channels.json, tools/makehuman_morph_channels.json |
+| positive | app/assets/3d/makehuman/editor-morphs.json (+ 3 других файлов) |
 | primitives | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | private | package.json |
-| productionSyntaxFiles | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
+| productionSyntaxFiles | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
 | productName | package.json |
-| project | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
+| project | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
 | pronounced | tests/fixtures/female_anatomy_74_00_59.json |
 | proportions | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
-| publication | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
+| publication | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
 | race | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
-| radius | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
+| radius | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
 | rawBounds | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | recommendedSourceCommit | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
-| regression | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
+| regression | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
 | release | docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json |
-| releaseCommit | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
+| releaseCommit | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
 | required_editor_assets | docs/2026-10-11_ota_v74_00_57_checkpoint.json |
-| requiredAssets | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_v740026.json (+ 3 ещё) |
-| rmsDisplacementMeters | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json, docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json |
+| requiredAssets | app/data/maps/3d_castle_black_rose_v740030.json (+ 6 других файлов) |
+| rmsDisplacementMeters | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json (+ 1 других файлов) |
 | rootCause | docs/2026-10-09_ota_v74_00_17_checkpoint.json |
-| rotation | app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_v740026.json, app/data/maps/3d_tavern_v740019.json (+ 2 ещё) |
+| rotation | app/data/maps/3d_castle_v740019.json (+ 5 других файлов) |
 | roughnessFactor | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| runtime | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json, docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json |
+| runtime | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json (+ 1 других файлов) |
 | runtimeOTARegression | docs/2026-10-09_ota_v74_00_17_checkpoint.json |
-| s | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 4 ещё) |
-| scale | app/assets/3d/makehuman/editor-morphs.json, app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json (+ 7 ещё) |
-| schema | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json, updates/beta.json, updates/stable.json |
-| schemaVersion | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_v740026.json (+ 3 ещё) |
+| s | app/data/maps/3d_castle_black_rose_v740030.json (+ 7 других файлов) |
+| scale | app/assets/3d/makehuman/editor-morphs.json (+ 10 других файлов) |
+| schema | app/assets/3d/makehuman/editor-morphs.json (+ 3 других файлов) |
+| schemaVersion | app/data/maps/3d_castle_black_rose_v740030.json (+ 6 других файлов) |
 | scripts | package.json |
 | seamDuplicates | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| seamMaxMeters | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json, docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json |
-| searchable | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_tavern_v740019.json (+ 2 ещё) |
-| seconds | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
-| selectedTexture | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
-| selectedTool | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
-| selectedWallTexture | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
-| sha256 | VTT_PROJECT_MANIFEST_V70.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json, updates/stable.json |
-| shippedSha256 | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json, docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json |
-| shoulders | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json, tools/makehuman_gender_channels.json, tools/makehuman_morph_channels.json |
+| seamMaxMeters | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json (+ 1 других файлов) |
+| searchable | app/data/maps/3d_castle_black_rose_v740030.json (+ 5 других файлов) |
+| seconds | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
+| selectedTexture | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
+| selectedTool | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
+| selectedWallTexture | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
+| sha256 | VTT_PROJECT_MANIFEST_V70.json (+ 3 других файлов) |
+| shippedSha256 | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json (+ 1 других файлов) |
+| shoulders | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json (+ 2 других файлов) |
 | showAbove | app/data/maps/3d_castle_black_rose_v740030.json |
 | showBelow | app/data/maps/3d_castle_black_rose_v740030.json |
 | showCeilings | app/data/maps/3d_castle_black_rose_v740030.json |
 | signedRelease | docs/2026-10-09_ota_v74_00_17_checkpoint.json |
 | skins | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| sky | app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_tavern_v740019.json, app/data/maps/3d_town_v740019.json (+ 1 ещё) |
+| sky | app/data/maps/3d_castle_v740019.json (+ 4 других файлов) |
 | slash | app/data/maps/3d_stress_v740026.json |
 | slashTexture | app/data/maps/3d_stress_v740026.json |
-| source | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json, manifest.json |
+| source | app/assets/3d/makehuman/editor-morphs.json (+ 2 других файлов) |
 | sourceGlbSha256 | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
-| sourceHashes | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json, docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
+| sourceHashes | app/assets/3d/makehuman/editor-morphs.json (+ 2 других файлов) |
 | sourceProject | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
-| sources | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json, tools/makehuman_gender_channels.json |
-| sourceSha256 | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json, docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json |
+| sources | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json (+ 1 других файлов) |
+| sourceSha256 | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json (+ 1 других файлов) |
 | sourceStackTerms | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json |
-| stableVersion | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
+| stableVersion | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
 | stage | docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json |
-| stairDirection | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_stress_v740026.json |
-| stairFrom | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_stress_v740026.json |
-| stairsTo | app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_tavern_v740019.json |
-| stairTo | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_stress_v740026.json |
-| status | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json, docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
-| steps | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_stress_v740026.json |
-| sTexture | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 4 ещё) |
-| tags | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_v740026.json (+ 3 ещё) |
-| target | package.json, tools/makehuman_gender_channels.json |
-| targets | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json, docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json, docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json (+ 1 ещё) |
+| stairDirection | app/data/maps/3d_castle_black_rose_v740030.json (+ 1 других файлов) |
+| stairFrom | app/data/maps/3d_castle_black_rose_v740030.json (+ 1 других файлов) |
+| stairsTo | app/data/maps/3d_castle_v740019.json (+ 2 других файлов) |
+| stairTo | app/data/maps/3d_castle_black_rose_v740030.json (+ 1 других файлов) |
+| status | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 3 других файлов) |
+| steps | app/data/maps/3d_castle_black_rose_v740030.json (+ 1 других файлов) |
+| sTexture | app/data/maps/3d_castle_black_rose_v740030.json (+ 7 других файлов) |
+| tags | app/data/maps/3d_castle_black_rose_v740030.json (+ 6 других файлов) |
+| target | package.json (+ 1 других файлов) |
+| targets | app/assets/3d/makehuman/editor-morphs.json (+ 4 других файлов) |
 | TEXCOORD_0 | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| tiles | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
-| tokens | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
+| tiles | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
+| tokens | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
 | topology | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| torso-muscle-pectoral-decr | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| torso-muscle-pectoral-incr | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
+| torso-muscle-pectoral-decr | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| torso-muscle-pectoral-incr | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
 | triangles | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| type | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
-| unchanged | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json, docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json |
+| type | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
+| unchanged | docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json (+ 1 других файлов) |
 | uniquePositions | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | url | updates/stable.json |
 | uvOutsideUnitSquare | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | uvRange | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| version | VTT_PROJECT_MANIFEST_V70.json, app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json (+ 12 ещё) |
-| versionCode | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
-| vertexCount | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| vertices | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json, docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json, docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
-| view | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
-| w | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
-| waist | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json, tools/makehuman_gender_channels.json, tools/makehuman_morph_channels.json |
-| walkable | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_stress_v740026.json |
-| walls | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
-| weight | app/assets/3d/makehuman/editor-morphs.json, docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json, docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json, tools/makehuman_gender_channels.json |
+| version | VTT_PROJECT_MANIFEST_V70.json (+ 15 других файлов) |
+| versionCode | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
+| vertexCount | app/assets/3d/makehuman/editor-morphs.json (+ 1 других файлов) |
+| vertices | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json (+ 3 других файлов) |
+| view | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
+| w | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
+| waist | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json (+ 2 других файлов) |
+| walkable | app/data/maps/3d_castle_black_rose_v740030.json (+ 1 других файлов) |
+| walls | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
+| weight | app/assets/3d/makehuman/editor-morphs.json (+ 3 других файлов) |
 | WEIGHTS_0 | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | weightSumMaxError | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | weldedBoundaryEdges | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | weldedNonManifoldEdges | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | weldTolerance | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
-| width | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
+| width | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
 | win | package.json |
-| workflows | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
-| wTexture | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 4 ещё) |
-| x | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
-| y | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
-| z | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
+| workflows | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
+| wTexture | app/data/maps/3d_castle_black_rose_v740030.json (+ 7 других файлов) |
+| x | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
+| y | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
+| z | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
 | zeroWeightVertices | docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json |
 | zip | docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
 | zip_crc_and_all_entry_sha256 | docs/2026-10-11_ota_v74_00_57_checkpoint.json |
 | zip_sha256 | docs/2026-10-11_ota_v74_00_57_checkpoint.json |
-| zipSha256 | docs/2026-10-09_ota_v74_00_17_checkpoint.json, docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json |
-| zones | app/data/maps/3d_castle_black_rose_v740030.json, app/data/maps/3d_castle_v740019.json, app/data/maps/3d_house_v740019.json, app/data/maps/3d_stress_test_all.json (+ 5 ещё) |
+| zipSha256 | docs/2026-10-09_ota_v74_00_17_checkpoint.json (+ 1 других файлов) |
+| zones | app/data/maps/3d_castle_black_rose_v740030.json (+ 8 других файлов) |
 
 ## Файлы с совпадающим Git SHA
 
