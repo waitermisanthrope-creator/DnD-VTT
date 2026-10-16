@@ -223,7 +223,7 @@
       if (!active[name]) return;
       var key=normalizeConditionName(name), c=CONDITIONS[key];
       if (!c) return;
-      if (c.selfDisadvantage) result.disadvantage=true;
+      if (c.selfDisadvantage && !(key==='Испуган' && global.DNDPredictorCards && global.DNDPredictorCards.fearVisible(hero)===false)) result.disadvantage=true;
       if (c.selfAdvantage) result.advantage=true;
       if (c.speed===0) result.speed=0;
       result.autoFailStrDex=result.autoFailStrDex||!!c.autoFailStrDex;

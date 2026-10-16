@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 44886c561533. Файлов: 1354
+Коммит 480a896ff28d. Файлов: 1354
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -46,7 +46,7 @@
 0030. AGENTS.md — документация или отчёт: AGENTS (4903 B)
 0031. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (3041 B)
 0032. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (3218 B)
-0033. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (20353 B)
+0033. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (21234 B)
 0034. android/.gitignore — Android компонент: .gitignore (44 B)
 0035. android/app/build.gradle — Android компонент: build (4122 B)
 0036. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -820,7 +820,7 @@
 0804. app/onboarding_faq_v71.js — логический модуль: onboarding faq v71 (32373 B)
 0805. app/parasite_extra_runtime.js — логический модуль: parasite extra runtime (30047 B)
 0806. app/parasite_extra_ui.js — логический модуль: parasite extra ui (4710 B)
-0807. app/predictor_cards.js — логический модуль: predictor cards (137925 B)
+0807. app/predictor_cards.js — логический модуль: predictor cards (138966 B)
 0808. app/predictor_deck_ui.js — логический модуль: predictor deck ui (37064 B)
 0809. app/predictor_movement.js — логический модуль: predictor movement (6682 B)
 0810. app/predictor_runtime.js — логический модуль: predictor runtime (31001 B)
@@ -829,7 +829,7 @@
 0813. app/races.js — логический модуль: races (52239 B)
 0814. app/resource_gathering_v35.js — логический модуль: resource gathering v35 (12553 B)
 0815. app/resource_processing_v44.js — логический модуль: resource processing v44 (22150 B)
-0816. app/rulesEngine.js — логический модуль: rulesEngine (45663 B)
+0816. app/rulesEngine.js — логический модуль: rulesEngine (45774 B)
 0817. app/runekeeper_taron_v12_runtime.js — логический модуль: runekeeper taron v12 runtime (27697 B)
 0818. app/savant_laserllama_v561_runtime.js — логический модуль: savant laserllama v561 runtime (29860 B)
 0819. app/secondary_entities_engine.js — логический модуль: secondary entities engine (7342 B)
@@ -1015,7 +1015,7 @@
 0999. docs/map-stage-740021.md — документация или отчёт: map stage 740021 (2000 B)
 1000. docs/MONETIZATION_ROADMAP.md — документация или отчёт: MONETIZATION ROADMAP (15924 B)
 1001. docs/NETWORK_APK_NOTES.md — документация или отчёт: NETWORK APK NOTES (7296 B)
-1002. docs/PREDICTOR_APPROVED_CARD_STATUS.md — документация или отчёт: PREDICTOR APPROVED CARD STATUS (50070 B)
+1002. docs/PREDICTOR_APPROVED_CARD_STATUS.md — документация или отчёт: PREDICTOR APPROVED CARD STATUS (50745 B)
 1003. docs/PREDICTOR_CLASS_SPEC.md — документация или отчёт: PREDICTOR CLASS SPEC (94181 B)
 1004. docs/PRODUCT_ACCESS_AND_MONETIZATION.md — документация или отчёт: PRODUCT ACCESS AND MONETIZATION (11580 B)
 1005. docs/ROOT_FURNITURE_IMPORT_REPORT.md — документация или отчёт: ROOT FURNITURE IMPORT REPORT (6882 B)
@@ -1132,14 +1132,14 @@
 1116. tests/predictor_cards_test.cjs — автотест: predictor cards test (10793 B)
 1117. tests/predictor_cloud_sync_test.cjs — автотест: predictor cloud sync test (33414 B)
 1118. tests/predictor_coin_ancestor_test.cjs — автотест: predictor coin ancestor test (6734 B)
-1119. tests/predictor_deck_ui_test.cjs — автотест: predictor deck ui test (27210 B)
+1119. tests/predictor_deck_ui_test.cjs — автотест: predictor deck ui test (27418 B)
 1120. tests/predictor_devil_plan_test.cjs — автотест: predictor devil plan test (4680 B)
 1121. tests/predictor_event_reactions_test.cjs — автотест: predictor event reactions test (7259 B)
 1122. tests/predictor_exhaustion_test.cjs — автотест: predictor exhaustion test (4867 B)
 1123. tests/predictor_healing_reaction_test.cjs — автотест: predictor healing reaction test (5049 B)
 1124. tests/predictor_inventory_rewards_test.cjs — автотест: predictor inventory rewards test (14111 B)
 1125. tests/predictor_last_stand_test.cjs — автотест: predictor last stand test (12289 B)
-1126. tests/predictor_mage_spells_test.cjs — автотест: predictor mage spells test (18452 B)
+1126. tests/predictor_mage_spells_test.cjs — автотест: predictor mage spells test (20042 B)
 1127. tests/predictor_motion_cards_test.cjs — автотест: predictor motion cards test (11690 B)
 1128. tests/predictor_movement_cards_test.cjs — автотест: predictor movement cards test (7196 B)
 1129. tests/predictor_progression_test.cjs — автотест: predictor progression test (3750 B)
@@ -2229,7 +2229,7 @@ conMod — №0613 (+ 4 других файлов)
 conModFinal — №0613 (+ 1 других файлов)
 conScore — №0644
 consent — №1119
-console — №0652 (+ 30 других файлов)
+console — №0652 (+ 29 других файлов)
 constant — №0800 (+ 1 других файлов)
 consumed — №0661
 consumedJinx — №0644
@@ -5007,7 +5007,7 @@ rest — №0768 (+ 2 других файлов)
 restarted — №1089
 rested — №1129
 restId — №0810 (+ 1 других файлов)
-restored — №0637 (+ 12 других файлов)
+restored — №0637 (+ 13 других файлов)
 restoredShort — №0636
 restoredUse — №1058
 restoreFullCheckbox — №0689
@@ -5279,7 +5279,7 @@ Server — №1117 (+ 1 других файлов)
 session — №0049 (+ 4 других файлов)
 SESSION — №0642
 set — №0778 (+ 2 других файлов)
-Set — №0652 (+ 15 других файлов)
+Set — №0652 (+ 14 других файлов)
 setInterval — №1183 (+ 5 других файлов)
 setTimeout — №1090 (+ 35 других файлов)
 settings — №0640 (+ 2 других файлов)
@@ -5958,7 +5958,7 @@ uiFreeGather — №0814
 uiGather — №0814
 uiMix — №0068
 Uint16Array — №1059 (+ 22 других файлов)
-Uint32Array — №1059 (+ 28 других файлов)
+Uint32Array — №1059 (+ 27 других файлов)
 Uint8Array — №1061 (+ 22 других файлов)
 ul — №0050
 unacted — №0637
@@ -6919,7 +6919,7 @@ walterParasite — №0689 (+ 1 других файлов)
 weaponsData — №0636
 worldMatrices — №0048 (+ 3 других файлов)
 
---- Поля JS объектов (6485) ---
+--- Поля JS объектов (6486) ---
 _ — №1152 (+ 11 других файлов)
 __base — №0062
 __bodyMasks — №1081
@@ -8528,7 +8528,7 @@ digDeep — №0705 (+ 1 других файлов)
 digits — №0050
 diminutive — №0822 (+ 1 других файлов)
 dimLightAdditionalFt — №0768
-direct — №0807 (+ 1 других файлов)
+direct — №0807 (+ 2 других файлов)
 directAttackNearestIfFailed — №0768
 directDice — №0067
 direction — №0062 (+ 6 других файлов)
@@ -8996,6 +8996,7 @@ fearSave — №0768
 fearSavePenalty — №0768
 fearSourceId — №0807
 fearTargets — №1145
+fearVisible — №0807
 feat — №0736
 featherTailSize — №0055 (+ 3 других файлов)
 featherWingSize — №0055 (+ 3 других файлов)
