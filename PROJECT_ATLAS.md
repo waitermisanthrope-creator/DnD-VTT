@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 0db589d4a3ca. Git содержит 1344 файлов.
+Снимок кода d8913bd33db9. Git содержит 1344 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -36,7 +36,7 @@
 | №0015 .github/workflows/refresh-update-manifest.yml | 540 B | автоматизация GitHub Actions: refresh update manifest |
 | №0016 .github/workflows/test-gltf-loader.yml | 717 B | автоматизация GitHub Actions: test gltf loader |
 | №0017 .github/workflows/test-stair-navigation.yml | 752 B | автоматизация GitHub Actions: test stair navigation |
-| №0018 .github/workflows/unified-release.yml | 14002 B | автоматизация GitHub Actions: unified release |
+| №0018 .github/workflows/unified-release.yml | 14076 B | автоматизация GitHub Actions: unified release |
 | №0019 .github/workflows/unpack-project.yml | 2987 B | автоматизация GitHub Actions: unpack project |
 | №0020 .github/workflows/validate-imported-glb.yml | 2317 B | автоматизация GitHub Actions: validate imported glb |
 | №0021 .gitignore | 81 B | вспомогательный файл: .gitignore |

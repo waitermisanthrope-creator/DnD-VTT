@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 0db589d4a3ca. Файлов: 1344
+Коммит d8913bd33db9. Файлов: 1344
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -31,7 +31,7 @@
 0015. .github/workflows/refresh-update-manifest.yml — автоматизация GitHub Actions: refresh update manifest (540 B)
 0016. .github/workflows/test-gltf-loader.yml — автоматизация GitHub Actions: test gltf loader (717 B)
 0017. .github/workflows/test-stair-navigation.yml — автоматизация GitHub Actions: test stair navigation (752 B)
-0018. .github/workflows/unified-release.yml — автоматизация GitHub Actions: unified release (14002 B)
+0018. .github/workflows/unified-release.yml — автоматизация GitHub Actions: unified release (14076 B)
 0019. .github/workflows/unpack-project.yml — автоматизация GitHub Actions: unpack project (2987 B)
 0020. .github/workflows/validate-imported-glb.yml — автоматизация GitHub Actions: validate imported glb (2317 B)
 0021. .gitignore — вспомогательный файл: .gitignore (81 B)
