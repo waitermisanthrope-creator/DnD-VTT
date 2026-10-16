@@ -18,7 +18,7 @@ function harness(options={}) {
  }
  const doc={readyState:'loading',documentElement:new Element('html'),head:new Element('head'),body:new Element('body'),getElementById:id=>ids[id]||null,querySelector:()=>null,createElement:tag=>new Element(tag),addEventListener:(n,f)=>(docEvents[n]||=[]).push(f)};
  const manifest={version:options.version||nextVersion,minAppVersion:options.min||'70.26.99',baseUrl:'https://example.test',files:[{path:'index.html',bytes:100,sha256:'a'.repeat(64)}]};
- const ctx={document:doc,console,Date,Math,JSON,Number,Promise,localStorage:{getItem(){return null},setItem(){}},CustomEvent:function(type){this.type=type},alert(){throw Error('unexpected alert')},setTimeout(fn,delay){const id=++serial;timers.set(id,{fn,delay});return id;},clearTimeout(id){timers.delete(id)},requestAnimationFrame(fn){const id=++serial;raf.set(id,fn);return id;},cancelAnimationFrame(id){raf.delete(id)},addEventListener(n,f){(events[n]||=[]).push(f)},dispatchEvent(e){for(const f of events[e.type]||[])f(e)},fetch:async url=>{fetches.push(url);if(options.offline)throw Error('offline');return {ok:true,json:async()=>manifest};}};
+ const ctx={document:doc,console,Date,Math,JSON,Number,Promise,localStorage:{getItem(key){return key==='dnd_update_manifest_url_v2'?(options.savedUrl||null):key==='dnd_update_channel_v2'?(options.savedChannel||null):null},setItem(){}},CustomEvent:function(type){this.type=type},alert(){throw Error('unexpected alert')},setTimeout(fn,delay){const id=++serial;timers.set(id,{fn,delay});return id;},clearTimeout(id){timers.delete(id)},requestAnimationFrame(fn){const id=++serial;raf.set(id,fn);return id;},cancelAnimationFrame(id){raf.delete(id)},addEventListener(n,f){(events[n]||=[]).push(f)},dispatchEvent(e){for(const f of events[e.type]||[])f(e)},fetch:async url=>{fetches.push(url);if(options.offline)throw Error('offline');return {ok:true,json:async()=>options.savedUrl&&url.startsWith(options.savedUrl)?{...manifest,version:currentVersion}:manifest};}};
  ctx.window=ctx;
  if(options.custom){ctx.DND_UPDATE_MANIFEST_URL="https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/feature/cloud-character-sync/updates/cloud-test.json";ctx.DND_UPDATE_CHANNEL="beta";}
  function respond(req,extra){for(const fn of nativeListeners)fn({data:JSON.stringify({id:req.id,ok:true,...extra})});}
@@ -71,6 +71,17 @@ async function edgeCases(){
   assert.equal(isolated.fetches.length,1,'test channel requested stable fallback');
   assert(isolated.fetches[0].startsWith(isolated.ctx.DND_UPDATE_MANIFEST_URL));
  }
+ const legacyUrl='https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/old-tag/updates/stable.json';
+ const stableLegacy=harness({savedUrl:legacyUrl});
+ const stableFound=await stableLegacy.ctx.DND_UPDATE_MANAGER.inspect();
+ assert(stableFound.updateAvailable,'saved obsolete stable feed hid a published update');
+ assert.equal(stableFound.manifest.version,nextVersion,'stale URL won newest manifest race');
+ assert.equal(stableFound.manifestUrl,'https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/main/updates/stable.json');
+ assert.equal(stableLegacy.fetches.length,3,'stable should check saved, raw and Pages endpoints');
+ const isolatedLegacy=harness({savedUrl:legacyUrl,savedChannel:'beta'});
+ const isolatedFound=await isolatedLegacy.ctx.DND_UPDATE_MANAGER.inspect();
+ assert.equal(isolatedFound.updateAvailable,false,'beta feed must stay isolated');
+ assert.equal(isolatedLegacy.fetches.length,1,'beta should never request stable endpoints');
  const h=harness();h.overlay.fire('dblclick');assert.equal(h.ctx.dndSplashFinished,false);
  const fallback=[...h.timers.values()].find(t=>t.delay===650);assert(fallback);fallback.fn();await h.settle();assert(h.latest('stage'),'missing transitionend prevented OTA');
  const stageCount=h.requests.filter(r=>r.type==='stage').length;h.overlay.fire('transitionend');await h.settle();assert.equal(h.requests.filter(r=>r.type==='stage').length,stageCount);
