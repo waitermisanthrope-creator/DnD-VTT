@@ -17,3 +17,12 @@
 - Build/run evidence and next checkpoint are recorded in subsequent entries, not assumed here.
 
 - Automation implementation verified locally: `node tools/ai_checks.cjs` **21/21 suites PASS**; actionlint v1.7.7 validates both changed workflows; `git diff --check` PASS. Gate tests cover explicit paid authorization, missing credentials, cooldown, weekly/billing separation and release source invalidation. No paid API call performed. Real Actions run status still requires observation after push.
+
+- Published automation: `e3139a58`, merged atlas-only bot update as `51663fd50dd853a5c701411e1109259ec3cbf8fc`; both on main. Real cloud smoke run **SUCCESS**: https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/38889102794 (checkpoint passed; model job disabled). Unified native build run https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/38889102940 was still running when first observed; no artifact success claimed.
+
+## Predictor infrastructure audit / automation hardening
+- Added `tests/predictor_progression_test.cjs`: **60 level/subclass cases PASS**, covering all levels 1–20 × three subclasses; hand limits, draw thresholds, gradual Major unlock, resource spending only on application, no action cost for draws, finite-card conservation, short/long rest, idempotency, JSON reload and multiclass isolation. This verifies shared infrastructure, NOT unfinished Oracle/Weaver abilities.
+- Corrected stale Trickster description: supported cards are playable; unsupported effects remain blocked. Still 60/78 effects.
+- Added an explicit tracked `paid_api_authorized=false` gate: even accidentally pre-existing repository variables/secrets cannot enable paid execution. Added explicit dispatch of existing unified test build after autonomous GITHUB_TOKEN pushes (GitHub does not trigger push workflows for those pushes).
+
+- Final local verification: **23/23 suites PASS** with progression matrix and isolated-Git finalizer integration tests (successful push; protected-path refusal; concurrent main left intact with local commits preserved; failed-model cooldown excludes staged unfinished code). Both workflows pass actionlint; source syntax/diff checks pass.

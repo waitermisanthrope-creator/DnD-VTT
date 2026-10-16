@@ -3,6 +3,7 @@
 const fs=require('node:fs'),cp=require('node:child_process');
 function developmentGate(control,env,now=Date.now()){
  if(env.AI_DEVELOPMENT_ENABLED!=='true')return 'disabled';
+ if(control.paid_api_authorized!==true)return 'paid-api-not-authorized';
  if(env.AI_ALLOW_PAID_API!=='true')return 'paid-api-not-authorized';
  if(!env.OPENAI_API_KEY)return 'missing-api-key';
  if(control.retry_after && (!Number.isFinite(Date.parse(control.retry_after))||Date.parse(control.retry_after)>now))return 'cooldown';

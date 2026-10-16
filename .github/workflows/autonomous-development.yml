@@ -42,6 +42,7 @@ jobs:
     permissions:
       contents: write
       issues: read
+      actions: write
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -90,6 +91,10 @@ jobs:
         run: |
           gh auth setup-git
           if [ '${{ steps.codex.outcome }}' = 'failure' ]; then node /tmp/dnd-ai-finalize.cjs --cooldown; else node /tmp/dnd-ai-finalize.cjs; fi
+          # GITHUB_TOKEN pushes do not trigger push workflows: dispatch the existing build explicitly.
+          if [ '${{ steps.codex.outcome }}' = 'success' ] && [ "$(git rev-parse HEAD)" != "$AI_BASE_SHA" ]; then
+            gh workflow run unified-release.yml --ref main -f publish=false -f version=auto
+          fi
       - name: Preserve unpushed checkpoint on any failure
         if: failure() || steps.codex.outcome == 'failure'
         run: |

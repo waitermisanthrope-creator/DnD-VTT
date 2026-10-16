@@ -6,7 +6,7 @@ const tests=fs.readdirSync('tests').filter(f=>/^predictor_.*_test\.cjs$/.test(f)
  'tests/cloud_sync_test.cjs','tests/creation_signature_asset_test.cjs',
  'tests/desktop_update_contract.cjs','tests/update_ota_flow_test.js',
  'tests/pugilist_combat_test.js','tests/alchemist_combat_test.js',
- 'tests/test_class_audit_stage4_runtime.js','tests/ai_automation_test.cjs'
+ 'tests/test_class_audit_stage4_runtime.js','tests/ai_automation_test.cjs','tests/ai_finalize_test.cjs'
 ]);
 let failed=0;
 for(const file of tests){

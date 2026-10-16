@@ -9,9 +9,10 @@
 ## Explicitly disabled paid developer option
 Only after owner approves separate API billing, configure repository **Settings → Secrets and variables → Actions**:
 1. Secret `OPENAI_API_KEY` (enter there directly; never in chat/source).
-2. Variables `AI_ALLOW_PAID_API=true` AND `AI_DEVELOPMENT_ENABLED=true`.
-3. Run **Autonomous development checkpoint → Run workflow** and inspect both jobs.
-Without all three, no model call is made. API usage has separate billing/quota from ChatGPT subscription. This repository does not export or reuse the managed ChatGPT session's auth files. A supported subscription-backed runner would need its own authorized provisioning and verification before replacing this gate.
+2. Set `.github/ai-control.json` `paid_api_authorized=true` only after explicit owner authorization.
+3. Variables `AI_ALLOW_PAID_API=true` AND `AI_DEVELOPMENT_ENABLED=true`.
+4. Run **Autonomous development checkpoint → Run workflow** and inspect both jobs.
+Without all these gates, no model call is made. API usage has separate billing/quota from ChatGPT subscription. This repository does not export or reuse the managed ChatGPT session's auth files. A supported subscription-backed runner would need its own authorized provisioning and verification before replacing this gate.
 
 ## Quota and recovery
 One model session per run, no retries in a loop. Machine control has `retry_after` and `quota_scope`; weekly errors back off seven days, insufficient billing quota requires owner intervention, ordinary rate limits back off one hour. If Codex omits the actual error in its result file, the failure is classified as unknown/hourly; consult run logs to set weekly cooldown rather than claiming automatic diagnosis. A weekly limit remains independent of hourly retries.

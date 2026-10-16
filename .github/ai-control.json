@@ -3,5 +3,6 @@
   "release_source_sha": "",
   "release_reason": "Predictor remains partial (60/78 effects); no stable release for infrastructure alone.",
   "retry_after": null,
-  "quota_scope": null
+  "quota_scope": null,
+  "paid_api_authorized": false
 }
