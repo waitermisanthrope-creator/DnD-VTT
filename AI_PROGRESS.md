@@ -32,3 +32,10 @@
 - Preserved gameplay source `c34f025bfbc34231ba8deb23a2e7c1f4be228db8`: unified native test build **SUCCESS**, https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/38888249156 ; debug Android + Windows artifacts are on that run. This is not a signed stable release or physical-device QA.
 - Subsequent unified builds: https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/38889102940 was running; https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/38889496028 was pending at last observation. Do not infer their eventual results. No stable release/version bump performed.
 - Next gameplay stage: remaining 18 effects / Oracle and Weaver actual ability implementation per approved specification, with tests; progress matrix already covered, do not repeat it. Continuous model execution remains blocked as documented in AI_BLOCKERS.md; hourly checks themselves are deployed and tested.
+
+## 2026-10-16 — character creation / level-up UI hotfix
+- Owner-requested correction from Android screenshots: PR #10 squash-merged to main at `c7b9a4de93b930ce985fac10259026b96ea0ce2d`.
+- Builder V2: 27-point standard buy, mutually locked-after-first-roll five 4d6-drop-lowest attempts, and unrestricted manual 1–20 mode; stat-generation metadata saved with new characters.
+- Legacy class level-up picker: restored mobile scrolling despite global fantasy frame's `overflow:visible!important`, highlighting of existing classes, shorter stat aliases in multiclass checks, Ghost Extra restrictions.
+- Added `tests/character_stat_modes_levelup_test.cjs` to common regression gate. Interactive stat/regression scenario smoke tests passed in isolated JS; real GitHub unified workflow #38890919126 checks job **SUCCESS**. Windows/Android build jobs were still running at last observation: do not claim artifacts or physical-device QA until checked.
+- No change to owner Issue #9 class-work order, no stable release flag or paid API authorization changed.
