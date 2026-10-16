@@ -1,16 +1,16 @@
 {
   "schema": 1,
   "app": "DND_VTT",
-  "version": "74.00.66",
+  "version": "74.00.67",
   "minAppVersion": "70.26.99",
   "channel": "stable",
-  "generated": "2026-10-14",
-  "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7",
+  "generated": "2026-10-16",
+  "baseUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b",
   "files": [
     {
       "path": "index.html",
-      "bytes": 89497,
-      "sha256": "ce95fe059ed3078e230a6520ce07adcc49731ca945daa02aa575f4c7d9d927e2"
+      "bytes": 89700,
+      "sha256": "54accbb09452303795204fef38516a9b112ec570d9350ccc5bb4c62cfa1261b5"
     },
     {
       "path": "app/3dmap/assets/clothing/fantasy-materials.webp",
@@ -134,8 +134,8 @@
     },
     {
       "path": "app/Hero-info.js",
-      "bytes": 11879,
-      "sha256": "3631ffe8c5f09af3a82eedfeac86dea64ae9b51cc4f2482f5cd9290e4da0fd09"
+      "bytes": 12434,
+      "sha256": "73624a0ea1a9c9c4d932ccf0c9f0aab35cbbae455b6f236cde4380b0ea148e8f"
     },
     {
       "path": "app/Inventory-weight-tracker.js",
@@ -204,8 +204,8 @@
     },
     {
       "path": "app/app.js",
-      "bytes": 36824,
-      "sha256": "d560a1cf1c6a2e4ef99abffb179b75a58b0c1c4efa835070cc460373af42f0c4"
+      "bytes": 37183,
+      "sha256": "8cf59a2960af5414e28cb93a57c4b76fd390531509df9bc5b575fafadb2bf196"
     },
     {
       "path": "app/armors.js",
@@ -2914,8 +2914,8 @@
     },
     {
       "path": "app/battle_board.js",
-      "bytes": 35254,
-      "sha256": "df942a9b35ab3829b6db07d44e999718d87b198ff8fea5f0a360f473e378c718"
+      "bytes": 37380,
+      "sha256": "2749d71a47175a1c3dfb878905455d9ba8de79ae69b3bbb94e3822bc9f490cec"
     },
     {
       "path": "app/bestiary_2_0_v56.js",
@@ -2999,13 +2999,13 @@
     },
     {
       "path": "app/character.js",
-      "bytes": 10055,
-      "sha256": "50bcc687e8e2ae879d328762992cba91f338412ded948482ef05cc5c2cbccbd4"
+      "bytes": 10357,
+      "sha256": "1837a437146a32f674e7079c9d05c720ded956f054af0b0337f7f718f5e034ed"
     },
     {
       "path": "app/character_builder_v2.js",
-      "bytes": 104907,
-      "sha256": "a7bac437237f716851e5efbd680464685eb482b136bcdfe2aa1320172f56fca4"
+      "bytes": 109543,
+      "sha256": "1a8176ef45b1193b3a536b085f3c12a54be62540e88a6e336638ddde4c338a9f"
     },
     {
       "path": "app/character_creation.js",
@@ -3024,8 +3024,8 @@
     },
     {
       "path": "app/class_features_engine.js",
-      "bytes": 134113,
-      "sha256": "bbc89cd751f58c6bd80644d1a0b488693d44f1bcdcbfcbb23336cc8178c1f313"
+      "bytes": 134918,
+      "sha256": "193c7d963654520dd1f916c418a91364a13420de5ca5fcc8971d68e5ba33db4c"
     },
     {
       "path": "app/classesRegistry.js",
@@ -3049,8 +3049,8 @@
     },
     {
       "path": "app/cloud_sync.js",
-      "bytes": 22572,
-      "sha256": "3d2fc4f68a19ebc524d22719056b5cafc6d042bd705ae8b8dc814f8f56cc199d"
+      "bytes": 24647,
+      "sha256": "b5366f3cd4175c7cd906202a43b48d9c53f61123a80f28d3b5c8b486443fac81"
     },
     {
       "path": "app/combat_abilities.js",
@@ -3059,8 +3059,8 @@
     },
     {
       "path": "app/combat_engine.js",
-      "bytes": 81509,
-      "sha256": "207ac907403ebb8b7f56822b18243d26e440feca6ec153fe0a395540c1c3cb5b"
+      "bytes": 88824,
+      "sha256": "9e25d769aa6b62960205494d80c2056d2b7163037878ef87b6ade72975fab8e8"
     },
     {
       "path": "app/companion_gameplay_v27.js",
@@ -3429,8 +3429,8 @@
     },
     {
       "path": "app/data/classes/level_up.js",
-      "bytes": 59525,
-      "sha256": "ce171938815f14f58606d686bf24c462e367a7ea2a0f67ba5af6f4fd8548562d"
+      "bytes": 62903,
+      "sha256": "4243496eec665d4a3d9a1007661390122bc3e4dc704ec420fe90b0b39cd51956"
     },
     {
       "path": "app/data/classes/martyr.png",
@@ -3644,13 +3644,13 @@
     },
     {
       "path": "app/dice.js",
-      "bytes": 39590,
-      "sha256": "d1280742be4070250241da8b5920d322fb7745ed197379e92b355f3abec85188"
+      "bytes": 42135,
+      "sha256": "4ec896dc0140ab6b7adbb32776b5ab511268d0ff08948a2988f80c7cd3f60b5c"
     },
     {
       "path": "app/dnd_tools.js",
-      "bytes": 15959,
-      "sha256": "f30979dc9a812cf8df4b12c7787c8d544f8e14cf3213a81f4a1056fcc891e603"
+      "bytes": 18249,
+      "sha256": "75e3160f2380ffd7225588a0c47aec50e529a6e4517e7fc75052417915ea582d"
     },
     {
       "path": "app/expanded_bestiary_v39.js",
@@ -3694,8 +3694,8 @@
     },
     {
       "path": "app/gameplay_core_v57.js",
-      "bytes": 15945,
-      "sha256": "0b785aa9d5238f0e9f7e7b3559e9bb57bdd697c17c65fa7d9c7d2ed25c47a813"
+      "bytes": 19219,
+      "sha256": "ef5f5959cc0cf310a7e7deaf0ce4fbe5956ced43a01440c6107d1126d72854b7"
     },
     {
       "path": "app/ghost_extra_runtime.js",
@@ -3814,8 +3814,8 @@
     },
     {
       "path": "app/network_gameplay.js",
-      "bytes": 87125,
-      "sha256": "5111f195329bdf98e3b7ad6cfebee3c5ce6660d42bb994d809cb3242414085cd"
+      "bytes": 87259,
+      "sha256": "d8d14d09d6427a5775ac7f42b1fc3ab2362137e2b50b9ea2c204a5626d8cec68"
     },
     {
       "path": "app/notes.js",
@@ -3848,6 +3848,26 @@
       "sha256": "6a2936867d183306560c2181b8f4de780a48e250e71d0ff51c5f1ea1461afe1b"
     },
     {
+      "path": "app/predictor_cards.js",
+      "bytes": 74738,
+      "sha256": "a02e857c6053bbab2398126ee47f5d9361004b11098337a1731d47624f313041"
+    },
+    {
+      "path": "app/predictor_deck_ui.js",
+      "bytes": 24855,
+      "sha256": "1d51068e3fb42f1a1fd19188ad9517e4b080cc0d608e3a7edddaf993238c177e"
+    },
+    {
+      "path": "app/predictor_movement.js",
+      "bytes": 6682,
+      "sha256": "6ba034d48320e2299477e5b0950e12c32a4b96749262bf08ae2f5d43a75bf362"
+    },
+    {
+      "path": "app/predictor_runtime.js",
+      "bytes": 30445,
+      "sha256": "2ad1bdf74e73382e773038ec230eede0877e217d88b20573340e76110ed72288"
+    },
+    {
       "path": "app/races.js",
       "bytes": 52239,
       "sha256": "edebb1f1ddcb47b9a1863b4b427f7ac0721cc22f64de543188614c7444cbbdbc"
@@ -3864,8 +3884,8 @@
     },
     {
       "path": "app/rulesEngine.js",
-      "bytes": 42653,
-      "sha256": "b1c2d68a47643440ea1b37b6e763583e53d56b499b3be2959a2a5b70e279d5af"
+      "bytes": 43719,
+      "sha256": "6db0f459f0ae2db73a2fe86eedba7b90d885c52598a868fdabf43bcdde188f0e"
     },
     {
       "path": "app/runekeeper_taron_v12_runtime.js",
@@ -3894,8 +3914,8 @@
     },
     {
       "path": "app/spellblade_kibbles_runtime.js",
-      "bytes": 14140,
-      "sha256": "6be4bb6a370682be4a1fd668032eeb817577ca4c947a6b79c5beaf2b916cafc0"
+      "bytes": 14261,
+      "sha256": "60f1987780a8b910f9de2072e015f64a9af20b772a866ce396e66f0f864a2f6a"
     },
     {
       "path": "app/spells.js",
@@ -3930,7 +3950,7 @@
     {
       "path": "app/update_manager_v2.js",
       "bytes": 19323,
-      "sha256": "cc959512c0a7c911b1807335b27aec36323332d882c153b48e76919a61ffce5a"
+      "sha256": "46e220c0b06896e89de3f6dd18a6d436cddee68cda6293e521b43f05dbdfb078"
     },
     {
       "path": "app/update_scene_v2.js",
@@ -4276,7 +4296,7 @@
       "path": "wallpapers/1790622696215.png",
       "bytes": 1202179,
       "sha256": "99987d82b27f29f4d1e71c91847fb54dbf0d546816297260d26668ed77c74cd7",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/1790622696215.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/1790622696215.png"
     },
     {
       "path": "1790622844831.png",
@@ -4287,7 +4307,7 @@
       "path": "wallpapers/1790622844831.png",
       "bytes": 104000,
       "sha256": "60c9ccfc77616b10a60b454ee077d79737a6a2ff1c8ed26649d35f2ebee37fa5",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/1790622844831.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/1790622844831.png"
     },
     {
       "path": "1790718758545.png",
@@ -4298,7 +4318,7 @@
       "path": "wallpapers/1790718758545.png",
       "bytes": 1889164,
       "sha256": "0a3eab3f11aebea532709de2a29279b3a60b28bc0785bd84bceacde56167700d",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/1790718758545.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/1790718758545.png"
     },
     {
       "path": "1790788500741.png",
@@ -4309,31 +4329,31 @@
       "path": "wallpapers/1790788500741.png",
       "bytes": 1468216,
       "sha256": "c0aebfe39dc4af2cf95cfd5892f92b20588d13229ed3d0bae7aef7ee94dd2020",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/1790788500741.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/1790788500741.png"
     },
     {
       "path": "ambience/GLENMORIL Soundtrack - Music Box.mp3",
       "bytes": 1827664,
       "sha256": "59461a290aef76005661fb6845fc9104f3162fc8b6b46aca6dcfe8767c72be3a",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/GLENMORIL%20Soundtrack%20-%20Music%20Box.mp3"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/GLENMORIL%20Soundtrack%20-%20Music%20Box.mp3"
     },
     {
       "path": "ambience/Jalan Jalan - Lotus.mp3",
       "bytes": 9083034,
       "sha256": "fc22c942ed5f03e235fdb3fe147e4b4b94fe38f1fe7084f60464435b6e29a4b8",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/Jalan%20Jalan%20-%20Lotus.mp3"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/Jalan%20Jalan%20-%20Lotus.mp3"
     },
     {
       "path": "ambience/Oliver DeRiviere - Prelude to an End_(grizzlymusic.ru).mp3",
       "bytes": 4020570,
       "sha256": "fc173ef4b75aeff03fedf4f980c0b86a31cae7ff8cae6a52195aa82508e3d367",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/Oliver%20DeRiviere%20-%20Prelude%20to%20an%20End_%28grizzlymusic.ru%29.mp3"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/Oliver%20DeRiviere%20-%20Prelude%20to%20an%20End_%28grizzlymusic.ru%29.mp3"
     },
     {
       "path": "ambience/Oliver Deriviere - Who Am I_(grizzlymusic.ru).mp3",
       "bytes": 3530381,
       "sha256": "cbaae152faa9c8afc4a99fbd03f7e1abaedaf645b2ab806eea600b7d9db87fb0",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/Oliver%20Deriviere%20-%20Who%20Am%20I_%28grizzlymusic.ru%29.mp3"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/Oliver%20Deriviere%20-%20Who%20Am%20I_%28grizzlymusic.ru%29.mp3"
     },
     {
       "path": "arcanacards.png",
@@ -4344,7 +4364,7 @@
       "path": "wallpapers/arcanacards.png",
       "bytes": 1820683,
       "sha256": "b3d03703696e62963f6248df9aa2b9f2e76e038e4b30a61b4081bb65eeb6f2c4",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/arcanacards.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/arcanacards.png"
     },
     {
       "path": "ash_v2_sprite.png",
@@ -4355,7 +4375,7 @@
       "path": "wallpapers/ash_v2_sprite.png",
       "bytes": 442476,
       "sha256": "6c1e18fcb5b29d6c9bd139f6265679ac95fd7126444bfcc3f20cd4176435874d",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/ash_v2_sprite.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/ash_v2_sprite.png"
     },
     {
       "path": "bed.glb",
@@ -4391,7 +4411,7 @@
       "path": "wallpapers/dragon_fire_v2_sprite.png",
       "bytes": 1013123,
       "sha256": "61a1aec3a118c257fa48ebab828daa475d1d2cbc3d06e68ec0077315d941a051",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/dragon_fire_v2_sprite.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/dragon_fire_v2_sprite.png"
     },
     {
       "path": "embers_v2_sprite.png",
@@ -4402,7 +4422,7 @@
       "path": "wallpapers/embers_v2_sprite.png",
       "bytes": 698014,
       "sha256": "de1286eb711d778f2c7720e5c1838f6f93a2dc188f16fb5c770a9a08a095c92d",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/embers_v2_sprite.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/embers_v2_sprite.png"
     },
     {
       "path": "fire_front_v2_sprite.png",
@@ -4413,7 +4433,7 @@
       "path": "wallpapers/fire_front_v2_sprite.png",
       "bytes": 2249732,
       "sha256": "8ed04019d13439348764e016576cd6212387fdb5c8ad06f6567e07b2f433c4cb",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/fire_front_v2_sprite.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/fire_front_v2_sprite.png"
     },
     {
       "path": "fire_spread_mask_v2_sprite.png",
@@ -4424,7 +4444,7 @@
       "path": "wallpapers/fire_spread_mask_v2_sprite.png",
       "bytes": 1373284,
       "sha256": "70edb7cbd35c6c819f164b0756839d1ea4d95496c6902afbae855fe07ed85198",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/fire_spread_mask_v2_sprite.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/fire_spread_mask_v2_sprite.png"
     },
     {
       "path": "flash_v2_sprite.png",
@@ -4435,7 +4455,7 @@
       "path": "wallpapers/flash_v2_sprite.png",
       "bytes": 803264,
       "sha256": "f3c4d9e0b5acb795fdbc885707f86cd1411b23a0c40426205f70ed9960631337",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/flash_v2_sprite.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/flash_v2_sprite.png"
     },
     {
       "path": "floor_ceramic_tile_dark.png",
@@ -4446,7 +4466,7 @@
       "path": "wallpapers/floor_ceramic_tile_dark.png",
       "bytes": 83469,
       "sha256": "f33bfb74314903e2f5fa4620c43dabb2c218fe21fe2c4075b2fbe9667d53cf0c",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/floor_ceramic_tile_dark.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/floor_ceramic_tile_dark.png"
     },
     {
       "path": "floor_ceramic_tile_light.png",
@@ -4457,7 +4477,7 @@
       "path": "wallpapers/floor_ceramic_tile_light.png",
       "bytes": 94086,
       "sha256": "f69cfa0718af07766bce044c7308c0eb6fa63e92402ddaf39f0caa51b2e0ce82",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/floor_ceramic_tile_light.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/floor_ceramic_tile_light.png"
     },
     {
       "path": "floor_checker_tile.png",
@@ -4468,7 +4488,7 @@
       "path": "wallpapers/floor_checker_tile.png",
       "bytes": 84123,
       "sha256": "077b2256e26265d466f6b5dc91796f4a73083b566dc0b5b0655371d6011e6629",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/floor_checker_tile.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/floor_checker_tile.png"
     },
     {
       "path": "floor_cobblestone.png",
@@ -4479,7 +4499,7 @@
       "path": "wallpapers/floor_cobblestone.png",
       "bytes": 128808,
       "sha256": "8381729afd257e4d5649c859edcc8ca8c1795985cd9ec02a3e3c707e0b6c8ffa",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/floor_cobblestone.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/floor_cobblestone.png"
     },
     {
       "path": "floor_earth.png",
@@ -4490,7 +4510,7 @@
       "path": "wallpapers/floor_earth.png",
       "bytes": 110714,
       "sha256": "5383b24754b106edf6039d792e9d9629f3c3552d6cf8f19eff41b4e2aa580354",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/floor_earth.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/floor_earth.png"
     },
     {
       "path": "floor_grass.png",
@@ -4501,7 +4521,7 @@
       "path": "wallpapers/floor_grass.png",
       "bytes": 124328,
       "sha256": "b55fd716ff1fd757a10ab024c01d6d63d276919063cd2df2f9d2960289a7b6a7",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/floor_grass.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/floor_grass.png"
     },
     {
       "path": "floor_hex_tile.png",
@@ -4512,7 +4532,7 @@
       "path": "wallpapers/floor_hex_tile.png",
       "bytes": 122290,
       "sha256": "26f2441f307344662f37af7d4fb014d17d836846d34e22da9a0363b38a5aaafc",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/floor_hex_tile.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/floor_hex_tile.png"
     },
     {
       "path": "floor_marble_dark.png",
@@ -4523,7 +4543,7 @@
       "path": "wallpapers/floor_marble_dark.png",
       "bytes": 111428,
       "sha256": "b6906ea0302e35383e2d19eb30f0f884bd4bb24dcc8badb8a789d3572d3182ce",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/floor_marble_dark.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/floor_marble_dark.png"
     },
     {
       "path": "floor_marble_light.png",
@@ -4534,7 +4554,7 @@
       "path": "wallpapers/floor_marble_light.png",
       "bytes": 88698,
       "sha256": "f7b468f8a3f5f83cb507a0388a387eadb429f92933a5e2e30cbce30395c2bdc4",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/floor_marble_light.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/floor_marble_light.png"
     },
     {
       "path": "floor_parquet_herringbone.png",
@@ -4545,7 +4565,7 @@
       "path": "wallpapers/floor_parquet_herringbone.png",
       "bytes": 126070,
       "sha256": "e36a8a572bdf208eb95fb3e0a93dfa6a72726511d9f2108918337d5cd1d4c887",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/floor_parquet_herringbone.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/floor_parquet_herringbone.png"
     },
     {
       "path": "floor_rug_blue.png",
@@ -4556,7 +4576,7 @@
       "path": "wallpapers/floor_rug_blue.png",
       "bytes": 118109,
       "sha256": "2350c76c19848346127ac65040ec6944ffb3442137fed85c0d5f9c34e9093e68",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/floor_rug_blue.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/floor_rug_blue.png"
     },
     {
       "path": "floor_rug_green.png",
@@ -4567,7 +4587,7 @@
       "path": "wallpapers/floor_rug_green.png",
       "bytes": 113771,
       "sha256": "d7e6f9f5ab130ddd79b0966319e117a251775e36a983a0fc7a314b9212811824",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/floor_rug_green.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/floor_rug_green.png"
     },
     {
       "path": "floor_rug_red.png",
@@ -4578,7 +4598,7 @@
       "path": "wallpapers/floor_rug_red.png",
       "bytes": 117912,
       "sha256": "94588e8f575a9d18aa5dd35f20ce4cf3e8302548320cd3197a7d7a8485c75ee3",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/floor_rug_red.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/floor_rug_red.png"
     },
     {
       "path": "floor_stone_tile_dark.png",
@@ -4589,7 +4609,7 @@
       "path": "wallpapers/floor_stone_tile_dark.png",
       "bytes": 91828,
       "sha256": "42dcbf382e423d8006fc3140069878a834d80cce03b9961896aac2a5c9d32e96",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/floor_stone_tile_dark.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/floor_stone_tile_dark.png"
     },
     {
       "path": "floor_stone_tile_light.png",
@@ -4600,7 +4620,7 @@
       "path": "wallpapers/floor_stone_tile_light.png",
       "bytes": 101714,
       "sha256": "44f90014d5d14906fed9bfe156af72aa07bc88c439b7e69cf9e742cf8acedbd8",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/floor_stone_tile_light.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/floor_stone_tile_light.png"
     },
     {
       "path": "floor_tatami.png",
@@ -4611,7 +4631,7 @@
       "path": "wallpapers/floor_tatami.png",
       "bytes": 91917,
       "sha256": "2f3f375bc5edf041a4f9df0f39c094c538c10d6ac3d947d03c5d843b227bad60",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/floor_tatami.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/floor_tatami.png"
     },
     {
       "path": "floor_wood_dark.png",
@@ -4622,7 +4642,7 @@
       "path": "wallpapers/floor_wood_dark.png",
       "bytes": 76168,
       "sha256": "1b02da6ad880d2ac6a6558a93abdaedb5f61d26e57f63d76d55e283f935ed6bb",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/floor_wood_dark.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/floor_wood_dark.png"
     },
     {
       "path": "floor_wood_light.png",
@@ -4633,7 +4653,7 @@
       "path": "wallpapers/floor_wood_light.png",
       "bytes": 83659,
       "sha256": "01f1d82f2dfc409433580d5d595492259ae288f9c0f10594fee51e846caffc16",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/floor_wood_light.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/floor_wood_light.png"
     },
     {
       "path": "heat_glow_v2_sprite.png",
@@ -4644,7 +4664,7 @@
       "path": "wallpapers/heat_glow_v2_sprite.png",
       "bytes": 836371,
       "sha256": "98922a27429de20b26099eef5653388354ace703cde5632e7ebabc5b5fefd3a9",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/heat_glow_v2_sprite.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/heat_glow_v2_sprite.png"
     },
     {
       "path": "human-base-rigged.glb",
@@ -4655,7 +4675,7 @@
       "path": "ambience/lineage_2_16. Shepard's Flute.mp3",
       "bytes": 2997816,
       "sha256": "1c1f3c69942087f2bebc56886dff9f949e26ca91a53ed3bc1d34c9c86a1a835a",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/lineage_2_16.%20Shepard%27s%20Flute.mp3"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/lineage_2_16.%20Shepard%27s%20Flute.mp3"
     },
     {
       "path": "smoke_back_v2_sprite-1.png",
@@ -4666,7 +4686,7 @@
       "path": "wallpapers/smoke_back_v2_sprite-1.png",
       "bytes": 1707378,
       "sha256": "65ad0052c01c2079e392adb9c2c00d22641b25380f3c5580808ca57c487f6c14",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/smoke_back_v2_sprite-1.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/smoke_back_v2_sprite-1.png"
     },
     {
       "path": "smoke_back_v2_sprite.png",
@@ -4677,7 +4697,7 @@
       "path": "wallpapers/smoke_back_v2_sprite.png",
       "bytes": 1814587,
       "sha256": "08d53a3bae525f62a0d55a78862855dbd9f9c3a8adf7a8e225f091db591ad3db",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/smoke_back_v2_sprite.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/smoke_back_v2_sprite.png"
     },
     {
       "path": "smoke_front_v2_sprite-1.png",
@@ -4688,7 +4708,7 @@
       "path": "wallpapers/smoke_front_v2_sprite-1.png",
       "bytes": 1890480,
       "sha256": "91b49d1084c54c741a5e2e0b93838fd92bc8b4483dc6a7ced0ed490108100046",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/smoke_front_v2_sprite-1.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/smoke_front_v2_sprite-1.png"
     },
     {
       "path": "smoke_front_v2_sprite.png",
@@ -4699,7 +4719,7 @@
       "path": "wallpapers/smoke_front_v2_sprite.png",
       "bytes": 2064687,
       "sha256": "4cbcdfa80f6cfc334c1b60cecdaee9c2a14665262b2afed79c9a89406b7ef965",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/smoke_front_v2_sprite.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/smoke_front_v2_sprite.png"
     },
     {
       "path": "smoke_mid_v2_sprite.png",
@@ -4710,7 +4730,7 @@
       "path": "wallpapers/smoke_mid_v2_sprite.png",
       "bytes": 1898516,
       "sha256": "f80c33b26b1d7fc61c31c7bac8ea174b764c473cc94dfe3b782cc1d0d2478d56",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/smoke_mid_v2_sprite.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/smoke_mid_v2_sprite.png"
     },
     {
       "path": "table.glb",
@@ -4726,7 +4746,7 @@
       "path": "wallpapers/vignette_v2_sprite.png",
       "bytes": 1213593,
       "sha256": "aa5ecba99b6ac6946f3a49fe220580ead374f86a557f53fa5d7eff63a40859bf",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/vignette_v2_sprite.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/vignette_v2_sprite.png"
     },
     {
       "path": "wall_brick_red.png",
@@ -4737,7 +4757,7 @@
       "path": "wallpapers/wall_brick_red.png",
       "bytes": 111128,
       "sha256": "b27a7edf7fa02583a0f16f04f75eebf8eb2a94d3f8b6454422c75d2923397706",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/wall_brick_red.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/wall_brick_red.png"
     },
     {
       "path": "wall_concrete.png",
@@ -4748,7 +4768,7 @@
       "path": "wallpapers/wall_concrete.png",
       "bytes": 91074,
       "sha256": "de0b8be04e6178da9beea8458acde166e169a1955a06f066f9e6a93220420b80",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/wall_concrete.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/wall_concrete.png"
     },
     {
       "path": "wall_half_timber.png",
@@ -4759,7 +4779,7 @@
       "path": "wallpapers/wall_half_timber.png",
       "bytes": 109537,
       "sha256": "7842a656fb37334d4a6c072afb9212f747d9f3ae038448a23667034e9167ebfe",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/wall_half_timber.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/wall_half_timber.png"
     },
     {
       "path": "wall_marble_dark.png",
@@ -4770,7 +4790,7 @@
       "path": "wallpapers/wall_marble_dark.png",
       "bytes": 123621,
       "sha256": "17fba8143f63e8bf6114420df6414ad05cd1663401ed7309a3469649fcc394f8",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/wall_marble_dark.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/wall_marble_dark.png"
     },
     {
       "path": "wall_marble_light.png",
@@ -4781,7 +4801,7 @@
       "path": "wallpapers/wall_marble_light.png",
       "bytes": 90457,
       "sha256": "7accf1a831f34cec725b8168ad539aa5ea23e36d94eb1d19c2616cb3d36bd7e7",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/wall_marble_light.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/wall_marble_light.png"
     },
     {
       "path": "wall_moss_stone.png",
@@ -4792,7 +4812,7 @@
       "path": "wallpapers/wall_moss_stone.png",
       "bytes": 128985,
       "sha256": "165dcdbb6b744d124cb77befe568af85a5d3e69ec6d683678fa0b5e7a992b579",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/wall_moss_stone.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/wall_moss_stone.png"
     },
     {
       "path": "wall_old_plaster.png",
@@ -4803,7 +4823,7 @@
       "path": "wallpapers/wall_old_plaster.png",
       "bytes": 107725,
       "sha256": "921b6c10d5bc86161b573546e5d6705931bfc2aff707b1382ebde1e371063690",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/wall_old_plaster.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/wall_old_plaster.png"
     },
     {
       "path": "wall_plaster_dark.png",
@@ -4814,7 +4834,7 @@
       "path": "wallpapers/wall_plaster_dark.png",
       "bytes": 95153,
       "sha256": "e33ebf57eb51980e7a4b511f216614ff4bb95c42ad319ca97be0a5fd2eec8567",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/wall_plaster_dark.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/wall_plaster_dark.png"
     },
     {
       "path": "wall_plaster_light.png",
@@ -4825,7 +4845,7 @@
       "path": "wallpapers/wall_plaster_light.png",
       "bytes": 91767,
       "sha256": "8ed7d38fd14ecb170530bfb6fd047064605a47a99116abe23313865c50db908a",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/wall_plaster_light.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/wall_plaster_light.png"
     },
     {
       "path": "wall_plaster_panel.png",
@@ -4836,7 +4856,7 @@
       "path": "wallpapers/wall_plaster_panel.png",
       "bytes": 89722,
       "sha256": "396b31b6f3ce344612ec19dbdbc28f61ec212d4dda6fcf4392215c7d64f774a3",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/wall_plaster_panel.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/wall_plaster_panel.png"
     },
     {
       "path": "wall_slate.png",
@@ -4847,7 +4867,7 @@
       "path": "wallpapers/wall_slate.png",
       "bytes": 103822,
       "sha256": "294be97ea615d61a77886389182a5d79638c5f23fb0e1d9ee0b8ffb8a4318e02",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/wall_slate.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/wall_slate.png"
     },
     {
       "path": "wall_stone_dark.png",
@@ -4858,7 +4878,7 @@
       "path": "wallpapers/wall_stone_dark.png",
       "bytes": 120617,
       "sha256": "44605c517008b9699ae9aaca13820cc7f946d6dc0c30357ba3ac7c36af0f940d",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/wall_stone_dark.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/wall_stone_dark.png"
     },
     {
       "path": "wall_stone_light.png",
@@ -4869,7 +4889,7 @@
       "path": "wallpapers/wall_stone_light.png",
       "bytes": 127689,
       "sha256": "53e389cf5474c2345a2e724a42bd5f46ff66a0ac6ebd96b0761e95808537b47f",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/wall_stone_light.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/wall_stone_light.png"
     },
     {
       "path": "wall_stone_masonry.png",
@@ -4880,7 +4900,7 @@
       "path": "wallpapers/wall_stone_masonry.png",
       "bytes": 129908,
       "sha256": "d2ac2cbb339003eb38628f63e9c947da74494ddcda95a6078e1e56c23d473894",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/wall_stone_masonry.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/wall_stone_masonry.png"
     },
     {
       "path": "wall_wallpaper.png",
@@ -4891,7 +4911,7 @@
       "path": "wallpapers/wall_wallpaper.png",
       "bytes": 106442,
       "sha256": "03bcd88415d29d71edcc15934399bf25eaa5f1d26d71b94956b74313c14ea2e9",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/wall_wallpaper.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/wall_wallpaper.png"
     },
     {
       "path": "wall_white_plaster.png",
@@ -4902,7 +4922,7 @@
       "path": "wallpapers/wall_white_plaster.png",
       "bytes": 120869,
       "sha256": "35ddea32266b39b8f016e545059819a920f8a449f3125a13074ea3e84a440364",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/wall_white_plaster.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/wall_white_plaster.png"
     },
     {
       "path": "wall_wood_dark.png",
@@ -4913,7 +4933,7 @@
       "path": "wallpapers/wall_wood_dark.png",
       "bytes": 81144,
       "sha256": "02dd332d198a6f829b0fd1b3dffa5fb12363fdc70918caea73f3a5ac5a12eb7f",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/wall_wood_dark.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/wall_wood_dark.png"
     },
     {
       "path": "wall_wood_light.png",
@@ -4924,7 +4944,7 @@
       "path": "wallpapers/wall_wood_light.png",
       "bytes": 93079,
       "sha256": "f6529f1062f39a7d3a4f1376084fe0d81fa824f6085527959e573809593b6a53",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/1aacdf0460baca476933ccaef891b20c727a1ac7/wall_wood_light.png"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/d8913bd33db973522c9cee58ae95f6941f6ccf3b/wall_wood_light.png"
     }
   ],
   "blockedVersions": []
