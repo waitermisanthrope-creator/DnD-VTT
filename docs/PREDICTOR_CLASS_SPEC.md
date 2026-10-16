@@ -411,3 +411,11 @@ CloudSync теперь переназначает известные внутр�
 Ограничения: автоматического запроса всех чужих провоцированных атак на каждом шаге рывка/отступления нет — используется существующий ручной порядок. Эти карты не наделяют добровольное движение иммунитетом к реакциям; в результате явно указан признак провоцирования. Числа оружия вводятся игроком, как в текущей локальной атаке. Приватное сетевое исполнение остаётся закрытым.
 
 Проверено: `predictor_motion_cards_test.cjs` — 20 сценариев, реальные UI-рычаги/сохранение, перенос выпавшего перемещения, отступления и ожидающего падения туда/обратно через mock CloudSync. Повторное приземление, коллизии, блокировка и неправильные параметры проверены. Осталось 18 исполнителей. Класс не завершён; физические Windows/Android, сборки, push и выпуск не выполнялись. Версия 74.00.66.
+
+
+## Pending decisions — remaining three cards (not approved defaults)
+
+As of the 75/78 checkpoint, do not silently approve these:
+- Mage: full any-list first-level spell automation requires executable spell effects, not just current descriptions. Owner was asked whether to implement all allowed spells as a separate large stage or begin with an explicitly limited fully executable list; no explicit choice recorded.
+- Devil: strongest available attack ranking (maximum possible versus average declared damage, including attack count) is not chosen. No inference of enemy hidden defenses.
+- Seven Cups proposed automated, seven equal outcomes: 10 gp; CON DC14 or 1d6 poison + poisoned for 60 seconds, repeat save end of own turn; ordinary healing potion; actual Poisonous Snake; empty; illusory gem for 600 seconds with zero sale value; actual gem 25 gp. Hidden cup choice, final result with no reroll. Submitted asynchronously for approval; no reply recorded at this checkpoint. These numerical values are a proposal, not active rules.

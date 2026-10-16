@@ -35,7 +35,7 @@
   }
   function hp(t){return Number(t.hpCurrent!=null?t.hpCurrent:t.hp&&typeof t.hp==='object'?t.hp.current:t.hp);}
   function maxHp(t){return g.DNDRules&&g.DNDRules.effectiveMaxHp?g.DNDRules.effectiveMaxHp(t):Number(t.hpMax||t.maxHp||t.hp&&t.hp.max);}
-  function syncOwner(h){(h.initiativeTracker&&h.initiativeTracker.combatants||[]).forEach(function(t){if(owned(h,t)){t.hp=hp(h);t.maxHp=Number(h.hpMax||h.maxHp||h.hp&&h.hp.max);if(h.exhaustionLevel!=null)t.exhaustionLevel=h.exhaustionLevel;t.tempHp=Number(h.hpTemp||h.tempHp)||0;['turnResources','tarotEffects','conditions','activeConditions','concentration','deathSaves','position','inspiration','tarotInspirationReady'].forEach(function(key){if(h[key]!=null)t[key]=copy(h[key]);});}});}
+  function syncOwner(h){(h.initiativeTracker&&h.initiativeTracker.combatants||[]).forEach(function(t){if(owned(h,t)){t.hp=hp(h);t.maxHp=Number(h.hpMax||h.maxHp||h.hp&&h.hp.max);if(h.exhaustionLevel!=null)t.exhaustionLevel=h.exhaustionLevel;t.tempHp=Number(h.hpTemp||h.tempHp)||0;['defeated','dead','turnResources','tarotEffects','conditions','activeConditions','concentration','deathSaves','position','inspiration','tarotInspirationReady'].forEach(function(key){if(h[key]!=null)t[key]=copy(h[key]);});}});}
   function distance(h,a,b){if(a===b)return 0;var p=token(h,a),q=token(h,b);if(!p||!q)error('Для проверки расстояния нужны позиции участников на карте.');var cell=h.initiativeTracker&&h.initiativeTracker.battlefield&&h.initiativeTracker.battlefield.cellFt||5;return Math.hypot((p.x-q.x)*cell,(p.y-q.y)*cell,(Number(p.elevationFt)||0)-(Number(q.elevationFt)||0));}
   function target(h,req,range){var t=actor(h,req.targetId);if(distance(h,h,t)>range)error('Цель вне дальности карты.');return t;}
   function allies(h,t){return t===h||t.team==='party'||t.type==='hero';}
@@ -44,7 +44,7 @@
   function conditions(h,kind){var key=g.DNDRules&&g.DNDRules.normalizeConditionName?g.DNDRules.normalizeConditionName(kind):kind;var applied=g.DNDCombat.toggleCondition(h,key,true);if(applied&&h.activeConditions)h.activeConditions[key]=true;return applied;}
   function clearCondition(h,kind){var key=g.DNDRules&&g.DNDRules.normalizeConditionName?g.DNDRules.normalizeConditionName(kind):kind;g.DNDCombat.toggleCondition(h,key,false);if(h.activeConditions)h.activeConditions[key]=false;}
   function payAction(h,kind,req){
-    var conditions=Object.assign({},h.conditions,h.activeConditions);if(['Бессознателен','Оглушён','Парализован','Недееспособен','Unconscious'].some(function(k){return conditions[k];})||(!Number.isFinite(hp(h))||hp(h)<=0))error('Состояние персонажа не позволяет разыграть карту.');
+    activateLastStand(h);var conditions=Object.assign({},h.conditions,h.activeConditions);if(['Бессознателен','Оглушён','Парализован','Недееспособен','Unconscious'].some(function(k){return conditions[k];})||(!Number.isFinite(hp(h))||hp(h)<=0&&!lastStandActive(h)))error('Состояние персонажа не позволяет разыграть карту.');
     var fight=h.initiativeTracker,current=fight&&fight.combatants&&fight.combatants[fight.activeIndex];if(kind!=='reaction'&&current&&!owned(h,current))error('Эта карта доступна только в собственный ход.');
     if(blocked(h,kind))error('Активная карта запрещает это действие.');var r=h.turnResources;if(!r)error('Нет учёта действий текущего хода.');
     var key=kind==='action'?(r.actions!=null?'actions':'action'):kind==='bonus'?'bonusAction':'reaction';
@@ -173,14 +173,14 @@
   function consumeMaximum(h){var ready=effects(h).some(function(e){return active(h,e)&&e.maximizeNextRoll;});if(ready){h.tarotEffects=effects(h).filter(function(e){return !e.maximizeNextRoll;});syncOwner(h);}return ready;}
   function canCast(h,spell){
     if(spell&&spell.damage&&peaceBlocked(sceneFor(h),h))return {ok:false,error:'Аура покоя запрещает наносящее урон заклинание.'};
-    if(blocked(h,'spell'))return {ok:false,error:'Отшельник запрещает колдовство до начала следующего хода.'};
+    if(blocked(h,'spell',{reaction:!!(spell&&(/reaction|реакц/i.test(String(spell.castingTime||spell.castTime||''))))}))return {ok:false,error:'Отшельник запрещает колдовство до начала следующего хода.'};
     var c=spell&&spell.components,verbal=typeof c==='string'?/(^|[,\s])(V|В)(?=$|[,\s])/i.test(c):Array.isArray(c)?c.some(function(x){return /^(V|В|verbal)$/i.test(x);}):c&&!!(c.verbal||c.v||c.V);
     if(verbal&&effects(h).some(function(e){return active(h,e)&&e.noVerbal;}))return {ok:false,error:'Тройка Кубков запрещает вербальные компоненты.'};return {ok:true};
   }
   function invisible(t){return !!Object.assign({},t&&t.conditions,t&&t.activeConditions)['Невидим']||effects(t).some(function(e){return active(t,e)&&e.invisible;});}
   function sceneFor(h,ctx){return ctx&&ctx.tarotScene||(h&&h.initiativeTracker?h:g.currentChar);}
   function canSee(scene,observer,t,options){
-    if(!observer||!t)return false;if(hp(observer)<=0||['Бессознателен','Недееспособен','Оглушён','Unconscious'].some(function(k){return Object.assign({},observer.conditions,observer.activeConditions)[k];}))return false;return sightGeometry(scene,observer,t,options);
+    if(!observer||!t)return false;if(hp(observer)<=0&&!lastStandActive(observer)||['Бессознателен','Недееспособен','Оглушён','Unconscious'].some(function(k){return Object.assign({},observer.conditions,observer.activeConditions)[k];}))return false;return sightGeometry(scene,observer,t,options);
   }
   // Pending wager magic is passive: unconsciousness cannot cancel its payout.
   // Keep range, walls, hidden targets, blindness and special-sight rules.
@@ -424,6 +424,58 @@
       applyWalk(draft,c,plan,true);syncOwner(draft);Object.assign(h,draft);return {ok:true,result:{movedFt:plan.cost,noOpportunityAttacks:true}};
     }catch(e){return {ok:false,reason:e.message};}
   }
+  // The interrupt frame belongs to the profile and survives JSON/cloud saves.
+  // Resource reset is deferred until the damage-producing action has committed.
+  function executionActor(t,ctx){var scene=executionScene||sceneFrom(t,ctx),list=scene&&scene.initiativeTracker&&scene.initiativeTracker.combatants;return scene&&scene.predictorState&&Array.isArray(list)&&list.includes(t)&&owned(scene,t)?scene:t;}
+  function lastStandFrame(h){return h&&h.classFeaturesState&&h.classFeaturesState.predictorLastStand;}
+  function lastStandActive(h){var scene=h&&h.predictorState?h:sceneFor(h),frame=lastStandFrame(scene);return !!(frame&&frame.active&&!scene.dead&&Number(scene.deathSaves&&scene.deathSaves.failures||0)<3&&(h===scene||owned(scene,h)));}
+  function beginLastStand(h,event){
+    if(g.dndNetwork&&g.dndNetwork.state&&g.dndNetwork.state.connected)return false;
+    var ready=effects(h).find(function(e){return active(h,e)&&e.lastStandReady;});
+    if(!ready||!h.predictorState||lastStandFrame(h)||h.dead||event.previousHp<=0||hp(h)!==0||event.instantDeath||event.hpDamage-event.previousHp>=maxHp(h)||Number(h.deathSaves&&h.deathSaves.failures||0)>=3)return false;
+    var tracker=h.initiativeTracker,owner=tracker&&tracker.combatants&&tracker.combatants.find(function(t){return owned(h,t);}),interrupted=tracker&&tracker.combatants[tracker.activeIndex];
+    if(!owner||!interrupted)return false;
+    h.tarotEffects=effects(h).filter(function(e){return e!==ready;});
+    var state=h.classFeaturesState||(h.classFeaturesState={});state.predictorLastStand={id:'last-stand:'+g.crypto.randomUUID(),active:true,activated:false,ownerId:owner.id,interruptedId:interrupted.id,round:tracker.round,queued:[],pool:copy(h.turnResources||{}),startedTurn:h.tarotLastStartedTurn||null,tricksterTurn:h.predictorState.trickster&&h.predictorState.trickster.ownTurnId||null,flags:{}};STAND_TURN_FLAGS.forEach(function(k){if(Object.prototype.hasOwnProperty.call(state,k))state.predictorLastStand.flags[k]=copy(state[k]);});
+    tracker.activeIndex=tracker.combatants.indexOf(owner);h.defeated=false;owner.defeated=false;syncOwner(h);return true;
+  }
+  var STAND_TURN_FLAGS=['sneakUsedThisTurn','foeSlayerUsedThisTurn','recklessThisTurn','actionSurgeUsed','rageMaintained','bhAttacksThisTurn'];
+  function activateLastStand(h){
+    h=executionActor(h);var frame=lastStandFrame(h);if(!frame||!lastStandActive(h)||frame.activated)return false;
+    frame.pool=copy(h.turnResources||{});frame.startedTurn=h.tarotLastStartedTurn||null;frame.tricksterTurn=h.predictorState.trickster&&h.predictorState.trickster.ownTurnId||null;
+    frame.flags={};STAND_TURN_FLAGS.forEach(function(k){if(Object.prototype.hasOwnProperty.call(h.classFeaturesState,k))frame.flags[k]=copy(h.classFeaturesState[k]);});
+    // Mark first: nested class start hooks cannot reset this pool again.
+    frame.activated=true;turnStart(h,frame.id,true);h.turnResources.movementUsed=0;A.beginOwnTurn(h,frame.id);syncOwner(h);return true;
+  }
+  function queueLastStandAttacks(scene,attacker,victim,list,options){
+    var frame=lastStandFrame(scene);if(!frame||!frame.active||!list.length)return false;
+    var members=actors(scene);if(!members.includes(attacker)||!members.includes(victim))return false;
+    var encoded=JSON.parse(JSON.stringify({attacks:list,options:options||{}},function(key,value){
+      if(key==='tarotScene'||key==='target'||key==='__attacker')return undefined;
+      if(value&&typeof value==='object'&&members.includes(value))return {tarotActorRef:value.id};return value;
+    }));
+    frame.queued.push({attackerId:attacker.id,targetId:victim.id,attacks:encoded.attacks,options:encoded.options});return true;
+  }
+  function finishLastStand(h){
+    var frame=lastStandFrame(h);if(!frame||!frame.active)return {ok:false,reason:'Нет внеочередного хода.'};
+    var saved=copy(h);
+    try{
+      activateLastStand(h);var ended=A.endTurn(h,frame.id);if(!ended.ok)error(ended.reason);turnEnd(h);
+      var tracker=h.initiativeTracker,reaction=h.turnResources&&h.turnResources.reaction,queue=frame.queued||[];
+      h.turnResources=copy(frame.pool||{});h.turnResources.reaction=reaction;
+      STAND_TURN_FLAGS.forEach(function(k){if(Object.prototype.hasOwnProperty.call(frame.flags||{},k))h.classFeaturesState[k]=frame.flags[k];else delete h.classFeaturesState[k];});
+      if(frame.startedTurn)h.tarotLastStartedTurn=frame.startedTurn;else delete h.tarotLastStartedTurn;
+      if(h.predictorState.trickster)h.predictorState.trickster.ownTurnId=frame.tricksterTurn;
+      delete h.classFeaturesState.predictorLastStand;
+      if(hp(h)<=0||h.dead||Number(h.deathSaves&&h.deathSaves.failures||0)>=3){h.defeated=true;conditions(h,'Бессознателен');g.DNDCombat.breakConcentration(h);h.turnResources.reaction=0;}else h.defeated=false;
+      var resume=tracker.combatants.findIndex(function(t){return String(t.id)===String(frame.interruptedId);});if(resume<0)error('Прерванный участник отсутствует в инициативе.');tracker.activeIndex=resume;syncOwner(h);
+      var resumed=[];queue.forEach(function(job){var source=actor(h,job.attackerId),victim=actor(h,job.targetId);if(source.dead||source.defeated||hp(source)<=0||job.options.stopOnDefeat&&(victim.defeated||hp(victim)<=0))return;
+        var attacks=JSON.parse(JSON.stringify(job.attacks),function(key,value){return value&&value.tarotActorRef?actor(h,value.tarotActorRef):value;});
+        attacks.forEach(function(a){a.tarotScene=h;});resumed.push(g.DNDCombat.attackSequence(source,victim,attacks,Object.assign({},job.options,{tarotScene:h})));
+      });syncOwner(h);return {ok:true,result:{lastStandFinished:true,resumed:resumed,interruptedId:frame.interruptedId,conscious:hp(h)>0&&!h.defeated}};
+    }catch(e){restoreInPlace(h,saved);return {ok:false,reason:e.message};}
+  }
+  HANDLERS.wands_09=function(h){var tracker=encounter(h);if(!tracker.combatants.some(function(t){return owned(h,t);}))error('Персонаж должен находиться в инициативе.');put(h,'wands_09',{lastStandReady:true,seconds:60});return {preparedLastStand:true,seconds:60};};
   HANDLERS.wands_10=function(h){
     if(!g.DNDRules||!g.DNDRules.addExhaustion)error('Движок истощения недоступен.');var result=g.DNDRules.addExhaustion(h,1);if(!result.ok)error('Не удалось учесть истощение.');
     if(!result.dead)put(h,'wands_10',{maximizeAttack:true,consumeOn:'attack',untilOwnEndAfterNext:true});return {exhaustion:result.after,dead:result.dead,maximizeNextAttack:!result.dead};
@@ -432,6 +484,7 @@
     encounter(h);var r=h.turnResources,key=r.actions!=null?'actions':'action',n=r[key]===true?1:Number(r[key])||0;r[key]=n+1;
     put(h,'major_21',{timeStop:true,speedMultiplier:2,untilOwnEnd:true,combatOnly:true});return {extraAction:1,extraMovement:true,untilOwnEnd:true};
   };
+  function standPaused(t,ctx){var scene=executionScene||sceneFor(t,ctx),frame=lastStandFrame(scene);return !!(frame&&frame.active&&actors(scene).includes(t)&&t!==scene&&!owned(scene,t)&&!(ctx&&(ctx.opportunityAttack||ctx.reaction)));}
   function timeFrozen(t){var scene=executionScene||sceneFor(t);return !!(scene&&actors(scene).includes(t)&&t!==scene&&!owned(scene,t)&&effects(scene).some(function(e){return active(scene,e)&&e.timeStop;}));}
   function noteAffect(t,ctx){var scene=ctx&&ctx.tarotScene||executionScene||g.currentChar;if(scene&&actors(scene).includes(t)&&t!==scene&&!owned(scene,t)&&effects(scene).some(function(e){return e.timeStop;}))scene.tarotEffects=effects(scene).filter(function(e){return !e.timeStop;});}
   HANDLERS.major_05=function(h){var targets=area(h,60);targets.forEach(function(t){put(t,'major_05',{truthful:true,seconds:600});});return {truthfulIds:targets.map(function(t){return t.id;}),seconds:600};};
@@ -473,7 +526,7 @@
   HANDLERS.pentacles_10=summonAncestor;
   function removeTarotEntity(h,id){var fight=h.initiativeTracker,bf=fight&&fight.battlefield;if(!bf)return;var active=fight.combatants[fight.activeIndex],activeId=active&&active.id;if(bf.entities)delete bf.entities[id];delete bf.tokens['bt_'+id];fight.combatants=fight.combatants.filter(function(t){return t.entityId!==id;});var at=fight.combatants.findIndex(function(t){return t.id===activeId;});fight.activeIndex=at>=0?at:Math.min(fight.activeIndex,Math.max(0,fight.combatants.length-1));}
   function syncTarotEntity(t,opts){
-    if(!t||!t.entityId)return;var scene=opts&&opts.tarotScene||executionScene||g.currentChar,bf=scene&&scene.initiativeTracker&&scene.initiativeTracker.battlefield,e=bf&&bf.entities&&bf.entities[t.entityId];
+    if(t&&t.predictorState)syncOwner(t);if(!t||!t.entityId)return;var scene=opts&&opts.tarotScene||executionScene||g.currentChar,bf=scene&&scene.initiativeTracker&&scene.initiativeTracker.battlefield,e=bf&&bf.entities&&bf.entities[t.entityId];
     if(!e||e.source!=='tarot:pentacles_10')return;e.hp=hp(t);e.maxHp=Number(t.hpMax||t.maxHp||t.hp&&t.hp.max);if(t.exhaustionLevel!=null)e.exhaustionLevel=t.exhaustionLevel;e.tempHp=Number(t.hpTemp||t.tempHp)||0;e.conditions=copy(t.conditions||{});e.defeated=e.hp<=0;var p=bf.tokens['bt_'+e.id];if(p){p.hp=e.hp;p.maxHp=e.maxHp;}
   }
   function canAncestorAttack(h,c,t){
@@ -626,7 +679,7 @@
   function ignoresResistance(h,type,ctx){return !!(ctx&&ctx.weaponAttack&&['дробящий','колющий','рубящий','bludgeoning','piercing','slashing'].includes(type)&&effects(h).some(function(e){return active(h,e)&&e.ignorePhysicalResistance;}));}
   function immuneCondition(h,condition){return effects(h).some(function(e){return active(h,e)&&Array.isArray(e.immuneConditions)&&e.immuneConditions.includes(condition);});}
   function speedMultiplier(h){var ex=g.DNDRules&&g.DNDRules.getExhaustion?g.DNDRules.getExhaustion(h):0;return effects(h).reduce(function(n,e){return active(h,e)&&e.speedMultiplier!=null?n*e.speedMultiplier:n;},ex>=5?0:ex>=2?0.5:1);}
-  function blocked(h,kind){if(timeFrozen(h)&&['action','bonus','reaction','movement','attack','spell','check'].includes(kind))return true;return effects(h).some(function(e){return active(h,e)&&(e.sleep&&['action','bonus','reaction','movement','check'].includes(kind)||e.noActions&&(kind==='action'||kind==='bonus')||e.noMainAction&&kind==='action'||e.noReactions&&kind==='reaction'||e.noMovement&&kind==='movement'||e.noHide&&kind==='hide'||e.noDisengage&&kind==='disengage'||e.noHelp&&kind==='help'||e.noTransfer&&kind==='transfer'||e.noAttacks&&kind==='attack'||e.noSpells&&kind==='spell');});}
+  function blocked(h,kind,ctx){if(kind!=='reaction'&&standPaused(h,ctx)&&['action','bonus','movement','attack','spell','check'].includes(kind))return true;if(timeFrozen(h)&&['action','bonus','reaction','movement','attack','spell','check'].includes(kind))return true;return effects(h).some(function(e){return active(h,e)&&(e.sleep&&['action','bonus','reaction','movement','check'].includes(kind)||e.noActions&&(kind==='action'||kind==='bonus')||e.noMainAction&&kind==='action'||e.noReactions&&kind==='reaction'||e.noMovement&&kind==='movement'||e.noHide&&kind==='hide'||e.noDisengage&&kind==='disengage'||e.noHelp&&kind==='help'||e.noTransfer&&kind==='transfer'||e.noAttacks&&kind==='attack'||e.noSpells&&kind==='spell');});}
   function canMove(h,from,to,context){
     if(blocked(h,'movement'))return false;
     return !effects(h).some(function(e){
@@ -643,6 +696,7 @@
     ended.forEach(function(e){e.lethalWake=!!event.instantDeath||Number.isFinite(event.previousHp)&&event.hpDamage-event.previousHp>=maxHp(h);expireEffect(h,e);});syncOwner(h);
   }
   function turnStart(h,turnId,resetResources){
+    var interrupt=lastStandFrame(h);if(interrupt&&interrupt.active&&turnId!==interrupt.id){activateLastStand(h);return {ok:false,reason:'Внеочередной ход уже начат; завершите его отдельно.'};}if(timeFrozen(h)||standPaused(h))return {ok:false,reason:'Сначала завершите внеочередной ход.'};
     if(turnId&&h.tarotLastStartedTurn===turnId)return {ok:false,reason:'Начало хода уже учтено.'};
     var extraActions=0;
     actors(h).forEach(function(t){effects(t).forEach(function(e){if(e.untilOwnerStart===h.id||t===h&&e.untilOwnStart)e.ending=true;});});
@@ -667,9 +721,9 @@
   // Called for an encounter participant whose own start differs from the
   // Predictor's. Owner-target auras still expire on the Predictor's start.
   function participantTurnStart(h,id,turnId){var t=actor(h,id);return turnStart(t,turnId,true);}
-  function combatEnd(h){if(h.classFeaturesState)delete h.classFeaturesState.predictorReaction;if(h.initiativeTracker)delete h.initiativeTracker.tarotDamageTotals;actors(h).forEach(function(t){t.tarotEffects=effects(t).filter(function(e){if(e.combatOnly||e.untilOwnStart||e.untilOwnerStart||e.untilOwnEnd||e.untilOwnerEnd||e.untilOwnEndAfterNext){expireEffect(t,e);return false;}return true;});delete t.tarotLastStartedTurn;});syncOwner(h);}
+  function combatEnd(h){var interrupted=lastStandFrame(h);if(interrupted){h.turnResources=copy(interrupted.pool||{});if(hp(h)<=0){conditions(h,'Бессознателен');h.defeated=true;h.turnResources.reaction=0;g.DNDCombat.breakConcentration(h);}delete h.classFeaturesState.predictorLastStand;}if(h.classFeaturesState)delete h.classFeaturesState.predictorReaction;if(h.initiativeTracker)delete h.initiativeTracker.tarotDamageTotals;actors(h).forEach(function(t){t.tarotEffects=effects(t).filter(function(e){if(e.combatOnly||e.untilOwnStart||e.untilOwnerStart||e.untilOwnEnd||e.untilOwnerEnd||e.untilOwnEndAfterNext){expireEffect(t,e);return false;}return true;});delete t.tarotLastStartedTurn;});syncOwner(h);}
   function turnEnd(h){actors(h).forEach(function(t){t.tarotEffects=effects(t).filter(function(e){if(t===h&&e.repeatSave){var frightened=!!Object.assign({},h.conditions,h.activeConditions)['Испуган'];if(!frightened||g.DNDCombat.savingThrow(h,e.repeatSave,e.saveDC).success){expireEffect(h,e);return false;}}if(t===h&&e.restrictionUntilOwnEnd){delete e.noHide;delete e.noDisengage;delete e.restrictionUntilOwnEnd;}if(e.untilOwnerEnd===h.id||t===h&&(e.untilOwnEnd||e.untilOwnEndAfterNext&&e.startedNext)){expireEffect(t,e);return false;}return true;});});syncOwner(h);}
   function advanceTime(h,seconds,context){if(!Number.isFinite(seconds)||seconds<0)return {ok:false};actors(h).forEach(function(t){advanceInventory(t,seconds);t.tarotEffects=effects(t).filter(function(e){if(e.seconds!=null&&!(context&&context.round&&(e.sleep||e.untilOwnStart))){e.seconds-=seconds;if(e.seconds<=0){expireEffect(t,e);if(e.concentration&&t.concentration&&t.concentration.spellId==='tarot:'+e.id)g.DNDCombat.breakConcentration(t);return false;}}return true;});});syncOwner(h);return {ok:true};}
   function longRestEffects(h){advanceTime(h,28800);combatEnd(h);actors(h).forEach(function(t){if(t.concentration&&String(t.concentration.spellId||'').startsWith('tarot:'))g.DNDCombat.breakConcentration(t);});syncOwner(h);}
-  g.DNDPredictorCards={interceptHealing:interceptHealing,resolveHealingEvent:resolveHealingEvent,interceptInitiative:interceptInitiative,timeFrozen:timeFrozen,noteAffect:noteAffect,cannotLie:cannotLie,deceptionBlocked:deceptionBlocked,syncTarotEntity:syncTarotEntity,canAncestorAttack:canAncestorAttack,spendCoin:spendCoin,armReaction:armReaction,cancelReaction:cancelReaction,interceptAttack:interceptAttack,interceptSave:interceptSave,hasInventoryEffects:hasInventoryEffects,inventoryEntries:inventoryEntries,creationOptions:creationOptions,claimReward:claimReward,moveReward:moveReward,definitions:DEFS,definition:definition,play:play,consumeMaximum:consumeMaximum,onCondition:onCondition,canCast:canCast,canSee:canSee,attackSight:attackSight,revealedSight:revealedSight,shareDamage:shareDamage,recordDamage:recordDamage,peaceBlocked:peaceBlocked,sceneFrom:sceneFrom,setElevation:setElevation,noteMove:noteMove,prepareInspiration:prepareInspiration,setCeiling:setCeiling,modifyStats:modifyStats,d20Modifiers:d20Modifiers,noteD20Roll:noteD20Roll,checkModifiers:checkModifiers,attackModifiers:attackModifiers,afterAttack:afterAttack,afterDamage:afterDamage,incoming:incoming,asleep:asleep,immune:immune,resistant:resistant,ignoresResistance:ignoresResistance,immuneCondition:immuneCondition,speedMultiplier:speedMultiplier,blocked:blocked,canMove:canMove,beforeAttack:beforeAttack,preventsOpportunity:preventsOpportunity,opportunityAttack:opportunityAttack,hostileAction:hostileAction,roundStart:roundStart,spendReaction:spendReaction,turnStart:turnStart,participantTurnStart:participantTurnStart,combatEnd:combatEnd,turnEnd:turnEnd,advanceTime:advanceTime,longRestEffects:longRestEffects};
+  g.DNDPredictorCards={executionActor:executionActor,lastStandActive:lastStandActive,beginLastStand:beginLastStand,activateLastStand:activateLastStand,finishLastStand:finishLastStand,queueLastStandAttacks:queueLastStandAttacks,interceptHealing:interceptHealing,resolveHealingEvent:resolveHealingEvent,interceptInitiative:interceptInitiative,timeFrozen:timeFrozen,noteAffect:noteAffect,cannotLie:cannotLie,deceptionBlocked:deceptionBlocked,syncTarotEntity:syncTarotEntity,canAncestorAttack:canAncestorAttack,spendCoin:spendCoin,armReaction:armReaction,cancelReaction:cancelReaction,interceptAttack:interceptAttack,interceptSave:interceptSave,hasInventoryEffects:hasInventoryEffects,inventoryEntries:inventoryEntries,creationOptions:creationOptions,claimReward:claimReward,moveReward:moveReward,definitions:DEFS,definition:definition,play:play,consumeMaximum:consumeMaximum,onCondition:onCondition,canCast:canCast,canSee:canSee,attackSight:attackSight,revealedSight:revealedSight,shareDamage:shareDamage,recordDamage:recordDamage,peaceBlocked:peaceBlocked,sceneFrom:sceneFrom,setElevation:setElevation,noteMove:noteMove,prepareInspiration:prepareInspiration,setCeiling:setCeiling,modifyStats:modifyStats,d20Modifiers:d20Modifiers,noteD20Roll:noteD20Roll,checkModifiers:checkModifiers,attackModifiers:attackModifiers,afterAttack:afterAttack,afterDamage:afterDamage,incoming:incoming,asleep:asleep,immune:immune,resistant:resistant,ignoresResistance:ignoresResistance,immuneCondition:immuneCondition,speedMultiplier:speedMultiplier,blocked:blocked,canMove:canMove,beforeAttack:beforeAttack,preventsOpportunity:preventsOpportunity,opportunityAttack:opportunityAttack,hostileAction:hostileAction,roundStart:roundStart,spendReaction:spendReaction,turnStart:turnStart,participantTurnStart:participantTurnStart,combatEnd:combatEnd,turnEnd:turnEnd,advanceTime:advanceTime,longRestEffects:longRestEffects};
 })(window);

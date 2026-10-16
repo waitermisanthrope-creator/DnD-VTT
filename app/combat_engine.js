@@ -98,7 +98,7 @@
     target.tempHp=next;target.hpTemp=next;
   }
   function applyDamage(target,amount,type,opts){
-    opts=opts||{};
+    opts=opts||{};if(global.DNDPredictorCards)target=global.DNDPredictorCards.executionActor(target,opts);
     if(global.DNDPredictorCards&&global.DNDPredictorCards.noteAffect)global.DNDPredictorCards.noteAffect(target,opts);
     if(global.DNDPredictorCards){var tarotScene=global.DNDPredictorCards.sceneFrom(target,opts);if(opts.attacker&&global.DNDPredictorCards.peaceBlocked(tarotScene,opts.attacker,target))return {amount:0,hpDamage:0,hp:readHp(target),peaceBlocked:true,note:'Аура покоя'};var shared=global.DNDPredictorCards.shareDamage(target,amount,type,opts);if(shared)return shared;}
     var reaction=null, reactionResult=null;
@@ -162,10 +162,11 @@
     }
     var concentration=null;
     var deathSaveFailures=0, instantDeath=false;
+    if(target.predictorState&&hp>0&&readHp(target)<=0&&hpDamage-hp>=num(global.DNDRules&&global.DNDRules.effectiveMaxHp?global.DNDRules.effectiveMaxHp(target):target.hpMax,target.maxHp))instantDeath=true;
     // A character already at 0 HP that takes damage suffers death-save failures.
     // A critical hit causes two failures; massive damage can kill outright.
-    if(!necromanticRevival&&hp<=0 && damageTaken>0 && (target.type==='hero'||target.ownerPeerId||target.deathSaveEligible)){
-      if(damageTaken>=num(target.hpMax,target.maxHp||hp)) instantDeath=true;
+    if(!necromanticRevival&&hp<=0 && damageTaken>0 && (target.type==='hero'||target.ownerPeerId||target.deathSaveEligible||target.predictorState)){
+      if(damageTaken>=num(global.DNDRules&&global.DNDRules.effectiveMaxHp?global.DNDRules.effectiveMaxHp(target):target.hpMax,target.maxHp||hp)) instantDeath=true;
       else deathSaveFailures=opts.critical?2:1;
       if(deathSaveFailures){target.deathSaves=target.deathSaves||{successes:0,failures:0};target.deathSaves.failures=Math.min(3,num(target.deathSaves.failures)+deathSaveFailures);}
     }
@@ -185,9 +186,12 @@
       target.classFeaturesState.witch.dyingCurseArmed=false;
       eventAttacker.witchDyingCurse={source:target,durationHours:24,disadvantage:['attack','ability','save']};
     }
+    if((instantDeath||Number(target.deathSaves&&target.deathSaves.failures||0)>=3)&&(target.predictorState||target.classFeaturesState&&target.classFeaturesState.predictorLastStand))target.dead=true;
+    if(global.DNDPredictorCards)global.DNDPredictorCards.beginLastStand(target,{previousHp:hp,hpDamage:hpDamage,instantDeath:instantDeath});
+    if(global.DNDPredictorCards&&global.DNDPredictorCards.lastStandActive(target))target.defeated=false;
     // Falling unconscious/defeated ends concentration regardless of the CON save.
     // Otherwise a successful save at 0 HP could leave an illegal concentration state.
-    if(readHp(target)<=0 || target.defeated){
+    if((readHp(target)<=0 || target.defeated)&&!(global.DNDPredictorCards&&global.DNDPredictorCards.lastStandActive(target))){
       if(concentrationState(target).active){
         breakConcentration(target);
         concentration={dc:null,roll:null,total:null,bonus:null,success:false,spell:null,endedByZeroHp:true};
@@ -225,6 +229,7 @@
   }
   function grantTemporaryHitPoints(target,amount){if(!target||!Number.isInteger(amount)||amount<0)return {ok:false};var before=readTempHp(target),after=Math.max(before,amount);if(('hpCurrent' in target||'hpMax' in target)&&(!target.hp||typeof target.hp!=='object'))target.hp={current:readHp(target),max:num(target.hpMax,target.maxHp),temp:before};writeTempHp(target,after);return {ok:true,added:after-before,tempHp:after};}
   function heal(target,amount,opts){
+    if(global.DNDPredictorCards){target=global.DNDPredictorCards.executionActor(target,opts);if(opts&&opts.caster)opts=Object.assign({},opts,{caster:global.DNDPredictorCards.executionActor(opts.caster,opts)});}
     if(target&&target.dead)return {amount:0,hp:readHp(target),blocked:true,note:'Обычное лечение не воскрешает умершего.'};
     var healingRedirect=global.DNDPredictorCards&&global.DNDPredictorCards.interceptHealing&&global.DNDPredictorCards.interceptHealing(target,amount,opts),originalHealingTarget=target;if(healingRedirect)target=healingRedirect.target;
     if(global.DNDPredictorCards&&global.DNDPredictorCards.noteAffect)global.DNDPredictorCards.noteAffect(target,opts);
@@ -284,16 +289,19 @@
   }
 
   function attackSequence(actor,target,attacks,opts){
-    opts=opts||{}; var list=Array.isArray(attacks)?attacks:[attacks||{}]; var results=[];
+    opts=opts||{};if(global.DNDPredictorCards){actor=global.DNDPredictorCards.executionActor(actor,opts);target=global.DNDPredictorCards.executionActor(target,opts);} var list=Array.isArray(attacks)?attacks:[attacks||{}]; var results=[];
+    var cards=global.DNDPredictorCards,scene=cards&&cards.sceneFrom(target,opts),wasStand=scene&&scene.classFeaturesState&&scene.classFeaturesState.predictorLastStand;
+    if(wasStand&&wasStand.active&&!cards.lastStandActive(actor)&&!opts.reaction&&!opts.opportunityAttack)return {ok:false,attacks:[],attackCount:0,reason:"Сначала завершите внеочередной ход."};
     for(var i=0;i<list.length;i++){ var a=list[i]||{}; var base={}; Object.keys(a).forEach(function(k){base[k]=a[k];});
-      base.target=target; if(base.useRules===undefined)base.useRules=true;
+      base.target=target;if(opts.reaction)base.reaction=true;if(opts.opportunityAttack)base.opportunityAttack=true; if(base.useRules===undefined)base.useRules=true;
       var r=attack(actor,target,base); results.push(r);
-      if(opts.stopOnDefeat&&target&&(target.defeated||num(target.hp)<=0))break;
+      if(!wasStand&&scene&&scene.classFeaturesState&&scene.classFeaturesState.predictorLastStand&&cards.queueLastStandAttacks(scene,actor,target,list.slice(i+1),opts))return {ok:true,attacks:results,attackCount:results.length,hitCount:results.filter(function(r){return r&&r.hit;}).length,suspended:true};
+      if(opts.stopOnDefeat&&target&&(target.defeated||readHp(target)<=0))break;
     }
-    return {ok:true,attacks:results,attackCount:results.length,hitCount:results.filter(function(r){return r&&r.hit;}).length,targetDefeated:!!(target&&(target.defeated||num(target.hp)<=0))};
+    return {ok:true,attacks:results,attackCount:results.length,hitCount:results.filter(function(r){return r&&r.hit;}).length,targetDefeated:!!(target&&(target.defeated||readHp(target)<=0))};
   }
   function savingThrow(actor,stat,dc,mode,ctx){
-    ctx=ctx||{};if(global.DNDPredictorCards&&global.DNDPredictorCards.noteAffect)global.DNDPredictorCards.noteAffect(actor,ctx);var tarotForced=global.DNDPredictorCards&&global.DNDPredictorCards.interceptSave&&global.DNDPredictorCards.interceptSave(actor,ctx);
+    ctx=ctx||{};if(global.DNDPredictorCards)actor=global.DNDPredictorCards.executionActor(actor,ctx);if(global.DNDPredictorCards&&global.DNDPredictorCards.noteAffect)global.DNDPredictorCards.noteAffect(actor,ctx);var tarotForced=global.DNDPredictorCards&&global.DNDPredictorCards.interceptSave&&global.DNDPredictorCards.interceptSave(actor,ctx);
     var h=actor && actor.stats ? actor : null, bonus=0, featureMode=mode||'normal';
     if(h && global.DNDRules){bonus=global.DNDRules.getSaveBonus(h,stat);} else bonus=num(actor && actor.saveBonuses && actor.saveBonuses[stat]);
     ctx=ctx||{};var sm=(global.DNDClassFeatures&&global.DNDClassFeatures.saveModifiers&&actor)?global.DNDClassFeatures.saveModifiers(actor,Object.assign({},ctx,{stat:stat,dexSaveVisible:stat==='dex',fromSpell:!!(ctx.fromSpell||actor&&actor.saveFromSpell),allyWithinAura:!!(ctx.allyWithinAura||actor&&actor.allyWithinAura),auraSource:ctx.auraSource||null,saveType:ctx.saveType||stat,halfDamageEffect:ctx.halfDamageEffect===true,frightenedEffect:!!ctx.frightenedEffect,courageSource:ctx.courageSource||null,allyWithinCourage:!!ctx.allyWithinCourage,charmEffect:!!ctx.charmEffect,fromFiendOrUndead:!!ctx.fromFiendOrUndead,flashOfGeniusAvailable:!!(actor&&actor.useFlashOfGenius)})):null;
@@ -315,11 +323,11 @@
     return saveResult;
   }
   function abilityCheck(actor,stat,dc,mode,ctx){
-    ctx=ctx||{};var R=global.DNDRules;
+    ctx=ctx||{};var R=global.DNDRules;if(global.DNDPredictorCards){actor=global.DNDPredictorCards.executionActor(actor,ctx);global.DNDPredictorCards.activateLastStand(actor);}
     if(!actor||!R||['str','dex','con','int','wis','cha'].indexOf(stat)<0||dc!=null&&!Number.isFinite(Number(dc)))return {ok:false,reason:'Неверные параметры проверки.'};
     if(global.DNDPredictorCards&&global.DNDPredictorCards.deceptionBlocked&&global.DNDPredictorCards.deceptionBlocked(actor,ctx))return {ok:false,reason:'Иерофант не позволяет произносить намеренную ложь.'};
     var conditions=Object.assign({},actor.conditions,actor.activeConditions);
-    if(readHp(actor)<=0||global.DNDPredictorCards&&global.DNDPredictorCards.blocked(actor,'check')||['Бессознателен','Недееспособен','Оглушён','Парализован'].some(function(c){return conditions[c];}))return {ok:false,reason:'Состояние не позволяет выполнить проверку.'};
+    if(readHp(actor)<=0&&!(global.DNDPredictorCards&&global.DNDPredictorCards.lastStandActive(actor))||global.DNDPredictorCards&&global.DNDPredictorCards.blocked(actor,'check')||['Бессознателен','Недееспособен','Оглушён','Парализован'].some(function(c){return conditions[c];}))return {ok:false,reason:'Состояние не позволяет выполнить проверку.'};
     var rank=Math.max(0,Math.min(2,num(ctx.proficiencyRank,ctx.proficient?1:0))),proficient=rank>0;
     if(ctx.skillId)rank=Math.max(0,Math.min(2,num(actor.skillsData&&actor.skillsData[ctx.skillId]))),proficient=rank>0;
     var stats=R.getStats(actor),bonus=ctx.bonusOverride!=null?num(ctx.bonusOverride):R.mod(stats[stat])+R.profBonus(actor)*rank;
@@ -356,7 +364,8 @@
   }
   function resetDeathSaves(hero){hero.deathSaves={successes:0,failures:0};}
   function attack(attacker,target,opts){
-    if(global.DNDPredictorCards&&(global.DNDPredictorCards.blocked(attacker,'action')||global.DNDPredictorCards.blocked(attacker,'attack')))return {ok:false,hit:false,blocked:true,reason:'Карта запрещает атаку.'};
+    if(global.DNDPredictorCards){attacker=global.DNDPredictorCards.executionActor(attacker,opts);target=global.DNDPredictorCards.executionActor(target,opts);global.DNDPredictorCards.activateLastStand(attacker);}
+    if(global.DNDPredictorCards&&(global.DNDPredictorCards.blocked(attacker,'action',opts)||global.DNDPredictorCards.blocked(attacker,'attack',opts)))return {ok:false,hit:false,blocked:true,reason:'Карта запрещает атаку.'};
     opts=opts||{};if(opts.opportunityAttack&&global.DNDPredictorCards&&global.DNDPredictorCards.preventsOpportunity(target))return {ok:false,hit:false,blocked:true,reason:'Перемещение цели не провоцирует атаки.'};if(target)opts.target=target;if(global.DNDPredictorCards){var ward=global.DNDPredictorCards.beforeAttack(attacker,target,opts);if(!ward.allowed)return {ok:true,hit:false,blocked:true,wardDenied:true,ward:ward,damage:null};}opts.__bloodHunterTargetHp=target?readHp(target):0; var bonus=num(opts.bonus), mode=opts.mode||'normal';
     var perfumeClass=(target&&target.classes||[]).find(function(cl){return cl&&(cl.name==='Алхимик'||cl.englishName==='Alchemist')&&(cl.subclass==='amorist'||cl.subclass==='Аморист')&&Number(cl.level)>=10;});
     if(perfumeClass&&attacker&&target&&opts.__perfumeChecked!==true){

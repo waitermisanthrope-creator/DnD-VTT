@@ -20,7 +20,9 @@
   function render(){
     if(!panel||openedHero!==g.currentChar){close();return;}panel.replaceChildren();button(panel,'Закрыть',close);
     var a=g.DNDPredictor,h=openedHero,r=a.inspect(h);if(!r.ok){paragraph(r.reason);return;}
+    if(g.DNDPredictorCards&&g.DNDPredictorCards.activateLastStand(h))save();
     var s=r.state;paragraph('Предсказатель — колоды и розыгрыш.');
+    if(h.classFeaturesState&&h.classFeaturesState.predictorLastStand){paragraph('Девятка Жезлов: внеочередной полный ход. При 0 HP после его окончания персонаж потеряет сознание.');button(panel,'Завершить внеочередной ход',function(){change(function(){return g.DNDPredictorCards.finishLastStand(h);});});}
     if(g.DNDRules&&g.DNDRules.getExhaustion(h))paragraph('Истощение: '+g.DNDRules.getExhaustion(h)+'/6. Эффективный максимум HP: '+g.DNDRules.effectiveMaxHp(h)+'; базовый максимум остаётся сохранённым.');
     if(g.DNDPredictorCards&&g.DNDPredictorCards.cannotLie(h))paragraph('Иерофант: нельзя произносить намеренную ложь. Невербальный обман сам по себе не запрещён.');
     if(h.tarotSearchResult)paragraph('Последний поиск магии (загруженная сцена): '+JSON.stringify(h.tarotSearchResult.items));

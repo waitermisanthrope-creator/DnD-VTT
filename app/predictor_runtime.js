@@ -100,7 +100,7 @@
   function luckDie(h){return level(h)<6?6:level(h)<10?8:level(h)<14?10:12;}
   function charisma(h){var stats=g.DNDRules?g.DNDRules.getStats(h):h.stats||h.abilityScores||{},n=Number(stats.cha==null?stats.charisma:stats.cha);return Math.max(1,Math.floor(((Number.isFinite(n)?n:10)-10)/2));}
   function tricksterStatus(h){var r=inspect(h);if(!r.ok)return r;if(!isTrickster(h))return fail('Подкласс Шулер не выбран.');var t=r.state.trickster,max=2+Math.floor((level(h)-1)/4);return {ok:true,wagerMax:max,wagerCurrent:Math.max(0,max-(t?t.wagers.length:0)),die:luckDie(h),lastTrumpAvailable:level(h)>=14&&!(t&&t.lastTrumpUsed),rewards:t?copy(t.rewards):[]};}
-  function conscious(h){var hp=Number(h.hpCurrent!=null?h.hpCurrent:h.hp&&typeof h.hp==='object'?h.hp.current:h.hp),conditions=Object.assign({},h.conditions,h.activeConditions);return hp>0&&!['Бессознателен','Без сознания','Unconscious','unconscious'].some(function(k){return conditions[k];});}
+  function conscious(h){var hp=Number(h.hpCurrent!=null?h.hpCurrent:h.hp&&typeof h.hp==='object'?h.hp.current:h.hp),conditions=Object.assign({},h.conditions,h.activeConditions);return (hp>0||g.DNDPredictorCards&&g.DNDPredictorCards.lastStandActive(h))&&!['Бессознателен','Без сознания','Unconscious','unconscious'].some(function(k){return conditions[k];});}
   function beginOwnTurn(h,turnId){return mutate(h,function(s){if(!isTrickster(h))return fail('Подкласс Шулер не выбран.');if(typeof turnId!=='string'||!turnId)return fail('Нужен ID собственного хода.');var t=trick(s);if(t.ownTurnId===turnId)return fail('Начало хода уже учтено.');
     t.rewards.forEach(function(r){if(r.status==='pending'&&((r.kind==='wands'&&conscious(h))||r.kind==='slip'))r.status='expired';});t.ownTurnId=turnId;return {ok:true};});}
   // Only the movement resolver calls this AFTER checking the path. This returns
@@ -171,7 +171,7 @@
   // Card effects are not used: discarding is the subclass ability's own cost.
   function lastTrump(h,cardId,ctx){
     ctx=ctx||{};if(!isTrickster(h,14))return fail('Последний козырь доступен Шулеру с 14-го уровня.');
-    var hp=Number(h.hpCurrent!=null?h.hpCurrent:h.hp&&typeof h.hp==='object'?h.hp.current:h.hp),max=Number(h.hpMax||h.maxHp||h.hp&&h.hp.max);
+    var hp=Number(h.hpCurrent!=null?h.hpCurrent:h.hp&&typeof h.hp==='object'?h.hp.current:h.hp),max=g.DNDRules&&g.DNDRules.effectiveMaxHp?g.DNDRules.effectiveMaxHp(h):Number(h.hpMax||h.maxHp||h.hp&&h.hp.max);
     if(hp!==0||!Number.isFinite(ctx.previousHp)||ctx.previousHp<=0||!Number.isFinite(ctx.hpDamage)||ctx.hpDamage<ctx.previousHp||!Number.isFinite(max)||ctx.hpDamage-ctx.previousHp>=max||ctx.instantDeath)return fail('Последний козырь неприменим к этому урону.');
     var conditions=Object.assign({},h.conditions,h.activeConditions);if(['Недееспособен','Оглушён','Парализован','Бессознателен','Incapacitated','Stunned','Paralyzed','Unconscious'].some(function(k){return conditions[k];}))return fail('Состояние не позволяет использовать реакцию.');
     if(!h.turnResources||!(h.turnResources.reaction===true||Number(h.turnResources.reaction)>0)||g.DNDPredictorCards&&g.DNDPredictorCards.blocked(h,'reaction'))return fail('Нет доступной реакции.');

@@ -1,5 +1,5 @@
 # [НЕ ВЫПОЛНЕНО] Current owner priorities — 2026-10-16
-Issue #9: first finish Предсказатель and Шулер/Оракул/Ткач Судьбы (currently 74/78 effects; class NOT complete), then remaining official/homebrew classes. Previous session work saved in main; compact state in AI_PROGRESS.md / AI_NEXT_TASK.md / AI_BLOCKERS.md. Cloud hourly monitoring and gated releases may run; independent model execution awaits separately authorized credentials. Older entries remain below as history. No force-push or paid API without explicit authorization.
+Issue #9: first finish Предсказатель and Шулер/Оракул/Ткач Судьбы (currently 75/78 effects; class NOT complete), then remaining official/homebrew classes. Previous session work saved in main; compact state in AI_PROGRESS.md / AI_NEXT_TASK.md / AI_BLOCKERS.md. Cloud hourly monitoring and gated releases may run; independent model execution awaits separately authorized credentials. Older entries remain below as history. No force-push or paid API without explicit authorization.
 
 # 01 — Планы и задачи проекта DnD-VTT
 

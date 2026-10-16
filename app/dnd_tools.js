@@ -197,6 +197,7 @@ function nextInitiativeTurn() {
   ensureDndToolsState();
   var t = currentChar.initiativeTracker;
   if (!t.combatants.length) return;
+  if(window.DNDPredictorCards&&currentChar.classFeaturesState&&currentChar.classFeaturesState.predictorLastStand){var interrupted=window.DNDPredictorCards.finishLastStand(currentChar);if(!interrupted.ok){alert(interrupted.reason);return;}_dndSave();renderInitiativeTracker();syncDndNetworkInitiative('last-stand');return;}
   var previousActive = t.combatants[t.activeIndex];
   // Open a finite, free draw window only for the owner's actual completed turn.
   // Online play needs private authoritative deck commands in a later stage.
