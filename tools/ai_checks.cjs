@@ -3,6 +3,7 @@
 // Dependency-free regression gate shared by cloud sessions and Actions.
 const fs=require('node:fs'),cp=require('node:child_process');
 const tests=fs.readdirSync('tests').filter(f=>/^predictor_.*_test\.cjs$/.test(f)).sort().map(f=>'tests/'+f).concat([
+ 'tests/character_stat_modes_levelup_test.cjs',
  'tests/cloud_sync_test.cjs','tests/creation_signature_asset_test.cjs',
  'tests/desktop_update_contract.cjs','tests/update_ota_flow_test.js',
  'tests/pugilist_combat_test.js','tests/alchemist_combat_test.js',
