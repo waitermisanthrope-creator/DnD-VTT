@@ -5,7 +5,7 @@
 | ID | Карта | Действие | Исполнение |
 |---|---|---|---|
 | major_00 | Дурак | Д | Подключено |
-| major_01 | Маг | Д | Частично: 21/60 текущих записей заклинаний; полная карта не завершена |
+| major_01 | Маг | Д | Частично: 25/60 текущих записей заклинаний; полная карта не завершена |
 | major_02 | Верховная Жрица | Д | Подключено |
 | major_03 | Императрица | Д | Подключено |
 | major_04 | Император | Б | Подключено |
@@ -191,3 +191,9 @@
 
 ### Additional Mage executor — Cause Fear
 Mage now runs 22/60 current catalogue entries (catalogue audit remains open; overall complete cards stay 76/78). Cause Fear uses a real WIS save, excludes undead/constructs, links the frightened condition to caster concentration, repeats the save on the target’s own turn end and clears on concentration loss/expiry. Source-aware fear penalties and movement use actual visibility; unknown-source fear keeps the existing fallback. Existing check-modifier logic now requires an actual selected stat before applying Hex disadvantage. No reaction-timing decision, Devil controller, subclass completion or stable release is implied.
+
+### Mage utility execution continuation — 25/60 current entries
+- **Mage Armor**: willing touch, body-armor rejection, base AC 13 + Dexterity (not a flat +3); shields/additional gear bonuses retained and better defenses are not added together. Eight-hour duration, body-armor equipment termination and caster action dismissal. Persisted `ac` stays the unmodified equipment value; rules UI displays the effective value and combat receives the actual difference.
+- **Goodberry**: choose 1–10 real inventory berries. Eating consumes one berry and one actual action, restores one HP and records 24-hour nourishment; it is not a new healing-spell cast and cannot use Queen Cups redirection. Awake non-Predictor recipients can use transferred berries through ordinary inventory. Magic expires after 24 hours even in nested containers; mundane berries remain, no automatic healing or item resurrection. Nourishment is saved/displayed; a separate comprehensive hunger simulation does not exist in the base game.
+- **Expeditious Retreat**: the approved Mage card still costs an action; its initial dash adds movement immediately, then further dashes cost the real bonus action while concentration lasts (10 minutes). Additional movement is tracked in `turnResources.mageDashCount` and used by Tarot paths, the board and gameplay movement; next turn clears dash counts/used distance. Base speed is not rewritten, and exhaustion applies before multiplying the dash allowance.
+- UI actions, ordinary inventory use, actual board/gameplay movement and mock PC→Android→PC continuation are covered. Reaction-spell timing, remaining 35 current catalogue handlers, missing catalogue entries/audit, the live Devil controller and subclass work remain. Complete-card count stays **76/78**; no stable release.

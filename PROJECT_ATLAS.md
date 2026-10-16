@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 0a42352d33a6. Git содержит 1354 файлов.
+Снимок кода 9a016b75bece. Git содержит 1354 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -50,8 +50,8 @@
 | №0029 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0030 AGENTS.md | 4903 B | документация или отчёт: AGENTS |
 | №0031 AI_BLOCKERS.md | 3041 B | документация или отчёт: AI BLOCKERS |
-| №0032 AI_NEXT_TASK.md | 3218 B | документация или отчёт: AI NEXT TASK |
-| №0033 AI_PROGRESS.md | 21484 B | документация или отчёт: AI PROGRESS |
+| №0032 AI_NEXT_TASK.md | 3887 B | документация или отчёт: AI NEXT TASK |
+| №0033 AI_PROGRESS.md | 22801 B | документация или отчёт: AI PROGRESS |
 | №0034 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0035 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0036 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -633,7 +633,7 @@
 | №0612 app/assets/ui/vine_bone_frame_strip.svg | 943 B | ассет графики/3D/интерфейса: vine bone frame strip |
 | №0613 app/Backgrounds.js | 63130 B | логический модуль: Backgrounds |
 | №0614 app/battle_action_ui.js | 18386 B | логический модуль: battle action ui |
-| №0615 app/battle_board.js | 37491 B | логический модуль: battle board |
+| №0615 app/battle_board.js | 37591 B | логический модуль: battle board |
 | №0616 app/bestiary_2_0_v56.js | 55429 B | логический модуль: bestiary 2 0 v56 |
 | №0617 app/bestiary_catalog_v56_1.js | 16222 B | логический модуль: bestiary catalog v56 1 |
 | №0618 app/bestiary_catalog_v56_10.js | 10944 B | логический модуль: bestiary catalog v56 10 |
@@ -790,7 +790,7 @@
 | №0769 app/Experience.js | 6150 B | логический модуль: Experience |
 | №0770 app/extra_class_ui_bridge.js | 645 B | логический модуль: extra class ui bridge |
 | №0771 app/feat_engine.js | 11457 B | логический модуль: feat engine |
-| №0772 app/gameplay_core_v57.js | 20191 B | логический модуль: gameplay core v57 |
+| №0772 app/gameplay_core_v57.js | 20212 B | логический модуль: gameplay core v57 |
 | №0773 app/ghost_extra_runtime.js | 22293 B | логический модуль: ghost extra runtime |
 | №0774 app/ghost_extra_ui.js | 2387 B | логический модуль: ghost extra ui |
 | №0775 app/Hero-info.js | 12434 B | логический модуль: Hero info |
@@ -800,7 +800,7 @@
 | №0779 app/inventory-coins.js | 23961 B | логический модуль: inventory coins |
 | №0780 app/inventory-modal.js | 32494 B | логический модуль: inventory modal |
 | №0781 app/Inventory-weight-tracker.js | 15712 B | логический модуль: Inventory weight tracker |
-| №0782 app/Inventory.js | 36307 B | логический модуль: Inventory |
+| №0782 app/Inventory.js | 36947 B | логический модуль: Inventory |
 | №0783 app/junk.js | 8387 B | логический модуль: junk |
 | №0784 app/kibbles_localization_content_v71.js | 32339 B | логический модуль: kibbles localization content v71 |
 | №0785 app/library.js | 9314 B | логический модуль: library |
@@ -825,8 +825,8 @@
 | №0804 app/onboarding_faq_v71.js | 32373 B | логический модуль: onboarding faq v71 |
 | №0805 app/parasite_extra_runtime.js | 30047 B | логический модуль: parasite extra runtime |
 | №0806 app/parasite_extra_ui.js | 4710 B | логический модуль: parasite extra ui |
-| №0807 app/predictor_cards.js | 138966 B | логический модуль: predictor cards |
-| №0808 app/predictor_deck_ui.js | 37064 B | логический модуль: predictor deck ui |
+| №0807 app/predictor_cards.js | 145118 B | логический модуль: predictor cards |
+| №0808 app/predictor_deck_ui.js | 39502 B | логический модуль: predictor deck ui |
 | №0809 app/predictor_movement.js | 6682 B | логический модуль: predictor movement |
 | №0810 app/predictor_runtime.js | 31001 B | логический модуль: predictor runtime |
 | №0811 app/Proficiencies.js | 31253 B | логический модуль: Proficiencies |
@@ -834,7 +834,7 @@
 | №0813 app/races.js | 52239 B | логический модуль: races |
 | №0814 app/resource_gathering_v35.js | 12553 B | логический модуль: resource gathering v35 |
 | №0815 app/resource_processing_v44.js | 22150 B | логический модуль: resource processing v44 |
-| №0816 app/rulesEngine.js | 45774 B | логический модуль: rulesEngine |
+| №0816 app/rulesEngine.js | 46039 B | логический модуль: rulesEngine |
 | №0817 app/runekeeper_taron_v12_runtime.js | 27697 B | логический модуль: runekeeper taron v12 runtime |
 | №0818 app/savant_laserllama_v561_runtime.js | 29860 B | логический модуль: savant laserllama v561 runtime |
 | №0819 app/secondary_entities_engine.js | 7342 B | логический модуль: secondary entities engine |
@@ -1020,7 +1020,7 @@
 | №0999 docs/map-stage-740021.md | 2000 B | документация или отчёт: map stage 740021 |
 | №1000 docs/MONETIZATION_ROADMAP.md | 15924 B | документация или отчёт: MONETIZATION ROADMAP |
 | №1001 docs/NETWORK_APK_NOTES.md | 7296 B | документация или отчёт: NETWORK APK NOTES |
-| №1002 docs/PREDICTOR_APPROVED_CARD_STATUS.md | 50745 B | документация или отчёт: PREDICTOR APPROVED CARD STATUS |
+| №1002 docs/PREDICTOR_APPROVED_CARD_STATUS.md | 52542 B | документация или отчёт: PREDICTOR APPROVED CARD STATUS |
 | №1003 docs/PREDICTOR_CLASS_SPEC.md | 94181 B | документация или отчёт: PREDICTOR CLASS SPEC |
 | №1004 docs/PRODUCT_ACCESS_AND_MONETIZATION.md | 11580 B | документация или отчёт: PRODUCT ACCESS AND MONETIZATION |
 | №1005 docs/ROOT_FURNITURE_IMPORT_REPORT.md | 6882 B | документация или отчёт: ROOT FURNITURE IMPORT REPORT |
@@ -1135,16 +1135,16 @@
 | №1114 tests/predictor_aura_ledger_test.cjs | 12810 B | автотест: predictor aura ledger test |
 | №1115 tests/predictor_blind_test.cjs | 4972 B | автотест: predictor blind test |
 | №1116 tests/predictor_cards_test.cjs | 10793 B | автотест: predictor cards test |
-| №1117 tests/predictor_cloud_sync_test.cjs | 33414 B | автотест: predictor cloud sync test |
+| №1117 tests/predictor_cloud_sync_test.cjs | 36354 B | автотест: predictor cloud sync test |
 | №1118 tests/predictor_coin_ancestor_test.cjs | 6734 B | автотест: predictor coin ancestor test |
-| №1119 tests/predictor_deck_ui_test.cjs | 27418 B | автотест: predictor deck ui test |
+| №1119 tests/predictor_deck_ui_test.cjs | 29014 B | автотест: predictor deck ui test |
 | №1120 tests/predictor_devil_plan_test.cjs | 4680 B | автотест: predictor devil plan test |
 | №1121 tests/predictor_event_reactions_test.cjs | 7259 B | автотест: predictor event reactions test |
 | №1122 tests/predictor_exhaustion_test.cjs | 4867 B | автотест: predictor exhaustion test |
 | №1123 tests/predictor_healing_reaction_test.cjs | 5049 B | автотест: predictor healing reaction test |
 | №1124 tests/predictor_inventory_rewards_test.cjs | 14111 B | автотест: predictor inventory rewards test |
 | №1125 tests/predictor_last_stand_test.cjs | 12289 B | автотест: predictor last stand test |
-| №1126 tests/predictor_mage_spells_test.cjs | 20042 B | автотест: predictor mage spells test |
+| №1126 tests/predictor_mage_spells_test.cjs | 29988 B | автотест: predictor mage spells test |
 | №1127 tests/predictor_motion_cards_test.cjs | 11690 B | автотест: predictor motion cards test |
 | №1128 tests/predictor_movement_cards_test.cjs | 7196 B | автотест: predictor movement cards test |
 | №1129 tests/predictor_progression_test.cjs | 3750 B | автотест: predictor progression test |
@@ -1380,11 +1380,11 @@
 Локальные параметры нельзя путать с полями сериализуемого персонажа, глобальными API или ключами localStorage.
 
 
-### JS объявления/параметры (4879)
+### JS объявления/параметры (4900)
 
 | Имя | Исходные файлы |
 |---|---|
-| _ | №0047 (+ 9 других файлов) |
+| _ | №0047 (+ 10 других файлов) |
 | __ls | №1183 (+ 4 других файлов) |
 | __shifterProgression | №0822 |
 | __TEST_SRC__ | №1183 (+ 4 других файлов) |
@@ -1793,6 +1793,9 @@
 | belly | №0050 |
 | belt | №0652 |
 | bend | №0050 |
+| berry | №0807 (+ 1 других файлов) |
+| berryOwner | №0808 |
+| berryRef | №1117 |
 | best | №0050 (+ 11 других файлов) |
 | bestD | №1105 |
 | bestDist | №0800 |
@@ -1974,6 +1977,7 @@
 | calf | №0048 |
 | call | №0860 |
 | callback | №0875 (+ 19 других файлов) |
+| callbacks | №1126 |
 | called | №1146 |
 | calls | №1098 (+ 3 других файлов) |
 | cam | №0059 (+ 1 других файлов) |
@@ -2245,6 +2249,7 @@
 | constant | №0800 (+ 1 других файлов) |
 | consumed | №0661 |
 | consumedJinx | №0644 |
+| consumer | №1126 |
 | container | №0613 (+ 15 других файлов) |
 | containerId | №0811 (+ 3 других файлов) |
 | containers | №0772 (+ 3 других файлов) |
@@ -2625,6 +2630,7 @@
 | disguise | №1137 |
 | displacement | №1102 |
 | display | №0689 (+ 1 других файлов) |
+| displayedAC | №0816 |
 | displayName | №0613 (+ 3 других файлов) |
 | displaySpeed | №0772 |
 | displayStyle | №0825 |
@@ -2973,7 +2979,7 @@
 | fid | №0637 (+ 4 других файлов) |
 | field | №0050 (+ 9 других файлов) |
 | fieldLengths | №1107 |
-| fields | №1270 (+ 2 других файлов) |
+| fields | №1126 (+ 3 других файлов) |
 | fiend | №1144 |
 | fight | №0807 |
 | fighter | №1207 (+ 1 других файлов) |
@@ -3035,7 +3041,7 @@
 | flyer | №1138 |
 | fm | №0644 (+ 1 других файлов) |
 | fm2 | №1210 |
-| fn | №0047 (+ 29 других файлов) |
+| fn | №0047 (+ 30 других файлов) |
 | focus | №0047 (+ 1 других файлов) |
 | focusEl | №0804 |
 | focusSources | №0825 |
@@ -3435,6 +3441,7 @@
 | ids | №0047 (+ 31 других файлов) |
 | idv | №0058 (+ 1 других файлов) |
 | idx | №0052 (+ 30 других файлов) |
+| ignoreTarot | №0816 |
 | ignoreWeight | №0778 |
 | ii | №1106 (+ 1 других файлов) |
 | illIds | №1146 |
@@ -3611,7 +3618,7 @@
 | isWalterParasiteExtra | №0635 |
 | isWalterParasiteHero | №0689 |
 | it | №0654 (+ 4 других файлов) |
-| item | №0051 (+ 36 других файлов) |
+| item | №0051 (+ 37 других файлов) |
 | itemArray | №0781 |
 | itemCards | №0781 |
 | itemCategory | №0782 |
@@ -3871,6 +3878,7 @@
 | mageActors | №0808 |
 | mageApi | №0808 |
 | mageBack | №1117 |
+| mageBerryCount | №0808 |
 | mageCon | №1117 |
 | mageDarts | №0808 (+ 1 других файлов) |
 | mageGround | №0808 |
@@ -4035,9 +4043,13 @@
 | mo | №0062 |
 | mob | №1117 |
 | mobile | №1117 |
+| mobileArmor | №1117 |
+| mobileArmored | №1117 |
 | mobileArtisan | №1117 |
+| mobileBerry | №1117 |
 | mobileBurden | №1117 |
 | mobileDarts | №1117 |
+| mobileDash | №1117 |
 | mobileIllusion | №1117 |
 | mobileMage | №1117 |
 | mobilePoison | №1117 |
@@ -4904,7 +4916,7 @@
 | reduce | №0860 |
 | reduced | №0630 |
 | reduction | №0637 |
-| ref | №0050 (+ 24 других файлов) |
+| ref | №0050 (+ 26 других файлов) |
 | reference | №0050 (+ 1 других файлов) |
 | referenceNode | №0779 |
 | refresh | №0663 |
@@ -5025,7 +5037,7 @@
 | restoreFullCheckbox | №0689 |
 | restoreUsed | №0067 |
 | restStr | №0825 |
-| result | №0050 (+ 62 других файлов) |
+| result | №0050 (+ 63 других файлов) |
 | resultPending | №0800 |
 | results | №0054 (+ 10 других файлов) |
 | resultText | №0636 (+ 1 других файлов) |
@@ -5036,6 +5048,7 @@
 | retries | №0810 |
 | retry | №0832 |
 | returned | №1117 |
+| returnedDash | №1117 |
 | reused | №0878 |
 | rev | №0800 |
 | reveal | №0808 |
@@ -5191,7 +5204,7 @@
 | savedWander | №1117 |
 | saveResult | №0644 |
 | saveRoll | №0773 (+ 2 других файлов) |
-| saves | №0682 (+ 2 других файлов) |
+| saves | №0682 (+ 3 других файлов) |
 | savesBeforeRefresh | №1119 |
 | saveStat | №0768 |
 | sb | №0659 (+ 2 других файлов) |
@@ -5692,7 +5705,7 @@
 | synergySet | №0068 |
 | sys | №0052 (+ 18 других файлов) |
 | sz | №0050 (+ 3 других файлов) |
-| t | №0047 (+ 102 других файлов) |
+| t | №0047 (+ 103 других файлов) |
 | T | №0047 (+ 2 других файлов) |
 | t2 | №0802 |
 | ta | №0768 |
@@ -6025,6 +6038,14 @@
 | USES | №0792 |
 | usesHtml | №0643 |
 | useSkinMicro | №0052 |
+| utilityArmor | №1117 |
+| utilityBack | №1117 |
+| utilityBerry | №1117 |
+| utilityDash | №1117 |
+| utilityPC | №1117 |
+| utilityPhone | №1117 |
+| utilityRoster | №1117 |
+| utilityServer | №1117 |
 | uv | №0047 (+ 6 других файлов) |
 | uvAnchor | №0047 |
 | uvDet | №0047 |
@@ -6264,7 +6285,7 @@
 | ZY | №0061 |
 | zz | №0050 (+ 1 других файлов) |
 
-### Глобальные JS API (562)
+### Глобальные JS API (563)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -6295,7 +6316,7 @@
 | accursedAfflictions | №0066 |
 | accursedProgression | №0066 (+ 2 других файлов) |
 | accursedRuntime | №0066 (+ 1 других файлов) |
-| addEventListener | №1119 (+ 3 других файлов) |
+| addEventListener | №1119 (+ 4 других файлов) |
 | addExperienceValue | №0769 |
 | addItemToInventory | №0781 (+ 2 других файлов) |
 | ALCHEMIST_MHP_2024 | №0067 |
@@ -6310,7 +6331,7 @@
 | applyMulticlassProficiencies | №0689 (+ 1 других файлов) |
 | applySubclassProgression | №0637 (+ 1 других файлов) |
 | artificerProgression | №0668 |
-| autoSaveCurrentCharacter | №0070 (+ 38 других файлов) |
+| autoSaveCurrentCharacter | №0070 (+ 39 других файлов) |
 | averageHpIncrease | №0689 |
 | barbarianProgression | №0670 |
 | bardProgression | №0672 |
@@ -6344,7 +6365,7 @@
 | createSwarmAvatar | №0828 |
 | crypto | №1114 (+ 19 других файлов) |
 | currentChar | №0821 (+ 31 других файлов) |
-| currentCharacter | №0821 (+ 9 других файлов) |
+| currentCharacter | №0821 (+ 10 других файлов) |
 | currentCharacterId | №0642 (+ 2 других файлов) |
 | currentRollMode | №1132 |
 | defaultArmors | №0073 |
@@ -6744,7 +6765,7 @@
 | renderDndTools | №0762 (+ 2 других файлов) |
 | renderGhostExtraPanel | №0770 |
 | renderInitiativeTracker | №0772 (+ 11 других файлов) |
-| renderInventory | №0070 (+ 12 других файлов) |
+| renderInventory | №0070 (+ 13 других файлов) |
 | renderParasiteExtraPanel | №0770 |
 | renderSpellSlots | №0816 (+ 2 других файлов) |
 | renderWalterParasitePanel | №0770 |
@@ -6805,6 +6826,7 @@
 | syncLevelUI | №0689 |
 | toggleClassFeatureDetails | №0637 |
 | triggerCritEffect | №1136 |
+| updateCharacterArmorClass | №1126 |
 | updateCharacterSpellSlots | №0689 (+ 1 других файлов) |
 | updateExperienceModalUI | №0769 |
 | updateExtraClassCreationUI | №0635 |
@@ -6898,7 +6920,7 @@
 | parasite | №0805 |
 | pendingProficiencyChoices | №0702 |
 | position | №1119 |
-| predictorState | №0636 (+ 3 других файлов) |
+| predictorState | №0782 (+ 4 других файлов) |
 | profBonus | №0825 |
 | proficiencies | №0782 (+ 3 других файлов) |
 | race | №0689 (+ 2 других файлов) |
@@ -6918,7 +6940,7 @@
 | skins | №0048 (+ 5 других файлов) |
 | sneakAttackDice | №0702 |
 | sorceryPoints | №0702 (+ 1 других файлов) |
-| speed | №0773 (+ 2 других файлов) |
+| speed | №0773 (+ 3 других файлов) |
 | spellcastingSources | №0702 (+ 1 других файлов) |
 | spells | №0762 |
 | spellsData | №0816 (+ 1 других файлов) |
@@ -6937,7 +6959,7 @@
 | weaponsData | №0636 |
 | worldMatrices | №0048 (+ 3 других файлов) |
 
-### Поля JS объектов (6486)
+### Поля JS объектов (6495)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -7003,7 +7025,7 @@
 | actionId | №0794 |
 | actionOrBonusAction | №0768 |
 | actionRequired | №0644 |
-| actions | №0067 (+ 27 других файлов) |
+| actions | №0067 (+ 28 других файлов) |
 | actionSpent | №0067 (+ 1 других файлов) |
 | actionSurge | №0637 |
 | actionSurges | №0683 |
@@ -7331,7 +7353,7 @@
 | armament | №0066 (+ 1 других файлов) |
 | armedAndAngry | №0768 |
 | armLength | №0052 (+ 1 других файлов) |
-| armor | №0050 (+ 63 других файлов) |
+| armor | №0050 (+ 64 других файлов) |
 | armor_component | №0815 |
 | armorBonus | №0654 |
 | armorClass | №0663 (+ 1 других файлов) |
@@ -7882,7 +7904,7 @@
 | catalysts | №0068 |
 | catEarSize | №0055 (+ 2 других файлов) |
 | categories | №0791 |
-| category | №0063 (+ 48 других файлов) |
+| category | №0063 (+ 50 других файлов) |
 | catMuzzleSize | №0055 (+ 3 других файлов) |
 | caucasian | №1103 |
 | cauldron | №0056 (+ 1 других файлов) |
@@ -8149,13 +8171,14 @@
 | constructDamageBonus | №0768 |
 | constructMode | №0768 |
 | consumableFunctional | №1153 |
-| consumables | №0782 (+ 30 других файлов) |
+| consumables | №0782 (+ 31 других файлов) |
 | consume | №0661 (+ 1 других файлов) |
 | consumed | №0661 (+ 2 других файлов) |
 | consumedPotion | №0067 |
 | consumeLairAction | №0794 |
 | consumeLegendaryAction | №0794 |
 | consumeLegendaryResistance | №0794 |
+| consumeMageBerry | №0807 |
 | consumeMagicMeleeWeapon | №0768 |
 | consumeMaximum | №0807 |
 | consumeOn | №0807 |
@@ -8166,11 +8189,11 @@
 | container | №0778 |
 | containerId | №1124 |
 | containerRequired | №0768 |
-| containers | №0795 (+ 5 других файлов) |
+| containers | №0795 (+ 6 других файлов) |
 | containerType | №0778 |
 | content | №0060 (+ 1 других файлов) |
 | contentPackId | №0067 (+ 6 других файлов) |
-| contents | №0778 (+ 5 других файлов) |
+| contents | №0778 (+ 6 других файлов) |
 | contentType | №1260 |
 | context | №0644 (+ 1 других файлов) |
 | contextIsolation | №0875 |
@@ -8424,6 +8447,7 @@
 | darkvisionBonusFt | №0630 |
 | darkvisionFt | №0630 (+ 1 других файлов) |
 | dash | №0765 |
+| dashMageRetreat | №0807 |
 | dastardlyTalents | №0768 |
 | data | №0066 (+ 10 других файлов) |
 | dataset | №1084 |
@@ -8590,6 +8614,7 @@
 | disguiseAndHexFocus | №0802 |
 | disguiseAppearance | №0067 |
 | disguiser | №0659 (+ 1 других файлов) |
+| dismissMageArmor | №0807 |
 | disoriented | №0768 |
 | disorientedDice | №0768 |
 | dispellingAnathema | №0768 |
@@ -8817,7 +8842,7 @@
 | equipment | №0055 (+ 6 других файлов) |
 | equipmentId | №0055 |
 | equipMilitia | №0768 |
-| equipped | №0063 (+ 5 других файлов) |
+| equipped | №0063 (+ 6 других файлов) |
 | equippedArmor | №1091 |
 | error | №0052 (+ 33 других файлов) |
 | error_code | №1089 |
@@ -8860,7 +8885,7 @@
 | expanded | №0649 (+ 1 других файлов) |
 | expected | №0843 |
 | expectedProcessed | №0815 |
-| expectedRevision | №0807 (+ 20 других файлов) |
+| expectedRevision | №0782 (+ 21 других файлов) |
 | expendHitDie | №0768 |
 | experience | №0775 |
 | experimental | №0068 (+ 1 других файлов) |
@@ -9709,11 +9734,11 @@
 | hpBonusPerLevel | №0813 |
 | hpCost | №0792 (+ 1 других файлов) |
 | hpCostBySlot | №0792 |
-| hpCurrent | №0613 (+ 18 других файлов) |
+| hpCurrent | №0613 (+ 19 других файлов) |
 | hpDamage | №0644 (+ 6 других файлов) |
 | hpDamageBySlot | №0792 |
 | hpFraction | №0765 |
-| hpMax | №0613 (+ 12 других файлов) |
+| hpMax | №0613 (+ 13 других файлов) |
 | hpMaxBonus | №0675 |
 | hpPer100gp | №0768 |
 | hpPercent | №1168 |
@@ -9814,7 +9839,7 @@
 | incomingDamage | №1138 |
 | incomingDisadvantage | №0807 |
 | incomparableIntellect | №0818 |
-| index | №0642 (+ 7 других файлов) |
+| index | №0782 (+ 8 других файлов) |
 | indexType | №0062 |
 | indices | №0047 (+ 8 других файлов) |
 | individualCount | №0055 |
@@ -9923,13 +9948,14 @@
 | intuition | №0817 |
 | intWisChaSavesDisadvantage | №0630 |
 | invadeHost | №0805 |
-| inventory | №0775 (+ 19 других файлов) |
+| inventory | №0775 (+ 20 других файлов) |
 | inventoryEntries | №0807 |
-| inventoryRef | №0808 (+ 2 других файлов) |
+| inventoryRef | №0782 (+ 4 других файлов) |
 | inverseBindMatrices | №0057 (+ 1 других файлов) |
 | investigation | №0761 (+ 1 других файлов) |
 | investigationExpertise | №0765 |
 | investigator | №0818 |
+| invHeaderAC | №1126 |
 | invigoratingOrders | №0768 |
 | Invisibility | №0069 |
 | invisibilityAfterCharnel | №0798 |
@@ -10131,7 +10157,7 @@
 | legendaryTandem | №0768 |
 | legLength | №0052 (+ 1 других файлов) |
 | legs | №0052 (+ 2 других файлов) |
-| length | №0048 (+ 18 других файлов) |
+| length | №0048 (+ 19 других файлов) |
 | level | №0769 (+ 82 других файлов) |
 | level10 | №0066 |
 | level18 | №0066 |
@@ -10253,8 +10279,11 @@
 | macrotargets | №1103 |
 | mage_slayer | №0771 |
 | mageArmor | №0802 |
+| mageArmorAC | №0807 |
+| mageBerryCount | №0808 (+ 2 других файлов) |
 | mageD20Bonus | №0807 |
 | mageDamageType | №0808 (+ 1 других файлов) |
+| mageEquipmentChanged | №0807 |
 | mageGround | №0808 (+ 1 других файлов) |
 | mageInfo | №0807 |
 | mageOptions | №0807 |
@@ -10676,6 +10705,7 @@
 | moveFt | №0675 (+ 4 других файлов) |
 | moveHalfSpeed | №0630 |
 | movement | №0067 (+ 19 других файлов) |
+| movementAllowance | №0807 |
 | movementUsed | №0067 (+ 14 других файлов) |
 | movementWithoutOpportunityAttacks | №0802 |
 | moveReward | №0807 |
@@ -10910,6 +10940,7 @@
 | oilCoated | №0067 |
 | ok | №0821 (+ 79 других файлов) |
 | old | №0800 |
+| oldFormat | №1126 |
 | oldLevel | №0659 |
 | oldOneTwo | №0768 |
 | omnipotence | №0768 (+ 1 других файлов) |
@@ -12265,7 +12296,7 @@
 | sigilEligible | №0621 |
 | sigilicGrace | №0768 |
 | signal | №0642 (+ 2 других файлов) |
-| signature | №0807 |
+| signature | №0782 (+ 1 других файлов) |
 | signatureSpells | №0637 |
 | signup | №0642 |
 | silent | №0807 |
@@ -13038,7 +13069,7 @@
 | turnEnd | №0807 |
 | turnId | №1146 |
 | turnIds | №0810 (+ 1 других файлов) |
-| turnResources | №0067 (+ 33 других файлов) |
+| turnResources | №0067 (+ 34 других файлов) |
 | turns | №0630 |
 | turnStart | №0807 |
 | turnUndead | №0637 |

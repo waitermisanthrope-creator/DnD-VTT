@@ -322,6 +322,7 @@ function toggleItemEquipped(category, index, isChecked) {
       });
     }
     item.equipped = isChecked;
+    if(window.DNDPredictorCards)window.DNDPredictorCards.mageEquipmentChanged(currentCharacter);
     if (typeof autoSaveCurrentCharacter === 'function') autoSaveCurrentCharacter();
     if (category === 'armor' || category === 'weapons') {
       updateCharacterArmorClass();
@@ -425,6 +426,14 @@ function useInventoryItem(category, index) {
   const item = currentCharacter.inventory[category][index];
   if (!item) return;
 
+  if(item.mageGoodberry&&window.DNDPredictorCards){
+    const ref={category:category,index:index,signature:JSON.stringify(item)};
+    const result=window.DNDPredictorCards.consumeMageBerry(currentCharacter,{inventoryRef:ref,expectedRevision:currentCharacter.predictorState&&currentCharacter.predictorState.revision});
+    if(!result.ok){alert(result.reason);return;}
+    if(typeof autoSaveCurrentCharacter==='function')autoSaveCurrentCharacter();
+    if(typeof updateHpDisplay==='function')updateHpDisplay();
+    renderInventory();return;
+  }
   alert(`Вы использовали предмет: ${item.name}`);
 
   if (item.count > 1) {

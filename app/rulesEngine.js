@@ -297,7 +297,7 @@
     return { groups: matches.length ? matches : [{count:1,sides:6}], constant: constant.reduce(function(a,x){return a+Number(x);},0) };
   }
 
-  function calculateAC(hero) {
+  function calculateAC(hero, ignoreTarot) {
     normalize(hero);
     var stats = getStats(hero), dex = mod(stats.dex), base = 10 + dex, body = null, shield = 0, extra = Number(hero.extraACBonus) || 0;
     var armor = hero.inventory && hero.inventory.armor;
@@ -315,7 +315,7 @@
     var ac = base;
     if (body) ac = body.type === 'heavy' ? body.ac : body.ac + (body.type === 'medium' ? Math.min(dex,2) : dex);
     ac += shield + extra;
-    return Math.max(0, ac);
+    return !ignoreTarot&&global.DNDPredictorCards?global.DNDPredictorCards.mageArmorAC(hero,Math.max(0,ac),shield+extra):Math.max(0,ac);
   }
 
   function spellSources(hero) {
@@ -448,9 +448,11 @@ if (typeof window !== 'undefined' && window.addEventListener) window.addEventLis
       var h = hero();
       if (!h) return original.apply(this, arguments);
       R.normalize(h);
-      h.ac = R.calculateAC(h);
-      var ac = document.getElementById('ac'); if (ac) ac.value = h.ac;
-      var inv = document.getElementById('invHeaderAC'); if (inv) inv.textContent = h.ac;
+      if(window.DNDPredictorCards)window.DNDPredictorCards.mageEquipmentChanged(h);
+      h.ac = R.calculateAC(h,true);
+      var displayedAC=R.calculateAC(h);
+      var ac = document.getElementById('ac'); if (ac) ac.value = displayedAC;
+      var inv = document.getElementById('invHeaderAC'); if (inv) inv.textContent = displayedAC;
       save();
       return h.ac;
     };
