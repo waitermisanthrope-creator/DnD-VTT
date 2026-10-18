@@ -52,6 +52,50 @@
     {
       "file": "app/data/spells/Spells9lvl.js",
       "sha256": "99a75b8e30eaf8859191c40d18bec4274c08e0cc7ebced5699ab213cca99fee6"
+    },
+    {
+      "file": "app/weaponsmelee.js",
+      "sha256": "dbe05e0a4374c45425dbb1b6de4fe0bc43ce131d84b06095c8ed8a23a7a05bdb"
+    },
+    {
+      "file": "app/weaponsheavy.js",
+      "sha256": "d5200f4300b07a64b61c600bb2646d6cc1a5d2c6570fb327b8a3143e79206c3e"
+    },
+    {
+      "file": "app/weaponsranged.js",
+      "sha256": "fcd00082ac50f3211bf5d18256f0f35e0fedbbe2066b2de375acef89d5456871"
+    },
+    {
+      "file": "app/weaponsspecial.js",
+      "sha256": "29a8c481679b535bc36bf4b8ca69e2fd228eb9e6f3c851f2085d2573ac9ba5e8"
+    },
+    {
+      "file": "app/armors.js",
+      "sha256": "3092291a33995025ecb4f6bed76062f676b42a53c1ada4e12c4bba5d296adaa9"
+    },
+    {
+      "file": "app/consumables.js",
+      "sha256": "613c4a7ff3b7f404db852effff900f655b1676383553aacc5d98d5aee4d6a6b4"
+    },
+    {
+      "file": "app/materials.js",
+      "sha256": "ddd46864b778987ad17f1e3ef89d875fd9927b3bb5e22eeccd88be9f24266825"
+    },
+    {
+      "file": "app/junk.js",
+      "sha256": "b06a0900f8f96447e4d78565c6f9741e3e1cb027741b0e3b995b7c9cdefedda8"
+    },
+    {
+      "file": "app/Inventory.js",
+      "sha256": "efaf898d91f51eaf8d30daec8ad6a96b92425822d375bf8f16adf42b7e2fb169"
+    },
+    {
+      "file": "app/Inventory-weight-tracker.js",
+      "sha256": "2992acea3d2a36997152319d71946d0c1438a3fc076cc2ea33d6f4506da2d7b7"
+    },
+    {
+      "file": "app/notes.js",
+      "sha256": "952e9cc0d2c44467e273e4305c0aa1c6ae0feaf74742859b9c642ba16b56e1b1"
     }
   ],
   "skills": [
@@ -5487,5 +5531,671 @@
         15
       ]
     }
-  ]
+  ],
+  "inventoryCases": [
+    {
+      "input": {
+        "id": "inventory-weapons",
+        "unknown": {
+          "keep": true
+        }
+      },
+      "category": "weapons",
+      "item": {
+        "id": "w_dagger",
+        "name": "Кинжал",
+        "category": "Простое рукопашное",
+        "groupKey": "simple",
+        "typeKey": "melee",
+        "hands": "🖐️ 1 рука",
+        "damage": "1d4",
+        "damageType": "колющий",
+        "weight": "1 фунт",
+        "cost": "2 зм",
+        "properties": [
+          "Фехтовальное",
+          "легкое",
+          "метательное (дистанция 20/60)"
+        ],
+        "proficiencies": [
+          "p_weapon_simple",
+          "p_weap_dagger"
+        ],
+        "toHit": 0,
+        "bonuses": {
+          "str": 0,
+          "dex": 0,
+          "con": 0,
+          "int": 0,
+          "wis": 0,
+          "cha": 0
+        },
+        "description": "Легкий, обоюдоострый клинок, который легко спрятать в складках одежды. Идеален для внезапных атак из тени, ближнего боя в тесноте и метания на коротке."
+      },
+      "stacked": {
+        "id": "inventory-weapons",
+        "unknown": {
+          "keep": true
+        },
+        "inventory": {
+          "weapons": [
+            {
+              "name": "Кинжал",
+              "count": 3,
+              "equipped": false,
+              "id": "w_dagger",
+              "category": "Простое рукопашное",
+              "groupKey": "simple",
+              "typeKey": "melee",
+              "hands": "🖐️ 1 рука",
+              "damage": "1d4",
+              "damageType": "колющий",
+              "weight": "1 фунт",
+              "cost": "2 зм",
+              "properties": [
+                "Фехтовальное",
+                "легкое",
+                "метательное (дистанция 20/60)"
+              ],
+              "proficiencies": [
+                "p_weapon_simple",
+                "p_weap_dagger"
+              ],
+              "toHit": 0,
+              "bonuses": {
+                "str": 0,
+                "dex": 0,
+                "con": 0,
+                "int": 0,
+                "wis": 0,
+                "cha": 0
+              },
+              "description": "Легкий, обоюдоострый клинок, который легко спрятать в складках одежды. Идеален для внезапных атак из тени, ближнего боя в тесноте и метания на коротке."
+            }
+          ],
+          "armor": [],
+          "consumables": [],
+          "materials": [],
+          "junk": []
+        }
+      },
+      "removed": {
+        "id": "inventory-weapons",
+        "unknown": {
+          "keep": true
+        },
+        "inventory": {
+          "weapons": [
+            {
+              "name": "Кастомный предмет",
+              "count": 1,
+              "equipped": false,
+              "weight": "1,5 кг",
+              "unknown": 17
+            }
+          ],
+          "armor": [],
+          "consumables": [],
+          "materials": [],
+          "junk": []
+        }
+      }
+    },
+    {
+      "input": {
+        "id": "inventory-armor",
+        "unknown": {
+          "keep": true
+        }
+      },
+      "category": "armor",
+      "item": {
+        "id": "h_leather_cap",
+        "name": "Кожаный подшлемник",
+        "category": "Шлем",
+        "acBase": 0,
+        "minStr": 0,
+        "proficiencyType": "none",
+        "acFormula": "Без бонуса к КД",
+        "weight": "2 фунта",
+        "cost": "2 зм",
+        "stealthDisadvantage": false,
+        "bonuses": {
+          "str": 0,
+          "dex": 0,
+          "con": 0,
+          "int": 0,
+          "wis": 0,
+          "cha": 0
+        },
+        "description": "🪖 Простой стеганый чепец, смягчающий удары по голове."
+      },
+      "stacked": {
+        "id": "inventory-armor",
+        "unknown": {
+          "keep": true
+        },
+        "inventory": {
+          "weapons": [],
+          "armor": [
+            {
+              "name": "Кожаный подшлемник",
+              "count": 3,
+              "equipped": false,
+              "id": "h_leather_cap",
+              "category": "Шлем",
+              "acBase": 0,
+              "minStr": 0,
+              "proficiencyType": "none",
+              "acFormula": "Без бонуса к КД",
+              "weight": "2 фунта",
+              "cost": "2 зм",
+              "stealthDisadvantage": false,
+              "bonuses": {
+                "str": 0,
+                "dex": 0,
+                "con": 0,
+                "int": 0,
+                "wis": 0,
+                "cha": 0
+              },
+              "description": "🪖 Простой стеганый чепец, смягчающий удары по голове."
+            }
+          ],
+          "consumables": [],
+          "materials": [],
+          "junk": []
+        }
+      },
+      "removed": {
+        "id": "inventory-armor",
+        "unknown": {
+          "keep": true
+        },
+        "inventory": {
+          "weapons": [],
+          "armor": [
+            {
+              "name": "Кастомный предмет",
+              "count": 1,
+              "equipped": false,
+              "weight": "1,5 кг",
+              "unknown": 17
+            }
+          ],
+          "consumables": [],
+          "materials": [],
+          "junk": []
+        }
+      }
+    },
+    {
+      "input": {
+        "id": "inventory-consumables",
+        "unknown": {
+          "keep": true
+        }
+      },
+      "category": "consumables",
+      "item": {
+        "id": "c_potion_healing",
+        "name": "Зелье лечения",
+        "category": "Зелье (Обычное)",
+        "weight": "0.5 фунта",
+        "cost": "50 зм",
+        "effect": "Восстанавливает 2d4 + 2 хитов.",
+        "description": "🧪 Стандартный красный эликсир в стеклянной колбе, запечатанный воском."
+      },
+      "stacked": {
+        "id": "inventory-consumables",
+        "unknown": {
+          "keep": true
+        },
+        "inventory": {
+          "weapons": [],
+          "armor": [],
+          "consumables": [
+            {
+              "name": "Зелье лечения",
+              "count": 3,
+              "equipped": false,
+              "id": "c_potion_healing",
+              "category": "Зелье (Обычное)",
+              "weight": "0.5 фунта",
+              "cost": "50 зм",
+              "effect": "Восстанавливает 2d4 + 2 хитов.",
+              "description": "🧪 Стандартный красный эликсир в стеклянной колбе, запечатанный воском."
+            }
+          ],
+          "materials": [],
+          "junk": []
+        }
+      },
+      "removed": {
+        "id": "inventory-consumables",
+        "unknown": {
+          "keep": true
+        },
+        "inventory": {
+          "weapons": [],
+          "armor": [],
+          "consumables": [
+            {
+              "name": "Кастомный предмет",
+              "count": 1,
+              "equipped": false,
+              "weight": "1,5 кг",
+              "unknown": 17
+            }
+          ],
+          "materials": [],
+          "junk": []
+        }
+      }
+    },
+    {
+      "input": {
+        "id": "inventory-materials",
+        "unknown": {
+          "keep": true
+        }
+      },
+      "category": "materials",
+      "item": {
+        "id": "m_iron_ore",
+        "name": "Железная руда / Слиток железа",
+        "category": "Металл (Базовый)",
+        "weight": "5 фунтов",
+        "cost": "1 зм",
+        "rarity": "Обычное",
+        "description": "⛏️ Основной материал для ковки большинства простых доспехов, мечей, топоров и наконечников стрел."
+      },
+      "stacked": {
+        "id": "inventory-materials",
+        "unknown": {
+          "keep": true
+        },
+        "inventory": {
+          "weapons": [],
+          "armor": [],
+          "consumables": [],
+          "materials": [
+            {
+              "name": "Железная руда / Слиток железа",
+              "count": 3,
+              "equipped": false,
+              "id": "m_iron_ore",
+              "category": "Металл (Базовый)",
+              "weight": "5 фунтов",
+              "cost": "1 зм",
+              "rarity": "Обычное",
+              "description": "⛏️ Основной материал для ковки большинства простых доспехов, мечей, топоров и наконечников стрел."
+            }
+          ],
+          "junk": []
+        }
+      },
+      "removed": {
+        "id": "inventory-materials",
+        "unknown": {
+          "keep": true
+        },
+        "inventory": {
+          "weapons": [],
+          "armor": [],
+          "consumables": [],
+          "materials": [
+            {
+              "name": "Кастомный предмет",
+              "count": 1,
+              "equipped": false,
+              "weight": "1,5 кг",
+              "unknown": 17
+            }
+          ],
+          "junk": []
+        }
+      }
+    },
+    {
+      "input": {
+        "id": "inventory-junk",
+        "unknown": {
+          "keep": true
+        }
+      },
+      "category": "junk",
+      "item": {
+        "id": "j_fake_coin",
+        "name": "Фальшивая золотая монета (из свинца)",
+        "category": "Хлам / Мелочь",
+        "weight": "0.02 фунта",
+        "cost": "0 зм",
+        "rarity": "Обычное",
+        "description": "🪙 Потертая монета, покрытая тонким слоем позолоты. На ощупь чуть тяжелее и мягче настоящего золота."
+      },
+      "stacked": {
+        "id": "inventory-junk",
+        "unknown": {
+          "keep": true
+        },
+        "inventory": {
+          "weapons": [],
+          "armor": [],
+          "consumables": [],
+          "materials": [],
+          "junk": [
+            {
+              "name": "Фальшивая золотая монета (из свинца)",
+              "count": 3,
+              "equipped": false,
+              "id": "j_fake_coin",
+              "category": "Хлам / Мелочь",
+              "weight": "0.02 фунта",
+              "cost": "0 зм",
+              "rarity": "Обычное",
+              "description": "🪙 Потертая монета, покрытая тонким слоем позолоты. На ощупь чуть тяжелее и мягче настоящего золота."
+            }
+          ]
+        }
+      },
+      "removed": {
+        "id": "inventory-junk",
+        "unknown": {
+          "keep": true
+        },
+        "inventory": {
+          "weapons": [],
+          "armor": [],
+          "consumables": [],
+          "materials": [],
+          "junk": [
+            {
+              "name": "Кастомный предмет",
+              "count": 1,
+              "equipped": false,
+              "weight": "1,5 кг",
+              "unknown": 17
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "weightCases": [
+    {
+      "input": null,
+      "expected": 0
+    },
+    {
+      "input": "",
+      "expected": 0
+    },
+    {
+      "input": 0,
+      "expected": 0
+    },
+    {
+      "input": 1,
+      "expected": 0.453592
+    },
+    {
+      "input": 2.5,
+      "expected": 1.13398
+    },
+    {
+      "input": "1 фунт",
+      "expected": 0.453592
+    },
+    {
+      "input": "2 фунта",
+      "expected": 0.907184
+    },
+    {
+      "input": "3 lbs",
+      "expected": 1.360776
+    },
+    {
+      "input": "1,5 кг",
+      "expected": 1.5
+    },
+    {
+      "input": "10",
+      "expected": 4.53592
+    },
+    {
+      "input": "без веса",
+      "expected": 0
+    },
+    {
+      "input": "0,25 lb",
+      "expected": 0.113398
+    }
+  ],
+  "weightHero": {
+    "id": "weight",
+    "stats": {
+      "str": 12
+    },
+    "inventory": {
+      "weapons": [
+        {
+          "weight": "2 фунта",
+          "count": 3
+        }
+      ],
+      "materials": [
+        {
+          "weight": "1,5 кг",
+          "count": 0.5
+        }
+      ],
+      "junk": [
+        {
+          "weight": 1,
+          "count": 0
+        }
+      ]
+    }
+  },
+  "weightTotal": {
+    "totalWeightKg": 3.925144,
+    "maxCapacityKg": 81.64656
+  },
+  "folderCases": [
+    {
+      "input": {
+        "id": "notes",
+        "activeFolderId": "f1",
+        "folders": [
+          {
+            "id": "f1",
+            "name": "Удаляемая",
+            "notes": [
+              {
+                "id": 1,
+                "text": "Запись"
+              }
+            ]
+          },
+          {
+            "id": "f2",
+            "name": "Остаётся",
+            "notes": [
+              {
+                "id": 2,
+                "text": "Не менять"
+              }
+            ]
+          }
+        ],
+        "unknown": 7
+      },
+      "expected": {
+        "id": "notes",
+        "activeFolderId": "f2",
+        "folders": [
+          {
+            "id": "f2",
+            "name": "Остаётся",
+            "notes": [
+              {
+                "id": 2,
+                "text": "Не менять"
+              }
+            ]
+          }
+        ],
+        "unknown": 7
+      }
+    },
+    {
+      "input": {
+        "id": "notes",
+        "activeFolderId": "f2",
+        "folders": [
+          {
+            "id": "f1",
+            "name": "Удаляемая",
+            "notes": [
+              {
+                "id": 1,
+                "text": "Запись"
+              }
+            ]
+          },
+          {
+            "id": "f2",
+            "name": "Остаётся",
+            "notes": [
+              {
+                "id": 2,
+                "text": "Не менять"
+              }
+            ]
+          }
+        ],
+        "unknown": 7
+      },
+      "expected": {
+        "id": "notes",
+        "activeFolderId": "f2",
+        "folders": [
+          {
+            "id": "f2",
+            "name": "Остаётся",
+            "notes": [
+              {
+                "id": 2,
+                "text": "Не менять"
+              }
+            ]
+          }
+        ],
+        "unknown": 7
+      }
+    },
+    {
+      "input": {
+        "id": "notes",
+        "activeFolderId": "missing",
+        "folders": [
+          {
+            "id": "f1",
+            "name": "Удаляемая",
+            "notes": [
+              {
+                "id": 1,
+                "text": "Запись"
+              }
+            ]
+          },
+          {
+            "id": "f2",
+            "name": "Остаётся",
+            "notes": [
+              {
+                "id": 2,
+                "text": "Не менять"
+              }
+            ]
+          }
+        ],
+        "unknown": 7
+      },
+      "expected": {
+        "id": "notes",
+        "activeFolderId": "missing",
+        "folders": [
+          {
+            "id": "f2",
+            "name": "Остаётся",
+            "notes": [
+              {
+                "id": 2,
+                "text": "Не менять"
+              }
+            ]
+          }
+        ],
+        "unknown": 7
+      }
+    }
+  ],
+  "noteCase": {
+    "input": {
+      "id": "notes-delete",
+      "activeFolderId": "f1",
+      "folders": [
+        {
+          "id": "f1",
+          "notes": [
+            {
+              "id": 1,
+              "text": "Удаляется"
+            },
+            {
+              "id": 2,
+              "text": "Остаётся"
+            }
+          ]
+        },
+        {
+          "id": "f2",
+          "notes": [
+            {
+              "id": 3,
+              "text": "Другая папка"
+            }
+          ]
+        }
+      ],
+      "unknown": true
+    },
+    "expected": {
+      "id": "notes-delete",
+      "activeFolderId": "f1",
+      "folders": [
+        {
+          "id": "f1",
+          "notes": [
+            {
+              "id": 2,
+              "text": "Остаётся"
+            }
+          ]
+        },
+        {
+          "id": "f2",
+          "notes": [
+            {
+              "id": 3,
+              "text": "Другая папка"
+            }
+          ]
+        }
+      ],
+      "unknown": true
+    }
+  }
 }

@@ -8,6 +8,8 @@ Character import accepts a single export, an array, or a `{characters:[...]}` wr
 
 Nine existing maps are selectable. Model coverage is complete for the tavern's model references; other maps show explicit placeholders for models outside the current packaged catalog. Walls/floors/diagonals, static open portal state, point lights and stair geometry are projected from map v2. Closed doors/windows are blocking proxies: interaction rules, fog/LOS, loot, token authority and stair routing remain for later stages. One map coordinate unit maps to one Unity unit; no combat-speed/feet conversion is inferred from realtime physics.
 
+Inventory now also offers the 188-item main catalogue, name/category/ID search, stacking additions and current-main weight/capacity display. Folder/note/item/spell record deletion requires confirmation and rejects a changed record. Folder selection/removal preserves `activeFolderId` behaviour; quantities can be fractional. Weight does not yet apply gameplay penalties, equipment does not yet execute class/AC hooks, and container moves/consumable effects remain unported.
+
 Content is copied by `Tools/sync_legacy_content.cjs` from the existing repository. Original glTF files and dependencies are preserved with SHA-256 provenance. The chest has a documented static bind-pose derivative because glTFast 6.14.1 fails to import its multi-primitive skin; the intact animated source is retained as `.gltf.bytes`. This does not port chest animation. License review remains required before any distribution of the migrated client.
 
 Reproduce from PowerShell with Git/Node in PATH (close this project's Editor before batch runs):

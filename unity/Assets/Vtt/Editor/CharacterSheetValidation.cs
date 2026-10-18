@@ -60,6 +60,39 @@ public static class CharacterSheetValidation
         finally { if (Directory.Exists(directory)) Directory.Delete(directory, true); }
         var catalog = JObject.Parse(File.ReadAllText("Assets/Vtt/Resources/CharacterSheet/catalog.json"));
         Check(((JArray)catalog["spells"]).Count == 402, "main spell catalogue");
+        Check(((JObject)catalog["items"]).Properties().Sum(p => ((JArray)p.Value).Count) == 188, "main item catalogues");
+        foreach (JObject test in (JArray)golden["inventoryCases"])
+        {
+            var hero = (JObject)test["input"].DeepClone(); string category = (string)test["category"]; var item = (JObject)test["item"];
+            CharacterSheetRules.AddInventory(hero, category, (string)item["name"], 1, item);
+            CharacterSheetRules.AddInventory(hero, category, (string)item["name"], 2, item);
+            Check(JToken.DeepEquals(hero, test["stacked"]), "actual JS add/stack " + category);
+            CharacterSheetRules.AddInventory(hero, category, "Кастомный предмет", 1, new JObject { ["weight"] = "1,5 кг", ["unknown"] = 17 });
+            var record = hero["inventory"][category][0];
+            CharacterSheetRules.RemoveRecord(hero, record.Path, record.ToString(Newtonsoft.Json.Formatting.None));
+            Check(JToken.DeepEquals(hero, test["removed"]), "actual JS inventory removal " + category);
+            string unchanged = hero.ToString(); bool refused = false;
+            try { CharacterSheetRules.AddInventory(hero, "invalid", "Item", 1, null); } catch (FormatException) { refused = true; }
+            Check(refused && hero.ToString() == unchanged, "invalid category no mutation");
+            var remaining = hero["inventory"][category][0]; string signature = remaining.ToString(Newtonsoft.Json.Formatting.None);
+            remaining["unknown"] = 18; unchanged = hero.ToString(); refused = false;
+            try { CharacterSheetRules.RemoveRecord(hero, remaining.Path, signature); } catch (InvalidOperationException) { refused = true; }
+            Check(refused && hero.ToString() == unchanged, "stale delete confirmation no mutation");
+        }
+        foreach (JObject test in (JArray)golden["folderCases"])
+        {
+            var hero = (JObject)test["input"].DeepClone(); var record = hero["folders"][0];
+            CharacterSheetRules.RemoveRecord(hero, record.Path, record.ToString(Newtonsoft.Json.Formatting.None));
+            Check(JToken.DeepEquals(hero, test["expected"]), "actual JS folder deletion / active selection");
+        }
+        {
+            var hero = (JObject)golden["noteCase"]["input"].DeepClone(); var record = hero["folders"][0]["notes"][0];
+            CharacterSheetRules.RemoveRecord(hero, record.Path, record.ToString(Newtonsoft.Json.Formatting.None));
+            Check(JToken.DeepEquals(hero, golden["noteCase"]["expected"]), "actual JS note deletion preserves other folders");
+        }
+        foreach (JObject test in (JArray)golden["weightCases"]) Check(Math.Abs(CharacterSheetRules.WeightKg(test["input"]) - (double)test["expected"]) < 1e-6, "actual JS weight parser " + test["input"]);
+        Check(Math.Abs(CharacterSheetRules.InventoryWeightKg((JObject)golden["weightHero"]) - (double)golden["weightTotal"]["totalWeightKg"]) < 1e-6, "actual JS inventory weight including fractional/zero quantity");
+        Check(Math.Abs(CharacterSheetRules.CapacityKg((JObject)golden["weightHero"]) - (double)golden["weightTotal"]["maxCapacityKg"]) < 1e-6, "actual JS carrying capacity");
         using var sha = System.Security.Cryptography.SHA256.Create();
         foreach (JObject source in (JArray)golden["sources"])
         {
@@ -68,5 +101,6 @@ public static class CharacterSheetValidation
             Check(digest == (string)source["sha256"], "JS fixture provenance " + source["file"]);
         }
         Debug.Log("VTT_SHEET_PASS: " + cases + " JS golden cases; 18 skills, modifiers/proficiency, single/array/wrapped editing, rollback, identity/unknown/class-state preservation, atomic save/reload/backup; 402 spells");
+        Debug.Log("VTT_SHEET_RECORDS_PASS: 188 items; actual JS 5-category add/stack/remove, folder/note deletion and active selection, stale/invalid mutation rejection, 12 weight parser cases / total / capacity");
     }
 }

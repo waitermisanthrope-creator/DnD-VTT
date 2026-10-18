@@ -1,5 +1,13 @@
 # Validation — 2026-10-18, experiment/unity-vtt
 
+## 2026-10-19 continuation: inventory and notes
+
+- Main content extraction PASS: 188 items from weaponsmelee/weaponsheavy/weaponsranged/weaponsspecial/armors/consumables/materials/junk; existing 402 spells and 60 formula fixtures preserved. Original app/workflow sources unchanged.
+- `MigrationContracts` **PASS, exit 0**, `TestResults/MigrationContracts.log`: `VTT_SHEET_PASS`, `VTT_SHEET_RECORDS_PASS`, legacy/map contracts and clean batch exit. New assertions compare against actual main JS add/stack/remove in five categories, folder/note deletion and active-folder selection, 12 weight parser fixtures, fractional/zero-quantity weight total and carrying capacity; also stale deletion signature and invalid-category no-mutation checks.
+- Windows build **PASS, exit 0**, `TestResults/MigrationWindows.log`; built-player `MigrationSmoke` **PASS, exit 0**. Final Assembly-CSharp.dll SHA256 `068D3330DF44405222409C55C7E59D5EEC0587B17975F499CE4934E8320A6AE2`. Earlier foundation logs copied to `Sheet-foundation-Windows.log`, `Sheet-foundation-Android.log`, `Sheet-foundation-Smoke.log` before reuse of generic log paths.
+- Interactive `Sheet-records-preview.log`: original staff weight1.81kg/capacity54.43kg, catalogue dagger add→2.27kg, second add merged same record→2.72kg, staff quantity1.5 accepted→3.63kg, deletion request/cancel retained staff. No gameplay exception heads observed. Actual deletion semantics are covered by C# against main JS; GUI confirmation was cancelled. Synthetic preview remained in memory and was not written over user archives.
+- Android final build **PASS, exit 0**, `TestResults/MigrationAndroid.log`: both sheet markers, legacy contracts, `VTT_MIGRATION_BUILD_PASS: Android`, clean batch exit. APK **97,838,110 bytes**, SHA256 `A9234D0B38C537AD46D9637CDE896D79A5757AA7F909B4287E06FD65DA471FD6`; `apksigner` exit0 verified debug signing, aapt confirmed `com.dndvtt.unityexperiment` / ARM64 / min26 / target36. No physical Android device/runtime QA, live cloud, or class/equipment rule parity inferred from Windows checks.
+
 ## Native character-sheet stage (incomplete parity)
 
 - Scope and remaining work: `../docs/UNITY_CHARACTER_SHEET_PARITY.md`. Main source `4d548ffbb29f15288faa24f298858b7eef0448c5`; `git diff main -- app index.html .github/workflows` empty.

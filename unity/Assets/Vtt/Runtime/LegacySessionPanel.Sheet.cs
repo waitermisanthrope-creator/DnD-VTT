@@ -15,8 +15,13 @@ namespace DndVtt.UnityPrototype
         private string rollResult = "Выберите кубик или проверку";
         private string spellSearch = "";
         private JArray spellCatalog;
+        private JObject itemCatalog;
+        private string itemSearch = "";
+        private int itemCategory;
+        private bool showItemCatalog;
+        private string deletePath, deleteSignature, deleteCharacter, deleteLabel;
         private readonly string[] tabs = { "Герой", "Навыки", "Способности", "Инвентарь", "Заметки", "Дайсы", "Данные / карты" };
-        private void ClearSheetInputs() { edits.Clear(); expanded.Clear(); }
+        private void ClearSheetInputs() { edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
         private void Attempt(Action action)
         {
             try { action(); } catch (Exception error) { status = error.Message; }
@@ -40,6 +45,20 @@ namespace DndVtt.UnityPrototype
             if (GUILayout.Button("Копировать изменённый JSON", GUILayout.Height(36))) { GUIUtility.systemCopyBuffer = archive.Export(); status = "Текущий архив скопирован"; }
             GUILayout.EndHorizontal();
             JObject hero = archive.Snapshot(selected); bool changed = false;
+            if (deletePath != null)
+            {
+                GUILayout.Label("Удалить запись «" + deleteLabel + "» вместе с её содержимым?");
+                GUILayout.Label("Изменение попадёт в файл после нажатия Сохранить.");
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Отмена", GUILayout.Height(40))) ClearSheetInputs();
+                if (GUILayout.Button("Подтвердить удаление", GUILayout.Height(40))) Attempt(() =>
+                {
+                    if (hero["id"].ToString() != deleteCharacter) throw new InvalidOperationException("Выбран другой персонаж");
+                    CharacterSheetRules.RemoveRecord(hero, deletePath, deleteSignature); archive.Replace(selected, hero);
+                    ClearSheetInputs(); status = "Запись удалена в памяти. Для записи на диск нажмите Сохранить.";
+                });
+                GUILayout.EndHorizontal(); return;
+            }
             switch (sheetTab)
             {
                 case 0: Hero(hero, ref changed); break;
@@ -59,6 +78,8 @@ namespace DndVtt.UnityPrototype
                 case 3:
                     GUILayout.Label("Предметы и количество редактируются; автоматический КД, атаки, крафт и применение расходников ещё переносится.");
                     if (hero["inventory"] is JArray) { ReadOnly(hero, "inventory", "Унаследованный инвентарь (массив)"); break; }
+                    GUILayout.Label("Вес по текущему main: " + CharacterSheetRules.InventoryWeightKg(hero).ToString("0.##", CultureInfo.InvariantCulture) + " кг / грузоподъёмность " + CharacterSheetRules.CapacityKg(hero).ToString("0.##", CultureInfo.InvariantCulture) + " кг. Автоматические штрафы ещё не подключены.");
+                    ItemCatalog(hero, ref changed);
                     var inventory = hero["inventory"] as JObject ?? new JObject();
                     string[] categories = { "weapons", "armor", "consumables", "materials", "junk" };
                     string[] names = { "Оружие", "Броня", "Расходники", "Материалы", "Хлам" };
@@ -166,6 +187,33 @@ namespace DndVtt.UnityPrototype
                 }
         }
         private static string Signed(int n) => n >= 0 ? "+" + n : n.ToString();
+        private void ItemCatalog(JObject hero, ref bool changed)
+        {
+            showItemCatalog = GUILayout.Toggle(showItemCatalog, "Справочник предметов main — 188 записей");
+            if (!showItemCatalog) return;
+            if (itemCatalog == null)
+            {
+                var asset = Resources.Load<TextAsset>("CharacterSheet/catalog");
+                if (!asset) { GUILayout.Label("Справочник предметов не найден"); return; }
+                itemCatalog = (JObject)JObject.Parse(asset.text)["items"];
+            }
+            itemCategory = GUILayout.SelectionGrid(itemCategory, new[] { "Оружие", "Броня", "Расходники", "Материалы", "Хлам" }, Screen.width < 900 ? 3 : 5, GUILayout.MinHeight(36));
+            GUILayout.Label("Поиск по названию, категории или ID:"); itemSearch = GUILayout.TextField(itemSearch, GUILayout.Height(32));
+            string category = CharacterSheetRules.InventoryCategories[itemCategory];
+            var matches = ((JArray)itemCatalog[category]).OfType<JObject>().Where(item => (item["name"] + " " + item["category"] + " " + item["id"]).IndexOf(itemSearch, StringComparison.OrdinalIgnoreCase) >= 0).ToArray();
+            GUILayout.Label("Найдено: " + matches.Length + "; показаны первые 20");
+            foreach (var item in matches.Take(20))
+                if (GUILayout.Button("+ " + item["name"] + " · " + item["weight"] + " · " + item["cost"], GUILayout.Height(34)))
+                {
+                    try { CharacterSheetRules.AddInventory(hero, category, (string)item["name"], 1, item); changed = true; }
+                    catch (Exception error) { status = error.Message; }
+                }
+        }
+        private void RequestDelete(JToken record, string label)
+        {
+            deletePath = record.Path; deleteSignature = record.ToString(Newtonsoft.Json.Formatting.None);
+            deleteCharacter = archive.Snapshot(selected)["id"].ToString(); deleteLabel = label;
+        }
         private void Scalar(JObject owner, string key, string label, ref bool changed, JToken fallback = null)
         {
             JToken token = owner[key] ?? fallback ?? new JValue("");
@@ -187,8 +235,9 @@ namespace DndVtt.UnityPrototype
                     bool numeric = token.Type == JTokenType.Integer || token.Type == JTokenType.Float || fallback?.Type == JTokenType.Integer || fallback?.Type == JTokenType.Float;
                     if (numeric)
                     {
-                        if (double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out double number) && !double.IsNaN(number) && !double.IsInfinity(number) && number > long.MinValue && number < long.MaxValue && (token.Type != JTokenType.Integer || number == Math.Truncate(number)))
-                        { owner[key] = token.Type == JTokenType.Integer || fallback?.Type == JTokenType.Integer ? new JValue(checked((long)number)) : new JValue(number); changed = true; }
+                        bool integral = key != "count" && key != "weight" && (token.Type == JTokenType.Integer || fallback?.Type == JTokenType.Integer);
+                        if (double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out double number) && !double.IsNaN(number) && !double.IsInfinity(number) && number > long.MinValue && number < long.MaxValue && (!integral || number == Math.Truncate(number)) && (key != "count" || number > 0))
+                        { owner[key] = integral ? new JValue(checked((long)number)) : new JValue(number); changed = true; }
                         else status = "Введите число: " + label;
                     }
                     else { owner[key] = value; changed = true; }
@@ -205,10 +254,22 @@ namespace DndVtt.UnityPrototype
             {
                 string title = (rows[i] as JObject)?["name"]?.ToString() ?? (rows[i] as JObject)?["title"]?.ToString() ?? (i + 1).ToString();
                 string path = hero.Path + "/" + key + "/" + i;
-                if (GUILayout.Button((expanded.Contains(path) ? "▼ " : "▶ ") + title, GUILayout.Height(32))) { if (!expanded.Add(path)) expanded.Remove(path); }
-                if (expanded.Contains(path)) EditToken(rows[i], path, 0, ref changed);
+                if (GUILayout.Button((expanded.Contains(path) ? "▼ " : "▶ ") + title, GUILayout.Height(32)))
+                {
+                    if (!expanded.Add(path)) expanded.Remove(path);
+                    if (key == "folders" && rows[i] is JObject folder) { hero["activeFolderId"] = folder["id"]?.DeepClone(); changed = true; }
+                }
+                if (expanded.Contains(path))
+                {
+                    EditToken(rows[i], path, 0, ref changed);
+                    if (key != "classes" && GUILayout.Button("Удалить «" + title + "»…", GUILayout.Height(32))) RequestDelete(rows[i], title);
+                }
             }
-            if (GUILayout.Button("+ " + label, GUILayout.Height(32))) { rows.Add(create()); hero[key] = rows; changed = true; }
+            if (GUILayout.Button("+ " + label, GUILayout.Height(32)))
+            {
+                var record = create(); rows.Add(record); hero[key] = rows;
+                if (key == "folders") hero["activeFolderId"] = record["id"]?.DeepClone(); changed = true;
+            }
         }
         private void Tree(JObject hero, string key, string label, ref bool changed)
         {
@@ -230,7 +291,12 @@ namespace DndVtt.UnityPrototype
                 }
                 if (obj["notes"] is JArray notes && GUILayout.Button("+ Заметка")) { notes.Add(new JObject { ["id"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(), ["title"] = "Заметка", ["text"] = "" }); changed = true; }
             }
-            else if (token is JArray array) foreach (var item in array.ToArray()) EditToken(item, path + "/" + array.IndexOf(item), depth + 1, ref changed);
+            else if (token is JArray array) foreach (var item in array.ToArray())
+            {
+                EditToken(item, path + "/" + array.IndexOf(item), depth + 1, ref changed);
+                string label = (item as JObject)?["title"]?.ToString() ?? (item as JObject)?["name"]?.ToString() ?? "Запись";
+                if (GUILayout.Button("Удалить «" + label + "»…", GUILayout.Height(30))) RequestDelete(item, label);
+            }
             else GUILayout.Label(token.ToString());
         }
         private void ReadOnly(JObject hero, string key, string title)
