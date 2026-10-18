@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 4d548ffbb29f. Git содержит 1412 файлов.
+Снимок кода 7722cccc4406. Git содержит 1412 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -49,9 +49,9 @@
 | №0028 3D_CHARACTER_CLOTHING_PROGRESS.md | 85343 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0029 3D_CHARACTER_RACES_PROGRESS.md | 75939 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0030 AGENTS.md | 4945 B | документация или отчёт: AGENTS |
-| №0031 AI_BLOCKERS.md | 3859 B | документация или отчёт: AI BLOCKERS |
+| №0031 AI_BLOCKERS.md | 4155 B | документация или отчёт: AI BLOCKERS |
 | №0032 AI_NEXT_TASK.md | 4359 B | документация или отчёт: AI NEXT TASK |
-| №0033 AI_PROGRESS.md | 26706 B | документация или отчёт: AI PROGRESS |
+| №0033 AI_PROGRESS.md | 26984 B | документация или отчёт: AI PROGRESS |
 | №0034 android/.gitignore | 48 B | Android компонент: .gitignore |
 | №0035 android/app/build.gradle | 4243 B | Android компонент: build |
 | №0036 android/app/src/main/AndroidManifest.xml | 12350 B | Android компонент: AndroidManifest |
@@ -1373,7 +1373,7 @@
 | №1352 unity/ProjectSettings/VersionControlSettings.asset | 172 B | вспомогательный файл: VersionControlSettings |
 | №1353 unity/ProjectSettings/VFXManager.asset | 525 B | вспомогательный файл: VFXManager |
 | №1354 unity/README.md | 2630 B | документация или отчёт: README |
-| №1355 unity/VALIDATION.md | 5635 B | документация или отчёт: VALIDATION |
+| №1355 unity/VALIDATION.md | 5948 B | документация или отчёт: VALIDATION |
 | №1356 unity/verify.ps1 | 1931 B | вспомогательный файл: verify |
 | №1357 updates/beta.json | 222 B | метаданные обновлений: beta |
 | №1358 updates/previous-stable.json | 184759 B | метаданные обновлений: previous stable |

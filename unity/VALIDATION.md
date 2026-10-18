@@ -1,5 +1,7 @@
 # Validation — 2026-10-18, experiment/unity-vtt
 
+Source stage committed locally as `7722cccc`. Git push to `experiment/unity-vtt` waited on Git Credential Manager; the owned push process was stopped, with the commit preserved. Remote publication is not confirmed; user GitHub authentication is required before retrying. No credential configuration was changed.
+
 ## Isolation and environment
 
 - Started from clean `experiment/unity-vtt` at `4d548ffbb29f15288faa24f298858b7eef0448c5`; fetched origin/main without reset. Local main and origin/main were both that SHA. No main checkout, main push, workflow edit or release performed.

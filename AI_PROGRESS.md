@@ -1,6 +1,7 @@
 # AI progress — compact checkpoint
 
 ## 2026-10-18 — isolated Unity experiment (experiment/unity-vtt only)
+- Source stage saved locally as `7722cccc`. Push to the experimental branch waited on Git Credential Manager; stopped the owned push process tree, retained the commit, no remote success claimed. Remote authentication is the remaining publication step; do not reset local work.
 - Direct owner request overrides main-work scope for this branch: main and all existing release workflows unchanged; no release. Initial clean HEAD/main/origin-main `4d548ffb`, fetch without reset.
 - Inspected sheet/rules/combat/class state, Supabase CAS/RLS sync, map v2/world/camera/GLB/appearance modules and platform wrappers. Migration plan: `docs/UNITY_MIGRATION_PLAN.md` (C#, URP, Android/Windows, schema preservation, staged parity and release-transition risks).
 - Installed Unity `6000.3.26f1 (de8167e7440c)` verified by actual licensed batch launch. Created `unity/`, URP 17.3.0/Input System 1.20.0, saved exploration scene with controllable capsule, physics, jump, first/third cameras with obstruction, touch controls and reset. No actual profile/map/cloud migration yet.

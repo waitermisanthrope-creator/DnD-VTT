@@ -1,6 +1,7 @@
 # Active blockers / limits
 
 ## Unity experiment scope (2026-10-18)
+- Source stage is committed locally (`7722cccc`); experimental push waited on Git Credential Manager and was stopped without credential changes. Remote push is not confirmed. Authenticate GitHub locally, then push only `HEAD:refs/heads/experiment/unity-vtt`; never push this experiment to main.
 - Work only on `experiment/unity-vtt`; no existing release workflow changes or stable publication. Unity prototype does not yet import character saves, maps, game rules or cloud accounts.
 - Real Android touch/performance QA and human keyboard/mouse QA require target devices. Obtain anonymized legacy exports before designing a write-capable save migration. See `unity/VALIDATION.md` for actual build/test evidence and environment limitations.
 - Editor Snapshot export saves a valid scene PNG but crashes on exit under D3D12 and D3D11 (`-1073741819`); this check is not green. Final Windows/Android build processes and Windows runtime mechanics smoke exited 0. Optional existing map DOM test requires jsdom. Do not equate these builds with physical-device QA.

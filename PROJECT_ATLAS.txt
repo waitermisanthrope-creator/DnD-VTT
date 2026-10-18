@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 4d548ffbb29f. Файлов: 1412
+Коммит 7722cccc4406. Файлов: 1412
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -44,9 +44,9 @@
 0028. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (85343 B)
 0029. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75939 B)
 0030. AGENTS.md — документация или отчёт: AGENTS (4945 B)
-0031. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (3859 B)
+0031. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (4155 B)
 0032. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (4359 B)
-0033. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (26706 B)
+0033. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (26984 B)
 0034. android/.gitignore — Android компонент: .gitignore (48 B)
 0035. android/app/build.gradle — Android компонент: build (4243 B)
 0036. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12350 B)
@@ -1368,7 +1368,7 @@
 1352. unity/ProjectSettings/VersionControlSettings.asset — вспомогательный файл: VersionControlSettings (172 B)
 1353. unity/ProjectSettings/VFXManager.asset — вспомогательный файл: VFXManager (525 B)
 1354. unity/README.md — документация или отчёт: README (2630 B)
-1355. unity/VALIDATION.md — документация или отчёт: VALIDATION (5635 B)
+1355. unity/VALIDATION.md — документация или отчёт: VALIDATION (5948 B)
 1356. unity/verify.ps1 — вспомогательный файл: verify (1931 B)
 1357. updates/beta.json — метаданные обновлений: beta (222 B)
 1358. updates/previous-stable.json — метаданные обновлений: previous stable (184759 B)
