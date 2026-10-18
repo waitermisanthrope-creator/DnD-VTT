@@ -13,6 +13,7 @@ public static class CharacterSheetValidation
     public static void Validate()
     {
         var golden = JObject.Parse(File.ReadAllText("Assets/Vtt/Tests/sheet-contract.json")); int cases = 0;
+        ValidateWalletAndSettings(golden);
         var nullable = new LegacyCharacterArchive("{\"id\":\"nullable\",\"stats\":null,\"skillsData\":null}").Snapshot(0);
         Check(CharacterSheetRules.Modifier(nullable, "str") == 0 && CharacterSheetRules.Skill(nullable, 0) == 0, "legacy null collections");
         foreach (JObject test in (JArray)golden["cases"])
@@ -103,6 +104,38 @@ public static class CharacterSheetValidation
         }
         Debug.Log("VTT_SHEET_PASS: " + cases + " JS golden cases; 18 skills, modifiers/proficiency, single/array/wrapped editing, rollback, identity/unknown/class-state preservation, atomic save/reload/backup; 402 spells");
         Debug.Log("VTT_SHEET_RECORDS_PASS: 188 items; actual JS 5-category add/stack/remove, folder/note deletion and active selection, stale/invalid mutation rejection, 12 weight parser cases / total / capacity");
+    }
+    private static void ValidateWalletAndSettings(JObject golden)
+    {
+        int cases = 0;
+        foreach (JObject test in (JArray)golden["coinCases"])
+        {
+            var hero = (JObject)test["input"].DeepClone(); bool accepted = true;
+            try { CharacterSheetRules.ApplyCoinOperation(hero, (JObject)test["amount"], (string)test["action"], (JObject)test["rates"], (bool)test["showPp"], (bool)test["showEp"], "12:34:56"); }
+            catch (FormatException) { accepted = false; }
+            Check(accepted == (bool)test["accepted"] && JToken.DeepEquals(hero, test["expected"]), "actual JS wallet operation " + cases++);
+        }
+        var source = new LegacyCharacterArchive("{\"id\":\"wallet-atomic\",\"coins\":{\"gp\":42},\"unknown\":17}");
+        var copy = source.DetachedCopy(); var edited = copy.Snapshot(0); CharacterSheetRules.ApplyCoinOperation(edited, JObject.Parse("{gp:2}"), "sub", null, false, true, "12:34:56"); copy.Replace(0, edited);
+        Check((int)source.Snapshot(0)["coins"]["gp"] == 42 && copy.OriginalJson == source.OriginalJson, "wallet transaction is detached and retains original import");
+        var malformed = source.Snapshot(0); malformed["coinLog"] = new JObject { ["keep"] = 17 }; string before = malformed.ToString(); bool refused = false;
+        try { CharacterSheetRules.ApplyCoinOperation(malformed, JObject.Parse("{gp:1}"), "add", null, true, true, "12:34:56"); } catch (FormatException) { refused = true; }
+        Check(refused && malformed.ToString() == before, "unsupported wallet state does not mutate");
+        string directory = Path.Combine(Path.GetTempPath(), "vtt-preferences-" + Guid.NewGuid()); Directory.CreateDirectory(directory);
+        try
+        {
+            string path = Path.Combine(directory, "settings.json"); var prefs = new ClientPreferences { sensitivity = 1.75f, fieldOfView = 85, invertY = true, firstPerson = true, fps = 30, quality = "Medium" };
+            prefs.Save(path); var reload = ClientPreferences.Load(path); Check(reload.Export() == prefs.Export(), "settings save/reload");
+            prefs.fps = 60; prefs.Save(path); Check(ClientPreferences.Load(path + ".bak").fps == 30 && ClientPreferences.Load(path).fps == 60, "settings atomic backup");
+            foreach (string json in new[] { "{version:2}", "{version:1,sensitivity:0}", "{version:1,fieldOfView:200}", "{version:1,fps:31}", "{version:1,invertY:'true'}", "{version:1,sensitivity:NaN}" })
+            { refused = false; try { ClientPreferences.Parse(json); } catch (FormatException) { refused = true; } Check(refused, "invalid settings rejected " + json); }
+            prefs.sensitivity = float.NaN; refused = false; try { prefs.Save(path); } catch (FormatException) { refused = true; }
+            Check(refused && ClientPreferences.Load(path).fps == 60, "invalid preferences never replace stored settings");
+            string profile = Path.Combine(directory, "characters.json"); CharacterSheetStore.Save(profile, source); CharacterSheetStore.Save(profile, copy);
+            Check((int)CharacterSheetStore.Load(profile).Snapshot(0)["coins"]["gp"] == 40 && (int)CharacterSheetStore.Load(profile + ".bak").Snapshot(0)["coins"]["gp"] == 42, "wallet save/reload/backup");
+        }
+        finally { Directory.Delete(directory, true); }
+        Debug.Log("VTT_SETTINGS_WALLET_PASS: " + cases + " actual JS coin operations, change/rates/toggles/log cap/rejection, detached save/backup; device preferences validation/save/reload/backup");
     }
     private static void ValidateCreation(JObject catalog)
     {

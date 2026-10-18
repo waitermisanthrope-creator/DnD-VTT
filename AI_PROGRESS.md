@@ -1,5 +1,12 @@
 # AI progress — compact checkpoint
 
+## 2026-10-19 — device settings and working wallet commands
+
+- Main menu now has Settings: platform quality levels, FPS cap/vSync, mouse/touch sensitivity, invert Y, field of view and default first-person camera. Preferences use a separate validated atomic device file with .bak; isolated profile QA also isolates settings. No browser/cloud preferences or character schema change.
+- Native wallet now receives/spends real value with automatic change, custom rates and optional PP/EP; uses canonical coins/coinLog, newest-first25 history and rejects insufficient funds before mutation. Successful operations save a detached candidate archive before replacing live state; original import remains available. Main JS applyCoinOperation generates20 comparison cases, including rejection, rounding and legacy fractional balances.
+- Generic scalar-array editor now reuses typed controls, preserving numeric/boolean types. Full class/race/level-up/equipment/rest/spell execution and cloud remain open; see parity matrix. Builds/GUI results are recorded only after actual verification in unity/VALIDATION.md.
+- Verified Windows/Android builds and Windows migration smoke exit0;20 actual JS coin fixtures and preferences backup/validation passed. Native GUI spend2gp from42→4pp, reject999999gp with unchanged file hash, receive1gp→4pp+1gp; balance/history and Medium/30FPS/1.75×/invert/FOV85/first-person preferences restored after restart. Only synthetic isolated files were written. APK signature verified; no attached Android device. A first Windows startup exit1 is retained as failed, not green.
+
 ## 2026-10-19 — Unity home, roster, creation and wallet
 
 - Added native Home as startup screen, searchable character roster, four-step creation (identity/background, race/class, point buy/manual stats and choices, preview), passport and editable all-data view. Map is a separate navigation destination.

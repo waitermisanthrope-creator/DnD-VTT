@@ -21,6 +21,7 @@ namespace DndVtt.UnityPrototype
             Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
             var args = Environment.GetCommandLineArgs(); int store = Array.IndexOf(args, "--vtt-profile-store");
             if (store >= 0 && store + 1 < args.Length) profileStoreOverride = Path.GetFullPath(args[store + 1]);
+            LoadPreferences();
             if (File.Exists(SavePath))
             {
                 try { archive = CharacterSheetStore.Load(SavePath); status = "Загружен локальный лист Unity"; }

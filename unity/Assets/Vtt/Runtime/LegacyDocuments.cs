@@ -54,6 +54,7 @@ namespace DndVtt.UnityPrototype
         }
         public JObject Snapshot(int index) => (JObject)characters[index].DeepClone();
         public string Export() => document.ToString(Formatting.Indented);
+        public LegacyCharacterArchive DetachedCopy() => new LegacyCharacterArchive(Export()) { OriginalJson = OriginalJson };
         public LegacyCharacterArchive Append(JObject character)
         {
             var copy = document.DeepClone();

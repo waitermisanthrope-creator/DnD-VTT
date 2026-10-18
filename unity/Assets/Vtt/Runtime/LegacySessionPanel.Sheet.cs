@@ -45,7 +45,7 @@ namespace DndVtt.UnityPrototype
             if (GUILayout.Button("Сохранить на этом устройстве", GUILayout.Height(36))) Attempt(() => { SaveSheet(); status = "Сохранено: " + SavePath; });
             if (GUILayout.Button("Копировать изменённый JSON", GUILayout.Height(36))) { GUIUtility.systemCopyBuffer = archive.Export(); status = "Текущий архив скопирован"; }
             GUILayout.EndHorizontal();
-            JObject hero = archive.Snapshot(selected); bool changed = false;
+            JObject hero = archive.Snapshot(selected); bool changed = false, persistWallet = false;
             if (deletePath != null)
             {
                 GUILayout.Label("Удалить запись «" + deleteLabel + "» вместе с её содержимым?");
@@ -93,7 +93,7 @@ namespace DndVtt.UnityPrototype
                     GUILayout.BeginHorizontal();
                     foreach (int die in new[] { 4, 6, 8, 10, 12, 20, 100 }) if (GUILayout.Button("d" + die, GUILayout.Height(45))) Roll("d" + die, die, 0);
                     GUILayout.EndHorizontal(); GUILayout.Label(rollResult); break;
-                case 7: Wallet(hero, ref changed); break;
+                case 7: Wallet(hero, ref changed, ref persistWallet); break;
                 case 8:
                     foreach (string field in new[] { "age", "gender", "origin", "alignment", "appearance", "personality", "ideals", "bonds", "flaws", "backstory", "profession" }) Scalar(hero, field, FieldLabel(field), ref changed);
                     foreach (string field in new[] { "proficiencies", "features", "feats", "raceMechanics", "raceFeatureDescriptions", "resistances", "immunities", "craftingProfessions", "companions", "encounters", "initiativeTracker", "pendingChoices", "choiceState" }) Tree(hero, field, FieldLabel(field), ref changed);
@@ -102,7 +102,17 @@ namespace DndVtt.UnityPrototype
                     GUILayout.Label("Полный документ героя. Идентификаторы защищены. Поля без игрового обработчика сохраняются без потерь.");
                     EditToken(hero, "raw", 0, ref changed); break;
             }
-            if (changed) Attempt(() => { archive.Replace(selected, hero); status = "Лист изменён в памяти. Нажмите Сохранить для записи."; });
+            if (changed) Attempt(() =>
+            {
+                if (persistWallet)
+                {
+                    var candidate = archive.DetachedCopy(); candidate.Replace(selected, hero);
+                    CharacterSheetStore.Save(SavePath, candidate); archive = candidate; ClearSheetInputs();
+                    for (int i = 0; i < coinInput.Length; i++) coinInput[i] = "0";
+                    status = "Операция кошелька выполнена. Архив сохранён на устройстве.";
+                }
+                else { archive.Replace(selected, hero); status = "Лист изменён в памяти. Нажмите Сохранить для записи."; }
+            });
         }
         private void Hero(JObject hero, ref bool changed)
         {
@@ -300,8 +310,11 @@ namespace DndVtt.UnityPrototype
             {
                 if (item is JValue scalar)
                 {
-                    string original = scalar.ToString(); string value = GUILayout.TextField(original, GUILayout.Height(30));
-                    if (value != original) { array[array.IndexOf(item)] = value; changed = true; }
+                    // Use the same typed controls as object properties; numeric and
+                    // boolean arrays must not silently become string arrays.
+                    string key = path + "/" + array.IndexOf(item); var box = new JObject { [key] = scalar.DeepClone() }; bool edited = false;
+                    Scalar(box, key, "Значение", ref edited);
+                    if (edited) { array[array.IndexOf(item)] = box[key].DeepClone(); changed = true; }
                 }
                 else EditToken(item, path + "/" + array.IndexOf(item), depth + 1, ref changed);
                 string label = (item as JObject)?["title"]?.ToString() ?? (item as JObject)?["name"]?.ToString() ?? "Запись";

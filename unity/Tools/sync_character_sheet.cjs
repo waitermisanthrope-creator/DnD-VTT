@@ -86,9 +86,27 @@ for (const className of ['Воин', 'Волшебник', 'Плут']) {
   context.allCharacters = []; context.CharacterBuilderV2.Wizard.prototype.finishCreate.call({ values: { name: 'Creation fixture', stats: clone(baseStats), background: background.nameRu || background.name, ...answers }, className, race, choices: picks, statMode: 'manual', randomRollsLeft: 5, isNewClass: true, root: { style: {} } });
   creationCases.push({ className, raceId: race.id, background: background.nameRu || background.name, stats: baseStats, answers, expected: clone(context.allCharacters[0]) });
 }
+const coinCases = [];
+context.Date = class extends Date { constructor(...args) { super(...(args.length ? args : ['2026-10-19T12:34:56'])); } };
+function coinCase(action, showPp, showEp, rates, amount, input) {
+  const alerts = []; context.alert = message => alerts.push(message);
+  for (const key of ['cp', 'sp', 'ep', 'gp', 'pp']) elements['cc_input' + key.toUpperCase()] = { value: String(amount[key] || 0) };
+  elements.cc_togglePP = { checked: showPp }; elements.cc_toggleEP = { checked: showEp };
+  for (const [key, id] of Object.entries({ pPerG: 'cc_ratePlat', gPerE: 'cc_rateGold', sPerG: 'cc_rateSilver', cPerS: 'cc_rateCopper' })) elements[id] = { value: String(rates[key]) };
+  context.currentChar = context.currentCharacter = clone(input); context.applyCoinOperation(action);
+  coinCases.push({ action, showPp, showEp, rates, amount, input, accepted: alerts.length === 0, expected: clone(context.currentChar) });
+}
+const coinHero = { id: 'wallet', coins: { cp: 8, sp: 9, ep: 3, gp: 21, pp: 1 }, coinLog: [], unknown: { keep: 17 }, resources: { untouched: true } };
+for (const rates of [{ pPerG: 10, gPerE: 2, sPerG: 10, cPerS: 10 }, { pPerG: 5, gPerE: 3, sPerG: 7, cPerS: 11 }])
+  for (const showPp of [true, false]) for (const showEp of [true, false]) for (const action of ['add', 'sub']) coinCase(action, showPp, showEp, rates, { gp: 2, cp: 5 }, coinHero);
+const standardRates = { pPerG: 10, gPerE: 2, sPerG: 10, cPerS: 10 };
+coinCase('sub', true, true, standardRates, { gp: 100000 }, coinHero);
+coinCase('add', true, true, standardRates, {}, coinHero);
+coinCase('add', false, false, standardRates, { pp: 1, ep: 1 }, coinHero);
+coinCase('add', true, true, standardRates, { cp: 1 }, { ...coinHero, coins: { cp: .5 }, coinLog: Array.from({ length: 25 }, (_, i) => ({ time: '00:00:00', action: 'add', cp: i })) });
 const output = path.join(root, 'unity/Assets/Vtt/Resources/CharacterSheet');
 fs.mkdirSync(output, { recursive: true });
 fs.writeFileSync(path.join(output, 'catalog.json'), JSON.stringify({ sourceCommit, sources, spells, items, creation }, null, 2) + '\n');
 const tests = path.join(root, 'unity/Assets/Vtt/Tests'); fs.mkdirSync(tests, { recursive: true });
-fs.writeFileSync(path.join(tests, 'sheet-contract.json'), JSON.stringify({ sourceCommit, sources, skills: context.SKILLS_CONFIG, cases: golden, inventoryCases, weightCases, weightHero, weightTotal, folderCases, noteCase, creationCases }, null, 2) + '\n');
+fs.writeFileSync(path.join(tests, 'sheet-contract.json'), JSON.stringify({ sourceCommit, sources, skills: context.SKILLS_CONFIG, cases: golden, inventoryCases, weightCases, weightHero, weightTotal, folderCases, noteCase, creationCases, coinCases }, null, 2) + '\n');
 console.log(`SHEET_SOURCE_PASS: ${spells.length} spells; ${Object.values(items).flat().length} items; ${golden.length} actual JS formula cases; inventory/notes/weight contracts from main ${sourceCommit}`);

@@ -6305,7 +6305,7 @@
         ]
       },
       "expected": {
-        "id": "char_1792358696428",
+        "id": "char_1792360357976",
         "name": "Creation fixture",
         "age": 0,
         "level": 1,
@@ -6563,7 +6563,7 @@
         ]
       },
       "expected": {
-        "id": "char_1792358696429",
+        "id": "char_1792360357977",
         "name": "Creation fixture",
         "age": 0,
         "level": 1,
@@ -6817,7 +6817,7 @@
         ]
       },
       "expected": {
-        "id": "char_1792358696430",
+        "id": "char_1792360357977",
         "name": "Creation fixture",
         "age": 0,
         "level": 1,
@@ -7057,6 +7057,1500 @@
           "int": 11,
           "wis": 11,
           "cha": 11
+        }
+      }
+    }
+  ],
+  "coinCases": [
+    {
+      "action": "add",
+      "showPp": true,
+      "showEp": true,
+      "rates": {
+        "pPerG": 10,
+        "gPerE": 2,
+        "sPerG": 10,
+        "cPerS": 10
+      },
+      "amount": {
+        "gp": 2,
+        "cp": 5
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": true,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 3,
+          "sp": 0,
+          "ep": 1,
+          "gp": 5,
+          "pp": 3
+        },
+        "coinLog": [
+          {
+            "time": "12:34:56",
+            "action": "add",
+            "pp": 0,
+            "gp": 2,
+            "ep": 0,
+            "sp": 0,
+            "cp": 5,
+            "resultPp": 3,
+            "resultGp": 5,
+            "resultEp": 1,
+            "resultSp": 0,
+            "resultCp": 3
+          }
+        ],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "sub",
+      "showPp": true,
+      "showEp": true,
+      "rates": {
+        "pPerG": 10,
+        "gPerE": 2,
+        "sPerG": 10,
+        "cPerS": 10
+      },
+      "amount": {
+        "gp": 2,
+        "cp": 5
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": true,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 3,
+          "sp": 4,
+          "ep": 0,
+          "gp": 1,
+          "pp": 3
+        },
+        "coinLog": [
+          {
+            "time": "12:34:56",
+            "action": "sub",
+            "pp": 0,
+            "gp": 2,
+            "ep": 0,
+            "sp": 0,
+            "cp": 5,
+            "resultPp": 3,
+            "resultGp": 1,
+            "resultEp": 0,
+            "resultSp": 4,
+            "resultCp": 3
+          }
+        ],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "add",
+      "showPp": true,
+      "showEp": false,
+      "rates": {
+        "pPerG": 10,
+        "gPerE": 2,
+        "sPerG": 10,
+        "cPerS": 10
+      },
+      "amount": {
+        "gp": 2,
+        "cp": 5
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": true,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 3,
+          "sp": 5,
+          "ep": 0,
+          "gp": 5,
+          "pp": 3
+        },
+        "coinLog": [
+          {
+            "time": "12:34:56",
+            "action": "add",
+            "pp": 0,
+            "gp": 2,
+            "ep": 0,
+            "sp": 0,
+            "cp": 5,
+            "resultPp": 3,
+            "resultGp": 5,
+            "resultEp": 0,
+            "resultSp": 5,
+            "resultCp": 3
+          }
+        ],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "sub",
+      "showPp": true,
+      "showEp": false,
+      "rates": {
+        "pPerG": 10,
+        "gPerE": 2,
+        "sPerG": 10,
+        "cPerS": 10
+      },
+      "amount": {
+        "gp": 2,
+        "cp": 5
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": true,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 3,
+          "sp": 4,
+          "ep": 0,
+          "gp": 1,
+          "pp": 3
+        },
+        "coinLog": [
+          {
+            "time": "12:34:56",
+            "action": "sub",
+            "pp": 0,
+            "gp": 2,
+            "ep": 0,
+            "sp": 0,
+            "cp": 5,
+            "resultPp": 3,
+            "resultGp": 1,
+            "resultEp": 0,
+            "resultSp": 4,
+            "resultCp": 3
+          }
+        ],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "add",
+      "showPp": false,
+      "showEp": true,
+      "rates": {
+        "pPerG": 10,
+        "gPerE": 2,
+        "sPerG": 10,
+        "cPerS": 10
+      },
+      "amount": {
+        "gp": 2,
+        "cp": 5
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": true,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 3,
+          "sp": 0,
+          "ep": 1,
+          "gp": 35,
+          "pp": 0
+        },
+        "coinLog": [
+          {
+            "time": "12:34:56",
+            "action": "add",
+            "pp": 0,
+            "gp": 2,
+            "ep": 0,
+            "sp": 0,
+            "cp": 5,
+            "resultPp": 0,
+            "resultGp": 35,
+            "resultEp": 1,
+            "resultSp": 0,
+            "resultCp": 3
+          }
+        ],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "sub",
+      "showPp": false,
+      "showEp": true,
+      "rates": {
+        "pPerG": 10,
+        "gPerE": 2,
+        "sPerG": 10,
+        "cPerS": 10
+      },
+      "amount": {
+        "gp": 2,
+        "cp": 5
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": true,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 3,
+          "sp": 4,
+          "ep": 0,
+          "gp": 31,
+          "pp": 0
+        },
+        "coinLog": [
+          {
+            "time": "12:34:56",
+            "action": "sub",
+            "pp": 0,
+            "gp": 2,
+            "ep": 0,
+            "sp": 0,
+            "cp": 5,
+            "resultPp": 0,
+            "resultGp": 31,
+            "resultEp": 0,
+            "resultSp": 4,
+            "resultCp": 3
+          }
+        ],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "add",
+      "showPp": false,
+      "showEp": false,
+      "rates": {
+        "pPerG": 10,
+        "gPerE": 2,
+        "sPerG": 10,
+        "cPerS": 10
+      },
+      "amount": {
+        "gp": 2,
+        "cp": 5
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": true,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 3,
+          "sp": 5,
+          "ep": 0,
+          "gp": 35,
+          "pp": 0
+        },
+        "coinLog": [
+          {
+            "time": "12:34:56",
+            "action": "add",
+            "pp": 0,
+            "gp": 2,
+            "ep": 0,
+            "sp": 0,
+            "cp": 5,
+            "resultPp": 0,
+            "resultGp": 35,
+            "resultEp": 0,
+            "resultSp": 5,
+            "resultCp": 3
+          }
+        ],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "sub",
+      "showPp": false,
+      "showEp": false,
+      "rates": {
+        "pPerG": 10,
+        "gPerE": 2,
+        "sPerG": 10,
+        "cPerS": 10
+      },
+      "amount": {
+        "gp": 2,
+        "cp": 5
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": true,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 3,
+          "sp": 4,
+          "ep": 0,
+          "gp": 31,
+          "pp": 0
+        },
+        "coinLog": [
+          {
+            "time": "12:34:56",
+            "action": "sub",
+            "pp": 0,
+            "gp": 2,
+            "ep": 0,
+            "sp": 0,
+            "cp": 5,
+            "resultPp": 0,
+            "resultGp": 31,
+            "resultEp": 0,
+            "resultSp": 4,
+            "resultCp": 3
+          }
+        ],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "add",
+      "showPp": true,
+      "showEp": true,
+      "rates": {
+        "pPerG": 5,
+        "gPerE": 3,
+        "sPerG": 7,
+        "cPerS": 11
+      },
+      "amount": {
+        "gp": 2,
+        "cp": 5
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": true,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 10,
+          "sp": 0,
+          "ep": 1,
+          "gp": 0,
+          "pp": 6
+        },
+        "coinLog": [
+          {
+            "time": "12:34:56",
+            "action": "add",
+            "pp": 0,
+            "gp": 2,
+            "ep": 0,
+            "sp": 0,
+            "cp": 5,
+            "resultPp": 6,
+            "resultGp": 0,
+            "resultEp": 1,
+            "resultSp": 0,
+            "resultCp": 10
+          }
+        ],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "sub",
+      "showPp": true,
+      "showEp": true,
+      "rates": {
+        "pPerG": 5,
+        "gPerE": 3,
+        "sPerG": 7,
+        "cPerS": 11
+      },
+      "amount": {
+        "gp": 2,
+        "cp": 5
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": true,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 0,
+          "sp": 0,
+          "ep": 1,
+          "gp": 1,
+          "pp": 5
+        },
+        "coinLog": [
+          {
+            "time": "12:34:56",
+            "action": "sub",
+            "pp": 0,
+            "gp": 2,
+            "ep": 0,
+            "sp": 0,
+            "cp": 5,
+            "resultPp": 5,
+            "resultGp": 1,
+            "resultEp": 1,
+            "resultSp": 0,
+            "resultCp": 0
+          }
+        ],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "add",
+      "showPp": true,
+      "showEp": false,
+      "rates": {
+        "pPerG": 5,
+        "gPerE": 3,
+        "sPerG": 7,
+        "cPerS": 11
+      },
+      "amount": {
+        "gp": 2,
+        "cp": 5
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": true,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 3,
+          "sp": 3,
+          "ep": 0,
+          "gp": 0,
+          "pp": 6
+        },
+        "coinLog": [
+          {
+            "time": "12:34:56",
+            "action": "add",
+            "pp": 0,
+            "gp": 2,
+            "ep": 0,
+            "sp": 0,
+            "cp": 5,
+            "resultPp": 6,
+            "resultGp": 0,
+            "resultEp": 0,
+            "resultSp": 3,
+            "resultCp": 3
+          }
+        ],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "sub",
+      "showPp": true,
+      "showEp": false,
+      "rates": {
+        "pPerG": 5,
+        "gPerE": 3,
+        "sPerG": 7,
+        "cPerS": 11
+      },
+      "amount": {
+        "gp": 2,
+        "cp": 5
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": true,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 4,
+          "sp": 2,
+          "ep": 0,
+          "gp": 1,
+          "pp": 5
+        },
+        "coinLog": [
+          {
+            "time": "12:34:56",
+            "action": "sub",
+            "pp": 0,
+            "gp": 2,
+            "ep": 0,
+            "sp": 0,
+            "cp": 5,
+            "resultPp": 5,
+            "resultGp": 1,
+            "resultEp": 0,
+            "resultSp": 2,
+            "resultCp": 4
+          }
+        ],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "add",
+      "showPp": false,
+      "showEp": true,
+      "rates": {
+        "pPerG": 5,
+        "gPerE": 3,
+        "sPerG": 7,
+        "cPerS": 11
+      },
+      "amount": {
+        "gp": 2,
+        "cp": 5
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": true,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 10,
+          "sp": 0,
+          "ep": 1,
+          "gp": 30,
+          "pp": 0
+        },
+        "coinLog": [
+          {
+            "time": "12:34:56",
+            "action": "add",
+            "pp": 0,
+            "gp": 2,
+            "ep": 0,
+            "sp": 0,
+            "cp": 5,
+            "resultPp": 0,
+            "resultGp": 30,
+            "resultEp": 1,
+            "resultSp": 0,
+            "resultCp": 10
+          }
+        ],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "sub",
+      "showPp": false,
+      "showEp": true,
+      "rates": {
+        "pPerG": 5,
+        "gPerE": 3,
+        "sPerG": 7,
+        "cPerS": 11
+      },
+      "amount": {
+        "gp": 2,
+        "cp": 5
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": true,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 0,
+          "sp": 0,
+          "ep": 1,
+          "gp": 26,
+          "pp": 0
+        },
+        "coinLog": [
+          {
+            "time": "12:34:56",
+            "action": "sub",
+            "pp": 0,
+            "gp": 2,
+            "ep": 0,
+            "sp": 0,
+            "cp": 5,
+            "resultPp": 0,
+            "resultGp": 26,
+            "resultEp": 1,
+            "resultSp": 0,
+            "resultCp": 0
+          }
+        ],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "add",
+      "showPp": false,
+      "showEp": false,
+      "rates": {
+        "pPerG": 5,
+        "gPerE": 3,
+        "sPerG": 7,
+        "cPerS": 11
+      },
+      "amount": {
+        "gp": 2,
+        "cp": 5
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": true,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 3,
+          "sp": 3,
+          "ep": 0,
+          "gp": 30,
+          "pp": 0
+        },
+        "coinLog": [
+          {
+            "time": "12:34:56",
+            "action": "add",
+            "pp": 0,
+            "gp": 2,
+            "ep": 0,
+            "sp": 0,
+            "cp": 5,
+            "resultPp": 0,
+            "resultGp": 30,
+            "resultEp": 0,
+            "resultSp": 3,
+            "resultCp": 3
+          }
+        ],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "sub",
+      "showPp": false,
+      "showEp": false,
+      "rates": {
+        "pPerG": 5,
+        "gPerE": 3,
+        "sPerG": 7,
+        "cPerS": 11
+      },
+      "amount": {
+        "gp": 2,
+        "cp": 5
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": true,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 4,
+          "sp": 2,
+          "ep": 0,
+          "gp": 26,
+          "pp": 0
+        },
+        "coinLog": [
+          {
+            "time": "12:34:56",
+            "action": "sub",
+            "pp": 0,
+            "gp": 2,
+            "ep": 0,
+            "sp": 0,
+            "cp": 5,
+            "resultPp": 0,
+            "resultGp": 26,
+            "resultEp": 0,
+            "resultSp": 2,
+            "resultCp": 4
+          }
+        ],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "sub",
+      "showPp": true,
+      "showEp": true,
+      "rates": {
+        "pPerG": 10,
+        "gPerE": 2,
+        "sPerG": 10,
+        "cPerS": 10
+      },
+      "amount": {
+        "gp": 100000
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": false,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "add",
+      "showPp": true,
+      "showEp": true,
+      "rates": {
+        "pPerG": 10,
+        "gPerE": 2,
+        "sPerG": 10,
+        "cPerS": 10
+      },
+      "amount": {},
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": false,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "add",
+      "showPp": false,
+      "showEp": false,
+      "rates": {
+        "pPerG": 10,
+        "gPerE": 2,
+        "sPerG": 10,
+        "cPerS": 10
+      },
+      "amount": {
+        "pp": 1,
+        "ep": 1
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": false,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 8,
+          "sp": 9,
+          "ep": 3,
+          "gp": 21,
+          "pp": 1
+        },
+        "coinLog": [],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      }
+    },
+    {
+      "action": "add",
+      "showPp": true,
+      "showEp": true,
+      "rates": {
+        "pPerG": 10,
+        "gPerE": 2,
+        "sPerG": 10,
+        "cPerS": 10
+      },
+      "amount": {
+        "cp": 1
+      },
+      "input": {
+        "id": "wallet",
+        "coins": {
+          "cp": 0.5
+        },
+        "coinLog": [
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 0
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 1
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 2
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 3
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 4
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 5
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 6
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 7
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 8
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 9
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 10
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 11
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 12
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 13
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 14
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 15
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 16
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 17
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 18
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 19
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 20
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 21
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 22
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 23
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 24
+          }
+        ],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
+        }
+      },
+      "accepted": true,
+      "expected": {
+        "id": "wallet",
+        "coins": {
+          "cp": 1.5,
+          "sp": 0,
+          "ep": 0,
+          "gp": 0,
+          "pp": 0
+        },
+        "coinLog": [
+          {
+            "time": "12:34:56",
+            "action": "add",
+            "pp": 0,
+            "gp": 0,
+            "ep": 0,
+            "sp": 0,
+            "cp": 1,
+            "resultPp": 0,
+            "resultGp": 0,
+            "resultEp": 0,
+            "resultSp": 0,
+            "resultCp": 1.5
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 0
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 1
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 2
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 3
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 4
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 5
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 6
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 7
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 8
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 9
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 10
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 11
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 12
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 13
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 14
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 15
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 16
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 17
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 18
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 19
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 20
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 21
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 22
+          },
+          {
+            "time": "00:00:00",
+            "action": "add",
+            "cp": 23
+          }
+        ],
+        "unknown": {
+          "keep": 17
+        },
+        "resources": {
+          "untouched": true
         }
       }
     }

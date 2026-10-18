@@ -1,5 +1,9 @@
 # DnD VTT Unity migration client
 
+**Настройки** in the main menu controls the actual Unity quality level, FPS/vSync, look sensitivity/inversion, camera FOV and initial first-person view. Click **Применить и сохранить**; preferences load at startup from a separate `client_settings.json` (previous copy `.bak`). QA profile overrides also isolate preferences. Settings defaults only reset the draft until applied.
+
+The wallet now supports **Получить монеты** / **Потратить монеты**, automatic change, custom exchange rates, PP/EP switches and a 25-entry transaction history using main's existing fields. An operation immediately saves the archive, including pending sheet edits; insufficient funds leave it unchanged. Direct balance edits still require the ordinary Save button. This is native C# validated against actual main JS, not a complete WebView gameplay port.
+
 The client now opens **Home**. Use **Персонажи** for the searchable roster, **Создать героя** for the four-step level-one wizard, or **Продолжить** for the selected sheet. The sheet includes inventory, wallet (all five coin denominations), notes, skills, magic, passport and editable saved data. Creating a hero appends and atomically saves the archive; subsequent sheet edits need the Save button. The wizard has 57 races / 35 class records / 31 backgrounds from main; extra-body creation and full class/level-up/equipment/spell execution remain incomplete. Unsupported choices stay pending. See the parity matrix for limits.
 
 **3D-карта** enters the existing world; **Лист / меню** returns to the front end. Startup no longer captures the mouse or enters map movement. For isolated QA only, launch with `--vtt-profile-store <absolute-json-path>`; ordinary launches use the existing persistent Unity archive.

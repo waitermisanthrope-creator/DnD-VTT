@@ -11,6 +11,8 @@ namespace DndVtt.UnityPrototype
         public bool firstPerson;
         public bool acceptInput = true;
         public float speed = 4f;
+        public float lookSensitivity = 1;
+        public bool invertY;
         public Vector3 spawnPosition = new Vector3(0, .15f, -6);
         public bool showHelp = true;
         private CharacterController motor;
@@ -25,7 +27,7 @@ namespace DndVtt.UnityPrototype
         public void RequestJump() { jumpRequested = true; }
         private static void Capture(bool value) { Cursor.lockState = value ? CursorLockMode.Locked : CursorLockMode.None; Cursor.visible = !value; }
         public void SetFirstPerson(bool value) { firstPerson = value; avatar.enabled = !value; UpdateCamera(); }
-        public void Look(Vector2 delta) { yaw += delta.x; pitch = Mathf.Clamp(pitch - delta.y, -70f, 75f); transform.rotation = Quaternion.Euler(0, yaw, 0); }
+        public void Look(Vector2 delta) { delta *= lookSensitivity; yaw += delta.x; pitch = Mathf.Clamp(pitch - delta.y * (invertY ? -1 : 1), -70f, 75f); transform.rotation = Quaternion.Euler(0, yaw, 0); }
         public void ResetPosition()
         {
             if (!motor) motor = GetComponent<CharacterController>();

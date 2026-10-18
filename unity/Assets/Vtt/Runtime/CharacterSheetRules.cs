@@ -18,6 +18,60 @@ namespace DndVtt.UnityPrototype
         public static readonly string[] SkillStats = { "dex", "wis", "int", "str", "cha", "int", "wis", "cha", "int", "wis", "int", "wis", "cha", "cha", "int", "dex", "dex", "wis" };
         public static readonly string[] SkillNames = { "Акробатика", "Уход за животными", "Магия", "Атлетика", "Обман", "История", "Проницательность", "Запугивание", "Анализ", "Медицина", "Природа", "Внимательность", "Выступление", "Убеждение", "Религия", "Ловкость рук", "Скрытность", "Выживание" };
         public static readonly string[] InventoryCategories = { "weapons", "armor", "consumables", "materials", "junk" };
+        public static readonly string[] CoinKeys = { "cp", "sp", "ep", "gp", "pp" };
+        private static double CoinNumber(JToken token)
+        {
+            if (token == null || token.Type == JTokenType.Null) return 0;
+            if (!(token is JValue value) || !double.TryParse(Convert.ToString(value.Value, CultureInfo.InvariantCulture), NumberStyles.Float, CultureInfo.InvariantCulture, out double number) || double.IsNaN(number) || double.IsInfinity(number) || number < 0 || number > 9007199254740991d)
+                throw new FormatException("Некорректное количество монет");
+            return number;
+        }
+        private static JValue CoinToken(double value) => value == Math.Truncate(value) ? new JValue((long)value) : new JValue(value);
+        public static double[] CoinMultipliers(JObject rates)
+        {
+            string[] keys = { "pPerG", "gPerE", "sPerG", "cPerS" }; double[] defaults = { 10, 2, 10, 10 }, values = new double[4];
+            for (int i = 0; i < 4; i++) { values[i] = rates?[keys[i]] == null ? defaults[i] : CoinNumber(rates[keys[i]]); if (values[i] < 1 || values[i] > 10000 || values[i] != Math.Floor(values[i])) throw new FormatException("Курс должен быть целым от 1 до 10000"); }
+            double gold = values[2] * values[3], electrum = Math.Floor(gold / values[1] + .5);
+            if (electrum < 1) throw new FormatException("По этому курсу электрум стоит меньше одной медной монеты");
+            return new[] { 1d, values[3], electrum, gold, gold * values[0] };
+        }
+        public static double CoinTotal(JObject coins, JObject rates)
+        {
+            var multipliers = CoinMultipliers(rates); double total = 0;
+            for (int i = 0; i < CoinKeys.Length; i++) total += CoinNumber(coins?[CoinKeys[i]]) * multipliers[i];
+            if (total > 9007199254740991d) throw new FormatException("Сумма монет слишком велика для точного расчёта");
+            return total;
+        }
+        // app/inventory-coins.js applyCoinOperation: total value, greedy change,
+        // optional PP/EP, existing coinLog schema (newest first, at most 25).
+        public static void ApplyCoinOperation(JObject hero, JObject amount, string action, JObject rates, bool showPp, bool showEp, string time)
+        {
+            if (action != "add" && action != "sub") throw new FormatException("Неизвестная операция кошелька");
+            if (hero["coins"] != null && hero["coins"].Type != JTokenType.Null && !(hero["coins"] is JObject)) throw new FormatException("Неподдерживаемый формат кошелька");
+            if (hero["coinLog"] != null && hero["coinLog"].Type != JTokenType.Null && !(hero["coinLog"] is JArray)) throw new FormatException("Неподдерживаемый формат истории кошелька");
+            var input = new JObject();
+            foreach (string key in CoinKeys)
+            {
+                double value = (key == "pp" && !showPp) || (key == "ep" && !showEp) ? 0 : CoinNumber(amount?[key]);
+                if (value != Math.Floor(value)) throw new FormatException("Введите целое количество монет"); input[key] = CoinToken(value);
+            }
+            double delta = CoinTotal(input, rates); if (delta <= 0) throw new FormatException("Введите сумму больше нуля");
+            double balance = CoinTotal(hero["coins"] as JObject, rates) + (action == "add" ? delta : -delta);
+            if (balance < 0) throw new FormatException("Недостаточно средств для списания");
+            if (balance > 9007199254740991d) throw new FormatException("Сумма монет слишком велика для точного расчёта");
+            var multipliers = CoinMultipliers(rates); var coins = hero["coins"] is JObject old ? (JObject)old.DeepClone() : new JObject();
+            double remainder = balance;
+            for (int i = 4; i >= 0; i--)
+            {
+                bool enabled = !(i == 4 && !showPp) && !(i == 2 && !showEp);
+                double value = !enabled ? 0 : i == 0 ? remainder : Math.Floor(remainder / multipliers[i]);
+                coins[CoinKeys[i]] = CoinToken(value); if (enabled && i > 0) remainder %= multipliers[i];
+            }
+            var entry = new JObject { ["time"] = time, ["action"] = action };
+            foreach (string key in CoinKeys) { entry[key] = input[key].DeepClone(); entry["result" + char.ToUpperInvariant(key[0]) + key.Substring(1)] = coins[key].DeepClone(); }
+            var log = hero["coinLog"] is JArray prior ? (JArray)prior.DeepClone() : new JArray(); log.Insert(0, entry); while (log.Count > 25) log.RemoveAt(log.Count - 1);
+            hero["coins"] = coins; hero["coinLog"] = log;
+        }
         public static int Modifier(JObject hero, string stat)
         {
             int score = (int)LegacyJson.Number((hero["stats"] as JObject)?[stat], 10);

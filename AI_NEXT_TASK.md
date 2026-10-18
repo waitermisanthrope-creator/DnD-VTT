@@ -1,5 +1,8 @@
 # Next checkpoint
 
+## 2026-10-19 — settings and wallet continuation
+Owner requires working WebView parity, not just forms. This stage adds device settings (graphics/FPS/camera controls) and actual main wallet commands (add/spend/change/custom rates/PP+EP switches/25-entry transaction log) in native C#. Use actual JS operation fixtures to verify behaviour. Continue full class/race initialization and choice execution/level-up next; these remain incomplete. Preserve experimental branch and original release workflows. Final validation evidence: unity/VALIDATION.md.
+
 ## 2026-10-19 Unity front end checkpoint
 On experiment/unity-vtt the client now starts at Home, with character roster, four-step level-one creation, sheet/passport/all-data editing and five-denomination wallet. Blueprints/choices come from actual main Builder: 57 races, 35 class records, 31 backgrounds; extra-body classes remain import-only. Three actual JS creation projections pass in C#. Synthetic GUI creation/save/restart and 42gp wallet persistence were checked. Continue class/race choice execution, class initialization and level-up before claiming full Builder parity. Main/workflows remain untouched. Validation evidence and limitations: unity/VALIDATION.md.
 
