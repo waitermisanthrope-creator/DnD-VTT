@@ -1,5 +1,8 @@
 # Next checkpoint
 
+## Branch-specific Unity experiment (owner request 2026-10-18)
+Only on `experiment/unity-vtt`: see `docs/UNITY_MIGRATION_PLAN.md`, `unity/README.md` and `unity/VALIDATION.md`. Do not checkout/write/push main or edit existing release workflows for this experiment. Prototype is isolated from existing saves/cloud. Continue with read-only schema/map adapters after validating the exploration slice. The historical main gameplay queue below remains unchanged.
+
 1. Read this file, AI_PROGRESS.md, AI_BLOCKERS.md, AGENTS.md; fetch origin/main without resetting local work. Inspect divergence and unpushed artifacts/branches before edits.
 2. Read live Issue #9 and last Actions conclusions. Use targeted PROJECT_ATLAS lookup, then actual source. Do not reread megabyte guides wholesale.
 3. Highest gameplay priority: complete Предсказатель; canonical subclasses Шулер, Оракул, Ткач Судьбы. Current effect implementation is 76/78, not a complete class. Locate the 2 unfinished effects in `docs/PREDICTOR_APPROVED_CARD_STATUS.md`. Implement a small coherent batch with real combat/inventory/UI integrations and transactional/no-double-spend tests. Never substitute a descriptive success for an effect.

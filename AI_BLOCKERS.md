@@ -1,5 +1,10 @@
 # Active blockers / limits
 
+## Unity experiment scope (2026-10-18)
+- Work only on `experiment/unity-vtt`; no existing release workflow changes or stable publication. Unity prototype does not yet import character saves, maps, game rules or cloud accounts.
+- Real Android touch/performance QA and human keyboard/mouse QA require target devices. Obtain anonymized legacy exports before designing a write-capable save migration. See `unity/VALIDATION.md` for actual build/test evidence and environment limitations.
+- Editor Snapshot export saves a valid scene PNG but crashes on exit under D3D12 and D3D11 (`-1073741819`); this check is not green. Final Windows/Android build processes and Windows runtime mechanics smoke exited 0. Optional existing map DOM test requires jsdom. Do not equate these builds with physical-device QA.
+
 - **Continuous model execution:** no Scheduled Tasks agent tool exposed in this session. ChatGPT login works only in this managed environment; fresh GitHub runners do not inherit it. Prepared official Codex Action requires separately authorized API credentials. OPENAI_API_KEY absent here; paid runs remain disabled. Do not export managed auth files or silently enable billing. Hourly regression monitoring can run without model authorization.
 - **Active environment API network:** GitHub Git transport and website work; api.github.com returns proxy 403. Domain addition saved in environment draft; owner must save/publish the environment for later sessions. This is distinct from GitHub runner networking. Until effective, gh dispatch/run API queries cannot be verified here; check public Actions pages and push-triggered runs.
 - **Quota:** gate supports timed cooldown and separate weekly/billing categories. CLI failure may omit a machine-readable cause; unknown failures get one-hour cooldown. Inspect Actions logs and set retry_after/quota_scope appropriately for an actual weekly cap. No quota bypass or repeated attempts within a run.

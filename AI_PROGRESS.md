@@ -1,5 +1,13 @@
 # AI progress — compact checkpoint
 
+## 2026-10-18 — isolated Unity experiment (experiment/unity-vtt only)
+- Direct owner request overrides main-work scope for this branch: main and all existing release workflows unchanged; no release. Initial clean HEAD/main/origin-main `4d548ffb`, fetch without reset.
+- Inspected sheet/rules/combat/class state, Supabase CAS/RLS sync, map v2/world/camera/GLB/appearance modules and platform wrappers. Migration plan: `docs/UNITY_MIGRATION_PLAN.md` (C#, URP, Android/Windows, schema preservation, staged parity and release-transition risks).
+- Installed Unity `6000.3.26f1 (de8167e7440c)` verified by actual licensed batch launch. Created `unity/`, URP 17.3.0/Input System 1.20.0, saved exploration scene with controllable capsule, physics, jump, first/third cameras with obstruction, touch controls and reset. No actual profile/map/cloud migration yet.
+- Actual Windows dev build + built-player smoke PASS; Android ARM64 IL2CPP dev APK build PASS, apksigner verifies Android Debug certificate, experimental app ID/min26/target36 confirmed by aapt. No Android device attached, no install/device QA. Existing JS gate 34/34 PASS; map world/stairs PASS; optional map DOM test blocked by absent jsdom.
+- Scene PNG rendered and viewed, but Editor Snapshot command crashes on exit under D3D12 and D3D11; it remains a failed check. Initial input-backend setup also crashed on exit; fresh setup passed. Initial runtime fall fixture failure corrected, final runtime smoke exit 0. Hidden-player optional screenshot failed; separate Editor PNG is not a player screenshot. Details/commands/hashes: `unity/VALIDATION.md`.
+- Next experiment checkpoint: diagnose Editor snapshot exit crash; manual Windows/Android controls QA; anonymized export fixtures and read-only map/profile adapters. Main Tarot queue below is unchanged and still incomplete.
+
 ## 2026-10-16 — preserved previous sessions
 - Code checkpoint: `73a299ce2f6f61dce66ee65d0098e52fd335b17c`; merged remote atlas/instructions without overwriting: `c34f025bfbc34231ba8deb23a2e7c1f4be228db8`, pushed to main.
 - Predictor: two decks, hand/discard/rest/resource accounting, Trickster wagers, 60/78 executable Tarot effects, UI and existing character/cloud serialization preserved. Full class and subclasses NOT complete. See `docs/PREDICTOR_APPROVED_CARD_STATUS.md` and `docs/PREDICTOR_CLASS_SPEC.md` (locate exact spec via atlas if renamed).
