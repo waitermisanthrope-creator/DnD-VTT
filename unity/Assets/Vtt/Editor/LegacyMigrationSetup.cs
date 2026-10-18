@@ -19,6 +19,7 @@ public static class LegacyMigrationSetup
     [MenuItem("DnD VTT/Migration/Validate data contracts")]
     public static void ValidateContracts()
     {
+        CharacterSheetValidation.Validate();
         var previousCulture = System.Globalization.CultureInfo.CurrentCulture;
         try
         {

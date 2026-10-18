@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DndVtt.UnityPrototype
 {
-    public sealed class LegacySessionPanel : MonoBehaviour
+    public sealed partial class LegacySessionPanel : MonoBehaviour
     {
         public LegacyMapPresenter world;
         private LegacyCharacterArchive archive;
@@ -12,9 +12,15 @@ namespace DndVtt.UnityPrototype
         private bool panel;
         private string input = "", status = "Профиль не загружен";
         private Vector2 scroll;
+        public string SavePath => Path.Combine(Application.persistentDataPath, "dnd_multi_characters_v2.json");
         private void Start()
         {
             world.explorer.showHelp = false;
+            if (File.Exists(SavePath))
+            {
+                try { archive = CharacterSheetStore.Load(SavePath); status = "Загружен локальный лист Unity"; }
+                catch (Exception e) { status = "Сохранение не загружено; файл оставлен без изменений: " + e.Message; }
+            }
             var args = Environment.GetCommandLineArgs(); int index = Array.IndexOf(args, "--vtt-character");
             if (index >= 0 && index + 1 < args.Length)
             {
@@ -24,11 +30,13 @@ namespace DndVtt.UnityPrototype
         }
         public bool Import(string json)
         {
-            try { var candidate = new LegacyCharacterArchive(json); archive = candidate; selected = 0; status = "Прочитано профилей: " + archive.Count + ". Исходные файлы не изменены."; return true; }
+            try { var candidate = new LegacyCharacterArchive(json); archive = candidate; selected = 0; ClearSheetInputs(); status = "Импортировано профилей: " + archive.Count + ". Для записи нажмите Сохранить."; return true; }
             catch (Exception error) { status = "Импорт отклонён: " + error.Message; return false; }
         }
         public string CurrentName => archive == null ? "Исследователь" : archive.Name(selected);
         public string ExportOriginal() => archive?.OriginalJson;
+        public string ExportCurrent() => archive?.Export();
+        public void SaveSheet() { CharacterSheetStore.Save(SavePath, archive ?? throw new InvalidOperationException("Нет персонажа")); }
         private void Toggle()
         {
             panel = !panel; world.explorer.acceptInput = !panel;
@@ -45,10 +53,17 @@ namespace DndVtt.UnityPrototype
             if (GUI.Button(new Rect(Screen.width - 215, 20, 95, 52), "Камера")) world.explorer.SetFirstPerson(!world.explorer.firstPerson);
             if (GUI.Button(new Rect(Screen.width - 110, 20, 90, 52), "Прыжок")) world.explorer.RequestJump();
             if (!panel) return;
-            var area = new Rect(20, 110, Mathf.Min(700, Screen.width - 40), Screen.height - 130);
-            GUI.Box(area, "Карты и импорт листа персонажа");
+            var area = new Rect(20, 110, Screen.width - 40, Screen.height - 130);
+            var oldColor = GUI.color; GUI.color = new Color(.07f, .08f, .1f, .97f);
+            GUI.DrawTexture(area, Texture2D.whiteTexture); GUI.color = oldColor;
+            GUI.Box(area, "Лист персонажа — эксперимент Unity");
             GUILayout.BeginArea(new Rect(area.x + 15, area.y + 30, area.width - 30, area.height - 40));
             scroll = GUILayout.BeginScrollView(scroll);
+            DrawSheet();
+            GUILayout.Label(status); GUILayout.EndScrollView(); GUILayout.EndArea();
+        }
+        private void DrawImportAndMap()
+        {
             GUILayout.Label("Выбор карты (модели полностью подключены для таверны):");
             for (int i = 0; i < world.catalog.maps.Length; i++)
             {
@@ -59,16 +74,14 @@ namespace DndVtt.UnityPrototype
             GUILayout.EndHorizontal();
             GUILayout.Label("Моделей: " + world.ImportedModels + "; заменителей: " + world.MissingModels + ". Закрытые двери/окна пока блокируют путь; боевые правила и туман ещё не перенесены.");
             if (!string.IsNullOrEmpty(world.Error)) GUILayout.Label(world.Error);
-            GUILayout.Label("Вставьте экспорт JSON персонажа / массива / characters. Только чтение:");
+            GUILayout.Label("Вставьте экспорт JSON персонажа / массива / characters:");
             input = GUILayout.TextArea(input, GUILayout.Height(110));
             if (GUILayout.Button("Прочитать JSON", GUILayout.Height(35))) Import(input);
             if (archive != null)
             {
-                for (int i = 0; i < archive.Count; i++) { int index = i; if (GUILayout.Button(archive.Name(i))) selected = index; }
+                for (int i = 0; i < archive.Count; i++) { int index = i; if (GUILayout.Button(archive.Name(i))) { selected = index; ClearSheetInputs(); } }
                 if (GUILayout.Button("Копировать исходный JSON без изменений")) GUIUtility.systemCopyBuffer = archive.OriginalJson;
-                GUILayout.Label("Это просмотр листа; ресурсы/инвентарь/эффекты сохранены в JSON, но ещё не исполняются C#-правилами.");
             }
-            GUILayout.Label(status); GUILayout.EndScrollView(); GUILayout.EndArea();
         }
     }
 }

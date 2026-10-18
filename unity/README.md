@@ -4,7 +4,7 @@ Start scene: **`Assets/Vtt/Scenes/ImportedAdventure.unity`** in `C:\Projects\DnD
 
 In Play Mode: click the world for mouse capture; WASD/mouse, V camera, Space jump, Esc releases cursor, R returns to the current floor entrance. **Карта / лист** opens map/floor selection and character JSON import. On touch devices drag left/right for movement/look; toolbar provides camera/jump. Floor buttons explicitly move to a safe entry on that floor; they do not simulate a stair transition.
 
-Character import accepts an existing single-character export, an array, or a `{characters:[...]}` wrapper. It displays name/current/max/temp HP and retains the **entire original JSON**, including unknown fields, resources, inventory and pending effects. Import is read-only; it does not change web saves, cloud data, source files or schema version. The original JSON can be copied back. Rejecting an import keeps the previous profile. Real cloud sync, combat/class execution and inventory interactions are not ported yet.
+Character import accepts a single export, an array, or a `{characters:[...]}` wrapper. **Карта / лист** now opens native C# sheet tabs: hero, skills/saves, abilities/spells, inventory, notes and dice. Edit the base fields, add inventory entries/folders/notes/spells, search the 402-spell main catalogue, roll basic checks and manually track slots. **Сохранить на этом устройстве** writes a separate Unity archive at `Application.persistentDataPath/dnd_multi_characters_v2.json` (previous valid file in `.bak`); it loads at next startup. **Копировать изменённый JSON** exports the entire edited archive with unknown fields/wrapper/other characters preserved. Original import export remains separate. Failed imports/validated edits retain the previous valid document. This is an incomplete sheet port: class/equipment/rest/spell execution, creation/level-up wizard, crafting, lore/bestiary and cloud still require migration. Exact parity matrix: `../docs/UNITY_CHARACTER_SHEET_PARITY.md`.
 
 Nine existing maps are selectable. Model coverage is complete for the tavern's model references; other maps show explicit placeholders for models outside the current packaged catalog. Walls/floors/diagonals, static open portal state, point lights and stair geometry are projected from map v2. Closed doors/windows are blocking proxies: interaction rules, fog/LOS, loot, token authority and stair routing remain for later stages. One map coordinate unit maps to one Unity unit; no combat-speed/feet conversion is inferred from realtime physics.
 
@@ -14,6 +14,7 @@ Reproduce from PowerShell with Git/Node in PATH (close this project's Editor bef
 
 ```powershell
 node unity/Tools/sync_legacy_content.cjs
+node unity/Tools/sync_character_sheet.cjs
 ./unity/verify.ps1 -Stage MigrationSetup
 ./unity/verify.ps1 -Stage MigrationContracts
 ./unity/verify.ps1 -Stage MigrationWindows
@@ -21,7 +22,7 @@ node unity/Tools/sync_legacy_content.cjs
 ./unity/verify.ps1 -Stage MigrationAndroid
 ```
 
-`MigrationSetup` regenerates the imported scene; save/backup hand edits before using it. New development outputs are `Builds/WindowsMigration/DndVtt.exe` (keep the whole folder) and `Builds/AndroidMigration/DndVtt-experiment.apk`. `--vtt-character <path>` can read a local export at player startup. No save or network write occurs. `--vtt-migration-smoke` runs the imported-tavern/runtime/import checks and exits with an explicit PASS marker or failure code. Reports are in ignored `TestResults/`; see `VALIDATION.md` for observed results.
+`MigrationSetup` regenerates the imported scene; save/backup hand edits before using it. New development outputs are `Builds/WindowsMigration/DndVtt.exe` (keep the whole folder) and `Builds/AndroidMigration/DndVtt-experiment.apk`. `--vtt-character <path>` imports a local export at startup; save requires an explicit button. No network write occurs. `--vtt-migration-smoke` runs imported-tavern/runtime/import checks and exits with an explicit PASS marker or failure code. Reports are in ignored `TestResults/`; see `VALIDATION.md` for observed results. Character formula/save tests also run during MigrationContracts and both migration builds.
 
 ## Original controller room
 

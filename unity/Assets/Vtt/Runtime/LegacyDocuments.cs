@@ -49,9 +49,24 @@ namespace DndVtt.UnityPrototype
                 float version = LegacyJson.Number(character["schemaVersion"], 1);
                 if (version < 1 || version > 3 || version != Math.Floor(version)) throw new FormatException("Unsupported character schema version");
                 Health(character, false); Health(character, true); TempHealth(character);
+                CharacterSheetRules.Validate(character);
             }
         }
         public JObject Snapshot(int index) => (JObject)characters[index].DeepClone();
+        public string Export() => document.ToString(Formatting.Indented);
+        // Validate a detached candidate before touching the live archive. Wrapper,
+        // identity and fields unknown to this client retain their original types.
+        public void Replace(int index, JObject candidate)
+        {
+            if (!JToken.DeepEquals(candidate["id"], characters[index]["id"])) throw new FormatException("Character identity cannot change");
+            var checkedCharacter = new LegacyCharacterArchive(candidate.ToString(Formatting.None)).Snapshot(0);
+            var old = characters[index];
+            if (ReferenceEquals(document, old))
+            {
+                old.RemoveAll(); foreach (var property in checkedCharacter.Properties().ToList()) old.Add(property.Name, property.Value.DeepClone());
+            }
+            else { old.Replace(checkedCharacter); characters[index] = checkedCharacter; }
+        }
         public string Name(int index) => (string)characters[index]["name"] ?? "Без имени";
         public float CurrentHp(int index) => Health(characters[index], false);
         public float MaximumHp(int index) => Health(characters[index], true);

@@ -1,0 +1,258 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using Newtonsoft.Json.Linq;
+using UnityEngine;
+
+namespace DndVtt.UnityPrototype
+{
+    public sealed partial class LegacySessionPanel
+    {
+        private int sheetTab;
+        private readonly Dictionary<string, string> edits = new Dictionary<string, string>();
+        private readonly HashSet<string> expanded = new HashSet<string>();
+        private string rollResult = "Выберите кубик или проверку";
+        private string spellSearch = "";
+        private JArray spellCatalog;
+        private readonly string[] tabs = { "Герой", "Навыки", "Способности", "Инвентарь", "Заметки", "Дайсы", "Данные / карты" };
+        private void ClearSheetInputs() { edits.Clear(); expanded.Clear(); }
+        private void Attempt(Action action)
+        {
+            try { action(); } catch (Exception error) { status = error.Message; }
+        }
+        private void DrawSheet()
+        {
+            int next = GUILayout.SelectionGrid(sheetTab, tabs, Screen.width < 900 ? 3 : 7, GUILayout.Height(Screen.width < 900 ? 96 : 40));
+            if (next != sheetTab) { sheetTab = next; GUI.FocusControl(null); }
+            if (archive == null)
+            {
+                GUILayout.Label("Импортируйте своего персонажа во вкладке Данные / карты или создайте пустой лист.");
+                if (GUILayout.Button("Новый персонаж", GUILayout.Height(40))) Import("{\"id\":\"" + Guid.NewGuid() + "\",\"schemaVersion\":3,\"name\":\"Новый герой\",\"level\":1,\"hpMax\":10,\"hpCurrent\":10,\"hpTemp\":0,\"stats\":{\"str\":10,\"dex\":10,\"con\":10,\"int\":10,\"wis\":10,\"cha\":10}}");
+                DrawImportAndMap(); return;
+            }
+            GUILayout.BeginHorizontal();
+            for (int i = 0; i < archive.Count; i++)
+                if (GUILayout.Button((selected == i ? "● " : "") + archive.Name(i), GUILayout.Height(34))) { selected = i; ClearSheetInputs(); }
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Сохранить на этом устройстве", GUILayout.Height(36))) Attempt(() => { SaveSheet(); status = "Сохранено: " + SavePath; });
+            if (GUILayout.Button("Копировать изменённый JSON", GUILayout.Height(36))) { GUIUtility.systemCopyBuffer = archive.Export(); status = "Текущий архив скопирован"; }
+            GUILayout.EndHorizontal();
+            JObject hero = archive.Snapshot(selected); bool changed = false;
+            switch (sheetTab)
+            {
+                case 0: Hero(hero, ref changed); break;
+                case 1: Skills(hero, ref changed); break;
+                case 2:
+                    GUILayout.Label("Редактор записей. Автоматическое исполнение классовых эффектов и расход действий ещё переносится.");
+                    Scalar(hero, "spellStat", "Характеристика заклинаний", ref changed, "int");
+                    string stat = (string)hero["spellStat"] ?? "int";
+                    int attack = CharacterSheetRules.Modifier(hero, stat) + CharacterSheetRules.Proficiency(hero);
+                    GUILayout.Label("Базовая СЛ заклинаний: " + (8 + attack) + " · атака: " + Signed(attack));
+                    Collection(hero, "combatAbilities", "Приёмы", () => new JObject { ["id"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(), ["name"] = "Новый приём", ["description"] = "", ["rechargeOn"] = "none", ["maxUses"] = 0, ["usedCount"] = 0 }, ref changed);
+                    Collection(hero, "spellsData", "Заклинания и фокусы", () => new JObject { ["id"] = Guid.NewGuid().ToString(), ["name"] = "Новое заклинание", ["level"] = 0, ["desc"] = "", ["prepared"] = false }, ref changed);
+                    SpellSlots(hero, ref changed);
+                    SpellCatalog(hero, ref changed);
+                    Tree(hero, "resources", "Ресурсы — ручной учёт", ref changed);
+                    ReadOnly(hero, "classFeaturesState", "Состояние классовых эффектов"); break;
+                case 3:
+                    GUILayout.Label("Предметы и количество редактируются; автоматический КД, атаки, крафт и применение расходников ещё переносится.");
+                    if (hero["inventory"] is JArray) { ReadOnly(hero, "inventory", "Унаследованный инвентарь (массив)"); break; }
+                    var inventory = hero["inventory"] as JObject ?? new JObject();
+                    string[] categories = { "weapons", "armor", "consumables", "materials", "junk" };
+                    string[] names = { "Оружие", "Броня", "Расходники", "Материалы", "Хлам" };
+                    for (int i = 0; i < categories.Length; i++) Collection(inventory, categories[i], names[i], () => new JObject { ["name"] = "Новый предмет", ["count"] = 1, ["weight"] = 0, ["equipped"] = false }, ref changed);
+                    if (changed) hero["inventory"] = inventory;
+                    Tree(hero, "coins", "Монеты", ref changed); break;
+                case 4:
+                    Collection(hero, "folders", "Папки заметок", () => new JObject { ["id"] = "f_" + Guid.NewGuid(), ["name"] = "Новая папка", ["notes"] = new JArray() }, ref changed); break;
+                case 5:
+                    GUILayout.BeginHorizontal();
+                    foreach (int die in new[] { 4, 6, 8, 10, 12, 20, 100 }) if (GUILayout.Button("d" + die, GUILayout.Height(45))) Roll("d" + die, die, 0);
+                    GUILayout.EndHorizontal(); GUILayout.Label(rollResult); break;
+                default:
+                    DrawImportAndMap();
+                    GUILayout.Label("Все данные выбранного персонажа (включая неисполняемые поля):");
+                    ReadOnlyToken(hero, "raw", 0); break;
+            }
+            if (changed) Attempt(() => { archive.Replace(selected, hero); status = "Лист изменён в памяти. Нажмите Сохранить для записи."; });
+        }
+        private void Hero(JObject hero, ref bool changed)
+        {
+            string priorClass = (string)hero["class"];
+            foreach (var field in new[] { ("name", "Имя"), ("class", "Класс"), ("raceName", "Раса"), ("background", "Предыстория"), ("speed", "Скорость"), ("hitDice", "Кости хитов") }) Scalar(hero, field.Item1, field.Item2, ref changed, field.Item1 == "class" ? hero["className"] : null);
+            if ((string)hero["class"] != priorClass) hero["className"] = hero["class"]?.DeepClone();
+            foreach (var field in new[] { ("level", "Уровень"), ("ac", "Класс доспеха"), ("hpMax", "Максимум HP"), ("hpCurrent", "Текущие HP"), ("hpTemp", "Временные HP") })
+            {
+                JToken fallback = field.Item1 == "hpCurrent" ? archive.CurrentHp(selected) : field.Item1 == "hpMax" ? archive.MaximumHp(selected) : field.Item1 == "hpTemp" ? archive.TemporaryHp(selected) : field.Item1 == "level" ? 1 : 10;
+                Scalar(hero, field.Item1, field.Item2, ref changed, fallback);
+            }
+            Collection(hero, "classes", "Мультикласс", () => new JObject { ["name"] = "Класс", ["level"] = 1, ["subclass"] = "" }, ref changed);
+            var stats = hero["stats"] as JObject ?? new JObject();
+            for (int i = 0; i < CharacterSheetRules.Stats.Length; i++)
+            {
+                string stat = CharacterSheetRules.Stats[i]; Scalar(stats, stat, CharacterSheetRules.StatNames[i], ref changed, 10);
+                GUILayout.Label("Модификатор " + stat + ": " + Signed(CharacterSheetRules.Modifier(new JObject { ["stats"] = stats.DeepClone() }, stat)));
+            }
+            if (changed) { hero["stats"] = stats; Attempt(() => CharacterSheetRules.Recalculate(hero)); }
+            GUILayout.Label("Бонус мастерства: " + Signed(CharacterSheetRules.Proficiency(hero)) + " · базовая инициатива: " + Signed(CharacterSheetRules.Modifier(hero, "dex")));
+            if (GUILayout.Button("Бросить инициативу", GUILayout.Height(36))) Roll("Инициатива", 20, CharacterSheetRules.Modifier(hero, "dex"));
+            GUILayout.Label(rollResult);
+            ReadOnly(hero, "activeConditions", "Активные состояния (автоматические эффекты ещё переносятся)");
+            ReadOnly(hero, "conditions", "Унаследованные состояния");
+            ReadOnly(hero, "companions", "Компаньоны"); ReadOnly(hero, "initiativeTracker", "Бой / инициатива");
+        }
+        private void Skills(JObject hero, ref bool changed)
+        {
+            var skills = hero["skillsData"] as JObject ?? new JObject();
+            var saves = hero["savesData"] as JObject ?? new JObject();
+            GUILayout.Label("Базовые формулы main: характеристика + владение × мастерство. Классовые бонусы ещё не исполняются.");
+            for (int i = 0; i < CharacterSheetRules.SkillIds.Length; i++)
+            {
+                string key = CharacterSheetRules.SkillIds[i]; int old = (int)LegacyJson.Number(skills[key], 0);
+                GUILayout.BeginHorizontal(); GUILayout.Label(CharacterSheetRules.SkillNames[i], GUILayout.Width(200));
+                int value = GUILayout.SelectionGrid(old, new[] { "—", "Владение", "Эксперт" }, 3);
+                if (value != old) { skills[key] = value; hero["skillsData"] = skills; CharacterSheetRules.Recalculate(hero); changed = true; }
+                int total = CharacterSheetRules.Skill(hero, i);
+                if (GUILayout.Button(Signed(total) + " · бросок", GUILayout.Width(140))) Roll(CharacterSheetRules.SkillNames[i], 20, total);
+                GUILayout.EndHorizontal();
+            }
+            for (int i = 0; i < CharacterSheetRules.Stats.Length; i++)
+            {
+                string key = CharacterSheetRules.Stats[i]; bool old = (bool?)saves[key] ?? false;
+                bool value = GUILayout.Toggle(old, "Спасбросок: " + CharacterSheetRules.StatNames[i]);
+                if (value != old) { saves[key] = value; hero["savesData"] = saves; changed = true; }
+                if (GUILayout.Button("Бросок " + key)) Roll("Спасбросок " + key, 20, CharacterSheetRules.Modifier(hero, key) + (value ? CharacterSheetRules.Proficiency(hero) : 0));
+            }
+            GUILayout.Label("Пассивно: Внимательность " + (10 + CharacterSheetRules.Skill(hero, 11)) + " · Анализ " + (10 + CharacterSheetRules.Skill(hero, 8)) + " · Проницательность " + (10 + CharacterSheetRules.Skill(hero, 6)));
+            GUILayout.Label(rollResult);
+        }
+        private void Roll(string label, int sides, int modifier) { int die = UnityEngine.Random.Range(1, sides + 1); rollResult = label + ": " + die + " " + Signed(modifier) + " = " + (die + modifier); }
+        private void SpellSlots(JObject hero, ref bool changed)
+        {
+            GUILayout.Label("Ячейки: ручной учёт максимум / использовано. Прогрессия класса ещё переносится.");
+            var slots = hero["spellSlotsData"] as JObject ?? new JObject();
+            for (int i = 1; i <= 9; i++)
+            {
+                string key = i.ToString(); var level = slots[key] as JObject ?? new JObject(); bool edit = false;
+                GUILayout.Label("Круг " + i);
+                Scalar(level, "max", "Круг " + i + " максимум", ref edit, 0); Scalar(level, "used", "Круг " + i + " использовано", ref edit, 0);
+                if (edit)
+                {
+                    float max = LegacyJson.Number(level["max"]), used = LegacyJson.Number(level["used"]);
+                    if (max < 0 || used < 0 || used > max) { status = "Ячейки: требуется 0 ≤ использовано ≤ максимум"; continue; }
+                    slots[key] = level; hero["spellSlotsData"] = slots; changed = true;
+                }
+            }
+        }
+        private void SpellCatalog(JObject hero, ref bool changed)
+        {
+            if (spellCatalog == null)
+            {
+                var asset = Resources.Load<TextAsset>("CharacterSheet/catalog");
+                if (!asset) { GUILayout.Label("Справочник заклинаний не найден"); return; }
+                spellCatalog = (JArray)JObject.Parse(asset.text)["spells"];
+            }
+            GUILayout.Label("Справочник main: " + spellCatalog.Count + " заклинания. Поиск по названию:");
+            spellSearch = GUILayout.TextField(spellSearch, GUILayout.Height(32));
+            if (spellSearch.Trim().Length < 2) return;
+            var matches = spellCatalog.OfType<JObject>().Where(s => ((string)s["name"] ?? "").IndexOf(spellSearch, StringComparison.OrdinalIgnoreCase) >= 0).Take(30);
+            foreach (var spell in matches)
+                if (GUILayout.Button("+ " + spell["name"] + " · круг " + spell["level"], GUILayout.Height(34)))
+                {
+                    var entry = (JObject)spell.DeepClone(); entry["id"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(); entry["desc"] = spell["description"] ?? spell["desc"] ?? ""; entry["prepared"] = false;
+                    CharacterSheetRules.Array(hero, "spellsData").Add(entry); changed = true;
+                }
+        }
+        private static string Signed(int n) => n >= 0 ? "+" + n : n.ToString();
+        private void Scalar(JObject owner, string key, string label, ref bool changed, JToken fallback = null)
+        {
+            JToken token = owner[key] ?? fallback ?? new JValue("");
+            if (token is JContainer) { Tree(owner, key, label, ref changed); return; }
+            string path = owner.Path + "/" + label + "/" + key;
+            GUILayout.BeginHorizontal(); GUILayout.Label(label, GUILayout.Width(200));
+            if (token.Type == JTokenType.Boolean)
+            {
+                bool old = (bool)token, value = GUILayout.Toggle(old, ""); if (old != value) { owner[key] = value; changed = true; }
+            }
+            else
+            {
+                string original = token.Type == JTokenType.Null ? "" : Convert.ToString(((JValue)token).Value, CultureInfo.InvariantCulture);
+                if (!edits.TryGetValue(path, out string text)) text = original;
+                string value = key == "text" || key == "desc" || key == "description"
+                    ? GUILayout.TextArea(text, GUILayout.MinHeight(90)) : GUILayout.TextField(text, GUILayout.MinHeight(30)); edits[path] = value;
+                if (value != text)
+                {
+                    bool numeric = token.Type == JTokenType.Integer || token.Type == JTokenType.Float || fallback?.Type == JTokenType.Integer || fallback?.Type == JTokenType.Float;
+                    if (numeric)
+                    {
+                        if (double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out double number) && !double.IsNaN(number) && !double.IsInfinity(number) && number > long.MinValue && number < long.MaxValue && (token.Type != JTokenType.Integer || number == Math.Truncate(number)))
+                        { owner[key] = token.Type == JTokenType.Integer || fallback?.Type == JTokenType.Integer ? new JValue(checked((long)number)) : new JValue(number); changed = true; }
+                        else status = "Введите число: " + label;
+                    }
+                    else { owner[key] = value; changed = true; }
+                }
+            }
+            GUILayout.EndHorizontal();
+        }
+        private void Collection(JObject hero, string key, string label, Func<JObject> create, ref bool changed)
+        {
+            GUILayout.Label(label);
+            if (hero[key] != null && !(hero[key] is JArray)) { ReadOnly(hero, key, "Нестандартный формат"); return; }
+            var rows = hero[key] as JArray ?? new JArray();
+            for (int i = 0; i < rows.Count; i++)
+            {
+                string title = (rows[i] as JObject)?["name"]?.ToString() ?? (rows[i] as JObject)?["title"]?.ToString() ?? (i + 1).ToString();
+                string path = hero.Path + "/" + key + "/" + i;
+                if (GUILayout.Button((expanded.Contains(path) ? "▼ " : "▶ ") + title, GUILayout.Height(32))) { if (!expanded.Add(path)) expanded.Remove(path); }
+                if (expanded.Contains(path)) EditToken(rows[i], path, 0, ref changed);
+            }
+            if (GUILayout.Button("+ " + label, GUILayout.Height(32))) { rows.Add(create()); hero[key] = rows; changed = true; }
+        }
+        private void Tree(JObject hero, string key, string label, ref bool changed)
+        {
+            if (hero[key] == null) return;
+            string path = hero.Path + "/" + key;
+            if (GUILayout.Button((expanded.Contains(path) ? "▼ " : "▶ ") + label, GUILayout.Height(32))) { if (!expanded.Add(path)) expanded.Remove(path); }
+            if (expanded.Contains(path)) EditToken(hero[key], path, 0, ref changed);
+        }
+        private void EditToken(JToken token, string path, int depth, ref bool changed)
+        {
+            if (depth > 16) { GUILayout.Label("Вложенные данные доступны в полном экспорте"); return; }
+            if (token is JObject obj)
+            {
+                foreach (var property in obj.Properties().ToArray())
+                {
+                    if (property.Name == "id" || property.Name.EndsWith("Id", StringComparison.Ordinal)) continue;
+                    if (property.Value is JContainer) { GUILayout.Label(FieldLabel(property.Name)); EditToken(property.Value, path + "/" + property.Name, depth + 1, ref changed); }
+                    else Scalar(obj, property.Name, FieldLabel(property.Name), ref changed);
+                }
+                if (obj["notes"] is JArray notes && GUILayout.Button("+ Заметка")) { notes.Add(new JObject { ["id"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(), ["title"] = "Заметка", ["text"] = "" }); changed = true; }
+            }
+            else if (token is JArray array) foreach (var item in array.ToArray()) EditToken(item, path + "/" + array.IndexOf(item), depth + 1, ref changed);
+            else GUILayout.Label(token.ToString());
+        }
+        private void ReadOnly(JObject hero, string key, string title)
+        {
+            if (hero[key] == null) return;
+            if (GUILayout.Button(title, GUILayout.Height(32))) { if (!expanded.Add("read/" + key)) expanded.Remove("read/" + key); }
+            if (expanded.Contains("read/" + key)) ReadOnlyToken(hero[key], key, 0);
+        }
+        private static string FieldLabel(string key) => key switch
+        {
+            "name" => "Название", "title" => "Заголовок", "text" => "Текст", "desc" => "Описание", "description" => "Описание",
+            "count" => "Количество", "weight" => "Вес", "equipped" => "Экипировано", "prepared" => "Подготовлено", "level" => "Уровень",
+            "notes" => "Заметки", "contents" => "Содержимое", "damage" => "Урон", "damageType" => "Тип урона", "school" => "Школа",
+            "castingTime" => "Время накладывания", "range" => "Дистанция", "duration" => "Длительность", "concentration" => "Концентрация",
+            "source" => "Источник", "rechargeOn" => "Восстановление", "maxUses" => "Максимум применений", "usedCount" => "Использовано", _ => key
+        };
+        private void ReadOnlyToken(JToken token, string path, int depth)
+        {
+            if (depth > 16) return;
+            if (token is JObject obj) foreach (var p in obj.Properties()) { GUILayout.Label(p.Name); ReadOnlyToken(p.Value, path + "/" + p.Name, depth + 1); }
+            else if (token is JArray array) foreach (var item in array) ReadOnlyToken(item, path, depth + 1);
+            else GUILayout.Label(token.ToString());
+        }
+    }
+}
