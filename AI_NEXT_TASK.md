@@ -1,5 +1,8 @@
 # Next checkpoint
 
+## 2026-10-19 Unity front end checkpoint
+On experiment/unity-vtt the client now starts at Home, with character roster, four-step level-one creation, sheet/passport/all-data editing and five-denomination wallet. Blueprints/choices come from actual main Builder: 57 races, 35 class records, 31 backgrounds; extra-body classes remain import-only. Three actual JS creation projections pass in C#. Synthetic GUI creation/save/restart and 42gp wallet persistence were checked. Continue class/race choice execution, class initialization and level-up before claiming full Builder parity. Main/workflows remain untouched. Validation evidence and limitations: unity/VALIDATION.md.
+
 ## Branch-specific Unity experiment (owner request 2026-10-18)
 Only on `experiment/unity-vtt`: owner now prioritizes the ENTIRE CHARACTER SHEET from main over further map work. Read `docs/UNITY_CHARACTER_SHEET_PARITY.md` for the incomplete native sheet matrix and remaining creation/level-up/class/equipment/rest/spell/lore/cloud paths. Basic native forms, skills/saves/dice, 402-spell catalogue and separate atomic local Unity archive are implemented; do not equate this with all main mechanics. See `unity/VALIDATION.md` for actual checks. Do not checkout/write/push main or edit release workflows. Start scene remains `Assets/Vtt/Scenes/ImportedAdventure.unity`. Preserve `Exploration.unity` and user-created `unity/dnd-vtt` sources; no bulk-stage. Historical main queue below remains unchanged.
 

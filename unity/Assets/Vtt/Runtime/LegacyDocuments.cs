@@ -31,7 +31,7 @@ namespace DndVtt.UnityPrototype
 
     public sealed class LegacyCharacterArchive
     {
-        public string OriginalJson { get; }
+        public string OriginalJson { get; private set; }
         private readonly JToken document;
         private readonly List<JObject> characters;
         public int Count => characters.Count;
@@ -54,6 +54,14 @@ namespace DndVtt.UnityPrototype
         }
         public JObject Snapshot(int index) => (JObject)characters[index].DeepClone();
         public string Export() => document.ToString(Formatting.Indented);
+        public LegacyCharacterArchive Append(JObject character)
+        {
+            var copy = document.DeepClone();
+            if (copy is JArray list) list.Add(character.DeepClone());
+            else if (copy["characters"] is JArray wrapped) wrapped.Add(character.DeepClone());
+            else copy = new JArray(copy, character.DeepClone());
+            return new LegacyCharacterArchive(copy.ToString(Formatting.None)) { OriginalJson = OriginalJson };
+        }
         // Validate a detached candidate before touching the live archive. Wrapper,
         // identity and fields unknown to this client retain their original types.
         public void Replace(int index, JObject candidate)

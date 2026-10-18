@@ -12,16 +12,21 @@ namespace DndVtt.UnityPrototype
         private bool panel;
         private string input = "", status = "Профиль не загружен";
         private Vector2 scroll;
-        public string SavePath => Path.Combine(Application.persistentDataPath, "dnd_multi_characters_v2.json");
+        private string profileStoreOverride;
+        public string SavePath => profileStoreOverride ?? Path.Combine(Application.persistentDataPath, "dnd_multi_characters_v2.json");
         private void Start()
         {
             world.explorer.showHelp = false;
+            world.explorer.acceptInput = false;
+            Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
+            var args = Environment.GetCommandLineArgs(); int store = Array.IndexOf(args, "--vtt-profile-store");
+            if (store >= 0 && store + 1 < args.Length) profileStoreOverride = Path.GetFullPath(args[store + 1]);
             if (File.Exists(SavePath))
             {
                 try { archive = CharacterSheetStore.Load(SavePath); status = "Загружен локальный лист Unity"; }
                 catch (Exception e) { status = "Сохранение не загружено; файл оставлен без изменений: " + e.Message; }
             }
-            var args = Environment.GetCommandLineArgs(); int index = Array.IndexOf(args, "--vtt-character");
+            int index = Array.IndexOf(args, "--vtt-character");
             if (index >= 0 && index + 1 < args.Length)
             {
                 try { var info = new FileInfo(args[index + 1]); if (info.Length > 1024 * 1024) throw new FormatException("File too large"); Import(File.ReadAllText(info.FullName)); }
@@ -45,24 +50,38 @@ namespace DndVtt.UnityPrototype
         private void OnGUI()
         {
             GUI.skin.label.fontSize = 16;
+            if (screen != FrontScreen.Map) { DrawFrontEnd(); return; }
             GUI.Box(new Rect(10, 10, Screen.width - 20, 86), "");
-            GUI.Label(new Rect(22, 16, Screen.width - 350, 25), world.MapName + " / этаж " + (world.CurrentFloor + 1));
-            GUI.Label(new Rect(22, 43, Screen.width - 350, 25), CurrentName + (archive == null ? "" : "  HP " + archive.CurrentHp(selected) + "/" + archive.MaximumHp(selected) + "  temp " + archive.TemporaryHp(selected)));
-            GUI.Label(new Rect(22, 69, Screen.width - 350, 22), "WASD · мышь · V камера · Space прыжок · Esc курсор · R вход");
-            if (GUI.Button(new Rect(Screen.width - 320, 20, 95, 52), "Карта / лист")) Toggle();
+            GUI.Label(new Rect(22, 16, Screen.width - 450, 25), world.MapName + " / этаж " + (world.CurrentFloor + 1));
+            GUI.Label(new Rect(22, 43, Screen.width - 450, 25), CurrentName + (archive == null ? "" : "  HP " + archive.CurrentHp(selected) + "/" + archive.MaximumHp(selected) + "  temp " + archive.TemporaryHp(selected)));
+            GUI.Label(new Rect(22, 69, Screen.width - 450, 22), "WASD · мышь · V камера · Space прыжок · Esc курсор · R вход");
+            if (GUI.Button(new Rect(Screen.width - 425, 20, 95, 52), "Лист / меню")) Navigate(archive == null ? FrontScreen.Home : FrontScreen.Sheet);
+            if (GUI.Button(new Rect(Screen.width - 320, 20, 95, 52), "Карты / этажи")) Toggle();
             if (GUI.Button(new Rect(Screen.width - 215, 20, 95, 52), "Камера")) world.explorer.SetFirstPerson(!world.explorer.firstPerson);
             if (GUI.Button(new Rect(Screen.width - 110, 20, 90, 52), "Прыжок")) world.explorer.RequestJump();
             if (!panel) return;
             var area = new Rect(20, 110, Screen.width - 40, Screen.height - 130);
             var oldColor = GUI.color; GUI.color = new Color(.07f, .08f, .1f, .97f);
             GUI.DrawTexture(area, Texture2D.whiteTexture); GUI.color = oldColor;
-            GUI.Box(area, "Лист персонажа — эксперимент Unity");
+            GUI.Box(area, "Карты и этажи");
             GUILayout.BeginArea(new Rect(area.x + 15, area.y + 30, area.width - 30, area.height - 40));
             scroll = GUILayout.BeginScrollView(scroll);
-            DrawSheet();
+            DrawMapSelector();
             GUILayout.Label(status); GUILayout.EndScrollView(); GUILayout.EndArea();
         }
         private void DrawImportAndMap()
+        {
+            DrawMapSelector();
+            GUILayout.Label("Вставьте экспорт JSON персонажа / массива / characters:");
+            input = GUILayout.TextArea(input, GUILayout.Height(110));
+            if (GUILayout.Button("Прочитать JSON", GUILayout.Height(35))) Import(input);
+            if (archive != null)
+            {
+                for (int i = 0; i < archive.Count; i++) { int index = i; if (GUILayout.Button(archive.Name(i))) { selected = index; ClearSheetInputs(); } }
+                if (GUILayout.Button("Копировать исходный JSON без изменений")) GUIUtility.systemCopyBuffer = archive.OriginalJson;
+            }
+        }
+        private void DrawMapSelector()
         {
             GUILayout.Label("Выбор карты (модели полностью подключены для таверны):");
             for (int i = 0; i < world.catalog.maps.Length; i++)
@@ -74,14 +93,6 @@ namespace DndVtt.UnityPrototype
             GUILayout.EndHorizontal();
             GUILayout.Label("Моделей: " + world.ImportedModels + "; заменителей: " + world.MissingModels + ". Закрытые двери/окна пока блокируют путь; боевые правила и туман ещё не перенесены.");
             if (!string.IsNullOrEmpty(world.Error)) GUILayout.Label(world.Error);
-            GUILayout.Label("Вставьте экспорт JSON персонажа / массива / characters:");
-            input = GUILayout.TextArea(input, GUILayout.Height(110));
-            if (GUILayout.Button("Прочитать JSON", GUILayout.Height(35))) Import(input);
-            if (archive != null)
-            {
-                for (int i = 0; i < archive.Count; i++) { int index = i; if (GUILayout.Button(archive.Name(i))) { selected = index; ClearSheetInputs(); } }
-                if (GUILayout.Button("Копировать исходный JSON без изменений")) GUIUtility.systemCopyBuffer = archive.OriginalJson;
-            }
         }
     }
 }

@@ -20,7 +20,7 @@ namespace DndVtt.UnityPrototype
         private int itemCategory;
         private bool showItemCatalog;
         private string deletePath, deleteSignature, deleteCharacter, deleteLabel;
-        private readonly string[] tabs = { "Герой", "Навыки", "Способности", "Инвентарь", "Заметки", "Дайсы", "Данные / карты" };
+        private readonly string[] tabs = { "Герой", "Навыки", "Способности", "Инвентарь", "Заметки", "Дайсы", "Все данные", "Кошелёк", "Паспорт" };
         private void ClearSheetInputs() { edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
         private void Attempt(Action action)
         {
@@ -28,12 +28,13 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawSheet()
         {
-            int next = GUILayout.SelectionGrid(sheetTab, tabs, Screen.width < 900 ? 3 : 7, GUILayout.Height(Screen.width < 900 ? 96 : 40));
+            int columns = Screen.width < 900 ? 3 : 7;
+            int next = GUILayout.SelectionGrid(sheetTab, tabs, columns, GUILayout.Height(Mathf.CeilToInt(tabs.Length / (float)columns) * 40));
             if (next != sheetTab) { sheetTab = next; GUI.FocusControl(null); }
             if (archive == null)
             {
                 GUILayout.Label("Импортируйте своего персонажа во вкладке Данные / карты или создайте пустой лист.");
-                if (GUILayout.Button("Новый персонаж", GUILayout.Height(40))) Import("{\"id\":\"" + Guid.NewGuid() + "\",\"schemaVersion\":3,\"name\":\"Новый герой\",\"level\":1,\"hpMax\":10,\"hpCurrent\":10,\"hpTemp\":0,\"stats\":{\"str\":10,\"dex\":10,\"con\":10,\"int\":10,\"wis\":10,\"cha\":10}}");
+                if (GUILayout.Button("Создать персонажа", GUILayout.Height(40))) BeginCreation();
                 DrawImportAndMap(); return;
             }
             GUILayout.BeginHorizontal();
@@ -78,7 +79,7 @@ namespace DndVtt.UnityPrototype
                 case 3:
                     GUILayout.Label("Предметы и количество редактируются; автоматический КД, атаки, крафт и применение расходников ещё переносится.");
                     if (hero["inventory"] is JArray) { ReadOnly(hero, "inventory", "Унаследованный инвентарь (массив)"); break; }
-                    GUILayout.Label("Вес по текущему main: " + CharacterSheetRules.InventoryWeightKg(hero).ToString("0.##", CultureInfo.InvariantCulture) + " кг / грузоподъёмность " + CharacterSheetRules.CapacityKg(hero).ToString("0.##", CultureInfo.InvariantCulture) + " кг. Автоматические штрафы ещё не подключены.");
+                    GUILayout.Label("Вес инвентаря: " + CharacterSheetRules.InventoryWeightKg(hero).ToString("0.##", CultureInfo.InvariantCulture) + " кг / грузоподъёмность " + CharacterSheetRules.CapacityKg(hero).ToString("0.##", CultureInfo.InvariantCulture) + " кг. Автоматические штрафы ещё не подключены.");
                     ItemCatalog(hero, ref changed);
                     var inventory = hero["inventory"] as JObject ?? new JObject();
                     string[] categories = { "weapons", "armor", "consumables", "materials", "junk" };
@@ -92,10 +93,14 @@ namespace DndVtt.UnityPrototype
                     GUILayout.BeginHorizontal();
                     foreach (int die in new[] { 4, 6, 8, 10, 12, 20, 100 }) if (GUILayout.Button("d" + die, GUILayout.Height(45))) Roll("d" + die, die, 0);
                     GUILayout.EndHorizontal(); GUILayout.Label(rollResult); break;
+                case 7: Wallet(hero, ref changed); break;
+                case 8:
+                    foreach (string field in new[] { "age", "gender", "origin", "alignment", "appearance", "personality", "ideals", "bonds", "flaws", "backstory", "profession" }) Scalar(hero, field, FieldLabel(field), ref changed);
+                    foreach (string field in new[] { "proficiencies", "features", "feats", "raceMechanics", "raceFeatureDescriptions", "resistances", "immunities", "craftingProfessions", "companions", "encounters", "initiativeTracker", "pendingChoices", "choiceState" }) Tree(hero, field, FieldLabel(field), ref changed);
+                    break;
                 default:
-                    DrawImportAndMap();
-                    GUILayout.Label("Все данные выбранного персонажа (включая неисполняемые поля):");
-                    ReadOnlyToken(hero, "raw", 0); break;
+                    GUILayout.Label("Полный документ героя. Идентификаторы защищены. Поля без игрового обработчика сохраняются без потерь.");
+                    EditToken(hero, "raw", 0, ref changed); break;
             }
             if (changed) Attempt(() => { archive.Replace(selected, hero); status = "Лист изменён в памяти. Нажмите Сохранить для записи."; });
         }
@@ -128,7 +133,7 @@ namespace DndVtt.UnityPrototype
         {
             var skills = hero["skillsData"] as JObject ?? new JObject();
             var saves = hero["savesData"] as JObject ?? new JObject();
-            GUILayout.Label("Базовые формулы main: характеристика + владение × мастерство. Классовые бонусы ещё не исполняются.");
+            GUILayout.Label("Базовая проверка: характеристика + владение × мастерство. Классовые бонусы ещё не исполняются.");
             for (int i = 0; i < CharacterSheetRules.SkillIds.Length; i++)
             {
                 string key = CharacterSheetRules.SkillIds[i]; int old = (int)LegacyJson.Number(skills[key], 0);
@@ -175,7 +180,7 @@ namespace DndVtt.UnityPrototype
                 if (!asset) { GUILayout.Label("Справочник заклинаний не найден"); return; }
                 spellCatalog = (JArray)JObject.Parse(asset.text)["spells"];
             }
-            GUILayout.Label("Справочник main: " + spellCatalog.Count + " заклинания. Поиск по названию:");
+            GUILayout.Label("Справочник: " + spellCatalog.Count + " заклинания. Поиск по названию:");
             spellSearch = GUILayout.TextField(spellSearch, GUILayout.Height(32));
             if (spellSearch.Trim().Length < 2) return;
             var matches = spellCatalog.OfType<JObject>().Where(s => ((string)s["name"] ?? "").IndexOf(spellSearch, StringComparison.OrdinalIgnoreCase) >= 0).Take(30);
@@ -189,7 +194,7 @@ namespace DndVtt.UnityPrototype
         private static string Signed(int n) => n >= 0 ? "+" + n : n.ToString();
         private void ItemCatalog(JObject hero, ref bool changed)
         {
-            showItemCatalog = GUILayout.Toggle(showItemCatalog, "Справочник предметов main — 188 записей");
+            showItemCatalog = GUILayout.Toggle(showItemCatalog, "Справочник предметов — 188 записей");
             if (!showItemCatalog) return;
             if (itemCatalog == null)
             {
@@ -285,7 +290,7 @@ namespace DndVtt.UnityPrototype
             {
                 foreach (var property in obj.Properties().ToArray())
                 {
-                    if (property.Name == "id" || property.Name.EndsWith("Id", StringComparison.Ordinal)) continue;
+                    if (property.Name == "id" || property.Name == "schemaVersion" || property.Name.EndsWith("Id", StringComparison.Ordinal)) continue;
                     if (property.Value is JContainer) { GUILayout.Label(FieldLabel(property.Name)); EditToken(property.Value, path + "/" + property.Name, depth + 1, ref changed); }
                     else Scalar(obj, property.Name, FieldLabel(property.Name), ref changed);
                 }
@@ -293,9 +298,14 @@ namespace DndVtt.UnityPrototype
             }
             else if (token is JArray array) foreach (var item in array.ToArray())
             {
-                EditToken(item, path + "/" + array.IndexOf(item), depth + 1, ref changed);
+                if (item is JValue scalar)
+                {
+                    string original = scalar.ToString(); string value = GUILayout.TextField(original, GUILayout.Height(30));
+                    if (value != original) { array[array.IndexOf(item)] = value; changed = true; }
+                }
+                else EditToken(item, path + "/" + array.IndexOf(item), depth + 1, ref changed);
                 string label = (item as JObject)?["title"]?.ToString() ?? (item as JObject)?["name"]?.ToString() ?? "Запись";
-                if (GUILayout.Button("Удалить «" + label + "»…", GUILayout.Height(30))) RequestDelete(item, label);
+                if (array.Path != "classes" && GUILayout.Button("Удалить «" + label + "»…", GUILayout.Height(30))) RequestDelete(item, label);
             }
             else GUILayout.Label(token.ToString());
         }
@@ -307,6 +317,8 @@ namespace DndVtt.UnityPrototype
         }
         private static string FieldLabel(string key) => key switch
         {
+            "age" => "Возраст", "gender" => "Пол", "origin" => "Происхождение", "alignment" => "Мировоззрение", "appearance" => "Внешность", "personality" => "Характер", "ideals" => "Идеалы", "bonds" => "Привязанности", "flaws" => "Слабости", "backstory" => "История", "profession" => "Профессия",
+            "proficiencies" => "Владения и языки", "features" => "Особенности", "feats" => "Черты", "raceMechanics" => "Расовые особенности", "raceFeatureDescriptions" => "Описание расовых особенностей", "resistances" => "Сопротивления", "immunities" => "Иммунитеты", "craftingProfessions" => "Ремесленные профессии", "companions" => "Компаньоны", "encounters" => "Сражения", "initiativeTracker" => "Инициатива", "pendingChoices" => "Ожидающие решения", "choiceState" => "Сделанные выборы",
             "name" => "Название", "title" => "Заголовок", "text" => "Текст", "desc" => "Описание", "description" => "Описание",
             "count" => "Количество", "weight" => "Вес", "equipped" => "Экипировано", "prepared" => "Подготовлено", "level" => "Уровень",
             "notes" => "Заметки", "contents" => "Содержимое", "damage" => "Урон", "damageType" => "Тип урона", "school" => "Школа",

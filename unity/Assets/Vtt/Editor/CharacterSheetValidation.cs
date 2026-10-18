@@ -60,6 +60,7 @@ public static class CharacterSheetValidation
         finally { if (Directory.Exists(directory)) Directory.Delete(directory, true); }
         var catalog = JObject.Parse(File.ReadAllText("Assets/Vtt/Resources/CharacterSheet/catalog.json"));
         Check(((JArray)catalog["spells"]).Count == 402, "main spell catalogue");
+        ValidateCreation(catalog);
         Check(((JObject)catalog["items"]).Properties().Sum(p => ((JArray)p.Value).Count) == 188, "main item catalogues");
         foreach (JObject test in (JArray)golden["inventoryCases"])
         {
@@ -102,5 +103,37 @@ public static class CharacterSheetValidation
         }
         Debug.Log("VTT_SHEET_PASS: " + cases + " JS golden cases; 18 skills, modifiers/proficiency, single/array/wrapped editing, rollback, identity/unknown/class-state preservation, atomic save/reload/backup; 402 spells");
         Debug.Log("VTT_SHEET_RECORDS_PASS: 188 items; actual JS 5-category add/stack/remove, folder/note deletion and active selection, stale/invalid mutation rejection, 12 weight parser cases / total / capacity");
+    }
+    private static void ValidateCreation(JObject catalog)
+    {
+        var data = (JObject)catalog["creation"];
+        Check(((JArray)data["races"]).Count == 57 && ((JArray)data["classes"]).Count == 35 && ((JArray)data["backgrounds"]).Count == 31, "creation catalogues");
+        var golden = JObject.Parse(File.ReadAllText("Assets/Vtt/Tests/sheet-contract.json"));
+        foreach (JObject test in (JArray)golden["creationCases"])
+        {
+            var race = ((JArray)data["races"]).OfType<JObject>().Single(r => (string)r["id"] == (string)test["raceId"]);
+            var cls = ((JArray)data["classes"]).OfType<JObject>().Single(r => (string)r["name"] == (string)test["className"]);
+            var bg = ((JArray)data["backgrounds"]).OfType<JObject>().Single(r => (string)(r["nameRu"] ?? r["name"]) == (string)test["background"]);
+            var hero = CharacterCreation.Create(data, "Creation fixture", race, cls, bg, (JObject)test["stats"], (JObject)test["answers"], "manual");
+            foreach (string key in new[] { "stats", "hpMax", "hpCurrent", "raceId", "raceName", "class", "background", "hitDice", "skillsData", "choiceState" }) Check(JToken.DeepEquals(hero[key], test["expected"][key]) || hero[key]?.ToString() == test["expected"][key]?.ToString(), "actual JS creation " + test["className"] + " / " + key);
+            Check(((JObject)hero["coins"]).Count == 5 && ((JObject)hero["inventory"]).Count == 5, "new character complete stores");
+            const string original = "{\"characters\":[{\"id\":\"existing\",\"unknown\":{\"keep\":17}}],\"wrapper\":true}";
+            var archive = new LegacyCharacterArchive(original); var appended = archive.Append(hero);
+            Check(appended.Count == 2 && archive.Count == 1 && (int)appended.Snapshot(0)["unknown"]["keep"] == 17 && (bool)JObject.Parse(appended.Export())["wrapper"], "creation appends without losing old hero/wrapper");
+            Check(appended.OriginalJson == original, "creation preserves original import bytes");
+            var reload = new LegacyCharacterArchive(appended.Export()); Check(JToken.DeepEquals(reload.Snapshot(1), hero), "new hero reload retains all fields");
+            bool refused = false; try { CharacterCreation.Create(data, "", race, cls, bg, (JObject)test["stats"], (JObject)test["answers"], "manual"); } catch (FormatException) { refused = true; }
+            Check(refused, "blank creation rejected");
+            refused = false; try { CharacterCreation.Create(data, "Missing choices", race, cls, bg, (JObject)test["stats"], new JObject(), "manual"); } catch (FormatException) { refused = true; }
+            Check(refused, "required choices rejected");
+            refused = false; try { appended.Append(hero); } catch (FormatException) { refused = true; }
+            Check(refused && appended.Count == 2, "duplicate identity does not mutate roster");
+            Check(((JArray)hero["companions"]).Count == 0 && ((JObject)hero["spellSlotsData"]).Count == 9 && (int)hero["initiativeTracker"]["round"] == 1, "complete new-profile containers");
+            var edited = (JObject)hero.DeepClone(); edited["abilities"]["unknown"] = "keep"; edited["stats"]["str"] = 17; CharacterSheetRules.Recalculate(edited);
+            Check((int)edited["abilities"]["str"] == 17 && (string)edited["abilities"]["unknown"] == "keep" && JToken.DeepEquals(edited["_builderBaseStats"], hero["_builderBaseStats"]), "Builder stat alias tracks edits without losing unknown fields or base choices");
+            refused = false; try { CharacterCreation.Create(data, "Invalid", race, cls, bg, JObject.Parse("{str:15,dex:15,con:15,int:15,wis:15,cha:15}"), (JObject)test["answers"], "pointbuy"); } catch (FormatException) { refused = true; }
+            Check(refused, "overspent point-buy rejected");
+        }
+        Debug.Log("VTT_FRONTEND_CONTRACT_PASS: 57 races/35 class records/31 backgrounds, actual JS three-class creation projections, append/identity/wrapper preservation/reload, required choices/name/point buy");
     }
 }

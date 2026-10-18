@@ -96,6 +96,86 @@
     {
       "file": "app/notes.js",
       "sha256": "952e9cc0d2c44467e273e4305c0aa1c6ae0feaf74742859b9c642ba16b56e1b1"
+    },
+    {
+      "file": "app/races.js",
+      "sha256": "3ebdbea05e5c466a78084a17bc3dd832a139c81f5310370e9916729e6205b401"
+    },
+    {
+      "file": "app/Backgrounds.js",
+      "sha256": "bc000d939aa4ed66ac82349770c4f3c97e9bd835dd8cffc5b6a24c9097b07fcb"
+    },
+    {
+      "file": "app/character_creation.js",
+      "sha256": "575121f33bb7abad3c23f9f2551d91ee03feda972edf355cdbfa709f923a9ad8"
+    },
+    {
+      "file": "app/Proficiencies.js",
+      "sha256": "7be07cda877bff6940ed869d81a4f893f0c3cafbba8f4cf4c6248b95b9022c26"
+    },
+    {
+      "file": "app/data/classes/Barbarian.js",
+      "sha256": "0474bbf7ad40db28ee531e86577f289c7959d219517e96b0c02ae4547d4743e1"
+    },
+    {
+      "file": "app/data/classes/Bard.js",
+      "sha256": "d704e17a39f8f6f25306a757a026494ca1b8c7af3782492e1e3f8d9865ca4206"
+    },
+    {
+      "file": "app/data/classes/Cleric.js",
+      "sha256": "563ae520b42239e36ff6fef1e65180b885e96bf84104a0060bfed90691a8243e"
+    },
+    {
+      "file": "app/data/classes/Druid.js",
+      "sha256": "44425007065242afd034362ec6ba015af7a42ac423054aa1b774f12ab26cfd0d"
+    },
+    {
+      "file": "app/data/classes/Fighter.js",
+      "sha256": "e7decd08c7d4db969d7bb57db6b03edc6e28bce3ecdc605b6f5b14a23104ca41"
+    },
+    {
+      "file": "app/data/classes/Monk.js",
+      "sha256": "d4c3d4087a76961084d8fc1ab49dd933cfec0e2defd2cc2a4e15c085b88f1e43"
+    },
+    {
+      "file": "app/data/classes/Paladin.js",
+      "sha256": "d0527bfae7a261ced97cb605c106206181239e8c8efe881dfeeda3a8b3137b1f"
+    },
+    {
+      "file": "app/data/classes/Ranger.js",
+      "sha256": "811bbaf7f00319db0628c9dbfe5fab8b9da8fb79c798a77a060ef566bdf006d5"
+    },
+    {
+      "file": "app/data/classes/Rogue.js",
+      "sha256": "b0ebf167b51ec05adc5f31d29e49c955d4f3c3186eddb587220d9f9582de2842"
+    },
+    {
+      "file": "app/data/classes/Sorcerer.js",
+      "sha256": "a44bf2d9725eff0d0f861e875efc58c3cd28f3e41db4eed709c4ea531edfe8d0"
+    },
+    {
+      "file": "app/data/classes/Warlock.js",
+      "sha256": "57881f3d78f253e5ecd1f4b8376eb50fafbc26c6522a8796a725c6ce38d75516"
+    },
+    {
+      "file": "app/data/classes/Wizard.js",
+      "sha256": "97ee34d923439e51f542ae989e4fe68161140603be23bff5771badcff5d433e2"
+    },
+    {
+      "file": "app/data/classes/Artificer.js",
+      "sha256": "19056ddb19942a4f638523c71a241ad37002b6120aaf4ebbe996d2dd2a660284"
+    },
+    {
+      "file": "app/classesRegistry.js",
+      "sha256": "970e2e0c04faaa6b9f5f81dc03c95cf7ff6d90e560d40a0a4f3f2067545f0ee1"
+    },
+    {
+      "file": "app/character_builder_v2.js",
+      "sha256": "f0c64454e182803eef317f55ed46781aefff5be093c7d219757db8d511e77f9a"
+    },
+    {
+      "file": "app/inventory-coins.js",
+      "sha256": "d2df4bb6493a0a6d835b45a6751b72f44a933e0add1e49f0b152ec4d0c8bbe82"
     }
   ],
   "skills": [
@@ -6197,5 +6277,788 @@
       ],
       "unknown": true
     }
-  }
+  },
+  "creationCases": [
+    {
+      "className": "Воин",
+      "raceId": "human",
+      "background": "Прислужник",
+      "stats": {
+        "str": 10,
+        "dex": 10,
+        "con": 10,
+        "int": 10,
+        "wis": 10,
+        "cha": 10
+      },
+      "answers": {
+        "race:human:languages": [
+          "lang_common"
+        ],
+        "background:Прислужник:languages": [
+          "lang_common",
+          "lang_dwarvish"
+        ],
+        "class:Воин:skills": [
+          "acrobatics",
+          "animalHandling"
+        ]
+      },
+      "expected": {
+        "id": "char_1792358696428",
+        "name": "Creation fixture",
+        "age": 0,
+        "level": 1,
+        "class": "Воин",
+        "className": "Воин",
+        "classes": [
+          {
+            "name": "Воин",
+            "level": 1,
+            "subclass": null
+          }
+        ],
+        "background": "Прислужник",
+        "profession": "",
+        "raceId": "human",
+        "raceName": "Человек (Стандартный)",
+        "baseAC": 10,
+        "ac": "10",
+        "speed": "30 футов",
+        "profBonus": 2,
+        "stats": {
+          "str": 11,
+          "dex": 11,
+          "con": 11,
+          "int": 11,
+          "wis": 11,
+          "cha": 11
+        },
+        "_builderBaseStats": {
+          "str": 10,
+          "dex": 10,
+          "con": 10,
+          "int": 10,
+          "wis": 10,
+          "cha": 10
+        },
+        "statGenerationMode": "manual",
+        "statRollsUsed": 0,
+        "savesData": {
+          "strength": 1,
+          "constitution": 1
+        },
+        "skillsData": {
+          "acrobatics": 1,
+          "animalHandling": 1,
+          "insight": 1,
+          "religion": 1
+        },
+        "proficiencies": [
+          {
+            "id": "lang_common",
+            "category": "Языки",
+            "name": "Всеобщий язык",
+            "description": "Основной язык общения людей, полуросликов, дварфов и эльфов."
+          },
+          {
+            "id": "lang_dwarvish",
+            "category": "Языки",
+            "name": "Дварфийский",
+            "description": "Резкий, согласный язык горняков, записываемый рунами."
+          },
+          {
+            "id": "p_armor_light",
+            "category": "Доспехи",
+            "name": "Лёгкие доспехи",
+            "description": "Владение стеганым, кожаным и проклепанным кожаным доспехом."
+          },
+          {
+            "id": "p_armor_medium",
+            "category": "Доспехи",
+            "name": "Средние доспехи",
+            "description": "Владение шкурными, кольчужными рубахами, кирасами и чешуйчатыми доспехами."
+          },
+          {
+            "id": "p_armor_heavy",
+            "category": "Доспехи",
+            "name": "Тяжелые доспехи",
+            "description": "Владение кольчатыми, латными и прочими тяжелыми доспехами."
+          },
+          {
+            "id": "p_shields",
+            "category": "Доспехи",
+            "name": "Щиты",
+            "description": "Умение эффективно использовать щиты для повышения класса доспеха (КД)."
+          },
+          {
+            "id": "p_weapon_simple",
+            "category": "Оружие",
+            "name": "Простое оружие (все)",
+            "description": "Владение всем простым оружием (кинжалы, дубины, короткие луки и т.д.)."
+          },
+          {
+            "id": "p_weapon_martial",
+            "category": "Оружие",
+            "name": "Воинское оружие (все)",
+            "description": "Владение воинским оружием (мечи, алебарды, длинные луки, тяжелые арбалеты)."
+          }
+        ],
+        "feats": [],
+        "features": [
+          "Приют верующего (Shelter of the Faithful) — Вы и ваши спутники можете рассчитывать на бесплатные исцеление и уход в храмах вашей веры. Единоверцы также готовы предоставить вам скромный ночлег и пищу, а вы имеете определенный авторитет в религиозных кругах."
+        ],
+        "choiceState": {
+          "race:human:languages": [
+            "lang_common"
+          ],
+          "background:Прислужник:languages": [
+            "lang_common",
+            "lang_dwarvish"
+          ],
+          "class:Воин:skills": [
+            "acrobatics",
+            "animalHandling"
+          ]
+        },
+        "choiceHistory": [
+          {
+            "key": "race:human:languages",
+            "label": "Дополнительные языки",
+            "value": [
+              "lang_common"
+            ],
+            "source": "race",
+            "level": 1,
+            "className": null,
+            "raceId": "human"
+          },
+          {
+            "key": "background:Прислужник:languages",
+            "label": "Языки предыстории",
+            "value": [
+              "lang_common",
+              "lang_dwarvish"
+            ],
+            "source": "background",
+            "level": 1,
+            "className": null,
+            "raceId": null
+          },
+          {
+            "key": "class:Воин:skills",
+            "label": "Навыки класса",
+            "value": [
+              "acrobatics",
+              "animalHandling"
+            ],
+            "source": "class",
+            "level": 1,
+            "className": "Воин",
+            "raceId": null
+          }
+        ],
+        "pendingChoices": [],
+        "activeConditions": {},
+        "weaponsData": [],
+        "spellSlotsData": {},
+        "spellsData": [],
+        "folders": [],
+        "library": [],
+        "backgroundLanguagesToChoose": 2,
+        "raceFeatureDescriptions": [
+          "Самая молодая, амбициозная и плотоядная раса материального плана. Люди лишены долголетия эльфов или мощи гигантов, но их упорство, изобретательность и краткая, но яркая жизнь позволяют им покорять любые вершины. +1 ко всем характеристикам. Возраст: дети до 13 лет; подростки 14–17; молодые 18–35; зрелые 36–59; пожилые/старые 60+ лет (редко доживают до 100). Размер: Средний."
+        ],
+        "raceMechanics": {
+          "darkvisionFt": 0,
+          "flight": false,
+          "swim": false,
+          "climb": false,
+          "telepathy": false,
+          "magicResistance": false,
+          "poisonResistance": false,
+          "poisonImmunity": false,
+          "fireResistance": false,
+          "coldResistance": false,
+          "acidResistance": false,
+          "necroticResistance": false,
+          "radiantResistance": false,
+          "psychicResistance": false,
+          "amphibious": false,
+          "breathWeapon": false,
+          "lucky": false,
+          "brave": false,
+          "relentlessEndurance": false,
+          "powerfulBuild": false,
+          "naturalArmor": false,
+          "shapeshifter": false,
+          "mimicry": false,
+          "noSleep": false,
+          "noBreath": false,
+          "sunlightSensitivity": false,
+          "stoneEndurance": false,
+          "charge": false,
+          "horns": false,
+          "sizeChoice": false,
+          "feyAncestry": false,
+          "weaponTraining": false,
+          "savageAttacks": false,
+          "nimbleEscape": false,
+          "packTactics": false,
+          "trunk": false,
+          "glide": false,
+          "repairable": false,
+          "mentalShield": false,
+          "undeadResilience": false,
+          "spiderClimb": false,
+          "speedFt": 30,
+          "size": "Средний",
+          "innateSpellcasting": false,
+          "skillBonuses": [],
+          "speed": "30 футов"
+        },
+        "resistances": [],
+        "immunities": [],
+        "size": "Средний",
+        "hpMax": 10,
+        "hpCurrent": 10,
+        "hitDice": "1d10",
+        "gender": "",
+        "origin": "",
+        "backgroundFeature": "Приют верующего (Shelter of the Faithful) — Вы и ваши спутники можете рассчитывать на бесплатные исцеление и уход в храмах вашей веры. Единоверцы также готовы предоставить вам скромный ночлег и пищу, а вы имеете определенный авторитет в религиозных кругах.",
+        "classFeaturesState": {},
+        "abilities": {
+          "str": 11,
+          "dex": 11,
+          "con": 11,
+          "int": 11,
+          "wis": 11,
+          "cha": 11
+        }
+      }
+    },
+    {
+      "className": "Волшебник",
+      "raceId": "human",
+      "background": "Прислужник",
+      "stats": {
+        "str": 10,
+        "dex": 10,
+        "con": 10,
+        "int": 10,
+        "wis": 10,
+        "cha": 10
+      },
+      "answers": {
+        "race:human:languages": [
+          "lang_common"
+        ],
+        "background:Прислужник:languages": [
+          "lang_common",
+          "lang_dwarvish"
+        ],
+        "class:Волшебник:skills": [
+          "arcana",
+          "history"
+        ]
+      },
+      "expected": {
+        "id": "char_1792358696429",
+        "name": "Creation fixture",
+        "age": 0,
+        "level": 1,
+        "class": "Волшебник",
+        "className": "Волшебник",
+        "classes": [
+          {
+            "name": "Волшебник",
+            "level": 1,
+            "subclass": null
+          }
+        ],
+        "background": "Прислужник",
+        "profession": "",
+        "raceId": "human",
+        "raceName": "Человек (Стандартный)",
+        "baseAC": 10,
+        "ac": "10",
+        "speed": "30 футов",
+        "profBonus": 2,
+        "stats": {
+          "str": 11,
+          "dex": 11,
+          "con": 11,
+          "int": 11,
+          "wis": 11,
+          "cha": 11
+        },
+        "_builderBaseStats": {
+          "str": 10,
+          "dex": 10,
+          "con": 10,
+          "int": 10,
+          "wis": 10,
+          "cha": 10
+        },
+        "statGenerationMode": "manual",
+        "statRollsUsed": 0,
+        "savesData": {
+          "intelligence": 1,
+          "wisdom": 1
+        },
+        "skillsData": {
+          "arcana": 1,
+          "history": 1,
+          "insight": 1,
+          "religion": 1
+        },
+        "proficiencies": [
+          {
+            "id": "lang_common",
+            "category": "Языки",
+            "name": "Всеобщий язык",
+            "description": "Основной язык общения людей, полуросликов, дварфов и эльфов."
+          },
+          {
+            "id": "lang_dwarvish",
+            "category": "Языки",
+            "name": "Дварфийский",
+            "description": "Резкий, согласный язык горняков, записываемый рунами."
+          },
+          {
+            "id": "p_weap_dagger",
+            "category": "Конкретное оружие",
+            "name": "Кинжал",
+            "description": "Простое оружие (фехтовальное, метательное, легкое)."
+          },
+          {
+            "id": "class_p_weap_dart",
+            "category": "Оружие",
+            "name": "p_weap_dart",
+            "description": "Владение от класса."
+          },
+          {
+            "id": "p_weap_sling",
+            "category": "Конкретное оружие",
+            "name": "Праща",
+            "description": "Простое дальнобойное оружие (боезапас)."
+          },
+          {
+            "id": "p_weap_quarterstaff",
+            "category": "Конкретное оружие",
+            "name": "Боевой посох",
+            "description": "Простое оружие (универсальное)."
+          },
+          {
+            "id": "p_weap_light_crossbow",
+            "category": "Конкретное оружие",
+            "name": "Легкий арбалет",
+            "description": "Простое дальнобойное оружие (двуручное, боезапас)."
+          }
+        ],
+        "feats": [],
+        "features": [
+          "Приют верующего (Shelter of the Faithful) — Вы и ваши спутники можете рассчитывать на бесплатные исцеление и уход в храмах вашей веры. Единоверцы также готовы предоставить вам скромный ночлег и пищу, а вы имеете определенный авторитет в религиозных кругах."
+        ],
+        "choiceState": {
+          "race:human:languages": [
+            "lang_common"
+          ],
+          "background:Прислужник:languages": [
+            "lang_common",
+            "lang_dwarvish"
+          ],
+          "class:Волшебник:skills": [
+            "arcana",
+            "history"
+          ]
+        },
+        "choiceHistory": [
+          {
+            "key": "race:human:languages",
+            "label": "Дополнительные языки",
+            "value": [
+              "lang_common"
+            ],
+            "source": "race",
+            "level": 1,
+            "className": null,
+            "raceId": "human"
+          },
+          {
+            "key": "background:Прислужник:languages",
+            "label": "Языки предыстории",
+            "value": [
+              "lang_common",
+              "lang_dwarvish"
+            ],
+            "source": "background",
+            "level": 1,
+            "className": null,
+            "raceId": null
+          },
+          {
+            "key": "class:Волшебник:skills",
+            "label": "Навыки класса",
+            "value": [
+              "arcana",
+              "history"
+            ],
+            "source": "class",
+            "level": 1,
+            "className": "Волшебник",
+            "raceId": null
+          }
+        ],
+        "pendingChoices": [],
+        "activeConditions": {},
+        "weaponsData": [],
+        "spellSlotsData": {},
+        "spellsData": [],
+        "folders": [],
+        "library": [],
+        "backgroundLanguagesToChoose": 2,
+        "raceFeatureDescriptions": [
+          "Самая молодая, амбициозная и плотоядная раса материального плана. Люди лишены долголетия эльфов или мощи гигантов, но их упорство, изобретательность и краткая, но яркая жизнь позволяют им покорять любые вершины. +1 ко всем характеристикам. Возраст: дети до 13 лет; подростки 14–17; молодые 18–35; зрелые 36–59; пожилые/старые 60+ лет (редко доживают до 100). Размер: Средний."
+        ],
+        "raceMechanics": {
+          "darkvisionFt": 0,
+          "flight": false,
+          "swim": false,
+          "climb": false,
+          "telepathy": false,
+          "magicResistance": false,
+          "poisonResistance": false,
+          "poisonImmunity": false,
+          "fireResistance": false,
+          "coldResistance": false,
+          "acidResistance": false,
+          "necroticResistance": false,
+          "radiantResistance": false,
+          "psychicResistance": false,
+          "amphibious": false,
+          "breathWeapon": false,
+          "lucky": false,
+          "brave": false,
+          "relentlessEndurance": false,
+          "powerfulBuild": false,
+          "naturalArmor": false,
+          "shapeshifter": false,
+          "mimicry": false,
+          "noSleep": false,
+          "noBreath": false,
+          "sunlightSensitivity": false,
+          "stoneEndurance": false,
+          "charge": false,
+          "horns": false,
+          "sizeChoice": false,
+          "feyAncestry": false,
+          "weaponTraining": false,
+          "savageAttacks": false,
+          "nimbleEscape": false,
+          "packTactics": false,
+          "trunk": false,
+          "glide": false,
+          "repairable": false,
+          "mentalShield": false,
+          "undeadResilience": false,
+          "spiderClimb": false,
+          "speedFt": 30,
+          "size": "Средний",
+          "innateSpellcasting": false,
+          "skillBonuses": [],
+          "speed": "30 футов"
+        },
+        "resistances": [],
+        "immunities": [],
+        "size": "Средний",
+        "hpMax": 6,
+        "hpCurrent": 6,
+        "hitDice": "1d6",
+        "gender": "",
+        "origin": "",
+        "backgroundFeature": "Приют верующего (Shelter of the Faithful) — Вы и ваши спутники можете рассчитывать на бесплатные исцеление и уход в храмах вашей веры. Единоверцы также готовы предоставить вам скромный ночлег и пищу, а вы имеете определенный авторитет в религиозных кругах.",
+        "classFeaturesState": {},
+        "abilities": {
+          "str": 11,
+          "dex": 11,
+          "con": 11,
+          "int": 11,
+          "wis": 11,
+          "cha": 11
+        }
+      }
+    },
+    {
+      "className": "Плут",
+      "raceId": "human",
+      "background": "Прислужник",
+      "stats": {
+        "str": 10,
+        "dex": 10,
+        "con": 10,
+        "int": 10,
+        "wis": 10,
+        "cha": 10
+      },
+      "answers": {
+        "race:human:languages": [
+          "lang_common"
+        ],
+        "background:Прислужник:languages": [
+          "lang_common",
+          "lang_dwarvish"
+        ],
+        "class:Плут:skills": [
+          "acrobatics",
+          "athletics",
+          "deception",
+          "insight"
+        ]
+      },
+      "expected": {
+        "id": "char_1792358696430",
+        "name": "Creation fixture",
+        "age": 0,
+        "level": 1,
+        "class": "Плут",
+        "className": "Плут",
+        "classes": [
+          {
+            "name": "Плут",
+            "level": 1,
+            "subclass": null
+          }
+        ],
+        "background": "Прислужник",
+        "profession": "",
+        "raceId": "human",
+        "raceName": "Человек (Стандартный)",
+        "baseAC": 10,
+        "ac": "10",
+        "speed": "30 футов",
+        "profBonus": 2,
+        "stats": {
+          "str": 11,
+          "dex": 11,
+          "con": 11,
+          "int": 11,
+          "wis": 11,
+          "cha": 11
+        },
+        "_builderBaseStats": {
+          "str": 10,
+          "dex": 10,
+          "con": 10,
+          "int": 10,
+          "wis": 10,
+          "cha": 10
+        },
+        "statGenerationMode": "manual",
+        "statRollsUsed": 0,
+        "savesData": {
+          "dexterity": 1,
+          "intelligence": 1
+        },
+        "skillsData": {
+          "acrobatics": 1,
+          "athletics": 1,
+          "deception": 1,
+          "insight": 1,
+          "religion": 1
+        },
+        "proficiencies": [
+          {
+            "id": "lang_common",
+            "category": "Языки",
+            "name": "Всеобщий язык",
+            "description": "Основной язык общения людей, полуросликов, дварфов и эльфов."
+          },
+          {
+            "id": "lang_dwarvish",
+            "category": "Языки",
+            "name": "Дварфийский",
+            "description": "Резкий, согласный язык горняков, записываемый рунами."
+          },
+          {
+            "id": "p_armor_light",
+            "category": "Доспехи",
+            "name": "Лёгкие доспехи",
+            "description": "Владение стеганым, кожаным и проклепанным кожаным доспехом."
+          },
+          {
+            "id": "p_weapon_simple",
+            "category": "Оружие",
+            "name": "Простое оружие (все)",
+            "description": "Владение всем простым оружием (кинжалы, дубины, короткие луки и т.д.)."
+          },
+          {
+            "id": "p_weap_hand_crossbow",
+            "category": "Конкретное оружие",
+            "name": "Ручной арбалет",
+            "description": "Воинское дальнобойное оружие (легкое, боезапас)."
+          },
+          {
+            "id": "p_weap_longsword",
+            "category": "Конкретное оружие",
+            "name": "Длинный меч",
+            "description": "Воинское оружие (универсальное)."
+          },
+          {
+            "id": "p_weap_rapier",
+            "category": "Конкретное оружие",
+            "name": "Рапира",
+            "description": "Воинское оружие (фехтовальное)."
+          },
+          {
+            "id": "p_weap_shortsword",
+            "category": "Конкретное оружие",
+            "name": "Короткий меч",
+            "description": "Воинское оружие (фехтовальное, легкое)."
+          },
+          {
+            "id": "p_tool_thief",
+            "category": "Инструменты",
+            "name": "Ворские инструменты",
+            "description": "Взлом замков, обезвреживание ловушек и махинации с механизмами."
+          }
+        ],
+        "feats": [],
+        "features": [
+          "Приют верующего (Shelter of the Faithful) — Вы и ваши спутники можете рассчитывать на бесплатные исцеление и уход в храмах вашей веры. Единоверцы также готовы предоставить вам скромный ночлег и пищу, а вы имеете определенный авторитет в религиозных кругах."
+        ],
+        "choiceState": {
+          "race:human:languages": [
+            "lang_common"
+          ],
+          "background:Прислужник:languages": [
+            "lang_common",
+            "lang_dwarvish"
+          ],
+          "class:Плут:skills": [
+            "acrobatics",
+            "athletics",
+            "deception",
+            "insight"
+          ]
+        },
+        "choiceHistory": [
+          {
+            "key": "race:human:languages",
+            "label": "Дополнительные языки",
+            "value": [
+              "lang_common"
+            ],
+            "source": "race",
+            "level": 1,
+            "className": null,
+            "raceId": "human"
+          },
+          {
+            "key": "background:Прислужник:languages",
+            "label": "Языки предыстории",
+            "value": [
+              "lang_common",
+              "lang_dwarvish"
+            ],
+            "source": "background",
+            "level": 1,
+            "className": null,
+            "raceId": null
+          },
+          {
+            "key": "class:Плут:skills",
+            "label": "Навыки класса",
+            "value": [
+              "acrobatics",
+              "athletics",
+              "deception",
+              "insight"
+            ],
+            "source": "class",
+            "level": 1,
+            "className": "Плут",
+            "raceId": null
+          }
+        ],
+        "pendingChoices": [],
+        "activeConditions": {},
+        "weaponsData": [],
+        "spellSlotsData": {},
+        "spellsData": [],
+        "folders": [],
+        "library": [],
+        "backgroundLanguagesToChoose": 2,
+        "raceFeatureDescriptions": [
+          "Самая молодая, амбициозная и плотоядная раса материального плана. Люди лишены долголетия эльфов или мощи гигантов, но их упорство, изобретательность и краткая, но яркая жизнь позволяют им покорять любые вершины. +1 ко всем характеристикам. Возраст: дети до 13 лет; подростки 14–17; молодые 18–35; зрелые 36–59; пожилые/старые 60+ лет (редко доживают до 100). Размер: Средний."
+        ],
+        "raceMechanics": {
+          "darkvisionFt": 0,
+          "flight": false,
+          "swim": false,
+          "climb": false,
+          "telepathy": false,
+          "magicResistance": false,
+          "poisonResistance": false,
+          "poisonImmunity": false,
+          "fireResistance": false,
+          "coldResistance": false,
+          "acidResistance": false,
+          "necroticResistance": false,
+          "radiantResistance": false,
+          "psychicResistance": false,
+          "amphibious": false,
+          "breathWeapon": false,
+          "lucky": false,
+          "brave": false,
+          "relentlessEndurance": false,
+          "powerfulBuild": false,
+          "naturalArmor": false,
+          "shapeshifter": false,
+          "mimicry": false,
+          "noSleep": false,
+          "noBreath": false,
+          "sunlightSensitivity": false,
+          "stoneEndurance": false,
+          "charge": false,
+          "horns": false,
+          "sizeChoice": false,
+          "feyAncestry": false,
+          "weaponTraining": false,
+          "savageAttacks": false,
+          "nimbleEscape": false,
+          "packTactics": false,
+          "trunk": false,
+          "glide": false,
+          "repairable": false,
+          "mentalShield": false,
+          "undeadResilience": false,
+          "spiderClimb": false,
+          "speedFt": 30,
+          "size": "Средний",
+          "innateSpellcasting": false,
+          "skillBonuses": [],
+          "speed": "30 футов"
+        },
+        "resistances": [],
+        "immunities": [],
+        "size": "Средний",
+        "hpMax": 8,
+        "hpCurrent": 8,
+        "hitDice": "1d8",
+        "gender": "",
+        "origin": "",
+        "backgroundFeature": "Приют верующего (Shelter of the Faithful) — Вы и ваши спутники можете рассчитывать на бесплатные исцеление и уход в храмах вашей веры. Единоверцы также готовы предоставить вам скромный ночлег и пищу, а вы имеете определенный авторитет в религиозных кругах.",
+        "classFeaturesState": {},
+        "abilities": {
+          "str": 11,
+          "dex": 11,
+          "con": 11,
+          "int": 11,
+          "wis": 11,
+          "cha": 11
+        }
+      }
+    }
+  ]
 }

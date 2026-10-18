@@ -8,6 +8,10 @@ if (git('branch', '--show-current') !== 'experiment/unity-vtt') throw Error('Exp
 const sourceCommit = git('rev-parse', 'main');
 const files = ['app/app.js', 'app/skills.js', 'app/spells.js', ...[...fs.readFileSync(path.join(root, 'index.html'), 'utf8').matchAll(/<script src="\.\/(app\/data\/spells\/[^"?]+)"/g)].map(m => m[1]), 'app/weaponsmelee.js', 'app/weaponsheavy.js', 'app/weaponsranged.js', 'app/weaponsspecial.js', 'app/armors.js', 'app/consumables.js', 'app/materials.js', 'app/junk.js', 'app/Inventory.js', 'app/Inventory-weight-tracker.js', 'app/notes.js'];
 if (git('diff', 'main', '--', ...files)) throw Error('Sheet sources differ from main; review before regeneration');
+files.push('app/races.js', 'app/Backgrounds.js', 'app/character_creation.js', 'app/Proficiencies.js', 'app/classesRegistry.js', 'app/character_builder_v2.js', 'app/inventory-coins.js');
+const classFiles = ['Barbarian', 'Bard', 'Cleric', 'Druid', 'Fighter', 'Monk', 'Paladin', 'Ranger', 'Rogue', 'Sorcerer', 'Warlock', 'Wizard', 'Artificer'].map(n => `app/data/classes/${n}.js`);
+files.splice(files.indexOf('app/classesRegistry.js'), 0, ...classFiles);
+if (git('diff', 'main', '--', ...files)) throw Error('Creation sources differ from main');
 const sources = files.map(file => ({ file, sha256: crypto.createHash('sha256').update(fs.readFileSync(path.join(root, file))).digest('hex') }));
 const elements = {};
 const context = { console, document: { addEventListener() {}, getElementById(id) { return elements[id] || null; } }, addEventListener() {}, setTimeout() {}, clearTimeout() {}, confirm() { return true; }, localStorage: { getItem() { return null; } } };
@@ -53,9 +57,38 @@ for (const activeFolderId of ['f1', 'f2', 'missing']) {
 const noteInput = { id: 'notes-delete', activeFolderId: 'f1', folders: [{ id: 'f1', notes: [{ id: 1, text: 'Удаляется' }, { id: 2, text: 'Остаётся' }] }, { id: 'f2', notes: [{ id: 3, text: 'Другая папка' }] }], unknown: true };
 context.currentChar = context.currentCharacter = clone(noteInput); context.deleteNote(0);
 const noteCase = { input: noteInput, expected: clone(context.currentChar) };
+// Materialize source Builder data; runtime C# consumes data, never JS code.
+context.getAllBackgrounds = () => vm.runInContext('dndBackgrounds', context);
+const baseStats = Object.fromEntries(context.STATS_CONFIG.map(s => [s.id, 10]));
+function seed(race, className, background) {
+  context.allCharacters = []; context.saveAllCharacters = () => {}; context.openCharacter = () => {};
+  context.CharacterBuilderV2.Wizard.prototype.finishCreate.call({ values: { name: 'Template', stats: clone(baseStats), background }, className, race, choices: [], statMode: 'manual', randomRollsLeft: 5, isNewClass: true, root: { style: {} } });
+  const hero = clone(context.allCharacters[0]); delete hero.id; return hero;
+}
+const neutral = seed(null, '', '');
+function delta(hero) { return Object.fromEntries(Object.entries(hero).filter(([key, value]) => JSON.stringify(neutral[key]) !== JSON.stringify(value))); }
+function choices(race, cls, bg) { return context.CharacterBuilderV2.collectChoices(race, cls, 1, true, null, { background: bg || '' }).map(c => ({ ...c, options: typeof c.options === 'function' ? c.options() : c.options || [] })); }
+const creation = {
+  races: context.getAllRaces().map(r => ({ ...r, seed: delta(seed(r, '', '')), choices: choices(r, '', '').filter(c => c.source === 'race') })),
+  classes: context.DND_CLASSES_LIST.map(c => ({ ...c, seed: seed(null, c.name, ''), choices: choices(null, c.name, '').filter(c => c.source !== 'race') })),
+  backgrounds: context.getAllBackgrounds().map(b => ({ ...b, seed: delta(seed(null, '', b.nameRu || b.name)), choices: choices(null, '', b.nameRu || b.name) })),
+  proficiencies: context.PROFICIENCIES_DB
+};
+for (const cls of creation.classes) {
+  const data = context.getClassData(cls.name), features = data && data.progression && data.progression.levels && data.progression.levels[1] && data.progression.levels[1].features || [];
+  cls.levelOneFeatures = clone(features);
+}
+const creationCases = [];
+for (const className of ['Воин', 'Волшебник', 'Плут']) {
+  const race = context.getAllRaces().find(r => r.id === 'human'), background = context.getAllBackgrounds()[0];
+  const picks = choices(race, className, background.nameRu || background.name), answers = {};
+  for (const c of picks) { const opts = c.options; const ids = opts.map(o => typeof o === 'string' ? o : o.id || o.name); answers[c.key] = c.type === 'multi' ? ids.slice(0, c.count || 1) : ids[0]; }
+  context.allCharacters = []; context.CharacterBuilderV2.Wizard.prototype.finishCreate.call({ values: { name: 'Creation fixture', stats: clone(baseStats), background: background.nameRu || background.name, ...answers }, className, race, choices: picks, statMode: 'manual', randomRollsLeft: 5, isNewClass: true, root: { style: {} } });
+  creationCases.push({ className, raceId: race.id, background: background.nameRu || background.name, stats: baseStats, answers, expected: clone(context.allCharacters[0]) });
+}
 const output = path.join(root, 'unity/Assets/Vtt/Resources/CharacterSheet');
 fs.mkdirSync(output, { recursive: true });
-fs.writeFileSync(path.join(output, 'catalog.json'), JSON.stringify({ sourceCommit, sources, spells, items }, null, 2) + '\n');
+fs.writeFileSync(path.join(output, 'catalog.json'), JSON.stringify({ sourceCommit, sources, spells, items, creation }, null, 2) + '\n');
 const tests = path.join(root, 'unity/Assets/Vtt/Tests'); fs.mkdirSync(tests, { recursive: true });
-fs.writeFileSync(path.join(tests, 'sheet-contract.json'), JSON.stringify({ sourceCommit, sources, skills: context.SKILLS_CONFIG, cases: golden, inventoryCases, weightCases, weightHero, weightTotal, folderCases, noteCase }, null, 2) + '\n');
+fs.writeFileSync(path.join(tests, 'sheet-contract.json'), JSON.stringify({ sourceCommit, sources, skills: context.SKILLS_CONFIG, cases: golden, inventoryCases, weightCases, weightHero, weightTotal, folderCases, noteCase, creationCases }, null, 2) + '\n');
 console.log(`SHEET_SOURCE_PASS: ${spells.length} spells; ${Object.values(items).flat().length} items; ${golden.length} actual JS formula cases; inventory/notes/weight contracts from main ${sourceCommit}`);

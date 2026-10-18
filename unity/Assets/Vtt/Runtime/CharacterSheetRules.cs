@@ -61,6 +61,10 @@ namespace DndVtt.UnityPrototype
         }
         public static void Recalculate(JObject hero)
         {
+            // Builder serializes this compatibility alias as a separate object.
+            // Update only recognized Builder profiles; preserve unrelated legacy data.
+            if (hero["_builderBaseStats"] is JObject && hero["stats"] is JObject stats && hero["abilities"] is JObject alias && Stats.All(s => alias[s] != null && stats[s] != null))
+                foreach (string stat in Stats) alias[stat] = stats[stat].DeepClone();
             hero["profBonus"] = Proficiency(hero);
             var skills = Object(hero, "skills"); var values = Object(hero, "skillValues");
             for (int i = 0; i < SkillIds.Length; i++)

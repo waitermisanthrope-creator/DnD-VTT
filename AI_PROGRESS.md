@@ -1,5 +1,14 @@
 # AI progress — compact checkpoint
 
+## 2026-10-19 — Unity home, roster, creation and wallet
+
+- Added native Home as startup screen, searchable character roster, four-step creation (identity/background, race/class, point buy/manual stats and choices, preview), passport and editable all-data view. Map is a separate navigation destination.
+- Creation blueprints are extracted from actual local main Builder without network execution: 57 races, 35 class records, 31 backgrounds. Extra-body classes are excluded from ordinary creation; unsupported choices remain pending, not executed. Full class initialization/progression is still incomplete.
+- New hero is appended to a validated archive and atomically saved before replacing the live document. Unknown fields, wrappers and existing heroes are preserved; duplicate identity, missing required choices and overspent point buy are rejected. Five coin denominations use existing coins contract; no parallel wallet store.
+- Actual Windows GUI created synthetic human fighter Арден — тест Unity, HP12, selected language/skills; wallet42gp survived save, .bak and restart in an isolated TestResults profile. Default user stores and cloud were untouched. Final platform evidence is in unity/VALIDATION.md.
+- Earlier contracts-only attempts failed at startup/Editor exit despite later assertion markers; logs retained. Do not call these attempts successful. No main/workflow/release changes; historical class queue below unchanged.
+- Final Windows/Android builds and Windows migration smoke exited0 after the map-selector regression and Builder stat-alias fixes. APK signature verified; no attached Android device. Exact artifact hashes and failure/service-log separation are recorded in unity/VALIDATION.md. Preserve the pre-existing 66 unrelated working changes; they are excluded from this stage.
+
 ## 2026-10-19 — sheet inventory and notes continuation
 - Foundation commit `ec12113d` is independently confirmed on origin/experiment/unity-vtt. Continued owner request to port the whole sheet; no map-only detour.
 - Packaged all 188 entries from eight actual main inventory catalogues. Native category/search/add controls preserve metadata and stack via the existing inventory structure. Added current-main weight/parser/capacity projections and positive fractional quantity editing. No AC/class/proficiency/consumable/overload-penalty execution claim.
