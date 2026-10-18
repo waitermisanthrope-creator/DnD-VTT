@@ -6,3 +6,5 @@
 *.cs text eol=lf
 *.json text eol=lf
 *.ps1 text eol=crlf
+# Keep packaged legacy assets byte-identical to the provenance manifest.
+Assets/LegacyContent/Source/** -text whitespace=-blank-at-eol

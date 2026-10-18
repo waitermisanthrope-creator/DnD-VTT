@@ -11,20 +11,24 @@ namespace DndVtt.UnityPrototype
         public bool firstPerson;
         public bool acceptInput = true;
         public float speed = 4f;
+        public Vector3 spawnPosition = new Vector3(0, .15f, -6);
+        public bool showHelp = true;
         private CharacterController motor;
         private float yaw, pitch = 12f, vertical;
         private Vector2 touchMove;
         private bool jumpRequested;
-        public Vector3 Spawn => new Vector3(0, 0.15f, -6);
+        public Vector3 Spawn => spawnPosition;
 
         private void Awake() { motor = GetComponent<CharacterController>(); }
-        private void Start() { if (!Application.isMobilePlatform && acceptInput) Capture(true); }
+        private void Start() { if (!Application.isMobilePlatform && acceptInput && showHelp) Capture(true); }
         private void OnApplicationFocus(bool focus) { if (!focus) Capture(false); }
+        public void RequestJump() { jumpRequested = true; }
         private static void Capture(bool value) { Cursor.lockState = value ? CursorLockMode.Locked : CursorLockMode.None; Cursor.visible = !value; }
         public void SetFirstPerson(bool value) { firstPerson = value; avatar.enabled = !value; UpdateCamera(); }
         public void Look(Vector2 delta) { yaw += delta.x; pitch = Mathf.Clamp(pitch - delta.y, -70f, 75f); transform.rotation = Quaternion.Euler(0, yaw, 0); }
         public void ResetPosition()
         {
+            if (!motor) motor = GetComponent<CharacterController>();
             motor.enabled = false; transform.position = Spawn; motor.enabled = true; vertical = 0;
         }
         // Also used by runtime verification: exercise exactly the same collision/movement path.
@@ -35,7 +39,7 @@ namespace DndVtt.UnityPrototype
             vertical += Physics.gravity.y * dt;
             Vector3 planar = transform.right * movement.x + transform.forward * movement.y;
             motor.Move((Vector3.ClampMagnitude(planar, 1) * speed + Vector3.up * vertical) * dt);
-            if (transform.position.y < -12) ResetPosition();
+            if (transform.position.y < Spawn.y - 12) ResetPosition();
         }
         private void Update()
         {
@@ -89,6 +93,7 @@ namespace DndVtt.UnityPrototype
         }
         private void OnGUI()
         {
+            if (!showHelp) return;
             GUI.skin.label.fontSize = 18;
             GUI.Label(new Rect(16, 12, Screen.width - 32, 30), "DnD VTT / Unity experiment — " + (firstPerson ? "First person" : "Third person"));
             GUI.Label(new Rect(16, 42, Screen.width - 32, 30), "WASD / mouse · V camera · Space jump · Esc cursor · R respawn");

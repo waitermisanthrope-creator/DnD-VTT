@@ -1,7 +1,7 @@
 # Next checkpoint
 
 ## Branch-specific Unity experiment (owner request 2026-10-18)
-Only on `experiment/unity-vtt`: see `docs/UNITY_MIGRATION_PLAN.md`, `unity/README.md` and `unity/VALIDATION.md`. Do not checkout/write/push main or edit existing release workflows for this experiment. Prototype is isolated from existing saves/cloud. Continue with read-only schema/map adapters after validating the exploration slice. The historical main gameplay queue below remains unchanged.
+Only on `experiment/unity-vtt`: see `docs/UNITY_MIGRATION_PLAN.md`, `unity/README.md` and `unity/VALIDATION.md`. Do not checkout/write/push main or edit existing release workflows. Current start scene is `Assets/Vtt/Scenes/ImportedAdventure.unity`: real tavern, two floors, 50 furniture instances, read-only JSON profile import; nine maps in catalog, other-map furniture coverage partial. Preserve `Exploration.unity` controller regression room and user-created `unity/dnd-vtt` sources (do not bulk-stage). Next: map door/LOS/loot/stair interaction parity and C# HP/dice/action domain commands against JS fixtures, before writing imported profiles or connecting live cloud. No full rules/class migration claim. The historical main gameplay queue below remains unchanged.
 
 1. Read this file, AI_PROGRESS.md, AI_BLOCKERS.md, AGENTS.md; fetch origin/main without resetting local work. Inspect divergence and unpushed artifacts/branches before edits.
 2. Read live Issue #9 and last Actions conclusions. Use targeted PROJECT_ATLAS lookup, then actual source. Do not reread megabyte guides wholesale.

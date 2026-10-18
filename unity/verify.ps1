@@ -1,5 +1,5 @@
 param(
-    [ValidateSet('Setup','Windows','Android','Smoke','Snapshot')][string]$Stage = 'Setup',
+    [ValidateSet('Setup','Windows','Android','Smoke','Snapshot','MigrationSetup','MigrationContracts','MigrationWindows','MigrationAndroid','MigrationSmoke')][string]$Stage = 'Setup',
     [string]$Editor = 'C:\Program Files\Unity\Hub\Editor\6000.3.26f1\Editor\Unity.exe'
 )
 $ErrorActionPreference = 'Stop'
@@ -10,21 +10,24 @@ if ($LASTEXITCODE -ne 0 -or $branch -ne 'experiment/unity-vtt') { throw 'Require
 $results = Join-Path $project 'TestResults'
 New-Item -ItemType Directory -Force $results | Out-Null
 $log = Join-Path $results "$Stage.log"
-if ($Stage -eq 'Smoke') {
-    $executable = Join-Path $project 'Builds\Windows\DndVtt.exe'
-    $arguments = "--vtt-smoke -logFile `"$log`""
-    $marker = 'VTT_SMOKE_PASS'
+if ($Stage -in @('Smoke','MigrationSmoke')) {
+    $folder = if ($Stage -eq 'MigrationSmoke') { 'WindowsMigration' } else { 'Windows' }
+    $executable = Join-Path $project "Builds\$folder\DndVtt.exe"
+    $flag = if ($Stage -eq 'MigrationSmoke') { '--vtt-migration-smoke' } else { '--vtt-smoke' }
+    $arguments = "$flag -logFile `"$log`""
+    $marker = if ($Stage -eq 'MigrationSmoke') { 'VTT_MIGRATION_SMOKE_PASS' } else { 'VTT_SMOKE_PASS' }
 } else {
     if (!(Test-Path -LiteralPath $Editor)) { throw 'Unity Editor not found' }
     $executable = $Editor
-    $method = @{Setup='Create'; Windows='BuildWindows'; Android='BuildAndroid'; Snapshot='Snapshot'}[$Stage]
-    $target = if ($Stage -eq 'Android') { '-buildTarget Android' } elseif ($Stage -eq 'Windows') { '-buildTarget Win64' } else { '' }
+    $method = @{Setup='Create'; Windows='BuildWindows'; Android='BuildAndroid'; Snapshot='Snapshot'; MigrationSetup='CreateScene'; MigrationContracts='ValidateContracts'; MigrationWindows='BuildWindows'; MigrationAndroid='BuildAndroid'}[$Stage]
+    $className = if ($Stage.StartsWith('Migration')) { 'LegacyMigrationSetup' } else { 'PrototypeSetup' }
+    $target = if ($Stage -in @('Android','MigrationAndroid')) { '-buildTarget Android' } elseif ($Stage -in @('Windows','MigrationWindows')) { '-buildTarget Win64' } else { '' }
     $graphics = if ($Stage -eq 'Snapshot') { '-force-d3d11' } else { '-nographics' }
-    $arguments = "-batchmode $graphics -quit $target -projectPath `"$project`" -executeMethod PrototypeSetup.$method -logFile `"$log`""
-    $marker = if ($Stage -eq 'Setup') { 'VTT_SETUP_PASS' } elseif ($Stage -eq 'Snapshot') { 'VTT_SNAPSHOT_PASS' } else { 'VTT_BUILD_PASS' }
+    $arguments = "-batchmode $graphics -quit $target -projectPath `"$project`" -executeMethod $className.$method -logFile `"$log`""
+    $marker = switch ($Stage) { 'Setup' {'VTT_SETUP_PASS'} 'Snapshot' {'VTT_SNAPSHOT_PASS'} 'MigrationSetup' {'VTT_MIGRATION_SCENE_PASS'} 'MigrationContracts' {'VTT_MIGRATION_CONTRACT_PASS'} 'MigrationWindows' {'VTT_MIGRATION_BUILD_PASS'} 'MigrationAndroid' {'VTT_MIGRATION_BUILD_PASS'} default {'VTT_BUILD_PASS'} }
 }
 $process = Start-Process -FilePath $executable -ArgumentList $arguments -WindowStyle Hidden -PassThru
-if (!$process.WaitForExit($(if ($Stage -eq 'Smoke') { 120000 } else { 1200000 }))) {
+if (!$process.WaitForExit($(if ($Stage -in @('Smoke','MigrationSmoke')) { 120000 } else { 1200000 }))) {
     Stop-Process -Id $process.Id
     throw "$Stage timed out; see $log"
 }

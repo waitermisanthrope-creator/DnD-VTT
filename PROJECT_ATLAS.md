@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 7722cccc4406. Git содержит 1412 файлов.
+Снимок кода 926a8ff3918c. Git содержит 1731 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -49,9 +49,9 @@
 | №0028 3D_CHARACTER_CLOTHING_PROGRESS.md | 85343 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0029 3D_CHARACTER_RACES_PROGRESS.md | 75939 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0030 AGENTS.md | 4945 B | документация или отчёт: AGENTS |
-| №0031 AI_BLOCKERS.md | 4155 B | документация или отчёт: AI BLOCKERS |
-| №0032 AI_NEXT_TASK.md | 4359 B | документация или отчёт: AI NEXT TASK |
-| №0033 AI_PROGRESS.md | 26984 B | документация или отчёт: AI PROGRESS |
+| №0031 AI_BLOCKERS.md | 4547 B | документация или отчёт: AI BLOCKERS |
+| №0032 AI_NEXT_TASK.md | 4736 B | документация или отчёт: AI NEXT TASK |
+| №0033 AI_PROGRESS.md | 31137 B | документация или отчёт: AI PROGRESS |
 | №0034 android/.gitignore | 48 B | Android компонент: .gitignore |
 | №0035 android/app/build.gradle | 4243 B | Android компонент: build |
 | №0036 android/app/src/main/AndroidManifest.xml | 12350 B | Android компонент: AndroidManifest |
@@ -1027,7 +1027,7 @@
 | №1006 docs/SIGNATURE_ASSET_FIX_74_00_66.md | 1737 B | документация или отчёт: SIGNATURE ASSET FIX 74 00 66 |
 | №1007 docs/SUPABASE_MAIL_SETUP_PROMPT_RU.md | 2882 B | документация или отчёт: SUPABASE MAIL SETUP PROMPT RU |
 | №1008 docs/UNIFIED_RELEASE.md | 6175 B | документация или отчёт: UNIFIED RELEASE |
-| №1009 docs/UNITY_MIGRATION_PLAN.md | 12027 B | документация или отчёт: UNITY MIGRATION PLAN |
+| №1009 docs/UNITY_MIGRATION_PLAN.md | 13623 B | документация или отчёт: UNITY MIGRATION PLAN |
 | №1010 docs/WINDOWS_DESKTOP.md | 3815 B | документация или отчёт: WINDOWS DESKTOP |
 | №1011 dragon_fire_v2_sprite.png | 1013123 B | текстура/изображение: dragon fire v2 sprite |
 | №1012 embers_v2_sprite.png | 698014 B | текстура/изображение: embers v2 sprite |
@@ -1318,119 +1318,438 @@
 | №1297 tools/sync_manifest.py | 2080 B | скрипт разработчика: sync manifest |
 | №1298 tools/test_cloud_sql.sh | 1105 B | скрипт разработчика: test cloud sql |
 | №1299 tools/unified_version.py | 3483 B | скрипт разработчика: unified version |
-| №1300 unity/.gitattributes | 316 B | вспомогательный файл: .gitattributes |
-| №1301 unity/.gitignore | 194 B | вспомогательный файл: .gitignore |
+| №1300 unity/.gitattributes | 451 B | вспомогательный файл: .gitattributes |
+| №1301 unity/.gitignore | 368 B | вспомогательный файл: .gitignore |
 | №1302 unity/Assets/DefaultVolumeProfile.asset | 20474 B | вспомогательный файл: DefaultVolumeProfile |
 | №1303 unity/Assets/DefaultVolumeProfile.asset.meta | 189 B | вспомогательный файл: DefaultVolumeProfile.asset |
-| №1304 unity/Assets/UniversalRenderPipelineGlobalSettings.asset | 25900 B | вспомогательный файл: UniversalRenderPipelineGlobalSettings |
-| №1305 unity/Assets/UniversalRenderPipelineGlobalSettings.asset.meta | 189 B | вспомогательный файл: UniversalRenderPipelineGlobalSettings.asset |
-| №1306 unity/Assets/Vtt.meta | 172 B | вспомогательный файл: Vtt |
-| №1307 unity/Assets/Vtt/Editor.meta | 172 B | вспомогательный файл: Editor |
-| №1308 unity/Assets/Vtt/Editor/PrototypeSetup.cs | 7704 B | вспомогательный файл: PrototypeSetup |
-| №1309 unity/Assets/Vtt/Editor/PrototypeSetup.cs.meta | 59 B | вспомогательный файл: PrototypeSetup.cs |
-| №1310 unity/Assets/Vtt/Runtime.meta | 172 B | вспомогательный файл: Runtime |
-| №1311 unity/Assets/Vtt/Runtime/ExplorerController.cs | 5476 B | вспомогательный файл: ExplorerController |
-| №1312 unity/Assets/Vtt/Runtime/ExplorerController.cs.meta | 59 B | вспомогательный файл: ExplorerController.cs |
-| №1313 unity/Assets/Vtt/Runtime/PrototypeSmoke.cs | 3139 B | вспомогательный файл: PrototypeSmoke |
-| №1314 unity/Assets/Vtt/Runtime/PrototypeSmoke.cs.meta | 59 B | вспомогательный файл: PrototypeSmoke.cs |
-| №1315 unity/Assets/Vtt/Scenes.meta | 172 B | вспомогательный файл: Scenes |
-| №1316 unity/Assets/Vtt/Scenes/Exploration.unity | 49176 B | вспомогательный файл: Exploration |
-| №1317 unity/Assets/Vtt/Scenes/Exploration.unity.meta | 155 B | вспомогательный файл: Exploration.unity |
-| №1318 unity/Assets/Vtt/Settings.meta | 172 B | вспомогательный файл: Settings |
-| №1319 unity/Assets/Vtt/Settings/Explorer.mat | 3799 B | вспомогательный файл: Explorer |
-| №1320 unity/Assets/Vtt/Settings/Explorer.mat.meta | 188 B | вспомогательный файл: Explorer.mat |
-| №1321 unity/Assets/Vtt/Settings/ExplorerRenderer.asset | 1865 B | вспомогательный файл: ExplorerRenderer |
-| №1322 unity/Assets/Vtt/Settings/ExplorerRenderer.asset.meta | 189 B | вспомогательный файл: ExplorerRenderer.asset |
-| №1323 unity/Assets/Vtt/Settings/ExplorerURP.asset | 4690 B | вспомогательный файл: ExplorerURP |
-| №1324 unity/Assets/Vtt/Settings/ExplorerURP.asset.meta | 189 B | вспомогательный файл: ExplorerURP.asset |
-| №1325 unity/Assets/Vtt/Settings/Stone.mat | 3795 B | вспомогательный файл: Stone |
-| №1326 unity/Assets/Vtt/Settings/Stone.mat.meta | 188 B | вспомогательный файл: Stone.mat |
-| №1327 unity/Assets/Vtt/Settings/Wall.mat | 3793 B | вспомогательный файл: Wall |
-| №1328 unity/Assets/Vtt/Settings/Wall.mat.meta | 188 B | вспомогательный файл: Wall.mat |
-| №1329 unity/evidence/exploration.png | 119417 B | текстура/изображение: exploration |
-| №1330 unity/Packages/manifest.json | 443 B | данные/конфигурация: manifest |
-| №1331 unity/Packages/packages-lock.json | 5469 B | данные/конфигурация: packages lock |
-| №1332 unity/ProjectSettings/AudioManager.asset | 523 B | вспомогательный файл: AudioManager |
-| №1333 unity/ProjectSettings/ClusterInputManager.asset | 114 B | вспомогательный файл: ClusterInputManager |
-| №1334 unity/ProjectSettings/DynamicsManager.asset | 1574 B | вспомогательный файл: DynamicsManager |
-| №1335 unity/ProjectSettings/EditorBuildSettings.asset | 291 B | вспомогательный файл: EditorBuildSettings |
-| №1336 unity/ProjectSettings/EditorSettings.asset | 1603 B | вспомогательный файл: EditorSettings |
-| №1337 unity/ProjectSettings/GraphicsSettings.asset | 2615 B | вспомогательный файл: GraphicsSettings |
-| №1338 unity/ProjectSettings/InputManager.asset | 9754 B | вспомогательный файл: InputManager |
-| №1339 unity/ProjectSettings/MemorySettings.asset | 1226 B | вспомогательный файл: MemorySettings |
-| №1340 unity/ProjectSettings/MultiplayerManager.asset | 232 B | вспомогательный файл: MultiplayerManager |
-| №1341 unity/ProjectSettings/NavMeshAreas.asset | 1361 B | вспомогательный файл: NavMeshAreas |
-| №1342 unity/ProjectSettings/Physics2DSettings.asset | 1862 B | вспомогательный файл: Physics2DSettings |
-| №1343 unity/ProjectSettings/PresetManager.asset | 146 B | вспомогательный файл: PresetManager |
-| №1344 unity/ProjectSettings/ProjectSettings.asset | 22470 B | вспомогательный файл: ProjectSettings |
-| №1345 unity/ProjectSettings/ProjectVersion.txt | 85 B | документация или отчёт: ProjectVersion |
-| №1346 unity/ProjectSettings/QualitySettings.asset | 9858 B | вспомогательный файл: QualitySettings |
-| №1347 unity/ProjectSettings/SceneTemplateSettings.json | 3535 B | данные/конфигурация: SceneTemplateSettings |
-| №1348 unity/ProjectSettings/ShaderGraphSettings.asset | 633 B | вспомогательный файл: ShaderGraphSettings |
-| №1349 unity/ProjectSettings/TagManager.asset | 411 B | вспомогательный файл: TagManager |
-| №1350 unity/ProjectSettings/TimeManager.asset | 305 B | вспомогательный файл: TimeManager |
-| №1351 unity/ProjectSettings/UnityConnectSettings.asset | 1063 B | вспомогательный файл: UnityConnectSettings |
-| №1352 unity/ProjectSettings/VersionControlSettings.asset | 172 B | вспомогательный файл: VersionControlSettings |
-| №1353 unity/ProjectSettings/VFXManager.asset | 525 B | вспомогательный файл: VFXManager |
-| №1354 unity/README.md | 2630 B | документация или отчёт: README |
-| №1355 unity/VALIDATION.md | 5948 B | документация или отчёт: VALIDATION |
-| №1356 unity/verify.ps1 | 1931 B | вспомогательный файл: verify |
-| №1357 updates/beta.json | 222 B | метаданные обновлений: beta |
-| №1358 updates/previous-stable.json | 184759 B | метаданные обновлений: previous stable |
-| №1359 updates/README.md | 243 B | документация или отчёт: README |
-| №1360 updates/stable.json | 184760 B | метаданные обновлений: stable |
-| №1361 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
-| №1362 VTT_PROJECT_MANIFEST_V70.json | 44371 B | устаревший список V70, не актуален |
-| №1363 wall_brick_red.png | 111128 B | текстура/изображение: wall brick red |
-| №1364 wall_concrete.png | 91074 B | текстура/изображение: wall concrete |
-| №1365 wall_half_timber.png | 109537 B | текстура/изображение: wall half timber |
-| №1366 wall_marble_dark.png | 123621 B | текстура/изображение: wall marble dark |
-| №1367 wall_marble_light.png | 90457 B | текстура/изображение: wall marble light |
-| №1368 wall_moss_stone.png | 128985 B | текстура/изображение: wall moss stone |
-| №1369 wall_old_plaster.png | 107725 B | текстура/изображение: wall old plaster |
-| №1370 wall_plaster_dark.png | 95153 B | текстура/изображение: wall plaster dark |
-| №1371 wall_plaster_light.png | 91767 B | текстура/изображение: wall plaster light |
-| №1372 wall_plaster_panel.png | 89722 B | текстура/изображение: wall plaster panel |
-| №1373 wall_slate.png | 103822 B | текстура/изображение: wall slate |
-| №1374 wall_stone_dark.png | 120617 B | текстура/изображение: wall stone dark |
-| №1375 wall_stone_light.png | 127689 B | текстура/изображение: wall stone light |
-| №1376 wall_stone_masonry.png | 129908 B | текстура/изображение: wall stone masonry |
-| №1377 wall_wallpaper.png | 106442 B | текстура/изображение: wall wallpaper |
-| №1378 wall_white_plaster.png | 120869 B | текстура/изображение: wall white plaster |
-| №1379 wall_wood_dark.png | 81144 B | текстура/изображение: wall wood dark |
-| №1380 wall_wood_light.png | 93079 B | текстура/изображение: wall wood light |
-| №1381 wallpapers/1.png | 1460744 B | ассет графики/3D/интерфейса: 1 |
-| №1382 wallpapers/10.png | 1667723 B | ассет графики/3D/интерфейса: 10 |
-| №1383 wallpapers/11.png | 1815959 B | ассет графики/3D/интерфейса: 11 |
-| №1384 wallpapers/12.png | 1548677 B | ассет графики/3D/интерфейса: 12 |
-| №1385 wallpapers/13.png | 1599093 B | ассет графики/3D/интерфейса: 13 |
-| №1386 wallpapers/14.png | 1596513 B | ассет графики/3D/интерфейса: 14 |
-| №1387 wallpapers/15.png | 233043 B | ассет графики/3D/интерфейса: 15 |
-| №1388 wallpapers/16.png | 212684 B | ассет графики/3D/интерфейса: 16 |
-| №1389 wallpapers/17.png | 1585122 B | ассет графики/3D/интерфейса: 17 |
-| №1390 wallpapers/18.png | 2095852 B | ассет графики/3D/интерфейса: 18 |
-| №1391 wallpapers/19.png | 8605503 B | ассет графики/3D/интерфейса: 19 |
-| №1392 wallpapers/2.png | 1590206 B | ассет графики/3D/интерфейса: 2 |
-| №1393 wallpapers/20.png | 1284815 B | ассет графики/3D/интерфейса: 20 |
-| №1394 wallpapers/21.png | 179307 B | ассет графики/3D/интерфейса: 21 |
-| №1395 wallpapers/22.png | 344279 B | ассет графики/3D/интерфейса: 22 |
-| №1396 wallpapers/23.png | 210291 B | ассет графики/3D/интерфейса: 23 |
-| №1397 wallpapers/24.png | 141215 B | ассет графики/3D/интерфейса: 24 |
-| №1398 wallpapers/25.png | 160892 B | ассет графики/3D/интерфейса: 25 |
-| №1399 wallpapers/26.png | 187259 B | ассет графики/3D/интерфейса: 26 |
-| №1400 wallpapers/27.png | 213194 B | ассет графики/3D/интерфейса: 27 |
-| №1401 wallpapers/28.png | 202417 B | ассет графики/3D/интерфейса: 28 |
-| №1402 wallpapers/29.png | 166942 B | ассет графики/3D/интерфейса: 29 |
-| №1403 wallpapers/3.png | 1662340 B | ассет графики/3D/интерфейса: 3 |
-| №1404 wallpapers/30.png | 237556 B | ассет графики/3D/интерфейса: 30 |
-| №1405 wallpapers/31.svg | 1181 B | ассет графики/3D/интерфейса: 31 |
-| №1406 wallpapers/32.svg | 1417 B | ассет графики/3D/интерфейса: 32 |
-| №1407 wallpapers/4.png | 1816114 B | ассет графики/3D/интерфейса: 4 |
-| №1408 wallpapers/5.png | 1742466 B | ассет графики/3D/интерфейса: 5 |
-| №1409 wallpapers/6.png | 1591016 B | ассет графики/3D/интерфейса: 6 |
-| №1410 wallpapers/7.png | 1815665 B | ассет графики/3D/интерфейса: 7 |
-| №1411 wallpapers/8.png | 1492730 B | ассет графики/3D/интерфейса: 8 |
-| №1412 wallpapers/9.png | 1715179 B | ассет графики/3D/интерфейса: 9 |
+| №1304 unity/Assets/LegacyContent.meta | 172 B | вспомогательный файл: LegacyContent |
+| №1305 unity/Assets/LegacyContent/Catalog.asset | 9068 B | вспомогательный файл: Catalog |
+| №1306 unity/Assets/LegacyContent/Catalog.asset.meta | 189 B | вспомогательный файл: Catalog.asset |
+| №1307 unity/Assets/LegacyContent/geometry-contract.json | 2446 B | данные/конфигурация: geometry contract |
+| №1308 unity/Assets/LegacyContent/geometry-contract.json.meta | 158 B | вспомогательный файл: geometry contract.json |
+| №1309 unity/Assets/LegacyContent/Materials.meta | 172 B | вспомогательный файл: Materials |
+| №1310 unity/Assets/LegacyContent/Materials/floor_ceramic_tile_dark.mat | 3851 B | вспомогательный файл: floor ceramic tile dark |
+| №1311 unity/Assets/LegacyContent/Materials/floor_ceramic_tile_dark.mat.meta | 188 B | вспомогательный файл: floor ceramic tile dark.mat |
+| №1312 unity/Assets/LegacyContent/Materials/floor_ceramic_tile_light.mat | 3852 B | вспомогательный файл: floor ceramic tile light |
+| №1313 unity/Assets/LegacyContent/Materials/floor_ceramic_tile_light.mat.meta | 188 B | вспомогательный файл: floor ceramic tile light.mat |
+| №1314 unity/Assets/LegacyContent/Materials/floor_checker_tile.mat | 3846 B | вспомогательный файл: floor checker tile |
+| №1315 unity/Assets/LegacyContent/Materials/floor_checker_tile.mat.meta | 188 B | вспомогательный файл: floor checker tile.mat |
+| №1316 unity/Assets/LegacyContent/Materials/floor_cobblestone.mat | 3845 B | вспомогательный файл: floor cobblestone |
+| №1317 unity/Assets/LegacyContent/Materials/floor_cobblestone.mat.meta | 188 B | вспомогательный файл: floor cobblestone.mat |
+| №1318 unity/Assets/LegacyContent/Materials/floor_earth.mat | 3838 B | вспомогательный файл: floor earth |
+| №1319 unity/Assets/LegacyContent/Materials/floor_earth.mat.meta | 188 B | вспомогательный файл: floor earth.mat |
+| №1320 unity/Assets/LegacyContent/Materials/floor_grass.mat | 3839 B | вспомогательный файл: floor grass |
+| №1321 unity/Assets/LegacyContent/Materials/floor_grass.mat.meta | 188 B | вспомогательный файл: floor grass.mat |
+| №1322 unity/Assets/LegacyContent/Materials/floor_hex_tile.mat | 3841 B | вспомогательный файл: floor hex tile |
+| №1323 unity/Assets/LegacyContent/Materials/floor_hex_tile.mat.meta | 188 B | вспомогательный файл: floor hex tile.mat |
+| №1324 unity/Assets/LegacyContent/Materials/floor_marble_dark.mat | 3844 B | вспомогательный файл: floor marble dark |
+| №1325 unity/Assets/LegacyContent/Materials/floor_marble_dark.mat.meta | 188 B | вспомогательный файл: floor marble dark.mat |
+| №1326 unity/Assets/LegacyContent/Materials/floor_marble_light.mat | 3846 B | вспомогательный файл: floor marble light |
+| №1327 unity/Assets/LegacyContent/Materials/floor_marble_light.mat.meta | 188 B | вспомогательный файл: floor marble light.mat |
+| №1328 unity/Assets/LegacyContent/Materials/floor_parquet_herringbone.mat | 3852 B | вспомогательный файл: floor parquet herringbone |
+| №1329 unity/Assets/LegacyContent/Materials/floor_parquet_herringbone.mat.meta | 188 B | вспомогательный файл: floor parquet herringbone.mat |
+| №1330 unity/Assets/LegacyContent/Materials/floor_rug_blue.mat | 3841 B | вспомогательный файл: floor rug blue |
+| №1331 unity/Assets/LegacyContent/Materials/floor_rug_blue.mat.meta | 188 B | вспомогательный файл: floor rug blue.mat |
+| №1332 unity/Assets/LegacyContent/Materials/floor_rug_green.mat | 3842 B | вспомогательный файл: floor rug green |
+| №1333 unity/Assets/LegacyContent/Materials/floor_rug_green.mat.meta | 188 B | вспомогательный файл: floor rug green.mat |
+| №1334 unity/Assets/LegacyContent/Materials/floor_rug_red.mat | 3840 B | вспомогательный файл: floor rug red |
+| №1335 unity/Assets/LegacyContent/Materials/floor_rug_red.mat.meta | 188 B | вспомогательный файл: floor rug red.mat |
+| №1336 unity/Assets/LegacyContent/Materials/floor_stone_tile_dark.mat | 3848 B | вспомогательный файл: floor stone tile dark |
+| №1337 unity/Assets/LegacyContent/Materials/floor_stone_tile_dark.mat.meta | 188 B | вспомогательный файл: floor stone tile dark.mat |
+| №1338 unity/Assets/LegacyContent/Materials/floor_stone_tile_light.mat | 3849 B | вспомогательный файл: floor stone tile light |
+| №1339 unity/Assets/LegacyContent/Materials/floor_stone_tile_light.mat.meta | 188 B | вспомогательный файл: floor stone tile light.mat |
+| №1340 unity/Assets/LegacyContent/Materials/floor_tatami.mat | 3840 B | вспомогательный файл: floor tatami |
+| №1341 unity/Assets/LegacyContent/Materials/floor_tatami.mat.meta | 188 B | вспомогательный файл: floor tatami.mat |
+| №1342 unity/Assets/LegacyContent/Materials/floor_wood_dark.mat | 3842 B | вспомогательный файл: floor wood dark |
+| №1343 unity/Assets/LegacyContent/Materials/floor_wood_dark.mat.meta | 188 B | вспомогательный файл: floor wood dark.mat |
+| №1344 unity/Assets/LegacyContent/Materials/floor_wood_light.mat | 3842 B | вспомогательный файл: floor wood light |
+| №1345 unity/Assets/LegacyContent/Materials/floor_wood_light.mat.meta | 188 B | вспомогательный файл: floor wood light.mat |
+| №1346 unity/Assets/LegacyContent/Materials/wall_brick_red.mat | 3842 B | вспомогательный файл: wall brick red |
+| №1347 unity/Assets/LegacyContent/Materials/wall_brick_red.mat.meta | 188 B | вспомогательный файл: wall brick red.mat |
+| №1348 unity/Assets/LegacyContent/Materials/wall_concrete.mat | 3841 B | вспомогательный файл: wall concrete |
+| №1349 unity/Assets/LegacyContent/Materials/wall_concrete.mat.meta | 188 B | вспомогательный файл: wall concrete.mat |
+| №1350 unity/Assets/LegacyContent/Materials/wall_half_timber.mat | 3844 B | вспомогательный файл: wall half timber |
+| №1351 unity/Assets/LegacyContent/Materials/wall_half_timber.mat.meta | 188 B | вспомогательный файл: wall half timber.mat |
+| №1352 unity/Assets/LegacyContent/Materials/wall_marble_dark.mat | 3843 B | вспомогательный файл: wall marble dark |
+| №1353 unity/Assets/LegacyContent/Materials/wall_marble_dark.mat.meta | 188 B | вспомогательный файл: wall marble dark.mat |
+| №1354 unity/Assets/LegacyContent/Materials/wall_marble_light.mat | 3845 B | вспомогательный файл: wall marble light |
+| №1355 unity/Assets/LegacyContent/Materials/wall_marble_light.mat.meta | 188 B | вспомогательный файл: wall marble light.mat |
+| №1356 unity/Assets/LegacyContent/Materials/wall_moss_stone.mat | 3843 B | вспомогательный файл: wall moss stone |
+| №1357 unity/Assets/LegacyContent/Materials/wall_moss_stone.mat.meta | 188 B | вспомогательный файл: wall moss stone.mat |
+| №1358 unity/Assets/LegacyContent/Materials/wall_old_plaster.mat | 3843 B | вспомогательный файл: wall old plaster |
+| №1359 unity/Assets/LegacyContent/Materials/wall_old_plaster.mat.meta | 188 B | вспомогательный файл: wall old plaster.mat |
+| №1360 unity/Assets/LegacyContent/Materials/wall_plaster_dark.mat | 3844 B | вспомогательный файл: wall plaster dark |
+| №1361 unity/Assets/LegacyContent/Materials/wall_plaster_dark.mat.meta | 188 B | вспомогательный файл: wall plaster dark.mat |
+| №1362 unity/Assets/LegacyContent/Materials/wall_plaster_light.mat | 3846 B | вспомогательный файл: wall plaster light |
+| №1363 unity/Assets/LegacyContent/Materials/wall_plaster_light.mat.meta | 188 B | вспомогательный файл: wall plaster light.mat |
+| №1364 unity/Assets/LegacyContent/Materials/wall_plaster_panel.mat | 3846 B | вспомогательный файл: wall plaster panel |
+| №1365 unity/Assets/LegacyContent/Materials/wall_plaster_panel.mat.meta | 188 B | вспомогательный файл: wall plaster panel.mat |
+| №1366 unity/Assets/LegacyContent/Materials/wall_slate.mat | 3837 B | вспомогательный файл: wall slate |
+| №1367 unity/Assets/LegacyContent/Materials/wall_slate.mat.meta | 188 B | вспомогательный файл: wall slate.mat |
+| №1368 unity/Assets/LegacyContent/Materials/wall_stone_dark.mat | 3842 B | вспомогательный файл: wall stone dark |
+| №1369 unity/Assets/LegacyContent/Materials/wall_stone_dark.mat.meta | 188 B | вспомогательный файл: wall stone dark.mat |
+| №1370 unity/Assets/LegacyContent/Materials/wall_stone_light.mat | 3843 B | вспомогательный файл: wall stone light |
+| №1371 unity/Assets/LegacyContent/Materials/wall_stone_light.mat.meta | 188 B | вспомогательный файл: wall stone light.mat |
+| №1372 unity/Assets/LegacyContent/Materials/wall_stone_masonry.mat | 3845 B | вспомогательный файл: wall stone masonry |
+| №1373 unity/Assets/LegacyContent/Materials/wall_stone_masonry.mat.meta | 188 B | вспомогательный файл: wall stone masonry.mat |
+| №1374 unity/Assets/LegacyContent/Materials/wall_wallpaper.mat | 3841 B | вспомогательный файл: wall wallpaper |
+| №1375 unity/Assets/LegacyContent/Materials/wall_wallpaper.mat.meta | 188 B | вспомогательный файл: wall wallpaper.mat |
+| №1376 unity/Assets/LegacyContent/Materials/wall_white_plaster.mat | 3845 B | вспомогательный файл: wall white plaster |
+| №1377 unity/Assets/LegacyContent/Materials/wall_white_plaster.mat.meta | 188 B | вспомогательный файл: wall white plaster.mat |
+| №1378 unity/Assets/LegacyContent/Materials/wall_wood_dark.mat | 3841 B | вспомогательный файл: wall wood dark |
+| №1379 unity/Assets/LegacyContent/Materials/wall_wood_dark.mat.meta | 188 B | вспомогательный файл: wall wood dark.mat |
+| №1380 unity/Assets/LegacyContent/Materials/wall_wood_light.mat | 3843 B | вспомогательный файл: wall wood light |
+| №1381 unity/Assets/LegacyContent/Materials/wall_wood_light.mat.meta | 188 B | вспомогательный файл: wall wood light.mat |
+| №1382 unity/Assets/LegacyContent/provenance.json | 28556 B | данные/конфигурация: provenance |
+| №1383 unity/Assets/LegacyContent/provenance.json.meta | 158 B | вспомогательный файл: provenance.json |
+| №1384 unity/Assets/LegacyContent/Source.meta | 172 B | вспомогательный файл: Source |
+| №1385 unity/Assets/LegacyContent/Source/app.meta | 172 B | вспомогательный файл: app |
+| №1386 unity/Assets/LegacyContent/Source/app/assets.meta | 172 B | вспомогательный файл: assets |
+| №1387 unity/Assets/LegacyContent/Source/app/assets/3d.meta | 172 B | вспомогательный файл: 3d |
+| №1388 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius.meta | 172 B | вспомогательный файл: quaternius |
+| №1389 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models.meta | 172 B | вспомогательный файл: models |
+| №1390 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bag.bin | 27188 B | 3D модель/геометрия: Bag |
+| №1391 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bag.bin.meta | 155 B | вспомогательный файл: Bag.bin |
+| №1392 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bag.gltf | 4614 B | 3D модель/геометрия: Bag |
+| №1393 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bag.gltf.meta | 2193 B | вспомогательный файл: Bag.gltf |
+| №1394 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Barrel_Apples.bin | 104600 B | 3D модель/геометрия: Barrel Apples |
+| №1395 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Barrel_Apples.bin.meta | 155 B | вспомогательный файл: Barrel Apples.bin |
+| №1396 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Barrel_Apples.gltf | 6660 B | 3D модель/геометрия: Barrel Apples |
+| №1397 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Barrel_Apples.gltf.meta | 2849 B | вспомогательный файл: Barrel Apples.gltf |
+| №1398 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Barrel.bin | 57144 B | 3D модель/геометрия: Barrel |
+| №1399 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Barrel.bin.meta | 155 B | вспомогательный файл: Barrel.bin |
+| №1400 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Barrel.gltf | 4607 B | 3D модель/геометрия: Barrel |
+| №1401 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Barrel.gltf.meta | 2199 B | вспомогательный файл: Barrel.gltf |
+| №1402 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bed_Twin1.bin | 77360 B | 3D модель/геометрия: Bed Twin1 |
+| №1403 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bed_Twin1.bin.meta | 155 B | вспомогательный файл: Bed Twin1.bin |
+| №1404 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bed_Twin1.gltf | 6636 B | 3D модель/геометрия: Bed Twin1 |
+| №1405 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bed_Twin1.gltf.meta | 2841 B | вспомогательный файл: Bed Twin1.gltf |
+| №1406 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bench.bin | 19304 B | 3D модель/геометрия: Bench |
+| №1407 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bench.bin.meta | 155 B | вспомогательный файл: Bench.bin |
+| №1408 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bench.gltf | 4594 B | 3D модель/геометрия: Bench |
+| №1409 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bench.gltf.meta | 2197 B | вспомогательный файл: Bench.gltf |
+| №1410 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Book_Stack_2.bin | 23956 B | 3D модель/геометрия: Book Stack 2 |
+| №1411 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Book_Stack_2.bin.meta | 155 B | вспомогательный файл: Book Stack 2.bin |
+| №1412 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Book_Stack_2.gltf | 4605 B | 3D модель/геометрия: Book Stack 2 |
+| №1413 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Book_Stack_2.gltf.meta | 2187 B | вспомогательный файл: Book Stack 2.gltf |
+| №1414 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bookcase_2.bin | 92968 B | 3D модель/геометрия: Bookcase 2 |
+| №1415 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bookcase_2.bin.meta | 155 B | вспомогательный файл: Bookcase 2.bin |
+| №1416 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bookcase_2.gltf | 4625 B | 3D модель/геометрия: Bookcase 2 |
+| №1417 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bookcase_2.gltf.meta | 2207 B | вспомогательный файл: Bookcase 2.gltf |
+| №1418 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bottle_1.bin | 13952 B | 3D модель/геометрия: Bottle 1 |
+| №1419 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bottle_1.bin.meta | 155 B | вспомогательный файл: Bottle 1.bin |
+| №1420 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bottle_1.gltf | 2586 B | 3D модель/геометрия: Bottle 1 |
+| №1421 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bottle_1.gltf.meta | 1543 B | вспомогательный файл: Bottle 1.gltf |
+| №1422 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Candle_2.bin | 6124 B | 3D модель/геометрия: Candle 2 |
+| №1423 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Candle_2.bin.meta | 155 B | вспомогательный файл: Candle 2.bin |
+| №1424 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Candle_2.gltf | 2350 B | 3D модель/геометрия: Candle 2 |
+| №1425 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Candle_2.gltf.meta | 1543 B | вспомогательный файл: Candle 2.gltf |
+| №1426 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/CandleStick_Triple.bin | 74368 B | 3D модель/геометрия: CandleStick Triple |
+| №1427 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/CandleStick_Triple.bin.meta | 155 B | вспомогательный файл: CandleStick Triple.bin |
+| №1428 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/CandleStick_Triple.gltf | 4168 B | 3D модель/геометрия: CandleStick Triple |
+| №1429 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/CandleStick_Triple.gltf.meta | 2199 B | вспомогательный файл: CandleStick Triple.gltf |
+| №1430 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chair_1.bin | 28096 B | 3D модель/геометрия: Chair 1 |
+| №1431 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chair_1.bin.meta | 155 B | вспомогательный файл: Chair 1.bin |
+| №1432 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chair_1.gltf | 4608 B | 3D модель/геометрия: Chair 1 |
+| №1433 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chair_1.gltf.meta | 2201 B | вспомогательный файл: Chair 1.gltf |
+| №1434 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chalice.bin | 15644 B | 3D модель/геометрия: Chalice |
+| №1435 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chalice.bin.meta | 155 B | вспомогательный файл: Chalice.bin |
+| №1436 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chalice.gltf | 2356 B | 3D модель/геометрия: Chalice |
+| №1437 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chalice.gltf.meta | 1541 B | вспомогательный файл: Chalice.gltf |
+| №1438 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chandelier.bin | 266680 B | 3D модель/геометрия: Chandelier |
+| №1439 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chandelier.bin.meta | 155 B | вспомогательный файл: Chandelier.bin |
+| №1440 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chandelier.gltf | 6678 B | 3D модель/геометрия: Chandelier |
+| №1441 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chandelier.gltf.meta | 2843 B | вспомогательный файл: Chandelier.gltf |
+| №1442 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chest_Wood.bin | 184356 B | 3D модель/геометрия: Chest Wood |
+| №1443 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chest_Wood.bin.meta | 155 B | вспомогательный файл: Chest Wood.bin |
+| №1444 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chest_Wood.gltf | 18141 B | 3D модель/геометрия: Chest Wood |
+| №1445 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chest_Wood.gltf.bytes | 22924 B | вспомогательный файл: Chest Wood.gltf |
+| №1446 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chest_Wood.gltf.bytes.meta | 158 B | вспомогательный файл: Chest Wood.gltf.bytes |
+| №1447 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chest_Wood.gltf.meta | 720 B | вспомогательный файл: Chest Wood.gltf |
+| №1448 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Coin.bin | 14464 B | 3D модель/геометрия: Coin |
+| №1449 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Coin.bin.meta | 155 B | вспомогательный файл: Coin.bin |
+| №1450 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Coin.gltf | 2581 B | 3D модель/геометрия: Coin |
+| №1451 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Coin.gltf.meta | 1535 B | вспомогательный файл: Coin.gltf |
+| №1452 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Mug.bin | 12488 B | 3D модель/геометрия: Mug |
+| №1453 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Mug.bin.meta | 155 B | вспомогательный файл: Mug.bin |
+| №1454 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Mug.gltf | 4149 B | 3D модель/геометрия: Mug |
+| №1455 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Mug.gltf.meta | 2193 B | вспомогательный файл: Mug.gltf |
+| №1456 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Pouch_Large.bin | 31580 B | 3D модель/геометрия: Pouch Large |
+| №1457 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Pouch_Large.bin.meta | 155 B | вспомогательный файл: Pouch Large.bin |
+| №1458 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Pouch_Large.gltf | 4602 B | 3D модель/геометрия: Pouch Large |
+| №1459 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Pouch_Large.gltf.meta | 2185 B | вспомогательный файл: Pouch Large.gltf |
+| №1460 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Rope_1.bin | 41624 B | 3D модель/геометрия: Rope 1 |
+| №1461 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Rope_1.bin.meta | 155 B | вспомогательный файл: Rope 1.bin |
+| №1462 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Rope_1.gltf | 2382 B | 3D модель/геометрия: Rope 1 |
+| №1463 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Rope_1.gltf.meta | 1563 B | вспомогательный файл: Rope 1.gltf |
+| №1464 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Shelf_Simple.bin | 22016 B | 3D модель/геометрия: Shelf Simple |
+| №1465 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Shelf_Simple.bin.meta | 155 B | вспомогательный файл: Shelf Simple.bin |
+| №1466 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Shelf_Simple.gltf | 2383 B | 3D модель/геометрия: Shelf Simple |
+| №1467 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Shelf_Simple.gltf.meta | 1575 B | вспомогательный файл: Shelf Simple.gltf |
+| №1468 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Stool.bin | 11472 B | 3D модель/геометрия: Stool |
+| №1469 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Stool.bin.meta | 155 B | вспомогательный файл: Stool.bin |
+| №1470 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Stool.gltf | 2596 B | 3D модель/геометрия: Stool |
+| №1471 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Stool.gltf.meta | 1561 B | вспомогательный файл: Stool.gltf |
+| №1472 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Cloth_BaseColor.png | 1936754 B | текстура/изображение: T Trim Cloth BaseColor |
+| №1473 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Cloth_BaseColor.png.meta | 3009 B | вспомогательный файл: T Trim Cloth BaseColor.png |
+| №1474 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Cloth_Normal.png | 3920858 B | текстура/изображение: T Trim Cloth Normal |
+| №1475 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Cloth_Normal.png.meta | 3009 B | вспомогательный файл: T Trim Cloth Normal.png |
+| №1476 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Cloth_ORM.png | 623426 B | текстура/изображение: T Trim Cloth ORM |
+| №1477 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Cloth_ORM.png.meta | 3009 B | вспомогательный файл: T Trim Cloth ORM.png |
+| №1478 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Furniture_BaseColor.png | 2232961 B | текстура/изображение: T Trim Furniture BaseColor |
+| №1479 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Furniture_BaseColor.png.meta | 3009 B | вспомогательный файл: T Trim Furniture BaseColor.png |
+| №1480 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Furniture_Normal.png | 3485710 B | текстура/изображение: T Trim Furniture Normal |
+| №1481 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Furniture_Normal.png.meta | 3009 B | вспомогательный файл: T Trim Furniture Normal.png |
+| №1482 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Furniture_ORM.png | 2064585 B | текстура/изображение: T Trim Furniture ORM |
+| №1483 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Furniture_ORM.png.meta | 3009 B | вспомогательный файл: T Trim Furniture ORM.png |
+| №1484 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Metal_BaseColor.png | 1361221 B | текстура/изображение: T Trim Metal BaseColor |
+| №1485 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Metal_BaseColor.png.meta | 3009 B | вспомогательный файл: T Trim Metal BaseColor.png |
+| №1486 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Metal_Normal.png | 3625541 B | текстура/изображение: T Trim Metal Normal |
+| №1487 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Metal_Normal.png.meta | 3009 B | вспомогательный файл: T Trim Metal Normal.png |
+| №1488 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Metal_ORM.png | 1871475 B | текстура/изображение: T Trim Metal ORM |
+| №1489 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Metal_ORM.png.meta | 3009 B | вспомогательный файл: T Trim Metal ORM.png |
+| №1490 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Props_BaseColor.png | 2263132 B | текстура/изображение: T Trim Props BaseColor |
+| №1491 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Props_BaseColor.png.meta | 3009 B | вспомогательный файл: T Trim Props BaseColor.png |
+| №1492 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Props_Normal.png | 4441458 B | текстура/изображение: T Trim Props Normal |
+| №1493 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Props_Normal.png.meta | 3009 B | вспомогательный файл: T Trim Props Normal.png |
+| №1494 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Props_ORM.png | 3017151 B | текстура/изображение: T Trim Props ORM |
+| №1495 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Props_ORM.png.meta | 3009 B | вспомогательный файл: T Trim Props ORM.png |
+| №1496 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Fork.bin | 4936 B | 3D модель/геометрия: Table Fork |
+| №1497 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Fork.bin.meta | 155 B | вспомогательный файл: Table Fork.bin |
+| №1498 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Fork.gltf | 2348 B | 3D модель/геометрия: Table Fork |
+| №1499 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Fork.gltf.meta | 1547 B | вспомогательный файл: Table Fork.gltf |
+| №1500 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Knife.bin | 2180 B | 3D модель/геометрия: Table Knife |
+| №1501 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Knife.bin.meta | 155 B | вспомогательный файл: Table Knife.bin |
+| №1502 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Knife.gltf | 2345 B | 3D модель/геометрия: Table Knife |
+| №1503 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Knife.gltf.meta | 1549 B | вспомогательный файл: Table Knife.gltf |
+| №1504 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Large.bin | 56396 B | 3D модель/геометрия: Table Large |
+| №1505 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Large.bin.meta | 155 B | вспомогательный файл: Table Large.bin |
+| №1506 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Large.gltf | 4612 B | 3D модель/геометрия: Table Large |
+| №1507 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Large.gltf.meta | 2209 B | вспомогательный файл: Table Large.gltf |
+| №1508 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Plate.bin | 6792 B | 3D модель/геометрия: Table Plate |
+| №1509 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Plate.bin.meta | 155 B | вспомогательный файл: Table Plate.bin |
+| №1510 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Plate.gltf | 2358 B | 3D модель/геометрия: Table Plate |
+| №1511 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Plate.gltf.meta | 1549 B | вспомогательный файл: Table Plate.gltf |
+| №1512 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Spoon.bin | 4856 B | 3D модель/геометрия: Table Spoon |
+| №1513 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Spoon.bin.meta | 155 B | вспомогательный файл: Table Spoon.bin |
+| №1514 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Spoon.gltf | 2350 B | 3D модель/геометрия: Table Spoon |
+| №1515 unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Spoon.gltf.meta | 1549 B | вспомогательный файл: Table Spoon.gltf |
+| №1516 unity/Assets/LegacyContent/Source/app/data.meta | 172 B | вспомогательный файл: data |
+| №1517 unity/Assets/LegacyContent/Source/app/data/maps.meta | 172 B | вспомогательный файл: maps |
+| №1518 unity/Assets/LegacyContent/Source/app/data/maps/3d_castle_black_rose_v740030.json | 177758 B | данные/конфигурация: 3d castle black rose v740030 |
+| №1519 unity/Assets/LegacyContent/Source/app/data/maps/3d_castle_black_rose_v740030.json.meta | 158 B | вспомогательный файл: 3d castle black rose v740030.json |
+| №1520 unity/Assets/LegacyContent/Source/app/data/maps/3d_castle_v740019.json | 107873 B | данные/конфигурация: 3d castle v740019 |
+| №1521 unity/Assets/LegacyContent/Source/app/data/maps/3d_castle_v740019.json.meta | 158 B | вспомогательный файл: 3d castle v740019.json |
+| №1522 unity/Assets/LegacyContent/Source/app/data/maps/3d_house_v740019.json | 22923 B | данные/конфигурация: 3d house v740019 |
+| №1523 unity/Assets/LegacyContent/Source/app/data/maps/3d_house_v740019.json.meta | 158 B | вспомогательный файл: 3d house v740019.json |
+| №1524 unity/Assets/LegacyContent/Source/app/data/maps/3d_stress_test_all.json | 170566 B | данные/конфигурация: 3d stress test all |
+| №1525 unity/Assets/LegacyContent/Source/app/data/maps/3d_stress_test_all.json.meta | 158 B | вспомогательный файл: 3d stress test all.json |
+| №1526 unity/Assets/LegacyContent/Source/app/data/maps/3d_stress_v740026.json | 506389 B | данные/конфигурация: 3d stress v740026 |
+| №1527 unity/Assets/LegacyContent/Source/app/data/maps/3d_stress_v740026.json.meta | 158 B | вспомогательный файл: 3d stress v740026.json |
+| №1528 unity/Assets/LegacyContent/Source/app/data/maps/3d_tavern_v740019.json | 32583 B | данные/конфигурация: 3d tavern v740019 |
+| №1529 unity/Assets/LegacyContent/Source/app/data/maps/3d_tavern_v740019.json.meta | 158 B | вспомогательный файл: 3d tavern v740019.json |
+| №1530 unity/Assets/LegacyContent/Source/app/data/maps/3d_test_dungeon.json | 20092 B | данные/конфигурация: 3d test dungeon |
+| №1531 unity/Assets/LegacyContent/Source/app/data/maps/3d_test_dungeon.json.meta | 158 B | вспомогательный файл: 3d test dungeon.json |
+| №1532 unity/Assets/LegacyContent/Source/app/data/maps/3d_town_v740019.json | 78781 B | данные/конфигурация: 3d town v740019 |
+| №1533 unity/Assets/LegacyContent/Source/app/data/maps/3d_town_v740019.json.meta | 158 B | вспомогательный файл: 3d town v740019.json |
+| №1534 unity/Assets/LegacyContent/Source/app/data/maps/3d_village_v740019.json | 39834 B | данные/конфигурация: 3d village v740019 |
+| №1535 unity/Assets/LegacyContent/Source/app/data/maps/3d_village_v740019.json.meta | 158 B | вспомогательный файл: 3d village v740019.json |
+| №1536 unity/Assets/LegacyContent/Source/floor_ceramic_tile_dark.png | 83469 B | текстура/изображение: floor ceramic tile dark |
+| №1537 unity/Assets/LegacyContent/Source/floor_ceramic_tile_dark.png.meta | 3009 B | вспомогательный файл: floor ceramic tile dark.png |
+| №1538 unity/Assets/LegacyContent/Source/floor_ceramic_tile_light.png | 94086 B | текстура/изображение: floor ceramic tile light |
+| №1539 unity/Assets/LegacyContent/Source/floor_ceramic_tile_light.png.meta | 3009 B | вспомогательный файл: floor ceramic tile light.png |
+| №1540 unity/Assets/LegacyContent/Source/floor_checker_tile.png | 84123 B | текстура/изображение: floor checker tile |
+| №1541 unity/Assets/LegacyContent/Source/floor_checker_tile.png.meta | 3009 B | вспомогательный файл: floor checker tile.png |
+| №1542 unity/Assets/LegacyContent/Source/floor_cobblestone.png | 128808 B | текстура/изображение: floor cobblestone |
+| №1543 unity/Assets/LegacyContent/Source/floor_cobblestone.png.meta | 3009 B | вспомогательный файл: floor cobblestone.png |
+| №1544 unity/Assets/LegacyContent/Source/floor_earth.png | 110714 B | текстура/изображение: floor earth |
+| №1545 unity/Assets/LegacyContent/Source/floor_earth.png.meta | 3009 B | вспомогательный файл: floor earth.png |
+| №1546 unity/Assets/LegacyContent/Source/floor_grass.png | 124328 B | текстура/изображение: floor grass |
+| №1547 unity/Assets/LegacyContent/Source/floor_grass.png.meta | 3009 B | вспомогательный файл: floor grass.png |
+| №1548 unity/Assets/LegacyContent/Source/floor_hex_tile.png | 122290 B | текстура/изображение: floor hex tile |
+| №1549 unity/Assets/LegacyContent/Source/floor_hex_tile.png.meta | 3009 B | вспомогательный файл: floor hex tile.png |
+| №1550 unity/Assets/LegacyContent/Source/floor_marble_dark.png | 111428 B | текстура/изображение: floor marble dark |
+| №1551 unity/Assets/LegacyContent/Source/floor_marble_dark.png.meta | 3009 B | вспомогательный файл: floor marble dark.png |
+| №1552 unity/Assets/LegacyContent/Source/floor_marble_light.png | 88698 B | текстура/изображение: floor marble light |
+| №1553 unity/Assets/LegacyContent/Source/floor_marble_light.png.meta | 3009 B | вспомогательный файл: floor marble light.png |
+| №1554 unity/Assets/LegacyContent/Source/floor_parquet_herringbone.png | 126070 B | текстура/изображение: floor parquet herringbone |
+| №1555 unity/Assets/LegacyContent/Source/floor_parquet_herringbone.png.meta | 3009 B | вспомогательный файл: floor parquet herringbone.png |
+| №1556 unity/Assets/LegacyContent/Source/floor_rug_blue.png | 118109 B | текстура/изображение: floor rug blue |
+| №1557 unity/Assets/LegacyContent/Source/floor_rug_blue.png.meta | 3009 B | вспомогательный файл: floor rug blue.png |
+| №1558 unity/Assets/LegacyContent/Source/floor_rug_green.png | 113771 B | текстура/изображение: floor rug green |
+| №1559 unity/Assets/LegacyContent/Source/floor_rug_green.png.meta | 3009 B | вспомогательный файл: floor rug green.png |
+| №1560 unity/Assets/LegacyContent/Source/floor_rug_red.png | 117912 B | текстура/изображение: floor rug red |
+| №1561 unity/Assets/LegacyContent/Source/floor_rug_red.png.meta | 3009 B | вспомогательный файл: floor rug red.png |
+| №1562 unity/Assets/LegacyContent/Source/floor_stone_tile_dark.png | 91828 B | текстура/изображение: floor stone tile dark |
+| №1563 unity/Assets/LegacyContent/Source/floor_stone_tile_dark.png.meta | 3009 B | вспомогательный файл: floor stone tile dark.png |
+| №1564 unity/Assets/LegacyContent/Source/floor_stone_tile_light.png | 101714 B | текстура/изображение: floor stone tile light |
+| №1565 unity/Assets/LegacyContent/Source/floor_stone_tile_light.png.meta | 3009 B | вспомогательный файл: floor stone tile light.png |
+| №1566 unity/Assets/LegacyContent/Source/floor_tatami.png | 91917 B | текстура/изображение: floor tatami |
+| №1567 unity/Assets/LegacyContent/Source/floor_tatami.png.meta | 3009 B | вспомогательный файл: floor tatami.png |
+| №1568 unity/Assets/LegacyContent/Source/floor_wood_dark.png | 76168 B | текстура/изображение: floor wood dark |
+| №1569 unity/Assets/LegacyContent/Source/floor_wood_dark.png.meta | 3009 B | вспомогательный файл: floor wood dark.png |
+| №1570 unity/Assets/LegacyContent/Source/floor_wood_light.png | 83659 B | текстура/изображение: floor wood light |
+| №1571 unity/Assets/LegacyContent/Source/floor_wood_light.png.meta | 3009 B | вспомогательный файл: floor wood light.png |
+| №1572 unity/Assets/LegacyContent/Source/wall_brick_red.png | 111128 B | текстура/изображение: wall brick red |
+| №1573 unity/Assets/LegacyContent/Source/wall_brick_red.png.meta | 3009 B | вспомогательный файл: wall brick red.png |
+| №1574 unity/Assets/LegacyContent/Source/wall_concrete.png | 91074 B | текстура/изображение: wall concrete |
+| №1575 unity/Assets/LegacyContent/Source/wall_concrete.png.meta | 3009 B | вспомогательный файл: wall concrete.png |
+| №1576 unity/Assets/LegacyContent/Source/wall_half_timber.png | 109537 B | текстура/изображение: wall half timber |
+| №1577 unity/Assets/LegacyContent/Source/wall_half_timber.png.meta | 3009 B | вспомогательный файл: wall half timber.png |
+| №1578 unity/Assets/LegacyContent/Source/wall_marble_dark.png | 123621 B | текстура/изображение: wall marble dark |
+| №1579 unity/Assets/LegacyContent/Source/wall_marble_dark.png.meta | 3009 B | вспомогательный файл: wall marble dark.png |
+| №1580 unity/Assets/LegacyContent/Source/wall_marble_light.png | 90457 B | текстура/изображение: wall marble light |
+| №1581 unity/Assets/LegacyContent/Source/wall_marble_light.png.meta | 3009 B | вспомогательный файл: wall marble light.png |
+| №1582 unity/Assets/LegacyContent/Source/wall_moss_stone.png | 128985 B | текстура/изображение: wall moss stone |
+| №1583 unity/Assets/LegacyContent/Source/wall_moss_stone.png.meta | 3009 B | вспомогательный файл: wall moss stone.png |
+| №1584 unity/Assets/LegacyContent/Source/wall_old_plaster.png | 107725 B | текстура/изображение: wall old plaster |
+| №1585 unity/Assets/LegacyContent/Source/wall_old_plaster.png.meta | 3009 B | вспомогательный файл: wall old plaster.png |
+| №1586 unity/Assets/LegacyContent/Source/wall_plaster_dark.png | 95153 B | текстура/изображение: wall plaster dark |
+| №1587 unity/Assets/LegacyContent/Source/wall_plaster_dark.png.meta | 3009 B | вспомогательный файл: wall plaster dark.png |
+| №1588 unity/Assets/LegacyContent/Source/wall_plaster_light.png | 91767 B | текстура/изображение: wall plaster light |
+| №1589 unity/Assets/LegacyContent/Source/wall_plaster_light.png.meta | 3009 B | вспомогательный файл: wall plaster light.png |
+| №1590 unity/Assets/LegacyContent/Source/wall_plaster_panel.png | 89722 B | текстура/изображение: wall plaster panel |
+| №1591 unity/Assets/LegacyContent/Source/wall_plaster_panel.png.meta | 3009 B | вспомогательный файл: wall plaster panel.png |
+| №1592 unity/Assets/LegacyContent/Source/wall_slate.png | 103822 B | текстура/изображение: wall slate |
+| №1593 unity/Assets/LegacyContent/Source/wall_slate.png.meta | 3009 B | вспомогательный файл: wall slate.png |
+| №1594 unity/Assets/LegacyContent/Source/wall_stone_dark.png | 120617 B | текстура/изображение: wall stone dark |
+| №1595 unity/Assets/LegacyContent/Source/wall_stone_dark.png.meta | 3009 B | вспомогательный файл: wall stone dark.png |
+| №1596 unity/Assets/LegacyContent/Source/wall_stone_light.png | 127689 B | текстура/изображение: wall stone light |
+| №1597 unity/Assets/LegacyContent/Source/wall_stone_light.png.meta | 3009 B | вспомогательный файл: wall stone light.png |
+| №1598 unity/Assets/LegacyContent/Source/wall_stone_masonry.png | 129908 B | текстура/изображение: wall stone masonry |
+| №1599 unity/Assets/LegacyContent/Source/wall_stone_masonry.png.meta | 3009 B | вспомогательный файл: wall stone masonry.png |
+| №1600 unity/Assets/LegacyContent/Source/wall_wallpaper.png | 106442 B | текстура/изображение: wall wallpaper |
+| №1601 unity/Assets/LegacyContent/Source/wall_wallpaper.png.meta | 3009 B | вспомогательный файл: wall wallpaper.png |
+| №1602 unity/Assets/LegacyContent/Source/wall_white_plaster.png | 120869 B | текстура/изображение: wall white plaster |
+| №1603 unity/Assets/LegacyContent/Source/wall_white_plaster.png.meta | 3009 B | вспомогательный файл: wall white plaster.png |
+| №1604 unity/Assets/LegacyContent/Source/wall_wood_dark.png | 81144 B | текстура/изображение: wall wood dark |
+| №1605 unity/Assets/LegacyContent/Source/wall_wood_dark.png.meta | 3009 B | вспомогательный файл: wall wood dark.png |
+| №1606 unity/Assets/LegacyContent/Source/wall_wood_light.png | 93079 B | текстура/изображение: wall wood light |
+| №1607 unity/Assets/LegacyContent/Source/wall_wood_light.png.meta | 3009 B | вспомогательный файл: wall wood light.png |
+| №1608 unity/Assets/UniversalRenderPipelineGlobalSettings.asset | 25900 B | вспомогательный файл: UniversalRenderPipelineGlobalSettings |
+| №1609 unity/Assets/UniversalRenderPipelineGlobalSettings.asset.meta | 189 B | вспомогательный файл: UniversalRenderPipelineGlobalSettings.asset |
+| №1610 unity/Assets/Vtt.meta | 172 B | вспомогательный файл: Vtt |
+| №1611 unity/Assets/Vtt/Editor.meta | 172 B | вспомогательный файл: Editor |
+| №1612 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs | 10689 B | вспомогательный файл: LegacyMigrationSetup |
+| №1613 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSetup.cs |
+| №1614 unity/Assets/Vtt/Editor/PrototypeSetup.cs | 7704 B | вспомогательный файл: PrototypeSetup |
+| №1615 unity/Assets/Vtt/Editor/PrototypeSetup.cs.meta | 59 B | вспомогательный файл: PrototypeSetup.cs |
+| №1616 unity/Assets/Vtt/Runtime.meta | 172 B | вспомогательный файл: Runtime |
+| №1617 unity/Assets/Vtt/Runtime/ExplorerController.cs | 5751 B | вспомогательный файл: ExplorerController |
+| №1618 unity/Assets/Vtt/Runtime/ExplorerController.cs.meta | 59 B | вспомогательный файл: ExplorerController.cs |
+| №1619 unity/Assets/Vtt/Runtime/LegacyContentCatalog.cs | 808 B | вспомогательный файл: LegacyContentCatalog |
+| №1620 unity/Assets/Vtt/Runtime/LegacyContentCatalog.cs.meta | 59 B | вспомогательный файл: LegacyContentCatalog.cs |
+| №1621 unity/Assets/Vtt/Runtime/LegacyDocuments.cs | 7501 B | вспомогательный файл: LegacyDocuments |
+| №1622 unity/Assets/Vtt/Runtime/LegacyDocuments.cs.meta | 59 B | вспомогательный файл: LegacyDocuments.cs |
+| №1623 unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs | 11893 B | вспомогательный файл: LegacyMapPresenter |
+| №1624 unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs.meta | 59 B | вспомогательный файл: LegacyMapPresenter.cs |
+| №1625 unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs | 3065 B | вспомогательный файл: LegacyMigrationSmoke |
+| №1626 unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSmoke.cs |
+| №1627 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs | 5093 B | вспомогательный файл: LegacySessionPanel |
+| №1628 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.cs |
+| №1629 unity/Assets/Vtt/Runtime/PrototypeSmoke.cs | 3139 B | вспомогательный файл: PrototypeSmoke |
+| №1630 unity/Assets/Vtt/Runtime/PrototypeSmoke.cs.meta | 59 B | вспомогательный файл: PrototypeSmoke.cs |
+| №1631 unity/Assets/Vtt/Scenes.meta | 172 B | вспомогательный файл: Scenes |
+| №1632 unity/Assets/Vtt/Scenes/Exploration.unity | 49176 B | вспомогательный файл: Exploration |
+| №1633 unity/Assets/Vtt/Scenes/Exploration.unity.meta | 155 B | вспомогательный файл: Exploration.unity |
+| №1634 unity/Assets/Vtt/Scenes/ImportedAdventure.unity | 2328750 B | вспомогательный файл: ImportedAdventure |
+| №1635 unity/Assets/Vtt/Scenes/ImportedAdventure.unity.meta | 155 B | вспомогательный файл: ImportedAdventure.unity |
+| №1636 unity/Assets/Vtt/Settings.meta | 172 B | вспомогательный файл: Settings |
+| №1637 unity/Assets/Vtt/Settings/Explorer.mat | 3799 B | вспомогательный файл: Explorer |
+| №1638 unity/Assets/Vtt/Settings/Explorer.mat.meta | 188 B | вспомогательный файл: Explorer.mat |
+| №1639 unity/Assets/Vtt/Settings/ExplorerRenderer.asset | 1865 B | вспомогательный файл: ExplorerRenderer |
+| №1640 unity/Assets/Vtt/Settings/ExplorerRenderer.asset.meta | 189 B | вспомогательный файл: ExplorerRenderer.asset |
+| №1641 unity/Assets/Vtt/Settings/ExplorerURP.asset | 4690 B | вспомогательный файл: ExplorerURP |
+| №1642 unity/Assets/Vtt/Settings/ExplorerURP.asset.meta | 189 B | вспомогательный файл: ExplorerURP.asset |
+| №1643 unity/Assets/Vtt/Settings/Stone.mat | 3795 B | вспомогательный файл: Stone |
+| №1644 unity/Assets/Vtt/Settings/Stone.mat.meta | 188 B | вспомогательный файл: Stone.mat |
+| №1645 unity/Assets/Vtt/Settings/Wall.mat | 3793 B | вспомогательный файл: Wall |
+| №1646 unity/Assets/Vtt/Settings/Wall.mat.meta | 188 B | вспомогательный файл: Wall.mat |
+| №1647 unity/evidence/exploration.png | 119417 B | текстура/изображение: exploration |
+| №1648 unity/Packages/manifest.json | 534 B | данные/конфигурация: manifest |
+| №1649 unity/Packages/packages-lock.json | 6217 B | данные/конфигурация: packages lock |
+| №1650 unity/ProjectSettings/AudioManager.asset | 523 B | вспомогательный файл: AudioManager |
+| №1651 unity/ProjectSettings/ClusterInputManager.asset | 114 B | вспомогательный файл: ClusterInputManager |
+| №1652 unity/ProjectSettings/DynamicsManager.asset | 1574 B | вспомогательный файл: DynamicsManager |
+| №1653 unity/ProjectSettings/EditorBuildSettings.asset | 401 B | вспомогательный файл: EditorBuildSettings |
+| №1654 unity/ProjectSettings/EditorSettings.asset | 1603 B | вспомогательный файл: EditorSettings |
+| №1655 unity/ProjectSettings/GraphicsSettings.asset | 2615 B | вспомогательный файл: GraphicsSettings |
+| №1656 unity/ProjectSettings/InputManager.asset | 9754 B | вспомогательный файл: InputManager |
+| №1657 unity/ProjectSettings/MemorySettings.asset | 1226 B | вспомогательный файл: MemorySettings |
+| №1658 unity/ProjectSettings/MultiplayerManager.asset | 232 B | вспомогательный файл: MultiplayerManager |
+| №1659 unity/ProjectSettings/NavMeshAreas.asset | 1361 B | вспомогательный файл: NavMeshAreas |
+| №1660 unity/ProjectSettings/Physics2DSettings.asset | 1862 B | вспомогательный файл: Physics2DSettings |
+| №1661 unity/ProjectSettings/PresetManager.asset | 146 B | вспомогательный файл: PresetManager |
+| №1662 unity/ProjectSettings/ProjectSettings.asset | 22470 B | вспомогательный файл: ProjectSettings |
+| №1663 unity/ProjectSettings/ProjectVersion.txt | 85 B | документация или отчёт: ProjectVersion |
+| №1664 unity/ProjectSettings/QualitySettings.asset | 9858 B | вспомогательный файл: QualitySettings |
+| №1665 unity/ProjectSettings/SceneTemplateSettings.json | 3535 B | данные/конфигурация: SceneTemplateSettings |
+| №1666 unity/ProjectSettings/ShaderGraphSettings.asset | 633 B | вспомогательный файл: ShaderGraphSettings |
+| №1667 unity/ProjectSettings/TagManager.asset | 411 B | вспомогательный файл: TagManager |
+| №1668 unity/ProjectSettings/TimeManager.asset | 305 B | вспомогательный файл: TimeManager |
+| №1669 unity/ProjectSettings/UnityConnectSettings.asset | 1063 B | вспомогательный файл: UnityConnectSettings |
+| №1670 unity/ProjectSettings/VersionControlSettings.asset | 172 B | вспомогательный файл: VersionControlSettings |
+| №1671 unity/ProjectSettings/VFXManager.asset | 525 B | вспомогательный файл: VFXManager |
+| №1672 unity/README.md | 6349 B | документация или отчёт: README |
+| №1673 unity/Tools/sync_legacy_content.cjs | 5736 B | логический модуль: sync legacy content |
+| №1674 unity/VALIDATION.md | 12534 B | документация или отчёт: VALIDATION |
+| №1675 unity/verify.ps1 | 2774 B | вспомогательный файл: verify |
+| №1676 updates/beta.json | 222 B | метаданные обновлений: beta |
+| №1677 updates/previous-stable.json | 184759 B | метаданные обновлений: previous stable |
+| №1678 updates/README.md | 243 B | документация или отчёт: README |
+| №1679 updates/stable.json | 184760 B | метаданные обновлений: stable |
+| №1680 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
+| №1681 VTT_PROJECT_MANIFEST_V70.json | 44371 B | устаревший список V70, не актуален |
+| №1682 wall_brick_red.png | 111128 B | текстура/изображение: wall brick red |
+| №1683 wall_concrete.png | 91074 B | текстура/изображение: wall concrete |
+| №1684 wall_half_timber.png | 109537 B | текстура/изображение: wall half timber |
+| №1685 wall_marble_dark.png | 123621 B | текстура/изображение: wall marble dark |
+| №1686 wall_marble_light.png | 90457 B | текстура/изображение: wall marble light |
+| №1687 wall_moss_stone.png | 128985 B | текстура/изображение: wall moss stone |
+| №1688 wall_old_plaster.png | 107725 B | текстура/изображение: wall old plaster |
+| №1689 wall_plaster_dark.png | 95153 B | текстура/изображение: wall plaster dark |
+| №1690 wall_plaster_light.png | 91767 B | текстура/изображение: wall plaster light |
+| №1691 wall_plaster_panel.png | 89722 B | текстура/изображение: wall plaster panel |
+| №1692 wall_slate.png | 103822 B | текстура/изображение: wall slate |
+| №1693 wall_stone_dark.png | 120617 B | текстура/изображение: wall stone dark |
+| №1694 wall_stone_light.png | 127689 B | текстура/изображение: wall stone light |
+| №1695 wall_stone_masonry.png | 129908 B | текстура/изображение: wall stone masonry |
+| №1696 wall_wallpaper.png | 106442 B | текстура/изображение: wall wallpaper |
+| №1697 wall_white_plaster.png | 120869 B | текстура/изображение: wall white plaster |
+| №1698 wall_wood_dark.png | 81144 B | текстура/изображение: wall wood dark |
+| №1699 wall_wood_light.png | 93079 B | текстура/изображение: wall wood light |
+| №1700 wallpapers/1.png | 1460744 B | ассет графики/3D/интерфейса: 1 |
+| №1701 wallpapers/10.png | 1667723 B | ассет графики/3D/интерфейса: 10 |
+| №1702 wallpapers/11.png | 1815959 B | ассет графики/3D/интерфейса: 11 |
+| №1703 wallpapers/12.png | 1548677 B | ассет графики/3D/интерфейса: 12 |
+| №1704 wallpapers/13.png | 1599093 B | ассет графики/3D/интерфейса: 13 |
+| №1705 wallpapers/14.png | 1596513 B | ассет графики/3D/интерфейса: 14 |
+| №1706 wallpapers/15.png | 233043 B | ассет графики/3D/интерфейса: 15 |
+| №1707 wallpapers/16.png | 212684 B | ассет графики/3D/интерфейса: 16 |
+| №1708 wallpapers/17.png | 1585122 B | ассет графики/3D/интерфейса: 17 |
+| №1709 wallpapers/18.png | 2095852 B | ассет графики/3D/интерфейса: 18 |
+| №1710 wallpapers/19.png | 8605503 B | ассет графики/3D/интерфейса: 19 |
+| №1711 wallpapers/2.png | 1590206 B | ассет графики/3D/интерфейса: 2 |
+| №1712 wallpapers/20.png | 1284815 B | ассет графики/3D/интерфейса: 20 |
+| №1713 wallpapers/21.png | 179307 B | ассет графики/3D/интерфейса: 21 |
+| №1714 wallpapers/22.png | 344279 B | ассет графики/3D/интерфейса: 22 |
+| №1715 wallpapers/23.png | 210291 B | ассет графики/3D/интерфейса: 23 |
+| №1716 wallpapers/24.png | 141215 B | ассет графики/3D/интерфейса: 24 |
+| №1717 wallpapers/25.png | 160892 B | ассет графики/3D/интерфейса: 25 |
+| №1718 wallpapers/26.png | 187259 B | ассет графики/3D/интерфейса: 26 |
+| №1719 wallpapers/27.png | 213194 B | ассет графики/3D/интерфейса: 27 |
+| №1720 wallpapers/28.png | 202417 B | ассет графики/3D/интерфейса: 28 |
+| №1721 wallpapers/29.png | 166942 B | ассет графики/3D/интерфейса: 29 |
+| №1722 wallpapers/3.png | 1662340 B | ассет графики/3D/интерфейса: 3 |
+| №1723 wallpapers/30.png | 237556 B | ассет графики/3D/интерфейса: 30 |
+| №1724 wallpapers/31.svg | 1181 B | ассет графики/3D/интерфейса: 31 |
+| №1725 wallpapers/32.svg | 1417 B | ассет графики/3D/интерфейса: 32 |
+| №1726 wallpapers/4.png | 1816114 B | ассет графики/3D/интерфейса: 4 |
+| №1727 wallpapers/5.png | 1742466 B | ассет графики/3D/интерфейса: 5 |
+| №1728 wallpapers/6.png | 1591016 B | ассет графики/3D/интерфейса: 6 |
+| №1729 wallpapers/7.png | 1815665 B | ассет графики/3D/интерфейса: 7 |
+| №1730 wallpapers/8.png | 1492730 B | ассет графики/3D/интерфейса: 8 |
+| №1731 wallpapers/9.png | 1715179 B | ассет графики/3D/интерфейса: 9 |
 
 ## Реестр имён, переменных и ключей
 
@@ -1438,7 +1757,7 @@
 Локальные параметры нельзя путать с полями сериализуемого персонажа, глобальными API или ключами localStorage.
 
 
-### JS объявления/параметры (4906)
+### JS объявления/параметры (4921)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -1448,7 +1767,7 @@
 | __TEST_SRC__ | №1184 (+ 4 других файлов) |
 | _event | №0876 |
 | _wc | №0875 |
-| a | №0048 (+ 142 других файлов) |
+| a | №0048 (+ 143 других файлов) |
 | A | №0047 (+ 5 других файлов) |
 | a0 | №1107 (+ 1 других файлов) |
 | a1 | №1107 (+ 1 других файлов) |
@@ -1463,6 +1782,7 @@
 | AbortController | №1090 |
 | above | №0050 (+ 2 других файлов) |
 | absent | №0657 |
+| absolute | №1673 |
 | absorbed | №0644 (+ 1 других файлов) |
 | ac | №0050 (+ 25 других файлов) |
 | ACADEMIES | №0861 |
@@ -1741,7 +2061,7 @@
 | axis | №0050 (+ 10 других файлов) |
 | ay | №0051 |
 | az | №0050 (+ 1 других файлов) |
-| b | №0048 (+ 127 других файлов) |
+| b | №0048 (+ 128 других файлов) |
 | B | №0047 (+ 16 других файлов) |
 | b1 | №0050 (+ 1 других файлов) |
 | back | №0048 (+ 4 других файлов) |
@@ -1765,6 +2085,7 @@
 | bagAnchor | №0047 |
 | bagCenter | №0047 |
 | bagRings | №0047 |
+| baked | №1673 |
 | balanceAfterBarter | №1154 |
 | balanceAfterBuy | №1154 |
 | BAM | №0619 |
@@ -2016,7 +2337,7 @@
 | BYPASS_PARCHMENT_ONCE | №0634 |
 | bySource | №0617 (+ 2 других файлов) |
 | byteOffset | №0058 |
-| bytes | №0053 (+ 3 других файлов) |
+| bytes | №0053 (+ 4 других файлов) |
 | bytesWritten | №0878 |
 | bz | №0062 |
 | c | №0048 (+ 221 других файлов) |
@@ -2319,6 +2640,7 @@
 | contextBridge | №0876 |
 | contexts | №1060 (+ 1 других файлов) |
 | contract | №0768 |
+| contracts | №1673 |
 | control | №0052 (+ 1 других файлов) |
 | controller | №0642 (+ 2 других файлов) |
 | controls | №0052 (+ 1 других файлов) |
@@ -2327,6 +2649,7 @@
 | cooldown | №1056 |
 | cooledAttack | №1059 |
 | cooling | №1059 |
+| copied | №1673 |
 | COPPER | №0788 |
 | copperPerElectrum | №0779 |
 | copperPerGold | №0779 |
@@ -2359,7 +2682,7 @@
 | coverBonus | №0644 (+ 1 других файлов) |
 | covered | №0051 (+ 1 других файлов) |
 | coveredCount | №1286 |
-| cp | №0050 (+ 15 других файлов) |
+| cp | №0050 (+ 16 других файлов) |
 | cPerS | №0779 |
 | cpInput | №0779 |
 | cpVal | №0779 |
@@ -2401,7 +2724,7 @@
 | crown | №0050 |
 | crownDiagnostics | №1260 |
 | crownOff | №1260 |
-| crypto | №0878 (+ 50 других файлов) |
+| crypto | №0878 (+ 51 других файлов) |
 | cs | №0050 (+ 11 других файлов) |
 | csel | №0795 |
 | ct | №0050 |
@@ -2590,7 +2913,9 @@
 | denOpacity | №0051 |
 | dense | №1267 |
 | denValues | №0051 |
+| dependency | №1673 |
 | depth | №0050 (+ 4 других файлов) |
+| derived | №1673 |
 | derivedAssets | №0060 |
 | desc | №0659 (+ 7 других файлов) |
 | descBox | №0613 (+ 2 других файлов) |
@@ -2604,7 +2929,7 @@
 | desired | №0047 (+ 2 других файлов) |
 | DesktopWebUpdater | №0875 (+ 2 других файлов) |
 | dest | №0064 (+ 4 других файлов) |
-| destination | №0807 (+ 1 других файлов) |
+| destination | №0807 (+ 2 других файлов) |
 | destinations | №0807 |
 | detail | №0839 (+ 3 других файлов) |
 | details | №0052 (+ 4 других файлов) |
@@ -2949,7 +3274,7 @@
 | eyeY | №0050 |
 | eyeZ | №0050 |
 | ez | №0050 |
-| f | №0048 (+ 115 других файлов) |
+| f | №0048 (+ 116 других файлов) |
 | F | №1208 (+ 4 других файлов) |
 | fa | №0768 |
 | face | №0047 (+ 2 других файлов) |
@@ -3163,7 +3488,7 @@
 | frontCount | №0050 |
 | frontPlate | №0050 |
 | frontTop | №0051 |
-| fs | №0052 (+ 224 других файлов) |
+| fs | №0052 (+ 225 других файлов) |
 | fsave | №0768 |
 | fsp | №0875 (+ 1 других файлов) |
 | ft | №0768 |
@@ -3206,8 +3531,9 @@
 | ge | №0768 |
 | gem | №0807 |
 | gender | №0051 (+ 7 других файлов) |
-| generated | №1169 |
+| generated | №1169 (+ 1 других файлов) |
 | generatedHarvest | №1169 |
+| generatedPath | №1673 |
 | generation | №0642 |
 | GENERIC_SPECIALTIES | №0659 |
 | geo | №0048 (+ 24 других файлов) |
@@ -3483,7 +3809,7 @@
 | hx | №0768 |
 | hy | №0050 |
 | hybrid | №0768 |
-| i | №0048 (+ 176 других файлов) |
+| i | №0048 (+ 177 других файлов) |
 | ia | №1107 (+ 2 других файлов) |
 | ib | №0057 |
 | icon | №0781 (+ 3 других файлов) |
@@ -3516,6 +3842,7 @@
 | immuneFire | №1058 |
 | immuneUntil | №0644 |
 | immunity | №0630 |
+| importDocument | №1673 |
 | imported | №1102 |
 | improved | №0792 |
 | inCombat | №0630 |
@@ -3969,12 +4296,13 @@
 | maleRef | №1079 |
 | malformed | №1065 (+ 3 других файлов) |
 | manager | №1239 |
-| manifest | №0784 (+ 3 других файлов) |
+| manifest | №0784 (+ 4 других файлов) |
 | manifestPath | №0878 (+ 1 других файлов) |
 | manifestUrl | №0831 |
 | manual | №1066 (+ 1 других файлов) |
-| map | №0050 (+ 24 других файлов) |
+| map | №0050 (+ 25 других файлов) |
 | Map | №1100 (+ 5 других файлов) |
+| mapPaths | №1673 |
 | mapped | №0768 |
 | mapping | №0050 (+ 1 других файлов) |
 | maps | №0860 (+ 1 других файлов) |
@@ -4127,7 +4455,8 @@
 | modDisplay | №0761 (+ 1 других файлов) |
 | mode | №0059 (+ 21 других файлов) |
 | modeButtons | №0761 |
-| model | №0795 (+ 1 других файлов) |
+| model | №0795 (+ 2 других файлов) |
+| models | №1673 |
 | modeRadio | №0636 |
 | modes | №1137 (+ 2 других файлов) |
 | modeSelect | №0780 |
@@ -4349,7 +4678,7 @@
 | now | №0050 (+ 5 других файлов) |
 | np | №0050 |
 | npot | №0062 |
-| null | №0821 (+ 14 других файлов) |
+| null | №0821 (+ 15 других файлов) |
 | num | №0775 (+ 1 других файлов) |
 | Number | №0652 (+ 25 других файлов) |
 | numbers | №0051 |
@@ -4359,7 +4688,7 @@
 | ny | №0047 (+ 1 других файлов) |
 | nylon | №0052 |
 | nz | №0047 (+ 2 других файлов) |
-| o | №0048 (+ 51 других файлов) |
+| o | №0048 (+ 52 других файлов) |
 | oa | №0768 |
 | obj | №0060 (+ 5 других файлов) |
 | Object | №0652 (+ 23 других файлов) |
@@ -4484,7 +4813,7 @@
 | otherIsShield | №0782 |
 | otherName | №0782 |
 | ott | №0768 |
-| out | №0048 (+ 69 других файлов) |
+| out | №0048 (+ 70 других файлов) |
 | outcome | №0807 (+ 2 других файлов) |
 | outer | №0047 (+ 2 других файлов) |
 | outerWidth | №0047 |
@@ -4573,7 +4902,7 @@
 | pat | №0061 |
 | patch | №0050 (+ 5 других файлов) |
 | patchLootResult | №0815 |
-| path | №0050 (+ 110 других файлов) |
+| path | №0050 (+ 111 других файлов) |
 | paths | №1094 |
 | patient | №0067 (+ 1 других файлов) |
 | patronNames | №0630 |
@@ -4920,6 +5249,7 @@
 | rats | №0050 |
 | raw | №0049 (+ 32 других файлов) |
 | rawCat | №0791 |
+| rawDestination | №1673 |
 | rawItems | №0825 |
 | rawParts | №0644 |
 | rawRadial | №0051 |
@@ -4999,7 +5329,7 @@
 | reject | №0821 (+ 6 других файлов) |
 | rejected | №1095 (+ 1 других файлов) |
 | rel | №0790 (+ 6 других файлов) |
-| relative | №0875 (+ 1 других файлов) |
+| relative | №0875 (+ 2 других файлов) |
 | release | №1090 |
 | releaseGate | №1056 |
 | relief | №0067 |
@@ -5036,6 +5366,7 @@
 | repeatBtn | №0071 |
 | replace | №0630 (+ 1 других файлов) |
 | replacement | №1120 |
+| repo | №1673 |
 | report | №0782 (+ 10 других файлов) |
 | repSelect | №0052 |
 | reptileCoreCache | №0050 |
@@ -5216,7 +5547,7 @@
 | ry | №0050 (+ 3 других файлов) |
 | rz | №0050 (+ 3 других файлов) |
 | rz2 | №0062 |
-| s | №0047 (+ 173 других файлов) |
+| s | №0047 (+ 174 других файлов) |
 | S | №0061 (+ 1 других файлов) |
 | s1 | №0689 |
 | s2 | №0689 |
@@ -5769,7 +6100,7 @@
 | synergySet | №0068 |
 | sys | №0052 (+ 18 других файлов) |
 | sz | №0050 (+ 3 других файлов) |
-| t | №0047 (+ 103 других файлов) |
+| t | №0047 (+ 104 других файлов) |
 | T | №0047 (+ 2 других файлов) |
 | t2 | №0802 |
 | ta | №0768 |
@@ -5800,7 +6131,7 @@
 | tangent | №0050 |
 | taper | №0050 (+ 1 других файлов) |
 | tapLength | №0786 |
-| target | №0047 (+ 48 других файлов) |
+| target | №0047 (+ 49 других файлов) |
 | targetActor | №0807 |
 | targetChar | №0820 |
 | targetCharId | №0820 |
@@ -5855,6 +6186,7 @@
 | tarotScene | №0644 |
 | tarotTurnId | №0762 |
 | TASKS | №0847 |
+| tavern | №1673 |
 | tb | №0797 |
 | tc | №0768 (+ 1 других файлов) |
 | team | №0800 |
@@ -5880,6 +6212,7 @@
 | TextDecoder | №1062 (+ 21 других файлов) |
 | textSpan | №0761 |
 | texture | №0058 (+ 3 других файлов) |
+| textures | №1673 |
 | th | №0062 (+ 1 других файлов) |
 | theftRef | №0808 |
 | theme | №0821 |
@@ -6173,7 +6506,7 @@
 | visionPhone | №1118 |
 | visionRoster | №1118 |
 | visionServer | №1118 |
-| vm | №0652 (+ 145 других файлов) |
+| vm | №0652 (+ 146 других файлов) |
 | voice | №1059 |
 | voiceInstall | №1059 |
 | volatility | №0068 (+ 1 других файлов) |
@@ -6261,6 +6594,7 @@
 | willActivate | №0644 |
 | willingTargetIds | №0808 |
 | win | №0875 (+ 5 других файлов) |
+| window | №1673 |
 | wingAngle | №0050 |
 | wis | №0617 (+ 11 других файлов) |
 | wisMod | №0613 (+ 1 других файлов) |
@@ -6911,7 +7245,7 @@
 | WARLORD_LASERLLAMA_V330 | №0861 |
 | warlordProgression | №0728 (+ 1 других файлов) |
 | WEAPONS_DB | №0812 (+ 1 других файлов) |
-| window | №1090 (+ 7 других файлов) |
+| window | №1090 (+ 8 других файлов) |
 | WITCH_MHP_2014 | №0768 |
 | witchProgression | №0730 |
 | witchRuntime | №0768 |
@@ -7023,7 +7357,7 @@
 | weaponsData | №0636 |
 | worldMatrices | №0048 (+ 3 других файлов) |
 
-### Поля JS объектов (6497)
+### Поля JS объектов (6499)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -7573,7 +7907,7 @@
 | barrel | №0056 |
 | barter | №1154 |
 | barycentricOutsideTolerance | №1109 |
-| base | №0058 (+ 4 других файлов) |
+| base | №0058 (+ 5 других файлов) |
 | baseAc | №0800 (+ 1 других файлов) |
 | baseAC | №0613 (+ 2 других файлов) |
 | baseAcFormula | №0813 |
@@ -7861,7 +8195,7 @@
 | bypassesTempHP | №0792 |
 | byteLength | №1098 (+ 3 других файлов) |
 | byteOffset | №1098 (+ 3 других файлов) |
-| bytes | №0831 (+ 7 других файлов) |
+| bytes | №0831 (+ 8 других файлов) |
 | bytesDone | №0831 (+ 2 других файлов) |
 | bytesTotal | №0831 (+ 2 других файлов) |
 | c | №0800 (+ 19 других файлов) |
@@ -8451,7 +8785,7 @@
 | customSkirt | №0051 |
 | cut | №0051 (+ 2 других файлов) |
 | cutoff | №1295 |
-| cwd | №1057 (+ 1 других файлов) |
+| cwd | №1057 (+ 2 других файлов) |
 | cx | №0047 (+ 2 других файлов) |
 | cycles | №0814 (+ 1 других файлов) |
 | cz | №0050 (+ 1 других файлов) |
@@ -8589,7 +8923,7 @@
 | descriptor | №0048 |
 | deserialize | №0055 |
 | desk | №0056 |
-| destination | №0807 (+ 7 других файлов) |
+| destination | №0807 (+ 8 других файлов) |
 | destinationGender | №1295 |
 | destroy | №0832 |
 | destroyThrallToHeal | №0798 |
@@ -8845,7 +9179,7 @@
 | enabled | №0048 (+ 6 других файлов) |
 | enchant | №0659 |
 | enclosed | №0048 |
-| encoding | №0878 (+ 5 других файлов) |
+| encoding | №0878 (+ 6 других файлов) |
 | encounter | №0849 (+ 1 других файлов) |
 | encounterBias | №0621 |
 | encounterId | №0807 (+ 2 других файлов) |
@@ -9148,9 +9482,9 @@
 | fightingStyleChoice | №0768 |
 | fightingStyles | №0677 (+ 1 других файлов) |
 | file | №0857 (+ 1 других файлов) |
-| filename | №0652 (+ 68 других файлов) |
+| filename | №0652 (+ 69 других файлов) |
 | FileReader | №1200 |
-| files | №0831 (+ 3 других файлов) |
+| files | №0831 (+ 4 других файлов) |
 | filter | №0821 (+ 3 других файлов) |
 | filtered | №0836 |
 | final | №0839 |
@@ -9228,7 +9562,7 @@
 | floor_water | №0061 |
 | floor_wood_dark | №0061 |
 | floor_wood_light | №0061 |
-| floors | №0060 |
+| floors | №0060 (+ 1 других файлов) |
 | flowers | №0814 |
 | flurry | №0637 |
 | fly | №0798 |
@@ -10092,7 +10426,7 @@
 | K | №1106 |
 | keenAwareness | №0818 |
 | keeperOfOrder | №0768 |
-| key | №0060 (+ 12 других файлов) |
+| key | №0060 (+ 13 других файлов) |
 | KEY | №0060 |
 | ki | №1136 (+ 2 других файлов) |
 | killInspiration | №0807 |
@@ -10425,7 +10759,7 @@
 | mappedTargetEntries | №1109 |
 | mappedVertices | №1098 |
 | mapping | №1247 |
-| maps | №0659 |
+| maps | №0659 (+ 1 других файлов) |
 | marble | №0661 |
 | marchUntoDestiny | №0792 |
 | margin | №1039 |
@@ -10632,6 +10966,7 @@
 | model | №0059 (+ 2 других файлов) |
 | modelFamily | №0055 |
 | modelLoc | №0062 |
+| models | №1673 |
 | modes | №0817 |
 | modifier | №0790 (+ 5 других файлов) |
 | modifierAtLevel20 | №0818 |
@@ -11168,7 +11503,7 @@
 | passive | №0052 (+ 9 других файлов) |
 | password | №0642 |
 | patch | №0654 (+ 1 других файлов) |
-| path | №0056 (+ 31 других файлов) |
+| path | №0056 (+ 32 других файлов) |
 | pathCost | №1220 (+ 1 других файлов) |
 | pathFt | №0800 |
 | patientDefense | №0637 |
@@ -11610,7 +11945,7 @@
 | reanimator | №0798 |
 | reaper | №0798 |
 | rearDigits | №0050 |
-| reason | №0066 (+ 29 других файлов) |
+| reason | №0066 (+ 30 других файлов) |
 | reassembleCorpus | №0768 |
 | rebirthInHell | №0768 |
 | rebuild | №0787 |
@@ -11653,7 +11988,7 @@
 | recoveryRate | №1091 |
 | recruitInformant | №0768 |
 | recruitMercenary | №0768 |
-| recursive | №0877 (+ 46 других файлов) |
+| recursive | №0877 (+ 47 других файлов) |
 | red | №0821 |
 | Red | №0765 (+ 1 других файлов) |
 | redirect | №0768 |
@@ -12268,7 +12603,7 @@
 | setWeapon | №0052 |
 | sewer | №0052 |
 | sha | №1245 |
-| sha256 | №0831 (+ 2 других файлов) |
+| sha256 | №0831 (+ 3 других файлов) |
 | shadow_dancer | №0771 |
 | shadow_touched | №0771 |
 | shadowColor | №0055 (+ 1 других файлов) |
@@ -12483,9 +12818,10 @@
 | soulOfArtifice | №0637 |
 | soulSight | №0802 |
 | soulToyConversion | №0798 |
-| source | №0047 (+ 111 других файлов) |
+| source | №0047 (+ 112 других файлов) |
 | SOURCE | №0655 |
 | SOURCE_TAG | №0659 |
+| sourceCommit | №1673 |
 | sourceDead | №0858 |
 | sourceDisplacementMax | №1109 |
 | sourceDisplacementMean | №1109 |
@@ -12987,7 +13323,7 @@
 | textile | №0659 |
 | texture | №0051 (+ 4 других файлов) |
 | Texture | №0059 |
-| textures | №0062 |
+| textures | №0062 (+ 1 других файлов) |
 | textureTile | №0051 |
 | thaumaturgy | №0768 |
 | thaumaturgyEnhanced | №0798 |
@@ -13019,7 +13355,7 @@
 | tier | №0654 |
 | tights | №0051 |
 | tile | №0051 |
-| tiles | №0060 (+ 1 других файлов) |
+| tiles | №0060 (+ 2 других файлов) |
 | time | №0050 (+ 13 других файлов) |
 | timeFrozen | №0807 |
 | timelessBody | №0637 |
@@ -13370,7 +13706,7 @@
 | wall_wood_dark | №0061 |
 | wall_wood_light | №0061 |
 | wallClimb | №0798 |
-| walls | №0060 (+ 15 других файлов) |
+| walls | №0060 (+ 16 других файлов) |
 | wallStart | №0615 |
 | wandering | №0703 (+ 1 других файлов) |
 | wands | №0807 (+ 1 других файлов) |
@@ -13830,11 +14166,11 @@
 | z | №1299 |
 | zeroWeightVertices | №1244 |
 
-### JSON поля (305)
+### JSON поля (314)
 
 | Имя | Исходные файлы |
 |---|---|
-| action | №0746 |
+| action | №0746 (+ 1 других файлов) |
 | african | №0907 |
 | age | №0907 |
 | allManifestEntriesMatchPhysicalZIP | №0894 (+ 1 других файлов) |
@@ -13843,7 +14179,7 @@
 | androidDebug | №0911 |
 | androidSignedRelease | №0911 |
 | animationClips | №0900 |
-| app | №1357 (+ 2 других файлов) |
+| app | №1676 (+ 2 других файлов) |
 | appId | №1045 |
 | arch | №1045 |
 | archiveBytes | №0894 (+ 1 других файлов) |
@@ -13857,32 +14193,33 @@
 | artifactName | №1045 |
 | asar | №1045 |
 | asian | №0907 |
-| assetId | №0740 (+ 6 других файлов) |
+| assetId | №0740 (+ 13 других файлов) |
 | attributes | №0900 |
 | audit | №0907 |
-| author | №0740 (+ 5 других файлов) |
-| backslash | №0744 |
-| backslashTexture | №0744 |
+| author | №0740 (+ 11 других файлов) |
+| backslash | №0744 (+ 1 других файлов) |
+| backslashTexture | №0744 (+ 1 других файлов) |
 | balanced | №1097 |
+| base | №1307 |
 | baseColorFactor | №0900 |
 | baseObj | №0075 (+ 1 других файлов) |
 | basePositionsSha256 | №0075 (+ 1 других файлов) |
-| baseUrl | №1357 (+ 2 других файлов) |
+| baseUrl | №1676 (+ 2 других файлов) |
 | binary | №0075 (+ 1 других файлов) |
 | binarySha256 | №0075 (+ 1 других файлов) |
 | binaryTransfer | №0909 |
-| blockedVersions | №1357 (+ 2 других файлов) |
+| blockedVersions | №1676 (+ 2 других файлов) |
 | bones | №0900 |
 | breast-volume-decr | №0075 (+ 1 других файлов) |
 | breast-volume-incr | №0075 (+ 1 других файлов) |
 | breastSize | №0075 (+ 1 других файлов) |
 | build | №1045 |
-| bytes | №1362 (+ 9 других файлов) |
-| category | №1362 |
+| bytes | №1681 (+ 10 других файлов) |
+| category | №1681 |
 | caucasian | №0907 |
-| cell | №0740 (+ 8 других файлов) |
+| cell | №0740 (+ 17 других файлов) |
 | changedVertices | №0907 (+ 1 других файлов) |
-| channel | №1357 (+ 2 других файлов) |
+| channel | №1676 (+ 2 других файлов) |
 | channels | №0075 (+ 1 других файлов) |
 | chest | №0900 (+ 2 других файлов) |
 | chromiumQA | №0894 |
@@ -13891,82 +14228,86 @@
 | compositions | №0075 (+ 1 других файлов) |
 | conclusion | №0894 (+ 1 других файлов) |
 | connectedComponents | №0900 |
-| controlled | №0740 (+ 1 других файлов) |
-| count | №0075 (+ 2 других файлов) |
+| controlled | №0740 (+ 3 других файлов) |
+| count | №0075 (+ 3 других файлов) |
 | CRC | №0894 (+ 1 других файлов) |
 | createDesktopShortcut | №1045 |
 | createStartMenuShortcut | №1045 |
 | cupsize | №0907 |
-| currentFloor | №0740 (+ 8 других файлов) |
+| currentFloor | №0740 (+ 17 других файлов) |
 | cutoff | №0907 |
-| d | №0740 (+ 8 других файлов) |
-| darkness | №0740 (+ 8 других файлов) |
+| d | №0740 (+ 17 других файлов) |
+| darkness | №0740 (+ 17 других файлов) |
 | debug | №0894 |
 | declaredSourceCommit | №0907 |
-| defaultDependencyTypeInfo | №1347 |
-| defaultInstantiationMode | №1347 |
+| defaultDependencyTypeInfo | №1665 |
+| defaultInstantiationMode | №1665 |
 | degenerateTriangles | №0900 |
-| dependencies | №1330 (+ 1 других файлов) |
-| dependencyTypeInfos | №1347 |
-| depth | №1331 |
-| description | №0740 (+ 7 других файлов) |
+| dependencies | №1648 (+ 1 других файлов) |
+| dependencyTypeInfos | №1665 |
+| depth | №1649 |
+| derived | №1382 |
+| description | №0740 (+ 14 других файлов) |
+| destination | №1382 |
 | destinationGender | №0907 |
 | devDependencies | №1045 |
 | directories | №1045 |
 | doubleSided | №0900 |
-| e | №0740 (+ 8 других файлов) |
+| e | №0740 (+ 17 других файлов) |
 | editorMorphs | №0900 |
 | electron | №1045 |
 | electron-builder | №1045 |
 | embeddedMorphChannels | №0900 |
-| emitsLight | №0746 |
+| emitsLight | №0746 (+ 1 других файлов) |
 | enclosed | №1097 |
-| eTexture | №0740 (+ 8 других файлов) |
+| eTexture | №0740 (+ 17 других файлов) |
 | exportedMacros | №0907 |
 | fail | №0894 (+ 1 других файлов) |
 | femaleStackTerms | №0907 |
-| fileCount | №1362 |
-| files | №1362 (+ 8 других файлов) |
+| fileCount | №1681 |
+| files | №1681 (+ 9 других файлов) |
 | firmness | №0907 |
 | fixtureSha256 | №0907 (+ 1 других файлов) |
-| floor | №0740 (+ 1 других файлов) |
-| floors | №0740 (+ 8 других файлов) |
+| floor | №0740 (+ 3 других файлов) |
+| floors | №0740 (+ 18 других файлов) |
 | flow | №0894 |
 | folder | №0075 (+ 3 других файлов) |
 | gender | №0907 |
-| generated | №1362 (+ 3 других файлов) |
+| generated | №1681 (+ 3 других файлов) |
 | gitBlob | №0911 |
-| h | №0740 (+ 8 других файлов) |
+| h | №0740 (+ 17 других файлов) |
 | head | №0075 (+ 1 других файлов) |
 | head-decr | №0075 (+ 1 других файлов) |
 | head-incr | №0075 (+ 1 других файлов) |
-| height | №0740 (+ 9 других файлов) |
+| height | №0740 (+ 18 других файлов) |
 | hips | №0900 (+ 2 других файлов) |
 | human-female | №1293 |
-| id | №0740 (+ 11 других файлов) |
+| id | №0740 (+ 20 других файлов) |
 | indexComponentType | №0900 |
-| intensity | №0740 (+ 8 других файлов) |
-| interactive | №0746 |
+| intensity | №0740 (+ 17 других файлов) |
+| interactive | №0746 (+ 1 других файлов) |
 | joints | №0907 (+ 2 других файлов) |
 | JOINTS_0 | №0900 |
-| kind | №1362 |
+| key | №1307 |
+| kind | №1681 |
 | legacy | №0894 (+ 1 других файлов) |
 | legLength | №0075 (+ 1 других файлов) |
 | legLength-decr | №0075 (+ 1 других файлов) |
 | legLength-incr | №0075 (+ 1 других файлов) |
 | legs | №0075 (+ 1 других файлов) |
-| library | №0740 (+ 6 других файлов) |
+| library | №0740 (+ 13 других файлов) |
 | license | №0075 (+ 1 других файлов) |
-| lighting | №0740 (+ 8 других файлов) |
-| lightIntensity | №0746 |
-| lightRadius | №0746 |
+| lighting | №0740 (+ 17 других файлов) |
+| lightIntensity | №0746 (+ 1 других файлов) |
+| lightRadius | №0746 (+ 1 других файлов) |
 | limitations | №0075 (+ 2 других файлов) |
 | localRuntimeTests | №0909 |
-| loot | №0740 |
+| loot | №0740 (+ 1 других файлов) |
 | macroConfigSha256 | №0907 |
 | main | №1045 |
 | manifest | №0894 (+ 1 других файлов) |
-| mapId | №0740 (+ 6 других файлов) |
+| mapId | №0740 (+ 13 других файлов) |
+| maps | №1382 |
 | materials | №0900 |
 | maxDisplacementMeters | №0907 (+ 1 других файлов) |
 | measure-thigh-circ-decr | №0075 (+ 1 других файлов) |
@@ -13979,8 +14320,9 @@
 | method | №0075 (+ 1 других файлов) |
 | MhObjectType | №0900 |
 | MhScaleFactor | №0900 |
-| minAppVersion | №1357 (+ 2 других файлов) |
-| model | №0740 (+ 9 других файлов) |
+| minAppVersion | №1676 (+ 2 других файлов) |
+| model | №0740 (+ 18 других файлов) |
+| models | №1307 (+ 1 других файлов) |
 | morphNames | №0900 |
 | MPFB_GEN_object_type | №0900 |
 | MPFB_GEN_scale_factor | №0900 |
@@ -13998,16 +14340,16 @@
 | MPFB_HUM_proportions | №0900 |
 | MPFB_HUM_weight | №0900 |
 | muscle | №0907 |
-| n | №0740 (+ 8 других файлов) |
-| name | №0075 (+ 12 других файлов) |
+| n | №0740 (+ 17 других файлов) |
+| name | №0075 (+ 21 других файлов) |
 | negative | №0075 (+ 3 других файлов) |
-| newSceneOverride | №1347 |
+| newSceneOverride | №1665 |
 | nextAction | №0911 |
 | nonFiniteValues | №0900 |
 | NORMAL | №0900 |
 | nsis | №1045 |
-| nTexture | №0740 (+ 8 других файлов) |
-| objects | №0740 (+ 8 других файлов) |
+| nTexture | №0740 (+ 17 других файлов) |
+| objects | №0740 (+ 17 других файлов) |
 | offset | №0075 (+ 1 других файлов) |
 | oneClick | №1045 |
 | ota_install_contract | №0896 |
@@ -14015,7 +14357,7 @@
 | pages | №0911 |
 | paid_api_authorized | №0001 |
 | pass | №0894 (+ 1 других файлов) |
-| path | №1362 (+ 3 других файлов) |
+| path | №1681 (+ 4 других файлов) |
 | pbrMetallicRoughness | №0900 |
 | pectorals | №0075 (+ 1 других файлов) |
 | perMachine | №1045 |
@@ -14036,8 +14378,9 @@
 | publication | №0894 (+ 1 других файлов) |
 | quota_scope | №0001 |
 | race | №0907 |
-| radius | №0740 (+ 8 других файлов) |
+| radius | №0740 (+ 17 других файлов) |
 | rawBounds | №0900 |
+| reason | №1382 |
 | recommendedSourceCommit | №0907 |
 | regression | №0894 (+ 1 других файлов) |
 | release | №0909 |
@@ -14046,38 +14389,39 @@
 | release_source_sha | №0001 |
 | releaseCommit | №0894 (+ 1 других файлов) |
 | required_editor_assets | №0896 |
-| requiredAssets | №0740 (+ 6 других файлов) |
+| requiredAssets | №0740 (+ 13 других файлов) |
 | retry_after | №0001 |
 | rmsDisplacementMeters | №0907 (+ 1 других файлов) |
 | rootCause | №0894 |
-| rotation | №0741 (+ 5 других файлов) |
+| rotation | №0741 (+ 11 других файлов) |
 | roughnessFactor | №0900 |
 | runtime | №0907 (+ 1 других файлов) |
 | runtimeOTARegression | №0894 |
-| s | №0740 (+ 7 других файлов) |
-| scale | №0075 (+ 10 других файлов) |
+| s | №0740 (+ 15 других файлов) |
+| scale | №0075 (+ 19 других файлов) |
 | schema | №0075 (+ 4 других файлов) |
-| schemaVersion | №0740 (+ 6 других файлов) |
+| schemaVersion | №0740 (+ 13 других файлов) |
 | scripts | №1045 |
 | seamDuplicates | №0900 |
 | seamMaxMeters | №0907 (+ 1 других файлов) |
-| searchable | №0740 (+ 5 других файлов) |
+| searchable | №0740 (+ 11 других файлов) |
 | seconds | №0894 (+ 1 других файлов) |
-| selectedTexture | №0740 (+ 8 других файлов) |
-| selectedTool | №0740 (+ 8 других файлов) |
-| selectedWallTexture | №0740 (+ 8 других файлов) |
-| sha256 | №1362 (+ 4 других файлов) |
+| selectedTexture | №0740 (+ 17 других файлов) |
+| selectedTool | №0740 (+ 17 других файлов) |
+| selectedWallTexture | №0740 (+ 17 других файлов) |
+| sha256 | №1681 (+ 5 других файлов) |
 | shippedSha256 | №0907 (+ 1 других файлов) |
 | shoulders | №0900 (+ 2 других файлов) |
-| showAbove | №0740 |
-| showBelow | №0740 |
-| showCeilings | №0740 |
+| showAbove | №0740 (+ 1 других файлов) |
+| showBelow | №0740 (+ 1 других файлов) |
+| showCeilings | №0740 (+ 1 других файлов) |
 | signedRelease | №0894 |
 | skins | №0900 |
-| sky | №0741 (+ 4 других файлов) |
-| slash | №0744 |
-| slashTexture | №0744 |
-| source | №0075 (+ 3 других файлов) |
+| sky | №0741 (+ 9 других файлов) |
+| slash | №0744 (+ 1 других файлов) |
+| slashTexture | №0744 (+ 1 других файлов) |
+| source | №0075 (+ 4 других файлов) |
+| sourceCommit | №1382 |
 | sourceGlbSha256 | №0907 |
 | sourceHashes | №0075 (+ 2 других файлов) |
 | sourceProject | №0907 |
@@ -14086,64 +14430,102 @@
 | sourceStackTerms | №0907 |
 | stableVersion | №0894 (+ 1 других файлов) |
 | stage | №0909 |
-| stairDirection | №0740 (+ 1 других файлов) |
-| stairFrom | №0740 (+ 1 других файлов) |
-| stairsTo | №0741 (+ 2 других файлов) |
-| stairTo | №0740 (+ 1 других файлов) |
+| stairDirection | №0740 (+ 3 других файлов) |
+| stairFrom | №0740 (+ 3 других файлов) |
+| stairsTo | №0741 (+ 5 других файлов) |
+| stairTo | №0740 (+ 3 других файлов) |
 | status | №0894 (+ 3 других файлов) |
-| steps | №0740 (+ 1 других файлов) |
-| sTexture | №0740 (+ 7 других файлов) |
-| tags | №0740 (+ 6 других файлов) |
+| steps | №0740 (+ 3 других файлов) |
+| sTexture | №0740 (+ 15 других файлов) |
+| tags | №0740 (+ 13 других файлов) |
 | target | №1045 (+ 1 других файлов) |
 | targets | №0075 (+ 4 других файлов) |
-| templatePinStates | №1347 |
+| templatePinStates | №1665 |
 | TEXCOORD_0 | №0900 |
-| tiles | №0740 (+ 8 других файлов) |
-| tokens | №0740 (+ 8 других файлов) |
+| textures | №1382 |
+| tiles | №0740 (+ 18 других файлов) |
+| tokens | №0740 (+ 17 других файлов) |
 | topology | №0900 |
 | torso-muscle-pectoral-decr | №0075 (+ 1 других файлов) |
 | torso-muscle-pectoral-incr | №0075 (+ 1 других файлов) |
 | triangles | №0900 |
-| type | №0740 (+ 9 других файлов) |
+| type | №0740 (+ 18 других файлов) |
 | unchanged | №0907 (+ 1 других файлов) |
 | uniquePositions | №0900 |
-| url | №1331 (+ 2 других файлов) |
-| userAdded | №1347 |
+| url | №1649 (+ 2 других файлов) |
+| userAdded | №1665 |
 | uvOutsideUnitSquare | №0900 |
 | uvRange | №0900 |
-| version | №1362 (+ 17 других файлов) |
+| version | №1681 (+ 26 других файлов) |
 | versionCode | №0894 (+ 1 других файлов) |
 | vertexCount | №0075 (+ 1 других файлов) |
 | vertices | №0900 (+ 3 других файлов) |
-| view | №0740 (+ 8 других файлов) |
-| w | №0740 (+ 8 других файлов) |
+| view | №0740 (+ 17 других файлов) |
+| w | №0740 (+ 17 других файлов) |
 | waist | №0900 (+ 2 других файлов) |
-| walkable | №0740 (+ 1 других файлов) |
-| walls | №0740 (+ 8 других файлов) |
+| walkable | №0740 (+ 3 других файлов) |
+| walls | №0740 (+ 18 других файлов) |
 | weight | №0075 (+ 3 других файлов) |
 | WEIGHTS_0 | №0900 |
 | weightSumMaxError | №0900 |
 | weldedBoundaryEdges | №0900 |
 | weldedNonManifoldEdges | №0900 |
 | weldTolerance | №0900 |
-| width | №0740 (+ 8 других файлов) |
+| width | №0740 (+ 17 других файлов) |
 | win | №1045 |
 | workflows | №0894 (+ 1 других файлов) |
-| wTexture | №0740 (+ 7 других файлов) |
-| x | №0740 (+ 8 других файлов) |
-| y | №0740 (+ 8 других файлов) |
-| z | №0740 (+ 8 других файлов) |
+| wTexture | №0740 (+ 15 других файлов) |
+| x | №0740 (+ 17 других файлов) |
+| y | №0740 (+ 17 других файлов) |
+| z | №0740 (+ 17 других файлов) |
 | zeroWeightVertices | №0900 |
 | zip | №0911 |
 | zip_crc_and_all_entry_sha256 | №0896 |
 | zip_sha256 | №0896 |
 | zipSha256 | №0894 (+ 1 других файлов) |
-| zones | №0740 (+ 8 других файлов) |
+| zones | №0740 (+ 17 других файлов) |
 
 ## Файлы с совпадающим Git SHA
 
 Совпадение содержимого не означает, что путь можно удалить.
 
+- app/assets/3d/quaternius/models/Bag.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bag.bin
+- app/assets/3d/quaternius/models/Barrel.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Barrel.bin
+- app/assets/3d/quaternius/models/Barrel_Apples.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Barrel_Apples.bin
+- app/assets/3d/quaternius/models/Bed_Twin1.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bed_Twin1.bin
+- app/assets/3d/quaternius/models/Bench.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bench.bin
+- app/assets/3d/quaternius/models/Book_Stack_2.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Book_Stack_2.bin
+- app/assets/3d/quaternius/models/Bookcase_2.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bookcase_2.bin
+- app/assets/3d/quaternius/models/Bottle_1.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Bottle_1.bin
+- app/assets/3d/quaternius/models/CandleStick_Triple.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/CandleStick_Triple.bin
+- app/assets/3d/quaternius/models/Candle_2.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Candle_2.bin
+- app/assets/3d/quaternius/models/Chair_1.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chair_1.bin
+- app/assets/3d/quaternius/models/Chalice.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chalice.bin
+- app/assets/3d/quaternius/models/Chandelier.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chandelier.bin
+- app/assets/3d/quaternius/models/Chest_Wood.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Chest_Wood.bin
+- app/assets/3d/quaternius/models/Coin.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Coin.bin
+- app/assets/3d/quaternius/models/Mug.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Mug.bin
+- app/assets/3d/quaternius/models/Pouch_Large.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Pouch_Large.bin
+- app/assets/3d/quaternius/models/Rope_1.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Rope_1.bin
+- app/assets/3d/quaternius/models/Shelf_Simple.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Shelf_Simple.bin
+- app/assets/3d/quaternius/models/Stool.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Stool.bin
+- app/assets/3d/quaternius/models/Table_Fork.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Fork.bin
+- app/assets/3d/quaternius/models/Table_Knife.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Knife.bin
+- app/assets/3d/quaternius/models/Table_Large.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Large.bin
+- app/assets/3d/quaternius/models/Table_Plate.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Plate.bin
+- app/assets/3d/quaternius/models/Table_Spoon.bin ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/Table_Spoon.bin
+- app/assets/3d/quaternius/textures/T_Trim_Cloth_BaseColor.png ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Cloth_BaseColor.png
+- app/assets/3d/quaternius/textures/T_Trim_Cloth_Normal.png ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Cloth_Normal.png
+- app/assets/3d/quaternius/textures/T_Trim_Cloth_ORM.png ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Cloth_ORM.png
+- app/assets/3d/quaternius/textures/T_Trim_Furniture_BaseColor.png ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Furniture_BaseColor.png
+- app/assets/3d/quaternius/textures/T_Trim_Furniture_Normal.png ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Furniture_Normal.png
+- app/assets/3d/quaternius/textures/T_Trim_Furniture_ORM.png ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Furniture_ORM.png
+- app/assets/3d/quaternius/textures/T_Trim_Metal_BaseColor.png ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Metal_BaseColor.png
+- app/assets/3d/quaternius/textures/T_Trim_Metal_Normal.png ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Metal_Normal.png
+- app/assets/3d/quaternius/textures/T_Trim_Metal_ORM.png ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Metal_ORM.png
+- app/assets/3d/quaternius/textures/T_Trim_Props_BaseColor.png ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Props_BaseColor.png
+- app/assets/3d/quaternius/textures/T_Trim_Props_Normal.png ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Props_Normal.png
+- app/assets/3d/quaternius/textures/T_Trim_Props_ORM.png ; unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Props_ORM.png
 - app/assets/3d/user_furniture/bed.glb ; bed.glb
 - app/assets/3d/user_furniture/bookshelf.glb ; bookshelf.glb
 - app/assets/3d/user_furniture/chair.glb ; chair.glb
@@ -14154,6 +14536,50 @@
 - app/assets/dice/dice10-1.png ; app/assets/dice/dice10.png
 - app/assets/ui/update_scene_forest_burned.svg ; wallpapers/32.svg
 - app/assets/ui/update_scene_forest_green.svg ; wallpapers/31.svg
+- app/data/maps/3d_castle_black_rose_v740030.json ; unity/Assets/LegacyContent/Source/app/data/maps/3d_castle_black_rose_v740030.json
+- app/data/maps/3d_castle_v740019.json ; unity/Assets/LegacyContent/Source/app/data/maps/3d_castle_v740019.json
+- app/data/maps/3d_house_v740019.json ; unity/Assets/LegacyContent/Source/app/data/maps/3d_house_v740019.json
+- app/data/maps/3d_stress_v740026.json ; unity/Assets/LegacyContent/Source/app/data/maps/3d_stress_v740026.json
+- app/data/maps/3d_tavern_v740019.json ; unity/Assets/LegacyContent/Source/app/data/maps/3d_tavern_v740019.json
+- app/data/maps/3d_test_dungeon.json ; unity/Assets/LegacyContent/Source/app/data/maps/3d_test_dungeon.json
+- app/data/maps/3d_town_v740019.json ; unity/Assets/LegacyContent/Source/app/data/maps/3d_town_v740019.json
+- app/data/maps/3d_village_v740019.json ; unity/Assets/LegacyContent/Source/app/data/maps/3d_village_v740019.json
+- floor_ceramic_tile_dark.png ; unity/Assets/LegacyContent/Source/floor_ceramic_tile_dark.png
+- floor_ceramic_tile_light.png ; unity/Assets/LegacyContent/Source/floor_ceramic_tile_light.png
+- floor_checker_tile.png ; unity/Assets/LegacyContent/Source/floor_checker_tile.png
+- floor_cobblestone.png ; unity/Assets/LegacyContent/Source/floor_cobblestone.png
+- floor_earth.png ; unity/Assets/LegacyContent/Source/floor_earth.png
+- floor_grass.png ; unity/Assets/LegacyContent/Source/floor_grass.png
+- floor_hex_tile.png ; unity/Assets/LegacyContent/Source/floor_hex_tile.png
+- floor_marble_dark.png ; unity/Assets/LegacyContent/Source/floor_marble_dark.png
+- floor_marble_light.png ; unity/Assets/LegacyContent/Source/floor_marble_light.png
+- floor_parquet_herringbone.png ; unity/Assets/LegacyContent/Source/floor_parquet_herringbone.png
+- floor_rug_blue.png ; unity/Assets/LegacyContent/Source/floor_rug_blue.png
+- floor_rug_green.png ; unity/Assets/LegacyContent/Source/floor_rug_green.png
+- floor_rug_red.png ; unity/Assets/LegacyContent/Source/floor_rug_red.png
+- floor_stone_tile_dark.png ; unity/Assets/LegacyContent/Source/floor_stone_tile_dark.png
+- floor_stone_tile_light.png ; unity/Assets/LegacyContent/Source/floor_stone_tile_light.png
+- floor_tatami.png ; unity/Assets/LegacyContent/Source/floor_tatami.png
+- floor_wood_dark.png ; unity/Assets/LegacyContent/Source/floor_wood_dark.png
+- floor_wood_light.png ; unity/Assets/LegacyContent/Source/floor_wood_light.png
+- unity/Assets/LegacyContent/Source/wall_brick_red.png ; wall_brick_red.png
+- unity/Assets/LegacyContent/Source/wall_concrete.png ; wall_concrete.png
+- unity/Assets/LegacyContent/Source/wall_half_timber.png ; wall_half_timber.png
+- unity/Assets/LegacyContent/Source/wall_marble_dark.png ; wall_marble_dark.png
+- unity/Assets/LegacyContent/Source/wall_marble_light.png ; wall_marble_light.png
+- unity/Assets/LegacyContent/Source/wall_moss_stone.png ; wall_moss_stone.png
+- unity/Assets/LegacyContent/Source/wall_old_plaster.png ; wall_old_plaster.png
+- unity/Assets/LegacyContent/Source/wall_plaster_dark.png ; wall_plaster_dark.png
+- unity/Assets/LegacyContent/Source/wall_plaster_light.png ; wall_plaster_light.png
+- unity/Assets/LegacyContent/Source/wall_plaster_panel.png ; wall_plaster_panel.png
+- unity/Assets/LegacyContent/Source/wall_slate.png ; wall_slate.png
+- unity/Assets/LegacyContent/Source/wall_stone_dark.png ; wall_stone_dark.png
+- unity/Assets/LegacyContent/Source/wall_stone_light.png ; wall_stone_light.png
+- unity/Assets/LegacyContent/Source/wall_stone_masonry.png ; wall_stone_masonry.png
+- unity/Assets/LegacyContent/Source/wall_wallpaper.png ; wall_wallpaper.png
+- unity/Assets/LegacyContent/Source/wall_white_plaster.png ; wall_white_plaster.png
+- unity/Assets/LegacyContent/Source/wall_wood_dark.png ; wall_wood_dark.png
+- unity/Assets/LegacyContent/Source/wall_wood_light.png ; wall_wood_light.png
 
 ## Обновление индекса
 

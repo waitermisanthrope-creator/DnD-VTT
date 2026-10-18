@@ -1,5 +1,30 @@
 # Validation — 2026-10-18, experiment/unity-vtt
 
+## First real-content migration stage
+
+- New scene: `Assets/Vtt/Scenes/ImportedAdventure.unity`, generated from the existing map `app/data/maps/3d_tavern_v740019.json`. Scene/import setup exited **0** (`TestResults/Migration-setup2.log`), `VTT_MIGRATION_SCENE_PASS`: 504 tiles, 164 wall segments, 50 real furniture instances, 2 floors. Original controller room retained.
+- Copied 9 map documents, 25 furniture models and 36 surface textures with buffer/image dependencies (107 source files, 37,108,163 source bytes). Provenance records original revision, source path, Unity destination and SHA-256; C# checks compare both packaged bytes and original repository content. JS `map_world.js` generates the independent floor/geometry contract fixture. No original assets/data files edited.
+- **C# data contracts PASS** during setup and Windows build: schema/legacy HP, canonical zero priority, unknown fields, exact original JSON preservation, snapshot isolation, array/wrapper/single profiles, duplicate keys/IDs and future schema rejection; decimal conversion under ru-RU/en-US/fr-FR; 9 original map documents/floor heights, signed cell keys and asset SHA-256.
+- **Windows migration development build PASS**, process exit 0: `TestResults/MigrationWindows.log`, `VTT_MIGRATION_BUILD_PASS: StandaloneWindows64`. New output `Builds/WindowsMigration/` does not overwrite the first prototype build.
+- **Android migration ARM64 IL2CPP development build PASS**, process exit 0: `TestResults/MigrationAndroid.log`, `VTT_MIGRATION_BUILD_PASS: Android`. APK `Builds/AndroidMigration/DndVtt-experiment.apk`, **62,009,242 bytes**, SHA-256 `392D08B25142E1D65F9434C5D61736B6A97A274191BD4170FC090964CDB21070`. `apksigner verify --print-certs` PASS (Android Debug); aapt confirms `com.dndvtt.unityexperiment`, min SDK 26 / target 36, `arm64-v8a`. `adb devices` empty: no physical install/run or touch/FPS claim.
+- Windows game assembly `Builds/WindowsMigration/DndVtt_Data/Managed/Assembly-CSharp.dll` SHA-256 `264A8CF59C4111493A33B4AA8A82A49B6278CF576792CEDFDD2ADF0D5A87DFE4`. Git-index SHA-256 check also PASS for all **108** packaged original/dependency/derived files; source assets are stored without automatic line-ending conversion.
+- **Built Windows migration player smoke PASS**, process exit 0: `TestResults/MigrationSmoke.log`, `VTT_MIGRATION_SMOKE_PASS`. Tests actual tavern import and model/geometry counts, ground/movement on both floors, first/third camera state, elevated-floor fall recovery, profile import/exact export and rejection retaining the previous profile. This is separate from human touch/mouse feel QA.
+- Interactive Windows built-client QA also verified real textured geometry/furniture, opening the map/profile panel, switching to floor 2, and typing/importing a synthetic Cyrillic profile through the actual UI: HUD displayed `Тестовый герой HP 17/24 temp 3`. No runtime exception heads in `TestResults/Migration-preview.log`. This does not validate the old rule engine or physical Android input.
+- Original JS world, stair navigation and cloud sync suites PASS; cloud suite **17 scenarios**. These are local/mocked checks, not live Supabase verification. Existing JS/platform/release sources unchanged.
+- Initial glTF import failed on the animated chest's multi-primitive bone job in glTFast 6.14.1. Source is preserved byte-for-byte as `.gltf.bytes`; the manifest identifies the static bind-pose derivative used by the Unity importer. Existing JS flattening also does not execute skins/animations. Chest animation remains unported. Initial C# map parse exposed a current-culture numeric conversion bug; fixed with invariant scalar conversion and locale regression checks before passing setup/build.
+- Runtime import is read-only, no cloud requests or writes to current saves. Movement is realtime exploration, not D&D action economy. Closed portal proxies, fog/LOS, loot, authoritative tokens, stair routing and rule/class execution are not complete. Other maps use visible placeholders when a model is outside the 25-model catalog. Floor controls perform explicit safe-entry relocation.
+- Existing user-created `unity/dnd-vtt` template sources are preserved and excluded from staging; generated caches remain ignored. No main/workflow/release change or paid API execution.
+
+## Follow-up audit: wrong project / nested caches
+
+- Fetch confirms `7722cccc` and `926a8ff3` are both on `origin/experiment/unity-vtt`, remote HEAD `926a8ff3`. The push blocker described in the original run below is historical.
+- Open Editor/Hub initially targeted `C:\Projects\DnD-VTT\unity\dnd-vtt`, a separate template project with `Assets/Scenes/SampleScene.unity`. Correct prototype is `C:\Projects\DnD-VTT\unity`, scene `C:\Projects\DnD-VTT\unity\Assets\Vtt\Scenes\Exploration.unity`.
+- Added the correct existing project to Hub and opened Exploration through the Editor UI. Hierarchy contains Explorer, Explorer Camera, Ground, Collision test wall, steps and Runtime verification. Play Mode rendered the capsule/room; after the check Play Mode was stopped, Exploration left open. No scene regeneration or save overwrite.
+- Console showed 0 errors/0 warnings; correct-project Editor.log had no C# error markers or gameplay exception heads. TLS certificate/Curl 35 messages are service networking failures. The nested template had additional licensing entitlement 404/AI service SDK messages; these are not C# compilation failures. No new APK/EXE build performed in this audit.
+- At first full enumeration Git showed 53,754 changes, primarily nested Library/Temp caches. Expanded unity/.gitignore to match generated Unity/VS files at nested depths. `git ls-files -ci --exclude-standard` returned 0: caches were untracked, so no index removal/deletion was needed.
+- 62 untracked template source/config files are deliberately preserved and remain visible (34 Assets files, 2 Packages manifests, 25 ProjectSettings, 1 .vsconfig). New ignore/docs changes remain uncommitted for review; no bulk commit or release.
+- Final GitHub Desktop and CLI count: **71 changes** = 7 modified tracked ignore/documentation/atlas files + 62 preserved untracked nested-template files + 2 newly written root-project settings (`PackageManagerSettings.asset`, `URPProjectSettings.asset`). These two ProjectSettings files remain visible because project configuration should not be hidden with caches. Staged files: 0. Main remains `4d548ffb`; existing workflows have no diff.
+
 Source stage committed locally as `7722cccc`. Git push to `experiment/unity-vtt` waited on Git Credential Manager; the owned push process was stopped, with the commit preserved. Remote publication is not confirmed; user GitHub authentication is required before retrying. No credential configuration was changed.
 
 ## Isolation and environment
@@ -38,9 +63,9 @@ One setup run saved the scene/settings, then crashed on exit (`-1073741819`) aft
 
 Initial player smoke reached the last assertion but exited 1: direct Transform teleport was overwritten by CharacterController.Move. The test fixture now disables/re-enables the motor when arranging an out-of-bounds starting point, as the real respawn method does. That failed attempt is not counted as a passing smoke test.
 
-## Scope limits
+## Original controller-room scope limits (historical)
 
-This is a capsule/primitive test room with realtime exploration and two cameras. Existing map import, character JSON migration, game rules, cloud, multiplayer, character art/animation and stable distribution are not implemented by this slice.
+The original Exploration scene is a capsule/primitive test room with realtime exploration and two cameras. Its baseline did not implement map/profile import. The subsequent real-content stage is described at the top of this report; game rules, cloud, multiplayer, character art/animation and stable distribution remain incomplete.
 
 The automated player scenario drives the same public movement and camera functions as input; it does not prove human keyboard/mouse feel, Android touch interaction or sustained FPS. No physical Android install/run, live Supabase or signed stable build has been performed. Android uses the separate experimental package ID; original signing key and release workflows remain untouched.
 

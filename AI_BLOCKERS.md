@@ -1,8 +1,9 @@
 # Active blockers / limits
 
 ## Unity experiment scope (2026-10-18)
-- Source stage is committed locally (`7722cccc`); experimental push waited on Git Credential Manager and was stopped without credential changes. Remote push is not confirmed. Authenticate GitHub locally, then push only `HEAD:refs/heads/experiment/unity-vtt`; never push this experiment to main.
-- Work only on `experiment/unity-vtt`; no existing release workflow changes or stable publication. Unity prototype does not yet import character saves, maps, game rules or cloud accounts.
+- Resolved at subsequent audit: fetch confirmed both `7722cccc` and `926a8ff3` on origin/experiment/unity-vtt. Earlier credential wait is historical. Never push this experiment to main; latest migration checkpoint/publication evidence is in AI_PROGRESS.md.
+- A separately created template project remains at `unity/dnd-vtt`; preserve its 62 untracked source/config files for owner review. Hub now also contains the correct existing `unity` project. Generated nested caches/VS projects are ignored; do not bulk-add the template sources.
+- Work only on `experiment/unity-vtt`; no existing release workflow changes or stable publication. Unity now has a real tavern scene/map-v2 geometry and read-only JSON profile import. Rule/class execution, write-capable profile migration, cloud, multiplayer, map portal/fog/loot/stair parity and full model coverage are still incomplete.
 - Real Android touch/performance QA and human keyboard/mouse QA require target devices. Obtain anonymized legacy exports before designing a write-capable save migration. See `unity/VALIDATION.md` for actual build/test evidence and environment limitations.
 - Editor Snapshot export saves a valid scene PNG but crashes on exit under D3D12 and D3D11 (`-1073741819`); this check is not green. Final Windows/Android build processes and Windows runtime mechanics smoke exited 0. Optional existing map DOM test requires jsdom. Do not equate these builds with physical-device QA.
 

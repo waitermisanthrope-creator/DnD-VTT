@@ -1,0 +1,157 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d98c1b0b69bcdca45b897b9e4bd0eb1f, type: 3}
+  m_Name: Catalog
+  m_EditorClassIdentifier: Assembly-CSharp::DndVtt.UnityPrototype.LegacyContentCatalog
+  maps:
+  - key: 3d_castle_black_rose_v740030.json
+    json: {fileID: 4900000, guid: e28790a058514b343b05aba2ea79f970, type: 3}
+  - key: 3d_castle_v740019.json
+    json: {fileID: 4900000, guid: beb606c1e9098fd4fb434203e47158cd, type: 3}
+  - key: 3d_house_v740019.json
+    json: {fileID: 4900000, guid: a8ca728e6049a3d4192dec17c3090004, type: 3}
+  - key: 3d_stress_test_all.json
+    json: {fileID: 4900000, guid: 79cc46dc2f8ef09429b9b20fabe21d16, type: 3}
+  - key: 3d_stress_v740026.json
+    json: {fileID: 4900000, guid: 0ad93ea0e3935e94d991da58a108b4da, type: 3}
+  - key: 3d_tavern_v740019.json
+    json: {fileID: 4900000, guid: b9768d0ee4b9ebe45b095afdc4fc27ae, type: 3}
+  - key: 3d_test_dungeon.json
+    json: {fileID: 4900000, guid: 7c98edaa27822304f902b058d33ffcf9, type: 3}
+  - key: 3d_town_v740019.json
+    json: {fileID: 4900000, guid: 3b70306f143e4e7419a8bed69db8096d, type: 3}
+  - key: 3d_village_v740019.json
+    json: {fileID: 4900000, guid: e44f519094151b04aa36409be44cb40d, type: 3}
+  models:
+  - key: ./app/assets/3d/quaternius/models/Bag.gltf
+    prefab: {fileID: 7234166541012301346, guid: 3e8946f12bffb414486e81fb8a8950ee, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Barrel.gltf
+    prefab: {fileID: -8261487552911795938, guid: c2610a907e5484b45bbbeccd0902c049, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Barrel_Apples.gltf
+    prefab: {fileID: -4451093049017346378, guid: 189abb1ed55812042a176827a58cac1b, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Bed_Twin1.gltf
+    prefab: {fileID: -1416231957337647946, guid: c41ecab471e17e8459fed47a93976606, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Bench.gltf
+    prefab: {fileID: 8820432933041923219, guid: 7a6e01abd37374945beeb458ffe9f0a2, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Book_Stack_2.gltf
+    prefab: {fileID: -5613001480214057380, guid: d4b6e51623474d745966176ece1c919f, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Bookcase_2.gltf
+    prefab: {fileID: 2665842518401010035, guid: 3b236e9831a94054d801213fef6e62e5, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Bottle_1.gltf
+    prefab: {fileID: -8085094248699948825, guid: d7ca5856cd711ea4f8e30bf03e003d4e, type: 3}
+  - key: ./app/assets/3d/quaternius/models/CandleStick_Triple.gltf
+    prefab: {fileID: -4549373371224588407, guid: 52104a91ee095f9448a72f965c9852e3, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Candle_2.gltf
+    prefab: {fileID: 5956914943041010262, guid: cfa7cd3e4ad62384d9225301d5254877, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Chair_1.gltf
+    prefab: {fileID: -1887731124459614620, guid: 85b288c95da810a4c8cbf187a6606072, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Chalice.gltf
+    prefab: {fileID: 2416062149982753565, guid: 9d3769870cc79de4baedb4d3f49c45f5, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Chandelier.gltf
+    prefab: {fileID: 2236818185297646619, guid: f721a25c8c7e53541bc4953f19433cf7, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Chest_Wood.gltf
+    prefab: {fileID: 339731507227210702, guid: 366073c814a96ae4e9a46b778231c05c, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Coin.gltf
+    prefab: {fileID: -6485194804514954509, guid: 2810c7dd07a7eb6458f456a219e8711f, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Mug.gltf
+    prefab: {fileID: -8017965365151790566, guid: 62bd4519c3f5b5c4cab3e92b9da96439, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Pouch_Large.gltf
+    prefab: {fileID: 9169503863178080710, guid: b7969e6e4e3410a469234e73f18f14b7, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Rope_1.gltf
+    prefab: {fileID: 8200856444941071626, guid: 4f1fd41c501f9be45816342c78535a9f, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Shelf_Simple.gltf
+    prefab: {fileID: -2963874817241173052, guid: 716062b2c40027c4fa6b77edbafb8225, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Stool.gltf
+    prefab: {fileID: 5575856430325903636, guid: 27b6a2b16d0f2214f9619df566a4634e, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Table_Fork.gltf
+    prefab: {fileID: 4661056891114301714, guid: 734795476d1f2974a8494ce1492fce1f, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Table_Knife.gltf
+    prefab: {fileID: -1837648128801903447, guid: 70ee6d66f90859149aefb08618e6581e, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Table_Large.gltf
+    prefab: {fileID: 3110080958983050372, guid: dcb78c607e507ff44b13ef0abd0b713b, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Table_Plate.gltf
+    prefab: {fileID: -3227848643086914346, guid: c80427300ba3c19478ad0a678bd6feb2, type: 3}
+  - key: ./app/assets/3d/quaternius/models/Table_Spoon.gltf
+    prefab: {fileID: 9140132764789442448, guid: 74ea0f8f80a2baa40bc8b684d35e1088, type: 3}
+  surfaces:
+  - key: floor_ceramic_tile_dark
+    material: {fileID: 2100000, guid: 3eaf4c34d77eb3e44b7c273842ea05e2, type: 2}
+  - key: floor_ceramic_tile_light
+    material: {fileID: 2100000, guid: a31c3fa81b3f38340b6e2d9ca1756c4e, type: 2}
+  - key: floor_checker_tile
+    material: {fileID: 2100000, guid: 39d6347fc88e00148841a3fef326e00d, type: 2}
+  - key: floor_cobblestone
+    material: {fileID: 2100000, guid: ccfb341631b393b40bd081e87fcc6b08, type: 2}
+  - key: floor_earth
+    material: {fileID: 2100000, guid: f0f9234beb7840143809d1e59a3f0d0d, type: 2}
+  - key: floor_grass
+    material: {fileID: 2100000, guid: c5dae25f603f5c94f9953ad8e5c32222, type: 2}
+  - key: floor_hex_tile
+    material: {fileID: 2100000, guid: c203af13d5371e64dab7abf4e9cf4694, type: 2}
+  - key: floor_marble_dark
+    material: {fileID: 2100000, guid: 600f89f5432d88b4db21efa65697004b, type: 2}
+  - key: floor_marble_light
+    material: {fileID: 2100000, guid: 0f7129617a73ef94baece41dcaef95dd, type: 2}
+  - key: floor_parquet_herringbone
+    material: {fileID: 2100000, guid: 5d08fe0bc0448be428fee4d6f23be858, type: 2}
+  - key: floor_rug_blue
+    material: {fileID: 2100000, guid: af62acaca3b82244e82905d68f65d47f, type: 2}
+  - key: floor_rug_green
+    material: {fileID: 2100000, guid: 35a1c95242a8a5b46bf7180cdceb1bd7, type: 2}
+  - key: floor_rug_red
+    material: {fileID: 2100000, guid: f7f3ed9d2f0fdaa42812fc6ff798ae9a, type: 2}
+  - key: floor_stone_tile_dark
+    material: {fileID: 2100000, guid: 4713742ae070ba641a226c518abcb826, type: 2}
+  - key: floor_stone_tile_light
+    material: {fileID: 2100000, guid: 4b78b1ce7b9ad024589087559bdc1c2a, type: 2}
+  - key: floor_tatami
+    material: {fileID: 2100000, guid: 0cb3f931b67260d42b6227f81596eff7, type: 2}
+  - key: floor_wood_dark
+    material: {fileID: 2100000, guid: baf1c682920eb8145951def7f82e95b4, type: 2}
+  - key: floor_wood_light
+    material: {fileID: 2100000, guid: 95e1a5ce35b174446bdf000f0fcc849f, type: 2}
+  - key: wall_brick_red
+    material: {fileID: 2100000, guid: 23b6dd24d4fceb340b607b28b8ce4da2, type: 2}
+  - key: wall_concrete
+    material: {fileID: 2100000, guid: 934359fdb6e7a104fb6f4eb4c09703ca, type: 2}
+  - key: wall_half_timber
+    material: {fileID: 2100000, guid: dd025cad8c8aba848ae1a9b57889bed0, type: 2}
+  - key: wall_marble_dark
+    material: {fileID: 2100000, guid: 547aa188543fd7a4e8f3f015492828ca, type: 2}
+  - key: wall_marble_light
+    material: {fileID: 2100000, guid: c07d5312bd62d7d459c9be174e81372d, type: 2}
+  - key: wall_moss_stone
+    material: {fileID: 2100000, guid: ac11b6cb3ee85694e88d7f730dae0b5a, type: 2}
+  - key: wall_old_plaster
+    material: {fileID: 2100000, guid: 5033762d41f30f048925a93d2960d1a7, type: 2}
+  - key: wall_plaster_dark
+    material: {fileID: 2100000, guid: 65dd06bc70c3dee458d147c82fed2a90, type: 2}
+  - key: wall_plaster_light
+    material: {fileID: 2100000, guid: 10cdd06f5a875624e8147df348169a85, type: 2}
+  - key: wall_plaster_panel
+    material: {fileID: 2100000, guid: adb809429a04a3045b8497016edcb751, type: 2}
+  - key: wall_slate
+    material: {fileID: 2100000, guid: 3a83d13f5fe8f8d4ea54a29ed58378ee, type: 2}
+  - key: wall_stone_dark
+    material: {fileID: 2100000, guid: d2a2e2fe5f6084f43b9ad0816fa6ccc5, type: 2}
+  - key: wall_stone_light
+    material: {fileID: 2100000, guid: ecaea3e84147b75479c151444f0a40d5, type: 2}
+  - key: wall_stone_masonry
+    material: {fileID: 2100000, guid: 16d95536c47e97c4da3e180886167823, type: 2}
+  - key: wall_wallpaper
+    material: {fileID: 2100000, guid: 3fa81a7eff19f514f8ca7bedfcf7d221, type: 2}
+  - key: wall_white_plaster
+    material: {fileID: 2100000, guid: 1fe57535aa985fe47b8a790ac3e3b0d7, type: 2}
+  - key: wall_wood_dark
+    material: {fileID: 2100000, guid: 666d7578f5c2ec64385afca2f64166bb, type: 2}
+  - key: wall_wood_light
+    material: {fileID: 2100000, guid: c3277be636690dc4b8f646d5e43d20e5, type: 2}

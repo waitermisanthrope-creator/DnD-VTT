@@ -1,0 +1,161 @@
+[
+  {
+    "key": "3d_castle_black_rose_v740030.json",
+    "floors": [
+      {
+        "base": 0,
+        "tiles": 896,
+        "walls": 206
+      },
+      {
+        "base": 4,
+        "tiles": 896,
+        "walls": 206
+      },
+      {
+        "base": 8,
+        "tiles": 896,
+        "walls": 206
+      },
+      {
+        "base": 12,
+        "tiles": 896,
+        "walls": 206
+      }
+    ],
+    "models": 88
+  },
+  {
+    "key": "3d_castle_v740019.json",
+    "floors": [
+      {
+        "base": 0,
+        "tiles": 480,
+        "walls": 115
+      },
+      {
+        "base": 3.5,
+        "tiles": 480,
+        "walls": 115
+      },
+      {
+        "base": 7,
+        "tiles": 480,
+        "walls": 115
+      },
+      {
+        "base": 10.5,
+        "tiles": 480,
+        "walls": 115
+      }
+    ],
+    "models": 116
+  },
+  {
+    "key": "3d_house_v740019.json",
+    "floors": [
+      {
+        "base": 0,
+        "tiles": 120,
+        "walls": 55
+      },
+      {
+        "base": 3.5,
+        "tiles": 120,
+        "walls": 55
+      }
+    ],
+    "models": 50
+  },
+  {
+    "key": "3d_stress_test_all.json",
+    "floors": [
+      {
+        "base": 0,
+        "tiles": 1200,
+        "walls": 159
+      },
+      {
+        "base": 3,
+        "tiles": 1200,
+        "walls": 159
+      }
+    ],
+    "models": 118
+  },
+  {
+    "key": "3d_stress_v740026.json",
+    "floors": [
+      {
+        "base": 0,
+        "tiles": 5084,
+        "walls": 60
+      },
+      {
+        "base": 4,
+        "tiles": 5072,
+        "walls": 60
+      },
+      {
+        "base": 8,
+        "tiles": 5072,
+        "walls": 60
+      }
+    ],
+    "models": 362
+  },
+  {
+    "key": "3d_tavern_v740019.json",
+    "floors": [
+      {
+        "base": 0,
+        "tiles": 252,
+        "walls": 82
+      },
+      {
+        "base": 3.5,
+        "tiles": 252,
+        "walls": 82
+      }
+    ],
+    "models": 50
+  },
+  {
+    "key": "3d_test_dungeon.json",
+    "floors": [
+      {
+        "base": 0,
+        "tiles": 192,
+        "walls": 77
+      },
+      {
+        "base": 3,
+        "tiles": 140,
+        "walls": 44
+      }
+    ],
+    "models": 19
+  },
+  {
+    "key": "3d_town_v740019.json",
+    "floors": [
+      {
+        "base": 0,
+        "tiles": 1824,
+        "walls": 440
+      }
+    ],
+    "models": 48
+  },
+  {
+    "key": "3d_village_v740019.json",
+    "floors": [
+      {
+        "base": 0,
+        "tiles": 1008,
+        "walls": 132
+      }
+    ],
+    "models": 34
+  }
+]
