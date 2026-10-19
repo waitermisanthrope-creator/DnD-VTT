@@ -13,6 +13,7 @@ namespace DndVtt.UnityPrototype
         public const int Code = 10000;
         public const string Package = "com.dndvtt.unity";
         public const string Feed = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/experiment/unity-vtt/updates/unity-experiment.json";
+        public const string ChangelogFeed = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/experiment/unity-vtt/updates/unity-changelog.json";
         public const string Releases = "https://github.com/waitermisanthrope-creator/DnD-VTT/releases";
         public static int VersionCode(string version)
         {
@@ -32,6 +33,33 @@ namespace DndVtt.UnityPrototype
             if (platform == "android" && (string)feed["androidPackage"] != Package) throw new FormatException("Пакет относится к другому приложению");
             return feed;
         }
+        public static JObject ParseHistory(string json)
+        {
+            var history = LegacyJson.Parse(json, 64 * 1024) as JObject
+                ?? throw new FormatException("Неверный формат истории изменений");
+            if ((int?)history["schema"] != 1 || (string)history["channel"] != "unity-experiment" ||
+                history["releases"] is not JArray releases || releases.Count < 1 || releases.Count > 100)
+                throw new FormatException("Неизвестный формат истории изменений");
+            int previous = int.MaxValue;
+            foreach (JToken row in releases)
+            {
+                if (row is not JObject entry) throw new FormatException("Повреждённая запись истории");
+                int code = VersionCode((string)entry["version"]);
+                if ((int?)entry["versionCode"] != code || code >= previous)
+                    throw new FormatException("История должна содержать уникальные версии по убыванию");
+                previous = code;
+                if ((string)entry["status"] != "published" && (string)entry["status"] != "testing")
+                    throw new FormatException("Некорректный статус выпуска");
+                if (((string)entry["title"])?.Length > 160 || ((string)entry["date"])?.Length > 30 ||
+                    entry["changes"] is not JArray changes || changes.Count < 1 || changes.Count > 30)
+                    throw new FormatException("Некорректный список изменений");
+                foreach (JToken item in changes)
+                    if (item.Type != JTokenType.String || ((string)item).Length > 500)
+                        throw new FormatException("Некорректное описание изменения");
+            }
+            return history;
+        }
+
         public static void VerifyFile(string path, JObject artifact)
         {
             if (new FileInfo(path).Length != (long)artifact["bytes"]) throw new FormatException("Пакет загружен не полностью");
