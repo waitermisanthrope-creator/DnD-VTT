@@ -23,16 +23,22 @@ def main():
     for name, sha in ORIGINAL_BLOBS.items():
         actual = subprocess.check_output(["git", "hash-object", str(BRAND / name)], cwd=ROOT, text=True).strip()
         assert actual == sha, name + " must be bitwise identical to main"
+        backup = ROOT / "unity/Assets/StreamingAssets/Branding" / name
+        assert backup.is_file(), "APK fallback missing: " + name
+        backup_hash = subprocess.check_output(["git", "hash-object", str(backup)], cwd=ROOT, text=True).strip()
+        assert backup_hash == sha, "Android fallback must be identical to main: " + name
     home = read("unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs")
     settings = read("unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs")
     frontend = read("unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs")
     client = read("unity/Assets/Vtt/Runtime/ClientPreferences.cs")
     updater = read("unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs")
-    assert all(name in home for name in ("Branding/Wallpaper16", "Branding/Splash19", "Branding/Dragon20", "DrawBrandHome", "DrawBrandMore"))
+    assert all(name in home for name in ("Branding/Wallpaper16", "Branding/Splash19", "Branding/Dragon20", "DrawBrandHome", "ReadPackagedArt", "ScaleMode.ScaleAndCrop"))
     assert all(name in frontend for name in ("DrawBrandHome(); return;", "DrawBrandSettings(); return;"))
-    assert all(name in settings for name in ("Обои по умолчанию: wallpapers/16.png", "DrawUpdates", "DrawChangelog", "Save(SettingsPath)"))
+    assert all(name in settings for name in ("wallpapers/16.png", "DrawTechnicalSettings", "Проверить и обновить", "Save(SettingsPath)"))
     assert all(name in client for name in ("frameStyle", "frameColor", "theme", "autoCheckUpdates"))
     assert all(name in updater for name in ("VerifyFile", "DownloadHandlerFile", "AttemptInstallUpdate"))
+    assert "brandTechnicalScreen" in frontend
+    assert "VTT_BRANDING_ASSET_PASS" in read("unity/Assets/Vtt/Editor/UnityReleaseBuild.cs")
     assert "ScreenOrientation.LandscapeLeft" in frontend
     assert "defaultScreenOrientation: 1" in read("unity/ProjectSettings/ProjectSettings.asset")
     assert "APPLICATION_DISABLED" not in updater
