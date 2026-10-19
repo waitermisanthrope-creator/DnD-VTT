@@ -36,6 +36,10 @@ def run():
     assert "StartCoroutine(CheckForUpdates())" in read("unity/Assets/Vtt/Runtime/LegacySessionPanel.cs")
     assert "REQUEST_INSTALL_PACKAGES" in read("unity/Assets/Vtt/Editor/UnityReleaseBuild.cs")
     assert "PackageManager.GET_SIGNING_CERTIFICATES" in read("unity/Assets/Plugins/Android/UpdateProvider.java")
+    assert '"getCacheDir"' in ui, "Updater must share Java provider cache path"
+    assert 'activity.getCacheDir()' in read("unity/Assets/Plugins/Android/UpdateProvider.java")
+    assert "UNITY_ANDROID_UPDATE_PUBLISHED" in read("unity/ci/publish_android_update.py")
+    assert "github.actor == 'waitermisanthrope-creator'" in read(".github/workflows/unity-android-update-publish.yml")
     print("UNITY_UPDATE_SETTINGS_CONTRACT_PASS: changelog, safe APK updater, theme and startup check")
 
 if __name__ == "__main__":
