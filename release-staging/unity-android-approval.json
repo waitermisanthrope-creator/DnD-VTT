@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "version": "1.00.03",
-  "candidateRunId": 39307518493,
+  "version": "1.00.04",
+  "candidateRunId": 39320423149,
   "approved": true,
   "releaseType": "public-prerelease",
   "channel": "unity-experiment",
   "scope": "Android-only",
-  "note": "Portrait on app screens, landscape in 3D map. Publish only after strictly successful signed CI and verification. No Windows or main changes. User requested Unity 1.00.03 as in-app updater test after successfully installing 1.00.02."
+  "note": "User directly authorized to produce/publish Unity 1.00.04 for in-app update testing. Wait for signed Android CI success, verify pinned certificate/APK, publish official GitHub Release and OTA feed. Do not change main, Windows or user character files."
 }
