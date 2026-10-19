@@ -117,14 +117,14 @@ namespace DndVtt.UnityPrototype
             if (!brandSplashActive) return false;
             PrepareBrand();
             float elapsed = Time.realtimeSinceStartup - brandSplashSince;
-            if (elapsed > 8) { brandSplashActive = false; return false; }
+            if (elapsed > 15) { brandSplashActive = false; return false; }
             var full = new Rect(0,0,Screen.width,Screen.height);
             Shade(full, Color.black); Cover(brandSplash, full);
             if (brandDragon)
             {
                 float w = Screen.width * .80f;
                 float h = Mathf.Min(w * brandDragon.height / brandDragon.width, Screen.height * .8f);
-                float y = Mathf.Lerp(Screen.height, -h, Mathf.Clamp01((elapsed - 1f) / 7f));
+                float y = Mathf.Lerp(Screen.height, -h, Mathf.Clamp01((elapsed - 1.8f) / 12f));
                 GUI.DrawTexture(new Rect((Screen.width-w)/2, y, w, h), brandDragon, ScaleMode.ScaleToFit, true);
             }
             if (GUI.Button(new Rect(Screen.width - 143, Screen.height - 64, 126, 46), "Пропустить", brandBrown))
