@@ -77,6 +77,18 @@ def publish():
     expected_cert = descriptor["signingCertificateSha256"]
     if not re.fullmatch("[a-f0-9]{64}", expected_cert) or ("certificate SHA-256 digest: " + expected_cert) not in certificate:
         raise ValueError("APK is not signed with the pinned Unity release key")
+    publish_verified(files, manifest, expected_cert)
+
+
+def publish_verified(files, manifest, expected_cert, source_commit=None, build_run=None):
+    """Shared final publisher; caller must verify packages and provenance first."""
+    if os.environ.get("GITHUB_REF") != "refs/heads/" + BRANCH:
+        raise ValueError("Only the Unity experimental branch may publish")
+    version = manifest["version"]
+    source_commit = source_commit or os.environ["GITHUB_SHA"]
+    destination = pathlib.Path(files[0]).parent
+    checksums = [manifest["artifacts"][platform]["sha256"] + "  " + path.name
+                 for platform, path in zip(("android", "windows"), files)]
     feed = destination / "unity-experiment.json"
     feed.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     sums = destination / "SHA256SUMS.txt"
@@ -90,7 +102,7 @@ def publish():
         print("Release already exists; verify it before updating feed", flush=True)
     else:
         gh("release", "create", tag, *map(str, files), "--repo", REPO,
-           "--target", os.environ["GITHUB_SHA"], "--title", "DnD VTT Unity " + version,
+           "--target", source_commit, "--title", "DnD VTT Unity " + version,
            "--notes-file", "unity/Installer/release-notes.md", "--prerelease", "--latest=false")
     # Verify public downloads, not just the local payload or an upload command.
     for path in files:
@@ -112,9 +124,11 @@ def publish():
     live_feed.write_bytes(feed.read_bytes())
     report = {"status": "published-and-download-verified", "version": version,
               "releaseUrl": "https://github.com/" + REPO + "/releases/tag/" + tag,
-              "sourceCommit": os.environ["GITHUB_SHA"], "artifacts": manifest["artifacts"],
+              "sourceCommit": source_commit, "artifacts": manifest["artifacts"],
               "androidSigningCertificateSha256": expected_cert,
-              "physicalAndroidQa": False, "cloudUnityBuildLicenseConfigured": False}
+              "physicalAndroidQa": False, "cloudUnityBuildLicenseConfigured": bool(build_run)}
+    if build_run:
+        report["cloudBuildRun"] = build_run
     pathlib.Path("unity/PUBLIC_DELIVERY.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     subprocess.check_call(["git", "config", "user.name", "github-actions[bot]"])
     subprocess.check_call(["git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"])

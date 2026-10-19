@@ -6,6 +6,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
+import promote_candidate as promotion
 
 spec = importlib.util.spec_from_file_location('cloud_release', Path(__file__).with_name('cloud_release.py'))
 ci = importlib.util.module_from_spec(spec)
@@ -73,6 +74,37 @@ class CloudReleaseTests(unittest.TestCase):
     def test_license_preflight_not_a_build(self):
         with patch.dict(os.environ, UNITY_SERIAL='',UNITY_EMAIL='',UNITY_PASSWORD=''):
             with self.assertRaisesRegex(ValueError,'Unity CI license not configured'): ci.check_license()
+
+    def test_promotion_requires_actual_build_and_upgrade_success(self):
+        run=dict(id=42,conclusion='success',head_branch='experiment/unity-vtt',head_sha='a'*40,
+                 path='.github/workflows/unity-cloud-candidate.yml',head_repository=dict(full_name=ci.REPO),event='workflow_dispatch')
+        jobs=[dict(name=n,conclusion='success') for n in ['Verify cloud signing key against public 1.00.00','Unity license preflight (not a build)','Build both release packages on GitHub Linux runner','Install and upgrade from public 1.00.00 on isolated Windows runner']]
+        with patch.object(promotion.subprocess,'check_output',side_effect=[json.dumps(run).encode(),json.dumps(dict(jobs=jobs)).encode()]):
+            self.assertEqual(promotion.proven_run('42')['id'],42)
+        jobs[-1]['conclusion']='skipped'
+        with patch.object(promotion.subprocess,'check_output',side_effect=[json.dumps(run).encode(),json.dumps(dict(jobs=jobs)).encode()]):
+            with self.assertRaisesRegex(ValueError,'did not all succeed'): promotion.proven_run('42')
+        for key,value in [('conclusion','failure'),('head_branch','main'),('path','.github/workflows/unity-experiment-android.yml'),('event','pull_request')]:
+            with patch.object(promotion.subprocess,'check_output',return_value=json.dumps(dict(run,**{key:value})).encode()):
+                with self.assertRaisesRegex(ValueError,'successful trusted'): promotion.proven_run('42')
+
+    def test_promotion_candidate_ties_qa_to_exact_version_source_and_hashes(self):
+        self.fixture(); ci.prepare('1.00.01')
+        _,_,root=ci.metadata();out=root/'distribution';out.mkdir(parents=True)
+        windows=root/'windows';(windows/'DndVtt_Data/Managed').mkdir(parents=True)
+        (windows/'DndVtt.exe').write_bytes(b'fixture');(windows/'DndVtt_Data/Managed/Assembly-CSharp.dll').write_bytes(b'fixture')
+        for name in ['DnD-VTT-Unity-1.00.01-arm64.apk','DnD-VTT-Unity-Setup-1.00.01-x64.exe']: (out/name).write_bytes(b'fixture'*500)
+        ci.candidate()
+        run=dict(head_sha='a'*40,id=42)
+        qa=dict(status='passed',source='a'*40,candidate='1.00.01',run=42,baselineInstall=True,installedPayloadHashes=True,upgrade=True,reinstall=True,isolatedProfileAndBackupPreserved=True,unknownFilePreserved=True,runtimeSmoke=True)
+        Path('qa.json').write_text(json.dumps(qa));feed=Path('updates/unity-experiment.json').read_bytes()
+        with patch.object(promotion.ci,'verify_apk'):
+            self.assertEqual(promotion.candidate_manifest(out,'qa.json',run,'1.00.01')[1]['versionCode'],10001)
+            Path('qa.json').write_text(json.dumps(dict(qa,source='b'*40)))
+            with self.assertRaisesRegex(ValueError,'QA does not belong'): promotion.candidate_manifest(out,'qa.json',run,'1.00.01')
+            Path('qa.json').write_text(json.dumps(qa)); (out/'DnD-VTT-Unity-1.00.01-arm64.apk').write_bytes(b'corrupt')
+            with self.assertRaisesRegex(ValueError,'size/hash'): promotion.candidate_manifest(out,'qa.json',run,'1.00.01')
+        self.assertEqual(Path('updates/unity-experiment.json').read_bytes(),feed)
 
     def test_authenticated_encryption_roundtrip_and_tamper_refusal(self):
         self.fixture(); ci.prepare('1.00.01')

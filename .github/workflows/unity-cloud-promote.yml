@@ -1,0 +1,71 @@
+name: Unity cloud promote verified candidate
+
+# Future owner action only. This workflow is NOT dispatched by the current task.
+on:
+  push:
+    branches: [experiment/unity-vtt]
+    paths: ['.github/workflows/unity-cloud-promote.yml']
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: 'Successful Unity cloud private candidate run ID'
+        required: true
+        type: string
+      version:
+        description: 'Exact unpublished version from that run'
+        required: true
+        default: '1.00.01'
+        type: string
+      publish:
+        description: 'Publish both installers and activate channel (only on owner request)'
+        required: true
+        default: false
+        type: boolean
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: unity-binary-delivery
+  cancel-in-progress: false
+jobs:
+  promote:
+    if: github.repository == 'waitermisanthrope-creator/DnD-VTT' && github.ref == 'refs/heads/experiment/unity-vtt' && github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment: unity-ci
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require actual successful cloud builds and upgrade QA
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ inputs.run_id }}
+        run: python3 unity/ci/promote_candidate.py verify-run --run "$RUN_ID"
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.run_id }}
+          name: Unity-private-candidate-${{ inputs.run_id }}
+          path: ${{ runner.temp }}/encrypted
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.run_id }}
+          name: Unity-Windows-upgrade-verdict-${{ inputs.run_id }}
+          path: ${{ runner.temp }}/qa
+      - name: Decrypt candidate only inside trusted runner
+        env:
+          UNITY_CI_ARTIFACT_PASSWORD: ${{ secrets.UNITY_CI_ARTIFACT_PASSWORD }}
+        run: |
+          python3 -m pip install -r unity/ci/requirements.txt
+          python3 unity/ci/cloud_release.py unseal --source "$RUNNER_TEMP/encrypted" --destination "$RUNNER_TEMP/candidate"
+      - name: Verify promotion or perform explicit owner-requested publication
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ inputs.run_id }}
+          CANDIDATE_VERSION: ${{ inputs.version }}
+          PUBLISH: ${{ inputs.publish }}
+        run: |
+          test -x "$ANDROID_HOME/build-tools/36.0.0/apksigner" || "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'build-tools;36.0.0' >/dev/null
+          args=()
+          if [[ "$PUBLISH" == 'true' ]]; then args+=(--publish); fi
+          python3 unity/ci/promote_candidate.py promote --run "$RUN_ID" --version "$CANDIDATE_VERSION" --folder "$RUNNER_TEMP/candidate" --qa "$RUNNER_TEMP/qa/windows-upgrade-result.json" "${args[@]}"

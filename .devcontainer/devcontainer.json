@@ -1,0 +1,17 @@
+{
+  "name": "DnD VTT Unity source + hosted CI",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "22" },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "postCreateCommand": "python3 -m pip install -r unity/ci/requirements.txt",
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-dotnettools.csharp", "github.vscode-github-actions"],
+      "settings": {
+        "files.exclude": { "unity/Library": true, "unity/Temp": true }
+      }
+    }
+  }
+}

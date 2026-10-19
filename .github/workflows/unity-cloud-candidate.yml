@@ -34,7 +34,8 @@ jobs:
         with:
           persist-credentials: false
       - name: Ensure pinned Android verification tools
-        run: sdkmanager 'build-tools;36.0.0' >/dev/null
+        run: |
+          test -x "$ANDROID_HOME/build-tools/36.0.0/apksigner" || "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'build-tools;36.0.0' >/dev/null
       - name: Validate CI helper safety contracts
         run: |
           python3 -m pip install -r unity/ci/requirements.txt
@@ -109,7 +110,7 @@ jobs:
           UNITY_ANDROID_KEYSTORE_BASE64: ${{ secrets.UNITY_ANDROID_KEYSTORE_BASE64 }}
           UNITY_ANDROID_KEYSTORE_PASSWORD: ${{ secrets.UNITY_ANDROID_KEYSTORE_PASSWORD }}
         run: |
-          sdkmanager 'build-tools;36.0.0' >/dev/null
+          test -x "$ANDROID_HOME/build-tools/36.0.0/apksigner" || "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'build-tools;36.0.0' >/dev/null
           python3 unity/ci/cloud_release.py sign
       - name: Install NSIS packaging tools
         run: sudo apt-get update -qq && sudo apt-get install --yes nsis
