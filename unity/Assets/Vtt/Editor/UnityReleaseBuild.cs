@@ -37,6 +37,25 @@ public static class UnityReleaseBuild
         if (PlayerSettings.companyName != "DnDVttExperiment" || PlayerSettings.productName != "DnD VTT Unity Prototype")
             throw new Exception("Release must preserve existing Windows save identity");
         LegacyMigrationSetup.ValidateContracts();
+        // 1.00.04 could compile while images were invisible at runtime.
+        // Fail 1.00.05 before packaging if any mandatory source texture is
+        // missing or cannot be resolved by the runtime Resources loader.
+        if (target == BuildTarget.Android)
+        {
+            foreach (string resource in new[] { "Branding/Wallpaper16", "Branding/Splash19", "Branding/Dragon20" })
+            {
+                var texture = Resources.Load<Texture2D>(resource);
+                if (!texture || texture.width < 100 || texture.height < 100)
+                    throw new Exception("VTT_BRANDING_ASSET_MISSING: " + resource);
+                Debug.Log("VTT_BRANDING_ASSET_PASS: " + resource + " / " + texture.width + "x" + texture.height);
+            }
+            foreach (string file in new[] { "Wallpaper16.jpg", "Splash19.png", "Dragon20.png" })
+            {
+                string path = Path.Combine(Application.dataPath, "StreamingAssets", "Branding", file);
+                if (!File.Exists(path) || new FileInfo(path).Length < 100000)
+                    throw new Exception("VTT_BRANDING_FALLBACK_MISSING: " + path);
+            }
+        }
         PlayerSettings.bundleVersion = UnityRelease.Version;
         PlayerSettings.Android.bundleVersionCode = UnityRelease.Code;
         PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.Android, UnityRelease.Package);

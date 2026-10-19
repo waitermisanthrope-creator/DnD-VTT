@@ -26,7 +26,7 @@ def run():
     assert live["version"] in versions, "Public version missing in history"
     assert all(x["changes"] for x in remote["releases"])
     assert all(x["status"] in ("testing", "published") for x in remote["releases"])
-    assert any(x["version"] == "1.00.04" and x["status"] == "testing" for x in remote["releases"])
+    assert any(x["version"] == "1.00.05" and x["status"] == "testing" for x in remote["releases"])
     release = read("unity/Assets/Vtt/Runtime/UnityRelease.cs")
     ui = read("unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs")
     prefs = read("unity/Assets/Vtt/Runtime/ClientPreferences.cs")

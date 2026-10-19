@@ -51,7 +51,12 @@ namespace DndVtt.UnityPrototype
             // The main app and settings use the exact main-branch look, but
             // remain native Unity screens. Existing gameplay screens survive.
             if (screen == FrontScreen.Home) { DrawBrandHome(); return; }
-            if (screen == FrontScreen.Settings) { DrawBrandSettings(); return; }
+            if (screen == FrontScreen.Settings)
+            {
+                if (brandTechnicalScreen) DrawTechnicalSettings();
+                else DrawBrandSettings();
+                return;
+            }
             heading ??= new GUIStyle(GUI.skin.label) { fontSize = 32, fontStyle = FontStyle.Bold, wordWrap = true };
             muted ??= new GUIStyle(GUI.skin.label) { fontSize = 15, wordWrap = true, normal = { textColor = new Color(.65f, .73f, .83f) } };
             bigButton ??= new GUIStyle(GUI.skin.button) { fontSize = 18, padding = new RectOffset(20, 20, 16, 16), alignment = TextAnchor.MiddleLeft };
