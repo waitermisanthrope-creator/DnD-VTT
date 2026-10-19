@@ -33,7 +33,7 @@ def main():
     client = read("unity/Assets/Vtt/Runtime/ClientPreferences.cs")
     updater = read("unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs")
     assert all(name in home for name in ("Branding/Wallpaper16", "Branding/Splash19", "Branding/Dragon20", "DrawBrandHome", "ReadPackagedArt", "ScaleMode.ScaleAndCrop"))
-    assert all(name in frontend for name in ("DrawBrandHome(); return;", "DrawBrandSettings(); return;"))
+    assert all(name in frontend for name in ("DrawBrandHome(); return;", "DrawBrandSettings();", "DrawTechnicalSettings();"))
     assert all(name in settings for name in ("wallpapers/16.png", "DrawTechnicalSettings", "Проверить и обновить", "Save(SettingsPath)"))
     assert all(name in client for name in ("frameStyle", "frameColor", "theme", "autoCheckUpdates"))
     assert all(name in updater for name in ("VerifyFile", "DownloadHandlerFile", "AttemptInstallUpdate"))
