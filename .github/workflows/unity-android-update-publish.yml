@@ -1,0 +1,82 @@
+name: Publish approved Unity Android in-app update
+
+# Never rebuild Unity or touch Windows. Only a repository owner approval can
+# promote an already-signed APK from a successful candidate run.
+on:
+  push:
+    branches: [experiment/unity-vtt]
+    paths: ['release-staging/unity-android-approval.json']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Android candidate version already tested'
+        required: true
+        type: string
+      candidate_run_id:
+        description: 'Successful Unity cloud Android candidate GitHub Actions run ID'
+        required: true
+        type: string
+      approved:
+        description: 'I approve publishing a public prerelease and activating in-app updates'
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: unity-android-publishing
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'waitermisanthrope-creator/DnD-VTT' && github.ref == 'refs/heads/experiment/unity-vtt' && github.actor == 'waitermisanthrope-creator'
+    runs-on: ubuntu-latest
+    environment: unity-ci
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate explicit owner approval and select candidate
+        shell: bash
+        env:
+          MANUAL_VERSION: ${{ inputs.version }}
+          MANUAL_CANDIDATE: ${{ inputs.candidate_run_id }}
+          MANUAL_APPROVED: ${{ inputs.approved }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          if os.environ['GITHUB_EVENT_NAME'] == 'push':
+              request = json.loads(Path('release-staging/unity-android-approval.json').read_text())
+              version, run = request['version'], str(request['candidateRunId'])
+              approved = request.get('approved') is True
+          else:
+              version, run = os.environ['MANUAL_VERSION'], os.environ['MANUAL_CANDIDATE']
+              approved = os.environ['MANUAL_APPROVED'] == 'true'
+          if not approved or not re.fullmatch(r'[1-9][0-9]{0,3}\.[0-9]{2}\.[0-9]{2}', version) or not re.fullmatch(r'[0-9]{5,16}', run):
+              raise SystemExit('Valid owner approval, version, and candidate run required')
+          with open(os.environ['GITHUB_ENV'], 'a') as out:
+              out.write('RELEASE_VERSION=' + version + '\n')
+              out.write('CANDIDATE_RUN_ID=' + run + '\n')
+              out.write('OWNER_APPROVED=true\n')
+          print('OWNER_ANDROID_RELEASE_APPROVAL_PASS:', version, run)
+          PY
+      - name: Download verified Android APK from selected candidate
+        uses: actions/download-artifact@v4
+        with:
+          name: DnD-VTT-Unity-${{ env.RELEASE_VERSION }}-Android-test
+          path: candidate
+          run-id: ${{ env.CANDIDATE_RUN_ID }}
+          github-token: ${{ github.token }}
+      - name: Ensure Android APK inspection tools
+        run: |
+          test -x "$ANDROID_HOME/build-tools/36.0.0/apksigner" || "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'build-tools;36.0.0' >/dev/null
+      - name: Verify published APK and activate update feed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 unity/ci/publish_android_update.py
