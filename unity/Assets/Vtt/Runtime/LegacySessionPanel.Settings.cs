@@ -8,10 +8,16 @@ namespace DndVtt.UnityPrototype
     {
         private ClientPreferences preferences, settingsDraft;
         private string platformQuality;
+        private int settingsSection;
+        private static readonly string[] SettingSections = { "Обновления", "Оформление", "Графика", "Управление", "Данные" };
+        private static readonly string[] ThemeKeys = { "midnight", "forest", "ember" };
+        private static readonly string[] ThemeLabels = { "Полночь", "Лес", "Угли" };
         private string SettingsPath => profileStoreOverride == null ? Path.Combine(Application.persistentDataPath, "client_settings.json") : SavePath + ".settings.json";
+
         private void LoadPreferences()
         {
-            platformQuality = QualitySettings.names[QualitySettings.GetQualityLevel()];
+            string[] qualityNames = QualitySettings.names;
+            platformQuality = qualityNames.Length > 0 ? qualityNames[QualitySettings.GetQualityLevel()] : "";
             preferences = new ClientPreferences { quality = platformQuality };
             if (File.Exists(SettingsPath))
                 try { preferences = ClientPreferences.Load(SettingsPath); }
@@ -20,43 +26,103 @@ namespace DndVtt.UnityPrototype
         }
         private void ApplyPreferences()
         {
-            preferences.Validate(); int quality = Array.IndexOf(QualitySettings.names, preferences.quality);
+            preferences.Validate();
+            int quality = Array.IndexOf(QualitySettings.names, preferences.quality);
             if (quality >= 0) QualitySettings.SetQualityLevel(quality, true);
-            QualitySettings.vSyncCount = preferences.vSync ? 1 : 0; Application.targetFrameRate = preferences.fps;
-            world.explorer.lookSensitivity = preferences.sensitivity; world.explorer.invertY = preferences.invertY;
-            world.explorer.viewCamera.fieldOfView = preferences.fieldOfView; world.explorer.SetFirstPerson(preferences.firstPerson);
+            QualitySettings.vSyncCount = preferences.vSync ? 1 : 0;
+            Application.targetFrameRate = preferences.fps;
+            world.explorer.lookSensitivity = preferences.sensitivity;
+            world.explorer.invertY = preferences.invertY;
+            world.explorer.viewCamera.fieldOfView = preferences.fieldOfView;
+            world.explorer.SetFirstPerson(preferences.firstPerson);
         }
         private void OpenSettings()
         {
-            settingsDraft = ClientPreferences.Parse(preferences.Export()); Navigate(FrontScreen.Settings);
+            settingsDraft = ClientPreferences.Parse(preferences.Export());
+            settingsSection = 0;
+            Navigate(FrontScreen.Settings);
         }
         private void DrawSettings()
         {
-            GUILayout.Label("Настройки", heading);
-            GUILayout.Label("Параметры сохраняются на этом устройстве отдельно от персонажей.", muted);
-            GUILayout.Space(14); GUILayout.Label("Качество графики");
-            int quality = Mathf.Max(0, Array.IndexOf(QualitySettings.names, settingsDraft.quality));
-            quality = GUILayout.SelectionGrid(quality, QualitySettings.names, Mathf.Min(3, QualitySettings.names.Length), GUILayout.MinHeight(60));
-            settingsDraft.quality = QualitySettings.names[quality];
-            GUILayout.Space(12); GUILayout.Label("Лимит кадров в секунду");
-            int[] limits = { 30, 60, 120, -1 }; int fps = Mathf.Max(0, Array.IndexOf(limits, settingsDraft.fps));
-            settingsDraft.fps = limits[GUILayout.SelectionGrid(fps, new[] { "30", "60", "120", "Без лимита" }, 4, GUILayout.Height(36))];
-            settingsDraft.vSync = GUILayout.Toggle(settingsDraft.vSync, "Вертикальная синхронизация (Windows)", GUILayout.MinHeight(30));
-            GUILayout.Label("При включённой синхронизации Windows использует частоту экрана вместо лимита FPS.", muted);
-            GUILayout.Space(14); GUILayout.Label("Чувствительность мыши и касания: " + settingsDraft.sensitivity.ToString("0.00") + "×");
-            settingsDraft.sensitivity = GUILayout.HorizontalSlider(settingsDraft.sensitivity, .25f, 3);
-            settingsDraft.invertY = GUILayout.Toggle(settingsDraft.invertY, "Инвертировать вертикальное движение камеры", GUILayout.MinHeight(32));
-            GUILayout.Label("Поле зрения: " + Mathf.RoundToInt(settingsDraft.fieldOfView) + "°");
-            settingsDraft.fieldOfView = GUILayout.HorizontalSlider(settingsDraft.fieldOfView, 50, 100);
-            settingsDraft.firstPerson = GUILayout.Toggle(settingsDraft.firstPerson, "Камера от первого лица при запуске", GUILayout.MinHeight(32));
-            GUILayout.Space(20);
-            if (GUILayout.Button("Применить и сохранить", GUILayout.Height(44))) Attempt(() =>
+            GUILayout.Label("Настройки приложения", heading);
+            GUILayout.Label("Версия Unity: " + UnityRelease.Version + "  ·  Изменения сохраняются только на этом устройстве.", muted);
+            GUILayout.Space(10);
+            int columns = Screen.width >= 900 ? 5 : 2;
+            int section = GUILayout.SelectionGrid(settingsSection, SettingSections, columns, GUILayout.MinHeight(48));
+            if (section != settingsSection) { settingsSection = section; frontScroll = Vector2.zero; }
+            GUILayout.Space(16);
+            switch (settingsSection)
             {
-                settingsDraft.Save(SettingsPath); preferences = ClientPreferences.Parse(settingsDraft.Export()); ApplyPreferences(); status = "Настройки применены и сохранены";
+                case 0:
+                    DrawUpdates();
+                    break;
+                case 1:
+                    GUILayout.Label("Оформление", heading);
+                    GUILayout.Label("Цветовая тема меняет фон меню и сохраняется для следующих запусков.", muted);
+                    int themeIndex = Math.Max(0, Array.IndexOf(ThemeKeys, settingsDraft.theme));
+                    themeIndex = GUILayout.SelectionGrid(themeIndex, ThemeLabels, 3, GUILayout.MinHeight(60));
+                    settingsDraft.theme = ThemeKeys[themeIndex];
+                    GUILayout.Label("Для выбора арт-обоев и иконок потребуется отдельный каталог изображений. Сейчас доступна смена цветовой темы.", muted);
+                    break;
+                case 2:
+                    GUILayout.Label("Графика", heading);
+                    string[] qualityNames = QualitySettings.names;
+                    if (qualityNames.Length > 0)
+                    {
+                        int quality = Mathf.Max(0, Array.IndexOf(qualityNames, settingsDraft.quality));
+                        quality = GUILayout.SelectionGrid(quality, qualityNames, Mathf.Min(3, qualityNames.Length), GUILayout.MinHeight(60));
+                        settingsDraft.quality = qualityNames[quality];
+                    }
+                    GUILayout.Space(14);
+                    GUILayout.Label("Лимит кадров в секунду");
+                    int[] limits = { 30, 60, 120, -1 };
+                    int fps = Mathf.Max(0, Array.IndexOf(limits, settingsDraft.fps));
+                    settingsDraft.fps = limits[GUILayout.SelectionGrid(fps, new[] { "30", "60", "120", "Без лимита" }, 4, GUILayout.Height(46))];
+#if UNITY_STANDALONE_WIN
+                    settingsDraft.vSync = GUILayout.Toggle(settingsDraft.vSync, "Вертикальная синхронизация (Windows)", GUILayout.MinHeight(38));
+                    GUILayout.Label("При синхронизации Windows использует частоту экрана вместо лимита FPS.", muted);
+#endif
+                    break;
+                case 3:
+                    GUILayout.Label("Камера и управление", heading);
+                    GUILayout.Label("Чувствительность мыши и касания: " + settingsDraft.sensitivity.ToString("0.00") + "×");
+                    settingsDraft.sensitivity = GUILayout.HorizontalSlider(settingsDraft.sensitivity, .25f, 3, GUILayout.Height(35));
+                    settingsDraft.invertY = GUILayout.Toggle(settingsDraft.invertY, "Инвертировать вертикальное движение камеры", GUILayout.MinHeight(42));
+                    GUILayout.Label("Поле зрения: " + Mathf.RoundToInt(settingsDraft.fieldOfView) + "°");
+                    settingsDraft.fieldOfView = GUILayout.HorizontalSlider(settingsDraft.fieldOfView, 50, 100, GUILayout.Height(35));
+                    settingsDraft.firstPerson = GUILayout.Toggle(settingsDraft.firstPerson, "Камера от первого лица при запуске", GUILayout.MinHeight(42));
+                    break;
+                case 4:
+                    GUILayout.Label("Данные и устройство", heading);
+                    GUILayout.Label("Персонажи хранятся отдельно от настроек. При обновлении приложения не удаляйте его данные.", muted);
+                    GUILayout.Label("Персонажей в архиве: " + (archive?.Count ?? 0), muted);
+                    GUILayout.Label("Файл персонажей: " + SavePath, muted);
+                    GUILayout.Label("Файл настроек: " + SettingsPath, muted);
+                    if (archive != null && GUILayout.Button("Сохранить персонажей сейчас", GUILayout.Height(48)))
+                        Attempt(() => { SaveSheet(); status = "Персонажи сохранены"; });
+                    if (GUILayout.Button("Скопировать путь к сохранению", GUILayout.Height(42))) GUIUtility.systemCopyBuffer = SavePath;
+                    break;
+            }
+            GUILayout.Space(22);
+            if (settingsSection == 0)
+            {
+                settingsDraft.autoCheckUpdates = GUILayout.Toggle(settingsDraft.autoCheckUpdates,
+                    "Проверять обновления при запуске", GUILayout.MinHeight(42));
+            }
+            GUILayout.Space(10);
+            if (GUILayout.Button("Применить и сохранить настройки", GUILayout.Height(50))) Attempt(() =>
+            {
+                settingsDraft.Save(SettingsPath);
+                preferences = ClientPreferences.Parse(settingsDraft.Export());
+                ApplyPreferences();
+                status = "Настройки применены и сохранены";
             });
-            if (GUILayout.Button("Стандартные значения", GUILayout.Height(38))) settingsDraft = new ClientPreferences { quality = platformQuality };
-            if (GUILayout.Button("Назад в главное меню", GUILayout.Height(38))) Navigate(FrontScreen.Home);
-            DrawUpdates();
+            if (GUILayout.Button("Восстановить значения по умолчанию (без удаления героев)", GUILayout.Height(42)))
+            {
+                settingsDraft = new ClientPreferences { quality = platformQuality };
+                status = "Стандартные параметры выбраны. Нажмите «Применить и сохранить», чтобы записать их.";
+            }
+            if (GUILayout.Button("Вернуться на главную", GUILayout.Height(42))) Navigate(FrontScreen.Home);
         }
     }
 }
