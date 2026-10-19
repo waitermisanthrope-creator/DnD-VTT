@@ -100,8 +100,23 @@ public static class CharacterSheetValidation
         foreach (JObject source in (JArray)golden["sources"])
         {
             var bytes = File.ReadAllBytes(Path.Combine("..", (string)source["file"]));
+            string expected = (string)source["sha256"];
             string digest = BitConverter.ToString(sha.ComputeHash(bytes)).Replace("-", "").ToLowerInvariant();
-            Check(digest == (string)source["sha256"], "JS fixture provenance " + source["file"]);
+            if (digest != expected)
+            {
+                // Fixtures were generated on Windows (CRLF), while the GitHub Linux
+                // runner checks out the same JavaScript with LF. Recreate only missing
+                // CR bytes: every other byte must still match the pinned source SHA256.
+                using var windowsBytes = new MemoryStream();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    if (bytes[i] == (byte)'\n' && (i == 0 || bytes[i - 1] != (byte)'\r'))
+                        windowsBytes.WriteByte((byte)'\r');
+                    windowsBytes.WriteByte(bytes[i]);
+                }
+                digest = BitConverter.ToString(sha.ComputeHash(windowsBytes.ToArray())).Replace("-", "").ToLowerInvariant();
+            }
+            Check(digest == expected, "JS fixture provenance " + source["file"]);
         }
         Debug.Log("VTT_SHEET_PASS: " + cases + " JS golden cases; 18 skills, modifiers/proficiency, single/array/wrapped editing, rollback, identity/unknown/class-state preservation, atomic save/reload/backup; 402 spells");
         Debug.Log("VTT_SHEET_RECORDS_PASS: 188 items; actual JS 5-category add/stack/remove, folder/note deletion and active selection, stale/invalid mutation rejection, 12 weight parser cases / total / capacity");

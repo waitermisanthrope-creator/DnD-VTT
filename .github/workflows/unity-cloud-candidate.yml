@@ -6,6 +6,12 @@ on:
     branches: [experiment/unity-vtt]
     paths:
       - '.github/workflows/unity-cloud-candidate.yml'
+      - 'unity/Assets/**'
+      - 'unity/Packages/**'
+      - 'unity/ProjectSettings/**'
+      - 'unity/Tools/**'
+      - 'unity/Installer/**'
+      - 'unity/release.ps1'
       - 'unity/ci/**'
   workflow_dispatch:
     inputs:
@@ -74,6 +80,8 @@ jobs:
         with:
           lfs: true
           persist-credentials: false
+      - name: Validate checked-out JS provenance before launching Unity
+        run: python3 unity/ci/check_sheet_provenance.py
       - name: Prepare unpublished candidate constants (checkout only)
         env:
           CANDIDATE_VERSION: ${{ inputs.version || '1.00.01' }}

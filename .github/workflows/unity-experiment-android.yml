@@ -1,13 +1,8 @@
 name: Unity experiment Android APK
 
-# Completely isolated Unity test build; never publishes the WebView release.
+# Legacy debug-only build. Explicit opt-in only: the private cloud candidate
+# workflow handles automated paired Windows and Android builds.
 on:
-  push:
-    branches:
-      - experiment/unity-vtt
-    paths:
-      - 'unity/**'
-      - '.github/workflows/unity-experiment-android.yml'
   workflow_dispatch:
 
 permissions:
