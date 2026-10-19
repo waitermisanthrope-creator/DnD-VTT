@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace DndVtt.UnityPrototype
 {
@@ -48,18 +50,39 @@ namespace DndVtt.UnityPrototype
             var t = new Texture2D(1, 1, TextureFormat.RGBA32, false);
             t.SetPixel(0, 0, c); t.Apply(); return t;
         }
+        // Nine-sliced curved edges: the WebView source uses rounded buttons,
+        // not the flat square IMGUI controls accidentally shipped in 1.00.04.
+        private static Texture2D Rounded(Color fill, Color edge, int radius = 12)
+        {
+            const int size = 48; const int border = 2;
+            var texture = new Texture2D(size, size, TextureFormat.RGBA32, false);
+            texture.filterMode = FilterMode.Bilinear; texture.wrapMode = TextureWrapMode.Clamp;
+            for (int y = 0; y < size; y++) for (int x = 0; x < size; x++)
+            {
+                float cx = Mathf.Clamp(x, radius, size - radius - 1);
+                float cy = Mathf.Clamp(y, radius, size - radius - 1);
+                float distance = Vector2.Distance(new Vector2(x,y), new Vector2(cx,cy));
+                float coverage = Mathf.Clamp01(radius + .5f - distance);
+                // Keep a thin border around each rounded component.
+                float inside = Mathf.Clamp01(radius - border + .5f - distance);
+                Color pixel = Color.Lerp(edge, fill, inside);
+                pixel.a *= coverage;
+                texture.SetPixel(x,y,pixel);
+            }
+            texture.Apply(false,true); return texture;
+        }
         private static GUIStyle Button(GUIStyle from, Color color, Color foreground)
         {
             var b = new GUIStyle(from);
-            b.normal.background = Solid(color);
-            b.hover.background = Solid(Color.Lerp(color, Color.white, .12f));
+            b.normal.background = Rounded(color, new Color(.84f,.70f,.37f,.63f));
+            b.hover.background = Rounded(Color.Lerp(color, Color.white, .12f), new Color(.96f,.79f,.45f,.93f));
             b.active.background = b.hover.background;
             b.normal.textColor = foreground; b.hover.textColor = foreground;
             b.active.textColor = foreground;
             b.alignment = TextAnchor.MiddleCenter; b.fontStyle = FontStyle.Bold;
-            b.fontSize = 16; b.wordWrap = true;
+            b.fontSize = 19; b.wordWrap = true;
             b.padding = new RectOffset(7, 7, 7, 7);
-            b.border = new RectOffset(0, 0, 0, 0);
+            b.border = new RectOffset(16, 16, 16, 16);
             return b;
         }
         private void PrepareBrand()
@@ -82,16 +105,51 @@ namespace DndVtt.UnityPrototype
             brandSub.normal.textColor = new Color(.73f,.72f,.71f);
             brandCard = new GUIStyle(GUI.skin.box) { padding = new RectOffset(12,12,12,12),
                 margin = new RectOffset(0,0,0,9) };
-            brandCard.normal.background = Solid(new Color(.10f,.10f,.11f,.94f));
-            brandCard.border = new RectOffset(0,0,0,0);
+            brandCard.normal.background = Rounded(new Color(.09f,.09f,.11f,.88f), new Color(.38f,.38f,.36f,.72f));
+            brandCard.border = new RectOffset(16,16,16,16);
         }
+        // Three original art assets also exist verbatim in StreamingAssets as
+        // Android-safe fallbacks. No additional wallpapers are shipped.
+        private IEnumerator LoadPackagedBrandArt()
+        {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            string path = Application.streamingAssetsPath.TrimEnd('/') + "/Branding/";
+            yield return ReadPackagedArt(path + "Wallpaper16.jpg", 0);
+            yield return ReadPackagedArt(path + "Splash19.png", 1);
+            yield return ReadPackagedArt(path + "Dragon20.png", 2);
+#endif
+        }
+        private IEnumerator ReadPackagedArt(string url, int kind)
+        {
+            using var request = UnityWebRequestTexture.GetTexture(url, true);
+            request.timeout = 25;
+            yield return request.SendWebRequest();
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogWarning("Branding asset package not loaded: " + kind + " / " + request.error);
+                yield break;
+            }
+            var texture = DownloadHandlerTexture.GetContent(request);
+            if (texture == null || texture.width < 100 || texture.height < 100)
+            {
+                Debug.LogWarning("Branding asset invalid: " + kind);
+                yield break;
+            }
+            if (kind == 0) brandWallpaper = texture;
+            else if (kind == 1) brandSplash = texture;
+            else brandDragon = texture;
+            Debug.Log("VTT_BRAND_ART_LOADED: " + kind + " / " + texture.width + "x" + texture.height);
+        }
+
         private static void Cover(Texture2D image, Rect area)
         {
             if (!image) return;
-            float ia = (float)image.width / image.height, va = area.width / area.height;
-            Rect uv = va > ia ? new Rect(0, .5f - ia / va * .5f, 1, ia / va)
-                              : new Rect(.5f - va / ia * .5f, 0, va / ia, 1);
-            GUI.DrawTextureWithTexCoords(area, image, uv);
+            Color oldColor = GUI.color;
+            GUI.color = Color.white;
+            // ScaleAndCrop has a supported Android IMGUI shader path, unlike
+            // custom UV drawing used in 1.00.04 (blank on the test device).
+            GUI.DrawTexture(area, image, ScaleMode.ScaleAndCrop, true);
+            GUI.color = oldColor;
         }
         private static void Shade(Rect area, Color c)
         {
@@ -110,6 +168,7 @@ namespace DndVtt.UnityPrototype
         {
 #if UNITY_ANDROID && !UNITY_EDITOR
             brandSplashActive = true; brandSplashSince = Time.realtimeSinceStartup;
+            StartCoroutine(LoadPackagedBrandArt());
 #endif
         }
         private bool DrawBrandSplash()
@@ -179,7 +238,10 @@ namespace DndVtt.UnityPrototype
             GUI.enabled = enabled;
             if (GUILayout.Button("3D Карты", brandGold, GUILayout.Height(53))) Navigate(FrontScreen.Map);
             GUILayout.EndHorizontal();
-            if (GUILayout.Button("☰ Ещё", brandBrown, GUILayout.Height(55))) brandMoreOpen = !brandMoreOpen;
+            // One tap opens settings. Do not hide the essential updater behind
+            // a floating popup that becomes unclickable on some Android devices.
+            if (GUILayout.Button("☰ Ещё / ⚙ Настройки", brandBrown, GUILayout.Height(61)))
+                { brandMoreOpen = false; OpenSettings(); }
             GUILayout.EndVertical(); GUILayout.EndArea();
             if (brandMoreOpen) DrawBrandMore();
         }
