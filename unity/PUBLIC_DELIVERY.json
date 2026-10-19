@@ -1,0 +1,21 @@
+{
+  "status": "published-and-download-verified",
+  "version": "1.00.00",
+  "releaseUrl": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/tag/unity-v1.00.00",
+  "sourceCommit": "51ee9510dd3df895c3edd2835a3d06b8db3c0562",
+  "artifacts": {
+    "android": {
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.00/DnD-VTT-Unity-1.00.00-arm64.apk",
+      "bytes": 48186137,
+      "sha256": "21299f36b6a23ee79e41dc754f133c92f51bdf42faf8e41f11a05fbb5796fd2e"
+    },
+    "windows": {
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.00/DnD-VTT-Unity-Setup-1.00.00-x64.exe",
+      "bytes": 36693230,
+      "sha256": "8df76dbb632cc314b9bd4a2c33f3399ca91b9a3920360693b7f7c8520ba3bccf"
+    }
+  },
+  "androidSigningCertificateSha256": "c1c1b3e6537f10819a3042817ac91535b47754ed65d084e635f84ff2b1f44c8e",
+  "physicalAndroidQa": false,
+  "cloudUnityBuildLicenseConfigured": false
+}
