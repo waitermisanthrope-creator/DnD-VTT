@@ -35,7 +35,7 @@ jobs:
     if: github.repository == 'waitermisanthrope-creator/DnD-VTT' && github.ref == 'refs/heads/experiment/unity-vtt' && github.actor == 'waitermisanthrope-creator'
     runs-on: ubuntu-latest
     environment: unity-ci
-    timeout-minutes: 30
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
         with:
@@ -66,6 +66,33 @@ jobs:
               out.write('OWNER_APPROVED=true\n')
           print('OWNER_ANDROID_RELEASE_APPROVAL_PASS:', version, run)
           PY
+      - name: Await owner-approved Android build and verify CI identity
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for poll in $(seq 1 200); do
+            run_json="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$CANDIDATE_RUN_ID")"
+            result="$(python3 -c 'import json,sys; r=json.load(sys.stdin); print(r.get("conclusion") or "pending")' <<< "$run_json")"
+            identity="$(python3 -c 'import json,sys; r=json.load(sys.stdin); print(str(r.get("name")) + "|" + str(r.get("head_branch")))' <<< "$run_json")"
+            if [[ "$identity" != "Unity cloud Android candidate|experiment/unity-vtt" ]]; then
+              echo "Refusing unrelated GitHub Actions run: $identity" >&2
+              exit 1
+            fi
+            if [[ "$result" == "success" ]]; then
+              echo "CI_OWNER_APPROVED_ANDROID_CANDIDATE_PASS: $CANDIDATE_RUN_ID"
+              break
+            elif [[ "$result" != "pending" ]]; then
+              echo "Approved candidate did not succeed: $result" >&2
+              exit 1
+            fi
+            if (( poll == 200 )); then
+              echo "Timed out waiting for approved candidate" >&2
+              exit 1
+            fi
+            sleep 25
+          done
       - name: Download verified Android APK from selected candidate
         uses: actions/download-artifact@v4
         with:
