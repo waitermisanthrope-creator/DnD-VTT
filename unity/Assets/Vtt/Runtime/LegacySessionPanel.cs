@@ -16,6 +16,7 @@ namespace DndVtt.UnityPrototype
         public string SavePath => profileStoreOverride ?? Path.Combine(Application.persistentDataPath, "dnd_multi_characters_v2.json");
         private void Start()
         {
+            ApplyMobileOrientation(screen); // Portrait immediately on app launch.
             world.explorer.showHelp = false;
             world.explorer.acceptInput = false;
             Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
@@ -35,6 +36,13 @@ namespace DndVtt.UnityPrototype
                 catch (Exception e) { status = e.Message; }
             }
         }
+        // Android may recreate/resume the activity after granting install
+        // permissions or returning from the background. Restore the view mode.
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            if (hasFocus) ApplyMobileOrientation(screen);
+        }
+
         public bool Import(string json)
         {
             try { var candidate = new LegacyCharacterArchive(json); archive = candidate; selected = 0; ClearSheetInputs(); status = "Импортировано профилей: " + archive.Count + ". Для записи нажмите Сохранить."; return true; }
@@ -53,6 +61,16 @@ namespace DndVtt.UnityPrototype
         {
             GUI.skin.label.fontSize = 16;
             if (screen != FrontScreen.Map) { DrawFrontEnd(); return; }
+#if UNITY_ANDROID && !UNITY_EDITOR
+            // Screen.orientation changes asynchronously. Don't draw a wide
+            // HUD with negative widths during the portrait-to-map transition.
+            if (Screen.height > Screen.width)
+            {
+                GUI.Box(new Rect(10, 10, Mathf.Max(1, Screen.width - 20), 100),
+                    "Поворачиваем экран для 3D-карты…");
+                return;
+            }
+#endif
             GUI.Box(new Rect(10, 10, Screen.width - 20, 86), "");
             GUI.Label(new Rect(22, 16, Screen.width - 450, 25), world.MapName + " / этаж " + (world.CurrentFloor + 1));
             GUI.Label(new Rect(22, 43, Screen.width - 450, 25), CurrentName + (archive == null ? "" : "  HP " + archive.CurrentHp(selected) + "/" + archive.MaximumHp(selected) + "  temp " + archive.TemporaryHp(selected)));
