@@ -1,5 +1,7 @@
 # Unity 1.00.00 — продолжение с телефона
 
+Current Personal-path run https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39257584398 (source8b9b213f): cloud signing job SUCCESS; license preflight FAILED because UNITY_EMAIL and UNITY_PASSWORD are still absent in unity-ci. Builds/upgrade QA SKIPPED; activation itself not attempted yet. Owner has been asked to enter these2 Secrets directly in GitHub; no serial or paid license required for the next Personal activation attempt. Never ask for password in chat.
+
 ## Коррекция лицензирования Personal — текущая попытка 2026-10-19
 
 Предыдущий preflight ошибочно требовал serial. Проверены **исходники опубликованного GameCI CLI v0.1.72**: `dist/platforms/ubuntu/steps/licensing_method.sh` выбирает `personal`, когда заданы `UNITY_EMAIL` + `UNITY_PASSWORD`, а serial/file/server отсутствуют; `activate.sh` активирует новую Personal seat через Unity Licensing Client непосредственно на runner. Домашний `.ulf`, license XML, managed tokens и покупка Pro для этой попытки не нужны. Источник: https://github.com/game-ci/cli/blob/v0.1.72/dist/platforms/ubuntu/steps/activate.sh . Это возможность актуального кода GameCI, а не доказательство успешной активации конкретного аккаунта.
