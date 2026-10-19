@@ -16,7 +16,8 @@ namespace DndVtt.UnityPrototype
         public string SavePath => profileStoreOverride ?? Path.Combine(Application.persistentDataPath, "dnd_multi_characters_v2.json");
         private void Start()
         {
-            ApplyMobileOrientation(screen); // Portrait immediately on app launch.
+            ApplyMobileOrientation(screen);
+            BeginBrandSplash(); // Portrait immediately on app launch.
             world.explorer.showHelp = false;
             world.explorer.acceptInput = false;
             Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
@@ -60,6 +61,7 @@ namespace DndVtt.UnityPrototype
         private void OnGUI()
         {
             GUI.skin.label.fontSize = 16;
+            if (DrawBrandSplash()) return;
             if (screen != FrontScreen.Map) { DrawFrontEnd(); return; }
 #if UNITY_ANDROID && !UNITY_EDITOR
             // Screen.orientation changes asynchronously. Don't draw a wide

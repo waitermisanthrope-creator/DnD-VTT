@@ -1,0 +1,30 @@
+name: Unity branded UI source contract
+
+on:
+  pull_request:
+    branches: [experiment/unity-vtt]
+    paths:
+      - 'unity/Assets/Vtt/Resources/Branding/**'
+      - 'unity/Assets/Vtt/Runtime/**'
+      - 'unity/ci/test_brand_visual_contract.py'
+      - '.github/workflows/unity-brand-visual-contract.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-assets-and-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: Check source-asset provenance and real UI integration
+        run: |
+          python3 unity/ci/test_brand_visual_contract.py
+      - name: Ensure only original three wallpapers were embedded
+        run: |
+          set -euo pipefail
+          test "$(find unity/Assets/Vtt/Resources/Branding -maxdepth 1 -type f ! -name '*.meta' | wc -l)" -eq 3

@@ -12,7 +12,8 @@ namespace DndVtt.UnityPrototype
         public bool invertY, firstPerson, vSync;
         public int fps = 60;
         public string quality = "";
-        public string theme = "midnight";
+        public string theme = "orange";
+        public string frameStyle = "dragon", frameColor = "gold";
         public bool autoCheckUpdates = true;
         private JObject original = new JObject();
         public void Validate()
@@ -20,14 +21,16 @@ namespace DndVtt.UnityPrototype
             if (float.IsNaN(sensitivity) || float.IsInfinity(sensitivity) || sensitivity < .25f || sensitivity > 3 ||
                 float.IsNaN(fieldOfView) || float.IsInfinity(fieldOfView) || fieldOfView < 50 || fieldOfView > 100 ||
                 !new[] { -1, 30, 60, 120 }.Contains(fps) || quality == null || quality.Length > 100 ||
-                (theme != "midnight" && theme != "forest" && theme != "ember"))
+                (theme != "midnight" && theme != "forest" && theme != "ember" && theme != "orange" && theme != "purple" && theme != "blue" && theme != "red") ||
+                (frameStyle != "dragon" && frameStyle != "vine") ||
+                (frameColor != "gold" && frameColor != "crimson" && frameColor != "jade" && frameColor != "azure" && frameColor != "violet"))
                 throw new FormatException("Некорректные настройки клиента");
         }
         public string Export()
         {
             Validate(); var json = (JObject)original.DeepClone();
             json["version"] = 1; json["sensitivity"] = sensitivity; json["fieldOfView"] = fieldOfView;
-            json["invertY"] = invertY; json["firstPerson"] = firstPerson; json["vSync"] = vSync; json["fps"] = fps; json["quality"] = quality; json["theme"] = theme; json["autoCheckUpdates"] = autoCheckUpdates;
+            json["invertY"] = invertY; json["firstPerson"] = firstPerson; json["vSync"] = vSync; json["fps"] = fps; json["quality"] = quality; json["theme"] = theme; json["frameStyle"] = frameStyle; json["frameColor"] = frameColor; json["autoCheckUpdates"] = autoCheckUpdates;
             return json.ToString();
         }
         public static ClientPreferences Parse(string json)
@@ -40,7 +43,9 @@ namespace DndVtt.UnityPrototype
             result.invertY = (bool?)doc["invertY"] ?? false; result.firstPerson = (bool?)doc["firstPerson"] ?? false; result.vSync = (bool?)doc["vSync"] ?? false;
             float fps = LegacyJson.Number(doc["fps"], 60); if (fps != Math.Floor(fps)) throw new FormatException("Некорректный лимит FPS");
             result.fps = (int)fps; result.quality = (string)doc["quality"] ?? "";
-            result.theme = (string)doc["theme"] ?? "midnight"; result.autoCheckUpdates = (bool?)doc["autoCheckUpdates"] ?? true;
+            result.theme = (string)doc["theme"] ?? "orange";
+            result.frameStyle = (string)doc["frameStyle"] ?? "dragon"; result.frameColor = (string)doc["frameColor"] ?? "gold";
+            result.autoCheckUpdates = (bool?)doc["autoCheckUpdates"] ?? true;
             result.Validate(); return result;
         }
         public static ClientPreferences Load(string path) => Parse(File.ReadAllText(path));
