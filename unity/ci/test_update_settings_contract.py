@@ -26,7 +26,7 @@ def run():
     assert live["version"] in versions, "Public version missing in history"
     assert all(x["changes"] for x in remote["releases"])
     assert all(x["status"] in ("testing", "published") for x in remote["releases"])
-    assert any(x["version"] == "1.00.02" and x["status"] == "testing" for x in remote["releases"])
+    assert any(x["version"] == "1.00.03" and x["status"] == "testing" for x in remote["releases"])
     release = read("unity/Assets/Vtt/Runtime/UnityRelease.cs")
     ui = read("unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs")
     prefs = read("unity/Assets/Vtt/Runtime/ClientPreferences.cs")
@@ -37,10 +37,24 @@ def run():
     assert "REQUEST_INSTALL_PACKAGES" in read("unity/Assets/Vtt/Editor/UnityReleaseBuild.cs")
     assert "PackageManager.GET_SIGNING_CERTIFICATES" in read("unity/Assets/Plugins/Android/UpdateProvider.java")
     assert '"getCacheDir"' in ui, "Updater must share Java provider cache path"
+    frontend = read("unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs")
+    main = read("unity/Assets/Vtt/Runtime/LegacySessionPanel.cs")
+    player_settings = read("unity/ProjectSettings/ProjectSettings.asset")
+    build_script = read("unity/Assets/Vtt/Editor/UnityReleaseBuild.cs")
+    # The launcher starts portrait, while only the 3D map requests landscape.
+    assert "defaultScreenOrientation: 1" in player_settings
+    assert "PlayerSettings.defaultInterfaceOrientation = UIOrientation.Portrait" in build_script
+    assert "target == FrontScreen.Map" in frontend and "ScreenOrientation.LandscapeLeft" in frontend
+    assert "ScreenOrientation.Portrait" in frontend
+    assert "ApplyMobileOrientation(next)" in frontend
+    assert "ApplyMobileOrientation(screen)" in main
+    assert "Screen.height > Screen.width" in frontend
+    assert "Screen.height > Screen.width" in read("unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs")
+    assert "Screen.height > Screen.width" in read("unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs")
     assert 'activity.getCacheDir()' in read("unity/Assets/Plugins/Android/UpdateProvider.java")
     assert "UNITY_ANDROID_UPDATE_PUBLISHED" in read("unity/ci/publish_android_update.py")
     assert "github.actor == 'waitermisanthrope-creator'" in read(".github/workflows/unity-android-update-publish.yml")
-    print("UNITY_UPDATE_SETTINGS_CONTRACT_PASS: changelog, safe APK updater, theme and startup check")
+    print("UNITY_UPDATE_SETTINGS_CONTRACT_PASS: changelog, safe APK updater, portrait UI / landscape maps, theme and startup check")
 
 if __name__ == "__main__":
     run()
