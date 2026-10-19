@@ -1,0 +1,201 @@
+using System;
+using UnityEngine;
+
+namespace DndVtt.UnityPrototype
+{
+    // Native Unity UI styled after main/index.html + main/app/Settings.js.
+    // Bundled artwork: ONLY main/wallpapers/{16,19,20}.png.
+    public sealed partial class LegacySessionPanel
+    {
+        private const float BrandMaxWidth = 720f;
+        private Texture2D brandWallpaper, brandSplash, brandDragon;
+        private GUIStyle brandTitle, brandSub, brandName, brandCard, brandBlue, brandGreen,
+            brandRed, brandPurple, brandGold, brandBrown, brandPlain;
+        private Vector2 brandHomeScroll, brandSettingsScroll;
+        private bool brandMoreOpen, brandSplashActive, brandAdvancedOpen;
+        private float brandSplashSince;
+        private string brandNotice = "";
+
+        private Color BrandAccent
+        {
+            get {
+                string name = settingsDraft != null && screen == FrontScreen.Settings
+                    ? settingsDraft.theme : preferences?.theme;
+                switch (name) {
+                    case "purple": return new Color(.64f,.18f,.78f);
+                    case "blue": return new Color(.13f,.59f,.95f);
+                    case "red": return new Color(.9f,.22f,.2f);
+                    default: return new Color(1f,.60f,.04f);
+                }
+            }
+        }
+        private Color BrandFrameColor
+        {
+            get {
+                string c = settingsDraft != null && screen == FrontScreen.Settings
+                    ? settingsDraft.frameColor : preferences?.frameColor;
+                switch(c) {
+                    case "crimson": return new Color(.79f,.29f,.27f);
+                    case "jade": return new Color(.29f,.66f,.54f);
+                    case "azure": return new Color(.29f,.57f,.78f);
+                    case "violet": return new Color(.61f,.42f,.78f);
+                    default: return new Color(.83f,.69f,.22f);
+                }
+            }
+        }
+        private static Texture2D Solid(Color c)
+        {
+            var t = new Texture2D(1, 1, TextureFormat.RGBA32, false);
+            t.SetPixel(0, 0, c); t.Apply(); return t;
+        }
+        private static GUIStyle Button(GUIStyle from, Color color, Color foreground)
+        {
+            var b = new GUIStyle(from);
+            b.normal.background = Solid(color);
+            b.hover.background = Solid(Color.Lerp(color, Color.white, .12f));
+            b.active.background = b.hover.background;
+            b.normal.textColor = foreground; b.hover.textColor = foreground;
+            b.active.textColor = foreground;
+            b.alignment = TextAnchor.MiddleCenter; b.fontStyle = FontStyle.Bold;
+            b.fontSize = 16; b.wordWrap = true;
+            b.padding = new RectOffset(7, 7, 7, 7);
+            b.border = new RectOffset(0, 0, 0, 0);
+            return b;
+        }
+        private void PrepareBrand()
+        {
+            if (brandBlue != null) return;
+            brandWallpaper = Resources.Load<Texture2D>("Branding/Wallpaper16");
+            brandSplash = Resources.Load<Texture2D>("Branding/Splash19");
+            brandDragon = Resources.Load<Texture2D>("Branding/Dragon20");
+            brandBlue = Button(GUI.skin.button, new Color(.12f,.58f,.95f), Color.white);
+            brandGreen = Button(GUI.skin.button, new Color(.28f,.69f,.33f), Color.white);
+            brandRed = Button(GUI.skin.button, new Color(.89f,.19f,.2f), Color.white);
+            brandPurple = Button(GUI.skin.button, new Color(.29f,.23f,.43f), Color.white);
+            brandGold = Button(GUI.skin.button, new Color(.41f,.28f,.08f), Color.white);
+            brandBrown = Button(GUI.skin.button, new Color(.16f,.12f,.08f), new Color(.98f,.84f,.49f));
+            brandPlain = Button(GUI.skin.button, new Color(.17f,.16f,.16f), Color.white);
+            brandTitle = new GUIStyle(GUI.skin.label) { fontSize = 25, fontStyle = FontStyle.Bold, wordWrap = true };
+            brandTitle.normal.textColor = BrandAccent;
+            brandName = new GUIStyle(brandTitle) { fontSize = 20 };
+            brandSub = new GUIStyle(GUI.skin.label) { fontSize = 15, wordWrap = true };
+            brandSub.normal.textColor = new Color(.73f,.72f,.71f);
+            brandCard = new GUIStyle(GUI.skin.box) { padding = new RectOffset(12,12,12,12),
+                margin = new RectOffset(0,0,0,9) };
+            brandCard.normal.background = Solid(new Color(.10f,.10f,.11f,.94f));
+            brandCard.border = new RectOffset(0,0,0,0);
+        }
+        private static void Cover(Texture2D image, Rect area)
+        {
+            if (!image) return;
+            float ia = (float)image.width / image.height, va = area.width / area.height;
+            Rect uv = va > ia ? new Rect(0, .5f - ia / va * .5f, 1, ia / va)
+                              : new Rect(.5f - va / ia * .5f, 0, va / ia, 1);
+            GUI.DrawTextureWithTexCoords(area, image, uv);
+        }
+        private static void Shade(Rect area, Color c)
+        {
+            var old = GUI.color; GUI.color = c;
+            GUI.DrawTexture(area, Texture2D.whiteTexture); GUI.color = old;
+        }
+        private void DrawBrandBackdrop(bool modal)
+        {
+            PrepareBrand();
+            var full = new Rect(0, 0, Screen.width, Screen.height);
+            Shade(full, new Color(.04f,.04f,.05f));
+            Cover(brandWallpaper, full);
+            Shade(full, new Color(0,0,0,modal ? .75f : .42f));
+        }
+        private void BeginBrandSplash()
+        {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            brandSplashActive = true; brandSplashSince = Time.realtimeSinceStartup;
+#endif
+        }
+        private bool DrawBrandSplash()
+        {
+            if (!brandSplashActive) return false;
+            PrepareBrand();
+            float elapsed = Time.realtimeSinceStartup - brandSplashSince;
+            if (elapsed > 8) { brandSplashActive = false; return false; }
+            var full = new Rect(0,0,Screen.width,Screen.height);
+            Shade(full, Color.black); Cover(brandSplash, full);
+            if (brandDragon)
+            {
+                float w = Screen.width * .80f;
+                float h = Mathf.Min(w * brandDragon.height / brandDragon.width, Screen.height * .8f);
+                float y = Mathf.Lerp(Screen.height, -h, Mathf.Clamp01((elapsed - 1f) / 7f));
+                GUI.DrawTexture(new Rect((Screen.width-w)/2, y, w, h), brandDragon, ScaleMode.ScaleToFit, true);
+            }
+            if (GUI.Button(new Rect(Screen.width - 143, Screen.height - 64, 126, 46), "Пропустить", brandBrown))
+                brandSplashActive = false;
+            return true;
+        }
+        private void DrawBrandHome()
+        {
+            DrawBrandBackdrop(false);
+            float width = Mathf.Min(Screen.width - 28, BrandMaxWidth);
+            float x = (Screen.width - width) / 2f;
+            float bottom = Mathf.Min(300, Screen.height * .38f);
+            GUILayout.BeginArea(new Rect(x, 12, width, Mathf.Max(75, Screen.height - bottom - 24)));
+            brandHomeScroll = GUILayout.BeginScrollView(brandHomeScroll, false, true);
+            if (archive == null || archive.Count == 0)
+            {
+                GUILayout.Space(22); GUILayout.BeginVertical(brandCard);
+                GUILayout.Label("Твоя история начинается здесь", brandTitle);
+                GUILayout.Label("Создай персонажа или перенеси своего героя из старой версии.", brandSub);
+                GUILayout.EndVertical();
+            }
+            else for (int i = 0; i < archive.Count; i++)
+            {
+                var hero = archive.Snapshot(i);
+                string details = ((string)hero["class"] ?? (string)hero["className"] ?? "Без класса")
+                    + " • " + ((string)hero["raceName"] ?? (string)hero["race"] ?? "Раса не выбрана");
+                GUILayout.BeginHorizontal(brandCard, GUILayout.MinHeight(76));
+                GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
+                GUILayout.Label(archive.Name(i), brandName);
+                GUILayout.Label(details, brandSub);
+                GUILayout.EndVertical();
+                if (GUILayout.Button("Играть", brandBlue, GUILayout.Width(Mathf.Min(105, width*.24f)), GUILayout.Height(51)))
+                { selected = i; Navigate(FrontScreen.Sheet); }
+                // Destructive character deletion is deliberately disabled during visual port.
+                bool before = GUI.enabled; GUI.enabled = false;
+                GUILayout.Button("×", brandRed, GUILayout.Width(48), GUILayout.Height(51));
+                GUI.enabled = before; GUILayout.EndHorizontal();
+            }
+            GUILayout.EndScrollView(); GUILayout.EndArea();
+            float footer = Mathf.Min(292, Screen.height * .37f);
+            GUILayout.BeginArea(new Rect(x, Screen.height - footer - 6, width, footer));
+            GUILayout.BeginVertical();
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("+ Новый персонаж", brandGreen, GUILayout.Height(51))) BeginCreation();
+            if (GUILayout.Button("Загрузить / импорт", brandBlue, GUILayout.Height(51))) Navigate(FrontScreen.Import);
+            GUILayout.EndHorizontal();
+            if (GUILayout.Button("☁ Локальный архив • " + (archive?.Count ?? 0) + " героев", brandBlue, GUILayout.Height(45)))
+                Navigate(FrontScreen.Characters);
+            GUILayout.BeginHorizontal();
+            bool enabled = GUI.enabled; GUI.enabled = false;
+            GUILayout.Button("3D Персонаж · скоро", brandPurple, GUILayout.Height(53));
+            GUI.enabled = enabled;
+            if (GUILayout.Button("3D Карты", brandGold, GUILayout.Height(53))) Navigate(FrontScreen.Map);
+            GUILayout.EndHorizontal();
+            if (GUILayout.Button("☰ Ещё", brandBrown, GUILayout.Height(55))) brandMoreOpen = !brandMoreOpen;
+            GUILayout.EndVertical(); GUILayout.EndArea();
+            if (brandMoreOpen) DrawBrandMore();
+        }
+        private void DrawBrandMore()
+        {
+            float width = Mathf.Min(Screen.width - 35, 520);
+            Rect r = new Rect((Screen.width - width)/2, Mathf.Max(20,Screen.height*.34f), width, 260);
+            Shade(r, new Color(.09f,.09f,.08f,.99f));
+            GUILayout.BeginArea(new Rect(r.x+14,r.y+10,r.width-28,r.height-15));
+            GUILayout.Label("Дополнительно", brandTitle);
+            if (GUILayout.Button("⚙ Настройки приложения", brandGold, GUILayout.Height(51)))
+            { brandMoreOpen = false; OpenSettings(); }
+            if (GUILayout.Button("📜 История изменений", brandBrown, GUILayout.Height(51)))
+            { brandMoreOpen = false; OpenSettings(); showChangelog = true; StartCoroutine(FetchChangelog()); }
+            if (GUILayout.Button("Закрыть", brandRed, GUILayout.Height(44))) brandMoreOpen = false;
+            GUILayout.EndArea();
+        }
+    }
+}
