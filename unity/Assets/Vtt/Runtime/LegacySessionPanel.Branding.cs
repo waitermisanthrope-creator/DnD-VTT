@@ -118,10 +118,17 @@ namespace DndVtt.UnityPrototype
             yield return ReadPackagedArt(path + "Splash19.png", 1);
             yield return ReadPackagedArt(path + "Dragon20.png", 2);
 #endif
+            // This iterator must compile in the Unity Editor too.
+            // UNITY_ANDROID is not defined in the Linux build editor.
+            yield break;
         }
         private IEnumerator ReadPackagedArt(string url, int kind)
         {
-            using var request = UnityWebRequestTexture.GetTexture(url, true);
+            // UnityWebRequestTexture is an optional Unity package module and
+            // is not installed in this Unity project. Download raw bytes using
+            // the already-proven UnityWebRequest module and decode with the
+            // installed ImageConversion module instead.
+            using var request = UnityWebRequest.Get(url);
             request.timeout = 25;
             yield return request.SendWebRequest();
             if (request.result != UnityWebRequest.Result.Success)
@@ -129,8 +136,14 @@ namespace DndVtt.UnityPrototype
                 Debug.LogWarning("Branding asset package not loaded: " + kind + " / " + request.error);
                 yield break;
             }
-            var texture = DownloadHandlerTexture.GetContent(request);
-            if (texture == null || texture.width < 100 || texture.height < 100)
+            var texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            if (!ImageConversion.LoadImage(texture, request.downloadHandler.data, true))
+            {
+                Destroy(texture);
+                Debug.LogWarning("Branding image decode failed: " + kind);
+                yield break;
+            }
+            if (texture.width < 100 || texture.height < 100)
             {
                 Debug.LogWarning("Branding asset invalid: " + kind);
                 yield break;
