@@ -47,6 +47,7 @@ jobs:
           python3 -m pip install -r unity/ci/requirements.txt
           python3 unity/ci/test_cloud_release.py
           python3 unity/ci/test_update_settings_contract.py
+          python3 unity/ci/test_brand_visual_contract.py
       - name: Verify signing key matches published Android 1.00.00
         env:
           UNITY_ANDROID_KEYSTORE_BASE64: ${{ secrets.UNITY_ANDROID_KEYSTORE_BASE64 }}
