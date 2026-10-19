@@ -47,7 +47,7 @@ namespace DndVtt.UnityPrototype
             GUILayout.Label("Настройки приложения", heading);
             GUILayout.Label("Версия Unity: " + UnityRelease.Version + "  ·  Изменения сохраняются только на этом устройстве.", muted);
             GUILayout.Space(10);
-            int columns = Screen.width >= 900 ? 5 : 2;
+            int columns = Screen.height > Screen.width ? 2 : Screen.width >= 900 ? 5 : 2;
             int section = GUILayout.SelectionGrid(settingsSection, SettingSections, columns, GUILayout.MinHeight(48));
             if (section != settingsSection) { settingsSection = section; frontScroll = Vector2.zero; }
             GUILayout.Space(16);
