@@ -28,7 +28,7 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawSheet()
         {
-            int columns = Screen.width < 900 ? 3 : 7;
+            int columns = Screen.height > Screen.width || Screen.width < 900 ? 3 : 7;
             int next = GUILayout.SelectionGrid(sheetTab, tabs, columns, GUILayout.Height(Mathf.CeilToInt(tabs.Length / (float)columns) * 40));
             if (next != sheetTab) { sheetTab = next; GUI.FocusControl(null); }
             if (archive == null)
@@ -37,14 +37,15 @@ namespace DndVtt.UnityPrototype
                 if (GUILayout.Button("Создать персонажа", GUILayout.Height(40))) BeginCreation();
                 DrawImportAndMap(); return;
             }
-            GUILayout.BeginHorizontal();
+            bool portraitLayout = Screen.height > Screen.width;
+            if (portraitLayout) GUILayout.BeginVertical(); else GUILayout.BeginHorizontal();
             for (int i = 0; i < archive.Count; i++)
-                if (GUILayout.Button((selected == i ? "● " : "") + archive.Name(i), GUILayout.Height(34))) { selected = i; ClearSheetInputs(); }
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Сохранить на этом устройстве", GUILayout.Height(36))) Attempt(() => { SaveSheet(); status = "Сохранено: " + SavePath; });
-            if (GUILayout.Button("Копировать изменённый JSON", GUILayout.Height(36))) { GUIUtility.systemCopyBuffer = archive.Export(); status = "Текущий архив скопирован"; }
-            GUILayout.EndHorizontal();
+                if (GUILayout.Button((selected == i ? "● " : "") + archive.Name(i), GUILayout.Height(portraitLayout ? 42 : 34))) { selected = i; ClearSheetInputs(); }
+            if (portraitLayout) GUILayout.EndVertical(); else GUILayout.EndHorizontal();
+            if (portraitLayout) GUILayout.BeginVertical(); else GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Сохранить на этом устройстве", GUILayout.Height(portraitLayout ? 44 : 36))) Attempt(() => { SaveSheet(); status = "Сохранено: " + SavePath; });
+            if (GUILayout.Button("Копировать изменённый JSON", GUILayout.Height(portraitLayout ? 44 : 36))) { GUIUtility.systemCopyBuffer = archive.Export(); status = "Текущий архив скопирован"; }
+            if (portraitLayout) GUILayout.EndVertical(); else GUILayout.EndHorizontal();
             JObject hero = archive.Snapshot(selected); bool changed = false, persistWallet = false;
             if (deletePath != null)
             {
@@ -90,9 +91,16 @@ namespace DndVtt.UnityPrototype
                 case 4:
                     Collection(hero, "folders", "Папки заметок", () => new JObject { ["id"] = "f_" + Guid.NewGuid(), ["name"] = "Новая папка", ["notes"] = new JArray() }, ref changed); break;
                 case 5:
-                    GUILayout.BeginHorizontal();
-                    foreach (int die in new[] { 4, 6, 8, 10, 12, 20, 100 }) if (GUILayout.Button("d" + die, GUILayout.Height(45))) Roll("d" + die, die, 0);
-                    GUILayout.EndHorizontal(); GUILayout.Label(rollResult); break;
+                    int[] dice = { 4, 6, 8, 10, 12, 20, 100 };
+                    for (int i = 0; i < dice.Length; i++)
+                    {
+                        if (i % (portraitLayout ? 3 : dice.Length) == 0) GUILayout.BeginHorizontal();
+                        int die = dice[i];
+                        if (GUILayout.Button("d" + die, GUILayout.Height(45))) Roll("d" + die, die, 0);
+                        if (i == dice.Length - 1 || i % (portraitLayout ? 3 : dice.Length) == (portraitLayout ? 2 : dice.Length - 1))
+                            GUILayout.EndHorizontal();
+                    }
+                    GUILayout.Label(rollResult); break;
                 case 7: Wallet(hero, ref changed, ref persistWallet); break;
                 case 8:
                     foreach (string field in new[] { "age", "gender", "origin", "alignment", "appearance", "personality", "ideals", "bonds", "flaws", "backstory", "profession" }) Scalar(hero, field, FieldLabel(field), ref changed);
