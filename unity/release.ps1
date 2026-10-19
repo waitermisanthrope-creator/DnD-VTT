@@ -64,16 +64,17 @@ if ($Stage -eq 'Package') {
     $prefix = [IO.Path]::GetFullPath($payload) + [IO.Path]::DirectorySeparatorChar
     foreach ($file in Get-ChildItem -LiteralPath $payload -Recurse -File) {
         if (!$file.FullName.StartsWith($prefix, [StringComparison]::OrdinalIgnoreCase)) { throw 'Payload path escapes build directory' }
-        $relative = $file.FullName.Substring($prefix.Length).Replace('$','$$')
+        $relative = $file.FullName.Substring($prefix.Length).Replace('/','\').Replace('$','$$')
         $commands.Add('Delete "$INSTDIR\' + $relative + '"')
     }
     foreach ($dir in Get-ChildItem -LiteralPath $payload -Recurse -Directory | Sort-Object { $_.FullName.Length } -Descending) {
-        $commands.Add('RMDir "$INSTDIR\' + $dir.FullName.Substring($prefix.Length).Replace('$','$$') + '"')
+        $commands.Add('RMDir "$INSTDIR\' + $dir.FullName.Substring($prefix.Length).Replace('/','\').Replace('$','$$') + '"')
     }
     [IO.File]::WriteAllLines($uninstall, $commands, [Text.UTF8Encoding]::new($false))
     $numeric = (($version.Split('.') | ForEach-Object { [int]$_ }) -join '.') + '.0'
     $setup = Join-Path $out "DnD-VTT-Unity-Setup-$version-x64.exe"
-    & $Nsis /V2 "/DVERSION=$version" "/DNUMVERSION=$numeric" "/DPAYLOAD=$payload" "/DOUTPUT=$setup" "/DUNINSTALL_FILES=$uninstall" (Join-Path $PSScriptRoot 'Installer/UnitySetup.nsi')
+    $switch = if ($IsWindows) { '/' } else { '-' }
+    & $Nsis "${switch}V2" "${switch}DVERSION=$version" "${switch}DNUMVERSION=$numeric" "${switch}DPAYLOAD=$payload" "${switch}DOUTPUT=$setup" "${switch}DUNINSTALL_FILES=$uninstall" (Join-Path $PSScriptRoot 'Installer/UnitySetup.nsi')
     if ($LASTEXITCODE -ne 0 -or !(Test-Path $setup)) { throw 'Windows setup compilation failed' }
     Write-Output "Windows setup PASS: $setup"
 }

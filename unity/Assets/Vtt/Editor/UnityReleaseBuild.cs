@@ -14,10 +14,19 @@ public static class UnityReleaseBuild
     public static void Android() => Build(BuildTarget.Android, "android-intermediate.apk");
     private static void Build(BuildTarget target, string suffix)
     {
+        if (PlayerSettings.companyName != "DnDVttExperiment" || PlayerSettings.productName != "DnD VTT Unity Prototype")
+            throw new Exception("Release must preserve existing Windows save identity");
         LegacyMigrationSetup.ValidateContracts();
         PlayerSettings.bundleVersion = UnityRelease.Version;
         PlayerSettings.Android.bundleVersionCode = UnityRelease.Code;
         PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.Android, UnityRelease.Package);
+        if (target == BuildTarget.Android)
+        {
+            PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
+            PlayerSettings.SetScriptingBackend(NamedBuildTarget.Android, ScriptingImplementation.IL2CPP);
+            PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel26;
+            PlayerSettings.Android.targetSdkVersion = (AndroidSdkVersions)36;
+        }
         string folder = "Builds/Unity-" + UnityRelease.Version; Directory.CreateDirectory(folder);
         var result = BuildPipeline.BuildPlayer(new[] { LegacyMigrationSetup.ScenePath }, folder + "/" + suffix, target, BuildOptions.None);
         if (result.summary.result != BuildResult.Succeeded) throw new Exception("Unity release build failed: " + result.summary.result);
