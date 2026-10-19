@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "version": "1.00.02",
+  "candidateRunId": 39295898595,
+  "approved": true,
+  "releaseType": "public-prerelease",
+  "channel": "unity-experiment",
+  "scope": "Android-only",
+  "note": "Explicit user approval in ChatGPT on 2026-10-19; publish only after the candidate succeeds; never modify main or Windows."
+}
