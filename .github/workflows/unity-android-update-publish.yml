@@ -40,6 +40,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          # Contents:write-scoped fine-grained PAT can be stored in
+          # the unity-ci environment as UNITY_RELEASE_TOKEN if GitHub rejects
+          # release creation by the built-in GITHUB_TOKEN with HTTP 403.
+          token: ${{ secrets.UNITY_RELEASE_TOKEN || github.token }}
       - name: Validate explicit owner approval and select candidate
         shell: bash
         env:
@@ -105,5 +109,6 @@ jobs:
           test -x "$ANDROID_HOME/build-tools/36.0.0/apksigner" || "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'build-tools;36.0.0' >/dev/null
       - name: Verify published APK and activate update feed
         env:
-          GH_TOKEN: ${{ github.token }}
+          # Never print this token. Owner grants access to this repo only.
+          GH_TOKEN: ${{ secrets.UNITY_RELEASE_TOKEN || github.token }}
         run: python3 unity/ci/publish_android_update.py
