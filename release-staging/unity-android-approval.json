@@ -1,12 +1,10 @@
 {
   "schema": 1,
-  "version": "1.00.02",
-  "candidateRunId": 39295898595,
+  "version": "1.00.03",
+  "candidateRunId": 39307518493,
   "approved": true,
   "releaseType": "public-prerelease",
   "channel": "unity-experiment",
   "scope": "Android-only",
-  "note": "Explicit user approval in ChatGPT on 2026-10-19; publish only after the candidate succeeds; never modify main or Windows.",
-  "retryReason": "Retry after owner stored scoped fine-grained UNITY_RELEASE_TOKEN in unity-ci environment; no APK rebuild",
-  "retryAttempt": 2
+  "note": "Portrait on app screens, landscape in 3D map. Publish only after strictly successful signed CI and verification. No Windows or main changes. User requested Unity 1.00.03 as in-app updater test after successfully installing 1.00.02."
 }
