@@ -119,6 +119,13 @@ jobs:
         run: |
           python3 unity/ci/cloud_release.py sign
           python3 unity/ci/cloud_release.py android-candidate
+      - name: Deliver verified signed Android APK for phone testing
+        uses: actions/upload-artifact@v4
+        with:
+          name: DnD-VTT-Unity-1.00.01-Android-test
+          path: unity/Builds/Unity-${{ inputs.version || '1.00.01' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.01' }}-arm64.apk
+          if-no-files-found: error
+          retention-days: 3
       - name: Encrypt unpublished APK candidate
         env:
           UNITY_CI_ARTIFACT_PASSWORD: ${{ secrets.UNITY_CI_ARTIFACT_PASSWORD }}
