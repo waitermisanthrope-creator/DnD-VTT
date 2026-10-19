@@ -1,10 +1,10 @@
 {
   "schema": 1,
   "version": "1.00.05",
-  "candidateRunId": 39328804070,
+  "candidateRunId": 39331395235,
   "approved": true,
   "releaseType": "public-prerelease",
   "channel": "unity-experiment",
   "scope": "Android-only",
-  "note": "Explicit user's 2026-10-20 request to publish hotfix 1.00.05 after Android 1.00.04 visuals missing, dark background, Settings blank. Publish only after strictly verified signed candidate and QA, preserving in-app 1.00.04 -> 1.00.05. Do not touch main or Windows."
+  "note": "Retest same explicitly approved 1.00.05 after fixing Unity editor C# compilation errors CS0161/CS0103 in branding package loader. Release only if new signed Android candidate run 39331395235 succeeds. Do not touch main or Windows."
 }
