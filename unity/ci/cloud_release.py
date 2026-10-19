@@ -181,6 +181,31 @@ def candidate():
     print('CI_CANDIDATE_PACKAGES_PASS:', version, json.dumps(artifacts))
 
 
+
+def android_candidate():
+    """Build an authenticated, unpublished Android-only candidate.
+
+    Keep the old two-platform candidate() for future Windows work.
+    Never change the update feed from this stage.
+    """
+    trusted()
+    version, code, root = metadata()
+    out = root / 'distribution'
+    name = f'DnD-VTT-Unity-{version}-arm64.apk'
+    apk = out / name
+    if not apk.is_file() or apk.stat().st_size < 1024:
+        raise ValueError('Android candidate APK missing')
+    verify_apk(apk, version, code)
+    artifacts = {'android': dict(name=name, bytes=apk.stat().st_size, sha256=sha(apk))}
+    report = dict(schema=1, status='built-android-not-published', version=version,
+                  versionCode=code, sourceCommit=os.environ['GITHUB_SHA'],
+                  signingCertificateSha256=CERT, artifacts=artifacts,
+                  physicalAndroidQa=False)
+    (out / 'candidate.json').write_text(json.dumps(report, indent=2) + '\n')
+    (out / 'SHA256SUMS.txt').write_text(artifacts['android']['sha256'] + '  ' + name + '\n')
+    print('CI_ANDROID_CANDIDATE_PASS:', version, artifacts['android']['sha256'])
+
+
 def encryption_key(salt):
     password = os.environ['UNITY_CI_ARTIFACT_PASSWORD']
     if len(password) < 40:
@@ -244,7 +269,7 @@ def unseal(source, destination):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('stage', choices=['check-key', 'check-license', 'prepare', 'sign', 'candidate', 'seal', 'unseal'])
+    parser.add_argument('stage', choices=['check-key', 'check-license', 'prepare', 'sign', 'candidate', 'android-candidate', 'seal', 'unseal'])
     parser.add_argument('--version', default='1.00.01')
     parser.add_argument('--source')
     parser.add_argument('--destination')
@@ -252,7 +277,7 @@ if __name__ == '__main__':
     try:
         if args.stage == 'prepare': prepare(args.version)
         elif args.stage == 'unseal': unseal(args.source, args.destination)
-        else: {'check-key': check_key, 'check-license': check_license, 'sign': sign, 'candidate': candidate, 'seal': seal}[args.stage]()
+        else: {'check-key': check_key, 'check-license': check_license, 'sign': sign, 'candidate': candidate, 'android-candidate': android_candidate, 'seal': seal}[args.stage]()
     except subprocess.CalledProcessError:
         raise SystemExit('CI external command failed; secret-bearing output suppressed')
     except (ValueError, KeyError) as error:

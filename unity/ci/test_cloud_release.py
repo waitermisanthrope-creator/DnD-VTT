@@ -110,6 +110,25 @@ class CloudReleaseTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'size/hash'): promotion.candidate_manifest(out,'qa.json',run,'1.00.01')
         self.assertEqual(Path('updates/unity-experiment.json').read_bytes(),feed)
 
+    def test_android_only_candidate_is_sealed_without_windows_payload(self):
+        self.fixture(); ci.prepare('1.00.01')
+        _, _, root = ci.metadata(); out = root/'distribution'; out.mkdir(parents=True)
+        name = 'DnD-VTT-Unity-1.00.01-arm64.apk'
+        (out/name).write_bytes(b'fictional signed apk bytes'*200)
+        with patch.object(ci, 'verify_apk') as verified:
+            ci.android_candidate()
+            verified.assert_called_once()
+        report = json.loads((out/'candidate.json').read_text())
+        self.assertEqual(report['status'], 'built-android-not-published')
+        self.assertEqual(list(report['artifacts']), ['android'])
+        self.assertFalse((root/'windows').exists())
+        ci.seal()
+        source = Path(self.folder.name)/'unity-encrypted'
+        ci.unseal(source, Path('android-decoded'))
+        self.assertTrue((Path('android-decoded')/name).is_file())
+        self.assertFalse((Path('android-decoded')/'DnD-VTT-Unity-Setup-1.00.01-x64.exe').exists())
+        self.assertEqual(json.loads(Path('updates/unity-experiment.json').read_text())['versionCode'], 10000)
+
     def test_authenticated_encryption_roundtrip_and_tamper_refusal(self):
         self.fixture(); ci.prepare('1.00.01')
         _,_,root=ci.metadata(); out=root/'distribution'; out.mkdir(parents=True)

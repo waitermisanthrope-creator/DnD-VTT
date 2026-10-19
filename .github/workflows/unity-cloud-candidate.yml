@@ -1,6 +1,7 @@
-name: Unity cloud private candidate
+name: Unity cloud Android candidate
 
-# A candidate build is NOT a publication. No release/feed write permission.
+# Android only. Never compile Windows, run NSIS, publish a release, or write
+# the Unity update feed. Produces an encrypted, signed private APK candidate.
 on:
   push:
     branches: [experiment/unity-vtt]
@@ -10,13 +11,11 @@ on:
       - 'unity/Packages/**'
       - 'unity/ProjectSettings/**'
       - 'unity/Tools/**'
-      - 'unity/Installer/**'
-      - 'unity/release.ps1'
       - 'unity/ci/**'
   workflow_dispatch:
     inputs:
       version:
-        description: 'Unpublished candidate version; must exceed public version'
+        description: 'Unpublished Android candidate, newer than public version'
         required: true
         default: '1.00.01'
         type: string
@@ -26,52 +25,12 @@ permissions:
 
 concurrency:
   group: unity-cloud-private-candidate
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
-  signing:
-    name: Verify cloud signing key against public 1.00.00
+  android:
+    name: Build and verify signed Android ARM64 APK
     if: github.repository == 'waitermisanthrope-creator/DnD-VTT' && github.ref == 'refs/heads/experiment/unity-vtt' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
-    runs-on: ubuntu-latest
-    environment: unity-ci
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - name: Ensure pinned Android verification tools
-        run: |
-          test -x "$ANDROID_HOME/build-tools/36.0.0/apksigner" || "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'build-tools;36.0.0' >/dev/null
-      - name: Validate CI helper safety contracts
-        run: |
-          python3 -m pip install -r unity/ci/requirements.txt
-          python3 unity/ci/test_cloud_release.py
-      - name: Open protected key and verify published APK independently
-        env:
-          UNITY_ANDROID_KEYSTORE_BASE64: ${{ secrets.UNITY_ANDROID_KEYSTORE_BASE64 }}
-          UNITY_ANDROID_KEYSTORE_PASSWORD: ${{ secrets.UNITY_ANDROID_KEYSTORE_PASSWORD }}
-        run: python3 unity/ci/cloud_release.py check-key
-
-  license:
-    name: Unity license preflight (not a build)
-    if: github.repository == 'waitermisanthrope-creator/DnD-VTT' && github.ref == 'refs/heads/experiment/unity-vtt' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
-    runs-on: ubuntu-latest
-    environment: unity-ci
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - name: Require owner-provisioned supported CI license
-        env:
-          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        run: python3 unity/ci/cloud_release.py check-license
-
-  build:
-    name: Build both release packages on GitHub Linux runner
-    needs: [signing, license]
     runs-on: ubuntu-latest
     environment: unity-ci
     timeout-minutes: 120
@@ -80,27 +39,29 @@ jobs:
         with:
           lfs: true
           persist-credentials: false
-      - name: Validate checked-out JS provenance before launching Unity
+      - name: Verify original JS source provenance
         run: python3 unity/ci/check_sheet_provenance.py
-      - name: Prepare unpublished candidate constants (checkout only)
+      - name: Prepare Android SDK and validate CI safety contracts
+        run: |
+          test -x "$ANDROID_HOME/build-tools/36.0.0/apksigner" || "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'build-tools;36.0.0' >/dev/null
+          python3 -m pip install -r unity/ci/requirements.txt
+          python3 unity/ci/test_cloud_release.py
+      - name: Verify signing key matches published Android 1.00.00
         env:
-          CANDIDATE_VERSION: ${{ inputs.version || '1.00.01' }}
-        run: python3 unity/ci/cloud_release.py prepare --version "$CANDIDATE_VERSION"
-      - name: Build actual Windows x64 Mono release using existing entry point
-        uses: game-ci/unity-builder@eb1b9fba120c6e62c9fb7a7a81d6c107ce004c45 # v6
+          UNITY_ANDROID_KEYSTORE_BASE64: ${{ secrets.UNITY_ANDROID_KEYSTORE_BASE64 }}
+          UNITY_ANDROID_KEYSTORE_PASSWORD: ${{ secrets.UNITY_ANDROID_KEYSTORE_PASSWORD }}
+        run: python3 unity/ci/cloud_release.py check-key
+      - name: Verify cloud Unity license configuration
         env:
           UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          projectPath: unity
-          unityVersion: 6000.3.26f1
-          cliVersion: v0.1.72
-          targetPlatform: StandaloneWindows64
-          buildMethod: UnityReleaseBuild.Windows
-          versioning: None
-          allowDirtyBuild: true
-      - name: Build actual Android ARM64 IL2CPP release using existing entry point
+        run: python3 unity/ci/cloud_release.py check-license
+      - name: Prepare unpublished Android version in checkout only
+        env:
+          CANDIDATE_VERSION: ${{ inputs.version || '1.00.01' }}
+        run: python3 unity/ci/cloud_release.py prepare --version "$CANDIDATE_VERSION"
+      - name: Build native Unity Android ARM64 IL2CPP APK
         uses: game-ci/unity-builder@eb1b9fba120c6e62c9fb7a7a81d6c107ce004c45 # v6
         env:
           UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
@@ -111,67 +72,25 @@ jobs:
           unityVersion: 6000.3.26f1
           cliVersion: v0.1.72
           targetPlatform: Android
-          buildMethod: UnityReleaseBuild.Android
+          buildMethod: UnityReleaseBuild.CloudAndroid
           versioning: None
           androidExportType: androidPackage
           allowDirtyBuild: true
-      - name: Sign with permanent release key; verify cert/package/code/ARM64/alignment
+      - name: Sign with original key and verify package, version, ARM64 and certificate
         env:
           UNITY_ANDROID_KEYSTORE_BASE64: ${{ secrets.UNITY_ANDROID_KEYSTORE_BASE64 }}
           UNITY_ANDROID_KEYSTORE_PASSWORD: ${{ secrets.UNITY_ANDROID_KEYSTORE_PASSWORD }}
         run: |
-          test -x "$ANDROID_HOME/build-tools/36.0.0/apksigner" || "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'build-tools;36.0.0' >/dev/null
           python3 unity/ci/cloud_release.py sign
-      - name: Install NSIS packaging tools
-        run: sudo apt-get update -qq && sudo apt-get install --yes nsis
-      - name: Package Windows Setup using existing installer and script
-        shell: pwsh
-        run: ./unity/release.ps1 -Stage Package -Nsis /usr/bin/makensis
-      - name: Validate both packages and exact Windows payload
-        run: python3 unity/ci/cloud_release.py candidate
-      - name: Encrypt both installers before any artifact upload
+          python3 unity/ci/cloud_release.py android-candidate
+      - name: Encrypt unpublished APK candidate
         env:
           UNITY_CI_ARTIFACT_PASSWORD: ${{ secrets.UNITY_CI_ARTIFACT_PASSWORD }}
-        run: |
-          python3 -m pip install -r unity/ci/requirements.txt
-          python3 unity/ci/cloud_release.py seal
-      - name: Upload encrypted candidate only (public repository)
+        run: python3 unity/ci/cloud_release.py seal
+      - name: Save private candidate for owner review
         uses: actions/upload-artifact@v4
         with:
-          name: Unity-private-candidate-${{ github.run_id }}
-          path: |
-            ${{ runner.temp }}/unity-encrypted/candidate.zip.enc
-          if-no-files-found: error
-          retention-days: 7
-
-  windows-qa:
-    name: Install and upgrade from public 1.00.00 on isolated Windows runner
-    needs: build
-    runs-on: windows-latest
-    environment: unity-ci
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - uses: actions/download-artifact@v4
-        with:
-          name: Unity-private-candidate-${{ github.run_id }}
-          path: ${{ runner.temp }}/unity-encrypted
-      - name: Authenticate and decrypt in runner temporary directory
-        env:
-          UNITY_CI_ARTIFACT_PASSWORD: ${{ secrets.UNITY_CI_ARTIFACT_PASSWORD }}
-        shell: pwsh
-        run: |
-          python -m pip install -r unity/ci/requirements.txt
-          python unity/ci/cloud_release.py unseal --source "$env:RUNNER_TEMP/unity-encrypted" --destination "$env:RUNNER_TEMP/unity-candidate"
-      - name: Verify installed payload, old saves, actual runtime and reinstall
-        shell: pwsh
-        run: ./unity/ci/windows-upgrade-qa.ps1 -CandidateFolder "$env:RUNNER_TEMP/unity-candidate"
-      - name: Upload non-sensitive QA verdict only
-        uses: actions/upload-artifact@v4
-        with:
-          name: Unity-Windows-upgrade-verdict-${{ github.run_id }}
-          path: ${{ runner.temp }}/windows-upgrade-result.json
+          name: Unity-private-android-${{ github.run_id }}
+          path: ${{ runner.temp }}/unity-encrypted/candidate.zip.enc
           if-no-files-found: error
           retention-days: 7

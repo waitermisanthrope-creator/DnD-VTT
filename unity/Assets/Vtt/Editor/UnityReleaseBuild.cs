@@ -12,6 +12,26 @@ public static class UnityReleaseBuild
 {
     public static void Windows() => Build(BuildTarget.StandaloneWindows64, "windows/DndVtt.exe");
     public static void Android() => Build(BuildTarget.Android, "android-intermediate.apk");
+
+    // GameCI validates the output at its -customBuildPath; our normal release
+    // pipeline also needs its original unsigned intermediate for pinned signing.
+    // Copy only when explicitly running through GameCI, and never change local builds.
+    public static void CloudAndroid()
+    {
+        string[] args = Environment.GetCommandLineArgs();
+        string destination = null;
+        for (int i = 0; i + 1 < args.Length; i++)
+            if (args[i] == "-customBuildPath") { destination = args[i + 1]; break; }
+        if (string.IsNullOrWhiteSpace(destination) ||
+            !destination.EndsWith(".apk", StringComparison.OrdinalIgnoreCase))
+            throw new Exception("GameCI Android APK output path missing");
+        Android();
+        string source = Path.Combine("Builds", "Unity-" + UnityRelease.Version, "android-intermediate.apk");
+        if (!File.Exists(source)) throw new FileNotFoundException("Android intermediate was not built", source);
+        Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(destination)));
+        File.Copy(source, destination, true);
+        Debug.Log("VTT_CLOUD_ANDROID_OUTPUT_PASS: " + UnityRelease.Version);
+    }
     private static void Build(BuildTarget target, string suffix)
     {
         if (PlayerSettings.companyName != "DnDVttExperiment" || PlayerSettings.productName != "DnD VTT Unity Prototype")
