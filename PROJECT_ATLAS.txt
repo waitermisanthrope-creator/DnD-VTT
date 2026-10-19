@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит adfd1602a4e8. Файлов: 1776
+Коммит 1fdc86c1623a. Файлов: 1776
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -49,9 +49,9 @@
 0033. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (85343 B)
 0034. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75939 B)
 0035. AGENTS.md — документация или отчёт: AGENTS (4945 B)
-0036. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (7021 B)
-0037. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (7882 B)
-0038. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (44599 B)
+0036. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (7393 B)
+0037. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (8254 B)
+0038. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (44971 B)
 0039. android/.gitignore — Android компонент: .gitignore (48 B)
 0040. android/app/build.gradle — Android компонент: build (4243 B)
 0041. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12350 B)
@@ -1028,7 +1028,7 @@
 1012. docs/SUPABASE_MAIL_SETUP_PROMPT_RU.md — документация или отчёт: SUPABASE MAIL SETUP PROMPT RU (2882 B)
 1013. docs/UNIFIED_RELEASE.md — документация или отчёт: UNIFIED RELEASE (6175 B)
 1014. docs/UNITY_CHARACTER_SHEET_PARITY.md — документация или отчёт: UNITY CHARACTER SHEET PARITY (12098 B)
-1015. docs/UNITY_CLOUD_HANDOFF.md — документация или отчёт: UNITY CLOUD HANDOFF (6536 B)
+1015. docs/UNITY_CLOUD_HANDOFF.md — документация или отчёт: UNITY CLOUD HANDOFF (18631 B)
 1016. docs/UNITY_MIGRATION_PLAN.md — документация или отчёт: UNITY MIGRATION PLAN (14710 B)
 1017. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3815 B)
 1018. dragon_fire_v2_sprite.png — текстура/изображение: dragon fire v2 sprite (1013123 B)

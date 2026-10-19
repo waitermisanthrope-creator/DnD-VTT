@@ -1,5 +1,7 @@
 # AI progress — compact checkpoint
 
+2026-10-19 portable agent handoff: docs/UNITY_CLOUD_HANDOFF.md now contains the complete Russian bootstrap prompt, verified download links/hashes, source/module map, remaining gameplay tasks, test evidence, signing/license limits and intentionally local-only files. New environments must read it before continuing; source upload is not cloud compute or character sync.
+
 2026-10-19 delivery VERIFIED: Unity 1.00.00 APK and Windows Setup are public at https://github.com/waitermisanthrope-creator/DnD-VTT/releases/tag/unity-v1.00.00 . Actions run39246852201 succeeded: 6 publisher tests, reconstructed package size/SHA256, permanent APK certificate, all4 public downloads verified, update feed activated. Evidence: unity/PUBLIC_DELIVERY.json (source51ee9510; activationadfd1602). Source and installers survive home-PC shutdown. Local Codex chat is not a cloud executor. Cloud Unity builds still require license/signing Secrets; Android physical install/update and character cloud sync remain unverified/incomplete. Main and existing stable workflow unchanged.
 
 ## 2026-10-19 — first Unity installers / cloud cutover in progress
