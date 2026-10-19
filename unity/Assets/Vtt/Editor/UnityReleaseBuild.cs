@@ -42,6 +42,9 @@ public static class UnityReleaseBuild
         PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.Android, UnityRelease.Package);
         if (target == BuildTarget.Android)
         {
+            // Make the Android launcher/splash portrait by default. The runtime
+            // switches to landscape only for the 3D map screen.
+            PlayerSettings.defaultInterfaceOrientation = UIOrientation.Portrait;
             PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
             PlayerSettings.SetScriptingBackend(NamedBuildTarget.Android, ScriptingImplementation.IL2CPP);
             PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel26;
