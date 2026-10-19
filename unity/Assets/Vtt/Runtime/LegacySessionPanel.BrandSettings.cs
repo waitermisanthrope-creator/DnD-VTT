@@ -7,134 +7,164 @@ namespace DndVtt.UnityPrototype
     {
         private static readonly string[] BrandAccentKeys = { "orange", "purple", "blue", "red" };
         private static readonly string[] BrandAccentNames = {
-            "D&D Оранжевый", "Некромантский фиолетовый", "Магический синий", "Кроваво-красный"
+            "D&D Оранжевый", "Некромантский", "Магический", "Кровавый"
         };
         private static readonly string[] BrandFrameKeys = { "dragon", "vine" };
-        private static readonly string[] BrandFrameNames = { "Восточный дракон", "Лоза и кости" };
+        private static readonly string[] BrandFrameNames = { "Дракон", "Лоза и кости" };
         private static readonly string[] BrandFrameColors = { "gold", "crimson", "jade", "azure", "violet" };
         private static readonly string[] BrandFrameLabels = { "Золото", "Багровый", "Нефрит", "Лазурь", "Фиолетовый" };
+        // Only the polished overview uses immediate GUI; the old, proven update
+        // center is a separate full-screen page with unchanged working controls.
+        private bool brandTechnicalScreen;
+        private GUIStyle settingsHeader, settingsDescription, settingsInset;
+        private float brandSettingsContentHeight = 1320;
 
-        private void BrandCardHeader(string name, Color? color = null)
+        private void PrepareSettingsSkin()
         {
-            brandName.normal.textColor = color ?? BrandAccent;
-            GUILayout.Label(name, brandName);
+            PrepareBrand();
+            if (settingsHeader != null) return;
+            settingsHeader = new GUIStyle(brandTitle) { fontSize = 22, wordWrap = true };
+            settingsDescription = new GUIStyle(brandSub) { fontSize = 17, wordWrap = true };
+            settingsInset = new GUIStyle(brandCard) {
+                padding = new RectOffset(14,14,12,12),
+                margin = new RectOffset(0,0,7,7)
+            };
+        }
+        private void DrawBrandSettings()
+        {
+            PrepareSettingsSkin();
+            if (settingsDraft == null)
+            {
+                // Recover from a stale navigation state instead of rendering
+                // an empty frame as 1.00.04 did.
+                settingsDraft = ClientPreferences.Parse(preferences.Export());
+            }
+            DrawBrandBackdrop(true);
+            float width = Mathf.Min(Screen.width - 20f, 660f);
+            float x = (Screen.width - width) * .5f;
+            float height = Mathf.Max(200f, Screen.height - 20f);
+            Rect outer = new Rect(x, 10f, width, height);
+            GUI.Box(outer, GUIContent.none, brandCard);
+            GUI.BeginGroup(outer);
+
+            GUI.Label(new Rect(18, 14, width - 91, 44), "⚙ Настройки приложения", brandTitle);
+            if (GUI.Button(new Rect(width - 65, 13, 48, 44), "✕", brandRed))
+            { Navigate(FrontScreen.Home); GUI.EndGroup(); return; }
+
+            float footerTop = height - 66;
+            float viewportHeight = Mathf.Max(95, footerTop - 72);
+            float viewportWidth = width - 24;
+            float contentWidth = Mathf.Max(170, viewportWidth - 21);
+            brandSettingsScroll = GUI.BeginScrollView(
+                new Rect(12, 64, viewportWidth, viewportHeight),
+                brandSettingsScroll, new Rect(0,0,contentWidth,brandSettingsContentHeight));
+
+            float y = 4;
+            y = Card(y, contentWidth, 132, "☁ Аккаунт и персонажи", new Color(.88f,.72f,.47f));
+            TextLine(y-75, contentWidth, "Локальных героев: " + (archive?.Count ?? 0), 37);
+            if (GUI.Button(new Rect(13, y-54, contentWidth-26, 42), "Мои персонажи", brandBlue))
+                Navigate(FrontScreen.Characters);
+
+            y = Card(y,contentWidth,143, "🎨 Тема оформления (Акцент)", BrandAccent);
+            TextLine(y-96,contentWidth,"Цвет заголовков и кнопок.",24);
+            float half = (contentWidth - 34) * .5f;
+            for (int i=0; i<BrandAccentKeys.Length;i++)
+            {
+                var rect = new Rect(13+(i%2)*(half+8), y-69+(i/2)*38, half, 34);
+                if (GUI.Button(rect, BrandAccentNames[i] + (settingsDraft.theme == BrandAccentKeys[i] ? " ✓" : ""), brandBrown))
+                    settingsDraft.theme = BrandAccentKeys[i];
+            }
+            y = Card(y,contentWidth,110,"✍ Типографика", BrandAccent);
+            TextLine(y-71,contentWidth,"Читаемый мобильный шрифт. Декоративные гарнитуры — в отдельном пакете.",60);
+
+            y = Card(y,contentWidth,109,"🖼 Иконка приложения",new Color(.9f,.79f,.48f));
+            TextLine(y-70,contentWidth,"Сейчас значок задаётся Android-сборкой. Переключение launcher-иконки ещё не подключено.",61);
+
+            y = Card(y,contentWidth,149,"🪄 Оформление рамок",new Color(.9f,.79f,.48f));
+            float subHalf = (contentWidth-34)*.5f;
+            for(int i=0;i<BrandFrameKeys.Length;i++)
+                if (GUI.Button(new Rect(13+i*(subHalf+8), y-107, subHalf, 35),
+                    BrandFrameNames[i] + (settingsDraft.frameStyle==BrandFrameKeys[i]?" ✓":""), brandBrown))
+                    settingsDraft.frameStyle = BrandFrameKeys[i];
+            for(int i=0;i<BrandFrameColors.Length;i++)
+            {
+                float colW=(contentWidth-26)/3f;
+                var rect = new Rect(13+(i%3)*colW,y-67+(i/3)*35,colW-5,31);
+                if(GUI.Button(rect,BrandFrameLabels[i]+(settingsDraft.frameColor==BrandFrameColors[i]?" ✓":""),brandGold))
+                    settingsDraft.frameColor=BrandFrameColors[i];
+            }
+
+            y = Card(y,contentWidth,111,"🖼 Обои и арты",new Color(.9f,.79f,.48f));
+            TextLine(y-75,contentWidth,"Установлены wallpapers/16.png. Остальные обои — будущие загружаемые пакеты.",65);
+
+            y = Card(y,contentWidth,100,"♫ Аудио и эмбиент",BrandAccent);
+            TextLine(y-63,contentWidth,"Оформление подготовлено. Аудиопаки добавим отдельно.",52);
+
+            y = Card(y,contentWidth,105,"📜 История изменений",new Color(.9f,.79f,.48f));
+            if(GUI.Button(new Rect(13,y-60,contentWidth-26,43),"📜 Открыть «Что нового»",brandBrown))
+            { showChangelog = true; settingsSection = 0; brandTechnicalScreen = true; StartCoroutine(FetchChangelog()); }
+
+            y = Card(y,contentWidth,128,"🔄 Обновления приложения",new Color(.25f,.75f,1f));
+            TextLine(y-88,contentWidth,"Установлена Unity " + UnityRelease.Version,27);
+            if(GUI.Button(new Rect(13,y-57,contentWidth-26,43),"🔎 Проверить и обновить",brandBlue))
+            { settingsSection = 0; showChangelog = false; brandTechnicalScreen = true; }
+
+            y = Card(y,contentWidth,139,"⚙ Дополнительные параметры",BrandAccent);
+            if(GUI.Button(new Rect(13,y-94,contentWidth-26,38),"Графика и FPS",brandGold))
+            { settingsSection=2; brandTechnicalScreen=true; }
+            if(GUI.Button(new Rect(13,y-49,contentWidth-26,38),"Камера, управление и данные",brandGold))
+            { settingsSection=3; brandTechnicalScreen=true; }
+
+            brandSettingsContentHeight = y + 12;
+            GUI.EndScrollView();
+
+            if(!string.IsNullOrEmpty(brandNotice))
+                GUI.Label(new Rect(18,footerTop-31,width-36,26),brandNotice,settingsDescription);
+            float saveW = (width-44)*.60f;
+            if(GUI.Button(new Rect(12,footerTop,saveW,49),"Сохранить оформление",brandGreen))
+                BrandSaveAppearance();
+            if(GUI.Button(new Rect(20+saveW,footerTop,width-saveW-32,49),"Закрыть",brandBrown))
+                Navigate(FrontScreen.Home);
+            GUI.EndGroup();
         }
 
+        private float Card(float start, float width, float height, string label, Color accent)
+        {
+            GUI.Box(new Rect(0,start,width,height),GUIContent.none,settingsInset);
+            settingsHeader.normal.textColor=accent;
+            GUI.Label(new Rect(13,start+9,width-26,35),label,settingsHeader);
+            return start+height+12;
+        }
+        private void TextLine(float y, float width, string text, float height)
+        {
+            GUI.Label(new Rect(13,y,width-26,height),text,settingsDescription);
+        }
         private void BrandSaveAppearance()
         {
             Attempt(() => {
                 settingsDraft.Save(SettingsPath);
-                preferences = ClientPreferences.Parse(settingsDraft.Export());
+                preferences=ClientPreferences.Parse(settingsDraft.Export());
                 ApplyPreferences();
-                brandNotice = "Оформление сохранено на устройстве.";
+                brandNotice="Оформление сохранено.";
             });
         }
 
-        private void BrandSettingsCard(Action body, string name, Color? c = null)
+        private void DrawTechnicalSettings()
         {
-            GUILayout.BeginVertical(brandCard);
-            BrandCardHeader(name, c);
-            GUILayout.Space(5);
-            body();
-            GUILayout.EndVertical();
-        }
-
-        private void DrawBrandSettings()
-        {
+            PrepareSettingsSkin();
             DrawBrandBackdrop(true);
-            float margin = Mathf.Min(20, Screen.width * .033f);
-            float width = Mathf.Min(Screen.width - margin * 2, BrandMaxWidth);
-            float x = (Screen.width - width) / 2f;
-            Rect outer = new Rect(x, 12, width, Mathf.Max(100, Screen.height - 24));
-            Color frame = BrandFrameColor;
-            Shade(outer, frame);
-            Rect inner = new Rect(outer.x + 2, outer.y + 2, outer.width - 4, outer.height - 4);
-            Shade(inner, new Color(.075f, .071f, .07f, .98f));
-            // Corner emblems reference the dragon / vine frames of the source UI.
-            GUI.Label(new Rect(inner.x + 5, inner.y + 3, 28, 28),
-                settingsDraft?.frameStyle == "vine" ? "❧" : "◆");
-
-            GUILayout.BeginArea(new Rect(inner.x + 13, inner.y + 11, inner.width - 26, inner.height - 22));
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("⚙ Настройки приложения", brandTitle, GUILayout.ExpandWidth(true));
-            if (GUILayout.Button("×", brandRed, GUILayout.Width(48), GUILayout.Height(42)))
-                Navigate(FrontScreen.Home);
-            GUILayout.EndHorizontal();
-            GUILayout.Space(9);
-            brandSettingsScroll = GUILayout.BeginScrollView(brandSettingsScroll, false, true);
-
-            BrandSettingsCard(() => {
-                GUILayout.Label("Герои хранятся на этом устройстве. Облачная синхронизация из WebView-клиента ещё не перенесена.", brandSub);
-                GUILayout.Label("Локальных персонажей: " + (archive?.Count ?? 0), brandSub);
-                if (GUILayout.Button("Мои персонажи", brandBlue, GUILayout.Height(45)))
-                    Navigate(FrontScreen.Characters);
-            }, "☁ Аккаунт и облачные персонажи", new Color(.90f,.72f,.40f));
-
-            BrandSettingsCard(() => {
-                int idx = Math.Max(0, Array.IndexOf(BrandAccentKeys, settingsDraft.theme));
-                idx = GUILayout.SelectionGrid(idx, BrandAccentNames, 2, GUILayout.MinHeight(96));
-                settingsDraft.theme = BrandAccentKeys[idx];
-                GUILayout.Label("Цвет заголовков и декоративных акцентов.", brandSub);
-            }, "🎨 Тема оформления (Акцент)");
-
-            BrandSettingsCard(() => {
-                GUILayout.Label("Интер (Строгий и чистый)", brandSub);
-                GUILayout.Label("В нативном Unity сейчас используется системный шрифт. Декоративные гарнитуры подключим отдельным UI-пакетом, без подмены содержимого.", brandSub);
-            }, "✍ Типографика (Шрифт интерфейса)");
-
-            BrandSettingsCard(() => {
-                GUILayout.Label("Иконка Android пока задана при сборке APK. Здесь будет выбор варианта значка после переноса Android launcher aliases.", brandSub);
-                bool enabled = GUI.enabled; GUI.enabled = false;
-                GUILayout.Button("Параметры иконки · скоро", brandGold, GUILayout.Height(45));
-                GUI.enabled = enabled;
-            }, "🖼 Иконка приложения", new Color(.90f,.79f,.48f));
-
-            BrandSettingsCard(() => {
-                GUILayout.Label("Рамка применяется к окнам Unity и сохраняется отдельно от персонажей.", brandSub);
-                int frame = Math.Max(0, Array.IndexOf(BrandFrameKeys, settingsDraft.frameStyle));
-                settingsDraft.frameStyle = BrandFrameKeys[GUILayout.SelectionGrid(frame, BrandFrameNames, 2, GUILayout.MinHeight(52))];
-                GUILayout.Space(8);
-                int tint = Math.Max(0, Array.IndexOf(BrandFrameColors, settingsDraft.frameColor));
-                settingsDraft.frameColor = BrandFrameColors[GUILayout.SelectionGrid(tint, BrandFrameLabels, 2, GUILayout.MinHeight(116))];
-            }, "🪄 Оформление рамок", new Color(.90f,.79f,.48f));
-
-            BrandSettingsCard(() => {
-                GUILayout.Label("Обои по умолчанию: wallpapers/16.png", brandSub);
-                GUILayout.Label("Используется оригинал из main. Остальные wallpapers НЕ входят в APK и будут доступны после внедрения загрузочных пакетов контента.", brandSub);
-                bool enabled = GUI.enabled; GUI.enabled = false;
-                GUILayout.Button("16.png — установлены по умолчанию", brandPurple, GUILayout.Height(45));
-                GUI.enabled = enabled;
-            }, "🖼 Обои и арты");
-
-            BrandSettingsCard(() => {
-                GUILayout.Label("Настройки музыки и эмбиента появятся после подключения аудиопакета. В эту сборку новые треки не добавляем.", brandSub);
-            }, "♫ Аудио и Эмбиент");
-
-            BrandSettingsCard(() => {
-                GUILayout.Label("Что нового в установленной версии и предыдущих выпусках.", brandSub);
-                if (GUILayout.Button(showChangelog ? "Скрыть «Что нового»" : "Открыть «Что нового»",
-                    brandGold, GUILayout.Height(48)))
-                {
-                    showChangelog = !showChangelog;
-                    if (showChangelog) StartCoroutine(FetchChangelog());
-                }
-                if (showChangelog) DrawChangelog();
-            }, "📜 История изменений", new Color(.9f,.79f,.48f));
-
-            // Existing verified in-app Android updater stays fully functional.
-            BrandSettingsCard(DrawUpdates, "🔄 Обновления приложения", new Color(.31f,.75f,.98f));
-
-            BrandSettingsCard(() => {
-                if (GUILayout.Button(brandAdvancedOpen ? "Скрыть технические настройки" : "Графика, управление и данные",
-                    brandGold, GUILayout.Height(47))) brandAdvancedOpen = !brandAdvancedOpen;
-                if (brandAdvancedOpen) DrawSettings(); // Reuses the real working controls.
-            }, "⚙ Дополнительные параметры");
-
-            if (!string.IsNullOrWhiteSpace(brandNotice)) GUILayout.Label(brandNotice, brandSub);
-            if (GUILayout.Button("Сохранить оформление", brandGreen, GUILayout.Height(50)))
-                BrandSaveAppearance();
-            if (GUILayout.Button("Закрыть", brandBrown, GUILayout.Height(46)))
-                Navigate(FrontScreen.Home);
+            heading ??= new GUIStyle(GUI.skin.label) { fontSize = 26, fontStyle = FontStyle.Bold, wordWrap = true };
+            muted ??= new GUIStyle(GUI.skin.label) { fontSize = 16, wordWrap = true,
+                normal = { textColor = new Color(.77f,.75f,.72f) } };
+            float width = Mathf.Min(Screen.width-20,BrandMaxWidth);
+            float x=(Screen.width-width)*.5f;
+            Rect outer=new Rect(x,10,width,Screen.height-20);
+            GUI.Box(outer,GUIContent.none,brandCard);
+            if(GUI.Button(new Rect(x+12,16,Mathf.Min(160,width*.42f),43),"← К оформлению",brandBrown))
+            { brandTechnicalScreen=false; return; }
+            GUILayout.BeginArea(new Rect(x+13,66,width-26,Screen.height-86));
+            frontScroll=GUILayout.BeginScrollView(frontScroll,false,true);
+            DrawSettings();
             GUILayout.EndScrollView();
             GUILayout.EndArea();
         }
