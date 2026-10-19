@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "version": "1.00.04",
-  "candidateRunId": 39320423149,
+  "version": "1.00.05",
+  "candidateRunId": 39328804070,
   "approved": true,
   "releaseType": "public-prerelease",
   "channel": "unity-experiment",
   "scope": "Android-only",
-  "note": "User directly authorized to produce/publish Unity 1.00.04 for in-app update testing. Wait for signed Android CI success, verify pinned certificate/APK, publish official GitHub Release and OTA feed. Do not change main, Windows or user character files."
+  "note": "Explicit user's 2026-10-20 request to publish hotfix 1.00.05 after Android 1.00.04 visuals missing, dark background, Settings blank. Publish only after strictly verified signed candidate and QA, preserving in-app 1.00.04 -> 1.00.05. Do not touch main or Windows."
 }
