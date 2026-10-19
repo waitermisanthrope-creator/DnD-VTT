@@ -1,5 +1,19 @@
 # AI progress — compact checkpoint
 
+## 2026-10-19 — first Unity installers / cloud cutover in progress
+
+- Owner explicitly requests1.00.00 APK+Windows Setup, manual in-app binary updates, and upload to GitHub for phone access before shutting down the home PC. Preserve concurrent commit4f46dd77 and Android delivery audit below. Only experiment/unity-vtt; no stable workflow edits.
+- Added UnityRelease version/code/package constants and strict separate update-feed parsing, HTTPS/repository/package/size/SHA256 validation, native Android read-only provider and signature-checked system installation, Windows setup handoff waiting for previous PID. Local character/settings paths stay unchanged on Windows; Android package is com.dndvtt.unity.
+- Release Windows BuildOptions.None exited0, including all old contracts and new VTT_UPDATER_CONTRACT_PASS. NSIS3.11 per-user Setup built; installed copy exited0 in actual migration smoke. Reinstall exited0 and preserved isolated profile SHA; registered install path is LOCALAPPDATA/Programs/DnD VTT Unity. No Authenticode certificate.
+- Android release signing/build and public asset publication require final evidence; do not equate the earlier debug audit APK with a release-signed APK. UI publication was stopped for uncertain Opera URL; an attested in-app browser is awaiting owner GitHub sign-in. Existing configured Git CLI has no noninteractive push credential; use connected GitHub API for a normal fast-forward source commit if necessary. Do not export browser/auth secrets or publish signing keys.
+
+## 2026-10-19 — requested local Android delivery audit
+
+- Only experiment/unity-vtt; fast-forwarded the existing remote workflow commit 4f46dd77 without discarding local Unity work. APK uses that base plus pre-existing uncommitted Unity changes and the manifest callback fix; it is not a clean-commit build. No main/stable workflow edits, public publication, secrets extraction or new paid service.
+- Fixed untracked UnityReleaseBuild.cs callback: launcher owns application label; remove the callback's stale literal and deduplicate its permission/provider when Unity reuses generated manifests. First two builds failed on manifest merging; final MigrationAndroid exited 0 and all embedded contracts passed. No C# compiler errors in final log.
+- APK 59,676,006 bytes, SHA256 4798F4923CCFAF63DDA1AAA340BD6631759E4EF23ECF3019661129E8B25BD88F; com.dndvtt.unity, 1.00.00/10000, ARM64, min26/target36. apksigner debug v2 and zipalign 16KB checks passed. ImportedAdventure built, not Exploration startup. All 403 retained input files matched prebuild SHA256; four generated performance-test metadata files were removed by Unity. Audit/previous APK/failed logs: unity/TestResults/ApkAudit-20261019-133627.
+- Public repo makes unchecked asset redistribution inappropriate: APK/report/checksums copied to current Codex chat outputs/Unity-Android-2026-10-19 for local/remote-desktop delivery. GitHub Actions run39223369417 failed before compilation: license not configured. Owner must enter appropriate CI license credentials via GitHub Secrets; no retry claimed. adb empty; no physical Android launch/touch/save/FPS QA. Full gameplay parity remains incomplete.
+
 ## 2026-10-19 — device settings and working wallet commands
 
 - Main menu now has Settings: platform quality levels, FPS cap/vSync, mouse/touch sensitivity, invert Y, field of view and default first-person camera. Preferences use a separate validated atomic device file with .bak; isolated profile QA also isolates settings. No browser/cloud preferences or character schema change.

@@ -1,5 +1,13 @@
 # Validation — 2026-10-18, experiment/unity-vtt
 
+## 2026-10-19 first installable Unity1.00.00 (publication pending)
+
+- Release Windows `unity/release.ps1 -Stage Windows` PASS, exit0; BuildOptions.None; ReleaseWindows.log includes earlier sheet/map/creation/wallet/settings contracts and VTT_UPDATER_CONTRACT_PASS, then VTT_RELEASE_BUILD_PASS StandaloneWindows64/1.00.00. Version/code/package: UnityRelease constants1.00.00/10000/com.dndvtt.unity.
+- NSIS3.11 compiler produced per-user `Builds/Unity-1.00.00/distribution/DnD-VTT-Unity-Setup-1.00.00-x64.exe`. Compiler distribution SHA256C7D27F780DDB6CFFB4730138CD1591E841F4B7EDB155856901CDF5F214394FA1 (upstream SourceForge archive mirrored by tauri-apps/binary-releases). No stable workflow changes.
+- Installed at LOCALAPPDATA/Programs/DnD VTT Unity. Actual installed-player smoke PASS/exit0 in Release-installed-Smoke.log. Reinstallation PASS/exit0; isolated profile file SHA unchanged. Installer deletes only enumerated packaged program files during uninstall and leaves saved characters/preferences outside install directory untouched. Windows Setup is unsigned by Authenticode.
+- Updater contracts test future version, wrong channel/version/package, non-HTTPS/foreign repository/wrong extension and corrupt/incomplete payload refusal. Android system-install/real network-update round trip and physical-device update are not yet verified. Source implementation does not prove that a public update channel is live.
+- Public source/artifact and Android signing status must be appended only after verification. Local outputs alone cannot be used from a phone after this PC is off.
+
 ## 2026-10-19 — device settings and wallet operations
 
 - Correct project remains `C:\Projects\DnD-VTT\unity`; only `experiment/unity-vtt`. Menu now exposes Settings, with real QualitySettings / FPS / vSync and Explorer camera sensitivity/invert/FOV/default view. Separate atomic device preferences preserve the previous `.bak`; `--vtt-profile-store` also isolates preferences for QA.
@@ -22,6 +30,14 @@
 - Final Android build **PASS, exit0**, `MigrationAndroid.log`: all contract markers, `VTT_MIGRATION_BUILD_PASS: Android`, clean batch exit. APK65,575,465 bytes, SHA256 `B1712C48FEC1B0BD99B8E4046EEB5D1BBC63E0448C12D2154F0706F23D7BA626`. `apksigner verify` exited0 (experimental debug certificate); aapt confirms `com.dndvtt.unityexperiment`, ARM64, min26/target36. `adb devices` returned no attached device. Earlier successful logs before the final map/alias fix are retained separately as `FrontEnd-before-map-fix-Windows.log` / `FrontEnd-before-map-fix-Android.log`.
 - Unity service/licensing logs include unavailable access-token refresh and Curl35 certificate-verification failures. These are distinct from C# compiler/gameplay failures: no `error CS` was observed in the successful build logs. Do not disable TLS verification to suppress them.
 - Remaining QA: no physical Android device test; no full class/race/level-up, cloud or cross-client persistence claim. Representative anonymized user exports remain useful for additional compatibility QA.
+
+## 2026-10-19 Android delivery audit (latest)
+
+- Actual `verify.ps1 -Stage MigrationAndroid` final PASS, Unity exit0, VTT_MIGRATION_BUILD_PASS Android; all sheet/front-end/wallet/map/updater contract markers present, no C# compile errors. Scene ImportedAdventure. First two attempts failed manifest merging; retained in TestResults/ApkAudit-20261019-133627 rather than reported green.
+- Fixed existing untracked UnityReleaseBuild.cs postprocessor: preserve launcher-owned app label; remove its stale literal on incremental reuse and deduplicate only its own permission/provider nodes. No stable release workflow changes.
+- Base4f46dd77f4b46f8a2115662fb56474e1b4880b5c plus existing dirty Unity inputs and callback fix, NOT a clean-commit build. All403 retained Assets/Packages/ProjectSettings inputs match recorded prebuild SHA256; four generated performance-test metadata files removed by Unity. Both input manifests and working status saved with delivery.
+- Final APK59,676,006 bytes; SHA2564798F4923CCFAF63DDA1AAA340BD6631759E4EF23ECF3019661129E8B25BD88F; package com.dndvtt.unity, version1.00.00/code10000, arm64-v8a, min26/target36. apksigner verifies Android Debug/v2; zipalign -c -P16 4 exit0. Old75,476,502-byte APK backed up before rebuild.
+- GitHub repository public, asset distribution rights not established: no upload/release. Local delivery copy and Russian report in current Codex chat outputs/Unity-Android-2026-10-19. Actions run39223369417 failed at license preflight; no compile/artifact and no new retry. Confidential CI license configuration remains owner action. No adb devices; physical Android runtime and full gameplay parity remain unverified/incomplete.
 
 ## 2026-10-19 continuation: inventory and notes
 

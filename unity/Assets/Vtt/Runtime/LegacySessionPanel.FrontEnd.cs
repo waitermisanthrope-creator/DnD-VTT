@@ -41,7 +41,7 @@ namespace DndVtt.UnityPrototype
             bigButton ??= new GUIStyle(GUI.skin.button) { fontSize = 18, padding = new RectOffset(20, 20, 16, 16), alignment = TextAnchor.MiddleLeft };
             var oldColor = GUI.color; GUI.color = new Color(.035f, .045f, .068f); GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), Texture2D.whiteTexture); GUI.color = oldColor;
             GUILayout.BeginArea(new Rect(28, 20, Screen.width - 56, Screen.height - 40));
-            GUILayout.BeginHorizontal(); GUILayout.Label("DnD VTT", heading); GUILayout.FlexibleSpace(); GUILayout.Label("Локальная библиотека героев", muted); GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal(); GUILayout.Label("DnD VTT", heading); GUILayout.FlexibleSpace(); GUILayout.Label("Unity · " + UnityRelease.Version, muted); GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Главная", GUILayout.Height(36))) Navigate(FrontScreen.Home);
             if (GUILayout.Button("Персонажи · " + (archive?.Count ?? 0), GUILayout.Height(36))) Navigate(FrontScreen.Characters);

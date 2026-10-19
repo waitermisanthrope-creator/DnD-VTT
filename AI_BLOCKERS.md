@@ -1,5 +1,7 @@
 # Active blockers / limits
 
+2026-10-19 phone/cloud cutover: owner now authorizes a separate Unity1.00.00 prerelease and cloud source/artifact upload, superseding old no-Unity-release notes. Browser publication needs owner sign-in in the attested IAB; native Opera automation stopped because URL could not be verified. GitHub connector has repository push permission; ordinary CLI push currently cannot authenticate noninteractively. Home-PC local Codex/Unity are not cloud compute; existing Unity CI still needs owner-supplied license/signing secrets. See docs/UNITY_CLOUD_HANDOFF.md. Never call unuploaded local packages phone-accessible.
+
 Settings/wallet continuation: device graphics/camera preferences and actual coin add/spend/change/history commands are implemented; they do not establish full WebView parity. Full class/race initialization, pending choices, level-up, gameplay effects and cloud remain the next work. Use current unity/VALIDATION.md for executed checks rather than inferring success from source changes.
 
 Unity front end update 2026-10-19: Home/roster, base level-one creation, passport/all-data forms and coins wallet now exist. Full Builder hooks, class/race initialization and level-up are incomplete; extra-body creation stays disabled and unresolved choices remain pending. Do not interpret generic data editing as automatic gameplay execution. A contracts-only Editor retry reached assertions then crashed on exit (-1073741819); successful subsequent build runs are recorded separately in unity/VALIDATION.md.

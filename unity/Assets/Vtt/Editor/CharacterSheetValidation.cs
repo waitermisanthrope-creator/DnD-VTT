@@ -14,6 +14,7 @@ public static class CharacterSheetValidation
     {
         var golden = JObject.Parse(File.ReadAllText("Assets/Vtt/Tests/sheet-contract.json")); int cases = 0;
         ValidateWalletAndSettings(golden);
+        ValidateUpdater();
         var nullable = new LegacyCharacterArchive("{\"id\":\"nullable\",\"stats\":null,\"skillsData\":null}").Snapshot(0);
         Check(CharacterSheetRules.Modifier(nullable, "str") == 0 && CharacterSheetRules.Skill(nullable, 0) == 0, "legacy null collections");
         foreach (JObject test in (JArray)golden["cases"])
@@ -104,6 +105,29 @@ public static class CharacterSheetValidation
         }
         Debug.Log("VTT_SHEET_PASS: " + cases + " JS golden cases; 18 skills, modifiers/proficiency, single/array/wrapped editing, rollback, identity/unknown/class-state preservation, atomic save/reload/backup; 402 spells");
         Debug.Log("VTT_SHEET_RECORDS_PASS: 188 items; actual JS 5-category add/stack/remove, folder/note deletion and active selection, stale/invalid mutation rejection, 12 weight parser cases / total / capacity");
+    }
+    private static void ValidateUpdater()
+    {
+        Check(UnityRelease.VersionCode(UnityRelease.Version) == UnityRelease.Code && UnityRelease.VersionCode("1.00.01") > UnityRelease.Code, "release version/code and monotonic comparison");
+        var fixture = JObject.Parse("{schema:1,channel:'unity-experiment',version:'1.00.01',versionCode:10001,androidPackage:'com.dndvtt.unity',artifacts:{android:{url:'https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.01/test.apk',bytes:3,sha256:'0000000000000000000000000000000000000000000000000000000000000000'}}}");
+        Check((int)UnityRelease.ParseFeed(fixture.ToString(), "android")["versionCode"] == 10001, "future Android manifest accepted");
+        foreach (var patch in new[] { JObject.Parse("{channel:'stable'}"), JObject.Parse("{versionCode:10002}"), JObject.Parse("{androidPackage:'com.other.app'}"), JObject.Parse("{schema:2}") })
+        {
+            var invalid = (JObject)fixture.DeepClone(); invalid.Merge(patch); bool refused = false; try { UnityRelease.ParseFeed(invalid.ToString(), "android"); } catch (FormatException) { refused = true; } Check(refused, "wrong release/channel/package rejected");
+        }
+        foreach (string url in new[] { "http://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.01/test.apk", "https://example.com/test.apk", "https://github.com/other/repo/releases/download/unity-v1.00.01/test.apk", "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.01/test.exe" })
+        {
+            var invalid = (JObject)fixture.DeepClone(); invalid["artifacts"]["android"]["url"] = url; bool refused = false; try { UnityRelease.ParseFeed(invalid.ToString(), "android"); } catch (FormatException) { refused = true; } Check(refused, "unsafe artifact URL rejected");
+        }
+        string path = Path.Combine(Path.GetTempPath(), "vtt-update-" + Guid.NewGuid()); File.WriteAllBytes(path, new byte[] { 1, 2, 3 });
+        try
+        {
+            using var sha = System.Security.Cryptography.SHA256.Create(); var artifact = (JObject)fixture["artifacts"]["android"];
+            artifact["sha256"] = BitConverter.ToString(sha.ComputeHash(File.ReadAllBytes(path))).Replace("-", ""); UnityRelease.VerifyFile(path, artifact);
+            File.AppendAllText(path, "corrupt"); bool refused = false; try { UnityRelease.VerifyFile(path, artifact); } catch (FormatException) { refused = true; } Check(refused, "corrupt/partial update rejected");
+        }
+        finally { File.Delete(path); }
+        Debug.Log("VTT_UPDATER_CONTRACT_PASS: version/channel/package/HTTPS/repository/extension checks and downloaded size/SHA256 verification");
     }
     private static void ValidateWalletAndSettings(JObject golden)
     {

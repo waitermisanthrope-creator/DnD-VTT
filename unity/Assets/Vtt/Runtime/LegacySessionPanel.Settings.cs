@@ -56,6 +56,7 @@ namespace DndVtt.UnityPrototype
             });
             if (GUILayout.Button("Стандартные значения", GUILayout.Height(38))) settingsDraft = new ClientPreferences { quality = platformQuality };
             if (GUILayout.Button("Назад в главное меню", GUILayout.Height(38))) Navigate(FrontScreen.Home);
+            DrawUpdates();
         }
     }
 }

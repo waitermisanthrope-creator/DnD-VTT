@@ -1,5 +1,8 @@
 # Next checkpoint
 
+## 2026-10-19 — first installers and phone/cloud handoff (owner priority)
+Owner explicitly requests Unity 1.00.00 Android APK + Windows Setup, a separate in-app update channel, upload to cloud and a phone-accessible link before the home PC shuts down. This supersedes the historical no-release restriction for a separate Unity prerelease only. Keep main and existing stable workflows unchanged. Preserve concurrent workflow commit4f46dd77 and the later manifest callback fix/audit notes. Read docs/UNITY_CLOUD_HANDOFF.md. Do not claim public assets/push/cloud builds until independently verified. CI Unity license/signing configuration remains distinct from uploading already-built packages. Game save cloud sync and full class parity remain unfinished.
+
 ## 2026-10-19 — settings and wallet continuation
 Owner requires working WebView parity, not just forms. This stage adds device settings (graphics/FPS/camera controls) and actual main wallet commands (add/spend/change/custom rates/PP+EP switches/25-entry transaction log) in native C#. Use actual JS operation fixtures to verify behaviour. Continue full class/race initialization and choice execution/level-up next; these remain incomplete. Preserve experimental branch and original release workflows. Final validation evidence: unity/VALIDATION.md.
 
