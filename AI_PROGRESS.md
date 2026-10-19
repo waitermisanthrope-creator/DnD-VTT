@@ -1,5 +1,7 @@
 # AI progress — compact checkpoint
 
+2026-10-19 delivery VERIFIED: Unity 1.00.00 APK and Windows Setup are public at https://github.com/waitermisanthrope-creator/DnD-VTT/releases/tag/unity-v1.00.00 . Actions run39246852201 succeeded: 6 publisher tests, reconstructed package size/SHA256, permanent APK certificate, all4 public downloads verified, update feed activated. Evidence: unity/PUBLIC_DELIVERY.json (source51ee9510; activationadfd1602). Source and installers survive home-PC shutdown. Local Codex chat is not a cloud executor. Cloud Unity builds still require license/signing Secrets; Android physical install/update and character cloud sync remain unverified/incomplete. Main and existing stable workflow unchanged.
+
 ## 2026-10-19 — first Unity installers / cloud cutover in progress
 
 - Source snapshot8c44b516 is independently confirmed on origin/experiment/unity-vtt. Release Android now exited0 after the preserved manifest callback fix; APK48,186,137 bytes, SHA25621299F36B6A23EE79E41DC754F133C92F51BDF42FAF8E41F11A05FBB5796FD2E, permanent RSA3072 certificate SHA256c1c1b3e6537f10819a3042817ac91535b47754ed65d084e635f84ff2b1f44c8e, v2/v3 verification and16KB zip alignment passed. Windows Setup36,693,230 bytes, SHA2568DF76DBB632CC314B9BD4A2C33F3399CA91B9A3920360693B7F7C8520BA3BCCF; installed smoke/reinstall preserve checks passed.

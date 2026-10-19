@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 51ee9510dd3d. Git содержит 1776 файлов.
+Снимок кода adfd1602a4e8. Git содержит 1776 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -19,283 +19,283 @@
 
 | Полный путь | Размер | Назначение и роль |
 |---|---:|---|
-| №0001 .github/ai-control.json | 255 B | данные/конфигурация: ai control |
-| №0002 .github/prompts/autonomous-development.md | 1259 B | документация или отчёт: autonomous development |
+| №0001 .github/ai-control.json | 263 B | данные/конфигурация: ai control |
+| №0002 .github/prompts/autonomous-development.md | 1262 B | документация или отчёт: autonomous development |
 | №0003 .github/scripts/.gitignore | 14 B | вспомогательный файл: .gitignore |
 | №0004 .github/scripts/publish-unity-artifacts.py | 7851 B | вспомогательный файл: publish unity artifacts |
-| №0005 .github/scripts/test-publish-unity-artifacts.py | 3695 B | вспомогательный файл: test publish unity artifacts |
-| №0006 .github/workflows/android-debug.yml | 4175 B | автоматизация GitHub Actions: android debug |
-| №0007 .github/workflows/android-release.yml | 8160 B | автоматизация GitHub Actions: android release |
-| №0008 .github/workflows/autonomous-development.yml | 4534 B | автоматизация GitHub Actions: autonomous development |
-| №0009 .github/workflows/build-windows-desktop.yml | 1449 B | автоматизация GitHub Actions: build windows desktop |
-| №0010 .github/workflows/cloud-test-build.yml | 3468 B | автоматизация GitHub Actions: cloud test build |
-| №0011 .github/workflows/convert-remaining-furniture.yml | 1964 B | автоматизация GitHub Actions: convert remaining furniture |
-| №0012 .github/workflows/deploy-pages.yml | 3633 B | автоматизация GitHub Actions: deploy pages |
-| №0013 .github/workflows/human-glb-audit.yml | 931 B | автоматизация GitHub Actions: human glb audit |
-| №0014 .github/workflows/import-root-furniture.yml | 3572 B | автоматизация GitHub Actions: import root furniture |
-| №0015 .github/workflows/map-ui-stage-qa.yml | 776 B | автоматизация GitHub Actions: map ui stage qa |
-| №0016 .github/workflows/project-atlas.yml | 953 B | автоматическое обновление атласа на GitHub |
-| №0017 .github/workflows/publish-stress-map-ota.yml | 455 B | автоматизация GitHub Actions: publish stress map ota |
-| №0018 .github/workflows/refresh-update-manifest.yml | 540 B | автоматизация GitHub Actions: refresh update manifest |
-| №0019 .github/workflows/test-gltf-loader.yml | 717 B | автоматизация GitHub Actions: test gltf loader |
-| №0020 .github/workflows/test-stair-navigation.yml | 752 B | автоматизация GitHub Actions: test stair navigation |
-| №0021 .github/workflows/unified-release.yml | 14076 B | автоматизация GitHub Actions: unified release |
+| №0005 .github/scripts/test-publish-unity-artifacts.py | 3738 B | вспомогательный файл: test publish unity artifacts |
+| №0006 .github/workflows/android-debug.yml | 4285 B | автоматизация GitHub Actions: android debug |
+| №0007 .github/workflows/android-release.yml | 8355 B | автоматизация GitHub Actions: android release |
+| №0008 .github/workflows/autonomous-development.yml | 4646 B | автоматизация GitHub Actions: autonomous development |
+| №0009 .github/workflows/build-windows-desktop.yml | 1494 B | автоматизация GitHub Actions: build windows desktop |
+| №0010 .github/workflows/cloud-test-build.yml | 3555 B | автоматизация GitHub Actions: cloud test build |
+| №0011 .github/workflows/convert-remaining-furniture.yml | 2011 B | автоматизация GitHub Actions: convert remaining furniture |
+| №0012 .github/workflows/deploy-pages.yml | 3740 B | автоматизация GitHub Actions: deploy pages |
+| №0013 .github/workflows/human-glb-audit.yml | 966 B | автоматизация GitHub Actions: human glb audit |
+| №0014 .github/workflows/import-root-furniture.yml | 3644 B | автоматизация GitHub Actions: import root furniture |
+| №0015 .github/workflows/map-ui-stage-qa.yml | 802 B | автоматизация GitHub Actions: map ui stage qa |
+| №0016 .github/workflows/project-atlas.yml | 990 B | автоматическое обновление атласа на GitHub |
+| №0017 .github/workflows/publish-stress-map-ota.yml | 472 B | автоматизация GitHub Actions: publish stress map ota |
+| №0018 .github/workflows/refresh-update-manifest.yml | 558 B | автоматизация GitHub Actions: refresh update manifest |
+| №0019 .github/workflows/test-gltf-loader.yml | 743 B | автоматизация GitHub Actions: test gltf loader |
+| №0020 .github/workflows/test-stair-navigation.yml | 778 B | автоматизация GitHub Actions: test stair navigation |
+| №0021 .github/workflows/unified-release.yml | 14407 B | автоматизация GitHub Actions: unified release |
 | №0022 .github/workflows/unity-delivery-publish.yml | 872 B | автоматизация GitHub Actions: unity delivery publish |
-| №0023 .github/workflows/unity-experiment-android.yml | 2782 B | автоматизация GitHub Actions: unity experiment android |
-| №0024 .github/workflows/unpack-project.yml | 2987 B | автоматизация GitHub Actions: unpack project |
-| №0025 .github/workflows/validate-imported-glb.yml | 2317 B | автоматизация GitHub Actions: validate imported glb |
-| №0026 .gitignore | 81 B | вспомогательный файл: .gitignore |
-| №0027 00_AI_PROJECT_GUIDE.md | 1108812 B | существующее руководство ИИ, не перезаписывать |
-| №0028 01_plansforproject.md | 62054 B | план целей и критериев выполнения |
+| №0023 .github/workflows/unity-experiment-android.yml | 2862 B | автоматизация GitHub Actions: unity experiment android |
+| №0024 .github/workflows/unpack-project.yml | 3071 B | автоматизация GitHub Actions: unpack project |
+| №0025 .github/workflows/validate-imported-glb.yml | 2365 B | автоматизация GitHub Actions: validate imported glb |
+| №0026 .gitignore | 86 B | вспомогательный файл: .gitignore |
+| №0027 00_AI_PROJECT_GUIDE.md | 1118692 B | существующее руководство ИИ, не перезаписывать |
+| №0028 01_plansforproject.md | 62287 B | план целей и критериев выполнения |
 | №0029 1790622696215.png | 1202179 B | текстура/изображение: 1790622696215 |
 | №0030 1790622844831.png | 104000 B | текстура/изображение: 1790622844831 |
 | №0031 1790718758545.png | 1889164 B | текстура/изображение: 1790718758545 |
 | №0032 1790788500741.png | 1468216 B | текстура/изображение: 1790788500741 |
-| №0033 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
-| №0034 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
-| №0035 AGENTS.md | 4903 B | документация или отчёт: AGENTS |
-| №0036 AI_BLOCKERS.md | 6259 B | документация или отчёт: AI BLOCKERS |
-| №0037 AI_NEXT_TASK.md | 7166 B | документация или отчёт: AI NEXT TASK |
-| №0038 AI_PROGRESS.md | 43707 B | документация или отчёт: AI PROGRESS |
-| №0039 android/.gitignore | 44 B | Android компонент: .gitignore |
-| №0040 android/app/build.gradle | 4122 B | Android компонент: build |
-| №0041 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
-| №0042 android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java | 34871 B | Android: bridge обновлений |
-| №0043 android/app/src/main/java/com/dndvtt/app/MainActivity.java | 7574 B | Android: запуск WebView |
-| №0044 android/app/src/main/res/values-v31/styles.xml | 527 B | Android компонент: styles |
-| №0045 android/app/src/main/res/values/styles.xml | 407 B | Android компонент: styles |
-| №0046 android/build.gradle | 73 B | Android компонент: build |
-| №0047 android/gradle.properties | 106 B | Android компонент: gradle |
-| №0048 android/README.md | 685 B | документация или отчёт: README |
-| №0049 android/settings.gradle | 333 B | Android компонент: settings |
+| №0033 3D_CHARACTER_CLOTHING_PROGRESS.md | 85343 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
+| №0034 3D_CHARACTER_RACES_PROGRESS.md | 75939 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
+| №0035 AGENTS.md | 4945 B | документация или отчёт: AGENTS |
+| №0036 AI_BLOCKERS.md | 7021 B | документация или отчёт: AI BLOCKERS |
+| №0037 AI_NEXT_TASK.md | 7882 B | документация или отчёт: AI NEXT TASK |
+| №0038 AI_PROGRESS.md | 44599 B | документация или отчёт: AI PROGRESS |
+| №0039 android/.gitignore | 48 B | Android компонент: .gitignore |
+| №0040 android/app/build.gradle | 4243 B | Android компонент: build |
+| №0041 android/app/src/main/AndroidManifest.xml | 12350 B | Android компонент: AndroidManifest |
+| №0042 android/app/src/main/java/com/dndvtt/app/DndUpdateBridge.java | 35594 B | Android: bridge обновлений |
+| №0043 android/app/src/main/java/com/dndvtt/app/MainActivity.java | 7743 B | Android: запуск WebView |
+| №0044 android/app/src/main/res/values-v31/styles.xml | 537 B | Android компонент: styles |
+| №0045 android/app/src/main/res/values/styles.xml | 416 B | Android компонент: styles |
+| №0046 android/build.gradle | 76 B | Android компонент: build |
+| №0047 android/gradle.properties | 109 B | Android компонент: gradle |
+| №0048 android/README.md | 695 B | документация или отчёт: README |
+| №0049 android/settings.gradle | 351 B | Android компонент: settings |
 | №0050 app/3dmap/assets/clothing/fantasy-materials.webp | 434234 B | компонент 3D карты/редактора: fantasy materials |
 | №0051 app/3dmap/assets/clothing/lingerie-nylon.webp | 289830 B | компонент 3D карты/редактора: lingerie nylon |
-| №0052 app/3dmap/character_anatomy_geometry.js | 22797 B | компонент 3D карты/редактора: character anatomy geometry |
-| №0053 app/3dmap/character_anatomy.js | 8424 B | компонент 3D карты/редактора: character anatomy |
-| №0054 app/3dmap/character_appearance_store.js | 2619 B | компонент 3D карты/редактора: character appearance store |
-| №0055 app/3dmap/character_body_geometry.js | 120619 B | компонент 3D карты/редактора: character body geometry |
-| №0056 app/3dmap/character_clothing.js | 51618 B | компонент 3D карты/редактора: character clothing |
-| №0057 app/3dmap/character_editor_3d.js | 166537 B | компонент 3D карты/редактора: character editor 3d |
-| №0058 app/3dmap/character_morph_assets.js | 3322 B | компонент 3D карты/редактора: character morph assets |
-| №0059 app/3dmap/character_pose.js | 4749 B | компонент 3D карты/редактора: character pose |
-| №0060 app/3dmap/character_system.js | 49923 B | компонент 3D карты/редактора: character system |
-| №0061 app/3dmap/gltf_catalog.js | 90502 B | компонент 3D карты/редактора: gltf catalog |
-| №0062 app/3dmap/gltf_character_pipeline.js | 7811 B | компонент 3D карты/редактора: gltf character pipeline |
-| №0063 app/3dmap/gltf_loader.js | 10027 B | компонент 3D карты/редактора: gltf loader |
-| №0064 app/3dmap/map_editor.js | 45829 B | компонент 3D карты/редактора: map editor |
-| №0065 app/3dmap/map_model.js | 7783 B | компонент 3D карты/редактора: map model |
-| №0066 app/3dmap/map_renderer_2d.js | 7331 B | компонент 3D карты/редактора: map renderer 2d |
-| №0067 app/3dmap/map_renderer_3d.js | 23969 B | компонент 3D карты/редактора: map renderer 3d |
-| №0068 app/3dmap/map_world.js | 9119 B | компонент 3D карты/редактора: map world |
-| №0069 app/3dmap/stair_navigation.js | 932 B | компонент 3D карты/редактора: stair navigation |
-| №0070 app/3dmap/stress_map.js | 3272 B | компонент 3D карты/редактора: stress map |
-| №0071 app/accursed_oap_v11_runtime.js | 31365 B | логический модуль: accursed oap v11 runtime |
-| №0072 app/alchemist_mhp_2024_runtime.js | 140155 B | логический модуль: alchemist mhp 2024 runtime |
-| №0073 app/alchemy_engine_v29.js | 40901 B | логический модуль: alchemy engine v29 |
-| №0074 app/alchemy_gameplay_v30.js | 17859 B | логический модуль: alchemy gameplay v30 |
-| №0075 app/alchemy_gathering_professions_v52.js | 11833 B | логический модуль: alchemy gathering professions v52 |
-| №0076 app/Ambiences.js | 14648 B | логический модуль: Ambiences |
-| №0077 app/app.js | 37183 B | главный контроллер; currentChar и все персонажи |
-| №0078 app/armors.js | 27349 B | логический модуль: armors |
+| №0052 app/3dmap/character_anatomy_geometry.js | 22924 B | компонент 3D карты/редактора: character anatomy geometry |
+| №0053 app/3dmap/character_anatomy.js | 8500 B | компонент 3D карты/редактора: character anatomy |
+| №0054 app/3dmap/character_appearance_store.js | 2639 B | компонент 3D карты/редактора: character appearance store |
+| №0055 app/3dmap/character_body_geometry.js | 121072 B | компонент 3D карты/редактора: character body geometry |
+| №0056 app/3dmap/character_clothing.js | 51816 B | компонент 3D карты/редактора: character clothing |
+| №0057 app/3dmap/character_editor_3d.js | 167015 B | компонент 3D карты/редактора: character editor 3d |
+| №0058 app/3dmap/character_morph_assets.js | 3344 B | компонент 3D карты/редактора: character morph assets |
+| №0059 app/3dmap/character_pose.js | 4767 B | компонент 3D карты/редактора: character pose |
+| №0060 app/3dmap/character_system.js | 50039 B | компонент 3D карты/редактора: character system |
+| №0061 app/3dmap/gltf_catalog.js | 90795 B | компонент 3D карты/редактора: gltf catalog |
+| №0062 app/3dmap/gltf_character_pipeline.js | 7841 B | компонент 3D карты/редактора: gltf character pipeline |
+| №0063 app/3dmap/gltf_loader.js | 10043 B | компонент 3D карты/редактора: gltf loader |
+| №0064 app/3dmap/map_editor.js | 45883 B | компонент 3D карты/редактора: map editor |
+| №0065 app/3dmap/map_model.js | 7800 B | компонент 3D карты/редактора: map model |
+| №0066 app/3dmap/map_renderer_2d.js | 7361 B | компонент 3D карты/редактора: map renderer 2d |
+| №0067 app/3dmap/map_renderer_3d.js | 24226 B | компонент 3D карты/редактора: map renderer 3d |
+| №0068 app/3dmap/map_world.js | 9144 B | компонент 3D карты/редактора: map world |
+| №0069 app/3dmap/stair_navigation.js | 955 B | компонент 3D карты/редактора: stair navigation |
+| №0070 app/3dmap/stress_map.js | 3315 B | компонент 3D карты/редактора: stress map |
+| №0071 app/accursed_oap_v11_runtime.js | 31572 B | логический модуль: accursed oap v11 runtime |
+| №0072 app/alchemist_mhp_2024_runtime.js | 140995 B | логический модуль: alchemist mhp 2024 runtime |
+| №0073 app/alchemy_engine_v29.js | 40929 B | логический модуль: alchemy engine v29 |
+| №0074 app/alchemy_gameplay_v30.js | 17912 B | логический модуль: alchemy gameplay v30 |
+| №0075 app/alchemy_gathering_professions_v52.js | 11956 B | логический модуль: alchemy gathering professions v52 |
+| №0076 app/Ambiences.js | 14999 B | логический модуль: Ambiences |
+| №0077 app/app.js | 38020 B | главный контроллер; currentChar и все персонажи |
+| №0078 app/armors.js | 28000 B | логический модуль: armors |
 | №0079 app/assets/3d/makehuman/editor-morphs.bin | 2340320 B | ассет графики/3D/интерфейса: editor morphs |
-| №0080 app/assets/3d/makehuman/editor-morphs.json | 11573 B | ассет графики/3D/интерфейса: editor morphs |
+| №0080 app/assets/3d/makehuman/editor-morphs.json | 11913 B | ассет графики/3D/интерфейса: editor morphs |
 | №0081 app/assets/3d/makehuman/human-body-morphs.glb | 12671780 B | ассет графики/3D/интерфейса: human body morphs |
-| №0082 app/assets/3d/makehuman/LICENSE.ASSETS.md | 6962 B | документация или отчёт: LICENSE.ASSETS |
+| №0082 app/assets/3d/makehuman/LICENSE.ASSETS.md | 7003 B | документация или отчёт: LICENSE.ASSETS |
 | №0083 app/assets/3d/makehuman/materials/skin_color_detail_v1.png | 2922380 B | ассет графики/3D/интерфейса: skin color detail v1 |
 | №0084 app/assets/3d/makehuman/materials/skin_micro_normal_roughness.png | 22965 B | ассет графики/3D/интерфейса: skin micro normal roughness |
-| №0085 app/assets/3d/makehuman/README.md | 1510 B | документация или отчёт: README |
-| №0086 app/assets/3d/makehuman/skins/young_caucasian_female/young_caucasian_female.mhmat | 1464 B | ассет графики/3D/интерфейса: young caucasian female |
+| №0085 app/assets/3d/makehuman/README.md | 1537 B | документация или отчёт: README |
+| №0086 app/assets/3d/makehuman/skins/young_caucasian_female/young_caucasian_female.mhmat | 1522 B | ассет графики/3D/интерфейса: young caucasian female |
 | №0087 app/assets/3d/makehuman/skins/young_caucasian_female/young_lightskinned_female_diffuse.png | 4391156 B | ассет графики/3D/интерфейса: young lightskinned female diffuse |
-| №0088 app/assets/3d/makehuman/skins/young_caucasian_male/young_caucasian_male.mhmat | 1462 B | ассет графики/3D/интерфейса: young caucasian male |
+| №0088 app/assets/3d/makehuman/skins/young_caucasian_male/young_caucasian_male.mhmat | 1517 B | ассет графики/3D/интерфейса: young caucasian male |
 | №0089 app/assets/3d/makehuman/skins/young_caucasian_male/young_lightskinned_male_diffuse.png | 3693828 B | ассет графики/3D/интерфейса: young lightskinned male diffuse |
 | №0090 app/assets/3d/quaternius/models/Anvil_Log.bin | 130880 B | ассет графики/3D/интерфейса: Anvil Log |
-| №0091 app/assets/3d/quaternius/models/Anvil_Log.gltf | 5580 B | ассет графики/3D/интерфейса: Anvil Log |
+| №0091 app/assets/3d/quaternius/models/Anvil_Log.gltf | 5957 B | ассет графики/3D/интерфейса: Anvil Log |
 | №0092 app/assets/3d/quaternius/models/Anvil.bin | 24020 B | ассет графики/3D/интерфейса: Anvil |
-| №0093 app/assets/3d/quaternius/models/Anvil.gltf | 3189 B | ассет графики/3D/интерфейса: Anvil |
+| №0093 app/assets/3d/quaternius/models/Anvil.gltf | 3415 B | ассет графики/3D/интерфейса: Anvil |
 | №0094 app/assets/3d/quaternius/models/Axe_Bronze.bin | 31156 B | ассет графики/3D/интерфейса: Axe Bronze |
-| №0095 app/assets/3d/quaternius/models/Axe_Bronze.gltf | 2591 B | ассет графики/3D/интерфейса: Axe Bronze |
+| №0095 app/assets/3d/quaternius/models/Axe_Bronze.gltf | 2775 B | ассет графики/3D/интерфейса: Axe Bronze |
 | №0096 app/assets/3d/quaternius/models/Bag.bin | 27188 B | ассет графики/3D/интерфейса: Bag |
-| №0097 app/assets/3d/quaternius/models/Bag.gltf | 4318 B | ассет графики/3D/интерфейса: Bag |
+| №0097 app/assets/3d/quaternius/models/Bag.gltf | 4614 B | ассет графики/3D/интерфейса: Bag |
 | №0098 app/assets/3d/quaternius/models/Banner_1_Cloth.bin | 6636 B | ассет графики/3D/интерфейса: Banner 1 Cloth |
-| №0099 app/assets/3d/quaternius/models/Banner_1_Cloth.gltf | 4670 B | ассет графики/3D/интерфейса: Banner 1 Cloth |
+| №0099 app/assets/3d/quaternius/models/Banner_1_Cloth.gltf | 4992 B | ассет графики/3D/интерфейса: Banner 1 Cloth |
 | №0100 app/assets/3d/quaternius/models/Banner_1.bin | 20976 B | ассет графики/3D/интерфейса: Banner 1 |
-| №0101 app/assets/3d/quaternius/models/Banner_1.gltf | 6789 B | ассет графики/3D/интерфейса: Banner 1 |
+| №0101 app/assets/3d/quaternius/models/Banner_1.gltf | 7247 B | ассет графики/3D/интерфейса: Banner 1 |
 | №0102 app/assets/3d/quaternius/models/Banner_2_Cloth.bin | 4940 B | ассет графики/3D/интерфейса: Banner 2 Cloth |
-| №0103 app/assets/3d/quaternius/models/Banner_2_Cloth.gltf | 4671 B | ассет графики/3D/интерфейса: Banner 2 Cloth |
+| №0103 app/assets/3d/quaternius/models/Banner_2_Cloth.gltf | 4993 B | ассет графики/3D/интерфейса: Banner 2 Cloth |
 | №0104 app/assets/3d/quaternius/models/Banner_2.bin | 19280 B | ассет графики/3D/интерфейса: Banner 2 |
-| №0105 app/assets/3d/quaternius/models/Banner_2.gltf | 6788 B | ассет графики/3D/интерфейса: Banner 2 |
+| №0105 app/assets/3d/quaternius/models/Banner_2.gltf | 7246 B | ассет графики/3D/интерфейса: Banner 2 |
 | №0106 app/assets/3d/quaternius/models/Barrel_Apples.bin | 104600 B | ассет графики/3D/интерфейса: Barrel Apples |
-| №0107 app/assets/3d/quaternius/models/Barrel_Apples.gltf | 6241 B | ассет графики/3D/интерфейса: Barrel Apples |
+| №0107 app/assets/3d/quaternius/models/Barrel_Apples.gltf | 6660 B | ассет графики/3D/интерфейса: Barrel Apples |
 | №0108 app/assets/3d/quaternius/models/Barrel_Holder.bin | 161816 B | ассет графики/3D/интерфейса: Barrel Holder |
-| №0109 app/assets/3d/quaternius/models/Barrel_Holder.gltf | 4347 B | ассет графики/3D/интерфейса: Barrel Holder |
+| №0109 app/assets/3d/quaternius/models/Barrel_Holder.gltf | 4643 B | ассет графики/3D/интерфейса: Barrel Holder |
 | №0110 app/assets/3d/quaternius/models/Barrel.bin | 57144 B | ассет графики/3D/интерфейса: Barrel |
-| №0111 app/assets/3d/quaternius/models/Barrel.gltf | 4311 B | ассет графики/3D/интерфейса: Barrel |
+| №0111 app/assets/3d/quaternius/models/Barrel.gltf | 4607 B | ассет графики/3D/интерфейса: Barrel |
 | №0112 app/assets/3d/quaternius/models/Bed_Twin1.bin | 77360 B | ассет графики/3D/интерфейса: Bed Twin1 |
-| №0113 app/assets/3d/quaternius/models/Bed_Twin1.gltf | 6217 B | ассет графики/3D/интерфейса: Bed Twin1 |
+| №0113 app/assets/3d/quaternius/models/Bed_Twin1.gltf | 6636 B | ассет графики/3D/интерфейса: Bed Twin1 |
 | №0114 app/assets/3d/quaternius/models/Bed_Twin2.bin | 76624 B | ассет графики/3D/интерфейса: Bed Twin2 |
-| №0115 app/assets/3d/quaternius/models/Bed_Twin2.gltf | 6217 B | ассет графики/3D/интерфейса: Bed Twin2 |
+| №0115 app/assets/3d/quaternius/models/Bed_Twin2.gltf | 6636 B | ассет графики/3D/интерфейса: Bed Twin2 |
 | №0116 app/assets/3d/quaternius/models/Bench.bin | 19304 B | ассет графики/3D/интерфейса: Bench |
-| №0117 app/assets/3d/quaternius/models/Bench.gltf | 4298 B | ассет графики/3D/интерфейса: Bench |
+| №0117 app/assets/3d/quaternius/models/Bench.gltf | 4594 B | ассет графики/3D/интерфейса: Bench |
 | №0118 app/assets/3d/quaternius/models/Book_5.bin | 5856 B | ассет графики/3D/интерфейса: Book 5 |
-| №0119 app/assets/3d/quaternius/models/Book_5.gltf | 2403 B | ассет графики/3D/интерфейса: Book 5 |
+| №0119 app/assets/3d/quaternius/models/Book_5.gltf | 2576 B | ассет графики/3D/интерфейса: Book 5 |
 | №0120 app/assets/3d/quaternius/models/Book_7.bin | 32664 B | ассет графики/3D/интерфейса: Book 7 |
-| №0121 app/assets/3d/quaternius/models/Book_7.gltf | 4290 B | ассет графики/3D/интерфейса: Book 7 |
+| №0121 app/assets/3d/quaternius/models/Book_7.gltf | 4586 B | ассет графики/3D/интерфейса: Book 7 |
 | №0122 app/assets/3d/quaternius/models/Book_Simplified_Single.bin | 3192 B | ассет графики/3D/интерфейса: Book Simplified Single |
-| №0123 app/assets/3d/quaternius/models/Book_Simplified_Single.gltf | 2428 B | ассет графики/3D/интерфейса: Book Simplified Single |
+| №0123 app/assets/3d/quaternius/models/Book_Simplified_Single.gltf | 2601 B | ассет графики/3D/интерфейса: Book Simplified Single |
 | №0124 app/assets/3d/quaternius/models/Book_Stack_1.bin | 12768 B | ассет графики/3D/интерфейса: Book Stack 1 |
-| №0125 app/assets/3d/quaternius/models/Book_Stack_1.gltf | 2418 B | ассет графики/3D/интерфейса: Book Stack 1 |
+| №0125 app/assets/3d/quaternius/models/Book_Stack_1.gltf | 2591 B | ассет графики/3D/интерфейса: Book Stack 1 |
 | №0126 app/assets/3d/quaternius/models/Book_Stack_2.bin | 23956 B | ассет графики/3D/интерфейса: Book Stack 2 |
-| №0127 app/assets/3d/quaternius/models/Book_Stack_2.gltf | 4309 B | ассет графики/3D/интерфейса: Book Stack 2 |
+| №0127 app/assets/3d/quaternius/models/Book_Stack_2.gltf | 4605 B | ассет графики/3D/интерфейса: Book Stack 2 |
 | №0128 app/assets/3d/quaternius/models/Bookcase_2.bin | 92968 B | ассет графики/3D/интерфейса: Bookcase 2 |
-| №0129 app/assets/3d/quaternius/models/Bookcase_2.gltf | 4329 B | ассет графики/3D/интерфейса: Bookcase 2 |
+| №0129 app/assets/3d/quaternius/models/Bookcase_2.gltf | 4625 B | ассет графики/3D/интерфейса: Bookcase 2 |
 | №0130 app/assets/3d/quaternius/models/BookGroup_Medium_1.bin | 25536 B | ассет графики/3D/интерфейса: BookGroup Medium 1 |
-| №0131 app/assets/3d/quaternius/models/BookGroup_Medium_1.gltf | 2429 B | ассет графики/3D/интерфейса: BookGroup Medium 1 |
+| №0131 app/assets/3d/quaternius/models/BookGroup_Medium_1.gltf | 2602 B | ассет графики/3D/интерфейса: BookGroup Medium 1 |
 | №0132 app/assets/3d/quaternius/models/BookGroup_Medium_2.bin | 28728 B | ассет графики/3D/интерфейса: BookGroup Medium 2 |
-| №0133 app/assets/3d/quaternius/models/BookGroup_Medium_2.gltf | 2431 B | ассет графики/3D/интерфейса: BookGroup Medium 2 |
+| №0133 app/assets/3d/quaternius/models/BookGroup_Medium_2.gltf | 2604 B | ассет графики/3D/интерфейса: BookGroup Medium 2 |
 | №0134 app/assets/3d/quaternius/models/BookGroup_Medium_3.bin | 28728 B | ассет графики/3D/интерфейса: BookGroup Medium 3 |
-| №0135 app/assets/3d/quaternius/models/BookGroup_Medium_3.gltf | 2432 B | ассет графики/3D/интерфейса: BookGroup Medium 3 |
+| №0135 app/assets/3d/quaternius/models/BookGroup_Medium_3.gltf | 2605 B | ассет графики/3D/интерфейса: BookGroup Medium 3 |
 | №0136 app/assets/3d/quaternius/models/BookGroup_Small_1.bin | 6384 B | ассет графики/3D/интерфейса: BookGroup Small 1 |
-| №0137 app/assets/3d/quaternius/models/BookGroup_Small_1.gltf | 2423 B | ассет графики/3D/интерфейса: BookGroup Small 1 |
+| №0137 app/assets/3d/quaternius/models/BookGroup_Small_1.gltf | 2596 B | ассет графики/3D/интерфейса: BookGroup Small 1 |
 | №0138 app/assets/3d/quaternius/models/BookGroup_Small_2.bin | 6384 B | ассет графики/3D/интерфейса: BookGroup Small 2 |
-| №0139 app/assets/3d/quaternius/models/BookGroup_Small_2.gltf | 2426 B | ассет графики/3D/интерфейса: BookGroup Small 2 |
+| №0139 app/assets/3d/quaternius/models/BookGroup_Small_2.gltf | 2599 B | ассет графики/3D/интерфейса: BookGroup Small 2 |
 | №0140 app/assets/3d/quaternius/models/BookGroup_Small_3.bin | 7980 B | ассет графики/3D/интерфейса: BookGroup Small 3 |
-| №0141 app/assets/3d/quaternius/models/BookGroup_Small_3.gltf | 2424 B | ассет графики/3D/интерфейса: BookGroup Small 3 |
+| №0141 app/assets/3d/quaternius/models/BookGroup_Small_3.gltf | 2597 B | ассет графики/3D/интерфейса: BookGroup Small 3 |
 | №0142 app/assets/3d/quaternius/models/BookStand.bin | 62020 B | ассет графики/3D/интерфейса: BookStand |
-| №0143 app/assets/3d/quaternius/models/BookStand.gltf | 2223 B | ассет графики/3D/интерфейса: BookStand |
+| №0143 app/assets/3d/quaternius/models/BookStand.gltf | 2382 B | ассет графики/3D/интерфейса: BookStand |
 | №0144 app/assets/3d/quaternius/models/Bottle_1.bin | 13952 B | ассет графики/3D/интерфейса: Bottle 1 |
-| №0145 app/assets/3d/quaternius/models/Bottle_1.gltf | 2413 B | ассет графики/3D/интерфейса: Bottle 1 |
+| №0145 app/assets/3d/quaternius/models/Bottle_1.gltf | 2586 B | ассет графики/3D/интерфейса: Bottle 1 |
 | №0146 app/assets/3d/quaternius/models/Bucket_Metal.bin | 18824 B | ассет графики/3D/интерфейса: Bucket Metal |
-| №0147 app/assets/3d/quaternius/models/Bucket_Metal.gltf | 2206 B | ассет графики/3D/интерфейса: Bucket Metal |
+| №0147 app/assets/3d/quaternius/models/Bucket_Metal.gltf | 2365 B | ассет графики/3D/интерфейса: Bucket Metal |
 | №0148 app/assets/3d/quaternius/models/Bucket_Wooden_1.bin | 32544 B | ассет графики/3D/интерфейса: Bucket Wooden 1 |
-| №0149 app/assets/3d/quaternius/models/Bucket_Wooden_1.gltf | 3911 B | ассет графики/3D/интерфейса: Bucket Wooden 1 |
+| №0149 app/assets/3d/quaternius/models/Bucket_Wooden_1.gltf | 4179 B | ассет графики/3D/интерфейса: Bucket Wooden 1 |
 | №0150 app/assets/3d/quaternius/models/Cabinet.bin | 114768 B | ассет графики/3D/интерфейса: Cabinet |
-| №0151 app/assets/3d/quaternius/models/Cabinet.gltf | 4324 B | ассет графики/3D/интерфейса: Cabinet |
+| №0151 app/assets/3d/quaternius/models/Cabinet.gltf | 4620 B | ассет графики/3D/интерфейса: Cabinet |
 | №0152 app/assets/3d/quaternius/models/Cage_Small.bin | 171848 B | ассет графики/3D/интерфейса: Cage Small |
-| №0153 app/assets/3d/quaternius/models/Cage_Small.gltf | 2207 B | ассет графики/3D/интерфейса: Cage Small |
+| №0153 app/assets/3d/quaternius/models/Cage_Small.gltf | 2366 B | ассет графики/3D/интерфейса: Cage Small |
 | №0154 app/assets/3d/quaternius/models/Candle_1.bin | 6200 B | ассет графики/3D/интерфейса: Candle 1 |
-| №0155 app/assets/3d/quaternius/models/Candle_1.gltf | 2191 B | ассет графики/3D/интерфейса: Candle 1 |
+| №0155 app/assets/3d/quaternius/models/Candle_1.gltf | 2350 B | ассет графики/3D/интерфейса: Candle 1 |
 | №0156 app/assets/3d/quaternius/models/Candle_2.bin | 6124 B | ассет графики/3D/интерфейса: Candle 2 |
-| №0157 app/assets/3d/quaternius/models/Candle_2.gltf | 2191 B | ассет графики/3D/интерфейса: Candle 2 |
+| №0157 app/assets/3d/quaternius/models/Candle_2.gltf | 2350 B | ассет графики/3D/интерфейса: Candle 2 |
 | №0158 app/assets/3d/quaternius/models/CandleStick_Stand.bin | 226228 B | ассет графики/3D/интерфейса: CandleStick Stand |
-| №0159 app/assets/3d/quaternius/models/CandleStick_Stand.gltf | 4347 B | ассет графики/3D/интерфейса: CandleStick Stand |
+| №0159 app/assets/3d/quaternius/models/CandleStick_Stand.gltf | 4643 B | ассет графики/3D/интерфейса: CandleStick Stand |
 | №0160 app/assets/3d/quaternius/models/CandleStick_Triple.bin | 74368 B | ассет графики/3D/интерфейса: CandleStick Triple |
-| №0161 app/assets/3d/quaternius/models/CandleStick_Triple.gltf | 3900 B | ассет графики/3D/интерфейса: CandleStick Triple |
+| №0161 app/assets/3d/quaternius/models/CandleStick_Triple.gltf | 4168 B | ассет графики/3D/интерфейса: CandleStick Triple |
 | №0162 app/assets/3d/quaternius/models/CandleStick.bin | 21436 B | ассет графики/3D/интерфейса: CandleStick |
-| №0163 app/assets/3d/quaternius/models/CandleStick.gltf | 2199 B | ассет графики/3D/интерфейса: CandleStick |
+| №0163 app/assets/3d/quaternius/models/CandleStick.gltf | 2358 B | ассет графики/3D/интерфейса: CandleStick |
 | №0164 app/assets/3d/quaternius/models/Carrot.bin | 22244 B | ассет графики/3D/интерфейса: Carrot |
-| №0165 app/assets/3d/quaternius/models/Carrot.gltf | 2411 B | ассет графики/3D/интерфейса: Carrot |
+| №0165 app/assets/3d/quaternius/models/Carrot.gltf | 2584 B | ассет графики/3D/интерфейса: Carrot |
 | №0166 app/assets/3d/quaternius/models/Cauldron.bin | 62712 B | ассет графики/3D/интерфейса: Cauldron |
-| №0167 app/assets/3d/quaternius/models/Cauldron.gltf | 2195 B | ассет графики/3D/интерфейса: Cauldron |
+| №0167 app/assets/3d/quaternius/models/Cauldron.gltf | 2354 B | ассет графики/3D/интерфейса: Cauldron |
 | №0168 app/assets/3d/quaternius/models/Chain_Coil.bin | 193664 B | ассет графики/3D/интерфейса: Chain Coil |
-| №0169 app/assets/3d/quaternius/models/Chain_Coil.gltf | 2424 B | ассет графики/3D/интерфейса: Chain Coil |
+| №0169 app/assets/3d/quaternius/models/Chain_Coil.gltf | 2597 B | ассет графики/3D/интерфейса: Chain Coil |
 | №0170 app/assets/3d/quaternius/models/Chair_1.bin | 28096 B | ассет графики/3D/интерфейса: Chair 1 |
-| №0171 app/assets/3d/quaternius/models/Chair_1.gltf | 4312 B | ассет графики/3D/интерфейса: Chair 1 |
+| №0171 app/assets/3d/quaternius/models/Chair_1.gltf | 4608 B | ассет графики/3D/интерфейса: Chair 1 |
 | №0172 app/assets/3d/quaternius/models/Chalice.bin | 15644 B | ассет графики/3D/интерфейса: Chalice |
-| №0173 app/assets/3d/quaternius/models/Chalice.gltf | 2197 B | ассет графики/3D/интерфейса: Chalice |
+| №0173 app/assets/3d/quaternius/models/Chalice.gltf | 2356 B | ассет графики/3D/интерфейса: Chalice |
 | №0174 app/assets/3d/quaternius/models/Chandelier.bin | 266680 B | ассет графики/3D/интерфейса: Chandelier |
-| №0175 app/assets/3d/quaternius/models/Chandelier.gltf | 6259 B | ассет графики/3D/интерфейса: Chandelier |
+| №0175 app/assets/3d/quaternius/models/Chandelier.gltf | 6678 B | ассет графики/3D/интерфейса: Chandelier |
 | №0176 app/assets/3d/quaternius/models/Chest_Wood.bin | 184356 B | ассет графики/3D/интерфейса: Chest Wood |
-| №0177 app/assets/3d/quaternius/models/Chest_Wood.gltf | 21402 B | ассет графики/3D/интерфейса: Chest Wood |
+| №0177 app/assets/3d/quaternius/models/Chest_Wood.gltf | 22924 B | ассет графики/3D/интерфейса: Chest Wood |
 | №0178 app/assets/3d/quaternius/models/Coin_Pile_2.bin | 52612 B | ассет графики/3D/интерфейса: Coin Pile 2 |
-| №0179 app/assets/3d/quaternius/models/Coin_Pile_2.gltf | 2429 B | ассет графики/3D/интерфейса: Coin Pile 2 |
+| №0179 app/assets/3d/quaternius/models/Coin_Pile_2.gltf | 2602 B | ассет графики/3D/интерфейса: Coin Pile 2 |
 | №0180 app/assets/3d/quaternius/models/Coin_Pile.bin | 47520 B | ассет графики/3D/интерфейса: Coin Pile |
-| №0181 app/assets/3d/quaternius/models/Coin_Pile.gltf | 2424 B | ассет графики/3D/интерфейса: Coin Pile |
+| №0181 app/assets/3d/quaternius/models/Coin_Pile.gltf | 2597 B | ассет графики/3D/интерфейса: Coin Pile |
 | №0182 app/assets/3d/quaternius/models/Coin.bin | 14464 B | ассет графики/3D/интерфейса: Coin |
-| №0183 app/assets/3d/quaternius/models/Coin.gltf | 2408 B | ассет графики/3D/интерфейса: Coin |
+| №0183 app/assets/3d/quaternius/models/Coin.gltf | 2581 B | ассет графики/3D/интерфейса: Coin |
 | №0184 app/assets/3d/quaternius/models/Crate_Metal.bin | 126828 B | ассет графики/3D/интерфейса: Crate Metal |
-| №0185 app/assets/3d/quaternius/models/Crate_Metal.gltf | 4335 B | ассет графики/3D/интерфейса: Crate Metal |
+| №0185 app/assets/3d/quaternius/models/Crate_Metal.gltf | 4631 B | ассет графики/3D/интерфейса: Crate Metal |
 | №0186 app/assets/3d/quaternius/models/Crate_Wooden.bin | 66496 B | ассет графики/3D/интерфейса: Crate Wooden |
-| №0187 app/assets/3d/quaternius/models/Crate_Wooden.gltf | 4412 B | ассет графики/3D/интерфейса: Crate Wooden |
+| №0187 app/assets/3d/quaternius/models/Crate_Wooden.gltf | 4713 B | ассет графики/3D/интерфейса: Crate Wooden |
 | №0188 app/assets/3d/quaternius/models/Dummy.bin | 80988 B | ассет графики/3D/интерфейса: Dummy |
-| №0189 app/assets/3d/quaternius/models/Dummy.gltf | 5570 B | ассет графики/3D/интерфейса: Dummy |
+| №0189 app/assets/3d/quaternius/models/Dummy.gltf | 5947 B | ассет графики/3D/интерфейса: Dummy |
 | №0190 app/assets/3d/quaternius/models/FarmCrate_Apple.bin | 134488 B | ассет графики/3D/интерфейса: FarmCrate Apple |
-| №0191 app/assets/3d/quaternius/models/FarmCrate_Apple.gltf | 6263 B | ассет графики/3D/интерфейса: FarmCrate Apple |
+| №0191 app/assets/3d/quaternius/models/FarmCrate_Apple.gltf | 6682 B | ассет графики/3D/интерфейса: FarmCrate Apple |
 | №0192 app/assets/3d/quaternius/models/FarmCrate_Carrot.bin | 204292 B | ассет графики/3D/интерфейса: FarmCrate Carrot |
-| №0193 app/assets/3d/quaternius/models/FarmCrate_Carrot.gltf | 6273 B | ассет графики/3D/интерфейса: FarmCrate Carrot |
+| №0193 app/assets/3d/quaternius/models/FarmCrate_Carrot.gltf | 6692 B | ассет графики/3D/интерфейса: FarmCrate Carrot |
 | №0194 app/assets/3d/quaternius/models/FarmCrate_Empty.bin | 54704 B | ассет графики/3D/интерфейса: FarmCrate Empty |
-| №0195 app/assets/3d/quaternius/models/FarmCrate_Empty.gltf | 3915 B | ассет графики/3D/интерфейса: FarmCrate Empty |
+| №0195 app/assets/3d/quaternius/models/FarmCrate_Empty.gltf | 4183 B | ассет графики/3D/интерфейса: FarmCrate Empty |
 | №0196 app/assets/3d/quaternius/models/Key_Gold.bin | 58636 B | ассет графики/3D/интерфейса: Key Gold |
-| №0197 app/assets/3d/quaternius/models/Key_Gold.gltf | 2424 B | ассет графики/3D/интерфейса: Key Gold |
+| №0197 app/assets/3d/quaternius/models/Key_Gold.gltf | 2597 B | ассет графики/3D/интерфейса: Key Gold |
 | №0198 app/assets/3d/quaternius/models/Key_Metal.bin | 19340 B | ассет графики/3D/интерфейса: Key Metal |
-| №0199 app/assets/3d/quaternius/models/Key_Metal.gltf | 2197 B | ассет графики/3D/интерфейса: Key Metal |
+| №0199 app/assets/3d/quaternius/models/Key_Metal.gltf | 2356 B | ассет графики/3D/интерфейса: Key Metal |
 | №0200 app/assets/3d/quaternius/models/Lantern_Wall.bin | 120036 B | ассет графики/3D/интерфейса: Lantern Wall |
-| №0201 app/assets/3d/quaternius/models/Lantern_Wall.gltf | 2203 B | ассет графики/3D/интерфейса: Lantern Wall |
+| №0201 app/assets/3d/quaternius/models/Lantern_Wall.gltf | 2362 B | ассет графики/3D/интерфейса: Lantern Wall |
 | №0202 app/assets/3d/quaternius/models/Mug.bin | 12488 B | ассет графики/3D/интерфейса: Mug |
-| №0203 app/assets/3d/quaternius/models/Mug.gltf | 3881 B | ассет графики/3D/интерфейса: Mug |
+| №0203 app/assets/3d/quaternius/models/Mug.gltf | 4149 B | ассет графики/3D/интерфейса: Mug |
 | №0204 app/assets/3d/quaternius/models/Nightstand_Shelf.bin | 21412 B | ассет графики/3D/интерфейса: Nightstand Shelf |
-| №0205 app/assets/3d/quaternius/models/Nightstand_Shelf.gltf | 2447 B | ассет графики/3D/интерфейса: Nightstand Shelf |
+| №0205 app/assets/3d/quaternius/models/Nightstand_Shelf.gltf | 2620 B | ассет графики/3D/интерфейса: Nightstand Shelf |
 | №0206 app/assets/3d/quaternius/models/Peg_Rack.bin | 26672 B | ассет графики/3D/интерфейса: Peg Rack |
-| №0207 app/assets/3d/quaternius/models/Peg_Rack.gltf | 3879 B | ассет графики/3D/интерфейса: Peg Rack |
+| №0207 app/assets/3d/quaternius/models/Peg_Rack.gltf | 4147 B | ассет графики/3D/интерфейса: Peg Rack |
 | №0208 app/assets/3d/quaternius/models/Pickaxe_Bronze.bin | 30736 B | ассет графики/3D/интерфейса: Pickaxe Bronze |
-| №0209 app/assets/3d/quaternius/models/Pickaxe_Bronze.gltf | 2425 B | ассет графики/3D/интерфейса: Pickaxe Bronze |
+| №0209 app/assets/3d/quaternius/models/Pickaxe_Bronze.gltf | 2598 B | ассет графики/3D/интерфейса: Pickaxe Bronze |
 | №0210 app/assets/3d/quaternius/models/Pot_1_Lid.bin | 46120 B | ассет графики/3D/интерфейса: Pot 1 Lid |
-| №0211 app/assets/3d/quaternius/models/Pot_1_Lid.gltf | 2196 B | ассет графики/3D/интерфейса: Pot 1 Lid |
+| №0211 app/assets/3d/quaternius/models/Pot_1_Lid.gltf | 2355 B | ассет графики/3D/интерфейса: Pot 1 Lid |
 | №0212 app/assets/3d/quaternius/models/Pot_1.bin | 37160 B | ассет графики/3D/интерфейса: Pot 1 |
-| №0213 app/assets/3d/quaternius/models/Pot_1.gltf | 2185 B | ассет графики/3D/интерфейса: Pot 1 |
+| №0213 app/assets/3d/quaternius/models/Pot_1.gltf | 2344 B | ассет графики/3D/интерфейса: Pot 1 |
 | №0214 app/assets/3d/quaternius/models/Potion_1.bin | 18200 B | ассет графики/3D/интерфейса: Potion 1 |
-| №0215 app/assets/3d/quaternius/models/Potion_1.gltf | 2418 B | ассет графики/3D/интерфейса: Potion 1 |
+| №0215 app/assets/3d/quaternius/models/Potion_1.gltf | 2591 B | ассет графики/3D/интерфейса: Potion 1 |
 | №0216 app/assets/3d/quaternius/models/Potion_2.bin | 19672 B | ассет графики/3D/интерфейса: Potion 2 |
-| №0217 app/assets/3d/quaternius/models/Potion_2.gltf | 2418 B | ассет графики/3D/интерфейса: Potion 2 |
+| №0217 app/assets/3d/quaternius/models/Potion_2.gltf | 2591 B | ассет графики/3D/интерфейса: Potion 2 |
 | №0218 app/assets/3d/quaternius/models/Potion_4.bin | 22536 B | ассет графики/3D/интерфейса: Potion 4 |
-| №0219 app/assets/3d/quaternius/models/Potion_4.gltf | 2418 B | ассет графики/3D/интерфейса: Potion 4 |
+| №0219 app/assets/3d/quaternius/models/Potion_4.gltf | 2591 B | ассет графики/3D/интерфейса: Potion 4 |
 | №0220 app/assets/3d/quaternius/models/Pouch_Large.bin | 31580 B | ассет графики/3D/интерфейса: Pouch Large |
-| №0221 app/assets/3d/quaternius/models/Pouch_Large.gltf | 4306 B | ассет графики/3D/интерфейса: Pouch Large |
+| №0221 app/assets/3d/quaternius/models/Pouch_Large.gltf | 4602 B | ассет графики/3D/интерфейса: Pouch Large |
 | №0222 app/assets/3d/quaternius/models/Rope_1.bin | 41624 B | ассет графики/3D/интерфейса: Rope 1 |
-| №0223 app/assets/3d/quaternius/models/Rope_1.gltf | 2223 B | ассет графики/3D/интерфейса: Rope 1 |
+| №0223 app/assets/3d/quaternius/models/Rope_1.gltf | 2382 B | ассет графики/3D/интерфейса: Rope 1 |
 | №0224 app/assets/3d/quaternius/models/Rope_2.bin | 34904 B | ассет графики/3D/интерфейса: Rope 2 |
-| №0225 app/assets/3d/quaternius/models/Rope_2.gltf | 2223 B | ассет графики/3D/интерфейса: Rope 2 |
+| №0225 app/assets/3d/quaternius/models/Rope_2.gltf | 2382 B | ассет графики/3D/интерфейса: Rope 2 |
 | №0226 app/assets/3d/quaternius/models/Rope_3.bin | 41624 B | ассет графики/3D/интерфейса: Rope 3 |
-| №0227 app/assets/3d/quaternius/models/Rope_3.gltf | 2225 B | ассет графики/3D/интерфейса: Rope 3 |
+| №0227 app/assets/3d/quaternius/models/Rope_3.gltf | 2384 B | ассет графики/3D/интерфейса: Rope 3 |
 | №0228 app/assets/3d/quaternius/models/Scroll_1.bin | 20112 B | ассет графики/3D/интерфейса: Scroll 1 |
-| №0229 app/assets/3d/quaternius/models/Scroll_1.gltf | 3954 B | ассет графики/3D/интерфейса: Scroll 1 |
+| №0229 app/assets/3d/quaternius/models/Scroll_1.gltf | 4228 B | ассет графики/3D/интерфейса: Scroll 1 |
 | №0230 app/assets/3d/quaternius/models/Scroll_2.bin | 28392 B | ассет графики/3D/интерфейса: Scroll 2 |
-| №0231 app/assets/3d/quaternius/models/Scroll_2.gltf | 3968 B | ассет графики/3D/интерфейса: Scroll 2 |
+| №0231 app/assets/3d/quaternius/models/Scroll_2.gltf | 4242 B | ассет графики/3D/интерфейса: Scroll 2 |
 | №0232 app/assets/3d/quaternius/models/Shelf_Arch.bin | 64836 B | ассет графики/3D/интерфейса: Shelf Arch |
-| №0233 app/assets/3d/quaternius/models/Shelf_Arch.gltf | 4332 B | ассет графики/3D/интерфейса: Shelf Arch |
+| №0233 app/assets/3d/quaternius/models/Shelf_Arch.gltf | 4628 B | ассет графики/3D/интерфейса: Shelf Arch |
 | №0234 app/assets/3d/quaternius/models/Shelf_Simple.bin | 22016 B | ассет графики/3D/интерфейса: Shelf Simple |
-| №0235 app/assets/3d/quaternius/models/Shelf_Simple.gltf | 2224 B | ассет графики/3D/интерфейса: Shelf Simple |
+| №0235 app/assets/3d/quaternius/models/Shelf_Simple.gltf | 2383 B | ассет графики/3D/интерфейса: Shelf Simple |
 | №0236 app/assets/3d/quaternius/models/Shelf_Small_Bottles.bin | 229484 B | ассет графики/3D/интерфейса: Shelf Small Bottles |
-| №0237 app/assets/3d/quaternius/models/Shelf_Small_Bottles.gltf | 6266 B | ассет графики/3D/интерфейса: Shelf Small Bottles |
+| №0237 app/assets/3d/quaternius/models/Shelf_Small_Bottles.gltf | 6685 B | ассет графики/3D/интерфейса: Shelf Small Bottles |
 | №0238 app/assets/3d/quaternius/models/Shield_Wooden.bin | 64184 B | ассет графики/3D/интерфейса: Shield Wooden |
-| №0239 app/assets/3d/quaternius/models/Shield_Wooden.gltf | 6243 B | ассет графики/3D/интерфейса: Shield Wooden |
+| №0239 app/assets/3d/quaternius/models/Shield_Wooden.gltf | 6662 B | ассет графики/3D/интерфейса: Shield Wooden |
 | №0240 app/assets/3d/quaternius/models/SmallBottle.bin | 5700 B | ассет графики/3D/интерфейса: SmallBottle |
-| №0241 app/assets/3d/quaternius/models/SmallBottle.gltf | 2392 B | ассет графики/3D/интерфейса: SmallBottle |
+| №0241 app/assets/3d/quaternius/models/SmallBottle.gltf | 2565 B | ассет графики/3D/интерфейса: SmallBottle |
 | №0242 app/assets/3d/quaternius/models/SmallBottles_1.bin | 20556 B | ассет графики/3D/интерфейса: SmallBottles 1 |
-| №0243 app/assets/3d/quaternius/models/SmallBottles_1.gltf | 2423 B | ассет графики/3D/интерфейса: SmallBottles 1 |
+| №0243 app/assets/3d/quaternius/models/SmallBottles_1.gltf | 2596 B | ассет графики/3D/интерфейса: SmallBottles 1 |
 | №0244 app/assets/3d/quaternius/models/Stall_Cart_Empty.bin | 237264 B | ассет графики/3D/интерфейса: Stall Cart Empty |
-| №0245 app/assets/3d/quaternius/models/Stall_Cart_Empty.gltf | 6857 B | ассет графики/3D/интерфейса: Stall Cart Empty |
+| №0245 app/assets/3d/quaternius/models/Stall_Cart_Empty.gltf | 7315 B | ассет графики/3D/интерфейса: Stall Cart Empty |
 | №0246 app/assets/3d/quaternius/models/Stall_Empty.bin | 88176 B | ассет графики/3D/интерфейса: Stall Empty |
-| №0247 app/assets/3d/quaternius/models/Stall_Empty.gltf | 6804 B | ассет графики/3D/интерфейса: Stall Empty |
+| №0247 app/assets/3d/quaternius/models/Stall_Empty.gltf | 7262 B | ассет графики/3D/интерфейса: Stall Empty |
 | №0248 app/assets/3d/quaternius/models/Stool.bin | 11472 B | ассет графики/3D/интерфейса: Stool |
-| №0249 app/assets/3d/quaternius/models/Stool.gltf | 2423 B | ассет графики/3D/интерфейса: Stool |
+| №0249 app/assets/3d/quaternius/models/Stool.gltf | 2596 B | ассет графики/3D/интерфейса: Stool |
 | №0250 app/assets/3d/quaternius/models/Sword_Bronze.bin | 69920 B | ассет графики/3D/интерфейса: Sword Bronze |
-| №0251 app/assets/3d/quaternius/models/Sword_Bronze.gltf | 2436 B | ассет графики/3D/интерфейса: Sword Bronze |
+| №0251 app/assets/3d/quaternius/models/Sword_Bronze.gltf | 2609 B | ассет графики/3D/интерфейса: Sword Bronze |
 | №0252 app/assets/3d/quaternius/models/Table_Fork.bin | 4936 B | ассет графики/3D/интерфейса: Table Fork |
-| №0253 app/assets/3d/quaternius/models/Table_Fork.gltf | 2189 B | ассет графики/3D/интерфейса: Table Fork |
+| №0253 app/assets/3d/quaternius/models/Table_Fork.gltf | 2348 B | ассет графики/3D/интерфейса: Table Fork |
 | №0254 app/assets/3d/quaternius/models/Table_Knife.bin | 2180 B | ассет графики/3D/интерфейса: Table Knife |
-| №0255 app/assets/3d/quaternius/models/Table_Knife.gltf | 2186 B | ассет графики/3D/интерфейса: Table Knife |
+| №0255 app/assets/3d/quaternius/models/Table_Knife.gltf | 2345 B | ассет графики/3D/интерфейса: Table Knife |
 | №0256 app/assets/3d/quaternius/models/Table_Large.bin | 56396 B | ассет графики/3D/интерфейса: Table Large |
-| №0257 app/assets/3d/quaternius/models/Table_Large.gltf | 4316 B | ассет графики/3D/интерфейса: Table Large |
+| №0257 app/assets/3d/quaternius/models/Table_Large.gltf | 4612 B | ассет графики/3D/интерфейса: Table Large |
 | №0258 app/assets/3d/quaternius/models/Table_Plate.bin | 6792 B | ассет графики/3D/интерфейса: Table Plate |
-| №0259 app/assets/3d/quaternius/models/Table_Plate.gltf | 2199 B | ассет графики/3D/интерфейса: Table Plate |
+| №0259 app/assets/3d/quaternius/models/Table_Plate.gltf | 2358 B | ассет графики/3D/интерфейса: Table Plate |
 | №0260 app/assets/3d/quaternius/models/Table_Spoon.bin | 4856 B | ассет графики/3D/интерфейса: Table Spoon |
-| №0261 app/assets/3d/quaternius/models/Table_Spoon.gltf | 2191 B | ассет графики/3D/интерфейса: Table Spoon |
+| №0261 app/assets/3d/quaternius/models/Table_Spoon.gltf | 2350 B | ассет графики/3D/интерфейса: Table Spoon |
 | №0262 app/assets/3d/quaternius/models/Torch_Metal.bin | 39100 B | ассет графики/3D/интерфейса: Torch Metal |
-| №0263 app/assets/3d/quaternius/models/Torch_Metal.gltf | 2203 B | ассет графики/3D/интерфейса: Torch Metal |
+| №0263 app/assets/3d/quaternius/models/Torch_Metal.gltf | 2362 B | ассет графики/3D/интерфейса: Torch Metal |
 | №0264 app/assets/3d/quaternius/models/Vase_2.bin | 21188 B | ассет графики/3D/интерфейса: Vase 2 |
-| №0265 app/assets/3d/quaternius/models/Vase_2.gltf | 2407 B | ассет графики/3D/интерфейса: Vase 2 |
+| №0265 app/assets/3d/quaternius/models/Vase_2.gltf | 2580 B | ассет графики/3D/интерфейса: Vase 2 |
 | №0266 app/assets/3d/quaternius/models/Vase_4.bin | 22028 B | ассет графики/3D/интерфейса: Vase 4 |
-| №0267 app/assets/3d/quaternius/models/Vase_4.gltf | 2412 B | ассет графики/3D/интерфейса: Vase 4 |
+| №0267 app/assets/3d/quaternius/models/Vase_4.gltf | 2585 B | ассет графики/3D/интерфейса: Vase 4 |
 | №0268 app/assets/3d/quaternius/models/Vase_Rubble_Medium.bin | 85960 B | ассет графики/3D/интерфейса: Vase Rubble Medium |
-| №0269 app/assets/3d/quaternius/models/Vase_Rubble_Medium.gltf | 2453 B | ассет графики/3D/интерфейса: Vase Rubble Medium |
+| №0269 app/assets/3d/quaternius/models/Vase_Rubble_Medium.gltf | 2626 B | ассет графики/3D/интерфейса: Vase Rubble Medium |
 | №0270 app/assets/3d/quaternius/models/WeaponStand.bin | 76312 B | ассет графики/3D/интерфейса: WeaponStand |
-| №0271 app/assets/3d/quaternius/models/WeaponStand.gltf | 3903 B | ассет графики/3D/интерфейса: WeaponStand |
+| №0271 app/assets/3d/quaternius/models/WeaponStand.gltf | 4171 B | ассет графики/3D/интерфейса: WeaponStand |
 | №0272 app/assets/3d/quaternius/models/Whetstone.bin | 59280 B | ассет графики/3D/интерфейса: Whetstone |
-| №0273 app/assets/3d/quaternius/models/Whetstone.gltf | 6212 B | ассет графики/3D/интерфейса: Whetstone |
+| №0273 app/assets/3d/quaternius/models/Whetstone.gltf | 6631 B | ассет графики/3D/интерфейса: Whetstone |
 | №0274 app/assets/3d/quaternius/models/Workbench_Drawers.bin | 16824 B | ассет графики/3D/интерфейса: Workbench Drawers |
-| №0275 app/assets/3d/quaternius/models/Workbench_Drawers.gltf | 4313 B | ассет графики/3D/интерфейса: Workbench Drawers |
+| №0275 app/assets/3d/quaternius/models/Workbench_Drawers.gltf | 4609 B | ассет графики/3D/интерфейса: Workbench Drawers |
 | №0276 app/assets/3d/quaternius/models/Workbench.bin | 63408 B | ассет графики/3D/интерфейса: Workbench |
-| №0277 app/assets/3d/quaternius/models/Workbench.gltf | 4318 B | ассет графики/3D/интерфейса: Workbench |
+| №0277 app/assets/3d/quaternius/models/Workbench.gltf | 4614 B | ассет графики/3D/интерфейса: Workbench |
 | №0278 app/assets/3d/quaternius/textures/T_Page_Noise.png | 7486734 B | ассет графики/3D/интерфейса: T Page Noise |
 | №0279 app/assets/3d/quaternius/textures/T_Trim_Cloth_BaseColor.png | 1936754 B | ассет графики/3D/интерфейса: T Trim Cloth BaseColor |
 | №0280 app/assets/3d/quaternius/textures/T_Trim_Cloth_Normal.png | 3920858 B | ассет графики/3D/интерфейса: T Trim Cloth Normal |
@@ -636,261 +636,261 @@
 | №0615 app/assets/ui/update_scene_forest_green.svg | 1181 B | ассет графики/3D/интерфейса: update scene forest green |
 | №0616 app/assets/ui/update_scene_smoke.svg | 417 B | ассет графики/3D/интерфейса: update scene smoke |
 | №0617 app/assets/ui/vine_bone_frame_strip.svg | 943 B | ассет графики/3D/интерфейса: vine bone frame strip |
-| №0618 app/Backgrounds.js | 63130 B | логический модуль: Backgrounds |
-| №0619 app/battle_action_ui.js | 18386 B | логический модуль: battle action ui |
-| №0620 app/battle_board.js | 37591 B | логический модуль: battle board |
-| №0621 app/bestiary_2_0_v56.js | 55429 B | логический модуль: bestiary 2 0 v56 |
-| №0622 app/bestiary_catalog_v56_1.js | 16222 B | логический модуль: bestiary catalog v56 1 |
-| №0623 app/bestiary_catalog_v56_10.js | 10944 B | логический модуль: bestiary catalog v56 10 |
-| №0624 app/bestiary_catalog_v56_11.js | 13164 B | логический модуль: bestiary catalog v56 11 |
-| №0625 app/bestiary_catalog_v56_12.js | 10118 B | логический модуль: bestiary catalog v56 12 |
-| №0626 app/bestiary_catalog_v56_13.js | 12586 B | логический модуль: bestiary catalog v56 13 |
-| №0627 app/bestiary_catalog_v56_2.js | 13525 B | логический модуль: bestiary catalog v56 2 |
-| №0628 app/bestiary_catalog_v56_3.js | 14383 B | логический модуль: bestiary catalog v56 3 |
-| №0629 app/bestiary_catalog_v56_4.js | 11396 B | логический модуль: bestiary catalog v56 4 |
-| №0630 app/bestiary_catalog_v56_5.js | 8648 B | логический модуль: bestiary catalog v56 5 |
-| №0631 app/bestiary_catalog_v56_6.js | 9066 B | логический модуль: bestiary catalog v56 6 |
-| №0632 app/bestiary_catalog_v56_7.js | 9314 B | логический модуль: bestiary catalog v56 7 |
-| №0633 app/bestiary_catalog_v56_8.js | 9559 B | логический модуль: bestiary catalog v56 8 |
-| №0634 app/bestiary_catalog_v56_9.js | 9861 B | логический модуль: bestiary catalog v56 9 |
-| №0635 app/blood_hunter_engine.js | 82133 B | логика класса Кровавый охотник |
-| №0636 app/campaign_manager.js | 7195 B | логический модуль: campaign manager |
-| №0637 app/character_builder_v2.js | 109543 B | логический модуль: character builder v2 |
-| №0638 app/character_creation_pergament.css | 12669 B | оформление интерфейса: character creation pergament |
-| №0639 app/character_creation_pergament.js | 39686 B | логический модуль: character creation pergament |
-| №0640 app/character_creation.js | 46823 B | логический модуль: character creation |
-| №0641 app/character.js | 11133 B | лист персонажа; состояния и оружие |
-| №0642 app/class_features_engine.js | 135018 B | логический модуль: class features engine |
-| №0643 app/classesRegistry.js | 10857 B | логический модуль: classesRegistry |
-| №0644 app/cloud_account.css | 1213 B | оформление интерфейса: cloud account |
-| №0645 app/cloud_account.js | 8970 B | интерфейс авторизации и управления версиями |
-| №0646 app/cloud_config.js | 450 B | публичная конфигурация облака |
-| №0647 app/cloud_sync.js | 24647 B | синхронизация сохранений через Supabase |
-| №0648 app/combat_abilities.js | 12824 B | логический модуль: combat abilities |
-| №0649 app/combat_engine.js | 95078 B | движок боя и HP; адаптеры legacy значений |
-| №0650 app/companion_gameplay_v27.js | 17531 B | логический модуль: companion gameplay v27 |
-| №0651 app/companion_packs_v26.js | 4998 B | логический модуль: companion packs v26 |
-| №0652 app/companions.js | 8943 B | логический модуль: companions |
-| №0653 app/consumables.js | 15638 B | логический модуль: consumables |
-| №0654 app/content_catalog.js | 9721 B | логический модуль: content catalog |
-| №0655 app/content_framework.js | 9884 B | логический модуль: content framework |
-| №0656 app/content_manifest.js | 3755 B | логический модуль: content manifest |
-| №0657 app/crafting_character_influence_test_v46.js | 7123 B | логический модуль: crafting character influence test v46 |
-| №0658 app/crafting_disassembly_repair_v51.js | 13334 B | логический модуль: crafting disassembly repair v51 |
-| №0659 app/crafting_disassembly_v51.js | 11979 B | логический модуль: crafting disassembly v51 |
-| №0660 app/crafting_dlc_v50.js | 8373 B | логический модуль: crafting dlc v50 |
-| №0661 app/crafting_economy_v49.js | 17129 B | логический модуль: crafting economy v49 |
-| №0662 app/crafting_engine_v31.js | 20294 B | логический модуль: crafting engine v31 |
-| №0663 app/crafting_profession_progression_test_v47.js | 5609 B | логический модуль: crafting profession progression test v47 |
-| №0664 app/crafting_profession_progression_v47.js | 35781 B | логический модуль: crafting profession progression v47 |
-| №0665 app/crafting_professions_v33.js | 19300 B | логический модуль: crafting professions v33 |
-| №0666 app/crafting_professions_v38.js | 48800 B | логический модуль: crafting professions v38 |
-| №0667 app/crafting_resources_v34.js | 35661 B | логический модуль: crafting resources v34 |
-| №0668 app/custom_crafting_v32.js | 15989 B | логический модуль: custom crafting v32 |
-| №0669 app/data/classes/Accursed.js | 3369 B | логика классов: Accursed |
+| №0618 app/Backgrounds.js | 64081 B | логический модуль: Backgrounds |
+| №0619 app/battle_action_ui.js | 18555 B | логический модуль: battle action ui |
+| №0620 app/battle_board.js | 37763 B | логический модуль: battle board |
+| №0621 app/bestiary_2_0_v56.js | 55618 B | логический модуль: bestiary 2 0 v56 |
+| №0622 app/bestiary_catalog_v56_1.js | 16257 B | логический модуль: bestiary catalog v56 1 |
+| №0623 app/bestiary_catalog_v56_10.js | 11060 B | логический модуль: bestiary catalog v56 10 |
+| №0624 app/bestiary_catalog_v56_11.js | 13282 B | логический модуль: bestiary catalog v56 11 |
+| №0625 app/bestiary_catalog_v56_12.js | 10189 B | логический модуль: bestiary catalog v56 12 |
+| №0626 app/bestiary_catalog_v56_13.js | 12672 B | логический модуль: bestiary catalog v56 13 |
+| №0627 app/bestiary_catalog_v56_2.js | 13579 B | логический модуль: bestiary catalog v56 2 |
+| №0628 app/bestiary_catalog_v56_3.js | 14426 B | логический модуль: bestiary catalog v56 3 |
+| №0629 app/bestiary_catalog_v56_4.js | 11437 B | логический модуль: bestiary catalog v56 4 |
+| №0630 app/bestiary_catalog_v56_5.js | 8746 B | логический модуль: bestiary catalog v56 5 |
+| №0631 app/bestiary_catalog_v56_6.js | 9217 B | логический модуль: bestiary catalog v56 6 |
+| №0632 app/bestiary_catalog_v56_7.js | 9477 B | логический модуль: bestiary catalog v56 7 |
+| №0633 app/bestiary_catalog_v56_8.js | 9710 B | логический модуль: bestiary catalog v56 8 |
+| №0634 app/bestiary_catalog_v56_9.js | 10014 B | логический модуль: bestiary catalog v56 9 |
+| №0635 app/blood_hunter_engine.js | 82559 B | логика класса Кровавый охотник |
+| №0636 app/campaign_manager.js | 7230 B | логический модуль: campaign manager |
+| №0637 app/character_builder_v2.js | 110748 B | логический модуль: character builder v2 |
+| №0638 app/character_creation_pergament.css | 12901 B | оформление интерфейса: character creation pergament |
+| №0639 app/character_creation_pergament.js | 40195 B | логический модуль: character creation pergament |
+| №0640 app/character_creation.js | 47703 B | логический модуль: character creation |
+| №0641 app/character.js | 11362 B | лист персонажа; состояния и оружие |
+| №0642 app/class_features_engine.js | 135942 B | логический модуль: class features engine |
+| №0643 app/classesRegistry.js | 11027 B | логический модуль: classesRegistry |
+| №0644 app/cloud_account.css | 1224 B | оформление интерфейса: cloud account |
+| №0645 app/cloud_account.js | 9060 B | интерфейс авторизации и управления версиями |
+| №0646 app/cloud_config.js | 458 B | публичная конфигурация облака |
+| №0647 app/cloud_sync.js | 24983 B | синхронизация сохранений через Supabase |
+| №0648 app/combat_abilities.js | 13046 B | логический модуль: combat abilities |
+| №0649 app/combat_engine.js | 95712 B | движок боя и HP; адаптеры legacy значений |
+| №0650 app/companion_gameplay_v27.js | 17747 B | логический модуль: companion gameplay v27 |
+| №0651 app/companion_packs_v26.js | 5045 B | логический модуль: companion packs v26 |
+| №0652 app/companions.js | 8968 B | логический модуль: companions |
+| №0653 app/consumables.js | 15937 B | логический модуль: consumables |
+| №0654 app/content_catalog.js | 9796 B | логический модуль: content catalog |
+| №0655 app/content_framework.js | 9998 B | логический модуль: content framework |
+| №0656 app/content_manifest.js | 3795 B | логический модуль: content manifest |
+| №0657 app/crafting_character_influence_test_v46.js | 7221 B | логический модуль: crafting character influence test v46 |
+| №0658 app/crafting_disassembly_repair_v51.js | 13557 B | логический модуль: crafting disassembly repair v51 |
+| №0659 app/crafting_disassembly_v51.js | 12112 B | логический модуль: crafting disassembly v51 |
+| №0660 app/crafting_dlc_v50.js | 8490 B | логический модуль: crafting dlc v50 |
+| №0661 app/crafting_economy_v49.js | 17231 B | логический модуль: crafting economy v49 |
+| №0662 app/crafting_engine_v31.js | 20387 B | логический модуль: crafting engine v31 |
+| №0663 app/crafting_profession_progression_test_v47.js | 5657 B | логический модуль: crafting profession progression test v47 |
+| №0664 app/crafting_profession_progression_v47.js | 36106 B | логический модуль: crafting profession progression v47 |
+| №0665 app/crafting_professions_v33.js | 19384 B | логический модуль: crafting professions v33 |
+| №0666 app/crafting_professions_v38.js | 49093 B | логический модуль: crafting professions v38 |
+| №0667 app/crafting_resources_v34.js | 35782 B | логический модуль: crafting resources v34 |
+| №0668 app/custom_crafting_v32.js | 16067 B | логический модуль: custom crafting v32 |
+| №0669 app/data/classes/Accursed.js | 3424 B | логика классов: Accursed |
 | №0670 app/data/classes/accursed.png | 2441667 B | логика классов: accursed |
-| №0671 app/data/classes/Alchemist.js | 5589 B | логика классов: Alchemist |
+| №0671 app/data/classes/Alchemist.js | 5640 B | логика классов: Alchemist |
 | №0672 app/data/classes/alchemist.png | 1945616 B | логика классов: alchemist |
-| №0673 app/data/classes/Artificer.js | 2124 B | логика классов: Artificer |
+| №0673 app/data/classes/Artificer.js | 2154 B | логика классов: Artificer |
 | №0674 app/data/classes/ARTIFICER.png | 891812 B | логика классов: ARTIFICER |
-| №0675 app/data/classes/Barbarian.js | 3822 B | логика классов: Barbarian |
+| №0675 app/data/classes/Barbarian.js | 3939 B | логика классов: Barbarian |
 | №0676 app/data/classes/BARBARIAN.png | 815028 B | логика классов: BARBARIAN |
-| №0677 app/data/classes/Bard.js | 2085 B | логика классов: Bard |
+| №0677 app/data/classes/Bard.js | 2116 B | логика классов: Bard |
 | №0678 app/data/classes/Bard.png | 769261 B | логика классов: Bard |
 | №0679 app/data/classes/beasthart.png | 2255040 B | логика классов: beasthart |
-| №0680 app/data/classes/Beastheart.js | 28992 B | логика классов: Beastheart |
+| №0680 app/data/classes/Beastheart.js | 29158 B | логика классов: Beastheart |
 | №0681 app/data/classes/blood hunter.png | 2210071 B | логика классов: blood hunter |
-| №0682 app/data/classes/BloodHunter.js | 5283 B | логика классов: BloodHunter |
-| №0683 app/data/classes/Cleric.js | 1987 B | логика классов: Cleric |
+| №0682 app/data/classes/BloodHunter.js | 5322 B | логика классов: BloodHunter |
+| №0683 app/data/classes/Cleric.js | 2018 B | логика классов: Cleric |
 | №0684 app/data/classes/CLERIC.png | 914579 B | логика классов: CLERIC |
-| №0685 app/data/classes/Druid.js | 1898 B | логика классов: Druid |
+| №0685 app/data/classes/Druid.js | 1929 B | логика классов: Druid |
 | №0686 app/data/classes/DRUID.png | 776880 B | логика классов: DRUID |
-| №0687 app/data/classes/extra_class_stubs.js | 4499 B | логика классов: extra class stubs |
-| №0688 app/data/classes/Fighter.js | 3771 B | логика классов: Fighter |
+| №0687 app/data/classes/extra_class_stubs.js | 4516 B | логика классов: extra class stubs |
+| №0688 app/data/classes/Fighter.js | 3890 B | логика классов: Fighter |
 | №0689 app/data/classes/FIGHTER.png | 762812 B | логика классов: FIGHTER |
 | №0690 app/data/classes/geist.png | 1776006 B | логика классов: geist |
-| №0691 app/data/classes/Ghost.js | 295 B | логика классов: Ghost |
-| №0692 app/data/classes/Illigger.js | 6058 B | логика классов: Illigger |
+| №0691 app/data/classes/Ghost.js | 302 B | логика классов: Ghost |
+| №0692 app/data/classes/Illigger.js | 6152 B | логика классов: Illigger |
 | №0693 app/data/classes/Illigger.png | 1716994 B | логика классов: Illigger |
-| №0694 app/data/classes/level_up.js | 62903 B | логика классов: level up |
-| №0695 app/data/classes/Martyr.js | 884 B | логика классов: Martyr |
+| №0694 app/data/classes/level_up.js | 64179 B | логика классов: level up |
+| №0695 app/data/classes/Martyr.js | 900 B | логика классов: Martyr |
 | №0696 app/data/classes/martyr.png | 2381724 B | логика классов: martyr |
-| №0697 app/data/classes/Monk.js | 2493 B | логика классов: Monk |
+| №0697 app/data/classes/Monk.js | 2524 B | логика классов: Monk |
 | №0698 app/data/classes/Monk.png | 1115382 B | логика классов: Monk |
-| №0699 app/data/classes/Necromancer.js | 1013 B | логика классов: Necromancer |
+| №0699 app/data/classes/Necromancer.js | 1039 B | логика классов: Necromancer |
 | №0700 app/data/classes/necromancer.png | 2007714 B | логика классов: necromancer |
-| №0701 app/data/classes/Occultist.js | 8507 B | логика классов: Occultist |
+| №0701 app/data/classes/Occultist.js | 8580 B | логика классов: Occultist |
 | №0702 app/data/classes/occultist.png | 1986332 B | логика классов: occultist |
-| №0703 app/data/classes/Paladin.js | 2017 B | логика классов: Paladin |
+| №0703 app/data/classes/Paladin.js | 2048 B | логика классов: Paladin |
 | №0704 app/data/classes/PALADIN.png | 873991 B | логика классов: PALADIN |
-| №0705 app/data/classes/Parasite.js | 545 B | логика классов: Parasite |
+| №0705 app/data/classes/Parasite.js | 560 B | логика классов: Parasite |
 | №0706 app/data/classes/parasite.png | 2144116 B | логика классов: parasite |
-| №0707 app/data/classes/progressionEngine.js | 20610 B | логика классов: progressionEngine |
-| №0708 app/data/classes/Psion.js | 9033 B | логика классов: Psion |
+| №0707 app/data/classes/progressionEngine.js | 20954 B | логика классов: progressionEngine |
+| №0708 app/data/classes/Psion.js | 9042 B | логика классов: Psion |
 | №0709 app/data/classes/psion.png | 1951350 B | логика классов: psion |
-| №0710 app/data/classes/Pugilist.js | 11453 B | логика классов: Pugilist |
+| №0710 app/data/classes/Pugilist.js | 11616 B | логика классов: Pugilist |
 | №0711 app/data/classes/pugilist.png | 2022336 B | логика классов: pugilist |
-| №0712 app/data/classes/Ranger.js | 1938 B | логика классов: Ranger |
+| №0712 app/data/classes/Ranger.js | 1969 B | логика классов: Ranger |
 | №0713 app/data/classes/RANGER.png | 643335 B | логика классов: RANGER |
-| №0714 app/data/classes/Rogue.js | 3244 B | логика классов: Rogue |
+| №0714 app/data/classes/Rogue.js | 3342 B | логика классов: Rogue |
 | №0715 app/data/classes/Rogue.png | 579962 B | логика классов: Rogue |
 | №0716 app/data/classes/rune keeper.png | 2582772 B | логика классов: rune keeper |
-| №0717 app/data/classes/RuneKeeper.js | 2366 B | логика классов: RuneKeeper |
-| №0718 app/data/classes/Savant.js | 930 B | логика классов: Savant |
+| №0717 app/data/classes/RuneKeeper.js | 2399 B | логика классов: RuneKeeper |
+| №0718 app/data/classes/Savant.js | 952 B | логика классов: Savant |
 | №0719 app/data/classes/savant.png | 1991433 B | логика классов: savant |
-| №0720 app/data/classes/Shifter.js | 734 B | логика классов: Shifter |
+| №0720 app/data/classes/Shifter.js | 746 B | логика классов: Shifter |
 | №0721 app/data/classes/shifter.png | 2248497 B | логика классов: shifter |
-| №0722 app/data/classes/Sorcerer.js | 2098 B | логика классов: Sorcerer |
+| №0722 app/data/classes/Sorcerer.js | 2129 B | логика классов: Sorcerer |
 | №0723 app/data/classes/SORCERER.png | 939797 B | логика классов: SORCERER |
-| №0724 app/data/classes/Swarm.js | 198 B | логика классов: Swarm |
+| №0724 app/data/classes/Swarm.js | 202 B | логика классов: Swarm |
 | №0725 app/data/classes/the swam.png | 1759593 B | логика классов: the swam |
-| №0726 app/data/classes/Vessel.js | 751 B | логика классов: Vessel |
+| №0726 app/data/classes/Vessel.js | 757 B | логика классов: Vessel |
 | №0727 app/data/classes/vessel.png | 1943431 B | логика классов: vessel |
-| №0728 app/data/classes/WalterParasite.js | 303 B | логика классов: WalterParasite |
-| №0729 app/data/classes/Warden.js | 6678 B | логика классов: Warden |
+| №0728 app/data/classes/WalterParasite.js | 309 B | логика классов: WalterParasite |
+| №0729 app/data/classes/Warden.js | 6787 B | логика классов: Warden |
 | №0730 app/data/classes/warden.png | 2093561 B | логика классов: warden |
-| №0731 app/data/classes/Warlock.js | 2013 B | логика классов: Warlock |
+| №0731 app/data/classes/Warlock.js | 2044 B | логика классов: Warlock |
 | №0732 app/data/classes/WARLOCK.png | 981038 B | логика классов: WARLOCK |
-| №0733 app/data/classes/Warlord.js | 9504 B | логика классов: Warlord |
+| №0733 app/data/classes/Warlord.js | 9600 B | логика классов: Warlord |
 | №0734 app/data/classes/warlord.png | 2460016 B | логика классов: warlord |
-| №0735 app/data/classes/Witch.js | 8032 B | логика классов: Witch |
+| №0735 app/data/classes/Witch.js | 8033 B | логика классов: Witch |
 | №0736 app/data/classes/witch.png | 1931074 B | логика классов: witch |
-| №0737 app/data/classes/Wizard.js | 1627 B | логика классов: Wizard |
+| №0737 app/data/classes/Wizard.js | 1658 B | логика классов: Wizard |
 | №0738 app/data/classes/Wizard.png | 822251 B | логика классов: Wizard |
-| №0739 app/data/feats/Feat_widget.js | 25654 B | черты и таланты: Feat widget |
-| №0740 app/data/feats/Feats_phb.js | 19377 B | черты и таланты: Feats phb |
-| №0741 app/data/feats/Feats_settings.js | 4392 B | черты и таланты: Feats settings |
-| №0742 app/data/feats/Feats_tcoe.js | 5779 B | черты и таланты: Feats tcoe |
-| №0743 app/data/feats/Feats_ua_homebrew.js | 11770 B | черты и таланты: Feats ua homebrew |
-| №0744 app/data/feats/Feats_xgte.js | 6729 B | черты и таланты: Feats xgte |
+| №0739 app/data/feats/Feat_widget.js | 26146 B | черты и таланты: Feat widget |
+| №0740 app/data/feats/Feats_phb.js | 19762 B | черты и таланты: Feats phb |
+| №0741 app/data/feats/Feats_settings.js | 4494 B | черты и таланты: Feats settings |
+| №0742 app/data/feats/Feats_tcoe.js | 5894 B | черты и таланты: Feats tcoe |
+| №0743 app/data/feats/Feats_ua_homebrew.js | 12137 B | черты и таланты: Feats ua homebrew |
+| №0744 app/data/feats/Feats_xgte.js | 6862 B | черты и таланты: Feats xgte |
 | №0745 app/data/maps/3d_castle_black_rose_v740030.json | 177758 B | данные/конфигурация: 3d castle black rose v740030 |
 | №0746 app/data/maps/3d_castle_v740019.json | 107873 B | данные/конфигурация: 3d castle v740019 |
 | №0747 app/data/maps/3d_house_v740019.json | 22923 B | данные/конфигурация: 3d house v740019 |
-| №0748 app/data/maps/3d_stress_test_all.json | 165139 B | данные/конфигурация: 3d stress test all |
+| №0748 app/data/maps/3d_stress_test_all.json | 170566 B | данные/конфигурация: 3d stress test all |
 | №0749 app/data/maps/3d_stress_v740026.json | 506389 B | данные/конфигурация: 3d stress v740026 |
 | №0750 app/data/maps/3d_tavern_v740019.json | 32583 B | данные/конфигурация: 3d tavern v740019 |
 | №0751 app/data/maps/3d_test_dungeon.json | 20092 B | данные/конфигурация: 3d test dungeon |
 | №0752 app/data/maps/3d_town_v740019.json | 78781 B | данные/конфигурация: 3d town v740019 |
 | №0753 app/data/maps/3d_village_v740019.json | 39834 B | данные/конфигурация: 3d village v740019 |
-| №0754 app/data/spells/Focuses.js | 53387 B | данные заклинаний: Focuses |
-| №0755 app/data/spells/Spells1lvl.js | 60079 B | данные заклинаний: Spells1lvl |
-| №0756 app/data/spells/Spells2lvl.js | 70401 B | данные заклинаний: Spells2lvl |
-| №0757 app/data/spells/Spells3lvl.js | 48531 B | данные заклинаний: Spells3lvl |
-| №0758 app/data/spells/Spells4lvl.js | 39396 B | данные заклинаний: Spells4lvl |
-| №0759 app/data/spells/Spells5lvl.js | 41719 B | данные заклинаний: Spells5lvl |
-| №0760 app/data/spells/spells6lvl.js | 37855 B | данные заклинаний: spells6lvl |
-| №0761 app/data/spells/Spells7lvl.js | 29194 B | данные заклинаний: Spells7lvl |
-| №0762 app/data/spells/Spells8lvl.js | 21355 B | данные заклинаний: Spells8lvl |
-| №0763 app/data/spells/Spells9lvl.js | 32625 B | данные заклинаний: Spells9lvl |
-| №0764 app/data/subclasses/subclassesRegistry.js | 111805 B | логика подклассов: subclassesRegistry |
-| №0765 app/debug.js | 5961 B | логический модуль: debug |
-| №0766 app/dice.js | 42492 B | логический модуль: dice |
-| №0767 app/dnd_tools.js | 19419 B | логический модуль: dnd tools |
-| №0768 app/expanded_bestiary_v39.js | 49383 B | логический модуль: expanded bestiary v39 |
-| №0769 app/expanded_class_registry_bridge.js | 5025 B | логический модуль: expanded class registry bridge |
-| №0770 app/expanded_classes_v23.js | 30269 B | логический модуль: expanded classes v23 |
-| №0771 app/expanded_subclasses_v23.js | 2030 B | логический модуль: expanded subclasses v23 |
-| №0772 app/expansion_class_progressions.js | 6719 B | логический модуль: expansion class progressions |
-| №0773 app/expansion_classes_pack.js | 352830 B | логический модуль: expansion classes pack |
-| №0774 app/Experience.js | 6150 B | логический модуль: Experience |
-| №0775 app/extra_class_ui_bridge.js | 645 B | логический модуль: extra class ui bridge |
-| №0776 app/feat_engine.js | 11457 B | логический модуль: feat engine |
-| №0777 app/gameplay_core_v57.js | 20212 B | логический модуль: gameplay core v57 |
-| №0778 app/ghost_extra_runtime.js | 22293 B | логический модуль: ghost extra runtime |
-| №0779 app/ghost_extra_ui.js | 2387 B | логический модуль: ghost extra ui |
-| №0780 app/Hero-info.js | 12434 B | логический модуль: Hero info |
-| №0781 app/icon_settings_v2.js | 10484 B | логический модуль: icon settings v2 |
-| №0782 app/icon_settings.js | 11281 B | логический модуль: icon settings |
-| №0783 app/inventory_containers_v54.js | 12772 B | логический модуль: inventory containers v54 |
-| №0784 app/inventory-coins.js | 23961 B | логический модуль: inventory coins |
-| №0785 app/inventory-modal.js | 32494 B | логический модуль: inventory modal |
-| №0786 app/Inventory-weight-tracker.js | 15712 B | логический модуль: Inventory weight tracker |
-| №0787 app/Inventory.js | 36947 B | логический модуль: Inventory |
-| №0788 app/junk.js | 8387 B | логический модуль: junk |
-| №0789 app/kibbles_localization_content_v71.js | 32339 B | логический модуль: kibbles localization content v71 |
-| №0790 app/library.js | 9314 B | логический модуль: library |
-| №0791 app/Logo.js | 5742 B | логический модуль: Logo |
-| №0792 app/magic_engine.js | 7570 B | логический модуль: magic engine |
-| №0793 app/market_economy_v55.js | 17219 B | логический модуль: market economy v55 |
-| №0794 app/market_expansion_v55_1.js | 21531 B | логический модуль: market expansion v55 1 |
-| №0795 app/market_social_v55_3.js | 11752 B | логический модуль: market social v55 3 |
-| №0796 app/market_trade_v55_2.js | 25582 B | логический модуль: market trade v55 2 |
-| №0797 app/martyr_mhp_2024_runtime.js | 33254 B | логический модуль: martyr mhp 2024 runtime |
-| №0798 app/materials.js | 11976 B | логический модуль: materials |
-| №0799 app/monster_engine.js | 17873 B | логический модуль: monster engine |
-| №0800 app/monster_loot_crafting_bridge_v40.js | 31518 B | логический модуль: monster loot crafting bridge v40 |
-| №0801 app/monster_loot_engine_v36.js | 13559 B | логический модуль: monster loot engine v36 |
-| №0802 app/monster_loot_engine_v37.js | 18554 B | логический модуль: monster loot engine v37 |
-| №0803 app/necromancer_mhp_2024_runtime.js | 43556 B | логический модуль: necromancer mhp 2024 runtime |
-| №0804 app/network_engine.js | 45962 B | логический модуль: network engine |
-| №0805 app/network_gameplay.js | 87259 B | логический модуль: network gameplay |
-| №0806 app/notes.js | 4818 B | логический модуль: notes |
-| №0807 app/occultist_kibbles_v11_runtime.js | 60686 B | логический модуль: occultist kibbles v11 runtime |
-| №0808 app/onboarding_faq_v71.css | 6093 B | оформление интерфейса: onboarding faq v71 |
-| №0809 app/onboarding_faq_v71.js | 32373 B | логический модуль: onboarding faq v71 |
-| №0810 app/parasite_extra_runtime.js | 30047 B | логический модуль: parasite extra runtime |
-| №0811 app/parasite_extra_ui.js | 4710 B | логический модуль: parasite extra ui |
-| №0812 app/predictor_cards.js | 145118 B | логический модуль: predictor cards |
-| №0813 app/predictor_deck_ui.js | 39502 B | логический модуль: predictor deck ui |
-| №0814 app/predictor_movement.js | 6682 B | логический модуль: predictor movement |
-| №0815 app/predictor_runtime.js | 31001 B | логический модуль: predictor runtime |
-| №0816 app/Proficiencies.js | 31253 B | логический модуль: Proficiencies |
-| №0817 app/Proficienciescheck.js | 10367 B | логический модуль: Proficienciescheck |
-| №0818 app/races.js | 52239 B | логический модуль: races |
-| №0819 app/resource_gathering_v35.js | 12553 B | логический модуль: resource gathering v35 |
-| №0820 app/resource_processing_v44.js | 22150 B | логический модуль: resource processing v44 |
-| №0821 app/rulesEngine.js | 46039 B | логический модуль: rulesEngine |
-| №0822 app/runekeeper_taron_v12_runtime.js | 27697 B | логический модуль: runekeeper taron v12 runtime |
-| №0823 app/savant_laserllama_v561_runtime.js | 29860 B | логический модуль: savant laserllama v561 runtime |
-| №0824 app/secondary_entities_engine.js | 7342 B | логический модуль: secondary entities engine |
-| №0825 app/Settings_debug.js | 7336 B | логический модуль: Settings debug |
-| №0826 app/Settings.js | 59645 B | логический модуль: Settings |
-| №0827 app/shifter_laserllama_v2_1_runtime.js | 38454 B | логический модуль: shifter laserllama v2 1 runtime |
-| №0828 app/skills.js | 6367 B | логический модуль: skills |
-| №0829 app/spellblade_kibbles_runtime.js | 14261 B | логический модуль: spellblade kibbles runtime |
-| №0830 app/spells.js | 39220 B | логический модуль: spells |
-| №0831 app/styles.css | 24174 B | оформление интерфейса: styles |
-| №0832 app/summoning_engine.js | 12861 B | логический модуль: summoning engine |
-| №0833 app/swarm_extra_runtime.js | 19936 B | логический модуль: swarm extra runtime |
-| №0834 app/swipe-lock.js | 1838 B | логический модуль: swipe lock |
-| №0835 app/turn_planner.js | 15930 B | логический модуль: turn planner |
-| №0836 app/update_manager_v2.js | 19885 B | логический модуль: update manager v2 |
-| №0837 app/update_scene_v2.js | 11560 B | логический модуль: update scene v2 |
-| №0838 app/vessel_laserllama_v4_runtime.js | 48055 B | логический модуль: vessel laserllama v4 runtime |
-| №0839 app/vtt_character_actions_v64.js | 4047 B | логический модуль: vtt character actions v64 |
-| №0840 app/vtt_character_sheet_v63.js | 3966 B | логический модуль: vtt character sheet v63 |
-| №0841 app/vtt_combat_event_bus_v69.js | 8287 B | логический модуль: vtt combat event bus v69 |
-| №0842 app/vtt_combat_log_v66.js | 8113 B | логический модуль: vtt combat log v66 |
-| №0843 app/vtt_debug_character_lab_v702.js | 16566 B | логический модуль: vtt debug character lab v702 |
-| №0844 app/vtt_debug_dice_lab_v706.js | 9112 B | логический модуль: vtt debug dice lab v706 |
-| №0845 app/vtt_debug_error_log_v709.js | 5965 B | логический модуль: vtt debug error log v709 |
-| №0846 app/vtt_debug_lab_v703.js | 12151 B | логический модуль: vtt debug lab v703 |
-| №0847 app/vtt_debug_panel_v70.js | 17285 B | логический модуль: vtt debug panel v70 |
-| №0848 app/vtt_debug_rules_matrix_v707.js | 6881 B | логический модуль: vtt debug rules matrix v707 |
-| №0849 app/vtt_debug_sandbox_v701.js | 14634 B | логический модуль: vtt debug sandbox v701 |
-| №0850 app/vtt_debug_scenario_editor_v705.js | 10352 B | логический модуль: vtt debug scenario editor v705 |
-| №0851 app/vtt_debug_scenarios_v704.js | 8385 B | логический модуль: vtt debug scenarios v704 |
-| №0852 app/vtt_debug_tasks_v708.js | 25273 B | логический модуль: vtt debug tasks v708 |
-| №0853 app/vtt_dice_resolution_v65.js | 3941 B | логический модуль: vtt dice resolution v65 |
-| №0854 app/vtt_encounter_checkpoint_v68.js | 9606 B | логический модуль: vtt encounter checkpoint v68 |
-| №0855 app/vtt_encounter_map_v59.js | 9462 B | логический модуль: vtt encounter map v59 |
-| №0856 app/vtt_gameplay_ux_v58.js | 8641 B | логический модуль: vtt gameplay ux v58 |
-| №0857 app/vtt_mobile_battle_v61.js | 4559 B | логический модуль: vtt mobile battle v61 |
-| №0858 app/vtt_mobile_combat_hud_v62.js | 9071 B | логический модуль: vtt mobile combat hud v62 |
-| №0859 app/vtt_mobile_session_v67.js | 11143 B | логический модуль: vtt mobile session v67 |
-| №0860 app/vtt_project_manifest_v70.js | 44405 B | логический модуль: vtt project manifest v70 |
-| №0861 app/vtt_token_interaction_v60.js | 8542 B | логический модуль: vtt token interaction v60 |
-| №0862 app/Wallpapers.js | 19943 B | логический модуль: Wallpapers |
-| №0863 app/walter_parasite_extra_runtime.js | 33758 B | логический модуль: walter parasite extra runtime |
-| №0864 app/walter_parasite_ui.js | 4185 B | логический модуль: walter parasite ui |
-| №0865 app/warden_mhp_2024_runtime.js | 41820 B | логический модуль: warden mhp 2024 runtime |
-| №0866 app/warlord_laserllama_v330_runtime.js | 15866 B | логический модуль: warlord laserllama v330 runtime |
-| №0867 app/weapons.js | 3380 B | логический модуль: weapons |
-| №0868 app/weaponsheavy.js | 8328 B | логический модуль: weaponsheavy |
-| №0869 app/weaponsmelee.js | 20232 B | логический модуль: weaponsmelee |
-| №0870 app/weaponsranged.js | 18195 B | логический модуль: weaponsranged |
-| №0871 app/weaponsspecial.js | 5655 B | логический модуль: weaponsspecial |
-| №0872 app/world_resource_gathering_v53.js | 17353 B | логический модуль: world resource gathering v53 |
+| №0754 app/data/spells/Focuses.js | 54334 B | данные заклинаний: Focuses |
+| №0755 app/data/spells/Spells1lvl.js | 61199 B | данные заклинаний: Spells1lvl |
+| №0756 app/data/spells/Spells2lvl.js | 71667 B | данные заклинаний: Spells2lvl |
+| №0757 app/data/spells/Spells3lvl.js | 49596 B | данные заклинаний: Spells3lvl |
+| №0758 app/data/spells/Spells4lvl.js | 40415 B | данные заклинаний: Spells4lvl |
+| №0759 app/data/spells/Spells5lvl.js | 42580 B | данные заклинаний: Spells5lvl |
+| №0760 app/data/spells/spells6lvl.js | 38565 B | данные заклинаний: spells6lvl |
+| №0761 app/data/spells/Spells7lvl.js | 29629 B | данные заклинаний: Spells7lvl |
+| №0762 app/data/spells/Spells8lvl.js | 21765 B | данные заклинаний: Spells8lvl |
+| №0763 app/data/spells/Spells9lvl.js | 33098 B | данные заклинаний: Spells9lvl |
+| №0764 app/data/subclasses/subclassesRegistry.js | 112653 B | логика подклассов: subclassesRegistry |
+| №0765 app/debug.js | 6121 B | логический модуль: debug |
+| №0766 app/dice.js | 43405 B | логический модуль: dice |
+| №0767 app/dnd_tools.js | 19783 B | логический модуль: dnd tools |
+| №0768 app/expanded_bestiary_v39.js | 49565 B | логический модуль: expanded bestiary v39 |
+| №0769 app/expanded_class_registry_bridge.js | 5105 B | логический модуль: expanded class registry bridge |
+| №0770 app/expanded_classes_v23.js | 30525 B | логический модуль: expanded classes v23 |
+| №0771 app/expanded_subclasses_v23.js | 2050 B | логический модуль: expanded subclasses v23 |
+| №0772 app/expansion_class_progressions.js | 6824 B | логический модуль: expansion class progressions |
+| №0773 app/expansion_classes_pack.js | 355247 B | логический модуль: expansion classes pack |
+| №0774 app/Experience.js | 6345 B | логический модуль: Experience |
+| №0775 app/extra_class_ui_bridge.js | 661 B | логический модуль: extra class ui bridge |
+| №0776 app/feat_engine.js | 11529 B | логический модуль: feat engine |
+| №0777 app/gameplay_core_v57.js | 20330 B | логический модуль: gameplay core v57 |
+| №0778 app/ghost_extra_runtime.js | 22632 B | логический модуль: ghost extra runtime |
+| №0779 app/ghost_extra_ui.js | 2426 B | логический модуль: ghost extra ui |
+| №0780 app/Hero-info.js | 12698 B | логический модуль: Hero info |
+| №0781 app/icon_settings_v2.js | 10793 B | логический модуль: icon settings v2 |
+| №0782 app/icon_settings.js | 11593 B | логический модуль: icon settings |
+| №0783 app/inventory_containers_v54.js | 12887 B | логический модуль: inventory containers v54 |
+| №0784 app/inventory-coins.js | 24464 B | логический модуль: inventory coins |
+| №0785 app/inventory-modal.js | 33255 B | логический модуль: inventory modal |
+| №0786 app/Inventory-weight-tracker.js | 16086 B | логический модуль: Inventory weight tracker |
+| №0787 app/Inventory.js | 37728 B | логический модуль: Inventory |
+| №0788 app/junk.js | 8587 B | логический модуль: junk |
+| №0789 app/kibbles_localization_content_v71.js | 32599 B | логический модуль: kibbles localization content v71 |
+| №0790 app/library.js | 9565 B | логический модуль: library |
+| №0791 app/Logo.js | 5934 B | логический модуль: Logo |
+| №0792 app/magic_engine.js | 7636 B | логический модуль: magic engine |
+| №0793 app/market_economy_v55.js | 17300 B | логический модуль: market economy v55 |
+| №0794 app/market_expansion_v55_1.js | 21633 B | логический модуль: market expansion v55 1 |
+| №0795 app/market_social_v55_3.js | 11810 B | логический модуль: market social v55 3 |
+| №0796 app/market_trade_v55_2.js | 25707 B | логический модуль: market trade v55 2 |
+| №0797 app/martyr_mhp_2024_runtime.js | 33416 B | логический модуль: martyr mhp 2024 runtime |
+| №0798 app/materials.js | 12239 B | логический модуль: materials |
+| №0799 app/monster_engine.js | 17968 B | логический модуль: monster engine |
+| №0800 app/monster_loot_crafting_bridge_v40.js | 31786 B | логический модуль: monster loot crafting bridge v40 |
+| №0801 app/monster_loot_engine_v36.js | 13702 B | логический модуль: monster loot engine v36 |
+| №0802 app/monster_loot_engine_v37.js | 18682 B | логический модуль: monster loot engine v37 |
+| №0803 app/necromancer_mhp_2024_runtime.js | 43793 B | логический модуль: necromancer mhp 2024 runtime |
+| №0804 app/network_engine.js | 46160 B | логический модуль: network engine |
+| №0805 app/network_gameplay.js | 87735 B | логический модуль: network gameplay |
+| №0806 app/notes.js | 4945 B | логический модуль: notes |
+| №0807 app/occultist_kibbles_v11_runtime.js | 61000 B | логический модуль: occultist kibbles v11 runtime |
+| №0808 app/onboarding_faq_v71.css | 6139 B | оформление интерфейса: onboarding faq v71 |
+| №0809 app/onboarding_faq_v71.js | 32582 B | логический модуль: onboarding faq v71 |
+| №0810 app/parasite_extra_runtime.js | 30619 B | логический модуль: parasite extra runtime |
+| №0811 app/parasite_extra_ui.js | 4785 B | логический модуль: parasite extra ui |
+| №0812 app/predictor_cards.js | 145982 B | логический модуль: predictor cards |
+| №0813 app/predictor_deck_ui.js | 39650 B | логический модуль: predictor deck ui |
+| №0814 app/predictor_movement.js | 6743 B | логический модуль: predictor movement |
+| №0815 app/predictor_runtime.js | 31208 B | логический модуль: predictor runtime |
+| №0816 app/Proficiencies.js | 31575 B | логический модуль: Proficiencies |
+| №0817 app/Proficienciescheck.js | 10557 B | логический модуль: Proficienciescheck |
+| №0818 app/races.js | 52899 B | логический модуль: races |
+| №0819 app/resource_gathering_v35.js | 12675 B | логический модуль: resource gathering v35 |
+| №0820 app/resource_processing_v44.js | 22359 B | логический модуль: resource processing v44 |
+| №0821 app/rulesEngine.js | 46702 B | логический модуль: rulesEngine |
+| №0822 app/runekeeper_taron_v12_runtime.js | 27847 B | логический модуль: runekeeper taron v12 runtime |
+| №0823 app/savant_laserllama_v561_runtime.js | 30000 B | логический модуль: savant laserllama v561 runtime |
+| №0824 app/secondary_entities_engine.js | 7389 B | логический модуль: secondary entities engine |
+| №0825 app/Settings_debug.js | 7520 B | логический модуль: Settings debug |
+| №0826 app/Settings.js | 60758 B | логический модуль: Settings |
+| №0827 app/shifter_laserllama_v2_1_runtime.js | 38741 B | логический модуль: shifter laserllama v2 1 runtime |
+| №0828 app/skills.js | 6511 B | логический модуль: skills |
+| №0829 app/spellblade_kibbles_runtime.js | 14367 B | логический модуль: spellblade kibbles runtime |
+| №0830 app/spells.js | 40067 B | логический модуль: spells |
+| №0831 app/styles.css | 24733 B | оформление интерфейса: styles |
+| №0832 app/summoning_engine.js | 12914 B | логический модуль: summoning engine |
+| №0833 app/swarm_extra_runtime.js | 20246 B | логический модуль: swarm extra runtime |
+| №0834 app/swipe-lock.js | 1885 B | логический модуль: swipe lock |
+| №0835 app/turn_planner.js | 16013 B | логический модуль: turn planner |
+| №0836 app/update_manager_v2.js | 20285 B | логический модуль: update manager v2 |
+| №0837 app/update_scene_v2.js | 11725 B | логический модуль: update scene v2 |
+| №0838 app/vessel_laserllama_v4_runtime.js | 48356 B | логический модуль: vessel laserllama v4 runtime |
+| №0839 app/vtt_character_actions_v64.js | 4065 B | логический модуль: vtt character actions v64 |
+| №0840 app/vtt_character_sheet_v63.js | 3990 B | логический модуль: vtt character sheet v63 |
+| №0841 app/vtt_combat_event_bus_v69.js | 8326 B | логический модуль: vtt combat event bus v69 |
+| №0842 app/vtt_combat_log_v66.js | 8146 B | логический модуль: vtt combat log v66 |
+| №0843 app/vtt_debug_character_lab_v702.js | 16621 B | логический модуль: vtt debug character lab v702 |
+| №0844 app/vtt_debug_dice_lab_v706.js | 9144 B | логический модуль: vtt debug dice lab v706 |
+| №0845 app/vtt_debug_error_log_v709.js | 6019 B | логический модуль: vtt debug error log v709 |
+| №0846 app/vtt_debug_lab_v703.js | 12196 B | логический модуль: vtt debug lab v703 |
+| №0847 app/vtt_debug_panel_v70.js | 17354 B | логический модуль: vtt debug panel v70 |
+| №0848 app/vtt_debug_rules_matrix_v707.js | 6926 B | логический модуль: vtt debug rules matrix v707 |
+| №0849 app/vtt_debug_sandbox_v701.js | 14691 B | логический модуль: vtt debug sandbox v701 |
+| №0850 app/vtt_debug_scenario_editor_v705.js | 10397 B | логический модуль: vtt debug scenario editor v705 |
+| №0851 app/vtt_debug_scenarios_v704.js | 8422 B | логический модуль: vtt debug scenarios v704 |
+| №0852 app/vtt_debug_tasks_v708.js | 25401 B | логический модуль: vtt debug tasks v708 |
+| №0853 app/vtt_dice_resolution_v65.js | 3959 B | логический модуль: vtt dice resolution v65 |
+| №0854 app/vtt_encounter_checkpoint_v68.js | 9658 B | логический модуль: vtt encounter checkpoint v68 |
+| №0855 app/vtt_encounter_map_v59.js | 9504 B | логический модуль: vtt encounter map v59 |
+| №0856 app/vtt_gameplay_ux_v58.js | 8677 B | логический модуль: vtt gameplay ux v58 |
+| №0857 app/vtt_mobile_battle_v61.js | 4603 B | логический модуль: vtt mobile battle v61 |
+| №0858 app/vtt_mobile_combat_hud_v62.js | 9109 B | логический модуль: vtt mobile combat hud v62 |
+| №0859 app/vtt_mobile_session_v67.js | 11191 B | логический модуль: vtt mobile session v67 |
+| №0860 app/vtt_project_manifest_v70.js | 44406 B | логический модуль: vtt project manifest v70 |
+| №0861 app/vtt_token_interaction_v60.js | 8595 B | логический модуль: vtt token interaction v60 |
+| №0862 app/Wallpapers.js | 20385 B | логический модуль: Wallpapers |
+| №0863 app/walter_parasite_extra_runtime.js | 34348 B | логический модуль: walter parasite extra runtime |
+| №0864 app/walter_parasite_ui.js | 4267 B | логический модуль: walter parasite ui |
+| №0865 app/warden_mhp_2024_runtime.js | 42129 B | логический модуль: warden mhp 2024 runtime |
+| №0866 app/warlord_laserllama_v330_runtime.js | 15993 B | логический модуль: warlord laserllama v330 runtime |
+| №0867 app/weapons.js | 3456 B | логический модуль: weapons |
+| №0868 app/weaponsheavy.js | 8534 B | логический модуль: weaponsheavy |
+| №0869 app/weaponsmelee.js | 20679 B | логический модуль: weaponsmelee |
+| №0870 app/weaponsranged.js | 18504 B | логический модуль: weaponsranged |
+| №0871 app/weaponsspecial.js | 5759 B | логический модуль: weaponsspecial |
+| №0872 app/world_resource_gathering_v53.js | 17480 B | логический модуль: world resource gathering v53 |
 | №0873 arcanacards.png | 1820683 B | текстура/изображение: arcanacards |
 | №0874 ash_v2_sprite.png | 442476 B | текстура/изображение: ash v2 sprite |
 | №0875 bed.glb | 5718760 B | 3D модель/геометрия: bed |
@@ -898,10 +898,10 @@
 | №0877 chair.glb | 4643004 B | 3D модель/геометрия: chair |
 | №0878 closet.glb | 6550260 B | 3D модель/геометрия: closet |
 | №0879 commode.glb | 4845868 B | 3D модель/геометрия: commode |
-| №0880 desktop/main.cjs | 8991 B | Electron: создание окна Windows |
-| №0881 desktop/preload.cjs | 2239 B | Electron: preload и мост к UI |
-| №0882 desktop/prepare.cjs | 3322 B | Electron: подготовка web ресурсов |
-| №0883 desktop/update.cjs | 10917 B | Electron: обновление |
+| №0880 desktop/main.cjs | 9233 B | Electron: создание окна Windows |
+| №0881 desktop/preload.cjs | 2293 B | Electron: preload и мост к UI |
+| №0882 desktop/prepare.cjs | 3401 B | Electron: подготовка web ресурсов |
+| №0883 desktop/update.cjs | 11130 B | Electron: обновление |
 | №0884 DND_VTT_FURNITURE_CONVERSION_KIT.zip | 4072 B | архив ассетов: DND VTT FURNITURE CONVERSION KIT |
 | №0885 DND_VTT_FURNITURE_READY_02.zip | 65111 B | архив ассетов: DND VTT FURNITURE READY 02 |
 | №0886 DND_VTT_FURNITURE_READY_03.zip | 84538 B | архив ассетов: DND VTT FURNITURE READY 03 |
@@ -912,133 +912,133 @@
 | №0891 DND_VTT_FURNITURE_READY_08.zip | 67621 B | архив ассетов: DND VTT FURNITURE READY 08 |
 | №0892 DND_VTT_FURNITURE_READY_09_20_MODELS.zip | 101933 B | архив ассетов: DND VTT FURNITURE READY 09 20 MODELS |
 | №0893 DND_VTT_REMAINING_GLB_BULK.zip | 5302181 B | архив ассетов: DND VTT REMAINING GLB BULK |
-| №0894 docs/00_AI_PROJECT_GUIDE.md | 351623 B | документация или отчёт: 00 AI PROJECT GUIDE |
-| №0895 docs/00_NEW_CHAT_PROMPT_V56_10.txt | 2658 B | документация или отчёт: 00 NEW CHAT PROMPT V56 10 |
-| №0896 docs/00_NEW_CHAT_PROMPT_V56_11.txt | 2118 B | документация или отчёт: 00 NEW CHAT PROMPT V56 11 |
-| №0897 docs/00_NEW_CHAT_PROMPT_V56_12.txt | 763 B | документация или отчёт: 00 NEW CHAT PROMPT V56 12 |
-| №0898 docs/00_NEW_CHAT_PROMPT_V56_9.txt | 3900 B | документация или отчёт: 00 NEW CHAT PROMPT V56 9 |
-| №0899 docs/2026-10-09_ota_v74_00_17_checkpoint.json | 1645 B | документация или отчёт: 2026 10 09 ota v74 00 17 checkpoint |
-| №0900 docs/2026-10-09_ota_v74_00_17.md | 6180 B | документация или отчёт: 2026 10 09 ota v74 00 17 |
-| №0901 docs/2026-10-11_ota_v74_00_57_checkpoint.json | 469 B | документация или отчёт: 2026 10 11 ota v74 00 57 checkpoint |
-| №0902 docs/2026-10-11_ota_v74_00_57.md | 5873 B | документация или отчёт: 2026 10 11 ota v74 00 57 |
-| №0903 docs/3D_ASSET_IMPORT_BATCHES.md | 32725 B | документация или отчёт: 3D ASSET IMPORT BATCHES |
-| №0904 docs/3d_character_anatomy/ADULT_ANATOMY_PROGRESS.md | 43788 B | документация или отчёт: ADULT ANATOMY PROGRESS |
-| №0905 docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json | 22458 B | документация или отчёт: ASSET AUDIT 2026 10 12 |
-| №0906 docs/3d_character_anatomy/SKIN_MATERIAL_PIPELINE.md | 7470 B | документация или отчёт: SKIN MATERIAL PIPELINE |
-| №0907 docs/3d_character_journal/2026-10-09_01_morph_architecture.md | 2418 B | документация или отчёт: 2026 10 09 01 morph architecture |
-| №0908 docs/3d_character_journal/2026-10-09_02_morph_bridge.md | 2712 B | документация или отчёт: 2026 10 09 02 morph bridge |
-| №0909 docs/3d_character_journal/2026-10-09_03_morph_bridge_diagnostics.md | 1768 B | документация или отчёт: 2026 10 09 03 morph bridge diagnostics |
-| №0910 docs/3d_character_journal/2026-10-09_04_skin_textures.md | 4995 B | документация или отчёт: 2026 10 09 04 skin textures |
-| №0911 docs/3d_character_journal/2026-10-09_05_named_makehuman_morphs.md | 8679 B | документация или отчёт: 2026 10 09 05 named makehuman morphs |
-| №0912 docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json | 5867 B | документация или отчёт: 2026 10 09 06 female stage1 checkpoint |
-| №0913 docs/3d_character_journal/2026-10-09_06_female_stage1.md | 8415 B | документация или отчёт: 2026 10 09 06 female stage1 |
-| №0914 docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json | 871 B | документация или отчёт: 2026 10 09 07 female stage2 checkpoint |
-| №0915 docs/3d_character_journal/2026-10-09_07_female_stage2.md | 7677 B | документация или отчёт: 2026 10 09 07 female stage2 |
-| №0916 docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json | 1725 B | документация или отчёт: 2026 10 09 08 female release checkpoint |
-| №0917 docs/3d_character_journal/2026-10-09_08_female_release.md | 7794 B | документация или отчёт: 2026 10 09 08 female release |
-| №0918 docs/3d_character_journal/2026-10-10_editor_v74_00_22.md | 6792 B | документация или отчёт: 2026 10 10 editor v74 00 22 |
-| №0919 docs/3d_character_journal/2026-10-11_editor_v74_00_32.md | 1158 B | документация или отчёт: 2026 10 11 editor v74 00 32 |
-| №0920 docs/3d_character_journal/2026-10-11_editor_v74_00_33.md | 1260 B | документация или отчёт: 2026 10 11 editor v74 00 33 |
-| №0921 docs/3d_character_journal/2026-10-11_editor_v74_00_34.md | 3336 B | документация или отчёт: 2026 10 11 editor v74 00 34 |
-| №0922 docs/3d_character_journal/2026-10-11_editor_v74_00_35.md | 3249 B | документация или отчёт: 2026 10 11 editor v74 00 35 |
-| №0923 docs/3d_character_races/aarakocra.md | 4966 B | документация или отчёт: aarakocra |
-| №0924 docs/3d_character_races/aasimar.md | 2398 B | документация или отчёт: aasimar |
-| №0925 docs/3d_character_races/ANIMAL_HEADS.md | 5724 B | документация или отчёт: ANIMAL HEADS |
-| №0926 docs/3d_character_races/autognome.md | 2759 B | документация или отчёт: autognome |
-| №0927 docs/3d_character_races/AVIAN_ELEPHANT_HEADS.md | 5661 B | документация или отчёт: AVIAN ELEPHANT HEADS |
-| №0928 docs/3d_character_races/bugbear.md | 4059 B | документация или отчёт: bugbear |
-| №0929 docs/3d_character_races/centaur.md | 2896 B | документация или отчёт: centaur |
-| №0930 docs/3d_character_races/changeling.md | 2162 B | документация или отчёт: changeling |
-| №0931 docs/3d_character_races/dhampir.md | 1557 B | документация или отчёт: dhampir |
-| №0932 docs/3d_character_races/dragonborn.md | 5010 B | документация или отчёт: dragonborn |
-| №0933 docs/3d_character_races/dwarf_hill.md | 2179 B | документация или отчёт: dwarf hill |
-| №0934 docs/3d_character_races/dwarf_mountain.md | 2179 B | документация или отчёт: dwarf mountain |
-| №0935 docs/3d_character_races/elf_drow.md | 4152 B | документация или отчёт: elf drow |
-| №0936 docs/3d_character_races/elf_high.md | 4150 B | документация или отчёт: elf high |
-| №0937 docs/3d_character_races/elf_wood.md | 4135 B | документация или отчёт: elf wood |
-| №0938 docs/3d_character_races/EXTRA_FORMS_PLAN.md | 5841 B | документация или отчёт: EXTRA FORMS PLAN |
-| №0939 docs/3d_character_races/fairy.md | 2154 B | документация или отчёт: fairy |
-| №0940 docs/3d_character_races/firbolg.md | 1211 B | документация или отчёт: firbolg |
-| №0941 docs/3d_character_races/full_orc.md | 2994 B | документация или отчёт: full orc |
-| №0942 docs/3d_character_races/FUR_PACK.md | 3742 B | документация или отчёт: FUR PACK |
-| №0943 docs/3d_character_races/genasi_air.md | 1474 B | документация или отчёт: genasi air |
-| №0944 docs/3d_character_races/genasi_earth.md | 1519 B | документация или отчёт: genasi earth |
-| №0945 docs/3d_character_races/genasi_fire.md | 1527 B | документация или отчёт: genasi fire |
-| №0946 docs/3d_character_races/genasi_water.md | 1464 B | документация или отчёт: genasi water |
-| №0947 docs/3d_character_races/ghost.md | 5482 B | документация или отчёт: ghost |
-| №0948 docs/3d_character_races/githyanki.md | 1321 B | документация или отчёт: githyanki |
-| №0949 docs/3d_character_races/githzerai.md | 1321 B | документация или отчёт: githzerai |
-| №0950 docs/3d_character_races/gnome_forest.md | 2175 B | документация или отчёт: gnome forest |
-| №0951 docs/3d_character_races/gnome_rock.md | 2177 B | документация или отчёт: gnome rock |
-| №0952 docs/3d_character_races/goblin.md | 1278 B | документация или отчёт: goblin |
-| №0953 docs/3d_character_races/goliath.md | 1362 B | документация или отчёт: goliath |
-| №0954 docs/3d_character_races/hadozee.md | 4245 B | документация или отчёт: hadozee |
-| №0955 docs/3d_character_races/HAIR_PACK.md | 4833 B | документация или отчёт: HAIR PACK |
-| №0956 docs/3d_character_races/half_elf.md | 4189 B | документация или отчёт: half elf |
-| №0957 docs/3d_character_races/half_orc.md | 3002 B | документация или отчёт: half orc |
-| №0958 docs/3d_character_races/halfling_lightfoot.md | 3486 B | документация или отчёт: halfling lightfoot |
-| №0959 docs/3d_character_races/halfling_stout.md | 3482 B | документация или отчёт: halfling stout |
-| №0960 docs/3d_character_races/harengon.md | 5657 B | документация или отчёт: harengon |
-| №0961 docs/3d_character_races/hexblood.md | 1643 B | документация или отчёт: hexblood |
-| №0962 docs/3d_character_races/hobgoblin.md | 1210 B | документация или отчёт: hobgoblin |
-| №0963 docs/3d_character_races/kalashtar.md | 1410 B | документация или отчёт: kalashtar |
-| №0964 docs/3d_character_races/kender.md | 1159 B | документация или отчёт: kender |
-| №0965 docs/3d_character_races/kenku.md | 5013 B | документация или отчёт: kenku |
-| №0966 docs/3d_character_races/kobold.md | 4696 B | документация или отчёт: kobold |
-| №0967 docs/3d_character_races/lizardfolk.md | 4944 B | документация или отчёт: lizardfolk |
-| №0968 docs/3d_character_races/loxodon.md | 4673 B | документация или отчёт: loxodon |
-| №0969 docs/3d_character_races/minotaur.md | 6054 B | документация или отчёт: minotaur |
-| №0970 docs/3d_character_races/myconid.md | 1846 B | документация или отчёт: myconid |
-| №0971 docs/3d_character_races/NATIVE_LIMBS.md | 6433 B | документация или отчёт: NATIVE LIMBS |
-| №0972 docs/3d_character_races/owlin.md | 5120 B | документация или отчёт: owlin |
-| №0973 docs/3d_character_races/parasite.md | 3100 B | документация или отчёт: parasite |
-| №0974 docs/3d_character_races/plasmoid.md | 1933 B | документация или отчёт: plasmoid |
-| №0975 docs/3d_character_races/RACES_3D_REMAINING_AUDIT_2026-10-12.md | 35486 B | документация или отчёт: RACES 3D REMAINING AUDIT 2026 10 12 |
-| №0976 docs/3d_character_races/reborn.md | 1619 B | документация или отчёт: reborn |
-| №0977 docs/3d_character_races/REMAINING_WORK.md | 23848 B | документация или отчёт: REMAINING WORK |
-| №0978 docs/3d_character_races/satyr.md | 5063 B | документация или отчёт: satyr |
-| №0979 docs/3d_character_races/shifter.md | 3214 B | документация или отчёт: shifter |
-| №0980 docs/3d_character_races/simic_hybrid.md | 2647 B | документация или отчёт: simic hybrid |
-| №0981 docs/3d_character_races/swarm_bats.md | 1019 B | документация или отчёт: swarm bats |
-| №0982 docs/3d_character_races/swarm_beetles.md | 6967 B | документация или отчёт: swarm beetles |
-| №0983 docs/3d_character_races/SWARM_DENSE_REDESIGN.md | 9032 B | документация или отчёт: SWARM DENSE REDESIGN |
-| №0984 docs/3d_character_races/swarm_rats.md | 6463 B | документация или отчёт: swarm rats |
-| №0985 docs/3d_character_races/tabaxi.md | 6015 B | документация или отчёт: tabaxi |
-| №0986 docs/3d_character_races/TEXTURE_PACK_CHECKPOINT.md | 17270 B | документация или отчёт: TEXTURE PACK CHECKPOINT |
-| №0987 docs/3d_character_races/TIEFLING_DETAIL_REDESIGN.md | 7294 B | документация или отчёт: TIEFLING DETAIL REDESIGN |
-| №0988 docs/3d_character_races/tiefling.md | 2992 B | документация или отчёт: tiefling |
-| №0989 docs/3d_character_races/tortle.md | 5805 B | документация или отчёт: tortle |
-| №0990 docs/3d_character_races/triton.md | 1588 B | документация или отчёт: triton |
-| №0991 docs/3d_character_races/vedalken.md | 1301 B | документация или отчёт: vedalken |
-| №0992 docs/3d_character_races/walter_parasite.md | 3278 B | документация или отчёт: walter parasite |
-| №0993 docs/3d_character_races/warforged.md | 2731 B | документация или отчёт: warforged |
-| №0994 docs/3d_character_races/yuan_ti.md | 1669 B | документация или отчёт: yuan ti |
-| №0995 docs/AI_AUTOMATION.md | 4081 B | документация или отчёт: AI AUTOMATION |
-| №0996 docs/CLASS_IMPLEMENTATION_PLAN.md | 19250 B | документация или отчёт: CLASS IMPLEMENTATION PLAN |
-| №0997 docs/CLASS_MECHANICS_SPEC.md | 38943 B | документация или отчёт: CLASS MECHANICS SPEC |
-| №0998 docs/CLOUD_CHARACTER_SYNC.md | 31142 B | документация или отчёт: CLOUD CHARACTER SYNC |
-| №0999 docs/CLOUD_SAVE_CALLERS.txt | 1869 B | документация или отчёт: CLOUD SAVE CALLERS |
-| №1000 docs/DND_VTT_CLASS_AUDIT_V74_00_17.md | 184356 B | документация или отчёт: DND VTT CLASS AUDIT V74 00 17 |
-| №1001 docs/Help.txt | 110717 B | документация или отчёт: Help |
-| №1002 docs/KIBBLES_ATTRIBUTION_V71.md | 803 B | документация или отчёт: KIBBLES ATTRIBUTION V71 |
-| №1003 docs/map-stage-740019.md | 1675 B | документация или отчёт: map stage 740019 |
-| №1004 docs/map-stage-740021.md | 2000 B | документация или отчёт: map stage 740021 |
-| №1005 docs/MONETIZATION_ROADMAP.md | 15924 B | документация или отчёт: MONETIZATION ROADMAP |
-| №1006 docs/NETWORK_APK_NOTES.md | 7296 B | документация или отчёт: NETWORK APK NOTES |
-| №1007 docs/PREDICTOR_APPROVED_CARD_STATUS.md | 52542 B | документация или отчёт: PREDICTOR APPROVED CARD STATUS |
-| №1008 docs/PREDICTOR_CLASS_SPEC.md | 94181 B | документация или отчёт: PREDICTOR CLASS SPEC |
-| №1009 docs/PRODUCT_ACCESS_AND_MONETIZATION.md | 11580 B | документация или отчёт: PRODUCT ACCESS AND MONETIZATION |
-| №1010 docs/ROOT_FURNITURE_IMPORT_REPORT.md | 6882 B | документация или отчёт: ROOT FURNITURE IMPORT REPORT |
-| №1011 docs/SIGNATURE_ASSET_FIX_74_00_66.md | 1729 B | документация или отчёт: SIGNATURE ASSET FIX 74 00 66 |
-| №1012 docs/SUPABASE_MAIL_SETUP_PROMPT_RU.md | 2853 B | документация или отчёт: SUPABASE MAIL SETUP PROMPT RU |
-| №1013 docs/UNIFIED_RELEASE.md | 6136 B | документация или отчёт: UNIFIED RELEASE |
-| №1014 docs/UNITY_CHARACTER_SHEET_PARITY.md | 12064 B | документация или отчёт: UNITY CHARACTER SHEET PARITY |
+| №0894 docs/00_AI_PROJECT_GUIDE.md | 355605 B | документация или отчёт: 00 AI PROJECT GUIDE |
+| №0895 docs/00_NEW_CHAT_PROMPT_V56_10.txt | 2698 B | документация или отчёт: 00 NEW CHAT PROMPT V56 10 |
+| №0896 docs/00_NEW_CHAT_PROMPT_V56_11.txt | 2153 B | документация или отчёт: 00 NEW CHAT PROMPT V56 11 |
+| №0897 docs/00_NEW_CHAT_PROMPT_V56_12.txt | 770 B | документация или отчёт: 00 NEW CHAT PROMPT V56 12 |
+| №0898 docs/00_NEW_CHAT_PROMPT_V56_9.txt | 3962 B | документация или отчёт: 00 NEW CHAT PROMPT V56 9 |
+| №0899 docs/2026-10-09_ota_v74_00_17_checkpoint.json | 1704 B | документация или отчёт: 2026 10 09 ota v74 00 17 checkpoint |
+| №0900 docs/2026-10-09_ota_v74_00_17.md | 6238 B | документация или отчёт: 2026 10 09 ota v74 00 17 |
+| №0901 docs/2026-10-11_ota_v74_00_57_checkpoint.json | 485 B | документация или отчёт: 2026 10 11 ota v74 00 57 checkpoint |
+| №0902 docs/2026-10-11_ota_v74_00_57.md | 5912 B | документация или отчёт: 2026 10 11 ota v74 00 57 |
+| №0903 docs/3D_ASSET_IMPORT_BATCHES.md | 32901 B | документация или отчёт: 3D ASSET IMPORT BATCHES |
+| №0904 docs/3d_character_anatomy/ADULT_ANATOMY_PROGRESS.md | 43940 B | документация или отчёт: ADULT ANATOMY PROGRESS |
+| №0905 docs/3d_character_anatomy/ASSET_AUDIT_2026-10-12.json | 23168 B | документация или отчёт: ASSET AUDIT 2026 10 12 |
+| №0906 docs/3d_character_anatomy/SKIN_MATERIAL_PIPELINE.md | 7503 B | документация или отчёт: SKIN MATERIAL PIPELINE |
+| №0907 docs/3d_character_journal/2026-10-09_01_morph_architecture.md | 2445 B | документация или отчёт: 2026 10 09 01 morph architecture |
+| №0908 docs/3d_character_journal/2026-10-09_02_morph_bridge.md | 2742 B | документация или отчёт: 2026 10 09 02 morph bridge |
+| №0909 docs/3d_character_journal/2026-10-09_03_morph_bridge_diagnostics.md | 1795 B | документация или отчёт: 2026 10 09 03 morph bridge diagnostics |
+| №0910 docs/3d_character_journal/2026-10-09_04_skin_textures.md | 5043 B | документация или отчёт: 2026 10 09 04 skin textures |
+| №0911 docs/3d_character_journal/2026-10-09_05_named_makehuman_morphs.md | 8770 B | документация или отчёт: 2026 10 09 05 named makehuman morphs |
+| №0912 docs/3d_character_journal/2026-10-09_06_female_stage1_checkpoint.json | 5948 B | документация или отчёт: 2026 10 09 06 female stage1 checkpoint |
+| №0913 docs/3d_character_journal/2026-10-09_06_female_stage1.md | 8501 B | документация или отчёт: 2026 10 09 06 female stage1 |
+| №0914 docs/3d_character_journal/2026-10-09_07_female_stage2_checkpoint.json | 892 B | документация или отчёт: 2026 10 09 07 female stage2 checkpoint |
+| №0915 docs/3d_character_journal/2026-10-09_07_female_stage2.md | 7749 B | документация или отчёт: 2026 10 09 07 female stage2 |
+| №0916 docs/3d_character_journal/2026-10-09_08_female_release_checkpoint.json | 1785 B | документация или отчёт: 2026 10 09 08 female release checkpoint |
+| №0917 docs/3d_character_journal/2026-10-09_08_female_release.md | 7876 B | документация или отчёт: 2026 10 09 08 female release |
+| №0918 docs/3d_character_journal/2026-10-10_editor_v74_00_22.md | 6823 B | документация или отчёт: 2026 10 10 editor v74 00 22 |
+| №0919 docs/3d_character_journal/2026-10-11_editor_v74_00_32.md | 1165 B | документация или отчёт: 2026 10 11 editor v74 00 32 |
+| №0920 docs/3d_character_journal/2026-10-11_editor_v74_00_33.md | 1267 B | документация или отчёт: 2026 10 11 editor v74 00 33 |
+| №0921 docs/3d_character_journal/2026-10-11_editor_v74_00_34.md | 3349 B | документация или отчёт: 2026 10 11 editor v74 00 34 |
+| №0922 docs/3d_character_journal/2026-10-11_editor_v74_00_35.md | 3260 B | документация или отчёт: 2026 10 11 editor v74 00 35 |
+| №0923 docs/3d_character_races/aarakocra.md | 4990 B | документация или отчёт: aarakocra |
+| №0924 docs/3d_character_races/aasimar.md | 2410 B | документация или отчёт: aasimar |
+| №0925 docs/3d_character_races/ANIMAL_HEADS.md | 5750 B | документация или отчёт: ANIMAL HEADS |
+| №0926 docs/3d_character_races/autognome.md | 2770 B | документация или отчёт: autognome |
+| №0927 docs/3d_character_races/AVIAN_ELEPHANT_HEADS.md | 5691 B | документация или отчёт: AVIAN ELEPHANT HEADS |
+| №0928 docs/3d_character_races/bugbear.md | 4078 B | документация или отчёт: bugbear |
+| №0929 docs/3d_character_races/centaur.md | 2905 B | документация или отчёт: centaur |
+| №0930 docs/3d_character_races/changeling.md | 2174 B | документация или отчёт: changeling |
+| №0931 docs/3d_character_races/dhampir.md | 1570 B | документация или отчёт: dhampir |
+| №0932 docs/3d_character_races/dragonborn.md | 5032 B | документация или отчёт: dragonborn |
+| №0933 docs/3d_character_races/dwarf_hill.md | 2195 B | документация или отчёт: dwarf hill |
+| №0934 docs/3d_character_races/dwarf_mountain.md | 2195 B | документация или отчёт: dwarf mountain |
+| №0935 docs/3d_character_races/elf_drow.md | 4188 B | документация или отчёт: elf drow |
+| №0936 docs/3d_character_races/elf_high.md | 4186 B | документация или отчёт: elf high |
+| №0937 docs/3d_character_races/elf_wood.md | 4171 B | документация или отчёт: elf wood |
+| №0938 docs/3d_character_races/EXTRA_FORMS_PLAN.md | 5879 B | документация или отчёт: EXTRA FORMS PLAN |
+| №0939 docs/3d_character_races/fairy.md | 2164 B | документация или отчёт: fairy |
+| №0940 docs/3d_character_races/firbolg.md | 1222 B | документация или отчёт: firbolg |
+| №0941 docs/3d_character_races/full_orc.md | 3020 B | документация или отчёт: full orc |
+| №0942 docs/3d_character_races/FUR_PACK.md | 3763 B | документация или отчёт: FUR PACK |
+| №0943 docs/3d_character_races/genasi_air.md | 1487 B | документация или отчёт: genasi air |
+| №0944 docs/3d_character_races/genasi_earth.md | 1532 B | документация или отчёт: genasi earth |
+| №0945 docs/3d_character_races/genasi_fire.md | 1540 B | документация или отчёт: genasi fire |
+| №0946 docs/3d_character_races/genasi_water.md | 1477 B | документация или отчёт: genasi water |
+| №0947 docs/3d_character_races/ghost.md | 5504 B | документация или отчёт: ghost |
+| №0948 docs/3d_character_races/githyanki.md | 1332 B | документация или отчёт: githyanki |
+| №0949 docs/3d_character_races/githzerai.md | 1332 B | документация или отчёт: githzerai |
+| №0950 docs/3d_character_races/gnome_forest.md | 2191 B | документация или отчёт: gnome forest |
+| №0951 docs/3d_character_races/gnome_rock.md | 2193 B | документация или отчёт: gnome rock |
+| №0952 docs/3d_character_races/goblin.md | 1289 B | документация или отчёт: goblin |
+| №0953 docs/3d_character_races/goliath.md | 1373 B | документация или отчёт: goliath |
+| №0954 docs/3d_character_races/hadozee.md | 4266 B | документация или отчёт: hadozee |
+| №0955 docs/3d_character_races/HAIR_PACK.md | 4861 B | документация или отчёт: HAIR PACK |
+| №0956 docs/3d_character_races/half_elf.md | 4225 B | документация или отчёт: half elf |
+| №0957 docs/3d_character_races/half_orc.md | 3028 B | документация или отчёт: half orc |
+| №0958 docs/3d_character_races/halfling_lightfoot.md | 3509 B | документация или отчёт: halfling lightfoot |
+| №0959 docs/3d_character_races/halfling_stout.md | 3505 B | документация или отчёт: halfling stout |
+| №0960 docs/3d_character_races/harengon.md | 5688 B | документация или отчёт: harengon |
+| №0961 docs/3d_character_races/hexblood.md | 1656 B | документация или отчёт: hexblood |
+| №0962 docs/3d_character_races/hobgoblin.md | 1221 B | документация или отчёт: hobgoblin |
+| №0963 docs/3d_character_races/kalashtar.md | 1423 B | документация или отчёт: kalashtar |
+| №0964 docs/3d_character_races/kender.md | 1170 B | документация или отчёт: kender |
+| №0965 docs/3d_character_races/kenku.md | 5037 B | документация или отчёт: kenku |
+| №0966 docs/3d_character_races/kobold.md | 4717 B | документация или отчёт: kobold |
+| №0967 docs/3d_character_races/lizardfolk.md | 4966 B | документация или отчёт: lizardfolk |
+| №0968 docs/3d_character_races/loxodon.md | 4694 B | документация или отчёт: loxodon |
+| №0969 docs/3d_character_races/minotaur.md | 6082 B | документация или отчёт: minotaur |
+| №0970 docs/3d_character_races/myconid.md | 1853 B | документация или отчёт: myconid |
+| №0971 docs/3d_character_races/NATIVE_LIMBS.md | 6470 B | документация или отчёт: NATIVE LIMBS |
+| №0972 docs/3d_character_races/owlin.md | 5144 B | документация или отчёт: owlin |
+| №0973 docs/3d_character_races/parasite.md | 3111 B | документация или отчёт: parasite |
+| №0974 docs/3d_character_races/plasmoid.md | 1940 B | документация или отчёт: plasmoid |
+| №0975 docs/3d_character_races/RACES_3D_REMAINING_AUDIT_2026-10-12.md | 35602 B | документация или отчёт: RACES 3D REMAINING AUDIT 2026 10 12 |
+| №0976 docs/3d_character_races/reborn.md | 1632 B | документация или отчёт: reborn |
+| №0977 docs/3d_character_races/REMAINING_WORK.md | 23983 B | документация или отчёт: REMAINING WORK |
+| №0978 docs/3d_character_races/satyr.md | 5084 B | документация или отчёт: satyr |
+| №0979 docs/3d_character_races/shifter.md | 3232 B | документация или отчёт: shifter |
+| №0980 docs/3d_character_races/simic_hybrid.md | 2660 B | документация или отчёт: simic hybrid |
+| №0981 docs/3d_character_races/swarm_bats.md | 1026 B | документация или отчёт: swarm bats |
+| №0982 docs/3d_character_races/swarm_beetles.md | 7010 B | документация или отчёт: swarm beetles |
+| №0983 docs/3d_character_races/SWARM_DENSE_REDESIGN.md | 9075 B | документация или отчёт: SWARM DENSE REDESIGN |
+| №0984 docs/3d_character_races/swarm_rats.md | 6496 B | документация или отчёт: swarm rats |
+| №0985 docs/3d_character_races/tabaxi.md | 6044 B | документация или отчёт: tabaxi |
+| №0986 docs/3d_character_races/TEXTURE_PACK_CHECKPOINT.md | 17340 B | документация или отчёт: TEXTURE PACK CHECKPOINT |
+| №0987 docs/3d_character_races/TIEFLING_DETAIL_REDESIGN.md | 7331 B | документация или отчёт: TIEFLING DETAIL REDESIGN |
+| №0988 docs/3d_character_races/tiefling.md | 3011 B | документация или отчёт: tiefling |
+| №0989 docs/3d_character_races/tortle.md | 5826 B | документация или отчёт: tortle |
+| №0990 docs/3d_character_races/triton.md | 1601 B | документация или отчёт: triton |
+| №0991 docs/3d_character_races/vedalken.md | 1312 B | документация или отчёт: vedalken |
+| №0992 docs/3d_character_races/walter_parasite.md | 3289 B | документация или отчёт: walter parasite |
+| №0993 docs/3d_character_races/warforged.md | 2742 B | документация или отчёт: warforged |
+| №0994 docs/3d_character_races/yuan_ti.md | 1682 B | документация или отчёт: yuan ti |
+| №0995 docs/AI_AUTOMATION.md | 4106 B | документация или отчёт: AI AUTOMATION |
+| №0996 docs/CLASS_IMPLEMENTATION_PLAN.md | 19358 B | документация или отчёт: CLASS IMPLEMENTATION PLAN |
+| №0997 docs/CLASS_MECHANICS_SPEC.md | 39134 B | документация или отчёт: CLASS MECHANICS SPEC |
+| №0998 docs/CLOUD_CHARACTER_SYNC.md | 31303 B | документация или отчёт: CLOUD CHARACTER SYNC |
+| №0999 docs/CLOUD_SAVE_CALLERS.txt | 1940 B | документация или отчёт: CLOUD SAVE CALLERS |
+| №1000 docs/DND_VTT_CLASS_AUDIT_V74_00_17.md | 184929 B | документация или отчёт: DND VTT CLASS AUDIT V74 00 17 |
+| №1001 docs/Help.txt | 111496 B | документация или отчёт: Help |
+| №1002 docs/KIBBLES_ATTRIBUTION_V71.md | 816 B | документация или отчёт: KIBBLES ATTRIBUTION V71 |
+| №1003 docs/map-stage-740019.md | 1686 B | документация или отчёт: map stage 740019 |
+| №1004 docs/map-stage-740021.md | 2011 B | документация или отчёт: map stage 740021 |
+| №1005 docs/MONETIZATION_ROADMAP.md | 16016 B | документация или отчёт: MONETIZATION ROADMAP |
+| №1006 docs/NETWORK_APK_NOTES.md | 7363 B | документация или отчёт: NETWORK APK NOTES |
+| №1007 docs/PREDICTOR_APPROVED_CARD_STATUS.md | 52741 B | документация или отчёт: PREDICTOR APPROVED CARD STATUS |
+| №1008 docs/PREDICTOR_CLASS_SPEC.md | 94622 B | документация или отчёт: PREDICTOR CLASS SPEC |
+| №1009 docs/PRODUCT_ACCESS_AND_MONETIZATION.md | 11625 B | документация или отчёт: PRODUCT ACCESS AND MONETIZATION |
+| №1010 docs/ROOT_FURNITURE_IMPORT_REPORT.md | 7154 B | документация или отчёт: ROOT FURNITURE IMPORT REPORT |
+| №1011 docs/SIGNATURE_ASSET_FIX_74_00_66.md | 1737 B | документация или отчёт: SIGNATURE ASSET FIX 74 00 66 |
+| №1012 docs/SUPABASE_MAIL_SETUP_PROMPT_RU.md | 2882 B | документация или отчёт: SUPABASE MAIL SETUP PROMPT RU |
+| №1013 docs/UNIFIED_RELEASE.md | 6175 B | документация или отчёт: UNIFIED RELEASE |
+| №1014 docs/UNITY_CHARACTER_SHEET_PARITY.md | 12098 B | документация или отчёт: UNITY CHARACTER SHEET PARITY |
 | №1015 docs/UNITY_CLOUD_HANDOFF.md | 6536 B | документация или отчёт: UNITY CLOUD HANDOFF |
 | №1016 docs/UNITY_MIGRATION_PLAN.md | 14710 B | документация или отчёт: UNITY MIGRATION PLAN |
-| №1017 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
+| №1017 docs/WINDOWS_DESKTOP.md | 3815 B | документация или отчёт: WINDOWS DESKTOP |
 | №1018 dragon_fire_v2_sprite.png | 1013123 B | текстура/изображение: dragon fire v2 sprite |
 | №1019 embers_v2_sprite.png | 698014 B | текстура/изображение: embers v2 sprite |
-| №1020 FAQ.md | 38563 B | документация или отчёт: FAQ |
+| №1020 FAQ.md | 38885 B | документация или отчёт: FAQ |
 | №1021 fire_front_v2_sprite.png | 2249732 B | текстура/изображение: fire front v2 sprite |
 | №1022 fire_spread_mask_v2_sprite.png | 1373284 B | текстура/изображение: fire spread mask v2 sprite |
 | №1023 flash_v2_sprite.png | 803264 B | текстура/изображение: flash v2 sprite |
@@ -1061,271 +1061,271 @@
 | №1040 floor_wood_dark.png | 76168 B | текстура/изображение: floor wood dark |
 | №1041 floor_wood_light.png | 83659 B | текстура/изображение: floor wood light |
 | №1042 GLENMORIL Soundtrack - Music Box.mp3 | 1827664 B | аудиофайл: GLENMORIL Soundtrack   Music Box |
-| №1043 gltf_catalog.js | 3197 B | логический модуль: gltf catalog |
+| №1043 gltf_catalog.js | 3206 B | логический модуль: gltf catalog |
 | №1044 heat_glow_v2_sprite.png | 836371 B | текстура/изображение: heat glow v2 sprite |
 | №1045 human-base-rigged.glb | 4994640 B | 3D модель/геометрия: human base rigged |
-| №1046 index.html | 89700 B | HTML-точка входа; интерфейс и порядок JS загрузки |
+| №1046 index.html | 90828 B | HTML-точка входа; интерфейс и порядок JS загрузки |
 | №1047 Jalan Jalan - Lotus.mp3 | 9083034 B | аудиофайл: Jalan Jalan   Lotus |
 | №1048 lineage_2_16. Shepard's Flute.mp3 | 2997816 B | аудиофайл: lineage 2 16. Shepard's Flute |
-| №1049 manifest.json | 488 B | данные/конфигурация: manifest |
+| №1049 manifest.json | 519 B | данные/конфигурация: manifest |
 | №1050 Oliver DeRiviere - Prelude to an End_(grizzlymusic.ru).mp3 | 4020570 B | аудиофайл: Oliver DeRiviere   Prelude to an End (grizzlymusic.ru) |
 | №1051 Oliver Deriviere - Who Am I_(grizzlymusic.ru).mp3 | 3530381 B | аудиофайл: Oliver Deriviere   Who Am I (grizzlymusic.ru) |
-| №1052 package.json | 1608 B | npm и упаковка desktop EXE |
+| №1052 package.json | 1667 B | npm и упаковка desktop EXE |
 | №1053 PROJECT_ATLAS.md | генерируется | машиночитаемая карта репозитория для ИИ |
 | №1054 PROJECT_ATLAS.txt | генерируется | человекочитаемая карта репозитория |
-| №1055 README.md | 145 B | документация или отчёт: README |
+| №1055 README.md | 148 B | документация или отчёт: README |
 | №1056 release-staging/unity-release.json | 3914 B | данные/конфигурация: unity release |
 | №1057 smoke_back_v2_sprite-1.png | 1707378 B | текстура/изображение: smoke back v2 sprite 1 |
 | №1058 smoke_back_v2_sprite.png | 1814587 B | текстура/изображение: smoke back v2 sprite |
 | №1059 smoke_front_v2_sprite-1.png | 1890480 B | текстура/изображение: smoke front v2 sprite 1 |
 | №1060 smoke_front_v2_sprite.png | 2064687 B | текстура/изображение: smoke front v2 sprite |
 | №1061 smoke_mid_v2_sprite.png | 1898516 B | текстура/изображение: smoke mid v2 sprite |
-| №1062 supabase/migrations/202610130001_characters.sql | 4421 B | SQL миграция Supabase |
+| №1062 supabase/migrations/202610130001_characters.sql | 4500 B | SQL миграция Supabase |
 | №1063 table.glb | 6217412 B | 3D модель/геометрия: table |
-| №1064 tests/ai_automation_test.cjs | 1649 B | автотест: ai automation test |
-| №1065 tests/ai_finalize_test.cjs | 3840 B | автотест: ai finalize test |
-| №1066 tests/alchemist_combat_test.js | 19298 B | автотест: alchemist combat test |
-| №1067 tests/alchemist_runtime_test.js | 41827 B | автотест: alchemist runtime test |
-| №1068 tests/character_3d_editor_test.js | 14206 B | автотест: character 3d editor test |
-| №1069 tests/character_3d_foundation_test.js | 15396 B | автотест: character 3d foundation test |
-| №1070 tests/character_3d_morph_assets_test.js | 5179 B | автотест: character 3d morph assets test |
-| №1071 tests/character_3d_skin_assets_test.js | 1827 B | автотест: character 3d skin assets test |
-| №1072 tests/character_3d_skin_morph_test.js | 3032 B | автотест: character 3d skin morph test |
-| №1073 tests/character_adult_anatomy_test.js | 4704 B | автотест: character adult anatomy test |
-| №1074 tests/character_animal_heads_test.js | 4415 B | автотест: character animal heads test |
-| №1075 tests/character_appearance_store_test.js | 2308 B | автотест: character appearance store test |
-| №1076 tests/character_avian_elephant_heads_test.js | 5125 B | автотест: character avian elephant heads test |
-| №1077 tests/character_clothing_customizer_geometry_test.js | 4676 B | автотест: character clothing customizer geometry test |
-| №1078 tests/character_clothing_options_test.js | 1922 B | автотест: character clothing options test |
-| №1079 tests/character_clothing_test.js | 7286 B | автотест: character clothing test |
-| №1080 tests/character_editor_morph_assets_test.js | 4783 B | автотест: character editor morph assets test |
-| №1081 tests/character_elf_details_test.js | 2787 B | автотест: character elf details test |
-| №1082 tests/character_external_anatomy_test.js | 7930 B | автотест: character external anatomy test |
-| №1083 tests/character_fur_test.js | 3520 B | автотест: character fur test |
-| №1084 tests/character_ghost_geometry_test.js | 3867 B | автотест: character ghost geometry test |
-| №1085 tests/character_hair_pack_test.js | 2838 B | автотест: character hair pack test |
-| №1086 tests/character_head_geometry_test.js | 3575 B | автотест: character head geometry test |
-| №1087 tests/character_male_anatomy_fix_test.js | 3902 B | автотест: character male anatomy fix test |
-| №1088 tests/character_native_limbs_test.js | 4909 B | автотест: character native limbs test |
-| №1089 tests/character_parasites_geometry_test.js | 3738 B | автотест: character parasites geometry test |
-| №1090 tests/character_races_geometry_test.js | 19702 B | автотест: character races geometry test |
-| №1091 tests/character_reptile_heads_test.js | 3734 B | автотест: character reptile heads test |
-| №1092 tests/character_skin_material_test.js | 3816 B | автотест: character skin material test |
-| №1093 tests/character_stat_modes_levelup_test.cjs | 4864 B | автотест: character stat modes levelup test |
-| №1094 tests/character_swarm_geometry_test.js | 3505 B | автотест: character swarm geometry test |
-| №1095 tests/character_tiefling_details_test.js | 4451 B | автотест: character tiefling details test |
-| №1096 tests/cloud_rls_test.sql | 5342 B | автотест: cloud rls test |
-| №1097 tests/cloud_sql_concurrency.cjs | 2072 B | автотест: cloud sql concurrency |
-| №1098 tests/cloud_sync_test.cjs | 19921 B | автотест: cloud sync test |
-| №1099 tests/crafting_disassembly_v51_test.js | 3052 B | автотест: crafting disassembly v51 test |
-| №1100 tests/crafting_dlc_v50_test.js | 2668 B | автотест: crafting dlc v50 test |
-| №1101 tests/crafting_economy_v49_test.js | 1974 B | автотест: crafting economy v49 test |
-| №1102 tests/creation_signature_asset_test.cjs | 3935 B | автотест: creation signature asset test |
-| №1103 tests/desktop_update_contract.cjs | 4025 B | автотест: desktop update contract |
-| №1104 tests/fixtures/cloud_auth.sql | 711 B | автотест: cloud auth |
-| №1105 tests/fixtures/female_anatomy_74_00_59.json | 251 B | автотест: female anatomy 74 00 59 |
-| №1106 tests/generate_makehuman_glb_morph_fixture.js | 4454 B | автотест: generate makehuman glb morph fixture |
-| №1107 tests/gltf_loader_smoke.cjs | 3734 B | автотест: gltf loader smoke |
-| №1108 tests/helpers/class_runtime_harness.js | 2323 B | автотест: class runtime harness |
-| №1109 tests/human_base_glb_audit.js | 2158 B | автотест: human base glb audit |
-| №1110 tests/imported_3d_editor_assets.cjs | 2157 B | автотест: imported 3d editor assets |
-| №1111 tests/makehuman_gender_fixture_audit.js | 4646 B | автотест: makehuman gender fixture audit |
-| №1112 tests/makehuman_gender_recipe_test.js | 5498 B | автотест: makehuman gender recipe test |
-| №1113 tests/makehuman_glb_morph_fixture_audit.js | 1703 B | автотест: makehuman glb morph fixture audit |
-| №1114 tests/makehuman_morph_bridge.js | 9756 B | автотест: makehuman morph bridge |
-| №1115 tests/makehuman_surface_mapping_audit.js | 9447 B | автотест: makehuman surface mapping audit |
-| №1116 tests/makehuman_target_reverse_transfer_audit.js | 10959 B | автотест: makehuman target reverse transfer audit |
-| №1117 tests/makehuman_target_surface_transfer_audit.js | 12260 B | автотест: makehuman target surface transfer audit |
-| №1118 tests/makehuman_topology_audit.js | 5878 B | автотест: makehuman topology audit |
-| №1119 tests/makehuman_uv_bridge_test.js | 1465 B | автотест: makehuman uv bridge test |
-| №1120 tests/makehuman_vertex_mapping_audit.js | 7410 B | автотест: makehuman vertex mapping audit |
-| №1121 tests/map_editor_dom_test.js | 3347 B | автотест: map editor dom test |
-| №1122 tests/map_rebuild_world_test.js | 3815 B | автотест: map rebuild world test |
-| №1123 tests/predictor_aura_ledger_test.cjs | 12810 B | автотест: predictor aura ledger test |
-| №1124 tests/predictor_blind_test.cjs | 4972 B | автотест: predictor blind test |
-| №1125 tests/predictor_cards_test.cjs | 10793 B | автотест: predictor cards test |
-| №1126 tests/predictor_cloud_sync_test.cjs | 36354 B | автотест: predictor cloud sync test |
-| №1127 tests/predictor_coin_ancestor_test.cjs | 6734 B | автотест: predictor coin ancestor test |
-| №1128 tests/predictor_deck_ui_test.cjs | 29014 B | автотест: predictor deck ui test |
-| №1129 tests/predictor_devil_plan_test.cjs | 4680 B | автотест: predictor devil plan test |
-| №1130 tests/predictor_event_reactions_test.cjs | 7259 B | автотест: predictor event reactions test |
-| №1131 tests/predictor_exhaustion_test.cjs | 4867 B | автотест: predictor exhaustion test |
-| №1132 tests/predictor_healing_reaction_test.cjs | 5049 B | автотест: predictor healing reaction test |
-| №1133 tests/predictor_inventory_rewards_test.cjs | 14111 B | автотест: predictor inventory rewards test |
-| №1134 tests/predictor_last_stand_test.cjs | 12289 B | автотест: predictor last stand test |
-| №1135 tests/predictor_mage_spells_test.cjs | 29988 B | автотест: predictor mage spells test |
-| №1136 tests/predictor_motion_cards_test.cjs | 11690 B | автотест: predictor motion cards test |
-| №1137 tests/predictor_movement_cards_test.cjs | 7196 B | автотест: predictor movement cards test |
-| №1138 tests/predictor_progression_test.cjs | 3750 B | автотест: predictor progression test |
-| №1139 tests/predictor_runtime_test.cjs | 10585 B | автотест: predictor runtime test |
-| №1140 tests/predictor_seven_cups_test.cjs | 12727 B | автотест: predictor seven cups test |
-| №1141 tests/predictor_status_cards_test.cjs | 13936 B | автотест: predictor status cards test |
-| №1142 tests/predictor_tactics_cards_test.cjs | 11334 B | автотест: predictor tactics cards test |
-| №1143 tests/predictor_trickster_test.cjs | 10554 B | автотест: predictor trickster test |
-| №1144 tests/predictor_turn_effects_test.cjs | 13273 B | автотест: predictor turn effects test |
-| №1145 tests/predictor_vision_control_test.cjs | 12922 B | автотест: predictor vision control test |
-| №1146 tests/predictor_world_truth_search_test.cjs | 5654 B | автотест: predictor world truth search test |
-| №1147 tests/pugilist_combat_test.js | 21085 B | автотест: pugilist combat test |
-| №1148 tests/pugilist_runtime_test.js | 4834 B | автотест: pugilist runtime test |
-| №1149 tests/stair_navigation.cjs | 2520 B | автотест: stair navigation |
-| №1150 tests/test_blood_hunter_completion.js | 8673 B | автотест: test blood hunter completion |
-| №1151 tests/test_blood_hunter_focus_network.js | 3203 B | автотест: test blood hunter focus network |
-| №1152 tests/test_blood_hunter_orders.js | 9810 B | автотест: test blood hunter orders |
-| №1153 tests/test_blood_hunter_patron_selection.js | 4699 B | автотест: test blood hunter patron selection |
-| №1154 tests/test_blood_hunter_profane_focus.js | 6459 B | автотест: test blood hunter profane focus |
-| №1155 tests/test_class_audit_runtime.js | 14611 B | автотест: test class audit runtime |
-| №1156 tests/test_class_audit_stage2_runtime.js | 15372 B | автотест: test class audit stage2 runtime |
-| №1157 tests/test_class_audit_stage3_runtime.js | 16610 B | автотест: test class audit stage3 runtime |
-| №1158 tests/test_class_audit_stage4_runtime.js | 23853 B | автотест: test class audit stage4 runtime |
-| №1159 tests/test_v52.js | 2202 B | автотест: test v52 |
-| №1160 tests/test_v53.js | 2507 B | автотест: test v53 |
-| №1161 tests/test_v54.js | 2148 B | автотест: test v54 |
-| №1162 tests/test_v55_2.js | 4154 B | автотест: test v55 2 |
-| №1163 tests/test_v55_3.js | 2635 B | автотест: test v55 3 |
-| №1164 tests/test_v55.js | 2152 B | автотест: test v55 |
-| №1165 tests/test_v56_1.js | 1667 B | автотест: test v56 1 |
-| №1166 tests/test_v56_10.js | 2140 B | автотест: test v56 10 |
-| №1167 tests/test_v56_11.js | 1791 B | автотест: test v56 11 |
-| №1168 tests/test_v56_12.js | 1665 B | автотест: test v56 12 |
-| №1169 tests/test_v56_13.js | 2465 B | автотест: test v56 13 |
-| №1170 tests/test_v56_2.js | 1697 B | автотест: test v56 2 |
-| №1171 tests/test_v56_3.js | 1363 B | автотест: test v56 3 |
-| №1172 tests/test_v56_4.js | 1458 B | автотест: test v56 4 |
-| №1173 tests/test_v56_5.js | 1745 B | автотест: test v56 5 |
-| №1174 tests/test_v56_6.js | 1439 B | автотест: test v56 6 |
-| №1175 tests/test_v56_8.js | 1516 B | автотест: test v56 8 |
-| №1176 tests/test_v56_9.js | 1734 B | автотест: test v56 9 |
-| №1177 tests/test_v56.js | 3572 B | автотест: test v56 |
-| №1178 tests/test_v57.js | 2554 B | автотест: test v57 |
-| №1179 tests/test_v58.js | 1847 B | автотест: test v58 |
-| №1180 tests/test_v59.js | 878 B | автотест: test v59 |
-| №1181 tests/test_v60.js | 860 B | автотест: test v60 |
-| №1182 tests/test_v61.js | 961 B | автотест: test v61 |
-| №1183 tests/test_v62.js | 800 B | автотест: test v62 |
-| №1184 tests/test_v63.js | 364 B | автотест: test v63 |
-| №1185 tests/test_v64.js | 312 B | автотест: test v64 |
-| №1186 tests/test_v65.js | 335 B | автотест: test v65 |
-| №1187 tests/test_v66.js | 373 B | автотест: test v66 |
-| №1188 tests/test_v67.js | 628 B | автотест: test v67 |
-| №1189 tests/test_v68.js | 984 B | автотест: test v68 |
-| №1190 tests/test_v69.js | 1713 B | автотест: test v69 |
-| №1191 tests/test_v70.js | 2112 B | автотест: test v70 |
-| №1192 tests/test_v701.js | 2425 B | автотест: test v701 |
-| №1193 tests/test_v702.js | 4409 B | автотест: test v702 |
-| №1194 tests/test_v703.js | 2646 B | автотест: test v703 |
-| №1195 tests/test_v704.js | 2402 B | автотест: test v704 |
-| №1196 tests/test_v705.js | 2717 B | автотест: test v705 |
-| №1197 tests/test_v706.js | 1414 B | автотест: test v706 |
-| №1198 tests/test_v707.js | 1066 B | автотест: test v707 |
-| №1199 tests/test_v708_fixes.js | 2968 B | автотест: test v708 fixes |
-| №1200 tests/test_v709_fixes.js | 2128 B | автотест: test v709 fixes |
-| №1201 tests/test_v710_fixes.js | 2223 B | автотест: test v710 fixes |
-| №1202 tests/test_v711_fixes.js | 1037 B | автотест: test v711 fixes |
-| №1203 tests/test_v712_fixes.js | 1675 B | автотест: test v712 fixes |
-| №1204 tests/test_v713_fixes.js | 2127 B | автотест: test v713 fixes |
-| №1205 tests/test_v714_fixes.js | 1727 B | автотест: test v714 fixes |
-| №1206 tests/test_v715_fixes.js | 1817 B | автотест: test v715 fixes |
-| №1207 tests/test_v716_fixes.js | 1980 B | автотест: test v716 fixes |
-| №1208 tests/test_v717_fixes.js | 2657 B | автотест: test v717 fixes |
-| №1209 tests/test_v718_fixes.js | 1001 B | автотест: test v718 fixes |
-| №1210 tests/test_v719_fixes.js | 1156 B | автотест: test v719 fixes |
-| №1211 tests/test_v720_fixes.js | 1621 B | автотест: test v720 fixes |
-| №1212 tests/test_v721_fixes.js | 3536 B | автотест: test v721 fixes |
-| №1213 tests/test_v722_fixes.js | 3509 B | автотест: test v722 fixes |
-| №1214 tests/test_v723_fixes.js | 4780 B | автотест: test v723 fixes |
-| №1215 tests/test_v724_fixes.js | 2330 B | автотест: test v724 fixes |
-| №1216 tests/test_v725_fixes.js | 4026 B | автотест: test v725 fixes |
-| №1217 tests/test_v726_fixes.js | 3809 B | автотест: test v726 fixes |
-| №1218 tests/test_v727_fixes.js | 3061 B | автотест: test v727 fixes |
-| №1219 tests/test_v728_fixes.js | 2641 B | автотест: test v728 fixes |
-| №1220 tests/test_v729_fixes.js | 1372 B | автотест: test v729 fixes |
-| №1221 tests/test_v730_fixes.js | 2190 B | автотест: test v730 fixes |
-| №1222 tests/test_v731_fixes.js | 1649 B | автотест: test v731 fixes |
-| №1223 tests/test_v732_fixes.js | 2794 B | автотест: test v732 fixes |
-| №1224 tests/test_v733_logic_audit.js | 2286 B | автотест: test v733 logic audit |
-| №1225 tests/test_v734_network_concentration.js | 1522 B | автотест: test v734 network concentration |
-| №1226 tests/test_v735_logic_rules.js | 1885 B | автотест: test v735 logic rules |
-| №1227 tests/test_v736_deep_rules.js | 4307 B | автотест: test v736 deep rules |
-| №1228 tests/test_v737_spellcasting_transaction.js | 5283 B | автотест: test v737 spellcasting transaction |
-| №1229 tests/test_v738_multiclass_spell_sources.js | 5402 B | автотест: test v738 multiclass spell sources |
-| №1230 tests/test_v739_prepared_transaction.js | 4317 B | автотест: test v739 prepared transaction |
-| №1231 tests/test_v740_concentration_lifecycle.js | 2114 B | автотест: test v740 concentration lifecycle |
-| №1232 tests/test_v741_damage_pipeline.js | 2462 B | автотест: test v741 damage pipeline |
-| №1233 tests/test_v742_character_combatant_sync.js | 3540 B | автотест: test v742 character combatant sync |
-| №1234 tests/test_v743_authority_recharge_events.js | 2228 B | автотест: test v743 authority recharge events |
-| №1235 tests/test_v744_sync_authority_save.js | 2516 B | автотест: test v744 sync authority save |
-| №1236 tests/test_v745_host_handoff.js | 2112 B | автотест: test v745 host handoff |
-| №1237 tests/test_v746_authoritative_save_recharge.js | 3032 B | автотест: test v746 authoritative save recharge |
-| №1238 tests/test_v747_event_race_compaction.js | 3064 B | автотест: test v747 event race compaction |
-| №1239 tests/test_v748_full_combat_transaction.js | 5181 B | автотест: test v748 full combat transaction |
-| №1240 tests/test_v749_monster_authority_reaction_order.js | 2661 B | автотест: test v749 monster authority reaction order |
-| №1241 tests/test_v750_resignal_reaction_monster_rpc.js | 1973 B | автотест: test v750 resignal reaction monster rpc |
-| №1242 tests/test_v751_authoritative_replay_rollback.js | 1185 B | автотест: test v751 authoritative replay rollback |
-| №1243 tests/test_v752_replay_hash_authority.js | 2033 B | автотест: test v752 replay hash authority |
-| №1244 tests/test_v753_replay_transaction_rng.js | 1195 B | автотест: test v753 replay transaction rng |
-| №1245 tests/test_v754_update_manager.js | 2816 B | автотест: test v754 update manager |
-| №1246 tests/test_v755_creation_buckets.js | 3973 B | автотест: test v755 creation buckets |
-| №1247 tests/test_v755_update_scene.js | 3625 B | автотест: test v755 update scene |
-| №1248 tests/update_ota_flow_test.js | 9661 B | автотест: update ota flow test |
-| №1249 tools/ai_automation.cjs | 2383 B | скрипт разработчика: ai automation |
-| №1250 tools/ai_checks.cjs | 1068 B | скрипт разработчика: ai checks |
-| №1251 tools/ai_finalize.cjs | 2199 B | скрипт разработчика: ai finalize |
-| №1252 tools/audit_adult_body_assets.py | 5868 B | скрипт разработчика: audit adult body assets |
-| №1253 tools/build_character_editor_morphs.js | 4493 B | скрипт разработчика: build character editor morphs |
-| №1254 tools/build_cloud_tests.sh | 1945 B | скрипт разработчика: build cloud tests |
-| №1255 tools/build_makehuman_morphs.js | 8803 B | скрипт разработчика: build makehuman morphs |
-| №1256 tools/build_skin_microtexture.py | 1254 B | скрипт разработчика: build skin microtexture |
-| №1257 tools/build_update_manifest.py | 3881 B | скрипт разработчика: build update manifest |
-| №1258 tools/check_adult_anatomy_browser.js | 7862 B | скрипт разработчика: check adult anatomy browser |
-| №1259 tools/check_adult_base_browser.js | 4732 B | скрипт разработчика: check adult base browser |
-| №1260 tools/check_animal_heads_browser.js | 6045 B | скрипт разработчика: check animal heads browser |
-| №1261 tools/check_avian_elephant_heads_browser.js | 6052 B | скрипт разработчика: check avian elephant heads browser |
-| №1262 tools/check_avian_races_browser.js | 6195 B | скрипт разработчика: check avian races browser |
-| №1263 tools/check_character_clothing_closeups.js | 3941 B | скрипт разработчика: check character clothing closeups |
-| №1264 tools/check_character_clothing_customizer.js | 8611 B | скрипт разработчика: check character clothing customizer |
-| №1265 tools/check_character_dress_customizer.js | 4892 B | скрипт разработчика: check character dress customizer |
-| №1266 tools/check_character_editor_browser.js | 24473 B | скрипт разработчика: check character editor browser |
-| №1267 tools/check_character_head_browser.js | 7169 B | скрипт разработчика: check character head browser |
-| №1268 tools/check_character_races_browser.js | 14773 B | скрипт разработчика: check character races browser |
-| №1269 tools/check_cloud_account_browser.cjs | 7054 B | скрипт разработчика: check cloud account browser |
-| №1270 tools/check_dense_swarm_browser.js | 6299 B | скрипт разработчика: check dense swarm browser |
-| №1271 tools/check_elf_details_browser.js | 5791 B | скрипт разработчика: check elf details browser |
-| №1272 tools/check_external_anatomy_browser.js | 9967 B | скрипт разработчика: check external anatomy browser |
-| №1273 tools/check_feather_surface_browser.js | 8888 B | скрипт разработчика: check feather surface browser |
-| №1274 tools/check_fur_browser.js | 6062 B | скрипт разработчика: check fur browser |
-| №1275 tools/check_fur_surface_browser.js | 8973 B | скрипт разработчика: check fur surface browser |
-| №1276 tools/check_ghost_browser.js | 8977 B | скрипт разработчика: check ghost browser |
-| №1277 tools/check_hair_pack_browser.js | 5826 B | скрипт разработчика: check hair pack browser |
-| №1278 tools/check_kobold_tabaxi_browser.js | 6240 B | скрипт разработчика: check kobold tabaxi browser |
-| №1279 tools/check_last_races_browser.js | 7457 B | скрипт разработчика: check last races browser |
-| №1280 tools/check_male_anatomy_browser.js | 6082 B | скрипт разработчика: check male anatomy browser |
-| №1281 tools/check_map_browser.js | 3805 B | скрипт разработчика: check map browser |
-| №1282 tools/check_mechanical_races_browser.js | 6158 B | скрипт разработчика: check mechanical races browser |
-| №1283 tools/check_modular_races_browser.js | 5826 B | скрипт разработчика: check modular races browser |
-| №1284 tools/check_native_limbs_browser.js | 7153 B | скрипт разработчика: check native limbs browser |
-| №1285 tools/check_parasites_browser.js | 6584 B | скрипт разработчика: check parasites browser |
-| №1286 tools/check_pose_browser.js | 7090 B | скрипт разработчика: check pose browser |
-| №1287 tools/check_quartet_races_browser.js | 6706 B | скрипт разработчика: check quartet races browser |
-| №1288 tools/check_reptile_heads_browser.js | 5336 B | скрипт разработчика: check reptile heads browser |
-| №1289 tools/check_reptile_races_browser.js | 5781 B | скрипт разработчика: check reptile races browser |
-| №1290 tools/check_reptile_surface_browser.js | 7114 B | скрипт разработчика: check reptile surface browser |
-| №1291 tools/check_skin_material_browser.js | 11016 B | скрипт разработчика: check skin material browser |
-| №1292 tools/check_small_armor_browser.js | 3698 B | скрипт разработчика: check small armor browser |
-| №1293 tools/check_swarm_browser.js | 7847 B | скрипт разработчика: check swarm browser |
-| №1294 tools/check_tiefling_browser.js | 7273 B | скрипт разработчика: check tiefling browser |
-| №1295 tools/check_tiefling_details_browser.js | 6694 B | скрипт разработчика: check tiefling details browser |
-| №1296 tools/cloud_test.init.gradle | 781 B | скрипт разработчика: cloud test.init |
-| №1297 tools/convert_remaining_furniture.py | 4297 B | скрипт разработчика: convert remaining furniture |
-| №1298 tools/finalize_v741.py | 3280 B | скрипт разработчика: finalize v741 |
-| №1299 tools/generate_project_atlas.cjs | 12690 B | автоматический генератор этого атласа |
-| №1300 tools/install_native_build_tools.sh | 2975 B | скрипт разработчика: install native build tools |
-| №1301 tools/makehuman_gender_channels.json | 4749 B | скрипт разработчика: makehuman gender channels |
-| №1302 tools/makehuman_morph_channels.json | 448 B | скрипт разработчика: makehuman morph channels |
-| №1303 tools/prepare_makehuman_gender.js | 5599 B | скрипт разработчика: prepare makehuman gender |
-| №1304 tools/run_tests_v731.js | 5062 B | скрипт разработчика: run tests v731 |
-| №1305 tools/sync_manifest.py | 2034 B | скрипт разработчика: sync manifest |
-| №1306 tools/test_cloud_sql.sh | 1088 B | скрипт разработчика: test cloud sql |
-| №1307 tools/unified_version.py | 3403 B | скрипт разработчика: unified version |
+| №1064 tests/ai_automation_test.cjs | 1672 B | автотест: ai automation test |
+| №1065 tests/ai_finalize_test.cjs | 3854 B | автотест: ai finalize test |
+| №1066 tests/alchemist_combat_test.js | 19503 B | автотест: alchemist combat test |
+| №1067 tests/alchemist_runtime_test.js | 42246 B | автотест: alchemist runtime test |
+| №1068 tests/character_3d_editor_test.js | 14297 B | автотест: character 3d editor test |
+| №1069 tests/character_3d_foundation_test.js | 15473 B | автотест: character 3d foundation test |
+| №1070 tests/character_3d_morph_assets_test.js | 5206 B | автотест: character 3d morph assets test |
+| №1071 tests/character_3d_skin_assets_test.js | 1846 B | автотест: character 3d skin assets test |
+| №1072 tests/character_3d_skin_morph_test.js | 3068 B | автотест: character 3d skin morph test |
+| №1073 tests/character_adult_anatomy_test.js | 4734 B | автотест: character adult anatomy test |
+| №1074 tests/character_animal_heads_test.js | 4428 B | автотест: character animal heads test |
+| №1075 tests/character_appearance_store_test.js | 2322 B | автотест: character appearance store test |
+| №1076 tests/character_avian_elephant_heads_test.js | 5138 B | автотест: character avian elephant heads test |
+| №1077 tests/character_clothing_customizer_geometry_test.js | 4682 B | автотест: character clothing customizer geometry test |
+| №1078 tests/character_clothing_options_test.js | 1930 B | автотест: character clothing options test |
+| №1079 tests/character_clothing_test.js | 7294 B | автотест: character clothing test |
+| №1080 tests/character_editor_morph_assets_test.js | 4813 B | автотест: character editor morph assets test |
+| №1081 tests/character_elf_details_test.js | 2799 B | автотест: character elf details test |
+| №1082 tests/character_external_anatomy_test.js | 7946 B | автотест: character external anatomy test |
+| №1083 tests/character_fur_test.js | 3537 B | автотест: character fur test |
+| №1084 tests/character_ghost_geometry_test.js | 3875 B | автотест: character ghost geometry test |
+| №1085 tests/character_hair_pack_test.js | 2852 B | автотест: character hair pack test |
+| №1086 tests/character_head_geometry_test.js | 3581 B | автотест: character head geometry test |
+| №1087 tests/character_male_anatomy_fix_test.js | 3909 B | автотест: character male anatomy fix test |
+| №1088 tests/character_native_limbs_test.js | 4926 B | автотест: character native limbs test |
+| №1089 tests/character_parasites_geometry_test.js | 3742 B | автотест: character parasites geometry test |
+| №1090 tests/character_races_geometry_test.js | 19713 B | автотест: character races geometry test |
+| №1091 tests/character_reptile_heads_test.js | 3747 B | автотест: character reptile heads test |
+| №1092 tests/character_skin_material_test.js | 3831 B | автотест: character skin material test |
+| №1093 tests/character_stat_modes_levelup_test.cjs | 4960 B | автотест: character stat modes levelup test |
+| №1094 tests/character_swarm_geometry_test.js | 3517 B | автотест: character swarm geometry test |
+| №1095 tests/character_tiefling_details_test.js | 4472 B | автотест: character tiefling details test |
+| №1096 tests/cloud_rls_test.sql | 5425 B | автотест: cloud rls test |
+| №1097 tests/cloud_sql_concurrency.cjs | 2095 B | автотест: cloud sql concurrency |
+| №1098 tests/cloud_sync_test.cjs | 20071 B | автотест: cloud sync test |
+| №1099 tests/crafting_disassembly_v51_test.js | 3075 B | автотест: crafting disassembly v51 test |
+| №1100 tests/crafting_dlc_v50_test.js | 2704 B | автотест: crafting dlc v50 test |
+| №1101 tests/crafting_economy_v49_test.js | 1999 B | автотест: crafting economy v49 test |
+| №1102 tests/creation_signature_asset_test.cjs | 3966 B | автотест: creation signature asset test |
+| №1103 tests/desktop_update_contract.cjs | 4107 B | автотест: desktop update contract |
+| №1104 tests/fixtures/cloud_auth.sql | 724 B | автотест: cloud auth |
+| №1105 tests/fixtures/female_anatomy_74_00_59.json | 256 B | автотест: female anatomy 74 00 59 |
+| №1106 tests/generate_makehuman_glb_morph_fixture.js | 4558 B | автотест: generate makehuman glb morph fixture |
+| №1107 tests/gltf_loader_smoke.cjs | 3765 B | автотест: gltf loader smoke |
+| №1108 tests/helpers/class_runtime_harness.js | 2336 B | автотест: class runtime harness |
+| №1109 tests/human_base_glb_audit.js | 2170 B | автотест: human base glb audit |
+| №1110 tests/imported_3d_editor_assets.cjs | 2187 B | автотест: imported 3d editor assets |
+| №1111 tests/makehuman_gender_fixture_audit.js | 4683 B | автотест: makehuman gender fixture audit |
+| №1112 tests/makehuman_gender_recipe_test.js | 5535 B | автотест: makehuman gender recipe test |
+| №1113 tests/makehuman_glb_morph_fixture_audit.js | 1716 B | автотест: makehuman glb morph fixture audit |
+| №1114 tests/makehuman_morph_bridge.js | 9866 B | автотест: makehuman morph bridge |
+| №1115 tests/makehuman_surface_mapping_audit.js | 9671 B | автотест: makehuman surface mapping audit |
+| №1116 tests/makehuman_target_reverse_transfer_audit.js | 11151 B | автотест: makehuman target reverse transfer audit |
+| №1117 tests/makehuman_target_surface_transfer_audit.js | 12557 B | автотест: makehuman target surface transfer audit |
+| №1118 tests/makehuman_topology_audit.js | 6060 B | автотест: makehuman topology audit |
+| №1119 tests/makehuman_uv_bridge_test.js | 1479 B | автотест: makehuman uv bridge test |
+| №1120 tests/makehuman_vertex_mapping_audit.js | 7604 B | автотест: makehuman vertex mapping audit |
+| №1121 tests/map_editor_dom_test.js | 3349 B | автотест: map editor dom test |
+| №1122 tests/map_rebuild_world_test.js | 3822 B | автотест: map rebuild world test |
+| №1123 tests/predictor_aura_ledger_test.cjs | 12844 B | автотест: predictor aura ledger test |
+| №1124 tests/predictor_blind_test.cjs | 5016 B | автотест: predictor blind test |
+| №1125 tests/predictor_cards_test.cjs | 10824 B | автотест: predictor cards test |
+| №1126 tests/predictor_cloud_sync_test.cjs | 36466 B | автотест: predictor cloud sync test |
+| №1127 tests/predictor_coin_ancestor_test.cjs | 6752 B | автотест: predictor coin ancestor test |
+| №1128 tests/predictor_deck_ui_test.cjs | 29110 B | автотест: predictor deck ui test |
+| №1129 tests/predictor_devil_plan_test.cjs | 4693 B | автотест: predictor devil plan test |
+| №1130 tests/predictor_event_reactions_test.cjs | 7281 B | автотест: predictor event reactions test |
+| №1131 tests/predictor_exhaustion_test.cjs | 4882 B | автотест: predictor exhaustion test |
+| №1132 tests/predictor_healing_reaction_test.cjs | 5065 B | автотест: predictor healing reaction test |
+| №1133 tests/predictor_inventory_rewards_test.cjs | 14146 B | автотест: predictor inventory rewards test |
+| №1134 tests/predictor_last_stand_test.cjs | 12317 B | автотест: predictor last stand test |
+| №1135 tests/predictor_mage_spells_test.cjs | 30059 B | автотест: predictor mage spells test |
+| №1136 tests/predictor_motion_cards_test.cjs | 11721 B | автотест: predictor motion cards test |
+| №1137 tests/predictor_movement_cards_test.cjs | 7216 B | автотест: predictor movement cards test |
+| №1138 tests/predictor_progression_test.cjs | 3788 B | автотест: predictor progression test |
+| №1139 tests/predictor_runtime_test.cjs | 10670 B | автотест: predictor runtime test |
+| №1140 tests/predictor_seven_cups_test.cjs | 12756 B | автотест: predictor seven cups test |
+| №1141 tests/predictor_status_cards_test.cjs | 14018 B | автотест: predictor status cards test |
+| №1142 tests/predictor_tactics_cards_test.cjs | 11394 B | автотест: predictor tactics cards test |
+| №1143 tests/predictor_trickster_test.cjs | 10629 B | автотест: predictor trickster test |
+| №1144 tests/predictor_turn_effects_test.cjs | 13350 B | автотест: predictor turn effects test |
+| №1145 tests/predictor_vision_control_test.cjs | 12955 B | автотест: predictor vision control test |
+| №1146 tests/predictor_world_truth_search_test.cjs | 5669 B | автотест: predictor world truth search test |
+| №1147 tests/pugilist_combat_test.js | 21277 B | автотест: pugilist combat test |
+| №1148 tests/pugilist_runtime_test.js | 4882 B | автотест: pugilist runtime test |
+| №1149 tests/stair_navigation.cjs | 2571 B | автотест: stair navigation |
+| №1150 tests/test_blood_hunter_completion.js | 8716 B | автотест: test blood hunter completion |
+| №1151 tests/test_blood_hunter_focus_network.js | 3232 B | автотест: test blood hunter focus network |
+| №1152 tests/test_blood_hunter_orders.js | 9856 B | автотест: test blood hunter orders |
+| №1153 tests/test_blood_hunter_patron_selection.js | 4770 B | автотест: test blood hunter patron selection |
+| №1154 tests/test_blood_hunter_profane_focus.js | 6535 B | автотест: test blood hunter profane focus |
+| №1155 tests/test_class_audit_runtime.js | 14688 B | автотест: test class audit runtime |
+| №1156 tests/test_class_audit_stage2_runtime.js | 15541 B | автотест: test class audit stage2 runtime |
+| №1157 tests/test_class_audit_stage3_runtime.js | 16757 B | автотест: test class audit stage3 runtime |
+| №1158 tests/test_class_audit_stage4_runtime.js | 24035 B | автотест: test class audit stage4 runtime |
+| №1159 tests/test_v52.js | 2219 B | автотест: test v52 |
+| №1160 tests/test_v53.js | 2533 B | автотест: test v53 |
+| №1161 tests/test_v54.js | 2171 B | автотест: test v54 |
+| №1162 tests/test_v55_2.js | 4186 B | автотест: test v55 2 |
+| №1163 tests/test_v55_3.js | 2654 B | автотест: test v55 3 |
+| №1164 tests/test_v55.js | 2159 B | автотест: test v55 |
+| №1165 tests/test_v56_1.js | 1692 B | автотест: test v56 1 |
+| №1166 tests/test_v56_10.js | 2157 B | автотест: test v56 10 |
+| №1167 tests/test_v56_11.js | 1807 B | автотест: test v56 11 |
+| №1168 tests/test_v56_12.js | 1675 B | автотест: test v56 12 |
+| №1169 tests/test_v56_13.js | 2497 B | автотест: test v56 13 |
+| №1170 tests/test_v56_2.js | 1714 B | автотест: test v56 2 |
+| №1171 tests/test_v56_3.js | 1376 B | автотест: test v56 3 |
+| №1172 tests/test_v56_4.js | 1471 B | автотест: test v56 4 |
+| №1173 tests/test_v56_5.js | 1762 B | автотест: test v56 5 |
+| №1174 tests/test_v56_6.js | 1452 B | автотест: test v56 6 |
+| №1175 tests/test_v56_8.js | 1528 B | автотест: test v56 8 |
+| №1176 tests/test_v56_9.js | 1749 B | автотест: test v56 9 |
+| №1177 tests/test_v56.js | 3599 B | автотест: test v56 |
+| №1178 tests/test_v57.js | 2576 B | автотест: test v57 |
+| №1179 tests/test_v58.js | 1861 B | автотест: test v58 |
+| №1180 tests/test_v59.js | 894 B | автотест: test v59 |
+| №1181 tests/test_v60.js | 875 B | автотест: test v60 |
+| №1182 tests/test_v61.js | 979 B | автотест: test v61 |
+| №1183 tests/test_v62.js | 817 B | автотест: test v62 |
+| №1184 tests/test_v63.js | 368 B | автотест: test v63 |
+| №1185 tests/test_v64.js | 315 B | автотест: test v64 |
+| №1186 tests/test_v65.js | 338 B | автотест: test v65 |
+| №1187 tests/test_v66.js | 376 B | автотест: test v66 |
+| №1188 tests/test_v67.js | 639 B | автотест: test v67 |
+| №1189 tests/test_v68.js | 993 B | автотест: test v68 |
+| №1190 tests/test_v69.js | 1722 B | автотест: test v69 |
+| №1191 tests/test_v70.js | 2123 B | автотест: test v70 |
+| №1192 tests/test_v701.js | 2435 B | автотест: test v701 |
+| №1193 tests/test_v702.js | 4419 B | автотест: test v702 |
+| №1194 tests/test_v703.js | 2656 B | автотест: test v703 |
+| №1195 tests/test_v704.js | 2412 B | автотест: test v704 |
+| №1196 tests/test_v705.js | 2727 B | автотест: test v705 |
+| №1197 tests/test_v706.js | 1427 B | автотест: test v706 |
+| №1198 tests/test_v707.js | 1083 B | автотест: test v707 |
+| №1199 tests/test_v708_fixes.js | 3024 B | автотест: test v708 fixes |
+| №1200 tests/test_v709_fixes.js | 2158 B | автотест: test v709 fixes |
+| №1201 tests/test_v710_fixes.js | 2243 B | автотест: test v710 fixes |
+| №1202 tests/test_v711_fixes.js | 1051 B | автотест: test v711 fixes |
+| №1203 tests/test_v712_fixes.js | 1691 B | автотест: test v712 fixes |
+| №1204 tests/test_v713_fixes.js | 2149 B | автотест: test v713 fixes |
+| №1205 tests/test_v714_fixes.js | 1748 B | автотест: test v714 fixes |
+| №1206 tests/test_v715_fixes.js | 1833 B | автотест: test v715 fixes |
+| №1207 tests/test_v716_fixes.js | 2002 B | автотест: test v716 fixes |
+| №1208 tests/test_v717_fixes.js | 2667 B | автотест: test v717 fixes |
+| №1209 tests/test_v718_fixes.js | 1014 B | автотест: test v718 fixes |
+| №1210 tests/test_v719_fixes.js | 1169 B | автотест: test v719 fixes |
+| №1211 tests/test_v720_fixes.js | 1632 B | автотест: test v720 fixes |
+| №1212 tests/test_v721_fixes.js | 3558 B | автотест: test v721 fixes |
+| №1213 tests/test_v722_fixes.js | 3542 B | автотест: test v722 fixes |
+| №1214 tests/test_v723_fixes.js | 4824 B | автотест: test v723 fixes |
+| №1215 tests/test_v724_fixes.js | 2350 B | автотест: test v724 fixes |
+| №1216 tests/test_v725_fixes.js | 4052 B | автотест: test v725 fixes |
+| №1217 tests/test_v726_fixes.js | 3873 B | автотест: test v726 fixes |
+| №1218 tests/test_v727_fixes.js | 3078 B | автотест: test v727 fixes |
+| №1219 tests/test_v728_fixes.js | 2659 B | автотест: test v728 fixes |
+| №1220 tests/test_v729_fixes.js | 1384 B | автотест: test v729 fixes |
+| №1221 tests/test_v730_fixes.js | 2206 B | автотест: test v730 fixes |
+| №1222 tests/test_v731_fixes.js | 1677 B | автотест: test v731 fixes |
+| №1223 tests/test_v732_fixes.js | 2831 B | автотест: test v732 fixes |
+| №1224 tests/test_v733_logic_audit.js | 2304 B | автотест: test v733 logic audit |
+| №1225 tests/test_v734_network_concentration.js | 1540 B | автотест: test v734 network concentration |
+| №1226 tests/test_v735_logic_rules.js | 1905 B | автотест: test v735 logic rules |
+| №1227 tests/test_v736_deep_rules.js | 4379 B | автотест: test v736 deep rules |
+| №1228 tests/test_v737_spellcasting_transaction.js | 5348 B | автотест: test v737 spellcasting transaction |
+| №1229 tests/test_v738_multiclass_spell_sources.js | 5459 B | автотест: test v738 multiclass spell sources |
+| №1230 tests/test_v739_prepared_transaction.js | 4356 B | автотест: test v739 prepared transaction |
+| №1231 tests/test_v740_concentration_lifecycle.js | 2156 B | автотест: test v740 concentration lifecycle |
+| №1232 tests/test_v741_damage_pipeline.js | 2473 B | автотест: test v741 damage pipeline |
+| №1233 tests/test_v742_character_combatant_sync.js | 3581 B | автотест: test v742 character combatant sync |
+| №1234 tests/test_v743_authority_recharge_events.js | 2257 B | автотест: test v743 authority recharge events |
+| №1235 tests/test_v744_sync_authority_save.js | 2546 B | автотест: test v744 sync authority save |
+| №1236 tests/test_v745_host_handoff.js | 2137 B | автотест: test v745 host handoff |
+| №1237 tests/test_v746_authoritative_save_recharge.js | 3061 B | автотест: test v746 authoritative save recharge |
+| №1238 tests/test_v747_event_race_compaction.js | 3091 B | автотест: test v747 event race compaction |
+| №1239 tests/test_v748_full_combat_transaction.js | 5255 B | автотест: test v748 full combat transaction |
+| №1240 tests/test_v749_monster_authority_reaction_order.js | 2676 B | автотест: test v749 monster authority reaction order |
+| №1241 tests/test_v750_resignal_reaction_monster_rpc.js | 1986 B | автотест: test v750 resignal reaction monster rpc |
+| №1242 tests/test_v751_authoritative_replay_rollback.js | 1200 B | автотест: test v751 authoritative replay rollback |
+| №1243 tests/test_v752_replay_hash_authority.js | 2045 B | автотест: test v752 replay hash authority |
+| №1244 tests/test_v753_replay_transaction_rng.js | 1204 B | автотест: test v753 replay transaction rng |
+| №1245 tests/test_v754_update_manager.js | 2844 B | автотест: test v754 update manager |
+| №1246 tests/test_v755_creation_buckets.js | 4009 B | автотест: test v755 creation buckets |
+| №1247 tests/test_v755_update_scene.js | 3668 B | автотест: test v755 update scene |
+| №1248 tests/update_ota_flow_test.js | 9750 B | автотест: update ota flow test |
+| №1249 tools/ai_automation.cjs | 2424 B | скрипт разработчика: ai automation |
+| №1250 tools/ai_checks.cjs | 1087 B | скрипт разработчика: ai checks |
+| №1251 tools/ai_finalize.cjs | 2222 B | скрипт разработчика: ai finalize |
+| №1252 tools/audit_adult_body_assets.py | 5979 B | скрипт разработчика: audit adult body assets |
+| №1253 tools/build_character_editor_morphs.js | 4528 B | скрипт разработчика: build character editor morphs |
+| №1254 tools/build_cloud_tests.sh | 1966 B | скрипт разработчика: build cloud tests |
+| №1255 tools/build_makehuman_morphs.js | 8855 B | скрипт разработчика: build makehuman morphs |
+| №1256 tools/build_skin_microtexture.py | 1281 B | скрипт разработчика: build skin microtexture |
+| №1257 tools/build_update_manifest.py | 3974 B | скрипт разработчика: build update manifest |
+| №1258 tools/check_adult_anatomy_browser.js | 7888 B | скрипт разработчика: check adult anatomy browser |
+| №1259 tools/check_adult_base_browser.js | 4744 B | скрипт разработчика: check adult base browser |
+| №1260 tools/check_animal_heads_browser.js | 6065 B | скрипт разработчика: check animal heads browser |
+| №1261 tools/check_avian_elephant_heads_browser.js | 6072 B | скрипт разработчика: check avian elephant heads browser |
+| №1262 tools/check_avian_races_browser.js | 6205 B | скрипт разработчика: check avian races browser |
+| №1263 tools/check_character_clothing_closeups.js | 3950 B | скрипт разработчика: check character clothing closeups |
+| №1264 tools/check_character_clothing_customizer.js | 8623 B | скрипт разработчика: check character clothing customizer |
+| №1265 tools/check_character_dress_customizer.js | 4900 B | скрипт разработчика: check character dress customizer |
+| №1266 tools/check_character_editor_browser.js | 24525 B | скрипт разработчика: check character editor browser |
+| №1267 tools/check_character_head_browser.js | 7179 B | скрипт разработчика: check character head browser |
+| №1268 tools/check_character_races_browser.js | 14783 B | скрипт разработчика: check character races browser |
+| №1269 tools/check_cloud_account_browser.cjs | 7125 B | скрипт разработчика: check cloud account browser |
+| №1270 tools/check_dense_swarm_browser.js | 6320 B | скрипт разработчика: check dense swarm browser |
+| №1271 tools/check_elf_details_browser.js | 5810 B | скрипт разработчика: check elf details browser |
+| №1272 tools/check_external_anatomy_browser.js | 9994 B | скрипт разработчика: check external anatomy browser |
+| №1273 tools/check_feather_surface_browser.js | 8923 B | скрипт разработчика: check feather surface browser |
+| №1274 tools/check_fur_browser.js | 6080 B | скрипт разработчика: check fur browser |
+| №1275 tools/check_fur_surface_browser.js | 9010 B | скрипт разработчика: check fur surface browser |
+| №1276 tools/check_ghost_browser.js | 9006 B | скрипт разработчика: check ghost browser |
+| №1277 tools/check_hair_pack_browser.js | 5844 B | скрипт разработчика: check hair pack browser |
+| №1278 tools/check_kobold_tabaxi_browser.js | 6250 B | скрипт разработчика: check kobold tabaxi browser |
+| №1279 tools/check_last_races_browser.js | 7467 B | скрипт разработчика: check last races browser |
+| №1280 tools/check_male_anatomy_browser.js | 6098 B | скрипт разработчика: check male anatomy browser |
+| №1281 tools/check_map_browser.js | 3807 B | скрипт разработчика: check map browser |
+| №1282 tools/check_mechanical_races_browser.js | 6168 B | скрипт разработчика: check mechanical races browser |
+| №1283 tools/check_modular_races_browser.js | 5836 B | скрипт разработчика: check modular races browser |
+| №1284 tools/check_native_limbs_browser.js | 7168 B | скрипт разработчика: check native limbs browser |
+| №1285 tools/check_parasites_browser.js | 6601 B | скрипт разработчика: check parasites browser |
+| №1286 tools/check_pose_browser.js | 7107 B | скрипт разработчика: check pose browser |
+| №1287 tools/check_quartet_races_browser.js | 6716 B | скрипт разработчика: check quartet races browser |
+| №1288 tools/check_reptile_heads_browser.js | 5356 B | скрипт разработчика: check reptile heads browser |
+| №1289 tools/check_reptile_races_browser.js | 5791 B | скрипт разработчика: check reptile races browser |
+| №1290 tools/check_reptile_surface_browser.js | 7141 B | скрипт разработчика: check reptile surface browser |
+| №1291 tools/check_skin_material_browser.js | 11043 B | скрипт разработчика: check skin material browser |
+| №1292 tools/check_small_armor_browser.js | 3705 B | скрипт разработчика: check small armor browser |
+| №1293 tools/check_swarm_browser.js | 7864 B | скрипт разработчика: check swarm browser |
+| №1294 tools/check_tiefling_browser.js | 7285 B | скрипт разработчика: check tiefling browser |
+| №1295 tools/check_tiefling_details_browser.js | 6717 B | скрипт разработчика: check tiefling details browser |
+| №1296 tools/cloud_test.init.gradle | 794 B | скрипт разработчика: cloud test.init |
+| №1297 tools/convert_remaining_furniture.py | 4375 B | скрипт разработчика: convert remaining furniture |
+| №1298 tools/finalize_v741.py | 3303 B | скрипт разработчика: finalize v741 |
+| №1299 tools/generate_project_atlas.cjs | 12859 B | автоматический генератор этого атласа |
+| №1300 tools/install_native_build_tools.sh | 3014 B | скрипт разработчика: install native build tools |
+| №1301 tools/makehuman_gender_channels.json | 4916 B | скрипт разработчика: makehuman gender channels |
+| №1302 tools/makehuman_morph_channels.json | 454 B | скрипт разработчика: makehuman morph channels |
+| №1303 tools/prepare_makehuman_gender.js | 5679 B | скрипт разработчика: prepare makehuman gender |
+| №1304 tools/run_tests_v731.js | 5150 B | скрипт разработчика: run tests v731 |
+| №1305 tools/sync_manifest.py | 2080 B | скрипт разработчика: sync manifest |
+| №1306 tools/test_cloud_sql.sh | 1105 B | скрипт разработчика: test cloud sql |
+| №1307 tools/unified_version.py | 3483 B | скрипт разработчика: unified version |
 | №1308 unity/.gitattributes | 451 B | вспомогательный файл: .gitattributes |
 | №1309 unity/.gitignore | 368 B | вспомогательный файл: .gitignore |
 | №1310 unity/Assets/DefaultVolumeProfile.asset | 20474 B | вспомогательный файл: DefaultVolumeProfile |
@@ -1370,13 +1370,13 @@
 | №1349 unity/Assets/LegacyContent/Materials/floor_tatami.mat.meta | 188 B | вспомогательный файл: floor tatami.mat |
 | №1350 unity/Assets/LegacyContent/Materials/floor_wood_dark.mat | 3842 B | вспомогательный файл: floor wood dark |
 | №1351 unity/Assets/LegacyContent/Materials/floor_wood_dark.mat.meta | 188 B | вспомогательный файл: floor wood dark.mat |
-| №1352 unity/Assets/LegacyContent/Materials/floor_wood_light.mat | 3842 B | вспомогательный файл: floor wood light |
+| №1352 unity/Assets/LegacyContent/Materials/floor_wood_light.mat | 3897 B | вспомогательный файл: floor wood light |
 | №1353 unity/Assets/LegacyContent/Materials/floor_wood_light.mat.meta | 188 B | вспомогательный файл: floor wood light.mat |
 | №1354 unity/Assets/LegacyContent/Materials/wall_brick_red.mat | 3842 B | вспомогательный файл: wall brick red |
 | №1355 unity/Assets/LegacyContent/Materials/wall_brick_red.mat.meta | 188 B | вспомогательный файл: wall brick red.mat |
 | №1356 unity/Assets/LegacyContent/Materials/wall_concrete.mat | 3841 B | вспомогательный файл: wall concrete |
 | №1357 unity/Assets/LegacyContent/Materials/wall_concrete.mat.meta | 188 B | вспомогательный файл: wall concrete.mat |
-| №1358 unity/Assets/LegacyContent/Materials/wall_half_timber.mat | 3844 B | вспомогательный файл: wall half timber |
+| №1358 unity/Assets/LegacyContent/Materials/wall_half_timber.mat | 3899 B | вспомогательный файл: wall half timber |
 | №1359 unity/Assets/LegacyContent/Materials/wall_half_timber.mat.meta | 188 B | вспомогательный файл: wall half timber.mat |
 | №1360 unity/Assets/LegacyContent/Materials/wall_marble_dark.mat | 3843 B | вспомогательный файл: wall marble dark |
 | №1361 unity/Assets/LegacyContent/Materials/wall_marble_dark.mat.meta | 188 B | вспомогательный файл: wall marble dark.mat |
@@ -1637,7 +1637,7 @@
 | №1616 unity/Assets/Plugins.meta | 172 B | вспомогательный файл: Plugins |
 | №1617 unity/Assets/Plugins/Android.meta | 172 B | вспомогательный файл: Android |
 | №1618 unity/Assets/Plugins/Android/UpdateProvider.java | 4306 B | вспомогательный файл: UpdateProvider |
-| №1619 unity/Assets/Plugins/Android/UpdateProvider.java.meta | 60 B | вспомогательный файл: UpdateProvider.java |
+| №1619 unity/Assets/Plugins/Android/UpdateProvider.java.meta | 62 B | вспомогательный файл: UpdateProvider.java |
 | №1620 unity/Assets/UniversalRenderPipelineGlobalSettings.asset | 25900 B | вспомогательный файл: UniversalRenderPipelineGlobalSettings |
 | №1621 unity/Assets/UniversalRenderPipelineGlobalSettings.asset.meta | 189 B | вспомогательный файл: UniversalRenderPipelineGlobalSettings.asset |
 | №1622 unity/Assets/Vtt.meta | 172 B | вспомогательный файл: Vtt |
@@ -1649,7 +1649,7 @@
 | №1628 unity/Assets/Vtt/Editor/PrototypeSetup.cs | 7704 B | вспомогательный файл: PrototypeSetup |
 | №1629 unity/Assets/Vtt/Editor/PrototypeSetup.cs.meta | 59 B | вспомогательный файл: PrototypeSetup.cs |
 | №1630 unity/Assets/Vtt/Editor/UnityReleaseBuild.cs | 3164 B | вспомогательный файл: UnityReleaseBuild |
-| №1631 unity/Assets/Vtt/Editor/UnityReleaseBuild.cs.meta | 60 B | вспомогательный файл: UnityReleaseBuild.cs |
+| №1631 unity/Assets/Vtt/Editor/UnityReleaseBuild.cs.meta | 62 B | вспомогательный файл: UnityReleaseBuild.cs |
 | №1632 unity/Assets/Vtt/Resources.meta | 172 B | вспомогательный файл: Resources |
 | №1633 unity/Assets/Vtt/Resources/CharacterSheet.meta | 172 B | вспомогательный файл: CharacterSheet |
 | №1634 unity/Assets/Vtt/Resources/CharacterSheet/catalog.json | 1259265 B | данные/конфигурация: catalog |
@@ -1680,11 +1680,11 @@
 | №1659 unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs | 28730 B | вспомогательный файл: LegacySessionPanel.Sheet |
 | №1660 unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.Sheet.cs |
 | №1661 unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs | 6627 B | вспомогательный файл: LegacySessionPanel.Updates |
-| №1662 unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Updates.cs |
+| №1662 unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs.meta | 62 B | вспомогательный файл: LegacySessionPanel.Updates.cs |
 | №1663 unity/Assets/Vtt/Runtime/PrototypeSmoke.cs | 3139 B | вспомогательный файл: PrototypeSmoke |
 | №1664 unity/Assets/Vtt/Runtime/PrototypeSmoke.cs.meta | 59 B | вспомогательный файл: PrototypeSmoke.cs |
 | №1665 unity/Assets/Vtt/Runtime/UnityRelease.cs | 3872 B | вспомогательный файл: UnityRelease |
-| №1666 unity/Assets/Vtt/Runtime/UnityRelease.cs.meta | 60 B | вспомогательный файл: UnityRelease.cs |
+| №1666 unity/Assets/Vtt/Runtime/UnityRelease.cs.meta | 62 B | вспомогательный файл: UnityRelease.cs |
 | №1667 unity/Assets/Vtt/Scenes.meta | 172 B | вспомогательный файл: Scenes |
 | №1668 unity/Assets/Vtt/Scenes/Exploration.unity | 49176 B | вспомогательный файл: Exploration |
 | №1669 unity/Assets/Vtt/Scenes/Exploration.unity.meta | 155 B | вспомогательный файл: Exploration.unity |
@@ -1707,7 +1707,7 @@
 | №1686 unity/evidence/exploration.png | 119417 B | текстура/изображение: exploration |
 | №1687 unity/Installer/release-notes.md | 1582 B | документация или отчёт: release notes |
 | №1688 unity/Installer/UnitySetup.nsi | 3417 B | вспомогательный файл: UnitySetup |
-| №1689 unity/Packages/manifest.json | 519 B | данные/конфигурация: manifest |
+| №1689 unity/Packages/manifest.json | 534 B | данные/конфигурация: manifest |
 | №1690 unity/Packages/packages-lock.json | 6217 B | данные/конфигурация: packages lock |
 | №1691 unity/ProjectSettings/AudioManager.asset | 523 B | вспомогательный файл: AudioManager |
 | №1692 unity/ProjectSettings/ClusterInputManager.asset | 114 B | вспомогательный файл: ClusterInputManager |
@@ -1732,19 +1732,19 @@
 | №1711 unity/ProjectSettings/VersionControlSettings.asset | 172 B | вспомогательный файл: VersionControlSettings |
 | №1712 unity/ProjectSettings/VFXManager.asset | 525 B | вспомогательный файл: VFXManager |
 | №1713 unity/PUBLIC_DELIVERY.json | 973 B | данные/конфигурация: PUBLIC DELIVERY |
-| №1714 unity/README.md | 9382 B | документация или отчёт: README |
-| №1715 unity/release.ps1 | 7614 B | вспомогательный файл: release |
+| №1714 unity/README.md | 9446 B | документация или отчёт: README |
+| №1715 unity/release.ps1 | 7520 B | вспомогательный файл: release |
 | №1716 unity/Tools/sync_character_sheet.cjs | 11570 B | логический модуль: sync character sheet |
 | №1717 unity/Tools/sync_legacy_content.cjs | 5736 B | логический модуль: sync legacy content |
 | №1718 unity/VALIDATION.md | 28732 B | документация или отчёт: VALIDATION |
-| №1719 unity/verify.ps1 | 2809 B | вспомогательный файл: verify |
-| №1720 updates/beta.json | 211 B | метаданные обновлений: beta |
-| №1721 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
-| №1722 updates/README.md | 233 B | документация или отчёт: README |
-| №1723 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №1724 updates/unity-experiment.json | 943 B | метаданные обновлений: unity experiment |
+| №1719 unity/verify.ps1 | 2774 B | вспомогательный файл: verify |
+| №1720 updates/beta.json | 222 B | метаданные обновлений: beta |
+| №1721 updates/previous-stable.json | 184759 B | метаданные обновлений: previous stable |
+| №1722 updates/README.md | 243 B | документация или отчёт: README |
+| №1723 updates/stable.json | 184760 B | метаданные обновлений: stable |
+| №1724 updates/unity-experiment.json | 963 B | метаданные обновлений: unity experiment |
 | №1725 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
-| №1726 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
+| №1726 VTT_PROJECT_MANIFEST_V70.json | 44371 B | устаревший список V70, не актуален |
 | №1727 wall_brick_red.png | 111128 B | текстура/изображение: wall brick red |
 | №1728 wall_concrete.png | 91074 B | текстура/изображение: wall concrete |
 | №1729 wall_half_timber.png | 109537 B | текстура/изображение: wall half timber |
