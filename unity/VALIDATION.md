@@ -1,5 +1,11 @@
 # Validation — 2026-10-18, experiment/unity-vtt
 
+## Cloud candidate cutover 2026-10-19 — NOT COMPLETE
+
+2026-10-19 CLOUD CUTOVER NOT COMPLETE: Environment unity-ci restricts Secrets to experiment/unity-vtt. Configured names only: UNITY_ANDROID_KEYSTORE_BASE64, UNITY_ANDROID_KEYSTORE_PASSWORD, UNITY_CI_ARTIFACT_PASSWORD. Run39254885215 signing job SUCCESS (8 tests, public APK verification, disposable re-sign using actual private key/password, temp cleanup); key and usable CI password are independent of home PC. Overall run FAILURE: missing UNITY_SERIAL/UNITY_EMAIL/UNITY_PASSWORD; both real Unity builds and Windows upgrade QA SKIPPED. Owner Unity page showed Personal / not activated. Do NOT copy local Unity auth or buy licenses. Resolve supported license with owner, then rerun unity-cloud-candidate.yml at1.00.01/code10001. Promotion dry-run39254642699 correctly rejected a failed build; no new release/feed change. See docs/UNITY_CLOUD_HANDOFF.md for evidence, secure settings URL, encrypted artifacts, phone bootstrap and remaining limits. Main/stable workflows unchanged.
+
+Local MigrationContracts exited0 after build entry-point safeguards (company/product preservation; explicit Android ARM64 IL2CPP/API26/36). All contract markers PASS. 8 CI-helper/promotion tests and6 legacy publisher scenarios passed locally; same8 helpers passed on GitHub runner. PowerShell parsers and YAML trust/read-only checks passed. The disposable re-sign used published1.00.00, not newly compiled code. No new Windows/Android packages, cloud setup/upgrade run, physical Android install/update/touch QA or positive candidate promotion occurred. Artifacts are configured for AES-256-GCM encryption before public-repository upload; this does not establish a successful build.
+
 ## 2026-10-19 first installable Unity1.00.00 (publication pending)
 
 - Final Android release build PASS/exit0, ReleaseAndroid.log; repaired incremental manifest callback preserves launcher label and deduplicates provider/permission. Final APK48,186,137 bytes, SHA25621299F36B6A23EE79E41DC754F133C92F51BDF42FAF8E41F11A05FBB5796FD2E, com.dndvtt.unity/1.00.00/10000/ARM64/min26/target36. apksigner verifies permanent RSA3072 certificate c1c1b3e6537f10819a3042817ac91535b47754ed65d084e635f84ff2b1f44c8e (v2/v3); zipalign -c -P16 4 exit0. No physical Android device attached.
