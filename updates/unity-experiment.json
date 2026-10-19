@@ -1,20 +1,15 @@
 {
   "schema": 1,
   "channel": "unity-experiment",
-  "version": "1.00.00",
-  "versionCode": 10000,
+  "version": "1.00.02",
+  "versionCode": 10002,
   "androidPackage": "com.dndvtt.unity",
-  "notes": "Первый Unity-клиент: герои, создание, лист, инвентарь, кошелёк, настройки и 3D-карта. Классовая автоматика и облако ещё переносятся.",
+  "notes": "Настройки разделены на обновления, оформление, графику, управление и данные. · Добавлены проверка новой версии, загрузка APK с индикатором прогресса и установка через системное окно Android. · Добавлена история изменений по версиям, доступная из настроек. · Добавлены цветовые темы и возможность проверять обновления автоматически при запуске.",
   "artifacts": {
     "android": {
-      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.00/DnD-VTT-Unity-1.00.00-arm64.apk",
-      "bytes": 48186137,
-      "sha256": "21299f36b6a23ee79e41dc754f133c92f51bdf42faf8e41f11a05fbb5796fd2e"
-    },
-    "windows": {
-      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.00/DnD-VTT-Unity-Setup-1.00.00-x64.exe",
-      "bytes": 36693230,
-      "sha256": "8df76dbb632cc314b9bd4a2c33f3399ca91b9a3920360693b7f7c8520ba3bccf"
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.02/DnD-VTT-Unity-1.00.02-arm64.apk",
+      "bytes": 48198519,
+      "sha256": "c64ba48a10b9fbf518d43a8999b4ee584ff1b43f08516c03f34d2e13a8589492"
     }
   }
 }
