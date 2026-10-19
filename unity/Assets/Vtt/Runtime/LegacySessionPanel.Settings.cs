@@ -10,8 +10,8 @@ namespace DndVtt.UnityPrototype
         private string platformQuality;
         private int settingsSection;
         private static readonly string[] SettingSections = { "Обновления", "Оформление", "Графика", "Управление", "Данные" };
-        private static readonly string[] ThemeKeys = { "midnight", "forest", "ember" };
-        private static readonly string[] ThemeLabels = { "Полночь", "Лес", "Угли" };
+        private static readonly string[] ThemeKeys = { "orange", "purple", "blue", "red" };
+        private static readonly string[] ThemeLabels = { "D&D Оранжевый", "Некромантский", "Магический", "Кровавый" };
         private string SettingsPath => profileStoreOverride == null ? Path.Combine(Application.persistentDataPath, "client_settings.json") : SavePath + ".settings.json";
 
         private void LoadPreferences()
@@ -40,6 +40,7 @@ namespace DndVtt.UnityPrototype
         {
             settingsDraft = ClientPreferences.Parse(preferences.Export());
             settingsSection = 0;
+            brandTechnicalScreen = false;
             Navigate(FrontScreen.Settings);
         }
         private void DrawSettings()
