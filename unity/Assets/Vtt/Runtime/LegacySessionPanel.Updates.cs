@@ -143,8 +143,24 @@ namespace DndVtt.UnityPrototype
             finally { updateBusy = false; }
         }
 
+        // Android's content provider exposes Context.getCacheDir(), not Unity's
+        // (possibly external) temporaryCachePath. Both sides MUST use one path.
+        private string UpdateCacheDirectory
+        {
+            get
+            {
+#if UNITY_ANDROID && !UNITY_EDITOR
+                using var player = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+                using var activity = player.GetStatic<AndroidJavaObject>("currentActivity");
+                using var cache = activity.Call<AndroidJavaObject>("getCacheDir");
+                return cache.Call<string>("getAbsolutePath");
+#else
+                return Application.temporaryCachePath;
+#endif
+            }
+        }
         private string UpdateFilePath(int code) =>
-            Path.Combine(Application.temporaryCachePath, "updates", "UnityUpdate-" + code +
+            Path.Combine(UpdateCacheDirectory, "updates", "UnityUpdate-" + code +
                 (UpdatePlatform == "android" ? ".apk" : ".exe"));
 
         private IEnumerator DownloadUpdate()
