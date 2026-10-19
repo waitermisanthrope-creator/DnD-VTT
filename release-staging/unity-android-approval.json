@@ -6,5 +6,7 @@
   "releaseType": "public-prerelease",
   "channel": "unity-experiment",
   "scope": "Android-only",
-  "note": "Explicit user approval in ChatGPT on 2026-10-19; publish only after the candidate succeeds; never modify main or Windows."
+  "note": "Explicit user approval in ChatGPT on 2026-10-19; publish only after the candidate succeeds; never modify main or Windows.",
+  "retryReason": "Retry after owner stored scoped fine-grained UNITY_RELEASE_TOKEN in unity-ci environment; no APK rebuild",
+  "retryAttempt": 2
 }
