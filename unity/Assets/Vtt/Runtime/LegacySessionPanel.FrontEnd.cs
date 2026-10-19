@@ -39,7 +39,13 @@ namespace DndVtt.UnityPrototype
             heading ??= new GUIStyle(GUI.skin.label) { fontSize = 32, fontStyle = FontStyle.Bold, wordWrap = true };
             muted ??= new GUIStyle(GUI.skin.label) { fontSize = 15, wordWrap = true, normal = { textColor = new Color(.65f, .73f, .83f) } };
             bigButton ??= new GUIStyle(GUI.skin.button) { fontSize = 18, padding = new RectOffset(20, 20, 16, 16), alignment = TextAnchor.MiddleLeft };
-            var oldColor = GUI.color; GUI.color = new Color(.035f, .045f, .068f); GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), Texture2D.whiteTexture); GUI.color = oldColor;
+            var oldColor = GUI.color;
+            string theme = preferences?.theme ?? "midnight";
+            GUI.color = theme == "forest" ? new Color(.035f, .071f, .062f)
+                : theme == "ember" ? new Color(.089f, .047f, .043f)
+                : new Color(.035f, .045f, .068f);
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), Texture2D.whiteTexture);
+            GUI.color = oldColor;
             GUILayout.BeginArea(new Rect(28, 20, Screen.width - 56, Screen.height - 40));
             GUILayout.BeginHorizontal(); GUILayout.Label("DnD VTT", heading); GUILayout.FlexibleSpace(); GUILayout.Label("Unity · " + UnityRelease.Version, muted); GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
@@ -59,7 +65,12 @@ namespace DndVtt.UnityPrototype
                     if (GUILayout.Button("Мои персонажи  →", bigButton, GUILayout.Height(68))) Navigate(FrontScreen.Characters);
                     if (GUILayout.Button("+  Создать персонажа", bigButton, GUILayout.Height(68))) BeginCreation();
                     if (archive != null && GUILayout.Button("Продолжить: " + CurrentName, bigButton, GUILayout.Height(68))) Navigate(FrontScreen.Sheet);
-                    if (GUILayout.Button("Настройки", bigButton, GUILayout.Height(54))) OpenSettings();
+                    if (updateFeed != null && (int)updateFeed["versionCode"] > UnityRelease.Code)
+                    {
+                        GUILayout.Label("Доступно обновление Unity " + (string)updateFeed["version"], muted);
+                        if (GUILayout.Button("Обновить приложение  →", bigButton, GUILayout.Height(58))) OpenSettings();
+                    }
+                    if (GUILayout.Button("Настройки и обновления", bigButton, GUILayout.Height(54))) OpenSettings();
                     GUILayout.Space(22); GUILayout.Label("Лист, инвентарь, кошелёк, заклинания и заметки — в одном сохранении.", muted); break;
                 case FrontScreen.Characters: DrawRoster(); break;
                 case FrontScreen.Create: DrawCreation(); break;
