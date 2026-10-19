@@ -73,7 +73,11 @@ class CloudReleaseTests(unittest.TestCase):
 
     def test_license_preflight_not_a_build(self):
         with patch.dict(os.environ, UNITY_SERIAL='',UNITY_EMAIL='',UNITY_PASSWORD=''):
-            with self.assertRaisesRegex(ValueError,'Unity CI license not configured'): ci.check_license()
+            with self.assertRaisesRegex(ValueError,'Unity CI credentials missing'): ci.check_license()
+
+    def test_personal_credentials_do_not_require_serial_or_local_license(self):
+        with patch.dict(os.environ, UNITY_SERIAL='', UNITY_EMAIL='fixture@example.invalid', UNITY_PASSWORD='fixture-only', UNITY_LICENSE=''):
+            ci.check_license()
 
     def test_promotion_requires_actual_build_and_upgrade_success(self):
         run=dict(id=42,conclusion='success',head_branch='experiment/unity-vtt',head_sha='a'*40,

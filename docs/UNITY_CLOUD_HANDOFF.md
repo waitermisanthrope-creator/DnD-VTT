@@ -1,5 +1,13 @@
 # Unity 1.00.00 — продолжение с телефона
 
+## Коррекция лицензирования Personal — текущая попытка 2026-10-19
+
+Предыдущий preflight ошибочно требовал serial. Проверены **исходники опубликованного GameCI CLI v0.1.72**: `dist/platforms/ubuntu/steps/licensing_method.sh` выбирает `personal`, когда заданы `UNITY_EMAIL` + `UNITY_PASSWORD`, а serial/file/server отсутствуют; `activate.sh` активирует новую Personal seat через Unity Licensing Client непосредственно на runner. Домашний `.ulf`, license XML, managed tokens и покупка Pro для этой попытки не нужны. Источник: https://github.com/game-ci/cli/blob/v0.1.72/dist/platforms/ubuntu/steps/activate.sh . Это возможность актуального кода GameCI, а не доказательство успешной активации конкретного аккаунта.
+
+CI preflight исправлен, CLI закреплён на `v0.1.72` в обеих сборках. Локально9 тестов PASS, включая явный тест Personal без serial/ULF. Docker tags `6000.3.26f1-windows-mono-3` и `6000.3.26f1-android-3` существуют в unityci/editor. Для фактического запуска владелец должен добавить **только** `UNITY_EMAIL` и `UNITY_PASSWORD` в Environment `unity-ci` (значения не передавать в чат). Serial необязателен: если когда-нибудь добавлен, GameCI выберет serial-активацию. Статус ниже про отсутствие всех трёх Secrets описывает прежние неуспешные runs и не является текущим требованием купить лицензию.
+
+На момент этой корректировки новые credentials ещё не подтверждены; успешной новой Unity-сборки пока нет. Не отключать MFA/защиту аккаунта ради headless CI. Если Unity потребует подтверждение устройства, согласие с условиями или не выдаст Personal seat, разбирать точный результат runner и необходимые действия владельца. Не повторять старый serial-only блокер после этой правки.
+
 ## 2026-10-19 — облачный CI: частично подготовлен, лицензия блокирует сборку
 
 **Итог фактических проверок:** https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39254885215 (source `fcc88fc1`). Signing job SUCCESS:8 тестов на runner, открытие ключа/пароля из Secrets, скачивание APK1.00.00 с проверкой SHA256/пакета/code/ARM64/API26/36/16KB alignment, одноразовая повторная подпись APK тем же private key и проверка подписи. `CLOUD_SIGNING_KEY_PASS` и `CI_KEY_TEMP_CLEANUP_PASS` присутствуют в логе. Это только signing probe существующего APK, **не новая Unity-сборка**. Закрытый ключ и используемый CI пароль больше не зависят от домашнего ПК. Общий run FAILURE: license preflight FAILED; build и Windows upgrade QA SKIPPED. Ссылок на успешные облачные сборки обоих клиентов пока нет, потому что их не было.

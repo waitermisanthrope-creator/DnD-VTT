@@ -133,11 +133,14 @@ def check_key():
 
 def check_license():
     trusted()
-    required = ['UNITY_SERIAL', 'UNITY_EMAIL', 'UNITY_PASSWORD']
+    # GameCI CLI v0.1.72 resolves email+password without serial/file to Personal
+    # and activates a fresh seat on the runner through Unity Licensing Client.
+    required = ['UNITY_EMAIL', 'UNITY_PASSWORD']
     missing = [name for name in required if not os.environ.get(name)]
     if missing:
-        raise ValueError('Unity CI license not configured: ' + ', '.join(missing) + '. Personal .ulf/local auth copying is prohibited by owner; supply a supported serial license securely, or resolve a supported alternate route with Unity/GameCI.')
-    print('LICENSE_CONFIGURATION_PRESENT (activation is NOT verified until Unity build succeeds)')
+        raise ValueError('Unity CI credentials missing: ' + ', '.join(missing) + '. Configure these Environment Secrets for runner-side Personal activation; do not copy local Unity auth.')
+    method = 'serial' if os.environ.get('UNITY_SERIAL') else 'personal'
+    print('LICENSE_CONFIGURATION_PRESENT:', method, '(activation is NOT verified until Unity build succeeds)')
 
 
 def sign():

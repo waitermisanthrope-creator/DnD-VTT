@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода fcc88fc164b4. Git содержит 1786 файлов.
+Снимок кода 861eac062890. Git содержит 1786 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -41,7 +41,7 @@
 | №0020 .github/workflows/test-gltf-loader.yml | 743 B | автоматизация GitHub Actions: test gltf loader |
 | №0021 .github/workflows/test-stair-navigation.yml | 778 B | автоматизация GitHub Actions: test stair navigation |
 | №0022 .github/workflows/unified-release.yml | 14407 B | автоматизация GitHub Actions: unified release |
-| №0023 .github/workflows/unity-cloud-candidate.yml | 6982 B | автоматизация GitHub Actions: unity cloud candidate |
+| №0023 .github/workflows/unity-cloud-candidate.yml | 7042 B | автоматизация GitHub Actions: unity cloud candidate |
 | №0024 .github/workflows/unity-cloud-promote.yml | 2934 B | автоматизация GitHub Actions: unity cloud promote |
 | №0025 .github/workflows/unity-delivery-publish.yml | 872 B | автоматизация GitHub Actions: unity delivery publish |
 | №0026 .github/workflows/unity-experiment-android.yml | 2862 B | автоматизация GitHub Actions: unity experiment android |
@@ -57,9 +57,9 @@
 | №0036 3D_CHARACTER_CLOTHING_PROGRESS.md | 85343 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0037 3D_CHARACTER_RACES_PROGRESS.md | 75939 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0038 AGENTS.md | 4945 B | документация или отчёт: AGENTS |
-| №0039 AI_BLOCKERS.md | 8376 B | документация или отчёт: AI BLOCKERS |
-| №0040 AI_NEXT_TASK.md | 9237 B | документация или отчёт: AI NEXT TASK |
-| №0041 AI_PROGRESS.md | 45954 B | документация или отчёт: AI PROGRESS |
+| №0039 AI_BLOCKERS.md | 9001 B | документация или отчёт: AI BLOCKERS |
+| №0040 AI_NEXT_TASK.md | 9862 B | документация или отчёт: AI NEXT TASK |
+| №0041 AI_PROGRESS.md | 46579 B | документация или отчёт: AI PROGRESS |
 | №0042 android/.gitignore | 48 B | Android компонент: .gitignore |
 | №0043 android/app/build.gradle | 4243 B | Android компонент: build |
 | №0044 android/app/src/main/AndroidManifest.xml | 12350 B | Android компонент: AndroidManifest |
@@ -1036,7 +1036,7 @@
 | №1015 docs/SUPABASE_MAIL_SETUP_PROMPT_RU.md | 2882 B | документация или отчёт: SUPABASE MAIL SETUP PROMPT RU |
 | №1016 docs/UNIFIED_RELEASE.md | 6175 B | документация или отчёт: UNIFIED RELEASE |
 | №1017 docs/UNITY_CHARACTER_SHEET_PARITY.md | 12098 B | документация или отчёт: UNITY CHARACTER SHEET PARITY |
-| №1018 docs/UNITY_CLOUD_HANDOFF.md | 30487 B | документация или отчёт: UNITY CLOUD HANDOFF |
+| №1018 docs/UNITY_CLOUD_HANDOFF.md | 33039 B | документация или отчёт: UNITY CLOUD HANDOFF |
 | №1019 docs/UNITY_MIGRATION_PLAN.md | 14710 B | документация или отчёт: UNITY MIGRATION PLAN |
 | №1020 docs/WINDOWS_DESKTOP.md | 3815 B | документация или отчёт: WINDOWS DESKTOP |
 | №1021 dragon_fire_v2_sprite.png | 1013123 B | текстура/изображение: dragon fire v2 sprite |
@@ -1708,10 +1708,10 @@
 | №1687 unity/Assets/Vtt/Tests/sheet-contract.json | 195912 B | данные/конфигурация: sheet contract |
 | №1688 unity/Assets/Vtt/Tests/sheet-contract.json.meta | 158 B | вспомогательный файл: sheet contract.json |
 | №1689 unity/ci/.gitignore | 14 B | вспомогательный файл: .gitignore |
-| №1690 unity/ci/cloud_release.py | 12967 B | вспомогательный файл: cloud release |
+| №1690 unity/ci/cloud_release.py | 13136 B | вспомогательный файл: cloud release |
 | №1691 unity/ci/promote_candidate.py | 4640 B | вспомогательный файл: promote candidate |
 | №1692 unity/ci/requirements.txt | 21 B | документация или отчёт: requirements |
-| №1693 unity/ci/test_cloud_release.py | 8721 B | вспомогательный файл: test cloud release |
+| №1693 unity/ci/test_cloud_release.py | 8972 B | вспомогательный файл: test cloud release |
 | №1694 unity/ci/transfer-signing-secrets.ps1 | 3402 B | вспомогательный файл: transfer signing secrets |
 | №1695 unity/ci/windows-upgrade-qa.ps1 | 3801 B | вспомогательный файл: windows upgrade qa |
 | №1696 unity/evidence/exploration.png | 119417 B | текстура/изображение: exploration |
@@ -14010,7 +14010,7 @@
 | --text-main | №0834 |
 | --text-muted | №0834 |
 
-### Python/Java идентификаторы (369)
+### Python/Java идентификаторы (371)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -14203,6 +14203,7 @@
 | meshes | №1300 |
 | meshMetadata | №1255 |
 | metavar | №1310 |
+| method | №1690 |
 | missing | №1690 |
 | missing_ok | №1300 (+ 1 других файлов) |
 | module | №0006 |
@@ -14343,6 +14344,7 @@
 | UNITY_ANDROID_KEYSTORE_BASE64 | №1693 |
 | UNITY_CI_ARTIFACT_PASSWORD | №1693 |
 | UNITY_EMAIL | №1693 |
+| UNITY_LICENSE | №1693 |
 | UNITY_PASSWORD | №1693 |
 | UNITY_SERIAL | №1693 |
 | unknownFilePreserved | №1693 |

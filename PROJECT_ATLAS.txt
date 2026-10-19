@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит fcc88fc164b4. Файлов: 1786
+Коммит 861eac062890. Файлов: 1786
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -36,7 +36,7 @@
 0020. .github/workflows/test-gltf-loader.yml — автоматизация GitHub Actions: test gltf loader (743 B)
 0021. .github/workflows/test-stair-navigation.yml — автоматизация GitHub Actions: test stair navigation (778 B)
 0022. .github/workflows/unified-release.yml — автоматизация GitHub Actions: unified release (14407 B)
-0023. .github/workflows/unity-cloud-candidate.yml — автоматизация GitHub Actions: unity cloud candidate (6982 B)
+0023. .github/workflows/unity-cloud-candidate.yml — автоматизация GitHub Actions: unity cloud candidate (7042 B)
 0024. .github/workflows/unity-cloud-promote.yml — автоматизация GitHub Actions: unity cloud promote (2934 B)
 0025. .github/workflows/unity-delivery-publish.yml — автоматизация GitHub Actions: unity delivery publish (872 B)
 0026. .github/workflows/unity-experiment-android.yml — автоматизация GitHub Actions: unity experiment android (2862 B)
@@ -52,9 +52,9 @@
 0036. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (85343 B)
 0037. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75939 B)
 0038. AGENTS.md — документация или отчёт: AGENTS (4945 B)
-0039. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (8376 B)
-0040. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (9237 B)
-0041. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (45954 B)
+0039. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (9001 B)
+0040. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (9862 B)
+0041. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (46579 B)
 0042. android/.gitignore — Android компонент: .gitignore (48 B)
 0043. android/app/build.gradle — Android компонент: build (4243 B)
 0044. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12350 B)
@@ -1031,7 +1031,7 @@
 1015. docs/SUPABASE_MAIL_SETUP_PROMPT_RU.md — документация или отчёт: SUPABASE MAIL SETUP PROMPT RU (2882 B)
 1016. docs/UNIFIED_RELEASE.md — документация или отчёт: UNIFIED RELEASE (6175 B)
 1017. docs/UNITY_CHARACTER_SHEET_PARITY.md — документация или отчёт: UNITY CHARACTER SHEET PARITY (12098 B)
-1018. docs/UNITY_CLOUD_HANDOFF.md — документация или отчёт: UNITY CLOUD HANDOFF (30487 B)
+1018. docs/UNITY_CLOUD_HANDOFF.md — документация или отчёт: UNITY CLOUD HANDOFF (33039 B)
 1019. docs/UNITY_MIGRATION_PLAN.md — документация или отчёт: UNITY MIGRATION PLAN (14710 B)
 1020. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3815 B)
 1021. dragon_fire_v2_sprite.png — текстура/изображение: dragon fire v2 sprite (1013123 B)
@@ -1703,10 +1703,10 @@
 1687. unity/Assets/Vtt/Tests/sheet-contract.json — данные/конфигурация: sheet contract (195912 B)
 1688. unity/Assets/Vtt/Tests/sheet-contract.json.meta — вспомогательный файл: sheet contract.json (158 B)
 1689. unity/ci/.gitignore — вспомогательный файл: .gitignore (14 B)
-1690. unity/ci/cloud_release.py — вспомогательный файл: cloud release (12967 B)
+1690. unity/ci/cloud_release.py — вспомогательный файл: cloud release (13136 B)
 1691. unity/ci/promote_candidate.py — вспомогательный файл: promote candidate (4640 B)
 1692. unity/ci/requirements.txt — документация или отчёт: requirements (21 B)
-1693. unity/ci/test_cloud_release.py — вспомогательный файл: test cloud release (8721 B)
+1693. unity/ci/test_cloud_release.py — вспомогательный файл: test cloud release (8972 B)
 1694. unity/ci/transfer-signing-secrets.ps1 — вспомогательный файл: transfer signing secrets (3402 B)
 1695. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (3801 B)
 1696. unity/evidence/exploration.png — текстура/изображение: exploration (119417 B)
@@ -13983,7 +13983,7 @@ dndContentEnabled — №0658
 --text-main — №0834
 --text-muted — №0834
 
---- Python/Java идентификаторы (369) ---
+--- Python/Java идентификаторы (371) ---
 __DND_APP_BOOT_READY — №0046
 __name__ — №0005 (+ 6 других файлов)
 a — №0045
@@ -14173,6 +14173,7 @@ materials — №1255
 meshes — №1300
 meshMetadata — №1255
 metavar — №1310
+method — №1690
 missing — №1690
 missing_ok — №1300 (+ 1 других файлов)
 module — №0006
@@ -14313,6 +14314,7 @@ units — №0045
 UNITY_ANDROID_KEYSTORE_BASE64 — №1693
 UNITY_CI_ARTIFACT_PASSWORD — №1693
 UNITY_EMAIL — №1693
+UNITY_LICENSE — №1693
 UNITY_PASSWORD — №1693
 UNITY_SERIAL — №1693
 unknownFilePreserved — №1693

@@ -87,6 +87,7 @@ jobs:
         with:
           projectPath: unity
           unityVersion: 6000.3.26f1
+          cliVersion: v0.1.72
           targetPlatform: StandaloneWindows64
           buildMethod: UnityReleaseBuild.Windows
           versioning: None
@@ -100,6 +101,7 @@ jobs:
         with:
           projectPath: unity
           unityVersion: 6000.3.26f1
+          cliVersion: v0.1.72
           targetPlatform: Android
           buildMethod: UnityReleaseBuild.Android
           versioning: None
