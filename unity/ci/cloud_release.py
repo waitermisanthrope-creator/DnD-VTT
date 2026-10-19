@@ -121,7 +121,13 @@ def check_key():
             if sha(apk) != PUBLISHED_APK_SHA:
                 raise ValueError('Published 1.00.00 bytes differ from delivery record')
             verify_apk(apk, '1.00.00', 10000)
-        print('CLOUD_SIGNING_KEY_PASS:', CERT, '(CI password usable; published APK matched)')
+            # Exercise the private key and key password, not only certificate export.
+            # This is a throwaway re-sign of existing public bytes, NOT a Unity build.
+            probe = Path(folder) / 'signing-probe.apk'
+            run([sdk_tool('apksigner'), 'sign', '--ks', store, '--ks-key-alias', 'unity-release',
+                 '--ks-pass', 'env:UNITY_ANDROID_KEYSTORE_PASSWORD', '--key-pass', 'env:UNITY_ANDROID_KEYSTORE_PASSWORD', '--out', probe, apk])
+            verify_apk(probe, '1.00.00', 10000)
+        print('CLOUD_SIGNING_KEY_PASS:', CERT, '(CI store/key passwords usable; public APK matched; disposable private-key signing probe verified; NOT a Unity build)')
     with_keystore(check)
 
 

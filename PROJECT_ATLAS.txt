@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит d7087d097662. Файлов: 1786
+Коммит 08e0032321cc. Файлов: 1786
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1703,7 +1703,7 @@
 1687. unity/Assets/Vtt/Tests/sheet-contract.json — данные/конфигурация: sheet contract (195912 B)
 1688. unity/Assets/Vtt/Tests/sheet-contract.json.meta — вспомогательный файл: sheet contract.json (158 B)
 1689. unity/ci/.gitignore — вспомогательный файл: .gitignore (14 B)
-1690. unity/ci/cloud_release.py — вспомогательный файл: cloud release (12375 B)
+1690. unity/ci/cloud_release.py — вспомогательный файл: cloud release (12967 B)
 1691. unity/ci/promote_candidate.py — вспомогательный файл: promote candidate (4640 B)
 1692. unity/ci/requirements.txt — документация или отчёт: requirements (21 B)
 1693. unity/ci/test_cloud_release.py — вспомогательный файл: test cloud release (8721 B)
@@ -13983,7 +13983,7 @@ dndContentEnabled — №0658
 --text-main — №0834
 --text-muted — №0834
 
---- Python/Java идентификаторы (368) ---
+--- Python/Java идентификаторы (369) ---
 __DND_APP_BOOT_READY — №0046
 __name__ — №0005 (+ 6 других файлов)
 a — №0045
@@ -14224,6 +14224,7 @@ previous — №0005 (+ 3 других файлов)
 previousDir — №0045
 previousRequestedOrientation — №0046
 primitives — №1255
+probe — №1690
 PUBLISHED_APK_SHA — №1690
 publisher — №1691
 pushed — №0006

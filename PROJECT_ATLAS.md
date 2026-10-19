@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода d7087d097662. Git содержит 1786 файлов.
+Снимок кода 08e0032321cc. Git содержит 1786 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1708,7 +1708,7 @@
 | №1687 unity/Assets/Vtt/Tests/sheet-contract.json | 195912 B | данные/конфигурация: sheet contract |
 | №1688 unity/Assets/Vtt/Tests/sheet-contract.json.meta | 158 B | вспомогательный файл: sheet contract.json |
 | №1689 unity/ci/.gitignore | 14 B | вспомогательный файл: .gitignore |
-| №1690 unity/ci/cloud_release.py | 12375 B | вспомогательный файл: cloud release |
+| №1690 unity/ci/cloud_release.py | 12967 B | вспомогательный файл: cloud release |
 | №1691 unity/ci/promote_candidate.py | 4640 B | вспомогательный файл: promote candidate |
 | №1692 unity/ci/requirements.txt | 21 B | документация или отчёт: requirements |
 | №1693 unity/ci/test_cloud_release.py | 8721 B | вспомогательный файл: test cloud release |
@@ -14010,7 +14010,7 @@
 | --text-main | №0834 |
 | --text-muted | №0834 |
 
-### Python/Java идентификаторы (368)
+### Python/Java идентификаторы (369)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -14254,6 +14254,7 @@
 | previousDir | №0045 |
 | previousRequestedOrientation | №0046 |
 | primitives | №1255 |
+| probe | №1690 |
 | PUBLISHED_APK_SHA | №1690 |
 | publisher | №1691 |
 | pushed | №0006 |
