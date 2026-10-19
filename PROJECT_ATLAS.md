@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 9a34edabaead. Git содержит 1786 файлов.
+Снимок кода 53d8eb32dbec. Git содержит 1786 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -57,9 +57,9 @@
 | №0036 3D_CHARACTER_CLOTHING_PROGRESS.md | 85343 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0037 3D_CHARACTER_RACES_PROGRESS.md | 75939 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0038 AGENTS.md | 4945 B | документация или отчёт: AGENTS |
-| №0039 AI_BLOCKERS.md | 12596 B | документация или отчёт: AI BLOCKERS |
-| №0040 AI_NEXT_TASK.md | 13457 B | документация или отчёт: AI NEXT TASK |
-| №0041 AI_PROGRESS.md | 50174 B | документация или отчёт: AI PROGRESS |
+| №0039 AI_BLOCKERS.md | 13267 B | документация или отчёт: AI BLOCKERS |
+| №0040 AI_NEXT_TASK.md | 14128 B | документация или отчёт: AI NEXT TASK |
+| №0041 AI_PROGRESS.md | 50845 B | документация или отчёт: AI PROGRESS |
 | №0042 android/.gitignore | 48 B | Android компонент: .gitignore |
 | №0043 android/app/build.gradle | 4243 B | Android компонент: build |
 | №0044 android/app/src/main/AndroidManifest.xml | 12350 B | Android компонент: AndroidManifest |
@@ -1036,7 +1036,7 @@
 | №1015 docs/SUPABASE_MAIL_SETUP_PROMPT_RU.md | 2882 B | документация или отчёт: SUPABASE MAIL SETUP PROMPT RU |
 | №1016 docs/UNIFIED_RELEASE.md | 6175 B | документация или отчёт: UNIFIED RELEASE |
 | №1017 docs/UNITY_CHARACTER_SHEET_PARITY.md | 12098 B | документация или отчёт: UNITY CHARACTER SHEET PARITY |
-| №1018 docs/UNITY_CLOUD_HANDOFF.md | 36634 B | документация или отчёт: UNITY CLOUD HANDOFF |
+| №1018 docs/UNITY_CLOUD_HANDOFF.md | 37305 B | документация или отчёт: UNITY CLOUD HANDOFF |
 | №1019 docs/UNITY_MIGRATION_PLAN.md | 14710 B | документация или отчёт: UNITY MIGRATION PLAN |
 | №1020 docs/WINDOWS_DESKTOP.md | 3815 B | документация или отчёт: WINDOWS DESKTOP |
 | №1021 dragon_fire_v2_sprite.png | 1013123 B | текстура/изображение: dragon fire v2 sprite |
@@ -1645,7 +1645,7 @@
 | №1624 unity/Assets/UniversalRenderPipelineGlobalSettings.asset.meta | 189 B | вспомогательный файл: UniversalRenderPipelineGlobalSettings.asset |
 | №1625 unity/Assets/Vtt.meta | 172 B | вспомогательный файл: Vtt |
 | №1626 unity/Assets/Vtt/Editor.meta | 172 B | вспомогательный файл: Editor |
-| №1627 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs | 19830 B | вспомогательный файл: CharacterSheetValidation |
+| №1627 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs | 20310 B | вспомогательный файл: CharacterSheetValidation |
 | №1628 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta | 59 B | вспомогательный файл: CharacterSheetValidation.cs |
 | №1629 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs | 10734 B | вспомогательный файл: LegacyMigrationSetup |
 | №1630 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSetup.cs |
@@ -1746,7 +1746,7 @@
 | №1725 unity/release.ps1 | 7655 B | вспомогательный файл: release |
 | №1726 unity/Tools/sync_character_sheet.cjs | 11570 B | логический модуль: sync character sheet |
 | №1727 unity/Tools/sync_legacy_content.cjs | 5736 B | логический модуль: sync legacy content |
-| №1728 unity/VALIDATION.md | 32164 B | документация или отчёт: VALIDATION |
+| №1728 unity/VALIDATION.md | 32835 B | документация или отчёт: VALIDATION |
 | №1729 unity/verify.ps1 | 2774 B | вспомогательный файл: verify |
 | №1730 updates/beta.json | 222 B | метаданные обновлений: beta |
 | №1731 updates/previous-stable.json | 184759 B | метаданные обновлений: previous stable |

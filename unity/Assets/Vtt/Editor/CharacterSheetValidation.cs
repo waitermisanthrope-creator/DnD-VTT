@@ -108,14 +108,20 @@ public static class CharacterSheetValidation
     }
     private static void ValidateUpdater()
     {
-        Check(UnityRelease.VersionCode(UnityRelease.Version) == UnityRelease.Code && UnityRelease.VersionCode("1.00.01") > UnityRelease.Code, "release version/code and monotonic comparison");
+        int futureCode = checked(UnityRelease.Code + 1);
+        string futureVersion = (futureCode / 10000) + "." + (futureCode / 100 % 100).ToString("00") + "." + (futureCode % 100).ToString("00");
+        string download = UnityRelease.Releases + "/download/unity-v" + futureVersion + "/";
+        Check(UnityRelease.VersionCode(UnityRelease.Version) == UnityRelease.Code && UnityRelease.VersionCode(futureVersion) == futureCode && futureCode > UnityRelease.Code
+            && UnityRelease.VersionCode("1.00.01") > UnityRelease.VersionCode("1.00.00"), "release version/code and monotonic comparison");
         var fixture = JObject.Parse("{schema:1,channel:'unity-experiment',version:'1.00.01',versionCode:10001,androidPackage:'com.dndvtt.unity',artifacts:{android:{url:'https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.01/test.apk',bytes:3,sha256:'0000000000000000000000000000000000000000000000000000000000000000'}}}");
-        Check((int)UnityRelease.ParseFeed(fixture.ToString(), "android")["versionCode"] == 10001, "future Android manifest accepted");
-        foreach (var patch in new[] { JObject.Parse("{channel:'stable'}"), JObject.Parse("{versionCode:10002}"), JObject.Parse("{androidPackage:'com.other.app'}"), JObject.Parse("{schema:2}") })
+        fixture["version"] = futureVersion; fixture["versionCode"] = futureCode;
+        fixture["artifacts"]["android"]["url"] = download + "test.apk";
+        Check((int)UnityRelease.ParseFeed(fixture.ToString(), "android")["versionCode"] == futureCode, "future Android manifest accepted");
+        foreach (var patch in new[] { JObject.Parse("{channel:'stable'}"), new JObject { ["versionCode"] = futureCode + 1 }, JObject.Parse("{androidPackage:'com.other.app'}"), JObject.Parse("{schema:2}") })
         {
             var invalid = (JObject)fixture.DeepClone(); invalid.Merge(patch); bool refused = false; try { UnityRelease.ParseFeed(invalid.ToString(), "android"); } catch (FormatException) { refused = true; } Check(refused, "wrong release/channel/package rejected");
         }
-        foreach (string url in new[] { "http://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.01/test.apk", "https://example.com/test.apk", "https://github.com/other/repo/releases/download/unity-v1.00.01/test.apk", "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.01/test.exe" })
+        foreach (string url in new[] { download.Replace("https://", "http://") + "test.apk", "https://example.com/test.apk", "https://github.com/other/repo/releases/download/unity-v" + futureVersion + "/test.apk", download + "test.exe" })
         {
             var invalid = (JObject)fixture.DeepClone(); invalid["artifacts"]["android"]["url"] = url; bool refused = false; try { UnityRelease.ParseFeed(invalid.ToString(), "android"); } catch (FormatException) { refused = true; } Check(refused, "unsafe artifact URL rejected");
         }
