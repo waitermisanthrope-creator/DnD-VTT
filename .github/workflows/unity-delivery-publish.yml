@@ -1,0 +1,30 @@
+name: Publish verified Unity installers
+
+# Upload already-built packages only. Does not run Unity, use Unity credentials,
+# publish WebView versions, or run merely because gameplay code changed.
+on:
+  push:
+    branches: [experiment/unity-vtt]
+    paths: ['release-staging/unity-release.json']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: unity-binary-delivery
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/experiment/unity-vtt'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publisher safety checks
+        run: python3 .github/scripts/test-publish-unity-artifacts.py
+      - name: Verify and publish requested Unity packages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 .github/scripts/publish-unity-artifacts.py

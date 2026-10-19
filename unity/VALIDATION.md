@@ -2,6 +2,10 @@
 
 ## 2026-10-19 first installable Unity1.00.00 (publication pending)
 
+- Final Android release build PASS/exit0, ReleaseAndroid.log; repaired incremental manifest callback preserves launcher label and deduplicates provider/permission. Final APK48,186,137 bytes, SHA25621299F36B6A23EE79E41DC754F133C92F51BDF42FAF8E41F11A05FBB5796FD2E, com.dndvtt.unity/1.00.00/10000/ARM64/min26/target36. apksigner verifies permanent RSA3072 certificate c1c1b3e6537f10819a3042817ac91535b47754ed65d084e635f84ff2b1f44c8e (v2/v3); zipalign -c -P16 4 exit0. No physical Android device attached.
+- Setup36,693,230 bytes, SHA2568DF76DBB632CC314B9BD4A2C33F3399CA91B9A3920360693B7F7C8520BA3BCCF. Reinstall preserved isolated archive bytes and installed Assembly-CSharp.dll matches packaged player.
+- Publisher safety tests are local mocked fixtures, six PASS; actual remote-download verification and feed activation must come from the separate GitHub Actions publisher.28 transport blobs have matched local Git SHA; source8c44b516 is verified on remote. This alone does not establish a published release.
+
 - Release Windows `unity/release.ps1 -Stage Windows` PASS, exit0; BuildOptions.None; ReleaseWindows.log includes earlier sheet/map/creation/wallet/settings contracts and VTT_UPDATER_CONTRACT_PASS, then VTT_RELEASE_BUILD_PASS StandaloneWindows64/1.00.00. Version/code/package: UnityRelease constants1.00.00/10000/com.dndvtt.unity.
 - NSIS3.11 compiler produced per-user `Builds/Unity-1.00.00/distribution/DnD-VTT-Unity-Setup-1.00.00-x64.exe`. Compiler distribution SHA256C7D27F780DDB6CFFB4730138CD1591E841F4B7EDB155856901CDF5F214394FA1 (upstream SourceForge archive mirrored by tauri-apps/binary-releases). No stable workflow changes.
 - Installed at LOCALAPPDATA/Programs/DnD VTT Unity. Actual installed-player smoke PASS/exit0 in Release-installed-Smoke.log. Reinstallation PASS/exit0; isolated profile file SHA unchanged. Installer deletes only enumerated packaged program files during uninstall and leaves saved characters/preferences outside install directory untouched. Windows Setup is unsigned by Authenticode.
