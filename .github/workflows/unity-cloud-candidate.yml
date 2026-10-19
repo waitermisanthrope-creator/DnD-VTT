@@ -61,7 +61,13 @@ jobs:
         env:
           CANDIDATE_VERSION: ${{ inputs.version || '1.00.01' }}
         run: python3 unity/ci/cloud_release.py prepare --version "$CANDIDATE_VERSION"
+      # GameCI CLI v0.1.72 can report validateBuild failure even after Unity
+      # logs VTT_RELEASE_BUILD_PASS and produces an APK. Preserve the output for
+      # strict, independent verification below; a real Unity failure still
+      # stops here because the intermediate APK will be missing/invalid.
       - name: Build native Unity Android ARM64 IL2CPP APK
+        id: unity-build
+        continue-on-error: true
         uses: game-ci/unity-builder@eb1b9fba120c6e62c9fb7a7a81d6c107ce004c45 # v6
         env:
           UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
@@ -76,6 +82,23 @@ jobs:
           versioning: None
           androidExportType: androidPackage
           allowDirtyBuild: true
+      - name: Strictly validate real Unity player output (not GameCI return status)
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK="unity/Builds/Unity-${{ inputs.version || '1.00.01' }}/android-intermediate.apk"
+          test -s "$APK"
+          test "$(stat -c '%s' "$APK")" -gt 10000000
+          badging="$("$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK")"
+          grep -F "name='com.dndvtt.unity'" <<<"$badging"
+          expected_version="${{ inputs.version || '1.00.01' }}"
+          IFS=. read -r major minor patch <<< "$expected_version"
+          printf -v expected_code '%d' "$((10#$major * 10000 + 10#$minor * 100 + 10#$patch))"
+          grep -F "versionCode='$expected_code'" <<<"$badging"
+          grep -F "versionName='${{ inputs.version || '1.00.01' }}'" <<<"$badging"
+          grep -F "native-code: 'arm64-v8a'" <<<"$badging"
+          sha256sum "$APK"
+          echo "CI_REAL_UNITY_ANDROID_APK_PASS: output exists and Android package metadata matches"
       - name: Sign with original key and verify package, version, ARM64 and certificate
         env:
           UNITY_ANDROID_KEYSTORE_BASE64: ${{ secrets.UNITY_ANDROID_KEYSTORE_BASE64 }}
