@@ -48,16 +48,17 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawFrontEnd()
         {
+            // The main app and settings use the exact main-branch look, but
+            // remain native Unity screens. Existing gameplay screens survive.
+            if (screen == FrontScreen.Home) { DrawBrandHome(); return; }
+            if (screen == FrontScreen.Settings) { DrawBrandSettings(); return; }
             heading ??= new GUIStyle(GUI.skin.label) { fontSize = 32, fontStyle = FontStyle.Bold, wordWrap = true };
             muted ??= new GUIStyle(GUI.skin.label) { fontSize = 15, wordWrap = true, normal = { textColor = new Color(.65f, .73f, .83f) } };
             bigButton ??= new GUIStyle(GUI.skin.button) { fontSize = 18, padding = new RectOffset(20, 20, 16, 16), alignment = TextAnchor.MiddleLeft };
             var oldColor = GUI.color;
             string theme = preferences?.theme ?? "midnight";
-            GUI.color = theme == "forest" ? new Color(.035f, .071f, .062f)
-                : theme == "ember" ? new Color(.089f, .047f, .043f)
-                : new Color(.035f, .045f, .068f);
-            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), Texture2D.whiteTexture);
             GUI.color = oldColor;
+            DrawBrandBackdrop(true); // Shared wallpaper + charcoal overlay on secondary screens.
             float inset = Mathf.Min(28f, Screen.width * .04f);
             GUILayout.BeginArea(new Rect(inset, 20, Mathf.Max(1, Screen.width - inset * 2), Mathf.Max(1, Screen.height - 40)));
             GUILayout.BeginHorizontal(); GUILayout.Label("DnD VTT", heading); GUILayout.FlexibleSpace(); GUILayout.Label("Unity · " + UnityRelease.Version, muted); GUILayout.EndHorizontal();
