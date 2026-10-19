@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 09cbcaeef118. Git содержит 1786 файлов.
+Снимок кода 9c93159ff0e2. Git содержит 1786 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -57,9 +57,9 @@
 | №0036 3D_CHARACTER_CLOTHING_PROGRESS.md | 85343 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0037 3D_CHARACTER_RACES_PROGRESS.md | 75939 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0038 AGENTS.md | 4945 B | документация или отчёт: AGENTS |
-| №0039 AI_BLOCKERS.md | 11056 B | документация или отчёт: AI BLOCKERS |
-| №0040 AI_NEXT_TASK.md | 11917 B | документация или отчёт: AI NEXT TASK |
-| №0041 AI_PROGRESS.md | 48634 B | документация или отчёт: AI PROGRESS |
+| №0039 AI_BLOCKERS.md | 11879 B | документация или отчёт: AI BLOCKERS |
+| №0040 AI_NEXT_TASK.md | 12740 B | документация или отчёт: AI NEXT TASK |
+| №0041 AI_PROGRESS.md | 49457 B | документация или отчёт: AI PROGRESS |
 | №0042 android/.gitignore | 48 B | Android компонент: .gitignore |
 | №0043 android/app/build.gradle | 4243 B | Android компонент: build |
 | №0044 android/app/src/main/AndroidManifest.xml | 12350 B | Android компонент: AndroidManifest |
@@ -1036,7 +1036,7 @@
 | №1015 docs/SUPABASE_MAIL_SETUP_PROMPT_RU.md | 2882 B | документация или отчёт: SUPABASE MAIL SETUP PROMPT RU |
 | №1016 docs/UNIFIED_RELEASE.md | 6175 B | документация или отчёт: UNIFIED RELEASE |
 | №1017 docs/UNITY_CHARACTER_SHEET_PARITY.md | 12098 B | документация или отчёт: UNITY CHARACTER SHEET PARITY |
-| №1018 docs/UNITY_CLOUD_HANDOFF.md | 35094 B | документация или отчёт: UNITY CLOUD HANDOFF |
+| №1018 docs/UNITY_CLOUD_HANDOFF.md | 35917 B | документация или отчёт: UNITY CLOUD HANDOFF |
 | №1019 docs/UNITY_MIGRATION_PLAN.md | 14710 B | документация или отчёт: UNITY MIGRATION PLAN |
 | №1020 docs/WINDOWS_DESKTOP.md | 3815 B | документация или отчёт: WINDOWS DESKTOP |
 | №1021 dragon_fire_v2_sprite.png | 1013123 B | текстура/изображение: dragon fire v2 sprite |
