@@ -21,9 +21,21 @@ namespace DndVtt.UnityPrototype
         private GUIStyle heading, muted, bigButton;
         private JObject CreationCatalog => creationCatalog ??= (JObject)JObject.Parse(Resources.Load<TextAsset>("CharacterSheet/catalog").text)["creation"];
         private JArray AvailableClasses => new JArray(((JArray)CreationCatalog["classes"]).OfType<JObject>().Where(c => (bool?)c["seed"]?["isExtraClass"] != true && (string)c["name"] != "Гайст"));
+        // Mobile menus, character creation, sheets, import and settings use
+        // portrait; only the live 3D map uses landscape. Desktop is unchanged.
+        private void ApplyMobileOrientation(FrontScreen target)
+        {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            ScreenOrientation desired = target == FrontScreen.Map
+                ? ScreenOrientation.LandscapeLeft : ScreenOrientation.Portrait;
+            if (Screen.orientation != desired) Screen.orientation = desired;
+#endif
+        }
         private void Navigate(FrontScreen next)
         {
-            screen = next; frontScroll = Vector2.zero; scroll = Vector2.zero; ClearSheetInputs();
+            screen = next;
+            ApplyMobileOrientation(next);
+            frontScroll = Vector2.zero; scroll = Vector2.zero; ClearSheetInputs();
             world.explorer.acceptInput = next == FrontScreen.Map; panel = false;
             Cursor.lockState = CursorLockMode.None; Cursor.visible = true; GUI.FocusControl(null);
         }
@@ -46,15 +58,22 @@ namespace DndVtt.UnityPrototype
                 : new Color(.035f, .045f, .068f);
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), Texture2D.whiteTexture);
             GUI.color = oldColor;
-            GUILayout.BeginArea(new Rect(28, 20, Screen.width - 56, Screen.height - 40));
+            float inset = Mathf.Min(28f, Screen.width * .04f);
+            GUILayout.BeginArea(new Rect(inset, 20, Mathf.Max(1, Screen.width - inset * 2), Mathf.Max(1, Screen.height - 40)));
             GUILayout.BeginHorizontal(); GUILayout.Label("DnD VTT", heading); GUILayout.FlexibleSpace(); GUILayout.Label("Unity · " + UnityRelease.Version, muted); GUILayout.EndHorizontal();
+            // A 6-column PC toolbar becomes 3 comfortable rows of two on a
+            // portrait phone; all destinations stay accessible in either view.
+            bool portraitLayout = Screen.height > Screen.width;
+            int navHeight = portraitLayout ? 54 : 36;
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Главная", GUILayout.Height(36))) Navigate(FrontScreen.Home);
-            if (GUILayout.Button("Персонажи · " + (archive?.Count ?? 0), GUILayout.Height(36))) Navigate(FrontScreen.Characters);
-            if (GUILayout.Button("Создать героя", GUILayout.Height(36))) BeginCreation();
-            if (GUILayout.Button("Импорт / экспорт", GUILayout.Height(36))) Navigate(FrontScreen.Import);
-            if (GUILayout.Button("3D-карта", GUILayout.Height(36))) Navigate(FrontScreen.Map);
-            if (GUILayout.Button("Настройки", GUILayout.Height(36))) OpenSettings();
+            if (GUILayout.Button("Главная", GUILayout.Height(navHeight))) Navigate(FrontScreen.Home);
+            if (GUILayout.Button("Персонажи · " + (archive?.Count ?? 0), GUILayout.Height(navHeight))) Navigate(FrontScreen.Characters);
+            if (portraitLayout) { GUILayout.EndHorizontal(); GUILayout.BeginHorizontal(); }
+            if (GUILayout.Button("Создать героя", GUILayout.Height(navHeight))) BeginCreation();
+            if (GUILayout.Button("Импорт / экспорт", GUILayout.Height(navHeight))) Navigate(FrontScreen.Import);
+            if (portraitLayout) { GUILayout.EndHorizontal(); GUILayout.BeginHorizontal(); }
+            if (GUILayout.Button("3D-карта", GUILayout.Height(navHeight))) Navigate(FrontScreen.Map);
+            if (GUILayout.Button("Настройки", GUILayout.Height(navHeight))) OpenSettings();
             GUILayout.EndHorizontal(); GUILayout.Space(18);
             frontScroll = GUILayout.BeginScrollView(frontScroll);
             switch (screen)
