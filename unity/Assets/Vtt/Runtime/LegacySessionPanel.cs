@@ -24,6 +24,7 @@ namespace DndVtt.UnityPrototype
             var args = Environment.GetCommandLineArgs(); int store = Array.IndexOf(args, "--vtt-profile-store");
             if (store >= 0 && store + 1 < args.Length) profileStoreOverride = Path.GetFullPath(args[store + 1]);
             LoadPreferences();
+            InitializeWorkshop(); world.Workshop = workshop; world.RestoreWorkshopMap();
             if (preferences.autoCheckUpdates) StartCoroutine(CheckForUpdates());
             if (File.Exists(SavePath))
             {
@@ -105,6 +106,7 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawMapSelector()
         {
+            DrawWorkshopLibrary();
             GUILayout.Label("Выбор карты (модели полностью подключены для таверны):");
             for (int i = 0; i < world.catalog.maps.Length; i++)
             {

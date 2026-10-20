@@ -2,249 +2,160 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace DndVtt.UnityPrototype
 {
-    // Prototype: trusted, pinned catalog location; data-only JSON packages.
-    // Installing a package does NOT activate gameplay content.
     public sealed partial class LegacySessionPanel
     {
         private const string CatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Content/main/catalog/v1/index.json";
         private const string AssetsCatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v1/index.json";
-        private const string PackageUrlPrefix = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Content/main/packages/";
-        private const int MaxCatalogBytes = 1024 * 1024;
-        private const int MaxPackageBytes = 5 * 1024 * 1024;
+        private WorkshopStore workshopStore;
+        private WorkshopRuntime workshop;
+        private bool contentBusy, installedOnly;
+        private float contentProgress;
         private int contentCategory;
-        private string contentSearch = "";
-        private string contentNotice = "Нажмите «Обновить каталог», чтобы получить список.";
-        private bool contentBusy;
-        private JArray contentPackages = new JArray();
-        private JArray assetPacks = new JArray();
-        private static readonly string[] ContentCategories =
+        private string contentSearch = "", contentNotice = "Каталоги доступны через интернет; установленные пакеты работают офлайн.";
+        private JArray contentPackages = new JArray(), assetPacks = new JArray();
+        private JObject contentDetails;
+        private static readonly string[] ContentCategories = { "Все", "Игровые системы", "Расы", "Классы", "Подклассы", "Заклинания", "Предметы", "Монстры", "3D-модели", "Окружение", "Текстуры", "Анимации", "Карты", "Оформление", "Коллекции" };
+        private static readonly string[] ContentTypes = { "", "game-system", "race", "class", "subclass", "spell", "item", "monster", "model", "environment", "texture", "animation", "map", "appearance", "collection" };
+        private string ContentDirectory => Path.Combine(Application.persistentDataPath, "workshop-v1");
+        private void InitializeWorkshop()
         {
-            "Все", "Игровые системы", "Расы", "Классы", "Заклинания",
-            "Ремёсла", "Карты", "3D-ресурсы", "Оформление", "Коллекции"
-        };
-        private static readonly string[] ContentTypes =
-        {
-            "", "game-system", "race", "class", "spell", "craft",
-            "map", "model", "appearance", "collection"
-        };
-        private string ContentDirectory => Path.Combine(Application.persistentDataPath, "content_packages");
-
-        private void OpenContentManager()
-        {
-            contentCategory = 0;
-            contentSearch = "";
-            Navigate(FrontScreen.ContentManager);
-        }
-
-        private static string PackageId(JObject package) => (string)package["id"] ?? "";
-        private static bool ValidId(string id) => !string.IsNullOrEmpty(id)
-            && id.Length <= 120 && Regex.IsMatch(id, @"^[a-z0-9][a-z0-9._-]*$");
-        private string PackagePath(string id) => Path.Combine(ContentDirectory, id + ".json");
-        private bool IsInstalled(JObject package)
-        {
-            string id = PackageId(package);
-            if (!ValidId(id)) return false;
-            string path = PackagePath(id);
-            if (!File.Exists(path)) return false;
-            try
+            if (workshopStore != null) return;
+            workshopStore = new WorkshopStore(ContentDirectory); workshop = new WorkshopRuntime(workshopStore); workshop.ActivateData();
+            foreach (string pair in new[] { "content", "assets" })
             {
-                var file = new FileInfo(path);
-                if (file.Length != (long)package["bytes"]) return false;
-                return string.Equals(Sha256(File.ReadAllBytes(path)), (string)package["sha256"], StringComparison.OrdinalIgnoreCase);
+                string path = Path.Combine(ContentDirectory, pair + ".catalog");
+                if (!File.Exists(path)) continue;
+                try { var entries = WorkshopStore.Catalog(File.ReadAllText(path), pair == "content" ? "packages" : "packs"); if (pair == "content") contentPackages = entries; else assetPacks = entries; }
+                catch (Exception e) { contentNotice = "Кеш каталога отклонён: " + e.Message; }
             }
-            catch { return false; }
+            creationCatalog = null;
         }
-
-        private static string Sha256(byte[] data)
+        private void RefreshWorkshop()
         {
-            using (var hash = SHA256.Create())
-                return BitConverter.ToString(hash.ComputeHash(data)).Replace("-", "").ToLowerInvariant();
+            // Destroy geometry before unloading owned resources, then reconstruct
+            // from preserved JSON. Missing resources become visible placeholders.
+            world.ClearWorkshopGeometry(); workshop.Dispose(); workshop = new WorkshopRuntime(workshopStore); workshop.ActivateData(); creationCatalog = null;
+            world.Workshop = workshop; world.ReloadCurrent();
         }
-
-        private static void ValidatePackage(JObject item)
-        {
-            string id = PackageId(item);
-            string url = (string)item["url"];
-            string hash = (string)item["sha256"];
-            long bytes = (long?)item["bytes"] ?? -1;
-            if (!ValidId(id) || string.IsNullOrWhiteSpace((string)item["name"])
-                || string.IsNullOrWhiteSpace((string)item["version"])
-                || !ContentTypes.Skip(1).Contains((string)item["type"])
-                || bytes <= 0 || bytes > MaxPackageBytes
-                || string.IsNullOrEmpty(hash) || !Regex.IsMatch(hash, @"^[a-fA-F0-9]{64}$")
-                || string.IsNullOrEmpty(url) || !url.StartsWith(PackageUrlPrefix, StringComparison.Ordinal)
-                || !url.EndsWith(".json", StringComparison.Ordinal))
-                throw new FormatException("Неверное описание пакета: " + id);
-        }
-
+        private void OpenContentManager() { InitializeWorkshop(); contentCategory = 0; contentDetails = null; Navigate(FrontScreen.ContentManager); }
         private IEnumerator FetchContentCatalog()
         {
             contentBusy = true;
-            contentNotice = "Загружаем каталог…";
-            using (var request = UnityWebRequest.Get(CatalogUrl))
+            foreach (string kind in new[] { "content", "assets" })
             {
-                request.timeout = 20;
-                request.redirectLimit = 0;
-                yield return request.SendWebRequest();
-                if (request.result != UnityWebRequest.Result.Success)
-                    contentNotice = "Ошибка каталога: " + request.error;
-                else
+                string path = Path.Combine(ContentDirectory, kind + ".catalog.part-download");
+                WorkshopDownload handler = null; UnityWebRequest request = null;
+                try { handler = new WorkshopDownload(path, WorkshopStore.MaxCatalogBytes); request = new UnityWebRequest(kind == "content" ? CatalogUrl : AssetsCatalogUrl, "GET", handler, null); request.timeout = 25; request.redirectLimit = 0; }
+                catch (Exception e) { contentNotice = e.Message; }
+                if (request == null) { handler?.Close(); continue; }
+                using (request)
                 {
+                    yield return request.SendWebRequest(); handler.Close();
                     try
                     {
-                        byte[] bytes = request.downloadHandler.data;
-                        if (bytes.Length > MaxCatalogBytes) throw new FormatException("Каталог слишком большой");
-                        var doc = JObject.Parse(request.downloadHandler.text);
-                        if ((int?)doc["schemaVersion"] != 1 || !(doc["packages"] is JArray packages))
-                            throw new FormatException("Неизвестный формат каталога");
-                        foreach (JToken token in packages)
-                        {
-                            if (!(token is JObject item)) throw new FormatException("Неверная запись каталога");
-                            ValidatePackage(item);
-                        }
-                        if (packages.OfType<JObject>().Select(PackageId).Distinct().Count() != packages.Count)
-                            throw new FormatException("Повторяющиеся ID");
-                        contentPackages = (JArray)packages.DeepClone();
-                        contentNotice = "Дополнений: " + contentPackages.Count + ". Проверяем 3D-каталог…";
+                        if (request.result != UnityWebRequest.Result.Success) throw new IOException(handler.Failure ?? request.error);
+                        string text = File.ReadAllText(path); var list = WorkshopStore.Catalog(text, kind == "content" ? "packages" : "packs");
+                        WorkshopStore.AtomicText(Path.Combine(ContentDirectory, kind + ".catalog"), text);
+                        if (kind == "content") contentPackages = list; else assetPacks = list;
+                        contentNotice = "Каталог обновлён. Доступно: " + (contentPackages.Count + assetPacks.Count);
                     }
-                    catch (Exception e) { contentNotice = "Каталог отклонён: " + e.Message; }
+                    catch (Exception e) { contentNotice = "Каталог недоступен; сохранён офлайн-кеш: " + e.Message; }
+                    finally { if (File.Exists(path)) File.Delete(path); }
                 }
-            }
-            // Asset packs have a separate platform-aware manifest. They are shown
-            // as informational cards until Unity bundle installation is implemented.
-            using (var assetsRequest = UnityWebRequest.Get(AssetsCatalogUrl))
-            {
-                assetsRequest.timeout = 20;
-                assetsRequest.redirectLimit = 0;
-                yield return assetsRequest.SendWebRequest();
-                if (assetsRequest.result == UnityWebRequest.Result.Success)
-                {
-                    try
-                    {
-                        if (assetsRequest.downloadHandler.data.Length > MaxCatalogBytes)
-                            throw new FormatException("Каталог 3D-ресурсов слишком большой");
-                        var assetsDoc = JObject.Parse(assetsRequest.downloadHandler.text);
-                        if ((int?)assetsDoc["schemaVersion"] != 1 || !(assetsDoc["packs"] is JArray packs))
-                            throw new FormatException("Неизвестный формат 3D-каталога");
-                        foreach (JToken token in packs)
-                        {
-                            if (!(token is JObject pack) || !ValidId((string)pack["id"])
-                                || string.IsNullOrWhiteSpace((string)pack["name"])
-                                || !(pack["platforms"] is JObject))
-                                throw new FormatException("Некорректный пакет 3D-ресурсов");
-                        }
-                        if (packs.OfType<JObject>().Select(PackageId).Distinct().Count() != packs.Count)
-                            throw new FormatException("Повторяющиеся ID 3D-ресурсов");
-                        assetPacks = (JArray)packs.DeepClone();
-                        contentNotice = "Дополнений: " + contentPackages.Count + " · 3D-пакетов: " + assetPacks.Count;
-                    }
-                    catch (Exception e) { contentNotice = "Каталог 3D-ресурсов отклонён: " + e.Message; }
-                }
-                else contentNotice = "3D-каталог недоступен: " + assetsRequest.error;
             }
             contentBusy = false;
         }
-
         private IEnumerator DownloadContentPackage(JObject item)
         {
-            contentBusy = true;
-            string id = PackageId(item);
-            contentNotice = "Скачивание: " + id;
-            using (var request = UnityWebRequest.Get((string)item["url"]))
+            contentBusy = true; contentProgress = 0; contentNotice = "Загрузка " + item["name"];
+            string path = Path.Combine(ContentDirectory, "download.part"); WorkshopDownload handler = null; UnityWebRequest request = null;
+            try
             {
-                request.timeout = 40;
-                request.redirectLimit = 0;
-                yield return request.SendWebRequest();
-                if (request.result != UnityWebRequest.Result.Success)
-                    contentNotice = "Ошибка загрузки: " + request.error;
-                else
+                WorkshopStore.ValidateManifest(item); WorkshopStore.Compatible(item, WorkshopRuntime.Platform, Application.unityVersion);
+                var drive = new DriveInfo(Path.GetPathRoot(ContentDirectory));
+                if (drive.IsReady && drive.AvailableFreeSpace < (long)item["bytes"] * 2 + 1024 * 1024) throw new IOException("Недостаточно свободного места");
+                handler = new WorkshopDownload(path, (long)item["bytes"]);
+                request = new UnityWebRequest((string)item["url"], "GET", handler, null) { timeout = 120, redirectLimit = (string)item["format"] == "assetbundle" ? 3 : 0 };
+            }
+            catch (Exception e) { contentNotice = e.Message; }
+            if (request != null)
+            {
+                using (request)
                 {
-                    string temp = null;
+                    var operation = request.SendWebRequest();
+                    while (!operation.isDone) { contentProgress = (float)handler.Received / (long)item["bytes"]; yield return null; }
+                    handler.Close();
                     try
                     {
-                        byte[] bytes = request.downloadHandler.data;
-                        if (bytes.Length != (long)item["bytes"] || bytes.Length > MaxPackageBytes)
-                            throw new FormatException("Неверный размер файла");
-                        if (!string.Equals(Sha256(bytes), (string)item["sha256"], StringComparison.OrdinalIgnoreCase))
-                            throw new FormatException("Контрольная сумма SHA-256 не совпадает");
-                        var json = JObject.Parse(System.Text.Encoding.UTF8.GetString(bytes));
-                        if ((string)json["id"] != id || (int?)json["schemaVersion"] != 1)
-                            throw new FormatException("ID или схема пакета не совпадает");
-                        Directory.CreateDirectory(ContentDirectory);
-                        temp = PackagePath(id) + ".part";
-                        File.WriteAllBytes(temp, bytes);
-                        string target = PackagePath(id);
-                        if (File.Exists(target)) File.Delete(target);
-                        File.Move(temp, target);
-                        contentNotice = "Пакет установлен: " + id + ". Подключение к игре будет добавлено позднее.";
+                        if (request.result != UnityWebRequest.Result.Success) throw new IOException(handler.Failure ?? request.error);
+                        workshopStore.Install(item, path, WorkshopRuntime.Platform, Application.unityVersion); RefreshWorkshop();
+                        contentProgress = 1; contentNotice = "Установлено и подключено: " + item["name"];
                     }
-                    catch (Exception e) { contentNotice = "Установка отклонена: " + e.Message; }
-                    finally { if (temp != null && File.Exists(temp)) File.Delete(temp); }
+                    catch (Exception e) { contentNotice = "Установка отклонена; можно повторить: " + e.Message; }
                 }
             }
+            else handler?.Close();
+            try { if (File.Exists(path)) File.Delete(path); } catch (Exception e) { contentNotice += " · " + e.Message; }
             contentBusy = false;
         }
-
+        private string InstallAvailability(JObject item)
+        {
+            try
+            {
+                WorkshopStore.Compatible(item, WorkshopRuntime.Platform, Application.unityVersion);
+                if ((string)item["format"] == "json" && !new[] { "race", "model", "environment", "appearance" }.Contains((string)item["type"])) return "Активация этой категории пока недоступна";
+                foreach (string dep in ((JArray)item["dependencies"]).Values<string>()) if (workshopStore.Find(dep) == null) return "Сначала установите: " + dep;
+                return null;
+            }
+            catch (Exception e) { return e.Message; }
+        }
         private void DrawContentManager()
         {
-            GUILayout.Label("Менеджер контента", heading);
-            GUILayout.Label("Первый рабочий этап: проверенный каталог и установка JSON-пакетов. Подключение к созданию персонажей — следующий этап.", muted);
-            GUILayout.Space(8);
-            if (GUILayout.Button(contentBusy ? "Операция выполняется…" : "↻ Обновить каталог", GUILayout.Height(45)) && !contentBusy)
-                StartCoroutine(FetchContentCatalog());
+            InitializeWorkshop(); GUILayout.Label("Мастерская дополнений", heading);
+            if (!contentBusy && GUILayout.Button("↻ Обновить каталоги и проверить обновления", GUILayout.Height(45))) StartCoroutine(FetchContentCatalog());
             GUILayout.Label(contentNotice, muted);
-            GUILayout.Space(8);
+            if (contentBusy) GUILayout.HorizontalSlider(contentProgress, 0, 1);
+            installedOnly = GUILayout.Toggle(installedOnly, "Только установленные (доступно без интернета)");
             contentSearch = GUILayout.TextField(contentSearch, GUILayout.MinHeight(40));
-            contentCategory = GUILayout.SelectionGrid(contentCategory, ContentCategories, 2, GUILayout.MinHeight(225));
-            GUILayout.Space(12);
+            contentCategory = GUILayout.SelectionGrid(contentCategory, ContentCategories, 2, GUILayout.MinHeight(300));
+            var installed = workshopStore.Installed();
+            var all = contentPackages.Concat(assetPacks).OfType<JObject>().ToList();
+            foreach (JObject local in installed) if (!all.Any(p => (string)p["id"] == (string)local["id"])) all.Add(local);
             int shown = 0;
-            foreach (JObject item in contentPackages.OfType<JObject>())
+            foreach (JObject item in all)
             {
-                if (contentCategory > 0 && (string)item["type"] != ContentTypes[contentCategory]) continue;
-                string title = (string)item["name"] ?? "";
-                if ((title + " " + PackageId(item) + " " + (string)item["author"]).IndexOf(contentSearch, StringComparison.OrdinalIgnoreCase) < 0) continue;
-                shown++;
-                GUILayout.BeginVertical(GUI.skin.box);
-                GUILayout.Label(title + " · " + (string)item["version"], heading);
-                GUILayout.Label((string)item["description"] ?? "", muted);
-                GUILayout.Label("Автор: " + (string)item["author"] + " · " + (long)item["bytes"] + " байт", muted);
-                bool installed = IsInstalled(item);
-                GUILayout.Label(installed ? "✓ Установлено и проверено" : "Не установлено", muted);
-                if (!contentBusy)
+                string id = (string)item["id"]; var local = installed.OfType<JObject>().FirstOrDefault(p => (string)p["id"] == id);
+                if (installedOnly && local == null || contentCategory > 0 && (string)item["type"] != ContentTypes[contentCategory]) continue;
+                if ((item["name"] + " " + id + " " + item["author"]).IndexOf(contentSearch, StringComparison.OrdinalIgnoreCase) < 0) continue;
+                shown++; GUILayout.BeginVertical(GUI.skin.box); GUILayout.Label(item["name"] + " · " + item["version"], heading);
+                GUILayout.Label(local == null ? "Не установлено" : (string)local["sha256"] == (string)item["sha256"] ? "✓ Установлено" : "Доступна другая версия · установлена " + local["version"], muted);
+                if (GUILayout.Button("Подробнее", GUILayout.Height(36))) contentDetails = contentDetails == item ? null : item;
+                if (contentDetails == item)
                 {
-                    if (!installed && GUILayout.Button("Скачать и проверить", GUILayout.Height(42)))
-                        StartCoroutine(DownloadContentPackage((JObject)item.DeepClone()));
-                    if (installed && GUILayout.Button("Удалить пакет", GUILayout.Height(38)))
-                    {
-                        try { File.Delete(PackagePath(PackageId(item))); contentNotice = "Пакет удалён"; }
-                        catch (Exception e) { contentNotice = "Ошибка удаления: " + e.Message; }
-                    }
+                    GUILayout.Label((string)item["description"], muted);
+                    GUILayout.Label("Автор: " + item["author"] + " · Лицензия: " + item["license"] + " · " + item["bytes"] + " байт", muted);
+                    GUILayout.Label("Зависимости: " + string.Join(", ", ((JArray)item["dependencies"]).Values<string>()) + " · Платформа: " + item["platform"] + " · Unity: " + item["unityVersion"], muted);
+                    GUILayout.Label("SHA-256: " + item["sha256"], muted);
                 }
-                GUILayout.EndVertical();
-            }
-            if (contentCategory == 0 || contentCategory == 7)
-            {
-                foreach (JObject pack in assetPacks.OfType<JObject>())
+                string unavailable = InstallAvailability(item); if (unavailable != null) GUILayout.Label(unavailable, muted);
+                bool enabled = GUI.enabled; GUI.enabled = enabled && !contentBusy && unavailable == null;
+                if (GUILayout.Button(local == null ? "Скачать и установить" : (string)local["sha256"] == (string)item["sha256"] ? "Скачать повторно" : "Установить версию " + item["version"], GUILayout.Height(42))) StartCoroutine(DownloadContentPackage((JObject)item.DeepClone()));
+                GUI.enabled = enabled && !contentBusy && local != null;
+                if (GUILayout.Button("Удалить пакет (персонажи и карты сохранятся)", GUILayout.Height(38)))
                 {
-                    string title = (string)pack["name"] ?? "";
-                    if ((title + " " + PackageId(pack)).IndexOf(contentSearch, StringComparison.OrdinalIgnoreCase) < 0) continue;
-                    shown++;
-                    GUILayout.BeginVertical(GUI.skin.box);
-                    GUILayout.Label(title + " · " + (string)pack["version"], heading);
-                    GUILayout.Label("3D-ресурс · загрузка AssetBundles появится в следующем этапе.", muted);
-                    GUILayout.EndVertical();
+                    try { workshopStore.Remove(id); RefreshWorkshop(); contentNotice = "Пакет удалён. Ссылки сохранений сохранены; ресурсы можно установить повторно."; }
+                    catch (Exception e) { contentNotice = e.Message; }
                 }
+                GUI.enabled = enabled; GUILayout.EndVertical();
             }
-            if (shown == 0) GUILayout.Label("В выбранной категории материалов пока нет.", muted);
-            GUILayout.Space(16);
-            if (GUILayout.Button("← Вернуться в настройки", GUILayout.Height(50))) OpenSettings();
+            if (shown == 0) GUILayout.Label("Материалы не найдены. Обновите каталог или измените фильтр.", muted);
+            if (GUILayout.Button("← Настройки", GUILayout.Height(45))) OpenSettings();
         }
     }
+}

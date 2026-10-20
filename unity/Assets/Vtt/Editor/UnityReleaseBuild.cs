@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Xml;
 using DndVtt.UnityPrototype;
+using Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEditor.Build;
@@ -72,6 +73,14 @@ public static class UnityReleaseBuild
         string folder = "Builds/Unity-" + UnityRelease.Version; Directory.CreateDirectory(folder);
         var result = BuildPipeline.BuildPlayer(new[] { LegacyMigrationSetup.ScenePath }, folder + "/" + suffix, target, BuildOptions.None);
         if (result.summary.result != BuildResult.Succeeded) throw new Exception("Unity release build failed: " + result.summary.result);
+        var packed = new JArray();
+        foreach (var group in result.packedAssets)
+            foreach (var asset in group.contents)
+                packed.Add(new JObject { ["source"] = asset.sourceAssetPath, ["packedBytes"] = asset.packedSize });
+        File.WriteAllText(folder + "/build-report-" + target + ".json", new JObject {
+            ["version"] = UnityRelease.Version, ["platform"] = target.ToString(), ["totalBytes"] = result.summary.totalSize,
+            ["packedAssets"] = packed, ["note"] = "Actual Unity BuildReport; APK compression differs from imported source sizes."
+        }.ToString());
         Debug.Log("VTT_RELEASE_BUILD_PASS: " + target + " / " + UnityRelease.Version);
     }
 }

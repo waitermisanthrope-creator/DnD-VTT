@@ -19,7 +19,7 @@ namespace DndVtt.UnityPrototype
         private JObject creationAnswers = new JObject();
         private JObject lastPreview;
         private GUIStyle heading, muted, bigButton;
-        private JObject CreationCatalog => creationCatalog ??= (JObject)JObject.Parse(Resources.Load<TextAsset>("CharacterSheet/catalog").text)["creation"];
+        private JObject CreationCatalog { get { InitializeWorkshop(); return creationCatalog ??= workshop.Creation((JObject)JObject.Parse(Resources.Load<TextAsset>("CharacterSheet/catalog").text)["creation"]); } }
         private JArray AvailableClasses => new JArray(((JArray)CreationCatalog["classes"]).OfType<JObject>().Where(c => (bool?)c["seed"]?["isExtraClass"] != true && (string)c["name"] != "Гайст"));
         // Mobile menus, character creation, sheets, import and settings use
         // portrait; only the live 3D map uses landscape. Desktop is unchanged.

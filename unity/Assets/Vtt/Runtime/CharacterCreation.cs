@@ -26,6 +26,8 @@ namespace DndVtt.UnityPrototype
             Merge(hero, (JObject)race["seed"]); Merge(hero, (JObject)background["seed"]);
             hero["id"] = Guid.NewGuid().ToString(); hero["schemaVersion"] = 3; hero["name"] = name.Trim();
             hero["class"] = cls["name"].DeepClone(); hero["className"] = cls["name"].DeepClone();
+            hero["classId"] = cls["id"].DeepClone();
+            if (race["packageId"] != null) hero["contentPackages"] = new JArray(new JObject { ["id"] = race["packageId"].DeepClone(), ["version"] = race["packageVersion"].DeepClone() });
             hero["raceId"] = race["id"].DeepClone(); hero["raceName"] = race["name"].DeepClone();
             hero["background"] = background["nameRu"] ?? background["name"];
             hero["_builderBaseStats"] = stats.DeepClone(); hero["statGenerationMode"] = mode;

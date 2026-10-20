@@ -1,3 +1,6 @@
+# Current modular workshop task — 2026-10-20
+Read docs/modular-content/PROGRESS.md first. Owner requests modular Unity work in experiment/unity-vtt. Preserve main, signing, saves and branding. Previous task history follows.
+
 # Next checkpoint
 
 2026-10-19 cloud run39263292444 confirms Personal activation/Editor startup now work after owner corrected exact Unity email/password case. Build reached existing C# updater contract and failed because test hardcoded future1.00.01 while candidate itself is1.00.01. Fixed CharacterSheetValidation.ValidateUpdater to derive next version/code and URLs from current release; no runtime update rules weakened. Local assertions reached VTT_UPDATER_CONTRACT_PASS and VTT_MIGRATION_CONTRACT_PASS, but Editor crashed on exit (-1073741819), so local command is NOT green. Rechecking actual candidate on hosted runner next. Credentials need no changes; no release/feed mutation.
