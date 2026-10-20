@@ -16,7 +16,7 @@ namespace DndVtt.UnityPrototype
     {
         private const string CatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Content/main/catalog/v1/index.json";
         private const string AssetsCatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v1/index.json";
-        private const string PackageUrlPrefix = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/experiment/unity-vtt/docs/content-packages/";
+        private const string PackageUrlPrefix = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Content/main/packages/";
         private const int MaxCatalogBytes = 1024 * 1024;
         private const int MaxPackageBytes = 5 * 1024 * 1024;
         private int contentCategory;
