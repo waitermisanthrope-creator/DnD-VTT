@@ -20,7 +20,7 @@ public static class WorkshopBundleBuild
     private static void Build(BuildTarget target)
     {
         string platform = target == BuildTarget.Android ? "android-arm64" : "windows-x64";
-        string source = "Assets/Editor/WorkshopGenerated";
+        string source = "Assets/WorkshopBuildSources";
         if (AssetDatabase.IsValidFolder(source)) AssetDatabase.DeleteAsset(source);
         Directory.CreateDirectory(source); AssetDatabase.Refresh();
         var shader = Shader.Find("Universal Render Pipeline/Lit"); if (!shader) throw new Exception("URP shader missing");

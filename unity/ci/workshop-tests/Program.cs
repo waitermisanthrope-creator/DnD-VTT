@@ -56,7 +56,11 @@ class Program
                         Check((string)reopened["contentPackages"][0]["version"] == "1.0.0", "package version retained in save");
                         File.Copy(original, part, true); store.Install(manifest, part, "android-arm64", "6000.3.26f1");
                     }
-                    var bad = (JObject)manifest.DeepClone(); bad["sha256"] = new string('0', 64); File.Copy(original, part, true);
+                    File.WriteAllText(store.PayloadPath(manifest), "corrupted cached payload");
+                    Check(new WorkshopStore(store.Root).Find(id) == null, "corrupt cache not activated after restart");
+                    File.Copy(original, part, true); store.Install(manifest, part, "android-arm64", "6000.3.26f1");
+                    Check((string)new WorkshopStore(store.Root).Data(manifest)["id"] == id, "retry repairs corrupt cached revision");
+                                        var bad = (JObject)manifest.DeepClone(); bad["sha256"] = new string('0', 64); File.Copy(original, part, true);
                     Reject(() => store.Install(bad, part, "android-arm64", "6000.3.26f1"), "corruption rejection"); Check(store.Find(id) != null, "previous revision survives");
                     bad = (JObject)manifest.DeepClone(); bad["dependencies"] = new JArray("missing.dependency");
                     Reject(() => store.Install(bad, part, "android-arm64", "6000.3.26f1"), "missing dependency");
@@ -98,6 +102,12 @@ class Program
             Reject(() => store.Install(edited, staged, "android-arm64", "6000.3.26f1"), "transitive dependency cycle rejected");
             Check(((JArray)store.Find((string)originalManifest["id"])["dependencies"]).Count == 0, "cycle rejection keeps active revision");
             store.Remove((string)dependent["id"]);
+                        var neighbor = (JObject)originalManifest.DeepClone(); neighbor["id"] = (string)originalManifest["id"] + "-neighbor";
+            var neighborData = (JObject)raceData.DeepClone(); neighborData["id"] = neighbor["id"].DeepClone(); neighborData["races"][0]["id"] = neighbor["id"].DeepClone();
+            File.WriteAllText(staged, neighborData.ToString()); neighbor["bytes"] = new FileInfo(staged).Length; neighbor["sha256"] = WorkshopStore.DigestFile(staged);
+            store.Install(neighbor, staged, "android-arm64", "6000.3.26f1");
+            store.Remove((string)originalManifest["id"]);
+            Check(new WorkshopStore(store.Root).Find((string)neighbor["id"]) != null, "uninstall preserves similarly prefixed package");
                         string saves = Path.Combine(root, "characters.json"); File.WriteAllText(saves, "{\"unknown\":[1,2,3]}");
             foreach (JObject m in store.Installed()) store.Remove((string)m["id"]);
             Check(File.ReadAllText(saves) == "{\"unknown\":[1,2,3]}", "user saves untouched");

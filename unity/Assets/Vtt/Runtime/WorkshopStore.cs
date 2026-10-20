@@ -112,7 +112,7 @@ namespace DndVtt.UnityPrototype
                 else
                 {
                     if (!Regex.IsMatch((string)e["color"] ?? "", "^#[A-Fa-f0-9]{8}$")) throw new FormatException("Цвет");
-                    if (field == "objects" && (!new[] { "Cube", "Sphere", "Cylinder", "Capsule" }.Contains((string)e["primitive"]) || !(e["scale"] is JArray scale) || scale.Count != 3 || scale.Any(v => v.Type != JTokenType.Float && v.Type != JTokenType.Integer || (double)v < .05 || (double)v > 10))) throw new FormatException("Геометрия");
+                    if (field == "objects" && (!new[] { "Cube", "Sphere", "Cylinder", "Capsule" }.Contains((string)e["primitive"]) || !(e["scale"] is JArray scale) || scale.Count != 3 || scale.Any(v => v.Type != JTokenType.Float && v.Type != JTokenType.Integer || double.IsNaN((double)v) || double.IsInfinity((double)v) || (double)v < .05 || (double)v > 10))) throw new FormatException("Геометрия");
                 }
             }
             return data;
@@ -135,7 +135,13 @@ namespace DndVtt.UnityPrototype
             foreach (string id in graph.Keys) Visit(id);
             Directory.CreateDirectory(Revision(m));
             string target = PayloadPath(m);
-            if (!File.Exists(target)) File.Move(downloaded, target); else Verify(m, target);
+            if (!File.Exists(target)) File.Move(downloaded, target);
+            else
+            {
+                try { Verify(m, target); }
+                catch (Exception e) when (e is IOException || e is FormatException)
+                { File.Replace(downloaded, target, target + ".bad"); }
+            }
             AtomicText(Pointer((string)m["id"]), m.ToString()); verifiedCache = null;
         }
         public JObject Creation(JObject baseline)
@@ -160,7 +166,11 @@ namespace DndVtt.UnityPrototype
             if (File.Exists(pointer)) File.Delete(pointer);
             verifiedCache = null;
             if (File.Exists(pointer + ".bak")) File.Delete(pointer + ".bak");
-            foreach (string dir in Directory.GetDirectories(Root, id + "-*")) Directory.Delete(dir, true);
+            foreach (string dir in Directory.GetDirectories(Root, id + "-*"))
+            {
+                string name = Path.GetFileName(dir);
+                if (name.Length == id.Length + 65 && Regex.IsMatch(name.Substring(id.Length + 1), "^[a-f0-9]{64}$")) Directory.Delete(dir, true);
+            }
         }
         public JObject Data(JObject m) { Verify(m, PayloadPath(m)); return ValidateData(m, File.ReadAllText(PayloadPath(m))); }
     }
