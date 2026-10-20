@@ -17,6 +17,7 @@ namespace DndVtt.UnityPrototype
         public const long MaxPackageBytes = 64 * 1024 * 1024;
         public static readonly string[] Types = { "game-system", "race", "class", "subclass", "spell", "item", "monster", "model", "environment", "texture", "animation", "map", "appearance", "collection", "craft" };
         private JArray verifiedCache;
+        private string cacheFingerprint;
         public string Root { get; }
         public WorkshopStore(string root) { Root = Path.GetFullPath(root); Directory.CreateDirectory(Root); }
         public static bool ValidId(string id) => id != null && id.Length <= 120 && Regex.IsMatch(id, @"^[a-z0-9][a-z0-9._-]*$");
@@ -70,7 +71,8 @@ namespace DndVtt.UnityPrototype
         }
         public JArray Installed()
         {
-            if (verifiedCache != null) return (JArray)verifiedCache.DeepClone();
+            string fingerprint = string.Join("|", Directory.GetFiles(Root, "*.json").OrderBy(p => p).Select(p => { var info = new FileInfo(p); return p + ":" + info.Length + ":" + info.LastWriteTimeUtc.Ticks; }));
+            if (verifiedCache != null && fingerprint == cacheFingerprint) return (JArray)verifiedCache.DeepClone();
             var list = new JArray();
             foreach (string path in Directory.GetFiles(Root, "*.json"))
             {
@@ -79,7 +81,7 @@ namespace DndVtt.UnityPrototype
             }
             bool changed;
             do { changed = false; foreach (JObject item in list.ToArray()) if (((JArray)item["dependencies"]).Any(d => !list.Any(x => (string)x["id"] == (string)d))) { item.Remove(); changed = true; } } while (changed);
-            verifiedCache = (JArray)list.DeepClone();
+            verifiedCache = (JArray)list.DeepClone(); cacheFingerprint = fingerprint;
             return list;
         }
         public JObject Find(string id) => Installed().OfType<JObject>().FirstOrDefault(m => (string)m["id"] == id);
