@@ -28,7 +28,7 @@ namespace DndVtt.UnityPrototype
         {
             string id = (string)m["id"], url = (string)m["url"], hash = (string)m["sha256"];
             long size = (long?)m["bytes"] ?? -1;
-            if (!ValidId(id) || !Types.Contains((string)m["type"]) || size < 1 || size > MaxPackageBytes
+            if ((int?)m["schemaVersion"] != 1 || !ValidId(id) || !Types.Contains((string)m["type"]) || size < 1 || size > MaxPackageBytes
                 || !Regex.IsMatch((string)m["version"] ?? "", @"^\d+\.\d+\.\d+$")
                 || string.IsNullOrWhiteSpace((string)m["name"]) || string.IsNullOrWhiteSpace((string)m["author"])
                 || string.IsNullOrWhiteSpace((string)m["license"]) || !Regex.IsMatch(hash ?? "", "^[a-f0-9]{64}$"))

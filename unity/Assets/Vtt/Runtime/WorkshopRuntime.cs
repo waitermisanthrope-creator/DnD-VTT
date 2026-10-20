@@ -89,11 +89,18 @@ namespace DndVtt.UnityPrototype
                 foreach (GameObject go in all.allAssets) Models[(string)m["id"] + "." + go.name.ToLowerInvariant()] = go;
             }
         }
+        public void ReleaseBundleCache()
+        {
+            foreach (string id in loaded)
+                foreach (string key in Models.Keys.Where(k => k.StartsWith(id + ".", StringComparison.Ordinal)).ToArray()) Models.Remove(key);
+            foreach (var bundle in bundles) bundle.Unload(false);
+            bundles.Clear(); loaded.Clear(); Resources.UnloadUnusedAssets();
+        }
         public void Dispose()
         {
             foreach (var go in owned) if (go) UnityEngine.Object.Destroy(go);
             foreach (var material in Surfaces.Values) if (material) UnityEngine.Object.Destroy(material);
-            Models.Clear(); owned.Clear(); loaded.Clear(); Surfaces.Clear(); foreach (var bundle in bundles) bundle.Unload(false); bundles.Clear(); Resources.UnloadUnusedAssets();
+            Models.Clear(); owned.Clear(); Surfaces.Clear(); ReleaseBundleCache();
         }
     }
 }

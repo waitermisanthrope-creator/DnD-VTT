@@ -26,6 +26,7 @@ namespace DndVtt.UnityPrototype
         private void InitializeWorkshop()
         {
             if (workshopStore != null) return;
+            Application.lowMemory += OnWorkshopLowMemory;
             workshopStore = new WorkshopStore(ContentDirectory); workshop = new WorkshopRuntime(workshopStore); workshop.ActivateData();
             foreach (string pair in new[] { "content", "assets" })
             {
@@ -36,6 +37,8 @@ namespace DndVtt.UnityPrototype
             }
             creationCatalog = null;
         }
+        private void OnWorkshopLowMemory() { workshop?.ReleaseBundleCache(); contentNotice = "Мало памяти: неиспользуемые bundle-ресурсы освобождаются. Откройте библиотеку для повторной загрузки."; }
+        private void OnDestroy() { Application.lowMemory -= OnWorkshopLowMemory; workshop?.Dispose(); }
         private void RefreshWorkshop()
         {
             // Destroy geometry before unloading owned resources, then reconstruct

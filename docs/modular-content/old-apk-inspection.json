@@ -1,0 +1,58 @@
+{
+  "apkBytes": 58430834,
+  "rawBranding": [
+    {
+      "path": "assets/Branding/Dragon20.png",
+      "bytes": 1284815,
+      "compressedBytes": 1284815
+    },
+    {
+      "path": "assets/Branding/Splash19.png",
+      "bytes": 8605503,
+      "compressedBytes": 8605503
+    },
+    {
+      "path": "assets/Branding/Wallpaper16.jpg",
+      "bytes": 212684,
+      "compressedBytes": 212684
+    }
+  ],
+  "native": [
+    {
+      "path": "lib/arm64-v8a/lib_burst_generated.so",
+      "bytes": 330744,
+      "compressedBytes": 104897
+    },
+    {
+      "path": "lib/arm64-v8a/libc++_shared.so",
+      "bytes": 1292904,
+      "compressedBytes": 406563
+    },
+    {
+      "path": "lib/arm64-v8a/libgame.so",
+      "bytes": 152288,
+      "compressedBytes": 56857
+    },
+    {
+      "path": "lib/arm64-v8a/libil2cpp.so",
+      "bytes": 75309536,
+      "compressedBytes": 19370691
+    },
+    {
+      "path": "lib/arm64-v8a/libmain.so",
+      "bytes": 6696,
+      "compressedBytes": 2577
+    },
+    {
+      "path": "lib/arm64-v8a/libswappywrapper.so",
+      "bytes": 226400,
+      "compressedBytes": 79862
+    },
+    {
+      "path": "lib/arm64-v8a/libunity.so",
+      "bytes": 19358992,
+      "compressedBytes": 8579824
+    }
+  ],
+  "note": "Zip entries cannot identify all serialized Unity assets; BuildReport required."
+}
