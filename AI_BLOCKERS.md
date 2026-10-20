@@ -1,3 +1,6 @@
+## 2026-10-20 — Android workshop download hotfix (PARTIAL)
+User device screenshots demonstrate1.00.06 cannot download: Android IL2CPP does not support DriveInfo.GetDriveFormat. Replaced Android probe with android.os.StatFs on actual workshop path; unavailable probe permits bounded streaming with existing IO/SHA checks. Low-RAM event releases bundle cache without overwriting download errors/results.93 C# and10 Python CI checks PASS. Candidate1.00.07/code10007 pending native build and device retest; no stable feed/save/signing change.
+
 # Current verified limits — 2026-10-20
 
 - No GitHub write or Unity licensing/signing blocker: all3 repositories updated, native run39508072660 SUCCESS. Optimized APK1.00.06 is available and measured. See docs/modular-content/REPORT.md.

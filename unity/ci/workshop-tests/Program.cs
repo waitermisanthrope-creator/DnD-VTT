@@ -23,6 +23,17 @@ class Program
                 var errors = tree.GetDiagnostics().Where(d => d.Severity == Microsoft.CodeAnalysis.DiagnosticSeverity.Error).ToArray();
                 Check(errors.Length == 0, "C# syntax " + file + " " + string.Join(";", errors.Select(e => e.ToString())));
             }
+            WorkshopStore.CheckDownloadSpace(1037, () => 1220000000L);
+            Check(true, "tiny race downloads with reported 1.22GB free");
+            WorkshopStore.CheckDownloadSpace(1037, () => throw new NotSupportedException("IL2CPP unsupported icall"));
+            WorkshopStore.CheckDownloadSpace(1037, () => throw new IOException("probe unavailable"));
+            Check(true, "unavailable free-space probe does not block download");
+            WorkshopStore.CheckDownloadSpace(1037, () => -1);
+            Check(true, "unknown space does not mean full storage");
+            Reject(() => WorkshopStore.CheckDownloadSpace(1037, () => 0), "actual full storage blocks download");
+            long required = 1037 * 2 + 1024 * 1024;
+            WorkshopStore.CheckDownloadSpace(1037, () => required);
+            Reject(() => WorkshopStore.CheckDownloadSpace(1037, () => required - 1), "storage reserve boundary");
             var store = new WorkshopStore(Path.Combine(root, "store"));
             Check(store.Installed().Count == 0, "empty offline startup");
             foreach (string repo in new[] { "DnD-VTT-Content", "DnD-VTT-Assets" })

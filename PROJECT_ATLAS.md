@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода f98d7f0d1c2c. Git содержит 1849 файлов.
+Снимок кода ec76518a36be. Git содержит 1849 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -59,9 +59,9 @@
 | №0038 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0039 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0040 AGENTS.md | 4903 B | документация или отчёт: AGENTS |
-| №0041 AI_BLOCKERS.md | 15431 B | документация или отчёт: AI BLOCKERS |
-| №0042 AI_NEXT_TASK.md | 15676 B | документация или отчёт: AI NEXT TASK |
-| №0043 AI_PROGRESS.md | 54000 B | документация или отчёт: AI PROGRESS |
+| №0041 AI_BLOCKERS.md | 15973 B | документация или отчёт: AI BLOCKERS |
+| №0042 AI_NEXT_TASK.md | 16218 B | документация или отчёт: AI NEXT TASK |
+| №0043 AI_PROGRESS.md | 54543 B | документация или отчёт: AI PROGRESS |
 | №0044 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0045 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0046 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1035,13 +1035,13 @@
 | №1014 docs/modular-content/audit.json | 1754999 B | документация или отчёт: audit |
 | №1015 docs/modular-content/catalog-entry-v1.schema.json | 2860 B | документация или отчёт: catalog entry v1.schema |
 | №1016 docs/modular-content/DEPENDENCIES.md | 7705 B | документация или отчёт: DEPENDENCIES |
-| №1017 docs/modular-content/DEVICE_QA.md | 4733 B | документация или отчёт: DEVICE QA |
+| №1017 docs/modular-content/DEVICE_QA.md | 5275 B | документация или отчёт: DEVICE QA |
 | №1018 docs/modular-content/final-apk-metrics.json | 1291 B | документация или отчёт: final apk metrics |
 | №1019 docs/modular-content/LICENSE_REVIEW.md | 2830 B | документация или отчёт: LICENSE REVIEW |
 | №1020 docs/modular-content/native-validation.json | 2495 B | документация или отчёт: native validation |
 | №1021 docs/modular-content/old-apk-inspection.json | 1311 B | документация или отчёт: old apk inspection |
 | №1022 docs/modular-content/old-apk-objects.json | 196276 B | документация или отчёт: old apk objects |
-| №1023 docs/modular-content/PROGRESS.md | 3201 B | документация или отчёт: PROGRESS |
+| №1023 docs/modular-content/PROGRESS.md | 3743 B | документация или отчёт: PROGRESS |
 | №1024 docs/modular-content/public-verification.json | 1729 B | документация или отчёт: public verification |
 | №1025 docs/modular-content/REPORT.md | 19727 B | документация или отчёт: REPORT |
 | №1026 docs/MONETIZATION_ROADMAP.md | 15924 B | документация или отчёт: MONETIZATION ROADMAP |
@@ -1716,7 +1716,7 @@
 | №1695 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Branding.cs |
 | №1696 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs | 10194 B | вспомогательный файл: LegacySessionPanel.BrandSettings |
 | №1697 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.BrandSettings.cs |
-| №1698 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs | 12667 B | вспомогательный файл: LegacySessionPanel.ContentManager |
+| №1698 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs | 12815 B | вспомогательный файл: LegacySessionPanel.ContentManager |
 | №1699 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs | 7648 B | вспомогательный файл: LegacySessionPanel |
 | №1700 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.cs |
 | №1701 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs | 24370 B | вспомогательный файл: LegacySessionPanel.FrontEnd |
@@ -1737,7 +1737,7 @@
 | №1716 unity/Assets/Vtt/Runtime/UnityRelease.cs.meta | 60 B | вспомогательный файл: UnityRelease.cs |
 | №1717 unity/Assets/Vtt/Runtime/WorkshopRuntime.cs | 6806 B | вспомогательный файл: WorkshopRuntime |
 | №1718 unity/Assets/Vtt/Runtime/WorkshopRuntime.cs.meta | 60 B | вспомогательный файл: WorkshopRuntime.cs |
-| №1719 unity/Assets/Vtt/Runtime/WorkshopStore.cs | 13913 B | вспомогательный файл: WorkshopStore |
+| №1719 unity/Assets/Vtt/Runtime/WorkshopStore.cs | 14704 B | вспомогательный файл: WorkshopStore |
 | №1720 unity/Assets/Vtt/Runtime/WorkshopStore.cs.meta | 60 B | вспомогательный файл: WorkshopStore.cs |
 | №1721 unity/Assets/Vtt/Scenes.meta | 172 B | вспомогательный файл: Scenes |
 | №1722 unity/Assets/Vtt/Scenes/Exploration.unity | 49176 B | вспомогательный файл: Exploration |
@@ -1774,7 +1774,7 @@
 | №1753 unity/ci/verify_public_workshop.py | 1506 B | вспомогательный файл: verify public workshop |
 | №1754 unity/ci/windows-upgrade-qa.ps1 | 3846 B | вспомогательный файл: windows upgrade qa |
 | №1755 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
-| №1756 unity/ci/workshop-tests/Program.cs | 11279 B | вспомогательный файл: Program |
+| №1756 unity/ci/workshop-tests/Program.cs | 12205 B | вспомогательный файл: Program |
 | №1757 unity/ci/workshop-tests/WorkshopTests.csproj | 799 B | вспомогательный файл: WorkshopTests |
 | №1758 unity/evidence/exploration.png | 119417 B | текстура/изображение: exploration |
 | №1759 unity/Installer/release-notes.md | 1582 B | документация или отчёт: release notes |

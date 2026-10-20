@@ -1,3 +1,6 @@
+## 2026-10-20 — Android workshop download hotfix (PARTIAL)
+User device screenshots demonstrate1.00.06 cannot download: Android IL2CPP does not support DriveInfo.GetDriveFormat. Replaced Android probe with android.os.StatFs on actual workshop path; unavailable probe permits bounded streaming with existing IO/SHA checks. Low-RAM event releases bundle cache without overwriting download errors/results.93 C# and10 Python CI checks PASS. Candidate1.00.07/code10007 pending native build and device retest; no stable feed/save/signing change.
+
 # Модульный контент — актуальный checkpoint 2026-10-20
 
 Общий статус PARTIAL. Подробный фактический отчёт: [REPORT.md](REPORT.md).

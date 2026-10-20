@@ -13,6 +13,17 @@ namespace DndVtt.UnityPrototype
     // Each immutable revision is committed before the atomic active pointer changes.
     public sealed class WorkshopStore
     {
+        // A failed optional probe must never prevent a bounded download. Actual
+        // filesystem write failures still abort installation without changing saves.
+        public static void CheckDownloadSpace(long packageBytes, Func<long> probe)
+        {
+            long available;
+            try { available = probe(); }
+            catch (Exception) { return; }
+            long required = checked(packageBytes * 2 + 1024 * 1024);
+            if (available >= 0 && available < required)
+                throw new IOException("Недостаточно места в хранилище приложения: требуется " + required + " байт, доступно " + available + " байт. Освободите место и повторите загрузку.");
+        }
         public const int MaxCatalogBytes = 1024 * 1024;
         public const long MaxPackageBytes = 64 * 1024 * 1024;
         public static readonly string[] Types = { "game-system", "race", "class", "subclass", "spell", "item", "monster", "model", "environment", "texture", "animation", "map", "appearance", "collection", "craft" };

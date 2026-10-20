@@ -37,7 +37,7 @@ namespace DndVtt.UnityPrototype
             }
             creationCatalog = null;
         }
-        private void OnWorkshopLowMemory() { workshop?.ReleaseBundleCache(); contentNotice = "Мало памяти: неиспользуемые bundle-ресурсы освобождаются. Откройте библиотеку для повторной загрузки."; }
+        private void OnWorkshopLowMemory() { workshop?.ReleaseBundleCache(); }
         private void OnDestroy() { Application.lowMemory -= OnWorkshopLowMemory; workshop?.Dispose(); }
         private void RefreshWorkshop()
         {
@@ -74,6 +74,17 @@ namespace DndVtt.UnityPrototype
             }
             contentBusy = false;
         }
+        private long ReadWorkshopFreeBytes()
+        {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            // DriveInfo invokes unsupported IL2CPP icalls on Android. Query the
+            // actual app-data filesystem, not the root filesystem or shared storage.
+            using (var stat = new AndroidJavaObject("android.os.StatFs", ContentDirectory))
+                return stat.Call<long>("getAvailableBytes");
+#else
+            return new DriveInfo(Path.GetPathRoot(ContentDirectory)).AvailableFreeSpace;
+#endif
+        }
         private IEnumerator DownloadContentPackage(JObject item)
         {
             contentBusy = true; contentProgress = 0; contentNotice = "Загрузка " + item["name"];
@@ -81,8 +92,7 @@ namespace DndVtt.UnityPrototype
             try
             {
                 WorkshopStore.ValidateManifest(item); WorkshopStore.Compatible(item, WorkshopRuntime.Platform, Application.unityVersion);
-                var drive = new DriveInfo(Path.GetPathRoot(ContentDirectory));
-                if (drive.IsReady && drive.AvailableFreeSpace < (long)item["bytes"] * 2 + 1024 * 1024) throw new IOException("Недостаточно свободного места");
+                WorkshopStore.CheckDownloadSpace((long)item["bytes"], ReadWorkshopFreeBytes);
                 handler = new WorkshopDownload(path, (long)item["bytes"]);
                 request = new UnityWebRequest((string)item["url"], "GET", handler, null) { timeout = 120, redirectLimit = (string)item["format"] == "assetbundle" ? 3 : 0 };
             }

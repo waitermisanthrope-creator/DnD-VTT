@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит f98d7f0d1c2c. Файлов: 1849
+Коммит ec76518a36be. Файлов: 1849
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -54,9 +54,9 @@
 0038. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0039. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0040. AGENTS.md — документация или отчёт: AGENTS (4903 B)
-0041. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (15431 B)
-0042. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (15676 B)
-0043. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (54000 B)
+0041. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (15973 B)
+0042. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (16218 B)
+0043. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (54543 B)
 0044. android/.gitignore — Android компонент: .gitignore (44 B)
 0045. android/app/build.gradle — Android компонент: build (4122 B)
 0046. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1030,13 +1030,13 @@
 1014. docs/modular-content/audit.json — документация или отчёт: audit (1754999 B)
 1015. docs/modular-content/catalog-entry-v1.schema.json — документация или отчёт: catalog entry v1.schema (2860 B)
 1016. docs/modular-content/DEPENDENCIES.md — документация или отчёт: DEPENDENCIES (7705 B)
-1017. docs/modular-content/DEVICE_QA.md — документация или отчёт: DEVICE QA (4733 B)
+1017. docs/modular-content/DEVICE_QA.md — документация или отчёт: DEVICE QA (5275 B)
 1018. docs/modular-content/final-apk-metrics.json — документация или отчёт: final apk metrics (1291 B)
 1019. docs/modular-content/LICENSE_REVIEW.md — документация или отчёт: LICENSE REVIEW (2830 B)
 1020. docs/modular-content/native-validation.json — документация или отчёт: native validation (2495 B)
 1021. docs/modular-content/old-apk-inspection.json — документация или отчёт: old apk inspection (1311 B)
 1022. docs/modular-content/old-apk-objects.json — документация или отчёт: old apk objects (196276 B)
-1023. docs/modular-content/PROGRESS.md — документация или отчёт: PROGRESS (3201 B)
+1023. docs/modular-content/PROGRESS.md — документация или отчёт: PROGRESS (3743 B)
 1024. docs/modular-content/public-verification.json — документация или отчёт: public verification (1729 B)
 1025. docs/modular-content/REPORT.md — документация или отчёт: REPORT (19727 B)
 1026. docs/MONETIZATION_ROADMAP.md — документация или отчёт: MONETIZATION ROADMAP (15924 B)
@@ -1711,7 +1711,7 @@
 1695. unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta — вспомогательный файл: LegacySessionPanel.Branding.cs (60 B)
 1696. unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs — вспомогательный файл: LegacySessionPanel.BrandSettings (10194 B)
 1697. unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta — вспомогательный файл: LegacySessionPanel.BrandSettings.cs (60 B)
-1698. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs — вспомогательный файл: LegacySessionPanel.ContentManager (12667 B)
+1698. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs — вспомогательный файл: LegacySessionPanel.ContentManager (12815 B)
 1699. unity/Assets/Vtt/Runtime/LegacySessionPanel.cs — вспомогательный файл: LegacySessionPanel (7648 B)
 1700. unity/Assets/Vtt/Runtime/LegacySessionPanel.cs.meta — вспомогательный файл: LegacySessionPanel.cs (59 B)
 1701. unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs — вспомогательный файл: LegacySessionPanel.FrontEnd (24370 B)
@@ -1732,7 +1732,7 @@
 1716. unity/Assets/Vtt/Runtime/UnityRelease.cs.meta — вспомогательный файл: UnityRelease.cs (60 B)
 1717. unity/Assets/Vtt/Runtime/WorkshopRuntime.cs — вспомогательный файл: WorkshopRuntime (6806 B)
 1718. unity/Assets/Vtt/Runtime/WorkshopRuntime.cs.meta — вспомогательный файл: WorkshopRuntime.cs (60 B)
-1719. unity/Assets/Vtt/Runtime/WorkshopStore.cs — вспомогательный файл: WorkshopStore (13913 B)
+1719. unity/Assets/Vtt/Runtime/WorkshopStore.cs — вспомогательный файл: WorkshopStore (14704 B)
 1720. unity/Assets/Vtt/Runtime/WorkshopStore.cs.meta — вспомогательный файл: WorkshopStore.cs (60 B)
 1721. unity/Assets/Vtt/Scenes.meta — вспомогательный файл: Scenes (172 B)
 1722. unity/Assets/Vtt/Scenes/Exploration.unity — вспомогательный файл: Exploration (49176 B)
@@ -1769,7 +1769,7 @@
 1753. unity/ci/verify_public_workshop.py — вспомогательный файл: verify public workshop (1506 B)
 1754. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (3846 B)
 1755. unity/ci/workshop-tests/.gitignore — вспомогательный файл: .gitignore (10 B)
-1756. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (11279 B)
+1756. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (12205 B)
 1757. unity/ci/workshop-tests/WorkshopTests.csproj — вспомогательный файл: WorkshopTests (799 B)
 1758. unity/evidence/exploration.png — текстура/изображение: exploration (119417 B)
 1759. unity/Installer/release-notes.md — документация или отчёт: release notes (1582 B)
