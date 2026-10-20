@@ -1,0 +1,98 @@
+[
+  {
+    "source": "unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Cloth_BaseColor.png",
+    "sourceSha256": "c4d0e14506e05cc56e7ca62ebeeb2d45de055296a55e5a8e9c1330ff8ff1833a",
+    "androidBefore": 2048,
+    "androidAfter": 1024,
+    "windows": "unchanged",
+    "sourcePixelsModified": false
+  },
+  {
+    "source": "unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Cloth_Normal.png",
+    "sourceSha256": "e91a490f94bc00707fb5be08045e316b4a18962f07a3b6e3d9d7c2058cfc51c0",
+    "androidBefore": 2048,
+    "androidAfter": 1024,
+    "windows": "unchanged",
+    "sourcePixelsModified": false
+  },
+  {
+    "source": "unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Cloth_ORM.png",
+    "sourceSha256": "9bdaa0d1be8c393b07d6185165d73c7cddc058d5c123ad49449945f45a7e0c0d",
+    "androidBefore": 2048,
+    "androidAfter": 1024,
+    "windows": "unchanged",
+    "sourcePixelsModified": false
+  },
+  {
+    "source": "unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Furniture_BaseColor.png",
+    "sourceSha256": "075fbc9ec2fabc15732bd4025b6f63a0b25762df38440d06bf30437565d39bab",
+    "androidBefore": 2048,
+    "androidAfter": 1024,
+    "windows": "unchanged",
+    "sourcePixelsModified": false
+  },
+  {
+    "source": "unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Furniture_Normal.png",
+    "sourceSha256": "3340c4cc47ff06d5e94a2dbe2a2a12d914d0ef055fcf66f63d876666bd160e42",
+    "androidBefore": 2048,
+    "androidAfter": 1024,
+    "windows": "unchanged",
+    "sourcePixelsModified": false
+  },
+  {
+    "source": "unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Furniture_ORM.png",
+    "sourceSha256": "7bf417e82baf313793c5791bf48cdc8e573f1f7136197785bf0eb235cb0f8153",
+    "androidBefore": 2048,
+    "androidAfter": 1024,
+    "windows": "unchanged",
+    "sourcePixelsModified": false
+  },
+  {
+    "source": "unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Metal_BaseColor.png",
+    "sourceSha256": "50422bbda9661effc259caf8b386224cac4b5ca811d2c5b3b8b25ae8efc714db",
+    "androidBefore": 2048,
+    "androidAfter": 1024,
+    "windows": "unchanged",
+    "sourcePixelsModified": false
+  },
+  {
+    "source": "unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Metal_Normal.png",
+    "sourceSha256": "ab7315c864c9a9e6d716c940a599928506e1569d3b0c9085f8f1a64ec520d790",
+    "androidBefore": 2048,
+    "androidAfter": 1024,
+    "windows": "unchanged",
+    "sourcePixelsModified": false
+  },
+  {
+    "source": "unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Metal_ORM.png",
+    "sourceSha256": "7407bccfc39ca74ecd68a61217395959bf56ac2063e6c93b384b11f07f5687c5",
+    "androidBefore": 2048,
+    "androidAfter": 1024,
+    "windows": "unchanged",
+    "sourcePixelsModified": false
+  },
+  {
+    "source": "unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Props_BaseColor.png",
+    "sourceSha256": "75225a4ccfd8cc358c871de7a7a3cab7118ef197419a88464e807b81716215c8",
+    "androidBefore": 2048,
+    "androidAfter": 1024,
+    "windows": "unchanged",
+    "sourcePixelsModified": false
+  },
+  {
+    "source": "unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Props_Normal.png",
+    "sourceSha256": "c4b28a8ba8efe3108cd11356ecab67e8bf75a10cebf29c78ee7724552c305a3e",
+    "androidBefore": 2048,
+    "androidAfter": 1024,
+    "windows": "unchanged",
+    "sourcePixelsModified": false
+  },
+  {
+    "source": "unity/Assets/LegacyContent/Source/app/assets/3d/quaternius/models/T_Trim_Props_ORM.png",
+    "sourceSha256": "2d83d8df79aca2c8f630d389b43f09113afee98e746dfd42ddc3ce3302a136a2",
+    "androidBefore": 2048,
+    "androidAfter": 1024,
+    "windows": "unchanged",
+    "sourcePixelsModified": false
+  }
+]

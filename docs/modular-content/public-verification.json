@@ -33,6 +33,11 @@
   },
   "oldApk": {
     "bytes": 58430834,
-    "sha256": "0240d7cf48ce7918779696d3624c5c53e813487bd902e0752004826de6761b23"
+    "sha256": "0240d7cf48ce7918779696d3624c5c53e813487bd902e0752004826de6761b23",
+    "version": "1.00.05",
+    "versionCode": 10005,
+    "package": "com.dndvtt.unity",
+    "certificateSha256": "c1c1b3e6537f10819a3042817ac91535b47754ed65d084e635f84ff2b1f44c8e",
+    "signatureVerification": "apksigner verify PASS"
   }
 }

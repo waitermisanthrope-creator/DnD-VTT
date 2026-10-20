@@ -59,6 +59,8 @@ jobs:
           mkdir -p "$RUNNER_TEMP/workshop-registries"
           python3 unity/ci/verify_public_workshop.py --output "$RUNNER_TEMP/workshop-registries"
           dotnet run --project unity/ci/workshop-tests -- "$RUNNER_TEMP/workshop-registries" "$GITHUB_WORKSPACE"
+          mkdir -p unity/WorkshopFixtures~
+          cp -R "$RUNNER_TEMP/workshop-registries/." unity/WorkshopFixtures~/
       - name: Verify signing key matches published Android 1.00.00
         env:
           UNITY_ANDROID_KEYSTORE_BASE64: ${{ secrets.UNITY_ANDROID_KEYSTORE_BASE64 }}
@@ -138,6 +140,24 @@ jobs:
         run: |
           python3 unity/ci/cloud_release.py sign
           python3 unity/ci/cloud_release.py android-candidate
+      - name: Measure real signed APK and validate retained artwork and prop imports
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install UnityPy==1.25.4
+          APK="unity/Builds/Unity-${{ inputs.version || '1.00.06' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.06' }}-arm64.apk"
+          python3 tools/inspect_unity_apk.py --apk "$APK" --output unity/apk-object-inventory.json
+          python3 unity/ci/measure_apk.py --apk "$APK" --objects unity/apk-object-inventory.json --report unity/apk-metrics.json --max-prop-texture 1024
+      - name: Save measured APK inventory and metrics
+        uses: actions/upload-artifact@v4
+        with:
+          name: Unity-APK-measurements-${{ github.run_id }}
+          path: |
+            unity/apk-metrics.json
+            unity/apk-object-inventory.json
+            unity/Builds/Unity-*/distribution/candidate.json
+            unity/Builds/Unity-*/distribution/SHA256SUMS.txt
+          if-no-files-found: error
       - name: Deliver verified signed Android APK for phone testing
         uses: actions/upload-artifact@v4
         with:
@@ -145,6 +165,17 @@ jobs:
           path: unity/Builds/Unity-${{ inputs.version || '1.00.06' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.06' }}-arm64.apk
           if-no-files-found: error
           retention-days: 3
+      - name: Verify separately generated trusted Android demo bundle
+        id: workshop-bundle
+        run: python3 unity/ci/verify_bundle_output.py
+      - name: Save verified Android bundle for manual runtime QA
+        if: steps.workshop-bundle.outputs.present == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Unity-workshop-Android-${{ github.run_id }}
+          path: unity/Builds/Workshop/android-arm64/
+          if-no-files-found: error
+          retention-days: 7
       - name: Encrypt unpublished APK candidate
         env:
           UNITY_CI_ARTIFACT_PASSWORD: ${{ secrets.UNITY_CI_ARTIFACT_PASSWORD }}

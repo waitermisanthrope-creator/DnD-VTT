@@ -51,7 +51,7 @@ namespace DndVtt.UnityPrototype
                     {
                         string id = (string)entry["id"]; if (Models.ContainsKey(id)) continue;
                         var go = GameObject.CreatePrimitive((PrimitiveType)Enum.Parse(typeof(PrimitiveType), (string)entry["primitive"]));
-                        go.name = id; go.SetActive(false); UnityEngine.Object.DontDestroyOnLoad(go);
+                        go.name = id; go.SetActive(false); if (Application.isPlaying) UnityEngine.Object.DontDestroyOnLoad(go);
                         var scale = (JArray)entry["scale"]; go.transform.localScale = new Vector3((float)scale[0], (float)scale[1], (float)scale[2]);
                         var mat = new Material(Shader.Find("Universal Render Pipeline/Lit")); ColorUtility.TryParseHtmlString((string)entry["color"], out Color color); mat.color = color;
                         go.GetComponent<Renderer>().sharedMaterial = mat; owned.Add(go); Models.Add(id, go); Surfaces.Add(id + ".material", mat);
@@ -96,10 +96,11 @@ namespace DndVtt.UnityPrototype
             foreach (var bundle in bundles) bundle.Unload(false);
             bundles.Clear(); loaded.Clear(); Resources.UnloadUnusedAssets();
         }
+        private static void Release(UnityEngine.Object value) { if (!value) return; if (Application.isPlaying) UnityEngine.Object.Destroy(value); else UnityEngine.Object.DestroyImmediate(value); }
         public void Dispose()
         {
-            foreach (var go in owned) if (go) UnityEngine.Object.Destroy(go);
-            foreach (var material in Surfaces.Values) if (material) UnityEngine.Object.Destroy(material);
+            foreach (var go in owned) if (go) Release(go);
+            foreach (var material in Surfaces.Values) if (material) Release(material);
             Models.Clear(); owned.Clear(); Surfaces.Clear(); ReleaseBundleCache();
         }
     }

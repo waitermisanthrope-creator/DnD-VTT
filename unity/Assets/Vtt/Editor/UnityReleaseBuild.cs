@@ -26,12 +26,17 @@ public static class UnityReleaseBuild
         if (string.IsNullOrWhiteSpace(destination) ||
             !destination.EndsWith(".apk", StringComparison.OrdinalIgnoreCase))
             throw new Exception("GameCI Android APK output path missing");
+        WorkshopEditorValidation.Run();
         Android();
         string source = Path.Combine("Builds", "Unity-" + UnityRelease.Version, "android-intermediate.apk");
         if (!File.Exists(source)) throw new FileNotFoundException("Android intermediate was not built", source);
         Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(destination)));
         File.Copy(source, destination, true);
         Debug.Log("VTT_CLOUD_ANDROID_OUTPUT_PASS: " + UnityRelease.Version);
+        // A separate reviewed demo artifact; its failure never disguises a player
+        // build failure and it is never added to the public catalog automatically.
+        try { WorkshopBundleBuild.BuildAndroid(); }
+        catch (Exception error) { Debug.LogWarning("VTT_WORKSHOP_BUNDLE_NOT_BUILT: " + error.Message); }
     }
     private static void Build(BuildTarget target, string suffix)
     {
@@ -78,8 +83,8 @@ public static class UnityReleaseBuild
             foreach (var asset in group.contents)
                 packed.Add(new JObject { ["source"] = asset.sourceAssetPath, ["packedBytes"] = asset.packedSize });
         File.WriteAllText(folder + "/build-report-" + target + ".json", new JObject {
-            ["version"] = UnityRelease.Version, ["platform"] = target.ToString(), ["totalBytes"] = result.summary.totalSize,
-            ["packedAssets"] = packed, ["note"] = "Actual Unity BuildReport; APK compression differs from imported source sizes."
+            ["version"] = UnityRelease.Version, ["platform"] = target.ToString(), ["reportedBuildOutputBytes"] = result.summary.totalSize,
+            ["packedAssets"] = packed, ["note"] = "Actual Unity BuildReport including build outputs/symbols; use signed APK metrics for APK file size."
         }.ToString());
         Debug.Log("VTT_RELEASE_BUILD_PASS: " + target + " / " + UnityRelease.Version);
     }

@@ -144,7 +144,8 @@ namespace DndVtt.UnityPrototype
             }
             catch (Exception error) { Dispose(staging); Error = error.Message; Debug.LogWarning("Map import rejected: " + error.Message); return false; }
         }
-        private string WorkshopMapPath => System.IO.Path.Combine(Application.persistentDataPath, "workshop-map-v1.json");
+        public string WorkshopMapStoreOverride { get; set; }
+        private string WorkshopMapPath => WorkshopMapStoreOverride ?? System.IO.Path.Combine(Application.persistentDataPath, "workshop-map-v1.json");
         public void ClearWorkshopGeometry() { Dispose(geometry); geometry = null; }
         public bool ReloadCurrent() => document == null ? TryLoad(mapIndex) : LoadDocument(mapIndex, document.Snapshot);
         public void RestoreWorkshopMap()
