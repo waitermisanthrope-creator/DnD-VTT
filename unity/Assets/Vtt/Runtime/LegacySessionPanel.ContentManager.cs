@@ -14,7 +14,8 @@ namespace DndVtt.UnityPrototype
     // Installing a package does NOT activate gameplay content.
     public sealed partial class LegacySessionPanel
     {
-        private const string CatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/experiment/unity-vtt/docs/content-catalog-v1.json";
+        private const string CatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Content/main/catalog/v1/index.json";
+        private const string AssetsCatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v1/index.json";
         private const string PackageUrlPrefix = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/experiment/unity-vtt/docs/content-packages/";
         private const int MaxCatalogBytes = 1024 * 1024;
         private const int MaxPackageBytes = 5 * 1024 * 1024;
@@ -23,6 +24,7 @@ namespace DndVtt.UnityPrototype
         private string contentNotice = "Нажмите «Обновить каталог», чтобы получить список.";
         private bool contentBusy;
         private JArray contentPackages = new JArray();
+        private JArray assetPacks = new JArray();
         private static readonly string[] ContentCategories =
         {
             "Все", "Игровые системы", "Расы", "Классы", "Заклинания",
@@ -111,10 +113,42 @@ namespace DndVtt.UnityPrototype
                         if (packages.OfType<JObject>().Select(PackageId).Distinct().Count() != packages.Count)
                             throw new FormatException("Повторяющиеся ID");
                         contentPackages = (JArray)packages.DeepClone();
-                        contentNotice = "Каталог обновлён. Пакетов: " + contentPackages.Count;
+                        contentNotice = "Дополнений: " + contentPackages.Count + ". Проверяем 3D-каталог…";
                     }
                     catch (Exception e) { contentNotice = "Каталог отклонён: " + e.Message; }
                 }
+            }
+            // Asset packs have a separate platform-aware manifest. They are shown
+            // as informational cards until Unity bundle installation is implemented.
+            using (var assetsRequest = UnityWebRequest.Get(AssetsCatalogUrl))
+            {
+                assetsRequest.timeout = 20;
+                assetsRequest.redirectLimit = 0;
+                yield return assetsRequest.SendWebRequest();
+                if (assetsRequest.result == UnityWebRequest.Result.Success)
+                {
+                    try
+                    {
+                        if (assetsRequest.downloadHandler.data.Length > MaxCatalogBytes)
+                            throw new FormatException("Каталог 3D-ресурсов слишком большой");
+                        var assetsDoc = JObject.Parse(assetsRequest.downloadHandler.text);
+                        if ((int?)assetsDoc["schemaVersion"] != 1 || !(assetsDoc["packs"] is JArray packs))
+                            throw new FormatException("Неизвестный формат 3D-каталога");
+                        foreach (JToken token in packs)
+                        {
+                            if (!(token is JObject pack) || !ValidId((string)pack["id"])
+                                || string.IsNullOrWhiteSpace((string)pack["name"])
+                                || !(pack["platforms"] is JObject))
+                                throw new FormatException("Некорректный пакет 3D-ресурсов");
+                        }
+                        if (packs.OfType<JObject>().Select(PackageId).Distinct().Count() != packs.Count)
+                            throw new FormatException("Повторяющиеся ID 3D-ресурсов");
+                        assetPacks = (JArray)packs.DeepClone();
+                        contentNotice = "Дополнений: " + contentPackages.Count + " · 3D-пакетов: " + assetPacks.Count;
+                    }
+                    catch (Exception e) { contentNotice = "Каталог 3D-ресурсов отклонён: " + e.Message; }
+                }
+                else contentNotice = "3D-каталог недоступен: " + assetsRequest.error;
             }
             contentBusy = false;
         }
@@ -195,6 +229,19 @@ namespace DndVtt.UnityPrototype
                     }
                 }
                 GUILayout.EndVertical();
+            }
+            if (contentCategory == 0 || contentCategory == 7)
+            {
+                foreach (JObject pack in assetPacks.OfType<JObject>())
+                {
+                    string title = (string)pack["name"] ?? "";
+                    if ((title + " " + PackageId(pack)).IndexOf(contentSearch, StringComparison.OrdinalIgnoreCase) < 0) continue;
+                    shown++;
+                    GUILayout.BeginVertical(GUI.skin.box);
+                    GUILayout.Label(title + " · " + (string)pack["version"], heading);
+                    GUILayout.Label("3D-ресурс · загрузка AssetBundles появится в следующем этапе.", muted);
+                    GUILayout.EndVertical();
+                }
             }
             if (shown == 0) GUILayout.Label("В выбранной категории материалов пока нет.", muted);
             GUILayout.Space(16);
