@@ -14,8 +14,8 @@ namespace DndVtt.UnityPrototype
     // Installing a package does NOT activate gameplay content.
     public sealed partial class LegacySessionPanel
     {
-        private const string CatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/feature/unity-content-manager-foundation/docs/content-catalog-v1.json";
-        private const string PackageUrlPrefix = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/feature/unity-content-manager-foundation/docs/content-packages/";
+        private const string CatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/experiment/unity-vtt/docs/content-catalog-v1.json";
+        private const string PackageUrlPrefix = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/experiment/unity-vtt/docs/content-packages/";
         private const int MaxCatalogBytes = 1024 * 1024;
         private const int MaxPackageBytes = 5 * 1024 * 1024;
         private int contentCategory;
