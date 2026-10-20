@@ -66,7 +66,8 @@ namespace DndVtt.UnityPrototype
         public static void AtomicText(string path, string text)
         {
             string part = path + ".part";
-            File.WriteAllText(part, text, new UTF8Encoding(false));
+            byte[] bytes = new UTF8Encoding(false).GetBytes(text);
+            using (var output = new FileStream(part, FileMode.Create, FileAccess.Write, FileShare.None)) { output.Write(bytes, 0, bytes.Length); output.Flush(true); }
             if (File.Exists(path)) File.Replace(part, path, path + ".bak"); else File.Move(part, path);
         }
         public JArray Installed()

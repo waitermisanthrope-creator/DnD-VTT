@@ -16,6 +16,7 @@ class Program
         {
             string source = args.Length > 0 ? args[0] : "/workspace";
             string appRoot = args.Length > 1 ? args[1] : Directory.GetCurrentDirectory();
+            Check((string)JObject.Parse(File.ReadAllText(Path.Combine(appRoot, "unity/Packages/manifest.json")))["dependencies"]["com.unity.modules.assetbundle"] == "1.0.0", "AssetBundle runtime module present");
             foreach (string file in Directory.GetFiles(Path.Combine(appRoot, "unity/Assets/Vtt"), "*.cs", SearchOption.AllDirectories))
             {
                 var tree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(File.ReadAllText(file));
@@ -69,7 +70,35 @@ class Program
                     Reject(() => WorkshopStore.ValidateManifest(bad), "path traversal");
                 }
             }
-            string saves = Path.Combine(root, "characters.json"); File.WriteAllText(saves, "{\"unknown\":[1,2,3]}");
+            var originalManifest = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source, "DnD-VTT-Content/catalog/v1/index.json")), "packages").OfType<JObject>().First();
+            var edited = (JObject)originalManifest.DeepClone(); edited["bytes"] = WorkshopStore.MaxPackageBytes + 1;
+            Reject(() => WorkshopStore.ValidateManifest(edited), "oversized payload");
+            edited = (JObject)originalManifest.DeepClone(); edited["dependencies"] = new JArray((string)edited["id"]);
+            Reject(() => WorkshopStore.ValidateManifest(edited), "self dependency");
+            edited = (JObject)originalManifest.DeepClone(); edited["format"] = "dll";
+            Reject(() => WorkshopStore.ValidateManifest(edited), "executable package");
+            var raceData = store.Data(originalManifest); var invalid = (JObject)raceData.DeepClone();
+            invalid["races"][0]["seed"]["arbitraryScript"] = "run()";
+            Reject(() => WorkshopStore.ValidateData(originalManifest, invalid.ToString()), "unsupported race mechanics");
+            invalid = (JObject)raceData.DeepClone(); invalid["races"][0]["seed"]["stats"]["dex"] = 999;
+            Reject(() => WorkshopStore.ValidateData(originalManifest, invalid.ToString()), "unbounded stat bonus");
+            invalid = (JObject)raceData.DeepClone(); invalid["races"][0]["id"] = "human";
+            Reject(() => WorkshopStore.ValidateData(originalManifest, invalid.ToString()), "base race collision");
+            invalid = (JObject)raceData.DeepClone(); invalid["version"] = "8.0.0";
+            Reject(() => WorkshopStore.ValidateData(originalManifest, invalid.ToString()), "payload version mismatch");
+            // A dependency protects uninstall, including after a restart. Updates
+            // that introduce a cycle must not replace the previous revision.
+            var dependent = (JObject)originalManifest.DeepClone(); dependent["id"] = "demo.race.dependent"; dependent["dependencies"] = new JArray((string)originalManifest["id"]);
+            var payload = (JObject)raceData.DeepClone(); payload["id"] = dependent["id"].DeepClone(); payload["races"][0]["id"] = dependent["id"].DeepClone();
+            string staged = Path.Combine(root, "dependent.json"); File.WriteAllText(staged, payload.ToString()); dependent["bytes"] = new FileInfo(staged).Length; dependent["sha256"] = WorkshopStore.DigestFile(staged);
+            store.Install(dependent, staged, "android-arm64", "6000.3.26f1");
+            Reject(() => new WorkshopStore(store.Root).Remove((string)originalManifest["id"]), "dependency uninstall protected after restart");
+            edited = (JObject)originalManifest.DeepClone(); edited["dependencies"] = new JArray((string)dependent["id"]);
+            File.Copy(store.PayloadPath(originalManifest), staged, true);
+            Reject(() => store.Install(edited, staged, "android-arm64", "6000.3.26f1"), "transitive dependency cycle rejected");
+            Check(((JArray)store.Find((string)originalManifest["id"])["dependencies"]).Count == 0, "cycle rejection keeps active revision");
+            store.Remove((string)dependent["id"]);
+                        string saves = Path.Combine(root, "characters.json"); File.WriteAllText(saves, "{\"unknown\":[1,2,3]}");
             foreach (JObject m in store.Installed()) store.Remove((string)m["id"]);
             Check(File.ReadAllText(saves) == "{\"unknown\":[1,2,3]}", "user saves untouched");
             Reject(() => WorkshopStore.Parse("{\"id\":1,\"id\":2}"), "duplicate JSON keys");

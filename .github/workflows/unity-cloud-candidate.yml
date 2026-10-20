@@ -57,8 +57,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/workshop-registries"
-          git clone --depth 1 https://github.com/waitermisanthrope-creator/DnD-VTT-Content.git "$RUNNER_TEMP/workshop-registries/DnD-VTT-Content"
-          git clone --depth 1 https://github.com/waitermisanthrope-creator/DnD-VTT-Assets.git "$RUNNER_TEMP/workshop-registries/DnD-VTT-Assets"
+          python3 unity/ci/verify_public_workshop.py --output "$RUNNER_TEMP/workshop-registries"
           dotnet run --project unity/ci/workshop-tests -- "$RUNNER_TEMP/workshop-registries" "$GITHUB_WORKSPACE"
       - name: Verify signing key matches published Android 1.00.00
         env:
