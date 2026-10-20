@@ -100,6 +100,10 @@ namespace DndVtt.UnityPrototype
             y = Card(y,contentWidth,100,"♫ Аудио и эмбиент",BrandAccent);
             TextLine(y-63,contentWidth,"Оформление подготовлено. Аудиопаки добавим отдельно.",52);
 
+            y = Card(y,contentWidth,116,"📦 Менеджер контента",BrandAccent);
+            if(GUI.Button(new Rect(13,y-73,contentWidth-26,46),"Открыть библиотеку дополнений",brandBlue))
+            { OpenContentManager(); GUI.EndScrollView(); GUI.EndGroup(); return; }
+
             y = Card(y,contentWidth,105,"📜 История изменений",new Color(.9f,.79f,.48f));
             if(GUI.Button(new Rect(13,y-60,contentWidth-26,43),"📜 Открыть «Что нового»",brandBrown))
             { showChangelog = true; settingsSection = 0; brandTechnicalScreen = true; StartCoroutine(FetchChangelog()); }
