@@ -76,6 +76,14 @@ jobs:
         env:
           CANDIDATE_VERSION: ${{ inputs.version || '1.00.06' }}
         run: python3 unity/ci/cloud_release.py prepare --version "$CANDIDATE_VERSION"
+      - name: Restore Unity import and IL2CPP cache (no credentials)
+        id: unity-library
+        uses: actions/cache/restore@v4
+        with:
+          path: unity/Library
+          key: unity-library-android-${{ runner.os }}-6000.3.26f1-${{ hashFiles('unity/Packages/**', 'unity/ProjectSettings/**', 'unity/Assets/**') }}
+          restore-keys: |
+            unity-library-android-${{ runner.os }}-6000.3.26f1-
       # GameCI CLI v0.1.72 can report validateBuild failure even after Unity
       # logs VTT_RELEASE_BUILD_PASS and produces an APK. Preserve the output for
       # strict, independent verification below; a real Unity failure still
@@ -187,3 +195,10 @@ jobs:
           path: ${{ runner.temp }}/unity-encrypted/candidate.zip.enc
           if-no-files-found: error
           retention-days: 7
+      - name: Save Unity import and IL2CPP cache for subsequent checked builds
+        if: always() && steps.unity-library.outputs.cache-hit != 'true'
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: unity/Library
+          key: ${{ steps.unity-library.outputs.cache-primary-key }}

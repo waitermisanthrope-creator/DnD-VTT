@@ -18,6 +18,12 @@ public static class WorkshopEditorValidation
         Check(Directory.Exists(fixtures), "Download verified public fixtures to unity/WorkshopFixtures~ first");
         string folder = Path.Combine(Path.GetTempPath(), "vtt-workshop-editor-" + Guid.NewGuid()); Directory.CreateDirectory(folder);
         var originalScene = SceneManager.GetActiveScene();
+        // A headless Editor starts with an unsaved Untitled scene; Unity forbids
+        // additive scenes in that state. Open the unchanged saved project scene
+        // only in batch CI. Never discard a developer's unsaved interactive work.
+        if (Application.isBatchMode && string.IsNullOrEmpty(originalScene.path))
+            originalScene = EditorSceneManager.OpenScene(LegacyMigrationSetup.ScenePath, OpenSceneMode.Single);
+        Check(!string.IsNullOrEmpty(originalScene.path), "Save the current untitled scene before running additive validation");
         var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive); SceneManager.SetActiveScene(scene);
         WorkshopRuntime runtime = null; LegacyMapPresenter world = null; LegacyContentCatalog catalog = null; TextAsset map = null;
         try
