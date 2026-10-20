@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода ec76518a36be. Git содержит 1849 файлов.
+Снимок кода 746c14355d6f. Git содержит 1849 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -59,9 +59,9 @@
 | №0038 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0039 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0040 AGENTS.md | 4903 B | документация или отчёт: AGENTS |
-| №0041 AI_BLOCKERS.md | 15973 B | документация или отчёт: AI BLOCKERS |
-| №0042 AI_NEXT_TASK.md | 16218 B | документация или отчёт: AI NEXT TASK |
-| №0043 AI_PROGRESS.md | 54543 B | документация или отчёт: AI PROGRESS |
+| №0041 AI_BLOCKERS.md | 16912 B | документация или отчёт: AI BLOCKERS |
+| №0042 AI_NEXT_TASK.md | 17157 B | документация или отчёт: AI NEXT TASK |
+| №0043 AI_PROGRESS.md | 55483 B | документация или отчёт: AI PROGRESS |
 | №0044 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0045 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0046 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1035,15 +1035,15 @@
 | №1014 docs/modular-content/audit.json | 1754999 B | документация или отчёт: audit |
 | №1015 docs/modular-content/catalog-entry-v1.schema.json | 2860 B | документация или отчёт: catalog entry v1.schema |
 | №1016 docs/modular-content/DEPENDENCIES.md | 7705 B | документация или отчёт: DEPENDENCIES |
-| №1017 docs/modular-content/DEVICE_QA.md | 5275 B | документация или отчёт: DEVICE QA |
+| №1017 docs/modular-content/DEVICE_QA.md | 6214 B | документация или отчёт: DEVICE QA |
 | №1018 docs/modular-content/final-apk-metrics.json | 1291 B | документация или отчёт: final apk metrics |
 | №1019 docs/modular-content/LICENSE_REVIEW.md | 2830 B | документация или отчёт: LICENSE REVIEW |
 | №1020 docs/modular-content/native-validation.json | 2495 B | документация или отчёт: native validation |
 | №1021 docs/modular-content/old-apk-inspection.json | 1311 B | документация или отчёт: old apk inspection |
 | №1022 docs/modular-content/old-apk-objects.json | 196276 B | документация или отчёт: old apk objects |
-| №1023 docs/modular-content/PROGRESS.md | 3743 B | документация или отчёт: PROGRESS |
+| №1023 docs/modular-content/PROGRESS.md | 4682 B | документация или отчёт: PROGRESS |
 | №1024 docs/modular-content/public-verification.json | 1729 B | документация или отчёт: public verification |
-| №1025 docs/modular-content/REPORT.md | 19727 B | документация или отчёт: REPORT |
+| №1025 docs/modular-content/REPORT.md | 21969 B | документация или отчёт: REPORT |
 | №1026 docs/MONETIZATION_ROADMAP.md | 15924 B | документация или отчёт: MONETIZATION ROADMAP |
 | №1027 docs/NETWORK_APK_NOTES.md | 7296 B | документация или отчёт: NETWORK APK NOTES |
 | №1028 docs/PREDICTOR_APPROVED_CARD_STATUS.md | 52542 B | документация или отчёт: PREDICTOR APPROVED CARD STATUS |

@@ -238,3 +238,7 @@ Owner requested modular Unity/content/assets work, superseding class task order 
 ## 2026-10-20 — Android workshop download hotfix (PARTIAL)
 User device screenshots demonstrate1.00.06 cannot download: Android IL2CPP does not support DriveInfo.GetDriveFormat. Replaced Android probe with android.os.StatFs on actual workshop path; unavailable probe permits bounded streaming with existing IO/SHA checks. Low-RAM event releases bundle cache without overwriting download errors/results.93 C# and10 Python CI checks PASS. Candidate1.00.07/code10007 pending native build and device retest; no stable feed/save/signing change.
 
+
+## Android download hotfix1.00.07 — DONE build / PARTIAL device QA
+Source746c1435, run39512342453 SUCCESS. [Signed test APK](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39512342453/artifacts/12306458856), artifact12306458856. Version1.00.07/code10007/com.dndvtt.unity ARM64, previous signing key retained.51825922 bytes, SHA256 c20079a977280580481d5579d527f6776bbe951785b608407cd3cb3d151da743.93 C# checks,10 Python CI tests and native VTT_WORKSHOP_EDITOR_PASS (real object/material/map persistence integration) PASS; original branding verified. Android uses StatFs, unsupported probes no longer block bounded downloads; lowMemory no longer overwrites operation result. User screenshots confirm old1.00.06 failure;1.00.07 physical-device download/install/restart still requires retest. Install over1.00.06; no uninstall/save deletion required. Main/stable feeds/signing unchanged. See hotfix-1.00.07-metrics.json.
+
