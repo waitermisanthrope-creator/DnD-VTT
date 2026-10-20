@@ -10,7 +10,7 @@
       "description": "Проверка реального скачивания и установки JSON-пакета. В конструктор персонажей ещё не добавлен.",
       "bytes": 299,
       "sha256": "55e2f90bdb5c1ddd2c6cb600e97dd8e8ae8502a308bd0dd1450b6d7bb53ae22d",
-      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/feature/unity-content-manager-foundation/docs/content-packages/demo-race.json"
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT/experiment/unity-vtt/docs/content-packages/demo-race.json"
     }
   ]
 }
