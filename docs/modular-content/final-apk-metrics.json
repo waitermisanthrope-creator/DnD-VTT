@@ -1,0 +1,64 @@
+{
+  "apkBytes": 51830018,
+  "apkSha256": "dc7e0a8cea1b6ac8a05743e93835b43fee0dbbbb6506a893eedbc8d3b4fbdcea",
+  "oldUnity10005ApkBytes": 58430834,
+  "reductionBytes": 6600816,
+  "reductionPercent": 11.297,
+  "zipCompressedUnityDataBytes": 10128766,
+  "zipCompressedBrandingBytes": 10103002,
+  "zipCompressedNativeBytes": 28736098,
+  "propTextureCount": 12,
+  "propTextureDimensions": {
+    "T_Trim_Metal_BaseColor": [
+      1024,
+      1024
+    ],
+    "T_Trim_Metal_ORM": [
+      1024,
+      1024
+    ],
+    "T_Trim_Props_ORM": [
+      1024,
+      1024
+    ],
+    "T_Trim_Props_BaseColor": [
+      1024,
+      1024
+    ],
+    "T_Trim_Props_Normal": [
+      1024,
+      1024
+    ],
+    "T_Trim_Metal_Normal": [
+      1024,
+      1024
+    ],
+    "T_Trim_Cloth_BaseColor": [
+      1024,
+      1024
+    ],
+    "T_Trim_Furniture_BaseColor": [
+      1024,
+      1024
+    ],
+    "T_Trim_Cloth_ORM": [
+      1024,
+      1024
+    ],
+    "T_Trim_Furniture_ORM": [
+      1024,
+      1024
+    ],
+    "T_Trim_Furniture_Normal": [
+      1024,
+      1024
+    ],
+    "T_Trim_Cloth_Normal": [
+      1024,
+      1024
+    ]
+  },
+  "originalBrandingBytesVerified": true,
+  "deviceQa": false,
+  "note": "Signed APK file size; ZIP groups include engine/metadata as indicated by path, not only gameplay content."
+}

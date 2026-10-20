@@ -1,3 +1,15 @@
+# Verified modular workshop checkpoint — 2026-10-20
+
+Read docs/modular-content/REPORT.md and PROGRESS.md first. Do not repeat completed work.
+
+- Optimized signed Android1.00.06/code10006 is built and measured:51830018 bytes vs58430834 (minus11.297%). Source16d56de7; run39508072660 SUCCESS; APK artifact12305216911. Package/certificate/ARM64/zipalign and original branding verified. Stable update feed and main unchanged.
+-88 C# checks,10 Python CI tests, real Unity Editor object/material/map save/restart/uninstall/reinstall integration pass. Public3 JSON packages and6 exact CC0 source copies verified; original files retained.
+- Android demo bundle built/verified:73619 bytes, artifact12305781311. Not published in Assets catalog; Windows bundle and device/runtime QA remain. Include upstream license notices before binary publication.
+- Immediate next: DEVICE_QA.md on Android, verify install/update/backup and3 JSON packs. Then Windows/bundle publication, missing gameplay handlers, license-cleared optional-content extraction. Most old media/data has not moved; no mass deletion or false full-completion claims.
+- Do not rebuild/republish version1.00.05, remove releases, change keys/company/product/package identity, delete saves, or silently promote an untested APK. Do not ask again for already working Unity credentials.
+
+Historical task notes follow.
+
 # Current modular workshop task — 2026-10-20
 Read docs/modular-content/PROGRESS.md first. Owner requests modular Unity work in experiment/unity-vtt. Preserve main, signing, saves and branding. Previous task history follows.
 

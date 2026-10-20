@@ -1,92 +1,105 @@
-# Фактический отчёт: модульный контент DnD-VTT
+# DnD-VTT: фактический результат модульного этапа
 
-Общий статус: **PARTIAL**. Полный критерий Android + мастерская + проверка на устройстве ещё не подтверждён. Состояние нативной сборки обновляется ниже; завершение реализации C# не равно прохождению Unity runtime QA.
+**Общий статус: PARTIAL. Облегчённый подписанный Android APK собран. Мастерская подключает опубликованные тестовые JSON-пакеты; полное вынесение прежнего контента и проверка на телефоне не завершены.**
 
-## Изменённые репозитории, ветки и коммиты
+[Скачать тестовый APK1.00.06 (GitHub artifact ZIP)](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39508072660/artifacts/12305216911). Требуется вход в GitHub; срок хранения APK —3 дня после сборки20 октября. APK и стабильная лента не публиковались автоматически в Releases.
 
-### DnD-VTT — `experiment/unity-vtt`
+Старый Unity1.00.05: **58 430 834 байта**. Новый1.00.06: **51 830 018 байт**. Измеренное уменьшение **6 600 816 байт / 11,297%**. Сравниваются APK-файлы, не размер ZIP artifact и не полный BuildReport output.
+
+## Репозитории, ветки и коммиты
+
+**DnD-VTT — `experiment/unity-vtt`**
 
 - [041f8073](https://github.com/waitermisanthrope-creator/DnD-VTT/commit/041f8073) feat(unity): integrate verified modular workshop packages and persistent map library
 - [7d6f94f9](https://github.com/waitermisanthrope-creator/DnD-VTT/commit/7d6f94f9) fix(workshop): refresh verified registry cache after external pointer changes
 - [8a8b2993](https://github.com/waitermisanthrope-creator/DnD-VTT/commit/8a8b2993) fix(unity): include AssetBundle module and test packages downloaded from public registries
-- [8665ab0f](https://github.com/waitermisanthrope-creator/DnD-VTT/commit/8665ab0f) feat(workshop): release unused bundle cache and record verified migration evidence
+- [31f83794](https://github.com/waitermisanthrope-creator/DnD-VTT/commit/31f83794) feat(workshop): release unused bundle cache and record verified migration evidence
+- [8665ab0f](https://github.com/waitermisanthrope-creator/DnD-VTT/commit/8665ab0f) fix(workshop): repair corrupted cache on retry and isolate package removal
+- [60a01a19](https://github.com/waitermisanthrope-creator/DnD-VTT/commit/60a01a19) perf(android): reduce prop texture imports and validate workshop objects in Unity Editor
+- [16d56de7](https://github.com/waitermisanthrope-creator/DnD-VTT/commit/16d56de7) fix(ci): initialize saved scene before additive workshop validation
+- [f98d7f0d](https://github.com/waitermisanthrope-creator/DnD-VTT/commit/f98d7f0d) docs: publish device QA procedure and current verified build checkpoint
 
-### DnD-VTT-Content — `main`
+**DnD-VTT-Content — `main`**
 
 - [2803eef](https://github.com/waitermisanthrope-creator/DnD-VTT-Content/commit/2803eef) feat: publish CC0 lanternfolk race package with verified manifest
 - [8fb953d](https://github.com/waitermisanthrope-creator/DnD-VTT-Content/commit/8fb953d) docs: align published data registry with shared runtime manifest
 - [b201ddc](https://github.com/waitermisanthrope-creator/DnD-VTT-Content/commit/b201ddc) docs: record implemented runtime pilot and remaining device checks
 
-### DnD-VTT-Assets — `main`
+**DnD-VTT-Assets — `main`**
 
 - [908899d](https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/commit/908899d) feat: publish CC0 object and theme packs and preserve licensed source metadata
 - [d91141c](https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/commit/d91141c) build: release verified CC0 skin sources without storing binary files in Git
 - [faa30dd](https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/commit/faa30dd) docs: document verified source release and shared runtime manifest
 - [7c4448c](https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/commit/7c4448c) docs: distinguish live JSON packages from source archive and pending bundles
+- [8d64a35](https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/commit/8d64a35) docs: record primary license evidence before migrating remaining third-party assets
 
-DnD-VTT/main не изменён. История не переписана; старые релизы и ключи подписи сохранены.
+Собранный исходный код: `16d56de73925c36b94a69074aa5eeca98c72aa96`. Последующие изменения — документация/аудит; финальный отчётный коммит виден в истории ветки. `DnD-VTT/main` остался на `4d548ffbb29f15288faa24f298858b7eef0448c5`. История не переписана. Старые релизы, ключи и опубликованные update feeds не изменены.
 
-## Статусы этапов
+## Статусы всего запроса
 
-| Этап | Статус | Проверенный результат и граница |
+| Этап | Статус | Что сделано / что осталось |
 |---|---|---|
-| 1. Аудит | PARTIAL | 3 репозитория, две ветки приложения; пофайловые хеши/размеры, дубли, GUID/glTF граф и Gradle-входы. Runtime-достижимость всех динамических ресурсов не доказана. |
-| 2. Перенос | PARTIAL | 6 уникальных оригиналов / 8 096 382 байта доступны в Assets Release; оригиналы сохранены. Остальной контент не перенесён; лицензии многих групп не подтверждены. |
-| 3. Минимальный клиент | PARTIAL | Базовый клиент и оформление сохранены, добавлена мастерская. Каталог прежних классов/рас и legacy-карты ещё не выделены из APK. |
-| 4. Мастерская | PARTIAL | Реализованы оба каталога, категории/поиск/подробности, установка/удаление/повтор/прогресс, SHA-256, зависимости/обновления, офлайн-реестр и кеш. Категории без обработчиков явно недоступны. Нативное UI требует QA. |
-| 5. AssetBundles | PARTIAL | Доверенный builder Android/Windows, платформенный манифест, SHA-256, кеш и загрузка/освобождение. Бинарные bundles не построены/не опубликованы и не проверены на обеих платформах. |
-| 6. Интеграция | PARTIAL | Раса реально участвует в C# создании/статах/сохранении; IDs и версия переживают удаление пакета. Добавлена библиотека примитивов/материалов, размещение и сохранение карты. Нативный рендер/карта не проверены; классы и остальные механики не активируются. |
-| 7. Тестовые пакеты | PARTIAL | 3 собственных CC0 JSON опубликованы, URL/размер/SHA-256 и C# цикл установки проверены. 3D-пакет содержит декларативные примитивы, не бинарный AssetBundle. Нет завершённой проверки на устройстве. |
-| 8. Оптимизация APK | NOT STARTED | Старый Unity APK измерен; доказанного уменьшения нет. Исходные материалы не удалены ради размера. |
-| 9. CI/обновления | PARTIAL | Исправлен устаревший тест published/testing и ошибка скобки в ContentManager; CI-кандидат 1.00.06/code10006, package com.dndvtt.unity. Подпись не менялась. Результат actual build см. ниже. |
-| 10. Безопасность/сохранения | PARTIAL | Пользовательские файлы не удаляются. Необязательный contentPackages не заменяет старые поля. Штатный экспорт + предупреждение о сохранении JSON вне приложения. Реальная Android-переустановка не проверена. |
-| 11. Отчёт | DONE | Код/коммиты/границы и точный дальнейший прогресс зафиксированы. |
+| 1. Полный аудит | PARTIAL | Проверены три репозитория, две ветки приложения, Gradle, GUID/glTF-зависимости, хеши/дубли; фактический старый APK разобран, новый проверен на runner. Полный динамический call graph WebView/всех Unity runtime-путей не доказан. |
+| 2. Перенос | PARTIAL | 6 уникальных существующих файлов опубликованы и побайтно проверены; 0 оригиналов удалено. Большинство старых ресурсов/данных ещё не перенесено; нужны лицензии и потребители runtime. |
+| 3. Минимальный клиент | PARTIAL | Реальный APK меньше, оформление и offline-база сохранены, оригиналы не удалены. Все старые optional-ресурсы ещё не выделены; запуск на устройстве не проверен. |
+| 4. Мастерская | PARTIAL | Два каталога, 14 категорий, поиск, карточки/детали, автор/версия/размер/лицензия/зависимости, progress, SHA-256, установка/удаление/обновление/повтор, офлайн-кеш и сохранённый реестр. Активация прочих игровых категорий, полноценная mobile UI QA ещё нужны. |
+| 5. AssetBundles | PARTIAL | Android bundle реально построен/хеширован, Windows builder реализован. Android/Windows runtime bundles не проверены на устройствах; Windows binary не построен; бинарные bundles не опубликованы в Assets Releases/catalog. |
+| 6. Подключение к игре | PARTIAL | Скачанная раса участвует в создании/статах/сохранении; объекты/материалы реально создаются и используются на карте, сохранение восстанавливается. Подтверждено C# и Unity Editor. Классы/системы/остальные механики не активируются; phone QA остаётся. |
+| 7. Тестовые пакеты | PARTIAL | 3 собственных CC0 JSON опубликованы и проверены по HTTP/размеру/SHA; 3D-пакет — процедурные примитивы. Есть отдельный построенный binary bundle artifact; публикация и device runtime QA ещё не выполнены. |
+| 8. Оптимизация APK | PARTIAL | Уменьшение файла на11,297% измерено. 12 prop-текстур реально1024×1024 в APK, исходные PNG/Windows-параметры/меню сохранены. Проверка качества/запуска на Android ещё нужна. |
+| 9. Обновления/CI | PARTIAL | Полный cloud run SUCCESS, версия1.00.06/code10006, ARM64, com.dndvtt.unity, прежний certificate, zipalign. Stable feed не тронут. Установка поверх1.00.05 физически не проверена. |
+| 10. Сохранения/безопасность | PARTIAL | Пользовательские файлы не удаляются. Дополнительные IDs/версии не меняют старые поля/schema. Экспорт JSON/резервные копии и предупреждение перед uninstall есть; реальная переустановка и внешний Android backup UX требуют проверки. |
+| 11. Отчёт | DONE | Код, коммиты, измерения, артефакты, границы проверок и дальнейший прогресс зафиксированы. |
 
-## Реально опубликованные данные
+## Реально опубликованные файлы и размеры
 
-- [Content: каталоги и раса](https://github.com/waitermisanthrope-creator/DnD-VTT-Content/tree/main/packages).
-- [Assets: объекты и оформление](https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/tree/main/packages).
-- [Assets source Release](https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/releases/tag/makehuman-cc0-skins-v1). ZIP **8 091 253 байта**, SHA-256 `6e20613c2288034f618e63ed2a259cb118e8840577ea049abcfa9891f54c1d3d`. Source-only, не runtime bundle.
-- Четыре малых файла оригинальной лицензии/атрибуции/материалов также лежат в Git Assets: **11 398 байт**. Они уже входят в число 6 уникальных перенесённых оригиналов, повторно не подсчитываются.
-- Три новые demo JSON: **2 636 байт**, учитываются отдельно от переноса существующих файлов.
-- Удалено оригинальных файлов: **0**. Все оставшиеся исходники перечислены в [audit.json](audit.json). Материалы с неясными правами не перепубликованы.
+- **6 уникальных оригинальных MakeHuman-файлов / 8 096 382 байта исходных данных**: LICENSE.ASSETS.md, README.md, female/male mhmat и соответствующие два diffuse PNG. Точные пути/хеши — [migration inventory](https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/blob/main/migration/verified-copies-v1.json) и [source release plan](https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/blob/main/migration/reviewed-source-release.json).
+- [Assets source Release](https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/releases/tag/makehuman-cc0-skins-v1): ZIP **8 091 253 байта**, SHA-256 `6e20613c2288034f618e63ed2a259cb118e8840577ea049abcfa9891f54c1d3d`. CRC и байты всех исходных файлов проверены. Это source-only архив; его нельзя считать установленным Unity content pack.
+- Четыре маленьких файла лицензии/метаданных также хранятся в Git Assets: **11 398 байт**, уже включены в6 уникальных оригиналов и повторно не считаются. Большие PNG не добавлены в новую обычную Git-историю.
+- **3 новых JSON / 2 636 байт**: [Фонарники](https://github.com/waitermisanthrope-creator/DnD-VTT-Content/blob/main/packages/demo.race.lanternfolk.json), [3D-маркеры](https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/blob/main/packages/demo.model.markers.json), [янтарное оформление](https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/blob/main/packages/demo.appearance.amber.json). Их права — собственная CC0-декларация; чужие материалы этой декларацией не лицензируются.
+- **Удалено оригинальных файлов:0**. Все оставшиеся отслеживаемые исходники и их SHA-256/размеры перечислены в [audit.json](audit.json), известные зависимости — [DEPENDENCIES.md](DEPENDENCIES.md). Для6 файлов указана проверенная внешняя копия; остальные не объявлены перенесёнными.
 
-## Проверки и APK
+## APK, встроенные ресурсы и пакеты
 
-- **88 C# проверок PASS**: фактические публичные загрузки передаются файловым lifecycle-тестам; установка, удаление, повторная установка, перезапуск, ошибки SHA/платформы/версии/схемы, зависимости/циклы, реальные характеристики и сохранение героя после удаления расы. Часть 88 проверок — синтаксический анализ Unity C#; он не заменяет native-компиляцию.
-- **10 Python CI tests PASS**: подпись/версия/кандидат/шифрование/неподходящие события и запрет продвижения непроверенной сборки.
-- Branding, updater, catalog, shared JSON Schema, provenance (44 исходника + CRLF) и git diff --check PASS.
-- Реально скачанный Unity **1.00.05 APK: 58 430 834 байта**, SHA-256 `0240d7cf48ce7918779696d3624c5c53e813487bd902e0752004826de6761b23`.
-- WebView **74.00.68 APK: 406 344 896 байт** по Release metadata. Это другой клиент/пакет; разницу с Unity нельзя приписывать текущей оптимизации.
-- Статические входные Unity-зависимости: 159 файлов / 61 086 974 байта исходников. Это не встроенный сжатый размер. Добавлен настоящий BuildReport в CI для дальнейшего анализа.
-- Source Release проверен скачиванием, SHA-256, CRC ZIP и побайтовым сравнением всех исходных файлов; публичные JSON URL/размеры/хеши тоже проверены. [Evidence](public-verification.json).
+| Измерение | Значение |
+|---|---|
+| Unity1.00.05 APK, реально скачан и локально проверен | 58 430 834 байта |
+| Unity1.00.06 подписанный APK, реально измерен на runner | 51 830 018 байт |
+| Уменьшение | 6 600 816 байт /11,297% |
+| ZIP-compressed assets/bin/Data, старый → новый | 16 860 311 →10 128 766 байт |
+| ZIP-compressed assets/Branding | 10 103 002 байта в обоих APK; каждый файл побайтно сверён с источником |
+| ZIP-compressed native libraries, старый → новый | 28 601 271 →28 736 098 байт |
+| Три downloadable JSON | 2 636 байт |
+| Построенный Android bundle, пока только artifact | 73 619 байт |
 
-## Сборка Android
+ZIP-группы определены путями и содержат также engine/settings/metadata; они не равны чистому объёму игровых текстур. Unity BuildReport `reportedBuildOutputBytes` может учитывать symbols/intermediates, поэтому не используется как размер APK. [Точные APK metrics](final-apk-metrics.json), [старый APK](old-apk-inspection.json), [фактические сериализованные объекты старого APK](old-apk-objects.json).
 
-- [CI candidate 1.00.06 / source 8665ab0f](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39504415733). На момент подготовки отчёта выполняется. Предыдущие промежуточные runs отменены новыми коммитами; они не считаются успешными сборками.
-- Новый APK: **ещё не подтверждён**. Размер и ссылка добавляются только после успешной сборки/подписи. Старые релизы и опубликованная лента не менялись.
+Новый APK SHA-256: `dc7e0a8cea1b6ac8a05743e93835b43fee0dbbbb6506a893eedbc8d3b4fbdcea`. Certificate SHA-256: `c1c1b3e6537f10819a3042817ac91535b47754ed65d084e635f84ff2b1f44c8e`; совпадает с локально проверенным старым Unity1.00.05. Версия1.00.06/code10006, package `com.dndvtt.unity`, ARM64, SDK26/36.
 
-## Что требует устройства и что дальше
+Старый WebView74.00.68:406 344 896 байт по Release metadata, package `com.dndvtt.pocketvtt`. Это другой клиент; его нельзя подставлять в расчёт текущего уменьшения Unity APK. Между клиентами нужен JSON экспорт/импорт.
 
-1. Дождаться нативной сборки, исправить реальные ошибки, скачать APK и BuildReport; измерить новый APK.
-2. На Android проверить холодный офлайн-запуск, оригинальное меню/заставку/настройки, создание и лист, скачивание трёх пакетов, библиотеку объектов/оформления, сохранение карты, перезапуск, удаление и повторную установку пакетов.
-3. Перед удалением Android-приложения скопировать экспорт персонажей **во внешнее хранилище**; буфер обмена/внутренняя резервная копия не гарантируют сохранность после удаления. Проверить установку поверх Unity1.00.05 с прежней подписью и отдельный JSON-перенос из WebView.
-4. Построить/проверить доверенные AssetBundles на Android/Windows и опубликовать их в Assets Releases; добавить манифесты только после проверки URL/размера/SHA-256.
-5. Выполнить пофайловый license clearance перед переносом остального main-контента. Из APK исключать только материалы с проверенной внешней копией и работающим runtime-потребителем. Музыка/арты/произвольные GLB сейчас BLOCKED лицензиями.
-6. Завершить обработчики классов/правил и остальных категорий; не включать их кнопки как работающие без настоящих механик. Подтвердить уменьшение APK только измерениями и QA.
+## Проверки и ссылки на настоящие артефакты
 
-Известные ограничения: нет проверки GUI/рендера на устройстве, нет опубликованных бинарных bundles, нет подтверждённого уменьшения APK; большинство старых игровых данных остаётся встроенным/в исходниках. Исторические неподтверждённые механики классов Unity не объявлены завершёнными.
+- [Итоговый cloud run39508072660](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39508072660) — **SUCCESS**, source16d56de7.
+- [Подписанный тестовый APK](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39508072660/artifacts/12305216911).
+- [Измерения APK + candidate.json + инвентарь](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39508072660/artifacts/12306125695).
+- [Unity BuildReport](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39508072660/artifacts/12305082001).
+- [Доверенный Android bundle artifact](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39508072660/artifacts/12305781311):73 619 байт, SHA-256 `b0ec35005db7a35792e501a4aaf124a4405555cf3491684f3bf83084490c806b`. Не включён в публичный runtime-каталог; device load не проверен.
+- **88 C# checks PASS**: публично скачанные пакеты, фактические install/restart/uninstall/reinstall, ошибки хеша/размера/схемы/платформы/зависимостей/циклов, repair повреждённого кеша, защита соседнего ID, создание героя/бонусы/ID/сохранение после удаления расы. Часть checks — синтаксис; native-компиляция подтверждена отдельной Unity сборкой.
+- **10 Python CI tests PASS**; branding/updater/catalog/shared JSON Schema/provenance (44 исходника + CRLF) и git diff --check PASS.
+- **VTT_WORKSHOP_EDITOR_PASS**: Unity действительно создал primitive renderers/colliders, использовал материал, разместил объект, сохранил карту, восстановил заменитель без пакета и объект после переустановки; байты сохранения не повреждены.
+- Штатные Unity Editor проверки: кошелёк/настройки, updater, 57 races/35 class records/31 backgrounds и три JS-проекции создания,60 sheet golden cases/402 spells/188 items,9 map contracts,3 branding assets — PASS. Это не подтверждает полноценность всех классов/механик.
+- Реальные APK проверки: подпись/zipalign/package/version/ARM64;12 текстур1024×1024; три packaged branding-файла побайтно идентичны. [Native evidence](native-validation.json).
+- Непосредственно в workspace проверены старый APK, цифровой сертификат, публичные JSON и source ZIP/CRC/байты, C# lifecycle/character tests. Новый APK проверен на GitHub runner: File Service download URLs недоступны из workspace (HTTP403); это не заменялось обходом политики.
 
-## Непосредственная проверка в Unity Editor (промежуточный source31f83794)
+## Ограничения, блокеры и следующий шаг
 
-В логе отменённого промежуточного run39503593438 до остановки подтверждены C# compilation и PASS: VTT_SETTINGS_WALLET, VTT_UPDATER_CONTRACT, VTT_FRONTEND_CONTRACT (57 races/35 class records/31 backgrounds и три JS-проекции создания), VTT_SHEET (60 golden cases/402 spells), VTT_SHEET_RECORDS (188 items), VTT_MIGRATION_CONTRACT (9 карт/проверка происхождения), все 3 VTT_BRANDING_ASSET. Сцена ImportedAdventure открыта и началась компиляция шейдеров. Это настоящие Editor-проверки, но этот прогон отменён исправлением кеша/удаления; завершённым APK или device QA он не является. Финальный source8665ab0f проверяется отдельной сборкой.
+- **BLOCKED** отдельное распространение большинства старых third-party материалов до проверки точного происхождения/лицензии. [Первичные license sources и выводы](LICENSE_REVIEW.md). Не считать всю папку Quaternius автоматически CC0 или автоматически QAL; нужно сопоставление конкретных файлов.
+- **NOT STARTED** Android physical QA: холодный offline-запуск, меню/настройки, создание/лист, workshop UI, материал/3D-карта, качество текстур, force-stop/restart и установка поверх старой версии. [Пошаговая проверка](DEVICE_QA.md).
+- **PARTIAL** бинарные bundles: Android build и metadata verification есть, но нет device load; Windows binary/runtime QA не выполнены. Перед Assets Release нужны полные upstream Unity/URP license notices и проверка пакета, затем публичные URL/байты/SHA и catalog entry. Не выдавать artifact за опубликованный пакет.
+- **PARTIAL** прочие категории: downloaded classes/systems/subclasses/spells/items/monsters/maps/textures/animations/collections пока не имеют завершённой активации. UI показывает недоступность обработчика; не считать их игровыми функциями.
+- Большинство старых ресурсов пока остаётся встроенным/в исходнике. Из APK исключать только после проверенной внешней копии **и** работающего потребителя. ИсходныеPNG, обои, логотип, заставка и сцены не удалены.
+- Сохранения не удаляются и не переводятся на новый несовместимый формат. Дополнительное поле contentPackages и classId необязательны; старые поля и неизвестные данные сохраняются. Android uninstall может удалить локальные файлы: заранее сохранить экспорт вне приложения. Clipboard/internal .bak не гарантируют восстановление после удаления.
+- Базовая историческая неполнота Unity классов/мультиплеера/редактора не объявлена исправленной. Полное production-паритетное VTT этим этапом не завершено.
 
-## Состав старого APK проверен непосредственно
-
-[old-apk-objects.json](old-apk-objects.json) получен чтением сериализованных файлов фактически скачанного Unity1.00.05 APK через UnityPy: 99 Texture2D, 39 Mesh, 13 TextAsset, AudioClip 0. Среди текстур — оригинальное оформление, покрытия, четыре Trim-набора; среди TextAsset — 9 карт и catalog. Это не означает, что все объекты активны в игре. Исходные пути и фактические packed bytes нового APK уточняются BuildReport. [Проверка лицензий](LICENSE_REVIEW.md) включает первичные Quaternius страницы: нельзя переносить ограничения QAL на CC0 автоматически, но нужно установить точное происхождение локальных файлов.
-
-## Успешный промежуточный Android candidate
-
-Source8665ab0f / run39504415733 завершён SUCCESS. Подпись, package/version/ARM64 и zipalign проверены. [Тестовый APK artifact](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39504415733/artifacts/12302494807); SHA-256 APK из runner `f01856e12c116a12fafda7f32ecc125f9dae46f218a0899b21a52b8beacd43a9`. Размер ZIP artifact не является размером APK и не используется для сравнения. Workspace не может скачать File Service URL (HTTP403); необходимые новые измерения выполняются непосредственно на runner и пишутся в публичный лог/артефакт.
-
-Подготовлен следующий проверяемый вариант: Android-only max1024 для 12 prop-текстур, оригинальные PNG и Standalone/branding не изменены; link.xml сохраняет компоненты для CreatePrimitive/AssetBundles, которых может не быть в стартовой сцене. Добавлена реальная Editor-проверка создания renderers/colliders, материалов и размещения/сохранения/восстановления карты при удалении и повторной установке пакета; она ещё должна пройти в Unity. После APK сборки независимо готовится маленький доверенный Android bundle artifact без автоматической публикации в каталог.
+Первый следующий практический шаг: установить тестовый APK на Android по DEVICE_QA.md, проверить три опубликованных JSON-пакета и сохранения; параллельно построить Windows bundle и завершить безопасную публикацию совместимых бинарных пакетов. Затем переносить оставшийся разрешённый контент по dependency map без массового удаления оригиналов.

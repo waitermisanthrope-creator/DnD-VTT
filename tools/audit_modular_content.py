@@ -18,10 +18,12 @@ guids={}
 for p in (root/'unity/Assets').rglob('*.meta'):
  m=re.search(r'^guid: ([a-f0-9]{32})',p.read_text(errors='replace'),re.M)
  if m:guids[m[1]]=str(p.relative_to(root))[:-5]
-edges={}
+edges={}; external_guids={}
 for (branch,name),t in texts.items():
  if branch=='unity-branch' and name.startswith('unity/Assets/'):
-  dependencies={guids[g] for g in re.findall(r'guid: ([a-f0-9]{32})',t) if g in guids}
+  references=set(re.findall(r'guid: ([a-f0-9]{32})',t))
+  dependencies={guids[g] for g in references if g in guids}
+  external_guids[name]=sorted(g for g in references if g not in guids)
   if name.endswith(('.gltf','.gltf.bytes')):
    try:
     model=json.loads(t)
@@ -55,6 +57,9 @@ for f in files:
 groups=collections.defaultdict(list)
 for f in files:groups[f['sha256']].append(f['branch']+':'+f['path'])
 out=dict(sourceRefs={label:subprocess.check_output(['git','rev-parse','HEAD'],cwd=base).decode().strip() for base,label in [(main,'main'),(root,'unity-branch')]},limitations=['Static GUID closure is not a Unity BuildReport. C# dynamic references and glTF import dependencies require Editor verification.','No deletion is authorized by lack of a static reference.','Web assets referenced by dynamically constructed names cannot be exhaustively proven by text search.'],buildRoots=roots,unityGuidEdges=edges,files=files,duplicates=[dict(sha256=h,paths=ps) for h,ps in groups.items() if len(ps)>1])
+out['externalOrPackageGuidReferences']=external_guids
+out['declaredUnityPackages']=json.loads((root/'unity/Packages/manifest.json').read_text())
+out['resolvedUnityPackages']=json.loads((root/'unity/Packages/packages-lock.json').read_text())
 out['workingTreeStatus']={label:subprocess.check_output(['git','status','--porcelain'],cwd=base).decode().splitlines() for base,label in [(main,'main'),(root,'unity-branch')]}
 out['sameTreeDuplicates']=[dict(branch=label,sha256=h,paths=[f['path'] for f in files if f['branch']==label and f['sha256']==h]) for h,ps in groups.items() for label in ['main','unity-branch'] if sum(1 for p in ps if p.startswith(label+':'))>1]
 p=root/'docs/modular-content/audit.json';p.write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n');print('audited',len(files),'files; static Unity closure',len(seen),'duplicate groups',len(out['duplicates']))

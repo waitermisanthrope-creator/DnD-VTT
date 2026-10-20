@@ -1,3 +1,13 @@
+# Current verified limits — 2026-10-20
+
+- No GitHub write or Unity licensing/signing blocker: all3 repositories updated, native run39508072660 SUCCESS. Optimized APK1.00.06 is available and measured. See docs/modular-content/REPORT.md.
+- Device Android QA and Windows bundle/runtime QA remain unperformed. Binary bundle publication remains partial; preserve upstream Unity/URP notices before Assets Release/catalog publication.
+- Most old third-party assets/data still need exact license/provenance clearance and runtime consumers. Do not infer license from directory names or delete originals.
+- File Service download URLs are denied in this executor (HTTP403). Do not use Sediment downloader for File Service IDs or bypass policy. New APK metrics/inventory were verified directly on GitHub runner; stable artifact links are in REPORT.md.
+- Missing gameplay-category handlers remain explicitly unavailable. Current code is a verified modular checkpoint, not full class/gameplay parity.
+
+Earlier checkpoint/history follows; old missing-license/credentials notes are superseded by actual successful builds.
+
 # Current modular-content checkpoint — 2026-10-20
 
 - GitHub read/write confirmed for all three repositories. Main application branch untouched.
