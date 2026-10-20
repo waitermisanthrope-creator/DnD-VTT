@@ -222,3 +222,8 @@ Current Personal-path run https://github.com/waitermisanthrope-creator/DnD-VTT/a
 
 ## 2026-10-20 — modular workshop checkpoint (PARTIAL)
 Owner requested modular Unity/content/assets work, superseding class task order for this branch. See docs/modular-content/PROGRESS.md and audit.json. New public CC0 demo packages in both registries; real pure C# installation/restart/removal/character integration tests pass. Native map library/bundle builder require actual Unity compilation/rendering. Main, signing keys, live updater and user saves unchanged. Do not claim APK reduction, published bundles, or device QA before evidence.
+
+## 2026-10-20 — real Android candidate and mobile texture optimization
+- Source8665ab0f / run39504415733 SUCCESS: real Android ARM64 IL2CPP APK1.00.06/code10006, existing certificate preserved. Test artifact12302494807; signed APK SHA256 f01856e12c116a12fafda7f32ecc125f9dae46f218a0899b21a52b8beacd43a9. This is not a stable release/feed promotion.
+- Source60a01a19 adds Android-only 1024 import caps for12 prop textures, actual Editor map/renderer/collider/persistence validation, precise signed APK metrics and a separate trusted Android demo bundle build. First run39506976588 failed because headless Untitled scene cannot have additive scene. No false success; source16d56de7 fixes CI initialization by opening saved project scene only in batch mode. Current run39508072660 pending.
+- 88 local C# checks,10 Python CI tests, branding/updater/catalog/provenance/shared-schema checks pass. Old Unity1.00.05 APK locally verified:58430834 bytes, original certificate,99 textures/39 meshes/13 text assets/0 AudioClip. New optimized APK measurements and native workshop validation remain pending current run. Device QA remains NOT STARTED.

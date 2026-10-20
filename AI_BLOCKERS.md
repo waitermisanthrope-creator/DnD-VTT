@@ -1,3 +1,13 @@
+# Current modular-content checkpoint — 2026-10-20
+
+- GitHub read/write confirmed for all three repositories. Main application branch untouched.
+- Unity licensing and permanent Android signing are NOT blocked: source8665ab0f built successfully in run39504415733; signed test APK artifact12302494807 exists. Current optimized source16d56de7 is in run39508072660.
+- Six unique CC0 source files published and byte-verified in Assets Release; three own JSON demos published. Most other asset groups still need exact license/provenance clearance. See docs/modular-content/LICENSE_REVIEW.md.
+- Cloud executor cannot download File Service artifact URLs (HTTP403). Do not misuse the Sediment downloader for File Service IDs or bypass network policy. APK/object measurements run directly on GitHub runner; owner can use GitHub artifact links.
+- Android device QA and Windows bundle/runtime QA remain unperformed. Do not claim APK reduction until signed-file metrics are available. Do not delete original assets or user saves.
+
+Historical blockers follow; do not re-ask for already working Unity credentials.
+
 # Active blockers / limits
 
 2026-10-19 cloud run39263292444 confirms Personal activation/Editor startup now work after owner corrected exact Unity email/password case. Build reached existing C# updater contract and failed because test hardcoded future1.00.01 while candidate itself is1.00.01. Fixed CharacterSheetValidation.ValidateUpdater to derive next version/code and URLs from current release; no runtime update rules weakened. Local assertions reached VTT_UPDATER_CONTRACT_PASS and VTT_MIGRATION_CONTRACT_PASS, but Editor crashed on exit (-1073741819), so local command is NOT green. Rechecking actual candidate on hosted runner next. Credentials need no changes; no release/feed mutation.
