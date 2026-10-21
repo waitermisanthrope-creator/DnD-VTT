@@ -24,6 +24,7 @@ namespace DndVtt.UnityPrototype
             sheetSkin.button = new GUIStyle(brandPlain) { fontSize = 20, fixedHeight = 0, stretchWidth = true, padding = new RectOffset(12, 12, 10, 10) };
             sheetSkin.button.margin = new RectOffset(2,2,5,5);
             sheetSkin.button.onNormal = brandBlue.normal;
+            sheetSkin.button.onHover = brandBlue.hover;sheetSkin.button.onActive = brandBlue.active;sheetSkin.button.onFocused = brandBlue.normal;
             var input = Rounded(new Color(.16f, .16f, .15f, .98f), new Color(.32f, .31f, .29f));
             foreach (var style in new[] { sheetSkin.textField, sheetSkin.textArea })
             {

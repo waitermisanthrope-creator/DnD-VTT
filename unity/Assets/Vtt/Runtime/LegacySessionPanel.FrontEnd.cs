@@ -96,7 +96,8 @@ namespace DndVtt.UnityPrototype
             if (GUILayout.Button("Настройки", GUILayout.Height(navHeight))) OpenSettings();
             GUILayout.EndHorizontal(); GUILayout.Space(18);
             }
-            frontScroll = GUILayout.BeginScrollView(SwipePosition("front",frontScroll),false,true);
+            frontScroll = GUILayout.BeginScrollView(SwipePosition("front",frontScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);
+            GUILayout.BeginVertical(new GUIStyle { fixedWidth=Mathf.Max(1,UiWidth-inset*2-22),stretchWidth=false });
             switch (screen)
             {
                 case FrontScreen.Home:
@@ -130,7 +131,7 @@ namespace DndVtt.UnityPrototype
                     }
                     GUILayout.Label("Локальный файл: " + SavePath, muted); break;
             }
-            GUILayout.Space(20); GUILayout.Label(status, muted); GUILayout.EndScrollView(); RegisterSwipe("front",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
+            GUILayout.Space(20); GUILayout.Label(status, muted); GUILayout.EndVertical(); GUILayout.EndScrollView(); RegisterSwipe("front",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
         }
         private void DrawRoster()
         {

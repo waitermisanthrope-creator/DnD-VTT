@@ -39,7 +39,8 @@ namespace DndVtt.UnityPrototype
             GUI.Box(new Rect(x,12,width,UiHeight-24),GUIContent.none,brandCard);
             GUILayout.BeginArea(new Rect(x+16,24,width-32,UiHeight-48));
             GUILayout.BeginHorizontal();GUILayout.Label("Настройки приложения",sheetHeading);if(GUILayout.Button("×",brandRed,GUILayout.Width(46),GUILayout.Height(46)))Navigate(FrontScreen.Home);GUILayout.EndHorizontal();
-            brandSettingsScroll=GUILayout.BeginScrollView(SwipePosition("settings",brandSettingsScroll),false,true);
+            brandSettingsScroll=GUILayout.BeginScrollView(SwipePosition("settings",brandSettingsScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);
+            GUILayout.BeginVertical(new GUIStyle { fixedWidth=width-54,stretchWidth=false });
             GUILayout.BeginVertical(GUI.skin.box);SheetSection("Аккаунт и облачные персонажи");
             GUILayout.Label(cloudSession==null?"Гостевой режим. Локальные герои доступны без регистрации.":(string)cloudSession["email"],sheetQuiet);
             if(GUILayout.Button("Аккаунт и синхронизация",brandBlue,GUILayout.MinHeight(64)))Navigate(FrontScreen.Account);
@@ -101,9 +102,10 @@ namespace DndVtt.UnityPrototype
             if(GUI.Button(new Rect(x+12,16,Mathf.Min(160,width*.42f),43),"← К оформлению",brandBrown))
             { brandTechnicalScreen=false; return; }
             GUILayout.BeginArea(new Rect(x+13,66,width-26,UiHeight-86));
-            frontScroll=GUILayout.BeginScrollView(SwipePosition("technical-settings",frontScroll),false,true);
+            frontScroll=GUILayout.BeginScrollView(SwipePosition("technical-settings",frontScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);
+            GUILayout.BeginVertical(new GUIStyle { fixedWidth=width-48,stretchWidth=false });
             DrawSettings();
-            GUILayout.EndScrollView();RegisterSwipe("technical-settings",GUILayoutUtility.GetLastRect());
+            GUILayout.EndVertical();GUILayout.EndScrollView();RegisterSwipe("technical-settings",GUILayoutUtility.GetLastRect());
             GUILayout.EndArea();
         }
     }
