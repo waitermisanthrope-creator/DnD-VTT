@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 0146a0d26403. Git содержит 1904 файлов.
+Снимок кода cfb3482bf0fb. Git содержит 1904 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1735,7 +1735,7 @@
 | №1714 unity/Assets/Vtt/Runtime/CharacterSheetRules.cs.meta | 59 B | вспомогательный файл: CharacterSheetRules.cs |
 | №1715 unity/Assets/Vtt/Runtime/ClientPreferences.cs | 4479 B | вспомогательный файл: ClientPreferences |
 | №1716 unity/Assets/Vtt/Runtime/ClientPreferences.cs.meta | 59 B | вспомогательный файл: ClientPreferences.cs |
-| №1717 unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs | 2184 B | вспомогательный файл: CloudCharacterProtocol |
+| №1717 unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs | 5186 B | вспомогательный файл: CloudCharacterProtocol |
 | №1718 unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs.meta | 60 B | вспомогательный файл: CloudCharacterProtocol.cs |
 | №1719 unity/Assets/Vtt/Runtime/CommerceRules.cs | 19387 B | вспомогательный файл: CommerceRules |
 | №1720 unity/Assets/Vtt/Runtime/CommerceRules.cs.meta | 60 B | вспомогательный файл: CommerceRules.cs |
@@ -1821,9 +1821,9 @@
 | №1800 unity/ci/verify_public_workshop.py | 1766 B | вспомогательный файл: verify public workshop |
 | №1801 unity/ci/windows-upgrade-qa.ps1 | 3846 B | вспомогательный файл: windows upgrade qa |
 | №1802 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
-| №1803 unity/ci/workshop-tests/AccountGestureChecks.cs | 2795 B | вспомогательный файл: AccountGestureChecks |
+| №1803 unity/ci/workshop-tests/AccountGestureChecks.cs | 3201 B | вспомогательный файл: AccountGestureChecks |
 | №1804 unity/ci/workshop-tests/CommerceChecks.cs | 4247 B | вспомогательный файл: CommerceChecks |
-| №1805 unity/ci/workshop-tests/Program.cs | 17225 B | вспомогательный файл: Program |
+| №1805 unity/ci/workshop-tests/Program.cs | 17232 B | вспомогательный файл: Program |
 | №1806 unity/ci/workshop-tests/WorkshopTests.csproj | 1243 B | вспомогательный файл: WorkshopTests |
 | №1807 unity/ContentSources~/catalog.full.json | 1259265 B | данные/конфигурация: catalog.full |
 | №1808 unity/ContentSources~/workshop-commerce/catalogs.json | 91244 B | данные/конфигурация: catalogs |

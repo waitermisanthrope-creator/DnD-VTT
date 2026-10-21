@@ -1,9 +1,10 @@
 using System;
+using System.IO;
 using Newtonsoft.Json.Linq;
 using DndVtt.UnityPrototype;
 static class AccountGestureChecks
 {
- public static int Run()
+ public static int Run(string appRoot)
  {
   int count=0;void Check(bool ok,string name) { if(!ok)throw new Exception(name);count++; }
   var gesture=new MenuGesture();gesture.Regions["page"]=new MenuGesture.Region { x=10,y=10,width=400,height=700 };gesture.Regions["tabs"]=new MenuGesture.Region { x=10,y=10,width=400,height=70,horizontal=true };
@@ -21,6 +22,8 @@ static class AccountGestureChecks
   var copy=CloudCharacterProtocol.DownloadCopy(new JObject { ["id"]=link["remoteId"].DeepClone(),["revision"]=8,["profile"]=profile.DeepClone(),["deleted"]=false });
   Check((string)copy["id"]!=(string)profile["id"]&&JToken.DeepEquals(copy["unknown"],profile["unknown"]),"cloud download is separate local identity without losing unknown fields");
   Check((string)profile["id"]=="old-local-id","cloud copy never modifies original save");
+  var contracts=JObject.Parse(File.ReadAllText(Path.Combine(appRoot,"unity/ContentSources~/cloud-copy-contracts.json")));
+  foreach(JObject contract in (JArray)contracts["cases"])Check(JToken.DeepEquals(CloudCharacterProtocol.CopyIdentity((JObject)contract["input"],(string)contract["identity"]),contract["expected"]),"cloud copy preserves main combat/self-link remapping");
   return count;
  }
 }

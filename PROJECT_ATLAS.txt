@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 0146a0d26403. Файлов: 1904
+Коммит cfb3482bf0fb. Файлов: 1904
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1730,7 +1730,7 @@
 1714. unity/Assets/Vtt/Runtime/CharacterSheetRules.cs.meta — вспомогательный файл: CharacterSheetRules.cs (59 B)
 1715. unity/Assets/Vtt/Runtime/ClientPreferences.cs — вспомогательный файл: ClientPreferences (4479 B)
 1716. unity/Assets/Vtt/Runtime/ClientPreferences.cs.meta — вспомогательный файл: ClientPreferences.cs (59 B)
-1717. unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs — вспомогательный файл: CloudCharacterProtocol (2184 B)
+1717. unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs — вспомогательный файл: CloudCharacterProtocol (5186 B)
 1718. unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs.meta — вспомогательный файл: CloudCharacterProtocol.cs (60 B)
 1719. unity/Assets/Vtt/Runtime/CommerceRules.cs — вспомогательный файл: CommerceRules (19387 B)
 1720. unity/Assets/Vtt/Runtime/CommerceRules.cs.meta — вспомогательный файл: CommerceRules.cs (60 B)
@@ -1816,9 +1816,9 @@
 1800. unity/ci/verify_public_workshop.py — вспомогательный файл: verify public workshop (1766 B)
 1801. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (3846 B)
 1802. unity/ci/workshop-tests/.gitignore — вспомогательный файл: .gitignore (10 B)
-1803. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (2795 B)
+1803. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (3201 B)
 1804. unity/ci/workshop-tests/CommerceChecks.cs — вспомогательный файл: CommerceChecks (4247 B)
-1805. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (17225 B)
+1805. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (17232 B)
 1806. unity/ci/workshop-tests/WorkshopTests.csproj — вспомогательный файл: WorkshopTests (1243 B)
 1807. unity/ContentSources~/catalog.full.json — данные/конфигурация: catalog.full (1259265 B)
 1808. unity/ContentSources~/workshop-commerce/catalogs.json — данные/конфигурация: catalogs (91244 B)

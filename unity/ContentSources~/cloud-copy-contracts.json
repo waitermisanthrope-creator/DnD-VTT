@@ -1,0 +1,168 @@
+{
+  "sourceSha256": "b5366f3cd4175c7cd906202a43b48d9c53f61123a80f28d3b5c8b486443fac81",
+  "cases": [
+    {
+      "input": {
+        "id": "self",
+        "name": "Linked hero",
+        "sourceId": "self",
+        "targetId": "other",
+        "unknown": {
+          "text": "self",
+          "id": "unchanged"
+        },
+        "effects": [
+          {
+            "ownerId": "self",
+            "casterId": "other"
+          }
+        ]
+      },
+      "identity": "copy",
+      "expected": {
+        "id": "copy",
+        "name": "Linked hero",
+        "sourceId": "copy",
+        "targetId": "other",
+        "unknown": {
+          "text": "self",
+          "id": "unchanged"
+        },
+        "effects": [
+          {
+            "ownerId": "copy",
+            "casterId": "other"
+          }
+        ]
+      }
+    },
+    {
+      "input": {
+        "id": "self",
+        "name": "Initiative hero",
+        "initiativeTracker": {
+          "combatants": [
+            {
+              "id": "self"
+            },
+            {
+              "id": "other"
+            }
+          ],
+          "ownTurnId": "initiative:self:2",
+          "turnIds": [
+            "initiative:self:2",
+            "initiative:other:2"
+          ],
+          "tarotDamageTotals": {
+            "self": 17,
+            "other": 5
+          },
+          "battlefield": {
+            "tokens": {
+              "bt_self": {
+                "id": "bt_self",
+                "x": 3
+              },
+              "other": {
+                "id": "other"
+              }
+            }
+          }
+        },
+        "tarotKnowledge": {
+          "self": {
+            "known": true
+          },
+          "other": {
+            "known": false
+          }
+        },
+        "resources": {
+          "tarotLastStartedTurn": "initiative:self:2"
+        }
+      },
+      "identity": "copy",
+      "expected": {
+        "id": "copy",
+        "name": "Initiative hero",
+        "initiativeTracker": {
+          "combatants": [
+            {
+              "id": "copy"
+            },
+            {
+              "id": "other"
+            }
+          ],
+          "ownTurnId": "initiative:copy:2",
+          "turnIds": [
+            "initiative:copy:2",
+            "initiative:other:2"
+          ],
+          "tarotDamageTotals": {
+            "other": 5,
+            "copy": 17
+          },
+          "battlefield": {
+            "tokens": {
+              "other": {
+                "id": "other"
+              },
+              "bt_copy": {
+                "id": "bt_copy",
+                "x": 3
+              }
+            }
+          }
+        },
+        "tarotKnowledge": {
+          "other": {
+            "known": false
+          },
+          "copy": {
+            "known": true
+          }
+        },
+        "resources": {
+          "tarotLastStartedTurn": "initiative:copy:2"
+        }
+      }
+    },
+    {
+      "input": {
+        "id": "self",
+        "name": "No self actor",
+        "initiativeTracker": {
+          "combatants": [
+            {
+              "id": "other"
+            }
+          ],
+          "ownTurnId": "initiative:self:2"
+        },
+        "source": "self",
+        "external": {
+          "name": "self"
+        }
+      },
+      "identity": "copy",
+      "expected": {
+        "id": "copy",
+        "name": "No self actor",
+        "initiativeTracker": {
+          "combatants": [
+            {
+              "id": "other"
+            }
+          ],
+          "ownTurnId": "initiative:self:2"
+        },
+        "source": "copy",
+        "external": {
+          "name": "self"
+        }
+      }
+    }
+  ]
+}
