@@ -97,11 +97,13 @@ namespace DndVtt.UnityPrototype
         {
             cloudBusy=true;string token=null;
             try {
-                string backupError=null;
-                try { if(archive==null)backupError="Нет выбранного героя";else CharacterSheetStore.Save(SavePath,archive); }catch(Exception) { backupError="Не удалось сохранить локальную резервную копию. Отправка отменена; изменения остаются в памяти."; }
+                string backupError=null;JObject hero=null;
+                // Freeze user intent before any network yield: navigation must
+                // not change which character the pending operation uploads.
+                try { if(archive==null)backupError="Нет выбранного героя";else { hero=archive.Snapshot(selected);CharacterSheetStore.Save(SavePath,archive); } }catch(Exception) { backupError="Не удалось сохранить локальную резервную копию. Отправка отменена; изменения остаются в памяти."; }
                 if(backupError!=null) { cloudMessage=backupError;yield break; }
                 yield return CloudToken(t=>token=t);if(token==null)yield break;
-                var hero=archive.Snapshot(selected);string key=hero["id"].ToString();
+                string key=hero["id"].ToString();
                 JObject link=null,pending=null;string preparationError=null;
                 try {
                     link=CloudJournal[key] as JObject;
@@ -113,7 +115,7 @@ namespace DndVtt.UnityPrototype
                 if(preparationError!=null) { cloudMessage=preparationError;yield break; }
                 yield return CloudRequest("/rest/v1/rpc/save_character",pending,token,r=>{
                     if((bool?)r["conflict"]==true) { cloudConflict=(JObject)r;cloudConflictLocalId=key;cloudMessage="Конфликт версий. Ни одна версия не перезаписана; можно отправить локальную отдельной облачной копией.";return; }
-                    link["revision"]=r["character"]["revision"].DeepClone();link.Remove("pending");WriteCloudFile(CloudJournalPath,CloudJournal.ToString());cloudMessage="Облачная версия сохранена. Повторите отправку, если после первой попытки редактировали героя.";
+                    link["revision"]=r["character"]["revision"].DeepClone();link.Remove("pending");WriteCloudFile(CloudJournalPath,CloudJournal.ToString());cloudMessage="Сохранён герой «"+hero["name"]+"». Повторите отправку, если после первой попытки редактировали его.";
                 },e=>cloudMessage=e+" Повторная отправка безопасно использует ту же операцию.");
             }finally { cloudBusy=false; }
         }
