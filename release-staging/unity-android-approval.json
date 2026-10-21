@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "version": "1.00.05",
-  "candidateRunId": 39331395235,
+  "version": "1.00.11",
+  "candidateRunId": 39595880251,
   "approved": true,
   "releaseType": "public-prerelease",
   "channel": "unity-experiment",
   "scope": "Android-only",
-  "note": "Retest same explicitly approved 1.00.05 after fixing Unity editor C# compilation errors CS0161/CS0103 in branding package loader. Release only if new signed Android candidate run 39331395235 succeeds. Do not touch main or Windows."
+  "note": "Owner reports application cannot see the delivered update. Promote the already verified 1.00.11 candidate to the Unity Android update channel. Require successful run, original certificate/package and public SHA-256 verification before feed activation. Do not rebuild or touch main/Windows."
 }
