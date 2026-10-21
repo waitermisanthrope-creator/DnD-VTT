@@ -12,7 +12,8 @@ static class AccountGestureChecks
   gesture.Begin(40,30);gesture.Move(40,5,0,-25,2);Check(gesture.Dragging&&gesture.Regions["page"].dy==12.5f,"vertical drag over tabs scrolls parent page at DPI scale");Check(gesture.End(),"drag end suppresses synthetic click");
   gesture.Begin(200,30);gesture.Move(170,30,-30,0,2);Check(gesture.Regions["tabs"].dx==15&&gesture.Regions["page"].dx==0,"horizontal tab swipe does not scroll page");gesture.End();
   gesture.Begin(40,30);gesture.Move(52,30,12,0,2);Check(!gesture.Dragging&&!gesture.End(),"high-DPI finger jitter does not cancel a tap");
-  gesture.Begin(900,900);gesture.Move(900,800,0,-100,1);Check(!gesture.Dragging,"outside touch never captures");gesture.Clear();Check(gesture.Regions.Count==0,"navigation clears stale regions");
+  gesture.Begin(40,200);gesture.Move(100,200,60,0,1);Check(gesture.CapturedRegion==null&&gesture.End(),"horizontal drag over a vertical page cancels button activation even without horizontal scrolling");
+  gesture.Begin(900,900);gesture.Move(900,800,0,-100,1);Check(gesture.CapturedRegion==null,"outside touch never captures");gesture.Clear();Check(gesture.Regions.Count==0,"navigation clears stale regions");
   var raw=JObject.Parse("{access_token:'access',refresh_token:'refresh',expires_at:2000000000,user:{id:'96bd0a7c-dd42-4adf-aa61-f0cf8d62310e',email:'test@example.invalid',user_metadata:{role:'owner'},app_metadata:{role:'admin'}}}");
   var session=CloudCharacterProtocol.Session(raw);Check(session["role"]==null&&session["user_metadata"]==null&&session["app_metadata"]==null,"self-assigned metadata never grants roles");
   var profile=JObject.Parse("{id:'old-local-id',name:'Keep me',unknown:{nested:[1,2,3]},inventory:{weapons:[]}}");

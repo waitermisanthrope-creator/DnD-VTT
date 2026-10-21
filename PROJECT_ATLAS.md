@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода ddf1415d2fa6. Git содержит 1906 файлов.
+Снимок кода 083dc279aedc. Git содержит 1906 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1753,7 +1753,7 @@
 | №1732 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Account.cs |
 | №1733 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs | 16427 B | вспомогательный файл: LegacySessionPanel.Branding |
 | №1734 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Branding.cs |
-| №1735 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs | 8691 B | вспомогательный файл: LegacySessionPanel.BrandSettings |
+| №1735 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs | 8977 B | вспомогательный файл: LegacySessionPanel.BrandSettings |
 | №1736 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.BrandSettings.cs |
 | №1737 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs | 18536 B | вспомогательный файл: LegacySessionPanel.Commerce |
 | №1738 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Commerce.cs |
@@ -1776,7 +1776,7 @@
 | №1755 unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopLibrary.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.WorkshopLibrary.cs |
 | №1756 unity/Assets/Vtt/Runtime/link.xml | 628 B | вспомогательный файл: link |
 | №1757 unity/Assets/Vtt/Runtime/link.xml.meta | 60 B | вспомогательный файл: link.xml |
-| №1758 unity/Assets/Vtt/Runtime/MenuGesture.cs | 1619 B | вспомогательный файл: MenuGesture |
+| №1758 unity/Assets/Vtt/Runtime/MenuGesture.cs | 1718 B | вспомогательный файл: MenuGesture |
 | №1759 unity/Assets/Vtt/Runtime/MenuGesture.cs.meta | 60 B | вспомогательный файл: MenuGesture.cs |
 | №1760 unity/Assets/Vtt/Runtime/PrototypeSmoke.cs | 3139 B | вспомогательный файл: PrototypeSmoke |
 | №1761 unity/Assets/Vtt/Runtime/PrototypeSmoke.cs.meta | 59 B | вспомогательный файл: PrototypeSmoke.cs |
@@ -1821,7 +1821,7 @@
 | №1800 unity/ci/verify_public_workshop.py | 1766 B | вспомогательный файл: verify public workshop |
 | №1801 unity/ci/windows-upgrade-qa.ps1 | 3846 B | вспомогательный файл: windows upgrade qa |
 | №1802 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
-| №1803 unity/ci/workshop-tests/AccountGestureChecks.cs | 3201 B | вспомогательный файл: AccountGestureChecks |
+| №1803 unity/ci/workshop-tests/AccountGestureChecks.cs | 3416 B | вспомогательный файл: AccountGestureChecks |
 | №1804 unity/ci/workshop-tests/CommerceChecks.cs | 4247 B | вспомогательный файл: CommerceChecks |
 | №1805 unity/ci/workshop-tests/Program.cs | 17232 B | вспомогательный файл: Program |
 | №1806 unity/ci/workshop-tests/WorkshopTests.csproj | 1243 B | вспомогательный файл: WorkshopTests |

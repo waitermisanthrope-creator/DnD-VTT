@@ -23,12 +23,17 @@ namespace DndVtt.UnityPrototype
         {
             PrepareBrand();
             if (settingsHeader != null) return;
-            settingsHeader = new GUIStyle(brandTitle) { fontSize = 22, wordWrap = true };
+            settingsHeader = new GUIStyle(brandTitle) { fontSize = 24, wordWrap = true, font = sheetSerif };
             settingsDescription = new GUIStyle(brandSub) { fontSize = 17, wordWrap = true };
             settingsInset = new GUIStyle(brandCard) {
                 padding = new RectOffset(14,14,12,12),
                 margin = new RectOffset(0,0,7,7)
             };
+        }
+        private void SettingsSection(string title)
+        {
+            PrepareSettingsSkin();settingsHeader.normal.textColor=BrandAccent;
+            GUILayout.Space(8);GUILayout.Label(title,settingsHeader);
         }
         private void DrawBrandSettings()
         {
@@ -38,26 +43,26 @@ namespace DndVtt.UnityPrototype
             float width=Mathf.Min(UiWidth-24,600),x=(UiWidth-width)*.5f;
             GUI.Box(new Rect(x,12,width,UiHeight-24),GUIContent.none,brandCard);
             GUILayout.BeginArea(new Rect(x+16,24,width-32,UiHeight-48));
-            GUILayout.BeginHorizontal();GUILayout.Label("Настройки приложения",sheetHeading);if(GUILayout.Button("×",brandRed,GUILayout.Width(46),GUILayout.Height(46)))Navigate(FrontScreen.Home);GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();GUILayout.Label("Настройки приложения",settingsHeader);if(GUILayout.Button("×",brandRed,GUILayout.Width(46),GUILayout.Height(46)))Navigate(FrontScreen.Home);GUILayout.EndHorizontal();
             brandSettingsScroll=GUILayout.BeginScrollView(SwipePosition("settings",brandSettingsScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);
             GUILayout.BeginVertical(new GUIStyle { fixedWidth=width-54,stretchWidth=false });
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Аккаунт и облачные персонажи");
+            GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Аккаунт и облачные персонажи");
             GUILayout.Label(cloudSession==null?"Гостевой режим. Локальные герои доступны без регистрации.":(string)cloudSession["email"],sheetQuiet);
             if(GUILayout.Button("Аккаунт и синхронизация",brandBlue,GUILayout.MinHeight(64)))Navigate(FrontScreen.Account);
             GUILayout.EndVertical();
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Тема оформления");
+            GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Тема оформления");
             for(int i=0;i<BrandAccentKeys.Length;i++)if(GUILayout.Button(BrandAccentNames[i]+(settingsDraft.theme==BrandAccentKeys[i]?" ✓":""),brandBrown,GUILayout.MinHeight(50)))settingsDraft.theme=BrandAccentKeys[i];
             GUILayout.EndVertical();
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Оформление рамок");
+            GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Оформление рамок");
             for(int i=0;i<BrandFrameKeys.Length;i++)if(GUILayout.Button(BrandFrameNames[i]+(settingsDraft.frameStyle==BrandFrameKeys[i]?" ✓":""),GUILayout.MinHeight(50)))settingsDraft.frameStyle=BrandFrameKeys[i];
             for(int i=0;i<BrandFrameColors.Length;i++)if(GUILayout.Button(BrandFrameLabels[i]+(settingsDraft.frameColor==BrandFrameColors[i]?" ✓":""),brandGold,GUILayout.MinHeight(48)))settingsDraft.frameColor=BrandFrameColors[i];
             GUILayout.EndVertical();
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Шрифт и оформление");GUILayout.Label("Сохранены wallpapers/16.png. Книжный системный шрифт с резервной гарнитурой. Размер интерфейса адаптирован под телефон.",sheetQuiet);GUILayout.Label("Смена значка Android и аудиопаки пока недоступны.",sheetQuiet);GUILayout.EndVertical();
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Мастерская дополнений");if(GUILayout.Button("Открыть мастерскую",brandBlue,GUILayout.Height(56)))OpenContentManager();GUILayout.EndVertical();
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Обновления приложения");GUILayout.Label("Установлена Unity "+UnityRelease.Version,sheetQuiet);
+            GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Шрифт и оформление");GUILayout.Label("Сохранены wallpapers/16.png. Книжный системный шрифт с резервной гарнитурой. Размер интерфейса адаптирован под телефон.",sheetQuiet);GUILayout.Label("Смена значка Android и аудиопаки пока недоступны.",sheetQuiet);GUILayout.EndVertical();
+            GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Мастерская дополнений");if(GUILayout.Button("Открыть мастерскую",brandBlue,GUILayout.Height(56)))OpenContentManager();GUILayout.EndVertical();
+            GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Обновления приложения");GUILayout.Label("Установлена Unity "+UnityRelease.Version,sheetQuiet);
             if(GUILayout.Button("Проверить и обновить",brandBlue,GUILayout.Height(56))) { settingsSection=0;showChangelog=false;brandTechnicalScreen=true; }
             if(GUILayout.Button("История изменений",brandBrown,GUILayout.Height(54))) { settingsSection=0;showChangelog=true;brandTechnicalScreen=true;StartCoroutine(FetchChangelog()); }GUILayout.EndVertical();
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Графика и управление");
+            GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Графика и управление");
             settingsDraft.keepScreenAwake=GUILayout.Toggle(settingsDraft.keepScreenAwake,"Не выключать экран, пока приложение открыто",GUILayout.MinHeight(58));
             if(GUILayout.Button("Графика и FPS",brandGold,GUILayout.Height(54))) { settingsSection=2;brandTechnicalScreen=true; }
             if(GUILayout.Button("Камера, управление и данные",brandGold,GUILayout.MinHeight(60))) { settingsSection=3;brandTechnicalScreen=true; }GUILayout.EndVertical();
@@ -83,7 +88,7 @@ namespace DndVtt.UnityPrototype
             Attempt(() => {
                 settingsDraft.Save(SettingsPath);
                 preferences=ClientPreferences.Parse(settingsDraft.Export());
-                ApplyPreferences();
+                ApplyPreferences();InvalidateBrandStyles();
                 brandNotice="Оформление сохранено.";
             });
         }
