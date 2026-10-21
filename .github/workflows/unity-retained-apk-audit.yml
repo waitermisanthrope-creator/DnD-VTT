@@ -1,0 +1,47 @@
+name: Audit retained assets in existing Unity APK
+on:
+  push:
+    branches: [experiment/unity-vtt]
+    paths: ['.github/workflows/unity-retained-apk-audit.yml', 'tools/audit_retained_apk.py']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: DnD-VTT-Unity-1.00.08-Android-test
+          run-id: 39518732474
+          github-token: ${{ github.token }}
+          path: audit/apk
+      - uses: actions/download-artifact@v4
+        with:
+          name: Unity-APK-measurements-39518732474
+          run-id: 39518732474
+          github-token: ${{ github.token }}
+          path: audit/measurements
+      - uses: actions/download-artifact@v4
+        with:
+          name: Unity-build-resource-report-39518732474
+          run-id: 39518732474
+          github-token: ${{ github.token }}
+          path: audit/build-report
+      - name: Inspect exact existing APK and retained source assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK=$(find audit/apk -name '*.apk' -print -quit)
+          INVENTORY=$(find audit/measurements -name 'apk-object-inventory.json' -print -quit)
+          REPORT=$(find audit/build-report -name 'build-report-Android.json' -print -quit)
+          python3 tools/audit_retained_apk.py --apk "$APK" --inventory "$INVENTORY" --build-report "$REPORT" --output audit/retained-assets.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Unity-1.00.08-retained-assets-audit
+          path: audit/retained-assets.json
+          if-no-files-found: error
