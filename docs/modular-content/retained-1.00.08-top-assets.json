@@ -1,0 +1,74 @@
+[
+  {
+    "source": "Built-in Texture2D: Splash Screen Unity Logo",
+    "packedBytes": 2796376
+  },
+  {
+    "source": "Assets/Vtt/Resources/Branding/Dragon20.png",
+    "packedBytes": 1048696
+  },
+  {
+    "source": "Assets/Vtt/Resources/Branding/Splash19.png",
+    "packedBytes": 1048696
+  },
+  {
+    "source": "Assets/Vtt/Resources/CharacterSheet/catalog.json",
+    "packedBytes": 963272
+  },
+  {
+    "source": "Resources/unity_builtin_extra",
+    "packedBytes": 524492
+  },
+  {
+    "source": "Assets/Vtt/Resources/Branding/Wallpaper16.jpg",
+    "packedBytes": 524412
+  },
+  {
+    "source": "Packages/com.unity.render-pipelines.core/Runtime/Vrs/Shaders/VrsTexture.compute",
+    "packedBytes": 160872
+  },
+  {
+    "source": "Packages/com.unity.render-pipelines.core/Runtime/Debugging/Prefabs/Fonts/PerfectDOSVGA437.ttf",
+    "packedBytes": 81330
+  },
+  {
+    "source": "Packages/com.unity.render-pipelines.universal/Shaders/Utils/CoreBlit.shader",
+    "packedBytes": 68688
+  },
+  {
+    "source": "Packages/com.unity.render-pipelines.universal/Shaders/Lit.shader",
+    "packedBytes": 68400
+  },
+  {
+    "source": "Packages/com.unity.render-pipelines.universal/Shaders/Terrain/WavingGrass.shader",
+    "packedBytes": 39008
+  },
+  {
+    "source": "Packages/com.unity.render-pipelines.universal/Shaders/Terrain/WavingGrassBillboard.shader",
+    "packedBytes": 30760
+  },
+  {
+    "source": "Packages/com.unity.render-pipelines.universal/Shaders/Terrain/TerrainDetailLit.shader",
+    "packedBytes": 28540
+  },
+  {
+    "source": "Packages/com.unity.render-pipelines.universal/Shaders/Debug/HDRDebugView.shader",
+    "packedBytes": 20460
+  },
+  {
+    "source": "Packages/com.unity.render-pipelines.universal/Textures/DebugFont.tga",
+    "packedBytes": 16508
+  },
+  {
+    "source": "Resources/unity_builtin_extra",
+    "packedBytes": 14228
+  },
+  {
+    "source": "Packages/com.unity.render-pipelines.universal/Shaders/Utils/CoreBlitColorAndDepth.shader",
+    "packedBytes": 12568
+  },
+  {
+    "source": "Packages/com.unity.render-pipelines.universal/Shaders/Debug/ProbeVolumeSamplingDebugPositionNormal.compute",
+    "packedBytes": 8664
+  }
+]

@@ -4,6 +4,8 @@ import hashlib
 import json
 from pathlib import Path
 import zipfile
+import io
+from PIL import Image
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--apk', type=Path, required=True)
@@ -36,8 +38,28 @@ if args.max_prop_texture:
 with zipfile.ZipFile(args.apk) as archive:
     assert archive.testzip() is None
     entries = archive.infolist()
+    def png_chunks(data):
+        result=[];position=8
+        assert data[:8] == b'\x89PNG\r\n\x1a\n'
+        while position < len(data):
+            size=int.from_bytes(data[position:position+4], 'big')+12
+            assert size >= 12 and position+size <= len(data)
+            result.append((data[position+4:position+8],data[position:position+size]));position+=size
+        assert result[-1][0] == b'IEND'
+        return result
+    removed_art_bytes=0
     for name in ('Dragon20.png', 'Splash19.png', 'Wallpaper16.jpg'):
-        assert archive.read('assets/Branding/' + name) == (root/'unity/Assets/Vtt/Resources/Branding'/name).read_bytes(), 'Original packaged artwork changed'
+        packaged=archive.read('assets/Branding/' + name)
+        original=(root/'unity/Assets/Vtt/Resources/Branding'/name).read_bytes()
+        if name == 'Splash19.png':
+            original_chunks=png_chunks(original);packaged_chunks=png_chunks(packaged)
+            assert packaged_chunks == [(kind,chunk) for kind,chunk in original_chunks if kind != b'caBX'], 'Rendered PNG chunks or attribution changed'
+            source_image=Image.open(io.BytesIO(original));packaged_image=Image.open(io.BytesIO(packaged))
+            assert source_image.mode==packaged_image.mode and source_image.size==packaged_image.size and source_image.tobytes()==packaged_image.tobytes(), 'Artwork pixels changed'
+            removed_art_bytes=len(original)-len(packaged)
+            assert removed_art_bytes == 6854025
+        else:
+            assert packaged == original, 'Original packaged artwork changed' 
     compressed = lambda prefix: sum(item.compress_size for item in entries if item.filename.startswith(prefix))
     old = 58430834
     result = dict(apkBytes=args.apk.stat().st_size, apkSha256=digest,
@@ -47,7 +69,9 @@ with zipfile.ZipFile(args.apk) as archive:
                   zipCompressedBrandingBytes=compressed('assets/Branding/'),
                   zipCompressedNativeBytes=compressed('lib/'),
                   propTextureCount=len(props), propTextureDimensions={item['name']:[item['width'], item['height']] for item in props},
-                  originalBrandingBytesVerified=True,
+                  originalBrandingBytesVerified=False,
+                  originalBrandingPixelsVerified=True,
+                  omittedNonRenderingPngBytes=removed_art_bytes,
                   minimalContentVerified=args.minimal_content,
                   bundledCreationIds=catalog if args.minimal_content else None,
                   deviceQa=False,

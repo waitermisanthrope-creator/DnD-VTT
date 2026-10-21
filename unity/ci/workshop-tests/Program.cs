@@ -34,6 +34,17 @@ class Program
             long required = 1037 * 2 + 1024 * 1024;
             WorkshopStore.CheckDownloadSpace(1037, () => required);
             Reject(() => WorkshopStore.CheckDownloadSpace(1037, () => required - 1), "storage reserve boundary");
+            var art = File.ReadAllBytes(Path.Combine(appRoot, "unity/Assets/StreamingAssets/Branding/Splash19.png"));
+            var optimizedArt = BuildBranding.OptimizePng(art);
+            Check(art.Length - optimizedArt.Length == 6854025, "only known non-rendering PNG container omitted");
+            Check(BuildBranding.OptimizePng(optimizedArt).SequenceEqual(optimizedArt), "PNG optimizer idempotent");
+            Reject(() => BuildBranding.OptimizePng(art.Take(art.Length - 1).ToArray()), "truncated PNG rejected");
+            Reject(() => BuildBranding.OptimizePng(new byte[40]), "invalid PNG signature rejected");
+            string artDirectory = Path.Combine(root, "art"); Directory.CreateDirectory(artDirectory);
+            string artPath = Path.Combine(artDirectory, "Splash19.png"); File.WriteAllBytes(artPath, art);
+            try { using var scope = new BuildBranding.Scope(artDirectory); Check(File.ReadAllBytes(artPath).SequenceEqual(optimizedArt), "packaging uses optimized copy"); throw new IOException("simulated build failure"); }
+            catch (IOException) { }
+            Check(File.ReadAllBytes(artPath).SequenceEqual(art), "build failure restores exact original source artwork");
             var store = new WorkshopStore(Path.Combine(root, "store"));
             Check(store.Installed().Count == 0, "empty offline startup");
             foreach (string repo in new[] { "DnD-VTT-Content", "DnD-VTT-Assets" })

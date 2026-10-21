@@ -101,6 +101,8 @@ public static class UnityReleaseBuild
             PlayerSettings.Android.targetSdkVersion = (AndroidSdkVersions)36;
         }
         string folder = "Builds/Unity-" + UnityRelease.Version; Directory.CreateDirectory(folder);
+        using var brandingScope = new BuildBranding.Scope(Path.Combine(Application.dataPath, "StreamingAssets", "Branding"));
+        Debug.Log("VTT_BRANDING_LOSSLESS_PACKAGE_PASS: removed non-rendering PNG bytes=" + brandingScope.SavedBytes + "; original source restored on scope exit");
         var result = BuildPipeline.BuildPlayer(new[] { PrepareMinimalScene() }, folder + "/" + suffix, target, BuildOptions.None);
         if (result.summary.result != BuildResult.Succeeded) throw new Exception("Unity release build failed: " + result.summary.result);
         var packed = new JArray();

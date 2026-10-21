@@ -5,6 +5,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
     <Compile Include="../../Assets/Vtt/Runtime/WorkshopStore.cs" Link="WorkshopStore.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="../../Assets/Vtt/Editor/BuildBranding.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/CharacterCreation.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/CharacterSheetRules.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/LegacyDocuments.cs" />
