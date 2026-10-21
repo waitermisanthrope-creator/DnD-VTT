@@ -43,6 +43,15 @@ public static class WorkshopEditorValidation
                 }
             }
             runtime = new WorkshopRuntime(store); runtime.ActivateData();
+            var commerce = runtime.Commerce();
+            Check(((JArray)commerce["items"]).Count == 308 && ((JArray)commerce["craft"]["recipes"]).Count == 47, "downloaded inventory and craft activated in native Unity");
+            var profiles = JObject.Parse(File.ReadAllText("ContentSources~/workshop-commerce/contracts.json"));
+            foreach (JObject contract in (JArray)profiles["profiles"])
+            {
+                var actual = CommerceRules.Profile((JObject)commerce["alchemy"], ((JArray)contract["ids"]).Values<string>().ToArray(), (string)contract["catalyst"]);
+                foreach (var property in ((JObject)contract["expected"]).Properties()) Check(JToken.DeepEquals(actual[property.Name],property.Value), "native Unity / main JS reaction parity: " + property.Name);
+            }
+            Debug.Log("VTT_COMMERCE_EDITOR_PASS: 308 downloadable item/ingredient records, 47 recipes, nine real JS reaction profiles");
             const string modelId = "demo.model.markers.beacon", surfaceId = "demo.appearance.amber.floor";
             Check(runtime.Models.ContainsKey(modelId) && runtime.Surfaces.ContainsKey(surfaceId), "JSON objects/materials activated");
             foreach (var prefab in runtime.Models.Values)
