@@ -53,6 +53,10 @@ def candidate_manifest(folder, qa_path, run, version):
     ci.verify_apk(files[0], version, code)
     manifest = dict(schema=1,channel='unity-experiment',version=version,versionCode=code,androidPackage=ci.PACKAGE,
                     notes='Проверенное обновление Unity ' + version,artifacts=artifacts)
+    history_path=Path('updates/unity-changelog.json')
+    if history_path.exists():
+        entry=next((e for e in json.loads(history_path.read_text())['releases'] if e['version']==version),None)
+        if entry:manifest['notes']=' · '.join(entry['changes'])
     previous = json.loads(Path('updates/unity-experiment.json').read_text())
     if code <= previous['versionCode']:
         raise ValueError('Only a newer, unpublished version may be promoted')

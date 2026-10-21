@@ -95,6 +95,8 @@ def publish_verified(files, manifest, expected_cert, source_commit=None, build_r
     sums.write_text("\n".join(checksums) + "\n", encoding="utf-8")
     files.extend([feed, sums])
     tag = "unity-v" + version
+    notes_file=destination / "release-notes.md"
+    notes_file.write_text("DnD VTT Unity "+version+"\n\n"+manifest.get("notes", "")+"\n",encoding="utf-8")
     existing = subprocess.run(["gh", "release", "view", tag, "--repo", REPO, "--json", "isDraft"], capture_output=True, text=True)
     if existing.returncode == 0:
         if json.loads(existing.stdout)["isDraft"]:
@@ -103,7 +105,7 @@ def publish_verified(files, manifest, expected_cert, source_commit=None, build_r
     else:
         gh("release", "create", tag, *map(str, files), "--repo", REPO,
            "--target", source_commit, "--title", "DnD VTT Unity " + version,
-           "--notes-file", "unity/Installer/release-notes.md", "--prerelease", "--latest=false")
+           "--notes-file", str(notes_file), "--prerelease", "--latest=false")
     # Verify public downloads, not just the local payload or an upload command.
     for path in files:
         url = "https://github.com/" + REPO + "/releases/download/" + tag + "/" + path.name
@@ -112,7 +114,7 @@ def publish_verified(files, manifest, expected_cert, source_commit=None, build_r
         if hashlib.sha256(verified.read_bytes()).digest() != hashlib.sha256(path.read_bytes()).digest():
             raise ValueError("Public release download differs from verified local payload")
     # Fast-forward only, and only this channel file. Never modify stable manifests.
-    subprocess.check_call(["git", "fetch", "origin", BRANCH])
+    subprocess.check_call(["git", "fetch", "origin", "refs/heads/"+BRANCH+":refs/remotes/origin/"+BRANCH])
     subprocess.check_call(["git", "switch", "--detach", "origin/" + BRANCH])
     live_feed = pathlib.Path("updates/unity-experiment.json")
     if live_feed.exists():
@@ -122,6 +124,15 @@ def publish_verified(files, manifest, expected_cert, source_commit=None, build_r
         if previous["versionCode"] == manifest["versionCode"] and previous["artifacts"] != manifest["artifacts"]:
             raise ValueError("Never replace a published version with different binaries")
     live_feed.write_bytes(feed.read_bytes())
+    history_path=pathlib.Path("updates/unity-changelog.json")
+    if history_path.exists():
+        history=json.loads(history_path.read_text(encoding="utf-8"))
+        for entry in history.get("releases",[]):
+            if entry.get("version")==version:entry["status"]="published"
+        history_path.write_text(json.dumps(history,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+        pathlib.Path("unity/Assets/Vtt/Resources/Changelog.json").write_bytes(history_path.read_bytes())
+        subprocess.check_call(["git","add","--",str(history_path),"unity/Assets/Vtt/Resources/Changelog.json"])
+
     report = {"status": "published-and-download-verified", "version": version,
               "releaseUrl": "https://github.com/" + REPO + "/releases/tag/" + tag,
               "sourceCommit": source_commit, "artifacts": manifest["artifacts"],
