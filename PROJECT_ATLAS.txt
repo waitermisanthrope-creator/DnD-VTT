@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 681e5bb39174. Файлов: 1904
+Коммит 0146a0d26403. Файлов: 1904
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1071,7 +1071,7 @@
 1055. docs/UNITY_CHARACTER_SHEET_PARITY.md — документация или отчёт: UNITY CHARACTER SHEET PARITY (12064 B)
 1056. docs/UNITY_CLOUD_HANDOFF.md — документация или отчёт: UNITY CLOUD HANDOFF (37179 B)
 1057. docs/UNITY_MIGRATION_PLAN.md — документация или отчёт: UNITY MIGRATION PLAN (14710 B)
-1058. docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md — документация или отчёт: ACCESS AND TOUCH 1.00.12 (7822 B)
+1058. docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md — документация или отчёт: ACCESS AND TOUCH 1.00.12 (7850 B)
 1059. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
 1060. dragon_fire_v2_sprite.png — текстура/изображение: dragon fire v2 sprite (1013123 B)
 1061. embers_v2_sprite.png — текстура/изображение: embers v2 sprite (698014 B)
@@ -1119,9 +1119,9 @@
 1103. smoke_front_v2_sprite.png — текстура/изображение: smoke front v2 sprite (2064687 B)
 1104. smoke_mid_v2_sprite.png — текстура/изображение: smoke mid v2 sprite (1898516 B)
 1105. supabase/migrations/202610130001_characters.sql — SQL миграция Supabase (4421 B)
-1106. supabase/migrations/202610210001_access_control.sql — SQL миграция Supabase (8182 B)
+1106. supabase/migrations/202610210001_access_control.sql — SQL миграция Supabase (8940 B)
 1107. supabase/tests/.gitignore — вспомогательный файл: .gitignore (14 B)
-1108. supabase/tests/access-control.mjs — вспомогательный файл: access control (6755 B)
+1108. supabase/tests/access-control.mjs — вспомогательный файл: access control (7158 B)
 1109. supabase/tests/package-lock.json — данные/конфигурация: package lock (512 B)
 1110. supabase/tests/package.json — данные/конфигурация: package (165 B)
 1111. table.glb — 3D модель/геометрия: table (6217412 B)
@@ -1744,7 +1744,7 @@
 1728. unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs.meta — вспомогательный файл: LegacyMapPresenter.cs (59 B)
 1729. unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs — вспомогательный файл: LegacyMigrationSmoke (3065 B)
 1730. unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs.meta — вспомогательный файл: LegacyMigrationSmoke.cs (59 B)
-1731. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs — вспомогательный файл: LegacySessionPanel.Account (17386 B)
+1731. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs — вспомогательный файл: LegacySessionPanel.Account (18680 B)
 1732. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta — вспомогательный файл: LegacySessionPanel.Account.cs (60 B)
 1733. unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs — вспомогательный файл: LegacySessionPanel.Branding (16427 B)
 1734. unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta — вспомогательный файл: LegacySessionPanel.Branding.cs (60 B)
@@ -1803,7 +1803,7 @@
 1787. unity/ci/.gitignore — вспомогательный файл: .gitignore (14 B)
 1788. unity/ci/check_sheet_provenance.py — вспомогательный файл: check sheet provenance (2365 B)
 1789. unity/ci/cloud_release.py — вспомогательный файл: cloud release (14328 B)
-1790. unity/ci/measure_apk.py — вспомогательный файл: measure apk (5487 B)
+1790. unity/ci/measure_apk.py — вспомогательный файл: measure apk (5713 B)
 1791. unity/ci/promote_candidate.py — вспомогательный файл: promote candidate (4640 B)
 1792. unity/ci/publish_android_update.py — вспомогательный файл: publish android update (6493 B)
 1793. unity/ci/requirements.txt — документация или отчёт: requirements (21 B)
@@ -7521,7 +7521,7 @@ walterParasite — №0700 (+ 1 других файлов)
 weaponsData — №0647
 worldMatrices — №0059 (+ 3 других файлов)
 
---- Поля JS объектов (6505) ---
+--- Поля JS объектов (6508) ---
 _ — №1209 (+ 11 других файлов)
 __base — №0073
 __bodyMasks — №1138
@@ -7536,6 +7536,7 @@ __tarotShared — №0818
 __TEST_ASSERT__ — №1355
 _sent — №1286
 a — №0061 (+ 17 других файлов)
+aal — №1108
 abdomen — №0059
 aberration — №0628 (+ 12 других файлов)
 abilities — №0628 (+ 17 других файлов)
@@ -7804,6 +7805,7 @@ amplifiedMoveFt — №0779
 amplifiedNextAttackAdvantage — №0779
 amplifiedRestoreSpellSlot — №0779
 amplify — №0641 (+ 4 других файлов)
+amr — №1108
 analysisAction — №0829
 analyticalDefense — №0829
 anatomy — №0061 (+ 1 других файлов)
@@ -11063,7 +11065,7 @@ metamagic_adept — №0782
 metamorphosesKnown — №0648
 metamorphosesMax — №0648
 metamorphosis — №0077
-method — №0653 (+ 3 других файлов)
+method — №0653 (+ 4 других файлов)
 metrics — №0063
 mettle — №0655 (+ 2 других файлов)
 mid — №0863
@@ -13527,6 +13529,7 @@ timeMinutes — №1115
 timeout — №1156 (+ 37 других файлов)
 timer — №0847
 times — №0068
+timestamp — №1108
 timeStop — №0818
 tinker — №0670 (+ 3 других файлов)
 tinkerer — №0671

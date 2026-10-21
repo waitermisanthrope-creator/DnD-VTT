@@ -97,7 +97,10 @@ namespace DndVtt.UnityPrototype
         {
             cloudBusy=true;string token=null;
             try {
-                yield return CloudToken(t=>token=t);if(token==null||archive==null)yield break;
+                string backupError=null;
+                try { if(archive==null)backupError="Нет выбранного героя";else CharacterSheetStore.Save(SavePath,archive); }catch(Exception) { backupError="Не удалось сохранить локальную резервную копию. Отправка отменена; изменения остаются в памяти."; }
+                if(backupError!=null) { cloudMessage=backupError;yield break; }
+                yield return CloudToken(t=>token=t);if(token==null)yield break;
                 var hero=archive.Snapshot(selected);string key=hero["id"].ToString();
                 JObject link=null,pending=null;string preparationError=null;
                 try {
@@ -124,6 +127,17 @@ namespace DndVtt.UnityPrototype
                 try { CloudJournal[profile["id"].ToString()]=new JObject { ["remoteId"]=remote["id"].DeepClone(),["revision"]=remote["revision"].DeepClone() };WriteCloudFile(CloudJournalPath,CloudJournal.ToString()); }
                 catch(Exception) { cloudMessage="Локальная копия сохранена, но связь с облачной версией не записана. Проверьте хранилище перед новой отправкой."; }
             }catch(Exception) { cloudMessage="Не удалось сохранить копию. Исходный архив не удалён."; }
+        }
+        private IEnumerator CloudLogout()
+        {
+            cloudBusy=true;string token=(string)cloudSession?["access_token"];
+            cloudSession=cloudAccess=cloudJournal=cloudConflict=null;cloudCharacters.Clear();cloudPassword=cloudCode="";
+            cloudMessage="Вы вышли на этом устройстве. Локальные герои сохранены.";
+            try {
+                try { foreach(string suffix in new[] { "", ".bak", ".pending" })if(File.Exists(CloudSessionPath+suffix))File.Delete(CloudSessionPath+suffix); }
+                catch(Exception) { cloudMessage="Сессия закрыта в памяти, но файл входа удалить не удалось. Проверьте хранилище перед выходом из приложения."; }
+                if(token!=null)yield return CloudRequest("/auth/v1/logout?scope=local",new JObject(),token,r=>{},e=>cloudMessage+=" Серверный отзыв сессии не подтверждён; проверьте активные сессии аккаунта.");
+            }finally { cloudBusy=false; }
         }
         private void DrawAccount()
         {
@@ -153,7 +167,7 @@ namespace DndVtt.UnityPrototype
                 GUILayout.BeginHorizontal();if(cloudPage>0&&GUILayout.Button("← Предыдущие")) { cloudPage--;StartCoroutine(CloudRefresh()); }if(cloudCharacters.Count==10&&GUILayout.Button("Следующие →")) { cloudPage++;StartCoroutine(CloudRefresh()); }GUILayout.EndHorizontal();
                 GUILayout.Label("Новый пароль (после подтверждения восстановления)");cloudPassword=GUILayout.PasswordField(cloudPassword,'•',GUILayout.MinHeight(52));
                 if(GUILayout.Button("Задать новый пароль"))StartCoroutine(CloudChangePassword());
-                if(GUILayout.Button("Выйти на этом устройстве",brandRed,GUILayout.Height(52))) { cloudSession=cloudAccess=cloudJournal=cloudConflict=null;cloudCharacters.Clear();cloudPassword="";if(File.Exists(CloudSessionPath))File.Delete(CloudSessionPath);if(File.Exists(CloudSessionPath+".bak"))File.Delete(CloudSessionPath+".bak");cloudMessage="Вы вышли. Локальные персонажи сохранены."; }
+                if(GUILayout.Button("Выйти на этом устройстве",brandRed,GUILayout.Height(52)))StartCoroutine(CloudLogout());
             }
             GUILayout.Label("Загрузка всегда добавляет отдельную копию. Облако не удаляет и не заменяет локальных героев автоматически.",sheetQuiet);
             GUI.enabled=previous;

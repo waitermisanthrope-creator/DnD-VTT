@@ -38,6 +38,7 @@ if args.max_prop_texture:
     assert len(props) == 12, 'Missing mandatory prop textures'
     assert all(max(item['width'], item['height']) <= args.max_prop_texture for item in props), 'Android texture import cap not applied'
 with zipfile.ZipFile(args.apk) as archive:
+    assert any(b"Lcom/dndvtt/unity/DndSessionVault;" in archive.read(name) for name in archive.namelist() if name.startswith("classes") and name.endswith(".dex")), "Android encrypted-session Java bridge missing from real APK"
     assert archive.testzip() is None
     entries = archive.infolist()
     def png_chunks(data):

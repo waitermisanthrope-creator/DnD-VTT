@@ -37,6 +37,17 @@ alter table app_private.access_audit enable row level security;
 alter table app_private.staff_requests enable row level security;
 revoke all on all tables in schema app_private from public,anon,authenticated;
 
+-- A refreshed aal2 token alone is not fresh verification. Sensitive actions
+-- require a server-signed TOTP/phone/security-key AMR within ten minutes.
+create function app_private.recent_mfa() returns boolean language sql stable security definer set search_path='' as $$
+ select coalesce(auth.jwt()->>'aal'='aal2',false) and exists(
+  select 1 from jsonb_array_elements(case when jsonb_typeof(auth.jwt()->'amr')='array' then auth.jwt()->'amr' else '[]'::jsonb end) e
+  where e->>'method' in ('totp','phone','webauthn')
+   and case when e->>'timestamp' ~ '^[0-9]{1,16}$' then (e->>'timestamp')::bigint between extract(epoch from now())::bigint-600 and extract(epoch from now())::bigint+60 else false end
+ );
+$$;
+revoke all on function app_private.recent_mfa() from public,anon,authenticated;
+
 create function public.my_access() returns jsonb language plpgsql stable security definer set search_path='' as $$
 declare uid uuid:=auth.uid(); s app_private.staff%rowtype; premium boolean; creator boolean; elevated boolean; tags jsonb;
 begin
@@ -55,8 +66,8 @@ begin
   'review.read',s.user_id is not null,
   'review.decide',elevated or coalesce(s.kind='moderator' and s.trust>=1,false),
   'workshop.publish',elevated or coalesce(s.kind='moderator' and s.trust>=2,false),
-  'diagnostics.read',(elevated or coalesce(s.kind='moderator' and s.trust>=3,false)) and coalesce(auth.jwt()->>'aal'='aal2',false),
-  'staff.manage',elevated and coalesce(auth.jwt()->>'aal'='aal2',false)
+  'diagnostics.read',(elevated or coalesce(s.kind='moderator' and s.trust>=3,false)) and app_private.recent_mfa(),
+  'staff.manage',elevated and app_private.recent_mfa()
   ));
 end;$$;
 revoke all on function public.my_access() from public,anon;

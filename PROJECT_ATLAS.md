@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 681e5bb39174. Git содержит 1904 файлов.
+Снимок кода 0146a0d26403. Git содержит 1904 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1076,7 +1076,7 @@
 | №1055 docs/UNITY_CHARACTER_SHEET_PARITY.md | 12064 B | документация или отчёт: UNITY CHARACTER SHEET PARITY |
 | №1056 docs/UNITY_CLOUD_HANDOFF.md | 37179 B | документация или отчёт: UNITY CLOUD HANDOFF |
 | №1057 docs/UNITY_MIGRATION_PLAN.md | 14710 B | документация или отчёт: UNITY MIGRATION PLAN |
-| №1058 docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md | 7822 B | документация или отчёт: ACCESS AND TOUCH 1.00.12 |
+| №1058 docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md | 7850 B | документация или отчёт: ACCESS AND TOUCH 1.00.12 |
 | №1059 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
 | №1060 dragon_fire_v2_sprite.png | 1013123 B | текстура/изображение: dragon fire v2 sprite |
 | №1061 embers_v2_sprite.png | 698014 B | текстура/изображение: embers v2 sprite |
@@ -1124,9 +1124,9 @@
 | №1103 smoke_front_v2_sprite.png | 2064687 B | текстура/изображение: smoke front v2 sprite |
 | №1104 smoke_mid_v2_sprite.png | 1898516 B | текстура/изображение: smoke mid v2 sprite |
 | №1105 supabase/migrations/202610130001_characters.sql | 4421 B | SQL миграция Supabase |
-| №1106 supabase/migrations/202610210001_access_control.sql | 8182 B | SQL миграция Supabase |
+| №1106 supabase/migrations/202610210001_access_control.sql | 8940 B | SQL миграция Supabase |
 | №1107 supabase/tests/.gitignore | 14 B | вспомогательный файл: .gitignore |
-| №1108 supabase/tests/access-control.mjs | 6755 B | вспомогательный файл: access control |
+| №1108 supabase/tests/access-control.mjs | 7158 B | вспомогательный файл: access control |
 | №1109 supabase/tests/package-lock.json | 512 B | данные/конфигурация: package lock |
 | №1110 supabase/tests/package.json | 165 B | данные/конфигурация: package |
 | №1111 table.glb | 6217412 B | 3D модель/геометрия: table |
@@ -1749,7 +1749,7 @@
 | №1728 unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs.meta | 59 B | вспомогательный файл: LegacyMapPresenter.cs |
 | №1729 unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs | 3065 B | вспомогательный файл: LegacyMigrationSmoke |
 | №1730 unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSmoke.cs |
-| №1731 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs | 17386 B | вспомогательный файл: LegacySessionPanel.Account |
+| №1731 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs | 18680 B | вспомогательный файл: LegacySessionPanel.Account |
 | №1732 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Account.cs |
 | №1733 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs | 16427 B | вспомогательный файл: LegacySessionPanel.Branding |
 | №1734 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Branding.cs |
@@ -1808,7 +1808,7 @@
 | №1787 unity/ci/.gitignore | 14 B | вспомогательный файл: .gitignore |
 | №1788 unity/ci/check_sheet_provenance.py | 2365 B | вспомогательный файл: check sheet provenance |
 | №1789 unity/ci/cloud_release.py | 14328 B | вспомогательный файл: cloud release |
-| №1790 unity/ci/measure_apk.py | 5487 B | вспомогательный файл: measure apk |
+| №1790 unity/ci/measure_apk.py | 5713 B | вспомогательный файл: measure apk |
 | №1791 unity/ci/promote_candidate.py | 4640 B | вспомогательный файл: promote candidate |
 | №1792 unity/ci/publish_android_update.py | 6493 B | вспомогательный файл: publish android update |
 | №1793 unity/ci/requirements.txt | 21 B | документация или отчёт: requirements |
@@ -7539,7 +7539,7 @@
 | weaponsData | №0647 |
 | worldMatrices | №0059 (+ 3 других файлов) |
 
-### Поля JS объектов (6505)
+### Поля JS объектов (6508)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -7557,6 +7557,7 @@
 | __TEST_ASSERT__ | №1355 |
 | _sent | №1286 |
 | a | №0061 (+ 17 других файлов) |
+| aal | №1108 |
 | abdomen | №0059 |
 | aberration | №0628 (+ 12 других файлов) |
 | abilities | №0628 (+ 17 других файлов) |
@@ -7825,6 +7826,7 @@
 | amplifiedNextAttackAdvantage | №0779 |
 | amplifiedRestoreSpellSlot | №0779 |
 | amplify | №0641 (+ 4 других файлов) |
+| amr | №1108 |
 | analysisAction | №0829 |
 | analyticalDefense | №0829 |
 | anatomy | №0061 (+ 1 других файлов) |
@@ -11084,7 +11086,7 @@
 | metamorphosesKnown | №0648 |
 | metamorphosesMax | №0648 |
 | metamorphosis | №0077 |
-| method | №0653 (+ 3 других файлов) |
+| method | №0653 (+ 4 других файлов) |
 | metrics | №0063 |
 | mettle | №0655 (+ 2 других файлов) |
 | mid | №0863 |
@@ -13548,6 +13550,7 @@
 | timeout | №1156 (+ 37 других файлов) |
 | timer | №0847 |
 | times | №0068 |
+| timestamp | №1108 |
 | timeStop | №0818 |
 | tinker | №0670 (+ 3 других файлов) |
 | tinkerer | №0671 |

@@ -5,7 +5,7 @@ const db=new PGlite();let checks=0;
 const owner='00000000-0000-4000-8000-000000000001',deputy='00000000-0000-4000-8000-000000000002',member='00000000-0000-4000-8000-000000000003',other='00000000-0000-4000-8000-000000000004';
 function check(value,name){assert.ok(value,name);checks++;}
 async function denied(sql,args=[]){await assert.rejects(db.query(sql,args));checks++;}
-async function identity(uid,aal='aal1'){await db.exec('reset role');await db.query("select set_config('request.jwt.claims',$1,false)",[JSON.stringify({sub:uid,aal,user_metadata:{role:'owner',premium:true}})]);await db.exec('set role authenticated');}
+async function identity(uid,aal='aal1'){await db.exec('reset role');await db.query("select set_config('request.jwt.claims',$1,false)",[JSON.stringify({sub:uid,aal,amr:aal==='aal2'?[{method:'totp',timestamp:Math.floor(Date.now()/1000)}]:[],user_metadata:{role:'owner',premium:true}})]);await db.exec('set role authenticated');}
 async function root(){await db.exec('reset role');}
 async function access(){return (await db.query('select public.my_access() as a')).rows[0].a;}
 try {
@@ -25,6 +25,7 @@ try {
  await root();await db.query("insert into app_private.staff values($1,'moderator',0,true)",[member]);
  for(let trust=0;trust<=3;trust++){await root();await db.query('update app_private.staff set trust=$1 where user_id=$2',[trust,member]);await identity(member);a=await access();check(a.capabilities['creator.submit']&&a.capabilities['review.read'],'moderator has creator + queue');check(a.capabilities['review.decide']===(trust>=1),'review threshold');check(a.capabilities['workshop.publish']===(trust>=2),'publication threshold');check(!a.capabilities['diagnostics.read'],'technical console needs MFA');}
  await identity(member,'aal2');check((await access()).capabilities['diagnostics.read'],'technical diagnostics with MFA');
+ await root();await db.query("select set_config('request.jwt.claims',$1,false)",[JSON.stringify({sub:member,aal:'aal2',amr:[{method:'totp',timestamp:Math.floor(Date.now()/1000)-3600}]})]);await db.exec('set role authenticated');check(!(await access()).capabilities['diagnostics.read'],'stale aal2 session requires fresh MFA');
  await root();await db.query('update app_private.staff set active=false where user_id=$1',[member]);await identity(member,'aal2');check(!(await access()).capabilities['diagnostics.read'],'revocation effective with unchanged token');
  await root();await db.query("insert into app_private.staff values($1,'owner',3,true),($2,'admin',3,true)",[owner,deputy]);
  await denied("insert into app_private.staff values($1,'owner',3,true)",[other]);
