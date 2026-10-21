@@ -8,7 +8,7 @@ namespace DndVtt.UnityPrototype
 {
     public sealed partial class LegacySessionPanel
     {
-        private enum FrontScreen { Home, Characters, Create, Sheet, Import, Map, Settings, ContentManager, Account }
+        private enum FrontScreen { Home, Characters, Create, Sheet, Import, Map, Settings, ContentManager, Account, Chat }
         private FrontScreen screen = FrontScreen.Home;
         private Vector2 frontScroll;
         private JObject creationCatalog;
@@ -113,6 +113,7 @@ namespace DndVtt.UnityPrototype
                     }
                     if (GUILayout.Button("Настройки и обновления", bigButton, GUILayout.Height(54))) OpenSettings();
                     GUILayout.Space(22); GUILayout.Label("Лист, инвентарь, кошелёк, заклинания и заметки — в одном сохранении.", muted); break;
+                case FrontScreen.Chat: DrawChat(); break;
                 case FrontScreen.Account: DrawAccount(); break;
                 case FrontScreen.ContentManager: DrawContentManager(); break;
                 case FrontScreen.Characters: DrawRoster(); break;

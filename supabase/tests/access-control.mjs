@@ -132,5 +132,26 @@ try {
  await identity(owner,'aal2');await denied("select public.request_staff_change($1,'moderator',0)",[deputy]);await denied("select public.request_staff_change($1,'revoke',0)",[owner]);
  await identity(deputy,'aal2');await denied("select public.request_staff_change($1,'admin',3)",[member]);
  await root();check((await db.query("select count(*)::int n from app_private.access_audit where action='staff.direct'")).rows[0].n===3,'all direct grants/removals audited');
+ // Authenticated rolling-hour chat: no raw body copies in audit.
+ await root();await db.exec(await readFile(new URL('../migrations/202610210004_authenticated_chat.sql',import.meta.url),'utf8'));
+ await db.exec('set role anon');await denied('select public.read_chat()');await denied("select public.send_chat($1,'x')",[member]);
+ await identity(other);let msg='40000000-0000-4000-8000-000000000001';
+ await db.query("select public.send_chat($1,'Chat-test-unique')",[msg]);await db.query("select public.send_chat($1,'Chat-test-unique')",[msg]);
+ check((await db.query('select public.read_chat() r')).rows[0].r.messages.length===1,'retry does not duplicate chat message');
+ await denied("select public.send_chat($1,'Changed payload')",[msg]);await denied('select * from app_private.chat_messages');await denied('select app_private.purge_expired_chat()');
+ await identity(member);await denied("select public.send_chat($1,'Chat-test-unique')",[msg]);
+ await root();await db.query("update app_private.account_limits set muted_until=now()+interval '1 hour' where user_id=$1",[other]);
+ await identity(other);await denied("select public.send_chat($1,'Muted')",[other]);check((await db.query('select public.read_chat() r')).rows[0].r.messages.length===1,'muted user may read chat');
+ await root();await db.query("update app_private.account_limits set muted_until=null,banned_until=now()+interval '1 hour' where user_id=$1",[other]);
+ await identity(other);await denied('select public.read_chat()');await denied("select public.send_chat($1,'Banned')",[other]);
+ await root();await db.query('update app_private.account_limits set banned_until=null where user_id=$1',[other]);
+ await db.query("insert into app_private.chat_messages(id,author,body,created_at) values($1,$2,'Expired',clock_timestamp()-interval '3601 seconds')",[member,other]);
+ await identity(other);check((await db.query('select public.read_chat() r')).rows[0].r.messages.length===1,'expired chat invisible before physical cleanup');
+ await denied('select public.send_chat($1,$2)',[other,'x'.repeat(1001)]);
+ for(let n=0;n<9;n++)await db.query("select public.send_chat(gen_random_uuid(),'Rate test')");
+ await denied("select public.send_chat(gen_random_uuid(),'Too fast')");
+ await root();check(Number((await db.query('select app_private.purge_expired_chat() n')).rows[0].n)===1,'worker purges expired chat only');
+ check(Number((await db.query('select count(*) n from app_private.chat_messages')).rows[0].n)===10,'worker retains unexpired chat');
+ check(Number((await db.query("select count(*) n from app_private.access_audit where details::text like '%Chat-test-unique%'")).rows[0].n)===0,'chat body not copied to longer audit');
  console.log('POSTGRES_ACCESS_CLOUD_PASS',checks,'checks: roles, forged metadata, MFA, two-person approval, revocation, receipts, conflict and RLS');
 } finally {await db.close();}

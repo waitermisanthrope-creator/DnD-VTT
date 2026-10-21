@@ -260,7 +260,7 @@ namespace DndVtt.UnityPrototype
                 GUI.enabled = before; GUILayout.EndHorizontal();
             }
             GUILayout.EndScrollView(); RegisterSwipe("home",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
-            float footer = Mathf.Min(292, UiHeight * .37f);
+            float footer = Mathf.Min(350, UiHeight * .44f);
             GUILayout.BeginArea(new Rect(x, UiHeight - footer - 6, width, footer));
             GUILayout.BeginVertical();
             GUILayout.BeginHorizontal();
@@ -275,6 +275,8 @@ namespace DndVtt.UnityPrototype
             GUI.enabled = enabled;
             if (GUILayout.Button("3D Карты", brandGold, GUILayout.Height(53))) Navigate(FrontScreen.Map);
             GUILayout.EndHorizontal();
+            LoadCloudSession();
+            if(cloudSession!=null&&GUILayout.Button("Чат",brandBlue,GUILayout.Height(51)))Navigate(FrontScreen.Chat);
             // One tap opens settings. Do not hide the essential updater behind
             // a floating popup that becomes unclickable on some Android devices.
             if (GUILayout.Button("☰ Ещё / ⚙ Настройки", brandBrown, GUILayout.Height(61)))
