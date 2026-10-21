@@ -106,7 +106,10 @@ coinCase('add', false, false, standardRates, { pp: 1, ep: 1 }, coinHero);
 coinCase('add', true, true, standardRates, { cp: 1 }, { ...coinHero, coins: { cp: .5 }, coinLog: Array.from({ length: 25 }, (_, i) => ({ time: '00:00:00', action: 'add', cp: i })) });
 const output = path.join(root, 'unity/Assets/Vtt/Resources/CharacterSheet');
 fs.mkdirSync(output, { recursive: true });
-fs.writeFileSync(path.join(output, 'catalog.json'), JSON.stringify({ sourceCommit, sources, spells, items, creation }, null, 2) + '\n');
+fs.mkdirSync(path.join(root, 'unity/ContentSources~'), { recursive: true });
+fs.writeFileSync(path.join(root, 'unity/ContentSources~/catalog.full.json'), JSON.stringify({ sourceCommit, sources, spells, items, creation }, null, 2) + '\n');
 const tests = path.join(root, 'unity/Assets/Vtt/Tests'); fs.mkdirSync(tests, { recursive: true });
 fs.writeFileSync(path.join(tests, 'sheet-contract.json'), JSON.stringify({ sourceCommit, sources, skills: context.SKILLS_CONFIG, cases: golden, inventoryCases, weightCases, weightHero, weightTotal, folderCases, noteCase, creationCases, coinCases }, null, 2) + '\n');
 console.log(`SHEET_SOURCE_PASS: ${spells.length} spells; ${Object.values(items).flat().length} items; ${golden.length} actual JS formula cases; inventory/notes/weight contracts from main ${sourceCommit}`);
+
+console.log("Run split_workshop_content.py with explicit Content/Assets checkouts to regenerate the minimal player catalog; full snapshot is never a Resources asset.");

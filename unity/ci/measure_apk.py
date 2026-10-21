@@ -10,12 +10,19 @@ parser.add_argument('--apk', type=Path, required=True)
 parser.add_argument('--objects', type=Path, required=True)
 parser.add_argument('--report', type=Path, required=True)
 parser.add_argument('--max-prop-texture', type=int)
+parser.add_argument('--minimal-content', action='store_true')
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[2]
 objects = json.loads(args.objects.read_text())
 digest = hashlib.sha256(args.apk.read_bytes()).hexdigest()
 assert objects['apkSha256'] == digest, 'Object inventory is for a different APK'
 props = [item for item in objects['objects'] if item['type'] == 'Texture2D' and item.get('name', '').startswith('T_Trim_')]
+if args.minimal_content:
+    assert not props, 'Optional prop textures leaked into APK'
+    optional_names = ('floor_', 'wall_', '3d_', 'T_Trim_')
+    assert not any(item.get('name','').startswith(optional_names) for item in objects['objects'] if item['type'] in ('Texture2D','TextAsset','Material')), 'Optional map content leaked into APK'
+    catalog = json.loads((root/'unity/Assets/Vtt/Resources/CharacterSheet/catalog.json').read_text())
+    assert len(catalog['creation']['races']) == 15 and len(catalog['creation']['classes']) == 12
 if args.max_prop_texture:
     assert len(props) == 12, 'Missing mandatory prop textures'
     assert all(max(item['width'], item['height']) <= args.max_prop_texture for item in props), 'Android texture import cap not applied'

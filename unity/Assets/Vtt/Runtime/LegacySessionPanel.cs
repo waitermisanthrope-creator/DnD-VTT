@@ -107,7 +107,14 @@ namespace DndVtt.UnityPrototype
         private void DrawMapSelector()
         {
             DrawWorkshopLibrary();
-            GUILayout.Label("Выбор карты (модели полностью подключены для таверны):");
+            GUILayout.Label("Карты из мастерской:");
+            if (GUILayout.Button("Создать пустую карту", GUILayout.Height(34))) Attempt(() => world.CreateEmptyMap());
+            if (workshop.Maps.Count == 0) GUILayout.Label("Готовые карты не входят в приложение. Скачайте их в мастерской.");
+            foreach (var entry in workshop.Maps)
+            {
+                string id = entry.Key;
+                if (GUILayout.Button((string)entry.Value["name"], GUILayout.Height(34))) Attempt(() => { if (!world.LoadWorkshopMap(id)) throw new FormatException(world.Error); });
+            }
             for (int i = 0; i < world.catalog.maps.Length; i++)
             {
                 int index = i; if (GUILayout.Button(world.catalog.maps[i].key, GUILayout.Height(30))) world.TryLoad(index);

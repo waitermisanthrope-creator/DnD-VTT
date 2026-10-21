@@ -10,8 +10,8 @@ namespace DndVtt.UnityPrototype
 {
     public sealed partial class LegacySessionPanel
     {
-        private const string CatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Content/main/catalog/v1/index.json";
-        private const string AssetsCatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v1/index.json";
+        private const string CatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Content/main/catalog/v2/index.json";
+        private const string AssetsCatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v2/index.json";
         private WorkshopStore workshopStore;
         private WorkshopRuntime workshop;
         private bool contentBusy, installedOnly;
@@ -20,8 +20,8 @@ namespace DndVtt.UnityPrototype
         private string contentSearch = "", contentNotice = "Каталоги доступны через интернет; установленные пакеты работают офлайн.";
         private JArray contentPackages = new JArray(), assetPacks = new JArray();
         private JObject contentDetails;
-        private static readonly string[] ContentCategories = { "Все", "Игровые системы", "Расы", "Классы", "Подклассы", "Заклинания", "Предметы", "Монстры", "3D-модели", "Окружение", "Текстуры", "Анимации", "Карты", "Оформление", "Коллекции" };
-        private static readonly string[] ContentTypes = { "", "game-system", "race", "class", "subclass", "spell", "item", "monster", "model", "environment", "texture", "animation", "map", "appearance", "collection" };
+        private static readonly string[] ContentCategories = { "Все", "Игровые системы", "Расы", "Классы", "Черты", "Подклассы", "Заклинания", "Предметы", "Монстры", "3D-модели", "Окружение", "Текстуры", "Анимации", "Карты", "Оформление", "Коллекции" };
+        private static readonly string[] ContentTypes = { "", "game-system", "race", "class", "feat", "subclass", "spell", "item", "monster", "model", "environment", "texture", "animation", "map", "appearance", "collection" };
         private string ContentDirectory => Path.Combine(Application.persistentDataPath, "workshop-v1");
         private void InitializeWorkshop()
         {
@@ -122,7 +122,8 @@ namespace DndVtt.UnityPrototype
             try
             {
                 WorkshopStore.Compatible(item, WorkshopRuntime.Platform, Application.unityVersion);
-                if ((string)item["format"] == "json" && !new[] { "race", "model", "environment", "appearance" }.Contains((string)item["type"])) return "Активация этой категории пока недоступна";
+                if ((int?)item["minClientVersionCode"] > UnityRelease.Code) return "Обновите приложение для этого пакета";
+                if ((string)item["format"] == "json" && !new[] { "race", "class", "feat", "map", "model", "environment", "appearance" }.Contains((string)item["type"])) return "Активация этой категории пока недоступна";
                 foreach (string dep in ((JArray)item["dependencies"]).Values<string>()) if (workshopStore.Find(dep) == null) return "Сначала установите: " + dep;
                 return null;
             }

@@ -24,13 +24,13 @@ namespace DndVtt.UnityPrototype
         public int WallCount { get; private set; }
         public string Error { get; private set; }
         private Material fallback;
-        private void Awake() { TryLoad(mapIndex); }
+        private void Awake() { if (catalog != null && catalog.maps != null && mapIndex >= 0 && mapIndex < catalog.maps.Length) TryLoad(mapIndex); }
         private static float N(JObject o, string key, float fallback = 0) => LegacyJson.Number(o[key], fallback);
         private static void Dispose(GameObject go) { if (!go) return; go.SetActive(false); if (Application.isPlaying) Destroy(go); else DestroyImmediate(go); }
         private Material Surface(string key)
         {
             if (Workshop != null && Workshop.Surfaces.TryGetValue(key, out var external)) return external;
-            var material = catalog.Surface(key); if (material) return material;
+            var material = catalog ? catalog.Surface(key) : null; if (material) return material;
             if (!fallback) fallback = new Material(Shader.Find("Universal Render Pipeline/Lit")) { color = new Color(.5f, .4f, .3f) };
             return fallback;
         }
@@ -39,14 +39,14 @@ namespace DndVtt.UnityPrototype
             var go = GameObject.CreatePrimitive(PrimitiveType.Cube); go.name = name; go.transform.SetParent(parent, false); go.transform.localPosition = position; go.transform.localScale = scale;
             go.GetComponent<Renderer>().sharedMaterial = Surface(surface); return go;
         }
-        private GameObject Model(string key) => Workshop != null && Workshop.Models.TryGetValue(key, out var downloaded) ? downloaded : catalog.Model(key);
+        private GameObject Model(string key) => Workshop != null && Workshop.Models.TryGetValue(key, out var downloaded) ? downloaded : catalog ? catalog.Model(key) : null;
         public bool TryLoad(int index) => LoadDocument(index, null);
         private bool LoadDocument(int index, JObject snapshot)
         {
             GameObject staging = null; var stagedFloors = new List<GameObject>();
             try
             {
-                if (index < 0 || index >= catalog.maps.Length) throw new ArgumentOutOfRangeException(nameof(index));
+                if (snapshot == null && (catalog == null || catalog.maps == null || index < 0 || index >= catalog.maps.Length)) throw new ArgumentOutOfRangeException(nameof(index));
                 var next = new LegacyMapDocument(snapshot != null ? snapshot.ToString() : catalog.maps[index].json.text);
                 staging = new GameObject("Imported map geometry"); staging.transform.SetParent(transform, false);
                 int tiles = 0, walls = 0, models = 0, missing = 0, floorIndex = 0;
@@ -144,20 +144,34 @@ namespace DndVtt.UnityPrototype
             }
             catch (Exception error) { Dispose(staging); Error = error.Message; Debug.LogWarning("Map import rejected: " + error.Message); return false; }
         }
+        public string ContentMapId { get; private set; }
+        public bool LoadWorkshopMap(string id)
+        {
+            if (Workshop == null || !Workshop.Maps.TryGetValue(id, out var entry)) { Error = "Сначала скачайте карту"; return false; }
+            if (!LoadDocument(-1, (JObject)entry["document"])) return false;
+            ContentMapId = id; SaveWorkshopMap(); return true;
+        }
+        public void CreateEmptyMap()
+        {
+            var tiles = new JObject(); for (int x = 0; x < 8; x++) for (int y = 0; y < 8; y++) tiles[x + "," + y] = "base";
+            var map = new JObject { ["version"] = 2, ["name"] = "Новая карта", ["width"] = 8, ["height"] = 8, ["floors"] = new JArray(new JObject { ["id"] = 0, ["name"] = "Этаж 1", ["height"] = 3, ["tiles"] = tiles, ["walls"] = new JObject(), ["objects"] = new JArray() }) };
+            if (!LoadDocument(-1, map)) throw new FormatException(Error);
+            ContentMapId = null; SaveWorkshopMap();
+        }
         public string WorkshopMapStoreOverride { get; set; }
         private string WorkshopMapPath => WorkshopMapStoreOverride ?? System.IO.Path.Combine(Application.persistentDataPath, "workshop-map-v1.json");
         public void ClearWorkshopGeometry() { Dispose(geometry); geometry = null; }
-        public bool ReloadCurrent() => document == null ? TryLoad(mapIndex) : LoadDocument(mapIndex, document.Snapshot);
+        public bool ReloadCurrent() => document == null || LoadDocument(mapIndex, document.Snapshot);
         public void RestoreWorkshopMap()
         {
-            if (!System.IO.File.Exists(WorkshopMapPath)) { ReloadCurrent(); return; }
-            try { var saved = WorkshopStore.Parse(System.IO.File.ReadAllText(WorkshopMapPath)); if (!LoadDocument((int)saved["mapIndex"], (JObject)saved["map"])) throw new FormatException(Error); }
+            if (!System.IO.File.Exists(WorkshopMapPath)) { if (document != null) ReloadCurrent(); return; }
+            try { var saved = WorkshopStore.Parse(System.IO.File.ReadAllText(WorkshopMapPath)); if (!LoadDocument((int?)saved["mapIndex"] ?? -1, (JObject)saved["map"])) throw new FormatException(Error); ContentMapId = (string)saved["contentMapId"]; }
             catch (Exception e) { Error = "Карта оставлена без изменений: " + e.Message; }
         }
         public void SaveWorkshopMap()
         {
             if (document == null) throw new InvalidOperationException("Нет карты");
-            WorkshopStore.AtomicText(WorkshopMapPath, new JObject { ["mapIndex"] = mapIndex, ["map"] = document.Snapshot }.ToString());
+            WorkshopStore.AtomicText(WorkshopMapPath, new JObject { ["mapIndex"] = mapIndex, ["contentMapId"] = ContentMapId, ["map"] = document.Snapshot }.ToString());
         }
         public void PlaceWorkshopObject(string id)
         {

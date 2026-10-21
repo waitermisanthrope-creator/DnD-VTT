@@ -26,7 +26,7 @@ namespace DndVtt.UnityPrototype
         }
         public const int MaxCatalogBytes = 1024 * 1024;
         public const long MaxPackageBytes = 64 * 1024 * 1024;
-        public static readonly string[] Types = { "game-system", "race", "class", "subclass", "spell", "item", "monster", "model", "environment", "texture", "animation", "map", "appearance", "collection", "craft" };
+        public static readonly string[] Types = { "game-system", "race", "class", "feat", "subclass", "spell", "item", "monster", "model", "environment", "texture", "animation", "map", "appearance", "collection", "craft" };
         private JArray verifiedCache;
         private string cacheFingerprint;
         public string Root { get; }
@@ -101,28 +101,53 @@ namespace DndVtt.UnityPrototype
         {
             if (new FileInfo(path).Length != (long)m["bytes"] || DigestFile(path) != (string)m["sha256"]) throw new FormatException("Размер или SHA-256 не совпадает");
         }
+        private static void ValidateChoices(JToken token)
+        {
+            if (!(token is JArray choices) || choices.Count > 50) throw new FormatException("Неверные выборы");
+            foreach (JObject choice in choices)
+                if (!new[] { "single", "multi", "stats2", "feat" }.Contains((string)choice["type"]) || string.IsNullOrEmpty((string)choice["key"]) || !(choice["options"] is JArray options) || options.Count > 500 || ((int?)choice["count"] ?? 1) < 1 || ((int?)choice["count"] ?? 1) > 20)
+                    throw new FormatException("Неподдерживаемый выбор");
+        }
         public static JObject ValidateData(JObject m, string text)
         {
             var data = Parse(text);
             if ((int?)data["schemaVersion"] != 1 || (string)data["id"] != (string)m["id"] || (string)data["version"] != (string)m["version"] || (string)data["type"] != (string)m["type"]) throw new FormatException("Пакет не соответствует манифесту");
-            string type = (string)m["type"];
-            if (!new[] { "race", "model", "environment", "appearance" }.Contains(type)) throw new FormatException("Этот тип пока недоступен для активации");
-            string field = type == "race" ? "races" : type == "appearance" ? "surfaces" : "objects";
+            string type = (string)m["type"], packageId = (string)m["id"];
+            if (!new[] { "race", "class", "feat", "map", "model", "environment", "appearance" }.Contains(type)) throw new FormatException("Этот тип пока недоступен для активации");
+            string field = type == "race" ? "races" : type == "class" ? "classes" : type == "feat" ? "feats" : type == "map" ? "maps" : type == "appearance" ? "surfaces" : "objects";
             if (!(data[field] is JArray entries) || entries.Count < 1 || entries.Count > 100) throw new FormatException("Неверный состав пакета");
             var ids = entries.OfType<JObject>().Select(x => (string)x["id"]).ToArray();
             if (ids.Length != entries.Count || ids.Distinct().Count() != ids.Length) throw new FormatException("Повтор ID ресурса");
             foreach (JObject e in entries)
             {
-                if (!ValidId((string)e["id"]) || !((string)e["id"]).StartsWith((string)m["id"] + ".", StringComparison.Ordinal) && (string)e["id"] != (string)m["id"] || string.IsNullOrWhiteSpace((string)e["name"])) throw new FormatException("ID ресурса должен принадлежать пакету");
-                if (field == "races")
+                string id = (string)e["id"];
+                bool legacyCharacterId = (type == "race" || type == "class" || type == "feat") && packageId == "dnd." + type + "." + id;
+                if (!ValidId(id) || !(id.StartsWith(packageId + ".", StringComparison.Ordinal) || id == packageId || legacyCharacterId) || string.IsNullOrWhiteSpace((string)e["name"])) throw new FormatException("ID ресурса должен принадлежать пакету");
+                if (type == "race" || type == "class")
                 {
-                    // Only the implemented additive stat/speed/size contract is accepted.
-                    if (!(e["seed"] is JObject seed) || seed.Properties().Any(p => !new[] { "stats", "speed", "size", "raceFeatureDescriptions" }.Contains(p.Name)) || !(e["choices"] is JArray choices) || choices.Count != 0) throw new FormatException("Неподдерживаемая механика расы");
-                    if (!(seed["stats"] is JObject stats) || stats.Properties().Count() != 6 || new[] { "str", "dex", "con", "int", "wis", "cha" }.Any(s => stats[s]?.Type != JTokenType.Integer || (int)stats[s] < 8 || (int)stats[s] > 12)) throw new FormatException("Неверные бонусы характеристик");
+                    if (!(e["seed"] is JObject seed)) throw new FormatException("Нет параметров персонажа");
+                    string[] raceFields = { "stats", "speed", "size", "raceFeatureDescriptions", "abilities", "ac", "baseAC", "features", "hpCurrent", "hpMax", "immunities", "proficiencies", "raceCraftBonuses", "raceHpBonusPerLevel", "raceId", "raceMechanics", "raceName", "resistances" };
+                    string[] classFields = { "name", "age", "level", "class", "className", "classes", "background", "profession", "raceId", "raceName", "baseAC", "ac", "speed", "profBonus", "stats", "_builderBaseStats", "statGenerationMode", "statRollsUsed", "savesData", "skillsData", "proficiencies", "feats", "features", "choiceState", "choiceHistory", "pendingChoices", "activeConditions", "weaponsData", "spellSlotsData", "spellsData", "folders", "library", "hpMax", "hpCurrent", "hitDice", "gender", "origin", "classFeaturesState", "abilities", "isExtraClass", "extraClassId", "extraClassName", "replacesRace", "resources", "extraClasses", "extraClassType", "tokenArt", "tokenReady", "multiclassAllowed" };
+                    if (seed.Properties().Any(p => !(type == "race" ? raceFields : classFields).Contains(p.Name))) throw new FormatException("Неподдерживаемая механика персонажа");
+                    if (seed["stats"] != null && (!(seed["stats"] is JObject stats) || stats.Properties().Count() != 6 || new[] { "str", "dex", "con", "int", "wis", "cha" }.Any(k => stats[k]?.Type != JTokenType.Integer || (int)stats[k] < 8 || (int)stats[k] > 12))) throw new FormatException("Неверные бонусы характеристик");
+                    ValidateChoices(e["choices"]);
+                    if (type == "class" && (!(e["levelOneFeatures"] is JArray) || !new[] { 4, 6, 8, 10, 12 }.Contains((int?)e["hitDie"] ?? 0))) throw new FormatException("Неверный класс");
+                }
+                else if (type == "feat")
+                {
+                    if (e["statBonus"] is JObject bonus && (!(bonus["stats"] is JArray stats) || stats.Count == 0 || stats.Count > 6 || stats.Any(k => !CharacterSheetRules.Stats.Contains((string)k)) || !new[] { 1, 2 }.Contains((int?)bonus["value"] ?? 0))) throw new FormatException("Бонус черты");
+                }
+                else if (type == "map")
+                {
+                    if (!(e["document"] is JObject doc)) throw new FormatException("Нет карты");
+                    var map = new LegacyMapDocument(doc.ToString());
+                    if (map.FloorCount > 16 || map.Floors.OfType<JObject>().Sum(f => ((JObject)f["tiles"]).Count + ((JObject)f["walls"]).Count + ((JArray)f["objects"]).Count) > 50000) throw new FormatException("Карта слишком велика");
                 }
                 else
                 {
-                    if (!Regex.IsMatch((string)e["color"] ?? "", "^#[A-Fa-f0-9]{8}$")) throw new FormatException("Цвет");
+                    if (!System.Text.RegularExpressions.Regex.IsMatch((string)e["color"] ?? "", "^#[A-Fa-f0-9]{8}$")) throw new FormatException("Цвет");
+                    if (e["legacyKey"] != null && (packageId != "dnd.appearance.map-surfaces" || !Regex.IsMatch((string)e["legacyKey"], "^(floor|wall)_[a-z0-9_]+$"))) throw new FormatException("Неверный ключ материала");
+                    if (e["pattern"] != null && ((string)e["pattern"] != "checker" || (int?)e["textureSize"] != 32 || !Regex.IsMatch((string)e["alternateColor"] ?? "", "^#[A-Fa-f0-9]{8}$"))) throw new FormatException("Неверная текстура");
                     if (field == "objects" && (!new[] { "Cube", "Sphere", "Cylinder", "Capsule" }.Contains((string)e["primitive"]) || !(e["scale"] is JArray scale) || scale.Count != 3 || scale.Any(v => v.Type != JTokenType.Float && v.Type != JTokenType.Integer || double.IsNaN((double)v) || double.IsInfinity((double)v) || (double)v < .05 || (double)v > 10))) throw new FormatException("Геометрия");
                 }
             }
@@ -158,16 +183,22 @@ namespace DndVtt.UnityPrototype
         public JObject Creation(JObject baseline)
         {
             var result = (JObject)baseline.DeepClone();
+            if (!(result["feats"] is JArray)) result["feats"] = new JArray();
             foreach (JObject m in Installed())
             {
-                if ((string)m["format"] != "json" || (string)m["type"] != "race") continue;
-                foreach (JObject entry in (JArray)Data(m)["races"])
+                string type = (string)m["type"];
+                if ((string)m["format"] != "json" || !new[] { "race", "class", "feat" }.Contains(type)) continue;
+                string field = type == "race" ? "races" : type == "class" ? "classes" : "feats";
+                foreach (JObject entry in (JArray)Data(m)[field])
                 {
-                    if (((JArray)result["races"]).Any(r => (string)r["id"] == (string)entry["id"])) throw new FormatException("Повтор ID расы");
-                    var race = (JObject)entry.DeepClone(); race["packageId"] = m["id"].DeepClone(); race["packageVersion"] = m["version"].DeepClone();
-                    ((JArray)result["races"]).Add(race);
+                    if (((JArray)result[field]).Any(r => (string)r["id"] == (string)entry["id"])) throw new FormatException("Повтор ID: " + entry["id"]);
+                    var item = (JObject)entry.DeepClone(); item["packageId"] = m["id"].DeepClone(); item["packageVersion"] = m["version"].DeepClone();
+                    ((JArray)result[field]).Add(item);
                 }
             }
+            foreach (JObject race in (JArray)result["races"])
+                foreach (JObject choice in (JArray)race["choices"])
+                    if ((string)choice["type"] == "feat") choice["options"] = result["feats"].DeepClone();
             return result;
         }
         public void Remove(string id)

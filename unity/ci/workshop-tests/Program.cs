@@ -38,7 +38,7 @@ class Program
             Check(store.Installed().Count == 0, "empty offline startup");
             foreach (string repo in new[] { "DnD-VTT-Content", "DnD-VTT-Assets" })
             {
-                string catalog = File.ReadAllText(Path.Combine(source, repo, "catalog/v1/index.json"));
+                string catalog = File.ReadAllText(Path.Combine(source, repo, "catalog/v2/index.json"));
                 var list = WorkshopStore.Catalog(catalog, repo.EndsWith("Content") ? "packages" : "packs");
                 foreach (JObject manifest in list)
                 {
@@ -47,7 +47,7 @@ class Program
                     store.Install(manifest, part, "android-arm64", "6000.3.26f1"); Check(store.Find(id) != null, "install");
                     var restart = new WorkshopStore(store.Root); Check(restart.Find(id) != null, "restart");
                     var data = restart.Data(manifest); Check((string)data["id"] == id, "activation data");
-                    if ((string)manifest["type"] == "race")
+                    if (id == "demo.race.lanternfolk")
                     {
                         var baseline = (JObject)JObject.Parse(File.ReadAllText(Path.Combine(appRoot, "unity/Assets/Vtt/Resources/CharacterSheet/catalog.json")))["creation"];
                         var creation = restart.Creation(baseline);
@@ -63,7 +63,7 @@ class Program
                         CharacterSheetStore.Save(save, new LegacyCharacterArchive(hero.ToString()));
                         store.Remove(id); var reopened = CharacterSheetStore.Load(save).Snapshot(0);
                         Check((string)reopened["raceId"] == id && (int)reopened["stats"]["dex"] == 11, "character survives package removal restart");
-                        Check(restart.Creation(baseline).ToString() == baseline.ToString(), "uninstall removes choice without changing base");
+                        Check(restart.Creation(baseline).ToString() == new WorkshopStore(Path.Combine(root, "empty-baseline")).Creation(baseline).ToString(), "uninstall removes choice without changing base");
                         Check((string)reopened["contentPackages"][0]["version"] == "1.0.0", "package version retained in save");
                         File.Copy(original, part, true); store.Install(manifest, part, "android-arm64", "6000.3.26f1");
                     }
@@ -85,7 +85,32 @@ class Program
                     Reject(() => WorkshopStore.ValidateManifest(bad), "path traversal");
                 }
             }
-            var originalManifest = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source, "DnD-VTT-Content/catalog/v1/index.json")), "packages").OfType<JObject>().First();
+            var baseCreation = (JObject)JObject.Parse(File.ReadAllText(Path.Combine(appRoot, "unity/Assets/Vtt/Resources/CharacterSheet/catalog.json")))["creation"];
+            Check(((JArray)baseCreation["races"]).Count == 15 && ((JArray)baseCreation["classes"]).Count == 12, "explicit PHB baseline counts");
+            Check(!((JArray)baseCreation["races"]).Any(r => new[] { "tortle", "aasimar" }.Contains((string)r["id"])), "non-PHB races physically absent from player catalog");
+            Check(!((JArray)baseCreation["classes"]).Any(c => new[] { "blood_hunter", "alchemist", "witch", "occultist", "artificer" }.Contains((string)c["id"])), "non-PHB classes physically absent from player catalog");
+            var expanded = store.Creation(baseCreation);
+            var downloadedRace = ((JArray)expanded["races"]).OfType<JObject>().Single(r => (string)r["id"] == "tortle");
+            var downloadedClass = ((JArray)expanded["classes"]).OfType<JObject>().Single(c => (string)c["id"] == "blood_hunter");
+            var downloadedFeat = ((JArray)expanded["feats"]).OfType<JObject>().Single(f => (string)f["id"] == "athlete");
+            var answerSet = new JObject { ["creation:feat"] = "athlete", ["feat:athlete:stat"] = "str" };
+            foreach (var entry in new[] { downloadedRace, downloadedClass }) foreach (JObject choice in (JArray)entry["choices"])
+            {
+                var ids = ((JArray)choice["options"]).Select(o => o is JObject obj ? obj["id"] ?? obj["name"] : o).ToArray();
+                answerSet[(string)choice["key"]] = (string)choice["type"] == "multi" ? new JArray(ids.Take((int?)choice["count"] ?? 1)) : ids[0].DeepClone();
+            }
+            var blankBackground = new JObject { ["name"] = "Test", ["seed"] = new JObject(), ["choices"] = new JArray() };
+            var stats10 = JObject.Parse("{str:10,dex:10,con:10,int:10,wis:10,cha:10}");
+            var optionalHero = CharacterCreation.Create(expanded, "Downloaded character", downloadedRace, downloadedClass, blankBackground, stats10, answerSet, "manual");
+            Check((string)optionalHero["raceId"] == "tortle" && (string)optionalHero["classId"] == "blood_hunter", "legacy IDs retained by downloaded race and class");
+            Check((int)optionalHero["stats"]["str"] == 13 && ((JArray)optionalHero["feats"]).Any(f => (string)f["id"] == "athlete"), "downloaded feat applies selected stat and persists record");
+            Check(((JArray)optionalHero["contentPackages"]).Count == 3, "race class feat package IDs and versions persisted");
+            var archiveText = new LegacyCharacterArchive(optionalHero.ToString()).Export();
+            foreach (string id in new[] { "dnd.race.tortle", "dnd.class.blood_hunter", "dnd.feat.athlete" }) store.Remove(id);
+            var afterRemoval = store.Creation(baseCreation);
+            Check(!((JArray)afterRemoval["races"]).Any(r => (string)r["id"] == "tortle") && !((JArray)afterRemoval["classes"]).Any(c => (string)c["id"] == "blood_hunter") && !((JArray)afterRemoval["feats"]).Any(f => (string)f["id"] == "athlete"), "uninstall removes only optional picker entries");
+            Check(JToken.DeepEquals(new LegacyCharacterArchive(archiveText).Snapshot(0), optionalHero), "old downloaded character fully survives removed packages and restart");
+            var originalManifest = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source, "DnD-VTT-Content/catalog/v2/index.json")), "packages").OfType<JObject>().First();
             var edited = (JObject)originalManifest.DeepClone(); edited["bytes"] = WorkshopStore.MaxPackageBytes + 1;
             Reject(() => WorkshopStore.ValidateManifest(edited), "oversized payload");
             edited = (JObject)originalManifest.DeepClone(); edited["dependencies"] = new JArray((string)edited["id"]);

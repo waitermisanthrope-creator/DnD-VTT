@@ -30,6 +30,8 @@ namespace DndVtt.UnityPrototype
     {
         private readonly WorkshopStore store;
         public readonly Dictionary<string, GameObject> Models = new Dictionary<string, GameObject>();
+        public readonly Dictionary<string, JObject> Maps = new Dictionary<string, JObject>();
+        private readonly List<Texture2D> textures = new List<Texture2D>();
         public readonly Dictionary<string, Material> Surfaces = new Dictionary<string, Material>();
         private readonly List<GameObject> owned = new List<GameObject>();
         private readonly HashSet<string> loaded = new HashSet<string>();
@@ -47,6 +49,7 @@ namespace DndVtt.UnityPrototype
                 {
                     WorkshopStore.Compatible(m, Platform, Application.unityVersion);
                     var d = store.Data(m);
+                    foreach (JObject entry in (JArray)d["maps"] ?? new JArray()) Maps[(string)entry["id"]] = (JObject)entry.DeepClone();
                     foreach (JObject entry in (JArray)d["objects"] ?? new JArray())
                     {
                         string id = (string)entry["id"]; if (Models.ContainsKey(id)) continue;
@@ -59,7 +62,16 @@ namespace DndVtt.UnityPrototype
                     foreach (JObject entry in (JArray)d["surfaces"] ?? new JArray())
                     {
                         string id = (string)entry["id"]; if (Surfaces.ContainsKey(id)) continue;
-                        var mat = new Material(Shader.Find("Universal Render Pipeline/Lit")); ColorUtility.TryParseHtmlString((string)entry["color"], out Color color); mat.color = color; Surfaces.Add(id, mat);
+                        var mat = new Material(Shader.Find("Universal Render Pipeline/Lit")); ColorUtility.TryParseHtmlString((string)entry["color"], out Color color); mat.color = color;
+                        if ((string)entry["pattern"] == "checker")
+                        {
+                            ColorUtility.TryParseHtmlString((string)entry["alternateColor"], out Color alternate);
+                            var texture = new Texture2D(32, 32, TextureFormat.RGBA32, false) { name = id, filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Repeat };
+                            var pixels = new Color[1024]; for (int y = 0; y < 32; y++) for (int x = 0; x < 32; x++) pixels[y * 32 + x] = ((x / 8 + y / 8) % 2 == 0) ? color : alternate;
+                            texture.SetPixels(pixels); texture.Apply(false, true); textures.Add(texture); mat.color = Color.white; mat.mainTexture = texture;
+                        }
+                        Surfaces.Add(id, mat);
+                        if (entry["legacyKey"] != null) Surfaces[(string)entry["legacyKey"]] = mat;
                     }
                 }
                 catch (Exception e) { Error = e.Message; }
@@ -100,7 +112,9 @@ namespace DndVtt.UnityPrototype
         public void Dispose()
         {
             foreach (var go in owned) if (go) Release(go);
-            foreach (var material in Surfaces.Values) if (material) Release(material);
+            foreach (var material in Surfaces.Values.Distinct()) if (material) Release(material);
+            foreach (var texture in textures) if (texture) Release(texture);
+            textures.Clear(); Maps.Clear();
             Models.Clear(); owned.Clear(); Surfaces.Clear(); ReleaseBundleCache();
         }
     }

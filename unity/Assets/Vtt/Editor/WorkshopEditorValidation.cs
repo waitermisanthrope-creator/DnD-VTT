@@ -25,6 +25,8 @@ public static class WorkshopEditorValidation
             originalScene = EditorSceneManager.OpenScene(LegacyMigrationSetup.ScenePath, OpenSceneMode.Single);
         Check(!string.IsNullOrEmpty(originalScene.path), "Save the current untitled scene before running additive validation");
         var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive); SceneManager.SetActiveScene(scene);
+        var originalRoots = originalScene.GetRootGameObjects().ToDictionary(go => go, go => go.activeSelf);
+        foreach (var root in originalRoots.Keys) root.SetActive(false);
         WorkshopRuntime runtime = null; LegacyMapPresenter world = null; LegacyContentCatalog catalog = null; TextAsset map = null;
         try
         {
@@ -32,7 +34,7 @@ public static class WorkshopEditorValidation
             var manifests = new JArray();
             foreach (string repo in new[] { "DnD-VTT-Content", "DnD-VTT-Assets" })
             {
-                var entries = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixtures, repo, "catalog/v1/index.json")), repo.EndsWith("Content", StringComparison.Ordinal) ? "packages" : "packs");
+                var entries = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixtures, repo, "catalog/v2/index.json")), repo.EndsWith("Content", StringComparison.Ordinal) ? "packages" : "packs");
                 foreach (JObject entry in entries)
                 {
                     if ((string)entry["format"] != "json") continue;
@@ -69,12 +71,25 @@ public static class WorkshopEditorValidation
             world.ClearWorkshopGeometry(); runtime.Dispose(); runtime = new WorkshopRuntime(new WorkshopStore(store.Root)); runtime.ActivateData(); world.Workshop = runtime; world.RestoreWorkshopMap();
             Check(world.ImportedModels == 1 && world.MissingModels == 0, "reinstalled model restores without editing save");
             Check(File.ReadAllText(world.WorkshopMapStoreOverride) == saved, "reinstallation preserves map bytes");
-            Debug.Log("VTT_WORKSHOP_EDITOR_PASS: public JSON objects/materials, actual mesh/collider/material use, map placement/save, restart, missing package, reinstallation without save corruption");
+            Check(runtime.Maps.Count == 9, "published optional maps activated");
+            Check(runtime.Surfaces["floor_wood_light"].mainTexture, "downloaded procedural texture actually generated");
+            catalog.maps = Array.Empty<LegacyContentCatalog.MapEntry>();
+            Check(world.LoadWorkshopMap("dnd.map.3d-house-v740019"), "downloaded map loaded with no bundled catalog: " + world.Error);
+            Check(world.TileCount > 0 && world.FloorCount > 0, "downloaded map creates actual geometry");
+            Check(world.GetComponentsInChildren<Renderer>().Any(r => r.sharedMaterial && r.sharedMaterial.mainTexture), "downloaded textures applied to actual map renderers");
+            string downloadedSave = File.ReadAllText(world.WorkshopMapStoreOverride);
+            Check(downloadedSave.Contains("dnd.map.3d-house-v740019"), "stable map package reference saved");
+            world.ClearWorkshopGeometry(); runtime.Dispose(); store.Remove("dnd.map.3d-house-v740019");
+            runtime = new WorkshopRuntime(new WorkshopStore(store.Root)); runtime.ActivateData(); world.Workshop = runtime; world.RestoreWorkshopMap();
+            Check(world.TileCount > 0 && File.ReadAllText(world.WorkshopMapStoreOverride) == downloadedSave, "downloaded map snapshot survives package removal and restart without bundled map index");
+            Check(runtime.Maps.Count == 8, "uninstalled map removed from library only");
+            Debug.Log("VTT_WORKSHOP_EDITOR_PASS: public JSON objects/materials, actual mesh/collider/material use, downloaded map/texture application, map placement/save, restart without bundled map catalog, missing package, reinstallation without save corruption");
         }
         finally
         {
             if (world) world.ClearWorkshopGeometry(); runtime?.Dispose();
             SceneManager.SetActiveScene(originalScene); EditorSceneManager.CloseScene(scene, true);
+            foreach (var root in originalRoots) if (root.Key) root.Key.SetActive(root.Value);
             if (catalog) UnityEngine.Object.DestroyImmediate(catalog); if (map) UnityEngine.Object.DestroyImmediate(map);
             Directory.Delete(folder, true);
         }

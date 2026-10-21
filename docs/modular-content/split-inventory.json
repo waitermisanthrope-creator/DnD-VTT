@@ -1,0 +1,1165 @@
+{
+  "baseline": {
+    "edition": "D&D 5e 2014 PHB",
+    "raceFamilies": 9,
+    "raceEntries": 15,
+    "classEntries": 12,
+    "feats": "SRD Grappler"
+  },
+  "packages": [
+    {
+      "id": "dnd.race.aasimar",
+      "bytes": 3514,
+      "sha256": "43f17cf0560ae260d990c9513cd09dd546d047bc769194b660f475f40a950561",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.firbolg",
+      "bytes": 3813,
+      "sha256": "df5ce1f328b786d3363b82b360179a791135a945ee0c7c6d0840c63d70bebcbf",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.goliath",
+      "bytes": 3391,
+      "sha256": "5024788e830d88bb57bf47fbec4917a81df9c110c8dd517df975b10bcf8758d9",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.kenku",
+      "bytes": 3260,
+      "sha256": "06cc77aa96c4c9d0961cdb585e8e9ff4461caa75e306ac259a4c4a17b6552b8f",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.tabaxi",
+      "bytes": 5995,
+      "sha256": "0521459d471354a7f35965a4f9423efd6653fc4561bd6e563173573aa334497a",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.triton",
+      "bytes": 3605,
+      "sha256": "81c0c400a7fe25f83e85a1961e1932fafaa95e25219afc09dab088d5363760e7",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.tortle",
+      "bytes": 3324,
+      "sha256": "e1aa790a7ab532c22d62df599f0379564903a84679a5abc726240c3df0f30427",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.changeling",
+      "bytes": 6160,
+      "sha256": "8faaecf624a1282134c8ac70e06bc48c0ecba6deb276e1af9b07d0a692ba3e2b",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.kalashtar",
+      "bytes": 6151,
+      "sha256": "c8f87c9fb7f8e6f579d4b327f76aa5dc3958bc772398806d826aa346740b9580",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.warforged",
+      "bytes": 6461,
+      "sha256": "ab3681b16b5837a77df34be415bafa82f033d689dac261f2e0ca40639001a15e",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.genasi_air",
+      "bytes": 3536,
+      "sha256": "e1b38997d3a65e26f3b4406606465da3fbf807e36dfc17441673e5045354681a",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.genasi_earth",
+      "bytes": 3532,
+      "sha256": "5a4259bfd341b677c843d3d56bc37a5c52d4593008e5da5deba8f1274e79665a",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.genasi_fire",
+      "bytes": 3609,
+      "sha256": "3c65a2b3b34833b3fd2007b226d90f8e0dc2ac67a058bf3cde9779f8f87c5d89",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.genasi_water",
+      "bytes": 3740,
+      "sha256": "d1a9614f770f632c7dfe0f90a4717a0a06a97e76e99e7ea3892bfbddc6798adc",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.plasmoid",
+      "bytes": 6702,
+      "sha256": "47ed6df75defeb20bd790261103fd3bb407659b6e92d028b5de91679b7ab40f4",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.autognome",
+      "bytes": 3722,
+      "sha256": "0b637779da9be3b1022d13418df37fa1528c62f874fb85476fe5ecb50aaa0405",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.githyanki",
+      "bytes": 6047,
+      "sha256": "af88ecd74125fb93c9ad6d44eb1ae8470e073782e51e95a8ec04067865a898aa",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.githzerai",
+      "bytes": 3278,
+      "sha256": "22fc6cce4e5f6b810978ef0a511841f1e7e7ecfa3c113d17f4a4e79ff5b1d27b",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.loxodon",
+      "bytes": 3829,
+      "sha256": "315efab16195c6f63bf78e3fe5c5e8f12e5e3232e08d6179a4b96b7c580ce6fa",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.simic_hybrid",
+      "bytes": 3552,
+      "sha256": "a7adab8b1fc94c8661413b3619c833dd26b4e2266043faa88cf5c945efdaa1e8",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.myconid",
+      "bytes": 3562,
+      "sha256": "7c8cf3398db1ca50c7f7059fbf4fefd6d2fb348108747d14f3046a9b777dd63e",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.vedalken",
+      "bytes": 6312,
+      "sha256": "f49e039f5b2b92a4b6e3c772e03f53b99e90d7a87cf27eaea5ce8a5e09d285f7",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.kender",
+      "bytes": 3263,
+      "sha256": "d703929a2b216ea4b79c49a1848a5a117824dd37435c3c1039ef8bbc7892c7b1",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.aarakocra",
+      "bytes": 3420,
+      "sha256": "2d84d5405c5ddde411dfe87fa43772c9a81361218aaa00a861f8bb09f05b0011",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.hadozee",
+      "bytes": 6116,
+      "sha256": "188b3a0681fba2ad459f40a29fbfd1c3e529abc1fbdcaa9eafbfa16ae2049805",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.shifter",
+      "bytes": 3622,
+      "sha256": "349d604a091c792f164c8b02d9d6df2e28a56d1772bf94e01047f796b5ba345d",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.bugbear",
+      "bytes": 3398,
+      "sha256": "dfb87fc6b8ec27a463e4394c43b9572f94b616aa4056f53d65e5e83fbdc7a143",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.goblin",
+      "bytes": 3642,
+      "sha256": "cd3f58fea09469bfbb5b86e4c1570a17ec3da0580d770563691119219b741355",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.hobgoblin",
+      "bytes": 3738,
+      "sha256": "36604518c22acce549b01d7e826ee7d869bcf76fc9bedb5c99289d90f95cea85",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.kobold",
+      "bytes": 3654,
+      "sha256": "298c1c2263d8e5622b080aa77295dabc8510ffd6176c2e209a65967bd9b6cc59",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.full_orc",
+      "bytes": 3594,
+      "sha256": "969b01bc7e337d45c2178d92fbb52528f9a2ea17e625e9d532d6170db3df0c3b",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.yuan_ti",
+      "bytes": 3984,
+      "sha256": "8324834441c8d32beda12f01db8f33d8aa08879067f6810a3b2e2652dc131b20",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.lizardfolk",
+      "bytes": 3986,
+      "sha256": "dd4f32702b9f2687866fa94cef3addde107a92a71b36cab07fb23bee62e9be94",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.dhampir",
+      "bytes": 6074,
+      "sha256": "2e89eb5544a88653a2df61b85cd5c3cc1885f815e969c6ee4f50f35d4fe672d7",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.hexblood",
+      "bytes": 3605,
+      "sha256": "5fee6f94ee81dcc2b59d1c9fc02be13216ed8460183ea67507d61c0b29d166f7",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.reborn",
+      "bytes": 6215,
+      "sha256": "d9c54908e863d1319deff3a97b2c210d39719cf774674b2d365633649922f5e0",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.satyr",
+      "bytes": 3402,
+      "sha256": "fbd2e82ebc6ce75072c6bc39155f826b780c63c075d28becbe6b9ca3e8112111",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.minotaur",
+      "bytes": 3415,
+      "sha256": "8712fd859d56490bf81280f856e64b37b557e81f1cc4bb73568e6068b7344d37",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.centaur",
+      "bytes": 3562,
+      "sha256": "850c727fb75101b903f77915fed45fe6b1316e59a3b244d78d7021132c6e9312",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.fairy",
+      "bytes": 3512,
+      "sha256": "9d9290af5219481e6684f7cd1ddd513320b1dcc05ce441ed4d8f19b8c73372e8",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.harengon",
+      "bytes": 4062,
+      "sha256": "c3177621ecd87d29b85db5c5fe2c466250b3872a87b7d0811b6a75244412cca1",
+      "entries": 1
+    },
+    {
+      "id": "dnd.race.owlin",
+      "bytes": 6742,
+      "sha256": "d56733b3af793e18a0e03d93960751be745d75f0f029cf8a4111792a4f66e75a",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.occultist",
+      "bytes": 2785,
+      "sha256": "339747167d5d247a497d03266baf8fa0b933d677c787fed3a078dea70c4276e0",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.witch",
+      "bytes": 2112,
+      "sha256": "4b5c20361009afbe99009120488efc5e0dae3da9721b642709bcc1613e69c993",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.necromancer",
+      "bytes": 2164,
+      "sha256": "516c728dfebe7589883cb35187449e174b0996d5fa262770103294c908c00787",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.martyr",
+      "bytes": 2128,
+      "sha256": "7f7f0ef717fb644003541f45ce45ff7bab934897d9635b6135190aee69c83b75",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.vessel",
+      "bytes": 2114,
+      "sha256": "f7c5749f828389c4ccd3e5d18204d11653b830d9677dc5d2d926d6520b7321aa",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.alchemist",
+      "bytes": 2137,
+      "sha256": "6d2ebe58645992152cb676fc5009178601d1dd07a935d95ff8ff14330687d888",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.artificer",
+      "bytes": 4527,
+      "sha256": "ddf563b3997fae301b49a609bcad9dd7b2162fe27b3295eb46b355ebaceee6bb",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.blood_hunter",
+      "bytes": 2232,
+      "sha256": "5b0395f617a3ea3b0ba0f24dbeee98577283108da5906505704008ec387101dc",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.illrigger",
+      "bytes": 2160,
+      "sha256": "d928804622128ba3951350f0b29b6e7edf9b6191fac560446e18a03b03fffd8a",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.beastheart",
+      "bytes": 2142,
+      "sha256": "a298460effce2135231c9ec56f6de1d674cb035b7e52da83ea6a91affd328a77",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.pugilist",
+      "bytes": 2144,
+      "sha256": "6ad8b9c837d8ce26d6039c6e80829c6a779c248d79dd529c346ee1e2125581b5",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.accursed",
+      "bytes": 2148,
+      "sha256": "ee44b46185853fe62ad181cea78d5fb099189fccabe924527681dcd81c05f8d7",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.geist",
+      "bytes": 2102,
+      "sha256": "e14cb96ada52f28a2f52e5dc832d19b3b9f5be0c1c221cd28a187a56711585b8",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.parasite",
+      "bytes": 2445,
+      "sha256": "0828831aa41674767f80deba1aac769083814728cb40e62e57daac477320688b",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.walter_parasite",
+      "bytes": 2632,
+      "sha256": "89aa4d866d45ca89d0928119f85f4224b4321e6d3ec92b1f5eeb273a261c9a8b",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.ghost",
+      "bytes": 2429,
+      "sha256": "2f0587471307675b6fbee73afd68da0548921e3ac8c76f0cbac9eac7919d6c74",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.psion",
+      "bytes": 2932,
+      "sha256": "f641a90f84c7d2af57a32d211a2c0441052de94b2fa7e18c83aae08b7a99905b",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.rune_keeper",
+      "bytes": 2223,
+      "sha256": "757389edeec4f4912914bad33d26671272c24a782ddb5647d5c4d5977c6d4d09",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.savant",
+      "bytes": 2118,
+      "sha256": "52de91ff6c0959ad80b71f25dc639e13f590666e03395c47d8c6c96762d82fe5",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.shifter",
+      "bytes": 3156,
+      "sha256": "f8e0632c690ed0889a628f3fe63b62adacb16222e795dc08f3610da665e85753",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.swarm",
+      "bytes": 2405,
+      "sha256": "c3ed725a6cf2cd870a8b9928a47e6ac5d1a263008eff8bf3fa02f6ae1b2070a3",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.warden",
+      "bytes": 2790,
+      "sha256": "1132ee059fe78de31ad20da3abfc373c554032c45a2e3da33eb98f8db77bf9df",
+      "entries": 1
+    },
+    {
+      "id": "dnd.class.warlord",
+      "bytes": 2817,
+      "sha256": "bcf49266877c424bc5c96421ad4a592c2d8f717e59696ce79268ba6ef1a89359",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.alert",
+      "bytes": 516,
+      "sha256": "6b26607c53a73f1768276f105863ae49f13d2f6bc078a3176c92a51cb7b98af0",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.athlete",
+      "bytes": 615,
+      "sha256": "63f881c1b6cd0921bd31430727b69f523aab6ae92bdda2c68e7254ddd4dafe31",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.actor",
+      "bytes": 566,
+      "sha256": "a8553a7de59ea8ec70c5abeab2456eb984fd1fb5f04ed43ca98f30a731e4deb9",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.charger",
+      "bytes": 506,
+      "sha256": "c239f1ec5ddf5ace57fa619e4cc44efbbf27cbec4f187981fade6b679bdca4dc",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.crossbow_expert",
+      "bytes": 582,
+      "sha256": "9bad75f364ca8791173b35f7d517ca6d6e4f3d285ca1bcee2ee9770a15fc0b6f",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.defensive_duelist",
+      "bytes": 620,
+      "sha256": "01f329abde6fc8e3b7b6933faa896dd8f44dffdb7383455b1069595fa52f1352",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.dual_wielder",
+      "bytes": 547,
+      "sha256": "7c6b25ec4bcc3dc9ca405d256a03ebf9a549b57725a80e41ae3353e84ab7d17f",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.dungeon_delver",
+      "bytes": 597,
+      "sha256": "d00fb0e522ce1e70d2d5203b3fd17df8853326adccf6405cafbdf595283b88c2",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.durable",
+      "bytes": 592,
+      "sha256": "c718caf5f1e2454fc1de4ab380f7ec20ee4324e882e558407e5f991945579680",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.elemental_adept",
+      "bytes": 586,
+      "sha256": "927e272037d2adb361b9dfe00a9f305c057921c264929e44b0b35b41d3867694",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.great_weapon_master",
+      "bytes": 602,
+      "sha256": "453277e4e508f78527ef9149ab278f1e8a6cca72e927a13ed192e7996989fcfb",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.healer",
+      "bytes": 511,
+      "sha256": "ce8b8560339d854d7646625d8fed6e16d6c4c590650ced6bf2151bd99040e72d",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.heavily_armored",
+      "bytes": 695,
+      "sha256": "0fcb7bbfa73d1097409b9c6fd4bdf6d024cb70e3d9c60351e4331127e33c330a",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.heavy_armor_master",
+      "bytes": 715,
+      "sha256": "49c71613d070bcb487e212a9129dcff1abda41bad59e57bd1efac8582f44892d",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.inspiring_leader",
+      "bytes": 629,
+      "sha256": "165a4377a847a4298a77d0d1bb447087c1fbf07f00a124f23e4953a6bf1e7867",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.keen_mind",
+      "bytes": 592,
+      "sha256": "3bb6079fe76e7ec075722e46a678fee7bf1386380405e857c5f4e962e73dfe4a",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.lightly_armored",
+      "bytes": 691,
+      "sha256": "a7e9330ddff817765d00916c0b508cd72e4d81683168e1a11d0f6c5217e0ff36",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.linguist",
+      "bytes": 587,
+      "sha256": "623d8221b32ca57654aabb1c6f89d89b5f6c63066fa2455531686c46fa9806a7",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.lucky",
+      "bytes": 508,
+      "sha256": "55c51220b234f6c5a3ed449cd9bec3fa7b9b762ee853b67005f5188e50795264",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.mage_slayer",
+      "bytes": 540,
+      "sha256": "f454004b465166e311ca46ed6fa0978cfcf5c20466ca0b586051f8f13986cda8",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.magic_initiate",
+      "bytes": 545,
+      "sha256": "e0b3bd12fc0a2f931a3606378f40cd3f0a74415c022e699c412231413e9bb90d",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.martial_adept",
+      "bytes": 584,
+      "sha256": "09343421466b2ee086c5685431cfd140b1215d1b52c2bdc72faa3bef2a11abd0",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.medium_armor_master",
+      "bytes": 649,
+      "sha256": "ccdcb87ce76804e053dc7a47a5546c1e2ae4a9793f8f8344dca2a86d82050f2d",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.mobile",
+      "bytes": 515,
+      "sha256": "ecffb38d9b7e8c3f2bda5f1eee1560c424da9ec5d31411570ab05fd89150e210",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.moderately_armored",
+      "bytes": 756,
+      "sha256": "18a23903ac5ae15645879a62f057430b1bb0852e9b037d01e50616ad879f40d0",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.mounted_combatant",
+      "bytes": 540,
+      "sha256": "6e446fcacf3b3ed5d34f6e5559df22ff8849d4fcd174c6c8690cc81c8e7ae6c5",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.observant",
+      "bytes": 657,
+      "sha256": "8b52a2a9bf26c7b2a98d3117ddbb10ffef1365fac4fefa6615ec3e6f037786fa",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.polearm_master",
+      "bytes": 595,
+      "sha256": "0393d68d85b26c9f39206a88114a346d5c8b0703400134f2ca6f4ee24ae4059e",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.resilient",
+      "bytes": 709,
+      "sha256": "0e19d48024f2c434a8bb893b75607d80440ff313e7e1fa2d1330be0c350f86b8",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.ritual_caster",
+      "bytes": 672,
+      "sha256": "4eaf26d578bb0f3ca74e8a57fed13f7735ea60a3d4af50c34791fa64dbd72b56",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.savage_attacker",
+      "bytes": 576,
+      "sha256": "93b1888423bc8ab722aba8d8bbf505b09f6c96ec1833fb18dff0b60edbfeee64",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.sentinel",
+      "bytes": 513,
+      "sha256": "57c5e7643dac7651c5c6554850c383f1f90793503e792b50d370822a15e713e2",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.sharpshooter",
+      "bytes": 525,
+      "sha256": "701e88b64f983327b909491471288e5b3f618e4b6f273bf53c5e7e4b88853ef2",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.shield_master",
+      "bytes": 546,
+      "sha256": "78c86cefa2a7d1feb2f10b77eda780fb1ed3284872b1aea1887e9d2c5ef94785",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.skilled",
+      "bytes": 506,
+      "sha256": "374466f08e123dc7fffaa868a5126d77a9eea5e7eaf910aa376c9f0ad03d3484",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.skulker",
+      "bytes": 548,
+      "sha256": "f7a83effc9aae60603710fb0917b982fe8c6e0fbb3b5a6fadeaac065dba47ed5",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.spell_sniper",
+      "bytes": 617,
+      "sha256": "e85e975cd61d30d36be8cb4087517374a228d61d78d43aa689b923b4c185524c",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.tavern_brawler",
+      "bytes": 678,
+      "sha256": "24dc208aad87f1d6bd3484f0b131f635182ed365faca674eced1768f77f055c5",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.tough",
+      "bytes": 500,
+      "sha256": "b87e09f554ee04a19ed4be9e63adc212329a9b96a5a391f9356540dbfa93961c",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.war_caster",
+      "bytes": 595,
+      "sha256": "464c25cb160131082aedfc1f742b57e0061f4cad62e64290b4b0e05686cb663e",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.weapon_master",
+      "bytes": 663,
+      "sha256": "edaf78a0dc03b5f017e0048c1b0a6bdf31d0ef08bc1ec1b867fd00ee8746e677",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.flame_touched",
+      "bytes": 597,
+      "sha256": "a7db5557c0bcacd1c010fd3a6d4f8245cf12e6c60ba5e0f9e220c7bcd8539b68",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.aberrant_dragonmark",
+      "bytes": 730,
+      "sha256": "7f39486c713d99bb3e7b42151de6edd728d125065da9ea19578de19ae4c77451",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.greater_dragonmark",
+      "bytes": 643,
+      "sha256": "7bdc2b612f53592ad544a723a1c7774d1d6b480a61652058d4ff2bf8048b9f0a",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.revenant_blade",
+      "bytes": 708,
+      "sha256": "507d661660900d8fb41827f5b7a9645297af45ce4848d56fcc48adb4dc382a1e",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.squire_of_solamnia",
+      "bytes": 607,
+      "sha256": "b839fdfb6adbfab5094f2abfdc64a5ecc1ed1d6e73ed01aee6ab6bca8e3b1418",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.knight_of_the_sword",
+      "bytes": 604,
+      "sha256": "13db510f2a7fdd9a979594adfc9f123437d56bc3cc344b3e68d0aa50eddff19c",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.knight_of_the_rose",
+      "bytes": 601,
+      "sha256": "52e188a104c752e1f7c42aa0758fa50672bebfcc8cfc7870eefa180acea527ba",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.initiate_of_high_sorcery",
+      "bytes": 627,
+      "sha256": "6cfc831066b6645a8d94167513701d342663463d78af9bdc8012ed9b2d9d5b86",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.strike_of_the_giants",
+      "bytes": 706,
+      "sha256": "c629bfdb5656f335caae16866c0fb314b4df6e58aac883a9ba18b6d471d65101",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.scion_of_the_outer_planes",
+      "bytes": 758,
+      "sha256": "b98029fa9bb55da9f65b3fbc529ebbcac7f0a1d9da8181b1f9ba906e79a41df6",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.chef",
+      "bytes": 621,
+      "sha256": "bc67d9274c2090d66e9c4c02820dfe5c875c8c450884065282b5ebc28e391cbe",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.eldritch_adept",
+      "bytes": 604,
+      "sha256": "46073835b72b1d71686b07a1dc9eb8e98519333b6ad73814ddf9b25f2f9265f6",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.fey_touched",
+      "bytes": 675,
+      "sha256": "f4091e4c6610b62c19d3ed029d6856dea4ad153caaab357bb8029208a4e4be76",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.shadow_touched",
+      "bytes": 684,
+      "sha256": "eaa436b37ceea8b318cc070da25fc7d0564af528f7c14753bab561d8a76b85ef",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.fighting_initiate",
+      "bytes": 630,
+      "sha256": "c75ebc3298e700581644f767f76fd6bd332f6e09b7a7535b7790184b0dd90423",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.metamagic_adept",
+      "bytes": 599,
+      "sha256": "1fbee8bdb775a6544a2ab94be40cf9d475dd54a0b0fcc0ef8b062152fda5c42e",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.gunner",
+      "bytes": 578,
+      "sha256": "d1e2d0783530843f090ce39e4153be846490add41280e1f1722e8395e6294317",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.piercer",
+      "bytes": 636,
+      "sha256": "e6ebab21586ae77e19c5e441ec1f35e59c0e11af65f7187c189b7a830e78e99a",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.poisoner",
+      "bytes": 526,
+      "sha256": "91b4fa20419fdd06e5bc5f512b93e7a3cd7331e1e66a6cb45e8b69199978396d",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.skill_expert",
+      "bytes": 737,
+      "sha256": "e94ce03bbf96a621859f46c16ba56981b2ac6c9ee5802c551e27f8953cf86c7d",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.telekinetic",
+      "bytes": 669,
+      "sha256": "9b78fd2b100c59ab458c2c89edad2543fbc789894a568306f7ec1276cd05e373",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.telepathic",
+      "bytes": 650,
+      "sha256": "b49875ab7fdc414638f9f619284b3ed43a1f6f370c550784b26eaa2d12a1b0fe",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.alchemist",
+      "bytes": 585,
+      "sha256": "ad71390095f6aab0eeb423478417a48549f52c542b7bb7c169991e19133177ba",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.arcane_marksman",
+      "bytes": 581,
+      "sha256": "4aa33960d1436991d02441ecb80f15a7137e6768aa184491945071b265c528b5",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.berserker",
+      "bytes": 515,
+      "sha256": "5f0642a00ca749ffa2eb6d8bb8fd77e80cc90d0604ec6a09c7fda22de002fbd1",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.brawler",
+      "bytes": 517,
+      "sha256": "8795fc226217e29573695f241d58fc2f714f574f956ebe3b8fdcdf5abba2294c",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.empath",
+      "bytes": 568,
+      "sha256": "611bd9adcd0f27d882aaf21c1e204f41d74900882f803e2d9987a48bb00915e3",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.fast_movement",
+      "bytes": 597,
+      "sha256": "88f9cb6af5a5d868850a69eb557f01618e812eb73ce72e634a265a22841f355f",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.gourmand",
+      "bytes": 578,
+      "sha256": "7d3e088e4733647a823d4aacbc4442245b0fdafc2bdf4f557055cef1fd1068cf",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.harper_agent",
+      "bytes": 552,
+      "sha256": "d217d74f33cb93fec21c470a6b9bb2888a841bfd32af20f373fb2ccc450d31b0",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.master_of_disguise",
+      "bytes": 580,
+      "sha256": "d763ca7fc66875ae4bbd5e64d632b40cf8ea8c827763945f3ae8e55d81969d17",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.medic",
+      "bytes": 531,
+      "sha256": "8866973aec78f56e79c4daf1b2a6639aeca02f3f6b6c2649d02ff3f9863efc95",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.necromantic_scholar",
+      "bytes": 663,
+      "sha256": "ba7aa60f65004702617eae4747c902ead520b26d42458e3abe601bf1d952c1a1",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.perceptive",
+      "bytes": 613,
+      "sha256": "631c18b06de605afd6a07a93aa38e4b23b429fa3383d0f609d986baeb26de5c4",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.pyromaniac",
+      "bytes": 588,
+      "sha256": "afe66c04a1eb97e63cafd64658b81f49e6b5600153be538b463278d6b4816fc8",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.sea_faring",
+      "bytes": 544,
+      "sha256": "52bc0b0c5991f350eb9857b9a8dbd4f697a176f1de43170a999739344a7bdaf0",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.silver_tongue",
+      "bytes": 625,
+      "sha256": "2e881b731b846d1be830586cfb1e5a2ef86121bb667ad54bdf378a0836139e89",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.stealthy",
+      "bytes": 546,
+      "sha256": "edc9a0e7cc6c4ac54c8f3cf1d4500bfe20bda7be92f8ff36ff210ba74be68942",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.survivalist",
+      "bytes": 607,
+      "sha256": "f11d1ca5160209a6e9ffeb9b504e8ba88ed1f56019246cd77d506cb837b25e23",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.tough_hide",
+      "bytes": 604,
+      "sha256": "25f738808ff98a3d2e09ab81224b5b348e683f6be4e1ab2a99410ff7e9cfdd4c",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.unarmored_defense_feat",
+      "bytes": 579,
+      "sha256": "1c9c80a053623b577f981ccb305f0081f4c496db0a557390e81a051fdfc202c4",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.zealot",
+      "bytes": 506,
+      "sha256": "b4df0bf13828ee88cece86a08c0009d920eaa8efffbbdfec2d776f211a052e3e",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.arcane_defender",
+      "bytes": 607,
+      "sha256": "dc4a8ba77631b3da7b58a1726bc7da5a52241307b5ebacda81ce89fc1b9eb18d",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.divine_interventionist",
+      "bytes": 597,
+      "sha256": "2882646ccb048523d832e392a8febbf655b183aee92b5272e0eae5e6bfbd8b85",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.shadow_dancer",
+      "bytes": 629,
+      "sha256": "1c0330bd4730ef23e42dc76cb439c9893402ea04bcc676252db41b9ebe857528",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.beast_tamer",
+      "bytes": 565,
+      "sha256": "66598cd1ed87607cf9de8357d013731d2686f68d8fe176891eb0653d6ccb4207",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.runic_carver",
+      "bytes": 622,
+      "sha256": "463df3a4f6200e4500216c0fa6e2194ea5eadb6b4c2433f1b8dd5dc0b5d227b1",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.storm_herald",
+      "bytes": 546,
+      "sha256": "5522273509221b8c72e2d784d3c00ca593bda5d8dea984ad0b00cbcb32a738fa",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.blood_hunter",
+      "bytes": 584,
+      "sha256": "f338d0fdbd84ff8a67f6ae8ba1038131d5e98326519c66478f650b089bbcf0a8",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.bardic_inspiration_feat",
+      "bytes": 647,
+      "sha256": "c4f91a54ff652e0884748b033bb3bc3c016750138942ac65e3927dcf64d285aa",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.monastic_training",
+      "bytes": 661,
+      "sha256": "99208410945ccfceae7a876c8d297cf153eeac2ae633130d856e1ee538ea8717",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.warlock_pact_initiate",
+      "bytes": 575,
+      "sha256": "53eb7dc2dea874cbd3a043a4f95c7e9b29312726d25f444bbc908f8763cfb839",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.artisan_genius",
+      "bytes": 664,
+      "sha256": "08e0ff88143d9e66ea48c41176be9e824e78055be6f996d1d0be47d330c763df",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.gladiator",
+      "bytes": 529,
+      "sha256": "68e577aaa4bf3e958ad9ec2e22eeec58a1a71edb2a800947d07f0aa75ba7e321",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.nomad",
+      "bytes": 617,
+      "sha256": "b1c196d0cc012b916e34724de488b7bd530110255593a5783d3db345eb679ad9",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.duelist_master",
+      "bytes": 558,
+      "sha256": "193a6cb728e579c11fd4180b0ce37a5bc959ae996a54c432805bd9220585654b",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.shield_bash_master",
+      "bytes": 559,
+      "sha256": "2efba58c798e856ed39961f84c1f987bdf509a045afd8f77800e0d873709287f",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.shadow_strike",
+      "bytes": 619,
+      "sha256": "d6c5f37339dc89b969ef3f0979ee514c0f838b5a87ac8c850ef08272cd7ac7e8",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.holy_warrior",
+      "bytes": 626,
+      "sha256": "ba3f75656ffa75bc737deeacd50e446a70b21a51fd4a5a7fb25973e9071e5e7a",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.arcane_recovery_feat",
+      "bytes": 615,
+      "sha256": "a42cea76633584573f424c456ca99417629fcd1ed6b78ba5cffd09366eac77da",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.berserker_rage",
+      "bytes": 608,
+      "sha256": "add2a595bad2587a9f0b70a874347a74245de06d23879a0286591c0c16a0d6e5",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.tactician",
+      "bytes": 601,
+      "sha256": "bb53eb6219b7eaf1a951459c8658c88d80ae3bca802fbf24c8139f24ae13a3a3",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.elven_accuracy",
+      "bytes": 763,
+      "sha256": "3caf3973b987ea4910308fa6b064ade74345fff2428b233629d0ce35cc4bff36",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.infernal_constitution",
+      "bytes": 701,
+      "sha256": "f7b1ebe27963f475679163af2667f5333e2c04896a26545942ce8fdd333be8f3",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.prodigy",
+      "bytes": 574,
+      "sha256": "f71c2b00db9b9161da0ed597436d5a69d895ac0624f1469b4d386401c1c1ad89",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.bountiful_luck",
+      "bytes": 590,
+      "sha256": "15f82a53f31735eaa4779f9793c094c48cce22ae5e04dae0e939626af772d5e2",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.dragon_fear",
+      "bytes": 713,
+      "sha256": "7d29cf3dee8f4ab578a8c3a6e243964ffe93e266a1b961d6a15218ac2e8bf28c",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.dragon_hide",
+      "bytes": 713,
+      "sha256": "5152aeefed5588634394a88389c072cabea40b1fca42575f2c9c4a0ab429d3bb",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.dwarven_fortitude",
+      "bytes": 694,
+      "sha256": "dd6f08d69bb30030d2cedbdb196b002a2f9c3a5f7051555fbb8e8be669c8db7a",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.flames_of_phlegethos",
+      "bytes": 725,
+      "sha256": "261938109574cd4c83676d33c2fe1b3360dc41385a6dc581d32ac911f11ea6cb",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.orcish_aggression",
+      "bytes": 673,
+      "sha256": "edb3ca8105dcd423848fbeaedb88028cb5e3e6b5f36e561a86b6ecfb322957f8",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.orcish_fury",
+      "bytes": 690,
+      "sha256": "468f5cb07e8a7a16830ce399bba7c50c8b5506f59b71b4b90e1a7b6cd997a5a1",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.squat_nimbleness",
+      "bytes": 743,
+      "sha256": "f299720820e3b902d3a2b1f7c3b3e9ad4ee95b7d777c1439985e0f4e2209228e",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.wood_elf_magic",
+      "bytes": 608,
+      "sha256": "c292642e54c8bf3ccb26bd482299c318d029d933e41454cb1aab7356ef4829e5",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.second_chance",
+      "bytes": 705,
+      "sha256": "b51389e0a48f08d0927fbb5fe8241582efc6c9065cefda03801905b7853cca9e",
+      "entries": 1
+    },
+    {
+      "id": "dnd.feat.fey_teleportation",
+      "bytes": 731,
+      "sha256": "91475c678c3d25c9cc6c05c6101d726bfb149e8a95902cc26ce7d8f96ae6a57e",
+      "entries": 1
+    },
+    {
+      "id": "dnd.map.3d-castle-black-rose-v740030",
+      "bytes": 328830,
+      "sha256": "42efa950ac5ccc7363da43f164eea20eceda1726f4fd5e4a6ea49209ec69350a",
+      "entries": 1
+    },
+    {
+      "id": "dnd.map.3d-castle-v740019",
+      "bytes": 199925,
+      "sha256": "de50f1891dabb080a3c6efa993eedc9014b17d164ace51f18b40e6ef3a9f3cfc",
+      "entries": 1
+    },
+    {
+      "id": "dnd.map.3d-house-v740019",
+      "bytes": 47682,
+      "sha256": "28f8c1c90ef28fe9fb44c6258fcefda4f68dbd648e37ab9924e51fde1861b98e",
+      "entries": 1
+    },
+    {
+      "id": "dnd.map.3d-stress-test-all",
+      "bytes": 197972,
+      "sha256": "25b0b14f6226e9659813a6e68e8b19a8019820ad08a4d36c60f860d029ef9b8e",
+      "entries": 1
+    },
+    {
+      "id": "dnd.map.3d-stress-v740026",
+      "bytes": 864469,
+      "sha256": "2bac703c7093f9c1efd52c87eac7e490a8071650ee6b627139372e80312418b5",
+      "entries": 1
+    },
+    {
+      "id": "dnd.map.3d-tavern-v740019",
+      "bytes": 65207,
+      "sha256": "5fa549a83605ff2a1774fafcc90d83f0e64e9e7449172bb3e1b5d08ec6c7f3de",
+      "entries": 1
+    },
+    {
+      "id": "dnd.map.3d-test-dungeon",
+      "bytes": 39922,
+      "sha256": "b7fc41ff6e88dbfabb42bedcffe72106388d24f3f6b0d34b6ba85af97e134bc8",
+      "entries": 1
+    },
+    {
+      "id": "dnd.map.3d-town-v740019",
+      "bytes": 151675,
+      "sha256": "e690f19b9b1cb72e471890262924c788b32b7db8ab61d5c97e413689b9290241",
+      "entries": 1
+    },
+    {
+      "id": "dnd.map.3d-village-v740019",
+      "bytes": 74458,
+      "sha256": "2de46d3a70a70d09152192c79299b879fca535c03738b64400ab6b495bca6fee",
+      "entries": 1
+    },
+    {
+      "id": "dnd.appearance.map-surfaces",
+      "bytes": 9628,
+      "sha256": "09e2d187673bbd0ac9502ecd210a215150424aaa58a7c8af9afa12b9505bbb3b",
+      "entries": 36
+    }
+  ],
+  "originalsDeleted": 0,
+  "legacyBinaryPublication": "BLOCKED: exact license/source verification pending"
+}

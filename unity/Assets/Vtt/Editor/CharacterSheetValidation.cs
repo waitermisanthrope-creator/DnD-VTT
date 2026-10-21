@@ -185,7 +185,7 @@ public static class CharacterSheetValidation
     private static void ValidateCreation(JObject catalog)
     {
         var data = (JObject)catalog["creation"];
-        Check(((JArray)data["races"]).Count == 57 && ((JArray)data["classes"]).Count == 35 && ((JArray)data["backgrounds"]).Count == 31, "creation catalogues");
+        Check(((JArray)data["races"]).Count == 15 && ((JArray)data["classes"]).Count == 12 && ((JArray)data["backgrounds"]).Count == 31, "creation catalogues");
         var golden = JObject.Parse(File.ReadAllText("Assets/Vtt/Tests/sheet-contract.json"));
         foreach (JObject test in (JArray)golden["creationCases"])
         {
@@ -212,6 +212,6 @@ public static class CharacterSheetValidation
             refused = false; try { CharacterCreation.Create(data, "Invalid", race, cls, bg, JObject.Parse("{str:15,dex:15,con:15,int:15,wis:15,cha:15}"), (JObject)test["answers"], "pointbuy"); } catch (FormatException) { refused = true; }
             Check(refused, "overspent point-buy rejected");
         }
-        Debug.Log("VTT_FRONTEND_CONTRACT_PASS: 57 races/35 class records/31 backgrounds, actual JS three-class creation projections, append/identity/wrapper preservation/reload, required choices/name/point buy");
+        Debug.Log("VTT_FRONTEND_CONTRACT_PASS: 15 PHB race variants/12 PHB classes/31 backgrounds, actual JS three-class creation projections, append/identity/wrapper preservation/reload, required choices/name/point buy");
     }
 }

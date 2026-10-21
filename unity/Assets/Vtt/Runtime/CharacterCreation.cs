@@ -27,7 +27,7 @@ namespace DndVtt.UnityPrototype
             hero["id"] = Guid.NewGuid().ToString(); hero["schemaVersion"] = 3; hero["name"] = name.Trim();
             hero["class"] = cls["name"].DeepClone(); hero["className"] = cls["name"].DeepClone();
             hero["classId"] = cls["id"].DeepClone();
-            if (race["packageId"] != null) hero["contentPackages"] = new JArray(new JObject { ["id"] = race["packageId"].DeepClone(), ["version"] = race["packageVersion"].DeepClone() });
+            foreach (var entry in new[] { race, cls }) RecordPackage(hero, entry);
             hero["raceId"] = race["id"].DeepClone(); hero["raceName"] = race["name"].DeepClone();
             hero["background"] = background["nameRu"] ?? background["name"];
             hero["_builderBaseStats"] = stats.DeepClone(); hero["statGenerationMode"] = mode;
@@ -55,9 +55,20 @@ namespace DndVtt.UnityPrototype
                         var p = ((JArray)catalog["proficiencies"]).OfType<JObject>().FirstOrDefault(x => (string)x["id"] == s.ToString());
                         if (p != null && !CharacterSheetRules.Array(hero, "proficiencies").Any(x => (string)x["id"] == (string)p["id"])) CharacterSheetRules.Array(hero, "proficiencies").Add(p.DeepClone());
                     }
+                    else if (id == "human_feat")
+                    {
+                        var feat = ((JArray)catalog["feats"]).OfType<JObject>().FirstOrDefault(f => (string)f["id"] == answer.ToString()) ?? throw new FormatException("Черта не установлена");
+                        AddFeat(hero, feat, (string)answers["feat:" + feat["id"] + ":stat"]);
+                    }
                     else if (id == "race_size") hero["size"] = answer.DeepClone();
                     else { var pending = (JObject)choice.DeepClone(); pending["selectedValue"] = answer.DeepClone(); CharacterSheetRules.Array(hero, "pendingChoices").Add(pending); }
                 }
+            if (answers["creation:feat"] != null)
+            {
+                string featId = (string)answers["creation:feat"];
+                var feat = ((JArray)catalog["feats"]).OfType<JObject>().FirstOrDefault(f => (string)f["id"] == featId) ?? throw new FormatException("Черта не установлена");
+                AddFeat(hero, feat, (string)answers["feat:" + featId + ":stat"]);
+            }
             int hp = Math.Max(1, (int)LegacyJson.Number(cls["hitDie"], 8) + CharacterSheetRules.Modifier(hero, "con") + (int)LegacyJson.Number(hero["raceHpBonusPerLevel"]));
             hero["hpMax"] = hp; hero["hpCurrent"] = hp; hero["hpTemp"] = 0; hero["hitDice"] = "1d" + (int)LegacyJson.Number(cls["hitDie"], 8);
             hero["abilities"] = hero["stats"].DeepClone();
@@ -73,6 +84,32 @@ namespace DndVtt.UnityPrototype
             var inventory = CharacterSheetRules.Object(hero, "inventory"); foreach (string key in CharacterSheetRules.InventoryCategories) CharacterSheetRules.Array(inventory, key);
             var coins = CharacterSheetRules.Object(hero, "coins"); foreach (string key in new[] { "cp", "sp", "ep", "gp", "pp" }) if (coins[key] == null) coins[key] = 0;
             CharacterSheetRules.Recalculate(hero); return new LegacyCharacterArchive(hero.ToString()).Snapshot(0);
+        }
+        public static void RecordPackage(JObject hero, JObject entry)
+        {
+            if (entry["packageId"] == null) return;
+            var packs = CharacterSheetRules.Array(hero, "contentPackages");
+            if (!packs.Any(p => (string)p["id"] == (string)entry["packageId"])) packs.Add(new JObject { ["id"] = entry["packageId"].DeepClone(), ["version"] = entry["packageVersion"].DeepClone() });
+        }
+        public static void AddFeat(JObject hero, JObject feat, string chosenStat)
+        {
+            var feats = CharacterSheetRules.Array(hero, "feats");
+            if (feats.Any(f => f is JObject && (string)f["id"] == (string)feat["id"])) throw new FormatException("Черта уже выбрана");
+            if (feat["prerequisite"] is JObject prereq)
+                foreach (string stat in CharacterSheetRules.Stats)
+                    if (prereq[stat]?.Type == JTokenType.Integer && LegacyJson.Number(hero["stats"]?[stat]) < (int)prereq[stat]) throw new FormatException("Требование черты: " + stat + " " + prereq[stat]);
+            var record = (JObject)feat.DeepClone();
+            if (feat["statBonus"] is JObject bonus)
+            {
+                var stats = (JArray)bonus["stats"];
+                if ((string)bonus["type"] == "choice")
+                {
+                    if (!stats.Any(x => (string)x == chosenStat)) throw new FormatException("Выберите характеристику черты");
+                    stats = new JArray(chosenStat); record["selectedStat"] = chosenStat;
+                }
+                foreach (string stat in stats.Values<string>()) hero["stats"][stat] = Math.Min(20, (int)LegacyJson.Number(hero["stats"][stat]) + (int)bonus["value"]);
+            }
+            feats.Add(record); RecordPackage(hero, feat);
         }
         private static void Merge(JObject target, JObject patch)
         {
