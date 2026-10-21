@@ -17,9 +17,12 @@ def proven_run(run_id):
     if run['conclusion'] != 'success' or run['head_branch'] != 'experiment/unity-vtt' or run['path'] != '.github/workflows/unity-cloud-candidate.yml' or run['head_repository']['full_name'] != ci.REPO or run['event'] not in ('push','workflow_dispatch'):
         raise ValueError('Only a successful trusted dual-platform candidate run may be promoted')
     jobs = json.loads(subprocess.check_output(['gh','api',f'repos/{ci.REPO}/actions/runs/{run_id}/jobs?per_page=100']))['jobs']
-    expected = {'Verify cloud signing key against public 1.00.00', 'Unity license preflight (not a build)',
-                'Build both release packages on GitHub Linux runner', 'Install and upgrade from public 1.00.00 on isolated Windows runner'}
-    if not expected <= {j['name'] for j in jobs if j['conclusion'] == 'success'}:
+    expected = {'Build and verify signed Android ARM64 APK', 'Build verified Windows x64 installer',
+                'Install and upgrade from public 1.00.00 on isolated Windows runner'}
+    legacy = {'Verify cloud signing key against public 1.00.00','Unity license preflight (not a build)',
+              'Build both release packages on GitHub Linux runner','Install and upgrade from public 1.00.00 on isolated Windows runner'}
+    passed = {j['name'] for j in jobs if j['conclusion'] == 'success'}
+    if not (expected <= passed or legacy <= passed):
         raise ValueError('Required actual build/signature/installation jobs did not all succeed')
     return run
 

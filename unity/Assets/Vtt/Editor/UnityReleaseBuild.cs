@@ -15,6 +15,19 @@ public static class UnityReleaseBuild
 {
     public static void Windows() => Build(BuildTarget.StandaloneWindows64, "windows/DndVtt.exe");
     public static void Android() => Build(BuildTarget.Android, "android-intermediate.apk");
+    public static void CloudWindows()
+    {
+        Windows();
+        string[] args=Environment.GetCommandLineArgs();
+        for(int i=0;i+1<args.Length;i++)if(args[i]=="-customBuildPath") {
+            string destination=args[i+1];
+            if(!destination.EndsWith(".exe",StringComparison.OrdinalIgnoreCase))throw new Exception("Windows output path missing");
+            Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(destination)));
+            File.Copy(Path.Combine("Builds","Unity-"+UnityRelease.Version,"windows","DndVtt.exe"),destination,true);
+            break;
+        }
+    }
+
 
     // GameCI validates the output at its -customBuildPath; our normal release
     // pipeline also needs its original unsigned intermediate for pinned signing.

@@ -1,7 +1,6 @@
 name: Unity cloud Android candidate
 
-# Android only. Never compile Windows, run NSIS, publish a release, or write
-# the Unity update feed. Produces an encrypted, signed private APK candidate.
+# Verified Android and Windows candidates. Never publish or change update feed.
 on:
   push:
     branches: [experiment/unity-vtt]
@@ -17,7 +16,7 @@ on:
       version:
         description: 'Unpublished Android candidate, newer than public version'
         required: true
-        default: '1.00.15'
+        default: '1.00.16'
         type: string
 
 permissions:
@@ -41,7 +40,7 @@ jobs:
           persist-credentials: false
       - name: Reject candidate version already present in update channel
         env:
-          CANDIDATE_VERSION: ${{ inputs.version || '1.00.15' }}
+          CANDIDATE_VERSION: ${{ inputs.version || '1.00.16' }}
         run: |
           python3 - <<'PYCODE'
           import json, os
@@ -91,7 +90,7 @@ jobs:
         run: python3 unity/ci/cloud_release.py check-license
       - name: Prepare unpublished Android version in checkout only
         env:
-          CANDIDATE_VERSION: ${{ inputs.version || '1.00.15' }}
+          CANDIDATE_VERSION: ${{ inputs.version || '1.00.16' }}
         run: python3 unity/ci/cloud_release.py prepare --version "$CANDIDATE_VERSION"
       - name: Restore Unity import and IL2CPP cache (no credentials)
         id: unity-library
@@ -126,16 +125,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          APK="unity/Builds/Unity-${{ inputs.version || '1.00.15' }}/android-intermediate.apk"
+          APK="unity/Builds/Unity-${{ inputs.version || '1.00.16' }}/android-intermediate.apk"
           test -s "$APK"
           test "$(stat -c '%s' "$APK")" -gt 10000000
           badging="$("$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK")"
           grep -F "name='com.dndvtt.unity'" <<<"$badging"
-          expected_version="${{ inputs.version || '1.00.15' }}"
+          expected_version="${{ inputs.version || '1.00.16' }}"
           IFS=. read -r major minor patch <<< "$expected_version"
           printf -v expected_code '%d' "$((10#$major * 10000 + 10#$minor * 100 + 10#$patch))"
           grep -F "versionCode='$expected_code'" <<<"$badging"
-          grep -F "versionName='${{ inputs.version || '1.00.15' }}'" <<<"$badging"
+          grep -F "versionName='${{ inputs.version || '1.00.16' }}'" <<<"$badging"
           grep -F "native-code: 'arm64-v8a'" <<<"$badging"
           sha256sum "$APK"
           echo "CI_REAL_UNITY_ANDROID_APK_PASS: output exists and Android package metadata matches"
@@ -149,7 +148,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          BUILD_DIR="unity/Builds/Unity-${{ inputs.version || '1.00.15' }}"
+          BUILD_DIR="unity/Builds/Unity-${{ inputs.version || '1.00.16' }}"
           test -s "$BUILD_DIR/android-intermediate.apk"
           # game-ci/unity-builder writes the intermediate files as root inside
           # Docker. The host runner must own them to create the signed APK.
@@ -170,7 +169,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m pip install UnityPy==1.25.4
-          APK="unity/Builds/Unity-${{ inputs.version || '1.00.15' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.15' }}-arm64.apk"
+          APK="unity/Builds/Unity-${{ inputs.version || '1.00.16' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.16' }}-arm64.apk"
           python3 tools/inspect_unity_apk.py --apk "$APK" --output unity/apk-object-inventory.json
           python3 unity/ci/measure_apk.py --apk "$APK" --objects unity/apk-object-inventory.json --report unity/apk-metrics.json --minimal-content
       - name: Save measured APK inventory and metrics
@@ -186,8 +185,8 @@ jobs:
       - name: Deliver verified signed Android APK for phone testing
         uses: actions/upload-artifact@v4
         with:
-          name: DnD-VTT-Unity-${{ inputs.version || '1.00.15' }}-Android-test
-          path: unity/Builds/Unity-${{ inputs.version || '1.00.15' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.15' }}-arm64.apk
+          name: DnD-VTT-Unity-${{ inputs.version || '1.00.16' }}-Android-test
+          path: unity/Builds/Unity-${{ inputs.version || '1.00.16' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.16' }}-arm64.apk
           if-no-files-found: error
           retention-days: 3
       - name: Verify separately generated trusted Android demo bundle
@@ -219,3 +218,101 @@ jobs:
         with:
           path: unity/Library
           key: ${{ steps.unity-library.outputs.cache-primary-key }}
+
+  windows-build:
+    name: Build verified Windows x64 installer
+    needs: android
+    runs-on: ubuntu-latest
+    environment: unity-ci
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Pin checkout to candidate source
+        run: git checkout --detach "$GITHUB_SHA"
+      - name: Prepare same candidate version
+        env:
+          CANDIDATE_VERSION: ${{ inputs.version || '1.00.16' }}
+        run: python3 unity/ci/cloud_release.py prepare --version "$CANDIDATE_VERSION"
+      - name: Build actual Windows x64 Mono player
+        continue-on-error: true
+        uses: game-ci/unity-builder@eb1b9fba120c6e62c9fb7a7a81d6c107ce004c45
+        env:
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: unity
+          unityVersion: 6000.3.26f1
+          cliVersion: v0.1.72
+          targetPlatform: StandaloneWindows64
+          buildMethod: UnityReleaseBuild.CloudWindows
+          versioning: None
+          allowDirtyBuild: true
+      - name: Verify actual Windows output and restore ownership
+        run: |
+          sudo chown -R "$(id -u):$(id -g)" unity/Builds
+          test -s "unity/Builds/Unity-${{ inputs.version || '1.00.16' }}/windows/DndVtt.exe"
+          test -s "unity/Builds/Unity-${{ inputs.version || '1.00.16' }}/windows/UnityPlayer.dll"
+          test -s "unity/Builds/Unity-${{ inputs.version || '1.00.16' }}/windows/DndVtt_Data/Managed/Assembly-CSharp.dll"
+      - uses: actions/download-artifact@v4
+        with:
+          name: DnD-VTT-Unity-${{ inputs.version || '1.00.16' }}-Android-test
+          path: unity/Builds/Unity-${{ inputs.version || '1.00.16' }}/distribution
+      - name: Install existing packaging dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install --yes nsis
+          python3 -m pip install -r unity/ci/requirements.txt
+      - name: Package using existing NSIS installer
+        shell: pwsh
+        run: |
+          git checkout -B experiment/unity-vtt
+          ./unity/release.ps1 -Stage Package -Nsis /usr/bin/makensis
+      - name: Record both packages and encrypt existing candidate format
+        env:
+          UNITY_CI_ARTIFACT_PASSWORD: ${{ secrets.UNITY_CI_ARTIFACT_PASSWORD }}
+        run: |
+          python3 unity/ci/cloud_release.py candidate
+          python3 unity/ci/cloud_release.py seal
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Unity-private-candidate-${{ github.run_id }}
+          path: ${{ runner.temp }}/unity-encrypted/candidate.zip.enc
+          if-no-files-found: error
+          retention-days: 7
+
+  windows-qa:
+    name: Install and upgrade from public 1.00.00 on isolated Windows runner
+    needs: windows-build
+    runs-on: windows-latest
+    environment: unity-ci
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: Unity-private-candidate-${{ github.run_id }}
+          path: ${{ runner.temp }}/unity-encrypted
+      - name: Authenticate and decrypt in runner temporary directory
+        env:
+          UNITY_CI_ARTIFACT_PASSWORD: ${{ secrets.UNITY_CI_ARTIFACT_PASSWORD }}
+        shell: pwsh
+        run: |
+          python -m pip install -r unity/ci/requirements.txt
+          python unity/ci/cloud_release.py unseal --source "$env:RUNNER_TEMP/unity-encrypted" --destination "$env:RUNNER_TEMP/unity-candidate"
+      - name: Verify installed payload, old saves, actual runtime and reinstall
+        shell: pwsh
+        run: ./unity/ci/windows-upgrade-qa.ps1 -CandidateFolder "$env:RUNNER_TEMP/unity-candidate"
+      - name: Upload non-sensitive QA verdict only
+        uses: actions/upload-artifact@v4
+        with:
+          name: Unity-Windows-upgrade-verdict-${{ github.run_id }}
+          path: ${{ runner.temp }}/windows-upgrade-result.json
+          if-no-files-found: error
+          retention-days: 7

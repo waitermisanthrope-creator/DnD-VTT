@@ -1,3 +1,13 @@
+# Android + Windows / chat / appearance checkpoint
+
+Owner authorized both-platform release and one-hour authenticated chat. Target 1.00.16/10016. DONE source: chat SQL migration 004, native home button/page, auth/ban/mute guards, bounded polling/messages, memory-only history, separate private hourly purge and cron setup. Local SQL 125 checks, .NET 2,885 checks, Python 10 checks and source UI contracts passed before final narrow account callback guard. Native compilation/build/install QA pending.
+
+PARTIAL Windows: re-enabled existing UnityReleaseBuild.Windows through GameCI wrapper and existing release.ps1/NSIS; existing encrypted paired candidate + Windows upgrade QA restored in same workflow after Android. No competing publication pipeline. Promotion accepts either complete historical gates or complete modern gates; failed Windows job/QA cannot promote. Public feed unchanged; approval file still points to already-published 1.00.13. No 1.00.16 release yet.
+
+BLOCKED appearance publication: 62 wallpaper/dice-icon source candidates, 77,630,991 bytes inventoried with SHA-256 in docs/modular-content/APPEARANCE_SOURCE_INVENTORY.json. Provenance/redistribution not confirmed; owner asked asynchronously. These are not uploaded packages. SVG conversion, image package activation and Android launcher-icon application are not implemented. Do not mark ALL wallpapers/icons downloadable. Original branding retained and no large binaries committed.
+
+Live chat deployment requires owner applying ONLY migration 004 then enable_chat_retention.sql in SQL Editor; older migrations already owner-confirmed. See CHAT_ONE_HOUR.md for expiry/cleanup and backup limitations. Await rights answer and native build outcomes before publication. Continue existing source; do not replace core account/role/workshop systems.
+
 # Latest owner policy: direct moderator management / unified center
 
 DONE locally: migration `202610210003_direct_moderator_management.sql` updates existing request_staff_change RPC. Owner/deputy independently appoint/change/revoke moderators with fresh MFA; no mutual approval. Every change audited. Owner protected; deputy cannot be demoted via moderator appointment; deputy workflow remains separate and owner-initiated. Old pending moderator/revoke requests expire on applying migration, preventing stale replay. Existing 1.00.14 client remains RPC-compatible; its old “request” button labels do not change synchronous server behavior after 003.

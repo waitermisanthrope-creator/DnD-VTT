@@ -85,6 +85,12 @@ class CloudReleaseTests(unittest.TestCase):
         jobs=[dict(name=n,conclusion='success') for n in ['Verify cloud signing key against public 1.00.00','Unity license preflight (not a build)','Build both release packages on GitHub Linux runner','Install and upgrade from public 1.00.00 on isolated Windows runner']]
         with patch.object(promotion.subprocess,'check_output',side_effect=[json.dumps(run).encode(),json.dumps(dict(jobs=jobs)).encode()]):
             self.assertEqual(promotion.proven_run('42')['id'],42)
+        modern=[dict(name=n,conclusion='success') for n in ['Build and verify signed Android ARM64 APK','Build verified Windows x64 installer','Install and upgrade from public 1.00.00 on isolated Windows runner']]
+        with patch.object(promotion.subprocess,'check_output',side_effect=[json.dumps(run).encode(),json.dumps(dict(jobs=modern)).encode()]):
+            self.assertEqual(promotion.proven_run('42')['id'],42)
+        modern[1]['conclusion']='failure'
+        with patch.object(promotion.subprocess,'check_output',side_effect=[json.dumps(run).encode(),json.dumps(dict(jobs=modern)).encode()]):
+            with self.assertRaises(ValueError): promotion.proven_run('42')
         jobs[-1]['conclusion']='skipped'
         with patch.object(promotion.subprocess,'check_output',side_effect=[json.dumps(run).encode(),json.dumps(dict(jobs=jobs)).encode()]):
             with self.assertRaisesRegex(ValueError,'did not all succeed'): promotion.proven_run('42')
