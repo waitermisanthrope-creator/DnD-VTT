@@ -12,13 +12,13 @@ rows=[]
 jobs=[]
 for repo,field in [('DnD-VTT-Content','packages'),('DnD-VTT-Assets','packs')]:
  prefix='https://raw.githubusercontent.com/waitermisanthrope-creator/'+repo+'/main/'
- version=3 if repo.endswith('Content') else 2
+ version=3
  data=fetch(prefix+f'catalog/v{version}/index.json',1024*1024);doc=json.loads(data)
  root=args.output/repo; (root/f'catalog/v{version}').mkdir(parents=True,exist_ok=True);(root/'packages').mkdir(exist_ok=True)
  (root/f'catalog/v{version}/index.json').write_bytes(data)
  for m in doc[field]:
   if m.get('format')!='json':continue
-  assert m['url'].startswith(prefix+'packages/') and '..' not in m['url'] and m['url'].endswith('.json')
+  assert (m['url'].startswith(prefix+'packages/') or (repo.endswith('Assets') and m['url'].startswith('https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/releases/download/owner-appearance-v1/'))) and '..' not in m['url'] and m['url'].endswith('.json')
   jobs.append((root,m))
 def download(job):
  root,m=job

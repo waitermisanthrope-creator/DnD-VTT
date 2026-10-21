@@ -60,6 +60,7 @@ namespace DndVtt.UnityPrototype
             for(int i=0;i<BrandFrameColors.Length;i++)if(GUILayout.Button(BrandFrameLabels[i]+(settingsDraft.frameColor==BrandFrameColors[i]?" ✓":""),brandGold,GUILayout.MinHeight(48)))settingsDraft.frameColor=BrandFrameColors[i];
             GUILayout.EndVertical();
             GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Шрифт и оформление");GUILayout.Label("Сохранены wallpapers/16.png. Книжный системный шрифт с резервной гарнитурой. Размер интерфейса адаптирован под телефон.",sheetQuiet);GUILayout.Label("Смена значка Android и аудиопаки пока недоступны.",sheetQuiet);GUILayout.EndVertical();
+            DrawAppearanceLibrary();
             GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Мастерская дополнений");if(GUILayout.Button("Открыть мастерскую",brandBlue,GUILayout.Height(56)))OpenContentManager();GUILayout.EndVertical();
             GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Обновления приложения");GUILayout.Label("Установлена Unity "+UnityRelease.Version,sheetQuiet);
             if(GUILayout.Button("Проверить и обновить",brandBlue,GUILayout.Height(56))) { settingsSection=0;showChangelog=false;brandTechnicalScreen=true; }

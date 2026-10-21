@@ -198,7 +198,7 @@ namespace DndVtt.UnityPrototype
             PrepareBrand();
             var full = new Rect(0, 0, UiWidth, UiHeight);
             Shade(full, new Color(.04f,.04f,.05f));
-            Cover(brandWallpaper, full);
+            Cover(SelectedAppearanceImage("wallpaper")??brandWallpaper, full);
             Shade(full, new Color(0,0,0,modal ? .75f : .42f));
         }
         private void BeginBrandSplash()

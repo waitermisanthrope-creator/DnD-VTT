@@ -47,7 +47,8 @@ namespace DndVtt.UnityPrototype
             bool json = (string)m["format"] == "json";
             string[] prefixes = json ? new[] {
                 "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Content/main/packages/",
-                "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/packages/" } : new[] {
+                "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/packages/",
+                "https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/releases/download/" } : new[] {
                 "https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/releases/download/" };
             if (url == null || !prefixes.Any(p => url.StartsWith(p, StringComparison.Ordinal)) || url.Contains("..") || url.Contains("?") || url.Contains("#")
                 || (!json && (string)m["format"] != "assetbundle") || (json && (!url.EndsWith(".json", StringComparison.Ordinal) || size > 5 * 1024 * 1024)))
@@ -114,6 +115,12 @@ namespace DndVtt.UnityPrototype
             if ((int?)data["schemaVersion"] != 1 || (string)data["id"] != (string)m["id"] || (string)data["version"] != (string)m["version"] || (string)data["type"] != (string)m["type"]) throw new FormatException("Пакет не соответствует манифесту");
             string type = (string)m["type"], packageId = (string)m["id"];
             if (!new[] { "race", "class", "feat", "map", "model", "environment", "appearance", "item", "craft" }.Contains(type)) throw new FormatException("Этот тип пока недоступен для активации");
+            if(type=="appearance"&&data["images"]!=null) {
+                if(!(data["images"] is JArray images)||images.Count!=1||data["surfaces"]!=null||data["objects"]!=null||data["maps"]!=null)throw new FormatException("Состав пакета изображений");
+                var image=images[0] as JObject??throw new FormatException("Изображение");
+                if((string)image["id"]!=packageId+".image"||string.IsNullOrWhiteSpace((string)image["name"])||!new[]{"wallpaper","icon"}.Contains((string)image["kind"])||(string)m["imageKind"]!=(string)image["kind"])throw new FormatException("Тип изображения");
+                ImageBytes(image);return data;
+            }
             if (type == "craft") { CommerceRules.ValidateCatalog(data); return data; }
             string field = type == "race" ? "races" : type == "class" ? "classes" : type == "feat" ? "feats" : type == "map" ? "maps" : type == "appearance" ? "surfaces" : type == "item" ? "items" : "objects";
             if (!(data[field] is JArray entries) || entries.Count < 1 || entries.Count > 100) throw new FormatException("Неверный состав пакета");
@@ -239,6 +246,17 @@ namespace DndVtt.UnityPrototype
                 string name = Path.GetFileName(dir);
                 if (name.Length == id.Length + 65 && Regex.IsMatch(name.Substring(id.Length + 1), "^[a-f0-9]{64}$")) Directory.Delete(dir, true);
             }
+        }
+        public static byte[] ImageBytes(JObject image)
+        {
+            string encoded=(string)image["pngBase64"];
+            if(encoded==null||encoded.Length>6*1024*1024)throw new FormatException("Размер изображения");
+            byte[] png=Convert.FromBase64String(encoded);
+            byte[] signature={137,80,78,71,13,10,26,10};
+            if(png.Length<33||png.Length>4*1024*1024||!png.Take(8).SequenceEqual(signature)||Encoding.ASCII.GetString(png,12,4)!="IHDR")throw new FormatException("Требуется PNG");
+            uint width=0,height=0;for(int n=0;n<4;n++) { width=(width<<8)|png[16+n];height=(height<<8)|png[20+n]; }
+            if(width==0||height==0||width>2048||height>2048||(long)width*height>4194304||width!=(long?)image["width"]||height!=(long?)image["height"])throw new FormatException("Размеры PNG");
+            if(Digest(png)!=(string)image["sha256"])throw new FormatException("SHA-256 PNG");return png;
         }
         public JObject Data(JObject m) { Verify(m, PayloadPath(m)); return ValidateData(m, File.ReadAllText(PayloadPath(m))); }
     }

@@ -31,17 +31,23 @@ public static class WorkshopEditorValidation
         try
         {
             var store = new WorkshopStore(Path.Combine(folder, "packages"));
-            var manifests = new JArray();
+            var manifests = new JArray();int decodedImages=0;
             foreach (string repo in new[] { "DnD-VTT-Content", "DnD-VTT-Assets" })
             {
-                var entries = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixtures, repo, repo.EndsWith("Content") ? "catalog/v3/index.json" : "catalog/v2/index.json")), repo.EndsWith("Content", StringComparison.Ordinal) ? "packages" : "packs");
+                var entries = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixtures, repo, repo.EndsWith("Content") ? "catalog/v3/index.json" : "catalog/v3/index.json")), repo.EndsWith("Content", StringComparison.Ordinal) ? "packages" : "packs");
                 foreach (JObject entry in entries)
                 {
                     if ((string)entry["format"] != "json") continue;
                     string stage = Path.Combine(folder, "download"); File.Copy(Path.Combine(fixtures, repo, "packages", Path.GetFileName((string)entry["url"])), stage, true);
                     store.Install(entry, stage, "android-arm64", Application.unityVersion); manifests.Add(entry.DeepClone());
+                    if(entry["imageKind"]!=null) {
+                        var image=(JObject)store.Data(entry)["images"][0];var texture=new Texture2D(2,2);
+                        try { Check(texture.LoadImage(WorkshopStore.ImageBytes(image)),"downloaded appearance PNG decodes in Unity");Check(texture.width==(int)image["width"]&&texture.height==(int)image["height"],"downloaded image dimensions");decodedImages++; }
+                        finally { UnityEngine.Object.DestroyImmediate(texture); }
+                    }
                 }
             }
+            Debug.Log("VTT_APPEARANCE_PNG_PASS: "+decodedImages+" downloaded images decoded with matching dimensions");
             runtime = new WorkshopRuntime(store); runtime.ActivateData();
             var commerce = runtime.Commerce();
             Check(((JArray)commerce["items"]).Count == 308 && ((JArray)commerce["craft"]["recipes"]).Count == 47, "downloaded inventory and craft activated in native Unity");

@@ -18,8 +18,9 @@ public class UpdateProvider extends ContentProvider {
     private File file(Uri uri) throws FileNotFoundException {
         try {
             String name = uri.getLastPathSegment();
-            if (name == null || !name.matches("UnityUpdate-[0-9]+\\.apk")) throw new IOException("Invalid update name");
-            File root = new File(getContext().getCacheDir(), "updates").getCanonicalFile();
+            boolean picture = uri.getPathSegments().size()==2 && "appearance".equals(uri.getPathSegments().get(0)) && name!=null && name.matches("Appearance-[a-f0-9]{64}\\.png");
+            if (!picture && (uri.getPathSegments().size()!=1 || name==null || !name.matches("UnityUpdate-[0-9]+\\.apk"))) throw new IOException("Invalid shared file name");
+            File root = new File(getContext().getCacheDir(), picture ? "appearance-exports" : "updates").getCanonicalFile();
             File file = new File(root, name).getCanonicalFile();
             if (!file.getParentFile().equals(root) || !file.isFile()) throw new IOException("Invalid update file");
             return file;
@@ -29,7 +30,7 @@ public class UpdateProvider extends ContentProvider {
         if (!"r".equals(mode)) throw new FileNotFoundException("Read only");
         return ParcelFileDescriptor.open(file(uri), ParcelFileDescriptor.MODE_READ_ONLY);
     }
-    @Override public String getType(Uri uri) { return "application/vnd.android.package-archive"; }
+    @Override public String getType(Uri uri) { return uri.getPathSegments().size()==2 && "appearance".equals(uri.getPathSegments().get(0)) ? "image/png" : "application/vnd.android.package-archive"; }
     @Override public Cursor query(Uri uri, String[] projection, String selection, String[] args, String sort) {
         try { File f = file(uri); MatrixCursor c = new MatrixCursor(new String[]{OpenableColumns.DISPLAY_NAME, OpenableColumns.SIZE}); c.addRow(new Object[]{f.getName(), f.length()}); return c; }
         catch (FileNotFoundException e) { return null; }
@@ -37,6 +38,15 @@ public class UpdateProvider extends ContentProvider {
     @Override public Uri insert(Uri u, ContentValues v) { throw new UnsupportedOperationException(); }
     @Override public int update(Uri u, ContentValues v, String s, String[] a) { throw new UnsupportedOperationException(); }
     @Override public int delete(Uri u, String s, String[] a) { throw new UnsupportedOperationException(); }
+    public static void sharePicture(Activity activity, String path) throws IOException {
+        File root=new File(activity.getCacheDir(),"appearance-exports").getCanonicalFile();
+        File png=new File(path).getCanonicalFile();
+        if(!png.getParentFile().equals(root)||!png.isFile()||!png.getName().matches("Appearance-[a-f0-9]{64}\\.png"))throw new SecurityException("Invalid image export");
+        Uri uri=new Uri.Builder().scheme("content").authority(activity.getPackageName()+".updates").appendPath("appearance").appendPath(png.getName()).build();
+        Intent send=new Intent(Intent.ACTION_SEND).setType("image/png").putExtra(Intent.EXTRA_STREAM,uri).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        send.setClipData(ClipData.newRawUri("DnD VTT image",uri));
+        activity.startActivity(Intent.createChooser(send,"Сохранить или отправить изображение"));
+    }
     private static Set<String> signatures(PackageInfo p) {
         Signature[] sigs = Build.VERSION.SDK_INT >= 28 ? p.signingInfo.getApkContentsSigners() : p.signatures;
         Set<String> result = new HashSet<>(); for (Signature s : sigs) result.add(s.toCharsString()); return result;

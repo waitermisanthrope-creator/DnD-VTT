@@ -1,3 +1,15 @@
+# 1.00.17 appearance release / paired installers checkpoint
+
+DONE: owner explicitly confirms personal AI authorship and workshop distribution permission for all wallpapers/dice/app icons. Assets repo release owner-appearance-v1 published 63 independent image JSON packages, 118,807,535 bytes; every public URL/size/SHA verified in run 39675879825 SUCCESS. Catalog v3 activated (75 asset manifests total, 63 image packs); old v2 preserved for older clients. No CC0 asserted. Sources: 32 wallpapers (2 SVG), 30 dice images and original standard icon. 63 source files/79,099,207 bytes, 62 unique normalized PNGs; two existing D10 sources share pixels. Original files preserved. Assets commits c33f12e, 2dc44e3 (activation), a36051a (validated v3 schema).
+
+DONE source/local: image manifest/PNG size+SHA+dimension checks, lazy selected-wallpaper decoding, persisted selection, fallback after removal/low memory, icon preview and PNG export, Android grant-only image share using existing provider. Native launcher-icon switching is NOT implemented. No optional images bundled in APK/Windows installer. Old bundled artwork preserved. New trusted Release JSON downloads explicitly allow GitHub redirects with immutable size/SHA checks. Native Editor will decode each published image before Android build.
+
+Validation: 3,709 .NET checks with all 268 packages (local byte-verified release fixture), 125 SQL checks, 10 Python tests, six publisher gates and source contracts passed. Public fixture download independently running/verified as recorded below. Device wallpaper/resume/share behavior unverified. User screenshots confirm live chat scheduler succeeded; not directly queried by executor.
+
+PARTIAL release: target 1.00.17/10017. Previous 1.00.16 Android compiled/signed, Windows compiled but packaging dependency install failed with root-owned ~/.local pip permissions. Fixed Windows dependency installation using isolated RUNNER_TEMP venv. Paired candidate/Windows install-and-upgrade QA must pass before publication. Existing paired publisher extended with explicit owner approval JSON and complete-job gates; no competing publisher. Public channel remains 1.00.13 until success. Never publish old 1.00.16 as the appearance release.
+
+Next: push completed source, await Android+Windows+upgrade QA, fix failures, then owner-authorized paired publication; verify raw feed has both artifacts/version17 and public APK/EXE hashes. Update this file with actual run IDs/results. No further permission question required: owner already explicitly authorized both-platform release.
+
 # Android + Windows / chat / appearance checkpoint
 
 Owner authorized both-platform release and one-hour authenticated chat. Target 1.00.16/10016. DONE source: chat SQL migration 004, native home button/page, auth/ban/mute guards, bounded polling/messages, memory-only history, separate private hourly purge and cron setup. Local SQL 125 checks, .NET 2,885 checks, Python 10 checks and source UI contracts passed before final narrow account callback guard. Native compilation/build/install QA pending.

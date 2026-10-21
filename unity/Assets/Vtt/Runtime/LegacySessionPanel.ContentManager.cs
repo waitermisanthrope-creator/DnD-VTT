@@ -11,7 +11,7 @@ namespace DndVtt.UnityPrototype
     public sealed partial class LegacySessionPanel
     {
         private const string CatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Content/main/catalog/v3/index.json";
-        private const string AssetsCatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v2/index.json";
+        private const string AssetsCatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v3/index.json";
         private WorkshopStore workshopStore;
         private WorkshopRuntime workshop;
         private bool contentBusy, installedOnly;
@@ -37,12 +37,13 @@ namespace DndVtt.UnityPrototype
             }
             creationCatalog = null;
         }
-        private void OnWorkshopLowMemory() { workshop?.ReleaseBundleCache(); }
-        private void OnDestroy() { Application.lowMemory -= OnWorkshopLowMemory; workshop?.Dispose(); ReleaseBrandStyles(); if (sheetSerif) Destroy(sheetSerif); ApplyScreenSleep(false); }
+        private void OnWorkshopLowMemory() { ReleaseAppearanceImages(false);workshop?.ReleaseBundleCache(); }
+        private void OnDestroy() { Application.lowMemory -= OnWorkshopLowMemory; workshop?.Dispose(); ReleaseAppearanceImages(true);ReleaseBrandStyles(); if (sheetSerif) Destroy(sheetSerif); ApplyScreenSleep(false); }
         private void RefreshWorkshop()
         {
             // Destroy geometry before unloading owned resources, then reconstruct
             // from preserved JSON. Missing resources become visible placeholders.
+            ReleaseAppearanceImages(true);
             world.ClearWorkshopGeometry(); workshop.Dispose(); workshop = new WorkshopRuntime(workshopStore); workshop.ActivateData(); creationCatalog = null; commerceCatalog = null; itemCatalog = null;
             world.Workshop = workshop; world.ReloadCurrent();
         }
@@ -94,7 +95,7 @@ namespace DndVtt.UnityPrototype
                 WorkshopStore.ValidateManifest(item); WorkshopStore.Compatible(item, WorkshopRuntime.Platform, Application.unityVersion);
                 WorkshopStore.CheckDownloadSpace((long)item["bytes"], ReadWorkshopFreeBytes);
                 handler = new WorkshopDownload(path, (long)item["bytes"]);
-                request = new UnityWebRequest((string)item["url"], "GET", handler, null) { timeout = 120, redirectLimit = (string)item["format"] == "assetbundle" ? 3 : 0 };
+                request = new UnityWebRequest((string)item["url"], "GET", handler, null) { timeout = 120, redirectLimit = new Uri((string)item["url"]).Host == "github.com" ? 3 : 0 };
             }
             catch (Exception e) { contentNotice = e.Message; }
             if (request != null)

@@ -23,6 +23,15 @@ class Program
                 var errors = tree.GetDiagnostics().Where(d => d.Severity == Microsoft.CodeAnalysis.DiagnosticSeverity.Error).ToArray();
                 Check(errors.Length == 0, "C# syntax " + file + " " + string.Join(";", errors.Select(e => e.ToString())));
             }
+            var imageBytes=File.ReadAllBytes(Path.Combine(appRoot,"wallpapers/6.png"));
+            int iw=0,ih=0;for(int n=0;n<4;n++) { iw=(iw<<8)|imageBytes[16+n];ih=(ih<<8)|imageBytes[20+n]; }
+            var imageEntry=new JObject { ["id"]="demo.image.image",["name"]="Own fixture",["kind"]="wallpaper",["width"]=iw,["height"]=ih,["sha256"]=WorkshopStore.Digest(imageBytes),["pngBase64"]=Convert.ToBase64String(imageBytes) };
+            var imageManifest=new JObject { ["id"]="demo.image",["version"]="1.0.0",["type"]="appearance",["imageKind"]="wallpaper" };
+            var imageData=new JObject { ["schemaVersion"]=1,["id"]="demo.image",["version"]="1.0.0",["type"]="appearance",["images"]=new JArray(imageEntry) };
+            Check(WorkshopStore.ValidateData(imageManifest,imageData.ToString())!=null,"downloadable PNG appearance validates");
+            imageEntry["sha256"]=new string('a',64);Reject(()=>WorkshopStore.ValidateData(imageManifest,imageData.ToString()),"PNG tampering rejected");imageEntry["sha256"]=WorkshopStore.Digest(imageBytes);
+            imageEntry["width"]=999999;Reject(()=>WorkshopStore.ValidateData(imageManifest,imageData.ToString()),"oversized/mismatched PNG dimensions rejected");imageEntry["width"]=iw;
+            imageData["objects"]=new JArray();Reject(()=>WorkshopStore.ValidateData(imageManifest,imageData.ToString()),"image package cannot smuggle unvalidated world objects");imageData.Remove("objects");
             WorkshopStore.CheckDownloadSpace(1037, () => 1220000000L);
             Check(true, "tiny race downloads with reported 1.22GB free");
             WorkshopStore.CheckDownloadSpace(1037, () => throw new NotSupportedException("IL2CPP unsupported icall"));
@@ -49,7 +58,7 @@ class Program
             Check(store.Installed().Count == 0, "empty offline startup");
             foreach (string repo in new[] { "DnD-VTT-Content", "DnD-VTT-Assets" })
             {
-                string catalog = File.ReadAllText(Path.Combine(source, repo, repo.EndsWith("Content") ? "catalog/v3/index.json" : "catalog/v2/index.json"));
+                string catalog = File.ReadAllText(Path.Combine(source, repo, repo.EndsWith("Content") ? "catalog/v3/index.json" : "catalog/v3/index.json"));
                 var list = WorkshopStore.Catalog(catalog, repo.EndsWith("Content") ? "packages" : "packs");
                 foreach (JObject manifest in list)
                 {
