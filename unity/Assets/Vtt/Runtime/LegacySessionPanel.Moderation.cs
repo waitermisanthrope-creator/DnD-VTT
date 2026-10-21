@@ -32,7 +32,7 @@ namespace DndVtt.UnityPrototype
             if(string.IsNullOrWhiteSpace(centerNote)) { centerMessage="Укажите обоснование решения";return; }
             Guid parsed;
             if(action=="assign"&&!Guid.TryParse(centerAssignee,out parsed)) { centerMessage="Введите UUID проверяющего";return; }
-            StartCoroutine(CenterCall("review_case",new JObject { ["p_id"]=item["id"].DeepClone(),["p_revision"]=item["revision"].DeepClone(),["p_action"]=action,["p_note"]=centerNote,["p_assignee"]=action=="assign"?(JToken)centerAssignee:null },r=> { item.Replace(r.DeepClone());centerNote=""; }));
+            StartCoroutine(CenterCall("review_case",new JObject { ["p_id"]=item["id"].DeepClone(),["p_revision"]=item["revision"].DeepClone(),["p_action"]=action,["p_note"]=centerNote,["p_assignee"]=action=="assign"?(JToken)centerAssignee:null },r=> { foreach(var property in ((JObject)r).Properties())item[property.Name]=property.Value.DeepClone();centerNote=""; }));
         }
         private void CenterLimit(JObject user,string kind)
         {

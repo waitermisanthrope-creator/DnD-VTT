@@ -1,3 +1,7 @@
+# Moderation checkpoint — 95 SQL checks locally
+
+DONE locally: 95 PostgreSQL checks including real SQL authorization/RLS, bans/mutes, assignment/tiers, stale revisions, shared audit, role revocation, author self-review denial, immutable records and expired-only purge. 2,884 .NET checks passed before final narrow response-update fix; repeat/native compilation pending. Candidate version 1.00.14/10014; public channel remains 1.00.13. No production migration, owner bootstrap or scheduler execution performed. Deployment remains BLOCKED by missing privileged connection. Native forms are server-backed in code, not proof of live service availability.
+
 # Moderation center follow-up — PARTIAL, deployment BLOCKED
 
 Prepared moderation migration 002, native RPC forms, shared immutable audit with 24h read cutoff and private scheduled purge. Account ban/mute, complaints/bug reports, assignment/review and existing independent staff approvals implemented in source. 88 local PostgreSQL checks pass; native/UI/live Supabase/cron checks still pending. No live owner designation performed; no privileged connection available. See MODERATION_CENTER_RUNBOOK.md for guarantees, limits and exact deployment sequence. “All logs erased everywhere at precisely 24h” is not claimed; provider backups/logs are outside this application retention mechanism.

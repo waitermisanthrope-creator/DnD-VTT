@@ -58,6 +58,8 @@ try {
  // Execute the additive center migration against the same Auth/character store.
  await root();await db.exec(await readFile(new URL('../migrations/202610210002_moderation_center.sql',import.meta.url),'utf8'));
  await db.query("update auth.users set email='person@example.invalid' where id=$1",[other]);
+ await db.exec('set role anon');await denied('select public.center_snapshot()');
+ await identity(other);await denied('select * from app_private.moderation_cases');await denied('select * from app_private.account_limits');
  await identity(other);let caseId='30000000-0000-4000-8000-000000000001';
  const submit="select public.submit_moderation_case($1,'bug','Crash','Steps to reproduce',null) as c";
  let item=(await db.query(submit,[caseId])).rows[0].c;check(item.author===other,'ordinary player submits bug report');
@@ -97,6 +99,14 @@ try {
  await identity(owner,'aal2');await db.query(limit,[other,2,'unban']);await db.query(limit,[other,3,'unmute']);
  await identity(other);await db.query(submit,[caseId]);
  await identity(member,'aal2');await denied(limit,[other,4,'ban']);
+ // A stale staff token and self-authored content cannot bypass guards.
+ await root();await db.query('update app_private.staff set active=false where user_id=$1',[member]);
+ await identity(member,'aal2');check((await db.query('select public.center_snapshot() as s')).rows[0].s.events.length===0,'revoked staff loses shared audit immediately');
+ await denied("select public.review_case($1,6,'comment','Revoked comment',null)",[caseId]);
+ await identity(deputy);await denied("select public.center_users('person')");
+ await identity(owner,'aal2');let ownId='30000000-0000-4000-8000-000000000002';
+ await db.query("select public.submit_moderation_case($1,'content','Own pack','Original manifest',$2::jsonb)",[ownId,JSON.stringify({id:'own.test',sha256:'a'.repeat(64)})]);
+ await denied("select public.review_case($1,1,'accepted','Self approval',null)",[ownId]);
  await root();await denied("update app_private.access_audit set action='tampered'");await denied('delete from app_private.access_audit');await denied('truncate app_private.access_audit');
  // Trusted test fixture seeds an expired event; application roles cannot do this.
  await db.exec("insert into app_private.access_audit(at,action) values(clock_timestamp()-interval '25 hours','expired.fixture')");
