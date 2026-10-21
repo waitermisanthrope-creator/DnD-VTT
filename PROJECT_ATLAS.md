@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода bfed0446d376. Git содержит 1887 файлов.
+Снимок кода 17e7ef78725c. Git содержит 1887 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -62,7 +62,7 @@
 | №0041 AGENTS.md | 4903 B | документация или отчёт: AGENTS |
 | №0042 AI_BLOCKERS.md | 23406 B | документация или отчёт: AI BLOCKERS |
 | №0043 AI_NEXT_TASK.md | 26049 B | документация или отчёт: AI NEXT TASK |
-| №0044 AI_PROGRESS.md | 64987 B | документация или отчёт: AI PROGRESS |
+| №0044 AI_PROGRESS.md | 65881 B | документация или отчёт: AI PROGRESS |
 | №0045 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0046 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0047 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1063,7 +1063,7 @@
 | №1042 docs/modular-content/retained-1.00.08-top-assets.json | 2133 B | документация или отчёт: retained 1.00.08 top assets |
 | №1043 docs/modular-content/split-inventory.json | 33489 B | документация или отчёт: split inventory |
 | №1044 docs/modular-content/UNITY-1.00.11-measured.json | 2382 B | документация или отчёт: UNITY 1.00.11 measured |
-| №1045 docs/modular-content/UNITY-1.00.11.md | 6912 B | документация или отчёт: UNITY 1.00.11 |
+| №1045 docs/modular-content/UNITY-1.00.11.md | 7583 B | документация или отчёт: UNITY 1.00.11 |
 | №1046 docs/MONETIZATION_ROADMAP.md | 15924 B | документация или отчёт: MONETIZATION ROADMAP |
 | №1047 docs/NETWORK_APK_NOTES.md | 7296 B | документация или отчёт: NETWORK APK NOTES |
 | №1048 docs/PREDICTOR_APPROVED_CARD_STATUS.md | 52542 B | документация или отчёт: PREDICTOR APPROVED CARD STATUS |
@@ -1715,7 +1715,7 @@
 | №1694 unity/Assets/Vtt/Resources/Branding/Splash19.png.meta | 312 B | вспомогательный файл: Splash19.png |
 | №1695 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg | 212684 B | текстура/изображение: Wallpaper16 |
 | №1696 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta | 312 B | вспомогательный файл: Wallpaper16.jpg |
-| №1697 unity/Assets/Vtt/Resources/Changelog.json | 7395 B | данные/конфигурация: Changelog |
+| №1697 unity/Assets/Vtt/Resources/Changelog.json | 7397 B | данные/конфигурация: Changelog |
 | №1698 unity/Assets/Vtt/Resources/Changelog.json.meta | 158 B | вспомогательный файл: Changelog.json |
 | №1699 unity/Assets/Vtt/Resources/CharacterSheet.meta | 172 B | вспомогательный файл: CharacterSheet |
 | №1700 unity/Assets/Vtt/Resources/CharacterSheet/catalog.json | 823381 B | данные/конфигурация: catalog |
@@ -1852,8 +1852,8 @@
 | №1831 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №1832 updates/README.md | 233 B | документация или отчёт: README |
 | №1833 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №1834 updates/unity-changelog.json | 7395 B | метаданные обновлений: unity changelog |
-| №1835 updates/unity-experiment.json | 1601 B | метаданные обновлений: unity experiment |
+| №1834 updates/unity-changelog.json | 7397 B | метаданные обновлений: unity changelog |
+| №1835 updates/unity-experiment.json | 1303 B | метаданные обновлений: unity experiment |
 | №1836 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №1837 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
 | №1838 wall_brick_red.png | 111128 B | текстура/изображение: wall brick red |
@@ -15563,6 +15563,7 @@
 - unity/Assets/LegacyContent/Source/wall_white_plaster.png ; wall_white_plaster.png
 - unity/Assets/LegacyContent/Source/wall_wood_dark.png ; wall_wood_dark.png
 - unity/Assets/LegacyContent/Source/wall_wood_light.png ; wall_wood_light.png
+- unity/Assets/Vtt/Resources/Changelog.json ; updates/unity-changelog.json
 
 ## Обновление индекса
 

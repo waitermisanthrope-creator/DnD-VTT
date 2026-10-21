@@ -49,3 +49,7 @@ PARTIAL — native sheet visual parity and base craft/alchemy. Screen-awake poli
 NOT STARTED in this stage — market/trading UI and advanced profession expansion. BLOCKED for direct verification — Android hardware interaction and video comparison (only JPG screenshots were supplied). Existing third-party asset provenance blockers are unchanged.
 
 Next: install over existing Unity app without uninstalling; exercise sleep toggle, lock/resume styling, new inventory/craft/alchemy pages, downloads and saves/restart; then continue main sheet parity, professions and trading. Export characters before any deliberate reinstall. Exact machine-readable build evidence: UNITY-1.00.11-measured.json.
+
+## In-app delivery correction
+
+DONE 2026-10-21: owner reported app could not see this update. Feed still pointed to 1.00.05; Actions artifacts are intentionally ignored by updater. Publisher run 39599547026 verified and publicly released the same approved candidate, then activated experimental Unity Android feed at 1.00.11 / 10011 (17e7ef78). Published APK was redownloaded and matched exact size/SHA above. Direct APK: https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.11/DnD-VTT-Unity-1.00.11-arm64.apk . Press Settings → Updates → Check update in an older Unity installation. Phone installation itself is not directly verified.
