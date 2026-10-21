@@ -1,8 +1,8 @@
 {
   "schema": 1,
   "version": "1.00.20",
-  "candidateRunId": 39692927725,
+  "candidateRunId": 39694472158,
   "approved": true,
   "scope": "Android ARM64 and Windows x64",
-  "note": "Owner-requested appearance preview and chat identity correction, exact source 12067d5e including user-confirmed Android home shortcut. Publish only after Android/Windows builds, native image checks and real Windows upgrade QA pass."
+  "note": "Owner-requested appearance grid, chat labels and user-confirmed Android icon shortcut; source cb1e5b9f also fixes editor texture cleanup. Only this candidate may publish after all build, native validation and Windows upgrade gates."
 }
