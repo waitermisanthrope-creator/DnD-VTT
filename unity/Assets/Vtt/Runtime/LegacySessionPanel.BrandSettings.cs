@@ -74,33 +74,6 @@ namespace DndVtt.UnityPrototype
             GUILayout.EndArea();
         }
 
-        private void DrawStaffSettingsPanels()
-        {
-            string role=(string)cloudAccess?["role"];
-            bool administrator=cloudSession!=null&&(role=="owner"||role=="admin");
-            bool moderator=administrator||(cloudSession!=null&&role=="moderator");
-            if(!moderator) { showAdminPanel=showModeratorPanel=false;return; }
-            int trust=Mathf.Clamp((int?)cloudAccess?["trust"]??0,0,3);
-            GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Управление платформой");
-            GUILayout.Label("Состав панелей — по последней проверке серверных прав. Каждое действие требует новой серверной проверки.",sheetQuiet);
-            if(administrator&&GUILayout.Button("Административная панель",brandGold,GUILayout.MinHeight(58)))showAdminPanel=!showAdminPanel;
-            if(administrator&&showAdminPanel) {
-                GUILayout.Label("Владелец / заместитель",settingsHeader);
-                GUILayout.Label("Пользователи и должности · Безопасность и аудит · Сборки и обновления · Обзор платформы",sheetQuiet);
-                GUILayout.Label("Функции ещё не подключены. Требуются защищённые серверные API, MFA и независимое подтверждение критических операций. Назначение заместителя доступно только владельцу.",sheetQuiet);
-            }
-            if(GUILayout.Button("Панель модерации",brandBlue,GUILayout.MinHeight(58)))showModeratorPanel=!showModeratorPanel;
-            if(showModeratorPanel) {
-                GUILayout.Label(administrator?"Администрация — все уровни модерации":"Уровень доверия: "+trust,settingsHeader);
-                GUILayout.Label("Назначенные заявки и замечания — сервер ещё не подключён.",sheetQuiet);
-                if(administrator||trust>=1)GUILayout.Label("Проверка материалов и передача на следующий этап — сервер ещё не подключён.",sheetQuiet);
-                if(administrator||trust>=2)GUILayout.Label("Очередь, спорные материалы и запрос публикации — сервер ещё не подключён.",sheetQuiet);
-                if(administrator||trust>=3)GUILayout.Label("Обезличенная диагностика и проверка совместимости — сервер ещё не подключён; требуется свежая MFA.",sheetQuiet);
-                GUILayout.Label("Модераторы не могут назначать должности или самостоятельно публиковать дополнения.",sheetQuiet);
-            }
-            GUILayout.EndVertical();
-        }
-
         private float Card(float start, float width, float height, string label, Color accent)
         {
             GUI.Box(new Rect(0,start,width,height),GUIContent.none,settingsInset);

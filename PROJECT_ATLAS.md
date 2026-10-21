@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 723ac26e1bc4. Git содержит 1913 файлов.
+Снимок кода a64bd8875d5e. Git содержит 1913 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1131,7 +1131,7 @@
 | №1110 supabase/enable_moderation_retention.sql | 861 B | вспомогательный файл: enable moderation retention |
 | №1111 supabase/migrations/202610130001_characters.sql | 4421 B | SQL миграция Supabase |
 | №1112 supabase/migrations/202610210001_access_control.sql | 8940 B | SQL миграция Supabase |
-| №1113 supabase/migrations/202610210002_moderation_center.sql | 13571 B | SQL миграция Supabase |
+| №1113 supabase/migrations/202610210002_moderation_center.sql | 13546 B | SQL миграция Supabase |
 | №1114 supabase/tests/.gitignore | 14 B | вспомогательный файл: .gitignore |
 | №1115 supabase/tests/access-control.mjs | 13004 B | вспомогательный файл: access control |
 | №1116 supabase/tests/package-lock.json | 512 B | данные/конфигурация: package lock |

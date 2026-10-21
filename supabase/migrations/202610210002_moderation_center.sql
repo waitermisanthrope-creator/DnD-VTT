@@ -114,7 +114,7 @@ begin
  perform app_private.center_guard();perform public.require_capability('staff.manage');
  if p_query is null or length(p_query)>160 then raise exception 'Invalid search' using errcode='22023';end if;
  select coalesce(jsonb_agg(to_jsonb(t)),'[]') into result from (
- select u.id,u.email,s.kind,s.trust,s.active,l.banned_until,l.muted_until,coalesce(l.revision,0) revision from auth.users u left join app_private.staff s on s.user_id=u.id left join app_private.account_limits l on l.user_id=u.id where p_query<>'' and (u.email ilike '%'||replace(replace(p_query,'%','\\%'),'_','\\_')||'%' or u.id::text=p_query) order by u.id limit 30)t;
+ select u.id,u.email,s.kind,s.trust,s.active,l.banned_until,l.muted_until,coalesce(l.revision,0) revision from auth.users u left join app_private.staff s on s.user_id=u.id left join app_private.account_limits l on l.user_id=u.id where p_query<>'' and (position(lower(p_query) in lower(u.email))>0 or u.id::text=p_query) order by u.id limit 30)t;
  return result;
 end;$$;
 create function public.set_account_limit(p_target uuid,p_revision bigint,p_kind text,p_until timestamptz,p_reason text) returns jsonb language plpgsql security definer set search_path='' as $$

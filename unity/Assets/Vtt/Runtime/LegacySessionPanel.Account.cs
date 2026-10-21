@@ -32,7 +32,7 @@ namespace DndVtt.UnityPrototype
         private void StoreCloudSession(JObject response)
         {
             var next=CloudCharacterProtocol.Session(response);
-            if(cloudSession==null||(string)cloudSession["user"]!=(string)next["user"]) { cloudJournal=null;cloudCharacters.Clear();cloudPage=0;cloudConflict=null; }
+            if(cloudSession==null||(string)cloudSession["user"]!=(string)next["user"]) { cloudJournal=null;cloudCharacters.Clear();cloudPage=0;cloudConflict=null;centerSnapshot=null;centerUsers.Clear();mfaSecret=mfaFactor=""; }
             cloudSession=next;cloudAccess=null;
 #if UNITY_ANDROID && !UNITY_EDITOR
             try { using var vault=new AndroidJavaClass("com.dndvtt.unity.DndSessionVault");WriteCloudFile(CloudSessionPath,vault.CallStatic<string>("protect",cloudSession.ToString())); } catch(Exception) { cloudMessage="Вход выполнен. Защищённое сохранение сессии недоступно; после закрытия войдите снова."; }

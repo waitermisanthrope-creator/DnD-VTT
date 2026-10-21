@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 723ac26e1bc4. Файлов: 1913
+Коммит a64bd8875d5e. Файлов: 1913
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1126,7 +1126,7 @@
 1110. supabase/enable_moderation_retention.sql — вспомогательный файл: enable moderation retention (861 B)
 1111. supabase/migrations/202610130001_characters.sql — SQL миграция Supabase (4421 B)
 1112. supabase/migrations/202610210001_access_control.sql — SQL миграция Supabase (8940 B)
-1113. supabase/migrations/202610210002_moderation_center.sql — SQL миграция Supabase (13571 B)
+1113. supabase/migrations/202610210002_moderation_center.sql — SQL миграция Supabase (13546 B)
 1114. supabase/tests/.gitignore — вспомогательный файл: .gitignore (14 B)
 1115. supabase/tests/access-control.mjs — вспомогательный файл: access control (13004 B)
 1116. supabase/tests/package-lock.json — данные/конфигурация: package lock (512 B)
