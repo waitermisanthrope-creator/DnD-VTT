@@ -56,7 +56,7 @@ namespace DndVtt.UnityPrototype
                 failure(request.responseCode==401?"Сессия истекла. Войдите снова.":request.responseCode==400?"Проверьте почту, пароль или код; подтвердите почту перед входом.":request.responseCode==429?"Слишком много запросов. Повторите позже.":"Нет связи с облаком или запрос отклонён ("+request.responseCode+"). Локальные данные сохранены.");yield break;
             }
             JToken parsed=null;string error=null;try { parsed=string.IsNullOrWhiteSpace(request.downloadHandler.text)?new JObject():LegacyJson.Parse(request.downloadHandler.text,16*1024*1024); }catch(Exception) { error="Некорректный ответ облака"; }
-            if(error!=null)failure(error);else success(parsed);
+            if(error!=null)failure(error);else { try { success(parsed); }catch(Exception) { failure("Не удалось обработать ответ или записать служебный журнал. Исходные персонажи не удалены; операцию можно повторить."); } }
         }
         private IEnumerator CloudToken(Action<string> ready)
         {
@@ -66,6 +66,9 @@ namespace DndVtt.UnityPrototype
         }
         private IEnumerator CloudAuth(string action)
         {
+            if(string.IsNullOrWhiteSpace(cloudEmail)||!cloudEmail.Contains("@")) { cloudMessage="Введите корректную почту";yield break; }
+            if((action=="login"&&cloudPassword.Length==0)||(action=="signup"&&cloudPassword.Length<8)) { cloudMessage="Введите пароль; для регистрации нужно не менее 8 символов";yield break; }
+            if((action=="verify"||action=="recovery")&&string.IsNullOrWhiteSpace(cloudCode)) { cloudMessage="Введите код из письма";yield break; }
             cloudBusy=true;cloudMessage="Подключаюсь…";string password=cloudPassword;cloudPassword="";
             string path=action=="login"?"/auth/v1/token?grant_type=password":action=="signup"?"/auth/v1/signup":action=="recover"?"/auth/v1/recover":"/auth/v1/verify";
             var body=new JObject { ["email"]=cloudEmail.Trim() };
@@ -111,8 +114,9 @@ namespace DndVtt.UnityPrototype
                 var profile=CloudCharacterProtocol.DownloadCopy(remote);
                 var candidate=archive==null?new LegacyCharacterArchive(profile.ToString()):archive.Append(profile);
                 CharacterSheetStore.Save(SavePath,candidate);archive=candidate;selected=archive.Count-1;ClearSheetInputs();
-                CloudJournal[profile["id"].ToString()]=new JObject { ["remoteId"]=remote["id"].DeepClone(),["revision"]=remote["revision"].DeepClone() };WriteCloudFile(CloudJournalPath,CloudJournal.ToString());
                 cloudMessage="Герой добавлен отдельной локальной копией и сохранён на устройстве.";
+                try { CloudJournal[profile["id"].ToString()]=new JObject { ["remoteId"]=remote["id"].DeepClone(),["revision"]=remote["revision"].DeepClone() };WriteCloudFile(CloudJournalPath,CloudJournal.ToString()); }
+                catch(Exception) { cloudMessage="Локальная копия сохранена, но облачная ссылка не записана. Перед новой отправкой проверьте журнал и свободное место."; }
             }catch(Exception) { cloudMessage="Не удалось сохранить копию. Исходный архив не удалён."; }
         }
         private void DrawAccount()

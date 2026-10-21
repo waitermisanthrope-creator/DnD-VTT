@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода fd9b9301cef0. Git содержит 1904 файлов.
+Снимок кода c15f5cee4979. Git содержит 1904 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1749,7 +1749,7 @@
 | №1728 unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs.meta | 59 B | вспомогательный файл: LegacyMapPresenter.cs |
 | №1729 unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs | 3065 B | вспомогательный файл: LegacyMigrationSmoke |
 | №1730 unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSmoke.cs |
-| №1731 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs | 15628 B | вспомогательный файл: LegacySessionPanel.Account |
+| №1731 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs | 16727 B | вспомогательный файл: LegacySessionPanel.Account |
 | №1732 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Account.cs |
 | №1733 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs | 16427 B | вспомогательный файл: LegacySessionPanel.Branding |
 | №1734 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Branding.cs |
