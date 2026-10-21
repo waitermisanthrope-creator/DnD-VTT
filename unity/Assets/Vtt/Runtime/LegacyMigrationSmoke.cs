@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.IO;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace DndVtt.UnityPrototype
@@ -7,11 +9,37 @@ namespace DndVtt.UnityPrototype
     public sealed class LegacyMigrationSmoke : MonoBehaviour
     {
         public const string Fixture = "{\"id\":\"unity-fixture\",\"name\":\"Fixture hero\",\"schemaVersion\":3,\"hpCurrent\":\"17\",\"hpMax\":24,\"resources\":{\"tarot\":{\"remaining\":3}},\"classFeaturesState\":{\"pending\":{\"sourceId\":\"unity-fixture\"}},\"futureUnknown\":{\"value\":123}}";
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        private static void InstallMinimalClientCheck()
+        {
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--vtt-client-smoke")>=0 && !FindFirstObjectByType<LegacyMigrationSmoke>())
+                new GameObject("Explicit minimal-client smoke check").AddComponent<LegacyMigrationSmoke>();
+        }
+        private static void RunMinimalClient()
+        {
+            var args=Environment.GetCommandLineArgs();int index=Array.IndexOf(args,"--vtt-profile-store");
+            Check(index>=0&&index+1<args.Length,"isolated profile override required");
+            string path=Path.GetFullPath(args[index+1]);var panel=FindFirstObjectByType<LegacySessionPanel>();
+            Check(panel&&panel.world&&panel.world.explorer,"core session/world/explorer started");
+            Check(Path.GetFullPath(panel.SavePath)==path&&File.Exists(path),"actual runtime uses isolated profile");
+            string original=File.ReadAllText(path);var expected=new LegacyCharacterArchive(original);
+            Check(panel.CurrentName==expected.Name(0)&&panel.ExportOriginal()==original,"startup loaded original profile without replacement");
+            Check(JToken.DeepEquals(LegacyJson.Parse(panel.ExportCurrent()),LegacyJson.Parse(original)),"all profile fields preserved in actual runtime export");
+            Check(!panel.Import("{\"id\":\"future\",\"schemaVersion\":99}")&&panel.ExportOriginal()==original,"invalid import preserves active profile");
+            Check(File.ReadAllText(path)==original&&File.ReadAllText(path+".bak")==original,"profile and backup remain unchanged");
+            var catalog=panel.world.catalog;
+            Check(catalog&&catalog.maps.Length==0&&catalog.models.Length==0&&catalog.surfaces.Length==0,"minimal startup has no bundled optional map resources");
+            foreach(string art in new[]{"Branding/Wallpaper16","Branding/Splash19","Branding/Dragon20"})Check(Resources.Load<Texture2D>(art),"mandatory artwork available: "+art);
+            var baseData=Resources.Load<TextAsset>("CharacterSheet/catalog");Check(baseData,"offline character data available");
+            var creation=(JObject)JObject.Parse(baseData.text)["creation"];
+            Check(((JArray)creation["races"]).Count>0&&((JArray)creation["classes"]).Count>0,"offline base creation catalog populated");
+        }
         private IEnumerator Start()
         {
-            if (Array.IndexOf(Environment.GetCommandLineArgs(), "--vtt-migration-smoke") < 0) yield break;
+            bool minimal=Array.IndexOf(Environment.GetCommandLineArgs(),"--vtt-client-smoke")>=0;
+            if (!minimal && Array.IndexOf(Environment.GetCommandLineArgs(), "--vtt-migration-smoke") < 0) yield break;
             yield return null;
-            try { Run(); Debug.Log("VTT_MIGRATION_SMOKE_PASS: actual tavern meshes/textures, both floors, ground/movement, first/third cameras, elevated respawn, character import/no-loss/rejection"); Application.Quit(0); }
+            try { if(minimal) { RunMinimalClient();Debug.Log("VTT_CLIENT_SMOKE_PASS: minimal startup, original profile/backup, unknown fields, invalid import isolation, mandatory artwork and offline creation");Application.Quit(0); } else { Run(); Debug.Log("VTT_MIGRATION_SMOKE_PASS: actual tavern meshes/textures, both floors, ground/movement, first/third cameras, elevated respawn, character import/no-loss/rejection"); Application.Quit(0); } }
             catch (Exception error) { Debug.LogException(error); Application.Quit(1); }
         }
         private static void Check(bool ok, string message) { if (!ok) throw new Exception("VTT_MIGRATION_SMOKE_FAIL: " + message); }

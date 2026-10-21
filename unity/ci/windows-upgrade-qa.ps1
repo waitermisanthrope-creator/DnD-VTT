@@ -16,10 +16,17 @@ function Install([string]$Setup) {
     $p = Start-Process -FilePath $Setup -ArgumentList @('/S','/NOAUTORUN=1',"/D=$install") -PassThru -WindowStyle Hidden
     if (!$p.WaitForExit(180000) -or $p.ExitCode -ne 0) { throw 'Silent installation failed/timed out' }
 }
-function Smoke([string]$Label) {
+function Smoke([string]$Label, [bool]$Minimal = $false) {
+    $mode = if ($Minimal) { "--vtt-client-smoke" } else { "--vtt-migration-smoke" }
+    $marker = if ($Minimal) { "VTT_CLIENT_SMOKE_PASS:" } else { "VTT_MIGRATION_SMOKE_PASS:" }
     $log = Join-Path $root "$Label.log"
-    $p = Start-Process -FilePath (Join-Path $install 'DndVtt.exe') -ArgumentList @('-batchmode','-nographics','--vtt-migration-smoke','--vtt-profile-store',"`"$profile`"",'-logFile',"`"$log`"") -PassThru -WindowStyle Hidden
-    if (!$p.WaitForExit(180000) -or $p.ExitCode -ne 0 -or !(Select-String -LiteralPath $log -SimpleMatch 'VTT_MIGRATION_SMOKE_PASS:' -Quiet)) { throw "Installed runtime smoke failed: $Label" }
+    $p = Start-Process -FilePath (Join-Path $install 'DndVtt.exe') -ArgumentList @('-batchmode','-nographics',$mode,'--vtt-profile-store',"`"$profile`"",'-logFile',"`"$log`"") -PassThru -WindowStyle Hidden
+    $exited=$p.WaitForExit(180000)
+    if (!$exited) { $p.Kill(); $p.WaitForExit(10000) | Out-Null }
+    if (!$exited -or $p.ExitCode -ne 0 -or !(Select-String -LiteralPath $log -SimpleMatch $marker -Quiet)) {
+        if(Test-Path $log) { Get-Content $log -Tail 100 | Write-Output }
+        throw "Installed runtime smoke failed: $Label"
+    }
     if ((Get-FileHash $profile).Hash -ne $before -or (Get-FileHash ($profile+'.bak')).Hash -ne $before) { throw 'Synthetic profile/backup changed' }
 }
 Install $baseline
@@ -37,9 +44,9 @@ foreach ($property in $report.windowsFiles.PSObject.Properties) {
     if (!(Test-Path -LiteralPath $path) -or (Get-FileHash -LiteralPath $path).Hash.ToLowerInvariant() -ne $property.Value) { throw "Installed payload differs: $($property.Name)" }
 }
 if (!(Test-Path $unknownFile)) { throw 'Upgrade removed an unknown user-added file' }
-Smoke 'upgraded'
+Smoke 'upgraded' $true
 Install $setup
-Smoke 'reinstalled'
-$result = [ordered]@{ status='passed'; baseline='1.00.00'; candidate=$report.version; baselineInstall=$true; installedPayloadHashes=$true; upgrade=$true; reinstall=$true; isolatedProfileAndBackupPreserved=$true; unknownFilePreserved=$true; runtimeSmoke=$true; physicalAndroidQa=$false; run=$env:GITHUB_RUN_ID; source=$env:GITHUB_SHA }
+Smoke 'reinstalled' $true
+$result = [ordered]@{ status='passed'; baseline='1.00.00'; candidate=$report.version; baselineInstall=$true; installedPayloadHashes=$true; upgrade=$true; reinstall=$true; isolatedProfileAndBackupPreserved=$true; unknownFilePreserved=$true; runtimeSmoke=$true; baselineSmokeMode='legacy-adventure'; candidateSmokeMode='minimal-client'; physicalAndroidQa=$false; run=$env:GITHUB_RUN_ID; source=$env:GITHUB_SHA }
 $result | ConvertTo-Json | Set-Content (Join-Path $env:RUNNER_TEMP 'windows-upgrade-result.json')
 Write-Output 'CLOUD_WINDOWS_UPGRADE_QA_PASS: installed 1.00.00 -> candidate -> reinstall; exact payload/profile/backup hashes; actual runtime smoke'

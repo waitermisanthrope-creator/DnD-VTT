@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 49c94ed22b29. Git содержит 1925 файлов.
+Снимок кода 5ab9a84a6dfc. Git содержит 1925 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1080,7 +1080,7 @@
 | №1059 docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md | 8253 B | документация или отчёт: ACCESS AND TOUCH 1.00.12 |
 | №1060 docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md | 9558 B | документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP |
 | №1061 docs/unity-account/CHAT_ONE_HOUR.md | 2267 B | документация или отчёт: CHAT ONE HOUR |
-| №1062 docs/unity-account/IMPLEMENTATION_STATUS.md | 19342 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1062 docs/unity-account/IMPLEMENTATION_STATUS.md | 21014 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1063 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1064 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1065 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
@@ -1736,7 +1736,7 @@
 | №1715 unity/Assets/Vtt/Resources/Branding/Splash19.png.meta | 312 B | вспомогательный файл: Splash19.png |
 | №1716 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg | 212684 B | текстура/изображение: Wallpaper16 |
 | №1717 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta | 312 B | вспомогательный файл: Wallpaper16.jpg |
-| №1718 unity/Assets/Vtt/Resources/Changelog.json | 15358 B | данные/конфигурация: Changelog |
+| №1718 unity/Assets/Vtt/Resources/Changelog.json | 17188 B | данные/конфигурация: Changelog |
 | №1719 unity/Assets/Vtt/Resources/Changelog.json.meta | 158 B | вспомогательный файл: Changelog.json |
 | №1720 unity/Assets/Vtt/Resources/CharacterSheet.meta | 172 B | вспомогательный файл: CharacterSheet |
 | №1721 unity/Assets/Vtt/Resources/CharacterSheet/catalog.json | 823381 B | данные/конфигурация: catalog |
@@ -1760,7 +1760,7 @@
 | №1739 unity/Assets/Vtt/Runtime/LegacyDocuments.cs.meta | 59 B | вспомогательный файл: LegacyDocuments.cs |
 | №1740 unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs | 16116 B | вспомогательный файл: LegacyMapPresenter |
 | №1741 unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs.meta | 59 B | вспомогательный файл: LegacyMapPresenter.cs |
-| №1742 unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs | 3065 B | вспомогательный файл: LegacyMigrationSmoke |
+| №1742 unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs | 5858 B | вспомогательный файл: LegacyMigrationSmoke |
 | №1743 unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSmoke.cs |
 | №1744 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs | 19042 B | вспомогательный файл: LegacySessionPanel.Account |
 | №1745 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Account.cs |
@@ -1838,7 +1838,7 @@
 | №1817 unity/ci/transfer-signing-secrets.ps1 | 3449 B | вспомогательный файл: transfer signing secrets |
 | №1818 unity/ci/verify_bundle_output.py | 1081 B | вспомогательный файл: verify bundle output |
 | №1819 unity/ci/verify_public_workshop.py | 1888 B | вспомогательный файл: verify public workshop |
-| №1820 unity/ci/windows-upgrade-qa.ps1 | 3846 B | вспомогательный файл: windows upgrade qa |
+| №1820 unity/ci/windows-upgrade-qa.ps1 | 4224 B | вспомогательный файл: windows upgrade qa |
 | №1821 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
 | №1822 unity/ci/workshop-tests/AccountGestureChecks.cs | 3924 B | вспомогательный файл: AccountGestureChecks |
 | №1823 unity/ci/workshop-tests/CommerceChecks.cs | 4247 B | вспомогательный файл: CommerceChecks |
@@ -1890,7 +1890,7 @@
 | №1869 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №1870 updates/README.md | 233 B | документация или отчёт: README |
 | №1871 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №1872 updates/unity-changelog.json | 15358 B | метаданные обновлений: unity changelog |
+| №1872 updates/unity-changelog.json | 17188 B | метаданные обновлений: unity changelog |
 | №1873 updates/unity-experiment.json | 1343 B | метаданные обновлений: unity experiment |
 | №1874 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №1875 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |

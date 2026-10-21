@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 49c94ed22b29. Файлов: 1925
+Коммит 5ab9a84a6dfc. Файлов: 1925
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1075,7 +1075,7 @@
 1059. docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md — документация или отчёт: ACCESS AND TOUCH 1.00.12 (8253 B)
 1060. docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md — документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP (9558 B)
 1061. docs/unity-account/CHAT_ONE_HOUR.md — документация или отчёт: CHAT ONE HOUR (2267 B)
-1062. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (19342 B)
+1062. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (21014 B)
 1063. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7893 B)
 1064. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1065. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
@@ -1731,7 +1731,7 @@
 1715. unity/Assets/Vtt/Resources/Branding/Splash19.png.meta — вспомогательный файл: Splash19.png (312 B)
 1716. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg — текстура/изображение: Wallpaper16 (212684 B)
 1717. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta — вспомогательный файл: Wallpaper16.jpg (312 B)
-1718. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (15358 B)
+1718. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (17188 B)
 1719. unity/Assets/Vtt/Resources/Changelog.json.meta — вспомогательный файл: Changelog.json (158 B)
 1720. unity/Assets/Vtt/Resources/CharacterSheet.meta — вспомогательный файл: CharacterSheet (172 B)
 1721. unity/Assets/Vtt/Resources/CharacterSheet/catalog.json — данные/конфигурация: catalog (823381 B)
@@ -1755,7 +1755,7 @@
 1739. unity/Assets/Vtt/Runtime/LegacyDocuments.cs.meta — вспомогательный файл: LegacyDocuments.cs (59 B)
 1740. unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs — вспомогательный файл: LegacyMapPresenter (16116 B)
 1741. unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs.meta — вспомогательный файл: LegacyMapPresenter.cs (59 B)
-1742. unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs — вспомогательный файл: LegacyMigrationSmoke (3065 B)
+1742. unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs — вспомогательный файл: LegacyMigrationSmoke (5858 B)
 1743. unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs.meta — вспомогательный файл: LegacyMigrationSmoke.cs (59 B)
 1744. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs — вспомогательный файл: LegacySessionPanel.Account (19042 B)
 1745. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta — вспомогательный файл: LegacySessionPanel.Account.cs (60 B)
@@ -1833,7 +1833,7 @@
 1817. unity/ci/transfer-signing-secrets.ps1 — вспомогательный файл: transfer signing secrets (3449 B)
 1818. unity/ci/verify_bundle_output.py — вспомогательный файл: verify bundle output (1081 B)
 1819. unity/ci/verify_public_workshop.py — вспомогательный файл: verify public workshop (1888 B)
-1820. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (3846 B)
+1820. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (4224 B)
 1821. unity/ci/workshop-tests/.gitignore — вспомогательный файл: .gitignore (10 B)
 1822. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (3924 B)
 1823. unity/ci/workshop-tests/CommerceChecks.cs — вспомогательный файл: CommerceChecks (4247 B)
@@ -1885,7 +1885,7 @@
 1869. updates/previous-stable.json — метаданные обновлений: previous stable (179808 B)
 1870. updates/README.md — документация или отчёт: README (233 B)
 1871. updates/stable.json — метаданные обновлений: stable (179809 B)
-1872. updates/unity-changelog.json — метаданные обновлений: unity changelog (15358 B)
+1872. updates/unity-changelog.json — метаданные обновлений: unity changelog (17188 B)
 1873. updates/unity-experiment.json — метаданные обновлений: unity experiment (1343 B)
 1874. vignette_v2_sprite.png — текстура/изображение: vignette v2 sprite (1213593 B)
 1875. VTT_PROJECT_MANIFEST_V70.json — устаревший список V70, не актуален (44370 B)
