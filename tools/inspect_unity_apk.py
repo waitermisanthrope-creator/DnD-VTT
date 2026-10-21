@@ -41,6 +41,18 @@ with tempfile.TemporaryDirectory(prefix='dnd-vtt-apk-audit-') as folder:
         try:
             data = obj.read()
             record['name'] = getattr(data, 'm_Name', '')
+            if kind == 'TextAsset':
+                raw = getattr(data, 'm_Script', '')
+                try:
+                    document = json.loads(raw)
+                except (ValueError, TypeError, UnicodeError):
+                    document = None
+                if isinstance(document, dict):
+                    record['isMapDocument'] = document.get('version') == 2 and isinstance(document.get('floors'), list)
+                    if isinstance(document.get('creation'), dict):
+                        creation = document['creation']
+                        record['creationIds'] = {key: [row.get('id') for row in creation.get(key, [])] for key in ('races', 'classes', 'feats')}
+                        record['baseline'] = document.get('baseline')
             if kind == 'Texture2D':
                 record.update(width=data.m_Width, height=data.m_Height, textureFormat=data.m_TextureFormat)
         except Exception as error:

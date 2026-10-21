@@ -21,8 +21,15 @@ if args.minimal_content:
     assert not props, 'Optional prop textures leaked into APK'
     optional_names = ('floor_', 'wall_', '3d_', 'T_Trim_')
     assert not any(item.get('name','').startswith(optional_names) for item in objects['objects'] if item['type'] in ('Texture2D','TextAsset','Material')), 'Optional map content leaked into APK'
-    catalog = json.loads((root/'unity/Assets/Vtt/Resources/CharacterSheet/catalog.json').read_text())
-    assert len(catalog['creation']['races']) == 15 and len(catalog['creation']['classes']) == 12
+    assert not any(item.get('isMapDocument') for item in objects['objects']), 'Map JSON is bundled in APK'
+    catalogs = [item['creationIds'] for item in objects['objects'] if 'creationIds' in item]
+    assert len(catalogs) == 1, 'Expected one actual serialized character catalog'
+    catalog = catalogs[0]
+    assert len(catalog['races']) == 15 and len(catalog['classes']) == 12, 'APK must contain only the PHB baseline'
+    assert not {'tortle','aasimar'}.intersection(catalog['races'])
+    assert not {'artificer','blood_hunter','alchemist','witch','occultist'}.intersection(catalog['classes'])
+    expected = json.loads((root/'unity/Assets/Vtt/Resources/CharacterSheet/catalog.json').read_text())['creation']
+    assert catalog == {key:[row.get('id') for row in expected[key]] for key in ('races','classes','feats')}, 'APK catalog differs from reviewed baseline' 
 if args.max_prop_texture:
     assert len(props) == 12, 'Missing mandatory prop textures'
     assert all(max(item['width'], item['height']) <= args.max_prop_texture for item in props), 'Android texture import cap not applied'
@@ -41,6 +48,8 @@ with zipfile.ZipFile(args.apk) as archive:
                   zipCompressedNativeBytes=compressed('lib/'),
                   propTextureCount=len(props), propTextureDimensions={item['name']:[item['width'], item['height']] for item in props},
                   originalBrandingBytesVerified=True,
+                  minimalContentVerified=args.minimal_content,
+                  bundledCreationIds=catalog if args.minimal_content else None,
                   deviceQa=False,
                   note='Signed APK file size; ZIP groups include engine/metadata as indicated by path, not only gameplay content.')
 args.report.write_text(json.dumps(result, indent=2)+'\n')
