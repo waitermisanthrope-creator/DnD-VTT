@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 739ff4bf630a. Git содержит 1925 файлов.
+Снимок кода cea3fa0f9fd2. Git содержит 1925 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1080,7 +1080,7 @@
 | №1059 docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md | 8253 B | документация или отчёт: ACCESS AND TOUCH 1.00.12 |
 | №1060 docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md | 9558 B | документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP |
 | №1061 docs/unity-account/CHAT_ONE_HOUR.md | 2267 B | документация или отчёт: CHAT ONE HOUR |
-| №1062 docs/unity-account/IMPLEMENTATION_STATUS.md | 23168 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1062 docs/unity-account/IMPLEMENTATION_STATUS.md | 24131 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1063 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1064 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1065 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
@@ -1726,7 +1726,7 @@
 | №1705 unity/Assets/Vtt/Editor/UnityReleaseBuild.cs.meta | 60 B | вспомогательный файл: UnityReleaseBuild.cs |
 | №1706 unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs | 3632 B | вспомогательный файл: WorkshopBundleBuild |
 | №1707 unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs.meta | 60 B | вспомогательный файл: WorkshopBundleBuild.cs |
-| №1708 unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs | 12272 B | вспомогательный файл: WorkshopEditorValidation |
+| №1708 unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs | 15083 B | вспомогательный файл: WorkshopEditorValidation |
 | №1709 unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs.meta | 60 B | вспомогательный файл: WorkshopEditorValidation.cs |
 | №1710 unity/Assets/Vtt/Resources.meta | 172 B | вспомогательный файл: Resources |
 | №1711 unity/Assets/Vtt/Resources/Branding.meta | 172 B | вспомогательный файл: Branding |
@@ -1736,7 +1736,7 @@
 | №1715 unity/Assets/Vtt/Resources/Branding/Splash19.png.meta | 312 B | вспомогательный файл: Splash19.png |
 | №1716 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg | 212684 B | текстура/изображение: Wallpaper16 |
 | №1717 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta | 312 B | вспомогательный файл: Wallpaper16.jpg |
-| №1718 unity/Assets/Vtt/Resources/Changelog.json | 19236 B | данные/конфигурация: Changelog |
+| №1718 unity/Assets/Vtt/Resources/Changelog.json | 20545 B | данные/конфигурация: Changelog |
 | №1719 unity/Assets/Vtt/Resources/Changelog.json.meta | 158 B | вспомогательный файл: Changelog.json |
 | №1720 unity/Assets/Vtt/Resources/CharacterSheet.meta | 172 B | вспомогательный файл: CharacterSheet |
 | №1721 unity/Assets/Vtt/Resources/CharacterSheet/catalog.json | 823381 B | данные/конфигурация: catalog |
@@ -1764,13 +1764,13 @@
 | №1743 unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSmoke.cs |
 | №1744 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs | 19042 B | вспомогательный файл: LegacySessionPanel.Account |
 | №1745 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Account.cs |
-| №1746 unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs | 6115 B | вспомогательный файл: LegacySessionPanel.Appearance |
+| №1746 unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs | 13281 B | вспомогательный файл: LegacySessionPanel.Appearance |
 | №1747 unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Appearance.cs |
 | №1748 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs | 16618 B | вспомогательный файл: LegacySessionPanel.Branding |
 | №1749 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Branding.cs |
 | №1750 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs | 9051 B | вспомогательный файл: LegacySessionPanel.BrandSettings |
 | №1751 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.BrandSettings.cs |
-| №1752 unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs | 3928 B | вспомогательный файл: LegacySessionPanel.Chat |
+| №1752 unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs | 4570 B | вспомогательный файл: LegacySessionPanel.Chat |
 | №1753 unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Chat.cs |
 | №1754 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs | 18536 B | вспомогательный файл: LegacySessionPanel.Commerce |
 | №1755 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Commerce.cs |
@@ -1890,7 +1890,7 @@
 | №1869 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №1870 updates/README.md | 233 B | документация или отчёт: README |
 | №1871 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №1872 updates/unity-changelog.json | 19236 B | метаданные обновлений: unity changelog |
+| №1872 updates/unity-changelog.json | 20545 B | метаданные обновлений: unity changelog |
 | №1873 updates/unity-experiment.json | 2442 B | метаданные обновлений: unity experiment |
 | №1874 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №1875 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |

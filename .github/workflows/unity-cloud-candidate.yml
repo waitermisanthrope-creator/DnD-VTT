@@ -16,7 +16,7 @@ on:
       version:
         description: 'Unpublished Android candidate, newer than public version'
         required: true
-        default: '1.00.19'
+        default: '1.00.20'
         type: string
 
 permissions:
@@ -40,7 +40,7 @@ jobs:
           persist-credentials: false
       - name: Reject candidate version already present in update channel
         env:
-          CANDIDATE_VERSION: ${{ inputs.version || '1.00.19' }}
+          CANDIDATE_VERSION: ${{ inputs.version || '1.00.20' }}
         run: |
           python3 - <<'PYCODE'
           import json, os
@@ -90,7 +90,7 @@ jobs:
         run: python3 unity/ci/cloud_release.py check-license
       - name: Prepare unpublished Android version in checkout only
         env:
-          CANDIDATE_VERSION: ${{ inputs.version || '1.00.19' }}
+          CANDIDATE_VERSION: ${{ inputs.version || '1.00.20' }}
         run: python3 unity/ci/cloud_release.py prepare --version "$CANDIDATE_VERSION"
       - name: Restore Unity import and IL2CPP cache (no credentials)
         id: unity-library
@@ -125,16 +125,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          APK="unity/Builds/Unity-${{ inputs.version || '1.00.19' }}/android-intermediate.apk"
+          APK="unity/Builds/Unity-${{ inputs.version || '1.00.20' }}/android-intermediate.apk"
           test -s "$APK"
           test "$(stat -c '%s' "$APK")" -gt 10000000
           badging="$("$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK")"
           grep -F "name='com.dndvtt.unity'" <<<"$badging"
-          expected_version="${{ inputs.version || '1.00.19' }}"
+          expected_version="${{ inputs.version || '1.00.20' }}"
           IFS=. read -r major minor patch <<< "$expected_version"
           printf -v expected_code '%d' "$((10#$major * 10000 + 10#$minor * 100 + 10#$patch))"
           grep -F "versionCode='$expected_code'" <<<"$badging"
-          grep -F "versionName='${{ inputs.version || '1.00.19' }}'" <<<"$badging"
+          grep -F "versionName='${{ inputs.version || '1.00.20' }}'" <<<"$badging"
           grep -F "native-code: 'arm64-v8a'" <<<"$badging"
           sha256sum "$APK"
           echo "CI_REAL_UNITY_ANDROID_APK_PASS: output exists and Android package metadata matches"
@@ -148,7 +148,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          BUILD_DIR="unity/Builds/Unity-${{ inputs.version || '1.00.19' }}"
+          BUILD_DIR="unity/Builds/Unity-${{ inputs.version || '1.00.20' }}"
           test -s "$BUILD_DIR/android-intermediate.apk"
           # game-ci/unity-builder writes the intermediate files as root inside
           # Docker. The host runner must own them to create the signed APK.
@@ -169,7 +169,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m pip install UnityPy==1.25.4
-          APK="unity/Builds/Unity-${{ inputs.version || '1.00.19' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.19' }}-arm64.apk"
+          APK="unity/Builds/Unity-${{ inputs.version || '1.00.20' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.20' }}-arm64.apk"
           python3 tools/inspect_unity_apk.py --apk "$APK" --output unity/apk-object-inventory.json
           python3 unity/ci/measure_apk.py --apk "$APK" --objects unity/apk-object-inventory.json --report unity/apk-metrics.json --minimal-content
       - name: Save measured APK inventory and metrics
@@ -185,8 +185,8 @@ jobs:
       - name: Deliver verified signed Android APK for phone testing
         uses: actions/upload-artifact@v4
         with:
-          name: DnD-VTT-Unity-${{ inputs.version || '1.00.19' }}-Android-test
-          path: unity/Builds/Unity-${{ inputs.version || '1.00.19' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.19' }}-arm64.apk
+          name: DnD-VTT-Unity-${{ inputs.version || '1.00.20' }}-Android-test
+          path: unity/Builds/Unity-${{ inputs.version || '1.00.20' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.20' }}-arm64.apk
           if-no-files-found: error
           retention-days: 3
       - name: Verify separately generated trusted Android demo bundle
@@ -235,7 +235,7 @@ jobs:
         run: git checkout --detach "$GITHUB_SHA"
       - name: Prepare same candidate version
         env:
-          CANDIDATE_VERSION: ${{ inputs.version || '1.00.19' }}
+          CANDIDATE_VERSION: ${{ inputs.version || '1.00.20' }}
         run: python3 unity/ci/cloud_release.py prepare --version "$CANDIDATE_VERSION"
       - name: Build actual Windows x64 Mono player
         continue-on-error: true
@@ -255,13 +255,13 @@ jobs:
       - name: Verify actual Windows output and restore ownership
         run: |
           sudo chown -R "$(id -u):$(id -g)" unity/Builds
-          test -s "unity/Builds/Unity-${{ inputs.version || '1.00.19' }}/windows/DndVtt.exe"
-          test -s "unity/Builds/Unity-${{ inputs.version || '1.00.19' }}/windows/UnityPlayer.dll"
-          test -s "unity/Builds/Unity-${{ inputs.version || '1.00.19' }}/windows/DndVtt_Data/Managed/Assembly-CSharp.dll"
+          test -s "unity/Builds/Unity-${{ inputs.version || '1.00.20' }}/windows/DndVtt.exe"
+          test -s "unity/Builds/Unity-${{ inputs.version || '1.00.20' }}/windows/UnityPlayer.dll"
+          test -s "unity/Builds/Unity-${{ inputs.version || '1.00.20' }}/windows/DndVtt_Data/Managed/Assembly-CSharp.dll"
       - uses: actions/download-artifact@v4
         with:
-          name: DnD-VTT-Unity-${{ inputs.version || '1.00.19' }}-Android-test
-          path: unity/Builds/Unity-${{ inputs.version || '1.00.19' }}/distribution
+          name: DnD-VTT-Unity-${{ inputs.version || '1.00.20' }}-Android-test
+          path: unity/Builds/Unity-${{ inputs.version || '1.00.20' }}/distribution
       - name: Install existing packaging dependencies
         run: |
           sudo apt-get update -qq

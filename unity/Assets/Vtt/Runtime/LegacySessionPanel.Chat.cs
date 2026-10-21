@@ -28,6 +28,12 @@ namespace DndVtt.UnityPrototype
                 },e=>chatStatus="Чат недоступен. Серверная миграция может быть ещё не подключена. "+e);
             }finally { chatBusy=false;chatNextRefresh=Time.unscaledTime+10; }
         }
+        private static string ChatAuthorLabel(string author,string ownUser)
+        {
+            if(!string.IsNullOrEmpty(ownUser)&&author==ownUser)return "Вы";
+            return "Игрок "+WorkshopStore.Digest(System.Text.Encoding.UTF8.GetBytes(author??"unknown")).Substring(0,6).ToUpperInvariant();
+        }
+        private static string ChatMessageTime(string value)=>DateTimeOffset.TryParse(value,out var created)?created.ToLocalTime().ToString("HH:mm"):"";
         private void DrawChat()
         {
             LoadCloudSession();
@@ -41,7 +47,10 @@ namespace DndVtt.UnityPrototype
             foreach(JObject message in chatMessages) {
                 if(!DateTimeOffset.TryParse((string)message["expires_at"],out var expires)||expires<=now)continue;
                 GUILayout.BeginVertical(GUI.skin.box);
-                GUILayout.Label((string)message["author"]+" · "+(string)message["created_at"],plain);
+                string author=(string)message["author"];
+                string label=ChatAuthorLabel(author,(string)cloudSession?["user"]);
+                string time=ChatMessageTime((string)message["created_at"]);
+                GUILayout.Label(label+" · "+time,plain);
                 GUILayout.Label((string)message["body"],plain);GUILayout.EndVertical();
             }
             chatDraft=GUILayout.TextArea(chatDraft,1000,GUILayout.MinHeight(85));

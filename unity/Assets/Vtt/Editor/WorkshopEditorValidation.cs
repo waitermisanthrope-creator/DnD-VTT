@@ -31,6 +31,37 @@ public static class WorkshopEditorValidation
             Debug.Log("VTT_MENU_INPUT_SYSTEM_PASS: actual virtual touchscreen begin/move/end reaches menu scroll and cancels click");
         } finally { UnityEngine.Object.DestroyImmediate(go);InputSystem.RemoveDevice(device);if(prior!=null)prior.MakeCurrent(); }
     }
+    private static void ValidateAppearanceLibrary(WorkshopStore store,JArray manifests)
+    {
+        var go=new GameObject("Appearance library validation");
+        try {
+            var panel=go.AddComponent<LegacySessionPanel>();var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+            typeof(LegacySessionPanel).GetField("workshopStore",flags).SetValue(panel,store);
+            var thumb=typeof(LegacySessionPanel).GetMethod("AppearanceThumbnail",flags);
+            var preview=typeof(LegacySessionPanel).GetMethod("AppearancePreview",flags);
+            var release=typeof(LegacySessionPanel).GetMethod("ReleaseAppearanceImages",flags);
+            var entries=manifests.OfType<JObject>().Where(m=>m["imageKind"]!=null).Take(12).ToArray();
+            Check(entries.Length==12,"real appearance fixtures available for bounded thumbnail test");
+            foreach(var entry in entries) {
+                var image=(Texture2D)thumb.Invoke(panel,new object[]{entry});
+                Check(image&&image.width<=160&&image.height<=160,"real published thumbnail decoded and bounded");
+            }
+            var cache=(System.Collections.IDictionary)typeof(LegacySessionPanel).GetField("appearanceThumbnails",flags).GetValue(panel);
+            Check(cache.Count<=9,"thumbnail cache remains bounded while browsing pages");
+            var full=(Texture2D)preview.Invoke(panel,new object[]{entries[0]});
+            var source=(JObject)store.Data(entries[0])["images"][0];
+            Check(full&&full.width==(int)source["width"]&&full.height==(int)source["height"],"large preview uses full downloaded image");
+            release.Invoke(panel,new object[]{true});Check(cache.Count==0,"low-memory/uninstall cleanup clears thumbnails");
+            Check(typeof(LegacySessionPanel).GetField("appearancePreviewTexture",flags).GetValue(panel)==null,"large preview released");
+            var author=typeof(LegacySessionPanel).GetMethod("ChatAuthorLabel",BindingFlags.Static|BindingFlags.NonPublic);
+            const string uuid="8e23f5b2-be5d-4805-8009-637685261fba";
+            Check((string)author.Invoke(null,new object[]{uuid,uuid})=="Вы","own chat author is friendly label");
+            string other=(string)author.Invoke(null,new object[]{uuid,"another-user"});
+            Check(other.StartsWith("Игрок ")&&!other.Contains(uuid)&&!other.Contains("@"),"chat hides technical identity and email");
+            Check(other==(string)author.Invoke(null,new object[]{uuid,"another-user"}),"chat pseudonym stable between refreshes");
+            Debug.Log("VTT_APPEARANCE_LIBRARY_PASS: real bounded thumbnails, full preview, cleanup, private friendly chat labels");
+        } finally { UnityEngine.Object.DestroyImmediate(go); }
+    }
     [MenuItem("DnD VTT/Workshop/Validate published demo integration")]
     public static void Run()
     {
@@ -69,6 +100,7 @@ public static class WorkshopEditorValidation
                 }
             }
             Debug.Log("VTT_APPEARANCE_PNG_PASS: "+decodedImages+" downloaded images decoded with matching dimensions");
+            ValidateAppearanceLibrary(store,manifests);
             runtime = new WorkshopRuntime(store); runtime.ActivateData();
             var commerce = runtime.Commerce();
             Check(((JArray)commerce["items"]).Count == 308 && ((JArray)commerce["craft"]["recipes"]).Count == 47, "downloaded inventory and craft activated in native Unity");
