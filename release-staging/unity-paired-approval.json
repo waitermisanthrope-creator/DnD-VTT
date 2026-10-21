@@ -1,8 +1,8 @@
 {
   "schema": 1,
   "version": "1.00.20",
-  "candidateRunId": 39692498721,
+  "candidateRunId": 39692927725,
   "approved": true,
   "scope": "Android ARM64 and Windows x64",
-  "note": "Owner-requested appearance preview and chat identity correction, source f6dc340e. Release only after actual Android/Windows builds, native appearance checks and Windows upgrade QA pass. Preserve signing, saves and existing publication pipeline."
+  "note": "Owner-requested appearance preview and chat identity correction, exact source 12067d5e including user-confirmed Android home shortcut. Publish only after Android/Windows builds, native image checks and real Windows upgrade QA pass."
 }

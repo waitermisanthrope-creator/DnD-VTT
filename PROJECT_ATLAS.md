@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода f6470cd94d24. Git содержит 1925 файлов.
+Снимок кода 12067d5e21dd. Git содержит 1925 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1080,7 +1080,7 @@
 | №1059 docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md | 8253 B | документация или отчёт: ACCESS AND TOUCH 1.00.12 |
 | №1060 docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md | 9558 B | документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP |
 | №1061 docs/unity-account/CHAT_ONE_HOUR.md | 2267 B | документация или отчёт: CHAT ONE HOUR |
-| №1062 docs/unity-account/IMPLEMENTATION_STATUS.md | 24131 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1062 docs/unity-account/IMPLEMENTATION_STATUS.md | 24459 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1063 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1064 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1065 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
@@ -1123,7 +1123,7 @@
 | №1102 PROJECT_ATLAS.txt | генерируется | человекочитаемая карта репозитория |
 | №1103 README.md | 145 B | документация или отчёт: README |
 | №1104 release-staging/unity-android-approval.json | 470 B | данные/конфигурация: unity android approval |
-| №1105 release-staging/unity-paired-approval.json | 397 B | данные/конфигурация: unity paired approval |
+| №1105 release-staging/unity-paired-approval.json | 384 B | данные/конфигурация: unity paired approval |
 | №1106 release-staging/unity-release.json | 3914 B | данные/конфигурация: unity release |
 | №1107 smoke_back_v2_sprite-1.png | 1707378 B | текстура/изображение: smoke back v2 sprite 1 |
 | №1108 smoke_back_v2_sprite.png | 1814587 B | текстура/изображение: smoke back v2 sprite |

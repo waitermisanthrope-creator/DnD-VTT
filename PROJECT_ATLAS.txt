@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит f6470cd94d24. Файлов: 1925
+Коммит 12067d5e21dd. Файлов: 1925
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1075,7 +1075,7 @@
 1059. docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md — документация или отчёт: ACCESS AND TOUCH 1.00.12 (8253 B)
 1060. docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md — документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP (9558 B)
 1061. docs/unity-account/CHAT_ONE_HOUR.md — документация или отчёт: CHAT ONE HOUR (2267 B)
-1062. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (24131 B)
+1062. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (24459 B)
 1063. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7893 B)
 1064. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1065. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
@@ -1118,7 +1118,7 @@
 1102. PROJECT_ATLAS.txt — человекочитаемая карта репозитория (генерируется)
 1103. README.md — документация или отчёт: README (145 B)
 1104. release-staging/unity-android-approval.json — данные/конфигурация: unity android approval (470 B)
-1105. release-staging/unity-paired-approval.json — данные/конфигурация: unity paired approval (397 B)
+1105. release-staging/unity-paired-approval.json — данные/конфигурация: unity paired approval (384 B)
 1106. release-staging/unity-release.json — данные/конфигурация: unity release (3914 B)
 1107. smoke_back_v2_sprite-1.png — текстура/изображение: smoke back v2 sprite 1 (1707378 B)
 1108. smoke_back_v2_sprite.png — текстура/изображение: smoke back v2 sprite (1814587 B)

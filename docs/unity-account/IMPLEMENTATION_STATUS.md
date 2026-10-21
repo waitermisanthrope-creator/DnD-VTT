@@ -1,10 +1,10 @@
 ## 1.00.20 appearance and chat correction — candidate
 
-PARTIAL: replaced long textual appearance list with separate wallpaper/icon thumbnail grids, nine-card pagination, full-size selected preview, explicit apply and selected marker. Installed packages only, bounded thumbnail cache and one full preview, clear on low-memory/remove/destroy. Existing preferences/export/package hashes retained. Android launcher replacement remains unavailable and explicitly labeled.
+PARTIAL: replaced long textual appearance list with separate wallpaper/icon thumbnail grids, nine-card pagination, full-size selected preview, explicit apply and selected marker. Installed packages only, bounded thumbnail cache and one full preview, clear on low-memory/remove/destroy. Existing preferences/export/package hashes retained. Downloaded icon can create/update an Android 8+ pinned home-screen shortcut through ShortcutManager with system confirmation; unsupported launchers report unavailable, PNG export remains. App-drawer component icon replacement remains unavailable and explicitly labeled. Real launcher behavior requires phone QA.
 
 DONE implementation: chat UUID replaced by own-label or stable pseudonym and local HH:mm; this UUID was not a TOTP secret. Server author identity/access/one-hour expiry unchanged. No tokens, emails or UUIDs displayed as author labels.
 
-Native validation added for actual published thumbnail decode, bounds, full-size preview, cleanup and safe chat labels. Await candidate CI; physical Android visual QA remains required. Public channel remains 1.00.19 until a checked candidate is published.
+Native validation added for actual published thumbnail decode, bounds, full-size preview, cleanup and safe chat labels. Candidate 39692927725 / source 12067d5e selected for gated paired delivery. Await candidate CI; physical Android visual and shortcut QA remains required. Public channel remains 1.00.19 until a checked candidate is published.
 
 ## Current checkpoint — 1.00.19 published (2026-10-22 Moscow)
 
