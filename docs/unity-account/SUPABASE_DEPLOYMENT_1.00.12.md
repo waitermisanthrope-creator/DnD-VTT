@@ -11,3 +11,9 @@ Status: BLOCKED for live deployment: no connected privileged Supabase migration 
 7. Rollback feature exposure first: disable new administration/delivery endpoints, preserve existing characters, audit and receipts. Do not drop data tables to roll back UI. Use reviewed forward correction migrations after backup; never blanket reset the project.
 
 Deployment does not complete moderation, paid delivery, native MFA screens or Admin Center. See ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md for explicit gaps and activation tests. The current publish capability is request eligibility only; a future publication endpoint must add fresh MFA, independent approval, assignment/author checks and trusted-build validation.
+
+## Owner clarification — appointments
+
+Only the verified project owner (account intended: `waiter.misanthrope@gmail.com`) and the single deputy personally designated by that owner may initiate staff appointments. The deputy cannot appoint/replace another deputy or alter the owner. No moderator tier, creator or Premium account can grant roles, including with MFA. Existing independent approval requirements remain in force.
+
+Bind ownership to the verified Supabase auth user UUID through trusted bootstrap; the email is an operator verification hint, not an authorization predicate or a client-side allowlist. Changing metadata/email cannot gain ownership. Live bootstrap is still BLOCKED; no account was appointed in production.

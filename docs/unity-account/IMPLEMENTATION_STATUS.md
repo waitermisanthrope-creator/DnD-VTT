@@ -38,3 +38,11 @@ Previous 1.00.11: 40,085,618 bytes. Candidate is **45,056 bytes larger**. No cla
 ## Continuation
 
 Start from this file and ACCESS_AND_TOUCH_1.00.12.md, inspect new remote commits, then targeted source/tests. Do not redo migration/audit or rebuild unchanged runtime merely for documentation. Update this checkpoint after actual evidence changes. Documentation commits after candidate do not alter APK source SHA.
+
+## Owner clarification — appointments
+
+Only the verified project owner (account intended: `waiter.misanthrope@gmail.com`) and the single deputy personally designated by that owner may initiate staff appointments. The deputy cannot appoint/replace another deputy or alter the owner. No moderator tier, creator or Premium account can grant roles, including with MFA. Existing independent approval requirements remain in force.
+
+Bind ownership to the verified Supabase auth user UUID through trusted bootstrap; the email is an operator verification hint, not an authorization predicate or a client-side allowlist. Changing metadata/email cannot gain ownership. Live bootstrap is still BLOCKED; no account was appointed in production.
+
+Appointment restriction regression: DONE locally — 57 PostgreSQL checks passed (previous candidate CI had 41). Added denial checks for every moderator trust tier with fresh MFA and spoofed owner-email metadata. APK/runtime unchanged.

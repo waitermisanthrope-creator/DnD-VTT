@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 466393270d32. Файлов: 1909
+Коммит 12e1a2abc1a1. Файлов: 1909
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1073,8 +1073,8 @@
 1057. docs/UNITY_MIGRATION_PLAN.md — документация или отчёт: UNITY MIGRATION PLAN (14710 B)
 1058. docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md — документация или отчёт: ACCESS AND TOUCH 1.00.12 (8253 B)
 1059. docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md — документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP (9558 B)
-1060. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (5241 B)
-1061. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (2841 B)
+1060. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (6212 B)
+1061. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1062. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
 1063. dragon_fire_v2_sprite.png — текстура/изображение: dragon fire v2 sprite (1013123 B)
 1064. embers_v2_sprite.png — текстура/изображение: embers v2 sprite (698014 B)
@@ -1124,7 +1124,7 @@
 1108. supabase/migrations/202610130001_characters.sql — SQL миграция Supabase (4421 B)
 1109. supabase/migrations/202610210001_access_control.sql — SQL миграция Supabase (8940 B)
 1110. supabase/tests/.gitignore — вспомогательный файл: .gitignore (14 B)
-1111. supabase/tests/access-control.mjs — вспомогательный файл: access control (7158 B)
+1111. supabase/tests/access-control.mjs — вспомогательный файл: access control (7783 B)
 1112. supabase/tests/package-lock.json — данные/конфигурация: package lock (512 B)
 1113. supabase/tests/package.json — данные/конфигурация: package (165 B)
 1114. table.glb — 3D модель/геометрия: table (6217412 B)
@@ -9336,7 +9336,7 @@ eligible — №1208
 elixirs — №0670
 eloquentSpeech — №0779
 elven_accuracy — №0782
-email — №0653 (+ 1 других файлов)
+email — №0653 (+ 2 других файлов)
 emanationFt — №0779
 embers — №0641
 Embers — №0779

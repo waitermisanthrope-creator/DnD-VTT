@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 466393270d32. Git содержит 1909 файлов.
+Снимок кода 12e1a2abc1a1. Git содержит 1909 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1078,8 +1078,8 @@
 | №1057 docs/UNITY_MIGRATION_PLAN.md | 14710 B | документация или отчёт: UNITY MIGRATION PLAN |
 | №1058 docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md | 8253 B | документация или отчёт: ACCESS AND TOUCH 1.00.12 |
 | №1059 docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md | 9558 B | документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP |
-| №1060 docs/unity-account/IMPLEMENTATION_STATUS.md | 5241 B | документация или отчёт: IMPLEMENTATION STATUS |
-| №1061 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 2841 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
+| №1060 docs/unity-account/IMPLEMENTATION_STATUS.md | 6212 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1061 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1062 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
 | №1063 dragon_fire_v2_sprite.png | 1013123 B | текстура/изображение: dragon fire v2 sprite |
 | №1064 embers_v2_sprite.png | 698014 B | текстура/изображение: embers v2 sprite |
@@ -1129,7 +1129,7 @@
 | №1108 supabase/migrations/202610130001_characters.sql | 4421 B | SQL миграция Supabase |
 | №1109 supabase/migrations/202610210001_access_control.sql | 8940 B | SQL миграция Supabase |
 | №1110 supabase/tests/.gitignore | 14 B | вспомогательный файл: .gitignore |
-| №1111 supabase/tests/access-control.mjs | 7158 B | вспомогательный файл: access control |
+| №1111 supabase/tests/access-control.mjs | 7783 B | вспомогательный файл: access control |
 | №1112 supabase/tests/package-lock.json | 512 B | данные/конфигурация: package lock |
 | №1113 supabase/tests/package.json | 165 B | данные/конфигурация: package |
 | №1114 table.glb | 6217412 B | 3D модель/геометрия: table |
@@ -9357,7 +9357,7 @@
 | elixirs | №0670 |
 | eloquentSpeech | №0779 |
 | elven_accuracy | №0782 |
-| email | №0653 (+ 1 других файлов) |
+| email | №0653 (+ 2 других файлов) |
 | emanationFt | №0779 |
 | embers | №0641 |
 | Embers | №0779 |
