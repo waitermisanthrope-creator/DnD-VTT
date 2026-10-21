@@ -1,3 +1,15 @@
+# Current release checkpoint — 2026-10-21 17:34 UTC
+
+DONE: owner explicitly authorized publication; 1.00.12/versionCode 10012 is now active in the existing Unity in-app update channel. Previous statements below about withheld publication and old candidate hashes are historical.
+
+Published source: `705ab4f2` (settings swipe routing/layout fixes, pointer fallback, role-scoped staff status panels). Candidate run 39643523821 SUCCESS; publisher run 39644301090 SUCCESS; feed commit `3553063e`. 2,883 C# checks and 57 PostgreSQL checks passed in CI. APK 40,130,674 bytes; SHA-256 `70b58d2d2f105f552dbf4527041dad23cf7fa197e8c1ea177a096fda5a2bc743`. Original package/certificate retained; publisher redownloaded and verified public APK before enabling feed. No main/Windows changes or old-release deletion.
+
+APK: https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.12/DnD-VTT-Unity-1.00.12-arm64.apk
+
+PARTIAL: actual Android swipe behavior, installation over existing version, Keystore and live auth/cloud round trip await owner device testing. Role migration deployment remains BLOCKED; staff panels are honest disconnected status views, not operational administration. Export heroes before installation; do not uninstall or clear storage.
+
+---
+
 # Unity 1.00.12 — checkpoint 2026-10-21
 
 Working branch: `experiment/unity-vtt`. Candidate source: `466393270d325e7727e44ce4a59e2ff002398b4b`. Main and public update channel are unchanged by this checkpoint.

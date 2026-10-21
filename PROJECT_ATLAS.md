@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 705ab4f29f4f. Git содержит 1909 файлов.
+Снимок кода 3553063e8a01. Git содержит 1909 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1078,7 +1078,7 @@
 | №1057 docs/UNITY_MIGRATION_PLAN.md | 14710 B | документация или отчёт: UNITY MIGRATION PLAN |
 | №1058 docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md | 8253 B | документация или отчёт: ACCESS AND TOUCH 1.00.12 |
 | №1059 docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md | 9558 B | документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP |
-| №1060 docs/unity-account/IMPLEMENTATION_STATUS.md | 7243 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1060 docs/unity-account/IMPLEMENTATION_STATUS.md | 8519 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1061 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1062 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
 | №1063 dragon_fire_v2_sprite.png | 1013123 B | текстура/изображение: dragon fire v2 sprite |
@@ -1726,7 +1726,7 @@
 | №1705 unity/Assets/Vtt/Resources/Branding/Splash19.png.meta | 312 B | вспомогательный файл: Splash19.png |
 | №1706 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg | 212684 B | текстура/изображение: Wallpaper16 |
 | №1707 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta | 312 B | вспомогательный файл: Wallpaper16.jpg |
-| №1708 unity/Assets/Vtt/Resources/Changelog.json | 9230 B | данные/конфигурация: Changelog |
+| №1708 unity/Assets/Vtt/Resources/Changelog.json | 9232 B | данные/конфигурация: Changelog |
 | №1709 unity/Assets/Vtt/Resources/Changelog.json.meta | 158 B | вспомогательный файл: Changelog.json |
 | №1710 unity/Assets/Vtt/Resources/CharacterSheet.meta | 172 B | вспомогательный файл: CharacterSheet |
 | №1711 unity/Assets/Vtt/Resources/CharacterSheet/catalog.json | 823381 B | данные/конфигурация: catalog |
@@ -1874,8 +1874,8 @@
 | №1853 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №1854 updates/README.md | 233 B | документация или отчёт: README |
 | №1855 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №1856 updates/unity-changelog.json | 9230 B | метаданные обновлений: unity changelog |
-| №1857 updates/unity-experiment.json | 1303 B | метаданные обновлений: unity experiment |
+| №1856 updates/unity-changelog.json | 9232 B | метаданные обновлений: unity changelog |
+| №1857 updates/unity-experiment.json | 1938 B | метаданные обновлений: unity experiment |
 | №1858 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №1859 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
 | №1860 wall_brick_red.png | 111128 B | текстура/изображение: wall brick red |
