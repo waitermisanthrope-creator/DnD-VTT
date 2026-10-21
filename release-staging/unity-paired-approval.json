@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "version": "1.00.19",
-  "candidateRunId": 39682790121,
+  "version": "1.00.20",
+  "candidateRunId": 39692498721,
   "approved": true,
   "scope": "Android ARM64 and Windows x64",
-  "note": "Owner-authorized paired release after appearance publication. Source 986bec6e fixes configured Input System touch path and minimal-client Windows smoke. Require successful Android, Windows and upgrade QA gates before publication. Earlier failed/cancelled candidates must not publish."
+  "note": "Owner-requested appearance preview and chat identity correction, source f6dc340e. Release only after actual Android/Windows builds, native appearance checks and Windows upgrade QA pass. Preserve signing, saves and existing publication pipeline."
 }
