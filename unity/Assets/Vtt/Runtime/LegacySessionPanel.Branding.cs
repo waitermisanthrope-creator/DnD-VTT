@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -13,6 +14,18 @@ namespace DndVtt.UnityPrototype
         private Texture2D brandWallpaper, brandSplash, brandDragon;
         private GUIStyle brandTitle, brandSub, brandName, brandCard, brandBlue, brandGreen,
             brandRed, brandPurple, brandGold, brandBrown, brandPlain;
+        // GUIStyle backgrounds alone are not reliable roots during unloading or
+        // Android graphics-context recreation. Own readable textures explicitly.
+        private readonly List<Texture2D> brandStyleTextures = new List<Texture2D>();
+        private bool brandStylesDirty = true;
+        private void InvalidateBrandStyles() { brandStylesDirty = true; }
+        private void ReleaseBrandStyles()
+        {
+            foreach (var texture in brandStyleTextures)
+                if (texture) { if (Application.isPlaying) Destroy(texture); else DestroyImmediate(texture); }
+            brandStyleTextures.Clear();
+        }
+        private void OnApplicationPause(bool paused) { if (!paused) InvalidateBrandStyles(); }
         private Vector2 brandHomeScroll, brandSettingsScroll;
         private bool brandMoreOpen, brandSplashActive, brandAdvancedOpen;
         private float brandSplashSince;
@@ -52,10 +65,12 @@ namespace DndVtt.UnityPrototype
         }
         // Nine-sliced curved edges: the WebView source uses rounded buttons,
         // not the flat square IMGUI controls accidentally shipped in 1.00.04.
-        private static Texture2D Rounded(Color fill, Color edge, int radius = 12)
+        private Texture2D Rounded(Color fill, Color edge, int radius = 12)
         {
             const int size = 48; const int border = 2;
             var texture = new Texture2D(size, size, TextureFormat.RGBA32, false);
+            texture.hideFlags = HideFlags.HideAndDontSave;
+            brandStyleTextures.Add(texture);
             texture.filterMode = FilterMode.Bilinear; texture.wrapMode = TextureWrapMode.Clamp;
             for (int y = 0; y < size; y++) for (int x = 0; x < size; x++)
             {
@@ -69,9 +84,9 @@ namespace DndVtt.UnityPrototype
                 pixel.a *= coverage;
                 texture.SetPixel(x,y,pixel);
             }
-            texture.Apply(false,true); return texture;
+            texture.Apply(false, false); return texture;
         }
-        private static GUIStyle Button(GUIStyle from, Color color, Color foreground)
+        private GUIStyle Button(GUIStyle from, Color color, Color foreground)
         {
             var b = new GUIStyle(from);
             b.normal.background = Rounded(color, new Color(.84f,.70f,.37f,.63f));
@@ -87,26 +102,32 @@ namespace DndVtt.UnityPrototype
         }
         private void PrepareBrand()
         {
-            if (brandBlue != null) return;
-            brandWallpaper = Resources.Load<Texture2D>("Branding/Wallpaper16");
-            brandSplash = Resources.Load<Texture2D>("Branding/Splash19");
-            brandDragon = Resources.Load<Texture2D>("Branding/Dragon20");
-            brandBlue = Button(GUI.skin.button, new Color(.12f,.58f,.95f), Color.white);
-            brandGreen = Button(GUI.skin.button, new Color(.28f,.69f,.33f), Color.white);
-            brandRed = Button(GUI.skin.button, new Color(.89f,.19f,.2f), Color.white);
-            brandPurple = Button(GUI.skin.button, new Color(.29f,.23f,.43f), Color.white);
-            brandGold = Button(GUI.skin.button, new Color(.41f,.28f,.08f), Color.white);
-            brandBrown = Button(GUI.skin.button, new Color(.16f,.12f,.08f), new Color(.98f,.84f,.49f));
-            brandPlain = Button(GUI.skin.button, new Color(.17f,.16f,.16f), Color.white);
-            brandTitle = new GUIStyle(GUI.skin.label) { fontSize = 25, fontStyle = FontStyle.Bold, wordWrap = true };
+            EnsureBrandStyles(GUI.skin.button, GUI.skin.label, GUI.skin.box);
+        }
+        private void EnsureBrandStyles(GUIStyle button, GUIStyle label, GUIStyle box)
+        {
+            if (!brandStylesDirty && brandBlue != null && brandBlue.normal.background) return;
+            ReleaseBrandStyles();
+            if (!brandWallpaper) brandWallpaper = Resources.Load<Texture2D>("Branding/Wallpaper16");
+            if (!brandSplash) brandSplash = Resources.Load<Texture2D>("Branding/Splash19");
+            if (!brandDragon) brandDragon = Resources.Load<Texture2D>("Branding/Dragon20");
+            brandBlue = Button(button, new Color(.12f,.58f,.95f), Color.white);
+            brandGreen = Button(button, new Color(.28f,.69f,.33f), Color.white);
+            brandRed = Button(button, new Color(.89f,.19f,.2f), Color.white);
+            brandPurple = Button(button, new Color(.29f,.23f,.43f), Color.white);
+            brandGold = Button(button, new Color(.41f,.28f,.08f), Color.white);
+            brandBrown = Button(button, new Color(.16f,.12f,.08f), new Color(.98f,.84f,.49f));
+            brandPlain = Button(button, new Color(.17f,.16f,.16f), Color.white);
+            brandTitle = new GUIStyle(label) { fontSize = 25, fontStyle = FontStyle.Bold, wordWrap = true };
             brandTitle.normal.textColor = BrandAccent;
             brandName = new GUIStyle(brandTitle) { fontSize = 20 };
-            brandSub = new GUIStyle(GUI.skin.label) { fontSize = 15, wordWrap = true };
+            brandSub = new GUIStyle(label) { fontSize = 15, wordWrap = true };
             brandSub.normal.textColor = new Color(.73f,.72f,.71f);
-            brandCard = new GUIStyle(GUI.skin.box) { padding = new RectOffset(12,12,12,12),
+            brandCard = new GUIStyle(box) { padding = new RectOffset(12,12,12,12),
                 margin = new RectOffset(0,0,0,9) };
             brandCard.normal.background = Rounded(new Color(.09f,.09f,.11f,.88f), new Color(.38f,.38f,.36f,.72f));
             brandCard.border = new RectOffset(16,16,16,16);
+            brandStylesDirty = false;
         }
         // Three original art assets also exist verbatim in StreamingAssets as
         // Android-safe fallbacks. No additional wallpapers are shipped.

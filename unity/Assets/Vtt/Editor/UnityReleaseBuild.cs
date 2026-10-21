@@ -28,6 +28,7 @@ public static class UnityReleaseBuild
         if (string.IsNullOrWhiteSpace(destination) ||
             !destination.EndsWith(".apk", StringComparison.OrdinalIgnoreCase))
             throw new Exception("GameCI Android APK output path missing");
+        BrandingResumeValidation.Run();
         WorkshopEditorValidation.Run();
         Android();
         string source = Path.Combine("Builds", "Unity-" + UnityRelease.Version, "android-intermediate.apk");
