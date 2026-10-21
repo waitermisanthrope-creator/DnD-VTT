@@ -1,3 +1,7 @@
+## 1.00.08 manual QA — NOT STARTED
+APK: https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39518732474/artifacts/12310252576
+Install over1.00.07, without deleting app data. Confirm15 PHB race variants/12 PHB classes/SRD Grappler offline; refresh workshop catalog, install Tortle/Blood Hunter/Athlete, create and save hero; download house map and map-surfaces, open actual map and observe texture; restart, remove optional packs and verify saved hero/map survive. Fresh install has no ready maps; previously saved user maps remain. Original-model runtime bundle remains pending, so map objects without models show placeholders.
+
 ## Owner device confirmation — 2026-10-21
 DONE:1.00.07 Lanternfolk downloaded and appeared in character creation.1.00.08 baseline, optional classes/feats/maps and upgrade QA still pending.
 

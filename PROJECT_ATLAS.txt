@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 4ac2e9618884. Файлов: 1853
+Коммит 0762b51df938. Файлов: 1853
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -46,7 +46,7 @@
 0030. .github/workflows/validate-imported-glb.yml — автоматизация GitHub Actions: validate imported glb (2317 B)
 0031. .gitignore — вспомогательный файл: .gitignore (81 B)
 0032. 00_AI_PROJECT_GUIDE.md — существующее руководство ИИ, не перезаписывать (1108812 B)
-0033. 01_plansforproject.md — план целей и критериев выполнения (62054 B)
+0033. 01_plansforproject.md — план целей и критериев выполнения (62524 B)
 0034. 1790622696215.png — текстура/изображение: 1790622696215 (1202179 B)
 0035. 1790622844831.png — текстура/изображение: 1790622844831 (104000 B)
 0036. 1790718758545.png — текстура/изображение: 1790718758545 (1889164 B)
@@ -54,9 +54,9 @@
 0038. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0039. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0040. AGENTS.md — документация или отчёт: AGENTS (4903 B)
-0041. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (18343 B)
-0042. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (18588 B)
-0043. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (56915 B)
+0041. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (20814 B)
+0042. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (21059 B)
+0043. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (59387 B)
 0044. android/.gitignore — Android компонент: .gitignore (44 B)
 0045. android/app/build.gradle — Android компонент: build (4122 B)
 0046. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1029,17 +1029,17 @@
 1013. docs/modular-content/android-texture-imports.json — документация или отчёт: android texture imports (3843 B)
 1014. docs/modular-content/audit.json — документация или отчёт: audit (1754999 B)
 1015. docs/modular-content/catalog-entry-v1.schema.json — документация или отчёт: catalog entry v1.schema (2876 B)
-1016. docs/modular-content/DEPENDENCIES.md — документация или отчёт: DEPENDENCIES (7705 B)
-1017. docs/modular-content/DEVICE_QA.md — документация или отчёт: DEVICE QA (6406 B)
+1016. docs/modular-content/DEPENDENCIES.md — документация или отчёт: DEPENDENCIES (8468 B)
+1017. docs/modular-content/DEVICE_QA.md — документация или отчёт: DEVICE QA (7051 B)
 1018. docs/modular-content/final-apk-metrics.json — документация или отчёт: final apk metrics (1291 B)
 1019. docs/modular-content/hotfix-1.00.07-metrics.json — документация или отчёт: hotfix 1.00.07 metrics (1451 B)
-1020. docs/modular-content/LICENSE_REVIEW.md — документация или отчёт: LICENSE REVIEW (2830 B)
+1020. docs/modular-content/LICENSE_REVIEW.md — документация или отчёт: LICENSE REVIEW (3704 B)
 1021. docs/modular-content/native-validation.json — документация или отчёт: native validation (2495 B)
 1022. docs/modular-content/old-apk-inspection.json — документация или отчёт: old apk inspection (1311 B)
 1023. docs/modular-content/old-apk-objects.json — документация или отчёт: old apk objects (196276 B)
-1024. docs/modular-content/PROGRESS.md — документация или отчёт: PROGRESS (6113 B)
+1024. docs/modular-content/PROGRESS.md — документация или отчёт: PROGRESS (8584 B)
 1025. docs/modular-content/public-verification.json — документация или отчёт: public verification (1729 B)
-1026. docs/modular-content/REPORT.md — документация или отчёт: REPORT (21969 B)
+1026. docs/modular-content/REPORT.md — документация или отчёт: REPORT (24440 B)
 1027. docs/modular-content/split-inventory.json — документация или отчёт: split inventory (33489 B)
 1028. docs/MONETIZATION_ROADMAP.md — документация или отчёт: MONETIZATION ROADMAP (15924 B)
 1029. docs/NETWORK_APK_NOTES.md — документация или отчёт: NETWORK APK NOTES (7296 B)

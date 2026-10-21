@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 4ac2e9618884. Git содержит 1853 файлов.
+Снимок кода 0762b51df938. Git содержит 1853 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -51,7 +51,7 @@
 | №0030 .github/workflows/validate-imported-glb.yml | 2317 B | автоматизация GitHub Actions: validate imported glb |
 | №0031 .gitignore | 81 B | вспомогательный файл: .gitignore |
 | №0032 00_AI_PROJECT_GUIDE.md | 1108812 B | существующее руководство ИИ, не перезаписывать |
-| №0033 01_plansforproject.md | 62054 B | план целей и критериев выполнения |
+| №0033 01_plansforproject.md | 62524 B | план целей и критериев выполнения |
 | №0034 1790622696215.png | 1202179 B | текстура/изображение: 1790622696215 |
 | №0035 1790622844831.png | 104000 B | текстура/изображение: 1790622844831 |
 | №0036 1790718758545.png | 1889164 B | текстура/изображение: 1790718758545 |
@@ -59,9 +59,9 @@
 | №0038 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0039 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0040 AGENTS.md | 4903 B | документация или отчёт: AGENTS |
-| №0041 AI_BLOCKERS.md | 18343 B | документация или отчёт: AI BLOCKERS |
-| №0042 AI_NEXT_TASK.md | 18588 B | документация или отчёт: AI NEXT TASK |
-| №0043 AI_PROGRESS.md | 56915 B | документация или отчёт: AI PROGRESS |
+| №0041 AI_BLOCKERS.md | 20814 B | документация или отчёт: AI BLOCKERS |
+| №0042 AI_NEXT_TASK.md | 21059 B | документация или отчёт: AI NEXT TASK |
+| №0043 AI_PROGRESS.md | 59387 B | документация или отчёт: AI PROGRESS |
 | №0044 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0045 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0046 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1034,17 +1034,17 @@
 | №1013 docs/modular-content/android-texture-imports.json | 3843 B | документация или отчёт: android texture imports |
 | №1014 docs/modular-content/audit.json | 1754999 B | документация или отчёт: audit |
 | №1015 docs/modular-content/catalog-entry-v1.schema.json | 2876 B | документация или отчёт: catalog entry v1.schema |
-| №1016 docs/modular-content/DEPENDENCIES.md | 7705 B | документация или отчёт: DEPENDENCIES |
-| №1017 docs/modular-content/DEVICE_QA.md | 6406 B | документация или отчёт: DEVICE QA |
+| №1016 docs/modular-content/DEPENDENCIES.md | 8468 B | документация или отчёт: DEPENDENCIES |
+| №1017 docs/modular-content/DEVICE_QA.md | 7051 B | документация или отчёт: DEVICE QA |
 | №1018 docs/modular-content/final-apk-metrics.json | 1291 B | документация или отчёт: final apk metrics |
 | №1019 docs/modular-content/hotfix-1.00.07-metrics.json | 1451 B | документация или отчёт: hotfix 1.00.07 metrics |
-| №1020 docs/modular-content/LICENSE_REVIEW.md | 2830 B | документация или отчёт: LICENSE REVIEW |
+| №1020 docs/modular-content/LICENSE_REVIEW.md | 3704 B | документация или отчёт: LICENSE REVIEW |
 | №1021 docs/modular-content/native-validation.json | 2495 B | документация или отчёт: native validation |
 | №1022 docs/modular-content/old-apk-inspection.json | 1311 B | документация или отчёт: old apk inspection |
 | №1023 docs/modular-content/old-apk-objects.json | 196276 B | документация или отчёт: old apk objects |
-| №1024 docs/modular-content/PROGRESS.md | 6113 B | документация или отчёт: PROGRESS |
+| №1024 docs/modular-content/PROGRESS.md | 8584 B | документация или отчёт: PROGRESS |
 | №1025 docs/modular-content/public-verification.json | 1729 B | документация или отчёт: public verification |
-| №1026 docs/modular-content/REPORT.md | 21969 B | документация или отчёт: REPORT |
+| №1026 docs/modular-content/REPORT.md | 24440 B | документация или отчёт: REPORT |
 | №1027 docs/modular-content/split-inventory.json | 33489 B | документация или отчёт: split inventory |
 | №1028 docs/MONETIZATION_ROADMAP.md | 15924 B | документация или отчёт: MONETIZATION ROADMAP |
 | №1029 docs/NETWORK_APK_NOTES.md | 7296 B | документация или отчёт: NETWORK APK NOTES |

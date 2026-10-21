@@ -1,3 +1,9 @@
+## 2026-10-21 — Quaternius Standard provenance resolved
+
+Exact reference: agentkaerf/FreeModels@db3df04d1e4714298a09510b26fb6de6645138a2, Fantasy Props MegaKit[Standard]/License_Standard.txt, CC0 1.0, author Quaternius. Primary pack pages below still explicitly grant CC0.25 model buffers and12 texture PNGs are byte-identical;25 glTF JSON files are structurally identical (formatting/newline differences). All62 source Git blobs, Unity CRLF-copy hashes and reference hashes are recorded in quaternius-source-comparison.json. Source archive publication via Assets Releases is in progress; trusted runtime bundle is still pending. No binary is copied into ordinary Git history.
+
+The36 old floor/wall PNGs remain unverified; new downloadable procedural patterns are explicitly replacements. Historical findings below are superseded only for the62 matched Quaternius files.
+
 # Проверка происхождения — 2026-10-20
 
 Публикуются только собственные demo JSON и шесть MakeHuman skin/license/metadata файлов с явными исходными CC0 сведениями. Остальные файлы не объявляются автоматически свободными.

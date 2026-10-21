@@ -1,3 +1,6 @@
+## Release1.00.08 dependency change
+The original ImportedAdventure scene and LegacyContent catalog remain unchanged as Editor migration fixtures. Release builds create Assets/Vtt/GeneratedMinimal/MinimalClient.unity with EmptyCatalog and no adventure geometry; build entrypoint packages only that scene. There is no runtime reference to LegacyContent maps/models/materials/textures. BuildReport hard-rejects those asset paths; signed APK UnityPy inspection verifies no map documents/old textures and exactly the PHB character IDs. WorkshopFixtures~ and ContentSources~ are outside imported player Assets. Branding Resources/StreamingAssets remain original. Historical static source dependency inventory below describes retained editor fixtures, not the new APK.
+
 # Фактические зависимости и границы упаковки
 
 Аудит выполнен по отслеживаемым файлам двух отдельных checkout. `audit.json` — пофайловый список размеров/SHA-256, граф импортов GUID + внешние URI glTF, входящие ссылки, одинаковые байты внутри каждого дерева и между ветками. Отсутствие статической ссылки не доказывает, что файл не используется динамически.
