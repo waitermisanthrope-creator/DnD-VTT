@@ -1,3 +1,15 @@
+# Native moderation candidate verified — 1.00.14
+
+DONE: candidate run [39656049442](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39656049442) SUCCESS, source `2271edf0`. Unity/Android ARM64 IL2CPP compilation, original package/signature, real APK inspection and minimal-content/branding gates passed. 2,884 C# checks and 95 SQL checks passed in that CI; test-only follow-up brings local PostgreSQL count to 98. Local Python checks: 10 passed.
+
+Signed APK: 40,142,962 bytes; SHA-256 `6e621b7a36f4d5b634edb73bc008dfb81cb39c43d7de045c4c29664689ef99b5`. [Download test artifact](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39656049442/artifacts/12372128171). Device/MFA/live Supabase checks remain unverified. Public update channel remains 1.00.13; no automatic promotion of a backend-incomplete feature.
+
+PARTIAL: native administration/moderation forms and real protected SQL RPCs are implemented/tested but not deployed. Includes account restrictions (cloud ban/submission mute), existing two-person staff grants, reports, manifest submission/review, shared staff decisions, and MFA flow. Content file upload/trusted build/publication, Auth Admin session revocation, chat moderation and complete diagnostics are not implemented. Do not describe this as a fully operating production admin service.
+
+BLOCKED: no privileged Supabase connection and project host not allowed by current environment policy. Owner UUID/bootstrap, migration application and pg_cron retention job were NOT performed. Explicit async setup question sent to owner; no credentials requested in chat. Use MODERATION_CENTER_RUNBOOK.md. Application audit is immutable until 24h and hidden after expiry; physical purge is minute scheduled, not a guarantee of exact-second deletion or erasure of provider backups.
+
+Commits: a64bd887 server/retention; 544b39d5 native RPC/MFA forms; 2271edf0 final candidate; fb8c3cc8 additional preservation tests. Later documentation-only commits do not alter candidate source.
+
 # Data-preservation regression checkpoint
 
 DONE locally: 98 PostgreSQL checks, including existing own-character visibility under mute, RLS denial during ban and restoration of original unknown fields after unban. 2,884 C# checks and 10 Python checks passed locally. Native candidate run 39656049442/source 2271edf0 in progress (its SQL step contains the earlier 95 checks). Later test-only changes do not modify candidate runtime. Deployment/owner bootstrap/cron remain BLOCKED, not simulated. No public update feed change.
