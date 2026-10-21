@@ -1,0 +1,20 @@
+{
+  "catalogUrl": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v2/index.json",
+  "packs": [
+    {
+      "id": "demo.model.markers",
+      "matchesInApk": [],
+      "resources": 2
+    },
+    {
+      "id": "demo.appearance.amber",
+      "matchesInApk": [],
+      "resources": 2
+    },
+    {
+      "id": "dnd.appearance.map-surfaces",
+      "matchesInApk": [],
+      "resources": 72
+    }
+  ]
+}

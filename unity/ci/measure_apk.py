@@ -31,7 +31,7 @@ if args.minimal_content:
     assert not {'tortle','aasimar'}.intersection(catalog['races'])
     assert not {'artificer','blood_hunter','alchemist','witch','occultist'}.intersection(catalog['classes'])
     expected = json.loads((root/'unity/Assets/Vtt/Resources/CharacterSheet/catalog.json').read_text())['creation']
-    assert catalog == {key:[row.get('id') for row in expected[key]] for key in ('races','classes','feats')}, 'APK catalog differs from reviewed baseline' 
+    assert catalog == {key:[row.get('id') for row in expected[key]] for key in ('races','classes','feats')}, 'APK catalog differs from reviewed baseline'
 if args.max_prop_texture:
     assert len(props) == 12, 'Missing mandatory prop textures'
     assert all(max(item['width'], item['height']) <= args.max_prop_texture for item in props), 'Android texture import cap not applied'
@@ -59,7 +59,7 @@ with zipfile.ZipFile(args.apk) as archive:
             removed_art_bytes=len(original)-len(packaged)
             assert removed_art_bytes == 6854025
         else:
-            assert packaged == original, 'Original packaged artwork changed' 
+            assert packaged == original, 'Original packaged artwork changed'
     compressed = lambda prefix: sum(item.compress_size for item in entries if item.filename.startswith(prefix))
     old = 58430834
     result = dict(apkBytes=args.apk.stat().st_size, apkSha256=digest,

@@ -1,3 +1,7 @@
+##1.00.09 — NOT STARTED device QA
+https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39585827400/artifacts/12340015913
+Install over1.00.08/1.00.07; verify same splash/menu/wallpaper, offline base creation, workshop, existing saves. Changes only Editor packaging of non-rendering splash metadata. Source pixels and signed APK images checked; same key/package and code10009.
+
 ## 1.00.08 manual QA — NOT STARTED
 APK: https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39518732474/artifacts/12310252576
 Install over1.00.07, without deleting app data. Confirm15 PHB race variants/12 PHB classes/SRD Grappler offline; refresh workshop catalog, install Tortle/Blood Hunter/Athlete, create and save hero; download house map and map-surfaces, open actual map and observe texture; restart, remove optional packs and verify saved hero/map survive. Fresh install has no ready maps; previously saved user maps remain. Original-model runtime bundle remains pending, so map objects without models show placeholders.
