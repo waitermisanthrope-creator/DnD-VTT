@@ -166,6 +166,7 @@ namespace DndVtt.UnityPrototype
         public static void Equip(JObject hero, JObject item)
         {
             item["equipped"] = !((bool?)item["equipped"] ?? false);
+            if ((string)item["inventoryCategory"] == "weapons" || (item.Parent?.Parent as JProperty)?.Name == "weapons") return;
             double dex = CharacterSheetRules.Modifier(hero,"dex");
             double ac = (bool?)hero["raceMechanics"]?["naturalArmor"] == true ? N(hero["baseAC"],10) : N(hero["baseAC"],10) + dex;
             double shield = 0;

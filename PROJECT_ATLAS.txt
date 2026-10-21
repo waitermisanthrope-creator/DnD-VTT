@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 7c99a103a108. Файлов: 1886
+Коммит c3f686a9c6fd. Файлов: 1886
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1721,7 +1721,7 @@
 1705. unity/Assets/Vtt/Runtime/CharacterSheetRules.cs.meta — вспомогательный файл: CharacterSheetRules.cs (59 B)
 1706. unity/Assets/Vtt/Runtime/ClientPreferences.cs — вспомогательный файл: ClientPreferences (4479 B)
 1707. unity/Assets/Vtt/Runtime/ClientPreferences.cs.meta — вспомогательный файл: ClientPreferences.cs (59 B)
-1708. unity/Assets/Vtt/Runtime/CommerceRules.cs — вспомогательный файл: CommerceRules (19258 B)
+1708. unity/Assets/Vtt/Runtime/CommerceRules.cs — вспомогательный файл: CommerceRules (19387 B)
 1709. unity/Assets/Vtt/Runtime/CommerceRules.cs.meta — вспомогательный файл: CommerceRules.cs (60 B)
 1710. unity/Assets/Vtt/Runtime/ExplorerController.cs — вспомогательный файл: ExplorerController (5869 B)
 1711. unity/Assets/Vtt/Runtime/ExplorerController.cs.meta — вспомогательный файл: ExplorerController.cs (59 B)
@@ -1737,7 +1737,7 @@
 1721. unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta — вспомогательный файл: LegacySessionPanel.Branding.cs (60 B)
 1722. unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs — вспомогательный файл: LegacySessionPanel.BrandSettings (10194 B)
 1723. unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta — вспомогательный файл: LegacySessionPanel.BrandSettings.cs (60 B)
-1724. unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs — вспомогательный файл: LegacySessionPanel.Commerce (18228 B)
+1724. unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs — вспомогательный файл: LegacySessionPanel.Commerce (18615 B)
 1725. unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs.meta — вспомогательный файл: LegacySessionPanel.Commerce.cs (60 B)
 1726. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs — вспомогательный файл: LegacySessionPanel.ContentManager (13202 B)
 1727. unity/Assets/Vtt/Runtime/LegacySessionPanel.cs — вспомогательный файл: LegacySessionPanel (8321 B)
@@ -1799,7 +1799,7 @@
 1783. unity/ci/verify_public_workshop.py — вспомогательный файл: verify public workshop (1766 B)
 1784. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (3846 B)
 1785. unity/ci/workshop-tests/.gitignore — вспомогательный файл: .gitignore (10 B)
-1786. unity/ci/workshop-tests/CommerceChecks.cs — вспомогательный файл: CommerceChecks (3391 B)
+1786. unity/ci/workshop-tests/CommerceChecks.cs — вспомогательный файл: CommerceChecks (4247 B)
 1787. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (17175 B)
 1788. unity/ci/workshop-tests/WorkshopTests.csproj — вспомогательный файл: WorkshopTests (1050 B)
 1789. unity/ContentSources~/catalog.full.json — данные/конфигурация: catalog.full (1259265 B)

@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 7c99a103a108. Git содержит 1886 файлов.
+Снимок кода c3f686a9c6fd. Git содержит 1886 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1726,7 +1726,7 @@
 | №1705 unity/Assets/Vtt/Runtime/CharacterSheetRules.cs.meta | 59 B | вспомогательный файл: CharacterSheetRules.cs |
 | №1706 unity/Assets/Vtt/Runtime/ClientPreferences.cs | 4479 B | вспомогательный файл: ClientPreferences |
 | №1707 unity/Assets/Vtt/Runtime/ClientPreferences.cs.meta | 59 B | вспомогательный файл: ClientPreferences.cs |
-| №1708 unity/Assets/Vtt/Runtime/CommerceRules.cs | 19258 B | вспомогательный файл: CommerceRules |
+| №1708 unity/Assets/Vtt/Runtime/CommerceRules.cs | 19387 B | вспомогательный файл: CommerceRules |
 | №1709 unity/Assets/Vtt/Runtime/CommerceRules.cs.meta | 60 B | вспомогательный файл: CommerceRules.cs |
 | №1710 unity/Assets/Vtt/Runtime/ExplorerController.cs | 5869 B | вспомогательный файл: ExplorerController |
 | №1711 unity/Assets/Vtt/Runtime/ExplorerController.cs.meta | 59 B | вспомогательный файл: ExplorerController.cs |
@@ -1742,7 +1742,7 @@
 | №1721 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Branding.cs |
 | №1722 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs | 10194 B | вспомогательный файл: LegacySessionPanel.BrandSettings |
 | №1723 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.BrandSettings.cs |
-| №1724 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs | 18228 B | вспомогательный файл: LegacySessionPanel.Commerce |
+| №1724 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs | 18615 B | вспомогательный файл: LegacySessionPanel.Commerce |
 | №1725 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Commerce.cs |
 | №1726 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs | 13202 B | вспомогательный файл: LegacySessionPanel.ContentManager |
 | №1727 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs | 8321 B | вспомогательный файл: LegacySessionPanel |
@@ -1804,7 +1804,7 @@
 | №1783 unity/ci/verify_public_workshop.py | 1766 B | вспомогательный файл: verify public workshop |
 | №1784 unity/ci/windows-upgrade-qa.ps1 | 3846 B | вспомогательный файл: windows upgrade qa |
 | №1785 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
-| №1786 unity/ci/workshop-tests/CommerceChecks.cs | 3391 B | вспомогательный файл: CommerceChecks |
+| №1786 unity/ci/workshop-tests/CommerceChecks.cs | 4247 B | вспомогательный файл: CommerceChecks |
 | №1787 unity/ci/workshop-tests/Program.cs | 17175 B | вспомогательный файл: Program |
 | №1788 unity/ci/workshop-tests/WorkshopTests.csproj | 1050 B | вспомогательный файл: WorkshopTests |
 | №1789 unity/ContentSources~/catalog.full.json | 1259265 B | данные/конфигурация: catalog.full |

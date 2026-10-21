@@ -59,11 +59,11 @@ namespace DndVtt.UnityPrototype
                 if (GUILayout.Button("−",GUILayout.Width(46))) { if (count <= 1) RequestDelete(item,(string)item["name"]); else { item["count"] = count - 1; changed = persist = true; } }
                 GUILayout.Label("Количество: " + count.ToString("0.##"));
                 if (GUILayout.Button("+",GUILayout.Width(46))) { item["count"] = count + 1; changed = persist = true; } GUILayout.EndHorizontal();
-                if (inventoryCategory < 2 && GUILayout.Button((bool?)item["equipped"] == true ? "✓ Экипировано" : "Экипировать",GUILayout.MinHeight(40))) { CommerceRules.Equip(hero,item); changed = persist = true; }
+                if (inventoryCategory < 2 && GUILayout.Button((bool?)item["equipped"] == true ? "✓ Экипировано" : "Экипировать",GUILayout.MinHeight(40))) { try { CommerceRules.Equip(hero,item); changed = persist = true; } catch (Exception e) { status = e.Message; } }
                 if (item["effects"] is JArray)
                 {
                     GUILayout.Label("Урон, длительность и эффекты на других существ учитываются вручную.",sheetQuiet);
-                    if (GUILayout.Button("Применить алхимический продукт",brandGreen)) { CommerceRules.UseProduct(hero,item); changed = persist = true; status = "Продукт применён"; }
+                    if (GUILayout.Button("Применить алхимический продукт",brandGreen)) { try { CommerceRules.UseProduct(hero,item); changed = persist = true; status = "Продукт применён"; } catch (Exception e) { status = e.Message; } }
                 }
                 foreach (JObject destination in (hero["inventory"]?["containers"] as JArray ?? new JArray()).OfType<JObject>().ToArray())
                     if (GUILayout.Button("В контейнер: " + destination["name"]))
@@ -104,7 +104,7 @@ namespace DndVtt.UnityPrototype
         private void DrawCommerceDownloadPrompt(string text) { GUILayout.Label(text,sheetQuiet); if (GUILayout.Button("Открыть менеджер модов",brandBlue,GUILayout.Height(48))) Navigate(FrontScreen.ContentManager); }
         private void DrawAlchemy(JObject hero, ref bool changed, ref bool persist)
         {
-            SheetSection("Алхимия 2.0"); var rules = (JObject)CommerceCatalog["alchemy"]; var ingredients = (JArray)rules["ingredients"];
+            SheetSection("Алхимия 2.0"); GUILayout.Label("Базовые реакции и исследования. Расширенные профессии ещё не перенесены; длительность и воздействие на других существ учитывает мастер.",sheetQuiet); var rules = (JObject)CommerceCatalog["alchemy"]; var ingredients = (JArray)rules["ingredients"];
             if (ingredients.Count == 0 || !((JObject)rules["effects"]).HasValues) { DrawCommerceDownloadPrompt("Установите правила Алхимии 2.0 и сборник ингредиентов."); return; }
             GUILayout.Label("Выбрано: " + selectedIngredients.Count + " / 5",sheetQuiet); if (GUILayout.Button("Очистить смесь")) { selectedIngredients.Clear(); selectedCatalyst = null; }
             foreach (JObject catalyst in (JArray)rules["catalysts"]) if (GUILayout.Toggle(selectedCatalyst == (string)catalyst["id"],(string)catalyst["name"])) selectedCatalyst = (string)catalyst["id"];

@@ -32,6 +32,15 @@ static class CommerceChecks
   foreach(string id in ids) CommerceRules.AddItem(hero,((JArray)commerce["items"]).OfType<JObject>().First(i=>(string)i["alchemyId"]==id));
   var mixed=CommerceRules.Mix(hero,alchemy,ids,null,100); Check((bool)mixed["ok"],"mix creates product"); Check(((JArray)hero["alchemyState"]["history"]).Count==1,"alchemy history persisted");
   var saved=new LegacyCharacterArchive(hero.ToString()).Export(); Check(JToken.DeepEquals(new LegacyCharacterArchive(saved).Snapshot(0),hero),"crafted save roundtrip");
+  var hpHero=JObject.Parse("{id:'old-hp',name:'Old HP',hp:{current:3,max:20,custom:'keep'},stats:{dex:10},ac:17}");
+  var potion=JObject.Parse("{name:'Test heal',inventoryCategory:'consumables',potency:40,count:1,effects:[{kind:'heal'}]}");
+  CommerceRules.AddItem(hpHero,potion);
+  CommerceRules.UseProduct(hpHero,(JObject)hpHero["inventory"]["consumables"][0]);
+  Check((double)hpHero["hpCurrent"]==7 && (string)hpHero["hp"]["custom"]=="keep","legacy nested HP heals without losing source fields");
+  Check(((JArray)hpHero["inventory"]["consumables"]).Count==0,"product consumption persisted");
+  var weapon=JObject.Parse("{name:'Sword',inventoryCategory:'weapons'}"); CommerceRules.AddItem(hpHero,weapon);
+  CommerceRules.Equip(hpHero,(JObject)hpHero["inventory"]["weapons"][0]);
+  Check((int)hpHero["ac"]==17,"weapon equip preserves manually set AC");
   var preferences=ClientPreferences.Parse("{version:1,custom:{future:true}}"); Check(preferences.keepScreenAwake,"old preferences default awake"); preferences.keepScreenAwake=false;
   var restored=ClientPreferences.Parse(preferences.Export()); Check(!restored.keepScreenAwake && (bool)JObject.Parse(restored.Export())["custom"]["future"],"sleep preference and unknown fields roundtrip");
   Reject(()=>ClientPreferences.Parse("{version:1,keepScreenAwake:'false'}"),"invalid sleep preference rejected");
