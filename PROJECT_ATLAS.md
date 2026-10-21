@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 4b698df43946. Git содержит 1886 файлов.
+Снимок кода 384fb58c89df. Git содержит 1886 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,8 +61,8 @@
 | №0040 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0041 AGENTS.md | 4903 B | документация или отчёт: AGENTS |
 | №0042 AI_BLOCKERS.md | 23406 B | документация или отчёт: AI BLOCKERS |
-| №0043 AI_NEXT_TASK.md | 25353 B | документация или отчёт: AI NEXT TASK |
-| №0044 AI_PROGRESS.md | 64378 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_NEXT_TASK.md | 26049 B | документация или отчёт: AI NEXT TASK |
+| №0044 AI_PROGRESS.md | 64987 B | документация или отчёт: AI PROGRESS |
 | №0045 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0046 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0047 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1062,7 +1062,7 @@
 | №1041 docs/modular-content/retained-1.00.08-textures.json | 8726 B | документация или отчёт: retained 1.00.08 textures |
 | №1042 docs/modular-content/retained-1.00.08-top-assets.json | 2133 B | документация или отчёт: retained 1.00.08 top assets |
 | №1043 docs/modular-content/split-inventory.json | 33489 B | документация или отчёт: split inventory |
-| №1044 docs/modular-content/UNITY-1.00.11.md | 3698 B | документация или отчёт: UNITY 1.00.11 |
+| №1044 docs/modular-content/UNITY-1.00.11.md | 6912 B | документация или отчёт: UNITY 1.00.11 |
 | №1045 docs/MONETIZATION_ROADMAP.md | 15924 B | документация или отчёт: MONETIZATION ROADMAP |
 | №1046 docs/NETWORK_APK_NOTES.md | 7296 B | документация или отчёт: NETWORK APK NOTES |
 | №1047 docs/PREDICTOR_APPROVED_CARD_STATUS.md | 52542 B | документация или отчёт: PREDICTOR APPROVED CARD STATUS |

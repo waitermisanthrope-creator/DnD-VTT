@@ -1,0 +1,96 @@
+{
+  "apkBytes": 40085618,
+  "apkSha256": "f9fd18c7a66f939bdf38272cb2ee3ac63382bcbbacaa6666bf85dfc3eeb58210",
+  "oldUnity10005ApkBytes": 58430834,
+  "reductionBytes": 18345216,
+  "reductionPercent": 31.396,
+  "zipCompressedUnityDataBytes": 5146852,
+  "zipCompressedBrandingBytes": 3248977,
+  "zipCompressedNativeBytes": 28831698,
+  "propTextureCount": 0,
+  "propTextureDimensions": {},
+  "originalBrandingBytesVerified": false,
+  "originalBrandingPixelsVerified": true,
+  "omittedNonRenderingPngBytes": 6854025,
+  "minimalContentVerified": true,
+  "bundledCreationIds": {
+    "races": [
+      "human",
+      "human_variant",
+      "elf_high",
+      "elf_wood",
+      "elf_drow",
+      "dwarf_hill",
+      "dwarf_mountain",
+      "halfling_lightfoot",
+      "halfling_stout",
+      "dragonborn",
+      "gnome_rock",
+      "gnome_forest",
+      "half_elf",
+      "half_orc",
+      "tiefling"
+    ],
+    "classes": [
+      "barbarian",
+      "bard",
+      "cleric",
+      "druid",
+      "fighter",
+      "monk",
+      "paladin",
+      "ranger",
+      "rogue",
+      "sorcerer",
+      "warlock",
+      "wizard"
+    ],
+    "feats": [
+      "grappler"
+    ]
+  },
+  "deviceQa": false,
+  "note": "Signed APK file size; ZIP groups include engine/metadata as indicated by path, not only gameplay content.",
+  "version": "1.00.11",
+  "versionCode": 10011,
+  "sourceCommit": "384fb58c89df78430e36712a7502ed03fe9da84a",
+  "runId": 39595880251,
+  "previousUnity10010ApkBytes": 40020082,
+  "changeFrom10010Bytes": 65536,
+  "testApkArtifact": "https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39595880251/artifacts/12343908716",
+  "artifacts": [
+    {
+      "id": 12344173374,
+      "name": "Unity-private-android-39595880251",
+      "bytes": 40099016
+    },
+    {
+      "id": 12343908716,
+      "name": "DnD-VTT-Unity-1.00.11-Android-test",
+      "bytes": 39041982
+    },
+    {
+      "id": 12343663979,
+      "name": "Unity-build-resource-report-39595880251",
+      "bytes": 25703
+    },
+    {
+      "id": 12343284582,
+      "name": "Unity-workshop-Android-39595880251",
+      "bytes": 62685
+    },
+    {
+      "id": 12343144196,
+      "name": "Unity-APK-measurements-39595880251",
+      "bytes": 6526
+    }
+  ],
+  "checks": {
+    "publicPackages": 205,
+    "publicPackageBytes": 2553962,
+    "dotnet": 2861,
+    "python": 10,
+    "nativeCommerce": true,
+    "device": false
+  }
+}

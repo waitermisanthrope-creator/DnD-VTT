@@ -280,3 +280,7 @@ Own15 small readable HideAndDontSave procedural button/card textures; pause-resu
 ## 2026-10-21 — owner Unity visual/commerce/sleep request
 
 PARTIAL: next candidate 1.00.11 adds default foreground keep-awake with graphics toggle, native dark sheet/cards/scroll tabs, optional five inventory libraries, native base craft and alchemy with downloadable rules/ingredients. Content f2999a0 physically publishes ten JSON files (263008 bytes), preserves v1/v2. Local source/pure lifecycle tests and nine JS profile goldens are being verified; cloud build/device QA remain pending. See docs/modular-content/UNITY-1.00.11.md. No claim of complete WebView parity; advanced professions/economy/trading remain partial. Main sources, save identity, signing and stable feeds unchanged.
+
+### Verified 1.00.11 checkpoint
+
+DONE: source 384fb58c, native run 39595880251 succeeded; signed APK artifact 12343908716, 40085618 bytes, SHA f9fd18c7a66f939bdf38272cb2ee3ac63382bcbbacaa6666bf85dfc3eeb58210. 2861 C# + 10 Python checks; native commerce/main-JS parity and actual APK minimal-content/artwork/signature checks passed. APK is 65536 bytes larger than 1.00.10; no new APK reduction claimed. Public Content f2999a0 ten packages/263008 bytes verified. PARTIAL: full WebView parity/advanced professions/economy and device sleep/visual QA; see docs/modular-content/UNITY-1.00.11.md and measured JSON.
