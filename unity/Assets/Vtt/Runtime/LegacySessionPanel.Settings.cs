@@ -27,6 +27,7 @@ namespace DndVtt.UnityPrototype
         private void ApplyPreferences()
         {
             preferences.Validate();
+            ApplyScreenSleep();
             int quality = Array.IndexOf(QualitySettings.names, preferences.quality);
             if (quality >= 0) QualitySettings.SetQualityLevel(quality, true);
             QualitySettings.vSyncCount = preferences.vSync ? 1 : 0;
@@ -35,6 +36,11 @@ namespace DndVtt.UnityPrototype
             world.explorer.invertY = preferences.invertY;
             world.explorer.viewCamera.fieldOfView = preferences.fieldOfView;
             world.explorer.SetFirstPerson(preferences.firstPerson);
+        }
+        private void ApplyScreenSleep(bool active = true)
+        {
+            if (Application.isMobilePlatform)
+                Screen.sleepTimeout = active && (preferences?.keepScreenAwake ?? true) ? SleepTimeout.NeverSleep : SleepTimeout.SystemSetting;
         }
         private void OpenSettings()
         {
@@ -67,6 +73,8 @@ namespace DndVtt.UnityPrototype
                     break;
                 case 2:
                     GUILayout.Label("Графика", heading);
+                    settingsDraft.keepScreenAwake = GUILayout.Toggle(settingsDraft.keepScreenAwake, "Не выключать экран, пока приложение открыто", GUILayout.MinHeight(44));
+                    GUILayout.Label("Если выключено — используется системный таймер телефона. В фоне всегда действует системный таймер.", muted);
                     string[] qualityNames = QualitySettings.names;
                     if (qualityNames.Length > 0)
                     {

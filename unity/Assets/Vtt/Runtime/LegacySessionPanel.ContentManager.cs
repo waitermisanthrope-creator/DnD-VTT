@@ -38,7 +38,7 @@ namespace DndVtt.UnityPrototype
             creationCatalog = null;
         }
         private void OnWorkshopLowMemory() { workshop?.ReleaseBundleCache(); }
-        private void OnDestroy() { Application.lowMemory -= OnWorkshopLowMemory; workshop?.Dispose(); ReleaseBrandStyles(); }
+        private void OnDestroy() { Application.lowMemory -= OnWorkshopLowMemory; workshop?.Dispose(); ReleaseBrandStyles(); ApplyScreenSleep(false); }
         private void RefreshWorkshop()
         {
             // Destroy geometry before unloading owned resources, then reconstruct

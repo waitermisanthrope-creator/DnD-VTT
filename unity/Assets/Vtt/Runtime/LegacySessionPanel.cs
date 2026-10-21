@@ -42,7 +42,7 @@ namespace DndVtt.UnityPrototype
         // permissions or returning from the background. Restore the view mode.
         private void OnApplicationFocus(bool hasFocus)
         {
-            if (hasFocus) { InvalidateBrandStyles(); ApplyMobileOrientation(screen); }
+            if (hasFocus) { InvalidateBrandStyles(); ApplyScreenSleep(); ApplyMobileOrientation(screen); }
         }
 
         public bool Import(string json)

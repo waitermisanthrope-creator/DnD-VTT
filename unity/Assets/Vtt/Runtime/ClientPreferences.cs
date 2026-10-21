@@ -15,6 +15,7 @@ namespace DndVtt.UnityPrototype
         public string theme = "orange";
         public string frameStyle = "dragon", frameColor = "gold";
         public bool autoCheckUpdates = true;
+        public bool keepScreenAwake = true;
         private JObject original = new JObject();
         public void Validate()
         {
@@ -30,7 +31,7 @@ namespace DndVtt.UnityPrototype
         {
             Validate(); var json = (JObject)original.DeepClone();
             json["version"] = 1; json["sensitivity"] = sensitivity; json["fieldOfView"] = fieldOfView;
-            json["invertY"] = invertY; json["firstPerson"] = firstPerson; json["vSync"] = vSync; json["fps"] = fps; json["quality"] = quality; json["theme"] = theme; json["frameStyle"] = frameStyle; json["frameColor"] = frameColor; json["autoCheckUpdates"] = autoCheckUpdates;
+            json["invertY"] = invertY; json["firstPerson"] = firstPerson; json["vSync"] = vSync; json["fps"] = fps; json["quality"] = quality; json["theme"] = theme; json["frameStyle"] = frameStyle; json["frameColor"] = frameColor; json["autoCheckUpdates"] = autoCheckUpdates; json["keepScreenAwake"] = keepScreenAwake;
             return json.ToString();
         }
         public static ClientPreferences Parse(string json)
@@ -38,7 +39,7 @@ namespace DndVtt.UnityPrototype
             var doc = LegacyJson.Parse(json, 64 * 1024) as JObject ?? throw new FormatException("Ожидались настройки клиента");
             if (doc["version"]?.Type != JTokenType.Integer || (int?)doc["version"] != 1) throw new FormatException("Неизвестная версия настроек клиента");
             var result = new ClientPreferences { original = doc };
-            foreach (string key in new[] { "invertY", "firstPerson", "vSync", "autoCheckUpdates" }) if (doc[key] != null && doc[key].Type != JTokenType.Boolean) throw new FormatException("Некорректный переключатель: " + key);
+            foreach (string key in new[] { "invertY", "firstPerson", "vSync", "autoCheckUpdates", "keepScreenAwake" }) if (doc[key] != null && doc[key].Type != JTokenType.Boolean) throw new FormatException("Некорректный переключатель: " + key);
             result.sensitivity = LegacyJson.Number(doc["sensitivity"], 1); result.fieldOfView = LegacyJson.Number(doc["fieldOfView"], 60);
             result.invertY = (bool?)doc["invertY"] ?? false; result.firstPerson = (bool?)doc["firstPerson"] ?? false; result.vSync = (bool?)doc["vSync"] ?? false;
             float fps = LegacyJson.Number(doc["fps"], 60); if (fps != Math.Floor(fps)) throw new FormatException("Некорректный лимит FPS");
@@ -46,6 +47,7 @@ namespace DndVtt.UnityPrototype
             result.theme = (string)doc["theme"] ?? "orange";
             result.frameStyle = (string)doc["frameStyle"] ?? "dragon"; result.frameColor = (string)doc["frameColor"] ?? "gold";
             result.autoCheckUpdates = (bool?)doc["autoCheckUpdates"] ?? true;
+            result.keepScreenAwake = (bool?)doc["keepScreenAwake"] ?? true;
             result.Validate(); return result;
         }
         public static ClientPreferences Load(string path) => Parse(File.ReadAllText(path));

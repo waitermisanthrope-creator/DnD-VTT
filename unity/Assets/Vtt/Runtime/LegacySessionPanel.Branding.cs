@@ -25,7 +25,7 @@ namespace DndVtt.UnityPrototype
                 if (texture) { if (Application.isPlaying) Destroy(texture); else DestroyImmediate(texture); }
             brandStyleTextures.Clear();
         }
-        private void OnApplicationPause(bool paused) { if (!paused) InvalidateBrandStyles(); }
+        private void OnApplicationPause(bool paused) { ApplyScreenSleep(!paused); if (!paused) InvalidateBrandStyles(); }
         private Vector2 brandHomeScroll, brandSettingsScroll;
         private bool brandMoreOpen, brandSplashActive, brandAdvancedOpen;
         private float brandSplashSince;
