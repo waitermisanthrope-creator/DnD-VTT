@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода e762775decbb. Git содержит 1925 файлов.
+Снимок кода 739ff4bf630a. Git содержит 1925 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1080,7 +1080,7 @@
 | №1059 docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md | 8253 B | документация или отчёт: ACCESS AND TOUCH 1.00.12 |
 | №1060 docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md | 9558 B | документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP |
 | №1061 docs/unity-account/CHAT_ONE_HOUR.md | 2267 B | документация или отчёт: CHAT ONE HOUR |
-| №1062 docs/unity-account/IMPLEMENTATION_STATUS.md | 22456 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1062 docs/unity-account/IMPLEMENTATION_STATUS.md | 23168 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1063 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1064 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1065 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
@@ -1838,7 +1838,7 @@
 | №1817 unity/ci/transfer-signing-secrets.ps1 | 3449 B | вспомогательный файл: transfer signing secrets |
 | №1818 unity/ci/verify_bundle_output.py | 1081 B | вспомогательный файл: verify bundle output |
 | №1819 unity/ci/verify_public_workshop.py | 1888 B | вспомогательный файл: verify public workshop |
-| №1820 unity/ci/windows-upgrade-qa.ps1 | 4276 B | вспомогательный файл: windows upgrade qa |
+| №1820 unity/ci/windows-upgrade-qa.ps1 | 4224 B | вспомогательный файл: windows upgrade qa |
 | №1821 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
 | №1822 unity/ci/workshop-tests/AccountGestureChecks.cs | 3924 B | вспомогательный файл: AccountGestureChecks |
 | №1823 unity/ci/workshop-tests/CommerceChecks.cs | 4247 B | вспомогательный файл: CommerceChecks |
