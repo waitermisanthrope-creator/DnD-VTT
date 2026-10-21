@@ -1,3 +1,7 @@
+# Data-preservation regression checkpoint
+
+DONE locally: 98 PostgreSQL checks, including existing own-character visibility under mute, RLS denial during ban and restoration of original unknown fields after unban. 2,884 C# checks and 10 Python checks passed locally. Native candidate run 39656049442/source 2271edf0 in progress (its SQL step contains the earlier 95 checks). Later test-only changes do not modify candidate runtime. Deployment/owner bootstrap/cron remain BLOCKED, not simulated. No public update feed change.
+
 # Moderation checkpoint — 95 SQL checks locally
 
 DONE locally: 95 PostgreSQL checks including real SQL authorization/RLS, bans/mutes, assignment/tiers, stale revisions, shared audit, role revocation, author self-review denial, immutable records and expired-only purge. 2,884 .NET checks passed before final narrow response-update fix; repeat/native compilation pending. Candidate version 1.00.14/10014; public channel remains 1.00.13. No production migration, owner bootstrap or scheduler execution performed. Deployment remains BLOCKED by missing privileged connection. Native forms are server-backed in code, not proof of live service availability.

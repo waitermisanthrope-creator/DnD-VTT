@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 544b39d5356a. Файлов: 1915
+Коммит 2271edf02755. Файлов: 1915
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1073,7 +1073,7 @@
 1057. docs/UNITY_MIGRATION_PLAN.md — документация или отчёт: UNITY MIGRATION PLAN (14710 B)
 1058. docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md — документация или отчёт: ACCESS AND TOUCH 1.00.12 (8253 B)
 1059. docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md — документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP (9558 B)
-1060. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (10692 B)
+1060. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (11217 B)
 1061. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7061 B)
 1062. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1063. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
@@ -1128,7 +1128,7 @@
 1112. supabase/migrations/202610210001_access_control.sql — SQL миграция Supabase (8940 B)
 1113. supabase/migrations/202610210002_moderation_center.sql — SQL миграция Supabase (13546 B)
 1114. supabase/tests/.gitignore — вспомогательный файл: .gitignore (14 B)
-1115. supabase/tests/access-control.mjs — вспомогательный файл: access control (14083 B)
+1115. supabase/tests/access-control.mjs — вспомогательный файл: access control (14573 B)
 1116. supabase/tests/package-lock.json — данные/конфигурация: package lock (512 B)
 1117. supabase/tests/package.json — данные/конфигурация: package (165 B)
 1118. table.glb — 3D модель/геометрия: table (6217412 B)

@@ -92,12 +92,16 @@ try {
  await db.query(limit,[other,0,'mute']);
  await identity(other);await denied("select public.submit_moderation_case($1,'complaint','Help','Complaint',null)",[other]);
  check((await db.query('select public.center_snapshot() as s')).rows[0].s.cases.length===1,'mute preserves own case visibility');
+ await db.query('select public.save_character($1,0,$2::jsonb,1,false,$3)',[other,profile,other]);
+ check((await db.query('select * from public.characters')).rows.length===1,'muted player retains cloud characters');
  await identity(owner,'aal2');await db.query(limit,[other,1,'ban']);await denied(limit,[other,1,'unban']);
  await identity(other);await denied('select public.center_snapshot()');
+ check((await db.query('select * from public.characters')).rows.length===0,'ban hides existing own cloud character through RLS');
  // Ban blocks existing character RPC even with a still-valid access token.
  await denied('select public.save_character($1,0,$2::jsonb,1,false,$3)',[cid,profile,operation]);
  await identity(owner,'aal2');await db.query(limit,[other,2,'unban']);await db.query(limit,[other,3,'unmute']);
  await identity(other);await db.query(submit,[caseId]);
+ check((await db.query('select * from public.characters')).rows[0].profile.unknown.x===7,'unban restores original character without data loss');
  await identity(member,'aal2');await denied(limit,[other,4,'ban']);
  // A stale staff token and self-authored content cannot bypass guards.
  await root();await db.query('update app_private.staff set active=false where user_id=$1',[member]);

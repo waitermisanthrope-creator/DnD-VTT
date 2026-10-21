@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 544b39d5356a. Git содержит 1915 файлов.
+Снимок кода 2271edf02755. Git содержит 1915 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1078,7 +1078,7 @@
 | №1057 docs/UNITY_MIGRATION_PLAN.md | 14710 B | документация или отчёт: UNITY MIGRATION PLAN |
 | №1058 docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md | 8253 B | документация или отчёт: ACCESS AND TOUCH 1.00.12 |
 | №1059 docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md | 9558 B | документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP |
-| №1060 docs/unity-account/IMPLEMENTATION_STATUS.md | 10692 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1060 docs/unity-account/IMPLEMENTATION_STATUS.md | 11217 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1061 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7061 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1062 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1063 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
@@ -1133,7 +1133,7 @@
 | №1112 supabase/migrations/202610210001_access_control.sql | 8940 B | SQL миграция Supabase |
 | №1113 supabase/migrations/202610210002_moderation_center.sql | 13546 B | SQL миграция Supabase |
 | №1114 supabase/tests/.gitignore | 14 B | вспомогательный файл: .gitignore |
-| №1115 supabase/tests/access-control.mjs | 14083 B | вспомогательный файл: access control |
+| №1115 supabase/tests/access-control.mjs | 14573 B | вспомогательный файл: access control |
 | №1116 supabase/tests/package-lock.json | 512 B | данные/конфигурация: package lock |
 | №1117 supabase/tests/package.json | 165 B | данные/конфигурация: package |
 | №1118 table.glb | 6217412 B | 3D модель/геометрия: table |
