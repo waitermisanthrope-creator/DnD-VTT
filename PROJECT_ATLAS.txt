@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит cb5925ccc1e4. Файлов: 1925
+Коммит 8719d737a12e. Файлов: 1925
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1721,7 +1721,7 @@
 1705. unity/Assets/Vtt/Editor/UnityReleaseBuild.cs.meta — вспомогательный файл: UnityReleaseBuild.cs (60 B)
 1706. unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs — вспомогательный файл: WorkshopBundleBuild (3632 B)
 1707. unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs.meta — вспомогательный файл: WorkshopBundleBuild.cs (60 B)
-1708. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs — вспомогательный файл: WorkshopEditorValidation (10234 B)
+1708. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs — вспомогательный файл: WorkshopEditorValidation (12272 B)
 1709. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs.meta — вспомогательный файл: WorkshopEditorValidation.cs (60 B)
 1710. unity/Assets/Vtt/Resources.meta — вспомогательный файл: Resources (172 B)
 1711. unity/Assets/Vtt/Resources/Branding.meta — вспомогательный файл: Branding (172 B)
@@ -1731,7 +1731,7 @@
 1715. unity/Assets/Vtt/Resources/Branding/Splash19.png.meta — вспомогательный файл: Splash19.png (312 B)
 1716. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg — текстура/изображение: Wallpaper16 (212684 B)
 1717. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta — вспомогательный файл: Wallpaper16.jpg (312 B)
-1718. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (17188 B)
+1718. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (19234 B)
 1719. unity/Assets/Vtt/Resources/Changelog.json.meta — вспомогательный файл: Changelog.json (158 B)
 1720. unity/Assets/Vtt/Resources/CharacterSheet.meta — вспомогательный файл: CharacterSheet (172 B)
 1721. unity/Assets/Vtt/Resources/CharacterSheet/catalog.json — данные/конфигурация: catalog (823381 B)
@@ -1782,7 +1782,7 @@
 1766. unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs.meta — вспомогательный файл: LegacySessionPanel.Sheet.cs (59 B)
 1767. unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs — вспомогательный файл: LegacySessionPanel.SheetSkin (4480 B)
 1768. unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs.meta — вспомогательный файл: LegacySessionPanel.SheetSkin.cs (60 B)
-1769. unity/Assets/Vtt/Runtime/LegacySessionPanel.Touch.cs — вспомогательный файл: LegacySessionPanel.Touch (3267 B)
+1769. unity/Assets/Vtt/Runtime/LegacySessionPanel.Touch.cs — вспомогательный файл: LegacySessionPanel.Touch (3878 B)
 1770. unity/Assets/Vtt/Runtime/LegacySessionPanel.Touch.cs.meta — вспомогательный файл: LegacySessionPanel.Touch.cs (60 B)
 1771. unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs — вспомогательный файл: LegacySessionPanel.Updates (13243 B)
 1772. unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs.meta — вспомогательный файл: LegacySessionPanel.Updates.cs (60 B)
@@ -1885,7 +1885,7 @@
 1869. updates/previous-stable.json — метаданные обновлений: previous stable (179808 B)
 1870. updates/README.md — документация или отчёт: README (233 B)
 1871. updates/stable.json — метаданные обновлений: stable (179809 B)
-1872. updates/unity-changelog.json — метаданные обновлений: unity changelog (17188 B)
+1872. updates/unity-changelog.json — метаданные обновлений: unity changelog (19234 B)
 1873. updates/unity-experiment.json — метаданные обновлений: unity experiment (1343 B)
 1874. vignette_v2_sprite.png — текстура/изображение: vignette v2 sprite (1213593 B)
 1875. VTT_PROJECT_MANIFEST_V70.json — устаревший список V70, не актуален (44370 B)

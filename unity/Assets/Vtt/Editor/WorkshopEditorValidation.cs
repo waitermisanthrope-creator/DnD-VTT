@@ -6,14 +6,35 @@ using Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
+using System.Reflection;
 using UnityEngine.SceneManagement;
 
 public static class WorkshopEditorValidation
 {
     private static void Check(bool condition, string message) { if (!condition) throw new Exception("VTT_WORKSHOP_EDITOR_FAIL: " + message); }
+    private static void ValidateMenuTouchBackend()
+    {
+        if(!Application.isBatchMode)return;
+        var prior=Touchscreen.current;var device=InputSystem.AddDevice<Touchscreen>();var go=new GameObject("Isolated menu input validation");
+        try {
+            var panel=go.AddComponent<LegacySessionPanel>();var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+            var gesture=(MenuGesture)typeof(LegacySessionPanel).GetField("menuGesture",flags).GetValue(panel);
+            gesture.Regions["test"]=new MenuGesture.Region { x=0,y=0,width=400,height=700 };
+            var update=typeof(LegacySessionPanel).GetMethod("Update",flags);
+            InputSystem.QueueStateEvent(device,new TouchState { touchId=1,phase=UnityEngine.InputSystem.TouchPhase.Began,position=new Vector2(40,Screen.height-200) });InputSystem.Update();update.Invoke(panel,null);
+            InputSystem.QueueStateEvent(device,new TouchState { touchId=1,phase=UnityEngine.InputSystem.TouchPhase.Moved,position=new Vector2(40,Screen.height-100),delta=new Vector2(0,100) });InputSystem.Update();update.Invoke(panel,null);
+            Check(gesture.Dragging&&gesture.Regions["test"].dy>0,"configured Input System drives actual menu scroll");
+            InputSystem.QueueStateEvent(device,new TouchState { touchId=1,phase=UnityEngine.InputSystem.TouchPhase.Ended,position=new Vector2(40,Screen.height-100) });InputSystem.Update();update.Invoke(panel,null);
+            Check(!gesture.Dragging&&(float)typeof(LegacySessionPanel).GetField("suppressMenuClickUntil",flags).GetValue(panel)>Time.unscaledTime,"touch release suppresses synthetic click");
+            Debug.Log("VTT_MENU_INPUT_SYSTEM_PASS: actual virtual touchscreen begin/move/end reaches menu scroll and cancels click");
+        } finally { UnityEngine.Object.DestroyImmediate(go);InputSystem.RemoveDevice(device);if(prior!=null)prior.MakeCurrent(); }
+    }
     [MenuItem("DnD VTT/Workshop/Validate published demo integration")]
     public static void Run()
     {
+        ValidateMenuTouchBackend();
         string fixtures = Path.GetFullPath("WorkshopFixtures~");
         Check(Directory.Exists(fixtures), "Download verified public fixtures to unity/WorkshopFixtures~ first");
         string folder = Path.Combine(Path.GetTempPath(), "vtt-workshop-editor-" + Guid.NewGuid()); Directory.CreateDirectory(folder);

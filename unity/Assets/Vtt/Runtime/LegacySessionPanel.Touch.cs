@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using InputTouchPhase = UnityEngine.InputSystem.TouchPhase;
 using System.Collections.Generic;
 using System.Linq;
 namespace DndVtt.UnityPrototype
@@ -16,10 +18,11 @@ namespace DndVtt.UnityPrototype
         private float UiWidth => Screen.width/MenuScale;
         private float UiHeight => Screen.height/MenuScale;
         // IMGUI pointer fallback also covers devices that deliver emulated mouse
-        // events without exposing touches through the legacy Input API.
+        // events when no touchscreen gesture is active.
+        private bool HasMenuTouch => Touchscreen.current!=null && (Touchscreen.current.primaryTouch.press.isPressed || Touchscreen.current.primaryTouch.press.wasReleasedThisFrame || Touchscreen.current.primaryTouch.phase.ReadValue()==InputTouchPhase.Ended || Touchscreen.current.primaryTouch.phase.ReadValue()==InputTouchPhase.Canceled);
         private void UpdateMenuPointer()
         {
-            if(Input.touchCount!=0)return;
+            if(HasMenuTouch)return;
             var e=Event.current;var point=e.mousePosition;
             if(e.type==EventType.MouseDown&&e.button==0)menuGesture.Begin(point.x,point.y);
             else if(e.type==EventType.MouseDrag&&e.button==0)menuGesture.Move(point.x,point.y,e.delta.x,e.delta.y,screen==FrontScreen.Map?1:MenuScale);
@@ -27,12 +30,13 @@ namespace DndVtt.UnityPrototype
         }
         private void Update()
         {
-            if(Input.touchCount==0)return;
-            if(Input.touchCount!=1) { if(menuGesture.End()) suppressMenuClickUntil=Time.unscaledTime+.15f;return; }
-            var touch=Input.GetTouch(0); float x=touch.position.x,y=Screen.height-touch.position.y;
-            if(touch.phase==TouchPhase.Began) menuGesture.Begin(x,y);
-            else if(touch.phase==TouchPhase.Moved) menuGesture.Move(x,y,touch.deltaPosition.x,-touch.deltaPosition.y,screen==FrontScreen.Map?1:MenuScale);
-            else if(touch.phase==TouchPhase.Ended||touch.phase==TouchPhase.Canceled) { if(menuGesture.End()) suppressMenuClickUntil=Time.unscaledTime+.15f; }
+            var device=Touchscreen.current;if(device==null||!HasMenuTouch)return;
+            if(device.touches.Count(t=>t.press.isPressed)>1) { if(menuGesture.End())suppressMenuClickUntil=Time.unscaledTime+.15f;return; }
+            var touch=device.primaryTouch;var position=touch.position.ReadValue();var delta=touch.delta.ReadValue();var phase=touch.phase.ReadValue();
+            float x=position.x,y=Screen.height-position.y;
+            if(phase==InputTouchPhase.Began||touch.press.wasPressedThisFrame)menuGesture.Begin(x,y);
+            else if(phase==InputTouchPhase.Moved)menuGesture.Move(x,y,delta.x,-delta.y,screen==FrontScreen.Map?1:MenuScale);
+            else if(phase==InputTouchPhase.Ended||phase==InputTouchPhase.Canceled||touch.press.wasReleasedThisFrame) { if(menuGesture.End())suppressMenuClickUntil=Time.unscaledTime+.15f; }
         }
         private Vector2 SwipePosition(string id,Vector2 position)
         {
