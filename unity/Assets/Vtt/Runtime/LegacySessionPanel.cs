@@ -63,7 +63,7 @@ namespace DndVtt.UnityPrototype
         {
             GUI.skin.label.fontSize = 16;
             if (DrawBrandSplash()) return;
-            if (screen != FrontScreen.Map) { DrawFrontEnd(); return; }
+            if (screen != FrontScreen.Map) { var originalSkin = GUI.skin; try { DrawFrontEnd(); } finally { GUI.skin = originalSkin; } return; }
 #if UNITY_ANDROID && !UNITY_EDITOR
             // Screen.orientation changes asynchronously. Don't draw a wide
             // HUD with negative widths during the portrait-to-map transition.

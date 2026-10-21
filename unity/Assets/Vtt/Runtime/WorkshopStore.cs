@@ -113,8 +113,9 @@ namespace DndVtt.UnityPrototype
             var data = Parse(text);
             if ((int?)data["schemaVersion"] != 1 || (string)data["id"] != (string)m["id"] || (string)data["version"] != (string)m["version"] || (string)data["type"] != (string)m["type"]) throw new FormatException("Пакет не соответствует манифесту");
             string type = (string)m["type"], packageId = (string)m["id"];
-            if (!new[] { "race", "class", "feat", "map", "model", "environment", "appearance" }.Contains(type)) throw new FormatException("Этот тип пока недоступен для активации");
-            string field = type == "race" ? "races" : type == "class" ? "classes" : type == "feat" ? "feats" : type == "map" ? "maps" : type == "appearance" ? "surfaces" : "objects";
+            if (!new[] { "race", "class", "feat", "map", "model", "environment", "appearance", "item", "craft" }.Contains(type)) throw new FormatException("Этот тип пока недоступен для активации");
+            if (type == "craft") { CommerceRules.ValidateCatalog(data); return data; }
+            string field = type == "race" ? "races" : type == "class" ? "classes" : type == "feat" ? "feats" : type == "map" ? "maps" : type == "appearance" ? "surfaces" : type == "item" ? "items" : "objects";
             if (!(data[field] is JArray entries) || entries.Count < 1 || entries.Count > 100) throw new FormatException("Неверный состав пакета");
             var ids = entries.OfType<JObject>().Select(x => (string)x["id"]).ToArray();
             if (ids.Length != entries.Count || ids.Distinct().Count() != ids.Length) throw new FormatException("Повтор ID ресурса");
@@ -132,6 +133,10 @@ namespace DndVtt.UnityPrototype
                     if (seed["stats"] != null && (!(seed["stats"] is JObject stats) || stats.Properties().Count() != 6 || new[] { "str", "dex", "con", "int", "wis", "cha" }.Any(k => stats[k]?.Type != JTokenType.Integer || (int)stats[k] < 8 || (int)stats[k] > 12))) throw new FormatException("Неверные бонусы характеристик");
                     ValidateChoices(e["choices"]);
                     if (type == "class" && (!(e["levelOneFeatures"] is JArray) || !new[] { 4, 6, 8, 10, 12 }.Contains((int?)e["hitDie"] ?? 0))) throw new FormatException("Неверный класс");
+                }
+                else if (type == "item")
+                {
+                    if (!CharacterSheetRules.InventoryCategories.Contains((string)e["inventoryCategory"])) throw new FormatException("Категория предмета");
                 }
                 else if (type == "feat")
                 {
@@ -199,6 +204,27 @@ namespace DndVtt.UnityPrototype
             foreach (JObject race in (JArray)result["races"])
                 foreach (JObject choice in (JArray)race["choices"])
                     if ((string)choice["type"] == "feat") choice["options"] = result["feats"].DeepClone();
+            return result;
+        }
+        public JObject Commerce()
+        {
+            var result = new JObject { ["items"] = new JArray(), ["craft"] = new JObject { ["materials"] = new JArray(), ["recipes"] = new JArray(), ["toolAliases"] = new JObject(), ["toolLabels"] = new JObject() }, ["alchemy"] = new JObject { ["ingredients"] = new JArray(), ["catalysts"] = new JArray(), ["synergy"] = new JArray(), ["conflict"] = new JArray(), ["effects"] = new JObject(), ["extraTrigger"] = new JObject() } };
+            foreach (JObject manifest in Installed())
+            {
+                if ((string)manifest["format"] != "json" || !new[] { "item", "craft" }.Contains((string)manifest["type"])) continue;
+                var data = Data(manifest);
+                foreach (JObject item in data["items"] as JArray ?? new JArray())
+                {
+                    var copy = (JObject)item.DeepClone(); copy["packageId"] = manifest["id"].DeepClone(); copy["packageVersion"] = manifest["version"].DeepClone(); ((JArray)result["items"]).Add(copy);
+                }
+                if ((string)manifest["type"] != "craft") continue;
+                var target = (JObject)result[(string)data["mode"] == "craft-v31" ? "craft" : "alchemy"];
+                foreach (var property in data.Properties())
+                {
+                    if (target[property.Name] is JArray array && property.Value is JArray values) foreach (var value in values) array.Add(value.DeepClone());
+                    else if (target[property.Name] is JObject obj && property.Value is JObject fields) foreach (var field in fields.Properties()) obj[field.Name] = field.Value.DeepClone();
+                }
+            }
             return result;
         }
         public void Remove(string id)

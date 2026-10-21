@@ -12,9 +12,10 @@ rows=[]
 jobs=[]
 for repo,field in [('DnD-VTT-Content','packages'),('DnD-VTT-Assets','packs')]:
  prefix='https://raw.githubusercontent.com/waitermisanthrope-creator/'+repo+'/main/'
- data=fetch(prefix+'catalog/v2/index.json',1024*1024);doc=json.loads(data)
- root=args.output/repo; (root/'catalog/v2').mkdir(parents=True,exist_ok=True);(root/'packages').mkdir(exist_ok=True)
- (root/'catalog/v2/index.json').write_bytes(data)
+ version=3 if repo.endswith('Content') else 2
+ data=fetch(prefix+f'catalog/v{version}/index.json',1024*1024);doc=json.loads(data)
+ root=args.output/repo; (root/f'catalog/v{version}').mkdir(parents=True,exist_ok=True);(root/'packages').mkdir(exist_ok=True)
+ (root/f'catalog/v{version}/index.json').write_bytes(data)
  for m in doc[field]:
   if m.get('format')!='json':continue
   assert m['url'].startswith(prefix+'packages/') and '..' not in m['url'] and m['url'].endswith('.json')

@@ -63,7 +63,7 @@ public static class CharacterSheetValidation
         var catalog = JObject.Parse(File.ReadAllText("Assets/Vtt/Resources/CharacterSheet/catalog.json"));
         Check(((JArray)catalog["spells"]).Count == 402, "main spell catalogue");
         ValidateCreation(catalog);
-        Check(((JObject)catalog["items"]).Properties().Sum(p => ((JArray)p.Value).Count) == 188, "main item catalogues");
+        Check(((JObject)catalog["items"]).Properties().Sum(p => ((JArray)p.Value).Count) == 0, "item collections downloaded separately");
         foreach (JObject test in (JArray)golden["inventoryCases"])
         {
             var hero = (JObject)test["input"].DeepClone(); string category = (string)test["category"]; var item = (JObject)test["item"];
@@ -119,7 +119,7 @@ public static class CharacterSheetValidation
             Check(digest == expected, "JS fixture provenance " + source["file"]);
         }
         Debug.Log("VTT_SHEET_PASS: " + cases + " JS golden cases; 18 skills, modifiers/proficiency, single/array/wrapped editing, rollback, identity/unknown/class-state preservation, atomic save/reload/backup; 402 spells");
-        Debug.Log("VTT_SHEET_RECORDS_PASS: 188 items; actual JS 5-category add/stack/remove, folder/note deletion and active selection, stale/invalid mutation rejection, 12 weight parser cases / total / capacity");
+        Debug.Log("VTT_SHEET_RECORDS_PASS: 0 embedded item entries; actual JS 5-category add/stack/remove, folder/note deletion and active selection, stale/invalid mutation rejection, 12 weight parser cases / total / capacity");
     }
     private static void ValidateUpdater()
     {

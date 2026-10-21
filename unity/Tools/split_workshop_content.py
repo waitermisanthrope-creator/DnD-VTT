@@ -31,6 +31,7 @@ for feat in base['creation']['feats']:
 base['creation']['races']=[r for r in full['creation']['races'] if r['id'] in base_races]
 base['creation']['classes']=[c for c in full['creation']['classes'] if c['id'] in base_classes]
 base.pop('sources',None)
+base['items']={key:[] for key in full['items']}
 base['baseline']={'edition':'D&D 5e 2014 PHB','raceFamilies':9,'raceEntries':15,'classEntries':12,'feats':'PHB' if phb else 'SRD Grappler'}
 write(ROOT/'unity/Assets/Vtt/Resources/CharacterSheet/catalog.json',base)
 content=json.loads((args.content/'catalog/v1/index.json').read_text()); content['packages']=[m for m in content['packages'] if not m['id'].startswith('dnd.')]

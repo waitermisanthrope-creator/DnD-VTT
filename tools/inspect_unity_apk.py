@@ -53,6 +53,7 @@ with tempfile.TemporaryDirectory(prefix='dnd-vtt-apk-audit-') as folder:
                         creation = document['creation']
                         record['creationIds'] = {key: [row.get('id') for row in creation.get(key, [])] for key in ('races', 'classes', 'feats')}
                         record['baseline'] = document.get('baseline')
+                        record['inventoryCatalogCounts'] = {key: len(rows) for key, rows in document.get('items', {}).items()}
             if kind == 'Texture2D':
                 record.update(width=data.m_Width, height=data.m_Height, textureFormat=data.m_TextureFormat)
         except Exception as error:

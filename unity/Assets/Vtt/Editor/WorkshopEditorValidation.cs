@@ -34,7 +34,7 @@ public static class WorkshopEditorValidation
             var manifests = new JArray();
             foreach (string repo in new[] { "DnD-VTT-Content", "DnD-VTT-Assets" })
             {
-                var entries = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixtures, repo, "catalog/v2/index.json")), repo.EndsWith("Content", StringComparison.Ordinal) ? "packages" : "packs");
+                var entries = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixtures, repo, repo.EndsWith("Content") ? "catalog/v3/index.json" : "catalog/v2/index.json")), repo.EndsWith("Content", StringComparison.Ordinal) ? "packages" : "packs");
                 foreach (JObject entry in entries)
                 {
                     if ((string)entry["format"] != "json") continue;

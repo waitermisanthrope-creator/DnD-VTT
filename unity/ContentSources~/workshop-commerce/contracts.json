@@ -1,0 +1,379 @@
+{
+  "profiles": [
+    {
+      "ids": [
+        "ing_001",
+        "ing_002"
+      ],
+      "catalyst": null,
+      "expected": {
+        "sharedProperties": [
+          "Recovery"
+        ],
+        "synergies": [
+          "Recovery|Vitality",
+          "Cold|Stability"
+        ],
+        "conflicts": [],
+        "extras": [],
+        "potency": 43,
+        "stability": 73,
+        "volatility": 30,
+        "purity": 72,
+        "risk": 0,
+        "unstable": false,
+        "activeProperties": [
+          "Recovery",
+          "Vitality",
+          "Cold",
+          "Stability"
+        ],
+        "catalystId": null
+      }
+    },
+    {
+      "ids": [
+        "ing_001",
+        "ing_002"
+      ],
+      "catalyst": "stabilizing_salt",
+      "expected": {
+        "sharedProperties": [
+          "Recovery"
+        ],
+        "synergies": [
+          "Recovery|Vitality",
+          "Cold|Stability"
+        ],
+        "conflicts": [],
+        "extras": [],
+        "potency": 43,
+        "stability": 91,
+        "volatility": 18,
+        "purity": 72,
+        "risk": 0,
+        "unstable": false,
+        "activeProperties": [
+          "Recovery",
+          "Vitality",
+          "Cold",
+          "Stability"
+        ],
+        "catalystId": "stabilizing_salt"
+      }
+    },
+    {
+      "ids": [
+        "ing_001",
+        "ing_002"
+      ],
+      "catalyst": "mercury_accelerator",
+      "expected": {
+        "sharedProperties": [
+          "Recovery"
+        ],
+        "synergies": [
+          "Recovery|Vitality",
+          "Cold|Stability"
+        ],
+        "conflicts": [],
+        "extras": [],
+        "potency": 51,
+        "stability": 63,
+        "volatility": 48,
+        "purity": 72,
+        "risk": 7,
+        "unstable": false,
+        "activeProperties": [
+          "Recovery",
+          "Vitality",
+          "Cold",
+          "Stability"
+        ],
+        "catalystId": "mercury_accelerator"
+      }
+    },
+    {
+      "ids": [
+        "ing_004",
+        "ing_005",
+        "ing_006"
+      ],
+      "catalyst": null,
+      "expected": {
+        "sharedProperties": [
+          "Radiant",
+          "Cold"
+        ],
+        "synergies": [
+          "Antidote|Recovery",
+          "Cold|Stability",
+          "Recovery|Vitality"
+        ],
+        "conflicts": [
+          "Antidote|Venom",
+          "Fire|Stability",
+          "Invisibility|Radiant",
+          "Cold|Fire"
+        ],
+        "extras": [
+          "Vitality"
+        ],
+        "potency": 67,
+        "stability": 68,
+        "volatility": 35,
+        "purity": 69,
+        "risk": 35,
+        "unstable": false,
+        "activeProperties": [
+          "Radiant",
+          "Cold",
+          "Antidote",
+          "Recovery",
+          "Stability",
+          "Vitality"
+        ],
+        "catalystId": null
+      }
+    },
+    {
+      "ids": [
+        "ing_004",
+        "ing_005",
+        "ing_006"
+      ],
+      "catalyst": "stabilizing_salt",
+      "expected": {
+        "sharedProperties": [
+          "Radiant",
+          "Cold"
+        ],
+        "synergies": [
+          "Antidote|Recovery",
+          "Cold|Stability",
+          "Recovery|Vitality"
+        ],
+        "conflicts": [
+          "Antidote|Venom",
+          "Fire|Stability",
+          "Invisibility|Radiant",
+          "Cold|Fire"
+        ],
+        "extras": [
+          "Vitality"
+        ],
+        "potency": 67,
+        "stability": 86,
+        "volatility": 23,
+        "purity": 69,
+        "risk": 20,
+        "unstable": false,
+        "activeProperties": [
+          "Radiant",
+          "Cold",
+          "Antidote",
+          "Recovery",
+          "Stability",
+          "Vitality"
+        ],
+        "catalystId": "stabilizing_salt"
+      }
+    },
+    {
+      "ids": [
+        "ing_004",
+        "ing_005",
+        "ing_006"
+      ],
+      "catalyst": "mercury_accelerator",
+      "expected": {
+        "sharedProperties": [
+          "Radiant",
+          "Cold"
+        ],
+        "synergies": [
+          "Antidote|Recovery",
+          "Cold|Stability",
+          "Recovery|Vitality"
+        ],
+        "conflicts": [
+          "Antidote|Venom",
+          "Fire|Stability",
+          "Invisibility|Radiant",
+          "Cold|Fire"
+        ],
+        "extras": [
+          "Vitality"
+        ],
+        "potency": 75,
+        "stability": 58,
+        "volatility": 53,
+        "purity": 69,
+        "risk": 49,
+        "unstable": false,
+        "activeProperties": [
+          "Radiant",
+          "Cold",
+          "Antidote",
+          "Recovery",
+          "Stability",
+          "Vitality"
+        ],
+        "catalystId": "mercury_accelerator"
+      }
+    },
+    {
+      "ids": [
+        "ing_008",
+        "ing_009",
+        "ing_010",
+        "ing_011",
+        "ing_012"
+      ],
+      "catalyst": null,
+      "expected": {
+        "sharedProperties": [
+          "Stability",
+          "Recovery",
+          "Magic",
+          "Mind"
+        ],
+        "synergies": [
+          "Antidote|Recovery",
+          "Cold|Stability",
+          "Recovery|Vitality",
+          "Invisibility|Magic",
+          "Mind|Perception"
+        ],
+        "conflicts": [
+          "Fire|Stability",
+          "Cold|Fire"
+        ],
+        "extras": [
+          "Volatility"
+        ],
+        "potency": 71,
+        "stability": 66,
+        "volatility": 31,
+        "purity": 74,
+        "risk": 14,
+        "unstable": false,
+        "activeProperties": [
+          "Stability",
+          "Recovery",
+          "Magic",
+          "Mind",
+          "Antidote",
+          "Cold",
+          "Vitality",
+          "Invisibility",
+          "Perception",
+          "Volatility"
+        ],
+        "catalystId": null
+      }
+    },
+    {
+      "ids": [
+        "ing_008",
+        "ing_009",
+        "ing_010",
+        "ing_011",
+        "ing_012"
+      ],
+      "catalyst": "stabilizing_salt",
+      "expected": {
+        "sharedProperties": [
+          "Stability",
+          "Recovery",
+          "Magic",
+          "Mind"
+        ],
+        "synergies": [
+          "Antidote|Recovery",
+          "Cold|Stability",
+          "Recovery|Vitality",
+          "Invisibility|Magic",
+          "Mind|Perception"
+        ],
+        "conflicts": [
+          "Fire|Stability",
+          "Cold|Fire"
+        ],
+        "extras": [
+          "Volatility"
+        ],
+        "potency": 71,
+        "stability": 84,
+        "volatility": 19,
+        "purity": 74,
+        "risk": 0,
+        "unstable": false,
+        "activeProperties": [
+          "Stability",
+          "Recovery",
+          "Magic",
+          "Mind",
+          "Antidote",
+          "Cold",
+          "Vitality",
+          "Invisibility",
+          "Perception",
+          "Volatility"
+        ],
+        "catalystId": "stabilizing_salt"
+      }
+    },
+    {
+      "ids": [
+        "ing_008",
+        "ing_009",
+        "ing_010",
+        "ing_011",
+        "ing_012"
+      ],
+      "catalyst": "mercury_accelerator",
+      "expected": {
+        "sharedProperties": [
+          "Stability",
+          "Recovery",
+          "Magic",
+          "Mind"
+        ],
+        "synergies": [
+          "Antidote|Recovery",
+          "Cold|Stability",
+          "Recovery|Vitality",
+          "Invisibility|Magic",
+          "Mind|Perception"
+        ],
+        "conflicts": [
+          "Fire|Stability",
+          "Cold|Fire"
+        ],
+        "extras": [
+          "Volatility"
+        ],
+        "potency": 79,
+        "stability": 56,
+        "volatility": 49,
+        "purity": 74,
+        "risk": 28,
+        "unstable": false,
+        "activeProperties": [
+          "Stability",
+          "Recovery",
+          "Magic",
+          "Mind",
+          "Antidote",
+          "Cold",
+          "Vitality",
+          "Invisibility",
+          "Perception",
+          "Volatility"
+        ],
+        "catalystId": "mercury_accelerator"
+      }
+    }
+  ]
+}

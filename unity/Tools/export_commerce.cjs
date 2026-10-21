@@ -1,0 +1,11 @@
+'use strict';
+const fs=require('fs'),vm=require('vm'),path=require('path'),crypto=require('crypto');
+const root=path.resolve(__dirname,'../..'), out=path.join(root,'unity/ContentSources~/workshop-commerce');fs.mkdirSync(out,{recursive:true});
+const c={console,document:{addEventListener(){},getElementById(){return null},querySelector(){return null}},setTimeout(){},localStorage:{getItem(){return null}},Math:Object.create(Math)};c.window=c;c.self=c;vm.createContext(c);
+const files=['app/crafting_engine_v31.js','app/alchemy_engine_v29.js','app/alchemy_gameplay_v30.js'];
+for(const file of files)vm.runInContext(fs.readFileSync(path.join(root,file),'utf8').replace('RECIPES.push({id,name,category,', 'RECIPES.push({id,name,inventoryCategory:category,category,').replace('const EFFECTS=', 'global.DND_EXTRA_TRIGGER=EXTRA_TRIGGER;const EFFECTS=').replace('function profs()', 'global.DND_TOOL_ALIASES=TOOL_IDS;function profs()'),c,{filename:file,timeout:5000});
+const clone=x=>JSON.parse(JSON.stringify(x));
+const data={craft:{materials:c.DND_CRAFTING_V31.MATERIALS,recipes:c.DND_CRAFTING_V31.RECIPES,toolLabels:c.DND_CRAFTING_V31.TOOL_LABELS,toolAliases:c.DND_TOOL_ALIASES},alchemy:{ingredients:c.DNDAlchemy.ingredients,catalysts:c.DNDAlchemy.catalysts,synergy:c.DNDAlchemy.synergy,conflict:c.DNDAlchemy.conflict,effects:c.DNDAlchemy.effects,extraTrigger:c.DND_EXTRA_TRIGGER},sources:files.map(file=>({file,sha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(root,file))).digest('hex')}))};
+fs.writeFileSync(path.join(out,'catalogs.json'),JSON.stringify(data,null,2)+'\n');
+const profiles=[];for(const ids of [data.alchemy.ingredients.slice(0,2).map(x=>x.id),data.alchemy.ingredients.slice(3,6).map(x=>x.id),data.alchemy.ingredients.slice(7,12).map(x=>x.id)])for(const cat of [null,...data.alchemy.catalysts.slice(0,2).map(x=>x.id)])profiles.push({ids,catalyst:cat,expected:clone(c.DNDAlchemy.reactionProfile(ids.map(id=>c.DNDAlchemy.ingredients.find(x=>x.id===id)),cat))});
+fs.writeFileSync(path.join(out,'contracts.json'),JSON.stringify({profiles},null,2)+'\n');console.log('COMMERCE_SOURCE_EXPORT',data.craft.recipes.length,'recipes',data.craft.materials.length,'materials',data.alchemy.ingredients.length,'ingredients',data.alchemy.catalysts.length,'catalysts');

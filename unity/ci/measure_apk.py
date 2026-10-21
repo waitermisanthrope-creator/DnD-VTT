@@ -26,6 +26,8 @@ if args.minimal_content:
     assert not any(item.get('isMapDocument') for item in objects['objects']), 'Map JSON is bundled in APK'
     catalogs = [item['creationIds'] for item in objects['objects'] if 'creationIds' in item]
     assert len(catalogs) == 1, 'Expected one actual serialized character catalog'
+    item_catalogs = [item['inventoryCatalogCounts'] for item in objects['objects'] if 'inventoryCatalogCounts' in item]
+    assert len(item_catalogs) == 1 and item_catalogs[0] and all(n == 0 for n in item_catalogs[0].values()), 'Optional inventory collections leaked into APK'
     catalog = catalogs[0]
     assert len(catalog['races']) == 15 and len(catalog['classes']) == 12, 'APK must contain only the PHB baseline'
     assert not {'tortle','aasimar'}.intersection(catalog['races'])

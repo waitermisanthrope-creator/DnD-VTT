@@ -39,6 +39,7 @@ namespace DndVtt.UnityPrototype
         public string Error { get; private set; } = "";
         public static string Platform => Application.platform == RuntimePlatform.Android ? "android-arm64" : Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor ? "windows-x64" : "unsupported";
         public WorkshopRuntime(WorkshopStore s) { store = s; }
+        public JObject Commerce() => store.Commerce();
         public JObject Creation(JObject baseline) => store.Creation(baseline);
         public void ActivateData()
         {

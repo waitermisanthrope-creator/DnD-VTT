@@ -59,6 +59,7 @@ namespace DndVtt.UnityPrototype
                 else DrawBrandSettings();
                 return;
             }
+            PrepareSheetSkin();
             heading ??= new GUIStyle(GUI.skin.label) { fontSize = 32, fontStyle = FontStyle.Bold, wordWrap = true };
             muted ??= new GUIStyle(GUI.skin.label) { fontSize = 15, wordWrap = true, normal = { textColor = new Color(.65f, .73f, .83f) } };
             bigButton ??= new GUIStyle(GUI.skin.button) { fontSize = 18, padding = new RectOffset(20, 20, 16, 16), alignment = TextAnchor.MiddleLeft };

@@ -1,0 +1,4108 @@
+{
+  "craft": {
+    "materials": [
+      {
+        "id": "iron",
+        "name": "Железо",
+        "cat": "metal",
+        "rarity": "common",
+        "price": 1,
+        "weight": 1
+      },
+      {
+        "id": "steel",
+        "name": "Сталь",
+        "cat": "metal",
+        "rarity": "common",
+        "price": 2,
+        "weight": 1
+      },
+      {
+        "id": "mithral",
+        "name": "Мифрил",
+        "cat": "metal",
+        "rarity": "very_rare",
+        "price": 75,
+        "weight": 1
+      },
+      {
+        "id": "adamantine",
+        "name": "Адамантин",
+        "cat": "metal",
+        "rarity": "very_rare",
+        "price": 100,
+        "weight": 1
+      },
+      {
+        "id": "silver",
+        "name": "Серебро",
+        "cat": "metal",
+        "rarity": "uncommon",
+        "price": 5,
+        "weight": 1
+      },
+      {
+        "id": "copper",
+        "name": "Медь",
+        "cat": "metal",
+        "rarity": "common",
+        "price": 0.5,
+        "weight": 1
+      },
+      {
+        "id": "wood",
+        "name": "Древесина",
+        "cat": "wood",
+        "rarity": "common",
+        "price": 0.1,
+        "weight": 1
+      },
+      {
+        "id": "hardwood",
+        "name": "Твёрдая древесина",
+        "cat": "wood",
+        "rarity": "uncommon",
+        "price": 1,
+        "weight": 1
+      },
+      {
+        "id": "darkwood",
+        "name": "Тенедревесина",
+        "cat": "wood",
+        "rarity": "rare",
+        "price": 10,
+        "weight": 1
+      },
+      {
+        "id": "leather",
+        "name": "Кожа",
+        "cat": "hide",
+        "rarity": "common",
+        "price": 1,
+        "weight": 0.5
+      },
+      {
+        "id": "hide",
+        "name": "Шкура",
+        "cat": "hide",
+        "rarity": "common",
+        "price": 2,
+        "weight": 1
+      },
+      {
+        "id": "dragonScale",
+        "name": "Драконья чешуя",
+        "cat": "hide",
+        "rarity": "very_rare",
+        "price": 75,
+        "weight": 0.5
+      },
+      {
+        "id": "spiderSilk",
+        "name": "Паучий шёлк",
+        "cat": "fiber",
+        "rarity": "rare",
+        "price": 15,
+        "weight": 0.2
+      },
+      {
+        "id": "cloth",
+        "name": "Ткань",
+        "cat": "fiber",
+        "rarity": "common",
+        "price": 0.5,
+        "weight": 0.2
+      },
+      {
+        "id": "thread",
+        "name": "Нить",
+        "cat": "fiber",
+        "rarity": "common",
+        "price": 0.1,
+        "weight": 0.1
+      },
+      {
+        "id": "paper",
+        "name": "Бумага",
+        "cat": "paper",
+        "rarity": "common",
+        "price": 0.2,
+        "weight": 0.05
+      },
+      {
+        "id": "parchment",
+        "name": "Пергамент",
+        "cat": "paper",
+        "rarity": "common",
+        "price": 1,
+        "weight": 0.05
+      },
+      {
+        "id": "glass",
+        "name": "Стекло",
+        "cat": "glass",
+        "rarity": "common",
+        "price": 1,
+        "weight": 0.2
+      },
+      {
+        "id": "crystal",
+        "name": "Кристалл",
+        "cat": "glass",
+        "rarity": "uncommon",
+        "price": 10,
+        "weight": 0.2
+      },
+      {
+        "id": "clay",
+        "name": "Глина",
+        "cat": "ceramic",
+        "rarity": "common",
+        "price": 0.1,
+        "weight": 1
+      },
+      {
+        "id": "ceramic",
+        "name": "Керамика",
+        "cat": "ceramic",
+        "rarity": "common",
+        "price": 1,
+        "weight": 0.5
+      },
+      {
+        "id": "charcoal",
+        "name": "Древесный уголь",
+        "cat": "fuel",
+        "rarity": "common",
+        "price": 0.1,
+        "weight": 0.5
+      },
+      {
+        "id": "salt",
+        "name": "Соль",
+        "cat": "reagent",
+        "rarity": "common",
+        "price": 0.05,
+        "weight": 0.2
+      },
+      {
+        "id": "resin",
+        "name": "Смола",
+        "cat": "reagent",
+        "rarity": "common",
+        "price": 0.5,
+        "weight": 0.2
+      },
+      {
+        "id": "wax",
+        "name": "Воск",
+        "cat": "reagent",
+        "rarity": "common",
+        "price": 0.2,
+        "weight": 0.2
+      },
+      {
+        "id": "gem",
+        "name": "Драгоценный камень",
+        "cat": "gem",
+        "rarity": "rare",
+        "price": 50,
+        "weight": 0.1
+      },
+      {
+        "id": "ink",
+        "name": "Чернила",
+        "cat": "reagent",
+        "rarity": "common",
+        "price": 5,
+        "weight": 0.05
+      },
+      {
+        "id": "herb",
+        "name": "Сушёные травы",
+        "cat": "reagent",
+        "rarity": "common",
+        "price": 1,
+        "weight": 0.1
+      },
+      {
+        "id": "monsterPart",
+        "name": "Часть чудовища",
+        "cat": "monster",
+        "rarity": "uncommon",
+        "price": 10,
+        "weight": 0.2
+      }
+    ],
+    "recipes": [
+      {
+        "id": "dagger",
+        "name": "Кинжал",
+        "inventoryCategory": "weapons",
+        "category": "weapons",
+        "dc": 10,
+        "time": 4,
+        "tools": [
+          "smith"
+        ],
+        "materials": {
+          "iron": 1,
+          "leather": 1
+        },
+        "damage": "1d4",
+        "damageType": "колющий",
+        "weight": 1,
+        "cost": "2 зм",
+        "properties": [
+          "Finesse",
+          "Light",
+          "Thrown"
+        ]
+      },
+      {
+        "id": "shortsword",
+        "name": "Короткий меч",
+        "inventoryCategory": "weapons",
+        "category": "weapons",
+        "dc": 11,
+        "time": 8,
+        "tools": [
+          "smith"
+        ],
+        "materials": {
+          "steel": 2,
+          "leather": 1
+        },
+        "damage": "1d6",
+        "damageType": "колющий",
+        "weight": 2,
+        "cost": "10 зм",
+        "properties": [
+          "Finesse",
+          "Light"
+        ]
+      },
+      {
+        "id": "longsword",
+        "name": "Длинный меч",
+        "inventoryCategory": "weapons",
+        "category": "weapons",
+        "dc": 12,
+        "time": 10,
+        "tools": [
+          "smith"
+        ],
+        "materials": {
+          "steel": 3,
+          "leather": 1
+        },
+        "damage": "1d8",
+        "damageType": "рубящий",
+        "weight": 3,
+        "cost": "15 зм",
+        "properties": [
+          "Versatile"
+        ]
+      },
+      {
+        "id": "greatsword",
+        "name": "Двуручный меч",
+        "inventoryCategory": "weapons",
+        "category": "weapons",
+        "dc": 14,
+        "time": 18,
+        "tools": [
+          "smith"
+        ],
+        "materials": {
+          "steel": 6,
+          "leather": 1
+        },
+        "damage": "2d6",
+        "damageType": "рубящий",
+        "weight": 6,
+        "cost": "50 зм",
+        "properties": [
+          "Heavy",
+          "Two-Handed"
+        ]
+      },
+      {
+        "id": "rapier",
+        "name": "Рапира",
+        "inventoryCategory": "weapons",
+        "category": "weapons",
+        "dc": 13,
+        "time": 10,
+        "tools": [
+          "smith"
+        ],
+        "materials": {
+          "steel": 2,
+          "silver": 1,
+          "leather": 1
+        },
+        "damage": "1d8",
+        "damageType": "колющий",
+        "weight": 2,
+        "cost": "25 зм",
+        "properties": [
+          "Finesse"
+        ]
+      },
+      {
+        "id": "mace",
+        "name": "Булава",
+        "inventoryCategory": "weapons",
+        "category": "weapons",
+        "dc": 10,
+        "time": 6,
+        "tools": [
+          "smith"
+        ],
+        "materials": {
+          "iron": 2,
+          "wood": 1
+        },
+        "damage": "1d6",
+        "damageType": "дробящий",
+        "weight": 4,
+        "cost": "5 зм",
+        "properties": []
+      },
+      {
+        "id": "battleaxe",
+        "name": "Боевой топор",
+        "inventoryCategory": "weapons",
+        "category": "weapons",
+        "dc": 12,
+        "time": 9,
+        "tools": [
+          "smith"
+        ],
+        "materials": {
+          "steel": 2,
+          "wood": 1,
+          "leather": 1
+        },
+        "damage": "1d8",
+        "damageType": "рубящий",
+        "weight": 4,
+        "cost": "10 зм",
+        "properties": [
+          "Versatile"
+        ]
+      },
+      {
+        "id": "warhammer",
+        "name": "Боевой молот",
+        "inventoryCategory": "weapons",
+        "category": "weapons",
+        "dc": 12,
+        "time": 9,
+        "tools": [
+          "smith"
+        ],
+        "materials": {
+          "steel": 2,
+          "wood": 1
+        },
+        "damage": "1d8",
+        "damageType": "дробящий",
+        "weight": 2,
+        "cost": "15 зм",
+        "properties": [
+          "Versatile"
+        ]
+      },
+      {
+        "id": "spear",
+        "name": "Копьё",
+        "inventoryCategory": "weapons",
+        "category": "weapons",
+        "dc": 9,
+        "time": 4,
+        "tools": [
+          "smith",
+          "woodwork"
+        ],
+        "materials": {
+          "steel": 1,
+          "wood": 2,
+          "leather": 1
+        },
+        "damage": "1d6",
+        "damageType": "колющий",
+        "weight": 3,
+        "cost": "1 зм",
+        "properties": [
+          "Thrown",
+          "Versatile"
+        ]
+      },
+      {
+        "id": "shield",
+        "name": "Щит",
+        "inventoryCategory": "armor",
+        "category": "Щит",
+        "dc": 12,
+        "time": 8,
+        "tools": [
+          "smith",
+          "leatherwork"
+        ],
+        "materials": {
+          "wood": 3,
+          "steel": 1,
+          "leather": 1
+        },
+        "ac": 2,
+        "weight": 6,
+        "cost": "10 зм"
+      },
+      {
+        "id": "shortbow",
+        "name": "Короткий лук",
+        "inventoryCategory": "weapons",
+        "category": "weapons",
+        "dc": 11,
+        "time": 8,
+        "tools": [
+          "woodwork"
+        ],
+        "materials": {
+          "hardwood": 2,
+          "leather": 1,
+          "thread": 1
+        },
+        "damage": "1d6",
+        "damageType": "колющий",
+        "weight": 2,
+        "cost": "25 зм",
+        "properties": [
+          "Ammunition",
+          "Two-Handed"
+        ]
+      },
+      {
+        "id": "longbow",
+        "name": "Длинный лук",
+        "inventoryCategory": "weapons",
+        "category": "weapons",
+        "dc": 13,
+        "time": 14,
+        "tools": [
+          "woodwork"
+        ],
+        "materials": {
+          "hardwood": 4,
+          "leather": 1,
+          "thread": 2
+        },
+        "damage": "1d8",
+        "damageType": "колющий",
+        "weight": 2,
+        "cost": "50 зм",
+        "properties": [
+          "Ammunition",
+          "Heavy",
+          "Two-Handed"
+        ]
+      },
+      {
+        "id": "crossbow",
+        "name": "Арбалет",
+        "inventoryCategory": "weapons",
+        "category": "weapons",
+        "dc": 13,
+        "time": 12,
+        "tools": [
+          "woodwork",
+          "smith"
+        ],
+        "materials": {
+          "steel": 2,
+          "hardwood": 2,
+          "leather": 1,
+          "thread": 2
+        },
+        "damage": "1d8",
+        "damageType": "колющий",
+        "weight": 5,
+        "cost": "25 зм",
+        "properties": [
+          "Ammunition",
+          "Loading",
+          "Two-Handed"
+        ]
+      },
+      {
+        "id": "leatherArmor",
+        "name": "Кожаный доспех",
+        "inventoryCategory": "armor",
+        "category": "Лёгкий доспех",
+        "dc": 10,
+        "time": 10,
+        "tools": [
+          "leatherwork"
+        ],
+        "materials": {
+          "leather": 4,
+          "thread": 2
+        },
+        "ac": 11,
+        "weight": 10,
+        "cost": "10 зм"
+      },
+      {
+        "id": "studdedLeather",
+        "name": "Клёпаная кожа",
+        "inventoryCategory": "armor",
+        "category": "Лёгкий доспех",
+        "dc": 12,
+        "time": 14,
+        "tools": [
+          "leatherwork",
+          "smith"
+        ],
+        "materials": {
+          "leather": 5,
+          "iron": 2,
+          "thread": 2
+        },
+        "ac": 12,
+        "weight": 13,
+        "cost": "45 зм"
+      },
+      {
+        "id": "chainShirt",
+        "name": "Кольчуга",
+        "inventoryCategory": "armor",
+        "category": "Средний доспех",
+        "dc": 13,
+        "time": 20,
+        "tools": [
+          "smith"
+        ],
+        "materials": {
+          "steel": 8
+        },
+        "ac": 13,
+        "weight": 20,
+        "cost": "50 зм"
+      },
+      {
+        "id": "breastplate",
+        "name": "Кираса",
+        "inventoryCategory": "armor",
+        "category": "Средний доспех",
+        "dc": 14,
+        "time": 18,
+        "tools": [
+          "smith"
+        ],
+        "materials": {
+          "steel": 8,
+          "leather": 2
+        },
+        "ac": 14,
+        "weight": 20,
+        "cost": "400 зм"
+      },
+      {
+        "id": "chainmail",
+        "name": "Кольчужная рубаха",
+        "inventoryCategory": "armor",
+        "category": "Тяжёлый доспех",
+        "dc": 14,
+        "time": 24,
+        "tools": [
+          "smith"
+        ],
+        "materials": {
+          "steel": 12,
+          "leather": 2
+        },
+        "ac": 16,
+        "weight": 55,
+        "cost": "75 зм"
+      },
+      {
+        "id": "plate",
+        "name": "Латы",
+        "inventoryCategory": "armor",
+        "category": "Тяжёлый доспех",
+        "dc": 17,
+        "time": 40,
+        "tools": [
+          "smith"
+        ],
+        "materials": {
+          "steel": 24,
+          "leather": 3
+        },
+        "ac": 18,
+        "weight": 65,
+        "cost": "1500 зм"
+      },
+      {
+        "id": "mithralArmor",
+        "name": "Мифриловая броня",
+        "inventoryCategory": "armor",
+        "category": "Средний доспех",
+        "dc": 18,
+        "time": 36,
+        "tools": [
+          "smith"
+        ],
+        "materials": {
+          "mithral": 12,
+          "leather": 2,
+          "thread": 2
+        },
+        "ac": 16,
+        "weight": 25,
+        "cost": "1500+ зм",
+        "rarity": "very_rare",
+        "special": "Не имеет ограничения Силы и помехи скрытности по решению мастера."
+      },
+      {
+        "id": "dragonScaleArmor",
+        "name": "Доспех из драконьей чешуи",
+        "inventoryCategory": "armor",
+        "category": "Средний доспех",
+        "dc": 18,
+        "time": 30,
+        "tools": [
+          "leatherwork"
+        ],
+        "materials": {
+          "dragonScale": 12,
+          "leather": 3,
+          "thread": 2
+        },
+        "ac": 14,
+        "weight": 20,
+        "cost": "500+ зм",
+        "rarity": "very_rare",
+        "special": "Выбери сопротивление, связанное с видом чешуи."
+      },
+      {
+        "id": "amulet",
+        "name": "Амулет",
+        "inventoryCategory": "armor",
+        "category": "Аксессуар",
+        "dc": 10,
+        "time": 6,
+        "tools": [
+          "jeweler"
+        ],
+        "materials": {
+          "silver": 1,
+          "gem": 1,
+          "thread": 1
+        },
+        "weight": 0.1,
+        "cost": "20 зм"
+      },
+      {
+        "id": "ring",
+        "name": "Кольцо",
+        "inventoryCategory": "armor",
+        "category": "Аксессуар",
+        "dc": 11,
+        "time": 5,
+        "tools": [
+          "jeweler"
+        ],
+        "materials": {
+          "silver": 1,
+          "gem": 1
+        },
+        "weight": 0.05,
+        "cost": "25 зм"
+      },
+      {
+        "id": "goggles",
+        "name": "Защитные очки",
+        "inventoryCategory": "armor",
+        "category": "Аксессуар",
+        "dc": 10,
+        "time": 5,
+        "tools": [
+          "glasswork",
+          "leatherwork"
+        ],
+        "materials": {
+          "glass": 2,
+          "leather": 1,
+          "thread": 1
+        },
+        "weight": 0.2,
+        "cost": "10 зм"
+      },
+      {
+        "id": "cloak",
+        "name": "Плотный плащ",
+        "inventoryCategory": "armor",
+        "category": "Аксессуар",
+        "dc": 9,
+        "time": 5,
+        "tools": [
+          "weaver"
+        ],
+        "materials": {
+          "cloth": 3,
+          "thread": 2
+        },
+        "weight": 2,
+        "cost": "5 зм"
+      },
+      {
+        "id": "vial",
+        "name": "Стеклянный флакон",
+        "inventoryCategory": "materials",
+        "category": "Стекло",
+        "dc": 8,
+        "time": 1,
+        "tools": [
+          "glasswork"
+        ],
+        "materials": {
+          "glass": 1
+        },
+        "weight": 0.1,
+        "cost": "1 зм"
+      },
+      {
+        "id": "alchemistBottle",
+        "name": "Алхимическая бутылочка",
+        "inventoryCategory": "materials",
+        "category": "Стекло",
+        "dc": 10,
+        "time": 2,
+        "tools": [
+          "glasswork"
+        ],
+        "materials": {
+          "glass": 2,
+          "clay": 1
+        },
+        "weight": 0.2,
+        "cost": "3 зм"
+      },
+      {
+        "id": "crucible",
+        "name": "Керамический тигель",
+        "inventoryCategory": "materials",
+        "category": "Керамика",
+        "dc": 10,
+        "time": 3,
+        "tools": [
+          "pottery"
+        ],
+        "materials": {
+          "clay": 3,
+          "charcoal": 1
+        },
+        "weight": 2,
+        "cost": "5 зм"
+      },
+      {
+        "id": "retort",
+        "name": "Перегонная колба",
+        "inventoryCategory": "materials",
+        "category": "Алхимия",
+        "dc": 13,
+        "time": 5,
+        "tools": [
+          "glasswork",
+          "alchemy"
+        ],
+        "materials": {
+          "glass": 3,
+          "ceramic": 1
+        },
+        "weight": 1,
+        "cost": "15 зм"
+      },
+      {
+        "id": "sealedJar",
+        "name": "Герметичная банка",
+        "inventoryCategory": "materials",
+        "category": "Керамика",
+        "dc": 9,
+        "time": 2,
+        "tools": [
+          "pottery"
+        ],
+        "materials": {
+          "ceramic": 2,
+          "wax": 1
+        },
+        "weight": 1,
+        "cost": "2 зм"
+      },
+      {
+        "id": "paperBundle",
+        "name": "Стопка бумаги",
+        "inventoryCategory": "materials",
+        "category": "Бумага",
+        "dc": 8,
+        "time": 2,
+        "tools": [
+          "scribe"
+        ],
+        "materials": {
+          "paper": 10,
+          "thread": 1
+        },
+        "weight": 0.5,
+        "cost": "2 зм",
+        "quantity": 10
+      },
+      {
+        "id": "parchmentBundle",
+        "name": "Стопка пергамента",
+        "inventoryCategory": "materials",
+        "category": "Пергамент",
+        "dc": 9,
+        "time": 3,
+        "tools": [
+          "scribe",
+          "leatherwork"
+        ],
+        "materials": {
+          "parchment": 10,
+          "thread": 1
+        },
+        "weight": 0.5,
+        "cost": "10 зм",
+        "quantity": 10
+      },
+      {
+        "id": "map",
+        "name": "Карта местности",
+        "inventoryCategory": "materials",
+        "category": "Карта",
+        "dc": 12,
+        "time": 8,
+        "tools": [
+          "cartographer",
+          "scribe"
+        ],
+        "materials": {
+          "paper": 2,
+          "ink": 1,
+          "thread": 1
+        },
+        "weight": 0.1,
+        "cost": "10 зм",
+        "special": "Точность зависит от инструментов и проверки."
+      },
+      {
+        "id": "spellbook",
+        "name": "Пустая книга заклинаний",
+        "inventoryCategory": "materials",
+        "category": "Книга",
+        "dc": 12,
+        "time": 10,
+        "tools": [
+          "scribe"
+        ],
+        "materials": {
+          "parchment": 30,
+          "leather": 2,
+          "thread": 3,
+          "ink": 2
+        },
+        "weight": 3,
+        "cost": "50 зм"
+      },
+      {
+        "id": "bowl",
+        "name": "Керамическая миска",
+        "inventoryCategory": "junk",
+        "category": "Посуда",
+        "dc": 8,
+        "time": 1,
+        "tools": [
+          "pottery"
+        ],
+        "materials": {
+          "clay": 2
+        },
+        "weight": 1,
+        "cost": 0.02
+      },
+      {
+        "id": "cup",
+        "name": "Керамическая кружка",
+        "inventoryCategory": "junk",
+        "category": "Посуда",
+        "dc": 8,
+        "time": 1,
+        "tools": [
+          "pottery"
+        ],
+        "materials": {
+          "clay": 1
+        },
+        "weight": 0.5,
+        "cost": 0.01
+      },
+      {
+        "id": "glassBottle",
+        "name": "Стеклянная бутылка",
+        "inventoryCategory": "junk",
+        "category": "Стекло",
+        "dc": 8,
+        "time": 1,
+        "tools": [
+          "glasswork"
+        ],
+        "materials": {
+          "glass": 2
+        },
+        "weight": 0.3,
+        "cost": 0.5
+      },
+      {
+        "id": "lens",
+        "name": "Стеклянная линза",
+        "inventoryCategory": "materials",
+        "category": "Оптика",
+        "dc": 14,
+        "time": 4,
+        "tools": [
+          "glasswork"
+        ],
+        "materials": {
+          "glass": 2,
+          "crystal": 1
+        },
+        "weight": 0.2,
+        "cost": "20 зм"
+      },
+      {
+        "id": "candle",
+        "name": "Свеча",
+        "inventoryCategory": "consumables",
+        "category": "Расходник",
+        "dc": 7,
+        "time": 1,
+        "tools": [
+          "weaver"
+        ],
+        "materials": {
+          "wax": 1,
+          "thread": 1
+        },
+        "weight": 0.1,
+        "cost": 0.01,
+        "quantity": 2
+      },
+      {
+        "id": "torch",
+        "name": "Факел",
+        "inventoryCategory": "consumables",
+        "category": "Расходник",
+        "dc": 7,
+        "time": 1,
+        "tools": [
+          "woodwork"
+        ],
+        "materials": {
+          "wood": 1,
+          "cloth": 1,
+          "resin": 1
+        },
+        "weight": 1,
+        "cost": 0.01,
+        "quantity": 2
+      },
+      {
+        "id": "silverWire",
+        "name": "Серебряная проволока",
+        "inventoryCategory": "materials",
+        "category": "Материал",
+        "dc": 11,
+        "time": 3,
+        "tools": [
+          "smith"
+        ],
+        "materials": {
+          "silver": 2
+        },
+        "weight": 0.2,
+        "cost": "10 зм"
+      },
+      {
+        "id": "adamantineEdge",
+        "name": "Адамантиновая заточка",
+        "inventoryCategory": "materials",
+        "category": "Модификатор",
+        "dc": 17,
+        "time": 12,
+        "tools": [
+          "smith"
+        ],
+        "materials": {
+          "adamantine": 1,
+          "steel": 2,
+          "charcoal": 1
+        },
+        "weight": 0.2,
+        "cost": "150 зм",
+        "special": "Можно применить к подходящему оружию по решению мастера."
+      },
+      {
+        "id": "mithralWire",
+        "name": "Мифриловая нить",
+        "inventoryCategory": "materials",
+        "category": "Материал",
+        "dc": 17,
+        "time": 8,
+        "tools": [
+          "smith",
+          "weaver"
+        ],
+        "materials": {
+          "mithral": 1,
+          "thread": 2
+        },
+        "weight": 0.1,
+        "cost": "100 зм"
+      },
+      {
+        "id": "arrows",
+        "name": "Стрелы",
+        "inventoryCategory": "consumables",
+        "category": "Боеприпасы",
+        "dc": 9,
+        "time": 2,
+        "tools": [
+          "woodwork"
+        ],
+        "materials": {
+          "wood": 2,
+          "steel": 1,
+          "thread": 1
+        },
+        "weight": 1,
+        "cost": "1 зм",
+        "quantity": 20
+      },
+      {
+        "id": "bolts",
+        "name": "Арбалетные болты",
+        "inventoryCategory": "consumables",
+        "category": "Боеприпасы",
+        "dc": 9,
+        "time": 2,
+        "tools": [
+          "woodwork",
+          "smith"
+        ],
+        "materials": {
+          "wood": 2,
+          "steel": 1,
+          "thread": 1
+        },
+        "weight": 1.5,
+        "cost": "1 зм",
+        "quantity": 20
+      },
+      {
+        "id": "oil",
+        "name": "Масло",
+        "inventoryCategory": "consumables",
+        "category": "Расходник",
+        "dc": 8,
+        "time": 2,
+        "tools": [
+          "alchemy"
+        ],
+        "materials": {
+          "resin": 1,
+          "glass": 1
+        },
+        "weight": 1,
+        "cost": "1 зм",
+        "quantity": 2
+      },
+      {
+        "id": "antitoxinVial",
+        "name": "Пустой флакон антидота",
+        "inventoryCategory": "materials",
+        "category": "Алхимия",
+        "dc": 9,
+        "time": 2,
+        "tools": [
+          "alchemy",
+          "glasswork"
+        ],
+        "materials": {
+          "glass": 1,
+          "herb": 1,
+          "charcoal": 1
+        },
+        "weight": 0.1,
+        "cost": "2 зм"
+      }
+    ],
+    "toolLabels": {
+      "smith": "Кузнечные инструменты",
+      "woodwork": "Плотницкие инструменты",
+      "leatherwork": "Инструменты кожевника",
+      "glasswork": "Инструменты стеклодува",
+      "pottery": "Гончарные инструменты",
+      "weaver": "Инструменты ткача",
+      "jeweler": "Ювелирные инструменты",
+      "scribe": "Каллиграфические инструменты",
+      "cartographer": "Инструменты картографа",
+      "alchemy": "Инструменты алхимика"
+    },
+    "toolAliases": {
+      "smith": [
+        "smith",
+        "p_smith_tools",
+        "кузнечные инструменты",
+        "smiths tools"
+      ],
+      "woodwork": [
+        "woodwork",
+        "p_carpenter_tools",
+        "плотницкие инструменты",
+        "carpenters tools"
+      ],
+      "leatherwork": [
+        "leatherwork",
+        "p_leatherworker_tools",
+        "инструменты кожевника",
+        "leatherworker tools"
+      ],
+      "glasswork": [
+        "glasswork",
+        "p_glassblower_tools",
+        "инструменты стеклодува",
+        "glassblowers tools"
+      ],
+      "pottery": [
+        "pottery",
+        "p_potter_tools",
+        "гончарные инструменты",
+        "potter tools"
+      ],
+      "weaver": [
+        "weaver",
+        "p_weaver_tools",
+        "инструменты ткача",
+        "weaver tools"
+      ],
+      "jeweler": [
+        "jeweler",
+        "p_jeweler_tools",
+        "ювелирные инструменты",
+        "jeweler tools"
+      ],
+      "scribe": [
+        "scribe",
+        "p_calligrapher_tools",
+        "каллиграфические инструменты",
+        "calligrapher supplies"
+      ],
+      "cartographer": [
+        "cartographer",
+        "p_cartographer_tools",
+        "инструменты картографа",
+        "cartographers tools"
+      ],
+      "alchemy": [
+        "alchemy",
+        "p_alchemist_tools",
+        "инструменты алхимика",
+        "alchemists supplies"
+      ]
+    }
+  },
+  "alchemy": {
+    "ingredients": [
+      {
+        "id": "ing_001",
+        "name": "Лунная трава",
+        "category": "plant",
+        "rarity": "common",
+        "properties": [
+          "Recovery",
+          "Perception",
+          "Stability",
+          "Cold"
+        ],
+        "extra": null,
+        "potency": 24,
+        "stability": 82,
+        "volatility": 22,
+        "purity": 65,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_002",
+        "name": "Красная мандрагора",
+        "category": "plant",
+        "rarity": "uncommon",
+        "properties": [
+          "Recovery",
+          "Vitality",
+          "Strength",
+          "Earth"
+        ],
+        "extra": null,
+        "potency": 29,
+        "stability": 64,
+        "volatility": 37,
+        "purity": 79,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_003",
+        "name": "Чернолист",
+        "category": "plant",
+        "rarity": "uncommon",
+        "properties": [
+          "Venom",
+          "Antidote",
+          "Weakness",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 38,
+        "stability": 65,
+        "volatility": 31,
+        "purity": 69,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_004",
+        "name": "Серебряный мох",
+        "category": "plant",
+        "rarity": "uncommon",
+        "properties": [
+          "Antidote",
+          "Stability",
+          "Radiant",
+          "Cold"
+        ],
+        "extra": "Vitality",
+        "potency": 41,
+        "stability": 71,
+        "volatility": 30,
+        "purity": 67,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_005",
+        "name": "Солнечный лепесток",
+        "category": "plant",
+        "rarity": "rare",
+        "properties": [
+          "Radiant",
+          "Recovery",
+          "Vitality",
+          "Fire"
+        ],
+        "extra": null,
+        "potency": 46,
+        "stability": 68,
+        "volatility": 38,
+        "purity": 72,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_006",
+        "name": "Теневой плющ",
+        "category": "plant",
+        "rarity": "uncommon",
+        "properties": [
+          "Invisibility",
+          "Venom",
+          "Cold",
+          "Hallucination"
+        ],
+        "extra": null,
+        "potency": 43,
+        "stability": 66,
+        "volatility": 38,
+        "purity": 69,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_007",
+        "name": "Вдовий колокольчик",
+        "category": "plant",
+        "rarity": "rare",
+        "properties": [
+          "Venom",
+          "Nausea",
+          "Sleep",
+          "Volatility"
+        ],
+        "extra": null,
+        "potency": 51,
+        "stability": 63,
+        "volatility": 45,
+        "purity": 75,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_008",
+        "name": "Пепельный папоротник",
+        "category": "plant",
+        "rarity": "common",
+        "properties": [
+          "Fire",
+          "Antidote",
+          "Stability",
+          "Weakness"
+        ],
+        "extra": "Volatility",
+        "potency": 20,
+        "stability": 68,
+        "volatility": 13,
+        "purity": 74,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_009",
+        "name": "Ледяная мята",
+        "category": "plant",
+        "rarity": "common",
+        "properties": [
+          "Cold",
+          "Nausea",
+          "Recovery",
+          "Stability"
+        ],
+        "extra": null,
+        "potency": 18,
+        "stability": 71,
+        "volatility": 20,
+        "purity": 72,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_010",
+        "name": "Кровавый шалфей",
+        "category": "plant",
+        "rarity": "uncommon",
+        "properties": [
+          "Hemorrhage",
+          "Recovery",
+          "Vitality",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 27,
+        "stability": 67,
+        "volatility": 37,
+        "purity": 71,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_011",
+        "name": "Призрачная орхидея",
+        "category": "plant",
+        "rarity": "rare",
+        "properties": [
+          "Hallucination",
+          "Invisibility",
+          "Magic",
+          "Mind"
+        ],
+        "extra": null,
+        "potency": 46,
+        "stability": 61,
+        "volatility": 35,
+        "purity": 78,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_012",
+        "name": "Звёздный анис",
+        "category": "plant",
+        "rarity": "rare",
+        "properties": [
+          "Mind",
+          "Perception",
+          "Magic",
+          "Stability"
+        ],
+        "extra": "Recovery",
+        "potency": 43,
+        "stability": 62,
+        "volatility": 48,
+        "purity": 74,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_013",
+        "name": "Драконья крапива",
+        "category": "plant",
+        "rarity": "rare",
+        "properties": [
+          "Fire",
+          "Strength",
+          "Volatility",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 43,
+        "stability": 71,
+        "volatility": 34,
+        "purity": 86,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_014",
+        "name": "Могильный корень",
+        "category": "plant",
+        "rarity": "uncommon",
+        "properties": [
+          "Necrotic",
+          "Recovery",
+          "Fear",
+          "Stability"
+        ],
+        "extra": null,
+        "potency": 28,
+        "stability": 71,
+        "volatility": 24,
+        "purity": 73,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_015",
+        "name": "Волчья ягода",
+        "category": "plant",
+        "rarity": "common",
+        "properties": [
+          "Speed",
+          "Venom",
+          "Dexterity",
+          "Volatility"
+        ],
+        "extra": null,
+        "potency": 31,
+        "stability": 70,
+        "volatility": 12,
+        "purity": 78,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_016",
+        "name": "Роса фей",
+        "category": "plant",
+        "rarity": "very_rare",
+        "properties": [
+          "Invisibility",
+          "Recovery",
+          "Magic",
+          "Radiant"
+        ],
+        "extra": "Vitality",
+        "potency": 64,
+        "stability": 67,
+        "volatility": 62,
+        "purity": 85,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_017",
+        "name": "Болотная свеча",
+        "category": "plant",
+        "rarity": "common",
+        "properties": [
+          "Fire",
+          "Nausea",
+          "Weakness",
+          "Stability"
+        ],
+        "extra": null,
+        "potency": 23,
+        "stability": 72,
+        "volatility": 23,
+        "purity": 66,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_018",
+        "name": "Сонный мак",
+        "category": "plant",
+        "rarity": "common",
+        "properties": [
+          "Sleep",
+          "Nausea",
+          "Mind",
+          "Recovery"
+        ],
+        "extra": null,
+        "potency": 19,
+        "stability": 70,
+        "volatility": 22,
+        "purity": 76,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_019",
+        "name": "Каменный лишайник",
+        "category": "plant",
+        "rarity": "common",
+        "properties": [
+          "Constitution",
+          "Stability",
+          "Acid",
+          "Vitality"
+        ],
+        "extra": null,
+        "potency": 29,
+        "stability": 77,
+        "volatility": 26,
+        "purity": 64,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_020",
+        "name": "Чернильный гриб",
+        "category": "fungus",
+        "rarity": "common",
+        "properties": [
+          "Invisibility",
+          "Hallucination",
+          "Mind",
+          "Magic"
+        ],
+        "extra": "Stability",
+        "potency": 17,
+        "stability": 70,
+        "volatility": 25,
+        "purity": 77,
+        "tags": [
+          "fungus",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_021",
+        "name": "Пещерный гриб",
+        "category": "fungus",
+        "rarity": "common",
+        "properties": [
+          "Cold",
+          "Perception",
+          "Nausea",
+          "Stability"
+        ],
+        "extra": null,
+        "potency": 30,
+        "stability": 77,
+        "volatility": 24,
+        "purity": 74,
+        "tags": [
+          "fungus",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_022",
+        "name": "Кровомор",
+        "category": "fungus",
+        "rarity": "uncommon",
+        "properties": [
+          "Hemorrhage",
+          "Venom",
+          "Recovery",
+          "Volatility"
+        ],
+        "extra": null,
+        "potency": 34,
+        "stability": 75,
+        "volatility": 27,
+        "purity": 70,
+        "tags": [
+          "fungus",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_023",
+        "name": "Серый трутовик",
+        "category": "fungus",
+        "rarity": "common",
+        "properties": [
+          "Fire",
+          "Stability",
+          "Antidote",
+          "Weakness"
+        ],
+        "extra": null,
+        "potency": 31,
+        "stability": 78,
+        "volatility": 26,
+        "purity": 66,
+        "tags": [
+          "fungus",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_024",
+        "name": "Светящийся гриб",
+        "category": "fungus",
+        "rarity": "uncommon",
+        "properties": [
+          "Radiant",
+          "Perception",
+          "Magic",
+          "Stability"
+        ],
+        "extra": "Hallucination",
+        "potency": 38,
+        "stability": 63,
+        "volatility": 31,
+        "purity": 79,
+        "tags": [
+          "fungus",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_025",
+        "name": "Клык паука",
+        "category": "animal",
+        "rarity": "common",
+        "properties": [
+          "Venom",
+          "Hemorrhage",
+          "Dexterity",
+          "Volatility"
+        ],
+        "extra": null,
+        "potency": 18,
+        "stability": 79,
+        "volatility": 28,
+        "purity": 74,
+        "tags": [
+          "animal",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_026",
+        "name": "Жало скорпиона",
+        "category": "animal",
+        "rarity": "uncommon",
+        "properties": [
+          "Venom",
+          "Weakness",
+          "Nausea",
+          "Volatility"
+        ],
+        "extra": null,
+        "potency": 41,
+        "stability": 76,
+        "volatility": 33,
+        "purity": 76,
+        "tags": [
+          "animal",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_027",
+        "name": "Кровь летучей мыши",
+        "category": "animal",
+        "rarity": "common",
+        "properties": [
+          "Perception",
+          "Invisibility",
+          "Speed",
+          "Hemorrhage"
+        ],
+        "extra": null,
+        "potency": 29,
+        "stability": 73,
+        "volatility": 27,
+        "purity": 68,
+        "tags": [
+          "animal",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_028",
+        "name": "Глаз совы",
+        "category": "animal",
+        "rarity": "uncommon",
+        "properties": [
+          "Perception",
+          "Mind",
+          "Cold",
+          "Magic"
+        ],
+        "extra": "Hemorrhage",
+        "potency": 27,
+        "stability": 75,
+        "volatility": 30,
+        "purity": 71,
+        "tags": [
+          "animal",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_029",
+        "name": "Перья ворона",
+        "category": "animal",
+        "rarity": "common",
+        "properties": [
+          "Perception",
+          "Invisibility",
+          "Mind",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 25,
+        "stability": 76,
+        "volatility": 12,
+        "purity": 77,
+        "tags": [
+          "animal",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_030",
+        "name": "Коготь волка",
+        "category": "animal",
+        "rarity": "common",
+        "properties": [
+          "Speed",
+          "Strength",
+          "Hemorrhage",
+          "Fear"
+        ],
+        "extra": null,
+        "potency": 24,
+        "stability": 83,
+        "volatility": 16,
+        "purity": 75,
+        "tags": [
+          "animal",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_031",
+        "name": "Клык вампира",
+        "category": "monster",
+        "rarity": "very_rare",
+        "properties": [
+          "Necrotic",
+          "Hemorrhage",
+          "Vitality",
+          "Invisibility"
+        ],
+        "extra": null,
+        "potency": 67,
+        "stability": 57,
+        "volatility": 51,
+        "purity": 93,
+        "tags": [
+          "monster",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_032",
+        "name": "Прах упыря",
+        "category": "monster",
+        "rarity": "rare",
+        "properties": [
+          "Necrotic",
+          "Nausea",
+          "Fear",
+          "Recovery"
+        ],
+        "extra": "Magic",
+        "potency": 53,
+        "stability": 58,
+        "volatility": 39,
+        "purity": 75,
+        "tags": [
+          "monster",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_033",
+        "name": "Кровь оборотня",
+        "category": "monster",
+        "rarity": "rare",
+        "properties": [
+          "Vitality",
+          "Strength",
+          "Speed",
+          "Volatility"
+        ],
+        "extra": null,
+        "potency": 46,
+        "stability": 58,
+        "volatility": 33,
+        "purity": 78,
+        "tags": [
+          "monster",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_034",
+        "name": "Чешуя дракона",
+        "category": "monster",
+        "rarity": "very_rare",
+        "properties": [
+          "Fire",
+          "Cold",
+          "Stability",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 62,
+        "stability": 59,
+        "volatility": 58,
+        "purity": 89,
+        "tags": [
+          "monster",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_035",
+        "name": "Слюна дракона",
+        "category": "monster",
+        "rarity": "very_rare",
+        "properties": [
+          "Acid",
+          "Fire",
+          "Venom",
+          "Volatility"
+        ],
+        "extra": null,
+        "potency": 71,
+        "stability": 57,
+        "volatility": 63,
+        "purity": 80,
+        "tags": [
+          "monster",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_036",
+        "name": "Кость дракона",
+        "category": "monster",
+        "rarity": "very_rare",
+        "properties": [
+          "Magic",
+          "Stability",
+          "Vitality",
+          "Radiant"
+        ],
+        "extra": "Necrotic",
+        "potency": 72,
+        "stability": 56,
+        "volatility": 54,
+        "purity": 84,
+        "tags": [
+          "monster",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_037",
+        "name": "Эктоплазма",
+        "category": "undead",
+        "rarity": "rare",
+        "properties": [
+          "Necrotic",
+          "Invisibility",
+          "Magic",
+          "Hallucination"
+        ],
+        "extra": null,
+        "potency": 55,
+        "stability": 69,
+        "volatility": 33,
+        "purity": 75,
+        "tags": [
+          "undead",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_038",
+        "name": "Пепел вампира",
+        "category": "undead",
+        "rarity": "rare",
+        "properties": [
+          "Necrotic",
+          "Invisibility",
+          "Fear",
+          "Stability"
+        ],
+        "extra": null,
+        "potency": 44,
+        "stability": 71,
+        "volatility": 45,
+        "purity": 79,
+        "tags": [
+          "undead",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_039",
+        "name": "Глаз василиска",
+        "category": "monster",
+        "rarity": "legendary",
+        "properties": [
+          "Petrification",
+          "Magic",
+          "Fear",
+          "Volatility"
+        ],
+        "extra": null,
+        "potency": 81,
+        "stability": 53,
+        "volatility": 74,
+        "purity": 85,
+        "tags": [
+          "monster",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_040",
+        "name": "Желчь хобгоблина",
+        "category": "monster",
+        "rarity": "uncommon",
+        "properties": [
+          "Venom",
+          "Weakness",
+          "Strength",
+          "Nausea"
+        ],
+        "extra": "Fear",
+        "potency": 39,
+        "stability": 71,
+        "volatility": 38,
+        "purity": 82,
+        "tags": [
+          "monster",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_041",
+        "name": "Слизь слизня",
+        "category": "monster",
+        "rarity": "common",
+        "properties": [
+          "Acid",
+          "Stability",
+          "Weakness",
+          "Volatility"
+        ],
+        "extra": null,
+        "potency": 20,
+        "stability": 73,
+        "volatility": 12,
+        "purity": 76,
+        "tags": [
+          "monster",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_042",
+        "name": "Чернила кракена",
+        "category": "monster",
+        "rarity": "very_rare",
+        "properties": [
+          "Invisibility",
+          "Acid",
+          "Mind",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 59,
+        "stability": 52,
+        "volatility": 47,
+        "purity": 81,
+        "tags": [
+          "monster",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_043",
+        "name": "Железная руда",
+        "category": "mineral",
+        "rarity": "common",
+        "properties": [
+          "Strength",
+          "Stability",
+          "Fire",
+          "Constitution"
+        ],
+        "extra": null,
+        "potency": 21,
+        "stability": 83,
+        "volatility": 20,
+        "purity": 65,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_044",
+        "name": "Серебряная руда",
+        "category": "mineral",
+        "rarity": "uncommon",
+        "properties": [
+          "Radiant",
+          "Antidote",
+          "Stability",
+          "Magic"
+        ],
+        "extra": "Fire",
+        "potency": 38,
+        "stability": 66,
+        "volatility": 33,
+        "purity": 81,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_045",
+        "name": "Золотая пыль",
+        "category": "mineral",
+        "rarity": "rare",
+        "properties": [
+          "Radiant",
+          "Magic",
+          "Stability",
+          "Vitality"
+        ],
+        "extra": null,
+        "potency": 56,
+        "stability": 65,
+        "volatility": 37,
+        "purity": 88,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_046",
+        "name": "Медный купорос",
+        "category": "mineral",
+        "rarity": "common",
+        "properties": [
+          "Acid",
+          "Venom",
+          "Stability",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 28,
+        "stability": 76,
+        "volatility": 15,
+        "purity": 75,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_047",
+        "name": "Сера",
+        "category": "mineral",
+        "rarity": "common",
+        "properties": [
+          "Fire",
+          "Volatility",
+          "Acid",
+          "Venom"
+        ],
+        "extra": null,
+        "potency": 31,
+        "stability": 79,
+        "volatility": 22,
+        "purity": 62,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_048",
+        "name": "Селитра",
+        "category": "mineral",
+        "rarity": "common",
+        "properties": [
+          "Fire",
+          "Volatility",
+          "Stability",
+          "Vitality"
+        ],
+        "extra": "Magic",
+        "potency": 23,
+        "stability": 81,
+        "volatility": 28,
+        "purity": 64,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_049",
+        "name": "Соль",
+        "category": "mineral",
+        "rarity": "common",
+        "properties": [
+          "Stability",
+          "Antidote",
+          "Vitality",
+          "Cold"
+        ],
+        "extra": null,
+        "potency": 26,
+        "stability": 74,
+        "volatility": 28,
+        "purity": 63,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_050",
+        "name": "Киноварь",
+        "category": "mineral",
+        "rarity": "rare",
+        "properties": [
+          "Magic",
+          "Volatility",
+          "Venom",
+          "Fire"
+        ],
+        "extra": null,
+        "potency": 44,
+        "stability": 63,
+        "volatility": 39,
+        "purity": 87,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_051",
+        "name": "Мифриловая стружка",
+        "category": "mineral",
+        "rarity": "very_rare",
+        "properties": [
+          "Magic",
+          "Stability",
+          "Radiant",
+          "Dexterity"
+        ],
+        "extra": null,
+        "potency": 62,
+        "stability": 54,
+        "volatility": 62,
+        "purity": 89,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_052",
+        "name": "Адамантиновая крошка",
+        "category": "mineral",
+        "rarity": "legendary",
+        "properties": [
+          "Strength",
+          "Stability",
+          "Constitution",
+          "Magic"
+        ],
+        "extra": "Fire",
+        "potency": 81,
+        "stability": 56,
+        "volatility": 72,
+        "purity": 91,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_053",
+        "name": "Обсидиановый порошок",
+        "category": "mineral",
+        "rarity": "uncommon",
+        "properties": [
+          "Fire",
+          "Cold",
+          "Stability",
+          "Necrotic"
+        ],
+        "extra": null,
+        "potency": 27,
+        "stability": 70,
+        "volatility": 31,
+        "purity": 68,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_054",
+        "name": "Янтарная смола",
+        "category": "material",
+        "rarity": "uncommon",
+        "properties": [
+          "Stability",
+          "Recovery",
+          "Magic",
+          "Vitality"
+        ],
+        "extra": null,
+        "potency": 36,
+        "stability": 62,
+        "volatility": 34,
+        "purity": 82,
+        "tags": [
+          "material",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_055",
+        "name": "Стеклянный порошок",
+        "category": "craft",
+        "rarity": "common",
+        "properties": [
+          "Acid",
+          "Stability",
+          "Volatility",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 18,
+        "stability": 68,
+        "volatility": 16,
+        "purity": 78,
+        "tags": [
+          "craft",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_056",
+        "name": "Керамическая пыль",
+        "category": "craft",
+        "rarity": "common",
+        "properties": [
+          "Stability",
+          "Weakness",
+          "Constitution",
+          "Earth"
+        ],
+        "extra": "Volatility",
+        "potency": 24,
+        "stability": 76,
+        "volatility": 16,
+        "purity": 78,
+        "tags": [
+          "craft",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_057",
+        "name": "Чернила ночи",
+        "category": "craft",
+        "rarity": "uncommon",
+        "properties": [
+          "Invisibility",
+          "Mind",
+          "Magic",
+          "Hallucination"
+        ],
+        "extra": null,
+        "potency": 41,
+        "stability": 66,
+        "volatility": 22,
+        "purity": 79,
+        "tags": [
+          "craft",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_058",
+        "name": "Сажа алхимика",
+        "category": "craft",
+        "rarity": "common",
+        "properties": [
+          "Fire",
+          "Weakness",
+          "Stability",
+          "Venom"
+        ],
+        "extra": null,
+        "potency": 23,
+        "stability": 83,
+        "volatility": 17,
+        "purity": 64,
+        "tags": [
+          "craft",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_059",
+        "name": "Сухая кровь",
+        "category": "organic",
+        "rarity": "common",
+        "properties": [
+          "Hemorrhage",
+          "Recovery",
+          "Necrotic",
+          "Stability"
+        ],
+        "extra": null,
+        "potency": 24,
+        "stability": 79,
+        "volatility": 17,
+        "purity": 72,
+        "tags": [
+          "organic",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_060",
+        "name": "Мумийная смола",
+        "category": "organic",
+        "rarity": "rare",
+        "properties": [
+          "Necrotic",
+          "Stability",
+          "Vitality",
+          "Antidote"
+        ],
+        "extra": "Recovery",
+        "potency": 57,
+        "stability": 66,
+        "volatility": 40,
+        "purity": 82,
+        "tags": [
+          "organic",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_061",
+        "name": "Мёд фей",
+        "category": "organic",
+        "rarity": "rare",
+        "properties": [
+          "Recovery",
+          "Vitality",
+          "Radiant",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 58,
+        "stability": 68,
+        "volatility": 35,
+        "purity": 87,
+        "tags": [
+          "organic",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_062",
+        "name": "Масло теней",
+        "category": "organic",
+        "rarity": "uncommon",
+        "properties": [
+          "Invisibility",
+          "Speed",
+          "Volatility",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 41,
+        "stability": 70,
+        "volatility": 27,
+        "purity": 78,
+        "tags": [
+          "organic",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_063",
+        "name": "Эфирная соль",
+        "category": "magical",
+        "rarity": "rare",
+        "properties": [
+          "Magic",
+          "Stability",
+          "Radiant",
+          "Cold"
+        ],
+        "extra": null,
+        "potency": 51,
+        "stability": 63,
+        "volatility": 42,
+        "purity": 84,
+        "tags": [
+          "magical",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_064",
+        "name": "Пыльца фей",
+        "category": "magical",
+        "rarity": "uncommon",
+        "properties": [
+          "Hallucination",
+          "Invisibility",
+          "Recovery",
+          "Magic"
+        ],
+        "extra": "Volatility",
+        "potency": 33,
+        "stability": 66,
+        "volatility": 30,
+        "purity": 70,
+        "tags": [
+          "magical",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_065",
+        "name": "Осколок магического кристалла",
+        "category": "magical",
+        "rarity": "rare",
+        "properties": [
+          "Magic",
+          "Radiant",
+          "Fire",
+          "Cold"
+        ],
+        "extra": null,
+        "potency": 42,
+        "stability": 63,
+        "volatility": 40,
+        "purity": 79,
+        "tags": [
+          "magical",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_066",
+        "name": "Капля плана воды",
+        "category": "magical",
+        "rarity": "very_rare",
+        "properties": [
+          "Cold",
+          "Recovery",
+          "Breathing",
+          "Stability"
+        ],
+        "extra": null,
+        "potency": 63,
+        "stability": 60,
+        "volatility": 48,
+        "purity": 89,
+        "tags": [
+          "magical",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_067",
+        "name": "Капля плана огня",
+        "category": "magical",
+        "rarity": "very_rare",
+        "properties": [
+          "Fire",
+          "Strength",
+          "Volatility",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 64,
+        "stability": 56,
+        "volatility": 63,
+        "purity": 82,
+        "tags": [
+          "magical",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_068",
+        "name": "Тень в бутылке",
+        "category": "magical",
+        "rarity": "very_rare",
+        "properties": [
+          "Invisibility",
+          "Fear",
+          "Necrotic",
+          "Magic"
+        ],
+        "extra": "Stability",
+        "potency": 67,
+        "stability": 61,
+        "volatility": 53,
+        "purity": 78,
+        "tags": [
+          "magical",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_069",
+        "name": "Дубовая зола",
+        "category": "plant",
+        "rarity": "common",
+        "properties": [
+          "Stability",
+          "Constitution",
+          "Antidote",
+          "Fire"
+        ],
+        "extra": null,
+        "potency": 21,
+        "stability": 78,
+        "volatility": 22,
+        "purity": 65,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_070",
+        "name": "Кора ивы",
+        "category": "plant",
+        "rarity": "common",
+        "properties": [
+          "Recovery",
+          "Nausea",
+          "Stability",
+          "Vitality"
+        ],
+        "extra": null,
+        "potency": 31,
+        "stability": 74,
+        "volatility": 25,
+        "purity": 62,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_071",
+        "name": "Белая крапива",
+        "category": "plant",
+        "rarity": "common",
+        "properties": [
+          "Antidote",
+          "Venom",
+          "Recovery",
+          "Dexterity"
+        ],
+        "extra": null,
+        "potency": 24,
+        "stability": 67,
+        "volatility": 22,
+        "purity": 66,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_072",
+        "name": "Лиловый вереск",
+        "category": "plant",
+        "rarity": "uncommon",
+        "properties": [
+          "Mind",
+          "Fear",
+          "Stability",
+          "Magic"
+        ],
+        "extra": "Antidote",
+        "potency": 36,
+        "stability": 64,
+        "volatility": 27,
+        "purity": 81,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_073",
+        "name": "Морская водоросль",
+        "category": "plant",
+        "rarity": "common",
+        "properties": [
+          "Breathing",
+          "Recovery",
+          "Cold",
+          "Stability"
+        ],
+        "extra": null,
+        "potency": 19,
+        "stability": 67,
+        "volatility": 14,
+        "purity": 62,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_074",
+        "name": "Черный чеснок",
+        "category": "plant",
+        "rarity": "common",
+        "properties": [
+          "Antidote",
+          "Necrotic",
+          "Venom",
+          "Vitality"
+        ],
+        "extra": null,
+        "potency": 27,
+        "stability": 81,
+        "volatility": 22,
+        "purity": 68,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_075",
+        "name": "Ядовитый плющ",
+        "category": "plant",
+        "rarity": "common",
+        "properties": [
+          "Venom",
+          "Weakness",
+          "Hemorrhage",
+          "Volatility"
+        ],
+        "extra": null,
+        "potency": 17,
+        "stability": 77,
+        "volatility": 18,
+        "purity": 75,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_076",
+        "name": "Морозная ягода",
+        "category": "plant",
+        "rarity": "uncommon",
+        "properties": [
+          "Cold",
+          "Recovery",
+          "Speed",
+          "Stability"
+        ],
+        "extra": "Magic",
+        "potency": 39,
+        "stability": 67,
+        "volatility": 36,
+        "purity": 77,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_077",
+        "name": "Пепельная ягода",
+        "category": "plant",
+        "rarity": "uncommon",
+        "properties": [
+          "Fire",
+          "Recovery",
+          "Volatility",
+          "Vitality"
+        ],
+        "extra": null,
+        "potency": 35,
+        "stability": 65,
+        "volatility": 37,
+        "purity": 77,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_078",
+        "name": "Костяной цветок",
+        "category": "plant",
+        "rarity": "rare",
+        "properties": [
+          "Necrotic",
+          "Vitality",
+          "Stability",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 56,
+        "stability": 65,
+        "volatility": 35,
+        "purity": 80,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_079",
+        "name": "Глаз тритона",
+        "category": "animal",
+        "rarity": "uncommon",
+        "properties": [
+          "Perception",
+          "Magic",
+          "Cold",
+          "Venom"
+        ],
+        "extra": null,
+        "potency": 37,
+        "stability": 64,
+        "volatility": 33,
+        "purity": 72,
+        "tags": [
+          "animal",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_080",
+        "name": "Язык лягушки",
+        "category": "animal",
+        "rarity": "common",
+        "properties": [
+          "Speed",
+          "Dexterity",
+          "Venom",
+          "Recovery"
+        ],
+        "extra": "Perception",
+        "potency": 29,
+        "stability": 70,
+        "volatility": 16,
+        "purity": 76,
+        "tags": [
+          "animal",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_081",
+        "name": "Панцирь жука",
+        "category": "animal",
+        "rarity": "common",
+        "properties": [
+          "Constitution",
+          "Stability",
+          "Acid",
+          "Vitality"
+        ],
+        "extra": null,
+        "potency": 25,
+        "stability": 70,
+        "volatility": 15,
+        "purity": 64,
+        "tags": [
+          "animal",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_082",
+        "name": "Перо совы",
+        "category": "animal",
+        "rarity": "common",
+        "properties": [
+          "Perception",
+          "Mind",
+          "Invisibility",
+          "Cold"
+        ],
+        "extra": null,
+        "potency": 21,
+        "stability": 83,
+        "volatility": 23,
+        "purity": 77,
+        "tags": [
+          "animal",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_083",
+        "name": "Шкура саламандры",
+        "category": "monster",
+        "rarity": "rare",
+        "properties": [
+          "Fire",
+          "Constitution",
+          "Stability",
+          "Volatility"
+        ],
+        "extra": null,
+        "potency": 51,
+        "stability": 63,
+        "volatility": 33,
+        "purity": 75,
+        "tags": [
+          "monster",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_084",
+        "name": "Кровь элементаля",
+        "category": "monster",
+        "rarity": "very_rare",
+        "properties": [
+          "Magic",
+          "Fire",
+          "Cold",
+          "Volatility"
+        ],
+        "extra": "Strength",
+        "potency": 63,
+        "stability": 60,
+        "volatility": 61,
+        "purity": 80,
+        "tags": [
+          "monster",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_085",
+        "name": "Сердце голема",
+        "category": "construct",
+        "rarity": "very_rare",
+        "properties": [
+          "Stability",
+          "Constitution",
+          "Strength",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 64,
+        "stability": 68,
+        "volatility": 53,
+        "purity": 77,
+        "tags": [
+          "construct",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_086",
+        "name": "Ржавчина древнего железа",
+        "category": "mineral",
+        "rarity": "uncommon",
+        "properties": [
+          "Weakness",
+          "Acid",
+          "Necrotic",
+          "Stability"
+        ],
+        "extra": null,
+        "potency": 30,
+        "stability": 73,
+        "volatility": 37,
+        "purity": 74,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_087",
+        "name": "Порошок мела",
+        "category": "mineral",
+        "rarity": "common",
+        "properties": [
+          "Stability",
+          "Antidote",
+          "Mind",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 32,
+        "stability": 75,
+        "volatility": 19,
+        "purity": 63,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_088",
+        "name": "Известь",
+        "category": "mineral",
+        "rarity": "common",
+        "properties": [
+          "Acid",
+          "Stability",
+          "Constitution",
+          "Weakness"
+        ],
+        "extra": "Fire",
+        "potency": 28,
+        "stability": 67,
+        "volatility": 19,
+        "purity": 66,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_089",
+        "name": "Древесный уголь",
+        "category": "material",
+        "rarity": "common",
+        "properties": [
+          "Fire",
+          "Stability",
+          "Antidote",
+          "Weakness"
+        ],
+        "extra": null,
+        "potency": 28,
+        "stability": 67,
+        "volatility": 19,
+        "purity": 78,
+        "tags": [
+          "material",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_090",
+        "name": "Канифоль",
+        "category": "material",
+        "rarity": "common",
+        "properties": [
+          "Fire",
+          "Stability",
+          "Volatility",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 26,
+        "stability": 67,
+        "volatility": 23,
+        "purity": 62,
+        "tags": [
+          "material",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_091",
+        "name": "Глицерин",
+        "category": "material",
+        "rarity": "uncommon",
+        "properties": [
+          "Stability",
+          "Recovery",
+          "Volatility",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 36,
+        "stability": 69,
+        "volatility": 25,
+        "purity": 81,
+        "tags": [
+          "material",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_092",
+        "name": "Спирт",
+        "category": "material",
+        "rarity": "common",
+        "properties": [
+          "Volatility",
+          "Antidote",
+          "Fire",
+          "Magic"
+        ],
+        "extra": "Stability",
+        "potency": 25,
+        "stability": 75,
+        "volatility": 21,
+        "purity": 72,
+        "tags": [
+          "material",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_093",
+        "name": "Уксус",
+        "category": "material",
+        "rarity": "common",
+        "properties": [
+          "Acid",
+          "Antidote",
+          "Stability",
+          "Weakness"
+        ],
+        "extra": null,
+        "potency": 24,
+        "stability": 81,
+        "volatility": 27,
+        "purity": 69,
+        "tags": [
+          "material",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_094",
+        "name": "Кровь древнего зверя",
+        "category": "monster",
+        "rarity": "rare",
+        "properties": [
+          "Strength",
+          "Vitality",
+          "Hemorrhage",
+          "Volatility"
+        ],
+        "extra": null,
+        "potency": 53,
+        "stability": 72,
+        "volatility": 34,
+        "purity": 76,
+        "tags": [
+          "monster",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_095",
+        "name": "Слезы сирены",
+        "category": "monster",
+        "rarity": "rare",
+        "properties": [
+          "Hallucination",
+          "Mind",
+          "Recovery",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 55,
+        "stability": 59,
+        "volatility": 42,
+        "purity": 85,
+        "tags": [
+          "monster",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_096",
+        "name": "Пыль призрачного цветка",
+        "category": "magical",
+        "rarity": "rare",
+        "properties": [
+          "Invisibility",
+          "Necrotic",
+          "Hallucination",
+          "Magic"
+        ],
+        "extra": "Radiant",
+        "potency": 45,
+        "stability": 71,
+        "volatility": 32,
+        "purity": 75,
+        "tags": [
+          "magical",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_097",
+        "name": "Лунный камень",
+        "category": "mineral",
+        "rarity": "rare",
+        "properties": [
+          "Cold",
+          "Radiant",
+          "Magic",
+          "Perception"
+        ],
+        "extra": null,
+        "potency": 43,
+        "stability": 58,
+        "volatility": 34,
+        "purity": 80,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_098",
+        "name": "Солнечный камень",
+        "category": "mineral",
+        "rarity": "rare",
+        "properties": [
+          "Radiant",
+          "Fire",
+          "Vitality",
+          "Stability"
+        ],
+        "extra": null,
+        "potency": 56,
+        "stability": 62,
+        "volatility": 47,
+        "purity": 86,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_099",
+        "name": "Кристалл памяти",
+        "category": "magical",
+        "rarity": "very_rare",
+        "properties": [
+          "Mind",
+          "Perception",
+          "Magic",
+          "Stability"
+        ],
+        "extra": null,
+        "potency": 71,
+        "stability": 65,
+        "volatility": 50,
+        "purity": 79,
+        "tags": [
+          "magical",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_100",
+        "name": "Осколок зеркала",
+        "category": "craft",
+        "rarity": "uncommon",
+        "properties": [
+          "Invisibility",
+          "Hallucination",
+          "Perception",
+          "Magic"
+        ],
+        "extra": "Acid",
+        "potency": 30,
+        "stability": 73,
+        "volatility": 33,
+        "purity": 81,
+        "tags": [
+          "craft",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_101",
+        "name": "Порошок жемчуга",
+        "category": "mineral",
+        "rarity": "uncommon",
+        "properties": [
+          "Recovery",
+          "Magic",
+          "Radiant",
+          "Stability"
+        ],
+        "extra": null,
+        "potency": 35,
+        "stability": 73,
+        "volatility": 25,
+        "purity": 76,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_102",
+        "name": "Черный жемчуг",
+        "category": "mineral",
+        "rarity": "rare",
+        "properties": [
+          "Necrotic",
+          "Magic",
+          "Invisibility",
+          "Fear"
+        ],
+        "extra": null,
+        "potency": 57,
+        "stability": 57,
+        "volatility": 41,
+        "purity": 85,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_103",
+        "name": "Порошок кости",
+        "category": "organic",
+        "rarity": "common",
+        "properties": [
+          "Necrotic",
+          "Vitality",
+          "Stability",
+          "Constitution"
+        ],
+        "extra": null,
+        "potency": 30,
+        "stability": 76,
+        "volatility": 25,
+        "purity": 70,
+        "tags": [
+          "organic",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_104",
+        "name": "Мозг чудовища",
+        "category": "monster",
+        "rarity": "rare",
+        "properties": [
+          "Mind",
+          "Hallucination",
+          "Magic",
+          "Volatility"
+        ],
+        "extra": "Strength",
+        "potency": 52,
+        "stability": 61,
+        "volatility": 41,
+        "purity": 81,
+        "tags": [
+          "monster",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_105",
+        "name": "Сердце растения",
+        "category": "plant",
+        "rarity": "rare",
+        "properties": [
+          "Recovery",
+          "Vitality",
+          "Stability",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 56,
+        "stability": 69,
+        "volatility": 48,
+        "purity": 85,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_106",
+        "name": "Споры грибницы",
+        "category": "fungus",
+        "rarity": "uncommon",
+        "properties": [
+          "Hallucination",
+          "Venom",
+          "Recovery",
+          "Volatility"
+        ],
+        "extra": null,
+        "potency": 40,
+        "stability": 63,
+        "volatility": 31,
+        "purity": 80,
+        "tags": [
+          "fungus",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_107",
+        "name": "Липкая смола",
+        "category": "plant",
+        "rarity": "common",
+        "properties": [
+          "Stability",
+          "Weakness",
+          "Acid",
+          "Volatility"
+        ],
+        "extra": null,
+        "potency": 31,
+        "stability": 74,
+        "volatility": 27,
+        "purity": 65,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_108",
+        "name": "Корень мандрагоры",
+        "category": "plant",
+        "rarity": "uncommon",
+        "properties": [
+          "Recovery",
+          "Fear",
+          "Vitality",
+          "Mind"
+        ],
+        "extra": "Stability",
+        "potency": 43,
+        "stability": 73,
+        "volatility": 32,
+        "purity": 80,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_109",
+        "name": "Семя тени",
+        "category": "plant",
+        "rarity": "rare",
+        "properties": [
+          "Invisibility",
+          "Necrotic",
+          "Speed",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 58,
+        "stability": 68,
+        "volatility": 41,
+        "purity": 86,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_110",
+        "name": "Пепел святого",
+        "category": "magical",
+        "rarity": "rare",
+        "properties": [
+          "Radiant",
+          "Antidote",
+          "Necrotic",
+          "Stability"
+        ],
+        "extra": null,
+        "potency": 57,
+        "stability": 67,
+        "volatility": 47,
+        "purity": 72,
+        "tags": [
+          "magical",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_111",
+        "name": "Пепел проклятого",
+        "category": "magical",
+        "rarity": "rare",
+        "properties": [
+          "Necrotic",
+          "Fear",
+          "Volatility",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 51,
+        "stability": 63,
+        "volatility": 40,
+        "purity": 88,
+        "tags": [
+          "magical",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_112",
+        "name": "Священная вода",
+        "category": "magical",
+        "rarity": "uncommon",
+        "properties": [
+          "Radiant",
+          "Antidote",
+          "Recovery",
+          "Stability"
+        ],
+        "extra": "Magic",
+        "potency": 41,
+        "stability": 68,
+        "volatility": 34,
+        "purity": 71,
+        "tags": [
+          "magical",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_113",
+        "name": "Вода из забытого источника",
+        "category": "magical",
+        "rarity": "rare",
+        "properties": [
+          "Recovery",
+          "Mind",
+          "Magic",
+          "Stability"
+        ],
+        "extra": null,
+        "potency": 52,
+        "stability": 62,
+        "volatility": 42,
+        "purity": 76,
+        "tags": [
+          "magical",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_114",
+        "name": "Роса рассвета",
+        "category": "plant",
+        "rarity": "uncommon",
+        "properties": [
+          "Radiant",
+          "Recovery",
+          "Stability",
+          "Vitality"
+        ],
+        "extra": null,
+        "potency": 35,
+        "stability": 77,
+        "volatility": 22,
+        "purity": 67,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_115",
+        "name": "Роса сумерек",
+        "category": "plant",
+        "rarity": "uncommon",
+        "properties": [
+          "Invisibility",
+          "Mind",
+          "Cold",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 39,
+        "stability": 73,
+        "volatility": 38,
+        "purity": 79,
+        "tags": [
+          "plant",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_116",
+        "name": "Медная стружка",
+        "category": "mineral",
+        "rarity": "common",
+        "properties": [
+          "Fire",
+          "Magic",
+          "Stability",
+          "Acid"
+        ],
+        "extra": "Radiant",
+        "potency": 25,
+        "stability": 72,
+        "volatility": 15,
+        "purity": 67,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_117",
+        "name": "Оловянная пыль",
+        "category": "mineral",
+        "rarity": "common",
+        "properties": [
+          "Stability",
+          "Magic",
+          "Weakness",
+          "Cold"
+        ],
+        "extra": null,
+        "potency": 30,
+        "stability": 68,
+        "volatility": 19,
+        "purity": 78,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_118",
+        "name": "Свинцовая пыль",
+        "category": "mineral",
+        "rarity": "common",
+        "properties": [
+          "Necrotic",
+          "Stability",
+          "Weakness",
+          "Magic"
+        ],
+        "extra": null,
+        "potency": 26,
+        "stability": 69,
+        "volatility": 20,
+        "purity": 65,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_119",
+        "name": "Кварцевый песок",
+        "category": "mineral",
+        "rarity": "common",
+        "properties": [
+          "Stability",
+          "Magic",
+          "Radiant",
+          "Acid"
+        ],
+        "extra": null,
+        "potency": 28,
+        "stability": 75,
+        "volatility": 15,
+        "purity": 71,
+        "tags": [
+          "mineral",
+          "alchemy"
+        ]
+      },
+      {
+        "id": "ing_120",
+        "name": "Древесная смола",
+        "category": "material",
+        "rarity": "common",
+        "properties": [
+          "Stability",
+          "Fire",
+          "Recovery",
+          "Volatility"
+        ],
+        "extra": "Antidote",
+        "potency": 22,
+        "stability": 78,
+        "volatility": 25,
+        "purity": 74,
+        "tags": [
+          "material",
+          "alchemy"
+        ]
+      }
+    ],
+    "catalysts": [
+      {
+        "id": "stabilizing_salt",
+        "name": "Стабилизирующая соль",
+        "stability": 18,
+        "volatility": -12,
+        "potency": 0,
+        "purity": 0
+      },
+      {
+        "id": "mercury_accelerator",
+        "name": "Ртутный ускоритель",
+        "stability": -10,
+        "volatility": 18,
+        "potency": 8,
+        "purity": 0
+      },
+      {
+        "id": "silver_powder",
+        "name": "Серебряный порошок",
+        "stability": 10,
+        "volatility": -4,
+        "potency": 4,
+        "purity": 18
+      },
+      {
+        "id": "dragonbone_powder",
+        "name": "Порошок драконьей кости",
+        "stability": -4,
+        "volatility": 4,
+        "potency": 16,
+        "purity": 0
+      },
+      {
+        "id": "activated_charcoal",
+        "name": "Активированный уголь",
+        "stability": 14,
+        "volatility": -8,
+        "potency": -2,
+        "purity": 10
+      }
+    ],
+    "synergy": [
+      [
+        "Recovery",
+        "Vitality"
+      ],
+      [
+        "Recovery",
+        "Antidote"
+      ],
+      [
+        "Recovery",
+        "Regeneration"
+      ],
+      [
+        "Speed",
+        "Dexterity"
+      ],
+      [
+        "Strength",
+        "Constitution"
+      ],
+      [
+        "Mind",
+        "Perception"
+      ],
+      [
+        "Venom",
+        "Hemorrhage"
+      ],
+      [
+        "Venom",
+        "Weakness"
+      ],
+      [
+        "Fear",
+        "Hallucination"
+      ],
+      [
+        "Fire",
+        "Volatility"
+      ],
+      [
+        "Cold",
+        "Stability"
+      ],
+      [
+        "Magic",
+        "Radiant"
+      ],
+      [
+        "Magic",
+        "Invisibility"
+      ],
+      [
+        "Acid",
+        "Weakness"
+      ],
+      [
+        "Necrotic",
+        "Fear"
+      ],
+      [
+        "Petrification",
+        "Stability"
+      ],
+      [
+        "Earth",
+        "Constitution"
+      ],
+      [
+        "Sleep",
+        "Hallucination"
+      ]
+    ],
+    "conflict": [
+      [
+        "Fire",
+        "Cold"
+      ],
+      [
+        "Recovery",
+        "Necrotic"
+      ],
+      [
+        "Vitality",
+        "Necrotic"
+      ],
+      [
+        "Antidote",
+        "Venom"
+      ],
+      [
+        "Stability",
+        "Volatility"
+      ],
+      [
+        "Invisibility",
+        "Radiant"
+      ],
+      [
+        "Sleep",
+        "Speed"
+      ],
+      [
+        "Petrification",
+        "Recovery"
+      ],
+      [
+        "Fire",
+        "Stability"
+      ],
+      [
+        "Acid",
+        "Recovery"
+      ]
+    ],
+    "effects": {
+      "Recovery": {
+        "label": "Восстановление",
+        "kind": "heal",
+        "formula": "1d4 + Potency/20"
+      },
+      "Vitality": {
+        "label": "Жизненность",
+        "kind": "tempHP",
+        "formula": "временные HP = Potency/5"
+      },
+      "Regeneration": {
+        "label": "Регенерация",
+        "kind": "regen",
+        "formula": "1d4 HP/ход"
+      },
+      "Speed": {
+        "label": "Скорость",
+        "kind": "speed",
+        "formula": "+10 футов"
+      },
+      "Dexterity": {
+        "label": "Ловкость",
+        "kind": "ability",
+        "formula": "преимущество на проверки Ловкости"
+      },
+      "Strength": {
+        "label": "Сила",
+        "kind": "ability",
+        "formula": "преимущество на проверки Силы"
+      },
+      "Constitution": {
+        "label": "Телосложение",
+        "kind": "ability",
+        "formula": "преимущество на проверки Телосложения"
+      },
+      "Mind": {
+        "label": "Разум",
+        "kind": "ability",
+        "formula": "преимущество на проверки Интеллекта"
+      },
+      "Perception": {
+        "label": "Восприятие",
+        "kind": "ability",
+        "formula": "преимущество на проверки Мудрости"
+      },
+      "Venom": {
+        "label": "Яд",
+        "kind": "damage",
+        "damageType": "poison",
+        "formula": "1d6 + Potency/15"
+      },
+      "Hemorrhage": {
+        "label": "Кровотечение",
+        "kind": "damage",
+        "damageType": "bleed",
+        "formula": "1d4/ход"
+      },
+      "Weakness": {
+        "label": "Слабость",
+        "kind": "debuff",
+        "formula": "штраф к силовым атакам/проверкам"
+      },
+      "Nausea": {
+        "label": "Тошнота",
+        "kind": "condition",
+        "condition": "poisoned",
+        "formula": "Poisoned"
+      },
+      "Blindness": {
+        "label": "Слепота",
+        "kind": "condition",
+        "condition": "blinded",
+        "formula": "Blinded"
+      },
+      "Fear": {
+        "label": "Страх",
+        "kind": "condition",
+        "condition": "frightened",
+        "formula": "Frightened"
+      },
+      "Hallucination": {
+        "label": "Галлюцинация",
+        "kind": "condition",
+        "condition": "confused",
+        "formula": "дезориентация"
+      },
+      "Sleep": {
+        "label": "Сон",
+        "kind": "condition",
+        "condition": "unconscious",
+        "formula": "Unconscious"
+      },
+      "Acid": {
+        "label": "Кислота",
+        "kind": "damage",
+        "damageType": "acid",
+        "formula": "2d4 + Potency/10"
+      },
+      "Fire": {
+        "label": "Огонь",
+        "kind": "damage",
+        "damageType": "fire",
+        "formula": "2d4 + Potency/10"
+      },
+      "Cold": {
+        "label": "Холод",
+        "kind": "damage",
+        "damageType": "cold",
+        "formula": "2d4 + Potency/10"
+      },
+      "Necrotic": {
+        "label": "Некротика",
+        "kind": "damage",
+        "damageType": "necrotic",
+        "formula": "2d4 + Potency/10"
+      },
+      "Radiant": {
+        "label": "Сияние",
+        "kind": "damage",
+        "damageType": "radiant",
+        "formula": "2d4 + Potency/10"
+      },
+      "Invisibility": {
+        "label": "Невидимость",
+        "kind": "condition",
+        "condition": "invisible",
+        "formula": "10 минут"
+      },
+      "Breathing": {
+        "label": "Дыхание",
+        "kind": "utility",
+        "formula": "1 час"
+      },
+      "Antidote": {
+        "label": "Антидот",
+        "kind": "cleanse",
+        "formula": "снимает яд"
+      },
+      "Stability": {
+        "label": "Стабильность",
+        "kind": "stability",
+        "formula": "снижает риск"
+      },
+      "Volatility": {
+        "label": "Нестабильность",
+        "kind": "volatile",
+        "formula": "ускоряет реакцию и риск"
+      },
+      "Magic": {
+        "label": "Магия",
+        "kind": "amplify",
+        "formula": "+25% к силе"
+      },
+      "Earth": {
+        "label": "Земля",
+        "kind": "resistance",
+        "formula": "устойчивость к сбиванию"
+      },
+      "Petrification": {
+        "label": "Окаменение",
+        "kind": "condition",
+        "condition": "petrified",
+        "formula": "тяжёлое состояние"
+      }
+    },
+    "extraTrigger": {
+      "Vitality": "Invisibility",
+      "Volatility": "Hallucination",
+      "Recovery": "Necrotic",
+      "Stability": "Recovery",
+      "Hallucination": "Radiant",
+      "Hemorrhage": "Perception",
+      "Magic": "Radiant",
+      "Necrotic": "Magic",
+      "Fear": "Venom",
+      "Fire": "Acid",
+      "Antidote": "Stability",
+      "Perception": "Speed",
+      "Strength": "Mind",
+      "Radiant": "Fire",
+      "Acid": "Invisibility"
+    }
+  },
+  "sources": [
+    {
+      "file": "app/crafting_engine_v31.js",
+      "sha256": "86f850c806af4723e4c05e56c8e9371ba4d3dfb17ae9a1259a61f5afedbca20e"
+    },
+    {
+      "file": "app/alchemy_engine_v29.js",
+      "sha256": "1ef9b0a723a3c387147779e96234dbe2d72a7cac8aeb14a54846309bb5a3708f"
+    },
+    {
+      "file": "app/alchemy_gameplay_v30.js",
+      "sha256": "148784aa1d25d963f9109493029fdab737e2d12942ee902a8bc780fb3d99abe9"
+    }
+  ]
+}

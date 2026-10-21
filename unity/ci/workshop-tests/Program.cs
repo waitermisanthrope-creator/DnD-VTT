@@ -49,7 +49,7 @@ class Program
             Check(store.Installed().Count == 0, "empty offline startup");
             foreach (string repo in new[] { "DnD-VTT-Content", "DnD-VTT-Assets" })
             {
-                string catalog = File.ReadAllText(Path.Combine(source, repo, "catalog/v2/index.json"));
+                string catalog = File.ReadAllText(Path.Combine(source, repo, repo.EndsWith("Content") ? "catalog/v3/index.json" : "catalog/v2/index.json"));
                 var list = WorkshopStore.Catalog(catalog, repo.EndsWith("Content") ? "packages" : "packs");
                 foreach (JObject manifest in list)
                 {
@@ -121,7 +121,8 @@ class Program
             var afterRemoval = store.Creation(baseCreation);
             Check(!((JArray)afterRemoval["races"]).Any(r => (string)r["id"] == "tortle") && !((JArray)afterRemoval["classes"]).Any(c => (string)c["id"] == "blood_hunter") && !((JArray)afterRemoval["feats"]).Any(f => (string)f["id"] == "athlete"), "uninstall removes only optional picker entries");
             Check(JToken.DeepEquals(new LegacyCharacterArchive(archiveText).Snapshot(0), optionalHero), "old downloaded character fully survives removed packages and restart");
-            var originalManifest = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source, "DnD-VTT-Content/catalog/v2/index.json")), "packages").OfType<JObject>().First();
+            checks += CommerceChecks.Run(store,appRoot);
+            var originalManifest = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source, "DnD-VTT-Content/catalog/v3/index.json")), "packages").OfType<JObject>().First();
             var edited = (JObject)originalManifest.DeepClone(); edited["bytes"] = WorkshopStore.MaxPackageBytes + 1;
             Reject(() => WorkshopStore.ValidateManifest(edited), "oversized payload");
             edited = (JObject)originalManifest.DeepClone(); edited["dependencies"] = new JArray((string)edited["id"]);
