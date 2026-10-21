@@ -1,3 +1,9 @@
+# Policy update: moderator appointments
+
+Latest owner instruction supersedes the historical two-person rule for MODERATOR appointments/removals only. Apply `202610210003_direct_moderator_management.sql` after already-installed 001/002. Existing request_staff_change RPC applies those changes immediately, logs staff.direct and returns an already-applied receipt UUID. approve_staff_change cannot replay it. Owner/deputy both require fresh MFA; moderators never appoint staff. Deputy changes remain separate and owner-controlled. Unified native center is staged for 1.00.15; 1.00.14 backend calls remain compatible.
+
+Owner supplied screenshots confirming live owner bootstrap and successful retention jobs; no direct privileged connection is available to this executor. Do not rerun 001/002. Existing historical checkpoint follows.
+
 # Moderation center implementation — 2026-10-21
 
 PARTIAL, not deployed. Extends existing Auth/access SQL and native settings; no alternate accounts, no service key in APK. Environment status checked: no administrative Supabase credentials/identity and project host outside enforced network allowlist. Owner bootstrap and live operations are BLOCKED, not completed by publishing an APK.

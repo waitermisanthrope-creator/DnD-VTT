@@ -16,7 +16,7 @@ namespace DndVtt.UnityPrototype
         // Only the polished overview uses immediate GUI; the old, proven update
         // center is a separate full-screen page with unchanged working controls.
         private bool brandTechnicalScreen;
-        private bool showAdminPanel,showModeratorPanel;
+        private bool showModeratorPanel;
         private GUIStyle settingsHeader, settingsDescription, settingsInset;
         private float brandSettingsContentHeight = 1320;
 

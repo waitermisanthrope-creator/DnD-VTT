@@ -1,3 +1,13 @@
+# Latest owner policy: direct moderator management / unified center
+
+DONE locally: migration `202610210003_direct_moderator_management.sql` updates existing request_staff_change RPC. Owner/deputy independently appoint/change/revoke moderators with fresh MFA; no mutual approval. Every change audited. Owner protected; deputy cannot be demoted via moderator appointment; deputy workflow remains separate and owner-initiated. Old pending moderator/revoke requests expire on applying migration, preventing stale replay. Existing 1.00.14 client remains RPC-compatible; its old “request” button labels do not change synchronous server behavior after 003.
+
+DONE source: one “Центр управления” entry with moderation for all staff and additional account administration only for owner/deputy. Trust tiers still control assignment/review/decision permissions. Content acceptance is not automatic file publication; trusted upload/build/publication pipeline remains PARTIAL.
+
+Local validation: 108 SQL checks, 2,884 .NET checks before notes-only version bump. Candidate target 1.00.15/10015, avoiding installed 1.00.14 collision. Native build pending; public feed remains 1.00.13. Do not call a new APK published/ready before CI succeeds.
+
+Live deployment evidence supplied by owner: migrations 001/002 reported Success; screenshot confirms verified owner UUID 8e23f5b2-be5d-4805-8009-637685261fba role owner/trust 3/active; both pg_cron jobs shown succeeded. These are owner-observed results, not direct executor database access. 003 has NOT yet been applied to live Supabase. Apply ONLY 003 now; do not rerun earlier migrations/bootstrap. Native fresh-MFA and live staff changes still require testing.
+
 # Native moderation candidate verified — 1.00.14
 
 DONE: candidate run [39656049442](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39656049442) SUCCESS, source `2271edf0`. Unity/Android ARM64 IL2CPP compilation, original package/signature, real APK inspection and minimal-content/branding gates passed. 2,884 C# checks and 95 SQL checks passed in that CI; test-only follow-up brings local PostgreSQL count to 98. Local Python checks: 10 passed.

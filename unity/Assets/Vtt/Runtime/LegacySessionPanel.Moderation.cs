@@ -65,7 +65,7 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawStaffSettingsPanels()
         {
-            if(cloudSession==null) { centerSnapshot=null;centerUsers.Clear();showAdminPanel=showModeratorPanel=showSupportPanel=false;mfaSecret="";return; }
+            if(cloudSession==null) { centerSnapshot=null;centerUsers.Clear();showModeratorPanel=showSupportPanel=false;mfaSecret="";return; }
             GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Обращения и управление");
             bool enabled=GUI.enabled;GUI.enabled=enabled&&!cloudBusy;
             if(GUILayout.Button("Обновить серверные права и обращения",brandBlue,GUILayout.MinHeight(58)))CenterRefresh();
@@ -79,15 +79,14 @@ namespace DndVtt.UnityPrototype
                 if(centerSnapshot?["cases"] is JArray own)foreach(JObject c in own)if((string)c["author"]==(string)cloudSession["user"])GUILayout.Label((string)c["title"]+" · "+(string)c["status"],sheetQuiet);
             }
             if(CenterModerator) {
-                if(GUILayout.Button("Панель модерации",brandBlue,GUILayout.MinHeight(58)))showModeratorPanel=!showModeratorPanel;
-                if(showModeratorPanel)DrawCenterModeration();
+                if(GUILayout.Button("Центр управления",brandGold,GUILayout.MinHeight(60)))showModeratorPanel=!showModeratorPanel;
+                if(showModeratorPanel) {
+                    DrawCenterModeration();
+                    if(CenterAdmin)DrawCenterAdministration();
+                }
             }else showModeratorPanel=false;
-            if(CenterAdmin) {
-                if(GUILayout.Button("Административная панель",brandGold,GUILayout.MinHeight(58)))showAdminPanel=!showAdminPanel;
-                if(showAdminPanel)DrawCenterAdministration();
-            }else showAdminPanel=false;
             // MFA uses existing Supabase session, with no alternate account database.
-            if(CenterModerator) {
+            if(CenterModerator&&showModeratorPanel) {
                 GUILayout.Label("Защита аккаунта: TOTP / MFA",settingsHeader);
                 if(GUILayout.Button("Найти мой TOTP-фактор",GUILayout.MinHeight(52)))StartCoroutine(CenterMfa("list"));
                 if(GUILayout.Button("Подключить новый TOTP-фактор",GUILayout.MinHeight(52)))StartCoroutine(CenterMfa("enroll"));
@@ -100,7 +99,7 @@ namespace DndVtt.UnityPrototype
         private void DrawCenterModeration()
         {
             int trust=(int?)cloudAccess?["trust"]??0;bool curator=CenterAdmin||trust>=2;
-            GUILayout.Label(CenterAdmin?"Модерация — администрация":"Уровень доверия: "+trust,settingsHeader);
+            GUILayout.Label("Мастерская и обращения · "+(CenterAdmin?"администрация":"уровень доверия "+trust),settingsHeader);
             GUILayout.Label("Все решения коллег видны ниже за последние 24 часа. Раннее удаление недоступно. Одобрение проверки не публикует пакет.",sheetQuiet);
             GUILayout.Label("Обоснование / замечание");centerNote=GUILayout.TextArea(centerNote,2000,GUILayout.MinHeight(80));
             if(curator) { GUILayout.Label("UUID назначаемого проверяющего");centerAssignee=GUILayout.TextField(centerAssignee,36); }
@@ -128,7 +127,7 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawCenterAdministration()
         {
-            GUILayout.Label("Учётные записи",settingsHeader);GUILayout.Label("Поиск по почте или UUID. Изменения требуют свежей MFA.",sheetQuiet);
+            GUILayout.Label("Администрирование — учётные записи",settingsHeader);GUILayout.Label("Назначение и снятие модераторов применяется сразу, без второго администратора. Требуется свежая MFA. Заместитель — отдельная процедура владельца.",sheetQuiet);GUILayout.Label("Поиск по почте или UUID. Изменения требуют свежей MFA.",sheetQuiet);
             centerSearch=GUILayout.TextField(centerSearch,160);
             if(GUILayout.Button("Найти пользователей",GUILayout.MinHeight(54)))StartCoroutine(CenterCall("center_users",new JObject { ["p_query"]=centerSearch },r=>centerUsers=(JArray)r));
             GUILayout.Label("Причина ограничения");centerReason=GUILayout.TextArea(centerReason,1000,GUILayout.MinHeight(80));
@@ -137,8 +136,8 @@ namespace DndVtt.UnityPrototype
                 GUILayout.BeginVertical(GUI.skin.box);GUILayout.Label((string)u["email"]+"\n"+(string)u["id"]+" · "+(string)u["kind"],sheetQuiet);
                 GUILayout.Label("Бан до: "+u["banned_until"]+" · Мут до: "+u["muted_until"],sheetQuiet);
                 foreach(string action in new[]{"ban","mute","unban","unmute"})if(GUILayout.Button(action=="ban"?"Бан на 24 часа":action=="mute"?"Мут обращений на 24 часа":action=="unban"?"Снять бан":"Снять мут",GUILayout.MinHeight(52)))CenterLimit(u,action);
-                if(GUILayout.Button("Запросить назначение модератором",GUILayout.MinHeight(56)))CenterStaffRequest(u,"moderator");
-                if(GUILayout.Button("Запросить снятие должности",GUILayout.MinHeight(56)))CenterStaffRequest(u,"revoke");
+                if(GUILayout.Button("Назначить модератором / изменить уровень",GUILayout.MinHeight(56)))CenterStaffRequest(u,"moderator");
+                if(GUILayout.Button("Снять должность модератора",GUILayout.MinHeight(56)))CenterStaffRequest(u,"revoke");
                 if((string)cloudAccess?["role"]=="owner"&&GUILayout.Button("Лично выбрать заместителем",GUILayout.MinHeight(56)))CenterStaffRequest(u,"admin");
                 GUILayout.EndVertical();
             }

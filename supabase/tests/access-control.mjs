@@ -118,5 +118,19 @@ try {
  check(!snapshot.events.some(e=>e.action==='expired.fixture'),'events invisible immediately at retention cutoff');
  await root();check(Number((await db.query('select app_private.purge_expired_audit() as n')).rows[0].n)===1,'worker deletes only expired logs');
  check(Number((await db.query('select count(*) as n from app_private.access_audit')).rows[0].n)>0,'worker preserves unexpired logs');
+ // Latest owner policy supersedes independent approval for moderators only.
+ await root();await db.exec(await readFile(new URL('../migrations/202610210003_direct_moderator_management.sql',import.meta.url),'utf8'));
+ await identity(owner);await denied("select public.request_staff_change($1,'moderator',0)",[member]);
+ await identity(owner,'aal2');let immediate=(await db.query("select public.request_staff_change($1,'moderator',0) as id",[member])).rows[0].id;
+ await identity(member);check((await access()).trust===0&&(await access()).role==='moderator','owner appoints moderator immediately without deputy');
+ await identity(deputy,'aal2');await denied('select public.approve_staff_change($1)',[immediate]);
+ await db.query("select public.request_staff_change($1,'moderator',3)",[member]);
+ await identity(member,'aal2');check((await access()).trust===3,'deputy independently changes moderator level');
+ await denied("select public.request_staff_change($1,'moderator',0)",[other]);
+ await identity(deputy,'aal2');await db.query("select public.request_staff_change($1,'revoke',0)",[member]);
+ await identity(member,'aal2');check((await access()).role==='member','deputy removes moderator immediately');
+ await identity(owner,'aal2');await denied("select public.request_staff_change($1,'moderator',0)",[deputy]);await denied("select public.request_staff_change($1,'revoke',0)",[owner]);
+ await identity(deputy,'aal2');await denied("select public.request_staff_change($1,'admin',3)",[member]);
+ await root();check((await db.query("select count(*)::int n from app_private.access_audit where action='staff.direct'")).rows[0].n===3,'all direct grants/removals audited');
  console.log('POSTGRES_ACCESS_CLOUD_PASS',checks,'checks: roles, forged metadata, MFA, two-person approval, revocation, receipts, conflict and RLS');
 } finally {await db.close();}
