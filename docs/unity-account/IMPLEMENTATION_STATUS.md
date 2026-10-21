@@ -1,3 +1,9 @@
+# Corrected active update — 1.00.13
+
+DONE: owner reported 1.00.12 already installed, so reusing 10012 could not deliver the fix. Built and published 1.00.13/versionCode 10013. Candidate source `ccf264ec`, run 39646171342 SUCCESS; publisher 39646215002 SUCCESS; feed commit `8de32b0a`. Public raw feed independently read back as 1.00.13/10013. Original signature/package retained; public download validated before activation. APK 40,130,674 bytes; SHA-256 `2b7c8a06f193c01f1bd0ba615328c10123ff24990090c089d459de3e484b9aef`.
+
+Added pre-build check refusing candidate versionCode <= active feed to prevent recurrence. Existing 1.00.12 release preserved. Runtime touch fixes remain those from 705ab4f2; physical-device verification remains PARTIAL, production role deployment BLOCKED. Historical release checkpoints follow.
+
 # Current release checkpoint — 2026-10-21 17:34 UTC
 
 DONE: owner explicitly authorized publication; 1.00.12/versionCode 10012 is now active in the existing Unity in-app update channel. Previous statements below about withheld publication and old candidate hashes are historical.

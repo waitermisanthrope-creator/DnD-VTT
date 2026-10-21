@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит ccf264eca750. Файлов: 1909
+Коммит 8de32b0afcf2. Файлов: 1909
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1073,7 +1073,7 @@
 1057. docs/UNITY_MIGRATION_PLAN.md — документация или отчёт: UNITY MIGRATION PLAN (14710 B)
 1058. docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md — документация или отчёт: ACCESS AND TOUCH 1.00.12 (8253 B)
 1059. docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md — документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP (9558 B)
-1060. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (8519 B)
+1060. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (9342 B)
 1061. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1062. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
 1063. dragon_fire_v2_sprite.png — текстура/изображение: dragon fire v2 sprite (1013123 B)
@@ -1721,7 +1721,7 @@
 1705. unity/Assets/Vtt/Resources/Branding/Splash19.png.meta — вспомогательный файл: Splash19.png (312 B)
 1706. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg — текстура/изображение: Wallpaper16 (212684 B)
 1707. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta — вспомогательный файл: Wallpaper16.jpg (312 B)
-1708. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (10430 B)
+1708. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (10432 B)
 1709. unity/Assets/Vtt/Resources/Changelog.json.meta — вспомогательный файл: Changelog.json (158 B)
 1710. unity/Assets/Vtt/Resources/CharacterSheet.meta — вспомогательный файл: CharacterSheet (172 B)
 1711. unity/Assets/Vtt/Resources/CharacterSheet/catalog.json — данные/конфигурация: catalog (823381 B)
@@ -1869,8 +1869,8 @@
 1853. updates/previous-stable.json — метаданные обновлений: previous stable (179808 B)
 1854. updates/README.md — документация или отчёт: README (233 B)
 1855. updates/stable.json — метаданные обновлений: stable (179809 B)
-1856. updates/unity-changelog.json — метаданные обновлений: unity changelog (10430 B)
-1857. updates/unity-experiment.json — метаданные обновлений: unity experiment (1938 B)
+1856. updates/unity-changelog.json — метаданные обновлений: unity changelog (10432 B)
+1857. updates/unity-experiment.json — метаданные обновлений: unity experiment (1343 B)
 1858. vignette_v2_sprite.png — текстура/изображение: vignette v2 sprite (1213593 B)
 1859. VTT_PROJECT_MANIFEST_V70.json — устаревший список V70, не актуален (44370 B)
 1860. wall_brick_red.png — текстура/изображение: wall brick red (111128 B)
