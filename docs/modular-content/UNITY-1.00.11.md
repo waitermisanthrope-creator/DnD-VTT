@@ -27,7 +27,7 @@ Device checks required: upgrade over installed APK without uninstalling; foregro
 
 ## Verified candidate and status
 
-DONE — signed Android ARM64 IL2CPP 1.00.11 / versionCode 10011, source 384fb58c89df78430e36712a7502ed03fe9da84a, run 39595880251 succeeded. APK is 40085618 bytes (40.086 MB / 38.228 MiB), SHA-256 f9fd18c7a66f939bdf38272cb2ee3ac63382bcbbacaa6666bf85dfc3eeb58210. Original signing certificate, package name and save identity verified. Stable update feeds, signing secrets and old releases are unchanged.
+DONE — signed Android ARM64 IL2CPP 1.00.11 / versionCode 10011, source 384fb58c89df78430e36712a7502ed03fe9da84a, run 39595880251 succeeded. APK is 40085618 bytes (40.086 MB / 38.229 MiB), SHA-256 f9fd18c7a66f939bdf38272cb2ee3ac63382bcbbacaa6666bf85dfc3eeb58210. Original signing certificate, package name and save identity verified. Stable update feeds, signing secrets and old releases are unchanged.
 
 Test APK: https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39595880251/artifacts/12343908716 (GitHub artifact ZIP; APK size above refers to extracted APK).
 
