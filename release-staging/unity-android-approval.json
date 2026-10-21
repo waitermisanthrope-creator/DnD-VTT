@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "version": "1.00.11",
-  "candidateRunId": 39595880251,
+  "version": "1.00.12",
+  "candidateRunId": 39643523821,
   "approved": true,
   "releaseType": "public-prerelease",
   "channel": "unity-experiment",
   "scope": "Android-only",
-  "note": "Owner reports application cannot see the delivered update. Promote the already verified 1.00.11 candidate to the Unity Android update channel. Require successful run, original certificate/package and public SHA-256 verification before feed activation. Do not rebuild or touch main/Windows."
+  "note": "Owner explicitly authorized in-app release with swipe fix. Publish only successful candidate 705ab4f2 with original certificate/package, measured APK and public download SHA-256 verification before feed activation. No main/Windows changes. Device swipe QA remains owner testing."
 }
