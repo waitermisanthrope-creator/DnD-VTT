@@ -137,7 +137,7 @@ namespace DndVtt.UnityPrototype
             if (contentBusy) GUILayout.HorizontalSlider(contentProgress, 0, 1);
             installedOnly = GUILayout.Toggle(installedOnly, "Только установленные (доступно без интернета)");
             contentSearch = GUILayout.TextField(contentSearch, GUILayout.MinHeight(40));
-            contentCategory = GUILayout.SelectionGrid(contentCategory, ContentCategories, 2, GUILayout.MinHeight(300));
+            contentCategory = MenuGrid(contentCategory,ContentCategories,2);
             var installed = workshopStore.Installed();
             var all = contentPackages.Concat(assetPacks).OfType<JObject>().ToList();
             foreach (JObject local in installed) if (!all.Any(p => (string)p["id"] == (string)local["id"])) all.Add(local);

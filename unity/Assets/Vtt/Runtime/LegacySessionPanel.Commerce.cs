@@ -19,11 +19,11 @@ namespace DndVtt.UnityPrototype
         private void DrawCommerceInventory(JObject hero, ref bool changed, ref bool persist)
         {
             if (hero["inventory"] is JArray) { ReadOnly(hero,"inventory","Унаследованный инвентарь сохранён без изменений"); return; }
-            inventoryMode = GUILayout.SelectionGrid(inventoryMode,new[] { "Инвентарь", "Крафт", "Алхимия 2.0" },3,GUILayout.MinHeight(76));
+            inventoryMode = MenuGrid(inventoryMode,new[] { "Инвентарь", "Крафт", "Алхимия 2.0" },3);
             if (inventoryMode == 1) { DrawCrafting(hero,ref changed,ref persist); return; }
             if (inventoryMode == 2) { DrawAlchemy(hero,ref changed,ref persist); return; }
             GUILayout.BeginVertical(GUI.skin.box); GUILayout.Label("Текущий КД",sheetQuiet); GUILayout.Label((hero["ac"] ?? hero["baseAC"] ?? 10).ToString(),sheetHeading); GUILayout.EndVertical();
-            inventoryCategory = GUILayout.SelectionGrid(inventoryCategory,inventoryNames,2,GUILayout.MinHeight(210));
+            inventoryCategory = MenuGrid(inventoryCategory,inventoryNames,2);
             if (GUILayout.Button("Справочник / Свой предмет",brandGreen,GUILayout.Height(58),GUILayout.ExpandWidth(true))) inventoryPicker = !inventoryPicker;
             if (inventoryPicker)
             {
@@ -132,7 +132,7 @@ namespace DndVtt.UnityPrototype
             GUILayout.Label("Найти черту"); featQuery = GUILayout.TextField(featQuery);
             GUILayout.Label("Прибавка характеристики для черт с выбором");
             var statNames = new[] { "str", "dex", "con", "int", "wis", "cha" };
-            featStat = statNames[GUILayout.SelectionGrid(Array.IndexOf(statNames,featStat),statNames,6)];
+            featStat = statNames[MenuGrid(Array.IndexOf(statNames,featStat),statNames,6)];
             foreach (JObject feat in ((JArray)CreationCatalog["feats"]).OfType<JObject>().Where(f => (f["nameRu"] + " " + f["name"]).IndexOf(featQuery,StringComparison.OrdinalIgnoreCase) >= 0).Take(30)) if (GUILayout.Button("+ " + (feat["nameRu"] ?? feat["name"]))) { try { CharacterCreation.AddFeat(hero,feat,featStat); changed = true; } catch (Exception e) { status = e.Message; } }
             GUILayout.EndVertical(); GUILayout.BeginVertical(GUI.skin.box); SheetSection("Владения и языки"); Collection(hero,"proficiencies","Записи",() => new JObject { ["name"] = "Своё владение",["description"] = "" },ref changed); GUILayout.EndVertical();
         }

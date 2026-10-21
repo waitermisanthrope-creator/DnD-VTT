@@ -169,7 +169,7 @@ namespace DndVtt.UnityPrototype
             }
             else if (creationStep == 2)
             {
-                statMode = GUILayout.SelectionGrid(statMode, new[] { "Покупка · 27 очков", "Ввод мастером" }, 2, GUILayout.Height(52));
+                statMode = MenuGrid(statMode,new[] { "Покупка · 27 очков", "Ввод мастером" },2);
                 for (int i = 0; i < 6; i++) { GUILayout.BeginHorizontal(); GUILayout.Label(CharacterSheetRules.StatNames[i], GUILayout.Width(180)); statInputs[i] = GUILayout.TextField(statInputs[i], GUILayout.Height(52)); GUILayout.EndHorizontal(); }
                 int total = 0; bool valid = true; foreach (string text in statInputs) { if (int.TryParse(text, out int n) && n >= 8 && n <= 15) total += CharacterCreation.PointCost(n); else valid = false; }
                 if (statMode == 0) GUILayout.Label(valid ? "Потрачено: " + total + " / 27 (до расовых бонусов)" : "Для покупки допустимы значения 8–15");

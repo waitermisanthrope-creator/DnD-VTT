@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace DndVtt.UnityPrototype
@@ -38,6 +39,13 @@ namespace DndVtt.UnityPrototype
             sheetTabStyle = new GUIStyle(sheetSkin.button) { wordWrap = false, fontSize = 20, fontStyle = FontStyle.Bold, padding = new RectOffset(16,16,14,14) };
             sheetActiveTab = new GUIStyle(sheetTabStyle); sheetActiveTab.normal.textColor = new Color(.98f,.23f,.23f); sheetActiveTab.normal.background = Rounded(new Color(.18f,.13f,.13f),new Color(.74f,.14f,.14f));
             GUI.skin = sheetSkin;
+        }
+        private int MenuGrid(int selectedIndex,string[] labels,int columns)
+        {
+            columns=Mathf.Clamp(columns,1,Mathf.Max(1,labels.Length));
+            float cellWidth=Mathf.Max(40,(UiWidth-100)/columns-8);
+            float rowHeight=Mathf.Max(56,labels.Select(label=>GUI.skin.button.CalcHeight(new GUIContent(label),cellWidth)+GUI.skin.button.margin.vertical).DefaultIfEmpty(56).Max());
+            return GUILayout.SelectionGrid(selectedIndex,labels,columns,GUILayout.MinHeight(((labels.Length+columns-1)/columns)*rowHeight));
         }
         private int HorizontalTabs(int selectedTab, string[] labels, ref Vector2 scrollPosition)
         {

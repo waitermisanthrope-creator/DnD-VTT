@@ -217,7 +217,7 @@ namespace DndVtt.UnityPrototype
                 if (!asset) { GUILayout.Label("Справочник предметов не найден"); return; }
                 itemCatalog = (JObject)JObject.Parse(asset.text)["items"];
             }
-            itemCategory = GUILayout.SelectionGrid(itemCategory, new[] { "Оружие", "Броня", "Расходники", "Материалы", "Хлам" }, UiWidth < 900 ? 3 : 5, GUILayout.MinHeight(36));
+            itemCategory = MenuGrid(itemCategory,new[] { "Оружие", "Броня", "Расходники", "Материалы", "Хлам" },UiWidth<900?3:5);
             GUILayout.Label("Поиск по названию, категории или ID:"); itemSearch = GUILayout.TextField(itemSearch, GUILayout.Height(52));
             string category = CharacterSheetRules.InventoryCategories[itemCategory];
             var matches = ((JArray)itemCatalog[category]).OfType<JObject>().Where(item => (item["name"] + " " + item["category"] + " " + item["id"]).IndexOf(itemSearch, StringComparison.OrdinalIgnoreCase) >= 0).ToArray();

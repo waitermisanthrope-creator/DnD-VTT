@@ -55,7 +55,7 @@ namespace DndVtt.UnityPrototype
             GUILayout.Label("Версия Unity: " + UnityRelease.Version + "  ·  Изменения сохраняются только на этом устройстве.", muted);
             GUILayout.Space(10);
             int columns = UiHeight > UiWidth ? 2 : UiWidth >= 900 ? 5 : 2;
-            int section = GUILayout.SelectionGrid(settingsSection, SettingSections, columns, GUILayout.MinHeight(columns==2?168:56));
+            int section = MenuGrid(settingsSection,SettingSections,columns);
             if (section != settingsSection) { settingsSection = section; frontScroll = Vector2.zero; }
             GUILayout.Space(16);
             switch (settingsSection)
@@ -67,7 +67,7 @@ namespace DndVtt.UnityPrototype
                     GUILayout.Label("Оформление", heading);
                     GUILayout.Label("Цветовая тема меняет фон меню и сохраняется для следующих запусков.", muted);
                     int themeIndex = Math.Max(0, Array.IndexOf(ThemeKeys, settingsDraft.theme));
-                    themeIndex = GUILayout.SelectionGrid(themeIndex, ThemeLabels, 2, GUILayout.MinHeight(140));
+                    themeIndex = MenuGrid(themeIndex,ThemeLabels,2);
                     settingsDraft.theme = ThemeKeys[themeIndex];
                     GUILayout.Label("Для выбора арт-обоев и иконок потребуется отдельный каталог изображений. Сейчас доступна смена цветовой темы.", muted);
                     break;
@@ -79,14 +79,14 @@ namespace DndVtt.UnityPrototype
                     if (qualityNames.Length > 0)
                     {
                         int quality = Mathf.Max(0, Array.IndexOf(qualityNames, settingsDraft.quality));
-                        quality = GUILayout.SelectionGrid(quality, qualityNames, Mathf.Min(3, qualityNames.Length), GUILayout.MinHeight(60));
+                        quality = MenuGrid(quality,qualityNames,Mathf.Min(3,qualityNames.Length));
                         settingsDraft.quality = qualityNames[quality];
                     }
                     GUILayout.Space(14);
                     GUILayout.Label("Лимит кадров в секунду");
                     int[] limits = { 30, 60, 120, -1 };
                     int fps = Mathf.Max(0, Array.IndexOf(limits, settingsDraft.fps));
-                    settingsDraft.fps = limits[GUILayout.SelectionGrid(fps, new[] { "30", "60", "120", "Без лимита" }, 4, GUILayout.Height(46))];
+                    settingsDraft.fps = limits[MenuGrid(fps,new[] { "30", "60", "120", "Без лимита" },4)];
 #if UNITY_STANDALONE_WIN
                     settingsDraft.vSync = GUILayout.Toggle(settingsDraft.vSync, "Вертикальная синхронизация (Windows)", GUILayout.MinHeight(38));
                     GUILayout.Label("При синхронизации Windows использует частоту экрана вместо лимита FPS.", muted);

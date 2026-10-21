@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 0251ef61f27e. Git содержит 1906 файлов.
+Снимок кода ddf1415d2fa6. Git содержит 1906 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1755,18 +1755,18 @@
 | №1734 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Branding.cs |
 | №1735 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs | 8691 B | вспомогательный файл: LegacySessionPanel.BrandSettings |
 | №1736 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.BrandSettings.cs |
-| №1737 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs | 18630 B | вспомогательный файл: LegacySessionPanel.Commerce |
+| №1737 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs | 18536 B | вспомогательный файл: LegacySessionPanel.Commerce |
 | №1738 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Commerce.cs |
-| №1739 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs | 13202 B | вспомогательный файл: LegacySessionPanel.ContentManager |
+| №1739 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs | 13159 B | вспомогательный файл: LegacySessionPanel.ContentManager |
 | №1740 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs | 8909 B | вспомогательный файл: LegacySessionPanel |
 | №1741 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.cs |
-| №1742 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs | 27612 B | вспомогательный файл: LegacySessionPanel.FrontEnd |
+| №1742 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs | 27573 B | вспомогательный файл: LegacySessionPanel.FrontEnd |
 | №1743 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.FrontEnd.cs |
-| №1744 unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs | 9630 B | вспомогательный файл: LegacySessionPanel.Settings |
+| №1744 unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs | 9448 B | вспомогательный файл: LegacySessionPanel.Settings |
 | №1745 unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.Settings.cs |
-| №1746 unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs | 28580 B | вспомогательный файл: LegacySessionPanel.Sheet |
+| №1746 unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs | 28532 B | вспомогательный файл: LegacySessionPanel.Sheet |
 | №1747 unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.Sheet.cs |
-| №1748 unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs | 3904 B | вспомогательный файл: LegacySessionPanel.SheetSkin |
+| №1748 unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs | 4480 B | вспомогательный файл: LegacySessionPanel.SheetSkin |
 | №1749 unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.SheetSkin.cs |
 | №1750 unity/Assets/Vtt/Runtime/LegacySessionPanel.Touch.cs | 2537 B | вспомогательный файл: LegacySessionPanel.Touch |
 | №1751 unity/Assets/Vtt/Runtime/LegacySessionPanel.Touch.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Touch.cs |
