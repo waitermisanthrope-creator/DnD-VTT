@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода f6dc340eaad1. Git содержит 1925 файлов.
+Снимок кода f6470cd94d24. Git содержит 1925 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1703,7 +1703,7 @@
 | №1682 unity/Assets/Plugins/Android.meta | 172 B | вспомогательный файл: Android |
 | №1683 unity/Assets/Plugins/Android/DndSessionVault.java | 2333 B | вспомогательный файл: DndSessionVault |
 | №1684 unity/Assets/Plugins/Android/DndSessionVault.java.meta | 60 B | вспомогательный файл: DndSessionVault.java |
-| №1685 unity/Assets/Plugins/Android/UpdateProvider.java | 5592 B | вспомогательный файл: UpdateProvider |
+| №1685 unity/Assets/Plugins/Android/UpdateProvider.java | 7717 B | вспомогательный файл: UpdateProvider |
 | №1686 unity/Assets/Plugins/Android/UpdateProvider.java.meta | 60 B | вспомогательный файл: UpdateProvider.java |
 | №1687 unity/Assets/StreamingAssets/Branding/Dragon20.png | 1284815 B | текстура/изображение: Dragon20 |
 | №1688 unity/Assets/StreamingAssets/Branding/Splash19.png | 8605503 B | текстура/изображение: Splash19 |
@@ -1736,7 +1736,7 @@
 | №1715 unity/Assets/Vtt/Resources/Branding/Splash19.png.meta | 312 B | вспомогательный файл: Splash19.png |
 | №1716 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg | 212684 B | текстура/изображение: Wallpaper16 |
 | №1717 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta | 312 B | вспомогательный файл: Wallpaper16.jpg |
-| №1718 unity/Assets/Vtt/Resources/Changelog.json | 20543 B | данные/конфигурация: Changelog |
+| №1718 unity/Assets/Vtt/Resources/Changelog.json | 20635 B | данные/конфигурация: Changelog |
 | №1719 unity/Assets/Vtt/Resources/Changelog.json.meta | 158 B | вспомогательный файл: Changelog.json |
 | №1720 unity/Assets/Vtt/Resources/CharacterSheet.meta | 172 B | вспомогательный файл: CharacterSheet |
 | №1721 unity/Assets/Vtt/Resources/CharacterSheet/catalog.json | 823381 B | данные/конфигурация: catalog |
@@ -1764,7 +1764,7 @@
 | №1743 unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSmoke.cs |
 | №1744 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs | 19042 B | вспомогательный файл: LegacySessionPanel.Account |
 | №1745 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Account.cs |
-| №1746 unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs | 13281 B | вспомогательный файл: LegacySessionPanel.Appearance |
+| №1746 unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs | 14711 B | вспомогательный файл: LegacySessionPanel.Appearance |
 | №1747 unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Appearance.cs |
 | №1748 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs | 16618 B | вспомогательный файл: LegacySessionPanel.Branding |
 | №1749 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Branding.cs |
@@ -1890,7 +1890,7 @@
 | №1869 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №1870 updates/README.md | 233 B | документация или отчёт: README |
 | №1871 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №1872 updates/unity-changelog.json | 20543 B | метаданные обновлений: unity changelog |
+| №1872 updates/unity-changelog.json | 20635 B | метаданные обновлений: unity changelog |
 | №1873 updates/unity-experiment.json | 2442 B | метаданные обновлений: unity experiment |
 | №1874 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №1875 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
@@ -14134,7 +14134,7 @@
 | --text-main | №0837 |
 | --text-muted | №0837 |
 
-### Python/Java идентификаторы (519)
+### Python/Java идентификаторы (527)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -14188,9 +14188,11 @@
 | baseUrl | №0048 |
 | bb | №0048 |
 | binary | №1313 |
+| bitmap | №1685 |
 | blob | №0005 |
 | blobs | №0006 |
 | bones | №1313 |
+| bounds | №1685 |
 | branch | №1314 |
 | BRANCH | №0005 (+ 2 других файлов) |
 | BRAND | №1813 |
@@ -14349,7 +14351,7 @@
 | home | №1813 |
 | i | №0048 (+ 1 других файлов) |
 | iconId | №0048 |
-| id | №0048 (+ 4 других файлов) |
+| id | №0048 (+ 5 других файлов) |
 | ids | №1313 |
 | image | №1319 |
 | in | №0048 |
@@ -14357,6 +14359,8 @@
 | indexComponentType | №1313 |
 | info | №0048 |
 | ings | №1862 |
+| inJustDecodeBounds | №1685 |
+| inSampleSize | №1685 |
 | installedPayloadHashes | №1814 |
 | intent | №1685 |
 | inv | №1315 |
@@ -14372,6 +14376,7 @@
 | kind | №0006 (+ 5 других файлов) |
 | landscapeActive | №0049 |
 | latest | №0005 (+ 1 других файлов) |
+| launch | №1685 |
 | legacy | №1810 |
 | len | №0048 |
 | length | №0048 (+ 2 других файлов) |
@@ -14385,6 +14390,7 @@
 | lower | №0048 |
 | m | №1314 (+ 8 других файлов) |
 | main | №1314 (+ 1 других файлов) |
+| manager | №1685 |
 | manifest | №0005 (+ 5 других файлов) |
 | MANIFEST | №1369 |
 | MANIFEST_PATHS | №1369 |
@@ -14431,6 +14437,7 @@
 | omittedNonRenderingPngBytes | №1809 |
 | optional | №1315 |
 | optional_names | №1809 |
+| options | №1685 |
 | original | №0006 (+ 2 других файлов) |
 | ORIGINAL_BLOBS | №1813 |
 | original_chunks | №1809 |
@@ -14549,6 +14556,7 @@
 | settings | №1808 (+ 2 других файлов) |
 | sha | №0006 (+ 1 других файлов) |
 | sha256 | №1313 (+ 4 других файлов) |
+| shortcut | №1685 |
 | side_effect | №1814 |
 | signer | №1811 |
 | signers | №0005 |

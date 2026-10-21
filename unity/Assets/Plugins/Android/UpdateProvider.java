@@ -47,6 +47,31 @@ public class UpdateProvider extends ContentProvider {
         send.setClipData(ClipData.newRawUri("DnD VTT image",uri));
         activity.startActivity(Intent.createChooser(send,"Сохранить или отправить изображение"));
     }
+    /** Downloaded icon becomes a user-confirmed launcher shortcut, never an APK component replacement. */
+    public static String pinPicture(Activity activity, byte[] png) {
+        if(Build.VERSION.SDK_INT<26)return "unsupported";
+        ShortcutManager manager=activity.getSystemService(ShortcutManager.class);
+        if(manager==null||!manager.isRequestPinShortcutSupported())return "unsupported";
+        if(png==null||png.length>4*1024*1024)throw new SecurityException("Invalid icon size");
+        android.graphics.BitmapFactory.Options bounds=new android.graphics.BitmapFactory.Options();bounds.inJustDecodeBounds=true;
+        android.graphics.BitmapFactory.decodeByteArray(png,0,png.length,bounds);
+        if(bounds.outWidth<1||bounds.outHeight<1||bounds.outWidth>2048||bounds.outHeight>2048)throw new SecurityException("Invalid icon dimensions");
+        android.graphics.BitmapFactory.Options options=new android.graphics.BitmapFactory.Options();options.inSampleSize=1;
+        while(Math.max(bounds.outWidth,bounds.outHeight)/options.inSampleSize>256)options.inSampleSize*=2;
+        android.graphics.Bitmap bitmap=android.graphics.BitmapFactory.decodeByteArray(png,0,png.length,options);
+        if(bitmap==null)throw new SecurityException("Invalid icon image");
+        try {
+            Intent launch=activity.getPackageManager().getLaunchIntentForPackage(activity.getPackageName());
+            if(launch==null)return "unsupported";
+            launch.setAction(Intent.ACTION_VIEW);
+            String id="dnd-vtt-selected-appearance";
+            ShortcutInfo shortcut=new ShortcutInfo.Builder(activity,id).setShortLabel("DnD VTT").setLongLabel("DnD VTT")
+                .setIcon(android.graphics.drawable.Icon.createWithBitmap(bitmap)).setIntent(launch).build();
+            for(ShortcutInfo pinned:manager.getPinnedShortcuts())if(id.equals(pinned.getId()))
+                return manager.updateShortcuts(Collections.singletonList(shortcut))?"updated":"unavailable";
+            return manager.requestPinShortcut(shortcut,null)?"requested":"unavailable";
+        } finally { bitmap.recycle(); }
+    }
     private static Set<String> signatures(PackageInfo p) {
         Signature[] sigs = Build.VERSION.SDK_INT >= 28 ? p.signingInfo.getApkContentsSigners() : p.signatures;
         Set<String> result = new HashSet<>(); for (Signature s : sigs) result.add(s.toCharsString()); return result;

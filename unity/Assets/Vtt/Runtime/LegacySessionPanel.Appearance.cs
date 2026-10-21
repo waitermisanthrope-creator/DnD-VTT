@@ -98,7 +98,7 @@ namespace DndVtt.UnityPrototype
                 var entries=workshopStore.Installed().OfType<JObject>().Where(m=>(string)m["imageKind"]==appearanceKind).OrderBy(m=>(string)m["name"]).ToArray();
                 string selected=PlayerPrefs.GetString(AppearancePreference(appearanceKind),"");
                 if(appearancePreviewId=="")appearancePreviewId=selected;
-                GUILayout.Label(appearanceKind=="wallpaper"?"Выберите скачанные обои. Нажмите карточку для предпросмотра.":"Выберите скачанную иконку для предпросмотра и экспорта PNG. Значок на рабочем столе Android пока не меняется.",settingsDescription);
+                GUILayout.Label(appearanceKind=="wallpaper"?"Выберите скачанные обои. Нажмите карточку для предпросмотра.":"Выберите скачанную иконку для предпросмотра, экспорта PNG и создания ярлыка Android. Значок в общем списке приложений не меняется.",settingsDescription);
                 if(entries.Length==0)GUILayout.Label("Здесь появятся изображения, установленные из мастерской.",settingsDescription);
                 appearancePage=Mathf.Clamp(appearancePage,0,Mathf.Max(0,(entries.Length-1)/AppearancePageSize));
                 var visible=entries.Skip(appearancePage*AppearancePageSize).Take(AppearancePageSize).ToArray();
@@ -132,10 +132,13 @@ namespace DndVtt.UnityPrototype
                     GUILayout.Space(12);GUILayout.Label((string)previewManifest["name"],settingsHeader);
                     var preview=AppearancePreview(previewManifest);
                     var rect=GUILayoutUtility.GetRect(1,220,GUILayout.ExpandWidth(true));if(preview)GUI.DrawTexture(rect,preview,ScaleMode.ScaleToFit,true);
-                    if(GUILayout.Button(appearanceKind=="wallpaper"?"Применить обои":"Выбрать иконку для библиотеки",GUILayout.MinHeight(60))) {
+                    if(GUILayout.Button(appearanceKind=="wallpaper"?"Применить обои":"Выбрать эту иконку",GUILayout.MinHeight(60))) {
                         PlayerPrefs.SetString(AppearancePreference(appearanceKind),appearancePreviewId);PlayerPrefs.Save();ReleaseAppearanceImages(true);SelectedAppearanceImage(appearanceKind);
-                        appearanceNotice=appearanceKind=="wallpaper"?"Обои применены":"Иконка выбрана. Доступен экспорт PNG; системный значок не изменён.";
+                        appearanceNotice=appearanceKind=="wallpaper"?"Обои применены":"Иконка выбрана. Можно создать ярлык на главном экране или экспортировать PNG.";
                     }
+                    #if UNITY_ANDROID && !UNITY_EDITOR
+                    if(appearanceKind=="icon"&&GUILayout.Button("Создать / обновить ярлык Android",GUILayout.MinHeight(64)))PinAppearanceShortcut(previewManifest);
+#endif
                     if(GUILayout.Button("Сохранить / отправить PNG",GUILayout.MinHeight(56)))ExportAppearancePng(previewManifest);
                 }
                 if(appearanceKind=="wallpaper"&&GUILayout.Button("Вернуть основной фон",GUILayout.MinHeight(56))) { PlayerPrefs.DeleteKey(AppearancePreference("wallpaper"));PlayerPrefs.Save();appearancePreviewId="";ReleaseAppearanceImages(true); }
@@ -143,6 +146,18 @@ namespace DndVtt.UnityPrototype
             }
             GUILayout.Label(appearanceNotice,settingsDescription);GUILayout.EndVertical();
         }
+#if UNITY_ANDROID && !UNITY_EDITOR
+        private void PinAppearanceShortcut(JObject manifest)
+        {
+            try {
+                var image=(JObject)workshopStore.Data(manifest)["images"][0];var png=WorkshopStore.ImageBytes(image);
+                using var player=new AndroidJavaClass("com.unity3d.player.UnityPlayer");using var activity=player.GetStatic<AndroidJavaObject>("currentActivity");
+                using var bridge=new AndroidJavaClass("com.dndvtt.unityupdater.UpdateProvider");
+                string result=bridge.CallStatic<string>("pinPicture",activity,png);
+                appearanceNotice=result=="requested"?"Подтвердите добавление ярлыка в системном окне Android.":result=="updated"?"Иконка ранее созданного ярлыка обновлена.":"Этот рабочий стол не поддерживает добавление ярлыка. Можно экспортировать PNG.";
+            }catch(Exception) { appearanceNotice="Не удалось создать ярлык. Можно экспортировать PNG."; }
+        }
+#endif
         private void ExportAppearancePng(JObject manifest)
         {
             string id=(string)manifest["id"];

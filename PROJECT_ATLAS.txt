@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит f6dc340eaad1. Файлов: 1925
+Коммит f6470cd94d24. Файлов: 1925
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1698,7 +1698,7 @@
 1682. unity/Assets/Plugins/Android.meta — вспомогательный файл: Android (172 B)
 1683. unity/Assets/Plugins/Android/DndSessionVault.java — вспомогательный файл: DndSessionVault (2333 B)
 1684. unity/Assets/Plugins/Android/DndSessionVault.java.meta — вспомогательный файл: DndSessionVault.java (60 B)
-1685. unity/Assets/Plugins/Android/UpdateProvider.java — вспомогательный файл: UpdateProvider (5592 B)
+1685. unity/Assets/Plugins/Android/UpdateProvider.java — вспомогательный файл: UpdateProvider (7717 B)
 1686. unity/Assets/Plugins/Android/UpdateProvider.java.meta — вспомогательный файл: UpdateProvider.java (60 B)
 1687. unity/Assets/StreamingAssets/Branding/Dragon20.png — текстура/изображение: Dragon20 (1284815 B)
 1688. unity/Assets/StreamingAssets/Branding/Splash19.png — текстура/изображение: Splash19 (8605503 B)
@@ -1731,7 +1731,7 @@
 1715. unity/Assets/Vtt/Resources/Branding/Splash19.png.meta — вспомогательный файл: Splash19.png (312 B)
 1716. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg — текстура/изображение: Wallpaper16 (212684 B)
 1717. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta — вспомогательный файл: Wallpaper16.jpg (312 B)
-1718. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (20543 B)
+1718. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (20635 B)
 1719. unity/Assets/Vtt/Resources/Changelog.json.meta — вспомогательный файл: Changelog.json (158 B)
 1720. unity/Assets/Vtt/Resources/CharacterSheet.meta — вспомогательный файл: CharacterSheet (172 B)
 1721. unity/Assets/Vtt/Resources/CharacterSheet/catalog.json — данные/конфигурация: catalog (823381 B)
@@ -1759,7 +1759,7 @@
 1743. unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs.meta — вспомогательный файл: LegacyMigrationSmoke.cs (59 B)
 1744. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs — вспомогательный файл: LegacySessionPanel.Account (19042 B)
 1745. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta — вспомогательный файл: LegacySessionPanel.Account.cs (60 B)
-1746. unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs — вспомогательный файл: LegacySessionPanel.Appearance (13281 B)
+1746. unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs — вспомогательный файл: LegacySessionPanel.Appearance (14711 B)
 1747. unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs.meta — вспомогательный файл: LegacySessionPanel.Appearance.cs (60 B)
 1748. unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs — вспомогательный файл: LegacySessionPanel.Branding (16618 B)
 1749. unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta — вспомогательный файл: LegacySessionPanel.Branding.cs (60 B)
@@ -1885,7 +1885,7 @@
 1869. updates/previous-stable.json — метаданные обновлений: previous stable (179808 B)
 1870. updates/README.md — документация или отчёт: README (233 B)
 1871. updates/stable.json — метаданные обновлений: stable (179809 B)
-1872. updates/unity-changelog.json — метаданные обновлений: unity changelog (20543 B)
+1872. updates/unity-changelog.json — метаданные обновлений: unity changelog (20635 B)
 1873. updates/unity-experiment.json — метаданные обновлений: unity experiment (2442 B)
 1874. vignette_v2_sprite.png — текстура/изображение: vignette v2 sprite (1213593 B)
 1875. VTT_PROJECT_MANIFEST_V70.json — устаревший список V70, не актуален (44370 B)
@@ -14107,7 +14107,7 @@ dndContentEnabled — №0661
 --text-main — №0837
 --text-muted — №0837
 
---- Python/Java идентификаторы (519) ---
+--- Python/Java идентификаторы (527) ---
 __DND_APP_BOOT_READY — №0049
 __name__ — №0005 (+ 11 других файлов)
 a — №0048 (+ 2 других файлов)
@@ -14158,9 +14158,11 @@ baselineInstall — №1814
 baseUrl — №0048
 bb — №0048
 binary — №1313
+bitmap — №1685
 blob — №0005
 blobs — №0006
 bones — №1313
+bounds — №1685
 branch — №1314
 BRANCH — №0005 (+ 2 других файлов)
 BRAND — №1813
@@ -14319,7 +14321,7 @@ history_path — №0005 (+ 2 других файлов)
 home — №1813
 i — №0048 (+ 1 других файлов)
 iconId — №0048
-id — №0048 (+ 4 других файлов)
+id — №0048 (+ 5 других файлов)
 ids — №1313
 image — №1319
 in — №0048
@@ -14327,6 +14329,8 @@ indent — №0005 (+ 13 других файлов)
 indexComponentType — №1313
 info — №0048
 ings — №1862
+inJustDecodeBounds — №1685
+inSampleSize — №1685
 installedPayloadHashes — №1814
 intent — №1685
 inv — №1315
@@ -14342,6 +14346,7 @@ keys — №1863
 kind — №0006 (+ 5 других файлов)
 landscapeActive — №0049
 latest — №0005 (+ 1 других файлов)
+launch — №1685
 legacy — №1810
 len — №0048
 length — №0048 (+ 2 других файлов)
@@ -14355,6 +14360,7 @@ local_path — №1811
 lower — №0048
 m — №1314 (+ 8 других файлов)
 main — №1314 (+ 1 других файлов)
+manager — №1685
 manifest — №0005 (+ 5 других файлов)
 MANIFEST — №1369
 MANIFEST_PATHS — №1369
@@ -14401,6 +14407,7 @@ oldUnity10005ApkBytes — №1809
 omittedNonRenderingPngBytes — №1809
 optional — №1315
 optional_names — №1809
+options — №1685
 original — №0006 (+ 2 других файлов)
 ORIGINAL_BLOBS — №1813
 original_chunks — №1809
@@ -14519,6 +14526,7 @@ serializedBytes — №1363
 settings — №1808 (+ 2 других файлов)
 sha — №0006 (+ 1 других файлов)
 sha256 — №1313 (+ 4 других файлов)
+shortcut — №1685
 side_effect — №1814
 signer — №1811
 signers — №0005
