@@ -1,3 +1,7 @@
+##1.00.10 unlock regression — NOT STARTED physical retest
+https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39588198771/artifacts/12340958713
+Install over current app. Check Home and Settings: lock/unlock screen five times, Home/background/return; button/card colours and borders persist, current screen/fields preserved. Repeat after opening downloaded map/library (resource unload path). Editor five-cycle test PASS; actual Android graphics-context recreation remains a device check.
+
 ##1.00.09 — NOT STARTED device QA
 https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/39585827400/artifacts/12340015913
 Install over1.00.08/1.00.07; verify same splash/menu/wallpaper, offline base creation, workshop, existing saves. Changes only Editor packaging of non-rendering splash metadata. Source pixels and signed APK images checked; same key/package and code10009.
