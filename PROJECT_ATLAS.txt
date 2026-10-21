@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 3553063e8a01. Файлов: 1909
+Коммит 3398088ea871. Файлов: 1909
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -38,7 +38,7 @@
 0022. .github/workflows/unified-release.yml — автоматизация GitHub Actions: unified release (14076 B)
 0023. .github/workflows/unity-android-update-publish.yml — автоматизация GitHub Actions: unity android update publish (5039 B)
 0024. .github/workflows/unity-brand-visual-contract.yml — автоматизация GitHub Actions: unity brand visual contract (877 B)
-0025. .github/workflows/unity-cloud-candidate.yml — автоматизация GitHub Actions: unity cloud candidate (9979 B)
+0025. .github/workflows/unity-cloud-candidate.yml — автоматизация GitHub Actions: unity cloud candidate (10664 B)
 0026. .github/workflows/unity-cloud-promote.yml — автоматизация GitHub Actions: unity cloud promote (2934 B)
 0027. .github/workflows/unity-delivery-publish.yml — автоматизация GitHub Actions: unity delivery publish (872 B)
 0028. .github/workflows/unity-experiment-android.yml — автоматизация GitHub Actions: unity experiment android (2708 B)
@@ -1721,7 +1721,7 @@
 1705. unity/Assets/Vtt/Resources/Branding/Splash19.png.meta — вспомогательный файл: Splash19.png (312 B)
 1706. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg — текстура/изображение: Wallpaper16 (212684 B)
 1707. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta — вспомогательный файл: Wallpaper16.jpg (312 B)
-1708. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (9232 B)
+1708. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (10430 B)
 1709. unity/Assets/Vtt/Resources/Changelog.json.meta — вспомогательный файл: Changelog.json (158 B)
 1710. unity/Assets/Vtt/Resources/CharacterSheet.meta — вспомогательный файл: CharacterSheet (172 B)
 1711. unity/Assets/Vtt/Resources/CharacterSheet/catalog.json — данные/конфигурация: catalog (823381 B)
@@ -1869,7 +1869,7 @@
 1853. updates/previous-stable.json — метаданные обновлений: previous stable (179808 B)
 1854. updates/README.md — документация или отчёт: README (233 B)
 1855. updates/stable.json — метаданные обновлений: stable (179809 B)
-1856. updates/unity-changelog.json — метаданные обновлений: unity changelog (9232 B)
+1856. updates/unity-changelog.json — метаданные обновлений: unity changelog (10430 B)
 1857. updates/unity-experiment.json — метаданные обновлений: unity experiment (1938 B)
 1858. vignette_v2_sprite.png — текстура/изображение: vignette v2 sprite (1213593 B)
 1859. VTT_PROJECT_MANIFEST_V70.json — устаревший список V70, не актуален (44370 B)
