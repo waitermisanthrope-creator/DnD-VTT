@@ -51,7 +51,7 @@ public static class WorkshopEditorValidation
             var full=(Texture2D)preview.Invoke(panel,new object[]{entries[0]});
             var source=(JObject)store.Data(entries[0])["images"][0];
             Check(full&&full.width==(int)source["width"]&&full.height==(int)source["height"],"large preview uses full downloaded image");
-            release.Invoke(panel,new object[]{true});Check(cache.Count==0,"low-memory/uninstall cleanup clears thumbnails");
+            release.Invoke(panel,new object[]{true});Check(cache.Count==0&&!full,"low-memory/uninstall cleanup destroys preview and clears thumbnails");
             Check(typeof(LegacySessionPanel).GetField("appearancePreviewTexture",flags).GetValue(panel)==null,"large preview released");
             var author=typeof(LegacySessionPanel).GetMethod("ChatAuthorLabel",BindingFlags.Static|BindingFlags.NonPublic);
             const string uuid="8e23f5b2-be5d-4805-8009-637685261fba";

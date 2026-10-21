@@ -17,12 +17,17 @@ namespace DndVtt.UnityPrototype
         private string appearancePreviewTextureId;
         private const int AppearancePageSize=9;
         private readonly Dictionary<string,Texture2D> appearanceThumbnails=new Dictionary<string,Texture2D>();
+        private static void ReleaseAppearanceTexture(Texture2D texture)
+        {
+            if(!texture)return;
+            if(Application.isPlaying)Destroy(texture);else DestroyImmediate(texture);
+        }
         private static string AppearancePreference(string kind)=>"dndvtt.appearance."+kind;
         private void ReleaseAppearanceImages(bool retry)
         {
             ClearAppearanceThumbnails();
-            if(appearancePreviewTexture)Destroy(appearancePreviewTexture);appearancePreviewTexture=null;appearancePreviewTextureId=null;
-            if(downloadedWallpaper)Destroy(downloadedWallpaper);if(downloadedIcon)Destroy(downloadedIcon);
+            ReleaseAppearanceTexture(appearancePreviewTexture);appearancePreviewTexture=null;appearancePreviewTextureId=null;
+            ReleaseAppearanceTexture(downloadedWallpaper);ReleaseAppearanceTexture(downloadedIcon);
             downloadedWallpaper=downloadedIcon=null;
             if(retry)loadedWallpaperId=loadedIconId=null;
         }
@@ -31,8 +36,8 @@ namespace DndVtt.UnityPrototype
             string id=PlayerPrefs.GetString(AppearancePreference(kind),"");
             if(id=="")return null;
             if((kind=="wallpaper"?loadedWallpaperId:loadedIconId)==id)return kind=="wallpaper"?downloadedWallpaper:downloadedIcon;
-            if(kind=="wallpaper") { if(downloadedWallpaper)Destroy(downloadedWallpaper);downloadedWallpaper=null;loadedWallpaperId=id; }
-            else { if(downloadedIcon)Destroy(downloadedIcon);downloadedIcon=null;loadedIconId=id; }
+            if(kind=="wallpaper") { ReleaseAppearanceTexture(downloadedWallpaper);downloadedWallpaper=null;loadedWallpaperId=id; }
+            else { ReleaseAppearanceTexture(downloadedIcon);downloadedIcon=null;loadedIconId=id; }
             Texture2D texture=null;
             try {
                 InitializeWorkshop();var manifest=workshopStore.Find(id);
@@ -42,11 +47,11 @@ namespace DndVtt.UnityPrototype
                 if(!texture.LoadImage(bytes,false)||texture.width!=(int)image["width"]||texture.height!=(int)image["height"])throw new FormatException("Ошибка декодирования PNG");
                 if(kind=="wallpaper")downloadedWallpaper=texture;else downloadedIcon=texture;
                 return texture;
-            }catch(Exception) { if(texture)Destroy(texture);appearanceNotice="Оформление недоступно. Используется встроенный фон; пакет можно установить повторно.";return null; }
+            }catch(Exception) { ReleaseAppearanceTexture(texture);appearanceNotice="Оформление недоступно. Используется встроенный фон; пакет можно установить повторно.";return null; }
         }
         private void ClearAppearanceThumbnails()
         {
-            foreach(var image in appearanceThumbnails.Values)if(image)Destroy(image);
+            foreach(var image in appearanceThumbnails.Values)ReleaseAppearanceTexture(image);
             appearanceThumbnails.Clear();
         }
         private Texture2D AppearanceThumbnail(JObject manifest)
@@ -66,21 +71,21 @@ namespace DndVtt.UnityPrototype
                 var pixels=new Color32[w*h];var original=source.GetPixels32();
                 for(int y=0;y<h;y++)for(int x=0;x<w;x++)pixels[y*w+x]=original[Mathf.Min(source.height-1,y*source.height/h)*source.width+Mathf.Min(source.width-1,x*source.width/w)];
                 small.SetPixels32(pixels);small.Apply(false,true);appearanceThumbnails[id]=small;return small;
-            }catch(Exception) { if(small)Destroy(small);appearanceThumbnails[id]=null;return null; }
+            }catch(Exception) { ReleaseAppearanceTexture(small);appearanceThumbnails[id]=null;return null; }
             finally { if(source)DestroyImmediate(source); }
         }
         private Texture2D AppearancePreview(JObject manifest)
         {
             string id=(string)manifest["id"];
             if(appearancePreviewTextureId==id)return appearancePreviewTexture;
-            if(appearancePreviewTexture)Destroy(appearancePreviewTexture);
+            ReleaseAppearanceTexture(appearancePreviewTexture);
             appearancePreviewTexture=null;appearancePreviewTextureId=id;
             try {
                 var image=(JObject)workshopStore.Data(manifest)["images"][0];
                 appearancePreviewTexture=new Texture2D(2,2,TextureFormat.RGBA32,false) { hideFlags=HideFlags.HideAndDontSave };
                 if(!appearancePreviewTexture.LoadImage(WorkshopStore.ImageBytes(image),false))throw new FormatException();
                 return appearancePreviewTexture;
-            }catch(Exception) { if(appearancePreviewTexture)Destroy(appearancePreviewTexture);appearancePreviewTexture=null;return null; }
+            }catch(Exception) { ReleaseAppearanceTexture(appearancePreviewTexture);appearancePreviewTexture=null;return null; }
         }
         private void DrawAppearanceLibrary()
         {
