@@ -1,0 +1,9 @@
+{
+  "sourceBytes": 8605503,
+  "packagedBytes": 1751478,
+  "savedBytes": 6854025,
+  "sourceSha256": "f44157dfaa3541805ea94254e58bc5849468d72f67fa8fc1be0e21dfda0596b8",
+  "packagedSha256": "5df13ecf87874790b363d3e1b9886ef4824069bece24ef6bb2e4a7148fe008ab",
+  "pixelsIdentical": true,
+  "retainedChunks": "all except caBX; IDAT/colour/text chunks byte-identical"
+}

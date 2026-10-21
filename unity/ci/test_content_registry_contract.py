@@ -10,15 +10,17 @@ SOURCE = (ROOT / "unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs"
 
 
 def run():
-    assert "DnD-VTT-Content/main/catalog/v1/index.json" in SOURCE
-    assert "DnD-VTT-Assets/main/catalog/v1/index.json" in SOURCE
-    assert "DnD-VTT-Content/main/packages/" in SOURCE
-    assert "MaxCatalogBytes" in SOURCE and "MaxPackageBytes" in SOURCE
-    assert "Sha256(bytes)" in SOURCE and "File.Move(temp, target)" in SOURCE
-    assert 'assetsDoc["packs"] is JArray packs' in SOURCE
-    assert "assetPacks = (JArray)packs.DeepClone()" in SOURCE
-    assert "AssetBundles" in SOURCE
-    print("UNITY_CONTENT_REGISTRY_CONTRACT_PASS: separate registries and guarded JSON download")
+    assert "DnD-VTT-Content/main/catalog/v3/index.json" in SOURCE
+    assert "DnD-VTT-Assets/main/catalog/v2/index.json" in SOURCE
+    store = (ROOT / "unity/Assets/Vtt/Runtime/WorkshopStore.cs").read_text(encoding="utf-8")
+    assert "DnD-VTT-Content/main/packages/" in store
+    assert "DnD-VTT-Assets/main/packages/" in store
+    assert "WorkshopStore.MaxCatalogBytes" in SOURCE
+    assert "WorkshopDownload" in SOURCE and "workshopStore.Install" in SOURCE
+    assert "DigestFile(path)" in store and "File.Replace(part, path" in store
+    assert 'kind == "content" ? "packages" : "packs"' in SOURCE
+    assert "workshopStore.Installed()" in SOURCE
+    print("UNITY_CONTENT_REGISTRY_CONTRACT_PASS: separate registries and verified installation")
 
 
 if __name__ == "__main__":

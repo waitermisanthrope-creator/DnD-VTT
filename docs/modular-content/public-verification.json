@@ -1,0 +1,43 @@
+{
+  "packages": [
+    {
+      "id": "demo.race.lanternfolk",
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Content/main/packages/demo.race.lanternfolk.json",
+      "bytes": 1037,
+      "sha256": "39293efa6c2d145c0c036d67d0e9bbdfd17b643bfd82222a32e861dfbf43e759",
+      "status": "verified-public-download"
+    },
+    {
+      "id": "demo.model.markers",
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/packages/demo.model.markers.json",
+      "bytes": 877,
+      "sha256": "517587634cfdfd855dac9dba15720acd935f0cd807be28131d28275ee2f39a6b",
+      "status": "verified-public-download"
+    },
+    {
+      "id": "demo.appearance.amber",
+      "url": "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/packages/demo.appearance.amber.json",
+      "bytes": 722,
+      "sha256": "11327f8fa8fcd50563c49e5c5d90ee605c3d12130c7ca1f08bd2a94716e0c530",
+      "status": "verified-public-download"
+    }
+  ],
+  "sourceRelease": {
+    "url": "https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/releases/tag/makehuman-cc0-skins-v1",
+    "archiveBytes": 8091253,
+    "sha256": "6e20613c2288034f618e63ed2a259cb118e8840577ea049abcfa9891f54c1d3d",
+    "uniqueOriginalFiles": 6,
+    "originalBytes": 8096382,
+    "archiveCRC": "PASS",
+    "sourceByteEquality": "PASS"
+  },
+  "oldApk": {
+    "bytes": 58430834,
+    "sha256": "0240d7cf48ce7918779696d3624c5c53e813487bd902e0752004826de6761b23",
+    "version": "1.00.05",
+    "versionCode": 10005,
+    "package": "com.dndvtt.unity",
+    "certificateSha256": "c1c1b3e6537f10819a3042817ac91535b47754ed65d084e635f84ff2b1f44c8e",
+    "signatureVerification": "apksigner verify PASS"
+  }
+}

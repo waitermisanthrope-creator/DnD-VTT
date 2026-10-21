@@ -1,0 +1,59 @@
+{
+  "source": "0762b51d",
+  "runId": 39518732474,
+  "apkArtifactId": 12310252576,
+  "version": "1.00.08",
+  "versionCode": 10008,
+  "previous10007Bytes": 51825922,
+  "reductionVs10007Bytes": 4949136,
+  "apkBytes": 46876786,
+  "apkSha256": "f1b2f98a667f57a7d304d218965b2cd4afb625f12e79cbd0df76c0cd6404e169",
+  "oldUnity10005ApkBytes": 58430834,
+  "reductionBytes": 11554048,
+  "reductionPercent": 19.774,
+  "zipCompressedUnityDataBytes": 5160959,
+  "zipCompressedBrandingBytes": 10103002,
+  "zipCompressedNativeBytes": 28757026,
+  "propTextureCount": 0,
+  "propTextureDimensions": {},
+  "originalBrandingBytesVerified": true,
+  "minimalContentVerified": true,
+  "bundledCreationIds": {
+    "races": [
+      "human",
+      "human_variant",
+      "elf_high",
+      "elf_wood",
+      "elf_drow",
+      "dwarf_hill",
+      "dwarf_mountain",
+      "halfling_lightfoot",
+      "halfling_stout",
+      "dragonborn",
+      "gnome_rock",
+      "gnome_forest",
+      "half_elf",
+      "half_orc",
+      "tiefling"
+    ],
+    "classes": [
+      "barbarian",
+      "bard",
+      "cleric",
+      "druid",
+      "fighter",
+      "monk",
+      "paladin",
+      "ranger",
+      "rogue",
+      "sorcerer",
+      "warlock",
+      "wizard"
+    ],
+    "feats": [
+      "grappler"
+    ]
+  },
+  "deviceQa": false,
+  "note": "Signed APK file size; ZIP groups include engine/metadata as indicated by path, not only gameplay content."
+}

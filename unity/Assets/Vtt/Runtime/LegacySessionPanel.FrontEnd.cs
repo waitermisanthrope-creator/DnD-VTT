@@ -18,8 +18,10 @@ namespace DndVtt.UnityPrototype
         private readonly string[] statInputs = { "15", "14", "13", "12", "10", "8" };
         private JObject creationAnswers = new JObject();
         private JObject lastPreview;
+        private bool creationFeatEnabled;
+        private int creationFeatIndex;
         private GUIStyle heading, muted, bigButton;
-        private JObject CreationCatalog => creationCatalog ??= (JObject)JObject.Parse(Resources.Load<TextAsset>("CharacterSheet/catalog").text)["creation"];
+        private JObject CreationCatalog { get { InitializeWorkshop(); return creationCatalog ??= workshop.Creation((JObject)JObject.Parse(Resources.Load<TextAsset>("CharacterSheet/catalog").text)["creation"]); } }
         private JArray AvailableClasses => new JArray(((JArray)CreationCatalog["classes"]).OfType<JObject>().Where(c => (bool?)c["seed"]?["isExtraClass"] != true && (string)c["name"] != "Гайст"));
         // Mobile menus, character creation, sheets, import and settings use
         // portrait; only the live 3D map uses landscape. Desktop is unchanged.
@@ -41,7 +43,7 @@ namespace DndVtt.UnityPrototype
         }
         private void BeginCreation()
         {
-            heroName = ""; creationStep = 0; creationAnswers = new JObject(); lastPreview = null;
+            heroName = ""; creationStep = 0; creationFeatEnabled = false; creationAnswers = new JObject(); lastPreview = null;
             classIndex = Math.Max(0, AvailableClasses.ToList().FindIndex(c => (string)c["name"] == "Воин"));
             backgroundIndex = Math.Max(0, ((JArray)CreationCatalog["backgrounds"]).ToList().FindIndex(b => (string)b["nameRu"] == "Солдат"));
             Navigate(FrontScreen.Create);
@@ -57,6 +59,7 @@ namespace DndVtt.UnityPrototype
                 else DrawBrandSettings();
                 return;
             }
+            PrepareSheetSkin();
             heading ??= new GUIStyle(GUI.skin.label) { fontSize = 32, fontStyle = FontStyle.Bold, wordWrap = true };
             muted ??= new GUIStyle(GUI.skin.label) { fontSize = 15, wordWrap = true, normal = { textColor = new Color(.65f, .73f, .83f) } };
             bigButton ??= new GUIStyle(GUI.skin.button) { fontSize = 18, padding = new RectOffset(20, 20, 16, 16), alignment = TextAnchor.MiddleLeft };
@@ -70,6 +73,16 @@ namespace DndVtt.UnityPrototype
             // A 6-column PC toolbar becomes 3 comfortable rows of two on a
             // portrait phone; all destinations stay accessible in either view.
             bool portraitLayout = Screen.height > Screen.width;
+            if (screen == FrontScreen.Sheet)
+            {
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("⌂ Меню",GUILayout.Height(44))) Navigate(FrontScreen.Home);
+                if (GUILayout.Button("Персонажи",GUILayout.Height(44))) Navigate(FrontScreen.Characters);
+                if (GUILayout.Button("Настройки",GUILayout.Height(44))) OpenSettings();
+                GUILayout.EndHorizontal();
+            }
+            else
+            {
             int navHeight = portraitLayout ? 54 : 36;
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Главная", GUILayout.Height(navHeight))) Navigate(FrontScreen.Home);
@@ -81,6 +94,7 @@ namespace DndVtt.UnityPrototype
             if (GUILayout.Button("3D-карта", GUILayout.Height(navHeight))) Navigate(FrontScreen.Map);
             if (GUILayout.Button("Настройки", GUILayout.Height(navHeight))) OpenSettings();
             GUILayout.EndHorizontal(); GUILayout.Space(18);
+            }
             frontScroll = GUILayout.BeginScrollView(frontScroll);
             switch (screen)
             {
@@ -157,6 +171,21 @@ namespace DndVtt.UnityPrototype
                 int total = 0; bool valid = true; foreach (string text in statInputs) { if (int.TryParse(text, out int n) && n >= 8 && n <= 15) total += CharacterCreation.PointCost(n); else valid = false; }
                 if (statMode == 0) GUILayout.Label(valid ? "Потрачено: " + total + " / 27 (до расовых бонусов)" : "Для покупки допустимы значения 8–15");
                 foreach (var entry in new[] { race, cls, bg }) foreach (JObject choice in (JArray)entry["choices"]) DrawCreationChoice(choice);
+                if (!((JArray)race["choices"]).OfType<JObject>().Any(c => (string)c["type"] == "feat"))
+                {
+                    creationFeatEnabled = GUILayout.Toggle(creationFeatEnabled, "Добавить черту по разрешению мастера");
+                    if (creationFeatEnabled)
+                    {
+                        var feats = (JArray)CreationCatalog["feats"];
+                        if (feats.Count > 0)
+                        {
+                            creationFeatIndex = Mathf.Clamp(creationFeatIndex, 0, feats.Count - 1);
+                            Picker("Черта", feats, ref creationFeatIndex, "nameRu");
+                            var feat = (JObject)feats[creationFeatIndex]; creationAnswers["creation:feat"] = feat["id"].DeepClone(); DrawFeatStatChoice(feat);
+                        }
+                    }
+                    else creationAnswers.Remove("creation:feat");
+                }
             }
             else
             {
@@ -212,6 +241,12 @@ namespace DndVtt.UnityPrototype
             string key = (string)choice["key"], type = (string)choice["type"]; int count = type == "stats2" ? 2 : (int?)choice["count"] ?? 1;
             GUILayout.Label((string)choice["label"] + (count > 1 ? " · выбрать " + count : ""));
             var options = (JArray)choice["options"];
+            if (type == "feat")
+            {
+                GUILayout.Label("Бонус характеристик применяется автоматически. Остальные эффекты и дополнительные требования проверьте с мастером.", muted);
+                var selectedFeat = options.OfType<JObject>().FirstOrDefault(f => (string)f["id"] == (string)creationAnswers[key]);
+                if (selectedFeat != null) DrawFeatStatChoice(selectedFeat);
+            }
             if (type == "stats2") options = new JArray(CharacterSheetRules.Stats.Select((s, i) => new JObject { ["id"] = s, ["name"] = CharacterSheetRules.StatNames[i] }));
             if (options.Count == 0) { creationAnswers[key] = GUILayout.TextField((string)creationAnswers[key] ?? "", GUILayout.Height(32)); return; }
             var selectedValues = creationAnswers[key] is JArray arr ? (JArray)arr.DeepClone() : new JArray();
@@ -226,6 +261,17 @@ namespace DndVtt.UnityPrototype
                     if (type == "multi" || type == "stats2") { if (value && selectedValues.Count < count) selectedValues.Add(id); else if (!value) selectedValues.First(v => (string)v == id).Remove(); creationAnswers[key] = selectedValues; }
                     else if (value) creationAnswers[key] = id;
                 }
+            }
+        }
+        private void DrawFeatStatChoice(JObject feat)
+        {
+            GUILayout.Label((string)feat["description"] ?? "", muted);
+            if (feat["prerequisite"] != null && feat["prerequisite"].Type != JTokenType.Null) GUILayout.Label("Требования: " + feat["prerequisite"], muted);
+            if (feat["statBonus"] is JObject bonus && (string)bonus["type"] == "choice")
+            {
+                string key = "feat:" + feat["id"] + ":stat";
+                foreach (string stat in ((JArray)bonus["stats"]).Values<string>())
+                    if (GUILayout.Toggle((string)creationAnswers[key] == stat, "+" + bonus["value"] + " " + stat.ToUpperInvariant())) creationAnswers[key] = stat;
             }
         }
         private readonly string[] coinInput = { "0", "0", "0", "0", "0" }, coinRateInputs = { "10", "2", "10", "10" };

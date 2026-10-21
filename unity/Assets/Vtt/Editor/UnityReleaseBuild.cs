@@ -2,8 +2,11 @@ using System;
 using System.IO;
 using System.Xml;
 using DndVtt.UnityPrototype;
+using Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
+using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 using UnityEditor.Build;
 using UnityEditor.Android;
 using UnityEngine;
@@ -25,12 +28,41 @@ public static class UnityReleaseBuild
         if (string.IsNullOrWhiteSpace(destination) ||
             !destination.EndsWith(".apk", StringComparison.OrdinalIgnoreCase))
             throw new Exception("GameCI Android APK output path missing");
+        BrandingResumeValidation.Run();
+        WorkshopEditorValidation.Run();
         Android();
         string source = Path.Combine("Builds", "Unity-" + UnityRelease.Version, "android-intermediate.apk");
         if (!File.Exists(source)) throw new FileNotFoundException("Android intermediate was not built", source);
         Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(destination)));
         File.Copy(source, destination, true);
         Debug.Log("VTT_CLOUD_ANDROID_OUTPUT_PASS: " + UnityRelease.Version);
+        // A separate reviewed demo artifact; its failure never disguises a player
+        // build failure and it is never added to the public catalog automatically.
+        try { WorkshopBundleBuild.BuildAndroid(); }
+        catch (Exception error) { Debug.LogWarning("VTT_WORKSHOP_BUNDLE_NOT_BUILT: " + error.Message); }
+    }
+    private static string PrepareMinimalScene()
+    {
+        const string folder = "Assets/Vtt/GeneratedMinimal";
+        Directory.CreateDirectory(folder); AssetDatabase.Refresh();
+        var scene = EditorSceneManager.OpenScene(LegacyMigrationSetup.ScenePath, OpenSceneMode.Single);
+        var world = UnityEngine.Object.FindFirstObjectByType<LegacyMapPresenter>();
+        if (!world || !world.explorer) throw new Exception("Release scene is missing core controllers");
+        world.ClearWorkshopGeometry();
+        foreach (var smoke in UnityEngine.Object.FindObjectsByType<LegacyMigrationSmoke>(FindObjectsSortMode.None)) UnityEngine.Object.DestroyImmediate(smoke);
+        var catalog = ScriptableObject.CreateInstance<LegacyContentCatalog>();
+        catalog.maps = Array.Empty<LegacyContentCatalog.MapEntry>(); catalog.models = Array.Empty<LegacyContentCatalog.ModelEntry>(); catalog.surfaces = Array.Empty<LegacyContentCatalog.SurfaceEntry>();
+        string catalogPath = folder + "/EmptyCatalog.asset";
+        if (AssetDatabase.LoadAssetAtPath<LegacyContentCatalog>(catalogPath)) AssetDatabase.DeleteAsset(catalogPath);
+        AssetDatabase.CreateAsset(catalog, catalogPath); world.catalog = catalog; world.mapIndex = -1;
+        var explorer = world.explorer; explorer.spawnPosition = new Vector3(0, 2, 0); explorer.acceptInput = false;
+        string path = folder + "/MinimalClient.unity";
+        // Save a copy: never overwrite the original imported adventure scene.
+        if (!EditorSceneManager.SaveScene(scene, path, true)) throw new Exception("Could not save minimal release scene");
+        foreach (string dep in AssetDatabase.GetDependencies(path, true))
+            if (dep.StartsWith("Assets/LegacyContent/", StringComparison.Ordinal)) throw new Exception("Optional content leaked into minimal scene: " + dep);
+        Debug.Log("VTT_MINIMAL_SCENE_PASS: no maps, models, legacy textures/materials or saved adventure geometry");
+        return path;
     }
     private static void Build(BuildTarget target, string suffix)
     {
@@ -70,8 +102,21 @@ public static class UnityReleaseBuild
             PlayerSettings.Android.targetSdkVersion = (AndroidSdkVersions)36;
         }
         string folder = "Builds/Unity-" + UnityRelease.Version; Directory.CreateDirectory(folder);
-        var result = BuildPipeline.BuildPlayer(new[] { LegacyMigrationSetup.ScenePath }, folder + "/" + suffix, target, BuildOptions.None);
+        using var brandingScope = new BuildBranding.Scope(Path.Combine(Application.dataPath, "StreamingAssets", "Branding"));
+        Debug.Log("VTT_BRANDING_LOSSLESS_PACKAGE_PASS: removed non-rendering PNG bytes=" + brandingScope.SavedBytes + "; original source restored on scope exit");
+        var result = BuildPipeline.BuildPlayer(new[] { PrepareMinimalScene() }, folder + "/" + suffix, target, BuildOptions.None);
         if (result.summary.result != BuildResult.Succeeded) throw new Exception("Unity release build failed: " + result.summary.result);
+        var packed = new JArray();
+        foreach (var group in result.packedAssets)
+            foreach (var asset in group.contents)
+                {
+                    if (asset.sourceAssetPath.StartsWith("Assets/LegacyContent/", StringComparison.Ordinal)) throw new Exception("Optional asset in player: " + asset.sourceAssetPath);
+                    packed.Add(new JObject { ["source"] = asset.sourceAssetPath, ["packedBytes"] = asset.packedSize });
+                }
+        File.WriteAllText(folder + "/build-report-" + target + ".json", new JObject {
+            ["version"] = UnityRelease.Version, ["platform"] = target.ToString(), ["reportedBuildOutputBytes"] = result.summary.totalSize,
+            ["packedAssets"] = packed, ["note"] = "Actual Unity BuildReport including build outputs/symbols; use signed APK metrics for APK file size."
+        }.ToString());
         Debug.Log("VTT_RELEASE_BUILD_PASS: " + target + " / " + UnityRelease.Version);
     }
 }

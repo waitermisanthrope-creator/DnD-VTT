@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DnD-VTT runtime catalog entry v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "id",
+    "name",
+    "version",
+    "author",
+    "license",
+    "type",
+    "format",
+    "platform",
+    "unityVersion",
+    "dependencies",
+    "bytes",
+    "sha256",
+    "url"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "author": {
+      "type": "string",
+      "minLength": 1
+    },
+    "license": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type": {
+      "enum": [
+        "game-system",
+        "race",
+        "class",
+        "feat",
+        "subclass",
+        "spell",
+        "item",
+        "monster",
+        "model",
+        "environment",
+        "texture",
+        "animation",
+        "map",
+        "appearance",
+        "collection",
+        "craft"
+      ]
+    },
+    "format": {
+      "enum": [
+        "json",
+        "assetbundle"
+      ]
+    },
+    "platform": {
+      "enum": [
+        "any",
+        "android-arm64",
+        "windows-x64"
+      ]
+    },
+    "unityVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "dependencies": {
+      "type": "array",
+      "uniqueItems": true,
+      "maxItems": 50,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9._-]{0,119}$"
+      }
+    },
+    "bytes": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 67108864
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "format": {
+            "const": "json"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "bytes": {
+            "maximum": 5242880
+          },
+          "url": {
+            "pattern": "^https://raw\\.githubusercontent\\.com/waitermisanthrope-creator/DnD-VTT-(Content|Assets)/main/packages/[a-zA-Z0-9._/-]+\\.json$"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "format": {
+            "const": "assetbundle"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "platform": {
+            "enum": [
+              "android-arm64",
+              "windows-x64"
+            ]
+          },
+          "url": {
+            "pattern": "^https://github\\.com/waitermisanthrope-creator/DnD-VTT-Assets/releases/download/"
+          }
+        }
+      }
+    }
+  ]
+}

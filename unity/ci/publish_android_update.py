@@ -99,9 +99,11 @@ def main():
     entry["status"] = "published"
     local_path.write_text(json.dumps(new_manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     history_path.write_text(json.dumps(history, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    bundled_history = Path("unity/Assets/Vtt/Resources/Changelog.json")
+    bundled_history.write_text(history_path.read_text(encoding="utf-8"), encoding="utf-8")
     run("git", "config", "user.name", "github-actions[bot]")
     run("git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com")
-    run("git", "add", "--", str(local_path), str(history_path))
+    run("git", "add", "--", str(local_path), str(history_path), str(bundled_history))
     run("git", "commit", "-m", "chore(unity): activate Android " + version + " in-app update [skip ci]")
     run("git", "push", "origin", "HEAD:" + BRANCH)
     print("UNITY_ANDROID_UPDATE_PUBLISHED:", version, code, digest, link)

@@ -1,0 +1,129 @@
+{
+  "apkBytes": 46876786,
+  "nativeLibraries": [
+    {
+      "path": "lib/arm64-v8a/libil2cpp.so",
+      "bytes": 75492488,
+      "apkCompressedBytes": 19440962
+    },
+    {
+      "path": "lib/arm64-v8a/libunity.so",
+      "bytes": 19562448,
+      "apkCompressedBytes": 8666639
+    },
+    {
+      "path": "lib/arm64-v8a/libc++_shared.so",
+      "bytes": 1292904,
+      "apkCompressedBytes": 406563
+    },
+    {
+      "path": "lib/arm64-v8a/lib_burst_generated.so",
+      "bytes": 331192,
+      "apkCompressedBytes": 103561
+    },
+    {
+      "path": "lib/arm64-v8a/libswappywrapper.so",
+      "bytes": 226400,
+      "apkCompressedBytes": 79867
+    },
+    {
+      "path": "lib/arm64-v8a/libgame.so",
+      "bytes": 152288,
+      "apkCompressedBytes": 56857
+    },
+    {
+      "path": "lib/arm64-v8a/libmain.so",
+      "bytes": 6696,
+      "apkCompressedBytes": 2577
+    }
+  ],
+  "rawArtwork": [
+    {
+      "path": "assets/Branding/Dragon20.png",
+      "bytes": 1284815,
+      "apkCompressedBytes": 1284815,
+      "sha256": "5e21f31646e2942cb8792a1b032854a5defbe94556c41d0958c2cc6c6cfaed16"
+    },
+    {
+      "path": "assets/Branding/Splash19.png",
+      "bytes": 8605503,
+      "apkCompressedBytes": 8605503,
+      "sha256": "f44157dfaa3541805ea94254e58bc5849468d72f67fa8fc1be0e21dfda0596b8"
+    },
+    {
+      "path": "assets/Branding/Wallpaper16.jpg",
+      "bytes": 212684,
+      "apkCompressedBytes": 212684,
+      "sha256": "100577fa912800411ab8117605112757c3468fa862eb0989003495c3686d17a5"
+    }
+  ],
+  "materials": [
+    {
+      "type": "Material",
+      "pathId": 2,
+      "serializedBytes": 304,
+      "name": "Sprites-Default"
+    },
+    {
+      "type": "Material",
+      "pathId": 1,
+      "serializedBytes": 148,
+      "name": "Font Material"
+    },
+    {
+      "type": "Material",
+      "pathId": 2,
+      "serializedBytes": 268,
+      "name": "Default-Skybox"
+    },
+    {
+      "type": "Material",
+      "pathId": 3,
+      "serializedBytes": 1660,
+      "name": "Explorer"
+    },
+    {
+      "type": "Material",
+      "pathId": 10100,
+      "serializedBytes": 148,
+      "name": "Font Material"
+    },
+    {
+      "type": "Material",
+      "pathId": 10756,
+      "serializedBytes": 136,
+      "name": "FrameDebuggerRenderTargetDisplay"
+    }
+  ],
+  "optionalTextureMatches": [],
+  "optionalMaterialMatches": [],
+  "artworkAlsoPresentAsUnityTextures": [
+    {
+      "type": "Texture2D",
+      "pathId": 1,
+      "serializedBytes": 1048696,
+      "name": "Dragon20",
+      "width": 1024,
+      "height": 1024,
+      "textureFormat": 1
+    },
+    {
+      "type": "Texture2D",
+      "pathId": 1,
+      "serializedBytes": 524412,
+      "name": "Wallpaper16",
+      "width": 512,
+      "height": 1024,
+      "textureFormat": 1
+    },
+    {
+      "type": "Texture2D",
+      "pathId": 1,
+      "serializedBytes": 1048696,
+      "name": "Splash19",
+      "width": 1024,
+      "height": 1024,
+      "textureFormat": 1
+    }
+  ]
+}

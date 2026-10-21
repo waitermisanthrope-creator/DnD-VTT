@@ -1,0 +1,69 @@
+{
+  "source": "746c14355d6f6b11011fa8f234511e915abf63d0",
+  "runId": 39512342453,
+  "apkArtifactId": 12306458856,
+  "version": "1.00.07",
+  "versionCode": 10007,
+  "apkBytes": 51825922,
+  "apkSha256": "c20079a977280580481d5579d527f6776bbe951785b608407cd3cb3d151da743",
+  "oldUnity10005ApkBytes": 58430834,
+  "reductionBytes": 6604912,
+  "reductionPercent": 11.304,
+  "zipCompressedUnityDataBytes": 10128257,
+  "zipCompressedBrandingBytes": 10103002,
+  "zipCompressedNativeBytes": 28734523,
+  "propTextureCount": 12,
+  "propTextureDimensions": {
+    "T_Trim_Metal_BaseColor": [
+      1024,
+      1024
+    ],
+    "T_Trim_Metal_ORM": [
+      1024,
+      1024
+    ],
+    "T_Trim_Props_ORM": [
+      1024,
+      1024
+    ],
+    "T_Trim_Props_BaseColor": [
+      1024,
+      1024
+    ],
+    "T_Trim_Props_Normal": [
+      1024,
+      1024
+    ],
+    "T_Trim_Metal_Normal": [
+      1024,
+      1024
+    ],
+    "T_Trim_Cloth_BaseColor": [
+      1024,
+      1024
+    ],
+    "T_Trim_Furniture_BaseColor": [
+      1024,
+      1024
+    ],
+    "T_Trim_Cloth_ORM": [
+      1024,
+      1024
+    ],
+    "T_Trim_Furniture_ORM": [
+      1024,
+      1024
+    ],
+    "T_Trim_Furniture_Normal": [
+      1024,
+      1024
+    ],
+    "T_Trim_Cloth_Normal": [
+      1024,
+      1024
+    ]
+  },
+  "originalBrandingBytesVerified": true,
+  "deviceQa": false,
+  "note": "Signed APK file size; ZIP groups include engine/metadata as indicated by path, not only gameplay content."
+}

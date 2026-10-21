@@ -1,0 +1,61 @@
+{
+  "source": "97c67c18",
+  "runId": 39585827400,
+  "apkArtifactId": 12340015913,
+  "version": "1.00.09",
+  "versionCode": 10009,
+  "previous10008Bytes": 46876786,
+  "reductionVs10008Bytes": 6852608,
+  "apkBytes": 40024178,
+  "apkSha256": "ac72d7da99f5c0b668cd9c079d76a25ead1cb1ecbdcaa6319796e2a12ad0ad26",
+  "oldUnity10005ApkBytes": 58430834,
+  "reductionBytes": 18406656,
+  "reductionPercent": 31.502,
+  "zipCompressedUnityDataBytes": 5160956,
+  "zipCompressedBrandingBytes": 3248977,
+  "zipCompressedNativeBytes": 28757029,
+  "propTextureCount": 0,
+  "propTextureDimensions": {},
+  "originalBrandingBytesVerified": false,
+  "originalBrandingPixelsVerified": true,
+  "omittedNonRenderingPngBytes": 6854025,
+  "minimalContentVerified": true,
+  "bundledCreationIds": {
+    "races": [
+      "human",
+      "human_variant",
+      "elf_high",
+      "elf_wood",
+      "elf_drow",
+      "dwarf_hill",
+      "dwarf_mountain",
+      "halfling_lightfoot",
+      "halfling_stout",
+      "dragonborn",
+      "gnome_rock",
+      "gnome_forest",
+      "half_elf",
+      "half_orc",
+      "tiefling"
+    ],
+    "classes": [
+      "barbarian",
+      "bard",
+      "cleric",
+      "druid",
+      "fighter",
+      "monk",
+      "paladin",
+      "ranger",
+      "rogue",
+      "sorcerer",
+      "warlock",
+      "wizard"
+    ],
+    "feats": [
+      "grappler"
+    ]
+  },
+  "deviceQa": false,
+  "note": "Signed APK file size; ZIP groups include engine/metadata as indicated by path, not only gameplay content."
+}

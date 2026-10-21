@@ -20,3 +20,8 @@
 /*.unitypackage
 [Mm]emoryCaptures/
 [Rr]ecordings/
+
+/WorkshopFixtures~/
+
+/Assets/Vtt/GeneratedMinimal/
+/Assets/Vtt/GeneratedMinimal.meta

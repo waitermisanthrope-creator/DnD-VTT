@@ -24,6 +24,7 @@ namespace DndVtt.UnityPrototype
             var args = Environment.GetCommandLineArgs(); int store = Array.IndexOf(args, "--vtt-profile-store");
             if (store >= 0 && store + 1 < args.Length) profileStoreOverride = Path.GetFullPath(args[store + 1]);
             LoadPreferences();
+            InitializeWorkshop(); world.Workshop = workshop; world.RestoreWorkshopMap();
             if (preferences.autoCheckUpdates) StartCoroutine(CheckForUpdates());
             if (File.Exists(SavePath))
             {
@@ -41,7 +42,7 @@ namespace DndVtt.UnityPrototype
         // permissions or returning from the background. Restore the view mode.
         private void OnApplicationFocus(bool hasFocus)
         {
-            if (hasFocus) ApplyMobileOrientation(screen);
+            if (hasFocus) { InvalidateBrandStyles(); ApplyScreenSleep(); ApplyMobileOrientation(screen); }
         }
 
         public bool Import(string json)
@@ -62,7 +63,7 @@ namespace DndVtt.UnityPrototype
         {
             GUI.skin.label.fontSize = 16;
             if (DrawBrandSplash()) return;
-            if (screen != FrontScreen.Map) { DrawFrontEnd(); return; }
+            if (screen != FrontScreen.Map) { var originalSkin = GUI.skin; try { DrawFrontEnd(); } finally { GUI.skin = originalSkin; } return; }
 #if UNITY_ANDROID && !UNITY_EDITOR
             // Screen.orientation changes asynchronously. Don't draw a wide
             // HUD with negative widths during the portrait-to-map transition.
@@ -105,7 +106,15 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawMapSelector()
         {
-            GUILayout.Label("Выбор карты (модели полностью подключены для таверны):");
+            DrawWorkshopLibrary();
+            GUILayout.Label("Карты из мастерской:");
+            if (GUILayout.Button("Создать пустую карту", GUILayout.Height(34))) Attempt(() => world.CreateEmptyMap());
+            if (workshop.Maps.Count == 0) GUILayout.Label("Готовые карты не входят в приложение. Скачайте их в мастерской.");
+            foreach (var entry in workshop.Maps)
+            {
+                string id = entry.Key;
+                if (GUILayout.Button((string)entry.Value["name"], GUILayout.Height(34))) Attempt(() => { if (!world.LoadWorkshopMap(id)) throw new FormatException(world.Error); });
+            }
             for (int i = 0; i < world.catalog.maps.Length; i++)
             {
                 int index = i; if (GUILayout.Button(world.catalog.maps[i].key, GUILayout.Height(30))) world.TryLoad(index);

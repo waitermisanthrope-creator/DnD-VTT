@@ -63,7 +63,7 @@ public static class CharacterSheetValidation
         var catalog = JObject.Parse(File.ReadAllText("Assets/Vtt/Resources/CharacterSheet/catalog.json"));
         Check(((JArray)catalog["spells"]).Count == 402, "main spell catalogue");
         ValidateCreation(catalog);
-        Check(((JObject)catalog["items"]).Properties().Sum(p => ((JArray)p.Value).Count) == 188, "main item catalogues");
+        Check(((JObject)catalog["items"]).Properties().Sum(p => ((JArray)p.Value).Count) == 0, "item collections downloaded separately");
         foreach (JObject test in (JArray)golden["inventoryCases"])
         {
             var hero = (JObject)test["input"].DeepClone(); string category = (string)test["category"]; var item = (JObject)test["item"];
@@ -119,7 +119,7 @@ public static class CharacterSheetValidation
             Check(digest == expected, "JS fixture provenance " + source["file"]);
         }
         Debug.Log("VTT_SHEET_PASS: " + cases + " JS golden cases; 18 skills, modifiers/proficiency, single/array/wrapped editing, rollback, identity/unknown/class-state preservation, atomic save/reload/backup; 402 spells");
-        Debug.Log("VTT_SHEET_RECORDS_PASS: 188 items; actual JS 5-category add/stack/remove, folder/note deletion and active selection, stale/invalid mutation rejection, 12 weight parser cases / total / capacity");
+        Debug.Log("VTT_SHEET_RECORDS_PASS: 0 embedded item entries; actual JS 5-category add/stack/remove, folder/note deletion and active selection, stale/invalid mutation rejection, 12 weight parser cases / total / capacity");
     }
     private static void ValidateUpdater()
     {
@@ -185,7 +185,7 @@ public static class CharacterSheetValidation
     private static void ValidateCreation(JObject catalog)
     {
         var data = (JObject)catalog["creation"];
-        Check(((JArray)data["races"]).Count == 57 && ((JArray)data["classes"]).Count == 35 && ((JArray)data["backgrounds"]).Count == 31, "creation catalogues");
+        Check(((JArray)data["races"]).Count == 15 && ((JArray)data["classes"]).Count == 12 && ((JArray)data["backgrounds"]).Count == 31, "creation catalogues");
         var golden = JObject.Parse(File.ReadAllText("Assets/Vtt/Tests/sheet-contract.json"));
         foreach (JObject test in (JArray)golden["creationCases"])
         {
@@ -212,6 +212,6 @@ public static class CharacterSheetValidation
             refused = false; try { CharacterCreation.Create(data, "Invalid", race, cls, bg, JObject.Parse("{str:15,dex:15,con:15,int:15,wis:15,cha:15}"), (JObject)test["answers"], "pointbuy"); } catch (FormatException) { refused = true; }
             Check(refused, "overspent point-buy rejected");
         }
-        Debug.Log("VTT_FRONTEND_CONTRACT_PASS: 57 races/35 class records/31 backgrounds, actual JS three-class creation projections, append/identity/wrapper preservation/reload, required choices/name/point buy");
+        Debug.Log("VTT_FRONTEND_CONTRACT_PASS: 15 PHB race variants/12 PHB classes/31 backgrounds, actual JS three-class creation projections, append/identity/wrapper preservation/reload, required choices/name/point buy");
     }
 }

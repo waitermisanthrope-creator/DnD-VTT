@@ -1,0 +1,461 @@
+[
+  {
+    "type": "Texture2D",
+    "pathId": 1,
+    "serializedBytes": 612,
+    "name": "UIFoldoutOpened",
+    "width": 11,
+    "height": 11,
+    "textureFormat": 4
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 1,
+    "serializedBytes": 5580,
+    "name": "UIMask",
+    "width": 32,
+    "height": 32,
+    "textureFormat": 4
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 1,
+    "serializedBytes": 1048696,
+    "name": "Dragon20",
+    "width": 1024,
+    "height": 1024,
+    "textureFormat": 1
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 3,
+    "serializedBytes": 2796376,
+    "name": "Splash Screen Unity Logo",
+    "width": 2048,
+    "height": 1024,
+    "textureFormat": 47
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 4,
+    "serializedBytes": 16508,
+    "name": "DebugFont",
+    "width": 256,
+    "height": 128,
+    "textureFormat": 34
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 5,
+    "serializedBytes": 4220,
+    "name": "LDR_LLL1_0",
+    "width": 64,
+    "height": 64,
+    "textureFormat": 1
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 6,
+    "serializedBytes": 140,
+    "name": "BayerMatrix",
+    "width": 4,
+    "height": 4,
+    "textureFormat": 1
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 1,
+    "serializedBytes": 524412,
+    "name": "Wallpaper16",
+    "width": 512,
+    "height": 1024,
+    "textureFormat": 1
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 2,
+    "serializedBytes": 124,
+    "name": "Font Texture",
+    "width": 0,
+    "height": 0,
+    "textureFormat": 4
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 1,
+    "serializedBytes": 612,
+    "name": "UIFoldoutClosed",
+    "width": 11,
+    "height": 11,
+    "textureFormat": 4
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 1,
+    "serializedBytes": 380,
+    "name": "UIElement8px",
+    "width": 8,
+    "height": 8,
+    "textureFormat": 4
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 1,
+    "serializedBytes": 1048696,
+    "name": "Splash19",
+    "width": 1024,
+    "height": 1024,
+    "textureFormat": 1
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 1,
+    "serializedBytes": 608,
+    "name": "UICheckMark",
+    "width": 11,
+    "height": 11,
+    "textureFormat": 4
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 1,
+    "serializedBytes": 124,
+    "name": "White1px",
+    "width": 1,
+    "height": 1,
+    "textureFormat": 3
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 10001,
+    "serializedBytes": 21964,
+    "name": "Soft",
+    "width": 128,
+    "height": 128,
+    "textureFormat": 1
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 10103,
+    "serializedBytes": 124,
+    "name": "Font Texture",
+    "width": 0,
+    "height": 0,
+    "textureFormat": 4
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 10401,
+    "serializedBytes": 21144,
+    "name": "EscToExit_back",
+    "width": 74,
+    "height": 71,
+    "textureFormat": 4
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 10402,
+    "serializedBytes": 10808,
+    "name": "EscToExit_Text",
+    "width": 267,
+    "height": 20,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 10406,
+    "serializedBytes": 96392,
+    "name": "UnityWatermark-trial-big",
+    "width": 512,
+    "height": 94,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 10407,
+    "serializedBytes": 2260,
+    "name": "UnityWatermark-trial",
+    "width": 76,
+    "height": 14,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 10409,
+    "serializedBytes": 5164,
+    "name": "UnityWatermark-edu",
+    "width": 148,
+    "height": 17,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 10410,
+    "serializedBytes": 4044,
+    "name": "UnityWatermark-dev",
+    "width": 115,
+    "height": 17,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 10411,
+    "serializedBytes": 8316,
+    "name": "WarningSign",
+    "width": 64,
+    "height": 64,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 10413,
+    "serializedBytes": 2396,
+    "name": "UnityWatermark-proto",
+    "width": 87,
+    "height": 13,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11001,
+    "serializedBytes": 404,
+    "name": "box",
+    "width": 12,
+    "height": 12,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11002,
+    "serializedBytes": 704,
+    "name": "button active",
+    "width": 12,
+    "height": 12,
+    "textureFormat": 4
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11003,
+    "serializedBytes": 412,
+    "name": "button hover",
+    "width": 12,
+    "height": 12,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11004,
+    "serializedBytes": 416,
+    "name": "button on hover",
+    "width": 12,
+    "height": 12,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11005,
+    "serializedBytes": 412,
+    "name": "button on",
+    "width": 12,
+    "height": 12,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11006,
+    "serializedBytes": 408,
+    "name": "button",
+    "width": 12,
+    "height": 12,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11007,
+    "serializedBytes": 428,
+    "name": "horizontal scrollbar thumb",
+    "width": 12,
+    "height": 12,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11008,
+    "serializedBytes": 672,
+    "name": "horizontal scrollbar",
+    "width": 18,
+    "height": 15,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11009,
+    "serializedBytes": 240,
+    "name": "horizontalslider",
+    "width": 8,
+    "height": 7,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11010,
+    "serializedBytes": 324,
+    "name": "slider thumb active",
+    "width": 8,
+    "height": 12,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11011,
+    "serializedBytes": 316,
+    "name": "slider thumb",
+    "width": 8,
+    "height": 12,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11012,
+    "serializedBytes": 324,
+    "name": "slidert humb hover",
+    "width": 8,
+    "height": 12,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11013,
+    "serializedBytes": 520,
+    "name": "toggle active",
+    "width": 14,
+    "height": 14,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11014,
+    "serializedBytes": 516,
+    "name": "toggle hover",
+    "width": 14,
+    "height": 14,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11015,
+    "serializedBytes": 520,
+    "name": "toggle on hover",
+    "width": 14,
+    "height": 14,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11016,
+    "serializedBytes": 516,
+    "name": "toggle on",
+    "width": 14,
+    "height": 14,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11017,
+    "serializedBytes": 520,
+    "name": "toggle on active",
+    "width": 14,
+    "height": 14,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11018,
+    "serializedBytes": 512,
+    "name": "toggle",
+    "width": 14,
+    "height": 14,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11019,
+    "serializedBytes": 424,
+    "name": "vertical scrollbar thumb",
+    "width": 12,
+    "height": 12,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11020,
+    "serializedBytes": 672,
+    "name": "vertical scrollbar",
+    "width": 15,
+    "height": 18,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11021,
+    "serializedBytes": 240,
+    "name": "verticalslider",
+    "width": 7,
+    "height": 8,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11022,
+    "serializedBytes": 1044,
+    "name": "window on",
+    "width": 17,
+    "height": 27,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11023,
+    "serializedBytes": 1040,
+    "name": "window",
+    "width": 17,
+    "height": 27,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11024,
+    "serializedBytes": 412,
+    "name": "textfield",
+    "width": 12,
+    "height": 12,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11025,
+    "serializedBytes": 412,
+    "name": "textfield on",
+    "width": 12,
+    "height": 12,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 11026,
+    "serializedBytes": 416,
+    "name": "textfield hover",
+    "width": 12,
+    "height": 12,
+    "textureFormat": 13
+  },
+  {
+    "type": "Texture2D",
+    "pathId": 15000,
+    "serializedBytes": 660,
+    "name": "UnitySplash-HolographicTrackingLoss",
+    "width": 32,
+    "height": 32,
+    "textureFormat": 34
+  }
+]

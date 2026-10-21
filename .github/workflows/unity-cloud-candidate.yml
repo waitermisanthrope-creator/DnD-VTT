@@ -17,7 +17,7 @@ on:
       version:
         description: 'Unpublished Android candidate, newer than public version'
         required: true
-        default: '1.00.06'
+        default: '1.00.11'
         type: string
 
 permissions:
@@ -49,6 +49,18 @@ jobs:
           python3 unity/ci/test_update_settings_contract.py
           python3 unity/ci/test_brand_visual_contract.py
           python3 unity/ci/test_content_registry_contract.py
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Test real package install, restart, removal and character integration
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/workshop-registries"
+          python3 unity/ci/verify_public_workshop.py --output "$RUNNER_TEMP/workshop-registries"
+          dotnet run --project unity/ci/workshop-tests -- "$RUNNER_TEMP/workshop-registries" "$GITHUB_WORKSPACE"
+          mkdir -p unity/WorkshopFixtures~
+          cp -R "$RUNNER_TEMP/workshop-registries/." unity/WorkshopFixtures~/
       - name: Verify signing key matches published Android 1.00.00
         env:
           UNITY_ANDROID_KEYSTORE_BASE64: ${{ secrets.UNITY_ANDROID_KEYSTORE_BASE64 }}
@@ -62,8 +74,16 @@ jobs:
         run: python3 unity/ci/cloud_release.py check-license
       - name: Prepare unpublished Android version in checkout only
         env:
-          CANDIDATE_VERSION: ${{ inputs.version || '1.00.06' }}
+          CANDIDATE_VERSION: ${{ inputs.version || '1.00.11' }}
         run: python3 unity/ci/cloud_release.py prepare --version "$CANDIDATE_VERSION"
+      - name: Restore Unity import and IL2CPP cache (no credentials)
+        id: unity-library
+        uses: actions/cache/restore@v4
+        with:
+          path: unity/Library
+          key: unity-library-android-${{ runner.os }}-6000.3.26f1-${{ hashFiles('unity/Packages/**', 'unity/ProjectSettings/**', 'unity/Assets/**') }}
+          restore-keys: |
+            unity-library-android-${{ runner.os }}-6000.3.26f1-
       # GameCI CLI v0.1.72 can report validateBuild failure even after Unity
       # logs VTT_RELEASE_BUILD_PASS and produces an APK. Preserve the output for
       # strict, independent verification below; a real Unity failure still
@@ -89,24 +109,30 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          APK="unity/Builds/Unity-${{ inputs.version || '1.00.06' }}/android-intermediate.apk"
+          APK="unity/Builds/Unity-${{ inputs.version || '1.00.11' }}/android-intermediate.apk"
           test -s "$APK"
           test "$(stat -c '%s' "$APK")" -gt 10000000
           badging="$("$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK")"
           grep -F "name='com.dndvtt.unity'" <<<"$badging"
-          expected_version="${{ inputs.version || '1.00.06' }}"
+          expected_version="${{ inputs.version || '1.00.11' }}"
           IFS=. read -r major minor patch <<< "$expected_version"
           printf -v expected_code '%d' "$((10#$major * 10000 + 10#$minor * 100 + 10#$patch))"
           grep -F "versionCode='$expected_code'" <<<"$badging"
-          grep -F "versionName='${{ inputs.version || '1.00.06' }}'" <<<"$badging"
+          grep -F "versionName='${{ inputs.version || '1.00.11' }}'" <<<"$badging"
           grep -F "native-code: 'arm64-v8a'" <<<"$badging"
           sha256sum "$APK"
           echo "CI_REAL_UNITY_ANDROID_APK_PASS: output exists and Android package metadata matches"
+      - name: Save measured Unity build resource report
+        uses: actions/upload-artifact@v4
+        with:
+          name: Unity-build-resource-report-${{ github.run_id }}
+          path: unity/Builds/Unity-*/build-report-Android.json
+          if-no-files-found: error
       - name: Restore runner ownership of Docker-generated Android build
         shell: bash
         run: |
           set -euo pipefail
-          BUILD_DIR="unity/Builds/Unity-${{ inputs.version || '1.00.06' }}"
+          BUILD_DIR="unity/Builds/Unity-${{ inputs.version || '1.00.11' }}"
           test -s "$BUILD_DIR/android-intermediate.apk"
           # game-ci/unity-builder writes the intermediate files as root inside
           # Docker. The host runner must own them to create the signed APK.
@@ -122,13 +148,42 @@ jobs:
         run: |
           python3 unity/ci/cloud_release.py sign
           python3 unity/ci/cloud_release.py android-candidate
+      - name: Measure real signed APK and validate retained artwork and prop imports
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install UnityPy==1.25.4
+          APK="unity/Builds/Unity-${{ inputs.version || '1.00.11' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.11' }}-arm64.apk"
+          python3 tools/inspect_unity_apk.py --apk "$APK" --output unity/apk-object-inventory.json
+          python3 unity/ci/measure_apk.py --apk "$APK" --objects unity/apk-object-inventory.json --report unity/apk-metrics.json --minimal-content
+      - name: Save measured APK inventory and metrics
+        uses: actions/upload-artifact@v4
+        with:
+          name: Unity-APK-measurements-${{ github.run_id }}
+          path: |
+            unity/apk-metrics.json
+            unity/apk-object-inventory.json
+            unity/Builds/Unity-*/distribution/candidate.json
+            unity/Builds/Unity-*/distribution/SHA256SUMS.txt
+          if-no-files-found: error
       - name: Deliver verified signed Android APK for phone testing
         uses: actions/upload-artifact@v4
         with:
-          name: DnD-VTT-Unity-${{ inputs.version || '1.00.06' }}-Android-test
-          path: unity/Builds/Unity-${{ inputs.version || '1.00.06' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.06' }}-arm64.apk
+          name: DnD-VTT-Unity-${{ inputs.version || '1.00.11' }}-Android-test
+          path: unity/Builds/Unity-${{ inputs.version || '1.00.11' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.11' }}-arm64.apk
           if-no-files-found: error
           retention-days: 3
+      - name: Verify separately generated trusted Android demo bundle
+        id: workshop-bundle
+        run: python3 unity/ci/verify_bundle_output.py
+      - name: Save verified Android bundle for manual runtime QA
+        if: steps.workshop-bundle.outputs.present == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Unity-workshop-Android-${{ github.run_id }}
+          path: unity/Builds/Workshop/android-arm64/
+          if-no-files-found: error
+          retention-days: 7
       - name: Encrypt unpublished APK candidate
         env:
           UNITY_CI_ARTIFACT_PASSWORD: ${{ secrets.UNITY_CI_ARTIFACT_PASSWORD }}
@@ -140,3 +195,10 @@ jobs:
           path: ${{ runner.temp }}/unity-encrypted/candidate.zip.enc
           if-no-files-found: error
           retention-days: 7
+      - name: Save Unity import and IL2CPP cache for subsequent checked builds
+        if: always() && steps.unity-library.outputs.cache-hit != 'true'
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: unity/Library
+          key: ${{ steps.unity-library.outputs.cache-primary-key }}

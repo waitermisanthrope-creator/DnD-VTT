@@ -1,0 +1,33 @@
+{
+  "sourceCommit": "16d56de73925c36b94a69074aa5eeca98c72aa96",
+  "runId": 39508072660,
+  "jobId": 118921936312,
+  "conclusion": "success",
+  "version": "1.00.06",
+  "versionCode": 10006,
+  "package": "com.dndvtt.unity",
+  "certificateSha256": "c1c1b3e6537f10819a3042817ac91535b47754ed65d084e635f84ff2b1f44c8e",
+  "apkArtifact": 12305216911,
+  "measurementsArtifact": 12306125695,
+  "buildReportArtifact": 12305082001,
+  "androidBundleArtifact": 12305781311,
+  "androidBundleBytes": 73619,
+  "androidBundleSha256": "b0ec35005db7a35792e501a4aaf124a4405555cf3491684f3bf83084490c806b",
+  "deviceQa": false,
+  "windowsBundleBuilt": false,
+  "binaryBundlePublishedToAssets": false,
+  "markers": [
+    "2026-10-20T22:32:53.1067491Z VTT_WORKSHOP_EDITOR_PASS: public JSON objects/materials, actual mesh/collider/material use, map placement/save, restart, missing package, reinstallation without save corruption",
+    "2026-10-20T22:32:53.1394703Z VTT_SETTINGS_WALLET_PASS: 20 actual JS coin operations, change/rates/toggles/log cap/rejection, detached save/backup; device preferences validation/save/reload/backup",
+    "2026-10-20T22:32:53.2204213Z VTT_FRONTEND_CONTRACT_PASS: 57 races/35 class records/31 backgrounds, actual JS three-class creation projections, append/identity/wrapper preservation/reload, required choices/name/point buy",
+    "2026-10-20T22:32:53.2705945Z VTT_SHEET_PASS: 60 JS golden cases; 18 skills, modifiers/proficiency, single/array/wrapped editing, rollback, identity/unknown/class-state preservation, atomic save/reload/backup; 402 spells",
+    "2026-10-20T22:32:54.3335073Z VTT_MIGRATION_CONTRACT_PASS: canonical/legacy HP, unknown fields, rejection/isolation, 9 JS map contracts, signed coordinates, source/copy SHA256",
+    "2026-10-20T22:32:54.3405339Z VTT_BRANDING_ASSET_PASS: Branding/Wallpaper16 / 512x1024",
+    "2026-10-20T22:32:54.3421770Z VTT_BRANDING_ASSET_PASS: Branding/Splash19 / 1024x1024",
+    "2026-10-20T22:32:54.3434824Z VTT_BRANDING_ASSET_PASS: Branding/Dragon20 / 1024x1024",
+    "2026-10-20T22:46:52.3468871Z VTT_RELEASE_BUILD_PASS: Android / 1.00.06",
+    "2026-10-20T22:46:55.2053560Z VTT_WORKSHOP_BUNDLE_BUILD_PASS android-arm64",
+    "2026-10-20T22:47:11.2289421Z CI_ANDROID_CANDIDATE_PASS: 1.00.06 dc7e0a8cea1b6ac8a05743e93835b43fee0dbbbb6506a893eedbc8d3b4fbdcea",
+    "2026-10-20T22:47:22.8956949Z TRUSTED_ANDROID_BUNDLE_ARTIFACT_PASS 73619 b0ec35005db7a35792e501a4aaf124a4405555cf3491684f3bf83084490c806b (device load still requires QA)"
+  ]
+}
