@@ -53,7 +53,7 @@ namespace DndVtt.UnityPrototype
             if(request.result!=UnityWebRequest.Result.Success)
             {
                 // Never include raw auth response/token/email or request body in logs/errors.
-                failure(request.responseCode==401?"Сессия истекла. Войдите снова.":request.responseCode==400?"Проверьте почту, пароль или код; подтвердите почту перед входом.":request.responseCode==429?"Слишком много запросов. Повторите позже.":"Нет связи с облаком или запрос отклонён ("+request.responseCode+"). Локальные данные сохранены.");yield break;
+                failure(request.responseCode==401?"Сессия истекла. Войдите снова.":request.responseCode==400?(path.StartsWith("/auth/",StringComparison.Ordinal)?"Проверьте почту, пароль или код; подтвердите почту перед входом.":"Облачные данные отклонены. Локальные версии сохранены."):request.responseCode==429?"Слишком много запросов. Повторите позже.":"Нет связи с облаком или запрос отклонён ("+request.responseCode+"). Локальные данные сохранены.");yield break;
             }
             JToken parsed=null;string error=null;try { parsed=string.IsNullOrWhiteSpace(request.downloadHandler.text)?new JObject():LegacyJson.Parse(request.downloadHandler.text,16*1024*1024); }catch(Exception) { error="Некорректный ответ облака"; }
             if(error!=null)failure(error);else { try { success(parsed); }catch(Exception) { failure("Не удалось обработать ответ или записать служебный журнал. Исходные персонажи не удалены; операцию можно повторить."); } }
@@ -99,9 +99,15 @@ namespace DndVtt.UnityPrototype
             try {
                 yield return CloudToken(t=>token=t);if(token==null||archive==null)yield break;
                 var hero=archive.Snapshot(selected);string key=hero["id"].ToString();
-                if(!(CloudJournal[key] is JObject link)) CloudJournal[key]=link=new JObject { ["remoteId"]=Guid.NewGuid().ToString(),["revision"]=0 };
-                if(!(link["pending"] is JObject pending))link["pending"]=pending=CloudCharacterProtocol.SaveRequest(hero,link);
-                WriteCloudFile(CloudJournalPath,CloudJournal.ToString());
+                JObject link=null,pending=null;string preparationError=null;
+                try {
+                    link=CloudJournal[key] as JObject;
+                    if(link==null)CloudJournal[key]=link=new JObject { ["remoteId"]=Guid.NewGuid().ToString(),["revision"]=0 };
+                    pending=link["pending"] as JObject;
+                    if(pending==null)link["pending"]=pending=CloudCharacterProtocol.SaveRequest(hero,link);
+                    WriteCloudFile(CloudJournalPath,CloudJournal.ToString());
+                }catch(Exception) { preparationError="Не удалось подготовить безопасную отправку. Проверьте хранилище устройства; герой в облако не отправлен."; }
+                if(preparationError!=null) { cloudMessage=preparationError;yield break; }
                 yield return CloudRequest("/rest/v1/rpc/save_character",pending,token,r=>{
                     if((bool?)r["conflict"]==true) { cloudConflict=(JObject)r;cloudConflictLocalId=key;cloudMessage="Конфликт версий. Ни одна версия не перезаписана; можно отправить локальную отдельной облачной копией.";return; }
                     link["revision"]=r["character"]["revision"].DeepClone();link.Remove("pending");WriteCloudFile(CloudJournalPath,CloudJournal.ToString());cloudMessage="Облачная версия сохранена. Повторите отправку, если после первой попытки редактировали героя.";
@@ -116,7 +122,7 @@ namespace DndVtt.UnityPrototype
                 CharacterSheetStore.Save(SavePath,candidate);archive=candidate;selected=archive.Count-1;ClearSheetInputs();
                 cloudMessage="Герой добавлен отдельной локальной копией и сохранён на устройстве.";
                 try { CloudJournal[profile["id"].ToString()]=new JObject { ["remoteId"]=remote["id"].DeepClone(),["revision"]=remote["revision"].DeepClone() };WriteCloudFile(CloudJournalPath,CloudJournal.ToString()); }
-                catch(Exception) { cloudMessage="Локальная копия сохранена, но облачная ссылка не записана. Перед новой отправкой проверьте журнал и свободное место."; }
+                catch(Exception) { cloudMessage="Локальная копия сохранена, но связь с облачной версией не записана. Проверьте хранилище перед новой отправкой."; }
             }catch(Exception) { cloudMessage="Не удалось сохранить копию. Исходный архив не удалён."; }
         }
         private void DrawAccount()

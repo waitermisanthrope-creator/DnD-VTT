@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит d4021bccf172. Файлов: 1904
+Коммит 681e5bb39174. Файлов: 1904
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1718,7 +1718,7 @@
 1702. unity/Assets/Vtt/Resources/Branding/Splash19.png.meta — вспомогательный файл: Splash19.png (312 B)
 1703. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg — текстура/изображение: Wallpaper16 (212684 B)
 1704. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta — вспомогательный файл: Wallpaper16.jpg (312 B)
-1705. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (7397 B)
+1705. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (9230 B)
 1706. unity/Assets/Vtt/Resources/Changelog.json.meta — вспомогательный файл: Changelog.json (158 B)
 1707. unity/Assets/Vtt/Resources/CharacterSheet.meta — вспомогательный файл: CharacterSheet (172 B)
 1708. unity/Assets/Vtt/Resources/CharacterSheet/catalog.json — данные/конфигурация: catalog (823381 B)
@@ -1744,7 +1744,7 @@
 1728. unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs.meta — вспомогательный файл: LegacyMapPresenter.cs (59 B)
 1729. unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs — вспомогательный файл: LegacyMigrationSmoke (3065 B)
 1730. unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs.meta — вспомогательный файл: LegacyMigrationSmoke.cs (59 B)
-1731. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs — вспомогательный файл: LegacySessionPanel.Account (16727 B)
+1731. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs — вспомогательный файл: LegacySessionPanel.Account (17386 B)
 1732. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta — вспомогательный файл: LegacySessionPanel.Account.cs (60 B)
 1733. unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs — вспомогательный файл: LegacySessionPanel.Branding (16427 B)
 1734. unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta — вспомогательный файл: LegacySessionPanel.Branding.cs (60 B)
@@ -1771,7 +1771,7 @@
 1755. unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopLibrary.cs.meta — вспомогательный файл: LegacySessionPanel.WorkshopLibrary.cs (60 B)
 1756. unity/Assets/Vtt/Runtime/link.xml — вспомогательный файл: link (628 B)
 1757. unity/Assets/Vtt/Runtime/link.xml.meta — вспомогательный файл: link.xml (60 B)
-1758. unity/Assets/Vtt/Runtime/MenuGesture.cs — вспомогательный файл: MenuGesture (1570 B)
+1758. unity/Assets/Vtt/Runtime/MenuGesture.cs — вспомогательный файл: MenuGesture (1619 B)
 1759. unity/Assets/Vtt/Runtime/MenuGesture.cs.meta — вспомогательный файл: MenuGesture.cs (60 B)
 1760. unity/Assets/Vtt/Runtime/PrototypeSmoke.cs — вспомогательный файл: PrototypeSmoke (3139 B)
 1761. unity/Assets/Vtt/Runtime/PrototypeSmoke.cs.meta — вспомогательный файл: PrototypeSmoke.cs (59 B)
@@ -1816,7 +1816,7 @@
 1800. unity/ci/verify_public_workshop.py — вспомогательный файл: verify public workshop (1766 B)
 1801. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (3846 B)
 1802. unity/ci/workshop-tests/.gitignore — вспомогательный файл: .gitignore (10 B)
-1803. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (2656 B)
+1803. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (2795 B)
 1804. unity/ci/workshop-tests/CommerceChecks.cs — вспомогательный файл: CommerceChecks (4247 B)
 1805. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (17225 B)
 1806. unity/ci/workshop-tests/WorkshopTests.csproj — вспомогательный файл: WorkshopTests (1243 B)
@@ -1864,7 +1864,7 @@
 1848. updates/previous-stable.json — метаданные обновлений: previous stable (179808 B)
 1849. updates/README.md — документация или отчёт: README (233 B)
 1850. updates/stable.json — метаданные обновлений: stable (179809 B)
-1851. updates/unity-changelog.json — метаданные обновлений: unity changelog (7397 B)
+1851. updates/unity-changelog.json — метаданные обновлений: unity changelog (9230 B)
 1852. updates/unity-experiment.json — метаданные обновлений: unity experiment (1303 B)
 1853. vignette_v2_sprite.png — текстура/изображение: vignette v2 sprite (1213593 B)
 1854. VTT_PROJECT_MANIFEST_V70.json — устаревший список V70, не актуален (44370 B)

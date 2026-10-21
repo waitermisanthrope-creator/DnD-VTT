@@ -14,7 +14,7 @@ namespace DndVtt.UnityPrototype
         {
             if (captured == null)
             {
-                float sx=x-startX,sy=y-startY; if(sx*sx+sy*sy<100) return;
+                float sx=x-startX,sy=y-startY,threshold=10*Math.Max(.1f,scale); if(sx*sx+sy*sy<threshold*threshold) return;
                 bool horizontal=Math.Abs(sx)>Math.Abs(sy); float smallest=float.MaxValue;
                 foreach(var pair in Regions) { var r=pair.Value; if(r.horizontal==horizontal&&r.Contains(startX,startY)&&r.width*r.height<smallest) { captured=pair.Key;smallest=r.width*r.height; } }
             }
