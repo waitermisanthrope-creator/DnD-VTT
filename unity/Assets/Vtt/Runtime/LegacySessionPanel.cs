@@ -61,6 +61,7 @@ namespace DndVtt.UnityPrototype
         }
         private void OnGUI()
         {
+            UpdateMenuPointer();
             GUI.skin.label.fontSize = 16;
             if (screen != FrontScreen.Map)
             {

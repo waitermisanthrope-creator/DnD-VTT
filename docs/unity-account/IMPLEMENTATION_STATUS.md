@@ -46,3 +46,11 @@ Only the verified project owner (account intended: `waiter.misanthrope@gmail.com
 Bind ownership to the verified Supabase auth user UUID through trusted bootstrap; the email is an operator verification hint, not an authorization predicate or a client-side allowlist. Changing metadata/email cannot gain ownership. Live bootstrap is still BLOCKED; no account was appointed in production.
 
 Appointment restriction regression: DONE locally — 57 PostgreSQL checks passed (previous candidate CI had 41). Added denial checks for every moderator trust tier with fresh MFA and spoofed owner-email metadata. APK/runtime unchanged.
+
+## Follow-up: phone swipe failure and role-specific settings panels
+
+PARTIAL: owner reports swipe still fails on device. Fixed duplicate settings/technical-settings viewport registration (gesture delta went to unused ID), missing EndVertical, and added IMGUI pointer fallback for legacy touch-unavailable devices. Added source regression checks; device verification remains mandatory.
+
+PARTIAL: native settings now have distinct administrator and moderator panel entries. Owner/deputy only see administration; owner/deputy/moderators see moderation, with sections scoped by server role/trust. No local grants, moderation actions or invented backend results. These are honest disconnected status panels until protected server APIs exist; cached role display is never mutation authorization. Refresh server permissions through Account and synchronization.
+
+Previous APK source 46639327 does not contain these follow-up fixes. New candidate build is required; do not distribute old candidate as the swipe fix. Public feed unchanged.

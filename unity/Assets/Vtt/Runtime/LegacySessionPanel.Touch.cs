@@ -15,8 +15,19 @@ namespace DndVtt.UnityPrototype
         private float MenuScale => Application.isMobilePlatform && Screen.height>Screen.width ? Screen.width/440f : 1f;
         private float UiWidth => Screen.width/MenuScale;
         private float UiHeight => Screen.height/MenuScale;
+        // IMGUI pointer fallback also covers devices that deliver emulated mouse
+        // events without exposing touches through the legacy Input API.
+        private void UpdateMenuPointer()
+        {
+            if(Input.touchCount!=0)return;
+            var e=Event.current;var point=e.mousePosition;
+            if(e.type==EventType.MouseDown&&e.button==0)menuGesture.Begin(point.x,point.y);
+            else if(e.type==EventType.MouseDrag&&e.button==0)menuGesture.Move(point.x,point.y,e.delta.x,e.delta.y,screen==FrontScreen.Map?1:MenuScale);
+            else if(e.type==EventType.MouseUp&&e.button==0&&menuGesture.End())suppressMenuClickUntil=Time.unscaledTime+.15f;
+        }
         private void Update()
         {
+            if(Input.touchCount==0)return;
             if(Input.touchCount!=1) { if(menuGesture.End()) suppressMenuClickUntil=Time.unscaledTime+.15f;return; }
             var touch=Input.GetTouch(0); float x=touch.position.x,y=Screen.height-touch.position.y;
             if(touch.phase==TouchPhase.Began) menuGesture.Begin(x,y);

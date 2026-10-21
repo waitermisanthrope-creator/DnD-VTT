@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 12e1a2abc1a1. Git содержит 1909 файлов.
+Снимок кода 66ad8b04e7d9. Git содержит 1909 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1078,7 +1078,7 @@
 | №1057 docs/UNITY_MIGRATION_PLAN.md | 14710 B | документация или отчёт: UNITY MIGRATION PLAN |
 | №1058 docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md | 8253 B | документация или отчёт: ACCESS AND TOUCH 1.00.12 |
 | №1059 docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md | 9558 B | документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP |
-| №1060 docs/unity-account/IMPLEMENTATION_STATUS.md | 6212 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1060 docs/unity-account/IMPLEMENTATION_STATUS.md | 7243 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1061 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1062 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
 | №1063 dragon_fire_v2_sprite.png | 1013123 B | текстура/изображение: dragon fire v2 sprite |
@@ -1756,12 +1756,12 @@
 | №1735 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Account.cs |
 | №1736 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs | 16427 B | вспомогательный файл: LegacySessionPanel.Branding |
 | №1737 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Branding.cs |
-| №1738 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs | 8977 B | вспомогательный файл: LegacySessionPanel.BrandSettings |
+| №1738 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs | 12135 B | вспомогательный файл: LegacySessionPanel.BrandSettings |
 | №1739 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.BrandSettings.cs |
 | №1740 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs | 18536 B | вспомогательный файл: LegacySessionPanel.Commerce |
 | №1741 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Commerce.cs |
 | №1742 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs | 13159 B | вспомогательный файл: LegacySessionPanel.ContentManager |
-| №1743 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs | 8909 B | вспомогательный файл: LegacySessionPanel |
+| №1743 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs | 8942 B | вспомогательный файл: LegacySessionPanel |
 | №1744 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.cs |
 | №1745 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs | 27573 B | вспомогательный файл: LegacySessionPanel.FrontEnd |
 | №1746 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.FrontEnd.cs |
@@ -1771,7 +1771,7 @@
 | №1750 unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.Sheet.cs |
 | №1751 unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs | 4480 B | вспомогательный файл: LegacySessionPanel.SheetSkin |
 | №1752 unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.SheetSkin.cs |
-| №1753 unity/Assets/Vtt/Runtime/LegacySessionPanel.Touch.cs | 2537 B | вспомогательный файл: LegacySessionPanel.Touch |
+| №1753 unity/Assets/Vtt/Runtime/LegacySessionPanel.Touch.cs | 3267 B | вспомогательный файл: LegacySessionPanel.Touch |
 | №1754 unity/Assets/Vtt/Runtime/LegacySessionPanel.Touch.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Touch.cs |
 | №1755 unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs | 13243 B | вспомогательный файл: LegacySessionPanel.Updates |
 | №1756 unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Updates.cs |
@@ -1824,7 +1824,7 @@
 | №1803 unity/ci/verify_public_workshop.py | 1766 B | вспомогательный файл: verify public workshop |
 | №1804 unity/ci/windows-upgrade-qa.ps1 | 3846 B | вспомогательный файл: windows upgrade qa |
 | №1805 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
-| №1806 unity/ci/workshop-tests/AccountGestureChecks.cs | 3416 B | вспомогательный файл: AccountGestureChecks |
+| №1806 unity/ci/workshop-tests/AccountGestureChecks.cs | 3924 B | вспомогательный файл: AccountGestureChecks |
 | №1807 unity/ci/workshop-tests/CommerceChecks.cs | 4247 B | вспомогательный файл: CommerceChecks |
 | №1808 unity/ci/workshop-tests/Program.cs | 17232 B | вспомогательный файл: Program |
 | №1809 unity/ci/workshop-tests/WorkshopTests.csproj | 1243 B | вспомогательный файл: WorkshopTests |
