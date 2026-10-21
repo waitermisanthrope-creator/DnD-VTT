@@ -17,7 +17,7 @@ on:
       version:
         description: 'Unpublished Android candidate, newer than public version'
         required: true
-        default: '1.00.11'
+        default: '1.00.12'
         type: string
 
 permissions:
@@ -49,6 +49,10 @@ jobs:
           python3 unity/ci/test_update_settings_contract.py
           python3 unity/ci/test_brand_visual_contract.py
           python3 unity/ci/test_content_registry_contract.py
+      - name: Verify PostgreSQL roles, MFA, approvals and cloud RLS
+        run: |
+          npm ci --prefix supabase/tests --ignore-scripts --no-audit --no-fund
+          node supabase/tests/access-control.mjs
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
@@ -74,7 +78,7 @@ jobs:
         run: python3 unity/ci/cloud_release.py check-license
       - name: Prepare unpublished Android version in checkout only
         env:
-          CANDIDATE_VERSION: ${{ inputs.version || '1.00.11' }}
+          CANDIDATE_VERSION: ${{ inputs.version || '1.00.12' }}
         run: python3 unity/ci/cloud_release.py prepare --version "$CANDIDATE_VERSION"
       - name: Restore Unity import and IL2CPP cache (no credentials)
         id: unity-library
@@ -109,16 +113,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          APK="unity/Builds/Unity-${{ inputs.version || '1.00.11' }}/android-intermediate.apk"
+          APK="unity/Builds/Unity-${{ inputs.version || '1.00.12' }}/android-intermediate.apk"
           test -s "$APK"
           test "$(stat -c '%s' "$APK")" -gt 10000000
           badging="$("$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK")"
           grep -F "name='com.dndvtt.unity'" <<<"$badging"
-          expected_version="${{ inputs.version || '1.00.11' }}"
+          expected_version="${{ inputs.version || '1.00.12' }}"
           IFS=. read -r major minor patch <<< "$expected_version"
           printf -v expected_code '%d' "$((10#$major * 10000 + 10#$minor * 100 + 10#$patch))"
           grep -F "versionCode='$expected_code'" <<<"$badging"
-          grep -F "versionName='${{ inputs.version || '1.00.11' }}'" <<<"$badging"
+          grep -F "versionName='${{ inputs.version || '1.00.12' }}'" <<<"$badging"
           grep -F "native-code: 'arm64-v8a'" <<<"$badging"
           sha256sum "$APK"
           echo "CI_REAL_UNITY_ANDROID_APK_PASS: output exists and Android package metadata matches"
@@ -132,7 +136,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          BUILD_DIR="unity/Builds/Unity-${{ inputs.version || '1.00.11' }}"
+          BUILD_DIR="unity/Builds/Unity-${{ inputs.version || '1.00.12' }}"
           test -s "$BUILD_DIR/android-intermediate.apk"
           # game-ci/unity-builder writes the intermediate files as root inside
           # Docker. The host runner must own them to create the signed APK.
@@ -153,7 +157,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m pip install UnityPy==1.25.4
-          APK="unity/Builds/Unity-${{ inputs.version || '1.00.11' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.11' }}-arm64.apk"
+          APK="unity/Builds/Unity-${{ inputs.version || '1.00.12' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.12' }}-arm64.apk"
           python3 tools/inspect_unity_apk.py --apk "$APK" --output unity/apk-object-inventory.json
           python3 unity/ci/measure_apk.py --apk "$APK" --objects unity/apk-object-inventory.json --report unity/apk-metrics.json --minimal-content
       - name: Save measured APK inventory and metrics
@@ -169,8 +173,8 @@ jobs:
       - name: Deliver verified signed Android APK for phone testing
         uses: actions/upload-artifact@v4
         with:
-          name: DnD-VTT-Unity-${{ inputs.version || '1.00.11' }}-Android-test
-          path: unity/Builds/Unity-${{ inputs.version || '1.00.11' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.11' }}-arm64.apk
+          name: DnD-VTT-Unity-${{ inputs.version || '1.00.12' }}-Android-test
+          path: unity/Builds/Unity-${{ inputs.version || '1.00.12' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.12' }}-arm64.apk
           if-no-files-found: error
           retention-days: 3
       - name: Verify separately generated trusted Android demo bundle

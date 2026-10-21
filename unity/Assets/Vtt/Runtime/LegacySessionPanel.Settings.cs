@@ -54,8 +54,8 @@ namespace DndVtt.UnityPrototype
             GUILayout.Label("Настройки приложения", heading);
             GUILayout.Label("Версия Unity: " + UnityRelease.Version + "  ·  Изменения сохраняются только на этом устройстве.", muted);
             GUILayout.Space(10);
-            int columns = Screen.height > Screen.width ? 2 : Screen.width >= 900 ? 5 : 2;
-            int section = GUILayout.SelectionGrid(settingsSection, SettingSections, columns, GUILayout.MinHeight(48));
+            int columns = UiHeight > UiWidth ? 2 : UiWidth >= 900 ? 5 : 2;
+            int section = GUILayout.SelectionGrid(settingsSection, SettingSections, columns, GUILayout.MinHeight(columns==2?168:56));
             if (section != settingsSection) { settingsSection = section; frontScroll = Vector2.zero; }
             GUILayout.Space(16);
             switch (settingsSection)
@@ -67,7 +67,7 @@ namespace DndVtt.UnityPrototype
                     GUILayout.Label("Оформление", heading);
                     GUILayout.Label("Цветовая тема меняет фон меню и сохраняется для следующих запусков.", muted);
                     int themeIndex = Math.Max(0, Array.IndexOf(ThemeKeys, settingsDraft.theme));
-                    themeIndex = GUILayout.SelectionGrid(themeIndex, ThemeLabels, 3, GUILayout.MinHeight(60));
+                    themeIndex = GUILayout.SelectionGrid(themeIndex, ThemeLabels, 2, GUILayout.MinHeight(140));
                     settingsDraft.theme = ThemeKeys[themeIndex];
                     GUILayout.Label("Для выбора арт-обоев и иконок потребуется отдельный каталог изображений. Сейчас доступна смена цветовой темы.", muted);
                     break;

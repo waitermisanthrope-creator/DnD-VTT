@@ -19,12 +19,12 @@ namespace DndVtt.UnityPrototype
         private void DrawCommerceInventory(JObject hero, ref bool changed, ref bool persist)
         {
             if (hero["inventory"] is JArray) { ReadOnly(hero,"inventory","Унаследованный инвентарь сохранён без изменений"); return; }
-            inventoryMode = GUILayout.SelectionGrid(inventoryMode,new[] { "Инвентарь", "Крафт", "Алхимия 2.0" },3,GUILayout.MinHeight(52));
+            inventoryMode = GUILayout.SelectionGrid(inventoryMode,new[] { "Инвентарь", "Крафт", "Алхимия 2.0" },3,GUILayout.MinHeight(76));
             if (inventoryMode == 1) { DrawCrafting(hero,ref changed,ref persist); return; }
             if (inventoryMode == 2) { DrawAlchemy(hero,ref changed,ref persist); return; }
             GUILayout.BeginVertical(GUI.skin.box); GUILayout.Label("Текущий КД",sheetQuiet); GUILayout.Label((hero["ac"] ?? hero["baseAC"] ?? 10).ToString(),sheetHeading); GUILayout.EndVertical();
-            inventoryCategory = GUILayout.SelectionGrid(inventoryCategory,inventoryNames,3,GUILayout.MinHeight(100));
-            if (GUILayout.Button("Выбрать из справочника / Создать",brandGreen,GUILayout.Height(52))) inventoryPicker = !inventoryPicker;
+            inventoryCategory = GUILayout.SelectionGrid(inventoryCategory,inventoryNames,2,GUILayout.MinHeight(210));
+            if (GUILayout.Button("Справочник / Свой предмет",brandGreen,GUILayout.Height(58),GUILayout.ExpandWidth(true))) inventoryPicker = !inventoryPicker;
             if (inventoryPicker)
             {
                 GUILayout.BeginVertical(GUI.skin.box); SheetSection("Справочник предметов");

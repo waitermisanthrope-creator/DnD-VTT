@@ -8,7 +8,7 @@ namespace DndVtt.UnityPrototype
 {
     public sealed partial class LegacySessionPanel
     {
-        private enum FrontScreen { Home, Characters, Create, Sheet, Import, Map, Settings, ContentManager }
+        private enum FrontScreen { Home, Characters, Create, Sheet, Import, Map, Settings, ContentManager, Account }
         private FrontScreen screen = FrontScreen.Home;
         private Vector2 frontScroll;
         private JObject creationCatalog;
@@ -35,6 +35,7 @@ namespace DndVtt.UnityPrototype
         }
         private void Navigate(FrontScreen next)
         {
+            menuGesture.Clear();
             screen = next;
             ApplyMobileOrientation(next);
             frontScroll = Vector2.zero; scroll = Vector2.zero; ClearSheetInputs();
@@ -67,12 +68,12 @@ namespace DndVtt.UnityPrototype
             string theme = preferences?.theme ?? "midnight";
             GUI.color = oldColor;
             DrawBrandBackdrop(true); // Shared wallpaper + charcoal overlay on secondary screens.
-            float inset = Mathf.Min(28f, Screen.width * .04f);
-            GUILayout.BeginArea(new Rect(inset, 20, Mathf.Max(1, Screen.width - inset * 2), Mathf.Max(1, Screen.height - 40)));
+            float inset = Mathf.Min(28f, UiWidth * .04f);
+            GUILayout.BeginArea(new Rect(inset, 20, Mathf.Max(1, UiWidth - inset * 2), Mathf.Max(1, UiHeight - 40)));
             GUILayout.BeginHorizontal(); GUILayout.Label("DnD VTT", heading); GUILayout.FlexibleSpace(); GUILayout.Label("Unity · " + UnityRelease.Version, muted); GUILayout.EndHorizontal();
             // A 6-column PC toolbar becomes 3 comfortable rows of two on a
             // portrait phone; all destinations stay accessible in either view.
-            bool portraitLayout = Screen.height > Screen.width;
+            bool portraitLayout = UiHeight > UiWidth;
             if (screen == FrontScreen.Sheet)
             {
                 GUILayout.BeginHorizontal();
@@ -95,7 +96,7 @@ namespace DndVtt.UnityPrototype
             if (GUILayout.Button("Настройки", GUILayout.Height(navHeight))) OpenSettings();
             GUILayout.EndHorizontal(); GUILayout.Space(18);
             }
-            frontScroll = GUILayout.BeginScrollView(frontScroll);
+            frontScroll = GUILayout.BeginScrollView(SwipePosition("front",frontScroll),false,true);
             switch (screen)
             {
                 case FrontScreen.Home:
@@ -111,6 +112,7 @@ namespace DndVtt.UnityPrototype
                     }
                     if (GUILayout.Button("Настройки и обновления", bigButton, GUILayout.Height(54))) OpenSettings();
                     GUILayout.Space(22); GUILayout.Label("Лист, инвентарь, кошелёк, заклинания и заметки — в одном сохранении.", muted); break;
+                case FrontScreen.Account: DrawAccount(); break;
                 case FrontScreen.ContentManager: DrawContentManager(); break;
                 case FrontScreen.Characters: DrawRoster(); break;
                 case FrontScreen.Create: DrawCreation(); break;
@@ -128,7 +130,7 @@ namespace DndVtt.UnityPrototype
                     }
                     GUILayout.Label("Локальный файл: " + SavePath, muted); break;
             }
-            GUILayout.Space(20); GUILayout.Label(status, muted); GUILayout.EndScrollView(); GUILayout.EndArea();
+            GUILayout.Space(20); GUILayout.Label(status, muted); GUILayout.EndScrollView(); RegisterSwipe("front",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
         }
         private void DrawRoster()
         {

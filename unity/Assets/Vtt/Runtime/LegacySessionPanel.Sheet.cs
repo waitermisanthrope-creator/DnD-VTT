@@ -36,15 +36,19 @@ namespace DndVtt.UnityPrototype
                 if (GUILayout.Button("Создать персонажа", GUILayout.Height(40))) BeginCreation();
                 DrawImportAndMap(); return;
             }
-            bool portraitLayout = Screen.height > Screen.width;
-            if (portraitLayout) GUILayout.BeginVertical(); else GUILayout.BeginHorizontal();
-            for (int i = 0; i < archive.Count; i++)
-                if (GUILayout.Button((selected == i ? "● " : "") + archive.Name(i), GUILayout.Height(portraitLayout ? 42 : 34))) { selected = i; ClearSheetInputs(); }
-            if (portraitLayout) GUILayout.EndVertical(); else GUILayout.EndHorizontal();
-            if (portraitLayout) GUILayout.BeginVertical(); else GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Сохранить на этом устройстве", GUILayout.Height(portraitLayout ? 44 : 36))) Attempt(() => { SaveSheet(); status = "Сохранено: " + SavePath; });
-            if (GUILayout.Button("Копировать изменённый JSON", GUILayout.Height(portraitLayout ? 44 : 36))) { GUIUtility.systemCopyBuffer = archive.Export(); status = "Текущий архив скопирован"; }
-            if (portraitLayout) GUILayout.EndVertical(); else GUILayout.EndHorizontal();
+            bool portraitLayout = UiHeight > UiWidth;
+            GUILayout.Label(archive.Name(selected),sheetQuiet);
+            if(archive.Count>1)
+            {
+                GUILayout.BeginHorizontal();
+                if(GUILayout.Button("← Герой",GUILayout.Height(44))) { selected=(selected+archive.Count-1)%archive.Count;ClearSheetInputs(); }
+                if(GUILayout.Button("Герой →",GUILayout.Height(44))) { selected=(selected+1)%archive.Count;ClearSheetInputs(); }
+                GUILayout.EndHorizontal();
+            }
+            GUILayout.BeginHorizontal();
+            if(GUILayout.Button("Сохранить",brandGreen,GUILayout.Height(46)))Attempt(()=>{SaveSheet();status="Сохранено на устройстве";});
+            if(GUILayout.Button("Экспорт JSON",GUILayout.Height(46))) { GUIUtility.systemCopyBuffer=archive.Export();status="Архив скопирован"; }
+            GUILayout.EndHorizontal();
             JObject hero = archive.Snapshot(selected); bool changed = false, persistWallet = false, persistCommerce = false;
             if (deletePath != null)
             {
@@ -213,7 +217,7 @@ namespace DndVtt.UnityPrototype
                 if (!asset) { GUILayout.Label("Справочник предметов не найден"); return; }
                 itemCatalog = (JObject)JObject.Parse(asset.text)["items"];
             }
-            itemCategory = GUILayout.SelectionGrid(itemCategory, new[] { "Оружие", "Броня", "Расходники", "Материалы", "Хлам" }, Screen.width < 900 ? 3 : 5, GUILayout.MinHeight(36));
+            itemCategory = GUILayout.SelectionGrid(itemCategory, new[] { "Оружие", "Броня", "Расходники", "Материалы", "Хлам" }, UiWidth < 900 ? 3 : 5, GUILayout.MinHeight(36));
             GUILayout.Label("Поиск по названию, категории или ID:"); itemSearch = GUILayout.TextField(itemSearch, GUILayout.Height(32));
             string category = CharacterSheetRules.InventoryCategories[itemCategory];
             var matches = ((JArray)itemCatalog[category]).OfType<JObject>().Where(item => (item["name"] + " " + item["category"] + " " + item["id"]).IndexOf(itemSearch, StringComparison.OrdinalIgnoreCase) >= 0).ToArray();
@@ -235,7 +239,7 @@ namespace DndVtt.UnityPrototype
             JToken token = owner[key] ?? fallback ?? new JValue("");
             if (token is JContainer) { Tree(owner, key, label, ref changed); return; }
             string path = owner.Path + "/" + label + "/" + key;
-            bool portrait = Screen.height > Screen.width;
+            bool portrait = UiHeight > UiWidth;
             if (portrait) { GUILayout.BeginVertical(); GUILayout.Label(label); } else { GUILayout.BeginHorizontal(); GUILayout.Label(label, GUILayout.Width(200)); }
             if (token.Type == JTokenType.Boolean)
             {

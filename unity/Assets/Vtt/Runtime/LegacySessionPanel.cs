@@ -62,8 +62,15 @@ namespace DndVtt.UnityPrototype
         private void OnGUI()
         {
             GUI.skin.label.fontSize = 16;
-            if (DrawBrandSplash()) return;
-            if (screen != FrontScreen.Map) { var originalSkin = GUI.skin; try { DrawFrontEnd(); } finally { GUI.skin = originalSkin; } return; }
+            if (screen != FrontScreen.Map)
+            {
+                var originalSkin=GUI.skin;var originalMatrix=GUI.matrix;BeginSwipeFrame();
+                try { GUI.matrix=Matrix4x4.Scale(new Vector3(MenuScale,MenuScale,1));
+                    if(menuGesture.Dragging) { GUIUtility.hotControl=0;GUI.FocusControl(null); }
+                    if(Event.current.type==EventType.MouseUp&&(menuGesture.Dragging||Time.unscaledTime<suppressMenuClickUntil)) { GUIUtility.hotControl=0;Event.current.Use(); }
+                    if(DrawBrandSplash())return; DrawFrontEnd();
+                } finally { EndSwipeFrame();GUI.skin=originalSkin;GUI.matrix=originalMatrix; } return;
+            }
 #if UNITY_ANDROID && !UNITY_EDITOR
             // Screen.orientation changes asynchronously. Don't draw a wide
             // HUD with negative widths during the portrait-to-map transition.
@@ -88,9 +95,9 @@ namespace DndVtt.UnityPrototype
             GUI.DrawTexture(area, Texture2D.whiteTexture); GUI.color = oldColor;
             GUI.Box(area, "Карты и этажи");
             GUILayout.BeginArea(new Rect(area.x + 15, area.y + 30, area.width - 30, area.height - 40));
-            scroll = GUILayout.BeginScrollView(scroll);
+            scroll = GUILayout.BeginScrollView(SwipePosition("map-panel",scroll));
             DrawMapSelector();
-            GUILayout.Label(status); GUILayout.EndScrollView(); GUILayout.EndArea();
+            GUILayout.Label(status); GUILayout.EndScrollView(); RegisterSwipe("map-panel",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
         }
         private void DrawImportAndMap()
         {

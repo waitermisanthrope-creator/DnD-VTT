@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 17e7ef78725c. Git содержит 1887 файлов.
+Снимок кода 53012ecba905. Git содержит 1887 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -43,7 +43,7 @@
 | №0022 .github/workflows/unified-release.yml | 14076 B | автоматизация GitHub Actions: unified release |
 | №0023 .github/workflows/unity-android-update-publish.yml | 5039 B | автоматизация GitHub Actions: unity android update publish |
 | №0024 .github/workflows/unity-brand-visual-contract.yml | 877 B | автоматизация GitHub Actions: unity brand visual contract |
-| №0025 .github/workflows/unity-cloud-candidate.yml | 9768 B | автоматизация GitHub Actions: unity cloud candidate |
+| №0025 .github/workflows/unity-cloud-candidate.yml | 9979 B | автоматизация GitHub Actions: unity cloud candidate |
 | №0026 .github/workflows/unity-cloud-promote.yml | 2934 B | автоматизация GitHub Actions: unity cloud promote |
 | №0027 .github/workflows/unity-delivery-publish.yml | 872 B | автоматизация GitHub Actions: unity delivery publish |
 | №0028 .github/workflows/unity-experiment-android.yml | 2708 B | автоматизация GitHub Actions: unity experiment android |
@@ -62,7 +62,7 @@
 | №0041 AGENTS.md | 4903 B | документация или отчёт: AGENTS |
 | №0042 AI_BLOCKERS.md | 23406 B | документация или отчёт: AI BLOCKERS |
 | №0043 AI_NEXT_TASK.md | 26049 B | документация или отчёт: AI NEXT TASK |
-| №0044 AI_PROGRESS.md | 65881 B | документация или отчёт: AI PROGRESS |
+| №0044 AI_PROGRESS.md | 66632 B | документация или отчёт: AI PROGRESS |
 | №0045 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0046 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0047 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1739,22 +1739,22 @@
 | №1718 unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs.meta | 59 B | вспомогательный файл: LegacyMapPresenter.cs |
 | №1719 unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs | 3065 B | вспомогательный файл: LegacyMigrationSmoke |
 | №1720 unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSmoke.cs |
-| №1721 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs | 16446 B | вспомогательный файл: LegacySessionPanel.Branding |
+| №1721 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs | 16427 B | вспомогательный файл: LegacySessionPanel.Branding |
 | №1722 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Branding.cs |
-| №1723 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs | 10194 B | вспомогательный файл: LegacySessionPanel.BrandSettings |
+| №1723 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs | 8397 B | вспомогательный файл: LegacySessionPanel.BrandSettings |
 | №1724 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.BrandSettings.cs |
-| №1725 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs | 18615 B | вспомогательный файл: LegacySessionPanel.Commerce |
+| №1725 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs | 18630 B | вспомогательный файл: LegacySessionPanel.Commerce |
 | №1726 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Commerce.cs |
 | №1727 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs | 13202 B | вспомогательный файл: LegacySessionPanel.ContentManager |
-| №1728 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs | 8321 B | вспомогательный файл: LegacySessionPanel |
+| №1728 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs | 8909 B | вспомогательный файл: LegacySessionPanel |
 | №1729 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.cs |
-| №1730 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs | 27259 B | вспомогательный файл: LegacySessionPanel.FrontEnd |
+| №1730 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs | 27429 B | вспомогательный файл: LegacySessionPanel.FrontEnd |
 | №1731 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.FrontEnd.cs |
-| №1732 unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs | 9629 B | вспомогательный файл: LegacySessionPanel.Settings |
+| №1732 unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs | 9630 B | вспомогательный файл: LegacySessionPanel.Settings |
 | №1733 unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.Settings.cs |
-| №1734 unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs | 28726 B | вспомогательный файл: LegacySessionPanel.Sheet |
+| №1734 unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs | 28580 B | вспомогательный файл: LegacySessionPanel.Sheet |
 | №1735 unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.Sheet.cs |
-| №1736 unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs | 3500 B | вспомогательный файл: LegacySessionPanel.SheetSkin |
+| №1736 unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs | 3757 B | вспомогательный файл: LegacySessionPanel.SheetSkin |
 | №1737 unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.SheetSkin.cs |
 | №1738 unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs | 13243 B | вспомогательный файл: LegacySessionPanel.Updates |
 | №1739 unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Updates.cs |
@@ -1806,8 +1806,8 @@
 | №1785 unity/ci/windows-upgrade-qa.ps1 | 3846 B | вспомогательный файл: windows upgrade qa |
 | №1786 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
 | №1787 unity/ci/workshop-tests/CommerceChecks.cs | 4247 B | вспомогательный файл: CommerceChecks |
-| №1788 unity/ci/workshop-tests/Program.cs | 17175 B | вспомогательный файл: Program |
-| №1789 unity/ci/workshop-tests/WorkshopTests.csproj | 1050 B | вспомогательный файл: WorkshopTests |
+| №1788 unity/ci/workshop-tests/Program.cs | 17225 B | вспомогательный файл: Program |
+| №1789 unity/ci/workshop-tests/WorkshopTests.csproj | 1243 B | вспомогательный файл: WorkshopTests |
 | №1790 unity/ContentSources~/catalog.full.json | 1259265 B | данные/конфигурация: catalog.full |
 | №1791 unity/ContentSources~/workshop-commerce/catalogs.json | 91244 B | данные/конфигурация: catalogs |
 | №1792 unity/ContentSources~/workshop-commerce/contracts.json | 7885 B | данные/конфигурация: contracts |

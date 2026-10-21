@@ -196,7 +196,7 @@ namespace DndVtt.UnityPrototype
         private void DrawBrandBackdrop(bool modal)
         {
             PrepareBrand();
-            var full = new Rect(0, 0, Screen.width, Screen.height);
+            var full = new Rect(0, 0, UiWidth, UiHeight);
             Shade(full, new Color(.04f,.04f,.05f));
             Cover(brandWallpaper, full);
             Shade(full, new Color(0,0,0,modal ? .75f : .42f));
@@ -214,27 +214,27 @@ namespace DndVtt.UnityPrototype
             PrepareBrand();
             float elapsed = Time.realtimeSinceStartup - brandSplashSince;
             if (elapsed > 15) { brandSplashActive = false; return false; }
-            var full = new Rect(0,0,Screen.width,Screen.height);
+            var full = new Rect(0,0,UiWidth,UiHeight);
             Shade(full, Color.black); Cover(brandSplash, full);
             if (brandDragon)
             {
-                float w = Screen.width * .80f;
-                float h = Mathf.Min(w * brandDragon.height / brandDragon.width, Screen.height * .8f);
-                float y = Mathf.Lerp(Screen.height, -h, Mathf.Clamp01((elapsed - 1.8f) / 12f));
-                GUI.DrawTexture(new Rect((Screen.width-w)/2, y, w, h), brandDragon, ScaleMode.ScaleToFit, true);
+                float w = UiWidth * .80f;
+                float h = Mathf.Min(w * brandDragon.height / brandDragon.width, UiHeight * .8f);
+                float y = Mathf.Lerp(UiHeight, -h, Mathf.Clamp01((elapsed - 1.8f) / 12f));
+                GUI.DrawTexture(new Rect((UiWidth-w)/2, y, w, h), brandDragon, ScaleMode.ScaleToFit, true);
             }
-            if (GUI.Button(new Rect(Screen.width - 143, Screen.height - 64, 126, 46), "Пропустить", brandBrown))
+            if (GUI.Button(new Rect(UiWidth - 143, UiHeight - 64, 126, 46), "Пропустить", brandBrown))
                 brandSplashActive = false;
             return true;
         }
         private void DrawBrandHome()
         {
             DrawBrandBackdrop(false);
-            float width = Mathf.Min(Screen.width - 28, BrandMaxWidth);
-            float x = (Screen.width - width) / 2f;
-            float bottom = Mathf.Min(300, Screen.height * .38f);
-            GUILayout.BeginArea(new Rect(x, 12, width, Mathf.Max(75, Screen.height - bottom - 24)));
-            brandHomeScroll = GUILayout.BeginScrollView(brandHomeScroll, false, true);
+            float width = Mathf.Min(UiWidth - 28, BrandMaxWidth);
+            float x = (UiWidth - width) / 2f;
+            float bottom = Mathf.Min(300, UiHeight * .38f);
+            GUILayout.BeginArea(new Rect(x, 12, width, Mathf.Max(75, UiHeight - bottom - 24)));
+            brandHomeScroll = GUILayout.BeginScrollView(SwipePosition("home",brandHomeScroll), false, true);
             if (archive == null || archive.Count == 0)
             {
                 GUILayout.Space(22); GUILayout.BeginVertical(brandCard);
@@ -259,9 +259,9 @@ namespace DndVtt.UnityPrototype
                 GUILayout.Button("×", brandRed, GUILayout.Width(48), GUILayout.Height(51));
                 GUI.enabled = before; GUILayout.EndHorizontal();
             }
-            GUILayout.EndScrollView(); GUILayout.EndArea();
-            float footer = Mathf.Min(292, Screen.height * .37f);
-            GUILayout.BeginArea(new Rect(x, Screen.height - footer - 6, width, footer));
+            GUILayout.EndScrollView(); RegisterSwipe("home",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
+            float footer = Mathf.Min(292, UiHeight * .37f);
+            GUILayout.BeginArea(new Rect(x, UiHeight - footer - 6, width, footer));
             GUILayout.BeginVertical();
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("+ Новый персонаж", brandGreen, GUILayout.Height(51))) BeginCreation();
@@ -284,8 +284,8 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawBrandMore()
         {
-            float width = Mathf.Min(Screen.width - 35, 520);
-            Rect r = new Rect((Screen.width - width)/2, Mathf.Max(20,Screen.height*.34f), width, 260);
+            float width = Mathf.Min(UiWidth - 35, 520);
+            Rect r = new Rect((UiWidth - width)/2, Mathf.Max(20,UiHeight*.34f), width, 260);
             Shade(r, new Color(.09f,.09f,.08f,.99f));
             GUILayout.BeginArea(new Rect(r.x+14,r.y+10,r.width-28,r.height-15));
             GUILayout.Label("Дополнительно", brandTitle);

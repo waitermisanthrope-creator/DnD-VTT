@@ -6,6 +6,9 @@
     <Compile Include="../../Assets/Vtt/Runtime/WorkshopStore.cs" Link="WorkshopStore.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="CommerceChecks.cs" />
+    <Compile Include="AccountGestureChecks.cs" />
+    <Compile Include="../../Assets/Vtt/Runtime/MenuGesture.cs" />
+    <Compile Include="../../Assets/Vtt/Runtime/CloudCharacterProtocol.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/CommerceRules.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/ClientPreferences.cs" />
     <Compile Include="../../Assets/Vtt/Editor/BuildBranding.cs" />
