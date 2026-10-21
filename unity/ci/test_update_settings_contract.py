@@ -48,9 +48,9 @@ def run():
     assert "ScreenOrientation.Portrait" in frontend
     assert "ApplyMobileOrientation(next)" in frontend
     assert "ApplyMobileOrientation(screen)" in main
-    assert "Screen.height > Screen.width" in frontend
-    assert "Screen.height > Screen.width" in read("unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs")
-    assert "Screen.height > Screen.width" in read("unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs")
+    assert "UiHeight > UiWidth" in frontend
+    assert "UiHeight > UiWidth" in read("unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs")
+    assert "UiHeight > UiWidth" in read("unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs")
     assert 'activity.getCacheDir()' in read("unity/Assets/Plugins/Android/UpdateProvider.java")
     assert "UNITY_ANDROID_UPDATE_PUBLISHED" in read("unity/ci/publish_android_update.py")
     assert "github.actor == 'waitermisanthrope-creator'" in read(".github/workflows/unity-android-update-publish.yml")

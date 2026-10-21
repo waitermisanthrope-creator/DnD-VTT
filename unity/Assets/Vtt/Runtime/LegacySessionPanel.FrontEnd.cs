@@ -125,8 +125,8 @@ namespace DndVtt.UnityPrototype
                     if (GUILayout.Button("Проверить и открыть импорт", GUILayout.Height(44))) { if (Import(input)) Navigate(FrontScreen.Characters); }
                     if (archive != null)
                     {
-                        if (GUILayout.Button("Копировать текущий архив", GUILayout.Height(40))) GUIUtility.systemCopyBuffer = ExportCurrent();
-                        if (GUILayout.Button("Сохранить архив на устройстве", GUILayout.Height(40))) Attempt(() => { SaveSheet(); status = "Архив сохранён"; });
+                        if (GUILayout.Button("Копировать текущий архив", GUILayout.Height(52))) GUIUtility.systemCopyBuffer = ExportCurrent();
+                        if (GUILayout.Button("Сохранить архив на устройстве", GUILayout.Height(52))) Attempt(() => { SaveSheet(); status = "Архив сохранён"; });
                     }
                     GUILayout.Label("Локальный файл: " + SavePath, muted); break;
             }
@@ -135,7 +135,7 @@ namespace DndVtt.UnityPrototype
         private void DrawRoster()
         {
             GUILayout.Label("Мои персонажи", heading);
-            GUILayout.Label("Поиск по имени, расе или классу", muted); rosterSearch = GUILayout.TextField(rosterSearch, GUILayout.Height(36)); GUILayout.Space(12);
+            GUILayout.Label("Поиск по имени, расе или классу", muted); rosterSearch = GUILayout.TextField(rosterSearch, GUILayout.Height(52)); GUILayout.Space(12);
             if (archive == null) { GUILayout.Label("Пока нет персонажей. Создайте первого героя или импортируйте сохранение."); return; }
             for (int i = 0; i < archive.Count; i++)
             {
@@ -143,7 +143,7 @@ namespace DndVtt.UnityPrototype
                 if ((archive.Name(i) + " " + details).IndexOf(rosterSearch, StringComparison.OrdinalIgnoreCase) < 0) continue;
                 GUILayout.BeginVertical(GUI.skin.box); GUILayout.Label(archive.Name(i), heading); GUILayout.Label(details, muted);
                 GUILayout.Label("Здоровье " + archive.CurrentHp(i) + " / " + archive.MaximumHp(i) + "   ·   " + CharacterSheetRules.InventoryWeightKg(hero).ToString("0.##", CultureInfo.InvariantCulture) + " кг");
-                if (GUILayout.Button("Открыть лист  →", GUILayout.Height(40))) { selected = i; Navigate(FrontScreen.Sheet); }
+                if (GUILayout.Button("Открыть лист  →", GUILayout.Height(52))) { selected = i; Navigate(FrontScreen.Sheet); }
                 GUILayout.EndVertical(); GUILayout.Space(10);
             }
         }
@@ -156,7 +156,7 @@ namespace DndVtt.UnityPrototype
             var race = (JObject)races[raceIndex]; var cls = (JObject)classes[classIndex]; var bg = (JObject)backgrounds[backgroundIndex];
             if (creationStep == 0)
             {
-                GUILayout.Label("Имя героя"); heroName = GUILayout.TextField(heroName, 120, GUILayout.Height(40));
+                GUILayout.Label("Имя героя"); heroName = GUILayout.TextField(heroName, 120, GUILayout.Height(52));
                 Picker("Предыстория", backgrounds, ref backgroundIndex, "nameRu"); GUILayout.Label((string)backgrounds[backgroundIndex]["description"] ?? "", muted);
             }
             else if (creationStep == 1)
@@ -168,8 +168,8 @@ namespace DndVtt.UnityPrototype
             }
             else if (creationStep == 2)
             {
-                statMode = GUILayout.SelectionGrid(statMode, new[] { "Покупка · 27 очков", "Ввод мастером" }, 2, GUILayout.Height(36));
-                for (int i = 0; i < 6; i++) { GUILayout.BeginHorizontal(); GUILayout.Label(CharacterSheetRules.StatNames[i], GUILayout.Width(180)); statInputs[i] = GUILayout.TextField(statInputs[i], GUILayout.Height(32)); GUILayout.EndHorizontal(); }
+                statMode = GUILayout.SelectionGrid(statMode, new[] { "Покупка · 27 очков", "Ввод мастером" }, 2, GUILayout.Height(52));
+                for (int i = 0; i < 6; i++) { GUILayout.BeginHorizontal(); GUILayout.Label(CharacterSheetRules.StatNames[i], GUILayout.Width(180)); statInputs[i] = GUILayout.TextField(statInputs[i], GUILayout.Height(52)); GUILayout.EndHorizontal(); }
                 int total = 0; bool valid = true; foreach (string text in statInputs) { if (int.TryParse(text, out int n) && n >= 8 && n <= 15) total += CharacterCreation.PointCost(n); else valid = false; }
                 if (statMode == 0) GUILayout.Label(valid ? "Потрачено: " + total + " / 27 (до расовых бонусов)" : "Для покупки допустимы значения 8–15");
                 foreach (var entry in new[] { race, cls, bg }) foreach (JObject choice in (JArray)entry["choices"]) DrawCreationChoice(choice);
@@ -223,18 +223,18 @@ namespace DndVtt.UnityPrototype
         private void Picker(string label, JArray values, ref int selectedIndex, string nameField)
         {
             GUILayout.Label(label); GUILayout.BeginHorizontal();
-            if (GUILayout.Button("‹", GUILayout.Width(48), GUILayout.Height(38))) selectedIndex = (selectedIndex + values.Count - 1) % values.Count;
+            if (GUILayout.Button("‹", GUILayout.Width(48), GUILayout.Height(52))) selectedIndex = (selectedIndex + values.Count - 1) % values.Count;
             if (GUILayout.Button(((string)values[selectedIndex][nameField] ?? (string)values[selectedIndex]["name"]) + "  ▾", GUILayout.MinHeight(38))) { pickerKey = pickerKey == label ? null : label; pickerSearch = ""; }
-            if (GUILayout.Button("›", GUILayout.Width(48), GUILayout.Height(38))) selectedIndex = (selectedIndex + 1) % values.Count;
+            if (GUILayout.Button("›", GUILayout.Width(48), GUILayout.Height(52))) selectedIndex = (selectedIndex + 1) % values.Count;
             GUILayout.EndHorizontal();
             if (pickerKey == label)
             {
-                GUILayout.Label("Найти вариант:", muted); pickerSearch = GUILayout.TextField(pickerSearch, GUILayout.Height(32)); int shown = 0;
+                GUILayout.Label("Найти вариант:", muted); pickerSearch = GUILayout.TextField(pickerSearch, GUILayout.Height(52)); int shown = 0;
                 for (int i = 0; i < values.Count; i++)
                 {
                     string name = (string)values[i][nameField] ?? (string)values[i]["name"];
                     if (name.IndexOf(pickerSearch, StringComparison.OrdinalIgnoreCase) < 0 || shown++ >= 12) continue;
-                    if (GUILayout.Button(name, GUILayout.Height(32))) { selectedIndex = i; pickerKey = null; }
+                    if (GUILayout.Button(name, GUILayout.Height(52))) { selectedIndex = i; pickerKey = null; }
                 }
             }
         }
@@ -250,7 +250,7 @@ namespace DndVtt.UnityPrototype
                 if (selectedFeat != null) DrawFeatStatChoice(selectedFeat);
             }
             if (type == "stats2") options = new JArray(CharacterSheetRules.Stats.Select((s, i) => new JObject { ["id"] = s, ["name"] = CharacterSheetRules.StatNames[i] }));
-            if (options.Count == 0) { creationAnswers[key] = GUILayout.TextField((string)creationAnswers[key] ?? "", GUILayout.Height(32)); return; }
+            if (options.Count == 0) { creationAnswers[key] = GUILayout.TextField((string)creationAnswers[key] ?? "", GUILayout.Height(52)); return; }
             var selectedValues = creationAnswers[key] is JArray arr ? (JArray)arr.DeepClone() : new JArray();
             foreach (var option in options)
             {
@@ -306,13 +306,13 @@ namespace DndVtt.UnityPrototype
             for (int i = 0; i < keys.Length; i++)
             {
                 if ((keys[i] == "pp" && !showPlatinum) || (keys[i] == "ep" && !showElectrum)) continue;
-                GUILayout.BeginHorizontal(); GUILayout.Label(names[i], GUILayout.Width(200)); coinInput[i] = GUILayout.TextField(coinInput[i], GUILayout.Height(30)); GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal(); GUILayout.Label(names[i], GUILayout.Width(200)); coinInput[i] = GUILayout.TextField(coinInput[i], GUILayout.Height(52)); GUILayout.EndHorizontal();
             }
-            showCoinRates = GUILayout.Toggle(showCoinRates, "Настроить курсы размена", GUILayout.Height(30));
+            showCoinRates = GUILayout.Toggle(showCoinRates, "Настроить курсы размена", GUILayout.Height(52));
             if (showCoinRates)
             {
                 string[] rateLabels = { "Золотых за платиновую", "Электрума за золотую", "Серебряных за золотую", "Медных за серебряную" };
-                for (int i = 0; i < 4; i++) { GUILayout.BeginHorizontal(); GUILayout.Label(rateLabels[i], GUILayout.Width(240)); coinRateInputs[i] = GUILayout.TextField(coinRateInputs[i], GUILayout.Height(30)); GUILayout.EndHorizontal(); }
+                for (int i = 0; i < 4; i++) { GUILayout.BeginHorizontal(); GUILayout.Label(rateLabels[i], GUILayout.Width(240)); coinRateInputs[i] = GUILayout.TextField(coinRateInputs[i], GUILayout.Height(52)); GUILayout.EndHorizontal(); }
             }
             string operation = null; GUILayout.BeginHorizontal();
             if (GUILayout.Button("Получить монеты", GUILayout.Height(42))) operation = "add";

@@ -149,7 +149,7 @@ namespace DndVtt.UnityPrototype
                 if ((item["name"] + " " + id + " " + item["author"]).IndexOf(contentSearch, StringComparison.OrdinalIgnoreCase) < 0) continue;
                 shown++; GUILayout.BeginVertical(GUI.skin.box); GUILayout.Label(item["name"] + " · " + item["version"], heading);
                 GUILayout.Label(local == null ? "Не установлено" : (string)local["sha256"] == (string)item["sha256"] ? "✓ Установлено" : "Доступна другая версия · установлена " + local["version"], muted);
-                if (GUILayout.Button("Подробнее", GUILayout.Height(36))) contentDetails = contentDetails == item ? null : item;
+                if (GUILayout.Button("Подробнее", GUILayout.Height(52))) contentDetails = contentDetails == item ? null : item;
                 if (contentDetails == item)
                 {
                     GUILayout.Label((string)item["description"], muted);
@@ -161,7 +161,7 @@ namespace DndVtt.UnityPrototype
                 bool enabled = GUI.enabled; GUI.enabled = enabled && !contentBusy && unavailable == null;
                 if (GUILayout.Button(local == null ? "Скачать и установить" : (string)local["sha256"] == (string)item["sha256"] ? "Скачать повторно" : "Установить версию " + item["version"], GUILayout.Height(42))) StartCoroutine(DownloadContentPackage((JObject)item.DeepClone()));
                 GUI.enabled = enabled && !contentBusy && local != null;
-                if (GUILayout.Button("Удалить пакет (персонажи и карты сохранятся)", GUILayout.Height(38)))
+                if (GUILayout.Button("Удалить пакет (персонажи и карты сохранятся)", GUILayout.Height(52)))
                 {
                     try { workshopStore.Remove(id); RefreshWorkshop(); contentNotice = "Пакет удалён. Ссылки сохранений сохранены; ресурсы можно установить повторно."; }
                     catch (Exception e) { contentNotice = e.Message; }

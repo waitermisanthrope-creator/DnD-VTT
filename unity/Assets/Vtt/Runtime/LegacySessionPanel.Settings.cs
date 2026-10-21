@@ -95,10 +95,10 @@ namespace DndVtt.UnityPrototype
                 case 3:
                     GUILayout.Label("Камера и управление", heading);
                     GUILayout.Label("Чувствительность мыши и касания: " + settingsDraft.sensitivity.ToString("0.00") + "×");
-                    settingsDraft.sensitivity = GUILayout.HorizontalSlider(settingsDraft.sensitivity, .25f, 3, GUILayout.Height(35));
+                    settingsDraft.sensitivity = GUILayout.HorizontalSlider(settingsDraft.sensitivity, .25f, 3, GUILayout.Height(52));
                     settingsDraft.invertY = GUILayout.Toggle(settingsDraft.invertY, "Инвертировать вертикальное движение камеры", GUILayout.MinHeight(42));
                     GUILayout.Label("Поле зрения: " + Mathf.RoundToInt(settingsDraft.fieldOfView) + "°");
-                    settingsDraft.fieldOfView = GUILayout.HorizontalSlider(settingsDraft.fieldOfView, 50, 100, GUILayout.Height(35));
+                    settingsDraft.fieldOfView = GUILayout.HorizontalSlider(settingsDraft.fieldOfView, 50, 100, GUILayout.Height(52));
                     settingsDraft.firstPerson = GUILayout.Toggle(settingsDraft.firstPerson, "Камера от первого лица при запуске", GUILayout.MinHeight(42));
                     break;
                 case 4:

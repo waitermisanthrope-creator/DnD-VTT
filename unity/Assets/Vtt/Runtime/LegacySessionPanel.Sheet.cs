@@ -33,7 +33,7 @@ namespace DndVtt.UnityPrototype
             if (archive == null)
             {
                 GUILayout.Label("Импортируйте своего персонажа во вкладке Данные / карты или создайте пустой лист.");
-                if (GUILayout.Button("Создать персонажа", GUILayout.Height(40))) BeginCreation();
+                if (GUILayout.Button("Создать персонажа", GUILayout.Height(52))) BeginCreation();
                 DrawImportAndMap(); return;
             }
             bool portraitLayout = UiHeight > UiWidth;
@@ -55,8 +55,8 @@ namespace DndVtt.UnityPrototype
                 GUILayout.Label("Удалить запись «" + deleteLabel + "» вместе с её содержимым?");
                 GUILayout.Label("Изменение попадёт в файл после нажатия Сохранить.");
                 GUILayout.BeginHorizontal();
-                if (GUILayout.Button("Отмена", GUILayout.Height(40))) ClearSheetInputs();
-                if (GUILayout.Button("Подтвердить удаление", GUILayout.Height(40))) Attempt(() =>
+                if (GUILayout.Button("Отмена", GUILayout.Height(52))) ClearSheetInputs();
+                if (GUILayout.Button("Подтвердить удаление", GUILayout.Height(52))) Attempt(() =>
                 {
                     if (hero["id"].ToString() != deleteCharacter) throw new InvalidOperationException("Выбран другой персонаж");
                     CharacterSheetRules.RemoveRecord(hero, deletePath, deleteSignature);
@@ -137,7 +137,7 @@ namespace DndVtt.UnityPrototype
             }
             if (changed) { hero["stats"] = stats; Attempt(() => CharacterSheetRules.Recalculate(hero)); }
             GUILayout.Label("Бонус мастерства: " + Signed(CharacterSheetRules.Proficiency(hero)) + " · базовая инициатива: " + Signed(CharacterSheetRules.Modifier(hero, "dex")));
-            if (GUILayout.Button("Бросить инициативу", GUILayout.Height(36))) Roll("Инициатива", 20, CharacterSheetRules.Modifier(hero, "dex"));
+            if (GUILayout.Button("Бросить инициативу", GUILayout.Height(52))) Roll("Инициатива", 20, CharacterSheetRules.Modifier(hero, "dex"));
             GUILayout.Label(rollResult);
             ReadOnly(hero, "activeConditions", "Активные состояния (автоматические эффекты ещё переносятся)");
             ReadOnly(hero, "conditions", "Унаследованные состояния");
@@ -196,11 +196,11 @@ namespace DndVtt.UnityPrototype
                 spellCatalog = (JArray)JObject.Parse(asset.text)["spells"];
             }
             GUILayout.Label("Справочник: " + spellCatalog.Count + " заклинания. Поиск по названию:");
-            spellSearch = GUILayout.TextField(spellSearch, GUILayout.Height(32));
+            spellSearch = GUILayout.TextField(spellSearch, GUILayout.Height(52));
             if (spellSearch.Trim().Length < 2) return;
             var matches = spellCatalog.OfType<JObject>().Where(s => ((string)s["name"] ?? "").IndexOf(spellSearch, StringComparison.OrdinalIgnoreCase) >= 0).Take(30);
             foreach (var spell in matches)
-                if (GUILayout.Button("+ " + spell["name"] + " · круг " + spell["level"], GUILayout.Height(34)))
+                if (GUILayout.Button("+ " + spell["name"] + " · круг " + spell["level"], GUILayout.Height(52)))
                 {
                     var entry = (JObject)spell.DeepClone(); entry["id"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(); entry["desc"] = spell["description"] ?? spell["desc"] ?? ""; entry["prepared"] = false;
                     CharacterSheetRules.Array(hero, "spellsData").Add(entry); changed = true;
@@ -218,12 +218,12 @@ namespace DndVtt.UnityPrototype
                 itemCatalog = (JObject)JObject.Parse(asset.text)["items"];
             }
             itemCategory = GUILayout.SelectionGrid(itemCategory, new[] { "Оружие", "Броня", "Расходники", "Материалы", "Хлам" }, UiWidth < 900 ? 3 : 5, GUILayout.MinHeight(36));
-            GUILayout.Label("Поиск по названию, категории или ID:"); itemSearch = GUILayout.TextField(itemSearch, GUILayout.Height(32));
+            GUILayout.Label("Поиск по названию, категории или ID:"); itemSearch = GUILayout.TextField(itemSearch, GUILayout.Height(52));
             string category = CharacterSheetRules.InventoryCategories[itemCategory];
             var matches = ((JArray)itemCatalog[category]).OfType<JObject>().Where(item => (item["name"] + " " + item["category"] + " " + item["id"]).IndexOf(itemSearch, StringComparison.OrdinalIgnoreCase) >= 0).ToArray();
             GUILayout.Label("Найдено: " + matches.Length + "; показаны первые 20");
             foreach (var item in matches.Take(20))
-                if (GUILayout.Button("+ " + item["name"] + " · " + item["weight"] + " · " + item["cost"], GUILayout.Height(34)))
+                if (GUILayout.Button("+ " + item["name"] + " · " + item["weight"] + " · " + item["cost"], GUILayout.Height(52)))
                 {
                     try { CharacterSheetRules.AddInventory(hero, category, (string)item["name"], 1, item); changed = true; }
                     catch (Exception error) { status = error.Message; }
@@ -275,7 +275,7 @@ namespace DndVtt.UnityPrototype
             {
                 string title = (rows[i] as JObject)?["name"]?.ToString() ?? (rows[i] as JObject)?["title"]?.ToString() ?? (i + 1).ToString();
                 string path = hero.Path + "/" + key + "/" + i;
-                if (GUILayout.Button((expanded.Contains(path) ? "▼ " : "▶ ") + title, GUILayout.Height(32)))
+                if (GUILayout.Button((expanded.Contains(path) ? "▼ " : "▶ ") + title, GUILayout.Height(52)))
                 {
                     if (!expanded.Add(path)) expanded.Remove(path);
                     if (key == "folders" && rows[i] is JObject folder) { hero["activeFolderId"] = folder["id"]?.DeepClone(); changed = true; }
@@ -283,10 +283,10 @@ namespace DndVtt.UnityPrototype
                 if (expanded.Contains(path))
                 {
                     EditToken(rows[i], path, 0, ref changed);
-                    if (key != "classes" && GUILayout.Button("Удалить «" + title + "»…", GUILayout.Height(32))) RequestDelete(rows[i], title);
+                    if (key != "classes" && GUILayout.Button("Удалить «" + title + "»…", GUILayout.Height(52))) RequestDelete(rows[i], title);
                 }
             }
-            if (GUILayout.Button("+ " + label, GUILayout.Height(32)))
+            if (GUILayout.Button("+ " + label, GUILayout.Height(52)))
             {
                 var record = create(); rows.Add(record); hero[key] = rows;
                 if (key == "folders") hero["activeFolderId"] = record["id"]?.DeepClone(); changed = true;
@@ -296,7 +296,7 @@ namespace DndVtt.UnityPrototype
         {
             if (hero[key] == null) return;
             string path = hero.Path + "/" + key;
-            if (GUILayout.Button((expanded.Contains(path) ? "▼ " : "▶ ") + label, GUILayout.Height(32))) { if (!expanded.Add(path)) expanded.Remove(path); }
+            if (GUILayout.Button((expanded.Contains(path) ? "▼ " : "▶ ") + label, GUILayout.Height(52))) { if (!expanded.Add(path)) expanded.Remove(path); }
             if (expanded.Contains(path)) EditToken(hero[key], path, 0, ref changed);
         }
         private void EditToken(JToken token, string path, int depth, ref bool changed)
@@ -324,14 +324,14 @@ namespace DndVtt.UnityPrototype
                 }
                 else EditToken(item, path + "/" + array.IndexOf(item), depth + 1, ref changed);
                 string label = (item as JObject)?["title"]?.ToString() ?? (item as JObject)?["name"]?.ToString() ?? "Запись";
-                if (array.Path != "classes" && GUILayout.Button("Удалить «" + label + "»…", GUILayout.Height(30))) RequestDelete(item, label);
+                if (array.Path != "classes" && GUILayout.Button("Удалить «" + label + "»…", GUILayout.Height(52))) RequestDelete(item, label);
             }
             else GUILayout.Label(token.ToString());
         }
         private void ReadOnly(JObject hero, string key, string title)
         {
             if (hero[key] == null) return;
-            if (GUILayout.Button(title, GUILayout.Height(32))) { if (!expanded.Add("read/" + key)) expanded.Remove("read/" + key); }
+            if (GUILayout.Button(title, GUILayout.Height(52))) { if (!expanded.Add("read/" + key)) expanded.Remove("read/" + key); }
             if (expanded.Contains("read/" + key)) ReadOnlyToken(hero[key], key, 0);
         }
         private static string FieldLabel(string key) => key switch

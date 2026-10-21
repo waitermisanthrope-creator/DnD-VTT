@@ -79,7 +79,7 @@ begin
  perform public.require_capability('staff.manage');
  select kind into my_kind from app_private.staff where user_id=uid and active;
  select kind into target_kind from app_private.staff where user_id=p_target and active;
- if p_target=uid or p_target is null or p_kind not in ('moderator','admin','revoke') or p_trust not between 0 and 3 or p_trust is null or target_kind='owner' or (my_kind<>'owner' and (p_kind='admin' or target_kind='admin')) then
+ if p_target=uid or p_target is null or p_kind is null or p_kind not in ('moderator','admin','revoke') or p_trust not between 0 and 3 or p_trust is null or target_kind='owner' or (my_kind<>'owner' and (p_kind='admin' or target_kind='admin')) then
   raise exception 'Staff change denied' using errcode='42501';
  end if;
  insert into app_private.staff_requests(requester,target,kind,trust) values(uid,p_target,p_kind,p_trust) returning id into request_id;

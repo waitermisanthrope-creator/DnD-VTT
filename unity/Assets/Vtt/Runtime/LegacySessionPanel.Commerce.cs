@@ -44,7 +44,7 @@ namespace DndVtt.UnityPrototype
                 }
                 GUILayout.EndVertical();
             }
-            GUILayout.BeginVertical(GUI.skin.box); inventoryWeightEnabled = GUILayout.Toggle(inventoryWeightEnabled,"Расчёт веса (если вы играете с ним)",GUILayout.Height(38));
+            GUILayout.BeginVertical(GUI.skin.box); inventoryWeightEnabled = GUILayout.Toggle(inventoryWeightEnabled,"Расчёт веса (если вы играете с ним)",GUILayout.Height(52));
             if (inventoryWeightEnabled) { double weight = CommerceRules.TotalWeightKg(hero), capacity = CharacterSheetRules.CapacityKg(hero); GUILayout.Label("Вес: " + weight.ToString("0.0") + " кг / Лимит: " + capacity.ToString("0.0") + " кг",sheetQuiet); Rect r = GUILayoutUtility.GetRect(1,9,GUILayout.ExpandWidth(true)); GUI.Box(r,GUIContent.none); var old = GUI.color; GUI.color = weight > capacity ? Color.red : Color.green; GUI.DrawTexture(new Rect(r.x,r.y,r.width*Mathf.Clamp01((float)(weight/Math.Max(1,capacity))),r.height),Texture2D.whiteTexture); GUI.color = old; }
             GUILayout.EndVertical();
             var list = hero["inventory"]?[CharacterSheetRules.InventoryCategories[inventoryCategory]] as JArray ?? new JArray();
