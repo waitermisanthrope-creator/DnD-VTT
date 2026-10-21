@@ -9,10 +9,10 @@ async function identity(uid,aal='aal1'){await db.exec('reset role');await db.que
 async function root(){await db.exec('reset role');}
 async function access(){return (await db.query('select public.my_access() as a')).rows[0].a;}
 try {
- await db.exec(`create role anon;create role authenticated;create role service_role;create schema auth;grant usage on schema auth to authenticated;create table auth.users(id uuid primary key);
+ await db.exec(`create role anon;create role authenticated;create role service_role;create schema auth;grant usage on schema auth to authenticated;create table auth.users(id uuid primary key,email text);
  create function auth.jwt() returns jsonb language sql stable as $$select coalesce(nullif(current_setting('request.jwt.claims',true),''),'{}')::jsonb$$;
  create function auth.uid() returns uuid language sql stable as $$select (auth.jwt()->>'sub')::uuid$$;`);
- await db.query('insert into auth.users values($1),($2),($3),($4)',[owner,deputy,member,other]);
+ await db.query('insert into auth.users(id) values($1),($2),($3),($4)',[owner,deputy,member,other]);
  await db.exec(await readFile(new URL('../migrations/202610130001_characters.sql',import.meta.url),'utf8'));
  await db.exec(await readFile(new URL('../migrations/202610210001_access_control.sql',import.meta.url),'utf8'));
  await db.exec('set role anon');await denied('select public.my_access()');
@@ -55,5 +55,54 @@ try {
  saved=(await db.query(sql,[cid,profile,'20000000-0000-4000-8000-000000000002'])).rows[0].saved;check(saved.conflict===true,'stale upload preserves newer revision');
  await identity(other);check((await db.query('select * from public.characters')).rows.length===0,'RLS hides another user characters');
  await denied('delete from public.characters');await denied('select * from app_private.access_audit');
+ // Execute the additive center migration against the same Auth/character store.
+ await root();await db.exec(await readFile(new URL('../migrations/202610210002_moderation_center.sql',import.meta.url),'utf8'));
+ await db.query("update auth.users set email='person@example.invalid' where id=$1",[other]);
+ await identity(other);let caseId='30000000-0000-4000-8000-000000000001';
+ const submit="select public.submit_moderation_case($1,'bug','Crash','Steps to reproduce',null) as c";
+ let item=(await db.query(submit,[caseId])).rows[0].c;check(item.author===other,'ordinary player submits bug report');
+ check((await db.query(submit,[caseId])).rows[0].c.revision===1,'submission retry idempotent');
+ await denied("select public.submit_moderation_case($1,'bug','Changed','Steps to reproduce',null)",[caseId]);
+ await denied('select public.center_users($1)',['person']);
+ await denied("select public.submit_moderation_case($1,'content','Pack','Own pack',null)",[other]);
+ await root();await db.query('update app_private.staff set trust=0 where user_id=$1',[member]);
+ await identity(member,'aal2');check((await db.query('select public.center_snapshot() as s')).rows[0].s.cases.length===0,'trainee cannot see unassigned reports');
+ await identity(owner,'aal2');let snapshot=(await db.query('select public.center_snapshot() as s')).rows[0].s;
+ check(snapshot.cases.length===1&&snapshot.events.length>0,'administration sees cases and shared audit');
+ await db.query("select public.review_case($1,1,'assign','Assigned for review',$2)",[caseId,member]);
+ await root();await db.query('update app_private.staff set trust=0 where user_id=$1',[member]);
+ await identity(member,'aal2');check((await db.query('select public.center_snapshot() as s')).rows[0].s.cases.length===1,'trainee sees assigned case');
+ await db.query("select public.review_case($1,2,'comment','Checked reproduction',null)",[caseId]);
+ await denied("select public.review_case($1,3,'accepted','Accept',null)",[caseId]);
+ await denied("select public.review_case($1,3,'recommend','Recommend',null)",[caseId]);
+ await root();await db.query('update app_private.staff set trust=1 where user_id=$1',[member]);
+ await identity(member);await db.query("select public.review_case($1,3,'recommend','Recommend triage',null)",[caseId]);
+ await denied("select public.review_case($1,4,'rejected','Reject',null)",[caseId]);
+ await root();await db.query('update app_private.staff set trust=2 where user_id=$1',[member]);
+ await identity(member);await db.query("select public.review_case($1,4,'resolved','Reproduction fixed',null)",[caseId]);
+ await denied("select public.review_case($1,4,'rejected','Stale decision',null)",[caseId]);
+ snapshot=(await db.query('select public.center_snapshot() as s')).rows[0].s;
+ check(snapshot.events.some(e=>e.action==='case.resolved')&&snapshot.events.some(e=>e.actor===owner),'colleagues and admin decisions transparent to staff');
+ await denied('delete from app_private.access_audit');await denied('truncate app_private.access_audit');await denied('select app_private.purge_expired_audit()');
+ await identity(owner,'aal2');check((await db.query("select public.center_users('person') as u")).rows[0].u[0].id===other,'admin searches accounts without character data');
+ const limit="select public.set_account_limit($1,$2,$3,now()+interval '1 hour','Reviewed complaint') as l";
+ await denied(limit,[owner,0,'ban']);await denied(limit,[deputy,0,'ban']);
+ await db.query(limit,[other,0,'mute']);
+ await identity(other);await denied("select public.submit_moderation_case($1,'complaint','Help','Complaint',null)",[other]);
+ check((await db.query('select public.center_snapshot() as s')).rows[0].s.cases.length===1,'mute preserves own case visibility');
+ await identity(owner,'aal2');await db.query(limit,[other,1,'ban']);await denied(limit,[other,1,'unban']);
+ await identity(other);await denied('select public.center_snapshot()');
+ // Ban blocks existing character RPC even with a still-valid access token.
+ await denied('select public.save_character($1,0,$2::jsonb,1,false,$3)',[cid,profile,operation]);
+ await identity(owner,'aal2');await db.query(limit,[other,2,'unban']);await db.query(limit,[other,3,'unmute']);
+ await identity(other);await db.query(submit,[caseId]);
+ await identity(member,'aal2');await denied(limit,[other,4,'ban']);
+ await root();await denied("update app_private.access_audit set action='tampered'");await denied('delete from app_private.access_audit');await denied('truncate app_private.access_audit');
+ // Trusted test fixture seeds an expired event; application roles cannot do this.
+ await db.exec("insert into app_private.access_audit(at,action) values(clock_timestamp()-interval '25 hours','expired.fixture')");
+ await identity(member);snapshot=(await db.query('select public.center_snapshot() as s')).rows[0].s;
+ check(!snapshot.events.some(e=>e.action==='expired.fixture'),'events invisible immediately at retention cutoff');
+ await root();check(Number((await db.query('select app_private.purge_expired_audit() as n')).rows[0].n)===1,'worker deletes only expired logs');
+ check(Number((await db.query('select count(*) as n from app_private.access_audit')).rows[0].n)>0,'worker preserves unexpired logs');
  console.log('POSTGRES_ACCESS_CLOUD_PASS',checks,'checks: roles, forged metadata, MFA, two-person approval, revocation, receipts, conflict and RLS');
 } finally {await db.close();}

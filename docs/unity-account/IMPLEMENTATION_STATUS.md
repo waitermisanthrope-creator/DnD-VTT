@@ -1,3 +1,7 @@
+# Moderation center follow-up — PARTIAL, deployment BLOCKED
+
+Prepared moderation migration 002, native RPC forms, shared immutable audit with 24h read cutoff and private scheduled purge. Account ban/mute, complaints/bug reports, assignment/review and existing independent staff approvals implemented in source. 88 local PostgreSQL checks pass; native/UI/live Supabase/cron checks still pending. No live owner designation performed; no privileged connection available. See MODERATION_CENTER_RUNBOOK.md for guarantees, limits and exact deployment sequence. “All logs erased everywhere at precisely 24h” is not claimed; provider backups/logs are outside this application retention mechanism.
+
 # Corrected active update — 1.00.13
 
 DONE: owner reported 1.00.12 already installed, so reusing 10012 could not deliver the fix. Built and published 1.00.13/versionCode 10013. Candidate source `ccf264ec`, run 39646171342 SUCCESS; publisher 39646215002 SUCCESS; feed commit `8de32b0a`. Public raw feed independently read back as 1.00.13/10013. Original signature/package retained; public download validated before activation. APK 40,130,674 bytes; SHA-256 `2b7c8a06f193c01f1bd0ba615328c10123ff24990090c089d459de3e484b9aef`.
