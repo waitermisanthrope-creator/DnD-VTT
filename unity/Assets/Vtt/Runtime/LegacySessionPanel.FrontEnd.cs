@@ -73,6 +73,16 @@ namespace DndVtt.UnityPrototype
             // A 6-column PC toolbar becomes 3 comfortable rows of two on a
             // portrait phone; all destinations stay accessible in either view.
             bool portraitLayout = Screen.height > Screen.width;
+            if (screen == FrontScreen.Sheet)
+            {
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("⌂ Меню",GUILayout.Height(44))) Navigate(FrontScreen.Home);
+                if (GUILayout.Button("Персонажи",GUILayout.Height(44))) Navigate(FrontScreen.Characters);
+                if (GUILayout.Button("Настройки",GUILayout.Height(44))) OpenSettings();
+                GUILayout.EndHorizontal();
+            }
+            else
+            {
             int navHeight = portraitLayout ? 54 : 36;
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Главная", GUILayout.Height(navHeight))) Navigate(FrontScreen.Home);
@@ -84,6 +94,7 @@ namespace DndVtt.UnityPrototype
             if (GUILayout.Button("3D-карта", GUILayout.Height(navHeight))) Navigate(FrontScreen.Map);
             if (GUILayout.Button("Настройки", GUILayout.Height(navHeight))) OpenSettings();
             GUILayout.EndHorizontal(); GUILayout.Space(18);
+            }
             frontScroll = GUILayout.BeginScrollView(frontScroll);
             switch (screen)
             {

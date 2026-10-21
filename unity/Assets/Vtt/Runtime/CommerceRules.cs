@@ -122,8 +122,8 @@ namespace DndVtt.UnityPrototype
             {
                 string[] active = ((JArray)profile["activeProperties"]).Values<string>().ToArray(); var effects = new JArray();
                 foreach (string key in active) if (rules["effects"]?[key] is JObject effect) { var copy = (JObject)effect.DeepClone(); copy["property"] = key; copy["strength"] = Round(N(profile["potency"]) * (active.Contains("Magic") ? 1.25 : 1)); effects.Add(copy); }
-                string kind = active.Intersect(new[] { "Venom", "Hemorrhage", "Weakness", "Nausea" }).Any() ? "poison" : active.Intersect(new[] { "Fire", "Acid", "Cold", "Necrotic", "Radiant" }).Any() ? "bomb" : active.Intersect(new[] { "Recovery", "Vitality", "Regeneration" }).Any() ? "potion" : "elixir";
-                var item = (JObject)profile.DeepClone(); item["name"] = (kind == "poison" ? "Алхимический яд" : kind == "bomb" ? "Алхимическая бомба" : kind == "potion" ? "Зелье" : "Эликсир") + ": " + string.Join(" + ", effects.OfType<JObject>().Take(2).Select(e => (string)e["label"]));
+                string kind = active.Intersect(new[] { "Venom", "Hemorrhage", "Weakness", "Nausea" }).Any() ? "poison" : active.Intersect(new[] { "Fire", "Acid", "Cold", "Necrotic", "Radiant" }).Any() ? "bomb" : active.Intersect(new[] { "Recovery", "Vitality", "Regeneration", "Antidote" }).Any() ? "potion" : active.Intersect(new[] { "Invisibility", "Speed", "Breathing", "Mind", "Perception" }).Any() ? "elixir" : "reagent";
+                var item = (JObject)profile.DeepClone(); item["name"] = (kind == "poison" ? "Алхимический яд" : kind == "bomb" ? "Алхимическая бомба" : kind == "potion" ? "Зелье" : kind == "elixir" ? "Эликсир" : "Алхимический реагент") + " — " + string.Join(" + ", effects.OfType<JObject>().Take(2).Select(e => (string)e["label"]));
                 item["inventoryCategory"] = "consumables"; item["effects"] = effects; item["kind"] = kind; item["crafted"] = true; item["alchemyId"] = "alchemy_" + Guid.NewGuid().ToString("N");
                 AddItem(candidate, item); state["mastery"] = N(state["mastery"]) + 1; CharacterSheetRules.Object(state, "knownReactions")[string.Join("|", ids.OrderBy(x => x, StringComparer.Ordinal))] = profile["activeProperties"].DeepClone(); outcome["product"] = item;
             }
@@ -146,7 +146,14 @@ namespace DndVtt.UnityPrototype
             foreach (JObject effect in effects)
             {
                 string kind = (string)effect["kind"];
-                if (kind == "heal") hero["hpCurrent"] = Math.Min(N(hero["hpMax"] ?? hero["maxHp"] ?? (hero["hp"] as JObject)?["max"]), N(hero["hpCurrent"] ?? hero["currentHP"] ?? (hero["hp"] is JObject hp ? hp["current"] : hero["hp"])) + power + potency / 20);
+                if (kind == "heal")
+                {
+                    var hp = hero["hp"] as JObject; var hit = hero["hitPoints"] as JObject;
+                    double current = N(hero["hpCurrent"] ?? hero["currentHP"] ?? hp?["current"] ?? hit?["current"] ?? (hero["hitPoints"] is JValue ? hero["hitPoints"] : null) ?? (hero["hp"] is JValue ? hero["hp"] : null));
+                    double maximum = N(hero["hpMax"] ?? hero["maxHitPoints"] ?? hero["maxHp"] ?? hp?["max"] ?? hit?["max"]);
+                    double healed = Math.Max(0,Math.Min(power + potency / 20,maximum > 0 ? maximum - current : power));
+                    hero["hpCurrent"] = current + healed;
+                }
                 else if (kind == "tempHP") hero["hpTemp"] = Math.Max(N(hero["hpTemp"]),Round(potency / 5));
                 else if (kind == "cleanse") { CharacterSheetRules.Object(hero,"conditions").Remove("poisoned"); CharacterSheetRules.Object(hero,"conditions").Remove("Poisoned"); }
                 else if (kind == "condition") CharacterSheetRules.Object(hero,"conditions")[(string)effect["condition"]] = true;

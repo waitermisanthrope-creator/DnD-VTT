@@ -157,7 +157,12 @@ class Program
             store.Remove((string)originalManifest["id"]);
             Check(new WorkshopStore(store.Root).Find((string)neighbor["id"]) != null, "uninstall preserves similarly prefixed package");
                         string saves = Path.Combine(root, "characters.json"); File.WriteAllText(saves, "{\"unknown\":[1,2,3]}");
-            foreach (JObject m in store.Installed()) store.Remove((string)m["id"]);
+            while (store.Installed().Count > 0)
+            {
+                var remaining = store.Installed().OfType<JObject>().ToArray();
+                var leaf = remaining.First(m => !remaining.Any(other => ((JArray)other["dependencies"]).Values<string>().Contains((string)m["id"])));
+                store.Remove((string)leaf["id"]);
+            }
             Check(File.ReadAllText(saves) == "{\"unknown\":[1,2,3]}", "user saves untouched");
             Reject(() => WorkshopStore.Parse("{\"id\":1,\"id\":2}"), "duplicate JSON keys");
             Check(!WorkshopStore.ValidId(".."), "dot traversal");
