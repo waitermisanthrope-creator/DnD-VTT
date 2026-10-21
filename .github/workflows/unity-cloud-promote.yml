@@ -1,6 +1,6 @@
 name: Unity cloud promote verified candidate
 
-# Future owner action only. This workflow is NOT dispatched by the current task.
+# Existing paired publisher: explicit owner approval plus successful builds and upgrade QA.
 on:
   push:
     branches: [experiment/unity-vtt]

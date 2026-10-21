@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "version": "1.00.17",
+  "candidateRunId": 39677174857,
+  "approved": true,
+  "scope": "Android ARM64 and Windows x64",
+  "note": "Owner explicitly requests workshop wallpapers/icons followed by in-app updates on both platforms. Appearance release/catalog v3 already public and byte-verified. Require successful Android signing, Windows installer and isolated install/upgrade QA before promoting exact source 49c94ed2. Preserve saves/package/signing and older releases. No WebView main publication."
+}
