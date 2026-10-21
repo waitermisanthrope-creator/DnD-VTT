@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "version": "1.00.18",
-  "candidateRunId": 39680693910,
+  "version": "1.00.19",
+  "candidateRunId": 39682790121,
   "approved": true,
   "scope": "Android ARM64 and Windows x64",
-  "note": "Owner authorizes paired in-app release after author appearance publication. Exact candidate source cb5925cc repairs minimal-client runtime upgrade smoke; require successful Android/Windows builds and genuine install/upgrade/reinstall before publication. 1.00.17 failed QA and must not be published."
+  "note": "Owner-authorized paired release after appearance publication. Source 986bec6e fixes configured Input System touch path and minimal-client Windows smoke. Require successful Android, Windows and upgrade QA gates before publication. Earlier failed/cancelled candidates must not publish."
 }

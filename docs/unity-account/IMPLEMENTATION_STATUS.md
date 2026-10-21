@@ -1,3 +1,11 @@
+## Current checkpoint — 1.00.19 candidate (2026-10-22 Moscow)
+
+DONE: 63 owner-authorized appearance packages physically published in DnD-VTT-Assets release owner-appearance-v1; 118,807,535 package bytes. Public URLs, sizes and SHA-256 verified. Native wallpaper selection and icon preview/export implemented; system launcher-icon switching remains unavailable.
+
+PARTIAL: paired candidate 39682790121, source 986bec6e. Android and Windows release gates are running; no claim that 1.00.19 is publicly available yet. Previous 1.00.17 Windows runtime QA failed; 1.00.18 was superseded/cancelled. Fixed smoke to exercise actual minimal client and changed menu touch to configured Unity Input System, with virtual touchscreen engine validation. Physical phone gestures remain unverified.
+
+Owner has authorized publication after gates pass. Paired approval selects only this exact candidate. Existing historical notes below are superseded where inconsistent with this checkpoint; production Supabase migrations/owner bootstrap were reported successful by owner, not independently deployed by this runner.
+
 # Windows upgrade gate repair — target 1.00.18
 
 Appearance catalog/release are DONE and unchanged. Candidate 1.00.17/source49c94ed2 passed Android (40,167,538 bytes; SHA256 2b86cedf87e69e1a2da53732228d4516fe60547e7c09cb43ae62a5a2715efde4), 3,709 C# checks, 125 SQL checks, public verification of 268 packages and native decode of all 63 images. Windows installer compiled/packaged successfully after isolated-pip fix. Actual Windows QA FAILED at upgraded runtime smoke: old --vtt-migration-smoke handler is intentionally removed from minimal scene and tests a bundled tavern which minimal client no longer contains. Baseline install/runtime and candidate payload/profile checks preceding smoke completed. Publication gate correctly stopped; 1.00.17 was NOT published.
