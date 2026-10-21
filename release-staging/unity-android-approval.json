@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "version": "1.00.12",
-  "candidateRunId": 39643523821,
+  "version": "1.00.13",
+  "candidateRunId": 39646171342,
   "approved": true,
   "releaseType": "public-prerelease",
   "channel": "unity-experiment",
   "scope": "Android-only",
-  "note": "Owner explicitly authorized in-app release with swipe fix. Publish only successful candidate 705ab4f2 with original certificate/package, measured APK and public download SHA-256 verification before feed activation. No main/Windows changes. Device swipe QA remains owner testing."
+  "note": "Owner requires a higher version than installed 1.00.12. Approve 1.00.13/versionCode 10013, source ccf264ec, with swipe fix and role-scoped status panels. Wait for successful candidate; preserve package/signature and verify public bytes/SHA before feed activation."
 }
