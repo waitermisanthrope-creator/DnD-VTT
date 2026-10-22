@@ -169,9 +169,10 @@ namespace DndVtt.UnityPrototype
         {
             camera.orthographicSize=4;camera.transform.position=origin+new Vector3(0,9,-6);camera.transform.LookAt(origin);
             elapsed=still=accumulator=0;Rolling=true;Value=null;Result=(retry==0?"Кубики летят… ":"Неоднозначная грань — перебрасываем… ")+"Готово "+Completed+" / "+Requested+". Сумма: "+Total;
+            int columns=theme==null?4:2,rows=(dice.Count+columns-1)/columns;float spacing=theme==null?1.7f:2.3f;
             for(int i=0;i<dice.Count;i++) {
                 var die=dice[i];if(unresolvedOnly&&die.resolved>0)continue;
-                die.resolved=0;var b=die.body;b.isKinematic=false;b.position=origin+new Vector3((i%4-((Mathf.Min(dice.Count,4)-1)*.5f))*1.7f,2.1f,(i/4-.5f)*1.7f);b.rotation=UnityEngine.Random.rotationUniform;
+                die.resolved=0;var b=die.body;b.isKinematic=false;b.position=origin+new Vector3((i%columns-((Mathf.Min(dice.Count,columns)-1)*.5f))*spacing,2.1f,(i/columns-(rows-1)*.5f)*spacing);b.rotation=UnityEngine.Random.rotationUniform;
                 b.linearVelocity=new Vector3(UnityEngine.Random.Range(-2.5f,2.5f),UnityEngine.Random.Range(1f,3f),UnityEngine.Random.Range(-2f,2f));b.angularVelocity=UnityEngine.Random.onUnitSphere*UnityEngine.Random.Range(12f,24f);b.WakeUp();
             }
         }

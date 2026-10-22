@@ -93,6 +93,11 @@ public static class DiceValidation
                     Check(table.CachedMeshCount==cached,"same shape reuses cooked collision meshes");
                     Check(!table.Throwing&&table.Value.HasValue&&table.Value>=1&&table.Value<=count,"themed physical throw "+theme.Id+" d"+count+": "+table.Result);rolls++;
                 }
+                if(first&&theme.Shape=="tentacles") {
+                    table.Throw("7d20 + 3d6 + 1d8");
+                    for(int step=0;step<2000&&table.Throwing;step++) { Check(table.BodyCount<=4,"themed mixed body budget");table.Tick(.1f,false); }
+                    Check(!table.Throwing&&table.Completed==11&&table.Total>=11&&table.Total<=166,"mixed tentacle physical throw: "+table.Result);
+                }
                 themes++;
             }
             Check(themes==31&&families.Count==7,"all icon sets and shape families tested");
