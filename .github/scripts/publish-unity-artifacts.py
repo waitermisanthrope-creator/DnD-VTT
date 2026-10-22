@@ -81,6 +81,13 @@ def publish():
     publish_verified(files, manifest, expected_cert)
 
 
+def render_review_allows_activation(required, approved, actual):
+    if not required:
+        return True
+    return bool(re.fullmatch(r"[a-f0-9]{64}", actual or "") and
+                re.fullmatch(r"[a-f0-9]{64}", approved or "") and approved == actual)
+
+
 def publish_verified(files, manifest, expected_cert, source_commit=None, build_run=None):
     """Shared final publisher; caller must verify packages and provenance first."""
     if os.environ.get("GITHUB_REF") != "refs/heads/" + BRANCH:
@@ -100,6 +107,7 @@ def publish_verified(files, manifest, expected_cert, source_commit=None, build_r
     notes_file.write_text("DnD VTT Unity "+version+"\n\n"+manifest.get("notes", "")+"\n",encoding="utf-8")
     # Optional render evidence is produced by the same successful native test run.
     # It never enters the APK or changes the two installer hash contracts.
+    render_digest=None
     render_folder=os.environ.get("DICE_PREVIEW_DIR")
     if render_folder:
         images=sorted(pathlib.Path(render_folder).rglob("dnd.dice.icon.*.theme-d20.png"))
@@ -112,6 +120,7 @@ def publish_verified(files, manifest, expected_cert, source_commit=None, build_r
             evidence.append(dict(name=path.name,bytes=len(blob),sha256=hashlib.sha256(blob).hexdigest(),width=768,height=640))
         index=destination/"dice-render-index.json"
         index.write_text(json.dumps(dict(sourceCommit=source_commit,buildRun=build_run,kind="Unity native rendered d20 preview",images=evidence),indent=2)+"\n")
+        render_digest=hashlib.sha256(index.read_bytes()).hexdigest()
         files.extend(images);files.append(index)
     existing = subprocess.run(["gh", "release", "view", tag, "--repo", REPO, "--json", "isDraft"], capture_output=True, text=True)
     if existing.returncode == 0:
@@ -129,6 +138,12 @@ def publish_verified(files, manifest, expected_cert, source_commit=None, build_r
         subprocess.check_call(["curl", "--fail", "--location", "--retry", "3", "--silent", "--show-error", url, "--output", str(verified)])
         if hashlib.sha256(verified.read_bytes()).digest() != hashlib.sha256(path.read_bytes()).digest():
             raise ValueError("Public release download differs from verified local payload")
+    # Public candidate render review precedes feed activation for visual changes.
+    # The same publisher reruns after review and verifies the exact immutable index.
+    if not render_review_allows_activation(os.environ.get("DICE_RENDER_REVIEW_REQUIRED")=="true",
+                                          os.environ.get("DICE_RENDER_REVIEW_SHA"),render_digest):
+        print("UNITY_RENDER_REVIEW_PENDING: "+str(render_digest)+"; public candidate available, update feed unchanged",flush=True)
+        return False
     # Fast-forward only, and only this channel file. Never modify stable manifests.
     subprocess.check_call(["git", "fetch", "origin", "refs/heads/"+BRANCH+":refs/remotes/origin/"+BRANCH])
     subprocess.check_call(["git", "switch", "--detach", "origin/" + BRANCH])
