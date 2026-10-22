@@ -1,8 +1,8 @@
 {
   "schema": 1,
   "version": "1.00.21",
-  "candidateRunId": 39697293142,
+  "candidateRunId": 39697410019,
   "approved": true,
   "scope": "Android ARM64 and Windows x64",
-  "note": "Owner explicitly requests overnight Android/Windows in-app update. Source 21318f51: workshop paging/cache and global chat nickname settings. Production nickname SQL rollout remains owner-operated and clearly documented; do not claim deployed. Require full native build and Windows upgrade gates before publication."
+  "note": "Owner-authorized overnight paired 1.00.21 release, source 06f7d051 including malformed nickname metadata compatibility guard. Require native pagination/appearance, Android/Windows builds and Windows upgrade QA. Nickname SQL production deployment remains blocked and documented for owner."
 }
