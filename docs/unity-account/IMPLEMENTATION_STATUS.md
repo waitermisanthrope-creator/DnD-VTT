@@ -1,4 +1,4 @@
-## 1.00.21 global chat nickname and workshop performance — candidate
+## 1.00.21 global chat nickname and workshop performance — published
 
 DONE implementation: global chat menu/title; authenticated nickname settings use existing Supabase Auth user metadata chat_nickname, encrypted Android session persistence and current Auth PUT /user. No new account or character store. Nicknames are display-only, not unique identities or staff badges. Validate 3–24 Latin/Cyrillic letters, numbers, spaces, underscore/hyphen on client and SQL read. Server role enforcement unchanged.
 
@@ -6,7 +6,7 @@ BLOCKED live nickname rollout: runner has no production SQL identity. Migration 
 
 DONE implementation: workshop cached filtered catalog/installed snapshot/dependency results; maximum 12 cards per page; whole-catalog search/category/installed-only and invalidation on refresh/install/remove. Native regression validates 20,000 entries, 100 snapshot reuses, page boundaries and search beyond page one. Not a claim of physical phone performance until device test.
 
-Local/CI verification: C# 3725, PostgreSQL WASM 129 and Python 10 checks passed. Candidate 39697410019 / source 06f7d051: Android DONE, real ARM64 signed APK 40,183,922 bytes; SHA-256 dad92f9c50a130c2837e7d36605c7b33b2f4d093556fb9169d1dc43679193a3b. Native VTT_WORKSHOP_PAGINATION_PASS validates 20,000 entries, 12 cards, 100 cached draws, paging/search/installed filter. Appearance and gesture integration checks also passed. Windows, upgrade QA and publication pending. Existing published version 1.00.20 remains until checked publication.
+Local/CI verification: C# 3725, PostgreSQL WASM 129 and Python 10 checks passed. Candidate 39697410019 / source 06f7d051: Android DONE, real ARM64 signed APK 40,183,922 bytes; SHA-256 dad92f9c50a130c2837e7d36605c7b33b2f4d093556fb9169d1dc43679193a3b. Native VTT_WORKSHOP_PAGINATION_PASS validates 20,000 entries, 12 cards, 100 cached draws, paging/search/installed filter. Appearance and gesture integration checks also passed. DONE Windows build and genuine baseline install/upgrade/reinstall, runtime startup and original profile/backup/unknown-file preservation. Installer 29,191,491 bytes / SHA-256 277b2dcf7bb071324b67b2c031aefd2b074d04391eed7f78fe31f35f17616e0a. Publisher run 39697476756 SUCCESS; both public downloads verified before feed activation 0ebe1e51. Raw update feed independently checked 1.00.21/10021 for Android and Windows. Source 06f7d05121ea62ea0fc150afcf247cb2f9c5c0b7; original Android signing certificate retained. Release https://github.com/waitermisanthrope-creator/DnD-VTT/releases/tag/unity-v1.00.21. PARTIAL phone performance and live nickname roundtrip: not tested on a physical device/live Supabase by this runner. Production nickname migration remains BLOCKED pending owner execution; guide CHAT_NICKNAMES_1.00.21.md. No character schema/save-format changes.
 
 ## 1.00.20 appearance and chat correction — published
 
