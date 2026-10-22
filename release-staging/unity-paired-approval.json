@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "version": "1.00.27",
-  "candidateRunId": 39858796086,
+  "version": "1.00.28",
+  "candidateRunId": 39862385559,
   "approved": true,
   "scope": "Android ARM64 and Windows x64",
-  "note": "Owner-authorized dice correction. Candidate39858796086/source0e256eb7f8879f4c71411f2a117a6d47b25c8abd and Android120104287538/Windows120109558882/actual Windows upgrade120112170160 all SUCCESS. Both targets pass32 actual numeral pixel occlusion/visible-glyph controls,60 faces,129 physical throws, textured GPU comparison and cleanup;4319 C#/12Python/133SQLWASM. First promotion publishes immutable public candidate +31 native render PNGs but MUST leave feed26 unchanged until real render index is visually reviewed and exact SHA recorded.26 default font material had back-face bleed discovered by manual native PNG inspection;27 adds depth-tested glyph shader and facet fit. No device QA or exact31 individual sculpt claim.",
+  "note": "Owner-authorized final dice material correction. Source3e3ded5f05d3de2f896eab48eabc6e26063b132c; candidate39862385559 and Android120116045500/Windows120121328183/actual Windows upgrade120124368417 all SUCCESS. Both targets pass32 depth/visible/strong-contrast numeral image controls,60 face checks,129 physical throws;4319 C#/12 Python/133 SQL WASM. Renderer includes dark glyph contour and normalized albedo tint after manual27 render review found light material oversaturation. First promotion must publish candidate/renders only and leave feed26; exact reviewed index SHA required for activation. No false exact31 sculpt or physical phone QA claim;31 optional material1.1 packs remain unchanged.",
   "requireRenderReview": true,
   "approvedRenderIndexSha256": ""
 }
