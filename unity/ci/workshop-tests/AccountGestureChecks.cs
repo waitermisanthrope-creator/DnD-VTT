@@ -13,6 +13,11 @@ static class AccountGestureChecks
    try { CloudCharacterProtocol.ChatNickname(invalid,true);throw new Exception("Invalid nickname accepted"); }catch(FormatException) { count++; }
   }
   foreach(var malformed in new JToken[]{null,new JObject(),new JArray(),new JValue(42),new JValue(true)})Check(CloudCharacterProtocol.ChatNicknameValue(malformed)=="","malformed optional nickname metadata cannot break login");
+  Check(CloudCharacterProtocol.ChatRolePrefix(JObject.Parse("{author_role:'owner'}")).Contains("Администратор"),"owner server badge");
+  Check(CloudCharacterProtocol.ChatRolePrefix(JObject.Parse("{author_role:'admin'}"))=="Замадмин","deputy server badge");
+  for(int tier=0;tier<=3;tier++)Check(CloudCharacterProtocol.ChatRolePrefix(new JObject { ["author_role"]="moderator",["author_trust"]=tier }).Contains(tier+" ур."),"moderator tier badge");
+  Check(CloudCharacterProtocol.ChatRolePrefix(JObject.Parse("{author_role:'moderator',author_trust:99}"))=="","invalid moderator tier cannot render staff badge");
+  Check(CloudCharacterProtocol.ChatRolePrefix(JObject.Parse("{nickname:'Администратор',role:'owner'}"))=="","nickname and local roles cannot produce server badge");
   var gesture=new MenuGesture();gesture.Regions["page"]=new MenuGesture.Region { x=10,y=10,width=400,height=700 };gesture.Regions["tabs"]=new MenuGesture.Region { x=10,y=10,width=400,height=70,horizontal=true };
   gesture.Begin(40,30);gesture.Move(42,32,2,2,2);Check(!gesture.Dragging&&!gesture.End(),"tap is not scroll and does not suppress click");
   gesture.Begin(40,30);gesture.Move(40,5,0,-25,2);Check(gesture.Dragging&&gesture.Regions["page"].dy==12.5f,"vertical drag over tabs scrolls parent page at DPI scale");Check(gesture.End(),"drag end suppresses synthetic click");

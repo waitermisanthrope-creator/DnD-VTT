@@ -72,6 +72,28 @@ public class UpdateProvider extends ContentProvider {
             return manager.requestPinShortcut(shortcut,null)?"requested":"unavailable";
         } finally { bitmap.recycle(); }
     }
+    private static String chatEditResult;
+    public static synchronized String takeChatEdit() { String result=chatEditResult;chatEditResult=null;return result; }
+    private static synchronized void finishChatEdit(String id,String text,boolean accepted) {
+        try { chatEditResult=new org.json.JSONObject().put("id",id).put("text",text).put("accepted",accepted).toString(); }
+        catch(org.json.JSONException ignored) { chatEditResult=null; }
+    }
+    public static void editChat(Activity activity,String id,String text) {
+        synchronized(UpdateProvider.class) { chatEditResult=null; }
+        activity.runOnUiThread(()->{
+            android.widget.EditText input=new android.widget.EditText(activity);
+            input.setInputType(android.text.InputType.TYPE_CLASS_TEXT|android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE|android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+            input.setFilters(new android.text.InputFilter[]{new android.text.InputFilter.LengthFilter(1000)});
+            input.setMinLines(4);input.setMaxLines(10);input.setGravity(android.view.Gravity.TOP);
+            input.setText(text);input.setSelection(input.length());input.setPadding(24,24,24,24);
+            android.app.AlertDialog dialog=new android.app.AlertDialog.Builder(activity).setTitle("Сообщение в глобальный чат").setView(input)
+                .setPositiveButton("Готово",(d,w)->finishChatEdit(id,input.getText().toString(),true))
+                .setNegativeButton("Отмена",(d,w)->finishChatEdit(id,text,false))
+                .setOnCancelListener(d->finishChatEdit(id,text,false)).create();
+            dialog.setOnShowListener(d->{input.requestFocus();dialog.getWindow().setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE|android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);});
+            dialog.show();
+        });
+    }
     private static Set<String> signatures(PackageInfo p) {
         Signature[] sigs = Build.VERSION.SDK_INT >= 28 ? p.signingInfo.getApkContentsSigners() : p.signatures;
         Set<String> result = new HashSet<>(); for (Signature s : sigs) result.add(s.toCharsString()); return result;

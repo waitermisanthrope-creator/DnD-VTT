@@ -11,6 +11,7 @@ namespace DndVtt.UnityPrototype
         private float suppressMenuClickUntil;
         private readonly HashSet<string> drawnSwipeRegions=new HashSet<string>();
         private bool collectingSwipeRegions;
+        private bool selectingChatText;
         private void BeginSwipeFrame() { collectingSwipeRegions=Event.current.type==EventType.Repaint;if(collectingSwipeRegions)drawnSwipeRegions.Clear(); }
         private void EndSwipeFrame() { if(collectingSwipeRegions)foreach(string id in menuGesture.Regions.Keys.Where(id=>!drawnSwipeRegions.Contains(id)).ToArray())menuGesture.Regions.Remove(id); }
 
@@ -24,12 +25,14 @@ namespace DndVtt.UnityPrototype
         {
             if(HasMenuTouch)return;
             var e=Event.current;var point=e.mousePosition;
-            if(e.type==EventType.MouseDown&&e.button==0)menuGesture.Begin(point.x,point.y);
+            if(e.type==EventType.MouseDown&&e.button==0) { selectingChatText=screen==FrontScreen.Chat&&chatDraftRectValid&&chatDraftRect.Contains(GUIUtility.GUIToScreenPoint(point));if(!selectingChatText)menuGesture.Begin(point.x,point.y); }
+            else if(selectingChatText) { if(e.type==EventType.MouseUp)selectingChatText=false;return; }
             else if(e.type==EventType.MouseDrag&&e.button==0)menuGesture.Move(point.x,point.y,e.delta.x,e.delta.y,screen==FrontScreen.Map?1:MenuScale);
             else if(e.type==EventType.MouseUp&&e.button==0&&menuGesture.End())suppressMenuClickUntil=Time.unscaledTime+.15f;
         }
         private void Update()
         {
+            PollNativeChatEditor();
             var device=Touchscreen.current;if(device==null||!HasMenuTouch)return;
             if(device.touches.Count(t=>t.press.isPressed)>1) { if(menuGesture.End())suppressMenuClickUntil=Time.unscaledTime+.15f;return; }
             var touch=device.primaryTouch;var position=touch.position.ReadValue();var delta=touch.delta.ReadValue();var phase=touch.phase.ReadValue();

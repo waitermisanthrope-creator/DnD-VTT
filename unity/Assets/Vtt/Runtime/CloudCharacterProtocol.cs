@@ -16,6 +16,15 @@ namespace DndVtt.UnityPrototype
             if(required)throw new FormatException("Ник: 3–24 символа, буквы, цифры, пробел, _ или -.");
             return "";
         }
+        public static string ChatRolePrefix(JObject message)
+        {
+            switch((string)message["author_role"]) {
+                case "owner":return "✦ Администратор ✦";
+                case "admin":return "Замадмин";
+                case "moderator":int level=(int?)message["author_trust"]??-1;return level>=0&&level<=3?"Модератор ("+level+" ур.)":"";
+                default:return "";
+            }
+        }
         public static JObject Session(JObject response)
         {
             if(!Guid.TryParse((string)response["user"]?["id"],out _) || string.IsNullOrEmpty((string)response["access_token"]) || string.IsNullOrEmpty((string)response["refresh_token"])) throw new FormatException("Подтвердите почту и войдите снова.");

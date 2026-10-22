@@ -135,6 +135,7 @@ try {
  // Authenticated rolling-hour chat: no raw body copies in audit.
  await root();await db.exec(await readFile(new URL('../migrations/202610210004_authenticated_chat.sql',import.meta.url),'utf8'));
  await db.exec(await readFile(new URL('../migrations/202610220001_chat_nicknames.sql',import.meta.url),'utf8'));
+ await db.exec(await readFile(new URL('../migrations/202610220002_chat_staff_badges.sql',import.meta.url),'utf8'));
  await db.query("update auth.users set raw_user_meta_data=$1 where id=$2",[JSON.stringify({chat_nickname:'Лесной_маг',role:'owner'}),other]);
  await db.exec('set role anon');await denied('select public.read_chat()');await denied("select public.send_chat($1,'x')",[member]);
  await identity(other);let msg='40000000-0000-4000-8000-000000000001';
@@ -143,6 +144,12 @@ try {
  const named=(await db.query('select public.read_chat() r')).rows[0].r;check(named.nicknamesSupported===true,'nickname-capable chat contract');
  check(named.messages[0].author_name==='Лесной_маг','chat resolves nickname from existing auth profile');
  check(!JSON.stringify(named.messages).includes('user_metadata'),'chat never exposes auth metadata');
+ check(named.roleBadgesSupported===true&&named.messages[0].author_role===null,'forged auth metadata cannot produce a staff badge');
+ await root();await db.query("insert into app_private.staff(user_id,kind,trust,active) values($1,'moderator',2,true) on conflict(user_id) do update set kind='moderator',trust=2,active=true",[other]);await identity(other);
+ check((await db.query('select public.read_chat() r')).rows[0].r.messages[0].author_role==='moderator','active server appointment produces moderator badge');
+ check((await db.query('select public.read_chat() r')).rows[0].r.messages[0].author_trust===2,'server returns actual moderator trust tier');
+ await root();await db.query('update app_private.staff set active=false where user_id=$1',[other]);await identity(other);
+ check((await db.query('select public.read_chat() r')).rows[0].r.messages[0].author_role===null,'revocation removes badge without waiting for message expiry');
  await root();await db.query("update auth.users set raw_user_meta_data=$1 where id=$2",[JSON.stringify({chat_nickname:'<b>admin</b>'}),other]);await identity(other);
  check((await db.query('select public.read_chat() r')).rows[0].r.messages[0].author_name===null,'unsafe metadata nickname rejected server-side');
  await denied("select public.send_chat($1,'Changed payload')",[msg]);await denied('select * from app_private.chat_messages');await denied('select app_private.purge_expired_chat()');
