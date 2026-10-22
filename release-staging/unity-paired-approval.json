@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "version": "1.00.23",
-  "candidateRunId": 39766470836,
+  "version": "1.00.24",
+  "candidateRunId": 39810382192,
   "approved": true,
   "scope": "Android ARM64 and Windows x64",
-  "note": "Owner explicitly requests publishing the working procedural dice update. Source55646b735a10ce5490b5e80237666c62cdcf5ad8; all three paired jobs SUCCESS. Native60 face checks +56 real PhysX throws per target, strict body/numeral pixels and preview pose regression pass; signed Android and actual Windows install/upgrade/reinstall pass. Includes settings categories/Home workshop. Physical phone QA remains owner test; no Supabase migration required."
+  "note": "Owner requests the next icon-linked physical dice addition to the accepted 3D dice release, continuing the authorized Android/Windows in-app update. Source d3efae76a4c8a0d7daf0052c621b48066870273d; candidate39810382192 and all three jobs SUCCESS. Both targets passed60 face orientations,129 real PhysX throws plus classic/tentacle mixed11-die requests, all31 sets/seven families, convex closed render/collider identity, bounded cache and cleanup. Android original package/certificate verified; Windows actual install-upgrade-reinstall preserved exact payload/profile/backup hashes. No Supabase migration. Physical phone rendering/touch remains owner verification."
 }
