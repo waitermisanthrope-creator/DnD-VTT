@@ -1,8 +1,10 @@
 {
   "schema": 1,
-  "version": "1.00.26",
-  "candidateRunId": 39853938026,
+  "version": "1.00.27",
+  "candidateRunId": 39858796086,
   "approved": true,
   "scope": "Android ARM64 and Windows x64",
-  "note": "Owner-authorized corrective dice continuation: restore actual installed-set selection and texture the active thrown bodies. Exact source678a7810f27c1db89f2497c434167baad8f7d93a; candidate39853938026 and Android120087098322/Windows120094765641/actual Windows upgrade120098345947 all SUCCESS.4319 C# checks/12 Python/133 SQL WASM; both targets passed60 face checks,129 physical throws, actual textured GPU image difference, compound collision and combined renderer identity. New31 optional1.1 materials are verified public, oldv5 preserved, APK contains no new material atlas. Two referenced face materials plus tinted engraved variants are not31 exact sculpts. Publish actual native render PNGs with provenance before catalog previews; no physical phone QA claimed. Prior0bf candidate failed missing LINQ import and is never promoted."
+  "note": "Owner-authorized dice correction. Candidate39858796086/source0e256eb7f8879f4c71411f2a117a6d47b25c8abd and Android120104287538/Windows120109558882/actual Windows upgrade120112170160 all SUCCESS. Both targets pass32 actual numeral pixel occlusion/visible-glyph controls,60 faces,129 physical throws, textured GPU comparison and cleanup;4319 C#/12Python/133SQLWASM. First promotion publishes immutable public candidate +31 native render PNGs but MUST leave feed26 unchanged until real render index is visually reviewed and exact SHA recorded.26 default font material had back-face bleed discovered by manual native PNG inspection;27 adds depth-tested glyph shader and facet fit. No device QA or exact31 individual sculpt claim.",
+  "requireRenderReview": true,
+  "approvedRenderIndexSha256": ""
 }
