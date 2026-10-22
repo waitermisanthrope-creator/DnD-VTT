@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 6cf382a08f54. Файлов: 1947
+Коммит 32aa1fc77028. Файлов: 1947
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1720,7 +1720,7 @@
 1704. unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta — вспомогательный файл: CharacterSheetValidation.cs (59 B)
 1705. unity/Assets/Vtt/Editor/DiceBuildGate.cs — вспомогательный файл: DiceBuildGate (4491 B)
 1706. unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta — вспомогательный файл: DiceBuildGate.cs (60 B)
-1707. unity/Assets/Vtt/Editor/DiceValidation.cs — вспомогательный файл: DiceValidation (4981 B)
+1707. unity/Assets/Vtt/Editor/DiceValidation.cs — вспомогательный файл: DiceValidation (5437 B)
 1708. unity/Assets/Vtt/Editor/DiceValidation.cs.meta — вспомогательный файл: DiceValidation.cs (60 B)
 1709. unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs — вспомогательный файл: LegacyMigrationSetup (10734 B)
 1710. unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta — вспомогательный файл: LegacyMigrationSetup.cs (59 B)
@@ -1761,7 +1761,7 @@
 1745. unity/Assets/Vtt/Runtime/CommerceRules.cs.meta — вспомогательный файл: CommerceRules.cs (60 B)
 1746. unity/Assets/Vtt/Runtime/DiceGeometry.cs — вспомогательный файл: DiceGeometry (5955 B)
 1747. unity/Assets/Vtt/Runtime/DiceGeometry.cs.meta — вспомогательный файл: DiceGeometry.cs (60 B)
-1748. unity/Assets/Vtt/Runtime/DiceTable.cs — вспомогательный файл: DiceTable (12477 B)
+1748. unity/Assets/Vtt/Runtime/DiceTable.cs — вспомогательный файл: DiceTable (12550 B)
 1749. unity/Assets/Vtt/Runtime/DiceTable.cs.meta — вспомогательный файл: DiceTable.cs (60 B)
 1750. unity/Assets/Vtt/Runtime/ExplorerController.cs — вспомогательный файл: ExplorerController (5869 B)
 1751. unity/Assets/Vtt/Runtime/ExplorerController.cs.meta — вспомогательный файл: ExplorerController.cs (59 B)

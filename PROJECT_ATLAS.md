@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 6cf382a08f54. Git содержит 1947 файлов.
+Снимок кода 32aa1fc77028. Git содержит 1947 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1725,7 +1725,7 @@
 | №1704 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta | 59 B | вспомогательный файл: CharacterSheetValidation.cs |
 | №1705 unity/Assets/Vtt/Editor/DiceBuildGate.cs | 4491 B | вспомогательный файл: DiceBuildGate |
 | №1706 unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta | 60 B | вспомогательный файл: DiceBuildGate.cs |
-| №1707 unity/Assets/Vtt/Editor/DiceValidation.cs | 4981 B | вспомогательный файл: DiceValidation |
+| №1707 unity/Assets/Vtt/Editor/DiceValidation.cs | 5437 B | вспомогательный файл: DiceValidation |
 | №1708 unity/Assets/Vtt/Editor/DiceValidation.cs.meta | 60 B | вспомогательный файл: DiceValidation.cs |
 | №1709 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs | 10734 B | вспомогательный файл: LegacyMigrationSetup |
 | №1710 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSetup.cs |
@@ -1766,7 +1766,7 @@
 | №1745 unity/Assets/Vtt/Runtime/CommerceRules.cs.meta | 60 B | вспомогательный файл: CommerceRules.cs |
 | №1746 unity/Assets/Vtt/Runtime/DiceGeometry.cs | 5955 B | вспомогательный файл: DiceGeometry |
 | №1747 unity/Assets/Vtt/Runtime/DiceGeometry.cs.meta | 60 B | вспомогательный файл: DiceGeometry.cs |
-| №1748 unity/Assets/Vtt/Runtime/DiceTable.cs | 12477 B | вспомогательный файл: DiceTable |
+| №1748 unity/Assets/Vtt/Runtime/DiceTable.cs | 12550 B | вспомогательный файл: DiceTable |
 | №1749 unity/Assets/Vtt/Runtime/DiceTable.cs.meta | 60 B | вспомогательный файл: DiceTable.cs |
 | №1750 unity/Assets/Vtt/Runtime/ExplorerController.cs | 5869 B | вспомогательный файл: ExplorerController |
 | №1751 unity/Assets/Vtt/Runtime/ExplorerController.cs.meta | 59 B | вспомогательный файл: ExplorerController.cs |

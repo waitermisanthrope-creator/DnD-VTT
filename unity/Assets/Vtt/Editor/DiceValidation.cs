@@ -47,6 +47,10 @@ public static class DiceValidation
         using(var table=new DiceTable()) {
             foreach(int count in new[]{4,6,8,10,12,20,100}) {
                 table.Preview(count);Check(table.BodyCount==(count==100?2:1),"bounded active dice");
+                foreach(var body in UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None)) {
+                    Check((body.position-body.transform.position).sqrMagnitude<.000001f,"preview physics/render positions agree d"+count);
+                    Check(Quaternion.Angle(body.rotation,body.transform.rotation)<.01f,"preview physics/render rotations agree d"+count);
+                }
                 SaveImage(table.Image,Path.Combine(folder,"d"+count+".png"));
                 for(int trial=0;trial<8;trial++) {
                     table.Throw(count);
@@ -70,8 +74,8 @@ public static class DiceValidation
                 if(pixel.b>pixel.r*1.3f&&pixel.b>pixel.g*1.1f&&pixel.b>100)blue++;
                 if(pixel.r>220&&pixel.g>180&&pixel.b<230)gold++;
             }
-            Check(blue>80,"actual rendered blue die pixels: "+path);
-            Check(gold>8,"actual rendered number pixels: "+path);
+            Check(blue>80,"actual rendered blue die pixels="+blue+", gold="+gold+": "+path);
+            Check(gold>8,"actual rendered number pixels="+gold+", blue="+blue+": "+path);
             File.WriteAllBytes(path,image.EncodeToPNG());
         }finally { RenderTexture.active=previous;UnityEngine.Object.DestroyImmediate(image); }
     }
