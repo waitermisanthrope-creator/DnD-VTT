@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода a4517f5e7f71. Git содержит 1947 файлов.
+Снимок кода fc9c8e0fbb9f. Git содержит 1947 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1723,7 +1723,7 @@
 | №1702 unity/Assets/Vtt/Editor/BuildBranding.cs.meta | 60 B | вспомогательный файл: BuildBranding.cs |
 | №1703 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs | 21197 B | вспомогательный файл: CharacterSheetValidation |
 | №1704 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta | 59 B | вспомогательный файл: CharacterSheetValidation.cs |
-| №1705 unity/Assets/Vtt/Editor/DiceBuildGate.cs | 3033 B | вспомогательный файл: DiceBuildGate |
+| №1705 unity/Assets/Vtt/Editor/DiceBuildGate.cs | 3503 B | вспомогательный файл: DiceBuildGate |
 | №1706 unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta | 60 B | вспомогательный файл: DiceBuildGate.cs |
 | №1707 unity/Assets/Vtt/Editor/DiceValidation.cs | 4980 B | вспомогательный файл: DiceValidation |
 | №1708 unity/Assets/Vtt/Editor/DiceValidation.cs.meta | 60 B | вспомогательный файл: DiceValidation.cs |

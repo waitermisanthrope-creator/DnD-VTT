@@ -12,15 +12,16 @@ public static class DiceBuildGate
     private const string Target="VttDice.BuildTarget",Phase="VttDice.BuildPhase",Deadline="VttDice.CleanupDeadline";
     static DiceBuildGate()
     {
-        EditorApplication.playModeStateChanged+=state=> { if(state==PlayModeStateChange.EnteredPlayMode||state==PlayModeStateChange.EnteredEditMode)Resume(); };
+        EditorApplication.playModeStateChanged+=state=>Debug.Log("VTT_DICE_GATE_STATE: "+state);
         EditorApplication.update+=Update;
-        EditorApplication.delayCall+=Resume;
     }
     public static void Begin(string target)
     {
         if(target!="Android"&&target!="Windows")throw new ArgumentException(nameof(target));
         if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Dice gate must start in Edit Mode");
         SessionState.SetString(Target,target);SessionState.SetString(Phase,"play");
+        SessionState.SetFloat(Deadline,(float)EditorApplication.timeSinceStartup+180);
+        Debug.Log("VTT_DICE_GATE_BEGIN: "+target);
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
         EditorApplication.EnterPlaymode();
     }
@@ -30,9 +31,11 @@ public static class DiceBuildGate
         string phase=SessionState.GetString(Phase,"");
         if(phase=="play"&&EditorApplication.isPlaying) {
             SessionState.SetString(Phase,"validate");
-            EditorApplication.delayCall+=Validate;
+            Debug.Log("VTT_DICE_GATE_VALIDATE: actual Play Mode");
+            Validate();
         } else if(phase=="build"&&!EditorApplication.isPlayingOrWillChangePlaymode) {
             SessionState.SetString(Phase,"building");
+            Debug.Log("VTT_DICE_GATE_BUILD: "+target);
             try {
                 if(target=="Android")UnityReleaseBuild.CloudAndroidAfterDice();else UnityReleaseBuild.CloudWindowsAfterDice();
                 SessionState.EraseString(Target);SessionState.EraseString(Phase);EditorApplication.Exit(0);
@@ -49,7 +52,14 @@ public static class DiceBuildGate
     }
     private static void Update()
     {
-        if(SessionState.GetString(Phase,"")!="cleanup"||!EditorApplication.isPlaying)return;
+        string phase=SessionState.GetString(Phase,"");
+        if(phase=="play"||phase=="build") {
+            if(phase=="play"&&!EditorApplication.isPlaying&&EditorApplication.timeSinceStartup>SessionState.GetFloat(Deadline,0)) {
+                Fail(new Exception("Dice validation could not enter Play Mode"));return;
+            }
+            Resume();return;
+        }
+        if(phase!="cleanup"||!EditorApplication.isPlaying)return;
         if(SceneManager.sceneCount==DiceValidation.ExpectedSceneCount) {
             Debug.Log("VTT_DICE_PLAYMODE_CLEANUP_PASS: async local scene unload completed");
             SessionState.SetString(Phase,"build");EditorApplication.ExitPlaymode();
