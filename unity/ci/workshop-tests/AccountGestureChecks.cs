@@ -7,6 +7,11 @@ static class AccountGestureChecks
  public static int Run(string appRoot)
  {
   int count=0;void Check(bool ok,string name) { if(!ok)throw new Exception(name);count++; }
+  Check(CloudCharacterProtocol.ChatNickname("  Лесной_маг  ",true)=="Лесной_маг","nickname uses canonical trimmed auth profile name");
+  foreach(var invalid in new[]{"ab","<b>admin</b>","a@b.invalid",new string('a',25),"abc\ndef"}) {
+   Check(CloudCharacterProtocol.ChatNickname(invalid)=="","unsafe or invalid nickname hidden");
+   try { CloudCharacterProtocol.ChatNickname(invalid,true);throw new Exception("Invalid nickname accepted"); }catch(FormatException) { count++; }
+  }
   var gesture=new MenuGesture();gesture.Regions["page"]=new MenuGesture.Region { x=10,y=10,width=400,height=700 };gesture.Regions["tabs"]=new MenuGesture.Region { x=10,y=10,width=400,height=70,horizontal=true };
   gesture.Begin(40,30);gesture.Move(42,32,2,2,2);Check(!gesture.Dragging&&!gesture.End(),"tap is not scroll and does not suppress click");
   gesture.Begin(40,30);gesture.Move(40,5,0,-25,2);Check(gesture.Dragging&&gesture.Regions["page"].dy==12.5f,"vertical drag over tabs scrolls parent page at DPI scale");Check(gesture.End(),"drag end suppresses synthetic click");

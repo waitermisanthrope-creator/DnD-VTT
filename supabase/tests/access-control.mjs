@@ -9,7 +9,7 @@ async function identity(uid,aal='aal1'){await db.exec('reset role');await db.que
 async function root(){await db.exec('reset role');}
 async function access(){return (await db.query('select public.my_access() as a')).rows[0].a;}
 try {
- await db.exec(`create role anon;create role authenticated;create role service_role;create schema auth;grant usage on schema auth to authenticated;create table auth.users(id uuid primary key,email text);
+ await db.exec(`create role anon;create role authenticated;create role service_role;create schema auth;grant usage on schema auth to authenticated;create table auth.users(id uuid primary key,email text,raw_user_meta_data jsonb not null default '{}');
  create function auth.jwt() returns jsonb language sql stable as $$select coalesce(nullif(current_setting('request.jwt.claims',true),''),'{}')::jsonb$$;
  create function auth.uid() returns uuid language sql stable as $$select (auth.jwt()->>'sub')::uuid$$;`);
  await db.query('insert into auth.users(id) values($1),($2),($3),($4)',[owner,deputy,member,other]);
@@ -134,10 +134,17 @@ try {
  await root();check((await db.query("select count(*)::int n from app_private.access_audit where action='staff.direct'")).rows[0].n===3,'all direct grants/removals audited');
  // Authenticated rolling-hour chat: no raw body copies in audit.
  await root();await db.exec(await readFile(new URL('../migrations/202610210004_authenticated_chat.sql',import.meta.url),'utf8'));
+ await db.exec(await readFile(new URL('../migrations/202610220001_chat_nicknames.sql',import.meta.url),'utf8'));
+ await db.query("update auth.users set raw_user_meta_data=$1 where id=$2",[JSON.stringify({chat_nickname:'Лесной_маг',role:'owner'}),other]);
  await db.exec('set role anon');await denied('select public.read_chat()');await denied("select public.send_chat($1,'x')",[member]);
  await identity(other);let msg='40000000-0000-4000-8000-000000000001';
  await db.query("select public.send_chat($1,'Chat-test-unique')",[msg]);await db.query("select public.send_chat($1,'Chat-test-unique')",[msg]);
  check((await db.query('select public.read_chat() r')).rows[0].r.messages.length===1,'retry does not duplicate chat message');
+ const named=(await db.query('select public.read_chat() r')).rows[0].r;check(named.nicknamesSupported===true,'nickname-capable chat contract');
+ check(named.messages[0].author_name==='Лесной_маг','chat resolves nickname from existing auth profile');
+ check(!JSON.stringify(named.messages).includes('user_metadata'),'chat never exposes auth metadata');
+ await root();await db.query("update auth.users set raw_user_meta_data=$1 where id=$2",[JSON.stringify({chat_nickname:'<b>admin</b>'}),other]);await identity(other);
+ check((await db.query('select public.read_chat() r')).rows[0].r.messages[0].author_name===null,'unsafe metadata nickname rejected server-side');
  await denied("select public.send_chat($1,'Changed payload')",[msg]);await denied('select * from app_private.chat_messages');await denied('select app_private.purge_expired_chat()');
  await identity(member);await denied("select public.send_chat($1,'Chat-test-unique')",[msg]);
  await root();await db.query("update app_private.account_limits set muted_until=now()+interval '1 hour' where user_id=$1",[other]);

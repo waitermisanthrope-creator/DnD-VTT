@@ -51,6 +51,7 @@ namespace DndVtt.UnityPrototype
             GUILayout.Label(cloudSession==null?"Гостевой режим. Локальные герои доступны без регистрации.":(string)cloudSession["email"],sheetQuiet);
             if(GUILayout.Button("Аккаунт и синхронизация",brandBlue,GUILayout.MinHeight(64)))Navigate(FrontScreen.Account);
             GUILayout.EndVertical();
+            DrawChatNicknameSettings();
             DrawStaffSettingsPanels();
             GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Тема оформления");
             for(int i=0;i<BrandAccentKeys.Length;i++)if(GUILayout.Button(BrandAccentNames[i]+(settingsDraft.theme==BrandAccentKeys[i]?" ✓":""),brandBrown,GUILayout.MinHeight(50)))settingsDraft.theme=BrandAccentKeys[i];

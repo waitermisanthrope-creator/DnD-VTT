@@ -1,3 +1,13 @@
+## 1.00.21 global chat nickname and workshop performance — candidate
+
+DONE implementation: global chat menu/title; authenticated nickname settings use existing Supabase Auth user metadata chat_nickname, encrypted Android session persistence and current Auth PUT /user. No new account or character store. Nicknames are display-only, not unique identities or staff badges. Validate 3–24 Latin/Cyrillic letters, numbers, spaces, underscore/hyphen on client and SQL read. Server role enforcement unchanged.
+
+BLOCKED live nickname rollout: runner has no production SQL identity. Migration supabase/migrations/202610220001_chat_nicknames.sql extends existing read_chat with validated author_name and nicknamesSupported flag; unchanged bans, authentication, last-100/hour, cleanup and rate limits. Client remains compatible with old read_chat and explicitly reports migration unavailable. Own saved nickname can display locally; other users require migration. No claim of live Supabase nickname roundtrip.
+
+DONE implementation: workshop cached filtered catalog/installed snapshot/dependency results; maximum 12 cards per page; whole-catalog search/category/installed-only and invalidation on refresh/install/remove. Native regression validates 20,000 entries, 100 snapshot reuses, page boundaries and search beyond page one. Not a claim of physical phone performance until device test.
+
+Local verification: C# 3720, PostgreSQL WASM 129 checks passed. Native Android/Windows CI, upgrade QA and publication pending. Existing published version 1.00.20 remains until checked publication.
+
 ## 1.00.20 appearance and chat correction — published
 
 DONE implementation/native validation: replaced long textual appearance list with separate wallpaper/icon thumbnail grids, nine-card pagination, full-size selected preview, explicit apply and selected marker. Installed packages only, bounded thumbnail cache and one full preview, clear on low-memory/remove/destroy. Existing preferences/export/package hashes retained. Downloaded icon can create/update an Android 8+ pinned home-screen shortcut through ShortcutManager with system confirmation; unsupported launchers report unavailable, PNG export remains. App-drawer component icon replacement remains unavailable and explicitly labeled. Real launcher behavior requires phone QA.

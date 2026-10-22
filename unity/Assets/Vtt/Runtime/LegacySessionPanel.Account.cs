@@ -33,7 +33,10 @@ namespace DndVtt.UnityPrototype
         {
             var next=CloudCharacterProtocol.Session(response);
             if(cloudSession==null||(string)cloudSession["user"]!=(string)next["user"]) { chatMessages.Clear();chatDraft=chatPendingId=chatPendingBody="";cloudJournal=null;cloudCharacters.Clear();cloudPage=0;cloudConflict=null;centerSnapshot=null;centerUsers.Clear();mfaSecret=mfaFactor=""; }
-            cloudSession=next;cloudAccess=null;
+            cloudSession=next;cloudAccess=null;PersistCloudSession();
+        }
+        private void PersistCloudSession()
+        {
 #if UNITY_ANDROID && !UNITY_EDITOR
             try { using var vault=new AndroidJavaClass("com.dndvtt.unity.DndSessionVault");WriteCloudFile(CloudSessionPath,vault.CallStatic<string>("protect",cloudSession.ToString())); } catch(Exception) { cloudMessage="Вход выполнен. Защищённое сохранение сессии недоступно; после закрытия войдите снова."; }
 #endif
@@ -88,7 +91,7 @@ namespace DndVtt.UnityPrototype
             cloudBusy=true;string token=null;
             try {
                 yield return CloudToken(t=>token=t);if(token==null)yield break;
-                yield return CloudRequest("/auth/v1/user",null,token,r=>cloudMessage="Аккаунт подтверждён сервером.",e=>cloudMessage=e);
+                yield return CloudRequest("/auth/v1/user",null,token,r=>{cloudSession["chat_nickname"]=CloudCharacterProtocol.ChatNickname((string)r["user_metadata"]?["chat_nickname"]);nicknameActor="";PersistCloudSession();cloudMessage="Аккаунт подтверждён сервером.";},e=>cloudMessage=e);
                 yield return CloudRequest("/rest/v1/characters?select=id,profile,revision,deleted,updated_at&deleted=eq.false&order=updated_at.desc&limit=10&offset="+(cloudPage*10),null,token,r=>{cloudCharacters=(JArray)r;cloudMessage="Облачные герои загружены. Локальные файлы не заменены.";},e=>cloudMessage=e);
                 yield return CloudRequest("/rest/v1/rpc/my_access",new JObject(),token,r=>cloudAccess=(JObject)r,e=>{cloudAccess=null;});
             } finally { cloudBusy=false; }

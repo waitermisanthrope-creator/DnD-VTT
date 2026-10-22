@@ -8,10 +8,17 @@ namespace DndVtt.UnityPrototype
     {
         public const string ProjectUrl="https://rrjqxbfgwsjhgshajnob.supabase.co";
         public const string PublicKey="sb_publishable_tEMVCTm-Pzd7lG6iGUPcjw_yGw9LcsD";
+        public static string ChatNickname(string value,bool required=false)
+        {
+            string name=(value??"").Trim();
+            if(System.Text.RegularExpressions.Regex.IsMatch(name,@"^[A-Za-zА-Яа-яЁё0-9 _-]{3,24}$"))return name;
+            if(required)throw new FormatException("Ник: 3–24 символа, буквы, цифры, пробел, _ или -.");
+            return "";
+        }
         public static JObject Session(JObject response)
         {
             if(!Guid.TryParse((string)response["user"]?["id"],out _) || string.IsNullOrEmpty((string)response["access_token"]) || string.IsNullOrEmpty((string)response["refresh_token"])) throw new FormatException("Подтвердите почту и войдите снова.");
-            return new JObject { ["user"]=response["user"]["id"].DeepClone(),["email"]=response["user"]["email"]?.DeepClone(),["access_token"]=response["access_token"].DeepClone(),["refresh_token"]=response["refresh_token"].DeepClone(),["expires_at"]=(long?)response["expires_at"] ?? (DateTimeOffset.UtcNow.ToUnixTimeSeconds()+((long?)response["expires_in"]??3600)) };
+            return new JObject { ["chat_nickname"]=ChatNickname((string)response["user"]?["user_metadata"]?["chat_nickname"]),["user"]=response["user"]["id"].DeepClone(),["email"]=response["user"]["email"]?.DeepClone(),["access_token"]=response["access_token"].DeepClone(),["refresh_token"]=response["refresh_token"].DeepClone(),["expires_at"]=(long?)response["expires_at"] ?? (DateTimeOffset.UtcNow.ToUnixTimeSeconds()+((long?)response["expires_in"]??3600)) };
         }
         public static JObject SaveRequest(JObject profile,JObject journal)
         {

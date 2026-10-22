@@ -31,6 +31,30 @@ public static class WorkshopEditorValidation
             Debug.Log("VTT_MENU_INPUT_SYSTEM_PASS: actual virtual touchscreen begin/move/end reaches menu scroll and cancels click");
         } finally { UnityEngine.Object.DestroyImmediate(go);InputSystem.RemoveDevice(device);if(prior!=null)prior.MakeCurrent(); }
     }
+    private static void ValidateWorkshopPagination(WorkshopStore store)
+    {
+        var go=new GameObject("Workshop pagination validation");
+        try {
+            var panel=go.AddComponent<LegacySessionPanel>();var flags=BindingFlags.Instance|BindingFlags.NonPublic;var type=typeof(LegacySessionPanel);
+            type.GetField("workshopStore",flags).SetValue(panel,store);
+            var catalog=new JArray();for(int i=0;i<20000;i++)catalog.Add(new JObject { ["id"]="ci."+i,["name"]="Item"+i,["author"]="CI",["type"]="race" });
+            type.GetField("contentPackages",flags).SetValue(panel,catalog);
+            var ensure=type.GetMethod("EnsureContentView",flags);var page=type.GetMethod("VisibleContentPage",flags);
+            ensure.Invoke(panel,null);var firstView=type.GetField("contentView",flags).GetValue(panel);
+            for(int i=0;i<100;i++)ensure.Invoke(panel,null);
+            Check(ReferenceEquals(firstView,type.GetField("contentView",flags).GetValue(panel)),"100 draw passes reuse catalog snapshot without rebuilding/disk reads");
+            var first=((System.Collections.Generic.IEnumerable<JObject>)page.Invoke(panel,null)).ToArray();
+            Check(first.Length==12&&(string)first[0]["id"]=="ci.0","large catalog renders only twelve records");
+            type.GetField("contentPage",flags).SetValue(panel,1);
+            var next=((System.Collections.Generic.IEnumerable<JObject>)page.Invoke(panel,null)).ToArray();
+            Check(next.Length==12&&(string)next[0]["id"]=="ci.12","next page has stable nonoverlapping records");
+            type.GetField("contentSearch",flags).SetValue(panel,"Item19999");ensure.Invoke(panel,null);
+            Check(((System.Collections.Generic.IEnumerable<JObject>)page.Invoke(panel,null)).Count()==1,"search reaches records beyond first page and resets page");
+            type.GetField("installedOnly",flags).SetValue(panel,true);ensure.Invoke(panel,null);
+            Check(!((System.Collections.Generic.IEnumerable<JObject>)page.Invoke(panel,null)).Any(),"installed-only filter excludes synthetic uninstalled packages");
+            Debug.Log("VTT_WORKSHOP_PAGINATION_PASS: 20000 entries, 12 cards, cached 100 draws, next page, search and installed-only");
+        }finally { UnityEngine.Object.DestroyImmediate(go); }
+    }
     private static void ValidateAppearanceLibrary(WorkshopStore store,JArray manifests)
     {
         var go=new GameObject("Appearance library validation");
@@ -101,6 +125,7 @@ public static class WorkshopEditorValidation
             }
             Debug.Log("VTT_APPEARANCE_PNG_PASS: "+decodedImages+" downloaded images decoded with matching dimensions");
             ValidateAppearanceLibrary(store,manifests);
+            ValidateWorkshopPagination(store);
             runtime = new WorkshopRuntime(store); runtime.ActivateData();
             var commerce = runtime.Commerce();
             Check(((JArray)commerce["items"]).Count == 308 && ((JArray)commerce["craft"]["recipes"]).Count == 47, "downloaded inventory and craft activated in native Unity");

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -20,6 +21,39 @@ namespace DndVtt.UnityPrototype
         private string contentSearch = "", contentNotice = "Каталоги доступны через интернет; установленные пакеты работают офлайн.";
         private JArray contentPackages = new JArray(), assetPacks = new JArray();
         private JObject contentDetails;
+        private const int ContentPageSize=12;
+        private int contentPage,contentViewCategory=-1;
+        private bool contentViewDirty=true,contentViewInstalledOnly;
+        private string contentViewSearch;
+        private List<JObject> contentView=new List<JObject>();
+        private Dictionary<string,JObject> contentInstalled=new Dictionary<string,JObject>();
+        private Dictionary<string,string> contentAvailability=new Dictionary<string,string>();
+        private void RebuildContentView()
+        {
+            contentInstalled=workshopStore.Installed().OfType<JObject>().ToDictionary(m=>(string)m["id"]);
+            var all=contentPackages.Concat(assetPacks).OfType<JObject>().GroupBy(m=>(string)m["id"]).Select(g=>g.First()).ToList();
+            var ids=new HashSet<string>(all.Select(m=>(string)m["id"]));
+            all.AddRange(contentInstalled.Values.Where(m=>!ids.Contains((string)m["id"])));
+            contentView=all.Where(m=>(!installedOnly||contentInstalled.ContainsKey((string)m["id"]))&&(contentCategory==0||(string)m["type"]==ContentTypes[contentCategory])&&
+                (m["name"]+" "+m["id"]+" "+m["author"]).IndexOf(contentSearch,StringComparison.OrdinalIgnoreCase)>=0).ToList();
+            contentAvailability.Clear();contentViewDirty=false;contentViewCategory=contentCategory;contentViewSearch=contentSearch;contentViewInstalledOnly=installedOnly;contentPage=0;contentDetails=null;
+        }
+        private void EnsureContentView()
+        {
+            if(contentViewDirty||contentViewCategory!=contentCategory||contentViewSearch!=contentSearch||contentViewInstalledOnly!=installedOnly)RebuildContentView();
+        }
+        private IEnumerable<JObject> VisibleContentPage()=>contentView.Skip(contentPage*ContentPageSize).Take(ContentPageSize);
+        private void DrawContentPagination()
+        {
+            int pages=Math.Max(1,(contentView.Count+ContentPageSize-1)/ContentPageSize);
+            GUILayout.Label("Материалов: "+contentView.Count+" · Страница "+(contentPage+1)+" из "+pages,muted);
+            if(pages==1)return;
+            GUILayout.BeginHorizontal();bool enabled=GUI.enabled;GUI.enabled=enabled&&contentPage>0;
+            if(GUILayout.Button("← Назад",GUILayout.MinHeight(52))) { contentPage--;contentDetails=null;frontScroll=Vector2.zero; }
+            GUI.enabled=enabled&&contentPage+1<pages;
+            if(GUILayout.Button("Далее →",GUILayout.MinHeight(52))) { contentPage++;contentDetails=null;frontScroll=Vector2.zero; }
+            GUI.enabled=enabled;GUILayout.EndHorizontal();
+        }
         private static readonly string[] ContentCategories = { "Все", "Игровые системы", "Расы", "Классы", "Черты", "Подклассы", "Заклинания", "Предметы", "Монстры", "3D-модели", "Окружение", "Текстуры", "Анимации", "Карты", "Оформление", "Коллекции", "Крафт и алхимия" };
         private static readonly string[] ContentTypes = { "", "game-system", "race", "class", "feat", "subclass", "spell", "item", "monster", "model", "environment", "texture", "animation", "map", "appearance", "collection", "craft" };
         private string ContentDirectory => Path.Combine(Application.persistentDataPath, "workshop-v1");
@@ -43,11 +77,11 @@ namespace DndVtt.UnityPrototype
         {
             // Destroy geometry before unloading owned resources, then reconstruct
             // from preserved JSON. Missing resources become visible placeholders.
-            ReleaseAppearanceImages(true);
+            contentViewDirty=true;ReleaseAppearanceImages(true);
             world.ClearWorkshopGeometry(); workshop.Dispose(); workshop = new WorkshopRuntime(workshopStore); workshop.ActivateData(); creationCatalog = null; commerceCatalog = null; itemCatalog = null;
             world.Workshop = workshop; world.ReloadCurrent();
         }
-        private void OpenContentManager() { InitializeWorkshop(); contentCategory = 0; contentDetails = null; Navigate(FrontScreen.ContentManager); }
+        private void OpenContentManager() { InitializeWorkshop(); contentViewDirty=true; contentCategory = 0; contentDetails = null; Navigate(FrontScreen.ContentManager); }
         private IEnumerator FetchContentCatalog()
         {
             contentBusy = true;
@@ -73,7 +107,7 @@ namespace DndVtt.UnityPrototype
                     finally { if (File.Exists(path)) File.Delete(path); }
                 }
             }
-            contentBusy = false;
+            contentBusy = false;contentViewDirty=true;
         }
         private long ReadWorkshopFreeBytes()
         {
@@ -125,7 +159,7 @@ namespace DndVtt.UnityPrototype
                 WorkshopStore.Compatible(item, WorkshopRuntime.Platform, Application.unityVersion);
                 if ((int?)item["minClientVersionCode"] > UnityRelease.Code) return "Обновите приложение для этого пакета";
                 if ((string)item["format"] == "json" && !new[] { "race", "class", "feat", "map", "model", "environment", "appearance", "item", "craft" }.Contains((string)item["type"])) return "Активация этой категории пока недоступна";
-                foreach (string dep in ((JArray)item["dependencies"]).Values<string>()) if (workshopStore.Find(dep) == null) return "Сначала установите: " + dep;
+                foreach (string dep in ((JArray)item["dependencies"]).Values<string>()) if (!contentInstalled.ContainsKey(dep)) return "Сначала установите: " + dep;
                 return null;
             }
             catch (Exception e) { return e.Message; }
@@ -139,15 +173,11 @@ namespace DndVtt.UnityPrototype
             installedOnly = GUILayout.Toggle(installedOnly, "Только установленные (доступно без интернета)");
             contentSearch = GUILayout.TextField(contentSearch, GUILayout.MinHeight(40));
             contentCategory = MenuGrid(contentCategory,ContentCategories,2);
-            var installed = workshopStore.Installed();
-            var all = contentPackages.Concat(assetPacks).OfType<JObject>().ToList();
-            foreach (JObject local in installed) if (!all.Any(p => (string)p["id"] == (string)local["id"])) all.Add(local);
-            int shown = 0;
-            foreach (JObject item in all)
+            EnsureContentView();
+            DrawContentPagination();int shown=0;
+            foreach (JObject item in VisibleContentPage())
             {
-                string id = (string)item["id"]; var local = installed.OfType<JObject>().FirstOrDefault(p => (string)p["id"] == id);
-                if (installedOnly && local == null || contentCategory > 0 && (string)item["type"] != ContentTypes[contentCategory]) continue;
-                if ((item["name"] + " " + id + " " + item["author"]).IndexOf(contentSearch, StringComparison.OrdinalIgnoreCase) < 0) continue;
+                string id=(string)item["id"];contentInstalled.TryGetValue(id,out var local);
                 shown++; GUILayout.BeginVertical(GUI.skin.box); GUILayout.Label(item["name"] + " · " + item["version"], heading);
                 GUILayout.Label(local == null ? "Не установлено" : (string)local["sha256"] == (string)item["sha256"] ? "✓ Установлено" : "Доступна другая версия · установлена " + local["version"], muted);
                 if (GUILayout.Button("Подробнее", GUILayout.Height(52))) contentDetails = contentDetails == item ? null : item;
@@ -158,7 +188,7 @@ namespace DndVtt.UnityPrototype
                     GUILayout.Label("Зависимости: " + string.Join(", ", ((JArray)item["dependencies"]).Values<string>()) + " · Платформа: " + item["platform"] + " · Unity: " + item["unityVersion"], muted);
                     GUILayout.Label("SHA-256: " + item["sha256"], muted);
                 }
-                string unavailable = InstallAvailability(item); if (unavailable != null) GUILayout.Label(unavailable, muted);
+                string unavailable;if(!contentAvailability.TryGetValue(id,out unavailable)) { unavailable=InstallAvailability(item);contentAvailability[id]=unavailable; } if (unavailable != null) GUILayout.Label(unavailable, muted);
                 bool enabled = GUI.enabled; GUI.enabled = enabled && !contentBusy && unavailable == null;
                 if (GUILayout.Button(local == null ? "Скачать и установить" : (string)local["sha256"] == (string)item["sha256"] ? "Скачать повторно" : "Установить версию " + item["version"], GUILayout.Height(42))) StartCoroutine(DownloadContentPackage((JObject)item.DeepClone()));
                 GUI.enabled = enabled && !contentBusy && local != null;
@@ -170,6 +200,7 @@ namespace DndVtt.UnityPrototype
                 GUI.enabled = enabled; GUILayout.EndVertical();
             }
             if (shown == 0) GUILayout.Label("Материалы не найдены. Обновите каталог или измените фильтр.", muted);
+            if(shown>0)DrawContentPagination();
             if (GUILayout.Button("← Настройки", GUILayout.Height(45))) OpenSettings();
         }
     }

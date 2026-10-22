@@ -276,7 +276,7 @@ namespace DndVtt.UnityPrototype
             if (GUILayout.Button("3D Карты", brandGold, GUILayout.Height(53))) Navigate(FrontScreen.Map);
             GUILayout.EndHorizontal();
             LoadCloudSession();
-            if(cloudSession!=null&&GUILayout.Button("Чат",brandBlue,GUILayout.Height(51)))Navigate(FrontScreen.Chat);
+            if(cloudSession!=null&&GUILayout.Button("Глобальный чат",brandBlue,GUILayout.Height(51)))Navigate(FrontScreen.Chat);
             // One tap opens settings. Do not hide the essential updater behind
             // a floating popup that becomes unclickable on some Android devices.
             if (GUILayout.Button("☰ Ещё / ⚙ Настройки", brandBrown, GUILayout.Height(61)))
