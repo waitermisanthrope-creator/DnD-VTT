@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "version": "1.00.20",
-  "candidateRunId": 39694472158,
+  "version": "1.00.21",
+  "candidateRunId": 39697293142,
   "approved": true,
   "scope": "Android ARM64 and Windows x64",
-  "note": "Owner-requested appearance grid, chat labels and user-confirmed Android icon shortcut; source cb1e5b9f also fixes editor texture cleanup. Only this candidate may publish after all build, native validation and Windows upgrade gates."
+  "note": "Owner explicitly requests overnight Android/Windows in-app update. Source 21318f51: workshop paging/cache and global chat nickname settings. Production nickname SQL rollout remains owner-operated and clearly documented; do not claim deployed. Require full native build and Windows upgrade gates before publication."
 }
