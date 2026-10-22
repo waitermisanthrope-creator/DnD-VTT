@@ -64,7 +64,7 @@ namespace DndVtt.UnityPrototype
                 foreach(var face in shape.faces)for(int i=0;i<face.vertices.Length;i++) {
                     int a=face.vertices[i],b=face.vertices[(i+1)%face.vertices.Length];
                     if(!edges.Add(Math.Min(a,b)+":"+Math.Max(a,b)))continue;
-                    pieces.Add(Frustum(shape.vertices[a]*1.01f,shape.vertices[b]*1.01f,theme.Width*.36f,theme.Width*.36f,8));
+                    var edge=Frustum(shape.vertices[a]*1.01f,shape.vertices[b]*1.01f,theme.Width*.36f,theme.Width*.36f,8);edge.name="Dice metal edge";pieces.Add(edge);
                 }
             }
             return pieces;

@@ -114,7 +114,8 @@ public static class DiceValidation
                         var sculpt=body.transform.Find("Sculpted details");
                         if(sculpt) {
                             var visual=sculpt.GetComponent<MeshFilter>().sharedMesh;
-                            Check(visual.triangles.Length==colliders.Where(c=>c.gameObject!=body.gameObject).Sum(c=>c.sharedMesh.triangles.Length),"batched render retains every physical ornament triangle");
+                            var edging=body.transform.Find("Metal edges");int edgeTriangles=edging?edging.GetComponent<MeshFilter>().sharedMesh.triangles.Length:0;
+                            Check(visual.triangles.Length+edgeTriangles==colliders.Where(c=>c.gameObject!=body.gameObject).Sum(c=>c.sharedMesh.triangles.Length),"batched render retains every physical ornament triangle");
                             Check(sculpt.localPosition==Vector3.zero&&sculpt.localRotation==Quaternion.identity,"batched visual/collision poses agree");
                             Check(body.GetComponentsInChildren<MeshRenderer>().Length<=shapeRendererBudget(count),"bounded visual renderer count with raised cups");
                         }
@@ -161,7 +162,7 @@ public static class DiceValidation
             Check(changed>1000,"GPU actually samples the downloaded art texture; changed pixels="+changed);
         }finally { foreach(var m in materials)m.SetFloat("_Textured",1);render.Invoke(table,null);RenderTexture.active=previous;UnityEngine.Object.DestroyImmediate(image); }
     }
-    private static int shapeRendererBudget(int sides)=>sides==4?14:sides+2;
+    private static int shapeRendererBudget(int sides)=>sides==4?15:sides+3;
     private static void CheckClosedConvex(Mesh mesh)
     {
         var vertices=mesh.vertices;var triangles=mesh.triangles;

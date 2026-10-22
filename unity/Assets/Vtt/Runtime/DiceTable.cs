@@ -21,6 +21,7 @@ namespace DndVtt.UnityPrototype
         private readonly Dictionary<int,Mesh> bodyMeshes=new Dictionary<int,Mesh>();
         private readonly Dictionary<int,List<Mesh>> ornamentMeshes=new Dictionary<int,List<Mesh>>();
         private readonly Dictionary<int,Mesh> ornamentRenderMeshes=new Dictionary<int,Mesh>();
+        private readonly Dictionary<int,Mesh> edgeRenderMeshes=new Dictionary<int,Mesh>();
         private readonly List<Mesh> geometryAssets=new List<Mesh>();
         public int CachedMeshCount=>geometryAssets.Count;
         private readonly Material surface;
@@ -115,11 +116,21 @@ namespace DndVtt.UnityPrototype
                 if(pieces.Count>0) {
                     if(!ornamentRenderMeshes.TryGetValue(count,out var rendered)) {
                         rendered=new Mesh { name="Batched sculpted dice detail",hideFlags=HideFlags.HideAndDontSave };
-                        var combine=new CombineInstance[pieces.Count];for(int i=0;i<pieces.Count;i++)combine[i]=new CombineInstance { mesh=pieces[i],transform=Matrix4x4.identity };
+                        var visible=themeTexture&&theme.TrimTile==2?pieces.Where(p=>p.name!="Dice metal edge").ToList():pieces;
+                        var combine=new CombineInstance[visible.Count];for(int i=0;i<visible.Count;i++)combine[i]=new CombineInstance { mesh=visible[i],transform=Matrix4x4.identity };
                         rendered.CombineMeshes(combine,true,false);ornamentRenderMeshes[count]=rendered;geometryAssets.Add(rendered);
                     }
                     var detail=Child("Sculpted details");detail.transform.SetParent(go.transform,false);
                     detail.AddComponent<MeshFilter>().sharedMesh=rendered;detail.AddComponent<MeshRenderer>().sharedMaterial=trim;
+                    if(themeTexture&&theme.TrimTile==2) {
+                        if(!edgeRenderMeshes.TryGetValue(count,out var edges)) {
+                            edges=new Mesh { name="Batched metallic dice edges",hideFlags=HideFlags.HideAndDontSave };
+                            edges.CombineMeshes(pieces.Where(p=>p.name=="Dice metal edge").Select(p=>new CombineInstance { mesh=p,transform=Matrix4x4.identity }).ToArray(),true,false);
+                            edgeRenderMeshes[count]=edges;geometryAssets.Add(edges);
+                        }
+                        var metal=new Material(trim);metal.SetFloat("_Tile",3);metal.color=theme.TintTexture?trimColor:Color.white;owned.Add(metal);
+                        var edging=Child("Metal edges");edging.transform.SetParent(go.transform,false);edging.AddComponent<MeshFilter>().sharedMesh=edges;edging.AddComponent<MeshRenderer>().sharedMaterial=metal;
+                    }
                 }
             }
             var body=go.AddComponent<Rigidbody>();body.mass=.08f;body.linearDamping=.3f;body.angularDamping=.35f;body.maxAngularVelocity=30;body.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;body.interpolation=RigidbodyInterpolation.None;body.solverIterations=12;body.solverVelocityIterations=6;
@@ -271,7 +282,7 @@ namespace DndVtt.UnityPrototype
         private void ClearGeometryAssets()
         {
             foreach(var mesh in geometryAssets)if(mesh)UnityEngine.Object.DestroyImmediate(mesh);
-            geometryAssets.Clear();shapes.Clear();bodyMeshes.Clear();ornamentMeshes.Clear();ornamentRenderMeshes.Clear();
+            geometryAssets.Clear();shapes.Clear();bodyMeshes.Clear();ornamentMeshes.Clear();ornamentRenderMeshes.Clear();edgeRenderMeshes.Clear();
         }
         public void Dispose()
         {
