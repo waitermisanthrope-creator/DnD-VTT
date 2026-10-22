@@ -6,7 +6,7 @@ BLOCKED live nickname rollout: runner has no production SQL identity. Migration 
 
 DONE implementation: workshop cached filtered catalog/installed snapshot/dependency results; maximum 12 cards per page; whole-catalog search/category/installed-only and invalidation on refresh/install/remove. Native regression validates 20,000 entries, 100 snapshot reuses, page boundaries and search beyond page one. Not a claim of physical phone performance until device test.
 
-Local verification: C# 3720, PostgreSQL WASM 129 checks passed. Native Android/Windows CI, upgrade QA and publication pending. Existing published version 1.00.20 remains until checked publication.
+Local/CI verification: C# 3725, PostgreSQL WASM 129 and Python 10 checks passed. Candidate 39697410019 / source 06f7d051: Android DONE, real ARM64 signed APK 40,183,922 bytes; SHA-256 dad92f9c50a130c2837e7d36605c7b33b2f4d093556fb9169d1dc43679193a3b. Native VTT_WORKSHOP_PAGINATION_PASS validates 20,000 entries, 12 cards, 100 cached draws, paging/search/installed filter. Appearance and gesture integration checks also passed. Windows, upgrade QA and publication pending. Existing published version 1.00.20 remains until checked publication.
 
 ## 1.00.20 appearance and chat correction — published
 
