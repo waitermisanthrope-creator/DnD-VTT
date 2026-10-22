@@ -43,3 +43,10 @@ Both targets must pass before APK readiness/publication is claimed.
 No physical phone visual/touch validation of these changes yet. Public remains
 1.00.23 until a successful paired candidate is confirmed and existing gated
 publisher is used. No Supabase change or SQL required for this feature.
+
+Additional mathematical check using the actual generator with a System.Numerics
+shim:186 non-percentile variants,4430 closed convex outward pieces with positive
+volume PASS. This is not a substitute for native PhysX. First CI39802677786
+correctly failed before Unity on unmatched bundled/online changelog; both now
+use the existing testing status and the contract passes locally. Runtime adds
+per-type aggregate results and first-use matching to the selected installed icon.

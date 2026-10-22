@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 2caf587a4340. Файлов: 1961
+Коммит 3d09cfc5650d. Файлов: 1961
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1082,7 +1082,7 @@
 1066. docs/unity-account/CHAT_ONE_HOUR.md — документация или отчёт: CHAT ONE HOUR (2267 B)
 1067. docs/unity-account/CHAT_WORKSHOP_1.00.22.md — документация или отчёт: CHAT WORKSHOP 1.00.22 (7852 B)
 1068. docs/unity-account/DICE_1.00.23.md — документация или отчёт: DICE 1.00.23 (5241 B)
-1069. docs/unity-account/DICE_THEMES_1.00.24.md — документация или отчёт: DICE THEMES 1.00.24 (2955 B)
+1069. docs/unity-account/DICE_THEMES_1.00.24.md — документация или отчёт: DICE THEMES 1.00.24 (3431 B)
 1070. docs/unity-account/dice-1.00.23-metrics.json — документация или отчёт: dice 1.00.23 metrics (1453 B)
 1071. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (36465 B)
 1072. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7893 B)
@@ -1728,7 +1728,7 @@
 1712. unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta — вспомогательный файл: CharacterSheetValidation.cs (59 B)
 1713. unity/Assets/Vtt/Editor/DiceBuildGate.cs — вспомогательный файл: DiceBuildGate (4491 B)
 1714. unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta — вспомогательный файл: DiceBuildGate.cs (60 B)
-1715. unity/Assets/Vtt/Editor/DiceValidation.cs — вспомогательный файл: DiceValidation (8163 B)
+1715. unity/Assets/Vtt/Editor/DiceValidation.cs — вспомогательный файл: DiceValidation (8290 B)
 1716. unity/Assets/Vtt/Editor/DiceValidation.cs.meta — вспомогательный файл: DiceValidation.cs (60 B)
 1717. unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs — вспомогательный файл: LegacyMigrationSetup (10734 B)
 1718. unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta — вспомогательный файл: LegacyMigrationSetup.cs (59 B)
@@ -1769,9 +1769,9 @@
 1753. unity/Assets/Vtt/Runtime/CommerceRules.cs.meta — вспомогательный файл: CommerceRules.cs (60 B)
 1754. unity/Assets/Vtt/Runtime/DiceGeometry.cs — вспомогательный файл: DiceGeometry (6082 B)
 1755. unity/Assets/Vtt/Runtime/DiceGeometry.cs.meta — вспомогательный файл: DiceGeometry.cs (60 B)
-1756. unity/Assets/Vtt/Runtime/DiceRollRequest.cs — вспомогательный файл: DiceRollRequest (3221 B)
+1756. unity/Assets/Vtt/Runtime/DiceRollRequest.cs — вспомогательный файл: DiceRollRequest (3635 B)
 1757. unity/Assets/Vtt/Runtime/DiceRollRequest.cs.meta — вспомогательный файл: DiceRollRequest.cs (60 B)
-1758. unity/Assets/Vtt/Runtime/DiceTable.cs — вспомогательный файл: DiceTable (16797 B)
+1758. unity/Assets/Vtt/Runtime/DiceTable.cs — вспомогательный файл: DiceTable (16887 B)
 1759. unity/Assets/Vtt/Runtime/DiceTable.cs.meta — вспомогательный файл: DiceTable.cs (60 B)
 1760. unity/Assets/Vtt/Runtime/DiceTheme.cs — вспомогательный файл: DiceTheme (1580 B)
 1761. unity/Assets/Vtt/Runtime/DiceTheme.cs.meta — вспомогательный файл: DiceTheme.cs (60 B)
@@ -1804,7 +1804,7 @@
 1788. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs.meta — вспомогательный файл: LegacySessionPanel.ContentPreviews.cs (60 B)
 1789. unity/Assets/Vtt/Runtime/LegacySessionPanel.cs — вспомогательный файл: LegacySessionPanel (8942 B)
 1790. unity/Assets/Vtt/Runtime/LegacySessionPanel.cs.meta — вспомогательный файл: LegacySessionPanel.cs (59 B)
-1791. unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs — вспомогательный файл: LegacySessionPanel.Dice (6055 B)
+1791. unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs — вспомогательный файл: LegacySessionPanel.Dice (6287 B)
 1792. unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs.meta — вспомогательный файл: LegacySessionPanel.Dice.cs (60 B)
 1793. unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs — вспомогательный файл: LegacySessionPanel.FrontEnd (28174 B)
 1794. unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs.meta — вспомогательный файл: LegacySessionPanel.FrontEnd.cs (59 B)

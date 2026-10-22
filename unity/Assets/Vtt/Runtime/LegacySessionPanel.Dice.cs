@@ -33,7 +33,8 @@ namespace DndVtt.UnityPrototype
                     InitializeWorkshop();
                     diceThemes=workshopStore.Installed().OfType<JObject>().Where(m=>(string)m["imageKind"]=="dice").Select(m=>DiceTheme.Read((JObject)workshopStore.Data(m)["diceThemes"][0])).ToArray();
                     string selected=PlayerPrefs.GetString("dndvtt.dice.theme","");
-                    diceThemeSelection=Array.FindIndex(diceThemes,t=>t.Id==selected)+1;
+                    if(!PlayerPrefs.HasKey("dndvtt.dice.theme")) { string icon=PlayerPrefs.GetString(AppearancePreference("icon"),"");selected=diceThemes.FirstOrDefault(t=>t.Icon==icon)?.Id??""; }
+                    diceThemeSelection=Array.FindIndex(diceThemes,t=>t.Id==selected)+1;diceThemePage=diceThemeSelection/6;
                     if(diceThemeSelection>0)diceTable.SetTheme(diceThemes[diceThemeSelection-1]); }
                 catch(Exception error) { CloseDiceTable();diceError="Не удалось открыть 3D-стол. Обычные броски доступны в листе героя. "+error.Message; }
             }

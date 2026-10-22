@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 2caf587a4340. Git содержит 1961 файлов.
+Снимок кода 3d09cfc5650d. Git содержит 1961 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1087,7 +1087,7 @@
 | №1066 docs/unity-account/CHAT_ONE_HOUR.md | 2267 B | документация или отчёт: CHAT ONE HOUR |
 | №1067 docs/unity-account/CHAT_WORKSHOP_1.00.22.md | 7852 B | документация или отчёт: CHAT WORKSHOP 1.00.22 |
 | №1068 docs/unity-account/DICE_1.00.23.md | 5241 B | документация или отчёт: DICE 1.00.23 |
-| №1069 docs/unity-account/DICE_THEMES_1.00.24.md | 2955 B | документация или отчёт: DICE THEMES 1.00.24 |
+| №1069 docs/unity-account/DICE_THEMES_1.00.24.md | 3431 B | документация или отчёт: DICE THEMES 1.00.24 |
 | №1070 docs/unity-account/dice-1.00.23-metrics.json | 1453 B | документация или отчёт: dice 1.00.23 metrics |
 | №1071 docs/unity-account/IMPLEMENTATION_STATUS.md | 36465 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1072 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
@@ -1733,7 +1733,7 @@
 | №1712 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta | 59 B | вспомогательный файл: CharacterSheetValidation.cs |
 | №1713 unity/Assets/Vtt/Editor/DiceBuildGate.cs | 4491 B | вспомогательный файл: DiceBuildGate |
 | №1714 unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta | 60 B | вспомогательный файл: DiceBuildGate.cs |
-| №1715 unity/Assets/Vtt/Editor/DiceValidation.cs | 8163 B | вспомогательный файл: DiceValidation |
+| №1715 unity/Assets/Vtt/Editor/DiceValidation.cs | 8290 B | вспомогательный файл: DiceValidation |
 | №1716 unity/Assets/Vtt/Editor/DiceValidation.cs.meta | 60 B | вспомогательный файл: DiceValidation.cs |
 | №1717 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs | 10734 B | вспомогательный файл: LegacyMigrationSetup |
 | №1718 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSetup.cs |
@@ -1774,9 +1774,9 @@
 | №1753 unity/Assets/Vtt/Runtime/CommerceRules.cs.meta | 60 B | вспомогательный файл: CommerceRules.cs |
 | №1754 unity/Assets/Vtt/Runtime/DiceGeometry.cs | 6082 B | вспомогательный файл: DiceGeometry |
 | №1755 unity/Assets/Vtt/Runtime/DiceGeometry.cs.meta | 60 B | вспомогательный файл: DiceGeometry.cs |
-| №1756 unity/Assets/Vtt/Runtime/DiceRollRequest.cs | 3221 B | вспомогательный файл: DiceRollRequest |
+| №1756 unity/Assets/Vtt/Runtime/DiceRollRequest.cs | 3635 B | вспомогательный файл: DiceRollRequest |
 | №1757 unity/Assets/Vtt/Runtime/DiceRollRequest.cs.meta | 60 B | вспомогательный файл: DiceRollRequest.cs |
-| №1758 unity/Assets/Vtt/Runtime/DiceTable.cs | 16797 B | вспомогательный файл: DiceTable |
+| №1758 unity/Assets/Vtt/Runtime/DiceTable.cs | 16887 B | вспомогательный файл: DiceTable |
 | №1759 unity/Assets/Vtt/Runtime/DiceTable.cs.meta | 60 B | вспомогательный файл: DiceTable.cs |
 | №1760 unity/Assets/Vtt/Runtime/DiceTheme.cs | 1580 B | вспомогательный файл: DiceTheme |
 | №1761 unity/Assets/Vtt/Runtime/DiceTheme.cs.meta | 60 B | вспомогательный файл: DiceTheme.cs |
@@ -1809,7 +1809,7 @@
 | №1788 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.ContentPreviews.cs |
 | №1789 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs | 8942 B | вспомогательный файл: LegacySessionPanel |
 | №1790 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.cs |
-| №1791 unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs | 6055 B | вспомогательный файл: LegacySessionPanel.Dice |
+| №1791 unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs | 6287 B | вспомогательный файл: LegacySessionPanel.Dice |
 | №1792 unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Dice.cs |
 | №1793 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs | 28174 B | вспомогательный файл: LegacySessionPanel.FrontEnd |
 | №1794 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.FrontEnd.cs |

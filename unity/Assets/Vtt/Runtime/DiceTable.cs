@@ -157,7 +157,7 @@ namespace DndVtt.UnityPrototype
         private void Launch(bool unresolvedOnly=false)
         {
             camera.orthographicSize=4;camera.transform.position=origin+new Vector3(0,9,-6);camera.transform.LookAt(origin);
-            elapsed=still=accumulator=0;Rolling=true;Value=null;Result=retry==0?"Кубики летят…":"Кубик встал на ребро — перебрасываем…";
+            elapsed=still=accumulator=0;Rolling=true;Value=null;Result=(retry==0?"Кубики летят… ":"Неоднозначная грань — перебрасываем… ")+"Готово "+Completed+" / "+Requested+". Сумма: "+Total;
             for(int i=0;i<dice.Count;i++) {
                 var die=dice[i];if(unresolvedOnly&&die.resolved>0)continue;
                 die.resolved=0;var b=die.body;b.isKinematic=false;b.position=origin+new Vector3((i%4-((Mathf.Min(dice.Count,4)-1)*.5f))*1.7f,2.1f,(i/4-.5f)*1.7f);b.rotation=UnityEngine.Random.rotationUniform;
@@ -201,7 +201,7 @@ namespace DndVtt.UnityPrototype
                 for(int i=0;i<batch.Length;i++)request.Accept(batch[i],results[i]);
                 nextBatch=request.Pending;
                 if(!nextBatch&&request.Total<=int.MaxValue)Value=(int)request.Total;
-                Result=(nextBatch?"Бросаем… ":"Готово: ")+Completed+" / "+Requested+". Сумма: "+Total+". Последняя партия: "+string.Join(", ",System.Linq.Enumerable.Select(System.Linq.Enumerable.Range(0,results.Count),i=>"d"+batch[i]+"="+results[i]));
+                Result=(nextBatch?"Бросаем… ":"Готово: ")+Completed+" / "+Requested+". Сумма: "+Total+". "+request.Summary+". Последняя партия: "+string.Join(", ",System.Linq.Enumerable.Select(System.Linq.Enumerable.Range(0,results.Count),i=>"d"+batch[i]+"="+results[i]));
             }
         }
 

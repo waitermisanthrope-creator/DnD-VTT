@@ -81,7 +81,7 @@ public static class DiceValidation
                     foreach(var body in UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None)) {
                         var colliders=body.GetComponentsInChildren<MeshCollider>();Check(colliders.Length>1,"compound collision "+theme.Id);
                         foreach(var collider in colliders) {
-                            Check(collider.convex&&!collider.isTrigger,"solid convex physical piece");
+                            Check(collider.enabled&&collider.convex&&!collider.isTrigger&&collider.attachedRigidbody==body&&!Physics.GetIgnoreLayerCollision(collider.gameObject.layer,31),"solid enabled attached collision piece");
                             Check(collider.sharedMesh==collider.GetComponent<MeshFilter>().sharedMesh,"render and collision use same mesh");
                         }
                     }

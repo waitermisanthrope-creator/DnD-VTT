@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
 
@@ -12,6 +13,8 @@ namespace DndVtt.UnityPrototype
     {
         private static readonly int[] Supported={4,6,8,10,12,20,100};
         private readonly Dictionary<int,BigInteger> remaining=new Dictionary<int,BigInteger>();
+        private readonly Dictionary<int,BigInteger> done=new Dictionary<int,BigInteger>(),sums=new Dictionary<int,BigInteger>();
+        public string Summary=>string.Join("; ",Supported.Where(s=>done.ContainsKey(s)).Select(s=>"d"+s+": "+done[s]+" шт., сумма "+sums[s]));
         private readonly Dictionary<int,int> inFlight=new Dictionary<int,int>();
         public BigInteger Count { get;private set; }
         public BigInteger Completed { get;private set; }
@@ -49,7 +52,7 @@ namespace DndVtt.UnityPrototype
         public void Accept(int sides,int value)
         {
             if(!inFlight.TryGetValue(sides,out int active)||active<1||value<1||value>sides||Completed>=Count)throw new ArgumentOutOfRangeException(nameof(value));
-            inFlight[sides]=active-1;Completed++;Total+=value;
+            inFlight[sides]=active-1;Completed++;Total+=value;done.TryGetValue(sides,out var count);sums.TryGetValue(sides,out var sum);done[sides]=count+1;sums[sides]=sum+value;
         }
     }
 }
