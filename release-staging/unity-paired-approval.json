@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "version": "1.00.24",
-  "candidateRunId": 39810382192,
+  "version": "1.00.25",
+  "candidateRunId": 39823915147,
   "approved": true,
   "scope": "Android ARM64 and Windows x64",
-  "note": "Owner requests the next icon-linked physical dice addition to the accepted 3D dice release, continuing the authorized Android/Windows in-app update. Source d3efae76a4c8a0d7daf0052c621b48066870273d; candidate39810382192 and all three jobs SUCCESS. Both targets passed60 face orientations,129 real PhysX throws plus classic/tentacle mixed11-die requests, all31 sets/seven families, convex closed render/collider identity, bounded cache and cleanup. Android original package/certificate verified; Windows actual install-upgrade-reinstall preserved exact payload/profile/backup hashes. No Supabase migration. Physical phone rendering/touch remains owner verification."
+  "note": "Owner-authorized continuation of the Unity dice release: button-based mixed groups and automatic installed set matching the selected app icon. Exact source945a4b5a6c402037644b3d10a509f00d1e3eb870; candidate39823915147 SUCCESS. Android119982033174, Windows119988588952 and real Windows install-upgrade-reinstall119992198245 all SUCCESS. Native composer checks and60 face/129 physical throw checks pass on both targets.4159 C# checks and12 Python checks pass; original Android signing/package retained. No schema/content/character storage changes. Physical phone UI verification remains pending."
 }
