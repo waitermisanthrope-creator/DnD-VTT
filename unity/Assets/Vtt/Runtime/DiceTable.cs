@@ -22,6 +22,7 @@ namespace DndVtt.UnityPrototype
         private readonly Font font;
         private readonly Vector3 origin=new Vector3(12000,0,12000);
         private float accumulator,elapsed,still;
+        private bool imageDirty=true;
         private int retry,sides=20;
         public RenderTexture Image { get;private set; }
         public bool Rolling { get;private set; }
@@ -31,11 +32,12 @@ namespace DndVtt.UnityPrototype
         public DiceTable()
         {
             scene=SceneManager.CreateScene("VttDice-"+Guid.NewGuid().ToString("N"),new CreateSceneParameters(LocalPhysicsMode.Physics3D));physics=scene.GetPhysicsScene();
+            try {
             root=new GameObject("Dice table");SceneManager.MoveGameObjectToScene(root,scene);root.transform.position=origin;
-            Shader shader=Resources.Load<Shader>("Dice/DiceSurface");if(!shader) { Dispose();throw new InvalidOperationException("Не найден шейдер дайсов"); }
+            Shader shader=Resources.Load<Shader>("Dice/DiceSurface");if(!shader)throw new InvalidOperationException("Не найден шейдер дайсов");
             surface=new Material(shader);owned.Add(surface);
             contact=new PhysicsMaterial("Dice contact") { dynamicFriction=.65f,staticFriction=.7f,bounciness=.26f,frictionCombine=PhysicsMaterialCombine.Average,bounceCombine=PhysicsMaterialCombine.Average };owned.Add(contact);
-            font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");font.RequestCharactersInTexture("0123456789.",64,FontStyle.Normal);
             Box("Сукно",new Vector3(0,-.18f,0),new Vector3(7,.35f,5.6f),new Color(.035f,.16f,.14f));
             Box("Борт",new Vector3(-3.55f,.6f,0),new Vector3(.3f,1.6f,5.9f),new Color(.36f,.21f,.08f));
             Box("Борт",new Vector3(3.55f,.6f,0),new Vector3(.3f,1.6f,5.9f),new Color(.36f,.21f,.08f));
@@ -44,7 +46,8 @@ namespace DndVtt.UnityPrototype
             var view=Child("Dice camera");camera=view.AddComponent<Camera>();camera.enabled=false;camera.gameObject.AddComponent<UniversalAdditionalCameraData>().renderPostProcessing=false;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.025f,.035f,.045f);camera.cullingMask=1<<31;
             camera.transform.localPosition=new Vector3(0,9,-6);camera.transform.LookAt(origin);camera.orthographic=true;camera.orthographicSize=4;camera.nearClipPlane=.1f;camera.farClipPlane=30;
             Image=new RenderTexture(768,640,16,RenderTextureFormat.ARGB32) { name="Dice view",antiAliasing=1 };Image.Create();camera.targetTexture=Image;camera.aspect=768f/640;
-            Preview(20);Render();
+            Preview(20);
+            }catch { Dispose();throw; }
         }
         private GameObject Child(string name)
         {
@@ -96,6 +99,7 @@ namespace DndVtt.UnityPrototype
             if(Rolling)return;sides=count;ClearDice();Value=null;
             if(count==100) { AddDie(10,true);AddDie(10,false,true); }else AddDie(count);
             for(int i=0;i<dice.Count;i++) { var d=dice[i];d.body.isKinematic=true;d.body.position=origin+new Vector3((i-(dice.Count-1)*.5f)*1.6f,1,0);d.body.rotation=Quaternion.Euler(20,25,10); }
+            FrameDice();
             Result=count==4?"d4: число у верхней вершины; результат по нижней грани.":count==100?"d100: десятки + единицы. 00 и 0 означают 100.":"d"+count+": результат по верхней грани.";Render();
         }
         public void Throw(int count)
@@ -104,6 +108,7 @@ namespace DndVtt.UnityPrototype
         }
         private void Launch()
         {
+            camera.orthographicSize=4;camera.transform.position=origin+new Vector3(0,9,-6);camera.transform.LookAt(origin);
             elapsed=still=accumulator=0;Rolling=true;Value=null;Result=retry==0?"Кубики летят…":"Кубик встал на ребро — перебрасываем…";
             for(int i=0;i<dice.Count;i++) {
                 var b=dice[i].body;b.isKinematic=false;b.position=origin+new Vector3((i-(dice.Count-1)*.5f)*1.7f,2.1f+i*.3f,0);b.rotation=UnityEngine.Random.rotationUniform;
@@ -112,6 +117,7 @@ namespace DndVtt.UnityPrototype
         }
         public void Tick(float delta,bool render=true)
         {
+            bool moved=Rolling;
             if(Rolling) {
                 accumulator+=Mathf.Clamp(delta,0,.1f);
                 while(accumulator>=1f/60) { physics.Simulate(1f/60);accumulator-=1f/60;elapsed+=1f/60;
@@ -121,7 +127,7 @@ namespace DndVtt.UnityPrototype
                     if(elapsed>12) { RerollOrFail();break; }
                 }
             }
-            if(render)Render();
+            if(render&&(moved||imageDirty||!Image.IsCreated()))Render();
         }
         private void Complete()
         {
@@ -131,6 +137,7 @@ namespace DndVtt.UnityPrototype
                 int displayed=d.tens?(value%10)*10:d.units?value%10:value;total+=displayed;values.Add(d.tens?displayed.ToString("00"):displayed.ToString());
             }
             if(sides==100&&total==0)total=100;
+            FrameDice();
             Value=total;Result="d"+sides+": "+(sides==100?string.Join(" + ",values)+" = ":"")+total;Rolling=false;
             foreach(var d in dice) { d.body.linearVelocity=Vector3.zero;d.body.angularVelocity=Vector3.zero;d.body.isKinematic=true; }
         }
@@ -140,12 +147,22 @@ namespace DndVtt.UnityPrototype
             Rolling=false;Value=null;Result="Кубик не лёг ровно. Нажмите «Бросить ещё раз».";
             foreach(var d in dice)d.body.isKinematic=true;
         }
+        private void FrameDice()
+        {
+            imageDirty=true;
+            Vector3 center=Vector3.zero;foreach(var d in dice)center+=d.body.position;center/=dice.Count;
+            float span=0;foreach(var d in dice)span=Mathf.Max(span,(d.body.position-center).magnitude);
+            camera.orthographicSize=Mathf.Clamp(1.5f+span,1.5f,4);
+            camera.transform.position=center+new Vector3(0,9,-6);camera.transform.LookAt(center);
+        }
         private void Render()
         {
-            if(!camera||!Image||!Image.IsCreated())return;
+            if(!camera||!Image)return;
+            if(!Image.IsCreated()&&!Image.Create())throw new InvalidOperationException("Не удалось восстановить 3D-стол");
             if(GraphicsSettings.currentRenderPipeline!=null)
                 RenderPipeline.SubmitRenderRequest(camera,new UniversalRenderPipeline.SingleCameraRequest { destination=Image });
             else camera.Render();
+            imageDirty=false;
         }
         public void Dispose()
         {

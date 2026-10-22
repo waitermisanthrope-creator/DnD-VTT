@@ -15,7 +15,8 @@ public static class UnityReleaseBuild
 {
     public static void Windows() => Build(BuildTarget.StandaloneWindows64, "windows/DndVtt.exe");
     public static void Android() => Build(BuildTarget.Android, "android-intermediate.apk");
-    public static void CloudWindows()
+    public static void CloudWindows() => DiceBuildGate.Begin("Windows");
+    public static void CloudWindowsAfterDice()
     {
         Windows();
         string[] args=Environment.GetCommandLineArgs();
@@ -32,7 +33,8 @@ public static class UnityReleaseBuild
     // GameCI validates the output at its -customBuildPath; our normal release
     // pipeline also needs its original unsigned intermediate for pinned signing.
     // Copy only when explicitly running through GameCI, and never change local builds.
-    public static void CloudAndroid()
+    public static void CloudAndroid() => DiceBuildGate.Begin("Android");
+    public static void CloudAndroidAfterDice()
     {
         string[] args = Environment.GetCommandLineArgs();
         string destination = null;
@@ -82,7 +84,6 @@ public static class UnityReleaseBuild
         if (PlayerSettings.companyName != "DnDVttExperiment" || PlayerSettings.productName != "DnD VTT Unity Prototype")
             throw new Exception("Release must preserve existing Windows save identity");
         LegacyMigrationSetup.ValidateContracts();
-        DiceValidation.Run();
         // 1.00.04 could compile while images were invisible at runtime.
         // Fail 1.00.05 before packaging if any mandatory source texture is
         // missing or cannot be resolved by the runtime Resources loader.

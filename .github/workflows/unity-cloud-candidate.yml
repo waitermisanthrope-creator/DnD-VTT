@@ -121,6 +121,7 @@ jobs:
           versioning: None
           androidExportType: androidPackage
           allowDirtyBuild: true
+          manualExit: true
           enableGpu: true
           customParameters: -force-glcore
       - name: Strictly validate real Unity player output (not GameCI return status)
@@ -264,6 +265,7 @@ jobs:
           buildMethod: UnityReleaseBuild.CloudWindows
           versioning: None
           allowDirtyBuild: true
+          manualExit: true
           enableGpu: true
           customParameters: -force-glcore
       - name: Verify actual Windows output and restore ownership

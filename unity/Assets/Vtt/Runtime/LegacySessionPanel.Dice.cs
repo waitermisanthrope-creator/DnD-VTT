@@ -15,15 +15,16 @@ namespace DndVtt.UnityPrototype
             bool visible=screen==FrontScreen.Dice||(screen==FrontScreen.Sheet&&sheetTab==5);
             if(!visible) { if(diceTable!=null)CloseDiceTable();return; }
             if(diceTable==null)return;
-            diceTable.Tick(Time.unscaledDeltaTime);
+            try { diceTable.Tick(Time.unscaledDeltaTime); }
+            catch(Exception error) { CloseDiceTable();diceError="3D-стол временно недоступен: "+error.Message;return; }
             if(diceTable.Value.HasValue)rollResult=diceTable.Result;
         }
         private void DrawDiceTable()
         {
             GUILayout.Label("Объёмные дайсы",heading);
             if(diceTable==null&&diceError==null) {
-                try { diceTable=new DiceTable(); }
-                catch(Exception error) { diceError="Не удалось открыть 3D-стол. Обычные броски доступны в листе героя. "+error.Message; }
+                try { diceTable=new DiceTable();diceTable.Preview(DiceSides[diceSelection]); }
+                catch(Exception error) { CloseDiceTable();diceError="Не удалось открыть 3D-стол. Обычные броски доступны в листе героя. "+error.Message; }
             }
             if(diceTable==null) {
                 GUILayout.Label(diceError,muted);

@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 
 public static class DiceValidation
 {
+    public static int ExpectedSceneCount { get; private set; }
     private static void Check(bool condition,string message) { if(!condition)throw new Exception("VTT_DICE_FAIL: "+message); }
     public static void Run()
     {
@@ -40,7 +41,7 @@ public static class DiceValidation
             Check(shape.Read(Quaternion.FromToRotation(midpoint,count==4?Vector3.down:Vector3.up),out _)==0,"edge rejected d"+count);
             var mesh=shape.Mesh();Check(mesh.triangles.Length>0,"triangulated mesh");UnityEngine.Object.DestroyImmediate(mesh);
         }
-        int scenes=SceneManager.sceneCount;int bodies=UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None).Length;
+        ExpectedSceneCount=SceneManager.sceneCount;int bodies=UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None).Length;
         string folder=Path.Combine("Builds","DiceValidation");Directory.CreateDirectory(folder);
         int rolls=0;
         using(var table=new DiceTable()) {
@@ -57,7 +58,6 @@ public static class DiceValidation
                 table.Tick(0);SaveImage(table.Image,Path.Combine(folder,"d"+count+"-settled.png"));
             }
         }
-        Check(SceneManager.sceneCount==scenes,"local physics scene released");
         Check(UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None).Length==bodies,"no rigidbody leaks");
         Debug.Log("VTT_DICE_PASS: "+checks+" face orientations/topology/convexity/equal areas; "+rolls+" real local-physics throws; d100 pair, PNG rendering and cleanup");
     }
