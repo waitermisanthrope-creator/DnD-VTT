@@ -57,3 +57,29 @@ Cooked base/ornament meshes are reused across batches; at most366 cached meshes
 for one theme, discarded on theme change/dispose. Native gate checks reuse and
 the enabled, non-trigger attached physical colliders. Supersedes c876cd5a source;
 its native run is not evidence for these further changes.
+
+## Current native candidate
+
+Source bf077a23, run39806710564. Complete native results pending. Earlier
+source changes superseded/canceled runs39803644534,39805814450,39805937318
+and39806298725; none is release evidence. No superseded APK published.
+
+## Physical device checklist
+
+1. Update over1.00.23 without deleting data; retain every local/cloud hero.
+2. Home → Workshop → Оформление → 3D Дайсы. Install Бездна and its linked
+   icon dependency, plus an ice and smooth set. Check bytes/SHA and offline restart.
+3. Home → 3D Дайсы → Выбрать набор. Inspect every d4/d6/d8/d10/d12/d20/d100.
+   Verify curls/crystals protrude and collide, face digits remain readable, d4
+   uses the top vertex number and d100 treats00+0 as100.
+4. Throw7d20+3d6+1d8. One logical request, bounded batches; complete exactly11
+   logical dice, per-type summary and total. Watch a mixed tentacle batch for
+   intersections, unexplained impulses, invisible walls or unreadable digits.
+5. Start a large request and cancel; partial total must be clearly incomplete,
+   with no change to hero stats/inventory. Try malformed input and offline mode.
+6. Change orientation, navigate away/back, lock/unlock while rolling. Inspect
+   keyboard, touch scroll, image/mesh recovery and persisted installed set.
+7. Uninstall selected dice set; re-enter table and confirm classic fallback.
+   A linked icon used by an installed set must retain dependency protection.
+8. Repeat on Windows; optional data and Android identity/signature remain the
+   existing ones. Phone GPU/launcher/touch is not proven by Linux Editor tests.

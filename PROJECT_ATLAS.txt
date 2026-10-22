@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 219dee5828c7. Файлов: 1961
+Коммит bf077a238489. Файлов: 1961
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,8 +56,8 @@
 0040. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0041. AGENTS.md — документация или отчёт: AGENTS (6892 B)
 0042. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (24954 B)
-0043. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (30127 B)
-0044. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (68673 B)
+0043. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (30153 B)
+0044. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (68699 B)
 0045. android/.gitignore — Android компонент: .gitignore (44 B)
 0046. android/app/build.gradle — Android компонент: build (4122 B)
 0047. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1082,9 +1082,9 @@
 1066. docs/unity-account/CHAT_ONE_HOUR.md — документация или отчёт: CHAT ONE HOUR (2267 B)
 1067. docs/unity-account/CHAT_WORKSHOP_1.00.22.md — документация или отчёт: CHAT WORKSHOP 1.00.22 (7852 B)
 1068. docs/unity-account/DICE_1.00.23.md — документация или отчёт: DICE 1.00.23 (5241 B)
-1069. docs/unity-account/DICE_THEMES_1.00.24.md — документация или отчёт: DICE THEMES 1.00.24 (3916 B)
+1069. docs/unity-account/DICE_THEMES_1.00.24.md — документация или отчёт: DICE THEMES 1.00.24 (5554 B)
 1070. docs/unity-account/dice-1.00.23-metrics.json — документация или отчёт: dice 1.00.23 metrics (1453 B)
-1071. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (36465 B)
+1071. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (36491 B)
 1072. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7893 B)
 1073. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1074. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)

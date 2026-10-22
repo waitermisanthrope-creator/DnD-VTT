@@ -1,6 +1,6 @@
 # [НЕ ВЫПОЛНЕНО] Icon-linked dice1.00.24, 2026-10-22
 
-Source implements31 downloadable full sets (Assets8ac6fa6/catalogv5), true compound collision and mixed arbitrary-count streaming throws. Local4154 C#/12 Python PASS. Native candidate, geometry/PhysX/render checks and publication pending; do not claim release ready. See docs/unity-account/DICE_THEMES_1.00.24.md. Preserve owner documentation throughdaefa4ed and deferred workshop page reset.
+Source implements31 downloadable full sets (Assets8ac6fa6/catalogv5), true compound collision and mixed arbitrary-count streaming throws. Local4154 C#/12 Python PASS. Native candidate39806710564/sourcebf077a23, geometry/PhysX/render checks and publication pending; do not claim release ready. See docs/unity-account/DICE_THEMES_1.00.24.md. Preserve owner documentation throughdaefa4ed and deferred workshop page reset.
 
 # Unity1.00.23 — delivered 2026-10-22
 
