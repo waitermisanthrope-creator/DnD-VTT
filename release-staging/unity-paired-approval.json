@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "version": "1.00.25",
-  "candidateRunId": 39823915147,
+  "version": "1.00.26",
+  "candidateRunId": 39853938026,
   "approved": true,
   "scope": "Android ARM64 and Windows x64",
-  "note": "Owner-authorized continuation of the Unity dice release: button-based mixed groups and automatic installed set matching the selected app icon. Exact source945a4b5a6c402037644b3d10a509f00d1e3eb870; candidate39823915147 SUCCESS. Android119982033174, Windows119988588952 and real Windows install-upgrade-reinstall119992198245 all SUCCESS. Native composer checks and60 face/129 physical throw checks pass on both targets.4159 C# checks and12 Python checks pass; original Android signing/package retained. No schema/content/character storage changes. Physical phone UI verification remains pending."
+  "note": "Owner-authorized corrective dice continuation: restore actual installed-set selection and texture the active thrown bodies. Exact source678a7810f27c1db89f2497c434167baad8f7d93a; candidate39853938026 and Android120087098322/Windows120094765641/actual Windows upgrade120098345947 all SUCCESS.4319 C# checks/12 Python/133 SQL WASM; both targets passed60 face checks,129 physical throws, actual textured GPU image difference, compound collision and combined renderer identity. New31 optional1.1 materials are verified public, oldv5 preserved, APK contains no new material atlas. Two referenced face materials plus tinted engraved variants are not31 exact sculpts. Publish actual native render PNGs with provenance before catalog previews; no physical phone QA claimed. Prior0bf candidate failed missing LINQ import and is never promoted."
 }
