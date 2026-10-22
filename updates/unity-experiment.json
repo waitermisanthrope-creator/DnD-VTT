@@ -1,20 +1,20 @@
 {
   "schema": 1,
   "channel": "unity-experiment",
-  "version": "1.00.24",
-  "versionCode": 10024,
+  "version": "1.00.25",
+  "versionCode": 10025,
   "androidPackage": "com.dndvtt.unity",
-  "notes": "В мастерской: 31 полный набор 3D-дайсов, связанный с авторскими иконками. Шипы, щупальца, клыки и узоры имеют объём и физические коллайдеры. · Броски вида 7d20 + 3d6 + 1d8. Общее количество не ограничено фиксированным лимитом: большие броски выполняются партиями, с общим итогом и отменой. · Выбор установленного набора на 3D-столе сохраняется. Фигурные дайсы могут быть несбалансированными; неоднозначная грань вызывает переброс, а не выдуманный результат.",
+  "notes": "Добавляйте группы дайсов кнопкой «Добавить дайс»: тип, количество, повторные группы и удаление. Встроенная цифровая панель не вызывает клавиатуру телефона. · Установленный 3D-набор автоматически соответствует выбранной иконке приложения. Старый ручной выбор больше не блокирует привязку. Если связанный набор не установлен, показана подсказка. · Во время броска состав и оформление защищены от изменения. Ограничения физической партии и произвольное общее количество сохранены.",
   "artifacts": {
     "android": {
-      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.24/DnD-VTT-Unity-1.00.24-arm64.apk",
-      "bytes": 42405784,
-      "sha256": "c7e4cdd1caf8fbe3c8c5f43da7465d8ac614b4aa0ca1dfe7b432a8bea7303584"
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.25/DnD-VTT-Unity-1.00.25-arm64.apk",
+      "bytes": 42426264,
+      "sha256": "b9e39e444732340983ddbc5c908d8a359bb90cb6729cb5e36226425f690287db"
     },
     "windows": {
-      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.24/DnD-VTT-Unity-Setup-1.00.24-x64.exe",
-      "bytes": 29220298,
-      "sha256": "3e14b977dc90163cc06059cc8ec70851d28aa998d9bc244d76c4df51cb6bf3f1"
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.25/DnD-VTT-Unity-Setup-1.00.25-x64.exe",
+      "bytes": 29218692,
+      "sha256": "564785d29b8041fde2c4303232d72222f3c7dca5950f24552dee02c7fe688458"
     }
   }
 }
