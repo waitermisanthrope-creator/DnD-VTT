@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 5a2ec6f14b3b. Git содержит 1962 файлов.
+Снимок кода 8fbebc0cdbe0. Git содержит 1962 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1754,7 +1754,7 @@
 | №1733 unity/Assets/Vtt/Resources/Branding/Splash19.png.meta | 312 B | вспомогательный файл: Splash19.png |
 | №1734 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg | 212684 B | текстура/изображение: Wallpaper16 |
 | №1735 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta | 312 B | вспомогательный файл: Wallpaper16.jpg |
-| №1736 unity/Assets/Vtt/Resources/Changelog.json | 26464 B | данные/конфигурация: Changelog |
+| №1736 unity/Assets/Vtt/Resources/Changelog.json | 26466 B | данные/конфигурация: Changelog |
 | №1737 unity/Assets/Vtt/Resources/Changelog.json.meta | 158 B | вспомогательный файл: Changelog.json |
 | №1738 unity/Assets/Vtt/Resources/CharacterSheet.meta | 172 B | вспомогательный файл: CharacterSheet |
 | №1739 unity/Assets/Vtt/Resources/CharacterSheet/catalog.json | 823381 B | данные/конфигурация: catalog |
@@ -1875,7 +1875,7 @@
 | №1854 unity/ci/verify_bundle_output.py | 1081 B | вспомогательный файл: verify bundle output |
 | №1855 unity/ci/verify_launcher_aliases.py | 3703 B | вспомогательный файл: verify launcher aliases |
 | №1856 unity/ci/verify_public_workshop.py | 3854 B | вспомогательный файл: verify public workshop |
-| №1857 unity/ci/windows-upgrade-qa.ps1 | 4224 B | вспомогательный файл: windows upgrade qa |
+| №1857 unity/ci/windows-upgrade-qa.ps1 | 4276 B | вспомогательный файл: windows upgrade qa |
 | №1858 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
 | №1859 unity/ci/workshop-tests/AccountGestureChecks.cs | 5460 B | вспомогательный файл: AccountGestureChecks |
 | №1860 unity/ci/workshop-tests/CommerceChecks.cs | 4247 B | вспомогательный файл: CommerceChecks |
@@ -1927,8 +1927,8 @@
 | №1906 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №1907 updates/README.md | 233 B | документация или отчёт: README |
 | №1908 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №1909 updates/unity-changelog.json | 26464 B | метаданные обновлений: unity changelog |
-| №1910 updates/unity-experiment.json | 1698 B | метаданные обновлений: unity experiment |
+| №1909 updates/unity-changelog.json | 26466 B | метаданные обновлений: unity changelog |
+| №1910 updates/unity-experiment.json | 1529 B | метаданные обновлений: unity experiment |
 | №1911 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №1912 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
 | №1913 wall_brick_red.png | 111128 B | текстура/изображение: wall brick red |

@@ -1,20 +1,20 @@
 {
   "schema": 1,
   "channel": "unity-experiment",
-  "version": "1.00.23",
-  "versionCode": 10023,
+  "version": "1.00.24",
+  "versionCode": 10024,
   "androidPackage": "com.dndvtt.unity",
-  "notes": "С главного экрана и из листа героя доступен физический 3D-стол: d4, d6, d8, d10, d12, d20 и d100 двумя десятигранниками. Работает без аккаунта и интернета. · Кубики генерируются кодом, с цифрами и простым сине-золотым материалом. Результат определяется по грани после остановки; кубик на ребре перебрасывается. Авторские текстуры и необычные формы будут отдельным этапом. · Настройки открываются выбором категорий: визуальные, графика, управление, сеть и аккаунт, данные, обновления и обращения. · Мастерская вынесена отдельной кнопкой на главный экран.",
+  "notes": "В мастерской: 31 полный набор 3D-дайсов, связанный с авторскими иконками. Шипы, щупальца, клыки и узоры имеют объём и физические коллайдеры. · Броски вида 7d20 + 3d6 + 1d8. Общее количество не ограничено фиксированным лимитом: большие броски выполняются партиями, с общим итогом и отменой. · Выбор установленного набора на 3D-столе сохраняется. Фигурные дайсы могут быть несбалансированными; неоднозначная грань вызывает переброс, а не выдуманный результат.",
   "artifacts": {
     "android": {
-      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.23/DnD-VTT-Unity-1.00.23-arm64.apk",
-      "bytes": 42368920,
-      "sha256": "84d08a31e8297d2059880a0776313c3dfcc21037a421b11759d8da7aeef3ac55"
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.24/DnD-VTT-Unity-1.00.24-arm64.apk",
+      "bytes": 42405784,
+      "sha256": "c7e4cdd1caf8fbe3c8c5f43da7465d8ac614b4aa0ca1dfe7b432a8bea7303584"
     },
     "windows": {
-      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.23/DnD-VTT-Unity-Setup-1.00.23-x64.exe",
-      "bytes": 29207169,
-      "sha256": "f0c31e0dfdef4330e100b10ad62b771739cd806d0e3cc6645c10fd87670a1ac3"
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.24/DnD-VTT-Unity-Setup-1.00.24-x64.exe",
+      "bytes": 29220298,
+      "sha256": "3e14b977dc90163cc06059cc8ec70851d28aa998d9bc244d76c4df51cb6bf3f1"
     }
   }
 }
