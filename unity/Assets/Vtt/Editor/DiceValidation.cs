@@ -13,6 +13,7 @@ public static class DiceValidation
     private static void Check(bool condition,string message) { if(!condition)throw new Exception("VTT_DICE_FAIL: "+message); }
     public static void Run()
     {
+        UnityEngine.Random.InitState(10024);Debug.Log("VTT_DICE_TEST_SEED:10024");
         int[] counts={4,6,8,10,12,20};int checks=0;
         foreach(int count in counts) {
             var shape=DiceGeometry.Create(count);

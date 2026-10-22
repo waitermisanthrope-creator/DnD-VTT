@@ -83,3 +83,9 @@ and39806298725; none is release evidence. No superseded APK published.
    A linked icon used by an installed set must retain dependency protection.
 8. Repeat on Windows; optional data and Android identity/signature remain the
    existing ones. Phone GPU/launcher/touch is not proven by Linux Editor tests.
+
+39806710564/sourcebf077a23 FAIL at native physical d10/theme01: four
+retries could not produce a readable result. No APK publication. Added numeric
+rest alignment/velocity/timeout diagnostics in Editor only and a reproducible
+validation seed10024 to distinguish support angle from settling jitter before
+changing geometry or the result rule. Native build remains NOT READY.

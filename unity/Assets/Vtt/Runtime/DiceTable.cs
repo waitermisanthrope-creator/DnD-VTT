@@ -219,6 +219,12 @@ namespace DndVtt.UnityPrototype
 
         private void RerollOrFail()
         {
+#if UNITY_EDITOR
+            foreach(var die in dice) {
+                die.geometry.Read(die.body.rotation,out float alignment,theme==null?.985f:.94f);
+                Debug.Log("VTT_DICE_RETRY: theme="+(theme?.Id??"classic")+" d"+die.geometry.sides+" retry="+retry+" time="+elapsed+" quiet="+still+" alignment="+alignment+" linear="+die.body.linearVelocity.magnitude+" angular="+die.body.angularVelocity.magnitude+" resolved="+die.resolved);
+            }
+#endif
             if(++retry<=3) { Launch(true);return; }
             Rolling=nextBatch=false;Value=null;Result="Не удалось прочитать грань. Бросок прерван: "+Completed+" / "+Requested+"; промежуточная сумма "+Total+". Повторите бросок.";
             foreach(var d in dice)d.body.isKinematic=true;
