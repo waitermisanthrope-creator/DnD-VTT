@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 43ee53d0e70a. Файлов: 1961
+Коммит 59ad8dbafd12. Файлов: 1961
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1728,7 +1728,7 @@
 1712. unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta — вспомогательный файл: CharacterSheetValidation.cs (59 B)
 1713. unity/Assets/Vtt/Editor/DiceBuildGate.cs — вспомогательный файл: DiceBuildGate (4491 B)
 1714. unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta — вспомогательный файл: DiceBuildGate.cs (60 B)
-1715. unity/Assets/Vtt/Editor/DiceValidation.cs — вспомогательный файл: DiceValidation (10209 B)
+1715. unity/Assets/Vtt/Editor/DiceValidation.cs — вспомогательный файл: DiceValidation (10367 B)
 1716. unity/Assets/Vtt/Editor/DiceValidation.cs.meta — вспомогательный файл: DiceValidation.cs (60 B)
 1717. unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs — вспомогательный файл: LegacyMigrationSetup (10734 B)
 1718. unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta — вспомогательный файл: LegacyMigrationSetup.cs (59 B)
@@ -1771,7 +1771,7 @@
 1755. unity/Assets/Vtt/Runtime/DiceGeometry.cs.meta — вспомогательный файл: DiceGeometry.cs (60 B)
 1756. unity/Assets/Vtt/Runtime/DiceRollRequest.cs — вспомогательный файл: DiceRollRequest (3635 B)
 1757. unity/Assets/Vtt/Runtime/DiceRollRequest.cs.meta — вспомогательный файл: DiceRollRequest.cs (60 B)
-1758. unity/Assets/Vtt/Runtime/DiceTable.cs — вспомогательный файл: DiceTable (18058 B)
+1758. unity/Assets/Vtt/Runtime/DiceTable.cs — вспомогательный файл: DiceTable (18169 B)
 1759. unity/Assets/Vtt/Runtime/DiceTable.cs.meta — вспомогательный файл: DiceTable.cs (60 B)
 1760. unity/Assets/Vtt/Runtime/DiceTheme.cs — вспомогательный файл: DiceTheme (1580 B)
 1761. unity/Assets/Vtt/Runtime/DiceTheme.cs.meta — вспомогательный файл: DiceTheme.cs (60 B)

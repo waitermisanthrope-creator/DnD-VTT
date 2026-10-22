@@ -84,6 +84,7 @@ public static class DiceValidation
                         foreach(var collider in colliders) {
                             Check(collider.enabled&&collider.convex&&!collider.isTrigger&&collider.attachedRigidbody==body&&!Physics.GetIgnoreLayerCollision(collider.gameObject.layer,31),"solid enabled attached collision piece");
                             Check(collider.sharedMesh==collider.GetComponent<MeshFilter>().sharedMesh,"render and collision use same mesh");
+                            Check((collider.sharedMesh.hideFlags&HideFlags.DontUnloadUnusedAsset)!=0,"cached procedural mesh survives unused-asset cleanup");
                             if(checkedMeshes.Add(collider.sharedMesh))CheckClosedConvex(collider.sharedMesh);
                         }
                     }

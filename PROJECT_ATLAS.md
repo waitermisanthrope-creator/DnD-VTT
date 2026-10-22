@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 43ee53d0e70a. Git содержит 1961 файлов.
+Снимок кода 59ad8dbafd12. Git содержит 1961 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1733,7 +1733,7 @@
 | №1712 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta | 59 B | вспомогательный файл: CharacterSheetValidation.cs |
 | №1713 unity/Assets/Vtt/Editor/DiceBuildGate.cs | 4491 B | вспомогательный файл: DiceBuildGate |
 | №1714 unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta | 60 B | вспомогательный файл: DiceBuildGate.cs |
-| №1715 unity/Assets/Vtt/Editor/DiceValidation.cs | 10209 B | вспомогательный файл: DiceValidation |
+| №1715 unity/Assets/Vtt/Editor/DiceValidation.cs | 10367 B | вспомогательный файл: DiceValidation |
 | №1716 unity/Assets/Vtt/Editor/DiceValidation.cs.meta | 60 B | вспомогательный файл: DiceValidation.cs |
 | №1717 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs | 10734 B | вспомогательный файл: LegacyMigrationSetup |
 | №1718 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSetup.cs |
@@ -1776,7 +1776,7 @@
 | №1755 unity/Assets/Vtt/Runtime/DiceGeometry.cs.meta | 60 B | вспомогательный файл: DiceGeometry.cs |
 | №1756 unity/Assets/Vtt/Runtime/DiceRollRequest.cs | 3635 B | вспомогательный файл: DiceRollRequest |
 | №1757 unity/Assets/Vtt/Runtime/DiceRollRequest.cs.meta | 60 B | вспомогательный файл: DiceRollRequest.cs |
-| №1758 unity/Assets/Vtt/Runtime/DiceTable.cs | 18058 B | вспомогательный файл: DiceTable |
+| №1758 unity/Assets/Vtt/Runtime/DiceTable.cs | 18169 B | вспомогательный файл: DiceTable |
 | №1759 unity/Assets/Vtt/Runtime/DiceTable.cs.meta | 60 B | вспомогательный файл: DiceTable.cs |
 | №1760 unity/Assets/Vtt/Runtime/DiceTheme.cs | 1580 B | вспомогательный файл: DiceTheme |
 | №1761 unity/Assets/Vtt/Runtime/DiceTheme.cs.meta | 60 B | вспомогательный файл: DiceTheme.cs |

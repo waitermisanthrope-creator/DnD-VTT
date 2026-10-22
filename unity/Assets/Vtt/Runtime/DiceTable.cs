@@ -85,7 +85,7 @@ namespace DndVtt.UnityPrototype
         {
             if(!shapes.TryGetValue(count,out var geometry)) { geometry=DiceGeometry.Create(count);shapes[count]=geometry; }
             if(!bodyMeshes.TryGetValue(count,out var mesh)) {
-                mesh=theme?.Shape=="rounded"?geometry.BeveledMesh(.12f+theme.Length):geometry.Mesh();bodyMeshes[count]=mesh;geometryAssets.Add(mesh);
+                mesh=theme?.Shape=="rounded"?geometry.BeveledMesh(.12f+theme.Length):geometry.Mesh();mesh.hideFlags=HideFlags.HideAndDontSave;bodyMeshes[count]=mesh;geometryAssets.Add(mesh);
             }
             var go=Child("d"+count);go.AddComponent<MeshFilter>().sharedMesh=mesh;
             var material=new Material(surface) { color=tens?new Color(.72f,.27f,.18f):new Color(.18f,.39f,.67f) };
@@ -98,7 +98,7 @@ namespace DndVtt.UnityPrototype
                 ColorUtility.TryParseHtmlString(theme.Trim,out var trimColor);
                 var trim=new Material(surface) { color=trimColor };owned.Add(trim);
                 if(!ornamentMeshes.TryGetValue(count,out var pieces)) {
-                    pieces=DiceThemeGeometry.Build(geometry,theme);ornamentMeshes[count]=pieces;geometryAssets.AddRange(pieces);
+                    pieces=DiceThemeGeometry.Build(geometry,theme);ornamentMeshes[count]=pieces;foreach(var piece in pieces)piece.hideFlags=HideFlags.HideAndDontSave;geometryAssets.AddRange(pieces);
                 }
                 foreach(var part in pieces) {
                     PhysicalOrnamentCount++;var ornament=Child("Physical "+theme.Shape);ornament.transform.SetParent(go.transform,false);
