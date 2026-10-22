@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using DndVtt.UnityPrototype;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -61,11 +62,40 @@ public static class DiceValidation
                 }
                 table.Tick(0);SaveImage(table.Image,Path.Combine(folder,"d"+count+"-settled.png"));
             }
+            table.Throw("7d20 + 3d6 + 1d8");
+            for(int step=0;step<2000&&table.Throwing;step++) { Check(table.BodyCount<=8,"mixed active-body budget");table.Tick(.1f,false); }
+            Check(!table.Throwing&&table.Completed==11&&table.Total>=11&&table.Total<=166,"mixed real-physics total: "+table.Result);
+            table.Throw("999999999999999999999999999999d100");
+            Check(table.BodyCount==8,"huge percentile request stays bounded");table.Cancel();
+            Check(!table.Throwing&&!table.Value.HasValue&&table.Completed==0,"cancel is partial, never a completed result");
+            string fixture=Path.GetFullPath("WorkshopFixtures~/DnD-VTT-Assets");
+            var catalog=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixture,"catalog/v5/index.json")),"packs");
+            int themes=0;var families=new HashSet<string>();
+            foreach(JObject manifest in catalog) {
+                if((string)manifest["imageKind"]!="dice")continue;
+                string payload=Path.Combine(fixture,"packages",Path.GetFileName((string)manifest["url"]));WorkshopStore.Verify(manifest,payload);
+                var data=WorkshopStore.ValidateData(manifest,File.ReadAllText(payload));var theme=DiceTheme.Read((JObject)data["diceThemes"][0]);
+                table.SetTheme(theme);bool first=families.Add(theme.Shape);
+                foreach(int count in first?new[]{4,6,8,10,12,20,100}:new[]{20}) {
+                    table.Preview(count);SaveImage(table.Image,Path.Combine(folder,theme.Id+"-d"+count+".png"),false);Check(table.PhysicalOrnamentCount>0,"actual protrusion geometry "+theme.Id);
+                    foreach(var body in UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None)) {
+                        var colliders=body.GetComponentsInChildren<MeshCollider>();Check(colliders.Length>1,"compound collision "+theme.Id);
+                        foreach(var collider in colliders) {
+                            Check(collider.convex&&!collider.isTrigger,"solid convex physical piece");
+                            Check(collider.sharedMesh==collider.GetComponent<MeshFilter>().sharedMesh,"render and collision use same mesh");
+                        }
+                    }
+                    table.Throw(count);for(int step=0;step<650&&table.Throwing;step++)table.Tick(.1f,false);
+                    Check(!table.Throwing&&table.Value.HasValue&&table.Value>=1&&table.Value<=count,"themed physical throw "+theme.Id+" d"+count+": "+table.Result);rolls++;
+                }
+                themes++;
+            }
+            Check(themes==31&&families.Count==7,"all icon sets and shape families tested");
         }
         Check(UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None).Length==bodies,"no rigidbody leaks");
         Debug.Log("VTT_DICE_PASS: "+checks+" face orientations/topology/convexity/equal areas; "+rolls+" real local-physics throws; d100 pair, PNG rendering and cleanup");
     }
-    private static void SaveImage(RenderTexture source,string path)
+    private static void SaveImage(RenderTexture source,string path,bool classic=true)
     {
         var previous=RenderTexture.active;var image=new Texture2D(source.width,source.height,TextureFormat.RGB24,false);
         try {
@@ -74,7 +104,7 @@ public static class DiceValidation
                 if(pixel.b>pixel.r*1.3f&&pixel.b>pixel.g*1.1f&&pixel.b>100)blue++;
                 if(pixel.r>220&&pixel.g>180&&pixel.b<230)gold++;
             }
-            Check(blue>80,"actual rendered blue die pixels="+blue+", gold="+gold+": "+path);
+            Check(!classic||blue>80,"actual rendered blue die pixels="+blue+", gold="+gold+": "+path);
             Check(gold>8,"actual rendered number pixels="+gold+", blue="+blue+": "+path);
             File.WriteAllBytes(path,image.EncodeToPNG());
         }finally { RenderTexture.active=previous;UnityEngine.Object.DestroyImmediate(image); }

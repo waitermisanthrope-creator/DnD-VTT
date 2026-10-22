@@ -14,6 +14,14 @@ class Program
         string root = Path.Combine(Path.GetTempPath(), "vtt-workshop-test-" + Guid.NewGuid()); Directory.CreateDirectory(root);
         try
         {
+            var mixed=DiceRollRequest.Parse("7d20 + 3d6 + 1d8");
+            Check(mixed.Count==11,"mixed request count");
+            int requested=0;while(mixed.Pending) { var batch=mixed.TakeBatch(8);Check(batch.Length>0&&batch.Length<=8,"bounded batch");foreach(int n in batch) { mixed.Accept(n,n);requested++; } }
+            Check(requested==11&&mixed.Total==166,"mixed totals");
+            var huge=DiceRollRequest.Parse("999999999999999999999999999999d20");
+            Check(huge.TakeBatch(8).Length==8&&huge.Count>long.MaxValue,"unbounded quantity never expanded");
+            var percentiles=DiceRollRequest.Parse("9d100");Check(percentiles.TakeBatch(8).Length==4,"percentile bodies bounded");
+            foreach(string bad in new[]{"0d20","-1d6","d7","1d20+","NaNd6","1d6x","1d6 + 2"})Reject(()=>DiceRollRequest.Parse(bad),"invalid throw "+bad);
             string source = args.Length > 0 ? args[0] : "/workspace";
             string appRoot = args.Length > 1 ? args[1] : Directory.GetCurrentDirectory();
             Check((string)JObject.Parse(File.ReadAllText(Path.Combine(appRoot, "unity/Packages/manifest.json")))["dependencies"]["com.unity.modules.assetbundle"] == "1.0.0", "AssetBundle runtime module present");
@@ -22,6 +30,18 @@ class Program
                 var tree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(File.ReadAllText(file));
                 var errors = tree.GetDiagnostics().Where(d => d.Severity == Microsoft.CodeAnalysis.DiagnosticSeverity.Error).ToArray();
                 Check(errors.Length == 0, "C# syntax " + file + " " + string.Join(";", errors.Select(e => e.ToString())));
+            }
+            var diceCatalog=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source,"DnD-VTT-Assets/catalog/v5/index.json")),"packs");
+            var themes=diceCatalog.OfType<JObject>().Where(m=>(string)m["imageKind"]=="dice").ToArray();
+            Check(themes.Length==31,"31 icon-linked full sets");
+            foreach(var m in themes) {
+                var themePayload=Path.Combine(source,"DnD-VTT-Assets/packages",Path.GetFileName((string)m["url"]));WorkshopStore.Verify(m,themePayload);
+                var data=WorkshopStore.ValidateData(m,File.ReadAllText(themePayload));
+                Check(WorkshopStore.CategoryPath(m)=="Оформление/3D Дайсы","dice subgroup");
+                var copy=(JObject)data.DeepClone();copy["diceThemes"][0]["length"]=999;
+                Reject(()=>WorkshopStore.ValidateData(m,copy.ToString()),"oversized ornament rejected");
+                copy=(JObject)data.DeepClone();copy["diceThemes"][0]["shape"]="script";
+                Reject(()=>WorkshopStore.ValidateData(m,copy.ToString()),"executable theme rejected");
             }
             var previewCatalog=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source,"DnD-VTT-Assets/catalog/v4/index.json")),"packs");int previewCount=0;
             foreach(JObject entry in previewCatalog)if(entry["preview"] is JObject preview) {

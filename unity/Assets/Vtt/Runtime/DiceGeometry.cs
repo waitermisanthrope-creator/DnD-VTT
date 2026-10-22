@@ -82,11 +82,11 @@ namespace DndVtt.UnityPrototype
             }
             return result.ToArray();
         }
-        public int Read(Quaternion rotation,out float alignment)
+        public int Read(Quaternion rotation,out float alignment,float minimumAlignment=.985f)
         {
-            Vector3 direction=sides==4?Vector3.down:Vector3.up;Face best=null;alignment=-1;
-            foreach(var f in faces) { float dot=Vector3.Dot(rotation*f.normal,direction);if(dot>alignment) { alignment=dot;best=f; } }
-            return alignment>=.985f?best.value:0; // Cocked/edge dice are never silently accepted.
+            Vector3 direction=sides==4?Vector3.down:Vector3.up;Face best=null;alignment=-1;float second=-1;
+            foreach(var f in faces) { float dot=Vector3.Dot(rotation*f.normal,direction);if(dot>alignment) { second=alignment;alignment=dot;best=f; }else if(dot>second)second=dot; }
+            return alignment>=minimumAlignment&&alignment-second>.025f?best.value:0; // Cocked/edge dice are never silently accepted.
         }
         public Mesh Mesh()
         {

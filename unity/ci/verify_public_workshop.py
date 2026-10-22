@@ -38,3 +38,13 @@ def download_preview(m):
  b=fetch(p['url'],p['bytes']);assert len(b)==p['bytes'] and hashlib.sha256(b).hexdigest()==p['sha256'];(preview_root/'previews'/p['url'].rsplit('/',1)[1]).write_bytes(b);return len(b)
 with ThreadPoolExecutor(max_workers=6) as pool:preview_rows=list(pool.map(download_preview,[m for m in json.loads(data)['packs'] if 'preview' in m]))
 print('PUBLIC_WORKSHOP_PREVIEWS_PASS',len(preview_rows),sum(preview_rows),'bytes')
+
+# v5 is consumed only by generator-capable clients; v3/v4 remain unchanged.
+data=fetch('https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v5/index.json',1024*1024)
+(preview_root/'catalog/v5').mkdir(parents=True,exist_ok=True);(preview_root/'catalog/v5/index.json').write_bytes(data)
+themes=[m for m in json.loads(data)['packs'] if m.get('imageKind')=='dice']
+assert len(themes)==31
+for m in themes:
+ assert m['url'].startswith('https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/packages/dnd.dice.icon.') and '..' not in m['url'] and '?' not in m['url']
+ download((preview_root,m))
+print('PUBLIC_DICE_PACKAGES_PASS',len(themes),sum(m['bytes'] for m in themes),'bytes')

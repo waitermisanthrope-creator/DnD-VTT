@@ -1,3 +1,7 @@
+# [НЕ ВЫПОЛНЕНО] Icon-linked dice1.00.24, 2026-10-22
+
+Source implements31 downloadable full sets (Assets8ac6fa6/catalogv5), true compound collision and mixed arbitrary-count streaming throws. Local4154 C#/12 Python PASS. Native candidate, geometry/PhysX/render checks and publication pending; do not claim release ready. See docs/unity-account/DICE_THEMES_1.00.24.md. Preserve owner documentation throughdaefa4ed and deferred workshop page reset.
+
 # Unity1.00.23 — delivered 2026-10-22
 
 Source55646b73/build39766470836/publish39769236621 SUCCESS; public release unity-v1.00.23/feed10023 activated1232e122. Manual procedural six-solid dice table + percentile pair, real PhysX/face result, rendered digits, auto framing/idle cache/cleanup, Home/Sheet routing; settings categories/Home workshop. Fixed preview Rigidbody/render pose mismatch caught on Windows d100.4044 C#/133 SQL WASM/12 Python,60 faces/56 real throws per target, strict body/numeral pixels/poses/cleanup and real Windows install-upgrade-reinstall pass. Actual public Android42,368,920 bytes/84d08a31..., Windows29,207,169/f0c31e0d... independently downloaded; APK v2/v3/original cert/package/code verified. No physical device or live Supabase test; no SQL needed. First basic material only, no authored skins/custom forms yet. See docs/unity-account/DICE_1.00.23.md and metrics. Main/save/signing unchanged; workshop page reset deferred.

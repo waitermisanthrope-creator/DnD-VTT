@@ -10,7 +10,7 @@ namespace DndVtt.UnityPrototype
     // Local physics scene: dice cannot collide with, simulate or modify the user's map.
     public sealed class DiceTable : IDisposable
     {
-        private sealed class Die { public DiceGeometry geometry;public Rigidbody body;public bool tens,units; }
+        private sealed class Die { public DiceGeometry geometry;public Rigidbody body;public bool tens,units;public int resolved; }
         private readonly Scene scene;
         private readonly PhysicsScene physics;
         private readonly GameObject root;
@@ -24,6 +24,16 @@ namespace DndVtt.UnityPrototype
         private float accumulator,elapsed,still;
         private bool imageDirty=true;
         private int retry,sides=20;
+        private DiceTheme theme;
+        private int tableResourceCount;
+        public int PhysicalOrnamentCount { get;private set; }
+        private DiceRollRequest request;
+        private int[] batch;
+        private bool nextBatch;
+        public bool Throwing=>Rolling||nextBatch;
+        public System.Numerics.BigInteger Completed=>request?.Completed??System.Numerics.BigInteger.Zero;
+        public System.Numerics.BigInteger Requested=>request?.Count??System.Numerics.BigInteger.Zero;
+        public System.Numerics.BigInteger Total=>request?.Total??System.Numerics.BigInteger.Zero;
         public RenderTexture Image { get;private set; }
         public bool Rolling { get;private set; }
         public string Result { get;private set; }="Выберите кубик и бросьте его на стол.";
@@ -46,7 +56,7 @@ namespace DndVtt.UnityPrototype
             var view=Child("Dice camera");camera=view.AddComponent<Camera>();camera.enabled=false;camera.gameObject.AddComponent<UniversalAdditionalCameraData>().renderPostProcessing=false;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.025f,.035f,.045f);camera.cullingMask=1<<31;
             camera.transform.localPosition=new Vector3(0,9,-6);camera.transform.LookAt(origin);camera.orthographic=true;camera.orthographicSize=4;camera.nearClipPlane=.1f;camera.farClipPlane=30;
             Image=new RenderTexture(768,640,16,RenderTextureFormat.ARGB32) { name="Dice view",antiAliasing=1 };Image.Create();camera.targetTexture=Image;camera.aspect=768f/640;
-            Preview(20);
+            tableResourceCount=owned.Count;Preview(20);
             }catch { Dispose();throw; }
         }
         private GameObject Child(string name)
@@ -57,20 +67,34 @@ namespace DndVtt.UnityPrototype
         {
             var go=GameObject.CreatePrimitive(PrimitiveType.Cube);go.name=name;go.layer=31;go.transform.SetParent(root.transform,false);go.transform.localPosition=position;go.transform.localScale=scale;
             var material=new Material(surface) { color=color };owned.Add(material);go.GetComponent<Renderer>().sharedMaterial=material;go.GetComponent<Collider>().sharedMaterial=contact;
+            if(name=="Борт") { var wall=go.GetComponent<BoxCollider>();wall.size=new Vector3(1,4,1);wall.center=new Vector3(0,1.5f,0); }
         }
         private void ClearDice()
         {
             foreach(var die in dice)if(die.body) { die.body.gameObject.SetActive(false);UnityEngine.Object.DestroyImmediate(die.body.gameObject); }
-            dice.Clear();
+            dice.Clear();PhysicalOrnamentCount=0;
             // Per-roll meshes/materials are separate from the seven table resources.
-            for(int i=owned.Count-1;i>=7;i--) { UnityEngine.Object.DestroyImmediate(owned[i]);owned.RemoveAt(i); }
+            for(int i=owned.Count-1;i>=tableResourceCount;i--) { UnityEngine.Object.DestroyImmediate(owned[i]);owned.RemoveAt(i); }
         }
         private void AddDie(int count,bool tens=false,bool units=false)
         {
             var geometry=DiceGeometry.Create(count);var mesh=geometry.Mesh();owned.Add(mesh);
             var go=Child("d"+count);go.AddComponent<MeshFilter>().sharedMesh=mesh;
-            var material=new Material(surface) { color=tens?new Color(.72f,.27f,.18f):new Color(.18f,.39f,.67f) };owned.Add(material);go.AddComponent<MeshRenderer>().sharedMaterial=material;
+            var material=new Material(surface) { color=tens?new Color(.72f,.27f,.18f):new Color(.18f,.39f,.67f) };
+            if(theme!=null) {
+                ColorUtility.TryParseHtmlString(theme.Body,out var bodyColor);material.color=bodyColor;
+                ColorUtility.TryParseHtmlString(theme.Trim,out var accent);material.SetColor("_Accent",accent);material.SetFloat("_Pattern",1);
+            }owned.Add(material);go.AddComponent<MeshRenderer>().sharedMaterial=material;
             var collider=go.AddComponent<MeshCollider>();collider.sharedMesh=mesh;collider.convex=true;collider.sharedMaterial=contact;
+            if(theme!=null) {
+                ColorUtility.TryParseHtmlString(theme.Trim,out var trimColor);
+                var trim=new Material(surface) { color=trimColor };owned.Add(trim);
+                foreach(var part in DiceThemeGeometry.Build(geometry,theme)) {
+                    owned.Add(part);PhysicalOrnamentCount++;var ornament=Child("Physical "+theme.Shape);ornament.transform.SetParent(go.transform,false);
+                    ornament.AddComponent<MeshFilter>().sharedMesh=part;ornament.AddComponent<MeshRenderer>().sharedMaterial=trim;
+                    var collision=ornament.AddComponent<MeshCollider>();collision.sharedMesh=part;collision.convex=true;collision.sharedMaterial=contact;
+                }
+            }
             var body=go.AddComponent<Rigidbody>();body.mass=.08f;body.linearDamping=.3f;body.angularDamping=.35f;body.maxAngularVelocity=30;body.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;body.interpolation=RigidbodyInterpolation.None;body.solverIterations=12;body.solverVelocityIterations=6;
             foreach(var face in geometry.faces) {
                 if(count==4) {
@@ -94,29 +118,55 @@ namespace DndVtt.UnityPrototype
             var label=go.AddComponent<TextMesh>();label.font=font;label.text=text;label.fontSize=64;label.characterSize=size/6;label.anchor=TextAnchor.MiddleCenter;label.alignment=TextAlignment.Center;label.color=new Color(1,.9f,.64f);
             go.GetComponent<MeshRenderer>().sharedMaterial=font.material;
         }
+        public void SetTheme(DiceTheme selected)
+        {
+            if(Throwing)throw new InvalidOperationException("Дождитесь окончания броска.");
+            theme=selected;Preview(sides);
+        }
         public void Preview(int count)
         {
-            if(Rolling)return;sides=count;ClearDice();Value=null;
+            if(Throwing)return;request=null;batch=null;sides=count;ClearDice();Value=null;
             if(count==100) { AddDie(10,true);AddDie(10,false,true); }else AddDie(count);
             for(int i=0;i<dice.Count;i++) { var d=dice[i];d.body.isKinematic=true;d.body.position=origin+new Vector3((i-(dice.Count-1)*.5f)*1.6f,1,0);d.body.rotation=Quaternion.Euler(20,25,10);d.body.transform.SetPositionAndRotation(d.body.position,d.body.rotation); }
             FrameDice();
             Result=count==4?"d4: число у верхней вершины; результат по нижней грани.":count==100?"d100: десятки + единицы. 00 и 0 означают 100.":"d"+count+": результат по верхней грани.";Render();
         }
-        public void Throw(int count)
+        public void Throw(int count) { Throw("1d"+count); }
+        public void Throw(string expression)
         {
-            if(Rolling)return;Preview(count);retry=0;Launch();
+            if(Throwing)return;
+            var parsed=DiceRollRequest.Parse(expression); // Invalid input preserves the last result.
+            request=parsed;NextBatch();
         }
-        private void Launch()
+        private void NextBatch()
+        {
+            nextBatch=false;ClearDice();Value=null;batch=request.TakeBatch(theme==null?8:4);
+            foreach(int count in batch) {
+                if(count==100) { AddDie(10,true);AddDie(10,false,true); }
+                else AddDie(count);
+            }
+            retry=0;Launch();
+        }
+        public void Cancel()
+        {
+            Rolling=nextBatch=false;Value=null;
+            foreach(var d in dice) { if(!d.body.isKinematic) { d.body.linearVelocity=Vector3.zero;d.body.angularVelocity=Vector3.zero;d.body.isKinematic=true; } }
+            Result="Бросок отменён. Готово "+Completed+" из "+Requested+"; промежуточная сумма "+Total+". Это не полный результат.";
+            imageDirty=true;
+        }
+        private void Launch(bool unresolvedOnly=false)
         {
             camera.orthographicSize=4;camera.transform.position=origin+new Vector3(0,9,-6);camera.transform.LookAt(origin);
             elapsed=still=accumulator=0;Rolling=true;Value=null;Result=retry==0?"Кубики летят…":"Кубик встал на ребро — перебрасываем…";
             for(int i=0;i<dice.Count;i++) {
-                var b=dice[i].body;b.isKinematic=false;b.position=origin+new Vector3((i-(dice.Count-1)*.5f)*1.7f,2.1f+i*.3f,0);b.rotation=UnityEngine.Random.rotationUniform;
+                var die=dice[i];if(unresolvedOnly&&die.resolved>0)continue;
+                die.resolved=0;var b=die.body;b.isKinematic=false;b.position=origin+new Vector3((i%4-((Mathf.Min(dice.Count,4)-1)*.5f))*1.7f,2.1f,(i/4-.5f)*1.7f);b.rotation=UnityEngine.Random.rotationUniform;
                 b.linearVelocity=new Vector3(UnityEngine.Random.Range(-2.5f,2.5f),UnityEngine.Random.Range(1f,3f),UnityEngine.Random.Range(-2f,2f));b.angularVelocity=UnityEngine.Random.onUnitSphere*UnityEngine.Random.Range(12f,24f);b.WakeUp();
             }
         }
         public void Tick(float delta,bool render=true)
         {
+            if(nextBatch)NextBatch();
             bool moved=Rolling;
             if(Rolling) {
                 accumulator+=Mathf.Clamp(delta,0,.1f);
@@ -131,20 +181,34 @@ namespace DndVtt.UnityPrototype
         }
         private void Complete()
         {
-            int total=0;var values=new List<string>();
+            bool ambiguous=false;
             foreach(var d in dice) {
-                int value=d.geometry.Read(d.body.rotation,out _);if(value==0) { RerollOrFail();return; }
-                int displayed=d.tens?(value%10)*10:d.units?value%10:value;total+=displayed;values.Add(d.tens?displayed.ToString("00"):displayed.ToString());
+                if(d.resolved==0)d.resolved=d.geometry.Read(d.body.rotation,out _,theme==null?.985f:.94f);
+                if(d.resolved==0)ambiguous=true;
+                else { if(!d.body.isKinematic) { d.body.linearVelocity=Vector3.zero;d.body.angularVelocity=Vector3.zero;d.body.isKinematic=true; } }
             }
-            if(sides==100&&total==0)total=100;
-            FrameDice();
-            Value=total;Result="d"+sides+": "+(sides==100?string.Join(" + ",values)+" = ":"")+total;Rolling=false;
-            foreach(var d in dice) { d.body.linearVelocity=Vector3.zero;d.body.angularVelocity=Vector3.zero;d.body.isKinematic=true; }
+            if(ambiguous) { RerollOrFail();return; }
+            var results=new List<int>();int percentile=0;
+            foreach(var d in dice) {
+                int value=d.resolved;
+                if(d.tens)percentile=(value%10)*10;
+                else if(d.units)results.Add(percentile+value%10==0?100:percentile+value%10);
+                else results.Add(value);
+            }
+            FrameDice();Rolling=false;
+            foreach(var d in dice) { if(!d.body.isKinematic) { d.body.linearVelocity=Vector3.zero;d.body.angularVelocity=Vector3.zero;d.body.isKinematic=true; } }
+            if(request!=null) {
+                for(int i=0;i<batch.Length;i++)request.Accept(batch[i],results[i]);
+                nextBatch=request.Pending;
+                if(!nextBatch&&request.Total<=int.MaxValue)Value=(int)request.Total;
+                Result=(nextBatch?"Бросаем… ":"Готово: ")+Completed+" / "+Requested+". Сумма: "+Total+". Последняя партия: "+string.Join(", ",System.Linq.Enumerable.Select(System.Linq.Enumerable.Range(0,results.Count),i=>"d"+batch[i]+"="+results[i]));
+            }
         }
+
         private void RerollOrFail()
         {
-            if(++retry<=3) { Launch();return; }
-            Rolling=false;Value=null;Result="Кубик не лёг ровно. Нажмите «Бросить ещё раз».";
+            if(++retry<=3) { Launch(true);return; }
+            Rolling=nextBatch=false;Value=null;Result="Не удалось прочитать грань. Бросок прерван: "+Completed+" / "+Requested+"; промежуточная сумма "+Total+". Повторите бросок.";
             foreach(var d in dice)d.body.isKinematic=true;
         }
         private void FrameDice()

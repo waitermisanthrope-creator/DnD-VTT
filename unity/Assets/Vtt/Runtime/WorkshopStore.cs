@@ -55,7 +55,7 @@ namespace DndVtt.UnityPrototype
                 case "environment":return "3D и карты/Окружение";
                 case "texture":return "3D и карты/Материалы и текстуры";
                 case "animation":return "3D и карты/Анимации";
-                case "appearance":return (string)manifest["imageKind"]=="wallpaper"?"Оформление/Обои":(string)manifest["imageKind"]=="icon"?"Оформление/Иконки":"3D и карты/Материалы и текстуры";
+                case "appearance":return (string)manifest["imageKind"]=="dice"?"Оформление/3D Дайсы":(string)manifest["imageKind"]=="wallpaper"?"Оформление/Обои":(string)manifest["imageKind"]=="icon"?"Оформление/Иконки":"3D и карты/Материалы и текстуры";
                 default:return "Коллекции/Наборы";
             }
         }
@@ -166,6 +166,12 @@ namespace DndVtt.UnityPrototype
             if ((int?)data["schemaVersion"] != 1 || (string)data["id"] != (string)m["id"] || (string)data["version"] != (string)m["version"] || (string)data["type"] != (string)m["type"]) throw new FormatException("Пакет не соответствует манифесту");
             string type = (string)m["type"], packageId = (string)m["id"];
             if (!new[] { "race", "class", "feat", "map", "model", "environment", "appearance", "item", "craft" }.Contains(type)) throw new FormatException("Этот тип пока недоступен для активации");
+            if(type=="appearance"&&data["diceThemes"]!=null) {
+                if((string)m["imageKind"]!="dice"||!(data["diceThemes"] is JArray themes)||themes.Count!=1||data["images"]!=null||data["surfaces"]!=null)throw new FormatException("Состав набора дайсов");
+                var theme=DiceTheme.Read(themes[0] as JObject??throw new FormatException("Набор дайсов"));
+                if(theme.Id!=packageId+".theme"||!((JArray)m["dependencies"]).Values<string>().Contains(theme.Icon))throw new FormatException("Набор должен зависеть от своей иконки");
+                return data;
+            }
             if(type=="appearance"&&data["images"]!=null) {
                 if(!(data["images"] is JArray images)||images.Count!=1||data["surfaces"]!=null||data["objects"]!=null||data["maps"]!=null)throw new FormatException("Состав пакета изображений");
                 var image=images[0] as JObject??throw new FormatException("Изображение");
