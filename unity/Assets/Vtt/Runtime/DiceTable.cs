@@ -25,7 +25,8 @@ namespace DndVtt.UnityPrototype
         private readonly Dictionary<int,Mesh> edgeRenderMeshes=new Dictionary<int,Mesh>();
         private readonly List<Mesh> geometryAssets=new List<Mesh>();
         public int CachedMeshCount=>geometryAssets.Count;
-        private readonly Material surface;
+        private readonly Material surface,numerals;
+        private readonly List<TextMesh> numberLabels=new List<TextMesh>();
         private readonly PhysicsMaterial contact;
         private readonly Font font;
         private readonly Vector3 origin=new Vector3(12000,0,12000);
@@ -59,6 +60,8 @@ namespace DndVtt.UnityPrototype
             surface=new Material(shader);owned.Add(surface);
             contact=new PhysicsMaterial("Dice contact") { dynamicFriction=.65f,staticFriction=.7f,bounciness=.26f,frictionCombine=PhysicsMaterialCombine.Average,bounceCombine=PhysicsMaterialCombine.Average };owned.Add(contact);
             font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");font.RequestCharactersInTexture("0123456789.",64,FontStyle.Normal);
+            Shader textShader=Resources.Load<Shader>("Dice/DiceNumeral");if(!textShader)throw new InvalidOperationException("Не найден шейдер цифр");
+            numerals=new Material(textShader) { mainTexture=font.material.mainTexture };owned.Add(numerals);
             Box("Сукно",new Vector3(0,-.18f,0),new Vector3(7,.35f,5.6f),new Color(.035f,.16f,.14f));
             Box("Борт",new Vector3(-3.55f,.6f,0),new Vector3(.3f,1.6f,5.9f),new Color(.36f,.21f,.08f));
             Box("Борт",new Vector3(3.55f,.6f,0),new Vector3(.3f,1.6f,5.9f),new Color(.36f,.21f,.08f));
@@ -82,6 +85,7 @@ namespace DndVtt.UnityPrototype
         }
         private void ClearDice()
         {
+            numberLabels.Clear();
             foreach(var die in dice)if(die.body) { die.body.gameObject.SetActive(false);UnityEngine.Object.DestroyImmediate(die.body.gameObject); }
             dice.Clear();PhysicalOrnamentCount=0;
             // Per-roll materials are separate from table assets and bounded shared shape meshes.
@@ -155,7 +159,14 @@ namespace DndVtt.UnityPrototype
         {
             var go=Child("Face "+text);go.transform.SetParent(parent,false);go.transform.localPosition=position;go.transform.localRotation=Quaternion.LookRotation(-normal,up);
             var label=go.AddComponent<TextMesh>();label.font=font;label.text=text;label.fontSize=64;label.characterSize=size/6;label.anchor=TextAnchor.MiddleCenter;label.alignment=TextAlignment.Center;label.color=themeTexture?new Color(1,.94f,.84f):new Color(1,.9f,.64f);
-            go.GetComponent<MeshRenderer>().sharedMaterial=font.material;
+            var renderer=go.GetComponent<MeshRenderer>();renderer.sharedMaterial=numerals;numberLabels.Add(label);
+            FitNumeral(label);
+        }
+        private void FitNumeral(TextMesh label)
+        {
+            // Recheck before rendering too: dynamic fonts may rebuild geometry/atlas later.
+            float size=label.characterSize*6;var bounds=label.GetComponent<MeshRenderer>().localBounds.size;
+            if(bounds.x>0&&bounds.y>0)label.transform.localScale=Vector3.one*Mathf.Min(size*1.2f/bounds.x,size/bounds.y);
         }
         public void SetTheme(DiceTheme selected)
         {
@@ -164,7 +175,7 @@ namespace DndVtt.UnityPrototype
             if(themeTexture)UnityEngine.Object.DestroyImmediate(themeTexture);themeTexture=null;theme=selected;
             if(selected?.TexturePng!=null) {
                 themeTexture=new Texture2D(2,2,TextureFormat.RGB24,true) { name=selected.Id+" albedo",hideFlags=HideFlags.HideAndDontSave,filterMode=FilterMode.Trilinear,wrapMode=TextureWrapMode.Clamp };
-                if(!themeTexture.LoadImage(selected.TexturePng,true)) { UnityEngine.Object.DestroyImmediate(themeTexture);themeTexture=null;throw new FormatException("Не удалось прочитать текстуру набора"); }
+                if(!themeTexture.LoadImage(selected.TexturePng,false)) { UnityEngine.Object.DestroyImmediate(themeTexture);themeTexture=null;throw new FormatException("Не удалось прочитать текстуру набора"); }
             }
             Preview(sides);
         }
@@ -274,6 +285,8 @@ namespace DndVtt.UnityPrototype
         private void Render()
         {
             if(!camera||!Image)return;
+            if(numerals)numerals.mainTexture=font.material.mainTexture;
+            foreach(var label in numberLabels)if(label)FitNumeral(label);
             if(!Image.IsCreated()&&!Image.Create())throw new InvalidOperationException("Не удалось восстановить 3D-стол");
             if(GraphicsSettings.currentRenderPipeline!=null)
                 RenderPipeline.SubmitRenderRequest(camera,new UniversalRenderPipeline.SingleCameraRequest { destination=Image });

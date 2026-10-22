@@ -78,7 +78,7 @@ public static class DiceValidation
         int rolls=0;
         using(var table=new DiceTable()) {
             foreach(int count in new[]{4,6,8,10,12,20,100}) {
-                table.Preview(count);Check(table.BodyCount==(count==100?2:1),"bounded active dice");
+                table.Preview(count);if(count==20)CheckNumeralOcclusion(table);Check(table.BodyCount==(count==100?2:1),"bounded active dice");
                 foreach(var body in UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None)) {
                     Check((body.position-body.transform.position).sqrMagnitude<.000001f,"preview physics/render positions agree d"+count);
                     Check(Quaternion.Angle(body.rotation,body.transform.rotation)<.01f,"preview physics/render rotations agree d"+count);
@@ -108,7 +108,7 @@ public static class DiceValidation
                 var data=WorkshopStore.ValidateData(manifest,File.ReadAllText(payload));var theme=DiceTheme.Read((JObject)data["diceThemes"][0],true);
                 table.SetTheme(theme);Check(table.ActiveThemeId==theme.Id&&table.HasMaterialTexture,"downloaded material is active");bool first=families.Add(theme.Shape);var checkedMeshes=new HashSet<Mesh>();
                 foreach(int count in first?new[]{4,6,8,10,12,20,100}:new[]{20}) {
-                    table.Preview(count);if(count==20&&(theme.Icon.EndsWith(".01")||theme.Icon.EndsWith(".05")))CheckTexturedRender(table);SaveImage(table.Image,Path.Combine(folder,theme.Id+"-d"+count+".png"),false);Check(theme.Shape=="rounded"||table.PhysicalOrnamentCount>0,"actual protrusion geometry "+theme.Id);
+                    table.Preview(count);if(count==20&&(theme.Icon.EndsWith(".01")||theme.Icon.EndsWith(".05"))) { CheckTexturedRender(table);CheckNumeralOcclusion(table); }SaveImage(table.Image,Path.Combine(folder,theme.Id+"-d"+count+".png"),false);Check(theme.Shape=="rounded"||table.PhysicalOrnamentCount>0,"actual protrusion geometry "+theme.Id);
                     foreach(var body in UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None)) {
                         var colliders=body.GetComponentsInChildren<MeshCollider>();Check(colliders.Length>(theme.Shape=="rounded"?0:1),"physical collision "+theme.Id);
                         var sculpt=body.transform.Find("Sculpted details");
@@ -131,6 +131,7 @@ public static class DiceValidation
                     Check(table.ActiveThemeId==theme.Id&&table.HasMaterialTexture,"selected downloaded set persists into active throw");
                     foreach(var body in UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None).Where(b=>b.gameObject.name.StartsWith("d"))) {
                         var renderer=body.GetComponent<MeshRenderer>();Check(renderer&&renderer.sharedMaterial.GetFloat("_Textured")==1&&renderer.sharedMaterial.GetTexture("_MainTex")!=null,"actual moving body uses material texture");
+                        Check(((Texture2D)renderer.sharedMaterial.GetTexture("_MainTex")).isReadable,"CPU texture pixels retained for Android context restoration");
                         Check(body.GetComponent<MeshFilter>().sharedMesh.uv.Length>0,"actual moving mesh has UVs");
                     }
                     for(int step=0;step<650&&table.Throwing;step++)table.Tick(.1f,false);
@@ -148,6 +149,31 @@ public static class DiceValidation
         }
         Check(UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None).Length==bodies,"no rigidbody leaks");
         Debug.Log("VTT_DICE_PASS: "+checks+" face orientations/topology/convexity/equal areas; "+rolls+" real local-physics throws; d100 pair, PNG rendering and cleanup");
+    }
+    private static void CheckNumeralOcclusion(DiceTable table)
+    {
+        var camera=UnityEngine.Object.FindObjectsByType<Camera>(FindObjectsSortMode.None).Single(c=>c.targetTexture==table.Image);
+        var labels=UnityEngine.Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None).Where(t=>t.GetComponent<MeshRenderer>().sharedMaterial.shader.name=="DnDVtt/DiceNumeral").ToArray();
+        var back=labels.Where(t=>Vector3.Dot(-t.transform.forward,-camera.transform.forward)<-.15f).Select(t=>t.GetComponent<MeshRenderer>()).ToArray();
+        Check(labels.Length==20&&back.Length>=4,"real front/back facet numerals available for occlusion test");
+        foreach(var text in labels) {
+            var size=Vector3.Scale(text.GetComponent<MeshRenderer>().localBounds.size,text.transform.localScale);
+            Check(size.x<=.265f&&size.y<=.221f,"d20 numerals fit within the facet");
+        }
+        var render=typeof(DiceTable).GetMethod("Render",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        var previous=RenderTexture.active;var image=new Texture2D(table.Image.width,table.Image.height,TextureFormat.RGB24,false);
+        Color32[] Pixels() { RenderTexture.active=table.Image;image.ReadPixels(new Rect(0,0,image.width,image.height),0,0);image.Apply();return image.GetPixels32(); }
+        try {
+            var all=Pixels();foreach(var r in back)r.enabled=false;render.Invoke(table,null);var front=Pixels();
+            int changed=0;for(int i=0;i<all.Length;i++)if(Math.Abs(all[i].r-front[i].r)+Math.Abs(all[i].g-front[i].g)+Math.Abs(all[i].b-front[i].b)>12)changed++;
+            Check(changed<=4,"hidden back-face numerals must not appear through the body; pixels="+changed);
+            foreach(var r in back)r.enabled=true;
+            var visible=labels.Where(t=>Vector3.Dot(-t.transform.forward,-camera.transform.forward)>.5f).Select(t=>t.GetComponent<MeshRenderer>()).ToArray();
+            Check(visible.Length>0,"front numerals available for positive control");foreach(var r in visible)r.enabled=false;render.Invoke(table,null);var hidden=Pixels();
+            int frontChanged=0;for(int i=0;i<all.Length;i++)if(Math.Abs(all[i].r-hidden[i].r)+Math.Abs(all[i].g-hidden[i].g)+Math.Abs(all[i].b-hidden[i].b)>12)frontChanged++;
+            Check(frontChanged>10,"visible front numerals must actually render; pixels="+frontChanged);
+            Debug.Log("VTT_DICE_NUMERAL_OCCLUSION_PASS: back labels="+back.Length+", back changed="+changed+", front control="+frontChanged);
+        }finally { foreach(var text in labels)text.GetComponent<MeshRenderer>().enabled=true;render.Invoke(table,null);RenderTexture.active=previous;UnityEngine.Object.DestroyImmediate(image); }
     }
     private static void CheckTexturedRender(DiceTable table)
     {
