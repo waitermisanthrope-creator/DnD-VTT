@@ -89,3 +89,10 @@ retries could not produce a readable result. No APK publication. Added numeric
 rest alignment/velocity/timeout diagnostics in Editor only and a reproducible
 validation seed10024 to distinguish support angle from settling jitter before
 changing geometry or the result rule. Native build remains NOT READY.
+
+Support-plane analysis of actual exported compound vertices (SciPy convex hull,
+volume-weighted approximate COM; not PhysX) found stable tentacle d10 contact
+planes with a clearly dominant numbered face (alignment about.85-.92, gap
+.08-.16) that the current.94 cutoff rejects. This is geometric evidence to
+compare with the native rest/velocity diagnostics, not a measured probability
+distribution or permission to accept tied faces.
