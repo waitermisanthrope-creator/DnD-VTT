@@ -9,17 +9,19 @@
 3. **Основное приложение** — `PROJECT_ATLAS.md` и `PROJECT_ATLAS.txt` (атлас файлов и имён основного проекта), `AGENTS.md`, `unity/README.md` и **реальные** исходники ниже. Атлас бывает устаревшим: для действия используй текущие исходники/каталог и git diff.
 4. **Контракт работающего клиента** — `unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs` (адреса и UI каталогов), `WorkshopStore.cs` (поддерживаемые поля, проверка SHA-256, безопасная установка, зависимости), `WorkshopRuntime.cs` (материалы и AssetBundle), `LegacySessionPanel.WorkshopLibrary.cs` (размещение объектов).
 
+Unity1.00.24+ использует Assets v5 (включая связанные 3D-дайсы). Assets v4 сохранён для1.00.23 и старых клиентов; Content v3 не меняется. Новые наборы имеют minClientVersionCode10024.
+
 ## Где что менять
 
 | Цель автора | Репозиторий и путь | Требуется новый APK? |
 |---|---|---|
 | Новая/исправленная раса, класс, черта, предмет, крафт | `DnD-VTT-Content/packages/<id>.json` + `catalog/v3/index.json` | **Нет**, если JSON укладывается в существующие обработчики |
-| Декларативная карта, цвет, простой примитив | `DnD-VTT-Assets/packages/<id>.json` + `catalog/v4/index.json` | **Нет**, если клиент поддерживает структуру |
+| Декларативная карта, цвет, простой примитив | `DnD-VTT-Assets/packages/<id>.json` + `catalog/v5/index.json` | **Нет**, если клиент поддерживает структуру |
 | Загруженные обои/иконки, JPEG-превью | `DnD-VTT-Assets`, проверенные release assets + запись каталога | Обычно нет, в пределах поддержанного формата |
 | Сложная/анимированная 3D-модель | Проверенный ресурс и платформенные AssetBundles | Требуются Unity-сборочные инструменты и QA; не обычный ручной JSON |
 | Новая игровая механика / новый тип пакета | Unity C# в `experiment/unity-vtt` | **Да** (если нужен новый код клиента) |
 
-Текущая Unity-ветка читает `https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Content/main/catalog/v3/index.json` и `https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v4/index.json`. Попадание в эти каталоги **публично** для пользователей данного канала. Текущая мастерская не читает обычные GitHub feature-ветки как отдельный приватный DEV-каталог.
+Текущая Unity-ветка читает `https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Content/main/catalog/v3/index.json` и `https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v5/index.json`. Попадание в эти каталоги **публично** для пользователей данного канала. Текущая мастерская не читает обычные GitHub feature-ветки как отдельный приватный DEV-каталог.
 
 ## Тебе поручили «научить новичка делать моды»?
 

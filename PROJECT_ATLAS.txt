@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 40a9af3ad052. Файлов: 1962
+Коммит 5a2ec6f14b3b. Файлов: 1962
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -54,7 +54,7 @@
 0038. 1790788500741.png — текстура/изображение: 1790788500741 (1468216 B)
 0039. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0040. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
-0041. AGENTS.md — документация или отчёт: AGENTS (6892 B)
+0041. AGENTS.md — документация или отчёт: AGENTS (6966 B)
 0042. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (24954 B)
 0043. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (30511 B)
 0044. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (69057 B)
@@ -1122,7 +1122,7 @@
 1106. lineage_2_16. Shepard's Flute.mp3 — аудиофайл: lineage 2 16. Shepard's Flute (2997816 B)
 1107. manifest.json — данные/конфигурация: manifest (488 B)
 1108. MMORPG_FUTURE_PLAN.txt — документация или отчёт: MMORPG FUTURE PLAN (4115 B)
-1109. MODDING_START_HERE.md — документация или отчёт: MODDING START HERE (8903 B)
+1109. MODDING_START_HERE.md — документация или отчёт: MODDING START HERE (9171 B)
 1110. Oliver DeRiviere - Prelude to an End_(grizzlymusic.ru).mp3 — аудиофайл: Oliver DeRiviere   Prelude to an End (grizzlymusic.ru) (4020570 B)
 1111. Oliver Deriviere - Who Am I_(grizzlymusic.ru).mp3 — аудиофайл: Oliver Deriviere   Who Am I (grizzlymusic.ru) (3530381 B)
 1112. package.json — npm и упаковка desktop EXE (1608 B)

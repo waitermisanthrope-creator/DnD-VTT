@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 40a9af3ad052. Git содержит 1962 файлов.
+Снимок кода 5a2ec6f14b3b. Git содержит 1962 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -59,7 +59,7 @@
 | №0038 1790788500741.png | 1468216 B | текстура/изображение: 1790788500741 |
 | №0039 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0040 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
-| №0041 AGENTS.md | 6892 B | документация или отчёт: AGENTS |
+| №0041 AGENTS.md | 6966 B | документация или отчёт: AGENTS |
 | №0042 AI_BLOCKERS.md | 24954 B | документация или отчёт: AI BLOCKERS |
 | №0043 AI_NEXT_TASK.md | 30511 B | документация или отчёт: AI NEXT TASK |
 | №0044 AI_PROGRESS.md | 69057 B | документация или отчёт: AI PROGRESS |
@@ -1127,7 +1127,7 @@
 | №1106 lineage_2_16. Shepard's Flute.mp3 | 2997816 B | аудиофайл: lineage 2 16. Shepard's Flute |
 | №1107 manifest.json | 488 B | данные/конфигурация: manifest |
 | №1108 MMORPG_FUTURE_PLAN.txt | 4115 B | документация или отчёт: MMORPG FUTURE PLAN |
-| №1109 MODDING_START_HERE.md | 8903 B | документация или отчёт: MODDING START HERE |
+| №1109 MODDING_START_HERE.md | 9171 B | документация или отчёт: MODDING START HERE |
 | №1110 Oliver DeRiviere - Prelude to an End_(grizzlymusic.ru).mp3 | 4020570 B | аудиофайл: Oliver DeRiviere   Prelude to an End (grizzlymusic.ru) |
 | №1111 Oliver Deriviere - Who Am I_(grizzlymusic.ru).mp3 | 3530381 B | аудиофайл: Oliver Deriviere   Who Am I (grizzlymusic.ru) |
 | №1112 package.json | 1608 B | npm и упаковка desktop EXE |
