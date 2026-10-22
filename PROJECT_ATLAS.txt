@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит daefa4ed35d1. Файлов: 1961
+Коммит 9fec470c7a40. Файлов: 1961
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1921,7 +1921,7 @@
 1905. updates/previous-stable.json — метаданные обновлений: previous stable (179808 B)
 1906. updates/README.md — документация или отчёт: README (233 B)
 1907. updates/stable.json — метаданные обновлений: stable (179809 B)
-1908. updates/unity-changelog.json — метаданные обновлений: unity changelog (25380 B)
+1908. updates/unity-changelog.json — метаданные обновлений: unity changelog (26466 B)
 1909. updates/unity-experiment.json — метаданные обновлений: unity experiment (1698 B)
 1910. vignette_v2_sprite.png — текстура/изображение: vignette v2 sprite (1213593 B)
 1911. VTT_PROJECT_MANIFEST_V70.json — устаревший список V70, не актуален (44370 B)
@@ -15713,6 +15713,7 @@ unity/Assets/LegacyContent/Source/wall_wallpaper.png ; wall_wallpaper.png
 unity/Assets/LegacyContent/Source/wall_white_plaster.png ; wall_white_plaster.png
 unity/Assets/LegacyContent/Source/wall_wood_dark.png ; wall_wood_dark.png
 unity/Assets/LegacyContent/Source/wall_wood_light.png ; wall_wood_light.png
+unity/Assets/Vtt/Resources/Changelog.json ; updates/unity-changelog.json
 
 Обновление: node tools/generate_project_atlas.cjs
 

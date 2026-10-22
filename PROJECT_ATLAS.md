@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода daefa4ed35d1. Git содержит 1961 файлов.
+Снимок кода 9fec470c7a40. Git содержит 1961 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1926,7 +1926,7 @@
 | №1905 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №1906 updates/README.md | 233 B | документация или отчёт: README |
 | №1907 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №1908 updates/unity-changelog.json | 25380 B | метаданные обновлений: unity changelog |
+| №1908 updates/unity-changelog.json | 26466 B | метаданные обновлений: unity changelog |
 | №1909 updates/unity-experiment.json | 1698 B | метаданные обновлений: unity experiment |
 | №1910 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №1911 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
@@ -15749,6 +15749,7 @@
 - unity/Assets/LegacyContent/Source/wall_white_plaster.png ; wall_white_plaster.png
 - unity/Assets/LegacyContent/Source/wall_wood_dark.png ; wall_wood_dark.png
 - unity/Assets/LegacyContent/Source/wall_wood_light.png ; wall_wood_light.png
+- unity/Assets/Vtt/Resources/Changelog.json ; updates/unity-changelog.json
 
 ## Обновление индекса
 
