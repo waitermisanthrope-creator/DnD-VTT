@@ -19,7 +19,8 @@ Shader "DnDVtt/DiceSurface" {
                 float3 baseColor=lerp(_Color.rgb,_Accent.rgb,vein*.4);
                 float2 offset=float2(fmod(_Tile,2),1-floor(_Tile/2))*.5;
                 float2 uv=offset+lerp(.003,.497,saturate(i.uv));
-                float3 art=tex2D(_MainTex,uv).rgb*_Color.rgb;
+                float3 tint=_Color.rgb/max(1,max(_Color.r,max(_Color.g,_Color.b)));
+                float3 art=tex2D(_MainTex,uv).rgb*tint;
                 baseColor=lerp(baseColor,art,_Textured);
                 // Fine embossed surface response, derived in world space from the albedo.
                 // Large protrusions remain actual convex collision geometry.

@@ -170,9 +170,14 @@ public static class DiceValidation
             foreach(var r in back)r.enabled=true;
             var visible=labels.Where(t=>Vector3.Dot(-t.transform.forward,-camera.transform.forward)>.5f).Select(t=>t.GetComponent<MeshRenderer>()).ToArray();
             Check(visible.Length>0,"front numerals available for positive control");foreach(var r in visible)r.enabled=false;render.Invoke(table,null);var hidden=Pixels();
-            int frontChanged=0;for(int i=0;i<all.Length;i++)if(Math.Abs(all[i].r-hidden[i].r)+Math.Abs(all[i].g-hidden[i].g)+Math.Abs(all[i].b-hidden[i].b)>12)frontChanged++;
+            int frontChanged=0,highContrast=0;
+            for(int i=0;i<all.Length;i++) {
+                int difference=Math.Abs(all[i].r-hidden[i].r)+Math.Abs(all[i].g-hidden[i].g)+Math.Abs(all[i].b-hidden[i].b);
+                if(difference>12)frontChanged++;if(difference>150)highContrast++;
+            }
             Check(frontChanged>10,"visible front numerals must actually render; pixels="+frontChanged);
-            Debug.Log("VTT_DICE_NUMERAL_OCCLUSION_PASS: back labels="+back.Length+", back changed="+changed+", front control="+frontChanged);
+            Check(highContrast>50,"front numerals have sufficient actual image contrast; pixels="+highContrast);
+            Debug.Log("VTT_DICE_NUMERAL_OCCLUSION_PASS: back labels="+back.Length+", back changed="+changed+", front control="+frontChanged+", high contrast="+highContrast);
         }finally { foreach(var text in labels)text.GetComponent<MeshRenderer>().enabled=true;render.Invoke(table,null);RenderTexture.active=previous;UnityEngine.Object.DestroyImmediate(image); }
     }
     private static void CheckTexturedRender(DiceTable table)

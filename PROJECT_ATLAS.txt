@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 0e256eb7f887. Файлов: 1966
+Коммит 8e0dc0261d6c. Файлов: 1966
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -57,8 +57,8 @@
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (6966 B)
 0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (24954 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (37960 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (76506 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (40315 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (78861 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1087,7 +1087,7 @@
 1071. docs/unity-account/dice-1.00.23-metrics.json — документация или отчёт: dice 1.00.23 metrics (1453 B)
 1072. docs/unity-account/dice-1.00.24-metrics.json — документация или отчёт: dice 1.00.24 metrics (2106 B)
 1073. docs/unity-account/dice-1.00.25-metrics.json — документация или отчёт: dice 1.00.25 metrics (2023 B)
-1074. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (44298 B)
+1074. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (46653 B)
 1075. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7893 B)
 1076. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1077. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
@@ -1132,7 +1132,7 @@
 1116. PROJECT_ATLAS.txt — человекочитаемая карта репозитория (генерируется)
 1117. README.md — документация или отчёт: README (145 B)
 1118. release-staging/unity-android-approval.json — данные/конфигурация: unity android approval (470 B)
-1119. release-staging/unity-paired-approval.json — данные/конфигурация: unity paired approval (986 B)
+1119. release-staging/unity-paired-approval.json — данные/конфигурация: unity paired approval (943 B)
 1120. release-staging/unity-release.json — данные/конфигурация: unity release (3914 B)
 1121. smoke_back_v2_sprite-1.png — текстура/изображение: smoke back v2 sprite 1 (1707378 B)
 1122. smoke_back_v2_sprite.png — текстура/изображение: smoke back v2 sprite (1814587 B)
@@ -1731,7 +1731,7 @@
 1715. unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta — вспомогательный файл: CharacterSheetValidation.cs (59 B)
 1716. unity/Assets/Vtt/Editor/DiceBuildGate.cs — вспомогательный файл: DiceBuildGate (4491 B)
 1717. unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta — вспомогательный файл: DiceBuildGate.cs (60 B)
-1718. unity/Assets/Vtt/Editor/DiceValidation.cs — вспомогательный файл: DiceValidation (19763 B)
+1718. unity/Assets/Vtt/Editor/DiceValidation.cs — вспомогательный файл: DiceValidation (20045 B)
 1719. unity/Assets/Vtt/Editor/DiceValidation.cs.meta — вспомогательный файл: DiceValidation.cs (60 B)
 1720. unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs — вспомогательный файл: LegacyMigrationSetup (10734 B)
 1721. unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta — вспомогательный файл: LegacyMigrationSetup.cs (59 B)
@@ -1751,15 +1751,15 @@
 1735. unity/Assets/Vtt/Resources/Branding/Splash19.png.meta — вспомогательный файл: Splash19.png (312 B)
 1736. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg — текстура/изображение: Wallpaper16 (212684 B)
 1737. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta — вспомогательный файл: Wallpaper16.jpg (312 B)
-1738. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (30087 B)
+1738. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (31506 B)
 1739. unity/Assets/Vtt/Resources/Changelog.json.meta — вспомогательный файл: Changelog.json (158 B)
 1740. unity/Assets/Vtt/Resources/CharacterSheet.meta — вспомогательный файл: CharacterSheet (172 B)
 1741. unity/Assets/Vtt/Resources/CharacterSheet/catalog.json — данные/конфигурация: catalog (823381 B)
 1742. unity/Assets/Vtt/Resources/CharacterSheet/catalog.json.meta — вспомогательный файл: catalog.json (158 B)
 1743. unity/Assets/Vtt/Resources/Dice.meta — вспомогательный файл: Dice (77 B)
-1744. unity/Assets/Vtt/Resources/Dice/DiceNumeral.shader — вспомогательный файл: DiceNumeral (929 B)
+1744. unity/Assets/Vtt/Resources/Dice/DiceNumeral.shader — вспомогательный файл: DiceNumeral (1350 B)
 1745. unity/Assets/Vtt/Resources/Dice/DiceNumeral.shader.meta — вспомогательный файл: DiceNumeral.shader (60 B)
-1746. unity/Assets/Vtt/Resources/Dice/DiceSurface.shader — вспомогательный файл: DiceSurface (2580 B)
+1746. unity/Assets/Vtt/Resources/Dice/DiceSurface.shader — вспомогательный файл: DiceSurface (2658 B)
 1747. unity/Assets/Vtt/Resources/Dice/DiceSurface.shader.meta — вспомогательный файл: DiceSurface.shader (60 B)
 1748. unity/Assets/Vtt/Runtime.meta — вспомогательный файл: Runtime (172 B)
 1749. unity/Assets/Vtt/Runtime/CharacterCreation.cs — вспомогательный файл: CharacterCreation (11170 B)
@@ -1926,7 +1926,7 @@
 1910. updates/previous-stable.json — метаданные обновлений: previous stable (179808 B)
 1911. updates/README.md — документация или отчёт: README (233 B)
 1912. updates/stable.json — метаданные обновлений: stable (179809 B)
-1913. updates/unity-changelog.json — метаданные обновлений: unity changelog (30087 B)
+1913. updates/unity-changelog.json — метаданные обновлений: unity changelog (31506 B)
 1914. updates/unity-experiment.json — метаданные обновлений: unity experiment (1972 B)
 1915. vignette_v2_sprite.png — текстура/изображение: vignette v2 sprite (1213593 B)
 1916. VTT_PROJECT_MANIFEST_V70.json — устаревший список V70, не актуален (44370 B)
@@ -14708,7 +14708,7 @@ zipCompressedBrandingBytes — №1848
 zipCompressedNativeBytes — №1848
 zipCompressedUnityDataBytes — №1848
 
---- JSON поля (973) ---
+--- JSON поля (975) ---
 _builderBaseStats — №1741 (+ 2 других файлов)
 $schema — №1018
 abilities — №1741 (+ 2 других файлов)
@@ -14764,6 +14764,7 @@ apkVersionCode — №1073
 app — №1909 (+ 2 других файлов)
 appId — №1114
 approved — №1118 (+ 1 других файлов)
+approvedRenderIndexSha256 — №1119
 arcana — №1741 (+ 2 других файлов)
 arch — №1114
 archiveBytes — №0906 (+ 3 других файлов)
@@ -15401,6 +15402,7 @@ repository — №1072
 required — №1018
 required_editor_assets — №0908
 requiredAssets — №0752 (+ 13 других файлов)
+requireRenderReview — №1119
 requires — №1138
 resin — №1869
 resistanceDamageType — №1741 (+ 1 других файлов)
