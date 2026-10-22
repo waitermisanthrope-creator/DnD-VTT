@@ -102,7 +102,7 @@ namespace DndVtt.UnityPrototype
                     if(!sent)yield break;
                 }
                 yield return CloudRequest("/rest/v1/rpc/read_chat",new JObject(),token,r=> {
-                    if((string)cloudSession?["user"]!=actor)return;chatMessages=(JArray)r["messages"];chatServerOffset=(DateTimeOffset.Parse((string)r["serverTime"])-DateTimeOffset.UtcNow).TotalSeconds;chatStatus="Последние 100 сообщений за час. Обновление каждые 10 секунд."+((bool?)r["nicknamesSupported"]==true?"":" Для показа ников всем игрокам требуется серверное обновление чата.");
+                    if((string)cloudSession?["user"]!=actor)return;chatMessages=(JArray)r["messages"];chatServerOffset=(DateTimeOffset.Parse((string)r["serverTime"])-DateTimeOffset.UtcNow).TotalSeconds;chatStatus="Последние 100 сообщений за час. Обновление каждые 10 секунд."+((bool?)r["nicknamesSupported"]==true?"":" Для показа ников всем игрокам требуется серверное обновление чата.")+((bool?)r["roleBadgesSupported"]==true?"":" Серверные префиксы ролей ещё не подключены.");
                 },e=>chatStatus="Чат недоступен. Серверная миграция может быть ещё не подключена. "+e);
             }finally { chatBusy=false;chatNextRefresh=Time.unscaledTime+10; }
         }

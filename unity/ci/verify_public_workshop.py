@@ -2,7 +2,7 @@
 import argparse,hashlib,json,urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-parser=argparse.ArgumentParser();parser.add_argument('--output',type=Path,required=True);args=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('--output',type=Path,required=True);parser.add_argument('--reuse-packages',action='store_true');args=parser.parse_args()
 def fetch(url,limit):
  with urllib.request.urlopen(url,timeout=45) as response:
   data=response.read(limit+1)
@@ -22,9 +22,19 @@ for repo,field in [('DnD-VTT-Content','packages'),('DnD-VTT-Assets','packs')]:
   jobs.append((root,m))
 def download(job):
  root,m=job
- b=fetch(m['url'],m['bytes']);h=hashlib.sha256(b).hexdigest();assert len(b)==m['bytes'] and h==m['sha256']
+ existing=root/'packages'/m['url'].rsplit('/',1)[1]
+ b=existing.read_bytes() if args.reuse_packages and existing.exists() else fetch(m['url'],m['bytes']);h=hashlib.sha256(b).hexdigest();assert len(b)==m['bytes'] and h==m['sha256']
  (root/'packages'/m['url'].rsplit('/',1)[1]).write_bytes(b)
  return dict(id=m['id'],url=m['url'],bytes=len(b),sha256=h,status='verified-public-download')
 with ThreadPoolExecutor(max_workers=6) as pool: rows=list(pool.map(download,jobs))
 (args.output/'verification.json').write_text(json.dumps(rows,ensure_ascii=False,indent=2)+'\n')
 print('PUBLIC_WORKSHOP_DOWNLOAD_PASS',len(rows),'packages,',sum(r['bytes'] for r in rows),'bytes')
+
+preview_root=args.output/'DnD-VTT-Assets';data=fetch('https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v4/index.json',1024*1024)
+(preview_root/'catalog/v4').mkdir(parents=True,exist_ok=True);(preview_root/'catalog/v4/index.json').write_bytes(data);(preview_root/'previews').mkdir(exist_ok=True)
+preview_rows=[]
+def download_preview(m):
+ p=m['preview'];assert p['url'].startswith('https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/releases/download/workshop-previews-v1/') and p['url'].endswith('.jpg') and '..' not in p['url'] and '?' not in p['url'] and 0<p['bytes']<=256*1024
+ b=fetch(p['url'],p['bytes']);assert len(b)==p['bytes'] and hashlib.sha256(b).hexdigest()==p['sha256'];(preview_root/'previews'/p['url'].rsplit('/',1)[1]).write_bytes(b);return len(b)
+with ThreadPoolExecutor(max_workers=6) as pool:preview_rows=list(pool.map(download_preview,[m for m in json.loads(data)['packs'] if 'preview' in m]))
+print('PUBLIC_WORKSHOP_PREVIEWS_PASS',len(preview_rows),sum(preview_rows),'bytes')

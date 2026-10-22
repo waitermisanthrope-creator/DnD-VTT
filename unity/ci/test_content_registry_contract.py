@@ -11,7 +11,7 @@ SOURCE = (ROOT / "unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs"
 
 def run():
     assert "DnD-VTT-Content/main/catalog/v3/index.json" in SOURCE
-    assert "DnD-VTT-Assets/main/catalog/v3/index.json" in SOURCE
+    assert "DnD-VTT-Assets/main/catalog/v4/index.json" in SOURCE
     store = (ROOT / "unity/Assets/Vtt/Runtime/WorkshopStore.cs").read_text(encoding="utf-8")
     assert "DnD-VTT-Content/main/packages/" in store
     assert "DnD-VTT-Assets/main/packages/" in store
@@ -20,6 +20,10 @@ def run():
     assert "DigestFile(path)" in store and "File.Replace(part, path" in store
     assert 'kind == "content" ? "packages" : "packs"' in SOURCE
     assert "workshopStore.Installed()" in SOURCE
+    assert 'VisibleContentPage()' in SOURCE and 'DrawContentTree()' in SOURCE
+    previews=(ROOT/'unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs').read_text(encoding='utf-8')
+    assert 'PreviewCacheLimit=8*1024*1024' in previews and 'WorkshopStore.PreviewBytes' in previews
+    assert 'CloseWorkshopPreviews()' in previews and 'Directory.Delete(contentPreviewRoot,true)' in previews
     print("UNITY_CONTENT_REGISTRY_CONTRACT_PASS: separate registries and verified installation")
 
 

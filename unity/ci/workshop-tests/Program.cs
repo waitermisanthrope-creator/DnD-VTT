@@ -23,6 +23,19 @@ class Program
                 var errors = tree.GetDiagnostics().Where(d => d.Severity == Microsoft.CodeAnalysis.DiagnosticSeverity.Error).ToArray();
                 Check(errors.Length == 0, "C# syntax " + file + " " + string.Join(";", errors.Select(e => e.ToString())));
             }
+            var previewCatalog=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source,"DnD-VTT-Assets/catalog/v4/index.json")),"packs");int previewCount=0;
+            foreach(JObject entry in previewCatalog)if(entry["preview"] is JObject preview) {
+                byte[] bytes=File.ReadAllBytes(Path.Combine(source,"DnD-VTT-Assets/previews",Path.GetFileName((string)preview["url"])));
+                Check(WorkshopStore.PreviewBytes(preview,bytes).Length==bytes.Length,"public preview SHA and bounded JPEG dimensions");previewCount++;
+                var bad=(JObject)preview.DeepClone();bad["url"]="https://example.invalid/preview.jpg";Reject(()=>WorkshopStore.ValidatePreview(bad),"external preview source rejected");
+                bad=(JObject)preview.DeepClone();bad["width"]=9999;Reject(()=>WorkshopStore.PreviewBytes(bad,bytes),"decompression size rejected before decode");
+                var tampered=(byte[])bytes.Clone();tampered[tampered.Length-1]^=1;Reject(()=>WorkshopStore.PreviewBytes(preview,tampered),"tampered preview rejected");
+            }
+            Check(previewCount==75,"all current graphical packages have small previews");
+            Check(WorkshopStore.CategoryPath(JObject.Parse("{type:'appearance',imageKind:'wallpaper'}"))=="Оформление/Обои","wallpaper subgroup");
+            Check(WorkshopStore.CategoryPath(JObject.Parse("{type:'appearance',imageKind:'icon'}"))=="Оформление/Иконки","icon subgroup separate from wallpaper");
+            Check(WorkshopStore.CategoryPath(JObject.Parse("{type:'item',id:'dnd.items.weapons'}"))=="Инвентарь/Оружие","inventory tree subgroup");
+            Check(WorkshopStore.CategoryPath(JObject.Parse("{type:'craft',id:'dnd.alchemy.ingredients.1'}"))=="Крафт и алхимия/Алхимия/Ингредиенты","three-level alchemy branch");
             var imageBytes=File.ReadAllBytes(Path.Combine(appRoot,"wallpapers/6.png"));
             int iw=0,ih=0;for(int n=0;n<4;n++) { iw=(iw<<8)|imageBytes[16+n];ih=(ih<<8)|imageBytes[20+n]; }
             var imageEntry=new JObject { ["id"]="demo.image.image",["name"]="Own fixture",["kind"]="wallpaper",["width"]=iw,["height"]=ih,["sha256"]=WorkshopStore.Digest(imageBytes),["pngBase64"]=Convert.ToBase64String(imageBytes) };

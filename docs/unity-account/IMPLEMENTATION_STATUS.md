@@ -1,3 +1,13 @@
+## 1.00.22 correction in progress
+
+DONE implementation: Android native multiline draft editor with cursor/selection/copy/paste; desktop selection no longer starts page swipe; confirmed send clears draft and focus, failed sends preserve draft/retry ID. Server-only staff badge mapping: owner animated gold, deputy gold, moderator 0–3 distinct colors, ordinary players no prefix.
+
+PARTIAL deployment: nickname migration 202610220001 was reported applied successfully by owner. New migration 202610220002_chat_staff_badges.sql is tested locally (133 SQL checks), not deployed; it derives role/trust only from active app_private.staff and preserves hourly retention. Nickname/metadata cannot forge badges; revocation tested.
+
+DONE physical preview publication: DnD-VTT-Assets producer 39745017325 succeeded, 75 JPEG previews / 672,045 bytes in release workshop-previews-v1, catalog/v4 activated; v3 retained. Maps and primitive objects are explicitly labeled schematics, materials are actual swatches, images are scaled original owner art. Public SHA/size download verification passed.
+
+PARTIAL native integration: category tree, cached pages, lazy sequential preview download of visible page only, maximum 256 KiB/image and 8 MiB session disk cache; abort/release/delete on exit and destroy. No installs or save deletions in preview path. Android launcher moves to predeclared aliases like WebView (31 small 192 px system images generated from verified public fixtures at build; full art remains optional). Old original component retained as default alias via Unity host subclass; atomic API33+ switch, rollback on older versions; no new pinned shortcuts. Existing pinned shortcut can only be removed manually by user. Pending real native builds and device launcher/input QA.
+
 ## 1.00.21 global chat nickname and workshop performance — published
 
 DONE implementation: global chat menu/title; authenticated nickname settings use existing Supabase Auth user metadata chat_nickname, encrypted Android session persistence and current Auth PUT /user. No new account or character store. Nicknames are display-only, not unique identities or staff badges. Validate 3–24 Latin/Cyrillic letters, numbers, spaces, underscore/hyphen on client and SQL read. Server role enforcement unchanged.

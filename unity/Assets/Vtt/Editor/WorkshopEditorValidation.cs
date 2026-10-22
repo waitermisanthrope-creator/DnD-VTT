@@ -52,6 +52,20 @@ public static class WorkshopEditorValidation
             Check(((System.Collections.Generic.IEnumerable<JObject>)page.Invoke(panel,null)).Count()==1,"search reaches records beyond first page and resets page");
             type.GetField("installedOnly",flags).SetValue(panel,true);ensure.Invoke(panel,null);
             Check(!((System.Collections.Generic.IEnumerable<JObject>)page.Invoke(panel,null)).Any(),"installed-only filter excludes synthetic uninstalled packages");
+            type.GetField("installedOnly",flags).SetValue(panel,false);type.GetField("contentSearch",flags).SetValue(panel,"");type.GetField("contentGroupPath",flags).SetValue(panel,"Оформление/Иконки");ensure.Invoke(panel,null);
+            Check(((System.Collections.Generic.IEnumerable<JObject>)page.Invoke(panel,null)).All(m=>(string)m["imageKind"]=="icon"),"icon branch contains no wallpapers");
+            type.GetField("contentGroupPath",flags).SetValue(panel,"Оформление/Обои");ensure.Invoke(panel,null);
+            Check(((System.Collections.Generic.IEnumerable<JObject>)page.Invoke(panel,null)).All(m=>(string)m["imageKind"]=="wallpaper"),"wallpaper branch contains no icons");
+            type.GetField("chatDraft",flags).SetValue(panel,"Текст для отправки");type.GetField("chatPendingId",flags).SetValue(panel,"confirmed-id");
+            type.GetMethod("AcknowledgeChatDraft",flags).Invoke(panel,null);
+            Check((string)type.GetField("chatDraft",flags).GetValue(panel)==""&&type.GetField("chatPendingId",flags).GetValue(panel)==null,"successful acknowledgement clears composer and pending retry");
+            string previews=Path.Combine(store.Root,"preview-lifecycle-test");Directory.CreateDirectory(previews);File.WriteAllText(Path.Combine(previews,"cache.jpg"),"temporary");
+            type.GetField("contentPreviewRoot",flags).SetValue(panel,previews);var texture=new Texture2D(2,2);
+            var images=(System.Collections.IDictionary)type.GetField("contentPreviewImages",flags).GetValue(panel);images.Add("test",texture);
+            int installedCount=Directory.GetFiles(store.Root,"*.json").Length;
+            type.GetMethod("CloseWorkshopPreviews",flags).Invoke(panel,null);
+            Check(!Directory.Exists(previews)&&!texture&&images.Count==0,"workshop exit deletes session thumbnails and destroys owned textures");
+            Check(Directory.GetFiles(store.Root,"*.json").Length==installedCount,"preview cleanup preserves installed manifests");
             Debug.Log("VTT_WORKSHOP_PAGINATION_PASS: 20000 entries, 12 cards, cached 100 draws, next page, search and installed-only");
         }finally { UnityEngine.Object.DestroyImmediate(go); }
     }
@@ -110,7 +124,7 @@ public static class WorkshopEditorValidation
             var manifests = new JArray();int decodedImages=0;
             foreach (string repo in new[] { "DnD-VTT-Content", "DnD-VTT-Assets" })
             {
-                var entries = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixtures, repo, repo.EndsWith("Content") ? "catalog/v3/index.json" : "catalog/v3/index.json")), repo.EndsWith("Content", StringComparison.Ordinal) ? "packages" : "packs");
+                var entries = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixtures, repo, repo.EndsWith("Content") ? "catalog/v3/index.json" : "catalog/v4/index.json")), repo.EndsWith("Content", StringComparison.Ordinal) ? "packages" : "packs");
                 foreach (JObject entry in entries)
                 {
                     if ((string)entry["format"] != "json") continue;
@@ -126,6 +140,19 @@ public static class WorkshopEditorValidation
             Debug.Log("VTT_APPEARANCE_PNG_PASS: "+decodedImages+" downloaded images decoded with matching dimensions");
             ValidateAppearanceLibrary(store,manifests);
             ValidateWorkshopPagination(store);
+            var previewEntries=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixtures,"DnD-VTT-Assets/catalog/v4/index.json")),"packs");int decodedPreviews=0;
+            foreach(JObject entry in previewEntries)if(entry["preview"] is JObject preview) {
+                var texture=new Texture2D(2,2);try { var b=WorkshopStore.PreviewBytes(preview,File.ReadAllBytes(Path.Combine(fixtures,"DnD-VTT-Assets/previews",Path.GetFileName((string)preview["url"]))));Check(texture.LoadImage(b),"real small preview decodes in Unity");Check(texture.width==320&&texture.height==200,"decoded preview dimensions");decodedPreviews++; }finally { UnityEngine.Object.DestroyImmediate(texture); }
+            }
+            Check(decodedPreviews==75,"all graphical package previews decode");Debug.Log("VTT_WORKSHOP_PREVIEW_PASS: 75 hash-verified small JPEG previews decoded safely");
+            var gradle=Path.Combine(folder,"gradle");Directory.CreateDirectory(Path.Combine(gradle,"src/main"));
+            File.WriteAllText(Path.Combine(gradle,"src/main/AndroidManifest.xml"),"<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"><application><activity android:name=\"com.unity3d.player.UnityPlayerActivity\"><intent-filter><action android:name=\"android.intent.action.MAIN\"/><category android:name=\"android.intent.category.LAUNCHER\"/></intent-filter></activity></application></manifest>");
+            var callback=new UnityUpdaterManifest();callback.OnPostGenerateGradleAndroidProject(gradle);callback.OnPostGenerateGradleAndroidProject(gradle);
+            var manifestXml=new System.Xml.XmlDocument();manifestXml.Load(Path.Combine(gradle,"src/main/AndroidManifest.xml"));
+            Check(manifestXml.SelectNodes("/manifest/application/activity-alias").Count==31,"launcher alias generation idempotent");
+            Check(Directory.GetFiles(Path.Combine(gradle,"src/main/res/drawable"),"vtt_icon_*.png").Length==31,"small Android system icon resources prepared");
+            Debug.Log("VTT_LAUNCHER_GENERATION_PASS: repeated manifest migration preserves old launcher name, 31 aliases and 31 bounded icons");
+
             runtime = new WorkshopRuntime(store); runtime.ActivateData();
             var commerce = runtime.Commerce();
             Check(((JArray)commerce["items"]).Count == 308 && ((JArray)commerce["craft"]["recipes"]).Count == 47, "downloaded inventory and craft activated in native Unity");
