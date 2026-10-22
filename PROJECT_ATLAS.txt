@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 32aa1fc77028. Файлов: 1947
+Коммит 55646b735a10. Файлов: 1947
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,7 +56,7 @@
 0040. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0041. AGENTS.md — документация или отчёт: AGENTS (4903 B)
 0042. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (24153 B)
-0043. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (28117 B)
+0043. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (28436 B)
 0044. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (67256 B)
 0045. android/.gitignore — Android компонент: .gitignore (44 B)
 0046. android/app/build.gradle — Android компонент: build (4122 B)
@@ -1077,8 +1077,8 @@
 1061. docs/unity-account/CHAT_NICKNAMES_1.00.21.md — документация или отчёт: CHAT NICKNAMES 1.00.21 (3028 B)
 1062. docs/unity-account/CHAT_ONE_HOUR.md — документация или отчёт: CHAT ONE HOUR (2267 B)
 1063. docs/unity-account/CHAT_WORKSHOP_1.00.22.md — документация или отчёт: CHAT WORKSHOP 1.00.22 (7852 B)
-1064. docs/unity-account/DICE_1.00.23.md — документация или отчёт: DICE 1.00.23 (4365 B)
-1065. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (35644 B)
+1064. docs/unity-account/DICE_1.00.23.md — документация или отчёт: DICE 1.00.23 (4814 B)
+1065. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (36156 B)
 1066. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7893 B)
 1067. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1068. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)

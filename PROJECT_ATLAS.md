@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 32aa1fc77028. Git содержит 1947 файлов.
+Снимок кода 55646b735a10. Git содержит 1947 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,7 +61,7 @@
 | №0040 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0041 AGENTS.md | 4903 B | документация или отчёт: AGENTS |
 | №0042 AI_BLOCKERS.md | 24153 B | документация или отчёт: AI BLOCKERS |
-| №0043 AI_NEXT_TASK.md | 28117 B | документация или отчёт: AI NEXT TASK |
+| №0043 AI_NEXT_TASK.md | 28436 B | документация или отчёт: AI NEXT TASK |
 | №0044 AI_PROGRESS.md | 67256 B | документация или отчёт: AI PROGRESS |
 | №0045 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0046 android/app/build.gradle | 4122 B | Android компонент: build |
@@ -1082,8 +1082,8 @@
 | №1061 docs/unity-account/CHAT_NICKNAMES_1.00.21.md | 3028 B | документация или отчёт: CHAT NICKNAMES 1.00.21 |
 | №1062 docs/unity-account/CHAT_ONE_HOUR.md | 2267 B | документация или отчёт: CHAT ONE HOUR |
 | №1063 docs/unity-account/CHAT_WORKSHOP_1.00.22.md | 7852 B | документация или отчёт: CHAT WORKSHOP 1.00.22 |
-| №1064 docs/unity-account/DICE_1.00.23.md | 4365 B | документация или отчёт: DICE 1.00.23 |
-| №1065 docs/unity-account/IMPLEMENTATION_STATUS.md | 35644 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1064 docs/unity-account/DICE_1.00.23.md | 4814 B | документация или отчёт: DICE 1.00.23 |
+| №1065 docs/unity-account/IMPLEMENTATION_STATUS.md | 36156 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1066 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1067 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1068 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
