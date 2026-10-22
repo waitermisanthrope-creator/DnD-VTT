@@ -1,3 +1,7 @@
+# Active Unity task — procedural dice 1.00.23, 2026-10-22
+
+Owner requests real 3D dice and both-platform in-app release. Runtime sourcea4517f5e; candidate39760613972 in progress. First39759223168 compiled but correctly failed at SceneManager.CreateScene from Edit Mode. New DiceBuildGate enters real Play Mode, runs geometry/56 PhysX throw/render/async cleanup checks, then builds existing CloudAndroidAfterDice/CloudWindowsAfterDice with manualExit. Do not weaken checks or call local-scene creation in Edit Mode. Release only successful paired artifacts through existing approval/promote; owner explicitly authorizes this request. Public remains22. Read docs/unity-account/DICE_1.00.23.md and IMPLEMENTATION_STATUS.md. Settings categoriescaec16da included. Workshop page-reset after download remains deferred. Current 1.00.22 fixes were owner-accepted; don't restart those.
+
 # Current Unity continuation — 1.00.22 published, 2026-10-22
 
 Read docs/unity-account/IMPLEMENTATION_STATUS.md and CHAT_WORKSHOP_1.00.22.md for the completed owner UI/chat/workshop request. Paired Android/Windows release is public and byte-verified; source961d0c63/run39751836865, feed10022. Do not restart the prior audit or rebuild unchanged runtime for documentation. Next independent checks: owner applies 202610220002_chat_staff_badges.sql; physical phone native cursor/selection and launcher icon update; verify session preview cache cleanup. Old pinned shortcut needs manual removal. Legacy main class queue below is preserved, not part of this Unity correction.

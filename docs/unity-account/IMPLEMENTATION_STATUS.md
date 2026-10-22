@@ -1,3 +1,9 @@
+# Procedural dice 1.00.23 — IN PROGRESS, 2026-10-22
+
+Owner authorizes Android+Windows publication after successful gates. Sourcea4517f5e/run39760613972: six generated solids, percentile pair, real local-PhysX throws, face-based result, bounded cocked-die retry, Home/Sheet table, settled-result zoom and idle rendering/resource recovery. Settings category reorganization caec16da included. Existing4039+4 C# checks,133 SQL WASM checks,12 Python tests and source contracts pass locally; all six actual-source geometry topologies/equal face areas checked with a math shim. These are not a native/player/device verdict.
+
+First native run39759223168 compiled but failed at Editor-only invocation of the Play-Mode-only SceneManager.CreateScene API. Corrected by a domain-reload-aware Play Mode build gate; it waits for real physics scene cleanup before player build. Next candidate in progress. Public feed remains1.00.22. Do not declare new APK ready until signed Android, Windows, upgrade QA and paired publication succeed. See DICE_1.00.23.md. No physical phone checks or live Supabase changes performed.
+
 # Settings categories — 2026-10-22
 
 IMPLEMENTED in source: Settings opens a category chooser (visual, graphics, controls, network/account, local data, updates, signed-in support/management). Existing account/cloud and server-checked staff tools retained. Draft preferences persist across categories, explicit save applies them. Workshop moved to its own Home button; installed appearance previews remain in visual settings, download navigation removed from settings. Home actions have an independent swipe area for short screens.
