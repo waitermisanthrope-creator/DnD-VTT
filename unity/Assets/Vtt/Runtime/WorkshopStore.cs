@@ -35,8 +35,59 @@ namespace DndVtt.UnityPrototype
         public static string Digest(byte[] bytes) { using (var h = SHA256.Create()) return BitConverter.ToString(h.ComputeHash(bytes)).Replace("-", "").ToLowerInvariant(); }
         public static string DigestFile(string path) { using (var h = SHA256.Create()) using (var s = File.OpenRead(path)) return BitConverter.ToString(h.ComputeHash(s)).Replace("-", "").ToLowerInvariant(); }
         public static JObject Parse(string text) => JObject.Parse(text, new JsonLoadSettings { DuplicatePropertyNameHandling = DuplicatePropertyNameHandling.Error });
+        public static string CategoryPath(JObject manifest)
+        {
+            string type=(string)manifest["type"],id=(string)manifest["id"]??"";
+            switch(type) {
+                case "race":return "Персонажи/Расы";
+                case "class":return "Персонажи/Классы";
+                case "subclass":return "Персонажи/Подклассы";
+                case "feat":return "Персонажи/Черты";
+                case "spell":return "Магия/Заклинания";
+                case "monster":return "Бестиарий/Монстры";
+                case "game-system":return "Игровые системы/Правила";
+                case "item":
+                    foreach(var pair in new[]{new[]{"weapons","Оружие"},new[]{"armor","Броня"},new[]{"consumables","Расходники"},new[]{"materials","Материалы"},new[]{"junk","Хлам"}})if(id.EndsWith("."+pair[0],StringComparison.Ordinal))return "Инвентарь/"+pair[1];
+                    return "Инвентарь/Прочее";
+                case "craft":return id.Contains("alchemy.ingredients")?"Крафт и алхимия/Алхимия/Ингредиенты":id.Contains("alchemy")?"Крафт и алхимия/Алхимия/Правила и катализаторы":"Крафт и алхимия/Рецепты";
+                case "map":return "3D и карты/Карты/"+(id.Contains("castle")?"Замки":id.Contains("house")?"Дома":id.Contains("tavern")?"Таверны":id.Contains("town")||id.Contains("village")?"Поселения":id.Contains("dungeon")?"Подземелья":id.Contains("stress")?"Тестовые":"Разное");
+                case "model":return "3D и карты/Модели";
+                case "environment":return "3D и карты/Окружение";
+                case "texture":return "3D и карты/Материалы и текстуры";
+                case "animation":return "3D и карты/Анимации";
+                case "appearance":return (string)manifest["imageKind"]=="wallpaper"?"Оформление/Обои":(string)manifest["imageKind"]=="icon"?"Оформление/Иконки":"3D и карты/Материалы и текстуры";
+                default:return "Коллекции/Наборы";
+            }
+        }
+        public static void ValidatePreview(JObject preview)
+        {
+            string url=(string)preview["url"];
+            if(url==null||!url.StartsWith("https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/releases/download/workshop-previews-v1/",StringComparison.Ordinal)||!url.EndsWith(".jpg",StringComparison.Ordinal)||url.Contains("..")||url.Contains("?")||url.Contains("#")||!Regex.IsMatch((string)preview["sha256"]??"","^[a-f0-9]{64}$")||(long?)preview["bytes"]<1||(long?)preview["bytes"]>256*1024||preview["bytes"]==null||(int?)preview["width"]<1||(int?)preview["width"]>512||preview["width"]==null||(int?)preview["height"]<1||(int?)preview["height"]>512||preview["height"]==null)
+                throw new FormatException("Некорректный предпросмотр");
+        }
+        public static byte[] PreviewBytes(JObject preview,byte[] bytes)
+        {
+            ValidatePreview(preview);
+            if(bytes.LongLength!=(long)preview["bytes"]||Digest(bytes)!=(string)preview["sha256"]||bytes.Length<12||bytes[0]!=255||bytes[1]!=216)throw new FormatException("Предпросмотр: размер/SHA-256/JPEG не совпадают");
+            int pos=2;
+            while(pos+4<bytes.Length) {
+                if(bytes[pos++]!=255)throw new FormatException("Неверный JPEG");
+                while(pos<bytes.Length&&bytes[pos]==255)pos++;
+                if(pos>=bytes.Length)break;int marker=bytes[pos++];
+                if(marker==0xD9||marker==0xDA)break;if(marker==0x01||marker>=0xD0&&marker<=0xD7)continue;
+                if(pos+2>bytes.Length)break;int length=bytes[pos]*256+bytes[pos+1];if(length<2||pos+length>bytes.Length)break;
+                if(marker>=0xC0&&marker<=0xCF&&marker!=0xC4&&marker!=0xC8&&marker!=0xCC) {
+                    if(length<8)break;int height=bytes[pos+3]*256+bytes[pos+4],width=bytes[pos+5]*256+bytes[pos+6];
+                    if(width!=(int)preview["width"]||height!=(int)preview["height"]||width>512||height>512)throw new FormatException("Неверные размеры предпросмотра");
+                    return bytes;
+                }
+                pos+=length;
+            }
+            throw new FormatException("JPEG не содержит безопасного размера");
+        }
         public static void ValidateManifest(JObject m)
         {
+            if(m["preview"]!=null) { if(!(m["preview"] is JObject preview))throw new FormatException("Неверный предпросмотр");ValidatePreview(preview); }
             string id = (string)m["id"], url = (string)m["url"], hash = (string)m["sha256"];
             long size = (long?)m["bytes"] ?? -1;
             if ((int?)m["schemaVersion"] != 1 || !ValidId(id) || !Types.Contains((string)m["type"]) || size < 1 || size > MaxPackageBytes

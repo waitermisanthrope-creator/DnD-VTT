@@ -12,10 +12,10 @@ namespace DndVtt.UnityPrototype
     public sealed partial class LegacySessionPanel
     {
         private const string CatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Content/main/catalog/v3/index.json";
-        private const string AssetsCatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v3/index.json";
+        private const string AssetsCatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v4/index.json";
         private WorkshopStore workshopStore;
         private WorkshopRuntime workshop;
-        private bool contentBusy, installedOnly;
+        private bool contentBusy, installedOnly,contentCatalogAutoRefreshed;
         private float contentProgress;
         private int contentCategory;
         private string contentSearch = "", contentNotice = "Каталоги доступны через интернет; установленные пакеты работают офлайн.";
@@ -24,7 +24,11 @@ namespace DndVtt.UnityPrototype
         private const int ContentPageSize=12;
         private int contentPage,contentViewCategory=-1;
         private bool contentViewDirty=true,contentViewInstalledOnly;
-        private string contentViewSearch;
+        private string contentViewSearch,contentViewGroup;
+        private string contentGroupPath="";
+        private List<string> contentTreeChildren=new List<string>();
+        private Dictionary<string,int> contentTreeCounts=new Dictionary<string,int>();
+        private int contentViewRevision;
         private List<JObject> contentView=new List<JObject>();
         private Dictionary<string,JObject> contentInstalled=new Dictionary<string,JObject>();
         private Dictionary<string,string> contentAvailability=new Dictionary<string,string>();
@@ -34,15 +38,40 @@ namespace DndVtt.UnityPrototype
             var all=contentPackages.Concat(assetPacks).OfType<JObject>().GroupBy(m=>(string)m["id"]).Select(g=>g.First()).ToList();
             var ids=new HashSet<string>(all.Select(m=>(string)m["id"]));
             all.AddRange(contentInstalled.Values.Where(m=>!ids.Contains((string)m["id"])));
-            contentView=all.Where(m=>(!installedOnly||contentInstalled.ContainsKey((string)m["id"]))&&(contentCategory==0||(string)m["type"]==ContentTypes[contentCategory])&&
-                (m["name"]+" "+m["id"]+" "+m["author"]).IndexOf(contentSearch,StringComparison.OrdinalIgnoreCase)>=0).ToList();
+            var eligible=all.Where(m=>(!installedOnly||contentInstalled.ContainsKey((string)m["id"]))&&(contentCategory==0||(string)m["type"]==ContentTypes[contentCategory])&&
+                (m["name"]+" "+m["id"]+" "+m["author"]+" "+WorkshopStore.CategoryPath(m)).IndexOf(contentSearch,StringComparison.OrdinalIgnoreCase)>=0).ToList();
+            string prefix=contentGroupPath==""?"":contentGroupPath+"/";
+            contentView=eligible.Where(m=>contentGroupPath==""||WorkshopStore.CategoryPath(m)==contentGroupPath||WorkshopStore.CategoryPath(m).StartsWith(prefix,StringComparison.Ordinal)).ToList();
+            contentTreeCounts.Clear();
+            foreach(var item in eligible) {
+                string group=WorkshopStore.CategoryPath(item);if(!group.StartsWith(prefix,StringComparison.Ordinal)||group==contentGroupPath)continue;
+                string child=prefix+group.Substring(prefix.Length).Split('/')[0];
+                if(!contentTreeCounts.ContainsKey(child))contentTreeCounts[child]=0;contentTreeCounts[child]++;
+            }
+            contentTreeChildren=contentTreeCounts.Keys.OrderBy(k=>k,StringComparer.Ordinal).ToList();contentViewGroup=contentGroupPath;contentViewRevision++;
             contentAvailability.Clear();contentViewDirty=false;contentViewCategory=contentCategory;contentViewSearch=contentSearch;contentViewInstalledOnly=installedOnly;contentPage=0;contentDetails=null;
         }
         private void EnsureContentView()
         {
-            if(contentViewDirty||contentViewCategory!=contentCategory||contentViewSearch!=contentSearch||contentViewInstalledOnly!=installedOnly)RebuildContentView();
+            if(contentViewDirty||contentViewCategory!=contentCategory||contentViewSearch!=contentSearch||contentViewInstalledOnly!=installedOnly||contentViewGroup!=contentGroupPath)RebuildContentView();
         }
         private IEnumerable<JObject> VisibleContentPage()=>contentView.Skip(contentPage*ContentPageSize).Take(ContentPageSize);
+        private void DrawContentTree()
+        {
+            GUILayout.Label(contentGroupPath==""?"Все категории":"Все / "+contentGroupPath,muted);
+            if(contentGroupPath!=""||contentCategory>0) {
+                GUILayout.BeginHorizontal();
+                if(GUILayout.Button("Все категории",GUILayout.MinHeight(50))) { contentGroupPath="";contentCategory=0;frontScroll=Vector2.zero; }
+                if(contentGroupPath!=""&&GUILayout.Button("← На уровень выше",GUILayout.MinHeight(50))) { int slash=contentGroupPath.LastIndexOf('/');contentGroupPath=slash<0?"":contentGroupPath.Substring(0,slash);if(contentGroupPath=="")contentCategory=0;frontScroll=Vector2.zero; }
+                GUILayout.EndHorizontal();
+            }
+            for(int i=0;i<contentTreeChildren.Count;i+=2) {
+                GUILayout.BeginHorizontal();for(int j=i;j<Math.Min(i+2,contentTreeChildren.Count);j++) {
+                    string group=contentTreeChildren[j];string label=group.Split('/').Last()+" · "+contentTreeCounts[group];
+                    if(GUILayout.Button(label,GUILayout.MinHeight(56))) { contentGroupPath=group;frontScroll=Vector2.zero; }
+                }GUILayout.EndHorizontal();
+            }
+        }
         private void DrawContentPagination()
         {
             int pages=Math.Max(1,(contentView.Count+ContentPageSize-1)/ContentPageSize);
@@ -72,7 +101,7 @@ namespace DndVtt.UnityPrototype
             creationCatalog = null;
         }
         private void OnWorkshopLowMemory() { ReleaseAppearanceImages(false);workshop?.ReleaseBundleCache(); }
-        private void OnDestroy() { Application.lowMemory -= OnWorkshopLowMemory; workshop?.Dispose(); ReleaseAppearanceImages(true);ReleaseBrandStyles(); if (sheetSerif) Destroy(sheetSerif); ApplyScreenSleep(false); }
+        private void OnDestroy() { CloseWorkshopPreviews(); Application.lowMemory -= OnWorkshopLowMemory; workshop?.Dispose(); ReleaseAppearanceImages(true);ReleaseBrandStyles(); if (sheetSerif) Destroy(sheetSerif); ApplyScreenSleep(false); }
         private void RefreshWorkshop()
         {
             // Destroy geometry before unloading owned resources, then reconstruct
@@ -81,7 +110,7 @@ namespace DndVtt.UnityPrototype
             world.ClearWorkshopGeometry(); workshop.Dispose(); workshop = new WorkshopRuntime(workshopStore); workshop.ActivateData(); creationCatalog = null; commerceCatalog = null; itemCatalog = null;
             world.Workshop = workshop; world.ReloadCurrent();
         }
-        private void OpenContentManager() { InitializeWorkshop(); contentViewDirty=true; contentCategory = 0; contentDetails = null; Navigate(FrontScreen.ContentManager); }
+        private void OpenContentManager() { InitializeWorkshop(); contentViewDirty=true; contentCategory = 0; contentGroupPath="";contentDetails = null;Navigate(FrontScreen.ContentManager); }
         private IEnumerator FetchContentCatalog()
         {
             contentBusy = true;
@@ -172,13 +201,13 @@ namespace DndVtt.UnityPrototype
             if (contentBusy) GUILayout.HorizontalSlider(contentProgress, 0, 1);
             installedOnly = GUILayout.Toggle(installedOnly, "Только установленные (доступно без интернета)");
             contentSearch = GUILayout.TextField(contentSearch, GUILayout.MinHeight(40));
-            contentCategory = MenuGrid(contentCategory,ContentCategories,2);
-            EnsureContentView();
+            EnsureContentView();DrawContentTree();SyncWorkshopPreviewPage();
             DrawContentPagination();int shown=0;
             foreach (JObject item in VisibleContentPage())
             {
                 string id=(string)item["id"];contentInstalled.TryGetValue(id,out var local);
                 shown++; GUILayout.BeginVertical(GUI.skin.box); GUILayout.Label(item["name"] + " · " + item["version"], heading);
+                DrawWorkshopPreview(item);
                 GUILayout.Label(local == null ? "Не установлено" : (string)local["sha256"] == (string)item["sha256"] ? "✓ Установлено" : "Доступна другая версия · установлена " + local["version"], muted);
                 if (GUILayout.Button("Подробнее", GUILayout.Height(52))) contentDetails = contentDetails == item ? null : item;
                 if (contentDetails == item)
@@ -201,6 +230,10 @@ namespace DndVtt.UnityPrototype
             }
             if (shown == 0) GUILayout.Label("Материалы не найдены. Обновите каталог или измените фильтр.", muted);
             if(shown>0)DrawContentPagination();
+            if(!contentPreviewLoading&&VisibleContentPage().Any(m=>m["preview"] is JObject p&&contentPreviewAttempted.Contains((string)p["sha256"])&&!contentPreviewImages.ContainsKey((string)p["sha256"]))&&GUILayout.Button("Повторить загрузку предпросмотров",GUILayout.MinHeight(50))) {
+                foreach(var item in VisibleContentPage())if(item["preview"] is JObject p)contentPreviewAttempted.Remove((string)p["sha256"]);
+            }
+            if(Event.current.type==EventType.Repaint&&!contentBusy)QueueWorkshopPreview();
             if (GUILayout.Button("← Настройки", GUILayout.Height(45))) OpenSettings();
         }
     }

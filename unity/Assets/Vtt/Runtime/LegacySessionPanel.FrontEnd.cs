@@ -35,6 +35,8 @@ namespace DndVtt.UnityPrototype
         }
         private void Navigate(FrontScreen next)
         {
+            if(screen==FrontScreen.ContentManager&&next!=FrontScreen.ContentManager)CloseWorkshopPreviews();
+            if(next==FrontScreen.ContentManager&&screen!=FrontScreen.ContentManager) { InitializeWorkshop();BeginWorkshopPreviews();if(!contentCatalogAutoRefreshed&&!contentBusy&&(assetPacks.Count==0||!assetPacks.OfType<Newtonsoft.Json.Linq.JObject>().Any(m=>m["preview"]!=null))) { contentCatalogAutoRefreshed=true;StartCoroutine(FetchContentCatalog()); } }
             menuGesture.Clear();
             screen = next;
             ApplyMobileOrientation(next);
