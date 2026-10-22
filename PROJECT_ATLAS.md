@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 35894977fcb3. Git содержит 1961 файлов.
+Снимок кода d3efae76a4c8. Git содержит 1961 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,8 +61,8 @@
 | №0040 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0041 AGENTS.md | 6892 B | документация или отчёт: AGENTS |
 | №0042 AI_BLOCKERS.md | 24954 B | документация или отчёт: AI BLOCKERS |
-| №0043 AI_NEXT_TASK.md | 30249 B | документация или отчёт: AI NEXT TASK |
-| №0044 AI_PROGRESS.md | 68795 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_NEXT_TASK.md | 30349 B | документация или отчёт: AI NEXT TASK |
+| №0044 AI_PROGRESS.md | 68895 B | документация или отчёт: AI PROGRESS |
 | №0045 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0046 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0047 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1089,7 +1089,7 @@
 | №1068 docs/unity-account/DICE_1.00.23.md | 5241 B | документация или отчёт: DICE 1.00.23 |
 | №1069 docs/unity-account/DICE_THEMES_1.00.24.md | 7020 B | документация или отчёт: DICE THEMES 1.00.24 |
 | №1070 docs/unity-account/dice-1.00.23-metrics.json | 1453 B | документация или отчёт: dice 1.00.23 metrics |
-| №1071 docs/unity-account/IMPLEMENTATION_STATUS.md | 36587 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1071 docs/unity-account/IMPLEMENTATION_STATUS.md | 36687 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1072 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1073 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1074 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
