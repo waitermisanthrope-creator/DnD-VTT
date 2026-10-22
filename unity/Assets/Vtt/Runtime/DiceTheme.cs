@@ -10,6 +10,11 @@ namespace DndVtt.UnityPrototype
     {
         public string Id,Name,Icon,Shape,Body,Trim;
         public float Length,Width;
+        public static DiceTheme ForIcon(DiceTheme[] installed,string icon)
+        {
+            if(string.IsNullOrEmpty(icon))icon="dnd.appearance.icon.default";
+            return installed?.FirstOrDefault(theme=>theme.Icon==icon);
+        }
         public static DiceTheme Read(JObject data)
         {
             string shape=(string)data["shape"],body=(string)data["body"],trim=(string)data["trim"];

@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода ec040aa9a130. Git содержит 1962 файлов.
+Снимок кода d795ee67be47. Git содержит 1962 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,8 +61,8 @@
 | №0040 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0041 AGENTS.md | 6966 B | документация или отчёт: AGENTS |
 | №0042 AI_BLOCKERS.md | 24954 B | документация или отчёт: AI BLOCKERS |
-| №0043 AI_NEXT_TASK.md | 31210 B | документация или отчёт: AI NEXT TASK |
-| №0044 AI_PROGRESS.md | 69756 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_NEXT_TASK.md | 32543 B | документация или отчёт: AI NEXT TASK |
+| №0044 AI_PROGRESS.md | 71089 B | документация или отчёт: AI PROGRESS |
 | №0045 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0046 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0047 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1090,7 +1090,7 @@
 | №1069 docs/unity-account/DICE_THEMES_1.00.24.md | 6119 B | документация или отчёт: DICE THEMES 1.00.24 |
 | №1070 docs/unity-account/dice-1.00.23-metrics.json | 1453 B | документация или отчёт: dice 1.00.23 metrics |
 | №1071 docs/unity-account/dice-1.00.24-metrics.json | 2106 B | документация или отчёт: dice 1.00.24 metrics |
-| №1072 docs/unity-account/IMPLEMENTATION_STATUS.md | 37548 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1072 docs/unity-account/IMPLEMENTATION_STATUS.md | 38881 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1073 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1074 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1075 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
@@ -1734,7 +1734,7 @@
 | №1713 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta | 59 B | вспомогательный файл: CharacterSheetValidation.cs |
 | №1714 unity/Assets/Vtt/Editor/DiceBuildGate.cs | 4491 B | вспомогательный файл: DiceBuildGate |
 | №1715 unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta | 60 B | вспомогательный файл: DiceBuildGate.cs |
-| №1716 unity/Assets/Vtt/Editor/DiceValidation.cs | 11463 B | вспомогательный файл: DiceValidation |
+| №1716 unity/Assets/Vtt/Editor/DiceValidation.cs | 13366 B | вспомогательный файл: DiceValidation |
 | №1717 unity/Assets/Vtt/Editor/DiceValidation.cs.meta | 60 B | вспомогательный файл: DiceValidation.cs |
 | №1718 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs | 10734 B | вспомогательный файл: LegacyMigrationSetup |
 | №1719 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSetup.cs |
@@ -1754,7 +1754,7 @@
 | №1733 unity/Assets/Vtt/Resources/Branding/Splash19.png.meta | 312 B | вспомогательный файл: Splash19.png |
 | №1734 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg | 212684 B | текстура/изображение: Wallpaper16 |
 | №1735 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta | 312 B | вспомогательный файл: Wallpaper16.jpg |
-| №1736 unity/Assets/Vtt/Resources/Changelog.json | 26466 B | данные/конфигурация: Changelog |
+| №1736 unity/Assets/Vtt/Resources/Changelog.json | 27630 B | данные/конфигурация: Changelog |
 | №1737 unity/Assets/Vtt/Resources/Changelog.json.meta | 158 B | вспомогательный файл: Changelog.json |
 | №1738 unity/Assets/Vtt/Resources/CharacterSheet.meta | 172 B | вспомогательный файл: CharacterSheet |
 | №1739 unity/Assets/Vtt/Resources/CharacterSheet/catalog.json | 823381 B | данные/конфигурация: catalog |
@@ -1779,7 +1779,7 @@
 | №1758 unity/Assets/Vtt/Runtime/DiceRollRequest.cs.meta | 60 B | вспомогательный файл: DiceRollRequest.cs |
 | №1759 unity/Assets/Vtt/Runtime/DiceTable.cs | 18824 B | вспомогательный файл: DiceTable |
 | №1760 unity/Assets/Vtt/Runtime/DiceTable.cs.meta | 60 B | вспомогательный файл: DiceTable.cs |
-| №1761 unity/Assets/Vtt/Runtime/DiceTheme.cs | 1580 B | вспомогательный файл: DiceTheme |
+| №1761 unity/Assets/Vtt/Runtime/DiceTheme.cs | 1824 B | вспомогательный файл: DiceTheme |
 | №1762 unity/Assets/Vtt/Runtime/DiceTheme.cs.meta | 60 B | вспомогательный файл: DiceTheme.cs |
 | №1763 unity/Assets/Vtt/Runtime/DiceThemeGeometry.cs | 4359 B | вспомогательный файл: DiceThemeGeometry |
 | №1764 unity/Assets/Vtt/Runtime/DiceThemeGeometry.cs.meta | 60 B | вспомогательный файл: DiceThemeGeometry.cs |
@@ -1810,7 +1810,7 @@
 | №1789 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.ContentPreviews.cs |
 | №1790 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs | 8942 B | вспомогательный файл: LegacySessionPanel |
 | №1791 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.cs |
-| №1792 unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs | 6287 B | вспомогательный файл: LegacySessionPanel.Dice |
+| №1792 unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs | 9543 B | вспомогательный файл: LegacySessionPanel.Dice |
 | №1793 unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Dice.cs |
 | №1794 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs | 28174 B | вспомогательный файл: LegacySessionPanel.FrontEnd |
 | №1795 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.FrontEnd.cs |
@@ -1879,7 +1879,7 @@
 | №1858 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
 | №1859 unity/ci/workshop-tests/AccountGestureChecks.cs | 5460 B | вспомогательный файл: AccountGestureChecks |
 | №1860 unity/ci/workshop-tests/CommerceChecks.cs | 4247 B | вспомогательный файл: CommerceChecks |
-| №1861 unity/ci/workshop-tests/Program.cs | 22512 B | вспомогательный файл: Program |
+| №1861 unity/ci/workshop-tests/Program.cs | 23288 B | вспомогательный файл: Program |
 | №1862 unity/ci/workshop-tests/WorkshopTests.csproj | 1377 B | вспомогательный файл: WorkshopTests |
 | №1863 unity/ContentSources~/catalog.full.json | 1259265 B | данные/конфигурация: catalog.full |
 | №1864 unity/ContentSources~/cloud-copy-contracts.json | 3613 B | данные/конфигурация: cloud copy contracts |
@@ -1927,7 +1927,7 @@
 | №1906 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №1907 updates/README.md | 233 B | документация или отчёт: README |
 | №1908 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №1909 updates/unity-changelog.json | 26466 B | метаданные обновлений: unity changelog |
+| №1909 updates/unity-changelog.json | 27630 B | метаданные обновлений: unity changelog |
 | №1910 updates/unity-experiment.json | 1529 B | метаданные обновлений: unity experiment |
 | №1911 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №1912 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |

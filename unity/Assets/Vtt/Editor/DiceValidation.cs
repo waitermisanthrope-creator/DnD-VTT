@@ -11,8 +11,32 @@ public static class DiceValidation
 {
     public static int ExpectedSceneCount { get; private set; }
     private static void Check(bool condition,string message) { if(!condition)throw new Exception("VTT_DICE_FAIL: "+message); }
+    private static void ValidateComposer()
+    {
+        const System.Reflection.BindingFlags flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
+        var type=typeof(LegacySessionPanel);var host=new GameObject("Dice composer validation");
+        try {
+            var panel=host.AddComponent<LegacySessionPanel>();
+            object Call(string name,params object[] args)=>type.GetMethod(name,flags).Invoke(panel,args);
+            void Field(string name,object value)=>type.GetField(name,flags).SetValue(panel,value);
+            var groups=(List<KeyValuePair<int,System.Numerics.BigInteger>>)type.GetField("diceGroups",flags).GetValue(panel);
+            groups.Clear();
+            foreach(var spec in new[]{new[]{5,7},new[]{1,3},new[]{2,1}}) {
+                Call("AddDiceGroup",spec[0]);Field("diceQuantity",spec[1].ToString());Call("ApplyDiceQuantity");
+            }
+            Check((string)Call("DiceGroupExpression")=="7d20 + 3d6 + 1d8","button composer mixed request");
+            Check(DiceRollRequest.Parse((string)Call("DiceGroupExpression")).Count==11,"composer uses existing batch protocol");
+            Call("AddDiceGroup",5);Field("diceQuantity","999999999999999999999999999999");Call("ApplyDiceQuantity");
+            Check(groups.Count==4&&groups[3].Value>long.MaxValue,"repeated die type and arbitrary precision quantity");
+            Call("AddDiceGroup",6);Field("diceQuantity","0");Call("ApplyDiceQuantity");
+            Check(groups[4].Value==1,"invalid quantity preserves existing group");
+            Field("diceQuantity","");Call("ApplyDiceQuantity");Check(groups[4].Value==1,"empty quantity preserves group");
+            Debug.Log("VTT_DICE_COMPOSER_PASS: mixed/repeated groups, huge quantities, invalid input preserves draft");
+        }finally { UnityEngine.Object.DestroyImmediate(host); }
+    }
     public static void Run()
     {
+        ValidateComposer();
         UnityEngine.Random.InitState(10024);Debug.Log("VTT_DICE_TEST_SEED:10024");
         int[] counts={4,6,8,10,12,20};int checks=0;
         foreach(int count in counts) {

@@ -14,6 +14,12 @@ class Program
         string root = Path.Combine(Path.GetTempPath(), "vtt-workshop-test-" + Guid.NewGuid()); Directory.CreateDirectory(root);
         try
         {
+            var iconThemes=new[]{new DiceTheme {Id="a",Icon="dnd.appearance.icon.01"},new DiceTheme {Id="b",Icon="dnd.appearance.icon.02"},new DiceTheme {Id="default",Icon="dnd.appearance.icon.default"}};
+            Check(DiceTheme.ForIcon(iconThemes,"dnd.appearance.icon.01").Id=="a","selected icon selects same dice set");
+            Check(DiceTheme.ForIcon(iconThemes,"dnd.appearance.icon.02").Id=="b","changing icon switches set");
+            Check(DiceTheme.ForIcon(iconThemes,"").Id=="default","default launcher uses default set");
+            Check(DiceTheme.ForIcon(iconThemes,"dnd.appearance.icon.03")==null,"missing linked set never uses another icon");
+            Check(DiceTheme.ForIcon(null,"dnd.appearance.icon.01")==null,"empty installations use classic");
             var mixed=DiceRollRequest.Parse("7d20 + 3d6 + 1d8");
             Check(mixed.Count==11,"mixed request count");
             int requested=0;while(mixed.Pending) { var batch=mixed.TakeBatch(8);Check(batch.Length>0&&batch.Length<=8,"bounded batch");foreach(int n in batch) { mixed.Accept(n,n);requested++; } }
