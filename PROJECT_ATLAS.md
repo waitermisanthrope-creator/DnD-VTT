@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 90b2df44d03c. Git содержит 1948 файлов.
+Снимок кода 1232e122cd9b. Git содержит 1948 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -60,9 +60,9 @@
 | №0039 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0040 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0041 AGENTS.md | 4903 B | документация или отчёт: AGENTS |
-| №0042 AI_BLOCKERS.md | 24153 B | документация или отчёт: AI BLOCKERS |
-| №0043 AI_NEXT_TASK.md | 28436 B | документация или отчёт: AI NEXT TASK |
-| №0044 AI_PROGRESS.md | 67256 B | документация или отчёт: AI PROGRESS |
+| №0042 AI_BLOCKERS.md | 24954 B | документация или отчёт: AI BLOCKERS |
+| №0043 AI_NEXT_TASK.md | 29668 B | документация или отчёт: AI NEXT TASK |
+| №0044 AI_PROGRESS.md | 68214 B | документация или отчёт: AI PROGRESS |
 | №0045 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0046 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0047 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1082,9 +1082,9 @@
 | №1061 docs/unity-account/CHAT_NICKNAMES_1.00.21.md | 3028 B | документация или отчёт: CHAT NICKNAMES 1.00.21 |
 | №1062 docs/unity-account/CHAT_ONE_HOUR.md | 2267 B | документация или отчёт: CHAT ONE HOUR |
 | №1063 docs/unity-account/CHAT_WORKSHOP_1.00.22.md | 7852 B | документация или отчёт: CHAT WORKSHOP 1.00.22 |
-| №1064 docs/unity-account/DICE_1.00.23.md | 4814 B | документация или отчёт: DICE 1.00.23 |
-| №1065 docs/unity-account/dice-1.00.23-metrics.json | 1111 B | документация или отчёт: dice 1.00.23 metrics |
-| №1066 docs/unity-account/IMPLEMENTATION_STATUS.md | 37100 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1064 docs/unity-account/DICE_1.00.23.md | 5241 B | документация или отчёт: DICE 1.00.23 |
+| №1065 docs/unity-account/dice-1.00.23-metrics.json | 1453 B | документация или отчёт: dice 1.00.23 metrics |
+| №1066 docs/unity-account/IMPLEMENTATION_STATUS.md | 36006 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1067 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1068 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1069 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
@@ -1861,7 +1861,7 @@
 | №1840 unity/ci/verify_bundle_output.py | 1081 B | вспомогательный файл: verify bundle output |
 | №1841 unity/ci/verify_launcher_aliases.py | 3703 B | вспомогательный файл: verify launcher aliases |
 | №1842 unity/ci/verify_public_workshop.py | 3117 B | вспомогательный файл: verify public workshop |
-| №1843 unity/ci/windows-upgrade-qa.ps1 | 4276 B | вспомогательный файл: windows upgrade qa |
+| №1843 unity/ci/windows-upgrade-qa.ps1 | 4224 B | вспомогательный файл: windows upgrade qa |
 | №1844 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
 | №1845 unity/ci/workshop-tests/AccountGestureChecks.cs | 5460 B | вспомогательный файл: AccountGestureChecks |
 | №1846 unity/ci/workshop-tests/CommerceChecks.cs | 4247 B | вспомогательный файл: CommerceChecks |
@@ -14711,7 +14711,7 @@
 | zipCompressedNativeBytes | №1830 |
 | zipCompressedUnityDataBytes | №1830 |
 
-### JSON поля (915)
+### JSON поля (920)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -14726,6 +14726,7 @@
 | acidResistance | №1731 (+ 2 других файлов) |
 | acrobatics | №1731 (+ 2 других файлов) |
 | action | №0757 (+ 2 других файлов) |
+| activationCommit | №1065 |
 | activeConditions | №1731 (+ 2 других файлов) |
 | activeFolderId | №1825 |
 | activeProperties | №1852 |
@@ -15297,10 +15298,14 @@
 | propTextureCount | №1045 (+ 5 других файлов) |
 | propTextureDimensions | №1045 (+ 5 других файлов) |
 | psychicResistance | №1731 (+ 2 других файлов) |
+| publicApkV2V3SignatureVerified | №1065 |
 | publication | №0905 (+ 3 других файлов) |
+| publicDownloadsVerified | №1065 |
+| publicFeedVerified | №1065 |
 | publicPackageBytes | №1045 |
 | publicPackages | №1045 |
 | publishedCopy | №1016 |
+| publishRunId | №1065 |
 | purity | №1851 (+ 1 других файлов) |
 | python | №1045 |
 | pythonUnit | №1065 |
@@ -15348,7 +15353,7 @@
 | releaseCommit | №0905 (+ 1 других файлов) |
 | releases | №1728 (+ 1 других файлов) |
 | releaseType | №1108 |
-| releaseUrl | №1035 (+ 1 других файлов) |
+| releaseUrl | №1035 (+ 2 других файлов) |
 | relentlessEndurance | №1731 (+ 2 других файлов) |
 | religion | №1731 (+ 2 других файлов) |
 | removed | №1825 |

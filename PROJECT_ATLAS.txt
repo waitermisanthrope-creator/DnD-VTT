@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 90b2df44d03c. Файлов: 1948
+Коммит 1232e122cd9b. Файлов: 1948
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -55,9 +55,9 @@
 0039. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0040. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0041. AGENTS.md — документация или отчёт: AGENTS (4903 B)
-0042. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (24153 B)
-0043. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (28436 B)
-0044. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (67256 B)
+0042. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (24954 B)
+0043. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (29668 B)
+0044. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (68214 B)
 0045. android/.gitignore — Android компонент: .gitignore (44 B)
 0046. android/app/build.gradle — Android компонент: build (4122 B)
 0047. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1077,9 +1077,9 @@
 1061. docs/unity-account/CHAT_NICKNAMES_1.00.21.md — документация или отчёт: CHAT NICKNAMES 1.00.21 (3028 B)
 1062. docs/unity-account/CHAT_ONE_HOUR.md — документация или отчёт: CHAT ONE HOUR (2267 B)
 1063. docs/unity-account/CHAT_WORKSHOP_1.00.22.md — документация или отчёт: CHAT WORKSHOP 1.00.22 (7852 B)
-1064. docs/unity-account/DICE_1.00.23.md — документация или отчёт: DICE 1.00.23 (4814 B)
-1065. docs/unity-account/dice-1.00.23-metrics.json — документация или отчёт: dice 1.00.23 metrics (1111 B)
-1066. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (37100 B)
+1064. docs/unity-account/DICE_1.00.23.md — документация или отчёт: DICE 1.00.23 (5241 B)
+1065. docs/unity-account/dice-1.00.23-metrics.json — документация или отчёт: dice 1.00.23 metrics (1453 B)
+1066. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (36006 B)
 1067. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7893 B)
 1068. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1069. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
@@ -1856,7 +1856,7 @@
 1840. unity/ci/verify_bundle_output.py — вспомогательный файл: verify bundle output (1081 B)
 1841. unity/ci/verify_launcher_aliases.py — вспомогательный файл: verify launcher aliases (3703 B)
 1842. unity/ci/verify_public_workshop.py — вспомогательный файл: verify public workshop (3117 B)
-1843. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (4276 B)
+1843. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (4224 B)
 1844. unity/ci/workshop-tests/.gitignore — вспомогательный файл: .gitignore (10 B)
 1845. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (5460 B)
 1846. unity/ci/workshop-tests/CommerceChecks.cs — вспомогательный файл: CommerceChecks (4247 B)
@@ -14681,7 +14681,7 @@ zipCompressedBrandingBytes — №1830
 zipCompressedNativeBytes — №1830
 zipCompressedUnityDataBytes — №1830
 
---- JSON поля (915) ---
+--- JSON поля (920) ---
 _builderBaseStats — №1731 (+ 2 других файлов)
 $schema — №1017
 abilities — №1731 (+ 2 других файлов)
@@ -14693,6 +14693,7 @@ Acid — №1851
 acidResistance — №1731 (+ 2 других файлов)
 acrobatics — №1731 (+ 2 других файлов)
 action — №0757 (+ 2 других файлов)
+activationCommit — №1065
 activeConditions — №1731 (+ 2 других файлов)
 activeFolderId — №1825
 activeProperties — №1852
@@ -15264,10 +15265,14 @@ proportions — №0918
 propTextureCount — №1045 (+ 5 других файлов)
 propTextureDimensions — №1045 (+ 5 других файлов)
 psychicResistance — №1731 (+ 2 других файлов)
+publicApkV2V3SignatureVerified — №1065
 publication — №0905 (+ 3 других файлов)
+publicDownloadsVerified — №1065
+publicFeedVerified — №1065
 publicPackageBytes — №1045
 publicPackages — №1045
 publishedCopy — №1016
+publishRunId — №1065
 purity — №1851 (+ 1 других файлов)
 python — №1045
 pythonUnit — №1065
@@ -15315,7 +15320,7 @@ release_source_sha — №0002
 releaseCommit — №0905 (+ 1 других файлов)
 releases — №1728 (+ 1 других файлов)
 releaseType — №1108
-releaseUrl — №1035 (+ 1 других файлов)
+releaseUrl — №1035 (+ 2 других файлов)
 relentlessEndurance — №1731 (+ 2 других файлов)
 religion — №1731 (+ 2 других файлов)
 removed — №1825

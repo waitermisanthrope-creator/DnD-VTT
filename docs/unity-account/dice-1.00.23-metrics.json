@@ -4,7 +4,7 @@
   "sourceCommit": "55646b735a10ce5490b5e80237666c62cdcf5ad8",
   "candidateRunId": 39766470836,
   "candidateConclusion": "success",
-  "publication": "pending",
+  "publication": "published-and-independently-download-verified",
   "android": {
     "bytes": 42368920,
     "sha256": "84d08a31e8297d2059880a0776313c3dfcc21037a421b11759d8da7aeef3ac55",
@@ -31,5 +31,11 @@
     "asyncSceneCleanup": true,
     "physicalAndroid": false,
     "liveSupabase": false
-  }
+  },
+  "publishRunId": 39769236621,
+  "activationCommit": "1232e122cd9b7d97d3883f4252c0c32cdc666d0c",
+  "releaseUrl": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/tag/unity-v1.00.23",
+  "publicFeedVerified": true,
+  "publicDownloadsVerified": true,
+  "publicApkV2V3SignatureVerified": true
 }

@@ -1,3 +1,7 @@
+# Unity1.00.23 delivery checks — 2026-10-22
+
+No publication blocker: both installers/feed already public and independently byte/hash/signature verified. Physical Android/Windows visual/interaction feedback remains owner check; native Linux-Editor raster/PhysX checks and real Windows headless installation/saves passed, not a phone GPU test. PNG artifact download via connector succeeds but workspace download host is denied by network policy; no manual screenshot review or bypass claimed. No Supabase changes required for dice. Authored skins/unusual forms not started; existing 2D skill/check rolls unchanged. Earlier preview pose regression fixed; workshop page-reset remains deferred. Historical staff-badge deployment/device/legacy GLB checks below remain separate, not new release blockers.
+
 # Current Unity blockers / checks — 2026-10-22
 
 BLOCKED production staff chat badges: runner lacks trusted SQL access; owner must run supabase/migrations/202610220002_chat_staff_badges.sql (guide CHAT_WORKSHOP_1.00.22.md). Nickname migration001 was already owner-confirmed successful. Physical phone cursor/selection, launcher placement/delay and old pinned-shortcut removal remain user checks. App1.00.22 is already published; do not describe the release as blocked. Legacy GLB workflow39754304410 separately misclassifies a JS concatenation fragment as a static filename, not an actual missing model; all268 real GLB headers/buffers pass. No arbitrary role grants, keys, paid features or production DB mutations performed in this checkpoint.
