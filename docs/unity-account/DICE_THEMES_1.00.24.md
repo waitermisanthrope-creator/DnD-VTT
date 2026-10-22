@@ -105,3 +105,12 @@ dominance>.04); classic remains>=.985/dominance>.025. This preserves the actual
 irregular physical form, never chooses a preselected result, and rejects edge
 and multi-face vertex ties. New native regression accepts the known actual
 support pose as face8 and rejects the five-way d20 vertex tie. Native rerun pending.
+
+Android candidate39810382192/source d3efae76 PASS, job119934715773. Actual native
+60 face checks/129 physical throws plus both11-die mixed requests,31 sets/seven
+families, watertight convex collider/render identity, bounded cache reuse,
+strict PNGs and async scene cleanup PASS. Existing touch, branding, workshop,
+character/map/save/commerce tests PASS. Real ARM64 IL2CPP player compiled and
+signed with original identity;42,405,784 bytes, SHA c7e4cdd1caf8fbe3c8c5f43da7465d8ac614b4aa0ca1dfe7b432a8bea7303584.
+Increase over23:36,864 bytes (36KiB). Windows job119943957059 in progress;
+paired publication and independent public-file/signature verification pending.

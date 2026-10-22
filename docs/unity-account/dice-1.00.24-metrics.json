@@ -1,0 +1,41 @@
+{
+  "version": "1.00.24",
+  "versionCode": 10024,
+  "status": "android-candidate-verified-windows-pending",
+  "sourceSha": "d3efae76a4c8a0d7daf0052c621b48066870273d",
+  "candidateRun": 39810382192,
+  "android": {
+    "job": 119934715773,
+    "status": "success",
+    "bytes": 42405784,
+    "sha256": "c7e4cdd1caf8fbe3c8c5f43da7465d8ac614b4aa0ca1dfe7b432a8bea7303584",
+    "package": "com.dndvtt.unity",
+    "deltaFrom10023Bytes": 36864,
+    "ciOriginalCertificateVerified": true,
+    "independentPublicVerification": false
+  },
+  "windows": {
+    "job": 119943957059,
+    "status": "in-progress"
+  },
+  "tests": {
+    "csharp": 4154,
+    "python": 12,
+    "sqlWasm": 133,
+    "nativeAndroidFaceOrientations": 60,
+    "nativeAndroidPhysicalThrows": 129,
+    "nativeAndroidMixedLogicalDice": 22,
+    "themes": 31,
+    "shapeFamilies": 7,
+    "physicalDeviceTested": false,
+    "liveSupabaseTested": false
+  },
+  "content": {
+    "repository": "waitermisanthrope-creator/DnD-VTT-Assets",
+    "catalog": "v5",
+    "recipeCommit": "8ac6fa6",
+    "sets": 31,
+    "recipeBytes": 15143,
+    "publicRecipeShaVerified": true
+  }
+}

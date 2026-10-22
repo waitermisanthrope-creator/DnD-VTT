@@ -1,6 +1,6 @@
 # [НЕ ВЫПОЛНЕНО] Icon-linked dice1.00.24, 2026-10-22
 
-Source implements31 downloadable full sets (Assets8ac6fa6/catalogv5), true compound collision and mixed arbitrary-count streaming throws. Local4154 C#/12 Python PASS. Native39806710564/sourcebf077a23 FAILED at tentacle d10 rest/result detection. Diagnostic39808700062 confirmed fully sleeping d10 with clear tilted face rejected by.94. Fixed dominant irregular reading in d3efae76; candidate39810382192 in progress. Publication BLOCKED until both targets pass; do not claim release ready. See docs/unity-account/DICE_THEMES_1.00.24.md. Preserve owner documentation throughdaefa4ed and deferred workshop page reset.
+Source implements31 downloadable full sets (Assets8ac6fa6/catalogv5), true compound collision and mixed arbitrary-count streaming throws. Local4154 C#/12 Python PASS. Native39806710564/sourcebf077a23 FAILED at tentacle d10 rest/result detection. Diagnostic39808700062 confirmed fully sleeping d10 with clear tilted face rejected by.94. Fixed dominant irregular reading in d3efae76; candidate39810382192 Android job119934715773 SUCCESS (42,405,784 bytes/c7e4cdd1..., original certificate, all31 sets/native129 throws+mixed22). Windows119943957059 in progress; publication waits for paired QA. See dice-1.00.24-metrics.json; do not claim release ready. See docs/unity-account/DICE_THEMES_1.00.24.md. Preserve owner documentation throughdaefa4ed and deferred workshop page reset.
 
 # Current Unity continuation —1.00.23 delivered, 2026-10-22
 
