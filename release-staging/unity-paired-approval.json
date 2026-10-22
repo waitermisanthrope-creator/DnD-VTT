@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "version": "1.00.21",
-  "candidateRunId": 39697410019,
+  "version": "1.00.22",
+  "candidateRunId": 39747583735,
   "approved": true,
   "scope": "Android ARM64 and Windows x64",
-  "note": "Owner-authorized overnight paired 1.00.21 release, source 06f7d051 including malformed nickname metadata compatibility guard. Require native pagination/appearance, Android/Windows builds and Windows upgrade QA. Nickname SQL production deployment remains blocked and documented for owner."
+  "note": "Owner-requested chat draft/selection/staff prefix corrections, primary Android launcher alias migration and workshop tree with temporary graphical previews. Exact source 440cf676; publish paired update only after native checks, actual APK launcher inspection and Windows upgrade QA. Server badge migration remains owner-operated, not falsely deployed."
 }
