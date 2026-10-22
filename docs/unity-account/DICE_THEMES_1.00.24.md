@@ -12,7 +12,7 @@ and the standard icon. Each includes d4/d6/d8/d10/d12/d20/d100. Source images we
 visually reviewed. Assets commit8ac6fa6; recipes15,143 bytes total. v5 is selected
 only by generator-capable clients; v4 is preserved for existing clients.
 - Seven bounded generator families: spikes, curved tentacles, fangs, rounded
-vertex caps, vines, crystals and raised edge filigree. Closed convex pieces are
+beveled bodies, vines, crystals and raised edge filigree. Closed convex pieces are
 shared between actual render mesh and compound MeshColliders. Curved arms do
 not use a single convex envelope that fills their empty spaces. Palettes and
 procedural veining interpret the icons; these are not exact hand-sculpted copies
@@ -45,8 +45,15 @@ No physical phone visual/touch validation of these changes yet. Public remains
 publisher is used. No Supabase change or SQL required for this feature.
 
 Additional mathematical check using the actual generator with a System.Numerics
-shim:186 non-percentile variants,4430 closed convex outward pieces with positive
+shim:186 non-percentile variants,4786 closed convex outward pieces (including base solids) with positive
 volume PASS. This is not a substitute for native PhysX. First CI39802677786
 correctly failed before Unity on unmatched bundled/online changelog; both now
 use the existing testing status and the contract passes locally. Runtime adds
 per-type aggregate results and first-use matching to the selected installed icon.
+
+Visual geometry review prompted true curling tentacles following incident edges
+instead of short horns, and clipped/beveled collision bodies for smooth sets.
+Cooked base/ornament meshes are reused across batches; at most366 cached meshes
+for one theme, discarded on theme change/dispose. Native gate checks reuse and
+the enabled, non-trigger attached physical colliders. Supersedes c876cd5a source;
+its native run is not evidence for these further changes.

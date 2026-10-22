@@ -77,15 +77,17 @@ public static class DiceValidation
                 var data=WorkshopStore.ValidateData(manifest,File.ReadAllText(payload));var theme=DiceTheme.Read((JObject)data["diceThemes"][0]);
                 table.SetTheme(theme);bool first=families.Add(theme.Shape);
                 foreach(int count in first?new[]{4,6,8,10,12,20,100}:new[]{20}) {
-                    table.Preview(count);SaveImage(table.Image,Path.Combine(folder,theme.Id+"-d"+count+".png"),false);Check(table.PhysicalOrnamentCount>0,"actual protrusion geometry "+theme.Id);
+                    table.Preview(count);SaveImage(table.Image,Path.Combine(folder,theme.Id+"-d"+count+".png"),false);Check(theme.Shape=="rounded"||table.PhysicalOrnamentCount>0,"actual protrusion geometry "+theme.Id);
                     foreach(var body in UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None)) {
-                        var colliders=body.GetComponentsInChildren<MeshCollider>();Check(colliders.Length>1,"compound collision "+theme.Id);
+                        var colliders=body.GetComponentsInChildren<MeshCollider>();Check(colliders.Length>(theme.Shape=="rounded"?0:1),"physical collision "+theme.Id);
                         foreach(var collider in colliders) {
                             Check(collider.enabled&&collider.convex&&!collider.isTrigger&&collider.attachedRigidbody==body&&!Physics.GetIgnoreLayerCollision(collider.gameObject.layer,31),"solid enabled attached collision piece");
                             Check(collider.sharedMesh==collider.GetComponent<MeshFilter>().sharedMesh,"render and collision use same mesh");
                         }
                     }
+                    int cached=table.CachedMeshCount;Check(cached<=366,"bounded per-theme mesh cache");
                     table.Throw(count);for(int step=0;step<650&&table.Throwing;step++)table.Tick(.1f,false);
+                    Check(table.CachedMeshCount==cached,"same shape reuses cooked collision meshes");
                     Check(!table.Throwing&&table.Value.HasValue&&table.Value>=1&&table.Value<=count,"themed physical throw "+theme.Id+" d"+count+": "+table.Result);rolls++;
                 }
                 themes++;

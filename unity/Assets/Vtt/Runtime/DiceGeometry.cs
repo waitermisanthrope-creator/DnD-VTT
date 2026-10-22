@@ -88,14 +88,27 @@ namespace DndVtt.UnityPrototype
             foreach(var f in faces) { float dot=Vector3.Dot(rotation*f.normal,direction);if(dot>alignment) { second=alignment;alignment=dot;best=f; }else if(dot>second)second=dot; }
             return alignment>=minimumAlignment&&alignment-second>.025f?best.value:0; // Cocked/edge dice are never silently accepted.
         }
-        public Mesh Mesh()
+        public Mesh BeveledMesh(float fraction)
+        {
+            if(fraction<=0||fraction>=.5f)throw new ArgumentOutOfRangeException(nameof(fraction));
+            var points=new List<Vector3>();var edges=new HashSet<string>();
+            foreach(var face in faces)for(int i=0;i<face.vertices.Length;i++) {
+                int a=face.vertices[i],b=face.vertices[(i+1)%face.vertices.Length];
+                if(!edges.Add(Math.Min(a,b)+":"+Math.Max(a,b)))continue;
+                points.Add(vertices[a]*(1-fraction)+vertices[b]*fraction);
+                points.Add(vertices[b]*(1-fraction)+vertices[a]*fraction);
+            }
+            var clipped=points.ToArray();return CreateMesh(clipped,Hull(clipped),"Beveled d"+sides);
+        }
+        public Mesh Mesh() => CreateMesh(vertices,faces,"Procedural d"+sides);
+        private static Mesh CreateMesh(Vector3[] vertices,Face[] faces,string name)
         {
             var positions=new List<Vector3>();var triangles=new List<int>();
             foreach(var f in faces) {
                 int offset=positions.Count;foreach(int id in f.vertices)positions.Add(vertices[id]);
                 for(int i=1;i<f.vertices.Length-1;i++)triangles.AddRange(new[]{offset,offset+i,offset+i+1});
             }
-            var mesh=new Mesh { name="Procedural d"+sides };mesh.SetVertices(positions);mesh.SetTriangles(triangles,0);mesh.RecalculateNormals();mesh.RecalculateBounds();return mesh;
+            var mesh=new Mesh { name=name };mesh.SetVertices(positions);mesh.SetTriangles(triangles,0);mesh.RecalculateNormals();mesh.RecalculateBounds();return mesh;
         }
     }
 }

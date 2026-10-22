@@ -17,6 +17,11 @@ namespace DndVtt.UnityPrototype
         private readonly Camera camera;
         private readonly List<UnityEngine.Object> owned=new List<UnityEngine.Object>();
         private readonly List<Die> dice=new List<Die>();
+        private readonly Dictionary<int,DiceGeometry> shapes=new Dictionary<int,DiceGeometry>();
+        private readonly Dictionary<int,Mesh> bodyMeshes=new Dictionary<int,Mesh>();
+        private readonly Dictionary<int,List<Mesh>> ornamentMeshes=new Dictionary<int,List<Mesh>>();
+        private readonly List<Mesh> geometryAssets=new List<Mesh>();
+        public int CachedMeshCount=>geometryAssets.Count;
         private readonly Material surface;
         private readonly PhysicsMaterial contact;
         private readonly Font font;
@@ -73,12 +78,15 @@ namespace DndVtt.UnityPrototype
         {
             foreach(var die in dice)if(die.body) { die.body.gameObject.SetActive(false);UnityEngine.Object.DestroyImmediate(die.body.gameObject); }
             dice.Clear();PhysicalOrnamentCount=0;
-            // Per-roll meshes/materials are separate from the seven table resources.
+            // Per-roll materials are separate from table assets and bounded shared shape meshes.
             for(int i=owned.Count-1;i>=tableResourceCount;i--) { UnityEngine.Object.DestroyImmediate(owned[i]);owned.RemoveAt(i); }
         }
         private void AddDie(int count,bool tens=false,bool units=false)
         {
-            var geometry=DiceGeometry.Create(count);var mesh=geometry.Mesh();owned.Add(mesh);
+            if(!shapes.TryGetValue(count,out var geometry)) { geometry=DiceGeometry.Create(count);shapes[count]=geometry; }
+            if(!bodyMeshes.TryGetValue(count,out var mesh)) {
+                mesh=theme?.Shape=="rounded"?geometry.BeveledMesh(.12f+theme.Length):geometry.Mesh();bodyMeshes[count]=mesh;geometryAssets.Add(mesh);
+            }
             var go=Child("d"+count);go.AddComponent<MeshFilter>().sharedMesh=mesh;
             var material=new Material(surface) { color=tens?new Color(.72f,.27f,.18f):new Color(.18f,.39f,.67f) };
             if(theme!=null) {
@@ -89,8 +97,11 @@ namespace DndVtt.UnityPrototype
             if(theme!=null) {
                 ColorUtility.TryParseHtmlString(theme.Trim,out var trimColor);
                 var trim=new Material(surface) { color=trimColor };owned.Add(trim);
-                foreach(var part in DiceThemeGeometry.Build(geometry,theme)) {
-                    owned.Add(part);PhysicalOrnamentCount++;var ornament=Child("Physical "+theme.Shape);ornament.transform.SetParent(go.transform,false);
+                if(!ornamentMeshes.TryGetValue(count,out var pieces)) {
+                    pieces=DiceThemeGeometry.Build(geometry,theme);ornamentMeshes[count]=pieces;geometryAssets.AddRange(pieces);
+                }
+                foreach(var part in pieces) {
+                    PhysicalOrnamentCount++;var ornament=Child("Physical "+theme.Shape);ornament.transform.SetParent(go.transform,false);
                     ornament.AddComponent<MeshFilter>().sharedMesh=part;ornament.AddComponent<MeshRenderer>().sharedMaterial=trim;
                     var collision=ornament.AddComponent<MeshCollider>();collision.sharedMesh=part;collision.convex=true;collision.sharedMaterial=contact;
                 }
@@ -121,7 +132,7 @@ namespace DndVtt.UnityPrototype
         public void SetTheme(DiceTheme selected)
         {
             if(Throwing)throw new InvalidOperationException("Дождитесь окончания броска.");
-            theme=selected;Preview(sides);
+            ClearDice();ClearGeometryAssets();theme=selected;Preview(sides);
         }
         public void Preview(int count)
         {
@@ -228,10 +239,16 @@ namespace DndVtt.UnityPrototype
             else camera.Render();
             imageDirty=false;
         }
+        private void ClearGeometryAssets()
+        {
+            foreach(var mesh in geometryAssets)if(mesh)UnityEngine.Object.DestroyImmediate(mesh);
+            geometryAssets.Clear();shapes.Clear();bodyMeshes.Clear();ornamentMeshes.Clear();
+        }
         public void Dispose()
         {
             if(camera)camera.targetTexture=null;
             if(root)UnityEngine.Object.DestroyImmediate(root);
+            ClearGeometryAssets();
             foreach(var asset in owned)if(asset)UnityEngine.Object.DestroyImmediate(asset);owned.Clear();dice.Clear();
             if(Image) { Image.Release();UnityEngine.Object.DestroyImmediate(Image);Image=null; }
             if(scene.IsValid()&&scene.isLoaded) {

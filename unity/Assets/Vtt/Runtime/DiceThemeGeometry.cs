@@ -12,21 +12,30 @@ namespace DndVtt.UnityPrototype
         public static List<Mesh> Build(DiceGeometry shape,DiceTheme theme)
         {
             var pieces=new List<Mesh>();
-            if(theme==null)return pieces;
+            if(theme==null||theme.Shape=="rounded")return pieces;
             int arms=Math.Min(shape.vertices.Length,6);
             for(int i=0;i<arms;i++) {
-                Vector3 vertex=shape.vertices[i*shape.vertices.Length/arms];
+                int vertexIndex=i*shape.vertices.Length/arms;Vector3 vertex=shape.vertices[vertexIndex];
                 Vector3 radial=vertex.normalized;
                 Vector3 tangent=Vector3.Cross(radial,Mathf.Abs(radial.y)<.8f?Vector3.up:Vector3.right).normalized;
+                // Follow an incident edge rather than curling across a numbered face center.
+                foreach(var face in shape.faces) {
+                    int corner=Array.IndexOf(face.vertices,vertexIndex);if(corner<0)continue;
+                    Vector3 edge=shape.vertices[face.vertices[(corner+1)%face.vertices.Length]]-vertex;
+                    tangent=(edge-radial*Vector3.Dot(edge,radial)).normalized;break;
+                }
                 Vector3 bitangent=Vector3.Cross(radial,tangent).normalized;
                 bool curved=theme.Shape=="tentacles"||theme.Shape=="vines"||theme.Shape=="fangs";
-                int segments=curved?5:theme.Shape=="rounded"?3:1;
+                int segments=theme.Shape=="tentacles"?10:curved?5:1;
                 Vector3 previous=vertex-radial*.035f;
                 float previousRadius=theme.Width;
                 for(int j=1;j<=segments;j++) {
                     float t=j/(float)segments;
                     Vector3 next=vertex+radial*(theme.Length*t);
-                    if(curved)next+=tangent*(theme.Length*.85f*t*t)+bitangent*(theme.Shape=="tentacles"?Mathf.Sin(t*Mathf.PI)*theme.Length*.32f:0);
+                    if(theme.Shape=="tentacles") {
+                        float angle=t*Mathf.PI*1.35f;
+                        next=vertex+radial*(theme.Length*Mathf.Sin(angle))+tangent*(theme.Length*1.45f*(1-Mathf.Cos(angle)))+bitangent*(Mathf.Sin(t*Mathf.PI)*theme.Length*.2f);
+                    }else if(curved)next+=tangent*(theme.Length*.85f*t*t);
                     float radius=theme.Width*(1-t*.92f);
                     if(theme.Shape=="rounded")radius=theme.Width*Mathf.Sqrt(Mathf.Max(.01f,1-t*t));
                     pieces.Add(Frustum(previous,next,previousRadius,radius,theme.Shape=="crystal"?4:8));
