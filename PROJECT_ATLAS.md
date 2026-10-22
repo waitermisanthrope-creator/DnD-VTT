@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 8e0dc0261d6c. Git содержит 1966 файлов.
+Снимок кода 456250873ba0. Git содержит 1966 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -62,8 +62,8 @@
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 6966 B | документация или отчёт: AGENTS |
 | №0043 AI_BLOCKERS.md | 24954 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 40315 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 78861 B | документация или отчёт: AI PROGRESS |
+| №0044 AI_NEXT_TASK.md | 40397 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 78943 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1092,7 +1092,7 @@
 | №1071 docs/unity-account/dice-1.00.23-metrics.json | 1453 B | документация или отчёт: dice 1.00.23 metrics |
 | №1072 docs/unity-account/dice-1.00.24-metrics.json | 2106 B | документация или отчёт: dice 1.00.24 metrics |
 | №1073 docs/unity-account/dice-1.00.25-metrics.json | 2023 B | документация или отчёт: dice 1.00.25 metrics |
-| №1074 docs/unity-account/IMPLEMENTATION_STATUS.md | 46653 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1074 docs/unity-account/IMPLEMENTATION_STATUS.md | 46735 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1075 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1076 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1077 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
@@ -1137,7 +1137,7 @@
 | №1116 PROJECT_ATLAS.txt | генерируется | человекочитаемая карта репозитория |
 | №1117 README.md | 145 B | документация или отчёт: README |
 | №1118 release-staging/unity-android-approval.json | 470 B | данные/конфигурация: unity android approval |
-| №1119 release-staging/unity-paired-approval.json | 943 B | данные/конфигурация: unity paired approval |
+| №1119 release-staging/unity-paired-approval.json | 1388 B | данные/конфигурация: unity paired approval |
 | №1120 release-staging/unity-release.json | 3914 B | данные/конфигурация: unity release |
 | №1121 smoke_back_v2_sprite-1.png | 1707378 B | текстура/изображение: smoke back v2 sprite 1 |
 | №1122 smoke_back_v2_sprite.png | 1814587 B | текстура/изображение: smoke back v2 sprite |
@@ -1756,7 +1756,7 @@
 | №1735 unity/Assets/Vtt/Resources/Branding/Splash19.png.meta | 312 B | вспомогательный файл: Splash19.png |
 | №1736 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg | 212684 B | текстура/изображение: Wallpaper16 |
 | №1737 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta | 312 B | вспомогательный файл: Wallpaper16.jpg |
-| №1738 unity/Assets/Vtt/Resources/Changelog.json | 31506 B | данные/конфигурация: Changelog |
+| №1738 unity/Assets/Vtt/Resources/Changelog.json | 31508 B | данные/конфигурация: Changelog |
 | №1739 unity/Assets/Vtt/Resources/Changelog.json.meta | 158 B | вспомогательный файл: Changelog.json |
 | №1740 unity/Assets/Vtt/Resources/CharacterSheet.meta | 172 B | вспомогательный файл: CharacterSheet |
 | №1741 unity/Assets/Vtt/Resources/CharacterSheet/catalog.json | 823381 B | данные/конфигурация: catalog |
@@ -1879,7 +1879,7 @@
 | №1858 unity/ci/verify_bundle_output.py | 1081 B | вспомогательный файл: verify bundle output |
 | №1859 unity/ci/verify_launcher_aliases.py | 3703 B | вспомогательный файл: verify launcher aliases |
 | №1860 unity/ci/verify_public_workshop.py | 4665 B | вспомогательный файл: verify public workshop |
-| №1861 unity/ci/windows-upgrade-qa.ps1 | 4224 B | вспомогательный файл: windows upgrade qa |
+| №1861 unity/ci/windows-upgrade-qa.ps1 | 4276 B | вспомогательный файл: windows upgrade qa |
 | №1862 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
 | №1863 unity/ci/workshop-tests/AccountGestureChecks.cs | 5460 B | вспомогательный файл: AccountGestureChecks |
 | №1864 unity/ci/workshop-tests/CommerceChecks.cs | 4247 B | вспомогательный файл: CommerceChecks |
@@ -1931,8 +1931,8 @@
 | №1910 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №1911 updates/README.md | 233 B | документация или отчёт: README |
 | №1912 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №1913 updates/unity-changelog.json | 31506 B | метаданные обновлений: unity changelog |
-| №1914 updates/unity-experiment.json | 1972 B | метаданные обновлений: unity experiment |
+| №1913 updates/unity-changelog.json | 31508 B | метаданные обновлений: unity changelog |
+| №1914 updates/unity-experiment.json | 1845 B | метаданные обновлений: unity experiment |
 | №1915 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №1916 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
 | №1917 wall_brick_red.png | 111128 B | текстура/изображение: wall brick red |
