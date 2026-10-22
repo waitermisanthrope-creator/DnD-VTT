@@ -1,7 +1,7 @@
 {
   "version": "1.00.24",
   "versionCode": 10024,
-  "status": "android-candidate-verified-windows-pending",
+  "status": "published-public-bytes-and-apk-signature-verified",
   "sourceSha": "d3efae76a4c8a0d7daf0052c621b48066870273d",
   "candidateRun": 39810382192,
   "android": {
@@ -12,11 +12,21 @@
     "package": "com.dndvtt.unity",
     "deltaFrom10023Bytes": 36864,
     "ciOriginalCertificateVerified": true,
-    "independentPublicVerification": false
+    "independentPublicVerification": true,
+    "signatureSchemes": [
+      2,
+      3
+    ],
+    "certificateSha256": "c1c1b3e6537f10819a3042817ac91535b47754ed65d084e635f84ff2b1f44c8e"
   },
   "windows": {
     "job": 119943957059,
-    "status": "in-progress"
+    "status": "success",
+    "bytes": 29220298,
+    "sha256": "3e14b977dc90163cc06059cc8ec70851d28aa998d9bc244d76c4df51cb6bf3f1",
+    "upgradeQaJob": 119947438658,
+    "actualInstallUpgradeReinstallPassed": true,
+    "independentPublicVerification": true
   },
   "tests": {
     "csharp": 4154,
@@ -28,7 +38,10 @@
     "themes": 31,
     "shapeFamilies": 7,
     "physicalDeviceTested": false,
-    "liveSupabaseTested": false
+    "liveSupabaseTested": false,
+    "nativeWindowsFaceOrientations": 60,
+    "nativeWindowsPhysicalThrows": 129,
+    "nativeWindowsMixedLogicalDice": 22
   },
   "content": {
     "repository": "waitermisanthrope-creator/DnD-VTT-Assets",
@@ -36,6 +49,19 @@
     "recipeCommit": "8ac6fa6",
     "sets": 31,
     "recipeBytes": 15143,
-    "publicRecipeShaVerified": true
+    "publicRecipeShaVerified": true,
+    "previewRun": 39815906775,
+    "diceGeometryPreviews": 31,
+    "diceGeometryPreviewBytes": 220272,
+    "publicGeometryPreviewShaAndDecodeVerified": true,
+    "previous75PreviewHashesUnchanged": true
+  },
+  "publication": {
+    "run": 39814696908,
+    "job": 119949991460,
+    "status": "success",
+    "activationCommit": "ec040aa9",
+    "release": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/tag/unity-v1.00.24",
+    "plainAndCacheBustedPublicFeedVerified": true
   }
 }

@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 8fbebc0cdbe0. Файлов: 1962
+Коммит ec040aa9a130. Файлов: 1962
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,8 +56,8 @@
 0040. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0041. AGENTS.md — документация или отчёт: AGENTS (6966 B)
 0042. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (24954 B)
-0043. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (30511 B)
-0044. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (69057 B)
+0043. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (31210 B)
+0044. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (69756 B)
 0045. android/.gitignore — Android компонент: .gitignore (44 B)
 0046. android/app/build.gradle — Android компонент: build (4122 B)
 0047. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1082,10 +1082,10 @@
 1066. docs/unity-account/CHAT_ONE_HOUR.md — документация или отчёт: CHAT ONE HOUR (2267 B)
 1067. docs/unity-account/CHAT_WORKSHOP_1.00.22.md — документация или отчёт: CHAT WORKSHOP 1.00.22 (7852 B)
 1068. docs/unity-account/DICE_1.00.23.md — документация или отчёт: DICE 1.00.23 (5241 B)
-1069. docs/unity-account/DICE_THEMES_1.00.24.md — документация или отчёт: DICE THEMES 1.00.24 (7686 B)
+1069. docs/unity-account/DICE_THEMES_1.00.24.md — документация или отчёт: DICE THEMES 1.00.24 (6119 B)
 1070. docs/unity-account/dice-1.00.23-metrics.json — документация или отчёт: dice 1.00.23 metrics (1453 B)
-1071. docs/unity-account/dice-1.00.24-metrics.json — документация или отчёт: dice 1.00.24 metrics (1121 B)
-1072. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (36849 B)
+1071. docs/unity-account/dice-1.00.24-metrics.json — документация или отчёт: dice 1.00.24 metrics (2106 B)
+1072. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (37548 B)
 1073. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7893 B)
 1074. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1075. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
@@ -1870,7 +1870,7 @@
 1854. unity/ci/verify_bundle_output.py — вспомогательный файл: verify bundle output (1081 B)
 1855. unity/ci/verify_launcher_aliases.py — вспомогательный файл: verify launcher aliases (3703 B)
 1856. unity/ci/verify_public_workshop.py — вспомогательный файл: verify public workshop (3854 B)
-1857. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (4276 B)
+1857. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (4224 B)
 1858. unity/ci/workshop-tests/.gitignore — вспомогательный файл: .gitignore (10 B)
 1859. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (5460 B)
 1860. unity/ci/workshop-tests/CommerceChecks.cs — вспомогательный файл: CommerceChecks (4247 B)
@@ -14696,7 +14696,7 @@ zipCompressedBrandingBytes — №1844
 zipCompressedNativeBytes — №1844
 zipCompressedUnityDataBytes — №1844
 
---- JSON поля (941) ---
+--- JSON поля (954) ---
 _builderBaseStats — №1739 (+ 2 других файлов)
 $schema — №1017
 abilities — №1739 (+ 2 других файлов)
@@ -14708,10 +14708,11 @@ Acid — №1865
 acidResistance — №1739 (+ 2 других файлов)
 acrobatics — №1739 (+ 2 других файлов)
 action — №0757 (+ 2 других файлов)
-activationCommit — №1070
+activationCommit — №1070 (+ 1 других файлов)
 activeConditions — №1739 (+ 2 других файлов)
 activeFolderId — №1839
 activeProperties — №1866
+actualInstallUpgradeReinstallPassed — №1071
 actualLocalPhysxThrowsPerTarget — №1070
 adamantine — №1865
 african — №0918
@@ -14834,7 +14835,7 @@ category — №1912 (+ 4 других файлов)
 caucasian — №0918
 cell — №0751 (+ 17 других файлов)
 ceramic — №1865
-certificateSha256 — №1027 (+ 1 других файлов)
+certificateSha256 — №1027 (+ 2 других файлов)
 cha — №1739 (+ 2 других файлов)
 changedVertices — №0918 (+ 1 других файлов)
 changeFrom10010Bytes — №1045
@@ -14939,6 +14940,8 @@ deviceQa — №1045 (+ 6 других файлов)
 dex — №1739 (+ 2 других файлов)
 dexterity — №1739 (+ 2 других файлов)
 Dexterity — №1865
+diceGeometryPreviewBytes — №1071
+diceGeometryPreviews — №1071
 directories — №1112
 dotnet — №1045
 doubleSided — №0911
@@ -15177,6 +15180,9 @@ nativeAndroidPhysicalThrows — №1071
 nativeCommerce — №1045
 nativeFaceOrientationsPerTarget — №1070
 nativeLibraries — №1041
+nativeWindowsFaceOrientations — №1071
+nativeWindowsMixedLogicalDice — №1071
+nativeWindowsPhysicalThrows — №1071
 naturalArmor — №1739 (+ 2 других файлов)
 nature — №1839
 Nausea — №1865
@@ -15253,6 +15259,7 @@ Physics2DSettings — №1029
 PhysicsManager — №1029
 pixels — №0911
 pixelsIdentical — №1031
+plainAndCacheBustedPublicFeedVerified — №1071
 platform — №1017 (+ 1 других файлов)
 PlayerSettings — №1029
 poisonImmunity — №1739 (+ 2 других файлов)
@@ -15269,8 +15276,10 @@ pPerG — №1839
 PreloadData — №1029
 prerequisite — №1739
 previewPhysicsRenderPoses — №1070
+previewRun — №1071
 previous10007Bytes — №1026
 previous10008Bytes — №1030
+previous75PreviewHashesUnchanged — №1071
 previousUnity10010ApkBytes — №1045
 price — №1865
 primaryLicenseUrls — №1036
@@ -15293,9 +15302,10 @@ propTextureCount — №1045 (+ 5 других файлов)
 propTextureDimensions — №1045 (+ 5 других файлов)
 psychicResistance — №1739 (+ 2 других файлов)
 publicApkV2V3SignatureVerified — №1070
-publication — №0905 (+ 3 других файлов)
+publication — №0905 (+ 4 других файлов)
 publicDownloadsVerified — №1070
 publicFeedVerified — №1070
+publicGeometryPreviewShaAndDecodeVerified — №1071
 publicPackageBytes — №1045
 publicPackages — №1045
 publicRecipeShaVerified — №1071
@@ -15343,7 +15353,7 @@ referenceRepository — №1036
 referenceSha256 — №1036
 Regeneration — №1865
 regression — №0905 (+ 1 других файлов)
-release — №0920
+release — №0920 (+ 1 других файлов)
 release_ready — №0002
 release_reason — №0002
 release_source_sha — №0002
@@ -15382,6 +15392,7 @@ rmsDisplacementMeters — №0918 (+ 1 других файлов)
 rootCause — №0905
 rotation — №0752 (+ 11 других файлов)
 roughnessFactor — №0911
+run — №1071
 runId — №1045 (+ 5 других файлов)
 runtime — №0918 (+ 1 других файлов)
 RuntimeInitializeOnLoadManager — №1029
@@ -15426,6 +15437,7 @@ showBelow — №0751 (+ 1 других файлов)
 showCeilings — №0751 (+ 1 других файлов)
 showEp — №1839
 showPp — №1839
+signatureSchemes — №1071
 signatureVerification — №1034
 signedRelease — №0905
 signingCertificateSha256 — №1070 (+ 1 других файлов)
@@ -15579,6 +15591,7 @@ unknown — №1839 (+ 1 других файлов)
 unstable — №1866
 untouched — №1839
 updateManifest — №1118
+upgradeQaJob — №1071
 url — №1007 (+ 12 других файлов)
 userAdded — №1887
 uvOutsideUnitSquare — №0911

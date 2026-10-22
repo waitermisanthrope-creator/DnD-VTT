@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 8fbebc0cdbe0. Git содержит 1962 файлов.
+Снимок кода ec040aa9a130. Git содержит 1962 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,8 +61,8 @@
 | №0040 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0041 AGENTS.md | 6966 B | документация или отчёт: AGENTS |
 | №0042 AI_BLOCKERS.md | 24954 B | документация или отчёт: AI BLOCKERS |
-| №0043 AI_NEXT_TASK.md | 30511 B | документация или отчёт: AI NEXT TASK |
-| №0044 AI_PROGRESS.md | 69057 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_NEXT_TASK.md | 31210 B | документация или отчёт: AI NEXT TASK |
+| №0044 AI_PROGRESS.md | 69756 B | документация или отчёт: AI PROGRESS |
 | №0045 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0046 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0047 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1087,10 +1087,10 @@
 | №1066 docs/unity-account/CHAT_ONE_HOUR.md | 2267 B | документация или отчёт: CHAT ONE HOUR |
 | №1067 docs/unity-account/CHAT_WORKSHOP_1.00.22.md | 7852 B | документация или отчёт: CHAT WORKSHOP 1.00.22 |
 | №1068 docs/unity-account/DICE_1.00.23.md | 5241 B | документация или отчёт: DICE 1.00.23 |
-| №1069 docs/unity-account/DICE_THEMES_1.00.24.md | 7686 B | документация или отчёт: DICE THEMES 1.00.24 |
+| №1069 docs/unity-account/DICE_THEMES_1.00.24.md | 6119 B | документация или отчёт: DICE THEMES 1.00.24 |
 | №1070 docs/unity-account/dice-1.00.23-metrics.json | 1453 B | документация или отчёт: dice 1.00.23 metrics |
-| №1071 docs/unity-account/dice-1.00.24-metrics.json | 1121 B | документация или отчёт: dice 1.00.24 metrics |
-| №1072 docs/unity-account/IMPLEMENTATION_STATUS.md | 36849 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1071 docs/unity-account/dice-1.00.24-metrics.json | 2106 B | документация или отчёт: dice 1.00.24 metrics |
+| №1072 docs/unity-account/IMPLEMENTATION_STATUS.md | 37548 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1073 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1074 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1075 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
@@ -1875,7 +1875,7 @@
 | №1854 unity/ci/verify_bundle_output.py | 1081 B | вспомогательный файл: verify bundle output |
 | №1855 unity/ci/verify_launcher_aliases.py | 3703 B | вспомогательный файл: verify launcher aliases |
 | №1856 unity/ci/verify_public_workshop.py | 3854 B | вспомогательный файл: verify public workshop |
-| №1857 unity/ci/windows-upgrade-qa.ps1 | 4276 B | вспомогательный файл: windows upgrade qa |
+| №1857 unity/ci/windows-upgrade-qa.ps1 | 4224 B | вспомогательный файл: windows upgrade qa |
 | №1858 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
 | №1859 unity/ci/workshop-tests/AccountGestureChecks.cs | 5460 B | вспомогательный файл: AccountGestureChecks |
 | №1860 unity/ci/workshop-tests/CommerceChecks.cs | 4247 B | вспомогательный файл: CommerceChecks |
@@ -14726,7 +14726,7 @@
 | zipCompressedNativeBytes | №1844 |
 | zipCompressedUnityDataBytes | №1844 |
 
-### JSON поля (941)
+### JSON поля (954)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -14741,10 +14741,11 @@
 | acidResistance | №1739 (+ 2 других файлов) |
 | acrobatics | №1739 (+ 2 других файлов) |
 | action | №0757 (+ 2 других файлов) |
-| activationCommit | №1070 |
+| activationCommit | №1070 (+ 1 других файлов) |
 | activeConditions | №1739 (+ 2 других файлов) |
 | activeFolderId | №1839 |
 | activeProperties | №1866 |
+| actualInstallUpgradeReinstallPassed | №1071 |
 | actualLocalPhysxThrowsPerTarget | №1070 |
 | adamantine | №1865 |
 | african | №0918 |
@@ -14867,7 +14868,7 @@
 | caucasian | №0918 |
 | cell | №0751 (+ 17 других файлов) |
 | ceramic | №1865 |
-| certificateSha256 | №1027 (+ 1 других файлов) |
+| certificateSha256 | №1027 (+ 2 других файлов) |
 | cha | №1739 (+ 2 других файлов) |
 | changedVertices | №0918 (+ 1 других файлов) |
 | changeFrom10010Bytes | №1045 |
@@ -14972,6 +14973,8 @@
 | dex | №1739 (+ 2 других файлов) |
 | dexterity | №1739 (+ 2 других файлов) |
 | Dexterity | №1865 |
+| diceGeometryPreviewBytes | №1071 |
+| diceGeometryPreviews | №1071 |
 | directories | №1112 |
 | dotnet | №1045 |
 | doubleSided | №0911 |
@@ -15210,6 +15213,9 @@
 | nativeCommerce | №1045 |
 | nativeFaceOrientationsPerTarget | №1070 |
 | nativeLibraries | №1041 |
+| nativeWindowsFaceOrientations | №1071 |
+| nativeWindowsMixedLogicalDice | №1071 |
+| nativeWindowsPhysicalThrows | №1071 |
 | naturalArmor | №1739 (+ 2 других файлов) |
 | nature | №1839 |
 | Nausea | №1865 |
@@ -15286,6 +15292,7 @@
 | PhysicsManager | №1029 |
 | pixels | №0911 |
 | pixelsIdentical | №1031 |
+| plainAndCacheBustedPublicFeedVerified | №1071 |
 | platform | №1017 (+ 1 других файлов) |
 | PlayerSettings | №1029 |
 | poisonImmunity | №1739 (+ 2 других файлов) |
@@ -15302,8 +15309,10 @@
 | PreloadData | №1029 |
 | prerequisite | №1739 |
 | previewPhysicsRenderPoses | №1070 |
+| previewRun | №1071 |
 | previous10007Bytes | №1026 |
 | previous10008Bytes | №1030 |
+| previous75PreviewHashesUnchanged | №1071 |
 | previousUnity10010ApkBytes | №1045 |
 | price | №1865 |
 | primaryLicenseUrls | №1036 |
@@ -15326,9 +15335,10 @@
 | propTextureDimensions | №1045 (+ 5 других файлов) |
 | psychicResistance | №1739 (+ 2 других файлов) |
 | publicApkV2V3SignatureVerified | №1070 |
-| publication | №0905 (+ 3 других файлов) |
+| publication | №0905 (+ 4 других файлов) |
 | publicDownloadsVerified | №1070 |
 | publicFeedVerified | №1070 |
+| publicGeometryPreviewShaAndDecodeVerified | №1071 |
 | publicPackageBytes | №1045 |
 | publicPackages | №1045 |
 | publicRecipeShaVerified | №1071 |
@@ -15376,7 +15386,7 @@
 | referenceSha256 | №1036 |
 | Regeneration | №1865 |
 | regression | №0905 (+ 1 других файлов) |
-| release | №0920 |
+| release | №0920 (+ 1 других файлов) |
 | release_ready | №0002 |
 | release_reason | №0002 |
 | release_source_sha | №0002 |
@@ -15415,6 +15425,7 @@
 | rootCause | №0905 |
 | rotation | №0752 (+ 11 других файлов) |
 | roughnessFactor | №0911 |
+| run | №1071 |
 | runId | №1045 (+ 5 других файлов) |
 | runtime | №0918 (+ 1 других файлов) |
 | RuntimeInitializeOnLoadManager | №1029 |
@@ -15459,6 +15470,7 @@
 | showCeilings | №0751 (+ 1 других файлов) |
 | showEp | №1839 |
 | showPp | №1839 |
+| signatureSchemes | №1071 |
 | signatureVerification | №1034 |
 | signedRelease | №0905 |
 | signingCertificateSha256 | №1070 (+ 1 других файлов) |
@@ -15612,6 +15624,7 @@
 | unstable | №1866 |
 | untouched | №1839 |
 | updateManifest | №1118 |
+| upgradeQaJob | №1071 |
 | url | №1007 (+ 12 других файлов) |
 | userAdded | №1887 |
 | uvOutsideUnitSquare | №0911 |
