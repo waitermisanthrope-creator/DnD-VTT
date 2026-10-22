@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "version": "1.00.22",
-  "candidateRunId": 39751836865,
+  "version": "1.00.23",
+  "candidateRunId": 39766470836,
   "approved": true,
   "scope": "Android ARM64 and Windows x64",
-  "note": "Final owner-requested 1.00.22 candidate source 961d0c63: background reads never lock composer, acknowledged send unlocks immediately. Retains passed actual launcher resource-table/DEX/PNG checks and preview/tree corrections. Publish only after all native, Android, Windows and upgrade gates; staff badge SQL remains owner-operated."
+  "note": "Owner explicitly requests publishing the working procedural dice update. Source55646b735a10ce5490b5e80237666c62cdcf5ad8; all three paired jobs SUCCESS. Native60 face checks +56 real PhysX throws per target, strict body/numeral pixels and preview pose regression pass; signed Android and actual Windows install/upgrade/reinstall pass. Includes settings categories/Home workshop. Physical phone QA remains owner test; no Supabase migration required."
 }

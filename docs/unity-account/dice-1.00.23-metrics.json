@@ -1,0 +1,35 @@
+{
+  "version": "1.00.23",
+  "versionCode": 10023,
+  "sourceCommit": "55646b735a10ce5490b5e80237666c62cdcf5ad8",
+  "candidateRunId": 39766470836,
+  "candidateConclusion": "success",
+  "publication": "pending",
+  "android": {
+    "bytes": 42368920,
+    "sha256": "84d08a31e8297d2059880a0776313c3dfcc21037a421b11759d8da7aeef3ac55",
+    "package": "com.dndvtt.unity",
+    "signingCertificateSha256": "c1c1b3e6537f10819a3042817ac91535b47754ed65d084e635f84ff2b1f44c8e",
+    "minimalContentVerified": true,
+    "deltaBytesFrom10022": 69726
+  },
+  "windows": {
+    "bytes": 29207169,
+    "sha256": "f0c31e0dfdef4330e100b10ad62b771739cd806d0e3cc6645c10fd87670a1ac3",
+    "installUpgradeReinstall": "passed",
+    "profileBackupAndUnknownFilePreserved": true
+  },
+  "checks": {
+    "csharp": 4044,
+    "sqlWasm": 133,
+    "pythonUnit": 12,
+    "nativeFaceOrientationsPerTarget": 60,
+    "actualLocalPhysxThrowsPerTarget": 56,
+    "targetsTested": 2,
+    "strictBodyAndNumeralRaster": true,
+    "previewPhysicsRenderPoses": true,
+    "asyncSceneCleanup": true,
+    "physicalAndroid": false,
+    "liveSupabase": false
+  }
+}

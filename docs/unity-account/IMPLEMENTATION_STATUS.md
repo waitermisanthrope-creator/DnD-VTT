@@ -1,3 +1,7 @@
+# Unity1.00.23 — BUILT AND VERIFIED, publication pending
+
+Source55646b735a10ce5490b5e80237666c62cdcf5ad8 / candidate39766470836 SUCCESS (all three required jobs). Android42,368,920 bytes/SHA84d08a31e8297d2059880a0776313c3dfcc21037a421b11759d8da7aeef3ac55; original package/cert; baseline+69,726 bytes. Windows29,207,169 bytes/SHAf0c31e0dfdef4330e100b10ad62b771739cd806d0e3cc6645c10fd87670a1ac3; actual installation→upgrade→reinstall, payload/profile/backup/unknown-file checks pass.4044 C# /133 SQL WASM /12 Python unit checks;60 native face orientations and56 actual PhysX throws per target (112 total), strict body/numeral raster, preview render/physics pose regression and async cleanup pass. Owner-authorized paired publication approval created; do not call in-app update public until publisher/feed verification succeeds. Physical Android and live Supabase not tested; no SQL migration required. Metrics: dice-1.00.23-metrics.json.
+
 # Procedural dice 1.00.23 — IN PROGRESS, 2026-10-22
 
 Owner authorizes Android+Windows publication after successful gates. Current source55646b73/run39766470836: six generated solids, percentile pair, real local-PhysX throws, face-based result, bounded cocked-die retry, Home/Sheet table, settled-result zoom and idle rendering/resource recovery. Settings category reorganization caec16da included. Existing4039+4 C# checks,133 SQL WASM checks,12 Python tests and source contracts pass locally; all six actual-source geometry topologies/equal face areas checked with a math shim. These are not a native/player/device verdict.
