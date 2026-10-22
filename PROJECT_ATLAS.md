@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 990ece1f7027. Git содержит 1963 файлов.
+Снимок кода 994217045535. Git содержит 1963 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,8 +61,8 @@
 | №0040 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0041 AGENTS.md | 6966 B | документация или отчёт: AGENTS |
 | №0042 AI_BLOCKERS.md | 24954 B | документация или отчёт: AI BLOCKERS |
-| №0043 AI_NEXT_TASK.md | 35541 B | документация или отчёт: AI NEXT TASK |
-| №0044 AI_PROGRESS.md | 74087 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_NEXT_TASK.md | 35806 B | документация или отчёт: AI NEXT TASK |
+| №0044 AI_PROGRESS.md | 74352 B | документация или отчёт: AI PROGRESS |
 | №0045 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0046 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0047 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1091,7 +1091,7 @@
 | №1070 docs/unity-account/dice-1.00.23-metrics.json | 1453 B | документация или отчёт: dice 1.00.23 metrics |
 | №1071 docs/unity-account/dice-1.00.24-metrics.json | 2106 B | документация или отчёт: dice 1.00.24 metrics |
 | №1072 docs/unity-account/dice-1.00.25-metrics.json | 2023 B | документация или отчёт: dice 1.00.25 metrics |
-| №1073 docs/unity-account/IMPLEMENTATION_STATUS.md | 41879 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1073 docs/unity-account/IMPLEMENTATION_STATUS.md | 42144 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1074 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1075 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1076 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
@@ -1778,7 +1778,7 @@
 | №1757 unity/Assets/Vtt/Runtime/DiceGeometry.cs.meta | 60 B | вспомогательный файл: DiceGeometry.cs |
 | №1758 unity/Assets/Vtt/Runtime/DiceRollRequest.cs | 3635 B | вспомогательный файл: DiceRollRequest |
 | №1759 unity/Assets/Vtt/Runtime/DiceRollRequest.cs.meta | 60 B | вспомогательный файл: DiceRollRequest.cs |
-| №1760 unity/Assets/Vtt/Runtime/DiceTable.cs | 22284 B | вспомогательный файл: DiceTable |
+| №1760 unity/Assets/Vtt/Runtime/DiceTable.cs | 22303 B | вспомогательный файл: DiceTable |
 | №1761 unity/Assets/Vtt/Runtime/DiceTable.cs.meta | 60 B | вспомогательный файл: DiceTable.cs |
 | №1762 unity/Assets/Vtt/Runtime/DiceTheme.cs | 2755 B | вспомогательный файл: DiceTheme |
 | №1763 unity/Assets/Vtt/Runtime/DiceTheme.cs.meta | 60 B | вспомогательный файл: DiceTheme.cs |

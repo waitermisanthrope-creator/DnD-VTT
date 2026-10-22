@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 990ece1f7027. Файлов: 1963
+Коммит 994217045535. Файлов: 1963
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,8 +56,8 @@
 0040. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0041. AGENTS.md — документация или отчёт: AGENTS (6966 B)
 0042. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (24954 B)
-0043. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (35541 B)
-0044. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (74087 B)
+0043. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (35806 B)
+0044. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (74352 B)
 0045. android/.gitignore — Android компонент: .gitignore (44 B)
 0046. android/app/build.gradle — Android компонент: build (4122 B)
 0047. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1086,7 +1086,7 @@
 1070. docs/unity-account/dice-1.00.23-metrics.json — документация или отчёт: dice 1.00.23 metrics (1453 B)
 1071. docs/unity-account/dice-1.00.24-metrics.json — документация или отчёт: dice 1.00.24 metrics (2106 B)
 1072. docs/unity-account/dice-1.00.25-metrics.json — документация или отчёт: dice 1.00.25 metrics (2023 B)
-1073. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (41879 B)
+1073. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (42144 B)
 1074. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7893 B)
 1075. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1076. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
@@ -1773,7 +1773,7 @@
 1757. unity/Assets/Vtt/Runtime/DiceGeometry.cs.meta — вспомогательный файл: DiceGeometry.cs (60 B)
 1758. unity/Assets/Vtt/Runtime/DiceRollRequest.cs — вспомогательный файл: DiceRollRequest (3635 B)
 1759. unity/Assets/Vtt/Runtime/DiceRollRequest.cs.meta — вспомогательный файл: DiceRollRequest.cs (60 B)
-1760. unity/Assets/Vtt/Runtime/DiceTable.cs — вспомогательный файл: DiceTable (22284 B)
+1760. unity/Assets/Vtt/Runtime/DiceTable.cs — вспомогательный файл: DiceTable (22303 B)
 1761. unity/Assets/Vtt/Runtime/DiceTable.cs.meta — вспомогательный файл: DiceTable.cs (60 B)
 1762. unity/Assets/Vtt/Runtime/DiceTheme.cs — вспомогательный файл: DiceTheme (2755 B)
 1763. unity/Assets/Vtt/Runtime/DiceTheme.cs.meta — вспомогательный файл: DiceTheme.cs (60 B)
