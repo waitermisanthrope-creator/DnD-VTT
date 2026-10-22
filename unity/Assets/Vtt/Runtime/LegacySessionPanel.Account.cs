@@ -91,7 +91,7 @@ namespace DndVtt.UnityPrototype
             cloudBusy=true;string token=null;
             try {
                 yield return CloudToken(t=>token=t);if(token==null)yield break;
-                yield return CloudRequest("/auth/v1/user",null,token,r=>{cloudSession["chat_nickname"]=CloudCharacterProtocol.ChatNickname((string)r["user_metadata"]?["chat_nickname"]);nicknameActor="";PersistCloudSession();cloudMessage="Аккаунт подтверждён сервером.";},e=>cloudMessage=e);
+                yield return CloudRequest("/auth/v1/user",null,token,r=>{cloudSession["chat_nickname"]=CloudCharacterProtocol.ChatNicknameValue(r["user_metadata"]?["chat_nickname"]);nicknameActor="";PersistCloudSession();cloudMessage="Аккаунт подтверждён сервером.";},e=>cloudMessage=e);
                 yield return CloudRequest("/rest/v1/characters?select=id,profile,revision,deleted,updated_at&deleted=eq.false&order=updated_at.desc&limit=10&offset="+(cloudPage*10),null,token,r=>{cloudCharacters=(JArray)r;cloudMessage="Облачные герои загружены. Локальные файлы не заменены.";},e=>cloudMessage=e);
                 yield return CloudRequest("/rest/v1/rpc/my_access",new JObject(),token,r=>cloudAccess=(JObject)r,e=>{cloudAccess=null;});
             } finally { cloudBusy=false; }

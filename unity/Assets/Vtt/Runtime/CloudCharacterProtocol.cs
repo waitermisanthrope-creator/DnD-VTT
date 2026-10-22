@@ -8,6 +8,7 @@ namespace DndVtt.UnityPrototype
     {
         public const string ProjectUrl="https://rrjqxbfgwsjhgshajnob.supabase.co";
         public const string PublicKey="sb_publishable_tEMVCTm-Pzd7lG6iGUPcjw_yGw9LcsD";
+        public static string ChatNicknameValue(JToken value)=>value?.Type==JTokenType.String?ChatNickname((string)value):"";
         public static string ChatNickname(string value,bool required=false)
         {
             string name=(value??"").Trim();
@@ -18,7 +19,7 @@ namespace DndVtt.UnityPrototype
         public static JObject Session(JObject response)
         {
             if(!Guid.TryParse((string)response["user"]?["id"],out _) || string.IsNullOrEmpty((string)response["access_token"]) || string.IsNullOrEmpty((string)response["refresh_token"])) throw new FormatException("Подтвердите почту и войдите снова.");
-            return new JObject { ["chat_nickname"]=ChatNickname((string)response["user"]?["user_metadata"]?["chat_nickname"]),["user"]=response["user"]["id"].DeepClone(),["email"]=response["user"]["email"]?.DeepClone(),["access_token"]=response["access_token"].DeepClone(),["refresh_token"]=response["refresh_token"].DeepClone(),["expires_at"]=(long?)response["expires_at"] ?? (DateTimeOffset.UtcNow.ToUnixTimeSeconds()+((long?)response["expires_in"]??3600)) };
+            return new JObject { ["chat_nickname"]=ChatNicknameValue(response["user"]?["user_metadata"]?["chat_nickname"]),["user"]=response["user"]["id"].DeepClone(),["email"]=response["user"]["email"]?.DeepClone(),["access_token"]=response["access_token"].DeepClone(),["refresh_token"]=response["refresh_token"].DeepClone(),["expires_at"]=(long?)response["expires_at"] ?? (DateTimeOffset.UtcNow.ToUnixTimeSeconds()+((long?)response["expires_in"]??3600)) };
         }
         public static JObject SaveRequest(JObject profile,JObject journal)
         {

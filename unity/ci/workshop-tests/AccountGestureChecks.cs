@@ -12,6 +12,7 @@ static class AccountGestureChecks
    Check(CloudCharacterProtocol.ChatNickname(invalid)=="","unsafe or invalid nickname hidden");
    try { CloudCharacterProtocol.ChatNickname(invalid,true);throw new Exception("Invalid nickname accepted"); }catch(FormatException) { count++; }
   }
+  foreach(var malformed in new JToken[]{null,new JObject(),new JArray(),new JValue(42),new JValue(true)})Check(CloudCharacterProtocol.ChatNicknameValue(malformed)=="","malformed optional nickname metadata cannot break login");
   var gesture=new MenuGesture();gesture.Regions["page"]=new MenuGesture.Region { x=10,y=10,width=400,height=700 };gesture.Regions["tabs"]=new MenuGesture.Region { x=10,y=10,width=400,height=70,horizontal=true };
   gesture.Begin(40,30);gesture.Move(42,32,2,2,2);Check(!gesture.Dragging&&!gesture.End(),"tap is not scroll and does not suppress click");
   gesture.Begin(40,30);gesture.Move(40,5,0,-25,2);Check(gesture.Dragging&&gesture.Regions["page"].dy==12.5f,"vertical drag over tabs scrolls parent page at DPI scale");Check(gesture.End(),"drag end suppresses synthetic click");

@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 21318f51b344. Файлов: 1927
+Коммит 67ea944285e7. Файлов: 1927
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1745,7 +1745,7 @@
 1729. unity/Assets/Vtt/Runtime/CharacterSheetRules.cs.meta — вспомогательный файл: CharacterSheetRules.cs (59 B)
 1730. unity/Assets/Vtt/Runtime/ClientPreferences.cs — вспомогательный файл: ClientPreferences (4479 B)
 1731. unity/Assets/Vtt/Runtime/ClientPreferences.cs.meta — вспомогательный файл: ClientPreferences.cs (59 B)
-1732. unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs — вспомогательный файл: CloudCharacterProtocol (5696 B)
+1732. unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs — вспомогательный файл: CloudCharacterProtocol (5818 B)
 1733. unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs.meta — вспомогательный файл: CloudCharacterProtocol.cs (60 B)
 1734. unity/Assets/Vtt/Runtime/CommerceRules.cs — вспомогательный файл: CommerceRules (19387 B)
 1735. unity/Assets/Vtt/Runtime/CommerceRules.cs.meta — вспомогательный файл: CommerceRules.cs (60 B)
@@ -1759,7 +1759,7 @@
 1743. unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs.meta — вспомогательный файл: LegacyMapPresenter.cs (59 B)
 1744. unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs — вспомогательный файл: LegacyMigrationSmoke (5858 B)
 1745. unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs.meta — вспомогательный файл: LegacyMigrationSmoke.cs (59 B)
-1746. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs — вспомогательный файл: LegacySessionPanel.Account (19281 B)
+1746. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs — вспомогательный файл: LegacySessionPanel.Account (19278 B)
 1747. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta — вспомогательный файл: LegacySessionPanel.Account.cs (60 B)
 1748. unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs — вспомогательный файл: LegacySessionPanel.Appearance (14896 B)
 1749. unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs.meta — вспомогательный файл: LegacySessionPanel.Appearance.cs (60 B)
@@ -1767,7 +1767,7 @@
 1751. unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta — вспомогательный файл: LegacySessionPanel.Branding.cs (60 B)
 1752. unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs — вспомогательный файл: LegacySessionPanel.BrandSettings (9091 B)
 1753. unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta — вспомогательный файл: LegacySessionPanel.BrandSettings.cs (60 B)
-1754. unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs — вспомогательный файл: LegacySessionPanel.Chat (7221 B)
+1754. unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs — вспомогательный файл: LegacySessionPanel.Chat (7215 B)
 1755. unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs.meta — вспомогательный файл: LegacySessionPanel.Chat.cs (60 B)
 1756. unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs — вспомогательный файл: LegacySessionPanel.Commerce (18536 B)
 1757. unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs.meta — вспомогательный файл: LegacySessionPanel.Commerce.cs (60 B)
@@ -1837,7 +1837,7 @@
 1821. unity/ci/verify_public_workshop.py — вспомогательный файл: verify public workshop (1888 B)
 1822. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (4224 B)
 1823. unity/ci/workshop-tests/.gitignore — вспомогательный файл: .gitignore (10 B)
-1824. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (4422 B)
+1824. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (4649 B)
 1825. unity/ci/workshop-tests/CommerceChecks.cs — вспомогательный файл: CommerceChecks (4247 B)
 1826. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (18684 B)
 1827. unity/ci/workshop-tests/WorkshopTests.csproj — вспомогательный файл: WorkshopTests (1243 B)

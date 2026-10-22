@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 21318f51b344. Git содержит 1927 файлов.
+Снимок кода 67ea944285e7. Git содержит 1927 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1750,7 +1750,7 @@
 | №1729 unity/Assets/Vtt/Runtime/CharacterSheetRules.cs.meta | 59 B | вспомогательный файл: CharacterSheetRules.cs |
 | №1730 unity/Assets/Vtt/Runtime/ClientPreferences.cs | 4479 B | вспомогательный файл: ClientPreferences |
 | №1731 unity/Assets/Vtt/Runtime/ClientPreferences.cs.meta | 59 B | вспомогательный файл: ClientPreferences.cs |
-| №1732 unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs | 5696 B | вспомогательный файл: CloudCharacterProtocol |
+| №1732 unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs | 5818 B | вспомогательный файл: CloudCharacterProtocol |
 | №1733 unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs.meta | 60 B | вспомогательный файл: CloudCharacterProtocol.cs |
 | №1734 unity/Assets/Vtt/Runtime/CommerceRules.cs | 19387 B | вспомогательный файл: CommerceRules |
 | №1735 unity/Assets/Vtt/Runtime/CommerceRules.cs.meta | 60 B | вспомогательный файл: CommerceRules.cs |
@@ -1764,7 +1764,7 @@
 | №1743 unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs.meta | 59 B | вспомогательный файл: LegacyMapPresenter.cs |
 | №1744 unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs | 5858 B | вспомогательный файл: LegacyMigrationSmoke |
 | №1745 unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSmoke.cs |
-| №1746 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs | 19281 B | вспомогательный файл: LegacySessionPanel.Account |
+| №1746 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs | 19278 B | вспомогательный файл: LegacySessionPanel.Account |
 | №1747 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Account.cs |
 | №1748 unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs | 14896 B | вспомогательный файл: LegacySessionPanel.Appearance |
 | №1749 unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Appearance.cs |
@@ -1772,7 +1772,7 @@
 | №1751 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Branding.cs |
 | №1752 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs | 9091 B | вспомогательный файл: LegacySessionPanel.BrandSettings |
 | №1753 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.BrandSettings.cs |
-| №1754 unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs | 7221 B | вспомогательный файл: LegacySessionPanel.Chat |
+| №1754 unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs | 7215 B | вспомогательный файл: LegacySessionPanel.Chat |
 | №1755 unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Chat.cs |
 | №1756 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs | 18536 B | вспомогательный файл: LegacySessionPanel.Commerce |
 | №1757 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Commerce.cs |
@@ -1842,7 +1842,7 @@
 | №1821 unity/ci/verify_public_workshop.py | 1888 B | вспомогательный файл: verify public workshop |
 | №1822 unity/ci/windows-upgrade-qa.ps1 | 4224 B | вспомогательный файл: windows upgrade qa |
 | №1823 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
-| №1824 unity/ci/workshop-tests/AccountGestureChecks.cs | 4422 B | вспомогательный файл: AccountGestureChecks |
+| №1824 unity/ci/workshop-tests/AccountGestureChecks.cs | 4649 B | вспомогательный файл: AccountGestureChecks |
 | №1825 unity/ci/workshop-tests/CommerceChecks.cs | 4247 B | вспомогательный файл: CommerceChecks |
 | №1826 unity/ci/workshop-tests/Program.cs | 18684 B | вспомогательный файл: Program |
 | №1827 unity/ci/workshop-tests/WorkshopTests.csproj | 1243 B | вспомогательный файл: WorkshopTests |

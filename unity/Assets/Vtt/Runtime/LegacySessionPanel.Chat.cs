@@ -33,7 +33,7 @@ namespace DndVtt.UnityPrototype
                 yield return CloudToken(t=>token=t);if(token==null) { nicknameNotice="Нет действующей сессии. Войдите снова.";yield break; }
                 yield return CloudRequest("/auth/v1/user",new JObject { ["data"]=new JObject { ["chat_nickname"]=nick } },token,r=> {
                     if((string)cloudSession?["user"]!=actor)return;
-                    cloudSession["chat_nickname"]=CloudCharacterProtocol.ChatNickname((string)r["user_metadata"]?["chat_nickname"]);
+                    cloudSession["chat_nickname"]=CloudCharacterProtocol.ChatNicknameValue(r["user_metadata"]?["chat_nickname"]);
                     PersistCloudSession();nicknameNotice="Ник сохранён в аккаунте.";
                 },e=>nicknameNotice="Ник не сохранён: "+e,"PUT");
             }finally { cloudBusy=false; }
@@ -76,7 +76,7 @@ namespace DndVtt.UnityPrototype
                 if(!DateTimeOffset.TryParse((string)message["expires_at"],out var expires)||expires<=now)continue;
                 GUILayout.BeginVertical(GUI.skin.box);
                 string author=(string)message["author"];
-                string nick=CloudCharacterProtocol.ChatNickname((string)message["author_name"]);
+                string nick=CloudCharacterProtocol.ChatNicknameValue(message["author_name"]);
                 if(nick==""&&author==(string)cloudSession?["user"])nick=CloudCharacterProtocol.ChatNickname((string)cloudSession?["chat_nickname"]);
                 string label=nick!=""?nick:ChatAuthorLabel(author,(string)cloudSession?["user"]);
                 string time=ChatMessageTime((string)message["created_at"]);
