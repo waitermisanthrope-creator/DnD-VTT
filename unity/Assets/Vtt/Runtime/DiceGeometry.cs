@@ -1,0 +1,101 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+namespace DndVtt.UnityPrototype
+{
+    // Exact convex solids. Flat faces are kept separately for numbering and result detection.
+    public sealed class DiceGeometry
+    {
+        public sealed class Face
+        {
+            public int[] vertices;
+            public Vector3 normal, center;
+            public int value;
+        }
+        public readonly Vector3[] vertices;
+        public readonly Face[] faces;
+        public readonly int sides;
+        private DiceGeometry(Vector3[] points, int count)
+        {
+            sides=count;vertices=points;faces=Hull(points);
+            if(faces.Length!=count)throw new InvalidOperationException("Invalid d"+count+" hull: "+faces.Length);
+            // Pair opposite faces where possible (standard d6/d8/d12/d20 sums).
+            var remaining=new HashSet<int>(Enumerable.Range(0,count));int low=1;
+            while(remaining.Count>0) {
+                int first=remaining.Min();remaining.Remove(first);faces[first].value=low;
+                int opposite=-1;
+                foreach(int other in remaining)if(Vector3.Dot(faces[first].normal,faces[other].normal)<-.999f) { opposite=other;break; }
+                if(opposite>=0) { faces[opposite].value=count+1-low;remaining.Remove(opposite); }
+                low++;
+            }
+            if(count==4||count==10)for(int i=0;i<count;i++)faces[i].value=i+1;
+        }
+        public static DiceGeometry Create(int sides)
+        {
+            float phi=(1+Mathf.Sqrt(5))/2;
+            var points=new List<Vector3>();
+            switch(sides) {
+                case 4:points.AddRange(new[]{new Vector3(1,1,1),new Vector3(-1,-1,1),new Vector3(-1,1,-1),new Vector3(1,-1,-1)});break;
+                case 6:for(int x=-1;x<=1;x+=2)for(int y=-1;y<=1;y+=2)for(int z=-1;z<=1;z+=2)points.Add(new Vector3(x,y,z));break;
+                case 8:points.AddRange(new[]{Vector3.right,Vector3.left,Vector3.up,Vector3.down,Vector3.forward,Vector3.back});break;
+                case 12:
+                    var ico=Create(20);
+                    foreach(var face in ico.faces)points.Add(face.normal/Vector3.Dot(face.normal,face.center));
+                    break;
+                case 20:
+                    for(int a=-1;a<=1;a+=2)for(int b=-1;b<=1;b+=2) {
+                        points.Add(new Vector3(0,a,b*phi));points.Add(new Vector3(a,b*phi,0));points.Add(new Vector3(b*phi,0,a));
+                    }break;
+                case 10:
+                    // Polar dual of a regular pentagonal antiprism: ten congruent kite faces.
+                    var ring=new List<Vector3>();
+                    float h=Mathf.Sqrt((Mathf.Cos(Mathf.PI/5)-Mathf.Cos(2*Mathf.PI/5))/2);
+                    for(int i=0;i<10;i++) {
+                        float angle=i*Mathf.PI/5;ring.Add(new Vector3(Mathf.Cos(angle),i%2==0?h:-h,Mathf.Sin(angle)));
+                    }
+                    foreach(var face in Hull(ring.ToArray()))points.Add(face.normal/Vector3.Dot(face.normal,face.center));
+                    break;
+                default:throw new ArgumentOutOfRangeException(nameof(sides));
+            }
+            float radius=points.Max(p=>p.magnitude);
+            return new DiceGeometry(points.Select(p=>p/radius*.65f).ToArray(),sides);
+        }
+        private static Face[] Hull(Vector3[] points)
+        {
+            var result=new List<Face>();var keys=new HashSet<string>();const float epsilon=.0001f;
+            for(int a=0;a<points.Length-2;a++)for(int b=a+1;b<points.Length-1;b++)for(int c=b+1;c<points.Length;c++) {
+                Vector3 cross=Vector3.Cross(points[b]-points[a],points[c]-points[a]);if(cross.sqrMagnitude<epsilon*epsilon)continue;
+                Vector3 normal=cross.normalized;float distance=Vector3.Dot(normal,points[a]);
+                bool positive=false,negative=false;
+                foreach(var p in points) { float delta=Vector3.Dot(normal,p)-distance;if(delta>epsilon)positive=true;if(delta < -epsilon)negative=true; }
+                if(positive&&negative)continue;
+                if(positive) { normal=-normal;distance=-distance; }
+                if(distance<=epsilon)continue;
+                var ids=Enumerable.Range(0,points.Length).Where(i=>Mathf.Abs(Vector3.Dot(normal,points[i])-distance)<epsilon).ToArray();
+                string key=string.Join(",",ids);if(!keys.Add(key))continue;
+                Vector3 center=Vector3.zero;foreach(int id in ids)center+=points[id];center/=ids.Length;
+                Vector3 u=(points[ids[0]]-center).normalized,v=Vector3.Cross(normal,u);
+                Array.Sort(ids,(i,j)=>Mathf.Atan2(Vector3.Dot(points[i]-center,v),Vector3.Dot(points[i]-center,u)).CompareTo(Mathf.Atan2(Vector3.Dot(points[j]-center,v),Vector3.Dot(points[j]-center,u))));
+                result.Add(new Face { vertices=ids,normal=normal,center=center });
+            }
+            return result.ToArray();
+        }
+        public int Read(Quaternion rotation,out float alignment)
+        {
+            Vector3 direction=sides==4?Vector3.down:Vector3.up;Face best=null;alignment=-1;
+            foreach(var f in faces) { float dot=Vector3.Dot(rotation*f.normal,direction);if(dot>alignment) { alignment=dot;best=f; } }
+            return alignment>=.985f?best.value:0; // Cocked/edge dice are never silently accepted.
+        }
+        public Mesh Mesh()
+        {
+            var positions=new List<Vector3>();var triangles=new List<int>();
+            foreach(var f in faces) {
+                int offset=positions.Count;foreach(int id in f.vertices)positions.Add(vertices[id]);
+                for(int i=1;i<f.vertices.Length-1;i++)triangles.AddRange(new[]{offset,offset+i,offset+i+1});
+            }
+            var mesh=new Mesh { name="Procedural d"+sides };mesh.SetVertices(positions);mesh.SetTriangles(triangles,0);mesh.RecalculateNormals();mesh.RecalculateBounds();return mesh;
+        }
+    }
+}

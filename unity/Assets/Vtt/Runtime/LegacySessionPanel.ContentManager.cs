@@ -101,7 +101,7 @@ namespace DndVtt.UnityPrototype
             creationCatalog = null;
         }
         private void OnWorkshopLowMemory() { ReleaseAppearanceImages(false);workshop?.ReleaseBundleCache(); }
-        private void OnDestroy() { CloseWorkshopPreviews(); Application.lowMemory -= OnWorkshopLowMemory; workshop?.Dispose(); ReleaseAppearanceImages(true);ReleaseBrandStyles(); if (sheetSerif) Destroy(sheetSerif); ApplyScreenSleep(false); }
+        private void OnDestroy() { CloseDiceTable(); CloseWorkshopPreviews(); Application.lowMemory -= OnWorkshopLowMemory; workshop?.Dispose(); ReleaseAppearanceImages(true);ReleaseBrandStyles(); if (sheetSerif) Destroy(sheetSerif); ApplyScreenSleep(false); }
         private void RefreshWorkshop()
         {
             // Destroy geometry before unloading owned resources, then reconstruct

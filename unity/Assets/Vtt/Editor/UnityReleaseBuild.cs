@@ -82,6 +82,7 @@ public static class UnityReleaseBuild
         if (PlayerSettings.companyName != "DnDVttExperiment" || PlayerSettings.productName != "DnD VTT Unity Prototype")
             throw new Exception("Release must preserve existing Windows save identity");
         LegacyMigrationSetup.ValidateContracts();
+        DiceValidation.Run();
         // 1.00.04 could compile while images were invisible at runtime.
         // Fail 1.00.05 before packaging if any mandatory source texture is
         // missing or cannot be resolved by the runtime Resources loader.

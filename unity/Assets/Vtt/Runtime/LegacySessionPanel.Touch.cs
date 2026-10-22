@@ -32,6 +32,7 @@ namespace DndVtt.UnityPrototype
         }
         private void Update()
         {
+            UpdateDiceTable();
             PollNativeChatEditor();
             var device=Touchscreen.current;if(device==null||!HasMenuTouch)return;
             if(device.touches.Count(t=>t.press.isPressed)>1) { if(menuGesture.End())suppressMenuClickUntil=Time.unscaledTime+.15f;return; }

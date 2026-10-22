@@ -276,7 +276,10 @@ namespace DndVtt.UnityPrototype
             GUI.enabled = enabled;
             if (GUILayout.Button("3D Карты", brandGold, GUILayout.Height(53))) Navigate(FrontScreen.Map);
             GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
             if(GUILayout.Button("Мастерская",brandPurple,GUILayout.MinHeight(54)))OpenContentManager();
+            if(GUILayout.Button("3D Дайсы",brandGold,GUILayout.MinHeight(54)))Navigate(FrontScreen.Dice);
+            GUILayout.EndHorizontal();
             LoadCloudSession();
             if(cloudSession!=null&&GUILayout.Button("Глобальный чат",brandBlue,GUILayout.Height(51)))Navigate(FrontScreen.Chat);
             // One tap opens settings. Do not hide the essential updater behind

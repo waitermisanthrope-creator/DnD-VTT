@@ -85,17 +85,7 @@ namespace DndVtt.UnityPrototype
                 case 3: DrawCommerceInventory(hero, ref changed, ref persistCommerce); break;
                 case 4:
                     Collection(hero, "folders", "Папки заметок", () => new JObject { ["id"] = "f_" + Guid.NewGuid(), ["name"] = "Новая папка", ["notes"] = new JArray() }, ref changed); break;
-                case 5:
-                    int[] dice = { 4, 6, 8, 10, 12, 20, 100 };
-                    for (int i = 0; i < dice.Length; i++)
-                    {
-                        if (i % (portraitLayout ? 3 : dice.Length) == 0) GUILayout.BeginHorizontal();
-                        int die = dice[i];
-                        if (GUILayout.Button("d" + die, GUILayout.Height(45))) Roll("d" + die, die, 0);
-                        if (i == dice.Length - 1 || i % (portraitLayout ? 3 : dice.Length) == (portraitLayout ? 2 : dice.Length - 1))
-                            GUILayout.EndHorizontal();
-                    }
-                    GUILayout.Label(rollResult); break;
+                case 5: DrawDiceTable(); break;
                 case 7: Wallet(hero, ref changed, ref persistWallet); break;
                 case 9: DrawLore(hero, ref changed); break;
                 case 8:
