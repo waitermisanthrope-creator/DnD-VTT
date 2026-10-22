@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 20116d9bca6c. Git содержит 1933 файлов.
+Снимок кода cd32fad45ff3. Git содержит 1933 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1730,7 +1730,7 @@
 | №1709 unity/Assets/Vtt/Editor/UnityReleaseBuild.cs.meta | 60 B | вспомогательный файл: UnityReleaseBuild.cs |
 | №1710 unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs | 3632 B | вспомогательный файл: WorkshopBundleBuild |
 | №1711 unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs.meta | 60 B | вспомогательный файл: WorkshopBundleBuild.cs |
-| №1712 unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs | 21628 B | вспомогательный файл: WorkshopEditorValidation |
+| №1712 unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs | 22196 B | вспомогательный файл: WorkshopEditorValidation |
 | №1713 unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs.meta | 60 B | вспомогательный файл: WorkshopEditorValidation.cs |
 | №1714 unity/Assets/Vtt/Resources.meta | 172 B | вспомогательный файл: Resources |
 | №1715 unity/Assets/Vtt/Resources/Branding.meta | 172 B | вспомогательный файл: Branding |
@@ -1774,7 +1774,7 @@
 | №1753 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Branding.cs |
 | №1754 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs | 9091 B | вспомогательный файл: LegacySessionPanel.BrandSettings |
 | №1755 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.BrandSettings.cs |
-| №1756 unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs | 11199 B | вспомогательный файл: LegacySessionPanel.Chat |
+| №1756 unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs | 11327 B | вспомогательный файл: LegacySessionPanel.Chat |
 | №1757 unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Chat.cs |
 | №1758 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs | 18536 B | вспомогательный файл: LegacySessionPanel.Commerce |
 | №1759 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Commerce.cs |

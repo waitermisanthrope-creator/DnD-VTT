@@ -56,9 +56,14 @@ public static class WorkshopEditorValidation
             Check(((System.Collections.Generic.IEnumerable<JObject>)page.Invoke(panel,null)).All(m=>(string)m["imageKind"]=="icon"),"icon branch contains no wallpapers");
             type.GetField("contentGroupPath",flags).SetValue(panel,"Оформление/Обои");ensure.Invoke(panel,null);
             Check(((System.Collections.Generic.IEnumerable<JObject>)page.Invoke(panel,null)).All(m=>(string)m["imageKind"]=="wallpaper"),"wallpaper branch contains no icons");
+            type.GetField("chatBusy",flags).SetValue(panel,true);
+            Check(!(bool)type.GetProperty("ChatComposerLocked",flags).GetValue(panel),"background chat reads do not lock draft editor");
+            type.GetField("chatSending",flags).SetValue(panel,true);
+            Check((bool)type.GetProperty("ChatComposerLocked",flags).GetValue(panel),"pending send locks editor until acknowledgement");
             type.GetField("chatDraft",flags).SetValue(panel,"Текст для отправки");type.GetField("chatPendingId",flags).SetValue(panel,"confirmed-id");
             type.GetMethod("AcknowledgeChatDraft",flags).Invoke(panel,null);
             Check((string)type.GetField("chatDraft",flags).GetValue(panel)==""&&type.GetField("chatPendingId",flags).GetValue(panel)==null,"successful acknowledgement clears composer and pending retry");
+            Check(!(bool)type.GetProperty("ChatComposerLocked",flags).GetValue(panel),"acknowledged send unlocks new draft before background read completes");
             string previews=Path.Combine(store.Root,"preview-lifecycle-test");Directory.CreateDirectory(previews);File.WriteAllText(Path.Combine(previews,"cache.jpg"),"temporary");
             type.GetField("contentPreviewRoot",flags).SetValue(panel,previews);var texture=new Texture2D(2,2);
             var images=(System.Collections.IDictionary)type.GetField("contentPreviewImages",flags).GetValue(panel);images.Add("test",texture);

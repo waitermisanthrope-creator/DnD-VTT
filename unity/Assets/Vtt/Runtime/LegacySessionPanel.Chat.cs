@@ -8,7 +8,8 @@ namespace DndVtt.UnityPrototype
     {
         private JArray chatMessages=new JArray();
         private string chatDraft="",chatStatus="История хранится на сервере один час",chatPendingId,chatPendingBody;
-        private bool chatBusy;
+        private bool chatBusy,chatSending;
+        private bool ChatComposerLocked=>chatSending||cloudBusy||chatEditId!=null;
         private float chatNextRefresh;
         private double chatServerOffset;
         private bool chatClearComposer;
@@ -29,12 +30,12 @@ namespace DndVtt.UnityPrototype
         }
         private void AcknowledgeChatDraft()
         {
-            chatDraft="";chatPendingId=chatPendingBody=null;chatClearComposer=true;
+            chatDraft="";chatPendingId=chatPendingBody=null;chatClearComposer=true;chatSending=false;
         }
         private void DrawChatComposer()
         {
             if(chatClearComposer) { GUI.FocusControl(null);chatClearComposer=false; }
-            bool enabled=GUI.enabled;GUI.enabled=enabled&&!chatBusy&&!cloudBusy&&chatEditId==null;
+            bool enabled=GUI.enabled;GUI.enabled=enabled&&!ChatComposerLocked;
 #if UNITY_ANDROID && !UNITY_EDITOR
             GUILayout.Label(string.IsNullOrEmpty(chatDraft)?"Напишите сообщение…":chatDraft,GUI.skin.box);
             if(GUILayout.Button(string.IsNullOrEmpty(chatDraft)?"Написать сообщение":"Изменить текст · курсор и выделение",GUILayout.MinHeight(58))) {
@@ -91,7 +92,7 @@ namespace DndVtt.UnityPrototype
         }
         private IEnumerator ChatRequest(bool send)
         {
-            if(chatBusy||cloudBusy||(send&&chatEditId!=null))yield break;chatBusy=true;string token=null;string actor=(string)cloudSession?["user"];
+            if(chatBusy||cloudBusy||(send&&chatEditId!=null))yield break;chatBusy=true;chatSending=send;string token=null;string actor=(string)cloudSession?["user"];
             try {
                 yield return CloudToken(t=>token=t);if(token==null||(string)cloudSession?["user"]!=actor) { chatMessages.Clear();chatStatus="Для чата войдите в аккаунт";yield break; }
                 if(send) {
@@ -104,7 +105,7 @@ namespace DndVtt.UnityPrototype
                 yield return CloudRequest("/rest/v1/rpc/read_chat",new JObject(),token,r=> {
                     if((string)cloudSession?["user"]!=actor)return;chatMessages=(JArray)r["messages"];chatServerOffset=(DateTimeOffset.Parse((string)r["serverTime"])-DateTimeOffset.UtcNow).TotalSeconds;chatStatus="Последние 100 сообщений за час. Обновление каждые 10 секунд."+((bool?)r["nicknamesSupported"]==true?"":" Для показа ников всем игрокам требуется серверное обновление чата.")+((bool?)r["roleBadgesSupported"]==true?"":" Серверные префиксы ролей ещё не подключены.");
                 },e=>chatStatus="Чат недоступен. Серверная миграция может быть ещё не подключена. "+e);
-            }finally { chatBusy=false;chatNextRefresh=Time.unscaledTime+10; }
+            }finally { chatBusy=false;chatSending=false;chatNextRefresh=Time.unscaledTime+10; }
         }
         private static string ChatAuthorLabel(string author,string ownUser)
         {

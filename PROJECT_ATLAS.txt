@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 20116d9bca6c. Файлов: 1933
+Коммит cd32fad45ff3. Файлов: 1933
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1725,7 +1725,7 @@
 1709. unity/Assets/Vtt/Editor/UnityReleaseBuild.cs.meta — вспомогательный файл: UnityReleaseBuild.cs (60 B)
 1710. unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs — вспомогательный файл: WorkshopBundleBuild (3632 B)
 1711. unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs.meta — вспомогательный файл: WorkshopBundleBuild.cs (60 B)
-1712. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs — вспомогательный файл: WorkshopEditorValidation (21628 B)
+1712. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs — вспомогательный файл: WorkshopEditorValidation (22196 B)
 1713. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs.meta — вспомогательный файл: WorkshopEditorValidation.cs (60 B)
 1714. unity/Assets/Vtt/Resources.meta — вспомогательный файл: Resources (172 B)
 1715. unity/Assets/Vtt/Resources/Branding.meta — вспомогательный файл: Branding (172 B)
@@ -1769,7 +1769,7 @@
 1753. unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta — вспомогательный файл: LegacySessionPanel.Branding.cs (60 B)
 1754. unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs — вспомогательный файл: LegacySessionPanel.BrandSettings (9091 B)
 1755. unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta — вспомогательный файл: LegacySessionPanel.BrandSettings.cs (60 B)
-1756. unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs — вспомогательный файл: LegacySessionPanel.Chat (11199 B)
+1756. unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs — вспомогательный файл: LegacySessionPanel.Chat (11327 B)
 1757. unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs.meta — вспомогательный файл: LegacySessionPanel.Chat.cs (60 B)
 1758. unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs — вспомогательный файл: LegacySessionPanel.Commerce (18536 B)
 1759. unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs.meta — вспомогательный файл: LegacySessionPanel.Commerce.cs (60 B)
