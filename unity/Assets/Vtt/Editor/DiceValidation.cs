@@ -108,7 +108,7 @@ public static class DiceValidation
                 var data=WorkshopStore.ValidateData(manifest,File.ReadAllText(payload));var theme=DiceTheme.Read((JObject)data["diceThemes"][0],true);
                 table.SetTheme(theme);Check(table.ActiveThemeId==theme.Id&&table.HasMaterialTexture,"downloaded material is active");bool first=families.Add(theme.Shape);var checkedMeshes=new HashSet<Mesh>();
                 foreach(int count in first?new[]{4,6,8,10,12,20,100}:new[]{20}) {
-                    table.Preview(count);if(count==20&&(theme.Icon.EndsWith(".01")||theme.Icon.EndsWith(".05"))) { CheckTexturedRender(table);CheckNumeralOcclusion(table); }SaveImage(table.Image,Path.Combine(folder,theme.Id+"-d"+count+".png"),false);Check(theme.Shape=="rounded"||table.PhysicalOrnamentCount>0,"actual protrusion geometry "+theme.Id);
+                    table.Preview(count);if(count==20) { CheckNumeralOcclusion(table);if(theme.Icon.EndsWith(".01")||theme.Icon.EndsWith(".05"))CheckTexturedRender(table); }SaveImage(table.Image,Path.Combine(folder,theme.Id+"-d"+count+".png"),false);Check(theme.Shape=="rounded"||table.PhysicalOrnamentCount>0,"actual protrusion geometry "+theme.Id);
                     foreach(var body in UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None)) {
                         var colliders=body.GetComponentsInChildren<MeshCollider>();Check(colliders.Length>(theme.Shape=="rounded"?0:1),"physical collision "+theme.Id);
                         var sculpt=body.transform.Find("Sculpted details");
@@ -214,12 +214,13 @@ public static class DiceValidation
         var previous=RenderTexture.active;var image=new Texture2D(source.width,source.height,TextureFormat.RGB24,false);
         try {
             RenderTexture.active=source;image.ReadPixels(new Rect(0,0,source.width,source.height),0,0);image.Apply();
-            int blue=0,gold=0;foreach(var pixel in image.GetPixels32()) {
+            int blue=0,gold=0,ivory=0;foreach(var pixel in image.GetPixels32()) {
                 if(pixel.b>pixel.r*1.3f&&pixel.b>pixel.g*1.1f&&pixel.b>100)blue++;
                 if(pixel.r>220&&pixel.g>180&&pixel.b<230)gold++;
+                if(pixel.r>220&&pixel.g>180&&pixel.b>170)ivory++;
             }
             Check(!classic||blue>80,"actual rendered blue die pixels="+blue+", gold="+gold+": "+path);
-            Check(gold>8,"actual rendered number pixels="+gold+", blue="+blue+": "+path);
+            Check((classic?gold:ivory)>8,"actual rendered number pixels="+(classic?gold:ivory)+", blue="+blue+": "+path);
             File.WriteAllBytes(path,image.EncodeToPNG());
         }finally { RenderTexture.active=previous;UnityEngine.Object.DestroyImmediate(image); }
     }
