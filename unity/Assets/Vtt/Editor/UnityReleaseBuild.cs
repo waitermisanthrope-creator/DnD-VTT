@@ -138,6 +138,48 @@ public static class UnityReleaseBuild
 public sealed class UnityUpdaterManifest : IPostGenerateGradleAndroidProject
 {
     public int callbackOrder => 100;
+    private static void ConfigureLauncherIcons(string path,XmlDocument xml,XmlElement app,string ns)
+    {
+        string original=null;XmlElement activity=null;
+        foreach(XmlElement meta in app.SelectNodes("meta-data"))if(meta.GetAttribute("name",ns)=="dnd.vtt.launcherDefault")original=meta.GetAttribute("value",ns);
+        foreach(XmlElement item in app.SelectNodes("activity")) {
+            if(item.GetAttribute("name",ns)=="com.dndvtt.unity.LauncherHostActivity")activity=item;
+            foreach(XmlElement filter in item.SelectNodes("intent-filter"))foreach(XmlElement category in filter.SelectNodes("category"))
+                if(category.GetAttribute("name",ns)=="android.intent.category.LAUNCHER") { activity=item;if(original==null)original=item.GetAttribute("name",ns); }
+        }
+        if(activity==null||!(original=="com.unity3d.player.UnityPlayerActivity"||original=="com.unity3d.player.UnityPlayerGameActivity"))throw new BuildFailedException("Cannot safely identify Unity launcher activity");
+        foreach(XmlElement filter in activity.SelectNodes("intent-filter")) {
+            bool launcher=false;foreach(XmlElement category in filter.SelectNodes("category"))if(category.GetAttribute("name",ns)=="android.intent.category.LAUNCHER")launcher=true;
+            if(launcher)activity.RemoveChild(filter);
+        }
+        activity.SetAttribute("name",ns,"com.dndvtt.unity.LauncherHostActivity");
+        foreach(XmlElement item in app.SelectNodes("activity-alias"))if(item.GetAttribute("name",ns)==original||item.GetAttribute("name",ns).StartsWith(UnityRelease.Package+".LauncherIcon",StringComparison.Ordinal))app.RemoveChild(item);
+        foreach(XmlElement meta in app.SelectNodes("meta-data"))if(meta.GetAttribute("name",ns)=="dnd.vtt.launcherDefault")app.RemoveChild(meta);
+        var marker=xml.CreateElement("meta-data");marker.SetAttribute("name",ns,"dnd.vtt.launcherDefault");marker.SetAttribute("value",ns,original);app.AppendChild(marker);
+        string javaDir=Path.Combine(path,"src/main/java/com/dndvtt/unity");Directory.CreateDirectory(javaDir);
+        File.WriteAllText(Path.Combine(javaDir,"LauncherHostActivity.java"),"package com.dndvtt.unity; public class LauncherHostActivity extends "+original+" {}\n");
+        string fixtures=Path.GetFullPath("WorkshopFixtures~/DnD-VTT-Assets");
+        var catalog=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixtures,"catalog/v3/index.json")),"packs");
+        string drawable=Path.Combine(path,"src/main/res/drawable");Directory.CreateDirectory(drawable);int count=0;long bytes=0;
+        foreach(JObject manifest in catalog) {
+            if((string)manifest["imageKind"]!="icon")continue;
+            string id=(string)manifest["id"],slot=id.Substring("dnd.appearance.icon.".Length);
+            if(id!="dnd.appearance.icon."+slot||!(slot=="default"||System.Text.RegularExpressions.Regex.IsMatch(slot,@"^(0[1-9]|[12][0-9]|30)$")))throw new BuildFailedException("Unknown icon slot");
+            var payloadPath=Path.Combine(fixtures,"packages",Path.GetFileName((string)manifest["url"]));WorkshopStore.Verify(manifest,payloadPath);
+            var data=WorkshopStore.ValidateData(manifest,File.ReadAllText(payloadPath));var source=new Texture2D(2,2);Texture2D small=null;
+            try {
+                if(!source.LoadImage(WorkshopStore.ImageBytes((JObject)data["images"][0]),false))throw new BuildFailedException("Invalid launcher image");
+                small=new Texture2D(192,192,TextureFormat.RGBA32,false);var pixels=new Color[192*192];
+                for(int y=0;y<192;y++)for(int x=0;x<192;x++)pixels[y*192+x]=source.GetPixelBilinear((x+.5f)/192,(y+.5f)/192);
+                small.SetPixels(pixels);small.Apply();byte[] png=small.EncodeToPNG();bytes+=png.Length;File.WriteAllBytes(Path.Combine(drawable,"vtt_icon_"+slot+".png"),png);
+            }finally { UnityEngine.Object.DestroyImmediate(source);if(small)UnityEngine.Object.DestroyImmediate(small); }
+            var alias=xml.CreateElement("activity-alias");alias.SetAttribute("name",ns,slot=="default"?original:UnityRelease.Package+".LauncherIcon"+slot);
+            alias.SetAttribute("targetActivity",ns,"com.dndvtt.unity.LauncherHostActivity");alias.SetAttribute("enabled",ns,slot=="default"?"true":"false");alias.SetAttribute("exported",ns,"true");alias.SetAttribute("icon",ns,"@drawable/vtt_icon_"+slot);
+            var filter=xml.CreateElement("intent-filter");var action=xml.CreateElement("action");action.SetAttribute("name",ns,"android.intent.action.MAIN");filter.AppendChild(action);var category=xml.CreateElement("category");category.SetAttribute("name",ns,"android.intent.category.LAUNCHER");filter.AppendChild(category);alias.AppendChild(filter);app.AppendChild(alias);count++;
+        }
+        if(count!=31||bytes>3*1024*1024)throw new BuildFailedException("Unexpected launcher icon count or size");
+        Debug.Log("VTT_LAUNCHER_ALIAS_PASS: "+count+" small system icons, "+bytes+" bytes; original launcher identity retained as default alias");
+    }
     public void OnPostGenerateGradleAndroidProject(string path)
     {
         string file = Path.Combine(path, "src/main/AndroidManifest.xml"); var xml = new XmlDocument(); xml.Load(file);
@@ -155,6 +197,6 @@ public sealed class UnityUpdaterManifest : IPostGenerateGradleAndroidProject
             if (existing.GetAttribute("name", ns) == "com.dndvtt.unityupdater.UpdateProvider") app.RemoveChild(existing);
         var provider = xml.CreateElement("provider"); provider.SetAttribute("name", ns, "com.dndvtt.unityupdater.UpdateProvider");
         provider.SetAttribute("authorities", ns, UnityRelease.Package + ".updates"); provider.SetAttribute("exported", ns, "false"); provider.SetAttribute("grantUriPermissions", ns, "true");
-        app.AppendChild(provider); xml.Save(file);
+        app.AppendChild(provider);ConfigureLauncherIcons(path,xml,app,ns);xml.Save(file);
     }
 }

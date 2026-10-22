@@ -47,30 +47,28 @@ public class UpdateProvider extends ContentProvider {
         send.setClipData(ClipData.newRawUri("DnD VTT image",uri));
         activity.startActivity(Intent.createChooser(send,"Сохранить или отправить изображение"));
     }
-    /** Downloaded icon becomes a user-confirmed launcher shortcut, never an APK component replacement. */
-    public static String pinPicture(Activity activity, byte[] png) {
-        if(Build.VERSION.SDK_INT<26)return "unsupported";
-        ShortcutManager manager=activity.getSystemService(ShortcutManager.class);
-        if(manager==null||!manager.isRequestPinShortcutSupported())return "unsupported";
-        if(png==null||png.length>4*1024*1024)throw new SecurityException("Invalid icon size");
-        android.graphics.BitmapFactory.Options bounds=new android.graphics.BitmapFactory.Options();bounds.inJustDecodeBounds=true;
-        android.graphics.BitmapFactory.decodeByteArray(png,0,png.length,bounds);
-        if(bounds.outWidth<1||bounds.outHeight<1||bounds.outWidth>2048||bounds.outHeight>2048)throw new SecurityException("Invalid icon dimensions");
-        android.graphics.BitmapFactory.Options options=new android.graphics.BitmapFactory.Options();options.inSampleSize=1;
-        while(Math.max(bounds.outWidth,bounds.outHeight)/options.inSampleSize>256)options.inSampleSize*=2;
-        android.graphics.Bitmap bitmap=android.graphics.BitmapFactory.decodeByteArray(png,0,png.length,options);
-        if(bitmap==null)throw new SecurityException("Invalid icon image");
-        try {
-            Intent launch=activity.getPackageManager().getLaunchIntentForPackage(activity.getPackageName());
-            if(launch==null)return "unsupported";
-            launch.setAction(Intent.ACTION_VIEW);
-            String id="dnd-vtt-selected-appearance";
-            ShortcutInfo shortcut=new ShortcutInfo.Builder(activity,id).setShortLabel("DnD VTT").setLongLabel("DnD VTT")
-                .setIcon(android.graphics.drawable.Icon.createWithBitmap(bitmap)).setIntent(launch).build();
-            for(ShortcutInfo pinned:manager.getPinnedShortcuts())if(id.equals(pinned.getId()))
-                return manager.updateShortcuts(Collections.singletonList(shortcut))?"updated":"unavailable";
-            return manager.requestPinShortcut(shortcut,null)?"requested":"unavailable";
-        } finally { bitmap.recycle(); }
+    /** Switch predeclared launcher aliases, like WebView. Never creates a pinned shortcut. */
+    public static String replaceLauncherIcon(Activity activity,String packageId) throws Exception {
+        if(packageId==null||!packageId.matches("dnd\\.appearance\\.icon\\.(default|0[1-9]|[12][0-9]|30)"))return "unsupported";
+        String slot=packageId.substring("dnd.appearance.icon.".length());PackageManager pm=activity.getPackageManager();
+        String original=pm.getApplicationInfo(activity.getPackageName(),PackageManager.GET_META_DATA).metaData.getString("dnd.vtt.launcherDefault");
+        if(original==null)return "unsupported";
+        ArrayList<ComponentName> components=new ArrayList<>();ArrayList<Integer> before=new ArrayList<>();int selected="default".equals(slot)?0:Integer.parseInt(slot);
+        for(int i=0;i<=30;i++) { ComponentName name=new ComponentName(activity.getPackageName(),i==0?original:activity.getPackageName()+".LauncherIcon"+String.format(Locale.ROOT,"%02d",i));pm.getActivityInfo(name,PackageManager.MATCH_DISABLED_COMPONENTS);components.add(name);before.add(pm.getComponentEnabledSetting(name)); }
+        if(Build.VERSION.SDK_INT>=33) {
+            ArrayList<PackageManager.ComponentEnabledSetting> changes=new ArrayList<>();
+            for(int i=0;i<=30;i++)changes.add(new PackageManager.ComponentEnabledSetting(components.get(i),i==selected?PackageManager.COMPONENT_ENABLED_STATE_ENABLED:PackageManager.COMPONENT_ENABLED_STATE_DISABLED,PackageManager.DONT_KILL_APP));
+            pm.setComponentEnabledSettings(changes);
+        } else {
+            try {
+                pm.setComponentEnabledSetting(components.get(selected),PackageManager.COMPONENT_ENABLED_STATE_ENABLED,PackageManager.DONT_KILL_APP);
+                for(int i=0;i<=30;i++)if(i!=selected)pm.setComponentEnabledSetting(components.get(i),PackageManager.COMPONENT_ENABLED_STATE_DISABLED,PackageManager.DONT_KILL_APP);
+            }catch(RuntimeException e) { for(int i=0;i<=30;i++)try { pm.setComponentEnabledSetting(components.get(i),before.get(i),PackageManager.DONT_KILL_APP); }catch(RuntimeException ignored) {}throw e; }
+        }
+        boolean legacy=false;
+        ShortcutManager shortcuts=activity.getSystemService(ShortcutManager.class);
+        try { if(shortcuts!=null)for(ShortcutInfo shortcut:shortcuts.getPinnedShortcuts())if("dnd-vtt-selected-appearance".equals(shortcut.getId())) { legacy=true;shortcuts.disableShortcuts(Collections.singletonList(shortcut.getId()),"Используйте основной значок DnD VTT"); } }catch(RuntimeException ignored) { /* launcher change itself has succeeded */ }
+        return legacy?"changed-legacy-shortcut":"changed";
     }
     private static String chatEditResult;
     public static synchronized String takeChatEdit() { String result=chatEditResult;chatEditResult=null;return result; }
