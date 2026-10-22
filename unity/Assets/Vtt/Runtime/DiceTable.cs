@@ -20,6 +20,7 @@ namespace DndVtt.UnityPrototype
         private readonly Dictionary<int,DiceGeometry> shapes=new Dictionary<int,DiceGeometry>();
         private readonly Dictionary<int,Mesh> bodyMeshes=new Dictionary<int,Mesh>();
         private readonly Dictionary<int,List<Mesh>> ornamentMeshes=new Dictionary<int,List<Mesh>>();
+        private readonly Dictionary<int,Mesh> ornamentRenderMeshes=new Dictionary<int,Mesh>();
         private readonly List<Mesh> geometryAssets=new List<Mesh>();
         public int CachedMeshCount=>geometryAssets.Count;
         private readonly Material surface;
@@ -30,6 +31,9 @@ namespace DndVtt.UnityPrototype
         private bool imageDirty=true;
         private int retry,sides=20;
         private DiceTheme theme;
+        private Texture2D themeTexture;
+        public string ActiveThemeId=>theme?.Id??"";
+        public bool HasMaterialTexture=>themeTexture!=null;
         private int tableResourceCount;
         public int PhysicalOrnamentCount { get;private set; }
         private DiceRollRequest request;
@@ -92,18 +96,30 @@ namespace DndVtt.UnityPrototype
             if(theme!=null) {
                 ColorUtility.TryParseHtmlString(theme.Body,out var bodyColor);material.color=bodyColor;
                 ColorUtility.TryParseHtmlString(theme.Trim,out var accent);material.SetColor("_Accent",accent);material.SetFloat("_Pattern",1);
+                if(themeTexture) { material.SetTexture("_MainTex",themeTexture);material.SetFloat("_Textured",1);material.SetFloat("_Tile",theme.FaceTile);material.color=theme.TintTexture?bodyColor*3:Color.white; }
             }owned.Add(material);go.AddComponent<MeshRenderer>().sharedMaterial=material;
             var collider=go.AddComponent<MeshCollider>();collider.sharedMesh=mesh;collider.convex=true;collider.sharedMaterial=contact;
             if(theme!=null) {
                 ColorUtility.TryParseHtmlString(theme.Trim,out var trimColor);
-                var trim=new Material(surface) { color=trimColor };owned.Add(trim);
+                var trim=new Material(surface) { color=trimColor };
+                if(themeTexture) { trim.SetTexture("_MainTex",themeTexture);trim.SetFloat("_Textured",1);trim.SetFloat("_Tile",theme.TrimTile);trim.color=theme.TintTexture?trimColor:Color.white; }
+                owned.Add(trim);
                 if(!ornamentMeshes.TryGetValue(count,out var pieces)) {
                     pieces=DiceThemeGeometry.Build(geometry,theme);ornamentMeshes[count]=pieces;foreach(var piece in pieces)piece.hideFlags=HideFlags.HideAndDontSave;geometryAssets.AddRange(pieces);
                 }
                 foreach(var part in pieces) {
                     PhysicalOrnamentCount++;var ornament=Child("Physical "+theme.Shape);ornament.transform.SetParent(go.transform,false);
-                    ornament.AddComponent<MeshFilter>().sharedMesh=part;ornament.AddComponent<MeshRenderer>().sharedMaterial=trim;
+                    ornament.AddComponent<MeshFilter>().sharedMesh=part;
                     var collision=ornament.AddComponent<MeshCollider>();collision.sharedMesh=part;collision.convex=true;collision.sharedMaterial=contact;
+                }
+                if(pieces.Count>0) {
+                    if(!ornamentRenderMeshes.TryGetValue(count,out var rendered)) {
+                        rendered=new Mesh { name="Batched sculpted dice detail",hideFlags=HideFlags.HideAndDontSave };
+                        var combine=new CombineInstance[pieces.Count];for(int i=0;i<pieces.Count;i++)combine[i]=new CombineInstance { mesh=pieces[i],transform=Matrix4x4.identity };
+                        rendered.CombineMeshes(combine,true,false);ornamentRenderMeshes[count]=rendered;geometryAssets.Add(rendered);
+                    }
+                    var detail=Child("Sculpted details");detail.transform.SetParent(go.transform,false);
+                    detail.AddComponent<MeshFilter>().sharedMesh=rendered;detail.AddComponent<MeshRenderer>().sharedMaterial=trim;
                 }
             }
             var body=go.AddComponent<Rigidbody>();body.mass=.08f;body.linearDamping=.3f;body.angularDamping=.35f;body.maxAngularVelocity=30;body.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;body.interpolation=RigidbodyInterpolation.None;body.solverIterations=12;body.solverVelocityIterations=6;
@@ -126,13 +142,19 @@ namespace DndVtt.UnityPrototype
         private void Label(Transform parent,string text,Vector3 position,Vector3 normal,Vector3 up,float size)
         {
             var go=Child("Face "+text);go.transform.SetParent(parent,false);go.transform.localPosition=position;go.transform.localRotation=Quaternion.LookRotation(-normal,up);
-            var label=go.AddComponent<TextMesh>();label.font=font;label.text=text;label.fontSize=64;label.characterSize=size/6;label.anchor=TextAnchor.MiddleCenter;label.alignment=TextAlignment.Center;label.color=new Color(1,.9f,.64f);
+            var label=go.AddComponent<TextMesh>();label.font=font;label.text=text;label.fontSize=64;label.characterSize=size/6;label.anchor=TextAnchor.MiddleCenter;label.alignment=TextAlignment.Center;label.color=themeTexture?new Color(1,.94f,.84f):new Color(1,.9f,.64f);
             go.GetComponent<MeshRenderer>().sharedMaterial=font.material;
         }
         public void SetTheme(DiceTheme selected)
         {
             if(Throwing)throw new InvalidOperationException("Дождитесь окончания броска.");
-            ClearDice();ClearGeometryAssets();theme=selected;Preview(sides);
+            ClearDice();ClearGeometryAssets();
+            if(themeTexture)UnityEngine.Object.DestroyImmediate(themeTexture);themeTexture=null;theme=selected;
+            if(selected?.TexturePng!=null) {
+                themeTexture=new Texture2D(2,2,TextureFormat.RGB24,true) { name=selected.Id+" albedo",hideFlags=HideFlags.HideAndDontSave,filterMode=FilterMode.Trilinear,wrapMode=TextureWrapMode.Clamp };
+                if(!themeTexture.LoadImage(selected.TexturePng,true)) { UnityEngine.Object.DestroyImmediate(themeTexture);themeTexture=null;throw new FormatException("Не удалось прочитать текстуру набора"); }
+            }
+            Preview(sides);
         }
         public void Preview(int count)
         {
@@ -151,7 +173,7 @@ namespace DndVtt.UnityPrototype
         }
         private void NextBatch()
         {
-            nextBatch=false;ClearDice();Value=null;batch=request.TakeBatch(theme==null?8:4);
+            nextBatch=false;ClearDice();Value=null;batch=request.TakeBatch(theme==null?8:theme.Shape=="tentacles"&&theme.TexturePng!=null?2:4);
             foreach(int count in batch) {
                 if(count==100) { AddDie(10,true);AddDie(10,false,true); }
                 else AddDie(count);
@@ -249,10 +271,11 @@ namespace DndVtt.UnityPrototype
         private void ClearGeometryAssets()
         {
             foreach(var mesh in geometryAssets)if(mesh)UnityEngine.Object.DestroyImmediate(mesh);
-            geometryAssets.Clear();shapes.Clear();bodyMeshes.Clear();ornamentMeshes.Clear();
+            geometryAssets.Clear();shapes.Clear();bodyMeshes.Clear();ornamentMeshes.Clear();ornamentRenderMeshes.Clear();
         }
         public void Dispose()
         {
+            if(themeTexture)UnityEngine.Object.DestroyImmediate(themeTexture);themeTexture=null;
             if(camera)camera.targetTexture=null;
             if(root)UnityEngine.Object.DestroyImmediate(root);
             ClearGeometryAssets();

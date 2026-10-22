@@ -11,6 +11,7 @@ import os
 import pathlib
 import re
 import subprocess
+import struct
 import urllib.error
 import urllib.request
 
@@ -97,6 +98,21 @@ def publish_verified(files, manifest, expected_cert, source_commit=None, build_r
     tag = "unity-v" + version
     notes_file=destination / "release-notes.md"
     notes_file.write_text("DnD VTT Unity "+version+"\n\n"+manifest.get("notes", "")+"\n",encoding="utf-8")
+    # Optional render evidence is produced by the same successful native test run.
+    # It never enters the APK or changes the two installer hash contracts.
+    render_folder=os.environ.get("DICE_PREVIEW_DIR")
+    if render_folder:
+        images=sorted(pathlib.Path(render_folder).rglob("dnd.dice.icon.*.theme-d20.png"))
+        expected={"dnd.dice.icon."+suffix+".theme-d20.png" for suffix in ["default"]+[f"{i:02d}" for i in range(1,31)]}
+        if {p.name for p in images}!=expected or len(images)!=31:raise ValueError("Expected31 actual native d20 renders")
+        evidence=[]
+        for path in images:
+            blob=path.read_bytes()
+            if not blob.startswith(b"\x89PNG\r\n\x1a\n") or struct.unpack(">II",blob[16:24])!=(768,640):raise ValueError("Invalid native render evidence")
+            evidence.append(dict(name=path.name,bytes=len(blob),sha256=hashlib.sha256(blob).hexdigest(),width=768,height=640))
+        index=destination/"dice-render-index.json"
+        index.write_text(json.dumps(dict(sourceCommit=source_commit,buildRun=build_run,kind="Unity native rendered d20 preview",images=evidence),indent=2)+"\n")
+        files.extend(images);files.append(index)
     existing = subprocess.run(["gh", "release", "view", tag, "--repo", REPO, "--json", "isDraft"], capture_output=True, text=True)
     if existing.returncode == 0:
         if json.loads(existing.stdout)["isDraft"]:

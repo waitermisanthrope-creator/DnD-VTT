@@ -20,6 +20,10 @@ class Program
             Check(DiceTheme.ForIcon(iconThemes,"").Id=="default","default launcher uses default set");
             Check(DiceTheme.ForIcon(iconThemes,"dnd.appearance.icon.03")==null,"missing linked set never uses another icon");
             Check(DiceTheme.ForIcon(null,"dnd.appearance.icon.01")==null,"empty installations use classic");
+            Check(DiceTheme.ForSelection(iconThemes,"dnd.appearance.icon.02","a",false).Id=="a","manual downloaded set wins over another app icon");
+            Check(DiceTheme.ForSelection(iconThemes,"dnd.appearance.icon.02","a",true).Id=="b","explicit follow-icon mode");
+            Check(DiceTheme.ForSelection(iconThemes,"dnd.appearance.icon.02","",false)==null,"explicit classic survives installed icon set");
+            Check(DiceTheme.ForSelection(iconThemes,"dnd.appearance.icon.02","removed",false)==null,"removed manual set does not silently substitute a different one");
             var mixed=DiceRollRequest.Parse("7d20 + 3d6 + 1d8");
             Check(mixed.Count==11,"mixed request count");
             int requested=0;while(mixed.Pending) { var batch=mixed.TakeBatch(8);Check(batch.Length>0&&batch.Length<=8,"bounded batch");foreach(int n in batch) { mixed.Accept(n,n);requested++; } }
@@ -48,6 +52,22 @@ class Program
                 Reject(()=>WorkshopStore.ValidateData(m,copy.ToString()),"oversized ornament rejected");
                 copy=(JObject)data.DeepClone();copy["diceThemes"][0]["shape"]="script";
                 Reject(()=>WorkshopStore.ValidateData(m,copy.ToString()),"executable theme rejected");
+            }
+            var texturedPath=Path.Combine(source,"DnD-VTT-Assets/catalog/v6/index.json");
+            if(File.Exists(texturedPath)) {
+                var texturedCatalog=WorkshopStore.Catalog(File.ReadAllText(texturedPath),"packs");int materialSets=0;
+                foreach(JObject manifest in texturedCatalog) {
+                    if((string)manifest["imageKind"]!="dice")continue;
+                    string path=Path.Combine(source,"DnD-VTT-Assets/packages",Path.GetFileName((string)manifest["url"]));WorkshopStore.Verify(manifest,path);
+                    var data=WorkshopStore.ValidateData(manifest,File.ReadAllText(path));var recipe=(JObject)data["diceThemes"][0];
+                    var selected=DiceTheme.Read(recipe,true);Check(selected.TexturePng?.Length>10000,"actual texture bytes loaded for selected set");
+                    Check(((JArray)manifest["dependencies"]).Count==0,"textured set install independent from launcher icon");
+                    Check(DiceTheme.Read(recipe).TexturePng==null,"library metadata does not retain all decoded textures");
+                    var bad=(JObject)recipe.DeepClone();bad["faceTile"]=4;Reject(()=>DiceTheme.Read(bad),"atlas index bounded");
+                    bad=(JObject)recipe.DeepClone();bad["albedo"]["sha256"]=new string('0',64);Reject(()=>DiceTheme.Read(bad),"texture hash checked");
+                    materialSets++;
+                }
+                Check(materialSets==31,"all31 textured recipes checked");
             }
             var previewCatalog=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source,"DnD-VTT-Assets/catalog/v4/index.json")),"packs");int previewCount=0;
             foreach(JObject entry in previewCatalog)if(entry["preview"] is JObject preview) {

@@ -14,7 +14,8 @@ namespace DndVtt.UnityPrototype
         private int diceSelection=5;
         private string diceError;
         private DiceTheme[] diceThemes;
-        private int diceThemeSelection;
+        private int diceThemeSelection,diceThemePage;
+        private bool diceThemePicker;
         private string diceIconSelection;
         private string diceInputError="";
         private readonly List<KeyValuePair<int,BigInteger>> diceGroups = new List<KeyValuePair<int,BigInteger>> { new KeyValuePair<int,BigInteger>(20,BigInteger.One) };
@@ -33,17 +34,45 @@ namespace DndVtt.UnityPrototype
             catch(Exception error) { CloseDiceTable();diceError="3D-стол временно недоступен: "+error.Message;return; }
             if(diceTable.Value.HasValue)rollResult=diceTable.Result;
         }
-        // Icon selection is the source of truth, including after a previous manual theme choice.
-        // A running throw retains its material; changes apply only before the next throw.
+        // Manual installed-set selection and icon-following are distinct persisted modes.
         private void SyncDiceIcon()
         {
             if(diceTable==null||diceTable.Throwing)return;
+            bool follow=PlayerPrefs.GetInt("dndvtt.dice.followIcon",PlayerPrefs.HasKey("dndvtt.dice.theme")?0:1)==1;
             string icon=PlayerPrefs.GetString(AppearancePreference("icon"),"dnd.appearance.icon.default");
-            if(string.IsNullOrEmpty(icon))icon="dnd.appearance.icon.default";
-            if(icon==diceIconSelection)return;
-            diceIconSelection=icon;
-            diceThemeSelection=Array.IndexOf(diceThemes??Array.Empty<DiceTheme>(),DiceTheme.ForIcon(diceThemes,icon))+1;
-            diceTable.SetTheme(diceThemeSelection==0?null:diceThemes[diceThemeSelection-1]);
+            string selected=PlayerPrefs.GetString("dndvtt.dice.theme","");
+            string key=(follow?"icon:":"set:")+(follow?icon:selected);
+            if(key==diceIconSelection)return;
+            var resolved=DiceTheme.ForSelection(diceThemes,icon,selected,follow);
+            diceThemeSelection=Array.IndexOf(diceThemes??Array.Empty<DiceTheme>(),resolved)+1;
+            if(resolved!=null) {
+                var manifest=workshopStore.Find(resolved.Id.Substring(0,resolved.Id.Length-6));
+                if(manifest!=null)resolved=DiceTheme.Read((JObject)workshopStore.Data(manifest)["diceThemes"][0],true);
+            }
+            diceTable.SetTheme(resolved);diceIconSelection=key;diceThemePage=diceThemeSelection/6;
+        }
+        private void DrawDiceThemePicker()
+        {
+            GUILayout.Label("Набор для броска: "+(diceThemeSelection==0?"Классический":diceThemes[diceThemeSelection-1].Name));
+            if(GUILayout.Button(diceThemePicker?"Свернуть наборы":"Мои наборы · "+(diceThemes?.Length??0),GUILayout.MinHeight(56)))diceThemePicker=!diceThemePicker;
+            if(!diceThemePicker)return;
+            bool follow=PlayerPrefs.GetInt("dndvtt.dice.followIcon",PlayerPrefs.HasKey("dndvtt.dice.theme")?0:1)==1;
+            if(GUILayout.Button((follow?"✓ ":"")+"Как выбранная иконка приложения",GUILayout.MinHeight(56))) {
+                PlayerPrefs.SetInt("dndvtt.dice.followIcon",1);PlayerPrefs.Save();diceIconSelection=null;SyncDiceIcon();
+            }
+            int count=(diceThemes?.Length??0)+1,start=diceThemePage*6,end=Math.Min(count,start+6);
+            for(int i=start;i<end;i++) {
+                string name=i==0?"Классический":diceThemes[i-1].Name;
+                if(GUILayout.Button((i==diceThemeSelection?"✓ ":"")+name,GUILayout.MinHeight(56))) {
+                    PlayerPrefs.SetString("dndvtt.dice.theme",i==0?"":diceThemes[i-1].Id);
+                    PlayerPrefs.SetInt("dndvtt.dice.followIcon",0);PlayerPrefs.Save();diceIconSelection=null;SyncDiceIcon();diceThemePicker=false;
+                }
+            }
+            GUILayout.BeginHorizontal();
+            if(diceThemePage>0&&GUILayout.Button("← Наборы",GUILayout.MinHeight(52)))diceThemePage--;
+            if(end<count&&GUILayout.Button("Наборы →",GUILayout.MinHeight(52)))diceThemePage++;
+            GUILayout.EndHorizontal();
+            if((diceThemes?.Length??0)==0)GUILayout.Label("Пока нет установленных 3D-наборов. Иконки и 3D-наборы — разные загрузки: Мастерская → Оформление → 3D Дайсы.",muted);
         }
         private string DiceGroupExpression()=>string.Join(" + ",diceGroups.Select(g=>g.Value.ToString(CultureInfo.InvariantCulture)+"d"+g.Key));
         private void AddDiceGroup(int selection)
@@ -114,8 +143,9 @@ namespace DndVtt.UnityPrototype
             }
             bool enabled=GUI.enabled;GUI.enabled=enabled&&!diceTable.Throwing;
             SyncDiceIcon();
-            GUILayout.Label("Набор: "+(diceThemeSelection==0?"Классический":diceThemes[diceThemeSelection-1].Name),muted);
-            if(diceThemeSelection==0)GUILayout.Label("Для оформления выбранной иконки скачайте связанный 3D-набор: Мастерская → Оформление → 3D Дайсы.",muted);
+            DrawDiceThemePicker();
+            if(diceThemeSelection==0)GUILayout.Label("Скачанные 3D-комплекты доступны в «Мои наборы». Режим привязки к иконке работает, если соответствующий комплект установлен.",muted);
+            else if(diceThemes[diceThemeSelection-1].TextureSha256==null)GUILayout.Label("Этот набор ещё версии без UV-текстур. Обновите его в мастерской до 1.1.0.",muted);
             DrawDiceGroups();
             GUI.enabled=enabled;
             float height=Mathf.Clamp(UiHeight*.38f,200,440);

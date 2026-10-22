@@ -81,6 +81,13 @@ jobs:
           run-id: ${{ env.SELECTED_RUN }}
           name: Unity-Windows-upgrade-verdict-${{ env.SELECTED_RUN }}
           path: ${{ runner.temp }}/qa
+      - name: Download actual native dice render evidence from the verified build
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ env.SELECTED_RUN }}
+          name: Unity-dice-previews-${{ env.SELECTED_RUN }}
+          path: ${{ runner.temp }}/dice-render-evidence
       - name: Decrypt candidate only inside trusted runner
         env:
           UNITY_CI_ARTIFACT_PASSWORD: ${{ secrets.UNITY_CI_ARTIFACT_PASSWORD }}
@@ -93,6 +100,7 @@ jobs:
           RUN_ID: ${{ env.SELECTED_RUN }}
           CANDIDATE_VERSION: ${{ env.SELECTED_VERSION }}
           PUBLISH: ${{ env.SELECTED_PUBLISH }}
+          DICE_PREVIEW_DIR: ${{ runner.temp }}/dice-render-evidence
         run: |
           test -x "$ANDROID_HOME/build-tools/36.0.0/apksigner" || "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'build-tools;36.0.0' >/dev/null
           args=()

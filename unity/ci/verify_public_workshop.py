@@ -48,3 +48,14 @@ for m in themes:
  assert m['url'].startswith('https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/packages/dnd.dice.icon.') and '..' not in m['url'] and '?' not in m['url']
  download((preview_root,m))
 print('PUBLIC_DICE_PACKAGES_PASS',len(themes),sum(m['bytes'] for m in themes),'bytes')
+
+# Textured v6 is separate: v5 legacy payloads and image pixels are unchanged.
+data=fetch('https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v6/index.json',1024*1024)
+(preview_root/'catalog/v6').mkdir(parents=True,exist_ok=True);(preview_root/'catalog/v6/index.json').write_bytes(data)
+textured=[m for m in json.loads(data)['packs'] if m.get('imageKind')=='dice']
+assert len(textured)==31
+for m in textured:
+ assert m['version']=='1.1.0' and m['minClientVersionCode']==10026 and m['dependencies']==[]
+ assert m['url'].startswith('https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/releases/download/owner-appearance-v1/dnd.dice.icon.')
+ download((preview_root,m))
+print('PUBLIC_TEXTURED_DICE_PACKAGES_PASS',len(textured),sum(m['bytes'] for m in textured),'bytes')

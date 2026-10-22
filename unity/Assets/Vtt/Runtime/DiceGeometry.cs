@@ -103,12 +103,15 @@ namespace DndVtt.UnityPrototype
         public Mesh Mesh() => CreateMesh(vertices,faces,"Procedural d"+sides);
         private static Mesh CreateMesh(Vector3[] vertices,Face[] faces,string name)
         {
-            var positions=new List<Vector3>();var triangles=new List<int>();
+            var positions=new List<Vector3>();var triangles=new List<int>();var uv=new List<Vector2>();
             foreach(var f in faces) {
-                int offset=positions.Count;foreach(int id in f.vertices)positions.Add(vertices[id]);
+                int offset=positions.Count;
+                Vector3 up=(vertices[f.vertices[0]]-f.center).normalized,right=Vector3.Cross(up,f.normal).normalized;
+                float radius=0;foreach(int id in f.vertices)radius=Mathf.Max(radius,(vertices[id]-f.center).magnitude);
+                foreach(int id in f.vertices) { positions.Add(vertices[id]);Vector3 local=vertices[id]-f.center;uv.Add(new Vector2(.5f+Vector3.Dot(local,right)/radius*.48f,.5f+Vector3.Dot(local,up)/radius*.48f)); }
                 for(int i=1;i<f.vertices.Length-1;i++)triangles.AddRange(new[]{offset,offset+i,offset+i+1});
             }
-            var mesh=new Mesh { name=name };mesh.SetVertices(positions);mesh.SetTriangles(triangles,0);mesh.RecalculateNormals();mesh.RecalculateBounds();return mesh;
+            var mesh=new Mesh { name=name };mesh.SetVertices(positions);mesh.SetUVs(0,uv);mesh.SetTriangles(triangles,0);mesh.RecalculateNormals();mesh.RecalculateBounds();return mesh;
         }
     }
 }

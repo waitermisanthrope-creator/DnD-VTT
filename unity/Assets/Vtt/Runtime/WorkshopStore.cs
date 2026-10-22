@@ -169,7 +169,7 @@ namespace DndVtt.UnityPrototype
             if(type=="appearance"&&data["diceThemes"]!=null) {
                 if((string)m["imageKind"]!="dice"||!(data["diceThemes"] is JArray themes)||themes.Count!=1||data["images"]!=null||data["surfaces"]!=null)throw new FormatException("Состав набора дайсов");
                 var theme=DiceTheme.Read(themes[0] as JObject??throw new FormatException("Набор дайсов"));
-                if(theme.Id!=packageId+".theme"||!((JArray)m["dependencies"]).Values<string>().Contains(theme.Icon))throw new FormatException("Набор должен зависеть от своей иконки");
+                if(theme.Id!=packageId+".theme"||(themes[0]["albedo"]==null&&!((JArray)m["dependencies"]).Values<string>().Contains(theme.Icon)))throw new FormatException("Набор должен зависеть от своей иконки");
                 return data;
             }
             if(type=="appearance"&&data["images"]!=null) {

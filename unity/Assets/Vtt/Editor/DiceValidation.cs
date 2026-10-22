@@ -100,26 +100,39 @@ public static class DiceValidation
             Check(table.BodyCount==8,"huge percentile request stays bounded");table.Cancel();
             Check(!table.Throwing&&!table.Value.HasValue&&table.Completed==0,"cancel is partial, never a completed result");
             string fixture=Path.GetFullPath("WorkshopFixtures~/DnD-VTT-Assets");
-            var catalog=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixture,"catalog/v5/index.json")),"packs");
+            var catalog=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixture,"catalog/v6/index.json")),"packs");
             int themes=0;var families=new HashSet<string>();
             foreach(JObject manifest in catalog) {
                 if((string)manifest["imageKind"]!="dice")continue;
                 string payload=Path.Combine(fixture,"packages",Path.GetFileName((string)manifest["url"]));WorkshopStore.Verify(manifest,payload);
-                var data=WorkshopStore.ValidateData(manifest,File.ReadAllText(payload));var theme=DiceTheme.Read((JObject)data["diceThemes"][0]);
-                table.SetTheme(theme);bool first=families.Add(theme.Shape);var checkedMeshes=new HashSet<Mesh>();
+                var data=WorkshopStore.ValidateData(manifest,File.ReadAllText(payload));var theme=DiceTheme.Read((JObject)data["diceThemes"][0],true);
+                table.SetTheme(theme);Check(table.ActiveThemeId==theme.Id&&table.HasMaterialTexture,"downloaded material is active");bool first=families.Add(theme.Shape);var checkedMeshes=new HashSet<Mesh>();
                 foreach(int count in first?new[]{4,6,8,10,12,20,100}:new[]{20}) {
-                    table.Preview(count);SaveImage(table.Image,Path.Combine(folder,theme.Id+"-d"+count+".png"),false);Check(theme.Shape=="rounded"||table.PhysicalOrnamentCount>0,"actual protrusion geometry "+theme.Id);
+                    table.Preview(count);if(count==20&&(theme.Icon.EndsWith(".01")||theme.Icon.EndsWith(".05")))CheckTexturedRender(table);SaveImage(table.Image,Path.Combine(folder,theme.Id+"-d"+count+".png"),false);Check(theme.Shape=="rounded"||table.PhysicalOrnamentCount>0,"actual protrusion geometry "+theme.Id);
                     foreach(var body in UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None)) {
                         var colliders=body.GetComponentsInChildren<MeshCollider>();Check(colliders.Length>(theme.Shape=="rounded"?0:1),"physical collision "+theme.Id);
+                        var sculpt=body.transform.Find("Sculpted details");
+                        if(sculpt) {
+                            var visual=sculpt.GetComponent<MeshFilter>().sharedMesh;
+                            Check(visual.triangles.Length==colliders.Where(c=>c.gameObject!=body.gameObject).Sum(c=>c.sharedMesh.triangles.Length),"batched render retains every physical ornament triangle");
+                            Check(sculpt.localPosition==Vector3.zero&&sculpt.localRotation==Quaternion.identity,"batched visual/collision poses agree");
+                            Check(body.GetComponentsInChildren<MeshRenderer>().Length<=shapeRendererBudget(count),"bounded visual renderer count with raised cups");
+                        }
                         foreach(var collider in colliders) {
                             Check(collider.enabled&&collider.convex&&!collider.isTrigger&&collider.attachedRigidbody==body&&!Physics.GetIgnoreLayerCollision(collider.gameObject.layer,31),"solid enabled attached collision piece");
-                            Check(collider.sharedMesh==collider.GetComponent<MeshFilter>().sharedMesh,"render and collision use same mesh");
+                            Check(collider.sharedMesh==collider.GetComponent<MeshFilter>().sharedMesh,"collision uses the verified source mesh");
                             Check((collider.sharedMesh.hideFlags&HideFlags.DontUnloadUnusedAsset)!=0,"cached procedural mesh survives unused-asset cleanup");
                             if(checkedMeshes.Add(collider.sharedMesh))CheckClosedConvex(collider.sharedMesh);
                         }
                     }
-                    int cached=table.CachedMeshCount;Check(cached<=366,"bounded per-theme mesh cache");
-                    table.Throw(count);for(int step=0;step<650&&table.Throwing;step++)table.Tick(.1f,false);
+                    int cached=table.CachedMeshCount;Check(cached<=1800,"bounded per-theme mesh cache");
+                    table.Throw(count);
+                    Check(table.ActiveThemeId==theme.Id&&table.HasMaterialTexture,"selected downloaded set persists into active throw");
+                    foreach(var body in UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None).Where(b=>b.gameObject.name.StartsWith("d"))) {
+                        var renderer=body.GetComponent<MeshRenderer>();Check(renderer&&renderer.sharedMaterial.GetFloat("_Textured")==1&&renderer.sharedMaterial.GetTexture("_MainTex")!=null,"actual moving body uses material texture");
+                        Check(body.GetComponent<MeshFilter>().sharedMesh.uv.Length>0,"actual moving mesh has UVs");
+                    }
+                    for(int step=0;step<650&&table.Throwing;step++)table.Tick(.1f,false);
                     Check(table.CachedMeshCount==cached,"same shape reuses cooked collision meshes");
                     Check(!table.Throwing&&table.Value.HasValue&&table.Value>=1&&table.Value<=count,"themed physical throw "+theme.Id+" d"+count+": "+table.Result);rolls++;
                 }
@@ -135,6 +148,20 @@ public static class DiceValidation
         Check(UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None).Length==bodies,"no rigidbody leaks");
         Debug.Log("VTT_DICE_PASS: "+checks+" face orientations/topology/convexity/equal areas; "+rolls+" real local-physics throws; d100 pair, PNG rendering and cleanup");
     }
+    private static void CheckTexturedRender(DiceTable table)
+    {
+        var materials=UnityEngine.Object.FindObjectsByType<MeshRenderer>(FindObjectsSortMode.None).Select(r=>r.sharedMaterial).Where(m=>m&&m.HasProperty("_Textured")&&m.GetFloat("_Textured")==1).Distinct().ToArray();
+        Check(materials.Length>0,"textured moving-body materials exist");
+        var render=typeof(DiceTable).GetMethod("Render",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+        var previous=RenderTexture.active;var image=new Texture2D(table.Image.width,table.Image.height,TextureFormat.RGB24,false);
+        Color32[] Pixels() { RenderTexture.active=table.Image;image.ReadPixels(new Rect(0,0,image.width,image.height),0,0);image.Apply();return image.GetPixels32(); }
+        try {
+            var textured=Pixels();foreach(var m in materials)m.SetFloat("_Textured",0);render.Invoke(table,null);var plain=Pixels();
+            int changed=0;for(int i=0;i<plain.Length;i++)if(Math.Abs(plain[i].r-textured[i].r)+Math.Abs(plain[i].g-textured[i].g)+Math.Abs(plain[i].b-textured[i].b)>40)changed++;
+            Check(changed>1000,"GPU actually samples the downloaded art texture; changed pixels="+changed);
+        }finally { foreach(var m in materials)m.SetFloat("_Textured",1);render.Invoke(table,null);RenderTexture.active=previous;UnityEngine.Object.DestroyImmediate(image); }
+    }
+    private static int shapeRendererBudget(int sides)=>sides==4?14:sides+2;
     private static void CheckClosedConvex(Mesh mesh)
     {
         var vertices=mesh.vertices;var triangles=mesh.triangles;

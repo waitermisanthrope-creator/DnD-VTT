@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит ae4d10ed2e8a. Файлов: 1963
+Коммит 00771082383d. Файлов: 1963
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -18,7 +18,7 @@
 0002. .github/ai-control.json — данные/конфигурация: ai control (255 B)
 0003. .github/prompts/autonomous-development.md — документация или отчёт: autonomous development (1259 B)
 0004. .github/scripts/.gitignore — вспомогательный файл: .gitignore (14 B)
-0005. .github/scripts/publish-unity-artifacts.py — вспомогательный файл: publish unity artifacts (9350 B)
+0005. .github/scripts/publish-unity-artifacts.py — вспомогательный файл: publish unity artifacts (10555 B)
 0006. .github/scripts/test-publish-unity-artifacts.py — вспомогательный файл: test publish unity artifacts (3695 B)
 0007. .github/workflows/android-debug.yml — автоматизация GitHub Actions: android debug (4175 B)
 0008. .github/workflows/android-release.yml — автоматизация GitHub Actions: android release (8160 B)
@@ -38,8 +38,8 @@
 0022. .github/workflows/unified-release.yml — автоматизация GitHub Actions: unified release (14076 B)
 0023. .github/workflows/unity-android-update-publish.yml — автоматизация GitHub Actions: unity android update publish (5039 B)
 0024. .github/workflows/unity-brand-visual-contract.yml — автоматизация GitHub Actions: unity brand visual contract (877 B)
-0025. .github/workflows/unity-cloud-candidate.yml — автоматизация GitHub Actions: unity cloud candidate (16113 B)
-0026. .github/workflows/unity-cloud-promote.yml — автоматизация GitHub Actions: unity cloud promote (4770 B)
+0025. .github/workflows/unity-cloud-candidate.yml — автоматизация GitHub Actions: unity cloud candidate (16186 B)
+0026. .github/workflows/unity-cloud-promote.yml — автоматизация GitHub Actions: unity cloud promote (5179 B)
 0027. .github/workflows/unity-delivery-publish.yml — автоматизация GitHub Actions: unity delivery publish (872 B)
 0028. .github/workflows/unity-experiment-android.yml — автоматизация GitHub Actions: unity experiment android (2708 B)
 0029. .github/workflows/unity-retained-apk-audit.yml — автоматизация GitHub Actions: unity retained apk audit (1749 B)
@@ -56,8 +56,8 @@
 0040. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0041. AGENTS.md — документация или отчёт: AGENTS (6966 B)
 0042. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (24954 B)
-0043. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (33176 B)
-0044. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (71722 B)
+0043. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (35433 B)
+0044. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (73979 B)
 0045. android/.gitignore — Android компонент: .gitignore (44 B)
 0046. android/app/build.gradle — Android компонент: build (4122 B)
 0047. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1086,7 +1086,7 @@
 1070. docs/unity-account/dice-1.00.23-metrics.json — документация или отчёт: dice 1.00.23 metrics (1453 B)
 1071. docs/unity-account/dice-1.00.24-metrics.json — документация или отчёт: dice 1.00.24 metrics (2106 B)
 1072. docs/unity-account/dice-1.00.25-metrics.json — документация или отчёт: dice 1.00.25 metrics (2023 B)
-1073. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (39514 B)
+1073. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (41771 B)
 1074. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7893 B)
 1075. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1076. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
@@ -1730,7 +1730,7 @@
 1714. unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta — вспомогательный файл: CharacterSheetValidation.cs (59 B)
 1715. unity/Assets/Vtt/Editor/DiceBuildGate.cs — вспомогательный файл: DiceBuildGate (4491 B)
 1716. unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta — вспомогательный файл: DiceBuildGate.cs (60 B)
-1717. unity/Assets/Vtt/Editor/DiceValidation.cs — вспомогательный файл: DiceValidation (13366 B)
+1717. unity/Assets/Vtt/Editor/DiceValidation.cs — вспомогательный файл: DiceValidation (16496 B)
 1718. unity/Assets/Vtt/Editor/DiceValidation.cs.meta — вспомогательный файл: DiceValidation.cs (60 B)
 1719. unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs — вспомогательный файл: LegacyMigrationSetup (10734 B)
 1720. unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta — вспомогательный файл: LegacyMigrationSetup.cs (59 B)
@@ -1750,13 +1750,13 @@
 1734. unity/Assets/Vtt/Resources/Branding/Splash19.png.meta — вспомогательный файл: Splash19.png (312 B)
 1735. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg — текстура/изображение: Wallpaper16 (212684 B)
 1736. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta — вспомогательный файл: Wallpaper16.jpg (312 B)
-1737. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (27632 B)
+1737. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (29195 B)
 1738. unity/Assets/Vtt/Resources/Changelog.json.meta — вспомогательный файл: Changelog.json (158 B)
 1739. unity/Assets/Vtt/Resources/CharacterSheet.meta — вспомогательный файл: CharacterSheet (172 B)
 1740. unity/Assets/Vtt/Resources/CharacterSheet/catalog.json — данные/конфигурация: catalog (823381 B)
 1741. unity/Assets/Vtt/Resources/CharacterSheet/catalog.json.meta — вспомогательный файл: catalog.json (158 B)
 1742. unity/Assets/Vtt/Resources/Dice.meta — вспомогательный файл: Dice (77 B)
-1743. unity/Assets/Vtt/Resources/Dice/DiceSurface.shader — вспомогательный файл: DiceSurface (1444 B)
+1743. unity/Assets/Vtt/Resources/Dice/DiceSurface.shader — вспомогательный файл: DiceSurface (2580 B)
 1744. unity/Assets/Vtt/Resources/Dice/DiceSurface.shader.meta — вспомогательный файл: DiceSurface.shader (60 B)
 1745. unity/Assets/Vtt/Runtime.meta — вспомогательный файл: Runtime (172 B)
 1746. unity/Assets/Vtt/Runtime/CharacterCreation.cs — вспомогательный файл: CharacterCreation (11170 B)
@@ -1769,15 +1769,15 @@
 1753. unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs.meta — вспомогательный файл: CloudCharacterProtocol.cs (60 B)
 1754. unity/Assets/Vtt/Runtime/CommerceRules.cs — вспомогательный файл: CommerceRules (19387 B)
 1755. unity/Assets/Vtt/Runtime/CommerceRules.cs.meta — вспомогательный файл: CommerceRules.cs (60 B)
-1756. unity/Assets/Vtt/Runtime/DiceGeometry.cs — вспомогательный файл: DiceGeometry (6987 B)
+1756. unity/Assets/Vtt/Runtime/DiceGeometry.cs — вспомогательный файл: DiceGeometry (7428 B)
 1757. unity/Assets/Vtt/Runtime/DiceGeometry.cs.meta — вспомогательный файл: DiceGeometry.cs (60 B)
 1758. unity/Assets/Vtt/Runtime/DiceRollRequest.cs — вспомогательный файл: DiceRollRequest (3635 B)
 1759. unity/Assets/Vtt/Runtime/DiceRollRequest.cs.meta — вспомогательный файл: DiceRollRequest.cs (60 B)
-1760. unity/Assets/Vtt/Runtime/DiceTable.cs — вспомогательный файл: DiceTable (18824 B)
+1760. unity/Assets/Vtt/Runtime/DiceTable.cs — вспомогательный файл: DiceTable (21100 B)
 1761. unity/Assets/Vtt/Runtime/DiceTable.cs.meta — вспомогательный файл: DiceTable.cs (60 B)
-1762. unity/Assets/Vtt/Runtime/DiceTheme.cs — вспомогательный файл: DiceTheme (1824 B)
+1762. unity/Assets/Vtt/Runtime/DiceTheme.cs — вспомогательный файл: DiceTheme (2755 B)
 1763. unity/Assets/Vtt/Runtime/DiceTheme.cs.meta — вспомогательный файл: DiceTheme.cs (60 B)
-1764. unity/Assets/Vtt/Runtime/DiceThemeGeometry.cs — вспомогательный файл: DiceThemeGeometry (4359 B)
+1764. unity/Assets/Vtt/Runtime/DiceThemeGeometry.cs — вспомогательный файл: DiceThemeGeometry (5739 B)
 1765. unity/Assets/Vtt/Runtime/DiceThemeGeometry.cs.meta — вспомогательный файл: DiceThemeGeometry.cs (60 B)
 1766. unity/Assets/Vtt/Runtime/ExplorerController.cs — вспомогательный файл: ExplorerController (5869 B)
 1767. unity/Assets/Vtt/Runtime/ExplorerController.cs.meta — вспомогательный файл: ExplorerController.cs (59 B)
@@ -1806,7 +1806,7 @@
 1790. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs.meta — вспомогательный файл: LegacySessionPanel.ContentPreviews.cs (60 B)
 1791. unity/Assets/Vtt/Runtime/LegacySessionPanel.cs — вспомогательный файл: LegacySessionPanel (8942 B)
 1792. unity/Assets/Vtt/Runtime/LegacySessionPanel.cs.meta — вспомогательный файл: LegacySessionPanel.cs (59 B)
-1793. unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs — вспомогательный файл: LegacySessionPanel.Dice (9543 B)
+1793. unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs — вспомогательный файл: LegacySessionPanel.Dice (12131 B)
 1794. unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs.meta — вспомогательный файл: LegacySessionPanel.Dice.cs (60 B)
 1795. unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs — вспомогательный файл: LegacySessionPanel.FrontEnd (28174 B)
 1796. unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs.meta — вспомогательный файл: LegacySessionPanel.FrontEnd.cs (59 B)
@@ -1834,7 +1834,7 @@
 1818. unity/Assets/Vtt/Runtime/UnityRelease.cs.meta — вспомогательный файл: UnityRelease.cs (60 B)
 1819. unity/Assets/Vtt/Runtime/WorkshopRuntime.cs — вспомогательный файл: WorkshopRuntime (8198 B)
 1820. unity/Assets/Vtt/Runtime/WorkshopRuntime.cs.meta — вспомогательный файл: WorkshopRuntime.cs (60 B)
-1821. unity/Assets/Vtt/Runtime/WorkshopStore.cs — вспомогательный файл: WorkshopStore (28265 B)
+1821. unity/Assets/Vtt/Runtime/WorkshopStore.cs — вспомогательный файл: WorkshopStore (28294 B)
 1822. unity/Assets/Vtt/Runtime/WorkshopStore.cs.meta — вспомогательный файл: WorkshopStore.cs (60 B)
 1823. unity/Assets/Vtt/Scenes.meta — вспомогательный файл: Scenes (172 B)
 1824. unity/Assets/Vtt/Scenes/Exploration.unity — вспомогательный файл: Exploration (49176 B)
@@ -1870,12 +1870,12 @@
 1854. unity/ci/transfer-signing-secrets.ps1 — вспомогательный файл: transfer signing secrets (3449 B)
 1855. unity/ci/verify_bundle_output.py — вспомогательный файл: verify bundle output (1081 B)
 1856. unity/ci/verify_launcher_aliases.py — вспомогательный файл: verify launcher aliases (3703 B)
-1857. unity/ci/verify_public_workshop.py — вспомогательный файл: verify public workshop (3854 B)
+1857. unity/ci/verify_public_workshop.py — вспомогательный файл: verify public workshop (4665 B)
 1858. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (4224 B)
 1859. unity/ci/workshop-tests/.gitignore — вспомогательный файл: .gitignore (10 B)
 1860. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (5460 B)
 1861. unity/ci/workshop-tests/CommerceChecks.cs — вспомогательный файл: CommerceChecks (4247 B)
-1862. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (23288 B)
+1862. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (25370 B)
 1863. unity/ci/workshop-tests/WorkshopTests.csproj — вспомогательный файл: WorkshopTests (1377 B)
 1864. unity/ContentSources~/catalog.full.json — данные/конфигурация: catalog.full (1259265 B)
 1865. unity/ContentSources~/cloud-copy-contracts.json — данные/конфигурация: cloud copy contracts (3613 B)
@@ -1923,7 +1923,7 @@
 1907. updates/previous-stable.json — метаданные обновлений: previous stable (179808 B)
 1908. updates/README.md — документация или отчёт: README (233 B)
 1909. updates/stable.json — метаданные обновлений: stable (179809 B)
-1910. updates/unity-changelog.json — метаданные обновлений: unity changelog (27632 B)
+1910. updates/unity-changelog.json — метаданные обновлений: unity changelog (29195 B)
 1911. updates/unity-experiment.json — метаданные обновлений: unity experiment (1593 B)
 1912. vignette_v2_sprite.png — текстура/изображение: vignette v2 sprite (1213593 B)
 1913. VTT_PROJECT_MANIFEST_V70.json — устаревший список V70, не актуален (44370 B)
@@ -14147,7 +14147,7 @@ dndContentEnabled — №0661
 --text-main — №0837
 --text-muted — №0837
 
---- Python/Java идентификаторы (548) ---
+--- Python/Java идентификаторы (554) ---
 __DND_APP_BOOT_READY — №0049
 __name__ — №0005 (+ 13 других файлов)
 a — №0048 (+ 3 других файлов)
@@ -14213,11 +14213,12 @@ build — №1330
 build_run — №0005 (+ 1 других файлов)
 build_script — №1853
 buildRoots — №1329
+buildRun — №0005
 bundled — №1853
 bundled_history — №1847
 bundledCreationIds — №1845
 bv — №0048
-bytes — №0048 (+ 7 других файлов)
+bytes — №0005 (+ 8 других файлов)
 c — №0048 (+ 6 других файлов)
 cache — №0048
 cacheBytes — №0048
@@ -14308,11 +14309,12 @@ env — №0006 (+ 1 других файлов)
 environment — №1378
 errors — №1329 (+ 1 других файлов)
 event — №1850
+evidence — №0005
 EXCLUDE_DIRS — №1384
 executor — №0048
 exist_ok — №0005 (+ 9 других файлов)
 existing — №0005 (+ 1 других файлов)
-expected — №1843 (+ 2 других файлов)
+expected — №0005 (+ 3 других файлов)
 expected_cert — №0005
 expected_name — №0005
 expectedBytes — №0048
@@ -14361,7 +14363,7 @@ head_sha — №1850
 header — №1844
 headers — №0005
 healthy — №0049
-height — №1334 (+ 1 других файлов)
+height — №0005 (+ 2 других файлов)
 help — №1386
 history — №0005 (+ 1 других файлов)
 history_path — №0005 (+ 2 других файлов)
@@ -14371,8 +14373,10 @@ iconId — №0048
 id — №0048 (+ 4 других файлов)
 ids — №1328
 image — №1334
+images — №0005
 in — №0048
 indent — №0005 (+ 14 других файлов)
+index — №0005
 indexComponentType — №1328
 info — №0048
 ings — №1900
@@ -14389,7 +14393,7 @@ k — №1375
 keepPrevious — №0048
 key — №1330 (+ 3 других файлов)
 keys — №1901
-kind — №0006 (+ 5 других файлов)
+kind — №0005 (+ 6 других файлов)
 landscapeActive — №0049
 latest — №0005 (+ 1 других файлов)
 launchers — №1856
@@ -14428,7 +14432,7 @@ module — №0006
 morphNames — №1328
 n — №0048 (+ 4 других файлов)
 N — №1334
-name — №0048 (+ 7 других файлов)
+name — №0005 (+ 8 других файлов)
 names — №1844 (+ 1 других файлов)
 native — №1330
 nativeSeedValidated — №0048
@@ -14540,6 +14544,7 @@ release — №1853
 release_exists — №1847
 remote — №1853
 removed_art_bytes — №1845
+render_folder — №0005
 REPO — №0005 (+ 2 других файлов)
 report — №0005 (+ 5 других файлов)
 request — №0005 (+ 1 других файлов)
@@ -14583,7 +14588,7 @@ settings — №1844 (+ 2 других файлов)
 settings_hub — №1853
 settingsCategory — №1853
 sha — №0006 (+ 1 других файлов)
-sha256 — №1328 (+ 4 других файлов)
+sha256 — №0005 (+ 5 других файлов)
 shortcuts — №1700
 side_effect — №1850
 signer — №1847
@@ -14600,7 +14605,7 @@ SOURCE — №1851
 source_commit — №0005 (+ 2 других файлов)
 source_image — №1845
 source_paths — №1329
-sourceCommit — №1844
+sourceCommit — №0005 (+ 1 других файлов)
 sourceRefs — №1329
 sources — №1843
 spec — №0006 (+ 2 других файлов)
@@ -14625,6 +14630,7 @@ targets — №0006
 temp — №1375
 text — №0005 (+ 7 других файлов)
 texts — №1329
+textured — №1857
 textureFormat — №1378
 textures — №1330
 themes — №1857
@@ -14687,7 +14693,7 @@ weightSumMaxError — №1328
 weldedBoundaryEdges — №1328
 weldedNonManifoldEdges — №1328
 weldTolerance — №1328
-width — №1328 (+ 1 других файлов)
+width — №0005 (+ 2 других файлов)
 window — №1901
 windows — №1850
 windowsFiles — №1844
