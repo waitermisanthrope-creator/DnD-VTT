@@ -16,6 +16,18 @@ namespace DndVtt.UnityPrototype
         // Only the polished overview uses immediate GUI; the old, proven update
         // center is a separate full-screen page with unchanged working controls.
         private bool brandTechnicalScreen;
+        private string settingsCategory = "";
+
+        private void OpenSettingsCategory(string category)
+        {
+            settingsCategory=category;brandSettingsScroll=Vector2.zero;frontScroll=Vector2.zero;menuGesture.Clear();GUI.FocusControl(null);
+        }
+        private void SettingsCategoryButton(string title,string description,string category)
+        {
+            GUILayout.BeginVertical(GUI.skin.box);
+            if(GUILayout.Button(title+"  →",brandGold,GUILayout.MinHeight(60)))OpenSettingsCategory(category);
+            GUILayout.Label(description,settingsDescription);GUILayout.EndVertical();
+        }
         private bool showModeratorPanel;
         private GUIStyle settingsHeader, settingsDescription, settingsInset;
         private float brandSettingsContentHeight = 1320;
@@ -44,35 +56,55 @@ namespace DndVtt.UnityPrototype
             float width=Mathf.Min(UiWidth-24,600),x=(UiWidth-width)*.5f;
             GUI.Box(new Rect(x,12,width,UiHeight-24),GUIContent.none,brandCard);
             GUILayout.BeginArea(new Rect(x+16,24,width-32,UiHeight-48));
-            GUILayout.BeginHorizontal();GUILayout.Label("Настройки приложения",settingsHeader);if(GUILayout.Button("×",brandRed,GUILayout.Width(46),GUILayout.Height(46)))Navigate(FrontScreen.Home);GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();GUILayout.Label(settingsCategory==""?"Настройки приложения":settingsCategory,settingsHeader);if(GUILayout.Button("×",brandRed,GUILayout.Width(46),GUILayout.Height(46)))Navigate(FrontScreen.Home);GUILayout.EndHorizontal();
             brandSettingsScroll=GUILayout.BeginScrollView(SwipePosition("settings",brandSettingsScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);
             GUILayout.BeginVertical(new GUIStyle { fixedWidth=width-54,stretchWidth=false });
-            GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Аккаунт и облачные персонажи");
-            GUILayout.Label(cloudSession==null?"Гостевой режим. Локальные герои доступны без регистрации.":(string)cloudSession["email"],sheetQuiet);
-            if(GUILayout.Button("Аккаунт и синхронизация",brandBlue,GUILayout.MinHeight(64)))Navigate(FrontScreen.Account);
-            GUILayout.EndVertical();
-            DrawChatNicknameSettings();
-            DrawStaffSettingsPanels();
-            GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Тема оформления");
-            for(int i=0;i<BrandAccentKeys.Length;i++)if(GUILayout.Button(BrandAccentNames[i]+(settingsDraft.theme==BrandAccentKeys[i]?" ✓":""),brandBrown,GUILayout.MinHeight(50)))settingsDraft.theme=BrandAccentKeys[i];
-            GUILayout.EndVertical();
-            GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Оформление рамок");
-            for(int i=0;i<BrandFrameKeys.Length;i++)if(GUILayout.Button(BrandFrameNames[i]+(settingsDraft.frameStyle==BrandFrameKeys[i]?" ✓":""),GUILayout.MinHeight(50)))settingsDraft.frameStyle=BrandFrameKeys[i];
-            for(int i=0;i<BrandFrameColors.Length;i++)if(GUILayout.Button(BrandFrameLabels[i]+(settingsDraft.frameColor==BrandFrameColors[i]?" ✓":""),brandGold,GUILayout.MinHeight(48)))settingsDraft.frameColor=BrandFrameColors[i];
-            GUILayout.EndVertical();
-            GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Шрифт и оформление");GUILayout.Label("Сохранены wallpapers/16.png. Книжный системный шрифт с резервной гарнитурой. Размер интерфейса адаптирован под телефон.",sheetQuiet);GUILayout.Label("Смена значка Android и аудиопаки пока недоступны.",sheetQuiet);GUILayout.EndVertical();
-            DrawAppearanceLibrary();
-            GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Мастерская дополнений");if(GUILayout.Button("Открыть мастерскую",brandBlue,GUILayout.Height(56)))OpenContentManager();GUILayout.EndVertical();
-            GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Обновления приложения");GUILayout.Label("Установлена Unity "+UnityRelease.Version,sheetQuiet);
-            if(GUILayout.Button("Проверить и обновить",brandBlue,GUILayout.Height(56))) { settingsSection=0;showChangelog=false;brandTechnicalScreen=true; }
-            if(GUILayout.Button("История изменений",brandBrown,GUILayout.Height(54))) { settingsSection=0;showChangelog=true;brandTechnicalScreen=true;StartCoroutine(FetchChangelog()); }GUILayout.EndVertical();
-            GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Графика и управление");
-            settingsDraft.keepScreenAwake=GUILayout.Toggle(settingsDraft.keepScreenAwake,"Не выключать экран, пока приложение открыто",GUILayout.MinHeight(58));
-            if(GUILayout.Button("Графика и FPS",brandGold,GUILayout.Height(54))) { settingsSection=2;brandTechnicalScreen=true; }
-            if(GUILayout.Button("Камера, управление и данные",brandGold,GUILayout.MinHeight(60))) { settingsSection=3;brandTechnicalScreen=true; }GUILayout.EndVertical();
+            if(settingsCategory=="") {
+                SettingsCategoryButton("Визуальные","Тема, рамки, обои и иконка приложения.","Визуальные");
+                SettingsCategoryButton("Графические","Качество, FPS и работа экрана без сна.","Графические");
+                SettingsCategoryButton("Управление","Камера, чувствительность и поле зрения.","Управление");
+                SettingsCategoryButton("Сеть и аккаунт","Вход, облачные персонажи и ник глобального чата.","Сеть и аккаунт");
+                SettingsCategoryButton("Данные и устройство","Локальный архив и сохранение персонажей.","Данные и устройство");
+                SettingsCategoryButton("Обновления","Проверка новой версии и история изменений.","Обновления");
+                if(cloudSession!=null)SettingsCategoryButton("Обращения и управление","Жалобы, заявки и инструменты в рамках серверных прав.","Обращения и управление");
+            } else {
+                if(GUILayout.Button("← Все настройки",brandBrown,GUILayout.MinHeight(54)))OpenSettingsCategory("");
+                switch(settingsCategory) {
+                    case "Визуальные":
+                        GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Тема оформления");
+                        for(int i=0;i<BrandAccentKeys.Length;i++)if(GUILayout.Button(BrandAccentNames[i]+(settingsDraft.theme==BrandAccentKeys[i]?" ✓":""),brandBrown,GUILayout.MinHeight(50)))settingsDraft.theme=BrandAccentKeys[i];
+                        GUILayout.EndVertical();
+                        GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Оформление рамок");
+                        for(int i=0;i<BrandFrameKeys.Length;i++)if(GUILayout.Button(BrandFrameNames[i]+(settingsDraft.frameStyle==BrandFrameKeys[i]?" ✓":""),GUILayout.MinHeight(50)))settingsDraft.frameStyle=BrandFrameKeys[i];
+                        for(int i=0;i<BrandFrameColors.Length;i++)if(GUILayout.Button(BrandFrameLabels[i]+(settingsDraft.frameColor==BrandFrameColors[i]?" ✓":""),brandGold,GUILayout.MinHeight(48)))settingsDraft.frameColor=BrandFrameColors[i];
+                        GUILayout.EndVertical();
+                        GUILayout.Label("Основной фон: wallpapers/16.png. Книжный шрифт с резервной гарнитурой.",sheetQuiet);
+                        DrawAppearanceLibrary();break;
+                    case "Сеть и аккаунт":
+                        SettingsSection("Аккаунт и облачные персонажи");
+                        GUILayout.Label(cloudSession==null?"Гостевой режим. Локальные герои доступны без регистрации.":(string)cloudSession["email"],sheetQuiet);
+                        if(GUILayout.Button("Аккаунт и синхронизация",brandBlue,GUILayout.MinHeight(64)))Navigate(FrontScreen.Account);
+                        DrawChatNicknameSettings();break;
+                    case "Обращения и управление":DrawStaffSettingsPanels();break;
+                    case "Графические":settingsSection=2;DrawSettings(true);break;
+                    case "Управление":settingsSection=3;DrawSettings(true);break;
+                    case "Данные и устройство":
+                        settingsSection=4;DrawSettings(true);
+                        if(GUILayout.Button("Выбрать настройки по умолчанию",brandBrown,GUILayout.MinHeight(60))) {
+                            settingsDraft=new ClientPreferences { quality=platformQuality };
+                            brandNotice="Выбраны стандартные параметры. Нажмите «Сохранить настройки». Персонажи сохранены.";
+                        }
+                        break;
+                    case "Обновления":
+                        SettingsSection("Обновления приложения");GUILayout.Label("Установлена Unity "+UnityRelease.Version,sheetQuiet);
+                        if(GUILayout.Button("Проверить и обновить",brandBlue,GUILayout.MinHeight(56))) { settingsSection=0;showChangelog=false;brandTechnicalScreen=true; }
+                        if(GUILayout.Button("История изменений",brandBrown,GUILayout.MinHeight(54))) { settingsSection=0;showChangelog=true;brandTechnicalScreen=true;StartCoroutine(FetchChangelog()); }
+                        break;
+                }
+            }
             GUILayout.Label(brandNotice??"",sheetQuiet);GUILayout.Space(12);
             GUILayout.EndVertical();GUILayout.EndScrollView();RegisterSwipe("settings",GUILayoutUtility.GetLastRect());
-            if(GUILayout.Button("Сохранить настройки",brandGreen,GUILayout.Height(56)))BrandSaveAppearance();
+            if(settingsCategory!=""&&GUILayout.Button("Сохранить настройки",brandGreen,GUILayout.MinHeight(56)))BrandSaveAppearance();
             GUILayout.EndArea();
         }
 
@@ -93,7 +125,7 @@ namespace DndVtt.UnityPrototype
                 settingsDraft.Save(SettingsPath);
                 preferences=ClientPreferences.Parse(settingsDraft.Export());
                 ApplyPreferences();InvalidateBrandStyles();
-                brandNotice="Оформление сохранено.";
+                brandNotice="Настройки сохранены.";
             });
         }
 
@@ -108,7 +140,7 @@ namespace DndVtt.UnityPrototype
             float x=(UiWidth-width)*.5f;
             Rect outer=new Rect(x,10,width,UiHeight-20);
             GUI.Box(outer,GUIContent.none,brandCard);
-            if(GUI.Button(new Rect(x+12,16,Mathf.Min(160,width*.42f),43),"← К оформлению",brandBrown))
+            if(GUI.Button(new Rect(x+12,16,Mathf.Min(160,width*.42f),43),"← К настройкам",brandBrown))
             { brandTechnicalScreen=false; return; }
             GUILayout.BeginArea(new Rect(x+13,66,width-26,UiHeight-86));
             frontScroll=GUILayout.BeginScrollView(SwipePosition("technical-settings",frontScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);

@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит a94f6fbc1bbd. Файлов: 1933
+Коммит 6f213fec9bbc. Файлов: 1933
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1077,7 +1077,7 @@
 1061. docs/unity-account/CHAT_NICKNAMES_1.00.21.md — документация или отчёт: CHAT NICKNAMES 1.00.21 (3028 B)
 1062. docs/unity-account/CHAT_ONE_HOUR.md — документация или отчёт: CHAT ONE HOUR (2267 B)
 1063. docs/unity-account/CHAT_WORKSHOP_1.00.22.md — документация или отчёт: CHAT WORKSHOP 1.00.22 (7852 B)
-1064. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (33186 B)
+1064. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (34009 B)
 1065. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7893 B)
 1066. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1067. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
@@ -1763,11 +1763,11 @@
 1747. unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs.meta — вспомогательный файл: LegacyMigrationSmoke.cs (59 B)
 1748. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs — вспомогательный файл: LegacySessionPanel.Account (19278 B)
 1749. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta — вспомогательный файл: LegacySessionPanel.Account.cs (60 B)
-1750. unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs — вспомогательный файл: LegacySessionPanel.Appearance (14877 B)
+1750. unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs — вспомогательный файл: LegacySessionPanel.Appearance (14833 B)
 1751. unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs.meta — вспомогательный файл: LegacySessionPanel.Appearance.cs (60 B)
-1752. unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs — вспомогательный файл: LegacySessionPanel.Branding (16639 B)
+1752. unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs — вспомогательный файл: LegacySessionPanel.Branding (17019 B)
 1753. unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta — вспомогательный файл: LegacySessionPanel.Branding.cs (60 B)
-1754. unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs — вспомогательный файл: LegacySessionPanel.BrandSettings (9091 B)
+1754. unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs — вспомогательный файл: LegacySessionPanel.BrandSettings (11248 B)
 1755. unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta — вспомогательный файл: LegacySessionPanel.BrandSettings.cs (60 B)
 1756. unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs — вспомогательный файл: LegacySessionPanel.Chat (11327 B)
 1757. unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs.meta — вспомогательный файл: LegacySessionPanel.Chat.cs (60 B)
@@ -1782,7 +1782,7 @@
 1766. unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs.meta — вспомогательный файл: LegacySessionPanel.FrontEnd.cs (59 B)
 1767. unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs — вспомогательный файл: LegacySessionPanel.Moderation (16332 B)
 1768. unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs.meta — вспомогательный файл: LegacySessionPanel.Moderation.cs (60 B)
-1769. unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs — вспомогательный файл: LegacySessionPanel.Settings (9448 B)
+1769. unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs — вспомогательный файл: LegacySessionPanel.Settings (9251 B)
 1770. unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs.meta — вспомогательный файл: LegacySessionPanel.Settings.cs (59 B)
 1771. unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs — вспомогательный файл: LegacySessionPanel.Sheet (28532 B)
 1772. unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs.meta — вспомогательный файл: LegacySessionPanel.Sheet.cs (59 B)
@@ -1836,7 +1836,7 @@
 1820. unity/ci/test_cloud_release.py — вспомогательный файл: test cloud release (10770 B)
 1821. unity/ci/test_content_registry_contract.py — вспомогательный файл: test content registry contract (1574 B)
 1822. unity/ci/test_launcher_aliases.py — вспомогательный файл: test launcher aliases (1007 B)
-1823. unity/ci/test_update_settings_contract.py — вспомогательный файл: test update settings contract (3945 B)
+1823. unity/ci/test_update_settings_contract.py — вспомогательный файл: test update settings contract (4439 B)
 1824. unity/ci/transfer-signing-secrets.ps1 — вспомогательный файл: transfer signing secrets (3449 B)
 1825. unity/ci/verify_bundle_output.py — вспомогательный файл: verify bundle output (1081 B)
 1826. unity/ci/verify_launcher_aliases.py — вспомогательный файл: verify launcher aliases (3703 B)
@@ -14117,7 +14117,7 @@ dndContentEnabled — №0661
 --text-main — №0837
 --text-muted — №0837
 
---- Python/Java идентификаторы (545) ---
+--- Python/Java идентификаторы (547) ---
 __DND_APP_BOOT_READY — №0049
 __name__ — №0005 (+ 13 других файлов)
 a — №0048 (+ 3 других файлов)
@@ -14550,6 +14550,8 @@ send — №1689
 separators — №1365 (+ 2 других файлов)
 serializedBytes — №1367
 settings — №1814 (+ 2 других файлов)
+settings_hub — №1823
+settingsCategory — №1823
 sha — №0006 (+ 1 других файлов)
 sha256 — №1317 (+ 4 других файлов)
 shortcuts — №1689

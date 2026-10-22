@@ -141,7 +141,7 @@ namespace DndVtt.UnityPrototype
                     if(GUILayout.Button("Сохранить / отправить PNG",GUILayout.MinHeight(56)))ExportAppearancePng(previewManifest);
                 }
                 if(appearanceKind=="wallpaper"&&GUILayout.Button("Вернуть основной фон",GUILayout.MinHeight(56))) { PlayerPrefs.DeleteKey(AppearancePreference("wallpaper"));PlayerPrefs.Save();appearancePreviewId="";ReleaseAppearanceImages(true); }
-                if(GUILayout.Button("Скачать оформление из мастерской",GUILayout.MinHeight(64))) { OpenContentManager();contentCategory=14;contentGroupPath="Оформление"; }
+                GUILayout.Label("Новые обои и иконки доступны в мастерской на главном экране.",settingsDescription);
             }
             GUILayout.Label(appearanceNotice,settingsDescription);GUILayout.EndVertical();
         }

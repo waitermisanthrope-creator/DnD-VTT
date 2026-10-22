@@ -29,7 +29,7 @@ namespace DndVtt.UnityPrototype
             settingsHeader = settingsDescription = settingsInset = null;
         }
         private void OnApplicationPause(bool paused) { ApplyScreenSleep(!paused); if (!paused) InvalidateBrandStyles(); }
-        private Vector2 brandHomeScroll, brandSettingsScroll;
+        private Vector2 brandHomeScroll, brandSettingsScroll, brandHomeActionsScroll;
         private bool brandMoreOpen, brandSplashActive, brandAdvancedOpen;
         private float brandSplashSince;
         private string brandNotice = "";
@@ -232,7 +232,7 @@ namespace DndVtt.UnityPrototype
             DrawBrandBackdrop(false);
             float width = Mathf.Min(UiWidth - 28, BrandMaxWidth);
             float x = (UiWidth - width) / 2f;
-            float bottom = Mathf.Min(300, UiHeight * .38f);
+            float bottom = Mathf.Min(420, UiHeight * .56f);
             GUILayout.BeginArea(new Rect(x, 12, width, Mathf.Max(75, UiHeight - bottom - 24)));
             brandHomeScroll = GUILayout.BeginScrollView(SwipePosition("home",brandHomeScroll), false, true);
             if (archive == null || archive.Count == 0)
@@ -260,8 +260,9 @@ namespace DndVtt.UnityPrototype
                 GUI.enabled = before; GUILayout.EndHorizontal();
             }
             GUILayout.EndScrollView(); RegisterSwipe("home",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
-            float footer = Mathf.Min(350, UiHeight * .44f);
+            float footer = Mathf.Min(420, UiHeight * .56f);
             GUILayout.BeginArea(new Rect(x, UiHeight - footer - 6, width, footer));
+            brandHomeActionsScroll=GUILayout.BeginScrollView(SwipePosition("home-actions",brandHomeActionsScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);
             GUILayout.BeginVertical();
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("+ Новый персонаж", brandGreen, GUILayout.Height(51))) BeginCreation();
@@ -275,13 +276,14 @@ namespace DndVtt.UnityPrototype
             GUI.enabled = enabled;
             if (GUILayout.Button("3D Карты", brandGold, GUILayout.Height(53))) Navigate(FrontScreen.Map);
             GUILayout.EndHorizontal();
+            if(GUILayout.Button("Мастерская",brandPurple,GUILayout.MinHeight(54)))OpenContentManager();
             LoadCloudSession();
             if(cloudSession!=null&&GUILayout.Button("Глобальный чат",brandBlue,GUILayout.Height(51)))Navigate(FrontScreen.Chat);
             // One tap opens settings. Do not hide the essential updater behind
             // a floating popup that becomes unclickable on some Android devices.
-            if (GUILayout.Button("☰ Ещё / ⚙ Настройки", brandBrown, GUILayout.Height(61)))
+            if (GUILayout.Button("⚙ Настройки", brandBrown, GUILayout.Height(61)))
                 { brandMoreOpen = false; OpenSettings(); }
-            GUILayout.EndVertical(); GUILayout.EndArea();
+            GUILayout.EndVertical();GUILayout.EndScrollView();RegisterSwipe("home-actions",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
             if (brandMoreOpen) DrawBrandMore();
         }
         private void DrawBrandMore()

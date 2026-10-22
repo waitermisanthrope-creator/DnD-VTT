@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода a94f6fbc1bbd. Git содержит 1933 файлов.
+Снимок кода 6f213fec9bbc. Git содержит 1933 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1082,7 +1082,7 @@
 | №1061 docs/unity-account/CHAT_NICKNAMES_1.00.21.md | 3028 B | документация или отчёт: CHAT NICKNAMES 1.00.21 |
 | №1062 docs/unity-account/CHAT_ONE_HOUR.md | 2267 B | документация или отчёт: CHAT ONE HOUR |
 | №1063 docs/unity-account/CHAT_WORKSHOP_1.00.22.md | 7852 B | документация или отчёт: CHAT WORKSHOP 1.00.22 |
-| №1064 docs/unity-account/IMPLEMENTATION_STATUS.md | 33186 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1064 docs/unity-account/IMPLEMENTATION_STATUS.md | 34009 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1065 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1066 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1067 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
@@ -1768,11 +1768,11 @@
 | №1747 unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSmoke.cs |
 | №1748 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs | 19278 B | вспомогательный файл: LegacySessionPanel.Account |
 | №1749 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Account.cs |
-| №1750 unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs | 14877 B | вспомогательный файл: LegacySessionPanel.Appearance |
+| №1750 unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs | 14833 B | вспомогательный файл: LegacySessionPanel.Appearance |
 | №1751 unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Appearance.cs |
-| №1752 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs | 16639 B | вспомогательный файл: LegacySessionPanel.Branding |
+| №1752 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs | 17019 B | вспомогательный файл: LegacySessionPanel.Branding |
 | №1753 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Branding.cs |
-| №1754 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs | 9091 B | вспомогательный файл: LegacySessionPanel.BrandSettings |
+| №1754 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs | 11248 B | вспомогательный файл: LegacySessionPanel.BrandSettings |
 | №1755 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.BrandSettings.cs |
 | №1756 unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs | 11327 B | вспомогательный файл: LegacySessionPanel.Chat |
 | №1757 unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Chat.cs |
@@ -1787,7 +1787,7 @@
 | №1766 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.FrontEnd.cs |
 | №1767 unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs | 16332 B | вспомогательный файл: LegacySessionPanel.Moderation |
 | №1768 unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Moderation.cs |
-| №1769 unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs | 9448 B | вспомогательный файл: LegacySessionPanel.Settings |
+| №1769 unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs | 9251 B | вспомогательный файл: LegacySessionPanel.Settings |
 | №1770 unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.Settings.cs |
 | №1771 unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs | 28532 B | вспомогательный файл: LegacySessionPanel.Sheet |
 | №1772 unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.Sheet.cs |
@@ -1841,7 +1841,7 @@
 | №1820 unity/ci/test_cloud_release.py | 10770 B | вспомогательный файл: test cloud release |
 | №1821 unity/ci/test_content_registry_contract.py | 1574 B | вспомогательный файл: test content registry contract |
 | №1822 unity/ci/test_launcher_aliases.py | 1007 B | вспомогательный файл: test launcher aliases |
-| №1823 unity/ci/test_update_settings_contract.py | 3945 B | вспомогательный файл: test update settings contract |
+| №1823 unity/ci/test_update_settings_contract.py | 4439 B | вспомогательный файл: test update settings contract |
 | №1824 unity/ci/transfer-signing-secrets.ps1 | 3449 B | вспомогательный файл: transfer signing secrets |
 | №1825 unity/ci/verify_bundle_output.py | 1081 B | вспомогательный файл: verify bundle output |
 | №1826 unity/ci/verify_launcher_aliases.py | 3703 B | вспомогательный файл: verify launcher aliases |
@@ -14144,7 +14144,7 @@
 | --text-main | №0837 |
 | --text-muted | №0837 |
 
-### Python/Java идентификаторы (545)
+### Python/Java идентификаторы (547)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -14580,6 +14580,8 @@
 | separators | №1365 (+ 2 других файлов) |
 | serializedBytes | №1367 |
 | settings | №1814 (+ 2 других файлов) |
+| settings_hub | №1823 |
+| settingsCategory | №1823 |
 | sha | №0006 (+ 1 других файлов) |
 | sha256 | №1317 (+ 4 других файлов) |
 | shortcuts | №1689 |

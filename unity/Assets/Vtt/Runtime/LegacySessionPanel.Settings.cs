@@ -46,18 +46,15 @@ namespace DndVtt.UnityPrototype
         {
             settingsDraft = ClientPreferences.Parse(preferences.Export());
             settingsSection = 0;
+            OpenSettingsCategory("");
             brandTechnicalScreen = false;
             Navigate(FrontScreen.Settings);
         }
-        private void DrawSettings()
+        private void DrawSettings(bool embedded = false)
         {
             GUILayout.Label("Настройки приложения", heading);
             GUILayout.Label("Версия Unity: " + UnityRelease.Version + "  ·  Изменения сохраняются только на этом устройстве.", muted);
             GUILayout.Space(10);
-            int columns = UiHeight > UiWidth ? 2 : UiWidth >= 900 ? 5 : 2;
-            int section = MenuGrid(settingsSection,SettingSections,columns);
-            if (section != settingsSection) { settingsSection = section; frontScroll = Vector2.zero; }
-            GUILayout.Space(16);
             switch (settingsSection)
             {
                 case 0:
@@ -112,6 +109,7 @@ namespace DndVtt.UnityPrototype
                     if (GUILayout.Button("Скопировать путь к сохранению", GUILayout.Height(42))) GUIUtility.systemCopyBuffer = SavePath;
                     break;
             }
+            if(embedded)return;
             GUILayout.Space(22);
             if (settingsSection == 0)
             {

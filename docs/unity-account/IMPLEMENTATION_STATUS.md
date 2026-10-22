@@ -1,3 +1,9 @@
+# Settings categories — 2026-10-22
+
+IMPLEMENTED in source: Settings opens a category chooser (visual, graphics, controls, network/account, local data, updates, signed-in support/management). Existing account/cloud and server-checked staff tools retained. Draft preferences persist across categories, explicit save applies them. Workshop moved to its own Home button; installed appearance previews remain in visual settings, download navigation removed from settings. Home actions have an independent swipe area for short screens.
+
+VERIFIED: Python CI unit suite12, branding/update-settings/content-registry contracts. No Unity Editor compilation or physical Android test performed for this change; no new APK or release published. Existing public1.00.22 unchanged. Workshop page-reset fix remains deferred as requested.
+
 ## 1.00.22 published — 2026-10-22
 
 DONE implementation: Android native multiline draft editor with cursor/selection/copy/paste; desktop selection no longer starts page swipe; confirmed send clears draft and focus, failed sends preserve draft/retry ID. Server-only staff badge mapping: owner animated gold, deputy gold, moderator 0–3 distinct colors, ordinary players no prefix.

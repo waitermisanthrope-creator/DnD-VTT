@@ -49,7 +49,12 @@ def run():
     assert "ApplyMobileOrientation(next)" in frontend
     assert "ApplyMobileOrientation(screen)" in main
     assert "UiHeight > UiWidth" in frontend
-    assert "UiHeight > UiWidth" in read("unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs")
+    settings_hub = read("unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs")
+    assert 'if(settingsCategory=="")' in settings_hub
+    assert 'OpenSettingsCategory("")' in read("unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs")
+    assert all(label in settings_hub for label in ("Визуальные", "Графические", "Сеть и аккаунт", "Данные и устройство"))
+    assert "OpenContentManager()" not in settings_hub
+    assert 'GUILayout.Button("Мастерская"' in read("unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs")
     assert "UiHeight > UiWidth" in read("unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs")
     assert 'activity.getCacheDir()' in read("unity/Assets/Plugins/Android/UpdateProvider.java")
     assert "UNITY_ANDROID_UPDATE_PUBLISHED" in read("unity/ci/publish_android_update.py")
