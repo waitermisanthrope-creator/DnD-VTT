@@ -40,6 +40,7 @@ public static class DiceValidation
             var first=shape.faces[0];var neighbor=shape.faces.First(f=>f!=first&&f.vertices.Intersect(first.vertices).Count()==2);
             Vector3 midpoint=(first.normal+neighbor.normal).normalized;
             Check(shape.Read(Quaternion.FromToRotation(midpoint,count==4?Vector3.down:Vector3.up),out _)==0,"edge rejected d"+count);
+            Check(shape.Read(Quaternion.FromToRotation(midpoint,count==4?Vector3.down:Vector3.up),out _,.94f)==0,"themed ambiguous edge rejected d"+count);
             var mesh=shape.Mesh();Check(mesh.triangles.Length>0,"triangulated mesh");UnityEngine.Object.DestroyImmediate(mesh);
         }
         ExpectedSceneCount=SceneManager.sceneCount;int bodies=UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None).Length;
@@ -75,7 +76,7 @@ public static class DiceValidation
                 if((string)manifest["imageKind"]!="dice")continue;
                 string payload=Path.Combine(fixture,"packages",Path.GetFileName((string)manifest["url"]));WorkshopStore.Verify(manifest,payload);
                 var data=WorkshopStore.ValidateData(manifest,File.ReadAllText(payload));var theme=DiceTheme.Read((JObject)data["diceThemes"][0]);
-                table.SetTheme(theme);bool first=families.Add(theme.Shape);
+                table.SetTheme(theme);bool first=families.Add(theme.Shape);var checkedMeshes=new HashSet<Mesh>();
                 foreach(int count in first?new[]{4,6,8,10,12,20,100}:new[]{20}) {
                     table.Preview(count);SaveImage(table.Image,Path.Combine(folder,theme.Id+"-d"+count+".png"),false);Check(theme.Shape=="rounded"||table.PhysicalOrnamentCount>0,"actual protrusion geometry "+theme.Id);
                     foreach(var body in UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None)) {
@@ -83,6 +84,7 @@ public static class DiceValidation
                         foreach(var collider in colliders) {
                             Check(collider.enabled&&collider.convex&&!collider.isTrigger&&collider.attachedRigidbody==body&&!Physics.GetIgnoreLayerCollision(collider.gameObject.layer,31),"solid enabled attached collision piece");
                             Check(collider.sharedMesh==collider.GetComponent<MeshFilter>().sharedMesh,"render and collision use same mesh");
+                            if(checkedMeshes.Add(collider.sharedMesh))CheckClosedConvex(collider.sharedMesh);
                         }
                     }
                     int cached=table.CachedMeshCount;Check(cached<=366,"bounded per-theme mesh cache");
@@ -96,6 +98,26 @@ public static class DiceValidation
         }
         Check(UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None).Length==bodies,"no rigidbody leaks");
         Debug.Log("VTT_DICE_PASS: "+checks+" face orientations/topology/convexity/equal areas; "+rolls+" real local-physics throws; d100 pair, PNG rendering and cleanup");
+    }
+    private static void CheckClosedConvex(Mesh mesh)
+    {
+        var vertices=mesh.vertices;var triangles=mesh.triangles;
+        var weld=new Dictionary<Vector3,int>();var ids=new int[vertices.Length];
+        for(int i=0;i<vertices.Length;i++) {
+            if(!weld.TryGetValue(vertices[i],out int id)) { id=weld.Count;weld[vertices[i]]=id; }ids[i]=id;
+        }
+        var edges=new Dictionary<string,int>();float volume=0;
+        for(int i=0;i<triangles.Length;i+=3) {
+            int a=triangles[i],b=triangles[i+1],c=triangles[i+2];
+            Vector3 normal=Vector3.Cross(vertices[b]-vertices[a],vertices[c]-vertices[a]);
+            Check(normal.sqrMagnitude>1e-16f,"nondegenerate collision triangle");normal.Normalize();
+            foreach(var point in vertices)Check(Vector3.Dot(normal,point-vertices[a])<=.00002f,"convex outward collision plane");
+            foreach(var pair in new[]{new[]{ids[a],ids[b]},new[]{ids[b],ids[c]},new[]{ids[c],ids[a]}}) {
+                string key=Math.Min(pair[0],pair[1])+":"+Math.Max(pair[0],pair[1]);edges.TryGetValue(key,out int n);edges[key]=n+1;
+            }
+            volume+=Vector3.Dot(vertices[a],Vector3.Cross(vertices[b],vertices[c]))/6;
+        }
+        Check(volume>0&&edges.Values.All(n=>n==2)&&weld.Count-edges.Count+triangles.Length/3==2,"closed positive-volume collision mesh");
     }
     private static void SaveImage(RenderTexture source,string path,bool classic=true)
     {
