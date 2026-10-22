@@ -106,6 +106,7 @@ jobs:
       # stops here because the intermediate APK will be missing/invalid.
       - name: Build native Unity Android ARM64 IL2CPP APK
         id: unity-build
+        timeout-minutes: 25
         continue-on-error: true
         uses: game-ci/unity-builder@eb1b9fba120c6e62c9fb7a7a81d6c107ce004c45 # v6
         env:
@@ -251,6 +252,7 @@ jobs:
           CANDIDATE_VERSION: ${{ inputs.version || '1.00.23' }}
         run: python3 unity/ci/cloud_release.py prepare --version "$CANDIDATE_VERSION"
       - name: Build actual Windows x64 Mono player
+        timeout-minutes: 25
         continue-on-error: true
         uses: game-ci/unity-builder@eb1b9fba120c6e62c9fb7a7a81d6c107ce004c45
         env:

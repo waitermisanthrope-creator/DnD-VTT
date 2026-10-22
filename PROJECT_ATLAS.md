@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 62afcce63b3c. Git содержит 1947 файлов.
+Снимок кода 0a004a49c3f7. Git содержит 1947 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -43,7 +43,7 @@
 | №0022 .github/workflows/unified-release.yml | 14076 B | автоматизация GitHub Actions: unified release |
 | №0023 .github/workflows/unity-android-update-publish.yml | 5039 B | автоматизация GitHub Actions: unity android update publish |
 | №0024 .github/workflows/unity-brand-visual-contract.yml | 877 B | автоматизация GitHub Actions: unity brand visual contract |
-| №0025 .github/workflows/unity-cloud-candidate.yml | 15565 B | автоматизация GitHub Actions: unity cloud candidate |
+| №0025 .github/workflows/unity-cloud-candidate.yml | 15621 B | автоматизация GitHub Actions: unity cloud candidate |
 | №0026 .github/workflows/unity-cloud-promote.yml | 4770 B | автоматизация GitHub Actions: unity cloud promote |
 | №0027 .github/workflows/unity-delivery-publish.yml | 872 B | автоматизация GitHub Actions: unity delivery publish |
 | №0028 .github/workflows/unity-experiment-android.yml | 2708 B | автоматизация GitHub Actions: unity experiment android |
@@ -1723,9 +1723,9 @@
 | №1702 unity/Assets/Vtt/Editor/BuildBranding.cs.meta | 60 B | вспомогательный файл: BuildBranding.cs |
 | №1703 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs | 21197 B | вспомогательный файл: CharacterSheetValidation |
 | №1704 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta | 59 B | вспомогательный файл: CharacterSheetValidation.cs |
-| №1705 unity/Assets/Vtt/Editor/DiceBuildGate.cs | 3503 B | вспомогательный файл: DiceBuildGate |
+| №1705 unity/Assets/Vtt/Editor/DiceBuildGate.cs | 4491 B | вспомогательный файл: DiceBuildGate |
 | №1706 unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta | 60 B | вспомогательный файл: DiceBuildGate.cs |
-| №1707 unity/Assets/Vtt/Editor/DiceValidation.cs | 4980 B | вспомогательный файл: DiceValidation |
+| №1707 unity/Assets/Vtt/Editor/DiceValidation.cs | 4981 B | вспомогательный файл: DiceValidation |
 | №1708 unity/Assets/Vtt/Editor/DiceValidation.cs.meta | 60 B | вспомогательный файл: DiceValidation.cs |
 | №1709 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs | 10734 B | вспомогательный файл: LegacyMigrationSetup |
 | №1710 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSetup.cs |

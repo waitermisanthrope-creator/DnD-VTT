@@ -19,6 +19,10 @@ public static class DiceBuildGate
     {
         if(target!="Android"&&target!="Windows")throw new ArgumentException(nameof(target));
         if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Dice gate must start in Edit Mode");
+        SessionState.SetBool("VttDice.OldOptionsEnabled",EditorSettings.enterPlayModeOptionsEnabled);
+        SessionState.SetInt("VttDice.OldOptions",(int)EditorSettings.enterPlayModeOptions);
+        EditorSettings.enterPlayModeOptionsEnabled=true;
+        EditorSettings.enterPlayModeOptions=EnterPlayModeOptions.DisableDomainReload;
         SessionState.SetString(Target,target);SessionState.SetString(Phase,"play");
         SessionState.SetFloat(Deadline,(float)EditorApplication.timeSinceStartup+180);
         Debug.Log("VTT_DICE_GATE_BEGIN: "+target);
@@ -35,6 +39,7 @@ public static class DiceBuildGate
             Validate();
         } else if(phase=="build"&&!EditorApplication.isPlayingOrWillChangePlaymode) {
             SessionState.SetString(Phase,"building");
+            RestoreOptions();
             Debug.Log("VTT_DICE_GATE_BUILD: "+target);
             try {
                 if(target=="Android")UnityReleaseBuild.CloudAndroidAfterDice();else UnityReleaseBuild.CloudWindowsAfterDice();
@@ -57,16 +62,24 @@ public static class DiceBuildGate
             if(phase=="play"&&!EditorApplication.isPlaying&&EditorApplication.timeSinceStartup>SessionState.GetFloat(Deadline,0)) {
                 Fail(new Exception("Dice validation could not enter Play Mode"));return;
             }
+            if(phase=="build"&&EditorApplication.isPlayingOrWillChangePlaymode&&EditorApplication.timeSinceStartup>SessionState.GetFloat(Deadline,0)) {
+                Fail(new Exception("Dice validation could not leave Play Mode"));return;
+            }
             Resume();return;
         }
         if(phase!="cleanup"||!EditorApplication.isPlaying)return;
         if(SceneManager.sceneCount==DiceValidation.ExpectedSceneCount) {
             Debug.Log("VTT_DICE_PLAYMODE_CLEANUP_PASS: async local scene unload completed");
-            SessionState.SetString(Phase,"build");EditorApplication.ExitPlaymode();
+            SessionState.SetString(Phase,"build");SessionState.SetFloat(Deadline,(float)EditorApplication.timeSinceStartup+60);EditorApplication.ExitPlaymode();
         }else if(EditorApplication.timeSinceStartup>SessionState.GetFloat(Deadline,0))Fail(new Exception("Dice physics scene did not unload"));
+    }
+    private static void RestoreOptions()
+    {
+        EditorSettings.enterPlayModeOptions=(EnterPlayModeOptions)SessionState.GetInt("VttDice.OldOptions",0);
+        EditorSettings.enterPlayModeOptionsEnabled=SessionState.GetBool("VttDice.OldOptionsEnabled",false);
     }
     private static void Fail(Exception error)
     {
-        Debug.LogException(error);SessionState.EraseString(Target);SessionState.EraseString(Phase);EditorApplication.Exit(1);
+        RestoreOptions();Debug.LogException(error);SessionState.EraseString(Target);SessionState.EraseString(Phase);EditorApplication.Exit(1);
     }
 }

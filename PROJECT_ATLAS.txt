@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 62afcce63b3c. Файлов: 1947
+Коммит 0a004a49c3f7. Файлов: 1947
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -38,7 +38,7 @@
 0022. .github/workflows/unified-release.yml — автоматизация GitHub Actions: unified release (14076 B)
 0023. .github/workflows/unity-android-update-publish.yml — автоматизация GitHub Actions: unity android update publish (5039 B)
 0024. .github/workflows/unity-brand-visual-contract.yml — автоматизация GitHub Actions: unity brand visual contract (877 B)
-0025. .github/workflows/unity-cloud-candidate.yml — автоматизация GitHub Actions: unity cloud candidate (15565 B)
+0025. .github/workflows/unity-cloud-candidate.yml — автоматизация GitHub Actions: unity cloud candidate (15621 B)
 0026. .github/workflows/unity-cloud-promote.yml — автоматизация GitHub Actions: unity cloud promote (4770 B)
 0027. .github/workflows/unity-delivery-publish.yml — автоматизация GitHub Actions: unity delivery publish (872 B)
 0028. .github/workflows/unity-experiment-android.yml — автоматизация GitHub Actions: unity experiment android (2708 B)
@@ -1718,9 +1718,9 @@
 1702. unity/Assets/Vtt/Editor/BuildBranding.cs.meta — вспомогательный файл: BuildBranding.cs (60 B)
 1703. unity/Assets/Vtt/Editor/CharacterSheetValidation.cs — вспомогательный файл: CharacterSheetValidation (21197 B)
 1704. unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta — вспомогательный файл: CharacterSheetValidation.cs (59 B)
-1705. unity/Assets/Vtt/Editor/DiceBuildGate.cs — вспомогательный файл: DiceBuildGate (3503 B)
+1705. unity/Assets/Vtt/Editor/DiceBuildGate.cs — вспомогательный файл: DiceBuildGate (4491 B)
 1706. unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta — вспомогательный файл: DiceBuildGate.cs (60 B)
-1707. unity/Assets/Vtt/Editor/DiceValidation.cs — вспомогательный файл: DiceValidation (4980 B)
+1707. unity/Assets/Vtt/Editor/DiceValidation.cs — вспомогательный файл: DiceValidation (4981 B)
 1708. unity/Assets/Vtt/Editor/DiceValidation.cs.meta — вспомогательный файл: DiceValidation.cs (60 B)
 1709. unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs — вспомогательный файл: LegacyMigrationSetup (10734 B)
 1710. unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta — вспомогательный файл: LegacyMigrationSetup.cs (59 B)

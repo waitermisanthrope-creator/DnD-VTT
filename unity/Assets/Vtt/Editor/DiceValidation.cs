@@ -67,8 +67,8 @@ public static class DiceValidation
         try {
             RenderTexture.active=source;image.ReadPixels(new Rect(0,0,source.width,source.height),0,0);image.Apply();
             int blue=0,gold=0;foreach(var pixel in image.GetPixels32()) {
-                if(pixel.b>pixel.r*1.3f&&pixel.b>pixel.g*1.1f&&pixel.b>40)blue++;
-                if(pixel.r>140&&pixel.g>100&&pixel.b<210)gold++;
+                if(pixel.b>pixel.r*1.3f&&pixel.b>pixel.g*1.1f&&pixel.b>100)blue++;
+                if(pixel.r>220&&pixel.g>180&&pixel.b<230)gold++;
             }
             Check(blue>80,"actual rendered blue die pixels: "+path);
             Check(gold>8,"actual rendered number pixels: "+path);
