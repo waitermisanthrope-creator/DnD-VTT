@@ -195,7 +195,7 @@ namespace DndVtt.UnityPrototype
         {
             bool ambiguous=false;
             foreach(var d in dice) {
-                if(d.resolved==0)d.resolved=d.geometry.Read(d.body.rotation,out _,theme==null?.985f:.94f);
+                if(d.resolved==0)d.resolved=d.geometry.Read(d.body.rotation,out _,theme==null?.985f:.7f,theme==null?.025f:.04f);
                 if(d.resolved==0)ambiguous=true;
                 else { if(!d.body.isKinematic) { d.body.linearVelocity=Vector3.zero;d.body.angularVelocity=Vector3.zero;d.body.isKinematic=true; } }
             }
@@ -221,7 +221,7 @@ namespace DndVtt.UnityPrototype
         {
 #if UNITY_EDITOR
             foreach(var die in dice) {
-                die.geometry.Read(die.body.rotation,out float alignment,theme==null?.985f:.94f);
+                die.geometry.Read(die.body.rotation,out float alignment,theme==null?.985f:.7f,theme==null?.025f:.04f);
                 Debug.Log("VTT_DICE_RETRY: theme="+(theme?.Id??"classic")+" d"+die.geometry.sides+" retry="+retry+" time="+elapsed+" quiet="+still+" alignment="+alignment+" linear="+die.body.linearVelocity.magnitude+" angular="+die.body.angularVelocity.magnitude+" resolved="+die.resolved);
             }
 #endif

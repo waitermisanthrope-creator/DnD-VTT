@@ -27,7 +27,7 @@ no count-sized list. At most8 classic/4 themed physical bodies at a time; larger
 requests proceed in real-physics batches with cancellation and partial totals.
 - Cocked dice alone retry; accepted bodies stay on the table. A terminal ambiguous
 rest is an explicit partial failure, never a fabricated full result. Irregular
-forms use dominant semantic numbered face alignment>=.94 and margin>.025;
+forms use dominant semantic numbered face alignment>=.70 (within45.6degrees) and dominance margin>.04;
 classic remains>=.985. d4 reads its bottom face. Irregular geometry can bias
 outcomes; no fairness certification or multiplayer-authoritative claim.
 
@@ -96,3 +96,12 @@ planes with a clearly dominant numbered face (alignment about.85-.92, gap
 .08-.16) that the current.94 cutoff rejects. This is geometric evidence to
 compare with the native rest/velocity diagnostics, not a measured probability
 distribution or permission to accept tied faces.
+
+Native diagnostic39808700062/source79b38e8a confirmed d10 is sleeping with zero
+linear/angular velocity and quiet.6s. Rest alignments.9240,.9345,.9347,.8888
+were rejected by.94, matching support-plane analysis. The irregular result rule
+now requires a stable uniquely dominant numbered face (alignment>=.70,
+dominance>.04); classic remains>=.985/dominance>.025. This preserves the actual
+irregular physical form, never chooses a preselected result, and rejects edge
+and multi-face vertex ties. New native regression accepts the known actual
+support pose as face8 and rejects the five-way d20 vertex tie. Native rerun pending.

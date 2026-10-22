@@ -41,9 +41,14 @@ public static class DiceValidation
             var first=shape.faces[0];var neighbor=shape.faces.First(f=>f!=first&&f.vertices.Intersect(first.vertices).Count()==2);
             Vector3 midpoint=(first.normal+neighbor.normal).normalized;
             Check(shape.Read(Quaternion.FromToRotation(midpoint,count==4?Vector3.down:Vector3.up),out _)==0,"edge rejected d"+count);
-            Check(shape.Read(Quaternion.FromToRotation(midpoint,count==4?Vector3.down:Vector3.up),out _,.94f)==0,"themed ambiguous edge rejected d"+count);
+            Check(shape.Read(Quaternion.FromToRotation(midpoint,count==4?Vector3.down:Vector3.up),out _,.7f,.04f)==0,"themed ambiguous edge rejected d"+count);
             var mesh=shape.Mesh();Check(mesh.triangles.Length>0,"triangulated mesh");UnityEngine.Object.DestroyImmediate(mesh);
         }
+        var tilted=DiceGeometry.Create(10);var supportPose=Quaternion.FromToRotation(new Vector3(-.644822f,-.399584f,.651565f),Vector3.up);
+        Check(tilted.Read(supportPose,out _,.94f)==0,"flat-only rule rejects known tilted support");
+        Check(tilted.Read(supportPose,out _,.7f,.04f)==8,"clear dominant numbered face on actual tentacle support plane");
+        var vertexPose=Quaternion.FromToRotation(DiceGeometry.Create(20).vertices[0].normalized,Vector3.up);
+        Check(DiceGeometry.Create(20).Read(vertexPose,out _,.7f,.04f)==0,"five-way vertex tie is not fabricated");
         ExpectedSceneCount=SceneManager.sceneCount;int bodies=UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None).Length;
         string folder=Path.Combine("Builds","DiceValidation");Directory.CreateDirectory(folder);
         int rolls=0;
