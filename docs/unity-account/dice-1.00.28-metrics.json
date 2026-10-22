@@ -1,0 +1,54 @@
+{
+  "version": "1.00.28",
+  "versionCode": 10028,
+  "sourceCommit": "3e3ded5f05d3de2f896eab48eabc6e26063b132c",
+  "candidateRun": 39862385559,
+  "jobs": {
+    "android": 120116045500,
+    "windows": 120121328183,
+    "windowsUpgrade": 120124368417
+  },
+  "publisherRun": 39865745625,
+  "activationCommit": "8c06c4c15b5eeddfbc014270b34beb071883c351",
+  "assetsPreviewRun": 39865749223,
+  "assetsActivationCommit": "787ac95d6aabaf5a676541471eaee4bc34fb00c8",
+  "android": {
+    "bytes": 42479606,
+    "sha256": "6f9b8725e08c97588ffccda489e1e96c7f1061ba72af78707e2b9f55aae01403",
+    "certificateSha256": "c1c1b3e6537f10819a3042817ac91535b47754ed65d084e635f84ff2b1f44c8e",
+    "signatureV2": true,
+    "signatureV3": true,
+    "package": "com.dndvtt.unity"
+  },
+  "windows": {
+    "bytes": 29214228,
+    "sha256": "d7edf9b20702d04c10de3cdd7c7cf0bde4ac7f0258ccf2ad73ad92b85ef83fe0"
+  },
+  "renderIndexSha256": "51c13da40a149e0d613d797ae5bab4ce44051beb165e83a35e5ae09c446b930a",
+  "nativePngCount": 31,
+  "nativePngBytes": 3868799,
+  "publicPreviewJpegCount": 31,
+  "publicPreviewJpegBytes": 686094,
+  "materialPacks": 31,
+  "materialPackBytes": 108341111,
+  "checks": {
+    "csharp": 4319,
+    "existingPython": 12,
+    "renderReviewBoundary": 2,
+    "sqlWasm": 133,
+    "nativePerTarget": {
+      "topology": 60,
+      "physxThrows": 129,
+      "numeralPixelControls": 32
+    }
+  },
+  "physicalPhoneVerified": false,
+  "liveSupabaseVerified": false,
+  "exact31SculpturesComplete": false,
+  "limitations": [
+    "01/05 authored faces;29 tinted engraved adaptations",
+    "Rigid tentacles; no soft-body/material effects",
+    "Physical phone touch/GPU/install-over pending",
+    "Workshop page reset owner-deferred"
+  ]
+}

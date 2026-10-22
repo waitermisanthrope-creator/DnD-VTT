@@ -1,3 +1,7 @@
+# Unity1.00.28 current limitations — 2026-10-22
+
+Both-platform delivery and public signature/feed/native-preview checks complete. Exact31 authored sculptures remain partial (01/05 face materials,29 tinted adaptations). Physical phone rendering/touch/install-over and desktop GPU/input unverified. Tentacles rigid; soft effects and workshop page-reset deferred. See docs/unity-account/DICE_MATERIALS_1.00.28.md. Historical blockers below are not claims about this completed release.
+
 # Unity1.00.23 delivery checks — 2026-10-22
 
 No publication blocker: both installers/feed already public and independently byte/hash/signature verified. Physical Android/Windows visual/interaction feedback remains owner check; native Linux-Editor raster/PhysX checks and real Windows headless installation/saves passed, not a phone GPU test. PNG artifact download via connector succeeds but workspace download host is denied by network policy; no manual screenshot review or bypass claimed. No Supabase changes required for dice. Authored skins/unusual forms not started; existing 2D skill/check rolls unchanged. Earlier preview pose regression fixed; workshop page-reset remains deferred. Historical staff-badge deployment/device/legacy GLB checks below remain separate, not new release blockers.
