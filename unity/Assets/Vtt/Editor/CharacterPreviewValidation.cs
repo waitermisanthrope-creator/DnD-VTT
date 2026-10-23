@@ -92,10 +92,11 @@ public static class CharacterPreviewValidation
         try
         {
             RenderTexture.active = source; image.ReadPixels(new Rect(0, 0, image.width, image.height), 0, 0); image.Apply();
+            File.WriteAllBytes(path, image.EncodeToPNG());
             var pixels = image.GetPixels32(); int visible = pixels.Count(c => c.r > 55 || c.g > 55 || c.b > 65);
+            Debug.Log("VTT_CHARACTER_PIXELS: " + path + " visible=" + visible + "/" + pixels.Length + " max=" + pixels.Max(c => Mathf.Max(c.r, Mathf.Max(c.g, c.b))));
             Check(visible > pixels.Length / 100, "rendered body is visible: " + path);
             Check(pixels.Count(c => c.r > 220 && c.b > 220 && c.g < 80) < pixels.Length / 20, "no pink missing shader: " + path);
-            File.WriteAllBytes(path, image.EncodeToPNG());
         }
         finally { RenderTexture.active = previous; UnityEngine.Object.DestroyImmediate(image); }
     }

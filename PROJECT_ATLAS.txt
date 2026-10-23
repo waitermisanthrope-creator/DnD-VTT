@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 6213b2a65bb7. Файлов: 2023
+Коммит 6b73b6d405c8. Файлов: 2023
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1080,7 +1080,7 @@
 1064. docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md — документация или отчёт: ACCESS AND TOUCH 1.00.12 (8253 B)
 1065. docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md — документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP (9558 B)
 1066. docs/unity-account/ALL_MOD_COLLECTIONS_1.00.36.md — документация или отчёт: ALL MOD COLLECTIONS 1.00.36 (6950 B)
-1067. docs/unity-account/CHARACTER_PREVIEW_1.00.37.md — документация или отчёт: CHARACTER PREVIEW 1.00.37 (3168 B)
+1067. docs/unity-account/CHARACTER_PREVIEW_1.00.37.md — документация или отчёт: CHARACTER PREVIEW 1.00.37 (5942 B)
 1068. docs/unity-account/CHAT_NICKNAMES_1.00.21.md — документация или отчёт: CHAT NICKNAMES 1.00.21 (3028 B)
 1069. docs/unity-account/CHAT_ONE_HOUR.md — документация или отчёт: CHAT ONE HOUR (2267 B)
 1070. docs/unity-account/CHAT_WORKSHOP_1.00.22.md — документация или отчёт: CHAT WORKSHOP 1.00.22 (7852 B)
@@ -1740,9 +1740,9 @@
 1724. unity/Assets/Vtt/Editor/BrandingResumeValidation.cs.meta — вспомогательный файл: BrandingResumeValidation.cs (60 B)
 1725. unity/Assets/Vtt/Editor/BuildBranding.cs — вспомогательный файл: BuildBranding (2738 B)
 1726. unity/Assets/Vtt/Editor/BuildBranding.cs.meta — вспомогательный файл: BuildBranding.cs (60 B)
-1727. unity/Assets/Vtt/Editor/CharacterPreviewImport.cs — вспомогательный файл: CharacterPreviewImport (1309 B)
+1727. unity/Assets/Vtt/Editor/CharacterPreviewImport.cs — вспомогательный файл: CharacterPreviewImport (1433 B)
 1728. unity/Assets/Vtt/Editor/CharacterPreviewImport.cs.meta — вспомогательный файл: CharacterPreviewImport.cs (60 B)
-1729. unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs — вспомогательный файл: CharacterPreviewValidation (5810 B)
+1729. unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs — вспомогательный файл: CharacterPreviewValidation (7092 B)
 1730. unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs.meta — вспомогательный файл: CharacterPreviewValidation.cs (60 B)
 1731. unity/Assets/Vtt/Editor/CharacterSheetValidation.cs — вспомогательный файл: CharacterSheetValidation (21197 B)
 1732. unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta — вспомогательный файл: CharacterSheetValidation.cs (59 B)
@@ -1782,14 +1782,14 @@
 1766. unity/Assets/Vtt/Resources/CharacterStudio/HumanBody.fbx.meta — вспомогательный файл: HumanBody.fbx (60 B)
 1767. unity/Assets/Vtt/Resources/CharacterStudio/LICENSE.ASSETS.md — документация или отчёт: LICENSE.ASSETS (6962 B)
 1768. unity/Assets/Vtt/Resources/CharacterStudio/LICENSE.ASSETS.md.meta — вспомогательный файл: LICENSE.ASSETS.md (60 B)
-1769. unity/Assets/Vtt/Resources/CharacterStudio/MorphCatalog.json — данные/конфигурация: MorphCatalog (2665 B)
+1769. unity/Assets/Vtt/Resources/CharacterStudio/MorphCatalog.json — данные/конфигурация: MorphCatalog (2701 B)
 1770. unity/Assets/Vtt/Resources/CharacterStudio/MorphCatalog.json.meta — вспомогательный файл: MorphCatalog.json (60 B)
-1771. unity/Assets/Vtt/Resources/CharacterStudio/PreviewLit.mat — вспомогательный файл: PreviewLit (1036 B)
+1771. unity/Assets/Vtt/Resources/CharacterStudio/PreviewLit.mat — вспомогательный файл: PreviewLit (1027 B)
 1772. unity/Assets/Vtt/Resources/CharacterStudio/PreviewLit.mat.meta — вспомогательный файл: PreviewLit.mat (60 B)
 1773. unity/Assets/Vtt/Resources/CharacterStudio/SkinFemale.png — текстура/изображение: SkinFemale (4391156 B)
-1774. unity/Assets/Vtt/Resources/CharacterStudio/SkinFemale.png.meta — вспомогательный файл: SkinFemale.png (60 B)
+1774. unity/Assets/Vtt/Resources/CharacterStudio/SkinFemale.png.meta — вспомогательный файл: SkinFemale.png (585 B)
 1775. unity/Assets/Vtt/Resources/CharacterStudio/SkinMale.png — текстура/изображение: SkinMale (3693828 B)
-1776. unity/Assets/Vtt/Resources/CharacterStudio/SkinMale.png.meta — вспомогательный файл: SkinMale.png (60 B)
+1776. unity/Assets/Vtt/Resources/CharacterStudio/SkinMale.png.meta — вспомогательный файл: SkinMale.png (585 B)
 1777. unity/Assets/Vtt/Resources/Dice.meta — вспомогательный файл: Dice (77 B)
 1778. unity/Assets/Vtt/Resources/Dice/DiceNumeral.shader — вспомогательный файл: DiceNumeral (1428 B)
 1779. unity/Assets/Vtt/Resources/Dice/DiceNumeral.shader.meta — вспомогательный файл: DiceNumeral.shader (60 B)
@@ -1798,13 +1798,13 @@
 1782. unity/Assets/Vtt/Runtime.meta — вспомогательный файл: Runtime (172 B)
 1783. unity/Assets/Vtt/Runtime/AppearanceDocument.cs — вспомогательный файл: AppearanceDocument (3069 B)
 1784. unity/Assets/Vtt/Runtime/AppearanceDocument.cs.meta — вспомогательный файл: AppearanceDocument.cs (60 B)
-1785. unity/Assets/Vtt/Runtime/CharacterBodyPreview.cs — вспомогательный файл: CharacterBodyPreview (13008 B)
+1785. unity/Assets/Vtt/Runtime/CharacterBodyPreview.cs — вспомогательный файл: CharacterBodyPreview (15711 B)
 1786. unity/Assets/Vtt/Runtime/CharacterBodyPreview.cs.meta — вспомогательный файл: CharacterBodyPreview.cs (60 B)
 1787. unity/Assets/Vtt/Runtime/CharacterCreation.cs — вспомогательный файл: CharacterCreation (11170 B)
 1788. unity/Assets/Vtt/Runtime/CharacterCreation.cs.meta — вспомогательный файл: CharacterCreation.cs (59 B)
 1789. unity/Assets/Vtt/Runtime/CharacterSheetRules.cs — вспомогательный файл: CharacterSheetRules (16128 B)
 1790. unity/Assets/Vtt/Runtime/CharacterSheetRules.cs.meta — вспомогательный файл: CharacterSheetRules.cs (59 B)
-1791. unity/Assets/Vtt/Runtime/CharacterStudioView.cs — вспомогательный файл: CharacterStudioView (5452 B)
+1791. unity/Assets/Vtt/Runtime/CharacterStudioView.cs — вспомогательный файл: CharacterStudioView (6202 B)
 1792. unity/Assets/Vtt/Runtime/CharacterStudioView.cs.meta — вспомогательный файл: CharacterStudioView.cs (60 B)
 1793. unity/Assets/Vtt/Runtime/ClientPreferences.cs — вспомогательный файл: ClientPreferences (4479 B)
 1794. unity/Assets/Vtt/Runtime/ClientPreferences.cs.meta — вспомогательный файл: ClientPreferences.cs (59 B)
@@ -1864,7 +1864,7 @@
 1848. unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs.meta — вспомогательный файл: LegacySessionPanel.Dice.cs (60 B)
 1849. unity/Assets/Vtt/Runtime/LegacySessionPanel.DiceControls.cs — вспомогательный файл: LegacySessionPanel.DiceControls (3513 B)
 1850. unity/Assets/Vtt/Runtime/LegacySessionPanel.DiceControls.cs.meta — вспомогательный файл: LegacySessionPanel.DiceControls.cs (60 B)
-1851. unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs — вспомогательный файл: LegacySessionPanel.FrontEnd (28606 B)
+1851. unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs — вспомогательный файл: LegacySessionPanel.FrontEnd (28633 B)
 1852. unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs.meta — вспомогательный файл: LegacySessionPanel.FrontEnd.cs (59 B)
 1853. unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs — вспомогательный файл: LegacySessionPanel.Moderation (16332 B)
 1854. unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs.meta — вспомогательный файл: LegacySessionPanel.Moderation.cs (60 B)
@@ -1970,7 +1970,7 @@
 1954. unity/PUBLIC_DELIVERY.json — данные/конфигурация: PUBLIC DELIVERY (1072 B)
 1955. unity/README.md — документация или отчёт: README (9382 B)
 1956. unity/release.ps1 — вспомогательный файл: release (7750 B)
-1957. unity/Tools/export_character.py — вспомогательный файл: export character (7345 B)
+1957. unity/Tools/export_character.py — вспомогательный файл: export character (7410 B)
 1958. unity/Tools/export_cloud_copy.cjs — логический модуль: export cloud copy (1429 B)
 1959. unity/Tools/export_commerce.cjs — логический модуль: export commerce (2282 B)
 1960. unity/Tools/package_commerce.py — вспомогательный файл: package commerce (3643 B)
@@ -14814,7 +14814,7 @@ zipCompressedBrandingBytes — №1901
 zipCompressedNativeBytes — №1901
 zipCompressedUnityDataBytes — №1901
 
---- JSON поля (1205) ---
+--- JSON поля (1206) ---
 _builderBaseStats — №1758 (+ 2 других файлов)
 $schema — №1018
 abilities — №1758 (+ 2 других файлов)
@@ -14921,6 +14921,7 @@ baseAc — №1923
 baseAC — №1758 (+ 2 других файлов)
 baseAcFormula — №1923
 baseColorFactor — №0912
+baseHeight — №1769
 baseline — №1045 (+ 1 других файлов)
 baseObj — №0087 (+ 1 других файлов)
 basePositionsSha256 — №0087 (+ 1 других файлов)
