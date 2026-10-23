@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 3b7c9b2ba483. Git содержит 1969 файлов.
+Снимок кода 3a276d935379. Git содержит 1969 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -62,8 +62,8 @@
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 6966 B | документация или отчёт: AGENTS |
 | №0043 AI_BLOCKERS.md | 25439 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 44112 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 82658 B | документация или отчёт: AI PROGRESS |
+| №0044 AI_NEXT_TASK.md | 44540 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 83086 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1089,13 +1089,13 @@
 | №1068 docs/unity-account/CHAT_WORKSHOP_1.00.22.md | 7852 B | документация или отчёт: CHAT WORKSHOP 1.00.22 |
 | №1069 docs/unity-account/DICE_1.00.23.md | 5241 B | документация или отчёт: DICE 1.00.23 |
 | №1070 docs/unity-account/DICE_MATERIALS_1.00.28.md | 3463 B | документация или отчёт: DICE MATERIALS 1.00.28 |
-| №1071 docs/unity-account/DICE_SIX_1.00.29.md | 4227 B | документация или отчёт: DICE SIX 1.00.29 |
+| №1071 docs/unity-account/DICE_SIX_1.00.29.md | 5085 B | документация или отчёт: DICE SIX 1.00.29 |
 | №1072 docs/unity-account/DICE_THEMES_1.00.24.md | 6119 B | документация или отчёт: DICE THEMES 1.00.24 |
 | №1073 docs/unity-account/dice-1.00.23-metrics.json | 1453 B | документация или отчёт: dice 1.00.23 metrics |
 | №1074 docs/unity-account/dice-1.00.24-metrics.json | 2106 B | документация или отчёт: dice 1.00.24 metrics |
 | №1075 docs/unity-account/dice-1.00.25-metrics.json | 2023 B | документация или отчёт: dice 1.00.25 metrics |
 | №1076 docs/unity-account/dice-1.00.28-metrics.json | 1717 B | документация или отчёт: dice 1.00.28 metrics |
-| №1077 docs/unity-account/IMPLEMENTATION_STATUS.md | 50450 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1077 docs/unity-account/IMPLEMENTATION_STATUS.md | 50878 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1078 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1079 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1080 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
@@ -1140,7 +1140,7 @@
 | №1119 PROJECT_ATLAS.txt | генерируется | человекочитаемая карта репозитория |
 | №1120 README.md | 145 B | документация или отчёт: README |
 | №1121 release-staging/unity-android-approval.json | 470 B | данные/конфигурация: unity android approval |
-| №1122 release-staging/unity-paired-approval.json | 1388 B | данные/конфигурация: unity paired approval |
+| №1122 release-staging/unity-paired-approval.json | 935 B | данные/конфигурация: unity paired approval |
 | №1123 release-staging/unity-release.json | 3914 B | данные/конфигурация: unity release |
 | №1124 smoke_back_v2_sprite-1.png | 1707378 B | текстура/изображение: smoke back v2 sprite 1 |
 | №1125 smoke_back_v2_sprite.png | 1814587 B | текстура/изображение: smoke back v2 sprite |
@@ -1934,7 +1934,7 @@
 | №1913 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №1914 updates/README.md | 233 B | документация или отчёт: README |
 | №1915 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №1916 updates/unity-changelog.json | 31508 B | метаданные обновлений: unity changelog |
+| №1916 updates/unity-changelog.json | 33113 B | метаданные обновлений: unity changelog |
 | №1917 updates/unity-experiment.json | 1845 B | метаданные обновлений: unity experiment |
 | №1918 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №1919 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
@@ -14743,7 +14743,7 @@
 | zipCompressedNativeBytes | №1851 |
 | zipCompressedUnityDataBytes | №1851 |
 
-### JSON поля (994)
+### JSON поля (993)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -14802,7 +14802,6 @@
 | app | №1912 (+ 2 других файлов) |
 | appId | №1117 |
 | approved | №1121 (+ 1 других файлов) |
-| approvedRenderIndexSha256 | №1122 |
 | arcana | №1744 (+ 2 других файлов) |
 | arch | №1117 |
 | archiveBytes | №0906 (+ 3 других файлов) |
@@ -15841,7 +15840,6 @@
 - unity/Assets/LegacyContent/Source/wall_white_plaster.png ; wall_white_plaster.png
 - unity/Assets/LegacyContent/Source/wall_wood_dark.png ; wall_wood_dark.png
 - unity/Assets/LegacyContent/Source/wall_wood_light.png ; wall_wood_light.png
-- unity/Assets/Vtt/Resources/Changelog.json ; updates/unity-changelog.json
 
 ## Обновление индекса
 

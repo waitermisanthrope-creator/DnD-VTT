@@ -1,10 +1,9 @@
 {
   "schema": 1,
-  "version": "1.00.28",
-  "candidateRunId": 39862385559,
+  "version": "1.00.29",
+  "candidateRunId": 39881037730,
   "approved": true,
   "scope": "Android ARM64 and Windows x64",
-  "note": "Owner-authorized final dice material correction. Source3e3ded5f05d3de2f896eab48eabc6e26063b132c; candidate39862385559 and Android120116045500/Windows120121328183/actual Windows upgrade120124368417 all SUCCESS. Both targets pass32 depth/visible/strong-contrast numeral image controls,60 face checks,129 physical throws;4319 C#/12 Python/133 SQL WASM. Renderer includes dark glyph contour and normalized albedo tint after manual27 render review found light material oversaturation. First promotion must publish candidate/renders only and leave feed26; exact reviewed index SHA required for activation. No false exact31 sculpt or physical phone QA claim;31 optional material1.1 packs remain unchanged. Real public28 PNGs independently downloaded/hashed and manually reviewed: full01/05/07/23 plus all31 native thumbnail contact sheet. Depth/facet fit/contour and normalized tint are visible; light materials readable. Exact render index approved; activate existing feed now. Other29 are deliberately described as tinted engraved adaptations, not exact individual sculpts. Physical phone test remains pending.",
   "requireRenderReview": true,
-  "approvedRenderIndexSha256": "51c13da40a149e0d613d797ae5bab4ce44051beb165e83a35e5ae09c446b930a"
+  "note": "Owner requested six experimental complete sets with material behaviors. Source3b7c9b2ba483557b4a48d0028506c033027af133; candidate39881037730 SUCCESS: Android120178197713, Windows120182576888, actual Windows install-upgrade-reinstall120185004787. Both native targets60topology/171PhysX/32legacy numeral controls/6opaque shell controls(rear0pixels), all42experimental types, effect bounds/cleanup/immutable results PASS.4350C#/12existingPython+2review-boundary/133SQLWASM PASS. Publish immutable candidate and85native images first; feed must remain28 until exact image index is reviewed and approved. No physical phone or exact sculpt/full soft-body claim. Six separate1.2 packs/v7 already verified8620494bytes; no production SQL or stable main changes."
 }

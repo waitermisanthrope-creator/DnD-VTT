@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 3b7c9b2ba483. Файлов: 1969
+Коммит 3a276d935379. Файлов: 1969
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -57,8 +57,8 @@
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (6966 B)
 0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (25439 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (44112 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (82658 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (44540 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (83086 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1084,13 +1084,13 @@
 1068. docs/unity-account/CHAT_WORKSHOP_1.00.22.md — документация или отчёт: CHAT WORKSHOP 1.00.22 (7852 B)
 1069. docs/unity-account/DICE_1.00.23.md — документация или отчёт: DICE 1.00.23 (5241 B)
 1070. docs/unity-account/DICE_MATERIALS_1.00.28.md — документация или отчёт: DICE MATERIALS 1.00.28 (3463 B)
-1071. docs/unity-account/DICE_SIX_1.00.29.md — документация или отчёт: DICE SIX 1.00.29 (4227 B)
+1071. docs/unity-account/DICE_SIX_1.00.29.md — документация или отчёт: DICE SIX 1.00.29 (5085 B)
 1072. docs/unity-account/DICE_THEMES_1.00.24.md — документация или отчёт: DICE THEMES 1.00.24 (6119 B)
 1073. docs/unity-account/dice-1.00.23-metrics.json — документация или отчёт: dice 1.00.23 metrics (1453 B)
 1074. docs/unity-account/dice-1.00.24-metrics.json — документация или отчёт: dice 1.00.24 metrics (2106 B)
 1075. docs/unity-account/dice-1.00.25-metrics.json — документация или отчёт: dice 1.00.25 metrics (2023 B)
 1076. docs/unity-account/dice-1.00.28-metrics.json — документация или отчёт: dice 1.00.28 metrics (1717 B)
-1077. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (50450 B)
+1077. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (50878 B)
 1078. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7893 B)
 1079. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1080. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
@@ -1135,7 +1135,7 @@
 1119. PROJECT_ATLAS.txt — человекочитаемая карта репозитория (генерируется)
 1120. README.md — документация или отчёт: README (145 B)
 1121. release-staging/unity-android-approval.json — данные/конфигурация: unity android approval (470 B)
-1122. release-staging/unity-paired-approval.json — данные/конфигурация: unity paired approval (1388 B)
+1122. release-staging/unity-paired-approval.json — данные/конфигурация: unity paired approval (935 B)
 1123. release-staging/unity-release.json — данные/конфигурация: unity release (3914 B)
 1124. smoke_back_v2_sprite-1.png — текстура/изображение: smoke back v2 sprite 1 (1707378 B)
 1125. smoke_back_v2_sprite.png — текстура/изображение: smoke back v2 sprite (1814587 B)
@@ -1929,7 +1929,7 @@
 1913. updates/previous-stable.json — метаданные обновлений: previous stable (179808 B)
 1914. updates/README.md — документация или отчёт: README (233 B)
 1915. updates/stable.json — метаданные обновлений: stable (179809 B)
-1916. updates/unity-changelog.json — метаданные обновлений: unity changelog (31508 B)
+1916. updates/unity-changelog.json — метаданные обновлений: unity changelog (33113 B)
 1917. updates/unity-experiment.json — метаданные обновлений: unity experiment (1845 B)
 1918. vignette_v2_sprite.png — текстура/изображение: vignette v2 sprite (1213593 B)
 1919. VTT_PROJECT_MANIFEST_V70.json — устаревший список V70, не актуален (44370 B)
@@ -14713,7 +14713,7 @@ zipCompressedBrandingBytes — №1851
 zipCompressedNativeBytes — №1851
 zipCompressedUnityDataBytes — №1851
 
---- JSON поля (994) ---
+--- JSON поля (993) ---
 _builderBaseStats — №1744 (+ 2 других файлов)
 $schema — №1018
 abilities — №1744 (+ 2 других файлов)
@@ -14769,7 +14769,6 @@ apkVersionCode — №1075
 app — №1912 (+ 2 других файлов)
 appId — №1117
 approved — №1121 (+ 1 других файлов)
-approvedRenderIndexSha256 — №1122
 arcana — №1744 (+ 2 других файлов)
 arch — №1117
 archiveBytes — №0906 (+ 3 других файлов)
@@ -15805,7 +15804,6 @@ unity/Assets/LegacyContent/Source/wall_wallpaper.png ; wall_wallpaper.png
 unity/Assets/LegacyContent/Source/wall_white_plaster.png ; wall_white_plaster.png
 unity/Assets/LegacyContent/Source/wall_wood_dark.png ; wall_wood_dark.png
 unity/Assets/LegacyContent/Source/wall_wood_light.png ; wall_wood_light.png
-unity/Assets/Vtt/Resources/Changelog.json ; updates/unity-changelog.json
 
 Обновление: node tools/generate_project_atlas.cjs
 
