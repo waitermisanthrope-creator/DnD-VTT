@@ -11,6 +11,11 @@ class Program
     static void Reject(Action action, string name) { bool rejected = false; try { action(); } catch (Exception) { rejected = true; } Check(rejected, name); }
     static void Main(string[] args)
     {
+        if (args.Length > 0 && args[0] == "--collections-only")
+        {
+            Console.WriteLine("Item collection checks: " + CommerceChecks.RunCollections(args[1]));
+            return;
+        }
         string root = Path.Combine(Path.GetTempPath(), "vtt-workshop-test-" + Guid.NewGuid()); Directory.CreateDirectory(root);
         try
         {

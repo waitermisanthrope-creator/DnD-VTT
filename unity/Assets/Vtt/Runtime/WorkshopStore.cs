@@ -186,7 +186,7 @@ namespace DndVtt.UnityPrototype
             }
             if (type == "craft") { CommerceRules.ValidateCatalog(data); return data; }
             string field = type == "race" ? "races" : type == "class" ? "classes" : type == "feat" ? "feats" : type == "map" ? "maps" : type == "appearance" ? "surfaces" : type == "item" ? "items" : "objects";
-            if (!(data[field] is JArray entries) || entries.Count < 1 || entries.Count > 100) throw new FormatException("Неверный состав пакета");
+            if (!(data[field] is JArray entries) || entries.Count < 1 || entries.Count > (type == "item" ? 5000 : 100)) throw new FormatException("Неверный состав пакета");
             var ids = entries.OfType<JObject>().Select(x => (string)x["id"]).ToArray();
             if (ids.Length != entries.Count || ids.Distinct().Count() != ids.Length) throw new FormatException("Повтор ID ресурса");
             foreach (JObject e in entries)
@@ -207,6 +207,7 @@ namespace DndVtt.UnityPrototype
                 else if (type == "item")
                 {
                     if (!CharacterSheetRules.InventoryCategories.Contains((string)e["inventoryCategory"])) throw new FormatException("Категория предмета");
+                    if (entries.Count > 100 && (string.IsNullOrWhiteSpace((string)e["description"]) || e["weight"] == null)) throw new FormatException("Нет веса/описания предмета");
                 }
                 else if (type == "feat")
                 {
@@ -225,6 +226,12 @@ namespace DndVtt.UnityPrototype
                     if (e["pattern"] != null && ((string)e["pattern"] != "checker" || (int?)e["textureSize"] != 32 || !Regex.IsMatch((string)e["alternateColor"] ?? "", "^#[A-Fa-f0-9]{8}$"))) throw new FormatException("Неверная текстура");
                     if (field == "objects" && (!new[] { "Cube", "Sphere", "Cylinder", "Capsule" }.Contains((string)e["primitive"]) || !(e["scale"] is JArray scale) || scale.Count != 3 || scale.Any(v => v.Type != JTokenType.Float && v.Type != JTokenType.Integer || double.IsNaN((double)v) || double.IsInfinity((double)v) || (double)v < .05 || (double)v > 10))) throw new FormatException("Геометрия");
                 }
+            }
+            if (type == "item" && (data["ingredients"] != null || data["materials"] != null))
+            {
+                var bridge = new JObject { ["mode"] = "alchemy-ingredients", ["ingredients"] = data["ingredients"]?.DeepClone() ?? new JArray(), ["items"] = new JArray() };
+                if (data["materials"] != null) bridge["materials"] = data["materials"].DeepClone();
+                CommerceRules.ValidateCatalog(bridge);
             }
             return data;
         }
@@ -279,13 +286,21 @@ namespace DndVtt.UnityPrototype
         public JObject Commerce()
         {
             var result = new JObject { ["items"] = new JArray(), ["craft"] = new JObject { ["materials"] = new JArray(), ["recipes"] = new JArray(), ["toolAliases"] = new JObject(), ["toolLabels"] = new JObject() }, ["alchemy"] = new JObject { ["ingredients"] = new JArray(), ["catalysts"] = new JArray(), ["synergy"] = new JArray(), ["conflict"] = new JArray(), ["effects"] = new JObject(), ["extraTrigger"] = new JObject() } };
-            foreach (JObject manifest in Installed())
+            foreach (JObject manifest in Installed().OfType<JObject>().OrderBy(m => (string)m["type"] == "item" ? 0 : 1))
             {
                 if ((string)manifest["format"] != "json" || !new[] { "item", "craft" }.Contains((string)manifest["type"])) continue;
                 var data = Data(manifest);
                 foreach (JObject item in data["items"] as JArray ?? new JArray())
                 {
                     var copy = (JObject)item.DeepClone(); copy["packageId"] = manifest["id"].DeepClone(); copy["packageVersion"] = manifest["version"].DeepClone(); ((JArray)result["items"]).Add(copy);
+                }
+                if ((string)manifest["type"] == "item")
+                {
+                    foreach (string field in new[] { "materials", "ingredients" })
+                        if (data[field] is JArray embedded)
+                            foreach (JObject entry in embedded)
+                                ((JArray)result[field == "materials" ? "craft" : "alchemy"][field]).Add(entry.DeepClone());
+                    continue;
                 }
                 if ((string)manifest["type"] != "craft") continue;
                 var target = (JObject)result[(string)data["mode"] == "craft-v31" ? "craft" : "alchemy"];
@@ -295,6 +310,13 @@ namespace DndVtt.UnityPrototype
                     else if (target[property.Name] is JObject obj && property.Value is JObject fields) foreach (var field in fields.Properties()) obj[field.Name] = field.Value.DeepClone();
                 }
             }
+            // Old ingredient packs may remain installed after upgrading. Their stable
+            // alchemy IDs resolve to one profile and one selectable inventory record.
+            foreach (string group in new[] { "craft", "alchemy" })
+                foreach (string field in new[] { "materials", "recipes", "ingredients", "catalysts" })
+                    if (result[group]?[field] is JArray values)
+                        result[group][field] = new JArray(values.OfType<JObject>().GroupBy(x => (string)x["id"]).Select(g => g.First().DeepClone()));
+            result["items"] = new JArray(((JArray)result["items"]).OfType<JObject>().GroupBy(x => (string)x["alchemyId"] ?? (string)x["id"]).Select(g => g.First().DeepClone()));
             return result;
         }
         public void Remove(string id)

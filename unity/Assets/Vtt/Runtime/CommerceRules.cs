@@ -27,7 +27,7 @@ namespace DndVtt.UnityPrototype
             string mode = (string)data["mode"];
             if (!new[] { "craft-v31", "alchemy-v30", "alchemy-ingredients" }.Contains(mode)) throw new FormatException("Неизвестный модуль ремесла");
             foreach (string field in new[] { "recipes", "materials", "ingredients", "catalysts" })
-                if (data[field] != null && (!(data[field] is JArray a) || a.Count > 200 || a.OfType<JObject>().Count() != a.Count || a.Any(x => string.IsNullOrWhiteSpace((string)x["id"]) || string.IsNullOrWhiteSpace((string)x["name"])) || a.Select(x => (string)x["id"]).Distinct().Count() != a.Count)) throw new FormatException("Неверный справочник " + field);
+                if (data[field] != null && (!(data[field] is JArray a) || a.Count > (field == "materials" ? 2000 : 200) || a.OfType<JObject>().Count() != a.Count || a.Any(x => string.IsNullOrWhiteSpace((string)x["id"]) || string.IsNullOrWhiteSpace((string)x["name"])) || a.Select(x => (string)x["id"]).Distinct().Count() != a.Count)) throw new FormatException("Неверный справочник " + field);
             if (mode == "craft-v31")
             {
                 if (!(data["recipes"] is JArray recipes) || !(data["materials"] is JArray) || !(data["toolAliases"] is JObject)) throw new FormatException("Неполный пакет крафта");
@@ -63,7 +63,7 @@ namespace DndVtt.UnityPrototype
         {
             foreach (var requirement in requirements)
             {
-                bool Match(JObject item) => (string)item[idField] == requirement.id || (string)item["materialId"] == requirement.id || string.Equals((string)item["name"], requirement.name, StringComparison.OrdinalIgnoreCase);
+                bool Match(JObject item) => (item[idField == "alchemyId" ? "alchemyIds" : "craftMaterialIds"] as JArray ?? new JArray()).Values<string>().Contains(requirement.id) || (string)item[idField] == requirement.id || (string)item["materialId"] == requirement.id || string.Equals((string)item["name"], requirement.name, StringComparison.OrdinalIgnoreCase);
                 var items = Entries(hero).Where(Match).ToArray();
                 if (items.Sum(x => N(x["count"], 1)) + .000001 < requirement.count) throw new FormatException("Не хватает: " + requirement.name + " ×" + requirement.count);
                 double left = requirement.count;
@@ -87,7 +87,8 @@ namespace DndVtt.UnityPrototype
             if (success)
             {
                 var item = new JObject { ["name"] = recipe["name"].DeepClone(), ["inventoryCategory"] = (recipe["inventoryCategory"] ?? recipe["category"]).DeepClone(), ["crafted"] = true, ["craftRecipe"] = recipe["id"].DeepClone(), ["craftQuality"] = total >= dc + 10 ? "exceptional" : total >= dc + 5 ? "fine" : "standard", ["craftTime"] = recipe["time"]?.DeepClone() };
-                foreach (string key in new[] { "damage", "damageType", "weight", "cost", "properties", "ac", "rarity", "special" }) if (recipe[key] != null) item[key] = recipe[key].DeepClone();
+                item["description"] = (string)recipe["description"] ?? "Изготовлено по рецепту: " + (string)recipe["name"];
+                foreach (string key in new[] { "damage", "damageType", "weight", "cost", "properties", "ac", "acBase", "proficiencyType", "equipmentSlot", "rarity", "special", "effects", "useMode" }) if (recipe[key] != null) item[key] = recipe[key].DeepClone();
                 AddItem(candidate, item, N(recipe["quantity"], 1)); outcome["item"] = item;
             }
             Commit(hero, candidate); return outcome;
@@ -124,6 +125,7 @@ namespace DndVtt.UnityPrototype
                 foreach (string key in active) if (rules["effects"]?[key] is JObject effect) { var copy = (JObject)effect.DeepClone(); copy["property"] = key; copy["strength"] = Round(N(profile["potency"]) * (active.Contains("Magic") ? 1.25 : 1)); effects.Add(copy); }
                 string kind = active.Intersect(new[] { "Venom", "Hemorrhage", "Weakness", "Nausea" }).Any() ? "poison" : active.Intersect(new[] { "Fire", "Acid", "Cold", "Necrotic", "Radiant" }).Any() ? "bomb" : active.Intersect(new[] { "Recovery", "Vitality", "Regeneration", "Antidote" }).Any() ? "potion" : active.Intersect(new[] { "Invisibility", "Speed", "Breathing", "Mind", "Perception" }).Any() ? "elixir" : "reagent";
                 var item = (JObject)profile.DeepClone(); item["name"] = (kind == "poison" ? "Алхимический яд" : kind == "bomb" ? "Алхимическая бомба" : kind == "potion" ? "Зелье" : kind == "elixir" ? "Эликсир" : "Алхимический реагент") + " — " + string.Join(" + ", effects.OfType<JObject>().Take(2).Select(e => (string)e["label"]));
+                item["weight"] = "0.1 кг"; item["description"] = "Алхимический продукт: " + string.Join(", ", effects.OfType<JObject>().Select(e => (string)e["label"]));
                 item["inventoryCategory"] = "consumables"; item["effects"] = effects; item["kind"] = kind; item["crafted"] = true; item["alchemyId"] = "alchemy_" + Guid.NewGuid().ToString("N");
                 AddItem(candidate, item); state["mastery"] = N(state["mastery"]) + 1; CharacterSheetRules.Object(state, "knownReactions")[string.Join("|", ids.OrderBy(x => x, StringComparer.Ordinal))] = profile["activeProperties"].DeepClone(); outcome["product"] = item;
             }
@@ -133,15 +135,18 @@ namespace DndVtt.UnityPrototype
         public static void Research(JObject hero, JObject rules, string id)
         {
             var ingredient = ((JArray)rules["ingredients"]).OfType<JObject>().FirstOrDefault(x => (string)x["id"] == id) ?? throw new FormatException("Ингредиент не установлен");
-            if (!Entries(hero).Any(x => ((string)x["alchemyId"] == id || (string)x["name"] == (string)ingredient["name"]) && N(x["count"],1) >= 1)) throw new FormatException("Нужен образец ингредиента в инвентаре");
+            if (!Entries(hero).Any(x => ((string)x["alchemyId"] == id || (x["alchemyIds"] as JArray ?? new JArray()).Values<string>().Contains(id) || (string)x["name"] == (string)ingredient["name"]) && N(x["count"],1) >= 1)) throw new FormatException("Нужен образец ингредиента в инвентаре");
             var state = CharacterSheetRules.Object(hero, "alchemyState"); var discoveries = CharacterSheetRules.Object(state, "discovered"); var known = CharacterSheetRules.Array(discoveries, id);
             string property = ((JArray)ingredient["properties"]).Values<string>().FirstOrDefault(x => !known.Values<string>().Contains(x));
             if (property == null) throw new FormatException("Все основные свойства уже изучены");
             known.Add(property); state["discoveries"] = N(state["discoveries"]) + 1;
         }
-        public static void UseProduct(JObject hero, JObject item)
+        public static void UseProduct(JObject hero, JObject item, Func<int,int> rollDie = null)
         {
-            if (!(item["effects"] is JArray effects) || N(item["count"],1) < 1) throw new FormatException("Это не алхимический продукт");
+            if (!Entries(hero).Any(x => ReferenceEquals(x, item)) || N(item["count"],1) < 1 || ((string)item["inventoryCategory"] != "consumables" && (item.Parent?.Parent as JProperty)?.Name != "consumables")) throw new FormatException("Расходник отсутствует в инвентаре");
+            var effects = item["effects"] as JArray;
+            if (effects == null && (string)item["useMode"] != "manual") throw new FormatException("Нет правил применения расходника");
+            effects ??= new JArray();
             double potency = N(item["potency"],20), power = Math.Max(1, Round(potency / 20));
             foreach (JObject effect in effects)
             {
@@ -151,7 +156,18 @@ namespace DndVtt.UnityPrototype
                     var hp = hero["hp"] as JObject; var hit = hero["hitPoints"] as JObject;
                     double current = N(hero["hpCurrent"] ?? hero["currentHP"] ?? hp?["current"] ?? hit?["current"] ?? (hero["hitPoints"] is JValue ? hero["hitPoints"] : null) ?? (hero["hp"] is JValue ? hero["hp"] : null));
                     double maximum = N(hero["hpMax"] ?? hero["maxHitPoints"] ?? hero["maxHp"] ?? hp?["max"] ?? hit?["max"]);
-                    double healed = Math.Max(0,Math.Min(power + potency / 20,maximum > 0 ? maximum - current : power));
+                    double amount = effect["amount"] == null ? power + potency / 20 : Math.Max(0,N(effect["amount"]));
+                    if (effect["dice"] != null)
+                    {
+                        var match = System.Text.RegularExpressions.Regex.Match((string)effect["dice"], @"^(\d{1,2})d(\d{1,2})(?:\+(\d{1,3}))?$");
+                        if (!match.Success) throw new FormatException("Неверная формула лечения");
+                        int count = int.Parse(match.Groups[1].Value), sides = int.Parse(match.Groups[2].Value);
+                        if (count < 1 || count > 20 || sides < 2 || sides > 20) throw new FormatException("Неверные кости лечения");
+                        amount = match.Groups[3].Success ? int.Parse(match.Groups[3].Value) : 0;
+                        var random = new Random();
+                        for (int i=0;i<count;i++) { int value=rollDie == null ? random.Next(1,sides+1) : rollDie(sides); if (value<1 || value>sides) throw new FormatException("Неверный результат кости"); amount += value; }
+                    }
+                    double healed = Math.Max(0,Math.Min(amount,maximum > 0 ? maximum - current : amount));
                     hero["hpCurrent"] = current + healed;
                 }
                 else if (kind == "tempHP") hero["hpTemp"] = Math.Max(N(hero["hpTemp"]),Round(potency / 5));
@@ -165,7 +181,15 @@ namespace DndVtt.UnityPrototype
         }
         public static void Equip(JObject hero, JObject item)
         {
+            if (!Entries(hero).Any(x => ReferenceEquals(x,item)) || N(item["count"],1) <= 0) throw new FormatException("Предмет отсутствует в инвентаре");
+            string category = (string)item["inventoryCategory"] ?? (item.Parent?.Parent as JProperty)?.Name;
+            if (category != "weapons" && category != "armor") throw new FormatException("Предмет нельзя экипировать");
             item["equipped"] = !((bool?)item["equipped"] ?? false);
+            string Slot(JObject armor) => (string)armor["equipmentSlot"] ?? (((string)armor["category"] ?? "").IndexOf("щит",StringComparison.OrdinalIgnoreCase)>=0 || ((string)armor["proficiencyType"] ?? "").Contains("shield") ? "shield" : N(armor["acBase"],N(armor["ac"]))>0 ? "body" : "accessory");
+            string slot = Slot(item);
+            if (category == "armor" && (bool)item["equipped"] && (slot == "body" || slot == "shield"))
+                foreach (JObject other in (hero["inventory"]?["armor"] as JArray ?? new JArray()).OfType<JObject>())
+                    if (!ReferenceEquals(other,item) && Slot(other) == slot) other["equipped"] = false;
             if ((string)item["inventoryCategory"] == "weapons" || (item.Parent?.Parent as JProperty)?.Name == "weapons") return;
             double dex = CharacterSheetRules.Modifier(hero,"dex");
             double ac = (bool?)hero["raceMechanics"]?["naturalArmor"] == true ? N(hero["baseAC"],10) : N(hero["baseAC"],10) + dex;

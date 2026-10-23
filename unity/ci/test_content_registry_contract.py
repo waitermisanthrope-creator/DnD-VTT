@@ -10,7 +10,7 @@ SOURCE = (ROOT / "unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs"
 
 
 def run():
-    assert "DnD-VTT-Content/main/catalog/v3/index.json" in SOURCE
+    assert "DnD-VTT-Content/main/catalog/v4/index.json" in SOURCE
     assert "DnD-VTT-Assets/main/catalog/v9/index.json" in SOURCE
     store = (ROOT / "unity/Assets/Vtt/Runtime/WorkshopStore.cs").read_text(encoding="utf-8")
     assert "DnD-VTT-Content/main/packages/" in store
