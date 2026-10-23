@@ -46,6 +46,17 @@ namespace DndVtt.UnityPrototype
             var catalog = Resources.Load<TextAsset>("CharacterStudio/MorphCatalog");
             var metadata = JObject.Parse(catalog.text);
             channels = (JObject)metadata["channels"];
+            // FBX may encode its units/up-axis in the renderer hierarchy. Work
+            // in the preview's Y-up metre space before applying WebView controls.
+            var meshToPreview = transform.worldToLocalMatrix * source.transform.localToWorldMatrix;
+            var importedBounds = new Bounds(meshToPreview.MultiplyPoint3x4(rest[0]), Vector3.zero);
+            for (int i = 0; i < rest.Length; i++)
+            { rest[i] = meshToPreview.MultiplyPoint3x4(rest[i]); importedBounds.Encapsulate(rest[i]); }
+            float sourceHeight = (float)metadata["baseHeight"];
+            if (sourceHeight < .5f || sourceHeight > 3 || importedBounds.size.y <= .00001f)
+                throw new InvalidOperationException("Некорректные габариты исходной или импортированной модели: " + importedBounds);
+            float unitScale = sourceHeight / importedBounds.size.y;
+            for (int i = 0; i < rest.Length; i++) rest[i] *= unitScale;
             morphDeltas = new Vector3[source.sharedMesh.blendShapeCount][];
             morphFrameWeights = new float[morphDeltas.Length];
             for (int i = 0; i < morphDeltas.Length; i++)
@@ -53,6 +64,8 @@ namespace DndVtt.UnityPrototype
                 int frame = source.sharedMesh.GetBlendShapeFrameCount(i) - 1;
                 morphDeltas[i] = new Vector3[rest.Length];
                 source.sharedMesh.GetBlendShapeFrameVertices(i, frame, morphDeltas[i], null, null);
+                for (int vertex = 0; vertex < rest.Length; vertex++)
+                    morphDeltas[i][vertex] = meshToPreview.MultiplyVector(morphDeltas[i][vertex]) * unitScale;
                 morphFrameWeights[i] = source.sharedMesh.GetBlendShapeFrameWeight(i, frame);
                 if (morphFrameWeights[i] <= 0) throw new InvalidOperationException("Некорректный кадр морфа.");
             }
@@ -63,16 +76,15 @@ namespace DndVtt.UnityPrototype
             }
             FindMorph("human-female");
             baked = new Mesh { name = "Human preview", indexFormat = IndexFormat.UInt32 };
-            baked.vertices = rest; baked.triangles = source.sharedMesh.triangles; baked.uv = source.sharedMesh.uv;
+            var triangles = source.sharedMesh.triangles;
+            if (meshToPreview.determinant < 0)
+                for (int i = 0; i < triangles.Length; i += 3)
+                { int swap = triangles[i + 1]; triangles[i + 1] = triangles[i + 2]; triangles[i + 2] = swap; }
+            baked.vertices = rest; baked.triangles = triangles; baked.uv = source.sharedMesh.uv;
             baked.RecalculateBounds();
             bottomMesh = new Mesh { name = "Preview shorts", indexFormat = IndexFormat.UInt32 };
             topMesh = new Mesh { name = "Preview top", indexFormat = IndexFormat.UInt32 };
             surface = MakeSurface("Body", baked);
-            float sourceHeight = (float)metadata["baseHeight"];
-            float importedHeight = surface.bounds.size.y;
-            if (sourceHeight < .5f || sourceHeight > 3 || importedHeight <= .00001f)
-                throw new InvalidOperationException("Некорректные габариты исходной или импортированной модели: " + importedHeight);
-            model.transform.localScale *= sourceHeight / importedHeight;
             bottom = MakeSurface("Preview shorts", bottomMesh);
             top = MakeSurface("Preview top", topMesh);
             var template = Resources.Load<Material>("CharacterStudio/PreviewLit");
@@ -92,7 +104,7 @@ namespace DndVtt.UnityPrototype
         MeshRenderer MakeSurface(string label, Mesh mesh)
         {
             var go = new GameObject(label);
-            go.transform.SetParent(source.transform, false);
+            go.transform.SetParent(transform, false);
             go.AddComponent<MeshFilter>().sharedMesh = mesh;
             return go.AddComponent<MeshRenderer>();
         }
@@ -128,7 +140,7 @@ namespace DndVtt.UnityPrototype
             foreach (var p in rest) restBounds.Encapsulate(p);
             float floor = restBounds.min.y, height = restBounds.size.y;
             var shorts = new List<int>(); var chest = new List<int>();
-            int[] triangles = source.sharedMesh.triangles;
+            int[] triangles = baked.triangles;
             for (int i = 0; i < triangles.Length; i += 3)
             {
                 int a = triangles[i], b = triangles[i + 1], c = triangles[i + 2];
