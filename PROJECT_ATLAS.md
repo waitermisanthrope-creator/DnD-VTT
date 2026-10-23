@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода f864b7016754. Git содержит 1989 файлов.
+Снимок кода 39a7a63fbc7e. Git содержит 1989 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1767,7 +1767,7 @@
 | №1746 unity/Assets/Vtt/Resources/Branding/Splash19.png.meta | 312 B | вспомогательный файл: Splash19.png |
 | №1747 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg | 212684 B | текстура/изображение: Wallpaper16 |
 | №1748 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta | 312 B | вспомогательный файл: Wallpaper16.jpg |
-| №1749 unity/Assets/Vtt/Resources/Changelog.json | 41845 B | данные/конфигурация: Changelog |
+| №1749 unity/Assets/Vtt/Resources/Changelog.json | 41847 B | данные/конфигурация: Changelog |
 | №1750 unity/Assets/Vtt/Resources/Changelog.json.meta | 158 B | вспомогательный файл: Changelog.json |
 | №1751 unity/Assets/Vtt/Resources/CharacterSheet.meta | 172 B | вспомогательный файл: CharacterSheet |
 | №1752 unity/Assets/Vtt/Resources/CharacterSheet/catalog.json | 823381 B | данные/конфигурация: catalog |
@@ -1954,8 +1954,8 @@
 | №1933 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №1934 updates/README.md | 233 B | документация или отчёт: README |
 | №1935 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №1936 updates/unity-changelog.json | 41845 B | метаданные обновлений: unity changelog |
-| №1937 updates/unity-experiment.json | 1671 B | метаданные обновлений: unity experiment |
+| №1936 updates/unity-changelog.json | 41847 B | метаданные обновлений: unity changelog |
+| №1937 updates/unity-experiment.json | 1444 B | метаданные обновлений: unity experiment |
 | №1938 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №1939 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
 | №1940 wall_brick_red.png | 111128 B | текстура/изображение: wall brick red |
