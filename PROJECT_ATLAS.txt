@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 3163efc53dc2. Файлов: 1987
+Коммит 6daf6ce57a14. Файлов: 1987
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1142,7 +1142,7 @@
 1126. PROJECT_ATLAS.txt — человекочитаемая карта репозитория (генерируется)
 1127. README.md — документация или отчёт: README (145 B)
 1128. release-staging/unity-android-approval.json — данные/конфигурация: unity android approval (470 B)
-1129. release-staging/unity-paired-approval.json — данные/конфигурация: unity paired approval (1674 B)
+1129. release-staging/unity-paired-approval.json — данные/конфигурация: unity paired approval (2256 B)
 1130. release-staging/unity-release.json — данные/конфигурация: unity release (3914 B)
 1131. smoke_back_v2_sprite-1.png — текстура/изображение: smoke back v2 sprite 1 (1707378 B)
 1132. smoke_back_v2_sprite.png — текстура/изображение: smoke back v2 sprite (1814587 B)
@@ -14733,7 +14733,7 @@ zipCompressedBrandingBytes — №1869
 zipCompressedNativeBytes — №1869
 zipCompressedUnityDataBytes — №1869
 
---- JSON поля (1055) ---
+--- JSON поля (1056) ---
 _builderBaseStats — №1751 (+ 2 других файлов)
 $schema — №1018
 abilities — №1751 (+ 2 других файлов)
@@ -14794,6 +14794,7 @@ apkVersionCode — №1080
 app — №1930 (+ 2 других файлов)
 appId — №1124
 approved — №1128 (+ 1 других файлов)
+approvedRenderIndexSha256 — №1129
 arcana — №1751 (+ 2 других файлов)
 arch — №1124
 archiveBytes — №0906 (+ 3 других файлов)
