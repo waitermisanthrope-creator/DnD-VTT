@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using DndVtt.UnityPrototype;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public static class DiceValidation
 {
@@ -31,6 +32,17 @@ public static class DiceValidation
             Call("AddDiceGroup",6);Field("diceQuantity","0");Call("ApplyDiceQuantity");
             Check(groups[4].Value==1,"invalid quantity preserves existing group");
             Field("diceQuantity","");Call("ApplyDiceQuantity");Check(groups[4].Value==1,"empty quantity preserves group");
+            var sensor=InputSystem.AddDevice<Accelerometer>();
+            try {
+                InputSystem.EnableDevice(sensor);Field("diceSensor",sensor);Field("ownsDiceSensor",true);
+                Call("OnApplicationPause",true);Check(!sensor.enabled,"pause releases owned sensor before Update stops");
+                InputSystem.EnableDevice(sensor);Field("diceSensor",sensor);Field("ownsDiceSensor",true);
+                Call("OnApplicationFocus",false);Check(!sensor.enabled,"focus loss releases owned sensor immediately");
+                InputSystem.EnableDevice(sensor);Field("diceSensor",sensor);Field("ownsDiceSensor",false);
+                Call("StopDiceSensor");Check(sensor.enabled,"other subsystem's sensor remains enabled");
+                Call("StopDiceSensor");Check(sensor.enabled,"repeated sensor cleanup is safe");
+                Debug.Log("VTT_DICE_SENSOR_LIFECYCLE_PASS: synthetic InputSystem device only; not physical phone sensitivity");
+            } finally { InputSystem.RemoveDevice(sensor); }
             Debug.Log("VTT_DICE_COMPOSER_PASS: mixed/repeated groups, huge quantities, invalid input preserves draft");
         }finally { UnityEngine.Object.DestroyImmediate(host); }
     }
@@ -213,7 +225,8 @@ public static class DiceValidation
                 string payload=Path.Combine(fixture,"packages",Path.GetFileName((string)manifest["url"]));WorkshopStore.Verify(manifest,payload);
                 var selected=DiceTray.Read((JObject)WorkshopStore.ValidateData(manifest,File.ReadAllText(payload))["diceTrays"][0]);
                 table.SetTray(selected);Check(table.ActiveTrayId==selected.Id,"installed tray selected");
-                SaveImage(table.Image,Path.Combine(folder,"arena-tray-"+selected.Profile+".png"),false);
+                CheckTexturedRender(table); // Actual native floor print sampling, not numeral visibility at tower scale.
+                SaveImage(table.Image,Path.Combine(folder,"arena-tray-"+selected.Profile+".png"),false,true);
                 table.Throw("20d20");Check(table.BodyCount==20,"twenty bodies enter "+selected.Profile);
                 for(int i=0;i<2400&&table.Throwing;i++)table.Tick(.1f,false);
                 Check(table.Completed==20&&table.Value.HasValue,"actual native tray20 roll "+selected.Profile+": "+table.Result);rolls+=20;
@@ -327,7 +340,7 @@ public static class DiceValidation
         }
         Check(volume>0&&edges.Values.All(n=>n==2)&&weld.Count-edges.Count+triangles.Length/3==2,"closed positive-volume collision mesh");
     }
-    private static void SaveImage(RenderTexture source,string path,bool classic=true)
+    private static void SaveImage(RenderTexture source,string path,bool classic=true,bool trayScene=false)
     {
         var previous=RenderTexture.active;var image=new Texture2D(source.width,source.height,TextureFormat.RGB24,false);
         try {
@@ -337,8 +350,9 @@ public static class DiceValidation
                 if(pixel.r>220&&pixel.g>180&&pixel.b<230)gold++;
                 if(pixel.r>220&&pixel.g>180&&pixel.b>170)ivory++;
             }
-            Check(!classic||blue>80,"actual rendered blue die pixels="+blue+", gold="+gold+": "+path);
-            Check((classic?gold:ivory)>8,"actual rendered number pixels="+(classic?gold:ivory)+", blue="+blue+": "+path);
+            Check(trayScene||!classic||blue>80,"actual rendered blue die pixels="+blue+", gold="+gold+": "+path);
+            Check(trayScene||(classic?gold:ivory)>8,"actual rendered number pixels="+(classic?gold:ivory)+", blue="+blue+": "+path);
+            if(trayScene)Check(image.GetPixels32().Count(p=>p.r>65||p.g>65||p.b>65)>3000,"native tray has visible geometry/print pixels");
             File.WriteAllBytes(path,image.EncodeToPNG());
         }finally { RenderTexture.active=previous;UnityEngine.Object.DestroyImmediate(image); }
     }

@@ -18,3 +18,7 @@ Run pure C# metadata/store/filter tests, existing Python/contracts, actual Unity
 ## Evidence so far
 
 Local4395C# checks PASS initially with exact locally generated fixtures, then repeated with actual public downloaded fixtures.12 existing Python tests+2render-review tests and registry/update/branding source contracts PASS. Assets producer source6243d50e9959e2e32ea480b2b367ca263438ec0d/run39927522385 SUCCESS. Four actual public recipe files1041bytes independently size/SHA verified; v9 active. Repeated4395C# checks against actual public fixtures PASS; installation test copies inputs before store consumes downloads. Native tests/APK/Windows build for31 not run yet.
+
+## Native trial1
+
+Native trial bf236ea4/candidate39928298122 Android120330183427 FAILED at tray preview helper: required ivory numeral pixels in a wide classic/tower overview (0ivory,900blue), before tray physics stage. Compilation and actual native old regressions/six42types/all-vertex arms/opaque shells/20Abyss(60contact pushes)/20slime(253physical hops)/immutable accepted results passed. No APK/release claim. Fix gives tower overview its own real GPU texture/visible-geometry controls; existing close-up numeral controls unchanged. Added synthetic InputSystem pause/focus/ownership cleanup tests and readable procedural prints for context recovery. Retrying same unpublished31; feed remains30.

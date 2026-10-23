@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 3d780e1e9085. Git содержит 1983 файлов.
+Снимок кода bf236ea4a8cd. Git содержит 1983 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 7007 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 27406 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 50223 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 88769 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 28090 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 50907 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 89453 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1088,7 +1088,7 @@
 | №1067 docs/unity-account/CHAT_ONE_HOUR.md | 2267 B | документация или отчёт: CHAT ONE HOUR |
 | №1068 docs/unity-account/CHAT_WORKSHOP_1.00.22.md | 7852 B | документация или отчёт: CHAT WORKSHOP 1.00.22 |
 | №1069 docs/unity-account/DICE_1.00.23.md | 5241 B | документация или отчёт: DICE 1.00.23 |
-| №1070 docs/unity-account/DICE_CONTACT_1.00.31.md | 3680 B | документация или отчёт: DICE CONTACT 1.00.31 |
+| №1070 docs/unity-account/DICE_CONTACT_1.00.31.md | 4383 B | документация или отчёт: DICE CONTACT 1.00.31 |
 | №1071 docs/unity-account/DICE_MATERIALS_1.00.28.md | 3463 B | документация или отчёт: DICE MATERIALS 1.00.28 |
 | №1072 docs/unity-account/DICE_SIX_1.00.29.md | 5386 B | документация или отчёт: DICE SIX 1.00.29 |
 | №1073 docs/unity-account/DICE_SIX_1.00.30.md | 8993 B | документация или отчёт: DICE SIX 1.00.30 |
@@ -1098,7 +1098,7 @@
 | №1077 docs/unity-account/dice-1.00.25-metrics.json | 2023 B | документация или отчёт: dice 1.00.25 metrics |
 | №1078 docs/unity-account/dice-1.00.28-metrics.json | 1717 B | документация или отчёт: dice 1.00.28 metrics |
 | №1079 docs/unity-account/dice-1.00.30-metrics.json | 2979 B | документация или отчёт: dice 1.00.30 metrics |
-| №1080 docs/unity-account/IMPLEMENTATION_STATUS.md | 56561 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1080 docs/unity-account/IMPLEMENTATION_STATUS.md | 57245 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1081 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1082 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1083 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
@@ -1742,7 +1742,7 @@
 | №1721 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta | 59 B | вспомогательный файл: CharacterSheetValidation.cs |
 | №1722 unity/Assets/Vtt/Editor/DiceBuildGate.cs | 4491 B | вспомогательный файл: DiceBuildGate |
 | №1723 unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta | 60 B | вспомогательный файл: DiceBuildGate.cs |
-| №1724 unity/Assets/Vtt/Editor/DiceValidation.cs | 31665 B | вспомогательный файл: DiceValidation |
+| №1724 unity/Assets/Vtt/Editor/DiceValidation.cs | 33036 B | вспомогательный файл: DiceValidation |
 | №1725 unity/Assets/Vtt/Editor/DiceValidation.cs.meta | 60 B | вспомогательный файл: DiceValidation.cs |
 | №1726 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs | 10734 B | вспомогательный файл: LegacyMigrationSetup |
 | №1727 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSetup.cs |
@@ -1791,7 +1791,7 @@
 | №1770 unity/Assets/Vtt/Runtime/DiceRollRequest.cs.meta | 60 B | вспомогательный файл: DiceRollRequest.cs |
 | №1771 unity/Assets/Vtt/Runtime/DiceTable.cs | 31250 B | вспомогательный файл: DiceTable |
 | №1772 unity/Assets/Vtt/Runtime/DiceTable.cs.meta | 60 B | вспомогательный файл: DiceTable.cs |
-| №1773 unity/Assets/Vtt/Runtime/DiceTable.Trays.cs | 7840 B | вспомогательный файл: DiceTable.Trays |
+| №1773 unity/Assets/Vtt/Runtime/DiceTable.Trays.cs | 7841 B | вспомогательный файл: DiceTable.Trays |
 | №1774 unity/Assets/Vtt/Runtime/DiceTable.Trays.cs.meta | 60 B | вспомогательный файл: DiceTable.Trays.cs |
 | №1775 unity/Assets/Vtt/Runtime/DiceTentacles.cs | 5008 B | вспомогательный файл: DiceTentacles |
 | №1776 unity/Assets/Vtt/Runtime/DiceTentacles.cs.meta | 60 B | вспомогательный файл: DiceTentacles.cs |
@@ -1815,7 +1815,7 @@
 | №1794 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Account.cs |
 | №1795 unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs | 14833 B | вспомогательный файл: LegacySessionPanel.Appearance |
 | №1796 unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Appearance.cs |
-| №1797 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs | 17210 B | вспомогательный файл: LegacySessionPanel.Branding |
+| №1797 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs | 17237 B | вспомогательный файл: LegacySessionPanel.Branding |
 | №1798 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Branding.cs |
 | №1799 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs | 11248 B | вспомогательный файл: LegacySessionPanel.BrandSettings |
 | №1800 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.BrandSettings.cs |
@@ -1827,7 +1827,7 @@
 | №1806 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.ContentManager.cs |
 | №1807 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs | 6755 B | вспомогательный файл: LegacySessionPanel.ContentPreviews |
 | №1808 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.ContentPreviews.cs |
-| №1809 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs | 8942 B | вспомогательный файл: LegacySessionPanel |
+| №1809 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs | 8977 B | вспомогательный файл: LegacySessionPanel |
 | №1810 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.cs |
 | №1811 unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs | 12684 B | вспомогательный файл: LegacySessionPanel.Dice |
 | №1812 unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Dice.cs |

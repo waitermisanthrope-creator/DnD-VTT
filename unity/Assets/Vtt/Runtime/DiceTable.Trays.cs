@@ -81,7 +81,7 @@ namespace DndVtt.UnityPrototype
                 bool ink=print=="web"?Mathf.Abs(Mathf.Sin(a*8))<.055f||Mathf.Abs(Mathf.Sin(r*30))<.06f:print=="runes"?Mathf.Abs(Mathf.Sin((u+v)*18)*Mathf.Cos((u-v)*18))<.045f:print=="astral"?Mathf.Abs(r-(.55f+.16f*Mathf.Cos(a*5)))<.012f||Mathf.Abs(r-.86f)<.012f:Mathf.Abs(r-.72f)<.013f||Mathf.Abs(Mathf.Sin(a*4))<.035f&&r<.72f;
                 pixels[y*size+x]=ink?Color.Lerp(floor,new Color(.75f,.61f,.32f),.55f):floor*(.94f+.06f*Mathf.Sin(x*2+y*3));
             }
-            var texture=new Texture2D(size,size,TextureFormat.RGB24,true) { name="Tray print "+print,filterMode=FilterMode.Trilinear };texture.SetPixels(pixels);texture.Apply(true,true);return texture;
+            var texture=new Texture2D(size,size,TextureFormat.RGB24,true) { name="Tray print "+print,filterMode=FilterMode.Trilinear };texture.SetPixels(pixels);texture.Apply(true,false);return texture;
         }
         private float SupportHeight(Vector3 point)
         {

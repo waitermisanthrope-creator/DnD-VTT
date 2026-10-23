@@ -43,6 +43,7 @@ namespace DndVtt.UnityPrototype
         private void OnApplicationFocus(bool hasFocus)
         {
             if (hasFocus) { InvalidateBrandStyles(); ApplyScreenSleep(); ApplyMobileOrientation(screen); }
+            else StopDiceSensor();
         }
 
         public bool Import(string json)
