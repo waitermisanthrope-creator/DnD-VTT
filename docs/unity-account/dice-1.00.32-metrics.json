@@ -1,0 +1,76 @@
+{
+  "sourceCommit": "d3f71068f3ae59a824ee488a83df88f01d0b5376",
+  "candidateRun": 39937442635,
+  "renderIndexSha256": "b40f861757dd5d4fc4a53c1617a8318be429117b1fd63936d262be7f1ba55f59",
+  "renderCount": 91,
+  "renderBytes": 32535920,
+  "installers": [
+    {
+      "name": "DnD-VTT-Unity-1.00.32-arm64.apk",
+      "bytes": 42516470,
+      "sha256": "51fb6cd746b990579d82738844f7aca747fbe6ee5fb90e31fb4825552975599a"
+    },
+    {
+      "name": "DnD-VTT-Unity-Setup-1.00.32-x64.exe",
+      "bytes": 29227975,
+      "sha256": "0328ce5ae5dcfb49a090066df13816bd5feab3168205ad48390d758d8702399d"
+    }
+  ],
+  "version": "1.00.32",
+  "versionCode": 10032,
+  "status": "published-experimental-device-qa-pending",
+  "date": "2026-10-23",
+  "candidateJobs": {
+    "android": 120360481593,
+    "windows": 120365606675,
+    "windowsUpgrade": 120368571948
+  },
+  "publisherRun": 39940848147,
+  "publisherJob": 120371611403,
+  "activationCommit": "2f9b9ce299e72be2023ddd52118ff652633413fd",
+  "androidPackage": "com.dndvtt.unity",
+  "androidCertificateSha256": "c1c1b3e6537f10819a3042817ac91535b47754ed65d084e635f84ff2b1f44c8e",
+  "publicApkSignature": [
+    "v2",
+    "v3"
+  ],
+  "minAndroidSdk": 26,
+  "apkDeltaVs30": 24576,
+  "tests": {
+    "csharp": 4398,
+    "pythonUnit": 12,
+    "renderReviewBoundary": 2,
+    "sourceContracts": 3,
+    "sqlWasm": 133,
+    "liveSupabase": false,
+    "nativePerTarget": {
+      "logicalPhysXThrows": 371,
+      "topologyFaceCases": 60,
+      "uvDirections": 420,
+      "legacyGlyphControls": 32,
+      "opaqueShellControls": 6
+    },
+    "syntheticSensorLifecycle": true,
+    "physicalAndroid": false,
+    "interactiveWindowsGpu": false,
+    "windowsInstallUpgradeReinstall": true
+  },
+  "previews": {
+    "count": 10,
+    "bytes": 147231,
+    "publisherRun": 39941062363,
+    "publisherJob": 120372315350,
+    "activationCommit": "8464fd7859e5e1245c3d15443acc07ed7b8399f7"
+  },
+  "trayRecipes": {
+    "count": 4,
+    "bytes": 1041,
+    "producerRun": 39927522385
+  },
+  "legacyPayloadsPreserved": 107,
+  "liveBodyBudget": 20,
+  "unlimitedTotalRequest": true,
+  "softBodySolver": false,
+  "feedPlainAndCacheBustedVerified": true,
+  "rejectedCandidate31NeverActivated": true
+}
