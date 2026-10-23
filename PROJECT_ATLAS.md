@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 1bbc1d512994. Git содержит 1991 файлов.
+Снимок кода c40f1064237d. Git содержит 1991 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1758,7 +1758,7 @@
 | №1737 unity/Assets/Vtt/Editor/UnityReleaseBuild.cs.meta | 60 B | вспомогательный файл: UnityReleaseBuild.cs |
 | №1738 unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs | 3632 B | вспомогательный файл: WorkshopBundleBuild |
 | №1739 unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs.meta | 60 B | вспомогательный файл: WorkshopBundleBuild.cs |
-| №1740 unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs | 26249 B | вспомогательный файл: WorkshopEditorValidation |
+| №1740 unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs | 26287 B | вспомогательный файл: WorkshopEditorValidation |
 | №1741 unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs.meta | 60 B | вспомогательный файл: WorkshopEditorValidation.cs |
 | №1742 unity/Assets/Vtt/Resources.meta | 172 B | вспомогательный файл: Resources |
 | №1743 unity/Assets/Vtt/Resources/Branding.meta | 172 B | вспомогательный файл: Branding |

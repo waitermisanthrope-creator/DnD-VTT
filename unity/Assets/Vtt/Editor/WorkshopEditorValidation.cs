@@ -115,7 +115,7 @@ public static class WorkshopEditorValidation
             var thumb=typeof(LegacySessionPanel).GetMethod("AppearanceThumbnail",flags);
             var preview=typeof(LegacySessionPanel).GetMethod("AppearancePreview",flags);
             var release=typeof(LegacySessionPanel).GetMethod("ReleaseAppearanceImages",flags);
-            var entries=manifests.OfType<JObject>().Where(m=>m["imageKind"]!=null).Take(12).ToArray();
+            var entries=manifests.OfType<JObject>().Where(m=>new[]{"icon","wallpaper"}.Contains((string)m["imageKind"])).Take(12).ToArray();
             Check(entries.Length==12,"real appearance fixtures available for bounded thumbnail test");
             foreach(var entry in entries) {
                 var image=(Texture2D)thumb.Invoke(panel,new object[]{entry});

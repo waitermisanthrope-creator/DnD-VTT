@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 1bbc1d512994. Файлов: 1991
+Коммит c40f1064237d. Файлов: 1991
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1753,7 +1753,7 @@
 1737. unity/Assets/Vtt/Editor/UnityReleaseBuild.cs.meta — вспомогательный файл: UnityReleaseBuild.cs (60 B)
 1738. unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs — вспомогательный файл: WorkshopBundleBuild (3632 B)
 1739. unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs.meta — вспомогательный файл: WorkshopBundleBuild.cs (60 B)
-1740. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs — вспомогательный файл: WorkshopEditorValidation (26249 B)
+1740. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs — вспомогательный файл: WorkshopEditorValidation (26287 B)
 1741. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs.meta — вспомогательный файл: WorkshopEditorValidation.cs (60 B)
 1742. unity/Assets/Vtt/Resources.meta — вспомогательный файл: Resources (172 B)
 1743. unity/Assets/Vtt/Resources/Branding.meta — вспомогательный файл: Branding (172 B)
