@@ -43,7 +43,7 @@ namespace DndVtt.UnityPrototype
             ApplyMobileOrientation(next);
             frontScroll = Vector2.zero; scroll = Vector2.zero; ClearSheetInputs();
             world.explorer.acceptInput = next == FrontScreen.Map; panel = false;
-            Cursor.lockState = CursorLockMode.None; Cursor.visible = true; GUI.FocusControl(null);
+            Cursor.lockState = CursorLockMode.None; Cursor.visible = true; if (Event.current != null) GUI.FocusControl(null);
         }
         private void BeginCreation()
         {
