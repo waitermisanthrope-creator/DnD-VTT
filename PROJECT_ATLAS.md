@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода f840ffe6c313. Git содержит 2032 файлов.
+Снимок кода 6c81b8bbd040. Git содержит 2032 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 7025 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 60767 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 84186 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 122130 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 63202 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 86621 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 124565 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |

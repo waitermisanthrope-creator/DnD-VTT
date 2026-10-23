@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит f840ffe6c313. Файлов: 2032
+Коммит 6c81b8bbd040. Файлов: 2032
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,9 +56,9 @@
 0040. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (7025 B)
-0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (60767 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (84186 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (122130 B)
+0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (63202 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (86621 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (124565 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
