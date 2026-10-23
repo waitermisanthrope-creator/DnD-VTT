@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 8c06c4c15b5e. Git содержит 1968 файлов.
+Снимок кода 3e072e8ddb28. Git содержит 1968 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -23,7 +23,7 @@
 | №0002 .github/ai-control.json | 255 B | данные/конфигурация: ai control |
 | №0003 .github/prompts/autonomous-development.md | 1259 B | документация или отчёт: autonomous development |
 | №0004 .github/scripts/.gitignore | 14 B | вспомогательный файл: .gitignore |
-| №0005 .github/scripts/publish-unity-artifacts.py | 11421 B | вспомогательный файл: publish unity artifacts |
+| №0005 .github/scripts/publish-unity-artifacts.py | 12068 B | вспомогательный файл: publish unity artifacts |
 | №0006 .github/scripts/test_unity_render_review.py | 964 B | вспомогательный файл: test unity render review |
 | №0007 .github/scripts/test-publish-unity-artifacts.py | 3695 B | вспомогательный файл: test publish unity artifacts |
 | №0008 .github/workflows/android-debug.yml | 4175 B | автоматизация GitHub Actions: android debug |
@@ -44,7 +44,7 @@
 | №0023 .github/workflows/unified-release.yml | 14076 B | автоматизация GitHub Actions: unified release |
 | №0024 .github/workflows/unity-android-update-publish.yml | 5039 B | автоматизация GitHub Actions: unity android update publish |
 | №0025 .github/workflows/unity-brand-visual-contract.yml | 877 B | автоматизация GitHub Actions: unity brand visual contract |
-| №0026 .github/workflows/unity-cloud-candidate.yml | 16186 B | автоматизация GitHub Actions: unity cloud candidate |
+| №0026 .github/workflows/unity-cloud-candidate.yml | 16254 B | автоматизация GitHub Actions: unity cloud candidate |
 | №0027 .github/workflows/unity-cloud-promote.yml | 5696 B | автоматизация GitHub Actions: unity cloud promote |
 | №0028 .github/workflows/unity-delivery-publish.yml | 872 B | автоматизация GitHub Actions: unity delivery publish |
 | №0029 .github/workflows/unity-experiment-android.yml | 2708 B | автоматизация GitHub Actions: unity experiment android |
@@ -62,8 +62,8 @@
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 6966 B | документация или отчёт: AGENTS |
 | №0043 AI_BLOCKERS.md | 25439 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 42535 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 81081 B | документация или отчёт: AI PROGRESS |
+| №0044 AI_NEXT_TASK.md | 44112 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 82658 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1094,7 +1094,7 @@
 | №1073 docs/unity-account/dice-1.00.24-metrics.json | 2106 B | документация или отчёт: dice 1.00.24 metrics |
 | №1074 docs/unity-account/dice-1.00.25-metrics.json | 2023 B | документация или отчёт: dice 1.00.25 metrics |
 | №1075 docs/unity-account/dice-1.00.28-metrics.json | 1717 B | документация или отчёт: dice 1.00.28 metrics |
-| №1076 docs/unity-account/IMPLEMENTATION_STATUS.md | 48873 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1076 docs/unity-account/IMPLEMENTATION_STATUS.md | 50450 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1077 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1078 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1079 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
@@ -1738,7 +1738,7 @@
 | №1717 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta | 59 B | вспомогательный файл: CharacterSheetValidation.cs |
 | №1718 unity/Assets/Vtt/Editor/DiceBuildGate.cs | 4491 B | вспомогательный файл: DiceBuildGate |
 | №1719 unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta | 60 B | вспомогательный файл: DiceBuildGate.cs |
-| №1720 unity/Assets/Vtt/Editor/DiceValidation.cs | 20045 B | вспомогательный файл: DiceValidation |
+| №1720 unity/Assets/Vtt/Editor/DiceValidation.cs | 25632 B | вспомогательный файл: DiceValidation |
 | №1721 unity/Assets/Vtt/Editor/DiceValidation.cs.meta | 60 B | вспомогательный файл: DiceValidation.cs |
 | №1722 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs | 10734 B | вспомогательный файл: LegacyMigrationSetup |
 | №1723 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSetup.cs |
@@ -1764,9 +1764,9 @@
 | №1743 unity/Assets/Vtt/Resources/CharacterSheet/catalog.json | 823381 B | данные/конфигурация: catalog |
 | №1744 unity/Assets/Vtt/Resources/CharacterSheet/catalog.json.meta | 158 B | вспомогательный файл: catalog.json |
 | №1745 unity/Assets/Vtt/Resources/Dice.meta | 77 B | вспомогательный файл: Dice |
-| №1746 unity/Assets/Vtt/Resources/Dice/DiceNumeral.shader | 1350 B | вспомогательный файл: DiceNumeral |
+| №1746 unity/Assets/Vtt/Resources/Dice/DiceNumeral.shader | 1428 B | вспомогательный файл: DiceNumeral |
 | №1747 unity/Assets/Vtt/Resources/Dice/DiceNumeral.shader.meta | 60 B | вспомогательный файл: DiceNumeral.shader |
-| №1748 unity/Assets/Vtt/Resources/Dice/DiceSurface.shader | 2658 B | вспомогательный файл: DiceSurface |
+| №1748 unity/Assets/Vtt/Resources/Dice/DiceSurface.shader | 3471 B | вспомогательный файл: DiceSurface |
 | №1749 unity/Assets/Vtt/Resources/Dice/DiceSurface.shader.meta | 60 B | вспомогательный файл: DiceSurface.shader |
 | №1750 unity/Assets/Vtt/Runtime.meta | 172 B | вспомогательный файл: Runtime |
 | №1751 unity/Assets/Vtt/Runtime/CharacterCreation.cs | 11170 B | вспомогательный файл: CharacterCreation |
@@ -1779,15 +1779,15 @@
 | №1758 unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs.meta | 60 B | вспомогательный файл: CloudCharacterProtocol.cs |
 | №1759 unity/Assets/Vtt/Runtime/CommerceRules.cs | 19387 B | вспомогательный файл: CommerceRules |
 | №1760 unity/Assets/Vtt/Runtime/CommerceRules.cs.meta | 60 B | вспомогательный файл: CommerceRules.cs |
-| №1761 unity/Assets/Vtt/Runtime/DiceGeometry.cs | 7428 B | вспомогательный файл: DiceGeometry |
+| №1761 unity/Assets/Vtt/Runtime/DiceGeometry.cs | 7859 B | вспомогательный файл: DiceGeometry |
 | №1762 unity/Assets/Vtt/Runtime/DiceGeometry.cs.meta | 60 B | вспомогательный файл: DiceGeometry.cs |
 | №1763 unity/Assets/Vtt/Runtime/DiceRollRequest.cs | 3635 B | вспомогательный файл: DiceRollRequest |
 | №1764 unity/Assets/Vtt/Runtime/DiceRollRequest.cs.meta | 60 B | вспомогательный файл: DiceRollRequest.cs |
-| №1765 unity/Assets/Vtt/Runtime/DiceTable.cs | 23309 B | вспомогательный файл: DiceTable |
+| №1765 unity/Assets/Vtt/Runtime/DiceTable.cs | 28895 B | вспомогательный файл: DiceTable |
 | №1766 unity/Assets/Vtt/Runtime/DiceTable.cs.meta | 60 B | вспомогательный файл: DiceTable.cs |
-| №1767 unity/Assets/Vtt/Runtime/DiceTheme.cs | 2755 B | вспомогательный файл: DiceTheme |
+| №1767 unity/Assets/Vtt/Runtime/DiceTheme.cs | 3343 B | вспомогательный файл: DiceTheme |
 | №1768 unity/Assets/Vtt/Runtime/DiceTheme.cs.meta | 60 B | вспомогательный файл: DiceTheme.cs |
-| №1769 unity/Assets/Vtt/Runtime/DiceThemeGeometry.cs | 5781 B | вспомогательный файл: DiceThemeGeometry |
+| №1769 unity/Assets/Vtt/Runtime/DiceThemeGeometry.cs | 6690 B | вспомогательный файл: DiceThemeGeometry |
 | №1770 unity/Assets/Vtt/Runtime/DiceThemeGeometry.cs.meta | 60 B | вспомогательный файл: DiceThemeGeometry.cs |
 | №1771 unity/Assets/Vtt/Runtime/ExplorerController.cs | 5869 B | вспомогательный файл: ExplorerController |
 | №1772 unity/Assets/Vtt/Runtime/ExplorerController.cs.meta | 59 B | вспомогательный файл: ExplorerController.cs |
@@ -1880,12 +1880,12 @@
 | №1859 unity/ci/transfer-signing-secrets.ps1 | 3449 B | вспомогательный файл: transfer signing secrets |
 | №1860 unity/ci/verify_bundle_output.py | 1081 B | вспомогательный файл: verify bundle output |
 | №1861 unity/ci/verify_launcher_aliases.py | 3703 B | вспомогательный файл: verify launcher aliases |
-| №1862 unity/ci/verify_public_workshop.py | 4665 B | вспомогательный файл: verify public workshop |
+| №1862 unity/ci/verify_public_workshop.py | 5491 B | вспомогательный файл: verify public workshop |
 | №1863 unity/ci/windows-upgrade-qa.ps1 | 4224 B | вспомогательный файл: windows upgrade qa |
 | №1864 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
 | №1865 unity/ci/workshop-tests/AccountGestureChecks.cs | 5460 B | вспомогательный файл: AccountGestureChecks |
 | №1866 unity/ci/workshop-tests/CommerceChecks.cs | 4247 B | вспомогательный файл: CommerceChecks |
-| №1867 unity/ci/workshop-tests/Program.cs | 25370 B | вспомогательный файл: Program |
+| №1867 unity/ci/workshop-tests/Program.cs | 26730 B | вспомогательный файл: Program |
 | №1868 unity/ci/workshop-tests/WorkshopTests.csproj | 1377 B | вспомогательный файл: WorkshopTests |
 | №1869 unity/ContentSources~/catalog.full.json | 1259265 B | данные/конфигурация: catalog.full |
 | №1870 unity/ContentSources~/cloud-copy-contracts.json | 3613 B | данные/конфигурация: cloud copy contracts |
@@ -14179,7 +14179,7 @@
 | --text-main | №0838 |
 | --text-muted | №0838 |
 
-### Python/Java идентификаторы (556)
+### Python/Java идентификаторы (558)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -14355,6 +14355,8 @@
 | expected_name | №0005 |
 | expectedBytes | №0049 |
 | expectedHash | №0049 |
+| experimental | №1862 |
+| experiments | №0005 |
 | export_apply | №1378 |
 | export_format | №1378 |
 | ext | №1338 (+ 1 других файлов) |
@@ -14585,7 +14587,7 @@
 | REPO | №0005 (+ 2 других файлов) |
 | report | №0005 (+ 5 других файлов) |
 | request | №0005 (+ 1 других файлов) |
-| required | №1331 (+ 11 других файлов) |
+| required | №0005 (+ 12 других файлов) |
 | resources | №1861 |
 | restore | №0050 |
 | result | №1333 (+ 5 других файлов) |

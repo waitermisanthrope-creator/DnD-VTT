@@ -113,6 +113,13 @@ def publish_verified(files, manifest, expected_cert, source_commit=None, build_r
         images=sorted(pathlib.Path(render_folder).rglob("dnd.dice.icon.*.theme-d20.png"))
         expected={"dnd.dice.icon."+suffix+".theme-d20.png" for suffix in ["default"]+[f"{i:02d}" for i in range(1,31)]}
         if {p.name for p in images}!=expected or len(images)!=31:raise ValueError("Expected31 actual native d20 renders")
+        # Six test sets also publish all shapes and two post-result frames for visual review.
+        experiments=sorted(pathlib.Path(render_folder).rglob("test-*.png"))
+        if experiments:
+            required={"test-"+profile+"-d"+str(sides)+".png" for profile in ["abyss","ice","blood","stone","vine","slime"] for sides in [4,6,8,10,12,20,100]}
+            required|={"test-"+profile+"-settled-"+frame+".png" for profile in ["abyss","ice","blood","stone","vine","slime"] for frame in ["a","b"]}
+            if {p.name for p in experiments}!=required:raise ValueError("Incomplete six-set render evidence")
+        images.extend(experiments)
         evidence=[]
         for path in images:
             blob=path.read_bytes()

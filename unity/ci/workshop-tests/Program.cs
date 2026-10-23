@@ -69,6 +69,17 @@ class Program
                 }
                 Check(materialSets==31,"all31 textured recipes checked");
             }
+            var experiments=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source,"DnD-VTT-Assets/catalog/v7/index.json")),"packs");int six=0;
+            foreach(JObject manifest in experiments.Where(m=>(string)m["version"]=="1.2.0"&&(string)m["imageKind"]=="dice")) {
+                string path=Path.Combine(source,"DnD-VTT-Assets/packages",Path.GetFileName((string)manifest["url"]));WorkshopStore.Verify(manifest,path);
+                var recipe=(JObject)WorkshopStore.ValidateData(manifest,File.ReadAllText(path))["diceThemes"][0];var parsed=DiceTheme.Read(recipe,true);
+                Check(parsed.NumberedAtlas&&parsed.TexturePng.Length>10000,"real complete numbered atlas selected");
+                Check(new[]{"abyss","ice","blood","stone","vine","slime"}.Contains(parsed.Behavior),"allowlisted behavior profile");
+                var bad=(JObject)recipe.DeepClone();bad["behavior"]="execute";Reject(()=>DiceTheme.Read(bad),"downloaded code profile rejected");
+                bad=(JObject)recipe.DeepClone();bad["albedo"]["width"]=1024;Reject(()=>DiceTheme.Read(bad),"wrong numbered atlas layout rejected");
+                bad=(JObject)recipe.DeepClone();bad.Remove("albedo");Reject(()=>DiceTheme.Read(bad),"numbered profile requires verified image");six++;
+            }
+            Check(six==6,"all six experimental payloads validated");
             var previewCatalog=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source,"DnD-VTT-Assets/catalog/v4/index.json")),"packs");int previewCount=0;
             foreach(JObject entry in previewCatalog)if(entry["preview"] is JObject preview) {
                 byte[] bytes=File.ReadAllBytes(Path.Combine(source,"DnD-VTT-Assets/previews",Path.GetFileName((string)preview["url"])));
