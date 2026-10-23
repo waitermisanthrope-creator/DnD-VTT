@@ -11,7 +11,8 @@ static class CommerceChecks
   void Check(bool value,string name) { if(!value) throw new Exception(name); count++; }
   void Reject(Action action,string name) { bool failed=false; try { action(); } catch(FormatException) { failed=true; } Check(failed,name); }
   var commerce=store.Commerce(); var craft=(JObject)commerce["craft"]; var alchemy=(JObject)commerce["alchemy"];
-  Check(((JArray)commerce["items"]).Count==308,"188 items and 120 ingredient records activated");
+  var sourceItems=store.Installed().OfType<JObject>().Where(m=>new[]{"item","craft"}.Contains((string)m["type"])).SelectMany(m=>(store.Data(m)["items"] as JArray ?? new JArray()).OfType<JObject>()).ToArray();
+  Check(((JArray)commerce["items"]).Count==sourceItems.Length && sourceItems.Select(i=>(string)i["id"]).Distinct().Count()==sourceItems.Length,"all installed item IDs activated once, including optional collections");
   Check(((JArray)craft["recipes"]).Count==47,"47 recipes activated");
   var contracts=JObject.Parse(File.ReadAllText(Path.Combine(appRoot,"unity/ContentSources~/workshop-commerce/contracts.json")));
   foreach(JObject contract in (JArray)contracts["profiles"])
@@ -28,8 +29,9 @@ static class CommerceChecks
   }
   var result=CommerceRules.Craft(hero,recipe,craft,20); Check((bool)result["ok"],"craft success"); Check((bool)hero["unknown"]["preserve"],"craft preserves unknown save fields");
   string before=hero.ToString(); Reject(()=>CommerceRules.Craft(hero,recipe,craft,20),"missing materials rejected"); Check(hero.ToString()==before,"failed transaction changes nothing");
-  var ids=((JArray)alchemy["ingredients"]).Take(2).Select(i=>(string)i["id"]).ToArray();
-  foreach(string id in ids) CommerceRules.AddItem(hero,((JArray)commerce["items"]).OfType<JObject>().First(i=>(string)i["alchemyId"]==id));
+  var samples=((JArray)alchemy["ingredients"]).OfType<JObject>().Take(2).ToArray();
+  var ids=samples.Select(i=>(string)i["id"]).ToArray();
+  foreach(var sample in samples) CommerceRules.AddItem(hero,((JArray)commerce["items"]).OfType<JObject>().First(i=>(string)i["alchemyId"]==(string)sample["id"] || (string)i["name"]==(string)sample["name"]));
   var mixed=CommerceRules.Mix(hero,alchemy,ids,null,100); Check((bool)mixed["ok"],"mix creates product"); Check(((JArray)hero["alchemyState"]["history"]).Count==1,"alchemy history persisted");
   var saved=new LegacyCharacterArchive(hero.ToString()).Export(); Check(JToken.DeepEquals(new LegacyCharacterArchive(saved).Snapshot(0),hero),"crafted save roundtrip");
   var hpHero=JObject.Parse("{id:'old-hp',name:'Old HP',hp:{current:3,max:20,custom:'keep'},stats:{dex:10},ac:17}");

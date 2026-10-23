@@ -49,6 +49,9 @@ namespace DndVtt.UnityPrototype
                 case "item":
                     foreach(var pair in new[]{new[]{"weapons","Оружие"},new[]{"armor","Броня"},new[]{"consumables","Расходники"},new[]{"materials","Материалы"},new[]{"junk","Хлам"}})if(id.EndsWith("."+pair[0],StringComparison.Ordinal))return "Инвентарь/"+pair[1];
                     return "Инвентарь/Прочее";
+                case "collection":
+                    string category=(string)manifest["inventoryCategory"];
+                    return "Инвентарь/"+(category=="weapons"?"Оружие":category=="armor"?"Броня":category=="materials"?"Материалы":category=="consumables"?"Расходники":"Хлам");
                 case "craft":return id.Contains("alchemy.ingredients")?"Крафт и алхимия/Алхимия/Ингредиенты":id.Contains("alchemy")?"Крафт и алхимия/Алхимия/Правила и катализаторы":"Крафт и алхимия/Рецепты";
                 case "map":return "3D и карты/Карты/"+(id.Contains("castle")?"Замки":id.Contains("house")?"Дома":id.Contains("tavern")?"Таверны":id.Contains("town")||id.Contains("village")?"Поселения":id.Contains("dungeon")?"Подземелья":id.Contains("stress")?"Тестовые":"Разное");
                 case "model":return "3D и карты/Модели";
@@ -58,6 +61,40 @@ namespace DndVtt.UnityPrototype
                 case "appearance":return (string)manifest["imageKind"]=="dice-tray"?"Оформление/Лотки и башни":(string)manifest["imageKind"]=="dice"?"Оформление/3D Дайсы":(string)manifest["imageKind"]=="wallpaper"?"Оформление/Обои":(string)manifest["imageKind"]=="icon"?"Оформление/Иконки":"3D и карты/Материалы и текстуры";
                 default:return "Коллекции/Наборы";
             }
+        }
+        private static bool SameInstall(JObject a, JObject b) => a != null && b != null && new[] { "id", "version", "sha256", "type", "format", "platform", "unityVersion", "dependencies" }.All(k => JToken.DeepEquals(a[k], b[k]));
+        // Resolve the complete graph before downloading anything. Return immutable
+        // snapshots in dependency-first order; commit the selected collection last.
+        public static JArray InstallPlan(JObject selected, System.Collections.Generic.IEnumerable<JObject> catalog, System.Collections.Generic.IEnumerable<JObject> installed, string platform, string unity, int clientCode)
+        {
+            ValidateManifest(selected);
+            var known = new System.Collections.Generic.Dictionary<string,JObject>();
+            foreach (var entry in catalog) { string id=(string)entry["id"]; if (!ValidId(id) || known.ContainsKey(id)) throw new FormatException("Повтор или неверный ID каталога"); known.Add(id,entry); }
+            var local = installed.ToDictionary(m => (string)m["id"]);
+            foreach (var entry in local) if (!known.ContainsKey(entry.Key)) known.Add(entry.Key,entry.Value);
+            string root=(string)selected["id"];
+            if (!known.TryGetValue(root,out var current) || !SameInstall(selected,current)) throw new FormatException("Каталог изменился; обновите список сборников");
+            var visiting=new System.Collections.Generic.HashSet<string>(); var complete=new System.Collections.Generic.HashSet<string>(); var plan=new JArray();
+            void Visit(string id,int depth)
+            {
+                if (depth>64 || complete.Count>2000) throw new FormatException("Слишком сложные зависимости");
+                if (complete.Contains(id)) return;
+                if (!known.TryGetValue(id,out var m)) throw new FormatException("В каталоге отсутствует часть сборника: "+id);
+                if (!visiting.Add(id)) throw new FormatException("Циклические зависимости сборника");
+                ValidateManifest(m); Compatible(m,platform,unity);
+                if (m["minClientVersionCode"]!=null && (m["minClientVersionCode"].Type!=JTokenType.Integer || (long)m["minClientVersionCode"]<1 || (long)m["minClientVersionCode"]>clientCode)) throw new FormatException("Обновите приложение для сборника: "+m["name"]);
+                if ((string)m["format"]=="json" && !new[]{"race","class","feat","map","model","environment","appearance","item","craft","collection"}.Contains((string)m["type"])) throw new FormatException("Часть сборника ещё не поддерживается: "+m["name"]);
+                foreach (string dep in ((JArray)m["dependencies"]).Values<string>()) Visit(dep,depth+1);
+                visiting.Remove(id);complete.Add(id);
+                if (!local.TryGetValue(id,out var present) || !SameInstall(present,m)) plan.Add(m.DeepClone());
+            }
+            Visit(root,0);return plan;
+        }
+        public static System.Collections.Generic.HashSet<string> CollectionParts(System.Collections.Generic.IEnumerable<JObject> catalog)
+        {
+            // Every internal group is itself a collection; their direct edges cover
+            // the complete graph without recursive traversal of untrusted data here.
+            return new System.Collections.Generic.HashSet<string>(catalog.Where(m=>(string)m["type"]=="collection").SelectMany(m=>(m["dependencies"] as JArray ?? new JArray()).Values<string>()));
         }
         public static void ValidatePreview(JObject preview)
         {
@@ -165,7 +202,12 @@ namespace DndVtt.UnityPrototype
             var data = Parse(text);
             if ((int?)data["schemaVersion"] != 1 || (string)data["id"] != (string)m["id"] || (string)data["version"] != (string)m["version"] || (string)data["type"] != (string)m["type"]) throw new FormatException("Пакет не соответствует манифесту");
             string type = (string)m["type"], packageId = (string)m["id"];
-            if (!new[] { "race", "class", "feat", "map", "model", "environment", "appearance", "item", "craft" }.Contains(type)) throw new FormatException("Этот тип пока недоступен для активации");
+            if (!new[] { "race", "class", "feat", "map", "model", "environment", "appearance", "item", "craft", "collection" }.Contains(type)) throw new FormatException("Этот тип пока недоступен для активации");
+            if (type=="collection")
+            {
+                if (!CharacterSheetRules.InventoryCategories.Contains((string)data["inventoryCategory"]) || (string)data["inventoryCategory"]!=(string)m["inventoryCategory"] || !(data["members"] is JArray members) || members.Count<1 || members.Count>50 || members.Any(x=>x.Type!=JTokenType.String || !ValidId((string)x)) || members.Values<string>().Distinct().Count()!=members.Count || !JToken.DeepEquals(members,m["dependencies"]) || data.Properties().Any(p=>!new[]{"schemaVersion","id","version","type","inventoryCategory","members"}.Contains(p.Name))) throw new FormatException("Неверный состав сборника");
+                return data;
+            }
             if(type=="appearance"&&(data["diceTrays"]!=null||(string)m["imageKind"]=="dice-tray")) {
                 if((string)m["imageKind"]!="dice-tray"||!(data["diceTrays"] is JArray trays)||trays.Count!=1||data.Properties().Any(p=>!new[]{"schemaVersion","id","version","type","diceTrays"}.Contains(p.Name)))throw new FormatException("Состав пакета лотка");
                 var tray=DiceTray.Read(trays[0] as JObject);

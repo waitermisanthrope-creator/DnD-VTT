@@ -31,12 +31,41 @@ public static class WorkshopEditorValidation
             Debug.Log("VTT_MENU_INPUT_SYSTEM_PASS: actual virtual touchscreen begin/move/end reaches menu scroll and cancels click");
         } finally { UnityEngine.Object.DestroyImmediate(go);InputSystem.RemoveDevice(device);if(prior!=null)prior.MakeCurrent(); }
     }
+    private static void ValidateCategoryCollections(WorkshopStore store,JArray manifests)
+    {
+        var roots=manifests.OfType<JObject>().Where(m=>(string)m["collectionRole"]=="category").ToArray();
+        if(roots.Length==0)return;
+        Check(roots.Length==5,"five category libraries in actual catalog");
+        var go=new GameObject("Category collection menu validation");
+        try {
+            var panel=go.AddComponent<LegacySessionPanel>();var flags=BindingFlags.Instance|BindingFlags.NonPublic;var type=typeof(LegacySessionPanel);
+            type.GetField("workshopStore",flags).SetValue(panel,store);
+            type.GetField("contentPackages",flags).SetValue(panel,manifests);
+            type.GetField("contentCategory",flags).SetValue(panel,0); // dedicated Collections page is the default
+            type.GetMethod("RebuildContentView",flags).Invoke(panel,null);
+            var view=(System.Collections.Generic.IEnumerable<JObject>)type.GetField("contentView",flags).GetValue(panel);
+            Check(view.Count()==5&&view.All(m=>(string)m["collectionRole"]=="category"),"real menu shows five libraries rather than individual tomes");
+            Check(view.Select(m=>(string)m["inventoryCategory"]).SequenceEqual(new[]{"weapons","armor","materials","consumables","junk"}),"dedicated collection page has predictable category order");
+            type.GetMethod("SwitchContentPage",flags).Invoke(panel,new object[]{false});
+            type.GetField("contentShowParts",flags).SetValue(panel,true);type.GetMethod("RebuildContentView",flags).Invoke(panel,null);
+            view=(System.Collections.Generic.IEnumerable<JObject>)type.GetField("contentView",flags).GetValue(panel);
+            Check(view.Count()>100,"individual tomes remain accessible through toggle");
+            foreach(var root in roots) {
+                var plan=(JArray)type.GetMethod("ContentInstallPlan",flags).Invoke(panel,new object[]{root});
+                Check(plan.Count==0,"actual UI skips all already installed collection modules");
+                var routine=(System.Collections.IEnumerator)type.GetMethod("DownloadContentPackage",flags).Invoke(panel,new object[]{root});
+                Check(!routine.MoveNext()&&!(bool)type.GetField("contentBusy",flags).GetValue(panel),"actual download controller completes already installed collection without network");
+            }
+            Debug.Log("VTT_COLLECTIONS_EDITOR_PASS: five actual category buttons, part toggle and real idempotent download controller");
+        }finally{UnityEngine.Object.DestroyImmediate(go);}
+    }
     private static void ValidateWorkshopPagination(WorkshopStore store)
     {
         var go=new GameObject("Workshop pagination validation");
         try {
             var panel=go.AddComponent<LegacySessionPanel>();var flags=BindingFlags.Instance|BindingFlags.NonPublic;var type=typeof(LegacySessionPanel);
             type.GetField("workshopStore",flags).SetValue(panel,store);
+            type.GetField("contentCollectionsPage",flags).SetValue(panel,false);
             var catalog=new JArray();for(int i=0;i<20000;i++)catalog.Add(new JObject { ["id"]="ci."+i,["name"]="Item"+i,["author"]="CI",["type"]="race" });
             type.GetField("contentPackages",flags).SetValue(panel,catalog);
             var ensure=type.GetMethod("EnsureContentView",flags);var page=type.GetMethod("VisibleContentPage",flags);
@@ -145,6 +174,7 @@ public static class WorkshopEditorValidation
             Debug.Log("VTT_APPEARANCE_PNG_PASS: "+decodedImages+" downloaded images decoded with matching dimensions");
             ValidateAppearanceLibrary(store,manifests);
             ValidateWorkshopPagination(store);
+            ValidateCategoryCollections(store,manifests);
             var previewEntries=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixtures,"DnD-VTT-Assets/catalog/v4/index.json")),"packs");int decodedPreviews=0;
             foreach(JObject entry in previewEntries)if(entry["preview"] is JObject preview) {
                 var texture=new Texture2D(2,2);try { var b=WorkshopStore.PreviewBytes(preview,File.ReadAllBytes(Path.Combine(fixtures,"DnD-VTT-Assets/previews",Path.GetFileName((string)preview["url"]))));Check(texture.LoadImage(b),"real small preview decodes in Unity");Check(texture.width==320&&texture.height==200,"decoded preview dimensions");decodedPreviews++; }finally { UnityEngine.Object.DestroyImmediate(texture); }
@@ -160,14 +190,15 @@ public static class WorkshopEditorValidation
 
             runtime = new WorkshopRuntime(store); runtime.ActivateData();
             var commerce = runtime.Commerce();
-            Check(((JArray)commerce["items"]).Count == 308 && ((JArray)commerce["craft"]["recipes"]).Count == 47, "downloaded inventory and craft activated in native Unity");
+            int expectedItems=manifests.OfType<JObject>().Where(m=>new[]{"item","craft"}.Contains((string)m["type"])).Sum(m=>(store.Data(m)["items"] as JArray ?? new JArray()).Count);
+            Check(((JArray)commerce["items"]).Count == expectedItems && ((JArray)commerce["craft"]["recipes"]).Count == 47, "downloaded inventory and craft activated in native Unity");
             var profiles = JObject.Parse(File.ReadAllText("ContentSources~/workshop-commerce/contracts.json"));
             foreach (JObject contract in (JArray)profiles["profiles"])
             {
                 var actual = CommerceRules.Profile((JObject)commerce["alchemy"], ((JArray)contract["ids"]).Values<string>().ToArray(), (string)contract["catalyst"]);
                 foreach (var property in ((JObject)contract["expected"]).Properties()) Check(JToken.DeepEquals(actual[property.Name],property.Value), "native Unity / main JS reaction parity: " + property.Name);
             }
-            Debug.Log("VTT_COMMERCE_EDITOR_PASS: 308 downloadable item/ingredient records, 47 recipes, nine real JS reaction profiles");
+            Debug.Log("VTT_COMMERCE_EDITOR_PASS: "+expectedItems+" downloadable item/ingredient records, 47 recipes, nine real JS reaction profiles");
             const string modelId = "demo.model.markers.beacon", surfaceId = "demo.appearance.amber.floor";
             Check(runtime.Models.ContainsKey(modelId) && runtime.Surfaces.ContainsKey(surfaceId), "JSON objects/materials activated");
             foreach (var prefab in runtime.Models.Values)

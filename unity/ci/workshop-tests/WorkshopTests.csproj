@@ -10,6 +10,7 @@
     <Compile Include="../../Assets/Vtt/Runtime/DiceTray.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/DiceMotion.cs" />
     <Compile Include="CommerceChecks.cs" />
+    <Compile Include="CollectionChecks.cs" />
     <Compile Include="AccountGestureChecks.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/MenuGesture.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/CloudCharacterProtocol.cs" />
