@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 5618b2b096c7. Git содержит 1983 файлов.
+Снимок кода deb74d697617. Git содержит 1983 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1088,7 +1088,7 @@
 | №1067 docs/unity-account/CHAT_ONE_HOUR.md | 2267 B | документация или отчёт: CHAT ONE HOUR |
 | №1068 docs/unity-account/CHAT_WORKSHOP_1.00.22.md | 7852 B | документация или отчёт: CHAT WORKSHOP 1.00.22 |
 | №1069 docs/unity-account/DICE_1.00.23.md | 5241 B | документация или отчёт: DICE 1.00.23 |
-| №1070 docs/unity-account/DICE_CONTACT_1.00.31.md | 4984 B | документация или отчёт: DICE CONTACT 1.00.31 |
+| №1070 docs/unity-account/DICE_CONTACT_1.00.31.md | 5032 B | документация или отчёт: DICE CONTACT 1.00.31 |
 | №1071 docs/unity-account/DICE_MATERIALS_1.00.28.md | 3463 B | документация или отчёт: DICE MATERIALS 1.00.28 |
 | №1072 docs/unity-account/DICE_SIX_1.00.29.md | 5386 B | документация или отчёт: DICE SIX 1.00.29 |
 | №1073 docs/unity-account/DICE_SIX_1.00.30.md | 8993 B | документация или отчёт: DICE SIX 1.00.30 |
@@ -1742,7 +1742,7 @@
 | №1721 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta | 59 B | вспомогательный файл: CharacterSheetValidation.cs |
 | №1722 unity/Assets/Vtt/Editor/DiceBuildGate.cs | 4491 B | вспомогательный файл: DiceBuildGate |
 | №1723 unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta | 60 B | вспомогательный файл: DiceBuildGate.cs |
-| №1724 unity/Assets/Vtt/Editor/DiceValidation.cs | 34568 B | вспомогательный файл: DiceValidation |
+| №1724 unity/Assets/Vtt/Editor/DiceValidation.cs | 34877 B | вспомогательный файл: DiceValidation |
 | №1725 unity/Assets/Vtt/Editor/DiceValidation.cs.meta | 60 B | вспомогательный файл: DiceValidation.cs |
 | №1726 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs | 10734 B | вспомогательный файл: LegacyMigrationSetup |
 | №1727 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSetup.cs |
@@ -1789,7 +1789,7 @@
 | №1768 unity/Assets/Vtt/Runtime/DiceMotion.cs.meta | 60 B | вспомогательный файл: DiceMotion.cs |
 | №1769 unity/Assets/Vtt/Runtime/DiceRollRequest.cs | 3635 B | вспомогательный файл: DiceRollRequest |
 | №1770 unity/Assets/Vtt/Runtime/DiceRollRequest.cs.meta | 60 B | вспомогательный файл: DiceRollRequest.cs |
-| №1771 unity/Assets/Vtt/Runtime/DiceTable.cs | 31372 B | вспомогательный файл: DiceTable |
+| №1771 unity/Assets/Vtt/Runtime/DiceTable.cs | 32009 B | вспомогательный файл: DiceTable |
 | №1772 unity/Assets/Vtt/Runtime/DiceTable.cs.meta | 60 B | вспомогательный файл: DiceTable.cs |
 | №1773 unity/Assets/Vtt/Runtime/DiceTable.Trays.cs | 9627 B | вспомогательный файл: DiceTable.Trays |
 | №1774 unity/Assets/Vtt/Runtime/DiceTable.Trays.cs.meta | 60 B | вспомогательный файл: DiceTable.Trays.cs |

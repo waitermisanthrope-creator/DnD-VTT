@@ -239,6 +239,8 @@ public static class DiceValidation
                     table.SetTheme(DiceTheme.Read((JObject)WorkshopStore.ValidateData(materialManifest,File.ReadAllText(p))["diceThemes"][0],true));table.Throw("20d20");
                     for(int i=0;i<2400&&table.Throwing;i++)table.Tick(.1f,false);
                     Check(table.Completed==20&&table.Value.HasValue,"twenty "+behavior+" bodies traverse "+selected.Profile+": "+table.Result);rolls+=20;
+                    if(behavior=="slime")Check(table.SlimeHops>=100,"slime starts its actual bounce phase after tower landing");
+                    if(behavior=="abyss")Check(table.TentaclePushes>0,"Abyss has actual contact drama after tower landing");
                     var moving=UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None);
                     Check(moving.All(b=>b.position.y>-1.5f&&b.position.y<2&&Mathf.Abs(b.position.x-12000)<6.5f&&Mathf.Abs(b.position.z-12000)<5.5f),"active material reaches bounded landing area "+selected.Profile);
                     Debug.Log("VTT_DICE_TRAY_MATERIAL_PASS: "+selected.Profile+" "+behavior+" maxY="+moving.Max(b=>b.position.y));
