@@ -16,7 +16,7 @@ on:
       version:
         description: 'Unpublished Android candidate, newer than public version'
         required: true
-        default: '1.00.37'
+        default: '1.00.38'
         type: string
 
 permissions:
@@ -40,7 +40,7 @@ jobs:
           persist-credentials: false
       - name: Reject candidate version already present in update channel
         env:
-          CANDIDATE_VERSION: ${{ inputs.version || '1.00.37' }}
+          CANDIDATE_VERSION: ${{ inputs.version || '1.00.38' }}
         run: |
           python3 - <<'PYCODE'
           import json, os
@@ -61,6 +61,7 @@ jobs:
           python3 unity/ci/test_update_settings_contract.py
           python3 unity/ci/test_brand_visual_contract.py
           python3 unity/ci/test_content_registry_contract.py
+          python3 unity/ci/test_character_preview_contract.py
       - name: Verify PostgreSQL roles, MFA, approvals and cloud RLS
         run: |
           npm ci --prefix supabase/tests --ignore-scripts --no-audit --no-fund
@@ -100,7 +101,7 @@ jobs:
         run: python3 unity/ci/cloud_release.py check-license
       - name: Prepare unpublished Android version in checkout only
         env:
-          CANDIDATE_VERSION: ${{ inputs.version || '1.00.37' }}
+          CANDIDATE_VERSION: ${{ inputs.version || '1.00.38' }}
         run: python3 unity/ci/cloud_release.py prepare --version "$CANDIDATE_VERSION"
       - name: Restore Unity import and IL2CPP cache (no credentials)
         id: unity-library
@@ -139,16 +140,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          APK="unity/Builds/Unity-${{ inputs.version || '1.00.37' }}/android-intermediate.apk"
+          APK="unity/Builds/Unity-${{ inputs.version || '1.00.38' }}/android-intermediate.apk"
           test -s "$APK"
           test "$(stat -c '%s' "$APK")" -gt 10000000
           badging="$("$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK")"
           grep -F "name='com.dndvtt.unity'" <<<"$badging"
-          expected_version="${{ inputs.version || '1.00.37' }}"
+          expected_version="${{ inputs.version || '1.00.38' }}"
           IFS=. read -r major minor patch <<< "$expected_version"
           printf -v expected_code '%d' "$((10#$major * 10000 + 10#$minor * 100 + 10#$patch))"
           grep -F "versionCode='$expected_code'" <<<"$badging"
-          grep -F "versionName='${{ inputs.version || '1.00.37' }}'" <<<"$badging"
+          grep -F "versionName='${{ inputs.version || '1.00.38' }}'" <<<"$badging"
           grep -F "native-code: 'arm64-v8a'" <<<"$badging"
           python3 unity/ci/verify_launcher_aliases.py "$APK" --aapt "$ANDROID_HOME/build-tools/36.0.0/aapt"
           sha256sum "$APK"
@@ -163,7 +164,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          BUILD_DIR="unity/Builds/Unity-${{ inputs.version || '1.00.37' }}"
+          BUILD_DIR="unity/Builds/Unity-${{ inputs.version || '1.00.38' }}"
           test -s "$BUILD_DIR/android-intermediate.apk"
           # game-ci/unity-builder writes the intermediate files as root inside
           # Docker. The host runner must own them to create the signed APK.
@@ -184,7 +185,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m pip install UnityPy==1.25.4
-          APK="unity/Builds/Unity-${{ inputs.version || '1.00.37' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.37' }}-arm64.apk"
+          APK="unity/Builds/Unity-${{ inputs.version || '1.00.38' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.38' }}-arm64.apk"
           python3 tools/inspect_unity_apk.py --apk "$APK" --output unity/apk-object-inventory.json
           python3 unity/ci/measure_apk.py --apk "$APK" --objects unity/apk-object-inventory.json --report unity/apk-metrics.json --minimal-content
       - name: Save measured APK inventory and metrics
@@ -200,8 +201,8 @@ jobs:
       - name: Deliver verified signed Android APK for phone testing
         uses: actions/upload-artifact@v4
         with:
-          name: DnD-VTT-Unity-${{ inputs.version || '1.00.37' }}-Android-test
-          path: unity/Builds/Unity-${{ inputs.version || '1.00.37' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.37' }}-arm64.apk
+          name: DnD-VTT-Unity-${{ inputs.version || '1.00.38' }}-Android-test
+          path: unity/Builds/Unity-${{ inputs.version || '1.00.38' }}/distribution/DnD-VTT-Unity-${{ inputs.version || '1.00.38' }}-arm64.apk
           if-no-files-found: error
           retention-days: 3
       - name: Verify separately generated trusted Android demo bundle
@@ -243,6 +244,15 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
+      - name: Upload native human character preview validation images
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Unity-character-previews-${{ github.run_id }}
+          path: unity/Builds/CharacterValidation/*.png
+          if-no-files-found: ignore
+          retention-days: 7
+
   windows-build:
     name: Build verified Windows x64 installer
     needs: android
@@ -259,7 +269,7 @@ jobs:
         run: git checkout --detach "$GITHUB_SHA"
       - name: Prepare same candidate version
         env:
-          CANDIDATE_VERSION: ${{ inputs.version || '1.00.37' }}
+          CANDIDATE_VERSION: ${{ inputs.version || '1.00.38' }}
         run: python3 unity/ci/cloud_release.py prepare --version "$CANDIDATE_VERSION"
       - uses: actions/download-artifact@v4
         with:
@@ -287,13 +297,13 @@ jobs:
       - name: Verify actual Windows output and restore ownership
         run: |
           sudo chown -R "$(id -u):$(id -g)" unity/Builds
-          test -s "unity/Builds/Unity-${{ inputs.version || '1.00.37' }}/windows/DndVtt.exe"
-          test -s "unity/Builds/Unity-${{ inputs.version || '1.00.37' }}/windows/UnityPlayer.dll"
-          test -s "unity/Builds/Unity-${{ inputs.version || '1.00.37' }}/windows/DndVtt_Data/Managed/Assembly-CSharp.dll"
+          test -s "unity/Builds/Unity-${{ inputs.version || '1.00.38' }}/windows/DndVtt.exe"
+          test -s "unity/Builds/Unity-${{ inputs.version || '1.00.38' }}/windows/UnityPlayer.dll"
+          test -s "unity/Builds/Unity-${{ inputs.version || '1.00.38' }}/windows/DndVtt_Data/Managed/Assembly-CSharp.dll"
       - uses: actions/download-artifact@v4
         with:
-          name: DnD-VTT-Unity-${{ inputs.version || '1.00.37' }}-Android-test
-          path: unity/Builds/Unity-${{ inputs.version || '1.00.37' }}/distribution
+          name: DnD-VTT-Unity-${{ inputs.version || '1.00.38' }}-Android-test
+          path: unity/Builds/Unity-${{ inputs.version || '1.00.38' }}/distribution
       - name: Install existing packaging dependencies
         run: |
           sudo apt-get update -qq

@@ -1,6 +1,10 @@
-# [В РАБОТЕ] Мастерская37 / 2026-10-23
+# [В РАБОТЕ] Мастерская38 / 2026-10-23
 
-Код рейтинга/избранного/ленты и новая SQL-миграция подготовлены; SQL162 и C#6923 локальных проверок пройдены. Рабочая БД НЕ обновлена: нет административного подключения и разрешённой сети к Supabase. Выполнить только новую202610230001 через SQL Editor; готовый runbook WORKSHOP_HEARTS_1.00.37.md. Нативный кандидат37 и публикация впереди, feed36 не менялся.
+Код рейтинга/избранного/ленты и новая SQL-миграция подготовлены; SQL162 и C#6923 локальных проверок пройдены. Рабочая БД НЕ обновлена: нет административного подключения и разрешённой сети к Supabase. Выполнить только новую202610230001 через SQL Editor; готовый runbook WORKSHOP_HEARTS_1.00.38.md. Нативный кандидат38 и публикация впереди, feed36 не менялся.
+
+# [В РАБОТЕ] 3D-персонаж из главного меню / Unity1.00.37, 2026-10-23
+
+Owner explicitly requested an in-app preview and update from the existing experimental Unity client. Previous separate feat/unity-character-studio prototype was not integrated; corrected in this stage. Enabled home 3D Character button, isolated native RenderTexture view, both human forms/23 morphs/15 axes, orbit/zoom/grey material, separate local draft. Original sheet/cloud/workshop/map data preserved. New native CharacterPreviewValidation gate checks real model geometry, six PNGs, controller navigation/cleanup and JSON preservation before existing dice/native builds. Candidate37/cloud verification/publication pending: do NOT claim installed or delivered yet. Existing feed36 remains unchanged until both builds and upgrade QA pass. No main/WebView release, MMO or dice-physics changes. See docs/unity-account/CHARACTER_PREVIEW_1.00.37.md. Preserve historical status below.
 
 # [ДОСТАВЛЕНО] Все15 сборников модов / Unity1.00.36, 2026-10-23
 
