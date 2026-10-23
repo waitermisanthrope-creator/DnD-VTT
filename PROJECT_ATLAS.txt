@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит d3f71068f3ae. Файлов: 1983
+Коммит 2ad2a3a1f274. Файлов: 1983
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1138,7 +1138,7 @@
 1122. PROJECT_ATLAS.txt — человекочитаемая карта репозитория (генерируется)
 1123. README.md — документация или отчёт: README (145 B)
 1124. release-staging/unity-android-approval.json — данные/конфигурация: unity android approval (470 B)
-1125. release-staging/unity-paired-approval.json — данные/конфигурация: unity paired approval (1284 B)
+1125. release-staging/unity-paired-approval.json — данные/конфигурация: unity paired approval (1969 B)
 1126. release-staging/unity-release.json — данные/конфигурация: unity release (3914 B)
 1127. smoke_back_v2_sprite-1.png — текстура/изображение: smoke back v2 sprite 1 (1707378 B)
 1128. smoke_back_v2_sprite.png — текстура/изображение: smoke back v2 sprite (1814587 B)
@@ -1757,7 +1757,7 @@
 1741. unity/Assets/Vtt/Resources/Branding/Splash19.png.meta — вспомогательный файл: Splash19.png (312 B)
 1742. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg — текстура/изображение: Wallpaper16 (212684 B)
 1743. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta — вспомогательный файл: Wallpaper16.jpg (312 B)
-1744. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (38725 B)
+1744. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (38727 B)
 1745. unity/Assets/Vtt/Resources/Changelog.json.meta — вспомогательный файл: Changelog.json (158 B)
 1746. unity/Assets/Vtt/Resources/CharacterSheet.meta — вспомогательный файл: CharacterSheet (172 B)
 1747. unity/Assets/Vtt/Resources/CharacterSheet/catalog.json — данные/конфигурация: catalog (823381 B)
@@ -1891,7 +1891,7 @@
 1875. unity/ci/verify_bundle_output.py — вспомогательный файл: verify bundle output (1081 B)
 1876. unity/ci/verify_launcher_aliases.py — вспомогательный файл: verify launcher aliases (3703 B)
 1877. unity/ci/verify_public_workshop.py — вспомогательный файл: verify public workshop (6279 B)
-1878. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (4224 B)
+1878. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (4276 B)
 1879. unity/ci/workshop-tests/.gitignore — вспомогательный файл: .gitignore (10 B)
 1880. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (5460 B)
 1881. unity/ci/workshop-tests/CommerceChecks.cs — вспомогательный файл: CommerceChecks (4247 B)
@@ -1943,8 +1943,8 @@
 1927. updates/previous-stable.json — метаданные обновлений: previous stable (179808 B)
 1928. updates/README.md — документация или отчёт: README (233 B)
 1929. updates/stable.json — метаданные обновлений: stable (179809 B)
-1930. updates/unity-changelog.json — метаданные обновлений: unity changelog (38725 B)
-1931. updates/unity-experiment.json — метаданные обновлений: unity experiment (2331 B)
+1930. updates/unity-changelog.json — метаданные обновлений: unity changelog (38727 B)
+1931. updates/unity-experiment.json — метаданные обновлений: unity experiment (2393 B)
 1932. vignette_v2_sprite.png — текстура/изображение: vignette v2 sprite (1213593 B)
 1933. VTT_PROJECT_MANIFEST_V70.json — устаревший список V70, не актуален (44370 B)
 1934. wall_brick_red.png — текстура/изображение: wall brick red (111128 B)
@@ -14729,7 +14729,7 @@ zipCompressedBrandingBytes — №1865
 zipCompressedNativeBytes — №1865
 zipCompressedUnityDataBytes — №1865
 
---- JSON поля (1031) ---
+--- JSON поля (1032) ---
 _builderBaseStats — №1747 (+ 2 других файлов)
 $schema — №1018
 abilities — №1747 (+ 2 других файлов)
@@ -14788,6 +14788,7 @@ apkVersionCode — №1077
 app — №1926 (+ 2 других файлов)
 appId — №1120
 approved — №1124 (+ 1 других файлов)
+approvedRenderIndexSha256 — №1125
 arcana — №1747 (+ 2 других файлов)
 arch — №1120
 archiveBytes — №0906 (+ 3 других файлов)

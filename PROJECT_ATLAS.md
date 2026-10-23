@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода d3f71068f3ae. Git содержит 1983 файлов.
+Снимок кода 2ad2a3a1f274. Git содержит 1983 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1143,7 +1143,7 @@
 | №1122 PROJECT_ATLAS.txt | генерируется | человекочитаемая карта репозитория |
 | №1123 README.md | 145 B | документация или отчёт: README |
 | №1124 release-staging/unity-android-approval.json | 470 B | данные/конфигурация: unity android approval |
-| №1125 release-staging/unity-paired-approval.json | 1284 B | данные/конфигурация: unity paired approval |
+| №1125 release-staging/unity-paired-approval.json | 1969 B | данные/конфигурация: unity paired approval |
 | №1126 release-staging/unity-release.json | 3914 B | данные/конфигурация: unity release |
 | №1127 smoke_back_v2_sprite-1.png | 1707378 B | текстура/изображение: smoke back v2 sprite 1 |
 | №1128 smoke_back_v2_sprite.png | 1814587 B | текстура/изображение: smoke back v2 sprite |
@@ -1762,7 +1762,7 @@
 | №1741 unity/Assets/Vtt/Resources/Branding/Splash19.png.meta | 312 B | вспомогательный файл: Splash19.png |
 | №1742 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg | 212684 B | текстура/изображение: Wallpaper16 |
 | №1743 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta | 312 B | вспомогательный файл: Wallpaper16.jpg |
-| №1744 unity/Assets/Vtt/Resources/Changelog.json | 38725 B | данные/конфигурация: Changelog |
+| №1744 unity/Assets/Vtt/Resources/Changelog.json | 38727 B | данные/конфигурация: Changelog |
 | №1745 unity/Assets/Vtt/Resources/Changelog.json.meta | 158 B | вспомогательный файл: Changelog.json |
 | №1746 unity/Assets/Vtt/Resources/CharacterSheet.meta | 172 B | вспомогательный файл: CharacterSheet |
 | №1747 unity/Assets/Vtt/Resources/CharacterSheet/catalog.json | 823381 B | данные/конфигурация: catalog |
@@ -1896,7 +1896,7 @@
 | №1875 unity/ci/verify_bundle_output.py | 1081 B | вспомогательный файл: verify bundle output |
 | №1876 unity/ci/verify_launcher_aliases.py | 3703 B | вспомогательный файл: verify launcher aliases |
 | №1877 unity/ci/verify_public_workshop.py | 6279 B | вспомогательный файл: verify public workshop |
-| №1878 unity/ci/windows-upgrade-qa.ps1 | 4224 B | вспомогательный файл: windows upgrade qa |
+| №1878 unity/ci/windows-upgrade-qa.ps1 | 4276 B | вспомогательный файл: windows upgrade qa |
 | №1879 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
 | №1880 unity/ci/workshop-tests/AccountGestureChecks.cs | 5460 B | вспомогательный файл: AccountGestureChecks |
 | №1881 unity/ci/workshop-tests/CommerceChecks.cs | 4247 B | вспомогательный файл: CommerceChecks |
@@ -1948,8 +1948,8 @@
 | №1927 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №1928 updates/README.md | 233 B | документация или отчёт: README |
 | №1929 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №1930 updates/unity-changelog.json | 38725 B | метаданные обновлений: unity changelog |
-| №1931 updates/unity-experiment.json | 2331 B | метаданные обновлений: unity experiment |
+| №1930 updates/unity-changelog.json | 38727 B | метаданные обновлений: unity changelog |
+| №1931 updates/unity-experiment.json | 2393 B | метаданные обновлений: unity experiment |
 | №1932 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №1933 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
 | №1934 wall_brick_red.png | 111128 B | текстура/изображение: wall brick red |
@@ -14759,7 +14759,7 @@
 | zipCompressedNativeBytes | №1865 |
 | zipCompressedUnityDataBytes | №1865 |
 
-### JSON поля (1031)
+### JSON поля (1032)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -14821,6 +14821,7 @@
 | app | №1926 (+ 2 других файлов) |
 | appId | №1120 |
 | approved | №1124 (+ 1 других файлов) |
+| approvedRenderIndexSha256 | №1125 |
 | arcana | №1747 (+ 2 других файлов) |
 | arch | №1120 |
 | archiveBytes | №0906 (+ 3 других файлов) |
