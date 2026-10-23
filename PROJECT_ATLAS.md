@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 17c6042e1c60. Git содержит 1986 файлов.
+Снимок кода 4e75015bf1d2. Git содержит 1986 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 7025 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 38808 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 61625 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 100171 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 40322 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 63139 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 101685 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1090,7 +1090,7 @@
 | №1069 docs/unity-account/DICE_1.00.23.md | 5241 B | документация или отчёт: DICE 1.00.23 |
 | №1070 docs/unity-account/DICE_CONTACT_1.00.31.md | 9409 B | документация или отчёт: DICE CONTACT 1.00.31 |
 | №1071 docs/unity-account/DICE_CONTACT_1.00.32.md | 14224 B | документация или отчёт: DICE CONTACT 1.00.32 |
-| №1072 docs/unity-account/DICE_DECAY_1.00.33.md | 2943 B | документация или отчёт: DICE DECAY 1.00.33 |
+| №1072 docs/unity-account/DICE_DECAY_1.00.33.md | 3783 B | документация или отчёт: DICE DECAY 1.00.33 |
 | №1073 docs/unity-account/DICE_MATERIALS_1.00.28.md | 3463 B | документация или отчёт: DICE MATERIALS 1.00.28 |
 | №1074 docs/unity-account/DICE_SIX_1.00.29.md | 5386 B | документация или отчёт: DICE SIX 1.00.29 |
 | №1075 docs/unity-account/DICE_SIX_1.00.30.md | 8993 B | документация или отчёт: DICE SIX 1.00.30 |
@@ -1101,7 +1101,7 @@
 | №1080 docs/unity-account/dice-1.00.28-metrics.json | 1717 B | документация или отчёт: dice 1.00.28 metrics |
 | №1081 docs/unity-account/dice-1.00.30-metrics.json | 2979 B | документация или отчёт: dice 1.00.30 metrics |
 | №1082 docs/unity-account/dice-1.00.32-metrics.json | 2200 B | документация или отчёт: dice 1.00.32 metrics |
-| №1083 docs/unity-account/IMPLEMENTATION_STATUS.md | 67963 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1083 docs/unity-account/IMPLEMENTATION_STATUS.md | 69477 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1084 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1085 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1086 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
