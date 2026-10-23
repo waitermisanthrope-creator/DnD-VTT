@@ -107,7 +107,7 @@ namespace DndVtt.UnityPrototype
             var positions=new List<Vector3>();var triangles=new List<int>();var uv=new List<Vector2>();
             foreach(var f in faces) {
                 int offset=positions.Count;
-                Vector3 up=(vertices[f.vertices[0]]-f.center).normalized,right=Vector3.Cross(up,f.normal).normalized;
+                Vector3 up=(vertices[f.vertices[0]]-f.center).normalized,right=(numberedAtlas?Vector3.Cross(f.normal,up):Vector3.Cross(up,f.normal)).normalized;
                 float radius=0;foreach(int id in f.vertices)radius=Mathf.Max(radius,(vertices[id]-f.center).magnitude);
                 foreach(int id in f.vertices) { positions.Add(vertices[id]);Vector3 local=vertices[id]-f.center;Vector2 coord=new Vector2(.5f+Vector3.Dot(local,right)/radius*.46f,.5f+Vector3.Dot(local,up)/radius*.46f);
                     if(numberedAtlas) { int tile=atlasOffset+f.value-1;coord=new Vector2((tile%10+coord.x)/10,(8-tile/10+coord.y)/9); }uv.Add(coord); }

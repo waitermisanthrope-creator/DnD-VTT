@@ -44,7 +44,7 @@ namespace DndVtt.UnityPrototype
         public int PhysicalOrnamentCount { get;private set; }
         private DiceRollRequest request;
         private int[] batch;
-        private bool nextBatch;
+        private bool nextBatch,resultAccepted;
         public bool Throwing=>Rolling||nextBatch;
         public System.Numerics.BigInteger Completed=>request?.Completed??System.Numerics.BigInteger.Zero;
         public System.Numerics.BigInteger Requested=>request?.Count??System.Numerics.BigInteger.Zero;
@@ -88,7 +88,7 @@ namespace DndVtt.UnityPrototype
         }
         private void ClearDice()
         {
-            numberLabels.Clear();
+            numberLabels.Clear();resultAccepted=false;
             foreach(var effect in effects)if(effect)UnityEngine.Object.DestroyImmediate(effect);effects.Clear();settledClock=0;
             foreach(var die in dice)if(die.body) { die.body.gameObject.SetActive(false);UnityEngine.Object.DestroyImmediate(die.body.gameObject); }
             dice.Clear();PhysicalOrnamentCount=0;
@@ -218,7 +218,7 @@ namespace DndVtt.UnityPrototype
         }
         public void Cancel()
         {
-            Rolling=nextBatch=false;Value=null;
+            Rolling=nextBatch=resultAccepted=false;Value=null;
             foreach(var d in dice) { if(!d.body.isKinematic) { d.body.linearVelocity=Vector3.zero;d.body.angularVelocity=Vector3.zero;d.body.isKinematic=true; } }
             Result="Бросок отменён. Готово "+Completed+" из "+Requested+"; промежуточная сумма "+Total+". Это не полный результат.";
             imageDirty=true;
@@ -253,7 +253,8 @@ namespace DndVtt.UnityPrototype
                 }
             }
             AnimateMaterial(delta);
-            if(render&&(moved||imageDirty||theme?.Behavior!=""&&theme?.Behavior!=null||!Image.IsCreated()))Render();
+            bool animated=theme?.Behavior=="abyss"||theme?.Behavior=="slime"||theme?.Behavior=="vine"&&settledClock<1.6f||effects.Count>0&&settledClock<10.1f;
+            if(render&&(moved||imageDirty||animated||!Image.IsCreated()))Render();
         }
         private void Complete()
         {
@@ -271,7 +272,7 @@ namespace DndVtt.UnityPrototype
                 else if(d.units)results.Add(percentile+value%10==0?100:percentile+value%10);
                 else results.Add(value);
             }
-            FrameDice();Rolling=false;settledClock=0;
+            FrameDice();Rolling=false;resultAccepted=true;settledClock=0;
             foreach(var die in dice)die.settledPosition=die.body.position;
             if(theme?.Behavior=="vine")foreach(var die in dice)GrowRoots(die);
             foreach(var d in dice) { if(!d.body.isKinematic) { d.body.linearVelocity=Vector3.zero;d.body.angularVelocity=Vector3.zero;d.body.isKinematic=true; } }
@@ -292,7 +293,7 @@ namespace DndVtt.UnityPrototype
             }
 #endif
             if(++retry<=3) { Launch(true);return; }
-            Rolling=nextBatch=false;Value=null;Result="Не удалось прочитать грань. Бросок прерван: "+Completed+" / "+Requested+"; промежуточная сумма "+Total+". Повторите бросок.";
+            Rolling=nextBatch=resultAccepted=false;Value=null;Result="Не удалось прочитать грань. Бросок прерван: "+Completed+" / "+Requested+"; промежуточная сумма "+Total+". Повторите бросок.";
             foreach(var d in dice)d.body.isKinematic=true;
         }
         private void FrameDice()
@@ -352,7 +353,7 @@ namespace DndVtt.UnityPrototype
                     var mat=renderer.sharedMaterial;if(mat.HasProperty("_Clock"))mat.SetFloat("_Clock",effectClock);
                     if(behavior=="slime"&&mat.HasProperty("_Squash"))mat.SetFloat("_Squash",Rolling?.045f*Mathf.Sin(effectClock*12):.075f*Mathf.Sin(settledClock*8));
                 }
-                if(behavior=="slime"&&!Rolling&&die.resolved>0) {
+                if(behavior=="slime"&&!Rolling&&resultAccepted) {
                     // Decorative bounce after immutable result; never re-simulate accepted dice.
                     die.body.transform.position=die.settledPosition+Vector3.up*(Mathf.Abs(Mathf.Sin(settledClock*4))*.22f);
                 }

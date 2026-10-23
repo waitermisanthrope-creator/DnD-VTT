@@ -39,7 +39,9 @@ namespace DndVtt.UnityPrototype
                     }else if(curved)next+=tangent*(theme.Length*.85f*t*t);
                     float radius=rootRadius*(1-t*.92f);
                     if(theme.Shape=="rounded")radius=theme.Width*Mathf.Sqrt(Mathf.Max(.01f,1-t*t));
-                    pieces.Add(Frustum(previous,next,previousRadius,radius,theme.Shape=="crystal"?4:8));
+                    var segment=Frustum(previous,next,previousRadius,radius,theme.Shape=="crystal"?4:8);
+                    if(theme.NumberedAtlas&&curved) { var coords=segment.uv;for(int k=0;k<coords.Length;k++)coords[k].y=(j-1+coords[k].y)/segments;segment.uv=coords; }
+                    pieces.Add(segment);
                     if(theme.TexturePng!=null&&theme.Shape=="tentacles"&&j%3==0) {
                         // Six convex tubes form a genuinely hollow, raised suction cup.
                         Vector3 along=(next-previous).normalized;

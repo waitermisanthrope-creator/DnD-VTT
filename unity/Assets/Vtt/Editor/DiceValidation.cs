@@ -146,12 +146,13 @@ public static class DiceValidation
                 themes++;
             }
             Check(themes==31&&families.Count==7,"all icon sets and shape families tested");
-            var experimental=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixture,"catalog/v7/index.json")),"packs");int experimentCount=0;
-            foreach(JObject manifest in experimental.Where(m=>(string)m["version"]=="1.2.0"&&(string)m["imageKind"]=="dice")) {
+            var experimental=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixture,"catalog/v8/index.json")),"packs");int experimentCount=0;
+            foreach(JObject manifest in experimental.Where(m=>(string)m["version"]=="1.2.1"&&(string)m["imageKind"]=="dice")) {
                 string payload=Path.Combine(fixture,"packages",Path.GetFileName((string)manifest["url"]));WorkshopStore.Verify(manifest,payload);
                 var theme=DiceTheme.Read((JObject)WorkshopStore.ValidateData(manifest,File.ReadAllText(payload))["diceThemes"][0],true);table.SetTheme(theme);
                 foreach(int count in new[]{4,6,8,10,12,20,100}) {
                     table.Preview(count);
+                    CheckAtlasHandedness(count==100?10:count);
                     Check(!UnityEngine.Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None).Any(),"numbered material has no floating text layers");
                     Check(table.MaterialBehavior==theme.Behavior,"actual profile selected");
                     if(count==20)CheckOpaqueShell(table);
@@ -172,6 +173,16 @@ public static class DiceValidation
                     }
                     Check(table.EffectCount<=48,"bounded effects for all die types");
                 }
+                if(theme.Behavior=="slime") {
+                    table.Throw("4d20");
+                    var state=(System.Collections.IList)typeof(DiceTable).GetField("dice",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(table);
+                    state[0].GetType().GetField("resolved").SetValue(state[0],1); // Deterministic partial-reroll cancellation state.
+                    table.Cancel();
+                    var actors=UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None).Where(b=>b.gameObject.name=="d20").ToArray();var positions=actors.Select(b=>b.transform.position).ToArray();
+                    table.Tick(.1f,false);
+                    Check(!table.Value.HasValue&&table.Completed==0&&actors.Select((b,i)=>(b.transform.position-positions[i]).sqrMagnitude<.000001f).All(v=>v),"cancelled partial slime cannot teleport to an uninitialized settled position");
+                }
+                Debug.Log("VTT_DICE_ATLAS_HANDEDNESS_PASS: "+theme.Behavior+" exterior U direction,70 faces incl percentile");
                 table.Preview(20);Check(table.EffectCount==0,"old marks/roots cleared with next preview");experimentCount++;
             }
             Check(experimentCount==6,"six complete experimental sets");
@@ -179,6 +190,19 @@ public static class DiceValidation
         }
         Check(UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None).Length==bodies,"no rigidbody leaks");
         Debug.Log("VTT_DICE_PASS: "+checks+" face orientations/topology/convexity/equal areas; "+rolls+" real local-physics throws; d100 pair, PNG rendering and cleanup");
+    }
+    private static void CheckAtlasHandedness(int count)
+    {
+        var shape=DiceGeometry.Create(count);var mesh=shape.Mesh(true,DiceGeometry.AtlasOffset(count));int offset=0;
+        try {
+            foreach(var face in shape.faces) {
+                Vector3 up=(shape.vertices[face.vertices[0]]-face.center).normalized;
+                Vector3 screenRight=Quaternion.LookRotation(-face.normal,up)*Vector3.right;
+                float correlation=0;float middle=mesh.uv.Skip(offset).Take(face.vertices.Length).Average(p=>p.x);
+                for(int i=0;i<face.vertices.Length;i++)correlation+=Vector3.Dot(shape.vertices[face.vertices[i]]-face.center,screenRight)*(mesh.uv[offset+i].x-middle);
+                Check(correlation>0,"numbered atlas U increases toward exterior viewer right; d"+count+" face"+face.value);offset+=face.vertices.Length;
+            }
+        }finally { UnityEngine.Object.DestroyImmediate(mesh); }
     }
     private static void CheckOpaqueShell(DiceTable table)
     {

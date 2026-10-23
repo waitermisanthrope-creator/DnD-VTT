@@ -69,8 +69,8 @@ class Program
                 }
                 Check(materialSets==31,"all31 textured recipes checked");
             }
-            var experiments=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source,"DnD-VTT-Assets/catalog/v7/index.json")),"packs");int six=0;
-            foreach(JObject manifest in experiments.Where(m=>(string)m["version"]=="1.2.0"&&(string)m["imageKind"]=="dice")) {
+            var experiments=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source,"DnD-VTT-Assets/catalog/v8/index.json")),"packs");int six=0;
+            foreach(JObject manifest in experiments.Where(m=>(string)m["version"]=="1.2.1"&&(string)m["imageKind"]=="dice")) {
                 string path=Path.Combine(source,"DnD-VTT-Assets/packages",Path.GetFileName((string)manifest["url"]));WorkshopStore.Verify(manifest,path);
                 var recipe=(JObject)WorkshopStore.ValidateData(manifest,File.ReadAllText(path))["diceThemes"][0];var parsed=DiceTheme.Read(recipe,true);
                 Check(parsed.NumberedAtlas&&parsed.TexturePng.Length>10000,"real complete numbered atlas selected");

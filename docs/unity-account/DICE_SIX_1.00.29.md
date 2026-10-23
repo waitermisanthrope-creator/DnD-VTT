@@ -1,3 +1,7 @@
+# VISUAL ACCEPTANCE FAILED — held candidate29
+
+Native checks/builds/Windows upgrade passed, but real rendered review exposed mirrored digits.29 was never activated in the in-app feed. Follow-up30 corrects exterior UV handedness and uses immutable1.2.1/v8 packs. Historical trial description below.
+
 # Six-theme test: Unity1.00.29
 
 Status: candidate in progress; public update feed stays1.00.28 until actual native checks, both builds, Windows upgrade QA, public artifacts and exact render review pass. Do not claim delivered until final evidence is appended.

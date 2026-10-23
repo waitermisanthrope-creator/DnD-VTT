@@ -60,13 +60,13 @@ for m in textured:
  download((preview_root,m))
 print('PUBLIC_TEXTURED_DICE_PACKAGES_PASS',len(textured),sum(m['bytes'] for m in textured),'bytes')
 
-# Six test material profiles are isolated in v7; existing v6 stays byte-compatible.
-data=fetch('https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v7/index.json',1024*1024)
-(preview_root/'catalog/v7').mkdir(parents=True,exist_ok=True);(preview_root/'catalog/v7/index.json').write_bytes(data)
-experimental=[m for m in json.loads(data)['packs'] if m.get('imageKind')=='dice' and m['version']=='1.2.0']
+# Six test material profiles are isolated in v8; existing v6 stays byte-compatible.
+data=fetch('https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v8/index.json',1024*1024)
+(preview_root/'catalog/v8').mkdir(parents=True,exist_ok=True);(preview_root/'catalog/v8/index.json').write_bytes(data)
+experimental=[m for m in json.loads(data)['packs'] if m.get('imageKind')=='dice' and m['version']=='1.2.1']
 assert len(experimental)==6
 for m in experimental:
- assert m['minClientVersionCode']==10029 and m['dependencies']==[]
+ assert m['minClientVersionCode']==10030 and m['dependencies']==[]
  assert m['url'].startswith('https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/releases/download/owner-appearance-v1/dnd.dice.')
  download((preview_root,m))
 print('PUBLIC_SIX_DICE_PACKAGES_PASS',len(experimental),sum(m['bytes'] for m in experimental),'bytes')
