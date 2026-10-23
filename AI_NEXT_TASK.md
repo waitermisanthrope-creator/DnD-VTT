@@ -1,3 +1,7 @@
+# [ПОВТОР36 С ИСПРАВЛЕННЫМ PNG-ТЕСТОМ] 2026-10-23
+
+Current actual runtime/test source1cee556028135ac6c155e44ca95a24d07792ca32, candidate40010792714, Android120610820409 in progress. Native PNG and thumbnail tests now explicitly select icon/wallpaper; dice/tray recipes keep their own validation, all63 images still mandatory. Earlier40008853150 failed old PNG assumption before collection UI, no36 published; superseded c40f1064 candidate40010721469 was canceled by this latest test refinement. Local full C#6905/collection991 unchanged PASS. All15 groups/397 real mods and map material dependency already public/verified, feed remains35. Next verify all3jobs for40010792714 only, paired gated release36, independent installer/feed/source/hash proof. Public verifier /tmp/verify_allmods36_public.py pins exact1cee/run40010792714. Preserve prior history below.
+
 # [ИСПРАВЛЕНИЕ НАТИВНОГО ТЕСТА36] 2026-10-23
 
 Candidate40008853150/source3428d7c1 failed before APK: old imageKind!=null PNG test dereferenced missing images on dice recipes after switching integration fixtures from Assets v4 to v9. Fix limits PNG decoding to icon/wallpaper and asserts all63 decode; dice/tray data remain validated by actual Store/recipe/native dice gates. C#6905 and991 real-module/platform checks passed in that run, native972 physics checks passed; collection UI gate was not reached. No36 APK/feed published,35 remains live. Rebuild required using subsequent corrected source; do not promote40008853150. All metadata/public catalogs already verified and unchanged. Preserve history below.

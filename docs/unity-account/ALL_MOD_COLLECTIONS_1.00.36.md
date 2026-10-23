@@ -17,3 +17,5 @@ Content v3:299, Assets v9:118;20 метаданных (15 корневых+5 в�
 После общего ресурса карт: полный C#6905 PASS, общий модуль991 PASS. Точный runtime source3428d7c188e00d2a8fc17dee676aac931bb41675; [нативный кандидат40008853150](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/40008853150) выполняется. Только его полностью успешные артефакты могут быть опубликованы.
 
 Кандидат40008853150 остановился на старом PNG-тесте: imageKind=dice/dice-tray не означает наличие массива images. После перехода интеграционных fixtures сv4 наv9 исправлена проверка только icon/wallpaper с сохранением обязательных63 декодирований; сами recipe-типы по-прежнему проходят Store/native dice проверки. Артефакты36 не опубликованы, нужен новый успешный кандидат.
+
+PNG и bounded-thumbnail selection исправлены явно для icon/wallpaper. Новый точный source1cee556028135ac6c155e44ca95a24d07792ca32, [кандидат40010792714](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/40010792714) в работе. Предыдущие36 кандидаты не публиковались.
