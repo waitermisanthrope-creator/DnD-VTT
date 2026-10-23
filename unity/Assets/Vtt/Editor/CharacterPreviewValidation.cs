@@ -16,6 +16,17 @@ public static class CharacterPreviewValidation
         Check(importer != null, "FBX exists");
         if (!importer.isReadable || !importer.importBlendShapes || importer.importAnimation || importer.indexFormat != ModelImporterIndexFormat.UInt32)
         { importer.isReadable = true; importer.SaveAndReimport(); }
+        foreach (string skin in new[] { "SkinMale", "SkinFemale" })
+        {
+            string path = "Assets/Vtt/Resources/CharacterStudio/" + skin + ".png";
+            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport);
+            var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+            Check(texture && texture.width == 2048 && texture.height == 2048,
+                "2D skin import: " + path + "; imported assets: " + string.Join(",", AssetDatabase.LoadAllAssetsAtPath(path).Select(a => a.GetType().Name + ":" + a.name)));
+            var runtime = Resources.Load<Texture2D>("CharacterStudio/" + skin);
+            Check(runtime, "skin available through runtime Resources: " + skin);
+            Debug.Log("VTT_CHARACTER_TEXTURE_PASS: " + skin + " " + texture.GetType().Name + " " + texture.width + "x" + texture.height);
+        }
     }
     public static void Run()
     {

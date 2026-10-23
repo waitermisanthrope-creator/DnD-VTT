@@ -40,3 +40,9 @@ FBX на два16-bit mesh parts; нативный gate остановился �
 Исправление: ModelImporterIndexFormat.UInt32 + проверка единственного
 SkinnedMeshRenderer; повторная сборка37 обязательна. C# действительно
 скомпилирован, но APK в этой попытке не создан/не опубликован.
+
+Попытка40025305329/source9a485848 тоже НЕУСПЕШНА: native Unity подтвердил
+единую сетку/23 морфа, затем остановился на загрузке SkinMale/SkinFemale.
+Файлы были импортированы TextureImporter. Добавлены явные Texture2D shape,
+полные texture meta и синхронная проверка AssetDatabase/Resources до Play Mode.
+Новая попытка обязательна;37 не опубликована.

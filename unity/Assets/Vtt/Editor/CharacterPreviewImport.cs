@@ -24,6 +24,7 @@ public sealed class CharacterPreviewImport : AssetPostprocessor
         if (!assetPath.StartsWith("Assets/Vtt/Resources/CharacterStudio/Skin")) return;
         var texture = (TextureImporter)assetImporter;
         texture.textureType = TextureImporterType.Default; texture.sRGBTexture = true;
+        texture.textureShape = TextureImporterShape.Texture2D;
         texture.maxTextureSize = 2048; texture.mipmapEnabled = true; texture.wrapMode = TextureWrapMode.Clamp;
     }
 }
