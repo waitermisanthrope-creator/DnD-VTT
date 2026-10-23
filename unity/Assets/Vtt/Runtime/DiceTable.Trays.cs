@@ -38,7 +38,7 @@ namespace DndVtt.UnityPrototype
             int sides=tray?.Profile=="hexagon"?6:tray?.Profile=="octagon"?8:4;
             var ground=TrayBox("Tray floor",new Vector3(0,FloorHeight-.18f,0),new Vector3(12,.35f,10),floor);
             var print=PrintTexture(tray?.Print??"compass",floor);trayAssets.Add(print);
-            var mat=ground.GetComponent<Renderer>().sharedMaterial;mat.SetTexture("_MainTex",print);mat.SetFloat("_Textured",1);mat.SetFloat("_Tile",-1);mat.color=Color.white;
+            var mat=ground.GetComponent<Renderer>().sharedMaterial;mat.SetTexture("_MainTex",print);mat.SetFloat("_Textured",1);mat.SetFloat("_Numbered",1);mat.SetFloat("_Tile",-1);mat.color=Color.white;
             if(sides>4) {
                 // The underside is hidden; the actual playable boundary is the polygon.
                 for(int i=0;i<sides;i++) {
@@ -61,6 +61,7 @@ namespace DndVtt.UnityPrototype
             }
             if(tray?.Profile=="spiral") {
                 // A continuous overlapping helical ramp: every visible tread is collidable.
+                TrayBox("Опора винтовой башни",new Vector3(0,3.1f,1.7f),new Vector3(1.05f,6.2f,1.05f),wall);
                 int steps=40;float start=-Mathf.PI*.5f;
                 for(int i=0;i<steps;i++) {
                     float a=start+i*(Mathf.PI*2/steps),b=start+(i+1)*(Mathf.PI*2/steps);
@@ -92,7 +93,8 @@ namespace DndVtt.UnityPrototype
         private void FrameTray()
         {
             bool tower=tray?.Profile=="spiral"||tray?.Profile=="pit";
-            camera.orthographicSize=tower?9:6.5f;Vector3 target=origin+Vector3.up*(tower?2:0);
+            bool tallStack=tray?.Profile=="spiral"&&dice.Count>6;
+            camera.orthographicSize=tallStack?12:tower?9:6.5f;Vector3 target=origin+Vector3.up*(tallStack?5:tower?2:0);
             camera.transform.position=target+new Vector3(0,11,-9);camera.transform.LookAt(target);imageDirty=true;
         }
         private void PlaceLaunch(Rigidbody body,int index,int columns,int rows,float spacing)
