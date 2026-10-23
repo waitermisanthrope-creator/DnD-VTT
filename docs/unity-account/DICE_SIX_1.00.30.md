@@ -38,3 +38,7 @@ After updating both app and pack, verify the selected set name on the table. For
 ## Exterior UV correction
 
 29 trial failed manual native visual acceptance despite opacity tests. Numbered UV horizontal axis now matches Quaternion.LookRotation(-normal,up)*Vector3.right, validated by positive correlation for every face/type. D4 corner positions in atlas are paired with the corrected basis. Other legacy UV stays unchanged. Curved detail V runs continuously along the arm. Accepted-result guard prevents decorative slime animation on cancelled partial throws. Static profiles stop idle rerendering after effects finish.30 native/build/public verification remains pending until appended final evidence.
+
+## Checkpoint: Android30 passed
+
+Source da5a40354c6854ebf57b6f35f823080d9fd42b47; candidate39884231802; Android120188536089 SUCCESS. Native60topology/171PhysX/32legacy numeral controls/6opaque exterior controls/420exterior-U face correlations passed; actual effect meshes, immutable results, partial-slime-cancel regression and cleanup passed. Rear-face removal0changed pixels for all6, front controls27797–46100pixels.4350C#/12existingPython+2review tests/133SQLWASM passed.25additional local filesystem upgrade/restart/corrupt-replacement/selection-ID checks passed using public1.2.0→1.2.1 data; these are not device or cloud checks. Windows120192598251 in progress; real Windows upgrade and visual acceptance/public signature still pending.

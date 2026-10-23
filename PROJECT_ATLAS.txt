@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 7a2d5ea6181b. Файлов: 1970
+Коммит da5a40354c68. Файлов: 1970
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -57,8 +57,8 @@
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (6966 B)
 0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (25439 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (45875 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (84421 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (46259 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (84805 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1085,13 +1085,13 @@
 1069. docs/unity-account/DICE_1.00.23.md — документация или отчёт: DICE 1.00.23 (5241 B)
 1070. docs/unity-account/DICE_MATERIALS_1.00.28.md — документация или отчёт: DICE MATERIALS 1.00.28 (3463 B)
 1071. docs/unity-account/DICE_SIX_1.00.29.md — документация или отчёт: DICE SIX 1.00.29 (5386 B)
-1072. docs/unity-account/DICE_SIX_1.00.30.md — документация или отчёт: DICE SIX 1.00.30 (5738 B)
+1072. docs/unity-account/DICE_SIX_1.00.30.md — документация или отчёт: DICE SIX 1.00.30 (6487 B)
 1073. docs/unity-account/DICE_THEMES_1.00.24.md — документация или отчёт: DICE THEMES 1.00.24 (6119 B)
 1074. docs/unity-account/dice-1.00.23-metrics.json — документация или отчёт: dice 1.00.23 metrics (1453 B)
 1075. docs/unity-account/dice-1.00.24-metrics.json — документация или отчёт: dice 1.00.24 metrics (2106 B)
 1076. docs/unity-account/dice-1.00.25-metrics.json — документация или отчёт: dice 1.00.25 metrics (2023 B)
 1077. docs/unity-account/dice-1.00.28-metrics.json — документация или отчёт: dice 1.00.28 metrics (1717 B)
-1078. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (52213 B)
+1078. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (52597 B)
 1079. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7893 B)
 1080. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1081. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
@@ -1136,7 +1136,7 @@
 1120. PROJECT_ATLAS.txt — человекочитаемая карта репозитория (генерируется)
 1121. README.md — документация или отчёт: README (145 B)
 1122. release-staging/unity-android-approval.json — данные/конфигурация: unity android approval (470 B)
-1123. release-staging/unity-paired-approval.json — данные/конфигурация: unity paired approval (935 B)
+1123. release-staging/unity-paired-approval.json — данные/конфигурация: unity paired approval (1035 B)
 1124. release-staging/unity-release.json — данные/конфигурация: unity release (3914 B)
 1125. smoke_back_v2_sprite-1.png — текстура/изображение: smoke back v2 sprite 1 (1707378 B)
 1126. smoke_back_v2_sprite.png — текстура/изображение: smoke back v2 sprite (1814587 B)

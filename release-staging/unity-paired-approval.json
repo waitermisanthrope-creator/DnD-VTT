@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "version": "1.00.29",
-  "candidateRunId": 39881037730,
+  "version": "1.00.30",
+  "candidateRunId": 39884231802,
   "approved": true,
   "scope": "Android ARM64 and Windows x64",
   "requireRenderReview": true,
-  "note": "Owner requested six experimental complete sets with material behaviors. Source3b7c9b2ba483557b4a48d0028506c033027af133; candidate39881037730 SUCCESS: Android120178197713, Windows120182576888, actual Windows install-upgrade-reinstall120185004787. Both native targets60topology/171PhysX/32legacy numeral controls/6opaque shell controls(rear0pixels), all42experimental types, effect bounds/cleanup/immutable results PASS.4350C#/12existingPython+2review-boundary/133SQLWASM PASS. Publish immutable candidate and85native images first; feed must remain28 until exact image index is reviewed and approved. No physical phone or exact sculpt/full soft-body claim. Six separate1.2 packs/v7 already verified8620494bytes; no production SQL or stable main changes."
+  "note": "Owner requested six experimental complete sets. Source da5a40354c6854ebf57b6f35f823080d9fd42b47; candidate39884231802 SUCCESS: Android120188536089, Windows120192598251, actual Windows install-upgrade-reinstall120194743203. Both native targets60topology/171PhysX/420exterior-UV correlations/32legacy numeral controls/6opaque shell controls(rear0pixels),42experimental types, effect bounds/cleanup/immutable results/slime partial-cancel guard PASS.4350C#/12existingPython+2review-boundary/133SQLWASM,25additional local filesystem upgrade checks PASS. Six1.2.1/v8 public packs verified8620414bytes. Publish candidate+85native images first, keep feed28 until exact render-index manual review approval.29 candidate rejected for mirrored digits and never activated. No exact sculpt/full soft-body/physical phone claim. No production SQL/stable main changes."
 }

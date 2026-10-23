@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 7a2d5ea6181b. Git содержит 1970 файлов.
+Снимок кода da5a40354c68. Git содержит 1970 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -62,8 +62,8 @@
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 6966 B | документация или отчёт: AGENTS |
 | №0043 AI_BLOCKERS.md | 25439 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 45875 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 84421 B | документация или отчёт: AI PROGRESS |
+| №0044 AI_NEXT_TASK.md | 46259 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 84805 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1090,13 +1090,13 @@
 | №1069 docs/unity-account/DICE_1.00.23.md | 5241 B | документация или отчёт: DICE 1.00.23 |
 | №1070 docs/unity-account/DICE_MATERIALS_1.00.28.md | 3463 B | документация или отчёт: DICE MATERIALS 1.00.28 |
 | №1071 docs/unity-account/DICE_SIX_1.00.29.md | 5386 B | документация или отчёт: DICE SIX 1.00.29 |
-| №1072 docs/unity-account/DICE_SIX_1.00.30.md | 5738 B | документация или отчёт: DICE SIX 1.00.30 |
+| №1072 docs/unity-account/DICE_SIX_1.00.30.md | 6487 B | документация или отчёт: DICE SIX 1.00.30 |
 | №1073 docs/unity-account/DICE_THEMES_1.00.24.md | 6119 B | документация или отчёт: DICE THEMES 1.00.24 |
 | №1074 docs/unity-account/dice-1.00.23-metrics.json | 1453 B | документация или отчёт: dice 1.00.23 metrics |
 | №1075 docs/unity-account/dice-1.00.24-metrics.json | 2106 B | документация или отчёт: dice 1.00.24 metrics |
 | №1076 docs/unity-account/dice-1.00.25-metrics.json | 2023 B | документация или отчёт: dice 1.00.25 metrics |
 | №1077 docs/unity-account/dice-1.00.28-metrics.json | 1717 B | документация или отчёт: dice 1.00.28 metrics |
-| №1078 docs/unity-account/IMPLEMENTATION_STATUS.md | 52213 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1078 docs/unity-account/IMPLEMENTATION_STATUS.md | 52597 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1079 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1080 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1081 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
@@ -1141,7 +1141,7 @@
 | №1120 PROJECT_ATLAS.txt | генерируется | человекочитаемая карта репозитория |
 | №1121 README.md | 145 B | документация или отчёт: README |
 | №1122 release-staging/unity-android-approval.json | 470 B | данные/конфигурация: unity android approval |
-| №1123 release-staging/unity-paired-approval.json | 935 B | данные/конфигурация: unity paired approval |
+| №1123 release-staging/unity-paired-approval.json | 1035 B | данные/конфигурация: unity paired approval |
 | №1124 release-staging/unity-release.json | 3914 B | данные/конфигурация: unity release |
 | №1125 smoke_back_v2_sprite-1.png | 1707378 B | текстура/изображение: smoke back v2 sprite 1 |
 | №1126 smoke_back_v2_sprite.png | 1814587 B | текстура/изображение: smoke back v2 sprite |
