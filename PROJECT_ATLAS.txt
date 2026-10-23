@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит e99d922aeab3. Файлов: 1989
+Коммит 27b38cef95eb. Файлов: 1989
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,9 +56,9 @@
 0040. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (7025 B)
-0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (49327 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (72144 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (110690 B)
+0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (49540 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (72357 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (110903 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1100,7 +1100,7 @@
 1084. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (77740 B)
 1085. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7893 B)
 1086. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
-1087. docs/unity-account/WORKSHOP_COLLECTIONS_1.00.35.md — документация или отчёт: WORKSHOP COLLECTIONS 1.00.35 (1995 B)
+1087. docs/unity-account/WORKSHOP_COLLECTIONS_1.00.35.md — документация или отчёт: WORKSHOP COLLECTIONS 1.00.35 (2361 B)
 1088. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
 1089. dragon_fire_v2_sprite.png — текстура/изображение: dragon fire v2 sprite (1013123 B)
 1090. embers_v2_sprite.png — текстура/изображение: embers v2 sprite (698014 B)
@@ -1949,7 +1949,7 @@
 1933. updates/previous-stable.json — метаданные обновлений: previous stable (179808 B)
 1934. updates/README.md — документация или отчёт: README (233 B)
 1935. updates/stable.json — метаданные обновлений: stable (179809 B)
-1936. updates/unity-changelog.json — метаданные обновлений: unity changelog (40864 B)
+1936. updates/unity-changelog.json — метаданные обновлений: unity changelog (41845 B)
 1937. updates/unity-experiment.json — метаданные обновлений: unity experiment (1671 B)
 1938. vignette_v2_sprite.png — текстура/изображение: vignette v2 sprite (1213593 B)
 1939. VTT_PROJECT_MANIFEST_V70.json — устаревший список V70, не актуален (44370 B)
@@ -15889,7 +15889,6 @@ unity/Assets/LegacyContent/Source/wall_wallpaper.png ; wall_wallpaper.png
 unity/Assets/LegacyContent/Source/wall_white_plaster.png ; wall_white_plaster.png
 unity/Assets/LegacyContent/Source/wall_wood_dark.png ; wall_wood_dark.png
 unity/Assets/LegacyContent/Source/wall_wood_light.png ; wall_wood_light.png
-unity/Assets/Vtt/Resources/Changelog.json ; updates/unity-changelog.json
 
 Обновление: node tools/generate_project_atlas.cjs
 

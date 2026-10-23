@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода e99d922aeab3. Git содержит 1989 файлов.
+Снимок кода 27b38cef95eb. Git содержит 1989 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 7025 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 49327 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 72144 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 110690 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 49540 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 72357 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 110903 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1105,7 +1105,7 @@
 | №1084 docs/unity-account/IMPLEMENTATION_STATUS.md | 77740 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1085 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1086 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
-| №1087 docs/unity-account/WORKSHOP_COLLECTIONS_1.00.35.md | 1995 B | документация или отчёт: WORKSHOP COLLECTIONS 1.00.35 |
+| №1087 docs/unity-account/WORKSHOP_COLLECTIONS_1.00.35.md | 2361 B | документация или отчёт: WORKSHOP COLLECTIONS 1.00.35 |
 | №1088 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
 | №1089 dragon_fire_v2_sprite.png | 1013123 B | текстура/изображение: dragon fire v2 sprite |
 | №1090 embers_v2_sprite.png | 698014 B | текстура/изображение: embers v2 sprite |
@@ -1954,7 +1954,7 @@
 | №1933 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №1934 updates/README.md | 233 B | документация или отчёт: README |
 | №1935 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №1936 updates/unity-changelog.json | 40864 B | метаданные обновлений: unity changelog |
+| №1936 updates/unity-changelog.json | 41845 B | метаданные обновлений: unity changelog |
 | №1937 updates/unity-experiment.json | 1671 B | метаданные обновлений: unity experiment |
 | №1938 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №1939 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
@@ -15925,7 +15925,6 @@
 - unity/Assets/LegacyContent/Source/wall_white_plaster.png ; wall_white_plaster.png
 - unity/Assets/LegacyContent/Source/wall_wood_dark.png ; wall_wood_dark.png
 - unity/Assets/LegacyContent/Source/wall_wood_light.png ; wall_wood_light.png
-- unity/Assets/Vtt/Resources/Changelog.json ; updates/unity-changelog.json
 
 ## Обновление индекса
 
