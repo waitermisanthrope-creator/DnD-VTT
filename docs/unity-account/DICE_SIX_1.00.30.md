@@ -1,6 +1,6 @@
 # Six-theme test: Unity1.00.30
 
-Status: candidate in progress; public update feed stays1.00.28 until actual native checks, both builds, Windows upgrade QA, public artifacts and exact render review pass. Do not claim delivered until final evidence is appended.
+Status: DELIVERED TEST PROTOTYPE. App1.00.30 and packs1.2.1/v8 are live; both public installers and six actual native previews independently verified. Historical checkpoint paragraphs below describe work before final delivery, superseded by final evidence.
 
 ## Scope and install
 
@@ -42,3 +42,13 @@ After updating both app and pack, verify the selected set name on the table. For
 ## Checkpoint: Android30 passed
 
 Source da5a40354c6854ebf57b6f35f823080d9fd42b47; candidate39884231802; Android120188536089 SUCCESS. Native60topology/171PhysX/32legacy numeral controls/6opaque exterior controls/420exterior-U face correlations passed; actual effect meshes, immutable results, partial-slime-cancel regression and cleanup passed. Rear-face removal0changed pixels for all6, front controls27797–46100pixels.4350C#/12existingPython+2review tests/133SQLWASM passed.25additional local filesystem upgrade/restart/corrupt-replacement/selection-ID checks passed using public1.2.0→1.2.1 data; these are not device or cloud checks. Windows120192598251 in progress; real Windows upgrade and visual acceptance/public signature still pending.
+
+## Final delivery —2026-10-23
+
+Both candidate jobs and actual Windows installation/upgrade/reinstallation passed. Candidate39884231802/source da5a40354c6854ebf57b6f35f823080d9fd42b47. Publisher39886825133/job120196826182 activates10030 after exact native index approval; commit2a5eb1817712901c94b2a820592325d71a3d7702. Plain/cache-busted public feed10030 agrees. [Release](https://github.com/waitermisanthrope-creator/DnD-VTT/releases/tag/unity-v1.00.30). APK42491894bytes/SHA7a455c4ae20d5d5ab4c6b4f37af20a1027b39d54f293246938c5268be38c1596; Windows29220176bytes/SHA958e20f02ffe9c60332774cf02e76d463d53a68d03cd781ebbba0cc47442274f. APK independently apksigner v2/v3/original certc1c1b3e6537f10819a3042817ac91535b47754ed65d084e635f84ff2b1f44c8e and aapt original package/code10030 verified. Windows Authenticode not asserted.
+
+85public native PNGs9674414bytes and both actual binaries downloaded/SHA verified. Reviewed full6d20, all42forms and12settled frames; corrected nonmirrored digits visible. After2sec actual image change counts: abyss23226/vine2067/slime42373; ice/blood/stone0 as expected after rest before mark expiry. Blood mark/stone grains visible; roots grow; opaque faces don't show rear digits. Native Editor images are not physical phone screenshots. Render index22bd94b490c5dfd431af6914a57ecb2ccb0ead9201bab810c5dc2450040f33db. Assets39886887017/job120197028869 SUCCESS activates six real native JPEGs133973bytes in6750d77db994c3a9543c11fb79a7454eea5d21e9. Each public JPEG size/SHA/dimensions and plain/cache-busted catalogv8 verified. Other101entries retained; five updated plus slime. All six public1.2.1 files total8620414bytes.
+
+Additional local actual-filesystem regression25checks confirms1.2.0→1.2.1 atomic upgrade, restart, stable selected IDs and corrupt-replacement refusal for each set (verification workspace dice-upgrade30). Not a live cloud/device test. Final source update/branding/registry contracts passed; no need to rerun physics for documentation-only changes.
+
+Separate auto furniture-conversion workflow39886378975/job120195406930 FAILED:8conversion errors,0models; verification says No converted models. Not a dice build or changed module, untouched. Do not describe all repository CI as green. Remaining: owner device acceptance; refine experimental geometry/materials (not exact icon sculptures); full soft-body/PBR maps and remaining25themes later. Next runtime code>10030; do not replace immutable30 binaries or1.2.1 payloads.

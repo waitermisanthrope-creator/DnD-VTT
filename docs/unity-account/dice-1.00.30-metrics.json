@@ -1,0 +1,98 @@
+{
+  "version": "1.00.30",
+  "versionCode": 10030,
+  "status": "delivered-test-prototype",
+  "sourceCommit": "da5a40354c6854ebf57b6f35f823080d9fd42b47",
+  "candidateRun": 39884231802,
+  "jobs": {
+    "android": 120188536089,
+    "windows": 120192598251,
+    "windowsUpgrade": 120194743203
+  },
+  "publisherRun": 39886825133,
+  "publisherJob": 120196826182,
+  "activationCommit": "2a5eb1817712901c94b2a820592325d71a3d7702",
+  "android": {
+    "bytes": 42491894,
+    "sha256": "7a455c4ae20d5d5ab4c6b4f37af20a1027b39d54f293246938c5268be38c1596",
+    "package": "com.dndvtt.unity",
+    "certificateSha256": "c1c1b3e6537f10819a3042817ac91535b47754ed65d084e635f84ff2b1f44c8e",
+    "signatureV2": true,
+    "signatureV3": true,
+    "deltaBytesVs28": 12288
+  },
+  "windows": {
+    "bytes": 29220176,
+    "sha256": "958e20f02ffe9c60332774cf02e76d463d53a68d03cd781ebbba0cc47442274f",
+    "actualUpgradeVerified": true,
+    "authenticodeVerified": false
+  },
+  "checks": {
+    "csharp": 4350,
+    "existingPython": 12,
+    "renderReviewBoundary": 2,
+    "sqlWasm": 133,
+    "localFilesystemPackageUpgrade": 25,
+    "nativeEditorPerTarget": {
+      "topology": 60,
+      "physxThrows": 171,
+      "exteriorUVFaces": 420,
+      "opaqueShellControls": 6,
+      "legacyNumeralControls": 32,
+      "experimentalTypes": 42
+    }
+  },
+  "renderIndexSha256": "22bd94b490c5dfd431af6914a57ecb2ccb0ead9201bab810c5dc2450040f33db",
+  "publicNativePngCount": 85,
+  "publicNativePngBytes": 9674414,
+  "review": {
+    "all42Forms": true,
+    "full6d20": true,
+    "settled12Frames": true,
+    "postRestChangedPixels": {
+      "abyss": 23226,
+      "ice": 0,
+      "blood": 0,
+      "stone": 0,
+      "vine": 2067,
+      "slime": 42373
+    }
+  },
+  "assets": {
+    "catalog": 8,
+    "packVersion": "1.2.1",
+    "packs": 6,
+    "packBytes": 8620414,
+    "producerRun": 39883872173,
+    "previewRun": 39886887017,
+    "previewJob": 120197028869,
+    "activationCommit": "6750d77db994c3a9543c11fb79a7454eea5d21e9",
+    "publicPreviewJpegs": 6,
+    "publicPreviewBytes": 133973
+  },
+  "rejectedCandidate": {
+    "version": "1.00.29",
+    "reason": "manual native review found mirrored digits",
+    "feedActivated": false
+  },
+  "unrelatedCiFailure": {
+    "run": 39886378975,
+    "job": 120195406930,
+    "name": "Convert remaining FBX and BLEND furniture",
+    "errors": 8,
+    "converted": 0,
+    "touched": false
+  },
+  "physicalPhoneVerified": false,
+  "interactiveDesktopVerified": false,
+  "liveSupabaseVerified": false,
+  "exactSculpturesComplete": false,
+  "fullSoftBodyComplete": false,
+  "limitations": [
+    "Experimental reference-inspired generated geometry/materials, not exact hand sculptures",
+    "Organic motion uses GPU deformation and simplified rigid collision",
+    "Albedo atlas plus scalar gloss/emboss, no full authored normal/roughness maps",
+    "Physical phone and desktop interactive acceptance pending",
+    "Other25themes and owner-deferred workshop page reset not included"
+  ]
+}

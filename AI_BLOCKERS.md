@@ -1,3 +1,7 @@
+# Unity1.00.30 test delivery complete —2026-10-23
+
+No dice publication blocker: both installers, original APK signature/package, live feed10030 and six native workshop previews verified. Physical phone and interactive desktop QA remain unperformed. Art is experimental adaptation with simplified collision/visual organic deformation, not exact hand-sculpted sets/full soft bodies. Other25themes/full PBR maps remain future scope.29 was held for mirrored UV;30 fixes exterior handedness. Separate existing furniture converter39886378975 failed with8errors/0models and is not part of dice builds; no furniture fix or success claimed. Workshop page-reset deferred; MMO WAIT_TEAM. See docs/unity-account/DICE_SIX_1.00.30.md. Historical blockers below retained.
+
 # Unity1.00.28 current limitations — 2026-10-22
 
 Both-platform delivery and public signature/feed/native-preview checks complete. Exact31 authored sculptures remain partial (01/05 face materials,29 tinted adaptations). Physical phone rendering/touch/install-over and desktop GPU/input unverified. Tentacles rigid; soft effects and workshop page-reset deferred. See docs/unity-account/DICE_MATERIALS_1.00.28.md. Historical blockers below are not claims about this completed release.

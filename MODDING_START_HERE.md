@@ -1,3 +1,5 @@
+> Current six-dice test: Unity1.00.30 / Assets catalogv8 / packs1.2.1. See docs/unity-account/DICE_SIX_1.00.30.md and Assets docs/DICE_THEMES.md. Earlier catalog references below remain applicable to older clients; v6/v5 unchanged. New profiles are allowlisted built-in client behavior, not downloadable executable code or arbitrary GLB support.
+
 # MODDING_START_HERE — старт для нового разработчика и его ChatGPT
 
 **Этот файл — входная дверь в создание дополнений DnD VTT, НЕ инструкция по сборке APK/EXE.** Основной клиент Unity находится в этой ветке, но новые JSON-моды обычно публикуются в других репозиториях и подхватываются мастерской без обновления приложения.
