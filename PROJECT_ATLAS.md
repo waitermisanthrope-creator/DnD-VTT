@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода cc6cb40884c0. Git содержит 2032 файлов.
+Снимок кода 2476ee4c3b82. Git содержит 2032 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1085,7 +1085,7 @@
 | №1064 docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md | 8253 B | документация или отчёт: ACCESS AND TOUCH 1.00.12 |
 | №1065 docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md | 9558 B | документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP |
 | №1066 docs/unity-account/ALL_MOD_COLLECTIONS_1.00.36.md | 6950 B | документация или отчёт: ALL MOD COLLECTIONS 1.00.36 |
-| №1067 docs/unity-account/CHARACTER_PREVIEW_1.00.37.md | 4569 B | документация или отчёт: CHARACTER PREVIEW 1.00.37 |
+| №1067 docs/unity-account/CHARACTER_PREVIEW_1.00.37.md | 5570 B | документация или отчёт: CHARACTER PREVIEW 1.00.37 |
 | №1068 docs/unity-account/CHAT_NICKNAMES_1.00.21.md | 3028 B | документация или отчёт: CHAT NICKNAMES 1.00.21 |
 | №1069 docs/unity-account/CHAT_ONE_HOUR.md | 2267 B | документация или отчёт: CHAT ONE HOUR |
 | №1070 docs/unity-account/CHAT_WORKSHOP_1.00.22.md | 7852 B | документация или отчёт: CHAT WORKSHOP 1.00.22 |
@@ -1750,7 +1750,7 @@
 | №1729 unity/Assets/Vtt/Editor/BuildBranding.cs.meta | 60 B | вспомогательный файл: BuildBranding.cs |
 | №1730 unity/Assets/Vtt/Editor/CharacterPreviewImport.cs | 1433 B | вспомогательный файл: CharacterPreviewImport |
 | №1731 unity/Assets/Vtt/Editor/CharacterPreviewImport.cs.meta | 60 B | вспомогательный файл: CharacterPreviewImport.cs |
-| №1732 unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs | 6898 B | вспомогательный файл: CharacterPreviewValidation |
+| №1732 unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs | 6925 B | вспомогательный файл: CharacterPreviewValidation |
 | №1733 unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs.meta | 60 B | вспомогательный файл: CharacterPreviewValidation.cs |
 | №1734 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs | 21197 B | вспомогательный файл: CharacterSheetValidation |
 | №1735 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta | 59 B | вспомогательный файл: CharacterSheetValidation.cs |
@@ -1766,7 +1766,7 @@
 | №1745 unity/Assets/Vtt/Editor/UnityReleaseBuild.cs.meta | 60 B | вспомогательный файл: UnityReleaseBuild.cs |
 | №1746 unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs | 3632 B | вспомогательный файл: WorkshopBundleBuild |
 | №1747 unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs.meta | 60 B | вспомогательный файл: WorkshopBundleBuild.cs |
-| №1748 unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs | 28445 B | вспомогательный файл: WorkshopEditorValidation |
+| №1748 unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs | 29407 B | вспомогательный файл: WorkshopEditorValidation |
 | №1749 unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs.meta | 60 B | вспомогательный файл: WorkshopEditorValidation.cs |
 | №1750 unity/Assets/Vtt/Resources.meta | 172 B | вспомогательный файл: Resources |
 | №1751 unity/Assets/Vtt/Resources/Branding.meta | 172 B | вспомогательный файл: Branding |
@@ -1790,7 +1790,7 @@
 | №1769 unity/Assets/Vtt/Resources/CharacterStudio/HumanBody.fbx.meta | 60 B | вспомогательный файл: HumanBody.fbx |
 | №1770 unity/Assets/Vtt/Resources/CharacterStudio/LICENSE.ASSETS.md | 6962 B | документация или отчёт: LICENSE.ASSETS |
 | №1771 unity/Assets/Vtt/Resources/CharacterStudio/LICENSE.ASSETS.md.meta | 60 B | вспомогательный файл: LICENSE.ASSETS.md |
-| №1772 unity/Assets/Vtt/Resources/CharacterStudio/MorphCatalog.json | 2665 B | данные/конфигурация: MorphCatalog |
+| №1772 unity/Assets/Vtt/Resources/CharacterStudio/MorphCatalog.json | 2701 B | данные/конфигурация: MorphCatalog |
 | №1773 unity/Assets/Vtt/Resources/CharacterStudio/MorphCatalog.json.meta | 60 B | вспомогательный файл: MorphCatalog.json |
 | №1774 unity/Assets/Vtt/Resources/CharacterStudio/PreviewLit.mat | 1027 B | вспомогательный файл: PreviewLit |
 | №1775 unity/Assets/Vtt/Resources/CharacterStudio/PreviewLit.mat.meta | 60 B | вспомогательный файл: PreviewLit.mat |
@@ -1806,7 +1806,7 @@
 | №1785 unity/Assets/Vtt/Runtime.meta | 172 B | вспомогательный файл: Runtime |
 | №1786 unity/Assets/Vtt/Runtime/AppearanceDocument.cs | 3069 B | вспомогательный файл: AppearanceDocument |
 | №1787 unity/Assets/Vtt/Runtime/AppearanceDocument.cs.meta | 60 B | вспомогательный файл: AppearanceDocument.cs |
-| №1788 unity/Assets/Vtt/Runtime/CharacterBodyPreview.cs | 13008 B | вспомогательный файл: CharacterBodyPreview |
+| №1788 unity/Assets/Vtt/Runtime/CharacterBodyPreview.cs | 15711 B | вспомогательный файл: CharacterBodyPreview |
 | №1789 unity/Assets/Vtt/Runtime/CharacterBodyPreview.cs.meta | 60 B | вспомогательный файл: CharacterBodyPreview.cs |
 | №1790 unity/Assets/Vtt/Runtime/CharacterCreation.cs | 11170 B | вспомогательный файл: CharacterCreation |
 | №1791 unity/Assets/Vtt/Runtime/CharacterCreation.cs.meta | 59 B | вспомогательный файл: CharacterCreation.cs |
@@ -1984,7 +1984,7 @@
 | №1963 unity/PUBLIC_DELIVERY.json | 1072 B | данные/конфигурация: PUBLIC DELIVERY |
 | №1964 unity/README.md | 9382 B | документация или отчёт: README |
 | №1965 unity/release.ps1 | 7750 B | вспомогательный файл: release |
-| №1966 unity/Tools/export_character.py | 7345 B | вспомогательный файл: export character |
+| №1966 unity/Tools/export_character.py | 7410 B | вспомогательный файл: export character |
 | №1967 unity/Tools/export_cloud_copy.cjs | 1429 B | логический модуль: export cloud copy |
 | №1968 unity/Tools/export_commerce.cjs | 2282 B | логический модуль: export commerce |
 | №1969 unity/Tools/package_commerce.py | 3643 B | вспомогательный файл: package commerce |
@@ -14863,7 +14863,7 @@
 | zipCompressedNativeBytes | №1908 |
 | zipCompressedUnityDataBytes | №1908 |
 
-### JSON поля (1205)
+### JSON поля (1206)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -14973,6 +14973,7 @@
 | baseAC | №1761 (+ 2 других файлов) |
 | baseAcFormula | №1932 |
 | baseColorFactor | №0912 |
+| baseHeight | №1772 |
 | baseline | №1045 (+ 1 других файлов) |
 | baseObj | №0087 (+ 1 других файлов) |
 | basePositionsSha256 | №0087 (+ 1 других файлов) |

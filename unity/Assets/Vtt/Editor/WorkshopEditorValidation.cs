@@ -43,6 +43,11 @@ public static class WorkshopEditorValidation
             type.GetField("contentPackages",flags).SetValue(panel,manifests);
             type.GetField("contentCategory",flags).SetValue(panel,0);
             Check(!(bool)type.GetField("contentCollectionsPage",flags).GetValue(panel),"main newest feed is default");
+            type.GetMethod("RebuildContentView",flags).Invoke(panel,null);
+            var mainView=((System.Collections.Generic.IEnumerable<JObject>)type.GetField("contentView",flags).GetValue(panel)).ToArray();
+            Check(mainView.Length==412&&mainView.Count(m=>(string)m["type"]=="collection")==15,"main feed includes397 published mods and15 libraries without internal markers");
+            Check(mainView.Select(WorkshopCommunity.Updated).SequenceEqual(mainView.Select(WorkshopCommunity.Updated).OrderByDescending(d=>d)),"actual main newest/updated ordering");
+            Check(((System.Collections.Generic.IEnumerable<JObject>)type.GetMethod("VisibleContentPage",flags).Invoke(panel,null)).Count()==12,"main feed uses bounded twelve-card page");
             type.GetMethod("SwitchContentPage",flags).Invoke(panel,new object[]{true});
             type.GetMethod("RebuildContentView",flags).Invoke(panel,null);
             var view=(System.Collections.Generic.IEnumerable<JObject>)type.GetField("contentView",flags).GetValue(panel);
@@ -71,6 +76,7 @@ public static class WorkshopEditorValidation
             Check(!community.Ready&&!(bool)type.GetField("contentFavoritesOnly",flags).GetValue(panel),"logout clears private workshop snapshot");
             var guest=(System.Collections.IEnumerator)type.GetMethod("ToggleWorkshopHeart",flags).Invoke(panel,new object[]{(string)roots[0]["id"]});
             Check(!guest.MoveNext(),"anonymous toggle exits without any network write");
+            Debug.Log("VTT_WORKSHOP_COMMUNITY_EDITOR_PASS: actual newest main412 / twelve-card page, fifteen libraries, rating order, own favorites, removal, logout and anonymous no-write controller");
             foreach(var root in roots) {
                 var plan=(JArray)type.GetMethod("ContentInstallPlan",flags).Invoke(panel,new object[]{root});
                 Check(plan.Count==0,"actual UI skips all already installed collection modules");

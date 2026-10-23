@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит cc6cb40884c0. Файлов: 2032
+Коммит 2476ee4c3b82. Файлов: 2032
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1080,7 +1080,7 @@
 1064. docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md — документация или отчёт: ACCESS AND TOUCH 1.00.12 (8253 B)
 1065. docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md — документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP (9558 B)
 1066. docs/unity-account/ALL_MOD_COLLECTIONS_1.00.36.md — документация или отчёт: ALL MOD COLLECTIONS 1.00.36 (6950 B)
-1067. docs/unity-account/CHARACTER_PREVIEW_1.00.37.md — документация или отчёт: CHARACTER PREVIEW 1.00.37 (4569 B)
+1067. docs/unity-account/CHARACTER_PREVIEW_1.00.37.md — документация или отчёт: CHARACTER PREVIEW 1.00.37 (5570 B)
 1068. docs/unity-account/CHAT_NICKNAMES_1.00.21.md — документация или отчёт: CHAT NICKNAMES 1.00.21 (3028 B)
 1069. docs/unity-account/CHAT_ONE_HOUR.md — документация или отчёт: CHAT ONE HOUR (2267 B)
 1070. docs/unity-account/CHAT_WORKSHOP_1.00.22.md — документация или отчёт: CHAT WORKSHOP 1.00.22 (7852 B)
@@ -1745,7 +1745,7 @@
 1729. unity/Assets/Vtt/Editor/BuildBranding.cs.meta — вспомогательный файл: BuildBranding.cs (60 B)
 1730. unity/Assets/Vtt/Editor/CharacterPreviewImport.cs — вспомогательный файл: CharacterPreviewImport (1433 B)
 1731. unity/Assets/Vtt/Editor/CharacterPreviewImport.cs.meta — вспомогательный файл: CharacterPreviewImport.cs (60 B)
-1732. unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs — вспомогательный файл: CharacterPreviewValidation (6898 B)
+1732. unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs — вспомогательный файл: CharacterPreviewValidation (6925 B)
 1733. unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs.meta — вспомогательный файл: CharacterPreviewValidation.cs (60 B)
 1734. unity/Assets/Vtt/Editor/CharacterSheetValidation.cs — вспомогательный файл: CharacterSheetValidation (21197 B)
 1735. unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta — вспомогательный файл: CharacterSheetValidation.cs (59 B)
@@ -1761,7 +1761,7 @@
 1745. unity/Assets/Vtt/Editor/UnityReleaseBuild.cs.meta — вспомогательный файл: UnityReleaseBuild.cs (60 B)
 1746. unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs — вспомогательный файл: WorkshopBundleBuild (3632 B)
 1747. unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs.meta — вспомогательный файл: WorkshopBundleBuild.cs (60 B)
-1748. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs — вспомогательный файл: WorkshopEditorValidation (28445 B)
+1748. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs — вспомогательный файл: WorkshopEditorValidation (29407 B)
 1749. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs.meta — вспомогательный файл: WorkshopEditorValidation.cs (60 B)
 1750. unity/Assets/Vtt/Resources.meta — вспомогательный файл: Resources (172 B)
 1751. unity/Assets/Vtt/Resources/Branding.meta — вспомогательный файл: Branding (172 B)
@@ -1785,7 +1785,7 @@
 1769. unity/Assets/Vtt/Resources/CharacterStudio/HumanBody.fbx.meta — вспомогательный файл: HumanBody.fbx (60 B)
 1770. unity/Assets/Vtt/Resources/CharacterStudio/LICENSE.ASSETS.md — документация или отчёт: LICENSE.ASSETS (6962 B)
 1771. unity/Assets/Vtt/Resources/CharacterStudio/LICENSE.ASSETS.md.meta — вспомогательный файл: LICENSE.ASSETS.md (60 B)
-1772. unity/Assets/Vtt/Resources/CharacterStudio/MorphCatalog.json — данные/конфигурация: MorphCatalog (2665 B)
+1772. unity/Assets/Vtt/Resources/CharacterStudio/MorphCatalog.json — данные/конфигурация: MorphCatalog (2701 B)
 1773. unity/Assets/Vtt/Resources/CharacterStudio/MorphCatalog.json.meta — вспомогательный файл: MorphCatalog.json (60 B)
 1774. unity/Assets/Vtt/Resources/CharacterStudio/PreviewLit.mat — вспомогательный файл: PreviewLit (1027 B)
 1775. unity/Assets/Vtt/Resources/CharacterStudio/PreviewLit.mat.meta — вспомогательный файл: PreviewLit.mat (60 B)
@@ -1801,7 +1801,7 @@
 1785. unity/Assets/Vtt/Runtime.meta — вспомогательный файл: Runtime (172 B)
 1786. unity/Assets/Vtt/Runtime/AppearanceDocument.cs — вспомогательный файл: AppearanceDocument (3069 B)
 1787. unity/Assets/Vtt/Runtime/AppearanceDocument.cs.meta — вспомогательный файл: AppearanceDocument.cs (60 B)
-1788. unity/Assets/Vtt/Runtime/CharacterBodyPreview.cs — вспомогательный файл: CharacterBodyPreview (13008 B)
+1788. unity/Assets/Vtt/Runtime/CharacterBodyPreview.cs — вспомогательный файл: CharacterBodyPreview (15711 B)
 1789. unity/Assets/Vtt/Runtime/CharacterBodyPreview.cs.meta — вспомогательный файл: CharacterBodyPreview.cs (60 B)
 1790. unity/Assets/Vtt/Runtime/CharacterCreation.cs — вспомогательный файл: CharacterCreation (11170 B)
 1791. unity/Assets/Vtt/Runtime/CharacterCreation.cs.meta — вспомогательный файл: CharacterCreation.cs (59 B)
@@ -1979,7 +1979,7 @@
 1963. unity/PUBLIC_DELIVERY.json — данные/конфигурация: PUBLIC DELIVERY (1072 B)
 1964. unity/README.md — документация или отчёт: README (9382 B)
 1965. unity/release.ps1 — вспомогательный файл: release (7750 B)
-1966. unity/Tools/export_character.py — вспомогательный файл: export character (7345 B)
+1966. unity/Tools/export_character.py — вспомогательный файл: export character (7410 B)
 1967. unity/Tools/export_cloud_copy.cjs — логический модуль: export cloud copy (1429 B)
 1968. unity/Tools/export_commerce.cjs — логический модуль: export commerce (2282 B)
 1969. unity/Tools/package_commerce.py — вспомогательный файл: package commerce (3643 B)
@@ -14833,7 +14833,7 @@ zipCompressedBrandingBytes — №1908
 zipCompressedNativeBytes — №1908
 zipCompressedUnityDataBytes — №1908
 
---- JSON поля (1205) ---
+--- JSON поля (1206) ---
 _builderBaseStats — №1761 (+ 2 других файлов)
 $schema — №1018
 abilities — №1761 (+ 2 других файлов)
@@ -14940,6 +14940,7 @@ baseAc — №1932
 baseAC — №1761 (+ 2 других файлов)
 baseAcFormula — №1932
 baseColorFactor — №0912
+baseHeight — №1772
 baseline — №1045 (+ 1 других файлов)
 baseObj — №0087 (+ 1 других файлов)
 basePositionsSha256 — №0087 (+ 1 других файлов)
