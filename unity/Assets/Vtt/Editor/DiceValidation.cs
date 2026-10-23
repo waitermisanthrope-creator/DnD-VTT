@@ -256,6 +256,24 @@ public static class DiceValidation
             }
             Check(experimentCount==6,"six complete experimental sets");
             table.SetTheme(null);
+            // Deterministic camera-edge control; not substituted for real throw images.
+            foreach(int n in new[]{4,6,8,10,12,20,100}) {
+                table.Preview(n);
+                var edgeBodies=UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None);
+                for(int i=0;i<edgeBodies.Length;i++) {
+                    var actor=edgeBodies[i];actor.position=new Vector3(12000+(i-(edgeBodies.Length-1)*.5f)*1.6f,.55f,12000-4.4f);
+                    actor.transform.SetPositionAndRotation(actor.position,actor.rotation);
+                }
+                var poses=edgeBodies.Select(b=>b.position).ToArray();
+                typeof(DiceTable).GetMethod("FrameDice",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(table,null);
+                var walls=UnityEngine.Object.FindObjectsByType<MeshRenderer>(FindObjectsSortMode.None).Where(r=>r.gameObject.name=="Борт").ToArray();
+                Check(walls.Any(w=>!w.enabled),"front wall rendering cannot conceal an edge die d"+n);
+                Check(walls.All(w=>w.GetComponent<Collider>().enabled),"result visibility keeps every wall collider enabled");
+                Check(edgeBodies.Select((b,i)=>(b.position-poses[i]).sqrMagnitude<.000001f).All(v=>v),"visibility never moves physical results");
+                typeof(DiceTable).GetMethod("FrameTray",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(table,null);
+                Check(walls.All(w=>w.enabled),"overview restores all walls before next launch");
+            }
+            Debug.Log("VTT_DICE_WALL_VISIBILITY_PASS: all seven die types, physical poses and colliders intact, overview restored");
             var trays=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixture,"catalog/v9/index.json")),"packs");int trayCount=0;
             foreach(JObject manifest in trays.Where(m=>(string)m["imageKind"]=="dice-tray")) {
                 string payload=Path.Combine(fixture,"packages",Path.GetFileName((string)manifest["url"]));WorkshopStore.Verify(manifest,payload);

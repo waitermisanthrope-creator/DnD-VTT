@@ -20,3 +20,7 @@ Physical phone remains unavailable here. Real perceived bounce cadence, asymmetr
 ## Android native checkpoint
 
 Candidate39946388195/source4e75015bf1d2dde3c688de12e2c6f2277488cad8, Android job120390954232 SUCCESS.972actual logical PhysX cases, prior face/UV/glyph/opaque/20body/tray/tower/cleanup regressions PASS.600Abyss d20 histogram:28,38,33,44,23,34,27,29,33,24,29,34,25,24,33,24,35,26,27,30; chi-squared18.8666666666667, no gross bias in this sample.20Abyss60contact impulses.20slime157real impacts; isolated slime13natural impacts, initial/max energy7.208248, numerical recovery.01227355; stationary accepted body PASS. Actual signed APK10033 CI SHA4c9cab13b7a59c41f953a4e84ae74aa1108b96e8d73edb53384aadb0004893e6. Windows120396289823 is building; installer upgrade, public images/signature/feed not yet verified. Previous candidate39945776162 was cancelled for the stronger energy regression, not a test failure.
+
+## Public33 review — NOT ACTIVATED
+
+Publisher39949621437/job120400609047 succeeded; all91actual public PNGs31550191bytes and installers independently verified. Index5af77132d28b385e28c11c0c0e7f6b04c904520cc8a4b7befc8c212b79bd7031 is NOT approved. Physical front tray wall conceals lower half of settled slime. Preserve immutable33 release and use34for the camera fix: hide obstructing wall renderer at closeup, retain collider and pose, restore for overview/next launch. APK public original certificate v2/v3 and aapt10033 PASS; Windows actual upgrade QA120399922464 PASS. These results do not mean33 was activated. Feed stays32 until reviewed34.

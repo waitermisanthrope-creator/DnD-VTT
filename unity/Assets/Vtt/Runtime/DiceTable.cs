@@ -343,6 +343,7 @@ namespace DndVtt.UnityPrototype
             float span=0;foreach(var d in dice)span=Mathf.Max(span,(d.body.position-center).magnitude);
             camera.orthographicSize=Mathf.Clamp(1.5f+span,1.5f,7.5f);
             camera.transform.position=center+new Vector3(0,9,-6);camera.transform.LookAt(center);
+            RevealDiceAtWalls();
         }
         private void Render()
         {
