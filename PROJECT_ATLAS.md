@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода a07a9ff59ad3. Git содержит 1983 файлов.
+Снимок кода efe29a648548. Git содержит 1983 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1791,7 +1791,7 @@
 | №1770 unity/Assets/Vtt/Runtime/DiceRollRequest.cs.meta | 60 B | вспомогательный файл: DiceRollRequest.cs |
 | №1771 unity/Assets/Vtt/Runtime/DiceTable.cs | 32270 B | вспомогательный файл: DiceTable |
 | №1772 unity/Assets/Vtt/Runtime/DiceTable.cs.meta | 60 B | вспомогательный файл: DiceTable.cs |
-| №1773 unity/Assets/Vtt/Runtime/DiceTable.Trays.cs | 12232 B | вспомогательный файл: DiceTable.Trays |
+| №1773 unity/Assets/Vtt/Runtime/DiceTable.Trays.cs | 12240 B | вспомогательный файл: DiceTable.Trays |
 | №1774 unity/Assets/Vtt/Runtime/DiceTable.Trays.cs.meta | 60 B | вспомогательный файл: DiceTable.Trays.cs |
 | №1775 unity/Assets/Vtt/Runtime/DiceTentacles.cs | 5008 B | вспомогательный файл: DiceTentacles |
 | №1776 unity/Assets/Vtt/Runtime/DiceTentacles.cs.meta | 60 B | вспомогательный файл: DiceTentacles.cs |

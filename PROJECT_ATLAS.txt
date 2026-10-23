@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит a07a9ff59ad3. Файлов: 1983
+Коммит efe29a648548. Файлов: 1983
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1786,7 +1786,7 @@
 1770. unity/Assets/Vtt/Runtime/DiceRollRequest.cs.meta — вспомогательный файл: DiceRollRequest.cs (60 B)
 1771. unity/Assets/Vtt/Runtime/DiceTable.cs — вспомогательный файл: DiceTable (32270 B)
 1772. unity/Assets/Vtt/Runtime/DiceTable.cs.meta — вспомогательный файл: DiceTable.cs (60 B)
-1773. unity/Assets/Vtt/Runtime/DiceTable.Trays.cs — вспомогательный файл: DiceTable.Trays (12232 B)
+1773. unity/Assets/Vtt/Runtime/DiceTable.Trays.cs — вспомогательный файл: DiceTable.Trays (12240 B)
 1774. unity/Assets/Vtt/Runtime/DiceTable.Trays.cs.meta — вспомогательный файл: DiceTable.Trays.cs (60 B)
 1775. unity/Assets/Vtt/Runtime/DiceTentacles.cs — вспомогательный файл: DiceTentacles (5008 B)
 1776. unity/Assets/Vtt/Runtime/DiceTentacles.cs.meta — вспомогательный файл: DiceTentacles.cs (60 B)

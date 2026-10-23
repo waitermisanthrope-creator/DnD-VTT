@@ -93,7 +93,7 @@ namespace DndVtt.UnityPrototype
                 }
             }
             for(int i=0;i<sides;i++) {
-                float a=i*2*Mathf.PI/sides,b=(i+1)*2*Mathf.PI/sides;int start=vertices.Count;
+                float a=i*2*Mathf.PI/sides,b=((i+1)%sides)*2*Mathf.PI/sides;int start=vertices.Count;
                 Vector3 p=new Vector3(Mathf.Cos(a)*6.2f,0,Mathf.Sin(a)*5.2f),q=new Vector3(Mathf.Cos(b)*6.2f,0,Mathf.Sin(b)*5.2f);
                 Vertex(p+Vector3.up*.175f);Vertex(p-Vector3.up*.175f);Vertex(q+Vector3.up*.175f);Vertex(q-Vector3.up*.175f);
                 triangles.AddRange(new[]{start,start+3,start+1,start,start+2,start+3});
