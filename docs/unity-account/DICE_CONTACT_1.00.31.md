@@ -26,3 +26,7 @@ Native trial bf236ea4/candidate39928298122 Android120330183427 FAILED at tray pr
 ## Native trial2
 
 Native trial2 source5618b2b0/candidate39929687416 Android120334591712 FAILED genuine20-body spiral traversal: several dice settle on sloped treads, strict classic face read remains ambiguous through3 retries. Previous feature regressions/material20 checks and synthetic sensor lifecycle PASS. Fix: delay completion on raised static supports, bounded real downhill/up release for stuck tower bodies, ambiguous rerolls into landing tray rather than the tower entry. Added real landing-height checks and20Abyss/20slime traversal for both towers. Retrying unpublished31; no feed change.
+
+## Native trial3
+
+Native trial3 source8869b5ac/candidate39931386111 Android120340709094 FAILED spiral20: two ambiguous dice remain after retries while18 are resolved. Strict face alignment retained; added furthest-clear landing-grid search excluding tower footprint and low lateral retry velocity to avoid frozen-body obstruction. Runtime phases now start after landing. Local4397C# checks PASS including repeated-shake detection, gravity/gradual orientation and single pickup-jolt rejection; latest source pending native rebuild. No APK publication or feed change.

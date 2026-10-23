@@ -119,10 +119,24 @@ namespace DndVtt.UnityPrototype
         private void PlaceLaunch(Rigidbody body,int index,int columns,int rows,float spacing,bool retry)
         {
             bool tower=tray?.Profile=="spiral"||tray?.Profile=="pit";
-            if(tower&&retry)body.position=origin+new Vector3((index%5-2)*1.85f,2.2f,-3.8f+index/5*1.05f);
+            if(retry)body.position=origin+ClearLandingSpot(body);
             else if(!tower)body.position=origin+new Vector3((index%columns-(Mathf.Min(dice.Count,columns)-1)*.5f)*spacing,2.2f,(index/columns-(rows-1)*.5f)*spacing);
             else if(tray.Profile=="pit")body.position=origin+new Vector3((index%3-1)*1.35f,7+index/9*1.5f,1.8f+(index/3%3-1)*1.35f);
             else body.position=origin+new Vector3((index%2-.5f)*1.25f,7+index/2*1.25f,-.35f);
+        }
+        private Vector3 ClearLandingSpot(Rigidbody body)
+        {
+            Vector3 best=new Vector3(0,FloorHeight+2.2f,-3.8f);float score=-1;
+            for(int x=0;x<9;x++)for(int z=0;z<7;z++) {
+                Vector3 p=new Vector3(-4.8f+x*1.2f,FloorHeight+2.2f,-3.8f+z*(7.6f/6));
+                if(p.x*p.x/25+p.z*p.z/16>1||IsTower&&Mathf.Abs(p.x)<3.5f&&p.z>-1.7f)continue;
+                float nearest=100;
+                foreach(var other in dice)if(other.body!=body) {
+                    Vector3 delta=other.body.position-origin-p;delta.y=0;nearest=Mathf.Min(nearest,delta.sqrMagnitude);
+                }
+                if(nearest>score) { score=nearest;best=p; }
+            }
+            return best;
         }
     }
 }

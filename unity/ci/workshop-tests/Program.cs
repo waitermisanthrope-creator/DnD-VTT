@@ -37,6 +37,12 @@ class Program
             var motion=new DiceMotion();int releases=0;
             for(int i=0;i<600;i++)if(motion.Sample(0,-1,0,1f/60))releases++;
             Check(releases==0,"gravity alone never throws");
+            motion.Reset();
+            for(int i=0;i<480;i++)if(motion.Sample((float)Math.Sin(i*Math.PI/240),-(float)Math.Cos(i*Math.PI/240),0,1f/60))releases++;
+            Check(releases==0,"ordinary gradual orientation change never throws");
+            motion.Reset();motion.Sample(0,-1,0,1f/60);
+            for(int i=0;i<120;i++)if(motion.Sample(i<12?4:0,-1,0,1f/60))releases++;
+            Check(releases==0,"single pickup jolt does not count as repeated shaking");
             float Gesture(float amplitude) {
                 var filter=new DiceMotion();float strength=0;int events=0;
                 for(int i=0;i<60;i++)filter.Sample(0,-1,0,1f/60);

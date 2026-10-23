@@ -251,7 +251,10 @@ namespace DndVtt.UnityPrototype
                 var die=dice[i];if(unresolvedOnly&&die.resolved>0)continue;
                 die.resolved=0;die.lastImpact=die.lastHop=die.lastGuide=0;die.hops=die.guides=0;die.materialStart=-1;die.tentacles?.Reset();var b=die.body;b.isKinematic=false;b.rotation=UnityEngine.Random.rotationUniform;
                 PlaceLaunch(b,i,columns,rows,spacing,unresolvedOnly);
-                b.linearVelocity=new Vector3(UnityEngine.Random.Range(-2.5f,2.5f),UnityEngine.Random.Range(1f,3f),UnityEngine.Random.Range(-2f,2f));b.linearVelocity*=.65f+throwStrength*1.3f;if(IsTower&&!unresolvedOnly)b.linearVelocity=new Vector3(b.linearVelocity.x*.08f,.3f,b.linearVelocity.z*.08f);b.angularVelocity=UnityEngine.Random.onUnitSphere*UnityEngine.Random.Range(12f,24f)*(.65f+throwStrength);b.WakeUp();
+                b.linearVelocity=new Vector3(UnityEngine.Random.Range(-2.5f,2.5f),UnityEngine.Random.Range(1f,3f),UnityEngine.Random.Range(-2f,2f));b.linearVelocity*=.65f+throwStrength*1.3f;
+                if(unresolvedOnly)b.linearVelocity=new Vector3(b.linearVelocity.x*.12f,b.linearVelocity.y,b.linearVelocity.z*.12f);
+                else if(IsTower)b.linearVelocity=new Vector3(b.linearVelocity.x*.08f,.3f,b.linearVelocity.z*.08f);
+                b.angularVelocity=UnityEngine.Random.onUnitSphere*UnityEngine.Random.Range(12f,24f)*(.65f+throwStrength);b.WakeUp();
             }
         }
         public void Tick(float delta,bool render=true)
@@ -326,7 +329,7 @@ namespace DndVtt.UnityPrototype
 #if UNITY_EDITOR
             foreach(var die in dice) {
                 die.geometry.Read(die.body.rotation,out float alignment,theme==null?.985f:.7f,theme==null?.025f:.04f);
-                Debug.Log("VTT_DICE_RETRY: theme="+(theme?.Id??"classic")+" d"+die.geometry.sides+" retry="+retry+" time="+elapsed+" quiet="+still+" alignment="+alignment+" linear="+die.body.linearVelocity.magnitude+" angular="+die.body.angularVelocity.magnitude+" resolved="+die.resolved);
+                Debug.Log("VTT_DICE_RETRY: theme="+(theme?.Id??"classic")+" d"+die.geometry.sides+" retry="+retry+" time="+elapsed+" quiet="+still+" alignment="+alignment+" linear="+die.body.linearVelocity.magnitude+" angular="+die.body.angularVelocity.magnitude+" resolved="+die.resolved+" position="+(die.body.position-origin)+" support="+SupportHeight(die.body.position)+" guides="+die.guides);
             }
 #endif
             if(++retry<=3) { Launch(true);return; }
