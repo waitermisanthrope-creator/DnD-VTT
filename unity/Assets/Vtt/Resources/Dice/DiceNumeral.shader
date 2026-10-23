@@ -5,7 +5,7 @@ Shader "DnDVtt/DiceNumeral" {
         Pass {
             Cull Off ZTest LEqual ZWrite On
             Blend SrcAlpha OneMinusSrcAlpha
-            Offset -1,-1
+            // No slope depth bias: near-edge planes can otherwise pull rear glyphs forward on mobile.
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag

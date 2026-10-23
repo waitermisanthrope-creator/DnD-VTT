@@ -100,15 +100,17 @@ namespace DndVtt.UnityPrototype
             }
             var clipped=points.ToArray();return CreateMesh(clipped,Hull(clipped),"Beveled d"+sides);
         }
-        public Mesh Mesh() => CreateMesh(vertices,faces,"Procedural d"+sides);
-        private static Mesh CreateMesh(Vector3[] vertices,Face[] faces,string name)
+        public static int AtlasOffset(int sides,bool tens=false,bool units=false)=>tens?60:units?70:sides==4?0:sides==6?4:sides==8?10:sides==10?18:sides==12?28:40;
+        public Mesh Mesh(bool numberedAtlas=false,int atlasOffset=0) => CreateMesh(vertices,faces,"Procedural d"+sides,numberedAtlas,atlasOffset);
+        private static Mesh CreateMesh(Vector3[] vertices,Face[] faces,string name,bool numberedAtlas=false,int atlasOffset=0)
         {
             var positions=new List<Vector3>();var triangles=new List<int>();var uv=new List<Vector2>();
             foreach(var f in faces) {
                 int offset=positions.Count;
                 Vector3 up=(vertices[f.vertices[0]]-f.center).normalized,right=Vector3.Cross(up,f.normal).normalized;
                 float radius=0;foreach(int id in f.vertices)radius=Mathf.Max(radius,(vertices[id]-f.center).magnitude);
-                foreach(int id in f.vertices) { positions.Add(vertices[id]);Vector3 local=vertices[id]-f.center;uv.Add(new Vector2(.5f+Vector3.Dot(local,right)/radius*.48f,.5f+Vector3.Dot(local,up)/radius*.48f)); }
+                foreach(int id in f.vertices) { positions.Add(vertices[id]);Vector3 local=vertices[id]-f.center;Vector2 coord=new Vector2(.5f+Vector3.Dot(local,right)/radius*.46f,.5f+Vector3.Dot(local,up)/radius*.46f);
+                    if(numberedAtlas) { int tile=atlasOffset+f.value-1;coord=new Vector2((tile%10+coord.x)/10,(8-tile/10+coord.y)/9); }uv.Add(coord); }
                 for(int i=1;i<f.vertices.Length-1;i++)triangles.AddRange(new[]{offset,offset+i,offset+i+1});
             }
             var mesh=new Mesh { name=name };mesh.SetVertices(positions);mesh.SetUVs(0,uv);mesh.SetTriangles(triangles,0);mesh.RecalculateNormals();mesh.RecalculateBounds();return mesh;

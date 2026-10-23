@@ -14,7 +14,7 @@ namespace DndVtt.UnityPrototype
             var pieces=new List<Mesh>();
             if(theme==null||theme.Shape=="rounded")return pieces;
             float rootRadius=theme.TexturePng!=null&&theme.Shape=="tentacles"?Mathf.Min(.09f,theme.Width*1.45f):theme.Width;
-            int arms=Math.Min(shape.vertices.Length,6);
+            int arms=Math.Min(shape.vertices.Length,theme.Behavior=="abyss"?4:6);
             for(int i=0;i<arms;i++) {
                 int vertexIndex=i*shape.vertices.Length/arms;Vector3 vertex=shape.vertices[vertexIndex];
                 Vector3 radial=vertex.normalized;
@@ -67,7 +67,20 @@ namespace DndVtt.UnityPrototype
                     var edge=Frustum(shape.vertices[a]*1.01f,shape.vertices[b]*1.01f,theme.Width*.36f,theme.Width*.36f,8);edge.name="Dice metal edge";pieces.Add(edge);
                 }
             }
+            if(theme.NumberedAtlas&&theme.Behavior!="slime"&&theme.Behavior!="stone") {
+                // Fine secondary raised frame sits inside each face perimeter, leaving numbers clear.
+                foreach(var face in shape.faces)for(int i=0;i<face.vertices.Length;i++) {
+                    Vector3 a=Vector3.Lerp(face.center,shape.vertices[face.vertices[i]],.84f)+face.normal*.006f;
+                    Vector3 b=Vector3.Lerp(face.center,shape.vertices[face.vertices[(i+1)%face.vertices.Length]],.84f)+face.normal*.006f;
+                    var rail=Frustum(a,b,.006f,.006f,6);rail.name="Dice metal edge";pieces.Add(rail);
+                }
+            }
             return pieces;
+        }
+        public static Mesh Root(Vector3 start,float angle)
+        {
+            Vector3 end=start+new Vector3(Mathf.Cos(angle),0,Mathf.Sin(angle))*.95f;
+            return Frustum(start,end,.045f,.004f,6);
         }
         private static Mesh Frustum(Vector3 a,Vector3 b,float ra,float rb,int count)
         {

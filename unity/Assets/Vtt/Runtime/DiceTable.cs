@@ -11,7 +11,7 @@ namespace DndVtt.UnityPrototype
     // Local physics scene: dice cannot collide with, simulate or modify the user's map.
     public sealed class DiceTable : IDisposable
     {
-        private sealed class Die { public DiceGeometry geometry;public Rigidbody body;public bool tens,units;public int resolved; }
+        private sealed class Die { public DiceGeometry geometry;public Rigidbody body;public bool tens,units;public int resolved;public Vector3 settledPosition;public float lastImpact; }
         private readonly Scene scene;
         private readonly PhysicsScene physics;
         private readonly GameObject root;
@@ -30,7 +30,10 @@ namespace DndVtt.UnityPrototype
         private readonly PhysicsMaterial contact;
         private readonly Font font;
         private readonly Vector3 origin=new Vector3(12000,0,12000);
-        private float accumulator,elapsed,still;
+        private float accumulator,elapsed,still,effectClock,settledClock;
+        private readonly List<GameObject> effects=new List<GameObject>();
+        public int EffectCount=>effects.Count;
+        public string MaterialBehavior=>theme?.Behavior??"";
         private bool imageDirty=true;
         private int retry,sides=20;
         private DiceTheme theme;
@@ -69,7 +72,7 @@ namespace DndVtt.UnityPrototype
             Box("Борт",new Vector3(0,.6f,2.85f),new Vector3(7.4f,1.6f,.3f),new Color(.36f,.21f,.08f));
             var view=Child("Dice camera");camera=view.AddComponent<Camera>();camera.enabled=false;camera.gameObject.AddComponent<UniversalAdditionalCameraData>().renderPostProcessing=false;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.025f,.035f,.045f);camera.cullingMask=1<<31;
             camera.transform.localPosition=new Vector3(0,9,-6);camera.transform.LookAt(origin);camera.orthographic=true;camera.orthographicSize=4;camera.nearClipPlane=.1f;camera.farClipPlane=30;
-            Image=new RenderTexture(768,640,16,RenderTextureFormat.ARGB32) { name="Dice view",antiAliasing=1 };Image.Create();camera.targetTexture=Image;camera.aspect=768f/640;
+            Image=new RenderTexture(768,640,24,RenderTextureFormat.ARGB32) { name="Dice view",antiAliasing=1 };Image.Create();camera.targetTexture=Image;camera.aspect=768f/640;
             tableResourceCount=owned.Count;Preview(20);
             }catch { Dispose();throw; }
         }
@@ -86,6 +89,7 @@ namespace DndVtt.UnityPrototype
         private void ClearDice()
         {
             numberLabels.Clear();
+            foreach(var effect in effects)if(effect)UnityEngine.Object.DestroyImmediate(effect);effects.Clear();settledClock=0;
             foreach(var die in dice)if(die.body) { die.body.gameObject.SetActive(false);UnityEngine.Object.DestroyImmediate(die.body.gameObject); }
             dice.Clear();PhysicalOrnamentCount=0;
             // Per-roll materials are separate from table assets and bounded shared shape meshes.
@@ -94,8 +98,9 @@ namespace DndVtt.UnityPrototype
         private void AddDie(int count,bool tens=false,bool units=false)
         {
             if(!shapes.TryGetValue(count,out var geometry)) { geometry=DiceGeometry.Create(count);shapes[count]=geometry; }
-            if(!bodyMeshes.TryGetValue(count,out var mesh)) {
-                mesh=theme?.Shape=="rounded"?geometry.BeveledMesh(.12f+theme.Length):geometry.Mesh();mesh.hideFlags=HideFlags.HideAndDontSave;bodyMeshes[count]=mesh;geometryAssets.Add(mesh);
+            int meshKey=count+(tens?100:units?200:0);
+            if(!bodyMeshes.TryGetValue(meshKey,out var mesh)) {
+                mesh=theme?.NumberedAtlas==true?geometry.Mesh(true,DiceGeometry.AtlasOffset(count,tens,units)):theme?.Shape=="rounded"?geometry.BeveledMesh(.12f+theme.Length):geometry.Mesh();mesh.hideFlags=HideFlags.HideAndDontSave;bodyMeshes[meshKey]=mesh;geometryAssets.Add(mesh);
             }
             var go=Child("d"+count);go.AddComponent<MeshFilter>().sharedMesh=mesh;
             var material=new Material(surface) { color=tens?new Color(.72f,.27f,.18f):new Color(.18f,.39f,.67f) };
@@ -103,12 +108,14 @@ namespace DndVtt.UnityPrototype
                 ColorUtility.TryParseHtmlString(theme.Body,out var bodyColor);material.color=bodyColor;
                 ColorUtility.TryParseHtmlString(theme.Trim,out var accent);material.SetColor("_Accent",accent);material.SetFloat("_Pattern",1);
                 if(themeTexture) { material.SetTexture("_MainTex",themeTexture);material.SetFloat("_Textured",1);material.SetFloat("_Tile",theme.FaceTile);material.color=theme.TintTexture?bodyColor*3:Color.white; }
+            if(theme.NumberedAtlas) { material.SetFloat("_Numbered",1);material.SetFloat("_Tile",-1);material.color=Color.white;material.SetFloat("_Gloss",theme.Behavior=="stone"?.05f:theme.Behavior=="vine"?.2f:.8f); }
             }owned.Add(material);go.AddComponent<MeshRenderer>().sharedMaterial=material;
             var collider=go.AddComponent<MeshCollider>();collider.sharedMesh=mesh;collider.convex=true;collider.sharedMaterial=contact;
             if(theme!=null) {
                 ColorUtility.TryParseHtmlString(theme.Trim,out var trimColor);
                 var trim=new Material(surface) { color=trimColor };
                 if(themeTexture) { trim.SetTexture("_MainTex",themeTexture);trim.SetFloat("_Textured",1);trim.SetFloat("_Tile",theme.TrimTile);trim.color=theme.TintTexture?trimColor:Color.white; }
+                if(theme.NumberedAtlas) { trim.SetFloat("_Numbered",1);trim.SetFloat("_Tile",80);trim.color=Color.white;trim.SetFloat("_Motion",theme.Behavior=="abyss"?1:0);trim.SetFloat("_Gloss",theme.Behavior=="stone"?.05f:.7f); }
                 owned.Add(trim);
                 if(!ornamentMeshes.TryGetValue(count,out var pieces)) {
                     pieces=DiceThemeGeometry.Build(geometry,theme);ornamentMeshes[count]=pieces;foreach(var piece in pieces)piece.hideFlags=HideFlags.HideAndDontSave;geometryAssets.AddRange(pieces);
@@ -133,13 +140,16 @@ namespace DndVtt.UnityPrototype
                             edges.CombineMeshes(pieces.Where(p=>p.name=="Dice metal edge").Select(p=>new CombineInstance { mesh=p,transform=Matrix4x4.identity }).ToArray(),true,false);
                             edgeRenderMeshes[count]=edges;geometryAssets.Add(edges);
                         }
-                        var metal=new Material(trim);metal.SetFloat("_Tile",3);metal.color=theme.TintTexture?trimColor:Color.white;owned.Add(metal);
+                        var metal=new Material(trim);metal.SetFloat("_Tile",theme.NumberedAtlas?80:3);metal.SetFloat("_Motion",0);metal.color=theme.TintTexture?trimColor:Color.white;owned.Add(metal);
                         var edging=Child("Metal edges");edging.transform.SetParent(go.transform,false);edging.AddComponent<MeshFilter>().sharedMesh=edges;edging.AddComponent<MeshRenderer>().sharedMaterial=metal;
                     }
                 }
             }
             var body=go.AddComponent<Rigidbody>();body.mass=.08f;body.linearDamping=.3f;body.angularDamping=.35f;body.maxAngularVelocity=30;body.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;body.interpolation=RigidbodyInterpolation.None;body.solverIterations=12;body.solverVelocityIterations=6;
-            foreach(var face in geometry.faces) {
+            if(theme?.Behavior=="ice") { body.linearDamping=.05f;body.angularDamping=.1f; }
+            if(theme?.Behavior=="stone")body.mass=.16f;
+            if(theme?.Behavior=="slime") { body.linearDamping=.6f;body.angularDamping=.65f; }
+            if(theme?.NumberedAtlas!=true)foreach(var face in geometry.faces) {
                 if(count==4) {
                     foreach(int vertex in face.vertices) {
                         int label=0;foreach(var opposite in geometry.faces)if(Array.IndexOf(opposite.vertices,vertex)<0) { label=opposite.value;break; }
@@ -177,6 +187,9 @@ namespace DndVtt.UnityPrototype
                 themeTexture=new Texture2D(2,2,TextureFormat.RGB24,true) { name=selected.Id+" albedo",hideFlags=HideFlags.HideAndDontSave,filterMode=FilterMode.Trilinear,wrapMode=TextureWrapMode.Clamp };
                 if(!themeTexture.LoadImage(selected.TexturePng,false)) { UnityEngine.Object.DestroyImmediate(themeTexture);themeTexture=null;throw new FormatException("Не удалось прочитать текстуру набора"); }
             }
+            contact.dynamicFriction=selected?.Behavior=="ice"?.025f:.65f;contact.staticFriction=selected?.Behavior=="ice"?.035f:.7f;
+            contact.frictionCombine=selected?.Behavior=="ice"?PhysicsMaterialCombine.Minimum:PhysicsMaterialCombine.Average;
+            contact.bounciness=selected?.Behavior=="slime"?.58f:selected?.Behavior=="stone"?.12f:.26f;
             Preview(sides);
         }
         public void Preview(int count)
@@ -223,18 +236,24 @@ namespace DndVtt.UnityPrototype
         }
         public void Tick(float delta,bool render=true)
         {
+            effectClock+=Mathf.Clamp(delta,0,.1f);
             if(nextBatch)NextBatch();
             bool moved=Rolling;
             if(Rolling) {
                 accumulator+=Mathf.Clamp(delta,0,.1f);
                 while(accumulator>=1f/60) { physics.Simulate(1f/60);accumulator-=1f/60;elapsed+=1f/60;
-                    bool quiet=true;foreach(var d in dice)if(d.body.linearVelocity.sqrMagnitude>.0144f||d.body.angularVelocity.sqrMagnitude>.0324f)quiet=false;
+                    bool quiet=true;foreach(var d in dice) {
+                        if(d.body.linearVelocity.sqrMagnitude>.0144f||d.body.angularVelocity.sqrMagnitude>.0324f)quiet=false;
+                        // Detect meaningful floor contacts without global MonoBehaviour callbacks.
+                        if((theme?.Behavior=="blood"||theme?.Behavior=="stone")&&d.body.position.y<.85f&&d.body.linearVelocity.y>.15f&&elapsed-d.lastImpact>.22f) { SpawnImpact(d);d.lastImpact=elapsed; }
+                    }
                     still=quiet?still+1f/60:0;
                     if(elapsed>.8f&&still>.6f) { Complete();break; }
                     if(elapsed>12) { RerollOrFail();break; }
                 }
             }
-            if(render&&(moved||imageDirty||!Image.IsCreated()))Render();
+            AnimateMaterial(delta);
+            if(render&&(moved||imageDirty||theme?.Behavior!=""&&theme?.Behavior!=null||!Image.IsCreated()))Render();
         }
         private void Complete()
         {
@@ -252,7 +271,9 @@ namespace DndVtt.UnityPrototype
                 else if(d.units)results.Add(percentile+value%10==0?100:percentile+value%10);
                 else results.Add(value);
             }
-            FrameDice();Rolling=false;
+            FrameDice();Rolling=false;settledClock=0;
+            foreach(var die in dice)die.settledPosition=die.body.position;
+            if(theme?.Behavior=="vine")foreach(var die in dice)GrowRoots(die);
             foreach(var d in dice) { if(!d.body.isKinematic) { d.body.linearVelocity=Vector3.zero;d.body.angularVelocity=Vector3.zero;d.body.isKinematic=true; } }
             if(request!=null) {
                 for(int i=0;i<batch.Length;i++)request.Accept(batch[i],results[i]);
@@ -286,12 +307,60 @@ namespace DndVtt.UnityPrototype
         {
             if(!camera||!Image)return;
             if(numerals)numerals.mainTexture=font.material.mainTexture;
-            foreach(var label in numberLabels)if(label)FitNumeral(label);
+            foreach(var label in numberLabels)if(label) {
+                FitNumeral(label);
+                // Explicit orientation culling also protects old text overlays on mobile GPUs.
+                label.GetComponent<MeshRenderer>().enabled=Vector3.Dot(-label.transform.forward,-camera.transform.forward)>.015f;
+            }
             if(!Image.IsCreated()&&!Image.Create())throw new InvalidOperationException("Не удалось восстановить 3D-стол");
             if(GraphicsSettings.currentRenderPipeline!=null)
                 RenderPipeline.SubmitRenderRequest(camera,new UniversalRenderPipeline.SingleCameraRequest { destination=Image });
             else camera.Render();
             imageDirty=false;
+        }
+        private void SpawnImpact(Die die)
+        {
+            int count=theme.Behavior=="blood"?3:5;
+            for(int i=0;i<count&&effects.Count<48;i++) {
+                var drop=Child(theme.Behavior=="blood"?"Blood drop":"Stone dust");
+                drop.AddComponent<MeshFilter>().sharedMesh=bodyMeshes.Values.First();
+                var mat=new Material(surface) { color=theme.Behavior=="blood"?new Color(.3f,.005f,.012f):new Color(.36f,.34f,.3f) };owned.Add(mat);
+                drop.AddComponent<MeshRenderer>().sharedMaterial=mat;
+                float phase=effects.Count*2.39996f,r=.12f+(effects.Count%5)*.07f;
+                drop.transform.localPosition=new Vector3(die.body.position.x-origin.x+Mathf.Cos(phase)*r,.025f,die.body.position.z-origin.z+Mathf.Sin(phase)*r);
+                drop.transform.localScale=theme.Behavior=="blood"?new Vector3(.11f,.012f,.09f):Vector3.one*.045f;
+                effects.Add(drop);
+            }
+            imageDirty=true;
+        }
+        private void GrowRoots(Die die)
+        {
+            for(int i=0;i<5&&effects.Count<48;i++) {
+                float angle=i*Mathf.PI*.4f;
+                var rootMesh=DiceThemeGeometry.Root(Vector3.zero,angle);
+                var rootGo=Child("Growing root");rootGo.AddComponent<MeshFilter>().sharedMesh=rootMesh;owned.Add(rootMesh);
+                var mat=new Material(surface) { color=new Color(.18f,.25f,.065f) };owned.Add(mat);rootGo.AddComponent<MeshRenderer>().sharedMaterial=mat;
+                rootGo.transform.localPosition=new Vector3(die.body.position.x-origin.x,.04f,die.body.position.z-origin.z);rootGo.transform.localScale=Vector3.zero;effects.Add(rootGo);
+            }
+        }
+        private void AnimateMaterial(float delta)
+        {
+            string behavior=theme?.Behavior??"";if(behavior=="")return;
+            if(!Rolling)settledClock+=Mathf.Clamp(delta,0,.1f);
+            foreach(var die in dice) {
+                foreach(var renderer in die.body.GetComponentsInChildren<MeshRenderer>()) {
+                    var mat=renderer.sharedMaterial;if(mat.HasProperty("_Clock"))mat.SetFloat("_Clock",effectClock);
+                    if(behavior=="slime"&&mat.HasProperty("_Squash"))mat.SetFloat("_Squash",Rolling?.045f*Mathf.Sin(effectClock*12):.075f*Mathf.Sin(settledClock*8));
+                }
+                if(behavior=="slime"&&!Rolling&&die.resolved>0) {
+                    // Decorative bounce after immutable result; never re-simulate accepted dice.
+                    die.body.transform.position=die.settledPosition+Vector3.up*(Mathf.Abs(Mathf.Sin(settledClock*4))*.22f);
+                }
+            }
+            foreach(var effect in effects)if(effect) {
+                if(behavior=="vine")effect.transform.localScale=Vector3.one*Mathf.Clamp01(settledClock/1.5f);
+                else { var renderer=effect.GetComponent<MeshRenderer>();float fade=Mathf.Clamp01(1-settledClock/(behavior=="blood"?10:3));renderer.enabled=fade>0; }
+            }
         }
         private void ClearGeometryAssets()
         {
