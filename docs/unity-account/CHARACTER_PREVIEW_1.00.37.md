@@ -46,3 +46,14 @@ SkinnedMeshRenderer; повторная сборка37 обязательна. C
 Файлы были импортированы TextureImporter. Добавлены явные Texture2D shape,
 полные texture meta и синхронная проверка AssetDatabase/Resources до Play Mode.
 Новая попытка обязательна;37 не опубликована.
+
+Текущая повторная попытка: source8ac5e990f1bb9271b506989f63505f623afa78d0,
+run40039088834. Статус пока pending/in progress; не считать выпуском.
+
+Попытка40039088834/source8ac5e990 НЕУСПЕШНА: обе кожи успешно загружены
+как Texture2D2048x2048 через AssetDatabase и Resources. Native gate затем
+отклонил масштаб male после SkinnedMeshRenderer.BakeMesh. Статический
+предпросмотр теперь применяет исходные blendshape-дельты напрямую к сетке,
+без зависимости от состояния Animator/BakeMesh; иерархия один раз нормализуется
+к физической высоте исходного GLB из MorphCatalog.baseHeight. Риг сохранён,
+живые анимации по-прежнему не заявлены. Нужна новая полная проверка.

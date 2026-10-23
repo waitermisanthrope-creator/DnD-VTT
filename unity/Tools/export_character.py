@@ -114,6 +114,7 @@ def export():
     require(max((a.co-b.co).length for a,b in zip(female.data,imported.data.shape_keys.key_blocks[0].data)) > .05, 'Female morph is empty')
     result = {'schema': 1, 'sourceGlbSha256': sha(raw), 'sourceSparseSha256': sha(sparse),
         'fbxSha256': sha(fbx.read_bytes()), 'triangles': expected_triangles, 'bones': expected_bones,
+        'baseHeight': positions['max'][1] - positions['min'][1],
         'morphNames': names, 'channels': channels, 'maxCoordinateRoundTripError': max_coordinate_error,
         'validation': 'Blender FBX export/reimport: bones, triangles, all shape coordinates, morph names, scale, nonempty female target',
         'unityValidation': 'Not run: Unity Editor unavailable in execution environment'}

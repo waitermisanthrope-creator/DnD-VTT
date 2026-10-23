@@ -89,5 +89,6 @@
   },
   "maxCoordinateRoundTripError": 1.3113021850585938e-06,
   "validation": "Blender FBX export/reimport: bones, triangles, all shape coordinates, morph names, scale, nonempty female target",
-  "unityValidation": "Not run: Unity Editor unavailable in execution environment"
+  "unityValidation": "Not run: Unity Editor unavailable in execution environment",
+  "baseHeight": 1.6803240799927153
 }

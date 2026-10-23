@@ -44,7 +44,7 @@ public static class CharacterPreviewValidation
             {
                 string gender = female ? "female" : "male";
                 var document = AppearanceDocument.Create(female); studio.Apply(document);
-                Check(studio.Body.Bounds.size.y > 1.3f && studio.Body.Bounds.size.y < 2.1f, "human scale: " + gender);
+                Check(studio.Body.Bounds.size.y > 1.3f && studio.Body.Bounds.size.y < 2.1f, "human scale: " + gender + " " + studio.Body.Bounds);
                 studio.Angle(0); studio.Frame(false); studio.Render(true); Save(studio.Image, Path.Combine(folder, gender + "-body.png"));
                 studio.Frame(true); studio.Render(true); Save(studio.Image, Path.Combine(folder, gender + "-face.png"));
                 studio.Grey(true); studio.Render(true); Save(studio.Image, Path.Combine(folder, gender + "-grey.png"));
