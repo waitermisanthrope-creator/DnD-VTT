@@ -13,6 +13,7 @@ namespace DndVtt.UnityPrototype
         private JArray cloudCharacters=new JArray();
         private string cloudEmail="",cloudPassword="",cloudCode="",cloudMessage="Гостевой режим. Ваши локальные герои доступны без регистрации.";
         private bool cloudBusy,cloudLoaded;
+        private int cloudSessionEpoch;
         private int cloudPage;
         private string cloudConflictLocalId;
         private string CloudSessionPath=>Path.Combine(Application.persistentDataPath,"cloud-session.encrypted");
@@ -31,9 +32,9 @@ namespace DndVtt.UnityPrototype
         }
         private void StoreCloudSession(JObject response)
         {
-            var next=CloudCharacterProtocol.Session(response);
-            if(cloudSession==null||(string)cloudSession["user"]!=(string)next["user"]) { chatMessages.Clear();chatDraft=chatPendingId=chatPendingBody="";cloudJournal=null;cloudCharacters.Clear();cloudPage=0;cloudConflict=null;centerSnapshot=null;centerUsers.Clear();mfaSecret=mfaFactor=""; }
-            cloudSession=next;cloudAccess=null;PersistCloudSession();
+            var next=CloudCharacterProtocol.Session(response);bool changed=cloudSession==null||(string)cloudSession["user"]!=(string)next["user"];
+            if(changed) { cloudSessionEpoch++; chatMessages.Clear();chatDraft=chatPendingId=chatPendingBody="";cloudJournal=null;cloudCharacters.Clear();cloudPage=0;cloudConflict=null;centerSnapshot=null;centerUsers.Clear();mfaSecret=mfaFactor=""; }
+            cloudSession=next;cloudAccess=null;if(changed)ClearWorkshopIdentity();PersistCloudSession();
         }
         private void PersistCloudSession()
         {
@@ -65,7 +66,8 @@ namespace DndVtt.UnityPrototype
         {
             if(cloudSession==null) { cloudMessage="Сначала войдите в аккаунт";yield break; }
             if((long?)cloudSession["expires_at"]>DateTimeOffset.UtcNow.ToUnixTimeSeconds()+60) { ready((string)cloudSession["access_token"]);yield break; }
-            yield return CloudRequest("/auth/v1/token?grant_type=refresh_token",new JObject { ["refresh_token"]=cloudSession["refresh_token"].DeepClone() },null,r=>{StoreCloudSession((JObject)r);ready((string)cloudSession["access_token"]);},e=>cloudMessage=e);
+            int epoch=cloudSessionEpoch;
+            yield return CloudRequest("/auth/v1/token?grant_type=refresh_token",new JObject { ["refresh_token"]=cloudSession["refresh_token"].DeepClone() },null,r=>{if(epoch!=cloudSessionEpoch||cloudSession==null)return;StoreCloudSession((JObject)r);ready((string)cloudSession["access_token"]);},e=>cloudMessage=e);
         }
         private IEnumerator CloudAuth(string action)
         {
@@ -136,7 +138,7 @@ namespace DndVtt.UnityPrototype
         private IEnumerator CloudLogout()
         {
             cloudBusy=true;string token=(string)cloudSession?["access_token"];
-            cloudSession=cloudAccess=cloudJournal=cloudConflict=null;chatMessages.Clear();chatDraft=chatPendingId=chatPendingBody="";cloudCharacters.Clear();cloudPassword=cloudCode="";
+            cloudSessionEpoch++;cloudSession=cloudAccess=cloudJournal=cloudConflict=null;ClearWorkshopIdentity();chatMessages.Clear();chatDraft=chatPendingId=chatPendingBody="";cloudCharacters.Clear();cloudPassword=cloudCode="";
             cloudMessage="Вы вышли на этом устройстве. Локальные герои сохранены.";
             try {
                 try { foreach(string suffix in new[] { "", ".bak", ".pending" })if(File.Exists(CloudSessionPath+suffix))File.Delete(CloudSessionPath+suffix); }

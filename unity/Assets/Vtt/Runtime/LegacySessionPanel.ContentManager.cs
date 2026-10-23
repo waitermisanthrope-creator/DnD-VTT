@@ -15,8 +15,8 @@ namespace DndVtt.UnityPrototype
         private const string AssetsCatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v9/index.json";
         private WorkshopStore workshopStore;
         private WorkshopRuntime workshop;
-        private bool contentBusy, installedOnly,contentCatalogAutoRefreshed,contentShowParts;
-        private bool contentCollectionsPage=true;
+        private bool contentBusy, installedOnly,contentCatalogAutoRefreshed,contentShowParts=true;
+        private bool contentCollectionsPage;
         private float contentProgress;
         private int contentCategory;
         private string contentSearch = "", contentNotice = "Каталоги доступны через интернет; установленные пакеты работают офлайн.";
@@ -36,15 +36,15 @@ namespace DndVtt.UnityPrototype
         private Dictionary<string,string> contentAvailability=new Dictionary<string,string>();
         private void RebuildContentView()
         {
+            bool keepPage=contentKeepPage&&contentViewSort==contentSort&&contentViewFavorites==contentFavoritesOnly&&contentViewCategory==contentCategory&&contentViewSearch==contentSearch&&contentViewInstalledOnly==installedOnly&&contentViewGroup==contentGroupPath;
+            contentKeepPage=false;
             contentInstalled=workshopStore.Installed().OfType<JObject>().ToDictionary(m=>(string)m["id"]);
             var all=contentPackages.Concat(assetPacks).OfType<JObject>().GroupBy(m=>(string)m["id"]).Select(g=>g.First()).ToList();
             var ids=new HashSet<string>(all.Select(m=>(string)m["id"]));
             all.AddRange(contentInstalled.Values.Where(m=>!ids.Contains((string)m["id"])));
             var collectionParts=WorkshopStore.CollectionParts(all);
-            var eligible=all.Where(m=>(!contentCollectionsPage || (string)m["collectionRole"]=="category")&&(contentShowParts || !collectionParts.Contains((string)m["id"]))&&(!installedOnly||contentInstalled.ContainsKey((string)m["id"]))&&(contentCategory==0||(string)m["type"]==ContentTypes[contentCategory]||ContentTypes[contentCategory]=="item"&&(string)m["type"]=="collection")&&
-                (m["name"]+" "+m["id"]+" "+m["author"]+" "+WorkshopStore.CategoryPath(m)).IndexOf(contentSearch,StringComparison.OrdinalIgnoreCase)>=0)
-                .OrderBy(m=>contentCollectionsPage&&(string)m["collectionRole"]=="category"?0:1)
-                .ThenBy(m=>contentCollectionsPage?WorkshopStore.CollectionOrder(m):0).ToList();
+            var eligible=contentCommunity.Order(all.Where(m=>(string)m["collectionRole"]!="internal"&&(!contentFavoritesOnly||WorkshopActor!=null&&contentCommunity.Hearted((string)m["id"]))&&(!contentCollectionsPage || (string)m["collectionRole"]=="category")&&(contentShowParts || !collectionParts.Contains((string)m["id"]))&&(!installedOnly||contentInstalled.ContainsKey((string)m["id"]))&&(contentCategory==0||(string)m["type"]==ContentTypes[contentCategory]||ContentTypes[contentCategory]=="item"&&(string)m["type"]=="collection")&&
+                (m["name"]+" "+m["id"]+" "+m["author"]+" "+WorkshopStore.CategoryPath(m)).IndexOf(contentSearch,StringComparison.OrdinalIgnoreCase)>=0),contentSort==1).ToList();
             string prefix=contentGroupPath==""?"":contentGroupPath+"/";
             contentView=eligible.Where(m=>contentGroupPath==""||WorkshopStore.CategoryPath(m)==contentGroupPath||WorkshopStore.CategoryPath(m).StartsWith(prefix,StringComparison.Ordinal)).ToList();
             contentTreeCounts.Clear();
@@ -54,11 +54,11 @@ namespace DndVtt.UnityPrototype
                 if(!contentTreeCounts.ContainsKey(child))contentTreeCounts[child]=0;contentTreeCounts[child]++;
             }
             contentTreeChildren=contentTreeCounts.Keys.OrderBy(k=>k,StringComparer.Ordinal).ToList();contentViewGroup=contentGroupPath;contentViewRevision++;
-            contentAvailability.Clear();contentViewDirty=false;contentViewCategory=contentCategory;contentViewSearch=contentSearch;contentViewInstalledOnly=installedOnly;contentPage=0;contentDetails=null;
+            contentAvailability.Clear();contentViewDirty=false;contentViewCategory=contentCategory;contentViewSearch=contentSearch;contentViewInstalledOnly=installedOnly;contentViewSort=contentSort;contentViewFavorites=contentFavoritesOnly;contentPage=keepPage?Math.Min(contentPage,Math.Max(0,(contentView.Count-1)/ContentPageLimit)):0;contentDetails=null;
         }
         private void EnsureContentView()
         {
-            if(contentViewDirty||contentViewCategory!=contentCategory||contentViewSearch!=contentSearch||contentViewInstalledOnly!=installedOnly||contentViewGroup!=contentGroupPath)RebuildContentView();
+            if(contentViewSort!=contentSort||contentViewFavorites!=contentFavoritesOnly||contentViewDirty||contentViewCategory!=contentCategory||contentViewSearch!=contentSearch||contentViewInstalledOnly!=installedOnly||contentViewGroup!=contentGroupPath)RebuildContentView();
         }
         private IEnumerable<JObject> VisibleContentPage()=>contentView.Skip(contentPage*ContentPageLimit).Take(ContentPageLimit);
         private void DrawContentTree()
@@ -115,7 +115,7 @@ namespace DndVtt.UnityPrototype
             world.ClearWorkshopGeometry(); workshop.Dispose(); workshop = new WorkshopRuntime(workshopStore); workshop.ActivateData(); creationCatalog = null; commerceCatalog = null; itemCatalog = null;
             world.Workshop = workshop; world.ReloadCurrent();
         }
-        private void OpenContentManager() { InitializeWorkshop(); contentViewDirty=true; contentCollectionsPage=true;contentCategory = 0; contentGroupPath="";contentDetails = null;Navigate(FrontScreen.ContentManager); }
+        private void OpenContentManager() { InitializeWorkshop(); contentViewDirty=true;contentKeepPage=false;contentPage=0; contentCollectionsPage=false;contentSort=0;contentShowParts=true;contentCategory = 0; contentGroupPath="";contentDetails = null;Navigate(FrontScreen.ContentManager);SyncWorkshopIdentity();if(!contentHeartsBusy)StartCoroutine(FetchWorkshopHearts()); }
         private IEnumerator FetchContentCatalog()
         {
             contentBusy = true;
@@ -141,7 +141,7 @@ namespace DndVtt.UnityPrototype
                     finally { if (File.Exists(path)) File.Delete(path); }
                 }
             }
-            contentBusy = false;contentViewDirty=true;
+            contentBusy = false;contentViewDirty=true;if(!contentHeartsBusy)yield return FetchWorkshopHearts();
         }
         private long ReadWorkshopFreeBytes()
         {
@@ -207,15 +207,16 @@ namespace DndVtt.UnityPrototype
             if (!contentBusy && GUILayout.Button("↻ Обновить каталоги и проверить обновления", GUILayout.Height(45))) StartCoroutine(FetchContentCatalog());
             GUILayout.Label(contentNotice, muted);
             if (contentBusy) GUILayout.HorizontalSlider(contentProgress, 0, 1);
+            DrawWorkshopCommunity();
             installedOnly = GUILayout.Toggle(installedOnly, "Только установленные (доступно без интернета)");
             GUILayout.BeginHorizontal();
             if(GUILayout.Toggle(contentCollectionsPage,"Сборники модов",GUI.skin.button,GUILayout.MinHeight(54))&&!contentCollectionsPage)SwitchContentPage(true);
-            if(GUILayout.Toggle(!contentCollectionsPage,"Все дополнения",GUI.skin.button,GUILayout.MinHeight(54))&&contentCollectionsPage)SwitchContentPage(false);
+            if(GUILayout.Toggle(!contentCollectionsPage,"Главная · Все дополнения",GUI.skin.button,GUILayout.MinHeight(54))&&contentCollectionsPage)SwitchContentPage(false);
             GUILayout.EndHorizontal();
             if(contentCollectionsPage)GUILayout.Label("Полные тематические сборники. Все входящие дополнения скачиваются одной кнопкой.",muted);
             else {
                 bool showParts=GUILayout.Toggle(contentShowParts,"Показать отдельные моды и части сборников");
-                if(showParts!=contentShowParts) {contentShowParts=showParts;contentViewDirty=true;}
+                if(showParts!=contentShowParts) {contentShowParts=showParts;contentKeepPage=false;contentViewDirty=true;}
             }
             contentSearch = GUILayout.TextField(contentSearch, GUILayout.MinHeight(40));
             EnsureContentView();if(!contentCollectionsPage)DrawContentTree();SyncWorkshopPreviewPage();
@@ -224,7 +225,7 @@ namespace DndVtt.UnityPrototype
             {
                 string id=(string)item["id"];contentInstalled.TryGetValue(id,out var local);
                 shown++; GUILayout.BeginVertical(GUI.skin.box); GUILayout.Label(item["name"] + " · " + item["version"], heading);
-                DrawWorkshopPreview(item);
+                DrawWorkshopPreview(item);DrawWorkshopHeart(item);
                 GUILayout.Label(local == null ? "Не установлено" : (string)local["sha256"] == (string)item["sha256"] ? "✓ Установлено" : "Доступна другая версия · установлена " + local["version"], muted);
                 if (GUILayout.Button("Подробнее", GUILayout.Height(52))) contentDetails = contentDetails == item ? null : item;
                 if (contentDetails == item)

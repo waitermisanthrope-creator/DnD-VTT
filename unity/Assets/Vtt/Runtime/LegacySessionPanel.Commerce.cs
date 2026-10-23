@@ -30,7 +30,7 @@ namespace DndVtt.UnityPrototype
                 GUILayout.BeginVertical(GUI.skin.box); SheetSection("Справочник предметов");
                 inventoryQuery = GUILayout.TextField(inventoryQuery,GUILayout.MinHeight(45));
                 var entries = ((JArray)CommerceCatalog["items"]).OfType<JObject>().Where(x => (string)x["inventoryCategory"] == CharacterSheetRules.InventoryCategories[inventoryCategory] && (x["name"] + " " + x["description"]).IndexOf(inventoryQuery,StringComparison.OrdinalIgnoreCase) >= 0).ToArray();
-                if (entries.Length == 0) { GUILayout.Label("Скачайте сборник этой категории из менеджера модов. Свой предмет можно создать без интернета.",sheetQuiet); if (GUILayout.Button("Открыть менеджер модов",brandBlue)) Navigate(FrontScreen.ContentManager); }
+                if (entries.Length == 0) { GUILayout.Label("Скачайте сборник этой категории из менеджера модов. Свой предмет можно создать без интернета.",sheetQuiet); if (GUILayout.Button("Открыть менеджер модов",brandBlue)) OpenContentManager(); }
                 foreach (var entry in entries.Take(25)) if (GUILayout.Button("+ " + entry["name"],GUILayout.MinHeight(44))) { CommerceRules.AddItem(hero,entry); changed = persist = true; status = "Предмет добавлен"; }
                 customItemOpen = GUILayout.Toggle(customItemOpen,"Создать свой предмет");
                 if (customItemOpen)
@@ -101,7 +101,7 @@ namespace DndVtt.UnityPrototype
             SheetSection("Материалы рецептов"); GUILayout.Label("Добавляйте только ресурсы, полученные в игре.",sheetQuiet);
             foreach (JObject material in (JArray)rules["materials"]) if (GUILayout.Button("+ " + material["name"])) { var item = (JObject)material.DeepClone(); item["inventoryCategory"] = "materials"; item["craftMaterialId"] = material["id"].DeepClone(); CommerceRules.AddItem(hero,item); changed = persist = true; }
         }
-        private void DrawCommerceDownloadPrompt(string text) { GUILayout.Label(text,sheetQuiet); if (GUILayout.Button("Открыть менеджер модов",brandBlue,GUILayout.Height(48))) Navigate(FrontScreen.ContentManager); }
+        private void DrawCommerceDownloadPrompt(string text) { GUILayout.Label(text,sheetQuiet); if (GUILayout.Button("Открыть менеджер модов",brandBlue,GUILayout.Height(48))) OpenContentManager(); }
         private void DrawAlchemy(JObject hero, ref bool changed, ref bool persist)
         {
             SheetSection("Алхимия 2.0"); GUILayout.Label("Базовые реакции и исследования. Расширенные профессии ещё не перенесены; длительность и воздействие на других существ учитывает мастер.",sheetQuiet); var rules = (JObject)CommerceCatalog["alchemy"]; var ingredients = (JArray)rules["ingredients"];
