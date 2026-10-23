@@ -231,11 +231,22 @@ public static class DiceValidation
                 for(int i=0;i<2400&&table.Throwing;i++)table.Tick(.1f,false);
                 Check(table.Completed==20&&table.Value.HasValue,"actual native tray20 roll "+selected.Profile+": "+table.Result);rolls+=20;
                 var actors=UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None);
-                Check(actors.All(b=>b.position.y>-1.5f&&Mathf.Abs(b.position.x-12000)<6.5f&&Mathf.Abs(b.position.z-12000)<5.5f),"tray contains all bodies: "+selected.Profile);
-                table.SetTray(null);Check(table.ActiveTrayId=="","switch removes prior tower");trayCount++;
+                Check(actors.All(b=>b.position.y>-1.5f&&b.position.y<2&&Mathf.Abs(b.position.x-12000)<6.5f&&Mathf.Abs(b.position.z-12000)<5.5f),"tray contains all bodies: "+selected.Profile);
+                Debug.Log("VTT_DICE_TRAY20_PASS: "+selected.Profile+" maxY="+actors.Max(b=>b.position.y)+" guides="+table.TowerGuides);
+                if(selected.Profile=="spiral"||selected.Profile=="pit")foreach(string behavior in new[]{"abyss","slime"}) {
+                    var m=experimental.OfType<JObject>().Single(m=>(string)m["version"]=="1.2.1"&&(string)m["imageKind"]=="dice"&&((string)m["id"]=="dnd.dice.icon.01"&&behavior=="abyss"||(string)m["id"]=="dnd.dice.test.slime"&&behavior=="slime"));
+                    string p=Path.Combine(fixture,"packages",Path.GetFileName((string)m["url"]));
+                    table.SetTheme(DiceTheme.Read((JObject)WorkshopStore.ValidateData(m,File.ReadAllText(p))["diceThemes"][0],true));table.Throw("20d20");
+                    for(int i=0;i<2400&&table.Throwing;i++)table.Tick(.1f,false);
+                    Check(table.Completed==20&&table.Value.HasValue,"twenty "+behavior+" bodies traverse "+selected.Profile+": "+table.Result);rolls+=20;
+                    var moving=UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None);
+                    Check(moving.All(b=>b.position.y>-1.5f&&b.position.y<2&&Mathf.Abs(b.position.x-12000)<6.5f&&Mathf.Abs(b.position.z-12000)<5.5f),"active material reaches bounded landing area "+selected.Profile);
+                    Debug.Log("VTT_DICE_TRAY_MATERIAL_PASS: "+selected.Profile+" "+behavior+" maxY="+moving.Max(b=>b.position.y));
+                }
+                table.SetTheme(null);table.SetTray(null);Check(table.ActiveTrayId=="","switch removes prior tower");trayCount++;
             }
             Check(trayCount==4,"four actual native workshop tray recipes");
-            Debug.Log("VTT_DICE_TRAYS_PASS: four native profiles,80 actual PhysX throws, bounds and switching cleanup");
+            Debug.Log("VTT_DICE_TRAYS_PASS: four native profiles,80 classic +80 active-material actual PhysX throws, bounds and switching cleanup");
             Debug.Log("VTT_DICE_EXPERIMENTS_PASS: six profiles,42 physical types including percentile pairs, opaque shell controls, immutable results, actual effect meshes and cleanup");
         }
         Check(UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None).Length==bodies,"no rigidbody leaks");

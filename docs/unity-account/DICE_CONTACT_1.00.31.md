@@ -22,3 +22,7 @@ Local4395C# checks PASS initially with exact locally generated fixtures, then re
 ## Native trial1
 
 Native trial bf236ea4/candidate39928298122 Android120330183427 FAILED at tray preview helper: required ivory numeral pixels in a wide classic/tower overview (0ivory,900blue), before tray physics stage. Compilation and actual native old regressions/six42types/all-vertex arms/opaque shells/20Abyss(60contact pushes)/20slime(253physical hops)/immutable accepted results passed. No APK/release claim. Fix gives tower overview its own real GPU texture/visible-geometry controls; existing close-up numeral controls unchanged. Added synthetic InputSystem pause/focus/ownership cleanup tests and readable procedural prints for context recovery. Retrying same unpublished31; feed remains30.
+
+## Native trial2
+
+Native trial2 source5618b2b0/candidate39929687416 Android120334591712 FAILED genuine20-body spiral traversal: several dice settle on sloped treads, strict classic face read remains ambiguous through3 retries. Previous feature regressions/material20 checks and synthetic sensor lifecycle PASS. Fix: delay completion on raised static supports, bounded real downhill/up release for stuck tower bodies, ambiguous rerolls into landing tray rather than the tower entry. Added real landing-height checks and20Abyss/20slime traversal for both towers. Retrying unpublished31; no feed change.

@@ -11,7 +11,7 @@ namespace DndVtt.UnityPrototype
     // Local physics scene: dice cannot collide with, simulate or modify the user's map.
     public sealed partial class DiceTable : IDisposable
     {
-        private sealed class Die { public DiceGeometry geometry;public Rigidbody body;public bool tens,units;public int resolved;public Vector3 settledPosition;public float lastImpact,lastHop;public int hops;public DiceTentacles tentacles; }
+        private sealed class Die { public DiceGeometry geometry;public Rigidbody body;public bool tens,units;public int resolved;public Vector3 settledPosition;public float lastImpact,lastHop,lastGuide;public int hops,guides;public DiceTentacles tentacles; }
         private readonly Scene scene;
         private readonly PhysicsScene physics;
         private readonly GameObject root;
@@ -58,6 +58,7 @@ namespace DndVtt.UnityPrototype
         public int TentacleCount=>dice.Sum(d=>d.tentacles?.Count??0);
         public int TentaclePushes=>dice.Sum(d=>d.tentacles?.Pushes??0);
         public int SlimeHops=>dice.Sum(d=>d.hops);
+        public int TowerGuides=>dice.Sum(d=>d.guides);
         private float throwStrength=.45f;
         public DiceTable()
         {
@@ -248,9 +249,9 @@ namespace DndVtt.UnityPrototype
             int columns=5,rows=(dice.Count+columns-1)/columns;float spacing=1.85f;
             for(int i=0;i<dice.Count;i++) {
                 var die=dice[i];if(unresolvedOnly&&die.resolved>0)continue;
-                die.resolved=0;die.lastImpact=die.lastHop=0;die.hops=0;die.tentacles?.Reset();var b=die.body;b.isKinematic=false;b.position=origin+new Vector3((i%columns-((Mathf.Min(dice.Count,columns)-1)*.5f))*spacing,2.1f,(i/columns-(rows-1)*.5f)*spacing);b.rotation=UnityEngine.Random.rotationUniform;
-                PlaceLaunch(b,i,columns,rows,spacing);
-                b.linearVelocity=new Vector3(UnityEngine.Random.Range(-2.5f,2.5f),UnityEngine.Random.Range(1f,3f),UnityEngine.Random.Range(-2f,2f));b.linearVelocity*=.65f+throwStrength*1.3f;if(tray?.Profile=="spiral"||tray?.Profile=="pit")b.linearVelocity=new Vector3(b.linearVelocity.x*.08f,.3f,b.linearVelocity.z*.08f);b.angularVelocity=UnityEngine.Random.onUnitSphere*UnityEngine.Random.Range(12f,24f)*(.65f+throwStrength);b.WakeUp();
+                die.resolved=0;die.lastImpact=die.lastHop=die.lastGuide=0;die.hops=die.guides=0;die.tentacles?.Reset();var b=die.body;b.isKinematic=false;b.rotation=UnityEngine.Random.rotationUniform;
+                PlaceLaunch(b,i,columns,rows,spacing,unresolvedOnly);
+                b.linearVelocity=new Vector3(UnityEngine.Random.Range(-2.5f,2.5f),UnityEngine.Random.Range(1f,3f),UnityEngine.Random.Range(-2f,2f));b.linearVelocity*=.65f+throwStrength*1.3f;if(IsTower&&!unresolvedOnly)b.linearVelocity=new Vector3(b.linearVelocity.x*.08f,.3f,b.linearVelocity.z*.08f);b.angularVelocity=UnityEngine.Random.onUnitSphere*UnityEngine.Random.Range(12f,24f)*(.65f+throwStrength);b.WakeUp();
             }
         }
         public void Tick(float delta,bool render=true)
@@ -262,6 +263,7 @@ namespace DndVtt.UnityPrototype
                 accumulator+=Mathf.Clamp(delta,0,.1f);
                 while(accumulator>=1f/60) {
                     foreach(var d in dice)if(d.resolved==0) {
+                        GuideTower(d);
                         d.tentacles?.Step(effectClock,elapsed,true);
                         if(MaterialBehavior=="slime"&&elapsed>.5f&&elapsed<6.5f&&elapsed-d.lastHop>.4f&&d.body.linearVelocity.y<.6f&&d.body.position.y-SupportHeight(d.body.position)<.85f) {
                             d.body.AddForce(Vector3.up*UnityEngine.Random.Range(2.6f,3.6f),ForceMode.VelocityChange);d.body.AddTorque(UnityEngine.Random.onUnitSphere*5,ForceMode.VelocityChange);d.body.WakeUp();d.lastHop=elapsed;d.hops++;
@@ -270,6 +272,7 @@ namespace DndVtt.UnityPrototype
                     physics.Simulate(1f/60);accumulator-=1f/60;elapsed+=1f/60;
                     bool quiet=true;foreach(var d in dice) {
                         if(d.body.linearVelocity.sqrMagnitude>.0144f||d.body.angularVelocity.sqrMagnitude>.0324f)quiet=false;
+                        if(IsTower&&d.resolved==0&&SupportHeight(d.body.position)>origin.y+FloorHeight+.18f)quiet=false;
                         // Detect meaningful floor contacts without global MonoBehaviour callbacks.
                         if((theme?.Behavior=="blood"||theme?.Behavior=="stone")&&d.body.position.y-SupportHeight(d.body.position)<.85f&&d.body.linearVelocity.y>.15f&&elapsed-d.lastImpact>.22f) { SpawnImpact(d);d.lastImpact=elapsed; }
                     }

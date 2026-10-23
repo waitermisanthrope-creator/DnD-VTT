@@ -12,6 +12,7 @@ namespace DndVtt.UnityPrototype
         private readonly List<UnityEngine.Object> trayAssets=new List<UnityEngine.Object>();
         private readonly RaycastHit[] supportHits=new RaycastHit[24];
         public string ActiveTrayId=>tray?.Id??"";
+        private bool IsTower=>tray?.Profile=="spiral"||tray?.Profile=="pit";
         private float FloorHeight=>tray?.Profile=="pit"?-.7f:0;
         public void SetTray(DiceTray selected)
         {
@@ -87,8 +88,26 @@ namespace DndVtt.UnityPrototype
         {
             float floor=origin.y+FloorHeight;
             int count=physics.Raycast(point+Vector3.up*.2f,Vector3.down,supportHits,1.1f,1<<31,QueryTriggerInteraction.Ignore);
-            for(int i=0;i<count;i++)if(supportHits[i].rigidbody==null)floor=Mathf.Max(floor,supportHits[i].point.y);
+            for(int i=0;i<count;i++)if(supportHits[i].rigidbody==null&&supportHits[i].normal.y>.25f)floor=Mathf.Max(floor,supportHits[i].point.y);
             return floor;
+        }
+        private void GuideTower(Die die)
+        {
+            if(!IsTower||die.body.isKinematic||elapsed-die.lastGuide<.8f||die.guides>=12||die.body.linearVelocity.sqrMagnitude>.12f||die.body.angularVelocity.sqrMagnitude>.5f)return;
+            int count=physics.Raycast(die.body.position+Vector3.up*.2f,Vector3.down,supportHits,1.3f,1<<31,QueryTriggerInteraction.Ignore);
+            RaycastHit support=default;float high=origin.y+FloorHeight+.18f;
+            for(int i=0;i<count;i++)if(supportHits[i].rigidbody==null&&supportHits[i].normal.y>.25f&&supportHits[i].point.y>high) { support=supportHits[i];high=support.point.y; }
+            if(support.collider==null)return;
+            Vector3 downhill=Vector3.ProjectOnPlane(Vector3.down,support.normal).normalized;
+            if(downhill.sqrMagnitude<.1f) {
+                Vector3 local=die.body.position-origin;
+                downhill=support.collider.name.StartsWith("Опора",StringComparison.Ordinal)?new Vector3(local.x,0,local.z-1.7f).normalized:new Vector3(-local.x,0,1.7f-local.z).normalized;
+                if(downhill.sqrMagnitude<.1f)downhill=Vector3.back;
+            }
+            // A small physical release breaks a static bridge on the ramp. Never
+            // rotate/teleport a die into a chosen value, and never touch accepted dice.
+            die.body.AddForce(downhill*1.2f+Vector3.up*.65f,ForceMode.VelocityChange);
+            die.body.AddTorque(UnityEngine.Random.onUnitSphere*2,ForceMode.VelocityChange);die.body.WakeUp();die.lastGuide=elapsed;die.guides++;
         }
         private void FrameTray()
         {
@@ -97,10 +116,11 @@ namespace DndVtt.UnityPrototype
             camera.orthographicSize=tallStack?12:tower?9:6.5f;Vector3 target=origin+Vector3.up*(tallStack?5:tower?2:0);
             camera.transform.position=target+new Vector3(0,11,-9);camera.transform.LookAt(target);imageDirty=true;
         }
-        private void PlaceLaunch(Rigidbody body,int index,int columns,int rows,float spacing)
+        private void PlaceLaunch(Rigidbody body,int index,int columns,int rows,float spacing,bool retry)
         {
             bool tower=tray?.Profile=="spiral"||tray?.Profile=="pit";
-            if(!tower)body.position=origin+new Vector3((index%columns-(Mathf.Min(dice.Count,columns)-1)*.5f)*spacing,2.2f,(index/columns-(rows-1)*.5f)*spacing);
+            if(tower&&retry)body.position=origin+new Vector3((index%5-2)*1.85f,2.2f,-3.8f+index/5*1.05f);
+            else if(!tower)body.position=origin+new Vector3((index%columns-(Mathf.Min(dice.Count,columns)-1)*.5f)*spacing,2.2f,(index/columns-(rows-1)*.5f)*spacing);
             else if(tray.Profile=="pit")body.position=origin+new Vector3((index%3-1)*1.35f,7+index/9*1.5f,1.8f+(index/3%3-1)*1.35f);
             else body.position=origin+new Vector3((index%2-.5f)*1.25f,7+index/2*1.25f,-.35f);
         }
