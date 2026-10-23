@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит a80bfdec24d6. Файлов: 1986
+Коммит 17c6042e1c60. Файлов: 1986
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1740,7 +1740,7 @@
 1724. unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta — вспомогательный файл: CharacterSheetValidation.cs (59 B)
 1725. unity/Assets/Vtt/Editor/DiceBuildGate.cs — вспомогательный файл: DiceBuildGate (4491 B)
 1726. unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta — вспомогательный файл: DiceBuildGate.cs (60 B)
-1727. unity/Assets/Vtt/Editor/DiceValidation.cs — вспомогательный файл: DiceValidation (38438 B)
+1727. unity/Assets/Vtt/Editor/DiceValidation.cs — вспомогательный файл: DiceValidation (38835 B)
 1728. unity/Assets/Vtt/Editor/DiceValidation.cs.meta — вспомогательный файл: DiceValidation.cs (60 B)
 1729. unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs — вспомогательный файл: LegacyMigrationSetup (10734 B)
 1730. unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta — вспомогательный файл: LegacyMigrationSetup.cs (59 B)

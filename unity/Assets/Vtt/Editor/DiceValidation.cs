@@ -228,17 +228,21 @@ public static class DiceValidation
                     Check(actor.position.y>=5,"higher ordinary launch");
                     float Energy() {
                         Vector3 w=Quaternion.Inverse(actor.rotation*actor.inertiaTensorRotation)*actor.angularVelocity;
-                        return actor.mass*9.81f*Mathf.Max(0,actor.position.y)+actor.mass*actor.linearVelocity.sqrMagnitude*.5f
+                        return actor.mass*9.81f*Mathf.Max(0,actor.worldCenterOfMass.y)+actor.mass*actor.linearVelocity.sqrMagnitude*.5f
                             +Vector3.Dot(Vector3.Scale(w,w),actor.inertiaTensor)*.5f;
                     }
-                    float initialEnergy=Energy(),maxEnergy=initialEnergy;
-                    for(int step=0;step<12000&&table.Throwing;step++) { table.Tick(1f/60,false);maxEnergy=Mathf.Max(maxEnergy,Energy()); }
+                    float initialEnergy=Energy(),maxEnergy=initialEnergy,lowEnergy=initialEnergy,maxRecovery=0;
+                    for(int step=0;step<12000&&table.Throwing;step++) {
+                        table.Tick(1f/60,false);float current=Energy();maxEnergy=Mathf.Max(maxEnergy,current);
+                        maxRecovery=Mathf.Max(maxRecovery,current-lowEnergy);lowEnergy=Mathf.Min(lowEnergy,current);
+                    }
+                    Check(maxRecovery<initialEnergy*.04f,"slime cannot recharge after losing energy (including hidden retry relaunches)");
                     Check(table.Value.HasValue,"natural slime settles without a timed jump phase");
                     Check(maxEnergy<=initialEnergy*1.12f,"isolated slime cannot manufacture new throw energy");
                     Check(table.SlimeHops>=3,"elastic slime repeats actual collision bounces");
                     Vector3 settled=actor.position;for(int step=0;step<120;step++)table.Tick(1f/60,false);
                     Check((actor.transform.position-settled).sqrMagnitude<.000001f,"settled slime never starts decorative post-result jumps");
-                    Debug.Log("VTT_DICE_SLIME_DECAY: impacts="+table.SlimeHops+" initialEnergy="+initialEnergy+" maxEnergy="+maxEnergy);rolls++;
+                    Debug.Log("VTT_DICE_SLIME_DECAY: impacts="+table.SlimeHops+" initialEnergy="+initialEnergy+" maxEnergy="+maxEnergy+" maxRecovery="+maxRecovery);rolls++;
                     table.Throw("4d20");
                     var state=(System.Collections.IList)typeof(DiceTable).GetField("dice",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(table);
                     state[0].GetType().GetField("resolved").SetValue(state[0],1); // Deterministic partial-reroll cancellation state.
