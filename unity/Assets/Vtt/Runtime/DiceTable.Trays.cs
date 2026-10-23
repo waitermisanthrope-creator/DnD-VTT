@@ -144,8 +144,10 @@ namespace DndVtt.UnityPrototype
                 if(overview)continue;
                 foreach(var die in dice) {
                     Bounds bounds=die.body.GetComponent<MeshRenderer>().bounds;
-                    for(int corner=0;corner<8;corner++) {
-                        Vector3 point=new Vector3((corner&1)==0?bounds.min.x:bounds.max.x,(corner&2)==0?bounds.min.y:bounds.max.y,(corner&4)==0?bounds.min.z:bounds.max.z);
+                    // Include face/interior samples: a wall can cover a face center while
+                    // all eight bounding-box corner rays miss its silhouette.
+                    for(int sample=0;sample<27;sample++) {
+                        Vector3 point=bounds.min+Vector3.Scale(bounds.size,new Vector3(sample%3*.5f,sample/3%3*.5f,sample/9*.5f));
                         Vector3 delta=point-camera.transform.position;
                         if(wall.bounds.IntersectRay(new Ray(camera.transform.position,delta.normalized),out float distance)&&distance<delta.magnitude-.02f) { wall.enabled=false;break; }
                     }

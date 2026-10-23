@@ -261,7 +261,10 @@ public static class DiceValidation
                 table.Preview(n);
                 var edgeBodies=UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None);
                 for(int i=0;i<edgeBodies.Length;i++) {
-                    var actor=edgeBodies[i];actor.position=new Vector3(12000+(i-(edgeBodies.Length-1)*.5f)*1.6f,.55f,12000-4.4f);
+                    var actor=edgeBodies[i];Vector3 extent=actor.GetComponent<MeshRenderer>().bounds.extents;
+                    // Keep the entire core above the floor and .025 inside the front wall,
+                    // rather than overlapping an arbitrary radius/height for every solid.
+                    actor.position=new Vector3(12000+(i-(edgeBodies.Length-1)*.5f)*1.6f,extent.y+.02f,12000-4.95f+extent.z);
                     actor.transform.SetPositionAndRotation(actor.position,actor.rotation);
                 }
                 var poses=edgeBodies.Select(b=>b.position).ToArray();

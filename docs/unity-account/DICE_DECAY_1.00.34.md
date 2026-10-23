@@ -21,3 +21,7 @@ Each native target:972actual logical PhysX throw cases,60face/topology,420exteri
 20Abyss60real contact impulses.20slime157actual collision bounces. Isolated slime13natural impacts, initial/max energy7.208248, numerical recovery.01227355; accepted body remains still. No timed energy injection or hidden relaunch in the isolated energy control. Original1.2.1 recipe/texture payloads remain unchanged.
 
 Local34:4398C# checks,3structural contracts and2render-approval boundary tests PASS. Full native/Android/Windows/install QA and exact public review must repeat under34. Physical phone/GPU/sensor/performance/touch/install-over and interactive Windows GPU remain unavailable here. No new live Supabase claim or production changes. MMO WAIT_TEAM; workshop page reset remains owner-deferred.
+
+## First34 native trial — FAILED, unpublished
+
+Trial39950834653/job120404589859 failed on the d8 camera-edge control after600Abyss/13natural slime/energy checks passed unchanged. The synthetic fixture used a commony.55/z-4.4 for different bounding extents; some solids overlapped wall/floor and did not guarantee the asserted occlusion. Correct placement derives minY=.02/minZ=-4.95 from each actual renderer bounding box. Strict visibility/collider/pose/restore requirements remain. Runtime probes also include face centers/interior (27samples), since8corner rays alone can miss an occluder covering a face interior. No34 APK was created or published. Retry the same unpublished34; feed remains32.
