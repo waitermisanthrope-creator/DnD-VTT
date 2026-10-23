@@ -6,8 +6,8 @@ using UnityEngine.Rendering;
 
 namespace DndVtt.UnityPrototype
 {
-    // Static preview: the FBX retains the rig. Bake only when appearance changes,
-    // then apply the WebView's procedural body controls to the baked surface.
+    // Static preview: retain the FBX rig, apply imported shape deltas directly,
+    // and normalize the imported hierarchy once to the source GLB's physical height.
     public sealed class CharacterBodyPreview : MonoBehaviour
     {
         public Bounds Bounds { get; private set; }
@@ -18,6 +18,8 @@ namespace DndVtt.UnityPrototype
         Material skin, cloth;
         Texture male, female;
         Vector3[] rest;
+        Vector3[][] morphDeltas;
+        float[] morphFrameWeights;
         BoneWeight[] weights;
         Transform[] bones;
         JObject channels;
@@ -42,7 +44,18 @@ namespace DndVtt.UnityPrototype
             weights = source.sharedMesh.boneWeights;
             bones = source.bones;
             var catalog = Resources.Load<TextAsset>("CharacterStudio/MorphCatalog");
-            channels = (JObject)JObject.Parse(catalog.text)["channels"];
+            var metadata = JObject.Parse(catalog.text);
+            channels = (JObject)metadata["channels"];
+            morphDeltas = new Vector3[source.sharedMesh.blendShapeCount][];
+            morphFrameWeights = new float[morphDeltas.Length];
+            for (int i = 0; i < morphDeltas.Length; i++)
+            {
+                int frame = source.sharedMesh.GetBlendShapeFrameCount(i) - 1;
+                morphDeltas[i] = new Vector3[rest.Length];
+                source.sharedMesh.GetBlendShapeFrameVertices(i, frame, morphDeltas[i], null, null);
+                morphFrameWeights[i] = source.sharedMesh.GetBlendShapeFrameWeight(i, frame);
+                if (morphFrameWeights[i] <= 0) throw new InvalidOperationException("Некорректный кадр морфа.");
+            }
             foreach (var property in channels.Properties())
             {
                 FindMorph((string)property.Value["positive"]);
@@ -50,9 +63,16 @@ namespace DndVtt.UnityPrototype
             }
             FindMorph("human-female");
             baked = new Mesh { name = "Human preview", indexFormat = IndexFormat.UInt32 };
+            baked.vertices = rest; baked.triangles = source.sharedMesh.triangles; baked.uv = source.sharedMesh.uv;
+            baked.RecalculateBounds();
             bottomMesh = new Mesh { name = "Preview shorts", indexFormat = IndexFormat.UInt32 };
             topMesh = new Mesh { name = "Preview top", indexFormat = IndexFormat.UInt32 };
             surface = MakeSurface("Body", baked);
+            float sourceHeight = (float)metadata["baseHeight"];
+            float importedHeight = surface.bounds.size.y;
+            if (sourceHeight < .5f || sourceHeight > 3 || importedHeight <= .00001f)
+                throw new InvalidOperationException("Некорректные габариты исходной или импортированной модели: " + importedHeight);
+            model.transform.localScale *= sourceHeight / importedHeight;
             bottom = MakeSurface("Preview shorts", bottomMesh);
             top = MakeSurface("Preview top", topMesh);
             var template = Resources.Load<Material>("CharacterStudio/PreviewLit");
@@ -142,8 +162,13 @@ namespace DndVtt.UnityPrototype
                 source.SetBlendShapeWeight(FindMorph((string)channel.Value["positive"]), Mathf.Max(0, value) * scale * 100);
                 source.SetBlendShapeWeight(FindMorph((string)channel.Value["negative"]), Mathf.Max(0, -value) * scale * 100);
             }
-            source.BakeMesh(baked);
-            var vertices = baked.vertices;
+            var vertices = (Vector3[])rest.Clone();
+            for (int target = 0; target < morphDeltas.Length; target++)
+            {
+                float weight = source.GetBlendShapeWeight(target) / morphFrameWeights[target];
+                if (Mathf.Abs(weight) < .000001f) continue;
+                for (int i = 0; i < vertices.Length; i++) vertices[i] += morphDeltas[target][i] * weight;
+            }
             ApplyProceduralBody(vertices, document);
             baked.vertices = vertices;
             baked.RecalculateNormals();
