@@ -12,7 +12,7 @@ namespace DndVtt.UnityPrototype
     public sealed partial class LegacySessionPanel
     {
         private const string CatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Content/main/catalog/v3/index.json";
-        private const string AssetsCatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v8/index.json";
+        private const string AssetsCatalogUrl = "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v9/index.json";
         private WorkshopStore workshopStore;
         private WorkshopRuntime workshop;
         private bool contentBusy, installedOnly,contentCatalogAutoRefreshed;

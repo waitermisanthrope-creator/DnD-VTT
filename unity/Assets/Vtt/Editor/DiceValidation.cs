@@ -94,10 +94,10 @@ public static class DiceValidation
                 table.Tick(0);SaveImage(table.Image,Path.Combine(folder,"d"+count+"-settled.png"));
             }
             table.Throw("7d20 + 3d6 + 1d8");
-            for(int step=0;step<2000&&table.Throwing;step++) { Check(table.BodyCount<=8,"mixed active-body budget");table.Tick(.1f,false); }
+            for(int step=0;step<2000&&table.Throwing;step++) { Check(table.BodyCount<=DiceTable.LiveBodyBudget,"mixed active-body budget");table.Tick(.1f,false); }
             Check(!table.Throwing&&table.Completed==11&&table.Total>=11&&table.Total<=166,"mixed real-physics total: "+table.Result);
             table.Throw("999999999999999999999999999999d100");
-            Check(table.BodyCount==8,"huge percentile request stays bounded");table.Cancel();
+            Check(table.BodyCount==DiceTable.LiveBodyBudget,"huge percentile request stays bounded");table.Cancel();
             Check(!table.Throwing&&!table.Value.HasValue&&table.Completed==0,"cancel is partial, never a completed result");
             string fixture=Path.GetFullPath("WorkshopFixtures~/DnD-VTT-Assets");
             var catalog=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixture,"catalog/v6/index.json")),"packs");
@@ -140,7 +140,7 @@ public static class DiceValidation
                 }
                 if(first&&theme.Shape=="tentacles") {
                     table.Throw("7d20 + 3d6 + 1d8");
-                    for(int step=0;step<2000&&table.Throwing;step++) { Check(table.BodyCount<=4,"themed mixed body budget");table.Tick(.1f,false); }
+                    for(int step=0;step<2000&&table.Throwing;step++) { Check(table.BodyCount<=DiceTable.LiveBodyBudget,"themed mixed body budget");table.Tick(.1f,false); }
                     Check(!table.Throwing&&table.Completed==11&&table.Total>=11&&table.Total<=166,"mixed tentacle physical throw: "+table.Result);
                 }
                 themes++;
@@ -155,12 +155,21 @@ public static class DiceValidation
                     CheckAtlasHandedness(count==100?10:count);
                     Check(!UnityEngine.Object.FindObjectsByType<TextMesh>(FindObjectsSortMode.None).Any(),"numbered material has no floating text layers");
                     Check(table.MaterialBehavior==theme.Behavior,"actual profile selected");
+                    if(theme.Behavior=="abyss") {
+                        int vertices=DiceGeometry.Create(count==100?10:count).vertices.Length;
+                        Check(table.TentacleCount==vertices*(count==100?2:1),"one compliant tentacle at EVERY vertex d"+count);
+                        var skins=UnityEngine.Object.FindObjectsByType<MeshFilter>(FindObjectsSortMode.None).Where(f=>f.gameObject.name=="Soft tentacles").ToArray();
+                        Check(skins.Length==table.BodyCount,"one batched deformable skin per die");
+                        Check(skins.All(f=>f.GetComponent<Collider>()==null),"soft arms are not a rigid compound cage");
+                    }
                     if(count==20)CheckOpaqueShell(table);
                     SaveImage(table.Image,Path.Combine(folder,"test-"+theme.Behavior+"-d"+count+".png"),false);
                     table.Throw(count);
                     for(int step=0;step<1000&&table.Throwing;step++)table.Tick(.1f,false);
                     Check(table.Value.HasValue&&table.Completed==1,"experimental actual physical result "+theme.Behavior+" d"+count+": "+table.Result);rolls++;
                     int value=table.Value.Value;
+                    if(theme.Behavior=="slime")Check(table.SlimeHops>=5*(count==100?2:1),"slime performs repeated real Rigidbody hops before locking d"+count);
+                    if(theme.Behavior=="abyss")Check(table.TentaclePushes>0,"grounded muscle actually pushes Rigidbody before locking d"+count);
                     if(count==20) {
                         table.Tick(.1f);SaveImage(table.Image,Path.Combine(folder,"test-"+theme.Behavior+"-settled-a.png"),false);
                         for(int i=0;i<20;i++)table.Tick(.1f,false);table.Tick(0);
@@ -172,6 +181,18 @@ public static class DiceValidation
                         if(theme.Behavior=="blood"||theme.Behavior=="stone")Check(table.EffectCount>0&&table.EffectCount<=48,"bounded actual impact meshes");
                     }
                     Check(table.EffectCount<=48,"bounded effects for all die types");
+                }
+                if(theme.Behavior=="abyss"||theme.Behavior=="slime") {
+                    var timer=System.Diagnostics.Stopwatch.StartNew();table.Throw("20d20");
+                    Check(table.BodyCount==20,"twenty simultaneous themed bodies, not four");
+                    for(int i=0;i<20;i++)table.Tick(.1f,false);
+                    Check(table.Completed==0&&!table.Value.HasValue,"active material phase cannot lock a premature result");
+                    table.Tick(0);SaveImage(table.Image,Path.Combine(folder,"arena-"+theme.Behavior+"-20.png"),false);
+                    for(int i=0;i<2400&&table.Throwing;i++)table.Tick(.1f,false);
+                    Check(table.Completed==20&&table.Value.HasValue,"twenty material bodies complete: "+theme.Behavior+" "+table.Result);rolls+=20;
+                    int accepted=table.Value.Value;table.Shake(1);for(int i=0;i<20;i++)table.Tick(.1f,false);
+                    Check(table.Value==accepted&&table.Completed==20,"shake cannot alter accepted twenty-die result");
+                    Debug.Log("VTT_DICE_20_BODY_PASS: "+theme.Behavior+" elapsedWallMs="+timer.ElapsedMilliseconds+" pushes="+table.TentaclePushes+" hops="+table.SlimeHops);
                 }
                 if(theme.Behavior=="slime") {
                     table.Throw("4d20");
@@ -186,6 +207,22 @@ public static class DiceValidation
                 table.Preview(20);Check(table.EffectCount==0,"old marks/roots cleared with next preview");experimentCount++;
             }
             Check(experimentCount==6,"six complete experimental sets");
+            table.SetTheme(null);
+            var trays=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixture,"catalog/v9/index.json")),"packs");int trayCount=0;
+            foreach(JObject manifest in trays.Where(m=>(string)m["imageKind"]=="dice-tray")) {
+                string payload=Path.Combine(fixture,"packages",Path.GetFileName((string)manifest["url"]));WorkshopStore.Verify(manifest,payload);
+                var selected=DiceTray.Read((JObject)WorkshopStore.ValidateData(manifest,File.ReadAllText(payload))["diceTrays"][0]);
+                table.SetTray(selected);Check(table.ActiveTrayId==selected.Id,"installed tray selected");
+                SaveImage(table.Image,Path.Combine(folder,"arena-tray-"+selected.Profile+".png"),false);
+                table.Throw("20d20");Check(table.BodyCount==20,"twenty bodies enter "+selected.Profile);
+                for(int i=0;i<2400&&table.Throwing;i++)table.Tick(.1f,false);
+                Check(table.Completed==20&&table.Value.HasValue,"actual native tray20 roll "+selected.Profile+": "+table.Result);rolls+=20;
+                var actors=UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None);
+                Check(actors.All(b=>b.position.y>-1.5f&&Mathf.Abs(b.position.x-12000)<6.5f&&Mathf.Abs(b.position.z-12000)<5.5f),"tray contains all bodies: "+selected.Profile);
+                table.SetTray(null);Check(table.ActiveTrayId=="","switch removes prior tower");trayCount++;
+            }
+            Check(trayCount==4,"four actual native workshop tray recipes");
+            Debug.Log("VTT_DICE_TRAYS_PASS: four native profiles,80 actual PhysX throws, bounds and switching cleanup");
             Debug.Log("VTT_DICE_EXPERIMENTS_PASS: six profiles,42 physical types including percentile pairs, opaque shell controls, immutable results, actual effect meshes and cleanup");
         }
         Check(UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None).Length==bodies,"no rigidbody leaks");

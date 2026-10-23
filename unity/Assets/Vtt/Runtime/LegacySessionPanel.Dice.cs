@@ -24,13 +24,13 @@ namespace DndVtt.UnityPrototype
         private string diceQuantity="1";
         private bool diceReplaceQuantity;
         private static readonly int[] DiceSides={4,6,8,10,12,20,100};
-        private void CloseDiceTable() { diceTable?.Dispose();diceTable=null;diceThemes=null; }
+        private void CloseDiceTable() { StopDiceSensor();diceTable?.Dispose();diceTable=null;diceThemes=null;diceTrays=null; }
         private void UpdateDiceTable()
         {
             bool visible=screen==FrontScreen.Dice||(screen==FrontScreen.Sheet&&sheetTab==5);
             if(!visible) { if(diceTable!=null)CloseDiceTable();return; }
             if(diceTable==null)return;
-            try { diceTable.Tick(Time.unscaledDeltaTime); }
+            try { UpdateDiceSensor();diceTable.Tick(Time.unscaledDeltaTime); }
             catch(Exception error) { CloseDiceTable();diceError="3D-стол временно недоступен: "+error.Message;return; }
             if(diceTable.Value.HasValue)rollResult=diceTable.Result;
         }
@@ -131,6 +131,8 @@ namespace DndVtt.UnityPrototype
                 try { diceTable=new DiceTable();diceTable.Preview(DiceSides[diceSelection]);
                     InitializeWorkshop();
                     diceThemes=workshopStore.Installed().OfType<JObject>().Where(m=>(string)m["imageKind"]=="dice").Select(m=>DiceTheme.Read((JObject)workshopStore.Data(m)["diceThemes"][0])).ToArray();
+                    diceTrays=workshopStore.Installed().OfType<JObject>().Where(m=>(string)m["imageKind"]=="dice-tray").Select(m=>DiceTray.Read((JObject)workshopStore.Data(m)["diceTrays"][0])).ToArray();
+                    diceTable.SetTray(diceTrays.FirstOrDefault(t=>t.Id==PlayerPrefs.GetString("dndvtt.dice.tray","")));
                     diceIconSelection=null;SyncDiceIcon(); }
                 catch(Exception error) { CloseDiceTable();diceError="Не удалось открыть 3D-стол. Обычные броски доступны в листе героя. "+error.Message; }
             }
@@ -144,6 +146,8 @@ namespace DndVtt.UnityPrototype
             bool enabled=GUI.enabled;GUI.enabled=enabled&&!diceTable.Throwing;
             SyncDiceIcon();
             DrawDiceThemePicker();
+            DrawDiceTrayPicker();
+            DrawDiceShakeControl();
             if(diceThemeSelection==0)GUILayout.Label("Скачанные 3D-комплекты доступны в «Мои наборы». Режим привязки к иконке работает, если соответствующий комплект установлен.",muted);
             else if(diceThemes[diceThemeSelection-1].TextureSha256==null)GUILayout.Label("Этот набор ещё версии без UV-текстур. Обновите его в мастерской до 1.1.0.",muted);
             DrawDiceGroups();
@@ -162,7 +166,7 @@ namespace DndVtt.UnityPrototype
             GUI.enabled=enabled;
             if(diceTable.Throwing&&GUILayout.Button("Отменить бросок",GUILayout.MinHeight(54)))diceTable.Cancel();
             if(diceInputError.Length>0)GUILayout.Label(diceInputError,muted);
-            GUILayout.Label("Большие броски идут партиями, без ограничения общего количества. Настоящая физика. Результат читается с грани после остановки. Кубик на ребре перебрасывается. Фигурные наборы могут быть несбалансированными. Результат не имеет сетевого подтверждения.",muted);
+            GUILayout.Label("До 20 физических кубов одновременно (d100 занимает два места). Общее количество не ограничено: большие броски идут партиями. Результат читается после остановки; движения щупалец и прыжки слайма могут изменить его до фиксации. Фигурные наборы могут быть несбалансированными. Сетевого подтверждения результата нет.",muted);
         }
     }
 }

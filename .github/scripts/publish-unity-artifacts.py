@@ -120,6 +120,11 @@ def publish_verified(files, manifest, expected_cert, source_commit=None, build_r
             required|={"test-"+profile+"-settled-"+frame+".png" for profile in ["abyss","ice","blood","stone","vine","slime"] for frame in ["a","b"]}
             if {p.name for p in experiments}!=required:raise ValueError("Incomplete six-set render evidence")
         images.extend(experiments)
+        arenas=sorted(pathlib.Path(render_folder).rglob("arena-*.png"))
+        if arenas:
+            required={"arena-tray-"+profile+".png" for profile in ["spiral","pit","hexagon","octagon"]}|{"arena-abyss-20.png","arena-slime-20.png"}
+            if {p.name for p in arenas}!=required:raise ValueError("Incomplete native tray/20-body evidence")
+            images.extend(arenas)
         evidence=[]
         for path in images:
             blob=path.read_bytes()

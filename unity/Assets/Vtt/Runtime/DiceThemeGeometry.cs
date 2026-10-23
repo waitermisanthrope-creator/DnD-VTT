@@ -14,7 +14,7 @@ namespace DndVtt.UnityPrototype
             var pieces=new List<Mesh>();
             if(theme==null||theme.Shape=="rounded")return pieces;
             float rootRadius=theme.TexturePng!=null&&theme.Shape=="tentacles"?Mathf.Min(.09f,theme.Width*1.45f):theme.Width;
-            int arms=Math.Min(shape.vertices.Length,theme.Behavior=="abyss"?4:6);
+            int arms=theme.Behavior=="abyss"?shape.vertices.Length:Math.Min(shape.vertices.Length,6);
             for(int i=0;i<arms;i++) {
                 int vertexIndex=i*shape.vertices.Length/arms;Vector3 vertex=shape.vertices[vertexIndex];
                 Vector3 radial=vertex.normalized;
@@ -40,6 +40,7 @@ namespace DndVtt.UnityPrototype
                     float radius=rootRadius*(1-t*.92f);
                     if(theme.Shape=="rounded")radius=theme.Width*Mathf.Sqrt(Mathf.Max(.01f,1-t*t));
                     var segment=Frustum(previous,next,previousRadius,radius,theme.Shape=="crystal"?4:8);
+                    if(theme.Behavior=="abyss")segment.name="Tentacle "+i;
                     if(theme.NumberedAtlas&&curved) { var coords=segment.uv;for(int k=0;k<coords.Length;k++)coords[k].y=(j-1+coords[k].y)/segments;segment.uv=coords; }
                     pieces.Add(segment);
                     if(theme.TexturePng!=null&&theme.Shape=="tentacles"&&j%3==0) {
@@ -54,7 +55,7 @@ namespace DndVtt.UnityPrototype
                             float a=ring*Mathf.PI/3,b=(ring+1)*Mathf.PI/3;
                             Vector3 from=center+(along*Mathf.Cos(a)+across*Mathf.Sin(a))*r;
                             Vector3 to=center+(along*Mathf.Cos(b)+across*Mathf.Sin(b))*r;
-                            pieces.Add(Frustum(from,to,tube,tube,6));
+                            var cup=Frustum(from,to,tube,tube,6);if(theme.Behavior=="abyss")cup.name="Tentacle "+i;pieces.Add(cup);
                         }
                     }
                     previous=next;previousRadius=radius;

@@ -32,6 +32,20 @@ class Program
             Check(huge.TakeBatch(8).Length==8&&huge.Count>long.MaxValue,"unbounded quantity never expanded");
             var percentiles=DiceRollRequest.Parse("9d100");Check(percentiles.TakeBatch(8).Length==4,"percentile bodies bounded");
             foreach(string bad in new[]{"0d20","-1d6","d7","1d20+","NaNd6","1d6x","1d6 + 2"})Reject(()=>DiceRollRequest.Parse(bad),"invalid throw "+bad);
+            Check(DiceRollRequest.Parse("20d20").TakeBatch(20).Length==20,"twenty simultaneous physical slots");
+            Check(DiceRollRequest.Parse("20d100").TakeBatch(20).Length==10,"twenty physical slots for percentile pairs");
+            var motion=new DiceMotion();int releases=0;
+            for(int i=0;i<600;i++)if(motion.Sample(0,-1,0,1f/60))releases++;
+            Check(releases==0,"gravity alone never throws");
+            float Gesture(float amplitude) {
+                var filter=new DiceMotion();float strength=0;int events=0;
+                for(int i=0;i<60;i++)filter.Sample(0,-1,0,1f/60);
+                for(int i=0;i<210;i++)if(filter.Sample(i<72?(float)Math.Sin(i*.65)*amplitude:0,-1,0,1f/60)) { events++;strength=filter.Strength; }
+                Check(events==1,"one release per shake, quiet cooldown");return strength;
+            }
+            float gentle=Gesture(1.4f),strong=Gesture(4);
+            Check(strong>gentle&&strong<=1&&gentle>0,"shake amplitude changes bounded launch strength");
+            motion.Reset();Check(!motion.Sample(float.NaN,0,0,.1f),"invalid sensor sample ignored");
             string source = args.Length > 0 ? args[0] : "/workspace";
             string appRoot = args.Length > 1 ? args[1] : Directory.GetCurrentDirectory();
             Check((string)JObject.Parse(File.ReadAllText(Path.Combine(appRoot, "unity/Packages/manifest.json")))["dependencies"]["com.unity.modules.assetbundle"] == "1.0.0", "AssetBundle runtime module present");
@@ -41,6 +55,22 @@ class Program
                 var errors = tree.GetDiagnostics().Where(d => d.Severity == Microsoft.CodeAnalysis.DiagnosticSeverity.Error).ToArray();
                 Check(errors.Length == 0, "C# syntax " + file + " " + string.Join(";", errors.Select(e => e.ToString())));
             }
+            var trayCatalog=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source,"DnD-VTT-Assets/catalog/v9/index.json")),"packs");
+            var trayStore=new WorkshopStore(Path.Combine(root,"trays"));int trayCount=0;
+            foreach(JObject m in trayCatalog.Where(m=>(string)m["imageKind"]=="dice-tray")) {
+                var trayPayload=Path.Combine(source,"DnD-VTT-Assets/packages",Path.GetFileName((string)m["url"]));WorkshopStore.Verify(m,trayPayload);
+                string text=File.ReadAllText(trayPayload);var data=WorkshopStore.ValidateData(m,text);var tray=DiceTray.Read((JObject)data["diceTrays"][0]);
+                Check(tray.Id==(string)m["id"]+".tray"&&WorkshopStore.CategoryPath(m)=="Оформление/Лотки и башни","verified native tray and category");
+                var trayDownload=Path.Combine(root,"tray-download.json");File.Copy(trayPayload,trayDownload,true);
+                trayStore.Install(m,trayDownload,"android-arm64","6000.3.26f1");
+                Check(new WorkshopStore(trayStore.Root).Find((string)m["id"])!=null,"tray survives restart");
+                foreach(var bad in new[]{new[]{"profile","shell"},new[]{"print","remote-url"},new[]{"floor","NaN"},new[]{"id","other.tray"}}) {
+                    var copy=(JObject)data.DeepClone();copy["diceTrays"][0][bad[0]]=bad[1];Reject(()=>WorkshopStore.ValidateData(m,copy.ToString()),"invalid tray "+bad[0]);
+                }
+                var extra=(JObject)data.DeepClone();extra["diceTrays"][0]["script"]="exec";Reject(()=>WorkshopStore.ValidateData(m,extra.ToString()),"downloaded script rejected");
+                extra=(JObject)data.DeepClone();extra["surfaces"]=new JArray();Reject(()=>WorkshopStore.ValidateData(m,extra.ToString()),"mixed tray payload rejected");trayCount++;
+            }
+            Check(trayCount==4,"four installable tray profiles");
             var diceCatalog=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source,"DnD-VTT-Assets/catalog/v5/index.json")),"packs");
             var themes=diceCatalog.OfType<JObject>().Where(m=>(string)m["imageKind"]=="dice").ToArray();
             Check(themes.Length==31,"31 icon-linked full sets");

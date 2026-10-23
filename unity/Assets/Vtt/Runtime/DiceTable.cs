@@ -9,9 +9,9 @@ using UnityEngine.Rendering.Universal;
 namespace DndVtt.UnityPrototype
 {
     // Local physics scene: dice cannot collide with, simulate or modify the user's map.
-    public sealed class DiceTable : IDisposable
+    public sealed partial class DiceTable : IDisposable
     {
-        private sealed class Die { public DiceGeometry geometry;public Rigidbody body;public bool tens,units;public int resolved;public Vector3 settledPosition;public float lastImpact; }
+        private sealed class Die { public DiceGeometry geometry;public Rigidbody body;public bool tens,units;public int resolved;public Vector3 settledPosition;public float lastImpact,lastHop;public int hops;public DiceTentacles tentacles; }
         private readonly Scene scene;
         private readonly PhysicsScene physics;
         private readonly GameObject root;
@@ -54,6 +54,11 @@ namespace DndVtt.UnityPrototype
         public string Result { get;private set; }="Выберите кубик и бросьте его на стол.";
         public int? Value { get;private set; }
         public int BodyCount=>dice.Count;
+        public const int LiveBodyBudget=20;
+        public int TentacleCount=>dice.Sum(d=>d.tentacles?.Count??0);
+        public int TentaclePushes=>dice.Sum(d=>d.tentacles?.Pushes??0);
+        public int SlimeHops=>dice.Sum(d=>d.hops);
+        private float throwStrength=.45f;
         public DiceTable()
         {
             scene=SceneManager.CreateScene("VttDice-"+Guid.NewGuid().ToString("N"),new CreateSceneParameters(LocalPhysicsMode.Physics3D));physics=scene.GetPhysicsScene();
@@ -65,13 +70,9 @@ namespace DndVtt.UnityPrototype
             font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");font.RequestCharactersInTexture("0123456789.",64,FontStyle.Normal);
             Shader textShader=Resources.Load<Shader>("Dice/DiceNumeral");if(!textShader)throw new InvalidOperationException("Не найден шейдер цифр");
             numerals=new Material(textShader) { mainTexture=font.material.mainTexture };owned.Add(numerals);
-            Box("Сукно",new Vector3(0,-.18f,0),new Vector3(7,.35f,5.6f),new Color(.035f,.16f,.14f));
-            Box("Борт",new Vector3(-3.55f,.6f,0),new Vector3(.3f,1.6f,5.9f),new Color(.36f,.21f,.08f));
-            Box("Борт",new Vector3(3.55f,.6f,0),new Vector3(.3f,1.6f,5.9f),new Color(.36f,.21f,.08f));
-            Box("Борт",new Vector3(0,.6f,-2.85f),new Vector3(7.4f,1.6f,.3f),new Color(.36f,.21f,.08f));
-            Box("Борт",new Vector3(0,.6f,2.85f),new Vector3(7.4f,1.6f,.3f),new Color(.36f,.21f,.08f));
+            BuildTray();
             var view=Child("Dice camera");camera=view.AddComponent<Camera>();camera.enabled=false;camera.gameObject.AddComponent<UniversalAdditionalCameraData>().renderPostProcessing=false;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.025f,.035f,.045f);camera.cullingMask=1<<31;
-            camera.transform.localPosition=new Vector3(0,9,-6);camera.transform.LookAt(origin);camera.orthographic=true;camera.orthographicSize=4;camera.nearClipPlane=.1f;camera.farClipPlane=30;
+            camera.transform.localPosition=new Vector3(0,9,-6);camera.transform.LookAt(origin);camera.orthographic=true;camera.orthographicSize=4;camera.nearClipPlane=.1f;camera.farClipPlane=50;
             Image=new RenderTexture(768,640,24,RenderTextureFormat.ARGB32) { name="Dice view",antiAliasing=1 };Image.Create();camera.targetTexture=Image;camera.aspect=768f/640;
             tableResourceCount=owned.Count;Preview(20);
             }catch { Dispose();throw; }
@@ -80,11 +81,12 @@ namespace DndVtt.UnityPrototype
         {
             var go=new GameObject(name) { layer=31 };go.transform.SetParent(root.transform,false);return go;
         }
-        private void Box(string name,Vector3 position,Vector3 scale,Color color)
+        private GameObject Box(string name,Vector3 position,Vector3 scale,Color color)
         {
             var go=GameObject.CreatePrimitive(PrimitiveType.Cube);go.name=name;go.layer=31;go.transform.SetParent(root.transform,false);go.transform.localPosition=position;go.transform.localScale=scale;
             var material=new Material(surface) { color=color };owned.Add(material);go.GetComponent<Renderer>().sharedMaterial=material;go.GetComponent<Collider>().sharedMaterial=contact;
             if(name=="Борт") { var wall=go.GetComponent<BoxCollider>();wall.size=new Vector3(1,4,1);wall.center=new Vector3(0,1.5f,0); }
+            return go;
         }
         private void ClearDice()
         {
@@ -111,16 +113,20 @@ namespace DndVtt.UnityPrototype
             if(theme.NumberedAtlas) { material.SetFloat("_Numbered",1);material.SetFloat("_Tile",-1);material.color=Color.white;material.SetFloat("_Gloss",theme.Behavior=="stone"?.05f:theme.Behavior=="vine"?.2f:.8f); }
             }owned.Add(material);go.AddComponent<MeshRenderer>().sharedMaterial=material;
             var collider=go.AddComponent<MeshCollider>();collider.sharedMesh=mesh;collider.convex=true;collider.sharedMaterial=contact;
+            List<Mesh> softPieces=null;Material softMaterial=null;
             if(theme!=null) {
                 ColorUtility.TryParseHtmlString(theme.Trim,out var trimColor);
                 var trim=new Material(surface) { color=trimColor };
                 if(themeTexture) { trim.SetTexture("_MainTex",themeTexture);trim.SetFloat("_Textured",1);trim.SetFloat("_Tile",theme.TrimTile);trim.color=theme.TintTexture?trimColor:Color.white; }
-                if(theme.NumberedAtlas) { trim.SetFloat("_Numbered",1);trim.SetFloat("_Tile",80);trim.color=Color.white;trim.SetFloat("_Motion",theme.Behavior=="abyss"?1:0);trim.SetFloat("_Gloss",theme.Behavior=="stone"?.05f:.7f); }
+                if(theme.NumberedAtlas) { trim.SetFloat("_Numbered",1);trim.SetFloat("_Tile",80);trim.color=Color.white;trim.SetFloat("_Motion",0);trim.SetFloat("_Gloss",theme.Behavior=="stone"?.05f:.7f); }
                 owned.Add(trim);
                 if(!ornamentMeshes.TryGetValue(count,out var pieces)) {
                     pieces=DiceThemeGeometry.Build(geometry,theme);ornamentMeshes[count]=pieces;foreach(var piece in pieces)piece.hideFlags=HideFlags.HideAndDontSave;geometryAssets.AddRange(pieces);
                 }
+                bool soft=theme.Behavior=="abyss"&&theme.NumberedAtlas;
+                if(soft) { softPieces=pieces;softMaterial=trim; }
                 foreach(var part in pieces) {
+                    if(soft&&part.name.StartsWith("Tentacle ",StringComparison.Ordinal))continue;
                     PhysicalOrnamentCount++;var ornament=Child("Physical "+theme.Shape);ornament.transform.SetParent(go.transform,false);
                     ornament.AddComponent<MeshFilter>().sharedMesh=part;
                     var collision=ornament.AddComponent<MeshCollider>();collision.sharedMesh=part;collision.convex=true;collision.sharedMaterial=contact;
@@ -128,13 +134,13 @@ namespace DndVtt.UnityPrototype
                 if(pieces.Count>0) {
                     if(!ornamentRenderMeshes.TryGetValue(count,out var rendered)) {
                         rendered=new Mesh { name="Batched sculpted dice detail",hideFlags=HideFlags.HideAndDontSave };
-                        var visible=themeTexture&&theme.TrimTile==2?pieces.Where(p=>p.name!="Dice metal edge").ToList():pieces;
+                        var visible=pieces.Where(p=>(!soft||!p.name.StartsWith("Tentacle ",StringComparison.Ordinal))&&(soft||!(themeTexture&&theme.TrimTile==2)||p.name!="Dice metal edge")).ToList();
                         var combine=new CombineInstance[visible.Count];for(int i=0;i<visible.Count;i++)combine[i]=new CombineInstance { mesh=visible[i],transform=Matrix4x4.identity };
                         rendered.CombineMeshes(combine,true,false);ornamentRenderMeshes[count]=rendered;geometryAssets.Add(rendered);
                     }
                     var detail=Child("Sculpted details");detail.transform.SetParent(go.transform,false);
                     detail.AddComponent<MeshFilter>().sharedMesh=rendered;detail.AddComponent<MeshRenderer>().sharedMaterial=trim;
-                    if(themeTexture&&theme.TrimTile==2) {
+                    if(themeTexture&&theme.TrimTile==2&&!soft) {
                         if(!edgeRenderMeshes.TryGetValue(count,out var edges)) {
                             edges=new Mesh { name="Batched metallic dice edges",hideFlags=HideFlags.HideAndDontSave };
                             edges.CombineMeshes(pieces.Where(p=>p.name=="Dice metal edge").Select(p=>new CombineInstance { mesh=p,transform=Matrix4x4.identity }).ToArray(),true,false);
@@ -163,7 +169,9 @@ namespace DndVtt.UnityPrototype
                     Label(go.transform,text,face.center+face.normal*.004f,face.normal,up,count>=12?.22f:.3f);
                 }
             }
-            dice.Add(new Die { geometry=geometry,body=body,tens=tens,units=units });
+            var die=new Die { geometry=geometry,body=body,tens=tens,units=units };
+            if(softPieces!=null)die.tentacles=new DiceTentacles(geometry,softPieces,go.transform,softMaterial,SupportHeight,owned);
+            dice.Add(die);
         }
         private void Label(Transform parent,string text,Vector3 position,Vector3 normal,Vector3 up,float size)
         {
@@ -201,15 +209,15 @@ namespace DndVtt.UnityPrototype
             Result=count==4?"d4: число у верхней вершины; результат по нижней грани.":count==100?"d100: десятки + единицы. 00 и 0 означают 100.":"d"+count+": результат по верхней грани.";Render();
         }
         public void Throw(int count) { Throw("1d"+count); }
-        public void Throw(string expression)
+        public void Throw(string expression,float strength=.45f)
         {
             if(Throwing)return;
             var parsed=DiceRollRequest.Parse(expression); // Invalid input preserves the last result.
-            request=parsed;NextBatch();
+            throwStrength=Mathf.Clamp01(strength);request=parsed;NextBatch();
         }
         private void NextBatch()
         {
-            nextBatch=false;ClearDice();Value=null;batch=request.TakeBatch(theme==null?8:theme.Shape=="tentacles"&&theme.TexturePng!=null?2:4);
+            nextBatch=false;ClearDice();Value=null;batch=request.TakeBatch(LiveBodyBudget);
             foreach(int count in batch) {
                 if(count==100) { AddDie(10,true);AddDie(10,false,true); }
                 else AddDie(count);
@@ -223,15 +231,26 @@ namespace DndVtt.UnityPrototype
             Result="Бросок отменён. Готово "+Completed+" из "+Requested+"; промежуточная сумма "+Total+". Это не полный результат.";
             imageDirty=true;
         }
+        public void Shake(float strength)
+        {
+            if(!Rolling)return; // An accepted result is never changed by phone movement.
+            float impulse=Mathf.Clamp01(strength);
+            foreach(var d in dice)if(d.resolved==0&&!d.body.isKinematic) {
+                d.body.AddForce(new Vector3(UnityEngine.Random.Range(-1f,1f),1.3f,UnityEngine.Random.Range(-1f,1f))*impulse*2,ForceMode.VelocityChange);
+                d.body.AddTorque(UnityEngine.Random.onUnitSphere*impulse*8,ForceMode.VelocityChange);d.body.WakeUp();
+            }
+            still=0;
+        }
         private void Launch(bool unresolvedOnly=false)
         {
-            camera.orthographicSize=4;camera.transform.position=origin+new Vector3(0,9,-6);camera.transform.LookAt(origin);
+            FrameTray();
             elapsed=still=accumulator=0;Rolling=true;Value=null;Result=(retry==0?"Кубики летят… ":"Неоднозначная грань — перебрасываем… ")+"Готово "+Completed+" / "+Requested+". Сумма: "+Total;
-            int columns=theme==null?4:2,rows=(dice.Count+columns-1)/columns;float spacing=theme==null?1.7f:2.3f;
+            int columns=5,rows=(dice.Count+columns-1)/columns;float spacing=1.85f;
             for(int i=0;i<dice.Count;i++) {
                 var die=dice[i];if(unresolvedOnly&&die.resolved>0)continue;
-                die.resolved=0;var b=die.body;b.isKinematic=false;b.position=origin+new Vector3((i%columns-((Mathf.Min(dice.Count,columns)-1)*.5f))*spacing,2.1f,(i/columns-(rows-1)*.5f)*spacing);b.rotation=UnityEngine.Random.rotationUniform;
-                b.linearVelocity=new Vector3(UnityEngine.Random.Range(-2.5f,2.5f),UnityEngine.Random.Range(1f,3f),UnityEngine.Random.Range(-2f,2f));b.angularVelocity=UnityEngine.Random.onUnitSphere*UnityEngine.Random.Range(12f,24f);b.WakeUp();
+                die.resolved=0;die.lastImpact=die.lastHop=0;die.hops=0;die.tentacles?.Reset();var b=die.body;b.isKinematic=false;b.position=origin+new Vector3((i%columns-((Mathf.Min(dice.Count,columns)-1)*.5f))*spacing,2.1f,(i/columns-(rows-1)*.5f)*spacing);b.rotation=UnityEngine.Random.rotationUniform;
+                PlaceLaunch(b,i,columns,rows,spacing);
+                b.linearVelocity=new Vector3(UnityEngine.Random.Range(-2.5f,2.5f),UnityEngine.Random.Range(1f,3f),UnityEngine.Random.Range(-2f,2f));b.linearVelocity*=.65f+throwStrength*1.3f;if(tray?.Profile=="spiral"||tray?.Profile=="pit")b.linearVelocity=new Vector3(b.linearVelocity.x*.08f,.3f,b.linearVelocity.z*.08f);b.angularVelocity=UnityEngine.Random.onUnitSphere*UnityEngine.Random.Range(12f,24f)*(.65f+throwStrength);b.WakeUp();
             }
         }
         public void Tick(float delta,bool render=true)
@@ -241,15 +260,22 @@ namespace DndVtt.UnityPrototype
             bool moved=Rolling;
             if(Rolling) {
                 accumulator+=Mathf.Clamp(delta,0,.1f);
-                while(accumulator>=1f/60) { physics.Simulate(1f/60);accumulator-=1f/60;elapsed+=1f/60;
+                while(accumulator>=1f/60) {
+                    foreach(var d in dice)if(d.resolved==0) {
+                        d.tentacles?.Step(effectClock,elapsed,true);
+                        if(MaterialBehavior=="slime"&&elapsed>.5f&&elapsed<6.5f&&elapsed-d.lastHop>.4f&&d.body.linearVelocity.y<.6f&&d.body.position.y-SupportHeight(d.body.position)<.85f) {
+                            d.body.AddForce(Vector3.up*UnityEngine.Random.Range(2.6f,3.6f),ForceMode.VelocityChange);d.body.AddTorque(UnityEngine.Random.onUnitSphere*5,ForceMode.VelocityChange);d.body.WakeUp();d.lastHop=elapsed;d.hops++;
+                        }
+                    }
+                    physics.Simulate(1f/60);accumulator-=1f/60;elapsed+=1f/60;
                     bool quiet=true;foreach(var d in dice) {
                         if(d.body.linearVelocity.sqrMagnitude>.0144f||d.body.angularVelocity.sqrMagnitude>.0324f)quiet=false;
                         // Detect meaningful floor contacts without global MonoBehaviour callbacks.
-                        if((theme?.Behavior=="blood"||theme?.Behavior=="stone")&&d.body.position.y<.85f&&d.body.linearVelocity.y>.15f&&elapsed-d.lastImpact>.22f) { SpawnImpact(d);d.lastImpact=elapsed; }
+                        if((theme?.Behavior=="blood"||theme?.Behavior=="stone")&&d.body.position.y-SupportHeight(d.body.position)<.85f&&d.body.linearVelocity.y>.15f&&elapsed-d.lastImpact>.22f) { SpawnImpact(d);d.lastImpact=elapsed; }
                     }
                     still=quiet?still+1f/60:0;
-                    if(elapsed>.8f&&still>.6f) { Complete();break; }
-                    if(elapsed>12) { RerollOrFail();break; }
+                    if(elapsed>(MaterialBehavior=="abyss"?4.8f:MaterialBehavior=="slime"?7.2f:.8f)&&still>.6f) { Complete();break; }
+                    if(elapsed>20) { RerollOrFail();break; }
                 }
             }
             AnimateMaterial(delta);
@@ -301,7 +327,7 @@ namespace DndVtt.UnityPrototype
             imageDirty=true;
             Vector3 center=Vector3.zero;foreach(var d in dice)center+=d.body.position;center/=dice.Count;
             float span=0;foreach(var d in dice)span=Mathf.Max(span,(d.body.position-center).magnitude);
-            camera.orthographicSize=Mathf.Clamp(1.5f+span,1.5f,4);
+            camera.orthographicSize=Mathf.Clamp(1.5f+span,1.5f,7.5f);
             camera.transform.position=center+new Vector3(0,9,-6);camera.transform.LookAt(center);
         }
         private void Render()
@@ -328,7 +354,7 @@ namespace DndVtt.UnityPrototype
                 var mat=new Material(surface) { color=theme.Behavior=="blood"?new Color(.3f,.005f,.012f):new Color(.36f,.34f,.3f) };owned.Add(mat);
                 drop.AddComponent<MeshRenderer>().sharedMaterial=mat;
                 float phase=effects.Count*2.39996f,r=.12f+(effects.Count%5)*.07f;
-                drop.transform.localPosition=new Vector3(die.body.position.x-origin.x+Mathf.Cos(phase)*r,.025f,die.body.position.z-origin.z+Mathf.Sin(phase)*r);
+                drop.transform.localPosition=new Vector3(die.body.position.x-origin.x+Mathf.Cos(phase)*r,SupportHeight(die.body.position)-origin.y+.025f,die.body.position.z-origin.z+Mathf.Sin(phase)*r);
                 drop.transform.localScale=theme.Behavior=="blood"?new Vector3(.11f,.012f,.09f):Vector3.one*.045f;
                 effects.Add(drop);
             }
@@ -341,7 +367,7 @@ namespace DndVtt.UnityPrototype
                 var rootMesh=DiceThemeGeometry.Root(Vector3.zero,angle);
                 var rootGo=Child("Growing root");rootGo.AddComponent<MeshFilter>().sharedMesh=rootMesh;owned.Add(rootMesh);
                 var mat=new Material(surface) { color=new Color(.18f,.25f,.065f) };owned.Add(mat);rootGo.AddComponent<MeshRenderer>().sharedMaterial=mat;
-                rootGo.transform.localPosition=new Vector3(die.body.position.x-origin.x,.04f,die.body.position.z-origin.z);rootGo.transform.localScale=Vector3.zero;effects.Add(rootGo);
+                rootGo.transform.localPosition=new Vector3(die.body.position.x-origin.x,SupportHeight(die.body.position)-origin.y+.04f,die.body.position.z-origin.z);rootGo.transform.localScale=Vector3.zero;effects.Add(rootGo);
             }
         }
         private void AnimateMaterial(float delta)
@@ -349,6 +375,7 @@ namespace DndVtt.UnityPrototype
             string behavior=theme?.Behavior??"";if(behavior=="")return;
             if(!Rolling)settledClock+=Mathf.Clamp(delta,0,.1f);
             foreach(var die in dice) {
+                die.tentacles?.Animate(effectClock);
                 foreach(var renderer in die.body.GetComponentsInChildren<MeshRenderer>()) {
                     var mat=renderer.sharedMaterial;if(mat.HasProperty("_Clock"))mat.SetFloat("_Clock",effectClock);
                     if(behavior=="slime"&&mat.HasProperty("_Squash"))mat.SetFloat("_Squash",Rolling?.045f*Mathf.Sin(effectClock*12):.075f*Mathf.Sin(settledClock*8));
@@ -373,6 +400,7 @@ namespace DndVtt.UnityPrototype
             if(themeTexture)UnityEngine.Object.DestroyImmediate(themeTexture);themeTexture=null;
             if(camera)camera.targetTexture=null;
             if(root)UnityEngine.Object.DestroyImmediate(root);
+            foreach(var asset in trayAssets)if(asset)UnityEngine.Object.DestroyImmediate(asset);trayAssets.Clear();trayObjects.Clear();
             ClearGeometryAssets();
             foreach(var asset in owned)if(asset)UnityEngine.Object.DestroyImmediate(asset);owned.Clear();dice.Clear();
             if(Image) { Image.Release();UnityEngine.Object.DestroyImmediate(Image);Image=null; }

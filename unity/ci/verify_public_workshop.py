@@ -70,3 +70,14 @@ for m in experimental:
  assert m['url'].startswith('https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/releases/download/owner-appearance-v1/dnd.dice.')
  download((preview_root,m))
 print('PUBLIC_SIX_DICE_PACKAGES_PASS',len(experimental),sum(m['bytes'] for m in experimental),'bytes')
+
+# Four bounded native tray recipes; older catalogs and dice payloads are unchanged.
+data=fetch('https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/catalog/v9/index.json',1024*1024)
+(preview_root/'catalog/v9').mkdir(parents=True,exist_ok=True);(preview_root/'catalog/v9/index.json').write_bytes(data)
+trays=[m for m in json.loads(data)['packs'] if m.get('imageKind')=='dice-tray']
+assert len(trays)==4
+for m in trays:
+ assert m['minClientVersionCode']==10031 and m['dependencies']==[] and m['bytes']<4096
+ assert m['url'].startswith('https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/releases/download/owner-appearance-v1/dnd.dice.tray.')
+ download((preview_root,m))
+print('PUBLIC_DICE_TRAYS_PASS',len(trays),sum(m['bytes'] for m in trays),'bytes')

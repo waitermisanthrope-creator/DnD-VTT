@@ -7,6 +7,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/DiceRollRequest.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/DiceTheme.cs" />
+    <Compile Include="../../Assets/Vtt/Runtime/DiceTray.cs" />
+    <Compile Include="../../Assets/Vtt/Runtime/DiceMotion.cs" />
     <Compile Include="CommerceChecks.cs" />
     <Compile Include="AccountGestureChecks.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/MenuGesture.cs" />
