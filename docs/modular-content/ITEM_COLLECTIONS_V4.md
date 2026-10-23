@@ -1,3 +1,15 @@
+# Опциональные сборники опубликованы без нового клиента — 2026-10-23
+
+Content main `d9a4fe7` активировал 36 независимых томов 1.1.0 / 3291 предмет
+в живом v3, плюс сохранены 120 прежних ингредиентов. 1096 проверок на
+неизменённом runtime e99d922a PASS; все 36 публичных payload и сам каталог
+скачаны, SHA/bytes/полное совпадение индекса PASS. Обновление Unity не нужно.
+Новые стабильные volume item ID: Content sources/workshop-volumes-1.1.0.json.
+Не выпускать старое переключение этого черновика на v4 без миграции этих ID:
+возможны дубли. PR #15 остаётся черновиком будущего runtime, моды доступны
+независимо от него. Инструкция: Content docs/WORKSHOP_ITEM_VOLUMES.md.
+Физический GUI QA не выполнялся; основная Unity-ветка и feed не изменялись.
+
 # Expanded workshop inventory — prepared stage, 2026-10-23
 
 Owner requested five independent large collections for Unity, generic creature

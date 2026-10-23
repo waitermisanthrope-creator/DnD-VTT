@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода e99d922aeab3. Git содержит 1988 файлов.
+Снимок кода a4d08ed46c3e. Git содержит 1988 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -62,8 +62,8 @@
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 7025 B | документация или отчёт: AGENTS |
 | №0043 AI_BLOCKERS.md | 48585 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 71402 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 111088 B | документация или отчёт: AI PROGRESS |
+| №0044 AI_NEXT_TASK.md | 72564 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 112251 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1043,7 +1043,7 @@
 | №1022 docs/modular-content/EXTRACTION_STAGE2.md | 7041 B | документация или отчёт: EXTRACTION STAGE2 |
 | №1023 docs/modular-content/final-apk-metrics.json | 1291 B | документация или отчёт: final apk metrics |
 | №1024 docs/modular-content/hotfix-1.00.07-metrics.json | 1451 B | документация или отчёт: hotfix 1.00.07 metrics |
-| №1025 docs/modular-content/ITEM_COLLECTIONS_V4.md | 2267 B | документация или отчёт: ITEM COLLECTIONS V4 |
+| №1025 docs/modular-content/ITEM_COLLECTIONS_V4.md | 3429 B | документация или отчёт: ITEM COLLECTIONS V4 |
 | №1026 docs/modular-content/LICENSE_REVIEW.md | 3704 B | документация или отчёт: LICENSE REVIEW |
 | №1027 docs/modular-content/live-manager-texture-comparison.json | 436 B | документация или отчёт: live manager texture comparison |
 | №1028 docs/modular-content/minimal-1.00.08-metrics.json | 1411 B | документация или отчёт: minimal 1.00.08 metrics |

@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит e99d922aeab3. Файлов: 1988
+Коммит a4d08ed46c3e. Файлов: 1988
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -57,8 +57,8 @@
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (7025 B)
 0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (48585 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (71402 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (111088 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (72564 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (112251 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1038,7 +1038,7 @@
 1022. docs/modular-content/EXTRACTION_STAGE2.md — документация или отчёт: EXTRACTION STAGE2 (7041 B)
 1023. docs/modular-content/final-apk-metrics.json — документация или отчёт: final apk metrics (1291 B)
 1024. docs/modular-content/hotfix-1.00.07-metrics.json — документация или отчёт: hotfix 1.00.07 metrics (1451 B)
-1025. docs/modular-content/ITEM_COLLECTIONS_V4.md — документация или отчёт: ITEM COLLECTIONS V4 (2267 B)
+1025. docs/modular-content/ITEM_COLLECTIONS_V4.md — документация или отчёт: ITEM COLLECTIONS V4 (3429 B)
 1026. docs/modular-content/LICENSE_REVIEW.md — документация или отчёт: LICENSE REVIEW (3704 B)
 1027. docs/modular-content/live-manager-texture-comparison.json — документация или отчёт: live manager texture comparison (436 B)
 1028. docs/modular-content/minimal-1.00.08-metrics.json — документация или отчёт: minimal 1.00.08 metrics (1411 B)

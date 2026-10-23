@@ -1,3 +1,15 @@
+# Опциональные сборники опубликованы без нового клиента — 2026-10-23
+
+Content main `d9a4fe7` активировал 36 независимых томов 1.1.0 / 3291 предмет
+в живом v3, плюс сохранены 120 прежних ингредиентов. 1096 проверок на
+неизменённом runtime e99d922a PASS; все 36 публичных payload и сам каталог
+скачаны, SHA/bytes/полное совпадение индекса PASS. Обновление Unity не нужно.
+Новые стабильные volume item ID: Content sources/workshop-volumes-1.1.0.json.
+Не выпускать старое переключение этого черновика на v4 без миграции этих ID:
+возможны дубли. PR #15 остаётся черновиком будущего runtime, моды доступны
+независимо от него. Инструкция: Content docs/WORKSHOP_ITEM_VOLUMES.md.
+Физический GUI QA не выполнялся; основная Unity-ветка и feed не изменялись.
+
 # [ДОСТАВЛЕНО ДЛЯ ТЕСТА] Unity1.00.34 — independent arms / dissipating slime / readable edge results,2026-10-23
 
 Existing Unity feed verified1.00.34/code10034 plain+cache-busted; both actual public installers hash/size checked, APK original cert v2/v3 and aapt identity retained. Runtime source24b2a4773e3951ea9192d9663596f26338936254; candidate39952385083 all3jobs SUCCESS (Android120409754850/Windows120415371535/actual Windows upgrade120419210554). Final publisher39955945545/job120421689548 SUCCESS; feed activation7ea3934398628b4ad5717086e36bb766784f5bc2. Release https://github.com/waitermisanthrope-creator/DnD-VTT/releases/tag/unity-v1.00.34 . APK42520566bytes SHAbdae0690a48da627e6294edc67514622e2855c78c82bd3facf9bb16447b89464; Windows29233602bytes SHAac83895262352c99647f3da1797e6aad8949f2155a0d944ed7fa27614caebca2. Do NOT overwrite immutable34; next runtime must exceed10034.
