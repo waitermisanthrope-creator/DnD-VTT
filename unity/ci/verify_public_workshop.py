@@ -81,3 +81,10 @@ for m in trays:
  assert m['url'].startswith('https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/releases/download/owner-appearance-v1/dnd.dice.tray.')
  download((preview_root,m))
 print('PUBLIC_DICE_TRAYS_PASS',len(trays),sum(m['bytes'] for m in trays),'bytes')
+
+# Optional complete-category metadata; immutable original Assets payloads stay unchanged.
+for m in json.loads(data)["packs"]:
+ if m.get("modCategoryCollection"):
+  assert m["url"].startswith("https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/packages/dnd.collections.")
+  download((preview_root,m))
+print("PUBLIC_ASSET_COLLECTIONS_PASS",sum(bool(m.get("modCategoryCollection")) for m in json.loads(data)["packs"]))

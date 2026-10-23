@@ -11,6 +11,7 @@ class Program
     static void Reject(Action action, string name) { bool rejected = false; try { action(); } catch (Exception) { rejected = true; } Check(rejected, name); }
     static void Main(string[] args)
     {
+        if(args.Length>0 && args[0]=="--all-collections") { Console.WriteLine("ALL_MOD_COLLECTIONS_PASS "+AllModCollectionChecks.Run(args[1]));return; }
         if(args.Length>0 && args[0]=="--collections") { Console.WriteLine("COLLECTIONS_PASS "+CollectionChecks.Run(args[1]));return; }
         string root = Path.Combine(Path.GetTempPath(), "vtt-workshop-test-" + Guid.NewGuid()); Directory.CreateDirectory(root);
         try
@@ -238,6 +239,12 @@ class Program
             Check((int)optionalHero["stats"]["str"] == 13 && ((JArray)optionalHero["feats"]).Any(f => (string)f["id"] == "athlete"), "downloaded feat applies selected stat and persists record");
             Check(((JArray)optionalHero["contentPackages"]).Count == 3, "race class feat package IDs and versions persisted");
             var archiveText = new LegacyCharacterArchive(optionalHero.ToString()).Export();
+            var collectionMarkers=store.Installed().OfType<JObject>().Where(m=>(bool?)m["modCategoryCollection"]==true).OrderBy(m=>(string)m["collectionRole"]=="category"?0:1).ToArray();
+            if(collectionMarkers.Length>0) {
+                Reject(()=>store.Remove("dnd.race.tortle"),"required race cannot be removed while collection marker is installed");
+                foreach(var marker in collectionMarkers)store.Remove((string)marker["id"]);
+                Check(store.Find("dnd.race.tortle")!=null,"removing collection marker preserves original mod");
+            }
             foreach (string id in new[] { "dnd.race.tortle", "dnd.class.blood_hunter", "dnd.feat.athlete" }) store.Remove(id);
             var afterRemoval = store.Creation(baseCreation);
             Check(!((JArray)afterRemoval["races"]).Any(r => (string)r["id"] == "tortle") && !((JArray)afterRemoval["classes"]).Any(c => (string)c["id"] == "blood_hunter") && !((JArray)afterRemoval["feats"]).Any(f => (string)f["id"] == "athlete"), "uninstall removes only optional picker entries");
@@ -245,6 +252,7 @@ class Program
             checks += CommerceChecks.Run(store,appRoot);
             if(File.Exists(Path.Combine(source,"DnD-VTT-Content/packages/dnd.collections.weapons-1.0.0.json"))) checks += CollectionChecks.Run(Path.Combine(source,"DnD-VTT-Content"));
             checks += AccountGestureChecks.Run(appRoot);
+            if(File.Exists(Path.Combine(source,"DnD-VTT-Content/packages/dnd.collections.races-1.0.0.json"))) checks += AllModCollectionChecks.Run(source);
             var originalManifest = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source, "DnD-VTT-Content/catalog/v3/index.json")), "packages").OfType<JObject>().First();
             var edited = (JObject)originalManifest.DeepClone(); edited["bytes"] = WorkshopStore.MaxPackageBytes + 1;
             Reject(() => WorkshopStore.ValidateManifest(edited), "oversized payload");

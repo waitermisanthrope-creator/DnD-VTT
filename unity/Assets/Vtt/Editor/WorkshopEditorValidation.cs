@@ -35,7 +35,7 @@ public static class WorkshopEditorValidation
     {
         var roots=manifests.OfType<JObject>().Where(m=>(string)m["collectionRole"]=="category").ToArray();
         if(roots.Length==0)return;
-        Check(roots.Length==5,"five category libraries in actual catalog");
+        Check(roots.Length==15,"all fifteen libraries in actual live catalogs");
         var go=new GameObject("Category collection menu validation");
         try {
             var panel=go.AddComponent<LegacySessionPanel>();var flags=BindingFlags.Instance|BindingFlags.NonPublic;var type=typeof(LegacySessionPanel);
@@ -44,8 +44,11 @@ public static class WorkshopEditorValidation
             type.GetField("contentCategory",flags).SetValue(panel,0); // dedicated Collections page is the default
             type.GetMethod("RebuildContentView",flags).Invoke(panel,null);
             var view=(System.Collections.Generic.IEnumerable<JObject>)type.GetField("contentView",flags).GetValue(panel);
-            Check(view.Count()==5&&view.All(m=>(string)m["collectionRole"]=="category"),"real menu shows five libraries rather than individual tomes");
-            Check(view.Select(m=>(string)m["inventoryCategory"]).SequenceEqual(new[]{"weapons","armor","materials","consumables","junk"}),"dedicated collection page has predictable category order");
+            Check(view.Count()==15&&view.All(m=>(string)m["collectionRole"]=="category"),"real menu shows all fifteen libraries rather than individual mods");
+            Check(view.Take(5).Select(m=>(string)m["inventoryCategory"]).SequenceEqual(new[]{"weapons","armor","materials","consumables","junk"}),"existing item category order retained");
+            Check(view.Skip(5).Select(m=>(string)m["collectionCategory"]).SequenceEqual(WorkshopStore.ModCollectionCategories),"all non-item categories follow in predictable order");
+            var firstPage=(System.Collections.Generic.IEnumerable<JObject>)type.GetMethod("VisibleContentPage",flags).Invoke(panel,null);
+            Check(firstPage.Count()==15,"all fifteen libraries fit on the first collection page");
             type.GetMethod("SwitchContentPage",flags).Invoke(panel,new object[]{false});
             type.GetField("contentShowParts",flags).SetValue(panel,true);type.GetMethod("RebuildContentView",flags).Invoke(panel,null);
             view=(System.Collections.Generic.IEnumerable<JObject>)type.GetField("contentView",flags).GetValue(panel);
@@ -56,7 +59,7 @@ public static class WorkshopEditorValidation
                 var routine=(System.Collections.IEnumerator)type.GetMethod("DownloadContentPackage",flags).Invoke(panel,new object[]{root});
                 Check(!routine.MoveNext()&&!(bool)type.GetField("contentBusy",flags).GetValue(panel),"actual download controller completes already installed collection without network");
             }
-            Debug.Log("VTT_COLLECTIONS_EDITOR_PASS: five actual category buttons, part toggle and real idempotent download controller");
+            Debug.Log("VTT_COLLECTIONS_EDITOR_PASS: fifteen actual collection cards, part toggle and real idempotent download controller");
         }finally{UnityEngine.Object.DestroyImmediate(go);}
     }
     private static void ValidateWorkshopPagination(WorkshopStore store)
@@ -158,7 +161,7 @@ public static class WorkshopEditorValidation
             var manifests = new JArray();int decodedImages=0;
             foreach (string repo in new[] { "DnD-VTT-Content", "DnD-VTT-Assets" })
             {
-                var entries = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixtures, repo, repo.EndsWith("Content") ? "catalog/v3/index.json" : "catalog/v4/index.json")), repo.EndsWith("Content", StringComparison.Ordinal) ? "packages" : "packs");
+                var entries = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixtures, repo, repo.EndsWith("Content") ? "catalog/v3/index.json" : "catalog/v9/index.json")), repo.EndsWith("Content", StringComparison.Ordinal) ? "packages" : "packs");
                 foreach (JObject entry in entries)
                 {
                     if ((string)entry["format"] != "json") continue;
@@ -175,6 +178,9 @@ public static class WorkshopEditorValidation
             ValidateAppearanceLibrary(store,manifests);
             ValidateWorkshopPagination(store);
             ValidateCategoryCollections(store,manifests);
+            int beforeMarkerRemoval=store.Installed().OfType<JObject>().Count(m=>(string)m["type"]!="collection");
+            foreach(var marker in store.Installed().OfType<JObject>().Where(m=>(bool?)m["modCategoryCollection"]==true).OrderBy(m=>(string)m["collectionRole"]=="category"?0:1).ToArray())store.Remove((string)marker["id"]);
+            Check(store.Installed().OfType<JObject>().Count(m=>(string)m["type"]!="collection")==beforeMarkerRemoval,"removing generic collection markers preserves every original mod");
             var previewEntries=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixtures,"DnD-VTT-Assets/catalog/v4/index.json")),"packs");int decodedPreviews=0;
             foreach(JObject entry in previewEntries)if(entry["preview"] is JObject preview) {
                 var texture=new Texture2D(2,2);try { var b=WorkshopStore.PreviewBytes(preview,File.ReadAllBytes(Path.Combine(fixtures,"DnD-VTT-Assets/previews",Path.GetFileName((string)preview["url"]))));Check(texture.LoadImage(b),"real small preview decodes in Unity");Check(texture.width==320&&texture.height==200,"decoded preview dimensions");decodedPreviews++; }finally { UnityEngine.Object.DestroyImmediate(texture); }

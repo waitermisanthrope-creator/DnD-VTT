@@ -50,6 +50,7 @@ namespace DndVtt.UnityPrototype
                     foreach(var pair in new[]{new[]{"weapons","Оружие"},new[]{"armor","Броня"},new[]{"consumables","Расходники"},new[]{"materials","Материалы"},new[]{"junk","Хлам"}})if(id.EndsWith("."+pair[0],StringComparison.Ordinal))return "Инвентарь/"+pair[1];
                     return "Инвентарь/Прочее";
                 case "collection":
+                    if(manifest["collectionCategory"]!=null)return "Сборники модов/"+(string)manifest["name"];
                     string category=(string)manifest["inventoryCategory"];
                     return "Инвентарь/"+(category=="weapons"?"Оружие":category=="armor"?"Броня":category=="materials"?"Материалы":category=="consumables"?"Расходники":"Хлам");
                 case "craft":return id.Contains("alchemy.ingredients")?"Крафт и алхимия/Алхимия/Ингредиенты":id.Contains("alchemy")?"Крафт и алхимия/Алхимия/Правила и катализаторы":"Крафт и алхимия/Рецепты";
@@ -89,6 +90,13 @@ namespace DndVtt.UnityPrototype
                 if (!local.TryGetValue(id,out var present) || !SameInstall(present,m)) plan.Add(m.DeepClone());
             }
             Visit(root,0);return plan;
+        }
+        public static readonly string[] ModCollectionCategories={"races","classes","feats","icons","wallpapers","dice","dice-trays","maps","models","surfaces"};
+        public static int CollectionOrder(JObject manifest)
+        {
+            int item=Array.IndexOf(CharacterSheetRules.InventoryCategories,(string)manifest["inventoryCategory"]);
+            if(item>=0)return Array.IndexOf(new[]{"weapons","armor","materials","consumables","junk"},(string)manifest["inventoryCategory"]);
+            int mod=Array.IndexOf(ModCollectionCategories,(string)manifest["collectionCategory"]);return mod>=0?5+mod:1000;
         }
         public static System.Collections.Generic.HashSet<string> CollectionParts(System.Collections.Generic.IEnumerable<JObject> catalog)
         {
@@ -205,7 +213,9 @@ namespace DndVtt.UnityPrototype
             if (!new[] { "race", "class", "feat", "map", "model", "environment", "appearance", "item", "craft", "collection" }.Contains(type)) throw new FormatException("Этот тип пока недоступен для активации");
             if (type=="collection")
             {
-                if (!CharacterSheetRules.InventoryCategories.Contains((string)data["inventoryCategory"]) || (string)data["inventoryCategory"]!=(string)m["inventoryCategory"] || !(data["members"] is JArray members) || members.Count<1 || members.Count>50 || members.Any(x=>x.Type!=JTokenType.String || !ValidId((string)x)) || members.Values<string>().Distinct().Count()!=members.Count || !JToken.DeepEquals(members,m["dependencies"]) || data.Properties().Any(p=>!new[]{"schemaVersion","id","version","type","inventoryCategory","members"}.Contains(p.Name))) throw new FormatException("Неверный состав сборника");
+                bool itemCategory=m["collectionCategory"]==null && data["inventoryCategory"]!=null && data["collectionCategory"]==null && CharacterSheetRules.InventoryCategories.Contains((string)data["inventoryCategory"]) && (string)data["inventoryCategory"]==(string)m["inventoryCategory"];
+                bool modCategory=m["inventoryCategory"]==null && data["collectionCategory"]!=null && data["inventoryCategory"]==null && ModCollectionCategories.Contains((string)data["collectionCategory"]) && (string)data["collectionCategory"]==(string)m["collectionCategory"];
+                if (!(itemCategory||modCategory) || !(data["members"] is JArray members) || members.Count<1 || members.Count>50 || members.Any(x=>x.Type!=JTokenType.String || !ValidId((string)x)) || members.Values<string>().Distinct().Count()!=members.Count || !JToken.DeepEquals(members,m["dependencies"]) || data.Properties().Any(p=>!new[]{"schemaVersion","id","version","type","inventoryCategory","collectionCategory","members"}.Contains(p.Name))) throw new FormatException("Неверный состав сборника");
                 return data;
             }
             if(type=="appearance"&&(data["diceTrays"]!=null||(string)m["imageKind"]=="dice-tray")) {

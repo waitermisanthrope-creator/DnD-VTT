@@ -11,10 +11,10 @@ static class CollectionChecks
   void Check(bool ok,string message){if(!ok)throw new Exception(message);checks++;}
   void Reject(Action action,string message){bool rejected=false;try{action();}catch(FormatException){rejected=true;}Check(rejected,message);}
   var catalog=WorkshopStore.Catalog(File.ReadAllText(Path.Combine(content,"catalog/v3/index.json")),"packages");
-  var all=catalog.OfType<JObject>().ToArray();var roots=all.Where(m=>(string)m["collectionRole"]=="category").ToArray();
+  var all=catalog.OfType<JObject>().ToArray();var roots=all.Where(m=>(string)m["collectionRole"]=="category" && (bool?)m["itemCategoryCollection"]==true).ToArray();
   Check(roots.Length==5,"five category buttons");
   var hidden=WorkshopStore.CollectionParts(all);
-  Check(all.Count(m=>new[]{"item","craft","collection"}.Contains((string)m["type"])&&!hidden.Contains((string)m["id"]))==5,"five visible libraries replace individual tomes");
+  Check(all.Count(m=>(new[]{"item","craft"}.Contains((string)m["type"]) || (bool?)m["itemCategoryCollection"]==true)&&!hidden.Contains((string)m["id"]))==5,"five visible libraries replace individual tomes");
   string temp=Path.Combine(Path.GetTempPath(),"collection-test-"+Guid.NewGuid());Directory.CreateDirectory(temp);
   try {
    string Payload(JObject m)=>Path.Combine(content,"packages",Path.GetFileName((string)m["url"]));

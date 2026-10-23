@@ -23,6 +23,7 @@ namespace DndVtt.UnityPrototype
         private JArray contentPackages = new JArray(), assetPacks = new JArray();
         private JObject contentDetails;
         private const int ContentPageSize=12;
+        private int ContentPageLimit=>contentCollectionsPage?24:ContentPageSize;
         private int contentPage,contentViewCategory=-1;
         private bool contentViewDirty=true,contentViewInstalledOnly;
         private string contentViewSearch,contentViewGroup;
@@ -43,7 +44,7 @@ namespace DndVtt.UnityPrototype
             var eligible=all.Where(m=>(!contentCollectionsPage || (string)m["collectionRole"]=="category")&&(contentShowParts || !collectionParts.Contains((string)m["id"]))&&(!installedOnly||contentInstalled.ContainsKey((string)m["id"]))&&(contentCategory==0||(string)m["type"]==ContentTypes[contentCategory]||ContentTypes[contentCategory]=="item"&&(string)m["type"]=="collection")&&
                 (m["name"]+" "+m["id"]+" "+m["author"]+" "+WorkshopStore.CategoryPath(m)).IndexOf(contentSearch,StringComparison.OrdinalIgnoreCase)>=0)
                 .OrderBy(m=>contentCollectionsPage&&(string)m["collectionRole"]=="category"?0:1)
-                .ThenBy(m=>contentCollectionsPage&&(string)m["collectionRole"]=="category"?Array.IndexOf(new[]{"weapons","armor","materials","consumables","junk"},(string)m["inventoryCategory"]):0).ToList();
+                .ThenBy(m=>contentCollectionsPage?WorkshopStore.CollectionOrder(m):0).ToList();
             string prefix=contentGroupPath==""?"":contentGroupPath+"/";
             contentView=eligible.Where(m=>contentGroupPath==""||WorkshopStore.CategoryPath(m)==contentGroupPath||WorkshopStore.CategoryPath(m).StartsWith(prefix,StringComparison.Ordinal)).ToList();
             contentTreeCounts.Clear();
@@ -59,7 +60,7 @@ namespace DndVtt.UnityPrototype
         {
             if(contentViewDirty||contentViewCategory!=contentCategory||contentViewSearch!=contentSearch||contentViewInstalledOnly!=installedOnly||contentViewGroup!=contentGroupPath)RebuildContentView();
         }
-        private IEnumerable<JObject> VisibleContentPage()=>contentView.Skip(contentPage*ContentPageSize).Take(ContentPageSize);
+        private IEnumerable<JObject> VisibleContentPage()=>contentView.Skip(contentPage*ContentPageLimit).Take(ContentPageLimit);
         private void DrawContentTree()
         {
             GUILayout.Label(contentGroupPath==""?"Все категории":"Все / "+contentGroupPath,muted);
@@ -78,7 +79,7 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawContentPagination()
         {
-            int pages=Math.Max(1,(contentView.Count+ContentPageSize-1)/ContentPageSize);
+            int pages=Math.Max(1,(contentView.Count+ContentPageLimit-1)/ContentPageLimit);
             GUILayout.Label("Материалов: "+contentView.Count+" · Страница "+(contentPage+1)+" из "+pages,muted);
             if(pages==1)return;
             GUILayout.BeginHorizontal();bool enabled=GUI.enabled;GUI.enabled=enabled&&contentPage>0;
@@ -211,9 +212,9 @@ namespace DndVtt.UnityPrototype
             if(GUILayout.Toggle(contentCollectionsPage,"Сборники модов",GUI.skin.button,GUILayout.MinHeight(54))&&!contentCollectionsPage)SwitchContentPage(true);
             if(GUILayout.Toggle(!contentCollectionsPage,"Все дополнения",GUI.skin.button,GUILayout.MinHeight(54))&&contentCollectionsPage)SwitchContentPage(false);
             GUILayout.EndHorizontal();
-            if(contentCollectionsPage)GUILayout.Label("Полные тематические сборники. Все входящие тома скачиваются одной кнопкой.",muted);
+            if(contentCollectionsPage)GUILayout.Label("Полные тематические сборники. Все входящие дополнения скачиваются одной кнопкой.",muted);
             else {
-                bool showParts=GUILayout.Toggle(contentShowParts,"Показать отдельные тома и части сборников");
+                bool showParts=GUILayout.Toggle(contentShowParts,"Показать отдельные моды и части сборников");
                 if(showParts!=contentShowParts) {contentShowParts=showParts;contentViewDirty=true;}
             }
             contentSearch = GUILayout.TextField(contentSearch, GUILayout.MinHeight(40));
@@ -230,7 +231,7 @@ namespace DndVtt.UnityPrototype
                 {
                     GUILayout.Label((string)item["description"], muted);
                     GUILayout.Label("Автор: " + item["author"] + " · Лицензия: " + item["license"] + " · " + item["bytes"] + " байт", muted);
-                    if((string)item["type"]=="collection") GUILayout.Label("Предметов в сборнике: "+item["itemCount"]+". Все необходимые части загружаются автоматически.",muted);
+                    if((string)item["type"]=="collection") GUILayout.Label((item["inventoryCategory"]!=null?"Предметов в сборнике: "+item["itemCount"]:"Дополнений в сборнике: "+item["packageCount"])+". Все необходимые части загружаются автоматически.",muted);
                     else GUILayout.Label("Зависимости: " + string.Join(", ", ((JArray)item["dependencies"]).Values<string>()) + " · Платформа: " + item["platform"] + " · Unity: " + item["unityVersion"], muted);
                     GUILayout.Label("SHA-256: " + item["sha256"], muted);
                 }
@@ -238,7 +239,7 @@ namespace DndVtt.UnityPrototype
                 bool enabled = GUI.enabled; GUI.enabled = enabled && !contentBusy && unavailable == null;
                 if (GUILayout.Button(local == null ? "Скачать и установить" : (string)local["sha256"] == (string)item["sha256"] ? "Скачать повторно" : "Установить версию " + item["version"], GUILayout.Height(42))) StartCoroutine(DownloadContentPackage((JObject)item.DeepClone()));
                 GUI.enabled = enabled && !contentBusy && local != null;
-                if (GUILayout.Button((string)item["type"]=="collection"?"Удалить запись сборника (тома сохранятся)":"Удалить пакет (персонажи и карты сохранятся)", GUILayout.Height(52)))
+                if (GUILayout.Button((string)item["type"]=="collection"?"Удалить запись сборника (дополнения сохранятся)":"Удалить пакет (персонажи и карты сохранятся)", GUILayout.Height(52)))
                 {
                     try { workshopStore.Remove(id); RefreshWorkshop(); contentNotice = "Пакет удалён. Ссылки сохранений сохранены; ресурсы можно установить повторно."; }
                     catch (Exception e) { contentNotice = e.Message; }
