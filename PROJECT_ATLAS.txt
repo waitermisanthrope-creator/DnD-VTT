@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит d4e8df4c1e23. Файлов: 1987
+Коммит 7ea393439862. Файлов: 1987
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,9 +56,9 @@
 0040. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (7025 B)
-0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (45132 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (67949 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (106495 B)
+0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (48585 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (71402 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (109948 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1086,7 +1086,7 @@
 1070. docs/unity-account/DICE_CONTACT_1.00.31.md — документация или отчёт: DICE CONTACT 1.00.31 (9409 B)
 1071. docs/unity-account/DICE_CONTACT_1.00.32.md — документация или отчёт: DICE CONTACT 1.00.32 (14224 B)
 1072. docs/unity-account/DICE_DECAY_1.00.33.md — документация или отчёт: DICE DECAY 1.00.33 (4433 B)
-1073. docs/unity-account/DICE_DECAY_1.00.34.md — документация или отчёт: DICE DECAY 1.00.34 (4856 B)
+1073. docs/unity-account/DICE_DECAY_1.00.34.md — документация или отчёт: DICE DECAY 1.00.34 (9415 B)
 1074. docs/unity-account/DICE_MATERIALS_1.00.28.md — документация или отчёт: DICE MATERIALS 1.00.28 (3463 B)
 1075. docs/unity-account/DICE_SIX_1.00.29.md — документация или отчёт: DICE SIX 1.00.29 (5386 B)
 1076. docs/unity-account/DICE_SIX_1.00.30.md — документация или отчёт: DICE SIX 1.00.30 (8993 B)
@@ -1097,7 +1097,7 @@
 1081. docs/unity-account/dice-1.00.28-metrics.json — документация или отчёт: dice 1.00.28 metrics (1717 B)
 1082. docs/unity-account/dice-1.00.30-metrics.json — документация или отчёт: dice 1.00.30 metrics (2979 B)
 1083. docs/unity-account/dice-1.00.32-metrics.json — документация или отчёт: dice 1.00.32 metrics (2200 B)
-1084. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (74287 B)
+1084. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (77740 B)
 1085. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7893 B)
 1086. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1087. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
@@ -1895,7 +1895,7 @@
 1879. unity/ci/verify_bundle_output.py — вспомогательный файл: verify bundle output (1081 B)
 1880. unity/ci/verify_launcher_aliases.py — вспомогательный файл: verify launcher aliases (3703 B)
 1881. unity/ci/verify_public_workshop.py — вспомогательный файл: verify public workshop (6279 B)
-1882. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (4276 B)
+1882. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (4224 B)
 1883. unity/ci/workshop-tests/.gitignore — вспомогательный файл: .gitignore (10 B)
 1884. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (5460 B)
 1885. unity/ci/workshop-tests/CommerceChecks.cs — вспомогательный файл: CommerceChecks (4247 B)

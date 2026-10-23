@@ -1,4 +1,4 @@
-# [НЕ ВЫПОЛНЕНО] Unity1.00.34 — collision decay, independent arms and readable results
+# [ВЫПОЛНЕНО] Поставка Unity1.00.34 — collision decay, independent arms and readable results
 
 Current source `cd7035a9b54750eeeff3155650f4cc9996d7319a`, candidate `39950834653`, Android job `120404589859` building. No34 APK/release/feed claim yet. Feed remains32. Public candidate33 is preserved and NOT activated.
 
@@ -29,3 +29,26 @@ Trial39950834653/job120404589859 failed on the d8 camera-edge control after600Ab
 ## Corrected34 Android native checkpoint
 
 Actual source24b2a4773e3951ea9192d9663596f26338936254/candidate39952385083. Android120409754850 SUCCESS:4398C#/12Python+2review/3contracts/133SQLWASM (not live Supabase), all972actual logical PhysX throws/60topology/420UV/32glyph/6opaque controls and all seven edge-visibility/collider/pose/restore checks PASS.600Abyss histogram,13natural slime impacts and energy trace repeat33 exactly; not additional independent random samples. Signed APK42520566bytes(+4096vs32) CI SHAbdae0690a48da627e6294edc67514622e2855c78c82bd3facf9bb16447b89464. Windows120415371535 building. Public images, APK independent signature check, actual Windows upgrade/reinstall and feed activation still pending.
+
+
+## Final verified delivery —2026-10-23
+
+Android and Windows are delivered in the existing Unity experimental in-app channel. Both ordinary and cache-busted public feeds independently return1.00.34/code10034 and the trusted installer hashes. Release: https://github.com/waitermisanthrope-creator/DnD-VTT/releases/tag/unity-v1.00.34 . This section supersedes pending checkpoints below/above;33 remained a public test candidate and was NEVER activated.
+
+- Actual runtime source:24b2a4773e3951ea9192d9663596f26338936254; successful candidate39952385083. Android120409754850, Windows120415371535, actual Windows install/upgrade/reinstall120419210554 all SUCCESS. Windows QA installs1.00.00→34→reinstall with exact payload/profile/backup hashes and actual headless runtime smoke; this is not interactive desktop GPU verification.
+- First publisher39955478756/job120420141451 staged public34 and held feed32. Final publisher39955945545/job120421689548 SUCCESS. Activation7ea3934398628b4ad5717086e36bb766784f5bc2.
+- Exact approved native indexfc8ad8922b789acbde3772e3ae950968eb4b1d0f488526995f77af0483885762. All91actual public PNGs31756736bytes independently downloaded/hash/dimension/source/run checked and viewed via full contact sheets; former edge-slime occlusion directly checked corrected. No generated illustration is used as evidence.
+- Public APK42520566bytes(+4096vs32), SHAbdae0690a48da627e6294edc67514622e2855c78c82bd3facf9bb16447b89464. Original certificatec1c1b3e6537f10819a3042817ac91535b47754ed65d084e635f84ff2b1f44c8e independently verifies v2/v3; com.dndvtt.unity/code10034/minSDK26/target36/ARM64 retained. Android install-over on a physical device is NOT tested here.
+- Windows installer29233602bytes, SHAac83895262352c99647f3da1797e6aad8949f2155a0d944ed7fa27614caebca2; actual downloaded bytes match CI. No Authenticode claim.
+- Final4398C#/12Python+2render-boundary/3structural contracts/133SQLWASM PASS. SQL is not live Supabase. Each native target repeats972logical PhysX throw cases,60topology/420UV/32glyph/6opaque checks,600Abyss counts23..44/face/chi18.8666666666667, isolated13natural slime impacts with initial/max7.208248 and numerical recovery.01227355,20body/trays/towers, seven camera-edge/collider/pose/restore controls and cleanup PASS. Identical seeded runs are not independent additional samples or a fairness certification.
+- Existing Assets preview publisher39956772016/job120424443608 SUCCESS, activationd279bae0a337418f8a086cce9794b99e14bddc1a. All10public native34 JPEGs147551bytes independently checked; plain/cache-busted v9 metadata equals independent regeneration.111payload records and six1.2.1 data/texture bytes unchanged; no recipe re-download required.
+
+### Changes and limits
+
+Changed existing DiceTentacles.cs, DiceTable.cs and DiceTable.Trays.cs; native DiceValidation.cs; candidate version defaults, both changelogs, paired-review request, generated atlases and status/report documents. Assets changes are the existing native source pin/current documentation and ten preview/description metadata entries. No character/save/auth/cloud schema, package/signing identity, production database, payment, main-stable channel or MMO changes. Workshop page-reset fix remains owner-deferred.
+
+Abyss uses bounded compliant skin/contact impulses, not full self/cross-arm soft-body collision. Slime uses passive restitution/damping at the ordinary floor; existing tower anti-stuck guidance remains limited to raised supports. Existing explicit ambiguous-face rerolls are retained. New wall cutaway changes renderer visibility only. Physical phone GPU/touch/sensor/performance/install-over, perceived drama and interactive desktop GPU remain owner QA.
+
+Initial unpublished34trial39950834653 failed a shape-invalid d8 edge fixture; the corrected strict control passed. Public33 failed visual review for wall occlusion despite successful builds; its immutable files remain, its index is never approved. Separately, out-of-scope GLB validator39955604654/job120420562664 FAILED because its extractor treats dynamic JS string '+id.slice(9)+'.glb as a literal model filename (268real files/269extracted references). That validator was not modified and the whole repository CI is not claimed green.
+
+Next owner action: Settings→Updates→Check and update (Настройки→Обновления→Проверить и обновить), then test repeated10d20Abyss and slime throws on the real phone, including an edge landing and20simultaneous bodies. Installed1.2.1 sets remain; no re-download needed.
