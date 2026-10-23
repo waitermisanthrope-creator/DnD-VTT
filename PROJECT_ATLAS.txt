@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 39eeb802bf17. Файлов: 1991
+Коммит 42a90c2c7e0d. Файлов: 1991
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,9 +56,9 @@
 0040. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (7025 B)
-0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (53281 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (76098 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (114644 B)
+0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (53867 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (76684 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (115230 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1079,7 +1079,7 @@
 1063. docs/UNITY_MIGRATION_PLAN.md — документация или отчёт: UNITY MIGRATION PLAN (14710 B)
 1064. docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md — документация или отчёт: ACCESS AND TOUCH 1.00.12 (8253 B)
 1065. docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md — документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP (9558 B)
-1066. docs/unity-account/ALL_MOD_COLLECTIONS_1.00.36.md — документация или отчёт: ALL MOD COLLECTIONS 1.00.36 (4121 B)
+1066. docs/unity-account/ALL_MOD_COLLECTIONS_1.00.36.md — документация или отчёт: ALL MOD COLLECTIONS 1.00.36 (4773 B)
 1067. docs/unity-account/CHAT_NICKNAMES_1.00.21.md — документация или отчёт: CHAT NICKNAMES 1.00.21 (3028 B)
 1068. docs/unity-account/CHAT_ONE_HOUR.md — документация или отчёт: CHAT ONE HOUR (2267 B)
 1069. docs/unity-account/CHAT_WORKSHOP_1.00.22.md — документация или отчёт: CHAT WORKSHOP 1.00.22 (7852 B)
@@ -1900,7 +1900,7 @@
 1884. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (4276 B)
 1885. unity/ci/workshop-tests/.gitignore — вспомогательный файл: .gitignore (10 B)
 1886. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (5460 B)
-1887. unity/ci/workshop-tests/AllModCollectionChecks.cs — вспомогательный файл: AllModCollectionChecks (4971 B)
+1887. unity/ci/workshop-tests/AllModCollectionChecks.cs — вспомогательный файл: AllModCollectionChecks (5776 B)
 1888. unity/ci/workshop-tests/CollectionChecks.cs — вспомогательный файл: CollectionChecks (6368 B)
 1889. unity/ci/workshop-tests/CommerceChecks.cs — вспомогательный файл: CommerceChecks (4694 B)
 1890. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (31853 B)

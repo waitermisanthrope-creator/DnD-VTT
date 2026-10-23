@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 39eeb802bf17. Git содержит 1991 файлов.
+Снимок кода 42a90c2c7e0d. Git содержит 1991 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 7025 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 53281 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 76098 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 114644 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 53867 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 76684 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 115230 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1084,7 +1084,7 @@
 | №1063 docs/UNITY_MIGRATION_PLAN.md | 14710 B | документация или отчёт: UNITY MIGRATION PLAN |
 | №1064 docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md | 8253 B | документация или отчёт: ACCESS AND TOUCH 1.00.12 |
 | №1065 docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md | 9558 B | документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP |
-| №1066 docs/unity-account/ALL_MOD_COLLECTIONS_1.00.36.md | 4121 B | документация или отчёт: ALL MOD COLLECTIONS 1.00.36 |
+| №1066 docs/unity-account/ALL_MOD_COLLECTIONS_1.00.36.md | 4773 B | документация или отчёт: ALL MOD COLLECTIONS 1.00.36 |
 | №1067 docs/unity-account/CHAT_NICKNAMES_1.00.21.md | 3028 B | документация или отчёт: CHAT NICKNAMES 1.00.21 |
 | №1068 docs/unity-account/CHAT_ONE_HOUR.md | 2267 B | документация или отчёт: CHAT ONE HOUR |
 | №1069 docs/unity-account/CHAT_WORKSHOP_1.00.22.md | 7852 B | документация или отчёт: CHAT WORKSHOP 1.00.22 |
@@ -1905,7 +1905,7 @@
 | №1884 unity/ci/windows-upgrade-qa.ps1 | 4276 B | вспомогательный файл: windows upgrade qa |
 | №1885 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
 | №1886 unity/ci/workshop-tests/AccountGestureChecks.cs | 5460 B | вспомогательный файл: AccountGestureChecks |
-| №1887 unity/ci/workshop-tests/AllModCollectionChecks.cs | 4971 B | вспомогательный файл: AllModCollectionChecks |
+| №1887 unity/ci/workshop-tests/AllModCollectionChecks.cs | 5776 B | вспомогательный файл: AllModCollectionChecks |
 | №1888 unity/ci/workshop-tests/CollectionChecks.cs | 6368 B | вспомогательный файл: CollectionChecks |
 | №1889 unity/ci/workshop-tests/CommerceChecks.cs | 4694 B | вспомогательный файл: CommerceChecks |
 | №1890 unity/ci/workshop-tests/Program.cs | 31853 B | вспомогательный файл: Program |

@@ -31,7 +31,16 @@ static class AllModCollectionChecks
      if(generic)Reject(()=>WorkshopStore.InstallPlan(root,all,Array.Empty<JObject>(),platform,"6000.3.26f1",10035),"client35 cannot install generic category metadata");
      var plan=WorkshopStore.InstallPlan(root,all,store.Installed().OfType<JObject>(),platform,"6000.3.26f1",10036);
      Check(plan.Count>0&&(string)plan.Last["id"]==(string)root["id"],"collection marker committed last");
-     if(generic)Check(plan.OfType<JObject>().Count(m=>(string)m["type"]!="collection")== (int)root["packageCount"],"all expected source mods in plan");
+     if(generic) {
+      var closure=new HashSet<string>();
+      void Visit(string id){if(!closure.Add(id))return;foreach(string dep in ((JArray)all.First(m=>(string)m["id"]==id)["dependencies"]).Values<string>())Visit(dep);}
+      Visit((string)root["id"]);
+      var leaves=all.Where(m=>closure.Contains((string)m["id"])&&(string)m["type"]!="collection").ToArray();
+      Check(leaves.Length==(int)root["packageCount"],"complete category includes declared shared resources");
+      var installedIds=store.Installed().OfType<JObject>().Select(m=>(string)m["id"]).ToHashSet();
+      Check(plan.OfType<JObject>().Count(m=>(string)m["type"]!="collection")==leaves.Count(m=>!installedIds.Contains((string)m["id"])),"shared resources are downloaded only once across collections");
+      if((string)root["collectionCategory"]=="maps")Check(leaves.Any(m=>(string)m["id"]=="dnd.appearance.map-surfaces"),"map collection includes procedural map textures");
+     }
      int prefix=Math.Min(2,plan.Count-1);foreach(JObject m in plan.Take(prefix)){Install(store,m,platform);activated.Add((string)m["id"]);}
      var resumed=WorkshopStore.InstallPlan(root,all,store.Installed().OfType<JObject>(),platform,"6000.3.26f1",10036);
      Check(resumed.Count==plan.Count-prefix,"partial retry skips verified mods");
