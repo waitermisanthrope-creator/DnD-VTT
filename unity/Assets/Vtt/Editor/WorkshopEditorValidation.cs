@@ -62,8 +62,16 @@ public static class WorkshopEditorValidation
             var community=(WorkshopCommunity)type.GetField("contentCommunity",flags).GetValue(panel);
             type.GetField("cloudSession",flags).SetValue(panel,new JObject { ["user"]="ci-user" });
             type.GetMethod("SyncWorkshopIdentity",flags).Invoke(panel,null);
+            type.GetMethod("EnsureContentView",flags).Invoke(panel,null);
+            type.GetField("contentPage",flags).SetValue(panel,2);
             community.Replace(new JArray(new JObject { ["id"]=roots[0]["id"].DeepClone(),["rating"]=8,["hearted"]=true },new JObject { ["id"]=roots[1]["id"].DeepClone(),["rating"]=12,["hearted"]=false }));
-            type.GetField("contentSort",flags).SetValue(panel,1);type.GetMethod("RebuildContentView",flags).Invoke(panel,null);
+            type.GetMethod("WorkshopRatingsChanged",flags).Invoke(panel,null);type.GetMethod("EnsureContentView",flags).Invoke(panel,null);
+            Check((int)type.GetField("contentPage",flags).GetValue(panel)==2,"rating refresh preserves current browsing page");
+            type.GetField("contentPage",flags).SetValue(panel,100);
+            type.GetMethod("WorkshopRatingsChanged",flags).Invoke(panel,null);type.GetMethod("EnsureContentView",flags).Invoke(panel,null);
+            Check((int)type.GetField("contentPage",flags).GetValue(panel)==34,"shrinking result clamps to last valid page");
+            type.GetField("contentSort",flags).SetValue(panel,1);type.GetMethod("EnsureContentView",flags).Invoke(panel,null);
+            Check((int)type.GetField("contentPage",flags).GetValue(panel)==0,"changing sorting resets pagination");
             view=(System.Collections.Generic.IEnumerable<JObject>)type.GetField("contentView",flags).GetValue(panel);
             Check((string)view.First()["id"]==(string)roots[1]["id"],"actual menu highest rating first");
             type.GetField("contentFavoritesOnly",flags).SetValue(panel,true);type.GetMethod("EnsureContentView",flags).Invoke(panel,null);
@@ -76,7 +84,7 @@ public static class WorkshopEditorValidation
             Check(!community.Ready&&!(bool)type.GetField("contentFavoritesOnly",flags).GetValue(panel),"logout clears private workshop snapshot");
             var guest=(System.Collections.IEnumerator)type.GetMethod("ToggleWorkshopHeart",flags).Invoke(panel,new object[]{(string)roots[0]["id"]});
             Check(!guest.MoveNext(),"anonymous toggle exits without any network write");
-            Debug.Log("VTT_WORKSHOP_COMMUNITY_EDITOR_PASS: actual newest main412 / twelve-card page, fifteen libraries, rating order, own favorites, removal, logout and anonymous no-write controller");
+            Debug.Log("VTT_WORKSHOP_COMMUNITY_EDITOR_PASS: actual newest main412 / twelve-card page, fifteen libraries, rating order, own favorites, removal, stable refresh pagination, logout and anonymous no-write controller");
             foreach(var root in roots) {
                 var plan=(JArray)type.GetMethod("ContentInstallPlan",flags).Invoke(panel,new object[]{root});
                 Check(plan.Count==0,"actual UI skips all already installed collection modules");

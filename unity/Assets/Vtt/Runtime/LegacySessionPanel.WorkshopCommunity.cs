@@ -8,15 +8,16 @@ namespace DndVtt.UnityPrototype
     public sealed partial class LegacySessionPanel
     {
         private readonly WorkshopCommunity contentCommunity=new WorkshopCommunity();
-        private bool contentHeartsBusy,contentFavoritesOnly;
+        private bool contentHeartsBusy,contentFavoritesOnly,contentKeepPage;
         private int contentHeartsGeneration,contentSort,contentViewSort=-1;
         private bool contentViewFavorites;
         private string contentHeartsActor,contentHeartsNotice="Рейтинг ещё не загружен.";
+        private void WorkshopRatingsChanged() { contentKeepPage=true;contentViewDirty=true; }
         private string WorkshopActor=>(string)cloudSession?["user"];
         private void ClearWorkshopIdentity()
         {
             contentHeartsGeneration++;contentHeartsBusy=false;contentHeartsActor=WorkshopActor;
-            contentCommunity.Clear();contentViewDirty=true;contentFavoritesOnly=false;
+            contentCommunity.Clear();WorkshopRatingsChanged();contentKeepPage=false;contentFavoritesOnly=false;
             contentHeartsNotice="Обновите рейтинг для текущего аккаунта.";
         }
         private void SyncWorkshopIdentity()
@@ -31,7 +32,7 @@ namespace DndVtt.UnityPrototype
             try {
                 if(actor!=null)yield return CloudToken(t=>token=t);
                 if(generation!=contentHeartsGeneration||actor!=WorkshopActor)yield break;
-                if(actor!=null&&token==null) { contentHeartsNotice="Не удалось подтвердить вход. Проверьте связь или войдите снова.";contentCommunity.Invalidate();contentViewDirty=true;yield break; }
+                if(actor!=null&&token==null) { contentHeartsNotice="Не удалось подтвердить вход. Проверьте связь или войдите снова.";contentCommunity.Invalidate();WorkshopRatingsChanged();yield break; }
                 var ids=contentPackages.Concat(assetPacks).OfType<JObject>().Select(m=>(string)m["id"]).Distinct().ToArray();
                 var items=new JArray();bool failed=false;
                 for(int offset=0;offset<ids.Length;offset+=200) {
@@ -41,10 +42,10 @@ namespace DndVtt.UnityPrototype
                         foreach(var row in rows)items.Add(row.DeepClone());
                     },e=>{if(generation==contentHeartsGeneration) { failed=true;contentHeartsNotice="Рейтинг пока недоступен. Проверьте соединение и повторите обновление."; }});
                     if(generation!=contentHeartsGeneration||actor!=WorkshopActor)yield break;
-                    if(failed) { contentCommunity.Invalidate();contentViewDirty=true;yield break; }
+                    if(failed) { contentCommunity.Invalidate();WorkshopRatingsChanged();yield break; }
                 }
                 string error=null;try { contentCommunity.Replace(items); }catch(Exception) { error="Сервер вернул некорректный рейтинг. Повторите обновление.";contentCommunity.Invalidate(); }
-                contentHeartsNotice=error??(actor==null?"Рейтинг: количество сердечек. Войдите в аккаунт, чтобы добавить мод в избранное.":"Сердечко добавляет в избранное. Повторное нажатие убирает сердечко.");contentViewDirty=true;
+                contentHeartsNotice=error??(actor==null?"Рейтинг: количество сердечек. Войдите в аккаунт, чтобы добавить мод в избранное.":"Сердечко добавляет в избранное. Повторное нажатие убирает сердечко.");WorkshopRatingsChanged();
             }finally { if(generation==contentHeartsGeneration)contentHeartsBusy=false; }
         }
         private IEnumerator ToggleWorkshopHeart(string id)
@@ -56,16 +57,16 @@ namespace DndVtt.UnityPrototype
             try {
                 yield return CloudToken(t=>token=t);
                 if(generation!=contentHeartsGeneration||actor!=WorkshopActor)yield break;
-                if(token==null) {contentCommunity.Invalidate();contentViewDirty=true;contentHeartsNotice="Не удалось подтвердить вход. Проверьте связь или войдите снова и обновите рейтинг.";yield break;}
+                if(token==null) {contentCommunity.Invalidate();WorkshopRatingsChanged();contentHeartsNotice="Не удалось подтвердить вход. Проверьте связь или войдите снова и обновите рейтинг.";yield break;}
                 yield return CloudRequest("/rest/v1/rpc/set_workshop_heart",new JObject { ["p_id"]=id,["p_hearted"]=desired },token,r=>{
                     if(generation!=contentHeartsGeneration||actor!=WorkshopActor)return;
                     if((string)r["id"]!=id||(bool?)r["hearted"]!=desired)throw new FormatException();
-                    contentCommunity.Apply((JObject)r);contentViewDirty=true;
+                    contentCommunity.Apply((JObject)r);WorkshopRatingsChanged();
                     contentHeartsNotice=desired?"Добавлено в избранное. Сердечко учтено в рейтинге.":"Убрано из избранного. Сердечко снято.";
                 },e=>{
                     if(generation!=contentHeartsGeneration)return;
                     // A timeout may follow a committed write. Re-read before allowing another toggle.
-                    contentCommunity.Invalidate();contentViewDirty=true;
+                    contentCommunity.Invalidate();WorkshopRatingsChanged();
                     contentHeartsNotice="Результат не подтверждён. Обновите рейтинг перед повторным нажатием.";
                 });
             }finally { if(generation==contentHeartsGeneration)contentHeartsBusy=false; }
@@ -77,13 +78,13 @@ namespace DndVtt.UnityPrototype
             if(GUILayout.Button(contentHeartsBusy?"Загрузка рейтинга…":"↻ Обновить рейтинг и избранное",GUILayout.MinHeight(48)))StartCoroutine(FetchWorkshopHearts());
             GUI.enabled=enabled;
             GUILayout.BeginHorizontal();
-            if(GUILayout.Toggle(contentSort==0,"Новые и обновлённые",GUI.skin.button,GUILayout.MinHeight(48))&&contentSort!=0) {contentSort=0;contentViewDirty=true;}
+            if(GUILayout.Toggle(contentSort==0,"Новые и обновлённые",GUI.skin.button,GUILayout.MinHeight(48))&&contentSort!=0) {contentSort=0;WorkshopRatingsChanged();}
             GUI.enabled=enabled&&contentCommunity.Ready;
-            if(GUILayout.Toggle(contentSort==1,"По рейтингу",GUI.skin.button,GUILayout.MinHeight(48))&&contentSort!=1) {contentSort=1;contentViewDirty=true;}
+            if(GUILayout.Toggle(contentSort==1,"По рейтингу",GUI.skin.button,GUILayout.MinHeight(48))&&contentSort!=1) {contentSort=1;WorkshopRatingsChanged();}
             GUI.enabled=enabled;GUILayout.EndHorizontal();
             GUI.enabled=enabled&&WorkshopActor!=null&&contentCommunity.Ready;
             bool favorites=GUILayout.Toggle(contentFavoritesOnly,"♥ Только избранное");
-            if(favorites!=contentFavoritesOnly) {contentFavoritesOnly=favorites;contentViewDirty=true;}
+            if(favorites!=contentFavoritesOnly) {contentFavoritesOnly=favorites;WorkshopRatingsChanged();}
             GUI.enabled=enabled;
             if(contentFavoritesOnly&&!contentCommunity.Ready)GUILayout.Label("Избранное недоступно до обновления рейтинга.",muted);
         }

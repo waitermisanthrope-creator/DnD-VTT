@@ -65,6 +65,14 @@ namespace DndVtt.UnityPrototype
             var b = Body.Bounds; var target = new Vector3(b.center.x, targetHeight, b.center.z);
             camera.transform.position = target + Quaternion.Euler(pitch, Yaw, 0) * Vector3.forward * distance;
             camera.transform.LookAt(target);
+#if UNITY_EDITOR
+            if (force)
+            {
+                Debug.Log("VTT_CHARACTER_CAMERA: bounds=" + b + " camera=" + camera.transform.position + " target=" + target + " pipeline=" + GraphicsSettings.currentRenderPipeline);
+                foreach (var renderer in Body.GetComponentsInChildren<MeshRenderer>())
+                    Debug.Log("VTT_CHARACTER_RENDERER: " + renderer.name + " enabled=" + renderer.enabled + " layer=" + renderer.gameObject.layer + " bounds=" + renderer.bounds + " shader=" + renderer.sharedMaterial.shader.name + " supported=" + renderer.sharedMaterial.shader.isSupported + " inFrustum=" + GeometryUtility.TestPlanesAABB(GeometryUtility.CalculateFrustumPlanes(camera), renderer.bounds));
+            }
+#endif
             // Directional lights from the live map must not illuminate this isolated view.
             var outside = UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None);
             var masks = new int[outside.Length];

@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 2476ee4c3b82. Git содержит 2032 файлов.
+Снимок кода f840ffe6c313. Git содержит 2032 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1085,7 +1085,7 @@
 | №1064 docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md | 8253 B | документация или отчёт: ACCESS AND TOUCH 1.00.12 |
 | №1065 docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md | 9558 B | документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP |
 | №1066 docs/unity-account/ALL_MOD_COLLECTIONS_1.00.36.md | 6950 B | документация или отчёт: ALL MOD COLLECTIONS 1.00.36 |
-| №1067 docs/unity-account/CHARACTER_PREVIEW_1.00.37.md | 5570 B | документация или отчёт: CHARACTER PREVIEW 1.00.37 |
+| №1067 docs/unity-account/CHARACTER_PREVIEW_1.00.37.md | 5942 B | документация или отчёт: CHARACTER PREVIEW 1.00.37 |
 | №1068 docs/unity-account/CHAT_NICKNAMES_1.00.21.md | 3028 B | документация или отчёт: CHAT NICKNAMES 1.00.21 |
 | №1069 docs/unity-account/CHAT_ONE_HOUR.md | 2267 B | документация или отчёт: CHAT ONE HOUR |
 | №1070 docs/unity-account/CHAT_WORKSHOP_1.00.22.md | 7852 B | документация или отчёт: CHAT WORKSHOP 1.00.22 |
@@ -1108,7 +1108,7 @@
 | №1087 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1088 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1089 docs/unity-account/WORKSHOP_COLLECTIONS_1.00.35.md | 5177 B | документация или отчёт: WORKSHOP COLLECTIONS 1.00.35 |
-| №1090 docs/unity-account/WORKSHOP_HEARTS_1.00.38.md | 7599 B | документация или отчёт: WORKSHOP HEARTS 1.00.38 |
+| №1090 docs/unity-account/WORKSHOP_HEARTS_1.00.38.md | 7973 B | документация или отчёт: WORKSHOP HEARTS 1.00.38 |
 | №1091 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
 | №1092 dragon_fire_v2_sprite.png | 1013123 B | текстура/изображение: dragon fire v2 sprite |
 | №1093 embers_v2_sprite.png | 698014 B | текстура/изображение: embers v2 sprite |
@@ -1750,7 +1750,7 @@
 | №1729 unity/Assets/Vtt/Editor/BuildBranding.cs.meta | 60 B | вспомогательный файл: BuildBranding.cs |
 | №1730 unity/Assets/Vtt/Editor/CharacterPreviewImport.cs | 1433 B | вспомогательный файл: CharacterPreviewImport |
 | №1731 unity/Assets/Vtt/Editor/CharacterPreviewImport.cs.meta | 60 B | вспомогательный файл: CharacterPreviewImport.cs |
-| №1732 unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs | 6925 B | вспомогательный файл: CharacterPreviewValidation |
+| №1732 unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs | 7092 B | вспомогательный файл: CharacterPreviewValidation |
 | №1733 unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs.meta | 60 B | вспомогательный файл: CharacterPreviewValidation.cs |
 | №1734 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs | 21197 B | вспомогательный файл: CharacterSheetValidation |
 | №1735 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta | 59 B | вспомогательный файл: CharacterSheetValidation.cs |
@@ -1766,7 +1766,7 @@
 | №1745 unity/Assets/Vtt/Editor/UnityReleaseBuild.cs.meta | 60 B | вспомогательный файл: UnityReleaseBuild.cs |
 | №1746 unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs | 3632 B | вспомогательный файл: WorkshopBundleBuild |
 | №1747 unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs.meta | 60 B | вспомогательный файл: WorkshopBundleBuild.cs |
-| №1748 unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs | 29407 B | вспомогательный файл: WorkshopEditorValidation |
+| №1748 unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs | 30290 B | вспомогательный файл: WorkshopEditorValidation |
 | №1749 unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs.meta | 60 B | вспомогательный файл: WorkshopEditorValidation.cs |
 | №1750 unity/Assets/Vtt/Resources.meta | 172 B | вспомогательный файл: Resources |
 | №1751 unity/Assets/Vtt/Resources/Branding.meta | 172 B | вспомогательный файл: Branding |
@@ -1812,7 +1812,7 @@
 | №1791 unity/Assets/Vtt/Runtime/CharacterCreation.cs.meta | 59 B | вспомогательный файл: CharacterCreation.cs |
 | №1792 unity/Assets/Vtt/Runtime/CharacterSheetRules.cs | 16128 B | вспомогательный файл: CharacterSheetRules |
 | №1793 unity/Assets/Vtt/Runtime/CharacterSheetRules.cs.meta | 59 B | вспомогательный файл: CharacterSheetRules.cs |
-| №1794 unity/Assets/Vtt/Runtime/CharacterStudioView.cs | 5452 B | вспомогательный файл: CharacterStudioView |
+| №1794 unity/Assets/Vtt/Runtime/CharacterStudioView.cs | 6202 B | вспомогательный файл: CharacterStudioView |
 | №1795 unity/Assets/Vtt/Runtime/CharacterStudioView.cs.meta | 60 B | вспомогательный файл: CharacterStudioView.cs |
 | №1796 unity/Assets/Vtt/Runtime/ClientPreferences.cs | 4479 B | вспомогательный файл: ClientPreferences |
 | №1797 unity/Assets/Vtt/Runtime/ClientPreferences.cs.meta | 59 B | вспомогательный файл: ClientPreferences.cs |
@@ -1862,7 +1862,7 @@
 | №1841 unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Chat.cs |
 | №1842 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs | 18504 B | вспомогательный файл: LegacySessionPanel.Commerce |
 | №1843 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Commerce.cs |
-| №1844 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs | 21636 B | вспомогательный файл: LegacySessionPanel.ContentManager |
+| №1844 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs | 22077 B | вспомогательный файл: LegacySessionPanel.ContentManager |
 | №1845 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.ContentManager.cs |
 | №1846 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs | 6755 B | вспомогательный файл: LegacySessionPanel.ContentPreviews |
 | №1847 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.ContentPreviews.cs |
@@ -1886,7 +1886,7 @@
 | №1865 unity/Assets/Vtt/Runtime/LegacySessionPanel.Touch.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Touch.cs |
 | №1866 unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs | 13243 B | вспомогательный файл: LegacySessionPanel.Updates |
 | №1867 unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Updates.cs |
-| №1868 unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopCommunity.cs | 8018 B | вспомогательный файл: LegacySessionPanel.WorkshopCommunity |
+| №1868 unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopCommunity.cs | 8180 B | вспомогательный файл: LegacySessionPanel.WorkshopCommunity |
 | №1869 unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopCommunity.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.WorkshopCommunity.cs |
 | №1870 unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopLibrary.cs | 2534 B | вспомогательный файл: LegacySessionPanel.WorkshopLibrary |
 | №1871 unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopLibrary.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.WorkshopLibrary.cs |

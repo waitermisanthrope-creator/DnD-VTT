@@ -36,6 +36,8 @@ namespace DndVtt.UnityPrototype
         private Dictionary<string,string> contentAvailability=new Dictionary<string,string>();
         private void RebuildContentView()
         {
+            bool keepPage=contentKeepPage&&contentViewSort==contentSort&&contentViewFavorites==contentFavoritesOnly&&contentViewCategory==contentCategory&&contentViewSearch==contentSearch&&contentViewInstalledOnly==installedOnly&&contentViewGroup==contentGroupPath;
+            contentKeepPage=false;
             contentInstalled=workshopStore.Installed().OfType<JObject>().ToDictionary(m=>(string)m["id"]);
             var all=contentPackages.Concat(assetPacks).OfType<JObject>().GroupBy(m=>(string)m["id"]).Select(g=>g.First()).ToList();
             var ids=new HashSet<string>(all.Select(m=>(string)m["id"]));
@@ -52,7 +54,7 @@ namespace DndVtt.UnityPrototype
                 if(!contentTreeCounts.ContainsKey(child))contentTreeCounts[child]=0;contentTreeCounts[child]++;
             }
             contentTreeChildren=contentTreeCounts.Keys.OrderBy(k=>k,StringComparer.Ordinal).ToList();contentViewGroup=contentGroupPath;contentViewRevision++;
-            contentAvailability.Clear();contentViewDirty=false;contentViewCategory=contentCategory;contentViewSearch=contentSearch;contentViewInstalledOnly=installedOnly;contentViewSort=contentSort;contentViewFavorites=contentFavoritesOnly;contentPage=0;contentDetails=null;
+            contentAvailability.Clear();contentViewDirty=false;contentViewCategory=contentCategory;contentViewSearch=contentSearch;contentViewInstalledOnly=installedOnly;contentViewSort=contentSort;contentViewFavorites=contentFavoritesOnly;contentPage=keepPage?Math.Min(contentPage,Math.Max(0,(contentView.Count-1)/ContentPageLimit)):0;contentDetails=null;
         }
         private void EnsureContentView()
         {
@@ -113,7 +115,7 @@ namespace DndVtt.UnityPrototype
             world.ClearWorkshopGeometry(); workshop.Dispose(); workshop = new WorkshopRuntime(workshopStore); workshop.ActivateData(); creationCatalog = null; commerceCatalog = null; itemCatalog = null;
             world.Workshop = workshop; world.ReloadCurrent();
         }
-        private void OpenContentManager() { InitializeWorkshop(); contentViewDirty=true; contentCollectionsPage=false;contentSort=0;contentShowParts=true;contentCategory = 0; contentGroupPath="";contentDetails = null;Navigate(FrontScreen.ContentManager);SyncWorkshopIdentity();if(!contentHeartsBusy)StartCoroutine(FetchWorkshopHearts()); }
+        private void OpenContentManager() { InitializeWorkshop(); contentViewDirty=true;contentKeepPage=false;contentPage=0; contentCollectionsPage=false;contentSort=0;contentShowParts=true;contentCategory = 0; contentGroupPath="";contentDetails = null;Navigate(FrontScreen.ContentManager);SyncWorkshopIdentity();if(!contentHeartsBusy)StartCoroutine(FetchWorkshopHearts()); }
         private IEnumerator FetchContentCatalog()
         {
             contentBusy = true;
@@ -214,7 +216,7 @@ namespace DndVtt.UnityPrototype
             if(contentCollectionsPage)GUILayout.Label("Полные тематические сборники. Все входящие дополнения скачиваются одной кнопкой.",muted);
             else {
                 bool showParts=GUILayout.Toggle(contentShowParts,"Показать отдельные моды и части сборников");
-                if(showParts!=contentShowParts) {contentShowParts=showParts;contentViewDirty=true;}
+                if(showParts!=contentShowParts) {contentShowParts=showParts;contentKeepPage=false;contentViewDirty=true;}
             }
             contentSearch = GUILayout.TextField(contentSearch, GUILayout.MinHeight(40));
             EnsureContentView();if(!contentCollectionsPage)DrawContentTree();SyncWorkshopPreviewPage();
