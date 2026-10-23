@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 24b2a4773e39. Git содержит 1987 файлов.
+Снимок кода 3163efc53dc2. Git содержит 1987 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1147,7 +1147,7 @@
 | №1126 PROJECT_ATLAS.txt | генерируется | человекочитаемая карта репозитория |
 | №1127 README.md | 145 B | документация или отчёт: README |
 | №1128 release-staging/unity-android-approval.json | 470 B | данные/конфигурация: unity android approval |
-| №1129 release-staging/unity-paired-approval.json | 1565 B | данные/конфигурация: unity paired approval |
+| №1129 release-staging/unity-paired-approval.json | 1674 B | данные/конфигурация: unity paired approval |
 | №1130 release-staging/unity-release.json | 3914 B | данные/конфигурация: unity release |
 | №1131 smoke_back_v2_sprite-1.png | 1707378 B | текстура/изображение: smoke back v2 sprite 1 |
 | №1132 smoke_back_v2_sprite.png | 1814587 B | текстура/изображение: smoke back v2 sprite |
