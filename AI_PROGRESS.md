@@ -426,3 +426,31 @@ DONE: owner reported update invisible because public Unity feed still advertised
 ## 2026-10-21 — Unity settings/touch/account/roles request
 
 PARTIAL: preparing 1.00.12 with 440-point mobile canvas, touch drag on all scroll views, auto-sized cozy settings, larger controls/unwrapped tabs, compact sheet save/export, native existing-Supabase auth and explicit safe cloud upload/download. Source-only role migration and 40 PostgreSQL tests prepared: server-controlled entitlements, four moderator trust levels, MFA, two-person role changes, owner/deputy separation. No live Supabase administration access; migration and payment/admin services are not deployed. See docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md. Native build and device verification pending; never claim full cloud/paid/admin functionality solely from local tests.
+
+## 2026-10-23 — expanded item collections prepared
+Owner-directed inventory/workshop task on isolated item-collections branch from
+experiment/unity-vtt. See docs/modular-content/ITEM_COLLECTIONS_V4.md and Content
+counterpart docs/ITEM_COLLECTIONS_V4.md. Five versioned packs / 3311 records,
+including explicit cosmetic/material variants. New item cap/pagination, embedded
+material/ingredient bridge, generic aliases, equip slots and consumable use.
+No release, production feed change or physical-device QA. Monster harvest UI
+and drop tables remain outside this implemented stage. Final checks recorded
+with this stage below; no whole-feature/release completion claim.
+Validation: targeted collection integration **34 checks PASS**; full existing
+workshop C# suite **4398 checks PASS**, using SHA/size-verified public supplemental
+Assets fixtures; content-registry Python contract PASS. Content catalog verifier
+checks all 190 entries and 3311 items, hashes/dependencies/legacy IDs. No native
+Unity build, phone or Windows interactive QA performed. Content draft PR:
+https://github.com/waitermisanthrope-creator/DnD-VTT-Content/pull/1 .
+
+# Опциональные сборники опубликованы без нового клиента — 2026-10-23
+
+Content main `d9a4fe7` активировал 36 независимых томов 1.1.0 / 3291 предмет
+в живом v3, плюс сохранены 120 прежних ингредиентов. 1096 проверок на
+неизменённом runtime e99d922a PASS; все 36 публичных payload и сам каталог
+скачаны, SHA/bytes/полное совпадение индекса PASS. Обновление Unity не нужно.
+Новые стабильные volume item ID: Content sources/workshop-volumes-1.1.0.json.
+Не выпускать старое переключение этого черновика на v4 без миграции этих ID:
+возможны дубли. PR #15 остаётся черновиком будущего runtime, моды доступны
+независимо от него. Инструкция: Content docs/WORKSHOP_ITEM_VOLUMES.md.
+Физический GUI QA не выполнялся; основная Unity-ветка и feed не изменялись.

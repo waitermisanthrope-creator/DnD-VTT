@@ -10,12 +10,12 @@ namespace DndVtt.UnityPrototype
     {
         private JObject commerceCatalog;
         private JObject CommerceCatalog { get { InitializeWorkshop(); return commerceCatalog ??= workshop.Commerce(); } }
-        private int inventoryMode, inventoryCategory;
+        private int inventoryMode, inventoryCategory, inventoryPage;
         private string inventoryQuery = "", customItemName = "", customItemWeight = "0", craftQuery = "";
         private bool inventoryPicker, customItemOpen, inventoryWeightEnabled = true;
         private readonly List<string> selectedIngredients = new List<string>();
         private string selectedCatalyst;
-        private readonly string[] inventoryNames = { "Оружие", "Броня", "Расходники", "Материалы и крафт", "Хлам" };
+        private readonly string[] inventoryNames = { "Оружие", "Броня и одежда", "Расходники", "Материалы и крафт", "Хлам" };
         private void DrawCommerceInventory(JObject hero, ref bool changed, ref bool persist)
         {
             if (hero["inventory"] is JArray) { ReadOnly(hero,"inventory","Унаследованный инвентарь сохранён без изменений"); return; }
@@ -23,15 +23,25 @@ namespace DndVtt.UnityPrototype
             if (inventoryMode == 1) { DrawCrafting(hero,ref changed,ref persist); return; }
             if (inventoryMode == 2) { DrawAlchemy(hero,ref changed,ref persist); return; }
             GUILayout.BeginVertical(GUI.skin.box); GUILayout.Label("Текущий КД",sheetQuiet); GUILayout.Label((hero["ac"] ?? hero["baseAC"] ?? 10).ToString(),sheetHeading); GUILayout.EndVertical();
+            int previousCategory = inventoryCategory;
             inventoryCategory = MenuGrid(inventoryCategory,inventoryNames,2);
+            if (previousCategory != inventoryCategory) inventoryPage = 0;
             if (GUILayout.Button("Справочник / Свой предмет",brandGreen,GUILayout.Height(58),GUILayout.ExpandWidth(true))) inventoryPicker = !inventoryPicker;
             if (inventoryPicker)
             {
                 GUILayout.BeginVertical(GUI.skin.box); SheetSection("Справочник предметов");
+                string previousQuery = inventoryQuery;
                 inventoryQuery = GUILayout.TextField(inventoryQuery,GUILayout.MinHeight(45));
+                if (previousQuery != inventoryQuery) inventoryPage = 0;
                 var entries = ((JArray)CommerceCatalog["items"]).OfType<JObject>().Where(x => (string)x["inventoryCategory"] == CharacterSheetRules.InventoryCategories[inventoryCategory] && (x["name"] + " " + x["description"]).IndexOf(inventoryQuery,StringComparison.OrdinalIgnoreCase) >= 0).ToArray();
                 if (entries.Length == 0) { GUILayout.Label("Скачайте сборник этой категории из менеджера модов. Свой предмет можно создать без интернета.",sheetQuiet); if (GUILayout.Button("Открыть менеджер модов",brandBlue)) Navigate(FrontScreen.ContentManager); }
-                foreach (var entry in entries.Take(25)) if (GUILayout.Button("+ " + entry["name"],GUILayout.MinHeight(44))) { CommerceRules.AddItem(hero,entry); changed = persist = true; status = "Предмет добавлен"; }
+                inventoryPage = Math.Max(0, Math.Min(inventoryPage, (entries.Length - 1) / 25));
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("←") && inventoryPage > 0) inventoryPage--;
+                GUILayout.Label($"{entries.Length} предметов · {inventoryPage + 1}/{Math.Max(1,(entries.Length + 24)/25)}");
+                if (GUILayout.Button("→") && (inventoryPage + 1) * 25 < entries.Length) inventoryPage++;
+                GUILayout.EndHorizontal();
+                foreach (var entry in entries.Skip(inventoryPage * 25).Take(25)) if (GUILayout.Button("+ " + entry["name"],GUILayout.MinHeight(44))) { CommerceRules.AddItem(hero,entry); changed = persist = true; status = "Предмет добавлен"; }
                 customItemOpen = GUILayout.Toggle(customItemOpen,"Создать свой предмет");
                 if (customItemOpen)
                 {
@@ -55,15 +65,18 @@ namespace DndVtt.UnityPrototype
                 if (GUILayout.Button("×",GUILayout.Width(44))) RequestDelete(item,(string)item["name"]); GUILayout.EndHorizontal();
                 GUILayout.Label((item["category"] ?? "") + " · " + (item["weight"] ?? "0") + " · " + (item["cost"] ?? ""),sheetQuiet);
                 if (item["description"] != null) GUILayout.Label((string)item["description"],sheetQuiet);
+                if (item["damage"] != null) GUILayout.Label("Урон: " + item["damage"] + " " + item["damageType"] + " · Бонус атаки: " + (item["toHit"] ?? 0),sheetQuiet);
+                if (item["acFormula"] != null) GUILayout.Label("Защита: " + item["acFormula"],sheetQuiet);
+                if (item["effect"] != null) GUILayout.Label((string)item["effect"],sheetQuiet);
                 GUILayout.BeginHorizontal(); double count = LegacyJson.Number(item["count"],1);
                 if (GUILayout.Button("−",GUILayout.Width(46))) { if (count <= 1) RequestDelete(item,(string)item["name"]); else { item["count"] = count - 1; changed = persist = true; } }
                 GUILayout.Label("Количество: " + count.ToString("0.##"));
                 if (GUILayout.Button("+",GUILayout.Width(46))) { item["count"] = count + 1; changed = persist = true; } GUILayout.EndHorizontal();
                 if (inventoryCategory < 2 && GUILayout.Button((bool?)item["equipped"] == true ? "✓ Экипировано" : "Экипировать",GUILayout.MinHeight(40))) { try { CommerceRules.Equip(hero,item); changed = persist = true; } catch (Exception e) { status = e.Message; } }
-                if (item["effects"] is JArray)
+                if (item["effects"] is JArray || (string)item["useMode"] == "manual")
                 {
                     GUILayout.Label("Урон, длительность и эффекты на других существ учитываются вручную.",sheetQuiet);
-                    if (GUILayout.Button("Применить алхимический продукт",brandGreen)) { try { CommerceRules.UseProduct(hero,item); changed = persist = true; status = "Продукт применён"; } catch (Exception e) { status = e.Message; } }
+                    if (GUILayout.Button("Применить / израсходовать",brandGreen)) { try { CommerceRules.UseProduct(hero,item); changed = persist = true; status = "Продукт применён"; } catch (Exception e) { status = e.Message; } }
                 }
                 foreach (JObject destination in (hero["inventory"]?["containers"] as JArray ?? new JArray()).OfType<JObject>().ToArray())
                     if (GUILayout.Button("В контейнер: " + destination["name"]))
