@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 3428d7c188e0. Файлов: 1991
+Коммит 1bbc1d512994. Файлов: 1991
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,9 +56,9 @@
 0040. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (7025 B)
-0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (54799 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (77616 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (116162 B)
+0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (55536 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (78353 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (116899 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1079,7 +1079,7 @@
 1063. docs/UNITY_MIGRATION_PLAN.md — документация или отчёт: UNITY MIGRATION PLAN (14710 B)
 1064. docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md — документация или отчёт: ACCESS AND TOUCH 1.00.12 (8253 B)
 1065. docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md — документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP (9558 B)
-1066. docs/unity-account/ALL_MOD_COLLECTIONS_1.00.36.md — документация или отчёт: ALL MOD COLLECTIONS 1.00.36 (5222 B)
+1066. docs/unity-account/ALL_MOD_COLLECTIONS_1.00.36.md — документация или отчёт: ALL MOD COLLECTIONS 1.00.36 (5827 B)
 1067. docs/unity-account/CHAT_NICKNAMES_1.00.21.md — документация или отчёт: CHAT NICKNAMES 1.00.21 (3028 B)
 1068. docs/unity-account/CHAT_ONE_HOUR.md — документация или отчёт: CHAT ONE HOUR (2267 B)
 1069. docs/unity-account/CHAT_WORKSHOP_1.00.22.md — документация или отчёт: CHAT WORKSHOP 1.00.22 (7852 B)
@@ -1753,7 +1753,7 @@
 1737. unity/Assets/Vtt/Editor/UnityReleaseBuild.cs.meta — вспомогательный файл: UnityReleaseBuild.cs (60 B)
 1738. unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs — вспомогательный файл: WorkshopBundleBuild (3632 B)
 1739. unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs.meta — вспомогательный файл: WorkshopBundleBuild.cs (60 B)
-1740. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs — вспомогательный файл: WorkshopEditorValidation (26077 B)
+1740. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs — вспомогательный файл: WorkshopEditorValidation (26249 B)
 1741. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs.meta — вспомогательный файл: WorkshopEditorValidation.cs (60 B)
 1742. unity/Assets/Vtt/Resources.meta — вспомогательный файл: Resources (172 B)
 1743. unity/Assets/Vtt/Resources/Branding.meta — вспомогательный файл: Branding (172 B)

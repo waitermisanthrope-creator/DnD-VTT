@@ -167,13 +167,14 @@ public static class WorkshopEditorValidation
                     if ((string)entry["format"] != "json") continue;
                     string stage = Path.Combine(folder, "download"); File.Copy(Path.Combine(fixtures, repo, "packages", Path.GetFileName((string)entry["url"])), stage, true);
                     store.Install(entry, stage, "android-arm64", Application.unityVersion); manifests.Add(entry.DeepClone());
-                    if(entry["imageKind"]!=null) {
+                    if(new[]{"icon","wallpaper"}.Contains((string)entry["imageKind"])) {
                         var image=(JObject)store.Data(entry)["images"][0];var texture=new Texture2D(2,2);
                         try { Check(texture.LoadImage(WorkshopStore.ImageBytes(image)),"downloaded appearance PNG decodes in Unity");Check(texture.width==(int)image["width"]&&texture.height==(int)image["height"],"downloaded image dimensions");decodedImages++; }
                         finally { UnityEngine.Object.DestroyImmediate(texture); }
                     }
                 }
             }
+            Check(decodedImages==63,"all63 actual icon and wallpaper images decode; dice and tray recipes use their own validation");
             Debug.Log("VTT_APPEARANCE_PNG_PASS: "+decodedImages+" downloaded images decoded with matching dimensions");
             ValidateAppearanceLibrary(store,manifests);
             ValidateWorkshopPagination(store);
