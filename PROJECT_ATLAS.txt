@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит c9d81a867b2c. Файлов: 2032
+Коммит cc6cb40884c0. Файлов: 2032
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,9 +56,9 @@
 0040. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (7025 B)
-0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (59999 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (83418 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (121362 B)
+0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (60767 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (84186 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (122130 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1103,7 +1103,7 @@
 1087. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7893 B)
 1088. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1089. docs/unity-account/WORKSHOP_COLLECTIONS_1.00.35.md — документация или отчёт: WORKSHOP COLLECTIONS 1.00.35 (5177 B)
-1090. docs/unity-account/WORKSHOP_HEARTS_1.00.38.md — документация или отчёт: WORKSHOP HEARTS 1.00.38 (6826 B)
+1090. docs/unity-account/WORKSHOP_HEARTS_1.00.38.md — документация или отчёт: WORKSHOP HEARTS 1.00.38 (7599 B)
 1091. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
 1092. dragon_fire_v2_sprite.png — текстура/изображение: dragon fire v2 sprite (1013123 B)
 1093. embers_v2_sprite.png — текстура/изображение: embers v2 sprite (698014 B)

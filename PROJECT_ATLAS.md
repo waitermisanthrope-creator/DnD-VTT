@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода c9d81a867b2c. Git содержит 2032 файлов.
+Снимок кода cc6cb40884c0. Git содержит 2032 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 7025 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 59999 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 83418 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 121362 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 60767 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 84186 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 122130 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1108,7 +1108,7 @@
 | №1087 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1088 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1089 docs/unity-account/WORKSHOP_COLLECTIONS_1.00.35.md | 5177 B | документация или отчёт: WORKSHOP COLLECTIONS 1.00.35 |
-| №1090 docs/unity-account/WORKSHOP_HEARTS_1.00.38.md | 6826 B | документация или отчёт: WORKSHOP HEARTS 1.00.38 |
+| №1090 docs/unity-account/WORKSHOP_HEARTS_1.00.38.md | 7599 B | документация или отчёт: WORKSHOP HEARTS 1.00.38 |
 | №1091 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
 | №1092 dragon_fire_v2_sprite.png | 1013123 B | текстура/изображение: dragon fire v2 sprite |
 | №1093 embers_v2_sprite.png | 698014 B | текстура/изображение: embers v2 sprite |
