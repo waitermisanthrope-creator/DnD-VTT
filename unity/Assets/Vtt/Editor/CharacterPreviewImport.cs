@@ -11,6 +11,7 @@ public sealed class CharacterPreviewImport : AssetPostprocessor
         model.animationType = ModelImporterAnimationType.Generic;
         model.importAnimation = false; model.importBlendShapes = true; model.isReadable = true;
         model.meshCompression = ModelImporterMeshCompression.Off;
+        model.indexFormat = ModelImporterIndexFormat.UInt32;
         model.importNormals = ModelImporterNormals.Import;
         model.importBlendShapeNormals = ModelImporterNormals.Calculate;
         model.importTangents = ModelImporterTangents.CalculateMikk;

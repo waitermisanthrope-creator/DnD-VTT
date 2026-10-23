@@ -14,7 +14,7 @@ public static class CharacterPreviewValidation
     {
         var importer = (ModelImporter)AssetImporter.GetAtPath(CharacterPreviewImport.ModelPath);
         Check(importer != null, "FBX exists");
-        if (!importer.isReadable || !importer.importBlendShapes || importer.importAnimation)
+        if (!importer.isReadable || !importer.importBlendShapes || importer.importAnimation || importer.indexFormat != ModelImporterIndexFormat.UInt32)
         { importer.isReadable = true; importer.SaveAndReimport(); }
     }
     public static void Run()
@@ -22,6 +22,7 @@ public static class CharacterPreviewValidation
         var model = Resources.Load<GameObject>("CharacterStudio/HumanBody");
         Check(model != null, "runtime resource exists");
         var renderer = model.GetComponentInChildren<SkinnedMeshRenderer>();
+        Check(model.GetComponentsInChildren<SkinnedMeshRenderer>().Length == 1, "single unsplit body renderer");
         Check(renderer && renderer.bones.Length == 53, "53 bones preserved");
         Check(renderer.sharedMesh.blendShapeCount == 23, "23 morphs preserved");
         Check(renderer.sharedMesh.triangles.Length == 107024 * 3, "107024 triangles preserved");
