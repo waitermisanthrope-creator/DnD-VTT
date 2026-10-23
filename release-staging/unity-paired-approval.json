@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "version": "1.00.31",
-  "candidateRunId": 39932786113,
+  "version": "1.00.32",
+  "candidateRunId": 39937442635,
   "approved": true,
   "scope": "Android ARM64 and Windows x64",
   "requireRenderReview": true,
-  "note": "Owner-authorized dice update. Actual source11278bc1974827997be44fd792b98a2589966fc6; paired candidate39932786113 SUCCESS: Android120344896239, Windows120350260470, actual Windows upgrade120353309299. Each native target371 PhysX throw cases,60 topology/face controls,420 UV correlations,32 legacy glyph controls,6 opaque shell controls, every-vertex soft arms,20-body Abyss/slime, four20-classic tray tests and20Abyss/20slime through each tower, landing bounds/immutable results/cleanup PASS.4397C#,12Python+2review tests,3source contracts,133SQLWASM PASS (not live Supabase). Actual APK42508278bytes SHA6a163d6c73d3d412f4d0162e668facea56f6112819538cf4098d7135e346ff31; Windows29229326bytes SHAe4364b80127f4bba2687c2a10f54e17af4a19d46a56eb2e2683290954545403c. Publish public candidate and91actual native PNGs first. Keep feed30 until manual exact render-index review. Physical phone sensor/GPU/touch/install-over and desktop interactive GPU remain owner QA. Bounded compliant contact approximation, not full soft-body;20live body budget, unlimited total request. No production SQL/main stable changes."
+  "note": "Owner-authorized living dice/trays update. Source d3f71068f3ae59a824ee488a83df88f01d0b5376; paired candidate39937442635 SUCCESS, Android120360481593, Windows120365606675, actual Windows upgrade120368571948.4398C#/12Python+2review/3contracts/133SQLWASM PASS (not live Supabase). Each native target371actual PhysX cases,60face/topology,420UV,32glyph,6opaque shell controls; every-vertex soft arms,20body materials, four20classic trays plus20Abyss/20slime through both towers, polygon floor convexity/no-rectangle-corners, immutable results and cleanup PASS. APK42516470bytes SHA51fb6cd746b990579d82738844f7aca747fbe6ee5fb90e31fb4825552975599a; Windows29227975bytes SHA0328ce5ae5dcfb49a090066df13816bd5feab3168205ad48390d758d8702399d. First publish candidate and91actual native PNGs, leave feed30 until exact index manual review.31 immutable candidate was rejected for rectangular floor protrusions, never activated; preserve its files. Real phone sensor/GPU/touch/install-over and desktop interactive GPU remain owner QA. Soft arms use bounded compliant contact approximation;20live body safety budget/unlimited total request. No production SQL/main stable changes."
 }
