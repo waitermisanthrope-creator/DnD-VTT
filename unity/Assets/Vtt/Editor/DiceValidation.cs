@@ -180,7 +180,7 @@ public static class DiceValidation
                     for(int step=0;step<1000&&table.Throwing;step++)table.Tick(.1f,false);
                     Check(table.Value.HasValue&&table.Completed==1,"experimental actual physical result "+theme.Behavior+" d"+count+": "+table.Result);rolls++;
                     int value=table.Value.Value;
-                    if(theme.Behavior=="slime")Check(table.SlimeHops>=5*(count==100?2:1),"slime performs repeated real Rigidbody hops before locking d"+count);
+                    if(theme.Behavior=="slime")Check(table.SlimeHops>=1,"slime has a real incoming/downward to outgoing/upward impact d"+count);
                     if(theme.Behavior=="abyss")Check(table.TentaclePushes>0,"grounded muscle actually pushes Rigidbody before locking d"+count);
                     if(count==20) {
                         table.Tick(.1f);SaveImage(table.Image,Path.Combine(folder,"test-"+theme.Behavior+"-settled-a.png"),false);
@@ -206,7 +206,39 @@ public static class DiceValidation
                     Check(table.Value==accepted&&table.Completed==20,"shake cannot alter accepted twenty-die result");
                     Debug.Log("VTT_DICE_20_BODY_PASS: "+theme.Behavior+" elapsedWallMs="+timer.ElapsedMilliseconds+" pushes="+table.TentaclePushes+" hops="+table.SlimeHops);
                 }
+                if(theme.Behavior=="abyss") {
+                    // Broad gross-bias regression, not a proof of mathematically fair dice.
+                    var histogram=new int[20];var randomState=UnityEngine.Random.state;
+                    try {
+                        for(int batch=0;batch<30;batch++) {
+                            UnityEngine.Random.InitState(33000+batch);table.Throw("20d20");
+                            for(int step=0;step<2400&&table.Throwing;step++)table.Tick(.1f,false);
+                            Check(table.Completed==20&&table.Value.HasValue,"Abyss distribution batch completes "+batch);
+                            var state=(System.Collections.IList)typeof(DiceTable).GetField("dice",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(table);
+                            foreach(var die in state)histogram[(int)die.GetType().GetField("resolved").GetValue(die)-1]++;
+                        }
+                    } finally { UnityEngine.Random.state=randomState; }
+                    double chi=histogram.Sum(n=>(n-30.0)*(n-30.0)/30.0);
+                    Debug.Log("VTT_DICE_ABYSS_DISTRIBUTION: n=600 bins="+string.Join(",",histogram)+" chiSquared="+chi);
+                    Check(histogram.Sum()==600&&histogram.All(n=>n>0&&n<90),"no absent face or threefold preferred face in 600 Abyss d20 throws");rolls+=600;
+                }
                 if(theme.Behavior=="slime") {
+                    table.Throw("1d20");
+                    var actor=UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None).Single();
+                    Check(actor.position.y>=5,"higher ordinary launch");
+                    float Energy() {
+                        Vector3 w=Quaternion.Inverse(actor.rotation*actor.inertiaTensorRotation)*actor.angularVelocity;
+                        return actor.mass*9.81f*Mathf.Max(0,actor.position.y)+actor.mass*actor.linearVelocity.sqrMagnitude*.5f
+                            +Vector3.Dot(Vector3.Scale(w,w),actor.inertiaTensor)*.5f;
+                    }
+                    float initialEnergy=Energy(),maxEnergy=initialEnergy;
+                    for(int step=0;step<12000&&table.Throwing;step++) { table.Tick(1f/60,false);maxEnergy=Mathf.Max(maxEnergy,Energy()); }
+                    Check(table.Value.HasValue,"natural slime settles without a timed jump phase");
+                    Check(maxEnergy<=initialEnergy*1.12f,"isolated slime cannot manufacture new throw energy");
+                    Check(table.SlimeHops>=3,"elastic slime repeats actual collision bounces");
+                    Vector3 settled=actor.position;for(int step=0;step<120;step++)table.Tick(1f/60,false);
+                    Check((actor.transform.position-settled).sqrMagnitude<.000001f,"settled slime never starts decorative post-result jumps");
+                    Debug.Log("VTT_DICE_SLIME_DECAY: impacts="+table.SlimeHops+" initialEnergy="+initialEnergy+" maxEnergy="+maxEnergy);rolls++;
                     table.Throw("4d20");
                     var state=(System.Collections.IList)typeof(DiceTable).GetField("dice",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(table);
                     state[0].GetType().GetField("resolved").SetValue(state[0],1); // Deterministic partial-reroll cancellation state.
@@ -245,7 +277,7 @@ public static class DiceValidation
                     table.SetTheme(DiceTheme.Read((JObject)WorkshopStore.ValidateData(materialManifest,File.ReadAllText(p))["diceThemes"][0],true));table.Throw("20d20");
                     for(int i=0;i<2400&&table.Throwing;i++)table.Tick(.1f,false);
                     Check(table.Completed==20&&table.Value.HasValue,"twenty "+behavior+" bodies traverse "+selected.Profile+": "+table.Result);rolls+=20;
-                    if(behavior=="slime")Check(table.SlimeHops>=100,"slime starts its actual bounce phase after tower landing");
+                    if(behavior=="slime")Check(table.SlimeHops>=20,"twenty slime bodies bounce naturally while traversing the tower");
                     if(behavior=="abyss")Check(table.TentaclePushes>0,"Abyss has actual contact drama after tower landing");
                     var moving=UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None);
                     Check(moving.All(b=>b.position.y>-1.5f&&b.position.y<2&&Mathf.Abs(b.position.x-12000)<6.5f&&Mathf.Abs(b.position.z-12000)<5.5f),"active material reaches bounded landing area "+selected.Profile);

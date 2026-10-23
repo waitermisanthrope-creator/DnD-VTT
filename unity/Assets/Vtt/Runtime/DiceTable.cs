@@ -11,7 +11,7 @@ namespace DndVtt.UnityPrototype
     // Local physics scene: dice cannot collide with, simulate or modify the user's map.
     public sealed partial class DiceTable : IDisposable
     {
-        private sealed class Die { public DiceGeometry geometry;public Rigidbody body;public bool tens,units;public int resolved;public Vector3 settledPosition;public float lastImpact,lastHop,lastGuide,materialStart=-1;public int hops,guides;public DiceTentacles tentacles; }
+        private sealed class Die { public DiceGeometry geometry;public Rigidbody body;public bool tens,units;public int resolved;public Vector3 settledPosition;public float lastImpact,lastHop,lastGuide,materialStart=-1;public float previousVertical;public int hops,guides;public DiceTentacles tentacles; }
         private readonly Scene scene;
         private readonly PhysicsScene physics;
         private readonly GameObject root;
@@ -86,7 +86,7 @@ namespace DndVtt.UnityPrototype
         {
             var go=GameObject.CreatePrimitive(PrimitiveType.Cube);go.name=name;go.layer=31;go.transform.SetParent(root.transform,false);go.transform.localPosition=position;go.transform.localScale=scale;
             var material=new Material(surface) { color=color };owned.Add(material);go.GetComponent<Renderer>().sharedMaterial=material;go.GetComponent<Collider>().sharedMaterial=contact;
-            if(name=="Борт") { var wall=go.GetComponent<BoxCollider>();wall.size=new Vector3(1,4,1);wall.center=new Vector3(0,1.5f,0); }
+            if(name=="Борт") { var wall=go.GetComponent<BoxCollider>();wall.size=new Vector3(1,8,1);wall.center=new Vector3(0,3.5f,0); }
             return go;
         }
         private void ClearDice()
@@ -155,7 +155,7 @@ namespace DndVtt.UnityPrototype
             var body=go.AddComponent<Rigidbody>();body.mass=.08f;body.linearDamping=.3f;body.angularDamping=.35f;body.maxAngularVelocity=30;body.collisionDetectionMode=CollisionDetectionMode.ContinuousDynamic;body.interpolation=RigidbodyInterpolation.None;body.solverIterations=12;body.solverVelocityIterations=6;
             if(theme?.Behavior=="ice") { body.linearDamping=.05f;body.angularDamping=.1f; }
             if(theme?.Behavior=="stone")body.mass=.16f;
-            if(theme?.Behavior=="slime") { body.linearDamping=.6f;body.angularDamping=.65f; }
+            if(theme?.Behavior=="slime") { body.linearDamping=.025f;body.angularDamping=.08f; }
             if(theme?.NumberedAtlas!=true)foreach(var face in geometry.faces) {
                 if(count==4) {
                     foreach(int vertex in face.vertices) {
@@ -198,7 +198,7 @@ namespace DndVtt.UnityPrototype
             }
             contact.dynamicFriction=selected?.Behavior=="ice"?.025f:.65f;contact.staticFriction=selected?.Behavior=="ice"?.035f:.7f;
             contact.frictionCombine=selected?.Behavior=="ice"?PhysicsMaterialCombine.Minimum:PhysicsMaterialCombine.Average;
-            contact.bounciness=selected?.Behavior=="slime"?.58f:selected?.Behavior=="stone"?.12f:.26f;
+            contact.bounciness=selected?.Behavior=="slime"?.88f:selected?.Behavior=="stone"?.12f:.26f;
             Preview(sides);
         }
         public void Preview(int count)
@@ -273,16 +273,16 @@ namespace DndVtt.UnityPrototype
                         }
                         float age=d.materialStart<0?-1:elapsed-d.materialStart;
                         d.tentacles?.Step(effectClock,age,age>=0);
-                        if(MaterialBehavior=="slime"&&age>=0&&age<6.5f&&elapsed-d.lastHop>.4f&&d.body.linearVelocity.y<.6f&&d.body.position.y-SupportHeight(d.body.position)<.85f) {
-                            d.body.AddForce(Vector3.up*UnityEngine.Random.Range(2.6f,3.6f),ForceMode.VelocityChange);d.body.AddTorque(UnityEngine.Random.onUnitSphere*5,ForceMode.VelocityChange);d.body.WakeUp();d.lastHop=elapsed;d.hops++;
-                        }
+                        // Capture incoming speed only; restitution supplies all bounce energy.
+                        d.previousVertical=d.body.linearVelocity.y;
                     }
                     physics.Simulate(1f/60);accumulator-=1f/60;elapsed+=1f/60;
                     bool quiet=true;foreach(var d in dice) {
                         if(d.body.linearVelocity.sqrMagnitude>.0144f||d.body.angularVelocity.sqrMagnitude>.0324f)quiet=false;
                         if(d.resolved==0) {
                             if(IsTower&&SupportHeight(d.body.position)>origin.y+FloorHeight+.18f)quiet=false;
-                            if((MaterialBehavior=="abyss"||MaterialBehavior=="slime")&&(d.materialStart<0||elapsed-d.materialStart<(MaterialBehavior=="abyss"?4.8f:7.2f)))quiet=false;
+                            if(MaterialBehavior=="abyss"&&(d.materialStart<0||elapsed-d.materialStart<4.8f))quiet=false;
+                            if(MaterialBehavior=="slime"&&d.previousVertical<-.5f&&d.body.linearVelocity.y>.5f&&elapsed-d.lastHop>.08f) { d.hops++;d.lastHop=elapsed; }
                         }
                         // Detect meaningful floor contacts without global MonoBehaviour callbacks.
                         if((theme?.Behavior=="blood"||theme?.Behavior=="stone")&&d.body.position.y-SupportHeight(d.body.position)<.85f&&d.body.linearVelocity.y>.15f&&elapsed-d.lastImpact>.22f) { SpawnImpact(d);d.lastImpact=elapsed; }
@@ -392,12 +392,9 @@ namespace DndVtt.UnityPrototype
                 die.tentacles?.Animate(effectClock);
                 foreach(var renderer in die.body.GetComponentsInChildren<MeshRenderer>()) {
                     var mat=renderer.sharedMaterial;if(mat.HasProperty("_Clock"))mat.SetFloat("_Clock",effectClock);
-                    if(behavior=="slime"&&mat.HasProperty("_Squash"))mat.SetFloat("_Squash",Rolling?.045f*Mathf.Sin(effectClock*12):.075f*Mathf.Sin(settledClock*8));
+                    if(behavior=="slime"&&mat.HasProperty("_Squash"))mat.SetFloat("_Squash",Rolling?.045f*Mathf.Sin(effectClock*12):.035f*Mathf.Sin(settledClock*8)*Mathf.Exp(-settledClock*2));
                 }
-                if(behavior=="slime"&&!Rolling&&resultAccepted) {
-                    // Decorative bounce after immutable result; never re-simulate accepted dice.
-                    die.body.transform.position=die.settledPosition+Vector3.up*(Mathf.Abs(Mathf.Sin(settledClock*4))*.22f);
-                }
+
             }
             foreach(var effect in effects)if(effect) {
                 if(behavior=="vine")effect.transform.localScale=Vector3.one*Mathf.Clamp01(settledClock/1.5f);
