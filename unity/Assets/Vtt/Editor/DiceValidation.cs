@@ -225,6 +225,12 @@ public static class DiceValidation
                 string payload=Path.Combine(fixture,"packages",Path.GetFileName((string)manifest["url"]));WorkshopStore.Verify(manifest,payload);
                 var selected=DiceTray.Read((JObject)WorkshopStore.ValidateData(manifest,File.ReadAllText(payload))["diceTrays"][0]);
                 table.SetTray(selected);Check(table.ActiveTrayId==selected.Id,"installed tray selected");
+                if(selected.Profile=="hexagon"||selected.Profile=="octagon") {
+                    var floor=UnityEngine.Object.FindObjectsByType<MeshFilter>(FindObjectsSortMode.None).Single(f=>f.gameObject.name=="Tray floor");
+                    Check(floor.sharedMesh.name=="Closed polygon tray floor"&&floor.GetComponent<MeshCollider>().convex,"entire floor is a real polygon prism");
+                    CheckClosedConvex(floor.sharedMesh);
+                    Check(floor.sharedMesh.vertices.All(v=>v.x*v.x/(6.2f*6.2f)+v.z*v.z/(5.2f*5.2f)<1.0001f),"no rectangular floor corners beyond polygon");
+                }
                 CheckTexturedRender(table); // Actual native floor print sampling, not numeral visibility at tower scale.
                 SaveImage(table.Image,Path.Combine(folder,"arena-tray-"+selected.Profile+".png"),false,true);
                 table.Throw("20d20");Check(table.BodyCount==20,"twenty bodies enter "+selected.Profile);

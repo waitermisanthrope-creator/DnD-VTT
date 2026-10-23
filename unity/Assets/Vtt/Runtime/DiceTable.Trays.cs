@@ -38,10 +38,16 @@ namespace DndVtt.UnityPrototype
             if(tray!=null) { ColorUtility.TryParseHtmlString(tray.Floor,out floor);ColorUtility.TryParseHtmlString(tray.Wall,out wall); }
             int sides=tray?.Profile=="hexagon"?6:tray?.Profile=="octagon"?8:4;
             var ground=TrayBox("Tray floor",new Vector3(0,FloorHeight-.18f,0),new Vector3(12,.35f,10),floor);
+            if(sides>4) {
+                var prism=PolygonFloor(sides);trayAssets.Add(prism);
+                ground.transform.localScale=Vector3.one;ground.GetComponent<MeshFilter>().sharedMesh=prism;
+                UnityEngine.Object.DestroyImmediate(ground.GetComponent<BoxCollider>());
+                var collision=ground.AddComponent<MeshCollider>();collision.sharedMesh=prism;collision.convex=true;collision.sharedMaterial=contact;
+            }
             var print=PrintTexture(tray?.Print??"compass",floor);trayAssets.Add(print);
             var mat=ground.GetComponent<Renderer>().sharedMaterial;mat.SetTexture("_MainTex",print);mat.SetFloat("_Textured",1);mat.SetFloat("_Numbered",1);mat.SetFloat("_Tile",-1);mat.color=Color.white;
             if(sides>4) {
-                // The underside is hidden; the actual playable boundary is the polygon.
+                // Walls and the complete printed floor follow the same polygon.
                 for(int i=0;i<sides;i++) {
                     float a=i*2*Mathf.PI/sides,b=(i+1)*2*Mathf.PI/sides;
                     Vector3 p=new Vector3(Mathf.Cos(a)*6.2f,.65f,Mathf.Sin(a)*5.2f),q=new Vector3(Mathf.Cos(b)*6.2f,.65f,Mathf.Sin(b)*5.2f),d=q-p;
@@ -73,6 +79,26 @@ namespace DndVtt.UnityPrototype
                     TrayBox("Перила винтовой башни",outer+Vector3.up*.65f,new Vector3(.15f,1.3f,forward.magnitude+.15f),wall,rotation);
                 }
             }
+        }
+        private static Mesh PolygonFloor(int sides)
+        {
+            var vertices=new List<Vector3>();var uv=new List<Vector2>();var triangles=new List<int>();
+            void Vertex(Vector3 p) { vertices.Add(p);uv.Add(new Vector2(.5f+p.x/12.4f,.5f+p.z/10.4f)); }
+            for(int cap=0;cap<2;cap++) {
+                float y=cap==0?.175f:-.175f;int center=vertices.Count;Vertex(new Vector3(0,y,0));
+                for(int i=0;i<sides;i++) { float a=i*2*Mathf.PI/sides;Vertex(new Vector3(Mathf.Cos(a)*6.2f,y,Mathf.Sin(a)*5.2f)); }
+                for(int i=0;i<sides;i++) {
+                    int a=center+1+i,b=center+1+(i+1)%sides;
+                    triangles.AddRange(cap==0?new[]{center,b,a}:new[]{center,a,b});
+                }
+            }
+            for(int i=0;i<sides;i++) {
+                float a=i*2*Mathf.PI/sides,b=(i+1)*2*Mathf.PI/sides;int start=vertices.Count;
+                Vector3 p=new Vector3(Mathf.Cos(a)*6.2f,0,Mathf.Sin(a)*5.2f),q=new Vector3(Mathf.Cos(b)*6.2f,0,Mathf.Sin(b)*5.2f);
+                Vertex(p+Vector3.up*.175f);Vertex(p-Vector3.up*.175f);Vertex(q+Vector3.up*.175f);Vertex(q-Vector3.up*.175f);
+                triangles.AddRange(new[]{start,start+3,start+1,start,start+2,start+3});
+            }
+            var mesh=new Mesh { name="Closed polygon tray floor" };mesh.SetVertices(vertices);mesh.SetUVs(0,uv);mesh.SetTriangles(triangles,0);mesh.RecalculateNormals();mesh.RecalculateBounds();return mesh;
         }
         private static Texture2D PrintTexture(string print,Color floor)
         {

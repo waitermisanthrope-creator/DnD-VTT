@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 11278bc19748. Git содержит 1983 файлов.
+Снимок кода a07a9ff59ad3. Git содержит 1983 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 7007 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 31624 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 54441 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 92987 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 33125 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 55942 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 94488 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1088,7 +1088,7 @@
 | №1067 docs/unity-account/CHAT_ONE_HOUR.md | 2267 B | документация или отчёт: CHAT ONE HOUR |
 | №1068 docs/unity-account/CHAT_WORKSHOP_1.00.22.md | 7852 B | документация или отчёт: CHAT WORKSHOP 1.00.22 |
 | №1069 docs/unity-account/DICE_1.00.23.md | 5241 B | документация или отчёт: DICE 1.00.23 |
-| №1070 docs/unity-account/DICE_CONTACT_1.00.31.md | 7948 B | документация или отчёт: DICE CONTACT 1.00.31 |
+| №1070 docs/unity-account/DICE_CONTACT_1.00.31.md | 9409 B | документация или отчёт: DICE CONTACT 1.00.31 |
 | №1071 docs/unity-account/DICE_MATERIALS_1.00.28.md | 3463 B | документация или отчёт: DICE MATERIALS 1.00.28 |
 | №1072 docs/unity-account/DICE_SIX_1.00.29.md | 5386 B | документация или отчёт: DICE SIX 1.00.29 |
 | №1073 docs/unity-account/DICE_SIX_1.00.30.md | 8993 B | документация или отчёт: DICE SIX 1.00.30 |
@@ -1098,7 +1098,7 @@
 | №1077 docs/unity-account/dice-1.00.25-metrics.json | 2023 B | документация или отчёт: dice 1.00.25 metrics |
 | №1078 docs/unity-account/dice-1.00.28-metrics.json | 1717 B | документация или отчёт: dice 1.00.28 metrics |
 | №1079 docs/unity-account/dice-1.00.30-metrics.json | 2979 B | документация или отчёт: dice 1.00.30 metrics |
-| №1080 docs/unity-account/IMPLEMENTATION_STATUS.md | 60779 B | документация или отчёт: IMPLEMENTATION STATUS |
+| №1080 docs/unity-account/IMPLEMENTATION_STATUS.md | 62280 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1081 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
 | №1082 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1083 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
@@ -1143,7 +1143,7 @@
 | №1122 PROJECT_ATLAS.txt | генерируется | человекочитаемая карта репозитория |
 | №1123 README.md | 145 B | документация или отчёт: README |
 | №1124 release-staging/unity-android-approval.json | 470 B | данные/конфигурация: unity android approval |
-| №1125 release-staging/unity-paired-approval.json | 1615 B | данные/конфигурация: unity paired approval |
+| №1125 release-staging/unity-paired-approval.json | 1284 B | данные/конфигурация: unity paired approval |
 | №1126 release-staging/unity-release.json | 3914 B | данные/конфигурация: unity release |
 | №1127 smoke_back_v2_sprite-1.png | 1707378 B | текстура/изображение: smoke back v2 sprite 1 |
 | №1128 smoke_back_v2_sprite.png | 1814587 B | текстура/изображение: smoke back v2 sprite |
@@ -1742,7 +1742,7 @@
 | №1721 unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta | 59 B | вспомогательный файл: CharacterSheetValidation.cs |
 | №1722 unity/Assets/Vtt/Editor/DiceBuildGate.cs | 4491 B | вспомогательный файл: DiceBuildGate |
 | №1723 unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta | 60 B | вспомогательный файл: DiceBuildGate.cs |
-| №1724 unity/Assets/Vtt/Editor/DiceValidation.cs | 34877 B | вспомогательный файл: DiceValidation |
+| №1724 unity/Assets/Vtt/Editor/DiceValidation.cs | 35497 B | вспомогательный файл: DiceValidation |
 | №1725 unity/Assets/Vtt/Editor/DiceValidation.cs.meta | 60 B | вспомогательный файл: DiceValidation.cs |
 | №1726 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs | 10734 B | вспомогательный файл: LegacyMigrationSetup |
 | №1727 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSetup.cs |
@@ -1762,7 +1762,7 @@
 | №1741 unity/Assets/Vtt/Resources/Branding/Splash19.png.meta | 312 B | вспомогательный файл: Splash19.png |
 | №1742 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg | 212684 B | текстура/изображение: Wallpaper16 |
 | №1743 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta | 312 B | вспомогательный файл: Wallpaper16.jpg |
-| №1744 unity/Assets/Vtt/Resources/Changelog.json | 36726 B | данные/конфигурация: Changelog |
+| №1744 unity/Assets/Vtt/Resources/Changelog.json | 38725 B | данные/конфигурация: Changelog |
 | №1745 unity/Assets/Vtt/Resources/Changelog.json.meta | 158 B | вспомогательный файл: Changelog.json |
 | №1746 unity/Assets/Vtt/Resources/CharacterSheet.meta | 172 B | вспомогательный файл: CharacterSheet |
 | №1747 unity/Assets/Vtt/Resources/CharacterSheet/catalog.json | 823381 B | данные/конфигурация: catalog |
@@ -1791,7 +1791,7 @@
 | №1770 unity/Assets/Vtt/Runtime/DiceRollRequest.cs.meta | 60 B | вспомогательный файл: DiceRollRequest.cs |
 | №1771 unity/Assets/Vtt/Runtime/DiceTable.cs | 32270 B | вспомогательный файл: DiceTable |
 | №1772 unity/Assets/Vtt/Runtime/DiceTable.cs.meta | 60 B | вспомогательный файл: DiceTable.cs |
-| №1773 unity/Assets/Vtt/Runtime/DiceTable.Trays.cs | 10316 B | вспомогательный файл: DiceTable.Trays |
+| №1773 unity/Assets/Vtt/Runtime/DiceTable.Trays.cs | 12232 B | вспомогательный файл: DiceTable.Trays |
 | №1774 unity/Assets/Vtt/Runtime/DiceTable.Trays.cs.meta | 60 B | вспомогательный файл: DiceTable.Trays.cs |
 | №1775 unity/Assets/Vtt/Runtime/DiceTentacles.cs | 5008 B | вспомогательный файл: DiceTentacles |
 | №1776 unity/Assets/Vtt/Runtime/DiceTentacles.cs.meta | 60 B | вспомогательный файл: DiceTentacles.cs |
@@ -1948,7 +1948,7 @@
 | №1927 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №1928 updates/README.md | 233 B | документация или отчёт: README |
 | №1929 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №1930 updates/unity-changelog.json | 36726 B | метаданные обновлений: unity changelog |
+| №1930 updates/unity-changelog.json | 38725 B | метаданные обновлений: unity changelog |
 | №1931 updates/unity-experiment.json | 2331 B | метаданные обновлений: unity experiment |
 | №1932 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №1933 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
@@ -14759,7 +14759,7 @@
 | zipCompressedNativeBytes | №1865 |
 | zipCompressedUnityDataBytes | №1865 |
 
-### JSON поля (1032)
+### JSON поля (1031)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -14821,7 +14821,6 @@
 | app | №1926 (+ 2 других файлов) |
 | appId | №1120 |
 | approved | №1124 (+ 1 других файлов) |
-| approvedRenderIndexSha256 | №1125 |
 | arcana | №1747 (+ 2 других файлов) |
 | arch | №1120 |
 | archiveBytes | №0906 (+ 3 других файлов) |
