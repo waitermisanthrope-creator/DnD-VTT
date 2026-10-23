@@ -41,18 +41,36 @@ public static class WorkshopEditorValidation
             var panel=go.AddComponent<LegacySessionPanel>();var flags=BindingFlags.Instance|BindingFlags.NonPublic;var type=typeof(LegacySessionPanel);
             type.GetField("workshopStore",flags).SetValue(panel,store);
             type.GetField("contentPackages",flags).SetValue(panel,manifests);
-            type.GetField("contentCategory",flags).SetValue(panel,0); // dedicated Collections page is the default
+            type.GetField("contentCategory",flags).SetValue(panel,0);
+            Check(!(bool)type.GetField("contentCollectionsPage",flags).GetValue(panel),"main newest feed is default");
+            type.GetMethod("SwitchContentPage",flags).Invoke(panel,new object[]{true});
             type.GetMethod("RebuildContentView",flags).Invoke(panel,null);
             var view=(System.Collections.Generic.IEnumerable<JObject>)type.GetField("contentView",flags).GetValue(panel);
             Check(view.Count()==15&&view.All(m=>(string)m["collectionRole"]=="category"),"real menu shows all fifteen libraries rather than individual mods");
-            Check(view.Take(5).Select(m=>(string)m["inventoryCategory"]).SequenceEqual(new[]{"weapons","armor","materials","consumables","junk"}),"existing item category order retained");
-            Check(view.Skip(5).Select(m=>(string)m["collectionCategory"]).SequenceEqual(WorkshopStore.ModCollectionCategories),"all non-item categories follow in predictable order");
+            Check(view.Select(WorkshopCommunity.Updated).SequenceEqual(view.Select(WorkshopCommunity.Updated).OrderByDescending(d=>d)),"collection updates sorted newest first");
             var firstPage=(System.Collections.Generic.IEnumerable<JObject>)type.GetMethod("VisibleContentPage",flags).Invoke(panel,null);
             Check(firstPage.Count()==15,"all fifteen libraries fit on the first collection page");
             type.GetMethod("SwitchContentPage",flags).Invoke(panel,new object[]{false});
             type.GetField("contentShowParts",flags).SetValue(panel,true);type.GetMethod("RebuildContentView",flags).Invoke(panel,null);
             view=(System.Collections.Generic.IEnumerable<JObject>)type.GetField("contentView",flags).GetValue(panel);
             Check(view.Count()>100,"individual tomes remain accessible through toggle");
+            var community=(WorkshopCommunity)type.GetField("contentCommunity",flags).GetValue(panel);
+            type.GetField("cloudSession",flags).SetValue(panel,new JObject { ["user"]="ci-user" });
+            type.GetMethod("SyncWorkshopIdentity",flags).Invoke(panel,null);
+            community.Replace(new JArray(new JObject { ["id"]=roots[0]["id"].DeepClone(),["rating"]=8,["hearted"]=true },new JObject { ["id"]=roots[1]["id"].DeepClone(),["rating"]=12,["hearted"]=false }));
+            type.GetField("contentSort",flags).SetValue(panel,1);type.GetMethod("RebuildContentView",flags).Invoke(panel,null);
+            view=(System.Collections.Generic.IEnumerable<JObject>)type.GetField("contentView",flags).GetValue(panel);
+            Check((string)view.First()["id"]==(string)roots[1]["id"],"actual menu highest rating first");
+            type.GetField("contentFavoritesOnly",flags).SetValue(panel,true);type.GetMethod("EnsureContentView",flags).Invoke(panel,null);
+            view=(System.Collections.Generic.IEnumerable<JObject>)type.GetField("contentView",flags).GetValue(panel);
+            Check(view.Count()==1&&(string)view.First()["id"]==(string)roots[0]["id"],"actual menu own favorites only");
+            community.Apply(new JObject { ["id"]=roots[0]["id"].DeepClone(),["rating"]=7,["hearted"]=false });
+            type.GetField("contentViewDirty",flags).SetValue(panel,true);type.GetMethod("EnsureContentView",flags).Invoke(panel,null);
+            Check(!((System.Collections.Generic.IEnumerable<JObject>)type.GetField("contentView",flags).GetValue(panel)).Any(),"removed heart disappears from favorites");
+            type.GetField("cloudSession",flags).SetValue(panel,null);type.GetMethod("SyncWorkshopIdentity",flags).Invoke(panel,null);
+            Check(!community.Ready&&!(bool)type.GetField("contentFavoritesOnly",flags).GetValue(panel),"logout clears private workshop snapshot");
+            var guest=(System.Collections.IEnumerator)type.GetMethod("ToggleWorkshopHeart",flags).Invoke(panel,new object[]{(string)roots[0]["id"]});
+            Check(!guest.MoveNext(),"anonymous toggle exits without any network write");
             foreach(var root in roots) {
                 var plan=(JArray)type.GetMethod("ContentInstallPlan",flags).Invoke(panel,new object[]{root});
                 Check(plan.Count==0,"actual UI skips all already installed collection modules");
@@ -69,7 +87,7 @@ public static class WorkshopEditorValidation
             var panel=go.AddComponent<LegacySessionPanel>();var flags=BindingFlags.Instance|BindingFlags.NonPublic;var type=typeof(LegacySessionPanel);
             type.GetField("workshopStore",flags).SetValue(panel,store);
             type.GetField("contentCollectionsPage",flags).SetValue(panel,false);
-            var catalog=new JArray();for(int i=0;i<20000;i++)catalog.Add(new JObject { ["id"]="ci."+i,["name"]="Item"+i,["author"]="CI",["type"]="race" });
+            var catalog=new JArray();for(int i=0;i<20000;i++)catalog.Add(new JObject { ["id"]="ci."+i,["name"]="Item"+i,["author"]="CI",["type"]="race",["updatedAt"]="2099-01-01T00:00:00Z" });
             type.GetField("contentPackages",flags).SetValue(panel,catalog);
             var ensure=type.GetMethod("EnsureContentView",flags);var page=type.GetMethod("VisibleContentPage",flags);
             ensure.Invoke(panel,null);var firstView=type.GetField("contentView",flags).GetValue(panel);

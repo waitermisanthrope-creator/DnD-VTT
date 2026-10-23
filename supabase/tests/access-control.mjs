@@ -1,3 +1,4 @@
+import {verifyWorkshop} from './workshop-hearts.mjs';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 const {PGlite}=await import(process.env.PGLITE_MODULE||'@electric-sql/pglite');
@@ -167,5 +168,6 @@ try {
  await root();check(Number((await db.query('select app_private.purge_expired_chat() n')).rows[0].n)===1,'worker purges expired chat only');
  check(Number((await db.query('select count(*) n from app_private.chat_messages')).rows[0].n)===10,'worker retains unexpired chat');
  check(Number((await db.query("select count(*) n from app_private.access_audit where details::text like '%Chat-test-unique%'")).rows[0].n)===0,'chat body not copied to longer audit');
+ await verifyWorkshop({db,root,identity,denied,check,member,other});
  console.log('POSTGRES_ACCESS_CLOUD_PASS',checks,'checks: roles, forged metadata, MFA, two-person approval, revocation, receipts, conflict and RLS');
 } finally {await db.close();}

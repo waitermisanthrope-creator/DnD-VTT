@@ -5,6 +5,8 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
     <Compile Include="../../Assets/Vtt/Runtime/WorkshopStore.cs" Link="WorkshopStore.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="WorkshopCommunityChecks.cs" />
+    <Compile Include="../../Assets/Vtt/Runtime/WorkshopCommunity.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/DiceRollRequest.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/DiceTheme.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/DiceTray.cs" />
