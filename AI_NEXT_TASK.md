@@ -1,5 +1,9 @@
 # Next checkpoint
 
+## Current user-directed Unity migration (2026-10-23)
+
+Owner explicitly requested starting the WebView → Unity migration in this conversation. First milestone lives in `unity/CharacterStudio`; see its README. Human FBX + 23 morphs, URP preview, body controls and lossless appearance JSON draft bridge are prepared. Unity Editor is absent here: do not claim C# compilation, Unity rendering/tests or native builds passed. Next: open in Unity 6000.0.23f1, run EditMode tests, inspect both genders and camera, then target Windows/Android QA. Other races, face/hair/clothing and live sheet/cloud integration remain unported. Existing gameplay queue below is preserved; no stable release authorized by this milestone.
+
 1. Read this file, AI_PROGRESS.md, AI_BLOCKERS.md, AGENTS.md; fetch origin/main without resetting local work. Inspect divergence and unpushed artifacts/branches before edits.
 2. Read live Issue #9 and last Actions conclusions. Use targeted PROJECT_ATLAS lookup, then actual source. Do not reread megabyte guides wholesale.
 3. Highest gameplay priority: complete Предсказатель; canonical subclasses Шулер, Оракул, Ткач Судьбы. Current effect implementation is 76/78, not a complete class. Locate the 2 unfinished effects in `docs/PREDICTOR_APPROVED_CARD_STATUS.md`. Implement a small coherent batch with real combat/inventory/UI integrations and transactional/no-double-spend tests. Never substitute a descriptive success for an effect.

@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 4e77af99eec8. Git содержит 1354 файлов.
+Снимок кода 4d548ffbb29f. Git содержит 1354 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -39,7 +39,7 @@
 | №0018 .github/workflows/unified-release.yml | 14076 B | автоматизация GitHub Actions: unified release |
 | №0019 .github/workflows/unpack-project.yml | 2987 B | автоматизация GitHub Actions: unpack project |
 | №0020 .github/workflows/validate-imported-glb.yml | 2317 B | автоматизация GitHub Actions: validate imported glb |
-| №0021 .gitignore | 81 B | вспомогательный файл: .gitignore |
+| №0021 .gitignore | 352 B | вспомогательный файл: .gitignore |
 | №0022 00_AI_PROJECT_GUIDE.md | 1108812 B | существующее руководство ИИ, не перезаписывать |
 | №0023 01_plansforproject.md | 62054 B | план целей и критериев выполнения |
 | №0024 1790622696215.png | 1202179 B | текстура/изображение: 1790622696215 |
@@ -49,9 +49,9 @@
 | №0028 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0029 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0030 AGENTS.md | 4903 B | документация или отчёт: AGENTS |
-| №0031 AI_BLOCKERS.md | 3041 B | документация или отчёт: AI BLOCKERS |
-| №0032 AI_NEXT_TASK.md | 3887 B | документация или отчёт: AI NEXT TASK |
-| №0033 AI_PROGRESS.md | 24739 B | документация или отчёт: AI PROGRESS |
+| №0031 AI_BLOCKERS.md | 3416 B | документация или отчёт: AI BLOCKERS |
+| №0032 AI_NEXT_TASK.md | 4602 B | документация или отчёт: AI NEXT TASK |
+| №0033 AI_PROGRESS.md | 26524 B | документация или отчёт: AI PROGRESS |
 | №0034 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0035 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0036 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1259,7 +1259,7 @@
 | №1238 tests/test_v755_update_scene.js | 3625 B | автотест: test v755 update scene |
 | №1239 tests/update_ota_flow_test.js | 9661 B | автотест: update ota flow test |
 | №1240 tools/ai_automation.cjs | 2383 B | скрипт разработчика: ai automation |
-| №1241 tools/ai_checks.cjs | 1068 B | скрипт разработчика: ai checks |
+| №1241 tools/ai_checks.cjs | 1118 B | скрипт разработчика: ai checks |
 | №1242 tools/ai_finalize.cjs | 2199 B | скрипт разработчика: ai finalize |
 | №1243 tools/audit_adult_body_assets.py | 5868 B | скрипт разработчика: audit adult body assets |
 | №1244 tools/build_character_editor_morphs.js | 4493 B | скрипт разработчика: build character editor morphs |

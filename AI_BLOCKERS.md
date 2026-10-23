@@ -11,3 +11,5 @@
 
 - Mage/Devil rules are now explicitly approved; not blocked on owner clarification. Implementation remains: 35 current Mage catalogue entries, missing base-catalogue entries/audit and event/world execution; Devil forced turn, class-modifier/source/slot/movement audit. Mage partial execution is labelled; Devil planner always reports forcedExecutionReady=false.
 - Only Mage reaction timing remains a new design question: approved card action versus native reaction event. Two alternatives submitted; no answer yet. Non-reaction implementation is independent and should continue.
+
+- **Unity migration (2026-10-23):** Unity Editor is not installed in this execution environment. Blender export/reimport and source contracts can be checked here; C# compilation, URP rendering, Unity EditMode tests, player builds and device QA require Unity. Initial project: `unity/CharacterStudio`. Do not equate syntax parsing or Blender validation with Unity execution.

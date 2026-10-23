@@ -1,0 +1,6 @@
+{
+  "name": "DndVtt.CharacterStudio.Tests",
+  "references": ["DndVtt.CharacterStudio", "DndVtt.CharacterStudio.Editor", "Unity.Newtonsoft.Json"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"]
+}

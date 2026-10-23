@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "com.unity.render-pipelines.universal": "17.0.3",
+    "com.unity.nuget.newtonsoft-json": "3.2.1",
+    "com.unity.test-framework": "1.4.5",
+    "com.unity.modules.imgui": "1.0.0",
+    "com.unity.modules.jsonserialize": "1.0.0",
+    "com.unity.modules.physics": "1.0.0",
+    "com.unity.modules.animation": "1.0.0",
+    "com.unity.modules.inputlegacy": "1.0.0",
+    "com.unity.modules.textrendering": "1.0.0"
+  }
+}

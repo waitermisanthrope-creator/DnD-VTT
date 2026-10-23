@@ -3,3 +3,15 @@ node_modules/
 desktop/web/
 dist/
 *.log
+
+# Unity generated workspace; source assets and their .meta files stay versioned.
+unity/**/[Ll]ibrary/
+unity/**/[Tt]emp/
+unity/**/[Oo]bj/
+unity/**/[Ll]ogs/
+unity/**/[Uu]ser[Ss]ettings/
+unity/**/[Bb]uild/
+unity/**/[Bb]uilds/
+unity/**/*.csproj
+unity/**/*.sln
+unity/**/.vs/

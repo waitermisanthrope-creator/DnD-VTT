@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 4e77af99eec8. Файлов: 1354
+Коммит 4d548ffbb29f. Файлов: 1354
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -34,7 +34,7 @@
 0018. .github/workflows/unified-release.yml — автоматизация GitHub Actions: unified release (14076 B)
 0019. .github/workflows/unpack-project.yml — автоматизация GitHub Actions: unpack project (2987 B)
 0020. .github/workflows/validate-imported-glb.yml — автоматизация GitHub Actions: validate imported glb (2317 B)
-0021. .gitignore — вспомогательный файл: .gitignore (81 B)
+0021. .gitignore — вспомогательный файл: .gitignore (352 B)
 0022. 00_AI_PROJECT_GUIDE.md — существующее руководство ИИ, не перезаписывать (1108812 B)
 0023. 01_plansforproject.md — план целей и критериев выполнения (62054 B)
 0024. 1790622696215.png — текстура/изображение: 1790622696215 (1202179 B)
@@ -44,9 +44,9 @@
 0028. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0029. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0030. AGENTS.md — документация или отчёт: AGENTS (4903 B)
-0031. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (3041 B)
-0032. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (3887 B)
-0033. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (24739 B)
+0031. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (3416 B)
+0032. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (4602 B)
+0033. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (26524 B)
 0034. android/.gitignore — Android компонент: .gitignore (44 B)
 0035. android/app/build.gradle — Android компонент: build (4122 B)
 0036. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1254,7 +1254,7 @@
 1238. tests/test_v755_update_scene.js — автотест: test v755 update scene (3625 B)
 1239. tests/update_ota_flow_test.js — автотест: update ota flow test (9661 B)
 1240. tools/ai_automation.cjs — скрипт разработчика: ai automation (2383 B)
-1241. tools/ai_checks.cjs — скрипт разработчика: ai checks (1068 B)
+1241. tools/ai_checks.cjs — скрипт разработчика: ai checks (1118 B)
 1242. tools/ai_finalize.cjs — скрипт разработчика: ai finalize (2199 B)
 1243. tools/audit_adult_body_assets.py — скрипт разработчика: audit adult body assets (5868 B)
 1244. tools/build_character_editor_morphs.js — скрипт разработчика: build character editor morphs (4493 B)

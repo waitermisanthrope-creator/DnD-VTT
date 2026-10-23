@@ -1,0 +1,5 @@
+{
+  "name": "DndVtt.CharacterStudio",
+  "rootNamespace": "DndVtt.CharacterStudio",
+  "references": ["Unity.Newtonsoft.Json"]
+}

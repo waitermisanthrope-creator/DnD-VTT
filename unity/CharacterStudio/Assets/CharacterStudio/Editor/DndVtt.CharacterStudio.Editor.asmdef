@@ -1,0 +1,6 @@
+{
+  "name": "DndVtt.CharacterStudio.Editor",
+  "rootNamespace": "DndVtt.CharacterStudio.Editor",
+  "references": ["DndVtt.CharacterStudio", "Unity.RenderPipelines.Universal.Runtime", "Unity.RenderPipelines.Core.Runtime"],
+  "includePlatforms": ["Editor"]
+}
