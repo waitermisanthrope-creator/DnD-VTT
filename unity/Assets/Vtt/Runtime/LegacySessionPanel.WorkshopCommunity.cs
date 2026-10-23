@@ -31,7 +31,7 @@ namespace DndVtt.UnityPrototype
             try {
                 if(actor!=null)yield return CloudToken(t=>token=t);
                 if(generation!=contentHeartsGeneration||actor!=WorkshopActor)yield break;
-                if(actor!=null&&token==null) { contentHeartsNotice="Войдите снова, чтобы загрузить избранное.";contentCommunity.Invalidate();contentViewDirty=true;yield break; }
+                if(actor!=null&&token==null) { contentHeartsNotice="Не удалось подтвердить вход. Проверьте связь или войдите снова.";contentCommunity.Invalidate();contentViewDirty=true;yield break; }
                 var ids=contentPackages.Concat(assetPacks).OfType<JObject>().Select(m=>(string)m["id"]).Distinct().ToArray();
                 var items=new JArray();bool failed=false;
                 for(int offset=0;offset<ids.Length;offset+=200) {
@@ -39,7 +39,7 @@ namespace DndVtt.UnityPrototype
                         if(generation!=contentHeartsGeneration||actor!=WorkshopActor)return;
                         if((bool?)r["authenticated"]!=(actor!=null)||!(r["items"] is JArray rows))throw new FormatException();
                         foreach(var row in rows)items.Add(row.DeepClone());
-                    },e=>{if(generation==contentHeartsGeneration) { failed=true;contentHeartsNotice="Рейтинг недоступен. Проверьте подключение; серверу требуется миграция мастерской."; }});
+                    },e=>{if(generation==contentHeartsGeneration) { failed=true;contentHeartsNotice="Рейтинг пока недоступен. Проверьте соединение и повторите обновление."; }});
                     if(generation!=contentHeartsGeneration||actor!=WorkshopActor)yield break;
                     if(failed) { contentCommunity.Invalidate();contentViewDirty=true;yield break; }
                 }
@@ -56,7 +56,7 @@ namespace DndVtt.UnityPrototype
             try {
                 yield return CloudToken(t=>token=t);
                 if(generation!=contentHeartsGeneration||actor!=WorkshopActor)yield break;
-                if(token==null) {contentCommunity.Invalidate();contentViewDirty=true;contentHeartsNotice="Сессия истекла. Войдите снова и обновите рейтинг.";yield break;}
+                if(token==null) {contentCommunity.Invalidate();contentViewDirty=true;contentHeartsNotice="Не удалось подтвердить вход. Проверьте связь или войдите снова и обновите рейтинг.";yield break;}
                 yield return CloudRequest("/rest/v1/rpc/set_workshop_heart",new JObject { ["p_id"]=id,["p_hearted"]=desired },token,r=>{
                     if(generation!=contentHeartsGeneration||actor!=WorkshopActor)return;
                     if((string)r["id"]!=id||(bool?)r["hearted"]!=desired)throw new FormatException();

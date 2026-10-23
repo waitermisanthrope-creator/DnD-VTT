@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 75d94572207a. Git содержит 2032 файлов.
+Снимок кода c9d81a867b2c. Git содержит 2032 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1886,7 +1886,7 @@
 | №1865 unity/Assets/Vtt/Runtime/LegacySessionPanel.Touch.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Touch.cs |
 | №1866 unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs | 13243 B | вспомогательный файл: LegacySessionPanel.Updates |
 | №1867 unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Updates.cs |
-| №1868 unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopCommunity.cs | 7940 B | вспомогательный файл: LegacySessionPanel.WorkshopCommunity |
+| №1868 unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopCommunity.cs | 8018 B | вспомогательный файл: LegacySessionPanel.WorkshopCommunity |
 | №1869 unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopCommunity.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.WorkshopCommunity.cs |
 | №1870 unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopLibrary.cs | 2534 B | вспомогательный файл: LegacySessionPanel.WorkshopLibrary |
 | №1871 unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopLibrary.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.WorkshopLibrary.cs |

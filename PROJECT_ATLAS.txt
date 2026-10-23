@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 75d94572207a. Файлов: 2032
+Коммит c9d81a867b2c. Файлов: 2032
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1881,7 +1881,7 @@
 1865. unity/Assets/Vtt/Runtime/LegacySessionPanel.Touch.cs.meta — вспомогательный файл: LegacySessionPanel.Touch.cs (60 B)
 1866. unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs — вспомогательный файл: LegacySessionPanel.Updates (13243 B)
 1867. unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs.meta — вспомогательный файл: LegacySessionPanel.Updates.cs (60 B)
-1868. unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopCommunity.cs — вспомогательный файл: LegacySessionPanel.WorkshopCommunity (7940 B)
+1868. unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopCommunity.cs — вспомогательный файл: LegacySessionPanel.WorkshopCommunity (8018 B)
 1869. unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopCommunity.cs.meta — вспомогательный файл: LegacySessionPanel.WorkshopCommunity.cs (60 B)
 1870. unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopLibrary.cs — вспомогательный файл: LegacySessionPanel.WorkshopLibrary (2534 B)
 1871. unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopLibrary.cs.meta — вспомогательный файл: LegacySessionPanel.WorkshopLibrary.cs (60 B)
