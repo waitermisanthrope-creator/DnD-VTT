@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 27b38cef95eb. Git содержит 1989 файлов.
+Снимок кода 7ae9274f21a0. Git содержит 1989 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 7025 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 49540 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 72357 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 110903 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 50066 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 72883 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 111429 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1828,7 +1828,7 @@
 | №1807 unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Chat.cs |
 | №1808 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs | 18536 B | вспомогательный файл: LegacySessionPanel.Commerce |
 | №1809 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Commerce.cs |
-| №1810 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs | 21081 B | вспомогательный файл: LegacySessionPanel.ContentManager |
+| №1810 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs | 21129 B | вспомогательный файл: LegacySessionPanel.ContentManager |
 | №1811 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.ContentManager.cs |
 | №1812 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs | 6755 B | вспомогательный файл: LegacySessionPanel.ContentPreviews |
 | №1813 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.ContentPreviews.cs |

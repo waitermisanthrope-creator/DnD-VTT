@@ -42,8 +42,8 @@ namespace DndVtt.UnityPrototype
             var collectionParts=WorkshopStore.CollectionParts(all);
             var eligible=all.Where(m=>(!contentCollectionsPage || (string)m["collectionRole"]=="category")&&(contentShowParts || !collectionParts.Contains((string)m["id"]))&&(!installedOnly||contentInstalled.ContainsKey((string)m["id"]))&&(contentCategory==0||(string)m["type"]==ContentTypes[contentCategory]||ContentTypes[contentCategory]=="item"&&(string)m["type"]=="collection")&&
                 (m["name"]+" "+m["id"]+" "+m["author"]+" "+WorkshopStore.CategoryPath(m)).IndexOf(contentSearch,StringComparison.OrdinalIgnoreCase)>=0)
-                .OrderBy(m=>(string)m["collectionRole"]=="category"?0:1)
-                .ThenBy(m=>(string)m["collectionRole"]=="category"?Array.IndexOf(new[]{"weapons","armor","materials","consumables","junk"},(string)m["inventoryCategory"]):0).ToList();
+                .OrderBy(m=>contentCollectionsPage&&(string)m["collectionRole"]=="category"?0:1)
+                .ThenBy(m=>contentCollectionsPage&&(string)m["collectionRole"]=="category"?Array.IndexOf(new[]{"weapons","armor","materials","consumables","junk"},(string)m["inventoryCategory"]):0).ToList();
             string prefix=contentGroupPath==""?"":contentGroupPath+"/";
             contentView=eligible.Where(m=>contentGroupPath==""||WorkshopStore.CategoryPath(m)==contentGroupPath||WorkshopStore.CategoryPath(m).StartsWith(prefix,StringComparison.Ordinal)).ToList();
             contentTreeCounts.Clear();

@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 27b38cef95eb. Файлов: 1989
+Коммит 7ae9274f21a0. Файлов: 1989
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,9 +56,9 @@
 0040. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (7025 B)
-0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (49540 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (72357 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (110903 B)
+0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (50066 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (72883 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (111429 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1823,7 +1823,7 @@
 1807. unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs.meta — вспомогательный файл: LegacySessionPanel.Chat.cs (60 B)
 1808. unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs — вспомогательный файл: LegacySessionPanel.Commerce (18536 B)
 1809. unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs.meta — вспомогательный файл: LegacySessionPanel.Commerce.cs (60 B)
-1810. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs — вспомогательный файл: LegacySessionPanel.ContentManager (21081 B)
+1810. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs — вспомогательный файл: LegacySessionPanel.ContentManager (21129 B)
 1811. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs.meta — вспомогательный файл: LegacySessionPanel.ContentManager.cs (60 B)
 1812. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs — вспомогательный файл: LegacySessionPanel.ContentPreviews (6755 B)
 1813. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs.meta — вспомогательный файл: LegacySessionPanel.ContentPreviews.cs (60 B)

@@ -1,3 +1,7 @@
+# [ИСПРАВЛЕНИЕ КАНДИДАТА35] 2026-10-23
+
+Candidate39996524739 failed native workshop pagination: pinned installed roots sorted ahead of synthetic ordinary-page records. Fixed sorting to apply only on dedicated Collections page; ordinary page retains stable catalog order. No APK35/release/feed published. Actual native dice972 throws and existing input/appearance tests passed before pagination failure; collection native test not reached. Rebuild required; do not describe failed candidate as successful.
+
 # [В РАБОТЕ] Сборники модов / Unity1.00.35, 2026-10-23
 
 Owner requested five one-click workshop collections on a separate page «Сборники модов», shown first. Content payloads and live v3 published/HTTP-verified: c01daff, 293 entries, old286 unchanged, 6729 existing IDs/103modules. Runtime collection dependency planner, resumable downloads, default dedicated page + ordinary add-ons page implemented. Local CollectionChecks136 / full C#5834 / registry contract / ten release unit tests PASS. Source27b38cef95eb73d94c02f6171aa0d7c14a784b5e pushed to experiment/unity-vtt; actual candidate39996524739 Android120561364917 in progress, Windows/upgrade follow. Native Android/Windows not yet verified/published; public app remains34. Next: verify candidate35, gated paired release, public artifacts/feed. Report docs/unity-account/WORKSHOP_COLLECTIONS_1.00.35.md. Preserve all prior dice work; no main WebView/MMO changes.
