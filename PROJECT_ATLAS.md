@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 7ae9274f21a0. Git содержит 1989 файлов.
+Снимок кода 09bc90b20643. Git содержит 1989 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 7025 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 50066 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 72883 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 111429 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 50408 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 73225 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 111771 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1767,7 +1767,7 @@
 | №1746 unity/Assets/Vtt/Resources/Branding/Splash19.png.meta | 312 B | вспомогательный файл: Splash19.png |
 | №1747 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg | 212684 B | текстура/изображение: Wallpaper16 |
 | №1748 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta | 312 B | вспомогательный файл: Wallpaper16.jpg |
-| №1749 unity/Assets/Vtt/Resources/Changelog.json | 40864 B | данные/конфигурация: Changelog |
+| №1749 unity/Assets/Vtt/Resources/Changelog.json | 41845 B | данные/конфигурация: Changelog |
 | №1750 unity/Assets/Vtt/Resources/Changelog.json.meta | 158 B | вспомогательный файл: Changelog.json |
 | №1751 unity/Assets/Vtt/Resources/CharacterSheet.meta | 172 B | вспомогательный файл: CharacterSheet |
 | №1752 unity/Assets/Vtt/Resources/CharacterSheet/catalog.json | 823381 B | данные/конфигурация: catalog |
@@ -15925,6 +15925,7 @@
 - unity/Assets/LegacyContent/Source/wall_white_plaster.png ; wall_white_plaster.png
 - unity/Assets/LegacyContent/Source/wall_wood_dark.png ; wall_wood_dark.png
 - unity/Assets/LegacyContent/Source/wall_wood_light.png ; wall_wood_light.png
+- unity/Assets/Vtt/Resources/Changelog.json ; updates/unity-changelog.json
 
 ## Обновление индекса
 

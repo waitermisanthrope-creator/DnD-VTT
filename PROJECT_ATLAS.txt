@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 7ae9274f21a0. Файлов: 1989
+Коммит 09bc90b20643. Файлов: 1989
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,9 +56,9 @@
 0040. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (7025 B)
-0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (50066 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (72883 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (111429 B)
+0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (50408 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (73225 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (111771 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1762,7 +1762,7 @@
 1746. unity/Assets/Vtt/Resources/Branding/Splash19.png.meta — вспомогательный файл: Splash19.png (312 B)
 1747. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg — текстура/изображение: Wallpaper16 (212684 B)
 1748. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta — вспомогательный файл: Wallpaper16.jpg (312 B)
-1749. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (40864 B)
+1749. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (41845 B)
 1750. unity/Assets/Vtt/Resources/Changelog.json.meta — вспомогательный файл: Changelog.json (158 B)
 1751. unity/Assets/Vtt/Resources/CharacterSheet.meta — вспомогательный файл: CharacterSheet (172 B)
 1752. unity/Assets/Vtt/Resources/CharacterSheet/catalog.json — данные/конфигурация: catalog (823381 B)
@@ -15889,6 +15889,7 @@ unity/Assets/LegacyContent/Source/wall_wallpaper.png ; wall_wallpaper.png
 unity/Assets/LegacyContent/Source/wall_white_plaster.png ; wall_white_plaster.png
 unity/Assets/LegacyContent/Source/wall_wood_dark.png ; wall_wood_dark.png
 unity/Assets/LegacyContent/Source/wall_wood_light.png ; wall_wood_light.png
+unity/Assets/Vtt/Resources/Changelog.json ; updates/unity-changelog.json
 
 Обновление: node tools/generate_project_atlas.cjs
 

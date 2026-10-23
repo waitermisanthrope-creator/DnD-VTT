@@ -1,3 +1,7 @@
+# [ПОВТОР КАНДИДАТА35] 2026-10-23
+
+Second run39998393016 stopped at update contract before build because online35 notes lacked bundled Resources/Changelog.json copy. Synchronized both; update/brand/registry contracts PASS locally. Pagination fix09bc90b2 retained, next native candidate required. No35 binaries/feed activated.
+
 # [ИСПРАВЛЕНИЕ КАНДИДАТА35] 2026-10-23
 
 Candidate39996524739 failed native workshop pagination: pinned installed roots sorted ahead of synthetic ordinary-page records. Fixed sorting to apply only on dedicated Collections page; ordinary page retains stable catalog order. No APK35/release/feed published. Actual native dice972 throws and existing input/appearance tests passed before pagination failure; collection native test not reached. Rebuild required; do not describe failed candidate as successful.
