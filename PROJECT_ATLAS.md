@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 7ea393439862. Git содержит 1987 файлов.
+Снимок кода 5ab3624b5e2c. Git содержит 1987 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1091,7 +1091,7 @@
 | №1070 docs/unity-account/DICE_CONTACT_1.00.31.md | 9409 B | документация или отчёт: DICE CONTACT 1.00.31 |
 | №1071 docs/unity-account/DICE_CONTACT_1.00.32.md | 14224 B | документация или отчёт: DICE CONTACT 1.00.32 |
 | №1072 docs/unity-account/DICE_DECAY_1.00.33.md | 4433 B | документация или отчёт: DICE DECAY 1.00.33 |
-| №1073 docs/unity-account/DICE_DECAY_1.00.34.md | 9415 B | документация или отчёт: DICE DECAY 1.00.34 |
+| №1073 docs/unity-account/DICE_DECAY_1.00.34.md | 9464 B | документация или отчёт: DICE DECAY 1.00.34 |
 | №1074 docs/unity-account/DICE_MATERIALS_1.00.28.md | 3463 B | документация или отчёт: DICE MATERIALS 1.00.28 |
 | №1075 docs/unity-account/DICE_SIX_1.00.29.md | 5386 B | документация или отчёт: DICE SIX 1.00.29 |
 | №1076 docs/unity-account/DICE_SIX_1.00.30.md | 8993 B | документация или отчёт: DICE SIX 1.00.30 |
