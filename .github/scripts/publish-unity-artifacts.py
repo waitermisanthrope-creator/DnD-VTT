@@ -131,7 +131,7 @@ def publish_verified(files, manifest, expected_cert, source_commit=None, build_r
             if not blob.startswith(b"\x89PNG\r\n\x1a\n") or struct.unpack(">II",blob[16:24])!=(768,640):raise ValueError("Invalid native render evidence")
             evidence.append(dict(name=path.name,bytes=len(blob),sha256=hashlib.sha256(blob).hexdigest(),width=768,height=640))
         index=destination/"dice-render-index.json"
-        index.write_text(json.dumps(dict(sourceCommit=source_commit,buildRun=build_run,kind="Unity native rendered d20 preview",images=evidence),indent=2)+"\n")
+        index.write_text(json.dumps(dict(sourceCommit=source_commit,buildRun=build_run,kind="Unity native rendered dice and tray validation",images=evidence),indent=2)+"\n")
         render_digest=hashlib.sha256(index.read_bytes()).hexdigest()
         files.extend(images);files.append(index)
     existing = subprocess.run(["gh", "release", "view", tag, "--repo", REPO, "--json", "isDraft"], capture_output=True, text=True)

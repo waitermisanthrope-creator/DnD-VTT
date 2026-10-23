@@ -164,7 +164,7 @@ namespace DndVtt.UnityPrototype
                 catch(FormatException error) { diceInputError=error.Message; }
             }
             GUI.enabled=enabled;
-            if(diceTable.Throwing&&GUILayout.Button("Отменить бросок",GUILayout.MinHeight(54)))diceTable.Cancel();
+            if(diceTable.Throwing&&GUILayout.Button("Отменить бросок",GUILayout.MinHeight(54))) { diceMotion.Reset();diceTable.Cancel(); }
             if(diceInputError.Length>0)GUILayout.Label(diceInputError,muted);
             GUILayout.Label("До 20 физических кубов одновременно (d100 занимает два места). Общее количество не ограничено: большие броски идут партиями. Результат читается после остановки; движения щупалец и прыжки слайма могут изменить его до фиксации. Фигурные наборы могут быть несбалансированными. Сетевого подтверждения результата нет.",muted);
         }

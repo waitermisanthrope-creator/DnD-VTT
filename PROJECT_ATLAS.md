@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода efe29a648548. Git содержит 1983 файлов.
+Снимок кода c8927281066d. Git содержит 1983 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -23,7 +23,7 @@
 | №0002 .github/ai-control.json | 255 B | данные/конфигурация: ai control |
 | №0003 .github/prompts/autonomous-development.md | 1259 B | документация или отчёт: autonomous development |
 | №0004 .github/scripts/.gitignore | 14 B | вспомогательный файл: .gitignore |
-| №0005 .github/scripts/publish-unity-artifacts.py | 12451 B | вспомогательный файл: publish unity artifacts |
+| №0005 .github/scripts/publish-unity-artifacts.py | 12464 B | вспомогательный файл: publish unity artifacts |
 | №0006 .github/scripts/test_unity_render_review.py | 964 B | вспомогательный файл: test unity render review |
 | №0007 .github/scripts/test-publish-unity-artifacts.py | 3695 B | вспомогательный файл: test publish unity artifacts |
 | №0008 .github/workflows/android-debug.yml | 4175 B | автоматизация GitHub Actions: android debug |
@@ -1829,7 +1829,7 @@
 | №1808 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.ContentPreviews.cs |
 | №1809 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs | 8977 B | вспомогательный файл: LegacySessionPanel |
 | №1810 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.cs |
-| №1811 unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs | 12684 B | вспомогательный файл: LegacySessionPanel.Dice |
+| №1811 unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs | 12708 B | вспомогательный файл: LegacySessionPanel.Dice |
 | №1812 unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Dice.cs |
 | №1813 unity/Assets/Vtt/Runtime/LegacySessionPanel.DiceControls.cs | 3513 B | вспомогательный файл: LegacySessionPanel.DiceControls |
 | №1814 unity/Assets/Vtt/Runtime/LegacySessionPanel.DiceControls.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.DiceControls.cs |
@@ -1900,7 +1900,7 @@
 | №1879 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
 | №1880 unity/ci/workshop-tests/AccountGestureChecks.cs | 5460 B | вспомогательный файл: AccountGestureChecks |
 | №1881 unity/ci/workshop-tests/CommerceChecks.cs | 4247 B | вспомогательный файл: CommerceChecks |
-| №1882 unity/ci/workshop-tests/Program.cs | 30218 B | вспомогательный файл: Program |
+| №1882 unity/ci/workshop-tests/Program.cs | 30643 B | вспомогательный файл: Program |
 | №1883 unity/ci/workshop-tests/WorkshopTests.csproj | 1505 B | вспомогательный файл: WorkshopTests |
 | №1884 unity/ContentSources~/catalog.full.json | 1259265 B | данные/конфигурация: catalog.full |
 | №1885 unity/ContentSources~/cloud-copy-contracts.json | 3613 B | данные/конфигурация: cloud copy contracts |

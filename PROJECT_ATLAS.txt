@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит efe29a648548. Файлов: 1983
+Коммит c8927281066d. Файлов: 1983
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -18,7 +18,7 @@
 0002. .github/ai-control.json — данные/конфигурация: ai control (255 B)
 0003. .github/prompts/autonomous-development.md — документация или отчёт: autonomous development (1259 B)
 0004. .github/scripts/.gitignore — вспомогательный файл: .gitignore (14 B)
-0005. .github/scripts/publish-unity-artifacts.py — вспомогательный файл: publish unity artifacts (12451 B)
+0005. .github/scripts/publish-unity-artifacts.py — вспомогательный файл: publish unity artifacts (12464 B)
 0006. .github/scripts/test_unity_render_review.py — вспомогательный файл: test unity render review (964 B)
 0007. .github/scripts/test-publish-unity-artifacts.py — вспомогательный файл: test publish unity artifacts (3695 B)
 0008. .github/workflows/android-debug.yml — автоматизация GitHub Actions: android debug (4175 B)
@@ -1824,7 +1824,7 @@
 1808. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs.meta — вспомогательный файл: LegacySessionPanel.ContentPreviews.cs (60 B)
 1809. unity/Assets/Vtt/Runtime/LegacySessionPanel.cs — вспомогательный файл: LegacySessionPanel (8977 B)
 1810. unity/Assets/Vtt/Runtime/LegacySessionPanel.cs.meta — вспомогательный файл: LegacySessionPanel.cs (59 B)
-1811. unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs — вспомогательный файл: LegacySessionPanel.Dice (12684 B)
+1811. unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs — вспомогательный файл: LegacySessionPanel.Dice (12708 B)
 1812. unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs.meta — вспомогательный файл: LegacySessionPanel.Dice.cs (60 B)
 1813. unity/Assets/Vtt/Runtime/LegacySessionPanel.DiceControls.cs — вспомогательный файл: LegacySessionPanel.DiceControls (3513 B)
 1814. unity/Assets/Vtt/Runtime/LegacySessionPanel.DiceControls.cs.meta — вспомогательный файл: LegacySessionPanel.DiceControls.cs (60 B)
@@ -1895,7 +1895,7 @@
 1879. unity/ci/workshop-tests/.gitignore — вспомогательный файл: .gitignore (10 B)
 1880. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (5460 B)
 1881. unity/ci/workshop-tests/CommerceChecks.cs — вспомогательный файл: CommerceChecks (4247 B)
-1882. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (30218 B)
+1882. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (30643 B)
 1883. unity/ci/workshop-tests/WorkshopTests.csproj — вспомогательный файл: WorkshopTests (1505 B)
 1884. unity/ContentSources~/catalog.full.json — данные/конфигурация: catalog.full (1259265 B)
 1885. unity/ContentSources~/cloud-copy-contracts.json — данные/конфигурация: cloud copy contracts (3613 B)

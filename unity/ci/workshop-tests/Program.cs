@@ -51,6 +51,11 @@ class Program
             }
             float gentle=Gesture(1.4f),strong=Gesture(4);
             Check(strong>gentle&&strong<=1&&gentle>0,"shake amplitude changes bounded launch strength");
+            var cancelledGesture=new DiceMotion();cancelledGesture.Sample(0,-1,0,1f/60);
+            for(int i=0;i<72;i++)cancelledGesture.Sample((float)Math.Sin(i*.65)*4,-1,0,1f/60);
+            cancelledGesture.Reset();int staleReleases=0;
+            for(int i=0;i<180;i++)if(cancelledGesture.Sample(0,-1,0,1f/60))staleReleases++;
+            Check(staleReleases==0,"cancel/focus reset discards a pending shake release");
             motion.Reset();Check(!motion.Sample(float.NaN,0,0,.1f),"invalid sensor sample ignored");
             string source = args.Length > 0 ? args[0] : "/workspace";
             string appRoot = args.Length > 1 ? args[1] : Directory.GetCurrentDirectory();
