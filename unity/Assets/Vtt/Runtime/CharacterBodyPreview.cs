@@ -76,7 +76,11 @@ namespace DndVtt.UnityPrototype
             }
             FindMorph("human-female");
             baked = new Mesh { name = "Human preview", indexFormat = IndexFormat.UInt32 };
-            baked.vertices = rest; baked.triangles = source.sharedMesh.triangles; baked.uv = source.sharedMesh.uv;
+            var triangles = source.sharedMesh.triangles;
+            if (meshToPreview.determinant < 0)
+                for (int i = 0; i < triangles.Length; i += 3)
+                { int swap = triangles[i + 1]; triangles[i + 1] = triangles[i + 2]; triangles[i + 2] = swap; }
+            baked.vertices = rest; baked.triangles = triangles; baked.uv = source.sharedMesh.uv;
             baked.RecalculateBounds();
             bottomMesh = new Mesh { name = "Preview shorts", indexFormat = IndexFormat.UInt32 };
             topMesh = new Mesh { name = "Preview top", indexFormat = IndexFormat.UInt32 };
@@ -136,7 +140,7 @@ namespace DndVtt.UnityPrototype
             foreach (var p in rest) restBounds.Encapsulate(p);
             float floor = restBounds.min.y, height = restBounds.size.y;
             var shorts = new List<int>(); var chest = new List<int>();
-            int[] triangles = source.sharedMesh.triangles;
+            int[] triangles = baked.triangles;
             for (int i = 0; i < triangles.Length; i += 3)
             {
                 int a = triangles[i], b = triangles[i + 1], c = triangles[i + 2];
