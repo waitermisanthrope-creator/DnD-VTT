@@ -1,3 +1,7 @@
+# [КАНДИДАТ36] Все15 сборников / 2026-10-23
+
+Runtime source3428d7c188e00d2a8fc17dee676aac931bb41675 pushed. Actual candidate40008853150, Android120603890967 in progress; Windows/real upgrade jobs follow. Local complete C#6905 checks and991 all-mod collection checks PASS after shared map-material dependency revision; update/brand/registry contracts and10 release tests PASS. All397 original mods grouped, old293 Content/111 Assets entries unchanged; actual live13 new payloads and both catalogs HTTP/hash verified (Content e95cd54, Assets f27b955). App36 not published yet, feed35 intact. Next all3candidate jobs SUCCESS → existing paired gated publisher → verify both real public installers/plain/cache-busted feed/provenance → update final delivery notes. No physical phone QA, main WebView/MMO/DB/dice-physics changes. Report docs/unity-account/ALL_MOD_COLLECTIONS_1.00.36.md. Preserve history below.
+
 # [ОБЩИЕ РЕСУРСЫ КАРТ] Unity36, 2026-10-23
 
 Map collection1.0.1 now includes9 maps plus shared dnd.appearance.map-surfaces; original1.0.0 preserved. Shared-resource tests now991 PASS on both platforms, all397 leaf modules still installed only once/417 active records total. Content e95cd54 tools/docs, Assets f27b955 live index; public payload hashes verified before activation. Full local suite rerunning after enhanced shared-dependency checks (prior6881 PASS). Previous candidate source42a90c2c superseded; only a subsequent fully successful source may be released.
