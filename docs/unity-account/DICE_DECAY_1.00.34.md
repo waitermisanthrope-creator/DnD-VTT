@@ -25,3 +25,7 @@ Local34:4398C# checks,3structural contracts and2render-approval boundary tests P
 ## First34 native trial — FAILED, unpublished
 
 Trial39950834653/job120404589859 failed on the d8 camera-edge control after600Abyss/13natural slime/energy checks passed unchanged. The synthetic fixture used a commony.55/z-4.4 for different bounding extents; some solids overlapped wall/floor and did not guarantee the asserted occlusion. Correct placement derives minY=.02/minZ=-4.95 from each actual renderer bounding box. Strict visibility/collider/pose/restore requirements remain. Runtime probes also include face centers/interior (27samples), since8corner rays alone can miss an occluder covering a face interior. No34 APK was created or published. Retry the same unpublished34; feed remains32.
+
+## Corrected34 Android native checkpoint
+
+Actual source24b2a4773e3951ea9192d9663596f26338936254/candidate39952385083. Android120409754850 SUCCESS:4398C#/12Python+2review/3contracts/133SQLWASM (not live Supabase), all972actual logical PhysX throws/60topology/420UV/32glyph/6opaque controls and all seven edge-visibility/collider/pose/restore checks PASS.600Abyss histogram,13natural slime impacts and energy trace repeat33 exactly; not additional independent random samples. Signed APK42520566bytes(+4096vs32) CI SHAbdae0690a48da627e6294edc67514622e2855c78c82bd3facf9bb16447b89464. Windows120415371535 building. Public images, APK independent signature check, actual Windows upgrade/reinstall and feed activation still pending.
