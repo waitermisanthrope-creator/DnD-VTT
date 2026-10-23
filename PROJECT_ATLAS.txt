@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит c8927281066d. Файлов: 1983
+Коммит d3f71068f3ae. Файлов: 1983
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,9 +56,9 @@
 0040. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (7007 B)
-0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (33125 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (55942 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (94488 B)
+0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (34911 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (57728 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (96274 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1093,7 +1093,7 @@
 1077. docs/unity-account/dice-1.00.25-metrics.json — документация или отчёт: dice 1.00.25 metrics (2023 B)
 1078. docs/unity-account/dice-1.00.28-metrics.json — документация или отчёт: dice 1.00.28 metrics (1717 B)
 1079. docs/unity-account/dice-1.00.30-metrics.json — документация или отчёт: dice 1.00.30 metrics (2979 B)
-1080. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (62280 B)
+1080. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (64066 B)
 1081. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7893 B)
 1082. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1083. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
