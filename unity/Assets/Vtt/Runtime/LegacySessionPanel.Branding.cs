@@ -271,9 +271,7 @@ namespace DndVtt.UnityPrototype
             if (GUILayout.Button("☁ Локальный архив • " + (archive?.Count ?? 0) + " героев", brandBlue, GUILayout.Height(45)))
                 Navigate(FrontScreen.Characters);
             GUILayout.BeginHorizontal();
-            bool enabled = GUI.enabled; GUI.enabled = false;
-            GUILayout.Button("3D Персонаж · скоро", brandPurple, GUILayout.Height(53));
-            GUI.enabled = enabled;
+            if (GUILayout.Button("3D Персонаж", brandPurple, GUILayout.Height(53))) OpenCharacterStudio();
             if (GUILayout.Button("3D Карты", brandGold, GUILayout.Height(53))) Navigate(FrontScreen.Map);
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();

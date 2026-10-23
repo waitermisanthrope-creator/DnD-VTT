@@ -25,6 +25,7 @@ namespace DndVtt.UnityPrototype
         {
             if(HasMenuTouch)return;
             var e=Event.current;var point=e.mousePosition;
+            if (CharacterOwnsPointer(new Vector2(point.x, Screen.height - point.y))) return;
             if(e.type==EventType.MouseDown&&e.button==0) { selectingChatText=screen==FrontScreen.Chat&&chatDraftRectValid&&chatDraftRect.Contains(GUIUtility.GUIToScreenPoint(point));if(!selectingChatText)menuGesture.Begin(point.x,point.y); }
             else if(selectingChatText) { if(e.type==EventType.MouseUp)selectingChatText=false;return; }
             else if(e.type==EventType.MouseDrag&&e.button==0)menuGesture.Move(point.x,point.y,e.delta.x,e.delta.y,screen==FrontScreen.Map?1:MenuScale);
@@ -33,6 +34,7 @@ namespace DndVtt.UnityPrototype
         private void Update()
         {
             UpdateDiceTable();
+            if (UpdateCharacterStudio()) { menuGesture.Clear(); return; }
             PollNativeChatEditor();
             var device=Touchscreen.current;if(device==null||!HasMenuTouch)return;
             if(device.touches.Count(t=>t.press.isPressed)>1) { if(menuGesture.End())suppressMenuClickUntil=Time.unscaledTime+.15f;return; }

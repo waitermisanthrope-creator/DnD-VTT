@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "sourceGlbSha256": "3628ff521db93f28a12f7e68bf59961dc48d7a2c1a3d0e82b661dafb9131120b",
+  "sourceSparseSha256": "3750f9c8ff476e43443d74935fb987b305a3029a4ef77c0a358b808f629c658b",
+  "fbxSha256": "448c0028d5f0b91a20efb40f238dcfd6cd9bd4b4f727864116668adf3a70fd20",
+  "triangles": 107024,
+  "bones": 53,
+  "morphNames": [
+    "measure-shoulder-dist-incr",
+    "measure-shoulder-dist-decr",
+    "measure-bust-circ-incr",
+    "measure-bust-circ-decr",
+    "measure-waist-circ-incr",
+    "measure-waist-circ-decr",
+    "measure-hips-circ-incr",
+    "measure-hips-circ-decr",
+    "human-female",
+    "measure-upperarm-circ-incr",
+    "measure-upperarm-circ-decr",
+    "measure-thigh-circ-incr",
+    "measure-thigh-circ-decr",
+    "torso-muscle-pectoral-incr",
+    "torso-muscle-pectoral-decr",
+    "armLength-incr",
+    "armLength-decr",
+    "legLength-incr",
+    "legLength-decr",
+    "head-incr",
+    "head-decr",
+    "breast-volume-incr",
+    "breast-volume-decr"
+  ],
+  "channels": {
+    "shoulders": {
+      "positive": "measure-shoulder-dist-incr",
+      "negative": "measure-shoulder-dist-decr",
+      "scale": 1
+    },
+    "chest": {
+      "positive": "measure-bust-circ-incr",
+      "negative": "measure-bust-circ-decr",
+      "scale": 1
+    },
+    "waist": {
+      "positive": "measure-waist-circ-incr",
+      "negative": "measure-waist-circ-decr",
+      "scale": 1
+    },
+    "hips": {
+      "positive": "measure-hips-circ-incr",
+      "negative": "measure-hips-circ-decr",
+      "scale": 1
+    },
+    "arms": {
+      "positive": "measure-upperarm-circ-incr",
+      "negative": "measure-upperarm-circ-decr",
+      "scale": 1
+    },
+    "legs": {
+      "positive": "measure-thigh-circ-incr",
+      "negative": "measure-thigh-circ-decr",
+      "scale": 1
+    },
+    "pectorals": {
+      "positive": "torso-muscle-pectoral-incr",
+      "negative": "torso-muscle-pectoral-decr",
+      "scale": 0.7
+    },
+    "armLength": {
+      "positive": "armLength-incr",
+      "negative": "armLength-decr",
+      "scale": 0.65
+    },
+    "legLength": {
+      "positive": "legLength-incr",
+      "negative": "legLength-decr",
+      "scale": 0.65
+    },
+    "head": {
+      "positive": "head-incr",
+      "negative": "head-decr",
+      "scale": 0.35
+    },
+    "breastSize": {
+      "positive": "breast-volume-incr",
+      "negative": "breast-volume-decr",
+      "scale": 0.8
+    }
+  },
+  "maxCoordinateRoundTripError": 1.3113021850585938e-06,
+  "validation": "Blender FBX export/reimport: bones, triangles, all shape coordinates, morph names, scale, nonempty female target",
+  "unityValidation": "Not run: Unity Editor unavailable in execution environment"
+}

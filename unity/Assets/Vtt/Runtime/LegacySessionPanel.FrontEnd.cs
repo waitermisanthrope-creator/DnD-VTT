@@ -8,7 +8,7 @@ namespace DndVtt.UnityPrototype
 {
     public sealed partial class LegacySessionPanel
     {
-        private enum FrontScreen { Home, Characters, Create, Sheet, Import, Map, Settings, ContentManager, Account, Chat, Dice }
+        private enum FrontScreen { Home, Characters, Create, Sheet, Import, Map, Settings, ContentManager, Account, Chat, Dice, CharacterStudio }
         private FrontScreen screen = FrontScreen.Home;
         private Vector2 frontScroll;
         private JObject creationCatalog;
@@ -35,6 +35,7 @@ namespace DndVtt.UnityPrototype
         }
         private void Navigate(FrontScreen next)
         {
+            if (screen == FrontScreen.CharacterStudio && next != FrontScreen.CharacterStudio) CloseCharacterStudio();
             if(screen==FrontScreen.ContentManager&&next!=FrontScreen.ContentManager)CloseWorkshopPreviews();
             if(next==FrontScreen.ContentManager&&screen!=FrontScreen.ContentManager) { InitializeWorkshop();BeginWorkshopPreviews();if(!contentCatalogAutoRefreshed&&!contentBusy&&(assetPacks.Count==0||!assetPacks.OfType<Newtonsoft.Json.Linq.JObject>().Any(m=>m["preview"]!=null)||!contentPackages.OfType<Newtonsoft.Json.Linq.JObject>().Any(m=>(string)m["collectionCategory"]=="races")||!assetPacks.OfType<Newtonsoft.Json.Linq.JObject>().Any(m=>(string)m["collectionCategory"]=="icons"))) { contentCatalogAutoRefreshed=true;StartCoroutine(FetchContentCatalog()); } }
             menuGesture.Clear();
@@ -56,6 +57,7 @@ namespace DndVtt.UnityPrototype
             // The main app and settings use the exact main-branch look, but
             // remain native Unity screens. Existing gameplay screens survive.
             if (screen == FrontScreen.Home) { DrawBrandHome(); return; }
+            if (screen == FrontScreen.CharacterStudio) { DrawCharacterStudio(); return; }
             if (screen == FrontScreen.Settings)
             {
                 if (brandTechnicalScreen) DrawTechnicalSettings();

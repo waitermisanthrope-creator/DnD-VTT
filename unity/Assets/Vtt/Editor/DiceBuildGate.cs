@@ -19,6 +19,7 @@ public static class DiceBuildGate
     {
         if(target!="Android"&&target!="Windows")throw new ArgumentException(nameof(target));
         if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Dice gate must start in Edit Mode");
+        CharacterPreviewValidation.Prepare();
         SessionState.SetBool("VttDice.OldOptionsEnabled",EditorSettings.enterPlayModeOptionsEnabled);
         SessionState.SetInt("VttDice.OldOptions",(int)EditorSettings.enterPlayModeOptions);
         EditorSettings.enterPlayModeOptionsEnabled=true;
@@ -50,6 +51,7 @@ public static class DiceBuildGate
     private static void Validate()
     {
         try {
+            CharacterPreviewValidation.Run();
             DiceValidation.Run();
             SessionState.SetFloat(Deadline,(float)EditorApplication.timeSinceStartup+15);
             SessionState.SetString(Phase,"cleanup");
