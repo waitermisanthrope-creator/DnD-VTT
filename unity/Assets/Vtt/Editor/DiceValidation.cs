@@ -234,9 +234,9 @@ public static class DiceValidation
                 Check(actors.All(b=>b.position.y>-1.5f&&b.position.y<2&&Mathf.Abs(b.position.x-12000)<6.5f&&Mathf.Abs(b.position.z-12000)<5.5f),"tray contains all bodies: "+selected.Profile);
                 Debug.Log("VTT_DICE_TRAY20_PASS: "+selected.Profile+" maxY="+actors.Max(b=>b.position.y)+" guides="+table.TowerGuides);
                 if(selected.Profile=="spiral"||selected.Profile=="pit")foreach(string behavior in new[]{"abyss","slime"}) {
-                    var m=experimental.OfType<JObject>().Single(m=>(string)m["version"]=="1.2.1"&&(string)m["imageKind"]=="dice"&&((string)m["id"]=="dnd.dice.icon.01"&&behavior=="abyss"||(string)m["id"]=="dnd.dice.test.slime"&&behavior=="slime"));
-                    string p=Path.Combine(fixture,"packages",Path.GetFileName((string)m["url"]));
-                    table.SetTheme(DiceTheme.Read((JObject)WorkshopStore.ValidateData(m,File.ReadAllText(p))["diceThemes"][0],true));table.Throw("20d20");
+                    var materialManifest=experimental.OfType<JObject>().Single(row=>(string)row["version"]=="1.2.1"&&(string)row["imageKind"]=="dice"&&((string)row["id"]=="dnd.dice.icon.01"&&behavior=="abyss"||(string)row["id"]=="dnd.dice.test.slime"&&behavior=="slime"));
+                    string p=Path.Combine(fixture,"packages",Path.GetFileName((string)materialManifest["url"]));
+                    table.SetTheme(DiceTheme.Read((JObject)WorkshopStore.ValidateData(materialManifest,File.ReadAllText(p))["diceThemes"][0],true));table.Throw("20d20");
                     for(int i=0;i<2400&&table.Throwing;i++)table.Tick(.1f,false);
                     Check(table.Completed==20&&table.Value.HasValue,"twenty "+behavior+" bodies traverse "+selected.Profile+": "+table.Result);rolls+=20;
                     var moving=UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None);
