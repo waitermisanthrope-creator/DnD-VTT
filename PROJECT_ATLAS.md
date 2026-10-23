@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода da5a40354c68. Git содержит 1970 файлов.
+Снимок кода c085e889f0e8. Git содержит 1970 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1141,7 +1141,7 @@
 | №1120 PROJECT_ATLAS.txt | генерируется | человекочитаемая карта репозитория |
 | №1121 README.md | 145 B | документация или отчёт: README |
 | №1122 release-staging/unity-android-approval.json | 470 B | данные/конфигурация: unity android approval |
-| №1123 release-staging/unity-paired-approval.json | 1035 B | данные/конфигурация: unity paired approval |
+| №1123 release-staging/unity-paired-approval.json | 1615 B | данные/конфигурация: unity paired approval |
 | №1124 release-staging/unity-release.json | 3914 B | данные/конфигурация: unity release |
 | №1125 smoke_back_v2_sprite-1.png | 1707378 B | текстура/изображение: smoke back v2 sprite 1 |
 | №1126 smoke_back_v2_sprite.png | 1814587 B | текстура/изображение: smoke back v2 sprite |
@@ -14744,7 +14744,7 @@
 | zipCompressedNativeBytes | №1852 |
 | zipCompressedUnityDataBytes | №1852 |
 
-### JSON поля (993)
+### JSON поля (994)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -14803,6 +14803,7 @@
 | app | №1913 (+ 2 других файлов) |
 | appId | №1118 |
 | approved | №1122 (+ 1 других файлов) |
+| approvedRenderIndexSha256 | №1123 |
 | arcana | №1745 (+ 2 других файлов) |
 | arch | №1118 |
 | archiveBytes | №0906 (+ 3 других файлов) |
