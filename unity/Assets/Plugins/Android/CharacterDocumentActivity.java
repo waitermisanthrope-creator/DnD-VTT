@@ -12,6 +12,7 @@ import java.io.*;
 public class CharacterDocumentActivity extends Activity {
     private static final int PICK = 1040, LIMIT = 1024 * 1024;
     private String target, token, operation;
+    private boolean resultDelivered, copying;
     public static void launch(Activity owner, String target, String token, String operation) {
         owner.runOnUiThread(() -> {
             Intent intent = new Intent(owner, CharacterDocumentActivity.class);
@@ -62,6 +63,7 @@ public class CharacterDocumentActivity extends Activity {
         if (request != PICK) return;
         if (result != RESULT_OK) { complete("cancel", null); return; }
         final Uri uri = data == null ? null : data.getData();
+        copying = true;
         new Thread(() -> {
             try {
                 if (uri == null || !"content".equals(uri.getScheme())) throw new IOException("Выберите документ в системном окне");
@@ -80,13 +82,19 @@ public class CharacterDocumentActivity extends Activity {
         }, "DnD character document").start();
     }
 
-    private void complete(String status, String error) {
+    private void notifyResult(String status, String error) {
+        if (resultDelivered) return;
+        resultDelivered = true;
         try {
             JSONObject result = new JSONObject().put("token", token).put("status", status);
             if (error != null) result.put("error", error);
             if (target != null) UnityPlayer.UnitySendMessage(target, "OnCharacterFileResult", result.toString());
             if (!"ok".equals(status)) transferFile().delete();
         } catch (Exception ignored) { }
-        finish();
+    }
+    private void complete(String status, String error) { notifyResult(status, error); finish(); }
+    @Override protected void onDestroy() {
+        if (!isChangingConfigurations() && !copying && !resultDelivered) notifyResult("cancel", null);
+        super.onDestroy();
     }
 }
