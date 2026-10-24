@@ -56,6 +56,12 @@ namespace DndVtt.UnityPrototype
             backgroundIndex = Math.Max(0, ((JArray)CreationCatalog["backgrounds"]).ToList().FindIndex(b => (string)b["nameRu"] == "Солдат"));
             Navigate(FrontScreen.Create);
         }
+        private GUIStyle NavigationStyle(string[] labels, float width)
+        {
+            var style = new GUIStyle(GUI.skin.button) { font = MenuFont, fontSize = 18, wordWrap = false, padding = new RectOffset(7,7,7,7) };
+            while (style.fontSize > 14 && labels.Any(label => style.CalcSize(new GUIContent(label)).x > width)) style.fontSize--;
+            return style;
+        }
         private void DrawFrontEnd()
         {
             // The main app and settings use the exact main-branch look, but
@@ -86,30 +92,32 @@ namespace DndVtt.UnityPrototype
             {
                 string[] sheetNavigation = { "⌂ Меню", "Персонажи", "Настройки" };
                 float buttonWidth = Mathf.Max(80, (UiWidth - inset * 2 - 24) / 3 - 8);
-                float buttonHeight = Mathf.Max(54, sheetNavigation.Max(label => GUI.skin.button.CalcHeight(new GUIContent(label), buttonWidth)));
+                var sheetNavigationStyle = NavigationStyle(sheetNavigation, buttonWidth);
+                float buttonHeight = Mathf.Max(54, sheetNavigation.Max(label => sheetNavigationStyle.CalcHeight(new GUIContent(label), buttonWidth)));
                 GUILayout.BeginHorizontal();
                 for (int i = 0; i < sheetNavigation.Length; i++)
                 {
-                    bool clicked = GUILayout.Button(sheetNavigation[i], GUILayout.Width(buttonWidth), GUILayout.Height(buttonHeight));
-                    DesktopUiSmoke.RecordButton(sheetNavigation[i], GUI.skin.button, GUILayoutUtility.GetLastRect());
+                    bool clicked = GUILayout.Button(sheetNavigation[i], sheetNavigationStyle, GUILayout.Width(buttonWidth), GUILayout.Height(buttonHeight));
+                    DesktopUiSmoke.RecordButton(sheetNavigation[i], sheetNavigationStyle, GUILayoutUtility.GetLastRect());
                     if (clicked) { if (i == 2) OpenSettings(); else Navigate(i == 0 ? FrontScreen.Home : FrontScreen.Characters); }
                 }
                 GUILayout.EndHorizontal();
             }
             else
             {
-            string[] labels = { "Главная", "Персонажи · " + (archive?.Count ?? 0), "Создать героя", "Импорт / экспорт", "3D-карта", "Настройки" };
-            var destinations = new[] { FrontScreen.Home, FrontScreen.Characters, FrontScreen.Create, FrontScreen.Import, FrontScreen.Map, FrontScreen.Settings };
+            string[] labels = portraitLayout ? new[] { "← Главная", screen == FrontScreen.Characters ? "Создать" : "Персонажи" } : new[] { "Главная", "Персонажи", "Создать", "Файлы", "3D-карта", "Настройки" };
+            var destinations = portraitLayout ? new[] { FrontScreen.Home, screen == FrontScreen.Characters ? FrontScreen.Create : FrontScreen.Characters } : new[] { FrontScreen.Home, FrontScreen.Characters, FrontScreen.Create, FrontScreen.Import, FrontScreen.Map, FrontScreen.Settings };
             int columns = portraitLayout ? 2 : 6;
             float cellWidth = Mathf.Max(80, (UiWidth - inset * 2 - 24) / columns - 8);
-            float navHeight = Mathf.Max(54, labels.Max(label => GUI.skin.button.CalcHeight(new GUIContent(label), cellWidth)));
+            var navStyle = NavigationStyle(labels, cellWidth);
+            float navHeight = Mathf.Max(54, labels.Max(label => navStyle.CalcHeight(new GUIContent(label), cellWidth)));
             GUILayout.BeginHorizontal();
             for (int i = 0; i < labels.Length; i++)
             {
                 if (i > 0 && i % columns == 0) { GUILayout.EndHorizontal(); GUILayout.BeginHorizontal(); }
-                bool clicked = GUILayout.Button(labels[i], GUILayout.Width(cellWidth), GUILayout.Height(navHeight));
-                DesktopUiSmoke.RecordButton(labels[i], GUI.skin.button, GUILayoutUtility.GetLastRect());
-                if (clicked) { if (i == 2) BeginCreation(); else Navigate(destinations[i]); }
+                bool clicked = GUILayout.Button(labels[i], navStyle, GUILayout.Width(cellWidth), GUILayout.Height(navHeight));
+                DesktopUiSmoke.RecordButton(labels[i], navStyle, GUILayoutUtility.GetLastRect());
+                if (clicked) { if (destinations[i] == FrontScreen.Create) BeginCreation(); else if (destinations[i] == FrontScreen.Settings) OpenSettings(); else Navigate(destinations[i]); }
             }
             GUILayout.EndHorizontal(); GUILayout.Space(18);
             }
@@ -199,17 +207,18 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawRoster()
         {
-            GUILayout.Label("Мои персонажи", heading);
-            GUILayout.Label("Поиск по имени, расе или классу", muted); rosterSearch = GUILayout.TextField(rosterSearch, GUILayout.Height(52)); GUILayout.Space(12);
             if (archive == null) { GUILayout.Label("Пока нет персонажей. Создайте первого героя или импортируйте сохранение."); return; }
             if (pendingCharacterDeleteId != null)
             {
-                GUILayout.Label("Удалить персонажа «" + pendingCharacterDeleteName + "» с этого устройства?", heading);
+                GUILayout.Label("Удаление персонажа", heading);
+                GUILayout.Label("Удалить «" + pendingCharacterDeleteName + "» с этого устройства?", GUI.skin.label);
                 GUILayout.Label("Облачная копия останется. Предыдущий локальный архив сохранится в резервной копии.", muted);
                 if (GUILayout.Button("Подтвердить удаление", GUILayout.Height(52))) Attempt(ConfirmCharacterDeletion);
                 if (GUILayout.Button("Отмена", GUILayout.Height(52))) pendingCharacterDeleteId = pendingCharacterDeleteName = null;
                 return;
             }
+            GUILayout.Label("Мои персонажи", heading);
+            GUILayout.Label("Поиск по имени, расе или классу", muted); rosterSearch = GUILayout.TextField(rosterSearch, GUILayout.Height(52)); GUILayout.Space(12);
             for (int i = 0; i < archive.Count; i++)
             {
                 var hero = archive.Snapshot(i); string details = ((string)hero["class"] ?? (string)hero["className"] ?? "Без класса") + " · " + CharacterSheetRules.Level(hero) + " ур. · " + (hero["raceName"] ?? "Раса не указана");

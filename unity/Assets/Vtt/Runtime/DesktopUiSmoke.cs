@@ -19,7 +19,7 @@ namespace DndVtt.UnityPrototype
             if (!running || Event.current.type != EventType.Repaint) return;
             buttonChecks++;
             float needed = style.CalcHeight(new GUIContent(label), rect.width);
-            if (needed > rect.height + 1)
+            if (needed > rect.height + 1 || !style.wordWrap && style.CalcSize(new GUIContent(label)).x > rect.width + 1)
             {
                 clippedButtons++;
                 Debug.LogError("VTT_LABEL_CLIP_FAIL: " + label + " requires " + needed + " allocated " + rect.height);

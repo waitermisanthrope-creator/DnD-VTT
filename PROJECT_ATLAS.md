@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода efea256090c2. Git содержит 2043 файлов.
+Снимок кода 08dac7b35edc. Git содержит 2043 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1831,7 +1831,7 @@
 | №1810 unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs.meta | 60 B | вспомогательный файл: CloudCharacterProtocol.cs |
 | №1811 unity/Assets/Vtt/Runtime/CommerceRules.cs | 19387 B | вспомогательный файл: CommerceRules |
 | №1812 unity/Assets/Vtt/Runtime/CommerceRules.cs.meta | 60 B | вспомогательный файл: CommerceRules.cs |
-| №1813 unity/Assets/Vtt/Runtime/DesktopUiSmoke.cs | 14990 B | вспомогательный файл: DesktopUiSmoke |
+| №1813 unity/Assets/Vtt/Runtime/DesktopUiSmoke.cs | 15069 B | вспомогательный файл: DesktopUiSmoke |
 | №1814 unity/Assets/Vtt/Runtime/DesktopUiSmoke.cs.meta | 60 B | вспомогательный файл: DesktopUiSmoke.cs |
 | №1815 unity/Assets/Vtt/Runtime/DiceGeometry.cs | 7902 B | вспомогательный файл: DiceGeometry |
 | №1816 unity/Assets/Vtt/Runtime/DiceGeometry.cs.meta | 60 B | вспомогательный файл: DiceGeometry.cs |
@@ -1889,7 +1889,7 @@
 | №1868 unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Dice.cs |
 | №1869 unity/Assets/Vtt/Runtime/LegacySessionPanel.DiceControls.cs | 3513 B | вспомогательный файл: LegacySessionPanel.DiceControls |
 | №1870 unity/Assets/Vtt/Runtime/LegacySessionPanel.DiceControls.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.DiceControls.cs |
-| №1871 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs | 33470 B | вспомогательный файл: LegacySessionPanel.FrontEnd |
+| №1871 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs | 34407 B | вспомогательный файл: LegacySessionPanel.FrontEnd |
 | №1872 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.FrontEnd.cs |
 | №1873 unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs | 16332 B | вспомогательный файл: LegacySessionPanel.Moderation |
 | №1874 unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Moderation.cs |
