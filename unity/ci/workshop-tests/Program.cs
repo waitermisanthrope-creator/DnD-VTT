@@ -11,6 +11,46 @@ class Program
     static void Reject(Action action, string name) { bool rejected = false; try { action(); } catch (Exception) { rejected = true; } Check(rejected, name); }
     static void Main(string[] args)
     {
+        if (args.Length > 0 && args[0] == "--character-delete")
+        {
+            string dir = Path.Combine(Path.GetTempPath(), "vtt-delete-" + Guid.NewGuid()); Directory.CreateDirectory(dir);
+            try
+            {
+                var first = JObject.Parse("{\"id\":\"a\",\"name\":\"First\",\"custom\":{\"unknown\":[1,2]}}");
+                var second = JObject.Parse("{\"id\":\"b\",\"name\":\"Second\",\"resources\":{\"custom\":7}}");
+                foreach (JToken doc in new JToken[] { new JArray(first.DeepClone(), second.DeepClone()), new JObject { ["characters"] = new JArray(first.DeepClone(), second.DeepClone()), ["metadata"] = "preserve" }, first.DeepClone() })
+                {
+                    var original = new LegacyCharacterArchive(doc.ToString());
+                    var candidate = original.WithoutCharacter("a");
+                    Check(original.Count == (doc is JObject single && single["id"] != null ? 1 : 2), "live archive untouched before save");
+                    Check(original.Export() == doc.ToString(), "source document intact");
+                    Reject(() => original.WithoutCharacter("missing"), "stale id rejected");
+                    string path = Path.Combine(dir, "characters.json");
+                    CharacterSheetStore.Save(path, original); CharacterSheetStore.Save(path, candidate);
+                    var loaded = CharacterSheetStore.Load(path);
+                    Check(loaded.Count == original.Count - 1, "delete persists after restart");
+                    Check(CharacterSheetStore.Load(path + ".bak").Export() == original.Export(), "backup preserves previous roster");
+                    if (loaded.Count > 0)
+                    {
+                        Check(JToken.DeepEquals(loaded.Snapshot(0), second), "other character retains every field");
+                        Check(!(doc is JObject wrapper && wrapper["characters"] != null) || (string)JObject.Parse(loaded.Export())["metadata"] == "preserve", "wrapper metadata preserved");
+                        CharacterSheetStore.Save(path, loaded.WithoutCharacter("b"));
+                        Check(CharacterSheetStore.Load(path).Count == 0, "last character deletion persists");
+                    }
+                    Check(new LegacyCharacterArchive("[]").Append(first).Count == 1, "creation after empty archive");
+                    string blocker = Path.Combine(dir, "not-a-directory"); File.WriteAllText(blocker, "blocked");
+                    Reject(() => CharacterSheetStore.Save(Path.Combine(blocker, "characters.json"), candidate), "failed save rejected");
+                    Check(original.Export() == doc.ToString(), "failed save leaves live archive intact");
+                }
+                foreach (string file in Directory.GetFiles("unity/Assets/Vtt", "*.cs", SearchOption.AllDirectories))
+                {
+                    var tree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(File.ReadAllText(file));
+                    Check(!tree.GetDiagnostics().Any(d => d.Severity == Microsoft.CodeAnalysis.DiagnosticSeverity.Error), "C# syntax " + file);
+                }
+                Console.WriteLine("CHARACTER_DELETE_PASS " + checks); return;
+            }
+            finally { Directory.Delete(dir, true); }
+        }
         if(args.Length>0 && args[0]=="--all-collections") { Console.WriteLine("ALL_MOD_COLLECTIONS_PASS "+AllModCollectionChecks.Run(args[1]));return; }
         if(args.Length>0 && args[0]=="--collections") { Console.WriteLine("COLLECTIONS_PASS "+CollectionChecks.Run(args[1]));return; }
         string root = Path.Combine(Path.GetTempPath(), "vtt-workshop-test-" + Guid.NewGuid()); Directory.CreateDirectory(root);

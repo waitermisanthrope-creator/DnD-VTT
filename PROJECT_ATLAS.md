@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 9eedb0293db3. Git содержит 2035 файлов.
+Снимок кода 73353f10f618. Git содержит 2035 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -44,7 +44,7 @@
 | №0023 .github/workflows/unified-release.yml | 14076 B | автоматизация GitHub Actions: unified release |
 | №0024 .github/workflows/unity-android-update-publish.yml | 5039 B | автоматизация GitHub Actions: unity android update publish |
 | №0025 .github/workflows/unity-brand-visual-contract.yml | 877 B | автоматизация GitHub Actions: unity brand visual contract |
-| №0026 .github/workflows/unity-cloud-candidate.yml | 17035 B | автоматизация GitHub Actions: unity cloud candidate |
+| №0026 .github/workflows/unity-cloud-candidate.yml | 17112 B | автоматизация GitHub Actions: unity cloud candidate |
 | №0027 .github/workflows/unity-cloud-promote.yml | 5696 B | автоматизация GitHub Actions: unity cloud promote |
 | №0028 .github/workflows/unity-delivery-publish.yml | 872 B | автоматизация GitHub Actions: unity delivery publish |
 | №0029 .github/workflows/unity-experiment-android.yml | 2708 B | автоматизация GitHub Actions: unity experiment android |
@@ -62,8 +62,8 @@
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 7025 B | документация или отчёт: AGENTS |
 | №0043 AI_BLOCKERS.md | 72030 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 94847 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 133393 B | документация или отчёт: AI PROGRESS |
+| №0044 AI_NEXT_TASK.md | 95898 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 134444 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1849,7 +1849,7 @@
 | №1828 unity/Assets/Vtt/Runtime/ExplorerController.cs.meta | 59 B | вспомогательный файл: ExplorerController.cs |
 | №1829 unity/Assets/Vtt/Runtime/LegacyContentCatalog.cs | 808 B | вспомогательный файл: LegacyContentCatalog |
 | №1830 unity/Assets/Vtt/Runtime/LegacyContentCatalog.cs.meta | 59 B | вспомогательный файл: LegacyContentCatalog.cs |
-| №1831 unity/Assets/Vtt/Runtime/LegacyDocuments.cs | 9096 B | вспомогательный файл: LegacyDocuments |
+| №1831 unity/Assets/Vtt/Runtime/LegacyDocuments.cs | 9724 B | вспомогательный файл: LegacyDocuments |
 | №1832 unity/Assets/Vtt/Runtime/LegacyDocuments.cs.meta | 59 B | вспомогательный файл: LegacyDocuments.cs |
 | №1833 unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs | 16116 B | вспомогательный файл: LegacyMapPresenter |
 | №1834 unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs.meta | 59 B | вспомогательный файл: LegacyMapPresenter.cs |
@@ -1873,7 +1873,7 @@
 | №1852 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.ContentManager.cs |
 | №1853 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs | 6755 B | вспомогательный файл: LegacySessionPanel.ContentPreviews |
 | №1854 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.ContentPreviews.cs |
-| №1855 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs | 9209 B | вспомогательный файл: LegacySessionPanel |
+| №1855 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs | 9281 B | вспомогательный файл: LegacySessionPanel |
 | №1856 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.cs |
 | №1857 unity/Assets/Vtt/Runtime/LegacySessionPanel.Desktop.cs | 2053 B | вспомогательный файл: LegacySessionPanel.Desktop |
 | №1858 unity/Assets/Vtt/Runtime/LegacySessionPanel.Desktop.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Desktop.cs |
@@ -1881,7 +1881,7 @@
 | №1860 unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Dice.cs |
 | №1861 unity/Assets/Vtt/Runtime/LegacySessionPanel.DiceControls.cs | 3513 B | вспомогательный файл: LegacySessionPanel.DiceControls |
 | №1862 unity/Assets/Vtt/Runtime/LegacySessionPanel.DiceControls.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.DiceControls.cs |
-| №1863 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs | 28633 B | вспомогательный файл: LegacySessionPanel.FrontEnd |
+| №1863 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs | 30404 B | вспомогательный файл: LegacySessionPanel.FrontEnd |
 | №1864 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.FrontEnd.cs |
 | №1865 unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs | 16332 B | вспомогательный файл: LegacySessionPanel.Moderation |
 | №1866 unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Moderation.cs |
@@ -1945,13 +1945,13 @@
 | №1924 unity/ci/verify_bundle_output.py | 1081 B | вспомогательный файл: verify bundle output |
 | №1925 unity/ci/verify_launcher_aliases.py | 3703 B | вспомогательный файл: verify launcher aliases |
 | №1926 unity/ci/verify_public_workshop.py | 6725 B | вспомогательный файл: verify public workshop |
-| №1927 unity/ci/windows-upgrade-qa.ps1 | 5475 B | вспомогательный файл: windows upgrade qa |
+| №1927 unity/ci/windows-upgrade-qa.ps1 | 5538 B | вспомогательный файл: windows upgrade qa |
 | №1928 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
 | №1929 unity/ci/workshop-tests/AccountGestureChecks.cs | 5460 B | вспомогательный файл: AccountGestureChecks |
 | №1930 unity/ci/workshop-tests/AllModCollectionChecks.cs | 5776 B | вспомогательный файл: AllModCollectionChecks |
 | №1931 unity/ci/workshop-tests/CollectionChecks.cs | 6368 B | вспомогательный файл: CollectionChecks |
 | №1932 unity/ci/workshop-tests/CommerceChecks.cs | 4694 B | вспомогательный файл: CommerceChecks |
-| №1933 unity/ci/workshop-tests/Program.cs | 31853 B | вспомогательный файл: Program |
+| №1933 unity/ci/workshop-tests/Program.cs | 35145 B | вспомогательный файл: Program |
 | №1934 unity/ci/workshop-tests/WorkshopTests.csproj | 1603 B | вспомогательный файл: WorkshopTests |
 | №1935 unity/ContentSources~/catalog.full.json | 1259265 B | данные/конфигурация: catalog.full |
 | №1936 unity/ContentSources~/cloud-copy-contracts.json | 3613 B | данные/конфигурация: cloud copy contracts |

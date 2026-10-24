@@ -41,7 +41,7 @@ namespace DndVtt.UnityPrototype
             var array = document as JArray ?? (document as JObject)?["characters"] as JArray;
             characters = array != null ? array.Select(t => t as JObject ?? throw new FormatException("Character must be an object")).ToList()
                 : document is JObject single && single["id"] != null ? new List<JObject> { single } : throw new FormatException("Expected a character, character array or characters wrapper");
-            if (characters.Count == 0 || characters.Count > 1000) throw new FormatException("Invalid character count");
+            if (characters.Count > 1000) throw new FormatException("Invalid character count");
             var ids = new HashSet<string>();
             foreach (var character in characters)
             {
@@ -61,6 +61,16 @@ namespace DndVtt.UnityPrototype
             if (copy is JArray list) list.Add(character.DeepClone());
             else if (copy["characters"] is JArray wrapped) wrapped.Add(character.DeepClone());
             else copy = new JArray(copy, character.DeepClone());
+            return new LegacyCharacterArchive(copy.ToString(Formatting.None)) { OriginalJson = OriginalJson };
+        }
+        public LegacyCharacterArchive WithoutCharacter(string id)
+        {
+            int index = characters.FindIndex(c => c["id"].ToString() == id);
+            if (index < 0) throw new InvalidOperationException("Персонаж больше не найден. Повторите удаление.");
+            var copy = document.DeepClone();
+            if (copy is JArray list) list.RemoveAt(index);
+            else if (copy["characters"] is JArray wrapped) wrapped.RemoveAt(index);
+            else copy = new JArray();
             return new LegacyCharacterArchive(copy.ToString(Formatting.None)) { OriginalJson = OriginalJson };
         }
         // Validate a detached candidate before touching the live archive. Wrapper,

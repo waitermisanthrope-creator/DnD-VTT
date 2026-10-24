@@ -14,6 +14,7 @@ namespace DndVtt.UnityPrototype
         private JObject creationCatalog;
         private int creationStep, raceIndex, classIndex, backgroundIndex, statMode;
         private string heroName = "", rosterSearch = "";
+        private string pendingCharacterDeleteId, pendingCharacterDeleteName;
         private string pickerKey, pickerSearch = "";
         private readonly string[] statInputs = { "15", "14", "13", "12", "10", "8" };
         private JObject creationAnswers = new JObject();
@@ -38,6 +39,7 @@ namespace DndVtt.UnityPrototype
             if (screen == FrontScreen.CharacterStudio && next != FrontScreen.CharacterStudio) CloseCharacterStudio();
             if(screen==FrontScreen.ContentManager&&next!=FrontScreen.ContentManager)CloseWorkshopPreviews();
             if(next==FrontScreen.ContentManager&&screen!=FrontScreen.ContentManager) { InitializeWorkshop();BeginWorkshopPreviews();if(!contentCatalogAutoRefreshed&&!contentBusy&&(assetPacks.Count==0||!assetPacks.OfType<Newtonsoft.Json.Linq.JObject>().Any(m=>m["preview"]!=null)||!contentPackages.OfType<Newtonsoft.Json.Linq.JObject>().Any(m=>(string)m["collectionCategory"]=="races")||!assetPacks.OfType<Newtonsoft.Json.Linq.JObject>().Any(m=>(string)m["collectionCategory"]=="icons"))) { contentCatalogAutoRefreshed=true;StartCoroutine(FetchContentCatalog()); } }
+            pendingCharacterDeleteId = pendingCharacterDeleteName = null;
             menuGesture.Clear();
             screen = next;
             ApplyMobileOrientation(next);
@@ -144,6 +146,23 @@ namespace DndVtt.UnityPrototype
             GUILayout.Label("Мои персонажи", heading);
             GUILayout.Label("Поиск по имени, расе или классу", muted); rosterSearch = GUILayout.TextField(rosterSearch, GUILayout.Height(52)); GUILayout.Space(12);
             if (archive == null) { GUILayout.Label("Пока нет персонажей. Создайте первого героя или импортируйте сохранение."); return; }
+            if (pendingCharacterDeleteId != null)
+            {
+                GUILayout.Label("Удалить персонажа «" + pendingCharacterDeleteName + "» с этого устройства?", heading);
+                GUILayout.Label("Облачная копия останется. Предыдущий локальный архив сохранится в резервной копии.", muted);
+                if (GUILayout.Button("Подтвердить удаление", GUILayout.Height(52))) Attempt(() =>
+                {
+                    string currentId = archive.Snapshot(selected)["id"].ToString();
+                    var candidate = archive.WithoutCharacter(pendingCharacterDeleteId);
+                    CharacterSheetStore.Save(SavePath, candidate);
+                    archive = candidate.Count == 0 ? null : candidate;
+                    selected = archive == null ? 0 : Enumerable.Range(0, archive.Count).FirstOrDefault(n => archive.Snapshot(n)["id"].ToString() == currentId);
+                    ClearSheetInputs(); pendingCharacterDeleteId = pendingCharacterDeleteName = null;
+                    status = "Персонаж удалён с устройства";
+                });
+                if (GUILayout.Button("Отмена", GUILayout.Height(52))) pendingCharacterDeleteId = pendingCharacterDeleteName = null;
+                return;
+            }
             for (int i = 0; i < archive.Count; i++)
             {
                 var hero = archive.Snapshot(i); string details = ((string)hero["class"] ?? (string)hero["className"] ?? "Без класса") + " · " + CharacterSheetRules.Level(hero) + " ур. · " + (hero["raceName"] ?? "Раса не указана");
@@ -151,6 +170,8 @@ namespace DndVtt.UnityPrototype
                 GUILayout.BeginVertical(GUI.skin.box); GUILayout.Label(archive.Name(i), heading); GUILayout.Label(details, muted);
                 GUILayout.Label("Здоровье " + archive.CurrentHp(i) + " / " + archive.MaximumHp(i) + "   ·   " + CharacterSheetRules.InventoryWeightKg(hero).ToString("0.##", CultureInfo.InvariantCulture) + " кг");
                 if (GUILayout.Button("Открыть лист  →", GUILayout.Height(52))) { selected = i; Navigate(FrontScreen.Sheet); }
+                if (GUILayout.Button("Удалить персонажа…", GUILayout.Height(52)))
+                { pendingCharacterDeleteId = hero["id"].ToString(); pendingCharacterDeleteName = archive.Name(i); }
                 GUILayout.EndVertical(); GUILayout.Space(10);
             }
         }

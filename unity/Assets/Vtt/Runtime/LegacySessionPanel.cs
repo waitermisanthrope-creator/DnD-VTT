@@ -29,7 +29,7 @@ namespace DndVtt.UnityPrototype
             if (preferences.autoCheckUpdates) StartCoroutine(CheckForUpdates());
             if (File.Exists(SavePath))
             {
-                try { archive = CharacterSheetStore.Load(SavePath); status = "Загружен локальный лист Unity"; }
+                try { archive = CharacterSheetStore.Load(SavePath); if (archive.Count == 0) archive = null; status = "Загружен локальный лист Unity"; }
                 catch (Exception e) { status = "Сохранение не загружено; файл оставлен без изменений: " + e.Message; }
             }
             int index = Array.IndexOf(args, "--vtt-character");
@@ -49,7 +49,7 @@ namespace DndVtt.UnityPrototype
 
         public bool Import(string json)
         {
-            try { var candidate = new LegacyCharacterArchive(json); archive = candidate; selected = 0; ClearSheetInputs(); status = "Импортировано профилей: " + archive.Count + ". Для записи нажмите Сохранить."; return true; }
+            try { var candidate = new LegacyCharacterArchive(json); archive = candidate.Count == 0 ? null : candidate; selected = 0; ClearSheetInputs(); status = "Импортировано профилей: " + candidate.Count + ". Для записи нажмите Сохранить."; return true; }
             catch (Exception error) { status = "Импорт отклонён: " + error.Message; return false; }
         }
         public string CurrentName => archive == null ? "Исследователь" : archive.Name(selected);
