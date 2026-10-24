@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит fb17ec43eef5. Файлов: 2025
+Коммит aa0a08fb115b. Файлов: 2025
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,9 +56,9 @@
 0040. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (7025 B)
-0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (62396 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (85213 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (123759 B)
+0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (64152 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (86969 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (125515 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1080,7 +1080,7 @@
 1064. docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md — документация или отчёт: ACCESS AND TOUCH 1.00.12 (8253 B)
 1065. docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md — документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP (9558 B)
 1066. docs/unity-account/ALL_MOD_COLLECTIONS_1.00.36.md — документация или отчёт: ALL MOD COLLECTIONS 1.00.36 (6950 B)
-1067. docs/unity-account/CHARACTER_PREVIEW_1.00.37.md — документация или отчёт: CHARACTER PREVIEW 1.00.37 (8596 B)
+1067. docs/unity-account/CHARACTER_PREVIEW_1.00.37.md — документация или отчёт: CHARACTER PREVIEW 1.00.37 (12746 B)
 1068. docs/unity-account/CHAT_NICKNAMES_1.00.21.md — документация или отчёт: CHAT NICKNAMES 1.00.21 (3028 B)
 1069. docs/unity-account/CHAT_ONE_HOUR.md — документация или отчёт: CHAT ONE HOUR (2267 B)
 1070. docs/unity-account/CHAT_WORKSHOP_1.00.22.md — документация или отчёт: CHAT WORKSHOP 1.00.22 (7852 B)
