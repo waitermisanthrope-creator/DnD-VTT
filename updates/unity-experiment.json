@@ -1,20 +1,20 @@
 {
   "schema": 1,
   "channel": "unity-experiment",
-  "version": "1.00.38",
-  "versionCode": 10038,
+  "version": "1.00.39",
+  "versionCode": 10039,
   "androidPackage": "com.dndvtt.unity",
-  "notes": "Встроенный шрифт с кириллицей: подписи меню и настроек не зависят от наличия системных шрифтов Windows. · Запуск в изменяемом окне1280×800, кнопки режима окна и переключениеF11. · Настройки на широком экране используют две колонки; добавлена графическая проверка установленного Windows-приложения.",
+  "notes": "Удаление персонажей из списка с подтверждением, включая последнего героя. · Правки листа сохраняются на устройстве автоматически. · Импорт добавляет героев к существующим; конфликтующие версии не заменяются. · Резервная копия в отдельный файл и восстановление предыдущего архива в разделе данных.",
   "artifacts": {
     "android": {
-      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.38/DnD-VTT-Unity-1.00.38-arm64.apk",
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.39/DnD-VTT-Unity-1.00.39-arm64.apk",
       "bytes": 55686238,
-      "sha256": "ebecc4db2e9409c9a9e3bbaf3570ba74a8cbba030d95ae91ef1b12a8c8d4d8f5"
+      "sha256": "a1e4813432c39819537276586006680f4f489050a01e013ed663cddcfd7bf2bf"
     },
     "windows": {
-      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.38/DnD-VTT-Unity-Setup-1.00.38-x64.exe",
-      "bytes": 39470356,
-      "sha256": "76c307a6c8f1e0583d1dcd314e84309b0ee6be2439ea91cd69e0e62a23340427"
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.39/DnD-VTT-Unity-Setup-1.00.39-x64.exe",
+      "bytes": 39476895,
+      "sha256": "916688c815e81180c60c7a54b13b6f65ecb69e94f5bb6df77835f9203c09b787"
     }
   }
 }
