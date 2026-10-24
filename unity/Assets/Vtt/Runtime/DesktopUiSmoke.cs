@@ -192,6 +192,7 @@ namespace DndVtt.UnityPrototype
             {
                 Check(clippedButtons == 0, "all recorded navigation/back labels fit their actual bounds");
                 Check(visible && hidden && visible.width == hidden.width, "GPU capture " + name);
+                if (name.EndsWith("-portrait", StringComparison.Ordinal)) Check(PortraitLayout && visible.height > visible.width, "actual portrait viewport " + name);
                 File.WriteAllBytes(Path.Combine(folder, name + ".png"), visible.EncodeToPNG());
                 var a = visible.GetPixels32(); var b = hidden.GetPixels32(); int textPixels = 0;
                 for (int i = 0; i < a.Length; i++)
