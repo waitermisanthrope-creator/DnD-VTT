@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит ac67e677cb32. Файлов: 2035
+Коммит 3f0346556668. Файлов: 2035
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1802,7 +1802,7 @@
 1786. unity/Assets/Vtt/Resources/UI/DejaVu-LICENSE.txt — документация или отчёт: DejaVu LICENSE (3859 B)
 1787. unity/Assets/Vtt/Resources/UI/DejaVu-LICENSE.txt.meta — вспомогательный файл: DejaVu LICENSE.txt (60 B)
 1788. unity/Assets/Vtt/Resources/UI/DejaVuSans.ttf — вспомогательный файл: DejaVuSans (759720 B)
-1789. unity/Assets/Vtt/Resources/UI/DejaVuSans.ttf.meta — вспомогательный файл: DejaVuSans.ttf (60 B)
+1789. unity/Assets/Vtt/Resources/UI/DejaVuSans.ttf.meta — вспомогательный файл: DejaVuSans.ttf (496 B)
 1790. unity/Assets/Vtt/Runtime.meta — вспомогательный файл: Runtime (172 B)
 1791. unity/Assets/Vtt/Runtime/AppearanceDocument.cs — вспомогательный файл: AppearanceDocument (3069 B)
 1792. unity/Assets/Vtt/Runtime/AppearanceDocument.cs.meta — вспомогательный файл: AppearanceDocument.cs (60 B)
