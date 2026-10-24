@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 3f0346556668. Git содержит 2035 файлов.
+Снимок кода f2d4dc227fd7. Git содержит 2035 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 7025 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 65204 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 88021 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 126567 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 67232 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 90049 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 128595 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1106,7 +1106,7 @@
 | №1085 docs/unity-account/dice-1.00.32-metrics.json | 2200 B | документация или отчёт: dice 1.00.32 metrics |
 | №1086 docs/unity-account/IMPLEMENTATION_STATUS.md | 77740 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1087 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
-| №1088 docs/unity-account/PC_UI_FIX_1.00.38.md | 2265 B | документация или отчёт: PC UI FIX 1.00.38 |
+| №1088 docs/unity-account/PC_UI_FIX_1.00.38.md | 2898 B | документация или отчёт: PC UI FIX 1.00.38 |
 | №1089 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1090 docs/unity-account/WORKSHOP_COLLECTIONS_1.00.35.md | 5177 B | документация или отчёт: WORKSHOP COLLECTIONS 1.00.35 |
 | №1091 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
@@ -1774,7 +1774,7 @@
 | №1753 unity/Assets/Vtt/Resources/Branding/Splash19.png.meta | 312 B | вспомогательный файл: Splash19.png |
 | №1754 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg | 212684 B | текстура/изображение: Wallpaper16 |
 | №1755 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta | 312 B | вспомогательный файл: Wallpaper16.jpg |
-| №1756 unity/Assets/Vtt/Resources/Changelog.json | 44455 B | данные/конфигурация: Changelog |
+| №1756 unity/Assets/Vtt/Resources/Changelog.json | 44448 B | данные/конфигурация: Changelog |
 | №1757 unity/Assets/Vtt/Resources/Changelog.json.meta | 158 B | вспомогательный файл: Changelog.json |
 | №1758 unity/Assets/Vtt/Resources/CharacterSheet.meta | 172 B | вспомогательный файл: CharacterSheet |
 | №1759 unity/Assets/Vtt/Resources/CharacterSheet/catalog.json | 823381 B | данные/конфигурация: catalog |
@@ -1960,7 +1960,7 @@
 | №1939 unity/evidence/exploration.png | 119417 B | текстура/изображение: exploration |
 | №1940 unity/Installer/release-notes.md | 1582 B | документация или отчёт: release notes |
 | №1941 unity/Installer/UnitySetup.nsi | 3417 B | вспомогательный файл: UnitySetup |
-| №1942 unity/Packages/manifest.json | 657 B | данные/конфигурация: manifest |
+| №1942 unity/Packages/manifest.json | 609 B | данные/конфигурация: manifest |
 | №1943 unity/Packages/packages-lock.json | 6359 B | данные/конфигурация: packages lock |
 | №1944 unity/ProjectSettings/AudioManager.asset | 523 B | вспомогательный файл: AudioManager |
 | №1945 unity/ProjectSettings/ClusterInputManager.asset | 114 B | вспомогательный файл: ClusterInputManager |
@@ -2000,7 +2000,7 @@
 | №1979 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №1980 updates/README.md | 233 B | документация или отчёт: README |
 | №1981 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №1982 updates/unity-changelog.json | 44455 B | метаданные обновлений: unity changelog |
+| №1982 updates/unity-changelog.json | 44448 B | метаданные обновлений: unity changelog |
 | №1983 updates/unity-experiment.json | 1294 B | метаданные обновлений: unity experiment |
 | №1984 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №1985 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
