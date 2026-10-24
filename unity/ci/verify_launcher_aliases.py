@@ -32,6 +32,11 @@ def main():
   attr=re.search(r'A: android:([\w]+)\([^)]*\)=(.*)',line)
   if attr and stack:
    raw=attr[2];quoted=re.search(r'"([^"]*)"',raw);stack[-1]['attrs'][attr[1]]=quoted[1] if quoted else raw.strip()
+ documents=[n for n in nodes if n['tag']=='activity' and n['attrs'].get('name')=='com.dndvtt.unityupdater.CharacterDocumentActivity']
+ assert len(documents)==1 and documents[0]['attrs'].get('exported') in ('false','(type 0x12)0x0'),'Private system-document activity must be present in actual APK'
+ permissions={n['attrs'].get('name') for n in nodes if n['tag']=='uses-permission'}
+ assert not permissions.intersection({'android.permission.MANAGE_EXTERNAL_STORAGE','android.permission.WRITE_EXTERNAL_STORAGE','android.permission.READ_EXTERNAL_STORAGE'}),'Document picker must use scoped access'
+ print('APK_CHARACTER_DOCUMENTS_PASS: private document picker, no broad storage permission')
  aliases=[n for n in nodes if n['tag']=='activity-alias'];assert len(aliases)==31,'Expected 31 fixed launcher aliases'
  marker=next(n for n in nodes if n['tag']=='meta-data' and n['attrs'].get('name')=='dnd.vtt.launcherDefault');default=marker['attrs']['value']
  assert default in ('com.unity3d.player.UnityPlayerActivity','com.unity3d.player.UnityPlayerGameActivity')

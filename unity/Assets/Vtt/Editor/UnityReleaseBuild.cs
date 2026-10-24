@@ -204,6 +204,14 @@ public sealed class UnityUpdaterManifest : IPostGenerateGradleAndroidProject
         if (app.GetAttribute("label", ns) == "DnD VTT Unity") app.RemoveAttribute("label", ns);
         foreach (XmlElement existing in app.SelectNodes("provider"))
             if (existing.GetAttribute("name", ns) == "com.dndvtt.unityupdater.UpdateProvider") app.RemoveChild(existing);
+        foreach (XmlElement existing in app.SelectNodes("activity"))
+            if (existing.GetAttribute("name", ns) == "com.dndvtt.unityupdater.CharacterDocumentActivity") app.RemoveChild(existing);
+        var documents = xml.CreateElement("activity");
+        documents.SetAttribute("name", ns, "com.dndvtt.unityupdater.CharacterDocumentActivity");
+        documents.SetAttribute("exported", ns, "false");
+        documents.SetAttribute("theme", ns, "@android:style/Theme.Translucent.NoTitleBar");
+        documents.SetAttribute("configChanges", ns, "orientation|screenSize|keyboardHidden");
+        app.AppendChild(documents);
         var provider = xml.CreateElement("provider"); provider.SetAttribute("name", ns, "com.dndvtt.unityupdater.UpdateProvider");
         provider.SetAttribute("authorities", ns, UnityRelease.Package + ".updates"); provider.SetAttribute("exported", ns, "false"); provider.SetAttribute("grantUriPermissions", ns, "true");
         app.AppendChild(provider);ConfigureLauncherIcons(path,xml,app,ns);xml.Save(file);

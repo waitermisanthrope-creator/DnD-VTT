@@ -65,6 +65,26 @@ class Program
                 Reject(() => CharacterSheetStore.RestorePrevious(daily), "corrupt backup rejected");
                 Check(File.ReadAllText(daily) == beforeRestore, "corrupt backup leaves current file unchanged");
                 Check(CharacterSheetStore.Load(exported).Export() == merged.Export(), "independent backup survives subsequent saves and restore");
+                string external = Path.Combine(dir, "Персонажи — резерв.json");
+                CharacterFiles.Write(external, merged.Export());
+                Check(new LegacyCharacterArchive(CharacterFiles.Read(external)).Export() == merged.Export(), "portable Unicode-path JSON roundtrip");
+                Check(merged.Merge(new LegacyCharacterArchive(CharacterFiles.Read(external))).Count == merged.Count, "file reimport does not duplicate heroes");
+                CharacterFiles.Write(external, changed.Export());
+                Check(CharacterSheetStore.Load(external + ".bak").Export() == merged.Export(), "overwriting export retains prior file");
+                File.WriteAllText(external, "\uFEFF" + merged.Export(), new System.Text.UTF8Encoding(false));
+                Check(new LegacyCharacterArchive(CharacterFiles.Read(external)).Count == 2, "UTF8 BOM imports");
+                File.WriteAllBytes(external, new byte[] { 0xff, 0xfe, 0xff });
+                Reject(() => CharacterFiles.Read(external), "invalid UTF8 rejected");
+                File.WriteAllBytes(external, new byte[CharacterFiles.Limit + 1]);
+                Reject(() => CharacterFiles.Read(external), "oversized file rejected before JSON import");
+                File.WriteAllText(external, "{broken"); Reject(() => CharacterFiles.Read(external), "corrupt JSON file rejected");
+                File.WriteAllText(external, "[]"); Reject(() => CharacterFiles.Read(external), "empty roster file rejected");
+                File.WriteAllText(external, "{\"id\":\"future\",\"schemaVersion\":999}");
+                Reject(() => CharacterFiles.Read(external), "future schema file rejected");
+                string wrong = Path.Combine(dir, "not-json.exe");
+                Reject(() => CharacterFiles.Write(wrong, merged.Export()), "export requires JSON extension");
+                Check(!File.Exists(wrong), "rejected export creates no destination");
+                Check(merged.Count == 2, "rejected file operations retain live roster");
                 foreach (string file in Directory.GetFiles("unity/Assets/Vtt", "*.cs", SearchOption.AllDirectories))
                 {
                     var tree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(File.ReadAllText(file));

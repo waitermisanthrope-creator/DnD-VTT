@@ -11,7 +11,20 @@ namespace DndVtt.UnityPrototype
     // The existing no-graphics migration test cannot detect invisible IMGUI text.
     public sealed class DesktopUiSmoke : MonoBehaviour
     {
-        public static bool HideText;
+        public static bool HideText, PortraitLayout;
+        static bool running;
+        static int buttonChecks, clippedButtons;
+        public static void RecordButton(string label, GUIStyle style, Rect rect)
+        {
+            if (!running || Event.current.type != EventType.Repaint) return;
+            buttonChecks++;
+            float needed = style.CalcHeight(new GUIContent(label), rect.width);
+            if (needed > rect.height + 1)
+            {
+                clippedButtons++;
+                Debug.LogError("VTT_LABEL_CLIP_FAIL: " + label + " requires " + needed + " allocated " + rect.height);
+            }
+        }
         const BindingFlags Flags = BindingFlags.Instance | BindingFlags.NonPublic;
         string folder;
         LegacySessionPanel panel;
@@ -19,12 +32,33 @@ namespace DndVtt.UnityPrototype
         static void Install()
         {
             if (Array.IndexOf(Environment.GetCommandLineArgs(), "--vtt-ui-smoke") >= 0)
-                new GameObject("Installed desktop UI validation").AddComponent<DesktopUiSmoke>();
+            { running = true; new GameObject("Installed desktop UI validation").AddComponent<DesktopUiSmoke>(); }
         }
         static void Check(bool ok, string message) { if (!ok) throw new Exception("VTT_DESKTOP_UI_FAIL: " + message); }
         void Call(string method, params object[] args) => typeof(LegacySessionPanel).GetMethod(method, Flags).Invoke(panel, args);
         void Field(string name, object value) => typeof(LegacySessionPanel).GetField(name, Flags).SetValue(panel, value);
         void Fail(Exception error) { HideText = false; Debug.LogException(error); Application.Quit(1); }
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+        [System.Runtime.InteropServices.DllImport("user32.dll", CharSet=System.Runtime.InteropServices.CharSet.Unicode)]
+        static extern IntPtr FindWindow(string kind, string title);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        static extern bool PostMessage(IntPtr window, uint message, IntPtr first, IntPtr second);
+        static void CheckDialogCancellation(bool save)
+        {
+            bool found = false;
+            var closer = new System.Threading.Thread(() =>
+            {
+                for (int i = 0; i < 100; i++)
+                {
+                    var window = FindWindow("#32770", save ? "Сохранить персонажей DnD VTT" : "Открыть персонажей DnD VTT");
+                    if (window != IntPtr.Zero) { found = true; PostMessage(window, 0x0010, IntPtr.Zero, IntPtr.Zero); return; }
+                    System.Threading.Thread.Sleep(100);
+                }
+            }) { IsBackground = true };
+            closer.Start(); string path = CharacterFiles.PickWindows(save); closer.Join(12000);
+            Check(found && path == null, "actual Windows file dialog cancellation " + save);
+        }
+#endif
         IEnumerator Start()
         {
             yield return new WaitForSecondsRealtime(1);
@@ -87,10 +121,36 @@ namespace DndVtt.UnityPrototype
                 Check(panel.CurrentName == "Второй герой", "deleted last hero can be restored");
                 string backup = CharacterSheetStore.Backup(panel.SavePath, CharacterSheetStore.Load(panel.SavePath));
                 Check(CharacterSheetStore.Load(backup).Name(0) == "Второй герой", "native independent backup roundtrip");
+                string portable = Path.Combine(folder, "portable-characters.json");
+                CharacterFiles.Write(portable, panel.ExportCurrent());
+                Field("archive", null);
+                Check(panel.Import(CharacterFiles.Read(portable)) && panel.CurrentName == "Второй герой", "actual file import/export roundtrip");
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+                string beforeDialogs = panel.ExportCurrent();
+                CheckDialogCancellation(false); CheckDialogCancellation(true);
+                Check(panel.ExportCurrent() == beforeDialogs, "cancelled system dialogs leave roster unchanged");
+                Debug.Log("VTT_DESKTOP_FILE_TRANSFER_PASS: actual Windows open/save dialogs cancelled, Unicode JSON file roundtrip and unchanged roster");
+#endif
                 Field("archive", savedArchive); Field("profileStoreOverride", savedOverride); Field("selected", savedSelected);
                 Call("OpenSettings"); Call("OpenSettingsCategory", "Данные и устройство");
                 Debug.Log("VTT_DAILY_CHARACTERS_PASS: actual installed native import, conflicting import rejection, delete/last delete, selection, disk reload and backup restore; original QA profile untouched");
             }
+            catch (Exception error) { Fail(error); yield break; }
+            try
+            {
+                var screenType = typeof(LegacySessionPanel).GetNestedType("FrontScreen", BindingFlags.NonPublic);
+                Call("Navigate", Enum.Parse(screenType, "Import"));
+            }
+            catch (Exception error) { Fail(error); yield break; }
+            yield return Frame("character-files-desktop"); if (failed) yield break;
+            Screen.SetResolution(600, 960, FullScreenMode.Windowed);
+            yield return new WaitForSecondsRealtime(.5f); PortraitLayout = true;
+            yield return Frame("character-files-portrait"); if (failed) yield break;
+            try { Call("RequestCharacterDeletion", 0); }
+            catch (Exception error) { Fail(error); yield break; }
+            yield return Frame("character-delete-portrait"); if (failed) yield break;
+            PortraitLayout = false;
+            try { Check(buttonChecks > 12 && clippedButtons == 0, "navigation/back labels checked at desktop and portrait widths"); Call("OpenSettings"); }
             catch (Exception error) { Fail(error); yield break; }
             Screen.SetResolution(1024, 768, FullScreenMode.Windowed);
             yield return new WaitForSecondsRealtime(.4f);
@@ -117,6 +177,7 @@ namespace DndVtt.UnityPrototype
             var hidden = ScreenCapture.CaptureScreenshotAsTexture(); HideText = false;
             try
             {
+                Check(clippedButtons == 0, "all recorded navigation/back labels fit their actual bounds");
                 Check(visible && hidden && visible.width == hidden.width, "GPU capture " + name);
                 File.WriteAllBytes(Path.Combine(folder, name + ".png"), visible.EncodeToPNG());
                 var a = visible.GetPixels32(); var b = hidden.GetPixels32(); int textPixels = 0;
@@ -125,11 +186,12 @@ namespace DndVtt.UnityPrototype
                 Check(textPixels > 600, "actual visible text pixels on " + name + ": " + textPixels);
                 Debug.Log("VTT_DESKTOP_TEXT_PIXELS: " + name + " " + textPixels);
                 // Reviewable actual GPU evidence even if the artifact download host is unreachable.
-                var thumb = new Texture2D(640, 400, TextureFormat.RGB24, false);
+                int thumbWidth = visible.width >= visible.height ? 640 : 400, thumbHeight = visible.width >= visible.height ? 400 : 640;
+                var thumb = new Texture2D(thumbWidth, thumbHeight, TextureFormat.RGB24, false);
                 try
                 {
-                    var pixels = new Color[640 * 400];
-                    for (int y = 0; y < 400; y++) for (int x = 0; x < 640; x++) pixels[y * 640 + x] = visible.GetPixelBilinear((x + .5f) / 640, (y + .5f) / 400);
+                    var pixels = new Color[thumbWidth * thumbHeight];
+                    for (int y = 0; y < thumbHeight; y++) for (int x = 0; x < thumbWidth; x++) pixels[y * thumbWidth + x] = visible.GetPixelBilinear((x + .5f) / thumbWidth, (y + .5f) / thumbHeight);
                     thumb.SetPixels(pixels); thumb.Apply();
                     Debug.Log("VTT_DESKTOP_UI_PNG:" + name + ":" + Convert.ToBase64String(thumb.EncodeToPNG()));
                 }

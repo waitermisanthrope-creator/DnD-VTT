@@ -49,6 +49,7 @@ namespace DndVtt.UnityPrototype
             if(GUILayout.Button("Сохранить",brandGreen,GUILayout.Height(46)))Attempt(()=>{SaveSheet();status="Сохранено на устройстве";});
             if(GUILayout.Button("Экспорт JSON",GUILayout.Height(46))) { GUIUtility.systemCopyBuffer=archive.Export();status="Архив скопирован"; }
             GUILayout.EndHorizontal();
+            if (GUILayout.Button("Сохранить JSON в файл…", GUILayout.MinHeight(54))) Attempt(() => PickCharacterFile(true));
             JObject hero = archive.Snapshot(selected); bool changed = false, persistWallet = false, persistCommerce = false;
             if (deletePath != null)
             {

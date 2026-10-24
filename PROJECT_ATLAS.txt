@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 7b6416cf2e41. Файлов: 2036
+Коммит 045a6fe03476. Файлов: 2042
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -57,8 +57,8 @@
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (7025 B)
 0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (72659 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (100539 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (139085 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (102072 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (140618 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1727,329 +1727,335 @@
 1711. unity/Assets/LegacyContent/Source/wall_wood_light.png.meta — вспомогательный файл: wall wood light.png (3009 B)
 1712. unity/Assets/Plugins.meta — вспомогательный файл: Plugins (172 B)
 1713. unity/Assets/Plugins/Android.meta — вспомогательный файл: Android (172 B)
-1714. unity/Assets/Plugins/Android/DndSessionVault.java — вспомогательный файл: DndSessionVault (2333 B)
-1715. unity/Assets/Plugins/Android/DndSessionVault.java.meta — вспомогательный файл: DndSessionVault.java (60 B)
-1716. unity/Assets/Plugins/Android/UpdateProvider.java — вспомогательный файл: UpdateProvider (10227 B)
-1717. unity/Assets/Plugins/Android/UpdateProvider.java.meta — вспомогательный файл: UpdateProvider.java (60 B)
-1718. unity/Assets/StreamingAssets/Branding/Dragon20.png — текстура/изображение: Dragon20 (1284815 B)
-1719. unity/Assets/StreamingAssets/Branding/Splash19.png — текстура/изображение: Splash19 (8605503 B)
-1720. unity/Assets/StreamingAssets/Branding/Wallpaper16.jpg — текстура/изображение: Wallpaper16 (212684 B)
-1721. unity/Assets/UniversalRenderPipelineGlobalSettings.asset — вспомогательный файл: UniversalRenderPipelineGlobalSettings (25900 B)
-1722. unity/Assets/UniversalRenderPipelineGlobalSettings.asset.meta — вспомогательный файл: UniversalRenderPipelineGlobalSettings.asset (189 B)
-1723. unity/Assets/Vtt.meta — вспомогательный файл: Vtt (172 B)
-1724. unity/Assets/Vtt/Editor.meta — вспомогательный файл: Editor (172 B)
-1725. unity/Assets/Vtt/Editor/BrandingResumeValidation.cs — вспомогательный файл: BrandingResumeValidation (2971 B)
-1726. unity/Assets/Vtt/Editor/BrandingResumeValidation.cs.meta — вспомогательный файл: BrandingResumeValidation.cs (60 B)
-1727. unity/Assets/Vtt/Editor/BuildBranding.cs — вспомогательный файл: BuildBranding (2738 B)
-1728. unity/Assets/Vtt/Editor/BuildBranding.cs.meta — вспомогательный файл: BuildBranding.cs (60 B)
-1729. unity/Assets/Vtt/Editor/CharacterPreviewImport.cs — вспомогательный файл: CharacterPreviewImport (1433 B)
-1730. unity/Assets/Vtt/Editor/CharacterPreviewImport.cs.meta — вспомогательный файл: CharacterPreviewImport.cs (60 B)
-1731. unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs — вспомогательный файл: CharacterPreviewValidation (8132 B)
-1732. unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs.meta — вспомогательный файл: CharacterPreviewValidation.cs (60 B)
-1733. unity/Assets/Vtt/Editor/CharacterSheetValidation.cs — вспомогательный файл: CharacterSheetValidation (21197 B)
-1734. unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta — вспомогательный файл: CharacterSheetValidation.cs (59 B)
-1735. unity/Assets/Vtt/Editor/DiceBuildGate.cs — вспомогательный файл: DiceBuildGate (4583 B)
-1736. unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta — вспомогательный файл: DiceBuildGate.cs (60 B)
-1737. unity/Assets/Vtt/Editor/DiceValidation.cs — вспомогательный файл: DiceValidation (40864 B)
-1738. unity/Assets/Vtt/Editor/DiceValidation.cs.meta — вспомогательный файл: DiceValidation.cs (60 B)
-1739. unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs — вспомогательный файл: LegacyMigrationSetup (10967 B)
-1740. unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta — вспомогательный файл: LegacyMigrationSetup.cs (59 B)
-1741. unity/Assets/Vtt/Editor/PrototypeSetup.cs — вспомогательный файл: PrototypeSetup (7704 B)
-1742. unity/Assets/Vtt/Editor/PrototypeSetup.cs.meta — вспомогательный файл: PrototypeSetup.cs (59 B)
-1743. unity/Assets/Vtt/Editor/UnityReleaseBuild.cs — вспомогательный файл: UnityReleaseBuild (16327 B)
-1744. unity/Assets/Vtt/Editor/UnityReleaseBuild.cs.meta — вспомогательный файл: UnityReleaseBuild.cs (60 B)
-1745. unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs — вспомогательный файл: WorkshopBundleBuild (3632 B)
-1746. unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs.meta — вспомогательный файл: WorkshopBundleBuild.cs (60 B)
-1747. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs — вспомогательный файл: WorkshopEditorValidation (26287 B)
-1748. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs.meta — вспомогательный файл: WorkshopEditorValidation.cs (60 B)
-1749. unity/Assets/Vtt/Resources.meta — вспомогательный файл: Resources (172 B)
-1750. unity/Assets/Vtt/Resources/Branding.meta — вспомогательный файл: Branding (172 B)
-1751. unity/Assets/Vtt/Resources/Branding/Dragon20.png — текстура/изображение: Dragon20 (1284815 B)
-1752. unity/Assets/Vtt/Resources/Branding/Dragon20.png.meta — вспомогательный файл: Dragon20.png (312 B)
-1753. unity/Assets/Vtt/Resources/Branding/Splash19.png — текстура/изображение: Splash19 (8605503 B)
-1754. unity/Assets/Vtt/Resources/Branding/Splash19.png.meta — вспомогательный файл: Splash19.png (312 B)
-1755. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg — текстура/изображение: Wallpaper16 (212684 B)
-1756. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta — вспомогательный файл: Wallpaper16.jpg (312 B)
-1757. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (45272 B)
-1758. unity/Assets/Vtt/Resources/Changelog.json.meta — вспомогательный файл: Changelog.json (158 B)
-1759. unity/Assets/Vtt/Resources/CharacterSheet.meta — вспомогательный файл: CharacterSheet (172 B)
-1760. unity/Assets/Vtt/Resources/CharacterSheet/catalog.json — данные/конфигурация: catalog (823381 B)
-1761. unity/Assets/Vtt/Resources/CharacterSheet/catalog.json.meta — вспомогательный файл: catalog.json (158 B)
-1762. unity/Assets/Vtt/Resources/CharacterStudio.meta — вспомогательный файл: CharacterStudio (77 B)
-1763. unity/Assets/Vtt/Resources/CharacterStudio/DefaultFemale.json — данные/конфигурация: DefaultFemale (3860 B)
-1764. unity/Assets/Vtt/Resources/CharacterStudio/DefaultFemale.json.meta — вспомогательный файл: DefaultFemale.json (60 B)
-1765. unity/Assets/Vtt/Resources/CharacterStudio/DefaultMale.json — данные/конфигурация: DefaultMale (3851 B)
-1766. unity/Assets/Vtt/Resources/CharacterStudio/DefaultMale.json.meta — вспомогательный файл: DefaultMale.json (60 B)
-1767. unity/Assets/Vtt/Resources/CharacterStudio/HumanBody.fbx — вспомогательный файл: HumanBody (6899052 B)
-1768. unity/Assets/Vtt/Resources/CharacterStudio/HumanBody.fbx.meta — вспомогательный файл: HumanBody.fbx (60 B)
-1769. unity/Assets/Vtt/Resources/CharacterStudio/LICENSE.ASSETS.md — документация или отчёт: LICENSE.ASSETS (6962 B)
-1770. unity/Assets/Vtt/Resources/CharacterStudio/LICENSE.ASSETS.md.meta — вспомогательный файл: LICENSE.ASSETS.md (60 B)
-1771. unity/Assets/Vtt/Resources/CharacterStudio/MorphCatalog.json — данные/конфигурация: MorphCatalog (2701 B)
-1772. unity/Assets/Vtt/Resources/CharacterStudio/MorphCatalog.json.meta — вспомогательный файл: MorphCatalog.json (60 B)
-1773. unity/Assets/Vtt/Resources/CharacterStudio/PreviewLit.mat — вспомогательный файл: PreviewLit (1027 B)
-1774. unity/Assets/Vtt/Resources/CharacterStudio/PreviewLit.mat.meta — вспомогательный файл: PreviewLit.mat (60 B)
-1775. unity/Assets/Vtt/Resources/CharacterStudio/PreviewStudio.shader — вспомогательный файл: PreviewStudio (2521 B)
-1776. unity/Assets/Vtt/Resources/CharacterStudio/PreviewStudio.shader.meta — вспомогательный файл: PreviewStudio.shader (204 B)
-1777. unity/Assets/Vtt/Resources/CharacterStudio/SkinFemale.png — текстура/изображение: SkinFemale (4391156 B)
-1778. unity/Assets/Vtt/Resources/CharacterStudio/SkinFemale.png.meta — вспомогательный файл: SkinFemale.png (585 B)
-1779. unity/Assets/Vtt/Resources/CharacterStudio/SkinMale.png — текстура/изображение: SkinMale (3693828 B)
-1780. unity/Assets/Vtt/Resources/CharacterStudio/SkinMale.png.meta — вспомогательный файл: SkinMale.png (585 B)
-1781. unity/Assets/Vtt/Resources/Dice.meta — вспомогательный файл: Dice (77 B)
-1782. unity/Assets/Vtt/Resources/Dice/DiceNumeral.shader — вспомогательный файл: DiceNumeral (1428 B)
-1783. unity/Assets/Vtt/Resources/Dice/DiceNumeral.shader.meta — вспомогательный файл: DiceNumeral.shader (60 B)
-1784. unity/Assets/Vtt/Resources/Dice/DiceSurface.shader — вспомогательный файл: DiceSurface (3471 B)
-1785. unity/Assets/Vtt/Resources/Dice/DiceSurface.shader.meta — вспомогательный файл: DiceSurface.shader (60 B)
-1786. unity/Assets/Vtt/Resources/UI.meta — вспомогательный файл: UI (77 B)
-1787. unity/Assets/Vtt/Resources/UI/DejaVu-LICENSE.txt — документация или отчёт: DejaVu LICENSE (3859 B)
-1788. unity/Assets/Vtt/Resources/UI/DejaVu-LICENSE.txt.meta — вспомогательный файл: DejaVu LICENSE.txt (60 B)
-1789. unity/Assets/Vtt/Resources/UI/DejaVuSans.ttf — вспомогательный файл: DejaVuSans (759720 B)
-1790. unity/Assets/Vtt/Resources/UI/DejaVuSans.ttf.meta — вспомогательный файл: DejaVuSans.ttf (496 B)
-1791. unity/Assets/Vtt/Runtime.meta — вспомогательный файл: Runtime (172 B)
-1792. unity/Assets/Vtt/Runtime/AppearanceDocument.cs — вспомогательный файл: AppearanceDocument (3069 B)
-1793. unity/Assets/Vtt/Runtime/AppearanceDocument.cs.meta — вспомогательный файл: AppearanceDocument.cs (60 B)
-1794. unity/Assets/Vtt/Runtime/CharacterBodyPreview.cs — вспомогательный файл: CharacterBodyPreview (15702 B)
-1795. unity/Assets/Vtt/Runtime/CharacterBodyPreview.cs.meta — вспомогательный файл: CharacterBodyPreview.cs (60 B)
-1796. unity/Assets/Vtt/Runtime/CharacterCreation.cs — вспомогательный файл: CharacterCreation (11170 B)
-1797. unity/Assets/Vtt/Runtime/CharacterCreation.cs.meta — вспомогательный файл: CharacterCreation.cs (59 B)
-1798. unity/Assets/Vtt/Runtime/CharacterSheetRules.cs — вспомогательный файл: CharacterSheetRules (16794 B)
-1799. unity/Assets/Vtt/Runtime/CharacterSheetRules.cs.meta — вспомогательный файл: CharacterSheetRules.cs (59 B)
-1800. unity/Assets/Vtt/Runtime/CharacterStudioView.cs — вспомогательный файл: CharacterStudioView (4943 B)
-1801. unity/Assets/Vtt/Runtime/CharacterStudioView.cs.meta — вспомогательный файл: CharacterStudioView.cs (60 B)
-1802. unity/Assets/Vtt/Runtime/ClientPreferences.cs — вспомогательный файл: ClientPreferences (4479 B)
-1803. unity/Assets/Vtt/Runtime/ClientPreferences.cs.meta — вспомогательный файл: ClientPreferences.cs (59 B)
-1804. unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs — вспомогательный файл: CloudCharacterProtocol (6277 B)
-1805. unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs.meta — вспомогательный файл: CloudCharacterProtocol.cs (60 B)
-1806. unity/Assets/Vtt/Runtime/CommerceRules.cs — вспомогательный файл: CommerceRules (19387 B)
-1807. unity/Assets/Vtt/Runtime/CommerceRules.cs.meta — вспомогательный файл: CommerceRules.cs (60 B)
-1808. unity/Assets/Vtt/Runtime/DesktopUiSmoke.cs — вспомогательный файл: DesktopUiSmoke (10099 B)
-1809. unity/Assets/Vtt/Runtime/DesktopUiSmoke.cs.meta — вспомогательный файл: DesktopUiSmoke.cs (60 B)
-1810. unity/Assets/Vtt/Runtime/DiceGeometry.cs — вспомогательный файл: DiceGeometry (7902 B)
-1811. unity/Assets/Vtt/Runtime/DiceGeometry.cs.meta — вспомогательный файл: DiceGeometry.cs (60 B)
-1812. unity/Assets/Vtt/Runtime/DiceMotion.cs — вспомогательный файл: DiceMotion (1864 B)
-1813. unity/Assets/Vtt/Runtime/DiceMotion.cs.meta — вспомогательный файл: DiceMotion.cs (60 B)
-1814. unity/Assets/Vtt/Runtime/DiceRollRequest.cs — вспомогательный файл: DiceRollRequest (3635 B)
-1815. unity/Assets/Vtt/Runtime/DiceRollRequest.cs.meta — вспомогательный файл: DiceRollRequest.cs (60 B)
-1816. unity/Assets/Vtt/Runtime/DiceTable.cs — вспомогательный файл: DiceTable (31882 B)
-1817. unity/Assets/Vtt/Runtime/DiceTable.cs.meta — вспомогательный файл: DiceTable.cs (60 B)
-1818. unity/Assets/Vtt/Runtime/DiceTable.Trays.cs — вспомогательный файл: DiceTable.Trays (13501 B)
-1819. unity/Assets/Vtt/Runtime/DiceTable.Trays.cs.meta — вспомогательный файл: DiceTable.Trays.cs (60 B)
-1820. unity/Assets/Vtt/Runtime/DiceTentacles.cs — вспомогательный файл: DiceTentacles (6087 B)
-1821. unity/Assets/Vtt/Runtime/DiceTentacles.cs.meta — вспомогательный файл: DiceTentacles.cs (60 B)
-1822. unity/Assets/Vtt/Runtime/DiceTheme.cs — вспомогательный файл: DiceTheme (3343 B)
-1823. unity/Assets/Vtt/Runtime/DiceTheme.cs.meta — вспомогательный файл: DiceTheme.cs (60 B)
-1824. unity/Assets/Vtt/Runtime/DiceThemeGeometry.cs — вспомогательный файл: DiceThemeGeometry (7056 B)
-1825. unity/Assets/Vtt/Runtime/DiceThemeGeometry.cs.meta — вспомогательный файл: DiceThemeGeometry.cs (60 B)
-1826. unity/Assets/Vtt/Runtime/DiceTray.cs — вспомогательный файл: DiceTray (1313 B)
-1827. unity/Assets/Vtt/Runtime/DiceTray.cs.meta — вспомогательный файл: DiceTray.cs (60 B)
-1828. unity/Assets/Vtt/Runtime/ExplorerController.cs — вспомогательный файл: ExplorerController (5869 B)
-1829. unity/Assets/Vtt/Runtime/ExplorerController.cs.meta — вспомогательный файл: ExplorerController.cs (59 B)
-1830. unity/Assets/Vtt/Runtime/LegacyContentCatalog.cs — вспомогательный файл: LegacyContentCatalog (808 B)
-1831. unity/Assets/Vtt/Runtime/LegacyContentCatalog.cs.meta — вспомогательный файл: LegacyContentCatalog.cs (59 B)
-1832. unity/Assets/Vtt/Runtime/LegacyDocuments.cs — вспомогательный файл: LegacyDocuments (10525 B)
-1833. unity/Assets/Vtt/Runtime/LegacyDocuments.cs.meta — вспомогательный файл: LegacyDocuments.cs (59 B)
-1834. unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs — вспомогательный файл: LegacyMapPresenter (16116 B)
-1835. unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs.meta — вспомогательный файл: LegacyMapPresenter.cs (59 B)
-1836. unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs — вспомогательный файл: LegacyMigrationSmoke (5858 B)
-1837. unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs.meta — вспомогательный файл: LegacyMigrationSmoke.cs (59 B)
-1838. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs — вспомогательный файл: LegacySessionPanel.Account (19278 B)
-1839. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta — вспомогательный файл: LegacySessionPanel.Account.cs (60 B)
-1840. unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs — вспомогательный файл: LegacySessionPanel.Appearance (14833 B)
-1841. unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs.meta — вспомогательный файл: LegacySessionPanel.Appearance.cs (60 B)
-1842. unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs — вспомогательный файл: LegacySessionPanel.Branding (17059 B)
-1843. unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta — вспомогательный файл: LegacySessionPanel.Branding.cs (60 B)
-1844. unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs — вспомогательный файл: LegacySessionPanel.BrandSettings (12018 B)
-1845. unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta — вспомогательный файл: LegacySessionPanel.BrandSettings.cs (60 B)
-1846. unity/Assets/Vtt/Runtime/LegacySessionPanel.CharacterStudio.cs — вспомогательный файл: LegacySessionPanel.CharacterStudio (12270 B)
-1847. unity/Assets/Vtt/Runtime/LegacySessionPanel.CharacterStudio.cs.meta — вспомогательный файл: LegacySessionPanel.CharacterStudio.cs (60 B)
-1848. unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs — вспомогательный файл: LegacySessionPanel.Chat (11327 B)
-1849. unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs.meta — вспомогательный файл: LegacySessionPanel.Chat.cs (60 B)
-1850. unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs — вспомогательный файл: LegacySessionPanel.Commerce (18536 B)
-1851. unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs.meta — вспомогательный файл: LegacySessionPanel.Commerce.cs (60 B)
-1852. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs — вспомогательный файл: LegacySessionPanel.ContentManager (21214 B)
-1853. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs.meta — вспомогательный файл: LegacySessionPanel.ContentManager.cs (60 B)
-1854. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs — вспомогательный файл: LegacySessionPanel.ContentPreviews (6755 B)
-1855. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs.meta — вспомогательный файл: LegacySessionPanel.ContentPreviews.cs (60 B)
-1856. unity/Assets/Vtt/Runtime/LegacySessionPanel.cs — вспомогательный файл: LegacySessionPanel (9639 B)
-1857. unity/Assets/Vtt/Runtime/LegacySessionPanel.cs.meta — вспомогательный файл: LegacySessionPanel.cs (59 B)
-1858. unity/Assets/Vtt/Runtime/LegacySessionPanel.Desktop.cs — вспомогательный файл: LegacySessionPanel.Desktop (2053 B)
-1859. unity/Assets/Vtt/Runtime/LegacySessionPanel.Desktop.cs.meta — вспомогательный файл: LegacySessionPanel.Desktop.cs (60 B)
-1860. unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs — вспомогательный файл: LegacySessionPanel.Dice (12708 B)
-1861. unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs.meta — вспомогательный файл: LegacySessionPanel.Dice.cs (60 B)
-1862. unity/Assets/Vtt/Runtime/LegacySessionPanel.DiceControls.cs — вспомогательный файл: LegacySessionPanel.DiceControls (3513 B)
-1863. unity/Assets/Vtt/Runtime/LegacySessionPanel.DiceControls.cs.meta — вспомогательный файл: LegacySessionPanel.DiceControls.cs (60 B)
-1864. unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs — вспомогательный файл: LegacySessionPanel.FrontEnd (32514 B)
-1865. unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs.meta — вспомогательный файл: LegacySessionPanel.FrontEnd.cs (59 B)
-1866. unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs — вспомогательный файл: LegacySessionPanel.Moderation (16332 B)
-1867. unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs.meta — вспомогательный файл: LegacySessionPanel.Moderation.cs (60 B)
-1868. unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs — вспомогательный файл: LegacySessionPanel.Settings (9503 B)
-1869. unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs.meta — вспомогательный файл: LegacySessionPanel.Settings.cs (59 B)
-1870. unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs — вспомогательный файл: LegacySessionPanel.Sheet (28173 B)
-1871. unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs.meta — вспомогательный файл: LegacySessionPanel.Sheet.cs (59 B)
-1872. unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs — вспомогательный файл: LegacySessionPanel.SheetSkin (4221 B)
-1873. unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs.meta — вспомогательный файл: LegacySessionPanel.SheetSkin.cs (60 B)
-1874. unity/Assets/Vtt/Runtime/LegacySessionPanel.Touch.cs — вспомогательный файл: LegacySessionPanel.Touch (4441 B)
-1875. unity/Assets/Vtt/Runtime/LegacySessionPanel.Touch.cs.meta — вспомогательный файл: LegacySessionPanel.Touch.cs (60 B)
-1876. unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs — вспомогательный файл: LegacySessionPanel.Updates (13404 B)
-1877. unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs.meta — вспомогательный файл: LegacySessionPanel.Updates.cs (60 B)
-1878. unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopLibrary.cs — вспомогательный файл: LegacySessionPanel.WorkshopLibrary (2534 B)
-1879. unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopLibrary.cs.meta — вспомогательный файл: LegacySessionPanel.WorkshopLibrary.cs (60 B)
-1880. unity/Assets/Vtt/Runtime/link.xml — вспомогательный файл: link (628 B)
-1881. unity/Assets/Vtt/Runtime/link.xml.meta — вспомогательный файл: link.xml (60 B)
-1882. unity/Assets/Vtt/Runtime/MenuGesture.cs — вспомогательный файл: MenuGesture (1718 B)
-1883. unity/Assets/Vtt/Runtime/MenuGesture.cs.meta — вспомогательный файл: MenuGesture.cs (60 B)
-1884. unity/Assets/Vtt/Runtime/PrototypeSmoke.cs — вспомогательный файл: PrototypeSmoke (3139 B)
-1885. unity/Assets/Vtt/Runtime/PrototypeSmoke.cs.meta — вспомогательный файл: PrototypeSmoke.cs (59 B)
-1886. unity/Assets/Vtt/Runtime/UnityRelease.cs — вспомогательный файл: UnityRelease (5985 B)
-1887. unity/Assets/Vtt/Runtime/UnityRelease.cs.meta — вспомогательный файл: UnityRelease.cs (60 B)
-1888. unity/Assets/Vtt/Runtime/WorkshopRuntime.cs — вспомогательный файл: WorkshopRuntime (8198 B)
-1889. unity/Assets/Vtt/Runtime/WorkshopRuntime.cs.meta — вспомогательный файл: WorkshopRuntime.cs (60 B)
-1890. unity/Assets/Vtt/Runtime/WorkshopStore.cs — вспомогательный файл: WorkshopStore (34917 B)
-1891. unity/Assets/Vtt/Runtime/WorkshopStore.cs.meta — вспомогательный файл: WorkshopStore.cs (60 B)
-1892. unity/Assets/Vtt/Scenes.meta — вспомогательный файл: Scenes (172 B)
-1893. unity/Assets/Vtt/Scenes/Exploration.unity — вспомогательный файл: Exploration (49176 B)
-1894. unity/Assets/Vtt/Scenes/Exploration.unity.meta — вспомогательный файл: Exploration.unity (155 B)
-1895. unity/Assets/Vtt/Scenes/ImportedAdventure.unity — вспомогательный файл: ImportedAdventure (2328750 B)
-1896. unity/Assets/Vtt/Scenes/ImportedAdventure.unity.meta — вспомогательный файл: ImportedAdventure.unity (155 B)
-1897. unity/Assets/Vtt/Settings.meta — вспомогательный файл: Settings (172 B)
-1898. unity/Assets/Vtt/Settings/Explorer.mat — вспомогательный файл: Explorer (3799 B)
-1899. unity/Assets/Vtt/Settings/Explorer.mat.meta — вспомогательный файл: Explorer.mat (188 B)
-1900. unity/Assets/Vtt/Settings/ExplorerRenderer.asset — вспомогательный файл: ExplorerRenderer (1865 B)
-1901. unity/Assets/Vtt/Settings/ExplorerRenderer.asset.meta — вспомогательный файл: ExplorerRenderer.asset (189 B)
-1902. unity/Assets/Vtt/Settings/ExplorerURP.asset — вспомогательный файл: ExplorerURP (4690 B)
-1903. unity/Assets/Vtt/Settings/ExplorerURP.asset.meta — вспомогательный файл: ExplorerURP.asset (189 B)
-1904. unity/Assets/Vtt/Settings/Stone.mat — вспомогательный файл: Stone (3795 B)
-1905. unity/Assets/Vtt/Settings/Stone.mat.meta — вспомогательный файл: Stone.mat (188 B)
-1906. unity/Assets/Vtt/Settings/Wall.mat — вспомогательный файл: Wall (3793 B)
-1907. unity/Assets/Vtt/Settings/Wall.mat.meta — вспомогательный файл: Wall.mat (188 B)
-1908. unity/Assets/Vtt/Tests.meta — вспомогательный файл: Tests (172 B)
-1909. unity/Assets/Vtt/Tests/sheet-contract.json — данные/конфигурация: sheet contract (195912 B)
-1910. unity/Assets/Vtt/Tests/sheet-contract.json.meta — вспомогательный файл: sheet contract.json (158 B)
-1911. unity/ci/.gitignore — вспомогательный файл: .gitignore (14 B)
-1912. unity/ci/check_sheet_provenance.py — вспомогательный файл: check sheet provenance (2365 B)
-1913. unity/ci/cloud_release.py — вспомогательный файл: cloud release (14328 B)
-1914. unity/ci/measure_apk.py — вспомогательный файл: measure apk (5713 B)
-1915. unity/ci/promote_candidate.py — вспомогательный файл: promote candidate (5141 B)
-1916. unity/ci/publish_android_update.py — вспомогательный файл: publish android update (6493 B)
-1917. unity/ci/requirements.txt — документация или отчёт: requirements (21 B)
-1918. unity/ci/test_brand_visual_contract.py — вспомогательный файл: test brand visual contract (3012 B)
-1919. unity/ci/test_character_preview_contract.py — вспомогательный файл: test character preview contract (1354 B)
-1920. unity/ci/test_cloud_release.py — вспомогательный файл: test cloud release (11048 B)
-1921. unity/ci/test_content_registry_contract.py — вспомогательный файл: test content registry contract (1574 B)
-1922. unity/ci/test_launcher_aliases.py — вспомогательный файл: test launcher aliases (1007 B)
-1923. unity/ci/test_update_settings_contract.py — вспомогательный файл: test update settings contract (4439 B)
-1924. unity/ci/transfer-signing-secrets.ps1 — вспомогательный файл: transfer signing secrets (3449 B)
-1925. unity/ci/verify_bundle_output.py — вспомогательный файл: verify bundle output (1081 B)
-1926. unity/ci/verify_launcher_aliases.py — вспомогательный файл: verify launcher aliases (3703 B)
-1927. unity/ci/verify_public_workshop.py — вспомогательный файл: verify public workshop (6725 B)
-1928. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (5538 B)
-1929. unity/ci/workshop-tests/.gitignore — вспомогательный файл: .gitignore (10 B)
-1930. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (5460 B)
-1931. unity/ci/workshop-tests/AllModCollectionChecks.cs — вспомогательный файл: AllModCollectionChecks (5776 B)
-1932. unity/ci/workshop-tests/CollectionChecks.cs — вспомогательный файл: CollectionChecks (6368 B)
-1933. unity/ci/workshop-tests/CommerceChecks.cs — вспомогательный файл: CommerceChecks (4694 B)
-1934. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (37627 B)
-1935. unity/ci/workshop-tests/WorkshopTests.csproj — вспомогательный файл: WorkshopTests (1603 B)
-1936. unity/ContentSources~/catalog.full.json — данные/конфигурация: catalog.full (1259265 B)
-1937. unity/ContentSources~/cloud-copy-contracts.json — данные/конфигурация: cloud copy contracts (3613 B)
-1938. unity/ContentSources~/workshop-commerce/catalogs.json — данные/конфигурация: catalogs (91244 B)
-1939. unity/ContentSources~/workshop-commerce/contracts.json — данные/конфигурация: contracts (7885 B)
-1940. unity/evidence/exploration.png — текстура/изображение: exploration (119417 B)
-1941. unity/Installer/release-notes.md — документация или отчёт: release notes (1582 B)
-1942. unity/Installer/UnitySetup.nsi — вспомогательный файл: UnitySetup (3417 B)
-1943. unity/Packages/manifest.json — данные/конфигурация: manifest (609 B)
-1944. unity/Packages/packages-lock.json — данные/конфигурация: packages lock (6359 B)
-1945. unity/ProjectSettings/AudioManager.asset — вспомогательный файл: AudioManager (523 B)
-1946. unity/ProjectSettings/ClusterInputManager.asset — вспомогательный файл: ClusterInputManager (114 B)
-1947. unity/ProjectSettings/DynamicsManager.asset — вспомогательный файл: DynamicsManager (1574 B)
-1948. unity/ProjectSettings/EditorBuildSettings.asset — вспомогательный файл: EditorBuildSettings (401 B)
-1949. unity/ProjectSettings/EditorSettings.asset — вспомогательный файл: EditorSettings (1603 B)
-1950. unity/ProjectSettings/GraphicsSettings.asset — вспомогательный файл: GraphicsSettings (2615 B)
-1951. unity/ProjectSettings/InputManager.asset — вспомогательный файл: InputManager (9754 B)
-1952. unity/ProjectSettings/MemorySettings.asset — вспомогательный файл: MemorySettings (1226 B)
-1953. unity/ProjectSettings/MultiplayerManager.asset — вспомогательный файл: MultiplayerManager (232 B)
-1954. unity/ProjectSettings/NavMeshAreas.asset — вспомогательный файл: NavMeshAreas (1361 B)
-1955. unity/ProjectSettings/Physics2DSettings.asset — вспомогательный файл: Physics2DSettings (1862 B)
-1956. unity/ProjectSettings/PresetManager.asset — вспомогательный файл: PresetManager (146 B)
-1957. unity/ProjectSettings/ProjectSettings.asset — вспомогательный файл: ProjectSettings (22467 B)
-1958. unity/ProjectSettings/ProjectVersion.txt — документация или отчёт: ProjectVersion (85 B)
-1959. unity/ProjectSettings/QualitySettings.asset — вспомогательный файл: QualitySettings (9858 B)
-1960. unity/ProjectSettings/SceneTemplateSettings.json — данные/конфигурация: SceneTemplateSettings (3535 B)
-1961. unity/ProjectSettings/ShaderGraphSettings.asset — вспомогательный файл: ShaderGraphSettings (633 B)
-1962. unity/ProjectSettings/TagManager.asset — вспомогательный файл: TagManager (411 B)
-1963. unity/ProjectSettings/TimeManager.asset — вспомогательный файл: TimeManager (305 B)
-1964. unity/ProjectSettings/UnityConnectSettings.asset — вспомогательный файл: UnityConnectSettings (1063 B)
-1965. unity/ProjectSettings/VersionControlSettings.asset — вспомогательный файл: VersionControlSettings (172 B)
-1966. unity/ProjectSettings/VFXManager.asset — вспомогательный файл: VFXManager (525 B)
-1967. unity/PUBLIC_DELIVERY.json — данные/конфигурация: PUBLIC DELIVERY (1072 B)
-1968. unity/README.md — документация или отчёт: README (9382 B)
-1969. unity/release.ps1 — вспомогательный файл: release (7750 B)
-1970. unity/Tools/export_character.py — вспомогательный файл: export character (7410 B)
-1971. unity/Tools/export_cloud_copy.cjs — логический модуль: export cloud copy (1429 B)
-1972. unity/Tools/export_commerce.cjs — логический модуль: export commerce (2282 B)
-1973. unity/Tools/package_commerce.py — вспомогательный файл: package commerce (3643 B)
-1974. unity/Tools/split_workshop_content.py — вспомогательный файл: split workshop content (7629 B)
-1975. unity/Tools/sync_character_sheet.cjs — логический модуль: sync character sheet (11842 B)
-1976. unity/Tools/sync_legacy_content.cjs — логический модуль: sync legacy content (5736 B)
-1977. unity/VALIDATION.md — документация или отчёт: VALIDATION (32688 B)
-1978. unity/verify.ps1 — вспомогательный файл: verify (2809 B)
-1979. updates/beta.json — метаданные обновлений: beta (211 B)
-1980. updates/previous-stable.json — метаданные обновлений: previous stable (179808 B)
-1981. updates/README.md — документация или отчёт: README (233 B)
-1982. updates/stable.json — метаданные обновлений: stable (179809 B)
-1983. updates/unity-changelog.json — метаданные обновлений: unity changelog (45272 B)
-1984. updates/unity-experiment.json — метаданные обновлений: unity experiment (1259 B)
-1985. vignette_v2_sprite.png — текстура/изображение: vignette v2 sprite (1213593 B)
-1986. VTT_PROJECT_MANIFEST_V70.json — устаревший список V70, не актуален (44370 B)
-1987. wall_brick_red.png — текстура/изображение: wall brick red (111128 B)
-1988. wall_concrete.png — текстура/изображение: wall concrete (91074 B)
-1989. wall_half_timber.png — текстура/изображение: wall half timber (109537 B)
-1990. wall_marble_dark.png — текстура/изображение: wall marble dark (123621 B)
-1991. wall_marble_light.png — текстура/изображение: wall marble light (90457 B)
-1992. wall_moss_stone.png — текстура/изображение: wall moss stone (128985 B)
-1993. wall_old_plaster.png — текстура/изображение: wall old plaster (107725 B)
-1994. wall_plaster_dark.png — текстура/изображение: wall plaster dark (95153 B)
-1995. wall_plaster_light.png — текстура/изображение: wall plaster light (91767 B)
-1996. wall_plaster_panel.png — текстура/изображение: wall plaster panel (89722 B)
-1997. wall_slate.png — текстура/изображение: wall slate (103822 B)
-1998. wall_stone_dark.png — текстура/изображение: wall stone dark (120617 B)
-1999. wall_stone_light.png — текстура/изображение: wall stone light (127689 B)
-2000. wall_stone_masonry.png — текстура/изображение: wall stone masonry (129908 B)
-2001. wall_wallpaper.png — текстура/изображение: wall wallpaper (106442 B)
-2002. wall_white_plaster.png — текстура/изображение: wall white plaster (120869 B)
-2003. wall_wood_dark.png — текстура/изображение: wall wood dark (81144 B)
-2004. wall_wood_light.png — текстура/изображение: wall wood light (93079 B)
-2005. wallpapers/1.png — ассет графики/3D/интерфейса: 1 (1460744 B)
-2006. wallpapers/10.png — ассет графики/3D/интерфейса: 10 (1667723 B)
-2007. wallpapers/11.png — ассет графики/3D/интерфейса: 11 (1815959 B)
-2008. wallpapers/12.png — ассет графики/3D/интерфейса: 12 (1548677 B)
-2009. wallpapers/13.png — ассет графики/3D/интерфейса: 13 (1599093 B)
-2010. wallpapers/14.png — ассет графики/3D/интерфейса: 14 (1596513 B)
-2011. wallpapers/15.png — ассет графики/3D/интерфейса: 15 (233043 B)
-2012. wallpapers/16.png — ассет графики/3D/интерфейса: 16 (212684 B)
-2013. wallpapers/17.png — ассет графики/3D/интерфейса: 17 (1585122 B)
-2014. wallpapers/18.png — ассет графики/3D/интерфейса: 18 (2095852 B)
-2015. wallpapers/19.png — ассет графики/3D/интерфейса: 19 (8605503 B)
-2016. wallpapers/2.png — ассет графики/3D/интерфейса: 2 (1590206 B)
-2017. wallpapers/20.png — ассет графики/3D/интерфейса: 20 (1284815 B)
-2018. wallpapers/21.png — ассет графики/3D/интерфейса: 21 (179307 B)
-2019. wallpapers/22.png — ассет графики/3D/интерфейса: 22 (344279 B)
-2020. wallpapers/23.png — ассет графики/3D/интерфейса: 23 (210291 B)
-2021. wallpapers/24.png — ассет графики/3D/интерфейса: 24 (141215 B)
-2022. wallpapers/25.png — ассет графики/3D/интерфейса: 25 (160892 B)
-2023. wallpapers/26.png — ассет графики/3D/интерфейса: 26 (187259 B)
-2024. wallpapers/27.png — ассет графики/3D/интерфейса: 27 (213194 B)
-2025. wallpapers/28.png — ассет графики/3D/интерфейса: 28 (202417 B)
-2026. wallpapers/29.png — ассет графики/3D/интерфейса: 29 (166942 B)
-2027. wallpapers/3.png — ассет графики/3D/интерфейса: 3 (1662340 B)
-2028. wallpapers/30.png — ассет графики/3D/интерфейса: 30 (237556 B)
-2029. wallpapers/31.svg — ассет графики/3D/интерфейса: 31 (1181 B)
-2030. wallpapers/32.svg — ассет графики/3D/интерфейса: 32 (1417 B)
-2031. wallpapers/4.png — ассет графики/3D/интерфейса: 4 (1816114 B)
-2032. wallpapers/5.png — ассет графики/3D/интерфейса: 5 (1742466 B)
-2033. wallpapers/6.png — ассет графики/3D/интерфейса: 6 (1591016 B)
-2034. wallpapers/7.png — ассет графики/3D/интерфейса: 7 (1815665 B)
-2035. wallpapers/8.png — ассет графики/3D/интерфейса: 8 (1492730 B)
-2036. wallpapers/9.png — ассет графики/3D/интерфейса: 9 (1715179 B)
+1714. unity/Assets/Plugins/Android/CharacterDocumentActivity.java — вспомогательный файл: CharacterDocumentActivity (5415 B)
+1715. unity/Assets/Plugins/Android/CharacterDocumentActivity.java.meta — вспомогательный файл: CharacterDocumentActivity.java (60 B)
+1716. unity/Assets/Plugins/Android/DndSessionVault.java — вспомогательный файл: DndSessionVault (2333 B)
+1717. unity/Assets/Plugins/Android/DndSessionVault.java.meta — вспомогательный файл: DndSessionVault.java (60 B)
+1718. unity/Assets/Plugins/Android/UpdateProvider.java — вспомогательный файл: UpdateProvider (11429 B)
+1719. unity/Assets/Plugins/Android/UpdateProvider.java.meta — вспомогательный файл: UpdateProvider.java (60 B)
+1720. unity/Assets/StreamingAssets/Branding/Dragon20.png — текстура/изображение: Dragon20 (1284815 B)
+1721. unity/Assets/StreamingAssets/Branding/Splash19.png — текстура/изображение: Splash19 (8605503 B)
+1722. unity/Assets/StreamingAssets/Branding/Wallpaper16.jpg — текстура/изображение: Wallpaper16 (212684 B)
+1723. unity/Assets/UniversalRenderPipelineGlobalSettings.asset — вспомогательный файл: UniversalRenderPipelineGlobalSettings (25900 B)
+1724. unity/Assets/UniversalRenderPipelineGlobalSettings.asset.meta — вспомогательный файл: UniversalRenderPipelineGlobalSettings.asset (189 B)
+1725. unity/Assets/Vtt.meta — вспомогательный файл: Vtt (172 B)
+1726. unity/Assets/Vtt/Editor.meta — вспомогательный файл: Editor (172 B)
+1727. unity/Assets/Vtt/Editor/BrandingResumeValidation.cs — вспомогательный файл: BrandingResumeValidation (2971 B)
+1728. unity/Assets/Vtt/Editor/BrandingResumeValidation.cs.meta — вспомогательный файл: BrandingResumeValidation.cs (60 B)
+1729. unity/Assets/Vtt/Editor/BuildBranding.cs — вспомогательный файл: BuildBranding (2738 B)
+1730. unity/Assets/Vtt/Editor/BuildBranding.cs.meta — вспомогательный файл: BuildBranding.cs (60 B)
+1731. unity/Assets/Vtt/Editor/CharacterPreviewImport.cs — вспомогательный файл: CharacterPreviewImport (1433 B)
+1732. unity/Assets/Vtt/Editor/CharacterPreviewImport.cs.meta — вспомогательный файл: CharacterPreviewImport.cs (60 B)
+1733. unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs — вспомогательный файл: CharacterPreviewValidation (8132 B)
+1734. unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs.meta — вспомогательный файл: CharacterPreviewValidation.cs (60 B)
+1735. unity/Assets/Vtt/Editor/CharacterSheetValidation.cs — вспомогательный файл: CharacterSheetValidation (21197 B)
+1736. unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta — вспомогательный файл: CharacterSheetValidation.cs (59 B)
+1737. unity/Assets/Vtt/Editor/DiceBuildGate.cs — вспомогательный файл: DiceBuildGate (4583 B)
+1738. unity/Assets/Vtt/Editor/DiceBuildGate.cs.meta — вспомогательный файл: DiceBuildGate.cs (60 B)
+1739. unity/Assets/Vtt/Editor/DiceValidation.cs — вспомогательный файл: DiceValidation (40864 B)
+1740. unity/Assets/Vtt/Editor/DiceValidation.cs.meta — вспомогательный файл: DiceValidation.cs (60 B)
+1741. unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs — вспомогательный файл: LegacyMigrationSetup (10967 B)
+1742. unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta — вспомогательный файл: LegacyMigrationSetup.cs (59 B)
+1743. unity/Assets/Vtt/Editor/PrototypeSetup.cs — вспомогательный файл: PrototypeSetup (7704 B)
+1744. unity/Assets/Vtt/Editor/PrototypeSetup.cs.meta — вспомогательный файл: PrototypeSetup.cs (59 B)
+1745. unity/Assets/Vtt/Editor/UnityReleaseBuild.cs — вспомогательный файл: UnityReleaseBuild (16960 B)
+1746. unity/Assets/Vtt/Editor/UnityReleaseBuild.cs.meta — вспомогательный файл: UnityReleaseBuild.cs (60 B)
+1747. unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs — вспомогательный файл: WorkshopBundleBuild (3632 B)
+1748. unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs.meta — вспомогательный файл: WorkshopBundleBuild.cs (60 B)
+1749. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs — вспомогательный файл: WorkshopEditorValidation (26287 B)
+1750. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs.meta — вспомогательный файл: WorkshopEditorValidation.cs (60 B)
+1751. unity/Assets/Vtt/Resources.meta — вспомогательный файл: Resources (172 B)
+1752. unity/Assets/Vtt/Resources/Branding.meta — вспомогательный файл: Branding (172 B)
+1753. unity/Assets/Vtt/Resources/Branding/Dragon20.png — текстура/изображение: Dragon20 (1284815 B)
+1754. unity/Assets/Vtt/Resources/Branding/Dragon20.png.meta — вспомогательный файл: Dragon20.png (312 B)
+1755. unity/Assets/Vtt/Resources/Branding/Splash19.png — текстура/изображение: Splash19 (8605503 B)
+1756. unity/Assets/Vtt/Resources/Branding/Splash19.png.meta — вспомогательный файл: Splash19.png (312 B)
+1757. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg — текстура/изображение: Wallpaper16 (212684 B)
+1758. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta — вспомогательный файл: Wallpaper16.jpg (312 B)
+1759. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (46122 B)
+1760. unity/Assets/Vtt/Resources/Changelog.json.meta — вспомогательный файл: Changelog.json (158 B)
+1761. unity/Assets/Vtt/Resources/CharacterSheet.meta — вспомогательный файл: CharacterSheet (172 B)
+1762. unity/Assets/Vtt/Resources/CharacterSheet/catalog.json — данные/конфигурация: catalog (823381 B)
+1763. unity/Assets/Vtt/Resources/CharacterSheet/catalog.json.meta — вспомогательный файл: catalog.json (158 B)
+1764. unity/Assets/Vtt/Resources/CharacterStudio.meta — вспомогательный файл: CharacterStudio (77 B)
+1765. unity/Assets/Vtt/Resources/CharacterStudio/DefaultFemale.json — данные/конфигурация: DefaultFemale (3860 B)
+1766. unity/Assets/Vtt/Resources/CharacterStudio/DefaultFemale.json.meta — вспомогательный файл: DefaultFemale.json (60 B)
+1767. unity/Assets/Vtt/Resources/CharacterStudio/DefaultMale.json — данные/конфигурация: DefaultMale (3851 B)
+1768. unity/Assets/Vtt/Resources/CharacterStudio/DefaultMale.json.meta — вспомогательный файл: DefaultMale.json (60 B)
+1769. unity/Assets/Vtt/Resources/CharacterStudio/HumanBody.fbx — вспомогательный файл: HumanBody (6899052 B)
+1770. unity/Assets/Vtt/Resources/CharacterStudio/HumanBody.fbx.meta — вспомогательный файл: HumanBody.fbx (60 B)
+1771. unity/Assets/Vtt/Resources/CharacterStudio/LICENSE.ASSETS.md — документация или отчёт: LICENSE.ASSETS (6962 B)
+1772. unity/Assets/Vtt/Resources/CharacterStudio/LICENSE.ASSETS.md.meta — вспомогательный файл: LICENSE.ASSETS.md (60 B)
+1773. unity/Assets/Vtt/Resources/CharacterStudio/MorphCatalog.json — данные/конфигурация: MorphCatalog (2701 B)
+1774. unity/Assets/Vtt/Resources/CharacterStudio/MorphCatalog.json.meta — вспомогательный файл: MorphCatalog.json (60 B)
+1775. unity/Assets/Vtt/Resources/CharacterStudio/PreviewLit.mat — вспомогательный файл: PreviewLit (1027 B)
+1776. unity/Assets/Vtt/Resources/CharacterStudio/PreviewLit.mat.meta — вспомогательный файл: PreviewLit.mat (60 B)
+1777. unity/Assets/Vtt/Resources/CharacterStudio/PreviewStudio.shader — вспомогательный файл: PreviewStudio (2521 B)
+1778. unity/Assets/Vtt/Resources/CharacterStudio/PreviewStudio.shader.meta — вспомогательный файл: PreviewStudio.shader (204 B)
+1779. unity/Assets/Vtt/Resources/CharacterStudio/SkinFemale.png — текстура/изображение: SkinFemale (4391156 B)
+1780. unity/Assets/Vtt/Resources/CharacterStudio/SkinFemale.png.meta — вспомогательный файл: SkinFemale.png (585 B)
+1781. unity/Assets/Vtt/Resources/CharacterStudio/SkinMale.png — текстура/изображение: SkinMale (3693828 B)
+1782. unity/Assets/Vtt/Resources/CharacterStudio/SkinMale.png.meta — вспомогательный файл: SkinMale.png (585 B)
+1783. unity/Assets/Vtt/Resources/Dice.meta — вспомогательный файл: Dice (77 B)
+1784. unity/Assets/Vtt/Resources/Dice/DiceNumeral.shader — вспомогательный файл: DiceNumeral (1428 B)
+1785. unity/Assets/Vtt/Resources/Dice/DiceNumeral.shader.meta — вспомогательный файл: DiceNumeral.shader (60 B)
+1786. unity/Assets/Vtt/Resources/Dice/DiceSurface.shader — вспомогательный файл: DiceSurface (3471 B)
+1787. unity/Assets/Vtt/Resources/Dice/DiceSurface.shader.meta — вспомогательный файл: DiceSurface.shader (60 B)
+1788. unity/Assets/Vtt/Resources/UI.meta — вспомогательный файл: UI (77 B)
+1789. unity/Assets/Vtt/Resources/UI/DejaVu-LICENSE.txt — документация или отчёт: DejaVu LICENSE (3859 B)
+1790. unity/Assets/Vtt/Resources/UI/DejaVu-LICENSE.txt.meta — вспомогательный файл: DejaVu LICENSE.txt (60 B)
+1791. unity/Assets/Vtt/Resources/UI/DejaVuSans.ttf — вспомогательный файл: DejaVuSans (759720 B)
+1792. unity/Assets/Vtt/Resources/UI/DejaVuSans.ttf.meta — вспомогательный файл: DejaVuSans.ttf (496 B)
+1793. unity/Assets/Vtt/Runtime.meta — вспомогательный файл: Runtime (172 B)
+1794. unity/Assets/Vtt/Runtime/AppearanceDocument.cs — вспомогательный файл: AppearanceDocument (3069 B)
+1795. unity/Assets/Vtt/Runtime/AppearanceDocument.cs.meta — вспомогательный файл: AppearanceDocument.cs (60 B)
+1796. unity/Assets/Vtt/Runtime/CharacterBodyPreview.cs — вспомогательный файл: CharacterBodyPreview (15702 B)
+1797. unity/Assets/Vtt/Runtime/CharacterBodyPreview.cs.meta — вспомогательный файл: CharacterBodyPreview.cs (60 B)
+1798. unity/Assets/Vtt/Runtime/CharacterCreation.cs — вспомогательный файл: CharacterCreation (11170 B)
+1799. unity/Assets/Vtt/Runtime/CharacterCreation.cs.meta — вспомогательный файл: CharacterCreation.cs (59 B)
+1800. unity/Assets/Vtt/Runtime/CharacterFiles.cs — вспомогательный файл: CharacterFiles (4435 B)
+1801. unity/Assets/Vtt/Runtime/CharacterFiles.cs.meta — вспомогательный файл: CharacterFiles.cs (60 B)
+1802. unity/Assets/Vtt/Runtime/CharacterSheetRules.cs — вспомогательный файл: CharacterSheetRules (16794 B)
+1803. unity/Assets/Vtt/Runtime/CharacterSheetRules.cs.meta — вспомогательный файл: CharacterSheetRules.cs (59 B)
+1804. unity/Assets/Vtt/Runtime/CharacterStudioView.cs — вспомогательный файл: CharacterStudioView (4943 B)
+1805. unity/Assets/Vtt/Runtime/CharacterStudioView.cs.meta — вспомогательный файл: CharacterStudioView.cs (60 B)
+1806. unity/Assets/Vtt/Runtime/ClientPreferences.cs — вспомогательный файл: ClientPreferences (4479 B)
+1807. unity/Assets/Vtt/Runtime/ClientPreferences.cs.meta — вспомогательный файл: ClientPreferences.cs (59 B)
+1808. unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs — вспомогательный файл: CloudCharacterProtocol (6277 B)
+1809. unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs.meta — вспомогательный файл: CloudCharacterProtocol.cs (60 B)
+1810. unity/Assets/Vtt/Runtime/CommerceRules.cs — вспомогательный файл: CommerceRules (19387 B)
+1811. unity/Assets/Vtt/Runtime/CommerceRules.cs.meta — вспомогательный файл: CommerceRules.cs (60 B)
+1812. unity/Assets/Vtt/Runtime/DesktopUiSmoke.cs — вспомогательный файл: DesktopUiSmoke (14155 B)
+1813. unity/Assets/Vtt/Runtime/DesktopUiSmoke.cs.meta — вспомогательный файл: DesktopUiSmoke.cs (60 B)
+1814. unity/Assets/Vtt/Runtime/DiceGeometry.cs — вспомогательный файл: DiceGeometry (7902 B)
+1815. unity/Assets/Vtt/Runtime/DiceGeometry.cs.meta — вспомогательный файл: DiceGeometry.cs (60 B)
+1816. unity/Assets/Vtt/Runtime/DiceMotion.cs — вспомогательный файл: DiceMotion (1864 B)
+1817. unity/Assets/Vtt/Runtime/DiceMotion.cs.meta — вспомогательный файл: DiceMotion.cs (60 B)
+1818. unity/Assets/Vtt/Runtime/DiceRollRequest.cs — вспомогательный файл: DiceRollRequest (3635 B)
+1819. unity/Assets/Vtt/Runtime/DiceRollRequest.cs.meta — вспомогательный файл: DiceRollRequest.cs (60 B)
+1820. unity/Assets/Vtt/Runtime/DiceTable.cs — вспомогательный файл: DiceTable (31882 B)
+1821. unity/Assets/Vtt/Runtime/DiceTable.cs.meta — вспомогательный файл: DiceTable.cs (60 B)
+1822. unity/Assets/Vtt/Runtime/DiceTable.Trays.cs — вспомогательный файл: DiceTable.Trays (13501 B)
+1823. unity/Assets/Vtt/Runtime/DiceTable.Trays.cs.meta — вспомогательный файл: DiceTable.Trays.cs (60 B)
+1824. unity/Assets/Vtt/Runtime/DiceTentacles.cs — вспомогательный файл: DiceTentacles (6087 B)
+1825. unity/Assets/Vtt/Runtime/DiceTentacles.cs.meta — вспомогательный файл: DiceTentacles.cs (60 B)
+1826. unity/Assets/Vtt/Runtime/DiceTheme.cs — вспомогательный файл: DiceTheme (3343 B)
+1827. unity/Assets/Vtt/Runtime/DiceTheme.cs.meta — вспомогательный файл: DiceTheme.cs (60 B)
+1828. unity/Assets/Vtt/Runtime/DiceThemeGeometry.cs — вспомогательный файл: DiceThemeGeometry (7056 B)
+1829. unity/Assets/Vtt/Runtime/DiceThemeGeometry.cs.meta — вспомогательный файл: DiceThemeGeometry.cs (60 B)
+1830. unity/Assets/Vtt/Runtime/DiceTray.cs — вспомогательный файл: DiceTray (1313 B)
+1831. unity/Assets/Vtt/Runtime/DiceTray.cs.meta — вспомогательный файл: DiceTray.cs (60 B)
+1832. unity/Assets/Vtt/Runtime/ExplorerController.cs — вспомогательный файл: ExplorerController (5869 B)
+1833. unity/Assets/Vtt/Runtime/ExplorerController.cs.meta — вспомогательный файл: ExplorerController.cs (59 B)
+1834. unity/Assets/Vtt/Runtime/LegacyContentCatalog.cs — вспомогательный файл: LegacyContentCatalog (808 B)
+1835. unity/Assets/Vtt/Runtime/LegacyContentCatalog.cs.meta — вспомогательный файл: LegacyContentCatalog.cs (59 B)
+1836. unity/Assets/Vtt/Runtime/LegacyDocuments.cs — вспомогательный файл: LegacyDocuments (10525 B)
+1837. unity/Assets/Vtt/Runtime/LegacyDocuments.cs.meta — вспомогательный файл: LegacyDocuments.cs (59 B)
+1838. unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs — вспомогательный файл: LegacyMapPresenter (16116 B)
+1839. unity/Assets/Vtt/Runtime/LegacyMapPresenter.cs.meta — вспомогательный файл: LegacyMapPresenter.cs (59 B)
+1840. unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs — вспомогательный файл: LegacyMigrationSmoke (5858 B)
+1841. unity/Assets/Vtt/Runtime/LegacyMigrationSmoke.cs.meta — вспомогательный файл: LegacyMigrationSmoke.cs (59 B)
+1842. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs — вспомогательный файл: LegacySessionPanel.Account (19278 B)
+1843. unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta — вспомогательный файл: LegacySessionPanel.Account.cs (60 B)
+1844. unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs — вспомогательный файл: LegacySessionPanel.Appearance (14833 B)
+1845. unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs.meta — вспомогательный файл: LegacySessionPanel.Appearance.cs (60 B)
+1846. unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs — вспомогательный файл: LegacySessionPanel.Branding (17059 B)
+1847. unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta — вспомогательный файл: LegacySessionPanel.Branding.cs (60 B)
+1848. unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs — вспомогательный файл: LegacySessionPanel.BrandSettings (12323 B)
+1849. unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta — вспомогательный файл: LegacySessionPanel.BrandSettings.cs (60 B)
+1850. unity/Assets/Vtt/Runtime/LegacySessionPanel.CharacterFiles.cs — вспомогательный файл: LegacySessionPanel.CharacterFiles (5461 B)
+1851. unity/Assets/Vtt/Runtime/LegacySessionPanel.CharacterFiles.cs.meta — вспомогательный файл: LegacySessionPanel.CharacterFiles.cs (60 B)
+1852. unity/Assets/Vtt/Runtime/LegacySessionPanel.CharacterStudio.cs — вспомогательный файл: LegacySessionPanel.CharacterStudio (12270 B)
+1853. unity/Assets/Vtt/Runtime/LegacySessionPanel.CharacterStudio.cs.meta — вспомогательный файл: LegacySessionPanel.CharacterStudio.cs (60 B)
+1854. unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs — вспомогательный файл: LegacySessionPanel.Chat (11327 B)
+1855. unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs.meta — вспомогательный файл: LegacySessionPanel.Chat.cs (60 B)
+1856. unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs — вспомогательный файл: LegacySessionPanel.Commerce (18536 B)
+1857. unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs.meta — вспомогательный файл: LegacySessionPanel.Commerce.cs (60 B)
+1858. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs — вспомогательный файл: LegacySessionPanel.ContentManager (21214 B)
+1859. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs.meta — вспомогательный файл: LegacySessionPanel.ContentManager.cs (60 B)
+1860. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs — вспомогательный файл: LegacySessionPanel.ContentPreviews (6755 B)
+1861. unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs.meta — вспомогательный файл: LegacySessionPanel.ContentPreviews.cs (60 B)
+1862. unity/Assets/Vtt/Runtime/LegacySessionPanel.cs — вспомогательный файл: LegacySessionPanel (9639 B)
+1863. unity/Assets/Vtt/Runtime/LegacySessionPanel.cs.meta — вспомогательный файл: LegacySessionPanel.cs (59 B)
+1864. unity/Assets/Vtt/Runtime/LegacySessionPanel.Desktop.cs — вспомогательный файл: LegacySessionPanel.Desktop (2053 B)
+1865. unity/Assets/Vtt/Runtime/LegacySessionPanel.Desktop.cs.meta — вспомогательный файл: LegacySessionPanel.Desktop.cs (60 B)
+1866. unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs — вспомогательный файл: LegacySessionPanel.Dice (12708 B)
+1867. unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs.meta — вспомогательный файл: LegacySessionPanel.Dice.cs (60 B)
+1868. unity/Assets/Vtt/Runtime/LegacySessionPanel.DiceControls.cs — вспомогательный файл: LegacySessionPanel.DiceControls (3513 B)
+1869. unity/Assets/Vtt/Runtime/LegacySessionPanel.DiceControls.cs.meta — вспомогательный файл: LegacySessionPanel.DiceControls.cs (60 B)
+1870. unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs — вспомогательный файл: LegacySessionPanel.FrontEnd (32959 B)
+1871. unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs.meta — вспомогательный файл: LegacySessionPanel.FrontEnd.cs (59 B)
+1872. unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs — вспомогательный файл: LegacySessionPanel.Moderation (16332 B)
+1873. unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs.meta — вспомогательный файл: LegacySessionPanel.Moderation.cs (60 B)
+1874. unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs — вспомогательный файл: LegacySessionPanel.Settings (9503 B)
+1875. unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs.meta — вспомогательный файл: LegacySessionPanel.Settings.cs (59 B)
+1876. unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs — вспомогательный файл: LegacySessionPanel.Sheet (28314 B)
+1877. unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs.meta — вспомогательный файл: LegacySessionPanel.Sheet.cs (59 B)
+1878. unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs — вспомогательный файл: LegacySessionPanel.SheetSkin (4221 B)
+1879. unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs.meta — вспомогательный файл: LegacySessionPanel.SheetSkin.cs (60 B)
+1880. unity/Assets/Vtt/Runtime/LegacySessionPanel.Touch.cs — вспомогательный файл: LegacySessionPanel.Touch (4476 B)
+1881. unity/Assets/Vtt/Runtime/LegacySessionPanel.Touch.cs.meta — вспомогательный файл: LegacySessionPanel.Touch.cs (60 B)
+1882. unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs — вспомогательный файл: LegacySessionPanel.Updates (13404 B)
+1883. unity/Assets/Vtt/Runtime/LegacySessionPanel.Updates.cs.meta — вспомогательный файл: LegacySessionPanel.Updates.cs (60 B)
+1884. unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopLibrary.cs — вспомогательный файл: LegacySessionPanel.WorkshopLibrary (2534 B)
+1885. unity/Assets/Vtt/Runtime/LegacySessionPanel.WorkshopLibrary.cs.meta — вспомогательный файл: LegacySessionPanel.WorkshopLibrary.cs (60 B)
+1886. unity/Assets/Vtt/Runtime/link.xml — вспомогательный файл: link (628 B)
+1887. unity/Assets/Vtt/Runtime/link.xml.meta — вспомогательный файл: link.xml (60 B)
+1888. unity/Assets/Vtt/Runtime/MenuGesture.cs — вспомогательный файл: MenuGesture (1718 B)
+1889. unity/Assets/Vtt/Runtime/MenuGesture.cs.meta — вспомогательный файл: MenuGesture.cs (60 B)
+1890. unity/Assets/Vtt/Runtime/PrototypeSmoke.cs — вспомогательный файл: PrototypeSmoke (3139 B)
+1891. unity/Assets/Vtt/Runtime/PrototypeSmoke.cs.meta — вспомогательный файл: PrototypeSmoke.cs (59 B)
+1892. unity/Assets/Vtt/Runtime/UnityRelease.cs — вспомогательный файл: UnityRelease (5985 B)
+1893. unity/Assets/Vtt/Runtime/UnityRelease.cs.meta — вспомогательный файл: UnityRelease.cs (60 B)
+1894. unity/Assets/Vtt/Runtime/WorkshopRuntime.cs — вспомогательный файл: WorkshopRuntime (8198 B)
+1895. unity/Assets/Vtt/Runtime/WorkshopRuntime.cs.meta — вспомогательный файл: WorkshopRuntime.cs (60 B)
+1896. unity/Assets/Vtt/Runtime/WorkshopStore.cs — вспомогательный файл: WorkshopStore (34917 B)
+1897. unity/Assets/Vtt/Runtime/WorkshopStore.cs.meta — вспомогательный файл: WorkshopStore.cs (60 B)
+1898. unity/Assets/Vtt/Scenes.meta — вспомогательный файл: Scenes (172 B)
+1899. unity/Assets/Vtt/Scenes/Exploration.unity — вспомогательный файл: Exploration (49176 B)
+1900. unity/Assets/Vtt/Scenes/Exploration.unity.meta — вспомогательный файл: Exploration.unity (155 B)
+1901. unity/Assets/Vtt/Scenes/ImportedAdventure.unity — вспомогательный файл: ImportedAdventure (2328750 B)
+1902. unity/Assets/Vtt/Scenes/ImportedAdventure.unity.meta — вспомогательный файл: ImportedAdventure.unity (155 B)
+1903. unity/Assets/Vtt/Settings.meta — вспомогательный файл: Settings (172 B)
+1904. unity/Assets/Vtt/Settings/Explorer.mat — вспомогательный файл: Explorer (3799 B)
+1905. unity/Assets/Vtt/Settings/Explorer.mat.meta — вспомогательный файл: Explorer.mat (188 B)
+1906. unity/Assets/Vtt/Settings/ExplorerRenderer.asset — вспомогательный файл: ExplorerRenderer (1865 B)
+1907. unity/Assets/Vtt/Settings/ExplorerRenderer.asset.meta — вспомогательный файл: ExplorerRenderer.asset (189 B)
+1908. unity/Assets/Vtt/Settings/ExplorerURP.asset — вспомогательный файл: ExplorerURP (4690 B)
+1909. unity/Assets/Vtt/Settings/ExplorerURP.asset.meta — вспомогательный файл: ExplorerURP.asset (189 B)
+1910. unity/Assets/Vtt/Settings/Stone.mat — вспомогательный файл: Stone (3795 B)
+1911. unity/Assets/Vtt/Settings/Stone.mat.meta — вспомогательный файл: Stone.mat (188 B)
+1912. unity/Assets/Vtt/Settings/Wall.mat — вспомогательный файл: Wall (3793 B)
+1913. unity/Assets/Vtt/Settings/Wall.mat.meta — вспомогательный файл: Wall.mat (188 B)
+1914. unity/Assets/Vtt/Tests.meta — вспомогательный файл: Tests (172 B)
+1915. unity/Assets/Vtt/Tests/sheet-contract.json — данные/конфигурация: sheet contract (195912 B)
+1916. unity/Assets/Vtt/Tests/sheet-contract.json.meta — вспомогательный файл: sheet contract.json (158 B)
+1917. unity/ci/.gitignore — вспомогательный файл: .gitignore (14 B)
+1918. unity/ci/check_sheet_provenance.py — вспомогательный файл: check sheet provenance (2365 B)
+1919. unity/ci/cloud_release.py — вспомогательный файл: cloud release (14328 B)
+1920. unity/ci/measure_apk.py — вспомогательный файл: measure apk (5713 B)
+1921. unity/ci/promote_candidate.py — вспомогательный файл: promote candidate (5141 B)
+1922. unity/ci/publish_android_update.py — вспомогательный файл: publish android update (6493 B)
+1923. unity/ci/requirements.txt — документация или отчёт: requirements (21 B)
+1924. unity/ci/test_brand_visual_contract.py — вспомогательный файл: test brand visual contract (3012 B)
+1925. unity/ci/test_character_preview_contract.py — вспомогательный файл: test character preview contract (1354 B)
+1926. unity/ci/test_cloud_release.py — вспомогательный файл: test cloud release (11048 B)
+1927. unity/ci/test_content_registry_contract.py — вспомогательный файл: test content registry contract (1574 B)
+1928. unity/ci/test_launcher_aliases.py — вспомогательный файл: test launcher aliases (1007 B)
+1929. unity/ci/test_update_settings_contract.py — вспомогательный файл: test update settings contract (4439 B)
+1930. unity/ci/transfer-signing-secrets.ps1 — вспомогательный файл: transfer signing secrets (3449 B)
+1931. unity/ci/verify_bundle_output.py — вспомогательный файл: verify bundle output (1081 B)
+1932. unity/ci/verify_launcher_aliases.py — вспомогательный файл: verify launcher aliases (4390 B)
+1933. unity/ci/verify_public_workshop.py — вспомогательный файл: verify public workshop (6725 B)
+1934. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (5538 B)
+1935. unity/ci/workshop-tests/.gitignore — вспомогательный файл: .gitignore (10 B)
+1936. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (5460 B)
+1937. unity/ci/workshop-tests/AllModCollectionChecks.cs — вспомогательный файл: AllModCollectionChecks (5776 B)
+1938. unity/ci/workshop-tests/CollectionChecks.cs — вспомогательный файл: CollectionChecks (6368 B)
+1939. unity/ci/workshop-tests/CommerceChecks.cs — вспомогательный файл: CommerceChecks (4694 B)
+1940. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (39670 B)
+1941. unity/ci/workshop-tests/WorkshopTests.csproj — вспомогательный файл: WorkshopTests (1672 B)
+1942. unity/ContentSources~/catalog.full.json — данные/конфигурация: catalog.full (1259265 B)
+1943. unity/ContentSources~/cloud-copy-contracts.json — данные/конфигурация: cloud copy contracts (3613 B)
+1944. unity/ContentSources~/workshop-commerce/catalogs.json — данные/конфигурация: catalogs (91244 B)
+1945. unity/ContentSources~/workshop-commerce/contracts.json — данные/конфигурация: contracts (7885 B)
+1946. unity/evidence/exploration.png — текстура/изображение: exploration (119417 B)
+1947. unity/Installer/release-notes.md — документация или отчёт: release notes (1582 B)
+1948. unity/Installer/UnitySetup.nsi — вспомогательный файл: UnitySetup (3417 B)
+1949. unity/Packages/manifest.json — данные/конфигурация: manifest (609 B)
+1950. unity/Packages/packages-lock.json — данные/конфигурация: packages lock (6359 B)
+1951. unity/ProjectSettings/AudioManager.asset — вспомогательный файл: AudioManager (523 B)
+1952. unity/ProjectSettings/ClusterInputManager.asset — вспомогательный файл: ClusterInputManager (114 B)
+1953. unity/ProjectSettings/DynamicsManager.asset — вспомогательный файл: DynamicsManager (1574 B)
+1954. unity/ProjectSettings/EditorBuildSettings.asset — вспомогательный файл: EditorBuildSettings (401 B)
+1955. unity/ProjectSettings/EditorSettings.asset — вспомогательный файл: EditorSettings (1603 B)
+1956. unity/ProjectSettings/GraphicsSettings.asset — вспомогательный файл: GraphicsSettings (2615 B)
+1957. unity/ProjectSettings/InputManager.asset — вспомогательный файл: InputManager (9754 B)
+1958. unity/ProjectSettings/MemorySettings.asset — вспомогательный файл: MemorySettings (1226 B)
+1959. unity/ProjectSettings/MultiplayerManager.asset — вспомогательный файл: MultiplayerManager (232 B)
+1960. unity/ProjectSettings/NavMeshAreas.asset — вспомогательный файл: NavMeshAreas (1361 B)
+1961. unity/ProjectSettings/Physics2DSettings.asset — вспомогательный файл: Physics2DSettings (1862 B)
+1962. unity/ProjectSettings/PresetManager.asset — вспомогательный файл: PresetManager (146 B)
+1963. unity/ProjectSettings/ProjectSettings.asset — вспомогательный файл: ProjectSettings (22467 B)
+1964. unity/ProjectSettings/ProjectVersion.txt — документация или отчёт: ProjectVersion (85 B)
+1965. unity/ProjectSettings/QualitySettings.asset — вспомогательный файл: QualitySettings (9858 B)
+1966. unity/ProjectSettings/SceneTemplateSettings.json — данные/конфигурация: SceneTemplateSettings (3535 B)
+1967. unity/ProjectSettings/ShaderGraphSettings.asset — вспомогательный файл: ShaderGraphSettings (633 B)
+1968. unity/ProjectSettings/TagManager.asset — вспомогательный файл: TagManager (411 B)
+1969. unity/ProjectSettings/TimeManager.asset — вспомогательный файл: TimeManager (305 B)
+1970. unity/ProjectSettings/UnityConnectSettings.asset — вспомогательный файл: UnityConnectSettings (1063 B)
+1971. unity/ProjectSettings/VersionControlSettings.asset — вспомогательный файл: VersionControlSettings (172 B)
+1972. unity/ProjectSettings/VFXManager.asset — вспомогательный файл: VFXManager (525 B)
+1973. unity/PUBLIC_DELIVERY.json — данные/конфигурация: PUBLIC DELIVERY (1072 B)
+1974. unity/README.md — документация или отчёт: README (9382 B)
+1975. unity/release.ps1 — вспомогательный файл: release (7750 B)
+1976. unity/Tools/export_character.py — вспомогательный файл: export character (7410 B)
+1977. unity/Tools/export_cloud_copy.cjs — логический модуль: export cloud copy (1429 B)
+1978. unity/Tools/export_commerce.cjs — логический модуль: export commerce (2282 B)
+1979. unity/Tools/package_commerce.py — вспомогательный файл: package commerce (3643 B)
+1980. unity/Tools/split_workshop_content.py — вспомогательный файл: split workshop content (7629 B)
+1981. unity/Tools/sync_character_sheet.cjs — логический модуль: sync character sheet (11842 B)
+1982. unity/Tools/sync_legacy_content.cjs — логический модуль: sync legacy content (5736 B)
+1983. unity/VALIDATION.md — документация или отчёт: VALIDATION (32688 B)
+1984. unity/verify.ps1 — вспомогательный файл: verify (2809 B)
+1985. updates/beta.json — метаданные обновлений: beta (211 B)
+1986. updates/previous-stable.json — метаданные обновлений: previous stable (179808 B)
+1987. updates/README.md — документация или отчёт: README (233 B)
+1988. updates/stable.json — метаданные обновлений: stable (179809 B)
+1989. updates/unity-changelog.json — метаданные обновлений: unity changelog (46122 B)
+1990. updates/unity-experiment.json — метаданные обновлений: unity experiment (1259 B)
+1991. vignette_v2_sprite.png — текстура/изображение: vignette v2 sprite (1213593 B)
+1992. VTT_PROJECT_MANIFEST_V70.json — устаревший список V70, не актуален (44370 B)
+1993. wall_brick_red.png — текстура/изображение: wall brick red (111128 B)
+1994. wall_concrete.png — текстура/изображение: wall concrete (91074 B)
+1995. wall_half_timber.png — текстура/изображение: wall half timber (109537 B)
+1996. wall_marble_dark.png — текстура/изображение: wall marble dark (123621 B)
+1997. wall_marble_light.png — текстура/изображение: wall marble light (90457 B)
+1998. wall_moss_stone.png — текстура/изображение: wall moss stone (128985 B)
+1999. wall_old_plaster.png — текстура/изображение: wall old plaster (107725 B)
+2000. wall_plaster_dark.png — текстура/изображение: wall plaster dark (95153 B)
+2001. wall_plaster_light.png — текстура/изображение: wall plaster light (91767 B)
+2002. wall_plaster_panel.png — текстура/изображение: wall plaster panel (89722 B)
+2003. wall_slate.png — текстура/изображение: wall slate (103822 B)
+2004. wall_stone_dark.png — текстура/изображение: wall stone dark (120617 B)
+2005. wall_stone_light.png — текстура/изображение: wall stone light (127689 B)
+2006. wall_stone_masonry.png — текстура/изображение: wall stone masonry (129908 B)
+2007. wall_wallpaper.png — текстура/изображение: wall wallpaper (106442 B)
+2008. wall_white_plaster.png — текстура/изображение: wall white plaster (120869 B)
+2009. wall_wood_dark.png — текстура/изображение: wall wood dark (81144 B)
+2010. wall_wood_light.png — текстура/изображение: wall wood light (93079 B)
+2011. wallpapers/1.png — ассет графики/3D/интерфейса: 1 (1460744 B)
+2012. wallpapers/10.png — ассет графики/3D/интерфейса: 10 (1667723 B)
+2013. wallpapers/11.png — ассет графики/3D/интерфейса: 11 (1815959 B)
+2014. wallpapers/12.png — ассет графики/3D/интерфейса: 12 (1548677 B)
+2015. wallpapers/13.png — ассет графики/3D/интерфейса: 13 (1599093 B)
+2016. wallpapers/14.png — ассет графики/3D/интерфейса: 14 (1596513 B)
+2017. wallpapers/15.png — ассет графики/3D/интерфейса: 15 (233043 B)
+2018. wallpapers/16.png — ассет графики/3D/интерфейса: 16 (212684 B)
+2019. wallpapers/17.png — ассет графики/3D/интерфейса: 17 (1585122 B)
+2020. wallpapers/18.png — ассет графики/3D/интерфейса: 18 (2095852 B)
+2021. wallpapers/19.png — ассет графики/3D/интерфейса: 19 (8605503 B)
+2022. wallpapers/2.png — ассет графики/3D/интерфейса: 2 (1590206 B)
+2023. wallpapers/20.png — ассет графики/3D/интерфейса: 20 (1284815 B)
+2024. wallpapers/21.png — ассет графики/3D/интерфейса: 21 (179307 B)
+2025. wallpapers/22.png — ассет графики/3D/интерфейса: 22 (344279 B)
+2026. wallpapers/23.png — ассет графики/3D/интерфейса: 23 (210291 B)
+2027. wallpapers/24.png — ассет графики/3D/интерфейса: 24 (141215 B)
+2028. wallpapers/25.png — ассет графики/3D/интерфейса: 25 (160892 B)
+2029. wallpapers/26.png — ассет графики/3D/интерфейса: 26 (187259 B)
+2030. wallpapers/27.png — ассет графики/3D/интерфейса: 27 (213194 B)
+2031. wallpapers/28.png — ассет графики/3D/интерфейса: 28 (202417 B)
+2032. wallpapers/29.png — ассет графики/3D/интерфейса: 29 (166942 B)
+2033. wallpapers/3.png — ассет графики/3D/интерфейса: 3 (1662340 B)
+2034. wallpapers/30.png — ассет графики/3D/интерфейса: 30 (237556 B)
+2035. wallpapers/31.svg — ассет графики/3D/интерфейса: 31 (1181 B)
+2036. wallpapers/32.svg — ассет графики/3D/интерфейса: 32 (1417 B)
+2037. wallpapers/4.png — ассет графики/3D/интерфейса: 4 (1816114 B)
+2038. wallpapers/5.png — ассет графики/3D/интерфейса: 5 (1742466 B)
+2039. wallpapers/6.png — ассет графики/3D/интерфейса: 6 (1591016 B)
+2040. wallpapers/7.png — ассет графики/3D/интерфейса: 7 (1815665 B)
+2041. wallpapers/8.png — ассет графики/3D/интерфейса: 8 (1492730 B)
+2042. wallpapers/9.png — ассет графики/3D/интерфейса: 9 (1715179 B)
 
 РЕЕСТР СТАТИЧЕСКИ ОБНАРУЖЕННЫХ ИМЁН
 
@@ -2076,7 +2082,7 @@ abName — №0655
 AbortController — №1190
 above — №0062 (+ 2 других файлов)
 absent — №0669
-absolute — №1976
+absolute — №1982
 absorbed — №0656 (+ 1 других файлов)
 ac — №0062 (+ 25 других файлов)
 ACADEMIES — №0873
@@ -2379,7 +2385,7 @@ bag — №1179
 bagAnchor — №0059
 bagCenter — №0059
 bagRings — №0059
-baked — №1976
+baked — №1982
 balanceAfterBarter — №1254
 balanceAfterBuy — №1254
 BAM — №0631
@@ -2936,7 +2942,7 @@ context — №0656 (+ 12 других файлов)
 contextBridge — №0888
 contexts — №1160 (+ 1 других файлов)
 contract — №0780
-contracts — №1976
+contracts — №1982
 control — №0064 (+ 1 других файлов)
 controller — №0654 (+ 2 других файлов)
 controls — №0064 (+ 1 других файлов)
@@ -2945,7 +2951,7 @@ converted — №0082 (+ 1 других файлов)
 cooldown — №1156
 cooledAttack — №1159
 cooling — №1159
-copied — №1976
+copied — №1982
 COPPER — №0800
 copperPerElectrum — №0791
 copperPerGold — №0791
@@ -3209,10 +3215,10 @@ denLabel — №0064
 denOpacity — №0063
 dense — №1369
 denValues — №0063
-dependency — №1976
+dependency — №1982
 depth — №0062 (+ 4 других файлов)
 deputy — №1152
-derived — №1976
+derived — №1982
 derivedAssets — №0072
 desc — №0671 (+ 7 других файлов)
 descBox — №0625 (+ 2 других файлов)
@@ -3830,7 +3836,7 @@ gem — №0819
 gender — №0063 (+ 7 других файлов)
 generated — №1269 (+ 1 других файлов)
 generatedHarvest — №1269
-generatedPath — №1976
+generatedPath — №1982
 generation — №0654
 GENERIC_SPECIALTIES — №0671
 geo — №0060 (+ 24 других файлов)
@@ -4140,7 +4146,7 @@ immuneCharm — №0780
 immuneFire — №1158
 immuneUntil — №0656
 immunity — №0642
-importDocument — №1976
+importDocument — №1982
 imported — №1202
 improved — №0804
 inCombat — №0642
@@ -4600,7 +4606,7 @@ manifestUrl — №0843
 manual — №1166 (+ 1 других файлов)
 map — №0062 (+ 25 других файлов)
 Map — №1200 (+ 5 других файлов)
-mapPaths — №1976
+mapPaths — №1982
 mapped — №0780
 mapping — №0062 (+ 1 других файлов)
 maps — №0872 (+ 1 других файлов)
@@ -4755,7 +4761,7 @@ modDisplay — №0773 (+ 1 других файлов)
 mode — №0071 (+ 21 других файлов)
 modeButtons — №0773
 model — №0807 (+ 2 других файлов)
-models — №1976
+models — №1982
 modeRadio — №0648
 modes — №1237 (+ 2 других файлов)
 modeSelect — №0792
@@ -5552,7 +5558,7 @@ ratio — №0074 (+ 3 других файлов)
 rats — №0062
 raw — №0061 (+ 32 других файлов)
 rawCat — №0803
-rawDestination — №1976
+rawDestination — №1982
 rawItems — №0837
 rawParts — №0656
 rawRadial — №0063
@@ -5669,7 +5675,7 @@ repCfg — №0062
 repeatBtn — №0083
 replace — №0642 (+ 1 других файлов)
 replacement — №1220
-repo — №1976
+repo — №1982
 report — №0794 (+ 10 других файлов)
 repSelect — №0064
 reptileCoreCache — №0062
@@ -5919,7 +5925,7 @@ schoolHero — №1239
 schoolSave — №1239
 schoolText — №0837
 scLower — №0837
-scope — №1971
+scope — №1977
 scoped — №0649
 score — №0062 (+ 8 других файлов)
 scores — №0687 (+ 3 других файлов)
@@ -6153,7 +6159,7 @@ SOURCE_TAG — №0671 (+ 1 других файлов)
 sourceArmor — №0794
 sourceCache — №0854
 sourceCheck — №0812
-sourceCommit — №1975
+sourceCommit — №1981
 sourceCount — №0827
 sourceGroups — №0701
 sourceHashes — №1347 (+ 1 других файлов)
@@ -6493,7 +6499,7 @@ tarotSave — №0656
 tarotScene — №0656
 tarotTurnId — №0774
 TASKS — №0859
-tavern — №1976
+tavern — №1982
 tb — №0809
 tc — №0780 (+ 1 других файлов)
 team — №0812
@@ -6519,7 +6525,7 @@ textColor — №0773
 TextDecoder — №1162 (+ 21 других файлов)
 textSpan — №0773
 texture — №0070 (+ 3 других файлов)
-textures — №1976
+textures — №1982
 th — №0074 (+ 1 других файлов)
 theftRef — №0820
 theme — №0833
@@ -6902,7 +6908,7 @@ wild — №0631 (+ 1 других файлов)
 willActivate — №0656
 willingTargetIds — №0820
 win — №0887 (+ 5 других файлов)
-window — №1976
+window — №1982
 wingAngle — №0062
 wis — №0629 (+ 11 других файлов)
 wisMod — №0625 (+ 1 других файлов)
@@ -8580,7 +8586,7 @@ cart — №0068
 cartographer — №0669 (+ 5 других файлов)
 cartographyQuality — №0672
 case — №0649 (+ 2 других файлов)
-cases — №1971
+cases — №1977
 castAsRitual — №0814
 caster — №0656 (+ 3 других файлов)
 casterId — №0820 (+ 2 других файлов)
@@ -9674,7 +9680,7 @@ extraSkillChoice — №0780
 extraSuture — №0810
 extraTargetPerSlotAbove1 — №0780
 extraTargets — №0780
-extraTrigger — №1972
+extraTrigger — №1978
 extraTurns — №0814
 extraUnarmedAfterTwoOldOneTwo — №0780
 extraUse — №0780 (+ 1 других файлов)
@@ -10468,7 +10474,7 @@ iconId — №0789 (+ 1 других файлов)
 id — №0062 (+ 200 других файлов)
 idempotent — №0866
 identifyEffect — №0780
-identity — №1971
+identity — №1977
 identityDistortion — №0630
 ids — №0059 (+ 2 других файлов)
 idx — №0074
@@ -11271,7 +11277,7 @@ mode — №0060 (+ 17 других файлов)
 model — №0071 (+ 2 других файлов)
 modelFamily — №0067
 modelLoc — №0074
-models — №1976
+models — №1982
 modes — №0829
 modifier — №0802 (+ 5 других файлов)
 modifierAtLevel20 — №0830
@@ -12834,7 +12840,7 @@ selectedTokenId — №0627
 selectedTool — №0072
 selectedWallTexture — №0072
 selection — №0078
-self — №1971
+self — №1977
 selfAdvantage — №0828
 selfDamage — №0649 (+ 4 других файлов)
 selfDamageType — №0780
@@ -13128,7 +13134,7 @@ soulToyConversion — №0810
 source — №0059 (+ 113 других файлов)
 SOURCE — №0667
 SOURCE_TAG — №0671
-sourceCommit — №1976
+sourceCommit — №1982
 sourceDead — №0870
 sourceDisplacementMax — №1209
 sourceDisplacementMean — №1209
@@ -13561,7 +13567,7 @@ targetTurns — №0642
 targetType — №0814
 tarotActorRef — №0819
 tarotCoin — №0819
-tarotDamageTotals — №1971
+tarotDamageTotals — №1977
 tarotEffects — №1190
 tarotKnowledge — №1190 (+ 1 других файлов)
 tarotLastStartedTurn — №1190 (+ 1 других файлов)
@@ -13691,9 +13697,9 @@ tokenList — №1306 (+ 2 других файлов)
 tokens — №0072 (+ 28 других файлов)
 tombGuardian — №0780
 tool — №0627 (+ 20 других файлов)
-toolAliases — №1972
+toolAliases — №1978
 toolBonus — №0809
-toolLabels — №1972
+toolLabels — №1978
 toolMastery — №0819
 toolName — №1159
 toolProficiencies — №0625 (+ 2 других файлов)
@@ -14220,235 +14226,238 @@ dndContentEnabled — №0662
 --text-main — №0838
 --text-muted — №0838
 
---- Python/Java идентификаторы (606) ---
+--- Python/Java идентификаторы (617) ---
 __DND_APP_BOOT_READY — №0050
 __name__ — №0005 (+ 14 других файлов)
 a — №0049 (+ 3 других файлов)
 aa — №0049
-accessor — №1970
+accessor — №1976
 action — №1391 (+ 4 других файлов)
 active — №0049 (+ 2 других файлов)
 activeFile — №0049
 activeRoot — №0050
 activeVersion — №0049
 activity — №0049
-actor — №1923
-actual — №1918
-add_leaf_bones — №1970
-alch — №1973
-ALIAS — №1714
+actor — №1929
+actual — №1924
+add_leaf_bones — №1976
+alch — №1979
+ALIAS — №1716
 aliases — №0049 (+ 1 других файлов)
-aligned — №1913
-alt — №1974
+aligned — №1919
+alt — №1980
 android — №1402
-androidPackage — №1915
+androidPackage — №1921
 animationClips — №1344
 ap — №1351
-apk — №1716 (+ 2 других файлов)
+apk — №1718 (+ 2 других файлов)
 apkBytes — №0049 (+ 2 других файлов)
 apkCompressedBytes — №1346
 apkSha256 — №1394 (+ 1 других файлов)
 app — №1402
 app_path — №1402
 APP_VERSION — №1402
-apply_unit_scale — №1970
+apply_unit_scale — №1976
 approved — №0005
-archive — №1913
+archive — №1919
 archives — №1391
 area — №1344
 arenas — №0005
 args — №1344 (+ 9 других файлов)
-armatures — №1970
+armatures — №1976
 artifacts — №0007 (+ 2 других файлов)
 artwork — №1346
-assets — №1974 (+ 1 других файлов)
-at — №1970
-attr — №1926
+assets — №1980 (+ 1 других файлов)
+at — №1976
+attr — №1932
 attributes — №1344
-attrs — №1926
+attrs — №1932
 av — №0049
 axis — №1344
-axis_forward — №1970
-axis_up — №1970
+axis_forward — №1976
+axis_up — №1976
 b — №0049 (+ 7 других файлов)
-backup — №1918
-backup_hash — №1918
-badging — №1913 (+ 1 других файлов)
-bake_anim — №1970
-base — №1973 (+ 1 других файлов)
-base_classes — №1974
-base_feat_ids — №1974
-base_races — №1974
-baselineInstall — №1920
+backup — №1924
+backup_hash — №1924
+badging — №1919 (+ 1 других файлов)
+bake_anim — №1976
+base — №1979 (+ 1 других файлов)
+base_classes — №1980
+base_feat_ids — №1980
+base_races — №1980
+baselineInstall — №1926
 baseUrl — №0049
 bb — №0049
-before — №1716
+before — №1718
 binary — №1344 (+ 1 других файлов)
 blob — №0005
 blobs — №0007
-bodies — №1970
+bodies — №1976
 bones — №1344
 branch — №1345
 BRANCH — №0005 (+ 2 других файлов)
-BRAND — №1918
+BRAND — №1924
 buf — №0049
-buffer — №1344
+buffer — №1344 (+ 1 других файлов)
 build — №1346
 build_run — №0005 (+ 1 других файлов)
-build_script — №1923
+build_script — №1929
 buildRoots — №1345
 buildRun — №0005
-bundled — №1923
-bundled_history — №1916
-bundledCreationIds — №1914
+bundled — №1929
+bundled_history — №1922
+bundledCreationIds — №1920
 bv — №0049
 bytes — №0005 (+ 8 других файлов)
 c — №0049 (+ 6 других файлов)
 cache — №0049
 cacheBytes — №0049
 cacheKey — №0049
-candidate — №1920
-candidate_run — №1916
+candidate — №1926
+candidate_run — №1922
 candidates — №0049 (+ 1 других файлов)
 canonical — №0049
-capture — №1913 (+ 1 других файлов)
+capture — №1919 (+ 1 других файлов)
 capture_output — №0005
 catalog — №1391 (+ 2 других файлов)
-catalogs — №1914
+catalogs — №1920
 category — №1400
-cert — №1913 (+ 1 других файлов)
-CERT — №1913 (+ 1 других файлов)
+cert — №1919 (+ 1 других файлов)
+CERT — №1919 (+ 1 других файлов)
 certificate — №0005
-changes — №1716
-channel — №1915
-channels — №1970
-chatEditResult — №1716
+changes — №1718
+channel — №1921
+channels — №1976
+characters — №1718
+chatEditResult — №1718
 checksums — №0005
 children — №0049
 choices — №1351 (+ 2 других файлов)
 chunk — №1344
-ci — №1920
-cipher — №1714
-ciphertext — №1714
-client — №1918
+ci — №1926
+cipher — №1716
+ciphertext — №1716
+client — №1924
 code — №1402 (+ 3 других файлов)
-Code — №1913 (+ 1 других файлов)
+Code — №1919 (+ 1 других файлов)
 codeCache — №0049
 codeCacheBytes — №0049
-codes — №1923
-color — №1974
+codes — №1929
+color — №1980
 component — №0049
-components — №1716
-compressed — №1914
-conclusion — №1920
+components — №1718
+compressed — №1920
+conclusion — №1926
 connectedComponents — №1344
-content — №1974
+content — №1980
 context — №0049
-converted — №1912
-coordinates — №1970
-count — №1344 (+ 2 других файлов)
+converted — №1918
+coordinates — №1976
+count — №1344 (+ 3 других файлов)
 counts — №1344 (+ 1 других файлов)
-craft — №1973
+craft — №1979
 created — №0007
 creation — №1394
-crlf — №1912
+crlf — №1918
 current — №1402 (+ 2 других файлов)
 cwd — №1345 (+ 1 других файлов)
 d — №1350 (+ 2 других файлов)
-data — №0005 (+ 10 других файлов)
+data — №0005 (+ 11 других файлов)
 dataBytes — №0049
 dataRoot — №0049
 default — №1351 (+ 2 других файлов)
 defaultFile — №0049
-defaultInterfaceOrientation — №1923
+defaultInterfaceOrientation — №1929
 degenerateTriangles — №1344
-delta — №1970
+delta — №1976
 dependencies — №1345
-deps — №1973
+deps — №1979
 descriptor — №0005 (+ 1 других файлов)
-desktopUiSmoke — №1920
+desktopUiSmoke — №1926
 dest — №0007 (+ 1 других файлов)
 destination — №0005 (+ 1 других файлов)
 detected — №1351
-deviceQa — №1914
-dialog — №1716
+deviceQa — №1920
+dialog — №1718
 digest — №0005 (+ 4 других файлов)
-dir — №1913
+dir — №1919
+directory — №1714
 dirs — №0049
-dklen — №1913
+dklen — №1919
 dndvtt_update — №0049
-doc — №1970 (+ 4 других файлов)
+doc — №1976 (+ 4 других файлов)
 document — №1344 (+ 1 других файлов)
+documents — №1932
 downloadedBytes — №0049
 dtype — №1344 (+ 1 других файлов)
-dump — №1922
+dump — №1928
 duplicates — №1345
 edges — №1344 (+ 1 других файлов)
 editorMorphs — №1344
-element — №1926
+element — №1932
 embeddedMorphChannels — №1344
 enabled — №0049 (+ 1 других файлов)
 encoding — №0005 (+ 10 других файлов)
-encrypted — №1913 (+ 1 других файлов)
+encrypted — №1919 (+ 1 других файлов)
 ensure_ascii — №0005 (+ 13 других файлов)
 entries — №1392 (+ 3 других файлов)
 entry — №0049 (+ 5 других файлов)
 env — №0007 (+ 1 других файлов)
 environment — №1394
-error — №1970
+error — №1976
 errors — №1345 (+ 1 других файлов)
-event — №1920
+event — №1926
 evidence — №0005
 EXCLUDE_DIRS — №1400
 executor — №0049
 exist_ok — №0005 (+ 10 других файлов)
 existing — №0005 (+ 1 других файлов)
 expected — №0005 (+ 4 других файлов)
-expected_bones — №1970
+expected_bones — №1976
 expected_cert — №0005
-expected_coordinates — №1970
-expected_extents — №1970
+expected_coordinates — №1976
+expected_extents — №1976
 expected_name — №0005
-expected_shapes — №1970
-expected_triangles — №1970
+expected_shapes — №1976
+expected_triangles — №1976
 expectedBytes — №0049
 expectedHash — №0049
-experimental — №1927
+experimental — №1933
 experiments — №0005
 export_apply — №1391
 export_format — №1391
 ext — №1351 (+ 1 других файлов)
-extents — №1970
+extents — №1976
 external_guids — №1345
 f — №0049 (+ 1 других файлов)
 faces — №1344
 failed — №0007
-fbx — №1970
-feats — №1974
+fbx — №1976
+feats — №1980
 feed — №0005 (+ 2 других файлов)
-female — №1970
-file — №0049 (+ 3 других файлов)
+female — №1976
+file — №0049 (+ 4 других файлов)
 filepath — №1391 (+ 1 других файлов)
 files — №0007 (+ 9 других файлов)
 filesBytes — №0049
-FIXTURE — №1912
-flags — №1716 (+ 1 других файлов)
+FIXTURE — №1918
+flags — №1718 (+ 1 других файлов)
 flush — №0005
-folder — №1915 (+ 1 других файлов)
-found — №1918
+folder — №1921 (+ 1 других файлов)
+found — №1924
 fp — №1392
-frontend — №1918 (+ 1 других файлов)
-fs — №1974
-full — №1974
-full_name — №1920
+frontend — №1924 (+ 1 других файлов)
+fs — №1980
+full — №1980
+full_name — №1926
 GENERATED — №1400
-generator — №1714
+generator — №1716
 git_sha — №0005
-GITHUB_EVENT_NAME — №1920
-GITHUB_REF — №1920
-GITHUB_REPOSITORY — №1920
-GITHUB_SHA — №1920
-glb — №1970
+GITHUB_EVENT_NAME — №1926
+GITHUB_REF — №1926
+GITHUB_REPOSITORY — №1926
+GITHUB_SHA — №1926
+glb — №1976
 goToTab — №0050
 gradle — №1402
 gradle_path — №1402
@@ -14457,59 +14466,61 @@ guids — №1345
 gx — №1350
 gy — №1350
 h — №1351 (+ 3 других файлов)
-head_branch — №1920
-head_repository — №1920
-head_sha — №1920
-header — №1913
+head_branch — №1926
+head_repository — №1926
+head_sha — №1926
+header — №1919
 headers — №0005
 healthy — №0050
 height — №0005 (+ 2 других файлов)
 help — №1402
 history — №0005 (+ 1 других файлов)
 history_path — №0005 (+ 2 других файлов)
-home — №1918
+home — №1924
 i — №0049 (+ 2 других файлов)
 iconId — №0049
 id — №0049 (+ 4 других файлов)
 ids — №1344
 image — №1350
 images — №0005
-imported — №1970
+imported — №1976
 in — №0049
 indent — №0005 (+ 15 других файлов)
 index — №0005
 indexComponentType — №1344
 info — №0049
-ings — №1973
-input — №1716
-installedPayloadHashes — №1920
-intent — №1716
+ings — №1979
+input — №1714 (+ 1 других файлов)
+installedPayloadHashes — №1926
+intent — №1714 (+ 1 других файлов)
 inv — №1346
-isolatedProfileAndBackupPreserved — №1920
+isolatedProfileAndBackupPreserved — №1926
 item — №0005 (+ 4 других файлов)
-item_catalogs — №1914
-iv — №1714
-jb — №1970
-jobs — №1915 (+ 2 других файлов)
-json_size — №1970
+item_catalogs — №1920
+iv — №1716
+jb — №1976
+jobs — №1921 (+ 2 других файлов)
+json — №1718
+json_size — №1976
 k — №1391
 keepPrevious — №0049
 key — №1346 (+ 3 других файлов)
-keys — №1974
+keys — №1980
 kind — №0005 (+ 6 других файлов)
 landscapeActive — №0050
 latest — №0005 (+ 1 других файлов)
-launchers — №1926
-legacy — №1716 (+ 1 других файлов)
+launchers — №1932
+legacy — №1718 (+ 1 других файлов)
 len — №0049
 length — №0049 (+ 2 других файлов)
+LIMIT — №1714
 limitations — №1345
 lines — №1391
 link — №1391 (+ 1 других файлов)
-live — №1923
+live — №1929
 live_feed — №0005
 loader — №0050
-local_path — №1916
+local_path — №1922
 lower — №0049
 m — №1345 (+ 8 других файлов)
 main — №1345 (+ 1 других файлов)
@@ -14519,161 +14530,166 @@ MANIFEST_PATHS — №1400
 manifestUrl — №0049
 marker — №1391 (+ 1 других файлов)
 materials — №1344 (+ 1 других файлов)
-max_coordinate_error — №1970
-max_workers — №1927
-merge_vertices — №1970
-merged — №1970
-mesh_smooth_type — №1970
+max_coordinate_error — №1976
+max_workers — №1933
+merge_vertices — №1976
+merged — №1976
+mesh_smooth_type — №1976
 meshes — №1391 (+ 1 других файлов)
 meshMetadata — №1344
-meta — №1970 (+ 1 других файлов)
+meta — №1976 (+ 1 других файлов)
 metavar — №1402
-method — №1913
+method — №1919
 migrated — №1345
-minimalContentVerified — №1914
-missing — №1913
+minimalContentVerified — №1920
+missing — №1919
 missing_ok — №1391 (+ 1 других файлов)
-mode — №1914
+mode — №1920
 model — №1345
-modern — №1920
+modern — №1926
 module — №0007
 morphNames — №1344
 n — №0049 (+ 4 других файлов)
 N — №1350
 name — №0005 (+ 9 других файлов)
-names — №1970 (+ 2 других файлов)
+names — №1976 (+ 2 других файлов)
 native — №1346
 nativeSeedValidated — №0049
-new_manifest — №1916
-newCode — №1716
+new_manifest — №1922
+newCode — №1718
 next — №0049 (+ 1 других файлов)
 noBackup — №0049
 noBackupBytes — №0049
-node — №1926
-nodes — №1926
-nonce — №1913
+node — №1932
+nodes — №1932
+nonce — №1919
 nonFiniteValues — №1344
-normalized — №1912
+normalized — №1918
 note — №1394 (+ 1 других файлов)
-notes — №1915 (+ 1 других файлов)
+notes — №1921 (+ 1 других файлов)
 notes_file — №0005 (+ 1 других файлов)
 o — №0049
-object_types — №1970
+object_types — №1976
 objects — №1391 (+ 2 других файлов)
 offset — №0005 (+ 1 других файлов)
-old — №1914
-oldCode — №1716
-oldUnity10005ApkBytes — №1914
-omittedNonRenderingPngBytes — №1914
+old — №1920
+oldCode — №1718
+oldUnity10005ApkBytes — №1920
+omittedNonRenderingPngBytes — №1920
+operation — №1714
 optional — №1346
-optional_names — №1914
+optional_names — №1920
 original — №0007 (+ 3 других файлов)
-ORIGINAL_BLOBS — №1918
-original_chunks — №1914
-originalBrandingBytesVerified — №1914
-originalBrandingPixelsVerified — №1914
+ORIGINAL_BLOBS — №1924
+original_chunks — №1920
+originalBrandingBytesVerified — №1920
+originalBrandingPixelsVerified — №1920
 out — №0049 (+ 7 других файлов)
-OUT — №1970
+OUT — №1976
+output — №1714
 p — №1345 (+ 8 других файлов)
 package — №1402
-PACKAGE — №1913 (+ 1 других файлов)
-packaged — №1914
-packaged_chunks — №1914
-packaged_image — №1914
-packageId — №1716
+PACKAGE — №1919 (+ 1 других файлов)
+packaged — №1920
+packaged_chunks — №1920
+packaged_image — №1920
+packageId — №1718
 packageVersion — №0049
 packed — №1346
 parent — №0049 (+ 2 других файлов)
 parents — №0007 (+ 11 других файлов)
 parser — №1344 (+ 6 других файлов)
-part — №1973
+part — №1979
 parts — №1344
-passed — №1915
-password — №1913
-patch — №1916
+passed — №1921
+password — №1919
+patch — №1922
 path — №0005 (+ 9 других файлов)
-path_mode — №1970
+path_mode — №1976
 pathId — №1394
 paths — №1345 (+ 1 других файлов)
-payload — №1912 (+ 1 других файлов)
+payload — №1918 (+ 1 других файлов)
 pending — №0049
-per_page — №1915
-phb — №1974
-physical — №1926
-physicalAndroidQa — №1913
-picture — №1716
+per_page — №1921
+permissions — №1932
+phb — №1980
+physical — №1932
+physicalAndroidQa — №1919
+pick — №1714
+PICK — №1714
+picture — №1718
 pixels — №1344 (+ 1 других файлов)
 pkg — №1402
 pkg_path — №1402
-plaintext — №1913
+plaintext — №1919
 platform — №0005 (+ 1 других файлов)
-player_settings — №1923
+player_settings — №1929
 pm — №0049 (+ 1 других файлов)
-png — №1716
+png — №1718
 pores — №1350
-position — №1914
-position_view — №1970
+position — №1920
+position_view — №1976
 positions — №1344 (+ 1 других файлов)
 prefix — №0007 (+ 3 других файлов)
 prefs — №0049 (+ 1 других файлов)
-present — №1925
-preset — №1919
-preview_root — №1927
-preview_rows — №1927
-PreviewCacheLimit — №1921
+present — №1931
+preset — №1925
+preview_root — №1933
+preview_rows — №1933
+PreviewCacheLimit — №1927
 previewRoot — №0049
-previews — №1921
+previews — №1927
 previous — №0005 (+ 4 других файлов)
 previousDir — №0049
 previousRequestedOrientation — №0050
-primitive — №1970
+primitive — №1976
 primitives — №1344
-prior — №1916
-probe — №1913
-props — №1914
-propTextureCount — №1914
-propTextureDimensions — №1914
+prior — №1922
+probe — №1919
+props — №1920
+propTextureCount — №1920
+propTextureDimensions — №1920
 provenance — №1346
-PUBLISHED_APK_SHA — №1913
+PUBLISHED_APK_SHA — №1919
 publisher — №0006 (+ 1 других файлов)
 pushed — №0007
-qa — №1915 (+ 1 других файлов)
+qa — №1921 (+ 1 других файлов)
 queue — №1345
-quoted — №1926
+quoted — №1932
 raw — №0049 (+ 3 других файлов)
 rawBounds — №1344
 reach — №1350
 received — №0049
 record — №1394
 records — №1391
-reductionBytes — №1914
-reductionPercent — №1914
-reference — №1926
+reductionBytes — №1920
+reductionPercent — №1920
+reference — №1932
 references — №1345
-refs — №1922 (+ 1 других файлов)
-reinstall — №1920
+refs — №1928 (+ 1 других файлов)
+reinstall — №1926
 rel — №1400
 relative — №1391
-release — №1923
-release_exists — №1916
-remote — №1923
-removed_art_bytes — №1914
+release — №1929
+release_exists — №1922
+remote — №1929
+removed_art_bytes — №1920
 render_digest — №0005
 render_folder — №0005
 REPO — №0005 (+ 2 других файлов)
 report — №0005 (+ 5 других файлов)
 request — №0005 (+ 1 других файлов)
 required — №0005 (+ 12 других файлов)
-resources — №1926
+resources — №1932
 restore — №0050
-result — №1346 (+ 6 других файлов)
+result — №1346 (+ 7 других файлов)
 return_counts — №1344
 return_inverse — №1344
-return_value — №1920
+return_value — №1926
 returncode — №0005 (+ 1 других файлов)
 reverse — №1346 (+ 1 других файлов)
-rig — №1970
-rigs — №1970
+rig — №1976
+rigs — №1976
 rng — №1350
 root — №0007 (+ 14 других файлов)
 ROOT — №1344 (+ 10 других файлов)
@@ -14683,125 +14699,126 @@ roots — №1344 (+ 1 других файлов)
 rough — №1350
 row — №1345 (+ 1 других файлов)
 rows — №1346 (+ 3 других файлов)
-run — №1915 (+ 1 других файлов)
-run_data — №1916
-RUNNER_TEMP — №1920
-runtime — №1920
+run — №1921 (+ 1 других файлов)
+run_data — №1922
+RUNNER_TEMP — №1926
+runtime — №1926
 RUNTIME_MANIFEST — №1400
-runtimeSmoke — №1920
+runtimeSmoke — №1926
 s — №0049 (+ 1 других файлов)
-scene — №1920
+scene — №1926
 schema — №1344 (+ 2 других файлов)
-script — №1974
+script — №1980
 sdk — №0005 (+ 1 других файлов)
 seamDuplicates — №1344
 seen — №1345 (+ 3 других файлов)
 selected — №0049 (+ 1 других файлов)
 selectedIndex — №0049
-send — №1716
+send — №1718
 separators — №1392 (+ 3 других файлов)
 serializedBytes — №1394
-settings — №1913 (+ 2 других файлов)
-settings_hub — №1923
-settingsCategory — №1923
+settings — №1919 (+ 2 других файлов)
+settings_hub — №1929
+settingsCategory — №1929
 sha — №0007 (+ 1 других файлов)
 sha256 — №0005 (+ 5 других файлов)
-shape — №1970
-shortcuts — №1716
-side_effect — №1920
-signer — №1916
+shape — №1976
+shortcuts — №1718
+side_effect — №1926
+signer — №1922
 signers — №0005
-signingCertificateSha256 — №1913
-sigs — №1716
-size — №1914 (+ 2 других файлов)
+signingCertificateSha256 — №1919
+sigs — №1718
+size — №1920 (+ 2 других файлов)
 skins — №1344
 skipped — №1391
-slot — №1716
-slug — №1974
-source — №0007 (+ 4 других файлов)
-SOURCE — №1921
+slot — №1718
+slug — №1980
+source — №0007 (+ 5 других файлов)
+SOURCE — №1927
 source_commit — №0005 (+ 2 других файлов)
-source_image — №1914
+source_image — №1920
 source_paths — №1345
 sourceCommit — №0005 (+ 1 других файлов)
 sourceRefs — №1345
-sources — №1912
-sparse — №1970
+sources — №1918
+sparse — №1976
 spec — №0007 (+ 3 других файлов)
 src — №0049
-SRC — №1970
+SRC — №1976
 stack — №0049 (+ 1 других файлов)
-stage — №1913 (+ 1 других файлов)
+stage — №1919 (+ 1 других файлов)
 staged — №0049
 stageRoot — №0049
 standalone — №1391
-start — №1970
+start — №1976
 state — №0049
-status — №1913 (+ 2 других файлов)
-stderr — №1913 (+ 1 других файлов)
-stdout — №1916
-store — №1714 (+ 2 других файлов)
+status — №1919 (+ 2 других файлов)
+stderr — №1919 (+ 1 других файлов)
+stdout — №1922
+store — №1716 (+ 2 других файлов)
 strides — №1344
 sums — №0005
-surfaces — №1974
-t — №1922 (+ 1 других файлов)
+surfaces — №1980
+t — №1928 (+ 1 других файлов)
 tag — №0005 (+ 2 других файлов)
-target — №0049 (+ 6 других файлов)
+target — №0049 (+ 7 других файлов)
 targets — №0007
 temp — №1391
 text — №0005 (+ 7 других файлов)
 texts — №1345
-textured — №1927
+textured — №1933
 textureFormat — №1394
 textures — №1346
-themes — №1927
+themes — №1933
 ti — №0049
 timeout — №0005 (+ 1 других файлов)
 title — №0050
-tools — №1916
+token — №1714
+tools — №1922
 topology — №1344
-total — №0049
+total — №0049 (+ 1 других файлов)
 totalBytes — №0049
 totalFiles — №0049
 tracked — №1345
-trays — №1927
+trays — №1933
 triangles — №1344
 type — №0049 (+ 10 других файлов)
 typeCounts — №1394
-ui — №1923
-unique — №1974
+ui — №1929
+unique — №1980
 uniquePositions — №1344
 unit — №0049
 units — №0049
-UNITY_ANDROID_KEYSTORE_BASE64 — №1920
-UNITY_CI_ARTIFACT_PASSWORD — №1920
-UNITY_EMAIL — №1920
-UNITY_LICENSE — №1920
-UNITY_PASSWORD — №1920
-UNITY_SERIAL — №1920
+UNITY_ANDROID_KEYSTORE_BASE64 — №1926
+UNITY_CI_ARTIFACT_PASSWORD — №1926
+UNITY_EMAIL — №1926
+UNITY_LICENSE — №1926
+UNITY_PASSWORD — №1926
+UNITY_SERIAL — №1926
 unityGuidEdges — №1345
 unityPyVersion — №1394
-unknownFilePreserved — №1920
+unknownFilePreserved — №1926
 updateBytes — №0049
 updater — №0050 (+ 1 других файлов)
 updateRoot — №0049
-upgrade — №1920
-uri — №1345 (+ 1 других файлов)
+upgrade — №1926
+uri — №1345 (+ 2 других файлов)
 url — №0005 (+ 4 других файлов)
-use_anim — №1970
-use_empty — №1970
+use_anim — №1976
+use_empty — №1976
 use_global — №1391
-use_mesh_modifiers — №1970
+use_mesh_modifiers — №1976
 use_selection — №1391 (+ 1 других файлов)
 uv — №1344
 uvOutsideUnitSquare — №1344
 uvRange — №1344
-validate — №1913
+validate — №1919
 value — №0049
 verbosity — №0006 (+ 1 других файлов)
 verified — №0005 (+ 1 других файлов)
 version — №0005 (+ 6 других файлов)
-Version — №1913 (+ 1 других файлов)
+Version — №1919 (+ 1 других файлов)
 VERSION — №1400
 versionCode — №0007 (+ 3 других файлов)
 versionName — №0049 (+ 2 других файлов)
@@ -14810,7 +14827,7 @@ versionsBytes — №0049
 vertices — №1344
 view — №1344 (+ 1 других файлов)
 visited — №0049
-vm — №1974
+vm — №1980
 VTT_PROJECT_MANIFEST_V70 — №1392 (+ 1 других файлов)
 webView — №0050
 weights — №1344
@@ -14819,48 +14836,48 @@ weldedBoundaryEdges — №1344
 weldedNonManifoldEdges — №1344
 weldTolerance — №1344
 width — №0005 (+ 2 других файлов)
-window — №1974
-windows — №1920
-windowsFiles — №1913
+window — №1980
+windows — №1926
+windowsFiles — №1919
 z — №1402 (+ 1 других файлов)
 zeroWeightVertices — №1344
-zipCompressedBrandingBytes — №1914
-zipCompressedNativeBytes — №1914
-zipCompressedUnityDataBytes — №1914
+zipCompressedBrandingBytes — №1920
+zipCompressedNativeBytes — №1920
+zipCompressedUnityDataBytes — №1920
 
 --- JSON поля (1206) ---
-_builderBaseStats — №1760 (+ 2 других файлов)
+_builderBaseStats — №1762 (+ 2 других файлов)
 $schema — №1018
-abilities — №1760 (+ 2 других файлов)
+abilities — №1762 (+ 2 других файлов)
 abyss — №1085
-ac — №1760 (+ 3 других файлов)
-acBase — №1909 (+ 1 других файлов)
-accepted — №1909
-acFormula — №1909 (+ 1 других файлов)
-Acid — №1938
-acidResistance — №1760 (+ 2 других файлов)
-acrobatics — №1760 (+ 2 других файлов)
+ac — №1762 (+ 3 других файлов)
+acBase — №1915 (+ 1 других файлов)
+accepted — №1915
+acFormula — №1915 (+ 1 других файлов)
+Acid — №1944
+acidResistance — №1762 (+ 2 других файлов)
+acrobatics — №1762 (+ 2 других файлов)
 action — №0758 (+ 2 других файлов)
 activationCommit — №1081 (+ 5 других файлов)
-activeConditions — №1760 (+ 2 других файлов)
-activeFolderId — №1909
-activeProperties — №1939
+activeConditions — №1762 (+ 2 других файлов)
+activeFolderId — №1915
+activeProperties — №1945
 actualAndroidUpgradeOnPhone — №1083
 actualInstallUpgradeReinstallPassed — №1082
 actualLocalPhysxThrowsPerTarget — №1081
 actualUpgradeVerified — №1085
 actualWindowsUpgrade — №1083
-adamantine — №1938
+adamantine — №1944
 african — №0919
 age — №0919 (+ 3 других файлов)
-alchemy — №1938
+alchemy — №1944
 all42Forms — №1085
 allManifestEntriesMatchPhysicalZIP — №0906 (+ 1 других файлов)
 allOf — №1018
 allowToChangeInstallationDirectory — №1129
 allUnpackedSizesAndSHA256 — №0906 (+ 1 других файлов)
-amount — №1909
-amphibious — №1760 (+ 2 других файлов)
+amount — №1915
+amphibious — №1762 (+ 2 других файлов)
 android — №1081 (+ 8 других файлов)
 androidAfter — №1015
 androidBefore — №1015
@@ -14871,13 +14888,13 @@ androidCertificateSha256 — №1086
 androidDebug — №0923
 androidPackage — №1083 (+ 3 других файлов)
 androidSignedRelease — №0923
-androidSigningCertificateSha256 — №1967
-animalHandling — №1760 (+ 2 других файлов)
-animalProfile — №1763 (+ 1 других файлов)
+androidSigningCertificateSha256 — №1973
+animalHandling — №1762 (+ 2 других файлов)
+animalProfile — №1765 (+ 1 других файлов)
 animationClips — №0912
-animationId — №1763 (+ 1 других файлов)
-answers — №1909
-Antidote — №1938
+animationId — №1765 (+ 1 других файлов)
+answers — №1915
+Antidote — №1944
 apkArtifact — №1028
 apkArtifactId — №1024 (+ 3 других файлов)
 apkBytes — №1046 (+ 8 других файлов)
@@ -14888,10 +14905,10 @@ apkSha256 — №1046 (+ 6 других файлов)
 apkV2 — №1083
 apkV3 — №1083
 apkVersionCode — №1083
-app — №1979 (+ 2 других файлов)
+app — №1985 (+ 2 других файлов)
 appId — №1129
 approved — №1133 (+ 1 других файлов)
-arcana — №1760 (+ 2 других файлов)
+arcana — №1762 (+ 2 других файлов)
 arch — №1129
 archiveBytes — №0906 (+ 3 других файлов)
 archiveCRC — №1035
@@ -14914,74 +14931,74 @@ assets — №1085
 assetsActivationCommit — №1084
 assetsPreviewRun — №1084
 asyncSceneCleanup — №1081
-athletics — №1760 (+ 2 других файлов)
-attackType — №1760 (+ 1 других файлов)
+athletics — №1762 (+ 2 других файлов)
+attackType — №1762 (+ 1 других файлов)
 attributes — №0912
 AudioListener — №1030
 AudioManager — №1030
 audit — №0919
 authenticodeVerified — №1085
 author — №0752 (+ 15 других файлов)
-back — №1763 (+ 1 других файлов)
-background — №1760 (+ 2 других файлов)
-backgroundFeature — №1760 (+ 2 других файлов)
-backgroundLanguagesToChoose — №1760 (+ 2 других файлов)
-backgrounds — №1760 (+ 1 других файлов)
+back — №1765 (+ 1 других файлов)
+background — №1762 (+ 2 других файлов)
+backgroundFeature — №1762 (+ 2 других файлов)
+backgroundLanguagesToChoose — №1762 (+ 2 других файлов)
+backgrounds — №1762 (+ 1 других файлов)
 backslash — №0756 (+ 1 других файлов)
 backslashTexture — №0756 (+ 1 других файлов)
 balanced — №1197
 base — №1411
-baseAc — №1936
-baseAC — №1760 (+ 2 других файлов)
-baseAcFormula — №1936
+baseAc — №1942
+baseAC — №1762 (+ 2 других файлов)
+baseAcFormula — №1942
 baseColorFactor — №0912
-baseHeight — №1771
+baseHeight — №1773
 baseline — №1045 (+ 1 других файлов)
 baseObj — №0087 (+ 1 других файлов)
 basePositionsSha256 — №0087 (+ 1 других файлов)
-baseUrl — №1979 (+ 2 других файлов)
-battlefield — №1937
-beakColor — №1763 (+ 1 других файлов)
-beakSize — №1763 (+ 1 других файлов)
-beakStyle — №1763 (+ 1 других файлов)
-beard — №1763 (+ 1 других файлов)
+baseUrl — №1985 (+ 2 других файлов)
+battlefield — №1943
+beakColor — №1765 (+ 1 других файлов)
+beakSize — №1765 (+ 1 других файлов)
+beakStyle — №1765 (+ 1 других файлов)
+beard — №1765 (+ 1 других файлов)
 binary — №0087 (+ 1 других файлов)
 binaryBundlePublishedToAssets — №1028
 binarySha256 — №0087 (+ 1 других файлов)
 binaryTransfer — №0921
-Blindness — №1938
-blockedVersions — №1979 (+ 2 других файлов)
+Blindness — №1944
+blockedVersions — №1985 (+ 2 других файлов)
 blood — №1085
-blushColor — №1763 (+ 1 других файлов)
-blushOpacity — №1763 (+ 1 других файлов)
-body — №1763 (+ 1 других файлов)
-bodyColor — №1763 (+ 1 других файлов)
-bodyTint — №1763 (+ 1 других файлов)
+blushColor — №1765 (+ 1 других файлов)
+blushOpacity — №1765 (+ 1 других файлов)
+body — №1765 (+ 1 других файлов)
+bodyColor — №1765 (+ 1 других файлов)
+bodyTint — №1765 (+ 1 других файлов)
 bones — №0912 (+ 1 других файлов)
-bonuses — №1760 (+ 2 других файлов)
+bonuses — №1762 (+ 2 других файлов)
 bothBinariesDownloadedAndHashed — №1083
-bottom — №1763 (+ 1 других файлов)
-bovineEarSize — №1763 (+ 1 других файлов)
+bottom — №1765 (+ 1 других файлов)
+bovineEarSize — №1765 (+ 1 других файлов)
 BoxCollider — №1030
 branch — №1017
 brandingResumeValidation — №1040
-brave — №1760 (+ 2 других файлов)
+brave — №1762 (+ 2 других файлов)
 breast-volume-decr — №0087 (+ 1 других файлов)
 breast-volume-incr — №0087 (+ 1 других файлов)
 breastSize — №0087 (+ 4 других файлов)
-Breathing — №1938
-breathWeapon — №1760 (+ 2 других файлов)
-browHeight — №1763 (+ 1 других файлов)
-browRidge — №1763 (+ 1 других файлов)
-bt_copy — №1937
-bt_self — №1937
+Breathing — №1944
+breathWeapon — №1762 (+ 2 других файлов)
+browHeight — №1765 (+ 1 других файлов)
+browRidge — №1765 (+ 1 других файлов)
+bt_copy — №1943
+bt_self — №1943
 build — №1129
 buildReportArtifact — №1028
 buildRoots — №1017
 BuildSettings — №1030
-bullMuzzleSize — №1763 (+ 1 других файлов)
+bullMuzzleSize — №1765 (+ 1 других файлов)
 bundledCreationIds — №1046 (+ 3 других файлов)
-bytes — №1986 (+ 31 других файлов)
+bytes — №1992 (+ 31 других файлов)
 cacheBustedFeedVersionCode — №1083
 Camera — №1030
 candidateConclusion — №1081 (+ 1 других файлов)
@@ -14990,102 +15007,102 @@ candidateRun — №1082 (+ 4 других файлов)
 candidateRunId — №1081 (+ 2 других файлов)
 Canvas — №1030
 CanvasRenderer — №1030
-capColor — №1763 (+ 1 других файлов)
-capSize — №1763 (+ 1 других файлов)
-cartographer — №1938
-cases — №1909 (+ 1 других файлов)
-casterId — №1937
-castingTime — №1760 (+ 1 других файлов)
-cat — №1938
+capColor — №1765 (+ 1 других файлов)
+capSize — №1765 (+ 1 других файлов)
+cartographer — №1944
+cases — №1915 (+ 1 других файлов)
+casterId — №1943
+castingTime — №1762 (+ 1 других файлов)
+cat — №1944
 catalog — №1082 (+ 1 других файлов)
 catalogUrl — №1026
-catalyst — №1939
-catalystId — №1939
-catalysts — №1938
-catEarSize — №1763 (+ 1 других файлов)
-category — №1986 (+ 4 других файлов)
-catMuzzleSize — №1763 (+ 1 других файлов)
+catalyst — №1945
+catalystId — №1945
+catalysts — №1944
+catEarSize — №1765 (+ 1 других файлов)
+category — №1992 (+ 4 других файлов)
+catMuzzleSize — №1765 (+ 1 других файлов)
 caucasian — №0919
 cell — №0752 (+ 17 других файлов)
-centaurSize — №1763 (+ 1 других файлов)
-ceramic — №1938
+centaurSize — №1765 (+ 1 других файлов)
+ceramic — №1944
 certificateSha256 — №1028 (+ 4 других файлов)
-cha — №1760 (+ 2 других файлов)
+cha — №1762 (+ 2 других файлов)
 changedVertices — №0919 (+ 1 других файлов)
 changeFrom10010Bytes — №1046
-changes — №1757 (+ 1 других файлов)
+changes — №1759 (+ 1 других файлов)
 channel — №1133 (+ 7 других файлов)
 channels — №0087 (+ 2 других файлов)
 CharacterController — №1030
-charcoal — №1938
-charge — №1760 (+ 2 других файлов)
-charisma — №1760 (+ 1 других файлов)
+charcoal — №1944
+charge — №1762 (+ 2 других файлов)
+charisma — №1762 (+ 1 других файлов)
 checks — №1046 (+ 4 других файлов)
-cheekbones — №1763 (+ 1 других файлов)
+cheekbones — №1765 (+ 1 других файлов)
 chest — №0912 (+ 5 других файлов)
-chinLength — №1763 (+ 1 других файлов)
-choiceHistory — №1760 (+ 2 других файлов)
-choices — №1760 (+ 1 других файлов)
-choiceState — №1760 (+ 2 других файлов)
+chinLength — №1765 (+ 1 других файлов)
+choiceHistory — №1762 (+ 2 других файлов)
+choices — №1762 (+ 1 других файлов)
+choiceState — №1762 (+ 2 других файлов)
 chromiumQA — №0906
 ciOriginalCertificateVerified — №1082
-class — №1760 (+ 2 других файлов)
+class — №1762 (+ 2 других файлов)
 classEntries — №1045 (+ 1 других файлов)
 classes — №1046 (+ 6 других файлов)
-classFeaturesState — №1760 (+ 2 других файлов)
-className — №1760 (+ 2 других файлов)
-clawColor — №1763 (+ 1 других файлов)
-clawSize — №1763 (+ 1 других файлов)
-clay — №1938
-climb — №1760 (+ 2 других файлов)
-cloth — №1938
-clothing — №1763 (+ 1 других файлов)
-cloudBuildRun — №1967
-cloudUnityBuildLicenseConfigured — №1967
-coinCases — №1909
-coinLog — №1909
-coins — №1909
-Cold — №1938
-coldResistance — №1760 (+ 2 других файлов)
-combatants — №1937
+classFeaturesState — №1762 (+ 2 других файлов)
+className — №1762 (+ 2 других файлов)
+clawColor — №1765 (+ 1 других файлов)
+clawSize — №1765 (+ 1 других файлов)
+clay — №1944
+climb — №1762 (+ 2 других файлов)
+cloth — №1944
+clothing — №1765 (+ 1 других файлов)
+cloudBuildRun — №1973
+cloudUnityBuildLicenseConfigured — №1973
+coinCases — №1915
+coinLog — №1915
+coins — №1915
+Cold — №1944
+coldResistance — №1762 (+ 2 других файлов)
+combatants — №1943
 commit — №0087 (+ 1 других файлов)
 comparison — №1037
-components — №1760 (+ 1 других файлов)
+components — №1762 (+ 1 других файлов)
 compositeTerms — №0919
 compositions — №0087 (+ 1 других файлов)
 compressedBytes — №1029
 ComputeShader — №1030
-con — №1760 (+ 2 других файлов)
-concentration — №1760 (+ 1 других файлов)
+con — №1762 (+ 2 других файлов)
+concentration — №1762 (+ 1 других файлов)
 conclusion — №0906 (+ 2 других файлов)
-condition — №1938
-conflict — №1938
-conflicts — №1939
+condition — №1944
+conflict — №1944
+conflicts — №1945
 connectedComponents — №0912
 const — №1018
-constitution — №1760 (+ 2 других файлов)
-Constitution — №1938
+constitution — №1762 (+ 2 других файлов)
+Constitution — №1944
 consumables — №1019 (+ 3 других файлов)
 content — №1082
 controlled — №0752 (+ 3 других файлов)
 converted — №1085
-copy — №1937
-corset — №1763 (+ 1 других файлов)
-cost — №1909 (+ 2 других файлов)
+copy — №1943
+corset — №1765 (+ 1 других файлов)
+cost — №1915 (+ 2 других файлов)
 count — №0087 (+ 8 других файлов)
-cp — №1909
-cPerS — №1909
-craft — №1938
-craftBonuses — №1760 (+ 1 других файлов)
+cp — №1915
+cPerS — №1915
+craft — №1944
+craftBonuses — №1762 (+ 1 других файлов)
 CRC — №0906 (+ 1 других файлов)
 createDesktopShortcut — №1129
 createStartMenuShortcut — №1129
-creation — №1760 (+ 1 других файлов)
-creationCases — №1909
-crestSize — №1763 (+ 1 других файлов)
-crownColor — №1763 (+ 1 других файлов)
-crownSize — №1763 (+ 1 других файлов)
-crystal — №1938
+creation — №1762 (+ 1 других файлов)
+creationCases — №1915
+crestSize — №1765 (+ 1 других файлов)
+crownColor — №1765 (+ 1 других файлов)
+crownSize — №1765 (+ 1 других файлов)
+crystal — №1944
 csharp — №1081 (+ 5 других файлов)
 Cubemap — №1030
 cupsize — №0919
@@ -15093,28 +15110,28 @@ currentFloor — №0752 (+ 17 других файлов)
 customizations — №0001 (+ 2 других файлов)
 cutoff — №0919
 d — №0752 (+ 17 других файлов)
-damage — №1760 (+ 3 других файлов)
-damageType — №1760 (+ 3 других файлов)
+damage — №1762 (+ 3 других файлов)
+damageType — №1762 (+ 3 других файлов)
 darkness — №0752 (+ 17 других файлов)
-darkvisionFt — №1760 (+ 2 других файлов)
+darkvisionFt — №1762 (+ 2 других файлов)
 date — №1086 (+ 2 других файлов)
-dc — №1938
+dc — №1944
 debug — №0906
-deception — №1760 (+ 2 других файлов)
+deception — №1762 (+ 2 других файлов)
 declaredSourceCommit — №0919
 declaredUnityPackages — №1017
-defaultDependencyTypeInfo — №1960
-defaultInstantiationMode — №1960
+defaultDependencyTypeInfo — №1966
+defaultInstantiationMode — №1966
 degenerateTriangles — №0912
 DelayedCallManager — №1030
 deltaBytesFrom10022 — №1081
 deltaBytesVs28 — №1085
 deltaFrom10023Bytes — №1082
 dependencies — №1017 (+ 4 других файлов)
-dependencyTypeInfos — №1960
+dependencyTypeInfos — №1966
 depth — №1017 (+ 1 других файлов)
 derived — №1486
-desc — №1760 (+ 1 других файлов)
+desc — №1762 (+ 1 других файлов)
 description — №0752 (+ 21 других файлов)
 destination — №1037 (+ 1 других файлов)
 destinationGender — №0919
@@ -15122,222 +15139,222 @@ dev — №1153
 devDependencies — №1129 (+ 2 других файлов)
 device — №1046
 deviceQa — №1046 (+ 6 других файлов)
-dex — №1760 (+ 2 других файлов)
-dexterity — №1760 (+ 2 других файлов)
-Dexterity — №1938
+dex — №1762 (+ 2 других файлов)
+dexterity — №1762 (+ 2 других файлов)
+Dexterity — №1944
 diceGeometryPreviewBytes — №1082
 diceGeometryPreviews — №1082
 directories — №1129
 dotnet — №1046
 doubleSided — №0912
-dragonScale — №1938
-dress — №1763 (+ 1 других файлов)
+dragonScale — №1944
+dress — №1765 (+ 1 других файлов)
 duplicates — №1017
-duration — №1760 (+ 1 других файлов)
+duration — №1762 (+ 1 других файлов)
 e — №0752 (+ 17 других файлов)
-earLength — №1763 (+ 1 других файлов)
-earPointiness — №1763 (+ 1 других файлов)
-Earth — №1938
-earTuftSize — №1763 (+ 1 других файлов)
+earLength — №1765 (+ 1 других файлов)
+earPointiness — №1765 (+ 1 других файлов)
+Earth — №1944
+earTuftSize — №1765 (+ 1 других файлов)
 edition — №1045 (+ 1 других файлов)
 editorMorphs — №0912
-effect — №1909 (+ 1 других файлов)
-effects — №1937 (+ 1 других файлов)
+effect — №1915 (+ 1 других файлов)
+effects — №1943 (+ 1 других файлов)
 electron — №1129
 electron-builder — №1129
-elephantEarSize — №1763 (+ 1 других файлов)
-elephantTuskSize — №1763 (+ 1 других файлов)
+elephantEarSize — №1765 (+ 1 других файлов)
+elephantTuskSize — №1765 (+ 1 других файлов)
 embeddedMorphChannels — №0912
 emitsLight — №0758 (+ 1 других файлов)
 enclosed — №1197
 entries — №1045
 enum — №1018
-ep — №1909
-equipment — №1763 (+ 1 других файлов)
-equipped — №1909
+ep — №1915
+equipment — №1765 (+ 1 других файлов)
+equipped — №1915
 errors — №1085
 eTexture — №0752 (+ 17 других файлов)
 exact31SculpturesComplete — №1084
 exactSculpturesComplete — №1085
 existingPython — №1084 (+ 1 других файлов)
-expected — №1909 (+ 2 других файлов)
+expected — №1915 (+ 2 других файлов)
 experimentalTypes — №1085
 exportedMacros — №0919
 extensions — №0001
 exteriorUVFaces — №1085
-external — №1937
+external — №1943
 externalOrPackageGuidReferences — №1017
-extra — №1938
-extraClassName — №1936
-extraClassType — №1936
-extras — №1939
-extraTrigger — №1938
-eyeColor — №1763 (+ 1 других файлов)
-eyeGlow — №1763 (+ 1 других файлов)
-eyeHeight — №1763 (+ 1 других файлов)
-eyeliner — №1763 (+ 1 других файлов)
-eyeShape — №1763 (+ 1 других файлов)
-eyeSize — №1763 (+ 1 других файлов)
-eyeSpacing — №1763 (+ 1 других файлов)
-eyeTilt — №1763 (+ 1 других файлов)
-eyeWidth — №1763 (+ 1 других файлов)
-faceColor — №1763 (+ 1 других файлов)
-faceLength — №1763 (+ 1 других файлов)
-faceShape — №1763 (+ 1 других файлов)
-faceTint — №1763 (+ 1 других файлов)
-faceWidth — №1763 (+ 1 других файлов)
+extra — №1944
+extraClassName — №1942
+extraClassType — №1942
+extras — №1945
+extraTrigger — №1944
+eyeColor — №1765 (+ 1 других файлов)
+eyeGlow — №1765 (+ 1 других файлов)
+eyeHeight — №1765 (+ 1 других файлов)
+eyeliner — №1765 (+ 1 других файлов)
+eyeShape — №1765 (+ 1 других файлов)
+eyeSize — №1765 (+ 1 других файлов)
+eyeSpacing — №1765 (+ 1 других файлов)
+eyeTilt — №1765 (+ 1 других файлов)
+eyeWidth — №1765 (+ 1 других файлов)
+faceColor — №1765 (+ 1 других файлов)
+faceLength — №1765 (+ 1 других файлов)
+faceShape — №1765 (+ 1 других файлов)
+faceTint — №1765 (+ 1 других файлов)
+faceWidth — №1765 (+ 1 других файлов)
 fail — №0906 (+ 1 других файлов)
-fangSize — №1763 (+ 1 других файлов)
-fat — №1763 (+ 1 других файлов)
-fbxSha256 — №1771
-Fear — №1938
-featherTailSize — №1763 (+ 1 других файлов)
-featherWingSize — №1763 (+ 1 других файлов)
+fangSize — №1765 (+ 1 других файлов)
+fat — №1765 (+ 1 других файлов)
+fbxSha256 — №1773
+Fear — №1944
+featherTailSize — №1765 (+ 1 других файлов)
+featherWingSize — №1765 (+ 1 других файлов)
 feats — №1046 (+ 7 других файлов)
-feature — №1760 (+ 1 других файлов)
+feature — №1762 (+ 1 других файлов)
 features — №0001 (+ 3 других файлов)
 feedActivated — №1085
 feedPlainAndCacheBustedVerified — №1086
-feet — №1763 (+ 1 других файлов)
+feet — №1765 (+ 1 других файлов)
 femaleStackTerms — №0919
-feyAncestry — №1760 (+ 2 других файлов)
-file — №1909 (+ 2 других файлов)
-fileCount — №1986
-files — №1986 (+ 12 других файлов)
-finSize — №1763 (+ 1 других файлов)
-Fire — №1938
-fireResistance — №1760 (+ 2 других файлов)
+feyAncestry — №1762 (+ 2 других файлов)
+file — №1915 (+ 2 других файлов)
+fileCount — №1992
+files — №1992 (+ 12 других файлов)
+finSize — №1765 (+ 1 других файлов)
+Fire — №1944
+fireResistance — №1762 (+ 2 других файлов)
 firmness — №0919
 fixtureSha256 — №0919 (+ 1 других файлов)
-flight — №1760 (+ 2 других файлов)
+flight — №1762 (+ 2 других файлов)
 floor — №0752 (+ 3 других файлов)
 floors — №0752 (+ 18 других файлов)
 flow — №0906
 folder — №0087 (+ 3 других файлов)
-folderCases — №1909
-folders — №1760 (+ 2 других файлов)
+folderCases — №1915
+folders — №1762 (+ 2 других файлов)
 Font — №1030
 format — №1018 (+ 1 других файлов)
-formula — №1938
+formula — №1944
 full6d20 — №1085
 fullSoftBodyComplete — №1085
-furAmount — №1763 (+ 1 других файлов)
-furColor — №1763 (+ 1 других файлов)
-furDensity — №1763 (+ 1 других файлов)
-furLength — №1763 (+ 1 других файлов)
-furProfile — №1763 (+ 1 других файлов)
+furAmount — №1765 (+ 1 других файлов)
+furColor — №1765 (+ 1 других файлов)
+furDensity — №1765 (+ 1 других файлов)
+furLength — №1765 (+ 1 других файлов)
+furProfile — №1765 (+ 1 других файлов)
 GameObject — №1030
-gem — №1938
+gem — №1944
 gender — №0919 (+ 5 других файлов)
-generated — №1986 (+ 3 других файлов)
-ghostChainSize — №1763 (+ 1 других файлов)
-ghostOpacity — №1763 (+ 1 других файлов)
-ghostTerror — №1763 (+ 1 других файлов)
-ghostWeapon — №1763 (+ 1 других файлов)
+generated — №1992 (+ 3 других файлов)
+ghostChainSize — №1765 (+ 1 других файлов)
+ghostOpacity — №1765 (+ 1 других файлов)
+ghostTerror — №1765 (+ 1 других файлов)
+ghostWeapon — №1765 (+ 1 других файлов)
 gitBlob — №0923
-glass — №1938
-glasswork — №1938
-glide — №1760 (+ 2 других файлов)
-gliderMembraneSize — №1763 (+ 1 других файлов)
-gooSize — №1763 (+ 1 других файлов)
-gp — №1909
-gPerE — №1909
+glass — №1944
+glasswork — №1944
+glide — №1762 (+ 2 других файлов)
+gliderMembraneSize — №1765 (+ 1 других файлов)
+gooSize — №1765 (+ 1 других файлов)
+gp — №1915
+gPerE — №1915
 GraphicsSettings — №1030
-grayColor — №1763 (+ 1 других файлов)
-grayPercent — №1763 (+ 1 других файлов)
-groupKey — №1909 (+ 1 других файлов)
+grayColor — №1765 (+ 1 других файлов)
+grayPercent — №1765 (+ 1 других файлов)
+groupKey — №1915 (+ 1 других файлов)
 h — №0752 (+ 17 других файлов)
-hair — №1763 (+ 1 других файлов)
-hairColor — №1763 (+ 1 других файлов)
-Hallucination — №1938
-hands — №1763 (+ 3 других файлов)
-hardwood — №1938
+hair — №1765 (+ 1 других файлов)
+hairColor — №1765 (+ 1 других файлов)
+Hallucination — №1944
+hands — №1765 (+ 3 других файлов)
+hardwood — №1944
 head — №0087 (+ 4 других файлов)
 head-decr — №0087 (+ 1 других файлов)
 head-incr — №0087 (+ 1 других файлов)
 height — №0752 (+ 23 других файлов)
-Hemorrhage — №1938
-herb — №1938
-hero — №1909
-highlightColor — №1763 (+ 1 других файлов)
-highlightPercent — №1763 (+ 1 других файлов)
+Hemorrhage — №1944
+herb — №1944
+hero — №1915
+highlightColor — №1765 (+ 1 других файлов)
+highlightPercent — №1765 (+ 1 других файлов)
 hips — №0912 (+ 5 других файлов)
-history — №1760 (+ 2 других файлов)
-hitDice — №1760 (+ 2 других файлов)
-hitDie — №1760 (+ 1 других файлов)
-hoofColor — №1763 (+ 1 других файлов)
-hoofSize — №1763 (+ 1 других файлов)
-hornColor — №1763 (+ 1 других файлов)
-hornRidges — №1763 (+ 1 других файлов)
-horns — №1760 (+ 2 других файлов)
-hornSize — №1763 (+ 1 других файлов)
-hornStyle — №1763 (+ 1 других файлов)
-hornThickness — №1763 (+ 1 других файлов)
-horseColor — №1763 (+ 1 других файлов)
-hosieryDen — №1763 (+ 1 других файлов)
-hpBonusPerLevel — №1760 (+ 1 других файлов)
-hpCurrent — №1760 (+ 2 других файлов)
-hpMax — №1760 (+ 2 других файлов)
+history — №1762 (+ 2 других файлов)
+hitDice — №1762 (+ 2 других файлов)
+hitDie — №1762 (+ 1 других файлов)
+hoofColor — №1765 (+ 1 других файлов)
+hoofSize — №1765 (+ 1 других файлов)
+hornColor — №1765 (+ 1 других файлов)
+hornRidges — №1765 (+ 1 других файлов)
+horns — №1762 (+ 2 других файлов)
+hornSize — №1765 (+ 1 других файлов)
+hornStyle — №1765 (+ 1 других файлов)
+hornThickness — №1765 (+ 1 других файлов)
+horseColor — №1765 (+ 1 других файлов)
+hosieryDen — №1765 (+ 1 других файлов)
+hpBonusPerLevel — №1762 (+ 1 других файлов)
+hpCurrent — №1762 (+ 2 других файлов)
+hpMax — №1762 (+ 2 других файлов)
 human-female — №1396
 ice — №1085
 id — №0752 (+ 36 других файлов)
-identity — №1937
-ids — №1939
+identity — №1943
+ids — №1945
 if — №1018
 image — №0001
-immunities — №1760 (+ 2 других файлов)
+immunities — №1762 (+ 2 других файлов)
 incomingUnityReferences — №1017
 independentPublicVerification — №1082
 indexComponentType — №0912
 ingredients — №1019 (+ 1 других файлов)
-initiativeTracker — №1937
-ink — №1938
-innateSpellcasting — №1760 (+ 2 других файлов)
-input — №1909 (+ 1 других файлов)
+initiativeTracker — №1943
+ink — №1944
+innateSpellcasting — №1762 (+ 2 других файлов)
+input — №1915 (+ 1 других файлов)
 InputManager — №1030
-insight — №1760 (+ 2 других файлов)
+insight — №1762 (+ 2 других файлов)
 installers — №1086
 installUpgradeReinstall — №1081
-int — №1760 (+ 2 других файлов)
+int — №1762 (+ 2 других файлов)
 integrity — №1153
-intelligence — №1760 (+ 2 других файлов)
-intelligence_or_charisma — №1936
+intelligence — №1762 (+ 2 других файлов)
+intelligence_or_charisma — №1942
 intensity — №0752 (+ 17 других файлов)
 interactive — №0758 (+ 1 других файлов)
 interactiveDesktopVerified — №1085
 interactiveWindowsGpu — №1086
-intimidation — №1760 (+ 2 других файлов)
-inventory — №1909
-inventoryCases — №1909
-inventoryCategory — №1938
-investigation — №1909
-Invisibility — №1938
-iron — №1938
-isExtra — №1936
-isExtraClass — №1936
-item — №1909
+intimidation — №1762 (+ 2 других файлов)
+inventory — №1915
+inventoryCases — №1915
+inventoryCategory — №1944
+investigation — №1915
+Invisibility — №1944
+iron — №1944
+isExtra — №1942
+isExtraClass — №1942
+item — №1915
 items — №1018 (+ 3 других файлов)
-jawProjection — №1763 (+ 1 других файлов)
-jawWidth — №1763 (+ 1 других файлов)
-jeweler — №1938
+jawProjection — №1765 (+ 1 других файлов)
+jawWidth — №1765 (+ 1 других файлов)
+jeweler — №1944
 job — №1082 (+ 1 других файлов)
 jobId — №1028
 jobs — №1083 (+ 2 других файлов)
 joints — №0919 (+ 2 других файлов)
 JOINTS_0 — №0912
 junk — №1019 (+ 3 других файлов)
-keep — №1909
+keep — №1915
 key — №1411 (+ 3 других файлов)
-kind — №1986 (+ 1 других файлов)
-known — №1937
-label — №1760 (+ 3 других файлов)
-languages — №1760 (+ 1 других файлов)
-larvaGirth — №1763 (+ 1 других файлов)
-larvaLength — №1763 (+ 1 других файлов)
-larvaTendrilSize — №1763 (+ 1 других файлов)
-larvaToothSize — №1763 (+ 1 других файлов)
-leather — №1938
-leatherwork — №1938
+kind — №1992 (+ 1 других файлов)
+known — №1943
+label — №1762 (+ 3 других файлов)
+languages — №1762 (+ 1 других файлов)
+larvaGirth — №1765 (+ 1 других файлов)
+larvaLength — №1765 (+ 1 других файлов)
+larvaTendrilSize — №1765 (+ 1 других файлов)
+larvaToothSize — №1765 (+ 1 других файлов)
+leather — №1944
+leatherwork — №1944
 legacy — №0906 (+ 1 других файлов)
 legacyApkInput — №1017
 legacyBinaryPublication — №1045
@@ -15348,8 +15365,8 @@ legLength — №0087 (+ 4 других файлов)
 legLength-decr — №0087 (+ 1 других файлов)
 legLength-incr — №0087 (+ 1 других файлов)
 legs — №0087 (+ 4 других файлов)
-level — №1760 (+ 2 других файлов)
-levelOneFeatures — №1760 (+ 1 других файлов)
+level — №1762 (+ 2 других файлов)
+levelOneFeatures — №1762 (+ 1 других файлов)
 library — №0752 (+ 16 других файлов)
 license — №0087 (+ 5 других файлов)
 licenseReview — №1017
@@ -15359,11 +15376,11 @@ lighting — №0752 (+ 17 других файлов)
 lightIntensity — №0758 (+ 1 других файлов)
 LightmapSettings — №1030
 lightRadius — №0758 (+ 1 других файлов)
-limbProfile — №1763 (+ 1 других файлов)
+limbProfile — №1765 (+ 1 других файлов)
 limitations — №0087 (+ 6 других файлов)
-lipColor — №1763 (+ 1 других файлов)
-lipOpacity — №1763 (+ 1 других файлов)
-lipVolume — №1763 (+ 1 других файлов)
+lipColor — №1765 (+ 1 других файлов)
+lipOpacity — №1765 (+ 1 других файлов)
+lipVolume — №1765 (+ 1 других файлов)
 liveBodyBudget — №1086
 liveSupabase — №1081 (+ 2 других файлов)
 liveSupabaseTested — №1082
@@ -15373,23 +15390,23 @@ localRuntimeTests — №0921
 lockfileVersion — №1153
 logicalPhysXThrows — №1086
 loot — №0752 (+ 1 других файлов)
-lucky — №1760 (+ 2 других файлов)
+lucky — №1762 (+ 2 других файлов)
 macroConfigSha256 — №0919
-Magic — №1938
-magicResistance — №1760 (+ 2 других файлов)
+Magic — №1944
+magicResistance — №1762 (+ 2 других файлов)
 main — №1017 (+ 1 других файлов)
 manifest — №0906 (+ 1 других файлов)
 mapId — №0752 (+ 13 других файлов)
 maps — №1486
 markers — №1028
 matchesInApk — №1026
-material — №1760 (+ 1 других файлов)
+material — №1762 (+ 1 других файлов)
 Material — №1030
 materialPackBytes — №1084
 materialPacks — №1084
 materials — №0912 (+ 6 других файлов)
-maxCapacityKg — №1909
-maxCoordinateRoundTripError — №1771
+maxCapacityKg — №1915
+maxCoordinateRoundTripError — №1773
 maxDisplacementMeters — №0919 (+ 1 других файлов)
 maximum — №1018
 maxItems — №1018
@@ -15398,8 +15415,8 @@ measure-thigh-circ-incr — №0087 (+ 1 других файлов)
 measure-upperarm-circ-decr — №0087 (+ 1 других файлов)
 measure-upperarm-circ-incr — №0087 (+ 1 других файлов)
 measurementsArtifact — №1028
-medicine — №1909
-mentalShield — №1760 (+ 2 других файлов)
+medicine — №1915
+mentalShield — №1762 (+ 2 других файлов)
 Mesh — №1030
 meshes — №1124
 MeshFilter — №1030
@@ -15410,27 +15427,27 @@ method — №0087 (+ 1 других файлов)
 MhObjectType — №0912
 MhScaleFactor — №0912
 migrationStatus — №1017
-mimicry — №1760 (+ 2 других файлов)
-min — №1760
+mimicry — №1762 (+ 2 других файлов)
+min — №1762
 minAndroidSdk — №1086
-minAppVersion — №1979 (+ 2 других файлов)
+minAppVersion — №1985 (+ 2 других файлов)
 minClientVersionCode — №1019
-Mind — №1938
+Mind — №1944
 minimalContentVerified — №1046 (+ 4 других файлов)
 minimum — №1018
 minLength — №1018
-minStr — №1909 (+ 1 других файлов)
-mithral — №1938
+minStr — №1915 (+ 1 других файлов)
+mithral — №1944
 model — №0752 (+ 18 других файлов)
-modelFamily — №1763 (+ 1 других файлов)
+modelFamily — №1765 (+ 1 других файлов)
 models — №1411 (+ 1 других файлов)
-modifiers — №1909
+modifiers — №1915
 MonoBehaviour — №1030
 MonoManager — №1030
 MonoScript — №1030
 morphNames — №0912 (+ 1 других файлов)
-moustache — №1763 (+ 1 других файлов)
-mouthWidth — №1763 (+ 1 других файлов)
+moustache — №1765 (+ 1 других файлов)
+mouthWidth — №1765 (+ 1 других файлов)
 MPFB_GEN_object_type — №0912
 MPFB_GEN_scale_factor — №0912
 MPFB_HUM_african — №0912
@@ -15446,14 +15463,14 @@ MPFB_HUM_material_source — №0912
 MPFB_HUM_muscle — №0912
 MPFB_HUM_proportions — №0912
 MPFB_HUM_weight — №0912
-multiclassAllowed — №1936
+multiclassAllowed — №1942
 muscle — №0919 (+ 2 других файлов)
-muzzleHeight — №1763 (+ 1 других файлов)
-muzzleLength — №1763 (+ 1 других файлов)
-muzzleWidth — №1763 (+ 1 других файлов)
+muzzleHeight — №1765 (+ 1 других файлов)
+muzzleLength — №1765 (+ 1 других файлов)
+muzzleWidth — №1765 (+ 1 других файлов)
 n — №0752 (+ 17 других файлов)
 name — №0001 (+ 39 других файлов)
-nameRu — №1760 (+ 1 других файлов)
+nameRu — №1762 (+ 1 других файлов)
 native — №1029
 nativeAndroidFaceOrientations — №1082
 nativeAndroidMixedLogicalDice — №1082
@@ -15471,27 +15488,27 @@ nativePngCount — №1084
 nativeWindowsFaceOrientations — №1082
 nativeWindowsMixedLogicalDice — №1082
 nativeWindowsPhysicalThrows — №1082
-naturalArmor — №1760 (+ 2 других файлов)
-nature — №1909
-Nausea — №1938
+naturalArmor — №1762 (+ 2 других файлов)
+nature — №1915
+Nausea — №1944
 NavMeshProjectSettings — №1030
 NavMeshSettings — №1030
-neck — №1763 (+ 1 других файлов)
-Necrotic — №1938
-necroticResistance — №1760 (+ 2 других файлов)
+neck — №1765 (+ 1 других файлов)
+Necrotic — №1944
+necroticResistance — №1762 (+ 2 других файлов)
 negative — №0087 (+ 4 других файлов)
 newPackages — №1019
-newSceneOverride — №1960
+newSceneOverride — №1966
 nextAction — №0923
-nimbleEscape — №1760 (+ 2 других файлов)
-noBreath — №1760 (+ 2 других файлов)
+nimbleEscape — №1762 (+ 2 других файлов)
+noBreath — №1762 (+ 2 других файлов)
 nonFiniteValues — №0912
 NORMAL — №0912
-noseLength — №1763 (+ 1 других файлов)
-noseWidth — №1763 (+ 1 других файлов)
-noSleep — №1760 (+ 2 других файлов)
+noseLength — №1765 (+ 1 других файлов)
+noseWidth — №1765 (+ 1 других файлов)
+noSleep — №1762 (+ 2 других файлов)
 note — №1016 (+ 10 других файлов)
-noteCase — №1909
+noteCase — №1915
 notes — №1135 (+ 2 других файлов)
 nsis — №1129
 nTexture — №0752 (+ 17 других файлов)
@@ -15505,18 +15522,18 @@ oneClick — №1129
 opaqueShellControls — №1085 (+ 1 других файлов)
 optionalMaterialMatches — №1042
 optionalTextureMatches — №1042
-options — №1760 (+ 1 других файлов)
-origin — №1760 (+ 2 других файлов)
+options — №1762 (+ 1 других файлов)
+origin — №1762 (+ 2 других файлов)
 originalBrandingBytesVerified — №1046 (+ 5 других файлов)
 originalBrandingPixelsVerified — №1046 (+ 2 других файлов)
 originalBytes — №1035
 originalsDeleted — №1045
 ota_install_contract — №0908
-other — №1937
-outer — №1763 (+ 1 других файлов)
+other — №1943
+outer — №1765 (+ 1 других файлов)
 output — №1129
-ownerId — №1937
-ownTurnId — №1937
+ownerId — №1943
+ownTurnId — №1943
 package — №1028 (+ 5 других файлов)
 packagedBytes — №1032
 packagedSha256 — №1032
@@ -15524,31 +15541,31 @@ packages — №1008 (+ 3 других файлов)
 packBytes — №1085
 packedBytes — №1044
 packs — №1026 (+ 1 других файлов)
-packTactics — №1760 (+ 2 других файлов)
+packTactics — №1762 (+ 2 других файлов)
 packVersion — №1085
 pages — №0923
 paid_api_authorized — №0002
-paper — №1938
-parchment — №1938
+paper — №1944
+parchment — №1944
 parts — №1135
 pass — №0906 (+ 1 других файлов)
-path — №1986 (+ 9 других файлов)
+path — №1992 (+ 9 других файлов)
 pathId — №1030 (+ 2 других файлов)
 paths — №1017
 pattern — №1018
-pawPadColor — №1763 (+ 1 других файлов)
+pawPadColor — №1765 (+ 1 других файлов)
 pbrMetallicRoughness — №0912
 pectorals — №0087 (+ 4 других файлов)
-pendingChoices — №1760 (+ 2 других файлов)
-perception — №1760 (+ 2 других файлов)
-Perception — №1938
-performance — №1760 (+ 2 других файлов)
+pendingChoices — №1762 (+ 2 других файлов)
+perception — №1762 (+ 2 других файлов)
+Perception — №1944
+performance — №1762 (+ 2 других файлов)
 perMachine — №1129
-persuasion — №1760 (+ 2 других файлов)
-Petrification — №1938
+persuasion — №1762 (+ 2 других файлов)
+Petrification — №1944
 physical_android_test — №0908
 physicalAndroid — №1081 (+ 1 других файлов)
-physicalAndroidQa — №1967
+physicalAndroidQa — №1973
 physicalAndroidQA — №0906 (+ 3 других файлов)
 physicalDeviceTested — №1082
 physicalPhoneTouch — №1083
@@ -15561,27 +15578,27 @@ pixels — №0912
 pixelsIdentical — №1032
 plainAndCacheBustedPublicFeedVerified — №1082
 plainFeedVersionCode — №1083
-plateColor — №1763 (+ 1 других файлов)
-plateSize — №1763 (+ 1 других файлов)
+plateColor — №1765 (+ 1 других файлов)
+plateSize — №1765 (+ 1 других файлов)
 platform — №1018 (+ 1 других файлов)
 PlayerSettings — №1030
-poisonImmunity — №1760 (+ 2 других файлов)
-poisonResistance — №1760 (+ 2 других файлов)
+poisonImmunity — №1762 (+ 2 других файлов)
+poisonResistance — №1762 (+ 2 других файлов)
 portable — №1129
-pose — №1763 (+ 1 других файлов)
+pose — №1765 (+ 1 других файлов)
 POSITION — №0912
 positive — №0087 (+ 4 других файлов)
 postCreateCommand — №0001
 postRestChangedPixels — №1085
-potency — №1938 (+ 1 других файлов)
-pottery — №1938
-powerfulBuild — №1760 (+ 2 других файлов)
-pp — №1909
-pPerG — №1909
+potency — №1944 (+ 1 других файлов)
+pottery — №1944
+powerfulBuild — №1762 (+ 2 других файлов)
+pp — №1915
+pPerG — №1915
 PreloadData — №1030
-prerequisite — №1760
-preset — №1763 (+ 1 других файлов)
-presetId — №1763 (+ 1 других файлов)
+prerequisite — №1762
+preset — №1765 (+ 1 других файлов)
+presetId — №1765 (+ 1 других файлов)
 previewJob — №1085
 previewPhysicsRenderPoses — №1081
 previewRun — №1082 (+ 1 других файлов)
@@ -15590,28 +15607,28 @@ previous10007Bytes — №1027
 previous10008Bytes — №1031
 previous75PreviewHashesUnchanged — №1082
 previousUnity10010ApkBytes — №1046
-price — №1938
+price — №1944
 primaryLicenseUrls — №1037
 primitives — №0912
 private — №1129 (+ 1 других файлов)
 producerRun — №1085 (+ 1 других файлов)
 productionSyntaxFiles — №0906 (+ 1 других файлов)
 productName — №1129
-profBonus — №1760 (+ 2 других файлов)
-profession — №1760 (+ 2 других файлов)
-proficiencies — №1760 (+ 2 других файлов)
-proficiency — №1909
-proficiencyType — №1909 (+ 1 других файлов)
+profBonus — №1762 (+ 2 других файлов)
+profession — №1762 (+ 2 других файлов)
+proficiencies — №1762 (+ 2 других файлов)
+proficiency — №1915
+proficiencyType — №1915 (+ 1 других файлов)
 profileBackupAndUnknownFilePreserved — №1081
-profiles — №1939
+profiles — №1945
 project — №0087 (+ 1 других файлов)
 pronounced — №1197
 properties — №1018 (+ 3 других файлов)
 proportions — №0919
 propTextureCount — №1046 (+ 5 других файлов)
 propTextureDimensions — №1046 (+ 5 других файлов)
-pseudopodSize — №1763 (+ 1 других файлов)
-psychicResistance — №1760 (+ 2 других файлов)
+pseudopodSize — №1765 (+ 1 других файлов)
+psychicResistance — №1762 (+ 2 других файлов)
 publicApkSignature — №1086
 publicApkV2V3SignatureVerified — №1081
 publication — №0906 (+ 4 других файлов)
@@ -15633,32 +15650,32 @@ publisherConclusion — №1083
 publisherJob — №1083 (+ 2 других файлов)
 publisherRun — №1083 (+ 3 других файлов)
 publishRunId — №1081
-pupilOpacity — №1763 (+ 1 других файлов)
-pupilShape — №1763 (+ 1 других файлов)
-purity — №1938 (+ 1 других файлов)
+pupilOpacity — №1765 (+ 1 других файлов)
+pupilShape — №1765 (+ 1 других файлов)
+purity — №1944 (+ 1 других файлов)
 python — №1046 (+ 2 других файлов)
 pythonUnit — №1081 (+ 1 других файлов)
 QualitySettings — №1030
-quantity — №1938
+quantity — №1944
 quota_scope — №0002
-rabbitEarSize — №1763 (+ 1 других файлов)
-rabbitTailSize — №1763 (+ 1 других файлов)
+rabbitEarSize — №1765 (+ 1 других файлов)
+rabbitTailSize — №1765 (+ 1 других файлов)
 race — №0919
-raceCraftBonuses — №1760 (+ 1 других файлов)
+raceCraftBonuses — №1762 (+ 1 других файлов)
 raceEntries — №1045 (+ 1 других файлов)
 raceFamilies — №1045 (+ 1 других файлов)
-raceFeatureDescriptions — №1760 (+ 2 других файлов)
-raceHpBonusPerLevel — №1760 (+ 1 других файлов)
-raceId — №1760 (+ 4 других файлов)
-raceMechanics — №1760 (+ 2 других файлов)
-raceName — №1760 (+ 2 других файлов)
+raceFeatureDescriptions — №1762 (+ 2 других файлов)
+raceHpBonusPerLevel — №1762 (+ 1 других файлов)
+raceId — №1762 (+ 4 других файлов)
+raceMechanics — №1762 (+ 2 других файлов)
+raceName — №1762 (+ 2 других файлов)
 races — №1046 (+ 5 других файлов)
-Radiant — №1938
-radiantResistance — №1760 (+ 2 других файлов)
+Radiant — №1944
+radiantResistance — №1762 (+ 2 других файлов)
 radius — №0752 (+ 17 других файлов)
-range — №1760 (+ 1 других файлов)
-rarity — №1909 (+ 2 других файлов)
-rates — №1909
+range — №1762 (+ 1 других файлов)
+rarity — №1915 (+ 2 других файлов)
+rates — №1915
 rawArtwork — №1042
 rawBounds — №0912
 rawBranding — №1029
@@ -15667,7 +15684,7 @@ recipeBytes — №1082
 recipeCommit — №1082
 recipes — №1019 (+ 1 других файлов)
 recommendedSourceCommit — №0919
-Recovery — №1938
+Recovery — №1944
 RectTransform — №1030
 reductionBytes — №1046 (+ 5 других файлов)
 reductionPercent — №1046 (+ 5 других файлов)
@@ -15677,7 +15694,7 @@ referenceCommit — №1037
 referencePath — №1037
 referenceRepository — №1037
 referenceSha256 — №1037
-Regeneration — №1938
+Regeneration — №1944
 regression — №0906 (+ 1 других файлов)
 rejectedCandidate — №1085
 rejectedCandidate31NeverActivated — №1086
@@ -15686,50 +15703,50 @@ release_ready — №0002
 release_reason — №0002
 release_source_sha — №0002
 releaseCommit — №0906 (+ 1 других файлов)
-releases — №1757 (+ 1 других файлов)
+releases — №1759 (+ 1 других файлов)
 releaseType — №1133
 releaseUrl — №1036 (+ 2 других файлов)
-relentlessEndurance — №1760 (+ 2 других файлов)
-religion — №1760 (+ 2 других файлов)
-removed — №1909
+relentlessEndurance — №1762 (+ 2 других файлов)
+religion — №1762 (+ 2 других файлов)
+removed — №1915
 renderBytes — №1086
 renderCount — №1086
 renderIndexSha256 — №1084 (+ 2 других файлов)
 renderReviewBoundary — №1084 (+ 2 других файлов)
 RenderSettings — №1030
-repairable — №1760 (+ 2 других файлов)
-replacesRace — №1936
+repairable — №1762 (+ 2 других файлов)
+replacesRace — №1942
 repository — №1082
-reptileProfile — №1763 (+ 1 других файлов)
+reptileProfile — №1765 (+ 1 других файлов)
 required — №1018
 required_editor_assets — №0908
 requiredAssets — №0752 (+ 13 других файлов)
 requireRenderReview — №1134
 requires — №1153
-resin — №1938
-resistanceDamageType — №1760 (+ 1 других файлов)
-resistances — №1760 (+ 2 других файлов)
+resin — №1944
+resistanceDamageType — №1762 (+ 1 других файлов)
+resistances — №1762 (+ 2 других файлов)
 resolved — №1153
 resolvedUnityPackages — №1017
 ResourceManager — №1030
 resources — №1026 (+ 2 других файлов)
-resultCp — №1909
-resultEp — №1909
-resultGp — №1909
-resultPp — №1909
-resultSp — №1909
+resultCp — №1915
+resultEp — №1915
+resultGp — №1915
+resultPp — №1915
+resultSp — №1915
 retainedChunks — №1032
 retry_after — №0002
 review — №1085
-ridgeColor — №1763 (+ 1 других файлов)
-ridgeStyle — №1763 (+ 1 других файлов)
-risk — №1939
-ritual — №1760 (+ 1 других файлов)
+ridgeColor — №1765 (+ 1 других файлов)
+ridgeStyle — №1765 (+ 1 других файлов)
+risk — №1945
+ritual — №1762 (+ 1 других файлов)
 rmsDisplacementMeters — №0919 (+ 1 других файлов)
 rootCause — №0906
 rotation — №0753 (+ 11 других файлов)
 roughnessFactor — №0912
-roundEarSize — №1763 (+ 1 других файлов)
+roundEarSize — №1765 (+ 1 других файлов)
 run — №1082 (+ 1 других файлов)
 runId — №1046 (+ 5 других файлов)
 runtime — №0919 (+ 1 других файлов)
@@ -15738,75 +15755,75 @@ runtimeOTARegression — №0906
 runtimeStatus — №1036
 s — №0752 (+ 15 других файлов)
 sameTreeDuplicates — №1017
-savageAttacks — №1760 (+ 2 других файлов)
+savageAttacks — №1762 (+ 2 других файлов)
 savedBytes — №1032
-savesData — №1760 (+ 2 других файлов)
-savingThrow — №1760 (+ 1 других файлов)
+savesData — №1762 (+ 2 других файлов)
+savingThrow — №1762 (+ 1 других файлов)
 scale — №0087 (+ 20 других файлов)
 schema — №0087 (+ 11 других файлов)
 schemaVersion — №0752 (+ 20 других файлов)
-school — №1760 (+ 1 других файлов)
+school — №1762 (+ 1 других файлов)
 scope — №1133 (+ 1 других файлов)
-scribe — №1938
+scribe — №1944
 ScriptMapper — №1030
 scripts — №1129 (+ 1 других файлов)
 seamDuplicates — №0912
 seamMaxMeters — №0919 (+ 1 других файлов)
 searchable — №0752 (+ 11 других файлов)
 seconds — №0906 (+ 1 других файлов)
-seed — №1760 (+ 1 других файлов)
+seed — №1762 (+ 1 других файлов)
 selectedTexture — №0752 (+ 17 других файлов)
 selectedTool — №0752 (+ 17 других файлов)
 selectedWallTexture — №0752 (+ 17 других файлов)
-self — №1937
+self — №1943
 serializedBytes — №1030 (+ 2 других файлов)
 sets — №1082
 settings — №0001
 settled12Frames — №1085
 sha — №1135
-sha256 — №1986 (+ 27 других файлов)
+sha256 — №1992 (+ 27 других файлов)
 Shader — №1030
-shadowColor — №1763 (+ 1 других файлов)
-shadowOpacity — №1763 (+ 1 других файлов)
+shadowColor — №1765 (+ 1 других файлов)
+shadowOpacity — №1765 (+ 1 других файлов)
 shapeFamilies — №1082
-shapeshifter — №1760 (+ 2 других файлов)
-sharedProperties — №1939
-shellColor — №1763 (+ 1 других файлов)
-shellSize — №1763 (+ 1 других файлов)
+shapeshifter — №1762 (+ 2 других файлов)
+sharedProperties — №1945
+shellColor — №1765 (+ 1 других файлов)
+shellSize — №1765 (+ 1 других файлов)
 shippedSha256 — №0919 (+ 1 других файлов)
 shoulders — №0912 (+ 5 других файлов)
 showAbove — №0752 (+ 1 других файлов)
 showBelow — №0752 (+ 1 других файлов)
 showCeilings — №0752 (+ 1 других файлов)
-showEp — №1909
-showPp — №1909
+showEp — №1915
+showPp — №1915
 signatureSchemes — №1082
 signatureV2 — №1084 (+ 1 других файлов)
 signatureV3 — №1084 (+ 1 других файлов)
 signatureVerification — №1035
 signedRelease — №0906
 signingCertificateSha256 — №1081 (+ 1 других файлов)
-silver — №1938
-size — №1760 (+ 2 других файлов)
-sizeChoice — №1760 (+ 2 других файлов)
-skillBonuses — №1760 (+ 2 других файлов)
-skills — №1760 (+ 2 других файлов)
-skillsData — №1760 (+ 2 других файлов)
-skinDetail — №1763 (+ 1 других файлов)
-skinGlow — №1763 (+ 1 других файлов)
-skinId — №1763 (+ 1 других файлов)
+silver — №1944
+size — №1762 (+ 2 других файлов)
+sizeChoice — №1762 (+ 2 других файлов)
+skillBonuses — №1762 (+ 2 других файлов)
+skills — №1762 (+ 2 других файлов)
+skillsData — №1762 (+ 2 других файлов)
+skinDetail — №1765 (+ 1 других файлов)
+skinGlow — №1765 (+ 1 других файлов)
+skinId — №1765 (+ 1 других файлов)
 skins — №0912
-skinSurface — №1763 (+ 1 других файлов)
+skinSurface — №1765 (+ 1 других файлов)
 sky — №0753 (+ 9 других файлов)
 slash — №0756 (+ 1 других файлов)
 slashTexture — №0756 (+ 1 других файлов)
-Sleep — №1938
-sleightOfHand — №1760 (+ 2 других файлов)
+Sleep — №1944
+sleightOfHand — №1762 (+ 2 других файлов)
 slime — №1085
-smith — №1938
-socks — №1763 (+ 1 других файлов)
+smith — №1944
+socks — №1765 (+ 1 других файлов)
 softBodySolver — №1086
-somatic — №1760 (+ 1 других файлов)
+somatic — №1762 (+ 1 других файлов)
 source — №0087 (+ 15 других файлов)
 sourceByteEquality — №1035
 sourceBytes — №1032 (+ 1 других файлов)
@@ -15816,7 +15833,7 @@ sourceContracts — №1086
 sourceFileCount — №1036
 sourceGlbSha256 — №0919 (+ 1 других файлов)
 sourceHashes — №0087 (+ 2 других файлов)
-sourceId — №1937
+sourceId — №1943
 sourcePixelsModified — №1015
 sourceProject — №0919
 sourceRefs — №1017
@@ -15824,55 +15841,55 @@ sourceRelease — №1035
 sources — №0919 (+ 4 других файлов)
 sourceSha — №1082
 sourceSha256 — №0919 (+ 4 других файлов)
-sourceSparseSha256 — №1771
+sourceSparseSha256 — №1773
 sourceStackTerms — №0919
-sp — №1909
-special — №1938
-speed — №1760 (+ 2 других файлов)
-Speed — №1938
-speedFt — №1760 (+ 2 других файлов)
-spells — №1760 (+ 1 других файлов)
-spellsData — №1760 (+ 2 других файлов)
-spellSlotsData — №1760 (+ 2 других файлов)
-sPerG — №1909
-spiderClimb — №1760 (+ 2 других файлов)
+sp — №1915
+special — №1944
+speed — №1762 (+ 2 других файлов)
+Speed — №1944
+speedFt — №1762 (+ 2 других файлов)
+spells — №1762 (+ 1 других файлов)
+spellsData — №1762 (+ 2 других файлов)
+spellSlotsData — №1762 (+ 2 других файлов)
+sPerG — №1915
+spiderClimb — №1762 (+ 2 других файлов)
 Sprite — №1030
 sqlWasm — №1081 (+ 5 других файлов)
-stability — №1938 (+ 1 других файлов)
-Stability — №1938
+stability — №1944 (+ 1 других файлов)
+Stability — №1944
 stableVersion — №0906 (+ 1 других файлов)
-stacked — №1909
+stacked — №1915
 stage — №0921
 stairDirection — №0752 (+ 3 других файлов)
 stairFrom — №0752 (+ 3 других файлов)
 stairsTo — №0753 (+ 5 других файлов)
 stairTo — №0752 (+ 3 других файлов)
-stat — №1760 (+ 2 других файлов)
-statBonus — №1760
-statGenerationMode — №1760 (+ 2 других файлов)
-statRollsUsed — №1760 (+ 2 других файлов)
-stats — №1760 (+ 2 других файлов)
+stat — №1762 (+ 2 других файлов)
+statBonus — №1762
+statGenerationMode — №1762 (+ 2 других файлов)
+statRollsUsed — №1762 (+ 2 других файлов)
+stats — №1762 (+ 2 других файлов)
 status — №0906 (+ 12 других файлов)
-stealth — №1760 (+ 2 других файлов)
-stealthDisadvantage — №1909 (+ 1 других файлов)
-steel — №1938
+stealth — №1762 (+ 2 других файлов)
+stealthDisadvantage — №1915 (+ 1 других файлов)
+steel — №1944
 steps — №0752 (+ 3 других файлов)
 sTexture — №0752 (+ 15 других файлов)
 stone — №1085
-stoneEndurance — №1760 (+ 2 других файлов)
-str — №1760 (+ 2 других файлов)
+stoneEndurance — №1762 (+ 2 других файлов)
+str — №1762 (+ 2 других файлов)
 StreamingManager — №1030
-strength — №1760 (+ 2 других файлов)
-Strength — №1938
+strength — №1762 (+ 2 других файлов)
+Strength — №1944
 strictBodyAndNumeralRaster — №1081
-subclass — №1760 (+ 2 других файлов)
-sunlightSensitivity — №1760 (+ 2 других файлов)
-survival — №1760 (+ 2 других файлов)
-swarmForm — №1763 (+ 1 других файлов)
-swarmPercent — №1763 (+ 1 других файлов)
-swim — №1760 (+ 2 других файлов)
-synergies — №1939
-synergy — №1938
+subclass — №1762 (+ 2 других файлов)
+sunlightSensitivity — №1762 (+ 2 других файлов)
+survival — №1762 (+ 2 других файлов)
+swarmForm — №1765 (+ 1 других файлов)
+swarmPercent — №1765 (+ 1 других файлов)
+swim — №1762 (+ 2 других файлов)
+synergies — №1945
+synergy — №1944
 syntheticSensorLifecycle — №1086
 T_Trim_Cloth_BaseColor — №1023 (+ 1 других файлов)
 T_Trim_Cloth_Normal — №1023 (+ 1 других файлов)
@@ -15889,69 +15906,69 @@ T_Trim_Props_ORM — №1023 (+ 1 других файлов)
 tag — №1037
 TagManager — №1030
 tags — №0752 (+ 14 других файлов)
-tailColor — №1763 (+ 1 других файлов)
-tailCurve — №1763 (+ 1 других файлов)
-tailLength — №1763 (+ 1 других файлов)
-tailThickness — №1763 (+ 1 других файлов)
-tailTip — №1763 (+ 1 других файлов)
-tailTuftSize — №1763 (+ 1 других файлов)
+tailColor — №1765 (+ 1 других файлов)
+tailCurve — №1765 (+ 1 других файлов)
+tailLength — №1765 (+ 1 других файлов)
+tailThickness — №1765 (+ 1 других файлов)
+tailTip — №1765 (+ 1 других файлов)
+tailTuftSize — №1765 (+ 1 других файлов)
 target — №1129 (+ 1 других файлов)
-targetId — №1937
+targetId — №1943
 targets — №0087 (+ 4 других файлов)
 targetsTested — №1081
-tarotDamageTotals — №1937
-tarotKnowledge — №1937
-tarotLastStartedTurn — №1937
-telepathy — №1760 (+ 2 других файлов)
-templatePinStates — №1960
+tarotDamageTotals — №1943
+tarotKnowledge — №1943
+tarotLastStartedTurn — №1943
+telepathy — №1762 (+ 2 других файлов)
+templatePinStates — №1966
 test — №1154
 testApkArtifact — №1046
 tests — №1082 (+ 1 других файлов)
 TEXCOORD_0 — №0912
-text — №1909 (+ 1 других файлов)
+text — №1915 (+ 1 других файлов)
 TextAsset — №1030
 Texture2D — №1030
 textureFormat — №1030 (+ 2 других файлов)
 textures — №1486
 themes — №1082
 then — №1018
-thread — №1938
+thread — №1944
 tiles — №0752 (+ 18 других файлов)
-time — №1763 (+ 3 других файлов)
+time — №1765 (+ 3 других файлов)
 TimeManager — №1030
 title — №1018 (+ 2 других файлов)
-toHit — №1909 (+ 1 других файлов)
-tokenArt — №1936
-tokenReady — №1936
+toHit — №1915 (+ 1 других файлов)
+tokenArt — №1942
+tokenReady — №1942
 tokens — №0752 (+ 18 других файлов)
-toolAliases — №1938
-toolLabels — №1938
-toolProficiencies — №1760 (+ 1 других файлов)
-tools — №1938
-top — №1763 (+ 1 других файлов)
+toolAliases — №1944
+toolLabels — №1944
+toolProficiencies — №1762 (+ 1 других файлов)
+tools — №1944
+top — №1765 (+ 1 других файлов)
 topology — №0912 (+ 2 других файлов)
 topologyFaceCases — №1086
 torso-muscle-pectoral-decr — №0087 (+ 1 других файлов)
 torso-muscle-pectoral-incr — №0087 (+ 1 других файлов)
-torsoRidgeSize — №1763 (+ 1 других файлов)
-torsoRidgeWidth — №1763 (+ 1 других файлов)
-totals — №1909
-totalWeightKg — №1909
+torsoRidgeSize — №1765 (+ 1 других файлов)
+torsoRidgeWidth — №1765 (+ 1 других файлов)
+totals — №1915
+totalWeightKg — №1915
 touched — №1085
 Transform — №1030
 trayRecipes — №1086
 triangles — №0912 (+ 1 других файлов)
-trunk — №1760 (+ 2 других файлов)
-trunkSize — №1763 (+ 1 других файлов)
-turnIds — №1937
-tuskSize — №1763 (+ 1 других файлов)
+trunk — №1762 (+ 2 других файлов)
+trunkSize — №1765 (+ 1 других файлов)
+turnIds — №1943
+tuskSize — №1765 (+ 1 других файлов)
 type — №0752 (+ 28 других файлов)
 typeCounts — №1030
-typeKey — №1909 (+ 1 других файлов)
+typeKey — №1915 (+ 1 других файлов)
 unchanged — №0919 (+ 1 других файлов)
-undeadResilience — №1760 (+ 2 других файлов)
-underwearBottom — №1763 (+ 1 других файлов)
-underwearTop — №1763 (+ 1 других файлов)
+undeadResilience — №1762 (+ 2 других файлов)
+underwearBottom — №1765 (+ 1 других файлов)
+underwearTop — №1765 (+ 1 других файлов)
 uniqueItems — №1018
 uniqueOriginalFiles — №1035
 uniquePositions — №0912
@@ -15960,24 +15977,24 @@ unityCopiedSha256 — №1037
 unityGuidEdges — №1017
 unityInclusion — №1017
 unityPyVersion — №1030
-unityValidation — №1771
+unityValidation — №1773
 unityVersion — №1018 (+ 1 других файлов)
-unknown — №1909 (+ 1 других файлов)
+unknown — №1915 (+ 1 других файлов)
 unlimitedTotalRequest — №1086
 unrelatedCiFailure — №1085
-unstable — №1939
-untouched — №1909
+unstable — №1945
+untouched — №1915
 updateManifest — №1135
 upgradeQaJob — №1082
 url — №1008 (+ 13 других файлов)
-userAdded — №1960
+userAdded — №1966
 uvDirections — №1086
 uvOutsideUnitSquare — №0912
 uvRange — №0912
-validation — №1771
-value — №1909
-Venom — №1938
-verbal — №1760 (+ 1 других файлов)
+validation — №1773
+value — №1915
+Venom — №1944
+verbal — №1762 (+ 1 других файлов)
 version — №0001 (+ 52 других файлов)
 versionCode — №0906 (+ 18 других файлов)
 vertexCount — №0087 (+ 1 других файлов)
@@ -15985,26 +16002,26 @@ vertices — №0912 (+ 3 других файлов)
 VFXManager — №1030
 view — №0752 (+ 17 других файлов)
 vine — №1085
-Vitality — №1938
-volatility — №1938 (+ 1 других файлов)
-Volatility — №1938
+Vitality — №1944
+volatility — №1944 (+ 1 других файлов)
+Volatility — №1944
 vscode — №0001
 w — №0752 (+ 17 других файлов)
 waist — №0912 (+ 5 других файлов)
 walkable — №0752 (+ 3 других файлов)
 walls — №0752 (+ 18 других файлов)
-wax — №1938
-Weakness — №1938
+wax — №1944
+Weakness — №1944
 weapons — №1019 (+ 3 других файлов)
-weaponsData — №1760 (+ 2 других файлов)
-weaponTraining — №1760 (+ 2 других файлов)
-weaver — №1938
+weaponsData — №1762 (+ 2 других файлов)
+weaponTraining — №1762 (+ 2 других файлов)
+weaver — №1944
 weight — №0087 (+ 8 других файлов)
-weightCases — №1909
-weightHero — №1909
+weightCases — №1915
+weightHero — №1915
 WEIGHTS_0 — №0912
 weightSumMaxError — №0912
-weightTotal — №1909
+weightTotal — №1915
 weldedBoundaryEdges — №0912
 weldedNonManifoldEdges — №0912
 weldTolerance — №0912
@@ -16014,12 +16031,12 @@ windows — №1015 (+ 9 других файлов)
 windowsBundleBuilt — №1028
 windowsInstallUpgradeReinstall — №1086
 windowsUpgrade — №1083 (+ 3 других файлов)
-wingColor — №1763 (+ 1 других файлов)
-wingSize — №1763 (+ 1 других файлов)
-wis — №1760 (+ 2 других файлов)
-wisdom — №1760 (+ 2 других файлов)
-wood — №1938
-woodwork — №1938
+wingColor — №1765 (+ 1 других файлов)
+wingSize — №1765 (+ 1 других файлов)
+wis — №1762 (+ 2 других файлов)
+wisdom — №1762 (+ 2 других файлов)
+wood — №1944
+woodwork — №1944
 workflows — №0906 (+ 1 других файлов)
 workingTreeStatus — №1017
 wTexture — №0752 (+ 15 других файлов)

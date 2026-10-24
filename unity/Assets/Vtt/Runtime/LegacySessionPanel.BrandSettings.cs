@@ -150,9 +150,12 @@ namespace DndVtt.UnityPrototype
             float x=(UiWidth-width)*.5f;
             Rect outer=new Rect(x,10,width,UiHeight-20);
             GUI.Box(outer,GUIContent.none,brandCard);
-            if(GUI.Button(new Rect(x+12,16,Mathf.Min(160,width*.42f),43),"← К настройкам",brandBrown))
-            { brandTechnicalScreen=false; return; }
-            GUILayout.BeginArea(new Rect(x+13,66,width-26,UiHeight-86));
+            var backText = new GUIContent("← К настройкам");
+            float backWidth = Mathf.Min(width-48, Mathf.Max(230, brandBrown.CalcSize(backText).x+12));
+            var back = new Rect(x+12,16,backWidth,Mathf.Max(54,brandBrown.CalcHeight(backText,backWidth)));
+            if (GUI.Button(back,backText,brandBrown)) { brandTechnicalScreen=false; return; }
+            DesktopUiSmoke.RecordButton(backText.text, brandBrown, back);
+            GUILayout.BeginArea(new Rect(x+13,back.yMax+12,width-26,UiHeight-back.yMax-32));
             frontScroll=GUILayout.BeginScrollView(SwipePosition("technical-settings",frontScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);
             GUILayout.BeginVertical(new GUIStyle { fixedWidth=width-48,stretchWidth=false });
             DrawSettings();

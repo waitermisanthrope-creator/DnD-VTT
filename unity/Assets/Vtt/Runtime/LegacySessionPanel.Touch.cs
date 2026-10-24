@@ -15,7 +15,7 @@ namespace DndVtt.UnityPrototype
         private void BeginSwipeFrame() { collectingSwipeRegions=Event.current.type==EventType.Repaint;if(collectingSwipeRegions)drawnSwipeRegions.Clear(); }
         private void EndSwipeFrame() { if(collectingSwipeRegions)foreach(string id in menuGesture.Regions.Keys.Where(id=>!drawnSwipeRegions.Contains(id)).ToArray())menuGesture.Regions.Remove(id); }
 
-        private float MenuScale => Application.isMobilePlatform && Screen.height>Screen.width ? Screen.width/440f : 1f;
+        private float MenuScale => (Application.isMobilePlatform || DesktopUiSmoke.PortraitLayout) && Screen.height>Screen.width ? Screen.width/440f : 1f;
         private float UiWidth => Screen.width/MenuScale;
         private float UiHeight => Screen.height/MenuScale;
         // IMGUI pointer fallback also covers devices that deliver emulated mouse

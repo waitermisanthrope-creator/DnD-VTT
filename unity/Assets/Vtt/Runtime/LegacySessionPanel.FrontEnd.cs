@@ -92,16 +92,19 @@ namespace DndVtt.UnityPrototype
             }
             else
             {
-            int navHeight = portraitLayout ? 54 : 36;
+            string[] labels = { "Главная", "Персонажи · " + (archive?.Count ?? 0), "Создать героя", "Импорт / экспорт", "3D-карта", "Настройки" };
+            var destinations = new[] { FrontScreen.Home, FrontScreen.Characters, FrontScreen.Create, FrontScreen.Import, FrontScreen.Map, FrontScreen.Settings };
+            int columns = portraitLayout ? 2 : 6;
+            float cellWidth = Mathf.Max(80, (UiWidth - inset * 2 - 24) / columns - 8);
+            float navHeight = Mathf.Max(54, labels.Max(label => GUI.skin.button.CalcHeight(new GUIContent(label), cellWidth)));
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Главная", GUILayout.Height(navHeight))) Navigate(FrontScreen.Home);
-            if (GUILayout.Button("Персонажи · " + (archive?.Count ?? 0), GUILayout.Height(navHeight))) Navigate(FrontScreen.Characters);
-            if (portraitLayout) { GUILayout.EndHorizontal(); GUILayout.BeginHorizontal(); }
-            if (GUILayout.Button("Создать героя", GUILayout.Height(navHeight))) BeginCreation();
-            if (GUILayout.Button("Импорт / экспорт", GUILayout.Height(navHeight))) Navigate(FrontScreen.Import);
-            if (portraitLayout) { GUILayout.EndHorizontal(); GUILayout.BeginHorizontal(); }
-            if (GUILayout.Button("3D-карта", GUILayout.Height(navHeight))) Navigate(FrontScreen.Map);
-            if (GUILayout.Button("Настройки", GUILayout.Height(navHeight))) OpenSettings();
+            for (int i = 0; i < labels.Length; i++)
+            {
+                if (i > 0 && i % columns == 0) { GUILayout.EndHorizontal(); GUILayout.BeginHorizontal(); }
+                bool clicked = GUILayout.Button(labels[i], GUILayout.Width(cellWidth), GUILayout.Height(navHeight));
+                DesktopUiSmoke.RecordButton(labels[i], GUI.skin.button, GUILayoutUtility.GetLastRect());
+                if (clicked) { if (i == 2) BeginCreation(); else Navigate(destinations[i]); }
+            }
             GUILayout.EndHorizontal(); GUILayout.Space(18);
             }
             frontScroll = GUILayout.BeginScrollView(SwipePosition("front",frontScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);
@@ -132,6 +135,8 @@ namespace DndVtt.UnityPrototype
                 case FrontScreen.Import:
                     GUILayout.Label("Перенос персонажей", heading);
                     GUILayout.Label("Вставьте JSON персонажа, массива или архива characters. Импорт добавит новых героев и сохранит архив. Если ID совпадает, другая версия существующего героя не заменяется.", muted);
+                    DrawCharacterFiles();
+                    GUILayout.Space(12); GUILayout.Label("Или вставьте JSON из буфера обмена", muted);
                     input = GUILayout.TextArea(input, GUILayout.MinHeight(170));
                     if (GUILayout.Button("Проверить и открыть импорт", GUILayout.Height(44))) { if (Import(input)) Navigate(FrontScreen.Characters); }
                     if (archive != null)
@@ -139,13 +144,14 @@ namespace DndVtt.UnityPrototype
                         if (GUILayout.Button("Копировать текущий архив", GUILayout.Height(52))) GUIUtility.systemCopyBuffer = ExportCurrent();
                         if (GUILayout.Button("Сохранить архив на устройстве", GUILayout.Height(52))) Attempt(() => { SaveSheet(); status = "Архив сохранён"; });
                     }
-                    DrawCharacterBackups();
+                    DrawCharacterBackups(false);
                     GUILayout.Label("Локальный файл: " + SavePath, muted); break;
             }
             GUILayout.Space(20); GUILayout.Label(status, muted); GUILayout.EndVertical(); GUILayout.EndScrollView(); RegisterSwipe("front",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
         }
-        private void DrawCharacterBackups()
+        private void DrawCharacterBackups(bool fileButtons = true)
         {
+            if (fileButtons) DrawCharacterFiles();
             if (archive != null && GUILayout.Button("Создать резервную копию в файл", GUILayout.Height(52))) Attempt(() =>
             {
                 string path = CharacterSheetStore.Backup(SavePath, archive);
