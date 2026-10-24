@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 2e825b930eb9. Git содержит 2035 файлов.
+Снимок кода de1dc315ecc8. Git содержит 2035 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1825,7 +1825,7 @@
 | №1804 unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs.meta | 60 B | вспомогательный файл: CloudCharacterProtocol.cs |
 | №1805 unity/Assets/Vtt/Runtime/CommerceRules.cs | 19387 B | вспомогательный файл: CommerceRules |
 | №1806 unity/Assets/Vtt/Runtime/CommerceRules.cs.meta | 60 B | вспомогательный файл: CommerceRules.cs |
-| №1807 unity/Assets/Vtt/Runtime/DesktopUiSmoke.cs | 10180 B | вспомогательный файл: DesktopUiSmoke |
+| №1807 unity/Assets/Vtt/Runtime/DesktopUiSmoke.cs | 10099 B | вспомогательный файл: DesktopUiSmoke |
 | №1808 unity/Assets/Vtt/Runtime/DesktopUiSmoke.cs.meta | 60 B | вспомогательный файл: DesktopUiSmoke.cs |
 | №1809 unity/Assets/Vtt/Runtime/DiceGeometry.cs | 7902 B | вспомогательный файл: DiceGeometry |
 | №1810 unity/Assets/Vtt/Runtime/DiceGeometry.cs.meta | 60 B | вспомогательный файл: DiceGeometry.cs |
@@ -1859,7 +1859,7 @@
 | №1838 unity/Assets/Vtt/Runtime/LegacySessionPanel.Account.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Account.cs |
 | №1839 unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs | 14833 B | вспомогательный файл: LegacySessionPanel.Appearance |
 | №1840 unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Appearance.cs |
-| №1841 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs | 17207 B | вспомогательный файл: LegacySessionPanel.Branding |
+| №1841 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs | 17059 B | вспомогательный файл: LegacySessionPanel.Branding |
 | №1842 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Branding.cs |
 | №1843 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs | 12018 B | вспомогательный файл: LegacySessionPanel.BrandSettings |
 | №1844 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.BrandSettings.cs |
@@ -1881,7 +1881,7 @@
 | №1860 unity/Assets/Vtt/Runtime/LegacySessionPanel.Dice.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Dice.cs |
 | №1861 unity/Assets/Vtt/Runtime/LegacySessionPanel.DiceControls.cs | 3513 B | вспомогательный файл: LegacySessionPanel.DiceControls |
 | №1862 unity/Assets/Vtt/Runtime/LegacySessionPanel.DiceControls.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.DiceControls.cs |
-| №1863 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs | 32290 B | вспомогательный файл: LegacySessionPanel.FrontEnd |
+| №1863 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs | 32514 B | вспомогательный файл: LegacySessionPanel.FrontEnd |
 | №1864 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.FrontEnd.cs |
 | №1865 unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs | 16332 B | вспомогательный файл: LegacySessionPanel.Moderation |
 | №1866 unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Moderation.cs |

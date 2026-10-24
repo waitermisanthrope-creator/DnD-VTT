@@ -169,6 +169,12 @@ namespace DndVtt.UnityPrototype
             });
             if (GUILayout.Button("Отмена восстановления", GUILayout.Height(52))) confirmRestoreCharacters = false;
         }
+        private void RequestCharacterDeletion(int index)
+        {
+            string id = archive.Snapshot(index)["id"].ToString(), name = archive.Name(index);
+            Navigate(FrontScreen.Characters);
+            pendingCharacterDeleteId = id; pendingCharacterDeleteName = name;
+        }
         private void ConfirmCharacterDeletion()
         {
             string currentId = archive.Snapshot(selected)["id"].ToString();
@@ -200,7 +206,7 @@ namespace DndVtt.UnityPrototype
                 GUILayout.Label("Здоровье " + archive.CurrentHp(i) + " / " + archive.MaximumHp(i) + "   ·   " + CharacterSheetRules.InventoryWeightKg(hero).ToString("0.##", CultureInfo.InvariantCulture) + " кг");
                 if (GUILayout.Button("Открыть лист  →", GUILayout.Height(52))) { selected = i; Navigate(FrontScreen.Sheet); }
                 if (GUILayout.Button("Удалить персонажа…", GUILayout.Height(52)))
-                { pendingCharacterDeleteId = hero["id"].ToString(); pendingCharacterDeleteName = archive.Name(i); }
+                RequestCharacterDeletion(i);
                 GUILayout.EndVertical(); GUILayout.Space(10);
             }
         }

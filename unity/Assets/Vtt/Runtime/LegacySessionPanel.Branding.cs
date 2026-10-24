@@ -254,10 +254,8 @@ namespace DndVtt.UnityPrototype
                 GUILayout.EndVertical();
                 if (GUILayout.Button("Играть", brandBlue, GUILayout.Width(Mathf.Min(105, width*.24f)), GUILayout.Height(51)))
                 { selected = i; Navigate(FrontScreen.Sheet); }
-                // Destructive character deletion is deliberately disabled during visual port.
-                bool before = GUI.enabled; GUI.enabled = false;
-                GUILayout.Button("×", brandRed, GUILayout.Width(48), GUILayout.Height(51));
-                GUI.enabled = before; GUILayout.EndHorizontal();
+                if (GUILayout.Button("×", brandRed, GUILayout.Width(48), GUILayout.Height(51))) RequestCharacterDeletion(i);
+                GUILayout.EndHorizontal();
             }
             GUILayout.EndScrollView(); RegisterSwipe("home",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
             float footer = Mathf.Min(420, UiHeight * .56f);

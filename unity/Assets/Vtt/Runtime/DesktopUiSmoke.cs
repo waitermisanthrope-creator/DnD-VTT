@@ -70,11 +70,11 @@ namespace DndVtt.UnityPrototype
                 Check(loaded.Count == 2 && (int)loaded.Snapshot(0)["futureUnknown"]["value"] == 123, "native additive import preserves original fields");
                 Check(!panel.Import("{\"id\":\"daily-a\",\"name\":\"Conflict\"}") && CharacterSheetStore.Load(panel.SavePath).Count == 2, "conflict leaves disk unchanged");
                 var screenType = typeof(LegacySessionPanel).GetNestedType("FrontScreen", BindingFlags.NonPublic);
-                Call("Navigate", Enum.Parse(screenType, "Characters"));
+                Call("Navigate", Enum.Parse(screenType, "Home"));
             }
             catch (Exception error) { Fail(error); yield break; }
-            yield return Frame("characters-roster"); if (failed) yield break;
-            try { Field("pendingCharacterDeleteId", "daily-a"); Field("pendingCharacterDeleteName", "Первый герой"); }
+            yield return Frame("characters-home"); if (failed) yield break;
+            try { Call("RequestCharacterDeletion", 0); }
             catch (Exception error) { Fail(error); yield break; }
             yield return Frame("characters-delete-confirmation"); if (failed) yield break;
             try
