@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода be9b31d9c65e. Git содержит 2035 файлов.
+Снимок кода e53e259ded3f. Git содержит 2035 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 7025 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 68902 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 91719 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 130265 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 70028 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 92845 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 131391 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1106,7 +1106,7 @@
 | №1085 docs/unity-account/dice-1.00.32-metrics.json | 2200 B | документация или отчёт: dice 1.00.32 metrics |
 | №1086 docs/unity-account/IMPLEMENTATION_STATUS.md | 77740 B | документация или отчёт: IMPLEMENTATION STATUS |
 | №1087 docs/unity-account/MODERATION_CENTER_RUNBOOK.md | 7893 B | документация или отчёт: MODERATION CENTER RUNBOOK |
-| №1088 docs/unity-account/PC_UI_FIX_1.00.38.md | 3702 B | документация или отчёт: PC UI FIX 1.00.38 |
+| №1088 docs/unity-account/PC_UI_FIX_1.00.38.md | 4556 B | документация или отчёт: PC UI FIX 1.00.38 |
 | №1089 docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md | 3575 B | документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 |
 | №1090 docs/unity-account/WORKSHOP_COLLECTIONS_1.00.35.md | 5177 B | документация или отчёт: WORKSHOP COLLECTIONS 1.00.35 |
 | №1091 docs/WINDOWS_DESKTOP.md | 3756 B | документация или отчёт: WINDOWS DESKTOP |
@@ -1151,7 +1151,7 @@
 | №1130 PROJECT_ATLAS.txt | генерируется | человекочитаемая карта репозитория |
 | №1131 README.md | 145 B | документация или отчёт: README |
 | №1132 release-staging/unity-android-approval.json | 470 B | данные/конфигурация: unity android approval |
-| №1133 release-staging/unity-paired-approval.json | 1687 B | данные/конфигурация: unity paired approval |
+| №1133 release-staging/unity-paired-approval.json | 2305 B | данные/конфигурация: unity paired approval |
 | №1134 release-staging/unity-release.json | 3914 B | данные/конфигурация: unity release |
 | №1135 smoke_back_v2_sprite-1.png | 1707378 B | текстура/изображение: smoke back v2 sprite 1 |
 | №1136 smoke_back_v2_sprite.png | 1814587 B | текстура/изображение: smoke back v2 sprite |
