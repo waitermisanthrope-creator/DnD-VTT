@@ -20,7 +20,7 @@ namespace DndVtt.UnityPrototype
 
         private void OpenSettingsCategory(string category)
         {
-            settingsCategory=category;brandSettingsScroll=Vector2.zero;frontScroll=Vector2.zero;menuGesture.Clear();GUI.FocusControl(null);
+            settingsCategory=category;brandSettingsScroll=Vector2.zero;frontScroll=Vector2.zero;menuGesture.Clear();if(Event.current!=null)GUI.FocusControl(null);
         }
         private void SettingsCategoryButton(string title,string description,string category)
         {
@@ -36,7 +36,7 @@ namespace DndVtt.UnityPrototype
         {
             PrepareBrand();
             if (settingsHeader != null) return;
-            settingsHeader = new GUIStyle(brandTitle) { fontSize = 24, wordWrap = true, font = sheetSerif };
+            settingsHeader = new GUIStyle(brandTitle) { fontSize = 24, wordWrap = true, font = MenuFont };
             settingsDescription = new GUIStyle(brandSub) { fontSize = 17, wordWrap = true };
             settingsInset = new GUIStyle(brandCard) {
                 padding = new RectOffset(14,14,12,12),
@@ -53,19 +53,24 @@ namespace DndVtt.UnityPrototype
             PrepareSheetSkin();PrepareSettingsSkin();LoadCloudSession();
             if(settingsDraft==null)settingsDraft=ClientPreferences.Parse(preferences.Export());
             DrawBrandBackdrop(true);
-            float width=Mathf.Min(UiWidth-24,600),x=(UiWidth-width)*.5f;
+            float width=Mathf.Min(UiWidth-24,Application.isMobilePlatform ? 600 : 1040),x=(UiWidth-width)*.5f;
             GUI.Box(new Rect(x,12,width,UiHeight-24),GUIContent.none,brandCard);
             GUILayout.BeginArea(new Rect(x+16,24,width-32,UiHeight-48));
             GUILayout.BeginHorizontal();GUILayout.Label(settingsCategory==""?"Настройки приложения":settingsCategory,settingsHeader);if(GUILayout.Button("×",brandRed,GUILayout.Width(46),GUILayout.Height(46)))Navigate(FrontScreen.Home);GUILayout.EndHorizontal();
             brandSettingsScroll=GUILayout.BeginScrollView(SwipePosition("settings",brandSettingsScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);
             GUILayout.BeginVertical(new GUIStyle { fixedWidth=width-54,stretchWidth=false });
             if(settingsCategory=="") {
+                bool wide = !Application.isMobilePlatform && width >= 850;
+                if(wide)GUILayout.BeginHorizontal();
                 SettingsCategoryButton("Визуальные","Тема, рамки, обои и иконка приложения.","Визуальные");
-                SettingsCategoryButton("Графические","Качество, FPS и работа экрана без сна.","Графические");
+                SettingsCategoryButton("Графические","Качество, FPS и режим окна.","Графические");
+                if(wide) { GUILayout.EndHorizontal();GUILayout.BeginHorizontal(); }
                 SettingsCategoryButton("Управление","Камера, чувствительность и поле зрения.","Управление");
                 SettingsCategoryButton("Сеть и аккаунт","Вход, облачные персонажи и ник глобального чата.","Сеть и аккаунт");
+                if(wide) { GUILayout.EndHorizontal();GUILayout.BeginHorizontal(); }
                 SettingsCategoryButton("Данные и устройство","Локальный архив и сохранение персонажей.","Данные и устройство");
                 SettingsCategoryButton("Обновления","Проверка новой версии и история изменений.","Обновления");
+                if(wide)GUILayout.EndHorizontal();
                 if(cloudSession!=null)SettingsCategoryButton("Обращения и управление","Жалобы, заявки и инструменты в рамках серверных прав.","Обращения и управление");
             } else {
                 if(GUILayout.Button("← Все настройки",brandBrown,GUILayout.MinHeight(54)))OpenSettingsCategory("");
@@ -86,7 +91,8 @@ namespace DndVtt.UnityPrototype
                         if(GUILayout.Button("Аккаунт и синхронизация",brandBlue,GUILayout.MinHeight(64)))Navigate(FrontScreen.Account);
                         DrawChatNicknameSettings();break;
                     case "Обращения и управление":DrawStaffSettingsPanels();break;
-                    case "Графические":settingsSection=2;DrawSettings(true);break;
+                    case "Графические":
+                        DrawDesktopWindowControls();settingsSection=2;DrawSettings(true);break;
                     case "Управление":settingsSection=3;DrawSettings(true);break;
                     case "Данные и устройство":
                         settingsSection=4;DrawSettings(true);

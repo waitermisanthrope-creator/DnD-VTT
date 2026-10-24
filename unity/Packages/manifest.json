@@ -12,6 +12,7 @@
     "com.unity.modules.uielements": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.assetbundle": "1.0.0",
-    "com.unity.modules.animation": "1.0.0"
+    "com.unity.modules.animation": "1.0.0",
+    "com.unity.modules.textrendering": "1.0.0"
   }
 }

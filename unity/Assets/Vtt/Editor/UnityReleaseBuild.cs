@@ -83,6 +83,13 @@ public static class UnityReleaseBuild
     {
         if (PlayerSettings.companyName != "DnDVttExperiment" || PlayerSettings.productName != "DnD VTT Unity Prototype")
             throw new Exception("Release must preserve existing Windows save identity");
+        if (target == BuildTarget.StandaloneWindows64)
+        {
+            PlayerSettings.fullScreenMode = FullScreenMode.Windowed;
+            PlayerSettings.defaultScreenWidth = 1280; PlayerSettings.defaultScreenHeight = 800;
+            PlayerSettings.resizableWindow = true; PlayerSettings.allowFullscreenSwitch = true;
+        }
+        if (!Resources.Load<Font>("UI/DejaVuSans")) throw new Exception("Bundled Cyrillic UI font is missing");
         LegacyMigrationSetup.ValidateContracts();
         // 1.00.04 could compile while images were invisible at runtime.
         // Fail 1.00.05 before packaging if any mandatory source texture is

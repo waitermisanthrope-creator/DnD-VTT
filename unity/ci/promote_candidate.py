@@ -36,7 +36,7 @@ def candidate_manifest(folder, qa_path, run, version):
         raise ValueError('Candidate provenance/version/signature mismatch')
     if qa['status'] != 'passed' or qa['source'] != run['head_sha'] or qa['candidate'] != version or str(qa['run']) != str(run['id']):
         raise ValueError('Windows QA does not belong to this candidate')
-    for name in ['baselineInstall','installedPayloadHashes','upgrade','reinstall','isolatedProfileAndBackupPreserved','unknownFilePreserved','runtimeSmoke']:
+    for name in ['baselineInstall','installedPayloadHashes','upgrade','reinstall','isolatedProfileAndBackupPreserved','unknownFilePreserved','runtimeSmoke','desktopUiSmoke']:
         if qa.get(name) is not True:
             raise ValueError('Windows QA check missing: ' + name)
     artifacts, files = {}, []

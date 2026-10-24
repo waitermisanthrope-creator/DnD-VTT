@@ -98,7 +98,7 @@ namespace DndVtt.UnityPrototype
             b.normal.textColor = foreground; b.hover.textColor = foreground;
             b.active.textColor = foreground;
             b.alignment = TextAnchor.MiddleCenter; b.fontStyle = FontStyle.Bold;
-            b.fontSize = 19; b.wordWrap = true;
+            b.font = MenuFont; b.fontSize = 19; b.wordWrap = true;
             b.padding = new RectOffset(7, 7, 7, 7);
             b.border = new RectOffset(16, 16, 16, 16);
             return b;
@@ -121,10 +121,10 @@ namespace DndVtt.UnityPrototype
             brandGold = Button(button, new Color(.41f,.28f,.08f), Color.white);
             brandBrown = Button(button, new Color(.16f,.12f,.08f), new Color(.98f,.84f,.49f));
             brandPlain = Button(button, new Color(.17f,.16f,.16f), Color.white);
-            brandTitle = new GUIStyle(label) { fontSize = 25, fontStyle = FontStyle.Bold, wordWrap = true };
+            brandTitle = new GUIStyle(label) { font = MenuFont, fontSize = 25, fontStyle = FontStyle.Bold, wordWrap = true };
             brandTitle.normal.textColor = BrandAccent;
             brandName = new GUIStyle(brandTitle) { fontSize = 20 };
-            brandSub = new GUIStyle(label) { fontSize = 15, wordWrap = true };
+            brandSub = new GUIStyle(label) { font = MenuFont, fontSize = 15, wordWrap = true };
             brandSub.normal.textColor = new Color(.73f,.72f,.71f);
             brandCard = new GUIStyle(box) { padding = new RectOffset(12,12,12,12),
                 margin = new RectOffset(0,0,0,9) };

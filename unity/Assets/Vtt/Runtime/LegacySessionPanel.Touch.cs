@@ -33,6 +33,7 @@ namespace DndVtt.UnityPrototype
         }
         private void Update()
         {
+            UpdateDesktopWindow();
             UpdateDiceTable();
             if (UpdateCharacterStudio()) { menuGesture.Clear(); return; }
             PollNativeChatEditor();

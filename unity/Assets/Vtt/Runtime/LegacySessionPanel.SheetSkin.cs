@@ -15,12 +15,8 @@ namespace DndVtt.UnityPrototype
             PrepareBrand();
             if (sheetSkin) { GUI.skin = sheetSkin; return; }
             sheetSkin = Instantiate(GUI.skin); sheetSkin.hideFlags = HideFlags.HideAndDontSave;
-            if (!sheetSerif)
-            {
-                try { sheetSerif = Font.CreateDynamicFontFromOSFont(new[] { "Noto Serif", "Droid Serif", "Liberation Serif", "Times New Roman", "serif" }, 20); }
-                catch (Exception) { sheetSerif = null; }
-            }
-            if (sheetSerif) sheetSkin.font = sheetSerif;
+            sheetSerif = MenuFont;
+            sheetSkin.font = MenuFont;
             sheetSkin.label.fontSize = 20; sheetSkin.label.wordWrap = true; sheetSkin.label.normal.textColor = new Color(.82f, .81f, .77f);
             sheetSkin.button = new GUIStyle(brandPlain) { fontSize = 20, fixedHeight = 0, stretchWidth = true, padding = new RectOffset(12, 12, 10, 10) };
             sheetSkin.button.margin = new RectOffset(2,2,5,5);

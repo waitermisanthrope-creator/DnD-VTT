@@ -22,8 +22,8 @@ namespace DndVtt.UnityPrototype
         private void DrawUpdates()
         {
             GUILayout.Label("Обновление приложения", heading);
-            GUILayout.Label("Установлено: Unity " + UnityRelease.Version + "  ·  Канал: Unity Android", muted);
-            GUILayout.Label("При обновлении файлы персонажей и настройки остаются на устройстве. Для установки Android попросит подтверждение.", muted);
+            GUILayout.Label("Установлено: Unity " + UnityRelease.Version + "  ·  Канал: Unity " + (Application.isMobilePlatform ? "Android" : "Windows"), muted);
+            GUILayout.Label("При обновлении файлы персонажей и настройки остаются на устройстве." + (Application.isMobilePlatform ? " Для установки Android попросит подтверждение." : " Установщик обновит приложение на ПК."), muted);
             GUILayout.Space(12);
             GUILayout.BeginVertical(GUI.skin.box);
             GUILayout.Label(updateMessage, muted);
