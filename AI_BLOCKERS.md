@@ -1,3 +1,7 @@
+# Unity 1.00.40 — доставлена / оставшиеся ограничения (2026-10-24)
+
+Релизного блокера для40 нет: Android/Windows, установленный Windows runtime/dialogs/graphical UI и независимая проверка публичных файлов PASS. Физический Android document picker/share ещё не проверялся. Импорт другой версии существующего ID безопасно отклоняется; дружелюбное разрешение конфликта остаётся отдельной задачей. Основные подписи и портретные действия исправлены; короткая версия в portrait header ещё частично за краем. Горизонтальные вкладки листа прокручиваются намеренно. Предыдущие сообщения о блокерах39/40 ниже могут быть устаревшими; источник текущего итога docs/unity-account/CHARACTER_FILES_1.00.40.md.
+
 # Unity1.00.39 — delivered / remaining everyday limits (2026-10-24)
 
 Both native builds, installed Windows upgrade/runtime/graphical checks and public delivery verification PASS. No release blocker for39. Physical phone/owner-PC QA remains unperformed. Reviewed frames show pre-existing clipped secondary navigation and technical updater-back labels: next interface task. Portable file picker/share and friendly imported-ID conflict resolution remain; current import safely rejects differing same-ID profiles. See docs/unity-account/DAILY_CHARACTERS_1.00.39.md. Historical blockers below may describe superseded build states.
