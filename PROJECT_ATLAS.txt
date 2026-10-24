@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 890453a25233. Файлов: 2025
+Коммит fb17ec43eef5. Файлов: 2025
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1768,7 +1768,7 @@
 1752. unity/Assets/Vtt/Resources/Branding/Splash19.png.meta — вспомогательный файл: Splash19.png (312 B)
 1753. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg — текстура/изображение: Wallpaper16 (212684 B)
 1754. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta — вспомогательный файл: Wallpaper16.jpg (312 B)
-1755. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (43666 B)
+1755. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (43668 B)
 1756. unity/Assets/Vtt/Resources/Changelog.json.meta — вспомогательный файл: Changelog.json (158 B)
 1757. unity/Assets/Vtt/Resources/CharacterSheet.meta — вспомогательный файл: CharacterSheet (172 B)
 1758. unity/Assets/Vtt/Resources/CharacterSheet/catalog.json — данные/конфигурация: catalog (823381 B)
@@ -1985,8 +1985,8 @@
 1969. updates/previous-stable.json — метаданные обновлений: previous stable (179808 B)
 1970. updates/README.md — документация или отчёт: README (233 B)
 1971. updates/stable.json — метаданные обновлений: stable (179809 B)
-1972. updates/unity-changelog.json — метаданные обновлений: unity changelog (43666 B)
-1973. updates/unity-experiment.json — метаданные обновлений: unity experiment (1454 B)
+1972. updates/unity-changelog.json — метаданные обновлений: unity changelog (43668 B)
+1973. updates/unity-experiment.json — метаданные обновлений: unity experiment (1294 B)
 1974. vignette_v2_sprite.png — текстура/изображение: vignette v2 sprite (1213593 B)
 1975. VTT_PROJECT_MANIFEST_V70.json — устаревший список V70, не актуален (44370 B)
 1976. wall_brick_red.png — текстура/изображение: wall brick red (111128 B)

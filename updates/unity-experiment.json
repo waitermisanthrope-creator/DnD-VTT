@@ -1,20 +1,20 @@
 {
   "schema": 1,
   "channel": "unity-experiment",
-  "version": "1.00.36",
-  "versionCode": 10036,
+  "version": "1.00.37",
+  "versionCode": 10037,
   "androidPackage": "com.dndvtt.unity",
-  "notes": "На первой странице «Сборники модов» доступны все15 тематических сборников: предметы, расы, классы, черты, иконки, обои, дайсы, лотки, 3D-карты, объекты и материалы поверхностей. · Каждый сборник скачивает все входящие дополнения одной кнопкой, пропускает установленные версии и продолжает прерванную загрузку. · Сборники охватывают все397 опубликованных модов; старые предметы, персонажи, карты и ID сохранены.",
+  "notes": "Кнопка «3D Персонаж» открывает нативный предпросмотр человека внутри приложения. · Мужская и женская формы, 15 параметров тела, ракурсы, приближение лица, вращение и серый материал для оценки анатомии. · Отдельный локальный черновик. Листы героев и сохранения не изменяются. Волосы, одежда и другие расы ещё переносятся.",
   "artifacts": {
     "android": {
-      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.36/DnD-VTT-Unity-1.00.36-arm64.apk",
-      "bytes": 42528758,
-      "sha256": "f2c10cd7bbd5702af16f530217601ca05c81b07496c4469d5e89e8b76897c490"
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.37/DnD-VTT-Unity-1.00.37-arm64.apk",
+      "bytes": 55239586,
+      "sha256": "a60e4031bb4e38e27669979234f478e32e58c4c3898399a192aff40b0fc7e4da"
     },
     "windows": {
-      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.36/DnD-VTT-Unity-Setup-1.00.36-x64.exe",
-      "bytes": 29225350,
-      "sha256": "8ec67d5a2e5e6e47d89ebc608524c98b31feac7a85b4e2fdd4d161909d8d7c9e"
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.37/DnD-VTT-Unity-Setup-1.00.37-x64.exe",
+      "bytes": 39167376,
+      "sha256": "5fa76d6fbe7d91edfa6349853fc2b8c4450aecebe856706cc1e9c72244e5a469"
     }
   }
 }
