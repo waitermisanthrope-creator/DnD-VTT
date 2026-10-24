@@ -1,20 +1,20 @@
 {
   "schema": 1,
   "channel": "unity-experiment",
-  "version": "1.00.37",
-  "versionCode": 10037,
+  "version": "1.00.38",
+  "versionCode": 10038,
   "androidPackage": "com.dndvtt.unity",
-  "notes": "Кнопка «3D Персонаж» открывает нативный предпросмотр человека внутри приложения. · Мужская и женская формы, 15 параметров тела, ракурсы, приближение лица, вращение и серый материал для оценки анатомии. · Отдельный локальный черновик. Листы героев и сохранения не изменяются. Волосы, одежда и другие расы ещё переносятся.",
+  "notes": "Встроенный шрифт с кириллицей: подписи меню и настроек не зависят от наличия системных шрифтов Windows. · Запуск в изменяемом окне1280×800, кнопки режима окна и переключениеF11. · Настройки на широком экране используют две колонки; добавлена графическая проверка установленного Windows-приложения.",
   "artifacts": {
     "android": {
-      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.37/DnD-VTT-Unity-1.00.37-arm64.apk",
-      "bytes": 55239586,
-      "sha256": "a60e4031bb4e38e27669979234f478e32e58c4c3898399a192aff40b0fc7e4da"
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.38/DnD-VTT-Unity-1.00.38-arm64.apk",
+      "bytes": 55686238,
+      "sha256": "ebecc4db2e9409c9a9e3bbaf3570ba74a8cbba030d95ae91ef1b12a8c8d4d8f5"
     },
     "windows": {
-      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.37/DnD-VTT-Unity-Setup-1.00.37-x64.exe",
-      "bytes": 39167376,
-      "sha256": "5fa76d6fbe7d91edfa6349853fc2b8c4450aecebe856706cc1e9c72244e5a469"
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.38/DnD-VTT-Unity-Setup-1.00.38-x64.exe",
+      "bytes": 39470356,
+      "sha256": "76c307a6c8f1e0583d1dcd314e84309b0ee6be2439ea91cd69e0e62a23340427"
     }
   }
 }

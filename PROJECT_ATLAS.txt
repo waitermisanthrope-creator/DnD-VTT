@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит e53e259ded3f. Файлов: 2035
+Коммит 1288f1cee7ac. Файлов: 2035
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1769,7 +1769,7 @@
 1753. unity/Assets/Vtt/Resources/Branding/Splash19.png.meta — вспомогательный файл: Splash19.png (312 B)
 1754. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg — текстура/изображение: Wallpaper16 (212684 B)
 1755. unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta — вспомогательный файл: Wallpaper16.jpg (312 B)
-1756. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (44448 B)
+1756. unity/Assets/Vtt/Resources/Changelog.json — данные/конфигурация: Changelog (44450 B)
 1757. unity/Assets/Vtt/Resources/Changelog.json.meta — вспомогательный файл: Changelog.json (158 B)
 1758. unity/Assets/Vtt/Resources/CharacterSheet.meta — вспомогательный файл: CharacterSheet (172 B)
 1759. unity/Assets/Vtt/Resources/CharacterSheet/catalog.json — данные/конфигурация: catalog (823381 B)
@@ -1940,7 +1940,7 @@
 1924. unity/ci/verify_bundle_output.py — вспомогательный файл: verify bundle output (1081 B)
 1925. unity/ci/verify_launcher_aliases.py — вспомогательный файл: verify launcher aliases (3703 B)
 1926. unity/ci/verify_public_workshop.py — вспомогательный файл: verify public workshop (6725 B)
-1927. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (5475 B)
+1927. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (5538 B)
 1928. unity/ci/workshop-tests/.gitignore — вспомогательный файл: .gitignore (10 B)
 1929. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (5460 B)
 1930. unity/ci/workshop-tests/AllModCollectionChecks.cs — вспомогательный файл: AllModCollectionChecks (5776 B)
@@ -1995,8 +1995,8 @@
 1979. updates/previous-stable.json — метаданные обновлений: previous stable (179808 B)
 1980. updates/README.md — документация или отчёт: README (233 B)
 1981. updates/stable.json — метаданные обновлений: stable (179809 B)
-1982. updates/unity-changelog.json — метаданные обновлений: unity changelog (44448 B)
-1983. updates/unity-experiment.json — метаданные обновлений: unity experiment (1294 B)
+1982. updates/unity-changelog.json — метаданные обновлений: unity changelog (44450 B)
+1983. updates/unity-experiment.json — метаданные обновлений: unity experiment (1237 B)
 1984. vignette_v2_sprite.png — текстура/изображение: vignette v2 sprite (1213593 B)
 1985. VTT_PROJECT_MANIFEST_V70.json — устаревший список V70, не актуален (44370 B)
 1986. wall_brick_red.png — текстура/изображение: wall brick red (111128 B)
