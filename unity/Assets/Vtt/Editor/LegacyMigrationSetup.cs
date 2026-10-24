@@ -43,7 +43,9 @@ public static class LegacyMigrationSetup
         Reject(() => new LegacyCharacterArchive("{\"id\":\"x\",\"schemaVersion\":4}"), "future schema");
         Reject(() => new LegacyCharacterArchive("[{\"id\":\"x\"},{\"id\":\"x\"}]"), "duplicate identity");
         Reject(() => new LegacyCharacterArchive("{\"id\":\"x\",\"id\":\"y\"}"), "duplicate JSON property");
-        Reject(() => new LegacyCharacterArchive("[]"), "empty archive");
+        var empty = fixture.WithoutCharacter("unity-fixture");
+        Check(empty.Count == 0 && new LegacyCharacterArchive(empty.Export()).Count == 0, "last-character deletion persists empty archive");
+        Check(empty.Append(fixture.Snapshot(0)).Count == 1, "creation after last-character deletion");
         Reject(() => new LegacyCharacterArchive("{}"), "missing identity");
         var golden = JArray.Parse(File.ReadAllText(Content + "geometry-contract.json"));
         foreach (JObject expected in golden)
