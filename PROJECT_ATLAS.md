@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 1c93724091a2. Git содержит 2035 файлов.
+Снимок кода e400a8543b91. Git содержит 2035 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -62,8 +62,8 @@
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 7025 B | документация или отчёт: AGENTS |
 | №0043 AI_BLOCKERS.md | 72030 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 97260 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 135806 B | документация или отчёт: AI PROGRESS |
+| №0044 AI_NEXT_TASK.md | 98482 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 137028 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
