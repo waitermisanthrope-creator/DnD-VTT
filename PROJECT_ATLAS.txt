@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 788a5c9bd9fe. Файлов: 2025
+Коммит c1c837de4ddd. Файлов: 2025
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -1080,7 +1080,7 @@
 1064. docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md — документация или отчёт: ACCESS AND TOUCH 1.00.12 (8253 B)
 1065. docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md — документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP (9558 B)
 1066. docs/unity-account/ALL_MOD_COLLECTIONS_1.00.36.md — документация или отчёт: ALL MOD COLLECTIONS 1.00.36 (6950 B)
-1067. docs/unity-account/CHARACTER_PREVIEW_1.00.37.md — документация или отчёт: CHARACTER PREVIEW 1.00.37 (7087 B)
+1067. docs/unity-account/CHARACTER_PREVIEW_1.00.37.md — документация или отчёт: CHARACTER PREVIEW 1.00.37 (7891 B)
 1068. docs/unity-account/CHAT_NICKNAMES_1.00.21.md — документация или отчёт: CHAT NICKNAMES 1.00.21 (3028 B)
 1069. docs/unity-account/CHAT_ONE_HOUR.md — документация или отчёт: CHAT ONE HOUR (2267 B)
 1070. docs/unity-account/CHAT_WORKSHOP_1.00.22.md — документация или отчёт: CHAT WORKSHOP 1.00.22 (7852 B)
@@ -1742,7 +1742,7 @@
 1726. unity/Assets/Vtt/Editor/BuildBranding.cs.meta — вспомогательный файл: BuildBranding.cs (60 B)
 1727. unity/Assets/Vtt/Editor/CharacterPreviewImport.cs — вспомогательный файл: CharacterPreviewImport (1433 B)
 1728. unity/Assets/Vtt/Editor/CharacterPreviewImport.cs.meta — вспомогательный файл: CharacterPreviewImport.cs (60 B)
-1729. unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs — вспомогательный файл: CharacterPreviewValidation (7719 B)
+1729. unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs — вспомогательный файл: CharacterPreviewValidation (8132 B)
 1730. unity/Assets/Vtt/Editor/CharacterPreviewValidation.cs.meta — вспомогательный файл: CharacterPreviewValidation.cs (60 B)
 1731. unity/Assets/Vtt/Editor/CharacterSheetValidation.cs — вспомогательный файл: CharacterSheetValidation (21197 B)
 1732. unity/Assets/Vtt/Editor/CharacterSheetValidation.cs.meta — вспомогательный файл: CharacterSheetValidation.cs (59 B)
@@ -1800,7 +1800,7 @@
 1784. unity/Assets/Vtt/Runtime.meta — вспомогательный файл: Runtime (172 B)
 1785. unity/Assets/Vtt/Runtime/AppearanceDocument.cs — вспомогательный файл: AppearanceDocument (3069 B)
 1786. unity/Assets/Vtt/Runtime/AppearanceDocument.cs.meta — вспомогательный файл: AppearanceDocument.cs (60 B)
-1787. unity/Assets/Vtt/Runtime/CharacterBodyPreview.cs — вспомогательный файл: CharacterBodyPreview (15711 B)
+1787. unity/Assets/Vtt/Runtime/CharacterBodyPreview.cs — вспомогательный файл: CharacterBodyPreview (15702 B)
 1788. unity/Assets/Vtt/Runtime/CharacterBodyPreview.cs.meta — вспомогательный файл: CharacterBodyPreview.cs (60 B)
 1789. unity/Assets/Vtt/Runtime/CharacterCreation.cs — вспомогательный файл: CharacterCreation (11170 B)
 1790. unity/Assets/Vtt/Runtime/CharacterCreation.cs.meta — вспомогательный файл: CharacterCreation.cs (59 B)

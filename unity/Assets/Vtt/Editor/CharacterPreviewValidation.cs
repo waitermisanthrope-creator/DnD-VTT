@@ -45,6 +45,10 @@ public static class CharacterPreviewValidation
                 string gender = female ? "female" : "male";
                 var document = AppearanceDocument.Create(female); studio.Apply(document);
                 Check(studio.Body.Bounds.size.y > 1.3f && studio.Body.Bounds.size.y < 2.1f, "human scale: " + gender + " " + studio.Body.Bounds);
+                var actualMesh = studio.Body.GetComponentInChildren<MeshFilter>().sharedMesh;
+                Check(actualMesh.triangles.Length == 107024 * 3 && actualMesh.subMeshCount == 3,
+                    "coverage partitions original surface without duplicate triangles");
+                Check(actualMesh.GetIndexCount(1) > 0 && (actualMesh.GetIndexCount(2) > 0) == female, "coverage for selected body");
                 studio.Angle(0); studio.Frame(false); studio.Render(true); Save(studio.Image, Path.Combine(folder, gender + "-body.png"));
                 studio.Frame(true); studio.Render(true); Save(studio.Image, Path.Combine(folder, gender + "-face.png"));
                 studio.Grey(true); studio.Render(true); Save(studio.Image, Path.Combine(folder, gender + "-grey.png"));

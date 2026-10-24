@@ -13,8 +13,8 @@ namespace DndVtt.UnityPrototype
         public Bounds Bounds { get; private set; }
         public bool Grey { get; private set; }
         SkinnedMeshRenderer source;
-        MeshRenderer surface, bottom, top;
-        Mesh baked, bottomMesh, topMesh;
+        MeshRenderer surface;
+        Mesh baked;
         Material skin, cloth;
         Texture male, female;
         Vector3[] rest;
@@ -23,7 +23,7 @@ namespace DndVtt.UnityPrototype
         BoneWeight[] weights;
         Transform[] bones;
         JObject channels;
-        int[] bottomTriangles, topTriangles;
+        int[] bottomTriangles, topTriangles, maleSkinTriangles, femaleSkinTriangles;
         float[] torsoMask, armMask, legMask, headNeckMask;
         int[] normalGroups;
         Vector3[] normalSums;
@@ -82,19 +82,14 @@ namespace DndVtt.UnityPrototype
                 { int swap = triangles[i + 1]; triangles[i + 1] = triangles[i + 2]; triangles[i + 2] = swap; }
             baked.vertices = rest; baked.triangles = triangles; baked.uv = source.sharedMesh.uv;
             baked.RecalculateBounds();
-            bottomMesh = new Mesh { name = "Preview shorts", indexFormat = IndexFormat.UInt32 };
-            topMesh = new Mesh { name = "Preview top", indexFormat = IndexFormat.UInt32 };
             surface = MakeSurface("Body", baked);
-            bottom = MakeSurface("Preview shorts", bottomMesh);
-            top = MakeSurface("Preview top", topMesh);
             var template = Resources.Load<Material>("CharacterStudio/PreviewLit");
             if (!template || !template.shader) throw new InvalidOperationException("Не найден материал предпросмотра человека.");
             skin = new Material(template) { name = "Preview skin" };
             skin.SetFloat("_Smoothness", .32f);
             cloth = new Material(template) { name = "Preview underwear", color = new Color(.035f, .045f, .065f) };
             cloth.SetFloat("_Smoothness", .18f);
-            surface.sharedMaterial = skin;
-            bottom.sharedMaterial = top.sharedMaterial = cloth;
+            surface.sharedMaterials = new[] { skin, cloth, cloth };
             male = Resources.Load<Texture2D>("CharacterStudio/SkinMale");
             female = Resources.Load<Texture2D>("CharacterStudio/SkinFemale");
             if (!male || !female) throw new InvalidOperationException("Не найдены текстуры кожи.");
@@ -140,16 +135,27 @@ namespace DndVtt.UnityPrototype
             foreach (var p in rest) restBounds.Encapsulate(p);
             float floor = restBounds.min.y, height = restBounds.size.y;
             var shorts = new List<int>(); var chest = new List<int>();
+            var maleSkin = new List<int>(); var femaleSkin = new List<int>();
             int[] triangles = baked.triangles;
             for (int i = 0; i < triangles.Length; i += 3)
             {
                 int a = triangles[i], b = triangles[i + 1], c = triangles[i + 2];
                 float h = ((rest[a].y + rest[b].y + rest[c].y) / 3 - floor) / height;
-                if (h > .43f && h < .61f) { shorts.Add(a); shorts.Add(b); shorts.Add(c); }
-                if (h > .68f && h < .80f && torsoMask[a] > .5f && torsoMask[b] > .5f && torsoMask[c] > .5f)
-                { chest.Add(a); chest.Add(b); chest.Add(c); }
+                // Assign each original triangle to one material. Overlaid shells
+                // z-fought at the remote studio position and also coloured hands.
+                bool bottom = h > .43f && h < .61f &&
+                    torsoMask[a] + legMask[a] > .4f && torsoMask[b] + legMask[b] > .4f && torsoMask[c] + legMask[c] > .4f;
+                bool top = !bottom && h > .68f && h < .80f && torsoMask[a] > .5f && torsoMask[b] > .5f && torsoMask[c] > .5f;
+                var malePart = bottom ? shorts : maleSkin;
+                malePart.Add(a); malePart.Add(b); malePart.Add(c);
+                if (!bottom)
+                {
+                    var femalePart = top ? chest : femaleSkin;
+                    femalePart.Add(a); femalePart.Add(b); femalePart.Add(c);
+                }
             }
             bottomTriangles = shorts.ToArray(); topTriangles = chest.ToArray();
+            maleSkinTriangles = maleSkin.ToArray(); femaleSkinTriangles = femaleSkin.ToArray();
         }
 
         void AddWeight(int vertex, int bone, float weight)
@@ -191,9 +197,10 @@ namespace DndVtt.UnityPrototype
             for (int i = 0; i < normals.Length; i++) normals[i] = normalSums[normalGroups[i]].normalized;
             baked.normals = normals;
             baked.RecalculateBounds();
-            BuildCoverage(bottomMesh, vertices, normals, bottomTriangles);
-            BuildCoverage(topMesh, vertices, normals, topTriangles);
-            top.enabled = currentFemale;
+            baked.subMeshCount = 3;
+            baked.SetTriangles(currentFemale ? femaleSkinTriangles : maleSkinTriangles, 0);
+            baked.SetTriangles(bottomTriangles, 1);
+            baked.SetTriangles(currentFemale ? topTriangles : Array.Empty<int>(), 2);
             SetGrey(Grey);
             Bounds = surface.bounds;
         }
@@ -255,14 +262,6 @@ namespace DndVtt.UnityPrototype
             return new Vector2(fallback.x, fallback.z);
         }
 
-        static void BuildCoverage(Mesh mesh, Vector3[] vertices, Vector3[] normals, int[] triangles)
-        {
-            var expanded = new Vector3[vertices.Length];
-            for (int i = 0; i < expanded.Length; i++) expanded[i] = vertices[i] + normals[i] * .004f;
-            mesh.Clear(); mesh.vertices = expanded; mesh.normals = normals; mesh.triangles = triangles;
-            mesh.RecalculateBounds();
-        }
-
         public void SetGrey(bool grey)
         {
             Grey = grey;
@@ -272,7 +271,7 @@ namespace DndVtt.UnityPrototype
 
         void OnDestroy()
         {
-            Release(baked); Release(bottomMesh); Release(topMesh); Release(skin); Release(cloth);
+            Release(baked); Release(skin); Release(cloth);
         }
 
         static void Release(UnityEngine.Object asset)

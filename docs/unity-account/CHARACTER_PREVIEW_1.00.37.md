@@ -72,3 +72,14 @@ key/fill/rim и мягким ambient, независимый от первого
 сохраняется до assert; небольшие реальные GPU thumbnails включены в лог
 для визуального просмотра при недоступности artifact-download-host.
 Нужна новая полная нативная проверка; feed36 пока активен.
+
+Candidate40042713150/sourcec1c837de: Android120717257561 SUCCESS, native
+character gate PASS (both bodies/faces/grey, rig/scale/morph/controller/JSON),
+972 real dice throws and workshop regressions PASS, original signing certificate
+retained. Windows120723535747 started but this candidate is superseded before
+publication by visual review: actual GPU thumbnails show z-fighting in temporary
+coverage shells and height-based shorts colouring hands. Fix assigns every original
+triangle to exactly one skin/cloth submesh, limits shorts by pelvis/thigh weights,
+and adds native original-triangle-count/no-overlap coverage checks. Geometry
+positions/UV/source files unchanged. Must rerun complete candidate; feed36 stays live.
+Real reviewed thumbnails: /workspace/unity37-delivery/native (not product art).
