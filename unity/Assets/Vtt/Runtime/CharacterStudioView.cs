@@ -30,21 +30,12 @@ namespace DndVtt.UnityPrototype
                 camera.fieldOfView = 35; camera.nearClipPlane = .02f; camera.farClipPlane = 30;
                 Image = new RenderTexture(600, 800, 24, RenderTextureFormat.ARGB32) { name = "Human character preview", antiAliasing = 1 };
                 Image.Create(); camera.targetTexture = Image; camera.aspect = 600f / 800;
-                AddLight("Key", new Vector3(25, 215, 0), new Color(1, .91f, .83f), 1.8f);
-                AddLight("Fill", new Vector3(10, 135, 0), new Color(.76f, .85f, 1), .8f);
-                AddLight("Rim", new Vector3(20, 20, 0), new Color(.85f, .91f, 1), 1.2f);
                 // Objects instantiated by Body.Initialize must join the isolated render layer too.
                 foreach (var t in root.GetComponentsInChildren<Transform>(true)) t.gameObject.layer = Layer;
             }
             catch { Dispose(); throw; }
         }
         GameObject Child(string name) { var go = new GameObject(name) { layer = Layer }; go.transform.SetParent(root.transform, false); return go; }
-        void AddLight(string name, Vector3 rotation, Color color, float intensity)
-        {
-            var go = Child(name); go.transform.localRotation = Quaternion.Euler(rotation);
-            var light = go.AddComponent<Light>(); light.type = LightType.Directional;
-            light.cullingMask = 1 << Layer; light.color = color; light.intensity = intensity;
-        }
         public void Apply(AppearanceDocument document) { Body.Apply(document); Frame(face); imageDirty = true; }
         public void Frame(bool closeup)
         {
@@ -73,18 +64,9 @@ namespace DndVtt.UnityPrototype
                     Debug.Log("VTT_CHARACTER_RENDERER: " + renderer.name + " enabled=" + renderer.enabled + " layer=" + renderer.gameObject.layer + " bounds=" + renderer.bounds + " shader=" + renderer.sharedMaterial.shader.name + " supported=" + renderer.sharedMaterial.shader.isSupported + " inFrustum=" + GeometryUtility.TestPlanesAABB(GeometryUtility.CalculateFrustumPlanes(camera), renderer.bounds));
             }
 #endif
-            // Directional lights from the live map must not illuminate this isolated view.
-            var outside = UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None);
-            var masks = new int[outside.Length];
-            try
-            {
-                for (int i = 0; i < outside.Length; i++)
-                { masks[i] = outside[i].cullingMask; if (!outside[i].transform.IsChildOf(root.transform)) outside[i].cullingMask &= ~(1 << Layer); }
-                if (GraphicsSettings.currentRenderPipeline != null)
-                    RenderPipeline.SubmitRenderRequest(camera, new UniversalRenderPipeline.SingleCameraRequest { destination = Image });
-                else camera.Render();
-            }
-            finally { for (int i = 0; i < outside.Length; i++) if (outside[i]) outside[i].cullingMask = masks[i]; }
+            if (GraphicsSettings.currentRenderPipeline != null)
+                RenderPipeline.SubmitRenderRequest(camera, new UniversalRenderPipeline.SingleCameraRequest { destination = Image });
+            else camera.Render();
             imageDirty = false;
         }
         public void Dispose()

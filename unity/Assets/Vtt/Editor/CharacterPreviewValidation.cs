@@ -93,6 +93,16 @@ public static class CharacterPreviewValidation
         {
             RenderTexture.active = source; image.ReadPixels(new Rect(0, 0, image.width, image.height), 0, 0); image.Apply();
             File.WriteAllBytes(path, image.EncodeToPNG());
+            var thumbnail = new Texture2D(150, 200, TextureFormat.RGB24, false);
+            try
+            {
+                var samples = new Color[150 * 200];
+                for (int y = 0; y < 200; y++) for (int x = 0; x < 150; x++)
+                    samples[y * 150 + x] = image.GetPixelBilinear((x + .5f) / 150, (y + .5f) / 200);
+                thumbnail.SetPixels(samples); thumbnail.Apply();
+                Debug.Log("VTT_CHARACTER_THUMBNAIL:" + Path.GetFileName(path) + ":" + Convert.ToBase64String(thumbnail.EncodeToPNG()));
+            }
+            finally { UnityEngine.Object.DestroyImmediate(thumbnail); }
             var pixels = image.GetPixels32(); int visible = pixels.Count(c => c.r > 55 || c.g > 55 || c.b > 65);
             Debug.Log("VTT_CHARACTER_PIXELS: " + path + " visible=" + visible + "/" + pixels.Length + " max=" + pixels.Max(c => Mathf.Max(c.r, Mathf.Max(c.g, c.b))));
             Check(visible > pixels.Length / 100, "rendered body is visible: " + path);
