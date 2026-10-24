@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 1288f1cee7ac. Файлов: 2035
+Коммит 9eedb0293db3. Файлов: 2035
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,9 +56,9 @@
 0040. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (7025 B)
-0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (70028 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (92845 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (131391 B)
+0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (72030 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (94847 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (133393 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1101,7 +1101,7 @@
 1085. docs/unity-account/dice-1.00.32-metrics.json — документация или отчёт: dice 1.00.32 metrics (2200 B)
 1086. docs/unity-account/IMPLEMENTATION_STATUS.md — документация или отчёт: IMPLEMENTATION STATUS (77740 B)
 1087. docs/unity-account/MODERATION_CENTER_RUNBOOK.md — документация или отчёт: MODERATION CENTER RUNBOOK (7893 B)
-1088. docs/unity-account/PC_UI_FIX_1.00.38.md — документация или отчёт: PC UI FIX 1.00.38 (4556 B)
+1088. docs/unity-account/PC_UI_FIX_1.00.38.md — документация или отчёт: PC UI FIX 1.00.38 (9612 B)
 1089. docs/unity-account/SUPABASE_DEPLOYMENT_1.00.12.md — документация или отчёт: SUPABASE DEPLOYMENT 1.00.12 (3575 B)
 1090. docs/unity-account/WORKSHOP_COLLECTIONS_1.00.35.md — документация или отчёт: WORKSHOP COLLECTIONS 1.00.35 (5177 B)
 1091. docs/WINDOWS_DESKTOP.md — документация или отчёт: WINDOWS DESKTOP (3756 B)
@@ -1940,7 +1940,7 @@
 1924. unity/ci/verify_bundle_output.py — вспомогательный файл: verify bundle output (1081 B)
 1925. unity/ci/verify_launcher_aliases.py — вспомогательный файл: verify launcher aliases (3703 B)
 1926. unity/ci/verify_public_workshop.py — вспомогательный файл: verify public workshop (6725 B)
-1927. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (5538 B)
+1927. unity/ci/windows-upgrade-qa.ps1 — вспомогательный файл: windows upgrade qa (5475 B)
 1928. unity/ci/workshop-tests/.gitignore — вспомогательный файл: .gitignore (10 B)
 1929. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (5460 B)
 1930. unity/ci/workshop-tests/AllModCollectionChecks.cs — вспомогательный файл: AllModCollectionChecks (5776 B)
