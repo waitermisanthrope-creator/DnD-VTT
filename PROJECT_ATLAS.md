@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 08dac7b35edc. Git содержит 2043 файлов.
+Снимок кода 5fa7dce78f63. Git содержит 2043 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -62,8 +62,8 @@
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 7025 B | документация или отчёт: AGENTS |
 | №0043 AI_BLOCKERS.md | 72659 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 104921 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 143467 B | документация или отчёт: AI PROGRESS |
+| №0044 AI_NEXT_TASK.md | 107272 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 145818 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1085,7 +1085,7 @@
 | №1064 docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md | 8253 B | документация или отчёт: ACCESS AND TOUCH 1.00.12 |
 | №1065 docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md | 9558 B | документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP |
 | №1066 docs/unity-account/ALL_MOD_COLLECTIONS_1.00.36.md | 6950 B | документация или отчёт: ALL MOD COLLECTIONS 1.00.36 |
-| №1067 docs/unity-account/CHARACTER_FILES_1.00.40.md | 5653 B | документация или отчёт: CHARACTER FILES 1.00.40 |
+| №1067 docs/unity-account/CHARACTER_FILES_1.00.40.md | 6778 B | документация или отчёт: CHARACTER FILES 1.00.40 |
 | №1068 docs/unity-account/CHARACTER_PREVIEW_1.00.37.md | 12746 B | документация или отчёт: CHARACTER PREVIEW 1.00.37 |
 | №1069 docs/unity-account/CHAT_NICKNAMES_1.00.21.md | 3028 B | документация или отчёт: CHAT NICKNAMES 1.00.21 |
 | №1070 docs/unity-account/CHAT_ONE_HOUR.md | 2267 B | документация или отчёт: CHAT ONE HOUR |
