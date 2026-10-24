@@ -83,3 +83,13 @@ triangle to exactly one skin/cloth submesh, limits shorts by pelvis/thigh weight
 and adds native original-triangle-count/no-overlap coverage checks. Geometry
 positions/UV/source files unchanged. Must rerun complete candidate; feed36 stays live.
 Real reviewed thumbnails: /workspace/unity37-delivery/native (not product art).
+
+Final candidate source890453a25233d6d01c17e40c1bc50836edeb7fcb,
+run40044819058 ALL3 SUCCESS: Android120724036968, Windows120728971162,
+real1.00.00→37/reinstall/profile/backup/runtime QA120731145471. Both native
+character gates and972 dice throws PASS. All six actual GPU thumbnails reviewed:
+solid clothing/no z-fighting, hands skin, both body/face/grey visible. Full PNG
+artifact12540808828; review evidence /workspace/unity37-delivery/native-final/.
+APK55239586 SHAa60e4031bb4e38e27669979234f478e32e58c4c3898399a192aff40b0fc7e4da;
+Windows39167376 SHA5fa76d6fbe7d91edfa6349853fc2b8c4450aecebe856706cc1e9c72244e5a469.
+Owner-authorized paired publication selected; actual public delivery still pending.

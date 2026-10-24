@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода c1c837de4ddd. Git содержит 2025 файлов.
+Снимок кода 890453a25233. Git содержит 2025 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 7025 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 60152 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 82969 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 121515 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 62396 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 85213 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 123759 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1085,7 +1085,7 @@
 | №1064 docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md | 8253 B | документация или отчёт: ACCESS AND TOUCH 1.00.12 |
 | №1065 docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md | 9558 B | документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP |
 | №1066 docs/unity-account/ALL_MOD_COLLECTIONS_1.00.36.md | 6950 B | документация или отчёт: ALL MOD COLLECTIONS 1.00.36 |
-| №1067 docs/unity-account/CHARACTER_PREVIEW_1.00.37.md | 7891 B | документация или отчёт: CHARACTER PREVIEW 1.00.37 |
+| №1067 docs/unity-account/CHARACTER_PREVIEW_1.00.37.md | 8596 B | документация или отчёт: CHARACTER PREVIEW 1.00.37 |
 | №1068 docs/unity-account/CHAT_NICKNAMES_1.00.21.md | 3028 B | документация или отчёт: CHAT NICKNAMES 1.00.21 |
 | №1069 docs/unity-account/CHAT_ONE_HOUR.md | 2267 B | документация или отчёт: CHAT ONE HOUR |
 | №1070 docs/unity-account/CHAT_WORKSHOP_1.00.22.md | 7852 B | документация или отчёт: CHAT WORKSHOP 1.00.22 |
@@ -1150,7 +1150,7 @@
 | №1129 PROJECT_ATLAS.txt | генерируется | человекочитаемая карта репозитория |
 | №1130 README.md | 145 B | документация или отчёт: README |
 | №1131 release-staging/unity-android-approval.json | 470 B | данные/конфигурация: unity android approval |
-| №1132 release-staging/unity-paired-approval.json | 2087 B | данные/конфигурация: unity paired approval |
+| №1132 release-staging/unity-paired-approval.json | 1687 B | данные/конфигурация: unity paired approval |
 | №1133 release-staging/unity-release.json | 3914 B | данные/конфигурация: unity release |
 | №1134 smoke_back_v2_sprite-1.png | 1707378 B | текстура/изображение: smoke back v2 sprite 1 |
 | №1135 smoke_back_v2_sprite.png | 1814587 B | текстура/изображение: smoke back v2 sprite |
