@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода f1dd92da478b. Git содержит 2036 файлов.
+Снимок кода 7b6416cf2e41. Git содержит 2036 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -53,7 +53,7 @@
 | №0032 .github/workflows/validate-imported-glb.yml | 2317 B | автоматизация GitHub Actions: validate imported glb |
 | №0033 .gitignore | 81 B | вспомогательный файл: .gitignore |
 | №0034 00_AI_PROJECT_GUIDE.md | 1108812 B | существующее руководство ИИ, не перезаписывать |
-| №0035 01_plansforproject.md | 64636 B | план целей и критериев выполнения |
+| №0035 01_plansforproject.md | 65701 B | план целей и критериев выполнения |
 | №0036 1790622696215.png | 1202179 B | текстура/изображение: 1790622696215 |
 | №0037 1790622844831.png | 104000 B | текстура/изображение: 1790622844831 |
 | №0038 1790718758545.png | 1889164 B | текстура/изображение: 1790718758545 |
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 7025 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 72030 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 98482 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 137028 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 72659 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 100539 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 139085 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1089,7 +1089,7 @@
 | №1068 docs/unity-account/CHAT_NICKNAMES_1.00.21.md | 3028 B | документация или отчёт: CHAT NICKNAMES 1.00.21 |
 | №1069 docs/unity-account/CHAT_ONE_HOUR.md | 2267 B | документация или отчёт: CHAT ONE HOUR |
 | №1070 docs/unity-account/CHAT_WORKSHOP_1.00.22.md | 7852 B | документация или отчёт: CHAT WORKSHOP 1.00.22 |
-| №1071 docs/unity-account/DAILY_CHARACTERS_1.00.39.md | 5242 B | документация или отчёт: DAILY CHARACTERS 1.00.39 |
+| №1071 docs/unity-account/DAILY_CHARACTERS_1.00.39.md | 7617 B | документация или отчёт: DAILY CHARACTERS 1.00.39 |
 | №1072 docs/unity-account/DICE_1.00.23.md | 5241 B | документация или отчёт: DICE 1.00.23 |
 | №1073 docs/unity-account/DICE_CONTACT_1.00.31.md | 9409 B | документация или отчёт: DICE CONTACT 1.00.31 |
 | №1074 docs/unity-account/DICE_CONTACT_1.00.32.md | 14224 B | документация или отчёт: DICE CONTACT 1.00.32 |

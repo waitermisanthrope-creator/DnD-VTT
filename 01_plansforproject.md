@@ -1,3 +1,6 @@
+## [ВЫПОЛНЕНО] Первый блок повседневных действий Unity1.00.39 — 2026-10-24
+Работающий крестик удаления с подтверждением, включая последнего героя; автосохранение листа; добавляющий импорт с защитой существующих героев; независимая резервная копия и подтверждённое восстановление. Android/Windows, установленное Windows-приложение,12кадров и публичные файлы проверены;39 опубликована. Отчёт: docs/unity-account/DAILY_CHARACTERS_1.00.39.md. Полная цель меню/листа остаётся незавершённой: дальше обрезанные подписи второстепенной навигации, мобильная проверка и удобный обмен файлами. Классовую очередь и MMO WAIT_TEAM не менять.
+
 ## [НЕ ВЫПОЛНЕНО] Owner modular extraction stage — 2026-10-21
 Minimal1.00.08 APK built/verified; individual optional race/class/feat/map packages published. See docs/modular-content/EXTRACTION_STAGE2.md. Device QA, original floor/wall licensing and trusted Quaternius runtime bundle remain. Existing1.00.07 Lanternfolk download owner-confirmed. This owner request supersedes the old class queue for the current Unity turn; historical order below retained.
 

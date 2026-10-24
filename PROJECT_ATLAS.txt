@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит f1dd92da478b. Файлов: 2036
+Коммит 7b6416cf2e41. Файлов: 2036
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -48,7 +48,7 @@
 0032. .github/workflows/validate-imported-glb.yml — автоматизация GitHub Actions: validate imported glb (2317 B)
 0033. .gitignore — вспомогательный файл: .gitignore (81 B)
 0034. 00_AI_PROJECT_GUIDE.md — существующее руководство ИИ, не перезаписывать (1108812 B)
-0035. 01_plansforproject.md — план целей и критериев выполнения (64636 B)
+0035. 01_plansforproject.md — план целей и критериев выполнения (65701 B)
 0036. 1790622696215.png — текстура/изображение: 1790622696215 (1202179 B)
 0037. 1790622844831.png — текстура/изображение: 1790622844831 (104000 B)
 0038. 1790718758545.png — текстура/изображение: 1790718758545 (1889164 B)
@@ -56,9 +56,9 @@
 0040. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (7025 B)
-0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (72030 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (98482 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (137028 B)
+0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (72659 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (100539 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (139085 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1084,7 +1084,7 @@
 1068. docs/unity-account/CHAT_NICKNAMES_1.00.21.md — документация или отчёт: CHAT NICKNAMES 1.00.21 (3028 B)
 1069. docs/unity-account/CHAT_ONE_HOUR.md — документация или отчёт: CHAT ONE HOUR (2267 B)
 1070. docs/unity-account/CHAT_WORKSHOP_1.00.22.md — документация или отчёт: CHAT WORKSHOP 1.00.22 (7852 B)
-1071. docs/unity-account/DAILY_CHARACTERS_1.00.39.md — документация или отчёт: DAILY CHARACTERS 1.00.39 (5242 B)
+1071. docs/unity-account/DAILY_CHARACTERS_1.00.39.md — документация или отчёт: DAILY CHARACTERS 1.00.39 (7617 B)
 1072. docs/unity-account/DICE_1.00.23.md — документация или отчёт: DICE 1.00.23 (5241 B)
 1073. docs/unity-account/DICE_CONTACT_1.00.31.md — документация или отчёт: DICE CONTACT 1.00.31 (9409 B)
 1074. docs/unity-account/DICE_CONTACT_1.00.32.md — документация или отчёт: DICE CONTACT 1.00.32 (14224 B)
