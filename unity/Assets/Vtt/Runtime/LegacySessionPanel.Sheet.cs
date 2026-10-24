@@ -53,7 +53,7 @@ namespace DndVtt.UnityPrototype
             if (deletePath != null)
             {
                 GUILayout.Label("Удалить запись «" + deleteLabel + "» вместе с её содержимым?");
-                GUILayout.Label("Изменение попадёт в файл после нажатия Сохранить.");
+                GUILayout.Label("После подтверждения изменение сохранится на устройстве.");
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Отмена", GUILayout.Height(52))) ClearSheetInputs();
                 if (GUILayout.Button("Подтвердить удаление", GUILayout.Height(52))) Attempt(() =>
@@ -61,8 +61,9 @@ namespace DndVtt.UnityPrototype
                     if (hero["id"].ToString() != deleteCharacter) throw new InvalidOperationException("Выбран другой персонаж");
                     CharacterSheetRules.RemoveRecord(hero, deletePath, deleteSignature);
                     if (deletePath.StartsWith("libraryData.entries") && hero["library"] is JArray) hero["library"] = hero["libraryData"]["entries"].DeepClone();
-                    archive.Replace(selected, hero);
-                    ClearSheetInputs(); status = "Запись удалена в памяти. Для записи на диск нажмите Сохранить.";
+                    var candidate = archive.DetachedCopy(); candidate.Replace(selected, hero);
+                    CharacterSheetStore.Save(SavePath, candidate); archive = candidate;
+                    ClearSheetInputs(); status = "Запись удалена и сохранена на устройстве.";
                 });
                 GUILayout.EndHorizontal(); return;
             }
@@ -105,7 +106,12 @@ namespace DndVtt.UnityPrototype
                     if (persistWallet) for (int i = 0; i < coinInput.Length; i++) coinInput[i] = "0";
                     if (persistWallet) status = "Операция кошелька выполнена. Архив сохранён на устройстве."; else status += " · Сохранено";
                 }
-                else { archive.Replace(selected, hero); status = "Лист изменён в памяти. Нажмите Сохранить для записи."; }
+                else
+                {
+                    var candidate = archive.DetachedCopy(); candidate.Replace(selected, hero);
+                    CharacterSheetStore.Save(SavePath, candidate); archive = candidate;
+                    status = "Изменения сохранены на устройстве";
+                }
             });
         }
         private void Hero(JObject hero, ref bool changed)

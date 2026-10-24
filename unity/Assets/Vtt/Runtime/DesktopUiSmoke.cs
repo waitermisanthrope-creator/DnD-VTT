@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using Newtonsoft.Json.Linq;
 
 namespace DndVtt.UnityPrototype
 {
@@ -57,6 +58,40 @@ namespace DndVtt.UnityPrototype
             try { Field("brandTechnicalScreen", true); }
             catch (Exception error) { Fail(error); yield break; }
             yield return Frame("update-center"); if (failed) yield break;
+            object savedArchive = typeof(LegacySessionPanel).GetField("archive", Flags).GetValue(panel);
+            object savedOverride = typeof(LegacySessionPanel).GetField("profileStoreOverride", Flags).GetValue(panel);
+            object savedSelected = typeof(LegacySessionPanel).GetField("selected", Flags).GetValue(panel);
+            try
+            {
+                Field("profileStoreOverride", Path.Combine(folder, "daily-profile.json")); Field("archive", null); Field("selected", 0);
+                Check(panel.Import("{\"id\":\"daily-a\",\"name\":\"Первый герой\",\"futureUnknown\":{\"value\":123}}"), "first profile import and save");
+                Check(panel.Import("{\"id\":\"daily-b\",\"name\":\"Второй герой\"}"), "second import adds without replacing first");
+                var loaded = CharacterSheetStore.Load(panel.SavePath);
+                Check(loaded.Count == 2 && (int)loaded.Snapshot(0)["futureUnknown"]["value"] == 123, "native additive import preserves original fields");
+                Check(!panel.Import("{\"id\":\"daily-a\",\"name\":\"Conflict\"}") && CharacterSheetStore.Load(panel.SavePath).Count == 2, "conflict leaves disk unchanged");
+                var screenType = typeof(LegacySessionPanel).GetNestedType("FrontScreen", BindingFlags.NonPublic);
+                Call("Navigate", Enum.Parse(screenType, "Characters"));
+            }
+            catch (Exception error) { Fail(error); yield break; }
+            yield return Frame("characters-roster"); if (failed) yield break;
+            try { Field("pendingCharacterDeleteId", "daily-a"); Field("pendingCharacterDeleteName", "Первый герой"); }
+            catch (Exception error) { Fail(error); yield break; }
+            yield return Frame("characters-delete-confirmation"); if (failed) yield break;
+            try
+            {
+                Call("ConfirmCharacterDeletion");
+                Check(CharacterSheetStore.Load(panel.SavePath).Count == 1 && panel.CurrentName == "Второй герой", "actual delete action saves and selects remaining hero");
+                Field("pendingCharacterDeleteId", "daily-b"); Call("ConfirmCharacterDeletion");
+                Check(CharacterSheetStore.Load(panel.SavePath).Count == 0 && panel.CurrentName == "Исследователь", "actual last-hero delete leaves empty roster");
+                Field("archive", CharacterSheetStore.RestorePrevious(panel.SavePath)); Field("selected", 0);
+                Check(panel.CurrentName == "Второй герой", "deleted last hero can be restored");
+                string backup = CharacterSheetStore.Backup(panel.SavePath, CharacterSheetStore.Load(panel.SavePath));
+                Check(CharacterSheetStore.Load(backup).Name(0) == "Второй герой", "native independent backup roundtrip");
+                Field("archive", savedArchive); Field("profileStoreOverride", savedOverride); Field("selected", savedSelected);
+                Call("OpenSettings"); Call("OpenSettingsCategory", "Данные и устройство");
+                Debug.Log("VTT_DAILY_CHARACTERS_PASS: actual installed native import, conflicting import rejection, delete/last delete, selection, disk reload and backup restore; original QA profile untouched");
+            }
+            catch (Exception error) { Fail(error); yield break; }
             Screen.SetResolution(1024, 768, FullScreenMode.Windowed);
             yield return new WaitForSecondsRealtime(.4f);
             try { Call("OpenSettings"); }

@@ -200,12 +200,25 @@ namespace DndVtt.UnityPrototype
         public static void Save(string path, LegacyCharacterArchive archive)
         {
             string json = archive.Export(); _ = new LegacyCharacterArchive(json);
+            if (File.Exists(path) && File.ReadAllText(path) == json) return;
             Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path)));
             string temp = path + ".pending";
             using (var stream = new FileStream(temp, FileMode.Create, FileAccess.Write, FileShare.None))
             using (var writer = new StreamWriter(stream, new System.Text.UTF8Encoding(false)))
             { writer.Write(json); writer.Flush(); stream.Flush(true); }
             if (File.Exists(path)) File.Replace(temp, path, path + ".bak"); else File.Move(temp, path);
+        }
+        public static string Backup(string path, LegacyCharacterArchive archive)
+        {
+            string target = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(path)), "character-backups", "characters-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmss") + "-" + Guid.NewGuid().ToString("N") + ".json");
+            Save(target, archive);
+            return target;
+        }
+        public static LegacyCharacterArchive RestorePrevious(string path)
+        {
+            var candidate = Load(path + ".bak");
+            Save(path, candidate);
+            return candidate;
         }
         public static LegacyCharacterArchive Load(string path) => new LegacyCharacterArchive(File.ReadAllText(path));
     }

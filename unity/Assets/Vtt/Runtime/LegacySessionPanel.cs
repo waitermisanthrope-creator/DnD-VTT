@@ -49,7 +49,17 @@ namespace DndVtt.UnityPrototype
 
         public bool Import(string json)
         {
-            try { var candidate = new LegacyCharacterArchive(json); archive = candidate.Count == 0 ? null : candidate; selected = 0; ClearSheetInputs(); status = "Импортировано профилей: " + candidate.Count + ". Для записи нажмите Сохранить."; return true; }
+            try
+            {
+                var imported = new LegacyCharacterArchive(json);
+                if (imported.Count == 0) throw new FormatException("В файле нет персонажей");
+                var candidate = archive == null ? imported : archive.Merge(imported);
+                CharacterSheetStore.Save(SavePath, candidate);
+                archive = candidate; selected = 0; ClearSheetInputs();
+                pendingCharacterDeleteId = pendingCharacterDeleteName = null;
+                status = "Импорт сохранён. Персонажей в архиве: " + archive.Count;
+                return true;
+            }
             catch (Exception error) { status = "Импорт отклонён: " + error.Message; return false; }
         }
         public string CurrentName => archive == null ? "Исследователь" : archive.Name(selected);

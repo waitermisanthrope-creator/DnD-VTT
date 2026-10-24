@@ -63,6 +63,19 @@ namespace DndVtt.UnityPrototype
             else copy = new JArray(copy, character.DeepClone());
             return new LegacyCharacterArchive(copy.ToString(Formatting.None)) { OriginalJson = OriginalJson };
         }
+        public LegacyCharacterArchive Merge(LegacyCharacterArchive imported)
+        {
+            var result = DetachedCopy();
+            for (int i = 0; i < imported.Count; i++)
+            {
+                var hero = imported.Snapshot(i);
+                int existing = result.characters.FindIndex(c => JToken.DeepEquals(c["id"], hero["id"]));
+                if (existing < 0) result = result.Append(hero);
+                else if (!JToken.DeepEquals(result.characters[existing], hero))
+                    throw new InvalidOperationException("В архиве уже есть другая версия персонажа «" + result.Name(existing) + "». Импорт отменён; существующие герои сохранены.");
+            }
+            return result;
+        }
         public LegacyCharacterArchive WithoutCharacter(string id)
         {
             int index = characters.FindIndex(c => c["id"].ToString() == id);

@@ -113,6 +113,7 @@ namespace DndVtt.UnityPrototype
                     GUILayout.Label("Файл настроек: " + SettingsPath, muted);
                     if (archive != null && GUILayout.Button("Сохранить персонажей сейчас", GUILayout.Height(48)))
                         Attempt(() => { SaveSheet(); status = "Персонажи сохранены"; });
+                    DrawCharacterBackups();
                     if (GUILayout.Button("Скопировать путь к сохранению", GUILayout.Height(42))) GUIUtility.systemCopyBuffer = SavePath;
                     break;
             }

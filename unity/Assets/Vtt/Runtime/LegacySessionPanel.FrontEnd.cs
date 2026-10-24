@@ -15,6 +15,7 @@ namespace DndVtt.UnityPrototype
         private int creationStep, raceIndex, classIndex, backgroundIndex, statMode;
         private string heroName = "", rosterSearch = "";
         private string pendingCharacterDeleteId, pendingCharacterDeleteName;
+        private bool confirmRestoreCharacters;
         private string pickerKey, pickerSearch = "";
         private readonly string[] statInputs = { "15", "14", "13", "12", "10", "8" };
         private JObject creationAnswers = new JObject();
@@ -40,6 +41,7 @@ namespace DndVtt.UnityPrototype
             if(screen==FrontScreen.ContentManager&&next!=FrontScreen.ContentManager)CloseWorkshopPreviews();
             if(next==FrontScreen.ContentManager&&screen!=FrontScreen.ContentManager) { InitializeWorkshop();BeginWorkshopPreviews();if(!contentCatalogAutoRefreshed&&!contentBusy&&(assetPacks.Count==0||!assetPacks.OfType<Newtonsoft.Json.Linq.JObject>().Any(m=>m["preview"]!=null)||!contentPackages.OfType<Newtonsoft.Json.Linq.JObject>().Any(m=>(string)m["collectionCategory"]=="races")||!assetPacks.OfType<Newtonsoft.Json.Linq.JObject>().Any(m=>(string)m["collectionCategory"]=="icons"))) { contentCatalogAutoRefreshed=true;StartCoroutine(FetchContentCatalog()); } }
             pendingCharacterDeleteId = pendingCharacterDeleteName = null;
+            confirmRestoreCharacters = false;
             menuGesture.Clear();
             screen = next;
             ApplyMobileOrientation(next);
@@ -129,7 +131,7 @@ namespace DndVtt.UnityPrototype
                 case FrontScreen.Settings: DrawSettings(); break;
                 case FrontScreen.Import:
                     GUILayout.Label("Перенос персонажей", heading);
-                    GUILayout.Label("Вставьте JSON персонажа, массива или архива characters. Импорт сначала проверяется и открывается в памяти; запись — кнопкой Сохранить.", muted);
+                    GUILayout.Label("Вставьте JSON персонажа, массива или архива characters. Импорт добавит новых героев и сохранит архив. Если ID совпадает, другая версия существующего героя не заменяется.", muted);
                     input = GUILayout.TextArea(input, GUILayout.MinHeight(170));
                     if (GUILayout.Button("Проверить и открыть импорт", GUILayout.Height(44))) { if (Import(input)) Navigate(FrontScreen.Characters); }
                     if (archive != null)
@@ -137,9 +139,45 @@ namespace DndVtt.UnityPrototype
                         if (GUILayout.Button("Копировать текущий архив", GUILayout.Height(52))) GUIUtility.systemCopyBuffer = ExportCurrent();
                         if (GUILayout.Button("Сохранить архив на устройстве", GUILayout.Height(52))) Attempt(() => { SaveSheet(); status = "Архив сохранён"; });
                     }
+                    DrawCharacterBackups();
                     GUILayout.Label("Локальный файл: " + SavePath, muted); break;
             }
             GUILayout.Space(20); GUILayout.Label(status, muted); GUILayout.EndVertical(); GUILayout.EndScrollView(); RegisterSwipe("front",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
+        }
+        private void DrawCharacterBackups()
+        {
+            if (archive != null && GUILayout.Button("Создать резервную копию в файл", GUILayout.Height(52))) Attempt(() =>
+            {
+                string path = CharacterSheetStore.Backup(SavePath, archive);
+                GUIUtility.systemCopyBuffer = path;
+                status = "Резервная копия создана: " + path;
+            });
+            if (!System.IO.File.Exists(SavePath + ".bak")) return;
+            if (!confirmRestoreCharacters)
+            {
+                if (GUILayout.Button("Восстановить предыдущий архив…", GUILayout.Height(52))) confirmRestoreCharacters = true;
+                return;
+            }
+            GUILayout.Label("Заменить текущий список героев предыдущей резервной копией? Текущий сохранённый архив останется в резерве.", muted);
+            if (GUILayout.Button("Подтвердить восстановление", GUILayout.Height(52))) Attempt(() =>
+            {
+                var candidate = CharacterSheetStore.RestorePrevious(SavePath);
+                archive = candidate.Count == 0 ? null : candidate; selected = 0;
+                ClearSheetInputs(); confirmRestoreCharacters = false;
+                pendingCharacterDeleteId = pendingCharacterDeleteName = null;
+                status = "Предыдущий архив восстановлен";
+            });
+            if (GUILayout.Button("Отмена восстановления", GUILayout.Height(52))) confirmRestoreCharacters = false;
+        }
+        private void ConfirmCharacterDeletion()
+        {
+            string currentId = archive.Snapshot(selected)["id"].ToString();
+            var candidate = archive.WithoutCharacter(pendingCharacterDeleteId);
+            CharacterSheetStore.Save(SavePath, candidate);
+            archive = candidate.Count == 0 ? null : candidate;
+            selected = archive == null ? 0 : Enumerable.Range(0, archive.Count).FirstOrDefault(n => archive.Snapshot(n)["id"].ToString() == currentId);
+            ClearSheetInputs(); pendingCharacterDeleteId = pendingCharacterDeleteName = null;
+            status = "Персонаж удалён с устройства";
         }
         private void DrawRoster()
         {
@@ -150,16 +188,7 @@ namespace DndVtt.UnityPrototype
             {
                 GUILayout.Label("Удалить персонажа «" + pendingCharacterDeleteName + "» с этого устройства?", heading);
                 GUILayout.Label("Облачная копия останется. Предыдущий локальный архив сохранится в резервной копии.", muted);
-                if (GUILayout.Button("Подтвердить удаление", GUILayout.Height(52))) Attempt(() =>
-                {
-                    string currentId = archive.Snapshot(selected)["id"].ToString();
-                    var candidate = archive.WithoutCharacter(pendingCharacterDeleteId);
-                    CharacterSheetStore.Save(SavePath, candidate);
-                    archive = candidate.Count == 0 ? null : candidate;
-                    selected = archive == null ? 0 : Enumerable.Range(0, archive.Count).FirstOrDefault(n => archive.Snapshot(n)["id"].ToString() == currentId);
-                    ClearSheetInputs(); pendingCharacterDeleteId = pendingCharacterDeleteName = null;
-                    status = "Персонаж удалён с устройства";
-                });
+                if (GUILayout.Button("Подтвердить удаление", GUILayout.Height(52))) Attempt(ConfirmCharacterDeletion);
                 if (GUILayout.Button("Отмена", GUILayout.Height(52))) pendingCharacterDeleteId = pendingCharacterDeleteName = null;
                 return;
             }

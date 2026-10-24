@@ -1,3 +1,9 @@
+# [В РАБОТЕ] Повседневные персонажи / candidate1.00.39 — 2026-10-24
+
+Owner authorized proceeding with near-term daily workflow and delivering deletion. Implemented native confirmed deletion including last hero; additive, idempotent import with atomic conflicting-ID rejection and immediate disk save; transactional sheet/record autosave; independent timestamped file backup and confirmed restore of previous .bak (current disk version retained for undo). No-op saves preserve existing backup. Same app/profile/signing identities. Existing candidate workflow now targets unpublished1.00.39; initial deletion-only run40112907626 superseded by this complete daily batch.
+
+Local: 44 behavior checks +61 C# syntax checks PASS before no-op-save followup; update/settings/brand contracts PASS; cloud-release10/10 PASS. New installed graphical test exercises native actual import/conflict/delete/last-delete/reload/restore/independent backup in isolated profile, and captures roster/confirmation in addition to original10 screens. Native builds/runtime/render evidence NOT YET observed for this batch. Next: candidate all3jobsPASS, inspect actual screenshots and public installers, then owner-authorized existing paired promotion. Livefeed remains1.00.38; no publication claimed. Do not repeat prior deletion-only batch or touch main/MMO.
+
 # Character deletion fix — 2026-10-24
 
 Implemented on experiment/unity-vtt: native roster now offers Delete with explicit in-app confirmation/cancel. Deletion uses stable character ID, detached candidate, atomic CharacterSheetStore.Save and only then updates the live roster/selection. Existing .bak retains prior disk archive; cloud copies are unchanged. Empty archives can persist/reload; startup maps an empty roster to no active character. Unrelated profiles and wrapper fields survive deletion.

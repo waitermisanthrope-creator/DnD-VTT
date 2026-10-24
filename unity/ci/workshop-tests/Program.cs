@@ -42,6 +42,29 @@ class Program
                     Reject(() => CharacterSheetStore.Save(Path.Combine(blocker, "characters.json"), candidate), "failed save rejected");
                     Check(original.Export() == doc.ToString(), "failed save leaves live archive intact");
                 }
+                var local = new LegacyCharacterArchive("{\"characters\":[{\"id\":\"a\",\"future\":{\"nested\":[1,2]}}],\"metadata\":{\"keep\":true}}");
+                var incoming = new LegacyCharacterArchive("[{\"id\":\"b\",\"name\":\"Imported\"}]");
+                var merged = local.Merge(incoming);
+                Check(local.Count == 1 && merged.Count == 2, "additive import leaves source intact");
+                Check(JToken.DeepEquals(local.Snapshot(0), merged.Snapshot(0)), "import preserves existing profile");
+                Check((bool)JObject.Parse(merged.Export())["metadata"]["keep"], "import preserves wrapper metadata");
+                Check(merged.Merge(incoming).Count == 2, "identical reimport is idempotent");
+                Reject(() => merged.Merge(new LegacyCharacterArchive("[{\"id\":\"c\"},{\"id\":\"a\",\"name\":\"Conflict\"}]")), "conflicting import rejected atomically");
+                Check(merged.Count == 2, "conflict cannot partially append another hero");
+                string daily = Path.Combine(dir, "daily.json");
+                CharacterSheetStore.Save(daily, merged);
+                string exported = CharacterSheetStore.Backup(daily, merged);
+                Check(CharacterSheetStore.Load(exported).Export() == merged.Export(), "independent file backup exact roundtrip");
+                var changed = merged.DetachedCopy(); var edited = changed.Snapshot(1); edited["name"] = "Edited"; changed.Replace(1, edited);
+                CharacterSheetStore.Save(daily, changed);
+                Check(CharacterSheetStore.Load(daily).Name(1) == "Edited", "edited sheet persists");
+                Check(CharacterSheetStore.RestorePrevious(daily).Export() == merged.Export(), "restore prior archive");
+                Check(CharacterSheetStore.Load(daily + ".bak").Export() == changed.Export(), "restoration retains replaced version for undo");
+                Check(CharacterSheetStore.RestorePrevious(daily).Export() == changed.Export(), "restore can be undone");
+                File.WriteAllText(daily + ".bak", "broken"); string beforeRestore = File.ReadAllText(daily);
+                Reject(() => CharacterSheetStore.RestorePrevious(daily), "corrupt backup rejected");
+                Check(File.ReadAllText(daily) == beforeRestore, "corrupt backup leaves current file unchanged");
+                Check(CharacterSheetStore.Load(exported).Export() == merged.Export(), "independent backup survives subsequent saves and restore");
                 foreach (string file in Directory.GetFiles("unity/Assets/Vtt", "*.cs", SearchOption.AllDirectories))
                 {
                     var tree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(File.ReadAllText(file));
