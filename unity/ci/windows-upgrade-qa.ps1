@@ -55,7 +55,7 @@ $p = Start-Process -FilePath (Join-Path $install 'DndVtt.exe') -ArgumentList @('
 $uiExited = $p.WaitForExit(180000)
 if (!$uiExited) { $p.Kill(); $p.WaitForExit(10000) | Out-Null }
 if (Test-Path $uiLog) { Get-Content $uiLog | Where-Object { $_ -match 'VTT_DESKTOP_|Exception|Error|FAIL' } | Write-Output }
-if (!$uiExited -or $p.ExitCode -ne 0 -or !(Select-String -LiteralPath $uiLog -SimpleMatch 'VTT_DESKTOP_UI_PASS:' -Quiet)) { throw 'Actual Windows UI rendering test failed' }
+if (!$uiExited -or $p.ExitCode -ne 0 -or !(Select-String -LiteralPath $uiLog -SimpleMatch 'VTT_DESKTOP_UI_PASS:' -Quiet)) { Get-Content $uiLog -Tail 100 | Where-Object { $_ -notmatch 'VTT_DESKTOP_UI_PNG:' } | Write-Output; throw 'Actual Windows UI rendering test failed' }
 if ((Get-ChildItem $ui -Filter '*.png').Count -lt 10) { throw 'Missing installed graphical UI evidence' }
 if ((Get-FileHash $profile).Hash -ne $before -or (Get-FileHash ($profile+'.bak')).Hash -ne $before) { throw 'Graphical UI smoke modified profile or backup' }
 $result = [ordered]@{ status='passed'; baseline='1.00.00'; candidate=$report.version; baselineInstall=$true; installedPayloadHashes=$true; upgrade=$true; reinstall=$true; isolatedProfileAndBackupPreserved=$true; unknownFilePreserved=$true; runtimeSmoke=$true; desktopUiSmoke=$true; baselineSmokeMode='legacy-adventure'; candidateSmokeMode='minimal-client'; physicalAndroidQa=$false; run=$env:GITHUB_RUN_ID; source=$env:GITHUB_SHA }

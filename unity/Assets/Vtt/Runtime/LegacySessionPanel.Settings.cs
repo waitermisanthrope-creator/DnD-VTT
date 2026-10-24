@@ -52,9 +52,13 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawSettings(bool embedded = false)
         {
-            GUILayout.Label("Настройки приложения", heading);
-            GUILayout.Label("Версия Unity: " + UnityRelease.Version + "  ·  Изменения сохраняются только на этом устройстве.", muted);
-            GUILayout.Space(10);
+            PrepareSettingsSkin();
+            if (!embedded)
+            {
+                GUILayout.Label("Настройки приложения", heading);
+                GUILayout.Label("Версия Unity: " + UnityRelease.Version + "  ·  Изменения сохраняются только на этом устройстве.", muted);
+                GUILayout.Space(10);
+            }
             switch (settingsSection)
             {
                 case 0:
@@ -70,8 +74,11 @@ namespace DndVtt.UnityPrototype
                     break;
                 case 2:
                     GUILayout.Label("Графика", heading);
-                    settingsDraft.keepScreenAwake = GUILayout.Toggle(settingsDraft.keepScreenAwake, "Не выключать экран, пока приложение открыто", GUILayout.MinHeight(44));
-                    GUILayout.Label("Если выключено — используется системный таймер телефона. В фоне всегда действует системный таймер.", muted);
+                    if (Application.isMobilePlatform)
+                    {
+                        settingsDraft.keepScreenAwake = GUILayout.Toggle(settingsDraft.keepScreenAwake, "Не выключать экран, пока приложение открыто", GUILayout.MinHeight(44));
+                        GUILayout.Label("Если выключено — используется системный таймер телефона. В фоне всегда действует системный таймер.", muted);
+                    }
                     string[] qualityNames = QualitySettings.names;
                     if (qualityNames.Length > 0)
                     {

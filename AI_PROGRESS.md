@@ -1,3 +1,11 @@
+# [ПОВТОР38 / UI нашёл ошибку Graphics] 2026-10-24
+
+Sourcebe9/run40050344604 Android120741397032 and Windows120745104571 SUCCESS. Actual graphical QA120746994358 FAILED on Graphics null shared heading/muted (no release). Font glyphs PASS; actual home/settings overview/visual text pixels11966/20219/14513 and3PNGs manually reviewed: letters visible and2col layout good. Fix shared settings style initialization before embedded graphics/control/data pages; preserve all UI pixel/glyph/window/profile gates. Need new all3successful candidate+review10frames then owner-authorized publish38/directWindowsEXE.37 remains live. Previous textrendering-package hypothesis removed; embeddedfont is actual working fix. Prior history below.
+
+# [ANDROID38 PASS / WINDOWS ОЖИДАЕТ] Исправление ПК, 2026-10-24
+
+Sourcebe9b31d9c65e569a0a01d7b57da7e9d5a8746b66, candidate40050344604: Android120741397032 SUCCESS; Windows120745104571 in progress. Actual C#compile/bundled font Resources load/native human and972 dice gates PASS, APK SHA92e81da6e728f27eb9068b5658dd935c4fb630b99a797b00496d7448661b3470. Still require Windows build and mandatory actual installed graphical UI smoke/screenshots before owner-authorized publication38. No module dependency added: previous f2 run failed unsupported textrendering and corrected. Core fix is embedded DejaVu font/all-style assignment/includeFontData/windowed resizable/wide settings; no OS font dependency. Live feed37 unchanged. Verifier /workspace/unity38-delivery/verify_public.py pins sourcebe9/run40050344604. Final direct Windows EXE link required because current menus unreadable. Prior history below.
+
 # [ПОВТОР38] Убрана неподдерживаемая зависимость, 2026-10-24
 
 Candidate40049434417/sourcef2d4dc22 FAILED at UPM before compile: Unity6000.3.26f1 has no com.unity.modules.textrendering package. Earlier module hypothesis was wrong; removed dependency, retain embedded DejaVu dynamic font/includeFontData, explicit all GUI-style font assignment, windowed desktop/two-column settings and required graphical installed-player QA. No native compile/render success claimed yet. Need new candidate38 all3jobs then actual screenshots and publisher.37 unchanged. Owner authorized publish, direct Windows installer link required in final. Previous notes claiming missing module as cause are historical incorrect hypothesis. Prior records below.

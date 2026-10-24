@@ -35,6 +35,10 @@ namespace DndVtt.UnityPrototype
         private void PrepareSettingsSkin()
         {
             PrepareBrand();
+            // Embedded graphics/control/data panels also use these shared styles.
+            // They can open directly from Home, before the sheet/technical page.
+            heading ??= new GUIStyle(brandTitle) { font = MenuFont, fontSize = 24 };
+            muted ??= new GUIStyle(brandSub) { font = MenuFont, fontSize = 17 };
             if (settingsHeader != null) return;
             settingsHeader = new GUIStyle(brandTitle) { fontSize = 24, wordWrap = true, font = MenuFont };
             settingsDescription = new GUIStyle(brandSub) { fontSize = 17, wordWrap = true };
