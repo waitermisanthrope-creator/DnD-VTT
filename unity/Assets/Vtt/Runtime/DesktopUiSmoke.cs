@@ -145,6 +145,19 @@ namespace DndVtt.UnityPrototype
             yield return Frame("character-files-desktop"); if (failed) yield break;
             Screen.SetResolution(600, 960, FullScreenMode.Windowed);
             yield return new WaitForSecondsRealtime(.5f); PortraitLayout = true;
+            try
+            {
+                var screenType = typeof(LegacySessionPanel).GetNestedType("FrontScreen", BindingFlags.NonPublic);
+                Call("Navigate", Enum.Parse(screenType, "Sheet"));
+            }
+            catch (Exception error) { Fail(error); yield break; }
+            yield return Frame("character-sheet-portrait"); if (failed) yield break;
+            try
+            {
+                var screenType = typeof(LegacySessionPanel).GetNestedType("FrontScreen", BindingFlags.NonPublic);
+                Call("Navigate", Enum.Parse(screenType, "Import"));
+            }
+            catch (Exception error) { Fail(error); yield break; }
             yield return Frame("character-files-portrait"); if (failed) yield break;
             try { Call("RequestCharacterDeletion", 0); }
             catch (Exception error) { Fail(error); yield break; }

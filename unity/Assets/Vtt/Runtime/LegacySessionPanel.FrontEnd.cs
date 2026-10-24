@@ -84,10 +84,16 @@ namespace DndVtt.UnityPrototype
             bool portraitLayout = UiHeight > UiWidth;
             if (screen == FrontScreen.Sheet)
             {
+                string[] sheetNavigation = { "⌂ Меню", "Персонажи", "Настройки" };
+                float buttonWidth = Mathf.Max(80, (UiWidth - inset * 2 - 24) / 3 - 8);
+                float buttonHeight = Mathf.Max(54, sheetNavigation.Max(label => GUI.skin.button.CalcHeight(new GUIContent(label), buttonWidth)));
                 GUILayout.BeginHorizontal();
-                if (GUILayout.Button("⌂ Меню",GUILayout.Height(44))) Navigate(FrontScreen.Home);
-                if (GUILayout.Button("Персонажи",GUILayout.Height(44))) Navigate(FrontScreen.Characters);
-                if (GUILayout.Button("Настройки",GUILayout.Height(44))) OpenSettings();
+                for (int i = 0; i < sheetNavigation.Length; i++)
+                {
+                    bool clicked = GUILayout.Button(sheetNavigation[i], GUILayout.Width(buttonWidth), GUILayout.Height(buttonHeight));
+                    DesktopUiSmoke.RecordButton(sheetNavigation[i], GUI.skin.button, GUILayoutUtility.GetLastRect());
+                    if (clicked) { if (i == 2) OpenSettings(); else Navigate(i == 0 ? FrontScreen.Home : FrontScreen.Characters); }
+                }
                 GUILayout.EndHorizontal();
             }
             else
