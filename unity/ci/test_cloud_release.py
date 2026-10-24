@@ -106,10 +106,13 @@ class CloudReleaseTests(unittest.TestCase):
         for name in ['DnD-VTT-Unity-1.00.01-arm64.apk','DnD-VTT-Unity-Setup-1.00.01-x64.exe']: (out/name).write_bytes(b'fixture'*500)
         ci.candidate()
         run=dict(head_sha='a'*40,id=42)
-        qa=dict(status='passed',source='a'*40,candidate='1.00.01',run=42,baselineInstall=True,installedPayloadHashes=True,upgrade=True,reinstall=True,isolatedProfileAndBackupPreserved=True,unknownFilePreserved=True,runtimeSmoke=True)
+        qa=dict(status='passed',source='a'*40,candidate='1.00.01',run=42,baselineInstall=True,installedPayloadHashes=True,upgrade=True,reinstall=True,isolatedProfileAndBackupPreserved=True,unknownFilePreserved=True,runtimeSmoke=True,desktopUiSmoke=True)
         Path('qa.json').write_text(json.dumps(qa));feed=Path('updates/unity-experiment.json').read_bytes()
         with patch.object(promotion.ci,'verify_apk'):
             self.assertEqual(promotion.candidate_manifest(out,'qa.json',run,'1.00.01')[1]['versionCode'],10001)
+            for value in [False, None]:
+                Path('qa.json').write_text(json.dumps(dict(qa,desktopUiSmoke=value)))
+                with self.assertRaisesRegex(ValueError,'desktopUiSmoke'): promotion.candidate_manifest(out,'qa.json',run,'1.00.01')
             Path('qa.json').write_text(json.dumps(dict(qa,source='b'*40)))
             with self.assertRaisesRegex(ValueError,'QA does not belong'): promotion.candidate_manifest(out,'qa.json',run,'1.00.01')
             Path('qa.json').write_text(json.dumps(qa)); (out/'DnD-VTT-Unity-1.00.01-arm64.apk').write_bytes(b'corrupt')

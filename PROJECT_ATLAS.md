@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода f69e17ce2481. Git содержит 2035 файлов.
+Снимок кода ac67e677cb32. Git содержит 2035 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1937,7 +1937,7 @@
 | №1916 unity/ci/requirements.txt | 21 B | документация или отчёт: requirements |
 | №1917 unity/ci/test_brand_visual_contract.py | 3012 B | вспомогательный файл: test brand visual contract |
 | №1918 unity/ci/test_character_preview_contract.py | 1354 B | вспомогательный файл: test character preview contract |
-| №1919 unity/ci/test_cloud_release.py | 10770 B | вспомогательный файл: test cloud release |
+| №1919 unity/ci/test_cloud_release.py | 11048 B | вспомогательный файл: test cloud release |
 | №1920 unity/ci/test_content_registry_contract.py | 1574 B | вспомогательный файл: test content registry contract |
 | №1921 unity/ci/test_launcher_aliases.py | 1007 B | вспомогательный файл: test launcher aliases |
 | №1922 unity/ci/test_update_settings_contract.py | 4439 B | вспомогательный файл: test update settings contract |
@@ -14246,7 +14246,7 @@
 | --text-main | №0838 |
 | --text-muted | №0838 |
 
-### Python/Java идентификаторы (605)
+### Python/Java идентификаторы (606)
 
 | Имя | Исходные файлы |
 |---|---|
@@ -14395,6 +14395,7 @@
 | dependencies | №1344 |
 | deps | №1972 |
 | descriptor | №0005 (+ 1 других файлов) |
+| desktopUiSmoke | №1919 |
 | dest | №0007 (+ 1 других файлов) |
 | destination | №0005 (+ 1 других файлов) |
 | detected | №1350 |
