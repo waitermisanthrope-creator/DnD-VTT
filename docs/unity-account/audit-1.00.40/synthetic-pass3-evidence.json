@@ -1,0 +1,85 @@
+{
+  "profileNames": [
+    "Undo Probe",
+    "Second Audit Hero"
+  ],
+  "mergeAfterSecondAdd": {
+    "junk": [
+      {
+        "name": "Stack Probe",
+        "inventoryCategory": "junk",
+        "weight": "1 кг",
+        "count": 2.0,
+        "equipped": false
+      }
+    ]
+  },
+  "containerAfterMove": {
+    "containers": [
+      {
+        "id": "container_fa067667a6e740159f6495fd239a2adc",
+        "name": "Рюкзак",
+        "capacity": 30,
+        "weight": 0,
+        "contents": [
+          {
+            "name": "Capacity Probe",
+            "inventoryCategory": "junk",
+            "weight": "40 кг",
+            "count": 1.0,
+            "equipped": false
+          }
+        ],
+        "closed": false,
+        "source": "v54"
+      }
+    ]
+  },
+  "firstHeroNotesAfterCancel": [
+    {
+      "id": "f_ed6ec4b5-0a81-4dc5-9427-97fc176580d3",
+      "name": "Новая папка",
+      "notes": [
+        {
+          "id": 1792933949021,
+          "title": "Заметка",
+          "text": "Первая строка: ёжик, маг и меч.\r\nВторая строка — проверить перенос.\r\nТретья строка: 12345."
+        }
+      ]
+    }
+  ],
+  "secondHeroNotes": [],
+  "walletAfterRejectedSpend": {
+    "coins": {
+      "cp": 0,
+      "sp": 0,
+      "ep": 0,
+      "gp": 5,
+      "pp": 0
+    },
+    "coinLog": [
+      {
+        "time": "13:18:00",
+        "action": "add",
+        "cp": 0,
+        "resultCp": 0,
+        "sp": 0,
+        "resultSp": 0,
+        "ep": 0,
+        "resultEp": 0,
+        "gp": 5,
+        "resultGp": 5,
+        "pp": 0,
+        "resultPp": 0
+      }
+    ]
+  },
+  "clipboardExport": {
+    "selectedHero": "Second Audit Hero",
+    "exportedCount": 2,
+    "exportedNames": [
+      "Undo Probe",
+      "Second Audit Hero"
+    ]
+  }
+}
