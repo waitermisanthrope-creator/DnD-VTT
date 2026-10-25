@@ -1,0 +1,206 @@
+{
+  "current": {
+    "name": "Undo Probe",
+    "class": "Wizard Audit",
+    "className": "Wizard Audit",
+    "classId": "fighter",
+    "classes": [
+      {
+        "name": "Воин",
+        "level": 1,
+        "subclass": null
+      }
+    ],
+    "raceId": "human",
+    "raceName": "Человек (Стандартный)",
+    "background": "Солдат",
+    "level": 5,
+    "profBonus": 2,
+    "skillsData": {
+      "athletics": 1,
+      "intimidation": 1
+    },
+    "proficiencies": [
+      {
+        "id": "p_armor_light",
+        "category": "Доспехи",
+        "name": "Лёгкие доспехи",
+        "description": "Владение стеганым, кожаным и проклепанным кожаным доспехом."
+      },
+      {
+        "id": "p_armor_medium",
+        "category": "Доспехи",
+        "name": "Средние доспехи",
+        "description": "Владение шкурными, кольчужными рубахами, кирасами и чешуйчатыми доспехами."
+      },
+      {
+        "id": "p_armor_heavy",
+        "category": "Доспехи",
+        "name": "Тяжелые доспехи",
+        "description": "Владение кольчатыми, латными и прочими тяжелыми доспехами."
+      },
+      {
+        "id": "p_shields",
+        "category": "Доспехи",
+        "name": "Щиты",
+        "description": "Умение эффективно использовать щиты для повышения класса доспеха (КД)."
+      },
+      {
+        "id": "p_weapon_simple",
+        "category": "Оружие",
+        "name": "Простое оружие (все)",
+        "description": "Владение всем простым оружием (кинжалы, дубины, короткие луки и т.д.)."
+      },
+      {
+        "id": "p_weapon_martial",
+        "category": "Оружие",
+        "name": "Воинское оружие (все)",
+        "description": "Владение воинским оружием (мечи, алебарды, длинные луки, тяжелые арбалеты)."
+      },
+      {
+        "id": "lang_common",
+        "category": "Языки",
+        "name": "Всеобщий язык",
+        "description": "Основной язык общения людей, полуросликов, дварфов и эльфов."
+      },
+      {
+        "id": "p_game_dice",
+        "category": "Инструменты",
+        "name": "Набор для игры в кости",
+        "description": "Участие в азартных играх на костях, блеф, тактическое мышление."
+      },
+      {
+        "id": "p_vehicle_land",
+        "category": "Инструменты",
+        "name": "Наземный транспорт",
+        "description": "Управление повозками, каретами, телегами."
+      },
+      {
+        "id": "lang_elvish",
+        "category": "Языки",
+        "name": "Эльфийский",
+        "description": "Певучий, сложный язык с богатой поэтической литературой."
+      }
+    ],
+    "choiceState": {
+      "race:human:languages": [
+        "lang_elvish"
+      ],
+      "class:Воин:skills": [
+        "athletics",
+        "intimidation"
+      ]
+    },
+    "pendingChoices": [],
+    "inventory": {
+      "weapons": [],
+      "armor": [],
+      "consumables": [],
+      "materials": [],
+      "junk": []
+    },
+    "classFeaturesState": {}
+  },
+  "previousAutomaticBackup": {
+    "name": "Undo Prob",
+    "class": "Wizard Audit",
+    "className": "Wizard Audit",
+    "classId": "fighter",
+    "classes": [
+      {
+        "name": "Воин",
+        "level": 1,
+        "subclass": null
+      }
+    ],
+    "raceId": "human",
+    "raceName": "Человек (Стандартный)",
+    "background": "Солдат",
+    "level": 5,
+    "profBonus": 2,
+    "skillsData": {
+      "athletics": 1,
+      "intimidation": 1
+    },
+    "proficiencies": [
+      {
+        "id": "p_armor_light",
+        "category": "Доспехи",
+        "name": "Лёгкие доспехи",
+        "description": "Владение стеганым, кожаным и проклепанным кожаным доспехом."
+      },
+      {
+        "id": "p_armor_medium",
+        "category": "Доспехи",
+        "name": "Средние доспехи",
+        "description": "Владение шкурными, кольчужными рубахами, кирасами и чешуйчатыми доспехами."
+      },
+      {
+        "id": "p_armor_heavy",
+        "category": "Доспехи",
+        "name": "Тяжелые доспехи",
+        "description": "Владение кольчатыми, латными и прочими тяжелыми доспехами."
+      },
+      {
+        "id": "p_shields",
+        "category": "Доспехи",
+        "name": "Щиты",
+        "description": "Умение эффективно использовать щиты для повышения класса доспеха (КД)."
+      },
+      {
+        "id": "p_weapon_simple",
+        "category": "Оружие",
+        "name": "Простое оружие (все)",
+        "description": "Владение всем простым оружием (кинжалы, дубины, короткие луки и т.д.)."
+      },
+      {
+        "id": "p_weapon_martial",
+        "category": "Оружие",
+        "name": "Воинское оружие (все)",
+        "description": "Владение воинским оружием (мечи, алебарды, длинные луки, тяжелые арбалеты)."
+      },
+      {
+        "id": "lang_common",
+        "category": "Языки",
+        "name": "Всеобщий язык",
+        "description": "Основной язык общения людей, полуросликов, дварфов и эльфов."
+      },
+      {
+        "id": "p_game_dice",
+        "category": "Инструменты",
+        "name": "Набор для игры в кости",
+        "description": "Участие в азартных играх на костях, блеф, тактическое мышление."
+      },
+      {
+        "id": "p_vehicle_land",
+        "category": "Инструменты",
+        "name": "Наземный транспорт",
+        "description": "Управление повозками, каретами, телегами."
+      },
+      {
+        "id": "lang_elvish",
+        "category": "Языки",
+        "name": "Эльфийский",
+        "description": "Певучий, сложный язык с богатой поэтической литературой."
+      }
+    ],
+    "choiceState": {
+      "race:human:languages": [
+        "lang_elvish"
+      ],
+      "class:Воин:skills": [
+        "athletics",
+        "intimidation"
+      ]
+    },
+    "pendingChoices": [],
+    "inventory": {
+      "weapons": [],
+      "armor": [],
+      "consumables": [],
+      "materials": [],
+      "junk": []
+    },
+    "classFeaturesState": {}
+  }
+}
