@@ -21,6 +21,8 @@ public static class BrandingResumeValidation
             void Check(bool value, string reason) { if (!value) throw new Exception("VTT_BRANDING_RESUME_FAIL: " + reason); }
             Ensure();
             int count = Textures().Count; Check(count == 15, "owned backgrounds for seven buttons and card");
+            Color expectedPixel = Blue().normal.background.GetPixel(24, 24);
+            Check(expectedPixel.a > .9f && expectedPixel.b > expectedPixel.r, "initial blue button is opaque and nonblank");
             foreach (var texture in Textures())
             {
                 Check(texture.isReadable, "CPU pixels retained for graphics-context restoration");
@@ -37,7 +39,9 @@ public static class BrandingResumeValidation
                 Check(!ReferenceEquals(previous, Blue().normal.background), "pause/focus rebuild backgrounds");
                 Check(Textures().Count == count, "owned texture count does not grow after repeated resumes");
                 Color pixel = Blue().normal.background.GetPixel(24, 24);
-                Check(pixel.b > .9f && pixel.a > .9f, "blue button pixels restored");
+                Check(Mathf.Abs(pixel.r - expectedPixel.r) < .005f && Mathf.Abs(pixel.g - expectedPixel.g) < .005f &&
+                    Mathf.Abs(pixel.b - expectedPixel.b) < .005f && Mathf.Abs(pixel.a - expectedPixel.a) < .005f,
+                    "button pixels match original palette after resume");
                 Check(ReferenceEquals(wallpaper, type.GetField("brandWallpaper", flags).GetValue(panel)), "loaded artwork retained across style reset");
             }
             type.GetMethod("ReleaseBrandStyles", flags).Invoke(panel, null);
