@@ -1,0 +1,47 @@
+{
+  "name": "Undo Probe",
+  "stats": {
+    "str": 16,
+    "dex": 15,
+    "con": 14,
+    "int": 13,
+    "wis": 11,
+    "cha": 9
+  },
+  "ac": "10",
+  "baseAC": 10,
+  "hpMax": -5,
+  "hpCurrent": 12,
+  "spellStat": "INT",
+  "spellsData": [
+    {
+      "id": "f902b9ba-d31d-46b4-b231-6e1a6ba3cf92",
+      "name": "Новое заклинание",
+      "level": -1,
+      "desc": "",
+      "prepared": false
+    }
+  ],
+  "inventory": {
+    "weapons": [
+      {
+        "name": "Negative Weight Probe",
+        "inventoryCategory": "weapons",
+        "weight": "-50 кг",
+        "count": 1.0,
+        "equipped": false
+      }
+    ],
+    "armor": [],
+    "consumables": [],
+    "materials": [],
+    "junk": []
+  },
+  "coins": {
+    "cp": 0,
+    "sp": 0,
+    "ep": 0,
+    "gp": 0,
+    "pp": 0
+  }
+}

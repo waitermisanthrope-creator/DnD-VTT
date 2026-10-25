@@ -1,0 +1,25 @@
+Wine 10 / Xvfb / software D3D11; published Windows player 1.00.40. Native Windows/Android reproduction pending.
+
+InvalidOperationException: Type UnityEngine.Rendering.Universal.UniversalCameraData has already been created.
+  at UnityEngine.Rendering.Universal.UniversalRenderPipeline.CreateCameraData (UnityEngine.Rendering.ContextContainer frameData, UnityEngine.Camera camera, UnityEngine.Rendering.Universal.UniversalAdditionalCameraData additionalCameraData) [0x00014] in <b3d2d22491d040c6b93f3373ed749087>:0
+  at UnityEngine.Rendering.Universal.UniversalRenderPipeline.RenderSingleCameraInternal (UnityEngine.Rendering.ScriptableRenderContext context, UnityEngine.Camera camera, UnityEngine.Rendering.Universal.UniversalAdditionalCameraData& additionalCameraData, System.Boolean isLastBaseCamera) [0x000b6] in <b3d2d22491d040c6b93f3373ed749087>:0
+  at UnityEngine.Rendering.Universal.UniversalRenderPipeline.ProcessRenderRequests[RequestData] (UnityEngine.Rendering.ScriptableRenderContext context, UnityEngine.Camera camera, RequestData renderRequest) [0x001af] in <b3d2d22491d040c6b93f3373ed749087>:0
+  at UnityEngine.Rendering.RenderPipeline.InternalProcessRenderRequests[RequestData] (UnityEngine.Rendering.ScriptableRenderContext context, UnityEngine.Camera camera, RequestData renderRequest) [0x0001c] in <4066c29cf9d249daa98dbf2128a9fa87>:0
+  at UnityEngine.Rendering.RenderPipelineManager.DoRenderLoop_Internal (UnityEngine.Rendering.RenderPipelineAsset pipelineAsset, System.IntPtr loopPtr, UnityEngine.Object renderRequest) [0x00053] in <4066c29cf9d249daa98dbf2128a9fa87>:0
+UnityEngine.Camera:SubmitRenderRequestsInternal_Injected(IntPtr, Object)
+UnityEngine.Camera:SubmitRenderRequestsInternal(Object)
+UnityEngine.Camera:SubmitRenderRequest(SingleCameraRequest)
+UnityEngine.Rendering.RenderPipeline:SubmitRenderRequest(Camera, SingleCameraRequest)
+DndVtt.UnityPrototype.DiceTable:Render()
+DndVtt.UnityPrototype.DiceTable:Preview(Int32)
+DndVtt.UnityPrototype.DiceTable:.ctor()
+DndVtt.UnityPrototype.LegacySessionPanel:DrawDiceTable()
+DndVtt.UnityPrototype.LegacySessionPanel:DrawFrontEnd()
+DndVtt.UnityPrototype.LegacySessionPanel:OnGUI()
+UnityEngine.Rendering.ScriptableRenderContext:Submit_Internal(ScriptableRenderContext&)
+UnityEngine.Rendering.ScriptableRenderContext:Submit()
+UnityEngine.Rendering.Universal.UniversalRenderPipeline:RenderSingleCamera(ScriptableRenderContext, UniversalCameraData)
+UnityEngine.Rendering.Universal.UniversalRenderPipeline:RenderCameraStack(ScriptableRenderContext, Camera, Boolean)
+UnityEngine.Rendering.Universal.UniversalRenderPipeline:Render(ScriptableRenderContext, List`1)
+UnityEngine.Rendering.RenderPipeline:InternalRender(ScriptableRenderContext, List`1)
+UnityEngine.Rendering.RenderPipelineManager:DoRenderLoop_Internal(RenderPipelineAsset, IntPtr, Object)
