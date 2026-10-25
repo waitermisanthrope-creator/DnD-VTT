@@ -1,0 +1,12 @@
+{
+  "environment": "Wine 10.0 Debian trixie, Xvfb, software D3D11",
+  "kind": "QA copy of release 1.00.40 with current C# runtime compiled via Roslyn; not Unity Editor build",
+  "exit": 0,
+  "frames": 20,
+  "assembly_sha256": "56157c8732ab9c978d2becdf384db53d12f289caa10241e264e5c7726c510795",
+  "markers": [
+    "VTT_DESKTOP_FONT_PASS: Cyrillic, Latin, digits and controls in actual Windows player",
+    "VTT_DAILY_CHARACTERS_PASS: actual installed native import, conflicting import rejection, delete/last delete, selection, disk reload and backup restore; original QA profile untouched",
+    "VTT_DESKTOP_UI_PASS: installed player, visible Cyrillic home/all settings/update center, windowed startup/resize/fullscreen roundtrip and real PNG evidence"
+  ]
+}

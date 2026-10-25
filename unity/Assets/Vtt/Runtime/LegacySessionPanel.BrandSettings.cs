@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace DndVtt.UnityPrototype
@@ -22,9 +23,10 @@ namespace DndVtt.UnityPrototype
         {
             settingsCategory=category;brandSettingsScroll=Vector2.zero;frontScroll=Vector2.zero;menuGesture.Clear();if(Event.current!=null)GUI.FocusControl(null);
         }
-        private void SettingsCategoryButton(string title,string description,string category)
+        private void SettingsCategoryButton(string title,string description,string category, float cardWidth = 0)
         {
-            GUILayout.BeginVertical(GUI.skin.box);
+            if (cardWidth > 0) GUILayout.BeginVertical(GUI.skin.box, GUILayout.Width(cardWidth));
+            else GUILayout.BeginVertical(GUI.skin.box);
             if(GUILayout.Button(title+"  →",brandGold,GUILayout.MinHeight(60)))OpenSettingsCategory(category);
             GUILayout.Label(description,settingsDescription);GUILayout.EndVertical();
         }
@@ -65,15 +67,16 @@ namespace DndVtt.UnityPrototype
             GUILayout.BeginVertical(new GUIStyle { fixedWidth=width-54,stretchWidth=false });
             if(settingsCategory=="") {
                 bool wide = !Application.isMobilePlatform && width >= 850;
+                float categoryWidth = wide ? (width - 76) * .5f : 0;
                 if(wide)GUILayout.BeginHorizontal();
-                SettingsCategoryButton("Визуальные","Тема, рамки, обои и иконка приложения.","Визуальные");
-                SettingsCategoryButton("Графические","Качество, FPS и режим окна.","Графические");
+                SettingsCategoryButton("Визуальные","Тема, рамки, обои и иконка приложения.","Визуальные",categoryWidth);
+                SettingsCategoryButton("Графические","Качество, FPS и режим окна.","Графические",categoryWidth);
                 if(wide) { GUILayout.EndHorizontal();GUILayout.BeginHorizontal(); }
-                SettingsCategoryButton("Управление","Камера, чувствительность и поле зрения.","Управление");
-                SettingsCategoryButton("Сеть и аккаунт","Вход, облачные персонажи и ник глобального чата.","Сеть и аккаунт");
+                SettingsCategoryButton("Управление","Камера, чувствительность и поле зрения.","Управление",categoryWidth);
+                SettingsCategoryButton("Сеть и аккаунт","Вход, облачные герои и глобальный чат.","Сеть и аккаунт",categoryWidth);
                 if(wide) { GUILayout.EndHorizontal();GUILayout.BeginHorizontal(); }
-                SettingsCategoryButton("Данные и устройство","Локальный архив и сохранение персонажей.","Данные и устройство");
-                SettingsCategoryButton("Обновления","Проверка новой версии и история изменений.","Обновления");
+                SettingsCategoryButton("Данные и устройство","Локальный архив и сохранение персонажей.","Данные и устройство",categoryWidth);
+                SettingsCategoryButton("Обновления","Проверка новой версии и история изменений.","Обновления",categoryWidth);
                 if(wide)GUILayout.EndHorizontal();
                 if(cloudSession!=null)SettingsCategoryButton("Обращения и управление","Жалобы, заявки и инструменты в рамках серверных прав.","Обращения и управление");
             } else {
@@ -81,13 +84,17 @@ namespace DndVtt.UnityPrototype
                 switch(settingsCategory) {
                     case "Визуальные":
                         GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Тема оформления");
-                        for(int i=0;i<BrandAccentKeys.Length;i++)if(GUILayout.Button(BrandAccentNames[i]+(settingsDraft.theme==BrandAccentKeys[i]?" ✓":""),brandBrown,GUILayout.MinHeight(50)))settingsDraft.theme=BrandAccentKeys[i];
+                        int accentIndex = Math.Max(0, Array.IndexOf(BrandAccentKeys, settingsDraft.theme));
+                        settingsDraft.theme = BrandAccentKeys[MenuGrid(accentIndex, BrandAccentNames.Select((name, i) => name + (i == accentIndex ? " ✓" : "")).ToArray(), 2)];
                         GUILayout.EndVertical();
                         GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Оформление рамок");
-                        for(int i=0;i<BrandFrameKeys.Length;i++)if(GUILayout.Button(BrandFrameNames[i]+(settingsDraft.frameStyle==BrandFrameKeys[i]?" ✓":""),GUILayout.MinHeight(50)))settingsDraft.frameStyle=BrandFrameKeys[i];
-                        for(int i=0;i<BrandFrameColors.Length;i++)if(GUILayout.Button(BrandFrameLabels[i]+(settingsDraft.frameColor==BrandFrameColors[i]?" ✓":""),brandGold,GUILayout.MinHeight(48)))settingsDraft.frameColor=BrandFrameColors[i];
+                        int frameIndex = Math.Max(0, Array.IndexOf(BrandFrameKeys, settingsDraft.frameStyle));
+                        settingsDraft.frameStyle = BrandFrameKeys[MenuGrid(frameIndex, BrandFrameNames.Select((name, i) => name + (i == frameIndex ? " ✓" : "")).ToArray(), 2)];
+                        int colorIndex = Math.Max(0, Array.IndexOf(BrandFrameColors, settingsDraft.frameColor));
+                        settingsDraft.frameColor = BrandFrameColors[MenuGrid(colorIndex, BrandFrameLabels.Select((name, i) => name + (i == colorIndex ? " ✓" : "")).ToArray(), 3)];
                         GUILayout.EndVertical();
-                        GUILayout.Label("Основной фон: wallpapers/16.png. Книжный шрифт с резервной гарнитурой.",sheetQuiet);
+                        // Retain the packaged main reference: wallpapers/16.png.
+                        GUILayout.Label("Обои и значки приложения можно выбрать ниже.",sheetQuiet);
                         DrawAppearanceLibrary();break;
                     case "Сеть и аккаунт":
                         SettingsSection("Аккаунт и облачные персонажи");

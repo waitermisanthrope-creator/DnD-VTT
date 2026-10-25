@@ -84,7 +84,7 @@ namespace DndVtt.UnityPrototype
             DrawBrandBackdrop(true); // Shared wallpaper + charcoal overlay on secondary screens.
             float inset = Mathf.Min(28f, UiWidth * .04f);
             GUILayout.BeginArea(new Rect(inset, 20, Mathf.Max(1, UiWidth - inset * 2), Mathf.Max(1, UiHeight - 40)));
-            GUILayout.BeginHorizontal(); GUILayout.Label("DnD VTT", heading); GUILayout.FlexibleSpace(); GUILayout.Label("Unity · " + UnityRelease.Version, muted); GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal(); GUILayout.Label("DnD VTT", heading); GUILayout.FlexibleSpace(); if (UiWidth >= 700) GUILayout.Label("Unity · " + UnityRelease.Version, muted); GUILayout.EndHorizontal();
             // A 6-column PC toolbar becomes 3 comfortable rows of two on a
             // portrait phone; all destinations stay accessible in either view.
             bool portraitLayout = UiHeight > UiWidth;
@@ -110,13 +110,15 @@ namespace DndVtt.UnityPrototype
             int columns = portraitLayout ? 2 : 6;
             float cellWidth = Mathf.Max(80, (UiWidth - inset * 2 - 24) / columns - 8);
             var navStyle = NavigationStyle(labels, cellWidth);
+            var activeNavStyle = new GUIStyle(navStyle) { normal = brandBlue.normal, hover = brandBlue.hover, active = brandBlue.active, focused = brandBlue.focused };
             float navHeight = Mathf.Max(54, labels.Max(label => navStyle.CalcHeight(new GUIContent(label), cellWidth)));
             GUILayout.BeginHorizontal();
             for (int i = 0; i < labels.Length; i++)
             {
                 if (i > 0 && i % columns == 0) { GUILayout.EndHorizontal(); GUILayout.BeginHorizontal(); }
-                bool clicked = GUILayout.Button(labels[i], navStyle, GUILayout.Width(cellWidth), GUILayout.Height(navHeight));
-                DesktopUiSmoke.RecordButton(labels[i], navStyle, GUILayoutUtility.GetLastRect());
+                var destinationStyle = destinations[i] == screen ? activeNavStyle : navStyle;
+                bool clicked = GUILayout.Button(labels[i], destinationStyle, GUILayout.Width(cellWidth), GUILayout.Height(navHeight));
+                DesktopUiSmoke.RecordButton(labels[i], destinationStyle, GUILayoutUtility.GetLastRect());
                 if (clicked) { if (destinations[i] == FrontScreen.Create) BeginCreation(); else if (destinations[i] == FrontScreen.Settings) OpenSettings(); else Navigate(destinations[i]); }
             }
             GUILayout.EndHorizontal(); GUILayout.Space(18);
@@ -205,30 +207,58 @@ namespace DndVtt.UnityPrototype
             ClearSheetInputs(); pendingCharacterDeleteId = pendingCharacterDeleteName = null;
             status = "Персонаж удалён с устройства";
         }
+        private static string RosterDetails(JObject hero) =>
+            ((string)hero["class"] ?? (string)hero["className"] ?? "Без класса") + " · " + CharacterSheetRules.Level(hero) + " ур. · " + (hero["raceName"] ?? hero["race"] ?? "Раса не указана");
         private void DrawRoster()
         {
-            if (archive == null) { GUILayout.Label("Пока нет персонажей. Создайте первого героя или импортируйте сохранение."); return; }
+            GUILayout.Label("Мои персонажи", heading);
+            if (archive == null || archive.Count == 0)
+            {
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.Label("Здесь будут ваши герои", sheetHeading);
+                GUILayout.Label("Создайте персонажа или добавьте существующий JSON-файл.", muted);
+                if (GUILayout.Button("Создать персонажа", brandGreen, GUILayout.MinHeight(52))) BeginCreation();
+                if (GUILayout.Button("Импортировать персонажей", GUILayout.MinHeight(52))) Navigate(FrontScreen.Import);
+                GUILayout.EndVertical(); return;
+            }
             if (pendingCharacterDeleteId != null)
             {
-                GUILayout.Label("Удаление персонажа", heading);
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.Label("Удаление персонажа", sheetHeading);
                 GUILayout.Label("Удалить «" + pendingCharacterDeleteName + "» с этого устройства?", GUI.skin.label);
                 GUILayout.Label("Облачная копия останется. Предыдущий локальный архив сохранится в резервной копии.", muted);
-                if (GUILayout.Button("Подтвердить удаление", GUILayout.Height(52))) Attempt(ConfirmCharacterDeletion);
-                if (GUILayout.Button("Отмена", GUILayout.Height(52))) pendingCharacterDeleteId = pendingCharacterDeleteName = null;
-                return;
+                if (GUILayout.Button("Отмена", GUILayout.MinHeight(52))) pendingCharacterDeleteId = pendingCharacterDeleteName = null;
+                if (GUILayout.Button("Подтвердить удаление", brandRed, GUILayout.MinHeight(52))) Attempt(ConfirmCharacterDeletion);
+                GUILayout.EndVertical(); return;
             }
-            GUILayout.Label("Мои персонажи", heading);
-            GUILayout.Label("Поиск по имени, расе или классу", muted); rosterSearch = GUILayout.TextField(rosterSearch, GUILayout.Height(52)); GUILayout.Space(12);
-            for (int i = 0; i < archive.Count; i++)
+            GUILayout.Label("Поиск по имени, расе или классу", muted);
+            GUILayout.BeginHorizontal();
+            rosterSearch = GUILayout.TextField(rosterSearch, GUILayout.MinHeight(52));
+            if (rosterSearch.Length > 0 && MeasuredMenuButton("Сброс", GUI.skin.button, GUILayout.Width(112), GUILayout.MinHeight(52))) { rosterSearch = ""; GUI.FocusControl(null); }
+            GUILayout.EndHorizontal();
+            string query = rosterSearch.Trim();
+            int[] visible = Enumerable.Range(0, archive.Count).Where(i =>
+                (archive.Name(i) + " " + RosterDetails(archive.Snapshot(i))).IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0).ToArray();
+            GUILayout.Label("Найдено: " + visible.Length + " из " + archive.Count, muted); GUILayout.Space(12);
+            if (visible.Length == 0)
             {
-                var hero = archive.Snapshot(i); string details = ((string)hero["class"] ?? (string)hero["className"] ?? "Без класса") + " · " + CharacterSheetRules.Level(hero) + " ур. · " + (hero["raceName"] ?? "Раса не указана");
-                if ((archive.Name(i) + " " + details).IndexOf(rosterSearch, StringComparison.OrdinalIgnoreCase) < 0) continue;
-                GUILayout.BeginVertical(GUI.skin.box); GUILayout.Label(archive.Name(i), heading); GUILayout.Label(details, muted);
-                GUILayout.Label("Здоровье " + archive.CurrentHp(i) + " / " + archive.MaximumHp(i) + "   ·   " + CharacterSheetRules.InventoryWeightKg(hero).ToString("0.##", CultureInfo.InvariantCulture) + " кг");
-                if (GUILayout.Button("Открыть лист  →", GUILayout.Height(52))) { selected = i; Navigate(FrontScreen.Sheet); }
-                if (GUILayout.Button("Удалить персонажа…", GUILayout.Height(52)))
-                RequestCharacterDeletion(i);
-                GUILayout.EndVertical(); GUILayout.Space(10);
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.Label("Ничего не найдено", sheetHeading);
+                GUILayout.Label("Проверьте имя, расу или класс. Персонажи остаются в вашем архиве.", muted);
+                if (GUILayout.Button("Показать всех персонажей", GUILayout.MinHeight(52))) { rosterSearch = ""; GUI.FocusControl(null); }
+                GUILayout.EndVertical();
+            }
+            foreach (int i in visible)
+            {
+                var hero = archive.Snapshot(i);
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.Label(archive.Name(i), brandName);
+                if (i == selected) GUILayout.Label("Текущий герой", sheetQuiet);
+                GUILayout.Label(RosterDetails(hero), muted);
+                GUILayout.Label("Здоровье " + archive.CurrentHp(i) + " / " + archive.MaximumHp(i) + "   ·   " + CharacterSheetRules.InventoryWeightKg(hero).ToString("0.##", CultureInfo.InvariantCulture) + " кг", sheetQuiet);
+                if (MeasuredMenuButton("Открыть лист  →", brandBlue, GUILayout.MinHeight(52))) { selected = i; Navigate(FrontScreen.Sheet); }
+                if (MeasuredMenuButton("Удалить персонажа…", brandPlain, GUILayout.MinHeight(48))) RequestCharacterDeletion(i);
+                GUILayout.EndVertical(); GUILayout.Space(8);
             }
         }
         private void DrawCreation()

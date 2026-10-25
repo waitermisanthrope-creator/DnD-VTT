@@ -26,10 +26,14 @@ namespace DndVtt.UnityPrototype
         {
             try { action(); } catch (Exception error) { status = error.Message; }
         }
+        private void DrawSheetCharacterSwitch()
+        {
+            if (archive.Count <= 1) return;
+            if (GUILayout.Button("←", GUILayout.Width(52), GUILayout.MinHeight(48))) { selected=(selected+archive.Count-1)%archive.Count; ClearSheetInputs(); }
+            if (GUILayout.Button("→", GUILayout.Width(52), GUILayout.MinHeight(48))) { selected=(selected+1)%archive.Count; ClearSheetInputs(); }
+        }
         private void DrawSheet()
         {
-            int next = HorizontalTabs(sheetTab, tabs, ref sheetTabsScroll);
-            if (next != sheetTab) { sheetTab = next; GUI.FocusControl(null); }
             if (archive == null)
             {
                 GUILayout.Label("Импортируйте своего персонажа во вкладке Данные / карты или создайте пустой лист.");
@@ -37,19 +41,23 @@ namespace DndVtt.UnityPrototype
                 DrawImportAndMap(); return;
             }
             bool portraitLayout = UiHeight > UiWidth;
-            GUILayout.Label(archive.Name(selected),sheetQuiet);
-            if(archive.Count>1)
+            if (portraitLayout) GUILayout.Label(archive.Name(selected), sheetCharacterName);
+            else
             {
                 GUILayout.BeginHorizontal();
-                if(GUILayout.Button("← Герой",GUILayout.Height(44))) { selected=(selected+archive.Count-1)%archive.Count;ClearSheetInputs(); }
-                if(GUILayout.Button("Герой →",GUILayout.Height(44))) { selected=(selected+1)%archive.Count;ClearSheetInputs(); }
+                GUILayout.Label(archive.Name(selected), sheetHeading);
+                DrawSheetCharacterSwitch();
                 GUILayout.EndHorizontal();
             }
             GUILayout.BeginHorizontal();
-            if(GUILayout.Button("Сохранить",brandGreen,GUILayout.Height(46)))Attempt(()=>{SaveSheet();status="Сохранено на устройстве";});
-            if(GUILayout.Button("Экспорт JSON",GUILayout.Height(46))) { GUIUtility.systemCopyBuffer=archive.Export();status="Архив скопирован"; }
+            if (portraitLayout) DrawSheetCharacterSwitch();
+            if (MeasuredMenuButton("Сохранить", brandGreen, GUILayout.MinHeight(56))) Attempt(() => { SaveSheet(); status="Сохранено на устройстве"; });
+            if (portraitLayout) { GUILayout.EndHorizontal(); GUILayout.BeginHorizontal(); }
+            if (MeasuredMenuButton(portraitLayout ? "Копировать архив" : "Копировать весь архив", GUI.skin.button, GUILayout.MinHeight(portraitLayout ? 72 : 56))) { GUIUtility.systemCopyBuffer=archive.Export(); status="Весь архив скопирован"; }
+            if (MeasuredMenuButton(portraitLayout ? "Файл архива…" : "Сохранить архив в файл…", GUI.skin.button, GUILayout.MinHeight(portraitLayout ? 72 : 56))) Attempt(() => PickCharacterFile(true));
             GUILayout.EndHorizontal();
-            if (GUILayout.Button("Сохранить JSON в файл…", GUILayout.MinHeight(54))) Attempt(() => PickCharacterFile(true));
+            int next = HorizontalTabs(sheetTab, tabs, ref sheetTabsScroll);
+            if (next != sheetTab) { sheetTab = next; GUI.FocusControl(null); }
             JObject hero = archive.Snapshot(selected); bool changed = false, persistWallet = false, persistCommerce = false;
             if (deletePath != null)
             {

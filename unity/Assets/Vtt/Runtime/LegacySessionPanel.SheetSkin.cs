@@ -8,7 +8,7 @@ namespace DndVtt.UnityPrototype
     {
         private GUISkin sheetSkin;
         private Font sheetSerif;
-        private GUIStyle sheetHeading, sheetQuiet, sheetTabStyle, sheetActiveTab;
+        private GUIStyle sheetHeading, sheetQuiet, sheetTabStyle, sheetActiveTab, sheetCharacterName;
         private Vector2 sheetTabsScroll;
         private void PrepareSheetSkin()
         {
@@ -30,11 +30,18 @@ namespace DndVtt.UnityPrototype
             }
             sheetSkin.box = new GUIStyle(brandCard) { padding = new RectOffset(18,18,18,18), margin = new RectOffset(0,0,10,16) };
             sheetSkin.toggle.fontSize = 19; sheetSkin.toggle.wordWrap = true; sheetSkin.toggle.normal.textColor = sheetSkin.label.normal.textColor;
-            sheetHeading = new GUIStyle(sheetSkin.label) { fontSize = 29, fontStyle = FontStyle.Bold, margin = new RectOffset(0,0,3,17) }; sheetHeading.normal.textColor = new Color(.88f,.18f,.19f);
-            sheetQuiet = new GUIStyle(sheetSkin.label) { fontSize = 17, wordWrap = true }; sheetQuiet.normal.textColor = new Color(.59f,.58f,.55f);
+            sheetHeading = new GUIStyle(sheetSkin.label) { fontSize = 29, fontStyle = FontStyle.Bold, margin = new RectOffset(0,0,3,17) }; sheetHeading.normal.textColor = new Color(.92f,.85f,.69f);
+            sheetCharacterName = new GUIStyle(sheetHeading) { fontSize = 22 };
+            sheetQuiet = new GUIStyle(sheetSkin.label) { fontSize = 17, wordWrap = true }; sheetQuiet.normal.textColor = new Color(.75f,.74f,.70f);
             sheetTabStyle = new GUIStyle(sheetSkin.button) { wordWrap = false, fontSize = 20, fontStyle = FontStyle.Bold, padding = new RectOffset(16,16,14,14) };
-            sheetActiveTab = new GUIStyle(sheetTabStyle); sheetActiveTab.normal.textColor = new Color(.98f,.23f,.23f); sheetActiveTab.normal.background = Rounded(new Color(.18f,.13f,.13f),new Color(.74f,.14f,.14f));
+            sheetActiveTab = new GUIStyle(sheetTabStyle); sheetActiveTab.normal.textColor = Color.white; sheetActiveTab.normal.background = Rounded(Color.Lerp(new Color(.10f,.10f,.12f), BrandAccent, .28f), Color.Lerp(BrandAccent, Color.white, .25f));
             GUI.skin = sheetSkin;
+        }
+        private bool MeasuredMenuButton(string label, GUIStyle style, params GUILayoutOption[] options)
+        {
+            bool clicked = GUILayout.Button(label, style, options);
+            DesktopUiSmoke.RecordButton(label, style, GUILayoutUtility.GetLastRect());
+            return clicked;
         }
         private int MenuGrid(int selectedIndex,string[] labels,int columns)
         {
@@ -46,7 +53,7 @@ namespace DndVtt.UnityPrototype
         private int HorizontalTabs(int selectedTab, string[] labels, ref Vector2 scrollPosition)
         {
             scrollPosition = GUILayout.BeginScrollView(SwipePosition("sheet-tabs",scrollPosition), true, false, GUILayout.Height(86)); GUILayout.BeginHorizontal();
-            for (int i = 0; i < labels.Length; i++) if (GUILayout.Button(labels[i], i == selectedTab ? sheetActiveTab : sheetTabStyle, GUILayout.Width(Mathf.Max(106,sheetTabStyle.CalcSize(new GUIContent(labels[i])).x+12)), GUILayout.Height(54))) { selectedTab = i; GUI.FocusControl(null); }
+            for (int i = 0; i < labels.Length; i++) if (GUILayout.Button(i == selectedTab ? "• " + labels[i] : labels[i], i == selectedTab ? sheetActiveTab : sheetTabStyle, GUILayout.Width(Mathf.Max(106,sheetTabStyle.CalcSize(new GUIContent("• " + labels[i])).x+12)), GUILayout.Height(54))) { selectedTab = i; GUI.FocusControl(null); }
             GUILayout.EndHorizontal(); GUILayout.EndScrollView(); RegisterSwipe("sheet-tabs",GUILayoutUtility.GetLastRect(),true); return selectedTab;
         }
         private void SheetSection(string title) { GUILayout.Space(8); GUILayout.Label(title, sheetHeading); }

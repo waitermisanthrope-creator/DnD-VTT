@@ -92,9 +92,11 @@ namespace DndVtt.UnityPrototype
         private GUIStyle Button(GUIStyle from, Color color, Color foreground)
         {
             var b = new GUIStyle(from);
-            b.normal.background = Rounded(color, new Color(.84f,.70f,.37f,.63f));
-            b.hover.background = Rounded(Color.Lerp(color, Color.white, .12f), new Color(.96f,.79f,.45f,.93f));
+            b.normal.background = Rounded(color, new Color(.44f,.42f,.37f,.72f));
+            b.hover.background = Rounded(Color.Lerp(color, Color.white, .12f), new Color(.80f,.71f,.50f,.95f));
             b.active.background = b.hover.background;
+            b.focused.background = b.hover.background;
+            b.focused.textColor = foreground;
             b.normal.textColor = foreground; b.hover.textColor = foreground;
             b.active.textColor = foreground;
             b.alignment = TextAnchor.MiddleCenter; b.fontStyle = FontStyle.Bold;
@@ -114,21 +116,21 @@ namespace DndVtt.UnityPrototype
             if (!brandWallpaper) brandWallpaper = Resources.Load<Texture2D>("Branding/Wallpaper16");
             if (!brandSplash) brandSplash = Resources.Load<Texture2D>("Branding/Splash19");
             if (!brandDragon) brandDragon = Resources.Load<Texture2D>("Branding/Dragon20");
-            brandBlue = Button(button, new Color(.12f,.58f,.95f), Color.white);
-            brandGreen = Button(button, new Color(.28f,.69f,.33f), Color.white);
-            brandRed = Button(button, new Color(.89f,.19f,.2f), Color.white);
+            brandBlue = Button(button, new Color(.10f,.32f,.48f), Color.white);
+            brandGreen = Button(button, new Color(.12f,.36f,.27f), Color.white);
+            brandRed = Button(button, new Color(.48f,.15f,.18f), Color.white);
             brandPurple = Button(button, new Color(.29f,.23f,.43f), Color.white);
             brandGold = Button(button, new Color(.41f,.28f,.08f), Color.white);
             brandBrown = Button(button, new Color(.16f,.12f,.08f), new Color(.98f,.84f,.49f));
             brandPlain = Button(button, new Color(.17f,.16f,.16f), Color.white);
             brandTitle = new GUIStyle(label) { font = MenuFont, fontSize = 25, fontStyle = FontStyle.Bold, wordWrap = true };
-            brandTitle.normal.textColor = BrandAccent;
+            brandTitle.normal.textColor = Color.Lerp(BrandAccent, Color.white, .38f);
             brandName = new GUIStyle(brandTitle) { fontSize = 20 };
             brandSub = new GUIStyle(label) { font = MenuFont, fontSize = 15, wordWrap = true };
-            brandSub.normal.textColor = new Color(.73f,.72f,.71f);
+            brandSub.normal.textColor = new Color(.78f,.77f,.73f);
             brandCard = new GUIStyle(box) { padding = new RectOffset(12,12,12,12),
                 margin = new RectOffset(0,0,0,9) };
-            brandCard.normal.background = Rounded(new Color(.09f,.09f,.11f,.88f), new Color(.38f,.38f,.36f,.72f));
+            brandCard.normal.background = Rounded(new Color(.10f,.10f,.12f,.96f), new Color(.32f,.30f,.26f,.85f));
             brandCard.border = new RectOffset(16,16,16,16);
             brandStylesDirty = false;
         }
@@ -250,11 +252,11 @@ namespace DndVtt.UnityPrototype
                 GUILayout.BeginHorizontal(brandCard, GUILayout.MinHeight(76));
                 GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
                 GUILayout.Label(archive.Name(i), brandName);
+                if (i == selected) GUILayout.Label("Текущий герой", brandSub);
                 GUILayout.Label(details, brandSub);
                 GUILayout.EndVertical();
-                if (GUILayout.Button("Играть", brandBlue, GUILayout.Width(Mathf.Min(105, width*.24f)), GUILayout.Height(51)))
+                if (MeasuredMenuButton("Лист", brandBlue, GUILayout.Width(Mathf.Min(105, width*.24f)), GUILayout.Height(51)))
                 { selected = i; Navigate(FrontScreen.Sheet); }
-                if (GUILayout.Button("×", brandRed, GUILayout.Width(48), GUILayout.Height(51))) RequestCharacterDeletion(i);
                 GUILayout.EndHorizontal();
             }
             GUILayout.EndScrollView(); RegisterSwipe("home",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
@@ -266,15 +268,15 @@ namespace DndVtt.UnityPrototype
             if (GUILayout.Button("+ Новый персонаж", brandGreen, GUILayout.Height(51))) BeginCreation();
             if (GUILayout.Button("Загрузить / импорт", brandBlue, GUILayout.Height(51))) Navigate(FrontScreen.Import);
             GUILayout.EndHorizontal();
-            if (GUILayout.Button("☁ Локальный архив • " + (archive?.Count ?? 0) + " героев", brandBlue, GUILayout.Height(45)))
+            if (GUILayout.Button("Мои персонажи · " + (archive?.Count ?? 0), brandPlain, GUILayout.Height(45)))
                 Navigate(FrontScreen.Characters);
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("3D Персонаж", brandPurple, GUILayout.Height(53))) OpenCharacterStudio();
-            if (GUILayout.Button("3D Карты", brandGold, GUILayout.Height(53))) Navigate(FrontScreen.Map);
+            if (GUILayout.Button("3D Персонаж", brandPlain, GUILayout.Height(53))) OpenCharacterStudio();
+            if (GUILayout.Button("3D Карты", brandPlain, GUILayout.Height(53))) Navigate(FrontScreen.Map);
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
-            if(GUILayout.Button("Мастерская",brandPurple,GUILayout.MinHeight(54)))OpenContentManager();
-            if(GUILayout.Button("3D Дайсы",brandGold,GUILayout.MinHeight(54)))Navigate(FrontScreen.Dice);
+            if(GUILayout.Button("Мастерская",brandPlain,GUILayout.MinHeight(54)))OpenContentManager();
+            if(GUILayout.Button("3D Дайсы",brandPlain,GUILayout.MinHeight(54)))Navigate(FrontScreen.Dice);
             GUILayout.EndHorizontal();
             LoadCloudSession();
             if(cloudSession!=null&&GUILayout.Button("Глобальный чат",brandBlue,GUILayout.Height(51)))Navigate(FrontScreen.Chat);

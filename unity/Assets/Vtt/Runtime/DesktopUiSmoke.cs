@@ -143,6 +143,43 @@ namespace DndVtt.UnityPrototype
             }
             catch (Exception error) { Fail(error); yield break; }
             yield return Frame("character-files-desktop"); if (failed) yield break;
+            // Render the actual roster and search-empty state using a detached long-name fixture.
+            // Restore the live archive afterward; presentation must not write to disk.
+            LegacyCharacterArchive rosterBefore = null;
+            string rosterDiskBefore = null, rosterPreviewJson = null;
+            try
+            {
+                rosterBefore = (LegacyCharacterArchive)typeof(LegacySessionPanel).GetField("archive", Flags).GetValue(panel);
+                rosterDiskBefore = File.ReadAllText(panel.SavePath);
+                var preview = rosterBefore.DetachedCopy(); var hero = preview.Snapshot(0);
+                hero["name"] = "Элеонора Серебряная — хранительница забытой библиотеки";
+                preview.Replace(0, hero); Field("archive", preview); rosterPreviewJson = preview.Export();
+                var screenType = typeof(LegacySessionPanel).GetNestedType("FrontScreen", BindingFlags.NonPublic);
+                Call("Navigate", Enum.Parse(screenType, "Characters")); Field("rosterSearch", "");
+            }
+            catch (Exception error) { Fail(error); yield break; }
+            yield return Frame("roster-desktop"); if (failed) yield break;
+            Screen.SetResolution(600, 960, FullScreenMode.Windowed);
+            yield return new WaitForSecondsRealtime(.5f); PortraitLayout = true;
+            yield return Frame("roster-portrait"); if (failed) yield break;
+            Field("rosterSearch", "не-существующий-поиск-qa");
+            yield return Frame("roster-empty-search-portrait"); if (failed) yield break;
+            try
+            {
+                var screenType = typeof(LegacySessionPanel).GetNestedType("FrontScreen", BindingFlags.NonPublic);
+                Call("Navigate", Enum.Parse(screenType, "Sheet"));
+            }
+            catch (Exception error) { Fail(error); yield break; }
+            yield return Frame("sheet-long-name-portrait"); if (failed) yield break;
+            try
+            {
+                Check(panel.ExportCurrent() == rosterPreviewJson, "roster search and rendering preserve every character field");
+                Check(File.ReadAllText(panel.SavePath) == rosterDiskBefore, "roster presentation never rewrites the saved archive");
+                Field("archive", rosterBefore); Field("rosterSearch", "");
+            }
+            catch (Exception error) { Fail(error); yield break; }
+            PortraitLayout = false;
+
             Screen.SetResolution(600, 960, FullScreenMode.Windowed);
             yield return new WaitForSecondsRealtime(.5f); PortraitLayout = true;
             try

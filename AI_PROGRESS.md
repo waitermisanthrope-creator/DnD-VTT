@@ -1,3 +1,19 @@
+# Подготовка выпуска Unity1.00.41 — 25.10.2026
+
+Владелец разрешил выпуск Android/Windows. Существующий pipeline должен собрать
+новый candidate41 и пройти Windows upgrade/UI QA до paired promotion.
+Локальные UI/scroll изменения, evidence и testing changelog готовятся к сохранению;
+публичной41 ещё нет. Предыдущая QA-copy не заменяет Unity Editor build.
+
+# Локальная доработка Unity UI и реальный запуск — 25.10.2026
+
+Полный доступ позволил использовать Docker и сеть вне sandbox. Скачан player40,
+SHA сверён; создан Wine10/Xvfb. Текущий runtime скомпилирован Roslyn против DLL
+выпуска (без Editor) и запущен в QA-копии. В реальном UI исправлены home-label,
+portrait export/reset clipping, длинный заголовок, компактные настройки.
+Финальный UI smoke exit0 /20реальных кадров,119save/syntax+50menu PASS.
+См. docs/UNITY_UI_RUNTIME_CHECK.md; изменения локальные, без push/релиза.
+
 # Прокрутка Unity: сохранение исправления — 25.10.2026
 
 На базе07b146b проверены новые инструкции; Explorer/QA только чтение. Исправлен
