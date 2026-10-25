@@ -122,7 +122,7 @@ namespace DndVtt.UnityPrototype
             var controlsPixels = new Rect(controlsPoint.x, Screen.height - controlsPoint.y - controls.height * MenuScale, controls.width * MenuScale, controls.height * MenuScale);
             if (Event.current.type == EventType.Repaint) characterSliders.Clear();
             GUILayout.BeginArea(controls, brandCard);
-            characterControlsScroll = GUILayout.BeginScrollView(SwipePosition("character-controls", characterControlsScroll));
+            characterControlsScroll = GUILayout.BeginScrollView(SwipePosition("character-controls", characterControlsScroll), false, true);
             GUILayout.Label(characterNotice, brandSub);
             if (characterStudio != null)
             {

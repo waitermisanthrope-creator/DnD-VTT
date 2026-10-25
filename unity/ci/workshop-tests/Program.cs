@@ -11,6 +11,7 @@ class Program
     static void Reject(Action action, string name) { bool rejected = false; try { action(); } catch (Exception) { rejected = true; } Check(rejected, name); }
     static void Main(string[] args)
     {
+        if (args.Length > 0 && args[0] == "--menu-input") { Console.WriteLine("MENU_INPUT_LOGIC_PASS " + AccountGestureChecks.Run(Directory.GetCurrentDirectory())); return; }
         if (args.Length > 0 && args[0] == "--character-delete")
         {
             string dir = Path.Combine(Path.GetTempPath(), "vtt-delete-" + Guid.NewGuid()); Directory.CreateDirectory(dir);

@@ -25,6 +25,26 @@ static class AccountGestureChecks
   gesture.Begin(40,30);gesture.Move(52,30,12,0,2);Check(!gesture.Dragging&&!gesture.End(),"high-DPI finger jitter does not cancel a tap");
   gesture.Begin(40,200);gesture.Move(100,200,60,0,1);Check(gesture.CapturedRegion==null&&gesture.End(),"horizontal drag over a vertical page cancels button activation even without horizontal scrolling");
   gesture.Begin(900,900);gesture.Move(900,800,0,-100,1);Check(gesture.CapturedRegion==null,"outside touch never captures");gesture.Clear();Check(gesture.Regions.Count==0,"navigation clears stale regions");
+  // Clear/navigation must cancel the sequence, not just discard its old viewport.
+  gesture.Regions["page"]=new MenuGesture.Region { x=0,y=0,width=400,height=700 };
+  gesture.Begin(40,200);gesture.Clear();
+  gesture.Regions["next-page"]=new MenuGesture.Region { x=0,y=0,width=400,height=700 };
+  gesture.Move(40,100,0,-100,1);
+  Check(!gesture.Dragging&&gesture.CapturedRegion==null&&gesture.Regions["next-page"].dy==0,"navigation ignores the remainder of the old drag until a new press");
+  gesture.End();gesture.Move(40,50,0,-50,1);
+  Check(!gesture.Dragging,"released pointer cannot start a new scroll without press");
+  gesture.Clear();
+  gesture.Regions["page"]=new MenuGesture.Region { x=0,y=0,width=400,height=700 };
+  gesture.Regions["slider"]=new MenuGesture.Region { x=20,y=100,width=300,height=52,nativeControl=true };
+  gesture.Regions["scrollbar"]=new MenuGesture.Region { x=380,y=0,width=20,height=700,nativeControl=true };
+  foreach(var origin in new[]{(x:40f,y:120f),(x:390f,y:200f)}) {
+   gesture.Begin(origin.x,origin.y);gesture.Move(origin.x-80,origin.y-100,-80,-100,1);
+   Check(!gesture.Dragging&&gesture.CapturedRegion==null&&gesture.Regions["page"].dy==0,"native drag keeps ownership even outside slider or scrollbar");
+   Check(!gesture.End(),"native release is not suppressed as a page swipe");
+  }
+  gesture.Begin(100,300);gesture.Move(100,200,0,-100,2);
+  Check(gesture.Dragging&&gesture.CapturedRegion=="page"&&gesture.Regions["page"].dy==50,"page swipe outside native controls retains scaled vertical scrolling");
+  Check(gesture.End(),"page swipe still suppresses release");
   var settingsSource=File.ReadAllText(Path.Combine(appRoot,"unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs"));
   Check(!settingsSource.Contains("RegisterSwipe(\"technical-settings\",GUILayoutUtility.GetLastRect());RegisterSwipe(\"settings\""),"settings viewport has no competing unconsumed gesture region");
   Check(settingsSource.Contains("GUILayout.EndVertical();GUILayout.EndScrollView();RegisterSwipe(\"settings\""),"settings closes its fixed-width layout before closing scroll viewport");

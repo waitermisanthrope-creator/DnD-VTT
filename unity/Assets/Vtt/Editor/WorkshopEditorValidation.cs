@@ -14,6 +14,7 @@ using UnityEngine.SceneManagement;
 public static class WorkshopEditorValidation
 {
     private static void Check(bool condition, string message) { if (!condition) throw new Exception("VTT_WORKSHOP_EDITOR_FAIL: " + message); }
+    public static void RunMenuInput() => ValidateMenuTouchBackend();
     private static void ValidateMenuTouchBackend()
     {
         if(!Application.isBatchMode)return;
@@ -28,7 +29,37 @@ public static class WorkshopEditorValidation
             Check(gesture.Dragging&&gesture.Regions["test"].dy>0,"configured Input System drives actual menu scroll");
             InputSystem.QueueStateEvent(device,new TouchState { touchId=1,phase=UnityEngine.InputSystem.TouchPhase.Ended,position=new Vector2(40,Screen.height-100) });InputSystem.Update();update.Invoke(panel,null);
             Check(!gesture.Dragging&&(float)typeof(LegacySessionPanel).GetField("suppressMenuClickUntil",flags).GetValue(panel)>Time.unscaledTime,"touch release suppresses synthetic click");
-            Debug.Log("VTT_MENU_INPUT_SYSTEM_PASS: actual virtual touchscreen begin/move/end reaches menu scroll and cancels click");
+            gesture.Clear();
+            gesture.Regions["page"]=new MenuGesture.Region { x=0,y=0,width=400,height=700 };
+            gesture.Regions["slider"]=new MenuGesture.Region { x=20,y=150,width=300,height=100,nativeControl=true };
+            InputSystem.QueueStateEvent(device,new TouchState { touchId=2,phase=UnityEngine.InputSystem.TouchPhase.Began,position=new Vector2(40,Screen.height-200) });InputSystem.Update();update.Invoke(panel,null);
+            InputSystem.QueueStateEvent(device,new TouchState { touchId=2,phase=UnityEngine.InputSystem.TouchPhase.Moved,position=new Vector2(200,Screen.height-100),delta=new Vector2(160,100) });InputSystem.Update();update.Invoke(panel,null);
+            Check(!gesture.Dragging&&gesture.CapturedRegion==null&&gesture.Regions["page"].dy==0,"native control touch does not start custom page swipe");
+            InputSystem.QueueStateEvent(device,new TouchState { touchId=2,phase=UnityEngine.InputSystem.TouchPhase.Canceled,position=new Vector2(200,Screen.height-100) });InputSystem.Update();update.Invoke(panel,null);
+            gesture.Begin(40,200);gesture.Clear();
+            gesture.Regions["next-page"]=new MenuGesture.Region { x=0,y=0,width=400,height=700 };
+            InputSystem.QueueStateEvent(device,new TouchState { touchId=3,phase=UnityEngine.InputSystem.TouchPhase.Began,position=new Vector2(40,Screen.height-200) });InputSystem.Update();update.Invoke(panel,null);
+            gesture.Clear();gesture.Regions["next-page"]=new MenuGesture.Region { x=0,y=0,width=400,height=700 };
+            InputSystem.QueueStateEvent(device,new TouchState { touchId=3,phase=UnityEngine.InputSystem.TouchPhase.Moved,position=new Vector2(40,Screen.height-100),delta=new Vector2(0,100) });InputSystem.Update();update.Invoke(panel,null);
+            Check(!gesture.Dragging&&gesture.Regions["next-page"].dy==0,"navigation cancels old backend touch sequence");
+            InputSystem.QueueStateEvent(device,new TouchState { touchId=3,phase=UnityEngine.InputSystem.TouchPhase.Ended,position=new Vector2(40,Screen.height-100) });InputSystem.Update();update.Invoke(panel,null);
+            InputSystem.QueueStateEvent(device,new TouchState { touchId=4,phase=UnityEngine.InputSystem.TouchPhase.Began,position=new Vector2(40,Screen.height-300) });InputSystem.Update();update.Invoke(panel,null);
+            InputSystem.QueueStateEvent(device,new TouchState { touchId=4,phase=UnityEngine.InputSystem.TouchPhase.Moved,position=new Vector2(40,Screen.height-200),delta=new Vector2(0,100) });InputSystem.Update();update.Invoke(panel,null);
+            Check(gesture.Dragging,"page drag active before backend cancellation");
+            InputSystem.QueueStateEvent(device,new TouchState { touchId=4,phase=UnityEngine.InputSystem.TouchPhase.Canceled,position=new Vector2(40,Screen.height-200) });InputSystem.Update();update.Invoke(panel,null);
+            float canceledDy=gesture.Regions["next-page"].dy;
+            gesture.Move(40,100,0,-100,1);
+            Check(!gesture.Dragging&&gesture.CapturedRegion==null&&gesture.Regions["next-page"].dy==canceledDy,"canceled touch cannot recapture without a new press");
+            InputSystem.QueueStateEvent(device,new TouchState { touchId=5,phase=UnityEngine.InputSystem.TouchPhase.Began,position=new Vector2(40,Screen.height-300) });InputSystem.Update();update.Invoke(panel,null);
+            InputSystem.QueueStateEvent(device,new TouchState { touchId=5,phase=UnityEngine.InputSystem.TouchPhase.Moved,position=new Vector2(40,Screen.height-200),delta=new Vector2(0,100) });InputSystem.Update();update.Invoke(panel,null);
+            Check(gesture.Dragging&&gesture.Regions["next-page"].dy>canceledDy,"new touch scrolls after cancellation");
+            InputSystem.QueueStateEvent(device,new TouchState { touchId=5,phase=UnityEngine.InputSystem.TouchPhase.Ended,position=new Vector2(40,Screen.height-200) });InputSystem.Update();update.Invoke(panel,null);
+            var screenField=typeof(LegacySessionPanel).GetField("screen",flags);
+            screenField.SetValue(panel,Enum.Parse(screenField.FieldType,"Map"));
+            gesture.Regions["stale-panel"]=new MenuGesture.Region { x=0,y=0,width=400,height=700 };
+            update.Invoke(panel,null);
+            Check(gesture.Regions.Count==0&&!gesture.Dragging,"closed map panel drops stale scroll regions before gameplay touch");
+            Debug.Log("VTT_MENU_INPUT_SYSTEM_PASS: virtual touch scroll/release, native ownership, navigation and closed map lifecycle");
         } finally { UnityEngine.Object.DestroyImmediate(go);InputSystem.RemoveDevice(device);if(prior!=null)prior.MakeCurrent(); }
     }
     private static void ValidateCategoryCollections(WorkshopStore store,JArray manifests)

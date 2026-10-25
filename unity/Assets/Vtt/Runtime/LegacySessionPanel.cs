@@ -68,23 +68,33 @@ namespace DndVtt.UnityPrototype
         public void SaveSheet() { CharacterSheetStore.Save(SavePath, archive ?? throw new InvalidOperationException("Нет персонажа")); }
         private void Toggle()
         {
+            menuGesture.Clear();
             panel = !panel; world.explorer.acceptInput = !panel;
             Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
         }
         private void OnGUI()
         {
+            BeginSwipeFrame();
+            try
+            {
+                UpdateMenuPointer();
+                if(menuGesture.Dragging) { GUIUtility.hotControl=0;GUI.FocusControl(null); }
+                if(Event.current.type==EventType.MouseUp&&(menuGesture.Dragging||Time.unscaledTime<suppressMenuClickUntil)) { GUIUtility.hotControl=0;Event.current.Use(); }
+                DrawSessionUI();
+            }
+            finally { EndSwipeFrame(); }
+        }
+        private void DrawSessionUI()
+        {
             GUI.skin.font = MenuFont;
-            UpdateMenuPointer();
             GUI.skin.label.fontSize = 16;
             if (screen != FrontScreen.Map)
             {
-                var originalSkin=GUI.skin;var originalMatrix=GUI.matrix;var originalContentColor=GUI.contentColor;BeginSwipeFrame();
+                var originalSkin=GUI.skin;var originalMatrix=GUI.matrix;var originalContentColor=GUI.contentColor;
                 if (DesktopUiSmoke.HideText) GUI.contentColor=Color.clear;
                 try { GUI.matrix=Matrix4x4.Scale(new Vector3(MenuScale,MenuScale,1));
-                    if(menuGesture.Dragging) { GUIUtility.hotControl=0;GUI.FocusControl(null); }
-                    if(Event.current.type==EventType.MouseUp&&(menuGesture.Dragging||Time.unscaledTime<suppressMenuClickUntil)) { GUIUtility.hotControl=0;Event.current.Use(); }
                     if(DrawBrandSplash())return; DrawFrontEnd();
-                } finally { EndSwipeFrame();GUI.skin=originalSkin;GUI.matrix=originalMatrix;GUI.contentColor=originalContentColor; } return;
+                } finally { GUI.skin=originalSkin;GUI.matrix=originalMatrix;GUI.contentColor=originalContentColor; } return;
             }
 #if UNITY_ANDROID && !UNITY_EDITOR
             // Screen.orientation changes asynchronously. Don't draw a wide
@@ -110,7 +120,7 @@ namespace DndVtt.UnityPrototype
             GUI.DrawTexture(area, Texture2D.whiteTexture); GUI.color = oldColor;
             GUI.Box(area, "Карты и этажи");
             GUILayout.BeginArea(new Rect(area.x + 15, area.y + 30, area.width - 30, area.height - 40));
-            scroll = GUILayout.BeginScrollView(SwipePosition("map-panel",scroll));
+            scroll = GUILayout.BeginScrollView(SwipePosition("map-panel",scroll), false, true);
             DrawMapSelector();
             GUILayout.Label(status); GUILayout.EndScrollView(); RegisterSwipe("map-panel",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
         }

@@ -12,8 +12,39 @@ namespace DndVtt.UnityPrototype
         private readonly HashSet<string> drawnSwipeRegions=new HashSet<string>();
         private bool collectingSwipeRegions;
         private bool selectingChatText;
-        private void BeginSwipeFrame() { collectingSwipeRegions=Event.current.type==EventType.Repaint;if(collectingSwipeRegions)drawnSwipeRegions.Clear(); }
-        private void EndSwipeFrame() { if(collectingSwipeRegions)foreach(string id in menuGesture.Regions.Keys.Where(id=>!drawnSwipeRegions.Contains(id)).ToArray())menuGesture.Regions.Remove(id); }
+        private readonly Dictionary<string, (string parent, Rect rect)> menuNativeControls = new Dictionary<string, (string, Rect)>();
+        private void BeginSwipeFrame()
+        {
+            collectingSwipeRegions = Event.current.type == EventType.Repaint;
+            if (collectingSwipeRegions) { drawnSwipeRegions.Clear(); menuNativeControls.Clear(); }
+        }
+        private void EndSwipeFrame()
+        {
+            if (!collectingSwipeRegions) return;
+            foreach (var pair in menuNativeControls)
+            {
+                if (!menuGesture.Regions.TryGetValue(pair.Value.parent, out var parent)) continue;
+                var rect = pair.Value.rect;
+                float left = Mathf.Max(rect.xMin, parent.x), top = Mathf.Max(rect.yMin, parent.y);
+                float right = Mathf.Min(rect.xMax, parent.x + parent.width), bottom = Mathf.Min(rect.yMax, parent.y + parent.height);
+                if (right > left && bottom > top) RegisterMenuRegion(pair.Key, Rect.MinMaxRect(left, top, right, bottom), false, true);
+            }
+            foreach (string id in menuGesture.Regions.Keys.Where(id => !drawnSwipeRegions.Contains(id)).ToArray()) menuGesture.Regions.Remove(id);
+        }
+        private void RegisterMenuRegion(string id, Rect pixels, bool horizontal, bool nativeControl)
+        {
+            drawnSwipeRegions.Add(id);
+            if (!menuGesture.Regions.TryGetValue(id, out var region)) menuGesture.Regions[id] = region = new MenuGesture.Region();
+            region.x = pixels.x; region.y = pixels.y; region.width = pixels.width; region.height = pixels.height;
+            region.horizontal = horizontal; region.nativeControl = nativeControl;
+        }
+        private void RegisterMenuControl(string id, string parent, Rect rect)
+        {
+            if (Event.current.type != EventType.Repaint) return;
+            var top = GUIUtility.GUIToScreenPoint(rect.position);
+            var bottom = GUIUtility.GUIToScreenPoint(rect.position + rect.size);
+            menuNativeControls[id] = (parent, Rect.MinMaxRect(top.x, top.y, bottom.x, bottom.y));
+        }
 
         private float MenuScale => (Application.isMobilePlatform || DesktopUiSmoke.PortraitLayout) && Screen.height>Screen.width ? Screen.width/440f : 1f;
         private float UiWidth => Screen.width/MenuScale;
@@ -23,6 +54,7 @@ namespace DndVtt.UnityPrototype
         private bool HasMenuTouch => Touchscreen.current!=null && (Touchscreen.current.primaryTouch.press.isPressed || Touchscreen.current.primaryTouch.press.wasReleasedThisFrame || Touchscreen.current.primaryTouch.phase.ReadValue()==InputTouchPhase.Ended || Touchscreen.current.primaryTouch.phase.ReadValue()==InputTouchPhase.Canceled);
         private void UpdateMenuPointer()
         {
+            if (screen == FrontScreen.Map && !panel) return;
             if(HasMenuTouch)return;
             var e=Event.current;var point=e.mousePosition;
             if (CharacterOwnsPointer(new Vector2(point.x, Screen.height - point.y))) return;
@@ -35,6 +67,7 @@ namespace DndVtt.UnityPrototype
         {
             UpdateDesktopWindow();
             UpdateDiceTable();
+            if (screen == FrontScreen.Map && !panel) { menuGesture.Clear(); return; }
             if (UpdateCharacterStudio()) { menuGesture.Clear(); return; }
             PollNativeChatEditor();
             var device=Touchscreen.current;if(device==null||!HasMenuTouch)return;
@@ -53,10 +86,15 @@ namespace DndVtt.UnityPrototype
         private void RegisterSwipe(string id,Rect rect,bool horizontal=false)
         {
             if(Event.current.type!=EventType.Repaint)return;
-            drawnSwipeRegions.Add(id);
             var top=GUIUtility.GUIToScreenPoint(rect.position);var bottom=GUIUtility.GUIToScreenPoint(rect.position+rect.size);
-            if(!menuGesture.Regions.TryGetValue(id,out var region)) menuGesture.Regions[id]=region=new MenuGesture.Region();
-            region.x=top.x;region.y=top.y;region.width=bottom.x-top.x;region.height=bottom.y-top.y;region.horizontal=horizontal;
+            RegisterMenuRegion(id, Rect.MinMaxRect(top.x, top.y, bottom.x, bottom.y), horizontal, false);
+            // Match the native scrollbar gutter; it owns drags instead of page swipe.
+            var style = horizontal ? GUI.skin.horizontalScrollbar : GUI.skin.verticalScrollbar;
+            float thickness = horizontal ? style.fixedHeight + style.margin.top : style.fixedWidth + style.margin.left;
+            if (thickness <= 0) return;
+            var gutter = horizontal ? new Rect(rect.x, Mathf.Max(rect.y, rect.yMax-thickness), rect.width, Mathf.Min(rect.height, thickness))
+                : new Rect(Mathf.Max(rect.x, rect.xMax-thickness), rect.y, Mathf.Min(rect.width, thickness), rect.height);
+            RegisterMenuControl(id + "-scrollbar", id, gutter);
         }
     }
 }
