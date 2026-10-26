@@ -1,20 +1,20 @@
 {
   "schema": 1,
   "channel": "unity-experiment",
-  "version": "1.00.40",
-  "versionCode": 10040,
+  "version": "1.00.41",
+  "versionCode": 10041,
   "androidPackage": "com.dndvtt.unity",
-  "notes": "Кнопки навигации и возврата подстраиваются под текст, включая узкий экран. · Открытие и сохранение JSON персонажей через системные окна Android и Windows. · На Android добавлена отправка JSON через системное меню «Поделиться». · Проверка JSON, защита существующих героев при импорте и отсутствие изменений при отмене выбора файла.",
+  "notes": "Более контрастные кнопки, заметные вкладки и спокойное оформление меню. · Поиск персонажей с количеством совпадений, сбросом и понятным пустым состоянием. · Компактные настройки оформления и адаптивный заголовок листа на узком экране. · Исправлена обработка свайпов, ползунков и полос прокрутки; уточнены подписи экспорта архива.",
   "artifacts": {
     "android": {
-      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.40/DnD-VTT-Unity-1.00.40-arm64.apk",
-      "bytes": 55702622,
-      "sha256": "7149d5434e12ebeb6e35156305265c3108f6aa882e9f6304ab3510e07a58db0a"
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.41/DnD-VTT-Unity-1.00.41-arm64.apk",
+      "bytes": 55714910,
+      "sha256": "431e6eb54004e29cec91b328b7f096aac8bc63a6970af0cddd5b87105c9e6ef7"
     },
     "windows": {
-      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.40/DnD-VTT-Unity-Setup-1.00.40-x64.exe",
-      "bytes": 39493446,
-      "sha256": "d253d05dec8a27b531a1546c6b7664d4dedb94355cf605d3708f5b3f2eaed613"
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.41/DnD-VTT-Unity-Setup-1.00.41-x64.exe",
+      "bytes": 39461148,
+      "sha256": "f65fdb4a5cadbef20a149972f7ed516920f5105f5d8c210bd703c35bd6ab5e8d"
     }
   }
 }
