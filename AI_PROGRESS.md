@@ -1,3 +1,17 @@
+# Unity1.00.41 — опубликована и проверена, 26.10.2026
+
+Выпуск UI/scroll завершён по явному поручению владельца; следующий этап — его
+пользовательское тестирование. Source f225c415a86ced0091f2936accd012ba22b74179.
+Candidate40227980346: реальные Android IL2CPP/Windows и native Windows upgrade,
+сохранения/runtime/UI PASS; просмотрены20финальных GPU thumbnails. Publisher
+40326813466 SUCCESS; activation14600e59. Независимо скачаны оба публичных файла,
+проверены размеры/SHA256/ARM64/MZ и одинаковые обычный/cache-busted feed41.
+Свидетельство: unity/PUBLIC_DELIVERY.json; релиз:
+https://github.com/waitermisanthrope-creator/DnD-VTT/releases/tag/unity-v1.00.41
+Физический Android (свайпы, chooser/share) и ПК владельца ещё не проверены.
+Остальные дефекты аудита40 не объявлены исправленными. Main/MMO не затронуты.
+История ниже описывает предыдущие этапы.
+
 # Подготовка выпуска Unity1.00.41 — 25.10.2026
 
 Владелец разрешил выпуск Android/Windows. Существующий pipeline должен собрать
