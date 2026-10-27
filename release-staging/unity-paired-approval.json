@@ -1,9 +1,9 @@
 {
   "schema": 1,
-  "version": "1.00.41",
-  "candidateRunId": 40227980346,
+  "version": "1.00.42",
+  "candidateRunId": 40491912046,
   "approved": true,
   "scope": "Android ARM64 and Windows x64",
   "requireRenderReview": false,
-  "note": "Owner explicitly requested publishing UI/scroll update. Exact source f225c415a86ced0091f2936accd012ba22b74179; candidate40227980346 ALL3SUCCESS: Android121273379043, Windows121279103860, native installed upgrade/runtime/UI QA121281056785. Reviewed all20 actual Windows GPU screenshot thumbnails from final native QA log, including portrait long names, roster/reset, archive actions and settings. Font/UI/file-transfer/upgrade PASS. Prior local runtime review and targeted regression recorded in docs/UNITY_UI_RUNTIME_CHECK.md. No dice art or gameplay rule changes; existing dice validation retained. Preserve package, original signing identity, saves and paired delivery. Physical Android gestures/chooser remain user beta testing. Publisher must verify public APK/EXE before activating feed41."
+  "note": "Owner explicitly requested hero art/UI and release42, delegated implementation. Publish exact source0026e7228467b7890d1a25402dfab0ad9b24d562, candidate40491912046 ALL3SUCCESS: Android122148378789, Windows122155691036, native installed upgrade/runtime/UI122159381122. All25 final native Windows GPU thumbnail frames manually reviewed (hero art desktop/portrait, explicit3D unavailable, actions, details, stats and existing menus). WORKSHOP_STORE_PASS6958; save/syntax121; local pure art33, menu50; actual Unity QA-copy PNG/JPEG/BMP+8EXIF pixel transforms/cache/restoration PASS. Original-ID transaction and JSONB size regression RED-to-GREEN. First89a5 candidate cancelled/unpublished after additional stat-label visual finding; corrected width regression and final25frames only selected. Portable normalized art <=512px/64KiB embedded in hero JSON; source16MiB/24MP bounded; aggregate16MiB and cloud-compatible per-profile1MiB. No dice art/physics or gameplay rules changed; retain existing dice validation, no fresh dice render approval required. Preserve original signing identity/package, all unknown fields/other heroes/backup. Physical Android gallery/lifecycle/swipe testing remains unperformed. Publisher must verify public APK/EXE before activating42."
 }
