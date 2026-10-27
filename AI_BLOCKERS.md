@@ -1,3 +1,18 @@
+# Unity1.00.43 — опубликована и независимо проверена, 27.10.2026
+
+Отзыв Android обработан: адаптивные file/backup кнопки, owned NumberPad для
+целых чисел/live staging/Next flush/focus иtab cleanup, wizard defaults reset,
+компактные Данные/raw opt-in, явный ручной уровень классов иcanonical sync.
+Sourcee3edd8f628f6d3250b5e4c4bf3c9aff8307708b8; candidate40553837122 ALL3SUCCESS:
+Android122364435204, Windows122374854787, native installed UI122381243210.
+6973regression +pure14/art33/save122/menu50 PASS;31final native GPUframes reviewed.
+Publisher40559240758SUCCESS; activation48c7b7fb; independent public APK/EXE,
+size/SHA/ARM64/MZ/plain+fresh feed/source/run PASS.43 immutable, next runtime>10043.
+Отчёт docs/UNITY_USER_FEEDBACK_1.00.43.md; ждать phoneIME retest владельца.
+Полная автопрокачка/legacy feature parity НЕ завершены; не выдавать ручной уровень
+за автоматическую механику. Main/MMO/scenes/keys/SQL не менять.
+История ниже не является новым заданием.
+
 # Unity1.00.43 — первые отзывы, кандидат перед публикацией, 27.10.2026
 
 Владелец поручил исправить отзывы Android, ранее делегировал развитие/обновления.
