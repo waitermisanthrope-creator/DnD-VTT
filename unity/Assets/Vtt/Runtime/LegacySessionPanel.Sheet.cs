@@ -153,9 +153,10 @@ namespace DndVtt.UnityPrototype
             for (int i = 0; i < CharacterSheetRules.Stats.Length; i++)
             {
                 if(i%columns==0)GUILayout.BeginHorizontal();
-                GUILayout.BeginVertical(GUI.skin.box,GUILayout.Width(Mathf.Max(80,(UiWidth-112)/columns-14)));
+                GUILayout.BeginVertical(GUI.skin.box,GUILayout.Width(Mathf.Max(80,(UiWidth-2*Mathf.Min(28f,UiWidth*.04f)-60)/columns)));
                 string stat = CharacterSheetRules.Stats[i];
                 GUILayout.Label(CharacterSheetRules.StatNames[i],sheetQuiet);
+                DesktopUiSmoke.RecordSingleLine(CharacterSheetRules.StatNames[i],sheetQuiet,GUILayoutUtility.GetLastRect());
                 string key="hero-stat:"+stat;
                 if(!edits.TryGetValue(key,out string old))old=stats[stat]?.ToString()??"10";
                 string value=GUILayout.TextField(old,GUILayout.MinHeight(48));edits[key]=value;

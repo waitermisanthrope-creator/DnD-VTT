@@ -44,3 +44,7 @@ Windows: same file/import/restart cases, window resize/DPI, wheel and long names
 Try corrupt/oversize input; old portrait and archive must remain.
 3D is intentionally unavailable. Very large/unsupported images produce clear errors.
 See plan ledger for review and deferred low-impact compatibility cases.
+
+Additional lower-tab visual pass: corrected unused gutter/stat-card width after
+actual Телосложение word split; single-line regression RED→GREEN and inspected
+portrait stats frame PASS. Final QA-copy log art42-stat-green.log, exit0.

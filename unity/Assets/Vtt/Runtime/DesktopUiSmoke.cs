@@ -25,6 +25,12 @@ namespace DndVtt.UnityPrototype
                 Debug.LogError("VTT_LABEL_CLIP_FAIL: " + label + " requires " + needed + " allocated " + rect.height);
             }
         }
+        public static void RecordSingleLine(string label, GUIStyle style, Rect rect)
+        {
+            if(!running||Event.current.type!=EventType.Repaint)return;
+            buttonChecks++;
+            if(style.CalcSize(new GUIContent(label)).x>rect.width+1){clippedButtons++;Debug.LogError("VTT_LABEL_CLIP_FAIL: stat label "+label+" width "+rect.width);}
+        }
         const BindingFlags Flags = BindingFlags.Instance | BindingFlags.NonPublic;
         string folder;
         LegacySessionPanel panel;
@@ -234,6 +240,7 @@ namespace DndVtt.UnityPrototype
             Field("heroArt3D",true);yield return Frame("hero-3d-coming-soon-portrait");if(failed)yield break;
             Field("heroArt3D",false);Field("sheetActionsOpen",true);yield return Frame("hero-actions-portrait");if(failed)yield break;
             Field("sheetActionsOpen",false);Field("frontScroll",new Vector2(0,650));yield return Frame("hero-details-portrait");if(failed)yield break;
+            Field("frontScroll",new Vector2(0,1800));yield return Frame("hero-stats-portrait");if(failed)yield break;
             Field("frontScroll",Vector2.zero);
             try
             {
