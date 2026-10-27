@@ -1,3 +1,13 @@
+# Unity1.00.42 — арт героя, кандидат перед публикацией, 27.10.2026
+
+Владелец полностью делегировал UI/реализацию и поручил выпустить42. PNG/JPEG/BMP,
+portable heroArt, ID-targeted atomic save и новый Hero UI реализованы. Pure33,
+save/syntax121, menu50, contracts/release tests PASS; Unity Wine QA-copy exit0,
+8EXIF pixel checks + art/cache/restart/dialog/UI PASS. Independent review boundary
+jsonb size исправлен RED→GREEN. Реальные Android/Windows/native gates ещё нужны;
+feed41 неизменён до publisher. Отчёт docs/UNITY_HERO_ART_1.00.42.md и plan ledger.
+Main/MMO/SQL/ключи не трогать; workflow только default version42 для нового выпуска.
+
 # Unity1.00.41 — опубликована и проверена, 26.10.2026
 
 Выпуск UI/scroll завершён по явному поручению владельца; следующий этап — его

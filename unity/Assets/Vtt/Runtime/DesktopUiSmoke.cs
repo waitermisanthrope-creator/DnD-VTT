@@ -28,6 +28,7 @@ namespace DndVtt.UnityPrototype
         const BindingFlags Flags = BindingFlags.Instance | BindingFlags.NonPublic;
         string folder;
         LegacySessionPanel panel;
+        JObject qaHeroArt;
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void Install()
         {
@@ -43,22 +44,68 @@ namespace DndVtt.UnityPrototype
         static extern IntPtr FindWindow(string kind, string title);
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         static extern bool PostMessage(IntPtr window, uint message, IntPtr first, IntPtr second);
-        static void CheckDialogCancellation(bool save)
+        static void CheckDialogCancellation(bool save, bool art = false)
         {
             bool found = false;
             var closer = new System.Threading.Thread(() =>
             {
                 for (int i = 0; i < 100; i++)
                 {
-                    var window = FindWindow("#32770", save ? "Сохранить персонажей DnD VTT" : "Открыть персонажей DnD VTT");
+                    var window = FindWindow("#32770", art ? "Выбрать арт персонажа" : save ? "Сохранить персонажей DnD VTT" : "Открыть персонажей DnD VTT");
                     if (window != IntPtr.Zero) { found = true; PostMessage(window, 0x0010, IntPtr.Zero, IntPtr.Zero); return; }
                     System.Threading.Thread.Sleep(100);
                 }
             }) { IsBackground = true };
-            closer.Start(); string path = CharacterFiles.PickWindows(save); closer.Join(12000);
+            closer.Start(); string path = art ? CharacterFiles.PickWindowsArt() : CharacterFiles.PickWindows(save); closer.Join(12000);
             Check(found && path == null, "actual Windows file dialog cancellation " + save);
         }
 #endif
+        void CheckHeroArt()
+        {
+            Texture2D source = new Texture2D(900, 600, TextureFormat.RGBA32, false);
+            try
+            {
+                var pixels = new Color32[900 * 600];
+                for(int y=0;y<600;y++)for(int x=0;x<900;x++)pixels[y*900+x]=new Color32((byte)(x*255/900),(byte)(y*255/600),150,(byte)(x%2==0?255:120));
+                source.SetPixels32(pixels);source.Apply();
+                var normalize=typeof(LegacySessionPanel).GetMethod("NormalizeHeroArt",Flags|BindingFlags.Static);
+                Check(normalize!=null,"portrait normalizer exists");
+                byte[] bmp=new byte[62];bmp[0]=66;bmp[1]=77;bmp[2]=62;bmp[10]=54;bmp[14]=40;bmp[18]=2;bmp[22]=1;bmp[26]=1;bmp[28]=24;bmp[54]=180;bmp[58]=200;
+                foreach(var bytes in new[]{source.EncodeToPNG(),source.EncodeToJPG(90),bmp})
+                {
+                    var art=(JObject)normalize.Invoke(null,new object[]{bytes});if(qaHeroArt==null)qaHeroArt=art;var encoded=CharacterArt.StoredBytes(art);var size=CharacterArt.Inspect(encoded);
+                    Check(size.width<=512&&size.height<=512&&encoded.Length<=CharacterArt.StoredLimit,"normalized portrait dimensions/bytes");
+                    var hero=new JObject{["id"]="art-qa",["heroArt"]=art};
+                    var get=typeof(LegacySessionPanel).GetMethod("HeroArtTexture",Flags);
+                    var texture=(Texture2D)get.Invoke(panel,new object[]{hero});Check(texture&&texture.width==size.width,"saved portrait decoded");
+                    Check(ReferenceEquals(texture,get.Invoke(panel,new object[]{hero})),"portrait cache stable");
+                    Call("ReleaseHeroArt");Check(typeof(LegacySessionPanel).GetField("heroArtTexture",Flags).GetValue(panel)==null,"portrait texture ownership released");
+                    Check((Texture2D)get.Invoke(panel,new object[]{hero}),"portrait restored after cache loss");Call("ReleaseHeroArt");
+                }
+                byte[] jpeg=source.EncodeToJPG(92);
+                for(int orientation=1;orientation<=8;orientation++)
+                {
+                    byte[] exif={255,225,0,34,69,120,105,102,0,0,73,73,42,0,8,0,0,0,1,0,18,1,3,0,1,0,0,0,(byte)orientation,0,0,0,0,0,0,0};
+                    var rotated=new byte[jpeg.Length+exif.Length];Array.Copy(jpeg,0,rotated,0,2);Array.Copy(exif,0,rotated,2,exif.Length);Array.Copy(jpeg,2,rotated,2+exif.Length,jpeg.Length-2);
+                    var art=(JObject)normalize.Invoke(null,new object[]{rotated});var texture=new Texture2D(2,2);
+                    try
+                    {
+                        Check(texture.LoadImage(CharacterArt.StoredBytes(art)),"EXIF portrait decode");
+                        Check(orientation>=5?texture.height>texture.width:texture.width>texture.height,"EXIF swapped dimensions "+orientation);
+                        Color pixel=texture.GetPixelBilinear(.25f,.25f);
+                        float[] xs={0,.25f,.75f,.75f,.25f,.75f,.75f,.25f,.25f};
+                        float[] ys={0,.25f,.25f,.75f,.75f,.75f,.25f,.25f,.75f};
+                        Color original=source.GetPixelBilinear(xs[orientation],ys[orientation]);
+                        Color expected=new Color(original.r,original.g,original.b); // JPEG has no alpha.
+                        Check(Mathf.Abs(pixel.r-expected.r)<.13f&&Mathf.Abs(pixel.g-expected.g)<.13f,"EXIF pixel orientation "+orientation);
+                    }finally{DestroyImmediate(texture);}
+                }
+                bool rejected=false;try{normalize.Invoke(null,new object[]{new byte[32]});}catch(TargetInvocationException){rejected=true;}
+                Check(rejected,"corrupt portrait rejected");
+                Debug.Log("VTT_HERO_ART_PASS: PNG/JPEG/BMP decode, normalization, stored reload, cache, eight EXIF orientations and texture teardown");
+            }
+            finally { DestroyImmediate(source); }
+        }
         IEnumerator Start()
         {
             yield return new WaitForSecondsRealtime(1);
@@ -68,6 +115,7 @@ namespace DndVtt.UnityPrototype
                 Check(at >= 0 && at + 1 < args.Length, "explicit evidence output"); folder = args[at + 1]; Directory.CreateDirectory(folder);
                 panel = FindFirstObjectByType<LegacySessionPanel>(); Check(panel, "actual application menu");
                 Field("brandSplashActive", false);
+                CheckHeroArt();
                 Check(SystemInfo.graphicsDeviceType != UnityEngine.Rendering.GraphicsDeviceType.Null, "real graphics device");
                 Check(!Screen.fullScreen && Screen.width >= 800 && Screen.height >= 600, "starts windowed with usable dimensions");
                 var font = Resources.Load<Font>("UI/DejaVuSans"); Check(font, "bundled font in installed player");
@@ -102,6 +150,12 @@ namespace DndVtt.UnityPrototype
                 Check(panel.Import("{\"id\":\"daily-b\",\"name\":\"Второй герой\"}"), "second import adds without replacing first");
                 var loaded = CharacterSheetStore.Load(panel.SavePath);
                 Check(loaded.Count == 2 && (int)loaded.Snapshot(0)["futureUnknown"]["value"] == 123, "native additive import preserves original fields");
+                Field("selected",1);
+                var withArt=CharacterArt.WithArt(loaded,"daily-a",qaHeroArt);CharacterSheetStore.Save(panel.SavePath,withArt);Field("archive",CharacterSheetStore.Load(panel.SavePath));
+                Check(JToken.DeepEquals(CharacterSheetStore.Load(panel.SavePath).Snapshot(0)["heroArt"],qaHeroArt),"art restart attached to original ID despite selection change");
+                Check(CharacterSheetStore.Load(panel.SavePath).Snapshot(1)["heroArt"]==null,"other hero art untouched");
+                Field("selected",0);
+                loaded=(LegacyCharacterArchive)typeof(LegacySessionPanel).GetField("archive",Flags).GetValue(panel);
                 Check(!panel.Import("{\"id\":\"daily-a\",\"name\":\"Conflict\"}") && CharacterSheetStore.Load(panel.SavePath).Count == 2, "conflict leaves disk unchanged");
                 var screenType = typeof(LegacySessionPanel).GetNestedType("FrontScreen", BindingFlags.NonPublic);
                 Call("Navigate", Enum.Parse(screenType, "Home"));
@@ -127,7 +181,7 @@ namespace DndVtt.UnityPrototype
                 Check(panel.Import(CharacterFiles.Read(portable)) && panel.CurrentName == "Второй герой", "actual file import/export roundtrip");
 #if UNITY_STANDALONE_WIN && !UNITY_EDITOR
                 string beforeDialogs = panel.ExportCurrent();
-                CheckDialogCancellation(false); CheckDialogCancellation(true);
+                CheckDialogCancellation(false); CheckDialogCancellation(true); CheckDialogCancellation(false,true);
                 Check(panel.ExportCurrent() == beforeDialogs, "cancelled system dialogs leave roster unchanged");
                 Debug.Log("VTT_DESKTOP_FILE_TRANSFER_PASS: actual Windows open/save dialogs cancelled, Unicode JSON file roundtrip and unchanged roster");
 #endif
@@ -153,12 +207,18 @@ namespace DndVtt.UnityPrototype
                 rosterDiskBefore = File.ReadAllText(panel.SavePath);
                 var preview = rosterBefore.DetachedCopy(); var hero = preview.Snapshot(0);
                 hero["name"] = "Элеонора Серебряная — хранительница забытой библиотеки";
+                hero["heroArt"]=qaHeroArt.DeepClone();
                 preview.Replace(0, hero); Field("archive", preview); rosterPreviewJson = preview.Export();
                 var screenType = typeof(LegacySessionPanel).GetNestedType("FrontScreen", BindingFlags.NonPublic);
                 Call("Navigate", Enum.Parse(screenType, "Characters")); Field("rosterSearch", "");
             }
             catch (Exception error) { Fail(error); yield break; }
             yield return Frame("roster-desktop"); if (failed) yield break;
+            try {var screenType=typeof(LegacySessionPanel).GetNestedType("FrontScreen",BindingFlags.NonPublic);Call("Navigate",Enum.Parse(screenType,"Sheet"));Field("sheetTab",0);}
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("hero-art-desktop");if(failed)yield break;
+            try {var screenType=typeof(LegacySessionPanel).GetNestedType("FrontScreen",BindingFlags.NonPublic);Call("Navigate",Enum.Parse(screenType,"Characters"));}
+            catch(Exception error){Fail(error);yield break;}
             Screen.SetResolution(600, 960, FullScreenMode.Windowed);
             yield return new WaitForSecondsRealtime(.5f); PortraitLayout = true;
             yield return Frame("roster-portrait"); if (failed) yield break;
@@ -171,6 +231,10 @@ namespace DndVtt.UnityPrototype
             }
             catch (Exception error) { Fail(error); yield break; }
             yield return Frame("sheet-long-name-portrait"); if (failed) yield break;
+            Field("heroArt3D",true);yield return Frame("hero-3d-coming-soon-portrait");if(failed)yield break;
+            Field("heroArt3D",false);Field("sheetActionsOpen",true);yield return Frame("hero-actions-portrait");if(failed)yield break;
+            Field("sheetActionsOpen",false);Field("frontScroll",new Vector2(0,650));yield return Frame("hero-details-portrait");if(failed)yield break;
+            Field("frontScroll",Vector2.zero);
             try
             {
                 Check(panel.ExportCurrent() == rosterPreviewJson, "roster search and rendering preserve every character field");

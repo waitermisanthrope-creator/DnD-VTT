@@ -21,7 +21,7 @@ namespace DndVtt.UnityPrototype
         private bool showItemCatalog;
         private string deletePath, deleteSignature, deleteCharacter, deleteLabel;
         private readonly string[] tabs = { "Герой", "Навыки", "Способности", "Инвентарь", "Заметки", "Дайсы", "Данные", "Кошелёк", "Паспорт", "Лор / Бестиарий" };
-        private void ClearSheetInputs() { edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
+        private void ClearSheetInputs() { heroArt3D=false; sheetActionsOpen=false; edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
         private void Attempt(Action action)
         {
             try { action(); } catch (Exception error) { status = error.Message; }
@@ -52,10 +52,14 @@ namespace DndVtt.UnityPrototype
             GUILayout.BeginHorizontal();
             if (portraitLayout) DrawSheetCharacterSwitch();
             if (MeasuredMenuButton("Сохранить", brandGreen, GUILayout.MinHeight(56))) Attempt(() => { SaveSheet(); status="Сохранено на устройстве"; });
-            if (portraitLayout) { GUILayout.EndHorizontal(); GUILayout.BeginHorizontal(); }
-            if (MeasuredMenuButton(portraitLayout ? "Копировать архив" : "Копировать весь архив", GUI.skin.button, GUILayout.MinHeight(portraitLayout ? 72 : 56))) { GUIUtility.systemCopyBuffer=archive.Export(); status="Весь архив скопирован"; }
-            if (MeasuredMenuButton(portraitLayout ? "Файл архива…" : "Сохранить архив в файл…", GUI.skin.button, GUILayout.MinHeight(portraitLayout ? 72 : 56))) Attempt(() => PickCharacterFile(true));
+            if (MeasuredMenuButton("Ещё", sheetActionsOpen ? brandBlue : GUI.skin.button, GUILayout.Width(100), GUILayout.MinHeight(56))) sheetActionsOpen=!sheetActionsOpen;
             GUILayout.EndHorizontal();
+            if(sheetActionsOpen)
+            {
+                if (MeasuredMenuButton("Копировать весь архив", GUI.skin.button, GUILayout.MinHeight(54))) { GUIUtility.systemCopyBuffer=archive.Export(); status="Весь архив скопирован"; }
+                if (MeasuredMenuButton("Сохранить архив в файл…", GUI.skin.button, GUILayout.MinHeight(54))) Attempt(() => PickCharacterFile(true));
+                GUILayout.Label("Архив включает всех героев и их арт.",sheetQuiet);
+            }
             int next = HorizontalTabs(sheetTab, tabs, ref sheetTabsScroll);
             if (next != sheetTab) { sheetTab = next; GUI.FocusControl(null); }
             JObject hero = archive.Snapshot(selected); bool changed = false, persistWallet = false, persistCommerce = false;
@@ -78,7 +82,7 @@ namespace DndVtt.UnityPrototype
             }
             switch (sheetTab)
             {
-                case 0: GUILayout.BeginVertical(GUI.skin.box); SheetSection("Герой"); Hero(hero, ref changed); GUILayout.EndVertical(); break;
+                case 0: Hero(hero, ref changed); break;
                 case 1: GUILayout.BeginVertical(GUI.skin.box); SheetSection("Навыки"); Skills(hero, ref changed); GUILayout.EndVertical(); DrawCharacterFeats(hero, ref changed); break;
                 case 2:
                     GUILayout.Label("Редактор записей. Автоматическое исполнение классовых эффектов и расход действий ещё переносится.");
@@ -125,20 +129,43 @@ namespace DndVtt.UnityPrototype
         }
         private void Hero(JObject hero, ref bool changed)
         {
+            bool wide=UiWidth>=900;
+            if(wide){GUILayout.BeginHorizontal();GUILayout.BeginVertical(GUILayout.Width(310));}
+            DrawHeroArt(hero);
+            if(wide){GUILayout.EndVertical();GUILayout.BeginVertical();}
+            GUILayout.BeginVertical(GUI.skin.box);SheetSection("О герое");
             string priorClass = (string)hero["class"];
             foreach (var field in new[] { ("name", "Имя"), ("class", "Класс"), ("raceName", "Раса"), ("background", "Предыстория"), ("speed", "Скорость"), ("hitDice", "Кости хитов") }) Scalar(hero, field.Item1, field.Item2, ref changed, field.Item1 == "class" ? hero["className"] : null);
             if ((string)hero["class"] != priorClass) hero["className"] = hero["class"]?.DeepClone();
+            GUILayout.EndVertical();
+            if(wide){GUILayout.EndVertical();GUILayout.EndHorizontal();}
+            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Здоровье и защита");
             foreach (var field in new[] { ("level", "Уровень"), ("ac", "Класс доспеха"), ("hpMax", "Максимум HP"), ("hpCurrent", "Текущие HP"), ("hpTemp", "Временные HP") })
             {
                 JToken fallback = field.Item1 == "hpCurrent" ? archive.CurrentHp(selected) : field.Item1 == "hpMax" ? archive.MaximumHp(selected) : field.Item1 == "hpTemp" ? archive.TemporaryHp(selected) : field.Item1 == "level" ? 1 : 10;
                 Scalar(hero, field.Item1, field.Item2, ref changed, fallback);
             }
+            GUILayout.EndVertical();
+            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Характеристики");
             Collection(hero, "classes", "Мультикласс", () => new JObject { ["name"] = "Класс", ["level"] = 1, ["subclass"] = "" }, ref changed);
             var stats = hero["stats"] as JObject ?? new JObject();
+            int columns=wide?3:2;
             for (int i = 0; i < CharacterSheetRules.Stats.Length; i++)
             {
-                string stat = CharacterSheetRules.Stats[i]; Scalar(stats, stat, CharacterSheetRules.StatNames[i], ref changed, 10);
-                GUILayout.Label("Модификатор " + stat + ": " + Signed(CharacterSheetRules.Modifier(new JObject { ["stats"] = stats.DeepClone() }, stat)));
+                if(i%columns==0)GUILayout.BeginHorizontal();
+                GUILayout.BeginVertical(GUI.skin.box,GUILayout.Width(Mathf.Max(80,(UiWidth-112)/columns-14)));
+                string stat = CharacterSheetRules.Stats[i];
+                GUILayout.Label(CharacterSheetRules.StatNames[i],sheetQuiet);
+                string key="hero-stat:"+stat;
+                if(!edits.TryGetValue(key,out string old))old=stats[stat]?.ToString()??"10";
+                string value=GUILayout.TextField(old,GUILayout.MinHeight(48));edits[key]=value;
+                if(value!=old)
+                {
+                    if(int.TryParse(value,NumberStyles.Integer,CultureInfo.InvariantCulture,out int number)){stats[stat]=number;changed=true;}
+                    else status="Введите целое число: "+CharacterSheetRules.StatNames[i];
+                }
+                GUILayout.Label(Signed(CharacterSheetRules.Modifier(new JObject { ["stats"] = stats.DeepClone() }, stat)),sheetCharacterName);
+                GUILayout.EndVertical();if(i%columns==columns-1)GUILayout.EndHorizontal();
             }
             if (changed) { hero["stats"] = stats; Attempt(() => CharacterSheetRules.Recalculate(hero)); }
             GUILayout.Label("Бонус мастерства: " + Signed(CharacterSheetRules.Proficiency(hero)) + " · базовая инициатива: " + Signed(CharacterSheetRules.Modifier(hero, "dex")));
@@ -147,6 +174,7 @@ namespace DndVtt.UnityPrototype
             ReadOnly(hero, "activeConditions", "Активные состояния (автоматические эффекты ещё переносятся)");
             ReadOnly(hero, "conditions", "Унаследованные состояния");
             ReadOnly(hero, "companions", "Компаньоны"); ReadOnly(hero, "initiativeTracker", "Бой / инициатива");
+            GUILayout.EndVertical();
         }
         private void Skills(JObject hero, ref bool changed)
         {
@@ -311,6 +339,7 @@ namespace DndVtt.UnityPrototype
             {
                 foreach (var property in obj.Properties().ToArray())
                 {
+                    if (depth==0 && property.Name=="heroArt") { GUILayout.Label("Арт персонажа — управление во вкладке «Герой»",sheetQuiet);continue; }
                     if (property.Name == "id" || property.Name == "schemaVersion" || property.Name.EndsWith("Id", StringComparison.Ordinal)) continue;
                     if (property.Value is JContainer) { GUILayout.Label(FieldLabel(property.Name)); EditToken(property.Value, path + "/" + property.Name, depth + 1, ref changed); }
                     else Scalar(obj, property.Name, FieldLabel(property.Name), ref changed);

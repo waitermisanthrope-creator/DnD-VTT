@@ -35,7 +35,7 @@ namespace DndVtt.UnityPrototype
             int index = Array.IndexOf(args, "--vtt-character");
             if (index >= 0 && index + 1 < args.Length)
             {
-                try { var info = new FileInfo(args[index + 1]); if (info.Length > 1024 * 1024) throw new FormatException("File too large"); Import(File.ReadAllText(info.FullName)); }
+                try { var info = new FileInfo(args[index + 1]); if (info.Length > CharacterFiles.Limit) throw new FormatException("File too large"); Import(File.ReadAllText(info.FullName)); }
                 catch (Exception e) { status = e.Message; }
             }
         }

@@ -10,7 +10,7 @@ import java.io.*;
 
 /** System document access only; no storage permission or exported activity. */
 public class CharacterDocumentActivity extends Activity {
-    private static final int PICK = 1040, LIMIT = 1024 * 1024;
+    private static final int PICK = 1040, LIMIT = 16 * 1024 * 1024;
     private String target, token, operation;
     private boolean resultDelivered, copying;
     public static void launch(Activity owner, String target, String token, String operation) {
@@ -28,20 +28,23 @@ public class CharacterDocumentActivity extends Activity {
         if (token == null || !token.matches("[a-f0-9]{32}")) throw new IOException("Неверный запрос файла");
         File directory = new File(getCacheDir(), "character-transfers");
         if (!directory.isDirectory() && !directory.mkdirs()) throw new IOException("Не удалось открыть временное хранилище");
-        return new File(directory, token + ".json");
+        return new File(directory, token + ("art".equals(operation) ? ".image" : ".json"));
     }
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
         target = getIntent().getStringExtra("target"); token = getIntent().getStringExtra("token"); operation = getIntent().getStringExtra("operation");
         if (state != null) return; // The system restores the pending picker/result.
         try {
-            if (!"import".equals(operation) && !"export".equals(operation)) throw new IOException("Неверное действие с файлом");
+            if (!"import".equals(operation) && !"export".equals(operation) && !"art".equals(operation)) throw new IOException("Неверное действие с файлом");
             File source = transferFile();
             Intent pick = new Intent("export".equals(operation) ? Intent.ACTION_CREATE_DOCUMENT : Intent.ACTION_OPEN_DOCUMENT);
             pick.addCategory(Intent.CATEGORY_OPENABLE);
             if ("export".equals(operation)) {
                 if (!source.isFile() || source.length() > LIMIT) throw new IOException("Нет файла для сохранения");
                 pick.setType("application/json"); pick.putExtra(Intent.EXTRA_TITLE, "DnD-VTT-characters.json");
+            } else if ("art".equals(operation)) {
+                pick.setType("image/*");
+                pick.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/png", "image/jpeg", "image/bmp", "image/x-ms-bmp"});
             } else {
                 pick.setType("*/*");
                 pick.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"application/json", "text/plain", "application/octet-stream"});
@@ -53,7 +56,7 @@ public class CharacterDocumentActivity extends Activity {
         if (input == null || output == null) throw new IOException("Не удалось открыть выбранный документ");
         byte[] buffer = new byte[8192]; int count, total = 0;
         while ((count = input.read(buffer)) != -1) {
-            total += count; if (total > LIMIT) throw new IOException("Файл персонажей больше 1 МБ");
+            total += count; if (total > LIMIT) throw new IOException("Файл больше 16 МБ");
             output.write(buffer, 0, count);
         }
         output.flush();
@@ -76,7 +79,7 @@ public class CharacterDocumentActivity extends Activity {
                 }
                 runOnUiThread(() -> complete("ok", null));
             } catch (Exception error) {
-                try { if ("import".equals(operation)) transferFile().delete(); } catch (Exception ignored) { }
+                try { if (!"export".equals(operation)) transferFile().delete(); } catch (Exception ignored) { }
                 runOnUiThread(() -> complete("error", error.getMessage()));
             }
         }, "DnD character document").start();

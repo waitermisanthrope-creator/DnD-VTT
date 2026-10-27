@@ -9,7 +9,7 @@ namespace DndVtt.UnityPrototype
 {
     public sealed partial class LegacySessionPanel
     {
-        private string characterFileToken, characterFileOperation;
+        private string characterFileToken, characterFileOperation, characterArtTarget;
         private void DrawCharacterFiles()
         {
             bool enabled = GUI.enabled; GUI.enabled = enabled && characterFileToken == null;
@@ -24,6 +24,7 @@ namespace DndVtt.UnityPrototype
         }
         private void PickCharacterFile(bool save)
         {
+            if (characterFileToken != null) throw new InvalidOperationException("Сначала завершите выбор файла");
 #if UNITY_ANDROID && !UNITY_EDITOR
             using var player = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
             using var activity = player.GetStatic<AndroidJavaObject>("currentActivity");
@@ -54,7 +55,8 @@ namespace DndVtt.UnityPrototype
             {
                 var result = JObject.Parse(message);
                 if (characterFileToken == null || (string)result["token"] != characterFileToken) return;
-                string token = characterFileToken, operation = characterFileOperation;
+                string token = characterFileToken, operation = characterFileOperation, artTarget = characterArtTarget;
+                characterArtTarget = null;
                 characterFileToken = characterFileOperation = null;
                 if ((string)result["status"] == "cancel") { status = "Выбор файла отменён"; return; }
                 if ((string)result["status"] != "ok") throw new IOException((string)result["error"] ?? "Не удалось обработать файл");
@@ -63,8 +65,8 @@ namespace DndVtt.UnityPrototype
                 using var player = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
                 using var activity = player.GetStatic<AndroidJavaObject>("currentActivity");
                 using var cache = activity.Call<AndroidJavaObject>("getCacheDir");
-                string path = Path.Combine(cache.Call<string>("getAbsolutePath"), "character-transfers", token + ".json");
-                try { if (Import(CharacterFiles.Read(path))) Navigate(FrontScreen.Characters); }
+                string path = Path.Combine(cache.Call<string>("getAbsolutePath"), "character-transfers", token + (operation == "art" ? ".image" : ".json"));
+                try { if (operation == "art") ImportHeroArt(artTarget, CharacterArt.Read(path)); else if (Import(CharacterFiles.Read(path))) Navigate(FrontScreen.Characters); }
                 finally { if (File.Exists(path)) File.Delete(path); }
 #endif
             });

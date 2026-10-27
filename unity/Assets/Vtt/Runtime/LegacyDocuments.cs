@@ -20,6 +20,22 @@ namespace DndVtt.UnityPrototype
             if (reader.Read()) throw new FormatException("Trailing JSON content");
             return value;
         }
+        // PostgreSQL jsonb text adds one space after each comma and colon. Count
+        // those too, so a portable profile cannot cross the existing cloud bound.
+        public static long ProfileBytes(JToken token)
+        {
+            if(token is JObject obj)
+            {
+                long bytes=2;bool first=true;
+                foreach(var p in obj.Properties()) {if(!first)bytes+=2;first=false;bytes+=System.Text.Encoding.UTF8.GetByteCount(new JValue(p.Name).ToString(Formatting.None))+2+ProfileBytes(p.Value);}
+                return bytes;
+            }
+            if(token is JArray list)
+            {
+                long bytes=2;for(int i=0;i<list.Count;i++){if(i>0)bytes+=2;bytes+=ProfileBytes(list[i]);}return bytes;
+            }
+            return System.Text.Encoding.UTF8.GetByteCount(token.ToString(Formatting.None));
+        }
         public static float Number(JToken token, float fallback = 0)
         {
             if (token == null || token.Type == JTokenType.Null) return fallback;
@@ -37,7 +53,7 @@ namespace DndVtt.UnityPrototype
         public int Count => characters.Count;
         public LegacyCharacterArchive(string json)
         {
-            document = LegacyJson.Parse(json, 1024 * 1024); OriginalJson = json;
+            document = LegacyJson.Parse(json, CharacterArt.ArchiveLimit); OriginalJson = json;
             var array = document as JArray ?? (document as JObject)?["characters"] as JArray;
             characters = array != null ? array.Select(t => t as JObject ?? throw new FormatException("Character must be an object")).ToList()
                 : document is JObject single && single["id"] != null ? new List<JObject> { single } : throw new FormatException("Expected a character, character array or characters wrapper");
@@ -45,6 +61,7 @@ namespace DndVtt.UnityPrototype
             var ids = new HashSet<string>();
             foreach (var character in characters)
             {
+                if (LegacyJson.ProfileBytes(character) > CharacterArt.ProfileLimit) throw new FormatException("Персонаж больше 1 МБ. Уменьшите объём данных или арта.");
                 if (string.IsNullOrWhiteSpace((string)character["id"]) || !ids.Add(character["id"].ToString())) throw new FormatException("Missing or duplicate character id");
                 float version = LegacyJson.Number(character["schemaVersion"], 1);
                 if (version < 1 || version > 3 || version != Math.Floor(version)) throw new FormatException("Unsupported character schema version");
