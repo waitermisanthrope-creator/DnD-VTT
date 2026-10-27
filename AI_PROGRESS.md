@@ -1,3 +1,19 @@
+# Unity1.00.42 — опубликована и независимо проверена, 27.10.2026
+
+Владелец поручил арт героя/переработку Hero UI и выпуск42, делегировал решения.
+Доставлено: PNG/JPEG/BMP, portable heroArt, original-ID atomic save/backup,
+адаптивный Hero, явный3D-coming-soon, экспорт под Ещё, полные названия статов.
+Source0026e7228467b7890d1a25402dfab0ad9b24d562; candidate40491912046 ALL3SUCCESS:
+Android122148378789, Windows122155691036, native upgrade/runtime/UI122159381122.
+WORKSHOP6958 +save/syntax121 +art33 +menu50 PASS; all25native GPU thumbnails reviewed.
+Publisher40495801458SUCCESS; activation4afcf7fc. Независимые публичные APK/EXE,
+размеры/SHA256/ARM64/MZ, plain+fresh feed42 и source/run PASS.
+Отчёт docs/UNITY_HERO_ART_1.00.42.md, unity/PUBLIC_DELIVERY.json.42 immutable;
+следующий runtime>10042. Физический Android ещё не проверен; ждать отзыв владельца.
+Исходники арта<=16MiB/24MP, портрет<=512px/64KiB, архив16MiB, profile1MiB;
+клиенты41 могут не импортировать архив>1MiB. Main/SQL/MMO/ключи не менялись.
+Предыдущие этапы ниже — история, не новое задание.
+
 # Unity1.00.42 — арт героя, кандидат перед публикацией, 27.10.2026
 
 Владелец полностью делегировал UI/реализацию и поручил выпустить42. PNG/JPEG/BMP,

@@ -32,8 +32,23 @@ VTT_DESKTOP_UI_PASS, daily-character/file-dialog gates. Actual art dialog cancel
 is tested alongside existing JSON open/save. Local artifacts outside Git:
 /workspace/work/unity-runtime/evidence/art42-final and art42-final-player.log.
 Wine QA-copy is not an Editor or native Windows/Android build.
-Native candidate, final installed Windows GPU review, publication/public-download
-verification will be recorded after execution; no successful42 release claimed yet.
+Native candidate40491912046 (source0026e7228467b7890d1a25402dfab0ad9b24d562):
+Android122148378789, Windows122155691036, installed Windows upgrade/runtime/UI
+122159381122 all SUCCESS. Full registry regression WORKSHOP_STORE_PASS6958;
+real Editor Android build, ARM64/signature/package/version checks PASS. Windows
+player+installer built; installed1.00.00→42/reinstall and profile/backup hashes PASS.
+Native UI smoke includes PNG/JPEG/BMP normalization/EXIF/cache tests and art dialog
+cancellation; all25 actual GPU thumbnail frames reviewed, including art desktop,
+portrait, actions, explicit3D unavailable and stats. Local native proof folder:
+/workspace/work/unity-runtime/native42. This is distinct from earlier Wine QA-copy.
+Publisher40495801458/job122160804933 SUCCESS; activation4afcf7fc. Independently
+fetched ordinary+cache-busted feed42 and PUBLIC_DELIVERY, checked exact source/run,
+downloaded APK55735390bytes and EXE39482052bytes, verified both SHA256, APK ZIP/ARM64
+and Windows MZ: INDEPENDENT_DELIVERY42_PASS. Machine proof outside Git:
+/workspace/work/unity-runtime/delivery42/verification.json.
+Release: https://github.com/waitermisanthrope-creator/DnD-VTT/releases/tag/unity-v1.00.42
+Published42 is immutable; any further runtime release must be newer than10042.
+Physical Android gallery/gestures/lifecycle remain unperformed; owner will test.
 
 ## Remaining manual checks
 
