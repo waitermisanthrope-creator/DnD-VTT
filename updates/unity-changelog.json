@@ -6,7 +6,7 @@
       "version": "1.00.42",
       "versionCode": 10042,
       "date": "2026-10-27",
-      "status": "testing",
+      "status": "published",
       "title": "Арт персонажа и новый вид вкладки «Герой»",
       "changes": [
         "Загрузка своего арта PNG, JPG/JPEG и BMP через системный выбор файла на Android и Windows.",
