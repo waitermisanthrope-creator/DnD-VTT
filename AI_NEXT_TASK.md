@@ -1,3 +1,14 @@
+# Unity1.00.43 — первые отзывы, кандидат перед публикацией, 27.10.2026
+
+Владелец поручил исправить отзывы Android, ранее делегировал развитие/обновления.
+Исправлены фиксированные высоты файловых/backup кнопок; numeric NumberPad owner
+и сброс wizard focus/defaults; live valid digits/Next flush/tab cleanup. Data compact,
+raw editor opt-in. Явный ручной уровень классов +синхронизация total; полная
+автопрокачка НЕ реализована. Pure14/art33/save122/menu50, Win/Android compile,
+Unity Wine31frames exit0 PASS. Отчёт docs/UNITY_USER_FEEDBACK_1.00.43.md.
+Native candidate43/installed UI/public delivery ещё нужны; feed42 не менять вручную.
+Физический AndroidIME пока не проверен. Main/scenes/keys/MMO не трогать.
+
 # Unity1.00.42 — опубликована и независимо проверена, 27.10.2026
 
 Владелец поручил арт героя/переработку Hero UI и выпуск42, делегировал решения.

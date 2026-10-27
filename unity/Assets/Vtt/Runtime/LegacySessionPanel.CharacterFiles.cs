@@ -13,11 +13,11 @@ namespace DndVtt.UnityPrototype
         private void DrawCharacterFiles()
         {
             bool enabled = GUI.enabled; GUI.enabled = enabled && characterFileToken == null;
-            if (GUILayout.Button("Открыть файл персонажей…", GUILayout.MinHeight(54))) Attempt(() => PickCharacterFile(false));
+            if (FitMenuButton("Открыть файл персонажей…")) Attempt(() => PickCharacterFile(false));
             GUI.enabled = enabled && characterFileToken == null && archive != null;
-            if (GUILayout.Button("Сохранить персонажей в файл…", GUILayout.MinHeight(54))) Attempt(() => PickCharacterFile(true));
+            if (FitMenuButton("Сохранить персонажей в файл…")) Attempt(() => PickCharacterFile(true));
 #if UNITY_ANDROID && !UNITY_EDITOR
-            if (GUILayout.Button("Поделиться JSON персонажей…", GUILayout.MinHeight(54))) Attempt(ShareCharacterFile);
+            if (FitMenuButton("Поделиться JSON персонажей…")) Attempt(ShareCharacterFile);
 #endif
             GUI.enabled = enabled;
             if (characterFileToken != null) GUILayout.Label("Выберите файл в системном окне или нажмите там Отмена.", muted);

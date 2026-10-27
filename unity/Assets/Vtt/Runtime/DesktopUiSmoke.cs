@@ -270,6 +270,32 @@ namespace DndVtt.UnityPrototype
             try { Call("RequestCharacterDeletion", 0); }
             catch (Exception error) { Fail(error); yield break; }
             yield return Frame("character-delete-portrait"); if (failed) yield break;
+            // Device-feedback coverage: portrait data settings, backup controls,
+            // wizard field ownership and compact data screen (separate from raw editor).
+            try {Call("OpenSettings");Call("OpenSettingsCategory","Данные и устройство");Field("brandSettingsScroll",Vector2.zero);}
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("settings-data-portrait");if(failed)yield break;
+            Field("brandSettingsScroll",new Vector2(0,1600));yield return Frame("settings-data-bottom-portrait");if(failed)yield break;
+            try {Call("BeginCreation");Field("heroName","Герой 1");}
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("creation-name-portrait");if(failed)yield break;
+            try
+            {
+                var session=(NumericInputSession)typeof(LegacySessionPanel).GetField("numericSession",Flags).GetValue(panel);session.Begin("creation-name");
+                Call("SetCreationStep",2);session.Finish("creation-name","Герой 1",true);
+                Check(session.Owner==null&&!session.TryTake("creation-name",out _),"step clears prior keyboard owner");
+                var values=(string[])typeof(LegacySessionPanel).GetField("statInputs",Flags).GetValue(panel);
+                Check(values[0]=="15"&&values[1]=="14"&&values[5]=="8","name and stats remain independent");
+                values[0]="18";Call("BeginCreation");Check(values[0]=="15","new wizard resets previous numbers");Field("heroName","Герой 1");Call("SetCreationStep",2);
+            }
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("creation-stats-portrait");if(failed)yield break;
+            try {Field("lastPreview",JObject.Parse("{\"name\":\"Герой 1\",\"raceName\":\"Человек\",\"class\":\"Воин\",\"background\":\"Моряк\",\"hpMax\":12,\"hitDice\":\"1d10\",\"stats\":{\"str\":15,\"dex\":14,\"con\":13,\"int\":12,\"wis\":10,\"cha\":8}}"));Call("SetCreationStep",3);}
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("creation-confirm-portrait");if(failed)yield break;
+            try {var type=typeof(LegacySessionPanel).GetNestedType("FrontScreen",BindingFlags.NonPublic);Call("Navigate",Enum.Parse(type,"Sheet"));Field("sheetTab",6);}
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("character-data-portrait");if(failed)yield break;
             PortraitLayout = false;
             try { Check(buttonChecks > 12 && clippedButtons == 0, "navigation/back labels checked at desktop and portrait widths"); Call("OpenSettings"); }
             catch (Exception error) { Fail(error); yield break; }

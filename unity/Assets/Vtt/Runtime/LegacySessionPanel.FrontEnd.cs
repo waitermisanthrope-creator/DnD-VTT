@@ -40,6 +40,7 @@ namespace DndVtt.UnityPrototype
             if (screen == FrontScreen.CharacterStudio && next != FrontScreen.CharacterStudio) CloseCharacterStudio();
             if(screen==FrontScreen.ContentManager&&next!=FrontScreen.ContentManager)CloseWorkshopPreviews();
             if(next==FrontScreen.ContentManager&&screen!=FrontScreen.ContentManager) { InitializeWorkshop();BeginWorkshopPreviews();if(!contentCatalogAutoRefreshed&&!contentBusy&&(assetPacks.Count==0||!assetPacks.OfType<Newtonsoft.Json.Linq.JObject>().Any(m=>m["preview"]!=null)||!contentPackages.OfType<Newtonsoft.Json.Linq.JObject>().Any(m=>(string)m["collectionCategory"]=="races")||!assetPacks.OfType<Newtonsoft.Json.Linq.JObject>().Any(m=>(string)m["collectionCategory"]=="icons"))) { contentCatalogAutoRefreshed=true;StartCoroutine(FetchContentCatalog()); } }
+            ResetFormInput();
             pendingCharacterDeleteId = pendingCharacterDeleteName = null;
             confirmRestoreCharacters = false;
             menuGesture.Clear();
@@ -51,6 +52,7 @@ namespace DndVtt.UnityPrototype
         }
         private void BeginCreation()
         {
+            for(int i=0;i<statInputs.Length;i++)statInputs[i]=new[]{"15","14","13","12","10","8"}[i];
             heroName = ""; creationStep = 0; creationFeatEnabled = false; creationAnswers = new JObject(); lastPreview = null;
             classIndex = Math.Max(0, AvailableClasses.ToList().FindIndex(c => (string)c["name"] == "Воин"));
             backgroundIndex = Math.Max(0, ((JArray)CreationCatalog["backgrounds"]).ToList().FindIndex(b => (string)b["nameRu"] == "Солдат"));
@@ -168,7 +170,7 @@ namespace DndVtt.UnityPrototype
         private void DrawCharacterBackups(bool fileButtons = true)
         {
             if (fileButtons) DrawCharacterFiles();
-            if (archive != null && GUILayout.Button("Создать резервную копию в файл", GUILayout.Height(52))) Attempt(() =>
+            if (archive != null && FitMenuButton("Создать резервную копию в файл")) Attempt(() =>
             {
                 string path = CharacterSheetStore.Backup(SavePath, archive);
                 GUIUtility.systemCopyBuffer = path;
@@ -177,11 +179,11 @@ namespace DndVtt.UnityPrototype
             if (!System.IO.File.Exists(SavePath + ".bak")) return;
             if (!confirmRestoreCharacters)
             {
-                if (GUILayout.Button("Восстановить предыдущий архив…", GUILayout.Height(52))) confirmRestoreCharacters = true;
+                if (FitMenuButton("Восстановить предыдущий архив…")) confirmRestoreCharacters = true;
                 return;
             }
             GUILayout.Label("Заменить текущий список героев предыдущей резервной копией? Текущий сохранённый архив останется в резерве.", muted);
-            if (GUILayout.Button("Подтвердить восстановление", GUILayout.Height(52))) Attempt(() =>
+            if (FitMenuButton("Подтвердить восстановление")) Attempt(() =>
             {
                 var candidate = CharacterSheetStore.RestorePrevious(SavePath);
                 archive = candidate.Count == 0 ? null : candidate; selected = 0;
@@ -189,7 +191,7 @@ namespace DndVtt.UnityPrototype
                 pendingCharacterDeleteId = pendingCharacterDeleteName = null;
                 status = "Предыдущий архив восстановлен";
             });
-            if (GUILayout.Button("Отмена восстановления", GUILayout.Height(52))) confirmRestoreCharacters = false;
+            if (FitMenuButton("Отмена восстановления")) confirmRestoreCharacters = false;
         }
         private void RequestCharacterDeletion(int index)
         {
@@ -261,6 +263,7 @@ namespace DndVtt.UnityPrototype
                 GUILayout.EndVertical(); GUILayout.Space(8);
             }
         }
+        private void SetCreationStep(int step) { FlushCreationNumbers(); ResetFormInput(); creationStep=step; frontScroll=Vector2.zero; }
         private void DrawCreation()
         {
             GUILayout.Label("Создание персонажа", heading);
@@ -270,7 +273,7 @@ namespace DndVtt.UnityPrototype
             var race = (JObject)races[raceIndex]; var cls = (JObject)classes[classIndex]; var bg = (JObject)backgrounds[backgroundIndex];
             if (creationStep == 0)
             {
-                GUILayout.Label("Имя героя"); heroName = GUILayout.TextField(heroName, 120, GUILayout.Height(52));
+                GUILayout.Label("Имя героя"); GUI.SetNextControlName("creation-name"); heroName = GUILayout.TextField(heroName, 120, GUILayout.Height(52));
                 Picker("Предыстория", backgrounds, ref backgroundIndex, "nameRu"); GUILayout.Label((string)backgrounds[backgroundIndex]["description"] ?? "", muted);
             }
             else if (creationStep == 1)
@@ -283,7 +286,7 @@ namespace DndVtt.UnityPrototype
             else if (creationStep == 2)
             {
                 statMode = MenuGrid(statMode,new[] { "Покупка · 27 очков", "Ввод мастером" },2);
-                for (int i = 0; i < 6; i++) { GUILayout.BeginHorizontal(); GUILayout.Label(CharacterSheetRules.StatNames[i], GUILayout.Width(180)); statInputs[i] = GUILayout.TextField(statInputs[i], GUILayout.Height(52)); GUILayout.EndHorizontal(); }
+                for (int i = 0; i < 6; i++) { GUILayout.BeginHorizontal(); GUILayout.Label(CharacterSheetRules.StatNames[i], GUILayout.Width(180)); statInputs[i] = IntegerField("creation-stat-"+CharacterSheetRules.Stats[i],statInputs[i], GUILayout.MinHeight(52)); GUILayout.EndHorizontal(); }
                 int total = 0; bool valid = true; foreach (string text in statInputs) { if (int.TryParse(text, out int n) && n >= 8 && n <= 15) total += CharacterCreation.PointCost(n); else valid = false; }
                 if (statMode == 0) GUILayout.Label(valid ? "Потрачено: " + total + " / 27 (до расовых бонусов)" : "Для покупки допустимы значения 8–15");
                 foreach (var entry in new[] { race, cls, bg }) foreach (JObject choice in (JArray)entry["choices"]) DrawCreationChoice(choice);
@@ -314,20 +317,21 @@ namespace DndVtt.UnityPrototype
                     GUILayout.Label("Классовые эффекты и стартовые наборы ещё переносятся. Неприменённые решения сохранятся в листе как ожидающие обработки; снаряжение можно добавить из справочника.", muted);
                 }
             }
-            GUILayout.Space(20); GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Назад", GUILayout.Height(42))) { if (creationStep == 0) Navigate(FrontScreen.Characters); else creationStep--; frontScroll = Vector2.zero; }
-            if (GUILayout.Button(creationStep == 3 ? "Создать и сохранить героя" : "Далее  →", GUILayout.Height(42))) Attempt(() =>
+            bool stackActions=UiHeight>UiWidth&&creationStep==3;
+            GUILayout.Space(20); if(stackActions)GUILayout.BeginVertical();else GUILayout.BeginHorizontal();
+            if (FitMenuButton("Назад")) { if (creationStep == 0) Navigate(FrontScreen.Characters); else { SetCreationStep(creationStep-1); } frontScroll = Vector2.zero; }
+            if (FitMenuButton(creationStep == 3 ? "Создать и сохранить героя" : "Далее  →")) Attempt(() =>
             {
                 if (creationStep == 0 && string.IsNullOrWhiteSpace(heroName)) throw new FormatException("Введите имя героя");
-                if (creationStep == 2) lastPreview = BuildDraft(race, cls, bg);
+                if (creationStep == 2) { FlushCreationNumbers(); lastPreview = BuildDraft(race, cls, bg); }
                 if (creationStep == 3)
                 {
                     var candidate = archive == null ? new LegacyCharacterArchive(new JArray(lastPreview.DeepClone()).ToString()) : archive.Append(lastPreview);
                     CharacterSheetStore.Save(SavePath, candidate); archive = candidate; selected = archive.Count - 1; Navigate(FrontScreen.Sheet); status = "Персонаж создан и сохранён";
                 }
-                else { creationStep++; frontScroll = Vector2.zero; }
+                else { SetCreationStep(creationStep+1); }
             });
-            GUILayout.EndHorizontal();
+            if(stackActions)GUILayout.EndVertical();else GUILayout.EndHorizontal();
         }
         private JObject BuildDraft(JObject race, JObject cls, JObject bg)
         {

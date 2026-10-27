@@ -6,6 +6,71 @@ namespace DndVtt.UnityPrototype
 {
     public sealed partial class LegacySessionPanel
     {
+        private readonly NumericInputSession numericSession=new NumericInputSession();
+        private TouchScreenKeyboard numericKeyboard;
+        private void ResetFormInput()
+        {
+            if(numericKeyboard!=null){numericKeyboard.active=false;numericKeyboard=null;}
+            numericSession.CancelAll();
+            if(Event.current!=null)
+            {
+                int id=GUIUtility.keyboardControl;
+                if(id!=0)
+                {
+                    var editor=GUIUtility.GetStateObject(typeof(TextEditor),id) as TextEditor;
+                    if(editor!=null){if(editor.keyboardOnScreen!=null){editor.keyboardOnScreen.active=false;editor.keyboardOnScreen=null;}editor.OnLostFocus();}
+                }
+                GUI.FocusControl(null);GUIUtility.keyboardControl=0;GUIUtility.hotControl=0;
+            }
+        }
+        private void PollNumericKeyboard()
+        {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            if(numericKeyboard==null)return;
+            if(numericKeyboard.status==TouchScreenKeyboard.Status.Canceled){numericSession.Finish(numericSession.Owner,"",false);numericKeyboard.active=false;numericKeyboard=null;return;}
+            numericSession.Stage(numericSession.Owner,numericKeyboard.text);
+            if(numericKeyboard.status!=TouchScreenKeyboard.Status.Visible)CompleteNumericKeyboard();
+#endif
+        }
+        private void CompleteNumericKeyboard()
+        {
+            if(numericKeyboard==null)return;
+            numericSession.Finish(numericSession.Owner,numericKeyboard.text,numericKeyboard.status!=TouchScreenKeyboard.Status.Canceled);
+            numericKeyboard.active=false;numericKeyboard=null;
+        }
+        private void FlushCreationNumbers()
+        {
+            CompleteNumericKeyboard();
+            for(int i=0;i<statInputs.Length;i++)if(numericSession.TryTake("creation-stat-"+CharacterSheetRules.Stats[i],out string value))statInputs[i]=value;
+        }
+        private string IntegerField(string owner,string value,params GUILayoutOption[] options)
+        {
+#if UNITY_ANDROID && !UNITY_EDITOR
+            PollNumericKeyboard();
+            if(numericSession.TryTake(owner,out string committed))value=committed;
+            bool own=numericSession.Owner==owner&&numericKeyboard!=null;
+            string display=own?numericKeyboard.text+" ✓":value;
+            if(GUILayout.Button(display,GUI.skin.textField,options))
+            {
+                // Preserve the previous owner's last valid digit in either draw order.
+                CompleteNumericKeyboard();
+                if(numericSession.TryTake(owner,out committed))value=committed;
+                if(!own)
+                {
+                    numericSession.Begin(owner);
+                    numericKeyboard=TouchScreenKeyboard.Open(value,TouchScreenKeyboardType.NumberPad,false,false,false,false,"Введите число",11);
+                }
+            }
+            return value;
+#else
+            GUI.SetNextControlName(owner);return GUILayout.TextField(value,options);
+#endif
+        }
+        private bool FitMenuButton(string label,float minimum=54)
+        {
+            float width=Mathf.Max(100,Mathf.Min(900,UiWidth-140));
+            return MeasuredMenuButton(label,GUI.skin.button,GUILayout.MinHeight(Mathf.Max(minimum,GUI.skin.button.CalcHeight(new GUIContent(label),width))));
+        }
         private GUISkin sheetSkin;
         private Font sheetSerif;
         private GUIStyle sheetHeading, sheetQuiet, sheetTabStyle, sheetActiveTab, sheetCharacterName;

@@ -84,6 +84,12 @@ namespace DndVtt.UnityPrototype
                 ? classes.Sum(c => LegacyJson.Number((c as JObject)?["level"], 0)) : LegacyJson.Number(hero["level"], 1);
             return Math.Max(1, (int)n);
         }
+        public static void SynchronizeClassLevel(JObject hero)
+        {
+            Validate(hero);
+            if(hero["classes"] is JArray classes && classes.Count>0)hero["level"]=Level(hero);
+            Validate(hero);Recalculate(hero);
+        }
         public static int Proficiency(JObject hero) => (int)Math.Floor((Level(hero) - 1) / 4d) + 2;
         public static int Skill(JObject hero, int index) => Modifier(hero, SkillStats[index]) + Proficiency(hero) * (int)LegacyJson.Number((hero["skillsData"] as JObject)?[SkillIds[index]], 0);
         public static void Validate(JObject hero)

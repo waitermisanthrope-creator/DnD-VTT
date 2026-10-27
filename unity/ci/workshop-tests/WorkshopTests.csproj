@@ -6,6 +6,8 @@
     <Compile Include="../../Assets/Vtt/Runtime/WorkshopStore.cs" Link="WorkshopStore.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="CharacterArtChecks.cs" />
+    <Compile Include="NumericInputChecks.cs" />
+    <Compile Include="../../Assets/Vtt/Runtime/NumericInputSession.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/CharacterArt.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/CharacterFiles.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/DiceRollRequest.cs" />

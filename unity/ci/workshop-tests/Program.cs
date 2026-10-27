@@ -11,6 +11,7 @@ class Program
     static void Reject(Action action, string name) { bool rejected = false; try { action(); } catch (Exception) { rejected = true; } Check(rejected, name); }
     static void Main(string[] args)
     {
+        if (args.Length > 0 && args[0] == "--numeric-input") { Console.WriteLine("NUMERIC_INPUT_PASS " + NumericInputChecks.Run()); return; }
         if (args.Length > 0 && args[0] == "--character-art") { Console.WriteLine("CHARACTER_ART_PASS " + CharacterArtChecks.Run()); return; }
         if (args.Length > 0 && args[0] == "--menu-input") { Console.WriteLine("MENU_INPUT_LOGIC_PASS " + AccountGestureChecks.Run(Directory.GetCurrentDirectory())); return; }
         if (args.Length > 0 && args[0] == "--character-delete")
@@ -98,7 +99,7 @@ class Program
         }
         if(args.Length>0 && args[0]=="--all-collections") { Console.WriteLine("ALL_MOD_COLLECTIONS_PASS "+AllModCollectionChecks.Run(args[1]));return; }
         if(args.Length>0 && args[0]=="--collections") { Console.WriteLine("COLLECTIONS_PASS "+CollectionChecks.Run(args[1]));return; }
-        checks += CharacterArtChecks.Run();
+        checks += CharacterArtChecks.Run()+NumericInputChecks.Run();
         string root = Path.Combine(Path.GetTempPath(), "vtt-workshop-test-" + Guid.NewGuid()); Directory.CreateDirectory(root);
         try
         {

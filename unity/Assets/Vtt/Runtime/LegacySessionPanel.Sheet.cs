@@ -10,6 +10,7 @@ namespace DndVtt.UnityPrototype
     public sealed partial class LegacySessionPanel
     {
         private int sheetTab;
+        private bool technicalDataOpen,editClassLevels;
         private readonly Dictionary<string, string> edits = new Dictionary<string, string>();
         private readonly HashSet<string> expanded = new HashSet<string>();
         private string rollResult = "Выберите кубик или проверку";
@@ -21,7 +22,7 @@ namespace DndVtt.UnityPrototype
         private bool showItemCatalog;
         private string deletePath, deleteSignature, deleteCharacter, deleteLabel;
         private readonly string[] tabs = { "Герой", "Навыки", "Способности", "Инвентарь", "Заметки", "Дайсы", "Данные", "Кошелёк", "Паспорт", "Лор / Бестиарий" };
-        private void ClearSheetInputs() { heroArt3D=false; sheetActionsOpen=false; edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
+        private void ClearSheetInputs() { ResetFormInput(); technicalDataOpen=editClassLevels=false; heroArt3D=false; sheetActionsOpen=false; edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
         private void Attempt(Action action)
         {
             try { action(); } catch (Exception error) { status = error.Message; }
@@ -61,7 +62,7 @@ namespace DndVtt.UnityPrototype
                 GUILayout.Label("Архив включает всех героев и их арт.",sheetQuiet);
             }
             int next = HorizontalTabs(sheetTab, tabs, ref sheetTabsScroll);
-            if (next != sheetTab) { sheetTab = next; GUI.FocusControl(null); }
+            // Render/save the old tab once before committing a tab transition.
             JObject hero = archive.Snapshot(selected); bool changed = false, persistWallet = false, persistCommerce = false;
             if (deletePath != null)
             {
@@ -107,8 +108,11 @@ namespace DndVtt.UnityPrototype
                     foreach (string field in new[] { "proficiencies", "features", "feats", "raceMechanics", "raceFeatureDescriptions", "resistances", "immunities", "craftingProfessions", "companions", "encounters", "initiativeTracker", "pendingChoices", "choiceState" }) Tree(hero, field, FieldLabel(field), ref changed);
                     break;
                 default:
-                    GUILayout.Label("Полный документ героя. Идентификаторы защищены. Поля без игрового обработчика сохраняются без потерь.");
-                    EditToken(hero, "raw", 0, ref changed); break;
+                    SheetSection("Файлы и данные");
+                    GUILayout.Label("Архив включает всех героев и их арты. Сохранение работает автоматически.",sheetQuiet);
+                    DrawCharacterBackups();
+                    if(FitMenuButton(technicalDataOpen?"Скрыть технический редактор":"Технический редактор…")){ResetFormInput();technicalDataOpen=!technicalDataOpen;}
+                    if(technicalDataOpen){GUILayout.Label("Полный документ. Неизвестные поля сохраняются; ID защищены.",sheetQuiet);EditToken(hero,"raw",0,ref changed);}break;
             }
             if (changed) Attempt(() =>
             {
@@ -126,9 +130,11 @@ namespace DndVtt.UnityPrototype
                     status = "Изменения сохранены на устройстве";
                 }
             });
+            if(next!=sheetTab){ResetFormInput();sheetTab=next;}
         }
         private void Hero(JObject hero, ref bool changed)
         {
+            string classesBefore=hero["classes"]?.ToString(Newtonsoft.Json.Formatting.None);
             bool wide=UiWidth>=900;
             if(wide){GUILayout.BeginHorizontal();GUILayout.BeginVertical(GUILayout.Width(310));}
             DrawHeroArt(hero);
@@ -140,7 +146,16 @@ namespace DndVtt.UnityPrototype
             GUILayout.EndVertical();
             if(wide){GUILayout.EndVertical();GUILayout.EndHorizontal();}
             GUILayout.BeginVertical(GUI.skin.box);SheetSection("Здоровье и защита");
-            foreach (var field in new[] { ("level", "Уровень"), ("ac", "Класс доспеха"), ("hpMax", "Максимум HP"), ("hpCurrent", "Текущие HP"), ("hpTemp", "Временные HP") })
+            GUILayout.Label("Уровень "+CharacterSheetRules.Level(hero),sheetCharacterName);
+            if(FitMenuButton(editClassLevels?"Скрыть уровни классов":"Изменить уровни классов…")){ResetFormInput();editClassLevels=!editClassLevels;}
+            if(editClassLevels)
+            {
+                GUILayout.Label("Ручной учёт уровней. Выбор новых способностей и прирост HP пока не автоматизированы.",sheetQuiet);
+                if(hero["classes"] is JArray classList && classList.Count>0)
+                    foreach(var c in classList.OfType<JObject>())Scalar(c,"level","Уровень: "+((string)c["name"]??"Класс"),ref changed,1);
+                else Scalar(hero,"level","Уровень",ref changed,1);
+            }
+            foreach (var field in new[] { ("ac", "Класс доспеха"), ("hpMax", "Максимум HP"), ("hpCurrent", "Текущие HP"), ("hpTemp", "Временные HP") })
             {
                 JToken fallback = field.Item1 == "hpCurrent" ? archive.CurrentHp(selected) : field.Item1 == "hpMax" ? archive.MaximumHp(selected) : field.Item1 == "hpTemp" ? archive.TemporaryHp(selected) : field.Item1 == "level" ? 1 : 10;
                 Scalar(hero, field.Item1, field.Item2, ref changed, fallback);
@@ -159,7 +174,7 @@ namespace DndVtt.UnityPrototype
                 DesktopUiSmoke.RecordSingleLine(CharacterSheetRules.StatNames[i],sheetQuiet,GUILayoutUtility.GetLastRect());
                 string key="hero-stat:"+stat;
                 if(!edits.TryGetValue(key,out string old))old=stats[stat]?.ToString()??"10";
-                string value=GUILayout.TextField(old,GUILayout.MinHeight(48));edits[key]=value;
+                string value=IntegerField("hero:"+hero["id"]+":"+stat,old,GUILayout.MinHeight(48));edits[key]=value;
                 if(value!=old)
                 {
                     if(int.TryParse(value,NumberStyles.Integer,CultureInfo.InvariantCulture,out int number)){stats[stat]=number;changed=true;}
@@ -168,7 +183,7 @@ namespace DndVtt.UnityPrototype
                 GUILayout.Label(Signed(CharacterSheetRules.Modifier(new JObject { ["stats"] = stats.DeepClone() }, stat)),sheetCharacterName);
                 GUILayout.EndVertical();if(i%columns==columns-1)GUILayout.EndHorizontal();
             }
-            if (changed) { hero["stats"] = stats; Attempt(() => CharacterSheetRules.Recalculate(hero)); }
+            if (changed) { hero["stats"] = stats; Attempt(() => { if(classesBefore!=hero["classes"]?.ToString(Newtonsoft.Json.Formatting.None))CharacterSheetRules.SynchronizeClassLevel(hero);else CharacterSheetRules.Recalculate(hero); }); }
             GUILayout.Label("Бонус мастерства: " + Signed(CharacterSheetRules.Proficiency(hero)) + " · базовая инициатива: " + Signed(CharacterSheetRules.Modifier(hero, "dex")));
             if (GUILayout.Button("Бросить инициативу", GUILayout.Height(52))) Roll("Инициатива", 20, CharacterSheetRules.Modifier(hero, "dex"));
             GUILayout.Label(rollResult);
@@ -283,14 +298,15 @@ namespace DndVtt.UnityPrototype
             {
                 string original = token.Type == JTokenType.Null ? "" : Convert.ToString(((JValue)token).Value, CultureInfo.InvariantCulture);
                 if (!edits.TryGetValue(path, out string text)) text = original;
+                bool numeric = token.Type == JTokenType.Integer || token.Type == JTokenType.Float || fallback?.Type == JTokenType.Integer || fallback?.Type == JTokenType.Float;
+                bool integral = key != "count" && key != "weight" && (token.Type == JTokenType.Integer || fallback?.Type == JTokenType.Integer);
+                GUI.SetNextControlName("sheet-field:"+selected+":"+path);
                 string value = key == "text" || key == "desc" || key == "description"
-                    ? GUILayout.TextArea(text, GUILayout.MinHeight(90)) : GUILayout.TextField(text, GUILayout.MinHeight(48)); edits[path] = value;
+                    ? GUILayout.TextArea(text, GUILayout.MinHeight(90)) : numeric&&integral?IntegerField("sheet-number:"+selected+":"+path,text,GUILayout.MinHeight(48)):GUILayout.TextField(text, GUILayout.MinHeight(48)); edits[path] = value;
                 if (value != text)
                 {
-                    bool numeric = token.Type == JTokenType.Integer || token.Type == JTokenType.Float || fallback?.Type == JTokenType.Integer || fallback?.Type == JTokenType.Float;
                     if (numeric)
                     {
-                        bool integral = key != "count" && key != "weight" && (token.Type == JTokenType.Integer || fallback?.Type == JTokenType.Integer);
                         if (double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out double number) && !double.IsNaN(number) && !double.IsInfinity(number) && number > long.MinValue && number < long.MaxValue && (!integral || number == Math.Truncate(number)) && (key != "count" || number > 0))
                         { owner[key] = integral ? new JValue(checked((long)number)) : new JValue(number); changed = true; }
                         else status = "Введите число: " + label;

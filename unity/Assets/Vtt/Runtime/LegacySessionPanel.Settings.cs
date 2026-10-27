@@ -108,15 +108,15 @@ namespace DndVtt.UnityPrototype
                     settingsDraft.firstPerson = GUILayout.Toggle(settingsDraft.firstPerson, "Камера от первого лица при запуске", GUILayout.MinHeight(42));
                     break;
                 case 4:
-                    GUILayout.Label("Данные и устройство", heading);
+                    if(!embedded)GUILayout.Label("Данные и устройство", heading);
                     GUILayout.Label("Персонажи хранятся отдельно от настроек. При обновлении приложения не удаляйте его данные.", muted);
                     GUILayout.Label("Персонажей в архиве: " + (archive?.Count ?? 0), muted);
                     GUILayout.Label("Файл персонажей: " + SavePath, muted);
                     GUILayout.Label("Файл настроек: " + SettingsPath, muted);
-                    if (archive != null && GUILayout.Button("Сохранить персонажей сейчас", GUILayout.Height(48)))
+                    if (archive != null && FitMenuButton("Сохранить персонажей сейчас"))
                         Attempt(() => { SaveSheet(); status = "Персонажи сохранены"; });
                     DrawCharacterBackups();
-                    if (GUILayout.Button("Скопировать путь к сохранению", GUILayout.Height(42))) GUIUtility.systemCopyBuffer = SavePath;
+                    if (FitMenuButton("Скопировать путь к сохранению")) GUIUtility.systemCopyBuffer = SavePath;
                     break;
             }
             if(embedded)return;

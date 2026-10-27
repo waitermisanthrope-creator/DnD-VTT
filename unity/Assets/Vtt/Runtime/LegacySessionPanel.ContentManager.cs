@@ -106,7 +106,7 @@ namespace DndVtt.UnityPrototype
             creationCatalog = null;
         }
         private void OnWorkshopLowMemory() { ReleaseHeroArt(); ReleaseAppearanceImages(false);workshop?.ReleaseBundleCache(); }
-        private void OnDestroy() { ReleaseHeroArt(); CloseCharacterStudio(); CloseDiceTable(); CloseWorkshopPreviews(); Application.lowMemory -= OnWorkshopLowMemory; workshop?.Dispose(); ReleaseAppearanceImages(true);ReleaseBrandStyles();  ApplyScreenSleep(false); }
+        private void OnDestroy() { ResetFormInput(); ReleaseHeroArt(); CloseCharacterStudio(); CloseDiceTable(); CloseWorkshopPreviews(); Application.lowMemory -= OnWorkshopLowMemory; workshop?.Dispose(); ReleaseAppearanceImages(true);ReleaseBrandStyles();  ApplyScreenSleep(false); }
         private void RefreshWorkshop()
         {
             // Destroy geometry before unloading owned resources, then reconstruct

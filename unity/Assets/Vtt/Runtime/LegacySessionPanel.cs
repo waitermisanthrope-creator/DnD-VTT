@@ -74,6 +74,7 @@ namespace DndVtt.UnityPrototype
         }
         private void OnGUI()
         {
+            PollNumericKeyboard();
             BeginSwipeFrame();
             try
             {
