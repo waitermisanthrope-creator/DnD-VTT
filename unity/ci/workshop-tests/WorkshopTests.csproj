@@ -5,6 +5,8 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
     <Compile Include="../../Assets/Vtt/Runtime/WorkshopStore.cs" Link="WorkshopStore.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="AdvancementChecks.cs" />
+    <Compile Include="../../Assets/Vtt/Runtime/CharacterAdvancement.cs" />
     <Compile Include="CharacterArtChecks.cs" />
     <Compile Include="NumericInputChecks.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/NumericInputSession.cs" />

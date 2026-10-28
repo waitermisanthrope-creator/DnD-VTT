@@ -120,6 +120,9 @@ namespace DndVtt.UnityPrototype
                 var args = Environment.GetCommandLineArgs(); int at = Array.IndexOf(args, "--vtt-ui-output");
                 Check(at >= 0 && at + 1 < args.Length, "explicit evidence output"); folder = args[at + 1]; Directory.CreateDirectory(folder);
                 panel = FindFirstObjectByType<LegacySessionPanel>(); Check(panel, "actual application menu");
+                // Optional QA-copy override; released players resolve the bundled Resources asset.
+                int advancementAt=Array.IndexOf(args,"--vtt-advancement-catalog");
+                if(advancementAt>=0){Check(advancementAt+1<args.Length,"explicit QA advancement path");Field("advancementCatalog",JObject.Parse(File.ReadAllText(args[advancementAt+1])));}
                 Field("brandSplashActive", false);
                 CheckHeroArt();
                 Check(SystemInfo.graphicsDeviceType != UnityEngine.Rendering.GraphicsDeviceType.Null, "real graphics device");
@@ -296,6 +299,63 @@ namespace DndVtt.UnityPrototype
             try {var type=typeof(LegacySessionPanel).GetNestedType("FrontScreen",BindingFlags.NonPublic);Call("Navigate",Enum.Parse(type,"Sheet"));Field("sheetTab",6);}
             catch(Exception error){Fail(error);yield break;}
             yield return Frame("character-data-portrait");if(failed)yield break;
+            LegacyCharacterArchive advancementBefore=null;string advancementStore=null;
+            try
+            {
+                advancementBefore=(LegacyCharacterArchive)typeof(LegacySessionPanel).GetField("archive",Flags).GetValue(panel);
+                advancementStore=(string)typeof(LegacySessionPanel).GetField("profileStoreOverride",Flags).GetValue(panel);
+                Field("profileStoreOverride",Path.Combine(folder,"advancement-qa.json"));
+                var sample=JObject.Parse("{\"id\":\"advancement-qa\",\"name\":\"Элеонора\",\"exp\":900,\"classes\":[{\"name\":\"Воин\",\"level\":1}],\"stats\":{\"str\":15,\"dex\":14,\"con\":14,\"int\":13,\"wis\":13,\"cha\":13},\"hpMax\":12,\"hpCurrent\":0,\"future\":17}");
+                Field("archive",new LegacyCharacterArchive(sample.ToString()));Field("selected",0);Field("sheetTab",0);Call("ClearSheetInputs");Field("frontScroll",Vector2.zero);
+                Call("BeginAdvancement",sample,true);
+            }
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("experience-portrait");if(failed)yield break;
+            try
+            {
+                var sample=((LegacyCharacterArchive)typeof(LegacySessionPanel).GetField("archive",Flags).GetValue(panel)).Snapshot(0);
+                Call("BeginAdvancement",sample,false);
+            }
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("advancement-classes-portrait");if(failed)yield break;
+            try
+            {
+                var live=(LegacyCharacterArchive)typeof(LegacySessionPanel).GetField("archive",Flags).GetValue(panel);var sample=live.Snapshot(0);
+                Call("SelectAdvancementClass",sample,"Воин");
+                Check(live.Snapshot(0).ToString()==sample.ToString(),"class selection leaves live character unchanged");
+            }
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("advancement-preview-portrait");if(failed)yield break;
+            Field("frontScroll",new Vector2(0,1000));yield return Frame("advancement-confirm-portrait");if(failed)yield break;
+            try
+            {
+                var live=(LegacyCharacterArchive)typeof(LegacySessionPanel).GetField("archive",Flags).GetValue(panel);var sample=live.Snapshot(0);
+                Call("CloseAdvancement");Check((int)live.Snapshot(0)["classes"][0]["level"]==1,"cancel leaves level unchanged");
+                Call("BeginAdvancement",sample,false);Call("SelectAdvancementClass",sample,"Воин");
+                var choices=(JObject)typeof(LegacySessionPanel).GetMethod("AdvancementChoices",Flags).Invoke(panel,null);
+                var data=(JObject)typeof(LegacySessionPanel).GetProperty("AdvancementCatalog",Flags).GetValue(panel);
+                var updated=CharacterAdvancement.Advance(data,sample,"Воин",choices);
+                Call("PublishAdvancement",sample,updated);Call("CloseAdvancement");
+                Check((int)CharacterSheetStore.Load(panel.SavePath).Snapshot(0)["level"]==2,"actual UI publish persists after restart");
+                bool stale=false;try{Call("PublishAdvancement",sample,updated);}catch(TargetInvocationException){stale=true;}Check(stale,"duplicate confirmation refused");
+                Debug.Log("VTT_ADVANCEMENT_UI_PASS: XP/selection/preview/cancel, exact one-level atomic publish/restart and duplicate confirmation rejection; synthetic profile only");
+                var leveled=CharacterSheetStore.Load(panel.SavePath).Snapshot(0);Call("BeginAdvancement",leveled,false);Call("SelectAdvancementClass",leveled,"Воин");Field("advancementSubclass","Мастер боя");
+            }
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("advancement-subclass-portrait");if(failed)yield break;
+            try
+            {
+                var fixture=CharacterSheetStore.Load(panel.SavePath).Snapshot(0);fixture["classes"][0]["level"]=3;fixture["classes"][0]["subclass"]="Мастер боя";fixture["level"]=3;fixture["exp"]=2700;
+                Field("archive",new LegacyCharacterArchive(fixture.ToString()));Call("BeginAdvancement",fixture,false);Call("SelectAdvancementClass",fixture,"Воин");Field("frontScroll",new Vector2(0,700));
+            }
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("advancement-asi-portrait");if(failed)yield break;
+            Field("frontScroll",new Vector2(0,3000));yield return Frame("advancement-asi-confirm-portrait");if(failed)yield break;
+            try
+            {
+                Field("archive",advancementBefore);Field("profileStoreOverride",advancementStore);Call("ClearSheetInputs");
+            }
+            catch(Exception error){Fail(error);yield break;}
             PortraitLayout = false;
             try { Check(buttonChecks > 12 && clippedButtons == 0, "navigation/back labels checked at desktop and portrait widths"); Call("OpenSettings"); }
             catch (Exception error) { Fail(error); yield break; }

@@ -10,7 +10,7 @@ namespace DndVtt.UnityPrototype
     public sealed partial class LegacySessionPanel
     {
         private int sheetTab;
-        private bool technicalDataOpen,editClassLevels;
+        private bool technicalDataOpen;
         private readonly Dictionary<string, string> edits = new Dictionary<string, string>();
         private readonly HashSet<string> expanded = new HashSet<string>();
         private string rollResult = "Выберите кубик или проверку";
@@ -22,7 +22,7 @@ namespace DndVtt.UnityPrototype
         private bool showItemCatalog;
         private string deletePath, deleteSignature, deleteCharacter, deleteLabel;
         private readonly string[] tabs = { "Герой", "Навыки", "Способности", "Инвентарь", "Заметки", "Дайсы", "Данные", "Кошелёк", "Паспорт", "Лор / Бестиарий" };
-        private void ClearSheetInputs() { ResetFormInput(); technicalDataOpen=editClassLevels=false; heroArt3D=false; sheetActionsOpen=false; edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
+        private void ClearSheetInputs() { CloseAdvancement(); technicalDataOpen=false; heroArt3D=false; sheetActionsOpen=false; edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
         private void Attempt(Action action)
         {
             try { action(); } catch (Exception error) { status = error.Message; }
@@ -61,6 +61,7 @@ namespace DndVtt.UnityPrototype
                 if (MeasuredMenuButton("Сохранить архив в файл…", GUI.skin.button, GUILayout.MinHeight(54))) Attempt(() => PickCharacterFile(true));
                 GUILayout.Label("Архив включает всех героев и их арт.",sheetQuiet);
             }
+            if(advancementOpen){DrawAdvancement(archive.Snapshot(selected));return;}
             int next = HorizontalTabs(sheetTab, tabs, ref sheetTabsScroll);
             // Render/save the old tab once before committing a tab transition.
             JObject hero = archive.Snapshot(selected); bool changed = false, persistWallet = false, persistCommerce = false;
@@ -134,6 +135,8 @@ namespace DndVtt.UnityPrototype
         }
         private void Hero(JObject hero, ref bool changed)
         {
+            DrawProgressionSummary(hero);
+            if(advancementOpen)return;
             string classesBefore=hero["classes"]?.ToString(Newtonsoft.Json.Formatting.None);
             bool wide=UiWidth>=900;
             if(wide){GUILayout.BeginHorizontal();GUILayout.BeginVertical(GUILayout.Width(310));}
@@ -147,14 +150,6 @@ namespace DndVtt.UnityPrototype
             if(wide){GUILayout.EndVertical();GUILayout.EndHorizontal();}
             GUILayout.BeginVertical(GUI.skin.box);SheetSection("Здоровье и защита");
             GUILayout.Label("Уровень "+CharacterSheetRules.Level(hero),sheetCharacterName);
-            if(FitMenuButton(editClassLevels?"Скрыть уровни классов":"Изменить уровни классов…")){ResetFormInput();editClassLevels=!editClassLevels;}
-            if(editClassLevels)
-            {
-                GUILayout.Label("Ручной учёт уровней. Выбор новых способностей и прирост HP пока не автоматизированы.",sheetQuiet);
-                if(hero["classes"] is JArray classList && classList.Count>0)
-                    foreach(var c in classList.OfType<JObject>())Scalar(c,"level","Уровень: "+((string)c["name"]??"Класс"),ref changed,1);
-                else Scalar(hero,"level","Уровень",ref changed,1);
-            }
             foreach (var field in new[] { ("ac", "Класс доспеха"), ("hpMax", "Максимум HP"), ("hpCurrent", "Текущие HP"), ("hpTemp", "Временные HP") })
             {
                 JToken fallback = field.Item1 == "hpCurrent" ? archive.CurrentHp(selected) : field.Item1 == "hpMax" ? archive.MaximumHp(selected) : field.Item1 == "hpTemp" ? archive.TemporaryHp(selected) : field.Item1 == "level" ? 1 : 10;
@@ -162,7 +157,7 @@ namespace DndVtt.UnityPrototype
             }
             GUILayout.EndVertical();
             GUILayout.BeginVertical(GUI.skin.box);SheetSection("Характеристики");
-            Collection(hero, "classes", "Мультикласс", () => new JObject { ["name"] = "Класс", ["level"] = 1, ["subclass"] = "" }, ref changed);
+
             var stats = hero["stats"] as JObject ?? new JObject();
             int columns=wide?3:2;
             for (int i = 0; i < CharacterSheetRules.Stats.Length; i++)

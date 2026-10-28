@@ -1,3 +1,16 @@
+# Unity1.00.44 — опыт/прокачка, кандидат готовится, 28.10.2026
+
+Владелец приоритизировал XP/level-up/multiclass перед дальнейшей UI parity.
+27 source tables, exact class-level, XP/milestone, HP/CON ASI/feat/subclass,
+partial proficiencies, shared slots/Pact; atomic detached commit + stale guard.
+Pure1713/full8687/save124 PASS; Win/Android Roslyn compile PASS (не native builds).
+Wine: первый35frames exit0; расширенный38frames получил кадры/advancement PASS,
+но nativefullscreen crash; повтор38frames exit0/full UI PASS. Нативный CI ещё нужен.
+Не выдавать частичный combat runtime или неизвестные/Extra классы за full parity.
+План docs/superpowers/plans/2026-10-27-unity-progression.md; отчёт
+ docs/UNITY_ADVANCEMENT_1.00.44.md. Feed43 остаётся до ALL3+delivery44.
+Main/MMO/сцены/секреты/SQL не менять. История ниже не новое задание.
+
 # Unity1.00.43 — опубликована и независимо проверена, 27.10.2026
 
 Отзыв Android обработан: адаптивные file/backup кнопки, owned NumberPad для
