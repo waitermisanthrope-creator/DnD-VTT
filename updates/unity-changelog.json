@@ -6,7 +6,7 @@
       "version": "1.00.45",
       "versionCode": 10045,
       "date": "2026-10-28",
-      "status": "testing",
+      "status": "published",
       "title": "Перенос оформления WebView: первый проверяемый кандидат",
       "changes": [
         "Встроен оригинальный Playfair Display: интерфейс работает с исходным шрифтом офлайн.",

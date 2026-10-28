@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 9c14aad849fe. Git содержит 2134 файлов.
+Снимок кода 8aa5548fc912. Git содержит 2134 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 8151 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 87443 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 125941 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 165278 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 89144 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 127642 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 166979 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1095,7 +1095,7 @@
 | №1074 docs/UNITY_UI_READABILITY.md | 7339 B | документация или отчёт: UNITY UI READABILITY |
 | №1075 docs/UNITY_UI_RUNTIME_CHECK.md | 5415 B | документация или отчёт: UNITY UI RUNTIME CHECK |
 | №1076 docs/UNITY_USER_FEEDBACK_1.00.43.md | 3277 B | документация или отчёт: UNITY USER FEEDBACK 1.00.43 |
-| №1077 docs/UNITY_WEBVIEW_EXACT_CLONE.md | 7724 B | документация или отчёт: UNITY WEBVIEW EXACT CLONE |
+| №1077 docs/UNITY_WEBVIEW_EXACT_CLONE.md | 12129 B | документация или отчёт: UNITY WEBVIEW EXACT CLONE |
 | №1078 docs/UNITY_WEBVIEW_PARITY_STAGE1.md | 10754 B | документация или отчёт: UNITY WEBVIEW PARITY STAGE1 |
 | №1079 docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md | 8253 B | документация или отчёт: ACCESS AND TOUCH 1.00.12 |
 | №1080 docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md | 9558 B | документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP |
@@ -1213,7 +1213,7 @@
 | №1192 PROJECT_ATLAS.txt | генерируется | человекочитаемая карта репозитория |
 | №1193 README.md | 145 B | документация или отчёт: README |
 | №1194 release-staging/unity-android-approval.json | 470 B | данные/конфигурация: unity android approval |
-| №1195 release-staging/unity-paired-approval.json | 1851 B | данные/конфигурация: unity paired approval |
+| №1195 release-staging/unity-paired-approval.json | 1515 B | данные/конфигурация: unity paired approval |
 | №1196 release-staging/unity-release.json | 3914 B | данные/конфигурация: unity release |
 | №1197 smoke_back_v2_sprite-1.png | 1707378 B | текстура/изображение: smoke back v2 sprite 1 |
 | №1198 smoke_back_v2_sprite.png | 1814587 B | текстура/изображение: smoke back v2 sprite |
@@ -1825,7 +1825,7 @@
 | №1804 unity/Assets/Vtt/Editor/LegacyMigrationSetup.cs.meta | 59 B | вспомогательный файл: LegacyMigrationSetup.cs |
 | №1805 unity/Assets/Vtt/Editor/PrototypeSetup.cs | 7704 B | вспомогательный файл: PrototypeSetup |
 | №1806 unity/Assets/Vtt/Editor/PrototypeSetup.cs.meta | 59 B | вспомогательный файл: PrototypeSetup.cs |
-| №1807 unity/Assets/Vtt/Editor/UnityReleaseBuild.cs | 16960 B | вспомогательный файл: UnityReleaseBuild |
+| №1807 unity/Assets/Vtt/Editor/UnityReleaseBuild.cs | 17569 B | вспомогательный файл: UnityReleaseBuild |
 | №1808 unity/Assets/Vtt/Editor/UnityReleaseBuild.cs.meta | 60 B | вспомогательный файл: UnityReleaseBuild.cs |
 | №1809 unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs | 3632 B | вспомогательный файл: WorkshopBundleBuild |
 | №1810 unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs.meta | 60 B | вспомогательный файл: WorkshopBundleBuild.cs |
@@ -1834,12 +1834,12 @@
 | №1813 unity/Assets/Vtt/Resources.meta | 172 B | вспомогательный файл: Resources |
 | №1814 unity/Assets/Vtt/Resources/Branding.meta | 172 B | вспомогательный файл: Branding |
 | №1815 unity/Assets/Vtt/Resources/Branding/Dragon20.png | 1284815 B | текстура/изображение: Dragon20 |
-| №1816 unity/Assets/Vtt/Resources/Branding/Dragon20.png.meta | 312 B | вспомогательный файл: Dragon20.png |
+| №1816 unity/Assets/Vtt/Resources/Branding/Dragon20.png.meta | 886 B | вспомогательный файл: Dragon20.png |
 | №1817 unity/Assets/Vtt/Resources/Branding/Splash19.png | 8605503 B | текстура/изображение: Splash19 |
-| №1818 unity/Assets/Vtt/Resources/Branding/Splash19.png.meta | 312 B | вспомогательный файл: Splash19.png |
+| №1818 unity/Assets/Vtt/Resources/Branding/Splash19.png.meta | 886 B | вспомогательный файл: Splash19.png |
 | №1819 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg | 212684 B | текстура/изображение: Wallpaper16 |
-| №1820 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta | 312 B | вспомогательный файл: Wallpaper16.jpg |
-| №1821 unity/Assets/Vtt/Resources/Changelog.json | 52387 B | данные/конфигурация: Changelog |
+| №1820 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta | 886 B | вспомогательный файл: Wallpaper16.jpg |
+| №1821 unity/Assets/Vtt/Resources/Changelog.json | 52389 B | данные/конфигурация: Changelog |
 | №1822 unity/Assets/Vtt/Resources/Changelog.json.meta | 158 B | вспомогательный файл: Changelog.json |
 | №1823 unity/Assets/Vtt/Resources/CharacterSheet.meta | 172 B | вспомогательный файл: CharacterSheet |
 | №1824 unity/Assets/Vtt/Resources/CharacterSheet/advancement.json | 260278 B | данные/конфигурация: advancement |
@@ -1876,8 +1876,8 @@
 | №1855 unity/Assets/Vtt/Resources/UI/DejaVuSans.ttf | 759720 B | вспомогательный файл: DejaVuSans |
 | №1856 unity/Assets/Vtt/Resources/UI/DejaVuSans.ttf.meta | 496 B | вспомогательный файл: DejaVuSans.ttf |
 | №1857 unity/Assets/Vtt/Resources/UI/Parchment.png | 1460744 B | текстура/изображение: Parchment |
-| №1858 unity/Assets/Vtt/Resources/UI/Parchment.png.meta | 312 B | вспомогательный файл: Parchment.png |
-| №1859 unity/Assets/Vtt/Resources/UI/PlayfairDisplay-OFL.txt | 4449 B | документация или отчёт: PlayfairDisplay OFL |
+| №1858 unity/Assets/Vtt/Resources/UI/Parchment.png.meta | 886 B | вспомогательный файл: Parchment.png |
+| №1859 unity/Assets/Vtt/Resources/UI/PlayfairDisplay-OFL.txt | 4448 B | документация или отчёт: PlayfairDisplay OFL |
 | №1860 unity/Assets/Vtt/Resources/UI/PlayfairDisplay-OFL.txt.meta | 60 B | вспомогательный файл: PlayfairDisplay OFL.txt |
 | №1861 unity/Assets/Vtt/Resources/UI/PlayfairDisplay-Regular.ttf | 300724 B | вспомогательный файл: PlayfairDisplay Regular |
 | №1862 unity/Assets/Vtt/Resources/UI/PlayfairDisplay-Regular.ttf.meta | 575 B | вспомогательный файл: PlayfairDisplay Regular.ttf |
@@ -1906,7 +1906,7 @@
 | №1885 unity/Assets/Vtt/Runtime/CloudCharacterProtocol.cs.meta | 60 B | вспомогательный файл: CloudCharacterProtocol.cs |
 | №1886 unity/Assets/Vtt/Runtime/CommerceRules.cs | 19387 B | вспомогательный файл: CommerceRules |
 | №1887 unity/Assets/Vtt/Runtime/CommerceRules.cs.meta | 60 B | вспомогательный файл: CommerceRules.cs |
-| №1888 unity/Assets/Vtt/Runtime/DesktopUiSmoke.cs | 50173 B | вспомогательный файл: DesktopUiSmoke |
+| №1888 unity/Assets/Vtt/Runtime/DesktopUiSmoke.cs | 54383 B | вспомогательный файл: DesktopUiSmoke |
 | №1889 unity/Assets/Vtt/Runtime/DesktopUiSmoke.cs.meta | 60 B | вспомогательный файл: DesktopUiSmoke.cs |
 | №1890 unity/Assets/Vtt/Runtime/DiceGeometry.cs | 7902 B | вспомогательный файл: DiceGeometry |
 | №1891 unity/Assets/Vtt/Runtime/DiceGeometry.cs.meta | 60 B | вспомогательный файл: DiceGeometry.cs |
@@ -1952,7 +1952,7 @@
 | №1931 unity/Assets/Vtt/Runtime/LegacySessionPanel.CharacterStudio.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.CharacterStudio.cs |
 | №1932 unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs | 11327 B | вспомогательный файл: LegacySessionPanel.Chat |
 | №1933 unity/Assets/Vtt/Runtime/LegacySessionPanel.Chat.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Chat.cs |
-| №1934 unity/Assets/Vtt/Runtime/LegacySessionPanel.ClassicSheet.cs | 35323 B | вспомогательный файл: LegacySessionPanel.ClassicSheet |
+| №1934 unity/Assets/Vtt/Runtime/LegacySessionPanel.ClassicSheet.cs | 34450 B | вспомогательный файл: LegacySessionPanel.ClassicSheet |
 | №1935 unity/Assets/Vtt/Runtime/LegacySessionPanel.ClassicSheet.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.ClassicSheet.cs |
 | №1936 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs | 18680 B | вспомогательный файл: LegacySessionPanel.Commerce |
 | №1937 unity/Assets/Vtt/Runtime/LegacySessionPanel.Commerce.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Commerce.cs |
@@ -1970,13 +1970,13 @@
 | №1949 unity/Assets/Vtt/Runtime/LegacySessionPanel.DiceControls.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.DiceControls.cs |
 | №1950 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs | 36120 B | вспомогательный файл: LegacySessionPanel.FrontEnd |
 | №1951 unity/Assets/Vtt/Runtime/LegacySessionPanel.FrontEnd.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.FrontEnd.cs |
-| №1952 unity/Assets/Vtt/Runtime/LegacySessionPanel.HeroArt.cs | 7689 B | вспомогательный файл: LegacySessionPanel.HeroArt |
+| №1952 unity/Assets/Vtt/Runtime/LegacySessionPanel.HeroArt.cs | 7671 B | вспомогательный файл: LegacySessionPanel.HeroArt |
 | №1953 unity/Assets/Vtt/Runtime/LegacySessionPanel.HeroArt.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.HeroArt.cs |
 | №1954 unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs | 16332 B | вспомогательный файл: LegacySessionPanel.Moderation |
 | №1955 unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Moderation.cs |
 | №1956 unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs | 9768 B | вспомогательный файл: LegacySessionPanel.Settings |
 | №1957 unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.Settings.cs |
-| №1958 unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs | 21061 B | вспомогательный файл: LegacySessionPanel.Sheet |
+| №1958 unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs | 21608 B | вспомогательный файл: LegacySessionPanel.Sheet |
 | №1959 unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.Sheet.cs |
 | №1960 unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs | 8569 B | вспомогательный файл: LegacySessionPanel.SheetSkin |
 | №1961 unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.SheetSkin.cs |
@@ -2099,8 +2099,8 @@
 | №2078 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №2079 updates/README.md | 233 B | документация или отчёт: README |
 | №2080 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №2081 updates/unity-changelog.json | 52387 B | метаданные обновлений: unity changelog |
-| №2082 updates/unity-experiment.json | 1813 B | метаданные обновлений: unity experiment |
+| №2081 updates/unity-changelog.json | 52389 B | метаданные обновлений: unity changelog |
+| №2082 updates/unity-experiment.json | 2027 B | метаданные обновлений: unity experiment |
 | №2083 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №2084 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
 | №2085 wall_brick_red.png | 111128 B | текстура/изображение: wall brick red |
