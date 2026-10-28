@@ -68,9 +68,9 @@ namespace DndVtt.UnityPrototype
         }
         // Nine-sliced curved edges: the WebView source uses rounded buttons,
         // not the flat square IMGUI controls accidentally shipped in 1.00.04.
-        private Texture2D Rounded(Color fill, Color edge, int radius = 12)
+        private Texture2D Rounded(Color fill, Color edge, int radius = 7)
         {
-            const int size = 48; const int border = 2;
+            const int size = 48; const int border = 1;
             var texture = new Texture2D(size, size, TextureFormat.RGBA32, false);
             texture.hideFlags = HideFlags.HideAndDontSave;
             brandStyleTextures.Add(texture);
@@ -92,7 +92,7 @@ namespace DndVtt.UnityPrototype
         private GUIStyle Button(GUIStyle from, Color color, Color foreground)
         {
             var b = new GUIStyle(from);
-            b.normal.background = Rounded(color, new Color(.44f,.42f,.37f,.72f));
+            b.normal.background = Rounded(color, new Color(.30f,.29f,.27f,.85f));
             b.hover.background = Rounded(Color.Lerp(color, Color.white, .12f), new Color(.80f,.71f,.50f,.95f));
             b.active.background = b.hover.background;
             b.focused.background = b.hover.background;
@@ -100,7 +100,7 @@ namespace DndVtt.UnityPrototype
             b.normal.textColor = foreground; b.hover.textColor = foreground;
             b.active.textColor = foreground;
             b.alignment = TextAnchor.MiddleCenter; b.fontStyle = FontStyle.Bold;
-            b.font = MenuFont; b.fontSize = 19; b.wordWrap = true;
+            b.font = MenuFont; b.fontSize = 17; b.wordWrap = true;
             b.padding = new RectOffset(7, 7, 7, 7);
             b.border = new RectOffset(16, 16, 16, 16);
             return b;

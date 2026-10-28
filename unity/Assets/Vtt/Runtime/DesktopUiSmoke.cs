@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Reflection;
+using System.Linq;
 using UnityEngine;
 using Newtonsoft.Json.Linq;
 
@@ -14,10 +15,13 @@ namespace DndVtt.UnityPrototype
         public static bool HideText, PortraitLayout;
         static bool running;
         static int buttonChecks, clippedButtons;
+        static readonly System.Collections.Generic.Dictionary<string,Vector2> buttonPoints=new System.Collections.Generic.Dictionary<string,Vector2>();
         public static void RecordButton(string label, GUIStyle style, Rect rect)
         {
             if (!running || Event.current.type != EventType.Repaint) return;
             buttonChecks++;
+            Vector2 point=GUIUtility.GUIToScreenPoint(rect.center);
+            if(point.x>=0&&point.y>=0&&point.x<Screen.width&&point.y<Screen.height)buttonPoints[label]=point;
             float needed = style.CalcHeight(new GUIContent(label), rect.width);
             if (needed > rect.height + 1 || !style.wordWrap && style.CalcSize(new GUIContent(label)).x > rect.width + 1)
             {
@@ -50,6 +54,47 @@ namespace DndVtt.UnityPrototype
         static extern IntPtr FindWindow(string kind, string title);
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         static extern bool PostMessage(IntPtr window, uint message, IntPtr first, IntPtr second);
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        struct NativePoint{public int x,y;}
+        [System.Runtime.InteropServices.DllImport("user32.dll")] static extern IntPtr GetActiveWindow();
+        [System.Runtime.InteropServices.DllImport("user32.dll")] static extern bool SetForegroundWindow(IntPtr window);
+        [System.Runtime.InteropServices.DllImport("user32.dll")] static extern bool ClientToScreen(IntPtr window,ref NativePoint point);
+        [System.Runtime.InteropServices.DllImport("user32.dll")] static extern bool SetCursorPos(int x,int y);
+        [System.Runtime.InteropServices.DllImport("user32.dll")] static extern void mouse_event(uint flags,uint dx,uint dy,uint data,UIntPtr extra);
+        IEnumerator ClickNativeButton(string label)
+        {
+            IntPtr window=IntPtr.Zero;
+            try{window=GetActiveWindow();if(window==IntPtr.Zero)window=FindWindow("UnityWndClass",null);Check(window!=IntPtr.Zero,"Unity window for pointer input");SetForegroundWindow(window);}
+            catch(Exception error){Fail(error);yield break;}
+            yield return new WaitForSecondsRealtime(.3f);
+            yield return new WaitForEndOfFrame();
+            try
+            {
+                // Derive the hit target from the actual GPU image. GUIToScreenPoint
+                // includes a Wine/IMGUI scroll offset and is not a client coordinate.
+                Check(buttonPoints.ContainsKey(label),"visible native click target "+label);
+                bool red=label=="− Урон";Check(red||label=="+ Заметка","supported visual pointer target");
+                var capture=ScreenCapture.CaptureScreenshotAsTexture();
+                int minX=Screen.width,minY=Screen.height,maxX=-1,maxY=-1,hits=0;
+                try
+                {
+                    var pixels=capture.GetPixels32();
+                    for(int y=80;y<capture.height;y++)for(int x=15;x<capture.width-15;x++)
+                    {
+                        var c=pixels[y*capture.width+x];
+                        bool match=red?c.r>75&&c.r<180&&c.g<75&&c.b<90&&c.r>c.g*2&&c.r>c.b*1.6f:c.g>65&&c.g<150&&c.r<70&&c.b<c.g*.9f&&c.g>c.r*1.6f;
+                        if(!match)continue;hits++;minX=Math.Min(minX,x);maxX=Math.Max(maxX,x);minY=Math.Min(minY,y);maxY=Math.Max(maxY,y);
+                    }
+                }
+                finally{Destroy(capture);}
+                Check(hits>500&&maxX-minX>40&&maxY-minY>30&&maxY-minY<130,"unique compact visible button color "+label+" bounds="+minX+","+minY+".."+maxX+","+maxY);
+                var point=new Vector2((minX+maxX)/2f,Screen.height-1-(minY+maxY)/2f);
+                var native=new NativePoint{x=(int)point.x,y=(int)point.y};Check(ClientToScreen(window,ref native),"client-to-screen pointer");Check(SetCursorPos(native.x,native.y),"native pointer position");Debug.Log("VTT_NATIVE_POINTER: "+label+" gui="+point+" native="+native.x+","+native.y+" viewport="+Screen.width+","+Screen.height);
+            }
+            catch(Exception error){Fail(error);yield break;}
+            yield return new WaitForSecondsRealtime(.12f);mouse_event(2,0,0,0,UIntPtr.Zero);yield return new WaitForSecondsRealtime(.12f);
+            mouse_event(4,0,0,0,UIntPtr.Zero);yield return new WaitForSecondsRealtime(.2f);
+        }
         static void CheckDialogCancellation(bool save, bool art = false)
         {
             bool found = false;
@@ -123,6 +168,8 @@ namespace DndVtt.UnityPrototype
                 // Optional QA-copy override; released players resolve the bundled Resources asset.
                 int advancementAt=Array.IndexOf(args,"--vtt-advancement-catalog");
                 if(advancementAt>=0){Check(advancementAt+1<args.Length,"explicit QA advancement path");Field("advancementCatalog",JObject.Parse(File.ReadAllText(args[advancementAt+1])));}
+                int parchmentAt=Array.IndexOf(args,"--vtt-sheet-parchment");
+                if(parchmentAt>=0){var texture=new Texture2D(2,2);Check(texture.LoadImage(File.ReadAllBytes(args[parchmentAt+1])),"QA parchment source decode");Field("sheetParchment",texture);}
                 Field("brandSplashActive", false);
                 CheckHeroArt();
                 Check(SystemInfo.graphicsDeviceType != UnityEngine.Rendering.GraphicsDeviceType.Null, "real graphics device");
@@ -240,8 +287,8 @@ namespace DndVtt.UnityPrototype
             }
             catch (Exception error) { Fail(error); yield break; }
             yield return Frame("sheet-long-name-portrait"); if (failed) yield break;
-            Field("heroArt3D",true);yield return Frame("hero-3d-coming-soon-portrait");if(failed)yield break;
-            Field("heroArt3D",false);Field("sheetActionsOpen",true);yield return Frame("hero-actions-portrait");if(failed)yield break;
+            Field("classicPortraitOpen",true);Field("heroArt3D",true);yield return Frame("hero-3d-coming-soon-portrait");if(failed)yield break;
+            Field("heroArt3D",false);Field("classicPortraitOpen",false);Field("sheetActionsOpen",true);yield return Frame("hero-actions-portrait");if(failed)yield break;
             Field("sheetActionsOpen",false);Field("frontScroll",new Vector2(0,650));yield return Frame("hero-details-portrait");if(failed)yield break;
             Field("frontScroll",new Vector2(0,1800));yield return Frame("hero-stats-portrait");if(failed)yield break;
             Field("frontScroll",Vector2.zero);
@@ -356,6 +403,73 @@ namespace DndVtt.UnityPrototype
                 Field("archive",advancementBefore);Field("profileStoreOverride",advancementStore);Call("ClearSheetInputs");
             }
             catch(Exception error){Fail(error);yield break;}
+            // Full WebView-shaped sheet: render purity and actual OS-pointer actions.
+            LegacyCharacterArchive classicBefore=null;string classicStore=null,classicDisk=null;int classicSelected=0;
+            try
+            {
+                classicBefore=(LegacyCharacterArchive)typeof(LegacySessionPanel).GetField("archive",Flags).GetValue(panel);classicStore=(string)typeof(LegacySessionPanel).GetField("profileStoreOverride",Flags).GetValue(panel);classicSelected=(int)typeof(LegacySessionPanel).GetField("selected",Flags).GetValue(panel);
+                var fixture=JObject.Parse("{\"id\": \"ui-sample\", \"schemaVersion\": 3, \"name\": \"Элеонора Серебряная\", \"class\": \"Воин 2\", \"className\": \"Воин\", \"level\": 2, \"classes\": [{\"name\": \"Воин\", \"level\": 2}], \"raceName\": \"Человек\", \"race\": \"Человек\", \"background\": \"Солдат\", \"stats\": {\"str\": 16, \"dex\": 14, \"con\": 14, \"int\": 12, \"wis\": 10, \"cha\": 8}, \"hpMax\": 20, \"hpCurrent\": 12, \"hpTemp\": 3, \"exp\": 500, \"speed\": \"30 футов\", \"ac\": 16, \"skillsData\": {\"athletics\": 1, \"perception\": 1}, \"savesData\": {\"str\": true, \"con\": true}, \"features\": [\"Второе дыхание\", \"Всплеск действий\"], \"resources\": {\"ki\": {\"name\": \"Ци\", \"max\": 2, \"current\": 1, \"recharge\": \"short\", \"future\": 17}}, \"classFeaturesState\": {}, \"combatAbilities\": [{\"id\": \"wind\", \"name\": \"Второе дыхание\", \"description\": \"Восстановление здоровья учитывает игрок.\", \"maxUses\": 1, \"usedCount\": 0, \"rechargeOn\": \"short\"}], \"spellsData\": [{\"id\": \"light\", \"name\": \"Свет\", \"level\": 0, \"desc\": \"Касание предмета. Яркий свет20футов, тусклый ещё20.\", \"prepared\": true}], \"spellSlotsData\": {\"1\": {\"max\": 3, \"used\": 1, \"future\": 17}}, \"inventory\": {\"weapons\": [], \"armor\": [], \"consumables\": [], \"materials\": [], \"junk\": []}, \"folders\": [{\"id\": \"f1\", \"name\": \"Приключение\", \"notes\": [{\"id\": 1, \"title\": \"Следующая сессия\", \"text\": \"Найти ключ от северных ворот.\\nНе доверять трактирщику.\"}], \"future\": 17}], \"activeFolderId\": \"f1\", \"coins\": {\"gp\": 32, \"sp\": 5, \"cp\": 0}, \"combatAbilityStat\": \"str\", \"spellStat\": \"int\", \"unknown\": {\"future\": 17}}");var other=new JObject{["id"]="other-sheet-hero",["name"]="Другой герой",["future"]=true};
+                Field("archive",new LegacyCharacterArchive(new JObject{["characters"]=new JArray(fixture,other),["metadata"]=17}.ToString()));Field("selected",0);Field("profileStoreOverride",Path.Combine(folder,"classic-sheet-qa.json"));
+                var type=typeof(LegacySessionPanel).GetNestedType("FrontScreen",BindingFlags.NonPublic);Call("Navigate",Enum.Parse(type,"Sheet"));Field("sheetTab",0);panel.SaveSheet();classicDisk=File.ReadAllText(panel.SavePath);
+            }
+            catch(Exception error){Fail(error);yield break;}
+            try
+            {
+                var session=(NumericInputSession)typeof(LegacySessionPanel).GetField("numericSession",Flags).GetValue(panel);
+                var synthetic=CharacterSheetStore.Load(panel.SavePath).Snapshot(0);string owner="classic:"+synthetic["id"]+":hpCurrent";
+                session.Begin(owner);session.Stage(owner,"7");
+                typeof(LegacySessionPanel).GetMethod("FlushHealthInputs",Flags).Invoke(panel,new object[]{synthetic,false});
+                Check((int)synthetic["hpCurrent"]==7&&!session.TryTake(owner,out _)&&session.Owner==null,"health action consumes pending native digits and closes owner");
+                CharacterSheetRules.RecordRest(synthetic,true);Check((int)synthetic["hpCurrent"]==20&&!session.TryTake(owner,out _),"rest cannot replay stale native HP on next frame");
+            }
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("classic-hero-portrait");if(failed)yield break;
+            try{Check(File.ReadAllText(panel.SavePath)==classicDisk,"rendering Hero cannot rewrite profile");Field("frontScroll",new Vector2(0,200));}
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("classic-health-portrait");if(failed)yield break;
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+            yield return ClickNativeButton("− Урон");if(failed)yield break;
+            try
+            {
+                var saved=CharacterSheetStore.Load(panel.SavePath);Check((int)saved.Snapshot(0)["hpTemp"]==2&&(int)saved.Snapshot(0)["hpCurrent"]==12,"actual damage button spends temp HP and persists");
+                Check((bool)saved.Snapshot(1)["future"]&&(int)JObject.Parse(saved.Export())["metadata"]==17,"pointer action preserves other hero/wrapper");classicDisk=File.ReadAllText(panel.SavePath);
+            }
+            catch(Exception error){Fail(error);yield break;}
+#endif
+            try{Field("sheetTab",1);Field("frontScroll",Vector2.zero);}
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("classic-skills-portrait");if(failed)yield break;
+            try{Check(File.ReadAllText(panel.SavePath)==classicDisk,"rendering Skills cannot rewrite profile");Field("sheetTab",4);Field("frontScroll",Vector2.zero);}
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("classic-notes-portrait");if(failed)yield break;
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+            yield return ClickNativeButton("+ Заметка");if(failed)yield break;
+            try{var saved=CharacterSheetStore.Load(panel.SavePath).Snapshot(0);Check(((JArray)saved["folders"][0]["notes"]).Count==2&&(int)saved["folders"][0]["future"]==17,"actual add-note button saves without losing folder fields");classicDisk=File.ReadAllText(panel.SavePath);}
+            catch(Exception error){Fail(error);yield break;}
+#endif
+            try{Field("sheetTab",2);Field("frontScroll",Vector2.zero);}
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("classic-abilities-portrait");if(failed)yield break;
+            Field("frontScroll",new Vector2(0,800));yield return Frame("classic-resources-portrait");if(failed)yield break;
+            try{Check(File.ReadAllText(panel.SavePath)==classicDisk,"rendering spells/resources cannot rewrite profile");Field("sheetTab",0);Field("frontScroll",Vector2.zero);}
+            catch(Exception error){Fail(error);yield break;}
+            Screen.SetResolution(360,800,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);
+            yield return Frame("classic-hero-narrow-portrait");if(failed)yield break;
+            PortraitLayout=false;Screen.SetResolution(1280,900,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);
+            yield return Frame("classic-hero-desktop");if(failed)yield break;
+            try
+            {
+                var unsupported=((LegacyCharacterArchive)typeof(LegacySessionPanel).GetField("archive",Flags).GetValue(panel)).DetachedCopy();var hero=unsupported.Snapshot(0);
+                hero["combatAbilities"][0]["maxUses"]="PB";hero["spellSlotsData"]["1"]["max"]=new JObject{["future"]=17};hero["pactMagicData"]=new JObject{["max"]="PB",["used"]=0};
+                unsupported.Replace(0,hero);Field("archive",unsupported);Field("sheetTab",2);Field("frontScroll",Vector2.zero);
+            }
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("classic-unsupported-counters-desktop");if(failed)yield break;
+            Field("requestedSheetTab",(int?)0);yield return new WaitForSecondsRealtime(.3f);
+            try{Check((int)typeof(LegacySessionPanel).GetField("sheetTab",Flags).GetValue(panel)==0,"unsupported counter cannot trap tab navigation");Check(File.ReadAllText(panel.SavePath)==classicDisk,"unsupported counter rendering never overwrites archive");}
+            catch(Exception error){Fail(error);yield break;}
+            try{Field("archive",classicBefore);Field("profileStoreOverride",classicStore);Field("selected",classicSelected);Call("ClearSheetInputs");Debug.Log("VTT_CLASSIC_SHEET_UI_PASS: synthetic render purity, actual OS pointer damage/add-note, disk reload/other-hero/wrapper invariants; portrait/narrow/desktop frames");}
+            catch(Exception error){Fail(error);yield break;}
             PortraitLayout = false;
             try { Check(buttonChecks > 12 && clippedButtons == 0, "navigation/back labels checked at desktop and portrait widths"); Call("OpenSettings"); }
             catch (Exception error) { Fail(error); yield break; }
@@ -378,7 +492,17 @@ namespace DndVtt.UnityPrototype
         bool failed;
         IEnumerator Frame(string name)
         {
-            HideText = false; yield return null; yield return new WaitForEndOfFrame();
+            HideText=false;
+            // Word-wrapped IMGUI controls need settled Layout/Repaint passes after a
+            // viewport/tab change. Do not capture a stale first-pass layout.
+            string last=null;int stable=0;
+            for(int i=0;i<60&&stable<3;i++)
+            {
+                yield return null;
+                string signature=string.Join(";",System.Linq.Enumerable.OrderBy(buttonPoints,p=>p.Key).Select(p=>p.Key+":"+Mathf.RoundToInt(p.Value.x)+","+Mathf.RoundToInt(p.Value.y)));
+                stable=signature==last?stable+1:0;last=signature;
+            }
+            yield return new WaitForEndOfFrame();
             var visible = ScreenCapture.CaptureScreenshotAsTexture();
             HideText = true; yield return null; yield return new WaitForEndOfFrame();
             var hidden = ScreenCapture.CaptureScreenshotAsTexture(); HideText = false;

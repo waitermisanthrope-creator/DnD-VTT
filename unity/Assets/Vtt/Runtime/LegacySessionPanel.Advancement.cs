@@ -35,18 +35,6 @@ namespace DndVtt.UnityPrototype
             CharacterSheetStore.Save(SavePath,candidate);archive=candidate;
             advancementSignature=HeroSignature(updated);edits.Clear();status="Сохранено на устройстве";
         }
-        private void DrawProgressionSummary(JObject hero)
-        {
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Развитие персонажа");
-            int level=AdvancementTotal(hero);long xp=DisplayExperience(hero);
-            GUILayout.Label("Уровень "+level+" · опыт "+xp,sheetCharacterName);
-            if(level<20){long next=(long)AdvancementCatalog["xp"][Math.Min(19,level)];GUILayout.Label(xp>=next?"Доступно повышение уровня":"До следующего уровня: "+Math.Max(0,next-xp)+" опыта",sheetQuiet);}
-            else GUILayout.Label("Достигнут 20-й уровень",sheetQuiet);
-            foreach(JObject cls in (hero["classes"] as JArray??new JArray()).OfType<JObject>())GUILayout.Label(cls["name"]+" · "+cls["level"]+" ур."+(string.IsNullOrEmpty((string)cls["subclass"])?"":" · "+cls["subclass"]),sheetQuiet);
-            if(FitMenuButton("Опыт…"))BeginAdvancement(hero,true);
-            if(level<20&&FitMenuButton("Повысить уровень…"))BeginAdvancement(hero,false);
-            GUILayout.EndVertical();
-        }
         private long ReadExperience(string value)
         {if(!long.TryParse(value,NumberStyles.None,CultureInfo.InvariantCulture,out long n)||n<0)throw new FormatException("Введите целое неотрицательное количество опыта");return n;}
         private void FlushAdvancementNumbers()
@@ -171,7 +159,7 @@ namespace DndVtt.UnityPrototype
                 FlushAdvancementNumbers();var next=CharacterAdvancement.Experience(hero,ReadExperience(experienceAmount),action);PublishAdvancement(hero,next);experienceTotal=CharacterAdvancement.CurrentExperience(next).ToString();experienceAmount="0";
             });
             GUILayout.Label("Опыт не повышает и не понижает класс автоматически. Каждое повышение подтверждается отдельно.",sheetQuiet);
-            if(level<20&&CharacterAdvancement.LevelByExperience(AdvancementCatalog,current)>level&&FitMenuButton("Повысить уровень…")){ResetFormInput();experienceOpen=false;advancementMilestone=false;frontScroll=Vector2.zero;}
+            if(level<20&&FitMenuButton("Повысить уровень…")){ResetFormInput();experienceOpen=false;advancementMilestone=false;frontScroll=Vector2.zero;}
         }
     }
 }

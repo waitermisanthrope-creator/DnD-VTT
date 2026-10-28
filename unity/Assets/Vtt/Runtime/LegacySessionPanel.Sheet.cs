@@ -22,16 +22,10 @@ namespace DndVtt.UnityPrototype
         private bool showItemCatalog;
         private string deletePath, deleteSignature, deleteCharacter, deleteLabel;
         private readonly string[] tabs = { "Герой", "Навыки", "Способности", "Инвентарь", "Заметки", "Дайсы", "Данные", "Кошелёк", "Паспорт", "Лор / Бестиарий" };
-        private void ClearSheetInputs() { CloseAdvancement(); technicalDataOpen=false; heroArt3D=false; sheetActionsOpen=false; edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
+        private void ClearSheetInputs() { CloseAdvancement(); classicPortraitOpen=classicProfileEdit=false;healthAmount="1";notesQuery="";pendingBaseRest=null;technicalDataOpen=false; heroArt3D=false; sheetActionsOpen=false; edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
         private void Attempt(Action action)
         {
             try { action(); } catch (Exception error) { status = error.Message; }
-        }
-        private void DrawSheetCharacterSwitch()
-        {
-            if (archive.Count <= 1) return;
-            if (GUILayout.Button("←", GUILayout.Width(52), GUILayout.MinHeight(48))) { selected=(selected+archive.Count-1)%archive.Count; ClearSheetInputs(); }
-            if (GUILayout.Button("→", GUILayout.Width(52), GUILayout.MinHeight(48))) { selected=(selected+1)%archive.Count; ClearSheetInputs(); }
         }
         private void DrawSheet()
         {
@@ -41,28 +35,9 @@ namespace DndVtt.UnityPrototype
                 if (GUILayout.Button("Создать персонажа", GUILayout.Height(52))) BeginCreation();
                 DrawImportAndMap(); return;
             }
-            bool portraitLayout = UiHeight > UiWidth;
-            if (portraitLayout) GUILayout.Label(archive.Name(selected), sheetCharacterName);
-            else
-            {
-                GUILayout.BeginHorizontal();
-                GUILayout.Label(archive.Name(selected), sheetHeading);
-                DrawSheetCharacterSwitch();
-                GUILayout.EndHorizontal();
-            }
-            GUILayout.BeginHorizontal();
-            if (portraitLayout) DrawSheetCharacterSwitch();
-            if (MeasuredMenuButton("Сохранить", brandGreen, GUILayout.MinHeight(56))) Attempt(() => { SaveSheet(); status="Сохранено на устройстве"; });
-            if (MeasuredMenuButton("Ещё", sheetActionsOpen ? brandBlue : GUI.skin.button, GUILayout.Width(100), GUILayout.MinHeight(56))) sheetActionsOpen=!sheetActionsOpen;
-            GUILayout.EndHorizontal();
-            if(sheetActionsOpen)
-            {
-                if (MeasuredMenuButton("Копировать весь архив", GUI.skin.button, GUILayout.MinHeight(54))) { GUIUtility.systemCopyBuffer=archive.Export(); status="Весь архив скопирован"; }
-                if (MeasuredMenuButton("Сохранить архив в файл…", GUI.skin.button, GUILayout.MinHeight(54))) Attempt(() => PickCharacterFile(true));
-                GUILayout.Label("Архив включает всех героев и их арт.",sheetQuiet);
-            }
-            if(advancementOpen){DrawAdvancement(archive.Snapshot(selected));return;}
-            int next = HorizontalTabs(sheetTab, tabs, ref sheetTabsScroll);
+            if(advancementOpen){if(requestedSheetTab.HasValue){CloseAdvancement();sheetTab=requestedSheetTab.Value;requestedSheetTab=null;}else{GUILayout.BeginVertical(ClassicLegacySurface);DrawAdvancement(archive.Snapshot(selected));GUILayout.EndVertical();}FinishSheetNavigation();return;}
+            int next = requestedSheetTab??sheetTab;requestedSheetTab=null;
+            if(next!=sheetTab||requestedSheetCharacter.HasValue||requestedSheetDestination.HasValue)CompleteNumericKeyboard();
             // Render/save the old tab once before committing a tab transition.
             JObject hero = archive.Snapshot(selected); bool changed = false, persistWallet = false, persistCommerce = false;
             if (deletePath != null)
@@ -82,25 +57,16 @@ namespace DndVtt.UnityPrototype
                 });
                 GUILayout.EndHorizontal(); return;
             }
+            bool legacySurface=sheetTab>=5;
+            if(legacySurface)GUILayout.BeginVertical(ClassicLegacySurface);
             switch (sheetTab)
             {
-                case 0: Hero(hero, ref changed); break;
-                case 1: GUILayout.BeginVertical(GUI.skin.box); SheetSection("Навыки"); Skills(hero, ref changed); GUILayout.EndVertical(); DrawCharacterFeats(hero, ref changed); break;
-                case 2:
-                    GUILayout.Label("Редактор записей. Автоматическое исполнение классовых эффектов и расход действий ещё переносится.");
-                    Scalar(hero, "spellStat", "Характеристика заклинаний", ref changed, "int");
-                    string stat = (string)hero["spellStat"] ?? "int";
-                    int attack = CharacterSheetRules.Modifier(hero, stat) + CharacterSheetRules.Proficiency(hero);
-                    GUILayout.Label("Базовая СЛ заклинаний: " + (8 + attack) + " · атака: " + Signed(attack));
-                    Collection(hero, "combatAbilities", "Приёмы", () => new JObject { ["id"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(), ["name"] = "Новый приём", ["description"] = "", ["rechargeOn"] = "none", ["maxUses"] = 0, ["usedCount"] = 0 }, ref changed);
-                    Collection(hero, "spellsData", "Заклинания и фокусы", () => new JObject { ["id"] = Guid.NewGuid().ToString(), ["name"] = "Новое заклинание", ["level"] = 0, ["desc"] = "", ["prepared"] = false }, ref changed);
-                    SpellSlots(hero, ref changed);
-                    SpellCatalog(hero, ref changed);
-                    Tree(hero, "resources", "Ресурсы — ручной учёт", ref changed);
-                    ReadOnly(hero, "classFeaturesState", "Состояние классовых эффектов"); break;
+                case 0: ClassicHero(hero, ref changed); break;
+                case 1: ClassicSkills(hero, ref changed); if(SheetFold("edit-feats","Черты и владения"))DrawCharacterFeats(hero, ref changed); break;
+                case 2: ClassicAbilities(hero,ref changed);break;
                 case 3: DrawCommerceInventory(hero, ref changed, ref persistCommerce); break;
                 case 4:
-                    Collection(hero, "folders", "Папки заметок", () => new JObject { ["id"] = "f_" + Guid.NewGuid(), ["name"] = "Новая папка", ["notes"] = new JArray() }, ref changed); break;
+                    ClassicNotes(hero,ref changed); break;
                 case 5: DrawDiceTable(); break;
                 case 7: Wallet(hero, ref changed, ref persistWallet); break;
                 case 9: DrawLore(hero, ref changed); break;
@@ -115,6 +81,7 @@ namespace DndVtt.UnityPrototype
                     if(FitMenuButton(technicalDataOpen?"Скрыть технический редактор":"Технический редактор…")){ResetFormInput();technicalDataOpen=!technicalDataOpen;}
                     if(technicalDataOpen){GUILayout.Label("Полный документ. Неизвестные поля сохраняются; ID защищены.",sheetQuiet);EditToken(hero,"raw",0,ref changed);}break;
             }
+            if(legacySurface)GUILayout.EndVertical();
             if (changed) Attempt(() =>
             {
                 if (persistWallet || persistCommerce)
@@ -131,106 +98,10 @@ namespace DndVtt.UnityPrototype
                     status = "Изменения сохранены на устройстве";
                 }
             });
-            if(next!=sheetTab){ResetFormInput();sheetTab=next;}
-        }
-        private void Hero(JObject hero, ref bool changed)
-        {
-            DrawProgressionSummary(hero);
-            if(advancementOpen)return;
-            string classesBefore=hero["classes"]?.ToString(Newtonsoft.Json.Formatting.None);
-            bool wide=UiWidth>=900;
-            if(wide){GUILayout.BeginHorizontal();GUILayout.BeginVertical(GUILayout.Width(310));}
-            DrawHeroArt(hero);
-            if(wide){GUILayout.EndVertical();GUILayout.BeginVertical();}
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("О герое");
-            string priorClass = (string)hero["class"];
-            foreach (var field in new[] { ("name", "Имя"), ("class", "Класс"), ("raceName", "Раса"), ("background", "Предыстория"), ("speed", "Скорость"), ("hitDice", "Кости хитов") }) Scalar(hero, field.Item1, field.Item2, ref changed, field.Item1 == "class" ? hero["className"] : null);
-            if ((string)hero["class"] != priorClass) hero["className"] = hero["class"]?.DeepClone();
-            GUILayout.EndVertical();
-            if(wide){GUILayout.EndVertical();GUILayout.EndHorizontal();}
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Здоровье и защита");
-            GUILayout.Label("Уровень "+CharacterSheetRules.Level(hero),sheetCharacterName);
-            foreach (var field in new[] { ("ac", "Класс доспеха"), ("hpMax", "Максимум HP"), ("hpCurrent", "Текущие HP"), ("hpTemp", "Временные HP") })
-            {
-                JToken fallback = field.Item1 == "hpCurrent" ? archive.CurrentHp(selected) : field.Item1 == "hpMax" ? archive.MaximumHp(selected) : field.Item1 == "hpTemp" ? archive.TemporaryHp(selected) : field.Item1 == "level" ? 1 : 10;
-                Scalar(hero, field.Item1, field.Item2, ref changed, fallback);
-            }
-            GUILayout.EndVertical();
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Характеристики");
-
-            var stats = hero["stats"] as JObject ?? new JObject();
-            int columns=wide?3:2;
-            for (int i = 0; i < CharacterSheetRules.Stats.Length; i++)
-            {
-                if(i%columns==0)GUILayout.BeginHorizontal();
-                GUILayout.BeginVertical(GUI.skin.box,GUILayout.Width(Mathf.Max(80,(UiWidth-2*Mathf.Min(28f,UiWidth*.04f)-60)/columns)));
-                string stat = CharacterSheetRules.Stats[i];
-                GUILayout.Label(CharacterSheetRules.StatNames[i],sheetQuiet);
-                DesktopUiSmoke.RecordSingleLine(CharacterSheetRules.StatNames[i],sheetQuiet,GUILayoutUtility.GetLastRect());
-                string key="hero-stat:"+stat;
-                if(!edits.TryGetValue(key,out string old))old=stats[stat]?.ToString()??"10";
-                string value=IntegerField("hero:"+hero["id"]+":"+stat,old,GUILayout.MinHeight(48));edits[key]=value;
-                if(value!=old)
-                {
-                    if(int.TryParse(value,NumberStyles.Integer,CultureInfo.InvariantCulture,out int number)){stats[stat]=number;changed=true;}
-                    else status="Введите целое число: "+CharacterSheetRules.StatNames[i];
-                }
-                GUILayout.Label(Signed(CharacterSheetRules.Modifier(new JObject { ["stats"] = stats.DeepClone() }, stat)),sheetCharacterName);
-                GUILayout.EndVertical();if(i%columns==columns-1)GUILayout.EndHorizontal();
-            }
-            if (changed) { hero["stats"] = stats; Attempt(() => { if(classesBefore!=hero["classes"]?.ToString(Newtonsoft.Json.Formatting.None))CharacterSheetRules.SynchronizeClassLevel(hero);else CharacterSheetRules.Recalculate(hero); }); }
-            GUILayout.Label("Бонус мастерства: " + Signed(CharacterSheetRules.Proficiency(hero)) + " · базовая инициатива: " + Signed(CharacterSheetRules.Modifier(hero, "dex")));
-            if (GUILayout.Button("Бросить инициативу", GUILayout.Height(52))) Roll("Инициатива", 20, CharacterSheetRules.Modifier(hero, "dex"));
-            GUILayout.Label(rollResult);
-            ReadOnly(hero, "activeConditions", "Активные состояния (автоматические эффекты ещё переносятся)");
-            ReadOnly(hero, "conditions", "Унаследованные состояния");
-            ReadOnly(hero, "companions", "Компаньоны"); ReadOnly(hero, "initiativeTracker", "Бой / инициатива");
-            GUILayout.EndVertical();
-        }
-        private void Skills(JObject hero, ref bool changed)
-        {
-            var skills = hero["skillsData"] as JObject ?? new JObject();
-            var saves = hero["savesData"] as JObject ?? new JObject();
-            GUILayout.Label("Базовая проверка: характеристика + владение × мастерство. Классовые бонусы ещё не исполняются.");
-            for (int i = 0; i < CharacterSheetRules.SkillIds.Length; i++)
-            {
-                string key = CharacterSheetRules.SkillIds[i]; int old = (int)LegacyJson.Number(skills[key], 0);
-                GUILayout.BeginHorizontal();
-                int value = old; if (GUILayout.Button(new[] { "—", "✓", "★" }[Mathf.Clamp(old,0,2)], GUILayout.Width(57), GUILayout.Height(43))) value = (old + 1) % 3;
-                GUILayout.Label(CharacterSheetRules.SkillNames[i], GUILayout.ExpandWidth(true));
-                if (value != old) { skills[key] = value; hero["skillsData"] = skills; CharacterSheetRules.Recalculate(hero); changed = true; }
-                int total = CharacterSheetRules.Skill(hero, i);
-                if (GUILayout.Button(Signed(total) + " · бросок", GUILayout.Width(92))) Roll(CharacterSheetRules.SkillNames[i], 20, total);
-                GUILayout.EndHorizontal();
-            }
-            for (int i = 0; i < CharacterSheetRules.Stats.Length; i++)
-            {
-                string key = CharacterSheetRules.Stats[i]; bool old = (bool?)saves[key] ?? false;
-                bool value = GUILayout.Toggle(old, "Спасбросок: " + CharacterSheetRules.StatNames[i]);
-                if (value != old) { saves[key] = value; hero["savesData"] = saves; changed = true; }
-                if (GUILayout.Button("Бросок " + key)) Roll("Спасбросок " + key, 20, CharacterSheetRules.Modifier(hero, key) + (value ? CharacterSheetRules.Proficiency(hero) : 0));
-            }
-            GUILayout.Label("Пассивно: Внимательность " + (10 + CharacterSheetRules.Skill(hero, 11)) + " · Анализ " + (10 + CharacterSheetRules.Skill(hero, 8)) + " · Проницательность " + (10 + CharacterSheetRules.Skill(hero, 6)));
-            GUILayout.Label(rollResult);
+            if(next!=sheetTab){ResetFormInput();sheetTab=next;frontScroll=Vector2.zero;}
+            FinishSheetNavigation();
         }
         private void Roll(string label, int sides, int modifier) { int die = UnityEngine.Random.Range(1, sides + 1); rollResult = label + ": " + die + " " + Signed(modifier) + " = " + (die + modifier); }
-        private void SpellSlots(JObject hero, ref bool changed)
-        {
-            GUILayout.Label("Ячейки: ручной учёт максимум / использовано. Прогрессия класса ещё переносится.");
-            var slots = hero["spellSlotsData"] as JObject ?? new JObject();
-            for (int i = 1; i <= 9; i++)
-            {
-                string key = i.ToString(); var level = slots[key] as JObject ?? new JObject(); bool edit = false;
-                GUILayout.Label("Круг " + i);
-                Scalar(level, "max", "Круг " + i + " максимум", ref edit, 0); Scalar(level, "used", "Круг " + i + " использовано", ref edit, 0);
-                if (edit)
-                {
-                    float max = LegacyJson.Number(level["max"]), used = LegacyJson.Number(level["used"]);
-                    if (max < 0 || used < 0 || used > max) { status = "Ячейки: требуется 0 ≤ использовано ≤ максимум"; continue; }
-                    slots[key] = level; hero["spellSlotsData"] = slots; changed = true;
-                }
-            }
-        }
         private void SpellCatalog(JObject hero, ref bool changed)
         {
             if (spellCatalog == null)

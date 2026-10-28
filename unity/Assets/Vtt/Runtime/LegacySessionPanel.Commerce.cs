@@ -54,7 +54,8 @@ namespace DndVtt.UnityPrototype
                 GUILayout.BeginVertical(GUI.skin.box); GUILayout.BeginHorizontal(); GUILayout.Label((string)item["name"],new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold });
                 if (GUILayout.Button("×",GUILayout.Width(44))) RequestDelete(item,(string)item["name"]); GUILayout.EndHorizontal();
                 GUILayout.Label((item["category"] ?? "") + " · " + (item["weight"] ?? "0") + " · " + (item["cost"] ?? ""),sheetQuiet);
-                if (item["description"] != null) GUILayout.Label((string)item["description"],sheetQuiet);
+                bool itemDetails=SheetFold("item-details:"+item.Path,"Описание и перемещение");
+                if (itemDetails&&item["description"] != null) GUILayout.Label((string)item["description"],sheetQuiet);
                 GUILayout.BeginHorizontal(); double count = LegacyJson.Number(item["count"],1);
                 if (GUILayout.Button("−",GUILayout.Width(46))) { if (count <= 1) RequestDelete(item,(string)item["name"]); else { item["count"] = count - 1; changed = persist = true; } }
                 GUILayout.Label("Количество: " + count.ToString("0.##"));
@@ -65,7 +66,7 @@ namespace DndVtt.UnityPrototype
                     GUILayout.Label("Урон, длительность и эффекты на других существ учитываются вручную.",sheetQuiet);
                     if (GUILayout.Button("Применить алхимический продукт",brandGreen)) { try { CommerceRules.UseProduct(hero,item); changed = persist = true; status = "Продукт применён"; } catch (Exception e) { status = e.Message; } }
                 }
-                foreach (JObject destination in (hero["inventory"]?["containers"] as JArray ?? new JArray()).OfType<JObject>().ToArray())
+                if(itemDetails)foreach (JObject destination in (hero["inventory"]?["containers"] as JArray ?? new JArray()).OfType<JObject>().ToArray())
                     if (GUILayout.Button("В контейнер: " + destination["name"]))
                     {
                         var copy = (JObject)item.DeepClone(); copy["inventoryCategory"] = CharacterSheetRules.InventoryCategories[inventoryCategory]; copy["equipped"] = false;

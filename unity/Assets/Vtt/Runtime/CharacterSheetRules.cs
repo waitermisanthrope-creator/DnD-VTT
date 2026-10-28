@@ -10,7 +10,7 @@ namespace DndVtt.UnityPrototype
 {
     // Base sheet formulas from app/app.js, skills.js and spells.js. These are
     // intentionally separate from class-specific combat/equipment execution.
-    public static class CharacterSheetRules
+    public static partial class CharacterSheetRules
     {
         public static readonly string[] Stats = { "str", "dex", "con", "int", "wis", "cha" };
         public static readonly string[] StatNames = { "Сила", "Ловкость", "Телосложение", "Интеллект", "Мудрость", "Харизма" };

@@ -1,3 +1,18 @@
+# Unity WebView parity — первый этап листа, 28.10.2026
+
+Работа в experiment/unity-vtt поверх2ade9973/опубликованной1.00.44.
+Отчёт docs/UNITY_WEBVIEW_PARITY_STAGE1.md; план docs/superpowers/plans/2026-10-28-webview-ui-parity.md.
+Компактные вкладки/карточки/фон WebView; Hero/skills/notes/abilities/resources,
+HP/actions и ограниченный явный отдых в существующих partial UI/rules.
+8732full/40actions/menu50/numeric14, Win+Android Roslyn compile, source contracts PASS.
+Final Wine Unity-player parity45-contrast exit0:47GPUframes, actual OS clicks HP/note,
+file reload/wrapper/other hero/render purity/native digit queue/unsupported counts PASS.
+Reviewer partial findings исправлены; полного sign-off не было (лимит сервиса).
+Новые native builds/physical Android/релиз/полный UI+combat parity НЕ выполнены.
+Дальше: остальные окна по WebView; native обеих платформ/installed QA перед доставкой.
+Feed1.00.44 не менять без gates; следующий runtime>10044. Main/MMO/SQL/ключи не менять.
+История ниже не новое задание.
+
 # Unity1.00.44 — опыт/прокачка опубликованы и проверены, 28.10.2026
 
 Приоритет владельца: XP/level-up/multiclass перед остальной UI parity.

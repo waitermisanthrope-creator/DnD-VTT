@@ -83,30 +83,14 @@ namespace DndVtt.UnityPrototype
             var oldColor = GUI.color;
             string theme = preferences?.theme ?? "midnight";
             GUI.color = oldColor;
-            DrawBrandBackdrop(true); // Shared wallpaper + charcoal overlay on secondary screens.
+            if(screen==FrontScreen.Sheet)DrawClassicSheetBackdrop();else DrawBrandBackdrop(true);
             float inset = Mathf.Min(28f, UiWidth * .04f);
-            GUILayout.BeginArea(new Rect(inset, 20, Mathf.Max(1, UiWidth - inset * 2), Mathf.Max(1, UiHeight - 40)));
-            GUILayout.BeginHorizontal(); GUILayout.Label("DnD VTT", heading); GUILayout.FlexibleSpace(); if (UiWidth >= 700) GUILayout.Label("Unity · " + UnityRelease.Version, muted); GUILayout.EndHorizontal();
-            // A 6-column PC toolbar becomes 3 comfortable rows of two on a
-            // portrait phone; all destinations stay accessible in either view.
+            GUILayout.BeginArea(new Rect(inset, screen==FrontScreen.Sheet?8:20, Mathf.Max(1, UiWidth - inset * 2), Mathf.Max(1, UiHeight - 40)));
             bool portraitLayout = UiHeight > UiWidth;
-            if (screen == FrontScreen.Sheet)
-            {
-                string[] sheetNavigation = { "⌂ Меню", "Персонажи", "Настройки" };
-                float buttonWidth = Mathf.Max(80, (UiWidth - inset * 2 - 24) / 3 - 8);
-                var sheetNavigationStyle = NavigationStyle(sheetNavigation, buttonWidth);
-                float buttonHeight = Mathf.Max(54, sheetNavigation.Max(label => sheetNavigationStyle.CalcHeight(new GUIContent(label), buttonWidth)));
-                GUILayout.BeginHorizontal();
-                for (int i = 0; i < sheetNavigation.Length; i++)
-                {
-                    bool clicked = GUILayout.Button(sheetNavigation[i], sheetNavigationStyle, GUILayout.Width(buttonWidth), GUILayout.Height(buttonHeight));
-                    DesktopUiSmoke.RecordButton(sheetNavigation[i], sheetNavigationStyle, GUILayoutUtility.GetLastRect());
-                    if (clicked) { if (i == 2) OpenSettings(); else Navigate(i == 0 ? FrontScreen.Home : FrontScreen.Characters); }
-                }
-                GUILayout.EndHorizontal();
-            }
+            if(screen==FrontScreen.Sheet)DrawClassicSheetNavigation();
             else
             {
+                GUILayout.BeginHorizontal();GUILayout.Label("DnD VTT",heading);GUILayout.FlexibleSpace();if(UiWidth>=700)GUILayout.Label("Unity · "+UnityRelease.Version,muted);GUILayout.EndHorizontal();
             string[] labels = portraitLayout ? new[] { "← Главная", screen == FrontScreen.Characters ? "Создать" : "Персонажи" } : new[] { "Главная", "Персонажи", "Создать", "Файлы", "3D-карта", "Настройки" };
             var destinations = portraitLayout ? new[] { FrontScreen.Home, screen == FrontScreen.Characters ? FrontScreen.Create : FrontScreen.Characters } : new[] { FrontScreen.Home, FrontScreen.Characters, FrontScreen.Create, FrontScreen.Import, FrontScreen.Map, FrontScreen.Settings };
             int columns = portraitLayout ? 2 : 6;
@@ -165,7 +149,7 @@ namespace DndVtt.UnityPrototype
                     DrawCharacterBackups(false);
                     GUILayout.Label("Локальный файл: " + SavePath, muted); break;
             }
-            GUILayout.Space(20); GUILayout.Label(status, muted); GUILayout.EndVertical(); GUILayout.EndScrollView(); RegisterSwipe("front",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
+            GUILayout.Space(20);if(screen==FrontScreen.Sheet){GUILayout.BeginVertical(GUI.skin.box);GUILayout.Label(status,sheetQuiet);GUILayout.EndVertical();}else GUILayout.Label(status,muted);GUILayout.EndVertical(); GUILayout.EndScrollView(); RegisterSwipe("front",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
         }
         private void DrawCharacterBackups(bool fileButtons = true)
         {
