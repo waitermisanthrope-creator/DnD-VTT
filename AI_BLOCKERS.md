@@ -1,3 +1,17 @@
+# Unity46 remaining WebView UI — candidate pending, 29.10.2026
+
+Source UI continuation: race/+Своя/once-only confirmation, preserved device catalog,
+source notes, wallet back at Inventory top, horizontal categories, existing craft/
+alchemy/containers. Actual Chromium dynamic layout checked. Two readonly reports.
+Pure sheet65/numeric17/menu50 PASS; Windows+Android C# compile PASS. Local Wine/GPU
+parity-next10 exit0 (56frames), real HP/XP/note/custom race/wallet save, no GUI errors.
+Final footer10-frame reference capture PASS; all56full frames actually viewed. Full8760
+PASS. No native46 success/publication claimed yet;
+feed+approval45 retained. Details docs/UNITY_WEBVIEW_EXACT_CLONE.md.
+Still incomplete: market/trade, other modals/creation/lore, class hooks, exact emoji/
+blur/shadows; physical Android untested. Only experiment; no main/MMO/SQL/key changes.
+History below is not a new task.
+
 # Unity45 published / exact WebView UI still partial — 28.10.2026
 
 Published1.00.45, gated publisher40747479455 SUCCESS; public APK+EXE independently

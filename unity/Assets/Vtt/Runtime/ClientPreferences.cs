@@ -17,6 +17,30 @@ namespace DndVtt.UnityPrototype
         public bool autoCheckUpdates = true;
         public bool keepScreenAwake = true;
         private JObject original = new JObject();
+        public JArray CustomRaces
+        {
+            get
+            {
+                var token=original["dnd_custom_races"];
+                if(token==null||token.Type==JTokenType.Null)return new JArray();
+                return token is JArray list?(JArray)list.DeepClone():throw new FormatException("Неизвестный формат каталога своих рас — данные сохранены");
+            }
+        }
+        public void AddCustomRace(JObject race)
+        {
+            if(race==null||race["bonuses"] is not JObject||race["id"]?.Type!=JTokenType.String||!race["id"].ToString().StartsWith("custom_",StringComparison.Ordinal))throw new FormatException("Некорректная своя раса");
+            CharacterSheetRules.SelectRace(new JObject{["id"]="validation"},race);
+            var list=CustomRaces;if(list.OfType<JObject>().Any(r=>JToken.DeepEquals(r["id"],race["id"])))throw new FormatException("Такая раса уже существует");
+            list.Add(race.DeepClone());var draft=Parse(Export());draft.original["dnd_custom_races"]=list;
+            if(System.Text.Encoding.UTF8.GetByteCount(draft.Export())>64*1024)throw new FormatException("Каталог своих рас слишком большой");
+            original["dnd_custom_races"]=list;
+        }
+        public ClientPreferences WithDefaults(string platformQuality)
+        {
+            var retained=JObject.Parse(Export());
+            foreach(var field in JObject.Parse(new ClientPreferences{quality=platformQuality}.Export()).Properties())retained[field.Name]=field.Value.DeepClone();
+            return Parse(retained.ToString());
+        }
         public void Validate()
         {
             if (float.IsNaN(sensitivity) || float.IsInfinity(sensitivity) || sensitivity < .25f || sensitivity > 3 ||

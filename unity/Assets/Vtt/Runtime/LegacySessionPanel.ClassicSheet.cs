@@ -15,7 +15,7 @@ namespace DndVtt.UnityPrototype
         private bool classicPortraitOpen,classicProfileEdit;
         private bool? requestedPortraitVisibility;
         private bool? pendingBaseRest;
-        private string healthAmount="1",newFolderName="",notesQuery="";
+        private string healthAmount="1",newFolderName="";
         private readonly int[] classicTabs={0,1,2,3,4,5,9};
         private readonly string[] classicTabNames={"Герой","Навыки","Способн.","Инв-рь","Заметки","Дайсы","Лор/Бестиарий"};
         private float ClassicBodyWidth=>UiWidth-30;
@@ -97,12 +97,86 @@ namespace DndVtt.UnityPrototype
             GUILayout.Label(classText,cloneReadOnly,GUILayout.Height(60));
             if(MeasuredMenuButton("Опыт и уровень",cloneGold,GUILayout.Height(35)))BeginAdvancement(hero,true);
             CloneText(hero,"background","Предыстория",ref changed,true,35);
-            CloneFieldLabel("Раса персонажа");GUILayout.Label((hero["raceName"]??hero["race"])?.ToString()??"— Выберите расу —",cloneReadOnly,GUILayout.Height(39));
+            ClassicRaceField(hero);
             CloneFieldLabel("Профессия");GUILayout.Label(hero["profession"]?.ToString()??"Без профессии",cloneReadOnly,GUILayout.Height(35));
             GUILayout.EndVertical();ClassicCombat(hero,ref changed);ClassicStats(hero,ref changed);
             GUILayout.BeginVertical(GUI.skin.box);SheetSection("Управление данными");
             int dataAction=ClassicButtonRow("Экспорт в JSON","К выбору героев");if(dataAction==0)Attempt(()=>PickCharacterFile(true));if(dataAction==1)requestedSheetDestination=FrontScreen.Characters;
             GUILayout.EndVertical();classicControlWidth=0;
+        }
+        private int raceView;
+        private int? requestedRaceView;
+        private JObject pendingRace;
+        private string customRaceName="",customRaceDescription="",customRaceSpeed="30";
+        private readonly string[] customRaceBonuses={"0","0","0","0","0","0"};
+        private GUIStyle cloneBlue,cloneGreen,cloneFolder,cloneFolderActive,cloneNoteTitle,cloneDelete;
+        private bool RaceLocked(JObject hero)=>hero["raceId"]!=null&&hero["raceId"].Type!=JTokenType.Null&&hero["raceId"].ToString()!="";
+        private void PrepareCompactControls()
+        {
+            PrepareCloneControls();cloneBlue??=CloneAction(new Color(33/255f,150/255f,243/255f),Color.white);cloneGreen??=CloneAction(new Color(76/255f,175/255f,80/255f),Color.white);
+            cloneFolder??=new GUIStyle(GUI.skin.button){font=sheetSerif,alignment=TextAnchor.MiddleLeft,wordWrap=true,fontStyle=FontStyle.Normal,fontSize=13,padding=new RectOffset(12,12,6,6),margin=new RectOffset(),normal={background=Rounded(new Color(42/255f,42/255f,42/255f),new Color(68/255f,68/255f,68/255f),16),textColor=new Color(.67f,.67f,.67f)}};
+            cloneFolderActive??=new GUIStyle(cloneFolder){fontStyle=FontStyle.Bold,normal={background=Rounded(BrandAccent,BrandAccent,16),textColor=new Color(.07f,.07f,.07f)}};
+            cloneNoteTitle??=new GUIStyle(cloneInput){fontStyle=FontStyle.Bold,normal={textColor=BrandAccent}};
+            if(cloneDelete==null){cloneDelete=CloneAction(new Color(229/255f,57/255f,53/255f),Color.white);cloneDelete.padding=new RectOffset(8,8,4,4);}
+        }
+        private void ClassicRaceField(JObject hero)
+        {
+            PrepareCompactControls();CloneFieldLabel("Раса персонажа");GUILayout.BeginHorizontal();
+            bool enabled=GUI.enabled;GUI.enabled=enabled&&!RaceLocked(hero);
+            if(MeasuredMenuButton(((hero["raceName"]??hero["race"])?.ToString()??"— Выберите расу —")+" ▾",cloneReadOnly,GUILayout.Height(39),GUILayout.ExpandWidth(true)))requestedRaceView=1;
+            GUI.enabled=enabled;GUILayout.Space(8);
+            if(MeasuredMenuButton("+ Своя",cloneBlue,GUILayout.Width(63),GUILayout.Height(37))){ResetFormInput();customRaceName=customRaceDescription="";customRaceSpeed="30";for(int i=0;i<6;i++)customRaceBonuses[i]="0";requestedRaceView=2;}
+            GUILayout.EndHorizontal();
+            var descriptions=hero["raceFeatureDescriptions"] as JArray;
+            if(RaceLocked(hero)&&descriptions?.Count>0){GUILayout.Space(8);GUILayout.Label(string.Join("\n",descriptions.Select(d=>d.ToString())),sheetQuiet);}
+        }
+        private void SaveRaceSelection(JObject race)
+        {
+            var selectedHero=archive.Snapshot(selected);var result=CharacterSheetRules.SelectRace(selectedHero,race);
+            var candidate=archive.DetachedCopy();candidate.Replace(selected,result);CharacterSheetStore.Save(SavePath,candidate);archive=candidate;
+            pendingRace=null;requestedRaceView=0;InvalidateHealthInputs(result);status="Раса выбрана и сохранена";
+        }
+        private void DrawClassicRace(JObject hero)
+        {
+            PrepareCompactControls();GUILayout.Space(20);GUILayout.BeginHorizontal();GUILayout.FlexibleSpace();GUILayout.BeginVertical(GUI.skin.box,GUILayout.Width(Mathf.Min(500,UiWidth-40)));
+            if(raceView==1)
+            {
+                SheetSection("Раса персонажа");
+                JArray localRaces=new JArray();string catalogError=null;
+                try{localRaces=preferences.CustomRaces;}catch(Exception error){catalogError=error.Message;}
+                if(catalogError!=null)GUILayout.Label(catalogError,sheetQuiet);
+                foreach(JObject race in ((JArray)CreationCatalog["races"]).Concat(localRaces).OfType<JObject>())
+                    if(MeasuredMenuButton(race["name"]?.ToString()??"Раса",cloneReadOnly,GUILayout.MinHeight(39)))
+                    {pendingRace=(JObject)race.DeepClone();requestedRaceView=3;}
+                if(FitMenuButton("Отмена"))requestedRaceView=0;
+            }
+            else if(raceView==2)
+            {
+                SheetSection("Создание кастомной расы");CloneFieldLabel("Название расы");customRaceName=GUILayout.TextField(customRaceName,cloneInput,GUILayout.Height(39));
+                CloneFieldLabel("Описание и особенности");customRaceDescription=GUILayout.TextArea(customRaceDescription,cloneInput,GUILayout.Height(60));
+                CloneFieldLabel("Скорость (в футах)");customRaceSpeed=IntegerField("race-speed",customRaceSpeed,GUILayout.Height(39));
+                CloneFieldLabel("Бонусы к характеристикам:");
+                for(int i=0;i<6;i++)
+                {if(i%2==0)GUILayout.BeginHorizontal();GUILayout.BeginVertical(GUILayout.ExpandWidth(true));GUILayout.Label(new[]{"СИЛ:","ЛОВ:","ТЕЛ:","ИНТ:","МУД:","ХАР:"}[i],sheetQuiet);customRaceBonuses[i]=IntegerField("race-bonus-"+i,customRaceBonuses[i],GUILayout.Height(39),GUILayout.MinWidth(30));GUILayout.EndVertical();if(i%2==1)GUILayout.EndHorizontal();}
+                GUILayout.Space(20);GUILayout.BeginHorizontal();
+                if(MeasuredMenuButton("Сохранить расу",cloneGreen,GUILayout.Height(39)))Attempt(()=>
+                {
+                    CompleteNumericKeyboard();if(numericSession.TryTake("race-speed",out string speed))customRaceSpeed=speed;
+                    var bonuses=new JObject();for(int i=0;i<6;i++){if(numericSession.TryTake("race-bonus-"+i,out string value))customRaceBonuses[i]=value;bonuses[CharacterSheetRules.Stats[i]]=customRaceBonuses[i];}
+                    if(!int.TryParse(customRaceSpeed,out int feet))throw new FormatException("Введите целую скорость");
+                    var race=CharacterSheetRules.CustomRace(customRaceName,customRaceDescription,feet,bonuses);var draft=ClientPreferences.Parse(preferences.Export());draft.AddCustomRace(race);draft.Save(SettingsPath);preferences=draft;
+                    ResetFormInput();pendingRace=race;requestedRaceView=RaceLocked(hero)?0:3;status=RaceLocked(hero)?"Своя раса сохранена в каталоге. Раса этого героя уже зафиксирована.":"Своя раса сохранена";
+                });
+                if(MeasuredMenuButton("Отмена",cloneDelete,GUILayout.Height(39))){ResetFormInput();requestedRaceView=0;}GUILayout.EndHorizontal();
+            }
+            else
+            {
+                SheetSection("Выбор расы");GUILayout.Label("Выбрать расу «"+pendingRace?["name"]+"»? Выбор фиксируется, и расовые бонусы добавятся к характеристикам!",sheetQuiet);
+                if(pendingRace?["desc"]!=null)GUILayout.Label(pendingRace["desc"].ToString(),sheetQuiet);
+                GUILayout.BeginHorizontal();if(MeasuredMenuButton("Подтвердить",cloneGreen,GUILayout.Height(39)))Attempt(()=>SaveRaceSelection(pendingRace));
+                if(MeasuredMenuButton("Отмена",cloneDelete,GUILayout.Height(39))){pendingRace=null;requestedRaceView=0;}GUILayout.EndHorizontal();
+            }
+            GUILayout.EndVertical();GUILayout.FlexibleSpace();GUILayout.EndHorizontal();
         }
         private void ClassicNumber(JObject hero,string field,string label,ref bool changed,JToken fallback)
         {
@@ -120,7 +194,7 @@ namespace DndVtt.UnityPrototype
         }
         private GUIStyle CloneAction(Color color,Color text)
         {
-            var style=new GUIStyle(GUI.skin.button){font=sheetSerif,fontSize=13,fontStyle=FontStyle.Bold};
+            var style=new GUIStyle(GUI.skin.button){font=sheetSerif,fontSize=13,fontStyle=FontStyle.Bold,padding=new RectOffset(8,8,8,8)};
             foreach(var state in new[]{style.normal,style.hover,style.active,style.focused}){state.background=Rounded(color,Color.clear,6);state.textColor=text;}
             return style;
         }
@@ -241,24 +315,40 @@ namespace DndVtt.UnityPrototype
         }
         private void ClassicNotes(JObject hero,ref bool changed)
         {
+            PrepareCompactControls();
             if(hero["folders"]!=null&&!(hero["folders"] is JArray)){ReadOnly(hero,"folders","Заметки другого формата — данные сохранены");return;}
-            var folders=hero["folders"] as JArray??new JArray();GUILayout.BeginVertical(GUI.skin.box);SheetSection("Папки заметок");
+            var folders=hero["folders"] as JArray??new JArray();GUILayout.BeginVertical(GUI.skin.box);SheetSection("Папки Заметок");
+            float available=ClassicBodyWidth-40;
             foreach(JObject folder in folders.OfType<JObject>())
-            {bool active=JToken.DeepEquals(hero["activeFolderId"],folder["id"]);if(MeasuredMenuButton((active?"✓ ":"")+(string)folder["name"],active?brandGold:GUI.skin.button,GUILayout.MinHeight(44))){ResetFormInput();hero["activeFolderId"]=folder["id"]?.DeepClone();changed=true;}}
-            GUILayout.BeginHorizontal();GUI.SetNextControlName("new-note-folder");newFolderName=GUILayout.TextField(newFolderName,GUILayout.MinHeight(44));if(MeasuredMenuButton("+ Папка",brandBlue,GUILayout.Width(104),GUILayout.MinHeight(44)))SheetAction(()=>{CharacterSheetRules.CreateFolder(hero,newFolderName);newFolderName="";},ref changed);GUILayout.EndHorizontal();GUILayout.EndVertical();
-            var selectedFolder=folders.OfType<JObject>().FirstOrDefault(f=>JToken.DeepEquals(f["id"],hero["activeFolderId"]))??folders.OfType<JObject>().FirstOrDefault();
-            if(selectedFolder==null){ClassicHint("Создайте папку для первой заметки");return;}
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection((string)selectedFolder["name"]??"Заметки");
-            if(MeasuredMenuButton("+ Заметка",brandGreen,GUILayout.MinHeight(44)))SheetAction(()=>CharacterSheetRules.CreateNote(hero,(string)selectedFolder["id"]),ref changed);
-            if(SheetFold("folder-settings:"+selectedFolder["id"],"Настройки папки")){Scalar(selectedFolder,"name","Название",ref changed);if(MeasuredMenuButton("Удалить папку с заметками…",brandRed,GUILayout.MinHeight(44)))RequestDelete(selectedFolder,(string)selectedFolder["name"]);}
-            GUILayout.Label("Поиск в папке",sheetQuiet);notesQuery=GUILayout.TextField(notesQuery,GUILayout.MinHeight(44));GUILayout.EndVertical();
-            var notes=selectedFolder["notes"] as JArray;if(notes==null){if(selectedFolder["notes"]!=null)ReadOnly(selectedFolder,"notes","Нестандартные заметки — открыть");return;}
-            foreach(JObject note in notes.OfType<JObject>().Where(n=>(n["title"]+" "+n["text"]).IndexOf(notesQuery,StringComparison.CurrentCultureIgnoreCase)>=0).ToArray())
             {
-                GUILayout.BeginVertical(GUI.skin.box);Scalar(note,"title","Заголовок",ref changed);Scalar(note,"text","Текст",ref changed);
-                if(MeasuredMenuButton("Удалить заметку…",brandRed,GUILayout.MinHeight(44)))RequestDelete(note,(string)note["title"]??"Заметка");GUILayout.EndVertical();
+                bool active=JToken.DeepEquals(hero["activeFolderId"],folder["id"]);string name=folder["name"]?.ToString()??"Папка";var style=active?cloneFolderActive:cloneFolder;
+                float width=available-(folders.Count>1?30:0),height=Mathf.Max(31,style.CalcHeight(new GUIContent(name),width));GUILayout.BeginHorizontal();
+                if(MeasuredMenuButton(name,style,GUILayout.ExpandWidth(true),GUILayout.Height(height))){ResetFormInput();hero["activeFolderId"]=folder["id"]?.DeepClone();changed=true;}
+                if(folders.Count>1&&MeasuredMenuButton("×",cloneFolder,GUILayout.Width(28),GUILayout.Height(height)))RequestDelete(folder,name);
+                GUILayout.EndHorizontal();GUILayout.Space(6);
             }
-            if(notes.Count==0)ClassicHint("В этой папке пока нет заметок");
+            GUILayout.Space(4);
+            GUILayout.BeginHorizontal();GUI.SetNextControlName("new-note-folder");newFolderName=GUILayout.TextField(newFolderName,cloneInput,GUILayout.Height(39),GUILayout.MinWidth(40));
+            if(MeasuredMenuButton("+ Папка",GUI.skin.button,GUILayout.Width(88),GUILayout.Height(39)))SheetAction(()=>{CharacterSheetRules.CreateFolder(hero,newFolderName);newFolderName="";},ref changed);
+            GUILayout.EndHorizontal();GUILayout.EndVertical();
+            var selectedFolder=folders.OfType<JObject>().FirstOrDefault(f=>JToken.DeepEquals(f["id"],hero["activeFolderId"]))??folders.OfType<JObject>().FirstOrDefault();
+            GUILayout.BeginVertical(GUI.skin.box);GUILayout.BeginHorizontal();GUILayout.Label(selectedFolder?["name"]?.ToString()??"Заметки",sheetHeading);GUILayout.FlexibleSpace();
+            bool enabled=GUI.enabled;GUI.enabled=enabled&&selectedFolder!=null;
+            if(MeasuredMenuButton("+ Заметка",cloneGreen,GUILayout.Width(111),GUILayout.Height(35)))SheetAction(()=>CharacterSheetRules.CreateNote(hero,selectedFolder["id"].ToString()),ref changed);
+            GUI.enabled=enabled;GUILayout.EndHorizontal();GUILayout.Space(8);CloneListRule();GUILayout.Space(12);
+            if(selectedFolder==null){GUILayout.Label("Создайте или выберите папку",sheetQuiet);GUILayout.EndVertical();return;}
+            var notes=selectedFolder["notes"] as JArray;
+            if(notes==null){if(selectedFolder["notes"]!=null)ReadOnly(selectedFolder,"notes","Нестандартные заметки — открыть");GUILayout.EndVertical();return;}
+            foreach(JObject note in notes.OfType<JObject>().ToArray())
+            {
+                if(new[]{"title","text"}.Any(k=>note[k]!=null&&note[k].Type!=JTokenType.String&&note[k].Type!=JTokenType.Null)){ReadOnlyToken(note,"Нестандартная заметка — данные сохранены",0);continue;}
+                GUILayout.BeginVertical(GUI.skin.box);string title=note["title"]?.ToString()??"",text=note["text"]?.ToString()??"";
+                string nextTitle=GUILayout.TextField(title,cloneNoteTitle,GUILayout.Height(35));
+                string nextText=GUILayout.TextArea(text,cloneInput,GUILayout.MinHeight(100));
+                if(nextTitle!=title||nextText!=text)SheetAction(()=>CharacterSheetRules.UpdateNote(hero,selectedFolder["id"].ToString(),note["id"],nextTitle,nextText),ref changed);
+                GUILayout.BeginHorizontal();GUILayout.FlexibleSpace();if(MeasuredMenuButton("Удалить",cloneDelete,GUILayout.Width(86),GUILayout.Height(29)))RequestDelete(note,title.Length>0?title:"Заметка");GUILayout.EndHorizontal();GUILayout.EndVertical();
+            }
+            if(notes.Count==0)GUILayout.Label("В этой папке пока нет заметок",sheetQuiet);GUILayout.EndVertical();
         }
         private void ClassicAbilities(JObject hero,ref bool changed)
         {
@@ -270,7 +360,7 @@ namespace DndVtt.UnityPrototype
             foreach(JObject ability in (hero["combatAbilities"] as JArray??new JArray()).OfType<JObject>().ToArray())
             {
                 GUILayout.BeginVertical(GUI.skin.box);string name=(string)ability["name"]??"Приём";bool detail=SheetFold("ability:"+ability["id"],name);
-                bool known=CharacterSheetRules.TrySheetCount(ability["maxUses"],out int max)&&CharacterSheetRules.TrySheetCount(ability["usedCount"],out _);CharacterSheetRules.TrySheetCount(ability["usedCount"],out int used);if(!known){max=0;GUILayout.Label("Особый счётчик · данные сохранены; настройка в разделе «Ещё → Данные»",sheetQuiet);}
+                bool known=CharacterSheetRules.TrySheetCount(ability["maxUses"],out int max)&&CharacterSheetRules.TrySheetCount(ability["usedCount"],out _);CharacterSheetRules.TrySheetCount(ability["usedCount"],out int used);if(!known){max=0;GUILayout.Label("Особый счётчик · данные сохранены; настройка в разделе «Настройки → Данные и устройство»",sheetQuiet);}
                 if(max>0){GUILayout.Label("Осталось "+Math.Max(0,max-used)+" / "+max,sheetQuiet);GUILayout.BeginHorizontal();bool enabled=GUI.enabled;GUI.enabled=enabled&&used<max;if(FitMenuButton("− Расход"))SheetAction(()=>CharacterSheetRules.ChangeAbilityUse(hero,ability["id"]?.ToString(),1),ref changed);GUI.enabled=enabled&&used>0;if(FitMenuButton("+ Вернуть"))SheetAction(()=>CharacterSheetRules.ChangeAbilityUse(hero,ability["id"]?.ToString(),-1),ref changed);GUI.enabled=enabled;GUILayout.EndHorizontal();}
                 if(detail){foreach(var pair in new[]{("name","Название"),("description","Описание"),("maxUses","Максимум использований"),("rechargeOn","Восстановление: short / long / none")})Scalar(ability,pair.Item1,pair.Item2,ref changed);if(FitMenuButton("Удалить приём…"))RequestDelete(ability,name);}
                 GUILayout.EndVertical();

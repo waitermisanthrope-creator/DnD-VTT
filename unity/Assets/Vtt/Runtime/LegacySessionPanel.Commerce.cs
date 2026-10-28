@@ -10,7 +10,10 @@ namespace DndVtt.UnityPrototype
     {
         private JObject commerceCatalog;
         private JObject CommerceCatalog { get { InitializeWorkshop(); return commerceCatalog ??= workshop.Commerce(); } }
-        private int inventoryMode, inventoryCategory;
+        private int inventoryCategory;
+        private Vector2 inventoryTabsScroll;
+        private GUIStyle inventoryAcLabel,inventoryAcValue;
+        private int? requestedInventoryCategory;
         private string inventoryQuery = "", customItemName = "", customItemWeight = "0", craftQuery = "";
         private bool inventoryPicker, customItemOpen, inventoryWeightEnabled = true;
         private readonly List<string> selectedIngredients = new List<string>();
@@ -19,12 +22,16 @@ namespace DndVtt.UnityPrototype
         private void DrawCommerceInventory(JObject hero, ref bool changed, ref bool persist)
         {
             if (hero["inventory"] is JArray) { ReadOnly(hero,"inventory","Унаследованный инвентарь сохранён без изменений"); return; }
-            inventoryMode = MenuGrid(inventoryMode,new[] { "Инвентарь", "Крафт", "Алхимия 2.0" },3);
-            if (inventoryMode == 1) { DrawCrafting(hero,ref changed,ref persist); return; }
-            if (inventoryMode == 2) { DrawAlchemy(hero,ref changed,ref persist); return; }
-            GUILayout.BeginVertical(GUI.skin.box); GUILayout.Label("Текущий КД",sheetQuiet); GUILayout.Label((hero["ac"] ?? hero["baseAC"] ?? 10).ToString(),sheetHeading); GUILayout.EndVertical();
-            inventoryCategory = MenuGrid(inventoryCategory,inventoryNames,2);
-            if (GUILayout.Button("Справочник / Свой предмет",brandGreen,GUILayout.Height(58),GUILayout.ExpandWidth(true))) inventoryPicker = !inventoryPicker;
+            PrepareCompactControls();
+            if(Event.current.type==EventType.Layout&&requestedInventoryCategory.HasValue){inventoryCategory=requestedInventoryCategory.Value;requestedInventoryCategory=null;inventoryPicker=customItemOpen=false;ResetFormInput();}
+            inventoryAcLabel??=new GUIStyle(cloneMetricLabel){normal={textColor=new Color(.67f,.67f,.67f)}};inventoryAcValue??=new GUIStyle(cloneSuccess){fontSize=22,alignment=TextAnchor.MiddleCenter};
+            GUILayout.BeginVertical(GUI.skin.box);GUILayout.Label("Текущий КД",inventoryAcLabel);GUILayout.Label((hero["ac"]??hero["baseAC"]??10).ToString(),inventoryAcValue);GUILayout.EndVertical();
+            inventoryTabsScroll=GUILayout.BeginScrollView(SwipePosition("inventory-tabs",inventoryTabsScroll),false,false,GUIStyle.none,GUIStyle.none,GUILayout.Height(42));GUILayout.BeginHorizontal();
+            for(int i=0;i<inventoryNames.Length;i++)
+            {float width=Mathf.Max(70,GUI.skin.button.CalcSize(new GUIContent(inventoryNames[i])).x+8);if(MeasuredMenuButton(inventoryNames[i],i==inventoryCategory?cloneBlue:GUI.skin.button,GUILayout.Width(width),GUILayout.Height(35)))requestedInventoryCategory=i;GUILayout.Space(4);}
+            GUILayout.EndHorizontal();GUILayout.EndScrollView();RegisterSwipe("inventory-tabs",GUILayoutUtility.GetLastRect(),true);
+            GUILayout.Space(8);if(MeasuredMenuButton("Выбрать из справочника / Создать",cloneGreen,GUILayout.Height(39),GUILayout.ExpandWidth(true)))inventoryPicker=!inventoryPicker;
+            GUILayout.Space(12);
             if (inventoryPicker)
             {
                 GUILayout.BeginVertical(GUI.skin.box); SheetSection("Справочник предметов");
@@ -44,8 +51,8 @@ namespace DndVtt.UnityPrototype
                 }
                 GUILayout.EndVertical();
             }
-            GUILayout.BeginVertical(GUI.skin.box); inventoryWeightEnabled = GUILayout.Toggle(inventoryWeightEnabled,"Расчёт веса (если вы играете с ним)",GUILayout.Height(52));
-            if (inventoryWeightEnabled) { double weight = CommerceRules.TotalWeightKg(hero), capacity = CharacterSheetRules.CapacityKg(hero); GUILayout.Label("Вес: " + weight.ToString("0.0") + " кг / Лимит: " + capacity.ToString("0.0") + " кг",sheetQuiet); Rect r = GUILayoutUtility.GetRect(1,9,GUILayout.ExpandWidth(true)); GUI.Box(r,GUIContent.none); var old = GUI.color; GUI.color = weight > capacity ? Color.red : Color.green; GUI.DrawTexture(new Rect(r.x,r.y,r.width*Mathf.Clamp01((float)(weight/Math.Max(1,capacity))),r.height),Texture2D.whiteTexture); GUI.color = old; }
+            GUILayout.BeginVertical(GUI.skin.box); inventoryWeightEnabled = GUILayout.Toggle(inventoryWeightEnabled,"Расчёт веса (если вы играете с ним)",GUILayout.Height(25));
+            if (inventoryWeightEnabled) { double weight = CommerceRules.TotalWeightKg(hero), capacity = CharacterSheetRules.CapacityKg(hero); GUILayout.Label("Вес: " + weight.ToString("0.0") + " кг / Лимит: " + capacity.ToString("0.0") + " кг",sheetQuiet); Rect r = GUILayoutUtility.GetRect(1,9,GUILayout.ExpandWidth(true)); Shade(r,new Color(.12f,.12f,.12f));Shade(new Rect(r.x,r.y,r.width*Mathf.Clamp01((float)(weight/Math.Max(1,capacity))),r.height),weight>capacity?Color.red:Color.green); }
             GUILayout.EndVertical();
             var list = hero["inventory"]?[CharacterSheetRules.InventoryCategories[inventoryCategory]] as JArray ?? new JArray();
             if (list.Count == 0) GUILayout.Label("Список пуст",sheetQuiet);
@@ -82,6 +89,11 @@ namespace DndVtt.UnityPrototype
                 foreach (JObject item in contents.OfType<JObject>().ToArray()) if (GUILayout.Button("Извлечь: " + item["name"])) { CommerceRules.AddItem(hero,item,LegacyJson.Number(item["count"],1)); item.Remove(); changed = persist = true; }
             }
             GUILayout.EndVertical();
+            if(inventoryCategory==3)
+            {
+                GUILayout.BeginVertical(GUI.skin.box);DrawCrafting(hero,ref changed,ref persist);GUILayout.EndVertical();
+                GUILayout.BeginVertical(GUI.skin.box);DrawAlchemy(hero,ref changed,ref persist);GUILayout.EndVertical();
+            }
         }
         private void DrawCrafting(JObject hero, ref bool changed, ref bool persist)
         {

@@ -77,17 +77,36 @@ namespace DndVtt.UnityPrototype
                 // Derive the hit target from the actual GPU image. GUIToScreenPoint
                 // includes a Wine/IMGUI scroll offset and is not a client coordinate.
                 Check(buttonPoints.ContainsKey(label),"visible native click target "+label);
-                bool gold=label=="Опыт и уровень";Check(gold||label=="+ Заметка","supported visual pointer target");
+                bool gold=label=="Опыт и уровень",blue=label=="+ Своя"||label=="Посчитать",red=label=="Отмена";
+                Check(gold||blue||red||new[]{"+ Заметка","Выбрать из справочника / Создать","Сохранить расу","Подтвердить","Посчитать"}.Contains(label),"supported visual pointer target");
                 var capture=ScreenCapture.CaptureScreenshotAsTexture();
                 int minX=Screen.width,minY=Screen.height,maxX=-1,maxY=-1,hits=0;
                 try
                 {
-                    var pixels=capture.GetPixels32();
+                    var pixels=capture.GetPixels32();var mask=new bool[pixels.Length];
                     for(int y=80;y<capture.height;y++)for(int x=15;x<capture.width-15;x++)
                     {
                         var c=pixels[y*capture.width+x];
-                        bool match=gold?c.r>=210&&c.r<=214&&c.g>=173&&c.g<=177&&c.b>=53&&c.b<=57:c.g>65&&c.g<150&&c.r<70&&c.b<c.g*.9f&&c.g>c.r*1.6f;
-                        if(!match)continue;hits++;minX=Math.Min(minX,x);maxX=Math.Max(maxX,x);minY=Math.Min(minY,y);maxY=Math.Max(maxY,y);
+                        mask[y*capture.width+x]=gold?Math.Abs(c.r-212)<=2&&Math.Abs(c.g-175)<=2&&Math.Abs(c.b-55)<=2:
+                            blue?Math.Abs(c.r-33)<=2&&Math.Abs(c.g-150)<=2&&Math.Abs(c.b-243)<=2:
+                            red?Math.Abs(c.r-229)<=2&&Math.Abs(c.g-57)<=2&&Math.Abs(c.b-53)<=2:
+                            Math.Abs(c.r-76)<=2&&Math.Abs(c.g-175)<=2&&Math.Abs(c.b-80)<=2;
+                    }
+                    // Use the largest connected painted component: a green AC
+                    // glyph elsewhere on the page is not part of the green button.
+                    var queue=new System.Collections.Generic.Queue<int>();
+                    for(int start=0;start<mask.Length;start++)
+                    {
+                        if(!mask[start])continue;mask[start]=false;queue.Enqueue(start);
+                        int count=0,left=capture.width,right=0,bottom=capture.height,top=0;
+                        while(queue.Count>0)
+                        {
+                            int index=queue.Dequeue(),x=index%capture.width,y=index/capture.width;count++;
+                            left=Math.Min(left,x);right=Math.Max(right,x);bottom=Math.Min(bottom,y);top=Math.Max(top,y);
+                            foreach(int next in new[]{x>0?index-1:-1,x<capture.width-1?index+1:-1,index-capture.width,index+capture.width})
+                                if(next>=0&&next<mask.Length&&mask[next]){mask[next]=false;queue.Enqueue(next);}
+                        }
+                        if(count>hits){hits=count;minX=left;maxX=right;minY=bottom;maxY=top;}
                     }
                 }
                 finally{Destroy(capture);}
@@ -505,6 +524,46 @@ namespace DndVtt.UnityPrototype
             try{var saved=CharacterSheetStore.Load(panel.SavePath).Snapshot(0);Check(((JArray)saved["folders"][0]["notes"]).Count==2&&(int)saved["folders"][0]["future"]==17,"actual add-note button saves without losing folder fields");classicDisk=File.ReadAllText(panel.SavePath);}
             catch(Exception error){Fail(error);yield break;}
 #endif
+            Field("sheetTab",3);Field("frontScroll",Vector2.zero);yield return Frame("classic-inventory-portrait");if(failed)yield break;
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+            try{var amounts=(string[])typeof(LegacySessionPanel).GetField("coinInput",Flags).GetValue(panel);amounts[3]="1";}
+            catch(Exception error){Fail(error);yield break;}
+            yield return ClickNativeButton("Посчитать");if(failed)yield break;
+            try{var saved=CharacterSheetStore.Load(panel.SavePath).Snapshot(0);Check(CharacterSheetRules.CoinTotal(saved["coins"] as JObject,null)==3350,"actual compact wallet uses existing change operation");Check((int)saved["unknown"]["future"]==17&&((JArray)saved["coinLog"]).Count==1,"wallet preserves profile and records transaction");classicDisk=File.ReadAllText(panel.SavePath);}
+            catch(Exception error){Fail(error);yield break;}
+            Field("showPlatinum",false);Field("showElectrum",false);Field("coinActionChoices",true);Field("coinLogOpen",true);
+            yield return Frame("classic-wallet-options-portrait");if(failed)yield break;
+            try{Check(File.ReadAllText(panel.SavePath)==classicDisk,"wallet filters and history never mutate saved coins");}
+            catch(Exception error){Fail(error);yield break;}
+            Field("showPlatinum",true);Field("showElectrum",true);Field("coinActionChoices",false);Field("coinLogOpen",false);
+            Field("requestedInventoryCategory",(int?)1);Field("frontScroll",new Vector2(0,600));yield return new WaitForSecondsRealtime(.3f);
+            yield return Frame("classic-inventory-armor-portrait");if(failed)yield break;
+            yield return ClickNativeButton("Выбрать из справочника / Создать");if(failed)yield break;
+            yield return Frame("classic-inventory-picker-portrait");if(failed)yield break;
+            Field("inventoryPicker",false);Field("inventoryCategory",3);Field("frontScroll",Vector2.zero);
+            yield return Frame("classic-inventory-materials-portrait");if(failed)yield break;
+            Field("sheetTab",0);Field("frontScroll",new Vector2(0,250));yield return new WaitForSecondsRealtime(.3f);
+            yield return ClickNativeButton("+ Своя");if(failed)yield break;
+            yield return Frame("classic-custom-race-portrait");if(failed)yield break;
+            Field("frontScroll",new Vector2(0,2000));yield return new WaitForSecondsRealtime(.3f);
+            yield return ClickNativeButton("Отмена");if(failed)yield break;
+            try{Check(File.ReadAllText(panel.SavePath)==classicDisk,"cancel custom race preserves entire profile");}
+            catch(Exception error){Fail(error);yield break;}
+            Field("frontScroll",new Vector2(0,250));yield return new WaitForSecondsRealtime(.3f);
+            yield return ClickNativeButton("+ Своя");if(failed)yield break;
+            Field("customRaceName","QA custom race");Field("customRaceDescription","Unicode описание\nВторая строка");Field("frontScroll",new Vector2(0,2000));yield return new WaitForSecondsRealtime(.3f);
+            yield return ClickNativeButton("Сохранить расу");if(failed)yield break;
+            yield return Frame("classic-race-confirm-portrait");if(failed)yield break;
+            yield return ClickNativeButton("Подтвердить");if(failed)yield break;
+            try
+            {
+                var saved=CharacterSheetStore.Load(panel.SavePath);var hero=saved.Snapshot(0);Check(hero["raceId"].ToString().StartsWith("custom_"),"actual custom race selection saved");
+                Check((int)hero["stats"]["str"]==16&&(int)hero["hpCurrent"]==11&&(int)hero["unknown"]["future"]==17&&(bool)saved.Snapshot(1)["future"],"actual race save preserves stats HP unknown other hero");
+                var prefs=ClientPreferences.Load(panel.SavePath+".settings.json");Check(prefs.CustomRaces.OfType<JObject>().Any(r=>(string)r["name"]=="QA custom race"),"actual custom catalog survives disk reload");classicDisk=File.ReadAllText(panel.SavePath);
+            }
+            catch(Exception error){Fail(error);yield break;}
+            Field("frontScroll",new Vector2(0,250));yield return Frame("classic-race-locked-portrait");if(failed)yield break;
+#endif
             try{Field("sheetTab",2);Field("frontScroll",Vector2.zero);}
             catch(Exception error){Fail(error);yield break;}
             yield return Frame("classic-abilities-portrait");if(failed)yield break;
@@ -559,7 +618,7 @@ namespace DndVtt.UnityPrototype
             foreach(bool phone in new[]{true,false})
             {
                 PortraitLayout=phone;Screen.SetResolution(phone?440:1280,900,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
-                foreach(int tab in new[]{0,1,2,4})
+                foreach(int tab in new[]{0,1,2,3,4})
                 {Field("sheetTab",tab);Field("frontScroll",Vector2.zero);yield return Frame("reference-"+tab+"-"+(phone?"portrait":"desktop"));if(failed)yield break;}
             }
 #if UNITY_STANDALONE_WIN && !UNITY_EDITOR

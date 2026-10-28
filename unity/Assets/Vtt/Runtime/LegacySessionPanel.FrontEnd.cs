@@ -15,7 +15,7 @@ namespace DndVtt.UnityPrototype
         private int creationStep, raceIndex, classIndex, backgroundIndex, statMode;
         private string heroName = "", rosterSearch = "";
         private string pendingCharacterDeleteId, pendingCharacterDeleteName;
-        private bool confirmRestoreCharacters;
+        private bool confirmRestoreCharacters,showSheetNotice;
         private string pickerKey, pickerSearch = "";
         private readonly string[] statInputs = { "15", "14", "13", "12", "10", "8" };
         private JObject creationAnswers = new JObject();
@@ -66,6 +66,7 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawFrontEnd()
         {
+            if(Event.current.type==EventType.Layout)showSheetNotice=!string.IsNullOrWhiteSpace(status)&&status!="Изменения сохранены на устройстве"&&!status.StartsWith("Импорт сохранён",StringComparison.Ordinal);
             // The main app and settings use the exact main-branch look, but
             // remain native Unity screens. Existing gameplay screens survive.
             if (screen == FrontScreen.Home) { DrawBrandHome(); return; }
@@ -150,7 +151,7 @@ namespace DndVtt.UnityPrototype
                     DrawCharacterBackups(false);
                     GUILayout.Label("Локальный файл: " + SavePath, muted); break;
             }
-            GUILayout.Space(20);if(screen==FrontScreen.Sheet){GUILayout.BeginVertical(GUI.skin.box);GUILayout.Label(status,sheetQuiet);GUILayout.EndVertical();}else GUILayout.Label(status,muted);GUILayout.EndVertical(); GUILayout.EndScrollView(); RegisterSwipe("front",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
+            if(screen==FrontScreen.Sheet){if(showSheetNotice){GUILayout.Space(8);GUILayout.Label(status,sheetQuiet);}}else{GUILayout.Space(20);GUILayout.Label(status,muted);}GUILayout.EndVertical(); GUILayout.EndScrollView(); RegisterSwipe("front",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
         }
         private void DrawCharacterBackups(bool fileButtons = true)
         {
@@ -391,57 +392,66 @@ namespace DndVtt.UnityPrototype
             }
             CharacterSheetRules.CoinMultipliers(rates); return rates;
         }
+        private bool coinSubtract,coinActionChoices,coinLogOpen;
+        private GUIStyle coinCell,coinTitle;
         private void Wallet(JObject hero, ref bool changed, ref bool persist)
         {
-            GUILayout.Label("Кошелёк", heading); var coins = hero["coins"] is JObject old ? (JObject)old.DeepClone() : new JObject(); bool edited = false;
-            string[] keys = { "cp", "sp", "ep", "gp", "pp" }, names = { "Медные", "Серебряные", "Электрум", "Золотые", "Платиновые" };
-            for (int i = 0; i < keys.Length; i++) Scalar(coins, keys[i], names[i], ref edited, 0);
-            if (edited)
+            PrepareCompactControls();coinCell??=new GUIStyle(cloneInput){fontSize=12,alignment=TextAnchor.MiddleCenter,padding=new RectOffset(4,4,5,5)};coinTitle??=new GUIStyle(sheetHeading){fontSize=16,normal={textColor=new Color(1f,193/255f,7/255f)}};
+            if(hero["coins"]!=null&&!(hero["coins"] is JObject)){ReadOnly(hero,"coins","Неизвестный формат монет — данные сохранены");return;}
+            var coins=(JObject)(hero["coins"] as JObject??new JObject()).DeepClone();bool edited=false;int[] order={4,3,2,1,0};string[] names={"Мл","Сл","Эл","Зл","Пл"};
+            GUILayout.BeginVertical(GUI.skin.box);GUILayout.BeginHorizontal();GUILayout.Label("Монеты:",sheetQuiet);showPlatinum=GUILayout.Toggle(showPlatinum,"Пл (Платина)",GUILayout.Height(30));showElectrum=GUILayout.Toggle(showElectrum,"Эл (Электрум)",GUILayout.Height(30));GUILayout.EndHorizontal();
+            string[] rateLabels={"1 пл =","1 зол =","1 зол =","1 сер ="},rateUnits={"зол.","эл.","сер.","мед."};
+            for(int i=0;i<4;i++)
+            {if(i%2==0)GUILayout.BeginHorizontal();GUILayout.Label(rateLabels[i],sheetQuiet,GUILayout.Width(46));coinRateInputs[i]=IntegerField("wallet-rate-"+i,coinRateInputs[i],coinCell,GUILayout.Height(28),GUILayout.Width(43));GUILayout.Label(rateUnits[i],sheetQuiet,GUILayout.MinWidth(25));if(i%2==1)GUILayout.EndHorizontal();}
+            GUILayout.Space(8);GUILayout.Label("Мои монеты",coinTitle);CloneListRule();GUILayout.Space(6);GUILayout.BeginHorizontal();
+            foreach(int i in order)
             {
-                if (keys.Any(k => LegacyJson.Number(coins[k]) < 0)) status = "Количество монет не может быть отрицательным";
-                else { hero["coins"] = coins; changed = true; }
+                if(i==4&&!showPlatinum||i==2&&!showElectrum)continue;string key=CharacterSheetRules.CoinKeys[i];GUILayout.BeginVertical(GUILayout.ExpandWidth(true));GUILayout.Label(names[i],cloneMetricLabel);
+                string owner="wallet-balance:"+hero["id"]+":"+key,old=edits.TryGetValue(owner,out string buffered)?buffered:coins[key]?.ToString()??"0";
+                string value=IntegerField(owner,old,coinCell,GUILayout.Height(30),GUILayout.MinWidth(25));edits[owner]=value;
+                if(value!=old){if(long.TryParse(value,NumberStyles.None,CultureInfo.InvariantCulture,out long count)&&count>=0){coins[key]=count;edited=true;}else status="Введите целое неотрицательное количество монет";}
+                GUILayout.EndVertical();
             }
-            try { var currentRates = CurrentCoinRates(); GUILayout.Label("Общая стоимость: " + (CharacterSheetRules.CoinTotal(coins, currentRates) / CharacterSheetRules.CoinMultipliers(currentRates)[3]).ToString("0.##", CultureInfo.InvariantCulture) + " зм", muted); }
-            catch (FormatException error) { GUILayout.Label(error.Message, muted); }
-            GUILayout.Space(14); GUILayout.Label("Получение и трата монет", heading);
-            GUILayout.Label("Операция разменяет монеты по выбранному курсу и сразу сохранит архив, включая текущие правки листа.", muted);
-            GUILayout.BeginHorizontal(); showPlatinum = GUILayout.Toggle(showPlatinum, "Использовать платину"); showElectrum = GUILayout.Toggle(showElectrum, "Использовать электрум"); GUILayout.EndHorizontal();
-            for (int i = 0; i < keys.Length; i++)
+            GUILayout.EndHorizontal();if(edited){hero["coins"]=coins;changed=true;}
+            GUILayout.Space(12);GUILayout.Label("Управление кошельком",coinTitle);GUILayout.Space(6);GUILayout.BeginHorizontal();
+            foreach(int i in order)
             {
-                if ((keys[i] == "pp" && !showPlatinum) || (keys[i] == "ep" && !showElectrum)) continue;
-                GUILayout.BeginHorizontal(); GUILayout.Label(names[i], GUILayout.Width(200)); coinInput[i] = GUILayout.TextField(coinInput[i], GUILayout.Height(52)); GUILayout.EndHorizontal();
+                if(i==4&&!showPlatinum||i==2&&!showElectrum)continue;GUILayout.BeginVertical(GUILayout.ExpandWidth(true));GUILayout.Label(names[i]+" ("+CharacterSheetRules.CoinKeys[i].ToUpperInvariant()+")",cloneMetricLabel);
+                coinInput[i]=IntegerField("wallet-amount-"+i,coinInput[i],coinCell,GUILayout.Height(30),GUILayout.MinWidth(25));GUILayout.EndVertical();
             }
-            showCoinRates = GUILayout.Toggle(showCoinRates, "Настроить курсы размена", GUILayout.Height(52));
-            if (showCoinRates)
-            {
-                string[] rateLabels = { "Золотых за платиновую", "Электрума за золотую", "Серебряных за золотую", "Медных за серебряную" };
-                for (int i = 0; i < 4; i++) { GUILayout.BeginHorizontal(); GUILayout.Label(rateLabels[i], GUILayout.Width(240)); coinRateInputs[i] = GUILayout.TextField(coinRateInputs[i], GUILayout.Height(52)); GUILayout.EndHorizontal(); }
-            }
-            string operation = null; GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Получить монеты", GUILayout.Height(42))) operation = "add";
-            if (GUILayout.Button("Потратить монеты", GUILayout.Height(42))) operation = "sub";
-            GUILayout.EndHorizontal();
-            if (operation != null)
+            GUILayout.EndHorizontal();GUILayout.Space(8);GUILayout.BeginHorizontal();
+            if(MeasuredMenuButton(coinSubtract?"Вычесть (потратить) ▾":"Добавить монеты ▾",cloneGreen,GUILayout.Height(35)))coinActionChoices=!coinActionChoices;
+            if(MeasuredMenuButton("Посчитать",cloneBlue,GUILayout.Height(35)))
             {
                 try
                 {
-                    var amount = new JObject();
-                    for (int i = 0; i < keys.Length; i++)
+                    CompleteNumericKeyboard();var amount=new JObject();
+                    for(int i=0;i<4;i++)if(numericSession.TryTake("wallet-rate-"+i,out string rate))coinRateInputs[i]=rate;
+                    for(int i=0;i<5;i++)
                     {
-                        bool hidden = (keys[i] == "pp" && !showPlatinum) || (keys[i] == "ep" && !showElectrum);
-                        if (!hidden && (!long.TryParse(coinInput[i], NumberStyles.Integer, CultureInfo.InvariantCulture, out long value) || value < 0)) throw new FormatException("Введите целое неотрицательное количество монет");
-                        amount[keys[i]] = hidden ? 0 : long.Parse(coinInput[i], CultureInfo.InvariantCulture);
+                        string key=CharacterSheetRules.CoinKeys[i];if(numericSession.TryTake("wallet-amount-"+i,out string value))coinInput[i]=value;
+                        if(numericSession.TryTake("wallet-balance:"+hero["id"]+":"+key,out string balance))
+                        {if(!long.TryParse(balance,NumberStyles.None,CultureInfo.InvariantCulture,out long count)||count<0)throw new FormatException("Проверьте монеты");coins[key]=count;}
+                        bool hidden=i==4&&!showPlatinum||i==2&&!showElectrum;
+                        if(!hidden&&(!long.TryParse(coinInput[i],NumberStyles.None,CultureInfo.InvariantCulture,out long parsed)||parsed<0))throw new FormatException("Проверьте сумму операции");
+                        amount[key]=hidden?0:long.Parse(coinInput[i],CultureInfo.InvariantCulture);
                     }
-                    CharacterSheetRules.ApplyCoinOperation(hero, amount, operation, CurrentCoinRates(), showPlatinum, showElectrum, DateTime.Now.ToString("HH:mm:ss")); changed = true; persist = true;
+                    var candidate=(JObject)hero.DeepClone();candidate["coins"]=coins;CharacterSheetRules.ApplyCoinOperation(candidate,amount,coinSubtract?"sub":"add",CurrentCoinRates(),showPlatinum,showElectrum,DateTime.Now.ToString("HH:mm:ss"));
+                    hero["coins"]=candidate["coins"].DeepClone();hero["coinLog"]=candidate["coinLog"].DeepClone();changed=persist=true;
                 }
-                catch (FormatException error) { status = error.Message; }
+                catch(Exception error){status=error.Message;}
             }
-            GUILayout.Space(14); GUILayout.Label("История кошелька", heading);
-            if (hero["coinLog"] is JArray log) foreach (JObject entry in log.OfType<JObject>())
+            GUILayout.EndHorizontal();
+            if(coinActionChoices){int action=GUILayout.SelectionGrid(coinSubtract?1:0,new[]{"Добавить монеты","Вычесть (потратить)"},1);if(action!=(coinSubtract?1:0)){coinSubtract=action==1;coinActionChoices=false;}}
+            try{var rates=CurrentCoinRates();var amount=new JObject();for(int i=0;i<5;i++)amount[CharacterSheetRules.CoinKeys[i]]=long.TryParse(coinInput[i],out long value)&&value>=0?value:0;GUILayout.Label("Сумма операции: "+(CharacterSheetRules.CoinTotal(amount,rates)/CharacterSheetRules.CoinMultipliers(rates)[3]).ToString("0.##",CultureInfo.InvariantCulture)+" зол.",sheetQuiet);}catch(Exception error){GUILayout.Label(error.Message,sheetQuiet);}
+            if(MeasuredMenuButton("Лог транзакций кошелька "+(coinLogOpen?"▴":"▾"),GUI.skin.button,GUILayout.Height(35)))coinLogOpen=!coinLogOpen;
+            if(coinLogOpen)
             {
-                string amounts = string.Join(" · ", keys.Select((key, i) => entry[key]?.ToString() + " " + names[i].ToLowerInvariant()));
-                GUILayout.Label("[" + entry["time"] + "] " + ((string)entry["action"] == "add" ? "+ " : "− ") + amounts, muted);
+                var log=hero["coinLog"] as JArray;if(log==null||log.Count==0)GUILayout.Label("История пуста",sheetQuiet);
+                else foreach(JObject entry in log.OfType<JObject>())GUILayout.Label("["+entry["time"]+"] "+((string)entry["action"]=="add"?"+ ":"− ")+string.Join(" · ",order.Select(i=>entry[CharacterSheetRules.CoinKeys[i]]+" "+names[i])),sheetQuiet);
             }
+            GUILayout.EndVertical();
         }
+
     }
 }

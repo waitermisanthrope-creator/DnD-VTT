@@ -43,27 +43,29 @@ namespace DndVtt.UnityPrototype
             CompleteNumericKeyboard();
             for(int i=0;i<statInputs.Length;i++)if(numericSession.TryTake("creation-stat-"+CharacterSheetRules.Stats[i],out string value))statInputs[i]=value;
         }
-        private string IntegerField(string owner,string value,params GUILayoutOption[] options)
+        private string IntegerField(string owner,string value,params GUILayoutOption[] options)=>IntegerField(owner,value,GUI.skin.textField,options);
+        private string IntegerField(string owner,string value,GUIStyle style,params GUILayoutOption[] options)
         {
 #if UNITY_ANDROID && !UNITY_EDITOR
             PollNumericKeyboard();
             if(numericSession.TryTake(owner,out string committed))value=committed;
             bool own=numericSession.Owner==owner&&numericKeyboard!=null;
             string display=own?numericKeyboard.text+" ✓":value;
-            if(GUILayout.Button(display,GUI.skin.textField,options))
+            if(GUILayout.Button(display,style,options))
             {
                 // Preserve the previous owner's last valid digit in either draw order.
                 CompleteNumericKeyboard();
                 if(numericSession.TryTake(owner,out committed))value=committed;
                 if(!own)
                 {
-                    numericSession.Begin(owner);
-                    numericKeyboard=TouchScreenKeyboard.Open(value,TouchScreenKeyboardType.NumberPad,false,false,false,false,"Введите число",11);
+                    bool wide=owner.StartsWith("wallet-",StringComparison.Ordinal);numericSession.Begin(owner,wide);
+                    var keyboardType=owner.StartsWith("race-bonus-",StringComparison.Ordinal)?TouchScreenKeyboardType.NumbersAndPunctuation:TouchScreenKeyboardType.NumberPad;
+                    numericKeyboard=TouchScreenKeyboard.Open(value,keyboardType,false,false,false,false,"Введите число",wide?16:11);
                 }
             }
             return value;
 #else
-            GUI.SetNextControlName(owner);return GUILayout.TextField(value,options);
+            GUI.SetNextControlName(owner);return GUILayout.TextField(value,style,options);
 #endif
         }
         private bool FitMenuButton(string label,float minimum=44)

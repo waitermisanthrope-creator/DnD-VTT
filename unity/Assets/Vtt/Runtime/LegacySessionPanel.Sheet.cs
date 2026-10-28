@@ -22,7 +22,7 @@ namespace DndVtt.UnityPrototype
         private bool showItemCatalog;
         private string deletePath, deleteSignature, deleteCharacter, deleteLabel;
         private readonly string[] tabs = { "Герой", "Навыки", "Способности", "Инвентарь", "Заметки", "Дайсы", "Данные", "Кошелёк", "Паспорт", "Лор / Бестиарий" };
-        private void ClearSheetInputs() { CloseAdvancement();requestedPortraitVisibility=null;cloneSkillDropdown=null;classicPortraitOpen=classicProfileEdit=false;healthAmount="1";notesQuery="";pendingBaseRest=null;technicalDataOpen=false; heroArt3D=false; edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
+        private void ClearSheetInputs() { raceView=0;requestedRaceView=null;pendingRace=null; CloseAdvancement();requestedPortraitVisibility=null;cloneSkillDropdown=null;classicPortraitOpen=classicProfileEdit=false;healthAmount="1";pendingBaseRest=null;technicalDataOpen=false; heroArt3D=false; edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
         private void Attempt(Action action)
         {
             try { action(); } catch (Exception error) { status = error.Message; }
@@ -39,9 +39,11 @@ namespace DndVtt.UnityPrototype
             // Layout and Repaint. The requesting input event saved the old body.
             if(Event.current.type==EventType.Layout)
             {
-                if(requestedSheetTab.HasValue){CloseAdvancement();sheetTab=requestedSheetTab.Value;requestedSheetTab=null;requestedPortraitVisibility=null;classicPortraitOpen=false;ResetFormInput();frontScroll=Vector2.zero;}
+                if(requestedSheetTab.HasValue){raceView=0;requestedRaceView=null;pendingRace=null;CloseAdvancement();sheetTab=requestedSheetTab.Value;requestedSheetTab=null;requestedPortraitVisibility=null;classicPortraitOpen=false;ResetFormInput();frontScroll=Vector2.zero;}
+                if(requestedRaceView.HasValue){raceView=requestedRaceView.Value;requestedRaceView=null;ResetFormInput();frontScroll=Vector2.zero;}
                 if(requestedPortraitVisibility.HasValue){classicPortraitOpen=requestedPortraitVisibility.Value;requestedPortraitVisibility=null;ResetFormInput();frontScroll=Vector2.zero;}
             }
+            if(raceView>0){DrawClassicRace(archive.Snapshot(selected));FinishSheetNavigation();return;}
             if(classicPortraitOpen){DrawHeroArt(archive.Snapshot(selected));FinishSheetNavigation();return;}
             if(advancementOpen){GUILayout.BeginVertical(ClassicLegacySurface);DrawAdvancement(archive.Snapshot(selected));GUILayout.EndVertical();FinishSheetNavigation();return;}
             if(requestedSheetTab.HasValue||requestedSheetCharacter.HasValue||requestedSheetDestination.HasValue||requestedPortraitVisibility.HasValue)CompleteNumericKeyboard();
@@ -71,7 +73,7 @@ namespace DndVtt.UnityPrototype
                 case 0: ClassicHero(hero, ref changed); break;
                 case 1: ClassicSkills(hero, ref changed); if(SheetFold("edit-feats","Черты и владения"))DrawCharacterFeats(hero, ref changed); break;
                 case 2: ClassicAbilities(hero,ref changed);break;
-                case 3: DrawCommerceInventory(hero, ref changed, ref persistCommerce); break;
+                case 3: Wallet(hero,ref changed,ref persistWallet);DrawCommerceInventory(hero, ref changed, ref persistCommerce); break;
                 case 4:
                     ClassicNotes(hero,ref changed); break;
                 case 5: DrawDiceTable(); break;

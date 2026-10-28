@@ -11,6 +11,7 @@ static class NumericInputChecks
  s.Begin("sheet:a:hp");s.Finish("sheet:a:hp","12",true);s.CancelAll();Check(!s.TryTake("sheet:a:hp",out _),"navigation clears queued edits");
  var hero=Newtonsoft.Json.Linq.JObject.Parse("{\"id\":\"level-test\",\"level\":5,\"classes\":[{\"name\":\"Воин\",\"level\":1}],\"custom\":true}");CharacterSheetRules.SynchronizeClassLevel(hero);Check((int)hero["level"]==1&&CharacterSheetRules.Level(hero)==1&&(bool)hero["custom"],"canonical class level and unknown fields");
  foreach(var key in new[]{"a","b"}){s.Begin(key);s.Stage(key,"14");s.Finish(key,"15",true);Check(s.TryTake(key,out var final)&&final=="15","final digit survives either control order");s.CancelAll();}
+ s.Begin("wallet-balance:hero:gp",true);s.Finish("wallet-balance:hero:gp","9007199254740991",true);Check(s.TryTake("wallet-balance:hero:gp",out var wide)&&wide=="9007199254740991","wallet retains source safe-integer range");s.Begin("wallet-amount-3",true);s.Finish("wallet-amount-3","9007199254740992",true);Check(!s.TryTake("wallet-amount-3",out _),"wallet rejects inexact JS amount");s.Begin("race-bonus-0");s.Finish("race-bonus-0","-2",true);Check(s.TryTake("race-bonus-0",out var negative)&&negative=="-2","signed custom race bonus");
  Check(!NumericInputSession.IsIntegerText("1.5")&&!NumericInputSession.IsIntegerText("")&&!NumericInputSession.IsIntegerText("999999999999"),"invalid numeric text");return n;
  }
 }

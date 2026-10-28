@@ -101,6 +101,58 @@ namespace DndVtt.UnityPrototype
             // All work above is detached: unsupported data cannot leave a partial rest.
             foreach(string field in new[]{"resources","combatAbilities","pactMagicData","pactMagic","spellSlotsData","hpCurrent","hpMax","hpTemp","currentHP","maxHp","tempHp","hp","hitPoints","deathSaves","lastRest"})if(copy[field]!=null)hero[field]=copy[field].DeepClone();
         }
+        private static int RaceInteger(JToken token,int fallback,int minimum,int maximum)
+        {
+            if(token==null||token.Type==JTokenType.Null)return fallback;
+            if((token.Type!=JTokenType.Integer&&token.Type!=JTokenType.String)||!int.TryParse(token.ToString(),NumberStyles.Integer,CultureInfo.InvariantCulture,out int value)||value<minimum||value>maximum)
+                throw new FormatException("Некорректное числовое значение расы");
+            return value;
+        }
+        public static JObject CustomRace(string name,string description,int speed,JObject bonuses)
+        {
+            name=(name??"").Trim();description=(description??"").Trim();
+            if(name.Length==0||name.Length>120||description.Length>4000||speed<0||speed>1000)throw new FormatException("Проверьте название, описание и скорость расы");
+            var values=new JObject();foreach(string stat in Stats)values[stat]=RaceInteger(bonuses?[stat],0,-30,30);
+            return new JObject{["id"]="custom_"+Guid.NewGuid().ToString("N"),["name"]=name,["desc"]=description.Length==0?"Пользовательская раса":description,["speed"]=speed.ToString(CultureInfo.InvariantCulture)+" футов",["languages"]=new JArray("Всеобщий язык"),["bonuses"]=values};
+        }
+        // A preview is detached. Cancel, failed validation and repeated confirmation
+        // cannot alter an existing profile or merge an entire creation seed into it.
+        public static JObject SelectRace(JObject hero,JObject race)
+        {
+            if(hero==null||race==null)throw new FormatException("Выберите расу");
+            if(hero["raceId"]!=null&&hero["raceId"].Type!=JTokenType.Null&&hero["raceId"].ToString()!="")throw new FormatException("Раса уже выбрана и зафиксирована");
+            string id=race["id"]?.Type==JTokenType.String?(string)race["id"]:null,name=race["name"]?.Type==JTokenType.String?(string)race["name"]:null;
+            if(string.IsNullOrWhiteSpace(id)||id.Length>200||string.IsNullOrWhiteSpace(name)||name.Length>120)throw new FormatException("Некорректная запись расы");
+            if(race["bonuses"]==null&&race["seed"] is JObject seed)
+            {
+                string[] supported={"stats","speed","size","raceId","raceName","raceFeatureDescriptions","raceMechanics"};
+                if(seed.Properties().Any(p=>!supported.Contains(p.Name))||(race["choices"] is JArray choices&&choices.Count>0))
+                    throw new FormatException("Составные механики этой пакетной расы выбираются при создании персонажа; текущий герой не изменён");
+                race=(JObject)race.DeepClone();var bonuses=new JObject();
+                if(seed["stats"]!=null&&!(seed["stats"] is JObject))throw new FormatException("Неизвестный формат расовых характеристик");
+                foreach(string stat in Stats)bonuses[stat]=RaceInteger(seed["stats"]?[stat],10,1,40)-10;
+                race["bonuses"]=bonuses;if(seed["speed"]!=null)race["speed"]=seed["speed"].DeepClone();
+            }
+            var copy=(JObject)hero.DeepClone();var stats=Object(copy,"stats");
+            if(race["bonuses"]!=null&&!(race["bonuses"] is JObject))throw new FormatException("Неизвестный формат бонусов расы");
+            foreach(string stat in Stats)
+            {int score=RaceInteger(stats[stat],10,1,1000),bonus=RaceInteger(race["bonuses"]?[stat],0,-30,30);int next=checked(score+bonus);if(next<1||next>1000)throw new FormatException("Характеристика вне допустимого диапазона");stats[stat]=next;}
+            if(race["speed"]!=null){if(race["speed"].Type!=JTokenType.String||race["speed"].ToString().Length>80)throw new FormatException("Неизвестный формат скорости");copy["speed"]=race["speed"].DeepClone();}
+            if(race["baseAc"]!=null)copy["ac"]=RaceInteger(race["baseAc"],10,0,1000);
+            else if(race["baseAcFormula"]!=null)
+            {if((string)race["baseAcFormula"]!="lizardfolk")throw new FormatException("Особая формула КД этой расы ещё не поддерживается");copy["ac"]=13+Modifier(copy,"dex");}
+            int hpBonus=RaceInteger(race["hpBonusPerLevel"],0,0,1000);
+            if(hpBonus!=0)
+            {var a=new LegacyCharacterArchive(copy.ToString());WriteHealth(copy,checked(ActionCount(a.CurrentHp(0))+hpBonus),checked(ActionCount(a.MaximumHp(0))+hpBonus),ActionCount(a.TemporaryHp(0)));copy["raceHpBonusPerLevel"]=hpBonus;}
+            copy["raceId"]=id;copy["raceName"]=name;
+            if(race["seed"]?["size"]?.Type==JTokenType.String)copy["size"]=race["seed"]["size"].DeepClone();
+            // Carry descriptive race data only. Never overwrite class resources,
+            // inventory, art, choice history or unrelated existing fields with seed.
+            if(race["desc"]?.Type==JTokenType.String)
+            {var descriptions=Array(copy,"raceFeatureDescriptions");descriptions.Add(race["desc"].DeepClone());}
+            if(copy["raceMechanics"]==null&&race["seed"]?["raceMechanics"] is JObject mechanics)copy["raceMechanics"]=mechanics.DeepClone();
+            CharacterCreation.RecordPackage(copy,race);Recalculate(copy);return copy;
+        }
         public static JObject CreateFolder(JObject hero,string name)
         {
             name=(name??"").Trim();if(name.Length==0||name.Length>120)throw new FormatException("Название папки: от1до120 символов");
@@ -110,7 +162,7 @@ namespace DndVtt.UnityPrototype
         public static JObject CreateNote(JObject hero,string folderId)
         {
             var notes=Array(NoteFolder(hero,folderId),"notes");long id=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();while(notes.Any(n=>n["id"]?.ToString()==id.ToString()))id++;
-            var note=new JObject{["id"]=id,["title"]="Новая заметка",["text"]=""};notes.Add(note);return note;
+            var note=new JObject{["id"]=id,["title"]="",["text"]=""};notes.Add(note);return note;
         }
         public static void UpdateNote(JObject hero,string folderId,JToken noteId,string title,string text)
         {

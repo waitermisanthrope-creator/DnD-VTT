@@ -136,7 +136,7 @@ namespace DndVtt.UnityPrototype
             });
             if (GUILayout.Button("Восстановить значения по умолчанию (без удаления героев)", GUILayout.Height(42)))
             {
-                settingsDraft = new ClientPreferences { quality = platformQuality };
+                settingsDraft = settingsDraft.WithDefaults(platformQuality);
                 status = "Стандартные параметры выбраны. Нажмите «Применить и сохранить», чтобы записать их.";
             }
             if (GUILayout.Button("Вернуться на главную", GUILayout.Height(42))) Navigate(FrontScreen.Home);

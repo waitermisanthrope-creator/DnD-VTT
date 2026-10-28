@@ -173,3 +173,56 @@ Next work is actual remaining WebView parity, not more redesign. Test on physica
 Android: update without data deletion, old heroes/art reload, touch scroll/IME/numeric
 input, tabs and Back, XP/multiclass eligibility; on Windows check wheel/resize/file
 picker and saved data after restart. No claim these physical Android checks ran.
+
+## Continuation 29.10.2026 — race, notes, wallet and inventory
+
+Two read-only Explorer/QA analyses completed before implementation. Primary checked
+actual Chromium rendering with original Playfair: dynamic JS places the wallet at
+the beginning of Inventory, and folder chips are block-width30px, not a flex row.
+These runtime findings supersede the initial static-layout assumptions.
+
+Changes use existing partial OnGUI, CharacterSheetRules, ClientPreferences and
+CommerceRules; no new UI framework/store, no scene/meta/GUID/package changes.
+
+- Race dropdown and right blue +Своя, narrow custom form (name, description, speed,
+  six bonuses in2columns), confirmation, once-only lock and descriptive data.
+  SelectRace returns a detached preview; no class seed merge. Stats/speed/natural
+  armor/HP aliases apply atomically. Existing raceId, including unknown IDs, locks.
+  Supported simple seed-only package races normalize baseline stats/speed/size;
+  complex seed/required choices explicitly reject and direct to character creation.
+- Custom definitions live in existing device preferences under dnd_custom_races,
+  preserved by both default-settings actions. Unknown catalog shape is preserved,
+  blocks writes and displays a warning without trapping race selection.
+- Notes use source-sized folder pills, title/add-note row, direct title/multiline
+  text and small delete button; extra search/settings removed. Existing create,
+  update, signature-checked delete and autosave used; unknown formats stay readonly.
+- Existing wallet moved to Inventory top and compacted: five currencies,2x2rates,
+  operation selector, calculate and transaction log. Existing detached coin operation
+  and archive save remain. Android wallet input supports exact JS-safe integers
+  through9,007,199,254,740,991; custom bonuses use a signed keyboard layout.
+- Inventory AC, horizontal five-category swipe row, green source picker action;
+  crafting/alchemy remain under Materials; containers and existing handlers remain.
+  Removed huge always-present autosave card; routine autosave text is suppressed,
+  actionable notices remain as small text. Visibility changes commit at Layout.
+
+Verification: added pure tests RED→GREEN for race apply-once/cancel/invalid input,
+HP/Builder aliases/unknown fields, custom catalog/defaults/backup/reload; numeric
+wide range and signed bonuses; blank new note matching source. Sheet65, numeric17,
+menu50 PASS. Whole regression8760 PASS (final3, exit0). Native candidate results are recorded below
+when complete. Windows and Android Roslyn compile PASS (not native builds).
+Local full Wine/GPU parity-next10 exit0:56frames, real HP/XP/note/custom-race save,
+wallet+1gold operation3350copper/log, currency/action/history render purity, old
+profile/other hero/wrapper/backup guards and no GUILayout/label clipping errors.
+Local player uses explicit font/raw-paper override; do not call that a new native
+asset-import check. Final footer adjustment has a separate10-frame reference capture (exit0), actual HP edit and no GUI/clipping errors; notes frame inspected. All56 full-run frames actually inspected in contact sheets; key new screens inspected individually.
+Review caught catalog deletion on defaults, inert seed-only race, trapped malformed
+catalog, narrow labels and Android Int32 wallet limit; fixed with relevant checks.
+
+Remaining scope: complete market/trade UI/backend, parts of item picker and other
+modals/creation/lore, precise emoji/blur/shadow parity and full class combat/rest
+hooks. No fake market button is drawn. Physical Android touch/IME/Back and update
+need device QA; no claim of full WebView clone or complete class port.
+
+Candidate1.00.46 remains testing; feed/approval45 are untouched until actual native
+build/installed runtime and visual review pass. Only candidate workflow version
+literals45→46 changed; workflow logic/permissions/signing are unchanged.

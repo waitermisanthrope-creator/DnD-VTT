@@ -115,7 +115,7 @@ namespace DndVtt.UnityPrototype
                             if(GUILayout.Button("Паспорт персонажа",GUI.skin.button,GUILayout.MinHeight(44))){Navigate(FrontScreen.Sheet);sheetTab=8;}
                         }
                         if(GUILayout.Button("Выбрать настройки по умолчанию",brandBrown,GUILayout.MinHeight(60))) {
-                            settingsDraft=new ClientPreferences { quality=platformQuality };
+                            settingsDraft=settingsDraft.WithDefaults(platformQuality);
                             brandNotice="Выбраны стандартные параметры. Нажмите «Сохранить настройки». Персонажи сохранены.";
                         }
                         break;
