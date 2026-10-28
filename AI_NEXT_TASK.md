@@ -1,3 +1,18 @@
+# Unity1.00.44 — опыт/прокачка опубликованы и проверены, 28.10.2026
+
+Приоритет владельца: XP/level-up/multiclass перед остальной UI parity.
+Source8e111121a440157e8a4f9bf5276c27b30a7a229f; candidate40606924017 ALL3SUCCESS:
+Android122548740548, Windows122556545944, native installed QA122559522744.
+8690regression/pure1715/save124 PASS; все38final native GPUframes просмотрены.
+Publisher40610549848SUCCESS; activationd2f6d8af; независимые publicAPK/EXE,
+size/SHA/ARM64/MZ/plain+fresh feed/source/run PASS (INDEPENDENT_DELIVERY44_PASS).
+Отчёт docs/UNITY_ADVANCEMENT_1.00.44.md; ждать phoneXP/мультикласс/ASI retest.
+27source tables, XP/milestone, class-level HP/features/ASI/subclass/proficiencies,
+shared slots/Pact; unsupported/Extra/unknown requirements блокируются явно.
+Full combat/hooks/UI parity НЕ завершены; physicalAndroidQa=false.
+44 immutable, следующий runtime>10044. Main/MMO/scenes/keys/SQL не менять.
+История ниже не новое задание.
+
 # Unity1.00.44 — опыт/прокачка, кандидат готовится, 28.10.2026
 
 Владелец приоритизировал XP/level-up/multiclass перед дальнейшей UI parity.

@@ -22,17 +22,19 @@
 - Phone keyboards and wrapped button heights: reuse owned numeric input; real frames; physical Android remains separate.
 
 ### Task 1: Authoritative tables and pure progression
-- [ ] Export source tables/provenance plus JS golden XP/eligibility/progression/slots cases with deterministic local Node script, check reproducibility.
-- [ ] Add failing pure tests for XP boundaries/invalid input, class vs total level, prerequisites, choices, HP/ASI/subclasses, spell slots, no mutation.
-- [ ] Implement CharacterAdvancement in one focused existing-runtime companion, no parallel store.
-- [ ] Run targeted pure tests; roundtrip/save/restart/backup/failure tests.
+- [x] Export source tables/provenance plus JS golden XP/eligibility/progression/slots cases with deterministic local Node script, check reproducibility.
+- [x] Add failing pure tests for XP boundaries/invalid input, class vs total level, prerequisites, choices, HP/ASI/subclasses, spell slots, no mutation.
+- [x] Implement CharacterAdvancement in one focused existing-runtime companion, no parallel store.
+- [x] Run targeted pure tests; roundtrip/save/restart/backup/failure tests.
 
 ### Task 2: Sheet flow
-- [ ] Add XP summary/button, direct/set/add/sub controls; advancement class selection, HP options, choices, preview/confirm/cancel.
-- [ ] Replace default manual class editor with working flow; keep technical editor available for legacy unsupported records.
-- [ ] Extend installed UI smoke with deterministic synthetic progression interaction/cancel and portrait screenshots.
-- [ ] Compile Windows/Android branches; run relevant full regression and local player UI, inspect frames, review actual diff.
+- [x] Add XP summary/button, direct/set/add/sub controls; advancement class selection, HP options, choices, preview/confirm/cancel.
+- [x] Replace default manual class editor with working flow; keep technical editor available for legacy unsupported records.
+- [x] Extend installed UI smoke with deterministic synthetic progression interaction/cancel and portrait screenshots.
+- [x] Compile Windows/Android branches; run relevant full regression and local player UI, inspect frames, review actual diff.
 
 ### Task 3: Review/delivery evidence
-- [ ] Independent readonly review, resolve findings, refresh compact docs with exact verification and remaining limits.
-- [ ] Do not overwrite published43; any new delivered runtime version must exceed10043. Release only using existing verified gates if publishing is undertaken.
+- [x] Readonly review findings received/fixed; session later hit usage limit (no full independent sign-off). Primary reviewed final diff/results; compact docs updated with limits.
+- [x] Do not overwrite published43; any new delivered runtime version must exceed10043. Release only using existing verified gates if publishing is undertaken.
+
+Final: source8e111121, candidate40606924017 ALL3PASS, publisher40610549848PASS, activationd2f6d8af; independent public delivery44PASS. Full8690/pure1715/save124,38nativeframes reviewed. Physical Android remains untested; next runtime>10044. See release report for exact scope/unsupported classes.

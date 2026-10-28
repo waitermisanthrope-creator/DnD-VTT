@@ -42,20 +42,61 @@
   CON ASI/черта учитывает ретроактивный прирост HP предыдущих уровней; 0HP не
   подменяется10. Неизвестный подкласс блокируется с объяснением.
 
-## Проверка на этапе кандидата
+## Проверенные результаты выпуска
 
-- Pure .NET advancement: 1715 PASS (XP thresholds, prerequisites/aliases, class-level,
-  HP/ASI/subclasses/feats, slots/Pact, source hashes, backup/restart/IO failure).
-- Полный workshop прогон после расширения проверок:8687 PASS; сохранения/syntax124 PASS. Windows/Android C# ветви компилировались Roslyn
-  против DLL реального Unity-player; это не сборка IL2CPP/Editor.
-- Первый QA-copy Wine player: exit0,35 кадров, проверены опыт/выбор/отмена/подтверждение
-  и перезапуск синтетического файла. После UI-уточнений получены ещё экраны подкласса
-  и ASI; второй Wine прогон упал в нативном fullscreen roundtrip после этих кадров,
-  поэтому его нельзя назвать полным PASS. Повторный38-frame Wine прогон с финальными экранами завершился exit0 и
-  VTT_DESKTOP_UI_PASS. Нативный Windows gate ещё требуется.
-- Физический Android: НЕ проверен. Нужны NumberPad/последняя цифра/отмена/свайпы,
-  смена героя, повторное открытие, экспорт/import/backups; Windows — мышь, resize,
-  cancel/back, spell-slot/HP preservation. Только отдельные синтетические QA-профили.
+- Source `8e111121a440157e8a4f9bf5276c27b30a7a229f`; основной feature commit
+  `d0f401d7`, дополнительная защита уровня из строки «Воин 3»/формата classes — `8e111121`.
+- Candidate [40606924017](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/40606924017):
+  Android `122548740548`, Windows build `122556545944`, installed native Windows
+  `122559522744` — все SUCCESS; источник и ветка проверены через GitHub API.
+- WORKSHOP_STORE_PASS **8690** в CI; pure advancement **1715**; save/syntax **124**.
+  Порог XP ±1, prerequisites/aliases, class-level vs total, HP/CON ASI/feat,
+  array/object subclasses, legacy string feat duplicates, spell slots/Pact,
+  SHA источников, unknown fields/wrapper/ID/other heroes, backup/restart/IO failure.
+- Win/Android Roslyn compile PASS против реального player DLL; затем фактические
+  Unity Android ARM64 IL2CPP и Windows Mono builds PASS; Unity migration contracts PASS.
+- Installed Windows1.00.00→44/reinstall: payload/profile/backup hashes, native file
+  dialogs, runtime smoke и UI PASS. Все **38** конечных native GPU thumbnails просмотрены;
+  XP, class selection, HP preview/confirm, subclass-step и ASI. В оптическом кадре
+  subclass-step видна верхняя часть мастера; выбор/выдача подкласса отдельно проверены
+  pure tests, не выдаются за отдельный клик по каждому варианту в native UI.
+- Первый локальный QA-copy Wine35frames exit0; расширенный прогон после получения
+ 38кадров упал в нативном fullscreen roundtrip. Повтор38frames exit0/UI PASS;
+  финальный настоящий Windows gate выше также PASS. Wine не выдаётся за Editor/Android.
+- Provenance44, brand/readability/update contracts, legacy stat-mode/level-up и
+  multiclass spell-source JS tests PASS. Последний JS-тест требует cwd app/;
+  первичная попытка из корня получила ENOENT, повтор из app/ PASS.
+  Cloud release10, publisher6 и render-review2 checks PASS. Несуществующий путь
+  test_promote_candidate.py был ошибочной командой, не выполненным тестом;
+  реально выполнены test_cloud_release.py и .github/scripts/test-publish-unity-artifacts.py.
+- Два readonly исследования Explorer/QA получены до реализации. Отдельное независимое
+  ревью нашло риски HP/stat aliases, array subclasses, Blood Hunter Pact и неизвестного
+  исходного класса; исправлены и закреплены тестами. Сессия reviewer закончилась
+  лимитом использования, поэтому полного независимого заключения нет; основной
+  агент проверил конечные diff, компиляцию, native frames и результаты CI сам.
 
-Публикация/реальные сборки ещё не подтверждены. Активный публичный feed43 не менять
-до успешных обоих build gates, installed native QA и независимой доставки пакетов44.
+Publisher [40610549848](https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/40610549848)
+/job `122560762922` SUCCESS; activation `d2f6d8af`. После публикации основной агент
+независимо скачал оба публичных пакета, сверил размеры/SHA256, APK ZIP+ARM64/EXE MZ,
+обычный и cache-busted feed44, source/run/artifacts в PUBLIC_DELIVERY.json:
+**INDEPENDENT_DELIVERY44_PASS**. Публичный релиз — prerelease, draft=false.
+
+| Пакет | Байт | SHA256 |
+|---|---:|---|
+| Android ARM64 | 55829692 | e43b1987e5dd8c312e3c8957eae3c4d506e52215ac77e3f99bec3a5ab5b30480 |
+| Windows x64 | 39501585 | 886d1eee23bba9125048dc2d0ac4a3c925f350d99ae9f9944f58d19925bfc8b0 |
+
+[Релиз1.00.44](https://github.com/waitermisanthrope-creator/DnD-VTT/releases/tag/unity-v1.00.44).
+44 опубликована и неизменяема; следующий runtime должен быть новее10044.
+
+## Ручная проверка остаётся
+
+Физический Android **НЕ проверен**. На копии героя после экспорта:
+1. NumberPad XP: последняя цифра, подтверждение, начисление/списание, повторное открытие.
+2. Мультикласс: требование12 блокирует,13 разрешает; уже взятый класс повышается отдельно.
+3. HP/подкласс/ASI: отмена ничего не меняет; подтверждение сохраняется после перезапуска.
+4. Свайпы длинного списка, смена героя/экрана при клавиатуре, export/import и backup.
+
+Windows владельца: мышь/колесо/resize, cancel/back, сохранность HP/потраченных ячеек
+после повышения. Нативный CI уже проверен, личный ПК владельца — нет. Полный перенос
+интерфейса, неподдерживаемых классов и боевых/runtime hooks не объявлен завершённым.
