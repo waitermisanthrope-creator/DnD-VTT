@@ -1,3 +1,17 @@
+# Unity exact WebView clone correction — 28.10.2026
+
+Owner rejects9c14aad8 redesign: same original visual/fonts/colors/control positions.
+Report docs/UNITY_WEBVIEW_EXACT_CLONE.md; plan docs/superpowers/plans/2026-10-28-exact-webview-clone.md.
+Original Playfair Display bundled unmodified with OFL; actual font loaded in browser reference.
+Hero original fields/order/XP, vertical cards,2-col stats, compact skills/saves; invented
+summary/edit/damage rows removed. Old data actions retained in Data/device settings.
+8732full, Win/Android Roslyn +source contracts PASS; Wine full47+HP diagnostic PASS
+(exact-full2), final8 paired capture+real HP input PASS (exact-reference-final).
+Capture is NOT exact-match assertion. Race/custom modal, emoji/blur and other windows
+still differ; full visual/function parity unfinished. PhysicalAndroid and new native
+font import unverified until candidate gates. Next candidate1.00.45 testing; feed44 unchanged.
+Only experiment branch; no main/MMO/SQL/secrets. History below is not a new task.
+
 # Unity WebView parity — первый этап листа, 28.10.2026
 
 Работа в experiment/unity-vtt поверх2ade9973/опубликованной1.00.44.

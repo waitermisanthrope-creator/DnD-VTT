@@ -16,8 +16,8 @@ namespace DndVtt.UnityPrototype
         private bool? pendingBaseRest;
         private string healthAmount="1",newFolderName="",notesQuery="";
         private readonly int[] classicTabs={0,1,2,3,4,5,9};
-        private readonly string[] classicTabNames={"Герой","Навыки","Способности","Инвентарь","Заметки","Дайсы","Лор"};
-        private float ClassicBodyWidth=>UiWidth-2*Mathf.Min(28f,UiWidth*.04f)-22;
+        private readonly string[] classicTabNames={"Герой","Навыки","Способн.","Инв-рь","Заметки","Дайсы","Лор/Бестиарий"};
+        private float ClassicBodyWidth=>UiWidth-30;
         private int ClassicButtonRow(params string[] labels)
         {
             float available=classicControlWidth>0?classicControlWidth:ClassicBodyWidth-36;
@@ -36,17 +36,18 @@ namespace DndVtt.UnityPrototype
         private void DrawClassicSheetNavigation()
         {
             GUILayout.BeginHorizontal();
-            if(MeasuredMenuButton("Меню",sheetActiveTab,GUILayout.Width(60),GUILayout.Height(44)))requestedSheetDestination=FrontScreen.Home;
+            if(MeasuredMenuButton("Меню",sheetActiveTab,GUILayout.Width(60),GUILayout.Height(44)))requestedSheetDestination=FrontScreen.Characters;
             int active=Array.IndexOf(classicTabs,sheetTab);
             sheetTabsScroll=GUILayout.BeginScrollView(SwipePosition("sheet-tabs",sheetTabsScroll),false,false,GUIStyle.none,GUIStyle.none,GUILayout.Height(48));GUILayout.BeginHorizontal();
             for(int i=0;i<classicTabs.Length;i++)
             {
                 string label=classicTabNames[i];float width=Mathf.Max(65,sheetTabStyle.CalcSize(new GUIContent(label)).x+12);
                 if(MeasuredMenuButton(label,active==i?sheetActiveTab:sheetTabStyle,GUILayout.Width(width),GUILayout.Height(44)))requestedSheetTab=classicTabs[i];
-                if(active==i&&Event.current.type==EventType.Repaint){Rect r=GUILayoutUtility.GetLastRect();Shade(new Rect(r.x,r.yMax-3,r.width,3),BrandAccent);}
+                if(active==i&&Event.current.type==EventType.Repaint){Rect r=GUILayoutUtility.GetLastRect();Shade(new Rect(r.x,r.yMax-2,r.width,2),BrandAccent);}
             }
             GUILayout.EndHorizontal();GUILayout.EndScrollView();RegisterSwipe("sheet-tabs",GUILayoutUtility.GetLastRect(),true);
-            if(MeasuredMenuButton("Ещё",sheetActionsOpen?sheetActiveTab:sheetTabStyle,GUILayout.Width(48),GUILayout.Height(44)))sheetActionsOpen=!sheetActionsOpen;
+            cloneEye??=new GUIStyle(sheetTabStyle){font=Resources.Load<Font>("UI/DejaVuSans")};
+            if(MeasuredMenuButton("◉",cloneEye,GUILayout.Width(43),GUILayout.Height(38))){ResetFormInput();classicPortraitOpen=!classicPortraitOpen;}
             GUILayout.EndHorizontal();
             if(!sheetActionsOpen)return;
             float previousWidth=classicControlWidth;classicControlWidth=UiWidth-2*Mathf.Min(28f,UiWidth*.04f)-36;
@@ -78,76 +79,93 @@ namespace DndVtt.UnityPrototype
         private GUIStyle ClassicLegacySurface=>classicLegacySurface??=new GUIStyle{normal={background=brandCard.normal.background},border=new RectOffset(16,16,16,16),padding=new RectOffset(),margin=new RectOffset()};
         private void ClassicHint(string text)
         {GUILayout.BeginVertical(GUI.skin.box);GUILayout.Label(text,sheetQuiet);GUILayout.EndVertical();}
+        private GUIStyle cloneInput,cloneReadOnly,cloneGold,cloneMetricLabel,cloneSuccess;
+        private void PrepareCloneControls()
+        {
+            if(cloneInput!=null)return;
+            cloneInput=new GUIStyle(GUI.skin.textField){font=sheetSerif,fontSize=13,padding=new RectOffset(10,10,10,10),margin=new RectOffset(0,0,4,0)};
+            cloneReadOnly=new GUIStyle(cloneInput){wordWrap=true,padding=new RectOffset(8,8,8,8)};
+            cloneGold=new GUIStyle(GUI.skin.button){font=sheetSerif,fontSize=13,fontStyle=FontStyle.Bold,padding=new RectOffset(8,8,8,8),margin=new RectOffset(0,0,8,0)};
+            foreach(var state in new[]{cloneGold.normal,cloneGold.hover,cloneGold.active,cloneGold.focused}){state.background=Rounded(new Color(212/255f,175/255f,55/255f),Color.clear,6);state.textColor=Color.black;}
+            cloneMetricLabel=new GUIStyle(sheetQuiet){fontSize=12,alignment=TextAnchor.MiddleCenter,normal={textColor=BrandAccent},margin=new RectOffset(0,0,0,4)};
+            cloneSuccess=new GUIStyle(sheetSkin.label){fontStyle=FontStyle.Bold,normal={textColor=new Color(76/255f,175/255f,80/255f)},alignment=TextAnchor.MiddleRight};
+        }
+        private void CloneFieldLabel(string text){GUILayout.Space(10);GUILayout.Label(text,sheetQuiet,GUILayout.Height(19));}
+        private void CloneText(JObject hero,string key,string label,ref bool changed,bool readOnly=false,float height=39)
+        {
+            CloneFieldLabel(label);string old=hero[key]?.ToString()??"";
+            if(readOnly)GUILayout.Label(old,cloneReadOnly,GUILayout.Height(height));
+            else{GUI.SetNextControlName("clone:"+key);string value=GUILayout.TextField(old,cloneInput,GUILayout.Height(height));if(value!=old){hero[key]=value;changed=true;}}
+        }
         private void ClassicHero(JObject hero,ref bool changed)
         {
-            bool wide=UiWidth>=900;classicControlWidth=(wide?Mathf.Min(360,UiWidth*.32f):ClassicBodyWidth)-36;
-            if(wide){GUILayout.BeginHorizontal();GUILayout.BeginVertical(GUILayout.Width(Mathf.Min(360,UiWidth*.32f)));}
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Герой");GUILayout.BeginHorizontal();
-            var art=HeroArtTexture(hero);Rect preview=GUILayoutUtility.GetRect(92,116,GUILayout.Width(92),GUILayout.Height(116));
-            GUI.DrawTexture(preview,Texture2D.whiteTexture,ScaleMode.StretchToFill,false,0,new Color(.12f,.12f,.13f),0,6);
-            if(art)GUI.DrawTexture(new Rect(preview.x+3,preview.y+3,preview.width-6,preview.height-6),art,ScaleMode.ScaleToFit);
-            else GUI.Label(new Rect(preview.x+6,preview.y+20,preview.width-12,80),"Ваш\nпортрет",sheetQuiet);
-            GUILayout.BeginVertical();GUILayout.Label((string)hero["name"]??"Без имени",sheetCharacterName);
-            var classes=hero["classes"] as JArray;
-            if(classes!=null&&classes.Count>0)foreach(JObject c in classes.OfType<JObject>())GUILayout.Label(c["name"]+" · "+c["level"]+" ур."+(string.IsNullOrEmpty((string)c["subclass"])?"":"\n"+c["subclass"]),sheetQuiet);
-            else GUILayout.Label((string)(hero["class"]??hero["className"])??"Класс не выбран",sheetQuiet);
-            GUILayout.Label((string)(hero["raceName"]??hero["race"])??"Раса не указана",sheetQuiet);
-            GUILayout.EndVertical();GUILayout.EndHorizontal();
-            GUILayout.Label((string)hero["background"]??"Предыстория не указана",sheetQuiet);
-            if(MeasuredMenuButton("Опыт и уровень · "+DisplayExperience(hero)+" XP",brandGold,GUILayout.MinHeight(44)))BeginAdvancement(hero,true);
-            int profileAction=ClassicButtonRow(classicPortraitOpen?"Скрыть портрет":"Портрет…",classicProfileEdit?"Готово":"Изменить сведения");if(profileAction==0)classicPortraitOpen=!classicPortraitOpen;if(profileAction==1){ResetFormInput();classicProfileEdit=!classicProfileEdit;}
-            if(classicProfileEdit)
-            {
-                Scalar(hero,"name","Имя",ref changed);
-                foreach(var pair in new[]{("background","Предыстория"),("profession","Профессия")})Scalar(hero,pair.Item1,pair.Item2,ref changed);
-                GUILayout.Label("Класс и уровень меняются через мастер повышения.",sheetQuiet);
-            }
-            GUILayout.EndVertical();if(classicPortraitOpen)DrawHeroArt(hero);
-            if(wide){GUILayout.EndVertical();GUILayout.BeginVertical();}
-            classicControlWidth=(wide?ClassicBodyWidth-Mathf.Min(360,UiWidth*.32f):ClassicBodyWidth)-36;
-            ClassicCombat(hero,ref changed);ClassicStats(hero,ref changed);
-            if(wide){GUILayout.EndVertical();GUILayout.EndHorizontal();}classicControlWidth=0;
+            PrepareCloneControls();classicControlWidth=ClassicBodyWidth-32;
+            if(classicPortraitOpen){DrawHeroArt(hero);classicControlWidth=0;return;}
+            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Герой");
+            CloneText(hero,"name","Имя персонажа",ref changed);
+            CloneFieldLabel("Класс и Уровень");var classes=hero["classes"] as JArray;
+            string classText=classes!=null&&classes.Count>0?string.Join("\n",classes.OfType<JObject>().Select(c=>c["name"]+" "+c["level"])):(hero["class"]??hero["className"])?.ToString()??"";
+            GUILayout.Label(classText,cloneReadOnly,GUILayout.Height(60));
+            if(MeasuredMenuButton("Опыт и уровень",cloneGold,GUILayout.Height(35)))BeginAdvancement(hero,true);
+            CloneText(hero,"background","Предыстория",ref changed,true,35);
+            CloneFieldLabel("Раса персонажа");GUILayout.Label((hero["raceName"]??hero["race"])?.ToString()??"— Выберите расу —",cloneReadOnly,GUILayout.Height(39));
+            CloneFieldLabel("Профессия");GUILayout.Label(hero["profession"]?.ToString()??"Без профессии",cloneReadOnly,GUILayout.Height(35));
+            GUILayout.EndVertical();ClassicCombat(hero,ref changed);ClassicStats(hero,ref changed);
+            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Управление данными");
+            int dataAction=ClassicButtonRow("Экспорт в JSON","К выбору героев");if(dataAction==0)Attempt(()=>PickCharacterFile(true));if(dataAction==1)requestedSheetDestination=FrontScreen.Characters;
+            GUILayout.EndVertical();classicControlWidth=0;
         }
         private void ClassicNumber(JObject hero,string field,string label,ref bool changed,JToken fallback)
         {
-            GUILayout.BeginVertical(sheetMetricBox,GUILayout.ExpandWidth(true));GUILayout.Label(label,sheetQuiet);
+            GUILayout.BeginVertical(sheetMetricBox,GUILayout.ExpandWidth(true));GUILayout.Label(label,cloneMetricLabel);
             string key="classic:"+hero["id"]+":"+field;string old=edits.TryGetValue(key,out var saved)?saved:(hero[field]??fallback)?.ToString()??"0";
-            string value=IntegerField(key,old,GUILayout.MinHeight(44),GUILayout.MinWidth(40),GUILayout.ExpandWidth(true));edits[key]=value;
+            string value=IntegerField(key,old,GUILayout.Height(39),GUILayout.MinWidth(25),GUILayout.ExpandWidth(true));edits[key]=value;
             if(value!=old){if(int.TryParse(value,NumberStyles.Integer,CultureInfo.InvariantCulture,out int number)&&number>=0){hero[field]=number;changed=true;}else status="Введите неотрицательное целое: "+label;}
             GUILayout.EndVertical();
         }
+        private void CloneHp(JObject hero,string field,ref bool changed,JToken fallback)
+        {
+            string owner="classic:"+hero["id"]+":"+field;string old=edits.TryGetValue(owner,out string saved)?saved:(hero[field]??fallback)?.ToString()??"0";
+            string value=IntegerField(owner,old,GUILayout.Height(39),GUILayout.MinWidth(25));edits[owner]=value;
+            if(value!=old&&int.TryParse(value,out int number)&&number>=0){hero[field]=number;changed=true;}
+        }
+        private GUIStyle CloneAction(Color color,Color text)
+        {
+            var style=new GUIStyle(GUI.skin.button){font=sheetSerif,fontSize=13,fontStyle=FontStyle.Bold};
+            foreach(var state in new[]{style.normal,style.hover,style.active,style.focused}){state.background=Rounded(color,Color.clear,6);state.textColor=text;}
+            return style;
+        }
+        private GUIStyle cloneDanger,cloneShortRest,cloneLongRest,cloneChip;
         private void ClassicCombat(JObject hero,ref bool changed)
         {
+            PrepareCloneControls();cloneChip??=new GUIStyle(GUI.skin.button){padding=new RectOffset(10,10,5,5),fontStyle=FontStyle.Normal};cloneDanger??=CloneAction(new Color(229/255f,57/255f,53/255f),Color.white);cloneShortRest??=CloneAction(BrandAccent,Color.white);cloneLongRest??=CloneAction(new Color(76/255f,175/255f,80/255f),Color.white);
             GUILayout.BeginVertical(GUI.skin.box);SheetSection("Боевые параметры");GUILayout.BeginHorizontal();
-            ClassicNumber(hero,"ac","КД",ref changed,10);
-            GUILayout.BeginVertical(sheetMetricBox,GUILayout.ExpandWidth(true));GUILayout.Label("Инициатива",sheetQuiet);GUILayout.Label(Signed(CharacterSheetRules.Modifier(hero,"dex")),sheetCharacterName);
-            if(MeasuredMenuButton("d20",GUI.skin.button,GUILayout.MinHeight(44)))Roll("Инициатива",20,CharacterSheetRules.Modifier(hero,"dex"));GUILayout.EndVertical();
-            GUILayout.BeginVertical(sheetMetricBox,GUILayout.ExpandWidth(true));GUILayout.Label("Скорость",sheetQuiet);
-            string speed=(string)hero["speed"]??"30 футов";string next=GUILayout.TextField(speed,sheetMetricInput,GUILayout.MinHeight(44),GUILayout.MinWidth(40));if(next!=speed){hero["speed"]=next;changed=true;}GUILayout.EndVertical();GUILayout.EndHorizontal();
-            GUILayout.Label("Здоровье",sheetCharacterName);GUILayout.BeginHorizontal();
-            ClassicNumber(hero,"hpMax","Максимум",ref changed,archive.MaximumHp(selected));ClassicNumber(hero,"hpCurrent","Текущие HP",ref changed,archive.CurrentHp(selected));ClassicNumber(hero,"hpTemp","Временные",ref changed,archive.TemporaryHp(selected));GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();healthAmount=IntegerField("health-amount",healthAmount,GUILayout.Width(70),GUILayout.Height(44));
-            if(MeasuredMenuButton("− Урон",brandRed,GUILayout.MinHeight(44)))HealthAction(hero,false,ref changed);
-            if(MeasuredMenuButton("+ Лечение",brandGreen,GUILayout.MinHeight(44)))HealthAction(hero,true,ref changed);GUILayout.EndHorizontal();
-            GUILayout.Label("Урон сначала расходует временные HP.",sheetQuiet);
-            if(SheetFold("classic-conditions","Состояния и спасброски от смерти"))
+            ClassicNumber(hero,"ac","КД (AC)",ref changed,10);
+            GUILayout.BeginVertical(sheetMetricBox,GUILayout.ExpandWidth(true));GUILayout.Label("ИНИЦИАТИВА",cloneMetricLabel);GUILayout.Label(Signed(CharacterSheetRules.Modifier(hero,"dex")),cloneReadOnly,GUILayout.Height(39));GUILayout.EndVertical();
+            GUILayout.BeginVertical(sheetMetricBox,GUILayout.ExpandWidth(true));GUILayout.Label("СКОРОСТЬ",cloneMetricLabel);
+            string speed=hero["speed"]?.ToString()??"30 футов";string next=GUILayout.TextField(speed,cloneInput,GUILayout.Height(39),GUILayout.MinWidth(25));if(next!=speed){hero["speed"]=next;changed=true;}GUILayout.EndVertical();GUILayout.EndHorizontal();
+            GUILayout.Space(10);if(MeasuredMenuButton("Бросок Инициативы",cloneDanger,GUILayout.Height(39)))Roll("Инициатива",20,CharacterSheetRules.Modifier(hero,"dex"));
+            CloneFieldLabel("Состояния (Status Effects)");
+            string[] names={"Отравлен","Сбит с ног","Ослеплен","Очарован","Испуган","Невидимость","Парализован","Оглушен","Захвачен"};
+            for(int i=0;i<names.Length;i++)
             {
-                GUILayout.Label("Отметки для игры за столом. Автоматические эффекты состояний ещё переносятся.",sheetQuiet);
-                string[] names={"Отравлен","Сбит с ног","Ослеплен","Очарован","Испуган","Невидимость","Парализован","Оглушен","Захвачен"};
-                for(int i=0;i<names.Length;i++){if(i%2==0)GUILayout.BeginHorizontal();string name=names[i];var condition=(hero["activeConditions"] as JObject)?[name];bool active=condition?.Type==JTokenType.Boolean&&(bool)condition;
-                    if(MeasuredMenuButton((active?"✓ ":"")+name,active?brandRed:GUI.skin.button,GUILayout.MinHeight(44)))SheetAction(()=>CharacterSheetRules.ToggleSheetCondition(hero,name),ref changed);
-                    if(i%2==1||i==names.Length-1)GUILayout.EndHorizontal();}
-                CharacterSheetRules.TrySheetCount((hero["deathSaves"] as JObject)?["successes"],out int successes);CharacterSheetRules.TrySheetCount((hero["deathSaves"] as JObject)?["failures"],out int failures);
-                foreach(bool success in new[]{true,false}){GUILayout.BeginHorizontal();GUILayout.Label(success?"Успехи":"Провалы",GUILayout.Width(85));for(int i=1;i<=3;i++){int value=i;int current=success?successes:failures;
-                    if(MeasuredMenuButton(current>=i?"●":"○",current>=i?(success?brandGreen:brandRed):GUI.skin.button,GUILayout.Width(46),GUILayout.Height(44)))SheetAction(()=>CharacterSheetRules.SetDeathTrack(hero,success?(current==value?value-1:value):successes,success?failures:(current==value?value-1:value)),ref changed);}
-                    GUILayout.EndHorizontal();}
+                if(i%3==0)GUILayout.BeginHorizontal();string name=names[i];var token=(hero["activeConditions"] as JObject)?[name];bool active=token?.Type==JTokenType.Boolean&&(bool)token;
+                if(MeasuredMenuButton(name,active?cloneDanger:cloneChip,GUILayout.Height(33),GUILayout.MinWidth(30)))SheetAction(()=>CharacterSheetRules.ToggleSheetCondition(hero,name),ref changed);
+                if(i%3==2)GUILayout.EndHorizontal();
             }
-            int restAction=ClassicButtonRow("Короткий отдых…","Длинный отдых…");if(restAction>=0)pendingBaseRest=restAction==1;
+            CloneFieldLabel("Здоровье (Макс / Текущее / Временное)");GUILayout.BeginHorizontal();CloneHp(hero,"hpMax",ref changed,archive.MaximumHp(selected));CloneHp(hero,"hpCurrent",ref changed,archive.CurrentHp(selected));CloneHp(hero,"hpTemp",ref changed,archive.TemporaryHp(selected));GUILayout.EndHorizontal();
+            CloneFieldLabel("Спасброски от смерти");CharacterSheetRules.TrySheetCount((hero["deathSaves"] as JObject)?["successes"],out int successes);CharacterSheetRules.TrySheetCount((hero["deathSaves"] as JObject)?["failures"],out int failures);
+            foreach(bool success in new[]{true,false})
+            {
+                GUILayout.BeginHorizontal();GUILayout.Label(success?"Успехи:":"Провалы:",GUILayout.Width(90));for(int i=1;i<=3;i++)
+                {int current=success?successes:failures;bool old=current>=i;bool value=GUILayout.Toggle(old,"",GUILayout.Width(20),GUILayout.Height(23));if(value!=old){int count=value?i:i-1;SheetAction(()=>CharacterSheetRules.SetDeathTrack(hero,success?count:successes,success?failures:count),ref changed);}}
+                GUILayout.FlexibleSpace();GUILayout.EndHorizontal();
+            }
+            GUILayout.Space(15);GUILayout.BeginHorizontal();if(MeasuredMenuButton("Короткий отдых",cloneShortRest,GUILayout.Height(35)))pendingBaseRest=false;if(MeasuredMenuButton("Длинный отдых",cloneLongRest,GUILayout.Height(35)))pendingBaseRest=true;GUILayout.EndHorizontal();
             if(pendingBaseRest.HasValue)
             {
-                GUILayout.Label(pendingBaseRest.Value?"Восстановить HP, обычные ячейки, пакт и ресурсы с указанным коротким/длинным отдыхом?":"Восстановить пакт, приёмы и ресурсы с указанным коротким отдыхом? HP не изменятся.",sheetQuiet);
-                GUILayout.Label("Особые классовые эффекты и ресурсы без правила восстановления учитывайте вручную.",sheetQuiet);
-                if(MeasuredMenuButton("Подтвердить отдых",brandGreen,GUILayout.MinHeight(44))){bool full=pendingBaseRest.Value;FlushHealthInputs(hero,ref changed);SheetAction(()=>CharacterSheetRules.RecordRest(hero,full),ref changed);InvalidateHealthInputs(hero);pendingBaseRest=null;}
+                GUILayout.Label("Восстановить известные счётчики отдыха? Особые классовые эффекты учитываются вручную.",sheetQuiet);
+                if(FitMenuButton("Подтвердить отдых")){bool full=pendingBaseRest.Value;FlushHealthInputs(hero,ref changed);SheetAction(()=>CharacterSheetRules.RecordRest(hero,full),ref changed);InvalidateHealthInputs(hero);pendingBaseRest=null;}
                 if(FitMenuButton("Отмена"))pendingBaseRest=null;
             }
             if(rollResult!="Выберите кубик или проверку")GUILayout.Label(rollResult,sheetQuiet);GUILayout.EndVertical();
@@ -174,43 +192,58 @@ namespace DndVtt.UnityPrototype
         }
         private void ClassicStats(JObject hero,ref bool changed)
         {
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Характеристики");int columns=UiWidth>=900?3:2;
+            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Характеристики");int columns=2;
             var stats=hero["stats"] as JObject??new JObject();
             for(int i=0;i<6;i++)
             {
                 if(i%columns==0)GUILayout.BeginHorizontal();string stat=CharacterSheetRules.Stats[i];GUILayout.BeginVertical(GUI.skin.box,GUILayout.ExpandWidth(true));
-                GUILayout.Label(CharacterSheetRules.StatNames[i],sheetQuiet);DesktopUiSmoke.RecordSingleLine(CharacterSheetRules.StatNames[i],sheetQuiet,GUILayoutUtility.GetLastRect());
+                GUILayout.Label(new[]{"СИЛ","ЛОВ","ТЕЛ","ИНТ","МУД","ХАР"}[i],sheetQuiet);DesktopUiSmoke.RecordSingleLine(new[]{"СИЛ","ЛОВ","ТЕЛ","ИНТ","МУД","ХАР"}[i],sheetQuiet,GUILayoutUtility.GetLastRect());
                 string key="classic-stat:"+hero["id"]+":"+stat;string old=edits.TryGetValue(key,out var saved)?saved:stats[stat]?.ToString()??"10";
                 string value=IntegerField(key,old,GUILayout.MinHeight(44),GUILayout.MinWidth(40));edits[key]=value;
                 if(value!=old&&int.TryParse(value,out int score)){stats[stat]=score;hero["stats"]=stats;CharacterSheetRules.Recalculate(hero);changed=true;}
-                GUILayout.Label(Signed(CharacterSheetRules.Modifier(hero,stat)),sheetCharacterName);GUILayout.EndVertical();if(i%columns==columns-1)GUILayout.EndHorizontal();
+                GUILayout.Label(Signed(CharacterSheetRules.Modifier(hero,stat)),cloneSuccess);GUILayout.EndVertical();if(i%columns==columns-1)GUILayout.EndHorizontal();
             }
-            GUILayout.Label("Бонус мастерства "+Signed(CharacterSheetRules.Proficiency(hero)),sheetQuiet);GUILayout.EndVertical();
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Спасброски");ClassicSaves(hero,ref changed);GUILayout.EndVertical();
+            GUILayout.EndVertical();
+            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Спасброски Характеристики");ClassicSaves(hero,ref changed);GUILayout.EndVertical();
         }
+        private GUIStyle cloneListLabel,cloneProf,clonePassive,cloneProfBonus,cloneEye;
+        private int? cloneSkillDropdown;
+        private void PrepareCloneLists()
+        {
+            PrepareCloneControls();cloneProfBonus??=new GUIStyle(cloneReadOnly){alignment=TextAnchor.MiddleCenter,fontSize=19,fontStyle=FontStyle.Bold};cloneListLabel??=new GUIStyle(sheetQuiet){fontSize=14};
+            cloneProf??=new GUIStyle(GUI.skin.button){font=Resources.Load<Font>("UI/DejaVuSans"),fontSize=12,fontStyle=FontStyle.Normal,padding=new RectOffset(4,4,2,2),margin=new RectOffset()};
+            clonePassive??=new GUIStyle(cloneSuccess){normal={textColor=new Color(33/255f,150/255f,243/255f)}};
+        }
+        private void CloneListRule(){Rect line=GUILayoutUtility.GetRect(1,1);Shade(line,new Color(42/255f,42/255f,42/255f));}
         private void ClassicSaves(JObject hero,ref bool changed)
         {
-            var saves=hero["savesData"] as JObject??new JObject();
-            for(int i=0;i<6;i++){string key=CharacterSheetRules.Stats[i];bool owned=(bool?)saves[key]??false;GUILayout.BeginHorizontal();
-                if(MeasuredMenuButton(owned?"✓":"—",owned?brandGold:GUI.skin.button,GUILayout.Width(44),GUILayout.Height(44))){saves[key]=!owned;hero["savesData"]=saves;changed=true;owned=!owned;}
-                GUILayout.Label(CharacterSheetRules.StatNames[i],GUILayout.ExpandWidth(true));int bonus=CharacterSheetRules.Modifier(hero,key)+(owned?CharacterSheetRules.Proficiency(hero):0);
-                if(MeasuredMenuButton(Signed(bonus)+" · d20",GUI.skin.button,GUILayout.Width(Mathf.Max(104,GUI.skin.button.CalcSize(new GUIContent(Signed(bonus)+" · d20")).x+4)),GUILayout.Height(44)))Roll("Спасбросок: "+CharacterSheetRules.StatNames[i],20,bonus);GUILayout.EndHorizontal();}
+            PrepareCloneLists();var saves=hero["savesData"] as JObject??new JObject();
+            for(int i=0;i<6;i++)
+            {
+                string key=CharacterSheetRules.Stats[i];bool old=saves[key]?.Type==JTokenType.Boolean&&(bool)saves[key];GUILayout.Space(6);GUILayout.BeginHorizontal();
+                bool value=GUILayout.Toggle(old,"",GUILayout.Width(20),GUILayout.Height(23));if(value!=old){saves[key]=value;hero["savesData"]=saves;changed=true;}
+                GUILayout.Label(CharacterSheetRules.StatNames[i]+" ("+key.ToUpperInvariant()+")",cloneListLabel);
+                GUILayout.FlexibleSpace();GUILayout.Label(Signed(CharacterSheetRules.Modifier(hero,key)+(value?CharacterSheetRules.Proficiency(hero):0)),cloneSuccess,GUILayout.Width(35));GUILayout.EndHorizontal();GUILayout.Space(6);if(i<5)CloneListRule();
+            }
         }
         private void ClassicSkills(JObject hero,ref bool changed)
         {
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Бонус мастерства");GUILayout.Label(Signed(CharacterSheetRules.Proficiency(hero)),sheetCharacterName);GUILayout.EndVertical();
+            PrepareCloneLists();GUILayout.BeginVertical(GUI.skin.box);SheetSection("Бонус мастерства");
+            GUILayout.Label(CharacterSheetRules.Proficiency(hero).ToString(),cloneProfBonus,GUILayout.Height(47));GUILayout.EndVertical();
             GUILayout.BeginVertical(GUI.skin.box);SheetSection("Пассивные чувства");
-            foreach(var pair in new[]{("Внимательность",11),("Анализ",8),("Проницательность",6)}){GUILayout.BeginHorizontal();GUILayout.Label(pair.Item1);GUILayout.FlexibleSpace();GUILayout.Label((10+CharacterSheetRules.Skill(hero,pair.Item2)).ToString(),sheetCharacterName);GUILayout.EndHorizontal();}GUILayout.EndVertical();
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Навыки · 18");GUILayout.Label("— без владения · ✓ владение · ★ экспертиза. Нажмите значок для выбора.",sheetQuiet);
-            var skills=hero["skillsData"] as JObject??new JObject();
+            foreach(var pair in new[]{("Пассивная Внимательность:",11),("Пассивный Анализ:",8),("Пассивная Проницательность:",6)})
+            {GUILayout.Space(12);GUILayout.BeginHorizontal();GUILayout.Label(pair.Item1);GUILayout.Label((10+CharacterSheetRules.Skill(hero,pair.Item2)).ToString(),clonePassive,GUILayout.Width(30));GUILayout.FlexibleSpace();GUILayout.EndHorizontal();}GUILayout.EndVertical();
+            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Навыки (18)");var skills=hero["skillsData"] as JObject??new JObject();
             for(int i=0;i<CharacterSheetRules.SkillIds.Length;i++)
             {
-                string key=CharacterSheetRules.SkillIds[i];int owned=Mathf.Clamp((int)LegacyJson.Number(skills[key]),0,2);GUILayout.BeginHorizontal();
-                if(MeasuredMenuButton(new[]{"—","✓","★"}[owned],owned>0?brandGold:GUI.skin.button,GUILayout.Width(44),GUILayout.Height(44))){skills[key]=(owned+1)%3;hero["skillsData"]=skills;CharacterSheetRules.Recalculate(hero);changed=true;}
-                GUILayout.Label(CharacterSheetRules.SkillNames[i],GUILayout.ExpandWidth(true));int bonus=CharacterSheetRules.Skill(hero,i);
-                if(MeasuredMenuButton(Signed(bonus)+" · d20",GUI.skin.button,GUILayout.Width(Mathf.Max(104,GUI.skin.button.CalcSize(new GUIContent(Signed(bonus)+" · d20")).x+4)),GUILayout.Height(44)))Roll(CharacterSheetRules.SkillNames[i],20,bonus);GUILayout.EndHorizontal();
+                string key=CharacterSheetRules.SkillIds[i];CharacterSheetRules.TrySheetCount(skills[key],out int count);int owned=Mathf.Clamp(count,0,2);GUILayout.Space(6);GUILayout.BeginHorizontal();
+                if(MeasuredMenuButton(new[]{"—","✓","✕2"}[owned]+" ▾",cloneProf,GUILayout.Width(42),GUILayout.Height(25)))cloneSkillDropdown=cloneSkillDropdown==i?null:(int?)i;
+                GUILayout.Label(CharacterSheetRules.SkillNames[i]+" ("+CharacterSheetRules.SkillStats[i].ToUpperInvariant()+")",cloneListLabel);GUILayout.FlexibleSpace();
+                GUILayout.Label(Signed(CharacterSheetRules.Skill(hero,i)),cloneSuccess,GUILayout.Width(35));GUILayout.EndHorizontal();
+                if(cloneSkillDropdown==i){int choice=GUILayout.SelectionGrid(owned,new[]{"—","✓","✕2"},3,GUILayout.Height(30));if(choice!=owned){skills[key]=choice;hero["skillsData"]=skills;CharacterSheetRules.Recalculate(hero);changed=true;cloneSkillDropdown=null;}}
+                GUILayout.Space(6);if(i<CharacterSheetRules.SkillIds.Length-1)CloneListRule();
             }
-            GUILayout.Label("Базовые проверки. Особые классовые бонусы пока учитываются вручную.",sheetQuiet);GUILayout.Label(rollResult,sheetQuiet);GUILayout.EndVertical();
+            GUILayout.EndVertical();
         }
         private void ClassicNotes(JObject hero,ref bool changed)
         {
@@ -264,9 +297,12 @@ namespace DndVtt.UnityPrototype
         }
         private void ClassicAbilityStat(JObject hero,string key,string fallback,ref bool changed)
         {
-            string old=(string)hero[key]??fallback;int active=Array.IndexOf(CharacterSheetRules.Stats,old);
-            int next=MenuGrid(active,new[]{"СИЛ","ЛОВ","ТЕЛ","ИНТ","МУД","ХАР"},3);
-            if(next>=0&&next!=active){hero[key]=CharacterSheetRules.Stats[next];changed=true;}
+            string old=(string)hero[key]??fallback;int active=Array.IndexOf(CharacterSheetRules.Stats,old);string[] labels={"СИЛ","ЛОВ","ТЕЛ","ИНТ","МУД","ХАР"};
+            if(FitMenuButton((active>=0?labels[active]:old)+" ▾",35)){if(!expanded.Add("select:"+key))expanded.Remove("select:"+key);}
+            if(expanded.Contains("select:"+key))
+            {
+                int next=MenuGrid(active,labels,3);if(next>=0&&next!=active){hero[key]=CharacterSheetRules.Stats[next];changed=true;expanded.Remove("select:"+key);}
+            }
         }
         private void ClassicSpellSlots(JObject hero,ref bool changed)
         {

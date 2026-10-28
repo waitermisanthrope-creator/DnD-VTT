@@ -107,6 +107,13 @@ namespace DndVtt.UnityPrototype
                     case "Управление":settingsSection=3;DrawSettings(true);break;
                     case "Данные и устройство":
                         settingsSection=4;DrawSettings(true);
+                        if(archive!=null)
+                        {
+                            if(GUILayout.Button("Копировать весь архив",GUI.skin.button,GUILayout.MinHeight(44))){GUIUtility.systemCopyBuffer=archive.Export();brandNotice="Архив всех героев скопирован";}
+                            if(GUILayout.Button("Файлы и резервные копии",GUI.skin.button,GUILayout.MinHeight(44))){Navigate(FrontScreen.Sheet);sheetTab=6;}
+                            if(GUILayout.Button("Кошелёк персонажа",GUI.skin.button,GUILayout.MinHeight(44))){Navigate(FrontScreen.Sheet);sheetTab=7;}
+                            if(GUILayout.Button("Паспорт персонажа",GUI.skin.button,GUILayout.MinHeight(44))){Navigate(FrontScreen.Sheet);sheetTab=8;}
+                        }
                         if(GUILayout.Button("Выбрать настройки по умолчанию",brandBrown,GUILayout.MinHeight(60))) {
                             settingsDraft=new ClientPreferences { quality=platformQuality };
                             brandNotice="Выбраны стандартные параметры. Нажмите «Сохранить настройки». Персонажи сохранены.";

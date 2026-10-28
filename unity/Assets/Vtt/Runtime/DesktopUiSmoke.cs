@@ -73,7 +73,7 @@ namespace DndVtt.UnityPrototype
                 // Derive the hit target from the actual GPU image. GUIToScreenPoint
                 // includes a Wine/IMGUI scroll offset and is not a client coordinate.
                 Check(buttonPoints.ContainsKey(label),"visible native click target "+label);
-                bool red=label=="− Урон";Check(red||label=="+ Заметка","supported visual pointer target");
+                bool gold=label=="Опыт и уровень";Check(gold||label=="+ Заметка","supported visual pointer target");
                 var capture=ScreenCapture.CaptureScreenshotAsTexture();
                 int minX=Screen.width,minY=Screen.height,maxX=-1,maxY=-1,hits=0;
                 try
@@ -82,7 +82,7 @@ namespace DndVtt.UnityPrototype
                     for(int y=80;y<capture.height;y++)for(int x=15;x<capture.width-15;x++)
                     {
                         var c=pixels[y*capture.width+x];
-                        bool match=red?c.r>75&&c.r<180&&c.g<75&&c.b<90&&c.r>c.g*2&&c.r>c.b*1.6f:c.g>65&&c.g<150&&c.r<70&&c.b<c.g*.9f&&c.g>c.r*1.6f;
+                        bool match=gold?c.r>=210&&c.r<=214&&c.g>=173&&c.g<=177&&c.b>=53&&c.b<=57:c.g>65&&c.g<150&&c.r<70&&c.b<c.g*.9f&&c.g>c.r*1.6f;
                         if(!match)continue;hits++;minX=Math.Min(minX,x);maxX=Math.Max(maxX,x);minY=Math.Min(minY,y);maxY=Math.Max(maxY,y);
                     }
                 }
@@ -94,6 +94,38 @@ namespace DndVtt.UnityPrototype
             catch(Exception error){Fail(error);yield break;}
             yield return new WaitForSecondsRealtime(.12f);mouse_event(2,0,0,0,UIntPtr.Zero);yield return new WaitForSecondsRealtime(.12f);
             mouse_event(4,0,0,0,UIntPtr.Zero);yield return new WaitForSecondsRealtime(.2f);
+        }
+        [System.Runtime.InteropServices.DllImport("user32.dll")] static extern void keybd_event(byte key,byte scan,uint flags,UIntPtr extra);
+        IEnumerator EditNativeHp()
+        {
+            yield return new WaitForEndOfFrame();
+            try
+            {
+                var capture=ScreenCapture.CaptureScreenshotAsTexture();int centerX=-1,centerY=-1;
+                try
+                {
+                    var pixels=capture.GetPixels32();
+                    // In this fixture scroll600 leaves the readonly combat row above200px.
+                    for(int y=capture.height-200;y>=100&&centerX<0;y--)
+                    {
+                        var spans=new System.Collections.Generic.List<Vector2Int>();int start=-1;
+                        for(int x=15;x<capture.width-10;x++)
+                        {
+                            var c=pixels[y*capture.width+x];bool hit=c.r==42&&c.g==42&&c.b==42;
+                            if(hit&&start<0)start=x;
+                            if((!hit||x==capture.width-11)&&start>=0){if(x-start>=40)spans.Add(new Vector2Int(start,x));start=-1;}
+                        }
+                        if(spans.Count==3){centerX=(spans[1].x+spans[1].y)/2;centerY=capture.height-1-y+15;}
+                    }
+                }
+                finally{Destroy(capture);}
+                Debug.Log("VTT_HP_POINTER: "+centerX+","+centerY);Check(centerX>=0,"visible three-field HP row for real input");var window=GetActiveWindow();SetForegroundWindow(window);var point=new NativePoint{x=centerX,y=centerY};Check(ClientToScreen(window,ref point),"HP client coordinate");Check(SetCursorPos(point.x,point.y),"HP pointer position");
+            }
+            catch(Exception error){Fail(error);yield break;}
+            mouse_event(2,0,0,0,UIntPtr.Zero);yield return new WaitForSecondsRealtime(.1f);mouse_event(4,0,0,0,UIntPtr.Zero);yield return new WaitForSecondsRealtime(.2f);
+            keybd_event(0x11,0,0,UIntPtr.Zero);keybd_event(0x41,0,0,UIntPtr.Zero);keybd_event(0x41,0,2,UIntPtr.Zero);keybd_event(0x11,0,2,UIntPtr.Zero);
+            yield return new WaitForSecondsRealtime(.1f);var target=GetActiveWindow();keybd_event(0x31,0,0,UIntPtr.Zero);keybd_event(0x31,0,2,UIntPtr.Zero);yield return new WaitForSecondsRealtime(.1f);keybd_event(0x31,0,0,UIntPtr.Zero);keybd_event(0x31,0,2,UIntPtr.Zero);yield return new WaitForSecondsRealtime(.3f);
+            yield return new WaitForEndOfFrame();var diagnostic=ScreenCapture.CaptureScreenshotAsTexture();File.WriteAllBytes(Path.Combine(folder,"native-hp-probe.png"),diagnostic.EncodeToPNG());Destroy(diagnostic);
         }
         static void CheckDialogCancellation(bool save, bool art = false)
         {
@@ -170,6 +202,8 @@ namespace DndVtt.UnityPrototype
                 if(advancementAt>=0){Check(advancementAt+1<args.Length,"explicit QA advancement path");Field("advancementCatalog",JObject.Parse(File.ReadAllText(args[advancementAt+1])));}
                 int parchmentAt=Array.IndexOf(args,"--vtt-sheet-parchment");
                 if(parchmentAt>=0){var texture=new Texture2D(2,2);Check(texture.LoadImage(File.ReadAllBytes(args[parchmentAt+1])),"QA parchment source decode");Field("sheetParchment",texture);}
+                int fontAt=Array.IndexOf(args,"--vtt-sheet-font-family");
+                if(fontAt>=0){var reference=Font.CreateDynamicFontFromOSFont(args[fontAt+1],16);Check(reference,"actual Playfair reference font");Field("sheetReferenceFont",reference);}
                 Field("brandSplashActive", false);
                 CheckHeroArt();
                 Check(SystemInfo.graphicsDeviceType != UnityEngine.Rendering.GraphicsDeviceType.Null, "real graphics device");
@@ -184,6 +218,7 @@ namespace DndVtt.UnityPrototype
                 Debug.Log("VTT_DESKTOP_FONT_PASS: Cyrillic, Latin, digits and controls in actual Windows player");
             }
             catch (Exception error) { Fail(error); yield break; }
+            if(Array.IndexOf(Environment.GetCommandLineArgs(),"--vtt-reference-only")>=0){yield return ReferenceFrames();yield break;}
             yield return Frame("home");
             if (failed) yield break;
             foreach (var category in new[] { "", "Визуальные", "Графические", "Управление", "Сеть и аккаунт", "Данные и устройство", "Обновления" })
@@ -428,10 +463,14 @@ namespace DndVtt.UnityPrototype
             catch(Exception error){Fail(error);yield break;}
             yield return Frame("classic-health-portrait");if(failed)yield break;
 #if UNITY_STANDALONE_WIN && !UNITY_EDITOR
-            yield return ClickNativeButton("− Урон");if(failed)yield break;
+            Field("frontScroll",new Vector2(0,600));yield return new WaitForSecondsRealtime(.3f);
+            yield return EditNativeHp();if(failed)yield break;
+            try{Check((int)CharacterSheetStore.Load(panel.SavePath).Snapshot(0)["hpCurrent"]==11,"actual HP text edit persists");}
+            catch(Exception error){Fail(error);yield break;}
+            Field("frontScroll",Vector2.zero);yield return new WaitForSecondsRealtime(.3f);yield return ClickNativeButton("Опыт и уровень");if(failed)yield break;
             try
             {
-                var saved=CharacterSheetStore.Load(panel.SavePath);Check((int)saved.Snapshot(0)["hpTemp"]==2&&(int)saved.Snapshot(0)["hpCurrent"]==12,"actual damage button spends temp HP and persists");
+                var saved=CharacterSheetStore.Load(panel.SavePath);Check((bool)typeof(LegacySessionPanel).GetField("advancementOpen",Flags).GetValue(panel),"original XP action opens advancement");Call("CloseAdvancement");Check((int)saved.Snapshot(0)["hpTemp"]==3&&(int)saved.Snapshot(0)["hpCurrent"]==11,"opening XP does not alter HP");
                 Check((bool)saved.Snapshot(1)["future"]&&(int)JObject.Parse(saved.Export())["metadata"]==17,"pointer action preserves other hero/wrapper");classicDisk=File.ReadAllText(panel.SavePath);
             }
             catch(Exception error){Fail(error);yield break;}
@@ -468,7 +507,7 @@ namespace DndVtt.UnityPrototype
             Field("requestedSheetTab",(int?)0);yield return new WaitForSecondsRealtime(.3f);
             try{Check((int)typeof(LegacySessionPanel).GetField("sheetTab",Flags).GetValue(panel)==0,"unsupported counter cannot trap tab navigation");Check(File.ReadAllText(panel.SavePath)==classicDisk,"unsupported counter rendering never overwrites archive");}
             catch(Exception error){Fail(error);yield break;}
-            try{Field("archive",classicBefore);Field("profileStoreOverride",classicStore);Field("selected",classicSelected);Call("ClearSheetInputs");Debug.Log("VTT_CLASSIC_SHEET_UI_PASS: synthetic render purity, actual OS pointer damage/add-note, disk reload/other-hero/wrapper invariants; portrait/narrow/desktop frames");}
+            try{Field("archive",classicBefore);Field("profileStoreOverride",classicStore);Field("selected",classicSelected);Call("ClearSheetInputs");Debug.Log("VTT_CLASSIC_SHEET_UI_PASS: synthetic render purity, actual OS pointer experience/add-note, disk reload/other-hero/wrapper invariants; portrait/narrow/desktop frames");}
             catch(Exception error){Fail(error);yield break;}
             PortraitLayout = false;
             try { Check(buttonChecks > 12 && clippedButtons == 0, "navigation/back labels checked at desktop and portrait widths"); Call("OpenSettings"); }
@@ -488,6 +527,28 @@ namespace DndVtt.UnityPrototype
             catch (Exception error) { Fail(error); yield break; }
             Debug.Log("VTT_DESKTOP_UI_PASS: installed player, visible Cyrillic home/all settings/update center, windowed startup/resize/fullscreen roundtrip and real PNG evidence");
             Application.Quit(0);
+        }
+        IEnumerator ReferenceFrames()
+        {
+            try
+            {
+                var args=Environment.GetCommandLineArgs();int at=Array.IndexOf(args,"--vtt-reference-hero");Check(at>=0,"explicit reference fixture");
+                Field("archive",new LegacyCharacterArchive(File.ReadAllText(args[at+1])));Field("selected",0);Field("profileStoreOverride",Path.Combine(folder,"reference-qa.json"));
+                var type=typeof(LegacySessionPanel).GetNestedType("FrontScreen",BindingFlags.NonPublic);Call("Navigate",Enum.Parse(type,"Sheet"));panel.SaveSheet();
+            }
+            catch(Exception error){Fail(error);yield break;}
+            foreach(bool phone in new[]{true,false})
+            {
+                PortraitLayout=phone;Screen.SetResolution(phone?440:1280,900,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.4f);
+                foreach(int tab in new[]{0,1,2,4})
+                {Field("sheetTab",tab);Field("frontScroll",Vector2.zero);yield return Frame("reference-"+tab+"-"+(phone?"portrait":"desktop"));if(failed)yield break;}
+            }
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+            PortraitLayout=true;Screen.SetResolution(440,900,FullScreenMode.Windowed);Field("sheetTab",0);Field("frontScroll",new Vector2(0,600));yield return new WaitForSecondsRealtime(.4f);yield return EditNativeHp();if(failed)yield break;
+            try{Check((int)CharacterSheetStore.Load(panel.SavePath).Snapshot(0)["hpCurrent"]==11,"reference actual native HP edit");Debug.Log("VTT_NATIVE_HP_EDIT_PASS");}
+            catch(Exception error){Fail(error);yield break;}
+#endif
+            Debug.Log("VTT_REFERENCE_CAPTURE_PASS: Unity frames captured; no automatic WebView/font/visual equivalence assertion");Application.Quit(0);
         }
         bool failed;
         IEnumerator Frame(string name)

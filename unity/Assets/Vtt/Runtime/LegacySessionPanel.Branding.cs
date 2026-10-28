@@ -77,9 +77,9 @@ namespace DndVtt.UnityPrototype
             texture.filterMode = FilterMode.Bilinear; texture.wrapMode = TextureWrapMode.Clamp;
             for (int y = 0; y < size; y++) for (int x = 0; x < size; x++)
             {
-                float cx = Mathf.Clamp(x, radius, size - radius - 1);
-                float cy = Mathf.Clamp(y, radius, size - radius - 1);
-                float distance = Vector2.Distance(new Vector2(x,y), new Vector2(cx,cy));
+                float cx = Mathf.Clamp(x+.5f,radius,size-radius);
+                float cy = Mathf.Clamp(y+.5f,radius,size-radius);
+                float distance = Vector2.Distance(new Vector2(x+.5f,y+.5f),new Vector2(cx,cy));
                 float coverage = Mathf.Clamp01(radius + .5f - distance);
                 // Keep a thin border around each rounded component.
                 float inside = Mathf.Clamp01(radius - border + .5f - distance);

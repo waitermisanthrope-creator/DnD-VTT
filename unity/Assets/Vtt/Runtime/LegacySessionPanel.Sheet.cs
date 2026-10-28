@@ -22,7 +22,7 @@ namespace DndVtt.UnityPrototype
         private bool showItemCatalog;
         private string deletePath, deleteSignature, deleteCharacter, deleteLabel;
         private readonly string[] tabs = { "Герой", "Навыки", "Способности", "Инвентарь", "Заметки", "Дайсы", "Данные", "Кошелёк", "Паспорт", "Лор / Бестиарий" };
-        private void ClearSheetInputs() { CloseAdvancement(); classicPortraitOpen=classicProfileEdit=false;healthAmount="1";notesQuery="";pendingBaseRest=null;technicalDataOpen=false; heroArt3D=false; sheetActionsOpen=false; edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
+        private void ClearSheetInputs() { CloseAdvancement();cloneSkillDropdown=null;classicPortraitOpen=classicProfileEdit=false;healthAmount="1";notesQuery="";pendingBaseRest=null;technicalDataOpen=false; heroArt3D=false; sheetActionsOpen=false; edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
         private void Attempt(Action action)
         {
             try { action(); } catch (Exception error) { status = error.Message; }

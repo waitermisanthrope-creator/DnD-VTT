@@ -84,8 +84,8 @@ namespace DndVtt.UnityPrototype
             string theme = preferences?.theme ?? "midnight";
             GUI.color = oldColor;
             if(screen==FrontScreen.Sheet)DrawClassicSheetBackdrop();else DrawBrandBackdrop(true);
-            float inset = Mathf.Min(28f, UiWidth * .04f);
-            GUILayout.BeginArea(new Rect(inset, screen==FrontScreen.Sheet?8:20, Mathf.Max(1, UiWidth - inset * 2), Mathf.Max(1, UiHeight - 40)));
+            float inset = screen==FrontScreen.Sheet?15:Mathf.Min(28f,UiWidth*.04f);
+            GUILayout.BeginArea(new Rect(inset, screen==FrontScreen.Sheet?8:20, Mathf.Max(1, UiWidth - inset * 2+(screen==FrontScreen.Sheet?8:0)), Mathf.Max(1, UiHeight - 40)));
             bool portraitLayout = UiHeight > UiWidth;
             if(screen==FrontScreen.Sheet)DrawClassicSheetNavigation();
             else
@@ -109,8 +109,9 @@ namespace DndVtt.UnityPrototype
             }
             GUILayout.EndHorizontal(); GUILayout.Space(18);
             }
+            if(screen==FrontScreen.Sheet)GUILayout.Space(15);
             frontScroll = GUILayout.BeginScrollView(SwipePosition("front",frontScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);
-            GUILayout.BeginVertical(new GUIStyle { fixedWidth=Mathf.Max(1,UiWidth-inset*2-22),stretchWidth=false });
+            GUILayout.BeginVertical(new GUIStyle { fixedWidth=Mathf.Max(1,UiWidth-inset*2-(screen==FrontScreen.Sheet?0:22)),stretchWidth=false });
             switch (screen)
             {
                 case FrontScreen.Home:
