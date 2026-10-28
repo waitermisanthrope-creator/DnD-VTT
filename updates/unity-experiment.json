@@ -1,20 +1,20 @@
 {
   "schema": 1,
   "channel": "unity-experiment",
-  "version": "1.00.43",
-  "versionCode": 10043,
+  "version": "1.00.44",
+  "versionCode": 10044,
   "androidPackage": "com.dndvtt.unity",
-  "notes": "Исправлена высота длинных кнопок файлов и резервных копий на узком экране. · Отдельная цифровая клавиатура Android и привязка ввода к числовому полю; сброс фокуса при переходах мастера. · Новая попытка создания героя сбрасывает характеристики; цифры сохраняются при переходе между полями и перед подтверждением. · Вкладка «Данные» стала компактнее; полный технический редактор открывается отдельно. · Явный ручной доступ к уровням классов и согласование общего уровня. Автоматическая прокачка пока не реализована.",
+  "notes": "Кнопки опыта и повышения уровня во вкладке «Герой»: начисление, списание и установка опыта. · Повышение на один уровень выбранного класса по опыту или по решению мастера; мультикласс проверяет требования характеристик. · Предпросмотр HP, бросок/среднее/максимум, подкласс, ASI или установленная черта и выбор частичных владений нового класса. · Согласование общего уровня, мастерства и ячеек магии; Pact Magic отдельно, потраченные ячейки сохраняются. · Поддерживаемые таблицы классов перенесены из WebView; неизвестные прогрессии и Extra-классы явно блокируются. Полный перенос боевых эффектов ещё продолжается.",
   "artifacts": {
     "android": {
-      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.43/DnD-VTT-Unity-1.00.43-arm64.apk",
-      "bytes": 55743582,
-      "sha256": "dbbab052a84899979ed8bd324134fc0a7ebf6ef9e01722637a779ae5040834eb"
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.44/DnD-VTT-Unity-1.00.44-arm64.apk",
+      "bytes": 55829692,
+      "sha256": "e43b1987e5dd8c312e3c8957eae3c4d506e52215ac77e3f99bec3a5ab5b30480"
     },
     "windows": {
-      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.43/DnD-VTT-Unity-Setup-1.00.43-x64.exe",
-      "bytes": 39493257,
-      "sha256": "adbefbd1c9bf59adf86e10aa0fced0073d896295fb47fbb4b2734bc34e231608"
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.44/DnD-VTT-Unity-Setup-1.00.44-x64.exe",
+      "bytes": 39501585,
+      "sha256": "886d1eee23bba9125048dc2d0ac4a3c925f350d99ae9f9944f58d19925bfc8b0"
     }
   }
 }
