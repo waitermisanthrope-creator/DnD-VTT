@@ -129,3 +129,15 @@ view is global across sheet tabs and uses deferred transitions. A real old unsup
 counter tab→Hero transition emitted `Getting control...when doing repaint` despite
 exit0; navigation now commits state at Layout start, and QA fails on those GUI errors.
 Added art-from-Skills→return scenario. Final native import/render validation pending.
+
+## Final artifact transport bound
+
+Source d427cac6/run40735177301 ALL3SUCCESS: Android122981675114, Windows122993619126,
+installed runtime122998967028. Early editor logs confirm all4actualRGBA32 imports with
+original aspect (paper572x1024). Native installed pixel/layout/HP/art guards passed.
+However final combined job log download twice failed with MCP `Transport closed`;
+full PNG artifact download remains proxy-blocked. Do NOT claim final48frames manually
+viewed from that run. To complete the promised review, stdout previews now use JPEG82
+at preserved aspect/max640px; full-resolution PNG artifacts and all full-pixel checks
+are unchanged. This is an opt-in QA transport change, not altered product rendering.
+No publication before the final accessible preview review.

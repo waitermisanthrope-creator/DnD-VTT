@@ -611,7 +611,8 @@ namespace DndVtt.UnityPrototype
                     var pixels = new Color[thumbWidth * thumbHeight];
                     for (int y = 0; y < thumbHeight; y++) for (int x = 0; x < thumbWidth; x++) pixels[y * thumbWidth + x] = visible.GetPixelBilinear((x + .5f) / thumbWidth, (y + .5f) / thumbHeight);
                     thumb.SetPixels(pixels); thumb.Apply();
-                    Debug.Log("VTT_DESKTOP_UI_PNG:" + name + ":" + Convert.ToBase64String(thumb.EncodeToPNG()));
+                    // Full PNG above stays lossless. Bound log previews so the connected log reader can return the whole job.
+                    Debug.Log("VTT_DESKTOP_UI_JPEG:" + name + ":" + Convert.ToBase64String(thumb.EncodeToJPG(82)));
                 }
                 finally { Destroy(thumb); }
             }
