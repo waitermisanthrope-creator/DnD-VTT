@@ -76,3 +76,10 @@ Reviewer дополнительно нашёл потерю доступа по�
 старого CAPTURE-маркера: исправлены, прямой HP-ввод проверен настоящими событиями.
 Новый font import/IL2CPP/native installer/device Android проверяются отдельно.
 Кандидат1.00.45 отмечен testing, опубликованная1.00.44 и feed не меняются этой правкой.
+
+Final reference correction: `Wallpapers.js` default dim is0.4, not0.2;
+matched and natural-width condition chips now wrap by text width. Fractional chip
+widths are rounded upward to avoid wrapping the last glyph. Opt-in eye target padding
+matches its38px height. `exact-reference-dim3` capture8 + native HP input exit0.
+HP pointer QA distinguishes three wide inputs from narrower same-color condition chips.
+Candidate bcd60a52 is superseded by this final source before any publication.

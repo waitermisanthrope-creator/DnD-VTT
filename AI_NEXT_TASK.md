@@ -10,6 +10,8 @@ summary/edit/damage rows removed. Old data actions retained in Data/device setti
 Capture is NOT exact-match assertion. Race/custom modal, emoji/blur and other windows
 still differ; full visual/function parity unfinished. PhysicalAndroid and new native
 font import unverified until candidate gates. Next candidate1.00.45 testing; feed44 unchanged.
+Final dim0.4/natural condition widths capture+HP PASS exact-reference-dim3;
+previous candidate bcd60a52 superseded before publication.
 Only experiment branch; no main/MMO/SQL/secrets. History below is not a new task.
 
 # Unity WebView parity — первый этап листа, 28.10.2026

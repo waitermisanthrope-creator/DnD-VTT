@@ -113,7 +113,7 @@ namespace DndVtt.UnityPrototype
                         {
                             var c=pixels[y*capture.width+x];bool hit=c.r==42&&c.g==42&&c.b==42;
                             if(hit&&start<0)start=x;
-                            if((!hit||x==capture.width-11)&&start>=0){if(x-start>=40)spans.Add(new Vector2Int(start,x));start=-1;}
+                            if((!hit||x==capture.width-11)&&start>=0){if(x-start>=Mathf.FloorToInt((capture.width-50)*.8f/3))spans.Add(new Vector2Int(start,x));start=-1;}
                         }
                         if(spans.Count==3){centerX=(spans[1].x+spans[1].y)/2;centerY=capture.height-1-y+15;}
                     }

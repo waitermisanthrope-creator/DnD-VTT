@@ -30,13 +30,15 @@ namespace DndVtt.UnityPrototype
             PrepareBrand();if(!sheetParchment)sheetParchment=Resources.Load<Texture2D>("UI/Parchment");
             Rect full=new Rect(0,0,UiWidth,UiHeight);var chosen=SelectedAppearanceImage("wallpaper");
             Shade(full,new Color(.20f,.18f,.15f));Cover(chosen?chosen:sheetParchment?sheetParchment:brandWallpaper,full);
-            Shade(full,new Color(0,0,0,chosen?.45f:.20f));
+            Shade(full,new Color(0,0,0,chosen?.45f:.40f));
             Shade(new Rect(0,0,UiWidth,60),new Color(.15f,.15f,.15f,.99f));
         }
         private void DrawClassicSheetNavigation()
         {
-            GUILayout.BeginHorizontal();
-            if(MeasuredMenuButton("Меню",sheetActiveTab,GUILayout.Width(60),GUILayout.Height(44)))requestedSheetDestination=FrontScreen.Characters;
+            cloneHome??=new GUIStyle(sheetActiveTab){fontSize=14,padding=new RectOffset(),margin=new RectOffset()};
+            GUILayout.BeginHorizontal();GUILayout.Space(-5);
+            if(MeasuredMenuButton("Меню",cloneHome,GUILayout.Width(65),GUILayout.Height(40)))requestedSheetDestination=FrontScreen.Characters;
+            GUILayout.Space(4);
             int active=Array.IndexOf(classicTabs,sheetTab);
             sheetTabsScroll=GUILayout.BeginScrollView(SwipePosition("sheet-tabs",sheetTabsScroll),false,false,GUIStyle.none,GUIStyle.none,GUILayout.Height(48));GUILayout.BeginHorizontal();
             for(int i=0;i<classicTabs.Length;i++)
@@ -44,9 +46,10 @@ namespace DndVtt.UnityPrototype
                 string label=classicTabNames[i];float width=Mathf.Max(65,sheetTabStyle.CalcSize(new GUIContent(label)).x+12);
                 if(MeasuredMenuButton(label,active==i?sheetActiveTab:sheetTabStyle,GUILayout.Width(width),GUILayout.Height(44)))requestedSheetTab=classicTabs[i];
                 if(active==i&&Event.current.type==EventType.Repaint){Rect r=GUILayoutUtility.GetLastRect();Shade(new Rect(r.x,r.yMax-2,r.width,2),BrandAccent);}
+                GUILayout.Space(4);
             }
             GUILayout.EndHorizontal();GUILayout.EndScrollView();RegisterSwipe("sheet-tabs",GUILayoutUtility.GetLastRect(),true);
-            cloneEye??=new GUIStyle(sheetTabStyle){font=Resources.Load<Font>("UI/DejaVuSans")};
+            cloneEye??=new GUIStyle(sheetTabStyle){font=Resources.Load<Font>("UI/DejaVuSans"),fontSize=20,padding=new RectOffset()};
             if(MeasuredMenuButton("◉",cloneEye,GUILayout.Width(43),GUILayout.Height(38))){ResetFormInput();classicPortraitOpen=!classicPortraitOpen;}
             GUILayout.EndHorizontal();
             if(!sheetActionsOpen)return;
@@ -135,10 +138,10 @@ namespace DndVtt.UnityPrototype
             foreach(var state in new[]{style.normal,style.hover,style.active,style.focused}){state.background=Rounded(color,Color.clear,6);state.textColor=text;}
             return style;
         }
-        private GUIStyle cloneDanger,cloneShortRest,cloneLongRest,cloneChip;
+        private GUIStyle cloneDanger,cloneShortRest,cloneLongRest,cloneChip,cloneActiveChip;
         private void ClassicCombat(JObject hero,ref bool changed)
         {
-            PrepareCloneControls();cloneChip??=new GUIStyle(GUI.skin.button){padding=new RectOffset(10,10,5,5),fontStyle=FontStyle.Normal};cloneDanger??=CloneAction(new Color(229/255f,57/255f,53/255f),Color.white);cloneShortRest??=CloneAction(BrandAccent,Color.white);cloneLongRest??=CloneAction(new Color(76/255f,175/255f,80/255f),Color.white);
+            PrepareCloneControls();cloneChip??=new GUIStyle(GUI.skin.button){padding=new RectOffset(10,10,5,5),fontStyle=FontStyle.Normal,normal={background=Rounded(new Color(42/255f,42/255f,42/255f),new Color(68/255f,68/255f,68/255f),12),textColor=new Color(170/255f,170/255f,170/255f)}};cloneDanger??=CloneAction(new Color(229/255f,57/255f,53/255f),Color.white);cloneShortRest??=CloneAction(BrandAccent,Color.white);cloneLongRest??=CloneAction(new Color(76/255f,175/255f,80/255f),Color.white);
             GUILayout.BeginVertical(GUI.skin.box);SheetSection("Боевые параметры");GUILayout.BeginHorizontal();
             ClassicNumber(hero,"ac","КД (AC)",ref changed,10);
             GUILayout.BeginVertical(sheetMetricBox,GUILayout.ExpandWidth(true));GUILayout.Label("ИНИЦИАТИВА",cloneMetricLabel);GUILayout.Label(Signed(CharacterSheetRules.Modifier(hero,"dex")),cloneReadOnly,GUILayout.Height(39));GUILayout.EndVertical();
@@ -147,12 +150,17 @@ namespace DndVtt.UnityPrototype
             GUILayout.Space(10);if(MeasuredMenuButton("Бросок Инициативы",cloneDanger,GUILayout.Height(39)))Roll("Инициатива",20,CharacterSheetRules.Modifier(hero,"dex"));
             CloneFieldLabel("Состояния (Status Effects)");
             string[] names={"Отравлен","Сбит с ног","Ослеплен","Очарован","Испуган","Невидимость","Парализован","Оглушен","Захвачен"};
+            float used=0,available=ClassicBodyWidth-32;GUILayout.BeginHorizontal();
             for(int i=0;i<names.Length;i++)
             {
-                if(i%3==0)GUILayout.BeginHorizontal();string name=names[i];var token=(hero["activeConditions"] as JObject)?[name];bool active=token?.Type==JTokenType.Boolean&&(bool)token;
-                if(MeasuredMenuButton(name,active?cloneDanger:cloneChip,GUILayout.Height(33),GUILayout.MinWidth(30)))SheetAction(()=>CharacterSheetRules.ToggleSheetCondition(hero,name),ref changed);
-                if(i%3==2)GUILayout.EndHorizontal();
+                string name=names[i];float width=Mathf.Ceil(cloneChip.CalcSize(new GUIContent(name)).x)+2;
+                if(used>0&&used+width+6>available){GUILayout.EndHorizontal();GUILayout.BeginHorizontal();used=0;}
+                var token=(hero["activeConditions"] as JObject)?[name];bool active=token?.Type==JTokenType.Boolean&&(bool)token;
+                cloneActiveChip??=new GUIStyle(cloneChip){normal={background=cloneDanger.normal.background,textColor=Color.white}};
+                if(MeasuredMenuButton(name,active?cloneActiveChip:cloneChip,GUILayout.Height(28),GUILayout.Width(width)))SheetAction(()=>CharacterSheetRules.ToggleSheetCondition(hero,name),ref changed);
+                GUILayout.Space(6);used+=width+6;
             }
+            GUILayout.EndHorizontal();
             CloneFieldLabel("Здоровье (Макс / Текущее / Временное)");GUILayout.BeginHorizontal();CloneHp(hero,"hpMax",ref changed,archive.MaximumHp(selected));CloneHp(hero,"hpCurrent",ref changed,archive.CurrentHp(selected));CloneHp(hero,"hpTemp",ref changed,archive.TemporaryHp(selected));GUILayout.EndHorizontal();
             CloneFieldLabel("Спасброски от смерти");CharacterSheetRules.TrySheetCount((hero["deathSaves"] as JObject)?["successes"],out int successes);CharacterSheetRules.TrySheetCount((hero["deathSaves"] as JObject)?["failures"],out int failures);
             foreach(bool success in new[]{true,false})
@@ -206,7 +214,7 @@ namespace DndVtt.UnityPrototype
             GUILayout.EndVertical();
             GUILayout.BeginVertical(GUI.skin.box);SheetSection("Спасброски Характеристики");ClassicSaves(hero,ref changed);GUILayout.EndVertical();
         }
-        private GUIStyle cloneListLabel,cloneProf,clonePassive,cloneProfBonus,cloneEye;
+        private GUIStyle cloneListLabel,cloneProf,clonePassive,cloneProfBonus,cloneEye,cloneHome;
         private int? cloneSkillDropdown;
         private void PrepareCloneLists()
         {
