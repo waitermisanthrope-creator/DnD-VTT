@@ -44,7 +44,7 @@
 
 ## Проверка на этапе кандидата
 
-- Pure .NET advancement: 1713 PASS (XP thresholds, prerequisites/aliases, class-level,
+- Pure .NET advancement: 1715 PASS (XP thresholds, prerequisites/aliases, class-level,
   HP/ASI/subclasses/feats, slots/Pact, source hashes, backup/restart/IO failure).
 - Полный workshop прогон после расширения проверок:8687 PASS; сохранения/syntax124 PASS. Windows/Android C# ветви компилировались Roslyn
   против DLL реального Unity-player; это не сборка IL2CPP/Editor.

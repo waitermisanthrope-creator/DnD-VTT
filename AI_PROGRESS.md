@@ -3,7 +3,7 @@
 Владелец приоритизировал XP/level-up/multiclass перед дальнейшей UI parity.
 27 source tables, exact class-level, XP/milestone, HP/CON ASI/feat/subclass,
 partial proficiencies, shared slots/Pact; atomic detached commit + stale guard.
-Pure1713/full8687/save124 PASS; Win/Android Roslyn compile PASS (не native builds).
+Pure1715/full8687/save124 PASS; Win/Android Roslyn compile PASS (не native builds).
 Wine: первый35frames exit0; расширенный38frames получил кадры/advancement PASS,
 но nativefullscreen crash; повтор38frames exit0/full UI PASS. Нативный CI ещё нужен.
 Не выдавать частичный combat runtime или неизвестные/Extra классы за full parity.

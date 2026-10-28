@@ -17,6 +17,8 @@ namespace DndVtt.UnityPrototype
         private string experienceAmount="0",experienceTotal="0";
         private int advancementHp,advancementAsiMode;
         private readonly System.Collections.Generic.Dictionary<string,string> advancementProficiencies=new System.Collections.Generic.Dictionary<string,string>();
+        private int AdvancementTotal(JObject hero)
+        {try{return CharacterAdvancement.CurrentLevel(AdvancementCatalog,hero);}catch(FormatException){return CharacterSheetRules.Level(hero);}}
         private long DisplayExperience(JObject hero)
         {try{return Math.Max(0,CharacterAdvancement.CurrentExperience(hero));}catch(FormatException){return 0;}}
         private string HeroSignature(JObject hero)=>hero.ToString(Formatting.None);
@@ -36,7 +38,7 @@ namespace DndVtt.UnityPrototype
         private void DrawProgressionSummary(JObject hero)
         {
             GUILayout.BeginVertical(GUI.skin.box);SheetSection("Развитие персонажа");
-            int level=CharacterSheetRules.Level(hero);long xp=DisplayExperience(hero);
+            int level=AdvancementTotal(hero);long xp=DisplayExperience(hero);
             GUILayout.Label("Уровень "+level+" · опыт "+xp,sheetCharacterName);
             if(level<20){long next=(long)AdvancementCatalog["xp"][Math.Min(19,level)];GUILayout.Label(xp>=next?"Доступно повышение уровня":"До следующего уровня: "+Math.Max(0,next-xp)+" опыта",sheetQuiet);}
             else GUILayout.Label("Достигнут 20-й уровень",sheetQuiet);
@@ -60,7 +62,7 @@ namespace DndVtt.UnityPrototype
             if(HeroSignature(hero)!=advancementSignature){GUILayout.Label("Лист изменился. Откройте развитие заново. Ничего не применено.");return;}
             if(experienceOpen){DrawExperience(hero);return;}
             SheetSection("Повышение уровня");
-            int total=CharacterSheetRules.Level(hero);
+            int total=AdvancementTotal(hero);
             GUILayout.Label("Уровень "+total+" → "+(total+1),sheetCharacterName);
             bool enough=CharacterAdvancement.LevelByExperience(AdvancementCatalog,DisplayExperience(hero))>total;
             if(!enough)GUILayout.Label("По опыту повышение пока недоступно. Для игры по вехам можно подтвердить решение мастера.",sheetQuiet);
@@ -158,7 +160,7 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawExperience(JObject hero)
         {
-            SheetSection("Опыт персонажа");int level=CharacterSheetRules.Level(hero);long current=DisplayExperience(hero);
+            SheetSection("Опыт персонажа");int level=AdvancementTotal(hero);long current=DisplayExperience(hero);
             GUILayout.Label("Уровень "+level+" · "+current+" опыта",sheetCharacterName);
             if(level<20)GUILayout.Label("Следующий уровень: "+AdvancementCatalog["xp"][Math.Min(19,level)]+" опыта",sheetQuiet);
             GUILayout.Label("Всего опыта");experienceTotal=IntegerField("advancement-xp-total",experienceTotal,GUILayout.MinHeight(50));

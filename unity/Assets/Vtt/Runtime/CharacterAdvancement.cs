@@ -41,16 +41,22 @@ namespace DndVtt.UnityPrototype
         static string Canonical(JObject data,string name)=>((JObject)data["classes"]).Properties().FirstOrDefault(p=>Key(p.Name)==Key(name))?.Name;
         public static JArray Classes(JObject hero,JObject data)
         {
+            if(hero["classes"]!=null&&hero["classes"].Type!=JTokenType.Null&&!(hero["classes"] is JArray))throw new FormatException("Неподдерживаемый формат списка классов");
             if(hero["classes"] is JArray existing && existing.Count>0)return (JArray)existing.DeepClone();
             string raw=(string)(hero["className"]??hero["class"]),name=Canonical(data,raw);
+            int level=CharacterSheetRules.Level(hero);
             if(name==null && raw!=null)
             {
                 // Accept a single legacy "Воин 3" label; never guess a formatted multiclass.
+                var suffix=Regex.Match(raw,@"\s+(\d+)\s*(ур\.?|уровень)?\s*$",RegexOptions.IgnoreCase);
+                if((hero["level"]==null||hero["level"].Type==JTokenType.Null)&&suffix.Success){if(!int.TryParse(suffix.Groups[1].Value,NumberStyles.None,CultureInfo.InvariantCulture,out level))throw new FormatException("Некорректный уровень в имени класса");}
                 string plain=Regex.Replace(raw,@"\s*\d+\s*(ур\.?|уровень)?\s*$","",RegexOptions.IgnoreCase).Trim();name=Canonical(data,plain);
             }
             if(name==null)throw new FormatException("Не удалось распознать исходный класс. Проверьте импортированный лист.");
-            return new JArray(new JObject{["name"]=name,["level"]=CharacterSheetRules.Level(hero),["subclass"]=hero["subclass"]?.DeepClone()});
+            return new JArray(new JObject{["name"]=name,["level"]=level,["subclass"]=hero["subclass"]?.DeepClone()});
         }
+        public static int CurrentLevel(JObject data,JObject hero)
+        {var detached=(JObject)hero.DeepClone();detached["classes"]=Classes(hero,data);return CharacterSheetRules.Level(detached);}
         public static string EntryProblem(JObject data,JObject hero,string name)
         {
             var cls=ClassData(data,name);if(cls==null)return "Прогрессия класса «"+name+"» ещё не перенесена";
