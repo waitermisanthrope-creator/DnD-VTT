@@ -14,8 +14,12 @@ namespace DndVtt.UnityPrototype
     {
         public static bool HideText, PortraitLayout;
         static bool running;
-        static int buttonChecks, clippedButtons;
+        static int buttonChecks, clippedButtons,layoutErrors;
         static readonly System.Collections.Generic.Dictionary<string,Vector2> buttonPoints=new System.Collections.Generic.Dictionary<string,Vector2>();
+        void OnEnable(){Application.logMessageReceived+=ObserveGuiError;}
+        void OnDisable(){Application.logMessageReceived-=ObserveGuiError;}
+        static void ObserveGuiError(string condition,string trace,LogType type)
+        {if(running&&(type==LogType.Exception||type==LogType.Error)&&(condition.Contains("Getting control")||condition.Contains("GUILayout")||trace.Contains("GUILayoutGroup.GetNext")))layoutErrors++;}
         public static void RecordButton(string label, GUIStyle style, Rect rect)
         {
             if (!running || Event.current.type != EventType.Repaint) return;
@@ -209,8 +213,10 @@ namespace DndVtt.UnityPrototype
                 Check(SystemInfo.graphicsDeviceType != UnityEngine.Rendering.GraphicsDeviceType.Null, "real graphics device");
                 var paper=Resources.Load<Texture2D>("UI/Parchment");if(!paper&&parchmentAt>=0)paper=typeof(LegacySessionPanel).GetField("sheetParchment",Flags).GetValue(panel) as Texture2D;Check(paper,"bundled source paper or explicit QA override");
                 Debug.Log("VTT_DESKTOP_REFERENCE_ASSET: Parchment="+paper.width+"x"+paper.height+" format="+paper.format);
+                Check(paper.format!=TextureFormat.Alpha8&&paper.format!=TextureFormat.R8,"color paper cannot be imported as a single-channel mask");
+                if(parchmentAt<0)foreach(string key in new[]{"Branding/Wallpaper16","Branding/Splash19","Branding/Dragon20"}){var image=Resources.Load<Texture2D>(key);Check(image&&image.format!=TextureFormat.Alpha8&&image.format!=TextureFormat.R8,"color artwork importer: "+key);Debug.Log("VTT_DESKTOP_REFERENCE_ASSET: "+key+" "+image.width+"x"+image.height+" format="+image.format);}
                 var previousTarget=RenderTexture.active;var target=RenderTexture.GetTemporary(16,16,0,RenderTextureFormat.ARGB32);Texture2D sampled=null;
-                try{Graphics.Blit(paper,target);RenderTexture.active=target;sampled=new Texture2D(16,16,TextureFormat.RGB24,false);sampled.ReadPixels(new Rect(0,0,16,16),0,0);sampled.Apply();Color pixel=sampled.GetPixel(8,8);Debug.Log("VTT_DESKTOP_REFERENCE_ASSET_GPU: "+pixel.r+","+pixel.g+","+pixel.b);}
+                try{Graphics.Blit(paper,target);RenderTexture.active=target;sampled=new Texture2D(16,16,TextureFormat.RGB24,false);sampled.ReadPixels(new Rect(0,0,16,16),0,0);sampled.Apply();Color pixel=sampled.GetPixel(8,8);Debug.Log("VTT_DESKTOP_REFERENCE_ASSET_GPU: "+pixel.r+","+pixel.g+","+pixel.b);Check(pixel.r+pixel.g+pixel.b>.3f,"source paper actually contains visible RGB texels");}
                 finally{RenderTexture.active=previousTarget;RenderTexture.ReleaseTemporary(target);if(sampled)Destroy(sampled);}
                 var actualFont=typeof(LegacySessionPanel).GetProperty("MenuFont",Flags).GetValue(panel) as Font;Check(actualFont,"actual menu font");actualFont.RequestCharactersInTexture("АМИШabc123",13,FontStyle.Normal);
                 foreach(char letter in "АМИШabc123"){Check(actualFont.GetCharacterInfo(letter,out var glyph,13,FontStyle.Normal)&&glyph.advance>0,"bundled reference glyph "+letter);Debug.Log("VTT_DESKTOP_REFERENCE_FONT: "+actualFont.name+" "+letter+" advance="+glyph.advance+" glyph="+glyph.glyphWidth+"x"+glyph.glyphHeight);}
@@ -331,8 +337,8 @@ namespace DndVtt.UnityPrototype
             catch (Exception error) { Fail(error); yield break; }
             yield return Frame("sheet-long-name-portrait"); if (failed) yield break;
             Field("classicPortraitOpen",true);Field("heroArt3D",true);yield return Frame("hero-3d-coming-soon-portrait");if(failed)yield break;
-            Field("heroArt3D",false);Field("classicPortraitOpen",false);Field("sheetActionsOpen",true);yield return Frame("hero-actions-portrait");if(failed)yield break;
-            Field("sheetActionsOpen",false);Field("frontScroll",new Vector2(0,650));yield return Frame("hero-details-portrait");if(failed)yield break;
+            Field("heroArt3D",false);Field("classicPortraitOpen",false);Field("sheetTab",6);yield return Frame("hero-actions-portrait");if(failed)yield break;
+            Field("sheetTab",0);Field("frontScroll",new Vector2(0,650));yield return Frame("hero-details-portrait");if(failed)yield break;
             Field("frontScroll",new Vector2(0,1800));yield return Frame("hero-stats-portrait");if(failed)yield break;
             Field("frontScroll",Vector2.zero);
             try
@@ -486,6 +492,11 @@ namespace DndVtt.UnityPrototype
             try{Field("sheetTab",1);Field("frontScroll",Vector2.zero);}
             catch(Exception error){Fail(error);yield break;}
             yield return Frame("classic-skills-portrait");if(failed)yield break;
+            Field("requestedPortraitVisibility",(bool?)true);yield return new WaitForSecondsRealtime(.3f);
+            yield return Frame("classic-art-from-skills-portrait");if(failed)yield break;
+            Field("requestedPortraitVisibility",(bool?)false);yield return new WaitForSecondsRealtime(.3f);
+            try{Check(!(bool)typeof(LegacySessionPanel).GetField("classicPortraitOpen",Flags).GetValue(panel)&&(int)typeof(LegacySessionPanel).GetField("sheetTab",Flags).GetValue(panel)==1,"art view closes back to original skills tab");}
+            catch(Exception error){Fail(error);yield break;}
             try{Check(File.ReadAllText(panel.SavePath)==classicDisk,"rendering Skills cannot rewrite profile");Field("sheetTab",4);Field("frontScroll",Vector2.zero);}
             catch(Exception error){Fail(error);yield break;}
             yield return Frame("classic-notes-portrait");if(failed)yield break;
@@ -577,7 +588,7 @@ namespace DndVtt.UnityPrototype
             var hidden = ScreenCapture.CaptureScreenshotAsTexture(); HideText = false;
             try
             {
-                Check(clippedButtons == 0, "all recorded navigation/back labels fit their actual bounds");
+                Check(layoutErrors==0,"no IMGUI Layout/Repaint errors during navigation");Check(clippedButtons == 0, "all recorded navigation/back labels fit their actual bounds");
                 Check(visible && hidden && visible.width == hidden.width, "GPU capture " + name);
                 if (name.EndsWith("-portrait", StringComparison.Ordinal)) Check(PortraitLayout && visible.height > visible.width, "actual portrait viewport " + name);
                 Debug.Log("VTT_DESKTOP_VIEWPORT: "+name+" "+visible.width+"x"+visible.height);

@@ -13,6 +13,7 @@ namespace DndVtt.UnityPrototype
         private int? requestedSheetTab,requestedSheetCharacter;
         private FrontScreen? requestedSheetDestination;
         private bool classicPortraitOpen,classicProfileEdit;
+        private bool? requestedPortraitVisibility;
         private bool? pendingBaseRest;
         private string healthAmount="1",newFolderName="",notesQuery="";
         private readonly int[] classicTabs={0,1,2,3,4,5,9};
@@ -50,24 +51,10 @@ namespace DndVtt.UnityPrototype
             }
             GUILayout.EndHorizontal();GUILayout.EndScrollView();RegisterSwipe("sheet-tabs",GUILayoutUtility.GetLastRect(),true);
             cloneEye??=new GUIStyle(sheetTabStyle){font=Resources.Load<Font>("UI/DejaVuSans"),fontSize=20,padding=new RectOffset()};
-            if(MeasuredMenuButton("◉",cloneEye,GUILayout.Width(43),GUILayout.Height(38))){ResetFormInput();classicPortraitOpen=!classicPortraitOpen;}
+            bool eyeEnabled=GUI.enabled;GUI.enabled=eyeEnabled&&!advancementOpen;
+            if(MeasuredMenuButton("◉",cloneEye,GUILayout.Width(43),GUILayout.Height(38)))requestedPortraitVisibility=!classicPortraitOpen;
+            GUI.enabled=eyeEnabled;
             GUILayout.EndHorizontal();
-            if(!sheetActionsOpen)return;
-            float previousWidth=classicControlWidth;classicControlWidth=UiWidth-2*Mathf.Min(28f,UiWidth*.04f)-36;
-            GUILayout.BeginVertical(GUI.skin.box);GUILayout.Label(archive!=null&&archive.Count>0?archive.Name(selected):"Персонаж",sheetCharacterName);
-            if(archive==null){if(FitMenuButton("Открыть персонажей"))requestedSheetDestination=FrontScreen.Characters;GUILayout.EndVertical();classicControlWidth=previousWidth;return;}
-            if(archive!=null&&archive.Count>1)
-            {
-                int heroAction=ClassicButtonRow("← Предыдущий герой","Следующий герой →");
-                if(heroAction==0)requestedSheetCharacter=(selected+archive.Count-1)%archive.Count;if(heroAction==1)requestedSheetCharacter=(selected+1)%archive.Count;
-            }
-            int detailAction=ClassicButtonRow("Файлы","Кошелёк","Паспорт");if(detailAction>=0)requestedSheetTab=new[]{6,7,8}[detailAction];
-            int menuAction=ClassicButtonRow("Персонажи","Настройки","Сохранить");
-            if(menuAction==0)requestedSheetDestination=FrontScreen.Characters;if(menuAction==1)requestedSheetDestination=FrontScreen.Settings;
-            if(menuAction==2)Attempt(()=>{SaveSheet();status="Сохранено на устройстве";});
-            if(FitMenuButton("Копировать весь архив")){GUIUtility.systemCopyBuffer=archive.Export();status="Архив всех героев скопирован";}
-            if(FitMenuButton("Сохранить архив в файл…"))Attempt(()=>PickCharacterFile(true));
-            GUILayout.EndVertical();classicControlWidth=previousWidth;
         }
         private void FinishSheetNavigation()
         {
@@ -103,7 +90,6 @@ namespace DndVtt.UnityPrototype
         private void ClassicHero(JObject hero,ref bool changed)
         {
             PrepareCloneControls();classicControlWidth=ClassicBodyWidth-32;
-            if(classicPortraitOpen){DrawHeroArt(hero);classicControlWidth=0;return;}
             GUILayout.BeginVertical(GUI.skin.box);SheetSection("Герой");
             CloneText(hero,"name","Имя персонажа",ref changed);
             CloneFieldLabel("Класс и Уровень");var classes=hero["classes"] as JArray;

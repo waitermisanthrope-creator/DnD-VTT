@@ -22,7 +22,7 @@ namespace DndVtt.UnityPrototype
         private bool showItemCatalog;
         private string deletePath, deleteSignature, deleteCharacter, deleteLabel;
         private readonly string[] tabs = { "Герой", "Навыки", "Способности", "Инвентарь", "Заметки", "Дайсы", "Данные", "Кошелёк", "Паспорт", "Лор / Бестиарий" };
-        private void ClearSheetInputs() { CloseAdvancement();cloneSkillDropdown=null;classicPortraitOpen=classicProfileEdit=false;healthAmount="1";notesQuery="";pendingBaseRest=null;technicalDataOpen=false; heroArt3D=false; sheetActionsOpen=false; edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
+        private void ClearSheetInputs() { CloseAdvancement();requestedPortraitVisibility=null;cloneSkillDropdown=null;classicPortraitOpen=classicProfileEdit=false;healthAmount="1";notesQuery="";pendingBaseRest=null;technicalDataOpen=false; heroArt3D=false; edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
         private void Attempt(Action action)
         {
             try { action(); } catch (Exception error) { status = error.Message; }
@@ -35,9 +35,16 @@ namespace DndVtt.UnityPrototype
                 if (GUILayout.Button("Создать персонажа", GUILayout.Height(52))) BeginCreation();
                 DrawImportAndMap(); return;
             }
-            if(advancementOpen){if(requestedSheetTab.HasValue){CloseAdvancement();sheetTab=requestedSheetTab.Value;requestedSheetTab=null;}else{GUILayout.BeginVertical(ClassicLegacySurface);DrawAdvancement(archive.Snapshot(selected));GUILayout.EndVertical();}FinishSheetNavigation();return;}
-            int next = requestedSheetTab??sheetTab;requestedSheetTab=null;
-            if(next!=sheetTab||requestedSheetCharacter.HasValue||requestedSheetDestination.HasValue)CompleteNumericKeyboard();
+            // Apply pending view changes before building Layout, never between
+            // Layout and Repaint. The requesting input event saved the old body.
+            if(Event.current.type==EventType.Layout)
+            {
+                if(requestedSheetTab.HasValue){CloseAdvancement();sheetTab=requestedSheetTab.Value;requestedSheetTab=null;requestedPortraitVisibility=null;classicPortraitOpen=false;ResetFormInput();frontScroll=Vector2.zero;}
+                if(requestedPortraitVisibility.HasValue){classicPortraitOpen=requestedPortraitVisibility.Value;requestedPortraitVisibility=null;ResetFormInput();frontScroll=Vector2.zero;}
+            }
+            if(classicPortraitOpen){DrawHeroArt(archive.Snapshot(selected));FinishSheetNavigation();return;}
+            if(advancementOpen){GUILayout.BeginVertical(ClassicLegacySurface);DrawAdvancement(archive.Snapshot(selected));GUILayout.EndVertical();FinishSheetNavigation();return;}
+            if(requestedSheetTab.HasValue||requestedSheetCharacter.HasValue||requestedSheetDestination.HasValue||requestedPortraitVisibility.HasValue)CompleteNumericKeyboard();
             // Render/save the old tab once before committing a tab transition.
             JObject hero = archive.Snapshot(selected); bool changed = false, persistWallet = false, persistCommerce = false;
             if (deletePath != null)
@@ -98,7 +105,6 @@ namespace DndVtt.UnityPrototype
                     status = "Изменения сохранены на устройстве";
                 }
             });
-            if(next!=sheetTab){ResetFormInput();sheetTab=next;frontScroll=Vector2.zero;}
             FinishSheetNavigation();
         }
         private void Roll(string label, int sides, int modifier) { int die = UnityEngine.Random.Range(1, sides + 1); rollResult = label + ": " + die + " " + Signed(modifier) + " = " + (die + modifier); }

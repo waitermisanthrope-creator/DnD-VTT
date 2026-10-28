@@ -90,6 +90,13 @@ public static class UnityReleaseBuild
             PlayerSettings.resizableWindow = true; PlayerSettings.allowFullscreenSwitch = true;
         }
         if (!Resources.Load<Font>("UI/DejaVuSans")) throw new Exception("Bundled Cyrillic UI font is missing");
+        if (!Resources.Load<Font>("UI/PlayfairDisplay-Regular")) throw new Exception("Bundled WebView font is missing");
+        foreach(string resource in new[]{"UI/Parchment","Branding/Wallpaper16","Branding/Splash19","Branding/Dragon20"})
+        {
+            var image=Resources.Load<Texture2D>(resource);
+            if(!image||image.format==TextureFormat.Alpha8||image.format==TextureFormat.R8)throw new Exception("Color UI artwork imported as a single-channel mask: "+resource);
+            Debug.Log("VTT_UI_COLOR_IMPORT_PASS: "+resource+" "+image.width+"x"+image.height+" "+image.format);
+        }
         LegacyMigrationSetup.ValidateContracts();
         // 1.00.04 could compile while images were invisible at runtime.
         // Fail 1.00.05 before packaging if any mandatory source texture is

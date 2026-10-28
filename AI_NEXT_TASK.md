@@ -1,3 +1,15 @@
+# Unity45 actual root cause / final native retest — 28.10.2026
+
+40725932785/source0ced: Android+Windows built (license198 retried); installed QA
+correctly FAILS paper guard. Runtime texture Alpha8, RGB0, screen0: metadata bug.
+Corrected current RGBA32 importer schema for paper+3branding images, same GUIDs/bytes.
+Early build and runtime color guards; true-aspect screenshots/viewport telemetry.
+Playfair metrics match reference. Layout/Repaint transition bug fixed; UI now48frames,
+including global art from Skills and return, local explicit-PNG run PASS/no GUI errors.
+40actions/menu50 PASS. Report docs/UNITY_WEBVIEW_EXACT_CLONE.md. Native retest required;
+no publication/feed45 yet; stable44. Full clone/race/modal/physicalAndroid unfinished.
+Only experiment branch; no main/MMO/SQL/key changes. History below is not a new task.
+
 # Unity45 visual VETO — native build success is insufficient, 28.10.2026
 
 Source476513c9/run40715967849 ALL3SUCCESS;47native thumbnails actually viewed.

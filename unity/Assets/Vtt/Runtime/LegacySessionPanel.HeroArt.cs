@@ -9,7 +9,7 @@ namespace DndVtt.UnityPrototype
     {
         private Texture2D heroArtTexture;
         private string heroArtId, heroArtData, heroArtError;
-        private bool heroArt3D, sheetActionsOpen;
+        private bool heroArt3D;
         private void ReleaseHeroArt()
         {
             ReleaseAppearanceTexture(heroArtTexture); heroArtTexture=null;

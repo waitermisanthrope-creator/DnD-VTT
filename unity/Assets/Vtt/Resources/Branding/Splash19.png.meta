@@ -3,13 +3,36 @@ guid: 709f6281c0894b8a8f50d93c38df67c7
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   textureType: 0
+  textureShape: 1
+  textureFormat: 4
   maxTextureSize: 2048
-  textureCompression: 1
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 
+  nPOTScale: 0
+  alphaSource: 1
+  alphaIsTransparency: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  userData:
+  assetBundleName:
+  assetBundleVariant:

@@ -104,3 +104,28 @@ format/GPU texel, actual-font glyph metrics and frame viewport, and fails if the
 background samples remain black. Measured old native sample is RED; known-good local
 ARGB32 paper GPU=.9216,.8784,.7882, rendered mean=.5155, real HP edit PASS. Published44
 and paired approval44 remain untouched. No release45 authorised as complete clone.
+
+## Root cause confirmed by native telemetry
+
+Run40725932785/source0ced28ca: Android passed; Windows first failed Unity activation
+(exit198), the authorised failed-jobs retry built successfully. Installed QA then
+correctly FAILED the new paper guard. Actual runtime reports `Parchment512x1024
+format=Alpha8`, GPU RGB0,0,0, screen brightness0. This disproves the simple compression
+change: the hand-written old importer metadata selected a single-channel alpha mask.
+The fix uses current TextureImporter13/platformSettings4 with explicit RGBA32 format4,
+no NPOT distortion/mipmaps, and unchanged GUIDs. The same incomplete metadata was used
+by Wallpaper16/Splash19/Dragon20; all four color images now use that correct schema.
+Original PNG/JPG bytes are unchanged. Build validates color formats before packaging;
+installed runtime validates format, GPU RGB and visible backdrop. Local48-frame UI
+run `exact-layout-guard` PASS (explicit raw QA PNG; not a new-asset import proof).
+
+Native telemetry also confirmed actual runner viewport600x768, not requested600x900;
+old fixed thumbnail dimensions explained the apparently stretched font. Original
+Playfair glyph metrics match the OS reference; font file is not replaced. Capture
+now preserves aspect. Full artifact download is blocked by proxy; no bypass attempted.
+
+Removed unreachable old More pane; its actions remain in Data/device settings. Art
+view is global across sheet tabs and uses deferred transitions. A real old unsupported-
+counter tab→Hero transition emitted `Getting control...when doing repaint` despite
+exit0; navigation now commits state at Layout start, and QA fails on those GUI errors.
+Added art-from-Skills→return scenario. Final native import/render validation pending.
