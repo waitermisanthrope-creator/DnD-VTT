@@ -1,3 +1,18 @@
+# Unity45 published / exact WebView UI still partial — 28.10.2026
+
+Published1.00.45, gated publisher40747479455 SUCCESS; public APK+EXE independently
+re-downloaded and SHA256/size/feed verified (INDEPENDENT_DELIVERY45_PASS).
+Source27087353457a06dcb33c55f5cf3217c6323642c7/candidate40742387640 ALL3SUCCESS:
+Android123007122465, Windows123018400943, installed QA123022969453.
+All48 final native previews actually viewed, original Playfair/paper/colors/order;
+RGBA32 root-cause fix and GPU/background(.5172)/layout guards PASS. Full8732,
+actions40/menu50/numeric14; native HP/XP/note/global-art/save/upgrade tests PASS.
+User wants literal original UI, NO invented redesign/buttons. Full clone unfinished:
+race selection/modal, inventory/other windows and full class hooks remain; physical
+Android touch/IME untested. Next: remaining original WebView behavior/layout parity.
+Report docs/UNITY_WEBVIEW_EXACT_CLONE.md. Only experiment/unity-vtt, no main/MMO/SQL/key
+changes. Stable44 retained as prior release. History below is not a new task.
+
 # Unity45 actual root cause / final native retest — 28.10.2026
 
 40725932785/source0ced: Android+Windows built (license198 retried); installed QA

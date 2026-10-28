@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 8aa5548fc912. Git содержит 2134 файлов.
+Снимок кода 2a5800066fc0. Git содержит 2134 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 8151 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 89144 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 127642 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 166979 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 90185 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 128683 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 168020 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1095,7 +1095,7 @@
 | №1074 docs/UNITY_UI_READABILITY.md | 7339 B | документация или отчёт: UNITY UI READABILITY |
 | №1075 docs/UNITY_UI_RUNTIME_CHECK.md | 5415 B | документация или отчёт: UNITY UI RUNTIME CHECK |
 | №1076 docs/UNITY_USER_FEEDBACK_1.00.43.md | 3277 B | документация или отчёт: UNITY USER FEEDBACK 1.00.43 |
-| №1077 docs/UNITY_WEBVIEW_EXACT_CLONE.md | 12129 B | документация или отчёт: UNITY WEBVIEW EXACT CLONE |
+| №1077 docs/UNITY_WEBVIEW_EXACT_CLONE.md | 14172 B | документация или отчёт: UNITY WEBVIEW EXACT CLONE |
 | №1078 docs/UNITY_WEBVIEW_PARITY_STAGE1.md | 10754 B | документация или отчёт: UNITY WEBVIEW PARITY STAGE1 |
 | №1079 docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md | 8253 B | документация или отчёт: ACCESS AND TOUCH 1.00.12 |
 | №1080 docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md | 9558 B | документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP |

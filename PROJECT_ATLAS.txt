@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 8aa5548fc912. Файлов: 2134
+Коммит 2a5800066fc0. Файлов: 2134
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,9 +56,9 @@
 0040. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (8151 B)
-0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (89144 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (127642 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (166979 B)
+0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (90185 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (128683 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (168020 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1090,7 +1090,7 @@
 1074. docs/UNITY_UI_READABILITY.md — документация или отчёт: UNITY UI READABILITY (7339 B)
 1075. docs/UNITY_UI_RUNTIME_CHECK.md — документация или отчёт: UNITY UI RUNTIME CHECK (5415 B)
 1076. docs/UNITY_USER_FEEDBACK_1.00.43.md — документация или отчёт: UNITY USER FEEDBACK 1.00.43 (3277 B)
-1077. docs/UNITY_WEBVIEW_EXACT_CLONE.md — документация или отчёт: UNITY WEBVIEW EXACT CLONE (12129 B)
+1077. docs/UNITY_WEBVIEW_EXACT_CLONE.md — документация или отчёт: UNITY WEBVIEW EXACT CLONE (14172 B)
 1078. docs/UNITY_WEBVIEW_PARITY_STAGE1.md — документация или отчёт: UNITY WEBVIEW PARITY STAGE1 (10754 B)
 1079. docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md — документация или отчёт: ACCESS AND TOUCH 1.00.12 (8253 B)
 1080. docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md — документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP (9558 B)

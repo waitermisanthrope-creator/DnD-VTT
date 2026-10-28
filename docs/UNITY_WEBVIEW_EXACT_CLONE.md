@@ -141,3 +141,35 @@ viewed from that run. To complete the promised review, stdout previews now use J
 at preserved aspect/max640px; full-resolution PNG artifacts and all full-pixel checks
 are unchanged. This is an opt-in QA transport change, not altered product rendering.
 No publication before the final accessible preview review.
+
+## Final native review — 28.10.2026
+
+Exact source `27087353457a06dcb33c55f5cf3217c6323642c7`, run40742387640:
+Android123007122465, Windows123018400943, installed QA123022969453 all SUCCESS.
+The final JPEG preview log is accessible (2,500,893 characters),48frames extracted
+and actually viewed in four contact sheets; Hero/health/desktop/global-art additionally
+viewed individually. All four imported images are RGBA32, original aspect preserved;
+actual visible paper brightness0.517211. Original Playfair typography is present.
+Real input/save, XP/note/art navigation, layout guard and installed upgrade/reinstall
+checks passed. Full-resolution PNG evidence remains in the workflow artifact; stdout
+JPEG is only a transport preview. No physical Android gesture/IME test is claimed.
+
+The original black-background release veto is resolved by native evidence, not by
+source checks alone. Owner-delegated test publication approval8aa5548f selects this
+exact run. This is a partial UI port: see remaining differences above, especially
+race selection/modal and other windows. It is not completion of the full visual clone.
+
+## Published and independently downloaded
+
+1.00.45 released by existing gated publisher run40747479455 (SUCCESS), delivery
+commit2a580006, source27087353457a06dcb33c55f5cf3217c6323642c7/run40742387640.
+Independent public download: Android62,571,990bytes, Windows44,354,049bytes;
+SHA256 and byte lengths match feed and PUBLIC_DELIVERY.json; APK contains ARM64 libs,
+EXE has MZ header. Plain/cache-busted feed match45/code10045, original Android package.
+`INDEPENDENT_DELIVERY45_PASS`, exit0. Public links:
+https://github.com/waitermisanthrope-creator/DnD-VTT/releases/tag/unity-v1.00.45
+
+Next work is actual remaining WebView parity, not more redesign. Test on physical
+Android: update without data deletion, old heroes/art reload, touch scroll/IME/numeric
+input, tabs and Back, XP/multiclass eligibility; on Windows check wheel/resize/file
+picker and saved data after restart. No claim these physical Android checks ran.
