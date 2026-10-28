@@ -83,3 +83,24 @@ widths are rounded upward to avoid wrapping the last glyph. Opt-in eye target pa
 matches its38px height. `exact-reference-dim3` capture8 + native HP input exit0.
 HP pointer QA distinguishes three wide inputs from narrower same-color condition chips.
 Candidate bcd60a52 is superseded by this final source before any publication.
+
+## Visual veto after successful native builds — 28.10
+
+Source476513c9, run40715967849: Android122914632400, Windows122929199773,
+installed QA122935165209 all SUCCESS.47 actual native GPU thumbnails inspected.
+**Promotion vetoed**: paper outside cards is black (six measured RGB samples0),
+although the asset is present/imported. Local LoadImage paper is visible. Full PNG ZIP
+returned by GitHub connector cannot be fetched into this workspace: proxy CONNECT403;
+no network bypass attempted. Thumbnails suffice to prove the missing background.
+
+The old fixed400×640/640×400 thumbnail resampled arbitrary viewports and distorted
+font proportions. Capture now retains aspect and logs actual width/height and font
+metrics; this was a QA defect, not evidence to replace the original Playfair font.
+
+Next controlled import hypothesis: uncompressed paper only (`textureCompression:0`),
+same GUID204603f0a61c4362b41baaad2329807c; no scene/other image/GUID changes. Native
+success is still REQUIRED, not asserted from this hypothesis. QA now records texture
+format/GPU texel, actual-font glyph metrics and frame viewport, and fails if the six
+background samples remain black. Measured old native sample is RED; known-good local
+ARGB32 paper GPU=.9216,.8784,.7882, rendered mean=.5155, real HP edit PASS. Published44
+and paired approval44 remain untouched. No release45 authorised as complete clone.

@@ -1,3 +1,14 @@
+# Unity45 visual VETO — native build success is insufficient, 28.10.2026
+
+Source476513c9/run40715967849 ALL3SUCCESS;47native thumbnails actually viewed.
+VETO: paper is black in native frames (six RGB samples0). No promotion/feed change.
+Now test one import change: Parchment compression0, same GUID. Added true-aspect
+thumbnails, viewport/font/texture GPU diagnostics and background pixel guard.
+Old native frame RED; known-good local ARGB32 paper mean.5155 / HP edit PASS.
+Next candidate45 must pass new native guard before release. Original Playfair unchanged.
+Report docs/UNITY_WEBVIEW_EXACT_CLONE.md. Race/modal/other UI parity unfinished.
+Main/MMO/SQL/secrets unchanged; stable44 remains. History below is not a new task.
+
 # Unity exact WebView clone correction — 28.10.2026
 
 Owner rejects9c14aad8 redesign: same original visual/fonts/colors/control positions.

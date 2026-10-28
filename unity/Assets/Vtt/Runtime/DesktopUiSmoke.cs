@@ -207,6 +207,14 @@ namespace DndVtt.UnityPrototype
                 Field("brandSplashActive", false);
                 CheckHeroArt();
                 Check(SystemInfo.graphicsDeviceType != UnityEngine.Rendering.GraphicsDeviceType.Null, "real graphics device");
+                var paper=Resources.Load<Texture2D>("UI/Parchment");if(!paper&&parchmentAt>=0)paper=typeof(LegacySessionPanel).GetField("sheetParchment",Flags).GetValue(panel) as Texture2D;Check(paper,"bundled source paper or explicit QA override");
+                Debug.Log("VTT_DESKTOP_REFERENCE_ASSET: Parchment="+paper.width+"x"+paper.height+" format="+paper.format);
+                var previousTarget=RenderTexture.active;var target=RenderTexture.GetTemporary(16,16,0,RenderTextureFormat.ARGB32);Texture2D sampled=null;
+                try{Graphics.Blit(paper,target);RenderTexture.active=target;sampled=new Texture2D(16,16,TextureFormat.RGB24,false);sampled.ReadPixels(new Rect(0,0,16,16),0,0);sampled.Apply();Color pixel=sampled.GetPixel(8,8);Debug.Log("VTT_DESKTOP_REFERENCE_ASSET_GPU: "+pixel.r+","+pixel.g+","+pixel.b);}
+                finally{RenderTexture.active=previousTarget;RenderTexture.ReleaseTemporary(target);if(sampled)Destroy(sampled);}
+                var actualFont=typeof(LegacySessionPanel).GetProperty("MenuFont",Flags).GetValue(panel) as Font;Check(actualFont,"actual menu font");actualFont.RequestCharactersInTexture("АМИШabc123",13,FontStyle.Normal);
+                foreach(char letter in "АМИШabc123"){Check(actualFont.GetCharacterInfo(letter,out var glyph,13,FontStyle.Normal)&&glyph.advance>0,"bundled reference glyph "+letter);Debug.Log("VTT_DESKTOP_REFERENCE_FONT: "+actualFont.name+" "+letter+" advance="+glyph.advance+" glyph="+glyph.glyphWidth+"x"+glyph.glyphHeight);}
+                Debug.Log("VTT_DESKTOP_REFERENCE_FONT_NAMES: "+string.Join(",",actualFont.fontNames));
                 Check(!Screen.fullScreen && Screen.width >= 800 && Screen.height >= 600, "starts windowed with usable dimensions");
                 var font = Resources.Load<Font>("UI/DejaVuSans"); Check(font, "bundled font in installed player");
                 const string sample = "НастройкиОбновленияГрафическиеУправлениеДанныеВизуальныеЁёABC123×←✓";
@@ -572,6 +580,12 @@ namespace DndVtt.UnityPrototype
                 Check(clippedButtons == 0, "all recorded navigation/back labels fit their actual bounds");
                 Check(visible && hidden && visible.width == hidden.width, "GPU capture " + name);
                 if (name.EndsWith("-portrait", StringComparison.Ordinal)) Check(PortraitLayout && visible.height > visible.width, "actual portrait viewport " + name);
+                Debug.Log("VTT_DESKTOP_VIEWPORT: "+name+" "+visible.width+"x"+visible.height);
+                if(name=="classic-hero-portrait"||name=="reference-0-portrait")
+                {
+                    double brightness=0;foreach(int x in new[]{1,visible.width-2})foreach(float fraction in new[]{.3f,.5f,.75f}){Color pixel=visible.GetPixel(x,(int)(visible.height*fraction));brightness+=(pixel.r+pixel.g+pixel.b)/3;}
+                    brightness/=6;Debug.Log("VTT_DESKTOP_PAPER_BRIGHTNESS: "+brightness);Check(brightness>.08,"bundled paper is actually visible, not just imported");
+                }
                 File.WriteAllBytes(Path.Combine(folder, name + ".png"), visible.EncodeToPNG());
                 var a = visible.GetPixels32(); var b = hidden.GetPixels32(); int textPixels = 0;
                 for (int i = 0; i < a.Length; i++)
@@ -579,7 +593,7 @@ namespace DndVtt.UnityPrototype
                 Check(textPixels > 600, "actual visible text pixels on " + name + ": " + textPixels);
                 Debug.Log("VTT_DESKTOP_TEXT_PIXELS: " + name + " " + textPixels);
                 // Reviewable actual GPU evidence even if the artifact download host is unreachable.
-                int thumbWidth = visible.width >= visible.height ? 640 : 400, thumbHeight = visible.width >= visible.height ? 400 : 640;
+                float thumbScale=Mathf.Min(640f/visible.width,640f/visible.height);int thumbWidth=Mathf.Max(1,Mathf.RoundToInt(visible.width*thumbScale)),thumbHeight=Mathf.Max(1,Mathf.RoundToInt(visible.height*thumbScale));
                 var thumb = new Texture2D(thumbWidth, thumbHeight, TextureFormat.RGB24, false);
                 try
                 {
