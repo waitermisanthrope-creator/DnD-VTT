@@ -1,22 +1,22 @@
 {
   "status": "published-and-download-verified",
-  "version": "1.00.45",
-  "releaseUrl": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/tag/unity-v1.00.45",
-  "sourceCommit": "27087353457a06dcb33c55f5cf3217c6323642c7",
+  "version": "1.00.46",
+  "releaseUrl": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/tag/unity-v1.00.46",
+  "sourceCommit": "711902f4e679324a832452b5edf8c655cb10b931",
   "artifacts": {
     "android": {
-      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.45/DnD-VTT-Unity-1.00.45-arm64.apk",
-      "bytes": 62571990,
-      "sha256": "70a055b8bb3c0b5029c09803375936a4012387622ac297780017d28713553821"
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.46/DnD-VTT-Unity-1.00.46-arm64.apk",
+      "bytes": 62584278,
+      "sha256": "46688d6c5f14455d120204df3e2a2ee38759f2608418357ff34f8e80ee1164d4"
     },
     "windows": {
-      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.45/DnD-VTT-Unity-Setup-1.00.45-x64.exe",
-      "bytes": 44354049,
-      "sha256": "79085e1986fb5694220a7b711b18cc37c421b85044768f78d4c7e2ee2ad71f70"
+      "url": "https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.46/DnD-VTT-Unity-Setup-1.00.46-x64.exe",
+      "bytes": 44350660,
+      "sha256": "5300ff3f1e5039caa8c698fc279f1407496d4ee4d0d3cbafef11ccc80ba02a55"
     }
   },
   "androidSigningCertificateSha256": "c1c1b3e6537f10819a3042817ac91535b47754ed65d084e635f84ff2b1f44c8e",
   "physicalAndroidQa": false,
   "cloudUnityBuildLicenseConfigured": true,
-  "cloudBuildRun": "https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/40742387640"
+  "cloudBuildRun": "https://github.com/waitermisanthrope-creator/DnD-VTT/actions/runs/40790424498"
 }

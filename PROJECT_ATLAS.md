@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 15231e94af0d. Git содержит 2135 файлов.
+Снимок кода f3a69713d71e. Git содержит 2135 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1214,7 +1214,7 @@
 | №1193 PROJECT_ATLAS.txt | генерируется | человекочитаемая карта репозитория |
 | №1194 README.md | 145 B | документация или отчёт: README |
 | №1195 release-staging/unity-android-approval.json | 470 B | данные/конфигурация: unity android approval |
-| №1196 release-staging/unity-paired-approval.json | 1515 B | данные/конфигурация: unity paired approval |
+| №1196 release-staging/unity-paired-approval.json | 1614 B | данные/конфигурация: unity paired approval |
 | №1197 release-staging/unity-release.json | 3914 B | данные/конфигурация: unity release |
 | №1198 smoke_back_v2_sprite-1.png | 1707378 B | текстура/изображение: smoke back v2 sprite 1 |
 | №1199 smoke_back_v2_sprite.png | 1814587 B | текстура/изображение: smoke back v2 sprite |
@@ -1840,7 +1840,7 @@
 | №1819 unity/Assets/Vtt/Resources/Branding/Splash19.png.meta | 886 B | вспомогательный файл: Splash19.png |
 | №1820 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg | 212684 B | текстура/изображение: Wallpaper16 |
 | №1821 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta | 886 B | вспомогательный файл: Wallpaper16.jpg |
-| №1822 unity/Assets/Vtt/Resources/Changelog.json | 54255 B | данные/конфигурация: Changelog |
+| №1822 unity/Assets/Vtt/Resources/Changelog.json | 54257 B | данные/конфигурация: Changelog |
 | №1823 unity/Assets/Vtt/Resources/Changelog.json.meta | 158 B | вспомогательный файл: Changelog.json |
 | №1824 unity/Assets/Vtt/Resources/CharacterSheet.meta | 172 B | вспомогательный файл: CharacterSheet |
 | №1825 unity/Assets/Vtt/Resources/CharacterSheet/advancement.json | 260278 B | данные/конфигурация: advancement |
@@ -2100,8 +2100,8 @@
 | №2079 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №2080 updates/README.md | 233 B | документация или отчёт: README |
 | №2081 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №2082 updates/unity-changelog.json | 54255 B | метаданные обновлений: unity changelog |
-| №2083 updates/unity-experiment.json | 2027 B | метаданные обновлений: unity experiment |
+| №2082 updates/unity-changelog.json | 54257 B | метаданные обновлений: unity changelog |
+| №2083 updates/unity-experiment.json | 2281 B | метаданные обновлений: unity experiment |
 | №2084 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №2085 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
 | №2086 wall_brick_red.png | 111128 B | текстура/изображение: wall brick red |
