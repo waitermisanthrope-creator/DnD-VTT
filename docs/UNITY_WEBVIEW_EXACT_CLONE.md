@@ -1,4 +1,10 @@
-# WebView → Unity: исправление отвергнутого редизайна, 28.10.2026
+# WebView → Unity: перенос интерфейса и проверка сборок
+
+Текущее состояние29.10.2026: **1.00.46 опубликована и независимо скачана**. Раса,
+заметки, кошелёк и категории инвентаря перенесены очередным проверенным этапом.
+Полный рынок, ряд окон/модалок и классовые hooks остаются незавершёнными.
+
+## Исходный этап28.10.2026
 
 Владелец отверг9c14aad8 как недостаточно компактный и потребовал тот же визуал,
 шрифт, цвета, расположение полей и необходимых действий. Этот этап исправляет
@@ -226,3 +232,23 @@ need device QA; no claim of full WebView clone or complete class port.
 Candidate1.00.46 remains testing; feed/approval45 are untouched until actual native
 build/installed runtime and visual review pass. Only candidate workflow version
 literals45→46 changed; workflow logic/permissions/signing are unchanged.
+
+## Native46 verification and review
+
+Exact source711902f4e679324a832452b5edf8c655cb10b931, candidate40790424498:
+Android123173999947, Windows123180080494, installed QA123183021883 all SUCCESS.
+All56 actual native previews extracted from accessible2,912,954-character job log
+and viewed in4contact sheets. Notes, inventory wallet, custom form and locked race
+also inspected individually. Actual bundled images allRGBA32, paper brightness
+0.517211, original Playfair and control glyphs visible. Real pointer actions and
+disk assertions cover note creation, custom-race cancel/save/confirm, catalog reload,
+wallet+1gold3350copper/log, HP/XP, profile/backup/other hero preservation, no GUI errors.
+Local full8760 PASS, sheet65/menu50/numeric17. No physical Android QA claimed.
+
+Owner-delegated approvalf3a69713 selects this exact run. Existing publisher40793558358
+finished SUCCESS. Delivery commitdf0460b7; public APK62,584,278bytes and Windows
+EXE44,350,660bytes independently re-downloaded, SHA256 and lengths match feed and
+PUBLIC_DELIVERY.json. Plain/cache-busted feed match46/code10046, source711902f4 and
+candidate40790424498; APK ARM64 libs and EXE MZ header verified.
+`INDEPENDENT_DELIVERY46_PASS`, exit0. Existing original signing/package retained.
+https://github.com/waitermisanthrope-creator/DnD-VTT/releases/tag/unity-v1.00.46

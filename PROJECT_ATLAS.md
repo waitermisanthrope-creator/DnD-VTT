@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода f3a69713d71e. Git содержит 2135 файлов.
+Снимок кода df0460b72165. Git содержит 2135 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 8151 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 91092 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 129590 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 168927 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 91577 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 130075 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 169412 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1083,7 +1083,7 @@
 | №1062 docs/superpowers/plans/2026-10-27-unity-progression.md | 4032 B | документация или отчёт: 2026 10 27 unity progression |
 | №1063 docs/superpowers/plans/2026-10-28-exact-webview-clone.md | 1844 B | документация или отчёт: 2026 10 28 exact webview clone |
 | №1064 docs/superpowers/plans/2026-10-28-webview-ui-parity.md | 5274 B | документация или отчёт: 2026 10 28 webview ui parity |
-| №1065 docs/superpowers/plans/2026-10-29-webview-sheet-completion.md | 3739 B | документация или отчёт: 2026 10 29 webview sheet completion |
+| №1065 docs/superpowers/plans/2026-10-29-webview-sheet-completion.md | 4172 B | документация или отчёт: 2026 10 29 webview sheet completion |
 | №1066 docs/superpowers/specs/2026-10-27-hero-art-design.md | 1637 B | документация или отчёт: 2026 10 27 hero art design |
 | №1067 docs/UNIFIED_RELEASE.md | 6136 B | документация или отчёт: UNIFIED RELEASE |
 | №1068 docs/UNITY_ADVANCEMENT_1.00.44.md | 10267 B | документация или отчёт: UNITY ADVANCEMENT 1.00.44 |
@@ -1096,7 +1096,7 @@
 | №1075 docs/UNITY_UI_READABILITY.md | 7339 B | документация или отчёт: UNITY UI READABILITY |
 | №1076 docs/UNITY_UI_RUNTIME_CHECK.md | 5415 B | документация или отчёт: UNITY UI RUNTIME CHECK |
 | №1077 docs/UNITY_USER_FEEDBACK_1.00.43.md | 3277 B | документация или отчёт: UNITY USER FEEDBACK 1.00.43 |
-| №1078 docs/UNITY_WEBVIEW_EXACT_CLONE.md | 18087 B | документация или отчёт: UNITY WEBVIEW EXACT CLONE |
+| №1078 docs/UNITY_WEBVIEW_EXACT_CLONE.md | 19867 B | документация или отчёт: UNITY WEBVIEW EXACT CLONE |
 | №1079 docs/UNITY_WEBVIEW_PARITY_STAGE1.md | 10754 B | документация или отчёт: UNITY WEBVIEW PARITY STAGE1 |
 | №1080 docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md | 8253 B | документация или отчёт: ACCESS AND TOUCH 1.00.12 |
 | №1081 docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md | 9558 B | документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP |

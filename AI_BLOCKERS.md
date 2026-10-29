@@ -1,16 +1,21 @@
-# Unity46 remaining WebView UI — candidate pending, 29.10.2026
+# Unity46 published / WebView parity remains partial — 29.10.2026
 
-Source UI continuation: race/+Своя/once-only confirmation, preserved device catalog,
-source notes, wallet back at Inventory top, horizontal categories, existing craft/
-alchemy/containers. Actual Chromium dynamic layout checked. Two readonly reports.
-Pure sheet65/numeric17/menu50 PASS; Windows+Android C# compile PASS. Local Wine/GPU
-parity-next10 exit0 (56frames), real HP/XP/note/custom race/wallet save, no GUI errors.
-Final footer10-frame reference capture PASS; all56full frames actually viewed. Full8760
-PASS. No native46 success/publication claimed yet;
-feed+approval45 retained. Details docs/UNITY_WEBVIEW_EXACT_CLONE.md.
-Still incomplete: market/trade, other modals/creation/lore, class hooks, exact emoji/
-blur/shadows; physical Android untested. Only experiment; no main/MMO/SQL/key changes.
-History below is not a new task.
+1.00.46 published; publisher40793558358 SUCCESS, deliverydf0460b7. Public APK+EXE
+independently re-downloaded: sizes/SHA256/feed/source/run verified, DELIVERY46_PASS.
+Source711902f4e679324a832452b5edf8c655cb10b931 / candidate40790424498 ALL3SUCCESS:
+Android123173999947, Windows123180080494, installed QA123183021883. All56 actual native
+previews viewed; original Playfair/color resources/paper/layout intact. Real HP/XP/
+note/custom race cancel+save+confirm/catalog reload/wallet+1gold/log tests passed,
+no GUI/clipped labels. Whole8760, sheet65/menu50/numeric17; Windows+Android C# compile.
+Restored race/+Своя/once-only lock, preserved device catalog/default reset, source
+notes, wallet at Inventory top, horizontal categories, existing craft/alchemy/containers.
+Actual Chromium dynamic layout checked, not static markup alone. Docs:
+docs/UNITY_WEBVIEW_EXACT_CLONE.md, plan2026-10-29-webview-sheet-completion.md.
+Full clone NOT done: market/trade, parts of modals/creation/lore, exact emoji/blur/
+shadows and full class hooks remain. Complex seed-only race/choices blocked safely
+at sheet; create via existing builder. Physical Android touch/IME/Back untested.
+Next: remaining original behavior/layout, no invented redesign. Only experiment;
+no main/MMO/SQL/key/scene/GUID changes. History below is not a new task.
 
 # Unity45 published / exact WebView UI still partial — 28.10.2026
 

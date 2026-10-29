@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит f3a69713d71e. Файлов: 2135
+Коммит df0460b72165. Файлов: 2135
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,9 +56,9 @@
 0040. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (8151 B)
-0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (91092 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (129590 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (168927 B)
+0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (91577 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (130075 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (169412 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1078,7 +1078,7 @@
 1062. docs/superpowers/plans/2026-10-27-unity-progression.md — документация или отчёт: 2026 10 27 unity progression (4032 B)
 1063. docs/superpowers/plans/2026-10-28-exact-webview-clone.md — документация или отчёт: 2026 10 28 exact webview clone (1844 B)
 1064. docs/superpowers/plans/2026-10-28-webview-ui-parity.md — документация или отчёт: 2026 10 28 webview ui parity (5274 B)
-1065. docs/superpowers/plans/2026-10-29-webview-sheet-completion.md — документация или отчёт: 2026 10 29 webview sheet completion (3739 B)
+1065. docs/superpowers/plans/2026-10-29-webview-sheet-completion.md — документация или отчёт: 2026 10 29 webview sheet completion (4172 B)
 1066. docs/superpowers/specs/2026-10-27-hero-art-design.md — документация или отчёт: 2026 10 27 hero art design (1637 B)
 1067. docs/UNIFIED_RELEASE.md — документация или отчёт: UNIFIED RELEASE (6136 B)
 1068. docs/UNITY_ADVANCEMENT_1.00.44.md — документация или отчёт: UNITY ADVANCEMENT 1.00.44 (10267 B)
@@ -1091,7 +1091,7 @@
 1075. docs/UNITY_UI_READABILITY.md — документация или отчёт: UNITY UI READABILITY (7339 B)
 1076. docs/UNITY_UI_RUNTIME_CHECK.md — документация или отчёт: UNITY UI RUNTIME CHECK (5415 B)
 1077. docs/UNITY_USER_FEEDBACK_1.00.43.md — документация или отчёт: UNITY USER FEEDBACK 1.00.43 (3277 B)
-1078. docs/UNITY_WEBVIEW_EXACT_CLONE.md — документация или отчёт: UNITY WEBVIEW EXACT CLONE (18087 B)
+1078. docs/UNITY_WEBVIEW_EXACT_CLONE.md — документация или отчёт: UNITY WEBVIEW EXACT CLONE (19867 B)
 1079. docs/UNITY_WEBVIEW_PARITY_STAGE1.md — документация или отчёт: UNITY WEBVIEW PARITY STAGE1 (10754 B)
 1080. docs/unity-account/ACCESS_AND_TOUCH_1.00.12.md — документация или отчёт: ACCESS AND TOUCH 1.00.12 (8253 B)
 1081. docs/unity-account/ADMIN_CENTER_AND_PRIVATE_WORKSHOP.md — документация или отчёт: ADMIN CENTER AND PRIVATE WORKSHOP (9558 B)

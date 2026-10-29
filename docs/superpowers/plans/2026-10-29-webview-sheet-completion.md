@@ -30,7 +30,7 @@ Only experiment/unity-vtt. Preserve profiles, unknown fields, wrappers, GUIDs, c
 
 ### Task 3: Visual verification and delivery
 - [x] Capture actual GPU frames at portrait/narrow/desktop, compare to original WebView and inspect results. Distinguish local override from actual imported asset/native build.
-- [ ] Review full diff, update compact report and atlas pair, commit reviewable work. Publish only through existing gated process after actual native verification when a candidate is prepared; never call partial full parity complete.
+- [x] Review full diff, update compact report and atlas pair, commit reviewable work. Publish only through existing gated process after actual native verification when a candidate is prepared; never call partial full parity complete.
 
 ## Execution rulings / evidence
 
@@ -43,3 +43,11 @@ Only experiment/unity-vtt. Preserve profiles, unknown fields, wrappers, GUIDs, c
   source contracts and Windows/Android compile pass. Native46 remains gated.
 - QA transport now identifies connected painted button components, not one global
   color bounding box (green AC text is separate from picker). Real OS clicks remain.
+
+## Stage delivery
+
+711902f4 source, candidate40790424498 ALL3SUCCESS, all56 actual native frames reviewed;
+review fixes pass; publisher40793558358 SUCCESS; public46 APK+EXE independently
+re-downloaded and hashed (DELIVERY46_PASS). Diff confined to experiment, scene/meta/
+GUID/key/MMO/main untouched. Whole8760; sheet65/menu50/numeric17. Physical Android
+and the full remaining market/other-window/class-hook port are NOT complete.
