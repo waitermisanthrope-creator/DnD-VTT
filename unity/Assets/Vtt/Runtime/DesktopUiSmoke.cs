@@ -77,7 +77,7 @@ namespace DndVtt.UnityPrototype
                 // Derive the hit target from the actual GPU image. GUIToScreenPoint
                 // includes a Wine/IMGUI scroll offset and is not a client coordinate.
                 Check(buttonPoints.ContainsKey(label),"visible native click target "+label);
-                bool gold=label=="Опыт и уровень",blue=label=="+ Своя"||label=="Посчитать",red=label=="Отмена";
+                bool gold=label=="Опыт и уровень",blue=label=="+ Своя"||label=="Посчитать"||label=="Купить"||label=="×",red=label=="Отмена";
                 Check(gold||blue||red||new[]{"+ Заметка","Выбрать из справочника / Создать","Сохранить расу","Подтвердить","Посчитать"}.Contains(label),"supported visual pointer target");
                 var capture=ScreenCapture.CaptureScreenshotAsTexture();
                 int minX=Screen.width,minY=Screen.height,maxX=-1,maxY=-1,hits=0;
@@ -106,7 +106,13 @@ namespace DndVtt.UnityPrototype
                             foreach(int next in new[]{x>0?index-1:-1,x<capture.width-1?index+1:-1,index-capture.width,index+capture.width})
                                 if(next>=0&&next<mask.Length&&mask[next]){mask[next]=false;queue.Enqueue(next);}
                         }
-                        if(count>hits){hits=count;minX=left;maxX=right;minY=bottom;maxY=top;}
+                        bool candidate=count>hits;
+                        if(label=="Купить")
+                        {
+                            float scale=Screen.width/(float)typeof(LegacySessionPanel).GetProperty("UiWidth",Flags).GetValue(panel);
+                            candidate=Math.Abs(right-left-88*scale)<8&&left>Screen.width*.65f&&top<Screen.height*.65f&&count>500&&(hits==0||top>maxY);
+                        }
+                        if(candidate){hits=count;minX=left;maxX=right;minY=bottom;maxY=top;}
                     }
                 }
                 finally{Destroy(capture);}
@@ -223,6 +229,8 @@ namespace DndVtt.UnityPrototype
                 // Optional QA-copy override; released players resolve the bundled Resources asset.
                 int advancementAt=Array.IndexOf(args,"--vtt-advancement-catalog");
                 if(advancementAt>=0){Check(advancementAt+1<args.Length,"explicit QA advancement path");Field("advancementCatalog",JObject.Parse(File.ReadAllText(args[advancementAt+1])));}
+                int marketAt=Array.IndexOf(args,"--vtt-market-catalog");
+                if(marketAt>=0){Check(marketAt+1<args.Length,"explicit QA market path");Field("marketCatalog",JObject.Parse(File.ReadAllText(args[marketAt+1])));}
                 int parchmentAt=Array.IndexOf(args,"--vtt-sheet-parchment");
                 if(parchmentAt>=0){var texture=new Texture2D(2,2);Check(texture.LoadImage(File.ReadAllBytes(args[parchmentAt+1])),"QA parchment source decode");Field("sheetParchment",texture);}
                 int fontAt=Array.IndexOf(args,"--vtt-sheet-font-family");
@@ -536,6 +544,71 @@ namespace DndVtt.UnityPrototype
             try{Check(File.ReadAllText(panel.SavePath)==classicDisk,"wallet filters and history never mutate saved coins");}
             catch(Exception error){Fail(error);yield break;}
             Field("showPlatinum",true);Field("showElectrum",true);Field("coinActionChoices",false);Field("coinLogOpen",false);
+            // Exercise the real deferred trade handler against an isolated archive
+            // and preferences. These are handler tests, not synthetic touch claims.
+            ClientPreferences marketPreferences=null;string marketProfile=null,marketPrefsFile=null;
+            try
+            {
+                var probe=((LegacyCharacterArchive)typeof(LegacySessionPanel).GetField("archive",Flags).GetValue(panel)).Snapshot(0);
+                var session=(NumericInputSession)typeof(LegacySessionPanel).GetField("numericSession",Flags).GetValue(panel);
+                string owner="wallet-balance:"+probe["id"]+":gp";session.Begin(owner,true);session.Finish(owner,"33",true);
+                var transition=new object[]{probe,false,false};typeof(LegacySessionPanel).GetMethod("RequestMarketOpen",Flags).Invoke(panel,transition);
+                Check((int)probe["coins"]["gp"]==33&&(bool)transition[1]&&(bool)transition[2],"market transition consumes final native wallet digit before reset");
+                marketPreferences=(ClientPreferences)typeof(LegacySessionPanel).GetField("preferences",Flags).GetValue(panel);
+                marketProfile=File.ReadAllText(panel.SavePath);marketPrefsFile=panel.SavePath+".settings.json";
+                Field("preferences",new ClientPreferences());new ClientPreferences().Save(marketPrefsFile);
+                Field("requestedMarketOpen",(bool?)true);
+            }
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("market-traders-portrait");if(failed)yield break;
+            Field("marketScroll",new Vector2(0,10000));yield return Frame("market-goods-portrait");if(failed)yield break;
+            yield return ClickNativeButton("Купить");if(failed)yield break;
+            yield return Frame("market-purchase-portrait");if(failed)yield break;
+            try
+            {
+                var saved=CharacterSheetStore.Load(panel.SavePath);var p=ClientPreferences.Load(marketPrefsFile);
+                Check(CommerceRules.MarketStock((JObject)typeof(LegacySessionPanel).GetProperty("MarketCatalog",Flags).GetValue(panel),p.MarketState,"village").OfType<JObject>().Single(x=>(string)x["id"]=="market_rations")["qty"].Value<int>()==19,"real handler persists global stock");
+                Check(CharacterSheetRules.CoinTotal(saved.Snapshot(0)["coins"] as JObject,null)<3350,"real handler debits persisted wallet");
+                Check((int)saved.Snapshot(0)["unknown"]["future"]==17,"real trade preserves unknown hero fields");
+                Field("marketMode","sell");Field("marketScroll",Vector2.zero);
+            }
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("market-sale-portrait");if(failed)yield break;
+            Field("marketScroll",new Vector2(0,10000));yield return Frame("market-sale-items-portrait");if(failed)yield break;
+            PortraitLayout=false;Screen.SetResolution(1280,900,FullScreenMode.Windowed);Field("marketScroll",Vector2.zero);yield return new WaitForSecondsRealtime(.3f);
+            yield return Frame("market-desktop");if(failed)yield break;
+            PortraitLayout=true;Screen.SetResolution(360,800,FullScreenMode.Windowed);Field("marketScroll",new Vector2(0,10000));yield return new WaitForSecondsRealtime(.3f);
+            yield return Frame("market-narrow-portrait");if(failed)yield break;
+            Screen.SetResolution(600,960,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);
+            Field("marketMode","barter");Field("marketScroll",new Vector2(0,10000));yield return Frame("market-barter-portrait");if(failed)yield break;
+            try{Field("preferences",ClientPreferences.Parse("{version:1,dnd_market_v55_state:'future'}"));Field("marketScroll",Vector2.zero);}
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("market-unknown-state-portrait");if(failed)yield break;
+            try{Field("preferences",ClientPreferences.Parse("{version:1,dnd_market_v55_state:{region:'future',traders:{}}}"));Field("marketMode","buy");}
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("market-unknown-region-portrait");if(failed)yield break;
+            yield return ClickNativeButton("×");if(failed)yield break;
+            try{Check(!(bool)typeof(LegacySessionPanel).GetField("marketOpen",Flags).GetValue(panel),"unsupported market state can close with actual pointer");}
+            catch(Exception error){Fail(error);yield break;}
+            try
+            {
+                Field("requestedMarketOpen",(bool?)false);Field("preferences",marketPreferences);
+                File.WriteAllText(panel.SavePath,marketProfile);Field("archive",new LegacyCharacterArchive(marketProfile));classicDisk=marketProfile;
+                Debug.Log("VTT_MARKET_UI_PASS: actual OS-pointer purchase, paired persistence, unknown fields, unknown state/region rendering");
+            }
+            catch(Exception error){Fail(error);yield break;}
+            yield return new WaitForSecondsRealtime(.3f);
+            try
+            {
+                string prefsRaw=File.ReadAllText(marketPrefsFile);
+                var journal=new JObject{["schema"]=1,["beforeCharacters"]=marketProfile,["afterCharacters"]=marketProfile,["beforePreferences"]=prefsRaw,["afterPreferences"]=prefsRaw};
+                Field("pendingMarketAction",(Action)(()=>File.WriteAllText(panel.SavePath+".trade-journal",journal.ToString())));
+            }
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("market-recovery-portrait");if(failed)yield break;
+            Field("pendingMarketAction",(Action)(()=>Call("RecoverMarket")));yield return new WaitForSecondsRealtime(.3f);
+            try{Check(!File.Exists(panel.SavePath+".trade-journal")&&File.ReadAllText(panel.SavePath)==marketProfile,"deferred recovery changes UI at Layout and preserves archive");Field("preferences",marketPreferences);}
+            catch(Exception error){Fail(error);yield break;}
             Field("requestedInventoryCategory",(int?)1);Field("frontScroll",new Vector2(0,600));yield return new WaitForSecondsRealtime(.3f);
             yield return Frame("classic-inventory-armor-portrait");if(failed)yield break;
             yield return ClickNativeButton("Выбрать из справочника / Создать");if(failed)yield break;

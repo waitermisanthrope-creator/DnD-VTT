@@ -17,6 +17,13 @@ namespace DndVtt.UnityPrototype
         public bool autoCheckUpdates = true;
         public bool keepScreenAwake = true;
         private JObject original = new JObject();
+        public JObject MarketState=>original["dnd_market_v55_state"]==null?new JObject():original["dnd_market_v55_state"] is JObject state?(JObject)state.DeepClone():throw new FormatException("Неизвестный формат глобального рынка — данные сохранены");
+        public ClientPreferences WithMarketState(JObject state)
+        {
+            var copy=Parse(Export());_ = copy.MarketState;copy.original["dnd_market_v55_state"]=(state??throw new ArgumentNullException(nameof(state))).DeepClone();
+            if(System.Text.Encoding.UTF8.GetByteCount(copy.Export())>64*1024)throw new FormatException("Настройки и состояние рынка слишком велики");
+            return copy;
+        }
         public JArray CustomRaces
         {
             get
@@ -77,6 +84,7 @@ namespace DndVtt.UnityPrototype
         public static ClientPreferences Load(string path) => Parse(File.ReadAllText(path));
         public void Save(string path)
         {
+            using var lease=CharacterSheetStore.AcquireWriteLease(path);
             string json = Export(); string full = Path.GetFullPath(path); Directory.CreateDirectory(Path.GetDirectoryName(full));
             using (var stream = new FileStream(full + ".pending", FileMode.Create, FileAccess.Write, FileShare.None))
             using (var writer = new StreamWriter(stream, new System.Text.UTF8Encoding(false))) { writer.Write(json); writer.Flush(); stream.Flush(true); }

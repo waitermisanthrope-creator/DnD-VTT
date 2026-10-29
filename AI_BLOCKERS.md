@@ -1,3 +1,23 @@
+# Unity market port verified locally / native launch blocked — 29.10.2026
+
+Market55/55.1/55.2 port:42 traders/320 rows, original entry/modal/font/blue buttons,
+buy/sell/barter; shared stock in existing preferences, hero canonical inventory/coins.
+Paired WAL+rollback/startup recovery, common writer leases, variant-safe stacks,
+stale/duplicate/equipped safeguards. Readonly Explorer/QA reports received; five
+Important findings fixed. Local MARKET547/full9310/provenance44; Windows+Android C#
+compile PASS. Actual Windows QA-copy Wine/Mesa exit0/68PNG reviewed, OS purchase+close,
+paired disk persistence, unknown state/region escape, pending wallet digit and
+Layout-only recovery, portrait/narrow/desktop. Explicit QA resource overrides are
+NOT new asset import or native Android evidence. Candidate47 native jobs are NOT started. Automatic approval review rejected the
+commit because it changed GitHub Actions against the owner’s historical prohibition.
+Workflow restored to46; exact version-only patch saved separately outside Git.
+Need explicit owner permission for that workflow change before native candidate47;
+stable published46/feed/approval remain unchanged.
+See docs/UNITY_WEBVIEW_EXACT_CLONE.md, plan2026-10-29-unity-market.md.
+Remaining social/haggling/restock UI/other windows/full class hooks/physicalAndroid.
+Only experiment/unity-vtt; no main/MMO/SQL/key/scene/existing GUID changes.
+History below is not a new task.
+
 # Unity46 published / WebView parity remains partial — 29.10.2026
 
 1.00.46 published; publisher40793558358 SUCCESS, deliverydf0460b7. Public APK+EXE

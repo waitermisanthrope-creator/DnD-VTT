@@ -1,0 +1,4413 @@
+{
+  "schema": 1,
+  "traders": {
+    "village": {
+      "name": "Деревенский торговец",
+      "type": "general",
+      "buyFactor": 1,
+      "sellFactor": 0.5,
+      "regions": [
+        "forest",
+        "highlands",
+        "swamp",
+        "coast"
+      ],
+      "stock": [
+        {
+          "id": "market_rations",
+          "name": "Паёк",
+          "category": "consumables",
+          "costGp": 0.5,
+          "qty": 20,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "market_rope",
+          "name": "Верёвка, 50 футов",
+          "category": "gear",
+          "costGp": 1,
+          "qty": 8,
+          "tags": [
+            "rope"
+          ]
+        },
+        {
+          "id": "market_torch",
+          "name": "Факел",
+          "category": "gear",
+          "costGp": 0.01,
+          "qty": 40,
+          "tags": [
+            "common"
+          ]
+        },
+        {
+          "id": "market_potion_healing",
+          "name": "Зелье лечения",
+          "category": "consumables",
+          "costGp": 50,
+          "qty": 4,
+          "tags": [
+            "alchemical"
+          ]
+        }
+      ]
+    },
+    "blacksmith": {
+      "name": "Кузнец",
+      "type": "smith",
+      "buyFactor": 1.05,
+      "sellFactor": 0.6,
+      "regions": [
+        "highlands",
+        "wasteland",
+        "coast"
+      ],
+      "stock": [
+        {
+          "id": "market_dagger",
+          "name": "Кинжал",
+          "category": "weapons",
+          "costGp": 2,
+          "qty": 3,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "market_shield",
+          "name": "Щит",
+          "category": "armor",
+          "costGp": 10,
+          "qty": 2,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "market_arrows",
+          "name": "Стрелы (20)",
+          "category": "weapons",
+          "costGp": 1,
+          "qty": 10,
+          "tags": [
+            "metal",
+            "wood"
+          ]
+        },
+        {
+          "id": "market_repair_kit",
+          "name": "Ремонтный комплект",
+          "category": "materials",
+          "costGp": 5,
+          "qty": 8,
+          "tags": [
+            "metal",
+            "repair"
+          ]
+        }
+      ]
+    },
+    "apothecary": {
+      "name": "Аптекарь и алхимик",
+      "type": "alchemist",
+      "buyFactor": 1.1,
+      "sellFactor": 0.55,
+      "regions": [
+        "forest",
+        "swamp",
+        "ruins"
+      ],
+      "stock": [
+        {
+          "id": "market_antitoxin",
+          "name": "Противоядие",
+          "category": "consumables",
+          "costGp": 50,
+          "qty": 3,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "market_healing",
+          "name": "Зелье лечения",
+          "category": "consumables",
+          "costGp": 50,
+          "qty": 6,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "market_reagent",
+          "name": "Алхимический реагент",
+          "category": "materials",
+          "costGp": 8,
+          "qty": 10,
+          "tags": [
+            "alchemical",
+            "reagent"
+          ]
+        },
+        {
+          "id": "market_herbs",
+          "name": "Пучок лечебных трав",
+          "category": "materials",
+          "costGp": 3,
+          "qty": 12,
+          "tags": [
+            "herbalism"
+          ]
+        }
+      ]
+    },
+    "caravan": {
+      "name": "Странствующий караванщик",
+      "type": "caravan",
+      "buyFactor": 1.2,
+      "sellFactor": 0.65,
+      "regions": [
+        "forest",
+        "highlands",
+        "swamp",
+        "coast",
+        "wasteland",
+        "ruins"
+      ],
+      "stock": [
+        {
+          "id": "market_backpack",
+          "name": "Рюкзак",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 5,
+          "tags": [
+            "common"
+          ]
+        },
+        {
+          "id": "market_glass",
+          "name": "Стеклянный флакон",
+          "category": "materials",
+          "costGp": 0.1,
+          "qty": 30,
+          "tags": [
+            "glass"
+          ]
+        },
+        {
+          "id": "market_cloth",
+          "name": "Ткань",
+          "category": "materials",
+          "costGp": 0.5,
+          "qty": 20,
+          "tags": [
+            "textile"
+          ]
+        },
+        {
+          "id": "market_iron",
+          "name": "Железо, 1 ед.",
+          "category": "materials",
+          "costGp": 1,
+          "qty": 15,
+          "tags": [
+            "metal"
+          ]
+        }
+      ]
+    },
+    "armorer": {
+      "name": "Бронник",
+      "type": "armorer",
+      "buyFactor": 1.08,
+      "sellFactor": 0.58,
+      "regions": [
+        "highlands",
+        "wasteland",
+        "forest"
+      ],
+      "stock": [
+        {
+          "id": "m551_armorer_1",
+          "name": "Кожаный доспех",
+          "category": "armor",
+          "costGp": 10,
+          "qty": 2,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_armorer_2",
+          "name": "Кольчуга",
+          "category": "armor",
+          "costGp": 75,
+          "qty": 1,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_armorer_3",
+          "name": "Чешуйчатый доспех",
+          "category": "armor",
+          "costGp": 50,
+          "qty": 1,
+          "tags": [
+            "metal",
+            "scale"
+          ]
+        },
+        {
+          "id": "m551_armorer_4",
+          "name": "Кираса",
+          "category": "armor",
+          "costGp": 400,
+          "qty": 1,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_armorer_5",
+          "name": "Шлем",
+          "category": "armor",
+          "costGp": 10,
+          "qty": 3,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_armorer_6",
+          "name": "Наручи",
+          "category": "armor",
+          "costGp": 8,
+          "qty": 3,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_armorer_7",
+          "name": "Металлические поножи",
+          "category": "armor",
+          "costGp": 12,
+          "qty": 2,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_armorer_8",
+          "name": "Заклёпки, набор",
+          "category": "armor",
+          "costGp": 2,
+          "qty": 12,
+          "tags": [
+            "metal"
+          ]
+        }
+      ]
+    },
+    "weaponwright": {
+      "name": "Оружейник",
+      "type": "weaponsmith",
+      "buyFactor": 1.07,
+      "sellFactor": 0.6,
+      "regions": [
+        "highlands",
+        "wasteland",
+        "coast"
+      ],
+      "stock": [
+        {
+          "id": "m551_weaponwright_1",
+          "name": "Боевой топор",
+          "category": "weapons",
+          "costGp": 10,
+          "qty": 2,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_weaponwright_2",
+          "name": "Длинный меч",
+          "category": "weapons",
+          "costGp": 15,
+          "qty": 2,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_weaponwright_3",
+          "name": "Рапира",
+          "category": "weapons",
+          "costGp": 25,
+          "qty": 2,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_weaponwright_4",
+          "name": "Секира",
+          "category": "weapons",
+          "costGp": 10,
+          "qty": 2,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_weaponwright_5",
+          "name": "Молот",
+          "category": "weapons",
+          "costGp": 2,
+          "qty": 4,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_weaponwright_6",
+          "name": "Палица",
+          "category": "weapons",
+          "costGp": 0.2,
+          "qty": 5,
+          "tags": [
+            "wood",
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_weaponwright_7",
+          "name": "Копьё",
+          "category": "weapons",
+          "costGp": 1,
+          "qty": 5,
+          "tags": [
+            "wood",
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_weaponwright_8",
+          "name": "Арбалет",
+          "category": "weapons",
+          "costGp": 25,
+          "qty": 2,
+          "tags": [
+            "wood",
+            "metal"
+          ]
+        }
+      ]
+    },
+    "fletcher": {
+      "name": "Лучник и оплетчик",
+      "type": "fletcher",
+      "buyFactor": 1.03,
+      "sellFactor": 0.55,
+      "regions": [
+        "forest",
+        "coast"
+      ],
+      "stock": [
+        {
+          "id": "m551_fletcher_1",
+          "name": "Короткий лук",
+          "category": "weapons",
+          "costGp": 25,
+          "qty": 3,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_fletcher_2",
+          "name": "Длинный лук",
+          "category": "weapons",
+          "costGp": 50,
+          "qty": 2,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_fletcher_3",
+          "name": "Лёгкий арбалет",
+          "category": "weapons",
+          "costGp": 25,
+          "qty": 2,
+          "tags": [
+            "wood",
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_fletcher_4",
+          "name": "Стрелы (20)",
+          "category": "weapons",
+          "costGp": 1,
+          "qty": 15,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_fletcher_5",
+          "name": "Болты (20)",
+          "category": "weapons",
+          "costGp": 1,
+          "qty": 15,
+          "tags": [
+            "wood",
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_fletcher_6",
+          "name": "Стрела с железным наконечником (1)",
+          "category": "weapons",
+          "costGp": 0.08,
+          "qty": 60,
+          "tags": [
+            "wood",
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_fletcher_7",
+          "name": "Тетива",
+          "category": "weapons",
+          "costGp": 0.5,
+          "qty": 12,
+          "tags": [
+            "fiber"
+          ]
+        },
+        {
+          "id": "m551_fletcher_8",
+          "name": "Оперение для стрел (20)",
+          "category": "weapons",
+          "costGp": 0.2,
+          "qty": 15,
+          "tags": [
+            "fiber"
+          ]
+        }
+      ]
+    },
+    "leatherworker": {
+      "name": "Кожевник",
+      "type": "leatherworker",
+      "buyFactor": 1.05,
+      "sellFactor": 0.62,
+      "regions": [
+        "forest",
+        "swamp",
+        "coast"
+      ],
+      "stock": [
+        {
+          "id": "m551_leatherworker_1",
+          "name": "Кожаная броня",
+          "category": "gear",
+          "costGp": 10,
+          "qty": 2,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_leatherworker_2",
+          "name": "Кожаная сбруя",
+          "category": "gear",
+          "costGp": 10,
+          "qty": 3,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_leatherworker_3",
+          "name": "Ножны",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 5,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_leatherworker_4",
+          "name": "Подсумок",
+          "category": "gear",
+          "costGp": 1,
+          "qty": 8,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_leatherworker_5",
+          "name": "Кожаный ремень",
+          "category": "gear",
+          "costGp": 0.5,
+          "qty": 12,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_leatherworker_6",
+          "name": "Мягкие перчатки",
+          "category": "gear",
+          "costGp": 1,
+          "qty": 8,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_leatherworker_7",
+          "name": "Кожаная сумка",
+          "category": "gear",
+          "costGp": 3,
+          "qty": 5,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_leatherworker_8",
+          "name": "Шкура обработанная",
+          "category": "gear",
+          "costGp": 4,
+          "qty": 10,
+          "tags": [
+            "leather"
+          ]
+        }
+      ]
+    },
+    "weaver": {
+      "name": "Ткач",
+      "type": "weaver",
+      "buyFactor": 1.02,
+      "sellFactor": 0.6,
+      "regions": [
+        "forest",
+        "coast"
+      ],
+      "stock": [
+        {
+          "id": "m551_weaver_1",
+          "name": "Рулон льняной ткани",
+          "category": "gear",
+          "costGp": 3,
+          "qty": 10,
+          "tags": [
+            "textile"
+          ]
+        },
+        {
+          "id": "m551_weaver_2",
+          "name": "Рулон шерсти",
+          "category": "gear",
+          "costGp": 5,
+          "qty": 8,
+          "tags": [
+            "textile"
+          ]
+        },
+        {
+          "id": "m551_weaver_3",
+          "name": "Плащ",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 5,
+          "tags": [
+            "textile"
+          ]
+        },
+        {
+          "id": "m551_weaver_4",
+          "name": "Мантия",
+          "category": "gear",
+          "costGp": 5,
+          "qty": 3,
+          "tags": [
+            "textile"
+          ]
+        },
+        {
+          "id": "m551_weaver_5",
+          "name": "Верёвка, 50 футов",
+          "category": "gear",
+          "costGp": 1,
+          "qty": 8,
+          "tags": [
+            "rope"
+          ]
+        },
+        {
+          "id": "m551_weaver_6",
+          "name": "Канат, 50 футов",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 8,
+          "tags": [
+            "rope"
+          ]
+        },
+        {
+          "id": "m551_weaver_7",
+          "name": "Парусная ткань",
+          "category": "gear",
+          "costGp": 4,
+          "qty": 10,
+          "tags": [
+            "textile"
+          ]
+        },
+        {
+          "id": "m551_weaver_8",
+          "name": "Тонкая нить",
+          "category": "gear",
+          "costGp": 0.1,
+          "qty": 30,
+          "tags": [
+            "fiber"
+          ]
+        }
+      ]
+    },
+    "woodcarver": {
+      "name": "Резчик по дереву",
+      "type": "woodcarver",
+      "buyFactor": 1.02,
+      "sellFactor": 0.58,
+      "regions": [
+        "forest",
+        "highlands"
+      ],
+      "stock": [
+        {
+          "id": "m551_woodcarver_1",
+          "name": "Лук заготовка",
+          "category": "materials",
+          "costGp": 3,
+          "qty": 5,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_woodcarver_2",
+          "name": "Древесина, заготовка",
+          "category": "materials",
+          "costGp": 1,
+          "qty": 20,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_woodcarver_3",
+          "name": "Рукоять оружия",
+          "category": "materials",
+          "costGp": 1,
+          "qty": 15,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_woodcarver_4",
+          "name": "Щит деревянный",
+          "category": "materials",
+          "costGp": 10,
+          "qty": 3,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_woodcarver_5",
+          "name": "Деревянные колья (10)",
+          "category": "materials",
+          "costGp": 0.5,
+          "qty": 12,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_woodcarver_6",
+          "name": "Стрелковые древки (20)",
+          "category": "materials",
+          "costGp": 0.4,
+          "qty": 15,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_woodcarver_7",
+          "name": "Дубовая заготовка",
+          "category": "materials",
+          "costGp": 2,
+          "qty": 12,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_woodcarver_8",
+          "name": "Тисовая заготовка",
+          "category": "materials",
+          "costGp": 5,
+          "qty": 6,
+          "tags": [
+            "wood"
+          ]
+        }
+      ]
+    },
+    "carpenter": {
+      "name": "Плотник",
+      "type": "carpenter",
+      "buyFactor": 1.03,
+      "sellFactor": 0.55,
+      "regions": [
+        "forest",
+        "highlands"
+      ],
+      "stock": [
+        {
+          "id": "m551_carpenter_1",
+          "name": "Лестница складная",
+          "category": "gear",
+          "costGp": 5,
+          "qty": 3,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_carpenter_2",
+          "name": "Ящик",
+          "category": "gear",
+          "costGp": 1,
+          "qty": 8,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_carpenter_3",
+          "name": "Сундук",
+          "category": "gear",
+          "costGp": 5,
+          "qty": 4,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_carpenter_4",
+          "name": "Деревянная дверь",
+          "category": "gear",
+          "costGp": 10,
+          "qty": 2,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_carpenter_5",
+          "name": "Стол походный",
+          "category": "gear",
+          "costGp": 3,
+          "qty": 3,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_carpenter_6",
+          "name": "Кровать походная",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 3,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_carpenter_7",
+          "name": "Бочка",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 6,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_carpenter_8",
+          "name": "Щит усиленный",
+          "category": "gear",
+          "costGp": 15,
+          "qty": 3,
+          "tags": [
+            "wood",
+            "metal"
+          ]
+        }
+      ]
+    },
+    "jeweler": {
+      "name": "Ювелир",
+      "type": "jeweler",
+      "buyFactor": 1.2,
+      "sellFactor": 0.7,
+      "regions": [
+        "ruins",
+        "highlands",
+        "coast"
+      ],
+      "stock": [
+        {
+          "id": "m551_jeweler_1",
+          "name": "Серебряная оправа",
+          "category": "materials",
+          "costGp": 10,
+          "qty": 5,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_jeweler_2",
+          "name": "Золотая оправа",
+          "category": "materials",
+          "costGp": 25,
+          "qty": 4,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_jeweler_3",
+          "name": "Серебряное кольцо",
+          "category": "materials",
+          "costGp": 25,
+          "qty": 3,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_jeweler_4",
+          "name": "Золотой перстень",
+          "category": "materials",
+          "costGp": 50,
+          "qty": 2,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_jeweler_5",
+          "name": "Янтарь",
+          "category": "materials",
+          "costGp": 20,
+          "qty": 3,
+          "tags": [
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_jeweler_6",
+          "name": "Аметист",
+          "category": "materials",
+          "costGp": 100,
+          "qty": 2,
+          "tags": [
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_jeweler_7",
+          "name": "Гранат",
+          "category": "materials",
+          "costGp": 100,
+          "qty": 2,
+          "tags": [
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_jeweler_8",
+          "name": "Опал",
+          "category": "materials",
+          "costGp": 100,
+          "qty": 2,
+          "tags": [
+            "relic"
+          ]
+        }
+      ]
+    },
+    "gemcutter": {
+      "name": "Огранщик самоцветов",
+      "type": "gemcutter",
+      "buyFactor": 1.18,
+      "sellFactor": 0.72,
+      "regions": [
+        "ruins",
+        "highlands"
+      ],
+      "stock": [
+        {
+          "id": "m551_gemcutter_1",
+          "name": "Драгоценный камень, необработанный",
+          "category": "materials",
+          "costGp": 50,
+          "qty": 6,
+          "tags": [
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_gemcutter_2",
+          "name": "Огранённый кварц",
+          "category": "materials",
+          "costGp": 10,
+          "qty": 8,
+          "tags": [
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_gemcutter_3",
+          "name": "Огранённый гранат",
+          "category": "materials",
+          "costGp": 120,
+          "qty": 2,
+          "tags": [
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_gemcutter_4",
+          "name": "Огранённый сапфир",
+          "category": "materials",
+          "costGp": 200,
+          "qty": 2,
+          "tags": [
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_gemcutter_5",
+          "name": "Огранённый рубин",
+          "category": "materials",
+          "costGp": 200,
+          "qty": 2,
+          "tags": [
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_gemcutter_6",
+          "name": "Огранённый изумруд",
+          "category": "materials",
+          "costGp": 200,
+          "qty": 2,
+          "tags": [
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_gemcutter_7",
+          "name": "Лунный камень",
+          "category": "materials",
+          "costGp": 50,
+          "qty": 3,
+          "tags": [
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_gemcutter_8",
+          "name": "Чёрный обсидиан",
+          "category": "materials",
+          "costGp": 25,
+          "qty": 5,
+          "tags": [
+            "stone",
+            "relic"
+          ]
+        }
+      ]
+    },
+    "potter": {
+      "name": "Гончар",
+      "type": "potter",
+      "buyFactor": 1.04,
+      "sellFactor": 0.55,
+      "regions": [
+        "swamp",
+        "forest",
+        "coast"
+      ],
+      "stock": [
+        {
+          "id": "m551_potter_1",
+          "name": "Керамический кувшин",
+          "category": "materials",
+          "costGp": 0.02,
+          "qty": 20,
+          "tags": [
+            "ceramic"
+          ]
+        },
+        {
+          "id": "m551_potter_2",
+          "name": "Керамическая чаша",
+          "category": "materials",
+          "costGp": 0.03,
+          "qty": 20,
+          "tags": [
+            "ceramic"
+          ]
+        },
+        {
+          "id": "m551_potter_3",
+          "name": "Керамический тигель",
+          "category": "materials",
+          "costGp": 1,
+          "qty": 8,
+          "tags": [
+            "ceramic"
+          ]
+        },
+        {
+          "id": "m551_potter_4",
+          "name": "Алхимическая колба-керамика",
+          "category": "materials",
+          "costGp": 2,
+          "qty": 8,
+          "tags": [
+            "ceramic",
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_potter_5",
+          "name": "Глиняная печать",
+          "category": "materials",
+          "costGp": 0.1,
+          "qty": 20,
+          "tags": [
+            "ceramic"
+          ]
+        },
+        {
+          "id": "m551_potter_6",
+          "name": "Черепица (10)",
+          "category": "materials",
+          "costGp": 0.5,
+          "qty": 20,
+          "tags": [
+            "stone"
+          ]
+        },
+        {
+          "id": "m551_potter_7",
+          "name": "Керамический фильтр",
+          "category": "materials",
+          "costGp": 1,
+          "qty": 8,
+          "tags": [
+            "ceramic"
+          ]
+        },
+        {
+          "id": "m551_potter_8",
+          "name": "Глазурь",
+          "category": "materials",
+          "costGp": 0.5,
+          "qty": 12,
+          "tags": [
+            "ceramic"
+          ]
+        }
+      ]
+    },
+    "glassblower": {
+      "name": "Стеклодув",
+      "type": "glassblower",
+      "buyFactor": 1.06,
+      "sellFactor": 0.58,
+      "regions": [
+        "coast",
+        "ruins"
+      ],
+      "stock": [
+        {
+          "id": "m551_glassblower_1",
+          "name": "Стеклянный флакон",
+          "category": "materials",
+          "costGp": 0.1,
+          "qty": 30,
+          "tags": [
+            "glass"
+          ]
+        },
+        {
+          "id": "m551_glassblower_2",
+          "name": "Стеклянная колба",
+          "category": "materials",
+          "costGp": 1,
+          "qty": 15,
+          "tags": [
+            "glass"
+          ]
+        },
+        {
+          "id": "m551_glassblower_3",
+          "name": "Линза",
+          "category": "materials",
+          "costGp": 10,
+          "qty": 5,
+          "tags": [
+            "glass"
+          ]
+        },
+        {
+          "id": "m551_glassblower_4",
+          "name": "Толстая линза",
+          "category": "materials",
+          "costGp": 25,
+          "qty": 3,
+          "tags": [
+            "glass"
+          ]
+        },
+        {
+          "id": "m551_glassblower_5",
+          "name": "Стеклянная трубка",
+          "category": "materials",
+          "costGp": 2,
+          "qty": 10,
+          "tags": [
+            "glass"
+          ]
+        },
+        {
+          "id": "m551_glassblower_6",
+          "name": "Стеклянная реторта",
+          "category": "materials",
+          "costGp": 8,
+          "qty": 5,
+          "tags": [
+            "glass",
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_glassblower_7",
+          "name": "Витражное стекло",
+          "category": "materials",
+          "costGp": 5,
+          "qty": 10,
+          "tags": [
+            "glass"
+          ]
+        },
+        {
+          "id": "m551_glassblower_8",
+          "name": "Чистое стекло",
+          "category": "materials",
+          "costGp": 3,
+          "qty": 15,
+          "tags": [
+            "glass"
+          ]
+        }
+      ]
+    },
+    "mason": {
+      "name": "Каменщик",
+      "type": "mason",
+      "buyFactor": 1.04,
+      "sellFactor": 0.55,
+      "regions": [
+        "highlands",
+        "ruins"
+      ],
+      "stock": [
+        {
+          "id": "m551_mason_1",
+          "name": "Гранитная заготовка",
+          "category": "materials",
+          "costGp": 2,
+          "qty": 20,
+          "tags": [
+            "stone"
+          ]
+        },
+        {
+          "id": "m551_mason_2",
+          "name": "Мраморная заготовка",
+          "category": "materials",
+          "costGp": 5,
+          "qty": 12,
+          "tags": [
+            "stone"
+          ]
+        },
+        {
+          "id": "m551_mason_3",
+          "name": "Каменная плита",
+          "category": "materials",
+          "costGp": 1,
+          "qty": 30,
+          "tags": [
+            "stone"
+          ]
+        },
+        {
+          "id": "m551_mason_4",
+          "name": "Точёный камень",
+          "category": "materials",
+          "costGp": 0.5,
+          "qty": 30,
+          "tags": [
+            "stone"
+          ]
+        },
+        {
+          "id": "m551_mason_5",
+          "name": "Каменный блок",
+          "category": "materials",
+          "costGp": 0.1,
+          "qty": 50,
+          "tags": [
+            "stone"
+          ]
+        },
+        {
+          "id": "m551_mason_6",
+          "name": "Известь",
+          "category": "materials",
+          "costGp": 0.05,
+          "qty": 40,
+          "tags": [
+            "stone"
+          ]
+        },
+        {
+          "id": "m551_mason_7",
+          "name": "Гравированный камень",
+          "category": "materials",
+          "costGp": 10,
+          "qty": 5,
+          "tags": [
+            "stone",
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_mason_8",
+          "name": "Каменный идол",
+          "category": "materials",
+          "costGp": 25,
+          "qty": 2,
+          "tags": [
+            "stone",
+            "relic"
+          ]
+        }
+      ]
+    },
+    "cobbler": {
+      "name": "Сапожник",
+      "type": "cobbler",
+      "buyFactor": 1.02,
+      "sellFactor": 0.6,
+      "regions": [
+        "forest",
+        "highlands",
+        "coast"
+      ],
+      "stock": [
+        {
+          "id": "m551_cobbler_1",
+          "name": "Сапоги",
+          "category": "gear",
+          "costGp": 1,
+          "qty": 8,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_cobbler_2",
+          "name": "Сапоги походные",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 6,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_cobbler_3",
+          "name": "Высокие сапоги",
+          "category": "gear",
+          "costGp": 3,
+          "qty": 5,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_cobbler_4",
+          "name": "Мягкие туфли",
+          "category": "gear",
+          "costGp": 0.5,
+          "qty": 10,
+          "tags": [
+            "leather",
+            "textile"
+          ]
+        },
+        {
+          "id": "m551_cobbler_5",
+          "name": "Подошва кожаная (пара)",
+          "category": "gear",
+          "costGp": 0.5,
+          "qty": 12,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_cobbler_6",
+          "name": "Шпоры",
+          "category": "gear",
+          "costGp": 1,
+          "qty": 5,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_cobbler_7",
+          "name": "Гетры",
+          "category": "gear",
+          "costGp": 1,
+          "qty": 8,
+          "tags": [
+            "textile",
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_cobbler_8",
+          "name": "Набор для ремонта обуви",
+          "category": "gear",
+          "costGp": 1,
+          "qty": 8,
+          "tags": [
+            "leather"
+          ]
+        }
+      ]
+    },
+    "painter": {
+      "name": "Художник и герольд",
+      "type": "painter",
+      "buyFactor": 1.08,
+      "sellFactor": 0.6,
+      "regions": [
+        "forest",
+        "coast",
+        "ruins"
+      ],
+      "stock": [
+        {
+          "id": "m551_painter_1",
+          "name": "Пигменты, набор",
+          "category": "materials",
+          "costGp": 3,
+          "qty": 10,
+          "tags": [
+            "pigment"
+          ]
+        },
+        {
+          "id": "m551_painter_2",
+          "name": "Чёрная краска",
+          "category": "materials",
+          "costGp": 1,
+          "qty": 12,
+          "tags": [
+            "pigment"
+          ]
+        },
+        {
+          "id": "m551_painter_3",
+          "name": "Красная краска",
+          "category": "materials",
+          "costGp": 1.5,
+          "qty": 12,
+          "tags": [
+            "pigment"
+          ]
+        },
+        {
+          "id": "m551_painter_4",
+          "name": "Синяя краска",
+          "category": "materials",
+          "costGp": 2,
+          "qty": 10,
+          "tags": [
+            "pigment"
+          ]
+        },
+        {
+          "id": "m551_painter_5",
+          "name": "Золотая краска",
+          "category": "materials",
+          "costGp": 10,
+          "qty": 5,
+          "tags": [
+            "pigment",
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_painter_6",
+          "name": "Гербовая ткань",
+          "category": "materials",
+          "costGp": 8,
+          "qty": 5,
+          "tags": [
+            "textile"
+          ]
+        },
+        {
+          "id": "m551_painter_7",
+          "name": "Малярный набор",
+          "category": "materials",
+          "costGp": 2,
+          "qty": 6,
+          "tags": [
+            "pigment"
+          ]
+        },
+        {
+          "id": "m551_painter_8",
+          "name": "Масло для красок",
+          "category": "materials",
+          "costGp": 1,
+          "qty": 10,
+          "tags": [
+            "alchemical"
+          ]
+        }
+      ]
+    },
+    "tinker": {
+      "name": "Жестянщик и механик",
+      "type": "tinker",
+      "buyFactor": 1.1,
+      "sellFactor": 0.62,
+      "regions": [
+        "highlands",
+        "ruins",
+        "coast"
+      ],
+      "stock": [
+        {
+          "id": "m551_tinker_1",
+          "name": "Замок простой",
+          "category": "gear",
+          "costGp": 5,
+          "qty": 8,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_tinker_2",
+          "name": "Замок сложный",
+          "category": "gear",
+          "costGp": 25,
+          "qty": 4,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_tinker_3",
+          "name": "Шестерни, набор",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 12,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_tinker_4",
+          "name": "Пружины, набор",
+          "category": "gear",
+          "costGp": 3,
+          "qty": 8,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_tinker_5",
+          "name": "Механический таймер",
+          "category": "gear",
+          "costGp": 10,
+          "qty": 4,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_tinker_6",
+          "name": "Капкан",
+          "category": "gear",
+          "costGp": 5,
+          "qty": 5,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_tinker_7",
+          "name": "Сигнальный колокольчик",
+          "category": "gear",
+          "costGp": 1,
+          "qty": 8,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_tinker_8",
+          "name": "Инструментальный набор",
+          "category": "gear",
+          "costGp": 25,
+          "qty": 2,
+          "tags": [
+            "metal",
+            "repair"
+          ]
+        }
+      ]
+    },
+    "scribe": {
+      "name": "Писец",
+      "type": "scribe",
+      "buyFactor": 1.06,
+      "sellFactor": 0.5,
+      "regions": [
+        "ruins",
+        "forest",
+        "coast"
+      ],
+      "stock": [
+        {
+          "id": "m551_scribe_1",
+          "name": "Бумага (10 листов)",
+          "category": "gear",
+          "costGp": 1,
+          "qty": 20,
+          "tags": [
+            "paper"
+          ]
+        },
+        {
+          "id": "m551_scribe_2",
+          "name": "Пергамент (10 листов)",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 15,
+          "tags": [
+            "paper"
+          ]
+        },
+        {
+          "id": "m551_scribe_3",
+          "name": "Чернила",
+          "category": "gear",
+          "costGp": 0.1,
+          "qty": 20,
+          "tags": [
+            "paper"
+          ]
+        },
+        {
+          "id": "m551_scribe_4",
+          "name": "Чернила стойкие",
+          "category": "gear",
+          "costGp": 5,
+          "qty": 6,
+          "tags": [
+            "paper",
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_scribe_5",
+          "name": "Пустая книга",
+          "category": "gear",
+          "costGp": 1,
+          "qty": 8,
+          "tags": [
+            "paper"
+          ]
+        },
+        {
+          "id": "m551_scribe_6",
+          "name": "Журнал путешественника",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 5,
+          "tags": [
+            "paper"
+          ]
+        },
+        {
+          "id": "m551_scribe_7",
+          "name": "Пустой свиток",
+          "category": "gear",
+          "costGp": 1,
+          "qty": 10,
+          "tags": [
+            "paper"
+          ]
+        },
+        {
+          "id": "m551_scribe_8",
+          "name": "Восковые печати (10)",
+          "category": "gear",
+          "costGp": 0.5,
+          "qty": 10,
+          "tags": [
+            "paper"
+          ]
+        }
+      ]
+    },
+    "cartographer": {
+      "name": "Картограф",
+      "type": "cartographer",
+      "buyFactor": 1.12,
+      "sellFactor": 0.58,
+      "regions": [
+        "coast",
+        "ruins",
+        "forest"
+      ],
+      "stock": [
+        {
+          "id": "m551_cartographer_1",
+          "name": "Карта местности",
+          "category": "gear",
+          "costGp": 5,
+          "qty": 6,
+          "tags": [
+            "paper"
+          ]
+        },
+        {
+          "id": "m551_cartographer_2",
+          "name": "Карта региона",
+          "category": "gear",
+          "costGp": 15,
+          "qty": 3,
+          "tags": [
+            "paper"
+          ]
+        },
+        {
+          "id": "m551_cartographer_3",
+          "name": "Морская карта",
+          "category": "gear",
+          "costGp": 25,
+          "qty": 3,
+          "tags": [
+            "paper",
+            "coast"
+          ]
+        },
+        {
+          "id": "m551_cartographer_4",
+          "name": "Комплект картографа",
+          "category": "gear",
+          "costGp": 15,
+          "qty": 3,
+          "tags": [
+            "paper"
+          ]
+        },
+        {
+          "id": "m551_cartographer_5",
+          "name": "Компас",
+          "category": "gear",
+          "costGp": 10,
+          "qty": 4,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_cartographer_6",
+          "name": "Линейка и циркуль",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 8,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_cartographer_7",
+          "name": "Тубус для карт",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 6,
+          "tags": [
+            "leather",
+            "paper"
+          ]
+        },
+        {
+          "id": "m551_cartographer_8",
+          "name": "Водостойкая карта",
+          "category": "gear",
+          "costGp": 20,
+          "qty": 3,
+          "tags": [
+            "paper"
+          ]
+        }
+      ]
+    },
+    "herbalist": {
+      "name": "Травник",
+      "type": "herbalist",
+      "buyFactor": 1.08,
+      "sellFactor": 0.55,
+      "regions": [
+        "forest",
+        "swamp"
+      ],
+      "stock": [
+        {
+          "id": "m551_herbalist_1",
+          "name": "Лечебная трава",
+          "category": "materials",
+          "costGp": 3,
+          "qty": 20,
+          "tags": [
+            "herbalism"
+          ]
+        },
+        {
+          "id": "m551_herbalist_2",
+          "name": "Лунный мох",
+          "category": "materials",
+          "costGp": 8,
+          "qty": 10,
+          "tags": [
+            "herbalism",
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_herbalist_3",
+          "name": "Сонный мак",
+          "category": "materials",
+          "costGp": 5,
+          "qty": 12,
+          "tags": [
+            "herbalism"
+          ]
+        },
+        {
+          "id": "m551_herbalist_4",
+          "name": "Крапива болотная",
+          "category": "materials",
+          "costGp": 2,
+          "qty": 15,
+          "tags": [
+            "herbalism"
+          ]
+        },
+        {
+          "id": "m551_herbalist_5",
+          "name": "Кора целебная",
+          "category": "materials",
+          "costGp": 4,
+          "qty": 12,
+          "tags": [
+            "herbalism"
+          ]
+        },
+        {
+          "id": "m551_herbalist_6",
+          "name": "Сухоцвет",
+          "category": "materials",
+          "costGp": 1,
+          "qty": 20,
+          "tags": [
+            "herbalism"
+          ]
+        },
+        {
+          "id": "m551_herbalist_7",
+          "name": "Корень мандрагоры",
+          "category": "materials",
+          "costGp": 20,
+          "qty": 4,
+          "tags": [
+            "herbalism",
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_herbalist_8",
+          "name": "Пыльца фей",
+          "category": "materials",
+          "costGp": 25,
+          "qty": 3,
+          "tags": [
+            "herbalism",
+            "arcane"
+          ]
+        }
+      ]
+    },
+    "alchemist": {
+      "name": "Алхимик",
+      "type": "alchemist",
+      "buyFactor": 1.15,
+      "sellFactor": 0.62,
+      "regions": [
+        "swamp",
+        "ruins",
+        "forest"
+      ],
+      "stock": [
+        {
+          "id": "m551_alchemist_1",
+          "name": "Зелье лечения",
+          "category": "consumables",
+          "costGp": 50,
+          "qty": 6,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_alchemist_2",
+          "name": "Противоядие",
+          "category": "consumables",
+          "costGp": 50,
+          "qty": 4,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_alchemist_3",
+          "name": "Зелье лазания",
+          "category": "consumables",
+          "costGp": 50,
+          "qty": 3,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_alchemist_4",
+          "name": "Зелье ночного зрения",
+          "category": "consumables",
+          "costGp": 50,
+          "qty": 3,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_alchemist_5",
+          "name": "Алхимический огонь",
+          "category": "consumables",
+          "costGp": 50,
+          "qty": 4,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_alchemist_6",
+          "name": "Кислота, флакон",
+          "category": "consumables",
+          "costGp": 25,
+          "qty": 5,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_alchemist_7",
+          "name": "Дымовая смесь",
+          "category": "consumables",
+          "costGp": 15,
+          "qty": 6,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_alchemist_8",
+          "name": "Алхимический реагент",
+          "category": "consumables",
+          "costGp": 8,
+          "qty": 15,
+          "tags": [
+            "alchemical",
+            "reagent"
+          ]
+        }
+      ]
+    },
+    "poisoner": {
+      "name": "Торговец ядами",
+      "type": "poisoner",
+      "buyFactor": 1.35,
+      "sellFactor": 0.7,
+      "regions": [
+        "swamp",
+        "ruins"
+      ],
+      "stock": [
+        {
+          "id": "m551_poisoner_1",
+          "name": "Антитоксин",
+          "category": "consumables",
+          "costGp": 50,
+          "qty": 5,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_poisoner_2",
+          "name": "Слабый яд",
+          "category": "consumables",
+          "costGp": 100,
+          "qty": 3,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_poisoner_3",
+          "name": "Контактный токсин",
+          "category": "consumables",
+          "costGp": 150,
+          "qty": 2,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_poisoner_4",
+          "name": "Снотворный яд",
+          "category": "consumables",
+          "costGp": 120,
+          "qty": 2,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_poisoner_5",
+          "name": "Противоядие редкое",
+          "category": "consumables",
+          "costGp": 150,
+          "qty": 2,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_poisoner_6",
+          "name": "Токсичный реагент",
+          "category": "consumables",
+          "costGp": 25,
+          "qty": 8,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_poisoner_7",
+          "name": "Ядовитая смола",
+          "category": "consumables",
+          "costGp": 40,
+          "qty": 5,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_poisoner_8",
+          "name": "Пустой флакон",
+          "category": "consumables",
+          "costGp": 0.1,
+          "qty": 30,
+          "tags": [
+            "glass"
+          ]
+        }
+      ]
+    },
+    "brewer": {
+      "name": "Пивовар",
+      "type": "brewer",
+      "buyFactor": 1,
+      "sellFactor": 0.5,
+      "regions": [
+        "forest",
+        "highlands",
+        "coast"
+      ],
+      "stock": [
+        {
+          "id": "m551_brewer_1",
+          "name": "Эль, кружка",
+          "category": "consumables",
+          "costGp": 0.04,
+          "qty": 30,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_brewer_2",
+          "name": "Пиво крепкое",
+          "category": "consumables",
+          "costGp": 0.1,
+          "qty": 20,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_brewer_3",
+          "name": "Медовуха",
+          "category": "consumables",
+          "costGp": 0.2,
+          "qty": 15,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_brewer_4",
+          "name": "Сидр",
+          "category": "consumables",
+          "costGp": 0.1,
+          "qty": 20,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_brewer_5",
+          "name": "Дрожжи",
+          "category": "consumables",
+          "costGp": 0.5,
+          "qty": 15,
+          "tags": [
+            "reagent"
+          ]
+        },
+        {
+          "id": "m551_brewer_6",
+          "name": "Солод",
+          "category": "consumables",
+          "costGp": 0.2,
+          "qty": 20,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_brewer_7",
+          "name": "Хмель",
+          "category": "consumables",
+          "costGp": 0.1,
+          "qty": 20,
+          "tags": [
+            "herbalism"
+          ]
+        },
+        {
+          "id": "m551_brewer_8",
+          "name": "Бочка эля",
+          "category": "consumables",
+          "costGp": 2,
+          "qty": 5,
+          "tags": [
+            "wood",
+            "food"
+          ]
+        }
+      ]
+    },
+    "cook": {
+      "name": "Повар",
+      "type": "cook",
+      "buyFactor": 1.05,
+      "sellFactor": 0.5,
+      "regions": [
+        "forest",
+        "coast",
+        "highlands"
+      ],
+      "stock": [
+        {
+          "id": "m551_cook_1",
+          "name": "Паёк",
+          "category": "consumables",
+          "costGp": 0.5,
+          "qty": 30,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_cook_2",
+          "name": "Сухое мясо",
+          "category": "consumables",
+          "costGp": 1,
+          "qty": 20,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_cook_3",
+          "name": "Сыр",
+          "category": "consumables",
+          "costGp": 0.5,
+          "qty": 20,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_cook_4",
+          "name": "Сухари",
+          "category": "consumables",
+          "costGp": 0.1,
+          "qty": 30,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_cook_5",
+          "name": "Специи",
+          "category": "consumables",
+          "costGp": 0.5,
+          "qty": 20,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_cook_6",
+          "name": "Соль",
+          "category": "consumables",
+          "costGp": 0.05,
+          "qty": 30,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_cook_7",
+          "name": "Масло",
+          "category": "consumables",
+          "costGp": 0.1,
+          "qty": 20,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_cook_8",
+          "name": "Походный суп",
+          "category": "consumables",
+          "costGp": 0.2,
+          "qty": 20,
+          "tags": [
+            "food"
+          ]
+        }
+      ]
+    },
+    "fisher": {
+      "name": "Рыбак",
+      "type": "fisher",
+      "buyFactor": 1,
+      "sellFactor": 0.48,
+      "regions": [
+        "coast",
+        "swamp"
+      ],
+      "stock": [
+        {
+          "id": "m551_fisher_1",
+          "name": "Свежая рыба",
+          "category": "consumables",
+          "costGp": 0.1,
+          "qty": 30,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_fisher_2",
+          "name": "Сушёная рыба",
+          "category": "consumables",
+          "costGp": 0.2,
+          "qty": 25,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_fisher_3",
+          "name": "Солёная рыба",
+          "category": "consumables",
+          "costGp": 0.25,
+          "qty": 20,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_fisher_4",
+          "name": "Рыбий жир",
+          "category": "consumables",
+          "costGp": 0.5,
+          "qty": 12,
+          "tags": [
+            "food",
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_fisher_5",
+          "name": "Икра",
+          "category": "consumables",
+          "costGp": 2,
+          "qty": 8,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_fisher_6",
+          "name": "Крючки (10)",
+          "category": "consumables",
+          "costGp": 0.2,
+          "qty": 20,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_fisher_7",
+          "name": "Леска",
+          "category": "consumables",
+          "costGp": 0.1,
+          "qty": 30,
+          "tags": [
+            "fiber"
+          ]
+        },
+        {
+          "id": "m551_fisher_8",
+          "name": "Сеть рыбацкая",
+          "category": "consumables",
+          "costGp": 1,
+          "qty": 8,
+          "tags": [
+            "rope"
+          ]
+        }
+      ]
+    },
+    "shipchandler": {
+      "name": "Корабельный снабженец",
+      "type": "shipchandler",
+      "buyFactor": 1.08,
+      "sellFactor": 0.55,
+      "regions": [
+        "coast"
+      ],
+      "stock": [
+        {
+          "id": "m551_shipchandler_1",
+          "name": "Канат, 50 футов",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 12,
+          "tags": [
+            "rope"
+          ]
+        },
+        {
+          "id": "m551_shipchandler_2",
+          "name": "Парусная ткань",
+          "category": "gear",
+          "costGp": 4,
+          "qty": 15,
+          "tags": [
+            "textile"
+          ]
+        },
+        {
+          "id": "m551_shipchandler_3",
+          "name": "Фонарь",
+          "category": "gear",
+          "costGp": 5,
+          "qty": 5,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_shipchandler_4",
+          "name": "Масло для фонаря",
+          "category": "gear",
+          "costGp": 0.1,
+          "qty": 20,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_shipchandler_5",
+          "name": "Крюк абордажный",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 6,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_shipchandler_6",
+          "name": "Комплект для ремонта судна",
+          "category": "gear",
+          "costGp": 25,
+          "qty": 4,
+          "tags": [
+            "wood",
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_shipchandler_7",
+          "name": "Водонепроницаемый мешок",
+          "category": "gear",
+          "costGp": 3,
+          "qty": 8,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_shipchandler_8",
+          "name": "Компас",
+          "category": "gear",
+          "costGp": 10,
+          "qty": 5,
+          "tags": [
+            "metal"
+          ]
+        }
+      ]
+    },
+    "miner": {
+      "name": "Рудокоп",
+      "type": "miner",
+      "buyFactor": 1.1,
+      "sellFactor": 0.6,
+      "regions": [
+        "highlands",
+        "wasteland",
+        "ruins"
+      ],
+      "stock": [
+        {
+          "id": "m551_miner_1",
+          "name": "Железная руда",
+          "category": "materials",
+          "costGp": 1,
+          "qty": 30,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_miner_2",
+          "name": "Медная руда",
+          "category": "materials",
+          "costGp": 1.5,
+          "qty": 25,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_miner_3",
+          "name": "Серебряная руда",
+          "category": "materials",
+          "costGp": 5,
+          "qty": 15,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_miner_4",
+          "name": "Золотая руда",
+          "category": "materials",
+          "costGp": 20,
+          "qty": 6,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_miner_5",
+          "name": "Уголь",
+          "category": "materials",
+          "costGp": 0.05,
+          "qty": 40,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_miner_6",
+          "name": "Железный слиток",
+          "category": "materials",
+          "costGp": 5,
+          "qty": 20,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_miner_7",
+          "name": "Медный слиток",
+          "category": "materials",
+          "costGp": 4,
+          "qty": 15,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_miner_8",
+          "name": "Сталь, заготовка",
+          "category": "materials",
+          "costGp": 10,
+          "qty": 8,
+          "tags": [
+            "metal"
+          ]
+        }
+      ]
+    },
+    "stonecutter": {
+      "name": "Торговец камнем",
+      "type": "stonecutter",
+      "buyFactor": 1.05,
+      "sellFactor": 0.55,
+      "regions": [
+        "highlands",
+        "ruins"
+      ],
+      "stock": [
+        {
+          "id": "m551_stonecutter_1",
+          "name": "Гранит",
+          "category": "materials",
+          "costGp": 2,
+          "qty": 30,
+          "tags": [
+            "stone"
+          ]
+        },
+        {
+          "id": "m551_stonecutter_2",
+          "name": "Мрамор",
+          "category": "materials",
+          "costGp": 5,
+          "qty": 20,
+          "tags": [
+            "stone"
+          ]
+        },
+        {
+          "id": "m551_stonecutter_3",
+          "name": "Известняк",
+          "category": "materials",
+          "costGp": 0.5,
+          "qty": 30,
+          "tags": [
+            "stone"
+          ]
+        },
+        {
+          "id": "m551_stonecutter_4",
+          "name": "Обсидиан",
+          "category": "materials",
+          "costGp": 10,
+          "qty": 10,
+          "tags": [
+            "stone",
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_stonecutter_5",
+          "name": "Кварц",
+          "category": "materials",
+          "costGp": 3,
+          "qty": 15,
+          "tags": [
+            "stone",
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_stonecutter_6",
+          "name": "Сланец",
+          "category": "materials",
+          "costGp": 1,
+          "qty": 20,
+          "tags": [
+            "stone"
+          ]
+        },
+        {
+          "id": "m551_stonecutter_7",
+          "name": "Гравий",
+          "category": "materials",
+          "costGp": 0.02,
+          "qty": 50,
+          "tags": [
+            "stone"
+          ]
+        },
+        {
+          "id": "m551_stonecutter_8",
+          "name": "Мел",
+          "category": "materials",
+          "costGp": 0.05,
+          "qty": 30,
+          "tags": [
+            "stone"
+          ]
+        }
+      ]
+    },
+    "generalstore": {
+      "name": "Лавочник",
+      "type": "general",
+      "buyFactor": 1.02,
+      "sellFactor": 0.48,
+      "regions": [
+        "forest",
+        "highlands",
+        "swamp",
+        "coast",
+        "wasteland",
+        "ruins"
+      ],
+      "stock": [
+        {
+          "id": "m551_generalstore_1",
+          "name": "Факел",
+          "category": "gear",
+          "costGp": 0.01,
+          "qty": 60,
+          "tags": [
+            "common"
+          ]
+        },
+        {
+          "id": "m551_generalstore_2",
+          "name": "Свеча",
+          "category": "gear",
+          "costGp": 0.01,
+          "qty": 40,
+          "tags": [
+            "common"
+          ]
+        },
+        {
+          "id": "m551_generalstore_3",
+          "name": "Верёвка, 50 футов",
+          "category": "gear",
+          "costGp": 1,
+          "qty": 10,
+          "tags": [
+            "rope"
+          ]
+        },
+        {
+          "id": "m551_generalstore_4",
+          "name": "Рюкзак",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 8,
+          "tags": [
+            "common"
+          ]
+        },
+        {
+          "id": "m551_generalstore_5",
+          "name": "Одеяло",
+          "category": "gear",
+          "costGp": 0.5,
+          "qty": 8,
+          "tags": [
+            "textile"
+          ]
+        },
+        {
+          "id": "m551_generalstore_6",
+          "name": "Фляга",
+          "category": "gear",
+          "costGp": 0.2,
+          "qty": 15,
+          "tags": [
+            "common"
+          ]
+        },
+        {
+          "id": "m551_generalstore_7",
+          "name": "Кремень и огниво",
+          "category": "gear",
+          "costGp": 0.5,
+          "qty": 10,
+          "tags": [
+            "common"
+          ]
+        },
+        {
+          "id": "m551_generalstore_8",
+          "name": "Крючья для лазания",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 8,
+          "tags": [
+            "metal"
+          ]
+        }
+      ]
+    },
+    "luxury": {
+      "name": "Торговец роскошью",
+      "type": "luxury",
+      "buyFactor": 1.35,
+      "sellFactor": 0.72,
+      "regions": [
+        "coast",
+        "ruins",
+        "highlands"
+      ],
+      "stock": [
+        {
+          "id": "m551_luxury_1",
+          "name": "Шёлковая рубашка",
+          "category": "gear",
+          "costGp": 10,
+          "qty": 5,
+          "tags": [
+            "textile"
+          ]
+        },
+        {
+          "id": "m551_luxury_2",
+          "name": "Парфюм",
+          "category": "gear",
+          "costGp": 15,
+          "qty": 5,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_luxury_3",
+          "name": "Серебряный кубок",
+          "category": "gear",
+          "costGp": 25,
+          "qty": 3,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_luxury_4",
+          "name": "Хрустальный графин",
+          "category": "gear",
+          "costGp": 50,
+          "qty": 2,
+          "tags": [
+            "glass"
+          ]
+        },
+        {
+          "id": "m551_luxury_5",
+          "name": "Музыкальная шкатулка",
+          "category": "gear",
+          "costGp": 25,
+          "qty": 2,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_luxury_6",
+          "name": "Редкий чай",
+          "category": "gear",
+          "costGp": 5,
+          "qty": 10,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_luxury_7",
+          "name": "Экзотические специи",
+          "category": "gear",
+          "costGp": 10,
+          "qty": 8,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_luxury_8",
+          "name": "Драгоценная табакерка",
+          "category": "gear",
+          "costGp": 75,
+          "qty": 1,
+          "tags": [
+            "relic",
+            "metal"
+          ]
+        }
+      ]
+    },
+    "relicdealer": {
+      "name": "Торговец реликвиями",
+      "type": "relic",
+      "buyFactor": 1.45,
+      "sellFactor": 0.75,
+      "regions": [
+        "ruins"
+      ],
+      "stock": [
+        {
+          "id": "m551_relicdealer_1",
+          "name": "Древний фрагмент",
+          "category": "materials",
+          "costGp": 25,
+          "qty": 5,
+          "tags": [
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_relicdealer_2",
+          "name": "Старинная монета",
+          "category": "materials",
+          "costGp": 10,
+          "qty": 12,
+          "tags": [
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_relicdealer_3",
+          "name": "Руническая пластина",
+          "category": "materials",
+          "costGp": 50,
+          "qty": 3,
+          "tags": [
+            "relic",
+            "arcane"
+          ]
+        },
+        {
+          "id": "m551_relicdealer_4",
+          "name": "Осколок обсидиана",
+          "category": "materials",
+          "costGp": 15,
+          "qty": 8,
+          "tags": [
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_relicdealer_5",
+          "name": "Кость древнего зверя",
+          "category": "materials",
+          "costGp": 20,
+          "qty": 4,
+          "tags": [
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_relicdealer_6",
+          "name": "Прах мумии",
+          "category": "materials",
+          "costGp": 30,
+          "qty": 3,
+          "tags": [
+            "relic",
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_relicdealer_7",
+          "name": "Древний пергамент",
+          "category": "materials",
+          "costGp": 15,
+          "qty": 4,
+          "tags": [
+            "relic",
+            "paper"
+          ]
+        },
+        {
+          "id": "m551_relicdealer_8",
+          "name": "Неопознанный артефакт",
+          "category": "materials",
+          "costGp": 100,
+          "qty": 1,
+          "tags": [
+            "relic",
+            "arcane"
+          ]
+        }
+      ]
+    },
+    "arcane": {
+      "name": "Торговец магическими реагентами",
+      "type": "arcane",
+      "buyFactor": 1.3,
+      "sellFactor": 0.7,
+      "regions": [
+        "ruins",
+        "forest"
+      ],
+      "stock": [
+        {
+          "id": "m551_arcane_1",
+          "name": "Арканная пыль",
+          "category": "materials",
+          "costGp": 15,
+          "qty": 8,
+          "tags": [
+            "arcane"
+          ]
+        },
+        {
+          "id": "m551_arcane_2",
+          "name": "Эссенция огня",
+          "category": "materials",
+          "costGp": 25,
+          "qty": 5,
+          "tags": [
+            "arcane",
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_arcane_3",
+          "name": "Эссенция воды",
+          "category": "materials",
+          "costGp": 20,
+          "qty": 5,
+          "tags": [
+            "arcane",
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_arcane_4",
+          "name": "Эссенция воздуха",
+          "category": "materials",
+          "costGp": 25,
+          "qty": 5,
+          "tags": [
+            "arcane",
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_arcane_5",
+          "name": "Эссенция земли",
+          "category": "materials",
+          "costGp": 20,
+          "qty": 5,
+          "tags": [
+            "arcane",
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_arcane_6",
+          "name": "Лунный камень",
+          "category": "materials",
+          "costGp": 50,
+          "qty": 3,
+          "tags": [
+            "arcane",
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_arcane_7",
+          "name": "Кристалл памяти",
+          "category": "materials",
+          "costGp": 75,
+          "qty": 2,
+          "tags": [
+            "arcane",
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_arcane_8",
+          "name": "Порошок серебра",
+          "category": "materials",
+          "costGp": 10,
+          "qty": 8,
+          "tags": [
+            "arcane",
+            "metal"
+          ]
+        }
+      ]
+    },
+    "stablemaster": {
+      "name": "Конюший",
+      "type": "stable",
+      "buyFactor": 1.08,
+      "sellFactor": 0.55,
+      "regions": [
+        "forest",
+        "highlands",
+        "coast"
+      ],
+      "stock": [
+        {
+          "id": "m551_stablemaster_1",
+          "name": "Седло",
+          "category": "gear",
+          "costGp": 10,
+          "qty": 3,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_stablemaster_2",
+          "name": "Вьючное седло",
+          "category": "gear",
+          "costGp": 15,
+          "qty": 3,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_stablemaster_3",
+          "name": "Уздечка",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 6,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_stablemaster_4",
+          "name": "Подковы (4)",
+          "category": "gear",
+          "costGp": 1,
+          "qty": 10,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_stablemaster_5",
+          "name": "Корм, мешок",
+          "category": "gear",
+          "costGp": 0.5,
+          "qty": 20,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_stablemaster_6",
+          "name": "Овёс",
+          "category": "gear",
+          "costGp": 0.1,
+          "qty": 30,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_stablemaster_7",
+          "name": "Конская попона",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 5,
+          "tags": [
+            "textile"
+          ]
+        },
+        {
+          "id": "m551_stablemaster_8",
+          "name": "Седельные сумки",
+          "category": "gear",
+          "costGp": 4,
+          "qty": 5,
+          "tags": [
+            "leather"
+          ]
+        }
+      ]
+    },
+    "hunter": {
+      "name": "Охотник",
+      "type": "hunter",
+      "buyFactor": 1.08,
+      "sellFactor": 0.6,
+      "regions": [
+        "forest",
+        "highlands",
+        "wasteland"
+      ],
+      "stock": [
+        {
+          "id": "m551_hunter_1",
+          "name": "Шкура оленя",
+          "category": "materials",
+          "costGp": 5,
+          "qty": 8,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_hunter_2",
+          "name": "Шкура волка",
+          "category": "materials",
+          "costGp": 8,
+          "qty": 6,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_hunter_3",
+          "name": "Кабаний клык",
+          "category": "materials",
+          "costGp": 2,
+          "qty": 10,
+          "tags": [
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_hunter_4",
+          "name": "Оленьи рога",
+          "category": "materials",
+          "costGp": 10,
+          "qty": 3,
+          "tags": [
+            "bone"
+          ]
+        },
+        {
+          "id": "m551_hunter_5",
+          "name": "Перья",
+          "category": "materials",
+          "costGp": 0.1,
+          "qty": 30,
+          "tags": [
+            "fiber"
+          ]
+        },
+        {
+          "id": "m551_hunter_6",
+          "name": "Копчёное мясо",
+          "category": "materials",
+          "costGp": 1,
+          "qty": 15,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_hunter_7",
+          "name": "Лук охотничий",
+          "category": "materials",
+          "costGp": 25,
+          "qty": 2,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_hunter_8",
+          "name": "Набор силков",
+          "category": "materials",
+          "costGp": 2,
+          "qty": 8,
+          "tags": [
+            "metal"
+          ]
+        }
+      ]
+    },
+    "monsterparts": {
+      "name": "Заготовитель чудовищных трофеев",
+      "type": "monsterparts",
+      "buyFactor": 1.25,
+      "sellFactor": 0.68,
+      "regions": [
+        "swamp",
+        "wasteland",
+        "ruins"
+      ],
+      "stock": [
+        {
+          "id": "m551_monsterparts_1",
+          "name": "Паучий шёлк",
+          "category": "materials",
+          "costGp": 5,
+          "qty": 10,
+          "tags": [
+            "fiber"
+          ]
+        },
+        {
+          "id": "m551_monsterparts_2",
+          "name": "Панцирь хитина",
+          "category": "materials",
+          "costGp": 8,
+          "qty": 8,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_monsterparts_3",
+          "name": "Коготь чудовища",
+          "category": "materials",
+          "costGp": 3,
+          "qty": 12,
+          "tags": [
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_monsterparts_4",
+          "name": "Клык чудовища",
+          "category": "materials",
+          "costGp": 4,
+          "qty": 12,
+          "tags": [
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_monsterparts_5",
+          "name": "Глаз чудовища",
+          "category": "materials",
+          "costGp": 10,
+          "qty": 5,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_monsterparts_6",
+          "name": "Ядовитая железа",
+          "category": "materials",
+          "costGp": 15,
+          "qty": 4,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_monsterparts_7",
+          "name": "Чешуя чудовища",
+          "category": "materials",
+          "costGp": 6,
+          "qty": 10,
+          "tags": [
+            "scale"
+          ]
+        },
+        {
+          "id": "m551_monsterparts_8",
+          "name": "Эссенция монстра",
+          "category": "materials",
+          "costGp": 25,
+          "qty": 3,
+          "tags": [
+            "arcane",
+            "alchemical"
+          ]
+        }
+      ]
+    },
+    "scrollmerchant": {
+      "name": "Торговец свитками",
+      "type": "scrolls",
+      "buyFactor": 1.2,
+      "sellFactor": 0.62,
+      "regions": [
+        "ruins",
+        "forest",
+        "coast"
+      ],
+      "stock": [
+        {
+          "id": "m551_scrollmerchant_1",
+          "name": "Свиток заклинания 1 круга",
+          "category": "consumables",
+          "costGp": 25,
+          "qty": 4,
+          "tags": [
+            "arcane",
+            "paper"
+          ]
+        },
+        {
+          "id": "m551_scrollmerchant_2",
+          "name": "Свиток заклинания 2 круга",
+          "category": "consumables",
+          "costGp": 75,
+          "qty": 3,
+          "tags": [
+            "arcane",
+            "paper"
+          ]
+        },
+        {
+          "id": "m551_scrollmerchant_3",
+          "name": "Свиток заклинания 3 круга",
+          "category": "consumables",
+          "costGp": 150,
+          "qty": 2,
+          "tags": [
+            "arcane",
+            "paper"
+          ]
+        },
+        {
+          "id": "m551_scrollmerchant_4",
+          "name": "Пустой свиток",
+          "category": "consumables",
+          "costGp": 1,
+          "qty": 15,
+          "tags": [
+            "paper"
+          ]
+        },
+        {
+          "id": "m551_scrollmerchant_5",
+          "name": "Чернила арканные",
+          "category": "consumables",
+          "costGp": 10,
+          "qty": 8,
+          "tags": [
+            "arcane",
+            "paper"
+          ]
+        },
+        {
+          "id": "m551_scrollmerchant_6",
+          "name": "Пергамент",
+          "category": "consumables",
+          "costGp": 0.2,
+          "qty": 20,
+          "tags": [
+            "paper"
+          ]
+        },
+        {
+          "id": "m551_scrollmerchant_7",
+          "name": "Печать гильдии магов",
+          "category": "consumables",
+          "costGp": 5,
+          "qty": 5,
+          "tags": [
+            "relic"
+          ]
+        },
+        {
+          "id": "m551_scrollmerchant_8",
+          "name": "Футляр для свитков",
+          "category": "consumables",
+          "costGp": 2,
+          "qty": 8,
+          "tags": [
+            "leather",
+            "paper"
+          ]
+        }
+      ]
+    },
+    "temple": {
+      "name": "Храмовый лавочник",
+      "type": "temple",
+      "buyFactor": 1.05,
+      "sellFactor": 0.5,
+      "regions": [
+        "forest",
+        "highlands",
+        "ruins"
+      ],
+      "stock": [
+        {
+          "id": "m551_temple_1",
+          "name": "Святая вода",
+          "category": "consumables",
+          "costGp": 25,
+          "qty": 8,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_temple_2",
+          "name": "Ладан",
+          "category": "consumables",
+          "costGp": 1,
+          "qty": 15,
+          "tags": [
+            "herbalism"
+          ]
+        },
+        {
+          "id": "m551_temple_3",
+          "name": "Церковная свеча",
+          "category": "consumables",
+          "costGp": 0.05,
+          "qty": 30,
+          "tags": [
+            "common"
+          ]
+        },
+        {
+          "id": "m551_temple_4",
+          "name": "Символ веры",
+          "category": "consumables",
+          "costGp": 5,
+          "qty": 6,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_temple_5",
+          "name": "Благословлённое масло",
+          "category": "consumables",
+          "costGp": 10,
+          "qty": 6,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_temple_6",
+          "name": "Бинты",
+          "category": "consumables",
+          "costGp": 0.1,
+          "qty": 30,
+          "tags": [
+            "herbalism"
+          ]
+        },
+        {
+          "id": "m551_temple_7",
+          "name": "Лечебная мазь",
+          "category": "consumables",
+          "costGp": 5,
+          "qty": 10,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_temple_8",
+          "name": "Молитвенник",
+          "category": "consumables",
+          "costGp": 2,
+          "qty": 5,
+          "tags": [
+            "paper",
+            "relic"
+          ]
+        }
+      ]
+    },
+    "blackmarket": {
+      "name": "Чёрный рынок",
+      "type": "blackmarket",
+      "buyFactor": 1.45,
+      "sellFactor": 0.8,
+      "regions": [
+        "ruins",
+        "wasteland",
+        "swamp"
+      ],
+      "stock": [
+        {
+          "id": "m551_blackmarket_1",
+          "name": "Отмычки",
+          "category": "gear",
+          "costGp": 25,
+          "qty": 4,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_blackmarket_2",
+          "name": "Маска",
+          "category": "gear",
+          "costGp": 2,
+          "qty": 8,
+          "tags": [
+            "leather"
+          ]
+        },
+        {
+          "id": "m551_blackmarket_3",
+          "name": "Поддельная печать",
+          "category": "gear",
+          "costGp": 20,
+          "qty": 3,
+          "tags": [
+            "metal",
+            "paper"
+          ]
+        },
+        {
+          "id": "m551_blackmarket_4",
+          "name": "Скрытый нож",
+          "category": "gear",
+          "costGp": 5,
+          "qty": 3,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_blackmarket_5",
+          "name": "Дымовая шашка",
+          "category": "gear",
+          "costGp": 25,
+          "qty": 4,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_blackmarket_6",
+          "name": "Контрабандный реагент",
+          "category": "gear",
+          "costGp": 30,
+          "qty": 6,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_blackmarket_7",
+          "name": "Редкий яд",
+          "category": "gear",
+          "costGp": 200,
+          "qty": 2,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_blackmarket_8",
+          "name": "Запрещённый артефакт",
+          "category": "gear",
+          "costGp": 250,
+          "qty": 1,
+          "tags": [
+            "relic",
+            "arcane"
+          ]
+        }
+      ]
+    },
+    "caravan_master": {
+      "name": "Мастер каравана",
+      "type": "caravan_master",
+      "buyFactor": 1.16,
+      "sellFactor": 0.66,
+      "regions": [
+        "forest",
+        "highlands",
+        "swamp",
+        "coast",
+        "wasteland",
+        "ruins"
+      ],
+      "stock": [
+        {
+          "id": "m551_caravan_master_1",
+          "name": "Дорожный шатёр",
+          "category": "gear",
+          "costGp": 10,
+          "qty": 4,
+          "tags": [
+            "textile",
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_caravan_master_2",
+          "name": "Повозка, комплект ремонта",
+          "category": "gear",
+          "costGp": 15,
+          "qty": 5,
+          "tags": [
+            "wood",
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_caravan_master_3",
+          "name": "Масло фонарное",
+          "category": "gear",
+          "costGp": 0.1,
+          "qty": 25,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_caravan_master_4",
+          "name": "Верёвка, 50 футов",
+          "category": "gear",
+          "costGp": 1,
+          "qty": 15,
+          "tags": [
+            "rope"
+          ]
+        },
+        {
+          "id": "m551_caravan_master_5",
+          "name": "Паёк",
+          "category": "gear",
+          "costGp": 0.5,
+          "qty": 30,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_caravan_master_6",
+          "name": "Фляга",
+          "category": "gear",
+          "costGp": 0.2,
+          "qty": 20,
+          "tags": [
+            "common"
+          ]
+        },
+        {
+          "id": "m551_caravan_master_7",
+          "name": "Лошадиный корм",
+          "category": "gear",
+          "costGp": 0.2,
+          "qty": 30,
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "id": "m551_caravan_master_8",
+          "name": "Карта торговых путей",
+          "category": "gear",
+          "costGp": 10,
+          "qty": 5,
+          "tags": [
+            "paper"
+          ]
+        }
+      ]
+    },
+    "siege": {
+      "name": "Осадный снабженец",
+      "type": "siege",
+      "buyFactor": 1.2,
+      "sellFactor": 0.55,
+      "regions": [
+        "highlands",
+        "wasteland",
+        "ruins"
+      ],
+      "stock": [
+        {
+          "id": "m551_siege_1",
+          "name": "Канат толстый",
+          "category": "materials",
+          "costGp": 5,
+          "qty": 10,
+          "tags": [
+            "rope"
+          ]
+        },
+        {
+          "id": "m551_siege_2",
+          "name": "Цепь",
+          "category": "materials",
+          "costGp": 5,
+          "qty": 10,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_siege_3",
+          "name": "Железные шипы (20)",
+          "category": "materials",
+          "costGp": 2,
+          "qty": 15,
+          "tags": [
+            "metal"
+          ]
+        },
+        {
+          "id": "m551_siege_4",
+          "name": "Деревянный брус",
+          "category": "materials",
+          "costGp": 2,
+          "qty": 20,
+          "tags": [
+            "wood"
+          ]
+        },
+        {
+          "id": "m551_siege_5",
+          "name": "Смола",
+          "category": "materials",
+          "costGp": 1,
+          "qty": 15,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_siege_6",
+          "name": "Масло горючее",
+          "category": "materials",
+          "costGp": 2,
+          "qty": 12,
+          "tags": [
+            "alchemical"
+          ]
+        },
+        {
+          "id": "m551_siege_7",
+          "name": "Каменные ядра (5)",
+          "category": "materials",
+          "costGp": 5,
+          "qty": 10,
+          "tags": [
+            "stone"
+          ]
+        },
+        {
+          "id": "m551_siege_8",
+          "name": "Ремонтный набор",
+          "category": "materials",
+          "costGp": 10,
+          "qty": 6,
+          "tags": [
+            "repair",
+            "metal"
+          ]
+        }
+      ]
+    }
+  },
+  "regions": {
+    "forest": {
+      "wood": 0.8,
+      "leather": 0.9,
+      "herbalism": 0.75,
+      "metal": 1.15
+    },
+    "highlands": {
+      "metal": 0.8,
+      "stone": 0.85,
+      "wood": 1.1,
+      "leather": 1.05
+    },
+    "swamp": {
+      "herbalism": 0.8,
+      "alchemical": 0.9,
+      "food": 1.15,
+      "metal": 1.1
+    },
+    "coast": {
+      "food": 0.85,
+      "glass": 0.9,
+      "rope": 0.85,
+      "metal": 1.05
+    },
+    "wasteland": {
+      "metal": 1.2,
+      "food": 1.35,
+      "wood": 1.35,
+      "water": 1.5
+    },
+    "ruins": {
+      "arcane": 0.75,
+      "relic": 0.8,
+      "common": 1.1,
+      "food": 1.2
+    }
+  },
+  "accept": {
+    "general": {
+      "categories": [
+        "consumables",
+        "materials",
+        "junk",
+        "weapons",
+        "armor"
+      ],
+      "tags": [
+        "food",
+        "rope",
+        "common",
+        "textile",
+        "leather",
+        "metal",
+        "wood",
+        "glass",
+        "stone",
+        "paper",
+        "repair"
+      ]
+    },
+    "smith": {
+      "categories": [
+        "weapons",
+        "armor",
+        "materials"
+      ],
+      "tags": [
+        "metal",
+        "smith",
+        "repair",
+        "bone",
+        "scale"
+      ]
+    },
+    "alchemist": {
+      "categories": [
+        "consumables",
+        "materials"
+      ],
+      "tags": [
+        "alchemical",
+        "reagent",
+        "herbalism",
+        "herb",
+        "poison",
+        "toxin",
+        "glass",
+        "arcane"
+      ]
+    },
+    "caravan": {
+      "categories": [
+        "consumables",
+        "materials",
+        "junk",
+        "weapons",
+        "armor"
+      ],
+      "tags": [
+        "common",
+        "food",
+        "rope",
+        "textile",
+        "leather",
+        "metal",
+        "wood",
+        "glass",
+        "stone",
+        "paper",
+        "repair",
+        "alchemical"
+      ]
+    },
+    "armorer": {
+      "categories": [
+        "armor",
+        "materials"
+      ],
+      "tags": [
+        "metal",
+        "leather",
+        "armor",
+        "repair",
+        "scale"
+      ]
+    },
+    "weaponsmith": {
+      "categories": [
+        "weapons",
+        "materials"
+      ],
+      "tags": [
+        "metal",
+        "wood",
+        "repair",
+        "bone"
+      ]
+    },
+    "fletcher": {
+      "categories": [
+        "weapons",
+        "materials"
+      ],
+      "tags": [
+        "wood",
+        "fiber",
+        "metal",
+        "rope"
+      ]
+    },
+    "leatherworker": {
+      "categories": [
+        "armor",
+        "materials",
+        "junk"
+      ],
+      "tags": [
+        "leather",
+        "hide",
+        "fiber",
+        "textile",
+        "repair"
+      ]
+    },
+    "weaver": {
+      "categories": [
+        "armor",
+        "materials",
+        "junk"
+      ],
+      "tags": [
+        "textile",
+        "fiber",
+        "cloth",
+        "leather"
+      ]
+    },
+    "woodcarver": {
+      "categories": [
+        "weapons",
+        "materials",
+        "junk"
+      ],
+      "tags": [
+        "wood",
+        "fiber",
+        "bone"
+      ]
+    },
+    "carpenter": {
+      "categories": [
+        "materials",
+        "junk",
+        "armor"
+      ],
+      "tags": [
+        "wood",
+        "stone",
+        "metal"
+      ]
+    },
+    "jeweler": {
+      "categories": [
+        "materials",
+        "armor",
+        "junk"
+      ],
+      "tags": [
+        "gem",
+        "relic",
+        "metal",
+        "arcane"
+      ]
+    },
+    "gemcutter": {
+      "categories": [
+        "materials",
+        "junk"
+      ],
+      "tags": [
+        "gem",
+        "stone",
+        "crystal",
+        "relic"
+      ]
+    },
+    "potter": {
+      "categories": [
+        "materials",
+        "junk"
+      ],
+      "tags": [
+        "ceramic",
+        "stone",
+        "clay",
+        "glass"
+      ]
+    },
+    "glassblower": {
+      "categories": [
+        "materials",
+        "junk"
+      ],
+      "tags": [
+        "glass",
+        "crystal",
+        "arcane"
+      ]
+    },
+    "mason": {
+      "categories": [
+        "materials",
+        "junk",
+        "armor"
+      ],
+      "tags": [
+        "stone",
+        "metal",
+        "relic"
+      ]
+    },
+    "cobbler": {
+      "categories": [
+        "armor",
+        "materials",
+        "junk"
+      ],
+      "tags": [
+        "leather",
+        "textile",
+        "fiber"
+      ]
+    },
+    "painter": {
+      "categories": [
+        "materials",
+        "junk"
+      ],
+      "tags": [
+        "pigment",
+        "paper",
+        "textile",
+        "relic"
+      ]
+    },
+    "tinker": {
+      "categories": [
+        "weapons",
+        "armor",
+        "materials",
+        "junk"
+      ],
+      "tags": [
+        "metal",
+        "mechanism",
+        "repair",
+        "glass",
+        "arcane"
+      ]
+    },
+    "scribe": {
+      "categories": [
+        "consumables",
+        "materials",
+        "junk"
+      ],
+      "tags": [
+        "paper",
+        "arcane",
+        "relic",
+        "ink"
+      ]
+    },
+    "cartographer": {
+      "categories": [
+        "materials",
+        "junk"
+      ],
+      "tags": [
+        "paper",
+        "ink",
+        "relic"
+      ]
+    },
+    "herbalist": {
+      "categories": [
+        "consumables",
+        "materials"
+      ],
+      "tags": [
+        "herbalism",
+        "herb",
+        "food",
+        "alchemical"
+      ]
+    },
+    "poisoner": {
+      "categories": [
+        "consumables",
+        "materials"
+      ],
+      "tags": [
+        "alchemical",
+        "poison",
+        "toxin",
+        "reagent",
+        "herbalism"
+      ]
+    },
+    "brewer": {
+      "categories": [
+        "consumables",
+        "materials"
+      ],
+      "tags": [
+        "food",
+        "reagent",
+        "herbalism"
+      ]
+    },
+    "cook": {
+      "categories": [
+        "consumables",
+        "materials"
+      ],
+      "tags": [
+        "food",
+        "herbalism"
+      ]
+    },
+    "fisher": {
+      "categories": [
+        "consumables",
+        "materials",
+        "junk"
+      ],
+      "tags": [
+        "food",
+        "rope",
+        "metal"
+      ]
+    },
+    "shipchandler": {
+      "categories": [
+        "materials",
+        "junk",
+        "armor"
+      ],
+      "tags": [
+        "rope",
+        "textile",
+        "wood",
+        "metal",
+        "leather",
+        "repair"
+      ]
+    },
+    "miner": {
+      "categories": [
+        "materials"
+      ],
+      "tags": [
+        "metal",
+        "stone",
+        "gem",
+        "relic"
+      ]
+    },
+    "stonecutter": {
+      "categories": [
+        "materials",
+        "junk"
+      ],
+      "tags": [
+        "stone",
+        "relic",
+        "gem"
+      ]
+    },
+    "luxury": {
+      "categories": [
+        "armor",
+        "materials",
+        "junk",
+        "consumables"
+      ],
+      "tags": [
+        "relic",
+        "gem",
+        "metal",
+        "glass",
+        "textile",
+        "food"
+      ]
+    },
+    "relic": {
+      "categories": [
+        "materials",
+        "junk",
+        "consumables"
+      ],
+      "tags": [
+        "relic",
+        "arcane",
+        "gem",
+        "paper",
+        "alchemical"
+      ]
+    },
+    "arcane": {
+      "categories": [
+        "materials",
+        "consumables",
+        "junk"
+      ],
+      "tags": [
+        "arcane",
+        "alchemical",
+        "relic",
+        "gem",
+        "crystal"
+      ]
+    },
+    "stable": {
+      "categories": [
+        "armor",
+        "materials",
+        "junk"
+      ],
+      "tags": [
+        "leather",
+        "wood",
+        "metal",
+        "textile",
+        "food"
+      ]
+    },
+    "hunter": {
+      "categories": [
+        "weapons",
+        "materials",
+        "consumables",
+        "junk"
+      ],
+      "tags": [
+        "leather",
+        "hide",
+        "bone",
+        "food",
+        "wood",
+        "fiber"
+      ]
+    },
+    "monsterparts": {
+      "categories": [
+        "materials",
+        "consumables",
+        "junk"
+      ],
+      "tags": [
+        "relic",
+        "bone",
+        "hide",
+        "leather",
+        "scale",
+        "fiber",
+        "alchemical",
+        "arcane"
+      ]
+    },
+    "scrolls": {
+      "categories": [
+        "consumables",
+        "materials",
+        "junk"
+      ],
+      "tags": [
+        "arcane",
+        "paper",
+        "relic",
+        "ink"
+      ]
+    },
+    "temple": {
+      "categories": [
+        "consumables",
+        "materials",
+        "junk"
+      ],
+      "tags": [
+        "alchemical",
+        "herbalism",
+        "paper",
+        "relic",
+        "metal"
+      ]
+    },
+    "blackmarket": {
+      "categories": [
+        "weapons",
+        "armor",
+        "consumables",
+        "materials",
+        "junk"
+      ],
+      "tags": [
+        "metal",
+        "leather",
+        "alchemical",
+        "poison",
+        "toxin",
+        "relic",
+        "arcane",
+        "mechanism"
+      ]
+    },
+    "caravan_master": {
+      "categories": [
+        "consumables",
+        "materials",
+        "junk",
+        "weapons",
+        "armor"
+      ],
+      "tags": [
+        "common",
+        "food",
+        "rope",
+        "wood",
+        "metal",
+        "textile",
+        "paper",
+        "leather",
+        "repair"
+      ]
+    },
+    "siege": {
+      "categories": [
+        "weapons",
+        "armor",
+        "materials",
+        "junk"
+      ],
+      "tags": [
+        "metal",
+        "wood",
+        "stone",
+        "rope",
+        "repair",
+        "alchemical"
+      ]
+    }
+  },
+  "aliases": {
+    "Противоядие": "Противоядие (Антидот)",
+    "Антитоксин": "Противоядие (Антидот)"
+  },
+  "sources": [
+    {
+      "file": "app/market_economy_v55.js",
+      "sha256": "b41eca9d0a9956ff999500bd7d342535ea0526195c4538b41b11c951f5e5f122"
+    },
+    {
+      "file": "app/market_expansion_v55_1.js",
+      "sha256": "4e33c8ec6df8cc412d93fcdccf6dc45e7585feb56186a81a3aa06930a7177f24"
+    },
+    {
+      "file": "app/market_trade_v55_2.js",
+      "sha256": "5ffb08be065eb5e53afcbb8b1b426d6da04e318df4d9f39f8c94a1282a09011c"
+    }
+  ]
+}

@@ -11,6 +11,7 @@ class Program
     static void Reject(Action action, string name) { bool rejected = false; try { action(); } catch (Exception) { rejected = true; } Check(rejected, name); }
     static void Main(string[] args)
     {
+        if(args.Length>0&&args[0]=="--market"){Console.WriteLine("MARKET_PASS "+MarketChecks.Run(Directory.GetCurrentDirectory()));return;}
         if (args.Length > 0 && args[0] == "--sheet-actions") { Console.WriteLine("SHEET_ACTION_PASS " + SheetActionChecks.Run()); return; }
         if (args.Length > 0 && args[0] == "--advancement") { Console.WriteLine("ADVANCEMENT_PASS " + AdvancementChecks.Run()); return; }
         if (args.Length > 0 && args[0] == "--numeric-input") { Console.WriteLine("NUMERIC_INPUT_PASS " + NumericInputChecks.Run()); return; }
@@ -101,7 +102,7 @@ class Program
         }
         if(args.Length>0 && args[0]=="--all-collections") { Console.WriteLine("ALL_MOD_COLLECTIONS_PASS "+AllModCollectionChecks.Run(args[1]));return; }
         if(args.Length>0 && args[0]=="--collections") { Console.WriteLine("COLLECTIONS_PASS "+CollectionChecks.Run(args[1]));return; }
-        checks += CharacterArtChecks.Run()+NumericInputChecks.Run()+AdvancementChecks.Run()+SheetActionChecks.Run();
+        checks += MarketChecks.Run(args.Length>1?args[1]:Directory.GetCurrentDirectory())+CharacterArtChecks.Run()+NumericInputChecks.Run()+AdvancementChecks.Run()+SheetActionChecks.Run();
         string root = Path.Combine(Path.GetTempPath(), "vtt-workshop-test-" + Guid.NewGuid()); Directory.CreateDirectory(root);
         try
         {

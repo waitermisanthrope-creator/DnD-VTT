@@ -201,10 +201,12 @@ namespace DndVtt.UnityPrototype
 
     // Experimental local archive only: no writes into browser localStorage or
     // Supabase journals. Replace atomically; retain the preceding valid archive.
-    public static class CharacterSheetStore
+    public static partial class CharacterSheetStore
     {
         public static void Save(string path, LegacyCharacterArchive archive)
         {
+            using var lease=AcquireWriteLease(path);
+            if(File.Exists(path+".trade-journal"))throw new InvalidOperationException("Сначала восстановите незавершённую торговую операцию");
             string json = archive.Export(); _ = new LegacyCharacterArchive(json);
             if (File.Exists(path) && File.ReadAllText(path) == json) return;
             Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path)));

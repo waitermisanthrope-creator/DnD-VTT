@@ -66,6 +66,8 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawFrontEnd()
         {
+            MarketLayout();if(tradeRecoveryVisible){DrawTradeRecovery();return;}
+            if(marketOpen){DrawMarketModal();return;}
             if(Event.current.type==EventType.Layout)showSheetNotice=!string.IsNullOrWhiteSpace(status)&&status!="Изменения сохранены на устройстве"&&!status.StartsWith("Импорт сохранён",StringComparison.Ordinal);
             // The main app and settings use the exact main-branch look, but
             // remain native Unity screens. Existing gameplay screens survive.

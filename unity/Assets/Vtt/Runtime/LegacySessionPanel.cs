@@ -24,10 +24,11 @@ namespace DndVtt.UnityPrototype
             Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
             var args = Environment.GetCommandLineArgs(); int store = Array.IndexOf(args, "--vtt-profile-store");
             if (store >= 0 && store + 1 < args.Length) profileStoreOverride = Path.GetFullPath(args[store + 1]);
+            try{CharacterSheetStore.RecoverTrade(SavePath,SettingsPath);}catch(Exception error){status="Восстановление торговли остановлено: "+error.Message;}
             LoadPreferences();
             InitializeWorkshop(); world.Workshop = workshop; world.RestoreWorkshopMap();
             if (preferences.autoCheckUpdates) StartCoroutine(CheckForUpdates());
-            if (File.Exists(SavePath))
+            if (!File.Exists(SavePath+".trade-journal")&&File.Exists(SavePath))
             {
                 try { archive = CharacterSheetStore.Load(SavePath); if (archive.Count == 0) archive = null; status = "Загружен локальный лист Unity"; }
                 catch (Exception e) { status = "Сохранение не загружено; файл оставлен без изменений: " + e.Message; }

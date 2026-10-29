@@ -73,7 +73,7 @@ namespace DndVtt.UnityPrototype
                 case 0: ClassicHero(hero, ref changed); break;
                 case 1: ClassicSkills(hero, ref changed); if(SheetFold("edit-feats","Черты и владения"))DrawCharacterFeats(hero, ref changed); break;
                 case 2: ClassicAbilities(hero,ref changed);break;
-                case 3: Wallet(hero,ref changed,ref persistWallet);DrawCommerceInventory(hero, ref changed, ref persistCommerce); break;
+                case 3: Wallet(hero,ref changed,ref persistWallet);DrawMarketEntry(hero,ref changed,ref persistCommerce);DrawCommerceInventory(hero, ref changed, ref persistCommerce); break;
                 case 4:
                     ClassicNotes(hero,ref changed); break;
                 case 5: DrawDiceTable(); break;
