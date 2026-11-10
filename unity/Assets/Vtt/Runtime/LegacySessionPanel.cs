@@ -130,7 +130,7 @@ namespace DndVtt.UnityPrototype
         {
             DrawMapSelector();
             GUILayout.Label("Вставьте экспорт JSON персонажа / массива / characters:");
-            input = GUILayout.TextArea(input, GUILayout.Height(110));
+            input = MenuTextArea("input", input, GUILayout.Height(110));
             if (GUILayout.Button("Прочитать JSON", GUILayout.Height(35))) Import(input);
             if (archive != null)
             {

@@ -35,14 +35,14 @@ namespace DndVtt.UnityPrototype
             if (inventoryPicker)
             {
                 GUILayout.BeginVertical(GUI.skin.box); SheetSection("Справочник предметов");
-                inventoryQuery = GUILayout.TextField(inventoryQuery,GUILayout.MinHeight(45));
+                inventoryQuery = MenuTextField("inventoryQuery", inventoryQuery,GUILayout.MinHeight(45));
                 var entries = ((JArray)CommerceCatalog["items"]).OfType<JObject>().Where(x => (string)x["inventoryCategory"] == CharacterSheetRules.InventoryCategories[inventoryCategory] && (x["name"] + " " + x["description"]).IndexOf(inventoryQuery,StringComparison.OrdinalIgnoreCase) >= 0).ToArray();
                 if (entries.Length == 0) { GUILayout.Label("Скачайте сборник этой категории из менеджера модов. Свой предмет можно создать без интернета.",sheetQuiet); if (GUILayout.Button("Открыть менеджер модов",brandBlue)) Navigate(FrontScreen.ContentManager); }
                 foreach (var entry in entries.Take(25)) if (GUILayout.Button("+ " + entry["name"],GUILayout.MinHeight(44))) { CommerceRules.AddItem(hero,entry); changed = persist = true; status = "Предмет добавлен"; }
                 customItemOpen = GUILayout.Toggle(customItemOpen,"Создать свой предмет");
                 if (customItemOpen)
                 {
-                    GUILayout.Label("Название"); customItemName = GUILayout.TextField(customItemName); GUILayout.Label("Вес (кг)"); customItemWeight = GUILayout.TextField(customItemWeight);
+                    GUILayout.Label("Название"); customItemName = MenuTextField("customItemName", customItemName); GUILayout.Label("Вес (кг)"); customItemWeight = MenuTextField("customItemWeight", customItemWeight);
                     if (GUILayout.Button("Добавить свой предмет",brandGreen))
                     {
                         if (string.IsNullOrWhiteSpace(customItemName)) status = "Введите название";
@@ -100,7 +100,7 @@ namespace DndVtt.UnityPrototype
             SheetSection("Мастерская и крафт"); var rules = (JObject)CommerceCatalog["craft"]; var recipes = (JArray)rules["recipes"];
             GUILayout.Label("Проверка d20 + мастерство, инструменты и материалы — как в базовом движке main. Время рецепта учитывает мастер. Расширенные профессии и экономика ещё не перенесены.",sheetQuiet);
             if (recipes.Count == 0) { DrawCommerceDownloadPrompt("Скачайте пакет «Мастерская — рецепты и материалы»."); return; }
-            craftQuery = GUILayout.TextField(craftQuery,GUILayout.MinHeight(45));
+            craftQuery = MenuTextField("craftQuery", craftQuery,GUILayout.MinHeight(45));
             foreach (JObject recipe in recipes.OfType<JObject>().Where(r => (r["name"]+" "+r["category"]).IndexOf(craftQuery,StringComparison.OrdinalIgnoreCase) >= 0).Take(20))
             {
                 GUILayout.BeginVertical(GUI.skin.box); GUILayout.Label((string)recipe["name"],sheetHeading); GUILayout.Label("СЛ " + recipe["dc"] + " · " + recipe["time"] + " ч · " + recipe["tools"],sheetQuiet);
@@ -129,7 +129,7 @@ namespace DndVtt.UnityPrototype
                     try { var outcome = CommerceRules.Mix(hero,rules,selectedIngredients.ToArray(),selectedCatalyst,UnityEngine.Random.Range(1,101)); status = (bool)outcome["ok"] ? "Создано: " + outcome["product"]["name"] : "Реакция сорвалась. Ингредиенты израсходованы."; selectedIngredients.Clear(); changed = persist = true; } catch (Exception e) { status = e.Message; }
                 }
             }
-            GUILayout.Label("Найти ингредиент"); inventoryQuery = GUILayout.TextField(inventoryQuery);
+            GUILayout.Label("Найти ингредиент"); inventoryQuery = MenuTextField("inventoryQuery", inventoryQuery);
             foreach (JObject ingredient in ingredients.OfType<JObject>().Where(i => ((string)i["name"]).IndexOf(inventoryQuery,StringComparison.OrdinalIgnoreCase) >= 0).Take(20))
             {
                 string id = (string)ingredient["id"]; GUILayout.BeginVertical(GUI.skin.box); GUILayout.Label((string)ingredient["name"]);
@@ -142,7 +142,7 @@ namespace DndVtt.UnityPrototype
         {
             GUILayout.BeginVertical(GUI.skin.box); SheetSection("Черты");
             Collection(hero,"feats","Черты персонажа",() => new JObject { ["id"] = Guid.NewGuid().ToString(),["name"] = "Своя черта",["description"] = "" },ref changed);
-            GUILayout.Label("Найти черту"); featQuery = GUILayout.TextField(featQuery);
+            GUILayout.Label("Найти черту"); featQuery = MenuTextField("featQuery", featQuery);
             GUILayout.Label("Прибавка характеристики для черт с выбором");
             var statNames = new[] { "str", "dex", "con", "int", "wis", "cha" };
             featStat = statNames[MenuGrid(Array.IndexOf(statNames,featStat),statNames,6)];
@@ -153,7 +153,7 @@ namespace DndVtt.UnityPrototype
         private string loreTitle = "", loreDescription = "", loreCategory = "Локация";
         private void DrawLore(JObject hero, ref bool changed)
         {
-            GUILayout.BeginVertical(GUI.skin.box); SheetSection("Добавить запись в Базу"); GUILayout.Label("Категория (используй / для подкатегорий)"); loreCategory = GUILayout.TextField(loreCategory); GUILayout.Label("Название"); loreTitle = GUILayout.TextField(loreTitle); GUILayout.Label("Описание и характеристики"); loreDescription = GUILayout.TextArea(loreDescription,GUILayout.Height(120));
+            GUILayout.BeginVertical(GUI.skin.box); SheetSection("Добавить запись в Базу"); GUILayout.Label("Категория (используй / для подкатегорий)"); loreCategory = MenuTextField("loreCategory", loreCategory); GUILayout.Label("Название"); loreTitle = MenuTextField("loreTitle", loreTitle); GUILayout.Label("Описание и характеристики"); loreDescription = MenuTextArea("loreDescription", loreDescription,GUILayout.Height(120));
             if (GUILayout.Button("+ Добавить запись",brandBlue,GUILayout.Height(50)) && !string.IsNullOrWhiteSpace(loreTitle)) { var library = CharacterSheetRules.Object(hero,"libraryData"); var entries = library["entries"] as JArray ?? hero["library"] as JArray ?? new JArray(); library["entries"] = entries; entries.Add(new JObject { ["id"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),["category"] = loreCategory,["title"] = loreTitle,["desc"] = loreDescription }); if (hero["library"] is JArray) hero["library"] = entries.DeepClone(); loreTitle = loreDescription = ""; changed = true; }
             GUILayout.EndVertical(); GUILayout.BeginVertical(GUI.skin.box); SheetSection("Справочник мира"); var records = hero["libraryData"]?["entries"] as JArray ?? hero["library"] as JArray ?? new JArray(); if (records.Count == 0) GUILayout.Label("Справочник пуст",sheetQuiet);
             foreach (JObject record in records.OfType<JObject>().ToArray()) { GUILayout.Label(record["category"] + " / " + record["title"]); GUILayout.Label((string)record["desc"] ?? "",sheetQuiet); if (GUILayout.Button("Удалить запись")) RequestDelete(record,(string)record["title"]); } GUILayout.EndVertical();

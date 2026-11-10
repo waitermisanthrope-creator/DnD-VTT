@@ -150,10 +150,10 @@ namespace DndVtt.UnityPrototype
             bool previous=GUI.enabled;GUI.enabled=previous&&!cloudBusy;
             if(cloudSession==null)
             {
-                GUILayout.Label("Почта");cloudEmail=GUILayout.TextField(cloudEmail,GUILayout.MinHeight(52));GUILayout.Label("Пароль");cloudPassword=GUILayout.PasswordField(cloudPassword,'•',GUILayout.MinHeight(52));
+                GUILayout.Label("Почта");cloudEmail=MenuTextField("cloudEmail", cloudEmail,GUILayout.MinHeight(52));GUILayout.Label("Пароль");cloudPassword=MenuPasswordField("cloudPassword", cloudPassword,'•',GUILayout.MinHeight(52));
                 if(GUILayout.Button("Войти",brandBlue,GUILayout.Height(56)))StartCoroutine(CloudAuth("login"));
                 if(GUILayout.Button("Зарегистрироваться",GUILayout.Height(52)))StartCoroutine(CloudAuth("signup"));
-                GUILayout.Label("Код подтверждения / восстановления");cloudCode=GUILayout.TextField(cloudCode,GUILayout.MinHeight(52));
+                GUILayout.Label("Код подтверждения / восстановления");cloudCode=MenuTextField("cloudCode", cloudCode,GUILayout.MinHeight(52));
                 if(GUILayout.Button("Подтвердить почту"))StartCoroutine(CloudAuth("verify"));
                 if(GUILayout.Button("Отправить письмо восстановления"))StartCoroutine(CloudAuth("recover"));
                 if(GUILayout.Button("Подтвердить код восстановления"))StartCoroutine(CloudAuth("recovery"));
@@ -170,7 +170,7 @@ namespace DndVtt.UnityPrototype
                 }
                 SheetSection("Облачные персонажи");foreach(JObject remote in cloudCharacters) { GUILayout.BeginVertical(GUI.skin.box);GUILayout.Label((string)remote["profile"]?["name"]??"Без имени");GUILayout.Label("Ревизия "+remote["revision"],sheetQuiet);if(GUILayout.Button("Добавить локальную копию",brandBlue))CloudDownload(remote);GUILayout.EndVertical(); }
                 GUILayout.BeginHorizontal();if(cloudPage>0&&GUILayout.Button("← Предыдущие")) { cloudPage--;StartCoroutine(CloudRefresh()); }if(cloudCharacters.Count==10&&GUILayout.Button("Следующие →")) { cloudPage++;StartCoroutine(CloudRefresh()); }GUILayout.EndHorizontal();
-                GUILayout.Label("Новый пароль (после подтверждения восстановления)");cloudPassword=GUILayout.PasswordField(cloudPassword,'•',GUILayout.MinHeight(52));
+                GUILayout.Label("Новый пароль (после подтверждения восстановления)");cloudPassword=MenuPasswordField("cloudPassword", cloudPassword,'•',GUILayout.MinHeight(52));
                 if(GUILayout.Button("Задать новый пароль"))StartCoroutine(CloudChangePassword());
                 if(GUILayout.Button("Выйти на этом устройстве",brandRed,GUILayout.Height(52)))StartCoroutine(CloudLogout());
             }

@@ -39,9 +39,25 @@ class Program
         Check(!Multi("Волшебник", 2) && Multi("Жрец", 9), "multiclass uses individual class levels");
         Check(!(bool)method.Invoke(null, new object[] { multi, new JObject { ["level"] = 0 } }), "unclassified spell is not granted to everyone");
     }
+    static void CheckTextInput()
+    {
+        var type=typeof(NumericInputSession).Assembly.GetType("DndVtt.UnityPrototype.TextCaretSession");
+        Check(type!=null,"in-place input must track the caret instead of resetting it on every frame");
+        dynamic caret=Activator.CreateInstance(type);object keyboard=new object();
+        Check(caret.Activate("name",keyboard,"Тестовое имя") && caret.Cursor==12,"existing name opens at the right edge");
+        caret.Select("Тестовое имя",4,4);
+        Check(!caret.Activate("name",keyboard,"Тестовое имя") && caret.Cursor==4,"repaint preserves manually positioned cursor");
+        caret.Select("Тестовое имя",1,7);
+        Check(caret.Start==1&&caret.Length==6,"selection spans old text for replacement/deletion");
+        caret.Select("",100,-1);Check(caret.Cursor==0&&caret.Anchor==0,"delete all and clamp cursor");
+        Check(caret.Activate("note",new object(),"Первая\nВторая")&&caret.Cursor==13,"multiline focus opens at end");
+        caret.Select("A😀B",2,2);Check(caret.Cursor==1,"caret does not split a surrogate pair");
+        caret.Reset();Check(caret.Activate("note",keyboard,"Текст")&&caret.Cursor==5,"new focus initializes again after navigation");
+    }
     static void Main(string[] args)
     {
-        CheckSpellPicker();
+        if(args.Length>0&&args[0]=="--text-input"){CheckTextInput();Console.WriteLine("TEXT_INPUT_PASS "+checks);return;}
+        CheckSpellPicker();CheckTextInput();
         if (args.Length > 0 && args[0] == "--spell-picker")
         { Console.WriteLine("SPELL_PICKER_PASS " + checks); return; }
         if(args.Length>0&&args[0]=="--market"){Console.WriteLine("MARKET_PASS "+MarketChecks.Run(Directory.GetCurrentDirectory()));return;}

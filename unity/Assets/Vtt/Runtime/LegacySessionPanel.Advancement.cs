@@ -62,7 +62,7 @@ namespace DndVtt.UnityPrototype
             {
                 GUILayout.Label("Выберите класс. Новый класс добавит мультикласс, существующий получит ещё один уровень.",sheetQuiet);
                 if(FitMenuButton(advancementNewClass?"← Мои классы":"Добавить мультикласс…")){advancementNewClass=!advancementNewClass;ResetFormInput();}
-                if(advancementNewClass){GUILayout.Label("Поиск класса",sheetQuiet);advancementSearch=GUILayout.TextField(advancementSearch,GUILayout.MinHeight(48));}
+                if(advancementNewClass){GUILayout.Label("Поиск класса",sheetQuiet);advancementSearch=MenuTextField("advancementSearch", advancementSearch,GUILayout.MinHeight(48));}
                 var owned=ownedClasses.OfType<JObject>().Select(c=>(string)c["name"]).ToArray();
                 foreach(var unknown in owned.Where(n=>CharacterAdvancement.ClassData(AdvancementCatalog,n)==null))GUILayout.Label("«"+unknown+"»: прогрессия ещё не перенесена",sheetQuiet);
                 foreach(var p in ((JObject)AdvancementCatalog["classes"]).Properties().Where(p=>advancementNewClass?!owned.Contains(p.Name,StringComparer.OrdinalIgnoreCase)&&p.Name.IndexOf(advancementSearch,StringComparison.CurrentCultureIgnoreCase)>=0:owned.Contains(p.Name,StringComparer.OrdinalIgnoreCase)).OrderBy(p=>p.Name,StringComparer.CurrentCulture))

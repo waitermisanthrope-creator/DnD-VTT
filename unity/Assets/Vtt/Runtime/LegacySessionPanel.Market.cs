@@ -106,7 +106,7 @@ namespace DndVtt.UnityPrototype
             GUILayout.FlexibleSpace();GUILayout.EndHorizontal();GUILayout.Space(10);GUILayout.BeginHorizontal();
             foreach(var entry in new[]{("buy","Купить"),("sell","Продать"),("barter","Обмен")})
                 if(MeasuredMenuButton(entry.Item2,cloneBlue,GUILayout.Width(74),GUILayout.Height(35))){string mode=entry.Item1;pendingMarketAction=()=>{marketMode=mode;marketOffers.Clear();marketWanted=null;};}
-            marketQuery=GUILayout.TextField(marketQuery,cloneInput,GUILayout.MinWidth(95),GUILayout.Height(35));GUILayout.EndHorizontal();GUILayout.Space(8);
+            marketQuery=MenuTextField("marketQuery", marketQuery,cloneInput,GUILayout.MinWidth(95),GUILayout.Height(35));GUILayout.EndHorizontal();GUILayout.Space(8);
             if(stock!=null)
             {
                 GUILayout.Label(MarketCatalog["traders"][marketTrader]["name"]+" · склад: "+stock.Sum(i=>(long)i["qty"])+" · Покупает только подходящие товары",sheetQuiet);GUILayout.Space(8);

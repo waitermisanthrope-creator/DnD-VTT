@@ -217,7 +217,7 @@ namespace DndVtt.UnityPrototype
                 bool showParts=GUILayout.Toggle(contentShowParts,"Показать отдельные моды и части сборников");
                 if(showParts!=contentShowParts) {contentShowParts=showParts;contentViewDirty=true;}
             }
-            contentSearch = GUILayout.TextField(contentSearch, GUILayout.MinHeight(40));
+            contentSearch = MenuTextField("contentSearch", contentSearch, GUILayout.MinHeight(40));
             EnsureContentView();if(!contentCollectionsPage)DrawContentTree();SyncWorkshopPreviewPage();
             DrawContentPagination();int shown=0;
             foreach (JObject item in VisibleContentPage())

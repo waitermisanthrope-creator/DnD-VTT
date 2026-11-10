@@ -72,9 +72,9 @@ namespace DndVtt.UnityPrototype
             if(GUILayout.Button("Баг-репорт / жалоба / заявка автора",GUILayout.MinHeight(58)))showSupportPanel=!showSupportPanel;
             if(showSupportPanel) {
                 caseKind=MenuGrid(caseKind,new[]{"Баг-репорт","Жалоба","Контент"},2);
-                GUILayout.Label("Название");caseTitle=GUILayout.TextField(caseTitle,160);
-                GUILayout.Label("Описание (не отправляйте пароли, токены и личные данные)",sheetQuiet);caseBody=GUILayout.TextArea(caseBody,8000,GUILayout.MinHeight(100));
-                if(caseKind==2) { GUILayout.Label("JSON-манифест оригинального пакета. Файлы пока не загружаются.",sheetQuiet);caseManifest=GUILayout.TextArea(caseManifest,16384,GUILayout.MinHeight(100)); }
+                GUILayout.Label("Название");caseTitle=MenuTextField("caseTitle", caseTitle,160);
+                GUILayout.Label("Описание (не отправляйте пароли, токены и личные данные)",sheetQuiet);caseBody=MenuTextArea("caseBody", caseBody,8000,GUILayout.MinHeight(100));
+                if(caseKind==2) { GUILayout.Label("JSON-манифест оригинального пакета. Файлы пока не загружаются.",sheetQuiet);caseManifest=MenuTextArea("caseManifest", caseManifest,16384,GUILayout.MinHeight(100)); }
                 if(GUILayout.Button("Отправить обращение",brandBlue,GUILayout.MinHeight(56)))CenterSubmit();
                 if(centerSnapshot?["cases"] is JArray own)foreach(JObject c in own)if((string)c["author"]==(string)cloudSession["user"])GUILayout.Label((string)c["title"]+" · "+(string)c["status"],sheetQuiet);
             }
@@ -91,7 +91,7 @@ namespace DndVtt.UnityPrototype
                 if(GUILayout.Button("Найти мой TOTP-фактор",GUILayout.MinHeight(52)))StartCoroutine(CenterMfa("list"));
                 if(GUILayout.Button("Подключить новый TOTP-фактор",GUILayout.MinHeight(52)))StartCoroutine(CenterMfa("enroll"));
                 if(!string.IsNullOrEmpty(mfaSecret))GUILayout.Label("Секрет для аутентификатора: "+mfaSecret,sheetQuiet);
-                mfaCode=GUILayout.TextField(mfaCode,6);
+                mfaCode=MenuTextField("mfaCode", mfaCode,6);
                 if(GUILayout.Button("Подтвердить MFA кодом",GUILayout.MinHeight(52)))StartCoroutine(CenterMfa("verify"));
             }
             GUI.enabled=enabled;GUILayout.Label(centerMessage,sheetQuiet);GUILayout.EndVertical();
@@ -101,8 +101,8 @@ namespace DndVtt.UnityPrototype
             int trust=(int?)cloudAccess?["trust"]??0;bool curator=CenterAdmin||trust>=2;
             GUILayout.Label("Мастерская и обращения · "+(CenterAdmin?"администрация":"уровень доверия "+trust),settingsHeader);
             GUILayout.Label("Все решения коллег видны ниже за последние 24 часа. Раннее удаление недоступно. Одобрение проверки не публикует пакет.",sheetQuiet);
-            GUILayout.Label("Обоснование / замечание");centerNote=GUILayout.TextArea(centerNote,2000,GUILayout.MinHeight(80));
-            if(curator) { GUILayout.Label("UUID назначаемого проверяющего");centerAssignee=GUILayout.TextField(centerAssignee,36); }
+            GUILayout.Label("Обоснование / замечание");centerNote=MenuTextArea("centerNote", centerNote,2000,GUILayout.MinHeight(80));
+            if(curator) { GUILayout.Label("UUID назначаемого проверяющего");centerAssignee=MenuTextField("centerAssignee", centerAssignee,36); }
             if(centerSnapshot?["cases"] is JArray cases)foreach(JObject c in cases) {
                 GUILayout.BeginVertical(GUI.skin.box);GUILayout.Label((string)c["title"]+" · "+(string)c["kind"]+" · "+(string)c["status"],settingsHeader);
                 GUILayout.Label((string)c["body"],sheetQuiet);GUILayout.Label("Автор: "+(string)c["author"]+" · Проверяет: "+(string)c["assigned_to"],sheetQuiet);
@@ -128,9 +128,9 @@ namespace DndVtt.UnityPrototype
         private void DrawCenterAdministration()
         {
             GUILayout.Label("Администрирование — учётные записи",settingsHeader);GUILayout.Label("Назначение и снятие модераторов применяется сразу, без второго администратора. Требуется свежая MFA. Заместитель — отдельная процедура владельца.",sheetQuiet);GUILayout.Label("Поиск по почте или UUID. Изменения требуют свежей MFA.",sheetQuiet);
-            centerSearch=GUILayout.TextField(centerSearch,160);
+            centerSearch=MenuTextField("centerSearch", centerSearch,160);
             if(GUILayout.Button("Найти пользователей",GUILayout.MinHeight(54)))StartCoroutine(CenterCall("center_users",new JObject { ["p_query"]=centerSearch },r=>centerUsers=(JArray)r));
-            GUILayout.Label("Причина ограничения");centerReason=GUILayout.TextArea(centerReason,1000,GUILayout.MinHeight(80));
+            GUILayout.Label("Причина ограничения");centerReason=MenuTextArea("centerReason", centerReason,1000,GUILayout.MinHeight(80));
             centerTrust=MenuGrid(centerTrust,new[]{"Стажёр 0","Проверяющий 1","Куратор 2","Техспециалист 3"},2);
             foreach(JObject u in centerUsers) {
                 GUILayout.BeginVertical(GUI.skin.box);GUILayout.Label((string)u["email"]+"\n"+(string)u["id"]+" · "+(string)u["kind"],sheetQuiet);
@@ -146,7 +146,7 @@ namespace DndVtt.UnityPrototype
                 if((string)pending["requester"]!=(string)cloudSession["user"]&&(string)pending["target"]!=(string)cloudSession["user"])
                     if(GUILayout.Button("Независимо подтвердить назначение",GUILayout.MinHeight(58)))StartCoroutine(CenterCall("approve_staff_change",new JObject { ["p_request"]=pending["id"].DeepClone() },r=>centerMessage="Изменение подтверждено"));
             }
-            GUILayout.Label("UUID запроса независимого подтверждения",sheetQuiet);centerRequest=GUILayout.TextField(centerRequest,36);
+            GUILayout.Label("UUID запроса независимого подтверждения",sheetQuiet);centerRequest=MenuTextField("centerRequest", centerRequest,36);
             if(GUILayout.Button("Подтвердить чужой запрос должности",GUILayout.MinHeight(58))) {
                 Guid id;if(Guid.TryParse(centerRequest,out id))StartCoroutine(CenterCall("approve_staff_change",new JObject { ["p_request"]=id.ToString() },r=>centerMessage="Назначение подтверждено сервером"));else centerMessage="Нужен UUID запроса";
             }

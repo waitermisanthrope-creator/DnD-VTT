@@ -33,6 +33,12 @@ namespace DndVtt.UnityPrototype
                 Debug.LogError("VTT_LABEL_CLIP_FAIL: " + label + " requires " + needed + " allocated " + rect.height);
             }
         }
+        private static string requestedTextFocus;
+        public static void RecordTextField(string owner)
+        {
+            if(!running||Event.current.type!=EventType.Repaint||requestedTextFocus!=owner)return;
+            GUI.FocusControl(owner);requestedTextFocus=null;
+        }
         public static void RecordSingleLine(string label, GUIStyle style, Rect rect)
         {
             if(!running||Event.current.type!=EventType.Repaint)return;
@@ -125,6 +131,25 @@ namespace DndVtt.UnityPrototype
             mouse_event(4,0,0,0,UIntPtr.Zero);yield return new WaitForSecondsRealtime(.2f);
         }
         [System.Runtime.InteropServices.DllImport("user32.dll")] static extern void keybd_event(byte key,byte scan,uint flags,UIntPtr extra);
+        static void TapKey(byte key){keybd_event(key,0,0,UIntPtr.Zero);keybd_event(key,0,2,UIntPtr.Zero);}
+        IEnumerator EditCreationName()
+        {
+            requestedTextFocus="creation-name";
+            yield return new WaitForSecondsRealtime(.3f);
+            TapKey(0x23);TapKey(0x08);yield return new WaitForSecondsRealtime(.2f);
+            try{Check((string)typeof(LegacySessionPanel).GetField("heroName",Flags).GetValue(panel)=="Герой ","backspace deletes an existing name character");}
+            catch(Exception error){Fail(error);yield break;}
+            keybd_event(0x11,0,0,UIntPtr.Zero);TapKey(0x41);keybd_event(0x11,0,2,UIntPtr.Zero);TapKey(0x08);
+            yield return new WaitForSecondsRealtime(.2f);
+            try{Check((string)typeof(LegacySessionPanel).GetField("heroName",Flags).GetValue(panel)=="","selection deletes the entire existing name");}
+            catch(Exception error){Fail(error);yield break;}
+            foreach(byte key in new byte[]{0x48,0x45,0x52,0x4f}){TapKey(key);yield return new WaitForSecondsRealtime(.08f);}
+            TapKey(0x24);TapKey(0x2e);yield return new WaitForSecondsRealtime(.2f);
+            try{Check((string)typeof(LegacySessionPanel).GetField("heroName",Flags).GetValue(panel)=="ero","Home moves the cursor and Delete edits at that position");Debug.Log("VTT_TEXT_INPUT_PASS: real Windows keyboard deletes old text, selects all, types and moves the caret");}
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("creation-name-edited-caret-portrait");
+            Call("ResetFormInput");Field("heroName","Герой 1");
+        }
         IEnumerator EditNativeHp()
         {
             yield return new WaitForEndOfFrame();
@@ -405,6 +430,9 @@ namespace DndVtt.UnityPrototype
             try {Call("BeginCreation");Field("heroName","Герой 1");}
             catch(Exception error){Fail(error);yield break;}
             yield return Frame("creation-name-portrait");if(failed)yield break;
+#if UNITY_STANDALONE_WIN && !UNITY_EDITOR
+            yield return EditCreationName();if(failed)yield break;
+#endif
             try
             {
                 var session=(NumericInputSession)typeof(LegacySessionPanel).GetField("numericSession",Flags).GetValue(panel);session.Begin("creation-name");
@@ -641,6 +669,25 @@ namespace DndVtt.UnityPrototype
             catch(Exception error){Fail(error);yield break;}
             yield return Frame("classic-abilities-portrait");if(failed)yield break;
             Field("frontScroll",new Vector2(0,800));yield return Frame("classic-resources-portrait");if(failed)yield break;
+            LegacyCharacterArchive spellBefore=(LegacyCharacterArchive)typeof(LegacySessionPanel).GetField("archive",Flags).GetValue(panel);
+            try
+            {
+                var spellArchive=spellBefore.DetachedCopy();var wizard=spellArchive.Snapshot(0);
+                wizard["class"]="Волшебник";wizard["level"]=3;wizard["classes"]=new JArray(new JObject{["name"]="Волшебник",["level"]=3});
+                spellArchive.Replace(0,wizard);Field("archive",spellArchive);Call("OpenSpellCatalog");
+            }
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("spell-picker-all-portrait");if(failed)yield break;
+            try{var matches=(JObject[])typeof(LegacySessionPanel).GetField("spellMatches",Flags).GetValue(panel);Check(matches.Length>20&&matches.All(x=>(int)x["level"]<=2),"empty search lists only wizard3 spells");Field("requestedSpellCircles",(bool?)true);}
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("spell-picker-circles-portrait");if(failed)yield break;
+            Call("SetSpellCircle",0);yield return Frame("spell-picker-cantrips-portrait");if(failed)yield break;
+            try{var matches=(JObject[])typeof(LegacySessionPanel).GetField("spellMatches",Flags).GetValue(panel);Check(matches.Length>0&&matches.All(x=>(int)x["level"]==0),"cantrip filter after Layout");Call("CloseSpellCatalog");}
+            catch(Exception error){Fail(error);yield break;}
+            yield return new WaitForSecondsRealtime(.2f);
+            try{Field("archive",spellBefore);Call("ClearSheetInputs");Check(layoutErrors==0,"spell picker transitions have no layout mismatch");Debug.Log("VTT_SPELL_PICKER_UI_PASS: class-level browsing, circle menu, cantrips and close on actual rendered player");}
+            catch(Exception error){Fail(error);yield break;}
+
             try{Check(File.ReadAllText(panel.SavePath)==classicDisk,"rendering spells/resources cannot rewrite profile");Field("sheetTab",0);Field("frontScroll",Vector2.zero);}
             catch(Exception error){Fail(error);yield break;}
             Screen.SetResolution(360,800,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);

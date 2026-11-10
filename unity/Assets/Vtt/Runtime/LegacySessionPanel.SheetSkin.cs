@@ -11,7 +11,7 @@ namespace DndVtt.UnityPrototype
         private void ResetFormInput()
         {
             if(numericKeyboard!=null){numericKeyboard.active=false;numericKeyboard=null;}
-            numericSession.CancelAll();
+            numericSession.CancelAll();textCaret.Reset();pendingCaretKeyboard=null;
             if(Event.current!=null)
             {
                 int id=GUIUtility.keyboardControl;
@@ -28,6 +28,7 @@ namespace DndVtt.UnityPrototype
 #if UNITY_ANDROID && !UNITY_EDITOR
             if(numericKeyboard==null)return;
             if(numericKeyboard.status==TouchScreenKeyboard.Status.Canceled){numericSession.Finish(numericSession.Owner,"",false);numericKeyboard.active=false;numericKeyboard=null;return;}
+            PrepareMobileCaret(numericSession.Owner,numericKeyboard,numericKeyboard.text);
             numericSession.Stage(numericSession.Owner,numericKeyboard.text);
             if(numericKeyboard.status!=TouchScreenKeyboard.Status.Visible)CompleteNumericKeyboard();
 #endif
@@ -50,7 +51,7 @@ namespace DndVtt.UnityPrototype
             PollNumericKeyboard();
             if(numericSession.TryTake(owner,out string committed))value=committed;
             bool own=numericSession.Owner==owner&&numericKeyboard!=null;
-            string display=own?numericKeyboard.text+" ✓":value;
+            string display=own?numericKeyboard.text:value;
             if(GUILayout.Button(display,style,options))
             {
                 // Preserve the previous owner's last valid digit in either draw order.
@@ -58,14 +59,18 @@ namespace DndVtt.UnityPrototype
                 if(numericSession.TryTake(owner,out committed))value=committed;
                 if(!own)
                 {
+                    BlurTextField();
                     bool wide=owner.StartsWith("wallet-",StringComparison.Ordinal);numericSession.Begin(owner,wide);
                     var keyboardType=owner.StartsWith("race-bonus-",StringComparison.Ordinal)?TouchScreenKeyboardType.NumbersAndPunctuation:TouchScreenKeyboardType.NumberPad;
+                    TouchScreenKeyboard.hideInput=true;
                     numericKeyboard=TouchScreenKeyboard.Open(value,keyboardType,false,false,false,false,"Введите число",wide?16:11);
+                    PrepareMobileCaret(owner,numericKeyboard,value);
                 }
             }
+            if(own&&Event.current.type==EventType.Repaint)style.DrawCursor(GUILayoutUtility.GetLastRect(),new GUIContent(display),GUIUtility.keyboardControl,textCaret.Cursor);
             return value;
 #else
-            GUI.SetNextControlName(owner);return GUILayout.TextField(value,style,options);
+            return MenuTextField(owner,value,style,options);
 #endif
         }
         private bool FitMenuButton(string label,float minimum=44)

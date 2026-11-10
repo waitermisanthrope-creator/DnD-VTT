@@ -143,7 +143,7 @@ namespace DndVtt.UnityPrototype
                     GUILayout.Label("Вставьте JSON персонажа, массива или архива characters. Импорт добавит новых героев и сохранит архив. Если ID совпадает, другая версия существующего героя не заменяется.", muted);
                     DrawCharacterFiles();
                     GUILayout.Space(12); GUILayout.Label("Или вставьте JSON из буфера обмена", muted);
-                    input = GUILayout.TextArea(input, GUILayout.MinHeight(170));
+                    input = MenuTextArea("input", input, GUILayout.MinHeight(170));
                     if (GUILayout.Button("Проверить и открыть импорт", GUILayout.Height(44))) { if (Import(input)) Navigate(FrontScreen.Characters); }
                     if (archive != null)
                     {
@@ -223,7 +223,7 @@ namespace DndVtt.UnityPrototype
             }
             GUILayout.Label("Поиск по имени, расе или классу", muted);
             GUILayout.BeginHorizontal();
-            rosterSearch = GUILayout.TextField(rosterSearch, GUILayout.MinHeight(52));
+            rosterSearch = MenuTextField("rosterSearch", rosterSearch, GUILayout.MinHeight(52));
             if (rosterSearch.Length > 0 && MeasuredMenuButton("Сброс", GUI.skin.button, GUILayout.Width(112), GUILayout.MinHeight(52))) { rosterSearch = ""; GUI.FocusControl(null); }
             GUILayout.EndHorizontal();
             string query = rosterSearch.Trim();
@@ -261,7 +261,7 @@ namespace DndVtt.UnityPrototype
             var race = (JObject)races[raceIndex]; var cls = (JObject)classes[classIndex]; var bg = (JObject)backgrounds[backgroundIndex];
             if (creationStep == 0)
             {
-                GUILayout.Label("Имя героя"); GUI.SetNextControlName("creation-name"); heroName = GUILayout.TextField(heroName, 120, GUILayout.Height(52));
+                GUILayout.Label("Имя героя"); GUI.SetNextControlName("creation-name"); heroName = MenuTextField("creation-name", heroName, 120, GUILayout.Height(52));
                 Picker("Предыстория", backgrounds, ref backgroundIndex, "nameRu"); GUILayout.Label((string)backgrounds[backgroundIndex]["description"] ?? "", muted);
             }
             else if (creationStep == 1)
@@ -335,7 +335,7 @@ namespace DndVtt.UnityPrototype
             GUILayout.EndHorizontal();
             if (pickerKey == label)
             {
-                GUILayout.Label("Найти вариант:", muted); pickerSearch = GUILayout.TextField(pickerSearch, GUILayout.Height(52)); int shown = 0;
+                GUILayout.Label("Найти вариант:", muted); pickerSearch = MenuTextField("pickerSearch", pickerSearch, GUILayout.Height(52)); int shown = 0;
                 for (int i = 0; i < values.Count; i++)
                 {
                     string name = (string)values[i][nameField] ?? (string)values[i]["name"];
@@ -356,7 +356,7 @@ namespace DndVtt.UnityPrototype
                 if (selectedFeat != null) DrawFeatStatChoice(selectedFeat);
             }
             if (type == "stats2") options = new JArray(CharacterSheetRules.Stats.Select((s, i) => new JObject { ["id"] = s, ["name"] = CharacterSheetRules.StatNames[i] }));
-            if (options.Count == 0) { creationAnswers[key] = GUILayout.TextField((string)creationAnswers[key] ?? "", GUILayout.Height(52)); return; }
+            if (options.Count == 0) { creationAnswers[key] = MenuTextField("creation-answer:"+key, (string)creationAnswers[key] ?? "", GUILayout.Height(52)); return; }
             var selectedValues = creationAnswers[key] is JArray arr ? (JArray)arr.DeepClone() : new JArray();
             foreach (var option in options)
             {

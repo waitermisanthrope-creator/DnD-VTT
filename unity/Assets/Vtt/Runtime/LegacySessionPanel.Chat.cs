@@ -44,7 +44,7 @@ namespace DndVtt.UnityPrototype
                 catch(Exception) { chatEditId=chatEditActor=null;chatStatus="Не удалось открыть редактор. Черновик сохранён."; }
             }
 #else
-            GUI.SetNextControlName("ChatDraft");chatDraft=GUILayout.TextArea(chatDraft,1000,GUILayout.MinHeight(100));
+            GUI.SetNextControlName("ChatDraft");chatDraft=MenuTextArea("ChatDraft", chatDraft,1000,GUILayout.MinHeight(100));
             if(Event.current.type==EventType.Repaint) { var rect=GUILayoutUtility.GetLastRect();chatDraftRect=new Rect(GUIUtility.GUIToScreenPoint(rect.position),rect.size*MenuScale);chatDraftRectValid=true; }
 #endif
             GUI.enabled=enabled;
@@ -70,7 +70,7 @@ namespace DndVtt.UnityPrototype
             string actor=(string)cloudSession["user"];
             if(nicknameActor!=actor) { nicknameActor=actor;nicknameDraft=(string)cloudSession["chat_nickname"]??"";nicknameNotice=""; }
             GUILayout.Label("Ник в глобальном чате",settingsDescription);
-            nicknameDraft=GUILayout.TextField(nicknameDraft,24,GUILayout.MinHeight(52));
+            nicknameDraft=MenuTextField("nicknameDraft", nicknameDraft,24,GUILayout.MinHeight(52));
             GUILayout.Label("3–24 символа: буквы, цифры, пробел, _ и -. Ник не является служебной ролью.",settingsDescription);
             bool enabled=GUI.enabled;GUI.enabled=enabled&&!cloudBusy&&!chatBusy;
             if(GUILayout.Button("Сохранить ник аккаунта",GUILayout.MinHeight(56)))StartCoroutine(SaveChatNickname());

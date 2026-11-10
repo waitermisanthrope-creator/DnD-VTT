@@ -85,7 +85,7 @@ namespace DndVtt.UnityPrototype
         {
             CloneFieldLabel(label);string old=hero[key]?.ToString()??"";
             if(readOnly)GUILayout.Label(old,cloneReadOnly,GUILayout.Height(height));
-            else{GUI.SetNextControlName("clone:"+key);string value=GUILayout.TextField(old,cloneInput,GUILayout.Height(height));if(value!=old){hero[key]=value;changed=true;}}
+            else{GUI.SetNextControlName("clone:"+key);string value=MenuTextField("clone:"+key, old,cloneInput,GUILayout.Height(height));if(value!=old){hero[key]=value;changed=true;}}
         }
         private void ClassicHero(JObject hero,ref bool changed)
         {
@@ -152,8 +152,8 @@ namespace DndVtt.UnityPrototype
             }
             else if(raceView==2)
             {
-                SheetSection("Создание кастомной расы");CloneFieldLabel("Название расы");customRaceName=GUILayout.TextField(customRaceName,cloneInput,GUILayout.Height(39));
-                CloneFieldLabel("Описание и особенности");customRaceDescription=GUILayout.TextArea(customRaceDescription,cloneInput,GUILayout.Height(60));
+                SheetSection("Создание кастомной расы");CloneFieldLabel("Название расы");customRaceName=MenuTextField("customRaceName", customRaceName,cloneInput,GUILayout.Height(39));
+                CloneFieldLabel("Описание и особенности");customRaceDescription=MenuTextArea("customRaceDescription", customRaceDescription,cloneInput,GUILayout.Height(60));
                 CloneFieldLabel("Скорость (в футах)");customRaceSpeed=IntegerField("race-speed",customRaceSpeed,GUILayout.Height(39));
                 CloneFieldLabel("Бонусы к характеристикам:");
                 for(int i=0;i<6;i++)
@@ -206,7 +206,7 @@ namespace DndVtt.UnityPrototype
             ClassicNumber(hero,"ac","КД (AC)",ref changed,10);
             GUILayout.BeginVertical(sheetMetricBox,GUILayout.ExpandWidth(true));GUILayout.Label("ИНИЦИАТИВА",cloneMetricLabel);GUILayout.Label(Signed(CharacterSheetRules.Modifier(hero,"dex")),cloneReadOnly,GUILayout.Height(39));GUILayout.EndVertical();
             GUILayout.BeginVertical(sheetMetricBox,GUILayout.ExpandWidth(true));GUILayout.Label("СКОРОСТЬ",cloneMetricLabel);
-            string speed=hero["speed"]?.ToString()??"30 футов";string next=GUILayout.TextField(speed,cloneInput,GUILayout.Height(39),GUILayout.MinWidth(25));if(next!=speed){hero["speed"]=next;changed=true;}GUILayout.EndVertical();GUILayout.EndHorizontal();
+            string speed=hero["speed"]?.ToString()??"30 футов";string next=MenuTextField("clone:speed", speed,cloneInput,GUILayout.Height(39),GUILayout.MinWidth(25));if(next!=speed){hero["speed"]=next;changed=true;}GUILayout.EndVertical();GUILayout.EndHorizontal();
             GUILayout.Space(10);if(MeasuredMenuButton("Бросок Инициативы",cloneDanger,GUILayout.Height(39)))Roll("Инициатива",20,CharacterSheetRules.Modifier(hero,"dex"));
             CloneFieldLabel("Состояния (Status Effects)");
             string[] names={"Отравлен","Сбит с ног","Ослеплен","Очарован","Испуган","Невидимость","Парализован","Оглушен","Захвачен"};
@@ -328,7 +328,7 @@ namespace DndVtt.UnityPrototype
                 GUILayout.EndHorizontal();GUILayout.Space(6);
             }
             GUILayout.Space(4);
-            GUILayout.BeginHorizontal();GUI.SetNextControlName("new-note-folder");newFolderName=GUILayout.TextField(newFolderName,cloneInput,GUILayout.Height(39),GUILayout.MinWidth(40));
+            GUILayout.BeginHorizontal();GUI.SetNextControlName("new-note-folder");newFolderName=MenuTextField("new-note-folder", newFolderName,cloneInput,GUILayout.Height(39),GUILayout.MinWidth(40));
             if(MeasuredMenuButton("+ Папка",GUI.skin.button,GUILayout.Width(88),GUILayout.Height(39)))SheetAction(()=>{CharacterSheetRules.CreateFolder(hero,newFolderName);newFolderName="";},ref changed);
             GUILayout.EndHorizontal();GUILayout.EndVertical();
             var selectedFolder=folders.OfType<JObject>().FirstOrDefault(f=>JToken.DeepEquals(f["id"],hero["activeFolderId"]))??folders.OfType<JObject>().FirstOrDefault();
@@ -343,8 +343,8 @@ namespace DndVtt.UnityPrototype
             {
                 if(new[]{"title","text"}.Any(k=>note[k]!=null&&note[k].Type!=JTokenType.String&&note[k].Type!=JTokenType.Null)){ReadOnlyToken(note,"Нестандартная заметка — данные сохранены",0);continue;}
                 GUILayout.BeginVertical(GUI.skin.box);string title=note["title"]?.ToString()??"",text=note["text"]?.ToString()??"";
-                string nextTitle=GUILayout.TextField(title,cloneNoteTitle,GUILayout.Height(35));
-                string nextText=GUILayout.TextArea(text,cloneInput,GUILayout.MinHeight(100));
+                string nextTitle=MenuTextField("note-title:"+note.Path, title,cloneNoteTitle,GUILayout.Height(35));
+                string nextText=MenuTextArea("note-text:"+note.Path, text,cloneInput,GUILayout.MinHeight(100));
                 if(nextTitle!=title||nextText!=text)SheetAction(()=>CharacterSheetRules.UpdateNote(hero,selectedFolder["id"].ToString(),note["id"],nextTitle,nextText),ref changed);
                 GUILayout.BeginHorizontal();GUILayout.FlexibleSpace();if(MeasuredMenuButton("Удалить",cloneDelete,GUILayout.Width(86),GUILayout.Height(29)))RequestDelete(note,title.Length>0?title:"Заметка");GUILayout.EndHorizontal();GUILayout.EndVertical();
             }

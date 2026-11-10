@@ -5,6 +5,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
     <Compile Include="../../Assets/Vtt/Runtime/WorkshopStore.cs" Link="WorkshopStore.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="../../Assets/Vtt/Runtime/TextCaretSession.cs" />
     <Compile Include="MarketChecks.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/CommerceRules.Market.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/CharacterSheetStore.Trade.cs" />
