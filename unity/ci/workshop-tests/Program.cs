@@ -9,8 +9,41 @@ class Program
     static int checks;
     static void Check(bool ok, string name) { if (!ok) throw new Exception(name); checks++; }
     static void Reject(Action action, string name) { bool rejected = false; try { action(); } catch (Exception) { rejected = true; } Check(rejected, name); }
+    static void CheckSpellPicker()
+    {
+        var method = typeof(CharacterSheetRules).GetMethod("CanLearnSpell");
+        Check(method != null, "spell picker must filter by class and class level");
+        bool Allowed(string cls, int level, string spellClass, int circle, string subclass = "") =>
+            (bool)method.Invoke(null, new object[] {
+                new JObject { ["class"] = cls, ["level"] = level, ["subclass"] = subclass },
+                new JObject { ["classes"] = new JArray(spellClass), ["level"] = circle } });
+        foreach (string cls in new[] { "Бард", "Жрец", "Друид", "Волшебник", "Чародей", "Колдун" })
+            for (int level = 1; level <= 20; level++)
+                for (int circle = 0; circle <= 9; circle++)
+                    Check(Allowed(cls, level, cls, circle) == (circle <= (level + 1) / 2), cls + " progression " + level + "/" + circle);
+        foreach (string cls in new[] { "Паладин", "Следопыт" })
+            for (int level = 1; level <= 20; level++)
+                for (int circle = 0; circle <= 9; circle++)
+                    Check(Allowed(cls, level, cls, circle) == (level >= 2 && circle > 0 && circle <= (level + 3) / 4), "half caster progression");
+        Check(!Allowed("Воин", 20, "Волшебник", 0), "ordinary fighter has no wizard cantrips");
+        Check(!Allowed("Плут", 20, "Плут", 1), "ordinary rogue has no spells");
+        Check(Allowed("Wizard", 1, "Волшебник", 1), "English class alias");
+        Check(Allowed("Клирик", 1, "Жрец", 1), "cleric alias");
+        Check(!Allowed("Волшебник", 20, "Жрец", 1), "class restriction");
+        Check(!Allowed("Волшебник", 20, "Волшебник (Гравитургия)", 2), "subclass restriction");
+        Check(Allowed("Волшебник", 3, "Волшебник (Гравитургия)", 2, "Гравитургия"), "matching subclass");
+        Check(Allowed("Воин", 3, "Волшебник", 1, "Мистический рыцарь"), "eldritch knight spell list");
+        Check(!Allowed("Воин", 6, "Волшебник", 2, "Мистический рыцарь"), "third caster progression");
+        var multi = JObject.Parse("{\"class\":\"Волшебник\",\"level\":20,\"classes\":[{\"name\":\"Волшебник\",\"level\":1},{\"name\":\"Жрец\",\"level\":19}]}");
+        bool Multi(string cls, int circle) => (bool)method.Invoke(null, new object[] { multi, new JObject { ["classes"] = new JArray(cls), ["level"] = circle } });
+        Check(!Multi("Волшебник", 2) && Multi("Жрец", 9), "multiclass uses individual class levels");
+        Check(!(bool)method.Invoke(null, new object[] { multi, new JObject { ["level"] = 0 } }), "unclassified spell is not granted to everyone");
+    }
     static void Main(string[] args)
     {
+        CheckSpellPicker();
+        if (args.Length > 0 && args[0] == "--spell-picker")
+        { Console.WriteLine("SPELL_PICKER_PASS " + checks); return; }
         if (args.Length > 0 && args[0] == "--character-delete")
         {
             string dir = Path.Combine(Path.GetTempPath(), "vtt-delete-" + Guid.NewGuid()); Directory.CreateDirectory(dir);

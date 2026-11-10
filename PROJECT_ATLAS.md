@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 5fd191fb0dff. Git содержит 2082 файлов.
+Снимок кода 4a68a02cfffa. Git содержит 2082 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 7025 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 77249 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 114474 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 152905 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 78815 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 116040 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 154471 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1860,7 +1860,7 @@
 | №1839 unity/Assets/Vtt/Runtime/CharacterCreation.cs.meta | 59 B | вспомогательный файл: CharacterCreation.cs |
 | №1840 unity/Assets/Vtt/Runtime/CharacterFiles.cs | 4435 B | вспомогательный файл: CharacterFiles |
 | №1841 unity/Assets/Vtt/Runtime/CharacterFiles.cs.meta | 60 B | вспомогательный файл: CharacterFiles.cs |
-| №1842 unity/Assets/Vtt/Runtime/CharacterSheetRules.cs | 16794 B | вспомогательный файл: CharacterSheetRules |
+| №1842 unity/Assets/Vtt/Runtime/CharacterSheetRules.cs | 20635 B | вспомогательный файл: CharacterSheetRules |
 | №1843 unity/Assets/Vtt/Runtime/CharacterSheetRules.cs.meta | 59 B | вспомогательный файл: CharacterSheetRules.cs |
 | №1844 unity/Assets/Vtt/Runtime/CharacterStudioView.cs | 4943 B | вспомогательный файл: CharacterStudioView |
 | №1845 unity/Assets/Vtt/Runtime/CharacterStudioView.cs.meta | 60 B | вспомогательный файл: CharacterStudioView.cs |
@@ -1934,7 +1934,7 @@
 | №1913 unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Moderation.cs |
 | №1914 unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs | 9503 B | вспомогательный файл: LegacySessionPanel.Settings |
 | №1915 unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.Settings.cs |
-| №1916 unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs | 28314 B | вспомогательный файл: LegacySessionPanel.Sheet |
+| №1916 unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs | 33297 B | вспомогательный файл: LegacySessionPanel.Sheet |
 | №1917 unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.Sheet.cs |
 | №1918 unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs | 4221 B | вспомогательный файл: LegacySessionPanel.SheetSkin |
 | №1919 unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.SheetSkin.cs |
@@ -1998,7 +1998,7 @@
 | №1977 unity/ci/workshop-tests/AllModCollectionChecks.cs | 5776 B | вспомогательный файл: AllModCollectionChecks |
 | №1978 unity/ci/workshop-tests/CollectionChecks.cs | 6368 B | вспомогательный файл: CollectionChecks |
 | №1979 unity/ci/workshop-tests/CommerceChecks.cs | 4694 B | вспомогательный файл: CommerceChecks |
-| №1980 unity/ci/workshop-tests/Program.cs | 39670 B | вспомогательный файл: Program |
+| №1980 unity/ci/workshop-tests/Program.cs | 42690 B | вспомогательный файл: Program |
 | №1981 unity/ci/workshop-tests/WorkshopTests.csproj | 1672 B | вспомогательный файл: WorkshopTests |
 | №1982 unity/ContentSources~/catalog.full.json | 1259265 B | данные/конфигурация: catalog.full |
 | №1983 unity/ContentSources~/cloud-copy-contracts.json | 3613 B | данные/конфигурация: cloud copy contracts |

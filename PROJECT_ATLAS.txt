@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 5fd191fb0dff. Файлов: 2082
+Коммит 4a68a02cfffa. Файлов: 2082
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,9 +56,9 @@
 0040. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (7025 B)
-0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (77249 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (114474 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (152905 B)
+0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (78815 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (116040 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (154471 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1855,7 +1855,7 @@
 1839. unity/Assets/Vtt/Runtime/CharacterCreation.cs.meta — вспомогательный файл: CharacterCreation.cs (59 B)
 1840. unity/Assets/Vtt/Runtime/CharacterFiles.cs — вспомогательный файл: CharacterFiles (4435 B)
 1841. unity/Assets/Vtt/Runtime/CharacterFiles.cs.meta — вспомогательный файл: CharacterFiles.cs (60 B)
-1842. unity/Assets/Vtt/Runtime/CharacterSheetRules.cs — вспомогательный файл: CharacterSheetRules (16794 B)
+1842. unity/Assets/Vtt/Runtime/CharacterSheetRules.cs — вспомогательный файл: CharacterSheetRules (20635 B)
 1843. unity/Assets/Vtt/Runtime/CharacterSheetRules.cs.meta — вспомогательный файл: CharacterSheetRules.cs (59 B)
 1844. unity/Assets/Vtt/Runtime/CharacterStudioView.cs — вспомогательный файл: CharacterStudioView (4943 B)
 1845. unity/Assets/Vtt/Runtime/CharacterStudioView.cs.meta — вспомогательный файл: CharacterStudioView.cs (60 B)
@@ -1929,7 +1929,7 @@
 1913. unity/Assets/Vtt/Runtime/LegacySessionPanel.Moderation.cs.meta — вспомогательный файл: LegacySessionPanel.Moderation.cs (60 B)
 1914. unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs — вспомогательный файл: LegacySessionPanel.Settings (9503 B)
 1915. unity/Assets/Vtt/Runtime/LegacySessionPanel.Settings.cs.meta — вспомогательный файл: LegacySessionPanel.Settings.cs (59 B)
-1916. unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs — вспомогательный файл: LegacySessionPanel.Sheet (28314 B)
+1916. unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs — вспомогательный файл: LegacySessionPanel.Sheet (33297 B)
 1917. unity/Assets/Vtt/Runtime/LegacySessionPanel.Sheet.cs.meta — вспомогательный файл: LegacySessionPanel.Sheet.cs (59 B)
 1918. unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs — вспомогательный файл: LegacySessionPanel.SheetSkin (4221 B)
 1919. unity/Assets/Vtt/Runtime/LegacySessionPanel.SheetSkin.cs.meta — вспомогательный файл: LegacySessionPanel.SheetSkin.cs (60 B)
@@ -1993,7 +1993,7 @@
 1977. unity/ci/workshop-tests/AllModCollectionChecks.cs — вспомогательный файл: AllModCollectionChecks (5776 B)
 1978. unity/ci/workshop-tests/CollectionChecks.cs — вспомогательный файл: CollectionChecks (6368 B)
 1979. unity/ci/workshop-tests/CommerceChecks.cs — вспомогательный файл: CommerceChecks (4694 B)
-1980. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (39670 B)
+1980. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (42690 B)
 1981. unity/ci/workshop-tests/WorkshopTests.csproj — вспомогательный файл: WorkshopTests (1672 B)
 1982. unity/ContentSources~/catalog.full.json — данные/конфигурация: catalog.full (1259265 B)
 1983. unity/ContentSources~/cloud-copy-contracts.json — данные/конфигурация: cloud copy contracts (3613 B)

@@ -15,13 +15,17 @@ namespace DndVtt.UnityPrototype
         private string rollResult = "Выберите кубик или проверку";
         private string spellSearch = "";
         private JArray spellCatalog;
+        private bool showSpellCatalog, showSpellCircles;
+        private int spellCircle = -1, spellPage;
+        private Vector2 spellCatalogScroll, spellReturnScroll;
+        private const int SpellsPerPage = 20;
         private JObject itemCatalog;
         private string itemSearch = "";
         private int itemCategory;
         private bool showItemCatalog;
         private string deletePath, deleteSignature, deleteCharacter, deleteLabel;
         private readonly string[] tabs = { "Герой", "Навыки", "Способности", "Инвентарь", "Заметки", "Дайсы", "Данные", "Кошелёк", "Паспорт", "Лор / Бестиарий" };
-        private void ClearSheetInputs() { edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
+        private void ClearSheetInputs() { showSpellCatalog = false; spellSearch = ""; spellCircle = -1; spellPage = 0; edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
         private void Attempt(Action action)
         {
             try { action(); } catch (Exception error) { status = error.Message; }
@@ -29,7 +33,7 @@ namespace DndVtt.UnityPrototype
         private void DrawSheet()
         {
             int next = HorizontalTabs(sheetTab, tabs, ref sheetTabsScroll);
-            if (next != sheetTab) { sheetTab = next; GUI.FocusControl(null); }
+            if (next != sheetTab) { sheetTab = next; showSpellCatalog = false; GUI.FocusControl(null); }
             if (archive == null)
             {
                 GUILayout.Label("Импортируйте своего персонажа во вкладке Данные / карты или создайте пустой лист.");
@@ -68,7 +72,8 @@ namespace DndVtt.UnityPrototype
                 });
                 GUILayout.EndHorizontal(); return;
             }
-            switch (sheetTab)
+            if (showSpellCatalog) SpellCatalog(hero, ref changed);
+            else switch (sheetTab)
             {
                 case 0: GUILayout.BeginVertical(GUI.skin.box); SheetSection("Герой"); Hero(hero, ref changed); GUILayout.EndVertical(); break;
                 case 1: GUILayout.BeginVertical(GUI.skin.box); SheetSection("Навыки"); Skills(hero, ref changed); GUILayout.EndVertical(); DrawCharacterFeats(hero, ref changed); break;
@@ -80,8 +85,9 @@ namespace DndVtt.UnityPrototype
                     GUILayout.Label("Базовая СЛ заклинаний: " + (8 + attack) + " · атака: " + Signed(attack));
                     Collection(hero, "combatAbilities", "Приёмы", () => new JObject { ["id"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(), ["name"] = "Новый приём", ["description"] = "", ["rechargeOn"] = "none", ["maxUses"] = 0, ["usedCount"] = 0 }, ref changed);
                     Collection(hero, "spellsData", "Заклинания и фокусы", () => new JObject { ["id"] = Guid.NewGuid().ToString(), ["name"] = "Новое заклинание", ["level"] = 0, ["desc"] = "", ["prepared"] = false }, ref changed);
+                    if (GUILayout.Button("Добавить фокус или заклинание…", brandGold, GUILayout.MinHeight(52)))
+                    { spellReturnScroll = frontScroll; frontScroll = Vector2.zero; menuGesture.Clear(); showSpellCatalog = true; spellSearch = ""; spellCircle = -1; spellPage = 0; spellCatalogScroll = Vector2.zero; showSpellCircles = false; GUI.FocusControl(null); }
                     SpellSlots(hero, ref changed);
-                    SpellCatalog(hero, ref changed);
                     Tree(hero, "resources", "Ресурсы — ручной учёт", ref changed);
                     ReadOnly(hero, "classFeaturesState", "Состояние классовых эффектов"); break;
                 case 3: DrawCommerceInventory(hero, ref changed, ref persistCommerce); break;
@@ -186,23 +192,70 @@ namespace DndVtt.UnityPrototype
         }
         private void SpellCatalog(JObject hero, ref bool changed)
         {
+            if (GUILayout.Button("Закрыть выбор заклинаний", GUILayout.Height(48))) CloseSpellCatalog();
             if (spellCatalog == null)
             {
                 var asset = Resources.Load<TextAsset>("CharacterSheet/catalog");
                 if (!asset) { GUILayout.Label("Справочник заклинаний не найден"); return; }
                 spellCatalog = (JArray)JObject.Parse(asset.text)["spells"];
             }
-            GUILayout.Label("Справочник: " + spellCatalog.Count + " заклинания. Поиск по названию:");
-            spellSearch = GUILayout.TextField(spellSearch, GUILayout.Height(52));
-            if (spellSearch.Trim().Length < 2) return;
-            var matches = spellCatalog.OfType<JObject>().Where(s => ((string)s["name"] ?? "").IndexOf(spellSearch, StringComparison.OrdinalIgnoreCase) >= 0).Take(30);
-            foreach (var spell in matches)
-                if (GUILayout.Button("+ " + spell["name"] + " · круг " + spell["level"], GUILayout.Height(52)))
+            GUILayout.BeginVertical(GUI.skin.box);
+            GUILayout.Label("Добавить фокус или заклинание");
+            var available = spellCatalog.OfType<JObject>().Where(s => CharacterSheetRules.CanLearnSpell(hero, s))
+                .OrderBy(s => (int)s["level"]).ThenBy(s => (string)s["name"], StringComparer.CurrentCultureIgnoreCase).ToArray();
+            var circles = available.Select(s => (int)s["level"]).Distinct().ToArray();
+            if (spellCircle >= 0 && !circles.Contains(spellCircle)) spellCircle = -1;
+            if (GUILayout.Button((spellCircle < 0 ? "Все доступные круги" : spellCircle == 0 ? "Фокусы" : spellCircle + " круг") + "  ▾", GUILayout.Height(48))) showSpellCircles = !showSpellCircles;
+            if (showSpellCircles)
+            {
+                if (GUILayout.Button("Все доступные круги", GUILayout.Height(44))) SetSpellCircle(-1);
+                foreach (int circle in circles)
+                    if (GUILayout.Button((circle == spellCircle ? "✓ " : "") + (circle == 0 ? "Фокусы" : circle + " круг"), GUILayout.Height(44))) SetSpellCircle(circle);
+            }
+            GUILayout.Label("Поиск по названию или описанию (необязательно)");
+            string query = GUILayout.TextField(spellSearch, GUILayout.Height(48));
+            if (query != spellSearch) { spellSearch = query; spellPage = 0; spellCatalogScroll = Vector2.zero; }
+            string search = spellSearch.Trim();
+            var matches = available.Where(s => (spellCircle < 0 || (int)s["level"] == spellCircle)
+                && (search.Length == 0 || ((string)s["name"] ?? "").IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0
+                    || ((string)(s["description"] ?? s["desc"]) ?? "").IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0)).ToArray();
+            int pages = Math.Max(1, (matches.Length + SpellsPerPage - 1) / SpellsPerPage);
+            spellPage = Math.Min(spellPage, pages - 1);
+            GUILayout.Label("Доступно: " + matches.Length + " · страница " + (spellPage + 1) + " / " + pages);
+            if (available.Length == 0) GUILayout.Label("Нет доступных заклинаний для класса и уровня этого персонажа.");
+            else if (matches.Length == 0) GUILayout.Label("По выбранным фильтрам ничего не найдено.");
+            spellCatalogScroll = GUILayout.BeginScrollView(SwipePosition("spell-picker", spellCatalogScroll), GUILayout.Height(Mathf.Max(220, UiHeight * .45f)));
+            foreach (var spell in matches.Skip(spellPage * SpellsPerPage).Take(SpellsPerPage))
+            {
+                GUILayout.BeginVertical(GUI.skin.box);
+                int circle = (int)spell["level"];
+                GUILayout.Label(spell["name"] + " · " + (circle == 0 ? "Фокус" : circle + " круг") + " · " + spell["school"]);
+                if (spell["source"] != null) GUILayout.Label("Источник: " + spell["source"]);
+                GUILayout.Label((string)(spell["description"] ?? spell["desc"]) ?? "");
+                bool added = (hero["spellsData"] as JArray)?.OfType<JObject>().Any(s =>
+                    (string)s["name"] == (string)spell["name"] && (int?)s["level"] == circle) == true;
+                bool enabled = GUI.enabled; GUI.enabled = enabled && !added;
+                if (GUILayout.Button(added ? "Уже добавлено" : "Добавить", GUILayout.Height(48)))
                 {
-                    var entry = (JObject)spell.DeepClone(); entry["id"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(); entry["desc"] = spell["description"] ?? spell["desc"] ?? ""; entry["prepared"] = false;
+                    var entry = (JObject)spell.DeepClone(); entry["id"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                    entry["desc"] = spell["description"] ?? spell["desc"] ?? ""; entry["prepared"] = false;
                     CharacterSheetRules.Array(hero, "spellsData").Add(entry); changed = true;
                 }
+                GUI.enabled = enabled;
+                GUILayout.EndVertical();
+            }
+            GUILayout.EndScrollView(); RegisterSwipe("spell-picker", GUILayoutUtility.GetLastRect());
+            GUILayout.BeginHorizontal();
+            if (spellPage > 0 && GUILayout.Button("← Назад", GUILayout.Height(48))) { spellPage--; spellCatalogScroll = Vector2.zero; }
+            if (spellPage + 1 < pages && GUILayout.Button("Далее →", GUILayout.Height(48))) { spellPage++; spellCatalogScroll = Vector2.zero; }
+            GUILayout.EndHorizontal();
+            if (GUILayout.Button("Закрыть", GUILayout.Height(48))) CloseSpellCatalog();
+            GUILayout.EndVertical();
         }
+        private void CloseSpellCatalog()
+        { showSpellCatalog = false; frontScroll = spellReturnScroll; menuGesture.Clear(); GUI.FocusControl(null); }
+        private void SetSpellCircle(int circle)
+        { spellCircle = circle; spellPage = 0; spellCatalogScroll = Vector2.zero; showSpellCircles = false; }
         private static string Signed(int n) => n >= 0 ? "+" + n : n.ToString();
         private void ItemCatalog(JObject hero, ref bool changed)
         {
@@ -283,7 +336,7 @@ namespace DndVtt.UnityPrototype
                     if (key != "classes" && GUILayout.Button("Удалить «" + title + "»…", GUILayout.Height(52))) RequestDelete(rows[i], title);
                 }
             }
-            if (GUILayout.Button("+ " + label, GUILayout.Height(52)))
+            if (GUILayout.Button(key == "spellsData" ? "+ Создать пустое заклинание" : "+ " + label, GUILayout.Height(52)))
             {
                 var record = create(); rows.Add(record); hero[key] = rows;
                 if (key == "folders") hero["activeFolderId"] = record["id"]?.DeepClone(); changed = true;

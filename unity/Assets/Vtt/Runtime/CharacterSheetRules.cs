@@ -84,6 +84,73 @@ namespace DndVtt.UnityPrototype
                 ? classes.Sum(c => LegacyJson.Number((c as JObject)?["level"], 0)) : LegacyJson.Number(hero["level"], 1);
             return Math.Max(1, (int)n);
         }
+        // Spell access belongs to each class, not to total level or manually edited slots.
+        public static bool CanLearnSpell(JObject hero, JObject spell)
+        {
+            int circle = (int)LegacyJson.Number(spell["level"], -1);
+            if (circle < 0 || circle > 9 || !(spell["classes"] is JArray lists)) return false;
+            var classes = hero["classes"] as JArray;
+            var entries = classes != null && classes.Count > 0 ? classes.OfType<JObject>() : new[] {
+                new JObject { ["name"] = hero["class"] ?? hero["className"], ["level"] = hero["level"] ?? 1,
+                    ["subclass"] = hero["subclass"] ?? hero["subclassName"] } }.AsEnumerable();
+            foreach (var entry in entries)
+            {
+                int level = Math.Min(20, (int)LegacyJson.Number(entry["level"], 0));
+                if (level < 1) continue;
+                string cls = SpellClass((string)(entry["name"] ?? entry["class"] ?? entry["id"]));
+                string subclass = ((string)(entry["subclass"] ?? entry["subclassName"]) ?? "").Trim().ToLowerInvariant();
+                int maximum;
+                bool cantrips = true;
+                string list = cls;
+                switch (cls)
+                {
+                    case "bard": case "cleric": case "druid": case "sorcerer": case "warlock": case "wizard":
+                        maximum = Math.Min(9, (level + 1) / 2); break;
+                    case "paladin": case "ranger":
+                        maximum = level < 2 ? -1 : (level + 3) / 4; cantrips = false; break;
+                    case "artificer": maximum = (level + 3) / 4; break;
+                    case "fighter": case "rogue":
+                        bool caster = cls == "fighter" ? (subclass == "мистический рыцарь" || subclass == "eldritch knight")
+                            : (subclass == "мистический ловкач" || subclass == "arcane trickster");
+                        if (!caster || level < 3) continue;
+                        maximum = (level + 5) / 6; list = "wizard"; break;
+                    default: continue;
+                }
+                if (circle > maximum || (circle == 0 && !cantrips)) continue;
+                foreach (var token in lists)
+                {
+                    string raw = token.ToString().Trim();
+                    int bracket = raw.IndexOf('(');
+                    if (bracket >= 0)
+                    {
+                        string required = raw.Substring(bracket + 1).TrimEnd(')').Trim().ToLowerInvariant();
+                        if (subclass != required) continue;
+                        raw = raw.Substring(0, bracket).Trim();
+                    }
+                    if (SpellClass(raw) == list || (cls == "rogue" && SpellClass(raw) == "rogue")) return true;
+                }
+            }
+            return false;
+        }
+        private static string SpellClass(string value)
+        {
+            string name = Regex.Replace((value ?? "").Trim().ToLowerInvariant().Replace('ё', 'е'), @"\s+\d+\s*(?:ур\.?|уровень)?$", "").Trim();
+            switch (name)
+            {
+                case "бард": return "bard";
+                case "жрец": case "клирик": return "cleric";
+                case "друид": return "druid";
+                case "волшебник": return "wizard";
+                case "чародей": return "sorcerer";
+                case "колдун": return "warlock";
+                case "паладин": return "paladin";
+                case "следопыт": return "ranger";
+                case "изобретатель": return "artificer";
+                case "воин": return "fighter";
+                case "плут": return "rogue";
+                default: return name;
+            }
+        }
         public static int Proficiency(JObject hero) => (int)Math.Floor((Level(hero) - 1) / 4d) + 2;
         public static int Skill(JObject hero, int index) => Modifier(hero, SkillStats[index]) + Proficiency(hero) * (int)LegacyJson.Number((hero["skillsData"] as JObject)?[SkillIds[index]], 0);
         public static void Validate(JObject hero)
