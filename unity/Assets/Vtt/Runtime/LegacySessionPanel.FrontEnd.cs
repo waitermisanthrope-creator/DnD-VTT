@@ -15,7 +15,7 @@ namespace DndVtt.UnityPrototype
         private int creationStep, raceIndex, classIndex, backgroundIndex, statMode;
         private string heroName = "", rosterSearch = "";
         private string pendingCharacterDeleteId, pendingCharacterDeleteName;
-        private bool confirmRestoreCharacters;
+        private bool confirmRestoreCharacters,showSheetNotice;
         private string pickerKey, pickerSearch = "";
         private readonly string[] statInputs = { "15", "14", "13", "12", "10", "8" };
         private JObject creationAnswers = new JObject();
@@ -40,6 +40,7 @@ namespace DndVtt.UnityPrototype
             if (screen == FrontScreen.CharacterStudio && next != FrontScreen.CharacterStudio) CloseCharacterStudio();
             if(screen==FrontScreen.ContentManager&&next!=FrontScreen.ContentManager)CloseWorkshopPreviews();
             if(next==FrontScreen.ContentManager&&screen!=FrontScreen.ContentManager) { InitializeWorkshop();BeginWorkshopPreviews();if(!contentCatalogAutoRefreshed&&!contentBusy&&(assetPacks.Count==0||!assetPacks.OfType<Newtonsoft.Json.Linq.JObject>().Any(m=>m["preview"]!=null)||!contentPackages.OfType<Newtonsoft.Json.Linq.JObject>().Any(m=>(string)m["collectionCategory"]=="races")||!assetPacks.OfType<Newtonsoft.Json.Linq.JObject>().Any(m=>(string)m["collectionCategory"]=="icons"))) { contentCatalogAutoRefreshed=true;StartCoroutine(FetchContentCatalog()); } }
+            ResetFormInput();
             pendingCharacterDeleteId = pendingCharacterDeleteName = null;
             confirmRestoreCharacters = false;
             menuGesture.Clear();
@@ -51,6 +52,7 @@ namespace DndVtt.UnityPrototype
         }
         private void BeginCreation()
         {
+            for(int i=0;i<statInputs.Length;i++)statInputs[i]=new[]{"15","14","13","12","10","8"}[i];
             heroName = ""; creationStep = 0; creationFeatEnabled = false; creationAnswers = new JObject(); lastPreview = null;
             classIndex = Math.Max(0, AvailableClasses.ToList().FindIndex(c => (string)c["name"] == "Воин"));
             backgroundIndex = Math.Max(0, ((JArray)CreationCatalog["backgrounds"]).ToList().FindIndex(b => (string)b["nameRu"] == "Солдат"));
@@ -64,6 +66,9 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawFrontEnd()
         {
+            MarketLayout();if(tradeRecoveryVisible){DrawTradeRecovery();return;}
+            if(marketOpen){DrawMarketModal();return;}
+            if(Event.current.type==EventType.Layout)showSheetNotice=!string.IsNullOrWhiteSpace(status)&&status!="Изменения сохранены на устройстве"&&!status.StartsWith("Импорт сохранён",StringComparison.Ordinal);
             // The main app and settings use the exact main-branch look, but
             // remain native Unity screens. Existing gameplay screens survive.
             if (screen == FrontScreen.Home) { DrawBrandHome(); return; }
@@ -81,48 +86,35 @@ namespace DndVtt.UnityPrototype
             var oldColor = GUI.color;
             string theme = preferences?.theme ?? "midnight";
             GUI.color = oldColor;
-            DrawBrandBackdrop(true); // Shared wallpaper + charcoal overlay on secondary screens.
-            float inset = Mathf.Min(28f, UiWidth * .04f);
-            GUILayout.BeginArea(new Rect(inset, 20, Mathf.Max(1, UiWidth - inset * 2), Mathf.Max(1, UiHeight - 40)));
-            GUILayout.BeginHorizontal(); GUILayout.Label("DnD VTT", heading); GUILayout.FlexibleSpace(); GUILayout.Label("Unity · " + UnityRelease.Version, muted); GUILayout.EndHorizontal();
-            // A 6-column PC toolbar becomes 3 comfortable rows of two on a
-            // portrait phone; all destinations stay accessible in either view.
+            if(screen==FrontScreen.Sheet)DrawClassicSheetBackdrop();else DrawBrandBackdrop(true);
+            float inset = screen==FrontScreen.Sheet?15:Mathf.Min(28f,UiWidth*.04f);
+            GUILayout.BeginArea(new Rect(inset, screen==FrontScreen.Sheet?8:20, Mathf.Max(1, UiWidth - inset * 2+(screen==FrontScreen.Sheet?8:0)), Mathf.Max(1, UiHeight - 40)));
             bool portraitLayout = UiHeight > UiWidth;
-            if (screen == FrontScreen.Sheet)
-            {
-                string[] sheetNavigation = { "⌂ Меню", "Персонажи", "Настройки" };
-                float buttonWidth = Mathf.Max(80, (UiWidth - inset * 2 - 24) / 3 - 8);
-                var sheetNavigationStyle = NavigationStyle(sheetNavigation, buttonWidth);
-                float buttonHeight = Mathf.Max(54, sheetNavigation.Max(label => sheetNavigationStyle.CalcHeight(new GUIContent(label), buttonWidth)));
-                GUILayout.BeginHorizontal();
-                for (int i = 0; i < sheetNavigation.Length; i++)
-                {
-                    bool clicked = GUILayout.Button(sheetNavigation[i], sheetNavigationStyle, GUILayout.Width(buttonWidth), GUILayout.Height(buttonHeight));
-                    DesktopUiSmoke.RecordButton(sheetNavigation[i], sheetNavigationStyle, GUILayoutUtility.GetLastRect());
-                    if (clicked) { if (i == 2) OpenSettings(); else Navigate(i == 0 ? FrontScreen.Home : FrontScreen.Characters); }
-                }
-                GUILayout.EndHorizontal();
-            }
+            if(screen==FrontScreen.Sheet)DrawClassicSheetNavigation();
             else
             {
+                GUILayout.BeginHorizontal();GUILayout.Label("DnD VTT",heading);GUILayout.FlexibleSpace();if(UiWidth>=700)GUILayout.Label("Unity · "+UnityRelease.Version,muted);GUILayout.EndHorizontal();
             string[] labels = portraitLayout ? new[] { "← Главная", screen == FrontScreen.Characters ? "Создать" : "Персонажи" } : new[] { "Главная", "Персонажи", "Создать", "Файлы", "3D-карта", "Настройки" };
             var destinations = portraitLayout ? new[] { FrontScreen.Home, screen == FrontScreen.Characters ? FrontScreen.Create : FrontScreen.Characters } : new[] { FrontScreen.Home, FrontScreen.Characters, FrontScreen.Create, FrontScreen.Import, FrontScreen.Map, FrontScreen.Settings };
             int columns = portraitLayout ? 2 : 6;
             float cellWidth = Mathf.Max(80, (UiWidth - inset * 2 - 24) / columns - 8);
             var navStyle = NavigationStyle(labels, cellWidth);
+            var activeNavStyle = new GUIStyle(navStyle) { normal = brandBlue.normal, hover = brandBlue.hover, active = brandBlue.active, focused = brandBlue.focused };
             float navHeight = Mathf.Max(54, labels.Max(label => navStyle.CalcHeight(new GUIContent(label), cellWidth)));
             GUILayout.BeginHorizontal();
             for (int i = 0; i < labels.Length; i++)
             {
                 if (i > 0 && i % columns == 0) { GUILayout.EndHorizontal(); GUILayout.BeginHorizontal(); }
-                bool clicked = GUILayout.Button(labels[i], navStyle, GUILayout.Width(cellWidth), GUILayout.Height(navHeight));
-                DesktopUiSmoke.RecordButton(labels[i], navStyle, GUILayoutUtility.GetLastRect());
+                var destinationStyle = destinations[i] == screen ? activeNavStyle : navStyle;
+                bool clicked = GUILayout.Button(labels[i], destinationStyle, GUILayout.Width(cellWidth), GUILayout.Height(navHeight));
+                DesktopUiSmoke.RecordButton(labels[i], destinationStyle, GUILayoutUtility.GetLastRect());
                 if (clicked) { if (destinations[i] == FrontScreen.Create) BeginCreation(); else if (destinations[i] == FrontScreen.Settings) OpenSettings(); else Navigate(destinations[i]); }
             }
             GUILayout.EndHorizontal(); GUILayout.Space(18);
             }
+            if(screen==FrontScreen.Sheet)GUILayout.Space(15);
             frontScroll = GUILayout.BeginScrollView(SwipePosition("front",frontScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);
-            GUILayout.BeginVertical(new GUIStyle { fixedWidth=Mathf.Max(1,UiWidth-inset*2-22),stretchWidth=false });
+            GUILayout.BeginVertical(new GUIStyle { fixedWidth=Mathf.Max(1,UiWidth-inset*2-(screen==FrontScreen.Sheet?0:22)),stretchWidth=false });
             switch (screen)
             {
                 case FrontScreen.Home:
@@ -161,12 +153,12 @@ namespace DndVtt.UnityPrototype
                     DrawCharacterBackups(false);
                     GUILayout.Label("Локальный файл: " + SavePath, muted); break;
             }
-            GUILayout.Space(20); GUILayout.Label(status, muted); GUILayout.EndVertical(); GUILayout.EndScrollView(); RegisterSwipe("front",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
+            if(screen==FrontScreen.Sheet){if(showSheetNotice){GUILayout.Space(8);GUILayout.Label(status,sheetQuiet);}}else{GUILayout.Space(20);GUILayout.Label(status,muted);}GUILayout.EndVertical(); GUILayout.EndScrollView(); RegisterSwipe("front",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
         }
         private void DrawCharacterBackups(bool fileButtons = true)
         {
             if (fileButtons) DrawCharacterFiles();
-            if (archive != null && GUILayout.Button("Создать резервную копию в файл", GUILayout.Height(52))) Attempt(() =>
+            if (archive != null && FitMenuButton("Создать резервную копию в файл")) Attempt(() =>
             {
                 string path = CharacterSheetStore.Backup(SavePath, archive);
                 GUIUtility.systemCopyBuffer = path;
@@ -175,11 +167,11 @@ namespace DndVtt.UnityPrototype
             if (!System.IO.File.Exists(SavePath + ".bak")) return;
             if (!confirmRestoreCharacters)
             {
-                if (GUILayout.Button("Восстановить предыдущий архив…", GUILayout.Height(52))) confirmRestoreCharacters = true;
+                if (FitMenuButton("Восстановить предыдущий архив…")) confirmRestoreCharacters = true;
                 return;
             }
             GUILayout.Label("Заменить текущий список героев предыдущей резервной копией? Текущий сохранённый архив останется в резерве.", muted);
-            if (GUILayout.Button("Подтвердить восстановление", GUILayout.Height(52))) Attempt(() =>
+            if (FitMenuButton("Подтвердить восстановление")) Attempt(() =>
             {
                 var candidate = CharacterSheetStore.RestorePrevious(SavePath);
                 archive = candidate.Count == 0 ? null : candidate; selected = 0;
@@ -187,7 +179,7 @@ namespace DndVtt.UnityPrototype
                 pendingCharacterDeleteId = pendingCharacterDeleteName = null;
                 status = "Предыдущий архив восстановлен";
             });
-            if (GUILayout.Button("Отмена восстановления", GUILayout.Height(52))) confirmRestoreCharacters = false;
+            if (FitMenuButton("Отмена восстановления")) confirmRestoreCharacters = false;
         }
         private void RequestCharacterDeletion(int index)
         {
@@ -205,32 +197,61 @@ namespace DndVtt.UnityPrototype
             ClearSheetInputs(); pendingCharacterDeleteId = pendingCharacterDeleteName = null;
             status = "Персонаж удалён с устройства";
         }
+        private static string RosterDetails(JObject hero) =>
+            ((string)hero["class"] ?? (string)hero["className"] ?? "Без класса") + " · " + CharacterSheetRules.Level(hero) + " ур. · " + (hero["raceName"] ?? hero["race"] ?? "Раса не указана");
         private void DrawRoster()
         {
-            if (archive == null) { GUILayout.Label("Пока нет персонажей. Создайте первого героя или импортируйте сохранение."); return; }
+            GUILayout.Label("Мои персонажи", heading);
+            if (archive == null || archive.Count == 0)
+            {
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.Label("Здесь будут ваши герои", sheetHeading);
+                GUILayout.Label("Создайте персонажа или добавьте существующий JSON-файл.", muted);
+                if (GUILayout.Button("Создать персонажа", brandGreen, GUILayout.MinHeight(52))) BeginCreation();
+                if (GUILayout.Button("Импортировать персонажей", GUILayout.MinHeight(52))) Navigate(FrontScreen.Import);
+                GUILayout.EndVertical(); return;
+            }
             if (pendingCharacterDeleteId != null)
             {
-                GUILayout.Label("Удаление персонажа", heading);
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.Label("Удаление персонажа", sheetHeading);
                 GUILayout.Label("Удалить «" + pendingCharacterDeleteName + "» с этого устройства?", GUI.skin.label);
                 GUILayout.Label("Облачная копия останется. Предыдущий локальный архив сохранится в резервной копии.", muted);
-                if (GUILayout.Button("Подтвердить удаление", GUILayout.Height(52))) Attempt(ConfirmCharacterDeletion);
-                if (GUILayout.Button("Отмена", GUILayout.Height(52))) pendingCharacterDeleteId = pendingCharacterDeleteName = null;
-                return;
+                if (GUILayout.Button("Отмена", GUILayout.MinHeight(52))) pendingCharacterDeleteId = pendingCharacterDeleteName = null;
+                if (GUILayout.Button("Подтвердить удаление", brandRed, GUILayout.MinHeight(52))) Attempt(ConfirmCharacterDeletion);
+                GUILayout.EndVertical(); return;
             }
-            GUILayout.Label("Мои персонажи", heading);
-            GUILayout.Label("Поиск по имени, расе или классу", muted); rosterSearch = GUILayout.TextField(rosterSearch, GUILayout.Height(52)); GUILayout.Space(12);
-            for (int i = 0; i < archive.Count; i++)
+            GUILayout.Label("Поиск по имени, расе или классу", muted);
+            GUILayout.BeginHorizontal();
+            rosterSearch = GUILayout.TextField(rosterSearch, GUILayout.MinHeight(52));
+            if (rosterSearch.Length > 0 && MeasuredMenuButton("Сброс", GUI.skin.button, GUILayout.Width(112), GUILayout.MinHeight(52))) { rosterSearch = ""; GUI.FocusControl(null); }
+            GUILayout.EndHorizontal();
+            string query = rosterSearch.Trim();
+            int[] visible = Enumerable.Range(0, archive.Count).Where(i =>
+                (archive.Name(i) + " " + RosterDetails(archive.Snapshot(i))).IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0).ToArray();
+            GUILayout.Label("Найдено: " + visible.Length + " из " + archive.Count, muted); GUILayout.Space(12);
+            if (visible.Length == 0)
             {
-                var hero = archive.Snapshot(i); string details = ((string)hero["class"] ?? (string)hero["className"] ?? "Без класса") + " · " + CharacterSheetRules.Level(hero) + " ур. · " + (hero["raceName"] ?? "Раса не указана");
-                if ((archive.Name(i) + " " + details).IndexOf(rosterSearch, StringComparison.OrdinalIgnoreCase) < 0) continue;
-                GUILayout.BeginVertical(GUI.skin.box); GUILayout.Label(archive.Name(i), heading); GUILayout.Label(details, muted);
-                GUILayout.Label("Здоровье " + archive.CurrentHp(i) + " / " + archive.MaximumHp(i) + "   ·   " + CharacterSheetRules.InventoryWeightKg(hero).ToString("0.##", CultureInfo.InvariantCulture) + " кг");
-                if (GUILayout.Button("Открыть лист  →", GUILayout.Height(52))) { selected = i; Navigate(FrontScreen.Sheet); }
-                if (GUILayout.Button("Удалить персонажа…", GUILayout.Height(52)))
-                RequestCharacterDeletion(i);
-                GUILayout.EndVertical(); GUILayout.Space(10);
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.Label("Ничего не найдено", sheetHeading);
+                GUILayout.Label("Проверьте имя, расу или класс. Персонажи остаются в вашем архиве.", muted);
+                if (GUILayout.Button("Показать всех персонажей", GUILayout.MinHeight(52))) { rosterSearch = ""; GUI.FocusControl(null); }
+                GUILayout.EndVertical();
+            }
+            foreach (int i in visible)
+            {
+                var hero = archive.Snapshot(i);
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.Label(archive.Name(i), brandName);
+                if (i == selected) GUILayout.Label("Текущий герой", sheetQuiet);
+                GUILayout.Label(RosterDetails(hero), muted);
+                GUILayout.Label("Здоровье " + archive.CurrentHp(i) + " / " + archive.MaximumHp(i) + "   ·   " + CharacterSheetRules.InventoryWeightKg(hero).ToString("0.##", CultureInfo.InvariantCulture) + " кг", sheetQuiet);
+                if (MeasuredMenuButton("Открыть лист  →", brandBlue, GUILayout.MinHeight(52))) { selected = i; Navigate(FrontScreen.Sheet); }
+                if (MeasuredMenuButton("Удалить персонажа…", brandPlain, GUILayout.MinHeight(48))) RequestCharacterDeletion(i);
+                GUILayout.EndVertical(); GUILayout.Space(8);
             }
         }
+        private void SetCreationStep(int step) { FlushCreationNumbers(); ResetFormInput(); creationStep=step; frontScroll=Vector2.zero; }
         private void DrawCreation()
         {
             GUILayout.Label("Создание персонажа", heading);
@@ -240,7 +261,7 @@ namespace DndVtt.UnityPrototype
             var race = (JObject)races[raceIndex]; var cls = (JObject)classes[classIndex]; var bg = (JObject)backgrounds[backgroundIndex];
             if (creationStep == 0)
             {
-                GUILayout.Label("Имя героя"); heroName = GUILayout.TextField(heroName, 120, GUILayout.Height(52));
+                GUILayout.Label("Имя героя"); GUI.SetNextControlName("creation-name"); heroName = GUILayout.TextField(heroName, 120, GUILayout.Height(52));
                 Picker("Предыстория", backgrounds, ref backgroundIndex, "nameRu"); GUILayout.Label((string)backgrounds[backgroundIndex]["description"] ?? "", muted);
             }
             else if (creationStep == 1)
@@ -253,7 +274,7 @@ namespace DndVtt.UnityPrototype
             else if (creationStep == 2)
             {
                 statMode = MenuGrid(statMode,new[] { "Покупка · 27 очков", "Ввод мастером" },2);
-                for (int i = 0; i < 6; i++) { GUILayout.BeginHorizontal(); GUILayout.Label(CharacterSheetRules.StatNames[i], GUILayout.Width(180)); statInputs[i] = GUILayout.TextField(statInputs[i], GUILayout.Height(52)); GUILayout.EndHorizontal(); }
+                for (int i = 0; i < 6; i++) { GUILayout.BeginHorizontal(); GUILayout.Label(CharacterSheetRules.StatNames[i], GUILayout.Width(180)); statInputs[i] = IntegerField("creation-stat-"+CharacterSheetRules.Stats[i],statInputs[i], GUILayout.MinHeight(52)); GUILayout.EndHorizontal(); }
                 int total = 0; bool valid = true; foreach (string text in statInputs) { if (int.TryParse(text, out int n) && n >= 8 && n <= 15) total += CharacterCreation.PointCost(n); else valid = false; }
                 if (statMode == 0) GUILayout.Label(valid ? "Потрачено: " + total + " / 27 (до расовых бонусов)" : "Для покупки допустимы значения 8–15");
                 foreach (var entry in new[] { race, cls, bg }) foreach (JObject choice in (JArray)entry["choices"]) DrawCreationChoice(choice);
@@ -284,20 +305,21 @@ namespace DndVtt.UnityPrototype
                     GUILayout.Label("Классовые эффекты и стартовые наборы ещё переносятся. Неприменённые решения сохранятся в листе как ожидающие обработки; снаряжение можно добавить из справочника.", muted);
                 }
             }
-            GUILayout.Space(20); GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Назад", GUILayout.Height(42))) { if (creationStep == 0) Navigate(FrontScreen.Characters); else creationStep--; frontScroll = Vector2.zero; }
-            if (GUILayout.Button(creationStep == 3 ? "Создать и сохранить героя" : "Далее  →", GUILayout.Height(42))) Attempt(() =>
+            bool stackActions=UiHeight>UiWidth&&creationStep==3;
+            GUILayout.Space(20); if(stackActions)GUILayout.BeginVertical();else GUILayout.BeginHorizontal();
+            if (FitMenuButton("Назад")) { if (creationStep == 0) Navigate(FrontScreen.Characters); else { SetCreationStep(creationStep-1); } frontScroll = Vector2.zero; }
+            if (FitMenuButton(creationStep == 3 ? "Создать и сохранить героя" : "Далее  →")) Attempt(() =>
             {
                 if (creationStep == 0 && string.IsNullOrWhiteSpace(heroName)) throw new FormatException("Введите имя героя");
-                if (creationStep == 2) lastPreview = BuildDraft(race, cls, bg);
+                if (creationStep == 2) { FlushCreationNumbers(); lastPreview = BuildDraft(race, cls, bg); }
                 if (creationStep == 3)
                 {
                     var candidate = archive == null ? new LegacyCharacterArchive(new JArray(lastPreview.DeepClone()).ToString()) : archive.Append(lastPreview);
                     CharacterSheetStore.Save(SavePath, candidate); archive = candidate; selected = archive.Count - 1; Navigate(FrontScreen.Sheet); status = "Персонаж создан и сохранён";
                 }
-                else { creationStep++; frontScroll = Vector2.zero; }
+                else { SetCreationStep(creationStep+1); }
             });
-            GUILayout.EndHorizontal();
+            if(stackActions)GUILayout.EndVertical();else GUILayout.EndHorizontal();
         }
         private JObject BuildDraft(JObject race, JObject cls, JObject bg)
         {
@@ -372,57 +394,66 @@ namespace DndVtt.UnityPrototype
             }
             CharacterSheetRules.CoinMultipliers(rates); return rates;
         }
+        private bool coinSubtract,coinActionChoices,coinLogOpen;
+        private GUIStyle coinCell,coinTitle;
         private void Wallet(JObject hero, ref bool changed, ref bool persist)
         {
-            GUILayout.Label("Кошелёк", heading); var coins = hero["coins"] is JObject old ? (JObject)old.DeepClone() : new JObject(); bool edited = false;
-            string[] keys = { "cp", "sp", "ep", "gp", "pp" }, names = { "Медные", "Серебряные", "Электрум", "Золотые", "Платиновые" };
-            for (int i = 0; i < keys.Length; i++) Scalar(coins, keys[i], names[i], ref edited, 0);
-            if (edited)
+            PrepareCompactControls();coinCell??=new GUIStyle(cloneInput){fontSize=12,alignment=TextAnchor.MiddleCenter,padding=new RectOffset(4,4,5,5)};coinTitle??=new GUIStyle(sheetHeading){fontSize=16,normal={textColor=new Color(1f,193/255f,7/255f)}};
+            if(hero["coins"]!=null&&!(hero["coins"] is JObject)){ReadOnly(hero,"coins","Неизвестный формат монет — данные сохранены");return;}
+            var coins=(JObject)(hero["coins"] as JObject??new JObject()).DeepClone();bool edited=false;int[] order={4,3,2,1,0};string[] names={"Мл","Сл","Эл","Зл","Пл"};
+            GUILayout.BeginVertical(GUI.skin.box);GUILayout.BeginHorizontal();GUILayout.Label("Монеты:",sheetQuiet);showPlatinum=GUILayout.Toggle(showPlatinum,"Пл (Платина)",GUILayout.Height(30));showElectrum=GUILayout.Toggle(showElectrum,"Эл (Электрум)",GUILayout.Height(30));GUILayout.EndHorizontal();
+            string[] rateLabels={"1 пл =","1 зол =","1 зол =","1 сер ="},rateUnits={"зол.","эл.","сер.","мед."};
+            for(int i=0;i<4;i++)
+            {if(i%2==0)GUILayout.BeginHorizontal();GUILayout.Label(rateLabels[i],sheetQuiet,GUILayout.Width(46));coinRateInputs[i]=IntegerField("wallet-rate-"+i,coinRateInputs[i],coinCell,GUILayout.Height(28),GUILayout.Width(43));GUILayout.Label(rateUnits[i],sheetQuiet,GUILayout.MinWidth(25));if(i%2==1)GUILayout.EndHorizontal();}
+            GUILayout.Space(8);GUILayout.Label("Мои монеты",coinTitle);CloneListRule();GUILayout.Space(6);GUILayout.BeginHorizontal();
+            foreach(int i in order)
             {
-                if (keys.Any(k => LegacyJson.Number(coins[k]) < 0)) status = "Количество монет не может быть отрицательным";
-                else { hero["coins"] = coins; changed = true; }
+                if(i==4&&!showPlatinum||i==2&&!showElectrum)continue;string key=CharacterSheetRules.CoinKeys[i];GUILayout.BeginVertical(GUILayout.ExpandWidth(true));GUILayout.Label(names[i],cloneMetricLabel);
+                string owner="wallet-balance:"+hero["id"]+":"+key,old=edits.TryGetValue(owner,out string buffered)?buffered:coins[key]?.ToString()??"0";
+                string value=IntegerField(owner,old,coinCell,GUILayout.Height(30),GUILayout.MinWidth(25));edits[owner]=value;
+                if(value!=old){if(long.TryParse(value,NumberStyles.None,CultureInfo.InvariantCulture,out long count)&&count>=0){coins[key]=count;edited=true;}else status="Введите целое неотрицательное количество монет";}
+                GUILayout.EndVertical();
             }
-            try { var currentRates = CurrentCoinRates(); GUILayout.Label("Общая стоимость: " + (CharacterSheetRules.CoinTotal(coins, currentRates) / CharacterSheetRules.CoinMultipliers(currentRates)[3]).ToString("0.##", CultureInfo.InvariantCulture) + " зм", muted); }
-            catch (FormatException error) { GUILayout.Label(error.Message, muted); }
-            GUILayout.Space(14); GUILayout.Label("Получение и трата монет", heading);
-            GUILayout.Label("Операция разменяет монеты по выбранному курсу и сразу сохранит архив, включая текущие правки листа.", muted);
-            GUILayout.BeginHorizontal(); showPlatinum = GUILayout.Toggle(showPlatinum, "Использовать платину"); showElectrum = GUILayout.Toggle(showElectrum, "Использовать электрум"); GUILayout.EndHorizontal();
-            for (int i = 0; i < keys.Length; i++)
+            GUILayout.EndHorizontal();if(edited){hero["coins"]=coins;changed=true;}
+            GUILayout.Space(12);GUILayout.Label("Управление кошельком",coinTitle);GUILayout.Space(6);GUILayout.BeginHorizontal();
+            foreach(int i in order)
             {
-                if ((keys[i] == "pp" && !showPlatinum) || (keys[i] == "ep" && !showElectrum)) continue;
-                GUILayout.BeginHorizontal(); GUILayout.Label(names[i], GUILayout.Width(200)); coinInput[i] = GUILayout.TextField(coinInput[i], GUILayout.Height(52)); GUILayout.EndHorizontal();
+                if(i==4&&!showPlatinum||i==2&&!showElectrum)continue;GUILayout.BeginVertical(GUILayout.ExpandWidth(true));GUILayout.Label(names[i]+" ("+CharacterSheetRules.CoinKeys[i].ToUpperInvariant()+")",cloneMetricLabel);
+                coinInput[i]=IntegerField("wallet-amount-"+i,coinInput[i],coinCell,GUILayout.Height(30),GUILayout.MinWidth(25));GUILayout.EndVertical();
             }
-            showCoinRates = GUILayout.Toggle(showCoinRates, "Настроить курсы размена", GUILayout.Height(52));
-            if (showCoinRates)
-            {
-                string[] rateLabels = { "Золотых за платиновую", "Электрума за золотую", "Серебряных за золотую", "Медных за серебряную" };
-                for (int i = 0; i < 4; i++) { GUILayout.BeginHorizontal(); GUILayout.Label(rateLabels[i], GUILayout.Width(240)); coinRateInputs[i] = GUILayout.TextField(coinRateInputs[i], GUILayout.Height(52)); GUILayout.EndHorizontal(); }
-            }
-            string operation = null; GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Получить монеты", GUILayout.Height(42))) operation = "add";
-            if (GUILayout.Button("Потратить монеты", GUILayout.Height(42))) operation = "sub";
-            GUILayout.EndHorizontal();
-            if (operation != null)
+            GUILayout.EndHorizontal();GUILayout.Space(8);GUILayout.BeginHorizontal();
+            if(MeasuredMenuButton(coinSubtract?"Вычесть (потратить) ▾":"Добавить монеты ▾",cloneGreen,GUILayout.Height(35)))coinActionChoices=!coinActionChoices;
+            if(MeasuredMenuButton("Посчитать",cloneBlue,GUILayout.Height(35)))
             {
                 try
                 {
-                    var amount = new JObject();
-                    for (int i = 0; i < keys.Length; i++)
+                    CompleteNumericKeyboard();var amount=new JObject();
+                    for(int i=0;i<4;i++)if(numericSession.TryTake("wallet-rate-"+i,out string rate))coinRateInputs[i]=rate;
+                    for(int i=0;i<5;i++)
                     {
-                        bool hidden = (keys[i] == "pp" && !showPlatinum) || (keys[i] == "ep" && !showElectrum);
-                        if (!hidden && (!long.TryParse(coinInput[i], NumberStyles.Integer, CultureInfo.InvariantCulture, out long value) || value < 0)) throw new FormatException("Введите целое неотрицательное количество монет");
-                        amount[keys[i]] = hidden ? 0 : long.Parse(coinInput[i], CultureInfo.InvariantCulture);
+                        string key=CharacterSheetRules.CoinKeys[i];if(numericSession.TryTake("wallet-amount-"+i,out string value))coinInput[i]=value;
+                        if(numericSession.TryTake("wallet-balance:"+hero["id"]+":"+key,out string balance))
+                        {if(!long.TryParse(balance,NumberStyles.None,CultureInfo.InvariantCulture,out long count)||count<0)throw new FormatException("Проверьте монеты");coins[key]=count;}
+                        bool hidden=i==4&&!showPlatinum||i==2&&!showElectrum;
+                        if(!hidden&&(!long.TryParse(coinInput[i],NumberStyles.None,CultureInfo.InvariantCulture,out long parsed)||parsed<0))throw new FormatException("Проверьте сумму операции");
+                        amount[key]=hidden?0:long.Parse(coinInput[i],CultureInfo.InvariantCulture);
                     }
-                    CharacterSheetRules.ApplyCoinOperation(hero, amount, operation, CurrentCoinRates(), showPlatinum, showElectrum, DateTime.Now.ToString("HH:mm:ss")); changed = true; persist = true;
+                    var candidate=(JObject)hero.DeepClone();candidate["coins"]=coins;CharacterSheetRules.ApplyCoinOperation(candidate,amount,coinSubtract?"sub":"add",CurrentCoinRates(),showPlatinum,showElectrum,DateTime.Now.ToString("HH:mm:ss"));
+                    hero["coins"]=candidate["coins"].DeepClone();hero["coinLog"]=candidate["coinLog"].DeepClone();changed=persist=true;
                 }
-                catch (FormatException error) { status = error.Message; }
+                catch(Exception error){status=error.Message;}
             }
-            GUILayout.Space(14); GUILayout.Label("История кошелька", heading);
-            if (hero["coinLog"] is JArray log) foreach (JObject entry in log.OfType<JObject>())
+            GUILayout.EndHorizontal();
+            if(coinActionChoices){int action=GUILayout.SelectionGrid(coinSubtract?1:0,new[]{"Добавить монеты","Вычесть (потратить)"},1);if(action!=(coinSubtract?1:0)){coinSubtract=action==1;coinActionChoices=false;}}
+            try{var rates=CurrentCoinRates();var amount=new JObject();for(int i=0;i<5;i++)amount[CharacterSheetRules.CoinKeys[i]]=long.TryParse(coinInput[i],out long value)&&value>=0?value:0;GUILayout.Label("Сумма операции: "+(CharacterSheetRules.CoinTotal(amount,rates)/CharacterSheetRules.CoinMultipliers(rates)[3]).ToString("0.##",CultureInfo.InvariantCulture)+" зол.",sheetQuiet);}catch(Exception error){GUILayout.Label(error.Message,sheetQuiet);}
+            if(MeasuredMenuButton("Лог транзакций кошелька "+(coinLogOpen?"▴":"▾"),GUI.skin.button,GUILayout.Height(35)))coinLogOpen=!coinLogOpen;
+            if(coinLogOpen)
             {
-                string amounts = string.Join(" · ", keys.Select((key, i) => entry[key]?.ToString() + " " + names[i].ToLowerInvariant()));
-                GUILayout.Label("[" + entry["time"] + "] " + ((string)entry["action"] == "add" ? "+ " : "− ") + amounts, muted);
+                var log=hero["coinLog"] as JArray;if(log==null||log.Count==0)GUILayout.Label("История пуста",sheetQuiet);
+                else foreach(JObject entry in log.OfType<JObject>())GUILayout.Label("["+entry["time"]+"] "+((string)entry["action"]=="add"?"+ ":"− ")+string.Join(" · ",order.Select(i=>entry[CharacterSheetRules.CoinKeys[i]]+" "+names[i])),sheetQuiet);
             }
+            GUILayout.EndVertical();
         }
+
     }
 }

@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 namespace DndVtt.UnityPrototype
 {
     // Data-only packages. All arithmetic/transactions execute in the trusted client.
-    public static class CommerceRules
+    public static partial class CommerceRules
     {
         private static int Round(double value) => (int)Math.Floor(value + .5);
         private static int Clamp(int n, int min, int max) => Math.Max(min, Math.Min(max, n));

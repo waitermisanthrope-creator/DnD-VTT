@@ -17,6 +17,37 @@ namespace DndVtt.UnityPrototype
         public bool autoCheckUpdates = true;
         public bool keepScreenAwake = true;
         private JObject original = new JObject();
+        public JObject MarketState=>original["dnd_market_v55_state"]==null?new JObject():original["dnd_market_v55_state"] is JObject state?(JObject)state.DeepClone():throw new FormatException("Неизвестный формат глобального рынка — данные сохранены");
+        public ClientPreferences WithMarketState(JObject state)
+        {
+            var copy=Parse(Export());_ = copy.MarketState;copy.original["dnd_market_v55_state"]=(state??throw new ArgumentNullException(nameof(state))).DeepClone();
+            if(System.Text.Encoding.UTF8.GetByteCount(copy.Export())>64*1024)throw new FormatException("Настройки и состояние рынка слишком велики");
+            return copy;
+        }
+        public JArray CustomRaces
+        {
+            get
+            {
+                var token=original["dnd_custom_races"];
+                if(token==null||token.Type==JTokenType.Null)return new JArray();
+                return token is JArray list?(JArray)list.DeepClone():throw new FormatException("Неизвестный формат каталога своих рас — данные сохранены");
+            }
+        }
+        public void AddCustomRace(JObject race)
+        {
+            if(race==null||race["bonuses"] is not JObject||race["id"]?.Type!=JTokenType.String||!race["id"].ToString().StartsWith("custom_",StringComparison.Ordinal))throw new FormatException("Некорректная своя раса");
+            CharacterSheetRules.SelectRace(new JObject{["id"]="validation"},race);
+            var list=CustomRaces;if(list.OfType<JObject>().Any(r=>JToken.DeepEquals(r["id"],race["id"])))throw new FormatException("Такая раса уже существует");
+            list.Add(race.DeepClone());var draft=Parse(Export());draft.original["dnd_custom_races"]=list;
+            if(System.Text.Encoding.UTF8.GetByteCount(draft.Export())>64*1024)throw new FormatException("Каталог своих рас слишком большой");
+            original["dnd_custom_races"]=list;
+        }
+        public ClientPreferences WithDefaults(string platformQuality)
+        {
+            var retained=JObject.Parse(Export());
+            foreach(var field in JObject.Parse(new ClientPreferences{quality=platformQuality}.Export()).Properties())retained[field.Name]=field.Value.DeepClone();
+            return Parse(retained.ToString());
+        }
         public void Validate()
         {
             if (float.IsNaN(sensitivity) || float.IsInfinity(sensitivity) || sensitivity < .25f || sensitivity > 3 ||
@@ -53,6 +84,7 @@ namespace DndVtt.UnityPrototype
         public static ClientPreferences Load(string path) => Parse(File.ReadAllText(path));
         public void Save(string path)
         {
+            using var lease=CharacterSheetStore.AcquireWriteLease(path);
             string json = Export(); string full = Path.GetFullPath(path); Directory.CreateDirectory(Path.GetDirectoryName(full));
             using (var stream = new FileStream(full + ".pending", FileMode.Create, FileAccess.Write, FileShare.None))
             using (var writer = new StreamWriter(stream, new System.Text.UTF8Encoding(false))) { writer.Write(json); writer.Flush(); stream.Flush(true); }

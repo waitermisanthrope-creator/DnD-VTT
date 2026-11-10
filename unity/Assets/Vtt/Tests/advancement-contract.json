@@ -1,0 +1,6601 @@
+{
+  "cases": [
+    {
+      "name": "Оккультист",
+      "level": 1,
+      "features": [
+        "Spellcasting",
+        "Occult Tradition"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 2,
+      "features": [
+        "Occult Rites"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 3,
+      "features": [
+        "Occult Tradition feature"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 4,
+      "features": [
+        "Ability Score Improvement"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 5,
+      "features": [
+        "Occult Rites"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 6,
+      "features": [
+        "Occult Tradition feature"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 7,
+      "features": [
+        "Occult Rites"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 8,
+      "features": [
+        "Ability Score Improvement"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 9,
+      "features": [
+        "Occult Rites"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 10,
+      "features": [
+        "Traditional Expertise"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 11,
+      "features": [
+        "Occult Rites"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 12,
+      "features": [
+        "Ability Score Improvement"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 13,
+      "features": [
+        "Occult Rites"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 14,
+      "features": [
+        "Occult Tradition feature"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 15,
+      "features": [
+        "Occult Rites"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 16,
+      "features": [
+        "Ability Score Improvement"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 17,
+      "features": [
+        "Occult Rites"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 18,
+      "features": [
+        "Occult Rites"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 19,
+      "features": [
+        "Ability Score Improvement"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Оккультист",
+      "level": 20,
+      "features": [
+        "The Old Ways"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 1,
+      "features": [
+        "Hexes",
+        "Spellcasting",
+        "Witch's Curse"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 2,
+      "features": [
+        "Cackle",
+        "Familiar"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 3,
+      "features": [
+        "Witch's Craft"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 4,
+      "features": [
+        "Ability Score Improvement"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 5,
+      "features": [
+        "Insidious Spell"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 6,
+      "features": [
+        "Witch's Craft feature"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 7,
+      "features": [
+        "Improved Familiar"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 8,
+      "features": [
+        "Ability Score Improvement"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 9,
+      "features": [
+        "Dying Curse"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 10,
+      "features": [
+        "Witch's Craft feature"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 11,
+      "features": [
+        "Grand Hex"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 12,
+      "features": [
+        "Ability Score Improvement"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 13,
+      "features": [
+        "Grand Hex"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 14,
+      "features": [
+        "Witch's Craft feature"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 15,
+      "features": [
+        "Grand Hex"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 16,
+      "features": [
+        "Ability Score Improvement"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 17,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 18,
+      "features": [
+        "Grand Hex"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 19,
+      "features": [
+        "Ability Score Improvement"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Ведьма",
+      "level": 20,
+      "features": [
+        "Hexmaster"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 1,
+      "features": [
+        "Бомбы",
+        "Реагенты",
+        "Варка зелий"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 2,
+      "features": [
+        "Прайм-бомба",
+        "Формулы бомб",
+        "Синтез реагентов"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 3,
+      "features": [
+        "Подкласс Алхимика"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта",
+        "Зелья"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 5,
+      "features": [
+        "Открытие",
+        "Улучшенные бомбы"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 6,
+      "features": [
+        "Особенность подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 7,
+      "features": [
+        "Уклонение"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта",
+        "Зелья"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 9,
+      "features": [
+        "Открытие"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 10,
+      "features": [
+        "Особенность подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 11,
+      "features": [
+        "Покрытие взрыва"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта",
+        "Зелья"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 13,
+      "features": [
+        "Открытие"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 14,
+      "features": [
+        "Особенность подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 15,
+      "features": [
+        "Миксолог зелий"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта",
+        "Зелья"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 17,
+      "features": [
+        "Открытие"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 18,
+      "features": [
+        "Экспериментатор"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 19,
+      "features": [
+        "Эпический дар"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Алхимик",
+      "level": 20,
+      "features": [
+        "Философский камень",
+        "Ядерная бомба"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 1,
+      "features": [
+        "Охотничья погибель",
+        "Кровавое проклятие"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 2,
+      "features": [
+        "Боевой стиль",
+        "Алый обряд"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 3,
+      "features": [
+        "Орден кровавых охотников"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 5,
+      "features": [
+        "Дополнительная атака"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 6,
+      "features": [
+        "Клеймо наказания",
+        "Улучшение Кровавого проклятия"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 7,
+      "features": [
+        "Умение ордена",
+        "Улучшение Алого обряда"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 9,
+      "features": [
+        "Мрачная психометрия"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 10,
+      "features": [
+        "Тёмное усиление",
+        "Дополнительное кровавое проклятие"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 11,
+      "features": [
+        "Умение ордена"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 13,
+      "features": [
+        "Клеймо привязки",
+        "Улучшение Кровавого проклятия"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 14,
+      "features": [
+        "Закалённая душа",
+        "Улучшение Алого обряда",
+        "Дополнительное кровавое проклятие"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 15,
+      "features": [
+        "Умение ордена"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 17,
+      "features": [
+        "Улучшение Кровавого проклятия"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 18,
+      "features": [
+        "Умение ордена",
+        "Дополнительное кровавое проклятие"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Кровавый охотник",
+      "level": 20,
+      "features": [
+        "Кровавое мастерство"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 1,
+      "features": [
+        "Infernal contract",
+        "Brand / mark system"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 2,
+      "features": [
+        "Fighting style",
+        "Infernal resource"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 3,
+      "features": [
+        "Выбор подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 5,
+      "features": [
+        "Extra Attack"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 6,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 7,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 9,
+      "features": [
+        "Contract feature"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 10,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 11,
+      "features": [
+        "Improved infernal feature"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 13,
+      "features": [
+        "Contract feature"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 14,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 15,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 17,
+      "features": [
+        "Major infernal feature"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 18,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Иллиригер",
+      "level": 20,
+      "features": [
+        "Epic infernal mastery"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 1,
+      "features": [
+        "Monstrous Companion",
+        "Ferocity system"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 2,
+      "features": [
+        "Companion maneuver"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 3,
+      "features": [
+        "Выбор подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 5,
+      "features": [
+        "Extra Attack"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 6,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 7,
+      "features": [
+        "Companion feature"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 9,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 10,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 11,
+      "features": [
+        "Companion feature"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 13,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 14,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 15,
+      "features": [
+        "Companion feature"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 17,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 18,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бистхарт",
+      "level": 20,
+      "features": [
+        "Beastheart mastery"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 1,
+      "features": [
+        "Fisticuffs",
+        "Iron Chin",
+        "Moxie"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 2,
+      "features": [
+        "Dig Deep"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 3,
+      "features": [
+        "Fight Club"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 5,
+      "features": [
+        "Extra Attack",
+        "Haymaker"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 6,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 7,
+      "features": [
+        "Fancy Footwork",
+        "Shake It Off"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 9,
+      "features": [
+        "Down but Not Out"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 10,
+      "features": [
+        "School of Hard Knocks"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 11,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 13,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 14,
+      "features": [
+        "Unbreakable"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 15,
+      "features": [
+        "Herculean"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 17,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 18,
+      "features": [
+        "Fighting Spirit"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Пугилист",
+      "level": 20,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 1,
+      "features": [
+        "Завоёванное проклятие",
+        "Сглаз"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 2,
+      "features": [
+        "Маледикционная метаморфоза",
+        "Колдовство",
+        "Контроль недуга"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 3,
+      "features": [
+        "Особенность завоёванного проклятия",
+        "Ревнивый морок"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 5,
+      "features": [
+        "Особенность завоёванного проклятия"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 6,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 7,
+      "features": [
+        "Улучшение Ревнивого морока"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 9,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 10,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 11,
+      "features": [
+        "Особенность завоёванного проклятия"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 13,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 14,
+      "features": [
+        "Улучшение Ревнивого морока",
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 15,
+      "features": [
+        "Особенность завоёванного проклятия"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 17,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 18,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Аккурсд",
+      "level": 20,
+      "features": [
+        "Особенность завоёванного проклятия",
+        "Улучшение Ревнивого морока"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 1,
+      "features": [
+        "Псионический архетип",
+        "Псионика"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 2,
+      "features": [
+        "Псионические таланты"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 3,
+      "features": [
+        "Вторичная дисциплина",
+        "Особенность псионического архетипа"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 5,
+      "features": [
+        "Псионическое мастерство"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 6,
+      "features": [
+        "Особенность псионического архетипа"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 7,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 9,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 10,
+      "features": [
+        "Особенность псионического архетипа"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 11,
+      "features": [
+        "Врождённая псионическая способность (6 уровень)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 13,
+      "features": [
+        "Врождённая псионическая способность (7 уровень)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 14,
+      "features": [
+        "Особенность псионического архетипа"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 15,
+      "features": [
+        "Врождённая псионическая способность (8 уровень)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 17,
+      "features": [
+        "Врождённая псионическая способность (9 уровень)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 18,
+      "features": [
+        "Третья дисциплина"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Псионик",
+      "level": 20,
+      "features": [
+        "Вознесение"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 1,
+      "features": [
+        "Руническое знание",
+        "Полиглот"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 2,
+      "features": [
+        "Хранительский диалект",
+        "Рунная стойка"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 3,
+      "features": [
+        "Герметическая интуиция"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 5,
+      "features": [
+        "Причинное призывание"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 6,
+      "features": [
+        "Особенность хранительского диалекта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 7,
+      "features": [
+        "Гармоническая настройка"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 9,
+      "features": [
+        "Рунный напев"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 10,
+      "features": [
+        "Особенность хранительского диалекта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 11,
+      "features": [
+        "Вездесущность"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 13,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 14,
+      "features": [
+        "Особенность хранительского диалекта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 15,
+      "features": [
+        "Всеведение"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 17,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 18,
+      "features": [
+        "Всемогущество"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Рунный хранитель",
+      "level": 20,
+      "features": [
+        "Улучшение Рунного напева"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 1,
+      "features": [
+        "Изучение",
+        "Анализ"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 2,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 3,
+      "features": [
+        "Специализация класса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 5,
+      "features": [
+        "Дополнительная атака / усиление основной способности"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 6,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 7,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 9,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 10,
+      "features": [
+        "Улучшение специализации"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 11,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 13,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 14,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 15,
+      "features": [
+        "Великая особенность класса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 17,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 18,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик / черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Савант",
+      "level": 20,
+      "features": [
+        "Мастерство класса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 1,
+      "features": [
+        "Кровная линия",
+        "Дикая форма"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 2,
+      "features": [
+        "Первобытная связь"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 3,
+      "features": [
+        "Звериные инстинкты"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 5,
+      "features": [
+        "Дикий воин",
+        "Мистические удары"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 6,
+      "features": [
+        "Всплеск адреналина"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 7,
+      "features": [
+        "Особенность кровной линии"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 9,
+      "features": [
+        "Дикая осведомлённость"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 10,
+      "features": [
+        "Первобытная стойкость"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 11,
+      "features": [
+        "Первобытная форма"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 13,
+      "features": [
+        "Особенность кровной линии"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 14,
+      "features": [
+        "Звериные чувства"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 15,
+      "features": [
+        "Мифические формы"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 17,
+      "features": [
+        "Первобытное возрождение"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 18,
+      "features": [
+        "Особенность кровной линии"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Шифтер",
+      "level": 20,
+      "features": [
+        "Сила природы"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 1,
+      "features": [
+        "Боевой стиль",
+        "Стойка часового",
+        "Мастерство оружия"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 2,
+      "features": [
+        "Тактика стража",
+        "Непоколебимая решимость"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 3,
+      "features": [
+        "Призвание стража"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 5,
+      "features": [
+        "Дополнительная атака",
+        "Перехват"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 6,
+      "features": [
+        "Способность призвания стража"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 7,
+      "features": [
+        "Стойкость"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 9,
+      "features": [
+        "Выжить"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 10,
+      "features": [
+        "Способность призвания стража"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 11,
+      "features": [
+        "Удар часового"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 13,
+      "features": [
+        "Источник жизни"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 14,
+      "features": [
+        "Расширенная тактика"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 15,
+      "features": [
+        "Улучшенная решимость"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 17,
+      "features": [
+        "Способность призвания стража"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 18,
+      "features": [
+        "Душа часового"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 19,
+      "features": [
+        "Эпический дар"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Страж",
+      "level": 20,
+      "features": [
+        "Легендарное сопротивление"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 1,
+      "features": [
+        "Leadership Style — Стиль лидерства",
+        "Inspiring Word — Вдохновляющее слово"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 2,
+      "features": [
+        "Fighting Style — Стиль боя",
+        "Tactical Exploits — Тактические приёмы"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 3,
+      "features": [
+        "Academy of War — Военная академия"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 5,
+      "features": [
+        "Extra Attack — Дополнительная атака"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 6,
+      "features": [
+        "Academy feature — Особенность академии"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 7,
+      "features": [
+        "Valiant Leader — Доблестный лидер"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 9,
+      "features": [
+        "Rallying Cry — Боевой клич"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 10,
+      "features": [
+        "Unwavering Will — Непоколебимая воля"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 11,
+      "features": [
+        "Tactical Superiority — Тактическое превосходство"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 13,
+      "features": [
+        "Rallying Cry — Боевой клич (2)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 14,
+      "features": [
+        "Academy feature — Особенность академии"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 15,
+      "features": [
+        "Exalted Leader — Возвышенный лидер"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 17,
+      "features": [
+        "Rallying Cry — Боевой клич (3)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 18,
+      "features": [
+        "Academy feature — Особенность академии"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Военачальник",
+      "level": 20,
+      "features": [
+        "Dauntless — Неустрашимый"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 1,
+      "features": [
+        "Использование заклинаний",
+        "Бардовское вдохновение (d6)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 2,
+      "features": [
+        "Разносторонний талант",
+        "Песнь отдыха (d6)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 3,
+      "features": [
+        "Коллегия барда (Подкласс)",
+        "Искусность"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 5,
+      "features": [
+        "Бардовское вдохновение (d8)",
+        "Источник вдохновения"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 6,
+      "features": [
+        "Контрпесня",
+        "Способность коллегии"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 7,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 9,
+      "features": [
+        "Песнь отдыха (d8)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 10,
+      "features": [
+        "Бардовское вдохновение (d10)",
+        "Искусственные секреты",
+        "Искусность"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 11,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 13,
+      "features": [
+        "Песнь отдыха (d10)",
+        "Бардовское вдохновение (d12)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 14,
+      "features": [
+        "Искусственные секреты",
+        "Способность коллегии"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 15,
+      "features": [
+        "Песнь отдыха (d12)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 17,
+      "features": [
+        "Искусственные секреты"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 18,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Бард",
+      "level": 20,
+      "features": [
+        "Превосходное вдохновение"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Варвар",
+      "level": 1,
+      "features": [
+        "Ярость",
+        "Защита без доспехов (Варвар)"
+      ],
+      "fields": {
+        "ragesCount": 2,
+        "rageDamageBonus": 2
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 2,
+      "features": [
+        "Безрассудная атака",
+        "Чувство опасности"
+      ],
+      "fields": {
+        "ragesCount": 2,
+        "rageDamageBonus": 2
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 3,
+      "features": [
+        "Ветвящийся путь (Подкласс / Варварский архетип)"
+      ],
+      "fields": {
+        "ragesCount": 3,
+        "rageDamageBonus": 2
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "ragesCount": 3,
+        "rageDamageBonus": 2
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 5,
+      "features": [
+        "Дополнительная атака",
+        "Быстрое движение"
+      ],
+      "fields": {
+        "ragesCount": 3,
+        "rageDamageBonus": 2
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 6,
+      "features": [
+        "Способность подкласса (Бросок ярости и др.)"
+      ],
+      "fields": {
+        "ragesCount": 4,
+        "rageDamageBonus": 2
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 7,
+      "features": [
+        "Дикое чутье"
+      ],
+      "fields": {
+        "ragesCount": 4,
+        "rageDamageBonus": 2
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "ragesCount": 4,
+        "rageDamageBonus": 2
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 9,
+      "features": [
+        "Свирепый критический удар (Критический удар брута)"
+      ],
+      "fields": {
+        "ragesCount": 4,
+        "rageDamageBonus": 3
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 10,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {
+        "ragesCount": 4,
+        "rageDamageBonus": 3
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 11,
+      "features": [
+        "Несокрушимая ярость"
+      ],
+      "fields": {
+        "ragesCount": 4,
+        "rageDamageBonus": 3
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "ragesCount": 5,
+        "rageDamageBonus": 3
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 13,
+      "features": [
+        "Свирепый критический удар (2 кубика)"
+      ],
+      "fields": {
+        "ragesCount": 5,
+        "rageDamageBonus": 3
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 14,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {
+        "ragesCount": 5,
+        "rageDamageBonus": 3
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 15,
+      "features": [
+        "Непоколебимая ярость"
+      ],
+      "fields": {
+        "ragesCount": 5,
+        "rageDamageBonus": 3
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "ragesCount": 5,
+        "rageDamageBonus": 4
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 17,
+      "features": [
+        "Свирепый критический удар (3 кубика)"
+      ],
+      "fields": {
+        "ragesCount": 6,
+        "rageDamageBonus": 4
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 18,
+      "features": [
+        "Клич воина (Яростная мощь)"
+      ],
+      "fields": {
+        "ragesCount": 6,
+        "rageDamageBonus": 4
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "ragesCount": 6,
+        "rageDamageBonus": 4
+      }
+    },
+    {
+      "name": "Варвар",
+      "level": 20,
+      "features": [
+        "Первобытный чемпион"
+      ],
+      "fields": {
+        "ragesCount": "Бесконечно",
+        "rageDamageBonus": 4
+      }
+    },
+    {
+      "name": "Воин",
+      "level": 1,
+      "features": [
+        "Боевой стиль",
+        "Второе дыхание"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 2,
+      "features": [
+        "Всплеск действий (1 использование)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 3,
+      "features": [
+        "Воинский архетип (Подкласс)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 5,
+      "features": [
+        "Дополнительная атака"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 6,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 7,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 9,
+      "features": [
+        "Непреклонность (1 использование)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 10,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 11,
+      "features": [
+        "Дополнительная атака (2)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 13,
+      "features": [
+        "Непреклонность (2 использования)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 14,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 15,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 17,
+      "features": [
+        "Всплеск действий (2 использования)",
+        "Непреклонность (3 использования)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 18,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Воин",
+      "level": 20,
+      "features": [
+        "Дополнительная атака (3)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 1,
+      "features": [
+        "Использование заклинаний",
+        "Магическое восстановление"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 2,
+      "features": [
+        "Магическая школа (Подкласс)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 3,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 5,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 6,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 7,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 9,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 10,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 11,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 13,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 14,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 15,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 17,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 18,
+      "features": [
+        "Фирменное заклинание"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Волшебник",
+      "level": 20,
+      "features": [
+        "Магическое мастерство"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 1,
+      "features": [
+        "Использование заклинаний",
+        "Друидический язык"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 2,
+      "features": [
+        "Дикий облик",
+        "Круг друида (Подкласс)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 3,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта",
+        "Улучшение дикого облика"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 5,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 6,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 7,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта",
+        "Улучшение дикого облика (летучие/плавающие животные)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 9,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 10,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 11,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 13,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 14,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 15,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 17,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 18,
+      "features": [
+        "Вечнозеленый телохранитель (Тайная плоть)",
+        "Бесплатные заклинания изменения"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Друид",
+      "level": 20,
+      "features": [
+        "Аватар природы (Неограниченный дикий облик)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 1,
+      "features": [
+        "Использование заклинаний",
+        "Магическое конструирование"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 2,
+      "features": [
+        "Внедрение зачарования (Infusions)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 3,
+      "features": [
+        "Специальность изобретателя (Подкласс)",
+        "Инструментальный эксперт"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 5,
+      "features": [
+        "Способность специальности"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 6,
+      "features": [
+        "Улучшение зачарования предметов"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 7,
+      "features": [
+        "Вспышка гениальности"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 9,
+      "features": [
+        "Способность специальности"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 10,
+      "features": [
+        "Магический ремесленник (Улучшение зачарований)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 11,
+      "features": [
+        "Чародейский предмет (Spell-Storing Item)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 13,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 14,
+      "features": [
+        "Улучшение зачарования предметов (больше слотов)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 15,
+      "features": [
+        "Способность специальности"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 17,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 18,
+      "features": [
+        "Магический мастер"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Изобретатель",
+      "level": 20,
+      "features": [
+        "Душа ремесленника"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 1,
+      "features": [
+        "Божественный домен (Подкласс)",
+        "Использование заклинаний"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 2,
+      "features": [
+        "Божественный канал (1/отдых)",
+        "Способность домена"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 3,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 5,
+      "features": [
+        "Изгнание нежити (Улучшение)",
+        "Разрушение нечестивцев"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 6,
+      "features": [
+        "Божественный канал (2/отдых)",
+        "Способность домена"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 7,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта",
+        "Улучшение божественного сокрушения / заклинаний"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 9,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 10,
+      "features": [
+        "Божественное вмешательство"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 11,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 13,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 14,
+      "features": [
+        "Улучшение изгнания нежити"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 15,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 17,
+      "features": [
+        "Способность домена",
+        "Божественный канал (3/отдых)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 18,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Жрец",
+      "level": 20,
+      "features": [
+        "Божественное вмешательство (автоматический успех)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Монах",
+      "level": 1,
+      "features": [
+        "Защита без доспехов",
+        "Монастырское оружие (Боевые искусства)"
+      ],
+      "fields": {
+        "kiPoints": 0
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 2,
+      "features": [
+        "Ци (Ки)",
+        "Невероятная скорость"
+      ],
+      "fields": {
+        "kiPoints": 2
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 3,
+      "features": [
+        "Монастырская традиция (Подкласс)",
+        "Ступни ветра / Терпеливая оборона / Шквал ударов"
+      ],
+      "fields": {
+        "kiPoints": 3
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта",
+        "Медленное падение"
+      ],
+      "fields": {
+        "kiPoints": 4
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 5,
+      "features": [
+        "Дополнительная атака",
+        "Удар Оцепенения"
+      ],
+      "fields": {
+        "kiPoints": 5
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 6,
+      "features": [
+        "Чистые удары (Магические атаки)",
+        "Способность подкласса"
+      ],
+      "fields": {
+        "kiPoints": 6
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 7,
+      "features": [
+        "Уклонение",
+        "Цельность тела"
+      ],
+      "fields": {
+        "kiPoints": 7
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "kiPoints": 8
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 9,
+      "features": [
+        "Невероятная скорость (улучшение)"
+      ],
+      "fields": {
+        "kiPoints": 9
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 10,
+      "features": [
+        "Чистый разум",
+        "Тихий язык (Язык солнца и луны)"
+      ],
+      "fields": {
+        "kiPoints": 10
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 11,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {
+        "kiPoints": 11
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "kiPoints": 12
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 13,
+      "features": [
+        "Язык солнца и луны"
+      ],
+      "fields": {
+        "kiPoints": 13
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 14,
+      "features": [
+        "Алмазная душа"
+      ],
+      "fields": {
+        "kiPoints": 14
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 15,
+      "features": [
+        "Пустой телом"
+      ],
+      "fields": {
+        "kiPoints": 15
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "kiPoints": 16
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 17,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {
+        "kiPoints": 17
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 18,
+      "features": [
+        "Пустой телом (улучшение)"
+      ],
+      "fields": {
+        "kiPoints": 18
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "kiPoints": 19
+      }
+    },
+    {
+      "name": "Монах",
+      "level": 20,
+      "features": [
+        "Совершенное Ци"
+      ],
+      "fields": {
+        "kiPoints": 20
+      }
+    },
+    {
+      "name": "Паладин",
+      "level": 1,
+      "features": [
+        "Божественное чувствО",
+        "Наложение рук"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 2,
+      "features": [
+        "Боевой стиль",
+        "Створки заклинаний",
+        "Божественная кара"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 3,
+      "features": [
+        "Божественная капелька (Клятва)",
+        "Клятва паладина (Подкласс)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 5,
+      "features": [
+        "Дополнительная атака"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 6,
+      "features": [
+        "Аура защиты"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 7,
+      "features": [
+        "Способность подкласса (Аура клятвы)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 9,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 10,
+      "features": [
+        "Аура мужества"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 11,
+      "features": [
+        "Улучшенная божественная кара"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 13,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 14,
+      "features": [
+        "Очищающее касание"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 15,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 17,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 18,
+      "features": [
+        "Улучшенные ауры"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Паладин",
+      "level": 20,
+      "features": [
+        "Способность высшей клятвы (Аспект/Форма божества)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Плут",
+      "level": 1,
+      "features": [
+        "Экспертиза",
+        "Скрытая атака (1d6)",
+        "Воровской жаргон"
+      ],
+      "fields": {
+        "sneakAttackDice": 1
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 2,
+      "features": [
+        "Действие схитростью"
+      ],
+      "fields": {
+        "sneakAttackDice": 1
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 3,
+      "features": [
+        "Шерстяной архетип (Подкласс)",
+        "Убийственный удар / иное"
+      ],
+      "fields": {
+        "sneakAttackDice": 2
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "sneakAttackDice": 2
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 5,
+      "features": [
+        "Невероятное уклонение"
+      ],
+      "fields": {
+        "sneakAttackDice": 3
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 6,
+      "features": [
+        "Экспертиза"
+      ],
+      "fields": {
+        "sneakAttackDice": 3
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 7,
+      "features": [
+        "Ускользание"
+      ],
+      "fields": {
+        "sneakAttackDice": 4
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "sneakAttackDice": 4
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 9,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {
+        "sneakAttackDice": 5
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 10,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "sneakAttackDice": 5
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 11,
+      "features": [
+        "Надежный талант"
+      ],
+      "fields": {
+        "sneakAttackDice": 6
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "sneakAttackDice": 6
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 13,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {
+        "sneakAttackDice": 7
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 14,
+      "features": [
+        "Слепые чувствА"
+      ],
+      "fields": {
+        "sneakAttackDice": 7
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 15,
+      "features": [
+        "Скользкий ум"
+      ],
+      "fields": {
+        "sneakAttackDice": 8
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "sneakAttackDice": 8
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 17,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {
+        "sneakAttackDice": 9
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 18,
+      "features": [
+        "Ускользание от смерти (Эвазión / Ускользание) / Неуловимость"
+      ],
+      "fields": {
+        "sneakAttackDice": 9
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "sneakAttackDice": 10
+      }
+    },
+    {
+      "name": "Плут",
+      "level": 20,
+      "features": [
+        "Удача на вашей стороне (Удар судьбы)"
+      ],
+      "fields": {
+        "sneakAttackDice": 10
+      }
+    },
+    {
+      "name": "Следопыт",
+      "level": 1,
+      "features": [
+        "Излюбленный враг",
+        "Исследователь природы"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 2,
+      "features": [
+        "Боевой стиль",
+        "Использование заклинаний"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 3,
+      "features": [
+        "Архетип следопыта (Подкласс)",
+        "Исключительный следопыт"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 5,
+      "features": [
+        "Дополнительная атака"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 6,
+      "features": [
+        "Улучшения излюбленного врага и исследователя"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 7,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта",
+        "Земная походка"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 9,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 10,
+      "features": [
+        "Скрытность маскировки",
+        "Природный след"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 11,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 13,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 14,
+      "features": [
+        "Исчезновение"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 15,
+      "features": [
+        "Способность подкласса"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 17,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 18,
+      "features": [
+        "Дикий слух"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Следопыт",
+      "level": 20,
+      "features": [
+        "Убийца врагов"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Чародей",
+      "level": 1,
+      "features": [
+        "Использование заклинаний",
+        "Чародейское происхождение (Подкласс)"
+      ],
+      "fields": {
+        "sorceryPoints": 0
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 2,
+      "features": [
+        "Исток магии",
+        "Метамагия"
+      ],
+      "fields": {
+        "sorceryPoints": 2
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 3,
+      "features": [],
+      "fields": {
+        "sorceryPoints": 3
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "sorceryPoints": 4
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 5,
+      "features": [],
+      "fields": {
+        "sorceryPoints": 5
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 6,
+      "features": [
+        "Способность происхождения"
+      ],
+      "fields": {
+        "sorceryPoints": 6
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 7,
+      "features": [],
+      "fields": {
+        "sorceryPoints": 7
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "sorceryPoints": 8
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 9,
+      "features": [],
+      "fields": {
+        "sorceryPoints": 9
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 10,
+      "features": [
+        "Дополнительная метамагия"
+      ],
+      "fields": {
+        "sorceryPoints": 10
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 11,
+      "features": [],
+      "fields": {
+        "sorceryPoints": 11
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "sorceryPoints": 12
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 13,
+      "features": [],
+      "fields": {
+        "sorceryPoints": 13
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 14,
+      "features": [
+        "Способность происхождения"
+      ],
+      "fields": {
+        "sorceryPoints": 14
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 15,
+      "features": [],
+      "fields": {
+        "sorceryPoints": 15
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "sorceryPoints": 16
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 17,
+      "features": [
+        "Дополнительная метамагия"
+      ],
+      "fields": {
+        "sorceryPoints": 17
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 18,
+      "features": [
+        "Способность происхождения"
+      ],
+      "fields": {
+        "sorceryPoints": 18
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {
+        "sorceryPoints": 19
+      }
+    },
+    {
+      "name": "Чародей",
+      "level": 20,
+      "features": [
+        "Восстановление истока магии"
+      ],
+      "fields": {
+        "sorceryPoints": 20
+      }
+    },
+    {
+      "name": "Колдун",
+      "level": 1,
+      "features": [
+        "Использование заклинаний (Договорной каст)",
+        "Изумленный покровитель (Подкласс)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 2,
+      "features": [
+        "Воззвания договора (Eldritch Invocations)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 3,
+      "features": [
+        "Дак Пакта (Pact Boon)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 4,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 5,
+      "features": [
+        "Улучшение воззваний"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 6,
+      "features": [
+        "Способность покровителя"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 7,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 8,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 9,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 10,
+      "features": [
+        "Способность покровителя"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 11,
+      "features": [
+        "Мистический тайник (6 круг)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 12,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 13,
+      "features": [
+        "Мистический тайник (7 круг)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 14,
+      "features": [
+        "Способность покровителя"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 15,
+      "features": [
+        "Мистический тайник (8 круг)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 16,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 17,
+      "features": [
+        "Мистический тайник (9 круг)"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 18,
+      "features": [],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 19,
+      "features": [
+        "Увеличение характеристик (ASI) или Черта"
+      ],
+      "fields": {}
+    },
+    {
+      "name": "Колдун",
+      "level": 20,
+      "features": [
+        "Повелитель эльдрического мастерства (Восстановление ячеек за короткий отдых)"
+      ],
+      "fields": {}
+    }
+  ],
+  "magicCases": [
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 1
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 2,
+        "normal": {
+          "1": 3
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 1
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 1,
+        "normal": {
+          "1": 2
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 1,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 1,
+        "normal": {
+          "1": 2
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 1,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 1,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 2
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 3,
+        "normal": {
+          "1": 4,
+          "2": 2
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 2
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 1,
+        "normal": {
+          "1": 2
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 2,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 1,
+        "normal": {
+          "1": 2
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 2,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 2,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 3
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 4,
+        "normal": {
+          "1": 4,
+          "2": 3
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 3
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 2,
+        "normal": {
+          "1": 3
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 3,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 2,
+        "normal": {
+          "1": 3
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 3,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 3,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 4
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 5,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 2
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 4
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 2,
+        "normal": {
+          "1": 3
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 4,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 2,
+        "normal": {
+          "1": 3
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 4,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 4,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 5
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 6,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 5
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 3,
+        "normal": {
+          "1": 4,
+          "2": 2
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 5,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 2,
+        "normal": {
+          "1": 3
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 5,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 5,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 6
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 7,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 1
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 6
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 3,
+        "normal": {
+          "1": 4,
+          "2": 2
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 6,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 3,
+        "normal": {
+          "1": 4,
+          "2": 2
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 6,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 6,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 2
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 7
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 8,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 2
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 7
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 4,
+        "normal": {
+          "1": 4,
+          "2": 3
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 7,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 3,
+        "normal": {
+          "1": 4,
+          "2": 2
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 7,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 2
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 7,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 2
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 8
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 9,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 1
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 8
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 4,
+        "normal": {
+          "1": 4,
+          "2": 3
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 8,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 3,
+        "normal": {
+          "1": 4,
+          "2": 2
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 8,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 2
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 8,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 2
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 9
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 10,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 2
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 9
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 5,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 2
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 9,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 4,
+        "normal": {
+          "1": 4,
+          "2": 3
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 9,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 2
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 9,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 2
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 10
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 11,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 2,
+          "6": 1
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 10
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 5,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 2
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 10,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 4,
+        "normal": {
+          "1": 4,
+          "2": 3
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 10,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 2
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 10,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 2
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 11
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 12,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 2,
+          "6": 1
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 11
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 6,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 11,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 4,
+        "normal": {
+          "1": 4,
+          "2": 3
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 11,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 2
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 11,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 2
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 12
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 13,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 2,
+          "6": 1,
+          "7": 1
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 12
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 6,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 12,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 5,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 2
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 12,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 2
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 12,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 3
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 13
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 14,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 2,
+          "6": 1,
+          "7": 1
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 13
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 7,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 1
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 13,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 5,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 2
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 13,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 3
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 13,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 3
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 14
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 15,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 2,
+          "6": 1,
+          "7": 1,
+          "8": 1
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 14
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 7,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 1
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 14,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 5,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 2
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 14,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 3
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 14,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 3
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 15
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 16,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 2,
+          "6": 1,
+          "7": 1,
+          "8": 1
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 15
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 8,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 2
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 15,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 6,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 15,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 3
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 15,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 3
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 16
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 17,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 2,
+          "6": 1,
+          "7": 1,
+          "8": 1,
+          "9": 1
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 16
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 8,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 2
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 16,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 6,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 16,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 3
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 16,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 3
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 17
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 18,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 3,
+          "6": 1,
+          "7": 1,
+          "8": 1,
+          "9": 1
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 17
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 9,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 1
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 17,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 6,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 17,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 3
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 17,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 3
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 18
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 19,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 3,
+          "6": 2,
+          "7": 1,
+          "8": 1,
+          "9": 1
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 18
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 9,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 1
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 18,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 7,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 1
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 18,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 3
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 18,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 4
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 19
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 20,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 3,
+          "6": 2,
+          "7": 2,
+          "8": 1,
+          "9": 1
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 19
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 10,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 2
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 19,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 7,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 1
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 19,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 4
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 19,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 4
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Волшебник",
+          "level": 20
+        },
+        {
+          "name": "Жрец",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 20,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 3,
+          "6": 2,
+          "7": 2,
+          "8": 1,
+          "9": 1
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Изобретатель",
+          "level": 20
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 10,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 3,
+          "5": 2
+        },
+        "pact": {
+          "count": 1,
+          "level": 1
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Воин",
+          "level": 20,
+          "subclass": "Мистический рыцарь"
+        },
+        {
+          "name": "Плут",
+          "level": 3,
+          "subclass": "Мистический ловкач"
+        }
+      ],
+      "expected": {
+        "casterLevel": 7,
+        "normal": {
+          "1": 4,
+          "2": 3,
+          "3": 3,
+          "4": 1
+        },
+        "pact": null
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 20,
+          "subclass": "Орден осквернённых душ"
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 4
+        }
+      }
+    },
+    {
+      "classes": [
+        {
+          "name": "Кровавый охотник",
+          "level": 20,
+          "subclass": "Орден осквернённых душ"
+        },
+        {
+          "name": "Колдун",
+          "level": 1
+        }
+      ],
+      "expected": {
+        "casterLevel": 0,
+        "normal": {},
+        "pact": {
+          "count": 2,
+          "level": 4
+        }
+      }
+    }
+  ]
+}

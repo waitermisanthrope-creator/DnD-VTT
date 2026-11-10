@@ -100,21 +100,23 @@ namespace DndVtt.UnityPrototype
                     GUILayout.Label("Камера и управление", heading);
                     GUILayout.Label("Чувствительность мыши и касания: " + settingsDraft.sensitivity.ToString("0.00") + "×");
                     settingsDraft.sensitivity = GUILayout.HorizontalSlider(settingsDraft.sensitivity, .25f, 3, GUILayout.Height(52));
+                    RegisterMenuControl("settings-sensitivity", brandTechnicalScreen ? "technical-settings" : "settings", GUILayoutUtility.GetLastRect());
                     settingsDraft.invertY = GUILayout.Toggle(settingsDraft.invertY, "Инвертировать вертикальное движение камеры", GUILayout.MinHeight(42));
                     GUILayout.Label("Поле зрения: " + Mathf.RoundToInt(settingsDraft.fieldOfView) + "°");
                     settingsDraft.fieldOfView = GUILayout.HorizontalSlider(settingsDraft.fieldOfView, 50, 100, GUILayout.Height(52));
+                    RegisterMenuControl("settings-fov", brandTechnicalScreen ? "technical-settings" : "settings", GUILayoutUtility.GetLastRect());
                     settingsDraft.firstPerson = GUILayout.Toggle(settingsDraft.firstPerson, "Камера от первого лица при запуске", GUILayout.MinHeight(42));
                     break;
                 case 4:
-                    GUILayout.Label("Данные и устройство", heading);
+                    if(!embedded)GUILayout.Label("Данные и устройство", heading);
                     GUILayout.Label("Персонажи хранятся отдельно от настроек. При обновлении приложения не удаляйте его данные.", muted);
                     GUILayout.Label("Персонажей в архиве: " + (archive?.Count ?? 0), muted);
                     GUILayout.Label("Файл персонажей: " + SavePath, muted);
                     GUILayout.Label("Файл настроек: " + SettingsPath, muted);
-                    if (archive != null && GUILayout.Button("Сохранить персонажей сейчас", GUILayout.Height(48)))
+                    if (archive != null && FitMenuButton("Сохранить персонажей сейчас"))
                         Attempt(() => { SaveSheet(); status = "Персонажи сохранены"; });
                     DrawCharacterBackups();
-                    if (GUILayout.Button("Скопировать путь к сохранению", GUILayout.Height(42))) GUIUtility.systemCopyBuffer = SavePath;
+                    if (FitMenuButton("Скопировать путь к сохранению")) GUIUtility.systemCopyBuffer = SavePath;
                     break;
             }
             if(embedded)return;
@@ -134,7 +136,7 @@ namespace DndVtt.UnityPrototype
             });
             if (GUILayout.Button("Восстановить значения по умолчанию (без удаления героев)", GUILayout.Height(42)))
             {
-                settingsDraft = new ClientPreferences { quality = platformQuality };
+                settingsDraft = settingsDraft.WithDefaults(platformQuality);
                 status = "Стандартные параметры выбраны. Нажмите «Применить и сохранить», чтобы записать их.";
             }
             if (GUILayout.Button("Вернуться на главную", GUILayout.Height(42))) Navigate(FrontScreen.Home);

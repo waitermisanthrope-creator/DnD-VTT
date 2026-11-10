@@ -10,7 +10,7 @@ namespace DndVtt.UnityPrototype
 {
     // Base sheet formulas from app/app.js, skills.js and spells.js. These are
     // intentionally separate from class-specific combat/equipment execution.
-    public static class CharacterSheetRules
+    public static partial class CharacterSheetRules
     {
         public static readonly string[] Stats = { "str", "dex", "con", "int", "wis", "cha" };
         public static readonly string[] StatNames = { "Сила", "Ловкость", "Телосложение", "Интеллект", "Мудрость", "Харизма" };
@@ -151,6 +151,12 @@ namespace DndVtt.UnityPrototype
                 default: return name;
             }
         }
+        public static void SynchronizeClassLevel(JObject hero)
+        {
+            Validate(hero);
+            if(hero["classes"] is JArray classes && classes.Count>0)hero["level"]=Level(hero);
+            Validate(hero);Recalculate(hero);
+        }
         public static int Proficiency(JObject hero) => (int)Math.Floor((Level(hero) - 1) / 4d) + 2;
         public static int Skill(JObject hero, int index) => Modifier(hero, SkillStats[index]) + Proficiency(hero) * (int)LegacyJson.Number((hero["skillsData"] as JObject)?[SkillIds[index]], 0);
         public static void Validate(JObject hero)
@@ -262,10 +268,12 @@ namespace DndVtt.UnityPrototype
 
     // Experimental local archive only: no writes into browser localStorage or
     // Supabase journals. Replace atomically; retain the preceding valid archive.
-    public static class CharacterSheetStore
+    public static partial class CharacterSheetStore
     {
         public static void Save(string path, LegacyCharacterArchive archive)
         {
+            using var lease=AcquireWriteLease(path);
+            if(File.Exists(path+".trade-journal"))throw new InvalidOperationException("Сначала восстановите незавершённую торговую операцию");
             string json = archive.Export(); _ = new LegacyCharacterArchive(json);
             if (File.Exists(path) && File.ReadAllText(path) == json) return;
             Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path)));

@@ -2,6 +2,223 @@
 
 По прямому запросу владельца исправлен выбор на вкладке «Способности»: отдельный список без обязательного поиска, фильтр доступных кругов0–9, описания/источники, страницы и защита от повторного добавления. Круг ограничен уровнем конкретного класса (включая мультикласс), обычным воину/плуту магия не выдаётся; учтены кастующие подклассы, половинные кастеры и английские имена базовых классов. Существующие spellsData/сохранение сохранены. Это изменение исходников экспериментальной Unity; новый APK/Windows-релиз не выпускался. Локально SPELL_PICKER_PASS1612, CHARACTER_DELETE_PASS1731, Python unittest12PASS; полный Workshop harness6915PASS; provenance44 и brand/update contractsPASS; исправлена регистрация свайпа вложенного списка после ревью. Unity Editor в текущем окружении отсутствует; интерактивная проверка и сборка игроков остаются. Очередь классов/MMO WAIT_TEAM не меняется.
 
+# Unity market port verified locally / native launch blocked — 29.10.2026
+
+Market55/55.1/55.2 port:42 traders/320 rows, original entry/modal/font/blue buttons,
+buy/sell/barter; shared stock in existing preferences, hero canonical inventory/coins.
+Paired WAL+rollback/startup recovery, common writer leases, variant-safe stacks,
+stale/duplicate/equipped safeguards. Readonly Explorer/QA reports received; five
+Important findings fixed. Local MARKET547/full9310/provenance44; Windows+Android C#
+compile PASS. Actual Windows QA-copy Wine/Mesa exit0/68PNG reviewed, OS purchase+close,
+paired disk persistence, unknown state/region escape, pending wallet digit and
+Layout-only recovery, portrait/narrow/desktop. Explicit QA resource overrides are
+NOT new asset import or native Android evidence. Candidate47 native jobs are NOT started. Automatic approval review rejected the
+commit because it changed GitHub Actions against the owner’s historical prohibition.
+Workflow restored to46; exact version-only patch saved separately outside Git.
+Need explicit owner permission for that workflow change before native candidate47;
+stable published46/feed/approval remain unchanged.
+See docs/UNITY_WEBVIEW_EXACT_CLONE.md, plan2026-10-29-unity-market.md.
+Remaining social/haggling/restock UI/other windows/full class hooks/physicalAndroid.
+Only experiment/unity-vtt; no main/MMO/SQL/key/scene/existing GUID changes.
+History below is not a new task.
+
+# Unity46 published / WebView parity remains partial — 29.10.2026
+
+1.00.46 published; publisher40793558358 SUCCESS, deliverydf0460b7. Public APK+EXE
+independently re-downloaded: sizes/SHA256/feed/source/run verified, DELIVERY46_PASS.
+Source711902f4e679324a832452b5edf8c655cb10b931 / candidate40790424498 ALL3SUCCESS:
+Android123173999947, Windows123180080494, installed QA123183021883. All56 actual native
+previews viewed; original Playfair/color resources/paper/layout intact. Real HP/XP/
+note/custom race cancel+save+confirm/catalog reload/wallet+1gold/log tests passed,
+no GUI/clipped labels. Whole8760, sheet65/menu50/numeric17; Windows+Android C# compile.
+Restored race/+Своя/once-only lock, preserved device catalog/default reset, source
+notes, wallet at Inventory top, horizontal categories, existing craft/alchemy/containers.
+Actual Chromium dynamic layout checked, not static markup alone. Docs:
+docs/UNITY_WEBVIEW_EXACT_CLONE.md, plan2026-10-29-webview-sheet-completion.md.
+Full clone NOT done: market/trade, parts of modals/creation/lore, exact emoji/blur/
+shadows and full class hooks remain. Complex seed-only race/choices blocked safely
+at sheet; create via existing builder. Physical Android touch/IME/Back untested.
+Next: remaining original behavior/layout, no invented redesign. Only experiment;
+no main/MMO/SQL/key/scene/GUID changes. History below is not a new task.
+
+# Unity45 published / exact WebView UI still partial — 28.10.2026
+
+Published1.00.45, gated publisher40747479455 SUCCESS; public APK+EXE independently
+re-downloaded and SHA256/size/feed verified (INDEPENDENT_DELIVERY45_PASS).
+Source27087353457a06dcb33c55f5cf3217c6323642c7/candidate40742387640 ALL3SUCCESS:
+Android123007122465, Windows123018400943, installed QA123022969453.
+All48 final native previews actually viewed, original Playfair/paper/colors/order;
+RGBA32 root-cause fix and GPU/background(.5172)/layout guards PASS. Full8732,
+actions40/menu50/numeric14; native HP/XP/note/global-art/save/upgrade tests PASS.
+User wants literal original UI, NO invented redesign/buttons. Full clone unfinished:
+race selection/modal, inventory/other windows and full class hooks remain; physical
+Android touch/IME untested. Next: remaining original WebView behavior/layout parity.
+Report docs/UNITY_WEBVIEW_EXACT_CLONE.md. Only experiment/unity-vtt, no main/MMO/SQL/key
+changes. Stable44 retained as prior release. History below is not a new task.
+
+# Unity45 actual root cause / final native retest — 28.10.2026
+
+40725932785/source0ced: Android+Windows built (license198 retried); installed QA
+correctly FAILS paper guard. Runtime texture Alpha8, RGB0, screen0: metadata bug.
+Corrected current RGBA32 importer schema for paper+3branding images, same GUIDs/bytes.
+Early build and runtime color guards; true-aspect screenshots/viewport telemetry.
+Playfair metrics match reference. Layout/Repaint transition bug fixed; UI now48frames,
+including global art from Skills and return, local explicit-PNG run PASS/no GUI errors.
+40actions/menu50 PASS. Report docs/UNITY_WEBVIEW_EXACT_CLONE.md. Native retest required;
+no publication/feed45 yet; stable44. Full clone/race/modal/physicalAndroid unfinished.
+Only experiment branch; no main/MMO/SQL/key changes. History below is not a new task.
+
+# Unity45 visual VETO — native build success is insufficient, 28.10.2026
+
+Source476513c9/run40715967849 ALL3SUCCESS;47native thumbnails actually viewed.
+VETO: paper is black in native frames (six RGB samples0). No promotion/feed change.
+Now test one import change: Parchment compression0, same GUID. Added true-aspect
+thumbnails, viewport/font/texture GPU diagnostics and background pixel guard.
+Old native frame RED; known-good local ARGB32 paper mean.5155 / HP edit PASS.
+Next candidate45 must pass new native guard before release. Original Playfair unchanged.
+Report docs/UNITY_WEBVIEW_EXACT_CLONE.md. Race/modal/other UI parity unfinished.
+Main/MMO/SQL/secrets unchanged; stable44 remains. History below is not a new task.
+
+# Unity exact WebView clone correction — 28.10.2026
+
+Owner rejects9c14aad8 redesign: same original visual/fonts/colors/control positions.
+Report docs/UNITY_WEBVIEW_EXACT_CLONE.md; plan docs/superpowers/plans/2026-10-28-exact-webview-clone.md.
+Original Playfair Display bundled unmodified with OFL; actual font loaded in browser reference.
+Hero original fields/order/XP, vertical cards,2-col stats, compact skills/saves; invented
+summary/edit/damage rows removed. Old data actions retained in Data/device settings.
+8732full, Win/Android Roslyn +source contracts PASS; Wine full47+HP diagnostic PASS
+(exact-full2), final8 paired capture+real HP input PASS (exact-reference-final).
+Capture is NOT exact-match assertion. Race/custom modal, emoji/blur and other windows
+still differ; full visual/function parity unfinished. PhysicalAndroid and new native
+font import unverified until candidate gates. Next candidate1.00.45 testing; feed44 unchanged.
+Final dim0.4/natural condition widths capture+HP PASS exact-reference-dim3;
+previous candidate bcd60a52 superseded before publication.
+Only experiment branch; no main/MMO/SQL/secrets. History below is not a new task.
+
+# Unity WebView parity — первый этап листа, 28.10.2026
+
+Работа в experiment/unity-vtt поверх2ade9973/опубликованной1.00.44.
+Отчёт docs/UNITY_WEBVIEW_PARITY_STAGE1.md; план docs/superpowers/plans/2026-10-28-webview-ui-parity.md.
+Компактные вкладки/карточки/фон WebView; Hero/skills/notes/abilities/resources,
+HP/actions и ограниченный явный отдых в существующих partial UI/rules.
+8732full/40actions/menu50/numeric14, Win+Android Roslyn compile, source contracts PASS.
+Final Wine Unity-player parity45-contrast exit0:47GPUframes, actual OS clicks HP/note,
+file reload/wrapper/other hero/render purity/native digit queue/unsupported counts PASS.
+Reviewer partial findings исправлены; полного sign-off не было (лимит сервиса).
+Новые native builds/physical Android/релиз/полный UI+combat parity НЕ выполнены.
+Дальше: остальные окна по WebView; native обеих платформ/installed QA перед доставкой.
+Feed1.00.44 не менять без gates; следующий runtime>10044. Main/MMO/SQL/ключи не менять.
+История ниже не новое задание.
+
+# Unity1.00.44 — опыт/прокачка опубликованы и проверены, 28.10.2026
+
+Приоритет владельца: XP/level-up/multiclass перед остальной UI parity.
+Source8e111121a440157e8a4f9bf5276c27b30a7a229f; candidate40606924017 ALL3SUCCESS:
+Android122548740548, Windows122556545944, native installed QA122559522744.
+8690regression/pure1715/save124 PASS; все38final native GPUframes просмотрены.
+Publisher40610549848SUCCESS; activationd2f6d8af; независимые publicAPK/EXE,
+size/SHA/ARM64/MZ/plain+fresh feed/source/run PASS (INDEPENDENT_DELIVERY44_PASS).
+Отчёт docs/UNITY_ADVANCEMENT_1.00.44.md; ждать phoneXP/мультикласс/ASI retest.
+27source tables, XP/milestone, class-level HP/features/ASI/subclass/proficiencies,
+shared slots/Pact; unsupported/Extra/unknown requirements блокируются явно.
+Full combat/hooks/UI parity НЕ завершены; physicalAndroidQa=false.
+44 immutable, следующий runtime>10044. Main/MMO/scenes/keys/SQL не менять.
+История ниже не новое задание.
+
+# Unity1.00.44 — опыт/прокачка, кандидат готовится, 28.10.2026
+
+Владелец приоритизировал XP/level-up/multiclass перед дальнейшей UI parity.
+27 source tables, exact class-level, XP/milestone, HP/CON ASI/feat/subclass,
+partial proficiencies, shared slots/Pact; atomic detached commit + stale guard.
+Pure1715/full8687/save124 PASS; Win/Android Roslyn compile PASS (не native builds).
+Wine: первый35frames exit0; расширенный38frames получил кадры/advancement PASS,
+но nativefullscreen crash; повтор38frames exit0/full UI PASS. Нативный CI ещё нужен.
+Не выдавать частичный combat runtime или неизвестные/Extra классы за full parity.
+План docs/superpowers/plans/2026-10-27-unity-progression.md; отчёт
+ docs/UNITY_ADVANCEMENT_1.00.44.md. Feed43 остаётся до ALL3+delivery44.
+Main/MMO/сцены/секреты/SQL не менять. История ниже не новое задание.
+
+# Unity1.00.43 — опубликована и независимо проверена, 27.10.2026
+
+Отзыв Android обработан: адаптивные file/backup кнопки, owned NumberPad для
+целых чисел/live staging/Next flush/focus иtab cleanup, wizard defaults reset,
+компактные Данные/raw opt-in, явный ручной уровень классов иcanonical sync.
+Sourcee3edd8f628f6d3250b5e4c4bf3c9aff8307708b8; candidate40553837122 ALL3SUCCESS:
+Android122364435204, Windows122374854787, native installed UI122381243210.
+6973regression +pure14/art33/save122/menu50 PASS;31final native GPUframes reviewed.
+Publisher40559240758SUCCESS; activation48c7b7fb; independent public APK/EXE,
+size/SHA/ARM64/MZ/plain+fresh feed/source/run PASS.43 immutable, next runtime>10043.
+Отчёт docs/UNITY_USER_FEEDBACK_1.00.43.md; ждать phoneIME retest владельца.
+Полная автопрокачка/legacy feature parity НЕ завершены; не выдавать ручной уровень
+за автоматическую механику. Main/MMO/scenes/keys/SQL не менять.
+История ниже не является новым заданием.
+
+# Unity1.00.43 — первые отзывы, кандидат перед публикацией, 27.10.2026
+
+Владелец поручил исправить отзывы Android, ранее делегировал развитие/обновления.
+Исправлены фиксированные высоты файловых/backup кнопок; numeric NumberPad owner
+и сброс wizard focus/defaults; live valid digits/Next flush/tab cleanup. Data compact,
+raw editor opt-in. Явный ручной уровень классов +синхронизация total; полная
+автопрокачка НЕ реализована. Pure14/art33/save122/menu50, Win/Android compile,
+Unity Wine31frames exit0 PASS. Отчёт docs/UNITY_USER_FEEDBACK_1.00.43.md.
+Native candidate43/installed UI/public delivery ещё нужны; feed42 не менять вручную.
+Физический AndroidIME пока не проверен. Main/scenes/keys/MMO не трогать.
+
+# Unity1.00.42 — опубликована и независимо проверена, 27.10.2026
+
+Владелец поручил арт героя/переработку Hero UI и выпуск42, делегировал решения.
+Доставлено: PNG/JPEG/BMP, portable heroArt, original-ID atomic save/backup,
+адаптивный Hero, явный3D-coming-soon, экспорт под Ещё, полные названия статов.
+Source0026e7228467b7890d1a25402dfab0ad9b24d562; candidate40491912046 ALL3SUCCESS:
+Android122148378789, Windows122155691036, native upgrade/runtime/UI122159381122.
+WORKSHOP6958 +save/syntax121 +art33 +menu50 PASS; all25native GPU thumbnails reviewed.
+Publisher40495801458SUCCESS; activation4afcf7fc. Независимые публичные APK/EXE,
+размеры/SHA256/ARM64/MZ, plain+fresh feed42 и source/run PASS.
+Отчёт docs/UNITY_HERO_ART_1.00.42.md, unity/PUBLIC_DELIVERY.json.42 immutable;
+следующий runtime>10042. Физический Android ещё не проверен; ждать отзыв владельца.
+Исходники арта<=16MiB/24MP, портрет<=512px/64KiB, архив16MiB, profile1MiB;
+клиенты41 могут не импортировать архив>1MiB. Main/SQL/MMO/ключи не менялись.
+Предыдущие этапы ниже — история, не новое задание.
+
+# Unity1.00.42 — арт героя, кандидат перед публикацией, 27.10.2026
+
+Владелец полностью делегировал UI/реализацию и поручил выпустить42. PNG/JPEG/BMP,
+portable heroArt, ID-targeted atomic save и новый Hero UI реализованы. Pure33,
+save/syntax121, menu50, contracts/release tests PASS; Unity Wine QA-copy exit0,
+8EXIF pixel checks + art/cache/restart/dialog/UI PASS. Independent review boundary
+jsonb size исправлен RED→GREEN. Реальные Android/Windows/native gates ещё нужны;
+feed41 неизменён до publisher. Отчёт docs/UNITY_HERO_ART_1.00.42.md и plan ledger.
+Main/MMO/SQL/ключи не трогать; workflow только default version42 для нового выпуска.
+
+# Unity1.00.41 — опубликована и проверена, 26.10.2026
+
+Выпуск UI/scroll завершён по явному поручению владельца; следующий этап — его
+пользовательское тестирование. Source f225c415a86ced0091f2936accd012ba22b74179.
+Candidate40227980346: реальные Android IL2CPP/Windows и native Windows upgrade,
+сохранения/runtime/UI PASS; просмотрены20финальных GPU thumbnails. Publisher
+40326813466 SUCCESS; activation14600e59. Независимо скачаны оба публичных файла,
+проверены размеры/SHA256/ARM64/MZ и одинаковые обычный/cache-busted feed41.
+Свидетельство: unity/PUBLIC_DELIVERY.json; релиз:
+https://github.com/waitermisanthrope-creator/DnD-VTT/releases/tag/unity-v1.00.41
+Физический Android (свайпы, chooser/share) и ПК владельца ещё не проверены.
+Остальные дефекты аудита40 не объявлены исправленными. Main/MMO не затронуты.
+История ниже описывает предыдущие этапы.
+
+# Текущая задача: выпуск Unity1.00.41 — 25.10.2026
+
+Владелец явно поручил выпустить обновление. UI завершён как отдельный блок;
+20GPUкадров/exit0 проверены в Wine QA-copy, но обязательны реальные candidate
+Android/Windows сборки и native upgrade/UI gates. Changelog41 пока testing,
+публичный feed40 не менять до проверенного publisher. Workflow-файлы/ключи не менять.
+
+# Текущая задача владельца: доработать Unity UI — 25.10.2026
+
+Изменения на базе47949d6b локальные. Реально открыты опубликованный player40 и
+QA-копия с текущим runtime C# под Wine10/Xvfb. Отчёт: docs/UNITY_UI_RUNTIME_CHECK.md.
+Исправлены найденные переносы/обрезания подписей, компактные настройки и narrow
+заголовок листа. Для полноценной интеграции ещё нужны Editor build/native Windows
+и физический Android. Без отдельного поручения не push/не релиз/main/MMO.
+
 # Третий проход пользовательского аудита40 — 25.10.2026
 
 По «Давай дальше»: импорт второго синтетического героя/UI, выбор/Alt+F4/повторный запуск, русская многострочная заметка/отмена удаления/разделение профилей, свои предметы/контейнер, кошелёк, чтение clipboard-экспорта. Новые UX40-20/21/23: сброс выбранного героя; слияние разных весов1/2кг с потерей данных; экспорт всего архива из листа без явного выбора. UX40-22 уточняет уже известные лимиты/управление контейнерами (40кг приcapacity30). Получить5зм/отказсписать10из5иотменазаметки PASS. Всего23пункта:15новых подтверждённых,4известных,4задачи проверки. Отчёт/кадры/синтетическиеJSON: docs/unity-account/USER_AUDIT_1.00.40.md. Исправлений/релиза нет; физический Android, нативное повторение URP, сеть/необычные форматы/ошибки диска остаются. Очередь классов/MMO WAIT_TEAM прежние.

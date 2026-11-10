@@ -7,8 +7,16 @@ namespace DndVtt.UnityPrototype
     public sealed partial class LegacySessionPanel
     {
         Font menuFont;
-        Font MenuFont => menuFont ? menuFont : menuFont = Resources.Load<Font>("UI/DejaVuSans")
-            ?? throw new InvalidOperationException("Не найден встроенный шрифт интерфейса.");
+        Font MenuFont
+        {
+            get
+            {
+                if(menuFont)return menuFont;
+                var args=Environment.GetCommandLineArgs();int at=Array.IndexOf(args,"--vtt-sheet-font-family");
+                if(Array.IndexOf(args,"--vtt-ui-smoke")>=0&&at>=0&&at+1<args.Length)return menuFont=Font.CreateDynamicFontFromOSFont(args[at+1],16);
+                return menuFont=Resources.Load<Font>("UI/PlayfairDisplay-Regular")??throw new InvalidOperationException("Не найден встроенный Playfair Display интерфейса.");
+            }
+        }
         void InitializeDesktopWindow()
         {
 #if UNITY_STANDALONE_WIN && !UNITY_EDITOR
