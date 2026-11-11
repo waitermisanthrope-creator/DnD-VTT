@@ -190,7 +190,7 @@ namespace DndVtt.UnityPrototype
                             ["id"]="modstock."+id+"."+sourceId,
                             ["sourceItemId"]=sourceId,
                             ["name"]=name,
-                            ["category"]=category,
+                            ["inventoryCategory"]=category,
                             ["costGp"]=price,
                             ["qty"]=3
                         };
