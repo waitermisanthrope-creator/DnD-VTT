@@ -41,7 +41,7 @@ namespace DndVtt.UnityPrototype
             var ids=new HashSet<string>(all.Select(m=>(string)m["id"]));
             all.AddRange(contentInstalled.Values.Where(m=>!ids.Contains((string)m["id"])));
             var collectionParts=WorkshopStore.CollectionParts(all);
-            var eligible=all.Where(m=>(!contentCollectionsPage || (string)m["collectionRole"]=="category")&&(contentShowParts || !collectionParts.Contains((string)m["id"]))&&(!installedOnly||contentInstalled.ContainsKey((string)m["id"]))&&(contentCategory==0||(string)m["type"]==ContentTypes[contentCategory]||ContentTypes[contentCategory]=="item"&&(string)m["type"]=="collection")&&
+            var eligible=all.Where(m=>(!contentCollectionsPage || (string)m["collectionRole"]=="category")&&(contentShowParts || !collectionParts.Contains((string)m["id"]))&&(!installedOnly||contentInstalled.ContainsKey((string)m["id"]))&&(contentCategory==0||(string)m["type"]==ContentTypes[contentCategory]||ContentTypes[contentCategory]=="item"&&(string)m["type"]=="collection"||ContentTypes[contentCategory]=="market"&&(string)m["type"]=="craft"&&((string)m["id"]??"").StartsWith("dnd.market.",StringComparison.Ordinal))&&
                 (m["name"]+" "+m["id"]+" "+m["author"]+" "+WorkshopStore.CategoryPath(m)).IndexOf(contentSearch,StringComparison.OrdinalIgnoreCase)>=0)
                 .OrderBy(m=>contentCollectionsPage&&(string)m["collectionRole"]=="category"?0:1)
                 .ThenBy(m=>contentCollectionsPage?WorkshopStore.CollectionOrder(m):0).ToList();
