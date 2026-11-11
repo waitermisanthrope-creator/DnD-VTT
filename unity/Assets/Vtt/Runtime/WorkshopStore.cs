@@ -244,11 +244,11 @@ namespace DndVtt.UnityPrototype
                     ||!(data["traders"] is JArray traders)||traders.Count<1||traders.Count>80
                     ||!(data["departments"] is JArray departments)||departments.Count<1||departments.Count>24)
                     throw new FormatException("Неверный набор торговцев");
-                var ids=new System.Collections.Generic.HashSet<string>();
+                var merchantIds=new System.Collections.Generic.HashSet<string>();
                 foreach(JObject trader in traders)
                 {
                     string id=(string)trader["id"],template=(string)trader["template"],name=(string)trader["name"];
-                    if(!ValidId(id)||!ids.Add(id)||!ValidId(template)||string.IsNullOrWhiteSpace(name)||name.Length>100
+                    if(!ValidId(id)||!merchantIds.Add(id)||!ValidId(template)||string.IsNullOrWhiteSpace(name)||name.Length>100
                         ||!(trader["itemCategories"] is JArray categories)||categories.Count<1||categories.Count>5
                         ||categories.Any(c=>!CharacterSheetRules.InventoryCategories.Contains((string)c))
                         ||!(trader["nameContains"] is JArray words)&&trader["nameContains"]!=null
@@ -263,7 +263,7 @@ namespace DndVtt.UnityPrototype
                     string id=(string)section["id"],name=(string)section["name"];
                     if(!ValidId(id)||!departmentIds.Add(id)||string.IsNullOrWhiteSpace(name)||name.Length>100
                         ||!(section["traders"] is JArray list)||list.Count<1||list.Count>30
-                        ||list.Any(t=>!ids.Contains((string)t))||list.Values<string>().Distinct().Count()!=list.Count)
+                        ||list.Any(t=>!merchantIds.Contains((string)t))||list.Values<string>().Distinct().Count()!=list.Count)
                         throw new FormatException("Неверный раздел рынка: "+id);
                 }
                 return data;
