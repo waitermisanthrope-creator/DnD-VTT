@@ -318,7 +318,7 @@ class Program
                 // Public catalog order is presentation order, not dependency order.
                 var ordered = new System.Collections.Generic.List<JObject>();
                 foreach(JObject rootManifest in list)
-                    foreach(JObject dependency in WorkshopStore.InstallPlan(rootManifest,list.OfType<JObject>(),ordered,"android-arm64","6000.3.26f1",10047))
+                    foreach(JObject dependency in WorkshopStore.InstallPlan(rootManifest,list.OfType<JObject>(),ordered,"android-arm64","6000.3.26f1",Math.Max(UnityRelease.Code,10050)))
                         ordered.Add(dependency);
                 foreach (JObject manifest in ordered)
                 {
