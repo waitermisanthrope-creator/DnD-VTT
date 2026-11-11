@@ -83,8 +83,8 @@ namespace DndVtt.UnityPrototype
                 // Derive the hit target from the actual GPU image. GUIToScreenPoint
                 // includes a Wine/IMGUI scroll offset and is not a client coordinate.
                 Check(buttonPoints.ContainsKey(label),"visible native click target "+label);
-                bool craftMode=label=="Полуавтомат";
-                bool gold=label=="Опыт и уровень",blue=label=="+ Своя"||label=="Посчитать",red=label=="Отмена";
+                bool craftMode=label=="Полуавтомат",marketClose=label=="×";
+                bool gold=label=="Опыт и уровень",blue=label=="+ Своя"||label=="Посчитать"||label=="Рынок"||marketClose,red=label=="Отмена";
                 Check(craftMode||gold||blue||red||new[]{"+ Заметка","Выбрать из справочника / Создать","Сохранить расу","Подтвердить","Посчитать"}.Contains(label),"supported visual pointer target");
                 var capture=ScreenCapture.CaptureScreenshotAsTexture();
                 int minX=Screen.width,minY=Screen.height,maxX=-1,maxY=-1,hits=0;
@@ -113,12 +113,12 @@ namespace DndVtt.UnityPrototype
                             foreach(int next in new[]{x>0?index-1:-1,x<capture.width-1?index+1:-1,index-capture.width,index+capture.width})
                                 if(next>=0&&next<mask.Length&&mask[next]){mask[next]=false;queue.Enqueue(next);}
                         }
-                        bool candidate=craftMode?count>500&&right-left>40&&right-left<capture.width/2&&top-bottom>30&&top-bottom<130&&(left+right)/2>capture.width/3&&(left+right)/2<capture.width*2/3&&top>maxY:count>hits;
+                        bool candidate=marketClose?count>200&&right-left>=20&&right-left<=55&&top-bottom>=20&&top-bottom<=55&&left>capture.width*.7f&&top>maxY:craftMode?count>500&&right-left>40&&right-left<capture.width/2&&top-bottom>30&&top-bottom<130&&(left+right)/2>capture.width/3&&(left+right)/2<capture.width*2/3&&top>maxY:count>hits;
                         if(candidate){hits=count;minX=left;maxX=right;minY=bottom;maxY=top;}
                     }
                 }
                 finally{Destroy(capture);}
-                Check(hits>500&&maxX-minX>40&&maxY-minY>30&&maxY-minY<130,"unique compact visible button color "+label+" bounds="+minX+","+minY+".."+maxX+","+maxY);
+                Check(hits>(marketClose?200:500)&&maxX-minX>(marketClose?20:40)&&maxY-minY>(marketClose?20:30)&&maxY-minY<130,"unique compact visible button color "+label+" bounds="+minX+","+minY+".."+maxX+","+maxY);
                 var point=new Vector2((minX+maxX)/2f,Screen.height-1-(minY+maxY)/2f);
                 var native=new NativePoint{x=(int)point.x,y=(int)point.y};Check(ClientToScreen(window,ref native),"client-to-screen pointer");Check(SetCursorPos(native.x,native.y),"native pointer position");Debug.Log("VTT_NATIVE_POINTER: "+label+" gui="+point+" native="+native.x+","+native.y+" viewport="+Screen.width+","+Screen.height);
             }
