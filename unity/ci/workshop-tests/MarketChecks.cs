@@ -86,6 +86,30 @@ static class MarketChecks
   var second=CommerceRules.MarketTrade(catalog,definitions,enhanced,(JObject)barter["state"],"apothecary","buy",new JObject{["itemId"]="market_healing"},1,new JArray());
   Check(((JArray)second["hero"]["inventory"]["consumables"]).Count==2,"purchased ordinary item cannot duplicate enhanced variant");
   Check((int)second["hero"]["inventory"]["consumables"][0]["potency"]==90&&(int)second["hero"]["inventory"]["consumables"][0]["count"]==1,"existing variant remains unchanged");
+  // Regression: Json.NET reparents JTokens by cloning. Derived offers
+  // must be added to the JArray owned by the final catalog, not a detached
+  // temporary array that silently drops all new merchant merchandise.
+  var merchantSpec=JObject.Parse(@"{
+    'schemaVersion':1,'id':'test.market.merchants','version':'1.0.0','type':'market',
+    'departments':[{'id':'weapons','name':'Оружие','traders':['weaponwright','exotic']}],
+    'traders':[
+      {'id':'weaponwright','name':'Оружейник','template':'weaponwright','itemCategories':['weapons'],'nameContains':['тестовый'],'deriveLimit':4,'inheritStock':true},
+      {'id':'exotic','name':'Экзотическое оружие','template':'weaponwright','itemCategories':['weapons'],'nameContains':['тестовый'],'deriveLimit':4,'inheritStock':false}
+    ]
+  }");
+  var merchantDefinitions=JArray.Parse(@"[
+    {'id':'test.items.weapon','name':'Тестовый клинок','inventoryCategory':'weapons','cost':'5 см'},
+    {'id':'test.items.unpriced','name':'Тестовый неподлежащий продаже клинок','inventoryCategory':'weapons','cost':'Необычное'}
+  ]");
+  var extended=CommerceRules.MergeMarketPacks(catalog,new JArray(merchantSpec),merchantDefinitions);
+  Check(((JArray)extended["traders"]["weaponwright"]["stock"]).Count==9,
+    "base weaponwright must retain 8 original rows and get 1 installed item");
+  Check(((JArray)extended["traders"]["exotic"]["stock"]).Count==1
+    &&(string)extended["traders"]["exotic"]["stock"][0]["sourceItemId"]=="test.items.weapon",
+    "new exotic merchant must receive one real sourced item");
+  Check(((JArray)catalog["traders"]["weaponwright"]["stock"]).Count==8,
+    "source market template is never mutated by merchant mod");
+  
   // A malformed quantity in legacy global market state must not take the
   // entire shop offline. Other goods stay tradeable without changing the
   // unrecognized original value in character/preferences files.
