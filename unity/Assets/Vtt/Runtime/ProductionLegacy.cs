@@ -13,7 +13,13 @@ namespace DndVtt.UnityPrototype
             {
                 string id="legacy.craft."+(string)recipe["id"],profession=LegacyProfession((recipe["tools"] as JArray)?.First?.ToString());
                 if(!Professions.ContainsKey(profession))profession=Professions.Keys.FirstOrDefault();if(profession==null||Recipes.ContainsKey(id))continue;
-                Recipes.Add(id,new JObject{["id"]=id,["name"]=recipe["name"].DeepClone(),["description"]="Рецепт ранее установленного сборника. Исходная механика сохранена.",["professionId"]=profession,["knownByDefault"]=true,["timeHours"]=recipe["time"]?.DeepClone()??new JValue(0),["legacy"]=new JObject{["kind"]="craft",["recipeId"]=recipe["id"].DeepClone()}});
+                string details=(string)recipe["description"]??"Рецепт ранее установленного сборника. Исходная механика сохранена.";
+                details+="\nПроверка d20 + мастерство · СЛ "+recipe["dc"];
+                details+="\nИнструменты: "+string.Join(", ",(recipe["tools"] as JArray??new JArray()).Values<string>().Select(tool=>ToolNames.TryGetValue(tool,out var label)?label:tool));
+                foreach(var material in (recipe["materials"] as JObject??new JObject()).Properties())
+                {var source=(Commerce["craft"]?["materials"] as JArray??new JArray()).OfType<JObject>().FirstOrDefault(m=>(string)m["id"]==material.Name);details+="\n"+((string)source?["name"]??material.Name)+" ×"+material.Value;}
+                details+="\nРезультат: "+recipe["name"]+" ×"+(recipe["quantity"]?.ToString()??"1");
+                Recipes.Add(id,new JObject{["id"]=id,["name"]=recipe["name"].DeepClone(),["description"]=details,["professionId"]=profession,["knownByDefault"]=true,["timeHours"]=recipe["time"]?.DeepClone()??new JValue(0),["legacy"]=new JObject{["kind"]="craft",["recipeId"]=recipe["id"].DeepClone()}});
             }
         }
         internal static string LegacyProfession(string tool)

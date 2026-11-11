@@ -11,6 +11,7 @@ static class ProductionLegacyChecks
   var commerce=JObject.Parse("{items:[],craft:{materials:[{id:'iron',name:'Железо',weight:1}],recipes:[{id:'test',name:'Пробный клинок',inventoryCategory:'weapons',materials:{iron:2},tools:['smith'],dc:10,time:8}],toolAliases:{smith:['smith']}},alchemy:{}}");
   var module=JObject.Parse("{mode:'production-v1',professions:[{id:'smith',name:'Кузнечное дело',tools:[]}],recipes:[]}");var catalog=new ProductionCatalog(commerce,new[]{module});
   Check(catalog.Recipes.ContainsKey("legacy.craft.test"),"existing working craft recipes must participate in three modes and project book");
+  Check(((string)catalog.Recipes["legacy.craft.test"]["description"]).Contains("Железо ×2")&&((string)catalog.Recipes["legacy.craft.test"]["description"]).Contains("СЛ 10"),"legacy recipe book retains ingredient quantities and difficulty before crafting");
   var hero=JObject.Parse("{id:'a',tools:['p_tool_smith'],inventory:{materials:[{id:'iron',name:'Железо',craftMaterialId:'iron',inventoryCategory:'materials',count:4,weight:1}]}}");var ctx=new JObject();var rolls=new JObject{["d20"]=20};
   var semi=CommerceRules.StartProduction(hero,catalog,"legacy.craft.test","legacy.project","semi",1,ctx,rolls);Check(JToken.DeepEquals(semi["inventory"],hero["inventory"]),"legacy semi mode does not consume before approval");
   semi=CommerceRules.ReviewProductionOffline(semi,catalog,"legacy.project",true,true,ctx,rolls);Check(JToken.DeepEquals(semi["inventory"],hero["inventory"]),"legacy long recipe waits for actual game work");
