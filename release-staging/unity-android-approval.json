@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "version": "1.00.47",
-  "candidateRunId": 42983147959,
+  "version": "1.00.48",
+  "candidateRunId": 42993099242,
   "approved": true,
   "releaseType": "public-prerelease",
   "channel": "unity-experiment",
   "scope": "Android-only",
-  "note": "Owner explicitly requests Android in-app update now and defers Windows. Promote the successful signed Android job130398022222 from sourcec463ac018961b4c6d83e1b3482d0bd5c45a9d85f. Published46 plus only spell browsing and in-place text caret; unfinished market preserved in backup branch and excluded. Recheck original certificate/package/version and public downloaded bytes/SHA before activating feed."
+  "note": "Continue owner-authorized Android in-app updates; Windows publication remains deferred. Android job130430473008 succeeded from c5f9a8a9fa58862c2738e58e24984e824bfca9ad. Only inventory reference background loading and cached search; existing UI/search/order preserved. Recheck original signer/package/version and public downloaded bytes/SHA before activating feed."
 }
