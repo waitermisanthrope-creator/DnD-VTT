@@ -1,0 +1,43 @@
+{
+  "manifest": {
+    "id": "homebrew.metals",
+    "version": "1.0.0",
+    "type": "item",
+    "name": "Homebrew: материалы пробной кузни",
+    "author": "DnD-VTT — пример Homebrew",
+    "license": "CC0-1.0",
+    "dependencies": []
+  },
+  "data": {
+    "items": [
+      {
+        "id": "homebrew.metals.ore",
+        "name": "Руда для пробной плавки",
+        "inventoryCategory": "materials",
+        "weight": 1,
+        "description": "Пример для проверки ремёсел. Не является обязательным правилом D&D."
+      },
+      {
+        "id": "homebrew.metals.bar",
+        "name": "Пробный слиток",
+        "inventoryCategory": "materials",
+        "weight": 1,
+        "description": "Пример для проверки ремёсел. Не является обязательным правилом D&D."
+      },
+      {
+        "id": "homebrew.metals.blade",
+        "name": "Пробный клинок",
+        "inventoryCategory": "weapons",
+        "weight": 1,
+        "description": "Пример для проверки ремёсел. Не является обязательным правилом D&D."
+      },
+      {
+        "id": "homebrew.metals.hammer",
+        "name": "Ремесленный молоток",
+        "inventoryCategory": "junk",
+        "weight": 1,
+        "description": "Пример для проверки ремёсел. Не является обязательным правилом D&D."
+      }
+    ]
+  }
+}

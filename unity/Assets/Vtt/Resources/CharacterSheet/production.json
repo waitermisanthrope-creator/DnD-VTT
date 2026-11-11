@@ -1,0 +1,1409 @@
+{
+  "mode": "production-v1",
+  "professions": [
+    {
+      "id": "smith",
+      "name": "Кузнечное дело",
+      "description": "Оружие, металлическая броня, клинки, крепления и металлические компоненты.",
+      "icon": "🔥",
+      "tools": [
+        "smith"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "brewer",
+      "name": "Пивовар",
+      "description": "Ферментация, напитки, дрожжи, уксусные основы и пищевые заготовки.",
+      "icon": "🍺",
+      "tools": [
+        "brewer"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "calligrapher",
+      "name": "Изготовление свитков",
+      "description": "Бумага, пергамент, книги, чернила, свитки и письменные заготовки.",
+      "icon": "✒️",
+      "tools": [
+        "calligrapher"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "carpenter",
+      "name": "Плотницкое дело",
+      "description": "Щиты, мебель, ящики, каркасы, крупные деревянные детали.",
+      "icon": "🪚",
+      "tools": [
+        "carpenter"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "cartographer",
+      "name": "Картограф",
+      "description": "Карты, атласы, планы подземелий и навигационные схемы.",
+      "icon": "🗺️",
+      "tools": [
+        "cartographer"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "cobbler",
+      "name": "Сапожник",
+      "description": "Обувь, подошвы, ремни, сапоги и дорожные кожаные изделия.",
+      "icon": "🥾",
+      "tools": [
+        "cobbler"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "cook",
+      "name": "Кулинария",
+      "description": "Пайки, блюда, сушёные продукты и пищевые заготовки.",
+      "icon": "🍲",
+      "tools": [
+        "cook"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "glassblower",
+      "name": "Стеклодув",
+      "description": "Флаконы, линзы, бутылки, стеклянные детали и оптика.",
+      "icon": "🪟",
+      "tools": [
+        "glassblower"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "jeweler",
+      "name": "Ювелирное дело",
+      "description": "Кольца, амулеты, оправы, драгоценные камни и тонкая инкрустация.",
+      "icon": "💎",
+      "tools": [
+        "jeweler"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "leatherworker",
+      "name": "Кожевенное дело",
+      "description": "Кожа, ремни, ножны, лёгкая броня, сумки и обработка шкур.",
+      "icon": "🐺",
+      "tools": [
+        "leatherworker"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "mason",
+      "name": "Каменщик",
+      "description": "Камень, кирпич, плитка, статуи, точильные и строительные детали.",
+      "icon": "🧱",
+      "tools": [
+        "mason"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "painter",
+      "name": "Маляр",
+      "description": "Пигменты, краски, гербы, роспись, маркировка и декоративные покрытия.",
+      "icon": "🎨",
+      "tools": [
+        "painter"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "potter",
+      "name": "Гончар",
+      "description": "Керамика, тигли, формы, сосуды, печные детали и обожжённые компоненты.",
+      "icon": "🏺",
+      "tools": [
+        "potter"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "tinker",
+      "name": "Жестянщик/механик",
+      "description": "Шестерни, замки, пружины, ловушки и мелкие механизмы.",
+      "icon": "⚙️",
+      "tools": [
+        "tinker"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "alchemist",
+      "name": "Алхимия",
+      "description": "Растворители, реагенты, катализаторы и Alchemy 2.0.",
+      "icon": "⚗️",
+      "tools": [
+        "alchemist"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "weaver",
+      "name": "Портняжное дело",
+      "description": "Нити, ткань, одежда, плащи, подкладки, канаты и текстиль.",
+      "icon": "🧵",
+      "tools": [
+        "weaver"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "woodcarver",
+      "name": "Резчик по дереву",
+      "description": "Луки, стрелы, древки, рукояти, резные детали и деревянные мелкие изделия.",
+      "icon": "🪵",
+      "tools": [
+        "woodcarver"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "herbalist",
+      "name": "Травничество",
+      "description": "Сбор, сушка, сортировка и подготовка лекарственных растений.",
+      "icon": "🌿",
+      "tools": [
+        "herbalism"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "disguiser",
+      "name": "Гример",
+      "description": "Грим, парики, накладки, костюмные элементы и наборы для перевоплощения.",
+      "icon": "🎭",
+      "tools": [
+        "disguise"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "forger",
+      "name": "Мастер подделок",
+      "description": "Документы, печати, копии, поддельные карты и письменные реквизиты.",
+      "icon": "🪶",
+      "tools": [
+        "forgery"
+      ],
+      "progression": {
+        "homebrew": true,
+        "enabledByDefault": false,
+        "description": "Авторское ХБ: профессии и развитие ремесленного мастерства.",
+        "thresholds": [
+          0,
+          100,
+          300,
+          600,
+          1000
+        ],
+        "levels": [
+          {
+            "level": 1,
+            "name": "Ученик",
+            "xp": 0,
+            "checkBonus": 0,
+            "qualityBonus": 0,
+            "unlockRank": 1,
+            "note": "Базовое владение профессией."
+          },
+          {
+            "level": 2,
+            "name": "Подмастерье",
+            "xp": 100,
+            "checkBonus": 1,
+            "qualityBonus": 1,
+            "unlockRank": 2,
+            "note": "+1 к проверкам; открываются рецепты 2 ранга."
+          },
+          {
+            "level": 3,
+            "name": "Мастер",
+            "xp": 300,
+            "checkBonus": 2,
+            "qualityBonus": 1,
+            "unlockRank": 3,
+            "note": "+2 к проверкам; открываются рецепты 3 ранга."
+          },
+          {
+            "level": 4,
+            "name": "Эксперт",
+            "xp": 600,
+            "checkBonus": 3,
+            "qualityBonus": 2,
+            "unlockRank": 4,
+            "note": "+3 к проверкам; открываются рецепты 4 ранга."
+          },
+          {
+            "level": 5,
+            "name": "Великий мастер",
+            "xp": 1000,
+            "checkBonus": 4,
+            "qualityBonus": 3,
+            "unlockRank": 5,
+            "note": "+4 к проверкам; открываются рецепты 5 ранга."
+          }
+        ]
+      }
+    },
+    {
+      "id": "other",
+      "name": "Другие ремёсла",
+      "description": "Дополнительные профессии и правила задаются дополнениями кампании.",
+      "icon": "⚒",
+      "tools": []
+    }
+  ],
+  "recipes": [],
+  "toolLabels": {
+    "smith": "Кузнечные инструменты",
+    "brewer": "Пивоваренные принадлежности",
+    "calligrapher": "Каллиграфические принадлежности",
+    "carpenter": "Плотницкие инструменты",
+    "cartographer": "Инструменты картографа",
+    "cobbler": "Инструменты сапожника",
+    "cook": "Поварские принадлежности",
+    "glassblower": "Инструменты стеклодува",
+    "jeweler": "Ювелирные инструменты",
+    "leatherworker": "Инструменты кожевника",
+    "mason": "Инструменты каменщика",
+    "painter": "Малярные принадлежности",
+    "potter": "Гончарные инструменты",
+    "tinker": "Инструменты жестянщика",
+    "alchemist": "Инструменты алхимика",
+    "weaver": "Инструменты ткача",
+    "woodcarver": "Инструменты резчика по дереву",
+    "herbalism": "Набор травника",
+    "disguise": "Набор для грима",
+    "forgery": "Набор для подделок"
+  },
+  "sources": [
+    {
+      "file": "app/crafting_engine_v31.js",
+      "sha256": "86f850c806af4723e4c05e56c8e9371ba4d3dfb17ae9a1259a61f5afedbca20e"
+    },
+    {
+      "file": "app/crafting_professions_v38.js",
+      "sha256": "f5829872313d1e69da0bba1fca83b7adf130c3f94d63304cb3a52c7a29b4fb80"
+    },
+    {
+      "file": "app/crafting_profession_progression_v47.js",
+      "sha256": "20f73d58c9d4eb0806ab749a0c876fccce61897d45f29edf713133326ff8fdb6"
+    }
+  ]
+}

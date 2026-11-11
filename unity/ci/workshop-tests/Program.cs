@@ -64,6 +64,8 @@ class Program
         if(args.Length>0&&args[0]=="--sheet-swipe"){Console.WriteLine("SHEET_SWIPE_PASS "+SheetSwipeChecks.Run());return;}
         if(args.Length>0&&args[0]=="--dice-loading"){Console.WriteLine("DICE_LOADING_PASS "+DiceLoadingChecks.Run());return;}
         if(args.Length>0&&args[0]=="--container-migration"){Console.WriteLine("CONTAINER_MIGRATION_PASS "+ContainerMigrationChecks.Run());return;}
+        if(args.Length>0&&args[0]=="--production"){Console.WriteLine("PRODUCTION_PASS "+ProductionChecks.Run());return;}
+        if(args.Length>0&&args[0]=="--production-packages"){Console.WriteLine("PRODUCTION_PACKAGES_PASS "+ProductionPackageChecks.Run());return;}
         CheckSpellPicker();CheckTextInput();
         if (args.Length > 0 && args[0] == "--spell-picker")
         { Console.WriteLine("SPELL_PICKER_PASS " + checks); return; }

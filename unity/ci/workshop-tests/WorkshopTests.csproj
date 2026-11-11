@@ -9,6 +9,11 @@
     <Compile Include="SheetSwipeChecks.cs" />
     <Compile Include="DiceLoadingChecks.cs" />
     <Compile Include="ContainerMigrationChecks.cs" />
+    <Compile Include="ProductionChecks.cs" />
+    <Compile Include="ProductionPackageChecks.cs" />
+    <Compile Include="../../Assets/Vtt/Runtime/WorkshopStore.Production.cs" />
+    <Compile Include="../../Assets/Vtt/Runtime/ProductionCatalog.cs" />
+    <Compile Include="../../Assets/Vtt/Runtime/CommerceRules.Production.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/CommerceRules.InventoryMigration.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/CharacterSheetStore.Inventory.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/DiceAppearanceCatalog.cs" />

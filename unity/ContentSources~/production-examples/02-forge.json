@@ -1,0 +1,97 @@
+{
+  "manifest": {
+    "id": "homebrew.forge",
+    "version": "1.0.0",
+    "type": "craft",
+    "name": "Homebrew: пробная кузня и цепочка",
+    "author": "DnD-VTT — пример Homebrew",
+    "license": "CC0-1.0",
+    "dependencies": [
+      "homebrew.metals"
+    ]
+  },
+  "data": {
+    "mode": "production-v1",
+    "professions": [
+      {
+        "id": "homebrew.forge.smith",
+        "name": "Пробная кузня",
+        "description": "Пример настраиваемой профессии; опыт включается отдельно.",
+        "icon": "⚒",
+        "tools": [],
+        "toolItems": [
+          "homebrew.metals.hammer"
+        ],
+        "progression": {
+          "thresholds": [
+            0,
+            10,
+            30
+          ],
+          "levels": [
+            {
+              "name": "Ученик",
+              "checkBonus": 0
+            },
+            {
+              "name": "Подмастерье",
+              "checkBonus": 1
+            },
+            {
+              "name": "Мастер",
+              "checkBonus": 2
+            }
+          ]
+        }
+      }
+    ],
+    "recipes": [
+      {
+        "id": "homebrew.forge.smelt",
+        "name": "Выплавить пробный слиток",
+        "professionId": "homebrew.forge.smith",
+        "knownByDefault": true,
+        "rulesets": [
+          "homebrew"
+        ],
+        "ingredients": [
+          {
+            "itemId": "homebrew.metals.ore",
+            "count": 3
+          }
+        ],
+        "results": [
+          {
+            "itemId": "homebrew.metals.bar",
+            "count": 1
+          }
+        ],
+        "timeHours": 0,
+        "experience": 10
+      },
+      {
+        "id": "homebrew.forge.blade",
+        "name": "Выковать пробный клинок",
+        "professionId": "homebrew.forge.smith",
+        "knownByDefault": true,
+        "rulesets": [
+          "homebrew"
+        ],
+        "ingredients": [
+          {
+            "itemId": "homebrew.metals.bar",
+            "count": 1
+          }
+        ],
+        "results": [
+          {
+            "itemId": "homebrew.metals.blade",
+            "count": 1
+          }
+        ],
+        "timeHours": 16,
+        "experience": 10
+      }
+    ]
+  }
+}

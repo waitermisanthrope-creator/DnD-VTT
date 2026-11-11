@@ -1,0 +1,13 @@
+'use strict';
+const fs=require('fs'),vm=require('vm'),path=require('path'),crypto=require('crypto');
+const root=path.resolve(__dirname,'../..');
+const context={console,document:{readyState:'loading',addEventListener(){},getElementById(){return null},querySelector(){return null},querySelectorAll(){return []}},setTimeout(){},setInterval(){},localStorage:{getItem(){return null}},Math:Object.create(Math)};
+context.window=context;context.self=context;vm.createContext(context);
+const files=['app/crafting_engine_v31.js','app/crafting_professions_v38.js','app/crafting_profession_progression_v47.js'];
+for(const file of files)vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),context,{filename:file,timeout:5000});
+const base=context.DND_CRAFT_PROFESSIONS_V38,progress=context.DND_CRAFT_PROFESSION_PROGRESS;
+const names={alchemist:'Алхимия',smith:'Кузнечное дело',leatherworker:'Кожевенное дело',weaver:'Портняжное дело',jeweler:'Ювелирное дело',cook:'Кулинария',herbalist:'Травничество',carpenter:'Плотницкое дело',calligrapher:'Изготовление свитков'};
+const professions=Object.entries(base.PROFESSIONS).map(([id,p])=>({id,name:names[id]||p.name,description:p.desc||'',icon:base.TOOLS[(p.tools||[])[0]]?.icon||'⚒',tools:p.tools||[],progression:{homebrew:true,enabledByDefault:false,description:progress.SOURCE_TAG,thresholds:progress.LEVELS.map(l=>l.xp),levels:progress.LEVELS}}));
+if(!professions.some(p=>p.id==='other'))professions.push({id:'other',name:'Другие ремёсла',description:'Дополнительные профессии и правила задаются дополнениями кампании.',icon:'⚒',tools:[]});
+const data={mode:'production-v1',professions,recipes:[],toolLabels:Object.fromEntries(Object.entries(base.TOOLS).map(([id,t])=>[id,t.name])),sources:files.map(file=>({file,sha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(root,file))).digest('hex')}))};
+fs.writeFileSync(path.join(root,'unity/Assets/Vtt/Resources/CharacterSheet/production.json'),JSON.stringify(data,null,2)+'\n');console.log('PRODUCTION_SOURCE_EXPORT',professions.length,'optional-professions,',progress.LEVELS.length,'Homebrew ranks; progression default OFF');

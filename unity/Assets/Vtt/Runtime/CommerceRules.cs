@@ -26,6 +26,7 @@ namespace DndVtt.UnityPrototype
         public static void ValidateCatalog(JObject data)
         {
             string mode = (string)data["mode"];
+            if(mode=="production-v1"){ProductionCatalog.Validate(data);return;}
             if (!new[] { "craft-v31", "alchemy-v30", "alchemy-ingredients" }.Contains(mode)) throw new FormatException("Неизвестный модуль ремесла");
             foreach (string field in new[] { "recipes", "materials", "ingredients", "catalysts" })
                 if (data[field] != null && (!(data[field] is JArray a) || a.Count > 200 || a.OfType<JObject>().Count() != a.Count || a.Any(x => string.IsNullOrWhiteSpace((string)x["id"]) || string.IsNullOrWhiteSpace((string)x["name"])) || a.Select(x => (string)x["id"]).Distinct().Count() != a.Count)) throw new FormatException("Неверный справочник " + field);

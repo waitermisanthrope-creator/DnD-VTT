@@ -11,7 +11,7 @@ namespace DndVtt.UnityPrototype
 {
     // Pure data/storage layer. Only curated, pinned repository locations are accepted.
     // Each immutable revision is committed before the atomic active pointer changes.
-    public sealed class WorkshopStore
+    public sealed partial class WorkshopStore
     {
         // A failed optional probe must never prevent a bounded download. Actual
         // filesystem write failures still abort installation without changing saves.
@@ -38,6 +38,7 @@ namespace DndVtt.UnityPrototype
         public static string CategoryPath(JObject manifest)
         {
             string type=(string)manifest["type"],id=(string)manifest["id"]??"";
+            if(type=="craft"&&(string)manifest["craftMode"]=="production-v1")return "Ремёсла/Профессии и рецепты";
             switch(type) {
                 case "race":return "Персонажи/Расы";
                 case "class":return "Персонажи/Классы";
@@ -147,7 +148,9 @@ namespace DndVtt.UnityPrototype
                 "https://raw.githubusercontent.com/waitermisanthrope-creator/DnD-VTT-Assets/main/packages/",
                 "https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/releases/download/" } : new[] {
                 "https://github.com/waitermisanthrope-creator/DnD-VTT-Assets/releases/download/" };
-            if (url == null || !prefixes.Any(p => url.StartsWith(p, StringComparison.Ordinal)) || url.Contains("..") || url.Contains("?") || url.Contains("#")
+            bool local=json&&(string)m["source"]=="local"&&new[]{"item","craft"}.Contains((string)m["type"])&&url=="local://"+id+"/"+(string)m["version"]+".json";
+            if(m["craftMode"]!=null&&((string)m["craftMode"]!="production-v1"||(string)m["type"]!="craft"||((int?)m["minClientVersionCode"]??0)<ProductionClientCode))throw new FormatException("Неверная версия ремесленного дополнения");
+            if (url == null || !local&&!prefixes.Any(p => url.StartsWith(p, StringComparison.Ordinal)) || url.Contains("..") || url.Contains("?") || url.Contains("#")
                 || (!json && (string)m["format"] != "assetbundle") || (json && (!url.EndsWith(".json", StringComparison.Ordinal) || size > 5 * 1024 * 1024)))
                 throw new FormatException("Недоверенный адрес/формат пакета");
             if (!(m["dependencies"] is JArray deps) || deps.Count > 50 || deps.Any(d => !ValidId((string)d)) || deps.Select(d => (string)d).Distinct().Count() != deps.Count || deps.Any(d => (string)d == id))
@@ -270,7 +273,10 @@ namespace DndVtt.UnityPrototype
             }
             if (type == "craft")
             {
+                if(((string)m["craftMode"]=="production-v1")!=((string)data["mode"]=="production-v1"))throw new FormatException("Манифест и формат ремёсел не совпадают");
                 CommerceRules.ValidateCatalog(data);
+                if((string)data["mode"]=="production-v1")foreach(string ownedField in new[]{"professions","recipes"})
+                    foreach(JObject entry in (JArray)data[ownedField])if(!((string)entry["id"]).StartsWith((string)m["id"]+".",StringComparison.Ordinal))throw new FormatException("ID ремесленной записи должен принадлежать пакету");
                 // Compatible envelope: old Unity clients accept ordinary
                 // craft/alchemy-ingredients packets, while new clients validate
                 // optional market metadata. This prevents a new type=market
@@ -387,6 +393,7 @@ namespace DndVtt.UnityPrototype
             foreach (JObject manifest in installed)
             {
                 if ((string)manifest["format"] != "json" || !new[] { "item", "craft", "market" }.Contains((string)manifest["type"])) continue;
+                if((string)manifest["craftMode"]=="production-v1")continue;
                 var data = Data(manifest);
                 if ((string)manifest["type"] == "market") { ((JArray)result["markets"]).Add(data.DeepClone()); continue; }
                 foreach (JObject item in data["items"] as JArray ?? new JArray())
