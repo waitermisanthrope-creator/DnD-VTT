@@ -1,3 +1,7 @@
+# Unity51 — native retry после ошибки baseline теста / 2026-11-11
+
+Первая native попытка43077289483/source1c8b8dee прошла972 PhysX броска/темы/лотки, но НЕ создала APK: sceneCount измерителя снимался после временных async-unload сцен. Baseline перенесён до них; cleanup gate не ослаблен. Добавлены потерянные сведения старых рецептов в новую книгу, PRODUCTION_LEGACY11 (red→green), обе conditional compile PASS. Полная предыдущая локальная регрессия11400/Python14/Market553 PASS. Повторить private candidate51, затем дождаться actual APK/signature/Windows GPU smoke; ничего не публиковать и не менять feed/main. Physical Android и remote GM transport остаются незавершёнными. Отчёт docs/unity-account/STABILITY_CRAFTS_1.00.51.md.
+
 # Unity51 — полная локальная регрессия PASS, private CI выполняется / 2026-11-11
 
 Только experiment/unity-vtt. WORKSHOP_STORE_PASS11400 и CHARACTER_DELETE_PASS1765; Python14, MARKET553, COLLECTIONS137, обе conditional Unity compile PASS. Старый кэш49 обновлён до публичного каталога50, проверки не ослаблялись. Кандидат51 source1c8b8dee собирается в run43077289483; НЕ публиковать, НЕ менять feed/approval/main. Страница ремёсел/три режима/атомарные проекты/старые рецепты/JSON импорт подключены, platform identity исправлен. Ожидаются actual ARM64/Windows/GPU smoke/замеры. Сетевого GM transport нет; физические Android pause5/lock/swipe/perf недоступны. Не объявлять всю задачу готовой. Отчёт docs/unity-account/STABILITY_CRAFTS_1.00.51.md.
