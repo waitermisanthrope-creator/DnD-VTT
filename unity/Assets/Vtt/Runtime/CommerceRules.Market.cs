@@ -134,7 +134,19 @@ namespace DndVtt.UnityPrototype
             if(state["traders"]!=null&&!(state["traders"] is JObject))throw new FormatException("Неизвестный формат состояния рынка");
             var saved=(state["traders"] as JObject)?[trader];if(saved==null)return result;
             if(!(saved is JObject)||!(saved["stock"] is JArray slots)||slots.Any(s=>!(s is JObject))||slots.GroupBy(s=>(string)s["id"]).Any(g=>g.Count()>1))throw new FormatException("Неизвестный формат склада — данные сохранены");
-            foreach(JObject row in result){var slot=slots.OfType<JObject>().SingleOrDefault(s=>JToken.DeepEquals(s["id"],row["id"]));row["qty"]=slot==null?MarketCount(row["qty"]):MarketCount(slot["qty"]);}
+            foreach(JObject row in result)
+            {
+                var slot=slots.OfType<JObject>().SingleOrDefault(s=>JToken.DeepEquals(s["id"],row["id"]));
+                try { row["qty"]=slot==null?MarketCount(row["qty"]):MarketCount(slot["qty"]); }
+                catch(FormatException error)
+                {
+                    // Do not let one invalid legacy quantity block the entire
+                    // vendor or overwrite the saved user data. This offer is
+                    // not available until its stored value can be repaired.
+                    row["qty"]=0;
+                    row["marketInvalid"]=error.Message;
+                }
+            }
             return result;
         }
         private static void MarketSetStock(JObject catalog,JObject state,string trader,string item,long count)
