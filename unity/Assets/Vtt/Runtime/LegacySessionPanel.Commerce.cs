@@ -14,7 +14,7 @@ namespace DndVtt.UnityPrototype
         private JObject[] inventoryEntries = Array.Empty<JObject>();
         private bool commerceCatalogInvalidated;
         private bool? requestedInventoryPicker;
-        private void InvalidateCommerceCatalog() { commerceCatalogInvalidated = true; }
+        private void InvalidateCommerceCatalog() { commerceCatalogInvalidated = true; marketCatalog = null; }
         private void PrepareInventoryCatalog()
         {
             if(Event.current.type!=EventType.Layout)return;
