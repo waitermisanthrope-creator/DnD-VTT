@@ -554,7 +554,7 @@ namespace DndVtt.UnityPrototype
 #endif
             Field("sheetTab",3);Field("frontScroll",Vector2.zero);yield return Frame("classic-inventory-portrait");if(failed)yield break;
 #if UNITY_STANDALONE_WIN && !UNITY_EDITOR
-            try{var amounts=(string[])typeof(LegacySessionPanel).GetField("coinInput",Flags).GetValue(panel);amounts[3]="1";}
+            try{Check(!(bool)typeof(LegacySessionPanel).GetField("showElectrum",Flags).GetValue(panel),"electrum is disabled in a fresh wallet");var amounts=(string[])typeof(LegacySessionPanel).GetField("coinInput",Flags).GetValue(panel);amounts[3]="1";}
             catch(Exception error){Fail(error);yield break;}
             yield return ClickNativeButton("Посчитать");if(failed)yield break;
             try{var saved=CharacterSheetStore.Load(panel.SavePath).Snapshot(0);Check(CharacterSheetRules.CoinTotal(saved["coins"] as JObject,null)==3350,"actual compact wallet uses existing change operation");Check((int)saved["unknown"]["future"]==17&&((JArray)saved["coinLog"]).Count==1,"wallet preserves profile and records transaction");classicDisk=File.ReadAllText(panel.SavePath);}
@@ -564,6 +564,21 @@ namespace DndVtt.UnityPrototype
             try{Check(File.ReadAllText(panel.SavePath)==classicDisk,"wallet filters and history never mutate saved coins");}
             catch(Exception error){Fail(error);yield break;}
             Field("showPlatinum",true);Field("showElectrum",true);Field("coinActionChoices",false);Field("coinLogOpen",false);
+            Field("frontScroll",new Vector2(0,400));yield return new WaitForSecondsRealtime(.3f);
+            yield return ClickNativeButton("Рынок");if(failed)yield break;
+            float marketDeadline=Time.realtimeSinceStartup+60;
+            while(typeof(LegacySessionPanel).GetField("commerceCatalog",Flags).GetValue(panel)==null&&Time.realtimeSinceStartup<marketDeadline)yield return null;
+            try{Check(typeof(LegacySessionPanel).GetField("commerceCatalog",Flags).GetValue(panel)!=null,"market loads catalog on first open without inventory picker");}
+            catch(Exception error){Fail(error);yield break;}
+            yield return Frame("market-traders-portrait");if(failed)yield break;
+            try{Check((bool)typeof(LegacySessionPanel).GetField("marketOpen",Flags).GetValue(panel),"actual inventory market button opens trading");}
+            catch(Exception error){Fail(error);yield break;}
+            Screen.SetResolution(360,800,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);
+            yield return Frame("market-narrow-portrait");if(failed)yield break;
+            yield return ClickNativeButton("×");if(failed)yield break;
+            Screen.SetResolution(600,960,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);
+            try{Check(!(bool)typeof(LegacySessionPanel).GetField("marketOpen",Flags).GetValue(panel)&&File.ReadAllText(panel.SavePath)==classicDisk,"closing market leaves character archive unchanged");}
+            catch(Exception error){Fail(error);yield break;}
             Field("requestedInventoryCategory",(int?)1);Field("frontScroll",new Vector2(0,600));yield return new WaitForSecondsRealtime(.3f);
             yield return Frame("classic-inventory-armor-portrait");if(failed)yield break;
             yield return ClickNativeButton("Выбрать из справочника / Создать");if(failed)yield break;

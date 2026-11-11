@@ -16,9 +16,11 @@ namespace DndVtt.UnityPrototype
             private string lastCategory, lastQuery;
             private JObject[] matches = Array.Empty<JObject>();
             public JObject Catalog { get; }
+            public Dictionary<string,JObject> MarketDefinitions { get; }
             public Snapshot(JObject catalog)
             {
                 Catalog = catalog ?? throw new ArgumentNullException(nameof(catalog));
+                MarketDefinitions=CommerceRules.IndexMarketDefinitions(catalog["items"] as JArray??new JArray());
                 foreach (var token in catalog["items"] as JArray ?? new JArray())
                 {
                     if (!(token is JObject item) || !(item["inventoryCategory"] is JValue category)) continue;

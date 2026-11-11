@@ -1,0 +1,8092 @@
+{
+  "cases": [
+    {
+      "region": "forest",
+      "trader": "village",
+      "mode": "buy",
+      "item": {
+        "id": "market_rations",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 20,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 50
+    },
+    {
+      "region": "forest",
+      "trader": "village",
+      "mode": "sell",
+      "item": {
+        "id": "market_rations",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 20,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 25
+    },
+    {
+      "region": "forest",
+      "trader": "blacksmith",
+      "mode": "buy",
+      "item": {
+        "id": "market_dagger",
+        "name": "Кинжал",
+        "category": "weapons",
+        "costGp": 2,
+        "qty": 3,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 242
+    },
+    {
+      "region": "forest",
+      "trader": "blacksmith",
+      "mode": "sell",
+      "item": {
+        "id": "market_dagger",
+        "name": "Кинжал",
+        "category": "weapons",
+        "costGp": 2,
+        "qty": 3,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 138
+    },
+    {
+      "region": "forest",
+      "trader": "apothecary",
+      "mode": "buy",
+      "item": {
+        "id": "market_antitoxin",
+        "name": "Противоядие",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 3,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 5500
+    },
+    {
+      "region": "forest",
+      "trader": "apothecary",
+      "mode": "sell",
+      "item": {
+        "id": "market_antitoxin",
+        "name": "Противоядие",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 3,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 2750
+    },
+    {
+      "region": "forest",
+      "trader": "caravan",
+      "mode": "buy",
+      "item": {
+        "id": "market_backpack",
+        "name": "Рюкзак",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 5,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 240
+    },
+    {
+      "region": "forest",
+      "trader": "caravan",
+      "mode": "sell",
+      "item": {
+        "id": "market_backpack",
+        "name": "Рюкзак",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 5,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 130
+    },
+    {
+      "region": "forest",
+      "trader": "armorer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_armorer_1",
+        "name": "Кожаный доспех",
+        "category": "armor",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 972
+    },
+    {
+      "region": "forest",
+      "trader": "armorer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_armorer_1",
+        "name": "Кожаный доспех",
+        "category": "armor",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 522
+    },
+    {
+      "region": "forest",
+      "trader": "weaponwright",
+      "mode": "buy",
+      "item": {
+        "id": "m551_weaponwright_1",
+        "name": "Боевой топор",
+        "category": "weapons",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 1231
+    },
+    {
+      "region": "forest",
+      "trader": "weaponwright",
+      "mode": "sell",
+      "item": {
+        "id": "m551_weaponwright_1",
+        "name": "Боевой топор",
+        "category": "weapons",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 690
+    },
+    {
+      "region": "forest",
+      "trader": "fletcher",
+      "mode": "buy",
+      "item": {
+        "id": "m551_fletcher_1",
+        "name": "Короткий лук",
+        "category": "weapons",
+        "costGp": 25,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 2060
+    },
+    {
+      "region": "forest",
+      "trader": "fletcher",
+      "mode": "sell",
+      "item": {
+        "id": "m551_fletcher_1",
+        "name": "Короткий лук",
+        "category": "weapons",
+        "costGp": 25,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 1100
+    },
+    {
+      "region": "forest",
+      "trader": "leatherworker",
+      "mode": "buy",
+      "item": {
+        "id": "m551_leatherworker_1",
+        "name": "Кожаная броня",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 945
+    },
+    {
+      "region": "forest",
+      "trader": "leatherworker",
+      "mode": "sell",
+      "item": {
+        "id": "m551_leatherworker_1",
+        "name": "Кожаная броня",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 558
+    },
+    {
+      "region": "forest",
+      "trader": "weaver",
+      "mode": "buy",
+      "item": {
+        "id": "m551_weaver_1",
+        "name": "Рулон льняной ткани",
+        "category": "gear",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 306
+    },
+    {
+      "region": "forest",
+      "trader": "weaver",
+      "mode": "sell",
+      "item": {
+        "id": "m551_weaver_1",
+        "name": "Рулон льняной ткани",
+        "category": "gear",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 180
+    },
+    {
+      "region": "forest",
+      "trader": "woodcarver",
+      "mode": "buy",
+      "item": {
+        "id": "m551_woodcarver_1",
+        "name": "Лук заготовка",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 5,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 245
+    },
+    {
+      "region": "forest",
+      "trader": "woodcarver",
+      "mode": "sell",
+      "item": {
+        "id": "m551_woodcarver_1",
+        "name": "Лук заготовка",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 5,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 139
+    },
+    {
+      "region": "forest",
+      "trader": "carpenter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_carpenter_1",
+        "name": "Лестница складная",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 412
+    },
+    {
+      "region": "forest",
+      "trader": "carpenter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_carpenter_1",
+        "name": "Лестница складная",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 220
+    },
+    {
+      "region": "forest",
+      "trader": "jeweler",
+      "mode": "buy",
+      "item": {
+        "id": "m551_jeweler_1",
+        "name": "Серебряная оправа",
+        "category": "materials",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 1380
+    },
+    {
+      "region": "forest",
+      "trader": "jeweler",
+      "mode": "sell",
+      "item": {
+        "id": "m551_jeweler_1",
+        "name": "Серебряная оправа",
+        "category": "materials",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 805
+    },
+    {
+      "region": "forest",
+      "trader": "gemcutter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_gemcutter_1",
+        "name": "Драгоценный камень, необработанный",
+        "category": "materials",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 5900
+    },
+    {
+      "region": "forest",
+      "trader": "gemcutter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_gemcutter_1",
+        "name": "Драгоценный камень, необработанный",
+        "category": "materials",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 3600
+    },
+    {
+      "region": "forest",
+      "trader": "potter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_potter_1",
+        "name": "Керамический кувшин",
+        "category": "materials",
+        "costGp": 0.02,
+        "qty": 20,
+        "tags": [
+          "ceramic"
+        ]
+      },
+      "cp": 2
+    },
+    {
+      "region": "forest",
+      "trader": "potter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_potter_1",
+        "name": "Керамический кувшин",
+        "category": "materials",
+        "costGp": 0.02,
+        "qty": 20,
+        "tags": [
+          "ceramic"
+        ]
+      },
+      "cp": 1
+    },
+    {
+      "region": "forest",
+      "trader": "glassblower",
+      "mode": "buy",
+      "item": {
+        "id": "m551_glassblower_1",
+        "name": "Стеклянный флакон",
+        "category": "materials",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "glass"
+        ]
+      },
+      "cp": 11
+    },
+    {
+      "region": "forest",
+      "trader": "glassblower",
+      "mode": "sell",
+      "item": {
+        "id": "m551_glassblower_1",
+        "name": "Стеклянный флакон",
+        "category": "materials",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "glass"
+        ]
+      },
+      "cp": 6
+    },
+    {
+      "region": "forest",
+      "trader": "mason",
+      "mode": "buy",
+      "item": {
+        "id": "m551_mason_1",
+        "name": "Гранитная заготовка",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 20,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 208
+    },
+    {
+      "region": "forest",
+      "trader": "mason",
+      "mode": "sell",
+      "item": {
+        "id": "m551_mason_1",
+        "name": "Гранитная заготовка",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 20,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 110
+    },
+    {
+      "region": "forest",
+      "trader": "cobbler",
+      "mode": "buy",
+      "item": {
+        "id": "m551_cobbler_1",
+        "name": "Сапоги",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 92
+    },
+    {
+      "region": "forest",
+      "trader": "cobbler",
+      "mode": "sell",
+      "item": {
+        "id": "m551_cobbler_1",
+        "name": "Сапоги",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 54
+    },
+    {
+      "region": "forest",
+      "trader": "painter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_painter_1",
+        "name": "Пигменты, набор",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "pigment"
+        ]
+      },
+      "cp": 324
+    },
+    {
+      "region": "forest",
+      "trader": "painter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_painter_1",
+        "name": "Пигменты, набор",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "pigment"
+        ]
+      },
+      "cp": 180
+    },
+    {
+      "region": "forest",
+      "trader": "tinker",
+      "mode": "buy",
+      "item": {
+        "id": "m551_tinker_1",
+        "name": "Замок простой",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 633
+    },
+    {
+      "region": "forest",
+      "trader": "tinker",
+      "mode": "sell",
+      "item": {
+        "id": "m551_tinker_1",
+        "name": "Замок простой",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 357
+    },
+    {
+      "region": "forest",
+      "trader": "scribe",
+      "mode": "buy",
+      "item": {
+        "id": "m551_scribe_1",
+        "name": "Бумага (10 листов)",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 20,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 106
+    },
+    {
+      "region": "forest",
+      "trader": "scribe",
+      "mode": "sell",
+      "item": {
+        "id": "m551_scribe_1",
+        "name": "Бумага (10 листов)",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 20,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 50
+    },
+    {
+      "region": "forest",
+      "trader": "cartographer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_cartographer_1",
+        "name": "Карта местности",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 6,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 560
+    },
+    {
+      "region": "forest",
+      "trader": "cartographer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_cartographer_1",
+        "name": "Карта местности",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 6,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 290
+    },
+    {
+      "region": "forest",
+      "trader": "herbalist",
+      "mode": "buy",
+      "item": {
+        "id": "m551_herbalist_1",
+        "name": "Лечебная трава",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 20,
+        "tags": [
+          "herbalism"
+        ]
+      },
+      "cp": 243
+    },
+    {
+      "region": "forest",
+      "trader": "herbalist",
+      "mode": "sell",
+      "item": {
+        "id": "m551_herbalist_1",
+        "name": "Лечебная трава",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 20,
+        "tags": [
+          "herbalism"
+        ]
+      },
+      "cp": 124
+    },
+    {
+      "region": "forest",
+      "trader": "alchemist",
+      "mode": "buy",
+      "item": {
+        "id": "m551_alchemist_1",
+        "name": "Зелье лечения",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 5750
+    },
+    {
+      "region": "forest",
+      "trader": "alchemist",
+      "mode": "sell",
+      "item": {
+        "id": "m551_alchemist_1",
+        "name": "Зелье лечения",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 3100
+    },
+    {
+      "region": "forest",
+      "trader": "poisoner",
+      "mode": "buy",
+      "item": {
+        "id": "m551_poisoner_1",
+        "name": "Антитоксин",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 5,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 6750
+    },
+    {
+      "region": "forest",
+      "trader": "poisoner",
+      "mode": "sell",
+      "item": {
+        "id": "m551_poisoner_1",
+        "name": "Антитоксин",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 5,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 3500
+    },
+    {
+      "region": "forest",
+      "trader": "brewer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_brewer_1",
+        "name": "Эль, кружка",
+        "category": "consumables",
+        "costGp": 0.04,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 4
+    },
+    {
+      "region": "forest",
+      "trader": "brewer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_brewer_1",
+        "name": "Эль, кружка",
+        "category": "consumables",
+        "costGp": 0.04,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 2
+    },
+    {
+      "region": "forest",
+      "trader": "cook",
+      "mode": "buy",
+      "item": {
+        "id": "m551_cook_1",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 53
+    },
+    {
+      "region": "forest",
+      "trader": "cook",
+      "mode": "sell",
+      "item": {
+        "id": "m551_cook_1",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 25
+    },
+    {
+      "region": "forest",
+      "trader": "fisher",
+      "mode": "buy",
+      "item": {
+        "id": "m551_fisher_1",
+        "name": "Свежая рыба",
+        "category": "consumables",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 10
+    },
+    {
+      "region": "forest",
+      "trader": "fisher",
+      "mode": "sell",
+      "item": {
+        "id": "m551_fisher_1",
+        "name": "Свежая рыба",
+        "category": "consumables",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 5
+    },
+    {
+      "region": "forest",
+      "trader": "shipchandler",
+      "mode": "buy",
+      "item": {
+        "id": "m551_shipchandler_1",
+        "name": "Канат, 50 футов",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 12,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 216
+    },
+    {
+      "region": "forest",
+      "trader": "shipchandler",
+      "mode": "sell",
+      "item": {
+        "id": "m551_shipchandler_1",
+        "name": "Канат, 50 футов",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 12,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 110
+    },
+    {
+      "region": "forest",
+      "trader": "miner",
+      "mode": "buy",
+      "item": {
+        "id": "m551_miner_1",
+        "name": "Железная руда",
+        "category": "materials",
+        "costGp": 1,
+        "qty": 30,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 126
+    },
+    {
+      "region": "forest",
+      "trader": "miner",
+      "mode": "sell",
+      "item": {
+        "id": "m551_miner_1",
+        "name": "Железная руда",
+        "category": "materials",
+        "costGp": 1,
+        "qty": 30,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 69
+    },
+    {
+      "region": "forest",
+      "trader": "stonecutter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_stonecutter_1",
+        "name": "Гранит",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 30,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 210
+    },
+    {
+      "region": "forest",
+      "trader": "stonecutter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_stonecutter_1",
+        "name": "Гранит",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 30,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 110
+    },
+    {
+      "region": "forest",
+      "trader": "generalstore",
+      "mode": "buy",
+      "item": {
+        "id": "m551_generalstore_1",
+        "name": "Факел",
+        "category": "gear",
+        "costGp": 0.01,
+        "qty": 60,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 1
+    },
+    {
+      "region": "forest",
+      "trader": "generalstore",
+      "mode": "sell",
+      "item": {
+        "id": "m551_generalstore_1",
+        "name": "Факел",
+        "category": "gear",
+        "costGp": 0.01,
+        "qty": 60,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 1
+    },
+    {
+      "region": "forest",
+      "trader": "luxury",
+      "mode": "buy",
+      "item": {
+        "id": "m551_luxury_1",
+        "name": "Шёлковая рубашка",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 1350
+    },
+    {
+      "region": "forest",
+      "trader": "luxury",
+      "mode": "sell",
+      "item": {
+        "id": "m551_luxury_1",
+        "name": "Шёлковая рубашка",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 720
+    },
+    {
+      "region": "forest",
+      "trader": "relicdealer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_relicdealer_1",
+        "name": "Древний фрагмент",
+        "category": "materials",
+        "costGp": 25,
+        "qty": 5,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 3625
+    },
+    {
+      "region": "forest",
+      "trader": "relicdealer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_relicdealer_1",
+        "name": "Древний фрагмент",
+        "category": "materials",
+        "costGp": 25,
+        "qty": 5,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 1875
+    },
+    {
+      "region": "forest",
+      "trader": "arcane",
+      "mode": "buy",
+      "item": {
+        "id": "m551_arcane_1",
+        "name": "Арканная пыль",
+        "category": "materials",
+        "costGp": 15,
+        "qty": 8,
+        "tags": [
+          "arcane"
+        ]
+      },
+      "cp": 1950
+    },
+    {
+      "region": "forest",
+      "trader": "arcane",
+      "mode": "sell",
+      "item": {
+        "id": "m551_arcane_1",
+        "name": "Арканная пыль",
+        "category": "materials",
+        "costGp": 15,
+        "qty": 8,
+        "tags": [
+          "arcane"
+        ]
+      },
+      "cp": 1050
+    },
+    {
+      "region": "forest",
+      "trader": "stablemaster",
+      "mode": "buy",
+      "item": {
+        "id": "m551_stablemaster_1",
+        "name": "Седло",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 3,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 972
+    },
+    {
+      "region": "forest",
+      "trader": "stablemaster",
+      "mode": "sell",
+      "item": {
+        "id": "m551_stablemaster_1",
+        "name": "Седло",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 3,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 495
+    },
+    {
+      "region": "forest",
+      "trader": "hunter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_hunter_1",
+        "name": "Шкура оленя",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 486
+    },
+    {
+      "region": "forest",
+      "trader": "hunter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_hunter_1",
+        "name": "Шкура оленя",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 270
+    },
+    {
+      "region": "forest",
+      "trader": "monsterparts",
+      "mode": "buy",
+      "item": {
+        "id": "m551_monsterparts_1",
+        "name": "Паучий шёлк",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "fiber"
+        ]
+      },
+      "cp": 625
+    },
+    {
+      "region": "forest",
+      "trader": "monsterparts",
+      "mode": "sell",
+      "item": {
+        "id": "m551_monsterparts_1",
+        "name": "Паучий шёлк",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "fiber"
+        ]
+      },
+      "cp": 340
+    },
+    {
+      "region": "forest",
+      "trader": "scrollmerchant",
+      "mode": "buy",
+      "item": {
+        "id": "m551_scrollmerchant_1",
+        "name": "Свиток заклинания 1 круга",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "arcane",
+          "paper"
+        ]
+      },
+      "cp": 3000
+    },
+    {
+      "region": "forest",
+      "trader": "scrollmerchant",
+      "mode": "sell",
+      "item": {
+        "id": "m551_scrollmerchant_1",
+        "name": "Свиток заклинания 1 круга",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "arcane",
+          "paper"
+        ]
+      },
+      "cp": 1550
+    },
+    {
+      "region": "forest",
+      "trader": "temple",
+      "mode": "buy",
+      "item": {
+        "id": "m551_temple_1",
+        "name": "Святая вода",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 8,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 2625
+    },
+    {
+      "region": "forest",
+      "trader": "temple",
+      "mode": "sell",
+      "item": {
+        "id": "m551_temple_1",
+        "name": "Святая вода",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 8,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 1250
+    },
+    {
+      "region": "forest",
+      "trader": "blackmarket",
+      "mode": "buy",
+      "item": {
+        "id": "m551_blackmarket_1",
+        "name": "Отмычки",
+        "category": "gear",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 4169
+    },
+    {
+      "region": "forest",
+      "trader": "blackmarket",
+      "mode": "sell",
+      "item": {
+        "id": "m551_blackmarket_1",
+        "name": "Отмычки",
+        "category": "gear",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 2300
+    },
+    {
+      "region": "forest",
+      "trader": "caravan_master",
+      "mode": "buy",
+      "item": {
+        "id": "m551_caravan_master_1",
+        "name": "Дорожный шатёр",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 4,
+        "tags": [
+          "textile",
+          "wood"
+        ]
+      },
+      "cp": 928
+    },
+    {
+      "region": "forest",
+      "trader": "caravan_master",
+      "mode": "sell",
+      "item": {
+        "id": "m551_caravan_master_1",
+        "name": "Дорожный шатёр",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 4,
+        "tags": [
+          "textile",
+          "wood"
+        ]
+      },
+      "cp": 528
+    },
+    {
+      "region": "forest",
+      "trader": "siege",
+      "mode": "buy",
+      "item": {
+        "id": "m551_siege_1",
+        "name": "Канат толстый",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 600
+    },
+    {
+      "region": "forest",
+      "trader": "siege",
+      "mode": "sell",
+      "item": {
+        "id": "m551_siege_1",
+        "name": "Канат толстый",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 275
+    },
+    {
+      "region": "highlands",
+      "trader": "village",
+      "mode": "buy",
+      "item": {
+        "id": "market_rations",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 20,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 50
+    },
+    {
+      "region": "highlands",
+      "trader": "village",
+      "mode": "sell",
+      "item": {
+        "id": "market_rations",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 20,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 25
+    },
+    {
+      "region": "highlands",
+      "trader": "blacksmith",
+      "mode": "buy",
+      "item": {
+        "id": "market_dagger",
+        "name": "Кинжал",
+        "category": "weapons",
+        "costGp": 2,
+        "qty": 3,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 168
+    },
+    {
+      "region": "highlands",
+      "trader": "blacksmith",
+      "mode": "sell",
+      "item": {
+        "id": "market_dagger",
+        "name": "Кинжал",
+        "category": "weapons",
+        "costGp": 2,
+        "qty": 3,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 96
+    },
+    {
+      "region": "highlands",
+      "trader": "apothecary",
+      "mode": "buy",
+      "item": {
+        "id": "market_antitoxin",
+        "name": "Противоядие",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 3,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 5500
+    },
+    {
+      "region": "highlands",
+      "trader": "apothecary",
+      "mode": "sell",
+      "item": {
+        "id": "market_antitoxin",
+        "name": "Противоядие",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 3,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 2750
+    },
+    {
+      "region": "highlands",
+      "trader": "caravan",
+      "mode": "buy",
+      "item": {
+        "id": "market_backpack",
+        "name": "Рюкзак",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 5,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 240
+    },
+    {
+      "region": "highlands",
+      "trader": "caravan",
+      "mode": "sell",
+      "item": {
+        "id": "market_backpack",
+        "name": "Рюкзак",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 5,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 130
+    },
+    {
+      "region": "highlands",
+      "trader": "armorer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_armorer_1",
+        "name": "Кожаный доспех",
+        "category": "armor",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 1134
+    },
+    {
+      "region": "highlands",
+      "trader": "armorer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_armorer_1",
+        "name": "Кожаный доспех",
+        "category": "armor",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 609
+    },
+    {
+      "region": "highlands",
+      "trader": "weaponwright",
+      "mode": "buy",
+      "item": {
+        "id": "m551_weaponwright_1",
+        "name": "Боевой топор",
+        "category": "weapons",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 856
+    },
+    {
+      "region": "highlands",
+      "trader": "weaponwright",
+      "mode": "sell",
+      "item": {
+        "id": "m551_weaponwright_1",
+        "name": "Боевой топор",
+        "category": "weapons",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 480
+    },
+    {
+      "region": "highlands",
+      "trader": "fletcher",
+      "mode": "buy",
+      "item": {
+        "id": "m551_fletcher_1",
+        "name": "Короткий лук",
+        "category": "weapons",
+        "costGp": 25,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 2833
+    },
+    {
+      "region": "highlands",
+      "trader": "fletcher",
+      "mode": "sell",
+      "item": {
+        "id": "m551_fletcher_1",
+        "name": "Короткий лук",
+        "category": "weapons",
+        "costGp": 25,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 1513
+    },
+    {
+      "region": "highlands",
+      "trader": "leatherworker",
+      "mode": "buy",
+      "item": {
+        "id": "m551_leatherworker_1",
+        "name": "Кожаная броня",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 1103
+    },
+    {
+      "region": "highlands",
+      "trader": "leatherworker",
+      "mode": "sell",
+      "item": {
+        "id": "m551_leatherworker_1",
+        "name": "Кожаная броня",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 651
+    },
+    {
+      "region": "highlands",
+      "trader": "weaver",
+      "mode": "buy",
+      "item": {
+        "id": "m551_weaver_1",
+        "name": "Рулон льняной ткани",
+        "category": "gear",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 306
+    },
+    {
+      "region": "highlands",
+      "trader": "weaver",
+      "mode": "sell",
+      "item": {
+        "id": "m551_weaver_1",
+        "name": "Рулон льняной ткани",
+        "category": "gear",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 180
+    },
+    {
+      "region": "highlands",
+      "trader": "woodcarver",
+      "mode": "buy",
+      "item": {
+        "id": "m551_woodcarver_1",
+        "name": "Лук заготовка",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 5,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 337
+    },
+    {
+      "region": "highlands",
+      "trader": "woodcarver",
+      "mode": "sell",
+      "item": {
+        "id": "m551_woodcarver_1",
+        "name": "Лук заготовка",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 5,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 191
+    },
+    {
+      "region": "highlands",
+      "trader": "carpenter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_carpenter_1",
+        "name": "Лестница складная",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 567
+    },
+    {
+      "region": "highlands",
+      "trader": "carpenter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_carpenter_1",
+        "name": "Лестница складная",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 303
+    },
+    {
+      "region": "highlands",
+      "trader": "jeweler",
+      "mode": "buy",
+      "item": {
+        "id": "m551_jeweler_1",
+        "name": "Серебряная оправа",
+        "category": "materials",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 960
+    },
+    {
+      "region": "highlands",
+      "trader": "jeweler",
+      "mode": "sell",
+      "item": {
+        "id": "m551_jeweler_1",
+        "name": "Серебряная оправа",
+        "category": "materials",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 560
+    },
+    {
+      "region": "highlands",
+      "trader": "gemcutter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_gemcutter_1",
+        "name": "Драгоценный камень, необработанный",
+        "category": "materials",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 5900
+    },
+    {
+      "region": "highlands",
+      "trader": "gemcutter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_gemcutter_1",
+        "name": "Драгоценный камень, необработанный",
+        "category": "materials",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 3600
+    },
+    {
+      "region": "highlands",
+      "trader": "potter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_potter_1",
+        "name": "Керамический кувшин",
+        "category": "materials",
+        "costGp": 0.02,
+        "qty": 20,
+        "tags": [
+          "ceramic"
+        ]
+      },
+      "cp": 2
+    },
+    {
+      "region": "highlands",
+      "trader": "potter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_potter_1",
+        "name": "Керамический кувшин",
+        "category": "materials",
+        "costGp": 0.02,
+        "qty": 20,
+        "tags": [
+          "ceramic"
+        ]
+      },
+      "cp": 1
+    },
+    {
+      "region": "highlands",
+      "trader": "glassblower",
+      "mode": "buy",
+      "item": {
+        "id": "m551_glassblower_1",
+        "name": "Стеклянный флакон",
+        "category": "materials",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "glass"
+        ]
+      },
+      "cp": 11
+    },
+    {
+      "region": "highlands",
+      "trader": "glassblower",
+      "mode": "sell",
+      "item": {
+        "id": "m551_glassblower_1",
+        "name": "Стеклянный флакон",
+        "category": "materials",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "glass"
+        ]
+      },
+      "cp": 6
+    },
+    {
+      "region": "highlands",
+      "trader": "mason",
+      "mode": "buy",
+      "item": {
+        "id": "m551_mason_1",
+        "name": "Гранитная заготовка",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 20,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 177
+    },
+    {
+      "region": "highlands",
+      "trader": "mason",
+      "mode": "sell",
+      "item": {
+        "id": "m551_mason_1",
+        "name": "Гранитная заготовка",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 20,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 94
+    },
+    {
+      "region": "highlands",
+      "trader": "cobbler",
+      "mode": "buy",
+      "item": {
+        "id": "m551_cobbler_1",
+        "name": "Сапоги",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 107
+    },
+    {
+      "region": "highlands",
+      "trader": "cobbler",
+      "mode": "sell",
+      "item": {
+        "id": "m551_cobbler_1",
+        "name": "Сапоги",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 63
+    },
+    {
+      "region": "highlands",
+      "trader": "painter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_painter_1",
+        "name": "Пигменты, набор",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "pigment"
+        ]
+      },
+      "cp": 324
+    },
+    {
+      "region": "highlands",
+      "trader": "painter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_painter_1",
+        "name": "Пигменты, набор",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "pigment"
+        ]
+      },
+      "cp": 180
+    },
+    {
+      "region": "highlands",
+      "trader": "tinker",
+      "mode": "buy",
+      "item": {
+        "id": "m551_tinker_1",
+        "name": "Замок простой",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 440
+    },
+    {
+      "region": "highlands",
+      "trader": "tinker",
+      "mode": "sell",
+      "item": {
+        "id": "m551_tinker_1",
+        "name": "Замок простой",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 248
+    },
+    {
+      "region": "highlands",
+      "trader": "scribe",
+      "mode": "buy",
+      "item": {
+        "id": "m551_scribe_1",
+        "name": "Бумага (10 листов)",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 20,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 106
+    },
+    {
+      "region": "highlands",
+      "trader": "scribe",
+      "mode": "sell",
+      "item": {
+        "id": "m551_scribe_1",
+        "name": "Бумага (10 листов)",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 20,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 50
+    },
+    {
+      "region": "highlands",
+      "trader": "cartographer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_cartographer_1",
+        "name": "Карта местности",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 6,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 560
+    },
+    {
+      "region": "highlands",
+      "trader": "cartographer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_cartographer_1",
+        "name": "Карта местности",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 6,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 290
+    },
+    {
+      "region": "highlands",
+      "trader": "herbalist",
+      "mode": "buy",
+      "item": {
+        "id": "m551_herbalist_1",
+        "name": "Лечебная трава",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 20,
+        "tags": [
+          "herbalism"
+        ]
+      },
+      "cp": 324
+    },
+    {
+      "region": "highlands",
+      "trader": "herbalist",
+      "mode": "sell",
+      "item": {
+        "id": "m551_herbalist_1",
+        "name": "Лечебная трава",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 20,
+        "tags": [
+          "herbalism"
+        ]
+      },
+      "cp": 165
+    },
+    {
+      "region": "highlands",
+      "trader": "alchemist",
+      "mode": "buy",
+      "item": {
+        "id": "m551_alchemist_1",
+        "name": "Зелье лечения",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 5750
+    },
+    {
+      "region": "highlands",
+      "trader": "alchemist",
+      "mode": "sell",
+      "item": {
+        "id": "m551_alchemist_1",
+        "name": "Зелье лечения",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 3100
+    },
+    {
+      "region": "highlands",
+      "trader": "poisoner",
+      "mode": "buy",
+      "item": {
+        "id": "m551_poisoner_1",
+        "name": "Антитоксин",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 5,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 6750
+    },
+    {
+      "region": "highlands",
+      "trader": "poisoner",
+      "mode": "sell",
+      "item": {
+        "id": "m551_poisoner_1",
+        "name": "Антитоксин",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 5,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 3500
+    },
+    {
+      "region": "highlands",
+      "trader": "brewer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_brewer_1",
+        "name": "Эль, кружка",
+        "category": "consumables",
+        "costGp": 0.04,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 4
+    },
+    {
+      "region": "highlands",
+      "trader": "brewer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_brewer_1",
+        "name": "Эль, кружка",
+        "category": "consumables",
+        "costGp": 0.04,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 2
+    },
+    {
+      "region": "highlands",
+      "trader": "cook",
+      "mode": "buy",
+      "item": {
+        "id": "m551_cook_1",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 53
+    },
+    {
+      "region": "highlands",
+      "trader": "cook",
+      "mode": "sell",
+      "item": {
+        "id": "m551_cook_1",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 25
+    },
+    {
+      "region": "highlands",
+      "trader": "fisher",
+      "mode": "buy",
+      "item": {
+        "id": "m551_fisher_1",
+        "name": "Свежая рыба",
+        "category": "consumables",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 10
+    },
+    {
+      "region": "highlands",
+      "trader": "fisher",
+      "mode": "sell",
+      "item": {
+        "id": "m551_fisher_1",
+        "name": "Свежая рыба",
+        "category": "consumables",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 5
+    },
+    {
+      "region": "highlands",
+      "trader": "shipchandler",
+      "mode": "buy",
+      "item": {
+        "id": "m551_shipchandler_1",
+        "name": "Канат, 50 футов",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 12,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 216
+    },
+    {
+      "region": "highlands",
+      "trader": "shipchandler",
+      "mode": "sell",
+      "item": {
+        "id": "m551_shipchandler_1",
+        "name": "Канат, 50 футов",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 12,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 110
+    },
+    {
+      "region": "highlands",
+      "trader": "miner",
+      "mode": "buy",
+      "item": {
+        "id": "m551_miner_1",
+        "name": "Железная руда",
+        "category": "materials",
+        "costGp": 1,
+        "qty": 30,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 88
+    },
+    {
+      "region": "highlands",
+      "trader": "miner",
+      "mode": "sell",
+      "item": {
+        "id": "m551_miner_1",
+        "name": "Железная руда",
+        "category": "materials",
+        "costGp": 1,
+        "qty": 30,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 48
+    },
+    {
+      "region": "highlands",
+      "trader": "stonecutter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_stonecutter_1",
+        "name": "Гранит",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 30,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 179
+    },
+    {
+      "region": "highlands",
+      "trader": "stonecutter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_stonecutter_1",
+        "name": "Гранит",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 30,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 94
+    },
+    {
+      "region": "highlands",
+      "trader": "generalstore",
+      "mode": "buy",
+      "item": {
+        "id": "m551_generalstore_1",
+        "name": "Факел",
+        "category": "gear",
+        "costGp": 0.01,
+        "qty": 60,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 1
+    },
+    {
+      "region": "highlands",
+      "trader": "generalstore",
+      "mode": "sell",
+      "item": {
+        "id": "m551_generalstore_1",
+        "name": "Факел",
+        "category": "gear",
+        "costGp": 0.01,
+        "qty": 60,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 1
+    },
+    {
+      "region": "highlands",
+      "trader": "luxury",
+      "mode": "buy",
+      "item": {
+        "id": "m551_luxury_1",
+        "name": "Шёлковая рубашка",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 1350
+    },
+    {
+      "region": "highlands",
+      "trader": "luxury",
+      "mode": "sell",
+      "item": {
+        "id": "m551_luxury_1",
+        "name": "Шёлковая рубашка",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 720
+    },
+    {
+      "region": "highlands",
+      "trader": "relicdealer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_relicdealer_1",
+        "name": "Древний фрагмент",
+        "category": "materials",
+        "costGp": 25,
+        "qty": 5,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 3625
+    },
+    {
+      "region": "highlands",
+      "trader": "relicdealer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_relicdealer_1",
+        "name": "Древний фрагмент",
+        "category": "materials",
+        "costGp": 25,
+        "qty": 5,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 1875
+    },
+    {
+      "region": "highlands",
+      "trader": "arcane",
+      "mode": "buy",
+      "item": {
+        "id": "m551_arcane_1",
+        "name": "Арканная пыль",
+        "category": "materials",
+        "costGp": 15,
+        "qty": 8,
+        "tags": [
+          "arcane"
+        ]
+      },
+      "cp": 1950
+    },
+    {
+      "region": "highlands",
+      "trader": "arcane",
+      "mode": "sell",
+      "item": {
+        "id": "m551_arcane_1",
+        "name": "Арканная пыль",
+        "category": "materials",
+        "costGp": 15,
+        "qty": 8,
+        "tags": [
+          "arcane"
+        ]
+      },
+      "cp": 1050
+    },
+    {
+      "region": "highlands",
+      "trader": "stablemaster",
+      "mode": "buy",
+      "item": {
+        "id": "m551_stablemaster_1",
+        "name": "Седло",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 3,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 1134
+    },
+    {
+      "region": "highlands",
+      "trader": "stablemaster",
+      "mode": "sell",
+      "item": {
+        "id": "m551_stablemaster_1",
+        "name": "Седло",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 3,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 578
+    },
+    {
+      "region": "highlands",
+      "trader": "hunter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_hunter_1",
+        "name": "Шкура оленя",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 567
+    },
+    {
+      "region": "highlands",
+      "trader": "hunter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_hunter_1",
+        "name": "Шкура оленя",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 315
+    },
+    {
+      "region": "highlands",
+      "trader": "monsterparts",
+      "mode": "buy",
+      "item": {
+        "id": "m551_monsterparts_1",
+        "name": "Паучий шёлк",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "fiber"
+        ]
+      },
+      "cp": 625
+    },
+    {
+      "region": "highlands",
+      "trader": "monsterparts",
+      "mode": "sell",
+      "item": {
+        "id": "m551_monsterparts_1",
+        "name": "Паучий шёлк",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "fiber"
+        ]
+      },
+      "cp": 340
+    },
+    {
+      "region": "highlands",
+      "trader": "scrollmerchant",
+      "mode": "buy",
+      "item": {
+        "id": "m551_scrollmerchant_1",
+        "name": "Свиток заклинания 1 круга",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "arcane",
+          "paper"
+        ]
+      },
+      "cp": 3000
+    },
+    {
+      "region": "highlands",
+      "trader": "scrollmerchant",
+      "mode": "sell",
+      "item": {
+        "id": "m551_scrollmerchant_1",
+        "name": "Свиток заклинания 1 круга",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "arcane",
+          "paper"
+        ]
+      },
+      "cp": 1550
+    },
+    {
+      "region": "highlands",
+      "trader": "temple",
+      "mode": "buy",
+      "item": {
+        "id": "m551_temple_1",
+        "name": "Святая вода",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 8,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 2625
+    },
+    {
+      "region": "highlands",
+      "trader": "temple",
+      "mode": "sell",
+      "item": {
+        "id": "m551_temple_1",
+        "name": "Святая вода",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 8,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 1250
+    },
+    {
+      "region": "highlands",
+      "trader": "blackmarket",
+      "mode": "buy",
+      "item": {
+        "id": "m551_blackmarket_1",
+        "name": "Отмычки",
+        "category": "gear",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 2900
+    },
+    {
+      "region": "highlands",
+      "trader": "blackmarket",
+      "mode": "sell",
+      "item": {
+        "id": "m551_blackmarket_1",
+        "name": "Отмычки",
+        "category": "gear",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 1600
+    },
+    {
+      "region": "highlands",
+      "trader": "caravan_master",
+      "mode": "buy",
+      "item": {
+        "id": "m551_caravan_master_1",
+        "name": "Дорожный шатёр",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 4,
+        "tags": [
+          "textile",
+          "wood"
+        ]
+      },
+      "cp": 1276
+    },
+    {
+      "region": "highlands",
+      "trader": "caravan_master",
+      "mode": "sell",
+      "item": {
+        "id": "m551_caravan_master_1",
+        "name": "Дорожный шатёр",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 4,
+        "tags": [
+          "textile",
+          "wood"
+        ]
+      },
+      "cp": 726
+    },
+    {
+      "region": "highlands",
+      "trader": "siege",
+      "mode": "buy",
+      "item": {
+        "id": "m551_siege_1",
+        "name": "Канат толстый",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 600
+    },
+    {
+      "region": "highlands",
+      "trader": "siege",
+      "mode": "sell",
+      "item": {
+        "id": "m551_siege_1",
+        "name": "Канат толстый",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 275
+    },
+    {
+      "region": "swamp",
+      "trader": "village",
+      "mode": "buy",
+      "item": {
+        "id": "market_rations",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 20,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 57
+    },
+    {
+      "region": "swamp",
+      "trader": "village",
+      "mode": "sell",
+      "item": {
+        "id": "market_rations",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 20,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 29
+    },
+    {
+      "region": "swamp",
+      "trader": "blacksmith",
+      "mode": "buy",
+      "item": {
+        "id": "market_dagger",
+        "name": "Кинжал",
+        "category": "weapons",
+        "costGp": 2,
+        "qty": 3,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 231
+    },
+    {
+      "region": "swamp",
+      "trader": "blacksmith",
+      "mode": "sell",
+      "item": {
+        "id": "market_dagger",
+        "name": "Кинжал",
+        "category": "weapons",
+        "costGp": 2,
+        "qty": 3,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 132
+    },
+    {
+      "region": "swamp",
+      "trader": "apothecary",
+      "mode": "buy",
+      "item": {
+        "id": "market_antitoxin",
+        "name": "Противоядие",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 3,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 4950
+    },
+    {
+      "region": "swamp",
+      "trader": "apothecary",
+      "mode": "sell",
+      "item": {
+        "id": "market_antitoxin",
+        "name": "Противоядие",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 3,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 2475
+    },
+    {
+      "region": "swamp",
+      "trader": "caravan",
+      "mode": "buy",
+      "item": {
+        "id": "market_backpack",
+        "name": "Рюкзак",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 5,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 240
+    },
+    {
+      "region": "swamp",
+      "trader": "caravan",
+      "mode": "sell",
+      "item": {
+        "id": "market_backpack",
+        "name": "Рюкзак",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 5,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 130
+    },
+    {
+      "region": "swamp",
+      "trader": "armorer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_armorer_1",
+        "name": "Кожаный доспех",
+        "category": "armor",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 1080
+    },
+    {
+      "region": "swamp",
+      "trader": "armorer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_armorer_1",
+        "name": "Кожаный доспех",
+        "category": "armor",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 580
+    },
+    {
+      "region": "swamp",
+      "trader": "weaponwright",
+      "mode": "buy",
+      "item": {
+        "id": "m551_weaponwright_1",
+        "name": "Боевой топор",
+        "category": "weapons",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 1177
+    },
+    {
+      "region": "swamp",
+      "trader": "weaponwright",
+      "mode": "sell",
+      "item": {
+        "id": "m551_weaponwright_1",
+        "name": "Боевой топор",
+        "category": "weapons",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 660
+    },
+    {
+      "region": "swamp",
+      "trader": "fletcher",
+      "mode": "buy",
+      "item": {
+        "id": "m551_fletcher_1",
+        "name": "Короткий лук",
+        "category": "weapons",
+        "costGp": 25,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 2575
+    },
+    {
+      "region": "swamp",
+      "trader": "fletcher",
+      "mode": "sell",
+      "item": {
+        "id": "m551_fletcher_1",
+        "name": "Короткий лук",
+        "category": "weapons",
+        "costGp": 25,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 1375
+    },
+    {
+      "region": "swamp",
+      "trader": "leatherworker",
+      "mode": "buy",
+      "item": {
+        "id": "m551_leatherworker_1",
+        "name": "Кожаная броня",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 1050
+    },
+    {
+      "region": "swamp",
+      "trader": "leatherworker",
+      "mode": "sell",
+      "item": {
+        "id": "m551_leatherworker_1",
+        "name": "Кожаная броня",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 620
+    },
+    {
+      "region": "swamp",
+      "trader": "weaver",
+      "mode": "buy",
+      "item": {
+        "id": "m551_weaver_1",
+        "name": "Рулон льняной ткани",
+        "category": "gear",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 306
+    },
+    {
+      "region": "swamp",
+      "trader": "weaver",
+      "mode": "sell",
+      "item": {
+        "id": "m551_weaver_1",
+        "name": "Рулон льняной ткани",
+        "category": "gear",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 180
+    },
+    {
+      "region": "swamp",
+      "trader": "woodcarver",
+      "mode": "buy",
+      "item": {
+        "id": "m551_woodcarver_1",
+        "name": "Лук заготовка",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 5,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 306
+    },
+    {
+      "region": "swamp",
+      "trader": "woodcarver",
+      "mode": "sell",
+      "item": {
+        "id": "m551_woodcarver_1",
+        "name": "Лук заготовка",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 5,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 174
+    },
+    {
+      "region": "swamp",
+      "trader": "carpenter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_carpenter_1",
+        "name": "Лестница складная",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 515
+    },
+    {
+      "region": "swamp",
+      "trader": "carpenter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_carpenter_1",
+        "name": "Лестница складная",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 275
+    },
+    {
+      "region": "swamp",
+      "trader": "jeweler",
+      "mode": "buy",
+      "item": {
+        "id": "m551_jeweler_1",
+        "name": "Серебряная оправа",
+        "category": "materials",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 1320
+    },
+    {
+      "region": "swamp",
+      "trader": "jeweler",
+      "mode": "sell",
+      "item": {
+        "id": "m551_jeweler_1",
+        "name": "Серебряная оправа",
+        "category": "materials",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 770
+    },
+    {
+      "region": "swamp",
+      "trader": "gemcutter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_gemcutter_1",
+        "name": "Драгоценный камень, необработанный",
+        "category": "materials",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 5900
+    },
+    {
+      "region": "swamp",
+      "trader": "gemcutter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_gemcutter_1",
+        "name": "Драгоценный камень, необработанный",
+        "category": "materials",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 3600
+    },
+    {
+      "region": "swamp",
+      "trader": "potter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_potter_1",
+        "name": "Керамический кувшин",
+        "category": "materials",
+        "costGp": 0.02,
+        "qty": 20,
+        "tags": [
+          "ceramic"
+        ]
+      },
+      "cp": 2
+    },
+    {
+      "region": "swamp",
+      "trader": "potter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_potter_1",
+        "name": "Керамический кувшин",
+        "category": "materials",
+        "costGp": 0.02,
+        "qty": 20,
+        "tags": [
+          "ceramic"
+        ]
+      },
+      "cp": 1
+    },
+    {
+      "region": "swamp",
+      "trader": "glassblower",
+      "mode": "buy",
+      "item": {
+        "id": "m551_glassblower_1",
+        "name": "Стеклянный флакон",
+        "category": "materials",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "glass"
+        ]
+      },
+      "cp": 11
+    },
+    {
+      "region": "swamp",
+      "trader": "glassblower",
+      "mode": "sell",
+      "item": {
+        "id": "m551_glassblower_1",
+        "name": "Стеклянный флакон",
+        "category": "materials",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "glass"
+        ]
+      },
+      "cp": 6
+    },
+    {
+      "region": "swamp",
+      "trader": "mason",
+      "mode": "buy",
+      "item": {
+        "id": "m551_mason_1",
+        "name": "Гранитная заготовка",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 20,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 208
+    },
+    {
+      "region": "swamp",
+      "trader": "mason",
+      "mode": "sell",
+      "item": {
+        "id": "m551_mason_1",
+        "name": "Гранитная заготовка",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 20,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 110
+    },
+    {
+      "region": "swamp",
+      "trader": "cobbler",
+      "mode": "buy",
+      "item": {
+        "id": "m551_cobbler_1",
+        "name": "Сапоги",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 102
+    },
+    {
+      "region": "swamp",
+      "trader": "cobbler",
+      "mode": "sell",
+      "item": {
+        "id": "m551_cobbler_1",
+        "name": "Сапоги",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 60
+    },
+    {
+      "region": "swamp",
+      "trader": "painter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_painter_1",
+        "name": "Пигменты, набор",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "pigment"
+        ]
+      },
+      "cp": 324
+    },
+    {
+      "region": "swamp",
+      "trader": "painter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_painter_1",
+        "name": "Пигменты, набор",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "pigment"
+        ]
+      },
+      "cp": 180
+    },
+    {
+      "region": "swamp",
+      "trader": "tinker",
+      "mode": "buy",
+      "item": {
+        "id": "m551_tinker_1",
+        "name": "Замок простой",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 605
+    },
+    {
+      "region": "swamp",
+      "trader": "tinker",
+      "mode": "sell",
+      "item": {
+        "id": "m551_tinker_1",
+        "name": "Замок простой",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 341
+    },
+    {
+      "region": "swamp",
+      "trader": "scribe",
+      "mode": "buy",
+      "item": {
+        "id": "m551_scribe_1",
+        "name": "Бумага (10 листов)",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 20,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 106
+    },
+    {
+      "region": "swamp",
+      "trader": "scribe",
+      "mode": "sell",
+      "item": {
+        "id": "m551_scribe_1",
+        "name": "Бумага (10 листов)",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 20,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 50
+    },
+    {
+      "region": "swamp",
+      "trader": "cartographer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_cartographer_1",
+        "name": "Карта местности",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 6,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 560
+    },
+    {
+      "region": "swamp",
+      "trader": "cartographer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_cartographer_1",
+        "name": "Карта местности",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 6,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 290
+    },
+    {
+      "region": "swamp",
+      "trader": "herbalist",
+      "mode": "buy",
+      "item": {
+        "id": "m551_herbalist_1",
+        "name": "Лечебная трава",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 20,
+        "tags": [
+          "herbalism"
+        ]
+      },
+      "cp": 259
+    },
+    {
+      "region": "swamp",
+      "trader": "herbalist",
+      "mode": "sell",
+      "item": {
+        "id": "m551_herbalist_1",
+        "name": "Лечебная трава",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 20,
+        "tags": [
+          "herbalism"
+        ]
+      },
+      "cp": 132
+    },
+    {
+      "region": "swamp",
+      "trader": "alchemist",
+      "mode": "buy",
+      "item": {
+        "id": "m551_alchemist_1",
+        "name": "Зелье лечения",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 5175
+    },
+    {
+      "region": "swamp",
+      "trader": "alchemist",
+      "mode": "sell",
+      "item": {
+        "id": "m551_alchemist_1",
+        "name": "Зелье лечения",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 2790
+    },
+    {
+      "region": "swamp",
+      "trader": "poisoner",
+      "mode": "buy",
+      "item": {
+        "id": "m551_poisoner_1",
+        "name": "Антитоксин",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 5,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 6075
+    },
+    {
+      "region": "swamp",
+      "trader": "poisoner",
+      "mode": "sell",
+      "item": {
+        "id": "m551_poisoner_1",
+        "name": "Антитоксин",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 5,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 3150
+    },
+    {
+      "region": "swamp",
+      "trader": "brewer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_brewer_1",
+        "name": "Эль, кружка",
+        "category": "consumables",
+        "costGp": 0.04,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 5
+    },
+    {
+      "region": "swamp",
+      "trader": "brewer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_brewer_1",
+        "name": "Эль, кружка",
+        "category": "consumables",
+        "costGp": 0.04,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 2
+    },
+    {
+      "region": "swamp",
+      "trader": "cook",
+      "mode": "buy",
+      "item": {
+        "id": "m551_cook_1",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 60
+    },
+    {
+      "region": "swamp",
+      "trader": "cook",
+      "mode": "sell",
+      "item": {
+        "id": "m551_cook_1",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 29
+    },
+    {
+      "region": "swamp",
+      "trader": "fisher",
+      "mode": "buy",
+      "item": {
+        "id": "m551_fisher_1",
+        "name": "Свежая рыба",
+        "category": "consumables",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 12
+    },
+    {
+      "region": "swamp",
+      "trader": "fisher",
+      "mode": "sell",
+      "item": {
+        "id": "m551_fisher_1",
+        "name": "Свежая рыба",
+        "category": "consumables",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 6
+    },
+    {
+      "region": "swamp",
+      "trader": "shipchandler",
+      "mode": "buy",
+      "item": {
+        "id": "m551_shipchandler_1",
+        "name": "Канат, 50 футов",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 12,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 216
+    },
+    {
+      "region": "swamp",
+      "trader": "shipchandler",
+      "mode": "sell",
+      "item": {
+        "id": "m551_shipchandler_1",
+        "name": "Канат, 50 футов",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 12,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 110
+    },
+    {
+      "region": "swamp",
+      "trader": "miner",
+      "mode": "buy",
+      "item": {
+        "id": "m551_miner_1",
+        "name": "Железная руда",
+        "category": "materials",
+        "costGp": 1,
+        "qty": 30,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 121
+    },
+    {
+      "region": "swamp",
+      "trader": "miner",
+      "mode": "sell",
+      "item": {
+        "id": "m551_miner_1",
+        "name": "Железная руда",
+        "category": "materials",
+        "costGp": 1,
+        "qty": 30,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 66
+    },
+    {
+      "region": "swamp",
+      "trader": "stonecutter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_stonecutter_1",
+        "name": "Гранит",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 30,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 210
+    },
+    {
+      "region": "swamp",
+      "trader": "stonecutter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_stonecutter_1",
+        "name": "Гранит",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 30,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 110
+    },
+    {
+      "region": "swamp",
+      "trader": "generalstore",
+      "mode": "buy",
+      "item": {
+        "id": "m551_generalstore_1",
+        "name": "Факел",
+        "category": "gear",
+        "costGp": 0.01,
+        "qty": 60,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 1
+    },
+    {
+      "region": "swamp",
+      "trader": "generalstore",
+      "mode": "sell",
+      "item": {
+        "id": "m551_generalstore_1",
+        "name": "Факел",
+        "category": "gear",
+        "costGp": 0.01,
+        "qty": 60,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 1
+    },
+    {
+      "region": "swamp",
+      "trader": "luxury",
+      "mode": "buy",
+      "item": {
+        "id": "m551_luxury_1",
+        "name": "Шёлковая рубашка",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 1350
+    },
+    {
+      "region": "swamp",
+      "trader": "luxury",
+      "mode": "sell",
+      "item": {
+        "id": "m551_luxury_1",
+        "name": "Шёлковая рубашка",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 720
+    },
+    {
+      "region": "swamp",
+      "trader": "relicdealer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_relicdealer_1",
+        "name": "Древний фрагмент",
+        "category": "materials",
+        "costGp": 25,
+        "qty": 5,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 3625
+    },
+    {
+      "region": "swamp",
+      "trader": "relicdealer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_relicdealer_1",
+        "name": "Древний фрагмент",
+        "category": "materials",
+        "costGp": 25,
+        "qty": 5,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 1875
+    },
+    {
+      "region": "swamp",
+      "trader": "arcane",
+      "mode": "buy",
+      "item": {
+        "id": "m551_arcane_1",
+        "name": "Арканная пыль",
+        "category": "materials",
+        "costGp": 15,
+        "qty": 8,
+        "tags": [
+          "arcane"
+        ]
+      },
+      "cp": 1950
+    },
+    {
+      "region": "swamp",
+      "trader": "arcane",
+      "mode": "sell",
+      "item": {
+        "id": "m551_arcane_1",
+        "name": "Арканная пыль",
+        "category": "materials",
+        "costGp": 15,
+        "qty": 8,
+        "tags": [
+          "arcane"
+        ]
+      },
+      "cp": 1050
+    },
+    {
+      "region": "swamp",
+      "trader": "stablemaster",
+      "mode": "buy",
+      "item": {
+        "id": "m551_stablemaster_1",
+        "name": "Седло",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 3,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 1080
+    },
+    {
+      "region": "swamp",
+      "trader": "stablemaster",
+      "mode": "sell",
+      "item": {
+        "id": "m551_stablemaster_1",
+        "name": "Седло",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 3,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 550
+    },
+    {
+      "region": "swamp",
+      "trader": "hunter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_hunter_1",
+        "name": "Шкура оленя",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 540
+    },
+    {
+      "region": "swamp",
+      "trader": "hunter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_hunter_1",
+        "name": "Шкура оленя",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 300
+    },
+    {
+      "region": "swamp",
+      "trader": "monsterparts",
+      "mode": "buy",
+      "item": {
+        "id": "m551_monsterparts_1",
+        "name": "Паучий шёлк",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "fiber"
+        ]
+      },
+      "cp": 625
+    },
+    {
+      "region": "swamp",
+      "trader": "monsterparts",
+      "mode": "sell",
+      "item": {
+        "id": "m551_monsterparts_1",
+        "name": "Паучий шёлк",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "fiber"
+        ]
+      },
+      "cp": 340
+    },
+    {
+      "region": "swamp",
+      "trader": "scrollmerchant",
+      "mode": "buy",
+      "item": {
+        "id": "m551_scrollmerchant_1",
+        "name": "Свиток заклинания 1 круга",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "arcane",
+          "paper"
+        ]
+      },
+      "cp": 3000
+    },
+    {
+      "region": "swamp",
+      "trader": "scrollmerchant",
+      "mode": "sell",
+      "item": {
+        "id": "m551_scrollmerchant_1",
+        "name": "Свиток заклинания 1 круга",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "arcane",
+          "paper"
+        ]
+      },
+      "cp": 1550
+    },
+    {
+      "region": "swamp",
+      "trader": "temple",
+      "mode": "buy",
+      "item": {
+        "id": "m551_temple_1",
+        "name": "Святая вода",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 8,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 2363
+    },
+    {
+      "region": "swamp",
+      "trader": "temple",
+      "mode": "sell",
+      "item": {
+        "id": "m551_temple_1",
+        "name": "Святая вода",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 8,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 1125
+    },
+    {
+      "region": "swamp",
+      "trader": "blackmarket",
+      "mode": "buy",
+      "item": {
+        "id": "m551_blackmarket_1",
+        "name": "Отмычки",
+        "category": "gear",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 3988
+    },
+    {
+      "region": "swamp",
+      "trader": "blackmarket",
+      "mode": "sell",
+      "item": {
+        "id": "m551_blackmarket_1",
+        "name": "Отмычки",
+        "category": "gear",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 2200
+    },
+    {
+      "region": "swamp",
+      "trader": "caravan_master",
+      "mode": "buy",
+      "item": {
+        "id": "m551_caravan_master_1",
+        "name": "Дорожный шатёр",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 4,
+        "tags": [
+          "textile",
+          "wood"
+        ]
+      },
+      "cp": 1160
+    },
+    {
+      "region": "swamp",
+      "trader": "caravan_master",
+      "mode": "sell",
+      "item": {
+        "id": "m551_caravan_master_1",
+        "name": "Дорожный шатёр",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 4,
+        "tags": [
+          "textile",
+          "wood"
+        ]
+      },
+      "cp": 660
+    },
+    {
+      "region": "swamp",
+      "trader": "siege",
+      "mode": "buy",
+      "item": {
+        "id": "m551_siege_1",
+        "name": "Канат толстый",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 600
+    },
+    {
+      "region": "swamp",
+      "trader": "siege",
+      "mode": "sell",
+      "item": {
+        "id": "m551_siege_1",
+        "name": "Канат толстый",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 275
+    },
+    {
+      "region": "coast",
+      "trader": "village",
+      "mode": "buy",
+      "item": {
+        "id": "market_rations",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 20,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 43
+    },
+    {
+      "region": "coast",
+      "trader": "village",
+      "mode": "sell",
+      "item": {
+        "id": "market_rations",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 20,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 21
+    },
+    {
+      "region": "coast",
+      "trader": "blacksmith",
+      "mode": "buy",
+      "item": {
+        "id": "market_dagger",
+        "name": "Кинжал",
+        "category": "weapons",
+        "costGp": 2,
+        "qty": 3,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 221
+    },
+    {
+      "region": "coast",
+      "trader": "blacksmith",
+      "mode": "sell",
+      "item": {
+        "id": "market_dagger",
+        "name": "Кинжал",
+        "category": "weapons",
+        "costGp": 2,
+        "qty": 3,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 126
+    },
+    {
+      "region": "coast",
+      "trader": "apothecary",
+      "mode": "buy",
+      "item": {
+        "id": "market_antitoxin",
+        "name": "Противоядие",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 3,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 5500
+    },
+    {
+      "region": "coast",
+      "trader": "apothecary",
+      "mode": "sell",
+      "item": {
+        "id": "market_antitoxin",
+        "name": "Противоядие",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 3,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 2750
+    },
+    {
+      "region": "coast",
+      "trader": "caravan",
+      "mode": "buy",
+      "item": {
+        "id": "market_backpack",
+        "name": "Рюкзак",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 5,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 240
+    },
+    {
+      "region": "coast",
+      "trader": "caravan",
+      "mode": "sell",
+      "item": {
+        "id": "market_backpack",
+        "name": "Рюкзак",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 5,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 130
+    },
+    {
+      "region": "coast",
+      "trader": "armorer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_armorer_1",
+        "name": "Кожаный доспех",
+        "category": "armor",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 1080
+    },
+    {
+      "region": "coast",
+      "trader": "armorer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_armorer_1",
+        "name": "Кожаный доспех",
+        "category": "armor",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 580
+    },
+    {
+      "region": "coast",
+      "trader": "weaponwright",
+      "mode": "buy",
+      "item": {
+        "id": "m551_weaponwright_1",
+        "name": "Боевой топор",
+        "category": "weapons",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 1124
+    },
+    {
+      "region": "coast",
+      "trader": "weaponwright",
+      "mode": "sell",
+      "item": {
+        "id": "m551_weaponwright_1",
+        "name": "Боевой топор",
+        "category": "weapons",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 630
+    },
+    {
+      "region": "coast",
+      "trader": "fletcher",
+      "mode": "buy",
+      "item": {
+        "id": "m551_fletcher_1",
+        "name": "Короткий лук",
+        "category": "weapons",
+        "costGp": 25,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 2575
+    },
+    {
+      "region": "coast",
+      "trader": "fletcher",
+      "mode": "sell",
+      "item": {
+        "id": "m551_fletcher_1",
+        "name": "Короткий лук",
+        "category": "weapons",
+        "costGp": 25,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 1375
+    },
+    {
+      "region": "coast",
+      "trader": "leatherworker",
+      "mode": "buy",
+      "item": {
+        "id": "m551_leatherworker_1",
+        "name": "Кожаная броня",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 1050
+    },
+    {
+      "region": "coast",
+      "trader": "leatherworker",
+      "mode": "sell",
+      "item": {
+        "id": "m551_leatherworker_1",
+        "name": "Кожаная броня",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 620
+    },
+    {
+      "region": "coast",
+      "trader": "weaver",
+      "mode": "buy",
+      "item": {
+        "id": "m551_weaver_1",
+        "name": "Рулон льняной ткани",
+        "category": "gear",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 306
+    },
+    {
+      "region": "coast",
+      "trader": "weaver",
+      "mode": "sell",
+      "item": {
+        "id": "m551_weaver_1",
+        "name": "Рулон льняной ткани",
+        "category": "gear",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 180
+    },
+    {
+      "region": "coast",
+      "trader": "woodcarver",
+      "mode": "buy",
+      "item": {
+        "id": "m551_woodcarver_1",
+        "name": "Лук заготовка",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 5,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 306
+    },
+    {
+      "region": "coast",
+      "trader": "woodcarver",
+      "mode": "sell",
+      "item": {
+        "id": "m551_woodcarver_1",
+        "name": "Лук заготовка",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 5,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 174
+    },
+    {
+      "region": "coast",
+      "trader": "carpenter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_carpenter_1",
+        "name": "Лестница складная",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 515
+    },
+    {
+      "region": "coast",
+      "trader": "carpenter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_carpenter_1",
+        "name": "Лестница складная",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 275
+    },
+    {
+      "region": "coast",
+      "trader": "jeweler",
+      "mode": "buy",
+      "item": {
+        "id": "m551_jeweler_1",
+        "name": "Серебряная оправа",
+        "category": "materials",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 1260
+    },
+    {
+      "region": "coast",
+      "trader": "jeweler",
+      "mode": "sell",
+      "item": {
+        "id": "m551_jeweler_1",
+        "name": "Серебряная оправа",
+        "category": "materials",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 735
+    },
+    {
+      "region": "coast",
+      "trader": "gemcutter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_gemcutter_1",
+        "name": "Драгоценный камень, необработанный",
+        "category": "materials",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 5900
+    },
+    {
+      "region": "coast",
+      "trader": "gemcutter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_gemcutter_1",
+        "name": "Драгоценный камень, необработанный",
+        "category": "materials",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 3600
+    },
+    {
+      "region": "coast",
+      "trader": "potter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_potter_1",
+        "name": "Керамический кувшин",
+        "category": "materials",
+        "costGp": 0.02,
+        "qty": 20,
+        "tags": [
+          "ceramic"
+        ]
+      },
+      "cp": 2
+    },
+    {
+      "region": "coast",
+      "trader": "potter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_potter_1",
+        "name": "Керамический кувшин",
+        "category": "materials",
+        "costGp": 0.02,
+        "qty": 20,
+        "tags": [
+          "ceramic"
+        ]
+      },
+      "cp": 1
+    },
+    {
+      "region": "coast",
+      "trader": "glassblower",
+      "mode": "buy",
+      "item": {
+        "id": "m551_glassblower_1",
+        "name": "Стеклянный флакон",
+        "category": "materials",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "glass"
+        ]
+      },
+      "cp": 10
+    },
+    {
+      "region": "coast",
+      "trader": "glassblower",
+      "mode": "sell",
+      "item": {
+        "id": "m551_glassblower_1",
+        "name": "Стеклянный флакон",
+        "category": "materials",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "glass"
+        ]
+      },
+      "cp": 5
+    },
+    {
+      "region": "coast",
+      "trader": "mason",
+      "mode": "buy",
+      "item": {
+        "id": "m551_mason_1",
+        "name": "Гранитная заготовка",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 20,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 208
+    },
+    {
+      "region": "coast",
+      "trader": "mason",
+      "mode": "sell",
+      "item": {
+        "id": "m551_mason_1",
+        "name": "Гранитная заготовка",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 20,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 110
+    },
+    {
+      "region": "coast",
+      "trader": "cobbler",
+      "mode": "buy",
+      "item": {
+        "id": "m551_cobbler_1",
+        "name": "Сапоги",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 102
+    },
+    {
+      "region": "coast",
+      "trader": "cobbler",
+      "mode": "sell",
+      "item": {
+        "id": "m551_cobbler_1",
+        "name": "Сапоги",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 60
+    },
+    {
+      "region": "coast",
+      "trader": "painter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_painter_1",
+        "name": "Пигменты, набор",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "pigment"
+        ]
+      },
+      "cp": 324
+    },
+    {
+      "region": "coast",
+      "trader": "painter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_painter_1",
+        "name": "Пигменты, набор",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "pigment"
+        ]
+      },
+      "cp": 180
+    },
+    {
+      "region": "coast",
+      "trader": "tinker",
+      "mode": "buy",
+      "item": {
+        "id": "m551_tinker_1",
+        "name": "Замок простой",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 578
+    },
+    {
+      "region": "coast",
+      "trader": "tinker",
+      "mode": "sell",
+      "item": {
+        "id": "m551_tinker_1",
+        "name": "Замок простой",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 326
+    },
+    {
+      "region": "coast",
+      "trader": "scribe",
+      "mode": "buy",
+      "item": {
+        "id": "m551_scribe_1",
+        "name": "Бумага (10 листов)",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 20,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 106
+    },
+    {
+      "region": "coast",
+      "trader": "scribe",
+      "mode": "sell",
+      "item": {
+        "id": "m551_scribe_1",
+        "name": "Бумага (10 листов)",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 20,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 50
+    },
+    {
+      "region": "coast",
+      "trader": "cartographer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_cartographer_1",
+        "name": "Карта местности",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 6,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 560
+    },
+    {
+      "region": "coast",
+      "trader": "cartographer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_cartographer_1",
+        "name": "Карта местности",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 6,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 290
+    },
+    {
+      "region": "coast",
+      "trader": "herbalist",
+      "mode": "buy",
+      "item": {
+        "id": "m551_herbalist_1",
+        "name": "Лечебная трава",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 20,
+        "tags": [
+          "herbalism"
+        ]
+      },
+      "cp": 324
+    },
+    {
+      "region": "coast",
+      "trader": "herbalist",
+      "mode": "sell",
+      "item": {
+        "id": "m551_herbalist_1",
+        "name": "Лечебная трава",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 20,
+        "tags": [
+          "herbalism"
+        ]
+      },
+      "cp": 165
+    },
+    {
+      "region": "coast",
+      "trader": "alchemist",
+      "mode": "buy",
+      "item": {
+        "id": "m551_alchemist_1",
+        "name": "Зелье лечения",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 5750
+    },
+    {
+      "region": "coast",
+      "trader": "alchemist",
+      "mode": "sell",
+      "item": {
+        "id": "m551_alchemist_1",
+        "name": "Зелье лечения",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 3100
+    },
+    {
+      "region": "coast",
+      "trader": "poisoner",
+      "mode": "buy",
+      "item": {
+        "id": "m551_poisoner_1",
+        "name": "Антитоксин",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 5,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 6750
+    },
+    {
+      "region": "coast",
+      "trader": "poisoner",
+      "mode": "sell",
+      "item": {
+        "id": "m551_poisoner_1",
+        "name": "Антитоксин",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 5,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 3500
+    },
+    {
+      "region": "coast",
+      "trader": "brewer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_brewer_1",
+        "name": "Эль, кружка",
+        "category": "consumables",
+        "costGp": 0.04,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 3
+    },
+    {
+      "region": "coast",
+      "trader": "brewer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_brewer_1",
+        "name": "Эль, кружка",
+        "category": "consumables",
+        "costGp": 0.04,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 2
+    },
+    {
+      "region": "coast",
+      "trader": "cook",
+      "mode": "buy",
+      "item": {
+        "id": "m551_cook_1",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 45
+    },
+    {
+      "region": "coast",
+      "trader": "cook",
+      "mode": "sell",
+      "item": {
+        "id": "m551_cook_1",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 21
+    },
+    {
+      "region": "coast",
+      "trader": "fisher",
+      "mode": "buy",
+      "item": {
+        "id": "m551_fisher_1",
+        "name": "Свежая рыба",
+        "category": "consumables",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 9
+    },
+    {
+      "region": "coast",
+      "trader": "fisher",
+      "mode": "sell",
+      "item": {
+        "id": "m551_fisher_1",
+        "name": "Свежая рыба",
+        "category": "consumables",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 4
+    },
+    {
+      "region": "coast",
+      "trader": "shipchandler",
+      "mode": "buy",
+      "item": {
+        "id": "m551_shipchandler_1",
+        "name": "Канат, 50 футов",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 12,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 184
+    },
+    {
+      "region": "coast",
+      "trader": "shipchandler",
+      "mode": "sell",
+      "item": {
+        "id": "m551_shipchandler_1",
+        "name": "Канат, 50 футов",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 12,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 94
+    },
+    {
+      "region": "coast",
+      "trader": "miner",
+      "mode": "buy",
+      "item": {
+        "id": "m551_miner_1",
+        "name": "Железная руда",
+        "category": "materials",
+        "costGp": 1,
+        "qty": 30,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 116
+    },
+    {
+      "region": "coast",
+      "trader": "miner",
+      "mode": "sell",
+      "item": {
+        "id": "m551_miner_1",
+        "name": "Железная руда",
+        "category": "materials",
+        "costGp": 1,
+        "qty": 30,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 63
+    },
+    {
+      "region": "coast",
+      "trader": "stonecutter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_stonecutter_1",
+        "name": "Гранит",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 30,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 210
+    },
+    {
+      "region": "coast",
+      "trader": "stonecutter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_stonecutter_1",
+        "name": "Гранит",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 30,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 110
+    },
+    {
+      "region": "coast",
+      "trader": "generalstore",
+      "mode": "buy",
+      "item": {
+        "id": "m551_generalstore_1",
+        "name": "Факел",
+        "category": "gear",
+        "costGp": 0.01,
+        "qty": 60,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 1
+    },
+    {
+      "region": "coast",
+      "trader": "generalstore",
+      "mode": "sell",
+      "item": {
+        "id": "m551_generalstore_1",
+        "name": "Факел",
+        "category": "gear",
+        "costGp": 0.01,
+        "qty": 60,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 1
+    },
+    {
+      "region": "coast",
+      "trader": "luxury",
+      "mode": "buy",
+      "item": {
+        "id": "m551_luxury_1",
+        "name": "Шёлковая рубашка",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 1350
+    },
+    {
+      "region": "coast",
+      "trader": "luxury",
+      "mode": "sell",
+      "item": {
+        "id": "m551_luxury_1",
+        "name": "Шёлковая рубашка",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 720
+    },
+    {
+      "region": "coast",
+      "trader": "relicdealer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_relicdealer_1",
+        "name": "Древний фрагмент",
+        "category": "materials",
+        "costGp": 25,
+        "qty": 5,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 3625
+    },
+    {
+      "region": "coast",
+      "trader": "relicdealer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_relicdealer_1",
+        "name": "Древний фрагмент",
+        "category": "materials",
+        "costGp": 25,
+        "qty": 5,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 1875
+    },
+    {
+      "region": "coast",
+      "trader": "arcane",
+      "mode": "buy",
+      "item": {
+        "id": "m551_arcane_1",
+        "name": "Арканная пыль",
+        "category": "materials",
+        "costGp": 15,
+        "qty": 8,
+        "tags": [
+          "arcane"
+        ]
+      },
+      "cp": 1950
+    },
+    {
+      "region": "coast",
+      "trader": "arcane",
+      "mode": "sell",
+      "item": {
+        "id": "m551_arcane_1",
+        "name": "Арканная пыль",
+        "category": "materials",
+        "costGp": 15,
+        "qty": 8,
+        "tags": [
+          "arcane"
+        ]
+      },
+      "cp": 1050
+    },
+    {
+      "region": "coast",
+      "trader": "stablemaster",
+      "mode": "buy",
+      "item": {
+        "id": "m551_stablemaster_1",
+        "name": "Седло",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 3,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 1080
+    },
+    {
+      "region": "coast",
+      "trader": "stablemaster",
+      "mode": "sell",
+      "item": {
+        "id": "m551_stablemaster_1",
+        "name": "Седло",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 3,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 550
+    },
+    {
+      "region": "coast",
+      "trader": "hunter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_hunter_1",
+        "name": "Шкура оленя",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 540
+    },
+    {
+      "region": "coast",
+      "trader": "hunter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_hunter_1",
+        "name": "Шкура оленя",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 300
+    },
+    {
+      "region": "coast",
+      "trader": "monsterparts",
+      "mode": "buy",
+      "item": {
+        "id": "m551_monsterparts_1",
+        "name": "Паучий шёлк",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "fiber"
+        ]
+      },
+      "cp": 625
+    },
+    {
+      "region": "coast",
+      "trader": "monsterparts",
+      "mode": "sell",
+      "item": {
+        "id": "m551_monsterparts_1",
+        "name": "Паучий шёлк",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "fiber"
+        ]
+      },
+      "cp": 340
+    },
+    {
+      "region": "coast",
+      "trader": "scrollmerchant",
+      "mode": "buy",
+      "item": {
+        "id": "m551_scrollmerchant_1",
+        "name": "Свиток заклинания 1 круга",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "arcane",
+          "paper"
+        ]
+      },
+      "cp": 3000
+    },
+    {
+      "region": "coast",
+      "trader": "scrollmerchant",
+      "mode": "sell",
+      "item": {
+        "id": "m551_scrollmerchant_1",
+        "name": "Свиток заклинания 1 круга",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "arcane",
+          "paper"
+        ]
+      },
+      "cp": 1550
+    },
+    {
+      "region": "coast",
+      "trader": "temple",
+      "mode": "buy",
+      "item": {
+        "id": "m551_temple_1",
+        "name": "Святая вода",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 8,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 2625
+    },
+    {
+      "region": "coast",
+      "trader": "temple",
+      "mode": "sell",
+      "item": {
+        "id": "m551_temple_1",
+        "name": "Святая вода",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 8,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 1250
+    },
+    {
+      "region": "coast",
+      "trader": "blackmarket",
+      "mode": "buy",
+      "item": {
+        "id": "m551_blackmarket_1",
+        "name": "Отмычки",
+        "category": "gear",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 3806
+    },
+    {
+      "region": "coast",
+      "trader": "blackmarket",
+      "mode": "sell",
+      "item": {
+        "id": "m551_blackmarket_1",
+        "name": "Отмычки",
+        "category": "gear",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 2100
+    },
+    {
+      "region": "coast",
+      "trader": "caravan_master",
+      "mode": "buy",
+      "item": {
+        "id": "m551_caravan_master_1",
+        "name": "Дорожный шатёр",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 4,
+        "tags": [
+          "textile",
+          "wood"
+        ]
+      },
+      "cp": 1160
+    },
+    {
+      "region": "coast",
+      "trader": "caravan_master",
+      "mode": "sell",
+      "item": {
+        "id": "m551_caravan_master_1",
+        "name": "Дорожный шатёр",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 4,
+        "tags": [
+          "textile",
+          "wood"
+        ]
+      },
+      "cp": 660
+    },
+    {
+      "region": "coast",
+      "trader": "siege",
+      "mode": "buy",
+      "item": {
+        "id": "m551_siege_1",
+        "name": "Канат толстый",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 510
+    },
+    {
+      "region": "coast",
+      "trader": "siege",
+      "mode": "sell",
+      "item": {
+        "id": "m551_siege_1",
+        "name": "Канат толстый",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 234
+    },
+    {
+      "region": "wasteland",
+      "trader": "village",
+      "mode": "buy",
+      "item": {
+        "id": "market_rations",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 20,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 68
+    },
+    {
+      "region": "wasteland",
+      "trader": "village",
+      "mode": "sell",
+      "item": {
+        "id": "market_rations",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 20,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 34
+    },
+    {
+      "region": "wasteland",
+      "trader": "blacksmith",
+      "mode": "buy",
+      "item": {
+        "id": "market_dagger",
+        "name": "Кинжал",
+        "category": "weapons",
+        "costGp": 2,
+        "qty": 3,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 252
+    },
+    {
+      "region": "wasteland",
+      "trader": "blacksmith",
+      "mode": "sell",
+      "item": {
+        "id": "market_dagger",
+        "name": "Кинжал",
+        "category": "weapons",
+        "costGp": 2,
+        "qty": 3,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 144
+    },
+    {
+      "region": "wasteland",
+      "trader": "apothecary",
+      "mode": "buy",
+      "item": {
+        "id": "market_antitoxin",
+        "name": "Противоядие",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 3,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 5500
+    },
+    {
+      "region": "wasteland",
+      "trader": "apothecary",
+      "mode": "sell",
+      "item": {
+        "id": "market_antitoxin",
+        "name": "Противоядие",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 3,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 2750
+    },
+    {
+      "region": "wasteland",
+      "trader": "caravan",
+      "mode": "buy",
+      "item": {
+        "id": "market_backpack",
+        "name": "Рюкзак",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 5,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 240
+    },
+    {
+      "region": "wasteland",
+      "trader": "caravan",
+      "mode": "sell",
+      "item": {
+        "id": "market_backpack",
+        "name": "Рюкзак",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 5,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 130
+    },
+    {
+      "region": "wasteland",
+      "trader": "armorer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_armorer_1",
+        "name": "Кожаный доспех",
+        "category": "armor",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 1080
+    },
+    {
+      "region": "wasteland",
+      "trader": "armorer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_armorer_1",
+        "name": "Кожаный доспех",
+        "category": "armor",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 580
+    },
+    {
+      "region": "wasteland",
+      "trader": "weaponwright",
+      "mode": "buy",
+      "item": {
+        "id": "m551_weaponwright_1",
+        "name": "Боевой топор",
+        "category": "weapons",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 1284
+    },
+    {
+      "region": "wasteland",
+      "trader": "weaponwright",
+      "mode": "sell",
+      "item": {
+        "id": "m551_weaponwright_1",
+        "name": "Боевой топор",
+        "category": "weapons",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 720
+    },
+    {
+      "region": "wasteland",
+      "trader": "fletcher",
+      "mode": "buy",
+      "item": {
+        "id": "m551_fletcher_1",
+        "name": "Короткий лук",
+        "category": "weapons",
+        "costGp": 25,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 3476
+    },
+    {
+      "region": "wasteland",
+      "trader": "fletcher",
+      "mode": "sell",
+      "item": {
+        "id": "m551_fletcher_1",
+        "name": "Короткий лук",
+        "category": "weapons",
+        "costGp": 25,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 1856
+    },
+    {
+      "region": "wasteland",
+      "trader": "leatherworker",
+      "mode": "buy",
+      "item": {
+        "id": "m551_leatherworker_1",
+        "name": "Кожаная броня",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 1050
+    },
+    {
+      "region": "wasteland",
+      "trader": "leatherworker",
+      "mode": "sell",
+      "item": {
+        "id": "m551_leatherworker_1",
+        "name": "Кожаная броня",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 620
+    },
+    {
+      "region": "wasteland",
+      "trader": "weaver",
+      "mode": "buy",
+      "item": {
+        "id": "m551_weaver_1",
+        "name": "Рулон льняной ткани",
+        "category": "gear",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 306
+    },
+    {
+      "region": "wasteland",
+      "trader": "weaver",
+      "mode": "sell",
+      "item": {
+        "id": "m551_weaver_1",
+        "name": "Рулон льняной ткани",
+        "category": "gear",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 180
+    },
+    {
+      "region": "wasteland",
+      "trader": "woodcarver",
+      "mode": "buy",
+      "item": {
+        "id": "m551_woodcarver_1",
+        "name": "Лук заготовка",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 5,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 413
+    },
+    {
+      "region": "wasteland",
+      "trader": "woodcarver",
+      "mode": "sell",
+      "item": {
+        "id": "m551_woodcarver_1",
+        "name": "Лук заготовка",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 5,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 235
+    },
+    {
+      "region": "wasteland",
+      "trader": "carpenter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_carpenter_1",
+        "name": "Лестница складная",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 695
+    },
+    {
+      "region": "wasteland",
+      "trader": "carpenter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_carpenter_1",
+        "name": "Лестница складная",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 371
+    },
+    {
+      "region": "wasteland",
+      "trader": "jeweler",
+      "mode": "buy",
+      "item": {
+        "id": "m551_jeweler_1",
+        "name": "Серебряная оправа",
+        "category": "materials",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 1440
+    },
+    {
+      "region": "wasteland",
+      "trader": "jeweler",
+      "mode": "sell",
+      "item": {
+        "id": "m551_jeweler_1",
+        "name": "Серебряная оправа",
+        "category": "materials",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 840
+    },
+    {
+      "region": "wasteland",
+      "trader": "gemcutter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_gemcutter_1",
+        "name": "Драгоценный камень, необработанный",
+        "category": "materials",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 5900
+    },
+    {
+      "region": "wasteland",
+      "trader": "gemcutter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_gemcutter_1",
+        "name": "Драгоценный камень, необработанный",
+        "category": "materials",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 3600
+    },
+    {
+      "region": "wasteland",
+      "trader": "potter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_potter_1",
+        "name": "Керамический кувшин",
+        "category": "materials",
+        "costGp": 0.02,
+        "qty": 20,
+        "tags": [
+          "ceramic"
+        ]
+      },
+      "cp": 2
+    },
+    {
+      "region": "wasteland",
+      "trader": "potter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_potter_1",
+        "name": "Керамический кувшин",
+        "category": "materials",
+        "costGp": 0.02,
+        "qty": 20,
+        "tags": [
+          "ceramic"
+        ]
+      },
+      "cp": 1
+    },
+    {
+      "region": "wasteland",
+      "trader": "glassblower",
+      "mode": "buy",
+      "item": {
+        "id": "m551_glassblower_1",
+        "name": "Стеклянный флакон",
+        "category": "materials",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "glass"
+        ]
+      },
+      "cp": 11
+    },
+    {
+      "region": "wasteland",
+      "trader": "glassblower",
+      "mode": "sell",
+      "item": {
+        "id": "m551_glassblower_1",
+        "name": "Стеклянный флакон",
+        "category": "materials",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "glass"
+        ]
+      },
+      "cp": 6
+    },
+    {
+      "region": "wasteland",
+      "trader": "mason",
+      "mode": "buy",
+      "item": {
+        "id": "m551_mason_1",
+        "name": "Гранитная заготовка",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 20,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 208
+    },
+    {
+      "region": "wasteland",
+      "trader": "mason",
+      "mode": "sell",
+      "item": {
+        "id": "m551_mason_1",
+        "name": "Гранитная заготовка",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 20,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 110
+    },
+    {
+      "region": "wasteland",
+      "trader": "cobbler",
+      "mode": "buy",
+      "item": {
+        "id": "m551_cobbler_1",
+        "name": "Сапоги",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 102
+    },
+    {
+      "region": "wasteland",
+      "trader": "cobbler",
+      "mode": "sell",
+      "item": {
+        "id": "m551_cobbler_1",
+        "name": "Сапоги",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 60
+    },
+    {
+      "region": "wasteland",
+      "trader": "painter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_painter_1",
+        "name": "Пигменты, набор",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "pigment"
+        ]
+      },
+      "cp": 324
+    },
+    {
+      "region": "wasteland",
+      "trader": "painter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_painter_1",
+        "name": "Пигменты, набор",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "pigment"
+        ]
+      },
+      "cp": 180
+    },
+    {
+      "region": "wasteland",
+      "trader": "tinker",
+      "mode": "buy",
+      "item": {
+        "id": "m551_tinker_1",
+        "name": "Замок простой",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 660
+    },
+    {
+      "region": "wasteland",
+      "trader": "tinker",
+      "mode": "sell",
+      "item": {
+        "id": "m551_tinker_1",
+        "name": "Замок простой",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 372
+    },
+    {
+      "region": "wasteland",
+      "trader": "scribe",
+      "mode": "buy",
+      "item": {
+        "id": "m551_scribe_1",
+        "name": "Бумага (10 листов)",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 20,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 106
+    },
+    {
+      "region": "wasteland",
+      "trader": "scribe",
+      "mode": "sell",
+      "item": {
+        "id": "m551_scribe_1",
+        "name": "Бумага (10 листов)",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 20,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 50
+    },
+    {
+      "region": "wasteland",
+      "trader": "cartographer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_cartographer_1",
+        "name": "Карта местности",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 6,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 560
+    },
+    {
+      "region": "wasteland",
+      "trader": "cartographer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_cartographer_1",
+        "name": "Карта местности",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 6,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 290
+    },
+    {
+      "region": "wasteland",
+      "trader": "herbalist",
+      "mode": "buy",
+      "item": {
+        "id": "m551_herbalist_1",
+        "name": "Лечебная трава",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 20,
+        "tags": [
+          "herbalism"
+        ]
+      },
+      "cp": 324
+    },
+    {
+      "region": "wasteland",
+      "trader": "herbalist",
+      "mode": "sell",
+      "item": {
+        "id": "m551_herbalist_1",
+        "name": "Лечебная трава",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 20,
+        "tags": [
+          "herbalism"
+        ]
+      },
+      "cp": 165
+    },
+    {
+      "region": "wasteland",
+      "trader": "alchemist",
+      "mode": "buy",
+      "item": {
+        "id": "m551_alchemist_1",
+        "name": "Зелье лечения",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 5750
+    },
+    {
+      "region": "wasteland",
+      "trader": "alchemist",
+      "mode": "sell",
+      "item": {
+        "id": "m551_alchemist_1",
+        "name": "Зелье лечения",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 3100
+    },
+    {
+      "region": "wasteland",
+      "trader": "poisoner",
+      "mode": "buy",
+      "item": {
+        "id": "m551_poisoner_1",
+        "name": "Антитоксин",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 5,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 6750
+    },
+    {
+      "region": "wasteland",
+      "trader": "poisoner",
+      "mode": "sell",
+      "item": {
+        "id": "m551_poisoner_1",
+        "name": "Антитоксин",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 5,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 3500
+    },
+    {
+      "region": "wasteland",
+      "trader": "brewer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_brewer_1",
+        "name": "Эль, кружка",
+        "category": "consumables",
+        "costGp": 0.04,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 5
+    },
+    {
+      "region": "wasteland",
+      "trader": "brewer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_brewer_1",
+        "name": "Эль, кружка",
+        "category": "consumables",
+        "costGp": 0.04,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 3
+    },
+    {
+      "region": "wasteland",
+      "trader": "cook",
+      "mode": "buy",
+      "item": {
+        "id": "m551_cook_1",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 71
+    },
+    {
+      "region": "wasteland",
+      "trader": "cook",
+      "mode": "sell",
+      "item": {
+        "id": "m551_cook_1",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 34
+    },
+    {
+      "region": "wasteland",
+      "trader": "fisher",
+      "mode": "buy",
+      "item": {
+        "id": "m551_fisher_1",
+        "name": "Свежая рыба",
+        "category": "consumables",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 14
+    },
+    {
+      "region": "wasteland",
+      "trader": "fisher",
+      "mode": "sell",
+      "item": {
+        "id": "m551_fisher_1",
+        "name": "Свежая рыба",
+        "category": "consumables",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 6
+    },
+    {
+      "region": "wasteland",
+      "trader": "shipchandler",
+      "mode": "buy",
+      "item": {
+        "id": "m551_shipchandler_1",
+        "name": "Канат, 50 футов",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 12,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 216
+    },
+    {
+      "region": "wasteland",
+      "trader": "shipchandler",
+      "mode": "sell",
+      "item": {
+        "id": "m551_shipchandler_1",
+        "name": "Канат, 50 футов",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 12,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 110
+    },
+    {
+      "region": "wasteland",
+      "trader": "miner",
+      "mode": "buy",
+      "item": {
+        "id": "m551_miner_1",
+        "name": "Железная руда",
+        "category": "materials",
+        "costGp": 1,
+        "qty": 30,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 132
+    },
+    {
+      "region": "wasteland",
+      "trader": "miner",
+      "mode": "sell",
+      "item": {
+        "id": "m551_miner_1",
+        "name": "Железная руда",
+        "category": "materials",
+        "costGp": 1,
+        "qty": 30,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 72
+    },
+    {
+      "region": "wasteland",
+      "trader": "stonecutter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_stonecutter_1",
+        "name": "Гранит",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 30,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 210
+    },
+    {
+      "region": "wasteland",
+      "trader": "stonecutter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_stonecutter_1",
+        "name": "Гранит",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 30,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 110
+    },
+    {
+      "region": "wasteland",
+      "trader": "generalstore",
+      "mode": "buy",
+      "item": {
+        "id": "m551_generalstore_1",
+        "name": "Факел",
+        "category": "gear",
+        "costGp": 0.01,
+        "qty": 60,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 1
+    },
+    {
+      "region": "wasteland",
+      "trader": "generalstore",
+      "mode": "sell",
+      "item": {
+        "id": "m551_generalstore_1",
+        "name": "Факел",
+        "category": "gear",
+        "costGp": 0.01,
+        "qty": 60,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 1
+    },
+    {
+      "region": "wasteland",
+      "trader": "luxury",
+      "mode": "buy",
+      "item": {
+        "id": "m551_luxury_1",
+        "name": "Шёлковая рубашка",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 1350
+    },
+    {
+      "region": "wasteland",
+      "trader": "luxury",
+      "mode": "sell",
+      "item": {
+        "id": "m551_luxury_1",
+        "name": "Шёлковая рубашка",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 720
+    },
+    {
+      "region": "wasteland",
+      "trader": "relicdealer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_relicdealer_1",
+        "name": "Древний фрагмент",
+        "category": "materials",
+        "costGp": 25,
+        "qty": 5,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 3625
+    },
+    {
+      "region": "wasteland",
+      "trader": "relicdealer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_relicdealer_1",
+        "name": "Древний фрагмент",
+        "category": "materials",
+        "costGp": 25,
+        "qty": 5,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 1875
+    },
+    {
+      "region": "wasteland",
+      "trader": "arcane",
+      "mode": "buy",
+      "item": {
+        "id": "m551_arcane_1",
+        "name": "Арканная пыль",
+        "category": "materials",
+        "costGp": 15,
+        "qty": 8,
+        "tags": [
+          "arcane"
+        ]
+      },
+      "cp": 1950
+    },
+    {
+      "region": "wasteland",
+      "trader": "arcane",
+      "mode": "sell",
+      "item": {
+        "id": "m551_arcane_1",
+        "name": "Арканная пыль",
+        "category": "materials",
+        "costGp": 15,
+        "qty": 8,
+        "tags": [
+          "arcane"
+        ]
+      },
+      "cp": 1050
+    },
+    {
+      "region": "wasteland",
+      "trader": "stablemaster",
+      "mode": "buy",
+      "item": {
+        "id": "m551_stablemaster_1",
+        "name": "Седло",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 3,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 1080
+    },
+    {
+      "region": "wasteland",
+      "trader": "stablemaster",
+      "mode": "sell",
+      "item": {
+        "id": "m551_stablemaster_1",
+        "name": "Седло",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 3,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 550
+    },
+    {
+      "region": "wasteland",
+      "trader": "hunter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_hunter_1",
+        "name": "Шкура оленя",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 540
+    },
+    {
+      "region": "wasteland",
+      "trader": "hunter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_hunter_1",
+        "name": "Шкура оленя",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 300
+    },
+    {
+      "region": "wasteland",
+      "trader": "monsterparts",
+      "mode": "buy",
+      "item": {
+        "id": "m551_monsterparts_1",
+        "name": "Паучий шёлк",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "fiber"
+        ]
+      },
+      "cp": 625
+    },
+    {
+      "region": "wasteland",
+      "trader": "monsterparts",
+      "mode": "sell",
+      "item": {
+        "id": "m551_monsterparts_1",
+        "name": "Паучий шёлк",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "fiber"
+        ]
+      },
+      "cp": 340
+    },
+    {
+      "region": "wasteland",
+      "trader": "scrollmerchant",
+      "mode": "buy",
+      "item": {
+        "id": "m551_scrollmerchant_1",
+        "name": "Свиток заклинания 1 круга",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "arcane",
+          "paper"
+        ]
+      },
+      "cp": 3000
+    },
+    {
+      "region": "wasteland",
+      "trader": "scrollmerchant",
+      "mode": "sell",
+      "item": {
+        "id": "m551_scrollmerchant_1",
+        "name": "Свиток заклинания 1 круга",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "arcane",
+          "paper"
+        ]
+      },
+      "cp": 1550
+    },
+    {
+      "region": "wasteland",
+      "trader": "temple",
+      "mode": "buy",
+      "item": {
+        "id": "m551_temple_1",
+        "name": "Святая вода",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 8,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 2625
+    },
+    {
+      "region": "wasteland",
+      "trader": "temple",
+      "mode": "sell",
+      "item": {
+        "id": "m551_temple_1",
+        "name": "Святая вода",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 8,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 1250
+    },
+    {
+      "region": "wasteland",
+      "trader": "blackmarket",
+      "mode": "buy",
+      "item": {
+        "id": "m551_blackmarket_1",
+        "name": "Отмычки",
+        "category": "gear",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 4350
+    },
+    {
+      "region": "wasteland",
+      "trader": "blackmarket",
+      "mode": "sell",
+      "item": {
+        "id": "m551_blackmarket_1",
+        "name": "Отмычки",
+        "category": "gear",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 2400
+    },
+    {
+      "region": "wasteland",
+      "trader": "caravan_master",
+      "mode": "buy",
+      "item": {
+        "id": "m551_caravan_master_1",
+        "name": "Дорожный шатёр",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 4,
+        "tags": [
+          "textile",
+          "wood"
+        ]
+      },
+      "cp": 1566
+    },
+    {
+      "region": "wasteland",
+      "trader": "caravan_master",
+      "mode": "sell",
+      "item": {
+        "id": "m551_caravan_master_1",
+        "name": "Дорожный шатёр",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 4,
+        "tags": [
+          "textile",
+          "wood"
+        ]
+      },
+      "cp": 891
+    },
+    {
+      "region": "wasteland",
+      "trader": "siege",
+      "mode": "buy",
+      "item": {
+        "id": "m551_siege_1",
+        "name": "Канат толстый",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 600
+    },
+    {
+      "region": "wasteland",
+      "trader": "siege",
+      "mode": "sell",
+      "item": {
+        "id": "m551_siege_1",
+        "name": "Канат толстый",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 275
+    },
+    {
+      "region": "ruins",
+      "trader": "village",
+      "mode": "buy",
+      "item": {
+        "id": "market_rations",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 20,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 60
+    },
+    {
+      "region": "ruins",
+      "trader": "village",
+      "mode": "sell",
+      "item": {
+        "id": "market_rations",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 20,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 30
+    },
+    {
+      "region": "ruins",
+      "trader": "blacksmith",
+      "mode": "buy",
+      "item": {
+        "id": "market_dagger",
+        "name": "Кинжал",
+        "category": "weapons",
+        "costGp": 2,
+        "qty": 3,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 231
+    },
+    {
+      "region": "ruins",
+      "trader": "blacksmith",
+      "mode": "sell",
+      "item": {
+        "id": "market_dagger",
+        "name": "Кинжал",
+        "category": "weapons",
+        "costGp": 2,
+        "qty": 3,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 132
+    },
+    {
+      "region": "ruins",
+      "trader": "apothecary",
+      "mode": "buy",
+      "item": {
+        "id": "market_antitoxin",
+        "name": "Противоядие",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 3,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 6050
+    },
+    {
+      "region": "ruins",
+      "trader": "apothecary",
+      "mode": "sell",
+      "item": {
+        "id": "market_antitoxin",
+        "name": "Противоядие",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 3,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 3025
+    },
+    {
+      "region": "ruins",
+      "trader": "caravan",
+      "mode": "buy",
+      "item": {
+        "id": "market_backpack",
+        "name": "Рюкзак",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 5,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 264
+    },
+    {
+      "region": "ruins",
+      "trader": "caravan",
+      "mode": "sell",
+      "item": {
+        "id": "market_backpack",
+        "name": "Рюкзак",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 5,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 143
+    },
+    {
+      "region": "ruins",
+      "trader": "armorer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_armorer_1",
+        "name": "Кожаный доспех",
+        "category": "armor",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 1188
+    },
+    {
+      "region": "ruins",
+      "trader": "armorer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_armorer_1",
+        "name": "Кожаный доспех",
+        "category": "armor",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 638
+    },
+    {
+      "region": "ruins",
+      "trader": "weaponwright",
+      "mode": "buy",
+      "item": {
+        "id": "m551_weaponwright_1",
+        "name": "Боевой топор",
+        "category": "weapons",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 1177
+    },
+    {
+      "region": "ruins",
+      "trader": "weaponwright",
+      "mode": "sell",
+      "item": {
+        "id": "m551_weaponwright_1",
+        "name": "Боевой топор",
+        "category": "weapons",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 660
+    },
+    {
+      "region": "ruins",
+      "trader": "fletcher",
+      "mode": "buy",
+      "item": {
+        "id": "m551_fletcher_1",
+        "name": "Короткий лук",
+        "category": "weapons",
+        "costGp": 25,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 2833
+    },
+    {
+      "region": "ruins",
+      "trader": "fletcher",
+      "mode": "sell",
+      "item": {
+        "id": "m551_fletcher_1",
+        "name": "Короткий лук",
+        "category": "weapons",
+        "costGp": 25,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 1513
+    },
+    {
+      "region": "ruins",
+      "trader": "leatherworker",
+      "mode": "buy",
+      "item": {
+        "id": "m551_leatherworker_1",
+        "name": "Кожаная броня",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 1155
+    },
+    {
+      "region": "ruins",
+      "trader": "leatherworker",
+      "mode": "sell",
+      "item": {
+        "id": "m551_leatherworker_1",
+        "name": "Кожаная броня",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 2,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 682
+    },
+    {
+      "region": "ruins",
+      "trader": "weaver",
+      "mode": "buy",
+      "item": {
+        "id": "m551_weaver_1",
+        "name": "Рулон льняной ткани",
+        "category": "gear",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 337
+    },
+    {
+      "region": "ruins",
+      "trader": "weaver",
+      "mode": "sell",
+      "item": {
+        "id": "m551_weaver_1",
+        "name": "Рулон льняной ткани",
+        "category": "gear",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 198
+    },
+    {
+      "region": "ruins",
+      "trader": "woodcarver",
+      "mode": "buy",
+      "item": {
+        "id": "m551_woodcarver_1",
+        "name": "Лук заготовка",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 5,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 337
+    },
+    {
+      "region": "ruins",
+      "trader": "woodcarver",
+      "mode": "sell",
+      "item": {
+        "id": "m551_woodcarver_1",
+        "name": "Лук заготовка",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 5,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 191
+    },
+    {
+      "region": "ruins",
+      "trader": "carpenter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_carpenter_1",
+        "name": "Лестница складная",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 567
+    },
+    {
+      "region": "ruins",
+      "trader": "carpenter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_carpenter_1",
+        "name": "Лестница складная",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 3,
+        "tags": [
+          "wood"
+        ]
+      },
+      "cp": 303
+    },
+    {
+      "region": "ruins",
+      "trader": "jeweler",
+      "mode": "buy",
+      "item": {
+        "id": "m551_jeweler_1",
+        "name": "Серебряная оправа",
+        "category": "materials",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 1320
+    },
+    {
+      "region": "ruins",
+      "trader": "jeweler",
+      "mode": "sell",
+      "item": {
+        "id": "m551_jeweler_1",
+        "name": "Серебряная оправа",
+        "category": "materials",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 770
+    },
+    {
+      "region": "ruins",
+      "trader": "gemcutter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_gemcutter_1",
+        "name": "Драгоценный камень, необработанный",
+        "category": "materials",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 4720
+    },
+    {
+      "region": "ruins",
+      "trader": "gemcutter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_gemcutter_1",
+        "name": "Драгоценный камень, необработанный",
+        "category": "materials",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 2880
+    },
+    {
+      "region": "ruins",
+      "trader": "potter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_potter_1",
+        "name": "Керамический кувшин",
+        "category": "materials",
+        "costGp": 0.02,
+        "qty": 20,
+        "tags": [
+          "ceramic"
+        ]
+      },
+      "cp": 2
+    },
+    {
+      "region": "ruins",
+      "trader": "potter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_potter_1",
+        "name": "Керамический кувшин",
+        "category": "materials",
+        "costGp": 0.02,
+        "qty": 20,
+        "tags": [
+          "ceramic"
+        ]
+      },
+      "cp": 1
+    },
+    {
+      "region": "ruins",
+      "trader": "glassblower",
+      "mode": "buy",
+      "item": {
+        "id": "m551_glassblower_1",
+        "name": "Стеклянный флакон",
+        "category": "materials",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "glass"
+        ]
+      },
+      "cp": 12
+    },
+    {
+      "region": "ruins",
+      "trader": "glassblower",
+      "mode": "sell",
+      "item": {
+        "id": "m551_glassblower_1",
+        "name": "Стеклянный флакон",
+        "category": "materials",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "glass"
+        ]
+      },
+      "cp": 6
+    },
+    {
+      "region": "ruins",
+      "trader": "mason",
+      "mode": "buy",
+      "item": {
+        "id": "m551_mason_1",
+        "name": "Гранитная заготовка",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 20,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 229
+    },
+    {
+      "region": "ruins",
+      "trader": "mason",
+      "mode": "sell",
+      "item": {
+        "id": "m551_mason_1",
+        "name": "Гранитная заготовка",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 20,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 121
+    },
+    {
+      "region": "ruins",
+      "trader": "cobbler",
+      "mode": "buy",
+      "item": {
+        "id": "m551_cobbler_1",
+        "name": "Сапоги",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 112
+    },
+    {
+      "region": "ruins",
+      "trader": "cobbler",
+      "mode": "sell",
+      "item": {
+        "id": "m551_cobbler_1",
+        "name": "Сапоги",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 66
+    },
+    {
+      "region": "ruins",
+      "trader": "painter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_painter_1",
+        "name": "Пигменты, набор",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "pigment"
+        ]
+      },
+      "cp": 356
+    },
+    {
+      "region": "ruins",
+      "trader": "painter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_painter_1",
+        "name": "Пигменты, набор",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 10,
+        "tags": [
+          "pigment"
+        ]
+      },
+      "cp": 198
+    },
+    {
+      "region": "ruins",
+      "trader": "tinker",
+      "mode": "buy",
+      "item": {
+        "id": "m551_tinker_1",
+        "name": "Замок простой",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 605
+    },
+    {
+      "region": "ruins",
+      "trader": "tinker",
+      "mode": "sell",
+      "item": {
+        "id": "m551_tinker_1",
+        "name": "Замок простой",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 341
+    },
+    {
+      "region": "ruins",
+      "trader": "scribe",
+      "mode": "buy",
+      "item": {
+        "id": "m551_scribe_1",
+        "name": "Бумага (10 листов)",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 20,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 117
+    },
+    {
+      "region": "ruins",
+      "trader": "scribe",
+      "mode": "sell",
+      "item": {
+        "id": "m551_scribe_1",
+        "name": "Бумага (10 листов)",
+        "category": "gear",
+        "costGp": 1,
+        "qty": 20,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 55
+    },
+    {
+      "region": "ruins",
+      "trader": "cartographer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_cartographer_1",
+        "name": "Карта местности",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 6,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 616
+    },
+    {
+      "region": "ruins",
+      "trader": "cartographer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_cartographer_1",
+        "name": "Карта местности",
+        "category": "gear",
+        "costGp": 5,
+        "qty": 6,
+        "tags": [
+          "paper"
+        ]
+      },
+      "cp": 319
+    },
+    {
+      "region": "ruins",
+      "trader": "herbalist",
+      "mode": "buy",
+      "item": {
+        "id": "m551_herbalist_1",
+        "name": "Лечебная трава",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 20,
+        "tags": [
+          "herbalism"
+        ]
+      },
+      "cp": 356
+    },
+    {
+      "region": "ruins",
+      "trader": "herbalist",
+      "mode": "sell",
+      "item": {
+        "id": "m551_herbalist_1",
+        "name": "Лечебная трава",
+        "category": "materials",
+        "costGp": 3,
+        "qty": 20,
+        "tags": [
+          "herbalism"
+        ]
+      },
+      "cp": 182
+    },
+    {
+      "region": "ruins",
+      "trader": "alchemist",
+      "mode": "buy",
+      "item": {
+        "id": "m551_alchemist_1",
+        "name": "Зелье лечения",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 6325
+    },
+    {
+      "region": "ruins",
+      "trader": "alchemist",
+      "mode": "sell",
+      "item": {
+        "id": "m551_alchemist_1",
+        "name": "Зелье лечения",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 6,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 3410
+    },
+    {
+      "region": "ruins",
+      "trader": "poisoner",
+      "mode": "buy",
+      "item": {
+        "id": "m551_poisoner_1",
+        "name": "Антитоксин",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 5,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 7425
+    },
+    {
+      "region": "ruins",
+      "trader": "poisoner",
+      "mode": "sell",
+      "item": {
+        "id": "m551_poisoner_1",
+        "name": "Антитоксин",
+        "category": "consumables",
+        "costGp": 50,
+        "qty": 5,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 3850
+    },
+    {
+      "region": "ruins",
+      "trader": "brewer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_brewer_1",
+        "name": "Эль, кружка",
+        "category": "consumables",
+        "costGp": 0.04,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 5
+    },
+    {
+      "region": "ruins",
+      "trader": "brewer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_brewer_1",
+        "name": "Эль, кружка",
+        "category": "consumables",
+        "costGp": 0.04,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 2
+    },
+    {
+      "region": "ruins",
+      "trader": "cook",
+      "mode": "buy",
+      "item": {
+        "id": "m551_cook_1",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 63
+    },
+    {
+      "region": "ruins",
+      "trader": "cook",
+      "mode": "sell",
+      "item": {
+        "id": "m551_cook_1",
+        "name": "Паёк",
+        "category": "consumables",
+        "costGp": 0.5,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 30
+    },
+    {
+      "region": "ruins",
+      "trader": "fisher",
+      "mode": "buy",
+      "item": {
+        "id": "m551_fisher_1",
+        "name": "Свежая рыба",
+        "category": "consumables",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 12
+    },
+    {
+      "region": "ruins",
+      "trader": "fisher",
+      "mode": "sell",
+      "item": {
+        "id": "m551_fisher_1",
+        "name": "Свежая рыба",
+        "category": "consumables",
+        "costGp": 0.1,
+        "qty": 30,
+        "tags": [
+          "food"
+        ]
+      },
+      "cp": 6
+    },
+    {
+      "region": "ruins",
+      "trader": "shipchandler",
+      "mode": "buy",
+      "item": {
+        "id": "m551_shipchandler_1",
+        "name": "Канат, 50 футов",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 12,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 238
+    },
+    {
+      "region": "ruins",
+      "trader": "shipchandler",
+      "mode": "sell",
+      "item": {
+        "id": "m551_shipchandler_1",
+        "name": "Канат, 50 футов",
+        "category": "gear",
+        "costGp": 2,
+        "qty": 12,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 121
+    },
+    {
+      "region": "ruins",
+      "trader": "miner",
+      "mode": "buy",
+      "item": {
+        "id": "m551_miner_1",
+        "name": "Железная руда",
+        "category": "materials",
+        "costGp": 1,
+        "qty": 30,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 121
+    },
+    {
+      "region": "ruins",
+      "trader": "miner",
+      "mode": "sell",
+      "item": {
+        "id": "m551_miner_1",
+        "name": "Железная руда",
+        "category": "materials",
+        "costGp": 1,
+        "qty": 30,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 66
+    },
+    {
+      "region": "ruins",
+      "trader": "stonecutter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_stonecutter_1",
+        "name": "Гранит",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 30,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 231
+    },
+    {
+      "region": "ruins",
+      "trader": "stonecutter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_stonecutter_1",
+        "name": "Гранит",
+        "category": "materials",
+        "costGp": 2,
+        "qty": 30,
+        "tags": [
+          "stone"
+        ]
+      },
+      "cp": 121
+    },
+    {
+      "region": "ruins",
+      "trader": "generalstore",
+      "mode": "buy",
+      "item": {
+        "id": "m551_generalstore_1",
+        "name": "Факел",
+        "category": "gear",
+        "costGp": 0.01,
+        "qty": 60,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 1
+    },
+    {
+      "region": "ruins",
+      "trader": "generalstore",
+      "mode": "sell",
+      "item": {
+        "id": "m551_generalstore_1",
+        "name": "Факел",
+        "category": "gear",
+        "costGp": 0.01,
+        "qty": 60,
+        "tags": [
+          "common"
+        ]
+      },
+      "cp": 1
+    },
+    {
+      "region": "ruins",
+      "trader": "luxury",
+      "mode": "buy",
+      "item": {
+        "id": "m551_luxury_1",
+        "name": "Шёлковая рубашка",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 1485
+    },
+    {
+      "region": "ruins",
+      "trader": "luxury",
+      "mode": "sell",
+      "item": {
+        "id": "m551_luxury_1",
+        "name": "Шёлковая рубашка",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 5,
+        "tags": [
+          "textile"
+        ]
+      },
+      "cp": 792
+    },
+    {
+      "region": "ruins",
+      "trader": "relicdealer",
+      "mode": "buy",
+      "item": {
+        "id": "m551_relicdealer_1",
+        "name": "Древний фрагмент",
+        "category": "materials",
+        "costGp": 25,
+        "qty": 5,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 2900
+    },
+    {
+      "region": "ruins",
+      "trader": "relicdealer",
+      "mode": "sell",
+      "item": {
+        "id": "m551_relicdealer_1",
+        "name": "Древний фрагмент",
+        "category": "materials",
+        "costGp": 25,
+        "qty": 5,
+        "tags": [
+          "relic"
+        ]
+      },
+      "cp": 1500
+    },
+    {
+      "region": "ruins",
+      "trader": "arcane",
+      "mode": "buy",
+      "item": {
+        "id": "m551_arcane_1",
+        "name": "Арканная пыль",
+        "category": "materials",
+        "costGp": 15,
+        "qty": 8,
+        "tags": [
+          "arcane"
+        ]
+      },
+      "cp": 1463
+    },
+    {
+      "region": "ruins",
+      "trader": "arcane",
+      "mode": "sell",
+      "item": {
+        "id": "m551_arcane_1",
+        "name": "Арканная пыль",
+        "category": "materials",
+        "costGp": 15,
+        "qty": 8,
+        "tags": [
+          "arcane"
+        ]
+      },
+      "cp": 787
+    },
+    {
+      "region": "ruins",
+      "trader": "stablemaster",
+      "mode": "buy",
+      "item": {
+        "id": "m551_stablemaster_1",
+        "name": "Седло",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 3,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 1188
+    },
+    {
+      "region": "ruins",
+      "trader": "stablemaster",
+      "mode": "sell",
+      "item": {
+        "id": "m551_stablemaster_1",
+        "name": "Седло",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 3,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 605
+    },
+    {
+      "region": "ruins",
+      "trader": "hunter",
+      "mode": "buy",
+      "item": {
+        "id": "m551_hunter_1",
+        "name": "Шкура оленя",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 594
+    },
+    {
+      "region": "ruins",
+      "trader": "hunter",
+      "mode": "sell",
+      "item": {
+        "id": "m551_hunter_1",
+        "name": "Шкура оленя",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 8,
+        "tags": [
+          "leather"
+        ]
+      },
+      "cp": 330
+    },
+    {
+      "region": "ruins",
+      "trader": "monsterparts",
+      "mode": "buy",
+      "item": {
+        "id": "m551_monsterparts_1",
+        "name": "Паучий шёлк",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "fiber"
+        ]
+      },
+      "cp": 688
+    },
+    {
+      "region": "ruins",
+      "trader": "monsterparts",
+      "mode": "sell",
+      "item": {
+        "id": "m551_monsterparts_1",
+        "name": "Паучий шёлк",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "fiber"
+        ]
+      },
+      "cp": 374
+    },
+    {
+      "region": "ruins",
+      "trader": "scrollmerchant",
+      "mode": "buy",
+      "item": {
+        "id": "m551_scrollmerchant_1",
+        "name": "Свиток заклинания 1 круга",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "arcane",
+          "paper"
+        ]
+      },
+      "cp": 2250
+    },
+    {
+      "region": "ruins",
+      "trader": "scrollmerchant",
+      "mode": "sell",
+      "item": {
+        "id": "m551_scrollmerchant_1",
+        "name": "Свиток заклинания 1 круга",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "arcane",
+          "paper"
+        ]
+      },
+      "cp": 1163
+    },
+    {
+      "region": "ruins",
+      "trader": "temple",
+      "mode": "buy",
+      "item": {
+        "id": "m551_temple_1",
+        "name": "Святая вода",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 8,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 2888
+    },
+    {
+      "region": "ruins",
+      "trader": "temple",
+      "mode": "sell",
+      "item": {
+        "id": "m551_temple_1",
+        "name": "Святая вода",
+        "category": "consumables",
+        "costGp": 25,
+        "qty": 8,
+        "tags": [
+          "alchemical"
+        ]
+      },
+      "cp": 1375
+    },
+    {
+      "region": "ruins",
+      "trader": "blackmarket",
+      "mode": "buy",
+      "item": {
+        "id": "m551_blackmarket_1",
+        "name": "Отмычки",
+        "category": "gear",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 3988
+    },
+    {
+      "region": "ruins",
+      "trader": "blackmarket",
+      "mode": "sell",
+      "item": {
+        "id": "m551_blackmarket_1",
+        "name": "Отмычки",
+        "category": "gear",
+        "costGp": 25,
+        "qty": 4,
+        "tags": [
+          "metal"
+        ]
+      },
+      "cp": 2200
+    },
+    {
+      "region": "ruins",
+      "trader": "caravan_master",
+      "mode": "buy",
+      "item": {
+        "id": "m551_caravan_master_1",
+        "name": "Дорожный шатёр",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 4,
+        "tags": [
+          "textile",
+          "wood"
+        ]
+      },
+      "cp": 1276
+    },
+    {
+      "region": "ruins",
+      "trader": "caravan_master",
+      "mode": "sell",
+      "item": {
+        "id": "m551_caravan_master_1",
+        "name": "Дорожный шатёр",
+        "category": "gear",
+        "costGp": 10,
+        "qty": 4,
+        "tags": [
+          "textile",
+          "wood"
+        ]
+      },
+      "cp": 726
+    },
+    {
+      "region": "ruins",
+      "trader": "siege",
+      "mode": "buy",
+      "item": {
+        "id": "m551_siege_1",
+        "name": "Канат толстый",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 660
+    },
+    {
+      "region": "ruins",
+      "trader": "siege",
+      "mode": "sell",
+      "item": {
+        "id": "m551_siege_1",
+        "name": "Канат толстый",
+        "category": "materials",
+        "costGp": 5,
+        "qty": 10,
+        "tags": [
+          "rope"
+        ]
+      },
+      "cp": 303
+    }
+  ]
+}
