@@ -62,6 +62,41 @@ public static class WorkshopEditorValidation
             Debug.Log("VTT_MENU_INPUT_SYSTEM_PASS: virtual touch scroll/release, native ownership, navigation and closed map lifecycle");
         } finally { UnityEngine.Object.DestroyImmediate(go);InputSystem.RemoveDevice(device);if(prior!=null)prior.MakeCurrent(); }
     }
+
+    private static void ValidateMarketMerchantMod()
+    {
+        string json=Resources.Load<TextAsset>("CharacterSheet/market").text;
+        var original=JObject.Parse(json);
+        var data=new JObject {
+            ["schemaVersion"]=1,["id"]="test.market.merchants",["version"]="1.0.0",["type"]="market",
+            ["departments"]=new JArray(new JObject {["id"]="weapons",["name"]="Оружие",["traders"]=new JArray("weaponwright","exotic")}),
+            ["traders"]=new JArray(
+                new JObject {["id"]="weaponwright",["name"]="Оружейник",["template"]="weaponwright",["itemCategories"]=new JArray("weapons"),["nameContains"]=new JArray("тестовый"),["deriveLimit"]=4,["inheritStock"]=true},
+                new JObject {["id"]="exotic",["name"]="Экзотическое оружие",["template"]="weaponwright",["itemCategories"]=new JArray("weapons"),["nameContains"]=new JArray("тестовый"),["deriveLimit"]=4,["inheritStock"]=false}
+            )
+        };
+        var manifest=new JObject{["id"]="test.market.merchants",["version"]="1.0.0",["type"]="market"};
+        WorkshopStore.ValidateData(manifest,data.ToString());
+        var items=new JArray(
+            new JObject {["id"]="test.items.weapon",["name"]="Тестовый клинок",["inventoryCategory"]="weapons",["cost"]="5 см"},
+            new JObject {["id"]="test.items.unpriced",["name"]="Тестовый неподлежащий продаже клинок",["inventoryCategory"]="weapons",["cost"]="Необычное"}
+        );
+        var result=CommerceRules.MergeMarketPacks(original,new JArray(data),items);
+        Check(result["departments"] is JArray sections&&sections.Count==1,"merchant mod produces department tree");
+        Check(((JObject)original["traders"]).Properties().Count()==42,"default 42 merchants unchanged");
+        Check(((JArray)result["traders"]["weaponwright"]["stock"]).Count==9,"installed collection item appended without replacing default stock");
+        var exotic=(JArray)result["traders"]["exotic"]["stock"];
+        Check(exotic.Count==1&&(string)exotic[0]["sourceItemId"]=="test.items.weapon","market links existing item IDs and skips unknown prices");
+        Check(CommerceRules.MarketQuote(result,"exotic",(JObject)exotic[0],"buy","forest")>0,"silver-piece cost converted to copper");
+        var resolved=CommerceRules.MarketResolve(items,(JObject)exotic[0],CommerceRules.IndexMarketDefinitions(items));
+        Check((string)resolved["id"]=="test.items.weapon"&&(string)resolved["marketFunctionalStatus"]=="functional","item definitions resolved by immutable source ID");
+        var oldSaved=new JObject{["traders"]=new JObject{["exotic"]=new JObject{["stock"]=new JArray()}}};
+        var restored=CommerceRules.MarketStock(result,oldSaved,"exotic");
+        Check((long)restored[0]["qty"]==3,"new offers retain initial stock when old save lacks those IDs");
+        Check(((JArray)original["traders"]["weaponwright"]["stock"]).Count==8,"market mod never mutates built-in catalogue");
+        Debug.Log("VTT_MARKET_MERCHANTS_PASS: tree, 45-template extension, source IDs, price conversion, stock migration");
+    }
+
     private static void ValidateCategoryCollections(WorkshopStore store,JArray manifests)
     {
         var roots=manifests.OfType<JObject>().Where(m=>(string)m["collectionRole"]=="category").ToArray();
@@ -174,6 +209,7 @@ public static class WorkshopEditorValidation
     public static void Run()
     {
         ValidateMenuTouchBackend();
+        ValidateMarketMerchantMod();
         string fixtures = Path.GetFullPath("WorkshopFixtures~");
         Check(Directory.Exists(fixtures), "Download verified public fixtures to unity/WorkshopFixtures~ first");
         string folder = Path.Combine(Path.GetTempPath(), "vtt-workshop-editor-" + Guid.NewGuid()); Directory.CreateDirectory(folder);
