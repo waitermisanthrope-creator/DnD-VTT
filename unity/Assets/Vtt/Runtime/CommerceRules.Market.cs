@@ -178,8 +178,12 @@ namespace DndVtt.UnityPrototype
                     var trader=existing?(JObject)traders[id]:(JObject)original.DeepClone();
                     trader["name"]=(string)rule["name"];
                     if((bool?)rule["inheritStock"]==false)trader["stock"]=new JArray();
-                    var stock=trader["stock"] as JArray??new JArray();
-                    trader["stock"]=stock;traders[id]=trader;
+                    if(!(trader["stock"] is JArray))trader["stock"]=new JArray();
+                    // Reassigning an already-parented JToken to its own JObject
+                    // can clone the token in Json.NET. Attach new merchants once,
+                    // then always mutate the JArray actually held by the catalog.
+                    if(!existing)traders[id]=trader;
+                    var stock=(JArray)traders[id]["stock"];
                     int maximum=Math.Max(0,Math.Min(64,(int?)rule["deriveLimit"]??32));
                     if(maximum==0)continue;
                     var categories=new HashSet<string>((rule["itemCategories"] as JArray??new JArray()).Values<string>(),StringComparer.Ordinal);
