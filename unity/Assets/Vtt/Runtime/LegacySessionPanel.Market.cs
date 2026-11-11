@@ -10,9 +10,8 @@ namespace DndVtt.UnityPrototype
     public sealed partial class LegacySessionPanel
     {
         private JObject marketCatalog;
-        private JObject MarketCatalog=>marketCatalog??=CommerceRules.MergeMarketPacks(
-            JObject.Parse(Resources.Load<TextAsset>("CharacterSheet/market").text),
-            CommerceCatalog?["markets"] as JArray,CommerceCatalog?["items"] as JArray??new JArray());
+        private JObject MarketCatalog=>marketCatalog??=(CommerceCatalog?["market"] as JObject
+            ??JObject.Parse(Resources.Load<TextAsset>("CharacterSheet/market").text));
         private bool marketOpen,tradeRecoveryVisible;
         private bool? requestedMarketOpen;
         private Action pendingMarketAction;
