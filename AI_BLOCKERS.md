@@ -1,3 +1,15 @@
+# Кандидат52 — общий скин после native UI regression / 2026-11-11
+
+51: Android130738008909 и Windows130748279190 builds SUCCESS, но Windows QA130753092560 FAIL до crafts/dice: кнопки состояний наследовали menu font,36,67px вместо28. Корень PrepareBrand: безусловный переход с готового sheetSkin на templateSkin при backdrop. Исправлен общий predicate BrandStylesNeedRebuild: переход только при реальном rebuild, без изменения дизайна страниц. Условные Android/Windows compile и UI lifecycle/brand PASS. Собрать новый private52 (51APK НЕ перезаписывать), дождаться полного native UI QA/метрик/картинок. НЕ публиковать/не менять feed50/main/approvals. APK51 тестовый с известным UI дефектом, не стабильный. Physical Android и remote GM transport ещё не выполнены.
+
+# Android1.00.51 private APK SUCCESS, Windows QA выполняется / 2026-11-11
+
+run43082355762/job130738008909 SUCCESS, source3b0e83a311375cd9719ce9c02224f099766c54f8. Реальный ARM64 IL2CPP APK62830226байт, SHA2560aaca9d49c4606f4c12690d51eb03b6cb3bede9b1eea41242e9392c5b3a57667, original signature/package/code10051 PASS. Actions artifact13886411213 DnD-VTT-Unity-1.00.51-Android-test. WORKSHOP11401/972PhysX/async cleanup/Branding5callbacks PASS; Editor ordered warm198,56/9,71мс (не Android и не независимые cold starts). Windows job130748279190 собирается, затем GPU UI smoke; дождаться результатов/скриншотов/реальных page metrics. НЕ публиковать, feed/main/approvals не трогать. Physical Android5pause/lock/swipe/perf и remote GM transport ещё не готовы. Отчёт docs/unity-account/STABILITY_CRAFTS_1.00.51.md. Доп. код не менять без фактической новой ошибки.
+
+# Текущий private CI / 2026-11-11
+
+run43082355762, исходник3b0e83a311375cd9719ce9c02224f099766c54f8, кандидат1.00.51. Retry после подтверждённых и исправленных baseline sceneCount и GUI.skin вне OnGUI. Предыдущий run43079741096:11401 pure checks/972PhysX/scene cleanup PASS, APK отсутствует. В текущем коде GUI builder отделён от OnGUI; бросок ждёт каталога/темы, native smoke изолирует pending catalog. Дождаться фактических Android/signing/Windows UI результатов; не публиковать/не менять feed/main. Physical Android и удалённый GM transport остаются незавершёнными.
+
 # Unity51 — retry3, UI builder исправлен / 2026-11-11
 
 Native retry43079741096/sourcebec1f51e: WORKSHOP11401/972 PhysX/render/async scene cleanup PASS; APK НЕ создан из-за GUI.skin вне OnGUI в template-кэше. Исправлен общий builder с явными prototype-стилями; GUI.skin только в PrepareBrand. BrandingResumeValidation требует живые неизменные фоны/пиксели/число владений (старое ожидание rebuild противоречило корневому фиксу). Обе conditional compile/UI lifecycle/brand PASS. Бросок ждёт каталога и темы, smoke проверяет disabled при удержанном Task. Запустить/дождаться retry3 кандидата51; НЕ публиковать, feed/main/approvals не трогать. Physical Android и remote GM transport ещё не завершены. Отчёт docs/unity-account/STABILITY_CRAFTS_1.00.51.md.
