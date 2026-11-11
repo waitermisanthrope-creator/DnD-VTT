@@ -17,7 +17,16 @@ namespace DndVtt.UnityPrototype
         // GUIStyle backgrounds alone are not reliable roots during unloading or
         // Android graphics-context recreation. Own readable textures explicitly.
         private readonly List<Texture2D> brandStyleTextures = new List<Texture2D>();
-        private bool brandStylesDirty = true;
+        private bool brandStylesDirty = true, brandTextureRestorePending;
+        private void RequestGuiResourceRestore() { brandTextureRestorePending=true; }
+        private void RestoreGuiResources()
+        {
+            if(!brandTextureRestorePending||Event.current.type!=EventType.Layout)return;
+            // Preserve backgrounds shared by every cached GUIStyle. Rebuilding the
+            // brand skin here destroyed textures still owned by compact controls.
+            foreach(var texture in brandStyleTextures)if(texture&&texture.isReadable)texture.Apply(false,false);
+            brandTextureRestorePending=false;
+        }
         private void InvalidateBrandStyles() { brandStylesDirty = true; }
         private void ReleaseBrandStyles()
         {
@@ -28,7 +37,7 @@ namespace DndVtt.UnityPrototype
             heading = muted = bigButton = null;
             settingsHeader = settingsDescription = settingsInset = null;
         }
-        private void OnApplicationPause(bool paused) { if(paused)StopDiceSensor();ApplyScreenSleep(!paused); if (!paused) InvalidateBrandStyles(); }
+        private void OnApplicationPause(bool paused) { if(paused)StopDiceSensor();ApplyScreenSleep(!paused); if (!paused) RequestGuiResourceRestore();else menuGesture.Clear(); }
         private Vector2 brandHomeScroll, brandSettingsScroll, brandHomeActionsScroll;
         private bool brandMoreOpen, brandSplashActive, brandAdvancedOpen;
         private float brandSplashSince;

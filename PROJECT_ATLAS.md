@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода c2011273dab7. Git содержит 2157 файлов.
+Снимок кода 3dd0b18b717e. Git содержит 2158 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -1094,7 +1094,7 @@
 | №1073 docs/UNITY_MARKET_TREE_2026-11-11.md | 4918 B | документация или отчёт: UNITY MARKET TREE 2026 11 11 |
 | №1074 docs/UNITY_MIGRATION_PLAN.md | 14710 B | документация или отчёт: UNITY MIGRATION PLAN |
 | №1075 docs/UNITY_SCROLL_REVIEW.md | 8169 B | документация или отчёт: UNITY SCROLL REVIEW |
-| №1076 docs/UNITY_STABILITY_CRAFTS_2026-11-11.md | 6575 B | документация или отчёт: UNITY STABILITY CRAFTS 2026 11 11 |
+| №1076 docs/UNITY_STABILITY_CRAFTS_2026-11-11.md | 7508 B | документация или отчёт: UNITY STABILITY CRAFTS 2026 11 11 |
 | №1077 docs/UNITY_UI_READABILITY.md | 7339 B | документация или отчёт: UNITY UI READABILITY |
 | №1078 docs/UNITY_UI_RUNTIME_CHECK.md | 5415 B | документация или отчёт: UNITY UI RUNTIME CHECK |
 | №1079 docs/UNITY_USER_FEEDBACK_1.00.43.md | 3277 B | документация или отчёт: UNITY USER FEEDBACK 1.00.43 |
@@ -1915,7 +1915,7 @@
 | №1894 unity/Assets/Vtt/Runtime/CommerceRules.cs.meta | 60 B | вспомогательный файл: CommerceRules.cs |
 | №1895 unity/Assets/Vtt/Runtime/CommerceRules.Market.cs | 24799 B | вспомогательный файл: CommerceRules.Market |
 | №1896 unity/Assets/Vtt/Runtime/CommerceRules.Market.cs.meta | 60 B | вспомогательный файл: CommerceRules.Market.cs |
-| №1897 unity/Assets/Vtt/Runtime/DesktopUiSmoke.cs | 66597 B | вспомогательный файл: DesktopUiSmoke |
+| №1897 unity/Assets/Vtt/Runtime/DesktopUiSmoke.cs | 67824 B | вспомогательный файл: DesktopUiSmoke |
 | №1898 unity/Assets/Vtt/Runtime/DesktopUiSmoke.cs.meta | 60 B | вспомогательный файл: DesktopUiSmoke.cs |
 | №1899 unity/Assets/Vtt/Runtime/DiceGeometry.cs | 7902 B | вспомогательный файл: DiceGeometry |
 | №1900 unity/Assets/Vtt/Runtime/DiceGeometry.cs.meta | 60 B | вспомогательный файл: DiceGeometry.cs |
@@ -1953,7 +1953,7 @@
 | №1932 unity/Assets/Vtt/Runtime/LegacySessionPanel.Advancement.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Advancement.cs |
 | №1933 unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs | 14833 B | вспомогательный файл: LegacySessionPanel.Appearance |
 | №1934 unity/Assets/Vtt/Runtime/LegacySessionPanel.Appearance.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Appearance.cs |
-| №1935 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs | 17127 B | вспомогательный файл: LegacySessionPanel.Branding |
+| №1935 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs | 17748 B | вспомогательный файл: LegacySessionPanel.Branding |
 | №1936 unity/Assets/Vtt/Runtime/LegacySessionPanel.Branding.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Branding.cs |
 | №1937 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs | 13662 B | вспомогательный файл: LegacySessionPanel.BrandSettings |
 | №1938 unity/Assets/Vtt/Runtime/LegacySessionPanel.BrandSettings.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.BrandSettings.cs |
@@ -1971,7 +1971,7 @@
 | №1950 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentManager.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.ContentManager.cs |
 | №1951 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs | 6755 B | вспомогательный файл: LegacySessionPanel.ContentPreviews |
 | №1952 unity/Assets/Vtt/Runtime/LegacySessionPanel.ContentPreviews.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.ContentPreviews.cs |
-| №1953 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs | 10133 B | вспомогательный файл: LegacySessionPanel |
+| №1953 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs | 10194 B | вспомогательный файл: LegacySessionPanel |
 | №1954 unity/Assets/Vtt/Runtime/LegacySessionPanel.cs.meta | 59 B | вспомогательный файл: LegacySessionPanel.cs |
 | №1955 unity/Assets/Vtt/Runtime/LegacySessionPanel.Desktop.cs | 2424 B | вспомогательный файл: LegacySessionPanel.Desktop |
 | №1956 unity/Assets/Vtt/Runtime/LegacySessionPanel.Desktop.cs.meta | 60 B | вспомогательный файл: LegacySessionPanel.Desktop.cs |
@@ -2068,114 +2068,115 @@
 | №2047 unity/ci/workshop-tests/InventoryCatalogChecks.cs | 3653 B | вспомогательный файл: InventoryCatalogChecks |
 | №2048 unity/ci/workshop-tests/MarketChecks.cs | 14120 B | вспомогательный файл: MarketChecks |
 | №2049 unity/ci/workshop-tests/NumericInputChecks.cs | 2630 B | вспомогательный файл: NumericInputChecks |
-| №2050 unity/ci/workshop-tests/Program.cs | 45984 B | вспомогательный файл: Program |
+| №2050 unity/ci/workshop-tests/Program.cs | 46150 B | вспомогательный файл: Program |
 | №2051 unity/ci/workshop-tests/SheetActionChecks.cs | 11507 B | вспомогательный файл: SheetActionChecks |
-| №2052 unity/ci/workshop-tests/WalletMarketChecks.cs | 2908 B | вспомогательный файл: WalletMarketChecks |
-| №2053 unity/ci/workshop-tests/WorkshopTests.csproj | 2604 B | вспомогательный файл: WorkshopTests |
-| №2054 unity/ContentSources~/catalog.full.json | 1259265 B | данные/конфигурация: catalog.full |
-| №2055 unity/ContentSources~/cloud-copy-contracts.json | 3613 B | данные/конфигурация: cloud copy contracts |
-| №2056 unity/ContentSources~/workshop-commerce/catalogs.json | 91244 B | данные/конфигурация: catalogs |
-| №2057 unity/ContentSources~/workshop-commerce/contracts.json | 7885 B | данные/конфигурация: contracts |
-| №2058 unity/ContentSources~/workshop-commerce/market-contracts.json | 165510 B | данные/конфигурация: market contracts |
-| №2059 unity/evidence/exploration.png | 119417 B | текстура/изображение: exploration |
-| №2060 unity/Installer/release-notes.md | 1582 B | документация или отчёт: release notes |
-| №2061 unity/Installer/UnitySetup.nsi | 3417 B | вспомогательный файл: UnitySetup |
-| №2062 unity/Packages/manifest.json | 609 B | данные/конфигурация: manifest |
-| №2063 unity/Packages/packages-lock.json | 6359 B | данные/конфигурация: packages lock |
-| №2064 unity/ProjectSettings/AudioManager.asset | 523 B | вспомогательный файл: AudioManager |
-| №2065 unity/ProjectSettings/ClusterInputManager.asset | 114 B | вспомогательный файл: ClusterInputManager |
-| №2066 unity/ProjectSettings/DynamicsManager.asset | 1574 B | вспомогательный файл: DynamicsManager |
-| №2067 unity/ProjectSettings/EditorBuildSettings.asset | 401 B | вспомогательный файл: EditorBuildSettings |
-| №2068 unity/ProjectSettings/EditorSettings.asset | 1603 B | вспомогательный файл: EditorSettings |
-| №2069 unity/ProjectSettings/GraphicsSettings.asset | 2615 B | вспомогательный файл: GraphicsSettings |
-| №2070 unity/ProjectSettings/InputManager.asset | 9754 B | вспомогательный файл: InputManager |
-| №2071 unity/ProjectSettings/MemorySettings.asset | 1226 B | вспомогательный файл: MemorySettings |
-| №2072 unity/ProjectSettings/MultiplayerManager.asset | 232 B | вспомогательный файл: MultiplayerManager |
-| №2073 unity/ProjectSettings/NavMeshAreas.asset | 1361 B | вспомогательный файл: NavMeshAreas |
-| №2074 unity/ProjectSettings/Physics2DSettings.asset | 1862 B | вспомогательный файл: Physics2DSettings |
-| №2075 unity/ProjectSettings/PresetManager.asset | 146 B | вспомогательный файл: PresetManager |
-| №2076 unity/ProjectSettings/ProjectSettings.asset | 22467 B | вспомогательный файл: ProjectSettings |
-| №2077 unity/ProjectSettings/ProjectVersion.txt | 85 B | документация или отчёт: ProjectVersion |
-| №2078 unity/ProjectSettings/QualitySettings.asset | 9858 B | вспомогательный файл: QualitySettings |
-| №2079 unity/ProjectSettings/SceneTemplateSettings.json | 3535 B | данные/конфигурация: SceneTemplateSettings |
-| №2080 unity/ProjectSettings/ShaderGraphSettings.asset | 633 B | вспомогательный файл: ShaderGraphSettings |
-| №2081 unity/ProjectSettings/TagManager.asset | 411 B | вспомогательный файл: TagManager |
-| №2082 unity/ProjectSettings/TimeManager.asset | 305 B | вспомогательный файл: TimeManager |
-| №2083 unity/ProjectSettings/UnityConnectSettings.asset | 1063 B | вспомогательный файл: UnityConnectSettings |
-| №2084 unity/ProjectSettings/VersionControlSettings.asset | 172 B | вспомогательный файл: VersionControlSettings |
-| №2085 unity/ProjectSettings/VFXManager.asset | 525 B | вспомогательный файл: VFXManager |
-| №2086 unity/PUBLIC_DELIVERY.json | 1072 B | данные/конфигурация: PUBLIC DELIVERY |
-| №2087 unity/README.md | 9382 B | документация или отчёт: README |
-| №2088 unity/release.ps1 | 7750 B | вспомогательный файл: release |
-| №2089 unity/Tools/export_advancement.cjs | 4842 B | логический модуль: export advancement |
-| №2090 unity/Tools/export_character.py | 7410 B | вспомогательный файл: export character |
-| №2091 unity/Tools/export_cloud_copy.cjs | 1429 B | логический модуль: export cloud copy |
-| №2092 unity/Tools/export_commerce.cjs | 2282 B | логический модуль: export commerce |
-| №2093 unity/Tools/export_market.cjs | 1756 B | логический модуль: export market |
-| №2094 unity/Tools/package_commerce.py | 3643 B | вспомогательный файл: package commerce |
-| №2095 unity/Tools/split_workshop_content.py | 7629 B | вспомогательный файл: split workshop content |
-| №2096 unity/Tools/sync_character_sheet.cjs | 11842 B | логический модуль: sync character sheet |
-| №2097 unity/Tools/sync_legacy_content.cjs | 5736 B | логический модуль: sync legacy content |
-| №2098 unity/VALIDATION.md | 32688 B | документация или отчёт: VALIDATION |
-| №2099 unity/verify.ps1 | 2809 B | вспомогательный файл: verify |
-| №2100 updates/beta.json | 211 B | метаданные обновлений: beta |
-| №2101 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
-| №2102 updates/README.md | 233 B | документация или отчёт: README |
-| №2103 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №2104 updates/unity-changelog.json | 58026 B | метаданные обновлений: unity changelog |
-| №2105 updates/unity-experiment.json | 1394 B | метаданные обновлений: unity experiment |
-| №2106 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
-| №2107 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
-| №2108 wall_brick_red.png | 111128 B | текстура/изображение: wall brick red |
-| №2109 wall_concrete.png | 91074 B | текстура/изображение: wall concrete |
-| №2110 wall_half_timber.png | 109537 B | текстура/изображение: wall half timber |
-| №2111 wall_marble_dark.png | 123621 B | текстура/изображение: wall marble dark |
-| №2112 wall_marble_light.png | 90457 B | текстура/изображение: wall marble light |
-| №2113 wall_moss_stone.png | 128985 B | текстура/изображение: wall moss stone |
-| №2114 wall_old_plaster.png | 107725 B | текстура/изображение: wall old plaster |
-| №2115 wall_plaster_dark.png | 95153 B | текстура/изображение: wall plaster dark |
-| №2116 wall_plaster_light.png | 91767 B | текстура/изображение: wall plaster light |
-| №2117 wall_plaster_panel.png | 89722 B | текстура/изображение: wall plaster panel |
-| №2118 wall_slate.png | 103822 B | текстура/изображение: wall slate |
-| №2119 wall_stone_dark.png | 120617 B | текстура/изображение: wall stone dark |
-| №2120 wall_stone_light.png | 127689 B | текстура/изображение: wall stone light |
-| №2121 wall_stone_masonry.png | 129908 B | текстура/изображение: wall stone masonry |
-| №2122 wall_wallpaper.png | 106442 B | текстура/изображение: wall wallpaper |
-| №2123 wall_white_plaster.png | 120869 B | текстура/изображение: wall white plaster |
-| №2124 wall_wood_dark.png | 81144 B | текстура/изображение: wall wood dark |
-| №2125 wall_wood_light.png | 93079 B | текстура/изображение: wall wood light |
-| №2126 wallpapers/1.png | 1460744 B | ассет графики/3D/интерфейса: 1 |
-| №2127 wallpapers/10.png | 1667723 B | ассет графики/3D/интерфейса: 10 |
-| №2128 wallpapers/11.png | 1815959 B | ассет графики/3D/интерфейса: 11 |
-| №2129 wallpapers/12.png | 1548677 B | ассет графики/3D/интерфейса: 12 |
-| №2130 wallpapers/13.png | 1599093 B | ассет графики/3D/интерфейса: 13 |
-| №2131 wallpapers/14.png | 1596513 B | ассет графики/3D/интерфейса: 14 |
-| №2132 wallpapers/15.png | 233043 B | ассет графики/3D/интерфейса: 15 |
-| №2133 wallpapers/16.png | 212684 B | ассет графики/3D/интерфейса: 16 |
-| №2134 wallpapers/17.png | 1585122 B | ассет графики/3D/интерфейса: 17 |
-| №2135 wallpapers/18.png | 2095852 B | ассет графики/3D/интерфейса: 18 |
-| №2136 wallpapers/19.png | 8605503 B | ассет графики/3D/интерфейса: 19 |
-| №2137 wallpapers/2.png | 1590206 B | ассет графики/3D/интерфейса: 2 |
-| №2138 wallpapers/20.png | 1284815 B | ассет графики/3D/интерфейса: 20 |
-| №2139 wallpapers/21.png | 179307 B | ассет графики/3D/интерфейса: 21 |
-| №2140 wallpapers/22.png | 344279 B | ассет графики/3D/интерфейса: 22 |
-| №2141 wallpapers/23.png | 210291 B | ассет графики/3D/интерфейса: 23 |
-| №2142 wallpapers/24.png | 141215 B | ассет графики/3D/интерфейса: 24 |
-| №2143 wallpapers/25.png | 160892 B | ассет графики/3D/интерфейса: 25 |
-| №2144 wallpapers/26.png | 187259 B | ассет графики/3D/интерфейса: 26 |
-| №2145 wallpapers/27.png | 213194 B | ассет графики/3D/интерфейса: 27 |
-| №2146 wallpapers/28.png | 202417 B | ассет графики/3D/интерфейса: 28 |
-| №2147 wallpapers/29.png | 166942 B | ассет графики/3D/интерфейса: 29 |
-| №2148 wallpapers/3.png | 1662340 B | ассет графики/3D/интерфейса: 3 |
-| №2149 wallpapers/30.png | 237556 B | ассет графики/3D/интерфейса: 30 |
-| №2150 wallpapers/31.svg | 1181 B | ассет графики/3D/интерфейса: 31 |
-| №2151 wallpapers/32.svg | 1417 B | ассет графики/3D/интерфейса: 32 |
-| №2152 wallpapers/4.png | 1816114 B | ассет графики/3D/интерфейса: 4 |
-| №2153 wallpapers/5.png | 1742466 B | ассет графики/3D/интерфейса: 5 |
-| №2154 wallpapers/6.png | 1591016 B | ассет графики/3D/интерфейса: 6 |
-| №2155 wallpapers/7.png | 1815665 B | ассет графики/3D/интерфейса: 7 |
-| №2156 wallpapers/8.png | 1492730 B | ассет графики/3D/интерфейса: 8 |
-| №2157 wallpapers/9.png | 1715179 B | ассет графики/3D/интерфейса: 9 |
+| №2052 unity/ci/workshop-tests/UiLifecycleChecks.cs | 884 B | вспомогательный файл: UiLifecycleChecks |
+| №2053 unity/ci/workshop-tests/WalletMarketChecks.cs | 2908 B | вспомогательный файл: WalletMarketChecks |
+| №2054 unity/ci/workshop-tests/WorkshopTests.csproj | 2651 B | вспомогательный файл: WorkshopTests |
+| №2055 unity/ContentSources~/catalog.full.json | 1259265 B | данные/конфигурация: catalog.full |
+| №2056 unity/ContentSources~/cloud-copy-contracts.json | 3613 B | данные/конфигурация: cloud copy contracts |
+| №2057 unity/ContentSources~/workshop-commerce/catalogs.json | 91244 B | данные/конфигурация: catalogs |
+| №2058 unity/ContentSources~/workshop-commerce/contracts.json | 7885 B | данные/конфигурация: contracts |
+| №2059 unity/ContentSources~/workshop-commerce/market-contracts.json | 165510 B | данные/конфигурация: market contracts |
+| №2060 unity/evidence/exploration.png | 119417 B | текстура/изображение: exploration |
+| №2061 unity/Installer/release-notes.md | 1582 B | документация или отчёт: release notes |
+| №2062 unity/Installer/UnitySetup.nsi | 3417 B | вспомогательный файл: UnitySetup |
+| №2063 unity/Packages/manifest.json | 609 B | данные/конфигурация: manifest |
+| №2064 unity/Packages/packages-lock.json | 6359 B | данные/конфигурация: packages lock |
+| №2065 unity/ProjectSettings/AudioManager.asset | 523 B | вспомогательный файл: AudioManager |
+| №2066 unity/ProjectSettings/ClusterInputManager.asset | 114 B | вспомогательный файл: ClusterInputManager |
+| №2067 unity/ProjectSettings/DynamicsManager.asset | 1574 B | вспомогательный файл: DynamicsManager |
+| №2068 unity/ProjectSettings/EditorBuildSettings.asset | 401 B | вспомогательный файл: EditorBuildSettings |
+| №2069 unity/ProjectSettings/EditorSettings.asset | 1603 B | вспомогательный файл: EditorSettings |
+| №2070 unity/ProjectSettings/GraphicsSettings.asset | 2615 B | вспомогательный файл: GraphicsSettings |
+| №2071 unity/ProjectSettings/InputManager.asset | 9754 B | вспомогательный файл: InputManager |
+| №2072 unity/ProjectSettings/MemorySettings.asset | 1226 B | вспомогательный файл: MemorySettings |
+| №2073 unity/ProjectSettings/MultiplayerManager.asset | 232 B | вспомогательный файл: MultiplayerManager |
+| №2074 unity/ProjectSettings/NavMeshAreas.asset | 1361 B | вспомогательный файл: NavMeshAreas |
+| №2075 unity/ProjectSettings/Physics2DSettings.asset | 1862 B | вспомогательный файл: Physics2DSettings |
+| №2076 unity/ProjectSettings/PresetManager.asset | 146 B | вспомогательный файл: PresetManager |
+| №2077 unity/ProjectSettings/ProjectSettings.asset | 22467 B | вспомогательный файл: ProjectSettings |
+| №2078 unity/ProjectSettings/ProjectVersion.txt | 85 B | документация или отчёт: ProjectVersion |
+| №2079 unity/ProjectSettings/QualitySettings.asset | 9858 B | вспомогательный файл: QualitySettings |
+| №2080 unity/ProjectSettings/SceneTemplateSettings.json | 3535 B | данные/конфигурация: SceneTemplateSettings |
+| №2081 unity/ProjectSettings/ShaderGraphSettings.asset | 633 B | вспомогательный файл: ShaderGraphSettings |
+| №2082 unity/ProjectSettings/TagManager.asset | 411 B | вспомогательный файл: TagManager |
+| №2083 unity/ProjectSettings/TimeManager.asset | 305 B | вспомогательный файл: TimeManager |
+| №2084 unity/ProjectSettings/UnityConnectSettings.asset | 1063 B | вспомогательный файл: UnityConnectSettings |
+| №2085 unity/ProjectSettings/VersionControlSettings.asset | 172 B | вспомогательный файл: VersionControlSettings |
+| №2086 unity/ProjectSettings/VFXManager.asset | 525 B | вспомогательный файл: VFXManager |
+| №2087 unity/PUBLIC_DELIVERY.json | 1072 B | данные/конфигурация: PUBLIC DELIVERY |
+| №2088 unity/README.md | 9382 B | документация или отчёт: README |
+| №2089 unity/release.ps1 | 7750 B | вспомогательный файл: release |
+| №2090 unity/Tools/export_advancement.cjs | 4842 B | логический модуль: export advancement |
+| №2091 unity/Tools/export_character.py | 7410 B | вспомогательный файл: export character |
+| №2092 unity/Tools/export_cloud_copy.cjs | 1429 B | логический модуль: export cloud copy |
+| №2093 unity/Tools/export_commerce.cjs | 2282 B | логический модуль: export commerce |
+| №2094 unity/Tools/export_market.cjs | 1756 B | логический модуль: export market |
+| №2095 unity/Tools/package_commerce.py | 3643 B | вспомогательный файл: package commerce |
+| №2096 unity/Tools/split_workshop_content.py | 7629 B | вспомогательный файл: split workshop content |
+| №2097 unity/Tools/sync_character_sheet.cjs | 11842 B | логический модуль: sync character sheet |
+| №2098 unity/Tools/sync_legacy_content.cjs | 5736 B | логический модуль: sync legacy content |
+| №2099 unity/VALIDATION.md | 32688 B | документация или отчёт: VALIDATION |
+| №2100 unity/verify.ps1 | 2809 B | вспомогательный файл: verify |
+| №2101 updates/beta.json | 211 B | метаданные обновлений: beta |
+| №2102 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
+| №2103 updates/README.md | 233 B | документация или отчёт: README |
+| №2104 updates/stable.json | 179809 B | метаданные обновлений: stable |
+| №2105 updates/unity-changelog.json | 58026 B | метаданные обновлений: unity changelog |
+| №2106 updates/unity-experiment.json | 1394 B | метаданные обновлений: unity experiment |
+| №2107 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
+| №2108 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
+| №2109 wall_brick_red.png | 111128 B | текстура/изображение: wall brick red |
+| №2110 wall_concrete.png | 91074 B | текстура/изображение: wall concrete |
+| №2111 wall_half_timber.png | 109537 B | текстура/изображение: wall half timber |
+| №2112 wall_marble_dark.png | 123621 B | текстура/изображение: wall marble dark |
+| №2113 wall_marble_light.png | 90457 B | текстура/изображение: wall marble light |
+| №2114 wall_moss_stone.png | 128985 B | текстура/изображение: wall moss stone |
+| №2115 wall_old_plaster.png | 107725 B | текстура/изображение: wall old plaster |
+| №2116 wall_plaster_dark.png | 95153 B | текстура/изображение: wall plaster dark |
+| №2117 wall_plaster_light.png | 91767 B | текстура/изображение: wall plaster light |
+| №2118 wall_plaster_panel.png | 89722 B | текстура/изображение: wall plaster panel |
+| №2119 wall_slate.png | 103822 B | текстура/изображение: wall slate |
+| №2120 wall_stone_dark.png | 120617 B | текстура/изображение: wall stone dark |
+| №2121 wall_stone_light.png | 127689 B | текстура/изображение: wall stone light |
+| №2122 wall_stone_masonry.png | 129908 B | текстура/изображение: wall stone masonry |
+| №2123 wall_wallpaper.png | 106442 B | текстура/изображение: wall wallpaper |
+| №2124 wall_white_plaster.png | 120869 B | текстура/изображение: wall white plaster |
+| №2125 wall_wood_dark.png | 81144 B | текстура/изображение: wall wood dark |
+| №2126 wall_wood_light.png | 93079 B | текстура/изображение: wall wood light |
+| №2127 wallpapers/1.png | 1460744 B | ассет графики/3D/интерфейса: 1 |
+| №2128 wallpapers/10.png | 1667723 B | ассет графики/3D/интерфейса: 10 |
+| №2129 wallpapers/11.png | 1815959 B | ассет графики/3D/интерфейса: 11 |
+| №2130 wallpapers/12.png | 1548677 B | ассет графики/3D/интерфейса: 12 |
+| №2131 wallpapers/13.png | 1599093 B | ассет графики/3D/интерфейса: 13 |
+| №2132 wallpapers/14.png | 1596513 B | ассет графики/3D/интерфейса: 14 |
+| №2133 wallpapers/15.png | 233043 B | ассет графики/3D/интерфейса: 15 |
+| №2134 wallpapers/16.png | 212684 B | ассет графики/3D/интерфейса: 16 |
+| №2135 wallpapers/17.png | 1585122 B | ассет графики/3D/интерфейса: 17 |
+| №2136 wallpapers/18.png | 2095852 B | ассет графики/3D/интерфейса: 18 |
+| №2137 wallpapers/19.png | 8605503 B | ассет графики/3D/интерфейса: 19 |
+| №2138 wallpapers/2.png | 1590206 B | ассет графики/3D/интерфейса: 2 |
+| №2139 wallpapers/20.png | 1284815 B | ассет графики/3D/интерфейса: 20 |
+| №2140 wallpapers/21.png | 179307 B | ассет графики/3D/интерфейса: 21 |
+| №2141 wallpapers/22.png | 344279 B | ассет графики/3D/интерфейса: 22 |
+| №2142 wallpapers/23.png | 210291 B | ассет графики/3D/интерфейса: 23 |
+| №2143 wallpapers/24.png | 141215 B | ассет графики/3D/интерфейса: 24 |
+| №2144 wallpapers/25.png | 160892 B | ассет графики/3D/интерфейса: 25 |
+| №2145 wallpapers/26.png | 187259 B | ассет графики/3D/интерфейса: 26 |
+| №2146 wallpapers/27.png | 213194 B | ассет графики/3D/интерфейса: 27 |
+| №2147 wallpapers/28.png | 202417 B | ассет графики/3D/интерфейса: 28 |
+| №2148 wallpapers/29.png | 166942 B | ассет графики/3D/интерфейса: 29 |
+| №2149 wallpapers/3.png | 1662340 B | ассет графики/3D/интерфейса: 3 |
+| №2150 wallpapers/30.png | 237556 B | ассет графики/3D/интерфейса: 30 |
+| №2151 wallpapers/31.svg | 1181 B | ассет графики/3D/интерфейса: 31 |
+| №2152 wallpapers/32.svg | 1417 B | ассет графики/3D/интерфейса: 32 |
+| №2153 wallpapers/4.png | 1816114 B | ассет графики/3D/интерфейса: 4 |
+| №2154 wallpapers/5.png | 1742466 B | ассет графики/3D/интерфейса: 5 |
+| №2155 wallpapers/6.png | 1591016 B | ассет графики/3D/интерфейса: 6 |
+| №2156 wallpapers/7.png | 1815665 B | ассет графики/3D/интерфейса: 7 |
+| №2157 wallpapers/8.png | 1492730 B | ассет графики/3D/интерфейса: 8 |
+| №2158 wallpapers/9.png | 1715179 B | ассет графики/3D/интерфейса: 9 |
 
 ## Реестр имён, переменных и ключей
 
@@ -2209,7 +2210,7 @@
 | AbortController | №1254 |
 | above | №0062 (+ 2 других файлов) |
 | absent | №0669 |
-| absolute | №2097 |
+| absolute | №2098 |
 | absorbed | №0656 (+ 1 других файлов) |
 | ac | №0062 (+ 25 других файлов) |
 | ACADEMIES | №0873 |
@@ -2512,7 +2513,7 @@
 | bagAnchor | №0059 |
 | bagCenter | №0059 |
 | bagRings | №0059 |
-| baked | №2097 |
+| baked | №2098 |
 | balanceAfterBarter | №1318 |
 | balanceAfterBuy | №1318 |
 | BAM | №0631 |
@@ -3069,7 +3070,7 @@
 | contextBridge | №0888 |
 | contexts | №1224 (+ 1 других файлов) |
 | contract | №0780 |
-| contracts | №2097 |
+| contracts | №2098 |
 | control | №0064 (+ 1 других файлов) |
 | controller | №0654 (+ 2 других файлов) |
 | controls | №0064 (+ 1 других файлов) |
@@ -3078,7 +3079,7 @@
 | cooldown | №1220 |
 | cooledAttack | №1223 |
 | cooling | №1223 |
-| copied | №2097 |
+| copied | №2098 |
 | COPPER | №0800 |
 | copperPerElectrum | №0791 |
 | copperPerGold | №0791 |
@@ -3342,10 +3343,10 @@
 | denOpacity | №0063 |
 | dense | №1433 |
 | denValues | №0063 |
-| dependency | №2097 |
+| dependency | №2098 |
 | depth | №0062 (+ 4 других файлов) |
 | deputy | №1216 |
-| derived | №2097 |
+| derived | №2098 |
 | derivedAssets | №0072 |
 | desc | №0671 (+ 7 других файлов) |
 | descBox | №0625 (+ 2 других файлов) |
@@ -3833,7 +3834,7 @@
 | fit | №0064 (+ 5 других файлов) |
 | fitted | №0062 (+ 2 других файлов) |
 | fixture | №1243 |
-| fixtures | №2089 |
+| fixtures | №2090 |
 | flags | №0657 |
 | flare | №0063 |
 | flat | №1246 |
@@ -3964,7 +3965,7 @@
 | gender | №0063 (+ 7 других файлов) |
 | generated | №1333 (+ 1 других файлов) |
 | generatedHarvest | №1333 |
-| generatedPath | №2097 |
+| generatedPath | №2098 |
 | generation | №0654 |
 | GENERIC_SPECIALTIES | №0671 |
 | geo | №0060 (+ 24 других файлов) |
@@ -3994,7 +3995,7 @@
 | gnome | №0067 |
 | gob | №1335 |
 | gold | №0064 |
-| golden | №2089 |
+| golden | №2090 |
 | goldNeeded | №0666 |
 | goldOwner | №0820 |
 | goldRef | №0820 |
@@ -4275,7 +4276,7 @@
 | immuneFire | №1222 |
 | immuneUntil | №0656 |
 | immunity | №0642 |
-| importDocument | №2097 |
+| importDocument | №2098 |
 | imported | №1266 |
 | improved | №0804 |
 | inCombat | №0642 |
@@ -4716,7 +4717,7 @@
 | mageType | №0820 |
 | mageWilling | №0820 |
 | magic | №1355 |
-| magicCases | №2089 |
+| magicCases | №2090 |
 | magicFistHero | №1303 |
 | magicHit | №1303 |
 | main | №0063 |
@@ -4736,7 +4737,7 @@
 | manual | №1230 (+ 1 других файлов) |
 | map | №0062 (+ 25 других файлов) |
 | Map | №1264 (+ 5 других файлов) |
-| mapPaths | №2097 |
+| mapPaths | №2098 |
 | mapped | №0780 |
 | mapping | №0062 (+ 1 других файлов) |
 | maps | №0872 (+ 1 других файлов) |
@@ -4891,7 +4892,7 @@
 | mode | №0071 (+ 21 других файлов) |
 | modeButtons | №0773 |
 | model | №0807 (+ 2 других файлов) |
-| models | №2097 |
+| models | №2098 |
 | modeRadio | №0648 |
 | modes | №1301 (+ 2 других файлов) |
 | modeSelect | №0792 |
@@ -5688,7 +5689,7 @@
 | rats | №0062 |
 | raw | №0061 (+ 32 других файлов) |
 | rawCat | №0803 |
-| rawDestination | №2097 |
+| rawDestination | №2098 |
 | rawItems | №0837 |
 | rawParts | №0656 |
 | rawRadial | №0063 |
@@ -5805,7 +5806,7 @@
 | repeatBtn | №0083 |
 | replace | №0642 (+ 1 других файлов) |
 | replacement | №1284 |
-| repo | №2097 |
+| repo | №2098 |
 | report | №0794 (+ 10 других файлов) |
 | repSelect | №0064 |
 | reptileCoreCache | №0062 |
@@ -5827,7 +5828,7 @@
 | requiredEnd | №1276 |
 | requiredLevel | №0079 (+ 1 других файлов) |
 | requireLevel | №0780 |
-| requirements | №2089 |
+| requirements | №2090 |
 | requireTool | №0671 |
 | reroll | №0649 (+ 3 других файлов) |
 | res | №0649 (+ 45 других файлов) |
@@ -6056,7 +6057,7 @@
 | schoolSave | №1303 |
 | schoolText | №0837 |
 | scLower | №0837 |
-| scope | №2091 |
+| scope | №2092 |
 | scoped | №0649 |
 | score | №0062 (+ 8 других файлов) |
 | scores | №0687 (+ 3 других файлов) |
@@ -6290,7 +6291,7 @@
 | sourceArmor | №0794 |
 | sourceCache | №0854 |
 | sourceCheck | №0812 |
-| sourceCommit | №2096 |
+| sourceCommit | №2097 |
 | sourceCount | №0827 |
 | sourceGroups | №0701 |
 | sourceHashes | №1411 (+ 1 других файлов) |
@@ -6630,7 +6631,7 @@
 | tarotScene | №0656 |
 | tarotTurnId | №0774 |
 | TASKS | №0859 |
-| tavern | №2097 |
+| tavern | №2098 |
 | tb | №0809 |
 | tc | №0780 (+ 1 других файлов) |
 | team | №0812 |
@@ -6656,7 +6657,7 @@
 | TextDecoder | №1226 (+ 21 других файлов) |
 | textSpan | №0773 |
 | texture | №0070 (+ 3 других файлов) |
-| textures | №2097 |
+| textures | №2098 |
 | th | №0074 (+ 1 других файлов) |
 | theftRef | №0820 |
 | theme | №0833 |
@@ -6766,7 +6767,7 @@
 | track | №0083 |
 | tracker | №0079 (+ 5 других файлов) |
 | trackNameEl | №0083 |
-| trade | №2093 |
+| trade | №2094 |
 | TRADE_KEY | №0803 |
 | traderId | №0800 (+ 2 других файлов) |
 | TRADERS | №0800 |
@@ -7040,7 +7041,7 @@
 | willActivate | №0656 |
 | willingTargetIds | №0820 |
 | win | №0887 (+ 5 других файлов) |
-| window | №2097 |
+| window | №2098 |
 | wingAngle | №0062 |
 | wis | №0629 (+ 11 других файлов) |
 | wisMod | №0625 (+ 1 других файлов) |
@@ -7848,7 +7849,7 @@
 | acBonusAgainstTarget | №0780 |
 | acBonusDie | №0780 |
 | accent | №0833 |
-| accept | №2093 |
+| accept | №2094 |
 | acceptedCategories | №0803 |
 | acceptedTags | №0803 |
 | access | №0671 |
@@ -8728,7 +8729,7 @@
 | cartographer | №0669 (+ 5 других файлов) |
 | cartographyQuality | №0672 |
 | case | №0649 (+ 2 других файлов) |
-| cases | №2089 (+ 1 других файлов) |
+| cases | №2090 (+ 1 других файлов) |
 | castAsRitual | №0814 |
 | caster | №0656 (+ 3 других файлов) |
 | casterId | №0820 (+ 2 других файлов) |
@@ -9822,7 +9823,7 @@
 | extraSuture | №0810 |
 | extraTargetPerSlotAbove1 | №0780 |
 | extraTargets | №0780 |
-| extraTrigger | №2092 |
+| extraTrigger | №2093 |
 | extraTurns | №0814 |
 | extraUnarmedAfterTwoOldOneTwo | №0780 |
 | extraUse | №0780 (+ 1 других файлов) |
@@ -9922,7 +9923,7 @@
 | feyPresence | №0649 (+ 1 других файлов) |
 | fiber | №0668 (+ 1 других файлов) |
 | field | №0062 (+ 1 других файлов) |
-| fields | №2089 |
+| fields | №2090 |
 | fiend | №0629 (+ 12 других файлов) |
 | fiendish | №0780 (+ 1 других файлов) |
 | fiendishStance | №0780 |
@@ -10617,7 +10618,7 @@
 | id | №0062 (+ 201 других файлов) |
 | idempotent | №0866 |
 | identifyEffect | №0780 |
-| identity | №2091 |
+| identity | №2092 |
 | identityDistortion | №0630 |
 | ids | №0059 (+ 2 других файлов) |
 | idx | №0074 |
@@ -11420,7 +11421,7 @@
 | model | №0071 (+ 2 других файлов) |
 | modelFamily | №0067 |
 | modelLoc | №0074 |
-| models | №2097 |
+| models | №2098 |
 | modes | №0829 |
 | modifier | №0802 (+ 5 других файлов) |
 | modifierAtLevel20 | №0830 |
@@ -12983,7 +12984,7 @@
 | selectedTool | №0072 |
 | selectedWallTexture | №0072 |
 | selection | №0078 |
-| self | №2091 |
+| self | №2092 |
 | selfAdvantage | №0828 |
 | selfDamage | №0649 (+ 4 других файлов) |
 | selfDamageType | №0780 |
@@ -13277,7 +13278,7 @@
 | source | №0059 (+ 113 других файлов) |
 | SOURCE | №0667 |
 | SOURCE_TAG | №0671 |
-| sourceCommit | №2097 |
+| sourceCommit | №2098 |
 | sourceDead | №0870 |
 | sourceDisplacementMax | №1273 |
 | sourceDisplacementMean | №1273 |
@@ -13341,7 +13342,7 @@
 | speedReductionFt | №0687 |
 | speedZeroSave | №0780 |
 | spell | №0649 (+ 6 других файлов) |
-| spellAbility | №2089 |
+| spellAbility | №2090 |
 | spellAttack | №0780 (+ 3 других файлов) |
 | spellAttackBonus | №0780 (+ 2 других файлов) |
 | spellAttackUsesWisdom | №0780 |
@@ -13711,7 +13712,7 @@
 | targetType | №0814 |
 | tarotActorRef | №0819 |
 | tarotCoin | №0819 |
-| tarotDamageTotals | №2091 |
+| tarotDamageTotals | №2092 |
 | tarotEffects | №1254 |
 | tarotKnowledge | №1254 (+ 1 других файлов) |
 | tarotLastStartedTurn | №1254 (+ 1 других файлов) |
@@ -13841,9 +13842,9 @@
 | tokens | №0072 (+ 28 других файлов) |
 | tombGuardian | №0780 |
 | tool | №0627 (+ 20 других файлов) |
-| toolAliases | №2092 |
+| toolAliases | №2093 |
 | toolBonus | №0809 |
-| toolLabels | №2092 |
+| toolLabels | №2093 |
 | toolMastery | №0819 |
 | toolName | №1223 |
 | toolProficiencies | №0625 (+ 2 других файлов) |
@@ -13883,7 +13884,7 @@
 | toySoulVault | №0810 |
 | track | №0083 |
 | trackInscribedRunesAnyPlane | №0780 |
-| trader | №2093 |
+| trader | №2094 |
 | traderCount | №0801 |
 | traderId | №0802 |
 | traders | №0800 (+ 2 других файлов) |
@@ -14385,7 +14386,7 @@
 | __name__ | №0005 (+ 16 других файлов) |
 | a | №0049 (+ 3 других файлов) |
 | aa | №0049 |
-| accessor | №2090 |
+| accessor | №2091 |
 | action | №1455 (+ 4 других файлов) |
 | active | №0049 (+ 2 других файлов) |
 | activeFile | №0049 |
@@ -14394,12 +14395,12 @@
 | activity | №0049 |
 | actor | №2034 |
 | actual | №2028 |
-| add_leaf_bones | №2090 |
-| alch | №2094 |
+| add_leaf_bones | №2091 |
+| alch | №2095 |
 | ALIAS | №1781 |
 | aliases | №0049 (+ 1 других файлов) |
 | aligned | №2022 |
-| alt | №2095 |
+| alt | №2096 |
 | altered | №2027 |
 | android | №1466 |
 | androidPackage | №2024 |
@@ -14412,34 +14413,34 @@
 | app | №1466 |
 | app_path | №1466 |
 | APP_VERSION | №1466 |
-| apply_unit_scale | №2090 |
+| apply_unit_scale | №2091 |
 | approved | №0005 |
 | archive | №2022 |
 | archives | №1455 |
 | area | №1408 |
 | arenas | №0005 |
 | args | №1408 (+ 9 других файлов) |
-| armatures | №2090 |
+| armatures | №2091 |
 | artifacts | №0007 (+ 2 других файлов) |
 | artwork | №1410 |
-| assets | №2095 (+ 1 других файлов) |
-| at | №2090 |
+| assets | №2096 (+ 1 других файлов) |
+| at | №2091 |
 | attr | №2037 |
 | attributes | №1408 |
 | attrs | №2037 |
 | av | №0049 |
 | axis | №1408 |
-| axis_forward | №2090 |
-| axis_up | №2090 |
+| axis_forward | №2091 |
+| axis_up | №2091 |
 | b | №0049 (+ 7 других файлов) |
 | backup | №2028 |
 | backup_hash | №2028 |
 | badging | №2022 (+ 1 других файлов) |
-| bake_anim | №2090 |
-| base | №2094 (+ 1 других файлов) |
-| base_classes | №2095 |
-| base_feat_ids | №2095 |
-| base_races | №2095 |
+| bake_anim | №2091 |
+| base | №2095 (+ 1 других файлов) |
+| base_classes | №2096 |
+| base_feat_ids | №2096 |
+| base_races | №2096 |
 | baselineInstall | №2030 |
 | baseUrl | №0049 |
 | bb | №0049 |
@@ -14448,7 +14449,7 @@
 | blend_match | №2033 |
 | blob | №0005 |
 | blobs | №0007 |
-| bodies | №2090 |
+| bodies | №2091 |
 | bones | №1408 |
 | branch | №1409 |
 | BRANCH | №0005 (+ 2 других файлов) |
@@ -14484,7 +14485,7 @@
 | certificate | №0005 |
 | changes | №1783 |
 | channel | №2024 |
-| channels | №2090 |
+| channels | №2091 |
 | characters | №1783 |
 | chatEditResult | №1783 |
 | checksums | №0005 |
@@ -14500,20 +14501,20 @@
 | codeCache | №0049 |
 | codeCacheBytes | №0049 |
 | codes | №2034 |
-| color | №2095 |
+| color | №2096 |
 | component | №0049 |
 | components | №1783 |
 | compressed | №2023 |
 | conclusion | №2027 (+ 1 других файлов) |
 | connectedComponents | №1408 |
-| content | №2095 |
+| content | №2096 |
 | context | №0049 |
 | converted | №2021 |
-| coordinates | №2090 |
+| coordinates | №2091 |
 | copying | №1779 |
 | count | №1408 (+ 3 других файлов) |
 | counts | №1408 (+ 1 других файлов) |
-| craft | №2094 |
+| craft | №2095 |
 | created | №0007 |
 | creation | №1458 |
 | crlf | №2021 |
@@ -14527,9 +14528,9 @@
 | defaultFile | №0049 |
 | defaultInterfaceOrientation | №2034 |
 | degenerateTriangles | №1408 |
-| delta | №2090 |
+| delta | №2091 |
 | dependencies | №1409 |
-| deps | №2094 |
+| deps | №2095 |
 | descriptor | №0005 (+ 1 других файлов) |
 | desktopUiSmoke | №2030 |
 | dest | №0007 (+ 1 других файлов) |
@@ -14543,7 +14544,7 @@
 | dirs | №0049 |
 | dklen | №2022 |
 | dndvtt_update | №0049 |
-| doc | №2090 (+ 4 других файлов) |
+| doc | №2091 (+ 4 других файлов) |
 | document | №1408 (+ 1 других файлов) |
 | documents | №2037 |
 | downloadedBytes | №0049 |
@@ -14562,7 +14563,7 @@
 | entry | №0049 (+ 5 других файлов) |
 | env | №0007 (+ 1 других файлов) |
 | environment | №1458 |
-| error | №2090 |
+| error | №2091 |
 | errors | №1409 (+ 1 других файлов) |
 | event | №2027 (+ 1 других файлов) |
 | evidence | №0005 |
@@ -14571,13 +14572,13 @@
 | exist_ok | №0005 (+ 10 других файлов) |
 | existing | №0005 (+ 1 других файлов) |
 | expected | №0005 (+ 4 других файлов) |
-| expected_bones | №2090 |
+| expected_bones | №2091 |
 | expected_cert | №0005 |
-| expected_coordinates | №2090 |
-| expected_extents | №2090 |
+| expected_coordinates | №2091 |
+| expected_extents | №2091 |
 | expected_name | №0005 |
-| expected_shapes | №2090 |
-| expected_triangles | №2090 |
+| expected_shapes | №2091 |
+| expected_triangles | №2091 |
 | expectedBytes | №0049 |
 | expectedHash | №0049 |
 | experimental | №2038 |
@@ -14585,15 +14586,15 @@
 | export_apply | №1455 |
 | export_format | №1455 |
 | ext | №1415 (+ 1 других файлов) |
-| extents | №2090 |
+| extents | №2091 |
 | external_guids | №1409 |
 | f | №0049 (+ 1 других файлов) |
 | faces | №1408 |
 | failed | №0007 |
-| fbx | №2090 |
-| feats | №2095 |
+| fbx | №2091 |
+| feats | №2096 |
 | feed | №0005 (+ 2 других файлов) |
-| female | №2090 |
+| female | №2091 |
 | field | №2027 |
 | file | №0049 (+ 4 других файлов) |
 | filepath | №1455 (+ 1 других файлов) |
@@ -14606,8 +14607,8 @@
 | found | №2028 |
 | fp | №1456 |
 | frontend | №2028 (+ 1 других файлов) |
-| fs | №2095 |
-| full | №2095 |
+| fs | №2096 |
+| full | №2096 |
 | full_name | №2027 (+ 1 других файлов) |
 | GENERATED | №1464 |
 | generator | №1781 |
@@ -14616,7 +14617,7 @@
 | GITHUB_REF | №2030 |
 | GITHUB_REPOSITORY | №2030 |
 | GITHUB_SHA | №2030 |
-| glb | №2090 |
+| glb | №2091 |
 | goToTab | №0050 |
 | gradle | №1466 |
 | gradle_path | №1466 |
@@ -14643,13 +14644,13 @@
 | ids | №1408 |
 | image | №1414 |
 | images | №0005 |
-| imported | №2090 |
+| imported | №2091 |
 | in | №0049 |
 | indent | №0005 (+ 15 других файлов) |
 | index | №0005 |
 | indexComponentType | №1408 |
 | info | №0049 |
-| ings | №2094 |
+| ings | №2095 |
 | input | №1779 (+ 1 других файлов) |
 | installedPayloadHashes | №2030 |
 | intent | №1779 (+ 1 других файлов) |
@@ -14658,14 +14659,14 @@
 | item | №0005 (+ 4 других файлов) |
 | item_catalogs | №2023 |
 | iv | №1781 |
-| jb | №2090 |
+| jb | №2091 |
 | jobs | №2024 (+ 4 других файлов) |
 | json | №1783 |
-| json_size | №2090 |
+| json_size | №2091 |
 | k | №1455 |
 | keepPrevious | №0049 |
 | key | №1410 (+ 3 других файлов) |
-| keys | №2095 |
+| keys | №2096 |
 | kind | №0005 (+ 6 других файлов) |
 | landscapeActive | №0050 |
 | latest | №0005 (+ 1 других файлов) |
@@ -14692,14 +14693,14 @@
 | marker | №1455 (+ 1 других файлов) |
 | match | №2033 |
 | materials | №1408 (+ 1 других файлов) |
-| max_coordinate_error | №2090 |
+| max_coordinate_error | №2091 |
 | max_workers | №2038 |
-| merge_vertices | №2090 |
-| merged | №2090 |
-| mesh_smooth_type | №2090 |
+| merge_vertices | №2091 |
+| merged | №2091 |
+| mesh_smooth_type | №2091 |
 | meshes | №1455 (+ 1 других файлов) |
 | meshMetadata | №1408 |
-| meta | №2090 (+ 1 других файлов) |
+| meta | №2091 (+ 1 других файлов) |
 | metavar | №1466 |
 | method | №2022 |
 | migrated | №1409 |
@@ -14714,7 +14715,7 @@
 | n | №0049 (+ 4 других файлов) |
 | N | №1414 |
 | name | №0005 (+ 10 других файлов) |
-| names | №2090 (+ 2 других файлов) |
+| names | №2091 (+ 2 других файлов) |
 | native | №1410 |
 | nativeSeedValidated | №0049 |
 | new_manifest | №2025 |
@@ -14731,7 +14732,7 @@
 | notes | №2024 (+ 1 других файлов) |
 | notes_file | №0005 (+ 1 других файлов) |
 | o | №0049 |
-| object_types | №2090 |
+| object_types | №2091 |
 | objects | №1455 (+ 2 других файлов) |
 | offset | №0005 (+ 1 других файлов) |
 | old | №2023 |
@@ -14747,7 +14748,7 @@
 | originalBrandingBytesVerified | №2023 |
 | originalBrandingPixelsVerified | №2023 |
 | out | №0049 (+ 7 других файлов) |
-| OUT | №2090 |
+| OUT | №2091 |
 | outcome | №2027 |
 | output | №1779 |
 | p | №1409 (+ 8 других файлов) |
@@ -14762,20 +14763,20 @@
 | parent | №0049 (+ 2 других файлов) |
 | parents | №0007 (+ 11 других файлов) |
 | parser | №1408 (+ 6 других файлов) |
-| part | №2094 |
+| part | №2095 |
 | parts | №1408 |
 | passed | №2024 |
 | password | №2022 |
 | patch | №2025 |
 | path | №0005 (+ 10 других файлов) |
-| path_mode | №2090 |
+| path_mode | №2091 |
 | pathId | №1458 |
 | paths | №1409 (+ 1 других файлов) |
 | payload | №2021 (+ 1 других файлов) |
 | pending | №0049 |
 | per_page | №2024 (+ 1 других файлов) |
 | permissions | №2037 |
-| phb | №2095 |
+| phb | №2096 |
 | physical | №2037 |
 | physicalAndroidQa | №2022 |
 | pick | №1779 |
@@ -14791,7 +14792,7 @@
 | png | №1783 |
 | pores | №1414 |
 | position | №2023 |
-| position_view | №2090 |
+| position_view | №2091 |
 | positions | №1408 (+ 1 других файлов) |
 | prefix | №0007 (+ 3 других файлов) |
 | prefs | №0049 (+ 1 других файлов) |
@@ -14805,7 +14806,7 @@
 | previous | №0005 (+ 4 других файлов) |
 | previousDir | №0049 |
 | previousRequestedOrientation | №0050 |
-| primitive | №2090 |
+| primitive | №2091 |
 | primitives | №1408 |
 | prior | №2025 |
 | probe | №2022 |
@@ -14854,8 +14855,8 @@
 | returncode | №0005 (+ 1 других файлов) |
 | reverse | №1410 (+ 1 других файлов) |
 | rgb | №2033 |
-| rig | №2090 |
-| rigs | №2090 |
+| rig | №2091 |
+| rigs | №2091 |
 | rng | №1414 |
 | root | №0007 (+ 14 других файлов) |
 | ROOT | №1408 (+ 11 других файлов) |
@@ -14874,7 +14875,7 @@
 | s | №0049 (+ 1 других файлов) |
 | scene | №2030 |
 | schema | №1408 (+ 2 других файлов) |
-| script | №2095 |
+| script | №2096 |
 | sdk | №0005 (+ 1 других файлов) |
 | seamDuplicates | №1408 |
 | seen | №1409 (+ 3 других файлов) |
@@ -14888,7 +14889,7 @@
 | settingsCategory | №2034 |
 | sha | №0007 (+ 1 других файлов) |
 | sha256 | №0005 (+ 5 других файлов) |
-| shape | №2090 |
+| shape | №2091 |
 | shortcuts | №1783 |
 | side_effect | №2030 |
 | signer | №2025 |
@@ -14899,7 +14900,7 @@
 | skins | №1408 |
 | skipped | №1455 |
 | slot | №1783 |
-| slug | №2095 |
+| slug | №2096 |
 | source | №0007 (+ 7 других файлов) |
 | SOURCE | №2031 |
 | source_commit | №0005 (+ 2 других файлов) |
@@ -14908,16 +14909,16 @@
 | sourceCommit | №0005 (+ 1 других файлов) |
 | sourceRefs | №1409 |
 | sources | №2021 |
-| sparse | №2090 |
+| sparse | №2091 |
 | spec | №0007 (+ 3 других файлов) |
 | src | №0049 |
-| SRC | №2090 |
+| SRC | №2091 |
 | stack | №0049 (+ 1 других файлов) |
 | stage | №2022 (+ 1 других файлов) |
 | staged | №0049 |
 | stageRoot | №0049 |
 | standalone | №1455 |
-| start | №2090 |
+| start | №2091 |
 | state | №0049 |
 | status | №2022 (+ 2 других файлов) |
 | stderr | №2022 (+ 1 других файлов) |
@@ -14925,7 +14926,7 @@
 | store | №1781 (+ 2 других файлов) |
 | strides | №1408 |
 | sums | №0005 |
-| surfaces | №2095 |
+| surfaces | №2096 |
 | t | №2032 (+ 1 других файлов) |
 | tag | №0005 (+ 2 других файлов) |
 | target | №0049 (+ 7 других файлов) |
@@ -14952,7 +14953,7 @@
 | type | №0049 (+ 10 других файлов) |
 | typeCounts | №1458 |
 | ui | №2034 |
-| unique | №2095 |
+| unique | №2096 |
 | uniquePositions | №1408 |
 | unit | №0049 |
 | units | №0049 |
@@ -14971,10 +14972,10 @@
 | upgrade | №2030 |
 | uri | №1409 (+ 2 других файлов) |
 | url | №0005 (+ 4 других файлов) |
-| use_anim | №2090 |
-| use_empty | №2090 |
+| use_anim | №2091 |
+| use_empty | №2091 |
 | use_global | №1455 |
-| use_mesh_modifiers | №2090 |
+| use_mesh_modifiers | №2091 |
 | use_selection | №1455 (+ 1 других файлов) |
 | uv | №1408 |
 | uvOutsideUnitSquare | №1408 |
@@ -14994,7 +14995,7 @@
 | vertices | №1408 |
 | view | №1408 (+ 1 других файлов) |
 | visited | №0049 |
-| vm | №2095 |
+| vm | №2096 |
 | VTT_PROJECT_MANIFEST_V70 | №1456 (+ 1 других файлов) |
 | webView | №0050 |
 | weights | №1408 |
@@ -15003,7 +15004,7 @@
 | weldedNonManifoldEdges | №1408 |
 | weldTolerance | №1408 |
 | width | №0005 (+ 2 других файлов) |
-| window | №2095 |
+| window | №2096 |
 | windows | №2030 |
 | windowsFiles | №2022 |
 | z | №1466 (+ 1 других файлов) |
@@ -15025,7 +15026,7 @@
 | accept | №1831 |
 | accepted | №2018 |
 | acFormula | №2018 (+ 1 других файлов) |
-| Acid | №2056 |
+| Acid | №2057 |
 | acidResistance | №1829 (+ 2 других файлов) |
 | acrobatics | №1829 (+ 2 других файлов) |
 | action | №0758 (+ 3 других файлов) |
@@ -15033,18 +15034,18 @@
 | activationCommit | №1138 (+ 5 других файлов) |
 | activeConditions | №1829 (+ 2 других файлов) |
 | activeFolderId | №2018 |
-| activeProperties | №2057 |
+| activeProperties | №2058 |
 | actualAndroidUpgradeOnPhone | №1140 |
 | actualInstallUpgradeReinstallPassed | №1139 |
 | actualLocalPhysxThrowsPerTarget | №1138 |
 | actualUpgradeVerified | №1142 |
 | actualWindowsUpgrade | №1140 |
-| adamantine | №2056 |
+| adamantine | №2057 |
 | african | №0919 |
 | age | №0919 (+ 3 других файлов) |
 | alchemical | №1831 |
 | alchemist | №1831 |
-| alchemy | №2056 |
+| alchemy | №2057 |
 | aliases | №1831 |
 | all42Forms | №1142 |
 | allManifestEntriesMatchPhysicalZIP | №0906 (+ 1 других файлов) |
@@ -15063,13 +15064,13 @@
 | androidDebug | №0923 |
 | androidPackage | №1140 (+ 3 других файлов) |
 | androidSignedRelease | №0923 |
-| androidSigningCertificateSha256 | №2086 |
+| androidSigningCertificateSha256 | №2087 |
 | animalHandling | №1829 (+ 2 других файлов) |
 | animalProfile | №1834 (+ 1 других файлов) |
 | animationClips | №0912 |
 | animationId | №1834 (+ 1 других файлов) |
 | answers | №2018 |
-| Antidote | №2056 |
+| Antidote | №2057 |
 | apkArtifact | №1028 |
 | apkArtifactId | №1024 (+ 3 других файлов) |
 | apkBytes | №1046 (+ 8 других файлов) |
@@ -15081,7 +15082,7 @@
 | apkV3 | №1140 |
 | apkVersionCode | №1140 |
 | apothecary | №1831 |
-| app | №2100 (+ 2 других файлов) |
+| app | №2101 (+ 2 других файлов) |
 | appId | №1193 |
 | approved | №1197 (+ 1 других файлов) |
 | arcana | №1829 (+ 2 других файлов) |
@@ -15128,16 +15129,16 @@
 | backslashTexture | №0756 (+ 1 других файлов) |
 | balanced | №1261 |
 | base | №1476 |
-| baseAc | №2054 |
+| baseAc | №2055 |
 | baseAC | №1120 (+ 3 других файлов) |
-| baseAcFormula | №2054 |
+| baseAcFormula | №2055 |
 | baseColorFactor | №0912 |
 | baseHeight | №1842 |
 | baseline | №1045 (+ 1 других файлов) |
 | baseObj | №0087 (+ 1 других файлов) |
 | basePositionsSha256 | №0087 (+ 1 других файлов) |
-| baseUrl | №2100 (+ 2 других файлов) |
-| battlefield | №2055 |
+| baseUrl | №2101 (+ 2 других файлов) |
+| battlefield | №2056 |
 | beakColor | №1834 (+ 1 других файлов) |
 | beakSize | №1834 (+ 1 других файлов) |
 | beakStyle | №1834 (+ 1 других файлов) |
@@ -15148,8 +15149,8 @@
 | binaryTransfer | №0921 |
 | blackmarket | №1831 |
 | blacksmith | №1831 |
-| Blindness | №2056 |
-| blockedVersions | №2100 (+ 2 других файлов) |
+| Blindness | №2057 |
+| blockedVersions | №2101 (+ 2 других файлов) |
 | blood | №1142 |
 | bloodCursesKnown | №1827 |
 | blushColor | №1834 (+ 1 других файлов) |
@@ -15169,13 +15170,13 @@
 | breast-volume-decr | №0087 (+ 1 других файлов) |
 | breast-volume-incr | №0087 (+ 1 других файлов) |
 | breastSize | №0087 (+ 4 других файлов) |
-| Breathing | №2056 |
+| Breathing | №2057 |
 | breathWeapon | №1829 (+ 2 других файлов) |
 | brewer | №1831 |
 | browHeight | №1834 (+ 1 других файлов) |
 | browRidge | №1834 (+ 1 других файлов) |
-| bt_copy | №2055 |
-| bt_self | №2055 |
+| bt_copy | №2056 |
+| bt_self | №2056 |
 | build | №1193 |
 | buildReportArtifact | №1028 |
 | buildRoots | №1017 |
@@ -15183,7 +15184,7 @@
 | bullMuzzleSize | №1834 (+ 1 других файлов) |
 | bundledCreationIds | №1046 (+ 3 других файлов) |
 | buyFactor | №1831 |
-| bytes | №2107 (+ 31 других файлов) |
+| bytes | №2108 (+ 31 других файлов) |
 | cacheBustedFeedVersionCode | №1140 |
 | Camera | №1030 |
 | candidateConclusion | №1138 (+ 1 других файлов) |
@@ -15201,23 +15202,23 @@
 | carpenter | №1831 |
 | cartographer | №1831 (+ 1 других файлов) |
 | cases | №2016 (+ 3 других файлов) |
-| casterId | №2055 |
+| casterId | №2056 |
 | casterLevel | №2016 |
 | castingTime | №1829 (+ 1 других файлов) |
-| cat | №2056 |
+| cat | №2057 |
 | catalog | №1139 (+ 1 других файлов) |
 | catalogUrl | №1026 |
-| catalyst | №2057 |
-| catalystId | №2057 |
-| catalysts | №2056 |
+| catalyst | №2058 |
+| catalystId | №2058 |
+| catalysts | №2057 |
 | catEarSize | №1834 (+ 1 других файлов) |
 | categories | №1831 |
-| category | №2107 (+ 8 других файлов) |
+| category | №2108 (+ 8 других файлов) |
 | catMuzzleSize | №1834 (+ 1 других файлов) |
 | caucasian | №0919 |
 | cell | №0752 (+ 17 других файлов) |
 | centaurSize | №1834 (+ 1 других файлов) |
-| ceramic | №2056 |
+| ceramic | №2057 |
 | certificateSha256 | №1028 (+ 4 других файлов) |
 | cha | №1120 (+ 3 других файлов) |
 | changedVertices | №0919 (+ 1 других файлов) |
@@ -15226,7 +15227,7 @@
 | channel | №1197 (+ 7 других файлов) |
 | channels | №0087 (+ 2 других файлов) |
 | CharacterController | №1030 |
-| charcoal | №2056 |
+| charcoal | №2057 |
 | charge | №1829 (+ 2 других файлов) |
 | charisma | №1827 (+ 2 других файлов) |
 | checks | №1046 (+ 4 других файлов) |
@@ -15246,22 +15247,22 @@
 | className | №1122 (+ 3 других файлов) |
 | clawColor | №1834 (+ 1 других файлов) |
 | clawSize | №1834 (+ 1 других файлов) |
-| clay | №2056 |
+| clay | №2057 |
 | climb | №1829 (+ 2 других файлов) |
 | clipboardExport | №1121 |
 | closed | №1121 |
-| cloth | №2056 |
+| cloth | №2057 |
 | clothing | №1834 (+ 1 других файлов) |
-| cloudBuildRun | №2086 |
-| cloudUnityBuildLicenseConfigured | №2086 |
+| cloudBuildRun | №2087 |
+| cloudUnityBuildLicenseConfigured | №2087 |
 | coast | №1831 |
 | cobbler | №1831 |
 | coinCases | №2018 |
 | coinLog | №1121 (+ 1 других файлов) |
 | coins | №1120 (+ 2 других файлов) |
-| Cold | №2056 |
+| Cold | №2057 |
 | coldResistance | №1829 (+ 2 других файлов) |
-| combatants | №2055 |
+| combatants | №2056 |
 | commit | №0087 (+ 1 других файлов) |
 | common | №1831 |
 | comparison | №1037 |
@@ -15273,13 +15274,13 @@
 | con | №1120 (+ 3 других файлов) |
 | concentration | №1829 (+ 1 других файлов) |
 | conclusion | №0906 (+ 2 других файлов) |
-| condition | №2056 |
-| conflict | №2056 |
-| conflicts | №2057 |
+| condition | №2057 |
+| conflict | №2057 |
+| conflicts | №2058 |
 | connectedComponents | №0912 |
 | const | №1018 |
 | constitution | №1827 (+ 3 других файлов) |
-| Constitution | №2056 |
+| Constitution | №2057 |
 | consumables | №1019 (+ 5 других файлов) |
 | containerAfterMove | №1121 |
 | containers | №1121 |
@@ -15288,14 +15289,14 @@
 | controlled | №0752 (+ 3 других файлов) |
 | converted | №1142 |
 | cook | №1831 |
-| copy | №2055 |
+| copy | №2056 |
 | corset | №1834 (+ 1 других файлов) |
 | cost | №2018 (+ 2 других файлов) |
 | costGp | №1831 (+ 1 других файлов) |
 | count | №0087 (+ 12 других файлов) |
 | cp | №1120 (+ 3 других файлов) |
 | cPerS | №2018 |
-| craft | №2056 |
+| craft | №2057 |
 | craftBonuses | №1829 (+ 1 других файлов) |
 | CRC | №0906 (+ 1 других файлов) |
 | createDesktopShortcut | №1193 |
@@ -15305,7 +15306,7 @@
 | crestSize | №1834 (+ 1 других файлов) |
 | crownColor | №1834 (+ 1 других файлов) |
 | crownSize | №1834 (+ 1 других файлов) |
-| crystal | №2056 |
+| crystal | №2057 |
 | csharp | №1138 (+ 5 других файлов) |
 | Cubemap | №1030 |
 | cupsize | №0919 |
@@ -15319,20 +15320,20 @@
 | darkness | №0752 (+ 17 других файлов) |
 | darkvisionFt | №1829 (+ 2 других файлов) |
 | date | №1143 (+ 2 других файлов) |
-| dc | №2056 |
+| dc | №2057 |
 | debug | №0906 |
 | deception | №1829 (+ 2 других файлов) |
 | declaredSourceCommit | №0919 |
 | declaredUnityPackages | №1017 |
-| defaultDependencyTypeInfo | №2079 |
-| defaultInstantiationMode | №2079 |
+| defaultDependencyTypeInfo | №2080 |
+| defaultInstantiationMode | №2080 |
 | degenerateTriangles | №0912 |
 | DelayedCallManager | №1030 |
 | deltaBytesFrom10022 | №1138 |
 | deltaBytesVs28 | №1142 |
 | deltaFrom10023Bytes | №1139 |
 | dependencies | №1017 (+ 4 других файлов) |
-| dependencyTypeInfos | №2079 |
+| dependencyTypeInfos | №2080 |
 | depth | №1017 (+ 1 других файлов) |
 | derived | №1551 |
 | desc | №1120 (+ 2 других файлов) |
@@ -15345,14 +15346,14 @@
 | deviceQa | №1046 (+ 6 других файлов) |
 | dex | №1120 (+ 3 других файлов) |
 | dexterity | №1827 (+ 3 других файлов) |
-| Dexterity | №2056 |
+| Dexterity | №2057 |
 | Diabolist | №1827 |
 | diceGeometryPreviewBytes | №1139 |
 | diceGeometryPreviews | №1139 |
 | directories | №1193 |
 | dotnet | №1046 |
 | doubleSided | №0912 |
-| dragonScale | №2056 |
+| dragonScale | №2057 |
 | Drake-Blooded | №1827 |
 | dress | №1834 (+ 1 других файлов) |
 | duplicates | №1017 |
@@ -15360,12 +15361,12 @@
 | e | №0752 (+ 17 других файлов) |
 | earLength | №1834 (+ 1 других файлов) |
 | earPointiness | №1834 (+ 1 других файлов) |
-| Earth | №2056 |
+| Earth | №2057 |
 | earTuftSize | №1834 (+ 1 других файлов) |
 | edition | №1045 (+ 1 других файлов) |
 | editorMorphs | №0912 |
 | effect | №2018 (+ 1 других файлов) |
-| effects | №2055 (+ 1 других файлов) |
+| effects | №2056 (+ 1 других файлов) |
 | electron | №1193 |
 | electron-builder | №1193 |
 | elephantEarSize | №1834 (+ 1 других файлов) |
@@ -15392,13 +15393,13 @@
 | exportedNames | №1121 |
 | extensions | №0001 |
 | exteriorUVFaces | №1142 |
-| external | №2055 |
+| external | №2056 |
 | externalOrPackageGuidReferences | №1017 |
-| extra | №2056 |
-| extraClassName | №2054 |
-| extraClassType | №2054 |
-| extras | №2057 |
-| extraTrigger | №2056 |
+| extra | №2057 |
+| extraClassName | №2055 |
+| extraClassType | №2055 |
+| extras | №2058 |
+| extraTrigger | №2057 |
 | eyeColor | №1834 (+ 1 других файлов) |
 | eyeGlow | №1834 (+ 1 других файлов) |
 | eyeHeight | №1834 (+ 1 других файлов) |
@@ -15417,7 +15418,7 @@
 | fangSize | №1834 (+ 1 других файлов) |
 | fat | №1834 (+ 1 других файлов) |
 | fbxSha256 | №1842 |
-| Fear | №2056 |
+| Fear | №2057 |
 | featherTailSize | №1834 (+ 1 других файлов) |
 | featherWingSize | №1834 (+ 1 других файлов) |
 | feats | №1046 (+ 7 других файлов) |
@@ -15430,10 +15431,10 @@
 | feyAncestry | №1829 (+ 2 других файлов) |
 | fields | №2016 |
 | file | №1827 (+ 4 других файлов) |
-| fileCount | №2107 |
-| files | №2107 (+ 12 других файлов) |
+| fileCount | №2108 |
+| files | №2108 (+ 12 других файлов) |
 | finSize | №1834 (+ 1 других файлов) |
-| Fire | №2056 |
+| Fire | №2057 |
 | fireResistance | №1829 (+ 2 других файлов) |
 | firmness | №0919 |
 | firstHeroNotesAfterCancel | №1121 |
@@ -15452,7 +15453,7 @@
 | food | №1831 |
 | forest | №1831 |
 | format | №1018 (+ 1 других файлов) |
-| formula | №2056 |
+| formula | №2057 |
 | frames | №1155 |
 | full6d20 | №1142 |
 | fullSoftBodyComplete | №1142 |
@@ -15462,12 +15463,12 @@
 | furLength | №1834 (+ 1 других файлов) |
 | furProfile | №1834 (+ 1 других файлов) |
 | GameObject | №1030 |
-| gem | №2056 |
+| gem | №2057 |
 | gemcutter | №1831 |
 | gender | №0919 (+ 5 других файлов) |
 | general | №1831 |
 | generalstore | №1831 |
-| generated | №2107 (+ 3 других файлов) |
+| generated | №2108 (+ 3 других файлов) |
 | ghostChainSize | №1834 (+ 1 других файлов) |
 | ghostOpacity | №1834 (+ 1 других файлов) |
 | ghostTerror | №1834 (+ 1 других файлов) |
@@ -15475,7 +15476,7 @@
 | gitBlob | №0923 |
 | glass | №1831 (+ 1 других файлов) |
 | glassblower | №1831 |
-| glasswork | №2056 |
+| glasswork | №2057 |
 | glide | №1829 (+ 2 других файлов) |
 | gliderMembraneSize | №1834 (+ 1 других файлов) |
 | Godsworn | №1827 |
@@ -15490,15 +15491,15 @@
 | h | №0752 (+ 17 других файлов) |
 | hair | №1834 (+ 1 других файлов) |
 | hairColor | №1834 (+ 1 других файлов) |
-| Hallucination | №2056 |
+| Hallucination | №2057 |
 | hands | №1834 (+ 3 других файлов) |
-| hardwood | №2056 |
+| hardwood | №2057 |
 | head | №0087 (+ 4 других файлов) |
 | head-decr | №0087 (+ 1 других файлов) |
 | head-incr | №0087 (+ 1 других файлов) |
 | height | №0752 (+ 23 других файлов) |
-| Hemorrhage | №2056 |
-| herb | №2056 |
+| Hemorrhage | №2057 |
+| herb | №2057 |
 | herbalism | №1831 |
 | herbalist | №1831 |
 | hero | №2018 |
@@ -15527,8 +15528,8 @@
 | hunter | №1831 |
 | ice | №1142 |
 | id | №0752 (+ 42 других файлов) |
-| identity | №2055 |
-| ids | №2057 |
+| identity | №2056 |
+| ids | №2058 |
 | if | №1018 |
 | image | №0001 |
 | immunities | №1829 (+ 2 других файлов) |
@@ -15537,8 +15538,8 @@
 | indexComponentType | №0912 |
 | indomitable | №1827 |
 | ingredients | №1019 (+ 1 других файлов) |
-| initiativeTracker | №2055 |
-| ink | №2056 |
+| initiativeTracker | №2056 |
+| ink | №2057 |
 | innateSpellcasting | №1829 (+ 2 других файлов) |
 | input | №2018 (+ 1 других файлов) |
 | InputManager | №1030 |
@@ -15548,7 +15549,7 @@
 | int | №1120 (+ 3 других файлов) |
 | integrity | №1217 |
 | intelligence | №1827 (+ 3 других файлов) |
-| intelligence_or_charisma | №2054 |
+| intelligence_or_charisma | №2055 |
 | intelligenceOrWisdomOrCharisma | №1827 |
 | intensity | №0752 (+ 17 других файлов) |
 | interactive | №0758 (+ 1 других файлов) |
@@ -15559,10 +15560,10 @@
 | inventoryCases | №2018 |
 | inventoryCategory | №1120 (+ 2 других файлов) |
 | investigation | №2018 |
-| Invisibility | №2056 |
-| iron | №2056 |
-| isExtra | №2054 |
-| isExtraClass | №2054 |
+| Invisibility | №2057 |
+| iron | №2057 |
+| isExtra | №2055 |
+| isExtraClass | №2055 |
 | item | №2018 (+ 1 других файлов) |
 | items | №1018 (+ 3 других файлов) |
 | jawProjection | №1834 (+ 1 других файлов) |
@@ -15576,9 +15577,9 @@
 | junk | №1019 (+ 6 других файлов) |
 | keep | №2018 |
 | key | №1476 (+ 3 других файлов) |
-| kind | №2107 (+ 2 других файлов) |
+| kind | №2108 (+ 2 других файлов) |
 | kiPoints | №1827 (+ 1 других файлов) |
-| known | №2055 |
+| known | №2056 |
 | label | №1827 (+ 4 других файлов) |
 | languages | №1829 (+ 1 других файлов) |
 | larvaGirth | №1834 (+ 1 других файлов) |
@@ -15586,7 +15587,7 @@
 | larvaTendrilSize | №1834 (+ 1 других файлов) |
 | larvaToothSize | №1834 (+ 1 других файлов) |
 | leather | №1831 (+ 1 других файлов) |
-| leatherwork | №2056 |
+| leatherwork | №2057 |
 | leatherworker | №1831 |
 | legacy | №0906 (+ 1 других файлов) |
 | legacyApkInput | №1017 |
@@ -15627,7 +15628,7 @@
 | lucky | №1829 (+ 2 других файлов) |
 | luxury | №1831 |
 | macroConfigSha256 | №0919 |
-| Magic | №2056 |
+| Magic | №2057 |
 | magicCases | №2016 |
 | magicResistance | №1829 (+ 2 других файлов) |
 | main | №1017 (+ 1 других файлов) |
@@ -15670,16 +15671,16 @@
 | mimicry | №1829 (+ 2 других файлов) |
 | min | №1829 |
 | minAndroidSdk | №1143 |
-| minAppVersion | №2100 (+ 2 других файлов) |
+| minAppVersion | №2101 (+ 2 других файлов) |
 | minClientVersionCode | №1019 |
-| Mind | №2056 |
+| Mind | №2057 |
 | miner | №1831 |
 | minimalContentVerified | №1046 (+ 4 других файлов) |
 | minimum | №1018 |
 | minLength | №1018 |
 | minStr | №2018 (+ 1 других файлов) |
-| mithral | №2056 |
-| mode | №2058 |
+| mithral | №2057 |
+| mode | №2059 |
 | model | №0752 (+ 18 других файлов) |
 | modelFamily | №1834 (+ 1 других файлов) |
 | models | №1476 (+ 1 других файлов) |
@@ -15734,15 +15735,15 @@
 | nativeWindowsPhysicalThrows | №1139 |
 | naturalArmor | №1829 (+ 2 других файлов) |
 | nature | №2018 |
-| Nausea | №2056 |
+| Nausea | №2057 |
 | NavMeshProjectSettings | №1030 |
 | NavMeshSettings | №1030 |
 | neck | №1834 (+ 1 других файлов) |
-| Necrotic | №2056 |
+| Necrotic | №2057 |
 | necroticResistance | №1829 (+ 2 других файлов) |
 | negative | №0087 (+ 4 других файлов) |
 | newPackages | №1019 |
-| newSceneOverride | №2079 |
+| newSceneOverride | №2080 |
 | nextAction | №0923 |
 | Nightgaunt | №1827 |
 | nimbleEscape | №1829 (+ 2 других файлов) |
@@ -15776,11 +15777,11 @@
 | originalBytes | №1035 |
 | originalsDeleted | №1045 |
 | ota_install_contract | №0908 |
-| other | №2055 |
+| other | №2056 |
 | outer | №1834 (+ 1 других файлов) |
 | output | №1193 |
-| ownerId | №2055 |
-| ownTurnId | №2055 |
+| ownerId | №2056 |
+| ownTurnId | №2056 |
 | package | №1028 (+ 5 других файлов) |
 | packagedBytes | №1032 |
 | packagedSha256 | №1032 |
@@ -15794,11 +15795,11 @@
 | pages | №0923 |
 | paid_api_authorized | №0002 |
 | painter | №1831 |
-| paper | №2056 |
-| parchment | №2056 |
+| paper | №2057 |
+| parchment | №2057 |
 | parts | №1199 |
 | pass | №0906 (+ 1 других файлов) |
-| path | №2107 (+ 9 других файлов) |
+| path | №2108 (+ 9 других файлов) |
 | pathId | №1030 (+ 2 других файлов) |
 | paths | №1017 |
 | pattern | №1018 |
@@ -15807,14 +15808,14 @@
 | pectorals | №0087 (+ 4 других файлов) |
 | pendingChoices | №1122 (+ 3 других файлов) |
 | perception | №1829 (+ 2 других файлов) |
-| Perception | №2056 |
+| Perception | №2057 |
 | performance | №1829 (+ 2 других файлов) |
 | perMachine | №1193 |
 | persuasion | №1829 (+ 2 других файлов) |
-| Petrification | №2056 |
+| Petrification | №2057 |
 | physical_android_test | №0908 |
 | physicalAndroid | №1138 (+ 1 других файлов) |
-| physicalAndroidQa | №2086 |
+| physicalAndroidQa | №2087 |
 | physicalAndroidQA | №0906 (+ 3 других файлов) |
 | physicalDeviceTested | №1139 |
 | physicalPhoneTouch | №1140 |
@@ -15841,9 +15842,9 @@
 | positive | №0087 (+ 4 других файлов) |
 | postCreateCommand | №0001 |
 | postRestChangedPixels | №1142 |
-| potency | №2056 (+ 1 других файлов) |
+| potency | №2057 (+ 1 других файлов) |
 | potter | №1831 |
-| pottery | №2056 |
+| pottery | №2057 |
 | powerfulBuild | №1829 (+ 2 других файлов) |
 | pp | №1120 (+ 2 других файлов) |
 | pPerG | №2018 |
@@ -15861,7 +15862,7 @@
 | previous75PreviewHashesUnchanged | №1139 |
 | previousAutomaticBackup | №1122 |
 | previousUnity10010ApkBytes | №1046 |
-| price | №2056 |
+| price | №2057 |
 | primaryLicenseUrls | №1037 |
 | primitives | №0912 |
 | private | №1193 (+ 1 других файлов) |
@@ -15876,7 +15877,7 @@
 | proficiencyType | №2018 (+ 1 других файлов) |
 | profileBackupAndUnknownFilePreserved | №1138 |
 | profileNames | №1121 |
-| profiles | №2057 |
+| profiles | №2058 |
 | project | №0087 (+ 1 других файлов) |
 | pronounced | №1261 |
 | properties | №1018 (+ 3 других файлов) |
@@ -15908,12 +15909,12 @@
 | publishRunId | №1138 |
 | pupilOpacity | №1834 (+ 1 других файлов) |
 | pupilShape | №1834 (+ 1 других файлов) |
-| purity | №2056 (+ 1 других файлов) |
+| purity | №2057 (+ 1 других файлов) |
 | python | №1046 (+ 2 других файлов) |
 | pythonUnit | №1138 (+ 1 других файлов) |
 | qty | №1831 (+ 1 других файлов) |
 | QualitySettings | №1030 |
-| quantity | №2056 |
+| quantity | №2057 |
 | quota_scope | №0002 |
 | rabbitEarSize | №1834 (+ 1 других файлов) |
 | rabbitTailSize | №1834 (+ 1 других файлов) |
@@ -15927,7 +15928,7 @@
 | raceMechanics | №1829 (+ 2 других файлов) |
 | raceName | №1122 (+ 3 других файлов) |
 | races | №1046 (+ 5 других файлов) |
-| Radiant | №2056 |
+| Radiant | №2057 |
 | radiantResistance | №1829 (+ 2 других файлов) |
 | radius | №0752 (+ 17 других файлов) |
 | rageDamageBonus | №1827 (+ 1 других файлов) |
@@ -15943,7 +15944,7 @@
 | recipeCommit | №1139 |
 | recipes | №1019 (+ 1 других файлов) |
 | recommendedSourceCommit | №0919 |
-| Recovery | №2056 |
+| Recovery | №2057 |
 | RectTransform | №1030 |
 | reductionBytes | №1046 (+ 5 других файлов) |
 | reductionPercent | №1046 (+ 5 других файлов) |
@@ -15953,8 +15954,8 @@
 | referencePath | №1037 |
 | referenceRepository | №1037 |
 | referenceSha256 | №1037 |
-| Regeneration | №2056 |
-| region | №2058 |
+| Regeneration | №2057 |
+| region | №2059 |
 | regions | №1831 |
 | regression | №0906 (+ 1 других файлов) |
 | rejectedCandidate | №1142 |
@@ -15978,7 +15979,7 @@
 | renderReviewBoundary | №1141 (+ 2 других файлов) |
 | RenderSettings | №1030 |
 | repairable | №1829 (+ 2 других файлов) |
-| replacesRace | №2054 |
+| replacesRace | №2055 |
 | repository | №1139 |
 | reptileProfile | №1834 (+ 1 других файлов) |
 | required | №1018 |
@@ -15987,7 +15988,7 @@
 | requirements | №1827 |
 | requireRenderReview | №1198 |
 | requires | №1217 |
-| resin | №2056 |
+| resin | №2057 |
 | resistanceDamageType | №1829 (+ 1 других файлов) |
 | resistances | №1829 (+ 2 других файлов) |
 | resolved | №1217 |
@@ -16005,7 +16006,7 @@
 | ridgeColor | №1834 (+ 1 других файлов) |
 | ridgeStyle | №1834 (+ 1 других файлов) |
 | Rimekeeper | №1827 |
-| risk | №2057 |
+| risk | №2058 |
 | rites | №1827 |
 | ritual | №1829 (+ 1 других файлов) |
 | rmsDisplacementMeters | №0919 (+ 1 других файлов) |
@@ -16048,21 +16049,21 @@
 | selectedTexture | №0752 (+ 17 других файлов) |
 | selectedTool | №0752 (+ 17 других файлов) |
 | selectedWallTexture | №0752 (+ 17 других файлов) |
-| self | №2055 |
+| self | №2056 |
 | sellFactor | №1831 |
 | serializedBytes | №1030 (+ 2 других файлов) |
 | sets | №1139 |
 | settings | №0001 |
 | settled12Frames | №1142 |
 | sha | №1199 |
-| sha256 | №2107 (+ 29 других файлов) |
+| sha256 | №2108 (+ 29 других файлов) |
 | Shader | №1030 |
 | shadowColor | №1834 (+ 1 других файлов) |
 | shadowOpacity | №1834 (+ 1 других файлов) |
 | Shaman | №1827 |
 | shapeFamilies | №1139 |
 | shapeshifter | №1829 (+ 2 других файлов) |
-| sharedProperties | №2057 |
+| sharedProperties | №2058 |
 | shellColor | №1834 (+ 1 других файлов) |
 | shellSize | №1834 (+ 1 других файлов) |
 | shipchandler | №1831 |
@@ -16080,7 +16081,7 @@
 | signatureVerification | №1035 |
 | signedRelease | №0906 |
 | signingCertificateSha256 | №1138 (+ 1 других файлов) |
-| silver | №2056 |
+| silver | №2057 |
 | size | №1829 (+ 2 других файлов) |
 | sizeChoice | №1829 (+ 2 других файлов) |
 | skillBonuses | №1829 (+ 2 других файлов) |
@@ -16094,7 +16095,7 @@
 | sky | №0753 (+ 9 других файлов) |
 | slash | №0756 (+ 1 других файлов) |
 | slashTexture | №0756 (+ 1 других файлов) |
-| Sleep | №2056 |
+| Sleep | №2057 |
 | sleightOfHand | №1829 (+ 2 других файлов) |
 | slime | №1142 |
 | slots | №1827 |
@@ -16113,7 +16114,7 @@
 | sourceFileCount | №1036 |
 | sourceGlbSha256 | №0919 (+ 1 других файлов) |
 | sourceHashes | №0087 (+ 2 других файлов) |
-| sourceId | №2055 |
+| sourceId | №2056 |
 | sourcePixelsModified | №1015 |
 | sourceProject | №0919 |
 | sourceRefs | №1017 |
@@ -16124,9 +16125,9 @@
 | sourceSparseSha256 | №1842 |
 | sourceStackTerms | №0919 |
 | sp | №1120 (+ 2 других файлов) |
-| special | №2056 |
+| special | №2057 |
 | speed | №1829 (+ 2 других файлов) |
-| Speed | №2056 |
+| Speed | №2057 |
 | speedFt | №1829 (+ 2 других файлов) |
 | spellAbility | №1827 |
 | spells | №1827 (+ 2 других файлов) |
@@ -16137,8 +16138,8 @@
 | spiderClimb | №1829 (+ 2 других файлов) |
 | Sprite | №1030 |
 | sqlWasm | №1138 (+ 5 других файлов) |
-| stability | №2056 (+ 1 других файлов) |
-| Stability | №2056 |
+| stability | №2057 (+ 1 других файлов) |
+| Stability | №2057 |
 | stable | №1831 |
 | stablemaster | №1831 |
 | stableVersion | №0906 (+ 1 других файлов) |
@@ -16156,7 +16157,7 @@
 | status | №0906 (+ 12 других файлов) |
 | stealth | №1829 (+ 2 других файлов) |
 | stealthDisadvantage | №2018 (+ 1 других файлов) |
-| steel | №2056 |
+| steel | №2057 |
 | steps | №0752 (+ 3 других файлов) |
 | sTexture | №0752 (+ 15 других файлов) |
 | stock | №1831 |
@@ -16166,7 +16167,7 @@
 | str | №1120 (+ 3 других файлов) |
 | StreamingManager | №1030 |
 | strength | №1827 (+ 3 других файлов) |
-| Strength | №2056 |
+| Strength | №2057 |
 | strengthOrDexterity | №1827 |
 | strictBodyAndNumeralRaster | №1138 |
 | subclass | №1122 (+ 5 других файлов) |
@@ -16178,8 +16179,8 @@
 | swarmForm | №1834 (+ 1 других файлов) |
 | swarmPercent | №1834 (+ 1 других файлов) |
 | swim | №1829 (+ 2 других файлов) |
-| synergies | №2057 |
-| synergy | №2056 |
+| synergies | №2058 |
+| synergy | №2057 |
 | syntheticSensorLifecycle | №1143 |
 | T_Trim_Cloth_BaseColor | №1023 (+ 1 других файлов) |
 | T_Trim_Cloth_Normal | №1023 (+ 1 других файлов) |
@@ -16203,14 +16204,14 @@
 | tailTip | №1834 (+ 1 других файлов) |
 | tailTuftSize | №1834 (+ 1 других файлов) |
 | target | №1193 (+ 1 других файлов) |
-| targetId | №2055 |
+| targetId | №2056 |
 | targets | №0087 (+ 4 других файлов) |
 | targetsTested | №1138 |
-| tarotDamageTotals | №2055 |
-| tarotKnowledge | №2055 |
-| tarotLastStartedTurn | №2055 |
+| tarotDamageTotals | №2056 |
+| tarotKnowledge | №2056 |
+| tarotLastStartedTurn | №2056 |
 | telepathy | №1829 (+ 2 других файлов) |
-| templatePinStates | №2079 |
+| templatePinStates | №2080 |
 | temple | №1831 |
 | test | №1218 |
 | testApkArtifact | №1046 |
@@ -16223,20 +16224,20 @@
 | textures | №1551 |
 | themes | №1139 |
 | then | №1018 |
-| thread | №2056 |
+| thread | №2057 |
 | tiles | №0752 (+ 18 других файлов) |
 | time | №1121 (+ 4 других файлов) |
 | TimeManager | №1030 |
 | tinker | №1831 |
 | title | №1018 (+ 3 других файлов) |
 | toHit | №2018 (+ 1 других файлов) |
-| tokenArt | №2054 |
-| tokenReady | №2054 |
+| tokenArt | №2055 |
+| tokenReady | №2055 |
 | tokens | №0752 (+ 18 других файлов) |
-| toolAliases | №2056 |
-| toolLabels | №2056 |
+| toolAliases | №2057 |
+| toolLabels | №2057 |
 | toolProficiencies | №1829 (+ 1 других файлов) |
-| tools | №2056 |
+| tools | №2057 |
 | top | №1834 (+ 1 других файлов) |
 | topology | №0912 (+ 2 других файлов) |
 | topologyFaceCases | №1143 |
@@ -16247,14 +16248,14 @@
 | totals | №2018 |
 | totalWeightKg | №2018 |
 | touched | №1142 |
-| trader | №2058 |
+| trader | №2059 |
 | traders | №1831 |
 | Transform | №1030 |
 | trayRecipes | №1143 |
 | triangles | №0912 (+ 1 других файлов) |
 | trunk | №1829 (+ 2 других файлов) |
 | trunkSize | №1834 (+ 1 других файлов) |
-| turnIds | №2055 |
+| turnIds | №2056 |
 | tuskSize | №1834 (+ 1 других файлов) |
 | type | №0752 (+ 30 других файлов) |
 | typeCounts | №1030 |
@@ -16276,18 +16277,18 @@
 | unknown | №2018 (+ 1 других файлов) |
 | unlimitedTotalRequest | №1143 |
 | unrelatedCiFailure | №1142 |
-| unstable | №2057 |
+| unstable | №2058 |
 | untouched | №2018 |
 | updateManifest | №1199 |
 | upgradeQaJob | №1139 |
 | url | №1008 (+ 13 других файлов) |
-| userAdded | №2079 |
+| userAdded | №2080 |
 | uvDirections | №1143 |
 | uvOutsideUnitSquare | №0912 |
 | uvRange | №0912 |
 | validation | №1842 |
 | value | №2018 |
-| Venom | №2056 |
+| Venom | №2057 |
 | verbal | №1829 (+ 1 других файлов) |
 | version | №0001 (+ 52 других файлов) |
 | versionCode | №0906 (+ 18 других файлов) |
@@ -16297,9 +16298,9 @@
 | view | №0752 (+ 17 других файлов) |
 | village | №1831 |
 | vine | №1142 |
-| Vitality | №2056 |
-| volatility | №2056 (+ 1 других файлов) |
-| Volatility | №2056 |
+| Vitality | №2057 |
+| volatility | №2057 (+ 1 других файлов) |
+| Volatility | №2057 |
 | vscode | №0001 |
 | w | №0752 (+ 17 других файлов) |
 | waist | №0912 (+ 5 других файлов) |
@@ -16308,8 +16309,8 @@
 | walls | №0752 (+ 18 других файлов) |
 | wasteland | №1831 |
 | water | №1831 |
-| wax | №2056 |
-| Weakness | №2056 |
+| wax | №2057 |
+| Weakness | №2057 |
 | weapons | №1019 (+ 5 других файлов) |
 | weaponsData | №1829 (+ 2 других файлов) |
 | weaponsmith | №1831 |
@@ -16338,7 +16339,7 @@
 | Witch | №1827 |
 | wood | №1831 (+ 1 других файлов) |
 | woodcarver | №1831 |
-| woodwork | №2056 |
+| woodwork | №2057 |
 | workflows | №0906 (+ 1 других файлов) |
 | workingTreeStatus | №1017 |
 | wTexture | №0752 (+ 15 других файлов) |

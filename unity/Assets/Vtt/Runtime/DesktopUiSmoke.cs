@@ -553,6 +553,19 @@ namespace DndVtt.UnityPrototype
             catch(Exception error){Fail(error);yield break;}
 #endif
             Field("sheetTab",3);Field("frontScroll",Vector2.zero);yield return Frame("classic-inventory-portrait");if(failed)yield break;
+            // Deterministic native callback cycles; these are not physical Android
+            // suspension/lock-screen claims. Check actual shared Unity objects.
+            var resumeTexture=(Texture2D)((GUIStyle)typeof(LegacySessionPanel).GetField("cloneBlue",Flags).GetValue(panel)).normal.background;
+            for(int cycle=0;cycle<6;cycle++)
+            {
+                typeof(LegacySessionPanel).GetMethod("OnApplicationPause",Flags).Invoke(panel,new object[]{true});
+                typeof(LegacySessionPanel).GetMethod("OnApplicationFocus",Flags).Invoke(panel,new object[]{false});
+                typeof(LegacySessionPanel).GetMethod("OnApplicationPause",Flags).Invoke(panel,new object[]{false});
+                typeof(LegacySessionPanel).GetMethod("OnApplicationFocus",Flags).Invoke(panel,new object[]{true});
+                yield return Frame("ui-resume-"+cycle);if(failed)yield break;
+                try{Check(resumeTexture&&ReferenceEquals(resumeTexture,((GUIStyle)typeof(LegacySessionPanel).GetField("cloneBlue",Flags).GetValue(panel)).normal.background),"resume preserves actual cached button background, cycle "+cycle);}
+                catch(Exception error){Fail(error);yield break;}
+            }
 #if UNITY_STANDALONE_WIN && !UNITY_EDITOR
             try{Check(!(bool)typeof(LegacySessionPanel).GetField("showElectrum",Flags).GetValue(panel),"electrum is disabled in a fresh wallet");var amounts=(string[])typeof(LegacySessionPanel).GetField("coinInput",Flags).GetValue(panel);amounts[3]="1";}
             catch(Exception error){Fail(error);yield break;}

@@ -44,8 +44,8 @@ namespace DndVtt.UnityPrototype
         // permissions or returning from the background. Restore the view mode.
         private void OnApplicationFocus(bool hasFocus)
         {
-            if (hasFocus) { InvalidateBrandStyles(); ApplyScreenSleep(); ApplyMobileOrientation(screen); }
-            else StopDiceSensor();
+            if (hasFocus) { RequestGuiResourceRestore(); ApplyScreenSleep(); ApplyMobileOrientation(screen); }
+            else {StopDiceSensor();menuGesture.Clear();}
         }
 
         public bool Import(string json)
@@ -76,6 +76,7 @@ namespace DndVtt.UnityPrototype
         private void OnGUI()
         {
             PollNumericKeyboard();
+            RestoreGuiResources();
             BeginSwipeFrame();
             try
             {
