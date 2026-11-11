@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода c5f9a8a9fa58. Git содержит 2143 файлов.
+Снимок кода 24286565beaa. Git содержит 2143 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 8151 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 105039 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 143537 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 182874 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 106898 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 145396 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 184733 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1840,7 +1840,7 @@
 | №1819 unity/Assets/Vtt/Resources/Branding/Splash19.png.meta | 886 B | вспомогательный файл: Splash19.png |
 | №1820 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg | 212684 B | текстура/изображение: Wallpaper16 |
 | №1821 unity/Assets/Vtt/Resources/Branding/Wallpaper16.jpg.meta | 886 B | вспомогательный файл: Wallpaper16.jpg |
-| №1822 unity/Assets/Vtt/Resources/Changelog.json | 55187 B | данные/конфигурация: Changelog |
+| №1822 unity/Assets/Vtt/Resources/Changelog.json | 55919 B | данные/конфигурация: Changelog |
 | №1823 unity/Assets/Vtt/Resources/Changelog.json.meta | 158 B | вспомогательный файл: Changelog.json |
 | №1824 unity/Assets/Vtt/Resources/CharacterSheet.meta | 172 B | вспомогательный файл: CharacterSheet |
 | №1825 unity/Assets/Vtt/Resources/CharacterSheet/advancement.json | 260278 B | данные/конфигурация: advancement |
@@ -2108,8 +2108,8 @@
 | №2087 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №2088 updates/README.md | 233 B | документация или отчёт: README |
 | №2089 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №2090 updates/unity-changelog.json | 55917 B | метаданные обновлений: unity changelog |
-| №2091 updates/unity-experiment.json | 1124 B | метаданные обновлений: unity experiment |
+| №2090 updates/unity-changelog.json | 55919 B | метаданные обновлений: unity changelog |
+| №2091 updates/unity-experiment.json | 918 B | метаданные обновлений: unity experiment |
 | №2092 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №2093 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |
 | №2094 wall_brick_red.png | 111128 B | текстура/изображение: wall brick red |
