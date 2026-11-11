@@ -112,7 +112,7 @@ namespace DndVtt.UnityPrototype
             // Destroy geometry before unloading owned resources, then reconstruct
             // from preserved JSON. Missing resources become visible placeholders.
             contentViewDirty=true;ReleaseAppearanceImages(true);
-            world.ClearWorkshopGeometry(); workshop.Dispose(); workshop = new WorkshopRuntime(workshopStore); workshop.ActivateData(); creationCatalog = null; commerceCatalog = null; itemCatalog = null;
+            world.ClearWorkshopGeometry(); workshop.Dispose(); workshop = new WorkshopRuntime(workshopStore); workshop.ActivateData(); creationCatalog = null; InvalidateCommerceCatalog(); itemCatalog = null;
             world.Workshop = workshop; world.ReloadCurrent();
         }
         private void OpenContentManager() { InitializeWorkshop(); contentViewDirty=true; contentCollectionsPage=true;contentCategory = 0; contentGroupPath="";contentDetails = null;Navigate(FrontScreen.ContentManager); }

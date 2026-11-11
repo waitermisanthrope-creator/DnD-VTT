@@ -567,6 +567,14 @@ namespace DndVtt.UnityPrototype
             Field("requestedInventoryCategory",(int?)1);Field("frontScroll",new Vector2(0,600));yield return new WaitForSecondsRealtime(.3f);
             yield return Frame("classic-inventory-armor-portrait");if(failed)yield break;
             yield return ClickNativeButton("Выбрать из справочника / Создать");if(failed)yield break;
+            float inventoryDeadline=Time.realtimeSinceStartup+60;
+            while(typeof(LegacySessionPanel).GetField("commerceCatalog",Flags).GetValue(panel)==null&&Time.realtimeSinceStartup<inventoryDeadline)yield return null;
+            try
+            {
+                Check(typeof(LegacySessionPanel).GetField("commerceCatalog",Flags).GetValue(panel)!=null,"inventory catalog finishes background loading");
+                Check(((JObject[])typeof(LegacySessionPanel).GetField("inventoryEntries",Flags).GetValue(panel)).Length>0,"inventory picker displays loaded category results");
+            }
+            catch(Exception error){Fail(error);yield break;}
             yield return Frame("classic-inventory-picker-portrait");if(failed)yield break;
             Field("inventoryPicker",false);Field("inventoryCategory",3);Field("frontScroll",Vector2.zero);
             yield return Frame("classic-inventory-materials-portrait");if(failed)yield break;

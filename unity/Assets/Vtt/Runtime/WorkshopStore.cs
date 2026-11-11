@@ -328,10 +328,12 @@ namespace DndVtt.UnityPrototype
                     if ((string)choice["type"] == "feat") choice["options"] = result["feats"].DeepClone();
             return result;
         }
-        public JObject Commerce()
+        public JObject Commerce() => Commerce(Installed());
+        public JObject Commerce(JArray installed)
         {
+            if (installed == null) throw new ArgumentNullException(nameof(installed));
             var result = new JObject { ["items"] = new JArray(), ["craft"] = new JObject { ["materials"] = new JArray(), ["recipes"] = new JArray(), ["toolAliases"] = new JObject(), ["toolLabels"] = new JObject() }, ["alchemy"] = new JObject { ["ingredients"] = new JArray(), ["catalysts"] = new JArray(), ["synergy"] = new JArray(), ["conflict"] = new JArray(), ["effects"] = new JObject(), ["extraTrigger"] = new JObject() } };
-            foreach (JObject manifest in Installed())
+            foreach (JObject manifest in installed)
             {
                 if ((string)manifest["format"] != "json" || !new[] { "item", "craft" }.Contains((string)manifest["type"])) continue;
                 var data = Data(manifest);

@@ -9,7 +9,32 @@ namespace DndVtt.UnityPrototype
     public sealed partial class LegacySessionPanel
     {
         private JObject commerceCatalog;
-        private JObject CommerceCatalog { get { InitializeWorkshop(); return commerceCatalog ??= workshop.Commerce(); } }
+        private JObject CommerceCatalog => commerceCatalog;
+        private readonly InventoryCatalogCache inventoryCatalogCache = new InventoryCatalogCache();
+        private JObject[] inventoryEntries = Array.Empty<JObject>();
+        private bool commerceCatalogInvalidated;
+        private bool? requestedInventoryPicker;
+        private void InvalidateCommerceCatalog() { commerceCatalogInvalidated = true; }
+        private void PrepareInventoryCatalog()
+        {
+            if(Event.current.type!=EventType.Layout)return;
+            if(commerceCatalogInvalidated)
+            { inventoryCatalogCache.Invalidate();commerceCatalog=null;commerceCatalogInvalidated=false; }
+            inventoryCatalogCache.Poll();
+            commerceCatalog=inventoryCatalogCache.Current?.Catalog;
+            inventoryEntries=commerceCatalog==null?Array.Empty<JObject>():inventoryCatalogCache.Current.Find(CharacterSheetRules.InventoryCategories[inventoryCategory],inventoryQuery);
+            if(commerceCatalog!=null||inventoryCatalogCache.IsLoading||inventoryCatalogCache.Error!=null)return;
+            InitializeWorkshop();
+            // Snapshot the already verified manifest list once. The worker still
+            // verifies each item/craft payload; unrelated graphics packs aren't reread.
+            var installed=workshopStore.Installed();string root=workshopStore.Root;
+            inventoryCatalogCache.Request(()=>new WorkshopStore(root).Commerce(installed));
+        }
+        private void DrawInventoryCatalogLoading()
+        {
+            GUILayout.Label(inventoryCatalogCache.Error==null?"Загрузка справочника…":"Не удалось загрузить справочник: "+inventoryCatalogCache.Error,sheetQuiet);
+            if(inventoryCatalogCache.Error!=null&&GUILayout.Button("Повторить",GUILayout.MinHeight(44)))InvalidateCommerceCatalog();
+        }
         private int inventoryCategory;
         private Vector2 inventoryTabsScroll;
         private GUIStyle inventoryAcLabel,inventoryAcValue;
@@ -23,22 +48,26 @@ namespace DndVtt.UnityPrototype
         {
             if (hero["inventory"] is JArray) { ReadOnly(hero,"inventory","Унаследованный инвентарь сохранён без изменений"); return; }
             PrepareCompactControls();
-            if(Event.current.type==EventType.Layout&&requestedInventoryCategory.HasValue){inventoryCategory=requestedInventoryCategory.Value;requestedInventoryCategory=null;inventoryPicker=customItemOpen=false;ResetFormInput();}
+            if(Event.current.type==EventType.Layout&&requestedInventoryCategory.HasValue){inventoryCategory=requestedInventoryCategory.Value;requestedInventoryCategory=null;inventoryPicker=customItemOpen=false;requestedInventoryPicker=null;ResetFormInput();}
+            if(Event.current.type==EventType.Layout&&requestedInventoryPicker.HasValue)
+            { inventoryPicker=requestedInventoryPicker.Value;requestedInventoryPicker=null; }
+            if(inventoryPicker||inventoryCategory==3)PrepareInventoryCatalog();
             inventoryAcLabel??=new GUIStyle(cloneMetricLabel){normal={textColor=new Color(.67f,.67f,.67f)}};inventoryAcValue??=new GUIStyle(cloneSuccess){fontSize=22,alignment=TextAnchor.MiddleCenter};
             GUILayout.BeginVertical(GUI.skin.box);GUILayout.Label("Текущий КД",inventoryAcLabel);GUILayout.Label((hero["ac"]??hero["baseAC"]??10).ToString(),inventoryAcValue);GUILayout.EndVertical();
             inventoryTabsScroll=GUILayout.BeginScrollView(SwipePosition("inventory-tabs",inventoryTabsScroll),false,false,GUIStyle.none,GUIStyle.none,GUILayout.Height(42));GUILayout.BeginHorizontal();
             for(int i=0;i<inventoryNames.Length;i++)
             {float width=Mathf.Max(70,GUI.skin.button.CalcSize(new GUIContent(inventoryNames[i])).x+8);if(MeasuredMenuButton(inventoryNames[i],i==inventoryCategory?cloneBlue:GUI.skin.button,GUILayout.Width(width),GUILayout.Height(35)))requestedInventoryCategory=i;GUILayout.Space(4);}
             GUILayout.EndHorizontal();GUILayout.EndScrollView();RegisterSwipe("inventory-tabs",GUILayoutUtility.GetLastRect(),true);
-            GUILayout.Space(8);if(MeasuredMenuButton("Выбрать из справочника / Создать",cloneGreen,GUILayout.Height(39),GUILayout.ExpandWidth(true)))inventoryPicker=!inventoryPicker;
+            GUILayout.Space(8);if(MeasuredMenuButton("Выбрать из справочника / Создать",cloneGreen,GUILayout.Height(39),GUILayout.ExpandWidth(true)))requestedInventoryPicker=!inventoryPicker;
             GUILayout.Space(12);
             if (inventoryPicker)
             {
                 GUILayout.BeginVertical(GUI.skin.box); SheetSection("Справочник предметов");
                 inventoryQuery = MenuTextField("inventoryQuery", inventoryQuery,GUILayout.MinHeight(45));
-                var entries = ((JArray)CommerceCatalog["items"]).OfType<JObject>().Where(x => (string)x["inventoryCategory"] == CharacterSheetRules.InventoryCategories[inventoryCategory] && (x["name"] + " " + x["description"]).IndexOf(inventoryQuery,StringComparison.OrdinalIgnoreCase) >= 0).ToArray();
-                if (entries.Length == 0) { GUILayout.Label("Скачайте сборник этой категории из менеджера модов. Свой предмет можно создать без интернета.",sheetQuiet); if (GUILayout.Button("Открыть менеджер модов",brandBlue)) Navigate(FrontScreen.ContentManager); }
-                foreach (var entry in entries.Take(25)) if (GUILayout.Button("+ " + entry["name"],GUILayout.MinHeight(44))) { CommerceRules.AddItem(hero,entry); changed = persist = true; status = "Предмет добавлен"; }
+                var entries = inventoryEntries;
+                if(commerceCatalog==null)DrawInventoryCatalogLoading();
+                else if (entries.Length == 0) { GUILayout.Label("Скачайте сборник этой категории из менеджера модов. Свой предмет можно создать без интернета.",sheetQuiet); if (GUILayout.Button("Открыть менеджер модов",brandBlue)) Navigate(FrontScreen.ContentManager); }
+                foreach (var entry in entries) if (GUILayout.Button("+ " + entry["name"],GUILayout.MinHeight(44))) { CommerceRules.AddItem(hero,entry); changed = persist = true; status = "Предмет добавлен"; }
                 customItemOpen = GUILayout.Toggle(customItemOpen,"Создать свой предмет");
                 if (customItemOpen)
                 {
@@ -91,8 +120,12 @@ namespace DndVtt.UnityPrototype
             GUILayout.EndVertical();
             if(inventoryCategory==3)
             {
-                GUILayout.BeginVertical(GUI.skin.box);DrawCrafting(hero,ref changed,ref persist);GUILayout.EndVertical();
-                GUILayout.BeginVertical(GUI.skin.box);DrawAlchemy(hero,ref changed,ref persist);GUILayout.EndVertical();
+                if(commerceCatalog==null){GUILayout.BeginVertical(GUI.skin.box);DrawInventoryCatalogLoading();GUILayout.EndVertical();}
+                else
+                {
+                    GUILayout.BeginVertical(GUI.skin.box);DrawCrafting(hero,ref changed,ref persist);GUILayout.EndVertical();
+                    GUILayout.BeginVertical(GUI.skin.box);DrawAlchemy(hero,ref changed,ref persist);GUILayout.EndVertical();
+                }
             }
         }
         private void DrawCrafting(JObject hero, ref bool changed, ref bool persist)

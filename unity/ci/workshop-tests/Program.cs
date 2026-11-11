@@ -57,6 +57,7 @@ class Program
     static void Main(string[] args)
     {
         if(args.Length>0&&args[0]=="--text-input"){CheckTextInput();Console.WriteLine("TEXT_INPUT_PASS "+checks);return;}
+        if(args.Length>0&&args[0]=="--inventory-catalog"){Console.WriteLine("INVENTORY_CATALOG_PASS "+InventoryCatalogChecks.Run());return;}
         CheckSpellPicker();CheckTextInput();
         if (args.Length > 0 && args[0] == "--spell-picker")
         { Console.WriteLine("SPELL_PICKER_PASS " + checks); return; }
@@ -151,6 +152,7 @@ class Program
         if(args.Length>0 && args[0]=="--all-collections") { Console.WriteLine("ALL_MOD_COLLECTIONS_PASS "+AllModCollectionChecks.Run(args[1]));return; }
         if(args.Length>0 && args[0]=="--collections") { Console.WriteLine("COLLECTIONS_PASS "+CollectionChecks.Run(args[1]));return; }
         checks += CharacterArtChecks.Run()+NumericInputChecks.Run()+AdvancementChecks.Run()+SheetActionChecks.Run();
+        checks += InventoryCatalogChecks.Run();
         string root = Path.Combine(Path.GetTempPath(), "vtt-workshop-test-" + Guid.NewGuid()); Directory.CreateDirectory(root);
         try
         {

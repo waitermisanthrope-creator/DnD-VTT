@@ -11,6 +11,7 @@ static class CommerceChecks
   void Check(bool value,string name) { if(!value) throw new Exception(name); count++; }
   void Reject(Action action,string name) { bool failed=false; try { action(); } catch(FormatException) { failed=true; } Check(failed,name); }
   var commerce=store.Commerce(); var craft=(JObject)commerce["craft"]; var alchemy=(JObject)commerce["alchemy"];
+  Check(JToken.DeepEquals(commerce,store.Commerce(store.Installed())),"background catalog preserves verified composition");
   var sourceItems=store.Installed().OfType<JObject>().Where(m=>new[]{"item","craft"}.Contains((string)m["type"])).SelectMany(m=>(store.Data(m)["items"] as JArray ?? new JArray()).OfType<JObject>()).ToArray();
   Check(((JArray)commerce["items"]).Count==sourceItems.Length && sourceItems.Select(i=>(string)i["id"]).Distinct().Count()==sourceItems.Length,"all installed item IDs activated once, including optional collections");
   Check(((JArray)craft["recipes"]).Count==47,"47 recipes activated");
