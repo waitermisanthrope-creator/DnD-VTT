@@ -609,10 +609,10 @@ namespace DndVtt.UnityPrototype
             catch(Exception error){Fail(error);yield break;}
             diceWatch.Restart();Field("sheetTab",5);yield return Frame("dice-reopen");if(failed)yield break;
             Debug.Log("DICE_RUNTIME_OPEN_MS first="+firstDiceMs.ToString("F2")+" reopen="+diceWatch.Elapsed.TotalMilliseconds.ToString("F2")+" scope=WindowsPlayerIncludingScreenshot");
-            object savedDiceCatalog=typeof(LegacySessionPanel).GetField("diceAppearanceCatalog",Flags).GetValue(panel),savedDiceTask=typeof(LegacySessionPanel).GetField("diceCatalogTask",Flags).GetValue(panel);
-            var heldCatalog=new System.Threading.Tasks.TaskCompletionSource<DiceAppearanceCatalog>();Field("diceAppearanceCatalog",null);Field("diceCatalogTask",heldCatalog.Task);
+            object savedDiceCatalog=typeof(LegacySessionPanel).GetField("diceAppearanceCatalog",Flags).GetValue(panel),savedDiceTask=typeof(LegacySessionPanel).GetField("diceCatalogTask",Flags).GetValue(panel),savedDiceThemeTask=typeof(LegacySessionPanel).GetField("diceThemeTask",Flags).GetValue(panel);
+            var heldCatalog=new System.Threading.Tasks.TaskCompletionSource<DiceAppearanceCatalog>();Field("diceAppearanceCatalog",null);Field("diceThemeTask",null);Field("diceCatalogTask",heldCatalog.Task);
             yield return Frame("dice-catalog-loading");if(failed)yield break;
-            try{Check(buttonEnabled.TryGetValue("Бросить",out bool rollEnabled)&&!rollEnabled,"roll waits for appearance catalog instead of starting with wrong persisted skin");Field("diceAppearanceCatalog",savedDiceCatalog);Field("diceCatalogTask",savedDiceTask);}
+            try{Check(buttonEnabled.TryGetValue("Бросить",out bool rollEnabled)&&!rollEnabled,"roll waits for appearance catalog instead of starting with wrong persisted skin");Field("diceAppearanceCatalog",savedDiceCatalog);Field("diceThemeTask",savedDiceThemeTask);Field("diceCatalogTask",savedDiceTask);}
             catch(Exception error){Fail(error);yield break;}
             Field("sheetTab",3);
             string preCraftProfile=File.ReadAllText(panel.SavePath);var craftWatch=System.Diagnostics.Stopwatch.StartNew();Field("sheetTab",10);Field("frontScroll",Vector2.zero);
