@@ -26,7 +26,7 @@ namespace DndVtt.UnityPrototype
         }
         public const int MaxCatalogBytes = 1024 * 1024;
         public const long MaxPackageBytes = 64 * 1024 * 1024;
-        public static readonly string[] Types = { "game-system", "race", "class", "feat", "subclass", "spell", "item", "monster", "model", "environment", "texture", "animation", "map", "appearance", "collection", "craft" };
+        public static readonly string[] Types = { "game-system", "race", "class", "feat", "subclass", "spell", "item", "monster", "model", "environment", "texture", "animation", "map", "appearance", "collection", "craft", "market" };
         private JArray verifiedCache;
         private string cacheFingerprint;
         public string Root { get; }
@@ -53,6 +53,7 @@ namespace DndVtt.UnityPrototype
                     if(manifest["collectionCategory"]!=null)return "Сборники модов/"+(string)manifest["name"];
                     string category=(string)manifest["inventoryCategory"];
                     return "Инвентарь/"+(category=="weapons"?"Оружие":category=="armor"?"Броня":category=="materials"?"Материалы":category=="consumables"?"Расходники":"Хлам");
+                case "market":return "Экономика/Торговцы и рынки";
                 case "craft":return id.Contains("alchemy.ingredients")?"Крафт и алхимия/Алхимия/Ингредиенты":id.Contains("alchemy")?"Крафт и алхимия/Алхимия/Правила и катализаторы":"Крафт и алхимия/Рецепты";
                 case "map":return "3D и карты/Карты/"+(id.Contains("castle")?"Замки":id.Contains("house")?"Дома":id.Contains("tavern")?"Таверны":id.Contains("town")||id.Contains("village")?"Поселения":id.Contains("dungeon")?"Подземелья":id.Contains("stress")?"Тестовые":"Разное");
                 case "model":return "3D и карты/Модели";
@@ -84,7 +85,7 @@ namespace DndVtt.UnityPrototype
                 if (!visiting.Add(id)) throw new FormatException("Циклические зависимости сборника");
                 ValidateManifest(m); Compatible(m,platform,unity);
                 if (m["minClientVersionCode"]!=null && (m["minClientVersionCode"].Type!=JTokenType.Integer || (long)m["minClientVersionCode"]<1 || (long)m["minClientVersionCode"]>clientCode)) throw new FormatException("Обновите приложение для сборника: "+m["name"]);
-                if ((string)m["format"]=="json" && !new[]{"race","class","feat","map","model","environment","appearance","item","craft","collection"}.Contains((string)m["type"])) throw new FormatException("Часть сборника ещё не поддерживается: "+m["name"]);
+                if ((string)m["format"]=="json" && !new[]{"race","class","feat","map","model","environment","appearance","item","craft","collection","market"}.Contains((string)m["type"])) throw new FormatException("Часть сборника ещё не поддерживается: "+m["name"]);
                 foreach (string dep in ((JArray)m["dependencies"]).Values<string>()) Visit(dep,depth+1);
                 visiting.Remove(id);complete.Add(id);
                 if (!local.TryGetValue(id,out var present) || !SameInstall(present,m)) plan.Add(m.DeepClone());
@@ -210,7 +211,7 @@ namespace DndVtt.UnityPrototype
             var data = Parse(text);
             if ((int?)data["schemaVersion"] != 1 || (string)data["id"] != (string)m["id"] || (string)data["version"] != (string)m["version"] || (string)data["type"] != (string)m["type"]) throw new FormatException("Пакет не соответствует манифесту");
             string type = (string)m["type"], packageId = (string)m["id"];
-            if (!new[] { "race", "class", "feat", "map", "model", "environment", "appearance", "item", "craft", "collection" }.Contains(type)) throw new FormatException("Этот тип пока недоступен для активации");
+            if (!new[] { "race", "class", "feat", "map", "model", "environment", "appearance", "item", "craft", "collection", "market" }.Contains(type)) throw new FormatException("Этот тип пока недоступен для активации");
             if (type=="collection")
             {
                 bool itemCategory=m["collectionCategory"]==null && data["inventoryCategory"]!=null && data["collectionCategory"]==null && CharacterSheetRules.InventoryCategories.Contains((string)data["inventoryCategory"]) && (string)data["inventoryCategory"]==(string)m["inventoryCategory"];
@@ -235,6 +236,37 @@ namespace DndVtt.UnityPrototype
                 var image=images[0] as JObject??throw new FormatException("Изображение");
                 if((string)image["id"]!=packageId+".image"||string.IsNullOrWhiteSpace((string)image["name"])||!new[]{"wallpaper","icon"}.Contains((string)image["kind"])||(string)m["imageKind"]!=(string)image["kind"])throw new FormatException("Тип изображения");
                 ImageBytes(image);return data;
+            }
+
+            if(type=="market")
+            {
+                if(data.Properties().Any(p=>!new[]{"schemaVersion","id","version","type","description","departments","traders"}.Contains(p.Name))
+                    ||!(data["traders"] is JArray traders)||traders.Count<1||traders.Count>80
+                    ||!(data["departments"] is JArray departments)||departments.Count<1||departments.Count>24)
+                    throw new FormatException("Неверный набор торговцев");
+                var ids=new System.Collections.Generic.HashSet<string>();
+                foreach(JObject trader in traders)
+                {
+                    string id=(string)trader["id"],template=(string)trader["template"],name=(string)trader["name"];
+                    if(!ValidId(id)||!ids.Add(id)||!ValidId(template)||string.IsNullOrWhiteSpace(name)||name.Length>100
+                        ||!(trader["itemCategories"] is JArray categories)||categories.Count<1||categories.Count>5
+                        ||categories.Any(c=>!CharacterSheetRules.InventoryCategories.Contains((string)c))
+                        ||!(trader["nameContains"] is JArray words)&&trader["nameContains"]!=null
+                        ||(trader["nameContains"] is JArray terms&&(terms.Count>32||terms.Any(w=>w.Type!=JTokenType.String||w.ToString().Length>80)))
+                        ||(int?)trader["deriveLimit"]<0||(int?)trader["deriveLimit"]>64
+                        ||(trader["inheritStock"]!=null&&trader["inheritStock"].Type!=JTokenType.Boolean))
+                        throw new FormatException("Неверные данные торговца: "+id);
+                }
+                var departmentIds=new System.Collections.Generic.HashSet<string>();
+                foreach(JObject section in departments)
+                {
+                    string id=(string)section["id"],name=(string)section["name"];
+                    if(!ValidId(id)||!departmentIds.Add(id)||string.IsNullOrWhiteSpace(name)||name.Length>100
+                        ||!(section["traders"] is JArray list)||list.Count<1||list.Count>30
+                        ||list.Any(t=>!ids.Contains((string)t))||list.Values<string>().Distinct().Count()!=list.Count)
+                        throw new FormatException("Неверный раздел рынка: "+id);
+                }
+                return data;
             }
             if (type == "craft") { CommerceRules.ValidateCatalog(data); return data; }
             string field = type == "race" ? "races" : type == "class" ? "classes" : type == "feat" ? "feats" : type == "map" ? "maps" : type == "appearance" ? "surfaces" : type == "item" ? "items" : "objects";
@@ -332,11 +364,12 @@ namespace DndVtt.UnityPrototype
         public JObject Commerce(JArray installed)
         {
             if (installed == null) throw new ArgumentNullException(nameof(installed));
-            var result = new JObject { ["items"] = new JArray(), ["craft"] = new JObject { ["materials"] = new JArray(), ["recipes"] = new JArray(), ["toolAliases"] = new JObject(), ["toolLabels"] = new JObject() }, ["alchemy"] = new JObject { ["ingredients"] = new JArray(), ["catalysts"] = new JArray(), ["synergy"] = new JArray(), ["conflict"] = new JArray(), ["effects"] = new JObject(), ["extraTrigger"] = new JObject() } };
+            var result = new JObject { ["items"] = new JArray(), ["markets"] = new JArray(), ["craft"] = new JObject { ["materials"] = new JArray(), ["recipes"] = new JArray(), ["toolAliases"] = new JObject(), ["toolLabels"] = new JObject() }, ["alchemy"] = new JObject { ["ingredients"] = new JArray(), ["catalysts"] = new JArray(), ["synergy"] = new JArray(), ["conflict"] = new JArray(), ["effects"] = new JObject(), ["extraTrigger"] = new JObject() } };
             foreach (JObject manifest in installed)
             {
-                if ((string)manifest["format"] != "json" || !new[] { "item", "craft" }.Contains((string)manifest["type"])) continue;
+                if ((string)manifest["format"] != "json" || !new[] { "item", "craft", "market" }.Contains((string)manifest["type"])) continue;
                 var data = Data(manifest);
+                if ((string)manifest["type"] == "market") { ((JArray)result["markets"]).Add(data.DeepClone()); continue; }
                 foreach (JObject item in data["items"] as JArray ?? new JArray())
                 {
                     var copy = (JObject)item.DeepClone(); copy["packageId"] = manifest["id"].DeepClone(); copy["packageVersion"] = manifest["version"].DeepClone(); ((JArray)result["items"]).Add(copy);
