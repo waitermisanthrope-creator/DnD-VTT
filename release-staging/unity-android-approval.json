@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "version": "1.00.48",
-  "candidateRunId": 42993099242,
+  "version": "1.00.49",
+  "candidateRunId": 42997524765,
   "approved": true,
   "releaseType": "public-prerelease",
   "channel": "unity-experiment",
   "scope": "Android-only",
-  "note": "Continue owner-authorized Android in-app updates; Windows publication remains deferred. Android job130430473008 succeeded from c5f9a8a9fa58862c2738e58e24984e824bfca9ad. Only inventory reference background loading and cached search; existing UI/search/order preserved. Recheck original signer/package/version and public downloaded bytes/SHA before activating feed."
+  "note": "Owner requests next Android update: electrum off by default, metal-colored PM/ZM/SM/MM labels, market restored with entry between wallet log and current AC. Android job130445218576 succeeded from 3a8f455f1b6576a69bfdb49c029772b790acd1ef. Inventory48 loading/search optimization and spell/input47 fixes retained. Windows publication remains deferred. Recheck original signer/package/version and public downloaded bytes/SHA before activating feed."
 }

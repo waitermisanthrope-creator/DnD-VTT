@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода e6d23ba3c503. Git содержит 2155 файлов.
+Снимок кода 3a8f455f1b65. Git содержит 2155 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 8151 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 108858 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 147356 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 186693 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 109047 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 147545 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 186882 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1213,7 +1213,7 @@
 | №1192 PROJECT_ATLAS.md | генерируется | машиночитаемая карта репозитория для ИИ |
 | №1193 PROJECT_ATLAS.txt | генерируется | человекочитаемая карта репозитория |
 | №1194 README.md | 145 B | документация или отчёт: README |
-| №1195 release-staging/unity-android-approval.json | 570 B | данные/конфигурация: unity android approval |
+| №1195 release-staging/unity-android-approval.json | 652 B | данные/конфигурация: unity android approval |
 | №1196 release-staging/unity-paired-approval.json | 1614 B | данные/конфигурация: unity paired approval |
 | №1197 release-staging/unity-release.json | 3914 B | данные/конфигурация: unity release |
 | №1198 smoke_back_v2_sprite-1.png | 1707378 B | текстура/изображение: smoke back v2 sprite 1 |
@@ -2120,7 +2120,7 @@
 | №2099 updates/previous-stable.json | 179808 B | метаданные обновлений: previous stable |
 | №2100 updates/README.md | 233 B | документация или отчёт: README |
 | №2101 updates/stable.json | 179809 B | метаданные обновлений: stable |
-| №2102 updates/unity-changelog.json | 55919 B | метаданные обновлений: unity changelog |
+| №2102 updates/unity-changelog.json | 56791 B | метаданные обновлений: unity changelog |
 | №2103 updates/unity-experiment.json | 918 B | метаданные обновлений: unity experiment |
 | №2104 vignette_v2_sprite.png | 1213593 B | текстура/изображение: vignette v2 sprite |
 | №2105 VTT_PROJECT_MANIFEST_V70.json | 44370 B | устаревший список V70, не актуален |

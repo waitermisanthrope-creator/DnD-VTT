@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит e6d23ba3c503. Файлов: 2155
+Коммит 3a8f455f1b65. Файлов: 2155
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,9 +56,9 @@
 0040. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (8151 B)
-0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (108858 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (147356 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (186693 B)
+0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (109047 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (147545 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (186882 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1208,7 +1208,7 @@
 1192. PROJECT_ATLAS.md — машиночитаемая карта репозитория для ИИ (генерируется)
 1193. PROJECT_ATLAS.txt — человекочитаемая карта репозитория (генерируется)
 1194. README.md — документация или отчёт: README (145 B)
-1195. release-staging/unity-android-approval.json — данные/конфигурация: unity android approval (570 B)
+1195. release-staging/unity-android-approval.json — данные/конфигурация: unity android approval (652 B)
 1196. release-staging/unity-paired-approval.json — данные/конфигурация: unity paired approval (1614 B)
 1197. release-staging/unity-release.json — данные/конфигурация: unity release (3914 B)
 1198. smoke_back_v2_sprite-1.png — текстура/изображение: smoke back v2 sprite 1 (1707378 B)
@@ -2115,7 +2115,7 @@
 2099. updates/previous-stable.json — метаданные обновлений: previous stable (179808 B)
 2100. updates/README.md — документация или отчёт: README (233 B)
 2101. updates/stable.json — метаданные обновлений: stable (179809 B)
-2102. updates/unity-changelog.json — метаданные обновлений: unity changelog (55919 B)
+2102. updates/unity-changelog.json — метаданные обновлений: unity changelog (56791 B)
 2103. updates/unity-experiment.json — метаданные обновлений: unity experiment (918 B)
 2104. vignette_v2_sprite.png — текстура/изображение: vignette v2 sprite (1213593 B)
 2105. VTT_PROJECT_MANIFEST_V70.json — устаревший список V70, не актуален (44370 B)
