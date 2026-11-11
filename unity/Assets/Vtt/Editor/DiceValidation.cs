@@ -85,6 +85,18 @@ public static class DiceValidation
         Check(tilted.Read(supportPose,out _,.7f,.04f)==8,"clear dominant numbered face on actual tentacle support plane");
         var vertexPose=Quaternion.FromToRotation(DiceGeometry.Create(20).vertices[0].normalized,Vector3.up);
         Check(DiceGeometry.Create(20).Read(vertexPose,out _,.7f,.04f)==0,"five-way vertex tie is not fabricated");
+        // Same native renderer/process, actual old initialize sequence versus one
+        // preview and retained reopen. Not Android-device performance claims.
+        var benchmark=System.Diagnostics.Stopwatch.StartNew();
+        using(var oldPath=new DiceTable()){oldPath.Preview(20);oldPath.SetTray(null);oldPath.SetTheme(null);}
+        benchmark.Stop();double legacyMs=benchmark.Elapsed.TotalMilliseconds;
+        benchmark.Restart();
+        using(var retained=new DiceTable(false))
+        {
+            retained.Preview(20);benchmark.Stop();double coldMs=benchmark.Elapsed.TotalMilliseconds;
+            benchmark.Restart();for(int repeat=0;repeat<100;repeat++)Check(retained.Image!=null,"reopen retains native image");benchmark.Stop();
+            Debug.Log("DICE_NATIVE_OPEN_BENCH legacyInitializeMs="+legacyMs.ToString("F2")+" optimizedInitializeMs="+coldMs.ToString("F2")+" retained100ReopensMs="+benchmark.Elapsed.TotalMilliseconds.ToString("F3")+" scope=UnityEditorRenderer");
+        }
         ExpectedSceneCount=SceneManager.sceneCount;int bodies=UnityEngine.Object.FindObjectsByType<Rigidbody>(FindObjectsSortMode.None).Length;
         string folder=Path.Combine("Builds","DiceValidation");Directory.CreateDirectory(folder);
         int rolls=0;

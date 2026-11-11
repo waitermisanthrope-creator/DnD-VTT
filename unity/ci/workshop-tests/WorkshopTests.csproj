@@ -7,6 +7,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="UiLifecycleChecks.cs" />
     <Compile Include="SheetSwipeChecks.cs" />
+    <Compile Include="DiceLoadingChecks.cs" />
+    <Compile Include="../../Assets/Vtt/Runtime/DiceAppearanceCatalog.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/SheetSwipeMotion.cs" />
     <Compile Include="WalletMarketChecks.cs" />
     <Compile Include="MarketChecks.cs" />

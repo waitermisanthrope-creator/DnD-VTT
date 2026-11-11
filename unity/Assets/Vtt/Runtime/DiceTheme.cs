@@ -23,7 +23,9 @@ namespace DndVtt.UnityPrototype
         }
         public static DiceTheme ForSelection(DiceTheme[] installed,string icon,string selected,bool followIcon)
             =>followIcon?ForIcon(installed,icon):installed?.FirstOrDefault(theme=>theme.Id==selected);
-        public static DiceTheme Read(JObject data,bool includeTexture=false)
+        public static DiceTheme Read(JObject data,bool includeTexture=false)=>ReadCore(data,includeTexture,false);
+        internal static DiceTheme ReadVerified(JObject data,bool includeTexture=false)=>ReadCore(data,includeTexture,true);
+        private static DiceTheme ReadCore(JObject data,bool includeTexture,bool verified)
         {
             string shape=(string)data["shape"],body=(string)data["body"],trim=(string)data["trim"];
             float length=(float?)data["length"]??float.NaN,width=(float?)data["width"]??float.NaN;
@@ -34,7 +36,7 @@ namespace DndVtt.UnityPrototype
             byte[] png=null;int faceTile=(int?)data["faceTile"]??0,trimTile=(int?)data["trimTile"]??3;
             if(data["albedo"]!=null) {
                 if(!(data["albedo"] is JObject image)||faceTile<0||faceTile>3||trimTile<0||trimTile>3)throw new FormatException("Материал дайса");
-                var bytes=WorkshopStore.ImageBytes(image);if(numbered&&((int?)image["width"]!=1920||(int?)image["height"]!=1728))throw new FormatException("Размер нумерованного атласа");if(includeTexture)png=bytes;
+                var bytes=verified?(includeTexture?Convert.FromBase64String((string)image["pngBase64"]):null):WorkshopStore.ImageBytes(image);if(numbered&&((int?)image["width"]!=1920||(int?)image["height"]!=1728))throw new FormatException("Размер нумерованного атласа");if(includeTexture)png=bytes;
             }
             return new DiceTheme { Behavior=behavior,NumberedAtlas=numbered,TextureSha256=(string)data["albedo"]?["sha256"],TintTexture=(bool?)data["tintTexture"]??false,TexturePng=png,FaceTile=faceTile,TrimTile=trimTile,Id=(string)data["id"],Name=(string)data["name"],Icon=(string)data["iconPackage"],Shape=shape,Body=body,Trim=trim,Length=length,Width=width };
         }

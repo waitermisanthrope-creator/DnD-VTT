@@ -60,7 +60,7 @@ namespace DndVtt.UnityPrototype
         public int SlimeHops=>dice.Sum(d=>d.hops);
         public int TowerGuides=>dice.Sum(d=>d.guides);
         private float throwStrength=.45f;
-        public DiceTable()
+        public DiceTable(bool preview=true)
         {
             scene=SceneManager.CreateScene("VttDice-"+Guid.NewGuid().ToString("N"),new CreateSceneParameters(LocalPhysicsMode.Physics3D));physics=scene.GetPhysicsScene();
             try {
@@ -75,7 +75,7 @@ namespace DndVtt.UnityPrototype
             var view=Child("Dice camera");camera=view.AddComponent<Camera>();camera.enabled=false;camera.gameObject.AddComponent<UniversalAdditionalCameraData>().renderPostProcessing=false;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.025f,.035f,.045f);camera.cullingMask=1<<31;
             camera.transform.localPosition=new Vector3(0,9,-6);camera.transform.LookAt(origin);camera.orthographic=true;camera.orthographicSize=4;camera.nearClipPlane=.1f;camera.farClipPlane=50;
             Image=new RenderTexture(768,640,24,RenderTextureFormat.ARGB32) { name="Dice view",antiAliasing=1 };Image.Create();camera.targetTexture=Image;camera.aspect=768f/640;
-            tableResourceCount=owned.Count;Preview(20);
+            tableResourceCount=owned.Count;if(preview)Preview(20);
             }catch { Dispose();throw; }
         }
         private GameObject Child(string name)

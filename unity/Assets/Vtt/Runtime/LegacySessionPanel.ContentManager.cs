@@ -105,13 +105,13 @@ namespace DndVtt.UnityPrototype
             }
             creationCatalog = null;
         }
-        private void OnWorkshopLowMemory() { ReleaseHeroArt(); ReleaseAppearanceImages(false);workshop?.ReleaseBundleCache(); }
+        private void OnWorkshopLowMemory() { if(diceTable==null||!diceTable.Throwing)CloseDiceTable();ReleaseHeroArt(); ReleaseAppearanceImages(false);workshop?.ReleaseBundleCache(); }
         private void OnDestroy() { ResetFormInput(); ReleaseHeroArt(); CloseCharacterStudio(); CloseDiceTable(); CloseWorkshopPreviews(); Application.lowMemory -= OnWorkshopLowMemory; workshop?.Dispose(); ReleaseAppearanceImages(true);ReleaseBrandStyles();  ApplyScreenSleep(false); }
         private void RefreshWorkshop()
         {
             // Destroy geometry before unloading owned resources, then reconstruct
             // from preserved JSON. Missing resources become visible placeholders.
-            contentViewDirty=true;ReleaseAppearanceImages(true);
+            contentViewDirty=true;ReleaseAppearanceImages(true);InvalidateDiceContent();
             world.ClearWorkshopGeometry(); workshop.Dispose(); workshop = new WorkshopRuntime(workshopStore); workshop.ActivateData(); creationCatalog = null; InvalidateCommerceCatalog(); itemCatalog = null;
             world.Workshop = workshop; world.ReloadCurrent();
         }

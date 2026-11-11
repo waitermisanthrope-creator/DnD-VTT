@@ -592,6 +592,17 @@ namespace DndVtt.UnityPrototype
             Screen.SetResolution(600,960,FullScreenMode.Windowed);yield return new WaitForSecondsRealtime(.3f);
             try{Check(!(bool)typeof(LegacySessionPanel).GetField("marketOpen",Flags).GetValue(panel)&&File.ReadAllText(panel.SavePath)==classicDisk,"closing market leaves character archive unchanged");}
             catch(Exception error){Fail(error);yield break;}
+            Field("sheetTab",5);var diceWatch=System.Diagnostics.Stopwatch.StartNew();
+            float diceDeadline=Time.realtimeSinceStartup+60;
+            while(typeof(LegacySessionPanel).GetField("diceTable",Flags).GetValue(panel)==null&&Time.realtimeSinceStartup<diceDeadline)yield return null;
+            yield return Frame("dice-first-open");if(failed)yield break;
+            object retainedDice=typeof(LegacySessionPanel).GetField("diceTable",Flags).GetValue(panel);double firstDiceMs=diceWatch.Elapsed.TotalMilliseconds;
+            Field("sheetTab",0);yield return new WaitForSecondsRealtime(.2f);
+            try{Check(retainedDice!=null&&ReferenceEquals(retainedDice,typeof(LegacySessionPanel).GetField("diceTable",Flags).GetValue(panel)),"leaving dice suspends one bounded table");}
+            catch(Exception error){Fail(error);yield break;}
+            diceWatch.Restart();Field("sheetTab",5);yield return Frame("dice-reopen");if(failed)yield break;
+            Debug.Log("DICE_RUNTIME_OPEN_MS first="+firstDiceMs.ToString("F2")+" reopen="+diceWatch.Elapsed.TotalMilliseconds.ToString("F2")+" scope=WindowsPlayerIncludingScreenshot");
+            Field("sheetTab",3);
             Field("requestedInventoryCategory",(int?)1);Field("frontScroll",new Vector2(0,600));yield return new WaitForSecondsRealtime(.3f);
             yield return Frame("classic-inventory-armor-portrait");if(failed)yield break;
             yield return ClickNativeButton("Выбрать из справочника / Создать");if(failed)yield break;

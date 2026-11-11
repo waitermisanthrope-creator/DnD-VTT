@@ -6,7 +6,7 @@ namespace DndVtt.UnityPrototype
 {
     public sealed partial class LegacySessionPanel
     {
-        private DiceTray[] diceTrays;
+        private DiceTray[] diceTrays=Array.Empty<DiceTray>();
         private bool diceTrayPicker,ownsDiceSensor;
         private Accelerometer diceSensor;
         private readonly DiceMotion diceMotion=new DiceMotion();

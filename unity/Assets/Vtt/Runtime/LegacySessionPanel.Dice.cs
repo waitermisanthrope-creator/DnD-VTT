@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,9 +13,57 @@ namespace DndVtt.UnityPrototype
     public sealed partial class LegacySessionPanel
     {
         private DiceTable diceTable;
+        private DiceAppearanceCatalog diceAppearanceCatalog;
+        private Task<DiceAppearanceCatalog> diceCatalogTask;
+        private Task<(DiceTheme theme,string error)> diceThemeTask;
+        private string dicePendingThemeKey;
+        private bool dicePreparing,diceTrayRestorePending;
+        private string diceLastRoll="";
+        private float diceLastVisible;
+        private bool DicePageVisible=>screen==FrontScreen.Dice||(screen==FrontScreen.Sheet&&sheetTab==5&&!marketOpen);
+        private void StartDiceCatalog()
+        {
+            if(diceAppearanceCatalog!=null||diceCatalogTask!=null)return;
+            try {InitializeWorkshop();var manifests=workshopStore.Installed();string root=workshopStore.Root;
+                diceCatalogTask=Task.Run(()=>DiceAppearanceCatalog.Load(manifests,new WorkshopStore(root).Data));}
+            catch(Exception error){diceInputError="Не удалось прочитать наборы: "+error.Message;diceAppearanceCatalog=new DiceAppearanceCatalog();}
+        }
+        private void PollDiceCatalog()
+        {
+            if(diceCatalogTask!=null&&diceCatalogTask.IsCompleted)
+            {
+                if(diceCatalogTask.IsFaulted)diceInputError="Не удалось прочитать наборы: "+diceCatalogTask.Exception.GetBaseException().Message;
+                else {diceAppearanceCatalog=diceCatalogTask.Result;diceThemes=diceAppearanceCatalog.Themes;diceTrays=diceAppearanceCatalog.Trays;if(diceThemeSelection>diceThemes.Length)diceThemeSelection=0;diceInputError=diceAppearanceCatalog.Warning;diceIconSelection=null;diceTrayRestorePending=true;}
+                diceCatalogTask=null;
+            }
+            if(diceTrayRestorePending&&diceTable!=null&&!diceTable.Throwing)
+            {var tray=Array.Find(diceTrays,t=>t.Id==PlayerPrefs.GetString("dndvtt.dice.tray",""));if(tray!=null)diceTable.SetTray(tray);diceTrayRestorePending=false;}
+            if(diceThemeTask!=null&&diceThemeTask.IsCompleted&&diceTable!=null&&!diceTable.Throwing)
+            {
+                var result=diceThemeTask.Result;diceThemeTask=null;
+                if(dicePendingThemeKey==DiceAppearanceKey())
+                {if(result.error!=null)diceInputError=result.error;else diceTable.SetTheme(result.theme);diceIconSelection=dicePendingThemeKey;}
+            }
+        }
+        private string DiceAppearanceKey()
+        {
+            bool follow=PlayerPrefs.GetInt("dndvtt.dice.followIcon",PlayerPrefs.HasKey("dndvtt.dice.theme")?0:1)==1;
+            return follow?"icon:"+PlayerPrefs.GetString(AppearancePreference("icon"),"dnd.appearance.icon.default"):"set:"+PlayerPrefs.GetString("dndvtt.dice.theme","");
+        }
+        private IEnumerator PrepareDiceTable()
+        {
+            dicePreparing=true;yield return null;
+            try
+            {
+                if(DicePageVisible&&diceTable==null)
+                {var watch=System.Diagnostics.Stopwatch.StartNew();diceTable=new DiceTable(false);diceTable.Preview(DiceSides[diceSelection]);watch.Stop();Debug.Log("DICE_TABLE_CREATE_MS "+watch.Elapsed.TotalMilliseconds.ToString("F2",CultureInfo.InvariantCulture));}
+            }
+            catch(Exception error){diceError="Не удалось открыть 3D-стол: "+error.Message;}
+            finally{dicePreparing=false;}
+        }
         private int diceSelection=5;
         private string diceError;
-        private DiceTheme[] diceThemes;
+        private DiceTheme[] diceThemes=Array.Empty<DiceTheme>();
         private int diceThemeSelection,diceThemePage;
         private bool diceThemePicker;
         private string diceIconSelection;
@@ -24,32 +74,39 @@ namespace DndVtt.UnityPrototype
         private string diceQuantity="1";
         private bool diceReplaceQuantity;
         private static readonly int[] DiceSides={4,6,8,10,12,20,100};
-        private void CloseDiceTable() { StopDiceSensor();diceTable?.Dispose();diceTable=null;diceThemes=null;diceTrays=null; }
+        private void CloseDiceTable() { StopDiceSensor();diceTable?.Dispose();diceTable=null;diceThemes=Array.Empty<DiceTheme>();diceTrays=Array.Empty<DiceTray>();diceThemeSelection=0;diceThemePage=0;diceAppearanceCatalog=null;diceCatalogTask=null;diceThemeTask=null;diceIconSelection=null; }
+        private void InvalidateDiceContent()
+        {
+            if(diceTable==null||!diceTable.Throwing){CloseDiceTable();return;}
+            diceAppearanceCatalog=null;diceCatalogTask=null;diceThemeTask=null;diceIconSelection=null;
+        }
         private void UpdateDiceTable()
         {
-            bool visible=screen==FrontScreen.Dice||(screen==FrontScreen.Sheet&&sheetTab==5);
-            if(!visible) { if(diceTable!=null)CloseDiceTable();return; }
+            if(!Application.isFocused){StopDiceSensor();return;}
+            bool visible=DicePageVisible;
+            if(!visible) {StopDiceSensor();if(diceTable!=null&&!diceTable.Throwing&&Time.unscaledTime-diceLastVisible>120)CloseDiceTable();return;}
+            diceLastVisible=Time.unscaledTime;PollDiceCatalog();
             if(diceTable==null)return;
             try { UpdateDiceSensor();diceTable.Tick(Time.unscaledDeltaTime); }
             catch(Exception error) { CloseDiceTable();diceError="3D-стол временно недоступен: "+error.Message;return; }
-            if(diceTable.Value.HasValue)rollResult=diceTable.Result;
+            if(diceTable.Value.HasValue)diceLastRoll=rollResult=diceTable.Result;
         }
         // Manual installed-set selection and icon-following are distinct persisted modes.
         private void SyncDiceIcon()
         {
-            if(diceTable==null||diceTable.Throwing)return;
-            bool follow=PlayerPrefs.GetInt("dndvtt.dice.followIcon",PlayerPrefs.HasKey("dndvtt.dice.theme")?0:1)==1;
-            string icon=PlayerPrefs.GetString(AppearancePreference("icon"),"dnd.appearance.icon.default");
-            string selected=PlayerPrefs.GetString("dndvtt.dice.theme","");
-            string key=(follow?"icon:":"set:")+(follow?icon:selected);
-            if(key==diceIconSelection)return;
-            var resolved=DiceTheme.ForSelection(diceThemes,icon,selected,follow);
-            diceThemeSelection=Array.IndexOf(diceThemes??Array.Empty<DiceTheme>(),resolved)+1;
-            if(resolved!=null) {
-                var manifest=workshopStore.Find(resolved.Id.Substring(0,resolved.Id.Length-6));
-                if(manifest!=null)resolved=DiceTheme.Read((JObject)workshopStore.Data(manifest)["diceThemes"][0],true);
-            }
-            diceTable.SetTheme(resolved);diceIconSelection=key;diceThemePage=diceThemeSelection/6;
+            if(diceTable==null||diceTable.Throwing||diceAppearanceCatalog==null||diceThemeTask!=null)return;
+            string key=DiceAppearanceKey();if(key==diceIconSelection)return;
+            bool follow=key.StartsWith("icon:",StringComparison.Ordinal);
+            var resolved=DiceTheme.ForSelection(diceThemes,follow?key.Substring(5):"",follow?"":key.Substring(4),follow);
+            diceThemeSelection=Array.IndexOf(diceThemes??Array.Empty<DiceTheme>(),resolved)+1;diceThemePage=diceThemeSelection/6;
+            if(resolved==null){if(diceTable.ActiveThemeId!="")diceTable.SetTheme(null);diceIconSelection=key;return;}
+            if(!diceAppearanceCatalog.ThemePackages.TryGetValue(resolved.Id,out var manifest)){diceIconSelection=key;return;}
+            string root=workshopStore.Root;dicePendingThemeKey=key;
+            diceThemeTask=Task.Run(()=>
+            {
+                try {return (DiceTheme.ReadVerified((JObject)new WorkshopStore(root).Data(manifest)["diceThemes"][0],true),(string)null);}
+                catch(Exception error){return ((DiceTheme)null,"Не удалось подготовить набор: "+error.Message);}
+            });
         }
         private void DrawDiceThemePicker()
         {
@@ -127,18 +184,10 @@ namespace DndVtt.UnityPrototype
         private void DrawDiceTable()
         {
             GUILayout.Label("Объёмные дайсы",heading);
-            if(diceTable==null&&diceError==null) {
-                try { diceTable=new DiceTable();diceTable.Preview(DiceSides[diceSelection]);
-                    InitializeWorkshop();
-                    diceThemes=workshopStore.Installed().OfType<JObject>().Where(m=>(string)m["imageKind"]=="dice").Select(m=>DiceTheme.Read((JObject)workshopStore.Data(m)["diceThemes"][0])).ToArray();
-                    diceTrays=workshopStore.Installed().OfType<JObject>().Where(m=>(string)m["imageKind"]=="dice-tray").Select(m=>DiceTray.Read((JObject)workshopStore.Data(m)["diceTrays"][0])).ToArray();
-                    diceTable.SetTray(diceTrays.FirstOrDefault(t=>t.Id==PlayerPrefs.GetString("dndvtt.dice.tray","")));
-                    diceIconSelection=null;SyncDiceIcon(); }
-                catch(Exception error) { CloseDiceTable();diceError="Не удалось открыть 3D-стол. Обычные броски доступны в листе героя. "+error.Message; }
-            }
+            if(Event.current.type==EventType.Layout){StartDiceCatalog();PollDiceCatalog();if(diceTable==null&&diceError==null&&!dicePreparing)StartCoroutine(PrepareDiceTable());}
             if(diceTable==null) {
-                GUILayout.Label(diceError,muted);
-                if(GUILayout.Button("Повторить",GUILayout.MinHeight(54)))diceError=null;
+                GUILayout.Label(diceError??"Подготовка 3D-стола…",muted);
+                if(diceError!=null&&GUILayout.Button("Повторить",GUILayout.MinHeight(54)))diceError=null;
                 // Keep the existing lightweight rolls accessible if the GPU cannot create a table.
                 foreach(int sides in DiceSides)if(GUILayout.Button("Бросить d"+sides,GUILayout.MinHeight(48)))Roll("d"+sides,sides,0);
                 GUILayout.Label(rollResult);return;
@@ -156,10 +205,11 @@ namespace DndVtt.UnityPrototype
             Rect image=GUILayoutUtility.GetRect(1,height,GUILayout.ExpandWidth(true));
             RegisterMenuControl("dice-viewport","front",image);
             if(Event.current.type==EventType.Repaint)GUI.DrawTexture(image,diceTable.Image,ScaleMode.ScaleToFit,false);
-            GUILayout.Label(diceTable.Result,heading);
+            GUILayout.Label(diceTable.Value.HasValue||diceLastRoll.Length==0?diceTable.Result:diceLastRoll,heading);
             GUI.enabled=enabled&&!diceTable.Throwing;
             GUILayout.Label(diceGroups.Count==0?"Добавьте дайсы для броска":DiceGroupExpression(),muted);
-            GUI.enabled=GUI.enabled&&diceGroups.Count>0&&diceEditGroup<0;
+            if(diceThemeTask!=null)GUILayout.Label("Подготовка выбранного набора…",muted);
+            GUI.enabled=GUI.enabled&&diceGroups.Count>0&&diceEditGroup<0&&diceThemeTask==null;
             if(GUILayout.Button(diceTable.Throwing?"Бросок…":"Бросить",brandGreen,GUILayout.MinHeight(62))) {
                 try { diceTable.Throw(DiceGroupExpression());diceInputError="";diceAddPicker=false;diceEditGroup=-1; }
                 catch(FormatException error) { diceInputError=error.Message; }
