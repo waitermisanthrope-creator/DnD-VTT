@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "version": "1.00.13",
-  "candidateRunId": 39646171342,
+  "version": "1.00.47",
+  "candidateRunId": 42983147959,
   "approved": true,
   "releaseType": "public-prerelease",
   "channel": "unity-experiment",
   "scope": "Android-only",
-  "note": "Owner requires a higher version than installed 1.00.12. Approve 1.00.13/versionCode 10013, source ccf264ec, with swipe fix and role-scoped status panels. Wait for successful candidate; preserve package/signature and verify public bytes/SHA before feed activation."
+  "note": "Owner explicitly requests Android in-app update now and defers Windows. Promote the successful signed Android job130398022222 from sourcec463ac018961b4c6d83e1b3482d0bd5c45a9d85f. Published46 plus only spell browsing and in-place text caret; unfinished market preserved in backup branch and excluded. Recheck original certificate/package/version and public downloaded bytes/SHA before activating feed."
 }
