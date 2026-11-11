@@ -394,9 +394,10 @@ class Program
             Check(!((JArray)afterRemoval["races"]).Any(r => (string)r["id"] == "tortle") && !((JArray)afterRemoval["classes"]).Any(c => (string)c["id"] == "blood_hunter") && !((JArray)afterRemoval["feats"]).Any(f => (string)f["id"] == "athlete"), "uninstall removes only optional picker entries");
             Check(JToken.DeepEquals(new LegacyCharacterArchive(archiveText).Snapshot(0), optionalHero), "old downloaded character fully survives removed packages and restart");
             checks += CommerceChecks.Run(store,appRoot);
-            if(File.Exists(Path.Combine(source,"DnD-VTT-Content/packages/dnd.collections.weapons-1.0.0.json"))) checks += CollectionChecks.Run(Path.Combine(source,"DnD-VTT-Content"));
+            // Versioned filenames must never silently disable collection gates.
+            checks += CollectionChecks.Run(Path.Combine(source,"DnD-VTT-Content"));
             checks += AccountGestureChecks.Run(appRoot);
-            if(File.Exists(Path.Combine(source,"DnD-VTT-Content/packages/dnd.collections.races-1.0.0.json"))) checks += AllModCollectionChecks.Run(source);
+            checks += AllModCollectionChecks.Run(source);
             var originalManifest = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source, "DnD-VTT-Content/catalog/v3/index.json")), "packages").OfType<JObject>().First();
             var edited = (JObject)originalManifest.DeepClone(); edited["bytes"] = WorkshopStore.MaxPackageBytes + 1;
             Reject(() => WorkshopStore.ValidateManifest(edited), "oversized payload");

@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит 496b2cdb4c30. Файлов: 2151
+Коммит 79ebf5a378f2. Файлов: 2151
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,9 +56,9 @@
 0040. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (8151 B)
-0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (98085 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (136583 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (175920 B)
+0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (99448 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (137946 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (177283 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -1826,7 +1826,7 @@
 1810. unity/Assets/Vtt/Editor/UnityReleaseBuild.cs.meta — вспомогательный файл: UnityReleaseBuild.cs (60 B)
 1811. unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs — вспомогательный файл: WorkshopBundleBuild (3632 B)
 1812. unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs.meta — вспомогательный файл: WorkshopBundleBuild.cs (60 B)
-1813. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs — вспомогательный файл: WorkshopEditorValidation (30738 B)
+1813. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs — вспомогательный файл: WorkshopEditorValidation (31711 B)
 1814. unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs.meta — вспомогательный файл: WorkshopEditorValidation.cs (60 B)
 1815. unity/Assets/Vtt/Resources.meta — вспомогательный файл: Resources (172 B)
 1816. unity/Assets/Vtt/Resources/Branding.meta — вспомогательный файл: Branding (172 B)
@@ -2058,7 +2058,7 @@
 2042. unity/ci/workshop-tests/CommerceChecks.cs — вспомогательный файл: CommerceChecks (4694 B)
 2043. unity/ci/workshop-tests/MarketChecks.cs — вспомогательный файл: MarketChecks (11081 B)
 2044. unity/ci/workshop-tests/NumericInputChecks.cs — вспомогательный файл: NumericInputChecks (2630 B)
-2045. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (45646 B)
+2045. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (45529 B)
 2046. unity/ci/workshop-tests/SheetActionChecks.cs — вспомогательный файл: SheetActionChecks (11507 B)
 2047. unity/ci/workshop-tests/WorkshopTests.csproj — вспомогательный файл: WorkshopTests (2428 B)
 2048. unity/ContentSources~/catalog.full.json — данные/конфигурация: catalog.full (1259265 B)

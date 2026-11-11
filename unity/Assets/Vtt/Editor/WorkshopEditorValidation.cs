@@ -66,7 +66,8 @@ public static class WorkshopEditorValidation
     {
         var roots=manifests.OfType<JObject>().Where(m=>(string)m["collectionRole"]=="category").ToArray();
         if(roots.Length==0)return;
-        Check(roots.Length==15,"all fifteen libraries in actual live catalogs");
+        var requiredRoots=new[]{"weapons","armor","materials","consumables","junk"}.Concat(WorkshopStore.ModCollectionCategories).Select(x=>"dnd.collections."+x).ToHashSet();
+        Check(requiredRoots.IsSubsetOf(roots.Select(m=>(string)m["id"]).ToHashSet()),"all base libraries remain present alongside published additions");
         var go=new GameObject("Category collection menu validation");
         try {
             var panel=go.AddComponent<LegacySessionPanel>();var flags=BindingFlags.Instance|BindingFlags.NonPublic;var type=typeof(LegacySessionPanel);
@@ -75,11 +76,12 @@ public static class WorkshopEditorValidation
             type.GetField("contentCategory",flags).SetValue(panel,0); // dedicated Collections page is the default
             type.GetMethod("RebuildContentView",flags).Invoke(panel,null);
             var view=(System.Collections.Generic.IEnumerable<JObject>)type.GetField("contentView",flags).GetValue(panel);
-            Check(view.Count()==15&&view.All(m=>(string)m["collectionRole"]=="category"),"real menu shows all fifteen libraries rather than individual mods");
+            Check(view.Count()==roots.Length&&view.Select(m=>(string)m["id"]).ToHashSet().SetEquals(roots.Select(m=>(string)m["id"])),"real menu shows exactly the published category roots");
             Check(view.Take(5).Select(m=>(string)m["inventoryCategory"]).SequenceEqual(new[]{"weapons","armor","materials","consumables","junk"}),"existing item category order retained");
-            Check(view.Skip(5).Select(m=>(string)m["collectionCategory"]).SequenceEqual(WorkshopStore.ModCollectionCategories),"all non-item categories follow in predictable order");
+            Check(view.Skip(5).Select(m=>(string)m["collectionCategory"]).Distinct().SequenceEqual(WorkshopStore.ModCollectionCategories),"all non-item categories follow in predictable order");
             var firstPage=(System.Collections.Generic.IEnumerable<JObject>)type.GetMethod("VisibleContentPage",flags).Invoke(panel,null);
-            Check(firstPage.Count()==15,"all fifteen libraries fit on the first collection page");
+            int limit=(int)type.GetProperty("ContentPageLimit",flags).GetValue(panel);
+            Check(firstPage.Count()==Math.Min(roots.Length,limit)&&firstPage.Select(m=>(string)m["id"]).SequenceEqual(view.Take(limit).Select(m=>(string)m["id"])),"collection page contains the exact bounded catalog slice");
             type.GetMethod("SwitchContentPage",flags).Invoke(panel,new object[]{false});
             type.GetField("contentShowParts",flags).SetValue(panel,true);type.GetMethod("RebuildContentView",flags).Invoke(panel,null);
             view=(System.Collections.Generic.IEnumerable<JObject>)type.GetField("contentView",flags).GetValue(panel);
@@ -90,7 +92,7 @@ public static class WorkshopEditorValidation
                 var routine=(System.Collections.IEnumerator)type.GetMethod("DownloadContentPackage",flags).Invoke(panel,new object[]{root});
                 Check(!routine.MoveNext()&&!(bool)type.GetField("contentBusy",flags).GetValue(panel),"actual download controller completes already installed collection without network");
             }
-            Debug.Log("VTT_COLLECTIONS_EDITOR_PASS: fifteen actual collection cards, part toggle and real idempotent download controller");
+            Debug.Log("VTT_COLLECTIONS_EDITOR_PASS: all published collection cards, part toggle and real idempotent download controller");
         }finally{UnityEngine.Object.DestroyImmediate(go);}
     }
     private static void ValidateWorkshopPagination(WorkshopStore store)
@@ -193,7 +195,12 @@ public static class WorkshopEditorValidation
             foreach (string repo in new[] { "DnD-VTT-Content", "DnD-VTT-Assets" })
             {
                 var entries = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(fixtures, repo, repo.EndsWith("Content") ? "catalog/v3/index.json" : "catalog/v9/index.json")), repo.EndsWith("Content", StringComparison.Ordinal) ? "packages" : "packs");
-                foreach (JObject entry in entries)
+                var ordered=new System.Collections.Generic.List<JObject>();
+                var planned=manifests.OfType<JObject>().ToList();
+                foreach(JObject rootManifest in entries)
+                    foreach(JObject dependency in WorkshopStore.InstallPlan(rootManifest,entries.OfType<JObject>(),planned,"android-arm64",Application.unityVersion,Math.Max(UnityRelease.Code,10047)))
+                    { ordered.Add(dependency);planned.Add(dependency); }
+                foreach (JObject entry in ordered)
                 {
                     if ((string)entry["format"] != "json") continue;
                     string stage = Path.Combine(folder, "download"); File.Copy(Path.Combine(fixtures, repo, "packages", Path.GetFileName((string)entry["url"])), stage, true);

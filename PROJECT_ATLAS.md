@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода 496b2cdb4c30. Git содержит 2151 файлов.
+Снимок кода 79ebf5a378f2. Git содержит 2151 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 8151 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 98085 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 136583 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 175920 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 99448 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 137946 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 177283 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -1831,7 +1831,7 @@
 | №1810 unity/Assets/Vtt/Editor/UnityReleaseBuild.cs.meta | 60 B | вспомогательный файл: UnityReleaseBuild.cs |
 | №1811 unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs | 3632 B | вспомогательный файл: WorkshopBundleBuild |
 | №1812 unity/Assets/Vtt/Editor/WorkshopBundleBuild.cs.meta | 60 B | вспомогательный файл: WorkshopBundleBuild.cs |
-| №1813 unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs | 30738 B | вспомогательный файл: WorkshopEditorValidation |
+| №1813 unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs | 31711 B | вспомогательный файл: WorkshopEditorValidation |
 | №1814 unity/Assets/Vtt/Editor/WorkshopEditorValidation.cs.meta | 60 B | вспомогательный файл: WorkshopEditorValidation.cs |
 | №1815 unity/Assets/Vtt/Resources.meta | 172 B | вспомогательный файл: Resources |
 | №1816 unity/Assets/Vtt/Resources/Branding.meta | 172 B | вспомогательный файл: Branding |
@@ -2063,7 +2063,7 @@
 | №2042 unity/ci/workshop-tests/CommerceChecks.cs | 4694 B | вспомогательный файл: CommerceChecks |
 | №2043 unity/ci/workshop-tests/MarketChecks.cs | 11081 B | вспомогательный файл: MarketChecks |
 | №2044 unity/ci/workshop-tests/NumericInputChecks.cs | 2630 B | вспомогательный файл: NumericInputChecks |
-| №2045 unity/ci/workshop-tests/Program.cs | 45646 B | вспомогательный файл: Program |
+| №2045 unity/ci/workshop-tests/Program.cs | 45529 B | вспомогательный файл: Program |
 | №2046 unity/ci/workshop-tests/SheetActionChecks.cs | 11507 B | вспомогательный файл: SheetActionChecks |
 | №2047 unity/ci/workshop-tests/WorkshopTests.csproj | 2428 B | вспомогательный файл: WorkshopTests |
 | №2048 unity/ContentSources~/catalog.full.json | 1259265 B | данные/конфигурация: catalog.full |
