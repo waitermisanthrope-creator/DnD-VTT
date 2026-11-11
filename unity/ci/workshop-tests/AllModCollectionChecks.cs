@@ -21,7 +21,11 @@ static class AllModCollectionChecks
   var requiredRoots=new[]{"weapons","armor","materials","consumables","junk"}.Concat(WorkshopStore.ModCollectionCategories).Select(x=>"dnd.collections."+x).ToHashSet();
   Check(requiredRoots.IsSubsetOf(roots.Select(m=>(string)m["id"]).ToHashSet()),"all fifteen base optional categories remain visible alongside additions");
   Check(roots.Skip(5).Select(m=>(string)m["collectionCategory"]).Distinct().SequenceEqual(WorkshopStore.ModCollectionCategories),"all non-item categories have deterministic order");
-  var hidden=WorkshopStore.CollectionParts(all);Check(all.Where(m=>!hidden.Contains((string)m["id"])).Select(m=>(string)m["id"]).ToHashSet().SetEquals(roots.Select(m=>(string)m["id"])),"every published mod grouped; exactly the catalog category roots remain visible");
+  var hidden=WorkshopStore.CollectionParts(all);
+  const string merchantId="dnd.market.fantasy-merchants";
+  var standalone=all.Where(m=>!hidden.Contains((string)m["id"])&&!roots.Any(r=>(string)r["id"]==(string)m["id"])).ToArray();
+  Check(standalone.Length==1&&(string)standalone[0]["id"]==merchantId,"one optional merchant pack is outside full collections");
+  Check(all.Where(m=>!hidden.Contains((string)m["id"])&&(string)m["id"]!=merchantId).Select(m=>(string)m["id"]).ToHashSet().SetEquals(roots.Select(m=>(string)m["id"])),"all other mods remain grouped by original categories");
   string temp=Path.Combine(Path.GetTempPath(),"all-mod-collections-"+Guid.NewGuid());Directory.CreateDirectory(temp);
   try {
    void Install(WorkshopStore store,JObject m,string platform){string part=Path.Combine(temp,"download.part");File.Copy(paths[(string)m["id"]],part,true);store.Install(m,part,platform,"6000.3.26f1");}
@@ -55,7 +59,15 @@ static class AllModCollectionChecks
      }
     }
     var restarted=new WorkshopStore(store.Root);var installed=restarted.Installed().OfType<JObject>().ToArray();
-    Check(installed.Length==all.Count&&installed.Select(m=>(string)m["id"]).ToHashSet().SetEquals(all.Select(m=>(string)m["id"])),"every exact published module and collection survives restart");
+    Check(installed.Length==all.Count-1&&installed.Select(m=>(string)m["id"]).ToHashSet().SetEquals(all.Where(m=>(string)m["id"]!=merchantId).Select(m=>(string)m["id"])),"original collections install without optional merchant module");
+    var merchant=all.Single(m=>(string)m["id"]==merchantId);
+    Reject(()=>WorkshopStore.InstallPlan(merchant,all,restarted.Installed().OfType<JObject>(),"android-arm64","6000.3.26f1",10049),"released Unity49 cannot install merchant extension");
+    var optionPlan=WorkshopStore.InstallPlan(merchant,all,restarted.Installed().OfType<JObject>(),platform,"6000.3.26f1",10050);
+    Check(optionPlan.Count==1&&(string)optionPlan[0]["id"]==merchantId,"new Unity50 downloads market only when explicitly selected");
+    Install(store,merchant,platform);
+    restarted=new WorkshopStore(store.Root);
+    Check(restarted.Find(merchantId)!=null&&((JArray)restarted.Commerce()["markets"]).Count==1,"opt-in market activates without changing other packages");
+    Check(WorkshopStore.InstallPlan(merchant,all,restarted.Installed().OfType<JObject>(),platform,"6000.3.26f1",10050).Count==0,"already installed market never downloads twice");
     var creation=restarted.Creation(JObject.Parse("{races:[],classes:[],feats:[]}"));
     foreach(var pair in new[]{("races","race"),("classes","class"),("feats","feat")})
     {
