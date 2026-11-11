@@ -28,7 +28,14 @@ namespace DndVtt.UnityPrototype
             // Snapshot the already verified manifest list once. The worker still
             // verifies each item/craft payload; unrelated graphics packs aren't reread.
             var installed=workshopStore.Installed();string root=workshopStore.Root;
-            inventoryCatalogCache.Request(()=>new WorkshopStore(root).Commerce(installed));
+            // Unity Resources are read on the main thread; expensive merchant
+            // indexing runs alongside the existing commerce worker.
+            string marketJson=Resources.Load<TextAsset>("CharacterSheet/market").text;
+            inventoryCatalogCache.Request(()=>{
+                JObject result=new WorkshopStore(root).Commerce(installed);
+                result["market"]=CommerceRules.MergeMarketPacks(JObject.Parse(marketJson),result["markets"] as JArray,result["items"] as JArray??new JArray());
+                return result;
+            });
         }
         private void DrawInventoryCatalogLoading()
         {
