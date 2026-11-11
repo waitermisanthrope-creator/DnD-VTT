@@ -54,7 +54,7 @@ namespace DndVtt.UnityPrototype
                     string category=(string)manifest["inventoryCategory"];
                     return "Инвентарь/"+(category=="weapons"?"Оружие":category=="armor"?"Броня":category=="materials"?"Материалы":category=="consumables"?"Расходники":"Хлам");
                 case "market":return "Экономика/Торговцы и рынки";
-                case "craft":return id.Contains("alchemy.ingredients")?"Крафт и алхимия/Алхимия/Ингредиенты":id.Contains("alchemy")?"Крафт и алхимия/Алхимия/Правила и катализаторы":"Крафт и алхимия/Рецепты";
+                case "craft":return id.StartsWith("dnd.market.",StringComparison.Ordinal)?"Экономика/Торговцы и рынки":id.Contains("alchemy.ingredients")?"Крафт и алхимия/Алхимия/Ингредиенты":id.Contains("alchemy")?"Крафт и алхимия/Алхимия/Правила и катализаторы":"Крафт и алхимия/Рецепты";
                 case "map":return "3D и карты/Карты/"+(id.Contains("castle")?"Замки":id.Contains("house")?"Дома":id.Contains("tavern")?"Таверны":id.Contains("town")||id.Contains("village")?"Поселения":id.Contains("dungeon")?"Подземелья":id.Contains("stress")?"Тестовые":"Разное");
                 case "model":return "3D и карты/Модели";
                 case "environment":return "3D и карты/Окружение";
@@ -268,7 +268,26 @@ namespace DndVtt.UnityPrototype
                 }
                 return data;
             }
-            if (type == "craft") { CommerceRules.ValidateCatalog(data); return data; }
+            if (type == "craft")
+            {
+                CommerceRules.ValidateCatalog(data);
+                // Compatible envelope: old Unity clients accept ordinary
+                // craft/alchemy-ingredients packets, while new clients validate
+                // optional market metadata. This prevents a new type=market
+                // entry from invalidating the entire v3 catalog in Unity 1.00.49.
+                if(data["merchantMarket"]!=null)
+                {
+                    if(!(data["merchantMarket"] is JObject market))
+                        throw new FormatException("Неверный рынок внутри дополнения");
+                    ValidateData(new JObject {
+                        ["schemaVersion"]=m["schemaVersion"]?.DeepClone(),
+                        ["id"]=m["id"]?.DeepClone(),
+                        ["version"]=m["version"]?.DeepClone(),
+                        ["type"]="market"
+                    },market.ToString());
+                }
+                return data;
+            }
             string field = type == "race" ? "races" : type == "class" ? "classes" : type == "feat" ? "feats" : type == "map" ? "maps" : type == "appearance" ? "surfaces" : type == "item" ? "items" : "objects";
             if (!(data[field] is JArray entries) || entries.Count < 1 || entries.Count > 100) throw new FormatException("Неверный состав пакета");
             var ids = entries.OfType<JObject>().Select(x => (string)x["id"]).ToArray();
@@ -375,6 +394,8 @@ namespace DndVtt.UnityPrototype
                     var copy = (JObject)item.DeepClone(); copy["packageId"] = manifest["id"].DeepClone(); copy["packageVersion"] = manifest["version"].DeepClone(); ((JArray)result["items"]).Add(copy);
                 }
                 if ((string)manifest["type"] != "craft") continue;
+                if(data["merchantMarket"] is JObject market)
+                    ((JArray)result["markets"]).Add(market.DeepClone());
                 var target = (JObject)result[(string)data["mode"] == "craft-v31" ? "craft" : "alchemy"];
                 foreach (var property in data.Properties())
                 {
