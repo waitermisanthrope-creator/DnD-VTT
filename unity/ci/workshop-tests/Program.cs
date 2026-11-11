@@ -63,6 +63,7 @@ class Program
         if(args.Length>0&&args[0]=="--ui-lifecycle"){Console.WriteLine("UI_LIFECYCLE_CONTRACT_PASS "+UiLifecycleChecks.Run(Directory.GetCurrentDirectory()));return;}
         if(args.Length>0&&args[0]=="--sheet-swipe"){Console.WriteLine("SHEET_SWIPE_PASS "+SheetSwipeChecks.Run());return;}
         if(args.Length>0&&args[0]=="--dice-loading"){Console.WriteLine("DICE_LOADING_PASS "+DiceLoadingChecks.Run());return;}
+        if(args.Length>0&&args[0]=="--container-migration"){Console.WriteLine("CONTAINER_MIGRATION_PASS "+ContainerMigrationChecks.Run());return;}
         CheckSpellPicker();CheckTextInput();
         if (args.Length > 0 && args[0] == "--spell-picker")
         { Console.WriteLine("SPELL_PICKER_PASS " + checks); return; }

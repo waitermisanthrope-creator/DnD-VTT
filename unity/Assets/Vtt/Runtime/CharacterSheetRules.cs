@@ -274,6 +274,10 @@ namespace DndVtt.UnityPrototype
         {
             using var lease=AcquireWriteLease(path);
             if(File.Exists(path+".trade-journal"))throw new InvalidOperationException("Сначала восстановите незавершённую торговую операцию");
+            SaveOwned(path,archive);
+        }
+        private static void SaveOwned(string path,LegacyCharacterArchive archive)
+        {
             string json = archive.Export(); _ = new LegacyCharacterArchive(json);
             if (File.Exists(path) && File.ReadAllText(path) == json) return;
             Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path)));

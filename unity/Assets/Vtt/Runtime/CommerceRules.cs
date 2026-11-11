@@ -17,6 +17,7 @@ namespace DndVtt.UnityPrototype
             double total = CharacterSheetRules.InventoryWeightKg(hero);
             foreach (JObject container in (hero["inventory"]?["containers"] as JArray ?? new JArray()).OfType<JObject>())
             {
+                if(IsArchivedContainer(container))continue;
                 total += Math.Max(0,CharacterSheetRules.WeightKg(container["weight"]));
                 foreach (JObject item in (container["contents"] as JArray ?? new JArray()).OfType<JObject>()) total += Math.Max(0,CharacterSheetRules.WeightKg(item["weight"])) * Math.Max(0,N(item["count"],1));
             }

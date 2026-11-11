@@ -16,8 +16,8 @@ namespace DndVtt.UnityPrototype
         private bool? requestedPortraitVisibility;
         private bool? pendingBaseRest;
         private string healthAmount="1",newFolderName="";
-        private readonly int[] classicTabs={0,1,2,3,4,5,9};
-        private readonly string[] classicTabNames={"Герой","Навыки","Способн.","Инв-рь","Заметки","Дайсы","Лор/Бестиарий"};
+        private readonly int[] classicTabs={0,1,2,3,10,4,5,9};
+        private readonly string[] classicTabNames={"Герой","Навыки","Способн.","Инв-рь","Ремёсла","Заметки","Дайсы","Лор/Бестиарий"};
         private float ClassicBodyWidth=>UiWidth-30;
         private int ClassicButtonRow(params string[] labels)
         {

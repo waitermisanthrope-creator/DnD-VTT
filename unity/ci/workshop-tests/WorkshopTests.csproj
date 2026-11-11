@@ -8,6 +8,9 @@
     <Compile Include="UiLifecycleChecks.cs" />
     <Compile Include="SheetSwipeChecks.cs" />
     <Compile Include="DiceLoadingChecks.cs" />
+    <Compile Include="ContainerMigrationChecks.cs" />
+    <Compile Include="../../Assets/Vtt/Runtime/CommerceRules.InventoryMigration.cs" />
+    <Compile Include="../../Assets/Vtt/Runtime/CharacterSheetStore.Inventory.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/DiceAppearanceCatalog.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/SheetSwipeMotion.cs" />
     <Compile Include="WalletMarketChecks.cs" />

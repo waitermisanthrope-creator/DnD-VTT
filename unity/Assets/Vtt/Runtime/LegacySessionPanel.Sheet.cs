@@ -30,7 +30,7 @@ namespace DndVtt.UnityPrototype
         private int itemCategory;
         private bool showItemCatalog;
         private string deletePath, deleteSignature, deleteCharacter, deleteLabel;
-        private readonly string[] tabs = { "Герой", "Навыки", "Способности", "Инвентарь", "Заметки", "Дайсы", "Данные", "Кошелёк", "Паспорт", "Лор / Бестиарий" };
+        private readonly string[] tabs = { "Герой", "Навыки", "Способности", "Инвентарь", "Заметки", "Дайсы", "Данные", "Кошелёк", "Паспорт", "Лор / Бестиарий", "Ремёсла" };
         private void ClearSheetInputs() { ResetFormInput(); requestedSpellCatalog = null; showSpellCatalog = false; spellSearch = ""; spellCircle = -1; spellPage = 0; raceView=0;requestedRaceView=null;pendingRace=null; CloseAdvancement();requestedPortraitVisibility=null;cloneSkillDropdown=null;classicPortraitOpen=classicProfileEdit=false;healthAmount="1";pendingBaseRest=null;technicalDataOpen=false; heroArt3D=false; edits.Clear(); expanded.Clear(); deletePath = deleteSignature = deleteCharacter = deleteLabel = null; }
         private void Attempt(Action action)
         {
@@ -48,6 +48,7 @@ namespace DndVtt.UnityPrototype
             // Layout and Repaint. The requesting input event saved the old body.
             if(Event.current.type==EventType.Layout)
             {
+                CommitContainerTransfer();
                 if(requestedSheetTab.HasValue){if(swipeNavigationPending&&sheetSwipe.Waiting)sheetSwipe.Commit();else sheetSwipe.Cancel();swipeNavigationPending=false;showSpellCatalog=false;requestedSpellCatalog=null;raceView=0;requestedRaceView=null;pendingRace=null;CloseAdvancement();sheetTab=requestedSheetTab.Value;requestedSheetTab=null;requestedPortraitVisibility=null;classicPortraitOpen=false;ResetFormInput();frontScroll=Vector2.zero;}
                 if(requestedSpellCatalog.HasValue)
                 {
@@ -89,6 +90,7 @@ namespace DndVtt.UnityPrototype
                 case 1: ClassicSkills(hero, ref changed); if(SheetFold("edit-feats","Черты и владения"))DrawCharacterFeats(hero, ref changed); break;
                 case 2: ClassicAbilities(hero,ref changed);break;
                 case 3: Wallet(hero,ref changed,ref persistWallet);DrawMarketEntry(hero,ref changed,ref persistCommerce);DrawCommerceInventory(hero, ref changed, ref persistCommerce); break;
+                case 10: DrawCrafts(hero,ref changed,ref persistCommerce);break;
                 case 4:
                     ClassicNotes(hero,ref changed); break;
                 case 5: DrawDiceTable(); break;
