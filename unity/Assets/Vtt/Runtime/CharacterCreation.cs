@@ -13,7 +13,7 @@ namespace DndVtt.UnityPrototype
             if (string.IsNullOrWhiteSpace(name) || name.Trim().Length > 120) throw new FormatException("Введите имя персонажа (до 120 символов)");
             if (race == null || cls == null || background == null) throw new FormatException("Выберите расу, класс и предысторию");
             if (mode != "manual" && mode != "pointbuy") throw new FormatException("Неизвестный способ характеристик");
-            if ((bool?)cls["seed"]?["isExtraClass"] == true) throw new FormatException("Экстра-классы пока доступны через импорт сохранений");
+            // Experimental extra-class entries are allowed; their incomplete progression remains a separate feature.
             int cost = 0;
             foreach (string stat in CharacterSheetRules.Stats)
             {

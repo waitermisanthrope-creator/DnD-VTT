@@ -9,6 +9,35 @@ class Program
     static int checks;
     static void Check(bool ok, string name) { if (!ok) throw new Exception(name); checks++; }
     static void Reject(Action action, string name) { bool rejected = false; try { action(); } catch (Exception) { rejected = true; } Check(rejected, name); }
+    static void CheckCreationPicker()
+    {
+        var entries = new JArray();
+        for (int i = 0; i < 130; i++) entries.Add(new JObject {
+            ["id"] = "test.race." + i, ["name"] = "Раса " + i.ToString("D3"),
+            ["nameRu"] = "Раса " + i.ToString("D3"),
+            ["packageId"] = i >= 15 ? "homebrew.races" : null
+        });
+        var picker = new CreationPickerOptions();
+        Check(picker.Update(entries, "name", ""), "picker builds initial index");
+        Check(picker.Count == 130 && picker.Pages(12) == 11, "all 130 entries appear across eleven pages");
+        Check(picker.At(12) == 12 && picker.At(129) == 129, "late Homebrew entries remain accessible");
+        Check(!picker.Update(entries, "name", ""), "identical repaint does not rebuild search");
+        Check(picker.Update(entries, "name", "рАсА 129") && picker.Count == 1 && picker.At(0) == 129, "case insensitive search finds last item");
+        Check(picker.Update(entries, "nameRu", "раса 129") && picker.Count == 1, "field change refreshes index");
+        Check(picker.Update(entries, "name", "does not exist") && picker.Count == 0 && picker.Pages(12) == 1, "no-match view is safe");
+        Check(picker.Update(new JArray(new JObject { ["name"] = "Новый пакет" }), "name", "") && picker.Count == 1, "catalog changes invalidate search");
+        var cls = new JObject {
+            ["id"] = "test.extra.swarm", ["name"] = "Рой", ["hitDie"] = 8,
+            ["seed"] = new JObject { ["isExtraClass"] = true, ["extraClassType"] = "swarm" },
+            ["choices"] = new JArray(), ["levelOneFeatures"] = new JArray()
+        };
+        var race = new JObject { ["id"] = "test.race", ["name"] = "Тест", ["seed"] = new JObject(), ["choices"] = new JArray() };
+        var bg = new JObject { ["name"] = "Тест", ["seed"] = new JObject(), ["choices"] = new JArray() };
+        var stats = JObject.Parse("{str:10,dex:10,con:10,int:10,wis:10,cha:10}");
+        var catalog = new JObject { ["feats"] = new JArray(), ["proficiencies"] = new JArray() };
+        var hero = CharacterCreation.Create(catalog, "Экстра", race, cls, bg, stats, new JObject(), "manual");
+        Check((string)hero["classId"] == "test.extra.swarm" && (bool?)hero["isExtraClass"] == true, "experimental class can be created without losing its metadata");
+    }
     static void CheckSpellPicker()
     {
         var method = typeof(CharacterSheetRules).GetMethod("CanLearnSpell");
@@ -56,6 +85,7 @@ class Program
     }
     static void Main(string[] args)
     {
+        if(args.Length>0&&args[0]=="--creation-picker"){CheckCreationPicker();Console.WriteLine("CREATION_PICKER_PASS "+checks);return;}
         if(args.Length>0&&args[0]=="--text-input"){CheckTextInput();Console.WriteLine("TEXT_INPUT_PASS "+checks);return;}
         if(args.Length>0&&args[0]=="--inventory-catalog"){Console.WriteLine("INVENTORY_CATALOG_PASS "+InventoryCatalogChecks.Run());return;}
         if(args.Length>0&&args[0]=="--wallet-market"){Console.WriteLine("WALLET_MARKET_PASS "+WalletMarketChecks.Run(Directory.GetCurrentDirectory()));return;}
@@ -68,7 +98,7 @@ class Program
         if(args.Length>0&&args[0]=="--production-packages"){Console.WriteLine("PRODUCTION_PACKAGES_PASS "+ProductionPackageChecks.Run());return;}
         if(args.Length>0&&args[0]=="--production-legacy"){Console.WriteLine("PRODUCTION_LEGACY_PASS "+ProductionLegacyChecks.Run());return;}
         if(args.Length>0&&args[0]=="--generate-gui-style-cache"){GuiStyleResetChecks.Generate(Directory.GetCurrentDirectory());Console.WriteLine("GUI_STYLE_CACHE_GENERATED");return;}
-        CheckSpellPicker();CheckTextInput();
+        CheckCreationPicker();CheckSpellPicker();CheckTextInput();
         if (args.Length > 0 && args[0] == "--spell-picker")
         { Console.WriteLine("SPELL_PICKER_PASS " + checks); return; }
         if (args.Length > 0 && args[0] == "--sheet-actions") { Console.WriteLine("SHEET_ACTION_PASS " + SheetActionChecks.Run()); return; }

@@ -22,9 +22,12 @@ namespace DndVtt.UnityPrototype
         private JObject lastPreview;
         private bool creationFeatEnabled;
         private int creationFeatIndex;
+        private int pickerPage;
+        private readonly CreationPickerOptions pickerOptions = new CreationPickerOptions();
         private GUIStyle heading, muted, bigButton;
         private JObject CreationCatalog { get { InitializeWorkshop(); return creationCatalog ??= workshop.Creation((JObject)JObject.Parse(Resources.Load<TextAsset>("CharacterSheet/catalog").text)["creation"]); } }
-        private JArray AvailableClasses => new JArray(((JArray)CreationCatalog["classes"]).OfType<JObject>().Where(c => (bool?)c["seed"]?["isExtraClass"] != true && (string)c["name"] != "Гайст"));
+        // Expose all installed classes, including experimental extra-classes. Reuse the catalog array on repaint.
+        private JArray AvailableClasses => (JArray)CreationCatalog["classes"];
         // Mobile menus, character creation, sheets, import and settings use
         // portrait; only the live 3D map uses landscape. Desktop is unchanged.
         private void ApplyMobileOrientation(FrontScreen target)
@@ -54,6 +57,7 @@ namespace DndVtt.UnityPrototype
         {
             for(int i=0;i<statInputs.Length;i++)statInputs[i]=new[]{"15","14","13","12","10","8"}[i];
             heroName = ""; creationStep = 0; creationFeatEnabled = false; creationAnswers = new JObject(); lastPreview = null;
+            pickerKey = null; pickerSearch = ""; pickerPage = 0;
             classIndex = Math.Max(0, AvailableClasses.ToList().FindIndex(c => (string)c["name"] == "Воин"));
             backgroundIndex = Math.Max(0, ((JArray)CreationCatalog["backgrounds"]).ToList().FindIndex(b => (string)b["nameRu"] == "Солдат"));
             Navigate(FrontScreen.Create);
@@ -272,6 +276,8 @@ namespace DndVtt.UnityPrototype
                 int oldRace = raceIndex, oldClass = classIndex;
                 Picker("Раса", races, ref raceIndex, "name"); GUILayout.Label((string)races[raceIndex]["desc"] ?? "", muted);
                 Picker("Класс", classes, ref classIndex, "name"); GUILayout.Label((string)classes[classIndex]["desc"] ?? "", muted);
+                if ((bool?)classes[classIndex]["seed"]?["isExtraClass"] == true)
+                    GUILayout.Label("Экстра-класс: экспериментальная механика, полная прокачка ещё не реализована.", muted);
                 if (oldRace != raceIndex || oldClass != classIndex) creationAnswers = new JObject();
             }
             else if (creationStep == 2)
@@ -329,22 +335,79 @@ namespace DndVtt.UnityPrototype
             var stats = new JObject(); for (int i = 0; i < 6; i++) { if (!int.TryParse(statInputs[i], out int n)) throw new FormatException("Введите целую характеристику"); stats[CharacterSheetRules.Stats[i]] = n; }
             return CharacterCreation.Create(CreationCatalog, heroName, race, cls, bg, stats, creationAnswers, statMode == 0 ? "pointbuy" : "manual");
         }
+        private static string CreationPickerLabel(JToken option, string nameField)
+        {
+            string name = CreationPickerOptions.Name(option, nameField);
+            return option is JObject obj && obj["packageId"] != null ? name + " · HB" : name;
+        }
+        // Cache the search index between IMGUI events; create at most 12 option buttons per page.
+        private int DrawCreationPickerResults(JArray values, string nameField)
+        {
+            GUILayout.Label("Поиск по всем установленным вариантам:", muted);
+            string search = MenuTextField("pickerSearch", pickerSearch, GUILayout.Height(52));
+            if (search != pickerSearch) { pickerSearch = search; pickerPage = 0; }
+            pickerOptions.Update(values, nameField, pickerSearch);
+            const int pageSize = 12;
+            int pageCount = pickerOptions.Pages(pageSize);
+            pickerPage = Mathf.Clamp(pickerPage, 0, pageCount - 1);
+            GUILayout.Label("Найдено: " + pickerOptions.Count + " · страница " + (pickerPage + 1) + " / " + pageCount, muted);
+            if (pickerOptions.Count == 0) GUILayout.Label("Совпадений нет. Измените запрос.", muted);
+            int selected = -1;
+            int from = pickerPage * pageSize;
+            int to = Math.Min(from + pageSize, pickerOptions.Count);
+            for (int i = from; i < to; i++)
+            {
+                int index = pickerOptions.At(i);
+                if (GUILayout.Button(CreationPickerLabel(values[index], nameField), GUILayout.MinHeight(52))) selected = index;
+            }
+            if (pageCount > 1)
+            {
+                GUILayout.BeginHorizontal();
+                bool wasEnabled = GUI.enabled;
+                GUI.enabled = wasEnabled && pickerPage > 0;
+                if (GUILayout.Button("‹ Предыдущие", GUILayout.MinHeight(48))) pickerPage--;
+                GUI.enabled = wasEnabled && pickerPage < pageCount - 1;
+                if (GUILayout.Button("Следующие ›", GUILayout.MinHeight(48))) pickerPage++;
+                GUI.enabled = wasEnabled;
+                GUILayout.EndHorizontal();
+            }
+            return selected;
+        }
         private void Picker(string label, JArray values, ref int selectedIndex, string nameField)
         {
-            GUILayout.Label(label); GUILayout.BeginHorizontal();
+            GUILayout.Label(label);
+            if (values == null || values.Count == 0) { GUILayout.Label("Нет установленных вариантов", muted); return; }
+            selectedIndex = Mathf.Clamp(selectedIndex, 0, values.Count - 1);
+            GUILayout.BeginHorizontal();
             if (GUILayout.Button("‹", GUILayout.Width(48), GUILayout.Height(52))) selectedIndex = (selectedIndex + values.Count - 1) % values.Count;
-            if (GUILayout.Button(((string)values[selectedIndex][nameField] ?? (string)values[selectedIndex]["name"]) + "  ▾", GUILayout.MinHeight(38))) { pickerKey = pickerKey == label ? null : label; pickerSearch = ""; }
+            if (GUILayout.Button(CreationPickerLabel(values[selectedIndex], nameField) + "  ▾", GUILayout.MinHeight(52)))
+            {
+                pickerKey = pickerKey == label ? null : label;
+                pickerSearch = ""; pickerPage = 0;
+            }
             if (GUILayout.Button("›", GUILayout.Width(48), GUILayout.Height(52))) selectedIndex = (selectedIndex + 1) % values.Count;
             GUILayout.EndHorizontal();
             if (pickerKey == label)
             {
-                GUILayout.Label("Найти вариант:", muted); pickerSearch = MenuTextField("pickerSearch", pickerSearch, GUILayout.Height(52)); int shown = 0;
-                for (int i = 0; i < values.Count; i++)
-                {
-                    string name = (string)values[i][nameField] ?? (string)values[i]["name"];
-                    if (name.IndexOf(pickerSearch, StringComparison.OrdinalIgnoreCase) < 0 || shown++ >= 12) continue;
-                    if (GUILayout.Button(name, GUILayout.Height(52))) { selectedIndex = i; pickerKey = null; }
-                }
+                int picked = DrawCreationPickerResults(values, nameField);
+                if (picked >= 0) { selectedIndex = picked; pickerKey = null; }
+            }
+        }
+        private void DrawCreationFeatPicker(string key, JArray options)
+        {
+            string popupKey = "choice:feat:" + key;
+            string selectedId = (string)creationAnswers[key];
+            var chosen = options.OfType<JObject>().FirstOrDefault(f => (string)f["id"] == selectedId);
+            string caption = chosen == null ? "Выбрать черту" : CreationPickerLabel(chosen, "nameRu");
+            if (GUILayout.Button(caption + "  ▾", GUILayout.MinHeight(52)))
+            {
+                pickerKey = pickerKey == popupKey ? null : popupKey;
+                pickerSearch = ""; pickerPage = 0;
+            }
+            if (pickerKey == popupKey)
+            {
+                int picked = DrawCreationPickerResults(options, "nameRu");
+                if (picked >= 0) { creationAnswers[key] = (string)options[picked]["id"]; pickerKey = null; }
             }
         }
         private void DrawCreationChoice(JObject choice)
@@ -360,6 +423,7 @@ namespace DndVtt.UnityPrototype
             }
             if (type == "stats2") options = new JArray(CharacterSheetRules.Stats.Select((s, i) => new JObject { ["id"] = s, ["name"] = CharacterSheetRules.StatNames[i] }));
             if (options.Count == 0) { creationAnswers[key] = MenuTextField("creation-answer:"+key, (string)creationAnswers[key] ?? "", GUILayout.Height(52)); return; }
+            if (type == "feat" && options.Count > 12) { DrawCreationFeatPicker(key, options); return; }
             var selectedValues = creationAnswers[key] is JArray arr ? (JArray)arr.DeepClone() : new JArray();
             foreach (var option in options)
             {
