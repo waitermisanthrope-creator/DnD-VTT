@@ -1,6 +1,6 @@
 # DnD-VTT — полный атлас проекта
 
-Снимок кода e08e049f0546. Git содержит 2151 файлов.
+Снимок кода 496b2cdb4c30. Git содержит 2151 файлов.
 Роль неочевидных файлов предварительно определена по пути/имени; перед изменением читай исходник.
 
 ## Стандарт для всех ИИ и разработчиков
@@ -61,9 +61,9 @@
 | №0040 3D_CHARACTER_CLOTHING_PROGRESS.md | 84856 B | документация или отчёт: 3D CHARACTER CLOTHING PROGRESS |
 | №0041 3D_CHARACTER_RACES_PROGRESS.md | 75599 B | документация или отчёт: 3D CHARACTER RACES PROGRESS |
 | №0042 AGENTS.md | 8151 B | документация или отчёт: AGENTS |
-| №0043 AI_BLOCKERS.md | 97165 B | документация или отчёт: AI BLOCKERS |
-| №0044 AI_NEXT_TASK.md | 135663 B | документация или отчёт: AI NEXT TASK |
-| №0045 AI_PROGRESS.md | 175000 B | документация или отчёт: AI PROGRESS |
+| №0043 AI_BLOCKERS.md | 98085 B | документация или отчёт: AI BLOCKERS |
+| №0044 AI_NEXT_TASK.md | 136583 B | документация или отчёт: AI NEXT TASK |
+| №0045 AI_PROGRESS.md | 175920 B | документация или отчёт: AI PROGRESS |
 | №0046 android/.gitignore | 44 B | Android компонент: .gitignore |
 | №0047 android/app/build.gradle | 4122 B | Android компонент: build |
 | №0048 android/app/src/main/AndroidManifest.xml | 12250 B | Android компонент: AndroidManifest |
@@ -2057,13 +2057,13 @@
 | №2036 unity/ci/workshop-tests/.gitignore | 10 B | вспомогательный файл: .gitignore |
 | №2037 unity/ci/workshop-tests/AccountGestureChecks.cs | 7066 B | вспомогательный файл: AccountGestureChecks |
 | №2038 unity/ci/workshop-tests/AdvancementChecks.cs | 9986 B | вспомогательный файл: AdvancementChecks |
-| №2039 unity/ci/workshop-tests/AllModCollectionChecks.cs | 5776 B | вспомогательный файл: AllModCollectionChecks |
+| №2039 unity/ci/workshop-tests/AllModCollectionChecks.cs | 6598 B | вспомогательный файл: AllModCollectionChecks |
 | №2040 unity/ci/workshop-tests/CharacterArtChecks.cs | 6106 B | вспомогательный файл: CharacterArtChecks |
 | №2041 unity/ci/workshop-tests/CollectionChecks.cs | 6368 B | вспомогательный файл: CollectionChecks |
 | №2042 unity/ci/workshop-tests/CommerceChecks.cs | 4694 B | вспомогательный файл: CommerceChecks |
 | №2043 unity/ci/workshop-tests/MarketChecks.cs | 11081 B | вспомогательный файл: MarketChecks |
 | №2044 unity/ci/workshop-tests/NumericInputChecks.cs | 2630 B | вспомогательный файл: NumericInputChecks |
-| №2045 unity/ci/workshop-tests/Program.cs | 45183 B | вспомогательный файл: Program |
+| №2045 unity/ci/workshop-tests/Program.cs | 45646 B | вспомогательный файл: Program |
 | №2046 unity/ci/workshop-tests/SheetActionChecks.cs | 11507 B | вспомогательный файл: SheetActionChecks |
 | №2047 unity/ci/workshop-tests/WorkshopTests.csproj | 2428 B | вспомогательный файл: WorkshopTests |
 | №2048 unity/ContentSources~/catalog.full.json | 1259265 B | данные/конфигурация: catalog.full |

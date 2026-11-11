@@ -312,7 +312,12 @@ class Program
             {
                 string catalog = File.ReadAllText(Path.Combine(source, repo, repo.EndsWith("Content") ? "catalog/v3/index.json" : "catalog/v3/index.json"));
                 var list = WorkshopStore.Catalog(catalog, repo.EndsWith("Content") ? "packages" : "packs");
-                foreach (JObject manifest in list)
+                // Public catalog order is presentation order, not dependency order.
+                var ordered = new System.Collections.Generic.List<JObject>();
+                foreach(JObject rootManifest in list)
+                    foreach(JObject dependency in WorkshopStore.InstallPlan(rootManifest,list.OfType<JObject>(),ordered,"android-arm64","6000.3.26f1",10047))
+                        ordered.Add(dependency);
+                foreach (JObject manifest in ordered)
                 {
                     string id = (string)manifest["id"], original = Path.Combine(source, repo, "packages", Path.GetFileName((string)manifest["url"]));
                     string part = Path.Combine(root, "download"); File.Copy(original, part, true);
@@ -336,7 +341,7 @@ class Program
                         store.Remove(id); var reopened = CharacterSheetStore.Load(save).Snapshot(0);
                         Check((string)reopened["raceId"] == id && (int)reopened["stats"]["dex"] == 11, "character survives package removal restart");
                         Check(restart.Creation(baseline).ToString() == new WorkshopStore(Path.Combine(root, "empty-baseline")).Creation(baseline).ToString(), "uninstall removes choice without changing base");
-                        Check((string)reopened["contentPackages"][0]["version"] == "1.0.0", "package version retained in save");
+                        Check((string)reopened["contentPackages"][0]["version"] == (string)manifest["version"], "exact installed package version retained in save");
                         File.Copy(original, part, true); store.Install(manifest, part, "android-arm64", "6000.3.26f1");
                     }
                     File.WriteAllText(store.PayloadPath(manifest), "corrupted cached payload");

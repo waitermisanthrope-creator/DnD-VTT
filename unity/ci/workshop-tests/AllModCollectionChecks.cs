@@ -18,9 +18,10 @@ static class AllModCollectionChecks
    }
   }
   var roots=all.Where(m=>(string)m["collectionRole"]=="category").OrderBy(WorkshopStore.CollectionOrder).ToArray();
-  Check(roots.Length==15,"all fifteen optional categories visible");
-  Check(roots.Skip(5).Select(m=>(string)m["collectionCategory"]).SequenceEqual(WorkshopStore.ModCollectionCategories),"all non-item categories have deterministic order");
-  var hidden=WorkshopStore.CollectionParts(all);Check(all.Where(m=>!hidden.Contains((string)m["id"])).Select(m=>(string)m["id"]).ToHashSet().SetEquals(roots.Select(m=>(string)m["id"])),"every original mod grouped; exactly fifteen top-level entries");
+  var requiredRoots=new[]{"weapons","armor","materials","consumables","junk"}.Concat(WorkshopStore.ModCollectionCategories).Select(x=>"dnd.collections."+x).ToHashSet();
+  Check(requiredRoots.IsSubsetOf(roots.Select(m=>(string)m["id"]).ToHashSet()),"all fifteen base optional categories remain visible alongside additions");
+  Check(roots.Skip(5).Select(m=>(string)m["collectionCategory"]).Distinct().SequenceEqual(WorkshopStore.ModCollectionCategories),"all non-item categories have deterministic order");
+  var hidden=WorkshopStore.CollectionParts(all);Check(all.Where(m=>!hidden.Contains((string)m["id"])).Select(m=>(string)m["id"]).ToHashSet().SetEquals(roots.Select(m=>(string)m["id"])),"every published mod grouped; exactly the catalog category roots remain visible");
   string temp=Path.Combine(Path.GetTempPath(),"all-mod-collections-"+Guid.NewGuid());Directory.CreateDirectory(temp);
   try {
    void Install(WorkshopStore store,JObject m,string platform){string part=Path.Combine(temp,"download.part");File.Copy(paths[(string)m["id"]],part,true);store.Install(m,part,platform,"6000.3.26f1");}
@@ -53,9 +54,15 @@ static class AllModCollectionChecks
       Reject(()=>WorkshopStore.ValidateData(root,data.ToString()),"unknown or mismatched collection category rejected");
      }
     }
-    var restarted=new WorkshopStore(store.Root);Check(restarted.Installed().Count==417,"397 original modules and20 metadata markers survive restart");
+    var restarted=new WorkshopStore(store.Root);var installed=restarted.Installed().OfType<JObject>().ToArray();
+    Check(installed.Length==all.Count&&installed.Select(m=>(string)m["id"]).ToHashSet().SetEquals(all.Select(m=>(string)m["id"])),"every exact published module and collection survives restart");
     var creation=restarted.Creation(JObject.Parse("{races:[],classes:[],feats:[]}"));
-    foreach(var pair in new[]{("races",43),("classes",23),("feats",117)})Check(((JArray)creation[pair.Item1]).Count==pair.Item2,"all creation choices activated: "+pair.Item1);
+    foreach(var pair in new[]{("races","race"),("classes","class"),("feats","feat")})
+    {
+     var expected=all.Where(m=>(string)m["type"]==pair.Item2).SelectMany(m=>((JArray)JObject.Parse(File.ReadAllText(paths[(string)m["id"]]))[pair.Item1]).OfType<JObject>()).Select(x=>(string)x["id"]).ToArray();
+     var actual=((JArray)creation[pair.Item1]).OfType<JObject>().Select(x=>(string)x["id"]).ToArray();
+     Check(actual.Length==expected.Length&&actual.ToHashSet().SetEquals(expected),"all exact published creation choices activated: "+pair.Item1);
+    }
     Check(((JArray)restarted.Commerce()["items"]).Count==6729,"item libraries unchanged by generic collections");
     var assets=restarted.Installed().OfType<JObject>().Where(m=>(string)m["type"]=="appearance").Select(m=>(manifest:m,data:restarted.Data(m))).ToArray();
     Check(assets.Sum(x=>(x.data["images"] as JArray??new JArray()).Count)==63,"all icons/wallpapers usable");

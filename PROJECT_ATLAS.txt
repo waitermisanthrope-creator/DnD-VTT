@@ -1,5 +1,5 @@
 АТЛАС РЕПОЗИТОРИЯ DnD-VTT
-Коммит e08e049f0546. Файлов: 2151
+Коммит 496b2cdb4c30. Файлов: 2151
 
 ЕДИНЫЙ СТАНДАРТ
 
@@ -56,9 +56,9 @@
 0040. 3D_CHARACTER_CLOTHING_PROGRESS.md — документация или отчёт: 3D CHARACTER CLOTHING PROGRESS (84856 B)
 0041. 3D_CHARACTER_RACES_PROGRESS.md — документация или отчёт: 3D CHARACTER RACES PROGRESS (75599 B)
 0042. AGENTS.md — документация или отчёт: AGENTS (8151 B)
-0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (97165 B)
-0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (135663 B)
-0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (175000 B)
+0043. AI_BLOCKERS.md — документация или отчёт: AI BLOCKERS (98085 B)
+0044. AI_NEXT_TASK.md — документация или отчёт: AI NEXT TASK (136583 B)
+0045. AI_PROGRESS.md — документация или отчёт: AI PROGRESS (175920 B)
 0046. android/.gitignore — Android компонент: .gitignore (44 B)
 0047. android/app/build.gradle — Android компонент: build (4122 B)
 0048. android/app/src/main/AndroidManifest.xml — Android компонент: AndroidManifest (12250 B)
@@ -2052,13 +2052,13 @@
 2036. unity/ci/workshop-tests/.gitignore — вспомогательный файл: .gitignore (10 B)
 2037. unity/ci/workshop-tests/AccountGestureChecks.cs — вспомогательный файл: AccountGestureChecks (7066 B)
 2038. unity/ci/workshop-tests/AdvancementChecks.cs — вспомогательный файл: AdvancementChecks (9986 B)
-2039. unity/ci/workshop-tests/AllModCollectionChecks.cs — вспомогательный файл: AllModCollectionChecks (5776 B)
+2039. unity/ci/workshop-tests/AllModCollectionChecks.cs — вспомогательный файл: AllModCollectionChecks (6598 B)
 2040. unity/ci/workshop-tests/CharacterArtChecks.cs — вспомогательный файл: CharacterArtChecks (6106 B)
 2041. unity/ci/workshop-tests/CollectionChecks.cs — вспомогательный файл: CollectionChecks (6368 B)
 2042. unity/ci/workshop-tests/CommerceChecks.cs — вспомогательный файл: CommerceChecks (4694 B)
 2043. unity/ci/workshop-tests/MarketChecks.cs — вспомогательный файл: MarketChecks (11081 B)
 2044. unity/ci/workshop-tests/NumericInputChecks.cs — вспомогательный файл: NumericInputChecks (2630 B)
-2045. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (45183 B)
+2045. unity/ci/workshop-tests/Program.cs — вспомогательный файл: Program (45646 B)
 2046. unity/ci/workshop-tests/SheetActionChecks.cs — вспомогательный файл: SheetActionChecks (11507 B)
 2047. unity/ci/workshop-tests/WorkshopTests.csproj — вспомогательный файл: WorkshopTests (2428 B)
 2048. unity/ContentSources~/catalog.full.json — данные/конфигурация: catalog.full (1259265 B)
