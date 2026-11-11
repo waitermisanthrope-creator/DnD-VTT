@@ -15,6 +15,7 @@ namespace DndVtt.UnityPrototype
         public static bool HideText, PortraitLayout;
         static bool running;
         static int buttonChecks, clippedButtons,layoutErrors;
+        static readonly System.Collections.Generic.Dictionary<string,bool> buttonEnabled=new System.Collections.Generic.Dictionary<string,bool>();
         static readonly System.Collections.Generic.Dictionary<string,Vector2> buttonPoints=new System.Collections.Generic.Dictionary<string,Vector2>();
         void OnEnable(){Application.logMessageReceived+=ObserveGuiError;}
         void OnDisable(){Application.logMessageReceived-=ObserveGuiError;}
@@ -23,7 +24,7 @@ namespace DndVtt.UnityPrototype
         public static void RecordButton(string label, GUIStyle style, Rect rect)
         {
             if (!running || Event.current.type != EventType.Repaint) return;
-            buttonChecks++;
+            buttonChecks++;buttonEnabled[label]=GUI.enabled;
             Vector2 point=GUIUtility.GUIToScreenPoint(rect.center);
             if(point.x>=0&&point.y>=0&&point.x<Screen.width&&point.y<Screen.height)buttonPoints[label]=point;
             float needed = style.CalcHeight(new GUIContent(label), rect.width);
@@ -608,6 +609,11 @@ namespace DndVtt.UnityPrototype
             catch(Exception error){Fail(error);yield break;}
             diceWatch.Restart();Field("sheetTab",5);yield return Frame("dice-reopen");if(failed)yield break;
             Debug.Log("DICE_RUNTIME_OPEN_MS first="+firstDiceMs.ToString("F2")+" reopen="+diceWatch.Elapsed.TotalMilliseconds.ToString("F2")+" scope=WindowsPlayerIncludingScreenshot");
+            object savedDiceCatalog=typeof(LegacySessionPanel).GetField("diceAppearanceCatalog",Flags).GetValue(panel),savedDiceTask=typeof(LegacySessionPanel).GetField("diceCatalogTask",Flags).GetValue(panel);
+            var heldCatalog=new System.Threading.Tasks.TaskCompletionSource<DiceAppearanceCatalog>();Field("diceAppearanceCatalog",null);Field("diceCatalogTask",heldCatalog.Task);
+            yield return Frame("dice-catalog-loading");if(failed)yield break;
+            try{Check(buttonEnabled.TryGetValue("Бросить",out bool rollEnabled)&&!rollEnabled,"roll waits for appearance catalog instead of starting with wrong persisted skin");Field("diceAppearanceCatalog",savedDiceCatalog);Field("diceCatalogTask",savedDiceTask);}
+            catch(Exception error){Fail(error);yield break;}
             Field("sheetTab",3);
             string preCraftProfile=File.ReadAllText(panel.SavePath);var craftWatch=System.Diagnostics.Stopwatch.StartNew();Field("sheetTab",10);Field("frontScroll",Vector2.zero);
             float craftDeadline=Time.realtimeSinceStartup+60;

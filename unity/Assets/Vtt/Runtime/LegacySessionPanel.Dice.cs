@@ -223,9 +223,9 @@ namespace DndVtt.UnityPrototype
             GUILayout.Label(diceTable.Value.HasValue||diceLastRoll.Length==0?diceTable.Result:diceLastRoll,heading);
             GUI.enabled=enabled&&!diceTable.Throwing;
             GUILayout.Label(diceGroups.Count==0?"Добавьте дайсы для броска":DiceGroupExpression(),muted);
-            if(diceThemeTask!=null)GUILayout.Label("Подготовка выбранного набора…",muted);
-            GUI.enabled=GUI.enabled&&diceGroups.Count>0&&diceEditGroup<0&&diceThemeTask==null;
-            if(GUILayout.Button(diceTable.Throwing?"Бросок…":"Бросить",brandGreen,GUILayout.MinHeight(62))) {
+            if(diceCatalogTask!=null||diceThemeTask!=null)GUILayout.Label("Подготовка выбранного набора и лотка…",muted);
+            GUI.enabled=GUI.enabled&&diceGroups.Count>0&&diceEditGroup<0&&diceThemeTask==null&&diceCatalogTask==null;
+            if(MeasuredMenuButton(diceTable.Throwing?"Бросок…":"Бросить",brandGreen,GUILayout.MinHeight(62))) {
                 try { diceTable.Throw(DiceGroupExpression());diceInputError="";diceAddPicker=false;diceEditGroup=-1; }
                 catch(FormatException error) { diceInputError=error.Message; }
             }

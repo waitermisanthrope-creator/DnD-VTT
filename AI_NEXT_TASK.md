@@ -1,3 +1,7 @@
+# Unity51 — retry3, UI builder исправлен / 2026-11-11
+
+Native retry43079741096/sourcebec1f51e: WORKSHOP11401/972 PhysX/render/async scene cleanup PASS; APK НЕ создан из-за GUI.skin вне OnGUI в template-кэше. Исправлен общий builder с явными prototype-стилями; GUI.skin только в PrepareBrand. BrandingResumeValidation требует живые неизменные фоны/пиксели/число владений (старое ожидание rebuild противоречило корневому фиксу). Обе conditional compile/UI lifecycle/brand PASS. Бросок ждёт каталога и темы, smoke проверяет disabled при удержанном Task. Запустить/дождаться retry3 кандидата51; НЕ публиковать, feed/main/approvals не трогать. Physical Android и remote GM transport ещё не завершены. Отчёт docs/unity-account/STABILITY_CRAFTS_1.00.51.md.
+
 # Unity51 — native retry после ошибки baseline теста / 2026-11-11
 
 Первая native попытка43077289483/source1c8b8dee прошла972 PhysX броска/темы/лотки, но НЕ создала APK: sceneCount измерителя снимался после временных async-unload сцен. Baseline перенесён до них; cleanup gate не ослаблен. Добавлены потерянные сведения старых рецептов в новую книгу, PRODUCTION_LEGACY11 (red→green), обе conditional compile PASS. Полная предыдущая локальная регрессия11400/Python14/Market553 PASS. Повторить private candidate51, затем дождаться actual APK/signature/Windows GPU smoke; ничего не публиковать и не менять feed/main. Physical Android и remote GM transport остаются незавершёнными. Отчёт docs/unity-account/STABILITY_CRAFTS_1.00.51.md.
