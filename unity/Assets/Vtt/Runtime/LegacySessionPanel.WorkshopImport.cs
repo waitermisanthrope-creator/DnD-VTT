@@ -31,7 +31,7 @@ namespace DndVtt.UnityPrototype
         private IEnumerator ImportWorkshopData(string text)
         {
             InitializeWorkshop();contentBusy=true;contentNotice="Проверка и установка локального дополнения…";contentProgress=0;
-            string root=workshopStore.Root,platform=Application.platform==RuntimePlatform.Android?"Android":"Windows",unity=Application.unityVersion;int code=UnityRelease.Code;
+            string root=workshopStore.Root,platform=WorkshopRuntime.Platform,unity=Application.unityVersion;int code=UnityRelease.Code;
             yield return null;
             var task=Task.Run(()=>
             {
