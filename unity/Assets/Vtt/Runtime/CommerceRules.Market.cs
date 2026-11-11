@@ -28,13 +28,28 @@ namespace DndVtt.UnityPrototype
         private static string MarketNorm(string text)=>Regex.Replace((text??"").ToLowerInvariant(),"[^a-zа-яё0-9]","");
         private static decimal MarketBase(JObject item)
         {
-            // Explicit catalog/crafted prices precede the old1gp fallback bug.
+            // Respect prices from original installed collections and their
+            // structured trade metadata. Unpriced rarities remain untradeable:
+            // never substitute the old artificial 1 gp fallback.
             foreach(string key in new[]{"baseCraftValue","costGp","price"})if(item[key]!=null)return MarketNumber(item[key]);
+            JToken professionalPrice=item["itemTraits"]?["trade"]?["basePriceGp"];
+            if(professionalPrice!=null)return MarketNumber(professionalPrice);
             if(item["cost"]!=null)
             {
                 if(item["cost"].Type==JTokenType.Integer||item["cost"].Type==JTokenType.Float)return MarketNumber(item["cost"]);
-                var match=Regex.Match(item["cost"].ToString().Replace(',','.'),@"([0-9]+(?:\.[0-9]+)?)\s*зм",RegexOptions.IgnoreCase);
-                if(match.Success)return decimal.Parse(match.Groups[1].Value,CultureInfo.InvariantCulture);
+                var match=Regex.Match(item["cost"].ToString().Replace(',','.'),@"([0-9]+(?:\.[0-9]+)?)\s*(зм|см|мм|пм|эм|gp|sp|cp|pp|ep)\b",RegexOptions.IgnoreCase);
+                if(match.Success)
+                {
+                    decimal value=decimal.Parse(match.Groups[1].Value,CultureInfo.InvariantCulture);
+                    switch(match.Groups[2].Value.ToLowerInvariant())
+                    {
+                        case "пм":case "pp":return value*10;
+                        case "эм":case "ep":return value*.5m;
+                        case "см":case "sp":return value*.1m;
+                        case "мм":case "cp":return value*.01m;
+                        default:return value;
+                    }
+                }
             }
             if(item["marketPriceGp"]!=null)return MarketNumber(item["marketPriceGp"]);
             throw new FormatException("У предмета нет известной цены; укажите стоимость в его данных");
@@ -181,6 +196,7 @@ namespace DndVtt.UnityPrototype
                         };
                         if(source["tags"] is JArray tags)row["tags"]=tags.DeepClone();
                         else if(source["craftTags"] is JArray craftTags)row["tags"]=craftTags.DeepClone();
+                        if(source["rarity"]!=null)row["rarity"]=source["rarity"].DeepClone();
                         try { MarketQuote(catalog,id,row,"buy","forest"); }
                         catch(Exception e) when(e is FormatException||e is OverflowException) {continue;}
                         stock.Add(row);added++;
