@@ -86,6 +86,22 @@ static class MarketChecks
   var second=CommerceRules.MarketTrade(catalog,definitions,enhanced,(JObject)barter["state"],"apothecary","buy",new JObject{["itemId"]="market_healing"},1,new JArray());
   Check(((JArray)second["hero"]["inventory"]["consumables"]).Count==2,"purchased ordinary item cannot duplicate enhanced variant");
   Check((int)second["hero"]["inventory"]["consumables"][0]["potency"]==90&&(int)second["hero"]["inventory"]["consumables"][0]["count"]==1,"existing variant remains unchanged");
+  // A malformed quantity in legacy global market state must not take the
+  // entire shop offline. Other goods stay tradeable without changing the
+  // unrecognized original value in character/preferences files.
+  var damaged=JObject.Parse("{region:'forest',traders:{village:{stock:[{id:'market_rations',qty:'NaN'}]}}}");
+  string beforeDamaged=damaged.ToString();
+  var isolated=CommerceRules.MarketStock(catalog,damaged,"village");
+  Check((long)isolated.First(i=>(string)i["id"]=="market_rations")["qty"]==0
+    &&(string)isolated.First(i=>(string)i["id"]=="market_rations")["marketInvalid"]!=null,
+    "bad saved market quantity disables only damaged offer");
+  Check((long)isolated.First(i=>(string)i["id"]=="market_rope")["qty"]==8
+    &&damaged.ToString()==beforeDamaged,
+    "other vendor offers remain available and bad saved quantity is untouched");
+  var safePurchase=CommerceRules.MarketTrade(catalog,definitions,h,damaged,"village","buy",new JObject{["itemId"]="market_rope"},1,new JArray());
+  Check((string)safePurchase["state"]["traders"]["village"]["stock"][0]["qty"]=="NaN"
+    &&((JArray)safePurchase["hero"]["inventory"]["junk"]).Count==1,
+    "healthy offer can be bought while malformed saved slot stays preserved");
   return n;
  }
 }
