@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "version": "1.00.50",
-  "candidateRunId": 43016648832,
+  "version": "1.00.52",
+  "candidateRunId": 43087561652,
   "approved": true,
   "releaseType": "public-prerelease",
   "channel": "unity-experiment",
   "scope": "Android-only",
-  "note": "Owner explicitly requests publishing Android 1.00.50 to in-app update channel on 2026-11-11. Signed ARM64 candidate job 130509325265 succeeded, run 43016648832 from commit 908836a9c03ba01812038989db6154c51320ca2f. Merchant tree, optional fantasy merchants and market stability fixes. No Windows release. Publish only after original cert/package/version/hash/download verification; do not change main."
+  "note": "Владелец явно запросил обновление через приложение: «Мне нужен результат. Я хочу обновиться из приложения и проверить работоспособность». Это разрешение на Android-only публикацию 1.00.52 вместо прежнего запрета автоматической публикации. Кандидат run43087561652/sourceb948ac242a717646d73b73fb4a6ac70bc44fe043. Публиковать только после успешной ARM64 сборки, проверки исходного сертификата, пакета, версии, SHA256 и доступности APK. Windows не публиковать и не ждать; main не менять. 1.00.51 с найденным UI дефектом не продвигать. Физическая Android QA и удалённый GM transport не подтверждены."
 }
