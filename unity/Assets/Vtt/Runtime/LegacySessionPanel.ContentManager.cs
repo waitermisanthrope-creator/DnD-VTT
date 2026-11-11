@@ -88,8 +88,8 @@ namespace DndVtt.UnityPrototype
             if(GUILayout.Button("Далее →",GUILayout.MinHeight(52))) { contentPage++;contentDetails=null;frontScroll=Vector2.zero; }
             GUI.enabled=enabled;GUILayout.EndHorizontal();
         }
-        private static readonly string[] ContentCategories = { "Все", "Игровые системы", "Расы", "Классы", "Черты", "Подклассы", "Заклинания", "Предметы", "Монстры", "3D-модели", "Окружение", "Текстуры", "Анимации", "Карты", "Оформление", "Коллекции", "Крафт и алхимия" };
-        private static readonly string[] ContentTypes = { "", "game-system", "race", "class", "feat", "subclass", "spell", "item", "monster", "model", "environment", "texture", "animation", "map", "appearance", "collection", "craft" };
+        private static readonly string[] ContentCategories = { "Все", "Игровые системы", "Расы", "Классы", "Черты", "Подклассы", "Заклинания", "Предметы", "Монстры", "3D-модели", "Окружение", "Текстуры", "Анимации", "Карты", "Оформление", "Коллекции", "Крафт и алхимия", "Торговцы" };
+        private static readonly string[] ContentTypes = { "", "game-system", "race", "class", "feat", "subclass", "spell", "item", "monster", "model", "environment", "texture", "animation", "map", "appearance", "collection", "craft", "market" };
         private string ContentDirectory => Path.Combine(Application.persistentDataPath, "workshop-v1");
         private void InitializeWorkshop()
         {
