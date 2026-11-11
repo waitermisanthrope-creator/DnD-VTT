@@ -10,11 +10,13 @@ namespace DndVtt.UnityPrototype
     public sealed partial class LegacySessionPanel
     {
         private JObject marketCatalog;
-        private JObject MarketCatalog=>marketCatalog??=JObject.Parse(Resources.Load<TextAsset>("CharacterSheet/market").text);
+        private JObject MarketCatalog=>marketCatalog??=CommerceRules.MergeMarketPacks(
+            JObject.Parse(Resources.Load<TextAsset>("CharacterSheet/market").text),
+            CommerceCatalog?["markets"] as JArray,CommerceCatalog?["items"] as JArray??new JArray());
         private bool marketOpen,tradeRecoveryVisible;
         private bool? requestedMarketOpen;
         private Action pendingMarketAction;
-        private string marketTrader="village",marketMode="buy",marketQuery="",marketWanted,marketMessage="";
+        private string marketDepartment="",marketTrader="",marketMode="buy",marketQuery="",marketWanted,marketMessage="";
         private readonly JArray marketOffers=new JArray();
         private Vector2 marketScroll;
         private GUIStyle marketSurface,marketHeading,marketSelected;
@@ -23,7 +25,7 @@ namespace DndVtt.UnityPrototype
             if(Event.current.type!=EventType.Layout)return;
             if(requestedMarketOpen.HasValue)
             {
-                marketOpen=requestedMarketOpen.Value;requestedMarketOpen=null;pendingMarketAction=null;marketOffers.Clear();marketWanted=null;marketQuery="";marketMode="buy";marketScroll=Vector2.zero;ResetFormInput();
+                marketOpen=requestedMarketOpen.Value;requestedMarketOpen=null;pendingMarketAction=null;marketOffers.Clear();marketWanted=null;marketQuery="";marketMode="buy";marketDepartment="";marketTrader="";marketScroll=Vector2.zero;ResetFormInput();
             }
             if(pendingMarketAction!=null){var action=pendingMarketAction;pendingMarketAction=null;try{action();}catch(Exception error){marketMessage=status=error.Message;}}
             tradeRecoveryVisible=File.Exists(SavePath+".trade-journal");
@@ -80,9 +82,15 @@ namespace DndVtt.UnityPrototype
             {
                 if(CommerceCatalog==null)throw new InvalidOperationException(inventoryCatalogCache.Error??"Загрузка справочника…");
                 state=preferences.MarketState;definitions=(JArray)CommerceCatalog["items"];
-                stock=CommerceRules.MarketStock(MarketCatalog,state,marketTrader);
-                if(marketMode!="sell")foreach(JObject item in stock.OfType<JObject>())
-                {CommerceRules.MarketQuote(MarketCatalog,marketTrader,item,"buy",(string)state["region"]??"forest");CommerceRules.MarketResolve(definitions,item,inventoryCatalogCache.Current.MarketDefinitions);}
+                if(!string.IsNullOrEmpty(marketTrader))
+                {
+                    stock=CommerceRules.MarketStock(MarketCatalog,state,marketTrader);
+                    if(marketMode!="sell")foreach(JObject item in stock.OfType<JObject>())
+                    {
+                        try { CommerceRules.MarketQuote(MarketCatalog,marketTrader,item,"buy",(string)state["region"]??"forest");CommerceRules.MarketResolve(definitions,item,inventoryCatalogCache.Current.MarketDefinitions); }
+                        catch(Exception e) when(e is FormatException||e is OverflowException) { item["marketInvalid"]=e.Message; }
+                    }
+                }
             }
             catch(Exception error){loadError="Торговля недоступна; исходные данные сохранены. "+error.Message;}
             DrawClassicSheetBackdrop();Shade(new Rect(0,0,UiWidth,UiHeight),new Color(0,0,0,.82f));
@@ -96,22 +104,63 @@ namespace DndVtt.UnityPrototype
                 if(CommerceCatalog==null)DrawInventoryCatalogLoading();else GUILayout.Label(loadError,sheetQuiet);GUILayout.EndScrollView();GUILayout.EndVertical();GUILayout.EndArea();
                 if(Event.current.type==EventType.KeyDown&&Event.current.keyCode==KeyCode.Escape){requestedMarketOpen=false;Event.current.Use();}return;
             }
-            float used=0,available=width-44;GUILayout.BeginHorizontal();
-            foreach(var entry in ((JObject)MarketCatalog["traders"]).Properties())
+
+            // Three-level touch-friendly tree: department -> merchant -> goods.
+            // The grouping comes from a verified installed market pack, or a
+            // basic fallback for players who have not installed that pack yet.
+            JArray departments=MarketCatalog["departments"] as JArray;
+            if(departments==null||departments.Count==0)
             {
-                string id=entry.Name,name=(string)entry.Value["name"];var style=id==marketTrader?marketSelected:cloneBlue;float cell=Mathf.Min(available,style.CalcSize(new GUIContent(name)).x+6),height=Mathf.Max(35,style.CalcHeight(new GUIContent(name),cell));
-                if(used>0&&used+cell+6>available){GUILayout.FlexibleSpace();GUILayout.EndHorizontal();GUILayout.BeginHorizontal();used=0;}
-                if(MeasuredMenuButton(name,style,GUILayout.Width(cell),GUILayout.Height(height)))pendingMarketAction=()=>{marketTrader=id;marketOffers.Clear();marketWanted=null;};used+=cell+6;GUILayout.Space(6);
+                departments=new JArray(new JObject{
+                    ["id"]="all",["name"]="Все торговцы",
+                    ["traders"]=new JArray(((JObject)MarketCatalog["traders"]).Properties().Select(p=>p.Name))
+                });
             }
-            GUILayout.FlexibleSpace();GUILayout.EndHorizontal();GUILayout.Space(10);GUILayout.BeginHorizontal();
-            foreach(var entry in new[]{("buy","Купить"),("sell","Продать"),("barter","Обмен")})
-                if(MeasuredMenuButton(entry.Item2,cloneBlue,GUILayout.ExpandWidth(true),GUILayout.Height(35))){string mode=entry.Item1;pendingMarketAction=()=>{marketMode=mode;marketOffers.Clear();marketWanted=null;};}
-            GUILayout.EndHorizontal();
-            marketQuery=MenuTextField("marketQuery", marketQuery,cloneInput,GUILayout.ExpandWidth(true),GUILayout.Height(35));GUILayout.Space(8);
-            if(stock!=null)
+            if(string.IsNullOrEmpty(marketDepartment))
             {
-                GUILayout.Label(MarketCatalog["traders"][marketTrader]["name"]+" · склад: "+stock.Sum(i=>(long)i["qty"])+" · Покупает только подходящие товары",sheetQuiet);GUILayout.Space(8);
-                if(marketMode=="sell")DrawMarketSales(hero,state,definitions);else DrawMarketGoods(hero,state,definitions,stock);
+                GUILayout.Label("Выберите раздел рынка",marketHeading);GUILayout.Space(6);
+                foreach(JObject section in departments.OfType<JObject>())
+                {
+                    string id=(string)section["id"];
+                    if(MeasuredMenuButton("▸ "+section["name"]+" · "+((JArray)section["traders"]).Count,cloneBlue,GUILayout.ExpandWidth(true),GUILayout.Height(42)))
+                        pendingMarketAction=()=>{marketDepartment=id;marketTrader="";marketOffers.Clear();marketWanted=null;marketQuery="";marketScroll=Vector2.zero;};
+                    GUILayout.Space(5);
+                }
+            }
+            else
+            {
+                JObject section=departments.OfType<JObject>().FirstOrDefault(d=>(string)d["id"]==marketDepartment);
+                if(section==null)
+                {
+                    pendingMarketAction=()=>{marketDepartment="";marketTrader="";};
+                }
+                else
+                {
+                    if(MeasuredMenuButton("← Все разделы",cloneBlue,GUILayout.Height(36)))
+                        pendingMarketAction=()=>{marketDepartment="";marketTrader="";marketOffers.Clear();marketWanted=null;marketScroll=Vector2.zero;};
+                    GUILayout.Label("Раздел: "+section["name"],marketHeading);GUILayout.Space(6);
+                    foreach(string id in ((JArray)section["traders"]).Values<string>())
+                    {
+                        JObject trader=MarketCatalog["traders"]?[id] as JObject;
+                        if(trader==null)continue;
+                        string name=(string)trader["name"],label=(marketTrader==id?"✓ ":"▸ ")+name;
+                        if(MeasuredMenuButton(label,marketTrader==id?marketSelected:cloneBlue,GUILayout.ExpandWidth(true),GUILayout.Height(38)))
+                            pendingMarketAction=()=>{marketTrader=id;marketOffers.Clear();marketWanted=null;marketQuery="";marketScroll=Vector2.zero;};
+                        GUILayout.Space(4);
+                    }
+                    if(!string.IsNullOrEmpty(marketTrader)&&stock!=null)
+                    {
+                        GUILayout.Space(10);GUILayout.Label("Товары: "+MarketCatalog["traders"][marketTrader]["name"],marketHeading);
+                        GUILayout.BeginHorizontal();
+                        foreach(var entry in new[]{("buy","Купить"),("sell","Продать"),("barter","Обмен")})
+                            if(MeasuredMenuButton(entry.Item2,cloneBlue,GUILayout.ExpandWidth(true),GUILayout.Height(35)))
+                            {string mode=entry.Item1;pendingMarketAction=()=>{marketMode=mode;marketOffers.Clear();marketWanted=null;};}
+                        GUILayout.EndHorizontal();GUILayout.Space(6);
+                        marketQuery=MenuTextField("marketQuery",marketQuery,cloneInput,GUILayout.ExpandWidth(true),GUILayout.Height(35));GUILayout.Space(8);
+                        GUILayout.Label("Склад: "+stock.Sum(i=>(long)i["qty"])+" · покупает только подходящие товары",sheetQuiet);GUILayout.Space(8);
+                        if(marketMode=="sell")DrawMarketSales(hero,state,definitions);else DrawMarketGoods(hero,state,definitions,stock);
+                    }
+                }
             }
             GUILayout.Space(8);GUILayout.Label(marketMessage,sheetQuiet);GUILayout.EndScrollView();RegisterSwipe("market-modal",GUILayoutUtility.GetLastRect());GUILayout.EndVertical();GUILayout.EndArea();
             if(Event.current.type==EventType.KeyDown&&Event.current.keyCode==KeyCode.Escape){requestedMarketOpen=false;Event.current.Use();}
@@ -121,13 +170,15 @@ namespace DndVtt.UnityPrototype
             string region=(string)state["region"]??"forest";
             foreach(JObject item in stock.OfType<JObject>().Where(i=>(long)i["qty"]>0&&i["name"].ToString().IndexOf(marketQuery,StringComparison.CurrentCultureIgnoreCase)>=0))
             {
-                string id=(string)item["id"];long quote=CommerceRules.MarketQuote(MarketCatalog,marketTrader,item,"buy",region);CloneListRule();GUILayout.BeginHorizontal();GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
-                GUILayout.Label(item["name"]+" × "+item["qty"]);GUILayout.Label("Продажа игроку: "+MarketMoney(quote),sheetQuiet);
-                if((string)CommerceRules.MarketResolve(definitions,item,inventoryCatalogCache.Current.MarketDefinitions)["marketFunctionalStatus"]=="data_only")GUILayout.Label("Описание товара · пакет свойств не установлен",sheetQuiet);
-                GUILayout.EndVertical();
+                string id=(string)item["id"];long quote=0;string priceError=(string)item["marketInvalid"];
+                if(priceError==null)try{quote=CommerceRules.MarketQuote(MarketCatalog,marketTrader,item,"buy",region);}catch(Exception e) when(e is FormatException||e is OverflowException){priceError=e.Message;}
+                CloneListRule();GUILayout.BeginHorizontal();GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
+                GUILayout.Label(item["name"]+" × "+item["qty"]);GUILayout.Label(priceError==null?"Продажа игроку: "+MarketMoney(quote):"Товар недоступен: "+priceError,sheetQuiet);
+                if(priceError==null&&(string)CommerceRules.MarketResolve(definitions,item,inventoryCatalogCache.Current.MarketDefinitions)["marketFunctionalStatus"]=="data_only")GUILayout.Label("Описание товара · пакет свойств не установлен",sheetQuiet);
+                GUILayout.EndVertical();bool before=GUI.enabled;GUI.enabled=before&&priceError==null;
                 if(MeasuredMenuButton(marketMode=="barter"?"Выбрать":"Купить",cloneBlue,GUILayout.Width(88),GUILayout.Height(35)))
                 {if(marketMode=="barter")pendingMarketAction=()=>marketWanted=id;else QueueMarketTrade("buy",new JObject{["itemId"]=id},1,new JArray());}
-                GUILayout.EndHorizontal();GUILayout.Space(6);
+                GUI.enabled=before;GUILayout.EndHorizontal();GUILayout.Space(6);
             }
             if(marketMode!="barter")return;
             GUILayout.BeginVertical(GUI.skin.box);GUILayout.Label("Предметы для обмена",marketHeading);
