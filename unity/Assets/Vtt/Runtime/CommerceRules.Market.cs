@@ -65,15 +65,27 @@ namespace DndVtt.UnityPrototype
         {
             var index=new Dictionary<string,JObject>();
             foreach(JObject definition in definitions.OfType<JObject>())
-            {string key=MarketNorm((string)definition["name"]);if(index.ContainsKey(key))index[key]=null;else index[key]=definition;}
+            {string key=MarketNorm((string)definition["name"]);if(index.ContainsKey(key))index[key]=null;else index[key]=definition;
+                string id=(string)definition["id"];
+                if(!string.IsNullOrEmpty(id))index["#id:"+id]=definition;}
             return index;
         }
         public static JObject MarketResolve(JArray definitions,JObject item,Dictionary<string,JObject> index=null)
         {
             string name=(string)item["name"]??"";if(name=="Противоядие"||name=="Антитоксин")name="Противоядие (Антидот)";
             JObject definition;
-            if(index!=null)index.TryGetValue(MarketNorm(name),out definition);
-            else {var matches=definitions.OfType<JObject>().Where(d=>MarketNorm((string)d["name"])==MarketNorm(name)).ToArray();definition=matches.Length==1?matches[0]:null;}
+            if(index!=null)
+            {
+                string directId=(string)item["sourceItemId"];
+                if(directId!=null)index.TryGetValue("#id:"+directId,out definition);
+                else index.TryGetValue(MarketNorm(name),out definition);
+            }
+            else
+            {
+                string directId=(string)item["sourceItemId"];
+                var matches=definitions.OfType<JObject>().Where(d=>directId!=null?(string)d["id"]==directId:MarketNorm((string)d["name"])==MarketNorm(name)).ToArray();
+                definition=matches.Length==1?matches[0]:null;
+            }
             var result=(JObject)item.DeepClone();
             if(definition!=null)
             {
@@ -107,15 +119,80 @@ namespace DndVtt.UnityPrototype
             if(state["traders"]!=null&&!(state["traders"] is JObject))throw new FormatException("Неизвестный формат состояния рынка");
             var saved=(state["traders"] as JObject)?[trader];if(saved==null)return result;
             if(!(saved is JObject)||!(saved["stock"] is JArray slots)||slots.Any(s=>!(s is JObject))||slots.GroupBy(s=>(string)s["id"]).Any(g=>g.Count()>1))throw new FormatException("Неизвестный формат склада — данные сохранены");
-            foreach(JObject row in result){var slot=slots.OfType<JObject>().SingleOrDefault(s=>JToken.DeepEquals(s["id"],row["id"]));row["qty"]=slot==null?0:MarketCount(slot["qty"]);}
+            foreach(JObject row in result){var slot=slots.OfType<JObject>().SingleOrDefault(s=>JToken.DeepEquals(s["id"],row["id"]));row["qty"]=slot==null?MarketCount(row["qty"]):MarketCount(slot["qty"]);}
             return result;
         }
         private static void MarketSetStock(JObject catalog,JObject state,string trader,string item,long count)
         {
             var traders=CharacterSheetRules.Object(state,"traders");
             if(traders[trader]==null)traders[trader]=new JObject{["stock"]=new JArray(((JArray)MarketTrader(catalog,trader)["stock"]).OfType<JObject>().Select(i=>new JObject{["id"]=i["id"].DeepClone(),["qty"]=i["qty"].DeepClone()})),["lastRestock"]=DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()};
-            var slot=((JArray)traders[trader]["stock"]).OfType<JObject>().Single(s=>(string)s["id"]==item);slot["qty"]=count;
+            var slots=(JArray)traders[trader]["stock"];var slot=slots.OfType<JObject>().SingleOrDefault(s=>(string)s["id"]==item);
+            if(slot==null){slot=new JObject{["id"]=item,["qty"]=count};slots.Add(slot);}else slot["qty"]=count;
         }
+
+        /// <summary>
+        /// An installed market mod only indexes already-installed item definitions.
+        /// It never replaces the base item catalog, changes character data or executes code.
+        /// Derived stock has stable IDs so a trader's saved quantities survive reloads.
+        /// </summary>
+        public static JObject MergeMarketPacks(JObject baseline,JArray markets,JArray definitions)
+        {
+            var catalog=(JObject)baseline.DeepClone();
+            if(markets==null||markets.Count==0)return catalog;
+            var traders=(JObject)catalog["traders"];
+            var sections=new JArray();
+            foreach(JObject pack in markets.OfType<JObject>())
+            {
+                foreach(JObject rule in (pack["traders"] as JArray??new JArray()).OfType<JObject>())
+                {
+                    string id=(string)rule["id"],templateId=(string)rule["template"];
+                    if(string.IsNullOrEmpty(id)||!(traders[templateId] is JObject original))continue;
+                    bool existing=traders[id] is JObject;
+                    var trader=existing?(JObject)traders[id]:(JObject)original.DeepClone();
+                    trader["name"]=(string)rule["name"];
+                    if((bool?)rule["inheritStock"]==false)trader["stock"]=new JArray();
+                    var stock=trader["stock"] as JArray??new JArray();
+                    trader["stock"]=stock;traders[id]=trader;
+                    int maximum=Math.Max(0,Math.Min(64,(int?)rule["deriveLimit"]??32));
+                    if(maximum==0)continue;
+                    var categories=new HashSet<string>((rule["itemCategories"] as JArray??new JArray()).Values<string>(),StringComparer.Ordinal);
+                    var keywords=(rule["nameContains"] as JArray??new JArray()).Values<string>().Where(w=>!string.IsNullOrEmpty(w)).ToArray();
+                    var seen=new HashSet<string>(stock.OfType<JObject>().Select(x=>(string)x["sourceItemId"]??(string)x["id"]));
+                    int added=0;
+                    // Stable enumeration by installed content order. Do not copy
+                    // inventories; only make catalog entries available for purchase.
+                    foreach(JObject source in definitions.OfType<JObject>())
+                    {
+                        if(added>=maximum)break;
+                        string sourceId=(string)source["id"],name=(string)source["name"],category=(string)source["inventoryCategory"];
+                        if(string.IsNullOrEmpty(sourceId)||string.IsNullOrWhiteSpace(name)||!categories.Contains(category)||name.IndexOf("сломанный",StringComparison.OrdinalIgnoreCase)>=0||sourceId.Contains(".broken.")||sourceId.Contains(".damaged."))continue;
+                        if(keywords.Length>0&&!keywords.Any(k=>name.IndexOf(k,StringComparison.OrdinalIgnoreCase)>=0))continue;
+                        if(!seen.Add(sourceId))continue;
+                        decimal price;
+                        try { price=MarketBase(source);if(price<=0||price>MarketSafe/100m)continue; }
+                        catch(FormatException) { continue; }
+                        var row=new JObject{
+                            ["id"]="modstock."+id+"."+sourceId,
+                            ["sourceItemId"]=sourceId,
+                            ["name"]=name,
+                            ["category"]=category,
+                            ["costGp"]=price,
+                            ["qty"]=3
+                        };
+                        if(source["tags"] is JArray tags)row["tags"]=tags.DeepClone();
+                        else if(source["craftTags"] is JArray craftTags)row["tags"]=craftTags.DeepClone();
+                        try { MarketQuote(catalog,id,row,"buy","forest"); }
+                        catch(Exception e) when(e is FormatException||e is OverflowException) {continue;}
+                        stock.Add(row);added++;
+                    }
+                }
+                foreach(JObject section in (pack["departments"] as JArray??new JArray()).OfType<JObject>())
+                    if(!sections.OfType<JObject>().Any(s=>(string)s["id"]==(string)section["id"]))sections.Add(section.DeepClone());
+            }
+            if(sections.Count>0)catalog["departments"]=sections;
+            return catalog;
+        }
+
         private static long MarketBalance(JObject hero)
         {
             if(hero["coins"]!=null&&!(hero["coins"] is JObject))throw new FormatException("Неизвестный формат кошелька");
