@@ -77,6 +77,21 @@ public static class WorkshopEditorValidation
         };
         var manifest=new JObject{["id"]="test.market.merchants",["version"]="1.0.0",["type"]="market"};
         WorkshopStore.ValidateData(manifest,data.ToString());
+        // The live v3 catalogue must also remain parseable by released Unity
+        // 1.00.49, which understands craft but not a new market type.
+        var envelope=new JObject{
+            ["schemaVersion"]=1,["id"]="test.market.merchants",["version"]="1.0.0",
+            ["type"]="craft",["mode"]="alchemy-ingredients",
+            ["ingredients"]=new JArray(),["items"]=new JArray(),
+            ["merchantMarket"]=data.DeepClone()
+        };
+        var wrapperManifest=new JObject{
+            ["schemaVersion"]=1,["id"]="test.market.merchants",
+            ["version"]="1.0.0",["type"]="craft"
+        };
+        WorkshopStore.ValidateData(wrapperManifest,envelope.ToString());
+        Check(WorkshopStore.Types.Contains("craft"),"released-client compatible catalogue type");
+
         var items=new JArray(
             new JObject {["id"]="test.items.weapon",["name"]="Тестовый клинок",["inventoryCategory"]="weapons",["cost"]="5 см"},
             new JObject {["id"]="test.items.unpriced",["name"]="Тестовый неподлежащий продаже клинок",["inventoryCategory"]="weapons",["cost"]="Необычное"}
