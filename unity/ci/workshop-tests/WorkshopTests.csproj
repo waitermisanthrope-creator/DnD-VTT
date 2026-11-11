@@ -6,11 +6,14 @@
     <Compile Include="../../Assets/Vtt/Runtime/WorkshopStore.cs" Link="WorkshopStore.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="UiLifecycleChecks.cs" />
+    <Compile Include="GuiStyleResetChecks.cs" />
     <Compile Include="SheetSwipeChecks.cs" />
     <Compile Include="DiceLoadingChecks.cs" />
     <Compile Include="ContainerMigrationChecks.cs" />
     <Compile Include="ProductionChecks.cs" />
     <Compile Include="ProductionPackageChecks.cs" />
+    <Compile Include="ProductionLegacyChecks.cs" />
+    <Compile Include="../../Assets/Vtt/Runtime/ProductionLegacy.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/WorkshopStore.Production.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/ProductionCatalog.cs" />
     <Compile Include="../../Assets/Vtt/Runtime/CommerceRules.Production.cs" />

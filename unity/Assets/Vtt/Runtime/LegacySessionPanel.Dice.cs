@@ -17,7 +17,7 @@ namespace DndVtt.UnityPrototype
         private Task<DiceAppearanceCatalog> diceCatalogTask;
         private Task<(DiceTheme theme,string error)> diceThemeTask;
         private string dicePendingThemeKey;
-        private bool dicePreparing,diceTrayRestorePending;
+        private bool dicePreparing,diceTrayRestorePending,diceReleaseWhenSettled;
         private string diceLastRoll="";
         private float diceLastVisible;
         private bool DicePageVisible=>screen==FrontScreen.Dice||(screen==FrontScreen.Sheet&&sheetTab==5&&!marketOpen);
@@ -37,7 +37,7 @@ namespace DndVtt.UnityPrototype
                 diceCatalogTask=null;
             }
             if(diceTrayRestorePending&&diceTable!=null&&!diceTable.Throwing)
-            {var tray=Array.Find(diceTrays,t=>t.Id==PlayerPrefs.GetString("dndvtt.dice.tray",""));if(tray!=null)diceTable.SetTray(tray);diceTrayRestorePending=false;}
+            {var tray=Array.Find(diceTrays,t=>t.Id==PlayerPrefs.GetString("dndvtt.dice.tray",""));if(diceTable.ActiveTrayId!=(tray?.Id??""))diceTable.SetTray(tray);diceTrayRestorePending=false;}
             if(diceThemeTask!=null&&diceThemeTask.IsCompleted&&diceTable!=null&&!diceTable.Throwing)
             {
                 var result=diceThemeTask.Result;diceThemeTask=null;
@@ -45,6 +45,8 @@ namespace DndVtt.UnityPrototype
                 {if(result.error!=null)diceInputError=result.error;else diceTable.SetTheme(result.theme);diceIconSelection=dicePendingThemeKey;}
             }
         }
+        private void SafePollDiceCatalog()
+        {try{PollDiceCatalog();}catch(Exception error){CloseDiceTable();diceError="Не удалось восстановить 3D-оформление: "+error.Message;}}
         private string DiceAppearanceKey()
         {
             bool follow=PlayerPrefs.GetInt("dndvtt.dice.followIcon",PlayerPrefs.HasKey("dndvtt.dice.theme")?0:1)==1;
@@ -84,8 +86,21 @@ namespace DndVtt.UnityPrototype
         {
             if(!Application.isFocused){StopDiceSensor();return;}
             bool visible=DicePageVisible;
-            if(!visible) {StopDiceSensor();if(diceTable!=null&&!diceTable.Throwing&&Time.unscaledTime-diceLastVisible>120)CloseDiceTable();return;}
-            diceLastVisible=Time.unscaledTime;PollDiceCatalog();
+            if(!visible)
+            {
+                StopDiceSensor();
+                try
+                {
+                    // Finish an already requested roll without rendering; otherwise
+                    // an unfinished hidden roll could pin the cache indefinitely.
+                    if(diceTable?.Throwing==true)diceTable.Tick(Time.unscaledDeltaTime,false);
+                    if(diceTable?.Value.HasValue==true)diceLastRoll=rollResult=diceTable.Result;
+                    if(diceTable!=null&&!diceTable.Throwing&&(diceReleaseWhenSettled||Time.unscaledTime-diceLastVisible>120)){CloseDiceTable();diceReleaseWhenSettled=false;}
+                }
+                catch(Exception error){CloseDiceTable();diceError="Бросок остановлен: "+error.Message;}
+                return;
+            }
+            diceLastVisible=Time.unscaledTime;SafePollDiceCatalog();
             if(diceTable==null)return;
             try { UpdateDiceSensor();diceTable.Tick(Time.unscaledDeltaTime); }
             catch(Exception error) { CloseDiceTable();diceError="3D-стол временно недоступен: "+error.Message;return; }
@@ -184,7 +199,7 @@ namespace DndVtt.UnityPrototype
         private void DrawDiceTable()
         {
             GUILayout.Label("Объёмные дайсы",heading);
-            if(Event.current.type==EventType.Layout){StartDiceCatalog();PollDiceCatalog();if(diceTable==null&&diceError==null&&!dicePreparing)StartCoroutine(PrepareDiceTable());}
+            if(Event.current.type==EventType.Layout){StartDiceCatalog();SafePollDiceCatalog();if(diceTable==null&&diceError==null&&!dicePreparing)StartCoroutine(PrepareDiceTable());}
             if(diceTable==null) {
                 GUILayout.Label(diceError??"Подготовка 3D-стола…",muted);
                 if(diceError!=null&&GUILayout.Button("Повторить",GUILayout.MinHeight(54)))diceError=null;

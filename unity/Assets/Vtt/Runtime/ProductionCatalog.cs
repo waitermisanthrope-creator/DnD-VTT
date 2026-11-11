@@ -7,12 +7,13 @@ using Newtonsoft.Json.Linq;
 namespace DndVtt.UnityPrototype
 {
     // Indexes point into the shared immutable commerce snapshot; no second item DB.
-    public sealed class ProductionCatalog
+    public sealed partial class ProductionCatalog
     {
         public readonly Dictionary<string,JObject> Items=new Dictionary<string,JObject>();
         public readonly Dictionary<string,JObject> Professions=new Dictionary<string,JObject>();
         public readonly Dictionary<string,JObject> Recipes=new Dictionary<string,JObject>();
         public readonly JObject Commerce;
+        public JObject[] ProfessionList {get;private set;}
         public readonly JObject ToolAliases=new JObject();
         public readonly Dictionary<string,string> ToolNames=new Dictionary<string,string>();
         public ProductionCatalog(JObject commerce,JObject[] modules)
@@ -32,6 +33,7 @@ namespace DndVtt.UnityPrototype
                 {string id=(string)recipe["id"];if(Recipes.ContainsKey(id))throw new FormatException("Повторный ID рецепта: "+id);var copy=(JObject)recipe.DeepClone();if(module["packageVersion"]!=null){copy["packageId"]=module["packageId"]?.DeepClone();copy["packageVersion"]=module["packageVersion"].DeepClone();}Recipes.Add(id,copy);}
             }
             foreach(var recipe in Recipes.Values)if(!Professions.ContainsKey((string)recipe["professionId"]))throw new FormatException("Не установлена профессия рецепта: "+recipe["name"]);
+            AddLegacyRecipes();ProfessionList=Professions.Values.OrderBy(p=>(string)p["name"],StringComparer.CurrentCulture).ToArray();
         }
         public static decimal Number(JToken token,decimal fallback=0,decimal maximum=9007199254740991m)
         {
@@ -56,6 +58,7 @@ namespace DndVtt.UnityPrototype
             }
             foreach(JObject recipe in recipes)
             {
+                if(recipe["legacy"]!=null)throw new FormatException("Поле совместимости зарезервировано клиентом");
                 if(!WorkshopStore.ValidId((string)recipe["professionId"]))throw new FormatException("У рецепта нет профессии");
                 References(recipe["ingredients"],false);References(recipe["results"],true);if(recipe["failureResults"]!=null)References(recipe["failureResults"],false);
                 foreach(string effectField in new[]{"effects","failureEffects"})if(recipe[effectField]!=null)

@@ -49,6 +49,9 @@ static class ProductionChecks
   Check((bool?)effected["crafts"]["flags"]?["tempered"]==true&&((JArray)effected["crafts"]["professions"]["smith"]["knownRecipes"]).Values<string>().Contains("forge"),"declarative effects unlock recipes and craft flags without executing code");
   var manualXp=Call("SetCraftProgression",Hero(),catalog,"smith",true);manualXp=Call("StartProduction",manualXp,catalog,"smelt","project.manual.xp","manual",1m,ctx,rolls);manualXp=Call("FinishManualProduction",manualXp,catalog,"project.manual.xp",new JObject{["notes"]="Решение игрока и мастера",["experience"]=10});
   Check((long)manualXp["crafts"]["professions"]["smith"]["xp"]==10&&JToken.DeepEquals(manualXp["inventory"],Hero()["inventory"]),"manual XP is explicit and never forces item debit/output");
+  var manualOutput=Call("StartProduction",Hero(),catalog,"smelt","project.manual.props","manual",1m,ctx,rolls);
+  manualOutput=Call("FinishManualProduction",manualOutput,catalog,"project.manual.props",JObject.Parse("{produce:[{itemId:'bar',count:1,properties:{charges:7}}]}"));
+  Check(((JArray)manualOutput["inventory"]["materials"]).OfType<JObject>().Any(i=>(string)i["id"]=="bar"&&(int?)i["charges"]==7),"manual selected output properties are preserved");
   return n;
  }
 }

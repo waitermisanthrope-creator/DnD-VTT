@@ -12,6 +12,7 @@ namespace DndVtt.UnityPrototype
     {
         private const float BrandMaxWidth = 720f;
         private Texture2D brandWallpaper, brandSplash, brandDragon;
+        private GUISkin brandTemplateSkin;
         private GUIStyle brandTitle, brandSub, brandName, brandCard, brandBlue, brandGreen,
             brandRed, brandPurple, brandGold, brandBrown, brandPlain;
         // GUIStyle backgrounds alone are not reliable roots during unloading or
@@ -30,6 +31,7 @@ namespace DndVtt.UnityPrototype
         private void InvalidateBrandStyles() { brandStylesDirty = true; }
         private void ReleaseBrandStyles()
         {
+            ResetGuiStyleCaches();
             foreach (var texture in brandStyleTextures)
                 if (texture) { if (Application.isPlaying) Destroy(texture); else DestroyImmediate(texture); }
             brandStyleTextures.Clear();
@@ -121,6 +123,9 @@ namespace DndVtt.UnityPrototype
         private void EnsureBrandStyles(GUIStyle button, GUIStyle label, GUIStyle box)
         {
             if (!brandStylesDirty && brandBlue != null && brandBlue.normal.background) return;
+            if(!brandTemplateSkin){brandTemplateSkin=Instantiate(GUI.skin);brandTemplateSkin.hideFlags=HideFlags.HideAndDontSave;}
+            button=brandTemplateSkin.button;label=brandTemplateSkin.label;box=brandTemplateSkin.box;
+            if(GUI.skin==sheetSkin)GUI.skin=brandTemplateSkin;
             ReleaseBrandStyles();
             if (!brandWallpaper) brandWallpaper = Resources.Load<Texture2D>("Branding/Wallpaper16");
             if (!brandSplash) brandSplash = Resources.Load<Texture2D>("Branding/Splash19");

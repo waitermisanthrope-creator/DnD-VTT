@@ -83,8 +83,9 @@ namespace DndVtt.UnityPrototype
                 // Derive the hit target from the actual GPU image. GUIToScreenPoint
                 // includes a Wine/IMGUI scroll offset and is not a client coordinate.
                 Check(buttonPoints.ContainsKey(label),"visible native click target "+label);
+                bool craftMode=label=="Полуавтомат";
                 bool gold=label=="Опыт и уровень",blue=label=="+ Своя"||label=="Посчитать",red=label=="Отмена";
-                Check(gold||blue||red||new[]{"+ Заметка","Выбрать из справочника / Создать","Сохранить расу","Подтвердить","Посчитать"}.Contains(label),"supported visual pointer target");
+                Check(craftMode||gold||blue||red||new[]{"+ Заметка","Выбрать из справочника / Создать","Сохранить расу","Подтвердить","Посчитать"}.Contains(label),"supported visual pointer target");
                 var capture=ScreenCapture.CaptureScreenshotAsTexture();
                 int minX=Screen.width,minY=Screen.height,maxX=-1,maxY=-1,hits=0;
                 try
@@ -93,7 +94,7 @@ namespace DndVtt.UnityPrototype
                     for(int y=80;y<capture.height;y++)for(int x=15;x<capture.width-15;x++)
                     {
                         var c=pixels[y*capture.width+x];
-                        mask[y*capture.width+x]=gold?Math.Abs(c.r-212)<=2&&Math.Abs(c.g-175)<=2&&Math.Abs(c.b-55)<=2:
+                        mask[y*capture.width+x]=craftMode?Math.Abs(c.r-43)<=2&&Math.Abs(c.g-41)<=2&&Math.Abs(c.b-41)<=2:gold?Math.Abs(c.r-212)<=2&&Math.Abs(c.g-175)<=2&&Math.Abs(c.b-55)<=2:
                             blue?Math.Abs(c.r-33)<=2&&Math.Abs(c.g-150)<=2&&Math.Abs(c.b-243)<=2:
                             red?Math.Abs(c.r-229)<=2&&Math.Abs(c.g-57)<=2&&Math.Abs(c.b-53)<=2:
                             Math.Abs(c.r-76)<=2&&Math.Abs(c.g-175)<=2&&Math.Abs(c.b-80)<=2;
@@ -112,7 +113,8 @@ namespace DndVtt.UnityPrototype
                             foreach(int next in new[]{x>0?index-1:-1,x<capture.width-1?index+1:-1,index-capture.width,index+capture.width})
                                 if(next>=0&&next<mask.Length&&mask[next]){mask[next]=false;queue.Enqueue(next);}
                         }
-                        if(count>hits){hits=count;minX=left;maxX=right;minY=bottom;maxY=top;}
+                        bool candidate=craftMode?count>500&&right-left>40&&right-left<capture.width/2&&top-bottom>30&&top-bottom<130&&(left+right)/2>capture.width/3&&(left+right)/2<capture.width*2/3&&top>maxY:count>hits;
+                        if(candidate){hits=count;minX=left;maxX=right;minY=bottom;maxY=top;}
                     }
                 }
                 finally{Destroy(capture);}
@@ -245,6 +247,7 @@ namespace DndVtt.UnityPrototype
                 var args = Environment.GetCommandLineArgs(); int at = Array.IndexOf(args, "--vtt-ui-output");
                 Check(at >= 0 && at + 1 < args.Length, "explicit evidence output"); folder = args[at + 1]; Directory.CreateDirectory(folder);
                 panel = FindFirstObjectByType<LegacySessionPanel>(); Check(panel, "actual application menu");
+                Debug.Log("VTT_STARTUP_OBSERVATION seconds="+Time.realtimeSinceStartup.ToString("F3")+" managedBytes="+GC.GetTotalMemory(false)+" allocatedBytes="+UnityEngine.Profiling.Profiler.GetTotalAllocatedMemoryLong()+" scope=WindowsPlayerSmokeStartIncludesOneSecondHarnessDelay");
                 // Optional QA-copy override; released players resolve the bundled Resources asset.
                 int advancementAt=Array.IndexOf(args,"--vtt-advancement-catalog");
                 if(advancementAt>=0){Check(advancementAt+1<args.Length,"explicit QA advancement path");Field("advancementCatalog",JObject.Parse(File.ReadAllText(args[advancementAt+1])));}
@@ -566,6 +569,9 @@ namespace DndVtt.UnityPrototype
                 try{Check(resumeTexture&&ReferenceEquals(resumeTexture,((GUIStyle)typeof(LegacySessionPanel).GetField("cloneBlue",Flags).GetValue(panel)).normal.background),"resume preserves actual cached button background, cycle "+cycle);}
                 catch(Exception error){Fail(error);yield break;}
             }
+            Call("InvalidateBrandStyles");yield return Frame("ui-styles-theme-rebuild");if(failed)yield break;
+            try{Check(((GUIStyle)typeof(LegacySessionPanel).GetField("cloneBlue",Flags).GetValue(panel)).normal.background,"real style rebuild recreates every dependent cached background");}
+            catch(Exception error){Fail(error);yield break;}
 #if UNITY_STANDALONE_WIN && !UNITY_EDITOR
             try{Check(!(bool)typeof(LegacySessionPanel).GetField("showElectrum",Flags).GetValue(panel),"electrum is disabled in a fresh wallet");var amounts=(string[])typeof(LegacySessionPanel).GetField("coinInput",Flags).GetValue(panel);amounts[3]="1";}
             catch(Exception error){Fail(error);yield break;}
@@ -603,6 +609,23 @@ namespace DndVtt.UnityPrototype
             diceWatch.Restart();Field("sheetTab",5);yield return Frame("dice-reopen");if(failed)yield break;
             Debug.Log("DICE_RUNTIME_OPEN_MS first="+firstDiceMs.ToString("F2")+" reopen="+diceWatch.Elapsed.TotalMilliseconds.ToString("F2")+" scope=WindowsPlayerIncludingScreenshot");
             Field("sheetTab",3);
+            string preCraftProfile=File.ReadAllText(panel.SavePath);var craftWatch=System.Diagnostics.Stopwatch.StartNew();Field("sheetTab",10);Field("frontScroll",Vector2.zero);
+            float craftDeadline=Time.realtimeSinceStartup+60;
+            while(typeof(LegacySessionPanel).GetField("productionCatalog",Flags).GetValue(panel)==null&&Time.realtimeSinceStartup<craftDeadline)yield return null;
+            yield return Frame("crafts-manual-portrait");if(failed)yield break;
+            Debug.Log("VTT_CRAFTS_FIRST_OPEN_MS "+craftWatch.Elapsed.TotalMilliseconds.ToString("F2")+" scope=WindowsPlayerIncludesLazyCatalogAndScreenshot");
+            try{Check(typeof(LegacySessionPanel).GetField("productionCatalog",Flags).GetValue(panel)!=null,"craft page prepares own lazy catalog");Check(File.ReadAllText(panel.SavePath)==preCraftProfile,"opening crafts never manufactures or spends anything");}
+            catch(Exception error){Fail(error);yield break;}
+            yield return ClickNativeButton("Полуавтомат");if(failed)yield break;
+            yield return Frame("crafts-semi-portrait");if(failed)yield break;
+            try
+            {
+                var saved=CharacterSheetStore.Load(panel.SavePath).Snapshot(0);Check((string)CommerceRules.ReadCraftState(saved)["mode"]=="semi","actual mode button persists between loads");
+                Check(JToken.DeepEquals(saved["inventory"],CharacterSheetStore.Load(panel.SavePath+".bak").Snapshot(0)["inventory"]),"changing mode never changes inventory");
+                var restored=new LegacyCharacterArchive(preCraftProfile);CharacterSheetStore.Save(panel.SavePath,restored);Field("archive",restored);
+            }
+            catch(Exception error){Fail(error);yield break;}
+            Field("sheetTab",3);Field("frontScroll",Vector2.zero);
             Field("requestedInventoryCategory",(int?)1);Field("frontScroll",new Vector2(0,600));yield return new WaitForSecondsRealtime(.3f);
             yield return Frame("classic-inventory-armor-portrait");if(failed)yield break;
             yield return ClickNativeButton("Выбрать из справочника / Создать");if(failed)yield break;
@@ -725,6 +748,7 @@ namespace DndVtt.UnityPrototype
         bool failed;
         IEnumerator Frame(string name)
         {
+            var frameWatch=System.Diagnostics.Stopwatch.StartNew();
             HideText=false;
             // Word-wrapped IMGUI controls need settled Layout/Repaint passes after a
             // viewport/tab change. Do not capture a stale first-pass layout.
@@ -744,6 +768,7 @@ namespace DndVtt.UnityPrototype
                 Check(layoutErrors==0,"no IMGUI Layout/Repaint errors during navigation");Check(clippedButtons == 0, "all recorded navigation/back labels fit their actual bounds");
                 Check(visible && hidden && visible.width == hidden.width, "GPU capture " + name);
                 if (name.EndsWith("-portrait", StringComparison.Ordinal)) Check(PortraitLayout && visible.height > visible.width, "actual portrait viewport " + name);
+                Debug.Log("VTT_PAGE_SETTLE name="+name+" ms="+frameWatch.Elapsed.TotalMilliseconds.ToString("F2")+" managedBytes="+GC.GetTotalMemory(false)+" allocatedBytes="+UnityEngine.Profiling.Profiler.GetTotalAllocatedMemoryLong()+" scope=WindowsPlayerStableLayoutAndGpuCapture");
                 Debug.Log("VTT_DESKTOP_VIEWPORT: "+name+" "+visible.width+"x"+visible.height);
                 if(name=="classic-hero-portrait"||name=="reference-0-portrait")
                 {

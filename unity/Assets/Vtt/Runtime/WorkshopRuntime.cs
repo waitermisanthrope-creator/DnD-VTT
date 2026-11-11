@@ -45,7 +45,7 @@ namespace DndVtt.UnityPrototype
         {
             foreach (JObject m in store.Installed())
             {
-                if ((string)m["format"] != "json" || m["imageKind"]!=null) continue;
+                if ((string)m["format"] != "json" || m["imageKind"]!=null || (string)m["craftMode"]=="production-v1") continue;
                 try
                 {
                     WorkshopStore.Compatible(m, Platform, Application.unityVersion);

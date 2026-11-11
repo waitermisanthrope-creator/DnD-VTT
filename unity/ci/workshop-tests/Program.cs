@@ -66,6 +66,8 @@ class Program
         if(args.Length>0&&args[0]=="--container-migration"){Console.WriteLine("CONTAINER_MIGRATION_PASS "+ContainerMigrationChecks.Run());return;}
         if(args.Length>0&&args[0]=="--production"){Console.WriteLine("PRODUCTION_PASS "+ProductionChecks.Run());return;}
         if(args.Length>0&&args[0]=="--production-packages"){Console.WriteLine("PRODUCTION_PACKAGES_PASS "+ProductionPackageChecks.Run());return;}
+        if(args.Length>0&&args[0]=="--production-legacy"){Console.WriteLine("PRODUCTION_LEGACY_PASS "+ProductionLegacyChecks.Run());return;}
+        if(args.Length>0&&args[0]=="--generate-gui-style-cache"){GuiStyleResetChecks.Generate(Directory.GetCurrentDirectory());Console.WriteLine("GUI_STYLE_CACHE_GENERATED");return;}
         CheckSpellPicker();CheckTextInput();
         if (args.Length > 0 && args[0] == "--spell-picker")
         { Console.WriteLine("SPELL_PICKER_PASS " + checks); return; }
@@ -160,6 +162,7 @@ class Program
         if(args.Length>0 && args[0]=="--all-collections") { Console.WriteLine("ALL_MOD_COLLECTIONS_PASS "+AllModCollectionChecks.Run(args[1]));return; }
         if(args.Length>0 && args[0]=="--collections") { Console.WriteLine("COLLECTIONS_PASS "+CollectionChecks.Run(args[1]));return; }
         checks += CharacterArtChecks.Run()+NumericInputChecks.Run()+AdvancementChecks.Run()+SheetActionChecks.Run();
+        checks += UiLifecycleChecks.Run(args.Length>1?args[1]:Directory.GetCurrentDirectory())+SheetSwipeChecks.Run()+DiceLoadingChecks.Run()+ContainerMigrationChecks.Run()+ProductionChecks.Run()+ProductionPackageChecks.Run()+ProductionLegacyChecks.Run();
         checks += InventoryCatalogChecks.Run()+WalletMarketChecks.Run(args.Length>1?args[1]:Directory.GetCurrentDirectory())+MarketChecks.Run(args.Length>1?args[1]:Directory.GetCurrentDirectory());
         string root = Path.Combine(Path.GetTempPath(), "vtt-workshop-test-" + Guid.NewGuid()); Directory.CreateDirectory(root);
         try

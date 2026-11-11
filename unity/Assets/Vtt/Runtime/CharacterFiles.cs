@@ -55,8 +55,9 @@ namespace DndVtt.UnityPrototype
         [DllImport("comdlg32.dll")] private static extern uint CommDlgExtendedError();
         [DllImport("user32.dll")] private static extern IntPtr GetActiveWindow();
         public static string PickWindows(bool save) => PickWindowsCore(save, false);
+        public static string PickWindowsData()=>PickWindowsCore(false,false,"Импорт JSON дополнения DnD VTT");
         public static string PickWindowsArt() => PickWindowsCore(false, true);
-        private static string PickWindowsCore(bool save, bool art)
+        private static string PickWindowsCore(bool save, bool art,string title=null)
         {
             IntPtr buffer = Marshal.AllocHGlobal(32768 * 2);
             try
@@ -68,8 +69,8 @@ namespace DndVtt.UnityPrototype
                     Marshal.Copy(name, 0, buffer, name.Length);
                 }
                 var dialog = new OpenFileName { size = Marshal.SizeOf<OpenFileName>(), owner = GetActiveWindow(),
-                    filter = art ? "Арт персонажа (*.png;*.jpg;*.jpeg;*.bmp)\0*.png;*.jpg;*.jpeg;*.bmp\0Все файлы (*.*)\0*.*\0\0" : "Персонажи DnD VTT (*.json)\0*.json\0Все файлы (*.*)\0*.*\0\0", filterIndex = 1,
-                    file = buffer, maxFile = 32768, title = art ? "Выбрать арт персонажа" : save ? "Сохранить персонажей DnD VTT" : "Открыть персонажей DnD VTT",
+                    filter = art ? "Арт персонажа (*.png;*.jpg;*.jpeg;*.bmp)\0*.png;*.jpg;*.jpeg;*.bmp\0Все файлы (*.*)\0*.*\0\0" : (title!=null?"Дополнения DnD VTT (*.json)":"Персонажи DnD VTT (*.json)")+"\0*.json\0Все файлы (*.*)\0*.*\0\0", filterIndex = 1,
+                    file = buffer, maxFile = 32768, title = title??(art ? "Выбрать арт персонажа" : save ? "Сохранить персонажей DnD VTT" : "Открыть персонажей DnD VTT"),
                     defaultExtension = art ? "png" : "json", flags = 0x80000 | 0x8 | 0x800 | (save ? 0x2u : 0x1000u) };
                 bool accepted = save ? GetSaveFileName(ref dialog) : GetOpenFileName(ref dialog);
                 if (accepted) return Marshal.PtrToStringUni(buffer);

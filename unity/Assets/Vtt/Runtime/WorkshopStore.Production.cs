@@ -41,7 +41,7 @@ namespace DndVtt.UnityPrototype
                 if(((JArray)data["items"]).OfType<JObject>().Any(i=>existing.Contains((string)i["id"])))throw new FormatException("ID предмета уже принадлежит другому дополнению");
             }
             var available=new JArray(others.Select(m=>m.DeepClone()));available.Add(manifest.DeepClone());InstallPlan(manifest,available.OfType<JObject>(),installed.OfType<JObject>(),platform,unity,clientCode);
-            string temporary=Path.Combine(Root,"local-import-"+Guid.NewGuid().ToString("N")+".json");
+            string temporary=Path.Combine(Root,"local-import-"+Guid.NewGuid().ToString("N")+".part");
             try {File.WriteAllBytes(temporary,bytes);Install(manifest,temporary,platform,unity);return manifest;}
             finally{if(File.Exists(temporary))File.Delete(temporary);}
         }

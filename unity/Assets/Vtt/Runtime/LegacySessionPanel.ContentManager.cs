@@ -105,14 +105,14 @@ namespace DndVtt.UnityPrototype
             }
             creationCatalog = null;
         }
-        private void OnWorkshopLowMemory() { if(diceTable==null||!diceTable.Throwing)CloseDiceTable();ReleaseHeroArt(); ReleaseAppearanceImages(false);workshop?.ReleaseBundleCache(); }
-        private void OnDestroy() { ResetFormInput(); ReleaseHeroArt(); CloseCharacterStudio(); CloseDiceTable(); CloseWorkshopPreviews(); Application.lowMemory -= OnWorkshopLowMemory; workshop?.Dispose(); ReleaseAppearanceImages(true);ReleaseBrandStyles();  ApplyScreenSleep(false); }
+        private void OnWorkshopLowMemory() { if(diceTable==null||!diceTable.Throwing)CloseDiceTable();else diceReleaseWhenSettled=true;ReleaseHeroArt(); ReleaseAppearanceImages(false);workshop?.ReleaseBundleCache(); }
+        private void OnDestroy() { ResetFormInput(); ReleaseHeroArt(); CloseCharacterStudio(); CloseDiceTable(); CloseWorkshopPreviews(); Application.lowMemory -= OnWorkshopLowMemory; workshop?.Dispose(); ReleaseAppearanceImages(true);ReleaseBrandStyles();if(brandTemplateSkin){if(Application.isPlaying)Destroy(brandTemplateSkin);else DestroyImmediate(brandTemplateSkin);} ApplyScreenSleep(false); }
         private void RefreshWorkshop()
         {
             // Destroy geometry before unloading owned resources, then reconstruct
             // from preserved JSON. Missing resources become visible placeholders.
             contentViewDirty=true;ReleaseAppearanceImages(true);InvalidateDiceContent();
-            world.ClearWorkshopGeometry(); workshop.Dispose(); workshop = new WorkshopRuntime(workshopStore); workshop.ActivateData(); creationCatalog = null; InvalidateCommerceCatalog(); itemCatalog = null;
+            world.ClearWorkshopGeometry(); workshop.Dispose(); workshop = new WorkshopRuntime(workshopStore); workshop.ActivateData(); creationCatalog = null; InvalidateCommerceCatalog();InvalidateProductionCatalog(); itemCatalog = null;
             world.Workshop = workshop; world.ReloadCurrent();
         }
         private void OpenContentManager() { InitializeWorkshop(); contentViewDirty=true; contentCollectionsPage=true;contentCategory = 0; contentGroupPath="";contentDetails = null;Navigate(FrontScreen.ContentManager); }
@@ -205,6 +205,7 @@ namespace DndVtt.UnityPrototype
         {
             InitializeWorkshop(); GUILayout.Label("Мастерская дополнений", heading);
             if (!contentBusy && GUILayout.Button("↻ Обновить каталоги и проверить обновления", GUILayout.Height(45))) StartCoroutine(FetchContentCatalog());
+            if(!contentBusy&&GUILayout.Button("Импорт JSON дополнения из файла…",GUILayout.MinHeight(48)))Attempt(PickWorkshopDataFile);
             GUILayout.Label(contentNotice, muted);
             if (contentBusy) GUILayout.HorizontalSlider(contentProgress, 0, 1);
             installedOnly = GUILayout.Toggle(installedOnly, "Только установленные (доступно без интернета)");
@@ -237,7 +238,8 @@ namespace DndVtt.UnityPrototype
                 }
                 string unavailable;if(!contentAvailability.TryGetValue(id,out unavailable)) { unavailable=InstallAvailability(item);contentAvailability[id]=unavailable; } if (unavailable != null) GUILayout.Label(unavailable, muted);
                 bool enabled = GUI.enabled; GUI.enabled = enabled && !contentBusy && unavailable == null;
-                if (GUILayout.Button(local == null ? "Скачать и установить" : (string)local["sha256"] == (string)item["sha256"] ? "Скачать повторно" : "Установить версию " + item["version"], GUILayout.Height(42))) StartCoroutine(DownloadContentPackage((JObject)item.DeepClone()));
+                if((string)item["source"]=="local")GUILayout.Label("Обновление локального дополнения — через импорт файла",muted);
+                else if (GUILayout.Button(local == null ? "Скачать и установить" : (string)local["sha256"] == (string)item["sha256"] ? "Скачать повторно" : "Установить версию " + item["version"], GUILayout.Height(42))) StartCoroutine(DownloadContentPackage((JObject)item.DeepClone()));
                 GUI.enabled = enabled && !contentBusy && local != null;
                 if (GUILayout.Button((string)item["type"]=="collection"?"Удалить запись сборника (дополнения сохранятся)":"Удалить пакет (персонажи и карты сохранятся)", GUILayout.Height(52)))
                 {

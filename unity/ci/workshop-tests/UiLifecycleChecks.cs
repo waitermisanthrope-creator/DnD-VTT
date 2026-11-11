@@ -14,6 +14,6 @@ static class UiLifecycleChecks
    foreach(var method in tree.GetRoot().DescendantNodes().OfType<MethodDeclarationSyntax>().Where(m=>m.Identifier.Text=="OnApplicationPause"||m.Identifier.Text=="OnApplicationFocus"))
    {if(method.DescendantNodes().OfType<InvocationExpressionSyntax>().Any(i=>i.Expression.ToString()=="InvalidateBrandStyles"))throw new Exception("Resume must preserve cached style backgrounds, not destroy their shared textures: "+method.Identifier.Text);n++;}
   }
-  return n;
+  return n+GuiStyleResetChecks.Run(root);
  }
 }

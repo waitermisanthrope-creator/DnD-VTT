@@ -49,6 +49,7 @@ namespace DndVtt.UnityPrototype
             if(Event.current.type==EventType.Layout)
             {
                 CommitContainerTransfer();
+                CommitCraftCommand();
                 if(requestedSheetTab.HasValue){if(swipeNavigationPending&&sheetSwipe.Waiting)sheetSwipe.Commit();else sheetSwipe.Cancel();swipeNavigationPending=false;showSpellCatalog=false;requestedSpellCatalog=null;raceView=0;requestedRaceView=null;pendingRace=null;CloseAdvancement();sheetTab=requestedSheetTab.Value;requestedSheetTab=null;requestedPortraitVisibility=null;classicPortraitOpen=false;ResetFormInput();frontScroll=Vector2.zero;}
                 if(requestedSpellCatalog.HasValue)
                 {

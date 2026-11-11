@@ -66,7 +66,7 @@ namespace DndVtt.UnityPrototype
                 using var activity = player.GetStatic<AndroidJavaObject>("currentActivity");
                 using var cache = activity.Call<AndroidJavaObject>("getCacheDir");
                 string path = Path.Combine(cache.Call<string>("getAbsolutePath"), "character-transfers", token + (operation == "art" ? ".image" : ".json"));
-                try { if (operation == "art") ImportHeroArt(artTarget, CharacterArt.Read(path)); else if (Import(CharacterFiles.Read(path))) Navigate(FrontScreen.Characters); }
+                try { if (operation == "art") ImportHeroArt(artTarget, CharacterArt.Read(path)); else if(operation=="workshop")ImportWorkshopDataFile(path);else if (Import(CharacterFiles.Read(path))) Navigate(FrontScreen.Characters); }
                 finally { if (File.Exists(path)) File.Delete(path); }
 #endif
             });

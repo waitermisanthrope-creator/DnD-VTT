@@ -112,5 +112,25 @@ namespace DndVtt.UnityPrototype
                 GUILayout.EndVertical();
             }
         }
+        private void DrawCharacterFeats(JObject hero, ref bool changed)
+        {
+            GUILayout.BeginVertical(GUI.skin.box); SheetSection("Черты");
+            Collection(hero,"feats","Черты персонажа",() => new JObject { ["id"] = Guid.NewGuid().ToString(),["name"] = "Своя черта",["description"] = "" },ref changed);
+            GUILayout.Label("Найти черту"); featQuery = MenuTextField("featQuery", featQuery);
+            GUILayout.Label("Прибавка характеристики для черт с выбором");
+            var statNames = new[] { "str", "dex", "con", "int", "wis", "cha" };
+            featStat = statNames[MenuGrid(Array.IndexOf(statNames,featStat),statNames,6)];
+            foreach (JObject feat in ((JArray)CreationCatalog["feats"]).OfType<JObject>().Where(f => (f["nameRu"] + " " + f["name"]).IndexOf(featQuery,StringComparison.OrdinalIgnoreCase) >= 0).Take(30)) if (GUILayout.Button("+ " + (feat["nameRu"] ?? feat["name"]))) { try { CharacterCreation.AddFeat(hero,feat,featStat); changed = true; } catch (Exception e) { status = e.Message; } }
+            GUILayout.EndVertical(); GUILayout.BeginVertical(GUI.skin.box); SheetSection("Владения и языки"); Collection(hero,"proficiencies","Записи",() => new JObject { ["name"] = "Своё владение",["description"] = "" },ref changed); GUILayout.EndVertical();
+        }
+        private string featStat = "str", featQuery = "";
+        private string loreTitle = "", loreDescription = "", loreCategory = "Локация";
+        private void DrawLore(JObject hero, ref bool changed)
+        {
+            GUILayout.BeginVertical(GUI.skin.box); SheetSection("Добавить запись в Базу"); GUILayout.Label("Категория (используй / для подкатегорий)"); loreCategory = MenuTextField("loreCategory", loreCategory); GUILayout.Label("Название"); loreTitle = MenuTextField("loreTitle", loreTitle); GUILayout.Label("Описание и характеристики"); loreDescription = MenuTextArea("loreDescription", loreDescription,GUILayout.Height(120));
+            if (GUILayout.Button("+ Добавить запись",brandBlue,GUILayout.Height(50)) && !string.IsNullOrWhiteSpace(loreTitle)) { var library = CharacterSheetRules.Object(hero,"libraryData"); var entries = library["entries"] as JArray ?? hero["library"] as JArray ?? new JArray(); library["entries"] = entries; entries.Add(new JObject { ["id"] = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),["category"] = loreCategory,["title"] = loreTitle,["desc"] = loreDescription }); if (hero["library"] is JArray) hero["library"] = entries.DeepClone(); loreTitle = loreDescription = ""; changed = true; }
+            GUILayout.EndVertical(); GUILayout.BeginVertical(GUI.skin.box); SheetSection("Справочник мира"); var records = hero["libraryData"]?["entries"] as JArray ?? hero["library"] as JArray ?? new JArray(); if (records.Count == 0) GUILayout.Label("Справочник пуст",sheetQuiet);
+            foreach (JObject record in records.OfType<JObject>().ToArray()) { GUILayout.Label(record["category"] + " / " + record["title"]); GUILayout.Label((string)record["desc"] ?? "",sheetQuiet); if (GUILayout.Button("Удалить запись")) RequestDelete(record,(string)record["title"]); } GUILayout.EndVertical();
+        }
     }
 }

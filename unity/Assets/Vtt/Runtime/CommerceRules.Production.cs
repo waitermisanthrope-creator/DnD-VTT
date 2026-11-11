@@ -71,11 +71,11 @@ namespace DndVtt.UnityPrototype
         public static JObject PlanProduction(JObject hero,ProductionCatalog catalog,string recipeId,decimal units,JObject context)
         {
             if(units<1||units!=decimal.Truncate(units)||units>10000)throw new FormatException("Укажите целое количество изделий от1до10000");
-            var recipe=catalog.Recipe(recipeId);var profession=catalog.Professions[(string)recipe["professionId"]];var missing=new JArray();context=context??new JObject();
+            var recipe=catalog.Recipe(recipeId);if(recipe["legacy"] is JObject legacy)return PlanLegacyProduction(hero,catalog,legacy,units,context);var profession=catalog.Professions[(string)recipe["professionId"]];var missing=new JArray();context=context??new JObject();
             string ruleset=(string)(context["ruleset"]??ReadCraftState(hero)["ruleset"])??"dnd5e2014";
             if(recipe["rulesets"] is JArray editions&&editions.Count>0&&!editions.Values<string>().Contains(ruleset))missing.Add("Рецепт предназначен для другой системы правил");
             if(!ProductionRecipeKnown(hero,recipe))missing.Add("Рецепт не изучен");
-            if(recipe["requires"] is JObject requires)
+            foreach(var requires in new[]{profession["requires"] as JObject,recipe["requires"] as JObject}.Where(r=>r!=null))
             {
                 foreach(string flag in (requires["craftFlags"] as JArray??new JArray()).Values<string>())if((bool?)ReadCraftState(hero)["flags"]?[flag]!=true)missing.Add("Нужен ремесленный признак: "+flag);
                 if((ruleset.StartsWith("dnd5e",StringComparison.Ordinal)?CharacterSheetRules.Level(hero):PN(hero["level"],1))<PN(requires["minLevel"]))missing.Add("Недостаточный уровень персонажа");
@@ -116,13 +116,14 @@ namespace DndVtt.UnityPrototype
         {if((bool)plan["available"]!=true)throw new FormatException(string.Join("; ",((JArray)plan["missing"]).Values<string>()));}
         public static JObject StartProduction(JObject hero,ProductionCatalog catalog,string recipeId,string projectId,string mode,decimal units,JObject context,JObject rolls)
         {
+            if(catalog.Recipe(recipeId)["legacy"] is JObject legacy)return StartLegacyProduction(hero,catalog,legacy,projectId,mode,units,context,rolls);
             if(!WorkshopStore.ValidId(projectId)||!CraftModeAllowed(hero,mode))throw new FormatException("Недоступный режим или ID проекта");
             var existing=ProductionProjects(hero).SingleOrDefault(p=>(string)p["id"]==projectId);
             if(existing!=null){if((string)existing["recipeId"]!=recipeId||PN(existing["units"],1)!=units||(string)existing["mode"]!=mode)throw new FormatException("Этот ID проекта уже использован");return (JObject)hero.DeepClone();}
             var recipe=catalog.Recipe(recipeId);var plan=PlanProduction(hero,catalog,recipeId,units,context);if(mode!="manual")RequirePlan(plan);
             var copy=(JObject)hero.DeepClone();var state=WriteCraftState(copy);state["mode"]=mode;var projects=CraftArray(state,"projects");if(projects.Count>=200)throw new FormatException("Архивируйте завершённые проекты перед созданием новых");
             bool approval=mode=="semi"||(bool?)recipe["requiresApproval"]==true;
-            var project=new JObject{["id"]=projectId,["recipeId"]=recipeId,["professionId"]=recipe["professionId"].DeepClone(),["mode"]=mode,["units"]=units,["recipeHash"]=plan["recipeHash"]?.DeepClone(),["requiredHours"]=plan["timeHours"].DeepClone(),["progressHours"]=0,["status"]=mode!="manual"&&approval?"pending":"working",["requiresApproval"]=approval,["materialsDebited"]=false,["outputCommitted"]=false};projects.Add(project);
+            var project=new JObject{["id"]=projectId,["recipeId"]=recipeId,["name"]=recipe["name"].DeepClone(),["professionId"]=recipe["professionId"].DeepClone(),["mode"]=mode,["units"]=units,["recipeHash"]=plan["recipeHash"]?.DeepClone(),["requiredHours"]=plan["timeHours"].DeepClone(),["progressHours"]=0,["status"]=mode!="manual"&&approval?"pending":"working",["requiresApproval"]=approval,["materialsDebited"]=false,["outputCommitted"]=false};projects.Add(project);
             // Json.NET owns/clones parented nodes. Continue with the actual saved node.
             project=(JObject)projects.Last;ProductionHistory(copy,project,"started");
             if(mode!="manual"&&!approval&&PN(project["requiredHours"])==0)FinishProduction(copy,catalog,project,context,rolls);
@@ -157,6 +158,7 @@ namespace DndVtt.UnityPrototype
         private static void FinishProduction(JObject hero,ProductionCatalog catalog,JObject project,JObject context,JObject rolls)
         {
             if(ProductionClosed(project))return;
+            if(project["legacy"] is JObject){FinishLegacyProduction(hero,catalog,project,context,rolls);return;}
             string mode=(string)project["mode"];if(!CraftModeAllowed(hero,mode))throw new FormatException("Мастер ограничил режим этого проекта");
             if(mode=="manual")throw new FormatException("Ручной проект завершается ручной записью");
             if((bool?)project["requiresApproval"]==true&&(string)project["approvalScope"]!="offline")throw new FormatException("Нужно подтверждение мастера");
@@ -201,7 +203,7 @@ namespace DndVtt.UnityPrototype
             var copy=(JObject)hero.DeepClone();var project=ProductionProject(copy,projectId);if(ProductionClosed(project))return copy;
             if(!approve){project["status"]="cancelled";ProductionHistory(copy,project,"cancelled");return copy;}
             if((string)project["status"]!="pending")throw new FormatException("Проект не ожидает подтверждения");
-            var plan=PlanProduction(copy,catalog,(string)project["recipeId"],PN(project["units"],1),context);RequirePlan(plan);if((string)plan["recipeHash"]!=(string)project["recipeHash"])throw new FormatException("Рецепт изменился после подготовки проекта");
+            var plan=project["legacy"] is JObject legacy?PlanLegacyProduction(copy,catalog,legacy,1,context):PlanProduction(copy,catalog,(string)project["recipeId"],PN(project["units"],1),context);RequirePlan(plan);if((string)plan["recipeHash"]!=(string)project["recipeHash"])throw new FormatException("Рецепт изменился после подготовки проекта");
             project["approvalScope"]="offline";project["status"]="working";ProductionHistory(copy,project,"approved-offline");
             if(PN(project["progressHours"])>=PN(project["requiredHours"]))FinishProduction(copy,catalog,project,context,rolls);return copy;
         }
@@ -219,7 +221,13 @@ namespace DndVtt.UnityPrototype
             var copy=(JObject)hero.DeepClone();var project=ProductionProject(copy,projectId);if(ProductionClosed(project))return copy;if((string)project["mode"]!="manual")throw new FormatException("Проект использует другой режим");
             if(!CraftModeAllowed(copy,"manual"))throw new FormatException("Ручное изготовление ограничено мастером");adjustment=adjustment??new JObject();
             var consume=adjustment["consume"] as JArray??new JArray();ConsumeProduction(copy,consume,1);
-            foreach(JObject output in adjustment["produce"] as JArray??new JArray())AddExactInventoryItem(copy,catalog.Item((string)output["itemId"]),PN(output["count"],1));
+            foreach(JObject output in adjustment["produce"] as JArray??new JArray())
+            {
+                var item=(JObject)catalog.Item((string)output["itemId"]).DeepClone();
+                if(output["properties"] is JObject fields)foreach(var field in fields.Properties())
+                {if(new[]{"id","inventoryCategory","count","packageId","packageVersion"}.Contains(field.Name))throw new FormatException("Ручной результат не может менять ID или происхождение");item[field.Name]=field.Value.DeepClone();}
+                AddExactInventoryItem(copy,item,PN(output["count"],1));
+            }
             decimal explicitXp=PN(adjustment["experience"]);
             if(explicitXp>0&&catalog.Professions.TryGetValue((string)project["professionId"],out var profession)&&CraftProgressionEnabled(copy,profession))
             {var record=CraftProfession(copy,(string)profession["id"]);decimal xp=PN(record["xp"])+explicitXp;if(xp>9007199254740991m)throw new FormatException("Слишком много опыта");record["xp"]=xp;record["level"]=((JArray)profession["progression"]["thresholds"]).Count(t=>PN(t)<=xp);}
