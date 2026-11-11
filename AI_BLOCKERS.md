@@ -1,3 +1,7 @@
+# Unity51 — полная локальная регрессия PASS, private CI выполняется / 2026-11-11
+
+Только experiment/unity-vtt. WORKSHOP_STORE_PASS11400 и CHARACTER_DELETE_PASS1765; Python14, MARKET553, COLLECTIONS137, обе conditional Unity compile PASS. Старый кэш49 обновлён до публичного каталога50, проверки не ослаблялись. Кандидат51 source1c8b8dee собирается в run43077289483; НЕ публиковать, НЕ менять feed/approval/main. Страница ремёсел/три режима/атомарные проекты/старые рецепты/JSON импорт подключены, platform identity исправлен. Ожидаются actual ARM64/Windows/GPU smoke/замеры. Сетевого GM transport нет; физические Android pause5/lock/swipe/perf недоступны. Не объявлять всю задачу готовой. Отчёт docs/unity-account/STABILITY_CRAFTS_1.00.51.md.
+
 # Unity51 — интерфейс ремёсел и проверка стабильности / 2026-11-11
 
 Только experiment/unity-vtt, публичная версия остаётся1.00.50. Подключены три режима/профессии/книга/проекты/ручной итог/локальный мастер, старые Craft/Mix/Research через адаптер, импорт JSON через существующий WorkshopStore. Layout-очередь + SaveExpected защищают запись. Исправлены detached project после старого Commit, повторный расход, общий сброс GUIStyle при смене темы, hidden dice/удалённый лоток. Целевые PRODUCTION23/LEGACY10/PACKAGES10; Python14 и provenance44 PASS. Полная регрессия/новая conditional compile выполняются; native сборка ещё не запущена. Без публикации/изменения feed/main. Сетевой GM transport и физические Android pause/lock/swipe/perf не подтверждены. Подробности docs/UNITY_STABILITY_CRAFTS_2026-11-11.md.
