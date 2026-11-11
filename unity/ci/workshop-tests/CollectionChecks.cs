@@ -14,7 +14,13 @@ static class CollectionChecks
   var all=catalog.OfType<JObject>().ToArray();var roots=all.Where(m=>(string)m["collectionRole"]=="category" && (bool?)m["itemCategoryCollection"]==true).ToArray();
   Check(roots.Length==5,"five category buttons");
   var hidden=WorkshopStore.CollectionParts(all);
-  Check(all.Count(m=>(new[]{"item","craft"}.Contains((string)m["type"]) || (bool?)m["itemCategoryCollection"]==true)&&!hidden.Contains((string)m["id"]))==5,"five visible libraries replace individual tomes");
+  Check(all.Count(m=>(new[]{"item","craft"}.Contains((string)m["type"]) || (bool?)m["itemCategoryCollection"]==true)
+      && !((string)m["id"]??"").StartsWith("dnd.market.",StringComparison.Ordinal)
+      && !hidden.Contains((string)m["id"]))==5,"five original item libraries replace individual tomes");
+  var optionalMarket=all.SingleOrDefault(m=>(string)m["id"]=="dnd.market.fantasy-merchants");
+  Check(optionalMarket!=null&&(string)optionalMarket["type"]=="craft"&&(int?)optionalMarket["minClientVersionCode"]>=10050
+       &&!hidden.Contains((string)optionalMarket["id"])&&((JArray)optionalMarket["dependencies"]).Count==0,
+       "optional fantasy merchants coexist with five original libraries");
   string temp=Path.Combine(Path.GetTempPath(),"collection-test-"+Guid.NewGuid());Directory.CreateDirectory(temp);
   try {
    string Payload(JObject m)=>Path.Combine(content,"packages",Path.GetFileName((string)m["url"]));
