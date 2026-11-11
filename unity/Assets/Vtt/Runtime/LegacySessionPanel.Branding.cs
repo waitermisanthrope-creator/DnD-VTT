@@ -37,7 +37,7 @@ namespace DndVtt.UnityPrototype
             heading = muted = bigButton = null;
             settingsHeader = settingsDescription = settingsInset = null;
         }
-        private void OnApplicationPause(bool paused) { if(paused)StopDiceSensor();ApplyScreenSleep(!paused); if (!paused) RequestGuiResourceRestore();else menuGesture.Clear(); }
+        private void OnApplicationPause(bool paused) { if(paused)StopDiceSensor();ApplyScreenSleep(!paused); if (!paused) RequestGuiResourceRestore();else CancelPageSwipe(); }
         private Vector2 brandHomeScroll, brandSettingsScroll, brandHomeActionsScroll;
         private bool brandMoreOpen, brandSplashActive, brandAdvancedOpen;
         private float brandSplashSince;

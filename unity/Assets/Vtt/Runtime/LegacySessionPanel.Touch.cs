@@ -9,6 +9,32 @@ namespace DndVtt.UnityPrototype
     {
         private readonly MenuGesture menuGesture=new MenuGesture();
         private float suppressMenuClickUntil;
+        private readonly SheetSwipeMotion sheetSwipe=new SheetSwipeMotion();
+        private bool swipeNavigationPending;
+        private bool SheetPagingAllowed=>screen==FrontScreen.Sheet&&archive!=null&&!marketOpen&&!classicPortraitOpen&&!advancementOpen&&raceView==0&&!showSpellCatalog&&deletePath==null;
+        private void CancelPageSwipe(){if(swipeNavigationPending)requestedSheetTab=null;swipeNavigationPending=false;sheetSwipe.Cancel();menuGesture.Clear();}
+        private void MoveMenuGesture(float x,float y,float dx,float dy,float scale)
+        {
+            menuGesture.Move(x,y,dx,dy,scale);
+            if(menuGesture.CapturedRegion=="sheet-page"&&menuGesture.Regions.TryGetValue("sheet-page",out var region))
+            {int index=System.Array.IndexOf(classicTabs,sheetTab);sheetSwipe.Drag(-region.dx,UiWidth,index>0,index>=0&&index<classicTabs.Length-1);region.dx=0;}
+        }
+        private bool EndMenuGesture(bool cancelled=false)
+        {if(menuGesture.CapturedRegion=="sheet-page")sheetSwipe.Release(cancelled);return menuGesture.End();}
+        private void UpdateSheetSwipe()
+        {
+            if(!SheetPagingAllowed){if(sheetSwipe.Busy||sheetSwipe.Offset!=0)CancelPageSwipe();return;}
+            int step=sheetSwipe.Tick(Time.unscaledDeltaTime);if(step==0)return;
+            int index=System.Array.IndexOf(classicTabs,sheetTab),next=index+step;
+            if(index<0||next<0||next>=classicTabs.Length){CancelPageSwipe();return;}
+            requestedSheetTab=classicTabs[next];swipeNavigationPending=true;
+        }
+        private void RegisterSheetPaging(Rect rect)
+        {
+            if(Event.current.type!=EventType.Repaint||!SheetPagingAllowed)return;
+            var top=GUIUtility.GUIToScreenPoint(rect.position);var bottom=GUIUtility.GUIToScreenPoint(rect.position+rect.size);
+            RegisterMenuRegion("sheet-page",Rect.MinMaxRect(top.x,top.y,bottom.x,bottom.y),true,false);
+        }
         private readonly HashSet<string> drawnSwipeRegions=new HashSet<string>();
         private bool collectingSwipeRegions;
         private bool selectingChatText;
@@ -60,23 +86,24 @@ namespace DndVtt.UnityPrototype
             if (CharacterOwnsPointer(new Vector2(point.x, Screen.height - point.y))) return;
             if(e.type==EventType.MouseDown&&e.button==0) { selectingChatText=screen==FrontScreen.Chat&&chatDraftRectValid&&chatDraftRect.Contains(GUIUtility.GUIToScreenPoint(point));if(!selectingChatText)menuGesture.Begin(point.x,point.y); }
             else if(selectingChatText) { if(e.type==EventType.MouseUp)selectingChatText=false;return; }
-            else if(e.type==EventType.MouseDrag&&e.button==0)menuGesture.Move(point.x,point.y,e.delta.x,e.delta.y,screen==FrontScreen.Map?1:MenuScale);
-            else if(e.type==EventType.MouseUp&&e.button==0&&menuGesture.End())suppressMenuClickUntil=Time.unscaledTime+.15f;
+            else if(e.type==EventType.MouseDrag&&e.button==0)MoveMenuGesture(point.x,point.y,e.delta.x,e.delta.y,screen==FrontScreen.Map?1:MenuScale);
+            else if(e.type==EventType.MouseUp&&e.button==0&&EndMenuGesture())suppressMenuClickUntil=Time.unscaledTime+.15f;
         }
         private void Update()
         {
             UpdateDesktopWindow();
             UpdateDiceTable();
+            UpdateSheetSwipe();
             if (screen == FrontScreen.Map && !panel) { menuGesture.Clear(); return; }
             if (UpdateCharacterStudio()) { menuGesture.Clear(); return; }
             PollNativeChatEditor();
             var device=Touchscreen.current;if(device==null||!HasMenuTouch)return;
-            if(device.touches.Count(t=>t.press.isPressed)>1) { if(menuGesture.End())suppressMenuClickUntil=Time.unscaledTime+.15f;return; }
+            if(device.touches.Count(t=>t.press.isPressed)>1) { if(EndMenuGesture(true))suppressMenuClickUntil=Time.unscaledTime+.15f;return; }
             var touch=device.primaryTouch;var position=touch.position.ReadValue();var delta=touch.delta.ReadValue();var phase=touch.phase.ReadValue();
             float x=position.x,y=Screen.height-position.y;
             if(phase==InputTouchPhase.Began||touch.press.wasPressedThisFrame)menuGesture.Begin(x,y);
-            else if(phase==InputTouchPhase.Moved)menuGesture.Move(x,y,delta.x,-delta.y,screen==FrontScreen.Map?1:MenuScale);
-            else if(phase==InputTouchPhase.Ended||phase==InputTouchPhase.Canceled||touch.press.wasReleasedThisFrame) { if(menuGesture.End())suppressMenuClickUntil=Time.unscaledTime+.15f; }
+            else if(phase==InputTouchPhase.Moved)MoveMenuGesture(x,y,delta.x,-delta.y,screen==FrontScreen.Map?1:MenuScale);
+            else if(phase==InputTouchPhase.Ended||phase==InputTouchPhase.Canceled||touch.press.wasReleasedThisFrame) { if(EndMenuGesture(phase==InputTouchPhase.Canceled))suppressMenuClickUntil=Time.unscaledTime+.15f; }
         }
         private Vector2 SwipePosition(string id,Vector2 position)
         {

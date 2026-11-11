@@ -34,3 +34,7 @@ UI — LegacySessionPanel partial/OnGUI, общий Branding + SheetSkin + Class
 ## Этап1 — исходники исправлены
 
 Resume/focus больше не запускают уничтожение общих фонов; общий Layout-time restore повторно загружает readable текстуры, сохраняя ссылки GUIStyle. Незавершённый pointer сбрасывается при паузе/потере фокуса. Регрессионный контракт воспроизвёл ошибку до фикса, после фикса UI_LIFECYCLE_CONTRACT_PASS2. Android+Windows C# compile против реальных Unity DLL PASS. В runtime smoke добавлены6циклов pause/focus с проверкой существования/идентичности реального Texture2D и кадрами ui-resume. Эти runtime проверки ещё не выполнены; физические pause/lock-screen недоступны.
+
+## Этап2 — общий свайп страниц
+
+История native fd9b9301/986bec6e/705ab4f2/47949d6b содержит арбитраж scroll, но не утраченный snap. Поведение восстановления сверено с WebView a3753ed0 (app/app.js): реальный список страниц, dominant horizontal, clamp, порог40. Native продолжает использовать MenuGesture и requestedSheetTab. SheetSwipeMotion содержит только анимацию, не выбранную страницу: drag → выход → Layout commit существующей навигации → вход/snap0. Header и вложенные scroll/поля сохраняют владение; рынок/диалоги не регистрируют page region; viewport дайсов исключён. Pause/focus-loss отменяет незавершённый snap. Длина/границы берутся из classicTabs, поэтому новая страница включается одним списком. SHEET_SWIPE_PASS191, обе conditional compile PASS. Физические свайпы Android ещё не проверены.

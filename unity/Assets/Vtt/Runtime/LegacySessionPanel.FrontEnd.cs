@@ -115,6 +115,7 @@ namespace DndVtt.UnityPrototype
             if(screen==FrontScreen.Sheet)GUILayout.Space(15);
             frontScroll = GUILayout.BeginScrollView(SwipePosition("front",frontScroll),false,true,GUIStyle.none,GUI.skin.verticalScrollbar);
             GUILayout.BeginVertical(new GUIStyle { fixedWidth=Mathf.Max(1,UiWidth-inset*2-(screen==FrontScreen.Sheet?0:22)),stretchWidth=false });
+            var sheetBodyMatrix=GUI.matrix;if(screen==FrontScreen.Sheet)GUI.matrix=sheetBodyMatrix*Matrix4x4.Translate(new Vector3(sheetSwipe.Offset,0,0));
             switch (screen)
             {
                 case FrontScreen.Home:
@@ -153,7 +154,8 @@ namespace DndVtt.UnityPrototype
                     DrawCharacterBackups(false);
                     GUILayout.Label("Локальный файл: " + SavePath, muted); break;
             }
-            if(screen==FrontScreen.Sheet){if(showSheetNotice){GUILayout.Space(8);GUILayout.Label(status,sheetQuiet);}}else{GUILayout.Space(20);GUILayout.Label(status,muted);}GUILayout.EndVertical(); GUILayout.EndScrollView(); RegisterSwipe("front",GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
+            GUI.matrix=sheetBodyMatrix;
+            if(screen==FrontScreen.Sheet){if(showSheetNotice){GUILayout.Space(8);GUILayout.Label(status,sheetQuiet);}}else{GUILayout.Space(20);GUILayout.Label(status,muted);}GUILayout.EndVertical(); GUILayout.EndScrollView(); RegisterSwipe("front",GUILayoutUtility.GetLastRect());RegisterSheetPaging(GUILayoutUtility.GetLastRect()); GUILayout.EndArea();
         }
         private void DrawCharacterBackups(bool fileButtons = true)
         {

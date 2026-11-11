@@ -154,6 +154,7 @@ namespace DndVtt.UnityPrototype
             GUI.enabled=enabled;
             float height=Mathf.Clamp(UiHeight*.38f,200,440);
             Rect image=GUILayoutUtility.GetRect(1,height,GUILayout.ExpandWidth(true));
+            RegisterMenuControl("dice-viewport","front",image);
             if(Event.current.type==EventType.Repaint)GUI.DrawTexture(image,diceTable.Image,ScaleMode.ScaleToFit,false);
             GUILayout.Label(diceTable.Result,heading);
             GUI.enabled=enabled&&!diceTable.Throwing;

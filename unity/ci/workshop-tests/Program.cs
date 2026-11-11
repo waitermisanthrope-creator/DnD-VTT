@@ -61,6 +61,7 @@ class Program
         if(args.Length>0&&args[0]=="--wallet-market"){Console.WriteLine("WALLET_MARKET_PASS "+WalletMarketChecks.Run(Directory.GetCurrentDirectory()));return;}
         if(args.Length>0&&args[0]=="--market"){Console.WriteLine("MARKET_PASS "+MarketChecks.Run(Directory.GetCurrentDirectory()));return;}
         if(args.Length>0&&args[0]=="--ui-lifecycle"){Console.WriteLine("UI_LIFECYCLE_CONTRACT_PASS "+UiLifecycleChecks.Run(Directory.GetCurrentDirectory()));return;}
+        if(args.Length>0&&args[0]=="--sheet-swipe"){Console.WriteLine("SHEET_SWIPE_PASS "+SheetSwipeChecks.Run());return;}
         CheckSpellPicker();CheckTextInput();
         if (args.Length > 0 && args[0] == "--spell-picker")
         { Console.WriteLine("SPELL_PICKER_PASS " + checks); return; }

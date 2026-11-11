@@ -45,7 +45,7 @@ namespace DndVtt.UnityPrototype
         private void OnApplicationFocus(bool hasFocus)
         {
             if (hasFocus) { RequestGuiResourceRestore(); ApplyScreenSleep(); ApplyMobileOrientation(screen); }
-            else {StopDiceSensor();menuGesture.Clear();}
+            else {StopDiceSensor();CancelPageSwipe();}
         }
 
         public bool Import(string json)
