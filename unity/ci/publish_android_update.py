@@ -29,6 +29,21 @@ def version_code(version):
     major, minor, patch = map(int, version.split("."))
     return major * 10000 + minor * 100 + patch
 
+def verified_android_source(run_data, jobs):
+    if (run_data.get("name") != "Unity cloud Android candidate"
+            or run_data.get("head_branch") != BRANCH
+            or run_data.get("path") != ".github/workflows/unity-cloud-candidate.yml"
+            or run_data.get("event") not in ("push", "workflow_dispatch")
+            or run_data.get("head_repository", {}).get("full_name") != REPO):
+        raise ValueError("Untrusted Android candidate run")
+    if not any(job.get("name") == "Build and verify signed Android ARM64 APK"
+               and job.get("conclusion") == "success" for job in jobs):
+        raise ValueError("Signed Android build did not succeed")
+    source = run_data.get("head_sha", "")
+    if not re.fullmatch(r"[0-9a-f]{40}", source):
+        raise ValueError("Untrusted candidate source commit")
+    return source
+
 def main():
     version = os.environ["RELEASE_VERSION"]
     candidate_run = os.environ["CANDIDATE_RUN_ID"]
@@ -42,11 +57,8 @@ def main():
         raise ValueError("Owner must dispatch public release")
     code = version_code(version)
     run_data = json.loads(run("gh", "api", "repos/" + REPO + "/actions/runs/" + candidate_run, capture=True))
-    if run_data.get("name") != "Unity cloud Android candidate" or run_data.get("head_branch") != BRANCH or run_data.get("conclusion") != "success":
-        raise ValueError("Candidate run is not a successful trusted Unity Android build")
-    source_commit = run_data.get("head_sha", "")
-    if not re.fullmatch(r"[0-9a-f]{40}", source_commit):
-        raise ValueError("Untrusted candidate source commit")
+    jobs = json.loads(run("gh", "api", "repos/" + REPO + "/actions/runs/" + candidate_run + "/jobs?per_page=100", capture=True))["jobs"]
+    source_commit = verified_android_source(run_data, jobs)
     apk = Path("candidate") / ("DnD-VTT-Unity-" + version + "-arm64.apk")
     if not apk.is_file() or not 10_000_000 < apk.stat().st_size < 1_000_000_000:
         raise ValueError("Signed Android candidate not found")

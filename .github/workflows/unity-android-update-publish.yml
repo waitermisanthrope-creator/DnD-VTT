@@ -78,7 +78,8 @@ jobs:
           set -euo pipefail
           for poll in $(seq 1 200); do
             run_json="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$CANDIDATE_RUN_ID")"
-            result="$(python3 -c 'import json,sys; r=json.load(sys.stdin); print(r.get("conclusion") or "pending")' <<< "$run_json")"
+            result="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$CANDIDATE_RUN_ID/jobs?per_page=100" --jq '.jobs[] | select(.name == "Build and verify signed Android ARM64 APK") | .conclusion // "pending"')"
+            result="${result:-pending}"
             identity="$(python3 -c 'import json,sys; r=json.load(sys.stdin); print(str(r.get("name")) + "|" + str(r.get("head_branch")))' <<< "$run_json")"
             if [[ "$identity" != "Unity cloud Android candidate|experiment/unity-vtt" ]]; then
               echo "Refusing unrelated GitHub Actions run: $identity" >&2
