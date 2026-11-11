@@ -145,6 +145,8 @@ namespace DndVtt.UnityPrototype
                     GUILayout.EndHorizontal();GUILayout.Space(6);
                     marketQuery=MenuTextField("marketQuery",marketQuery,cloneInput,GUILayout.ExpandWidth(true),GUILayout.Height(35));GUILayout.Space(8);
                     GUILayout.Label("Склад: "+stock.Sum(i=>(long)i["qty"])+" · принимает только подходящие товары",sheetQuiet);GUILayout.Space(8);
+                    if(stock.OfType<JObject>().Any(i=>i["marketInvalid"]!=null))
+                        GUILayout.Label("Некоторые товары скрыты из-за некорректного остатка. Другие сделки доступны; исходные данные не изменены.",sheetQuiet);
                     if(marketMode=="sell")DrawMarketSales(hero,state,definitions);
                     else DrawMarketGoods(hero,state,definitions,stock);
                     GUILayout.EndVertical();GUILayout.EndHorizontal();
