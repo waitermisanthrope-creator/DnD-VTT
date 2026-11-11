@@ -36,7 +36,7 @@ public static class BrandingResumeValidation
                 type.GetMethod("OnApplicationPause", flags).Invoke(panel, new object[] { false });
                 type.GetMethod("OnApplicationFocus", flags).Invoke(panel, new object[] { true });
                 Ensure();
-                Check(!ReferenceEquals(previous, Blue().normal.background), "pause/focus rebuild backgrounds");
+                Check(previous && ReferenceEquals(previous, Blue().normal.background), "pause/focus preserves backgrounds used by dependent cached styles");
                 Check(Textures().Count == count, "owned texture count does not grow after repeated resumes");
                 Color pixel = Blue().normal.background.GetPixel(24, 24);
                 Check(Mathf.Abs(pixel.r - expectedPixel.r) < .005f && Mathf.Abs(pixel.g - expectedPixel.g) < .005f &&
@@ -46,7 +46,7 @@ public static class BrandingResumeValidation
             }
             type.GetMethod("ReleaseBrandStyles", flags).Invoke(panel, null);
             Check(Textures().Count == 0, "owned textures released on teardown");
-            Debug.Log("VTT_BRANDING_RESUME_PASS: readable/unload-protected backgrounds; pause/focus rebuild; five resumes with stable ownership and original artwork");
+            Debug.Log("VTT_BRANDING_RESUME_PASS: readable/unload-protected backgrounds; pause/focus preserves shared backgrounds; five lifecycle callbacks with stable ownership and original artwork (not physical Android)");
         }
         finally { UnityEngine.Object.DestroyImmediate(host); }
     }

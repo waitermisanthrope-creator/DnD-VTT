@@ -118,14 +118,18 @@ namespace DndVtt.UnityPrototype
         }
         private void PrepareBrand()
         {
+            // GUI.skin is only legal inside OnGUI. Keep the builder usable by
+            // native resource validation with explicit style prototypes too.
+            if(!brandTemplateSkin){brandTemplateSkin=Instantiate(GUI.skin);brandTemplateSkin.hideFlags=HideFlags.HideAndDontSave;}
+            if(GUI.skin==sheetSkin)GUI.skin=brandTemplateSkin;
             EnsureBrandStyles(GUI.skin.button, GUI.skin.label, GUI.skin.box);
         }
         private void EnsureBrandStyles(GUIStyle button, GUIStyle label, GUIStyle box)
         {
             if (!brandStylesDirty && brandBlue != null && brandBlue.normal.background) return;
-            if(!brandTemplateSkin){brandTemplateSkin=Instantiate(GUI.skin);brandTemplateSkin.hideFlags=HideFlags.HideAndDontSave;}
+            if(!brandTemplateSkin)
+            {brandTemplateSkin=ScriptableObject.CreateInstance<GUISkin>();brandTemplateSkin.hideFlags=HideFlags.HideAndDontSave;brandTemplateSkin.button=new GUIStyle(button);brandTemplateSkin.label=new GUIStyle(label);brandTemplateSkin.box=new GUIStyle(box);}
             button=brandTemplateSkin.button;label=brandTemplateSkin.label;box=brandTemplateSkin.box;
-            if(GUI.skin==sheetSkin)GUI.skin=brandTemplateSkin;
             ReleaseBrandStyles();
             if (!brandWallpaper) brandWallpaper = Resources.Load<Texture2D>("Branding/Wallpaper16");
             if (!brandSplash) brandSplash = Resources.Load<Texture2D>("Branding/Splash19");
