@@ -10,6 +10,7 @@ namespace DndVtt.UnityPrototype
         {
             public GUIStyle Panel, SecondaryPanel, Card, ActiveTab, InactiveTab;
             public GUIStyle PrimaryButton, SecondaryButton, Input, Heading, Caption, Indicator;
+            public GUIStyle HeroPanel, HeroMetric, HeroName, HeroSubtitle, HeroSection, HeroValue, HeroSmall;
         }
         private UiStyleRoles uiStyles;
         private static Color ThemeColor(string hex)
