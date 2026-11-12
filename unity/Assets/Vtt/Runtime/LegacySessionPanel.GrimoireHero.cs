@@ -52,6 +52,26 @@ namespace DndVtt.UnityPrototype
             {
                 fontSize = 13, alignment = TextAnchor.MiddleCenter, wordWrap = true
             };
+
+            // Optional imported Dark Grimoire UI Kit. Missing PNGs never block the sheet.
+            // Loaded once per skin lifetime; Resources-owned textures are never destroyed.
+            Texture2D main = Resources.Load<Texture2D>("UI/Grimoire/panels/panel_primary_9s");
+            Texture2D inset = Resources.Load<Texture2D>("UI/Grimoire/panels/panel_inset_9s");
+            if (main)
+            {
+                uiStyles.HeroPanel.normal.background = main;
+                uiStyles.HeroPanel.border = new RectOffset(16, 16, 16, 16);
+            }
+            if (inset)
+            {
+                uiStyles.HeroMetric.normal.background = inset;
+                uiStyles.HeroMetric.border = new RectOffset(16, 16, 16, 16);
+            }
+            uiStyles.HeroIcon = Resources.Load<Texture2D>("UI/Grimoire/icons/icon_hero_96");
+            uiStyles.HeroHealthTrack = Resources.Load<Texture2D>("UI/Grimoire/bars/bar_health_track_9s");
+            uiStyles.HeroHealthFill = Resources.Load<Texture2D>("UI/Grimoire/bars/bar_health_fill_mask_9s");
+            uiStyles.HeroXpTrack = Resources.Load<Texture2D>("UI/Grimoire/bars/bar_experience_track_9s");
+            uiStyles.HeroXpFill = Resources.Load<Texture2D>("UI/Grimoire/bars/bar_experience_fill_mask_9s");
         }
 
         // First redesign screen; the original full character editor stays available below.
@@ -91,6 +111,11 @@ namespace DndVtt.UnityPrototype
                 {
                     Rect inner = new Rect(photo.x + 5, photo.y + 5, photo.width - 10, photo.height - 10);
                     GUI.DrawTexture(inner, portrait, ScaleMode.ScaleAndCrop);
+                }
+                else if (uiStyles.HeroIcon)
+                {
+                    Rect icon = new Rect(photo.x + 24, photo.y + 34, photo.width - 48, photo.height - 68);
+                    GUI.DrawTexture(icon, uiStyles.HeroIcon, ScaleMode.ScaleToFit, true, 0, ThemeHeadingAccent, 0, 0);
                 }
                 else
                 {
@@ -132,17 +157,21 @@ namespace DndVtt.UnityPrototype
                     new Color(ThemeHeadingAccent.r, ThemeHeadingAccent.g, ThemeHeadingAccent.b, .65f), 0, 0);
         }
 
-        private void GrimoireProgress(float amount, Color fill)
+        private void GrimoireProgress(float amount, Color fill, bool experience)
         {
             Rect track = GUILayoutUtility.GetRect(1, 13, GUILayout.ExpandWidth(true));
             if (Event.current.type != EventType.Repaint) return;
-            GUI.DrawTexture(track, Texture2D.whiteTexture, ScaleMode.StretchToFill, false, 0,
-                new Color(.10f, .10f, .13f), 0, 6);
+            Texture2D trackArt = experience ? uiStyles.HeroXpTrack : uiStyles.HeroHealthTrack;
+            Texture2D fillMask = experience ? uiStyles.HeroXpFill : uiStyles.HeroHealthFill;
+            GUI.DrawTexture(track, trackArt ? trackArt : Texture2D.whiteTexture,
+                ScaleMode.StretchToFill, true, 0,
+                trackArt ? Color.white : new Color(.10f, .10f, .13f), 0, 6);
             float width = Mathf.Max(0, track.width - 4) * Mathf.Clamp01(amount);
             if (width > 0)
             {
                 Rect portion = new Rect(track.x + 2, track.y + 2, width, Mathf.Max(1, track.height - 4));
-                GUI.DrawTexture(portion, Texture2D.whiteTexture, ScaleMode.StretchToFill, false, 0, fill, 0, 4);
+                GUI.DrawTexture(portion, fillMask ? fillMask : Texture2D.whiteTexture,
+                    ScaleMode.StretchToFill, true, 0, fill, 0, 4);
             }
         }
 
@@ -163,7 +192,7 @@ namespace DndVtt.UnityPrototype
             GUILayout.Label("♥ " + current + " / " + maximum + " HP", uiStyles.HeroValue, GUILayout.ExpandWidth(true));
             GUILayout.Label("Временные: " + temporary, uiStyles.HeroSubtitle, GUILayout.Width(Mathf.Min(142, UiWidth * .29f)));
             GUILayout.EndHorizontal();
-            GrimoireProgress(maximum <= 0 ? 0 : (float)current / maximum, new Color(.70f, .37f, .37f));
+            GrimoireProgress(maximum <= 0 ? 0 : (float)current / maximum, new Color(.70f, .37f, .37f), false);
             GUILayout.Space(7);
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
@@ -220,7 +249,7 @@ namespace DndVtt.UnityPrototype
                 long floor = GrimoireXpThresholds[level - 1], next = GrimoireXpThresholds[level];
                 progress = Mathf.Clamp01((float)(current - floor) / Math.Max(1L, next - floor));
             }
-            GrimoireProgress(progress, ThemeHeadingAccent);
+            GrimoireProgress(progress, ThemeHeadingAccent, true);
             GUILayout.EndVertical();
         }
 
