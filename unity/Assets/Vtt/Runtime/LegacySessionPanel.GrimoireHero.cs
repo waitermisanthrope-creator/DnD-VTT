@@ -148,6 +148,7 @@ namespace DndVtt.UnityPrototype
 
         private static int GrimoireCount(JToken token, int fallback)
         {
+            if (token == null || token.Type == JTokenType.Null) return fallback;
             return CharacterSheetRules.TrySheetCount(token, out int n) ? n : fallback;
         }
 
