@@ -1,3 +1,7 @@
+# Перенос UI-тем на актуальную 1.00.53 — 12.11.2026
+
+Ветка `experiment/ui-theme-10053` создана от `08bdf971da5cfe81927bf6fb5362360c8099bbf0`. Из `6980bfbd` перенесена только готовая система оформления с адаптацией к GUI/input/lifecycle 1.00.53. Игровые механики, кошелёк, версия, main и канал обновлений не менялись; выпуска нет. Отчёт и точные ограничения проверок: `docs/ui-redesign/THEME_PORT_10053.md`. Старые записи и очередь ниже сохранены.
+
 # ДОСТАВЛЕНО Android1.00.52 — 2026-11-11
 
 По последнему прямому запросу владельца Android52 опубликован для установки из приложения. Candidate43087561652/job130755853841 SUCCESS, sourceb948ac242a717646d73b73fb4a6ac70bc44fe043. Publisher43090625108/job130766403615 SUCCESS; feed-commit a6de57a5. Обычный и cache-busted публичный feed независимо10052; APKскачан62826130байт, SHA2568a95740f5a8749de52041e6ecb8e61ce6f8dff2a21fc0b5d2e9d1fc2c0d98bf8, ZIP CRC/ARM64 PASS. URL https://github.com/waitermisanthrope-creator/DnD-VTT/releases/download/unity-v1.00.52/DnD-VTT-Unity-1.00.52-arm64.apk . WORKSHOP11401/972PhysX/5callbackStyles/cleanup PASS. Windows52 job130766650775 ещё выполняется, Windows не публиковать/Android доставку не задерживать. Physical Android5pause/lock/swipe/perf и remote GM transport НЕ завершены; не объявлять всю большую задачу готовой. Отчёт docs/unity-account/STABILITY_CRAFTS_1.00.52.md. 51не публиковался (его UI-регрессия исправлена52). Main не трогать. Не повторять выпуск/сборку без фактической новой ошибки; следующая версия53+,52APKне перезаписывать.

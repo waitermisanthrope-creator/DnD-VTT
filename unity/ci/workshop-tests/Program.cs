@@ -189,6 +189,7 @@ class Program
             }
             finally { Directory.Delete(dir, true); }
         }
+        if(args.Length>0 && args[0]=="--ui-theme") { Console.WriteLine("UI_THEME_PASS "+ThemeChecks.Run());return; }
         if(args.Length>0 && args[0]=="--all-collections") { Console.WriteLine("ALL_MOD_COLLECTIONS_PASS "+AllModCollectionChecks.Run(args[1]));return; }
         if(args.Length>0 && args[0]=="--collections") { Console.WriteLine("COLLECTIONS_PASS "+CollectionChecks.Run(args[1]));return; }
         checks += CharacterArtChecks.Run()+NumericInputChecks.Run()+AdvancementChecks.Run()+SheetActionChecks.Run();
@@ -438,6 +439,7 @@ class Program
             checks += CommerceChecks.Run(store,appRoot);
             // Versioned filenames must never silently disable collection gates.
             checks += CollectionChecks.Run(Path.Combine(source,"DnD-VTT-Content"));
+            checks += ThemeChecks.Run();
             checks += AccountGestureChecks.Run(appRoot);
             checks += AllModCollectionChecks.Run(source);
             var originalManifest = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source, "DnD-VTT-Content/catalog/v3/index.json")), "packages").OfType<JObject>().First();

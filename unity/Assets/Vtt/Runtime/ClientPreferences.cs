@@ -13,6 +13,7 @@ namespace DndVtt.UnityPrototype
         public int fps = 60;
         public string quality = "";
         public string theme = "orange";
+        public string accentHex = ""; // Empty preserves the selected legacy theme.
         public string frameStyle = "dragon", frameColor = "gold";
         public bool autoCheckUpdates = true;
         public bool keepScreenAwake = true;
@@ -61,6 +62,7 @@ namespace DndVtt.UnityPrototype
         public string Export()
         {
             Validate(); var json = (JObject)original.DeepClone();
+            json["accentHex"] = UiTheme.TryNormalizeHex(accentHex, out var hex) ? hex : "";
             json["version"] = 1; json["sensitivity"] = sensitivity; json["fieldOfView"] = fieldOfView;
             json["invertY"] = invertY; json["firstPerson"] = firstPerson; json["vSync"] = vSync; json["fps"] = fps; json["quality"] = quality; json["theme"] = theme; json["frameStyle"] = frameStyle; json["frameColor"] = frameColor; json["autoCheckUpdates"] = autoCheckUpdates; json["keepScreenAwake"] = keepScreenAwake;
             return json.ToString();
@@ -76,6 +78,7 @@ namespace DndVtt.UnityPrototype
             float fps = LegacyJson.Number(doc["fps"], 60); if (fps != Math.Floor(fps)) throw new FormatException("Некорректный лимит FPS");
             result.fps = (int)fps; result.quality = (string)doc["quality"] ?? "";
             result.theme = (string)doc["theme"] ?? "orange";
+            if (doc["accentHex"]?.Type == JTokenType.String && UiTheme.TryNormalizeHex((string)doc["accentHex"], out var hex)) result.accentHex = hex;
             result.frameStyle = (string)doc["frameStyle"] ?? "dragon"; result.frameColor = (string)doc["frameColor"] ?? "gold";
             result.autoCheckUpdates = (bool?)doc["autoCheckUpdates"] ?? true;
             result.keepScreenAwake = (bool?)doc["keepScreenAwake"] ?? true;

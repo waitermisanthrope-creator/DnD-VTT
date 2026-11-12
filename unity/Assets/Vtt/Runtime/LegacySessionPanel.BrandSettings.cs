@@ -19,6 +19,50 @@ namespace DndVtt.UnityPrototype
         private bool brandTechnicalScreen;
         private string settingsCategory = "";
 
+        private string accentHexInput = "";
+        private string pendingAccentHex;
+
+        private void DrawInterfaceColorSettings()
+        {
+            GUILayout.BeginVertical(GUI.skin.box);
+            SettingsSection("Цвет интерфейса");
+            GUILayout.Label("Акцент сохраняется сразу. Фон и текст сохраняют читаемость.", settingsDescription);
+            for (int i = 0; i < UiTheme.PresetCount; i++)
+            {
+                string hex = UiTheme.PresetHex(i);
+                if (GUILayout.Button(UiTheme.PresetName(i) + (preferences.accentHex == hex ? " ✓" : ""), brandBrown, GUILayout.MinHeight(UiTheme.TouchHeight)))
+                    pendingAccentHex = hex;
+            }
+            GUILayout.Label("Свой цвет RGB: #RRGGBB", settingsDescription);
+            accentHexInput = MenuTextField("interface-accent-hex", accentHexInput, 16, GUILayout.MinHeight(UiTheme.TouchHeight));
+            bool valid = UiTheme.TryNormalizeHex(accentHexInput, out var normalized);
+            if (!valid && accentHexInput.Length > 0)
+                GUILayout.Label("Введите шесть HEX-цифр, например #B89B52. Текущий цвет не изменён.", settingsDescription);
+            bool enabled = GUI.enabled;
+            GUI.enabled = enabled && valid;
+            if (GUILayout.Button("Применить HEX", uiStyles.PrimaryButton, GUILayout.MinHeight(UiTheme.TouchHeight))) pendingAccentHex = normalized;
+            GUI.enabled = enabled;
+            if (GUILayout.Button("Сбросить акцент к цвету текущей темы", brandBrown, GUILayout.MinHeight(UiTheme.TouchHeight))) pendingAccentHex = "";
+            GUILayout.EndVertical();
+        }
+        private void SavePendingAccent()
+        {
+            if (pendingAccentHex == null) return;
+            try {
+                // Do not commit unrelated unsaved graphics/control drafts.
+                var candidate = ClientPreferences.Parse(preferences.Export());
+                candidate.accentHex = pendingAccentHex;
+                candidate.Save(SettingsPath);
+                preferences = candidate;
+                settingsDraft.accentHex = candidate.accentHex;
+                accentHexInput = UiTheme.ResolveAccent(candidate);
+                InvalidateBrandStyles();
+                brandNotice = "Цвет интерфейса применён и сохранён.";
+            }
+            catch (Exception error) { brandNotice = "Цвет не сохранён: " + error.Message; }
+            pendingAccentHex = null;
+        }
+
         private void OpenSettingsCategory(string category)
         {
             settingsCategory=category;brandSettingsScroll=Vector2.zero;frontScroll=Vector2.zero;menuGesture.Clear();if(Event.current!=null)GUI.FocusControl(null);
@@ -51,7 +95,7 @@ namespace DndVtt.UnityPrototype
         }
         private void SettingsSection(string title)
         {
-            PrepareSettingsSkin();settingsHeader.normal.textColor=BrandAccent;
+            PrepareSettingsSkin();settingsHeader.normal.textColor=ThemeHeadingAccent;
             GUILayout.Space(8);GUILayout.Label(title,settingsHeader);
         }
         private void DrawBrandSettings()
@@ -83,6 +127,7 @@ namespace DndVtt.UnityPrototype
                 if(GUILayout.Button("← Все настройки",brandBrown,GUILayout.MinHeight(54)))OpenSettingsCategory("");
                 switch(settingsCategory) {
                     case "Визуальные":
+                        DrawInterfaceColorSettings();
                         GUILayout.BeginVertical(GUI.skin.box);SettingsSection("Тема оформления");
                         int accentIndex = Math.Max(0, Array.IndexOf(BrandAccentKeys, settingsDraft.theme));
                         settingsDraft.theme = BrandAccentKeys[MenuGrid(accentIndex, BrandAccentNames.Select((name, i) => name + (i == accentIndex ? " ✓" : "")).ToArray(), 2)];
@@ -130,6 +175,7 @@ namespace DndVtt.UnityPrototype
             GUILayout.EndVertical();GUILayout.EndScrollView();RegisterSwipe("settings",GUILayoutUtility.GetLastRect());
             if(settingsCategory!=""&&GUILayout.Button("Сохранить настройки",brandGreen,GUILayout.MinHeight(56)))BrandSaveAppearance();
             GUILayout.EndArea();
+            SavePendingAccent();
         }
 
         private float Card(float start, float width, float height, string label, Color accent)

@@ -13,6 +13,10 @@ namespace DndVtt.UnityPrototype
         private const float BrandMaxWidth = 720f;
         private Texture2D brandWallpaper, brandSplash, brandDragon;
         private GUISkin brandTemplateSkin;
+        private string cachedAccentInput, cachedAccentTheme;
+        private Color themeAccentColor, themeHeadingColor;
+        private GUIStyle brandPrimary, brandSecondaryPanel;
+        private Color ThemeHeadingAccent => string.IsNullOrEmpty(preferences?.accentHex) ? BrandAccent : themeHeadingColor;
         private GUIStyle brandTitle, brandSub, brandName, brandCard, brandBlue, brandGreen,
             brandRed, brandPurple, brandGold, brandBrown, brandPlain;
         // GUIStyle backgrounds alone are not reliable roots during unloading or
@@ -32,6 +36,7 @@ namespace DndVtt.UnityPrototype
         private void ReleaseBrandStyles()
         {
             ResetGuiStyleCaches();
+            uiStyles = null;
             foreach (var texture in brandStyleTextures)
                 if (texture) { if (Application.isPlaying) Destroy(texture); else DestroyImmediate(texture); }
             brandStyleTextures.Clear();
@@ -116,7 +121,7 @@ namespace DndVtt.UnityPrototype
             b.border = new RectOffset(16, 16, 16, 16);
             return b;
         }
-        private bool BrandStylesNeedRebuild=>brandStylesDirty||brandBlue==null||!brandBlue.normal.background;
+        private bool BrandStylesNeedRebuild=>brandStylesDirty||brandBlue==null||!brandBlue.normal.background||cachedAccentInput!=preferences?.accentHex||cachedAccentTheme!=preferences?.theme;
         private void PrepareBrand()
         {
             // GUI.skin is only legal inside OnGUI. Keep the builder usable by
@@ -143,7 +148,13 @@ namespace DndVtt.UnityPrototype
             brandBrown = Button(button, new Color(.16f,.12f,.08f), new Color(.98f,.84f,.49f));
             brandPlain = Button(button, new Color(.17f,.16f,.16f), Color.white);
             brandTitle = new GUIStyle(label) { font = MenuFont, fontSize = 25, fontStyle = FontStyle.Bold, wordWrap = true };
-            brandTitle.normal.textColor = Color.Lerp(BrandAccent, Color.white, .38f);
+            string accentHex = UiTheme.ResolveAccent(preferences);
+            themeAccentColor = ThemeColor(accentHex);
+            themeHeadingColor = ThemeColor(UiTheme.ReadableAccent(accentHex));
+            brandPrimary = Button(button, themeAccentColor, ThemeColor(UiTheme.TextOn(accentHex)));
+            brandPrimary.hover.textColor = brandPrimary.active.textColor = ThemeColor(UiTheme.TextOn(UiTheme.Hover(accentHex)));
+            brandPrimary.focused = brandPrimary.hover;
+            brandTitle.normal.textColor = string.IsNullOrEmpty(preferences?.accentHex) ? Color.Lerp(BrandAccent, Color.white, .38f) : themeHeadingColor;
             brandName = new GUIStyle(brandTitle) { fontSize = 20 };
             brandSub = new GUIStyle(label) { font = MenuFont, fontSize = 15, wordWrap = true };
             brandSub.normal.textColor = new Color(.78f,.77f,.73f);
@@ -151,6 +162,10 @@ namespace DndVtt.UnityPrototype
                 margin = new RectOffset(0,0,0,9) };
             brandCard.normal.background = Rounded(new Color(.10f,.10f,.12f,.96f), new Color(.32f,.30f,.26f,.85f));
             brandCard.border = new RectOffset(16,16,16,16);
+            brandSecondaryPanel = new GUIStyle(brandCard);
+            brandSecondaryPanel.normal.background = Rounded(ThemeColor(UiTheme.SecondaryPanelHex), new Color(.32f,.30f,.26f,.85f));
+            cachedAccentInput = preferences?.accentHex;
+            cachedAccentTheme = preferences?.theme;
             brandStylesDirty = false;
         }
         // Three original art assets also exist verbatim in StreamingAssets as
@@ -274,7 +289,7 @@ namespace DndVtt.UnityPrototype
                 if (i == selected) GUILayout.Label("Текущий герой", brandSub);
                 GUILayout.Label(details, brandSub);
                 GUILayout.EndVertical();
-                if (MeasuredMenuButton("Лист", brandBlue, GUILayout.Width(Mathf.Min(105, width*.24f)), GUILayout.Height(51)))
+                if (MeasuredMenuButton("Лист", brandPrimary, GUILayout.Width(Mathf.Min(105, width*.24f)), GUILayout.Height(51)))
                 { selected = i; Navigate(FrontScreen.Sheet); }
                 GUILayout.EndHorizontal();
             }
