@@ -12,6 +12,10 @@ namespace DndVtt.UnityPrototype
     {
         private const float BrandMaxWidth = 720f;
         private Texture2D brandWallpaper, brandSplash, brandDragon;
+        private GUISkin brandSourceSkin;
+        private string cachedAccentInput, cachedTheme;
+        private Color brandAccentColor;
+        private GUIStyle brandPrimary, brandSecondaryPanel;
         private GUIStyle brandTitle, brandSub, brandName, brandCard, brandBlue, brandGreen,
             brandRed, brandPurple, brandGold, brandBrown, brandPlain;
         // GUIStyle backgrounds alone are not reliable roots during unloading or
@@ -21,10 +25,14 @@ namespace DndVtt.UnityPrototype
         private void InvalidateBrandStyles() { brandStylesDirty = true; }
         private void ReleaseBrandStyles()
         {
+            brandStylesDirty = true;
+            if (sheetSkin && Event.current != null && GUI.skin == sheetSkin) GUI.skin = brandSourceSkin;
+            if (sheetSkin) { if (Application.isPlaying) Destroy(sheetSkin); else DestroyImmediate(sheetSkin); sheetSkin = null; }
             foreach (var texture in brandStyleTextures)
                 if (texture) { if (Application.isPlaying) Destroy(texture); else DestroyImmediate(texture); }
             brandStyleTextures.Clear();
-            if (sheetSkin) { if (Application.isPlaying) Destroy(sheetSkin); else DestroyImmediate(sheetSkin); sheetSkin = null; }
+            sheetHeading = sheetQuiet = sheetTabStyle = sheetActiveTab = null;
+            uiStyles = null;
             heading = muted = bigButton = null;
             settingsHeader = settingsDescription = settingsInset = null;
         }
@@ -34,19 +42,7 @@ namespace DndVtt.UnityPrototype
         private float brandSplashSince;
         private string brandNotice = "";
 
-        private Color BrandAccent
-        {
-            get {
-                string name = settingsDraft != null && screen == FrontScreen.Settings
-                    ? settingsDraft.theme : preferences?.theme;
-                switch (name) {
-                    case "purple": return new Color(.64f,.18f,.78f);
-                    case "blue": return new Color(.13f,.59f,.95f);
-                    case "red": return new Color(.9f,.22f,.2f);
-                    default: return new Color(1f,.60f,.04f);
-                }
-            }
-        }
+        private Color BrandAccent => brandAccentColor;
         private Color BrandFrameColor
         {
             get {
@@ -100,16 +96,20 @@ namespace DndVtt.UnityPrototype
             b.alignment = TextAnchor.MiddleCenter; b.fontStyle = FontStyle.Bold;
             b.font = MenuFont; b.fontSize = 19; b.wordWrap = true;
             b.padding = new RectOffset(7, 7, 7, 7);
-            b.border = new RectOffset(16, 16, 16, 16);
+            b.border = new RectOffset(UiTheme.SliceBorder, UiTheme.SliceBorder, UiTheme.SliceBorder, UiTheme.SliceBorder);
             return b;
         }
         private void PrepareBrand()
         {
-            EnsureBrandStyles(GUI.skin.button, GUI.skin.label, GUI.skin.box);
+            // Never clone a generated skin whose backgrounds will be destroyed below.
+            if (!brandSourceSkin) brandSourceSkin = GUI.skin;
+            EnsureBrandStyles(brandSourceSkin.button, brandSourceSkin.label, brandSourceSkin.box);
         }
         private void EnsureBrandStyles(GUIStyle button, GUIStyle label, GUIStyle box)
         {
-            if (!brandStylesDirty && brandBlue != null && brandBlue.normal.background) return;
+            // Compare raw persisted values before parsing: zero color/string allocations on repaint.
+            if (!brandStylesDirty && cachedAccentInput == preferences?.accentHex && cachedTheme == preferences?.theme && brandBlue != null && brandBlue.normal.background) return;
+            string accentHex = UiTheme.ResolveAccent(preferences);
             ReleaseBrandStyles();
             if (!brandWallpaper) brandWallpaper = Resources.Load<Texture2D>("Branding/Wallpaper16");
             if (!brandSplash) brandSplash = Resources.Load<Texture2D>("Branding/Splash19");
@@ -122,14 +122,23 @@ namespace DndVtt.UnityPrototype
             brandBrown = Button(button, new Color(.16f,.12f,.08f), new Color(.98f,.84f,.49f));
             brandPlain = Button(button, new Color(.17f,.16f,.16f), Color.white);
             brandTitle = new GUIStyle(label) { font = MenuFont, fontSize = 25, fontStyle = FontStyle.Bold, wordWrap = true };
-            brandTitle.normal.textColor = BrandAccent;
+            // Dedicated accent roles leave legacy (including wallet) button skins intact.
+            brandAccentColor = ThemeColor(accentHex);
+            brandPrimary = Button(button, BrandAccent, ThemeColor(UiTheme.TextOn(accentHex)));
+            brandPrimary.hover.textColor = brandPrimary.active.textColor = ThemeColor(UiTheme.TextOn(UiTheme.Hover(accentHex)));
+            brandPrimary.focused = brandPrimary.hover;
+            brandTitle.normal.textColor = ThemeColor(UiTheme.ReadableAccent(accentHex));
             brandName = new GUIStyle(brandTitle) { fontSize = 20 };
             brandSub = new GUIStyle(label) { font = MenuFont, fontSize = 15, wordWrap = true };
-            brandSub.normal.textColor = new Color(.73f,.72f,.71f);
-            brandCard = new GUIStyle(box) { padding = new RectOffset(12,12,12,12),
+            brandSub.normal.textColor = ThemeColor(UiTheme.CaptionHex);
+            brandCard = new GUIStyle(box) { padding = new RectOffset(UiTheme.PanelPadding,UiTheme.PanelPadding,UiTheme.PanelPadding,UiTheme.PanelPadding),
                 margin = new RectOffset(0,0,0,9) };
             brandCard.normal.background = Rounded(new Color(.09f,.09f,.11f,.88f), new Color(.38f,.38f,.36f,.72f));
-            brandCard.border = new RectOffset(16,16,16,16);
+            brandCard.border = new RectOffset(UiTheme.SliceBorder,UiTheme.SliceBorder,UiTheme.SliceBorder,UiTheme.SliceBorder);
+            brandSecondaryPanel = new GUIStyle(brandCard);
+            brandSecondaryPanel.normal.background = Rounded(ThemeColor(UiTheme.SecondaryPanelHex), new Color(.38f,.38f,.36f,.72f));
+            cachedAccentInput = preferences?.accentHex;
+            cachedTheme = preferences?.theme;
             brandStylesDirty = false;
         }
         // Three original art assets also exist verbatim in StreamingAssets as
@@ -252,7 +261,7 @@ namespace DndVtt.UnityPrototype
                 GUILayout.Label(archive.Name(i), brandName);
                 GUILayout.Label(details, brandSub);
                 GUILayout.EndVertical();
-                if (GUILayout.Button("Играть", brandBlue, GUILayout.Width(Mathf.Min(105, width*.24f)), GUILayout.Height(51)))
+                if (GUILayout.Button("Играть", brandPrimary, GUILayout.Width(Mathf.Min(105, width*.24f)), GUILayout.Height(51)))
                 { selected = i; Navigate(FrontScreen.Sheet); }
                 if (GUILayout.Button("×", brandRed, GUILayout.Width(48), GUILayout.Height(51))) RequestCharacterDeletion(i);
                 GUILayout.EndHorizontal();

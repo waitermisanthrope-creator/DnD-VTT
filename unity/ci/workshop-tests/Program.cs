@@ -94,6 +94,7 @@ class Program
             }
             finally { Directory.Delete(dir, true); }
         }
+        if(args.Length>0 && args[0]=="--ui-theme") { Console.WriteLine("UI_THEME_PASS "+ThemeChecks.Run());return; }
         if(args.Length>0 && args[0]=="--all-collections") { Console.WriteLine("ALL_MOD_COLLECTIONS_PASS "+AllModCollectionChecks.Run(args[1]));return; }
         if(args.Length>0 && args[0]=="--collections") { Console.WriteLine("COLLECTIONS_PASS "+CollectionChecks.Run(args[1]));return; }
         string root = Path.Combine(Path.GetTempPath(), "vtt-workshop-test-" + Guid.NewGuid()); Directory.CreateDirectory(root);
@@ -334,6 +335,7 @@ class Program
             Check(JToken.DeepEquals(new LegacyCharacterArchive(archiveText).Snapshot(0), optionalHero), "old downloaded character fully survives removed packages and restart");
             checks += CommerceChecks.Run(store,appRoot);
             if(File.Exists(Path.Combine(source,"DnD-VTT-Content/packages/dnd.collections.weapons-1.0.0.json"))) checks += CollectionChecks.Run(Path.Combine(source,"DnD-VTT-Content"));
+            checks += ThemeChecks.Run();
             checks += AccountGestureChecks.Run(appRoot);
             if(File.Exists(Path.Combine(source,"DnD-VTT-Content/packages/dnd.collections.races-1.0.0.json"))) checks += AllModCollectionChecks.Run(source);
             var originalManifest = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source, "DnD-VTT-Content/catalog/v3/index.json")), "packages").OfType<JObject>().First();
