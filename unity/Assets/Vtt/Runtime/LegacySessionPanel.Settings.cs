@@ -27,6 +27,7 @@ namespace DndVtt.UnityPrototype
         private void ApplyPreferences()
         {
             preferences.Validate();
+            InvalidateBrandStyles();
             ApplyScreenSleep();
             int quality = Array.IndexOf(QualitySettings.names, preferences.quality);
             if (quality >= 0) QualitySettings.SetQualityLevel(quality, true);
@@ -45,6 +46,8 @@ namespace DndVtt.UnityPrototype
         private void OpenSettings()
         {
             settingsDraft = ClientPreferences.Parse(preferences.Export());
+            accentHexInput = UiTheme.ResolveAccent(preferences);
+            pendingAccentHex = null;
             settingsSection = 0;
             OpenSettingsCategory("");
             brandTechnicalScreen = false;

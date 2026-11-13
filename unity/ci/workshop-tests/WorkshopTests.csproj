@@ -5,6 +5,10 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
     <Compile Include="../../Assets/Vtt/Runtime/WorkshopStore.cs" Link="WorkshopStore.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="ThemeChecks.cs" />
+    <Compile Include="../../Assets/Vtt/Runtime/UiTheme.cs" />
+    <Compile Include="../../Assets/Vtt/Runtime/CharacterSpeedDisplay.cs" />
+    <Compile Include="HeroUiChecks.cs" />
     <Compile Include="UiLifecycleChecks.cs" />
     <Compile Include="GuiStyleResetChecks.cs" />
     <Compile Include="SheetSwipeChecks.cs" />

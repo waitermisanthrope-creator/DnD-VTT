@@ -85,8 +85,13 @@ namespace DndVtt.UnityPrototype
         private void PrepareSheetSkin()
         {
             PrepareBrand();
-            if (sheetSkin) { GUI.skin = sheetSkin; return; }
-            sheetSkin = Instantiate(GUI.skin); sheetSkin.hideFlags = HideFlags.HideAndDontSave;
+            EnsureSheetSkin();
+            GUI.skin = sheetSkin;
+        }
+        private void EnsureSheetSkin()
+        {
+            if (sheetSkin) return;
+            sheetSkin = Instantiate(brandTemplateSkin); sheetSkin.hideFlags = HideFlags.HideAndDontSave;
             sheetSerif = sheetReferenceFont?sheetReferenceFont:Resources.Load<Font>("UI/PlayfairDisplay-Regular");
             if(!sheetSerif)throw new InvalidOperationException("Не найден Playfair Display интерфейса");
             sheetSkin.font = sheetSerif;
@@ -105,16 +110,21 @@ namespace DndVtt.UnityPrototype
             sheetSkin.box = new GUIStyle(brandCard) { padding = new RectOffset(15,15,15,15), margin = new RectOffset(0,0,0,15) };
             sheetSkin.box.normal.background=Rounded(new Color(30/255f,30/255f,30/255f,.90f),new Color(.2f,.2f,.2f));
             sheetSkin.toggle.fontSize = 13; sheetSkin.toggle.wordWrap = true; sheetSkin.toggle.normal.textColor = sheetSkin.label.normal.textColor;
-            sheetHeading = new GUIStyle(sheetSkin.label) { fontSize = 19, fontStyle = FontStyle.Bold, margin = new RectOffset(0,0,3,8) }; sheetHeading.normal.textColor = BrandAccent;
+            sheetHeading = new GUIStyle(sheetSkin.label) { fontSize = 19, fontStyle = FontStyle.Bold, margin = new RectOffset(0,0,3,8) }; sheetHeading.normal.textColor = ThemeHeadingAccent;
             sheetCharacterName = new GUIStyle(sheetHeading) { fontSize = 16 };
             sheetQuiet = new GUIStyle(sheetSkin.label) { fontSize = 14, wordWrap = true,padding=new RectOffset(),margin=new RectOffset() }; sheetQuiet.normal.textColor = new Color(187/255f,187/255f,187/255f);
             sheetTabStyle = new GUIStyle(sheetSkin.button) { wordWrap = false, fontSize = 13, fontStyle = FontStyle.Bold, padding = new RectOffset(4,4,8,8),margin=new RectOffset(0,0,0,0) };
             foreach(var state in new[]{sheetTabStyle.normal,sheetTabStyle.hover,sheetTabStyle.active,sheetTabStyle.focused}){state.background=null;state.textColor=new Color(.72f,.71f,.69f);}
             sheetActiveTab = new GUIStyle(sheetTabStyle);
-            foreach(var state in new[]{sheetActiveTab.normal,sheetActiveTab.hover,sheetActiveTab.active,sheetActiveTab.focused})state.textColor=BrandAccent;
+            foreach(var state in new[]{sheetActiveTab.normal,sheetActiveTab.hover,sheetActiveTab.active,sheetActiveTab.focused})state.textColor=ThemeHeadingAccent;
             sheetMetricBox=new GUIStyle(sheetSkin.box){padding=new RectOffset(8,8,8,8),margin=new RectOffset(0,4,0,4)};
             sheetMetricInput=new GUIStyle(sheetSkin.textField){fontSize=13,padding=new RectOffset(10,10,10,10),wordWrap=false};
-            GUI.skin = sheetSkin;
+            uiStyles = new UiStyleRoles {
+                Panel = sheetSkin.box, SecondaryPanel = brandSecondaryPanel, Card = sheetSkin.box,
+                ActiveTab = sheetActiveTab, InactiveTab = sheetTabStyle,
+                PrimaryButton = brandPrimary, SecondaryButton = sheetSkin.button,
+                Input = sheetSkin.textField, Heading = sheetHeading, Caption = sheetQuiet, Indicator = sheetCharacterName
+            };
         }
         private bool MeasuredMenuButton(string label, GUIStyle style, params GUILayoutOption[] options)
         {

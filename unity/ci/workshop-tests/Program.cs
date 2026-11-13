@@ -87,6 +87,7 @@ class Program
     {
         if(args.Length>0&&args[0]=="--creation-picker"){CheckCreationPicker();Console.WriteLine("CREATION_PICKER_PASS "+checks);return;}
         if(args.Length>0&&args[0]=="--text-input"){CheckTextInput();Console.WriteLine("TEXT_INPUT_PASS "+checks);return;}
+        if(args.Length>0&&args[0]=="--hero-ui"){Console.WriteLine("HERO_UI_PASS "+HeroUiChecks.Run());return;}
         if(args.Length>0&&args[0]=="--inventory-catalog"){Console.WriteLine("INVENTORY_CATALOG_PASS "+InventoryCatalogChecks.Run());return;}
         if(args.Length>0&&args[0]=="--wallet-market"){Console.WriteLine("WALLET_MARKET_PASS "+WalletMarketChecks.Run(Directory.GetCurrentDirectory()));return;}
         if(args.Length>0&&args[0]=="--market"){Console.WriteLine("MARKET_PASS "+MarketChecks.Run(Directory.GetCurrentDirectory()));return;}
@@ -189,6 +190,7 @@ class Program
             }
             finally { Directory.Delete(dir, true); }
         }
+        if(args.Length>0 && args[0]=="--ui-theme") { Console.WriteLine("UI_THEME_PASS "+ThemeChecks.Run());return; }
         if(args.Length>0 && args[0]=="--all-collections") { Console.WriteLine("ALL_MOD_COLLECTIONS_PASS "+AllModCollectionChecks.Run(args[1]));return; }
         if(args.Length>0 && args[0]=="--collections") { Console.WriteLine("COLLECTIONS_PASS "+CollectionChecks.Run(args[1]));return; }
         checks += CharacterArtChecks.Run()+NumericInputChecks.Run()+AdvancementChecks.Run()+SheetActionChecks.Run();
@@ -438,6 +440,7 @@ class Program
             checks += CommerceChecks.Run(store,appRoot);
             // Versioned filenames must never silently disable collection gates.
             checks += CollectionChecks.Run(Path.Combine(source,"DnD-VTT-Content"));
+            checks += ThemeChecks.Run() + HeroUiChecks.Run();
             checks += AccountGestureChecks.Run(appRoot);
             checks += AllModCollectionChecks.Run(source);
             var originalManifest = WorkshopStore.Catalog(File.ReadAllText(Path.Combine(source, "DnD-VTT-Content/catalog/v3/index.json")), "packages").OfType<JObject>().First();

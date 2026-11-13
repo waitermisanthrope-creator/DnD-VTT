@@ -1,0 +1,601 @@
+{
+  "kit": "DND-VTT Dark Grimoire UI Kit",
+  "version": "0.1.0",
+  "license": "Project use; original procedural art and vector icons created for this project.",
+  "baseline": "experiment/ui-theme-10053",
+  "reference_commit": "7fb267b0c66ec5946bea150d1a4d204cfbc31a39",
+  "accent_hex_reference": "#B89B52",
+  "components_count": 46,
+  "nine_slice_units": "texture pixels at source resolution, not density-independent pixels",
+  "color_policy": "Dark neutral textures are never globally tinted; white alpha masks/icons receive the selected user accent via GUI.color or Texture2D tint.",
+  "components": [
+    {
+      "category": "backgrounds",
+      "id": "bg_graphite",
+      "files": [
+        "backgrounds/bg_graphite_1080x1920.png"
+      ],
+      "type": "background",
+      "nine_slice": null,
+      "notes": "Нейтральный графит, 1080×1920; не окрашивать в цвет темы целиком."
+    },
+    {
+      "category": "backgrounds",
+      "id": "bg_stone_tile",
+      "files": [
+        "backgrounds/bg_parchment_stone_tile_512.png"
+      ],
+      "type": "background",
+      "nine_slice": null,
+      "notes": "Нейтральная мелкая фактура, repeat/tile, не использовать в GUIStyle 9-slice."
+    },
+    {
+      "category": "panels",
+      "id": "panel_primary",
+      "files": [
+        "panels/panel_primary_9s.png"
+      ],
+      "type": "9slice",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 16,
+        "bottom": 16
+      },
+      "notes": "Готовая нейтральная панель, девятисегментная. Не перекрашивать целиком."
+    },
+    {
+      "category": "panels",
+      "id": "panel_secondary",
+      "files": [
+        "panels/panel_secondary_9s.png"
+      ],
+      "type": "9slice",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 16,
+        "bottom": 16
+      },
+      "notes": "Готовая нейтральная панель, девятисегментная. Не перекрашивать целиком."
+    },
+    {
+      "category": "panels",
+      "id": "panel_inset",
+      "files": [
+        "panels/panel_inset_9s.png"
+      ],
+      "type": "9slice",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 16,
+        "bottom": 16
+      },
+      "notes": "Готовая нейтральная панель, девятисегментная. Не перекрашивать целиком."
+    },
+    {
+      "category": "frames",
+      "id": "frame_ornate",
+      "files": [
+        "frames/frame_ornate_mask_9s.png"
+      ],
+      "type": "tint_mask_9slice",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 16,
+        "bottom": 16
+      },
+      "notes": "Белая прозрачная маска; рисовать поверх панели, tint = выбранный HEX акцента."
+    },
+    {
+      "category": "frames",
+      "id": "frame_minimal",
+      "files": [
+        "frames/frame_minimal_mask_9s.png"
+      ],
+      "type": "tint_mask_9slice",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 16,
+        "bottom": 16
+      },
+      "notes": "Белая прозрачная маска; рисовать поверх панели, tint = выбранный HEX акцента."
+    },
+    {
+      "category": "frames",
+      "id": "frame_hero",
+      "files": [
+        "frames/frame_hero_mask_9s.png"
+      ],
+      "type": "tint_mask_9slice",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 16,
+        "bottom": 16
+      },
+      "notes": "Белая прозрачная маска; рисовать поверх панели, tint = выбранный HEX акцента."
+    },
+    {
+      "category": "buttons",
+      "id": "button_primary",
+      "files": [
+        "buttons/button_primary_normal_9s.png",
+        "buttons/button_primary_hover_9s.png",
+        "buttons/button_primary_pressed_9s.png",
+        "buttons/button_primary_disabled_9s.png",
+        "buttons/button_primary_accent_mask_9s.png"
+      ],
+      "type": "9slice_states_and_tint_mask",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 16,
+        "bottom": 16
+      },
+      "notes": "Состояния кнопки независимы от цветовой темы. Белую маску можно tint поверх."
+    },
+    {
+      "category": "buttons",
+      "id": "button_secondary",
+      "files": [
+        "buttons/button_secondary_normal_9s.png",
+        "buttons/button_secondary_hover_9s.png",
+        "buttons/button_secondary_pressed_9s.png",
+        "buttons/button_secondary_disabled_9s.png",
+        "buttons/button_secondary_accent_mask_9s.png"
+      ],
+      "type": "9slice_states_and_tint_mask",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 16,
+        "bottom": 16
+      },
+      "notes": "Состояния кнопки независимы от цветовой темы. Белую маску можно tint поверх."
+    },
+    {
+      "category": "buttons",
+      "id": "button_ghost",
+      "files": [
+        "buttons/button_ghost_normal_9s.png",
+        "buttons/button_ghost_hover_9s.png",
+        "buttons/button_ghost_pressed_9s.png",
+        "buttons/button_ghost_disabled_9s.png",
+        "buttons/button_ghost_accent_mask_9s.png"
+      ],
+      "type": "9slice_states_and_tint_mask",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 16,
+        "bottom": 16
+      },
+      "notes": "Состояния кнопки независимы от цветовой темы. Белую маску можно tint поверх."
+    },
+    {
+      "category": "buttons",
+      "id": "button_danger",
+      "files": [
+        "buttons/button_danger_normal_9s.png",
+        "buttons/button_danger_hover_9s.png",
+        "buttons/button_danger_pressed_9s.png",
+        "buttons/button_danger_disabled_9s.png",
+        "buttons/button_danger_accent_mask_9s.png"
+      ],
+      "type": "9slice_states_and_tint_mask",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 16,
+        "bottom": 16
+      },
+      "notes": "Состояния кнопки независимы от цветовой темы. Белую маску можно tint поверх."
+    },
+    {
+      "category": "dividers",
+      "id": "divider_line",
+      "files": [
+        "dividers/divider_line_mask.png"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Белая маска, допускает горизонтальный tint; при масштабировании сохранять высоту и растягивать только середину."
+    },
+    {
+      "category": "dividers",
+      "id": "divider_double",
+      "files": [
+        "dividers/divider_double_mask.png"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Белая маска, допускает горизонтальный tint; при масштабировании сохранять высоту и растягивать только середину."
+    },
+    {
+      "category": "dividers",
+      "id": "divider_runic",
+      "files": [
+        "dividers/divider_runic_mask.png"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Белая маска, допускает горизонтальный tint; при масштабировании сохранять высоту и растягивать только середину."
+    },
+    {
+      "category": "bars",
+      "id": "bar_health",
+      "files": [
+        "bars/bar_health_track_9s.png",
+        "bars/bar_health_fill_mask_9s.png"
+      ],
+      "type": "bar_track_and_tint_mask",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 16,
+        "bottom": 16
+      },
+      "notes": "Для прогресса клиппировать маску заполнения; цвет здоровья/опыта задаётся семантически, не принудительно цветом темы."
+    },
+    {
+      "category": "bars",
+      "id": "bar_experience",
+      "files": [
+        "bars/bar_experience_track_9s.png",
+        "bars/bar_experience_fill_mask_9s.png"
+      ],
+      "type": "bar_track_and_tint_mask",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 16,
+        "bottom": 16
+      },
+      "notes": "Для прогресса клиппировать маску заполнения; цвет здоровья/опыта задаётся семантически, не принудительно цветом темы."
+    },
+    {
+      "category": "bars",
+      "id": "bar_resource",
+      "files": [
+        "bars/bar_resource_track_9s.png",
+        "bars/bar_resource_fill_mask_9s.png"
+      ],
+      "type": "bar_track_and_tint_mask",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 16,
+        "bottom": 16
+      },
+      "notes": "Для прогресса клиппировать маску заполнения; цвет здоровья/опыта задаётся семантически, не принудительно цветом темы."
+    },
+    {
+      "category": "navigation",
+      "id": "nav_tab_idle",
+      "files": [
+        "navigation/nav_tab_idle_9s.png"
+      ],
+      "type": "9slice",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 16,
+        "bottom": 16
+      },
+      "notes": "Нейтральная навигация; focus_marker — белая маска для цветного акцента."
+    },
+    {
+      "category": "navigation",
+      "id": "nav_tab_active",
+      "files": [
+        "navigation/nav_tab_active_9s.png"
+      ],
+      "type": "9slice",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 16,
+        "bottom": 16
+      },
+      "notes": "Нейтральная навигация; focus_marker — белая маска для цветного акцента."
+    },
+    {
+      "category": "navigation",
+      "id": "nav_bottom_plate",
+      "files": [
+        "navigation/nav_bottom_plate_9s.png"
+      ],
+      "type": "9slice",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 16,
+        "bottom": 16
+      },
+      "notes": "Нейтральная навигация; focus_marker — белая маска для цветного акцента."
+    },
+    {
+      "category": "navigation",
+      "id": "nav_focus_marker",
+      "files": [
+        "navigation/nav_focus_marker_9s.png"
+      ],
+      "type": "tint_mask_9slice",
+      "nine_slice": {
+        "left": 16,
+        "right": 16,
+        "top": 16,
+        "bottom": 16
+      },
+      "notes": "Нейтральная навигация; focus_marker — белая маска для цветного акцента."
+    },
+    {
+      "category": "icons",
+      "id": "icon_hero",
+      "files": [
+        "icons/icon_hero_96.png",
+        "icons_svg/icon_hero.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_skills",
+      "files": [
+        "icons/icon_skills_96.png",
+        "icons_svg/icon_skills.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_abilities",
+      "files": [
+        "icons/icon_abilities_96.png",
+        "icons_svg/icon_abilities.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_inventory",
+      "files": [
+        "icons/icon_inventory_96.png",
+        "icons_svg/icon_inventory.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_crafts",
+      "files": [
+        "icons/icon_crafts_96.png",
+        "icons_svg/icon_crafts.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_notes",
+      "files": [
+        "icons/icon_notes_96.png",
+        "icons_svg/icon_notes.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_dice",
+      "files": [
+        "icons/icon_dice_96.png",
+        "icons_svg/icon_dice.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_lore",
+      "files": [
+        "icons/icon_lore_96.png",
+        "icons_svg/icon_lore.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_hp",
+      "files": [
+        "icons/icon_hp_96.png",
+        "icons_svg/icon_hp.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_xp",
+      "files": [
+        "icons/icon_xp_96.png",
+        "icons_svg/icon_xp.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_gold",
+      "files": [
+        "icons/icon_gold_96.png",
+        "icons_svg/icon_gold.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_weight",
+      "files": [
+        "icons/icon_weight_96.png",
+        "icons_svg/icon_weight.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_search",
+      "files": [
+        "icons/icon_search_96.png",
+        "icons_svg/icon_search.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_filter",
+      "files": [
+        "icons/icon_filter_96.png",
+        "icons_svg/icon_filter.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_settings",
+      "files": [
+        "icons/icon_settings_96.png",
+        "icons_svg/icon_settings.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_conditions",
+      "files": [
+        "icons/icon_conditions_96.png",
+        "icons_svg/icon_conditions.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_containers",
+      "files": [
+        "icons/icon_containers_96.png",
+        "icons_svg/icon_containers.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_add",
+      "files": [
+        "icons/icon_add_96.png",
+        "icons_svg/icon_add.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_attack",
+      "files": [
+        "icons/icon_attack_96.png",
+        "icons_svg/icon_attack.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_magic",
+      "files": [
+        "icons/icon_magic_96.png",
+        "icons_svg/icon_magic.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_clock",
+      "files": [
+        "icons/icon_clock_96.png",
+        "icons_svg/icon_clock.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_shield",
+      "files": [
+        "icons/icon_shield_96.png",
+        "icons_svg/icon_shield.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_map",
+      "files": [
+        "icons/icon_map_96.png",
+        "icons_svg/icon_map.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    },
+    {
+      "category": "icons",
+      "id": "icon_pin",
+      "files": [
+        "icons/icon_pin_96.png",
+        "icons_svg/icon_pin.svg"
+      ],
+      "type": "tint_mask",
+      "nine_slice": null,
+      "notes": "Оригинальная SVG-иконка + PNG, белый цвет для цветового tint, прозрачный фон."
+    }
+  ]
+}

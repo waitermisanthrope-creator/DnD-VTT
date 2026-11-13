@@ -13,8 +13,10 @@ namespace DndVtt.UnityPrototype
             brandGreen=null;
             brandName=null;
             brandPlain=null;
+            brandPrimary=null;
             brandPurple=null;
             brandRed=null;
+            brandSecondaryPanel=null;
             brandSub=null;
             brandTitle=null;
             classicLegacySurface=null;

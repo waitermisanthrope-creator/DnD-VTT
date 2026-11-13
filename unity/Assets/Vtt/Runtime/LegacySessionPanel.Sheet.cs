@@ -87,7 +87,7 @@ namespace DndVtt.UnityPrototype
             if (showSpellCatalog) SpellCatalog(hero, ref changed);
             else switch (sheetTab)
             {
-                case 0: ClassicHero(hero, ref changed); break;
+                case 0: GrimoireHero(hero, ref changed); break;
                 case 1: ClassicSkills(hero, ref changed); if(SheetFold("edit-feats","Черты и владения"))DrawCharacterFeats(hero, ref changed); break;
                 case 2: ClassicAbilities(hero,ref changed);break;
                 case 3: Wallet(hero,ref changed,ref persistWallet);DrawMarketEntry(hero,ref changed,ref persistCommerce);DrawCommerceInventory(hero, ref changed, ref persistCommerce); break;
