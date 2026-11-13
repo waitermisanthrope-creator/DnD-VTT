@@ -87,8 +87,7 @@ namespace DndVtt.UnityPrototype
             GrimoireConditions(hero);
             GrimoireQuickActions(hero);
 
-            string foldId = "grimoire-hero:" + (string)hero["id"];
-            if (SheetFold(foldId, "Сведения о герое · подробности и редактирование"))
+            if (GrimoireDetailsFold(hero, ref changed))
             {
                 // Keep every old control: editable identity/race/speed, death saves,
                 // long/short rest, all six stats, exports and class advancement.
