@@ -7,7 +7,7 @@ details=file("LegacySessionPanel.GrimoireDetails.cs")
 adv=file("LegacySessionPanel.Advancement.cs")
 advui=file("LegacySessionPanel.GrimoireAdvancement.cs")
 assert "GrimoireHeroDetails(hero, ref changed);" in hero
-assert 'ClassicButtonRow("К дайсам", "К атакам", "Развитие")' in hero
+assert all('MeasuredMenuButton("'+name+'"' in hero for name in ("К дайсам", "К атакам", "Развитие"))
 for key in ('"Профиль", "Бой", "Статы", "Данные"', 'GrimoireDetailsProfile(hero, ref changed)', 'GrimoireDetailsCombat(hero, ref changed)', 'GrimoireDetailsStats(hero, ref changed)', 'GrimoireDetailsData()'):
     assert key in details, key
 for name in ("ToggleSheetCondition", "RecordRest", "SetDeathTrack", "Recalculate", "PickCharacterFile", "RaceLocked"):
