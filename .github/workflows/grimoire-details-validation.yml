@@ -1,0 +1,83 @@
+name: Validate compact Grimoire Details
+on:
+  push:
+    branches: [experiment/ui-grimoire-details]
+    paths:
+      - '.github/workflows/grimoire-details-validation.yml'
+      - 'unity/Assets/Vtt/Runtime/LegacySessionPanel.GrimoireDetails.cs'
+      - 'unity/Assets/Vtt/Runtime/LegacySessionPanel.GrimoireAdvancement.cs'
+      - 'unity/Assets/Vtt/Runtime/LegacySessionPanel.Advancement.cs'
+      - 'unity/Assets/Vtt/Runtime/LegacySessionPanel.GrimoireHero.cs'
+      - 'unity/ci/test_grimoire_details_contract.py'
+permissions:
+  contents: read
+concurrency:
+  group: grimoire-details-ui
+  cancel-in-progress: true
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Validate new navigation and character actions
+        run: python3 unity/ci/test_grimoire_details_contract.py
+      - name: Build rules harness and run focused regression
+        run: |
+          dotnet build unity/ci/workshop-tests/WorkshopTests.csproj -c Release
+          dotnet run --no-build -c Release --project unity/ci/workshop-tests -- --advancement
+          dotnet run --no-build -c Release --project unity/ci/workshop-tests -- --hero-ui
+          dotnet run --no-build -c Release --project unity/ci/workshop-tests -- --ui-theme
+          dotnet run --no-build -c Release --project unity/ci/workshop-tests -- --sheet-swipe
+          dotnet run --no-build -c Release --project unity/ci/workshop-tests -- --wallet-market
+  unity-android:
+    name: Native Unity Android IL2CPP preview (not published)
+    needs: source
+    runs-on: ubuntu-latest
+    environment: unity-ci
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+          persist-credentials: false
+      - name: Prepare existing signed-content fixtures for Unity build gate
+        shell: bash
+        run: |
+          python3 -m pip install -r unity/ci/requirements.txt
+          mkdir -p "$RUNNER_TEMP/grimoire-registries"
+          python3 unity/ci/verify_public_workshop.py --output "$RUNNER_TEMP/grimoire-registries"
+          mkdir -p unity/WorkshopFixtures~
+          cp -R "$RUNNER_TEMP/grimoire-registries/." unity/WorkshopFixtures~/
+      - name: Restore existing Unity compilation cache
+        uses: actions/cache/restore@v4
+        with:
+          path: unity/Library
+          key: grimoire-details-android-Linux-6000.3.26f1-v1
+          restore-keys: |
+            unity-library-android-Linux-6000.3.26f1-
+      - name: Build native Unity Android preview
+        uses: game-ci/unity-builder@eb1b9fba120c6e62c9fb7a7a81d6c107ce004c45
+        env:
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: unity
+          unityVersion: 6000.3.26f1
+          cliVersion: v0.1.72
+          targetPlatform: Android
+          buildMethod: UnityReleaseBuild.CloudAndroid
+          versioning: None
+          androidExportType: androidPackage
+          allowDirtyBuild: true
+          manualExit: true
+          enableGpu: true
+          customParameters: -force-glcore
+      - name: Verify native compilation artifact
+        run: |
+          test -s unity/Builds/Unity-1.00.00/android-intermediate.apk
+          echo GRIMOIRE_DETAILS_NATIVE_ANDROID_PASS
