@@ -72,6 +72,43 @@ namespace DndVtt.UnityPrototype
             uiStyles.HeroHealthFill = Resources.Load<Texture2D>("UI/Grimoire/bars/bar_health_fill_mask_9s");
             uiStyles.HeroXpTrack = Resources.Load<Texture2D>("UI/Grimoire/bars/bar_experience_track_9s");
             uiStyles.HeroXpFill = Resources.Load<Texture2D>("UI/Grimoire/bars/bar_experience_fill_mask_9s");
+            uiStyles.HeroPortraitFrame = Resources.Load<Texture2D>("UI/Grimoire/frames/frame_hero_mask_9s");
+            uiStyles.HeroRuneDivider = Resources.Load<Texture2D>("UI/Grimoire/dividers/divider_runic_mask");
+            uiStyles.HeroHealthIcon = Resources.Load<Texture2D>("UI/Grimoire/icons/icon_hp_96");
+            uiStyles.HeroXpIcon = Resources.Load<Texture2D>("UI/Grimoire/icons/icon_xp_96");
+            uiStyles.HeroConditionsIcon = Resources.Load<Texture2D>("UI/Grimoire/icons/icon_conditions_96");
+            uiStyles.HeroShieldIcon = Resources.Load<Texture2D>("UI/Grimoire/icons/icon_shield_96");
+            uiStyles.HeroActionButton = new GUIStyle(uiStyles.PrimaryButton);
+            uiStyles.HeroSecondaryButton = new GUIStyle(uiStyles.SecondaryButton);
+            uiStyles.HeroSelectedButton = new GUIStyle(uiStyles.ActiveTab);
+            GrimoireButtonArt(uiStyles.HeroActionButton, "button_primary");
+            GrimoireButtonArt(uiStyles.HeroSecondaryButton, "button_secondary");
+            Texture2D nav = Resources.Load<Texture2D>("UI/Grimoire/navigation/nav_tab_active_9s");
+            if (nav)
+            {
+                uiStyles.HeroSelectedButton.normal.background = nav;
+                uiStyles.HeroSelectedButton.border = new RectOffset(16, 16, 16, 16);
+            }
+            uiStyles.HeroSelectedButton.normal.textColor = ThemeHeadingAccent;
+        }
+
+        private static void GrimoireButtonArt(GUIStyle style, string name)
+        {
+            // Import PNGs are Resources-owned; never allocate per repaint.
+            string path = "UI/Grimoire/buttons/" + name;
+            Texture2D normal = Resources.Load<Texture2D>(path + "_normal_9s");
+            if (!normal) return;
+            Texture2D hover = Resources.Load<Texture2D>(path + "_hover_9s");
+            Texture2D pressed = Resources.Load<Texture2D>(path + "_pressed_9s");
+            style.normal.background = normal;
+            style.hover.background = hover ? hover : normal;
+            style.active.background = pressed ? pressed : normal;
+            style.focused.background = normal;
+            style.border = new RectOffset(16, 16, 16, 16);
+            style.normal.textColor = Color.white;
+            style.hover.textColor = Color.white;
+            style.active.textColor = Color.white;
+            style.focused.textColor = Color.white;
         }
 
         // First redesign screen; the original full character editor stays available below.
@@ -120,6 +157,9 @@ namespace DndVtt.UnityPrototype
                 {
                     GUI.Label(photo, "✦", uiStyles.HeroValue);
                 }
+                if (uiStyles.HeroPortraitFrame)
+                    GUI.DrawTexture(photo, uiStyles.HeroPortraitFrame, ScaleMode.StretchToFill,
+                        true, 0, ThemeHeadingAccent, 0, 0);
             }
             // Reuse the existing art viewer/import flow rather than a new portrait system.
             if (GUI.Button(photo, GUIContent.none, GUIStyle.none))
@@ -145,13 +185,33 @@ namespace DndVtt.UnityPrototype
         private void GrimoireSection(string title)
         {
             GUILayout.Space(5);
-            GUILayout.Label(title, uiStyles.HeroSection);
+            Texture2D icon = title.Contains("ЗДОРОВЬ") ? uiStyles.HeroHealthIcon :
+                title.Contains("ОПЫТ") || title.Contains("РАЗВИТИЕ") || title.Contains("ПОВЫШЕНИЕ") ?
+                    uiStyles.HeroXpIcon :
+                title.Contains("СОСТОЯНИ") ? uiStyles.HeroConditionsIcon :
+                title.Contains("БОЕВ") ? uiStyles.HeroShieldIcon : null;
+            GUILayout.BeginHorizontal();
+            if (icon)
+            {
+                Rect rect = GUILayoutUtility.GetRect(21, 21, GUILayout.Width(21), GUILayout.Height(21));
+                if (Event.current.type == EventType.Repaint)
+                    GUI.DrawTexture(rect, icon, ScaleMode.ScaleToFit, true, 0,
+                        ThemeHeadingAccent, 0, 0);
+                GUILayout.Space(5);
+            }
+            GUILayout.Label(title, uiStyles.HeroSection, GUILayout.ExpandWidth(true));
+            GUILayout.EndHorizontal();
         }
 
         private void GrimoireRule()
         {
-            Rect r = GUILayoutUtility.GetRect(1, 2, GUILayout.ExpandWidth(true));
-            if (Event.current.type == EventType.Repaint)
+            Texture2D rune = uiStyles.HeroRuneDivider;
+            Rect r = GUILayoutUtility.GetRect(1, rune ? 13 : 2, GUILayout.ExpandWidth(true));
+            if (Event.current.type != EventType.Repaint) return;
+            if (rune)
+                GUI.DrawTexture(r, rune, ScaleMode.StretchToFill, true, 0,
+                    ThemeHeadingAccent, 0, 0);
+            else
                 GUI.DrawTexture(r, Texture2D.whiteTexture, ScaleMode.StretchToFill, false, 0,
                     new Color(ThemeHeadingAccent.r, ThemeHeadingAccent.g, ThemeHeadingAccent.b, .65f), 0, 0);
         }
@@ -195,12 +255,12 @@ namespace DndVtt.UnityPrototype
             GUILayout.Space(7);
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            if (MeasuredMenuButton("−1 HP", uiStyles.SecondaryButton, GUILayout.MinWidth(93), GUILayout.MinHeight(UiTheme.TouchHeight)))
+            if (MeasuredMenuButton("−1 HP", uiStyles.HeroSecondaryButton, GUILayout.MinWidth(93), GUILayout.MinHeight(UiTheme.TouchHeight)))
             {
                 SheetAction(() => CharacterSheetRules.ChangeHealth(hero, 1, false), ref changed);
                 InvalidateHealthInputs(hero);
             }
-            if (MeasuredMenuButton("+1 HP", uiStyles.SecondaryButton, GUILayout.MinWidth(93), GUILayout.MinHeight(UiTheme.TouchHeight)))
+            if (MeasuredMenuButton("+1 HP", uiStyles.HeroSecondaryButton, GUILayout.MinWidth(93), GUILayout.MinHeight(UiTheme.TouchHeight)))
             {
                 SheetAction(() => CharacterSheetRules.ChangeHealth(hero, 1, true), ref changed);
                 InvalidateHealthInputs(hero);
@@ -269,10 +329,17 @@ namespace DndVtt.UnityPrototype
         private void GrimoireQuickActions(JObject hero)
         {
             GrimoireSection("БЫСТРЫЕ ДЕЙСТВИЯ");
-            int action = ClassicButtonRow("К дайсам", "К атакам", "Развитие");
-            if (action == 0) requestedSheetTab = 5;
-            else if (action == 1) requestedSheetTab = 2;
-            else if (action == 2) BeginAdvancement(hero, true);
+            GUILayout.BeginHorizontal();
+            if (MeasuredMenuButton("К дайсам", uiStyles.HeroSecondaryButton,
+                GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
+                requestedSheetTab = 5;
+            if (MeasuredMenuButton("К атакам", uiStyles.HeroSecondaryButton,
+                GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
+                requestedSheetTab = 2;
+            if (MeasuredMenuButton("Развитие", uiStyles.HeroActionButton,
+                GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
+                BeginAdvancement(hero, true);
+            GUILayout.EndHorizontal();
         }
     }
 }

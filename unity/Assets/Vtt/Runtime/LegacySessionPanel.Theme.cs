@@ -12,6 +12,8 @@ namespace DndVtt.UnityPrototype
             public GUIStyle PrimaryButton, SecondaryButton, Input, Heading, Caption, Indicator;
             public GUIStyle HeroPanel, HeroMetric, HeroName, HeroSubtitle, HeroSection, HeroValue, HeroSmall;
             public Texture2D HeroIcon, HeroHealthTrack, HeroHealthFill, HeroXpTrack, HeroXpFill;
+            public Texture2D HeroPortraitFrame, HeroRuneDivider, HeroHealthIcon, HeroXpIcon, HeroConditionsIcon, HeroShieldIcon;
+            public GUIStyle HeroActionButton, HeroSecondaryButton, HeroSelectedButton;
         }
         private UiStyleRoles uiStyles;
         private static Color ThemeColor(string hex)

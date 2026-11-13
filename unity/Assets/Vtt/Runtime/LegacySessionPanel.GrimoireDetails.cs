@@ -54,7 +54,7 @@ namespace DndVtt.UnityPrototype
             bool open = expanded.Contains(key);
             if (MeasuredMenuButton((open ? "▾ " : "▸ ") +
                 "Сведения о герое · подробности и редактирование",
-                uiStyles.SecondaryButton, GUILayout.MinHeight(UiTheme.TouchHeight)))
+                uiStyles.HeroSecondaryButton, GUILayout.MinHeight(UiTheme.TouchHeight)))
             {
                 if (open) CommitGrimoireDetailKeyboard(hero, ref changed);
                 else ResetFormInput();
@@ -82,7 +82,7 @@ namespace DndVtt.UnityPrototype
             for (int i = 0; i < tabs.Length; i++)
             {
                 int target = i;
-                var style = grimoireDetailsTab == i ? uiStyles.ActiveTab : uiStyles.SecondaryButton;
+                var style = grimoireDetailsTab == i ? uiStyles.HeroSelectedButton : uiStyles.HeroSecondaryButton;
                 if (MeasuredMenuButton(tabs[i], style, GUILayout.ExpandWidth(true),
                     GUILayout.MinHeight(UiTheme.TouchHeight)) && grimoireDetailsTab != target)
                 {
@@ -127,7 +127,7 @@ namespace DndVtt.UnityPrototype
             GrimoireReadRow("Класс", classLabel);
             GrimoireReadRow("Предыстория", (string)hero["background"]);
             GrimoireReadRow("Профессия", (string)hero["profession"] ?? "Без профессии");
-            if (MeasuredMenuButton("Опыт и уровень →", uiStyles.PrimaryButton,
+            if (MeasuredMenuButton("Опыт и уровень →", uiStyles.HeroActionButton,
                 GUILayout.MinHeight(UiTheme.TouchHeight))) BeginAdvancement(hero, true);
             GUILayout.EndVertical();
 
@@ -137,10 +137,10 @@ namespace DndVtt.UnityPrototype
             bool previous = GUI.enabled;
             GUI.enabled = previous && !RaceLocked(hero);
             string race = (string)(hero["raceName"] ?? hero["race"]) ?? "Выберите расу";
-            if (MeasuredMenuButton(race + " ▾", uiStyles.SecondaryButton,
+            if (MeasuredMenuButton(race + " ▾", uiStyles.HeroSecondaryButton,
                 GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight))) requestedRaceView = 1;
             GUI.enabled = previous;
-            if (MeasuredMenuButton("+ Своя", uiStyles.SecondaryButton,
+            if (MeasuredMenuButton("+ Своя", uiStyles.HeroSecondaryButton,
                 GUILayout.Width(77), GUILayout.MinHeight(UiTheme.TouchHeight)))
             {
                 ResetFormInput();
@@ -176,7 +176,7 @@ namespace DndVtt.UnityPrototype
             if (edited != speed) { hero["speed"] = edited; changed = true; }
             GUILayout.EndVertical();
             GUILayout.EndHorizontal();
-            if (MeasuredMenuButton("⚄ Бросить инициативу", uiStyles.SecondaryButton,
+            if (MeasuredMenuButton("⚄ Бросить инициативу", uiStyles.HeroSecondaryButton,
                 GUILayout.MinHeight(UiTheme.TouchHeight)))
                 Roll("Инициатива", 20, CharacterSheetRules.Modifier(hero, "dex"));
             if (rollResult != "Выберите кубик или проверку")
@@ -194,7 +194,7 @@ namespace DndVtt.UnityPrototype
                 JToken token = (hero["activeConditions"] as JObject)?[condition];
                 bool active = token?.Type == JTokenType.Boolean && (bool)token;
                 if (MeasuredMenuButton((active ? "✓ " : "") + condition,
-                    active ? uiStyles.ActiveTab : uiStyles.SecondaryButton,
+                    active ? uiStyles.HeroSelectedButton : uiStyles.HeroSecondaryButton,
                     GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                     SheetAction(() => CharacterSheetRules.ToggleSheetCondition(hero, condition), ref changed);
                 if (i % 3 == 2) GUILayout.EndHorizontal();
@@ -234,7 +234,7 @@ namespace DndVtt.UnityPrototype
                     bool old = current >= i;
                     int point = i;
                     if (MeasuredMenuButton((old ? "● " : "○ ") + i,
-                        old ? uiStyles.ActiveTab : uiStyles.SecondaryButton,
+                        old ? uiStyles.HeroSelectedButton : uiStyles.HeroSecondaryButton,
                         GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                     {
                         int count = old ? point - 1 : point;
@@ -245,10 +245,10 @@ namespace DndVtt.UnityPrototype
                 GUILayout.EndHorizontal();
             }
             GUILayout.BeginHorizontal();
-            if (MeasuredMenuButton("Короткий отдых", uiStyles.SecondaryButton,
+            if (MeasuredMenuButton("Короткий отдых", uiStyles.HeroSecondaryButton,
                 GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                 pendingBaseRest = false;
-            if (MeasuredMenuButton("Длинный отдых", uiStyles.SecondaryButton,
+            if (MeasuredMenuButton("Длинный отдых", uiStyles.HeroSecondaryButton,
                 GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                 pendingBaseRest = true;
             GUILayout.EndHorizontal();
@@ -257,7 +257,7 @@ namespace DndVtt.UnityPrototype
                 GUILayout.Label("Восстановить известные счётчики отдыха? Особые эффекты учитываются вручную.",
                     uiStyles.HeroSubtitle);
                 GUILayout.BeginHorizontal();
-                if (MeasuredMenuButton("Подтвердить", uiStyles.PrimaryButton,
+                if (MeasuredMenuButton("Подтвердить", uiStyles.HeroActionButton,
                     GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                 {
                     bool full = pendingBaseRest.Value;
@@ -266,7 +266,7 @@ namespace DndVtt.UnityPrototype
                     InvalidateHealthInputs(hero);
                     pendingBaseRest = null;
                 }
-                if (MeasuredMenuButton("Отмена", uiStyles.SecondaryButton,
+                if (MeasuredMenuButton("Отмена", uiStyles.HeroSecondaryButton,
                     GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                     pendingBaseRest = null;
                 GUILayout.EndHorizontal();
@@ -332,9 +332,9 @@ namespace DndVtt.UnityPrototype
             GrimoireSection("УПРАВЛЕНИЕ ДАННЫМИ");
             GUILayout.BeginVertical(uiStyles.HeroPanel);
             GUILayout.Label("Сохранённые герои и перенос персонажей", uiStyles.HeroSubtitle);
-            if (MeasuredMenuButton("Экспортировать JSON", uiStyles.PrimaryButton,
+            if (MeasuredMenuButton("Экспортировать JSON", uiStyles.HeroActionButton,
                 GUILayout.MinHeight(UiTheme.TouchHeight))) Attempt(() => PickCharacterFile(true));
-            if (MeasuredMenuButton("К выбору героев", uiStyles.SecondaryButton,
+            if (MeasuredMenuButton("К выбору героев", uiStyles.HeroSecondaryButton,
                 GUILayout.MinHeight(UiTheme.TouchHeight)))
                 requestedSheetDestination = FrontScreen.Characters;
             GUILayout.EndVertical();

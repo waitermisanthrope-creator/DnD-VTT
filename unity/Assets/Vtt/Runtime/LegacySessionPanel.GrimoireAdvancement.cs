@@ -46,11 +46,11 @@ namespace DndVtt.UnityPrototype
             GUILayout.BeginVertical(uiStyles.HeroPanel);
             GUILayout.BeginHorizontal();
             if (MeasuredMenuButton("Мои классы", advancementNewClass
-                    ? uiStyles.SecondaryButton : uiStyles.ActiveTab,
+                    ? uiStyles.HeroSecondaryButton : uiStyles.HeroSelectedButton,
                 GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                 advancementNewClass = false;
             if (MeasuredMenuButton("Мультикласс", advancementNewClass
-                    ? uiStyles.ActiveTab : uiStyles.SecondaryButton,
+                    ? uiStyles.HeroSelectedButton : uiStyles.HeroSecondaryButton,
                 GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                 advancementNewClass = true;
             GUILayout.EndHorizontal();
@@ -92,7 +92,7 @@ namespace DndVtt.UnityPrototype
                 string label = name;
                 if (problem == null)
                     label += " · " + CharacterAdvancement.NextClassLevel(AdvancementCatalog, hero, name) + " ур.";
-                if (MeasuredMenuButton(label, uiStyles.SecondaryButton,
+                if (MeasuredMenuButton(label, uiStyles.HeroSecondaryButton,
                     GUILayout.MinHeight(UiTheme.TouchHeight)))
                     Attempt(() => SelectAdvancementClass(hero, name));
                 GUI.enabled = enabled;
@@ -105,7 +105,7 @@ namespace DndVtt.UnityPrototype
             {
                 GUILayout.BeginHorizontal();
                 bool enabled = GUI.enabled; GUI.enabled = enabled && advancementClassPage > 0;
-                if (MeasuredMenuButton("←", uiStyles.SecondaryButton,
+                if (MeasuredMenuButton("←", uiStyles.HeroSecondaryButton,
                     GUILayout.Width(54), GUILayout.MinHeight(UiTheme.TouchHeight)))
                     advancementClassPage--;
                 GUI.enabled = enabled;
@@ -114,7 +114,7 @@ namespace DndVtt.UnityPrototype
                     uiStyles.HeroSubtitle, GUILayout.MinHeight(44));
                 GUILayout.FlexibleSpace();
                 GUI.enabled = enabled && advancementClassPage + 1 < pages;
-                if (MeasuredMenuButton("→", uiStyles.SecondaryButton,
+                if (MeasuredMenuButton("→", uiStyles.HeroSecondaryButton,
                     GUILayout.Width(54), GUILayout.MinHeight(UiTheme.TouchHeight)))
                     advancementClassPage++;
                 GUI.enabled = enabled;
@@ -140,7 +140,7 @@ namespace DndVtt.UnityPrototype
             {
                 string id = (string)feat["id"];
                 if (MeasuredMenuButton((advancementFeat == id ? "✓ " : "") +
-                    ((string)feat["name"] ?? id), uiStyles.SecondaryButton,
+                    ((string)feat["name"] ?? id), uiStyles.HeroSecondaryButton,
                     GUILayout.MinHeight(UiTheme.TouchHeight)))
                     advancementFeat = id;
                 if (advancementFeat == id)
@@ -158,14 +158,14 @@ namespace DndVtt.UnityPrototype
                 GUILayout.BeginHorizontal();
                 bool canPrev = GUI.enabled && advancementFeatPage > 0;
                 bool old = GUI.enabled; GUI.enabled = canPrev;
-                if (MeasuredMenuButton("←", uiStyles.SecondaryButton, GUILayout.Width(54),
+                if (MeasuredMenuButton("←", uiStyles.HeroSecondaryButton, GUILayout.Width(54),
                     GUILayout.MinHeight(UiTheme.TouchHeight))) advancementFeatPage--;
                 GUI.enabled = old;
                 GUILayout.FlexibleSpace();
                 GUILayout.Label((advancementFeatPage + 1) + " / " + pages, uiStyles.HeroSubtitle);
                 GUILayout.FlexibleSpace();
                 GUI.enabled = old && advancementFeatPage + 1 < pages;
-                if (MeasuredMenuButton("→", uiStyles.SecondaryButton, GUILayout.Width(54),
+                if (MeasuredMenuButton("→", uiStyles.HeroSecondaryButton, GUILayout.Width(54),
                     GUILayout.MinHeight(UiTheme.TouchHeight))) advancementFeatPage++;
                 GUI.enabled = old;
                 GUILayout.EndHorizontal();
