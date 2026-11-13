@@ -12,6 +12,59 @@ namespace DndVtt.UnityPrototype
         private int grimoireDetailsTab;
         private string grimoireDetailsHero;
 
+        private void CommitGrimoireDetailKeyboard(JObject hero, ref bool changed)
+        {
+            // A user can tap a new subtab before Android closes its numeric keyboard.
+            // Commit the typed value instead of cancelling the numeric session.
+            if (grimoireDetailsTab == 1)
+            {
+                FlushHealthInputs(hero, ref changed);
+                return;
+            }
+            if (grimoireDetailsTab == 2)
+            {
+                CompleteNumericKeyboard();
+                var stats = hero["stats"] as JObject ?? new JObject();
+                bool statsChanged = false;
+                foreach (string stat in CharacterSheetRules.Stats)
+                {
+                    string owner = "classic-stat:" + hero["id"] + ":" + stat;
+                    if (numericSession.TryTake(owner, out string text)
+                        && int.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture,
+                            out int value))
+                    {
+                        stats[stat] = value;
+                        edits[owner] = text;
+                        statsChanged = true;
+                    }
+                }
+                if (statsChanged)
+                {
+                    hero["stats"] = stats;
+                    CharacterSheetRules.Recalculate(hero);
+                    changed = true;
+                }
+            }
+            ResetFormInput();
+        }
+
+        private bool GrimoireDetailsFold(JObject hero, ref bool changed)
+        {
+            string key = "grimoire-hero:" + (string)hero["id"];
+            bool open = expanded.Contains(key);
+            if (MeasuredMenuButton((open ? "▾ " : "▸ ") +
+                "Сведения о герое · подробности и редактирование",
+                uiStyles.SecondaryButton, GUILayout.MinHeight(UiTheme.TouchHeight)))
+            {
+                if (open) CommitGrimoireDetailKeyboard(hero, ref changed);
+                else ResetFormInput();
+                if (open) expanded.Remove(key);
+                else expanded.Add(key);
+                open = !open;
+            }
+            return open;
+        }
+
         private void GrimoireHeroDetails(JObject hero, ref bool changed)
         {
             PrepareGrimoireHeroStyles();
@@ -33,7 +86,7 @@ namespace DndVtt.UnityPrototype
                 if (MeasuredMenuButton(tabs[i], style, GUILayout.ExpandWidth(true),
                     GUILayout.MinHeight(UiTheme.TouchHeight)) && grimoireDetailsTab != target)
                 {
-                    ResetFormInput();
+                    CommitGrimoireDetailKeyboard(hero, ref changed);
                     grimoireDetailsTab = target;
                 }
             }
