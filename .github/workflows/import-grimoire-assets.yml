@@ -1,0 +1,87 @@
+name: Import approved Dark Grimoire UI Kit 0.1
+on:
+  push:
+    branches:
+      - experiment/ui-grimoire-hero
+    paths:
+      - .github/workflows/import-grimoire-assets.yml
+permissions:
+  contents: write
+concurrency:
+  group: import-grimoire-ui-kit
+  cancel-in-progress: false
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Check out owner-approved experimental branch
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Verify and extract uploaded Unity PNGs and metadata
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          import stat
+          from zipfile import ZipFile
+
+          archive = Path("DnD_VTT_Grimoire_Unity_Import_v0.1.zip")
+          expected = "ab60179c590179d822a57d4aa2db6c7b5824011acc163f3f6d93a04fd04e9436"
+          assert archive.is_file(), "Owner-uploaded UI kit ZIP is missing"
+          actual = hashlib.sha256(archive.read_bytes()).hexdigest()
+          assert actual == expected, f"Archive hash mismatch: {actual}"
+          prefix = "unity/Assets/Vtt/Resources/UI/Grimoire/"
+          root_meta = "unity/Assets/Vtt/Resources/UI/Grimoire.meta"
+          docs = {"INTEGRATION_README_RU.md", "ASSET_FILES.json"}
+          with ZipFile(archive) as z:
+              entries = z.infolist()
+              names = {entry.filename for entry in entries}
+              pngs = [name for name in names if name.endswith(".png")]
+              assert len(pngs) == 65, f"Expected 65 PNG, got {len(pngs)}"
+              for name in pngs:
+                  assert name + ".meta" in names, f"Missing Unity metadata for {name}"
+              assert prefix + "manifest.json" in names
+              assert root_meta in names
+              manifest = json.loads(z.read(prefix + "manifest.json"))
+              assert manifest.get("kit") == "DND-VTT Dark Grimoire UI Kit"
+              extracted = 0
+              for item in entries:
+                  name = item.filename
+                  path = Path(name)
+                  assert not path.is_absolute() and ".." not in path.parts, f"Unsafe ZIP path {name}"
+                  assert stat.S_IFMT(item.external_attr >> 16) != stat.S_IFLNK, f"Symlink forbidden: {name}"
+                  if item.is_dir() or name in docs:
+                      continue
+                  assert name == root_meta or name.startswith(prefix), f"Unexpected ZIP entry {name}"
+                  target = Path(name)
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  target.write_bytes(z.read(item))
+                  extracted += 1
+          print("GRIMOIRE_ASSET_IMPORT_PASS", len(pngs), "PNG;", extracted, "files with metadata")
+          PY
+      - name: Validate assets and preserve existing game sources
+        run: |
+          test -f unity/Assets/Vtt/Resources/UI/Grimoire/panels/panel_primary_9s.png
+          test -f unity/Assets/Vtt/Resources/UI/Grimoire/panels/panel_inset_9s.png
+          test -f unity/Assets/Vtt/Resources/UI/Grimoire/icons/icon_hero_96.png
+          test -f unity/Assets/Vtt/Resources/UI/Grimoire/bars/bar_health_track_9s.png
+          test -f unity/Assets/Vtt/Resources/UI/Grimoire/bars/bar_experience_fill_mask_9s.png
+          python3 unity/ci/test_ui_theme_contract.py
+      - name: Commit only imported UI Kit asset files to same experimental branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- unity/Assets/Vtt/Resources/UI/Grimoire.meta unity/Assets/Vtt/Resources/UI/Grimoire/
+          if git diff --cached --quiet; then
+            echo "Assets already present; no changes"
+            exit 0
+          fi
+          test "$(git diff --cached --name-only | grep -c '\.png$')" -eq 65
+          git diff --cached --check
+          git commit -m "assets(unity): unpack Dark Grimoire UI Kit 0.1 for Hero [skip ci]"
+          git push origin HEAD:refs/heads/experiment/ui-grimoire-hero
+          echo "GRIMOIRE_ASSETS_COMMITTED"
