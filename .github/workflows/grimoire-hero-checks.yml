@@ -1,0 +1,50 @@
+name: Validate experimental Grimoire Hero UI (source only)
+on:
+  push:
+    branches: [experiment/ui-grimoire-hero]
+    paths:
+      - .github/workflows/grimoire-hero-checks.yml
+      - unity/Assets/Vtt/Runtime/LegacySessionPanel.GrimoireHero.cs
+      - unity/Assets/Vtt/Runtime/CharacterSpeedDisplay.cs
+      - unity/ci/workshop-tests/HeroUiChecks.cs
+      - unity/Assets/Vtt/Resources/UI/Grimoire/**
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Validate imported Unity PNGs and matching .meta
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          root=Path("unity/Assets/Vtt/Resources/UI/Grimoire")
+          pngs=list(root.rglob("*.png"))
+          assert len(pngs)==65,(len(pngs),"PNG expected: 65")
+          for p in pngs:
+              assert p.with_suffix(p.suffix+".meta").is_file(),p
+              assert p.read_bytes()[:8]==b"\x89PNG\r\n\x1a\n",p
+          for file in ["panels/panel_primary_9s.png", "panels/panel_inset_9s.png",
+                       "icons/icon_hero_96.png", "bars/bar_health_track_9s.png",
+                       "bars/bar_experience_fill_mask_9s.png"]:
+              assert (root/file).is_file(),file
+          print("GRIMOIRE_IMPORT_SOURCE_PASS",len(pngs))
+          PY
+      - name: Build .NET C# harness
+        run: dotnet build unity/ci/workshop-tests/WorkshopTests.csproj
+      - name: Validate Hero speed in feet/metres
+        run: dotnet run --no-build --project unity/ci/workshop-tests -- --hero-ui
+      - name: Validate theme persistence and asset-safe styles
+        run: dotnet run --no-build --project unity/ci/workshop-tests -- --ui-theme
+      - name: Validate character sheet syntax and source compatibility
+        run: dotnet run --no-build --project unity/ci/workshop-tests -- --character-delete
+      - name: Validate sheet swipe logic
+        run: dotnet run --no-build --project unity/ci/workshop-tests -- --sheet-swipe
+      - name: Theme source integration contract
+        run: python3 unity/ci/test_ui_theme_contract.py
