@@ -1,0 +1,7 @@
+# Grimoire: compact Hero details + advancement (Android test 1.00.55)
+
+Based on public 1.00.54 source at a78d234fa3cc89fa2afe7262015686cebbd86cfd. Selected changes from feature branch 78505f1241860926148a0c45f033c71386a5fb16 staged to trusted experiment/unity-vtt solely for native CI. The public in-app updater remains on 1.00.54 until separate owner approval.
+
+53-second owner Android recording confirms old verbose forms and a large advancement page. The new Hero detail area is split into compact tabs: Профиль / Бой / Статы / Данные, with matching theme styles, 44+pt controls and preserved class/race/HP/death saves/conditions/rest/stats/save/export actions. XP change and award/spend inputs are hidden behind two foldouts while the progress bar and level-up entry are visible. Class choices and feats are searchable/paginated (8/page), ASI uses a two-column grid, new features collapsible. Buttons renamed «К дайсам» and «К атакам» to clarify navigation; no dice/attack mechanics changed.
+
+Owner's wallet code, rules, save format, main branch and public update feed remain unchanged. Native Android ARM64 IL2CPP candidate **1.00.55** is prepared only inside the Actions checkout, not committed to UnityRelease.cs. Windows GUI smoke test from 1.00.54 uses legacy HP coordinates and will need layout-specific adjustment. Device QA: numeric keyboard, portrait widths, scrolling and multi-class/feat pickers.

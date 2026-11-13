@@ -92,7 +92,7 @@ namespace DndVtt.UnityPrototype
             {
                 // Keep every old control: editable identity/race/speed, death saves,
                 // long/short rest, all six stats, exports and class advancement.
-                ClassicHero(hero, ref changed);
+                GrimoireHeroDetails(hero, ref changed);
             }
             classicControlWidth = 0;
         }
@@ -270,7 +270,7 @@ namespace DndVtt.UnityPrototype
         private void GrimoireQuickActions(JObject hero)
         {
             GrimoireSection("БЫСТРЫЕ ДЕЙСТВИЯ");
-            int action = ClassicButtonRow("Дайсы", "Атаки", "Развитие");
+            int action = ClassicButtonRow("К дайсам", "К атакам", "Развитие");
             if (action == 0) requestedSheetTab = 5;
             else if (action == 1) requestedSheetTab = 2;
             else if (action == 2) BeginAdvancement(hero, true);
