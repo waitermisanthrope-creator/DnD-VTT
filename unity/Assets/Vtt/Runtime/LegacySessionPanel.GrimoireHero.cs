@@ -185,9 +185,9 @@ namespace DndVtt.UnityPrototype
         {
             GrimoireSection("ЗДОРОВЬЕ");
             GUILayout.BeginVertical(uiStyles.HeroPanel);
-            int maximum = GrimoireCount(hero["hpMax"], archive.MaximumHp(selected));
-            int current = GrimoireCount(hero["hpCurrent"], archive.CurrentHp(selected));
-            int temporary = GrimoireCount(hero["hpTemp"], archive.TemporaryHp(selected));
+            int maximum = GrimoireCount(hero["hpMax"], Mathf.RoundToInt(archive.MaximumHp(selected)));
+            int current = GrimoireCount(hero["hpCurrent"], Mathf.RoundToInt(archive.CurrentHp(selected)));
+            int temporary = GrimoireCount(hero["hpTemp"], Mathf.RoundToInt(archive.TemporaryHp(selected)));
             GUILayout.BeginHorizontal();
             GUILayout.Label("♥ " + current + " / " + maximum + " HP", uiStyles.HeroValue, GUILayout.ExpandWidth(true));
             GUILayout.Label("Временные: " + temporary, uiStyles.HeroSubtitle, GUILayout.Width(Mathf.Min(142, UiWidth * .29f)));
