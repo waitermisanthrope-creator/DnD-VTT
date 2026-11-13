@@ -1,0 +1,53 @@
+name: Verify visible Grimoire UI artwork (source only)
+on:
+  push:
+    branches: [experiment/ui-grimoire-art-visible]
+    paths:
+      - '.github/workflows/grimoire-art-checks.yml'
+      - 'unity/Assets/Vtt/Runtime/LegacySessionPanel.*.cs'
+      - 'unity/Assets/Vtt/Resources/UI/Grimoire/**'
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Validate resource names and theme-safe IMGUI wiring
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          root=Path("unity/Assets/Vtt/Resources/UI/Grimoire")
+          runtime=Path("unity/Assets/Vtt/Runtime")
+          hero=(runtime/"LegacySessionPanel.GrimoireHero.cs").read_text()
+          theme=(runtime/"LegacySessionPanel.Theme.cs").read_text()
+          import re
+          resources=set(re.findall(r'"(UI/Grimoire/[^"]+)"',hero))
+          for reference in sorted(resources):
+              # dynamic suffixes in GrimoireButtonArt() checked separately
+              if reference.endswith("/"):
+                  continue
+              if reference.endswith("_9s") or reference.endswith("_mask") or reference.endswith("_96"):
+                  assert Path("unity/Assets/Vtt/Resources",reference+".png").exists(),reference
+          for name in ("button_primary","button_secondary"):
+              for state in ("normal","hover","pressed"):
+                  assert (root/"buttons"/f"{name}_{state}_9s.png").exists()
+          assert 'HeroPortraitFrame' in theme and 'HeroRuneDivider' in theme
+          assert 'GrimoireButtonArt(uiStyles.HeroActionButton' in hero
+          assert 'GrimoireButtonArt(uiStyles.HeroSecondaryButton' in hero
+          assert 'GrimoireHeroDetails(hero, ref changed)' in hero
+          assert 'GrimoireDetailsFold(hero, ref changed)' in hero
+          assert 'ClassicButtonRow(' not in hero
+          print("GRIMOIRE_ART_REFERENCES_PASS", len(resources))
+          PY
+      - name: Verify .NET rules and theme smoke
+        run: |
+          dotnet build unity/ci/workshop-tests/WorkshopTests.csproj
+          dotnet run --no-build --project unity/ci/workshop-tests -- --hero-ui
+          dotnet run --no-build --project unity/ci/workshop-tests -- --ui-theme
+          dotnet run --no-build --project unity/ci/workshop-tests -- --advancement
+          python3 unity/ci/test_grimoire_details_contract.py
