@@ -6,6 +6,7 @@ on:
       - '.github/workflows/grimoire-art-checks.yml'
       - 'unity/Assets/Vtt/Runtime/LegacySessionPanel.*.cs'
       - 'unity/Assets/Vtt/Resources/UI/Grimoire/**'
+      - 'unity/ci/test_grimoire_details_contract.py'
 permissions:
   contents: read
 jobs:
