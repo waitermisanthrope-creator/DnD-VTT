@@ -1,10 +1,10 @@
 {
   "schema": 1,
-  "version": "1.00.54",
-  "candidateRunId": 43341129817,
+  "version": "1.00.55",
+  "candidateRunId": 43415561916,
   "approved": true,
   "releaseType": "public-prerelease",
   "channel": "unity-experiment",
   "scope": "Android-only",
-  "note": "Владелец 2026-11-13 попросил выпуск 1.00.54 прямо через механизм обновлений в Android, чтобы лично проверить новый интерфейс. Native Android ARM64 IL2CPP job 131609416813 SUCCESS; APK 1.00.54 подписан исходным сертификатом, подписанный артефакт DnD-VTT-Unity-1.00.54-Android-test проверен; публикацию и SHA256 повторно проверяет publisher. Windows compilation/installer SUCCESS; отдельный Windows GUI QA FAIL: старый сценарий ожидает сразу видимые текстовые поля HP, теперь они в скрываемой секции 'Сведения о герое'; проверка требует адаптации к новому макету. Только Android, Windows не публиковать, main не трогать. Это пользовательское Android-тестирование UI, не утверждение всей регрессии."
+  "note": "Владелец 2026-11-13 разрешил публикацию всех последующих тестовых обновлений Android DnD-VTT через встроенный updater, без отдельного запроса, чтобы проверять их в приложении. 1.00.55 native Android ARM64 IL2CPP job 131852895573 SUCCESS, подписанный оригинальным сертификатом APK и тестовый artifact присутствуют. Windows build SUCCESS, но отдельный Windows graphical smoke FAIL из-за ожиданий прежних координат и разметки редактора HP — Windows не публиковать. Только Android 1.00.55, main не менять. Видеорегрессия и Android device QA проводятся пользователем."
 }
