@@ -26,7 +26,7 @@ namespace DndVtt.UnityPrototype
         private void BeginAdvancement(JObject hero,bool experience)
         {
             ResetFormInput();advancementHero=(string)hero["id"];advancementSignature=HeroSignature(hero);advancementClass=null;advancementOpen=true;experienceOpen=experience;
-            advancementMilestone=false;advancementNewClass=false;advancementSearch="";experienceTotal=DisplayExperience(hero).ToString(CultureInfo.InvariantCulture);experienceAmount="0";frontScroll=Vector2.zero;
+            advancementMilestone=false;advancementNewClass=false;advancementSearch="";advancementFeatSearch="";advancementClassPage=advancementFeatPage=0;experienceTotal=DisplayExperience(hero).ToString(CultureInfo.InvariantCulture);experienceAmount="0";frontScroll=Vector2.zero;
         }
         private void PublishAdvancement(JObject original,JObject updated)
         {
@@ -46,58 +46,55 @@ namespace DndVtt.UnityPrototype
         private void DrawAdvancement(JObject hero)
         {
             if((string)hero["id"]!=advancementHero){CloseAdvancement();return;}
-            if(FitMenuButton("← Вернуться к герою")){CloseAdvancement();return;}
+            PrepareGrimoireHeroStyles();
+            if(MeasuredMenuButton("← Вернуться к герою",uiStyles.SecondaryButton,GUILayout.MinHeight(UiTheme.TouchHeight))){CloseAdvancement();return;}
             if(HeroSignature(hero)!=advancementSignature){GUILayout.Label("Лист изменился. Откройте развитие заново. Ничего не применено.");return;}
             if(experienceOpen){DrawExperience(hero);return;}
-            SheetSection("Повышение уровня");
+            GrimoireAdvancementOverview(hero);
+            GrimoireSection("ПОВЫШЕНИЕ УРОВНЯ");
             int total=AdvancementTotal(hero);
-            GUILayout.Label("Уровень "+total+" → "+(total+1),sheetCharacterName);
+            GUILayout.Label("Уровень "+total+" → "+(total+1),uiStyles.HeroSubtitle);
             bool enough=CharacterAdvancement.LevelByExperience(AdvancementCatalog,DisplayExperience(hero))>total;
             if(!enough)GUILayout.Label("По опыту повышение пока недоступно. Для игры по вехам можно подтвердить решение мастера.",sheetQuiet);
-            if(FitMenuButton(advancementMilestone?"✓ По решению мастера":"По опыту · изменить на решение мастера"))advancementMilestone=!advancementMilestone;
+            if(MeasuredMenuButton(advancementMilestone?"✓ По решению мастера":"По опыту · изменить на решение мастера",uiStyles.SecondaryButton,GUILayout.MinHeight(UiTheme.TouchHeight)))advancementMilestone=!advancementMilestone;
             JArray ownedClasses=null;string classProblem=null;
             try{ownedClasses=CharacterAdvancement.Classes(hero,AdvancementCatalog);}catch(FormatException e){classProblem=e.Message;}
             if(classProblem!=null){GUILayout.Label(classProblem,sheetQuiet);return;}
             if(advancementClass==null)
             {
-                GUILayout.Label("Выберите класс. Новый класс добавит мультикласс, существующий получит ещё один уровень.",sheetQuiet);
-                if(FitMenuButton(advancementNewClass?"← Мои классы":"Добавить мультикласс…")){advancementNewClass=!advancementNewClass;ResetFormInput();}
-                if(advancementNewClass){GUILayout.Label("Поиск класса",sheetQuiet);advancementSearch=MenuTextField("advancementSearch", advancementSearch,GUILayout.MinHeight(48));}
-                var owned=ownedClasses.OfType<JObject>().Select(c=>(string)c["name"]).ToArray();
-                foreach(var unknown in owned.Where(n=>CharacterAdvancement.ClassData(AdvancementCatalog,n)==null))GUILayout.Label("«"+unknown+"»: прогрессия ещё не перенесена",sheetQuiet);
-                foreach(var p in ((JObject)AdvancementCatalog["classes"]).Properties().Where(p=>advancementNewClass?!owned.Contains(p.Name,StringComparer.OrdinalIgnoreCase)&&p.Name.IndexOf(advancementSearch,StringComparison.CurrentCultureIgnoreCase)>=0:owned.Contains(p.Name,StringComparer.OrdinalIgnoreCase)).OrderBy(p=>p.Name,StringComparer.CurrentCulture))
-                {
-                    string name=p.Name,problem=null;try{problem=CharacterAdvancement.EntryProblem(AdvancementCatalog,hero,name);}catch(FormatException e){problem=e.Message;}
-                    GUILayout.BeginVertical(GUI.skin.box);
-                    bool was=GUI.enabled;GUI.enabled=was&&problem==null&&(enough||advancementMilestone)&&total<20;
-                    if(FitMenuButton(name+(problem==null?" · "+CharacterAdvancement.NextClassLevel(AdvancementCatalog,hero,name)+" ур.":"")))Attempt(()=>SelectAdvancementClass(hero,name));
-                    GUI.enabled=was;if(problem!=null)GUILayout.Label(problem,sheetQuiet);GUILayout.EndVertical();
-                }
+                GrimoireChooseAdvancementClass(hero,ownedClasses,total,enough);
                 return;
             }
             var cls=CharacterAdvancement.ClassData(AdvancementCatalog,advancementClass);var row=CharacterAdvancement.LevelData(AdvancementCatalog,hero,advancementClass);
             int next=CharacterAdvancement.NextClassLevel(AdvancementCatalog,hero,advancementClass),die=(int)cls["hitDie"];
-            GUILayout.BeginVertical(GUI.skin.box);GUILayout.Label(advancementClass+" · "+next+" ур.",sheetCharacterName);
+            GUILayout.BeginVertical(uiStyles.HeroPanel);GUILayout.Label(advancementClass+" · "+next+" ур.",sheetCharacterName);
             if(FitMenuButton("Выбрать другой класс")){ResetFormInput();advancementClass=null;GUILayout.EndVertical();return;}
             GUILayout.Label("Кость хитов d"+die+" · результат "+advancementHp+" + Телосложение",sheetQuiet);
-            if(FitMenuButton("Среднее: "+(die/2+1)))advancementHp=die/2+1;
-            if(FitMenuButton("Бросить d"+die))advancementHp=UnityEngine.Random.Range(1,die+1);
-            if(FitMenuButton("Максимум: "+die))advancementHp=die;
+            GUILayout.BeginHorizontal();
+            if(MeasuredMenuButton("Среднее: "+(die/2+1),uiStyles.SecondaryButton,GUILayout.ExpandWidth(true),GUILayout.MinHeight(UiTheme.TouchHeight)))advancementHp=die/2+1;
+            if(MeasuredMenuButton("Бросить d"+die,uiStyles.SecondaryButton,GUILayout.ExpandWidth(true),GUILayout.MinHeight(UiTheme.TouchHeight)))advancementHp=UnityEngine.Random.Range(1,die+1);
+            if(MeasuredMenuButton("Максимум: "+die,uiStyles.SecondaryButton,GUILayout.ExpandWidth(true),GUILayout.MinHeight(UiTheme.TouchHeight)))advancementHp=die;
+            GUILayout.EndHorizontal();
             if(FitMenuButton(advancementRestore?"✓ Восстановить HP до максимума":"Сохранить полученный урон · изменить"))advancementRestore=!advancementRestore;GUILayout.EndVertical();
             var entry=CharacterAdvancement.Classes(hero,AdvancementCatalog).OfType<JObject>().FirstOrDefault(c=>string.Equals((string)c["name"],advancementClass,StringComparison.OrdinalIgnoreCase));
             var subclasses=cls["subclasses"] as JObject??new JObject();
             if(string.IsNullOrEmpty((string)entry?["subclass"])&&((bool?)row["subclassLevel"]==true||subclasses.Properties().Any(p=>(int?)p.Value["pickLevel"]<=next)))
             {
-                GUILayout.BeginVertical(GUI.skin.box);SheetSection("Подкласс");
+                GUILayout.BeginVertical(uiStyles.HeroPanel);SheetSection("Подкласс");
                 foreach(var p in subclasses.Properties().Where(p=>(int?)p.Value["pickLevel"]<=next))
                 {if(FitMenuButton((advancementSubclass==p.Name?"✓ ":"")+p.Name))advancementSubclass=p.Name;if(advancementSubclass==p.Name)GUILayout.Label((string)p.Value["description"]??"",sheetQuiet);}
                 GUILayout.EndVertical();
             }
             if((bool?)row["asi"]==true)DrawAdvancementAsi(hero);
             if(entry==null)DrawAdvancementProficiencies(hero,cls);
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Новые особенности");
-            foreach(var feature in row["features"] as JArray??new JArray())GUILayout.Label("• "+feature,sheetQuiet);
-            GUILayout.Label("Записи способностей добавляются в лист. Автоматическое исполнение всех боевых эффектов классов ещё переносится.",sheetQuiet);GUILayout.EndVertical();
+            GUILayout.BeginVertical(uiStyles.HeroPanel);
+            int featureCount=(row["features"] as JArray)?.Count??0;
+            if(SheetFold("adv-features:"+hero["id"],"Новые особенности ("+featureCount+")"))
+            {
+                foreach(var feature in row["features"] as JArray??new JArray())GUILayout.Label("• "+feature,uiStyles.HeroSubtitle);
+                GUILayout.Label("Записи добавляются в лист. Некоторые эффекты требуют ручного применения.",uiStyles.HeroSubtitle);
+            }
+            GUILayout.EndVertical();
             var choices=AdvancementChoices();JObject preview=null;string error=null;
             try{preview=CharacterAdvancement.Advance(AdvancementCatalog,hero,advancementClass,choices,CreationCatalog);}catch(Exception e){error=e.Message;}
             if(preview!=null)
@@ -111,7 +108,7 @@ namespace DndVtt.UnityPrototype
         private void SelectAdvancementClass(JObject hero,string name)
         {
             CharacterAdvancement.LevelData(AdvancementCatalog,hero,name);ResetFormInput();advancementClass=name;advancementHp=(int)CharacterAdvancement.ClassData(AdvancementCatalog,name)["hitDie"]/2+1;
-            advancementSubclass=advancementFeat=advancementFeatStat="";advancementAsiMode=0;advancementAsi1="str";advancementAsi2="dex";advancementRestore=false;advancementProficiencies.Clear();frontScroll=Vector2.zero;
+            advancementSubclass=advancementFeat=advancementFeatStat="";advancementAsiMode=0;advancementAsi1="str";advancementAsi2="dex";advancementRestore=false;advancementProficiencies.Clear();advancementFeatSearch="";advancementFeatPage=0;frontScroll=Vector2.zero;
         }
         private JObject AdvancementChoices()
         {
@@ -122,24 +119,37 @@ namespace DndVtt.UnityPrototype
             return result;
         }
         private string AdvancementStat(string selected,string label)
-        {GUILayout.Label(label,sheetQuiet);for(int i=0;i<6;i++)if(FitMenuButton((selected==CharacterSheetRules.Stats[i]?"✓ ":"")+CharacterSheetRules.StatNames[i]))selected=CharacterSheetRules.Stats[i];return selected;}
+        {
+            GUILayout.Label(label,uiStyles.HeroSubtitle);
+            for(int i=0;i<6;i++)
+            {
+                if(i%2==0)GUILayout.BeginHorizontal();
+                string stat=CharacterSheetRules.Stats[i];
+                if(MeasuredMenuButton((selected==stat?"✓ ":"")+CharacterSheetRules.StatNames[i],
+                    selected==stat?uiStyles.ActiveTab:uiStyles.SecondaryButton,
+                    GUILayout.ExpandWidth(true),GUILayout.MinHeight(UiTheme.TouchHeight)))selected=stat;
+                if(i%2==1)GUILayout.EndHorizontal();
+            }
+            return selected;
+        }
         private void DrawAdvancementAsi(JObject hero)
         {
-            GUILayout.BeginVertical(GUI.skin.box);SheetSection("Характеристики или черта");
-            foreach(var option in new[]{("+2 к характеристике",0),("+1 к двум характеристикам",1),("Выбрать черту",2)})if(FitMenuButton((advancementAsiMode==option.Item2?"✓ ":"")+option.Item1))advancementAsiMode=option.Item2;
+            GUILayout.BeginVertical(uiStyles.HeroPanel);SheetSection("Характеристики или черта");
+            GUILayout.BeginHorizontal();
+            foreach(var option in new[]{("+2 одной",0),("+1 двум",1),("Черта",2)})
+                if(MeasuredMenuButton((advancementAsiMode==option.Item2?"✓ ":"")+option.Item1,
+                    advancementAsiMode==option.Item2?uiStyles.ActiveTab:uiStyles.SecondaryButton,
+                    GUILayout.ExpandWidth(true),GUILayout.MinHeight(UiTheme.TouchHeight)))advancementAsiMode=option.Item2;
+            GUILayout.EndHorizontal();
             if(advancementAsiMode<2){advancementAsi1=AdvancementStat(advancementAsi1,"Первая характеристика");if(advancementAsiMode==1)advancementAsi2=AdvancementStat(advancementAsi2,"Вторая, отличная от первой");}
-            else foreach(JObject feat in CreationCatalog["feats"] as JArray??new JArray())
-            {
-                string id=(string)feat["id"];if(FitMenuButton((advancementFeat==id?"✓ ":"")+((string)feat["name"]??id)))advancementFeat=id;
-                if(advancementFeat==id){GUILayout.Label((string)(feat["description"]??feat["desc"])??"",sheetQuiet);if((string)feat["statBonus"]?["type"]=="choice")advancementFeatStat=AdvancementStat(advancementFeatStat,"Характеристика черты");}
-            }
+            else GrimoireAdvancementFeatPicker();
             GUILayout.EndVertical();
         }
         private void DrawAdvancementProficiencies(JObject hero,JObject cls)
         {
             int i=0;foreach(JObject choice in cls["multiclass"]?["choices"] as JArray??new JArray())
             {
-                string key=(i++).ToString();advancementProficiencies.TryGetValue(key,out string selected);GUILayout.BeginVertical(GUI.skin.box);SheetSection((string)choice["label"]??"Новое владение");
+                string key=(i++).ToString();advancementProficiencies.TryGetValue(key,out string selected);GUILayout.BeginVertical(uiStyles.HeroPanel);SheetSection((string)choice["label"]??"Новое владение");
                 if((string)choice["type"]=="skill")for(int s=0;s<CharacterSheetRules.SkillIds.Length;s++)
                 {string id=CharacterSheetRules.SkillIds[s];if(LegacyJson.Number(hero["skillsData"]?[id])==0&&FitMenuButton((selected==id?"✓ ":"")+CharacterSheetRules.SkillNames[s]))advancementProficiencies[key]=id;}
                 else foreach(JObject p in ((JArray)AdvancementCatalog["proficiencies"]).OfType<JObject>().Where(p=>(string)p["category"]=="Музыкальные инструменты"))if(FitMenuButton((selected==(string)p["id"]?"✓ ":"")+p["name"]))advancementProficiencies[key]=(string)p["id"];
@@ -148,18 +158,54 @@ namespace DndVtt.UnityPrototype
         }
         private void DrawExperience(JObject hero)
         {
-            SheetSection("Опыт персонажа");int level=AdvancementTotal(hero);long current=DisplayExperience(hero);
-            GUILayout.Label("Уровень "+level+" · "+current+" опыта",sheetCharacterName);
-            if(level<20)GUILayout.Label("Следующий уровень: "+AdvancementCatalog["xp"][Math.Min(19,level)]+" опыта",sheetQuiet);
-            GUILayout.Label("Всего опыта");experienceTotal=IntegerField("advancement-xp-total",experienceTotal,GUILayout.MinHeight(50));
-            if(FitMenuButton("Установить опыт"))Attempt(()=>{FlushAdvancementNumbers();var next=CharacterAdvancement.Experience(hero,ReadExperience(experienceTotal),"set");PublishAdvancement(hero,next);});
-            GUILayout.Label("Количество для начисления / списания");experienceAmount=IntegerField("advancement-xp-amount",experienceAmount,GUILayout.MinHeight(50));
-            foreach(string action in new[]{"add","sub"})if(FitMenuButton(action=="add"?"Добавить опыт":"Вычесть опыт"))Attempt(()=>
+            GrimoireAdvancementOverview(hero);
+            int level = AdvancementTotal(hero);
+            GUILayout.BeginVertical(uiStyles.HeroPanel);
+            GUILayout.Label("Опыт не повышает класс автоматически: каждое повышение подтверждается отдельно.",
+                uiStyles.HeroSubtitle);
+            if (level < 20 && MeasuredMenuButton("↑ Повысить уровень…", uiStyles.PrimaryButton,
+                GUILayout.MinHeight(UiTheme.TouchHeight)))
             {
-                FlushAdvancementNumbers();var next=CharacterAdvancement.Experience(hero,ReadExperience(experienceAmount),action);PublishAdvancement(hero,next);experienceTotal=CharacterAdvancement.CurrentExperience(next).ToString();experienceAmount="0";
-            });
-            GUILayout.Label("Опыт не повышает и не понижает класс автоматически. Каждое повышение подтверждается отдельно.",sheetQuiet);
-            if(level<20&&FitMenuButton("Повысить уровень…")){ResetFormInput();experienceOpen=false;advancementMilestone=false;frontScroll=Vector2.zero;}
+                ResetFormInput(); experienceOpen = false; advancementMilestone = false;
+                frontScroll = Vector2.zero;
+            }
+            GUILayout.EndVertical();
+
+            if (SheetFold("adv-xp-set:" + hero["id"], "Изменить общий опыт"))
+            {
+                GUILayout.BeginVertical(uiStyles.HeroPanel);
+                GUILayout.Label("Всего опыта", uiStyles.HeroSubtitle);
+                experienceTotal = IntegerField("advancement-xp-total", experienceTotal,
+                    GUILayout.MinHeight(UiTheme.TouchHeight));
+                if (MeasuredMenuButton("Установить опыт", uiStyles.PrimaryButton,
+                    GUILayout.MinHeight(UiTheme.TouchHeight)))
+                    Attempt(() => { FlushAdvancementNumbers(); var next = CharacterAdvancement.Experience(hero,
+                        ReadExperience(experienceTotal), "set"); PublishAdvancement(hero, next);
+                        experienceTotal = CharacterAdvancement.CurrentExperience(next).ToString(); });
+                GUILayout.EndVertical();
+            }
+            if (SheetFold("adv-xp-delta:" + hero["id"], "Начислить или списать опыт"))
+            {
+                GUILayout.BeginVertical(uiStyles.HeroPanel);
+                GUILayout.Label("Количество опыта", uiStyles.HeroSubtitle);
+                experienceAmount = IntegerField("advancement-xp-amount", experienceAmount,
+                    GUILayout.MinHeight(UiTheme.TouchHeight));
+                GUILayout.BeginHorizontal();
+                foreach (string action in new[] { "add", "sub" })
+                    if (MeasuredMenuButton(action == "add" ? "+ Добавить" : "− Списать",
+                        uiStyles.SecondaryButton, GUILayout.ExpandWidth(true),
+                        GUILayout.MinHeight(UiTheme.TouchHeight)))
+                        Attempt(() =>
+                        {
+                            FlushAdvancementNumbers();
+                            var next = CharacterAdvancement.Experience(hero, ReadExperience(experienceAmount), action);
+                            PublishAdvancement(hero, next);
+                            experienceTotal = CharacterAdvancement.CurrentExperience(next).ToString();
+                            experienceAmount = "0";
+                        });
+                GUILayout.EndHorizontal();
+                GUILayout.EndVertical();
+            }
         }
     }
 }

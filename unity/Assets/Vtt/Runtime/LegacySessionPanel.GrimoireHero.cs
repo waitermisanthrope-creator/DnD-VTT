@@ -92,7 +92,7 @@ namespace DndVtt.UnityPrototype
             {
                 // Keep every old control: editable identity/race/speed, death saves,
                 // long/short rest, all six stats, exports and class advancement.
-                ClassicHero(hero, ref changed);
+                GrimoireHeroDetails(hero, ref changed);
             }
             classicControlWidth = 0;
         }
