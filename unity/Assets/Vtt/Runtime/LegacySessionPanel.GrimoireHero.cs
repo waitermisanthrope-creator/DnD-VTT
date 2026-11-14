@@ -13,7 +13,7 @@ namespace DndVtt.UnityPrototype
             0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000,
             85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000
         };
-        private GUIStyle grimoireHpButton, grimoirePrimaryButton;
+        private GUIStyle grimoireHpButton, grimoirePrimaryButton, grimoireDetailCard;
         private GUIStyle grimoirePortraitFrameStyle, grimoireHealthTrackStyle,
             grimoireHealthFillStyle, grimoireXpTrackStyle, grimoireXpFillStyle;
         private Texture2D grimoirePortraitFrame, grimoireShieldIcon, grimoireHpIcon, grimoireXpIcon, grimoireConditionIcon;
@@ -61,6 +61,7 @@ namespace DndVtt.UnityPrototype
             // Loaded once per skin lifetime; Resources-owned textures are never destroyed.
             Texture2D main = Resources.Load<Texture2D>("UI/Grimoire/panels/panel_primary_9s");
             Texture2D inset = Resources.Load<Texture2D>("UI/Grimoire/panels/panel_inset_9s");
+            Texture2D secondaryPanel = Resources.Load<Texture2D>("UI/Grimoire/panels/panel_secondary_9s");
             if (main)
             {
                 uiStyles.HeroPanel.normal.background = main;
@@ -70,6 +71,16 @@ namespace DndVtt.UnityPrototype
             {
                 uiStyles.HeroMetric.normal.background = inset;
                 uiStyles.HeroMetric.border = new RectOffset(16, 16, 16, 16);
+            }
+            grimoireDetailCard = new GUIStyle(uiStyles.HeroPanel)
+            {
+                padding = new RectOffset(12, 12, 12, 12),
+                margin = new RectOffset(0, 0, 0, 9)
+            };
+            if (secondaryPanel)
+            {
+                grimoireDetailCard.normal.background = secondaryPanel;
+                grimoireDetailCard.border = new RectOffset(16, 16, 16, 16);
             }
             // Skin the Hero quick HP controls with the imported nine-slice artwork.
             // Keep this local to Hero: other sheets (especially the wallet) retain
