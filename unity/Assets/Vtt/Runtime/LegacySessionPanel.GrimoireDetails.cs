@@ -79,6 +79,7 @@ namespace DndVtt.UnityPrototype
             // Keep editing inside a framed card, not a second long full-width form.
             GUILayout.BeginVertical(uiStyles.HeroPanel);
             GUILayout.Label("СВЕДЕНИЯ О ГЕРОЕ", uiStyles.HeroSection);
+            GUILayout.Label("Выберите раздел для редактирования", uiStyles.HeroSubtitle);
             // Four short, thumb-sized pages instead of one enormous edit form.
             string[] tabs = { "Профиль", "Бой", "Статы", "Данные" };
             GUILayout.BeginHorizontal();
@@ -116,12 +117,12 @@ namespace DndVtt.UnityPrototype
 
         private void GrimoireDetailsProfile(JObject hero, ref bool changed)
         {
-            GrimoireSection("ЛИЧНЫЕ ДАННЫЕ");
+            GrimoireIconHeading("ЛИЧНЫЕ ДАННЫЕ", uiStyles.HeroIcon);
             GUILayout.BeginVertical(uiStyles.HeroPanel);
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Имя", uiStyles.HeroSubtitle, GUILayout.Width(105), GUILayout.MinHeight(44));
+            GUILayout.Label("Имя", uiStyles.HeroSubtitle, GUILayout.Width(94), GUILayout.MinHeight(40));
             string name = (string)hero["name"] ?? "";
-            string value = MenuTextField("clone:name", name, cloneInput, GUILayout.MinHeight(44));
+            string value = MenuTextField("clone:name", name, cloneInput, GUILayout.MinHeight(40));
             if (value != name) { hero["name"] = value; changed = true; }
             GUILayout.EndHorizontal();
 
@@ -136,7 +137,7 @@ namespace DndVtt.UnityPrototype
                 GUILayout.MinHeight(UiTheme.TouchHeight))) BeginAdvancement(hero, true);
             GUILayout.EndVertical();
 
-            GrimoireSection("РАСА");
+            GrimoireSection("РАСА И ОСОБЕННОСТИ");
             GUILayout.BeginVertical(uiStyles.HeroPanel);
             GUILayout.BeginHorizontal();
             bool previous = GUI.enabled;
@@ -164,7 +165,7 @@ namespace DndVtt.UnityPrototype
 
         private void GrimoireDetailsCombat(JObject hero, ref bool changed)
         {
-            GrimoireSection("БОЕВЫЕ ПАРАМЕТРЫ");
+            GrimoireIconHeading("БОЕВЫЕ ПАРАМЕТРЫ", grimoireShieldIcon);
             GUILayout.BeginVertical(uiStyles.HeroPanel);
             GUILayout.BeginHorizontal();
             ClassicNumber(hero, "ac", "КД", ref changed, 10);
@@ -188,7 +189,7 @@ namespace DndVtt.UnityPrototype
                 GUILayout.Label(rollResult, uiStyles.HeroSubtitle);
             GUILayout.EndVertical();
 
-            GrimoireSection("СОСТОЯНИЯ");
+            GrimoireIconHeading("СОСТОЯНИЯ", grimoireConditionIcon);
             GUILayout.BeginVertical(uiStyles.HeroPanel);
             string[] conditions = { "Отравлен", "Сбит с ног", "Ослеплен", "Очарован",
                 "Испуган", "Невидимость", "Парализован", "Оглушен", "Захвачен" };
@@ -209,7 +210,7 @@ namespace DndVtt.UnityPrototype
             }
             GUILayout.EndVertical();
 
-            GrimoireSection("ЗДОРОВЬЕ И ОТДЫХ");
+            GrimoireIconHeading("ЗДОРОВЬЕ И ОТДЫХ", grimoireHpIcon);
             GUILayout.BeginVertical(uiStyles.HeroPanel);
             GUILayout.BeginHorizontal();
             string[] fields = { "hpMax", "hpCurrent", "hpTemp" };
@@ -225,7 +226,7 @@ namespace DndVtt.UnityPrototype
                 GUILayout.EndVertical();
             }
             GUILayout.EndHorizontal();
-            GUILayout.Label("Спасброски от смерти", uiStyles.HeroSubtitle);
+            GrimoireSection("СПАСБРОСКИ ОТ СМЕРТИ");
             CharacterSheetRules.TrySheetCount((hero["deathSaves"] as JObject)?["successes"],
                 out int successes);
             CharacterSheetRules.TrySheetCount((hero["deathSaves"] as JObject)?["failures"],
@@ -284,7 +285,7 @@ namespace DndVtt.UnityPrototype
 
         private void GrimoireDetailsStats(JObject hero, ref bool changed)
         {
-            GrimoireSection("ХАРАКТЕРИСТИКИ");
+            GrimoireIconHeading("ХАРАКТЕРИСТИКИ", grimoireShieldIcon);
             GUILayout.BeginVertical(uiStyles.HeroPanel);
             var stats = hero["stats"] as JObject ?? new JObject();
             string[] captions = { "СИЛ", "ЛОВ", "ТЕЛ", "ИНТ", "МУД", "ХАР" };
@@ -315,7 +316,7 @@ namespace DndVtt.UnityPrototype
             }
             GUILayout.EndVertical();
 
-            GrimoireSection("СПАСБРОСКИ ХАРАКТЕРИСТИК");
+            GrimoireSection("СПАСБРОСКИ");
             GUILayout.BeginVertical(uiStyles.HeroPanel);
             var saves = hero["savesData"] as JObject ?? new JObject();
             for (int i = 0; i < 6; i++)
@@ -337,9 +338,9 @@ namespace DndVtt.UnityPrototype
 
         private void GrimoireDetailsData()
         {
-            GrimoireSection("УПРАВЛЕНИЕ ДАННЫМИ");
+            GrimoireIconHeading("УПРАВЛЕНИЕ ДАННЫМИ", uiStyles.HeroIcon);
             GUILayout.BeginVertical(uiStyles.HeroPanel);
-            GUILayout.Label("Сохранённые герои и перенос персонажей", uiStyles.HeroSubtitle);
+            GUILayout.Label("Экспорт и переход к списку героев", uiStyles.HeroSubtitle);
             if (MeasuredMenuButton("Экспортировать JSON", grimoirePrimaryButton,
                 GUILayout.MinHeight(UiTheme.TouchHeight))) Attempt(() => PickCharacterFile(true));
             if (MeasuredMenuButton("К выбору героев", uiStyles.SecondaryButton,
