@@ -78,7 +78,7 @@ namespace DndVtt.UnityPrototype
 
             // Keep editing inside a framed card, not a second long full-width form.
             GUILayout.BeginVertical(uiStyles.HeroPanel);
-            GUILayout.Label("РЕДАКТИРОВАНИЕ ПЕРСОНАЖА", uiStyles.HeroSection);
+            GUILayout.Label("СВЕДЕНИЯ О ГЕРОЕ", uiStyles.HeroSection);
             // Four short, thumb-sized pages instead of one enormous edit form.
             string[] tabs = { "Профиль", "Бой", "Статы", "Данные" };
             GUILayout.BeginHorizontal();
@@ -132,7 +132,7 @@ namespace DndVtt.UnityPrototype
             GrimoireReadRow("Класс", classLabel);
             GrimoireReadRow("Предыстория", (string)hero["background"]);
             GrimoireReadRow("Профессия", (string)hero["profession"] ?? "Без профессии");
-            if (MeasuredMenuButton("Опыт и уровень →", uiStyles.PrimaryButton,
+            if (MeasuredMenuButton("Опыт и уровень →", grimoirePrimaryButton,
                 GUILayout.MinHeight(UiTheme.TouchHeight))) BeginAdvancement(hero, true);
             GUILayout.EndVertical();
 
@@ -181,7 +181,7 @@ namespace DndVtt.UnityPrototype
             if (edited != speed) { hero["speed"] = edited; changed = true; }
             GUILayout.EndVertical();
             GUILayout.EndHorizontal();
-            if (MeasuredMenuButton("⚄ Бросить инициативу", uiStyles.SecondaryButton,
+            if (MeasuredMenuButton("⚄ Бросить инициативу", grimoireHpButton,
                 GUILayout.MinHeight(UiTheme.TouchHeight)))
                 Roll("Инициатива", 20, CharacterSheetRules.Modifier(hero, "dex"));
             if (rollResult != "Выберите кубик или проверку")
@@ -192,17 +192,20 @@ namespace DndVtt.UnityPrototype
             GUILayout.BeginVertical(uiStyles.HeroPanel);
             string[] conditions = { "Отравлен", "Сбит с ног", "Ослеплен", "Очарован",
                 "Испуган", "Невидимость", "Парализован", "Оглушен", "Захвачен" };
+            // Two readable columns on narrow Android screens, three on tablets.
+            int conditionColumns = UiWidth < 620 ? 2 : 3;
             for (int i = 0; i < conditions.Length; i++)
             {
-                if (i % 3 == 0) GUILayout.BeginHorizontal();
+                if (i % conditionColumns == 0) GUILayout.BeginHorizontal();
                 string condition = conditions[i];
                 JToken token = (hero["activeConditions"] as JObject)?[condition];
                 bool active = token?.Type == JTokenType.Boolean && (bool)token;
                 if (MeasuredMenuButton((active ? "✓ " : "") + condition,
-                    active ? uiStyles.ActiveTab : uiStyles.SecondaryButton,
+                    active ? uiStyles.ActiveTab : grimoireHpButton,
                     GUILayout.ExpandWidth(true), GUILayout.MinHeight(UiTheme.TouchHeight)))
                     SheetAction(() => CharacterSheetRules.ToggleSheetCondition(hero, condition), ref changed);
-                if (i % 3 == 2) GUILayout.EndHorizontal();
+                if (i % conditionColumns == conditionColumns - 1 || i == conditions.Length - 1)
+                    GUILayout.EndHorizontal();
             }
             GUILayout.EndVertical();
 
@@ -337,7 +340,7 @@ namespace DndVtt.UnityPrototype
             GrimoireSection("УПРАВЛЕНИЕ ДАННЫМИ");
             GUILayout.BeginVertical(uiStyles.HeroPanel);
             GUILayout.Label("Сохранённые герои и перенос персонажей", uiStyles.HeroSubtitle);
-            if (MeasuredMenuButton("Экспортировать JSON", uiStyles.PrimaryButton,
+            if (MeasuredMenuButton("Экспортировать JSON", grimoirePrimaryButton,
                 GUILayout.MinHeight(UiTheme.TouchHeight))) Attempt(() => PickCharacterFile(true));
             if (MeasuredMenuButton("К выбору героев", uiStyles.SecondaryButton,
                 GUILayout.MinHeight(UiTheme.TouchHeight)))
